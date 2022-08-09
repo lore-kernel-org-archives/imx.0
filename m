@@ -1,302 +1,109 @@
-Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-eopbgr00044.outbound.protection.outlook.com [40.107.0.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136144428
-	for <imx@lists.linux.dev>; Tue,  9 Aug 2022 14:31:48 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I6w5ZVmjETE0CTALfu64EdIqOiUUM57l/Fdv6yfRi3cW0vOPfW//fsQgN3Myhh5Lg3dTHrCE/uDI+knyXRcYZNJgWoNbVorx33BB7R20PkoGRye6hEjKDCpuDkUmq8Kv8Dna3gxOc8pVFbRzRnuHRhbWpPEfJlHiuq+cGlBiia1oP1mpkGiC/p7X2wMlVW4Qom6dJ+nH95pQiedCUyR8kKe+nGOcV8ytqIzW2AoxLSClnl9xR4Yin/Rv/5ywr5a4sOd+PQ8BRDaXhRuVzB/w7upeKGbbpQJ3SReJipHFKTE+ki7GmSsp4Y6lbwOxj0If8clKhf4SY7LgtMF5M217Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wxu/U9tqMOHp9+XNoADjX5mI6QN1TkJOQzcZtKHbtg4=;
- b=YEklJaZU7cR5FMc9r98DqEQjj8LossTlZM9bMWaGlPaMsPIbPU4wrdcOFuCU7jKw1AOSw7rOEz+4KDqIchMQ2UVvwwvCEyafpk2aDiC35mzAqK7f4n3XJQ/F3uKeqDI8qo2/wGbKEX5qjcHQkJvFewcaLEHp0IY9xBKG4D6SPz9MSSGD0YC45ud6bUmbZpORfk0KKf4ov/TsXJPM+Z4g30O/wcnwy4fgBgaB7uIQF1MF3ICgra6xOZFnVOgNUWIaIaqnQZQ9v0Ueo2YxN/astOq/dQifPUP65KIkSWJKMTUDDdMzaK3ew0v/Kp7HA9LSzbEODvNLobcrtw9/aR1WBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wxu/U9tqMOHp9+XNoADjX5mI6QN1TkJOQzcZtKHbtg4=;
- b=W8qho5OXyBj/CQp4zCo6LijpyVONMR7aBjnzQP9f1UcgQ9zLuCQsa6SgJK8rCVZujognHSq8vntvySiCmUTh4LxVTEnFFnhX7/Or6kWQuPoXRWxnd36QR3K7RZzjn7+atLc18Y0Rx18UBdWQbC3T4loU8vcDHz9TNDqHWGSzHEE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8274.eurprd04.prod.outlook.com (2603:10a6:20b:3e8::23)
- by DB7PR04MB5226.eurprd04.prod.outlook.com (2603:10a6:10:21::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.20; Tue, 9 Aug
- 2022 14:31:45 +0000
-Received: from AM9PR04MB8274.eurprd04.prod.outlook.com
- ([fe80::747c:397f:a003:dbca]) by AM9PR04MB8274.eurprd04.prod.outlook.com
- ([fe80::747c:397f:a003:dbca%5]) with mapi id 15.20.5525.010; Tue, 9 Aug 2022
- 14:31:45 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>
-Subject: [PATCH v2 3/3] firmware: imx: add imx-scu GPIO driver
-Date: Tue,  9 Aug 2022 09:31:05 -0500
-Message-Id: <20220809143105.17967-4-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220809143105.17967-1-shenwei.wang@nxp.com>
-References: <20220809143105.17967-1-shenwei.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR07CA0082.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::23) To AM9PR04MB8274.eurprd04.prod.outlook.com
- (2603:10a6:20b:3e8::23)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2D34428
+	for <imx@lists.linux.dev>; Tue,  9 Aug 2022 16:05:20 +0000 (UTC)
+Received: by mail-lf1-f50.google.com with SMTP id v2so8990086lfi.6
+        for <imx@lists.linux.dev>; Tue, 09 Aug 2022 09:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=2sKCf9ZKSlcTNKeuU2aWfd4L6pnmOrDWUSqmI6fFKX8=;
+        b=bTQjI2BHyw2f+Tnku7sYfkNWsLhWUrb44VDwgB+BLGNI+L2K7MhzxYXYcExLB8LR2W
+         lBcnY+B8xdcIC2GlDgqEtA70+6ivW31GG3z3U/yxPcvXjmk4tshwbGM1MD+q4C3XD4w2
+         cJpyZ2UyloQYQFVYqd5wXaHb4guR/GQhIc9XSQpAMtWB+V56HrS3h9jpq2BzVBKCvhax
+         B/hywRWedBkgrCz5qByzVNK303fS0gEZyEMZEziKBThkt3BDiccZQbWM/E7U/wlCVfX3
+         YvW0rIO2zq6XEmJblqR9X1U+uWwwazgZjjKkQFUiGb3VtmQXt16XgA7Q/E7WIiUlT8mr
+         PX6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=2sKCf9ZKSlcTNKeuU2aWfd4L6pnmOrDWUSqmI6fFKX8=;
+        b=i8K36zNDMOD0SjAmwk28MO2Z4lcwdCOaIHoS0eHY2FfoFSFs4ssEnR3vItPOMNxafn
+         vOQn1ieiUdaT96vpL1BTLZ+4AdIvqrWBfxKv2ql+9+hadvWhS+yCSnrvcdaz4XMYgcMS
+         /snfT0yHnxtBgVY6J5KhNifI8tnmSeaPi/jc0qozwoGocmOH11zkhfsEuwJSck0KhVem
+         qEo6M2DF8WLwA4A/ZVbUncP/TdyhmOj/xq7t8E/XW/t4ThaHqT/txWczY09XMGH8BTPU
+         sHqdYBqvmWzuYpejnq694pO0v+7UnjZiHpSIc2gllmeHUL/aRuvuFbZEW5uvfkbG9TP3
+         aGUA==
+X-Gm-Message-State: ACgBeo1ycOOWrmDGXE7WetimX2zEAueBE0xwdt2lm4+6ozg48iFcLNzJ
+	/fcSAn3RBW57ohBuOlfFqW6Nbw==
+X-Google-Smtp-Source: AA6agR7/JH4Rl+hjT86FmJEOgCluUzJLkTTOJern+M60BdxIAadELBCCw7At3ldhoER0sG45xrRJ1g==
+X-Received: by 2002:a05:6512:1043:b0:48b:2d4b:a13e with SMTP id c3-20020a056512104300b0048b2d4ba13emr7869247lfb.19.1660061118909;
+        Tue, 09 Aug 2022 09:05:18 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id z16-20020a19f710000000b00485caa0f5dfsm22203lfe.44.2022.08.09.09.05.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Aug 2022 09:05:18 -0700 (PDT)
+Message-ID: <5eb4d4a0-9895-dc0b-ba6a-ac435674892d@linaro.org>
+Date: Tue, 9 Aug 2022 19:05:16 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b6d2521a-adc7-479d-a9f6-08da7a13e25e
-X-MS-TrafficTypeDiagnostic: DB7PR04MB5226:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	gzkSqC1ztb7EBMb+qM2BSS8UVGNhH7Pm4BqiY/bJxPfUVaYw9e4O8SV1Z9b1/5EDAPGMeAXtYnxmM7NII7kYV7Woh7jnkbOBBzwAPWP/YLTbqQJnbpr6FvOj/lsMIXAELHcASiVNPXEzEG9cTVz6Px+a9n8B9uuXCDvuzEMDw70njAMo7WMgGCHTe+P7G4yL7oxhO9Wb6ER3Ea0V4iqCiGewlOdTGdZA+vI2iKU5bgYKgLheg8Tk1bXaPRkVAnINmD9NOsCobqcXfuueDsgN6aXQraOABji3zEoQ2/DirnWlWIOVNduhNKVjaNHWEAFViTc0gDBJtMKa0jXv8ogVn0AaC782lTXEYBInYlNSzWG3nbo0XwvImcPAN6t+h4IjM8clrK2Z6OUaIhY9dFwgSZCL/51mOyHpkFd7IDA1qu79fgf1GNlRqBRZkKBfEHB2YsoXRbHA5db/+yNVkkHNh5vi0pRD773GpNJb/Fh5RDfT9+NnuBaQaPUEsiDjtKERXJH2mLfO6RNIkprawVGolY0k67ix7cEeJruAXiMNC+GihFPsqOmVLLcRpWunhD72mf/RlYZzpZnirWjLz4+L9R82++24yxJSUVbTbUYEDNZ8zXrZl+XubobDMtln5khl1uy6AzZojHaebKHtm2tKdJaPpDiMvMsIh0Fz1imGsdyeQEM7ORLzMp/Da8nheqwvPiMGvfKTIlu1XYBOkqwTOCIzLbzFqUiEhO52tyKXG/5Zp+USbFxxGS28OF75hLCUJqCXmpetJXiccZ7mluXYqh3qZBNFwFJjPsaXc/Ap2co=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8274.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(366004)(136003)(39860400002)(376002)(346002)(6666004)(55236004)(2906002)(52116002)(26005)(6512007)(7416002)(6506007)(44832011)(8936002)(6486002)(41300700001)(478600001)(36756003)(86362001)(1076003)(2616005)(186003)(83380400001)(66946007)(5660300002)(6636002)(316002)(66556008)(66476007)(38350700002)(4326008)(8676002)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MozQllthrx5LRTwJvYQu1UlIdWmzbgz9nWq3YhBWF0Wnrp9vohO128Fvsc1Y?=
- =?us-ascii?Q?5cksQPslEqwAzGJvl72rzNJoo3GZqSfBjXejXVvHUUl3IXwZy1m+g2bqvNqu?=
- =?us-ascii?Q?4L///PZbbUdqlFXJ4u9lhYXGax7Rzwnb+kXPBqEXL2Pee2Fqr11VkkR4mKZ5?=
- =?us-ascii?Q?o8H11zTlcRK27im09tMQF7dwYb9gl0WUySmdvluRTRQgtKlcevEt0yd/N06J?=
- =?us-ascii?Q?I7C+CqcbNTbIp5UfsD75Ws+bMNRu9ubmzHErI5cR0FOdSLKbS8Jvu4cB2iq3?=
- =?us-ascii?Q?bDE461PWxkKfwTAQebaH3xWgYN3jlZbLa2HWq2g+9I6lzHrzgg8RGTQCkb7z?=
- =?us-ascii?Q?JpbEcrR5C8lNRHAN9OfFGetIVgW78ipJkF2W9dLZXueGdHYZbJXXk2chNt/H?=
- =?us-ascii?Q?h2JDcbzNpCSQLlRYHnoKNbkVmAxGdblrlZTE9GivfoSGWgKAKl5CsC59vFr2?=
- =?us-ascii?Q?Hj3oNVlHmLKYNw1Y2tXAwjw07G1qNfc+wSEn2DarB1g8+HQXglHiVAfyOYij?=
- =?us-ascii?Q?uL71T+Hme5iocE7c5m6MKXgI0GDVScFUwCh5xd4Jn3vIAExARCDdrarMOhPM?=
- =?us-ascii?Q?r67lHz1Sk1zvsN3w4eTSws5HISalusLLkCgu6ve4UqWc/Z3PpyfJL1Af65Z4?=
- =?us-ascii?Q?MPUy289ITJRXE0bGb48r+b5X98eM3oGvgJRVEEm9OVXDy6Aq33HVHHUDhd5h?=
- =?us-ascii?Q?j4o3mgzkawppXulPdKT+ml7xXdVAUrvQvqBrB/fcC/CtTGHgtpSZRoLUK8An?=
- =?us-ascii?Q?r1wc/OUW/ao+xTAuAYkYJJ8RBPTOebhyhskvmzicYGw9S1+JAabzPF+rXZvF?=
- =?us-ascii?Q?p+5WvCmVqqIIefCieAlOy6g8By6NKQgFbpsVDTDRMV7jRhtwZ4WTCdEzXJ9E?=
- =?us-ascii?Q?uesQ4F6g1xyIwVmHM3ntU+ThASyMQMf4C0Nz8MGdIS7HmypIfTw9UwdMSLF9?=
- =?us-ascii?Q?i4xKI33jBTGmVo8lP3ocQHQDZLF/fGHlpkXd9SLJ48WgH4NuBo8FGV2uwPSl?=
- =?us-ascii?Q?3hmj6dTmqmtyQHvi11D6u60SZwDLOq70Yr4Mza4PwWlAsiF6dLaobY6uE5I0?=
- =?us-ascii?Q?Bj187xDcDXkscxoqvpyXbJcHZJL8v64DZ7HZ0mGc1kqHgXYave92EqMvTXGV?=
- =?us-ascii?Q?Cm1/mvjefRkqDNdtQ1ST7jo2dA1br6aH996sEqrCKAAKoGagrnybpChzc73I?=
- =?us-ascii?Q?W/zCXmwLgDv5PJ38kgRHZ6MWzebVvTUWH7hNN5Uwl5gMp0sCzmNaZeyAXsVx?=
- =?us-ascii?Q?qWu9AYfdM3XSMqMWafihs6/lB7EQ2sdj0aJwyVRHJqj/RAdeR1a+47mYvC2L?=
- =?us-ascii?Q?F3srUyzNh15Xjw4Un7R8d8ABU0a3xppq5zhLqUukL0Re+Pb5IpsOuyscd/5D?=
- =?us-ascii?Q?6PaKSgSGPDR7LeCbB/SvSPNp55cpm46GVAEqInedifIDzx5efkRyjcYbSN/F?=
- =?us-ascii?Q?Dp/U83ztmERx2E2njqnYXNUOI4pudB60ZRhw5pisAQKPFbWNeM8GINdM/XUz?=
- =?us-ascii?Q?1uPe2wBlyB7A8o47WKyK/y9luwg5MpMWomPE3hMzjK+tZTEcBFmiXt5UBiOr?=
- =?us-ascii?Q?hf9FbR0ky3wciYaUBJdJA7hvX5OyP9b30T5034x1?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6d2521a-adc7-479d-a9f6-08da7a13e25e
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8274.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2022 14:31:44.9355
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YCv+aaNzsOQk5uVdHPhXh324Z18zTTG0aRi3Cy9YSUK0ypTXWcKlv3PyUxhkD32omWeUn1UdRaR/hV7HVejShQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB5226
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2 1/3] dt-bindings: gpio: Add imx-scu gpio driver
+ bindings
+Content-Language: en-US
+To: Shenwei Wang <shenwei.wang@nxp.com>, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, linus.walleij@linaro.org, brgl@bgdev.pl,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, linux-imx@nxp.com
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev
+References: <20220809143105.17967-1-shenwei.wang@nxp.com>
+ <20220809143105.17967-2-shenwei.wang@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220809143105.17967-2-shenwei.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The SCU firmware on i.MX8 platforms provides a set of APIs to
-control the GPIO PINs on the SCU domain. This patch implements the
-standard GPIO driver interface to access those PINs on the
-SCU domain over the SCU APIs.
+On 09/08/2022 17:31, Shenwei Wang wrote:
+> Add binding document for the imx-scu gpio driver.
+> 
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  .../bindings/gpio/fsl,imx8-scu-gpio.yaml      | 39 +++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml
+> new file mode 100644
+> index 000000000000..4cbe3108a612
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml
+> @@ -0,0 +1,39 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/gpio/fsl,imx8-scu-gpio.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: GPIO driver over IMX SCU firmware API
+> +
+> +maintainers:
+> +  - Shenwei Wang <shenwei.wang@nxp.com>
+> +
+> +description: |
+> +  This module provides the standard interface to control the
+> +  resource pins in SCU domain on i.MX8 platforms.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8-scu-gpio
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
----
- drivers/gpio/Kconfig        |   4 ++
- drivers/gpio/Makefile       |   1 +
- drivers/gpio/gpio-imx-scu.c | 139 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 144 insertions(+)
- create mode 100644 drivers/gpio/gpio-imx-scu.c
+This should be rather a specific imx8 chip. See other imx8 SCU bindings.
+Strictly speaking there is no "imx8" SoC and compatible should be
+derived from SoC.
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 0499c2facbb0..b01310f6ebcc 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -341,6 +341,10 @@ config GPIO_ICH
- 
- 	  If unsure, say N.
- 
-+config GPIO_IMX_SCU
-+       def_bool y
-+       depends on IMX_SCU
-+
- config GPIO_IOP
- 	tristate "Intel IOP GPIO"
- 	depends on ARCH_IOP32X || COMPILE_TEST
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 3fa4f3f93d85..b39ab87793ec 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -70,6 +70,7 @@ obj-$(CONFIG_HTC_EGPIO)			+= gpio-htc-egpio.o
- obj-$(CONFIG_GPIO_I8255)		+= gpio-i8255.o
- obj-$(CONFIG_GPIO_ICH)			+= gpio-ich.o
- obj-$(CONFIG_GPIO_IDT3243X)		+= gpio-idt3243x.o
-+obj-$(CONFIG_GPIO_IMX_SCU)		+= gpio-imx-scu.o
- obj-$(CONFIG_GPIO_IOP)			+= gpio-iop.o
- obj-$(CONFIG_GPIO_IT87)			+= gpio-it87.o
- obj-$(CONFIG_GPIO_IXP4XX)		+= gpio-ixp4xx.o
-diff --git a/drivers/gpio/gpio-imx-scu.c b/drivers/gpio/gpio-imx-scu.c
-new file mode 100644
-index 000000000000..2f4a991a9ad6
---- /dev/null
-+++ b/drivers/gpio/gpio-imx-scu.c
-@@ -0,0 +1,139 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2021~2022 NXP
-+ *
-+ * The driver exports a standard gpiochip interface
-+ * to control the PIN resources on SCU domain.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/gpio/driver.h>
-+#include <linux/platform_device.h>
-+#include <linux/firmware/imx/svc/rm.h>
-+#include <dt-bindings/firmware/imx/rsrc.h>
-+
-+struct scu_gpio_priv {
-+	struct gpio_chip	chip;
-+	struct mutex		lock;
-+	struct device		*dev;
-+	struct imx_sc_ipc	*handle;
-+};
-+
-+static unsigned int scu_rsrc_arr[] = {
-+	IMX_SC_R_BOARD_R0,
-+	IMX_SC_R_BOARD_R1,
-+	IMX_SC_R_BOARD_R2,
-+	IMX_SC_R_BOARD_R3,
-+	IMX_SC_R_BOARD_R4,
-+	IMX_SC_R_BOARD_R5,
-+	IMX_SC_R_BOARD_R6,
-+	IMX_SC_R_BOARD_R7,
-+};
-+
-+static int imx_scu_gpio_get(struct gpio_chip *chip, unsigned int offset)
-+{
-+	struct scu_gpio_priv *priv = gpiochip_get_data(chip);
-+	int level;
-+	int err;
-+
-+	if (offset >= chip->ngpio)
-+		return -EINVAL;
-+
-+	mutex_lock(&priv->lock);
-+
-+	/* to read PIN state via scu api */
-+	err = imx_sc_misc_get_control(priv->handle,
-+			scu_rsrc_arr[offset], 0, &level);
-+	mutex_unlock(&priv->lock);
-+
-+	if (err) {
-+		dev_err(priv->dev, "SCU get failed: %d\n", err);
-+		return err;
-+	}
-+
-+	return level;
-+}
-+
-+static void imx_scu_gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
-+{
-+	struct scu_gpio_priv *priv = gpiochip_get_data(chip);
-+	int err;
-+
-+	if (offset >= chip->ngpio)
-+		return;
-+
-+	mutex_lock(&priv->lock);
-+
-+	/* to set PIN output level via scu api */
-+	err = imx_sc_misc_set_control(priv->handle,
-+			scu_rsrc_arr[offset], 0, value);
-+	mutex_unlock(&priv->lock);
-+
-+	if (err)
-+		dev_err(priv->dev, "SCU set (%d) failed: %d\n",
-+				scu_rsrc_arr[offset], err);
-+}
-+
-+static int imx_scu_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
-+{
-+	if (offset >= chip->ngpio)
-+		return -EINVAL;
-+
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int imx_scu_gpio_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct scu_gpio_priv *priv;
-+	struct gpio_chip *gc;
-+	int ret;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	ret = imx_scu_get_handle(&priv->handle);
-+	if (ret)
-+		return ret;
-+
-+	priv->dev = dev;
-+	mutex_init(&priv->lock);
-+
-+	gc = &priv->chip;
-+	gc->base = -1;
-+	gc->parent = dev;
-+	gc->ngpio = sizeof(scu_rsrc_arr)/sizeof(unsigned int);
-+	gc->label = dev_name(dev);
-+	gc->get = imx_scu_gpio_get;
-+	gc->set = imx_scu_gpio_set;
-+	gc->get_direction = imx_scu_gpio_get_direction;
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	return devm_gpiochip_add_data(dev, gc, priv);
-+}
-+
-+static const struct of_device_id imx_scu_gpio_dt_ids[] = {
-+	{ .compatible = "fsl,imx8-scu-gpio" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct platform_driver imx_scu_gpio_driver = {
-+	.driver	= {
-+		.name = "gpio-imx-scu",
-+		.of_match_table = imx_scu_gpio_dt_ids,
-+	},
-+	.probe = imx_scu_gpio_probe,
-+};
-+
-+static int __init _imx_scu_gpio_init(void)
-+{
-+	return platform_driver_register(&imx_scu_gpio_driver);
-+}
-+
-+subsys_initcall_sync(_imx_scu_gpio_init);
-+
-+MODULE_AUTHOR("Shenwei Wang <shenwei.wang@nxp.com>");
-+MODULE_DESCRIPTION("NXP GPIO over IMX SCU API");
-+MODULE_LICENSE("GPL");
--- 
-2.25.1
 
+
+Best regards,
+Krzysztof
