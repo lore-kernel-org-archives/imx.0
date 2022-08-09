@@ -1,44 +1,44 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2D34428
-	for <imx@lists.linux.dev>; Tue,  9 Aug 2022 16:05:20 +0000 (UTC)
-Received: by mail-lf1-f50.google.com with SMTP id v2so8990086lfi.6
-        for <imx@lists.linux.dev>; Tue, 09 Aug 2022 09:05:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358214428
+	for <imx@lists.linux.dev>; Tue,  9 Aug 2022 16:05:42 +0000 (UTC)
+Received: by mail-lj1-f176.google.com with SMTP id x9so9767236ljj.13
+        for <imx@lists.linux.dev>; Tue, 09 Aug 2022 09:05:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=2sKCf9ZKSlcTNKeuU2aWfd4L6pnmOrDWUSqmI6fFKX8=;
-        b=bTQjI2BHyw2f+Tnku7sYfkNWsLhWUrb44VDwgB+BLGNI+L2K7MhzxYXYcExLB8LR2W
-         lBcnY+B8xdcIC2GlDgqEtA70+6ivW31GG3z3U/yxPcvXjmk4tshwbGM1MD+q4C3XD4w2
-         cJpyZ2UyloQYQFVYqd5wXaHb4guR/GQhIc9XSQpAMtWB+V56HrS3h9jpq2BzVBKCvhax
-         B/hywRWedBkgrCz5qByzVNK303fS0gEZyEMZEziKBThkt3BDiccZQbWM/E7U/wlCVfX3
-         YvW0rIO2zq6XEmJblqR9X1U+uWwwazgZjjKkQFUiGb3VtmQXt16XgA7Q/E7WIiUlT8mr
-         PX6A==
+        bh=QHTTec7dUx1qXt74vHAdnoKvJ0Y1zKM06sa4DmhXaHA=;
+        b=EDDrvl3OAxEnD1Qgo1+kDKdAUSABexKsnTCYrgEOsdW+6i2vIdxTj3MUC+obJFw1wp
+         oJJ+NlcE2AL7371IPf3cWVBp8EJnjRa2WksXyrfx3FDVQRfYxk68uAJXcepygOXu318o
+         dKang7QeTvM9HJDSGov7nrI1qw5p/4KBK9FjhSKo3B9Bpvae+imaHxRMZ90eHzGUPJrA
+         rQFFt291MLIZfB/Ssl+6sCtS80TEk1xr+cBn2wYoHQ01gr4syWNmxrgxa7k3pmplgawu
+         uD/8kRw5K/626ucV8oQRkVwRMPpe6LHunidN/qydLrktq7pFa3RSAjPFd7QB/kY42PKG
+         KGiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=2sKCf9ZKSlcTNKeuU2aWfd4L6pnmOrDWUSqmI6fFKX8=;
-        b=i8K36zNDMOD0SjAmwk28MO2Z4lcwdCOaIHoS0eHY2FfoFSFs4ssEnR3vItPOMNxafn
-         vOQn1ieiUdaT96vpL1BTLZ+4AdIvqrWBfxKv2ql+9+hadvWhS+yCSnrvcdaz4XMYgcMS
-         /snfT0yHnxtBgVY6J5KhNifI8tnmSeaPi/jc0qozwoGocmOH11zkhfsEuwJSck0KhVem
-         qEo6M2DF8WLwA4A/ZVbUncP/TdyhmOj/xq7t8E/XW/t4ThaHqT/txWczY09XMGH8BTPU
-         sHqdYBqvmWzuYpejnq694pO0v+7UnjZiHpSIc2gllmeHUL/aRuvuFbZEW5uvfkbG9TP3
-         aGUA==
-X-Gm-Message-State: ACgBeo1ycOOWrmDGXE7WetimX2zEAueBE0xwdt2lm4+6ozg48iFcLNzJ
-	/fcSAn3RBW57ohBuOlfFqW6Nbw==
-X-Google-Smtp-Source: AA6agR7/JH4Rl+hjT86FmJEOgCluUzJLkTTOJern+M60BdxIAadELBCCw7At3ldhoER0sG45xrRJ1g==
-X-Received: by 2002:a05:6512:1043:b0:48b:2d4b:a13e with SMTP id c3-20020a056512104300b0048b2d4ba13emr7869247lfb.19.1660061118909;
-        Tue, 09 Aug 2022 09:05:18 -0700 (PDT)
+        bh=QHTTec7dUx1qXt74vHAdnoKvJ0Y1zKM06sa4DmhXaHA=;
+        b=QQvthLvo4YmA0GOflQ3/1xxrU/JYZOcxKGOde2c8OlO3EROzYb0hyZBgmn/t32Z/5B
+         FjnSZIZ6bhPsxyW3H7O/20Cd3COCRGWcrHjfqStNr3yzxdndjX+3wcuBPGJ1XTIWY1oY
+         rFdkw+G0Pmun/hFj2EOa8jRk83gDoBbbDSkU+4HJiCkvwhOd9ZDsa0GThh+sgyljJuS+
+         h6kfvuzS0cX/YN42yjJoQMXbfD/e0d82gXAzuT2Z5N9IFRZpXk7K8nnl83T0jd9OmeaB
+         rgTdmEqf/VNFcHSTOSLYYqYCpJbPjnP92DbGo+lWIsv57GnzLzrSZY/rA25RcvwlIw7j
+         xz3g==
+X-Gm-Message-State: ACgBeo2TPccqbMA5mbZmoedvpsmY0mmm4ftK+Jf1DyYxWAWDmnL/mJWU
+	khuwwL78kbRnmGHfdvDCIXCLOlbCSN4n6+ik
+X-Google-Smtp-Source: AA6agR5MIRBOqhcN3ewSqfA/Lm0LG7LeU/Vh3UY4uRjwwjzRwM13ZVe1fK5C5PbSVgsHwmxTKy0//g==
+X-Received: by 2002:a05:651c:160a:b0:25a:62a4:9085 with SMTP id f10-20020a05651c160a00b0025a62a49085mr7734006ljq.214.1660061140257;
+        Tue, 09 Aug 2022 09:05:40 -0700 (PDT)
 Received: from [192.168.1.39] ([83.146.140.105])
-        by smtp.gmail.com with ESMTPSA id z16-20020a19f710000000b00485caa0f5dfsm22203lfe.44.2022.08.09.09.05.17
+        by smtp.gmail.com with ESMTPSA id i21-20020a056512225500b0048b18fb378fsm17292lfu.119.2022.08.09.09.05.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Aug 2022 09:05:18 -0700 (PDT)
-Message-ID: <5eb4d4a0-9895-dc0b-ba6a-ac435674892d@linaro.org>
-Date: Tue, 9 Aug 2022 19:05:16 +0300
+        Tue, 09 Aug 2022 09:05:39 -0700 (PDT)
+Message-ID: <7a375a37-dd6d-45df-0087-eac04e4c5ba4@linaro.org>
+Date: Tue, 9 Aug 2022 19:05:37 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,8 +47,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.12.0
-Subject: Re: [PATCH v2 1/3] dt-bindings: gpio: Add imx-scu gpio driver
- bindings
+Subject: Re: [PATCH v2 2/3] dt-bindings: firmware: imx: Add imx-scu gpio node
 Content-Language: en-US
 To: Shenwei Wang <shenwei.wang@nxp.com>, robh+dt@kernel.org,
  krzysztof.kozlowski+dt@linaro.org, linus.walleij@linaro.org, brgl@bgdev.pl,
@@ -58,51 +57,19 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  imx@lists.linux.dev
 References: <20220809143105.17967-1-shenwei.wang@nxp.com>
- <20220809143105.17967-2-shenwei.wang@nxp.com>
+ <20220809143105.17967-3-shenwei.wang@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220809143105.17967-2-shenwei.wang@nxp.com>
+In-Reply-To: <20220809143105.17967-3-shenwei.wang@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 09/08/2022 17:31, Shenwei Wang wrote:
-> Add binding document for the imx-scu gpio driver.
+> Add the description for imx-scu gpio subnode.
 > 
 > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  .../bindings/gpio/fsl,imx8-scu-gpio.yaml      | 39 +++++++++++++++++++
->  1 file changed, 39 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml
-> new file mode 100644
-> index 000000000000..4cbe3108a612
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/fsl,imx8-scu-gpio.yaml
-> @@ -0,0 +1,39 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/gpio/fsl,imx8-scu-gpio.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: GPIO driver over IMX SCU firmware API
-> +
-> +maintainers:
-> +  - Shenwei Wang <shenwei.wang@nxp.com>
-> +
-> +description: |
-> +  This module provides the standard interface to control the
-> +  resource pins in SCU domain on i.MX8 platforms.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,imx8-scu-gpio
 
-This should be rather a specific imx8 chip. See other imx8 SCU bindings.
-Strictly speaking there is no "imx8" SoC and compatible should be
-derived from SoC.
 
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
 Best regards,
