@@ -1,67 +1,66 @@
-Received: from out0.migadu.com (out0.migadu.com [94.23.1.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E5440F
-	for <imx@lists.linux.dev>; Thu, 18 Aug 2022 13:47:34 +0000 (UTC)
-Date: Thu, 18 Aug 2022 15:47:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1660830445;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F1nswzplSrCb6WdWfNGZKC3kGQ7z4tGMybBgtZBA4lw=;
-	b=iAVvCdtlXCoLlg20/VMsS18eli0rvlcpjVyq3b1kG0LL2gYG8dHV5U/er4+edUu7Hb8Iak
-	YZPFZvQZ+sltnxP8jUGFKJAOWroOYjv6/d3+ptCPJHS0Uw/dQrRZH1HOlTXFY+ssOzEQON
-	BcYcFiJkgAtaZUcZiE0TTCzTvKaMSOw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Richard Leitner <richard.leitner@linux.dev>
-To: David Wolfson <wolfson.sol@gmail.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [EXT] I2C_IMX support for i.MX8MP
-Message-ID: <Yv5C61+2eLgtTvE5@skidata.com>
-References: <YvzFPR5rwVSLzNPK@skidata.com>
- <DB9PR04MB828420CFED71AE624B11B8B2896A9@DB9PR04MB8284.eurprd04.prod.outlook.com>
- <Yvz2IA9GB2NJmc+D@skidata.com>
- <DB9PR04MB82843B074F7F2ADB0D455867896A9@DB9PR04MB8284.eurprd04.prod.outlook.com>
- <Yv37CrPtlm0WSUmd@skidata.com>
- <AM9PR04MB827430FBD894470753E97BC5896D9@AM9PR04MB8274.eurprd04.prod.outlook.com>
- <20220818125404.GA45792@ubuntu>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435E27EC
+	for <imx@lists.linux.dev>; Mon, 22 Aug 2022 08:51:53 +0000 (UTC)
+Received: by mail-ej1-f41.google.com with SMTP id gt3so7336090ejb.12
+        for <imx@lists.linux.dev>; Mon, 22 Aug 2022 01:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=F9wABGPJepecNKwit4UZt+CWAiTGn1tZ03tvvlqXGJg=;
+        b=mKZT6I2wMsaNwXM5/0bJ7rowcsGG9xiomgEsajUzkHsT7HcuOj9E+1YMCAIhBQPj1O
+         w4zLYYxnBcsQ0vJoY3mLCU/KInwP8wcxCYKPmLi13WXAb3tvuImFly+DCPTD+cNvw0uT
+         zuIRk5myyhfAIvNTx8YkGARd0UF4FfcbBXBKiipX3NdjbbM0TBL+uxyYnBR+xkMlopt7
+         II2FC1IAGUnmoGjJz+vC6jmqCNVu5QAdhUIoA6Ia713KHJg114QhtT5CL5IrdlJj/+3D
+         PthbNSqQ3WwME1t32WSntsUJD23td/3o+5ycyLAUf2zLKEI4PBhm+xluk8s9Npon+yto
+         zS2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=F9wABGPJepecNKwit4UZt+CWAiTGn1tZ03tvvlqXGJg=;
+        b=qnzdp95W1gNVBNAhtRhDuLpRCEPAlqb1G7rNuFeRV0SaXFcYPeSZ0ORpW8zcIFFgHn
+         eohzBNfvKvs70VgGKRsyQyfXpgOLVUFI7TH2HSBRLNwQ+Ob0wgiN/FHn0TpJRJdcUXP8
+         KnzDf2kSzK4vJRBG0H1189CQQmpY1uRd0Ke5D64vSbXtr0BGOxFxlwOxFwMyn7lW7MfK
+         X6blwVIk6D6quvMZBcZNEUyfCp3L19lo/ftx421iPSIANX/g2gKsaz83N3yrbV8vOLQt
+         O6GXbGAVmoswkFf+/xGfTt7WcWEkqGbZJhbXjrX9NZn37Km1/JGJz+okqPmQYgjU0hQe
+         6DuQ==
+X-Gm-Message-State: ACgBeo2oKLUcDUO+UQ8WSplpeBCzZ0+DCaBmPCmrQF/S1jFH1dvfC7mc
+	iG6ZfR0IAQU4Xb1qNU+oY3LtBeDLL7cFu9makVOv3A==
+X-Google-Smtp-Source: AA6agR48fYE55tzDtAC6ibWU/joRibr0uHd0eKN9AvtNXWBFXk4FEax2+UisAqGiMzu7o0I7SacdqzKwZo2px46sLKI=
+X-Received: by 2002:a17:906:9b86:b0:73d:72cf:72af with SMTP id
+ dd6-20020a1709069b8600b0073d72cf72afmr4069144ejc.440.1661158311511; Mon, 22
+ Aug 2022 01:51:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220818125404.GA45792@ubuntu>
-X-Migadu-Flow: FLOW_OUT
-X-Migadu-Auth-User: linux.dev
+References: <20220812133012.7283-1-shenwei.wang@nxp.com>
+In-Reply-To: <20220812133012.7283-1-shenwei.wang@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 22 Aug 2022 10:51:40 +0200
+Message-ID: <CACRpkdaPPpsm+0dzD5V_HtZfiHbBCvzEP73PUmJ4cEYT18g+-A@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Add IMX8 SCU GPIO support
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, brgl@bgdev.pl, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-imx@nxp.com, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 18, 2022 at 07:54:04AM -0500, David Wolfson wrote:
-> On Thu, Aug 18, 2022 at 11:59:41AM +0000, Shenwei Wang wrote:
-> > Hi Richard,
-> > 
-> > Nothing is hidden here. That is PAD control register, and should be documented in the IOMUXC and PIN Control section in the RM.
-> > 
-> 
-> Checking the IOMUX and PADs' settings is the first step when enabling
-> an interface.
+On Fri, Aug 12, 2022 at 3:30 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
 
-Sure, that's what I've done. Nonetheless the "8.2.4.280
-SW_PAD_CTL_PAD_I2C3_SCL SW PAD Control Register
-(IOMUXC_SW_PAD_CTL_PAD_I2C3_SCL)" section in the IMX8MPRM says bit 30 is
-reserved.
+> Changes in V5:
+>  - rename the file name from fsl,imx-sc-gpio to fsl,imx8qxp-sc-gpio
+>    to match the compatible string
 
-So does "8.2.4.128 SW_MUX_CTL_PAD_I2C3_SCL SW MUX Control Register
-(IOMUXC_SW_MUX_CTL_PAD_I2C3_SCL)".
+v5 looks good to me!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Maybe I'm just too dumb do find it... So it would be really helpful if
-you could please give a pointer where to find that documentation?
-
-Thanks & regards;rl
-
-> 
-> David
-> 
+Yours,
+Linus Walleij
