@@ -1,112 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27586184E;
-	Sat, 10 Sep 2022 14:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71C9C433D6;
-	Sat, 10 Sep 2022 14:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8FF7F
+	for <imx@lists.linux.dev>; Mon, 12 Sep 2022 08:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7853AC433C1;
+	Mon, 12 Sep 2022 08:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1662820831;
-	bh=yoLyrhPTFTvBgeQMrdTZ1aOP2pxInq6DJu6Ae8eysg0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kdpA6DJoqSDG8On3+fYzAcvlQQH2ovwvFFRtWCSP4W+O8kTwr3A9aTM2+JjrMoL2t
-	 qECi7WfNNOgG7gv4KzTvbJgFCg8xD25AOdw7O79YuHJWT9yods0zdEVcL5ZgHO1CB5
-	 To2sUNaMW9MHLarY7xtVShKufm1NFFNTa4y+rMMRxzWfOXNx2mrJtOCiCrpMaTSQZT
-	 BnuFtfNkYD2aJOVZNBH59LcJ9b/9ZHl+FNzTH1Y3JBcywMKeCnZHmFJ8zfcYxsTw/k
-	 N618MBrj+mCMUMBKRZTgStS6O7Kbh0zMLMFzKjdILtXldKY2iMPJ32j/ghIMew+MF7
-	 o8rmoprpbiWlw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1oX1en-009Pak-He;
-	Sat, 10 Sep 2022 15:40:29 +0100
-Date: Sat, 10 Sep 2022 15:40:29 +0100
-Message-ID: <87wnabpa1u.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Frank Li <frank.li@nxp.com>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"robh+dt@kernel.org"
-	<robh+dt@kernel.org>,
-	"krzysztof.kozlowski+dt@linaro.org"
-	<krzysztof.kozlowski+dt@linaro.org>,
-	"shawnguo@kernel.org"
-	<shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kw@linux.com" <kw@linux.com>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>,
+	s=k20201202; t=1662970616;
+	bh=d2lJvNgrRtlyC5oOofFV5LY/kFsntq4GasXOTeJDkIQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ATb0HKe9GAMoIt2DoPt5vkoWd+IyrC0RrT4xmHJ+opigh+sL3DuhMCKwQiGlOJqwF
+	 Q0K8qwui/IuoEQzQDTm04C02I4akllW/ilUIf/FYjm/pryj0BHjIhKycAsM8ogIzWY
+	 fehFTUS12KBml6Ieg6OGpygKWZyTA2bIYntG0O0w5kXPYSedTJLSAXAz96F9WLYIPC
+	 wGFOjh+ygYt9RatXKRaPeGeJBOOIl8UEJo8Hwob87d2I1qeI75R+nUsIh1Apl5kixo
+	 63mBqDbylIPHo3eAA39D2pGdPSSX8EyVw4sCkcmSS9E0TWpEBTNFsi55kf22itKzLa
+	 dcys7jWok6bOA==
+Date: Mon, 12 Sep 2022 16:16:49 +0800
+From: Shawn Guo <shawnguo@kernel.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Peng Fan <peng.fan@nxp.com>,
-	Aisheng Dong
-	<aisheng.dong@nxp.com>,
-	"jdmason@kudzu.us" <jdmason@kudzu.us>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com"
-	<festevam@gmail.com>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	"kishon@ti.com"
-	<kishon@ti.com>,
-	"lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-	"ntb@lists.linux.dev" <ntb@lists.linux.dev>,
-	"lznuaa@gmail.com"
-	<lznuaa@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>
-Subject: Re: [EXT] Re: [PATCH v9 2/4] irqchip: Add IMX MU MSI controller driver
-In-Reply-To: <AM9PR04MB879307CC53696BE7121AA26B88439@AM9PR04MB8793.eurprd04.prod.outlook.com>
-References: <20220907034856.3101570-1-Frank.Li@nxp.com>
-	<20220907034856.3101570-3-Frank.Li@nxp.com>
-	<87fsh2qpq4.wl-maz@kernel.org>
-	<AM9PR04MB879307CC53696BE7121AA26B88439@AM9PR04MB8793.eurprd04.prod.outlook.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v6 5/5] arm64: dts: freescale: add support for
+ i.MX8DXL EVK board
+Message-ID: <20220912081649.GR1728671@dragon>
+References: <20220822175245.222691-1-shenwei.wang@nxp.com>
+ <20220822175245.222691-6-shenwei.wang@nxp.com>
+ <20220903034819.GF1728671@dragon>
+ <PAXPR04MB9185D243324279DD80C371DB897E9@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: frank.li@nxp.com, tglx@linutronix.de, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kw@linux.com, bhelgaas@google.com, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, peng.fan@nxp.com, aisheng.dong@nxp.com, jdmason@kudzu.us, kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com, kishon@ti.com, lorenzo.pieralisi@arm.com, ntb@lists.linux.dev, lznuaa@gmail.com, imx@lists.linux.dev, manivannan.sadhasivam@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB9185D243324279DD80C371DB897E9@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-On Fri, 09 Sep 2022 15:52:45 +0100,
-Frank Li <frank.li@nxp.com> wrote:
+On Tue, Sep 06, 2022 at 01:15:37PM +0000, Shenwei Wang wrote:
 > 
-> > > +     select IRQ_DOMAIN
-> > > +     select IRQ_DOMAIN_HIERARCHY
-> > > +     select GENERIC_MSI_IRQ_DOMAIN
-> > > +     help
-> > > +       MU work as MSI controller to do general doorbell
+> 
+> > -----Original Message-----
+> > From: Shawn Guo <shawnguo@kernel.org>
+> > Sent: Friday, September 2, 2022 10:48 PM
+> > To: Shenwei Wang <shenwei.wang@nxp.com>
+> > Cc: Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
+> > <krzysztof.kozlowski+dt@linaro.org>; Sascha Hauer <s.hauer@pengutronix.de>;
+> > Pengutronix Kernel Team <kernel@pengutronix.de>; Peng Fan
+> > <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-arm-
+> > kernel@lists.infradead.org; imx@lists.linux.dev; dl-linux-imx <linux-
+> > imx@nxp.com>
+> > Subject: [EXT] Re: [PATCH v6 5/5] arm64: dts: freescale: add support for
+> > i.MX8DXL EVK board
 > > 
-> > I'm not sure this is that generic. It really is limited to CPU-to-CPU
-> > interrupts.
+> > > +             regulator-always-on;
+> > > +     };
+> > > +
+> > > +     reg_fec1_sel: regulator-1 {
+> > > +             compatible = "regulator-fixed";
+> > > +             regulator-name = "fec1_supply";
+> > > +             regulator-min-microvolt = <3300000>;
+> > > +             regulator-max-microvolt = <3300000>;
+> > > +             gpio = <&pca6416_1 11 GPIO_ACTIVE_HIGH>;
+> > 
+> > Missing enable-active-high?
 > 
-> [Frank Li] I think the only limitation is only 4 irq numbers. 
-> The principle CPU to CPU irq is the same as MSI.
+> No. Enabling this regulator to select the fec1 interface instead of usdhc2. Pulling this GPIO pin to low is to use FEC1 interface. 
 
-Not quite. Normal MSIs are device-to-CPU. CPU-to-CPU are normally
-IPIs, and this one falls in the middle.
+Then the polarity cell should be GPIO_ACTIVE_LOW rather than
+GPIO_ACTIVE_HIGH?
 
-> What's  your preferred help description?
-
-<quote>
-	Provide a driver for the MU block used as a CPU-to-CPU MSI
-	controller. This requires a specially crafted DT to make use
-	of this driver.
-
-	If unsure, say N.
-</quote>
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Shawn
