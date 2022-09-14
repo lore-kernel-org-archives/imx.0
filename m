@@ -1,96 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-eopbgr00052.outbound.protection.outlook.com [40.107.0.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6C23C3F;
-	Tue, 13 Sep 2022 22:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E8FC433C1;
-	Tue, 13 Sep 2022 22:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663107558;
-	bh=vOM7sqZItl/trS+7jw/NfA7mCPUKtLKs8p8juFEz1LQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=PqY2sMOHIFT9Hb81j94J0rf9pS4s4sfT4NMscI+2mfmuako+a2b4cqOx8dG/wawnr
-	 Jh5hfF3unFix49Lcr+LmcEVF6JQ+zzbUJj/toSoRvoTw/5VVUpbrR+xLpAu3fZauyk
-	 Rx8/zEI88uPJ/xbsGWJTH2tyyZ7PzfNw0miGbHeXfoVKCy50rqL7VeYow23AQUEnq4
-	 n/hKChC9+JbfnKuz5cl04SNOvomK8erZlvC948pmx9bnHood+2BbE8a07mJ5/Ue7fe
-	 LCJW18jHOZcHWunYifNqxyn1pYn/oFCUMLwPNzLJF4XSCJR4oIHlec/buR4H9G26Lo
-	 cO2ze6p4tuRDw==
-Date: Tue, 13 Sep 2022 17:19:16 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: maz@kernel.org, tglx@linutronix.de, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kw@linux.com, bhelgaas@google.com,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	peng.fan@nxp.com, aisheng.dong@nxp.com, jdmason@kudzu.us,
-	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-	kishon@ti.com, lorenzo.pieralisi@arm.com, ntb@lists.linux.dev,
-	lznuaa@gmail.com, imx@lists.linux.dev,
-	manivannan.sadhasivam@linaro.org
-Subject: Re: [PATCH v10 5/6] PCI: endpoint: makeup pci-epf-vntb.c
-Message-ID: <20220913221916.GA627631@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88C3D7C
+	for <imx@lists.linux.dev>; Wed, 14 Sep 2022 13:59:31 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gKGdNAZhXFYV31X2krf433DZ81in/1qQTOZ63dgRFEwQpugAbAJnrJmvj4aPFnD2yl1yddbDe1Ut32rzMrH44/qrdFuXpvDDRB0A1esgHbQlOFRGyqxL9cxyinhLN4P7WisGfUJ3UW1SHp78SA51tyCr0IYD4KyoynXYdawD6/zFR1mzUKqitX6bwX5Bq/2yab3x2gLUA7mVJjgT6jQtucHv9nyokpb5RjBN2JQqYRQjcAAm1cDKWVbyO/l1d2CjcLJzJLXjlEcIWYdnZ9idGjBvwzNBjmIj25pgeZdWC/mvq26RigfVdkoxFYsymr4+k05bw9QHLSeUrj521NHNxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GvEczb4CI80QFspzyxO3gVaqpJxdO2UbayqL9zB6oDE=;
+ b=fxdSKvraSi3GwG5KGMGbfd+NtUnKfRtCq+9e0AIn82ph6kysYJzrjDGMWMcEFz1SzbK9MANF96EN6+Rw9aJd0QUtY6rQQ5Pv+qCC4ObY9W2M/72W70iBI+gykz7ucFYnKi6aoOsWG/18tgV8gbe56ImbJD1JOV24yxJ9e695cZZ8pocZQquOCKMH8swChn7F4Cis9pnzKa5I5NIyUqiMTQgEfUXsKhJxQlyym4DlH/45Mp6PeGxn6iG0QraxHbnnQIMEq8WhJu6vtpqPbpRK7bCy9ZNQaj6JxVHI8FSOsYQv/paelGImpRsCOSXr41yoy0dbFuKh6JecAJWiZh+xnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GvEczb4CI80QFspzyxO3gVaqpJxdO2UbayqL9zB6oDE=;
+ b=iOFlpEXpTuSd2oCBFU8oYaUByVFxhPGzCjk1ABDHCvdhS0J0sYgia0sTlLhDkikrbCg6FKDml0usotW3Bjjy9fd2d7ODXr8oqWN5jty4wTnjNdwvK1SG8f0ZSU8r63HmHeIeY4V2wc/IhXjnrnU2MMmJWim0s3aq8oeUBwBepgU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com (2603:10a6:20b:44b::7)
+ by DB8PR04MB7129.eurprd04.prod.outlook.com (2603:10a6:10:127::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.22; Wed, 14 Sep
+ 2022 13:59:28 +0000
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::a552:97fd:60f4:edd6]) by AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::a552:97fd:60f4:edd6%7]) with mapi id 15.20.5612.022; Wed, 14 Sep 2022
+ 13:59:28 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Denys Drozdov <denys.drozdov@toradex.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Alex Marginean <alexandru.marginean@nxp.com>,
+	Reinhold Mueller <reinhold.mueller@emtrion.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Viorel Suman <viorel.suman@nxp.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Shijie Qin <shijie.qin@nxp.com>,
+	Ming Qian <ming.qian@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v8 0/5] add imx8dxl evk support
+Date: Wed, 14 Sep 2022 08:58:43 -0500
+Message-Id: <20220914135848.118616-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0079.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::24) To AS8PR04MB9176.eurprd04.prod.outlook.com
+ (2603:10a6:20b:44b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220913210957.3493826-6-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB9176:EE_|DB8PR04MB7129:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d128dc3-b0d0-433c-763f-08da96595632
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+ DqOCHmyr7gIt5TYyr4kO/SXUcMejqrdQzAnG2hBZmVXaSEWRTmmIywf/JZfRoOSBOhLKIo+Hyzul7MpZg7c+UMLhwWU8egNhJ45FXJds9GNwrQ4E7kWaus/oTiDFL5bRvD4FilhyRT8M2IFSkYu5e2v5CxGF9CmekWhtpVKcRTlmuVyinVUlRtcn7oJw3IeaO+5hAhj8bDCOvPmVITWTIIEx9Vv5t3dc2LxgQim/Ktivep0ShX72o+voeepexUxbyTUaKdUJ+0bSWFDFFplL8Z8hbIOyNV0ErimaIXWi1cHAf4fxNyupCPxZwoBGvpnhzMiGhu2C2+2/Z/YhIyBbWpVk0zSEyI7zhoPdtT8jm3rlQqM9WRffVOBYXOuz68FOHBGxygw1Av0LtA5xri1WCSgR5BHiBzbUhk2BMRwRBLTl5h6T26UWBh31punnkj7j3ygFE/yIq4gxL0fvY5On2MHL87yAdE6rCD6nMSqICzcQehMMw55qyAib82nkJQYdUEbZ2Oxq5rzYx2T7aEbDYNsvghjPQj7+71GPWcBSmOP2QAfdtsgqZswqJIdPnCPF4VI7cJleaEFaKscoAA8UjdHYEh3eiP0qLLyJMZAQZ/v7rHC0WgsRzq2hqd1uGeOHpFaJheimLVsCT1az+azILVfeilcyU+HTHtrMoTiPIZpBwFS/OY9uOgmEJdqpwk1Ko+HFqiufazWbalqtfiCr1W3RwdCwVe7SIltsbX+vTNHJXh27H5Ypual54JYA0kKmEsPLP9X6HWUy48j2cR8MMg==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9176.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(396003)(39860400002)(376002)(366004)(346002)(451199015)(38350700002)(4326008)(5660300002)(7416002)(66946007)(6666004)(55236004)(1076003)(66556008)(38100700002)(8936002)(8676002)(6486002)(186003)(44832011)(41300700001)(66476007)(86362001)(26005)(316002)(110136005)(2906002)(478600001)(54906003)(2616005)(36756003)(52116002)(6506007)(83380400001)(6512007)(32563001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?fWRBwRwI8K06bc/YaBExS/3QlYJIJFTeBNcLQx/X1XXnTj8MRuVEjvDirf6B?=
+ =?us-ascii?Q?IGmE8WCzmCYbkFuLkiEKM1c2GEHc18g/tmtE26YHFsXOUmhJH+QA+g/MQACd?=
+ =?us-ascii?Q?VJu83O9LI74YDdPHrWBFMHshRz8Y6yuSXDHrFzBvbObJxnRK1taLbFptgk2p?=
+ =?us-ascii?Q?haepKfpvfJNgLzwBRWU2P1sEIb8MYta/eLcHZh7tY8zOSuxjnqI3cIJcaAVJ?=
+ =?us-ascii?Q?rVMRCKVl17vtXf3JZ4WgWmSzH3ucZ8HE/oPOAXej1Mhc1DHu5+Fxikus7QR6?=
+ =?us-ascii?Q?IaJJa3e71AnL2uIaynyqtybl7uG5HQ6rCW/CulnOp3bJHtiEg25m9CAckZyN?=
+ =?us-ascii?Q?7ciWHBTkTKLjVwP4kmy5T5eS6Pngl/sHmPKeuJDTbkrYGaZhsov89BQ+NWJu?=
+ =?us-ascii?Q?VE0P/9wE+VgJZ3wtZdkPiugrkK7amR/JQ9Z+mNxmI+OzXz7jlvRM3rJm6Pg1?=
+ =?us-ascii?Q?YUIklpddOO3BTzLo7cHlkKwV69/14890EwQCdcTAVUf2XL7yDvfRLSoiaHzH?=
+ =?us-ascii?Q?Ga3KGX8NM8QKXuF03ZbdWvhr+GweHSKxArelY2g/+xhXkYISYRza+8RNgCLc?=
+ =?us-ascii?Q?/cJtIO+oygiHfjOAY9xavzX/Nu1Md0nQBWEZpFfmX8e5cMnQSLFJlL3OYCBi?=
+ =?us-ascii?Q?yuRGurNw+wm+atS+cZYptlgU3AJrQ8xNwd7JK9eybG04/7r/jOwWaV4bJq5m?=
+ =?us-ascii?Q?W4PAesQDIJwGodGa4JtTeVS1nSue6cnGUB44sIe6fP4NW+4hurK0BaCbKc3O?=
+ =?us-ascii?Q?pIrA9ggMg61QWH+4ByfdErd69nZhO2wTZfPn8nWa049auyl3JR67avjKJVXa?=
+ =?us-ascii?Q?zFSPZYKfZS6/RhEYkni64RmigRPt6D7JoysogsIgM9/SrtnasSJw3rICE97E?=
+ =?us-ascii?Q?Q+2OYMbfJqXJILyxOvxm/HbWhvHX5vhmyhgjAyFQHZWDLpOK5+jcngxu1Ebj?=
+ =?us-ascii?Q?MYnDc1XEHgKPLrNHzpeob0/v7MoXlm7MuHkoycJskDt8JVhYkUgl9/vh8t5Y?=
+ =?us-ascii?Q?gVtjy4VWhKvkwibiDVQl6re1chTCceeIVlJAGczzmqVVbXZy01jmUhdxUtZ+?=
+ =?us-ascii?Q?z2rH+OWqRbsbGnckBg+u6EvZqT/q3I7YbiW2vUUOysKXlXM89YhrJDse52Ky?=
+ =?us-ascii?Q?E2M3DNHgQTI2MMUlz7VpZjBHxzd2P6zpGIeN5ynLXjAhCA9ptNCvwsb7XmC2?=
+ =?us-ascii?Q?ZouPCTxXj1vo8ZD/aINdMh0sa9OWEY+gka06yNZkzl3x1nfbks1E4E+BQGet?=
+ =?us-ascii?Q?6pOmfOfGJFjhr29aWinop+yIwnC6jk0SJppKab+9qKcigVRJxqsLqyL+xlcy?=
+ =?us-ascii?Q?fxv3puBR+uQAmbU8H0VRuOPaW7yb4YbQ1lxPSNLebM1OaQF3gqcTn60h6uQc?=
+ =?us-ascii?Q?JqGGKHfJpA4zmUNl1TMlDvpNcbwd3MEPa7nDPsWieo2pedbj2NE9MKfL0Pub?=
+ =?us-ascii?Q?7XhccLw/d8cY/kgJXpNg7Ys5yq4ZejO7rQByNaOp2Dw4jiY9NFNanOJFl1YH?=
+ =?us-ascii?Q?SuRFjkBnKifIcOh8zvoRocPRLbscWb52a52fOmJWEiw0FauTw11P/M8oaB7F?=
+ =?us-ascii?Q?j1ueBMbOCjY8iLQsbPJWoPcDDE8Gq1jGkDZm33nt?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d128dc3-b0d0-433c-763f-08da96595632
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9176.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2022 13:59:28.1272
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hi3HjHknCSyjGkN98hXh5e2RLl4hzQB7Xiqo+rJIecYwkErnGfjfI0JjKodsDj8HPmPsfOUK0aJ8IiUfMCvCAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7129
 
-In subject, capitalize and change "makeup" to "Clean up":
+i.MX8DXL is a device targeting the automotive and industrial market
+segments. The chip is designed to achieve both high performance and
+low power consumption. It has a dual (2x) Cortex-A35 processor.
 
-  PCI: endpoint: pci-epf-vntb: Clean up
+The series of patches is to add the imx8dxl soc and its evk board
+support.
 
-On Tue, Sep 13, 2022 at 04:09:56PM -0500, Frank Li wrote:
-> Remove unused field: epf_db_phy.
-> Remove __iomem before epf_db.
-> Remove dupicate check if (readl(ntb->epf_db + i * 4)).
-> Using readl_relaxed instead of readl.
-> Using marco ENTRY_SIZE instead of number 4 at all place.
+changes in V8:
+  - change the flag of gpio phandle in reg_fec1_sel node to
+    GPIO_ACTIVE_LOW to match the hardware behavior.
 
-Add "()" after function names.
+changes in V7:
+  - move the fec1 reset gpio into its phy node
 
-s/marco/macro/
+changes in V6:
+  - The V6 changes mainly respond to the comments from Shawn
+  - Separate the V5 patch into SoC and Board commits
+  - Remove the unnecessary properties of "max-frequency"
+    in usdhc2 node
+  - Remove the unnecessary properties of "clk_csr" in eqos node
+  - Fix several coding style problems
 
-It would be nice if "ENTRY_SIZE" had a hint about what kind of entry
-we're talking about.
+changes in V5:
+  - change the "scu" node name to "system-controller"
+  - fix the typo in the comments for imx8dxl evk board
 
-Since this is a collection of random cleanups, I noticed a typo in
-epf_ntb_configure_interrupt() kernel-doc: s/capaiblity/capability/
+changes in V4:
+  - move i2c/mmc/serial aliases from soc to board
+  - correct the node names to follow the generic names recommendation
+  - remove some unused nodes in the evk board dts
 
-The struct epf_ntb_ctrl definition is also whitespace-damaged.  The
-members of struct epf_ntb_ctrl and struct epf_ntb should follow the
-same indentation style.  Some members of struct epf_ntb_ctrl are
-indented with a tab, others with space.  Either make them all tabs and
-indent struct epf_ntb similarly, or indent the struct epf_ntb_ctrl
-members with a single space.
+changes in V3:
+  - re-order the commit sequence according to Krzysztof's feedback
+  - correct the syntax and styple problems pointed by Krzysztof
+    (Thank you for the detailed review, Krzysztof!)
+  - remove the unused nodes in imx8dxl-evk.dts
+  - dt_binding_check passed
 
-The comments in the file have a whole collection of ways to spell
-vhost: Virtual Host, VHOST, VHost, vHOST, vhost.  Make them all the
-same, please.  You can use "Virtual Host (VHOST)" or whatever the
-first time if you want to use the short version later.
+Changes in V2:
+  - removed the edma2 device node because the edma v3 driver hasn't been
+    upstreamed yet.
+  - removed the imx8dxl_cm4 alias to fix the compile error.
+  - removed the extra blank lines at EOF.
+  - dt_binding_check passed.
 
-Same for host/HOST/etc.  I don't want to read things like this:
+Shenwei Wang (5):
+  dt-bindings: firmware: add missing resource IDs for imx8dxl
+  dt-bindings: arm: imx: update fsl.yaml for imx8dxl
+  arm64: dts: imx8: add a node label to ddr-pmu
+  arm64: dts: freescale: add i.MX8DXL SoC support
+  arm64: dts: freescale: add support for i.MX8DXL EVK board
 
-  @ntb: NTB device that facilitates communication between HOST and vHOST2
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../arm64/boot/dts/freescale/imx8-ss-ddr.dtsi |   2 +-
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 426 ++++++++++++++++++
+ .../boot/dts/freescale/imx8dxl-ss-adma.dtsi   |  52 +++
+ .../boot/dts/freescale/imx8dxl-ss-conn.dtsi   | 142 ++++++
+ .../boot/dts/freescale/imx8dxl-ss-ddr.dtsi    |   9 +
+ .../boot/dts/freescale/imx8dxl-ss-lsio.dtsi   |  74 +++
+ arch/arm64/boot/dts/freescale/imx8dxl.dtsi    | 238 ++++++++++
+ include/dt-bindings/firmware/imx/rsrc.h       |   7 +
+ 10 files changed, 956 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dxl-ss-ddr.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dxl-ss-lsio.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dxl.dtsi
 
-  Wrapper to initialize a particular EPC interface and start the
-  workqueue to check for commands from host.
+--
+2.25.1
 
-and wonder whether "host" is supposed to be the same as "HOST".  Also,
-why does that say "vHOST*2*"?
-
-There are several instances of "HOST1" and "HOST2" (and "vHOST2").
-Should those appear somewhere in the diagram at the top of the file?
-
-The diagram starts with "/**" which means it's kernel-doc, but the
-diagram is not kernel-doc.  Please run this:
-
-  scripts/kernel-doc -v -none drivers/pci/endpoint/functions/pci-epf-vntb.c
-
-and fix all the warnings.
-
-Bjorn
