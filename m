@@ -1,189 +1,79 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2054.outbound.protection.outlook.com [40.107.22.54])
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4AD5381;
-	Wed, 28 Sep 2022 21:39:28 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GvENDMliue3/FxlO9ZBOmjNG1ODpOacSDWAQny0wJ+9rNf7tM2Mx6Lc6YsBncABeIns51ajrRu9hSIEB1XTUcZ3jDFqLkTUQGLAPkIk6K51d7QObcc6vY3Z6QxLiF54KtoZFdQ8nPshRJURGTxvUjU2xBO0zUDU4jMqN9aAqF+E9GNjuUD5tYRnJb7KEZx5pzIPUxchjCvV6weDhLRwrxGsLPI9yCNcFLkQ/pYMNiirhugkfKaWAskbF7CoAizkISugalRpa5x+n9/aWWcxDibqYrlRzNK7OqSPAPOS9RsbnlNdClvbjvqE+16KjKuGfyZh6sPznRqX0IvC7stQvGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rktDTD4A/iB32/kZ63Y3XStryDpmWWe53Z18bX+2+4I=;
- b=ZEreDjflt9PuMM1xjkCQbVgO4EBqO1P83oyOQEMLStbJKqsQotkC1n7JyjvP5OOLInBJYpgDQajLl3NAgairHxycZBVWU9sNkfMQtpdYwYTfyi9c1cxI0AsDOt3otQs/PjG+TMufIakxcxeWST+5yizUZnHMgWT1P8KKMPM9eEg2f701QUFt5ORIkt8ES7sbdnDer47XLfPMpMJlbDVsked3eVMc/FmS+m89ZRQUJ1BSJiCGcT4HeMFLhUlqs3xXgXfap/moG323Zeu7nxjsP9OYxaIU6SyuIDgC5qddapLXr2luROyETWkLA4Qtkif9SsZLARKlNMKB9FgeOJ/Bjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rktDTD4A/iB32/kZ63Y3XStryDpmWWe53Z18bX+2+4I=;
- b=VZEswMuhSS/o+AwdT4KaR/BheEAS+63sGX+xxocOe2kQf02199eEhEXdTCIAOCgENDJ0iF2DNFdchBsJdfBn/a/viKrMgdCiXw/ZsO/Hiyb01EWz4mUQrsXyOy70+ia3fA6PH2XpRpfjU977qQCIM75E9CIpkhp7FfW3AosH8hM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8793.eurprd04.prod.outlook.com (2603:10a6:20b:408::22)
- by DU2PR04MB9100.eurprd04.prod.outlook.com (2603:10a6:10:2f3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.17; Wed, 28 Sep
- 2022 21:39:24 +0000
-Received: from AM9PR04MB8793.eurprd04.prod.outlook.com
- ([fe80::4d5d:40ae:e0c0:63a3]) by AM9PR04MB8793.eurprd04.prod.outlook.com
- ([fe80::4d5d:40ae:e0c0:63a3%7]) with mapi id 15.20.5676.019; Wed, 28 Sep 2022
- 21:39:18 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: fancer.lancer@gmail.com,
-	helgaas@kernel.org,
-	sergey.semin@baikalelectronics.ru,
-	kw@linux.com,
-	linux-pci@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	ntb@lists.linux.dev,
-	jdmason@kudzu.us,
-	kishon@ti.com,
-	haotian.wang@sifive.com,
-	lznuaa@gmail.com,
-	imx@lists.linux.dev
-Subject: [RFC] PCI EP/RC network transfer by using eDMA
-Date: Wed, 28 Sep 2022 16:38:56 -0500
-Message-Id: <20220928213856.54211-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.35.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0232.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::27) To AM9PR04MB8793.eurprd04.prod.outlook.com
- (2603:10a6:20b:408::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8359EA9
+	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 01:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=oGBNk7ehsr6naNZyndXMCMbMLWq4E6sNqHzKAcVK0R0=; b=N2j6it1iwchaJQ6Jw5RQXNCHoj
+	J19EWqrL0hSDlTAcP+QEHawdH5d9OYTsG2zhQz+nKNZQvrIqxGbdX96gmADamfWO72dBAMcTHAG+X
+	1ymlj6tsvfo8H0xh2dr/nR2RfxrLSJ9HzQuMG8dofHR2oGtgu/KTM2NAlpu6YLyE2T8Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1odihJ-000ZSE-Nb; Thu, 29 Sep 2022 03:50:45 +0200
+Date: Thu, 29 Sep 2022 03:50:45 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Joakim Zhang <qiangqing.zhang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] net: fec: add initial XDP support
+Message-ID: <YzT59R+zx4dA5G5Q@lunn.ch>
+References: <20220928152509.141490-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8793:EE_|DU2PR04MB9100:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76cf1657-85e1-4ee0-0eaa-08daa199e5e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Q3P7dBtz1Vacsa/Ua7XgzYoUpj5UUEFdx57CrUX4ojmAHN4VDwRALrXsjflSN72IKh/pBaDPRlAJs222qFi5yXavK1WP61N1rJwlR385bnBHvuG08nfCStO5BzTDFyz6i1FH7lYbQrXa/s3qx/D6GKzGv2vKDazBARO5j17jzzTHpLRXKxurxKYKseVBUVb0Env7+XNx5H1ENJNzqpo2UkJHidTU3QODub6UpynTF3wOSlaAQlftJRrWE6XaIS542gOSD07KE7owALxnjzxKH5OtguP++dAfd3WPWIQWmPenTXzFZ+ST2ilKihQoM2KTrXeVrqQkr4ouwY8e2W0y2ffFolXM5hFo9oUpr0AnAtHizgXj4Py6SJIcfQ9BmG83/2MKfdXEaQ7NLJtryfBLHsZ+efJhv/COo51Rx317ozwmhaOovFB1OhWBfLumkX8esKK4nPDk21Neek8dLRskXt9Akjqn3QzbMijmyP2jLksjZRsEf7OePubKb6neZDPBpTAzQpFaKV5a5o8u46EEhO9WG17t7i6XCMd3J/AFB5r4Gnq7Cb+poWpLceQmuRbNsfQqFPfIJvir1vsx+HJ8jysZpyLkbHWe17L6ZHAsWdLXQvPFN1GENgG/D2FuNzhsBlK4um2o5jjf59xIv0jGsFNG42DN6wU55ZrdD/ch7GGhOSwotQPaTBoutj/e8ofm34ffactiRDFTKY1Xro/jOo3QeHFUOqBRFsVexjbcrVcjd/p13q8S2V12wU9BoSt3umwBqx3e4pQ2OuEcqW/qbxZ0uPAB3BRtQ//NLfS9jHUleOfs2ZhwSKB0MpVcpDOpeeJ77F0OyWgOlkanCKAcOMF9d+TCMNCUidoZg/Pi77A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8793.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(39860400002)(376002)(136003)(366004)(346002)(451199015)(38100700002)(83380400001)(316002)(921005)(5660300002)(66556008)(478600001)(7416002)(2906002)(66946007)(6486002)(38350700002)(6666004)(41300700001)(66476007)(8676002)(6506007)(966005)(52116002)(8936002)(1076003)(186003)(2616005)(86362001)(36756003)(26005)(6512007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bkdhL2VxcUVaZVYyYkFCRktjTURXc05Tc0s2NGF6eTUzZ21hZnUyUlJqT2wv?=
- =?utf-8?B?M3F3L213d2tZYitIK2ZKQzRVQy84YU0yblZ5Z0g0V1cxNnpLempNZG1MVlQ5?=
- =?utf-8?B?OUs0WS9IOGdOUU80YWRBRGJCU3FkczZ3Z0pxZkcrTzlieXpMM09nOTM4Y0RP?=
- =?utf-8?B?dlErbE1rM1I2bjRaOTZpdGZuRHV2MHZCVld0bnpOK3BaVmNoS2U5S3VPWSt5?=
- =?utf-8?B?UHlEMFhsblhzbGwvQ3hGdDdNQi9YZzBaRUd5MVNtYzZqRFhPNFkwaDF5Rjdq?=
- =?utf-8?B?SmJHWVMxR0FFMDN6aWpTSHY0elNuNU9nclJGTUFpOU9FZE9VYXlHek9XUzNl?=
- =?utf-8?B?SGdEZWcxRFY5UDhsWjhjelZzZ2FUQzdRZHd0SWZNZ2FIV3F3L3lTTGM2cVB3?=
- =?utf-8?B?UmFSNkI2YU55QlFjNVByV0JybzF5OGtuQmFHWmFZY0tJN0NRWnVZWVVieHBI?=
- =?utf-8?B?c21BQnhhUmNKejJRZVR0cmVKZlJJN3g0T3RBTlNpODQ1NHlqczVuSyt1c09D?=
- =?utf-8?B?WUNqOU9FNWN4UFZscEFybjZ4UUlMVkNmbVA4UHYxV3FjNzhwNWQ4SDF6TzNn?=
- =?utf-8?B?NFM2d0F2eEhWNjlBMkl5U3MrWXVHSmo4anNqaytmRlBCclFFUEUxdDZtaEht?=
- =?utf-8?B?cHZpMHBTM3dPbVdiT1d1dm5MTEdGbktkM01KaXVhaWxXbHl4S1U3a1QxdGdr?=
- =?utf-8?B?LzIwdWdYa2hkdHJObEhWeHBjLzM0dXcrdjQxRitFOGxEdmhESTlzNVZOSG1G?=
- =?utf-8?B?c0VkT202MzZDL2lLN25TdTl2OEpBT2gySmlSQnV2RDVHTkp4ek82aHNEb2NK?=
- =?utf-8?B?VkVBUnd3SWZrS0ZRMGNYYWNKTTJOand4b2tad0p3UTY1RFBHejJjM1lQUHVl?=
- =?utf-8?B?RHhVb1dqcFg3M2tYaUlhSWVJcldIYlp3Zjlqam11Vjlqa1VvTjBPRlZzeno4?=
- =?utf-8?B?REFrSjBBeEpRYytKdEN2MDdxMW1laXdJUXBrODhpVHJUcUE0bmR6VytGbEpX?=
- =?utf-8?B?OFA1NW5JT2dVRklzTWRFZFplRnlrMmQ1RUhxMnUvYmlMRTE1akpxQmRRa1Ey?=
- =?utf-8?B?c0k2UWV4OUFJWFNKU0V4SDNtSDREcys2Nzk4MlU2UWxHZ1p4QnMyUEg2QUxS?=
- =?utf-8?B?UkFrZGVsVXRsS010WUVWKzNaamU2NlMwcWNlNHpVcWMva1RFR3pUSnU1WWJs?=
- =?utf-8?B?TUdPaEdacFBkNEdjZmFVQ2lZeTFRYVpLS2ZwVXVZY2VmdWVqY0YvV1pBNlFl?=
- =?utf-8?B?Mm9rT2RRSkY0U0RYSzhQT1E5Mi9WSDlVaklFajQ0TWVxMkZhZmYwNWw1R1FB?=
- =?utf-8?B?ZnR0UHFZajBtTVRLdTVtdUppYUtKbUREZGc3VGZNY2UzSDh2bVZpZ0w3QTYv?=
- =?utf-8?B?ZVp0Y1pGTTJtS3o4eGJXNTJmZlE3aS80SndyWUFseFUzRE1xSzAxSFFkb3BZ?=
- =?utf-8?B?aStUTlRxbWJnYUxtaEw2cWVrMWNaV2dkbmZvZTZkZ3VYaTNGN1dhMGJVQmI1?=
- =?utf-8?B?ZVZWTVRtWW1PbWxmSVF0dGk5enNlY2M1b083Qlp3ekJwOCsvckJFS3FlNm0r?=
- =?utf-8?B?ZkF3R3NLR2I0S1VwMzkzUUg4ZktHbkd0bDFzQUFpYzBLWGxUSVBOT2tidlNr?=
- =?utf-8?B?WnJYa2oyUTBiODc4OTQ1N0JCSHRHWG9uN2ZHVWJSc1dYSzFwR3hMTWZrSnBY?=
- =?utf-8?B?eWRtKzRDczRPcFl3RW8xcnBwNkEySFRGeHVWM0xacFRhbnU3cnV6UXRCTWZj?=
- =?utf-8?B?K0JlSUh1SndHTVYxNVJqbDg2SXcvbjZWKzkwTmhBbHdNMEw0VzIzYzBPYTJT?=
- =?utf-8?B?L0NiYzdWakdoSG9WcmYxcnFFempQSkxiMks3NVZ2ZlhGeng3RjNzSCtYYXZD?=
- =?utf-8?B?ajJMUklReUtEbzBYWDlheFI1bGFrdXBNV0xWNHFMdFcxUU02N3AyeTVVYy9p?=
- =?utf-8?B?UlBmVFM5Vk81Y0RVQ3k2QUVmbFF5L09DeEQ1QVVZOFF2aU4ybEJxd1VSMzdM?=
- =?utf-8?B?K3hHOFlQTTFiaWkzTCtsbm1LL25nQ3huTUNSQ3g4MmFrWWhqeGdvNm1Fc1V0?=
- =?utf-8?B?cElqTjBvQkJ6T1VIcnBZY3dsRnRSSmpMTythdzlDb1pBMVpKRktBM0IwZWda?=
- =?utf-8?Q?AGn6uOExHgYutdkT/LOr93GPK?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76cf1657-85e1-4ee0-0eaa-08daa199e5e7
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8793.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2022 21:39:18.8976
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DybJM5770QIckJIi6UgbeANIP5GnytgOgZ3FNSQM49jJ72oKSBLMVPm4xLbENQjaku4ARXPpD/MwDhWoT/VRwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220928152509.141490-1-shenwei.wang@nxp.com>
 
+> +struct fec_enet_xdp_stats {
+> +	u64	xdp_pass;
+> +	u64	xdp_drop;
+> +	u64	xdp_xmit;
+> +	u64	xdp_redirect;
+> +	u64	xdp_xmit_err;
+> +	u64	xdp_tx;
+> +	u64	xdp_tx_err;
+> +};
+> +
+> +	switch (act) {
+> +	case XDP_PASS:
+> +		rxq->stats.xdp_pass++;
 
-ALL:
+Since the stats are u64, and most machines using the FEC are 32 bit,
+you cannot just do an increment. Took a look at u64_stats_sync.h.
 
-       Recently some important PCI EP function patch already merged.  
-Especially DWC EDMA support. 
-       PCIe EDMA have nice feature, which can read/write all PCI host
-memory regardless EP side PCI memory map windows size.
-       Pci-epf-vntb.c also merged into mainline.  
-       And part of vntb msi patch already merged. 
-		https://lore.kernel.org/imx/86mtaj7hdw.wl-maz@kernel.org/T/#m35546867af07735c1070f596d653a2666f453c52
+> -#define FEC_STATS_SIZE		(ARRAY_SIZE(fec_stats) * sizeof(u64))
+> +static struct fec_xdp_stat {
+> +	char name[ETH_GSTRING_LEN];
+> +	u32 count;
+> +} fec_xdp_stats[] = {
+> +	{ "rx_xdp_redirect", 0 },
+> +	{ "rx_xdp_pass", 0 },
+> +	{ "rx_xdp_drop", 0 },
+> +	{ "rx_xdp_tx", 0 },
+> +	{ "rx_xdp_tx_errors", 0 },
+> +	{ "tx_xdp_xmit", 0 },
+> +	{ "tx_xdp_xmit_errors", 0 },
+> +};
+> +
+> +#define FEC_STATS_SIZE	((ARRAY_SIZE(fec_stats) + \
+> +			ARRAY_SIZE(fec_xdp_stats)) * sizeof(u64))
 
-       Although msi can improve transfer latency,  the transfer speed
-still quite slow because DMA have not supported yet. 
+The page pool also has some stats. See page_pool_get_stats(),
+page_pool_ethtool_stats_get_strings() etc.
 
-       I plan continue to improve transfer speed. But I find some
-fundamental limitation at original framework, which can’t use EDMA 100% benefits. 
-       After research some old thread: 
-		https://lore.kernel.org/linux-pci/20200702082143.25259-1-kishon@ti.com/
-		https://lore.kernel.org/linux-pci/9f8e596f-b601-7f97-a98a-111763f966d1@ti.com/T/
-		Some RDMA document and https://github.com/ntrdma/ntrdma-ext
-
-       I think the solution, which based on haotian wang will be best one. 
-
-  ┌─────────────────────────────────┐   ┌──────────────┐
-  │                                 │   │              │
-  │                                 │   │              │
-  │   VirtQueue             RX      │   │  VirtQueue   │
-  │     TX                 ┌──┐     │   │    TX        │
-  │  ┌─────────┐           │  │     │   │ ┌─────────┐  │
-  │  │ SRC LEN ├─────┐  ┌──┤  │◄────┼───┼─┤ SRC LEN │  │
-  │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
-  │  │         │     │  │  │  │     │   │ │         │  │
-  │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
-  │  │         │     │  │  │  │     │   │ │         │  │
-  │  └─────────┘     │  │  └──┘     │   │ └─────────┘  │
-  │                  │  │           │   │              │
-  │     RX       ┌───┼──┘   TX      │   │    RX        │
-  │  ┌─────────┐ │   │     ┌──┐     │   │ ┌─────────┐  │
-  │  │         │◄┘   └────►│  ├─────┼───┼─┤         │  │
-  │  ├─────────┤           │  │     │   │ ├─────────┤  │
-  │  │         │           │  │     │   │ │         │  │
-  │  ├─────────┤           │  │     │   │ ├─────────┤  │
-  │  │         │           │  │     │   │ │         │  │
-  │  └─────────┘           │  │     │   │ └─────────┘  │
-  │   virtio_net           └──┘     │   │ virtio_net   │
-  │  Virtual PCI BUS   EDMA Queue   │   │              │
-  ├─────────────────────────────────┤   │              │
-  │  PCI EP Controller with eDMA    │   │  PCI Host    │
-  └─────────────────────────────────┘   └──────────────┘
-
-
-       Basic idea is
-	1.	Both EP and host probe virtio_net driver
-	2.	There are two queues,  one is EP side(EQ),  the other is Host side. 
-	3.	EP side epf driver map Host side’s queue into EP’s space. , Called HQ.
-	4.	One working thread 
-	a.	pick one TX from EQ and RX from HQ, combine and generate EDMA request, and put into DMA TX queue.
-	b.	Pick one RX from EQ and TX from HQ, combine and generate EDMA request, and put into DMA RX queue. 
-	5.	EDMA done irq will mark related item in EP and HQ finished.
-
-The whole transfer is zero copied and use DMA queue.
-
-      RDMA have similar idea and more coding efforts. 
-      I think Kishon Vijay Abraham I prefer use vhost,  but I don’t know how to build a queue at host side.
-      NTB transfer just do one directory EDMA transfer (DMA write) because Read actually local memory
- to local memory.
-
-      Any comments about overall solution?
-
-best regards
-Frank Li
+      Andrew
