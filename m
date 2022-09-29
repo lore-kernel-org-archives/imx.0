@@ -1,20 +1,20 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8359EA9
-	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 01:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC93EA9
+	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 01:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=oGBNk7ehsr6naNZyndXMCMbMLWq4E6sNqHzKAcVK0R0=; b=N2j6it1iwchaJQ6Jw5RQXNCHoj
-	J19EWqrL0hSDlTAcP+QEHawdH5d9OYTsG2zhQz+nKNZQvrIqxGbdX96gmADamfWO72dBAMcTHAG+X
-	1ymlj6tsvfo8H0xh2dr/nR2RfxrLSJ9HzQuMG8dofHR2oGtgu/KTM2NAlpu6YLyE2T8Y=;
+	bh=WgYp4kgX3yzN0Gagvg7OxRHJp7EnJoIu8HNLaefuSRI=; b=prISs92iTwutWRn1Fm3DmUw5Fu
+	2U1o9LPTgITB8C9gSMMzmcb6DqZMsRADRVEJj4aFKKRt0R0FzPKI/zcCb+2NGvNLIt2Qx12R0YvsM
+	2JRT1Oz+2pY/9iqN5VCfU5Qwg35TmA7I1TWmQUsBM25IdKKw2LAC0dkRxlFkQFQ3R0xU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1odihJ-000ZSE-Nb; Thu, 29 Sep 2022 03:50:45 +0200
-Date: Thu, 29 Sep 2022 03:50:45 +0200
+	id 1odiR0-000ZNQ-DM; Thu, 29 Sep 2022 03:33:54 +0200
+Date: Thu, 29 Sep 2022 03:33:54 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Shenwei Wang <shenwei.wang@nxp.com>
 Cc: Joakim Zhang <qiangqing.zhang@nxp.com>,
@@ -27,7 +27,7 @@ Cc: Joakim Zhang <qiangqing.zhang@nxp.com>,
 	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev
 Subject: Re: [PATCH 1/1] net: fec: add initial XDP support
-Message-ID: <YzT59R+zx4dA5G5Q@lunn.ch>
+Message-ID: <YzT2An2J5afN1w3L@lunn.ch>
 References: <20220928152509.141490-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -39,41 +39,22 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20220928152509.141490-1-shenwei.wang@nxp.com>
 
-> +struct fec_enet_xdp_stats {
-> +	u64	xdp_pass;
-> +	u64	xdp_drop;
-> +	u64	xdp_xmit;
-> +	u64	xdp_redirect;
-> +	u64	xdp_xmit_err;
-> +	u64	xdp_tx;
-> +	u64	xdp_tx_err;
-> +};
-> +
-> +	switch (act) {
-> +	case XDP_PASS:
-> +		rxq->stats.xdp_pass++;
+On Wed, Sep 28, 2022 at 10:25:09AM -0500, Shenwei Wang wrote:
+> This patch adds the initial XDP support to Freescale driver. It supports
+> XDP_PASS, XDP_DROP and XDP_REDIRECT actions. Upcoming patches will add
+> support for XDP_TX and Zero Copy features.
+> 
+> This patch also optimizes the RX buffers by using the page pool, which
+> uses one frame per page for easy management. In the future, it can be
+> further improved to use two frames per page.
 
-Since the stats are u64, and most machines using the FEC are 32 bit,
-you cannot just do an increment. Took a look at u64_stats_sync.h.
+Please could you split this patch up. It is rather large and hard to
+review. I think you can first add support for the page pool, and then
+add XDP support, for example. 
 
-> -#define FEC_STATS_SIZE		(ARRAY_SIZE(fec_stats) * sizeof(u64))
-> +static struct fec_xdp_stat {
-> +	char name[ETH_GSTRING_LEN];
-> +	u32 count;
-> +} fec_xdp_stats[] = {
-> +	{ "rx_xdp_redirect", 0 },
-> +	{ "rx_xdp_pass", 0 },
-> +	{ "rx_xdp_drop", 0 },
-> +	{ "rx_xdp_tx", 0 },
-> +	{ "rx_xdp_tx_errors", 0 },
-> +	{ "tx_xdp_xmit", 0 },
-> +	{ "tx_xdp_xmit_errors", 0 },
-> +};
-> +
-> +#define FEC_STATS_SIZE	((ARRAY_SIZE(fec_stats) + \
-> +			ARRAY_SIZE(fec_xdp_stats)) * sizeof(u64))
+I would be interesting to see how the page pool helps performance for
+normal traffic, since that is what most people use it for. And for a
+range of devices, since we need to make sure it does not cause any
+regressions for older devices.
 
-The page pool also has some stats. See page_pool_get_stats(),
-page_pool_ethtool_stats_get_strings() etc.
-
-      Andrew
+	    Andrew
