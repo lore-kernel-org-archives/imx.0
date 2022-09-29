@@ -1,354 +1,247 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70070.outbound.protection.outlook.com [40.107.7.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED5E5395
-	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 15:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1664466273;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DFDRdT3YNiEMsa+AZetCOI5EJNYxOYuiooVQoGJe/s4=;
-	b=W11PR7cBby+ioSGs+90L6n9TuWUGHBXeTlfR3oAkAloqp1z0pRhndu2s5UW6iMdppANtZK
-	LqwtZSIF//v9XgDVhErfYcPfwE5EZLS+sm9bqXlteZYmvVgBpXZoJ/sKzYcC45L98c8jm1
-	pqj3UVo06kJ6LZSLbBgsrR7M7k2nEVI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-596-00MKYcbmNSyTez0k1okAvA-1; Thu, 29 Sep 2022 11:44:32 -0400
-X-MC-Unique: 00MKYcbmNSyTez0k1okAvA-1
-Received: by mail-ej1-f72.google.com with SMTP id xj11-20020a170906db0b00b0077b6ecb23fcso897864ejb.5
-        for <imx@lists.linux.dev>; Thu, 29 Sep 2022 08:44:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:to
-         :content-language:subject:cc:user-agent:mime-version:date:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date;
-        bh=DFDRdT3YNiEMsa+AZetCOI5EJNYxOYuiooVQoGJe/s4=;
-        b=P6tE1Xp6xf07wUFwx3sH/5o7Kfbl4+bGGYIVFh5C/+/PYffTxr4qfG3LFvHcW22f6V
-         7tDBDQ9npVny/WwLfSXcygNzqzLvTTvgl70XnAvfkd5+lN2FIQVJ7msT9zKwu+pPNAE0
-         gruYlL3oKSyM8F04wnMZKHoNWFeofhMMMwa+z3cAGOeDKjj8kk+AAh/R1lUSJ2mio0Fg
-         m0TezIMsltfuGL8RyTLtq87y/DkvHCKiyA2/N9u/nA7RYRpACkCrYquGz1GZBRpU+oIZ
-         BYlvNxYqBQl2rLqRS/wEuHo9BhJowZCuMJ0u6IM/0UTjpL61OtLLT5LG6o9kASqUCWp9
-         xgLw==
-X-Gm-Message-State: ACrzQf0TqSSYD735V9bG52xsKARmdvCV1Mycw9X0XonHrJfh8XsdmwPd
-	5YpfobYGdRd6bsGxo63aWNkZ1BNtVdwehClWUz+koQsb4gwqTNKJxiLi3DhRyZM2hlQ/JNG315E
-	P9f/cMFxFDBcz
-X-Received: by 2002:a17:906:9bdb:b0:787:afc4:d088 with SMTP id de27-20020a1709069bdb00b00787afc4d088mr3046465ejc.611.1664466271296;
-        Thu, 29 Sep 2022 08:44:31 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7K+AGqIX5myJwH31RYnX6ZEx5Iml2doWE/FRHVx0t97GmO4a7o9vbL1cP1+QiCcugQXnMVfA==
-X-Received: by 2002:a17:906:9bdb:b0:787:afc4:d088 with SMTP id de27-20020a1709069bdb00b00787afc4d088mr3046452ejc.611.1664466271027;
-        Thu, 29 Sep 2022 08:44:31 -0700 (PDT)
-Received: from [192.168.41.81] (83-90-141-187-cable.dk.customer.tdc.net. [83.90.141.187])
-        by smtp.gmail.com with ESMTPSA id l18-20020a1709061c5200b00783fb38965bsm4126486ejg.100.2022.09.29.08.44.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Sep 2022 08:44:30 -0700 (PDT)
-From: Jesper Dangaard Brouer <jbrouer@redhat.com>
-X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
-Message-ID: <f1a4bd53-aa55-a040-9171-7f8a57649151@redhat.com>
-Date: Thu, 29 Sep 2022 17:44:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D225395
+	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 15:52:54 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FEce3bJM3BtU7Z3jfTB5makkvEZ7QzfTh/f97Su8dJsWQqvofzxZWJGpQN0Ag8qUYpCvRMsSM6pEb5laO4j/t8QLCYHibk9uCZFMNXqgoeQQLuPfhhwNkd6xXVfB7cejSQp8VInUmpnpVNbgtMCK8aVLtodfL8iMJubhksbNXjCQvZ1ODuB5FczjTc3EaBVpf79U/ooiBVB6QYmgYiAWodKVdAWep1Ey8k4cdhWqT2+7uTMKhXsLknXap+MLJG8EEVKe4l3BN5zHGKAykuPRU4sbvligRZ4w5pX3HKsFN8WHbzleB5Rk1p5o/HdUVIj+LQOmlyVJAOpTmdo+Q1/m2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0cLQfSI3dln5I3J4kS0RyqYBLN1w9O8xi4BOgNZoPqg=;
+ b=oG/5KL57wwXKlJia43L8b33qSipnA3OoUsP2ikyXBwIPbPi4l8NzZ9vKxzG8zhCNE2ksVU7wnI8u/x/ankjeRSJnxvqDd79zZ6W8tcF3+g+vsdjNnZKFG3W8LQAal4FvP+6kcI+3DN5iT5irtS0gKZBP2w2eDM0Kn3C9d1/SkTf1f5fBRnGwgm7vLoXAH6RO4bs569POmxB7rAj/Hk80CAtUa+0PBbPvIlmeEUpmjmFE8d7+epBszH1CBtVWYe9vFyEhsbyQR+ujwj3syShi9Ss8wUrbhRY9zfEjC7qJQAUtL0icmffNARAj8WhGnuXI2oTdpRpBurFNzcF/8GpglA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0cLQfSI3dln5I3J4kS0RyqYBLN1w9O8xi4BOgNZoPqg=;
+ b=c72z45lz+r5Ho/bibhIJObu/ZRawy0TvQoIv5k8ng7PfjI8EHlAkgJ6EhY7BQuVZUtCMWyNX03V7a/Ciy+K6OWikPVKb6Evuee+ZfhSRoVq4AnOHk0H8PLkCl8mPa95D5Zuah4LMCqt3KS16nPOHZWGzL9/SIQkyUE/Q6xwZE3I=
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by PA4PR04MB9415.eurprd04.prod.outlook.com (2603:10a6:102:2aa::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.26; Thu, 29 Sep
+ 2022 15:52:51 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::a543:fc4e:f6c5:b11f]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::a543:fc4e:f6c5:b11f%9]) with mapi id 15.20.5676.020; Thu, 29 Sep 2022
+ 15:52:51 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Jesper Dangaard Brouer <jbrouer@redhat.com>, Andrew Lunn <andrew@lunn.ch>
+CC: "brouer@redhat.com" <brouer@redhat.com>, Joakim Zhang
+	<qiangqing.zhang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+Thread-Topic: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+Thread-Index:
+ AQHY006sqGpD/PA5gEmZiYlRlE0jhK31oHQAgAC4dcCAAA2WgIAAADZwgAAi/oCAAARmwA==
+Date: Thu, 29 Sep 2022 15:52:51 +0000
+Message-ID:
+ <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20220928152509.141490-1-shenwei.wang@nxp.com>
+ <YzT2An2J5afN1w3L@lunn.ch>
+ <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <YzWcI+U1WYJuZIdk@lunn.ch>
+ <PAXPR04MB918545B92E493CB57CDE612B89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com>
+In-Reply-To: <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA4PR04MB9415:EE_
+x-ms-office365-filtering-correlation-id: 58a58b3a-c66f-4395-9f42-08daa232aa1c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ VVMi7z2nF2l+1x9c2aLYSqsADhFdnleQlPPEZivhAxNINwgy/04Pn5xpak4q23ynNJ5NiiSPbm1nvCfHCbn//9lVth+n93hwDP5grrOPNhYLJLdS0SkFG/jpdiKY/q3nt5EgfVWK7D4rq/ADmZDlRhMoTZh+fHf7at3SDNQqPpdEKL4847TPXPG4/jsg9lUufO3U8FZtME3SNNGojfRYYR0zXJpgL4ty0k33nDrNaxotU5iqnvbmTJSeDtaixid1+oO6EBz3gCN5SDnLp7DxJHnkd7ZJopfTvduVtAOWTOw+5/JdDNrmX1ibnUW1WbxywJU8d12wTfpeNxGabXqAeDOHRsA1Z6l/RkNi6BhWcfvczNlf/AQ43Y0C1QKNIgMskeWz6EKlkgFhPJKR2/TzHJIv0hqE0/3mW74Yg2gpFgY19+gcVzwPNZfdWAgNBzUbjDSHrNRYESp5QEdZPmtL5DrAhhZMx/y0I5Ks/uqnFaxSD7OpjZK1P4DR0SdSPgjfnk2vFajM7RacMlLP4H9uhnyjyd0NmBocg/rkh6IRyu/zNfwbQWSCUO8CvSWtPso+4a57LXnKPlNmHccG44xrKdtiYWNgR01ChZiFlACNOW7PFSAn8dG4/z0sxrmyXoh957Gbc6eO+LScxRTa8zPTTG5QziMWKFnASXY6ZnueSSSWedTJpraqeQZVn2uKDzxot+B8Fh2hIxmgdEzMHwY6VbYNftpKi5k9lb2GEthWsKelifbr/x/Vpw8I97XZij0HIzxpTRR5J3FQjIvfUtD/KQ==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(346002)(366004)(136003)(376002)(396003)(451199015)(38070700005)(83380400001)(38100700002)(66446008)(66556008)(122000001)(186003)(478600001)(9686003)(55236004)(6506007)(26005)(7696005)(71200400001)(53546011)(66476007)(86362001)(316002)(110136005)(2906002)(64756008)(4326008)(44832011)(66946007)(8676002)(7416002)(52536014)(8936002)(5660300002)(54906003)(33656002)(41300700001)(55016003)(76116006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?QVNBYndpQnhwK296dU9jQ0FyL1ZBM1N0RGhkTXJYZ2RLek1tYmtSZUFWMnIz?=
+ =?utf-8?B?WnZVWXhaYUkrZDJ1RFQ1RU85dTFwaFJLUVhMU2xCNk5UdnpXdFVGOVBqZEhh?=
+ =?utf-8?B?am9kNkxoSDBMa1dNY1JtcFhUNS9xUUMxL3h0ekEyZ3ArQkhKMVdLTGIrcXpP?=
+ =?utf-8?B?ZUZkbkVONEJ3cCt4RC9sQ2RkNldTb000d1pLMy9HOC9yYjAvc2RGbEtKYk56?=
+ =?utf-8?B?Q0UzR2grbU05MDZncXNiOFBiM282OWFQc0tnbFZjS3psTndxZjBHVG1GdnZT?=
+ =?utf-8?B?Y2lzd2djM0RpZXhLV0VZV3FOYjAwdTVNNllPZk9ieUNjZHlweFlaL2pRdUZt?=
+ =?utf-8?B?TE9kOVdyVlRSMjNPdVltNDB5UDJ4ZFlnRnZwdzFuem1kOVVmdHVsSmJsd3BP?=
+ =?utf-8?B?UFRvY0VEWUFLZ1hBcVp1bHRtbTV4NmdWQU1kVjcrRWE2Vit2enBJT3hGdFJ5?=
+ =?utf-8?B?RW80YXN5dzZCZFpsZEt2aGhKcCs5bDBvalZUbFZyUHd1VGNsQnVEUnBlNHg5?=
+ =?utf-8?B?QmR6bzNhcit3WFVneFJZbGFUaGdJTXlSMFRaYXdZQ1Ura0tEYjJLMmJhNlNj?=
+ =?utf-8?B?RHptUEpHZElDVnZPYmljMTlpYWJ1M1VNQVRyWDJqYVBTeEFjMTZhdk5WMmpJ?=
+ =?utf-8?B?UTFZQUJlYzdJaEdMbmhlZG5qbGhHaFJaWWxzSW5wMnpXMXZPbWFIaGl1dzQw?=
+ =?utf-8?B?cHFTSVpVM2VvMlpmK2pLeFgyLzMzaWhpeTQ2cG5YZG81czdlRUhEV2hKOVgz?=
+ =?utf-8?B?YVlITFNiOHQ4OEFHa0RFK0xUQVZISWJZVEdVdlhJSmJQVkdnd2ZwbjlUMm81?=
+ =?utf-8?B?TnBPcHZZcTluK05aUkZmdk8rTEpxWHJGaEZ4ekZwSWp4N2JwTWZKby9lYysv?=
+ =?utf-8?B?Mnc0YUdjYlZTVGFtYVNmU2g1cWYzbldFakZXK0Q4WC91V0pCYjNtMmJzR1BM?=
+ =?utf-8?B?WitaYkg0SDB0eFhoRkN3elRXMExBNmpiM0ZBNmVWVlNhYTR3a0RiL2hCbWlK?=
+ =?utf-8?B?UnlPUWE0QkpiU1dpb1hEbyttblNHK0NLRzFlZ094UjJYNzVMaUJFZDZaOVVu?=
+ =?utf-8?B?YXpKa3g4QjhmS3ZDMGhhdk1SQUtXblo5N3laYUNwWWxkck1xNC9qQjgrNXl2?=
+ =?utf-8?B?NUhhSmZlaXo4Yy9nbTlJdXBrS25RaXBvRnUzMHg1UWhQaVl0MjAwb2ZWWlpE?=
+ =?utf-8?B?VXphVHY2bnNMZzJKNVZMSzdZM0xEZXpxd1VPQ3Yya2NnS3hSZURHUzhIUmsv?=
+ =?utf-8?B?bW5aQXlQSUh3THlKZWZRYzdoT1YyZFZZUGxqS1lHSnc1eDRUalh4czI5ZWh6?=
+ =?utf-8?B?eWRBOFFwU2tPYnYraG5MUit2SENtN2VRNVRiSHZBMUVZWkdjR1d5MnZWR1Br?=
+ =?utf-8?B?eERuYzZEWTZrbjZWS0VpMklFWU9uVW44Sk5lTGpQV2hIN2dlRk84RTg2d3JS?=
+ =?utf-8?B?RytxemtoVzlTT0IvOGpNR2hVbWRySGN6TktDT2NicXg5QmZ0R3ZuSlp3eEE3?=
+ =?utf-8?B?NXJXV25RclQ2bE5IVUtCWGJRZHBlL2VOR05BTVpWdHpyUWd4YjcyMzRJZ0JW?=
+ =?utf-8?B?STdxRFZWWDFzV2tEZmdwVVRYWXZtYWRxTCtYZmUwNUFSd3gvY055Q2dlZjdp?=
+ =?utf-8?B?elN3cEVxdDJid3UvV0sybnFLQWtGaUxNNWVQMUxnSjFuM2RIS3R3enh1S1Jh?=
+ =?utf-8?B?cjhPVWZmWmVzbmJmSmtxU1FmTnRYSFZ6QjFtYWxKN1RXTWpjZCs1aDZOejN4?=
+ =?utf-8?B?NXFKTktZYi95L3FGQ3JsbERJNk8rbGxPQ3ZZcDJSaUNrL3JyeXlDWXd4UkdK?=
+ =?utf-8?B?cnJZdDhkYzl3ZXg0anoxTWtRblU3d05yRUFDMkpCQ2lneXF4VUZGVzEyZ0g0?=
+ =?utf-8?B?VEdPREZVcnROSkt4Qzg5Y0MyUHpRc2d2SkgrRnE2LzgxcVdGak5kWnU2UDNx?=
+ =?utf-8?B?bmNWanEya0pYcFhXdUZuS1lDYUNMOGRUSDNUWm1yOHVyZVNkWkR5ZWVxcFpu?=
+ =?utf-8?B?eUg1ZlhuRGNQSG5sTGo2Zlc0YnlQRVg0L2lhK1MrY3kvTWJ0TVR6VWdZRzd6?=
+ =?utf-8?B?V0JhWThneXM2RitKalF0OG9DMUVzWFRWZzAxc1pKMDBMMWlKZ0RiYnBnYmZr?=
+ =?utf-8?Q?mREwePMpgQkDOQBErpS3lIzDj?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Cc: brouer@redhat.com, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
-To: Shenwei Wang <shenwei.wang@nxp.com>,
- Jesper Dangaard Brouer <jbrouer@redhat.com>,
- Joakim Zhang <qiangqing.zhang@nxp.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20220928152509.141490-1-shenwei.wang@nxp.com>
- <1898c50e-1bad-1143-17d9-d093b2d2674a@redhat.com>
- <PAXPR04MB91853E39BDA9A46CB5DED06D89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB91853E39BDA9A46CB5DED06D89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58a58b3a-c66f-4395-9f42-08daa232aa1c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2022 15:52:51.2101
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: b60yMiDxRC97bFBxvuX6VcIDaThA0VV1zioqzb26/Qfyj9IEbZoQCEZOcy30cgiO0pefzlPFI8XaELc0OoHPUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9415
 
-
-
-On 29/09/2022 15.11, Shenwei Wang wrote:
-> 
->> From: Jesper Dangaard Brouer <jbrouer@redhat.com>
- >>
->>> diff --git a/drivers/net/ethernet/freescale/fec.h
->>> b/drivers/net/ethernet/freescale/fec.h
->>> index b0100fe3c9e4..f7531503aa95 100644
->>> --- a/drivers/net/ethernet/freescale/fec.h
->>> +++ b/drivers/net/ethernet/freescale/fec.h
->>> @@ -346,8 +346,10 @@ struct bufdesc_ex {
->>>     * the skbuffer directly.
->>>     */
->>>
->>> +#define FEC_ENET_XDP_HEADROOM        (512) /* XDP_PACKET_HEADROOM
->> + NET_IP_ALIGN) */
->>
->> Why the large headroom?
->>
-> 
-> The accurate value here should be "XDP_PACKET_HEADROOM (256) +
-> NET_IP_ALIGN" which then aligns with 64 bytes. So 256 + 64 should be
-> enough here.
-> 
-
-Most other XDP drivers have 256 bytes headroom.
-I don't understand why you just don't keep this at 256, like other drivers ?
-
->>> +
->>>    #define FEC_ENET_RX_PAGES   256
->>> -#define FEC_ENET_RX_FRSIZE   2048
->>> +#define FEC_ENET_RX_FRSIZE   (PAGE_SIZE - FEC_ENET_XDP_HEADROOM)
->>
->> This FEC_ENET_RX_FRSIZE is likely wrong, because you also need to reserve 320
->> bytes at the end for struct skb_shared_info.
->> (320 calculated as SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
->>
->>>    #define FEC_ENET_RX_FRPPG   (PAGE_SIZE / FEC_ENET_RX_FRSIZE)
->>>    #define RX_RING_SIZE                (FEC_ENET_RX_FRPPG *
->> FEC_ENET_RX_PAGES)
->>>    #define FEC_ENET_TX_FRSIZE  2048
->>> @@ -517,6 +519,22 @@ struct bufdesc_prop {
->> [...]
->>
->>> diff --git a/drivers/net/ethernet/freescale/fec_main.c
->>> b/drivers/net/ethernet/freescale/fec_main.c
->>> index 59921218a8a4..2e30182ed770 100644
->>> --- a/drivers/net/ethernet/freescale/fec_main.c
->>> +++ b/drivers/net/ethernet/freescale/fec_main.c
->>> @@ -66,6 +66,8 @@
->>>    #include <linux/mfd/syscon.h>
->>>    #include <linux/regmap.h>
->>>    #include <soc/imx/cpuidle.h>
->>> +#include <linux/filter.h>
->>> +#include <linux/bpf.h>
->>>
->>>    #include <asm/cacheflush.h>
->>>
->>> @@ -87,6 +89,11 @@ static const u16 fec_enet_vlan_pri_to_queue[8] = {0, 0,
->> 1, 1, 1, 2, 2, 2};
->>>    #define FEC_ENET_OPD_V      0xFFF0
->>>    #define FEC_MDIO_PM_TIMEOUT  100 /* ms */
->>>
->>> +#define FEC_ENET_XDP_PASS          0
->>> +#define FEC_ENET_XDP_CONSUMED      BIT(0)
->>> +#define FEC_ENET_XDP_TX            BIT(1)
->>> +#define FEC_ENET_XDP_REDIR         BIT(2)
->>> +
->>>    struct fec_devinfo {
->>>        u32 quirks;
->>>    };
->>> @@ -422,6 +429,49 @@ fec_enet_clear_csum(struct sk_buff *skb, struct
->> net_device *ndev)
->>>        return 0;
->>>    }
->>>
->>> +static int
->>> +fec_enet_create_page_pool(struct fec_enet_private *fep,
->>> +                       struct fec_enet_priv_rx_q *rxq, int size) {
->>> +     struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
->>> +     struct page_pool_params pp_params = {
->>> +             .order = 0,
->>> +             .flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
->>> +             .pool_size = size,
->>> +             .nid = dev_to_node(&fep->pdev->dev),
->>> +             .dev = &fep->pdev->dev,
->>> +             .dma_dir = xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE,
->>> +             .offset = FEC_ENET_XDP_HEADROOM,
->>> +             .max_len = FEC_ENET_RX_FRSIZE,
->>
->> XDP BPF-prog cannot access last 320 bytes, so FEC_ENET_RX_FRSIZE is wrong
->> here.
->>
-> 
-> So the FEC_ENET_RX_FRSIZE should subtract the sizeof(struct
-> skb_shared_info) in the definition, right?
-> 
-
-Yes correct, but use:
-   SKB_DATA_ALIGN(sizeof(struct skb_shared_info))
-
-
->>> +     };
->>> +     int err;
->>> +
->>> +     rxq->page_pool = page_pool_create(&pp_params);
->>> +     if (IS_ERR(rxq->page_pool)) {
->>> +             err = PTR_ERR(rxq->page_pool);
->>> +             rxq->page_pool = NULL;
->>> +             return err;
->>> +     }
->>> +
->>> +     err = xdp_rxq_info_reg(&rxq->xdp_rxq, fep->netdev, rxq->id, 0);
->>> +     if (err < 0)
->>> +             goto err_free_pp;
->>> +
->>> +     err = xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
->>> +                                      rxq->page_pool);
->>> +     if (err)
->>> +             goto err_unregister_rxq;
->>> +
->>> +     return 0;
->>> +
->>> +err_unregister_rxq:
->>> +     xdp_rxq_info_unreg(&rxq->xdp_rxq);
->>> +err_free_pp:
->>> +     page_pool_destroy(rxq->page_pool);
->>> +     rxq->page_pool = NULL;
->>> +     return err;
->>> +}
->>> +
->>>    static struct bufdesc *
->>>    fec_enet_txq_submit_frag_skb(struct fec_enet_priv_tx_q *txq,
->>>                             struct sk_buff *skb, @@ -1285,7 +1335,6 @@
->>> fec_stop(struct net_device *ndev)
->>>        }
->>>    }
->>>
->>> -
->>>    static void
->>>    fec_timeout(struct net_device *ndev, unsigned int txqueue)
->>>    {
->>> @@ -1450,7 +1499,7 @@ static void fec_enet_tx(struct net_device *ndev)
->>>                fec_enet_tx_queue(ndev, i);
->>>    }
->>>
->>> -static int
->>> +static int __maybe_unused
->>>    fec_enet_new_rxbdp(struct net_device *ndev, struct bufdesc *bdp, struct sk_buff *skb)
->>>    {
->>>        struct  fec_enet_private *fep = netdev_priv(ndev); @@ -1470,8
->>> +1519,9 @@ fec_enet_new_rxbdp(struct net_device *ndev, struct bufdesc
->> *bdp, struct sk_buff
->>>        return 0;
->>>    }
->>>
->>> -static bool fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
->>> -                            struct bufdesc *bdp, u32 length, bool swap)
->>> +static bool __maybe_unused
->>> +fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
->>> +                struct bufdesc *bdp, u32 length, bool swap)
->>>    {
->>>        struct  fec_enet_private *fep = netdev_priv(ndev);
->>>        struct sk_buff *new_skb;
->>> @@ -1496,6 +1546,78 @@ static bool fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
->>>        return true;
->>>    }
->>>
->>> +static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
->>> +                             struct bufdesc *bdp, int index) {
->>> +     struct page *new_page;
->>> +     dma_addr_t phys_addr;
->>> +
->>> +     new_page = page_pool_dev_alloc_pages(rxq->page_pool);
->>> +     WARN_ON(!new_page);
->>> +     rxq->rx_skb_info[index].page = new_page;
->>> +
->>> +     rxq->rx_skb_info[index].offset = FEC_ENET_XDP_HEADROOM;
->>> +     phys_addr = page_pool_get_dma_addr(new_page) + FEC_ENET_XDP_HEADROOM;
->>> +     bdp->cbd_bufaddr = cpu_to_fec32(phys_addr); }
->>> +
->>> +static u32
->>> +fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
->>> +              struct xdp_buff *xdp, struct fec_enet_priv_rx_q *rxq,
->>> +int index) {
->>> +     unsigned int sync, len = xdp->data_end - xdp->data;
->>> +     u32 ret = FEC_ENET_XDP_PASS;
->>> +     struct page *page;
->>> +     int err;
->>> +     u32 act;
->>> +
->>> +     act = bpf_prog_run_xdp(prog, xdp);
->>> +
->>> +     /* Due xdp_adjust_tail: DMA sync for_device cover max len CPU touch */
->>> +     sync = xdp->data_end - xdp->data_hard_start - FEC_ENET_XDP_HEADROOM;
->>> +     sync = max(sync, len);
->>> +
->>> +     switch (act) {
->>> +     case XDP_PASS:
->>> +             rxq->stats.xdp_pass++;
->>> +             ret = FEC_ENET_XDP_PASS;
->>> +             break;
->>> +
->>> +     case XDP_TX:
->>> +             rxq->stats.xdp_tx++;
->>> +             bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
->>> +             fallthrough;
->>
->> This fallthrough looks wrong. The next xdp_do_redirect() call will pickup left-
->> overs in per CPU bpf_redirect_info.
->>
-> 
-> So before the XDP_TX is implemented, this part of codes should reside below the XDP_REDIRECT case?
-> 
-
-If that fallthrough goes to dropping packet, then yes.
-
->>> +
->>> +     case XDP_REDIRECT:
->>> +             err = xdp_do_redirect(fep->netdev, xdp, prog);
->>> +             rxq->stats.xdp_redirect++;
->>> -                     dma_unmap_single(&fep->pdev->dev,
-> ...
-> 
->>> -                                      fec32_to_cpu(bdp->cbd_bufaddr),
->>> -                                      FEC_ENET_RX_FRSIZE - fep->rx_align,
->>> -                                      DMA_FROM_DEVICE);
->>> -             }
->>> -
->>> -             prefetch(skb->data - NET_IP_ALIGN);
->>> +             skb = build_skb(page_address(page), FEC_ENET_RX_FRSIZE);
->>
->> This looks wrong, I think FEC_ENET_RX_FRSIZE should be replaced by PAGE_SIZE.
->> As build_skb() does:
->>
->>    size -= SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
->>
-> 
-> Agree. As the current FRSIZE definition did not subtract the sizeof(struct skb_shared_info), I happened to not see the problem during the testing.
-> 
-
-As I wrote use PAGE_SIZE here.
-
-
->>> +             skb_reserve(skb, FEC_ENET_XDP_HEADROOM);
->>
->> The skb_reserve looks correct.
->>
->>>                skb_put(skb, pkt_len - 4);
->>>                data = skb->data;
->>> +             page_pool_release_page(rxq->page_pool, page);
->>
->> Today page_pool have SKB recycle support (you might have looked at drivers
->> that didn't utilize this yet), thus you don't need to release the page
->> (page_pool_release_page) here.  Instead you could simply mark the SKB for
->> recycling, unless driver does some page refcnt tricks I didn't notice.
->>
->>    skb_mark_for_recycle(skb);
-
-I hope you try out the above proposed change.
-
->>
->>> -             if (!is_copybreak && need_swap)
->>> +             if (need_swap)
->>>                        swap_buffer(data, pkt_len);
->>>
->>>    #if !defined(CONFIG_M5272)
->>> @@ -1649,16 +1781,6 @@ fec_enet_rx_queue(struct net_device *ndev, int
->>> budget, u16 queue_id)
->> [...]
-> 
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmVzcGVyIERhbmdhYXJk
+IEJyb3VlciA8amJyb3VlckByZWRoYXQuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgU2VwdGVtYmVy
+IDI5LCAyMDIyIDEwOjI5IEFNDQo+IFRvOiBTaGVud2VpIFdhbmcgPHNoZW53ZWkud2FuZ0BueHAu
+Y29tPjsgQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPg0KPiBDYzogYnJvdWVyQHJlZGhhdC5j
+b207IEpvYWtpbSBaaGFuZyA8cWlhbmdxaW5nLnpoYW5nQG54cC5jb20+OyBEYXZpZCBTLg0KPiBN
+aWxsZXIgPGRhdmVtQGRhdmVtbG9mdC5uZXQ+OyBFcmljIER1bWF6ZXQgPGVkdW1hemV0QGdvb2ds
+ZS5jb20+OyBKYWt1Yg0KPiBLaWNpbnNraSA8a3ViYUBrZXJuZWwub3JnPjsgUGFvbG8gQWJlbmkg
+PHBhYmVuaUByZWRoYXQuY29tPjsgQWxleGVpDQo+IFN0YXJvdm9pdG92IDxhc3RAa2VybmVsLm9y
+Zz47IERhbmllbCBCb3JrbWFubiA8ZGFuaWVsQGlvZ2VhcmJveC5uZXQ+Ow0KPiBKZXNwZXIgRGFu
+Z2FhcmQgQnJvdWVyIDxoYXdrQGtlcm5lbC5vcmc+OyBKb2huIEZhc3RhYmVuZA0KPiA8am9obi5m
+YXN0YWJlbmRAZ21haWwuY29tPjsgbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+IGtl
+cm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGlteEBsaXN0cy5saW51eC5kZXYNCj4gU3ViamVjdDogUmU6
+IFtFWFRdIFJlOiBbUEFUQ0ggMS8xXSBuZXQ6IGZlYzogYWRkIGluaXRpYWwgWERQIHN1cHBvcnQN
+Cj4gDQo+IENhdXRpb246IEVYVCBFbWFpbA0KPiANCj4gT24gMjkvMDkvMjAyMiAxNS4yNiwgU2hl
+bndlaSBXYW5nIHdyb3RlOg0KPiA+DQo+ID4+IEZyb206IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVu
+bi5jaD4NCj4gPj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJlciAyOSwgMjAyMiA4OjIzIEFNDQo+
+IFsuLi5dDQo+ID4+DQo+ID4+PiBJIGFjdHVhbGx5IGRpZCBzb21lIGNvbXBhcmUgdGVzdGluZyBy
+ZWdhcmRpbmcgdGhlIHBhZ2UgcG9vbCBmb3INCj4gPj4+IG5vcm1hbCB0cmFmZmljLiAgU28gZmFy
+IEkgZG9uJ3Qgc2VlIHNpZ25pZmljYW50IGltcHJvdmVtZW50IGluIHRoZQ0KPiA+Pj4gY3VycmVu
+dCBpbXBsZW1lbnRhdGlvbi4gVGhlIHBlcmZvcm1hbmNlIGZvciBsYXJnZSBwYWNrZXRzIGltcHJv
+dmVzIGENCj4gPj4+IGxpdHRsZSwgYW5kIHRoZSBwZXJmb3JtYW5jZSBmb3Igc21hbGwgcGFja2V0
+cyBnZXQgYSBsaXR0bGUgd29yc2UuDQo+ID4+DQo+ID4+IFdoYXQgaGFyZHdhcmUgd2FzIHRoaXMg
+Zm9yPyBpbXg1MT8gaW14Nj8gaW14NyBWeWJyaWQ/IFRoZXNlIGFsbCB1c2UgdGhlDQo+IEZFQy4N
+Cj4gPg0KPiA+IEkgdGVzdGVkIG9uIGlteDhxeHAgcGxhdGZvcm0uIEl0IGlzIEFSTTY0Lg0KPiAN
+Cj4gT24gbXZuZXRhIGRyaXZlci9wbGF0Zm9ybSB3ZSBzYXcgaHVnZSBzcGVlZHVwIHJlcGxhY2lu
+ZzoNCj4gDQo+ICAgIHBhZ2VfcG9vbF9yZWxlYXNlX3BhZ2UocnhxLT5wYWdlX3Bvb2wsIHBhZ2Up
+OyB3aXRoDQo+ICAgIHNrYl9tYXJrX2Zvcl9yZWN5Y2xlKHNrYik7DQo+IA0KPiBBcyBJIG1lbnRp
+b25lZDogVG9kYXkgcGFnZV9wb29sIGhhdmUgU0tCIHJlY3ljbGUgc3VwcG9ydCAoeW91IG1pZ2h0
+IGhhdmUNCj4gbG9va2VkIGF0IGRyaXZlcnMgdGhhdCBkaWRuJ3QgdXRpbGl6ZSB0aGlzIHlldCks
+IHRodXMgeW91IGRvbid0IG5lZWQgdG8gcmVsZWFzZSB0aGUNCj4gcGFnZSAocGFnZV9wb29sX3Jl
+bGVhc2VfcGFnZSkgaGVyZS4gIEluc3RlYWQgeW91IGNvdWxkIHNpbXBseSBtYXJrIHRoZSBTS0IN
+Cj4gZm9yIHJlY3ljbGluZywgdW5sZXNzIGRyaXZlciBkb2VzIHNvbWUgcGFnZSByZWZjbnQgdHJp
+Y2tzIEkgZGlkbid0IG5vdGljZS4NCj4gDQo+IE9uIHRoZSBtdm5ldGEgZHJpdmVyL3BsYXRmb3Jt
+IHRoZSBETUEgdW5tYXAgKGluIHBhZ2VfcG9vbF9yZWxlYXNlX3BhZ2UpDQo+IHdhcyB2ZXJ5IGV4
+cGVuc2l2ZS4gVGhpcyBpbXg4cXhwIHBsYXRmb3JtIG1pZ2h0IGhhdmUgZmFzdGVyIERNQSB1bm1h
+cCBpbg0KPiBjYXNlIGlzIGl0IGNhY2hlLWNvaGVyZW50Lg0KPiANCj4gSSB3b3VsZCBiZSB2ZXJ5
+IGludGVyZXN0ZWQgaW4ga25vd2luZyBpZiBza2JfbWFya19mb3JfcmVjeWNsZSgpIGhlbHBzIG9u
+IHRoaXMNCj4gcGxhdGZvcm0sIGZvciBub3JtYWwgbmV0d29yayBzdGFjayBwZXJmb3JtYW5jZS4N
+Cj4gDQoNCkRpZCBhIHF1aWNrIGNvbXBhcmUgdGVzdGluZyBmb3IgdGhlIGZvbGxvd2luZyAzIHNj
+ZW5hcmlvczogDQoxLiBvcmlnaW5hbCBpbXBsZW1lbnRhdGlvbiANCg0Kc2hlbndlaUA1ODEwOn4k
+IGlwZXJmIC1jIDEwLjgxLjE2LjI0NSAtdyAybSAtaSAxDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCkNsaWVudCBjb25uZWN0aW5n
+IHRvIDEwLjgxLjE2LjI0NSwgVENQIHBvcnQgNTAwMQ0KVENQIHdpbmRvdyBzaXplOiAgNDE2IEtC
+eXRlIChXQVJOSU5HOiByZXF1ZXN0ZWQgMS45MSBNQnl0ZSkNCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KWyAgMV0gbG9jYWwgMTAu
+ODEuMTcuMjAgcG9ydCA0OTE1NCBjb25uZWN0ZWQgd2l0aCAxMC44MS4xNi4yNDUgcG9ydCA1MDAx
+DQpbIElEXSBJbnRlcnZhbCAgICAgICBUcmFuc2ZlciAgICAgQmFuZHdpZHRoDQpbICAxXSAwLjAw
+MDAtMS4wMDAwIHNlYyAgIDEwNCBNQnl0ZXMgICA4NjggTWJpdHMvc2VjDQpbICAxXSAxLjAwMDAt
+Mi4wMDAwIHNlYyAgIDEwNSBNQnl0ZXMgICA4NzggTWJpdHMvc2VjDQpbICAxXSAyLjAwMDAtMy4w
+MDAwIHNlYyAgIDEwNSBNQnl0ZXMgICA4ODEgTWJpdHMvc2VjDQpbICAxXSAzLjAwMDAtNC4wMDAw
+IHNlYyAgIDEwNSBNQnl0ZXMgICA4NzkgTWJpdHMvc2VjDQpbICAxXSA0LjAwMDAtNS4wMDAwIHNl
+YyAgIDEwNSBNQnl0ZXMgICA4NzggTWJpdHMvc2VjDQpbICAxXSA1LjAwMDAtNi4wMDAwIHNlYyAg
+IDEwNSBNQnl0ZXMgICA4NzggTWJpdHMvc2VjDQpbICAxXSA2LjAwMDAtNy4wMDAwIHNlYyAgIDEw
+NCBNQnl0ZXMgICA4NzUgTWJpdHMvc2VjDQpbICAxXSA3LjAwMDAtOC4wMDAwIHNlYyAgIDEwNCBN
+Qnl0ZXMgICA4NzUgTWJpdHMvc2VjDQpbICAxXSA4LjAwMDAtOS4wMDAwIHNlYyAgIDEwNCBNQnl0
+ZXMgICA4NzMgTWJpdHMvc2VjDQpbICAxXSA5LjAwMDAtMTAuMDAwMCBzZWMgICAxMDQgTUJ5dGVz
+ICAgODc1IE1iaXRzL3NlYw0KWyAgMV0gMC4wMDAwLTEwLjAwNzMgc2VjICAxLjAyIEdCeXRlcyAg
+IDg3NSBNYml0cy9zZWMNCg0KMi4gUGFnZSBwb29sIHdpdGggcGFnZV9wb29sX3JlbGVhc2VfcGFn
+ZQ0KDQpzaGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEuMTYuMjQ1IC13IDJtIC1pIDENCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQ0KQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEuMTYuMjQ1LCBUQ1AgcG9ydCA1MDAxDQpUQ1Ag
+d2luZG93IHNpemU6ICA0MTYgS0J5dGUgKFdBUk5JTkc6IHJlcXVlc3RlZCAxLjkxIE1CeXRlKQ0K
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tDQpbICAxXSBsb2NhbCAxMC44MS4xNy4yMCBwb3J0IDM1OTI0IGNvbm5lY3RlZCB3aXRoIDEw
+LjgxLjE2LjI0NSBwb3J0IDUwMDENClsgSURdIEludGVydmFsICAgICAgIFRyYW5zZmVyICAgICBC
+YW5kd2lkdGgNClsgIDFdIDAuMDAwMC0xLjAwMDAgc2VjICAgMTAxIE1CeXRlcyAgIDg0OSBNYml0
+cy9zZWMNClsgIDFdIDEuMDAwMC0yLjAwMDAgc2VjICAgMTAyIE1CeXRlcyAgIDg2MCBNYml0cy9z
+ZWMNClsgIDFdIDIuMDAwMC0zLjAwMDAgc2VjICAgMTAyIE1CeXRlcyAgIDg2MCBNYml0cy9zZWMN
+ClsgIDFdIDMuMDAwMC00LjAwMDAgc2VjICAgMTAyIE1CeXRlcyAgIDg1OSBNYml0cy9zZWMNClsg
+IDFdIDQuMDAwMC01LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2MyBNYml0cy9zZWMNClsgIDFd
+IDUuMDAwMC02LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2NCBNYml0cy9zZWMNClsgIDFdIDYu
+MDAwMC03LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2MyBNYml0cy9zZWMNClsgIDFdIDcuMDAw
+MC04LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2NSBNYml0cy9zZWMNClsgIDFdIDguMDAwMC05
+LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2MiBNYml0cy9zZWMNClsgIDFdIDkuMDAwMC0xMC4w
+MDAwIHNlYyAgIDEwMiBNQnl0ZXMgICA4NTYgTWJpdHMvc2VjDQpbICAxXSAwLjAwMDAtMTAuMDI0
+NiBzZWMgIDEuMDAgR0J5dGVzICAgODU4IE1iaXRzL3NlYw0KDQoNCjMuIHBhZ2UgcG9vbCB3aXRo
+IHNrYl9tYXJrX2Zvcl9yZWN5Y2xlDQoNCnNoZW53ZWlANTgxMDp+JCBpcGVyZiAtYyAxMC44MS4x
+Ni4yNDUgLXcgMm0gLWkgMQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpDbGllbnQgY29ubmVjdGluZyB0byAxMC44MS4xNi4yNDUs
+IFRDUCBwb3J0IDUwMDENClRDUCB3aW5kb3cgc2l6ZTogIDQxNiBLQnl0ZSAoV0FSTklORzogcmVx
+dWVzdGVkIDEuOTEgTUJ5dGUpDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NClsgIDFdIGxvY2FsIDEwLjgxLjE3LjIwIHBvcnQgNDI3
+MjQgY29ubmVjdGVkIHdpdGggMTAuODEuMTYuMjQ1IHBvcnQgNTAwMQ0KWyBJRF0gSW50ZXJ2YWwg
+ICAgICAgVHJhbnNmZXIgICAgIEJhbmR3aWR0aA0KWyAgMV0gMC4wMDAwLTEuMDAwMCBzZWMgICAx
+MTEgTUJ5dGVzICAgOTMxIE1iaXRzL3NlYw0KWyAgMV0gMS4wMDAwLTIuMDAwMCBzZWMgICAxMTIg
+TUJ5dGVzICAgOTM1IE1iaXRzL3NlYw0KWyAgMV0gMi4wMDAwLTMuMDAwMCBzZWMgICAxMTEgTUJ5
+dGVzICAgOTM0IE1iaXRzL3NlYw0KWyAgMV0gMy4wMDAwLTQuMDAwMCBzZWMgICAxMTEgTUJ5dGVz
+ICAgOTM0IE1iaXRzL3NlYw0KWyAgMV0gNC4wMDAwLTUuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAg
+OTM0IE1iaXRzL3NlYw0KWyAgMV0gNS4wMDAwLTYuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAgOTM1
+IE1iaXRzL3NlYw0KWyAgMV0gNi4wMDAwLTcuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTM0IE1i
+aXRzL3NlYw0KWyAgMV0gNy4wMDAwLTguMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTMzIE1iaXRz
+L3NlYw0KWyAgMV0gOC4wMDAwLTkuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAgOTM1IE1iaXRzL3Nl
+Yw0KWyAgMV0gOS4wMDAwLTEwLjAwMDAgc2VjICAgMTExIE1CeXRlcyAgIDkzMyBNYml0cy9zZWMN
+ClsgIDFdIDAuMDAwMC0xMC4wMDY5IHNlYyAgMS4wOSBHQnl0ZXMgICA5MzQgTWJpdHMvc2VjDQoN
+CkZvciBzbWFsbCBwYWNrZXQgc2l6ZSAoNjQgYnl0ZXMpLCBhbGwgdGhyZWUgY2FzZXMgaGF2ZSBh
+bG1vc3QgdGhlIHNhbWUgcmVzdWx0Og0KDQpzaGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEu
+MTYuMjQ1IC13IDJtIC1pIDEgLWwgNjQNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEu
+MTYuMjQ1LCBUQ1AgcG9ydCA1MDAxDQpUQ1Agd2luZG93IHNpemU6ICA0MTYgS0J5dGUgKFdBUk5J
+Tkc6IHJlcXVlc3RlZCAxLjkxIE1CeXRlKQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpbICAxXSBsb2NhbCAxMC44MS4xNy4yMCBw
+b3J0IDU4MjA0IGNvbm5lY3RlZCB3aXRoIDEwLjgxLjE2LjI0NSBwb3J0IDUwMDENClsgSURdIElu
+dGVydmFsICAgICAgIFRyYW5zZmVyICAgICBCYW5kd2lkdGgNClsgIDFdIDAuMDAwMC0xLjAwMDAg
+c2VjICAzNi45IE1CeXRlcyAgIDMwOSBNYml0cy9zZWMNClsgIDFdIDEuMDAwMC0yLjAwMDAgc2Vj
+ICAzNi42IE1CeXRlcyAgIDMwNyBNYml0cy9zZWMNClsgIDFdIDIuMDAwMC0zLjAwMDAgc2VjICAz
+Ni42IE1CeXRlcyAgIDMwNyBNYml0cy9zZWMNClsgIDFdIDMuMDAwMC00LjAwMDAgc2VjICAzNi41
+IE1CeXRlcyAgIDMwNyBNYml0cy9zZWMNClsgIDFdIDQuMDAwMC01LjAwMDAgc2VjICAzNy4xIE1C
+eXRlcyAgIDMxMSBNYml0cy9zZWMNClsgIDFdIDUuMDAwMC02LjAwMDAgc2VjICAzNy4yIE1CeXRl
+cyAgIDMxMiBNYml0cy9zZWMNClsgIDFdIDYuMDAwMC03LjAwMDAgc2VjICAzNy4xIE1CeXRlcyAg
+IDMxMSBNYml0cy9zZWMNClsgIDFdIDcuMDAwMC04LjAwMDAgc2VjICAzNy4xIE1CeXRlcyAgIDMx
+MSBNYml0cy9zZWMNClsgIDFdIDguMDAwMC05LjAwMDAgc2VjICAzNy4xIE1CeXRlcyAgIDMxMiBN
+Yml0cy9zZWMNClsgIDFdIDkuMDAwMC0xMC4wMDAwIHNlYyAgMzcuMiBNQnl0ZXMgICAzMTIgTWJp
+dHMvc2VjDQpbICAxXSAwLjAwMDAtMTAuMDA5NyBzZWMgICAzNjkgTUJ5dGVzICAgMzEwIE1iaXRz
+L3NlYw0KDQpSZWdhcmRzLA0KU2hlbndlaQ0KDQoNCj4gPj4gQnkgc21hbGwgcGFja2V0cywgZG8g
+eW91IG1lYW4gdGhvc2UgdW5kZXIgdGhlIGNvcHlicmVhayBsaW1pdD8NCj4gPj4NCj4gPj4gUGxl
+YXNlIHByb3ZpZGUgc29tZSBiZW5jaG1hcmsgbnVtYmVycyB3aXRoIHlvdXIgbmV4dCBwYXRjaHNl
+dC4NCj4gPg0KPiA+IFllcywgdGhlIHBhY2tldCBzaXplIGlzIDY0IGJ5dGVzIGFuZCBpdCBpcyB1
+bmRlciB0aGUgY29weWJyZWFrIGxpbWl0Lg0KPiA+IEFzIHRoZSBpbXBhY3QgaXMgbm90IHNpZ25p
+ZmljYW50LCBJIHdvdWxkIHByZWZlciB0byByZW1vdmUgdGhlDQo+ID4gY29weWJyZWFrICBsb2dp
+Yy4NCj4gDQo+ICsxIHRvIHJlbW92aW5nIHRoaXMgbG9naWMgaWYgcG9zc2libGUsIGR1ZSB0byBt
+YWludGVuYW5jZSBjb3N0Lg0KPiANCj4gLS1KZXNwZXINCg0K
