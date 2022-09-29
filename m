@@ -1,247 +1,245 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70070.outbound.protection.outlook.com [40.107.7.70])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D225395
-	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 15:52:54 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FEce3bJM3BtU7Z3jfTB5makkvEZ7QzfTh/f97Su8dJsWQqvofzxZWJGpQN0Ag8qUYpCvRMsSM6pEb5laO4j/t8QLCYHibk9uCZFMNXqgoeQQLuPfhhwNkd6xXVfB7cejSQp8VInUmpnpVNbgtMCK8aVLtodfL8iMJubhksbNXjCQvZ1ODuB5FczjTc3EaBVpf79U/ooiBVB6QYmgYiAWodKVdAWep1Ey8k4cdhWqT2+7uTMKhXsLknXap+MLJG8EEVKe4l3BN5zHGKAykuPRU4sbvligRZ4w5pX3HKsFN8WHbzleB5Rk1p5o/HdUVIj+LQOmlyVJAOpTmdo+Q1/m2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0cLQfSI3dln5I3J4kS0RyqYBLN1w9O8xi4BOgNZoPqg=;
- b=oG/5KL57wwXKlJia43L8b33qSipnA3OoUsP2ikyXBwIPbPi4l8NzZ9vKxzG8zhCNE2ksVU7wnI8u/x/ankjeRSJnxvqDd79zZ6W8tcF3+g+vsdjNnZKFG3W8LQAal4FvP+6kcI+3DN5iT5irtS0gKZBP2w2eDM0Kn3C9d1/SkTf1f5fBRnGwgm7vLoXAH6RO4bs569POmxB7rAj/Hk80CAtUa+0PBbPvIlmeEUpmjmFE8d7+epBszH1CBtVWYe9vFyEhsbyQR+ujwj3syShi9Ss8wUrbhRY9zfEjC7qJQAUtL0icmffNARAj8WhGnuXI2oTdpRpBurFNzcF/8GpglA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0cLQfSI3dln5I3J4kS0RyqYBLN1w9O8xi4BOgNZoPqg=;
- b=c72z45lz+r5Ho/bibhIJObu/ZRawy0TvQoIv5k8ng7PfjI8EHlAkgJ6EhY7BQuVZUtCMWyNX03V7a/Ciy+K6OWikPVKb6Evuee+ZfhSRoVq4AnOHk0H8PLkCl8mPa95D5Zuah4LMCqt3KS16nPOHZWGzL9/SIQkyUE/Q6xwZE3I=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PA4PR04MB9415.eurprd04.prod.outlook.com (2603:10a6:102:2aa::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.26; Thu, 29 Sep
- 2022 15:52:51 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::a543:fc4e:f6c5:b11f]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::a543:fc4e:f6c5:b11f%9]) with mapi id 15.20.5676.020; Thu, 29 Sep 2022
- 15:52:51 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Jesper Dangaard Brouer <jbrouer@redhat.com>, Andrew Lunn <andrew@lunn.ch>
-CC: "brouer@redhat.com" <brouer@redhat.com>, Joakim Zhang
-	<qiangqing.zhang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
-Thread-Topic: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
-Thread-Index:
- AQHY006sqGpD/PA5gEmZiYlRlE0jhK31oHQAgAC4dcCAAA2WgIAAADZwgAAi/oCAAARmwA==
-Date: Thu, 29 Sep 2022 15:52:51 +0000
-Message-ID:
- <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20220928152509.141490-1-shenwei.wang@nxp.com>
- <YzT2An2J5afN1w3L@lunn.ch>
- <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <YzWcI+U1WYJuZIdk@lunn.ch>
- <PAXPR04MB918545B92E493CB57CDE612B89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com>
-In-Reply-To: <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA4PR04MB9415:EE_
-x-ms-office365-filtering-correlation-id: 58a58b3a-c66f-4395-9f42-08daa232aa1c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- VVMi7z2nF2l+1x9c2aLYSqsADhFdnleQlPPEZivhAxNINwgy/04Pn5xpak4q23ynNJ5NiiSPbm1nvCfHCbn//9lVth+n93hwDP5grrOPNhYLJLdS0SkFG/jpdiKY/q3nt5EgfVWK7D4rq/ADmZDlRhMoTZh+fHf7at3SDNQqPpdEKL4847TPXPG4/jsg9lUufO3U8FZtME3SNNGojfRYYR0zXJpgL4ty0k33nDrNaxotU5iqnvbmTJSeDtaixid1+oO6EBz3gCN5SDnLp7DxJHnkd7ZJopfTvduVtAOWTOw+5/JdDNrmX1ibnUW1WbxywJU8d12wTfpeNxGabXqAeDOHRsA1Z6l/RkNi6BhWcfvczNlf/AQ43Y0C1QKNIgMskeWz6EKlkgFhPJKR2/TzHJIv0hqE0/3mW74Yg2gpFgY19+gcVzwPNZfdWAgNBzUbjDSHrNRYESp5QEdZPmtL5DrAhhZMx/y0I5Ks/uqnFaxSD7OpjZK1P4DR0SdSPgjfnk2vFajM7RacMlLP4H9uhnyjyd0NmBocg/rkh6IRyu/zNfwbQWSCUO8CvSWtPso+4a57LXnKPlNmHccG44xrKdtiYWNgR01ChZiFlACNOW7PFSAn8dG4/z0sxrmyXoh957Gbc6eO+LScxRTa8zPTTG5QziMWKFnASXY6ZnueSSSWedTJpraqeQZVn2uKDzxot+B8Fh2hIxmgdEzMHwY6VbYNftpKi5k9lb2GEthWsKelifbr/x/Vpw8I97XZij0HIzxpTRR5J3FQjIvfUtD/KQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(346002)(366004)(136003)(376002)(396003)(451199015)(38070700005)(83380400001)(38100700002)(66446008)(66556008)(122000001)(186003)(478600001)(9686003)(55236004)(6506007)(26005)(7696005)(71200400001)(53546011)(66476007)(86362001)(316002)(110136005)(2906002)(64756008)(4326008)(44832011)(66946007)(8676002)(7416002)(52536014)(8936002)(5660300002)(54906003)(33656002)(41300700001)(55016003)(76116006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?QVNBYndpQnhwK296dU9jQ0FyL1ZBM1N0RGhkTXJYZ2RLek1tYmtSZUFWMnIz?=
- =?utf-8?B?WnZVWXhaYUkrZDJ1RFQ1RU85dTFwaFJLUVhMU2xCNk5UdnpXdFVGOVBqZEhh?=
- =?utf-8?B?am9kNkxoSDBMa1dNY1JtcFhUNS9xUUMxL3h0ekEyZ3ArQkhKMVdLTGIrcXpP?=
- =?utf-8?B?ZUZkbkVONEJ3cCt4RC9sQ2RkNldTb000d1pLMy9HOC9yYjAvc2RGbEtKYk56?=
- =?utf-8?B?Q0UzR2grbU05MDZncXNiOFBiM282OWFQc0tnbFZjS3psTndxZjBHVG1GdnZT?=
- =?utf-8?B?Y2lzd2djM0RpZXhLV0VZV3FOYjAwdTVNNllPZk9ieUNjZHlweFlaL2pRdUZt?=
- =?utf-8?B?TE9kOVdyVlRSMjNPdVltNDB5UDJ4ZFlnRnZwdzFuem1kOVVmdHVsSmJsd3BP?=
- =?utf-8?B?UFRvY0VEWUFLZ1hBcVp1bHRtbTV4NmdWQU1kVjcrRWE2Vit2enBJT3hGdFJ5?=
- =?utf-8?B?RW80YXN5dzZCZFpsZEt2aGhKcCs5bDBvalZUbFZyUHd1VGNsQnVEUnBlNHg5?=
- =?utf-8?B?QmR6bzNhcit3WFVneFJZbGFUaGdJTXlSMFRaYXdZQ1Ura0tEYjJLMmJhNlNj?=
- =?utf-8?B?RHptUEpHZElDVnZPYmljMTlpYWJ1M1VNQVRyWDJqYVBTeEFjMTZhdk5WMmpJ?=
- =?utf-8?B?UTFZQUJlYzdJaEdMbmhlZG5qbGhHaFJaWWxzSW5wMnpXMXZPbWFIaGl1dzQw?=
- =?utf-8?B?cHFTSVpVM2VvMlpmK2pLeFgyLzMzaWhpeTQ2cG5YZG81czdlRUhEV2hKOVgz?=
- =?utf-8?B?YVlITFNiOHQ4OEFHa0RFK0xUQVZISWJZVEdVdlhJSmJQVkdnd2ZwbjlUMm81?=
- =?utf-8?B?TnBPcHZZcTluK05aUkZmdk8rTEpxWHJGaEZ4ekZwSWp4N2JwTWZKby9lYysv?=
- =?utf-8?B?Mnc0YUdjYlZTVGFtYVNmU2g1cWYzbldFakZXK0Q4WC91V0pCYjNtMmJzR1BM?=
- =?utf-8?B?WitaYkg0SDB0eFhoRkN3elRXMExBNmpiM0ZBNmVWVlNhYTR3a0RiL2hCbWlK?=
- =?utf-8?B?UnlPUWE0QkpiU1dpb1hEbyttblNHK0NLRzFlZ094UjJYNzVMaUJFZDZaOVVu?=
- =?utf-8?B?YXpKa3g4QjhmS3ZDMGhhdk1SQUtXblo5N3laYUNwWWxkck1xNC9qQjgrNXl2?=
- =?utf-8?B?NUhhSmZlaXo4Yy9nbTlJdXBrS25RaXBvRnUzMHg1UWhQaVl0MjAwb2ZWWlpE?=
- =?utf-8?B?VXphVHY2bnNMZzJKNVZMSzdZM0xEZXpxd1VPQ3Yya2NnS3hSZURHUzhIUmsv?=
- =?utf-8?B?bW5aQXlQSUh3THlKZWZRYzdoT1YyZFZZUGxqS1lHSnc1eDRUalh4czI5ZWh6?=
- =?utf-8?B?eWRBOFFwU2tPYnYraG5MUit2SENtN2VRNVRiSHZBMUVZWkdjR1d5MnZWR1Br?=
- =?utf-8?B?eERuYzZEWTZrbjZWS0VpMklFWU9uVW44Sk5lTGpQV2hIN2dlRk84RTg2d3JS?=
- =?utf-8?B?RytxemtoVzlTT0IvOGpNR2hVbWRySGN6TktDT2NicXg5QmZ0R3ZuSlp3eEE3?=
- =?utf-8?B?NXJXV25RclQ2bE5IVUtCWGJRZHBlL2VOR05BTVpWdHpyUWd4YjcyMzRJZ0JW?=
- =?utf-8?B?STdxRFZWWDFzV2tEZmdwVVRYWXZtYWRxTCtYZmUwNUFSd3gvY055Q2dlZjdp?=
- =?utf-8?B?elN3cEVxdDJid3UvV0sybnFLQWtGaUxNNWVQMUxnSjFuM2RIS3R3enh1S1Jh?=
- =?utf-8?B?cjhPVWZmWmVzbmJmSmtxU1FmTnRYSFZ6QjFtYWxKN1RXTWpjZCs1aDZOejN4?=
- =?utf-8?B?NXFKTktZYi95L3FGQ3JsbERJNk8rbGxPQ3ZZcDJSaUNrL3JyeXlDWXd4UkdK?=
- =?utf-8?B?cnJZdDhkYzl3ZXg0anoxTWtRblU3d05yRUFDMkpCQ2lneXF4VUZGVzEyZ0g0?=
- =?utf-8?B?VEdPREZVcnROSkt4Qzg5Y0MyUHpRc2d2SkgrRnE2LzgxcVdGak5kWnU2UDNx?=
- =?utf-8?B?bmNWanEya0pYcFhXdUZuS1lDYUNMOGRUSDNUWm1yOHVyZVNkWkR5ZWVxcFpu?=
- =?utf-8?B?eUg1ZlhuRGNQSG5sTGo2Zlc0YnlQRVg0L2lhK1MrY3kvTWJ0TVR6VWdZRzd6?=
- =?utf-8?B?V0JhWThneXM2RitKalF0OG9DMUVzWFRWZzAxc1pKMDBMMWlKZ0RiYnBnYmZr?=
- =?utf-8?Q?mREwePMpgQkDOQBErpS3lIzDj?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FADB53B5
+	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 18:55:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1664477725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ii/zdDDzioDeAg4ijCoWLsXuT0PoJynFMmsjY+6iNyY=;
+	b=YrAJnxB3jIix8CqDFR8c+GvbdMQV+CnFE9aQ+lCU5Cs0hMFRONoZOfUD1/Drow7bDaS61W
+	qgAjYD5zwVhDHWRFJ7q2JH01aou+a3i3Elp5PV8iRPxtS+g8a6AwMbXA3UshTNtbeMS99T
+	h8RvX2WserxwBf2qKkiZRK5y0J8iy0w=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-470-VB9mSPmZP7eR5-DDbDXApA-1; Thu, 29 Sep 2022 14:55:24 -0400
+X-MC-Unique: VB9mSPmZP7eR5-DDbDXApA-1
+Received: by mail-ed1-f70.google.com with SMTP id x5-20020a05640226c500b00451ec193793so1891623edd.16
+        for <imx@lists.linux.dev>; Thu, 29 Sep 2022 11:55:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:references:to
+         :content-language:subject:cc:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date;
+        bh=Ii/zdDDzioDeAg4ijCoWLsXuT0PoJynFMmsjY+6iNyY=;
+        b=RtMSYc+EFdjqWfy61dOCijeCYnTiGclZ2l0fCdThdOxNfGv4uS7gFn8t25GpFoq/+M
+         KStWWdRFYNCgNPqxmt99McrHXLyO2UlU/p97jNT1c6R9RJXsBnlScwA31FDOJQ4iIvM+
+         FvKbv7N0lRmPCsHE9CJwl9oMp9W3HuNv/7jG6528BpNd/XDsacMrmYhzhSmY/oEVknt4
+         gCuvV+Knb7zj/RIKiKT+Moe/T7LRVMwOkLXZ6MwF1wBCcydYJbcBYp4ZS7yjeBvmhvwq
+         l8yAg4LObueAmQc21rSiOll9Ks0f2GG0s+kZQ2HleBEdr+pb3gLjxgUXzbAuD8UZZHOt
+         t/cA==
+X-Gm-Message-State: ACrzQf3ZxVjL84Bv17x1u1WKnuWAGlRvp3VK3XOUnPNkvwd5QRLX+tof
+	CE61rv8tAR30QkSmmkEOqF3ktM5PJkSoN9i1jiU34nrMfVrqIkl8rXUOC1hrkBzMxEDNx0TeAPF
+	VRs4ICwLz32Xm
+X-Received: by 2002:a17:906:eec1:b0:782:6384:76be with SMTP id wu1-20020a170906eec100b00782638476bemr3829806ejb.756.1664477722951;
+        Thu, 29 Sep 2022 11:55:22 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM42IrmOoNBkxw7IFK/Fcf3fs7srHeyKhwzHkAPoxCYkxOO/VTiZbG6+F2H6PCnMvcmycfKlHA==
+X-Received: by 2002:a17:906:eec1:b0:782:6384:76be with SMTP id wu1-20020a170906eec100b00782638476bemr3829779ejb.756.1664477722669;
+        Thu, 29 Sep 2022 11:55:22 -0700 (PDT)
+Received: from [192.168.41.81] (83-90-141-187-cable.dk.customer.tdc.net. [83.90.141.187])
+        by smtp.gmail.com with ESMTPSA id m17-20020a170906581100b0073a644ef803sm4383184ejq.101.2022.09.29.11.55.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Sep 2022 11:55:22 -0700 (PDT)
+From: Jesper Dangaard Brouer <jbrouer@redhat.com>
+X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
+Message-ID: <afb652db-05fc-d3d6-6774-bfd9830414d9@redhat.com>
+Date: Thu, 29 Sep 2022 20:55:20 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58a58b3a-c66f-4395-9f42-08daa232aa1c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2022 15:52:51.2101
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: b60yMiDxRC97bFBxvuX6VcIDaThA0VV1zioqzb26/Qfyj9IEbZoQCEZOcy30cgiO0pefzlPFI8XaELc0OoHPUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9415
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Cc: brouer@redhat.com, Joakim Zhang <qiangqing.zhang@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+To: Shenwei Wang <shenwei.wang@nxp.com>,
+ Jesper Dangaard Brouer <jbrouer@redhat.com>, Andrew Lunn <andrew@lunn.ch>
+References: <20220928152509.141490-1-shenwei.wang@nxp.com>
+ <YzT2An2J5afN1w3L@lunn.ch>
+ <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <YzWcI+U1WYJuZIdk@lunn.ch>
+ <PAXPR04MB918545B92E493CB57CDE612B89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com>
+ <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmVzcGVyIERhbmdhYXJk
-IEJyb3VlciA8amJyb3VlckByZWRoYXQuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgU2VwdGVtYmVy
-IDI5LCAyMDIyIDEwOjI5IEFNDQo+IFRvOiBTaGVud2VpIFdhbmcgPHNoZW53ZWkud2FuZ0BueHAu
-Y29tPjsgQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPg0KPiBDYzogYnJvdWVyQHJlZGhhdC5j
-b207IEpvYWtpbSBaaGFuZyA8cWlhbmdxaW5nLnpoYW5nQG54cC5jb20+OyBEYXZpZCBTLg0KPiBN
-aWxsZXIgPGRhdmVtQGRhdmVtbG9mdC5uZXQ+OyBFcmljIER1bWF6ZXQgPGVkdW1hemV0QGdvb2ds
-ZS5jb20+OyBKYWt1Yg0KPiBLaWNpbnNraSA8a3ViYUBrZXJuZWwub3JnPjsgUGFvbG8gQWJlbmkg
-PHBhYmVuaUByZWRoYXQuY29tPjsgQWxleGVpDQo+IFN0YXJvdm9pdG92IDxhc3RAa2VybmVsLm9y
-Zz47IERhbmllbCBCb3JrbWFubiA8ZGFuaWVsQGlvZ2VhcmJveC5uZXQ+Ow0KPiBKZXNwZXIgRGFu
-Z2FhcmQgQnJvdWVyIDxoYXdrQGtlcm5lbC5vcmc+OyBKb2huIEZhc3RhYmVuZA0KPiA8am9obi5m
-YXN0YWJlbmRAZ21haWwuY29tPjsgbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+IGtl
-cm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGlteEBsaXN0cy5saW51eC5kZXYNCj4gU3ViamVjdDogUmU6
-IFtFWFRdIFJlOiBbUEFUQ0ggMS8xXSBuZXQ6IGZlYzogYWRkIGluaXRpYWwgWERQIHN1cHBvcnQN
-Cj4gDQo+IENhdXRpb246IEVYVCBFbWFpbA0KPiANCj4gT24gMjkvMDkvMjAyMiAxNS4yNiwgU2hl
-bndlaSBXYW5nIHdyb3RlOg0KPiA+DQo+ID4+IEZyb206IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVu
-bi5jaD4NCj4gPj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJlciAyOSwgMjAyMiA4OjIzIEFNDQo+
-IFsuLi5dDQo+ID4+DQo+ID4+PiBJIGFjdHVhbGx5IGRpZCBzb21lIGNvbXBhcmUgdGVzdGluZyBy
-ZWdhcmRpbmcgdGhlIHBhZ2UgcG9vbCBmb3INCj4gPj4+IG5vcm1hbCB0cmFmZmljLiAgU28gZmFy
-IEkgZG9uJ3Qgc2VlIHNpZ25pZmljYW50IGltcHJvdmVtZW50IGluIHRoZQ0KPiA+Pj4gY3VycmVu
-dCBpbXBsZW1lbnRhdGlvbi4gVGhlIHBlcmZvcm1hbmNlIGZvciBsYXJnZSBwYWNrZXRzIGltcHJv
-dmVzIGENCj4gPj4+IGxpdHRsZSwgYW5kIHRoZSBwZXJmb3JtYW5jZSBmb3Igc21hbGwgcGFja2V0
-cyBnZXQgYSBsaXR0bGUgd29yc2UuDQo+ID4+DQo+ID4+IFdoYXQgaGFyZHdhcmUgd2FzIHRoaXMg
-Zm9yPyBpbXg1MT8gaW14Nj8gaW14NyBWeWJyaWQ/IFRoZXNlIGFsbCB1c2UgdGhlDQo+IEZFQy4N
-Cj4gPg0KPiA+IEkgdGVzdGVkIG9uIGlteDhxeHAgcGxhdGZvcm0uIEl0IGlzIEFSTTY0Lg0KPiAN
-Cj4gT24gbXZuZXRhIGRyaXZlci9wbGF0Zm9ybSB3ZSBzYXcgaHVnZSBzcGVlZHVwIHJlcGxhY2lu
-ZzoNCj4gDQo+ICAgIHBhZ2VfcG9vbF9yZWxlYXNlX3BhZ2UocnhxLT5wYWdlX3Bvb2wsIHBhZ2Up
-OyB3aXRoDQo+ICAgIHNrYl9tYXJrX2Zvcl9yZWN5Y2xlKHNrYik7DQo+IA0KPiBBcyBJIG1lbnRp
-b25lZDogVG9kYXkgcGFnZV9wb29sIGhhdmUgU0tCIHJlY3ljbGUgc3VwcG9ydCAoeW91IG1pZ2h0
-IGhhdmUNCj4gbG9va2VkIGF0IGRyaXZlcnMgdGhhdCBkaWRuJ3QgdXRpbGl6ZSB0aGlzIHlldCks
-IHRodXMgeW91IGRvbid0IG5lZWQgdG8gcmVsZWFzZSB0aGUNCj4gcGFnZSAocGFnZV9wb29sX3Jl
-bGVhc2VfcGFnZSkgaGVyZS4gIEluc3RlYWQgeW91IGNvdWxkIHNpbXBseSBtYXJrIHRoZSBTS0IN
-Cj4gZm9yIHJlY3ljbGluZywgdW5sZXNzIGRyaXZlciBkb2VzIHNvbWUgcGFnZSByZWZjbnQgdHJp
-Y2tzIEkgZGlkbid0IG5vdGljZS4NCj4gDQo+IE9uIHRoZSBtdm5ldGEgZHJpdmVyL3BsYXRmb3Jt
-IHRoZSBETUEgdW5tYXAgKGluIHBhZ2VfcG9vbF9yZWxlYXNlX3BhZ2UpDQo+IHdhcyB2ZXJ5IGV4
-cGVuc2l2ZS4gVGhpcyBpbXg4cXhwIHBsYXRmb3JtIG1pZ2h0IGhhdmUgZmFzdGVyIERNQSB1bm1h
-cCBpbg0KPiBjYXNlIGlzIGl0IGNhY2hlLWNvaGVyZW50Lg0KPiANCj4gSSB3b3VsZCBiZSB2ZXJ5
-IGludGVyZXN0ZWQgaW4ga25vd2luZyBpZiBza2JfbWFya19mb3JfcmVjeWNsZSgpIGhlbHBzIG9u
-IHRoaXMNCj4gcGxhdGZvcm0sIGZvciBub3JtYWwgbmV0d29yayBzdGFjayBwZXJmb3JtYW5jZS4N
-Cj4gDQoNCkRpZCBhIHF1aWNrIGNvbXBhcmUgdGVzdGluZyBmb3IgdGhlIGZvbGxvd2luZyAzIHNj
-ZW5hcmlvczogDQoxLiBvcmlnaW5hbCBpbXBsZW1lbnRhdGlvbiANCg0Kc2hlbndlaUA1ODEwOn4k
-IGlwZXJmIC1jIDEwLjgxLjE2LjI0NSAtdyAybSAtaSAxDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCkNsaWVudCBjb25uZWN0aW5n
-IHRvIDEwLjgxLjE2LjI0NSwgVENQIHBvcnQgNTAwMQ0KVENQIHdpbmRvdyBzaXplOiAgNDE2IEtC
-eXRlIChXQVJOSU5HOiByZXF1ZXN0ZWQgMS45MSBNQnl0ZSkNCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KWyAgMV0gbG9jYWwgMTAu
-ODEuMTcuMjAgcG9ydCA0OTE1NCBjb25uZWN0ZWQgd2l0aCAxMC44MS4xNi4yNDUgcG9ydCA1MDAx
-DQpbIElEXSBJbnRlcnZhbCAgICAgICBUcmFuc2ZlciAgICAgQmFuZHdpZHRoDQpbICAxXSAwLjAw
-MDAtMS4wMDAwIHNlYyAgIDEwNCBNQnl0ZXMgICA4NjggTWJpdHMvc2VjDQpbICAxXSAxLjAwMDAt
-Mi4wMDAwIHNlYyAgIDEwNSBNQnl0ZXMgICA4NzggTWJpdHMvc2VjDQpbICAxXSAyLjAwMDAtMy4w
-MDAwIHNlYyAgIDEwNSBNQnl0ZXMgICA4ODEgTWJpdHMvc2VjDQpbICAxXSAzLjAwMDAtNC4wMDAw
-IHNlYyAgIDEwNSBNQnl0ZXMgICA4NzkgTWJpdHMvc2VjDQpbICAxXSA0LjAwMDAtNS4wMDAwIHNl
-YyAgIDEwNSBNQnl0ZXMgICA4NzggTWJpdHMvc2VjDQpbICAxXSA1LjAwMDAtNi4wMDAwIHNlYyAg
-IDEwNSBNQnl0ZXMgICA4NzggTWJpdHMvc2VjDQpbICAxXSA2LjAwMDAtNy4wMDAwIHNlYyAgIDEw
-NCBNQnl0ZXMgICA4NzUgTWJpdHMvc2VjDQpbICAxXSA3LjAwMDAtOC4wMDAwIHNlYyAgIDEwNCBN
-Qnl0ZXMgICA4NzUgTWJpdHMvc2VjDQpbICAxXSA4LjAwMDAtOS4wMDAwIHNlYyAgIDEwNCBNQnl0
-ZXMgICA4NzMgTWJpdHMvc2VjDQpbICAxXSA5LjAwMDAtMTAuMDAwMCBzZWMgICAxMDQgTUJ5dGVz
-ICAgODc1IE1iaXRzL3NlYw0KWyAgMV0gMC4wMDAwLTEwLjAwNzMgc2VjICAxLjAyIEdCeXRlcyAg
-IDg3NSBNYml0cy9zZWMNCg0KMi4gUGFnZSBwb29sIHdpdGggcGFnZV9wb29sX3JlbGVhc2VfcGFn
-ZQ0KDQpzaGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEuMTYuMjQ1IC13IDJtIC1pIDENCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQ0KQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEuMTYuMjQ1LCBUQ1AgcG9ydCA1MDAxDQpUQ1Ag
-d2luZG93IHNpemU6ICA0MTYgS0J5dGUgKFdBUk5JTkc6IHJlcXVlc3RlZCAxLjkxIE1CeXRlKQ0K
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tDQpbICAxXSBsb2NhbCAxMC44MS4xNy4yMCBwb3J0IDM1OTI0IGNvbm5lY3RlZCB3aXRoIDEw
-LjgxLjE2LjI0NSBwb3J0IDUwMDENClsgSURdIEludGVydmFsICAgICAgIFRyYW5zZmVyICAgICBC
-YW5kd2lkdGgNClsgIDFdIDAuMDAwMC0xLjAwMDAgc2VjICAgMTAxIE1CeXRlcyAgIDg0OSBNYml0
-cy9zZWMNClsgIDFdIDEuMDAwMC0yLjAwMDAgc2VjICAgMTAyIE1CeXRlcyAgIDg2MCBNYml0cy9z
-ZWMNClsgIDFdIDIuMDAwMC0zLjAwMDAgc2VjICAgMTAyIE1CeXRlcyAgIDg2MCBNYml0cy9zZWMN
-ClsgIDFdIDMuMDAwMC00LjAwMDAgc2VjICAgMTAyIE1CeXRlcyAgIDg1OSBNYml0cy9zZWMNClsg
-IDFdIDQuMDAwMC01LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2MyBNYml0cy9zZWMNClsgIDFd
-IDUuMDAwMC02LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2NCBNYml0cy9zZWMNClsgIDFdIDYu
-MDAwMC03LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2MyBNYml0cy9zZWMNClsgIDFdIDcuMDAw
-MC04LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2NSBNYml0cy9zZWMNClsgIDFdIDguMDAwMC05
-LjAwMDAgc2VjICAgMTAzIE1CeXRlcyAgIDg2MiBNYml0cy9zZWMNClsgIDFdIDkuMDAwMC0xMC4w
-MDAwIHNlYyAgIDEwMiBNQnl0ZXMgICA4NTYgTWJpdHMvc2VjDQpbICAxXSAwLjAwMDAtMTAuMDI0
-NiBzZWMgIDEuMDAgR0J5dGVzICAgODU4IE1iaXRzL3NlYw0KDQoNCjMuIHBhZ2UgcG9vbCB3aXRo
-IHNrYl9tYXJrX2Zvcl9yZWN5Y2xlDQoNCnNoZW53ZWlANTgxMDp+JCBpcGVyZiAtYyAxMC44MS4x
-Ni4yNDUgLXcgMm0gLWkgMQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpDbGllbnQgY29ubmVjdGluZyB0byAxMC44MS4xNi4yNDUs
-IFRDUCBwb3J0IDUwMDENClRDUCB3aW5kb3cgc2l6ZTogIDQxNiBLQnl0ZSAoV0FSTklORzogcmVx
-dWVzdGVkIDEuOTEgTUJ5dGUpDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NClsgIDFdIGxvY2FsIDEwLjgxLjE3LjIwIHBvcnQgNDI3
-MjQgY29ubmVjdGVkIHdpdGggMTAuODEuMTYuMjQ1IHBvcnQgNTAwMQ0KWyBJRF0gSW50ZXJ2YWwg
-ICAgICAgVHJhbnNmZXIgICAgIEJhbmR3aWR0aA0KWyAgMV0gMC4wMDAwLTEuMDAwMCBzZWMgICAx
-MTEgTUJ5dGVzICAgOTMxIE1iaXRzL3NlYw0KWyAgMV0gMS4wMDAwLTIuMDAwMCBzZWMgICAxMTIg
-TUJ5dGVzICAgOTM1IE1iaXRzL3NlYw0KWyAgMV0gMi4wMDAwLTMuMDAwMCBzZWMgICAxMTEgTUJ5
-dGVzICAgOTM0IE1iaXRzL3NlYw0KWyAgMV0gMy4wMDAwLTQuMDAwMCBzZWMgICAxMTEgTUJ5dGVz
-ICAgOTM0IE1iaXRzL3NlYw0KWyAgMV0gNC4wMDAwLTUuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAg
-OTM0IE1iaXRzL3NlYw0KWyAgMV0gNS4wMDAwLTYuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAgOTM1
-IE1iaXRzL3NlYw0KWyAgMV0gNi4wMDAwLTcuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTM0IE1i
-aXRzL3NlYw0KWyAgMV0gNy4wMDAwLTguMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTMzIE1iaXRz
-L3NlYw0KWyAgMV0gOC4wMDAwLTkuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAgOTM1IE1iaXRzL3Nl
-Yw0KWyAgMV0gOS4wMDAwLTEwLjAwMDAgc2VjICAgMTExIE1CeXRlcyAgIDkzMyBNYml0cy9zZWMN
-ClsgIDFdIDAuMDAwMC0xMC4wMDY5IHNlYyAgMS4wOSBHQnl0ZXMgICA5MzQgTWJpdHMvc2VjDQoN
-CkZvciBzbWFsbCBwYWNrZXQgc2l6ZSAoNjQgYnl0ZXMpLCBhbGwgdGhyZWUgY2FzZXMgaGF2ZSBh
-bG1vc3QgdGhlIHNhbWUgcmVzdWx0Og0KDQpzaGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEu
-MTYuMjQ1IC13IDJtIC1pIDEgLWwgNjQNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEu
-MTYuMjQ1LCBUQ1AgcG9ydCA1MDAxDQpUQ1Agd2luZG93IHNpemU6ICA0MTYgS0J5dGUgKFdBUk5J
-Tkc6IHJlcXVlc3RlZCAxLjkxIE1CeXRlKQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpbICAxXSBsb2NhbCAxMC44MS4xNy4yMCBw
-b3J0IDU4MjA0IGNvbm5lY3RlZCB3aXRoIDEwLjgxLjE2LjI0NSBwb3J0IDUwMDENClsgSURdIElu
-dGVydmFsICAgICAgIFRyYW5zZmVyICAgICBCYW5kd2lkdGgNClsgIDFdIDAuMDAwMC0xLjAwMDAg
-c2VjICAzNi45IE1CeXRlcyAgIDMwOSBNYml0cy9zZWMNClsgIDFdIDEuMDAwMC0yLjAwMDAgc2Vj
-ICAzNi42IE1CeXRlcyAgIDMwNyBNYml0cy9zZWMNClsgIDFdIDIuMDAwMC0zLjAwMDAgc2VjICAz
-Ni42IE1CeXRlcyAgIDMwNyBNYml0cy9zZWMNClsgIDFdIDMuMDAwMC00LjAwMDAgc2VjICAzNi41
-IE1CeXRlcyAgIDMwNyBNYml0cy9zZWMNClsgIDFdIDQuMDAwMC01LjAwMDAgc2VjICAzNy4xIE1C
-eXRlcyAgIDMxMSBNYml0cy9zZWMNClsgIDFdIDUuMDAwMC02LjAwMDAgc2VjICAzNy4yIE1CeXRl
-cyAgIDMxMiBNYml0cy9zZWMNClsgIDFdIDYuMDAwMC03LjAwMDAgc2VjICAzNy4xIE1CeXRlcyAg
-IDMxMSBNYml0cy9zZWMNClsgIDFdIDcuMDAwMC04LjAwMDAgc2VjICAzNy4xIE1CeXRlcyAgIDMx
-MSBNYml0cy9zZWMNClsgIDFdIDguMDAwMC05LjAwMDAgc2VjICAzNy4xIE1CeXRlcyAgIDMxMiBN
-Yml0cy9zZWMNClsgIDFdIDkuMDAwMC0xMC4wMDAwIHNlYyAgMzcuMiBNQnl0ZXMgICAzMTIgTWJp
-dHMvc2VjDQpbICAxXSAwLjAwMDAtMTAuMDA5NyBzZWMgICAzNjkgTUJ5dGVzICAgMzEwIE1iaXRz
-L3NlYw0KDQpSZWdhcmRzLA0KU2hlbndlaQ0KDQoNCj4gPj4gQnkgc21hbGwgcGFja2V0cywgZG8g
-eW91IG1lYW4gdGhvc2UgdW5kZXIgdGhlIGNvcHlicmVhayBsaW1pdD8NCj4gPj4NCj4gPj4gUGxl
-YXNlIHByb3ZpZGUgc29tZSBiZW5jaG1hcmsgbnVtYmVycyB3aXRoIHlvdXIgbmV4dCBwYXRjaHNl
-dC4NCj4gPg0KPiA+IFllcywgdGhlIHBhY2tldCBzaXplIGlzIDY0IGJ5dGVzIGFuZCBpdCBpcyB1
-bmRlciB0aGUgY29weWJyZWFrIGxpbWl0Lg0KPiA+IEFzIHRoZSBpbXBhY3QgaXMgbm90IHNpZ25p
-ZmljYW50LCBJIHdvdWxkIHByZWZlciB0byByZW1vdmUgdGhlDQo+ID4gY29weWJyZWFrICBsb2dp
-Yy4NCj4gDQo+ICsxIHRvIHJlbW92aW5nIHRoaXMgbG9naWMgaWYgcG9zc2libGUsIGR1ZSB0byBt
-YWludGVuYW5jZSBjb3N0Lg0KPiANCj4gLS1KZXNwZXINCg0K
+
+
+On 29/09/2022 17.52, Shenwei Wang wrote:
+> 
+>> From: Jesper Dangaard Brouer <jbrouer@redhat.com>
+>>
+>> On 29/09/2022 15.26, Shenwei Wang wrote:
+>>>
+>>>> From: Andrew Lunn <andrew@lunn.ch>
+>>>> Sent: Thursday, September 29, 2022 8:23 AM
+>> [...]
+>>>>
+>>>>> I actually did some compare testing regarding the page pool for
+>>>>> normal traffic.  So far I don't see significant improvement in the
+>>>>> current implementation. The performance for large packets improves a
+>>>>> little, and the performance for small packets get a little worse.
+>>>>
+>>>> What hardware was this for? imx51? imx6? imx7 Vybrid? These all use the FEC.
+>>>
+>>> I tested on imx8qxp platform. It is ARM64.
+>>
+>> On mvneta driver/platform we saw huge speedup replacing:
+>>
+>>     page_pool_release_page(rxq->page_pool, page); with
+>>     skb_mark_for_recycle(skb);
+>>
+>> As I mentioned: Today page_pool have SKB recycle support (you might have
+>> looked at drivers that didn't utilize this yet), thus you don't need to release the
+>> page (page_pool_release_page) here.  Instead you could simply mark the SKB
+>> for recycling, unless driver does some page refcnt tricks I didn't notice.
+>>
+>> On the mvneta driver/platform the DMA unmap (in page_pool_release_page)
+>> was very expensive. This imx8qxp platform might have faster DMA unmap in
+>> case is it cache-coherent.
+>>
+>> I would be very interested in knowing if skb_mark_for_recycle() helps on this
+>> platform, for normal network stack performance.
+>>
+> 
+> Did a quick compare testing for the following 3 scenarios:
+
+Thanks for doing this! :-)
+
+> 1. original implementation
+> 
+> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+> ------------------------------------------------------------
+> Client connecting to 10.81.16.245, TCP port 5001
+> TCP window size:  416 KByte (WARNING: requested 1.91 MByte)
+> ------------------------------------------------------------
+> [  1] local 10.81.17.20 port 49154 connected with 10.81.16.245 port 5001
+> [ ID] Interval       Transfer     Bandwidth
+> [  1] 0.0000-1.0000 sec   104 MBytes   868 Mbits/sec
+> [  1] 1.0000-2.0000 sec   105 MBytes   878 Mbits/sec
+> [  1] 2.0000-3.0000 sec   105 MBytes   881 Mbits/sec
+> [  1] 3.0000-4.0000 sec   105 MBytes   879 Mbits/sec
+> [  1] 4.0000-5.0000 sec   105 MBytes   878 Mbits/sec
+> [  1] 5.0000-6.0000 sec   105 MBytes   878 Mbits/sec
+> [  1] 6.0000-7.0000 sec   104 MBytes   875 Mbits/sec
+> [  1] 7.0000-8.0000 sec   104 MBytes   875 Mbits/sec
+> [  1] 8.0000-9.0000 sec   104 MBytes   873 Mbits/sec
+> [  1] 9.0000-10.0000 sec   104 MBytes   875 Mbits/sec
+> [  1] 0.0000-10.0073 sec  1.02 GBytes   875 Mbits/sec
+> 
+> 2. Page pool with page_pool_release_page
+> 
+> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+> ------------------------------------------------------------
+> Client connecting to 10.81.16.245, TCP port 5001
+> TCP window size:  416 KByte (WARNING: requested 1.91 MByte)
+> ------------------------------------------------------------
+> [  1] local 10.81.17.20 port 35924 connected with 10.81.16.245 port 5001
+> [ ID] Interval       Transfer     Bandwidth
+> [  1] 0.0000-1.0000 sec   101 MBytes   849 Mbits/sec
+> [  1] 1.0000-2.0000 sec   102 MBytes   860 Mbits/sec
+> [  1] 2.0000-3.0000 sec   102 MBytes   860 Mbits/sec
+> [  1] 3.0000-4.0000 sec   102 MBytes   859 Mbits/sec
+> [  1] 4.0000-5.0000 sec   103 MBytes   863 Mbits/sec
+> [  1] 5.0000-6.0000 sec   103 MBytes   864 Mbits/sec
+> [  1] 6.0000-7.0000 sec   103 MBytes   863 Mbits/sec
+> [  1] 7.0000-8.0000 sec   103 MBytes   865 Mbits/sec
+> [  1] 8.0000-9.0000 sec   103 MBytes   862 Mbits/sec
+> [  1] 9.0000-10.0000 sec   102 MBytes   856 Mbits/sec
+> [  1] 0.0000-10.0246 sec  1.00 GBytes   858 Mbits/sec
+> 
+> 
+> 3. page pool with skb_mark_for_recycle
+> 
+> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+> ------------------------------------------------------------
+> Client connecting to 10.81.16.245, TCP port 5001
+> TCP window size:  416 KByte (WARNING: requested 1.91 MByte)
+> ------------------------------------------------------------
+> [  1] local 10.81.17.20 port 42724 connected with 10.81.16.245 port 5001
+> [ ID] Interval       Transfer     Bandwidth
+> [  1] 0.0000-1.0000 sec   111 MBytes   931 Mbits/sec
+> [  1] 1.0000-2.0000 sec   112 MBytes   935 Mbits/sec
+> [  1] 2.0000-3.0000 sec   111 MBytes   934 Mbits/sec
+> [  1] 3.0000-4.0000 sec   111 MBytes   934 Mbits/sec
+> [  1] 4.0000-5.0000 sec   111 MBytes   934 Mbits/sec
+> [  1] 5.0000-6.0000 sec   112 MBytes   935 Mbits/sec
+> [  1] 6.0000-7.0000 sec   111 MBytes   934 Mbits/sec
+> [  1] 7.0000-8.0000 sec   111 MBytes   933 Mbits/sec
+> [  1] 8.0000-9.0000 sec   112 MBytes   935 Mbits/sec
+> [  1] 9.0000-10.0000 sec   111 MBytes   933 Mbits/sec
+> [  1] 0.0000-10.0069 sec  1.09 GBytes   934 Mbits/sec
+
+This is a very significant performance improvement (page pool with
+skb_mark_for_recycle).  This is very close to the max goodput for a
+1Gbit/s link.
+
+
+> For small packet size (64 bytes), all three cases have almost the same result:
+> 
+
+To me this indicate, that the DMA map/unmap operations on this platform
+are indeed more expensive on larger packets.  Given this is what
+page_pool does, keeping the DMA mapping intact when recycling.
+
+Driver still need DMA-sync, although I notice you set page_pool feature
+flag PP_FLAG_DMA_SYNC_DEV, this is good as page_pool will try to reduce
+sync size where possible. E.g. in this SKB case will reduce the DMA-sync
+to the max_len=FEC_ENET_RX_FRSIZE which should also help on performance.
+
+
+> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1 -l 64
+> ------------------------------------------------------------
+> Client connecting to 10.81.16.245, TCP port 5001
+> TCP window size:  416 KByte (WARNING: requested 1.91 MByte)
+> ------------------------------------------------------------
+> [  1] local 10.81.17.20 port 58204 connected with 10.81.16.245 port 5001
+> [ ID] Interval       Transfer     Bandwidth
+> [  1] 0.0000-1.0000 sec  36.9 MBytes   309 Mbits/sec
+> [  1] 1.0000-2.0000 sec  36.6 MBytes   307 Mbits/sec
+> [  1] 2.0000-3.0000 sec  36.6 MBytes   307 Mbits/sec
+> [  1] 3.0000-4.0000 sec  36.5 MBytes   307 Mbits/sec
+> [  1] 4.0000-5.0000 sec  37.1 MBytes   311 Mbits/sec
+> [  1] 5.0000-6.0000 sec  37.2 MBytes   312 Mbits/sec
+> [  1] 6.0000-7.0000 sec  37.1 MBytes   311 Mbits/sec
+> [  1] 7.0000-8.0000 sec  37.1 MBytes   311 Mbits/sec
+> [  1] 8.0000-9.0000 sec  37.1 MBytes   312 Mbits/sec
+> [  1] 9.0000-10.0000 sec  37.2 MBytes   312 Mbits/sec
+> [  1] 0.0000-10.0097 sec   369 MBytes   310 Mbits/sec
+> 
+> Regards,
+> Shenwei
+> 
+> 
+>>>> By small packets, do you mean those under the copybreak limit?
+>>>>
+>>>> Please provide some benchmark numbers with your next patchset.
+>>>
+>>> Yes, the packet size is 64 bytes and it is under the copybreak limit.
+>>> As the impact is not significant, I would prefer to remove the
+>>> copybreak  logic.
+>>
+>> +1 to removing this logic if possible, due to maintenance cost.
+>>
+>> --Jesper
+> 
+
