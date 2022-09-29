@@ -1,446 +1,166 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2087.outbound.protection.outlook.com [40.107.104.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF911107
-	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 10:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1664446601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I49cF9sfbxNgGCeAY0uIcK3yeSiGnK00QABITkag+hY=;
-	b=Xly8wuoXkZV0gqPQyuk4XMGkIEL6mVOOV70YOcH/jmk14jbmweXXJnbuKEcBzAWLnCw1Lo
-	UnXx0Tc/7xu7qE/xO24B5B9zlTyD0H681f/OdjmFdFp4wBVhh31kbw3jsTaS9E2+3Fn6aG
-	RVocK9iYrHaTkTnVK4gdWVfkR6e2bss=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-75-z4VP6qeUPk-EMyOc03sKgg-1; Thu, 29 Sep 2022 06:16:40 -0400
-X-MC-Unique: z4VP6qeUPk-EMyOc03sKgg-1
-Received: by mail-ej1-f70.google.com with SMTP id dm10-20020a170907948a00b00781fa5e140fso480328ejc.21
-        for <imx@lists.linux.dev>; Thu, 29 Sep 2022 03:16:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:to
-         :content-language:subject:cc:user-agent:mime-version:date:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date;
-        bh=I49cF9sfbxNgGCeAY0uIcK3yeSiGnK00QABITkag+hY=;
-        b=KmqDVoO4T4aeXITjhllGRAjPj9qsc7SEpVG/CTcG56Vqvu/5zQvJq/7sXyrpOw1zUg
-         ifkGJmmIpF0JMYGyH/X32Bg4zL6RvXw68iLfTArYbK+o+Bf6CypqSzknoQqOUeflSOQi
-         hRHKzmXweVOoAB56Kg5/V0EQXZTqlEUcpeXWaK8jT/y8Obimu7VKOQlGKyyyv8j/raR2
-         VubxOW2Nx8wV4B+MBRvuzDShrZITLn0Mc26SpS7s1QSUW2kLin144+KiXruQjg+9hM2Y
-         ZvdiXYMJnMrPeO8OGm6lZtNISsoy2xsnhUvG/qI3oCKaUda/fJ7f/OjGUXq2Fdmgtumx
-         yP4A==
-X-Gm-Message-State: ACrzQf3qEB+SON7YKrANTMxAIdHqJpNSFQA/WLhUbxw7VzKfVqAh+OZt
-	B+RZBBZkLh9cyhufuwexdLCl/KsiuGPrhK0DLLsmc8VCuwCTsfLeydlRhxae7IJpN4ca4DvBQrE
-	1pKwSX54T5bdO
-X-Received: by 2002:a05:6402:1d48:b0:458:f29:798 with SMTP id dz8-20020a0564021d4800b004580f290798mr2584164edb.414.1664446598783;
-        Thu, 29 Sep 2022 03:16:38 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM762CNe0AvrD0AO+UmU8OF8GzMBFMqFMvDaTEz9DThG2UtyooTJnbMOFXkYvIB6rEwZsmjHig==
-X-Received: by 2002:a05:6402:1d48:b0:458:f29:798 with SMTP id dz8-20020a0564021d4800b004580f290798mr2584138edb.414.1664446598503;
-        Thu, 29 Sep 2022 03:16:38 -0700 (PDT)
-Received: from [192.168.41.81] (83-90-141-187-cable.dk.customer.tdc.net. [83.90.141.187])
-        by smtp.gmail.com with ESMTPSA id 6-20020a508e06000000b004574f4326b8sm5285304edw.30.2022.09.29.03.16.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Sep 2022 03:16:37 -0700 (PDT)
-From: Jesper Dangaard Brouer <jbrouer@redhat.com>
-X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
-Message-ID: <1898c50e-1bad-1143-17d9-d093b2d2674a@redhat.com>
-Date: Thu, 29 Sep 2022 12:16:36 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122FA1385
+	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 12:40:04 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eoCXPefD8tgcl3rVeJutxSxXTvGVUm32Ahculb0D+U4dTvRm+SEfGRQ/3hAJJEFrRDict9c9R43rv+Ni4k6rLJMZigXsMm+JFOxohKoBSdDnrY2oc+3Ful5uYC7AXnJPykMU3vdw4tms1Yp7JJX9M55QE55j2sIzKOdUTr7zpfhvKCQmn/86wn4CF61HE2vaPqcw3XL+Zv7UIqAk+RtBQJnRqBx5N6H0A20673HAxgq5cd5jNyDt7pABfzStS763LO+9uulUWYKOJqo49Z6NwmaDqG6ecNdl6riljvsvI58gMTcxHibuaTnSkwbqnUpSR/ZWekDY08TxOU6NGPWmfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MBpmg3KBjTY1dJBsgQWRQ6/CtV9VLEQJJ9xX5oavwGE=;
+ b=fCfiRoLCi/x0HvlYWpZOdHfG24cfkF3kXZ67XJ4IpAXwOicfmjYTCOmgVtL0+DWN/2OYSZbTmzFmyZdteAkfv8Pv51dYexAvAe3AkeShis4xv3kEbN1uPnG2JTN1ycsLgR3JXFH+bMTZD/iBbnpz1nuyCQjFJ6lfwUESFpIVrMVGoD5TGgM2B/YMnG+HPn3Rkra5pV393xv6ypiMHMzLHzw+gqmIKOX+ixwa2p9T35y4ii7bHtFlQz5A/mTbHcy6Y1Fd39nfFjaIAyo5FAWkPl4OetO1bwrBIF8Kgf24rvrAgsOLyQsHofOCRLFa2RmWh9P5AqgxIenHZHrYPsuKtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MBpmg3KBjTY1dJBsgQWRQ6/CtV9VLEQJJ9xX5oavwGE=;
+ b=jq9C2Ev8nBG0wJh6rRZlYmaRRp6UCMRAv1FyXbS9Y2zEx8aJNHZEuf/xritdK6PUpTzf/IWBs/DjwXzIKTCNLp7Bot2bjIXTItoSSwbyp6W+26kc7cSVDWGS/ZcD6J0bWO93/CfpDdTx91CC/XzMU3k9wR/wf1vLbbl1V9HD8T4=
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AS8PR04MB8753.eurprd04.prod.outlook.com (2603:10a6:20b:42c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.17; Thu, 29 Sep
+ 2022 12:40:02 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::a543:fc4e:f6c5:b11f]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::a543:fc4e:f6c5:b11f%9]) with mapi id 15.20.5676.020; Thu, 29 Sep 2022
+ 12:40:02 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Joakim Zhang <qiangqing.zhang@nxp.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov
+	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+Thread-Topic: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+Thread-Index: AQHY006sqGpD/PA5gEmZiYlRlE0jhK31oHQAgAC4dcA=
+Date: Thu, 29 Sep 2022 12:40:02 +0000
+Message-ID:
+ <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20220928152509.141490-1-shenwei.wang@nxp.com>
+ <YzT2An2J5afN1w3L@lunn.ch>
+In-Reply-To: <YzT2An2J5afN1w3L@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AS8PR04MB8753:EE_
+x-ms-office365-filtering-correlation-id: a9b61a33-9585-40b8-e877-08daa217ba85
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 9P0IcVUxws4cf2upaskErY4EmM+bR7QDpm4OKigmsBapjZcn1Py+doNY/ZS+06KebTdIyO1O205FD06vowW99VjAOrkgTHs1zoaW74aUibIJnmxvzkDRSNDbgPDwAyy7JTrqN4Tww68pSQDTteO4It5gg3IUjLIZczjggOEAiv4XSsBl1o8Jx3dV8B79uPtUKoQQfgbf3IRevfBhAgFKjYShCY4EA6XOWnA9uObfzOwFUSzwvxOifmxTvIWwtVgCRkFEjd5734k7XDCfoJnMltffl+tYFv0CcRJmtxw5iipU1khYExGRJChS3LJqPi4zreCDcFJuGAqzx87omUEW9cwgiKmgzJsAs56pglpjQByM17sZ+ATTw8wo6nTg4hzLu1h6AvADSPFMvnQsz/7gApT4xsDK/SI2dr48iHCjwv00IjFVXeCF4ViYmXQ5+rTR41MIYL/R14By7/orify14YPMIMS5HQQL6h3ceAemfpu76i2iAvCC/YQeUq/X2CV0KUvsUW5vAl4WiSMdMSbyfpZlbSzZ/aCHyC5MXT+Ip9oft1/25dAlvjDMDrWpRoUd2HijsiMac30SifPr5vTlS8pc/wemHo9R4N/vYuNnVXT0DkJ4ywsLx7UzddY3QxHqVvKulaEY+HlsWreVAVPzcnaJhFxkpghN5epzbYShraaJL92ZzwvFHWNYsghouwSpx4unT4wdry27E+n0t4cgFQF2gRTSV9BOpiswTd7DQ/WU8n50bMAXhAutI987C/gm4N0WDEsUSe4ElIuJ3Watwg==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(39860400002)(346002)(396003)(366004)(136003)(451199015)(478600001)(71200400001)(55236004)(53546011)(7696005)(6506007)(8936002)(316002)(122000001)(33656002)(52536014)(54906003)(2906002)(6916009)(38070700005)(38100700002)(66556008)(9686003)(26005)(83380400001)(41300700001)(8676002)(4326008)(66946007)(86362001)(76116006)(44832011)(7416002)(55016003)(5660300002)(64756008)(66476007)(186003)(66446008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?pCOAP2SfafRfXJMNX/M9+Fledfq2rDbwmtLUV9cYDuQlI/d1MCsbKFd1z33l?=
+ =?us-ascii?Q?RoLMcJLZhogg4GI2M4rj3qOzucK9p+y0KSG7tKUs+XRgDd0gNYypoOyHajCg?=
+ =?us-ascii?Q?A0HaBNxWQuvhseYgm8v+snbegUV+nyeKxhLf5IvjjQg6tBwF4+zBeu3Ph5fR?=
+ =?us-ascii?Q?hYmdtfjVnDZa/reyfXmiBt9ao4KBGfA/6hjGTbnhLwzM+1qvafFfSEsEiF+Y?=
+ =?us-ascii?Q?ZPdIQ/YPO93ZOtzq4GdKvpvOXIIrdqvv5uWy1obXfzpbn/BjhmyR5uTPCkUc?=
+ =?us-ascii?Q?3MYBJmHco+OfFhLZkLPaNTFrtlzZJUudV9xxsnCsPi5N1UknMBkVzfAFL2RE?=
+ =?us-ascii?Q?HI9CM/RvZTcP0+iCcNxXRGaoo7/a17rblVCIIXIlvn877Fvfai3R3xYedXvC?=
+ =?us-ascii?Q?S4JNhvEtCDMioPTS4jKW+G7BOy0vSlBzlMBCRu0WwCcgq6/pl65NTvsKN0d4?=
+ =?us-ascii?Q?FVMExIA/GDlp+OswxOajJjJYbl1PA35TczwD6Fh6Kv54iPsa4hKAO0PjUfqJ?=
+ =?us-ascii?Q?s/0tnq/+yyXQvlvwriIr6B8db6vHOg0Lh7bceBJXKjXLg9/Vmz30IEf1g77e?=
+ =?us-ascii?Q?NRlTnWd2JcLV5738nzmMJG4vQC3kRnfP6h5XGxf/XfiJJaLtTcM13GdX4yh8?=
+ =?us-ascii?Q?MflbXpZh3+D8sIq2/cBdhECeireZkp4J7HmdzBkV7x/DHy2ZgQ2pPCQwDNlP?=
+ =?us-ascii?Q?aXxB3Plnz/3+elX1Yw8VePF2wWqR9lfMsLJHoB6EekwYIZszvHkWTZ6BWT2W?=
+ =?us-ascii?Q?VIurBebIBgcSzKBf/rSDEnl8SlwApHXbJa3CekRK9X30Uv23/2gY3Ix5invn?=
+ =?us-ascii?Q?Ty+vLtgNC4xjmIxlzWfEAstbt/xM/mtcTHvvm3Ku/08bShc0cKxSnRuW+aag?=
+ =?us-ascii?Q?UCNXLWwNJ18GyC3mQASYhQN98Uyo/OiQRONGBf/QVVA44xlRisYvPTAUeyFD?=
+ =?us-ascii?Q?EmjVOYpBHLs4sl/H7S8aTHMi4gzMqviFKAvTyCH/Gc5D7ll3LSAepp7UeZwJ?=
+ =?us-ascii?Q?ALfy9QOc3m5wU8CNufwslh5qp4dWgpsufrRdLs/4kULCkpV+TFhLtPm5uZJj?=
+ =?us-ascii?Q?zXrJk88czr18LN9I3EZDGStVBZg+WAAD1SnRmjV99H9dnMznnn2SsfWZa3+k?=
+ =?us-ascii?Q?dy+ugaM+fdPEJkCoTl1OxOHKmvWfQTiWsueQvh2Gx/9AYJN6VfsUf60GijaK?=
+ =?us-ascii?Q?TjgU59FtysuEJOhnbe0+L48DZ0pYJ5DDZSmAXBblzrKlYFhC5zpqVeS4qXfs?=
+ =?us-ascii?Q?+JiY/msySXRBLMHb8AZ5vs4fo6piVIJbAurNlBWm9er2cJQwYMj9s0nRFwQ8?=
+ =?us-ascii?Q?ZyWTq4+AbRXqqxg+yETF9ZS4/eXspGkrUpuzvaiPkCjF4DILZcv26caouxLt?=
+ =?us-ascii?Q?BqXmnyANttB2/pVNahgh5HHoCd6dOjzHVHcNwmELwT76C9d5gHY3i0aZhM+y?=
+ =?us-ascii?Q?RVArQUpHrYTFwCW+lk/ND60C6mdrY/1Gw+FUdUg5PZ8C1By1GOI61ozeo7/U?=
+ =?us-ascii?Q?/J6qb3QpDhxNydWSUycAaGXuTDHPwlPvlOVGXYYvKKH/o6Pa3+BDL0g7d5Xb?=
+ =?us-ascii?Q?AT5KbZHMQuzUZrPuswXZb6UIRUE85Y+JMhil4+cK?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Cc: brouer@redhat.com, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] net: fec: add initial XDP support
-To: Shenwei Wang <shenwei.wang@nxp.com>,
- Joakim Zhang <qiangqing.zhang@nxp.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20220928152509.141490-1-shenwei.wang@nxp.com>
-In-Reply-To: <20220928152509.141490-1-shenwei.wang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9b61a33-9585-40b8-e877-08daa217ba85
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2022 12:40:02.3319
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: deQMpgdUVpzxgHF1X9Ey2fxIvBWDgb8NTl0duB4Dsu2QPpaGjNJOosHSy14WrxRdj+PXuzyGztj/u98nvVPk8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8753
 
 
 
-On 28/09/2022 17.25, Shenwei Wang wrote:
-> This patch adds the initial XDP support to Freescale driver. It supports
-> XDP_PASS, XDP_DROP and XDP_REDIRECT actions. Upcoming patches will add
-> support for XDP_TX and Zero Copy features.
-> 
-> This patch also optimizes the RX buffers by using the page pool, which
-> uses one frame per page for easy management. In the future, it can be
-> further improved to use two frames per page.
-> 
-> This patch has been tested with the sample apps of "xdpsock" and "xdp2" in
-> samples/bpf directory for both SKB and Native (XDP) mode. The following
-> are the testing result comparing with the XDP skb-mode.
-> 
->   # xdpsock -i eth0
->   sock0@eth0:0 rxdrop xdp-drv
->                     pps            pkts           1.00
->   rx                 198798         1040011
->   tx                 0              0
-> 
->   # xdpsock -S -i eth0         // skb-mode
->   sock0@eth0:0 rxdrop xdp-skb
->                      pps            pkts           1.00
->   rx                 95638          717251
->   tx                 0              0
-> 
->   # xdp2 eth0
->   proto 0:     475362 pkt/s
->   proto 0:     475549 pkt/s
->   proto 0:     475480 pkt/s
->   proto 0:     143258 pkt/s
-> 
->   # xdp2 -S eth0    // skb-mode
->   proto 17:      56468 pkt/s
->   proto 17:      71999 pkt/s
->   proto 17:      72000 pkt/s
->   proto 17:      71988 pkt/s
-> 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->   drivers/net/ethernet/freescale/fec.h      |  34 +-
->   drivers/net/ethernet/freescale/fec_main.c | 414 +++++++++++++++++++---
->   2 files changed, 393 insertions(+), 55 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-> index b0100fe3c9e4..f7531503aa95 100644
-> --- a/drivers/net/ethernet/freescale/fec.h
-> +++ b/drivers/net/ethernet/freescale/fec.h
-> @@ -346,8 +346,10 @@ struct bufdesc_ex {
->    * the skbuffer directly.
->    */
->   
-> +#define FEC_ENET_XDP_HEADROOM	(512) /* XDP_PACKET_HEADROOM + NET_IP_ALIGN) */
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Wednesday, September 28, 2022 8:34 PM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Joakim Zhang <qiangqing.zhang@nxp.com>; David S. Miller
+> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Alexei
+> Starovoitov <ast@kernel.org>; Daniel Borkmann <daniel@iogearbox.net>;
+> Jesper Dangaard Brouer <hawk@kernel.org>; John Fastabend
+> <john.fastabend@gmail.com>; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org; imx@lists.linux.dev
+> Subject: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+>=20
+> Caution: EXT Email
+>=20
+> On Wed, Sep 28, 2022 at 10:25:09AM -0500, Shenwei Wang wrote:
+> > This patch adds the initial XDP support to Freescale driver. It
+> > supports XDP_PASS, XDP_DROP and XDP_REDIRECT actions. Upcoming
+> patches
+> > will add support for XDP_TX and Zero Copy features.
+> >
+> > This patch also optimizes the RX buffers by using the page pool, which
+> > uses one frame per page for easy management. In the future, it can be
+> > further improved to use two frames per page.
+>=20
+> Please could you split this patch up. It is rather large and hard to revi=
+ew. I think
+> you can first add support for the page pool, and then add XDP support, fo=
+r
+> example.
+>=20
 
-Why the large headroom?
+Will do it in the next version. Thanks for the review.
 
-> +
->   #define FEC_ENET_RX_PAGES	256
-> -#define FEC_ENET_RX_FRSIZE	2048
-> +#define FEC_ENET_RX_FRSIZE	(PAGE_SIZE - FEC_ENET_XDP_HEADROOM)
+> I would be interesting to see how the page pool helps performance for nor=
+mal
+> traffic, since that is what most people use it for. And for a range of de=
+vices,
+> since we need to make sure it does not cause any regressions for older de=
+vices.
+>=20
 
-This FEC_ENET_RX_FRSIZE is likely wrong, because you also need to
-reserve 320 bytes at the end for struct skb_shared_info.
-(320 calculated as SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+I actually did some compare testing regarding the page pool for normal traf=
+fic.=20
+So far I don't see significant improvement in the current implementation. T=
+he performance for large packets improves a little, and the performance for=
+ small packets get a little worse.
 
->   #define FEC_ENET_RX_FRPPG	(PAGE_SIZE / FEC_ENET_RX_FRSIZE)
->   #define RX_RING_SIZE		(FEC_ENET_RX_FRPPG * FEC_ENET_RX_PAGES)
->   #define FEC_ENET_TX_FRSIZE	2048
-> @@ -517,6 +519,22 @@ struct bufdesc_prop {
-[...]
+Thanks,
+Shenwei
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 59921218a8a4..2e30182ed770 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -66,6 +66,8 @@
->   #include <linux/mfd/syscon.h>
->   #include <linux/regmap.h>
->   #include <soc/imx/cpuidle.h>
-> +#include <linux/filter.h>
-> +#include <linux/bpf.h>
->   
->   #include <asm/cacheflush.h>
->   
-> @@ -87,6 +89,11 @@ static const u16 fec_enet_vlan_pri_to_queue[8] = {0, 0, 1, 1, 1, 2, 2, 2};
->   #define FEC_ENET_OPD_V	0xFFF0
->   #define FEC_MDIO_PM_TIMEOUT  100 /* ms */
->   
-> +#define FEC_ENET_XDP_PASS          0
-> +#define FEC_ENET_XDP_CONSUMED      BIT(0)
-> +#define FEC_ENET_XDP_TX            BIT(1)
-> +#define FEC_ENET_XDP_REDIR         BIT(2)
-> +
->   struct fec_devinfo {
->   	u32 quirks;
->   };
-> @@ -422,6 +429,49 @@ fec_enet_clear_csum(struct sk_buff *skb, struct net_device *ndev)
->   	return 0;
->   }
->   
-> +static int
-> +fec_enet_create_page_pool(struct fec_enet_private *fep,
-> +			  struct fec_enet_priv_rx_q *rxq, int size)
-> +{
-> +	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
-> +	struct page_pool_params pp_params = {
-> +		.order = 0,
-> +		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
-> +		.pool_size = size,
-> +		.nid = dev_to_node(&fep->pdev->dev),
-> +		.dev = &fep->pdev->dev,
-> +		.dma_dir = xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE,
-> +		.offset = FEC_ENET_XDP_HEADROOM,
-> +		.max_len = FEC_ENET_RX_FRSIZE,
-
-XDP BPF-prog cannot access last 320 bytes, so FEC_ENET_RX_FRSIZE is 
-wrong here.
-
-> +	};
-> +	int err;
-> +
-> +	rxq->page_pool = page_pool_create(&pp_params);
-> +	if (IS_ERR(rxq->page_pool)) {
-> +		err = PTR_ERR(rxq->page_pool);
-> +		rxq->page_pool = NULL;
-> +		return err;
-> +	}
-> +
-> +	err = xdp_rxq_info_reg(&rxq->xdp_rxq, fep->netdev, rxq->id, 0);
-> +	if (err < 0)
-> +		goto err_free_pp;
-> +
-> +	err = xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
-> +					 rxq->page_pool);
-> +	if (err)
-> +		goto err_unregister_rxq;
-> +
-> +	return 0;
-> +
-> +err_unregister_rxq:
-> +	xdp_rxq_info_unreg(&rxq->xdp_rxq);
-> +err_free_pp:
-> +	page_pool_destroy(rxq->page_pool);
-> +	rxq->page_pool = NULL;
-> +	return err;
-> +}
-> +
->   static struct bufdesc *
->   fec_enet_txq_submit_frag_skb(struct fec_enet_priv_tx_q *txq,
->   			     struct sk_buff *skb,
-> @@ -1285,7 +1335,6 @@ fec_stop(struct net_device *ndev)
->   	}
->   }
->   
-> -
->   static void
->   fec_timeout(struct net_device *ndev, unsigned int txqueue)
->   {
-> @@ -1450,7 +1499,7 @@ static void fec_enet_tx(struct net_device *ndev)
->   		fec_enet_tx_queue(ndev, i);
->   }
->   
-> -static int
-> +static int __maybe_unused
->   fec_enet_new_rxbdp(struct net_device *ndev, struct bufdesc *bdp, struct sk_buff *skb)
->   {
->   	struct  fec_enet_private *fep = netdev_priv(ndev);
-> @@ -1470,8 +1519,9 @@ fec_enet_new_rxbdp(struct net_device *ndev, struct bufdesc *bdp, struct sk_buff
->   	return 0;
->   }
->   
-> -static bool fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
-> -			       struct bufdesc *bdp, u32 length, bool swap)
-> +static bool __maybe_unused
-> +fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
-> +		   struct bufdesc *bdp, u32 length, bool swap)
->   {
->   	struct  fec_enet_private *fep = netdev_priv(ndev);
->   	struct sk_buff *new_skb;
-> @@ -1496,6 +1546,78 @@ static bool fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
->   	return true;
->   }
->   
-> +static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
-> +				struct bufdesc *bdp, int index)
-> +{
-> +	struct page *new_page;
-> +	dma_addr_t phys_addr;
-> +
-> +	new_page = page_pool_dev_alloc_pages(rxq->page_pool);
-> +	WARN_ON(!new_page);
-> +	rxq->rx_skb_info[index].page = new_page;
-> +
-> +	rxq->rx_skb_info[index].offset = FEC_ENET_XDP_HEADROOM;
-> +	phys_addr = page_pool_get_dma_addr(new_page) + FEC_ENET_XDP_HEADROOM;
-> +	bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
-> +}
-> +
-> +static u32
-> +fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
-> +		 struct xdp_buff *xdp, struct fec_enet_priv_rx_q *rxq, int index)
-> +{
-> +	unsigned int sync, len = xdp->data_end - xdp->data;
-> +	u32 ret = FEC_ENET_XDP_PASS;
-> +	struct page *page;
-> +	int err;
-> +	u32 act;
-> +
-> +	act = bpf_prog_run_xdp(prog, xdp);
-> +
-> +	/* Due xdp_adjust_tail: DMA sync for_device cover max len CPU touch */
-> +	sync = xdp->data_end - xdp->data_hard_start - FEC_ENET_XDP_HEADROOM;
-> +	sync = max(sync, len);
-> +
-> +	switch (act) {
-> +	case XDP_PASS:
-> +		rxq->stats.xdp_pass++;
-> +		ret = FEC_ENET_XDP_PASS;
-> +		break;
-> +
-> +	case XDP_TX:
-> +		rxq->stats.xdp_tx++;
-> +		bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
-> +		fallthrough;
-
-This fallthrough looks wrong. The next xdp_do_redirect() call will
-pickup left-overs in per CPU bpf_redirect_info.
-
-> +
-> +	case XDP_REDIRECT:
-> +		err = xdp_do_redirect(fep->netdev, xdp, prog);
-> +		rxq->stats.xdp_redirect++;
-> +		if (!err) {
-> +			ret = FEC_ENET_XDP_REDIR;
-> +		} else {
-> +			ret = FEC_ENET_XDP_CONSUMED;
-> +			page = virt_to_head_page(xdp->data);
-> +			page_pool_put_page(rxq->page_pool, page, sync, true);
-> +		}
-> +		break;
-> +
-> +	default:
-> +		bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
-> +		fallthrough;
-> +
-> +	case XDP_ABORTED:
-> +		fallthrough;    /* handle aborts by dropping packet */
-> +
-> +	case XDP_DROP:
-> +		rxq->stats.xdp_drop++;
-> +		ret = FEC_ENET_XDP_CONSUMED;
-> +		page = virt_to_head_page(xdp->data);
-> +		page_pool_put_page(rxq->page_pool, page, sync, true);
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->   /* During a receive, the bd_rx.cur points to the current incoming buffer.
->    * When we update through the ring, if the next incoming buffer has
->    * not been given to the system, we just set the empty indicator,
-> @@ -1508,7 +1630,6 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
->   	struct fec_enet_priv_rx_q *rxq;
->   	struct bufdesc *bdp;
->   	unsigned short status;
-> -	struct  sk_buff *skb_new = NULL;
->   	struct  sk_buff *skb;
->   	ushort	pkt_len;
->   	__u8 *data;
-> @@ -1517,8 +1638,12 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
->   	bool	vlan_packet_rcvd = false;
->   	u16	vlan_tag;
->   	int	index = 0;
-> -	bool	is_copybreak;
->   	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
-> +	struct page *page;
-> +	struct xdp_buff xdp;
-> +	u32 ret, xdp_result = FEC_ENET_XDP_PASS;
-> +
-> +	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
->   
->   #ifdef CONFIG_M532x
->   	flush_cache_all();
-> @@ -1529,6 +1654,7 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
->   	 * These get messed up if we get called due to a busy condition.
->   	 */
->   	bdp = rxq->bd.cur;
-> +	xdp_init_buff(&xdp, PAGE_SIZE, &rxq->xdp_rxq);
->   
->   	while (!((status = fec16_to_cpu(bdp->cbd_sc)) & BD_ENET_RX_EMPTY)) {
->   
-> @@ -1570,31 +1696,37 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
->   		ndev->stats.rx_bytes += pkt_len;
->   
->   		index = fec_enet_get_bd_index(bdp, &rxq->bd);
-> -		skb = rxq->rx_skbuff[index];
-> +		page = rxq->rx_skb_info[index].page;
-> +
-> +		dma_sync_single_for_cpu(&fep->pdev->dev,
-> +					fec32_to_cpu(bdp->cbd_bufaddr),
-> +					pkt_len,
-> +					DMA_FROM_DEVICE);
-> +
-> +		prefetch(page_address(page));
-> +		fec_enet_update_cbd(rxq, bdp, index);
-> +
-> +		if (xdp_prog) {
-> +			xdp_prepare_buff(&xdp, page_address(page),
-> +					 FEC_ENET_XDP_HEADROOM, pkt_len, false);
-> +
-> +			ret = fec_enet_run_xdp(fep, xdp_prog, &xdp, rxq, index);
-> +			xdp_result |= ret;
-> +			if (ret != FEC_ENET_XDP_PASS)
-> +				goto rx_processing_done;
-> +		}
->   
->   		/* The packet length includes FCS, but we don't want to
->   		 * include that when passing upstream as it messes up
->   		 * bridging applications.
->   		 */
-> -		is_copybreak = fec_enet_copybreak(ndev, &skb, bdp, pkt_len - 4,
-> -						  need_swap);
-> -		if (!is_copybreak) {
-> -			skb_new = netdev_alloc_skb(ndev, FEC_ENET_RX_FRSIZE);
-> -			if (unlikely(!skb_new)) {
-> -				ndev->stats.rx_dropped++;
-> -				goto rx_processing_done;
-> -			}
-> -			dma_unmap_single(&fep->pdev->dev,
-> -					 fec32_to_cpu(bdp->cbd_bufaddr),
-> -					 FEC_ENET_RX_FRSIZE - fep->rx_align,
-> -					 DMA_FROM_DEVICE);
-> -		}
-> -
-> -		prefetch(skb->data - NET_IP_ALIGN);
-> +		skb = build_skb(page_address(page), FEC_ENET_RX_FRSIZE);
-
-This looks wrong, I think FEC_ENET_RX_FRSIZE should be replaced by 
-PAGE_SIZE.
-As build_skb() does:
-
-  size -= SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-
-> +		skb_reserve(skb, FEC_ENET_XDP_HEADROOM);
-
-The skb_reserve looks correct.
-
->   		skb_put(skb, pkt_len - 4);
->   		data = skb->data;
-> +		page_pool_release_page(rxq->page_pool, page);
-
-Today page_pool have SKB recycle support (you might have looked at
-drivers that didn't utilize this yet), thus you don't need to release
-the page (page_pool_release_page) here.  Instead you could simply mark
-the SKB for recycling, unless driver does some page refcnt tricks I
-didn't notice.
-
-  skb_mark_for_recycle(skb);
-
-
-> -		if (!is_copybreak && need_swap)
-> +		if (need_swap)
->   			swap_buffer(data, pkt_len);
->   
->   #if !defined(CONFIG_M5272)
-> @@ -1649,16 +1781,6 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
-[...]
-
+>             Andrew
