@@ -1,20 +1,20 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826D71C13
-	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 13:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C25A1C13
+	for <imx@lists.linux.dev>; Thu, 29 Sep 2022 13:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0+1nUta2pVXe4Nepuxyz02WZlUvq7DHS9Z6e3kiv/no=; b=bEcj0OpKViIgw16wtP99ObezXR
-	7ypjXPzngzdnT6Kau0fp0/7PShtnL+062fmnUA+gVXUlFxAwDi1VmgJCvZtFtceDMD3cUlNV6gLva
-	RBFYj42lZONUA980PX9oUN/4OrH2iCnGxyLZYlSM7vRQvU9w3PiSW5aTnToMgnl30iM4=;
+	bh=GFmE0LoqXWikNphWZFYNpMrFo7yy2CuxJ2DWoSYNxVY=; b=MSKKijugu/O/kh0yv74PpZNETo
+	FF4caSWlOapcQmrDnXO9pL5Dd/CiQUrf6+NSvST1Ok5dnXEFDp6uU00URC6befQVI+aQrqRbcOsBH
+	Usf0YCKdxjk7EEKxrH4rGE5AWcqFU/T2q5euWd2SidkiRa6XNQAacj6tYNGd05C+OfDY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1odtUx-000cNT-Dt; Thu, 29 Sep 2022 15:22:43 +0200
-Date: Thu, 29 Sep 2022 15:22:43 +0200
+	id 1odtWI-000cOg-9e; Thu, 29 Sep 2022 15:24:06 +0200
+Date: Thu, 29 Sep 2022 15:24:06 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Shenwei Wang <shenwei.wang@nxp.com>
 Cc: Joakim Zhang <qiangqing.zhang@nxp.com>,
@@ -29,10 +29,10 @@ Cc: Joakim Zhang <qiangqing.zhang@nxp.com>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>
 Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
-Message-ID: <YzWcI+U1WYJuZIdk@lunn.ch>
+Message-ID: <YzWcdsGkq4x8VWbY@lunn.ch>
 References: <20220928152509.141490-1-shenwei.wang@nxp.com>
- <YzT2An2J5afN1w3L@lunn.ch>
- <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <YzT59R+zx4dA5G5Q@lunn.ch>
+ <PAXPR04MB91859C7C1F1C4FE94611D5A789579@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,18 +41,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB91859C7C1F1C4FE94611D5A789579@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-> I actually did some compare testing regarding the page pool for
-> normal traffic.  So far I don't see significant improvement in the
-> current implementation. The performance for large packets improves a
-> little, and the performance for small packets get a little worse.
+> > > +struct fec_enet_xdp_stats {
+> > > +     u64     xdp_pass;
+> > > +     u64     xdp_drop;
+> > > +     u64     xdp_xmit;
+> > > +     u64     xdp_redirect;
+> > > +     u64     xdp_xmit_err;
+> > > +     u64     xdp_tx;
+> > > +     u64     xdp_tx_err;
+> > > +};
+> > > +
+> > > +     switch (act) {
+> > > +     case XDP_PASS:
+> > > +             rxq->stats.xdp_pass++;
+> > 
+> > Since the stats are u64, and most machines using the FEC are 32 bit, you cannot
+> > just do an increment. Took a look at u64_stats_sync.h.
+> > 
+> 
 
-What hardware was this for? imx51? imx6? imx7 Vybrid? These all use
-the FEC.
+> As this increment is only executed under the NAPI kthread context,
+> is the protection still required?
 
-By small packets, do you mean those under the copybreak limit?
+Are the statistics values read by ethtool under NAPI kthread context?
 
-Please provide some benchmark numbers with your next patchset.
-
-       Andrew
+    Andrew
