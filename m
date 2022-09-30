@@ -1,57 +1,57 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70044.outbound.protection.outlook.com [40.107.7.44])
+Received: from EUR02-HE1-obe.outbound.protection.outlook.com (mail-eopbgr10085.outbound.protection.outlook.com [40.107.1.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEA65A88
-	for <imx@lists.linux.dev>; Fri, 30 Sep 2022 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E7A5A88
+	for <imx@lists.linux.dev>; Fri, 30 Sep 2022 19:38:14 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h5SMFPddtkmkdSv18GYj8R7/frCBzljvj+zyBoSSxJcb8Exy236nUWMLyEMsdgOaIbD0e71xR/asezqQT+Yw5xMaS+/WIp/iba/GV8rbz58IhKpBkMDiDtfcyvSmWdiTE1uwbva0eo7Jgz14novY6R3ehgk5xSebryRsTBjAezTJ9NE/VoZA4FLgZcELYq616kN9NB/31k80nvPJPUEaq/aEX63hjxz9gO3RBpPCbpX+69FC200EPlr4zJhOVUj4bjF9dPmuTQLCv5nSI7uT5+9ARAqg7tNkT/lqXtJ3Bu3Eg8NoE3W79+kUts1pA9kyWWE594XjZ4woc/xQvQpOUQ==
+ b=U7ch11hlCUItG5wv1DbLI8yFYqQJxowTzo5YLjpuAyqstLgziFWECnzSWYLR9MjU6HihP/TsXmNeChluKtxethbiJr3jmm+s2q262aYtxGMLTrWQARvNzD0LINLp03TnL7EZ+jQGqIZDEOdy+FyoUH8DufY+byou84ShbNDvoqhEdiE53qM3U4KGD1dop4GVM8oYtxfnLAZq6qqsmgJr2TDLc6bxZQrbqigGqkku0pl8EdhNgCgY6NY5miFgB1caAVlf/OkgdNmFicAnW+I0DX1fHwMECev+bGxHMYqaQq6ms+dUFfdYDEHg5Ic1/QOGiuly3+eHTnQ5obuhqsKHAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UxQAxOpKvxqFsvJpMQI43AF34ymdkXadTcBVW4ZA+uo=;
- b=Rl57jP03H/nJrpYnIPEA2Vb6aFaumWlOWxBWcXc/1rDSXWm+4rfXu1rNr/J0faFaQqEEJjkiDTcpCX5EA8RPgev7jJpXy5ujWW6Rl7IWVsB7agGgi+s8U0BoROhOg2y2HtJjiq1KoVotxRX5s8byBE7Li1Wout5phfelQvadwnZizAZBotGnxvtKSSerpLE3b7ulZszm62tMnImoB4aaT8LwwxaXhguqrwEWGrWpo4cY7/g9+is9aTojRYYVJA2w+2JuaT9wW849mY2eLHv2hZMSUAMfaF9hNjgZ5cdFKGdwkpa2Xj6Hneb96T+or1m5x2V+DhB/MWb+l7GIQniwTA==
+ bh=frREI8N7nDaabQetHTk8L8o90ZlFHecJUW3bPYA/9Aw=;
+ b=AJfV67zp7Bk2GhpcG8SmEzBW4QtMF1s10WR3Sdprc3V/+h4U63Sca/d+Dc3yVYBTcVJQx51Ci5dMixwAQR9dt3Hjrm8pMZJtm9es4bWTqJhNW25yT3lQH/d/zimClQRW97eZ6Nmjqyyx/mLUaMprVYG+oQQS5mh0OeVy36Law+y5vJKrAkLL/qNpDx16yu1oeqctHmPL+MpLLkde7gPSwH2dAAVizKMcXTOqXZmPe1QzT7pn1CM0NmTSgq9To4xV5wlS+Z2Ujc3KS1V4DqSrTBl9gq6vahh+luOZ3n+XFqM6JuyvJOYwZlCDQ04Hxl75eSgXlQoAbcY36H5a5OVrxA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UxQAxOpKvxqFsvJpMQI43AF34ymdkXadTcBVW4ZA+uo=;
- b=KCXiEfEM4nWRy+0Gt1RI72V3UEvgoFg4+Urf5U6swZt53lQy+sE5pN+zfLP1BSO9E97I1XT2Iu3JAX/0kPLyngOM11YeQZPGKTnN3EDu3FEi6l6i5qrJJ6Eew/TLR97+OVF/Ukhxs4cZWKfIBlz0W9R/oggDnp3tZ9mvEllawCs=
+ bh=frREI8N7nDaabQetHTk8L8o90ZlFHecJUW3bPYA/9Aw=;
+ b=iPedQZw27t33UI8CTEcjefeNQ+wAgmy9pL3ClEE+x7oJDqlZdVoiKS6+4/vjt3o2rdn2KjeAFTLDBlht6LjSCrwNtf0yCTFjGGHoDTtq93/9B9hApgb3jR+uApT88Xt5OzChMgHgb1rjAnFGQGzWbNGc3KVM7pnbRAhMSQcM51A=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8793.eurprd04.prod.outlook.com (2603:10a6:20b:408::22)
- by PAXPR04MB8942.eurprd04.prod.outlook.com (2603:10a6:102:20d::24) with
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DB9PR04MB8236.eurprd04.prod.outlook.com (2603:10a6:10:245::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.23; Fri, 30 Sep
- 2022 18:35:07 +0000
-Received: from AM9PR04MB8793.eurprd04.prod.outlook.com
- ([fe80::4d5d:40ae:e0c0:63a3]) by AM9PR04MB8793.eurprd04.prod.outlook.com
- ([fe80::4d5d:40ae:e0c0:63a3%7]) with mapi id 15.20.5676.023; Fri, 30 Sep 2022
- 18:35:07 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: imx@lists.linux.dev,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 2/2] arm64: dts: imx8dxl: add usb1 and usb2 support
-Date: Fri, 30 Sep 2022 13:34:25 -0500
-Message-Id: <20220930183426.1130641-2-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220930183426.1130641-1-Frank.Li@nxp.com>
-References: <20220930183426.1130641-1-Frank.Li@nxp.com>
+ 2022 19:38:11 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::a543:fc4e:f6c5:b11f]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::a543:fc4e:f6c5:b11f%9]) with mapi id 15.20.5676.023; Fri, 30 Sep 2022
+ 19:38:11 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH 1/1] net: fec: using page pool to manage RX buffers
+Date: Fri, 30 Sep 2022 14:37:51 -0500
+Message-Id: <20220930193751.1249054-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0272.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::7) To AM9PR04MB8793.eurprd04.prod.outlook.com
- (2603:10a6:20b:408::22)
+X-ClientProxiedBy: BYAPR11CA0063.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::40) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,185 +59,460 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8793:EE_|PAXPR04MB8942:EE_
-X-MS-Office365-Filtering-Correlation-Id: de1fdf34-b801-4094-04b9-08daa3127f68
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DB9PR04MB8236:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4ffa2fe-2e84-4ca5-ef52-08daa31b4ed6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	JdQ2UeQqleDJpIKrZza5C3rl/EmBhFjhYFUFzAKFLtYaPpYMWyFicovaGPDMQZmj3rUeBcbLDNmXQSqWcWNEXHpQLnBPsSz2Ie8UFUPY7XW2rtXrYIu8pk+F4pGrtec3qxG4ADMIBuiPFyD/U1cBWcrdQHrAdh2w90PGKdW1s8/5xCqCFpPY5BTZoflC1eNQgc2iSJduEirZC/BWzudikqGiNiAZm+gYTMG8XdmFLQ0+zGno74/Hv3/ixSW8tSdu7aqMlTJPjf650XluuZBKPPtt+sKfXd3BAS26BGq6D3WBhSmVev6Ihw2bvYZLHr0EmpJw83IoAnuG2TAE8xxSXtM1XreFy6qfVXwYgGTGnM8B/3nTquxc32UQj6X05kuT2IS9m+b2Y5Kge4hMmdEFH1VlNNA901JOlLNjYa8ysd13L9oRnlX6qZG4zpYqn2rBUA8X7mZcXVoaJCS5VAfDXScT5fHngzTl7AiMQHmE9eY1GN3j0qsALKbhp85lmVdfpGdXbKwkGK4ra+MLsDMkC5a5ORoaq7/KcxzZ5MRPzADpgM766thmK+ZaP/TxuEOPkQCKvy8X36AxFxVNTxX/QRFmqEzN+jxMc5ja7hthKUQ3FB666O2s3o57WF7q1dYxRNchFKZBQ5430DrcoPfRuPENJl1nfAmFCYvdoirAi3hjpad8fzxSF6/adgBHl1mHglSWOTDleMvAJaG+O162wbnZzv+C5s1zxJ2cI9Ip48aYtYn1ErDflvJCqmVaPn35oOxRUOHtPmZEwZRgLxWYcUAHhxLL7TZ6t1Lw/y2xFlNfH/0fqHyIife9IG91oJU1
+	V/FrxUk4H96m92U2EfU4NldBLCt4aFycI8VV3mBoABmVC/kI/DlVDcd46AOz9lLRlbwJm2v6m+ENkkuFCl1jkb6jVwZDSHcHzaY6UxxnQbibV90EQMrqavLSD9JSK9KiGyGCr6MKqRYMhrdzB5vGOg9F3DKVJ33Wn0ZN39rWIyTXq63CKbJR8KlGnBFE61M2ktOEeg35+LrJZwma/tbfm3IUdsS1CkTHn0xA4+DgBq6Ej5AIN/P2tlu1i0kjhW0p+SZaKOKhvy4LOc8Uin9GPiwrgEme5yUK+VYyvTQVJ3/sf4/TSAT7hAPzUgQjMgEh/7dxz/xyIA2yhehTH5/JlK4UinALh/Lg5E7eiqWA+K3fRo4fsEj2m+zUF8PjkSVRm6cRBlFmY0hlmanPHtXIS4dsp+DZdaL6H9aGnB8MEkXGxpyK+kGKB2yPGi4o1tAItzz82BupXXWZiIpoJnenV0ABoaxSHk9dWCOVnqxpsTRD4NX8l8whvu8Y26STtCULvnFN7LE1OoXhmj2vKQAF1vcija+BAZgXwHhBEKdZK44zPaInWEiUtGH+19237Q1TcOl4yqfI/P+PLnpZxEjqETh3Hhh8F3bXyCjOdkSuFlaimMohqazcB5z7J+kyQvOQBFB6m0XVy+BSFWwfElXWPFkzLfqwOgC4hf5FQKgelguypHJArCjpxkXccZI1OR4GddBaBKRSnx7pcxDinfVFl4gcoX64UAx50WMuozrc2mrF65C/uwGXuETpPy4XXE0UiOghixsqvQS6YUX2CO1b0A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8793.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(346002)(366004)(396003)(376002)(451199015)(2616005)(478600001)(921005)(6486002)(2906002)(110136005)(316002)(5660300002)(86362001)(38350700002)(38100700002)(8936002)(26005)(7416002)(66476007)(83380400001)(6666004)(66946007)(186003)(41300700001)(6512007)(52116002)(36756003)(6506007)(1076003)(8676002)(66556008)(32563001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(366004)(376002)(136003)(346002)(39860400002)(451199015)(44832011)(5660300002)(7416002)(8936002)(30864003)(36756003)(2906002)(38100700002)(110136005)(54906003)(66556008)(66476007)(4326008)(41300700001)(8676002)(316002)(66946007)(2616005)(186003)(1076003)(6512007)(26005)(55236004)(38350700002)(6666004)(86362001)(52116002)(478600001)(6486002)(6506007)(83380400001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+EGA9M8fyN+oQM2Og0JT2vh6wxmD93WrWtA3uWlKkHLHieDAzDQxNcVVjeHT?=
- =?us-ascii?Q?WK/Z3mAF5K1jeiI9rQnk6cc7Ot5n/pOpJGoUTTIIgR8My7titEYDNs0jeB0t?=
- =?us-ascii?Q?Xh5dURvjyGOha4yfcCHWBmzz2DO4WEwzZUDP+4rDsAPhCFFa4vvEBtKSeF0A?=
- =?us-ascii?Q?y1aUsjQkLlPYeXatvRwdidyXi7qOgAyjyRgt6wPpe4uSKqzLlD63afx84rcL?=
- =?us-ascii?Q?LxIG8nyQNzEB1Uw7exrfk3ynGF3ZIHxNr2lOqduMnzaJ75PQGTTWTqxH1+5E?=
- =?us-ascii?Q?kAWKQCTT7MauMZSyJ4XUyrcRNSZmf8K1pLGgtvTxYCQpG2mjPF5OEWMx49OK?=
- =?us-ascii?Q?IDZbm1FSlhI0lTF67zZ9rzytc2QmtMXfBXNbkaCeNeTad2T4l8qluyTsVt9z?=
- =?us-ascii?Q?+kAzCItMZXZaqkC6iLjyBZRlTwhripizomjo58GeUb0oLD93qHfP9RGDlV4m?=
- =?us-ascii?Q?BtfO6C4pIsmzoV2Pv79bzqrL2lflGnNUHuzc17aW8fILobZTO5GvfZd3W5uq?=
- =?us-ascii?Q?+NZSRZHCZzOpts3GhuP0pZGqYMd2h4NJoYmb1sM8992z5/deIGXVWIHf2O9y?=
- =?us-ascii?Q?q38yuqca02TO8QKsrIm1K9uvcOOkmSUNjuNvWqKK/uIRNEds7CR4sBgpMhLL?=
- =?us-ascii?Q?2B0OrnzWSBJM/prR8q7NORUjUpCRnQMyMaz5ohjyqYCRUFlTJ+GLEPFc0r6n?=
- =?us-ascii?Q?iijGvtr3USSW99X0AIMLwbXto08/YTpMp+NlSwWZWhCINEG3nyiiTGmHFnCk?=
- =?us-ascii?Q?48+hCdNkleTPFGVHYljlu6k3eSDz+gEgYrberyNkE60qPchNb98n2xTGuda0?=
- =?us-ascii?Q?dq2fsulU+JMEK4UNrD+oCk9eCbs+B+XzBOygRsMvcAYmEj6B7vr8zYxCif/4?=
- =?us-ascii?Q?gTFfjBArmWRPEg/WcfIHaL7XuVnwa5exZ4/MoOPEtNH4wCOGzK49s8ciYKJU?=
- =?us-ascii?Q?InkUhDi5r8LruFyCfgLVLSAcVkWuSIx2EL1pDtuIPQXCrTLAjzLaeSZANAib?=
- =?us-ascii?Q?MZc/BMsl8qktsiAWM+mTuqUJtTKjLvIfrZf/8lZ3R5Axp7fKkuegvzVaj/0Z?=
- =?us-ascii?Q?v+eVX4UheJPBPkWti9jSQG/ehpbz0GJuZL0dVFOFjGUQ30bHMk4R06/xEoUP?=
- =?us-ascii?Q?KmcL8sXYwM2yjkmRNeyzYW0LbJaFFBi68MK9u0q5aQDdzSWOHR3EUljG6Y5G?=
- =?us-ascii?Q?C1FkaiSSnPYOiR9y9SjYlpvzOy7zO8179Fn04ZuASEMy/Grnh5+5+kArlj5x?=
- =?us-ascii?Q?rBS3F+BBgL5QKf307N1oh5Nb8Kstx5CPXf5qfnT2sdny9EhqaaIRvM3sVZoI?=
- =?us-ascii?Q?w/McMnSplitAWevAncFN0ZrUfYFhmohsGAGGuN0o4oMVgN3EEcNfX3rPGkih?=
- =?us-ascii?Q?d0EoUo73WohpUrPv9JOF42EvpwuMbRK5RbDdRfVz2WBg2F6TKdadQR5u4Md4?=
- =?us-ascii?Q?qljM4a8LF33DeKoxHtXvAxACFeS1Il5J9bYeJeaDhBetaL4n3n9kX2Lcu5Cl?=
- =?us-ascii?Q?bE9BZGNGAzjVv8YZ/keRl+BbBQwFmCoOFT4VYh9B/VSZwSzBxwtgiscQFLQT?=
- =?us-ascii?Q?PsGKsfd4dbNu7nzeR0FlYALU64V1tyVgpAtMxuHw?=
+	=?us-ascii?Q?BGIrz0R2sEAGk3ivVlAXtoi+8H1V8/svnlJYDDN6GSLoLZCqEiAU4Z7QG+r9?=
+ =?us-ascii?Q?/C+dxNy3lD8JO9vjPod79Q8cKpN02Vja0Q6KjD+QM4xxveGxXtOYV+vJp7yp?=
+ =?us-ascii?Q?HUGKO/eEK1FVcNB7VPZHTpMmmPBVyBb4nASlYZXrRehX3w4/qxCuf+T7SjQh?=
+ =?us-ascii?Q?slcHD5EloM+6bGLmCHDNc8GQmy0/U6fZU3WyPFC3VYB+SSbg5P5pXPcdIbDO?=
+ =?us-ascii?Q?P6fhYVZoHT38N+WJjNcB8AuOM0D+xTsRrgZO3id07j2qlNjbhKWFMwmoMKBy?=
+ =?us-ascii?Q?5dVyi9d6d2Wn5IhsTP48qoRZbL1EZyntbRbZFGPMBa4XQvoPSOam1fHm47Rz?=
+ =?us-ascii?Q?tYKzjFw6oPXILJKyi4qCqtqTkVIclHvzcctegyLVMmvzTs3BuFaFt6tqnU+C?=
+ =?us-ascii?Q?C5oANwb20yWCf7Z8zwC0/uWKon23PXqwYoR7ui/QX/52q5jGXMhndwrF9aAn?=
+ =?us-ascii?Q?dAG116GSNhsSXBBnFsjXlH7Yttef6u6lRCOWui0SHJqLFj49zCAAlPQVjMSk?=
+ =?us-ascii?Q?XNswiWW8jerI4N53G+krCvkI66BgRs9qWfAP+JuZz9nrUTA+S+BBZ49s3tZs?=
+ =?us-ascii?Q?plKpl1yKmwWGBq9SOfZQVGhvaiGlF8h16wqW0JRGpXO+nKo8G3JdQgAEEAQd?=
+ =?us-ascii?Q?9rgDc90L6OfFpkJZkM/knMfk6ElD8pkUk86QiwsFetvZWEUUlw9HSSH8thHV?=
+ =?us-ascii?Q?kvVIO7c9xGQxoFV0PYWynpU8DOAuNo8jh5WfYaNs2l4TesOVzSxHUE/S1tiM?=
+ =?us-ascii?Q?eFGfQ06aVolvsa/+IsoB5nwvwkmhhOqjesj+XF1E1tTiR/AdNoHh0yXI8niT?=
+ =?us-ascii?Q?gDXzDj0J9tAF4MiYrMBzrA8iFbffnp73ODEProcy3XtBDFFkKy4V5heOPHrq?=
+ =?us-ascii?Q?95j8umqYz01HSdJXbDAKbrii0ajbaoBTy5yHSQC9lyDWlVrr5CH7oJZ4rfyK?=
+ =?us-ascii?Q?sJ96vhgzczAxjRjqcHgdh5Bof6F8T6kJ6I29QXcx2ImH/xZIVWEh4l+2nZrE?=
+ =?us-ascii?Q?SrSi9B/vAWHXXkir7jqmEjRhgokw8NCysWQsVw0aWs3kLOqp9RplNjFKOg12?=
+ =?us-ascii?Q?kj7sXD2ie1cqI0Zgb8TuIV+sqRi1qIIX7NHT1deLLrHF77HDMfkM+18VvyT5?=
+ =?us-ascii?Q?cTWBMmyqJk9bJcVwcOQVWxbbmysNwVtIr6LqPzMxMyDEbbQN72PHIT3Cqf2X?=
+ =?us-ascii?Q?G3hgJpoFAEiKIRCJfu7mwhyl7C6SWKHYLwHJRsq+Nh1ia/lxLPsaXyZWmRmx?=
+ =?us-ascii?Q?voGOuEZAeNLAJvGBj7rAGt8ZQdalCmN8PuQt7b+0468STSlw5GlFFoI/8Ckv?=
+ =?us-ascii?Q?fTxjwQUGr9CkdPrvQ5EB4nYDn3gztWLbgrc07UV/jg9ApDXKWGidB4DBkxiv?=
+ =?us-ascii?Q?dUbI0iH6hyxj/xsjpw6DiCKJQvPRg2NSWWjl1OwVHcZVOBYNWdkZdjqvWoZ1?=
+ =?us-ascii?Q?4DRuFYLTTmueJ1FwP59M1yKXMcbkyw8v9K1b3NT2WOazHH7POG8aNYiGIESa?=
+ =?us-ascii?Q?ArNZUI/kJHMB1EKep6rQd5H5v+8cPmEc0iehEz3zV5hTIE7PqOJMzhKLVqHr?=
+ =?us-ascii?Q?KKSkdQDUTXZwq8KBxEXxtZKeStb1WcD6VifkmzSt?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de1fdf34-b801-4094-04b9-08daa3127f68
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8793.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4ffa2fe-2e84-4ca5-ef52-08daa31b4ed6
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2022 18:35:07.0341
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2022 19:38:11.1780
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hLYTwLmIgUXXuImNemuUxqpt/2Tmhsy4CdsU07W/A0ujHe+AfvBRPr6TE2IbdWZhKLUX3EpuxGqyheO7akmtNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8942
+X-MS-Exchange-CrossTenant-UserPrincipalName: XS/oOPjhNDPTHKe0BDUj9ISl3Y1X70rBHdGonZp1TNPM6k/a6W3FEprAU3E1J3bup9zMGSmNBlZj1D30XwQtdg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8236
 
-There are two chipidea usb controller in 8dxl.
-Add usb node at common connect subsystem.
-Enable two usb at imx8dxl_evk boards dts.
+This patch optimizes the RX buffer management by using the page
+pool. The purpose for this change is to prepare for the following
+XDP support. The current driver uses one frame per page for easy
+management.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The following are the comparing result between page pool implementation
+and the original implementation (non page pool).
+
+ --- Page Pool implementation ----
+
+shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+------------------------------------------------------------
+Client connecting to 10.81.16.245, TCP port 5001
+TCP window size:  416 KByte (WARNING: requested 1.91 MByte)
+------------------------------------------------------------
+[  1] local 10.81.17.20 port 43204 connected with 10.81.16.245 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-1.0000 sec   111 MBytes   933 Mbits/sec
+[  1] 1.0000-2.0000 sec   111 MBytes   934 Mbits/sec
+[  1] 2.0000-3.0000 sec   112 MBytes   935 Mbits/sec
+[  1] 3.0000-4.0000 sec   111 MBytes   933 Mbits/sec
+[  1] 4.0000-5.0000 sec   111 MBytes   934 Mbits/sec
+[  1] 5.0000-6.0000 sec   111 MBytes   933 Mbits/sec
+[  1] 6.0000-7.0000 sec   111 MBytes   931 Mbits/sec
+[  1] 7.0000-8.0000 sec   112 MBytes   935 Mbits/sec
+[  1] 8.0000-9.0000 sec   111 MBytes   933 Mbits/sec
+[  1] 9.0000-10.0000 sec   112 MBytes   935 Mbits/sec
+[  1] 0.0000-10.0077 sec  1.09 GBytes   933 Mbits/sec
+
+ --- Non Page Pool implementation ----
+
+shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+------------------------------------------------------------
+Client connecting to 10.81.16.245, TCP port 5001
+TCP window size:  416 KByte (WARNING: requested 1.91 MByte)
+------------------------------------------------------------
+[  1] local 10.81.17.20 port 49154 connected with 10.81.16.245 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-1.0000 sec   104 MBytes   868 Mbits/sec
+[  1] 1.0000-2.0000 sec   105 MBytes   878 Mbits/sec
+[  1] 2.0000-3.0000 sec   105 MBytes   881 Mbits/sec
+[  1] 3.0000-4.0000 sec   105 MBytes   879 Mbits/sec
+[  1] 4.0000-5.0000 sec   105 MBytes   878 Mbits/sec
+[  1] 5.0000-6.0000 sec   105 MBytes   878 Mbits/sec
+[  1] 6.0000-7.0000 sec   104 MBytes   875 Mbits/sec
+[  1] 7.0000-8.0000 sec   104 MBytes   875 Mbits/sec
+[  1] 8.0000-9.0000 sec   104 MBytes   873 Mbits/sec
+[  1] 9.0000-10.0000 sec   104 MBytes   875 Mbits/sec
+[  1] 0.0000-10.0073 sec  1.02 GBytes   875 Mbits/sec
+
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 ---
- .../boot/dts/freescale/imx8-ss-conn.dtsi      | 39 +++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 34 ++++++++++++++++
- .../boot/dts/freescale/imx8dxl-ss-conn.dtsi   | 10 +++++
- 3 files changed, 83 insertions(+)
+ drivers/net/ethernet/freescale/Kconfig    |   1 +
+ drivers/net/ethernet/freescale/fec.h      |  35 ++++-
+ drivers/net/ethernet/freescale/fec_main.c | 155 ++++++++++++++--------
+ 3 files changed, 134 insertions(+), 57 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-index 82a1c44883786..bf72732e311a6 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-@@ -34,6 +34,35 @@ conn_ipg_clk: clock-conn-ipg {
- 		clock-output-names = "conn_ipg_clk";
- 	};
+diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
+index b7bf45cec29d..ce866ae3df03 100644
+--- a/drivers/net/ethernet/freescale/Kconfig
++++ b/drivers/net/ethernet/freescale/Kconfig
+@@ -28,6 +28,7 @@ config FEC
+ 	depends on PTP_1588_CLOCK_OPTIONAL
+ 	select CRC32
+ 	select PHYLIB
++	select PAGE_POOL
+ 	imply NET_SELFTESTS
+ 	help
+ 	  Say Y here if you want to use the built-in 10/100 Fast ethernet
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index b0100fe3c9e4..7be56cc1ddb4 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -17,6 +17,7 @@
+ #include <linux/clocksource.h>
+ #include <linux/net_tstamp.h>
+ #include <linux/pm_qos.h>
++#include <linux/bpf.h>
+ #include <linux/ptp_clock_kernel.h>
+ #include <linux/timecounter.h>
+ #include <dt-bindings/firmware/imx/rsrc.h>
+@@ -346,8 +347,11 @@ struct bufdesc_ex {
+  * the skbuffer directly.
+  */
  
-+	usbotg1: usb@5b0d0000 {
-+		compatible = "fsl,imx7ulp-usb";
-+		reg = <0x5b0d0000 0x200>;
-+		interrupt-parent = <&gic>;
-+		interrupts = <GIC_SPI 267 IRQ_TYPE_LEVEL_HIGH>;
-+		fsl,usbphy = <&usbphy1>;
-+		fsl,usbmisc = <&usbmisc1 0>;
-+		clocks = <&usb2_lpcg 0>;
-+		ahb-burst-config = <0x0>;
-+		tx-burst-size-dword = <0x10>;
-+		rx-burst-size-dword = <0x10>;
-+		power-domains = <&pd IMX_SC_R_USB_0>;
-+		status = "disabled";
-+	};
++#define FEC_ENET_XDP_HEADROOM	(XDP_PACKET_HEADROOM)
 +
-+	usbmisc1: usbmisc@5b0d0200 {
-+		#index-cells = <1>;
-+		compatible = "fsl,imx7ulp-usbmisc", "fsl,imx6q-usbmisc";
-+		reg = <0x5b0d0200 0x200>;
-+	};
-+
-+	usbphy1: usbphy@5b100000 {
-+		compatible = "fsl,imx7ulp-usbphy";
-+		reg = <0x5b100000 0x1000>;
-+		clocks = <&usb2_lpcg 1>;
-+		power-domains = <&pd IMX_SC_R_USB_0_PHY>;
-+		status = "disabled";
-+	};
-+
- 	usdhc1: mmc@5b010000 {
- 		interrupts = <GIC_SPI 232 IRQ_TYPE_LEVEL_HIGH>;
- 		reg = <0x5b010000 0x10000>;
-@@ -195,4 +224,14 @@ enet1_lpcg: clock-controller@5b240000 {
- 				     "enet1_lpcg_ipg_s_clk";
- 		power-domains = <&pd IMX_SC_R_ENET_1>;
- 	};
-+
-+	usb2_lpcg: clock-controller@5b270000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x5b270000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&conn_ahb_clk>, <&conn_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_6>, <IMX_LPCG_CLK_7>;
-+		clock-output-names = "usboh3_ahb_clk", "usboh3_phy_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_USB_0_PHY>;
-+	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-index ca2a43e0cbf61..a91a70651ea4f 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-@@ -266,6 +266,40 @@ map0 {
- 	};
+ #define FEC_ENET_RX_PAGES	256
+-#define FEC_ENET_RX_FRSIZE	2048
++#define FEC_ENET_RX_FRSIZE	(PAGE_SIZE - FEC_ENET_XDP_HEADROOM \
++		- SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+ #define FEC_ENET_RX_FRPPG	(PAGE_SIZE / FEC_ENET_RX_FRSIZE)
+ #define RX_RING_SIZE		(FEC_ENET_RX_FRPPG * FEC_ENET_RX_PAGES)
+ #define FEC_ENET_TX_FRSIZE	2048
+@@ -517,6 +521,22 @@ struct bufdesc_prop {
+ 	unsigned char dsize_log2;
  };
  
-+&usbphy1 {
-+	/* USB eye diagram tests result */
-+	fsl,tx-d-cal = <114>;
-+	status = "okay";
++struct fec_enet_priv_txrx_info {
++	int	offset;
++	struct	page *page;
++	struct  sk_buff *skb;
 +};
 +
-+&usbotg1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usbotg1>;
-+	srp-disable;
-+	hnp-disable;
-+	adp-disable;
-+	power-active-high;
-+	disable-over-current;
-+	status = "okay";
++struct fec_enet_xdp_stats {
++	u64	xdp_pass;
++	u64	xdp_drop;
++	u64	xdp_xmit;
++	u64	xdp_redirect;
++	u64	xdp_xmit_err;
++	u64	xdp_tx;
++	u64	xdp_tx_err;
 +};
 +
-+&usbphy2 {
-+	/* USB eye diagram tests result */
-+	fsl,tx-d-cal = <111>;
-+	status = "okay";
-+};
+ struct fec_enet_priv_tx_q {
+ 	struct bufdesc_prop bd;
+ 	unsigned char *tx_bounce[TX_RING_SIZE];
+@@ -532,7 +552,15 @@ struct fec_enet_priv_tx_q {
+ 
+ struct fec_enet_priv_rx_q {
+ 	struct bufdesc_prop bd;
+-	struct  sk_buff *rx_skbuff[RX_RING_SIZE];
++	struct  fec_enet_priv_txrx_info rx_skb_info[RX_RING_SIZE];
 +
-+&usbotg2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usbotg2>;
-+	srp-disable;
-+	hnp-disable;
-+	adp-disable;
-+	power-active-high;
-+	disable-over-current;
-+	status = "okay";
-+};
++	/* page_pool */
++	struct page_pool *page_pool;
++	struct xdp_rxq_info xdp_rxq;
++	struct fec_enet_xdp_stats stats;
 +
- &usdhc1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usdhc1>;
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-index 69c4849f21321..6b416fb760d59 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-@@ -140,3 +140,13 @@ &usdhc3 {
- 	compatible = "fsl,imx8dxl-usdhc", "fsl,imx8qxp-usdhc";
- 	interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
++	/* rx queue number, in the range 0-7 */
++	u8 id;
  };
+ 
+ struct fec_stop_mode_gpr {
+@@ -644,6 +672,9 @@ struct fec_enet_private {
+ 
+ 	struct imx_sc_ipc *ipc_handle;
+ 
++	/* XDP BPF Program */
++	struct bpf_prog *xdp_prog;
 +
-+&usbotg1 {
-+	interrupts = <GIC_SPI 169 IRQ_TYPE_LEVEL_HIGH>;
-+	/*
-+	 * usbotg1 and usbotg2 share one clock
-+	 * scfw disable clock access and keep it always on
-+	 * in case other core (M4) use one of these.
-+	 */
-+	clocks = <&clk_dummy>;
-+};
+ 	u64 ethtool_stats[];
+ };
+ 
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 59921218a8a4..643b4f6627ab 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -66,6 +66,8 @@
+ #include <linux/mfd/syscon.h>
+ #include <linux/regmap.h>
+ #include <soc/imx/cpuidle.h>
++#include <linux/filter.h>
++#include <linux/bpf.h>
+ 
+ #include <asm/cacheflush.h>
+ 
+@@ -422,6 +424,49 @@ fec_enet_clear_csum(struct sk_buff *skb, struct net_device *ndev)
+ 	return 0;
+ }
+ 
++static int
++fec_enet_create_page_pool(struct fec_enet_private *fep,
++			  struct fec_enet_priv_rx_q *rxq, int size)
++{
++	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
++	struct page_pool_params pp_params = {
++		.order = 0,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
++		.pool_size = size,
++		.nid = dev_to_node(&fep->pdev->dev),
++		.dev = &fep->pdev->dev,
++		.dma_dir = xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE,
++		.offset = FEC_ENET_XDP_HEADROOM,
++		.max_len = FEC_ENET_RX_FRSIZE,
++	};
++	int err;
++
++	rxq->page_pool = page_pool_create(&pp_params);
++	if (IS_ERR(rxq->page_pool)) {
++		err = PTR_ERR(rxq->page_pool);
++		rxq->page_pool = NULL;
++		return err;
++	}
++
++	err = xdp_rxq_info_reg(&rxq->xdp_rxq, fep->netdev, rxq->id, 0);
++	if (err < 0)
++		goto err_free_pp;
++
++	err = xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
++					 rxq->page_pool);
++	if (err)
++		goto err_unregister_rxq;
++
++	return 0;
++
++err_unregister_rxq:
++	xdp_rxq_info_unreg(&rxq->xdp_rxq);
++err_free_pp:
++	page_pool_destroy(rxq->page_pool);
++	rxq->page_pool = NULL;
++	return err;
++}
++
+ static struct bufdesc *
+ fec_enet_txq_submit_frag_skb(struct fec_enet_priv_tx_q *txq,
+ 			     struct sk_buff *skb,
+@@ -1450,7 +1495,7 @@ static void fec_enet_tx(struct net_device *ndev)
+ 		fec_enet_tx_queue(ndev, i);
+ }
+ 
+-static int
++static int __maybe_unused
+ fec_enet_new_rxbdp(struct net_device *ndev, struct bufdesc *bdp, struct sk_buff *skb)
+ {
+ 	struct  fec_enet_private *fep = netdev_priv(ndev);
+@@ -1470,8 +1515,9 @@ fec_enet_new_rxbdp(struct net_device *ndev, struct bufdesc *bdp, struct sk_buff
+ 	return 0;
+ }
+ 
+-static bool fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
+-			       struct bufdesc *bdp, u32 length, bool swap)
++static bool __maybe_unused
++fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
++		   struct bufdesc *bdp, u32 length, bool swap)
+ {
+ 	struct  fec_enet_private *fep = netdev_priv(ndev);
+ 	struct sk_buff *new_skb;
+@@ -1496,6 +1542,21 @@ static bool fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
+ 	return true;
+ }
+ 
++static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
++				struct bufdesc *bdp, int index)
++{
++	struct page *new_page;
++	dma_addr_t phys_addr;
++
++	new_page = page_pool_dev_alloc_pages(rxq->page_pool);
++	WARN_ON(!new_page);
++	rxq->rx_skb_info[index].page = new_page;
++
++	rxq->rx_skb_info[index].offset = FEC_ENET_XDP_HEADROOM;
++	phys_addr = page_pool_get_dma_addr(new_page) + FEC_ENET_XDP_HEADROOM;
++	bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
++}
++
+ /* During a receive, the bd_rx.cur points to the current incoming buffer.
+  * When we update through the ring, if the next incoming buffer has
+  * not been given to the system, we just set the empty indicator,
+@@ -1508,7 +1569,6 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	struct fec_enet_priv_rx_q *rxq;
+ 	struct bufdesc *bdp;
+ 	unsigned short status;
+-	struct  sk_buff *skb_new = NULL;
+ 	struct  sk_buff *skb;
+ 	ushort	pkt_len;
+ 	__u8 *data;
+@@ -1517,8 +1577,8 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	bool	vlan_packet_rcvd = false;
+ 	u16	vlan_tag;
+ 	int	index = 0;
+-	bool	is_copybreak;
+ 	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
++	struct page *page;
+ 
+ #ifdef CONFIG_M532x
+ 	flush_cache_all();
+@@ -1570,31 +1630,25 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		ndev->stats.rx_bytes += pkt_len;
+ 
+ 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
+-		skb = rxq->rx_skbuff[index];
++		page = rxq->rx_skb_info[index].page;
++		dma_sync_single_for_cpu(&fep->pdev->dev,
++					fec32_to_cpu(bdp->cbd_bufaddr),
++					pkt_len,
++					DMA_FROM_DEVICE);
++		prefetch(page_address(page));
++		fec_enet_update_cbd(rxq, bdp, index);
+ 
+ 		/* The packet length includes FCS, but we don't want to
+ 		 * include that when passing upstream as it messes up
+ 		 * bridging applications.
+ 		 */
+-		is_copybreak = fec_enet_copybreak(ndev, &skb, bdp, pkt_len - 4,
+-						  need_swap);
+-		if (!is_copybreak) {
+-			skb_new = netdev_alloc_skb(ndev, FEC_ENET_RX_FRSIZE);
+-			if (unlikely(!skb_new)) {
+-				ndev->stats.rx_dropped++;
+-				goto rx_processing_done;
+-			}
+-			dma_unmap_single(&fep->pdev->dev,
+-					 fec32_to_cpu(bdp->cbd_bufaddr),
+-					 FEC_ENET_RX_FRSIZE - fep->rx_align,
+-					 DMA_FROM_DEVICE);
+-		}
+-
+-		prefetch(skb->data - NET_IP_ALIGN);
++		skb = build_skb(page_address(page), PAGE_SIZE);
++		skb_reserve(skb, FEC_ENET_XDP_HEADROOM);
+ 		skb_put(skb, pkt_len - 4);
++		skb_mark_for_recycle(skb);
+ 		data = skb->data;
+ 
+-		if (!is_copybreak && need_swap)
++		if (need_swap)
+ 			swap_buffer(data, pkt_len);
+ 
+ #if !defined(CONFIG_M5272)
+@@ -1649,16 +1703,6 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		skb_record_rx_queue(skb, queue_id);
+ 		napi_gro_receive(&fep->napi, skb);
+ 
+-		if (is_copybreak) {
+-			dma_sync_single_for_device(&fep->pdev->dev,
+-						   fec32_to_cpu(bdp->cbd_bufaddr),
+-						   FEC_ENET_RX_FRSIZE - fep->rx_align,
+-						   DMA_FROM_DEVICE);
+-		} else {
+-			rxq->rx_skbuff[index] = skb_new;
+-			fec_enet_new_rxbdp(ndev, bdp, skb_new);
+-		}
+-
+ rx_processing_done:
+ 		/* Clear the status flags for this buffer */
+ 		status &= ~BD_ENET_RX_STATS;
+@@ -3002,26 +3046,19 @@ static void fec_enet_free_buffers(struct net_device *ndev)
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+ 	unsigned int i;
+ 	struct sk_buff *skb;
+-	struct bufdesc	*bdp;
+ 	struct fec_enet_priv_tx_q *txq;
+ 	struct fec_enet_priv_rx_q *rxq;
+ 	unsigned int q;
+ 
+ 	for (q = 0; q < fep->num_rx_queues; q++) {
+ 		rxq = fep->rx_queue[q];
+-		bdp = rxq->bd.base;
+-		for (i = 0; i < rxq->bd.ring_size; i++) {
+-			skb = rxq->rx_skbuff[i];
+-			rxq->rx_skbuff[i] = NULL;
+-			if (skb) {
+-				dma_unmap_single(&fep->pdev->dev,
+-						 fec32_to_cpu(bdp->cbd_bufaddr),
+-						 FEC_ENET_RX_FRSIZE - fep->rx_align,
+-						 DMA_FROM_DEVICE);
+-				dev_kfree_skb(skb);
+-			}
+-			bdp = fec_enet_get_nextdesc(bdp, &rxq->bd);
+-		}
++		for (i = 0; i < rxq->bd.ring_size; i++)
++			page_pool_release_page(rxq->page_pool, rxq->rx_skb_info[i].page);
++
++		if (xdp_rxq_info_is_reg(&rxq->xdp_rxq))
++			xdp_rxq_info_unreg(&rxq->xdp_rxq);
++		page_pool_destroy(rxq->page_pool);
++		rxq->page_pool = NULL;
+ 	}
+ 
+ 	for (q = 0; q < fep->num_tx_queues; q++) {
+@@ -3111,24 +3148,32 @@ static int
+ fec_enet_alloc_rxq_buffers(struct net_device *ndev, unsigned int queue)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	unsigned int i;
+-	struct sk_buff *skb;
++	int i, err;
+ 	struct bufdesc	*bdp;
+ 	struct fec_enet_priv_rx_q *rxq;
+ 
++	dma_addr_t phys_addr;
++	struct page *page;
++
+ 	rxq = fep->rx_queue[queue];
+ 	bdp = rxq->bd.base;
++
++	err = fec_enet_create_page_pool(fep, rxq, rxq->bd.ring_size);
++	if (err < 0) {
++		netdev_err(ndev, "%s failed queue %d (%d)\n", __func__, queue, err);
++		return err;
++	}
++
+ 	for (i = 0; i < rxq->bd.ring_size; i++) {
+-		skb = __netdev_alloc_skb(ndev, FEC_ENET_RX_FRSIZE, GFP_KERNEL);
+-		if (!skb)
++		page = page_pool_dev_alloc_pages(rxq->page_pool);
++		if (!page)
+ 			goto err_alloc;
+ 
+-		if (fec_enet_new_rxbdp(ndev, bdp, skb)) {
+-			dev_kfree_skb(skb);
+-			goto err_alloc;
+-		}
++		phys_addr = page_pool_get_dma_addr(page) + FEC_ENET_XDP_HEADROOM;
++		bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
+ 
+-		rxq->rx_skbuff[i] = skb;
++		rxq->rx_skb_info[i].page = page;
++		rxq->rx_skb_info[i].offset = FEC_ENET_XDP_HEADROOM;
+ 		bdp->cbd_sc = cpu_to_fec16(BD_ENET_RX_EMPTY);
+ 
+ 		if (fep->bufdesc_ex) {
 -- 
-2.35.1
+2.34.1
 
