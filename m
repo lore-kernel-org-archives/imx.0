@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BD97B
-	for <imx@lists.linux.dev>; Tue,  4 Oct 2022 11:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED94D7B
+	for <imx@lists.linux.dev>; Tue,  4 Oct 2022 11:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1664882311;
+	s=mimecast20190719; t=1664882516;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gnepkY0TgZKqop1C+S4YBSp9YXD3uP2dxXvg2KODGSM=;
-	b=EGwsTaVyTagGMsaoZEeli9lMdU1nwI0XEND8uBLdr4FnmC9KX+Uf4HaIewdF3lALXMaBoR
-	McVMzeHNPMGet/0oweAvYb2HQIbkwRkYk+pfMxXdYARFNrGJm2zxx099evlhUSDAidHEBk
-	jJRztIkdJHPUH8YNJhJP+xj1WWcEc9s=
+	bh=TdrzGR8b2o0PMyri4IUewO1nY7AXkHC5c0JZN4P78VE=;
+	b=eG8gsYS/JPUq75YTTG+jvZTqZohvW9Uy66UGOvrFfCmO0c0+HoHq12uGjgvbRkS+oHFYur
+	BCs/CFsnWsHbmawvgT+kDlRPKmPgEqFvzM/nA6C57j2uKWVNO9BhoOREfRbyIpT6bHmj1P
+	DCZF/dTYcDnlGiQcwSoRO5MjQK6svtw=
 Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
  [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-621-OwkZqF5rOimk-bU8EXKDxA-1; Tue, 04 Oct 2022 07:18:30 -0400
-X-MC-Unique: OwkZqF5rOimk-bU8EXKDxA-1
-Received: by mail-ed1-f70.google.com with SMTP id x5-20020a05640226c500b00451ec193793so10928191edd.16
-        for <imx@lists.linux.dev>; Tue, 04 Oct 2022 04:18:30 -0700 (PDT)
+ us-mta-515-TvyxSvH_N16usszXfiJfPg-1; Tue, 04 Oct 2022 07:21:54 -0400
+X-MC-Unique: TvyxSvH_N16usszXfiJfPg-1
+Received: by mail-ed1-f70.google.com with SMTP id z9-20020a05640240c900b00458dae4ed9cso5199521edb.3
+        for <imx@lists.linux.dev>; Tue, 04 Oct 2022 04:21:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:references:to
          :content-language:subject:cc:user-agent:mime-version:date:message-id
          :from:x-gm-message-state:from:to:cc:subject:date;
-        bh=gnepkY0TgZKqop1C+S4YBSp9YXD3uP2dxXvg2KODGSM=;
-        b=iWayDStamYWQ2RzAPR/yoFfnUnbXPkpKCe756Z/sVIbnfG+JO5l2R/+XMbm9l+aI56
-         z45kuxgQ1C2Vk8lQpCXtyUbLtm0DltNNj8wOhSVRTKhsxSgkgSOXdvExScn4hz2JMGLO
-         T9Xgx2OsCSlS8TqTi/W//ExrDzc3t0nbO8xpmauWuJA+dI6PFumJQVLilqIUMZB5rXA/
-         30Be3dlaF0l7JJYnZRlir4g5SdwnjNRYmVhDgC7lqhif0ArjMBKQdYez+FjOqvnIqpsR
-         xQvQmSJyAOEvOUUpXhvGqhB5iaeILDEK8pWfIV9iXEYuLYCX2i4J1XwELb3WfKE9S4dL
-         sF+Q==
-X-Gm-Message-State: ACrzQf01PqkDhi70PMa2o6+sItHBj/De0EAaJKxJTfm6d3+Zn1cy5XBF
-	DyQsIVhVYbxj4oRwmMM8XxwHq8OQFv7sIwfXOnr/xNnn5T0m0oxpCSSrwFIHrghMGhm+tXpxUDE
-	huAuR5s4Sblfk
-X-Received: by 2002:a05:6402:90a:b0:458:ca4d:a2f8 with SMTP id g10-20020a056402090a00b00458ca4da2f8mr12409295edz.230.1664882309711;
-        Tue, 04 Oct 2022 04:18:29 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM5wxjDzIjFVczqqYoXyO3JSiwl1e1NNSpIMVWjPSFP032LsEqgpeVHfPd879v/3Em5EYMMGTQ==
-X-Received: by 2002:a05:6402:90a:b0:458:ca4d:a2f8 with SMTP id g10-20020a056402090a00b00458ca4da2f8mr12409263edz.230.1664882309499;
-        Tue, 04 Oct 2022 04:18:29 -0700 (PDT)
+        bh=TdrzGR8b2o0PMyri4IUewO1nY7AXkHC5c0JZN4P78VE=;
+        b=m5OhWTjuFLzDON69/cXZyUTD8nua/1Sarvkxh24J+GCkogrwKAn3500o34GbFCvfDj
+         5/S4WgcUxehIAiueP+yZvabs7VgLjFyAEQb845ip9uz8+AOjLsz3gtydFx9w3Qic0LJU
+         yM6vGmnnN4T1a9KperR7IvHg+t3XILkAnezxchDuQhBTSgHKRfkwUMBCgMTeteuci2zj
+         qsbyD0cGGx9uQbT0YJWdeC+QSeei1ej/FvVlp3jWzCcfkiW6JmVn2IatmJbn/Nn5tgaH
+         pmnGnPGrWHQPgwwpXNiiK1Hc+DAlV9gkhzJ+V9rwAR0fjBC+aPQByDdLHqvYLlOnLeCk
+         juIA==
+X-Gm-Message-State: ACrzQf0BaoTVXVRmwa84uZcA/dwbCiYLOKI5N1x+fd2k9VB2zLp2gz5P
+	mG3CC0jXiPCeBiCU4sMGz9L2nw5c1ZgEpkYL4bldIq0LjljOSvJjK63b+sOtDp2sI5Af9LWlkWw
+	XwFMfpbG+8XAD
+X-Received: by 2002:a17:907:9493:b0:78d:1eca:1cda with SMTP id dm19-20020a170907949300b0078d1eca1cdamr799709ejc.407.1664882512755;
+        Tue, 04 Oct 2022 04:21:52 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6rSat7HfiZZunmN6Y5g1Zjqz7Yj6M9P32x+DCZ3aKHZqKFVbkjH8w6Uvd28EgTsY+ojosOmg==
+X-Received: by 2002:a17:907:9493:b0:78d:1eca:1cda with SMTP id dm19-20020a170907949300b0078d1eca1cdamr799694ejc.407.1664882512532;
+        Tue, 04 Oct 2022 04:21:52 -0700 (PDT)
 Received: from [192.168.41.81] (83-90-141-187-cable.dk.customer.tdc.net. [83.90.141.187])
-        by smtp.gmail.com with ESMTPSA id g2-20020a17090604c200b0073d7bef38e3sm6839369eja.45.2022.10.04.04.18.27
+        by smtp.gmail.com with ESMTPSA id z10-20020a50eb4a000000b0044e01e2533asm1494358edp.43.2022.10.04.04.21.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Oct 2022 04:18:28 -0700 (PDT)
+        Tue, 04 Oct 2022 04:21:51 -0700 (PDT)
 From: Jesper Dangaard Brouer <jbrouer@redhat.com>
 X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
-Message-ID: <850048b2-ec8b-26db-6ea7-92ed30aab207@redhat.com>
-Date: Tue, 4 Oct 2022 13:18:27 +0200
+Message-ID: <4f7cf74d-95ca-f93f-7328-e0386348a06e@redhat.com>
+Date: Tue, 4 Oct 2022 13:21:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,19 +56,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
-Cc: brouer@redhat.com, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew@lunn.ch>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
+Cc: brouer@redhat.com, Joakim Zhang <qiangqing.zhang@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
  Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Wei Fang <wei.fang@nxp.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: [PATCH v2 1/1] net: fec: using page pool to manage RX buffers
-To: Jakub Kicinski <kuba@kernel.org>, Shenwei Wang <shenwei.wang@nxp.com>
-References: <20220930204427.1299077-1-shenwei.wang@nxp.com>
- <20221003165157.2bbdae26@kernel.org>
-In-Reply-To: <20221003165157.2bbdae26@kernel.org>
+ John Fastabend <john.fastabend@gmail.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ Magnus Karlsson <magnus.karlsson@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+To: Shenwei Wang <shenwei.wang@nxp.com>,
+ Jesper Dangaard Brouer <jbrouer@redhat.com>, Andrew Lunn <andrew@lunn.ch>
+References: <20220928152509.141490-1-shenwei.wang@nxp.com>
+ <YzT2An2J5afN1w3L@lunn.ch>
+ <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <YzWcI+U1WYJuZIdk@lunn.ch>
+ <PAXPR04MB918545B92E493CB57CDE612B89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com>
+ <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <afb652db-05fc-d3d6-6774-bfd9830414d9@redhat.com>
+ <PAXPR04MB9185743919EC6DDA54FAC3B7895B9@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB9185743919EC6DDA54FAC3B7895B9@PAXPR04MB9185.eurprd04.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -76,22 +87,242 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
-On 04/10/2022 01.51, Jakub Kicinski wrote:
-> On Fri, 30 Sep 2022 15:44:27 -0500 Shenwei Wang wrote:
->> This patch optimizes the RX buffer management by using the page
->> pool. The purpose for this change is to prepare for the following
->> XDP support. The current driver uses one frame per page for easy
->> management.
+On 03/10/2022 14.49, Shenwei Wang wrote:
+> Hi Jesper,
 > 
-> I believe this has been applied as:
+>>>> On mvneta driver/platform we saw huge speedup replacing:
+>>>>
+>>>>      page_pool_release_page(rxq->page_pool, page); with
+>>>>      skb_mark_for_recycle(skb);
+>>>>
 > 
-> commit 95698ff6177b ("net: fec: using page pool to manage RX buffers")
+> After replacing the page_pool_release_page with the
+> skb_mark_for_recycle, I found something confused me a little in the
+> testing result. >
+> I tested with the sample app of "xdpsock" under two modes: 
+>  1. Native (xdpsock -i eth0). 
+>  2. Skb-mode (xdpsock -S -i eth0).
+Great that you are also testing AF_XDP, but do you have a particular
+use-case that needs AF_XDP on this board?
+
+What packet size are used in below results?
+
+> The following are the testing result:
+ >
+>       With page_pool_release_page (pps)  With skb_mark_for_recycle (pps)
 > 
-> to net-next. Thanks!
+>   SKB-Mode                          90K                            200K
+>   Native                           190K                            190K
 > 
 
-Sorry, that I was not quick enough to review and ACK this patch.
-I just went over it quickly and the page_pool adding LGTM, so:
+The default AF_XDP test with xdpsock is rxdrop IIRC.
 
-Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Can you test the normal XDP code path and do a XDP_DROP test via the
+samples tool 'xdp_rxq_info' and cmdline:
+
+   sudo ./xdp_rxq_info --dev eth42 --act XDP_DROP --read
+
+And then same with --skb-mode
+
+> The skb_mark_for_recycle solution boosted the performance of SKB-Mode
+> to 200K+ PPS. That is even higher than the performance of Native
+> solution.  Is this result reasonable? Do you have any clue why the
+> SKB-Mode performance can go higher than that of Native one?
+I might be able to explain this (Cc. AF_XDP maintainers to keep me honest).
+
+When you say "native" *AF_XDP* that isn't Zero-Copy AF_XDP.
+
+Sure, XDP runs in native driver mode and redirects the raw frames into 
+the AF_XDP socket, but as this isn't zero-copy AF_XDP. Thus, the packets 
+needs to be copied into the AF_XDP buffers.
+
+As soon as the frame or SKB (for generic XDP) have been copied it is 
+released/freed by AF_XDP/xsk code (either via xdp_return_buff() or 
+consume_skb()). Thus, it looks like it really pays off to recycle the 
+frame via page_pool, also for the SKB consume_skb() case.
+
+I am still a little surprised that to can be faster than native AF_XDP, 
+as the SKB-mode ("XDP-generic") needs to call through lot more software 
+layers and convert the SKB to look like an xdp_buff.
+
+--Jesper
+
+
+
+>> -----Original Message-----
+>> From: Jesper Dangaard Brouer <jbrouer@redhat.com>
+>> Sent: Thursday, September 29, 2022 1:55 PM
+>> To: Shenwei Wang <shenwei.wang@nxp.com>; Jesper Dangaard Brouer
+>> <jbrouer@redhat.com>; Andrew Lunn <andrew@lunn.ch>
+>> Cc: brouer@redhat.com; Joakim Zhang <qiangqing.zhang@nxp.com>; David S.
+>> Miller <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+>> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Alexei
+>> Starovoitov <ast@kernel.org>; Daniel Borkmann <daniel@iogearbox.net>;
+>> Jesper Dangaard Brouer <hawk@kernel.org>; John Fastabend
+>> <john.fastabend@gmail.com>; netdev@vger.kernel.org; linux-
+>> kernel@vger.kernel.org; imx@lists.linux.dev
+>> Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+>>
+>> Caution: EXT Email
+>>
+>> On 29/09/2022 17.52, Shenwei Wang wrote:
+>>>
+>>>> From: Jesper Dangaard Brouer <jbrouer@redhat.com>
+>>>>
+>>>> On 29/09/2022 15.26, Shenwei Wang wrote:
+>>>>>
+>>>>>> From: Andrew Lunn <andrew@lunn.ch>
+>>>>>> Sent: Thursday, September 29, 2022 8:23 AM
+>>>> [...]
+>>>>>>
+>>>>>>> I actually did some compare testing regarding the page pool for
+>>>>>>> normal traffic.  So far I don't see significant improvement in the
+>>>>>>> current implementation. The performance for large packets improves
+>>>>>>> a little, and the performance for small packets get a little worse.
+>>>>>>
+>>>>>> What hardware was this for? imx51? imx6? imx7 Vybrid? These all use the
+>> FEC.
+>>>>>
+>>>>> I tested on imx8qxp platform. It is ARM64.
+>>>>
+>>>> On mvneta driver/platform we saw huge speedup replacing:
+>>>>
+>>>>      page_pool_release_page(rxq->page_pool, page); with
+>>>>      skb_mark_for_recycle(skb);
+>>>>
+>>>> As I mentioned: Today page_pool have SKB recycle support (you might
+>>>> have looked at drivers that didn't utilize this yet), thus you don't
+>>>> need to release the page (page_pool_release_page) here.  Instead you
+>>>> could simply mark the SKB for recycling, unless driver does some page refcnt
+>> tricks I didn't notice.
+>>>>
+>>>> On the mvneta driver/platform the DMA unmap (in
+>>>> page_pool_release_page) was very expensive. This imx8qxp platform
+>>>> might have faster DMA unmap in case is it cache-coherent.
+>>>>
+>>>> I would be very interested in knowing if skb_mark_for_recycle() helps
+>>>> on this platform, for normal network stack performance.
+>>>>
+>>>
+>>> Did a quick compare testing for the following 3 scenarios:
+>>
+>> Thanks for doing this! :-)
+>>
+>>> 1. original implementation
+>>>
+>>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+>>> ------------------------------------------------------------
+>>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
+>>> KByte (WARNING: requested 1.91 MByte)
+>>> ------------------------------------------------------------
+>>> [  1] local 10.81.17.20 port 49154 connected with 10.81.16.245 port 5001
+>>> [ ID] Interval       Transfer     Bandwidth
+>>> [  1] 0.0000-1.0000 sec   104 MBytes   868 Mbits/sec
+>>> [  1] 1.0000-2.0000 sec   105 MBytes   878 Mbits/sec
+>>> [  1] 2.0000-3.0000 sec   105 MBytes   881 Mbits/sec
+>>> [  1] 3.0000-4.0000 sec   105 MBytes   879 Mbits/sec
+>>> [  1] 4.0000-5.0000 sec   105 MBytes   878 Mbits/sec
+>>> [  1] 5.0000-6.0000 sec   105 MBytes   878 Mbits/sec
+>>> [  1] 6.0000-7.0000 sec   104 MBytes   875 Mbits/sec
+>>> [  1] 7.0000-8.0000 sec   104 MBytes   875 Mbits/sec
+>>> [  1] 8.0000-9.0000 sec   104 MBytes   873 Mbits/sec
+>>> [  1] 9.0000-10.0000 sec   104 MBytes   875 Mbits/sec
+>>> [  1] 0.0000-10.0073 sec  1.02 GBytes   875 Mbits/sec
+>>>
+>>> 2. Page pool with page_pool_release_page
+>>>
+>>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+>>> ------------------------------------------------------------
+>>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
+>>> KByte (WARNING: requested 1.91 MByte)
+>>> ------------------------------------------------------------
+>>> [  1] local 10.81.17.20 port 35924 connected with 10.81.16.245 port 5001
+>>> [ ID] Interval       Transfer     Bandwidth
+>>> [  1] 0.0000-1.0000 sec   101 MBytes   849 Mbits/sec
+>>> [  1] 1.0000-2.0000 sec   102 MBytes   860 Mbits/sec
+>>> [  1] 2.0000-3.0000 sec   102 MBytes   860 Mbits/sec
+>>> [  1] 3.0000-4.0000 sec   102 MBytes   859 Mbits/sec
+>>> [  1] 4.0000-5.0000 sec   103 MBytes   863 Mbits/sec
+>>> [  1] 5.0000-6.0000 sec   103 MBytes   864 Mbits/sec
+>>> [  1] 6.0000-7.0000 sec   103 MBytes   863 Mbits/sec
+>>> [  1] 7.0000-8.0000 sec   103 MBytes   865 Mbits/sec
+>>> [  1] 8.0000-9.0000 sec   103 MBytes   862 Mbits/sec
+>>> [  1] 9.0000-10.0000 sec   102 MBytes   856 Mbits/sec
+>>> [  1] 0.0000-10.0246 sec  1.00 GBytes   858 Mbits/sec
+>>>
+>>>
+>>> 3. page pool with skb_mark_for_recycle
+>>>
+>>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
+>>> ------------------------------------------------------------
+>>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
+>>> KByte (WARNING: requested 1.91 MByte)
+>>> ------------------------------------------------------------
+>>> [  1] local 10.81.17.20 port 42724 connected with 10.81.16.245 port 5001
+>>> [ ID] Interval       Transfer     Bandwidth
+>>> [  1] 0.0000-1.0000 sec   111 MBytes   931 Mbits/sec
+>>> [  1] 1.0000-2.0000 sec   112 MBytes   935 Mbits/sec
+>>> [  1] 2.0000-3.0000 sec   111 MBytes   934 Mbits/sec
+>>> [  1] 3.0000-4.0000 sec   111 MBytes   934 Mbits/sec
+>>> [  1] 4.0000-5.0000 sec   111 MBytes   934 Mbits/sec
+>>> [  1] 5.0000-6.0000 sec   112 MBytes   935 Mbits/sec
+>>> [  1] 6.0000-7.0000 sec   111 MBytes   934 Mbits/sec
+>>> [  1] 7.0000-8.0000 sec   111 MBytes   933 Mbits/sec
+>>> [  1] 8.0000-9.0000 sec   112 MBytes   935 Mbits/sec
+>>> [  1] 9.0000-10.0000 sec   111 MBytes   933 Mbits/sec
+>>> [  1] 0.0000-10.0069 sec  1.09 GBytes   934 Mbits/sec
+>>
+>> This is a very significant performance improvement (page pool with
+>> skb_mark_for_recycle).  This is very close to the max goodput for a 1Gbit/s link.
+>>
+>>
+>>> For small packet size (64 bytes), all three cases have almost the same result:
+>>>
+>>
+>> To me this indicate, that the DMA map/unmap operations on this platform are
+>> indeed more expensive on larger packets.  Given this is what page_pool does,
+>> keeping the DMA mapping intact when recycling.
+>>
+>> Driver still need DMA-sync, although I notice you set page_pool feature flag
+>> PP_FLAG_DMA_SYNC_DEV, this is good as page_pool will try to reduce sync size
+>> where possible. E.g. in this SKB case will reduce the DMA-sync to the
+>> max_len=FEC_ENET_RX_FRSIZE which should also help on performance.
+>>
+>>
+>>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1 -l 64
+>>> ------------------------------------------------------------
+>>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
+>>> KByte (WARNING: requested 1.91 MByte)
+>>> ------------------------------------------------------------
+>>> [  1] local 10.81.17.20 port 58204 connected with 10.81.16.245 port 5001
+>>> [ ID] Interval       Transfer     Bandwidth
+>>> [  1] 0.0000-1.0000 sec  36.9 MBytes   309 Mbits/sec
+>>> [  1] 1.0000-2.0000 sec  36.6 MBytes   307 Mbits/sec
+>>> [  1] 2.0000-3.0000 sec  36.6 MBytes   307 Mbits/sec
+>>> [  1] 3.0000-4.0000 sec  36.5 MBytes   307 Mbits/sec
+>>> [  1] 4.0000-5.0000 sec  37.1 MBytes   311 Mbits/sec
+>>> [  1] 5.0000-6.0000 sec  37.2 MBytes   312 Mbits/sec
+>>> [  1] 6.0000-7.0000 sec  37.1 MBytes   311 Mbits/sec
+>>> [  1] 7.0000-8.0000 sec  37.1 MBytes   311 Mbits/sec
+>>> [  1] 8.0000-9.0000 sec  37.1 MBytes   312 Mbits/sec
+>>> [  1] 9.0000-10.0000 sec  37.2 MBytes   312 Mbits/sec
+>>> [  1] 0.0000-10.0097 sec   369 MBytes   310 Mbits/sec
+>>>
+>>> Regards,
+>>> Shenwei
+>>>
+>>>
+>>>>>> By small packets, do you mean those under the copybreak limit?
+>>>>>>
+>>>>>> Please provide some benchmark numbers with your next patchset.
+>>>>>
+>>>>> Yes, the packet size is 64 bytes and it is under the copybreak limit.
+>>>>> As the impact is not significant, I would prefer to remove the
+>>>>> copybreak  logic.
+>>>>
+>>>> +1 to removing this logic if possible, due to maintenance cost.
+>>>>
+>>>> --Jesper
+>>>
+> 
 
