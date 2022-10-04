@@ -1,75 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2050.outbound.protection.outlook.com [40.107.247.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED94D7B
-	for <imx@lists.linux.dev>; Tue,  4 Oct 2022 11:21:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1664882516;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TdrzGR8b2o0PMyri4IUewO1nY7AXkHC5c0JZN4P78VE=;
-	b=eG8gsYS/JPUq75YTTG+jvZTqZohvW9Uy66UGOvrFfCmO0c0+HoHq12uGjgvbRkS+oHFYur
-	BCs/CFsnWsHbmawvgT+kDlRPKmPgEqFvzM/nA6C57j2uKWVNO9BhoOREfRbyIpT6bHmj1P
-	DCZF/dTYcDnlGiQcwSoRO5MjQK6svtw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-515-TvyxSvH_N16usszXfiJfPg-1; Tue, 04 Oct 2022 07:21:54 -0400
-X-MC-Unique: TvyxSvH_N16usszXfiJfPg-1
-Received: by mail-ed1-f70.google.com with SMTP id z9-20020a05640240c900b00458dae4ed9cso5199521edb.3
-        for <imx@lists.linux.dev>; Tue, 04 Oct 2022 04:21:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:to
-         :content-language:subject:cc:user-agent:mime-version:date:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date;
-        bh=TdrzGR8b2o0PMyri4IUewO1nY7AXkHC5c0JZN4P78VE=;
-        b=m5OhWTjuFLzDON69/cXZyUTD8nua/1Sarvkxh24J+GCkogrwKAn3500o34GbFCvfDj
-         5/S4WgcUxehIAiueP+yZvabs7VgLjFyAEQb845ip9uz8+AOjLsz3gtydFx9w3Qic0LJU
-         yM6vGmnnN4T1a9KperR7IvHg+t3XILkAnezxchDuQhBTSgHKRfkwUMBCgMTeteuci2zj
-         qsbyD0cGGx9uQbT0YJWdeC+QSeei1ej/FvVlp3jWzCcfkiW6JmVn2IatmJbn/Nn5tgaH
-         pmnGnPGrWHQPgwwpXNiiK1Hc+DAlV9gkhzJ+V9rwAR0fjBC+aPQByDdLHqvYLlOnLeCk
-         juIA==
-X-Gm-Message-State: ACrzQf0BaoTVXVRmwa84uZcA/dwbCiYLOKI5N1x+fd2k9VB2zLp2gz5P
-	mG3CC0jXiPCeBiCU4sMGz9L2nw5c1ZgEpkYL4bldIq0LjljOSvJjK63b+sOtDp2sI5Af9LWlkWw
-	XwFMfpbG+8XAD
-X-Received: by 2002:a17:907:9493:b0:78d:1eca:1cda with SMTP id dm19-20020a170907949300b0078d1eca1cdamr799709ejc.407.1664882512755;
-        Tue, 04 Oct 2022 04:21:52 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM6rSat7HfiZZunmN6Y5g1Zjqz7Yj6M9P32x+DCZ3aKHZqKFVbkjH8w6Uvd28EgTsY+ojosOmg==
-X-Received: by 2002:a17:907:9493:b0:78d:1eca:1cda with SMTP id dm19-20020a170907949300b0078d1eca1cdamr799694ejc.407.1664882512532;
-        Tue, 04 Oct 2022 04:21:52 -0700 (PDT)
-Received: from [192.168.41.81] (83-90-141-187-cable.dk.customer.tdc.net. [83.90.141.187])
-        by smtp.gmail.com with ESMTPSA id z10-20020a50eb4a000000b0044e01e2533asm1494358edp.43.2022.10.04.04.21.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Oct 2022 04:21:51 -0700 (PDT)
-From: Jesper Dangaard Brouer <jbrouer@redhat.com>
-X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
-Message-ID: <4f7cf74d-95ca-f93f-7328-e0386348a06e@redhat.com>
-Date: Tue, 4 Oct 2022 13:21:49 +0200
-Precedence: bulk
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Cc: brouer@redhat.com, Joakim Zhang <qiangqing.zhang@nxp.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- Magnus Karlsson <magnus.karlsson@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
-To: Shenwei Wang <shenwei.wang@nxp.com>,
- Jesper Dangaard Brouer <jbrouer@redhat.com>, Andrew Lunn <andrew@lunn.ch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6F52F49
+	for <imx@lists.linux.dev>; Tue,  4 Oct 2022 13:12:43 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FkhYpuDjA94ScLLwTyv5nH9giQq7JxCko/9M+ANT4r/eDsV1ohqtvyv4Pe09yGvFdZrHT740YkOibc/55yTjqI8FmkbDbgNUR05OvPkUumtycbzI1wSlRQDRi+vsZNmXR4yKSSig+tb1C8smDQdje3xtpfcPXlKEz6vroc15LxTEXsyyJr2cmaxNty+yar67mdaKdTMLB5YPDmR7W0KakauNSkZl3UQmZU00c/wMyKmaLPO5ZhcRlm3kAgfGVnxBVmQey1olthx6+8eDRzMFOI0IN44wHmiXo1o8I432Z4+n1mVO0tcDZzNaR7CsiWDV/jv2xVVdSvPY1O5Md/2ISA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uJaXwzdpEZqpvDzDv0T7re1dfSZl+ySFT0lrDTeCIt4=;
+ b=ap4YXlNxVmpUtDvNp8cZN86ebIU3mjivbElUouLsRoX1WWctCuAQq/MtATXUX1paQuuWm3YLjiMpAnTwxZCkX1yBDOXA8vIg0TJw3C9jUOUhHAli9SwvsUwZhpj5X12dMTPHXF3jj98cVx2zNWK54GoR4q9tae+SttJ6/4Pu3mNUDSNj7BcmY4xVcOmQPAHHVyo/1A3rkll7KGHey8R+LAlz0W3rbVSbnOcigwHbLYBY/1WBNmEbAQD2lACdbGmYWVvAcifizFe7TpW0ADqdTF/4ab5aoAwQOukqxBsZk4HPlAdzqm42GpvZFtOnCw057pePR2UXUpZKoiy0dblNwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uJaXwzdpEZqpvDzDv0T7re1dfSZl+ySFT0lrDTeCIt4=;
+ b=Rc7jtU0w79z8KHispwcM4k7nn2B1TgvLNR6cw77Ur+ETRi5+blODf5Nk5q6MT+vaKFVPANOg4R72GeJWVYk+VjPrqCzVGg10y3Tmx+IYN9dJVmbfEN3uA4LJWQIBzQsotO0OjM25gP8VWrEJiyNdUvFwXpaJX4b3WNb7PhbXv00=
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com (2603:10a6:20b:44b::7)
+ by AS8PR04MB9128.eurprd04.prod.outlook.com (2603:10a6:20b:44b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.31; Tue, 4 Oct
+ 2022 13:12:40 +0000
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::e756:33d3:f738:f8ae]) by AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::e756:33d3:f738:f8ae%7]) with mapi id 15.20.5676.028; Tue, 4 Oct 2022
+ 13:12:40 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Jesper Dangaard Brouer <jbrouer@redhat.com>, Andrew Lunn <andrew@lunn.ch>
+CC: "brouer@redhat.com" <brouer@redhat.com>, Joakim Zhang
+	<qiangqing.zhang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	Magnus Karlsson <magnus.karlsson@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?=
+	<bjorn@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: RE: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+Thread-Topic: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+Thread-Index:
+ AQHY006sqGpD/PA5gEmZiYlRlE0jhK31oHQAgAC4dcCAAA2WgIAAADZwgAAi/oCAAARmwIAANVQAgAXfkgCAAX1ggIAAGiew
+Date: Tue, 4 Oct 2022 13:12:40 +0000
+Message-ID:
+ <AS8PR04MB9176281109667B36CB694763895A9@AS8PR04MB9176.eurprd04.prod.outlook.com>
 References: <20220928152509.141490-1-shenwei.wang@nxp.com>
  <YzT2An2J5afN1w3L@lunn.ch>
  <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
@@ -79,250 +54,305 @@ References: <20220928152509.141490-1-shenwei.wang@nxp.com>
  <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
  <afb652db-05fc-d3d6-6774-bfd9830414d9@redhat.com>
  <PAXPR04MB9185743919EC6DDA54FAC3B7895B9@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB9185743919EC6DDA54FAC3B7895B9@PAXPR04MB9185.eurprd04.prod.outlook.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+ <4f7cf74d-95ca-f93f-7328-e0386348a06e@redhat.com>
+In-Reply-To: <4f7cf74d-95ca-f93f-7328-e0386348a06e@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9176:EE_|AS8PR04MB9128:EE_
+x-ms-office365-filtering-correlation-id: 6ee4481e-53b5-40a2-6748-08daa60a1dc2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ J44H4w5S/dZuINDr2g31ITdhIdIQCFdG0Uun5C8j5u1de60Wdgnn1OSJ6gD/BrBEJ3wESj57euG25DV2dYPWfuQkPnB+tbDNAJ1+yNVzC9aoeOxmJO6XAVnxqnqBZFz8mHgq1U3KQziTJmpvBHd7D0nVtX2Hi0WHqskc1HqgZWRMPuWZAiAG168VSxIzVCG1XWX3PwJm6grwE2w8XJOkZAwWdJpXEUlXs2WvpPKPUnVei+Moyyc59WH55aO3narzxxuLyuNqksMiBOtZJu4zRHPDwutqk0IKaLOMkwMvYEISIVVijPKOqssD8lzJ7zF4vskh2wIHaLszEmc4malnD4jPgygW+T5fg6pY1tEZ3qniHTw9GRWS+jCB1eUpWt4B0hqXvijwPSy31M093Bluf9J3jFNrktdRQwPrrTsO7ddOtbON5AsiPMzgR0ZGSdKeJQYIprtzrUjTzpcEwVRB0IKm1QVzVcMbIaPvtl6piXWwlm7UlHRete+/rLoaXg95bi9sImqFTFjb+RT3uQ5Hj0x5cP81NPiKlLSDPVu8J7g2LEYKbpQjFD8LDTRWArB6fLp3hiajo1btm0EkJoWHJc7O3Yf+Ar3ndh52qe1ll5GKBoaeorJPNXCwcaybx9g8g8Lwp4LKYU2z/L4CCDfTA64TNzfx3IdQKZ7n7PJSFK5f1dRFDqXz7dmXDrKptsxiQrnPnkLE/30IY1/SuajzHEq7QwR+n+TYR5UuoIIgrog99yvlBG3aSFC9+F2INGryloBoVK7/nFsg9OQf2RD8uA==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9176.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(39860400002)(366004)(346002)(376002)(136003)(451199015)(66574015)(86362001)(83380400001)(38100700002)(38070700005)(186003)(52536014)(122000001)(8936002)(7416002)(71200400001)(41300700001)(5660300002)(30864003)(54906003)(110136005)(8676002)(76116006)(66946007)(66556008)(66476007)(66446008)(4326008)(55016003)(64756008)(53546011)(26005)(9686003)(7696005)(6506007)(55236004)(33656002)(316002)(2906002)(44832011)(478600001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?OHVPb3YvbURQNmU3K2tuOERKMnhHQVBXYzZIVFpTdXhZNWJZd3RmTXVjSVEw?=
+ =?utf-8?B?VjBBMzFQZXBFVjF2WnVIelJYMDRYdGlIWC9ibksyUlZBVExGT0tzV2sxY21i?=
+ =?utf-8?B?TXZ0L2tDQmoyVzVSbzdFc2ZFOEhxZUdDWmVWalVZQS9JT05HNVNhQkV1NDdO?=
+ =?utf-8?B?QjlDUytaYm50ZTBHMWx2YW1SMWNJakg1dmlvZFZyL1JieFprcThXSWxZRlk0?=
+ =?utf-8?B?UjdoNVQ1bDhzZlJQZFNYUFl0VFQ3VksvUjRscFJYYVlGNWEwNGtDRTRCZUll?=
+ =?utf-8?B?ekJySm5pcVBqUzBNZTdGUDZsR0E4SXRtWC9peFJhNmdyNmViTEdCS1pqaFJp?=
+ =?utf-8?B?OEMrempRdWpvcTZWeFFsVXJyMUY0NDhqT2w5VkwyejdWalQ0ZExlRjFjcm0w?=
+ =?utf-8?B?bWkrOFh3MGJlUnc0ZlhLSldKQ01LKzg5aHNyZ0hWVVJEL0lmeHMrUUZyUk52?=
+ =?utf-8?B?UGNybzZPVzZ6NU9XaHlqMTIxMlRoVG0vN2h6SnFZNnQxQ2ZzM2NzdVYzWWM5?=
+ =?utf-8?B?dlh4c3RkaUxCL3YvdHc4Z1o4bTNacnEyVUxTQkxueDBaRTkrUFM5NGFOamtn?=
+ =?utf-8?B?c29ZTHJheWNrdCtIQitXbVhlaGwxUzZJQUFoL1R3anllK1ZEa3BQNDluYXUr?=
+ =?utf-8?B?M3NibXBBWEd6Ni93dEJjR0orRmhqbWdPZzJ5ZFN6THNiRkZaNllFdWVkZ3Zk?=
+ =?utf-8?B?NnUwMzkwL2cydnp1WGNHL2pvWlFQWnlKK2hEZ2d0L2czUUJnOGIrY1Q2TWF6?=
+ =?utf-8?B?ZkI0bHBlUzdGRjc4djZkWmNYcExKYmVlZ09lUTZwMWZ6NGo0SldSVitZRVZY?=
+ =?utf-8?B?QitFWW5oc3E1Vk53OWFpSG9EWk5KYll5UWtPaDhXVm5FNDVZNHdHdlFDVFFk?=
+ =?utf-8?B?Qmh0RXFuREI5U3hPYjMvbHEva1hJN1FXRHlITmhoR0twT1hXbmJXWU1ZazJo?=
+ =?utf-8?B?dFZLMUtrL3orWUgvZzRuanhLYXN0bDM3V2hCR0k4UlNHUG5DNWlQb21UVGVL?=
+ =?utf-8?B?ZmdZMDhKQU4waDc0dE9lL2hEeEMrUUVQdmpXWUgyc1BIdjZtZW1oYUpwWlRW?=
+ =?utf-8?B?dGxwd3FUeHJkdnFNa1ZRdVV6aXZ1Y1p5TXY3ems3MWp4bXZoZXFxUnVJZ01l?=
+ =?utf-8?B?QXg5bmF2b0E1UkhDOEtNMXZwWFhidm9ybFhIN1djRFlWY1AyT0pSZ2JzN0pa?=
+ =?utf-8?B?WW9mU1lRLzh4QmZrc0IzcXRYNGNNQWQrQUpTTnpoUVljZXdtQUpTS3hXTjFD?=
+ =?utf-8?B?ZDJRMW9LNzF1d0xNNGo5MmM4cXBCd0xIZWJjL25VZXdqZTB5cmJ5YzhraUg2?=
+ =?utf-8?B?Q09HSExmakZaaHJWUWNCeWsrejdRcDd4ZHg4cEVBVzF3dHNuenpobzA5U0Fj?=
+ =?utf-8?B?Q09LWUs2eUR0ODZQbEpLVVBuNmNjWlFQNWxXT1hiY3JVNkdBTVl4SjAvVnh3?=
+ =?utf-8?B?YTJhcEZlOGFVQnZCUXZqOVBHQUFIaFVLdnozU2ZHSkwwMWFGVzFVY3hjS0pW?=
+ =?utf-8?B?WGJtL0NtdU80S2VxTkpzdk5EeEhORWZkbG1pQVZGUitGWG5NeVBrM3FTWG9V?=
+ =?utf-8?B?UzdJdHkxc2puZWFyTHNZeTNWZHlrUytHR2Vqc0ZqUm1iaC9GZU5ma0RJRUdw?=
+ =?utf-8?B?ak9OSS9GdkcvYWZWQVduREVodHdVVHh5bUpYbm14VWRMQzV1VHBXcitZRVZN?=
+ =?utf-8?B?WHpIejVIMERZcmI2YzdBdVRZWXVGcHErVHlkNVB3UStjU3FTaEl6T1ZWQmxy?=
+ =?utf-8?B?RHd6d256R0hzWGJ4ZFBtSHdiSnJWS2xhN1I3RXM3MHNKaTRCMW1RYU5qWXRl?=
+ =?utf-8?B?TmJ4R1dsaWZhdnhJZkxZSWtnNk5xUjlZRHhFUTBRK0lwZzZaZlVuaXp0dnkr?=
+ =?utf-8?B?YndHV3BoaHVJem9XYUNHM2Y2cDVkZXpxVG5yeW9QSS94TUZOWkFQL3BTZ3lY?=
+ =?utf-8?B?NmgxNW5DM3hMU1NDUm9xd0M1eUkyVElTeTI1aXlVQVdtdHhBcXhCcGZuWGFZ?=
+ =?utf-8?B?Tm1WT3F5QW5YZGFlSkxhQ3RhbStmMmk4YnpqNnBma21VNmU0dmY3WG9VTE04?=
+ =?utf-8?B?dno3WFZSblAycStJcmp5T0FxQzhWV3NpY3dRejV0cHlRWXFkUVk1RDh4d0hI?=
+ =?utf-8?Q?K6QBEl/lWGahMjm7mP2eqT0la?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Precedence: bulk
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9176.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ee4481e-53b5-40a2-6748-08daa60a1dc2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2022 13:12:40.4858
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yrVFcJ5ABIIY282g80joNDN0IvIRvuNd1UTmHg62ZJHuvys/6u6uCDTjw0VUnllIE2yT8YtGVgQmatPiouYvsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9128
 
-
-On 03/10/2022 14.49, Shenwei Wang wrote:
-> Hi Jesper,
-> 
->>>> On mvneta driver/platform we saw huge speedup replacing:
->>>>
->>>>      page_pool_release_page(rxq->page_pool, page); with
->>>>      skb_mark_for_recycle(skb);
->>>>
-> 
-> After replacing the page_pool_release_page with the
-> skb_mark_for_recycle, I found something confused me a little in the
-> testing result. >
-> I tested with the sample app of "xdpsock" under two modes: 
->  1. Native (xdpsock -i eth0). 
->  2. Skb-mode (xdpsock -S -i eth0).
-Great that you are also testing AF_XDP, but do you have a particular
-use-case that needs AF_XDP on this board?
-
-What packet size are used in below results?
-
-> The following are the testing result:
- >
->       With page_pool_release_page (pps)  With skb_mark_for_recycle (pps)
-> 
->   SKB-Mode                          90K                            200K
->   Native                           190K                            190K
-> 
-
-The default AF_XDP test with xdpsock is rxdrop IIRC.
-
-Can you test the normal XDP code path and do a XDP_DROP test via the
-samples tool 'xdp_rxq_info' and cmdline:
-
-   sudo ./xdp_rxq_info --dev eth42 --act XDP_DROP --read
-
-And then same with --skb-mode
-
-> The skb_mark_for_recycle solution boosted the performance of SKB-Mode
-> to 200K+ PPS. That is even higher than the performance of Native
-> solution.  Is this result reasonable? Do you have any clue why the
-> SKB-Mode performance can go higher than that of Native one?
-I might be able to explain this (Cc. AF_XDP maintainers to keep me honest).
-
-When you say "native" *AF_XDP* that isn't Zero-Copy AF_XDP.
-
-Sure, XDP runs in native driver mode and redirects the raw frames into 
-the AF_XDP socket, but as this isn't zero-copy AF_XDP. Thus, the packets 
-needs to be copied into the AF_XDP buffers.
-
-As soon as the frame or SKB (for generic XDP) have been copied it is 
-released/freed by AF_XDP/xsk code (either via xdp_return_buff() or 
-consume_skb()). Thus, it looks like it really pays off to recycle the 
-frame via page_pool, also for the SKB consume_skb() case.
-
-I am still a little surprised that to can be faster than native AF_XDP, 
-as the SKB-mode ("XDP-generic") needs to call through lot more software 
-layers and convert the SKB to look like an xdp_buff.
-
---Jesper
-
-
-
->> -----Original Message-----
->> From: Jesper Dangaard Brouer <jbrouer@redhat.com>
->> Sent: Thursday, September 29, 2022 1:55 PM
->> To: Shenwei Wang <shenwei.wang@nxp.com>; Jesper Dangaard Brouer
->> <jbrouer@redhat.com>; Andrew Lunn <andrew@lunn.ch>
->> Cc: brouer@redhat.com; Joakim Zhang <qiangqing.zhang@nxp.com>; David S.
->> Miller <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
->> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Alexei
->> Starovoitov <ast@kernel.org>; Daniel Borkmann <daniel@iogearbox.net>;
->> Jesper Dangaard Brouer <hawk@kernel.org>; John Fastabend
->> <john.fastabend@gmail.com>; netdev@vger.kernel.org; linux-
->> kernel@vger.kernel.org; imx@lists.linux.dev
->> Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
->>
->> Caution: EXT Email
->>
->> On 29/09/2022 17.52, Shenwei Wang wrote:
->>>
->>>> From: Jesper Dangaard Brouer <jbrouer@redhat.com>
->>>>
->>>> On 29/09/2022 15.26, Shenwei Wang wrote:
->>>>>
->>>>>> From: Andrew Lunn <andrew@lunn.ch>
->>>>>> Sent: Thursday, September 29, 2022 8:23 AM
->>>> [...]
->>>>>>
->>>>>>> I actually did some compare testing regarding the page pool for
->>>>>>> normal traffic.  So far I don't see significant improvement in the
->>>>>>> current implementation. The performance for large packets improves
->>>>>>> a little, and the performance for small packets get a little worse.
->>>>>>
->>>>>> What hardware was this for? imx51? imx6? imx7 Vybrid? These all use the
->> FEC.
->>>>>
->>>>> I tested on imx8qxp platform. It is ARM64.
->>>>
->>>> On mvneta driver/platform we saw huge speedup replacing:
->>>>
->>>>      page_pool_release_page(rxq->page_pool, page); with
->>>>      skb_mark_for_recycle(skb);
->>>>
->>>> As I mentioned: Today page_pool have SKB recycle support (you might
->>>> have looked at drivers that didn't utilize this yet), thus you don't
->>>> need to release the page (page_pool_release_page) here.  Instead you
->>>> could simply mark the SKB for recycling, unless driver does some page refcnt
->> tricks I didn't notice.
->>>>
->>>> On the mvneta driver/platform the DMA unmap (in
->>>> page_pool_release_page) was very expensive. This imx8qxp platform
->>>> might have faster DMA unmap in case is it cache-coherent.
->>>>
->>>> I would be very interested in knowing if skb_mark_for_recycle() helps
->>>> on this platform, for normal network stack performance.
->>>>
->>>
->>> Did a quick compare testing for the following 3 scenarios:
->>
->> Thanks for doing this! :-)
->>
->>> 1. original implementation
->>>
->>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
->>> ------------------------------------------------------------
->>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
->>> KByte (WARNING: requested 1.91 MByte)
->>> ------------------------------------------------------------
->>> [  1] local 10.81.17.20 port 49154 connected with 10.81.16.245 port 5001
->>> [ ID] Interval       Transfer     Bandwidth
->>> [  1] 0.0000-1.0000 sec   104 MBytes   868 Mbits/sec
->>> [  1] 1.0000-2.0000 sec   105 MBytes   878 Mbits/sec
->>> [  1] 2.0000-3.0000 sec   105 MBytes   881 Mbits/sec
->>> [  1] 3.0000-4.0000 sec   105 MBytes   879 Mbits/sec
->>> [  1] 4.0000-5.0000 sec   105 MBytes   878 Mbits/sec
->>> [  1] 5.0000-6.0000 sec   105 MBytes   878 Mbits/sec
->>> [  1] 6.0000-7.0000 sec   104 MBytes   875 Mbits/sec
->>> [  1] 7.0000-8.0000 sec   104 MBytes   875 Mbits/sec
->>> [  1] 8.0000-9.0000 sec   104 MBytes   873 Mbits/sec
->>> [  1] 9.0000-10.0000 sec   104 MBytes   875 Mbits/sec
->>> [  1] 0.0000-10.0073 sec  1.02 GBytes   875 Mbits/sec
->>>
->>> 2. Page pool with page_pool_release_page
->>>
->>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
->>> ------------------------------------------------------------
->>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
->>> KByte (WARNING: requested 1.91 MByte)
->>> ------------------------------------------------------------
->>> [  1] local 10.81.17.20 port 35924 connected with 10.81.16.245 port 5001
->>> [ ID] Interval       Transfer     Bandwidth
->>> [  1] 0.0000-1.0000 sec   101 MBytes   849 Mbits/sec
->>> [  1] 1.0000-2.0000 sec   102 MBytes   860 Mbits/sec
->>> [  1] 2.0000-3.0000 sec   102 MBytes   860 Mbits/sec
->>> [  1] 3.0000-4.0000 sec   102 MBytes   859 Mbits/sec
->>> [  1] 4.0000-5.0000 sec   103 MBytes   863 Mbits/sec
->>> [  1] 5.0000-6.0000 sec   103 MBytes   864 Mbits/sec
->>> [  1] 6.0000-7.0000 sec   103 MBytes   863 Mbits/sec
->>> [  1] 7.0000-8.0000 sec   103 MBytes   865 Mbits/sec
->>> [  1] 8.0000-9.0000 sec   103 MBytes   862 Mbits/sec
->>> [  1] 9.0000-10.0000 sec   102 MBytes   856 Mbits/sec
->>> [  1] 0.0000-10.0246 sec  1.00 GBytes   858 Mbits/sec
->>>
->>>
->>> 3. page pool with skb_mark_for_recycle
->>>
->>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1
->>> ------------------------------------------------------------
->>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
->>> KByte (WARNING: requested 1.91 MByte)
->>> ------------------------------------------------------------
->>> [  1] local 10.81.17.20 port 42724 connected with 10.81.16.245 port 5001
->>> [ ID] Interval       Transfer     Bandwidth
->>> [  1] 0.0000-1.0000 sec   111 MBytes   931 Mbits/sec
->>> [  1] 1.0000-2.0000 sec   112 MBytes   935 Mbits/sec
->>> [  1] 2.0000-3.0000 sec   111 MBytes   934 Mbits/sec
->>> [  1] 3.0000-4.0000 sec   111 MBytes   934 Mbits/sec
->>> [  1] 4.0000-5.0000 sec   111 MBytes   934 Mbits/sec
->>> [  1] 5.0000-6.0000 sec   112 MBytes   935 Mbits/sec
->>> [  1] 6.0000-7.0000 sec   111 MBytes   934 Mbits/sec
->>> [  1] 7.0000-8.0000 sec   111 MBytes   933 Mbits/sec
->>> [  1] 8.0000-9.0000 sec   112 MBytes   935 Mbits/sec
->>> [  1] 9.0000-10.0000 sec   111 MBytes   933 Mbits/sec
->>> [  1] 0.0000-10.0069 sec  1.09 GBytes   934 Mbits/sec
->>
->> This is a very significant performance improvement (page pool with
->> skb_mark_for_recycle).  This is very close to the max goodput for a 1Gbit/s link.
->>
->>
->>> For small packet size (64 bytes), all three cases have almost the same result:
->>>
->>
->> To me this indicate, that the DMA map/unmap operations on this platform are
->> indeed more expensive on larger packets.  Given this is what page_pool does,
->> keeping the DMA mapping intact when recycling.
->>
->> Driver still need DMA-sync, although I notice you set page_pool feature flag
->> PP_FLAG_DMA_SYNC_DEV, this is good as page_pool will try to reduce sync size
->> where possible. E.g. in this SKB case will reduce the DMA-sync to the
->> max_len=FEC_ENET_RX_FRSIZE which should also help on performance.
->>
->>
->>> shenwei@5810:~$ iperf -c 10.81.16.245 -w 2m -i 1 -l 64
->>> ------------------------------------------------------------
->>> Client connecting to 10.81.16.245, TCP port 5001 TCP window size:  416
->>> KByte (WARNING: requested 1.91 MByte)
->>> ------------------------------------------------------------
->>> [  1] local 10.81.17.20 port 58204 connected with 10.81.16.245 port 5001
->>> [ ID] Interval       Transfer     Bandwidth
->>> [  1] 0.0000-1.0000 sec  36.9 MBytes   309 Mbits/sec
->>> [  1] 1.0000-2.0000 sec  36.6 MBytes   307 Mbits/sec
->>> [  1] 2.0000-3.0000 sec  36.6 MBytes   307 Mbits/sec
->>> [  1] 3.0000-4.0000 sec  36.5 MBytes   307 Mbits/sec
->>> [  1] 4.0000-5.0000 sec  37.1 MBytes   311 Mbits/sec
->>> [  1] 5.0000-6.0000 sec  37.2 MBytes   312 Mbits/sec
->>> [  1] 6.0000-7.0000 sec  37.1 MBytes   311 Mbits/sec
->>> [  1] 7.0000-8.0000 sec  37.1 MBytes   311 Mbits/sec
->>> [  1] 8.0000-9.0000 sec  37.1 MBytes   312 Mbits/sec
->>> [  1] 9.0000-10.0000 sec  37.2 MBytes   312 Mbits/sec
->>> [  1] 0.0000-10.0097 sec   369 MBytes   310 Mbits/sec
->>>
->>> Regards,
->>> Shenwei
->>>
->>>
->>>>>> By small packets, do you mean those under the copybreak limit?
->>>>>>
->>>>>> Please provide some benchmark numbers with your next patchset.
->>>>>
->>>>> Yes, the packet size is 64 bytes and it is under the copybreak limit.
->>>>> As the impact is not significant, I would prefer to remove the
->>>>> copybreak  logic.
->>>>
->>>> +1 to removing this logic if possible, due to maintenance cost.
->>>>
->>>> --Jesper
->>>
-> 
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmVzcGVyIERhbmdhYXJk
+IEJyb3VlciA8amJyb3VlckByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVyIDQs
+IDIwMjIgNjoyMiBBTQ0KPiBUbzogU2hlbndlaSBXYW5nIDxzaGVud2VpLndhbmdAbnhwLmNvbT47
+IEplc3BlciBEYW5nYWFyZCBCcm91ZXINCj4gPGpicm91ZXJAcmVkaGF0LmNvbT47IEFuZHJldyBM
+dW5uIDxhbmRyZXdAbHVubi5jaD4NCj4gQ2M6IGJyb3VlckByZWRoYXQuY29tOyBKb2FraW0gWmhh
+bmcgPHFpYW5ncWluZy56aGFuZ0BueHAuY29tPjsgRGF2aWQgUy4NCj4gTWlsbGVyIDxkYXZlbUBk
+YXZlbWxvZnQubmV0PjsgRXJpYyBEdW1hemV0IDxlZHVtYXpldEBnb29nbGUuY29tPjsgSmFrdWIN
+Cj4gS2ljaW5za2kgPGt1YmFAa2VybmVsLm9yZz47IFBhb2xvIEFiZW5pIDxwYWJlbmlAcmVkaGF0
+LmNvbT47IEFsZXhlaQ0KPiBTdGFyb3ZvaXRvdiA8YXN0QGtlcm5lbC5vcmc+OyBEYW5pZWwgQm9y
+a21hbm4gPGRhbmllbEBpb2dlYXJib3gubmV0PjsNCj4gSmVzcGVyIERhbmdhYXJkIEJyb3VlciA8
+aGF3a0BrZXJuZWwub3JnPjsgSm9obiBGYXN0YWJlbmQNCj4gPGpvaG4uZmFzdGFiZW5kQGdtYWls
+LmNvbT47IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBrZXJuZWxAdmdlci5rZXJu
+ZWwub3JnOyBpbXhAbGlzdHMubGludXguZGV2OyBNYWdudXMgS2FybHNzb24NCj4gPG1hZ251cy5r
+YXJsc3NvbkBnbWFpbC5jb20+OyBCasO2cm4gVMO2cGVsIDxiam9ybkBrZXJuZWwub3JnPjsgSWxp
+YXMNCj4gQXBhbG9kaW1hcyA8aWxpYXMuYXBhbG9kaW1hc0BsaW5hcm8ub3JnPg0KPiBTdWJqZWN0
+OiBSZTogW0VYVF0gUmU6IFtQQVRDSCAxLzFdIG5ldDogZmVjOiBhZGQgaW5pdGlhbCBYRFAgc3Vw
+cG9ydA0KPiANCj4gQ2F1dGlvbjogRVhUIEVtYWlsDQo+IA0KPiBPbiAwMy8xMC8yMDIyIDE0LjQ5
+LCBTaGVud2VpIFdhbmcgd3JvdGU6DQo+ID4gSGkgSmVzcGVyLA0KPiA+DQo+ID4+Pj4gT24gbXZu
+ZXRhIGRyaXZlci9wbGF0Zm9ybSB3ZSBzYXcgaHVnZSBzcGVlZHVwIHJlcGxhY2luZzoNCj4gPj4+
+Pg0KPiA+Pj4+ICAgICAgcGFnZV9wb29sX3JlbGVhc2VfcGFnZShyeHEtPnBhZ2VfcG9vbCwgcGFn
+ZSk7IHdpdGgNCj4gPj4+PiAgICAgIHNrYl9tYXJrX2Zvcl9yZWN5Y2xlKHNrYik7DQo+ID4+Pj4N
+Cj4gPg0KPiA+IEFmdGVyIHJlcGxhY2luZyB0aGUgcGFnZV9wb29sX3JlbGVhc2VfcGFnZSB3aXRo
+IHRoZQ0KPiA+IHNrYl9tYXJrX2Zvcl9yZWN5Y2xlLCBJIGZvdW5kIHNvbWV0aGluZyBjb25mdXNl
+ZCBtZSBhIGxpdHRsZSBpbiB0aGUNCj4gPiB0ZXN0aW5nIHJlc3VsdC4gPiBJIHRlc3RlZCB3aXRo
+IHRoZSBzYW1wbGUgYXBwIG9mICJ4ZHBzb2NrIiB1bmRlciB0d28NCj4gPiBtb2RlczoNCj4gPiAg
+MS4gTmF0aXZlICh4ZHBzb2NrIC1pIGV0aDApLg0KPiA+ICAyLiBTa2ItbW9kZSAoeGRwc29jayAt
+UyAtaSBldGgwKS4NCj4gR3JlYXQgdGhhdCB5b3UgYXJlIGFsc28gdGVzdGluZyBBRl9YRFAsIGJ1
+dCBkbyB5b3UgaGF2ZSBhIHBhcnRpY3VsYXIgdXNlLWNhc2UNCj4gdGhhdCBuZWVkcyBBRl9YRFAg
+b24gdGhpcyBib2FyZD8NCg0KVGhlIHB1cnBvc2UgaXMgdG8gcHJvdmlkZSBvdXIgY3VzdG9tZXJz
+IGFuIGFsdGVybmF0aXZlIHNvbHV0aW9uIHRvIHRoZSBjdXJyZW50IERQREsgaW1wbGVtZW50YXRp
+b24uDQoNCj4gDQo+IFdoYXQgcGFja2V0IHNpemUgYXJlIHVzZWQgaW4gYmVsb3cgcmVzdWx0cz8N
+Cg0KVGhlIHBhY2tldHMgd2VyZSBnZW5lcmF0ZWQgYnkgcGt0Z2VuX3NhbXBsZTAzX2J1cnN0X3Np
+bmdsZV9mbG93LnNoLCBhbmQgaXRzIHNpemUgaXMgNjAgYnl0ZXMgMCBmcmFncy4NCg0KPiANCj4g
+PiBUaGUgZm9sbG93aW5nIGFyZSB0aGUgdGVzdGluZyByZXN1bHQ6DQo+ICA+DQo+ID4gICAgICAg
+V2l0aCBwYWdlX3Bvb2xfcmVsZWFzZV9wYWdlIChwcHMpICBXaXRoIHNrYl9tYXJrX2Zvcl9yZWN5
+Y2xlDQo+ID4gKHBwcykNCj4gPg0KPiA+ICAgU0tCLU1vZGUgICAgICAgICAgICAgICAgICAgICAg
+ICAgIDkwSyAgICAgICAgICAgICAgICAgICAgICAgICAgICAyMDBLDQo+ID4gICBOYXRpdmUgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAxOTBLICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE5
+MEsNCj4gPg0KPiANCj4gVGhlIGRlZmF1bHQgQUZfWERQIHRlc3Qgd2l0aCB4ZHBzb2NrIGlzIHJ4
+ZHJvcCBJSVJDLg0KPiANCj4gQ2FuIHlvdSB0ZXN0IHRoZSBub3JtYWwgWERQIGNvZGUgcGF0aCBh
+bmQgZG8gYSBYRFBfRFJPUCB0ZXN0IHZpYSB0aGUgc2FtcGxlcw0KPiB0b29sICd4ZHBfcnhxX2lu
+Zm8nIGFuZCBjbWRsaW5lOg0KPiANCj4gICAgc3VkbyAuL3hkcF9yeHFfaW5mbyAtLWRldiBldGg0
+MiAtLWFjdCBYRFBfRFJPUCAtLXJlYWQNCj4gDQo+IEFuZCB0aGVuIHNhbWUgd2l0aCAtLXNrYi1t
+b2RlDQoNCkkgaGF2ZW4ndCB0ZXN0ZWQgeGRwX3J4cV9pbmZvIHlldCwgYW5kIHdpbGwgaGF2ZSBh
+IHRyeSBzb21ldGltZSBsYXRlciB0b2RheS4gSG93ZXZlciwgZm9yIHRoZSBYRFBfRFJPUCB0ZXN0
+LCBJIA0KZGlkIHRyeSB4ZHAyIHRlc3QgY2FzZSwgYW5kIHRoZSB0ZXN0aW5nIHJlc3VsdCBsb29r
+cyByZWFzb25hYmxlLiBUaGUgcGVyZm9ybWFuY2Ugb2YgTmF0aXZlIG1vZGUgaXMgbXVjaCBoaWdo
+ZXIgdGhhbiBza2ItbW9kZS4NCg0KIyB4ZHAyIGV0aDANCiBwcm90byAwOiAgICAgNDc1MzYyIHBr
+dC9zDQoNCiMgeGRwMiAtUyBldGgwICAgICAgICAgICAgIChwYWdlX3Bvb2xfcmVsZWFzZV9wYWdl
+IHNvbHV0aW9uKQ0KIHByb3RvIDE3OiAgICAgNzE5OTkgcGt0L3MNCg0KIyB4ZHAyIC1TIGV0aDAg
+ICAgICAgICAgICAgKHNrYl9tYXJrX2Zvcl9yZWN5Y2xlIHNvbHV0aW9uKQ0KIHByb3RvIDE3OiAg
+ICAgNzIyMjggcGt0L3MNCg0KPiANCj4gPiBUaGUgc2tiX21hcmtfZm9yX3JlY3ljbGUgc29sdXRp
+b24gYm9vc3RlZCB0aGUgcGVyZm9ybWFuY2Ugb2YgU0tCLU1vZGUNCj4gPiB0byAyMDBLKyBQUFMu
+IFRoYXQgaXMgZXZlbiBoaWdoZXIgdGhhbiB0aGUgcGVyZm9ybWFuY2Ugb2YgTmF0aXZlDQo+ID4g
+c29sdXRpb24uICBJcyB0aGlzIHJlc3VsdCByZWFzb25hYmxlPyBEbyB5b3UgaGF2ZSBhbnkgY2x1
+ZSB3aHkgdGhlDQo+ID4gU0tCLU1vZGUgcGVyZm9ybWFuY2UgY2FuIGdvIGhpZ2hlciB0aGFuIHRo
+YXQgb2YgTmF0aXZlIG9uZT8NCj4gSSBtaWdodCBiZSBhYmxlIHRvIGV4cGxhaW4gdGhpcyAoQ2Mu
+IEFGX1hEUCBtYWludGFpbmVycyB0byBrZWVwIG1lIGhvbmVzdCkuDQo+IA0KPiBXaGVuIHlvdSBz
+YXkgIm5hdGl2ZSIgKkFGX1hEUCogdGhhdCBpc24ndCBaZXJvLUNvcHkgQUZfWERQLg0KPiANCg0K
+UmlnaHQuIFplcm8tY29weSBoYXNuJ3QgYmVlbiBpbXBsZW1lbnRlZCB5ZXQuDQoNCj4gU3VyZSwg
+WERQIHJ1bnMgaW4gbmF0aXZlIGRyaXZlciBtb2RlIGFuZCByZWRpcmVjdHMgdGhlIHJhdyBmcmFt
+ZXMgaW50byB0aGUNCj4gQUZfWERQIHNvY2tldCwgYnV0IGFzIHRoaXMgaXNuJ3QgemVyby1jb3B5
+IEFGX1hEUC4gVGh1cywgdGhlIHBhY2tldHMgbmVlZHMgdG8gYmUNCj4gY29waWVkIGludG8gdGhl
+IEFGX1hEUCBidWZmZXJzLg0KPiANCj4gQXMgc29vbiBhcyB0aGUgZnJhbWUgb3IgU0tCIChmb3Ig
+Z2VuZXJpYyBYRFApIGhhdmUgYmVlbiBjb3BpZWQgaXQgaXMNCj4gcmVsZWFzZWQvZnJlZWQgYnkg
+QUZfWERQL3hzayBjb2RlIChlaXRoZXIgdmlhIHhkcF9yZXR1cm5fYnVmZigpIG9yDQo+IGNvbnN1
+bWVfc2tiKCkpLiBUaHVzLCBpdCBsb29rcyBsaWtlIGl0IHJlYWxseSBwYXlzIG9mZiB0byByZWN5
+Y2xlIHRoZSBmcmFtZSB2aWENCj4gcGFnZV9wb29sLCBhbHNvIGZvciB0aGUgU0tCIGNvbnN1bWVf
+c2tiKCkgY2FzZS4NCj4gDQo+IEkgYW0gc3RpbGwgYSBsaXR0bGUgc3VycHJpc2VkIHRoYXQgdG8g
+Y2FuIGJlIGZhc3RlciB0aGFuIG5hdGl2ZSBBRl9YRFAsIGFzIHRoZSBTS0ItDQo+IG1vZGUgKCJY
+RFAtZ2VuZXJpYyIpIG5lZWRzIHRvIGNhbGwgdGhyb3VnaCBsb3QgbW9yZSBzb2Z0d2FyZSBsYXll
+cnMgYW5kDQo+IGNvbnZlcnQgdGhlIFNLQiB0byBsb29rIGxpa2UgYW4geGRwX2J1ZmYuDQoNClRo
+YXQncyB3aGF0IEkgY2FuJ3QgdW5kZXJzdGFuZCByaWdodCBub3cgdG9vLg0KDQpUaGFua3MgdmVy
+eSBtdWNoIGZvciB0aGUgZXhwbGFuYXRpb25zIQ0KU2hlbndlaQ0KDQo+IA0KPiAtLUplc3Blcg0K
+PiANCj4gDQo+IA0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBK
+ZXNwZXIgRGFuZ2FhcmQgQnJvdWVyIDxqYnJvdWVyQHJlZGhhdC5jb20+DQo+ID4+IFNlbnQ6IFRo
+dXJzZGF5LCBTZXB0ZW1iZXIgMjksIDIwMjIgMTo1NSBQTQ0KPiA+PiBUbzogU2hlbndlaSBXYW5n
+IDxzaGVud2VpLndhbmdAbnhwLmNvbT47IEplc3BlciBEYW5nYWFyZCBCcm91ZXINCj4gPj4gPGpi
+cm91ZXJAcmVkaGF0LmNvbT47IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4NCj4gPj4gQ2M6
+IGJyb3VlckByZWRoYXQuY29tOyBKb2FraW0gWmhhbmcgPHFpYW5ncWluZy56aGFuZ0BueHAuY29t
+PjsgRGF2aWQNCj4gUy4NCj4gPj4gTWlsbGVyIDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgRXJpYyBE
+dW1hemV0IDxlZHVtYXpldEBnb29nbGUuY29tPjsNCj4gPj4gSmFrdWIgS2ljaW5za2kgPGt1YmFA
+a2VybmVsLm9yZz47IFBhb2xvIEFiZW5pIDxwYWJlbmlAcmVkaGF0LmNvbT47DQo+ID4+IEFsZXhl
+aSBTdGFyb3ZvaXRvdiA8YXN0QGtlcm5lbC5vcmc+OyBEYW5pZWwgQm9ya21hbm4NCj4gPj4gPGRh
+bmllbEBpb2dlYXJib3gubmV0PjsgSmVzcGVyIERhbmdhYXJkIEJyb3VlciA8aGF3a0BrZXJuZWwu
+b3JnPjsNCj4gPj4gSm9obiBGYXN0YWJlbmQgPGpvaG4uZmFzdGFiZW5kQGdtYWlsLmNvbT47IG5l
+dGRldkB2Z2VyLmtlcm5lbC5vcmc7DQo+ID4+IGxpbnV4LSBrZXJuZWxAdmdlci5rZXJuZWwub3Jn
+OyBpbXhAbGlzdHMubGludXguZGV2DQo+ID4+IFN1YmplY3Q6IFJlOiBbRVhUXSBSZTogW1BBVENI
+IDEvMV0gbmV0OiBmZWM6IGFkZCBpbml0aWFsIFhEUCBzdXBwb3J0DQo+ID4+DQo+ID4+IENhdXRp
+b246IEVYVCBFbWFpbA0KPiA+Pg0KPiA+PiBPbiAyOS8wOS8yMDIyIDE3LjUyLCBTaGVud2VpIFdh
+bmcgd3JvdGU6DQo+ID4+Pg0KPiA+Pj4+IEZyb206IEplc3BlciBEYW5nYWFyZCBCcm91ZXIgPGpi
+cm91ZXJAcmVkaGF0LmNvbT4NCj4gPj4+Pg0KPiA+Pj4+IE9uIDI5LzA5LzIwMjIgMTUuMjYsIFNo
+ZW53ZWkgV2FuZyB3cm90ZToNCj4gPj4+Pj4NCj4gPj4+Pj4+IEZyb206IEFuZHJldyBMdW5uIDxh
+bmRyZXdAbHVubi5jaD4NCj4gPj4+Pj4+IFNlbnQ6IFRodXJzZGF5LCBTZXB0ZW1iZXIgMjksIDIw
+MjIgODoyMyBBTQ0KPiA+Pj4+IFsuLi5dDQo+ID4+Pj4+Pg0KPiA+Pj4+Pj4+IEkgYWN0dWFsbHkg
+ZGlkIHNvbWUgY29tcGFyZSB0ZXN0aW5nIHJlZ2FyZGluZyB0aGUgcGFnZSBwb29sIGZvcg0KPiA+
+Pj4+Pj4+IG5vcm1hbCB0cmFmZmljLiAgU28gZmFyIEkgZG9uJ3Qgc2VlIHNpZ25pZmljYW50IGlt
+cHJvdmVtZW50IGluDQo+ID4+Pj4+Pj4gdGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24uIFRoZSBw
+ZXJmb3JtYW5jZSBmb3IgbGFyZ2UgcGFja2V0cw0KPiA+Pj4+Pj4+IGltcHJvdmVzIGEgbGl0dGxl
+LCBhbmQgdGhlIHBlcmZvcm1hbmNlIGZvciBzbWFsbCBwYWNrZXRzIGdldCBhIGxpdHRsZQ0KPiB3
+b3JzZS4NCj4gPj4+Pj4+DQo+ID4+Pj4+PiBXaGF0IGhhcmR3YXJlIHdhcyB0aGlzIGZvcj8gaW14
+NTE/IGlteDY/IGlteDcgVnlicmlkPyBUaGVzZSBhbGwNCj4gPj4+Pj4+IHVzZSB0aGUNCj4gPj4g
+RkVDLg0KPiA+Pj4+Pg0KPiA+Pj4+PiBJIHRlc3RlZCBvbiBpbXg4cXhwIHBsYXRmb3JtLiBJdCBp
+cyBBUk02NC4NCj4gPj4+Pg0KPiA+Pj4+IE9uIG12bmV0YSBkcml2ZXIvcGxhdGZvcm0gd2Ugc2F3
+IGh1Z2Ugc3BlZWR1cCByZXBsYWNpbmc6DQo+ID4+Pj4NCj4gPj4+PiAgICAgIHBhZ2VfcG9vbF9y
+ZWxlYXNlX3BhZ2UocnhxLT5wYWdlX3Bvb2wsIHBhZ2UpOyB3aXRoDQo+ID4+Pj4gICAgICBza2Jf
+bWFya19mb3JfcmVjeWNsZShza2IpOw0KPiA+Pj4+DQo+ID4+Pj4gQXMgSSBtZW50aW9uZWQ6IFRv
+ZGF5IHBhZ2VfcG9vbCBoYXZlIFNLQiByZWN5Y2xlIHN1cHBvcnQgKHlvdSBtaWdodA0KPiA+Pj4+
+IGhhdmUgbG9va2VkIGF0IGRyaXZlcnMgdGhhdCBkaWRuJ3QgdXRpbGl6ZSB0aGlzIHlldCksIHRo
+dXMgeW91DQo+ID4+Pj4gZG9uJ3QgbmVlZCB0byByZWxlYXNlIHRoZSBwYWdlIChwYWdlX3Bvb2xf
+cmVsZWFzZV9wYWdlKSBoZXJlLg0KPiA+Pj4+IEluc3RlYWQgeW91IGNvdWxkIHNpbXBseSBtYXJr
+IHRoZSBTS0IgZm9yIHJlY3ljbGluZywgdW5sZXNzIGRyaXZlcg0KPiA+Pj4+IGRvZXMgc29tZSBw
+YWdlIHJlZmNudA0KPiA+PiB0cmlja3MgSSBkaWRuJ3Qgbm90aWNlLg0KPiA+Pj4+DQo+ID4+Pj4g
+T24gdGhlIG12bmV0YSBkcml2ZXIvcGxhdGZvcm0gdGhlIERNQSB1bm1hcCAoaW4NCj4gPj4+PiBw
+YWdlX3Bvb2xfcmVsZWFzZV9wYWdlKSB3YXMgdmVyeSBleHBlbnNpdmUuIFRoaXMgaW14OHF4cCBw
+bGF0Zm9ybQ0KPiA+Pj4+IG1pZ2h0IGhhdmUgZmFzdGVyIERNQSB1bm1hcCBpbiBjYXNlIGlzIGl0
+IGNhY2hlLWNvaGVyZW50Lg0KPiA+Pj4+DQo+ID4+Pj4gSSB3b3VsZCBiZSB2ZXJ5IGludGVyZXN0
+ZWQgaW4ga25vd2luZyBpZiBza2JfbWFya19mb3JfcmVjeWNsZSgpDQo+ID4+Pj4gaGVscHMgb24g
+dGhpcyBwbGF0Zm9ybSwgZm9yIG5vcm1hbCBuZXR3b3JrIHN0YWNrIHBlcmZvcm1hbmNlLg0KPiA+
+Pj4+DQo+ID4+Pg0KPiA+Pj4gRGlkIGEgcXVpY2sgY29tcGFyZSB0ZXN0aW5nIGZvciB0aGUgZm9s
+bG93aW5nIDMgc2NlbmFyaW9zOg0KPiA+Pg0KPiA+PiBUaGFua3MgZm9yIGRvaW5nIHRoaXMhIDot
+KQ0KPiA+Pg0KPiA+Pj4gMS4gb3JpZ2luYWwgaW1wbGVtZW50YXRpb24NCj4gPj4+DQo+ID4+PiBz
+aGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEuMTYuMjQ1IC13IDJtIC1pIDENCj4gPj4+IC0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQ0KPiA+Pj4gQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEuMTYuMjQ1LCBUQ1AgcG9ydCA1MDAx
+IFRDUCB3aW5kb3cgc2l6ZToNCj4gPj4+IDQxNiBLQnl0ZSAoV0FSTklORzogcmVxdWVzdGVkIDEu
+OTEgTUJ5dGUpDQo+ID4+PiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPj4+IFsgIDFdIGxvY2FsIDEwLjgxLjE3LjIwIHBvcnQg
+NDkxNTQgY29ubmVjdGVkIHdpdGggMTAuODEuMTYuMjQ1IHBvcnQgNTAwMQ0KPiA+Pj4gWyBJRF0g
+SW50ZXJ2YWwgICAgICAgVHJhbnNmZXIgICAgIEJhbmR3aWR0aA0KPiA+Pj4gWyAgMV0gMC4wMDAw
+LTEuMDAwMCBzZWMgICAxMDQgTUJ5dGVzICAgODY4IE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gMS4w
+MDAwLTIuMDAwMCBzZWMgICAxMDUgTUJ5dGVzICAgODc4IE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0g
+Mi4wMDAwLTMuMDAwMCBzZWMgICAxMDUgTUJ5dGVzICAgODgxIE1iaXRzL3NlYw0KPiA+Pj4gWyAg
+MV0gMy4wMDAwLTQuMDAwMCBzZWMgICAxMDUgTUJ5dGVzICAgODc5IE1iaXRzL3NlYw0KPiA+Pj4g
+WyAgMV0gNC4wMDAwLTUuMDAwMCBzZWMgICAxMDUgTUJ5dGVzICAgODc4IE1iaXRzL3NlYw0KPiA+
+Pj4gWyAgMV0gNS4wMDAwLTYuMDAwMCBzZWMgICAxMDUgTUJ5dGVzICAgODc4IE1iaXRzL3NlYw0K
+PiA+Pj4gWyAgMV0gNi4wMDAwLTcuMDAwMCBzZWMgICAxMDQgTUJ5dGVzICAgODc1IE1iaXRzL3Nl
+Yw0KPiA+Pj4gWyAgMV0gNy4wMDAwLTguMDAwMCBzZWMgICAxMDQgTUJ5dGVzICAgODc1IE1iaXRz
+L3NlYw0KPiA+Pj4gWyAgMV0gOC4wMDAwLTkuMDAwMCBzZWMgICAxMDQgTUJ5dGVzICAgODczIE1i
+aXRzL3NlYw0KPiA+Pj4gWyAgMV0gOS4wMDAwLTEwLjAwMDAgc2VjICAgMTA0IE1CeXRlcyAgIDg3
+NSBNYml0cy9zZWMNCj4gPj4+IFsgIDFdIDAuMDAwMC0xMC4wMDczIHNlYyAgMS4wMiBHQnl0ZXMg
+ICA4NzUgTWJpdHMvc2VjDQo+ID4+Pg0KPiA+Pj4gMi4gUGFnZSBwb29sIHdpdGggcGFnZV9wb29s
+X3JlbGVhc2VfcGFnZQ0KPiA+Pj4NCj4gPj4+IHNoZW53ZWlANTgxMDp+JCBpcGVyZiAtYyAxMC44
+MS4xNi4yNDUgLXcgMm0gLWkgMQ0KPiA+Pj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4+PiBDbGllbnQgY29ubmVjdGluZyB0
+byAxMC44MS4xNi4yNDUsIFRDUCBwb3J0IDUwMDEgVENQIHdpbmRvdyBzaXplOg0KPiA+Pj4gNDE2
+IEtCeXRlIChXQVJOSU5HOiByZXF1ZXN0ZWQgMS45MSBNQnl0ZSkNCj4gPj4+IC0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+Pj4g
+WyAgMV0gbG9jYWwgMTAuODEuMTcuMjAgcG9ydCAzNTkyNCBjb25uZWN0ZWQgd2l0aCAxMC44MS4x
+Ni4yNDUgcG9ydCA1MDAxDQo+ID4+PiBbIElEXSBJbnRlcnZhbCAgICAgICBUcmFuc2ZlciAgICAg
+QmFuZHdpZHRoDQo+ID4+PiBbICAxXSAwLjAwMDAtMS4wMDAwIHNlYyAgIDEwMSBNQnl0ZXMgICA4
+NDkgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSAxLjAwMDAtMi4wMDAwIHNlYyAgIDEwMiBNQnl0ZXMg
+ICA4NjAgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSAyLjAwMDAtMy4wMDAwIHNlYyAgIDEwMiBNQnl0
+ZXMgICA4NjAgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSAzLjAwMDAtNC4wMDAwIHNlYyAgIDEwMiBN
+Qnl0ZXMgICA4NTkgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSA0LjAwMDAtNS4wMDAwIHNlYyAgIDEw
+MyBNQnl0ZXMgICA4NjMgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSA1LjAwMDAtNi4wMDAwIHNlYyAg
+IDEwMyBNQnl0ZXMgICA4NjQgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSA2LjAwMDAtNy4wMDAwIHNl
+YyAgIDEwMyBNQnl0ZXMgICA4NjMgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSA3LjAwMDAtOC4wMDAw
+IHNlYyAgIDEwMyBNQnl0ZXMgICA4NjUgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSA4LjAwMDAtOS4w
+MDAwIHNlYyAgIDEwMyBNQnl0ZXMgICA4NjIgTWJpdHMvc2VjDQo+ID4+PiBbICAxXSA5LjAwMDAt
+MTAuMDAwMCBzZWMgICAxMDIgTUJ5dGVzICAgODU2IE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gMC4w
+MDAwLTEwLjAyNDYgc2VjICAxLjAwIEdCeXRlcyAgIDg1OCBNYml0cy9zZWMNCj4gPj4+DQo+ID4+
+Pg0KPiA+Pj4gMy4gcGFnZSBwb29sIHdpdGggc2tiX21hcmtfZm9yX3JlY3ljbGUNCj4gPj4+DQo+
+ID4+PiBzaGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEuMTYuMjQ1IC13IDJtIC1pIDENCj4g
+Pj4+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQ0KPiA+Pj4gQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEuMTYuMjQ1LCBUQ1AgcG9y
+dCA1MDAxIFRDUCB3aW5kb3cgc2l6ZToNCj4gPj4+IDQxNiBLQnl0ZSAoV0FSTklORzogcmVxdWVz
+dGVkIDEuOTEgTUJ5dGUpDQo+ID4+PiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPj4+IFsgIDFdIGxvY2FsIDEwLjgxLjE3LjIw
+IHBvcnQgNDI3MjQgY29ubmVjdGVkIHdpdGggMTAuODEuMTYuMjQ1IHBvcnQgNTAwMQ0KPiA+Pj4g
+WyBJRF0gSW50ZXJ2YWwgICAgICAgVHJhbnNmZXIgICAgIEJhbmR3aWR0aA0KPiA+Pj4gWyAgMV0g
+MC4wMDAwLTEuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTMxIE1iaXRzL3NlYw0KPiA+Pj4gWyAg
+MV0gMS4wMDAwLTIuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAgOTM1IE1iaXRzL3NlYw0KPiA+Pj4g
+WyAgMV0gMi4wMDAwLTMuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTM0IE1iaXRzL3NlYw0KPiA+
+Pj4gWyAgMV0gMy4wMDAwLTQuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTM0IE1iaXRzL3NlYw0K
+PiA+Pj4gWyAgMV0gNC4wMDAwLTUuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTM0IE1iaXRzL3Nl
+Yw0KPiA+Pj4gWyAgMV0gNS4wMDAwLTYuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAgOTM1IE1iaXRz
+L3NlYw0KPiA+Pj4gWyAgMV0gNi4wMDAwLTcuMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTM0IE1i
+aXRzL3NlYw0KPiA+Pj4gWyAgMV0gNy4wMDAwLTguMDAwMCBzZWMgICAxMTEgTUJ5dGVzICAgOTMz
+IE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gOC4wMDAwLTkuMDAwMCBzZWMgICAxMTIgTUJ5dGVzICAg
+OTM1IE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gOS4wMDAwLTEwLjAwMDAgc2VjICAgMTExIE1CeXRl
+cyAgIDkzMyBNYml0cy9zZWMNCj4gPj4+IFsgIDFdIDAuMDAwMC0xMC4wMDY5IHNlYyAgMS4wOSBH
+Qnl0ZXMgICA5MzQgTWJpdHMvc2VjDQo+ID4+DQo+ID4+IFRoaXMgaXMgYSB2ZXJ5IHNpZ25pZmlj
+YW50IHBlcmZvcm1hbmNlIGltcHJvdmVtZW50IChwYWdlIHBvb2wgd2l0aA0KPiA+PiBza2JfbWFy
+a19mb3JfcmVjeWNsZSkuICBUaGlzIGlzIHZlcnkgY2xvc2UgdG8gdGhlIG1heCBnb29kcHV0IGZv
+ciBhIDFHYml0L3MNCj4gbGluay4NCj4gPj4NCj4gPj4NCj4gPj4+IEZvciBzbWFsbCBwYWNrZXQg
+c2l6ZSAoNjQgYnl0ZXMpLCBhbGwgdGhyZWUgY2FzZXMgaGF2ZSBhbG1vc3QgdGhlIHNhbWUgcmVz
+dWx0Og0KPiA+Pj4NCj4gPj4NCj4gPj4gVG8gbWUgdGhpcyBpbmRpY2F0ZSwgdGhhdCB0aGUgRE1B
+IG1hcC91bm1hcCBvcGVyYXRpb25zIG9uIHRoaXMNCj4gPj4gcGxhdGZvcm0gYXJlIGluZGVlZCBt
+b3JlIGV4cGVuc2l2ZSBvbiBsYXJnZXIgcGFja2V0cy4gIEdpdmVuIHRoaXMgaXMNCj4gPj4gd2hh
+dCBwYWdlX3Bvb2wgZG9lcywga2VlcGluZyB0aGUgRE1BIG1hcHBpbmcgaW50YWN0IHdoZW4gcmVj
+eWNsaW5nLg0KPiA+Pg0KPiA+PiBEcml2ZXIgc3RpbGwgbmVlZCBETUEtc3luYywgYWx0aG91Z2gg
+SSBub3RpY2UgeW91IHNldCBwYWdlX3Bvb2wNCj4gPj4gZmVhdHVyZSBmbGFnIFBQX0ZMQUdfRE1B
+X1NZTkNfREVWLCB0aGlzIGlzIGdvb2QgYXMgcGFnZV9wb29sIHdpbGwgdHJ5DQo+ID4+IHRvIHJl
+ZHVjZSBzeW5jIHNpemUgd2hlcmUgcG9zc2libGUuIEUuZy4gaW4gdGhpcyBTS0IgY2FzZSB3aWxs
+IHJlZHVjZQ0KPiA+PiB0aGUgRE1BLXN5bmMgdG8gdGhlIG1heF9sZW49RkVDX0VORVRfUlhfRlJT
+SVpFIHdoaWNoIHNob3VsZCBhbHNvIGhlbHANCj4gb24gcGVyZm9ybWFuY2UuDQo+ID4+DQo+ID4+
+DQo+ID4+PiBzaGVud2VpQDU4MTA6fiQgaXBlcmYgLWMgMTAuODEuMTYuMjQ1IC13IDJtIC1pIDEg
+LWwgNjQNCj4gPj4+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQ0KPiA+Pj4gQ2xpZW50IGNvbm5lY3RpbmcgdG8gMTAuODEuMTYuMjQ1
+LCBUQ1AgcG9ydCA1MDAxIFRDUCB3aW5kb3cgc2l6ZToNCj4gPj4+IDQxNiBLQnl0ZSAoV0FSTklO
+RzogcmVxdWVzdGVkIDEuOTEgTUJ5dGUpDQo+ID4+PiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPj4+IFsgIDFdIGxvY2FsIDEw
+LjgxLjE3LjIwIHBvcnQgNTgyMDQgY29ubmVjdGVkIHdpdGggMTAuODEuMTYuMjQ1IHBvcnQgNTAw
+MQ0KPiA+Pj4gWyBJRF0gSW50ZXJ2YWwgICAgICAgVHJhbnNmZXIgICAgIEJhbmR3aWR0aA0KPiA+
+Pj4gWyAgMV0gMC4wMDAwLTEuMDAwMCBzZWMgIDM2LjkgTUJ5dGVzICAgMzA5IE1iaXRzL3NlYw0K
+PiA+Pj4gWyAgMV0gMS4wMDAwLTIuMDAwMCBzZWMgIDM2LjYgTUJ5dGVzICAgMzA3IE1iaXRzL3Nl
+Yw0KPiA+Pj4gWyAgMV0gMi4wMDAwLTMuMDAwMCBzZWMgIDM2LjYgTUJ5dGVzICAgMzA3IE1iaXRz
+L3NlYw0KPiA+Pj4gWyAgMV0gMy4wMDAwLTQuMDAwMCBzZWMgIDM2LjUgTUJ5dGVzICAgMzA3IE1i
+aXRzL3NlYw0KPiA+Pj4gWyAgMV0gNC4wMDAwLTUuMDAwMCBzZWMgIDM3LjEgTUJ5dGVzICAgMzEx
+IE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gNS4wMDAwLTYuMDAwMCBzZWMgIDM3LjIgTUJ5dGVzICAg
+MzEyIE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gNi4wMDAwLTcuMDAwMCBzZWMgIDM3LjEgTUJ5dGVz
+ICAgMzExIE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gNy4wMDAwLTguMDAwMCBzZWMgIDM3LjEgTUJ5
+dGVzICAgMzExIE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gOC4wMDAwLTkuMDAwMCBzZWMgIDM3LjEg
+TUJ5dGVzICAgMzEyIE1iaXRzL3NlYw0KPiA+Pj4gWyAgMV0gOS4wMDAwLTEwLjAwMDAgc2VjICAz
+Ny4yIE1CeXRlcyAgIDMxMiBNYml0cy9zZWMNCj4gPj4+IFsgIDFdIDAuMDAwMC0xMC4wMDk3IHNl
+YyAgIDM2OSBNQnl0ZXMgICAzMTAgTWJpdHMvc2VjDQo+ID4+Pg0KPiA+Pj4gUmVnYXJkcywNCj4g
+Pj4+IFNoZW53ZWkNCj4gPj4+DQo+ID4+Pg0KPiA+Pj4+Pj4gQnkgc21hbGwgcGFja2V0cywgZG8g
+eW91IG1lYW4gdGhvc2UgdW5kZXIgdGhlIGNvcHlicmVhayBsaW1pdD8NCj4gPj4+Pj4+DQo+ID4+
+Pj4+PiBQbGVhc2UgcHJvdmlkZSBzb21lIGJlbmNobWFyayBudW1iZXJzIHdpdGggeW91ciBuZXh0
+IHBhdGNoc2V0Lg0KPiA+Pj4+Pg0KPiA+Pj4+PiBZZXMsIHRoZSBwYWNrZXQgc2l6ZSBpcyA2NCBi
+eXRlcyBhbmQgaXQgaXMgdW5kZXIgdGhlIGNvcHlicmVhayBsaW1pdC4NCj4gPj4+Pj4gQXMgdGhl
+IGltcGFjdCBpcyBub3Qgc2lnbmlmaWNhbnQsIEkgd291bGQgcHJlZmVyIHRvIHJlbW92ZSB0aGUN
+Cj4gPj4+Pj4gY29weWJyZWFrICBsb2dpYy4NCj4gPj4+Pg0KPiA+Pj4+ICsxIHRvIHJlbW92aW5n
+IHRoaXMgbG9naWMgaWYgcG9zc2libGUsIGR1ZSB0byBtYWludGVuYW5jZSBjb3N0Lg0KPiA+Pj4+
+DQo+ID4+Pj4gLS1KZXNwZXINCj4gPj4+DQo+ID4NCg0K
