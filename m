@@ -1,163 +1,226 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60059.outbound.protection.outlook.com [40.107.6.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B64A00
-	for <imx@lists.linux.dev>; Thu,  6 Oct 2022 20:24:12 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=causQy0xOyR5xPYyl+EK2KWr0uasKEHeQ1foQWxgz4g1PY3ehhwj1B7wpbMDBg1n60fl2WuGTW8FaAKyxiObGNurPu2IMJE3kkTK4QCvnFOzp7SY7zWwa+9EwhCzp4wgGmchbXVaTqYUBQGtCLi8E3+Is74Z/zJdqBYdrojoXsCKZAmZSIL78xSQGOMdcHlSaOZXVPkzrVn/0vkGo7gB5/PgalM+0lfYz9YAuq/TrgBecPD0Mv+t4jPUVCu2xd1Qo+mAKCbiTRxpPw7O02M87neHTG5byTfVX+zIL3gTbsK3QhJYMA5CbC1bVwU9uL8PlUWXsEpfc25ZB0Yh+9y+kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8PAkexK+ZcA/oqOzcF1Ncz8NVc+C40bsF0cP+gTGnPk=;
- b=I9/Eo6VuZp0FAah5AV5six0dtSG3mfvABAcLf1WZ4m9iqEcovt4vOxKVdQyWHFqw8bS0JHkLtNTJonIUc3YJ783Q8gxLJo4uJRRZFulGX/XsO9nE7LSRxXeMIKu3jfu17bWqHjs+1vcpEuySydN3BnYT0NYVslabIhNHKXTq5YgXspZu3kQ9aJwPlJM6gzJ28o/BvEsqMB08Hpyp7K5nr62udzWkv7z97bu1ycH6taGeRFVKwNPqT2sq5YFqKqExE36sVVV6942G6RzGQ8ksUTFlKJOZZlzpROixaFH36YpexC/xn3itcyap0DAm5jQwZvOp/9zt6tb/pAjJ6aFiGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8PAkexK+ZcA/oqOzcF1Ncz8NVc+C40bsF0cP+gTGnPk=;
- b=QY4ERxOliqmDESH7Y3ZsdZKHR68wy0M3S4KR9E/edUo11B1pAWJqSjrBfh/UA/7aSBzdmpuAm6Xfv6phOcqLNNRGogRHWVGF7XHk6iv6VIBK6ZbYu13xMNVkpp1e/PXwVIaYZci/+zz3Ec4MecjfIiKtLQ0AQM98Er6yGrKtOuI=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PAXPR04MB8701.eurprd04.prod.outlook.com (2603:10a6:102:21c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.36; Thu, 6 Oct
- 2022 20:24:09 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::fdea:3753:5715:9758]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::fdea:3753:5715:9758%7]) with mapi id 15.20.5676.033; Thu, 6 Oct 2022
- 20:24:09 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Russell King <linux@armlinux.org.uk>
-CC: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH 1/1] net: phylink: add phylink_set_mac_pm()
- helper
-Thread-Topic: [EXT] Re: [PATCH 1/1] net: phylink: add phylink_set_mac_pm()
- helper
-Thread-Index: AQHY2aV7z03oTM08YkiJP0ja6Vcjkq4BvyAAgAAQecA=
-Date: Thu, 6 Oct 2022 20:24:09 +0000
-Message-ID:
- <PAXPR04MB9185147B369F93218F2C1CAF895C9@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20221006170237.784639-1-shenwei.wang@nxp.com>
- <Yz8rWoYlF8sjbkBz@shell.armlinux.org.uk>
-In-Reply-To: <Yz8rWoYlF8sjbkBz@shell.armlinux.org.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PAXPR04MB8701:EE_
-x-ms-office365-filtering-correlation-id: 428e7c6c-d9a2-44fd-dcb6-08daa7d8b99a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- VUlTf5s0P1xA2ZXSwnQbYscTmUUGSY3KRcZYntGZftGgiNDz5Jm5rWeh3L4MbmoqRIYNG0jfGbkRhpXsLMOnGhHNeHjxlWP1ne5eU9LVouzD8ZYaCRLv/hysbQ0Mz03u5mD8z/TTvzdA+/5JTP2znpKRiQCoJBwUj9w8YcjABMox1XTPWKK20rlBXwfeJ5B1D+v3YfeiouQI6seyU+xIgdRVxGSsvxQfohvEKccba19scMFiXA1ZqxZqKkkjcFiPlj1omMxJoZdiRVQxtZ9qLdFsqjYzqbfvpwOXbH+719AiNNim+vkDnvu0N70jj/0ibvbLXiqLBsVZ8Fp0HSyGyv1URd9Ctd9WVKG+XoHW1SlNNN87Lq0G7zrUZ4WqDyq1b6iLFwqTA5oQ/ufh1ej3YU2KtaJGB+pSpqRP4fTjodutsb7rA64UIKvoy2JZCoBjeUgUcVy5j4aL02f7VMLXEXMvNyRtLMc2+GtcNzacs+rSDgvInMPAtXNDNMLBs74jNGBaK4885vx+fw+4xpn6jVJ5sHyTJjo6zLNOmcw2tmjwapvnShkd2j9zTT04XkBgS61nWPWnYPvvezFW9yCg5X3rvLLYAIkzoZ7hbgxvlYTybuXmZdJpYxWCU2+DRQ4AsT5sU4iALwdiZQzPYiVZJ9KGUDLD2N/SDLlv8Wrfhsz8AbsuvULkRYaTWv8FI78zOKzjOhSd2Z6ISdCa/k/b05SWT4RxLNRUevi/mLY0j/80Y/vAquW0uo5ZKQzr3pURtL2h5MuSrAcYO5ePCcdyXZ2GfE3RR/dgAOKzCnSXIcw=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(396003)(39860400002)(366004)(136003)(376002)(451199015)(54906003)(6916009)(316002)(45080400002)(478600001)(8936002)(71200400001)(5660300002)(52536014)(2906002)(44832011)(76116006)(66556008)(66446008)(64756008)(8676002)(66946007)(41300700001)(38100700002)(966005)(9686003)(122000001)(26005)(83380400001)(38070700005)(6506007)(186003)(7696005)(55236004)(53546011)(55016003)(86362001)(4326008)(66476007)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?8KjDDHL4xMwY91Q088HlWgRWlu4ll/E5pt2SXXJqzzyHj47y8yOvexbSRDmH?=
- =?us-ascii?Q?z38k2uqeqwYnDkxk7Iesv82QSUXpXO76r9kVCO01cP3ziSXg12CRdvZR9XKG?=
- =?us-ascii?Q?fQcX+DXaqXZ2AIYuyZWUN5Gb1aW9Oo5GSAJkywaecCYVpUvYXKxsUdxrjgLq?=
- =?us-ascii?Q?xA8Tmsf6aivKEO/vt34VIvzAoy0ylnKoCPEp4x8i7RUvjJwfZT5+7A/nnxz5?=
- =?us-ascii?Q?3vMNBMlAlesnmrdPCwV/9wSus3ROHUDyF9wX4drMKpfWj7u2vWMYksnq8wGx?=
- =?us-ascii?Q?WKPQpq84RZ7fbJo9c4FyTApTqmlEhwstPt8HevWPln3T/9CcQT1wdkD0gRyn?=
- =?us-ascii?Q?T1gkMR5AW0gfulIgioZwxANypyHYKDNY5NT1XmKVsx2rWKyCGjbg98f9Xd8d?=
- =?us-ascii?Q?TNXFbMvUmeYIH27Igr855jOSxP3W6PABYcgYoVXxCjQOTKGaiAaNmnBwWjDT?=
- =?us-ascii?Q?z9R2B4JyYv7WOWd6iMn8+TSNTSVoIassFfOqlsjLP4fY3d/Je0N1en47J+dw?=
- =?us-ascii?Q?wFOb9VLi6iv69GpbY4XTb3U0CcLPLBgnzioZtXcMuJbJ6UoboqD1eV25JEXm?=
- =?us-ascii?Q?rI9NnQkm1zYeQuoMrDVGR/DeH8WGL/yPWGtX94POKECPzBqs5BcgapZ7Xs3K?=
- =?us-ascii?Q?LmqklWTKct4J6A+uubFS1bvUsZly6ElwyZnKjf9e4bOMAk+83oyXhdHdRVQu?=
- =?us-ascii?Q?WXmFJpd/ydZdMR2NPWOPRCWNMVUEHPeU7ZpzjqOCTwFgwcu/nqgmxZj4TJs4?=
- =?us-ascii?Q?Bs8Xo65y46hzlytBce5233TIKXIhNYQ/sb/oFZjFUKKgUhRYnd4xT+OC9NT8?=
- =?us-ascii?Q?5ZY+3su7SlhduTam4bhMIvoSWsLM5tz9RmI7hI0ya7zgC7sJHglGYzIz+Ly0?=
- =?us-ascii?Q?hCujdKDJNM5mhp+c86Sy/XW+JP37ZeD2JPZYzxrB170O9SJDjO2QKUBr82Dw?=
- =?us-ascii?Q?pGgDLQC7JzpqkbnlfUJa8sryRzIbac7VOm90edTH0Mz/Vq/4LTpiBnEbiKoc?=
- =?us-ascii?Q?lV9G9ISs34ZMy/Y/AZ10drgY8kKgLQVzbatQIG3pMGxmm0b8w7AewgrSLTZq?=
- =?us-ascii?Q?L1ncQCC7cm/TxDC4YSut2Ibc7cYQnS05gmnbpTcgh+1NX4w31iy7DmZw7BH3?=
- =?us-ascii?Q?s9ddruJNMpfR9EZMnhkNn25hs1gXz3+jJ5+xfDXDJ2cTpxcuUQF/wmDgKW7B?=
- =?us-ascii?Q?ik+FEs32RPX+xWlwncoXknFMOl/bCsWij70YX1Oo9mJDU5IYApxjEVuIwyN5?=
- =?us-ascii?Q?nRM4gnMwhgKv8vS0i8e9aENlPpBBCCtMaq7tDOkGSwa+M+YdhflcO6PleCXr?=
- =?us-ascii?Q?G0U9r/oqvFHrmgSSrFTsGKX9o7Ob91r888pXzLPyBI9kgsUfhCgO2nBYqMdq?=
- =?us-ascii?Q?npR0+pXn2uYz9k42efs6z/eH6nB08IxqUU26kBS/KROK6GLhHhEi0xQEo3bW?=
- =?us-ascii?Q?Kx6DkXYCW6cv0OM3iANYYdRTs3RNoqvE4h2Z/AvIpD1h9qkEDbEzgIQ6B1rT?=
- =?us-ascii?Q?QDGoOo3fep1FAEjXDE+2OoCYoZoh853qbydgtvkLGi2EXrxRxNU1mbNyLnOv?=
- =?us-ascii?Q?9jDAwgiytPa1zo7ig99m7y8jiHFYybghZm6P6LtY?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2A97E
+	for <imx@lists.linux.dev>; Fri,  7 Oct 2022 08:09:11 +0000 (UTC)
+Received: by mail-lj1-f181.google.com with SMTP id a12so4829466ljr.7
+        for <imx@lists.linux.dev>; Fri, 07 Oct 2022 01:09:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=1LM8BrE+lT990zTpq2Ri2Btyxx5NaMTdCH1GeUVOqNY=;
+        b=Q+Mxgbs1wqmWg2gKZgO+D7/+ztdce2XtH6jkL4cZXqmxJXMWL26/W9X4JeW2ebBqCY
+         6FUJZniHBI6ajqXzvruG/vwiL2xXs0Ny8DLFayb5IRt42bVoDhfL14vRY0WxMvtUpVon
+         7FtLSENL5ubITuNSSVX4b5IK4uREb2lYAWAmvlaZD/ZgxZdAkD0R/1XeSnF2QVNx8Egf
+         F4lLqEMUHvlOrB2WZCJU+IrADmhh9fxSajuZd6rr5UtEih/ihAkO+xxH6vCj02a+JolO
+         J6RwrehyZCOP7HXmQ94k6irpUwNLQH6ZuxsNY5wFsrh0vsZRl6I/6vVIiygPSNQj86w1
+         sfHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=1LM8BrE+lT990zTpq2Ri2Btyxx5NaMTdCH1GeUVOqNY=;
+        b=PC1MX5dThcGj+hPGJm8xpc19zGVJTCn+tx9fGFx4dHHQVZcxZhQGAsQgkOSxAqgmi3
+         Pp10hNHx9sffz5PZP9zs8q6srxS2cjw0I2uhAc63pCc6r/JIVE89kCdIa2smHkSgkYYP
+         282pxcKZXqpEP/c1dxJpeQ4IsijCpi9P/VWVgAVZRcOqyi1zOwT7PngKlR0He79PB8YW
+         zb5/t5IlwHltkJdQoFCUjAQU/aPWNNMS1fgutMxBc+ocRo/P1PRdnNqacxi6dFbJrQlA
+         kPPR4kPIaHBYQpna7FVIwdXYeez/ny9uN5bPmXtRmmlK+8leXFSvnqN3v1VVNEMm7RX3
+         pvRA==
+X-Gm-Message-State: ACrzQf3b+VW6j82qcO30YBJBBli0f2xjrkhAdtyEF3aa8bwcg6tczLpQ
+	aWEeEOU4KB+myhiijNCjRYyIZxd7Okd5D970O14DcglVPUw=
+X-Google-Smtp-Source: AMsMyM6KBsKXnn9vdqw62b7sBvhG0nwAVh/808VwVz1ttzXzdGm9XUpAy8ohl4M6IJqYNvCWiyjGSsrXfoLIQXY0R3U=
+X-Received: by 2002:a05:6512:2014:b0:4a2:6c86:d995 with SMTP id
+ a20-20020a056512201400b004a26c86d995mr1500447lfb.632.1665130139329; Fri, 07
+ Oct 2022 01:08:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 428e7c6c-d9a2-44fd-dcb6-08daa7d8b99a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Oct 2022 20:24:09.4898
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GZ7CPJCiFWAqVzoVTSgZJbfiGFv1vkJwBFeqntpWiclWBvmPQsTMjYWhlC03rU9Ud6dwBI1y1CkvE7/rdHNg8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8701
+References: <20220928152509.141490-1-shenwei.wang@nxp.com> <YzT2An2J5afN1w3L@lunn.ch>
+ <PAXPR04MB9185141B58499FD00C43BB6889579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <YzWcI+U1WYJuZIdk@lunn.ch> <PAXPR04MB918545B92E493CB57CDE612B89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <ae658987-8763-c6de-7198-1a418e4728b4@redhat.com> <PAXPR04MB918584422BE4ECAF79C0295A89579@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <afb652db-05fc-d3d6-6774-bfd9830414d9@redhat.com> <PAXPR04MB9185743919EC6DDA54FAC3B7895B9@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <4f7cf74d-95ca-f93f-7328-e0386348a06e@redhat.com> <AS8PR04MB9176281109667B36CB694763895A9@AS8PR04MB9176.eurprd04.prod.outlook.com>
+ <AS8PR04MB917670AAD2045CEBC122FEE1895A9@AS8PR04MB9176.eurprd04.prod.outlook.com>
+ <PAXPR04MB918565DF416D879FF9232A6C895D9@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <eb8d097b-e53b-ed09-f598-71cac24edb7c@redhat.com>
+In-Reply-To: <eb8d097b-e53b-ed09-f598-71cac24edb7c@redhat.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 7 Oct 2022 11:08:23 +0300
+Message-ID: <CAC_iWjJ7AgpSZeOW+K8nMwgmZ-zC3h_nsfvGsJRrY2Aq2UVqSA@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+To: Jesper Dangaard Brouer <jbrouer@redhat.com>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew@lunn.ch>, brouer@redhat.com, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	Magnus Karlsson <magnus.karlsson@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Jesper,
 
-
-> -----Original Message-----
-> From: Russell King <linux@armlinux.org.uk>
-> Sent: Thursday, October 6, 2022 2:24 PM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Andrew Lunn <andrew@lunn.ch>; Heiner Kallweit <hkallweit1@gmail.com>;
-> David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; netdev@vger.kernel.org; imx@lists.linux.dev
-> Subject: [EXT] Re: [PATCH 1/1] net: phylink: add phylink_set_mac_pm() hel=
-per
->=20
-> Caution: EXT Email
->=20
-> On Thu, Oct 06, 2022 at 12:02:37PM -0500, Shenwei Wang wrote:
-> > diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> > index e9d62f9598f9..a741c4bb5dd5 100644
-> > --- a/drivers/net/phy/phylink.c
-> > +++ b/drivers/net/phy/phylink.c
-> > @@ -1722,6 +1722,15 @@ void phylink_stop(struct phylink *pl)  }
-> > EXPORT_SYMBOL_GPL(phylink_stop);
+On Thu, 6 Oct 2022 at 11:37, Jesper Dangaard Brouer <jbrouer@redhat.com> wr=
+ote:
+>
+>
+>
+> On 05/10/2022 14.40, Shenwei Wang wrote:
+> > Hi Jesper,
 > >
-> > +void phylink_set_mac_pm(struct phylink *pl)
->=20
-> This needs documenting. The documentation for the function needs to menti=
-on
-> when this should be called - so users are guided towards calling it at th=
-e right
-> place in their drivers, rather than leaving them trying to figure it out =
-and possibly
-> get it wrong.
->=20
+> > Here is the summary of "xdp_rxq_info" testing.
+> >
+> >                skb_mark_for_recycle           page_pool_release_page
+> >
+> >               Native        SKB-Mode           Native          SKB-Mode
+> > XDP_DROP     460K           220K              460K             102K
+> > XDP_PASS     80K            113K              60K              62K
+> >
+>
+> It is very pleasing to see the *huge* performance benefit that page_pool
+> provide when recycling pages for SKBs (via skb_mark_for_recycle).
+> I did expect a performance boost, but not around a x2 performance boost.
 
-Thanks very much for the review. Will add it in the patch V2.
+Indeed that's a pleasant surprise.  Keep in mind that if we convert
+more driver we
+can also get rid of copy_break code sprinkled around in drivers.
 
-Thanks,
-Shenwei
-
-> Thanks.
->=20
-> --
-> RMK's Patch system:
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.a=
-r
-> mlinux.org.uk%2Fdeveloper%2Fpatches%2F&amp;data=3D05%7C01%7Cshenwei.
-> wang%40nxp.com%7C817e10680d6345ce150908daa7d05d51%7C686ea1d3bc2
-> b4c6fa92cd99c5c301635%7C0%7C0%7C638006810614113624%7CUnknown%7
-> CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJ
-> XVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DdRZOuDK5vKRHYZomgVbJLPu
-> Adg13bxe3QGyPZyRWwwQ%3D&amp;reserved=3D0
-> FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Thanks
+/Ilias
+>
+> I guess this platform have a larger overhead for DMA-mapping and
+> page-allocation.
+>
+> IMHO it would be valuable to include this result as part of the patch
+> description when you post the XDP patch again.
+>
+> Only strange result is XDP_PASS 'Native' is slower that 'SKB-mode'. I
+> cannot explain why, as XDP_PASS essentially does nothing and just follow
+> normal driver code to netstack.
+>
+> Thanks a lot for doing these tests.
+> --Jesper
+>
+> > The following are the testing log.
+> >
+> > Thanks,
+> > Shenwei
+> >
+> > ### skb_mark_for_recycle solution ###
+> >
+> > ./xdp_rxq_info --dev eth0 --act XDP_DROP --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_DROP options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       466,553     0
+> > XDP-RX CPU      total   466,553
+> >
+> > ./xdp_rxq_info -S --dev eth0 --act XDP_DROP --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_DROP options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       226,272     0
+> > XDP-RX CPU      total   226,272
+> >
+> > ./xdp_rxq_info --dev eth0 --act XDP_PASS --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_PASS options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       80,518      0
+> > XDP-RX CPU      total   80,518
+> >
+> > ./xdp_rxq_info -S --dev eth0 --act XDP_PASS --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_PASS options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       113,681     0
+> > XDP-RX CPU      total   113,681
+> >
+> >
+> > ### page_pool_release_page solution ###
+> >
+> > ./xdp_rxq_info --dev eth0 --act XDP_DROP --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_DROP options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       463,145     0
+> > XDP-RX CPU      total   463,145
+> >
+> > ./xdp_rxq_info -S --dev eth0 --act XDP_DROP --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_DROP options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       104,443     0
+> > XDP-RX CPU      total   104,443
+> >
+> > ./xdp_rxq_info --dev eth0 --act XDP_PASS --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_PASS options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       60,539      0
+> > XDP-RX CPU      total   60,539
+> >
+> > ./xdp_rxq_info -S --dev eth0 --act XDP_PASS --read
+> >
+> > Running XDP on dev:eth0 (ifindex:2) action:XDP_PASS options:read
+> > XDP stats       CPU     pps         issue-pps
+> > XDP-RX CPU      0       62,566      0
+> > XDP-RX CPU      total   62,566
+> >
+> >> -----Original Message-----
+> >> From: Shenwei Wang
+> >> Sent: Tuesday, October 4, 2022 8:34 AM
+> >> To: Jesper Dangaard Brouer <jbrouer@redhat.com>; Andrew Lunn
+> >> <andrew@lunn.ch>
+> >> Cc: brouer@redhat.com; David S. Miller <davem@davemloft.net>; Eric Dum=
+azet
+> >> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> >> <pabeni@redhat.com>; Alexei Starovoitov <ast@kernel.org>; Daniel Borkm=
+ann
+> >> <daniel@iogearbox.net>; Jesper Dangaard Brouer <hawk@kernel.org>; John
+> >> Fastabend <john.fastabend@gmail.com>; netdev@vger.kernel.org; linux-
+> >> kernel@vger.kernel.org; imx@lists.linux.dev; Magnus Karlsson
+> >> <magnus.karlsson@gmail.com>; Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>;=
+ Ilias
+> >> Apalodimas <ilias.apalodimas@linaro.org>
+> >> Subject: RE: [EXT] Re: [PATCH 1/1] net: fec: add initial XDP support
+> >>
+> >>
+> >>
+> >>> -----Original Message-----
+> >>> From: Shenwei Wang
+> >>> Sent: Tuesday, October 4, 2022 8:13 AM
+> >>> To: Jesper Dangaard Brouer <jbrouer@redhat.com>; Andrew Lunn
+> >> ...
+> >>> I haven't tested xdp_rxq_info yet, and will have a try sometime later=
+ today.
+> >>> However, for the XDP_DROP test, I did try xdp2 test case, and the
+> >>> testing result looks reasonable. The performance of Native mode is
+> >>> much higher than skb- mode.
+> >>>
+> >>> # xdp2 eth0
+> >>>   proto 0:     475362 pkt/s
+> >>>
+> >>> # xdp2 -S eth0             (page_pool_release_page solution)
+> >>>   proto 17:     71999 pkt/s
+> >>>
+> >>> # xdp2 -S eth0             (skb_mark_for_recycle solution)
+> >>>   proto 17:     72228 pkt/s
+> >>>
+> >>
+> >> Correction for xdp2 -S eth0  (skb_mark_for_recycle solution)
+> >> proto 0:          0 pkt/s
+> >> proto 17:     122473 pkt/s
+> >>
+> >> Thanks,
+> >> Shenwei
+> >
+>
