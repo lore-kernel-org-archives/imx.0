@@ -1,84 +1,85 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAA133FE
-	for <imx@lists.linux.dev>; Fri,  7 Oct 2022 21:25:58 +0000 (UTC)
-Received: by mail-qt1-f170.google.com with SMTP id l27so3578697qtv.4
-        for <imx@lists.linux.dev>; Fri, 07 Oct 2022 14:25:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pp3PkNdpP6jrpj+2aY9vM5YFVJap6BN+ylh/P+ZmqCQ=;
-        b=BwwO755p9NGTK+jw/Jm945MjRSatJXV3PX9Bpt7qwsN70+f2/XXunJJXibUP5l9rp7
-         JqP3icDS19X6tdwddnJYvYMh0RXb5feHt50Fe5C5l+nsbiGo20HwjErZoWldsXv1bjYc
-         ZTwPtWBD4MkjPLYXSzbSCfSkoMndRUzjCV62nKy2HFNvczouML9SQgLCDm1fX6c8mPEu
-         w0AuaRC7KiisOCQotAk0rn+zJxm3ttBA/CdnycyimTkiAmiLyIooZIeDDCxHWZXuk6+C
-         DcHnfMCrHdosqEp3Ao+hqKkHvFfCDvYfh+yA5HKyjG76oa8julyR1UENtFgBph1CSmez
-         RWgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pp3PkNdpP6jrpj+2aY9vM5YFVJap6BN+ylh/P+ZmqCQ=;
-        b=tv2mthu4id2f4DRBSiN8KaXqB+wHNuAQcqh/Gqmrx81cXF5wpZAwmci+RerOpWTpHT
-         1eQgSXzL6FNCGVPhLTn3e7u5fXulSPoKFjlmN4uT7tHdYFAQw81BrzkS5iPpy64XHyfW
-         cbgEtTwW119z+I0i7OdJh88XW9kNxYtGqa4BBSthSM/a0H9XLCCW48EGUqUPg/IAwccS
-         moyu2NrEecp1gcxz3GVJnrLfyOw05/CQJhyKy6YdqRmWtOwEVfBeWSVSKNIGERQYReXL
-         tKkJDF8ny56PM+JvEaemC2vHqv/ySKLoRfnyQYvRc1Ri92idOqeTORlzG1z/f6AI9mrk
-         ULvg==
-X-Gm-Message-State: ACrzQf2YG95/AdPN4F0fvQvTANB4PeeFo7Or+vdC49Iz8d92z9ooCpMW
-	lA8hF0Fs+wnaAWsRXBgTk6g=
-X-Google-Smtp-Source: AMsMyM4IVyQL8e1ldgW7ejKvXkivsbYmt0BIXTluu0teimSk6wCTBzk23s9DK5Qw6kAThT9W52E3Dg==
-X-Received: by 2002:a05:622a:390:b0:35d:44ab:c615 with SMTP id j16-20020a05622a039000b0035d44abc615mr6064206qtx.594.1665177957035;
-        Fri, 07 Oct 2022 14:25:57 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id ey23-20020a05622a4c1700b0035cf31005e2sm2897179qtb.73.2022.10.07.14.25.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Oct 2022 14:25:56 -0700 (PDT)
-Message-ID: <3a95403f-0f26-6f64-1cd6-7770808f8514@gmail.com>
-Date: Fri, 7 Oct 2022 14:25:51 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628CF10F3
+	for <imx@lists.linux.dev>; Sat,  8 Oct 2022 07:27:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5LuQRAEYNuy2Djje4dgYioJM3Hrq3L41SvaEqPX8DcU=; b=mhftvTLVD38Y4Hl4RJZN3XupCJ
+	qXWYfU4Ilg1OWtHdbMKEhH/lAXXpr2Rcv+HZb1hH8x/xbyQ5wAYhKPGrpKwnsbBF5mCtNZ8V3M05m
+	j8uoFUUq1MkcsoC+TSPUz4AWkBVTVAQA9BXxlWCGACcfE7k+YjaGjCUsz2T0yki8YtHA9a83/UGWb
+	6LYFdd9Y59LhiQztaJ0n8jUdexq3SIziG40CYemM78GLC91qDC9EfBxFppaS2NZVGLQ2t/NH5sGtz
+	zNWLIklxi9KvqpnDb4CaQzWdkqVWXDmX2dnqe1xjuxX7baz5yKYlWm8JrGK5yJs7UJEGe+kQ+XwFP
+	Ecv63J1Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34632)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1oh4FM-000367-BD; Sat, 08 Oct 2022 08:27:44 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1oh4FI-0008DZ-UQ; Sat, 08 Oct 2022 08:27:40 +0100
+Date: Sat, 8 Oct 2022 08:27:40 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/1] net: phylink: add phylink_set_mac_pm() helper
+Message-ID: <Y0EmbNyFhT/HsBMh@shell.armlinux.org.uk>
+References: <20221007154246.838404-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v3 1/1] net: phylink: add phylink_set_mac_pm() helper
-Content-Language: en-US
-To: Shenwei Wang <shenwei.wang@nxp.com>, Russell King
- <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, imx@lists.linux.dev
-References: <20221007154246.838404-1-shenwei.wang@nxp.com>
-From: Florian Fainelli <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20221007154246.838404-1-shenwei.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 10/7/22 08:42, Shenwei Wang wrote:
-> The recent commit
-> 
-> 'commit 47ac7b2f6a1f ("net: phy: Warn about incorrect
-> mdio_bus_phy_resume() state")'
-> 
-> requires the MAC driver explicitly tell the phy driver who is
-> managing the PM, otherwise you will see warning during resume
-> stage.
-> 
-> Add a helper to let the MAC driver has a way to tell the PHY
-> driver it will manage the PM.
-> 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+On Fri, Oct 07, 2022 at 10:42:46AM -0500, Shenwei Wang wrote:
+> +/**
+> + * phylink_set_mac_pm() - set phydev->mac_managed_pm to true
+> + * @pl: a pointer to a &struct phylink returned from phylink_create()
+> + *
+> + * Set the phydev->mac_managed_pm, which is under the phylink instance
+> + * specified by @pl, to true. This is to indicate that the MAC driver is
+> + * responsible for PHY PM.
+> + *
+> + * The function can be called in the end of net_device_ops ndo_open() method
+> + * or any place after phy is connected.
 
-This is fine and needed, but first net-next tree is currently closed, 
-and second, you need to submit the user of that helper function in the 
-same patch series.
+May I suggest a different wording:
+
+"If the driver wishes to use this feature, this function should be
+called each time after the driver connects a PHY with phylink."
+
+This makes it clear that after one of:
+
+phylink_connect_phy()
+phylink_of_phy_connect()
+phylink_fwnode_phy_connect()
+
+has been called, and the driver wants to call this function, the driver
+needs to call this every time just after the driver connects a PHY.
+
+The alternative is that we store this information away when this
+function is called, and always update the phydev when one is
+connected.
+
+There is also the question whether this should also be applied to PHYs
+on SFP modules or not. Should a network driver using mac managed PM, but
+also supports SFPs, and a copper SFP is plugged in with an accessible
+PHY, what should happen if the system goes into a low power state?
+
 -- 
-Florian
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
