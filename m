@@ -1,33 +1,33 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-eopbgr130049.outbound.protection.outlook.com [40.107.13.49])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2059.outbound.protection.outlook.com [40.107.105.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7265CAE
-	for <imx@lists.linux.dev>; Mon, 10 Oct 2022 20:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4495CAE
+	for <imx@lists.linux.dev>; Mon, 10 Oct 2022 20:48:52 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VgWFPWNorM0SNf9wX4WiqQRSGdeonI8U87NGSjyvlDW5DYQfrbWnxn/U9wQAUGXe3l5tIJ08iBBp77BPvCwM9uRA9rbHOuk6c6+zENkw56/Y1R8xu/PSaLF/uXP1Aa51TTy2F0he0jODUtGaGawt7rSTCu6p9u78uEo6Hgp9TV1+zx00Q+nHMKUxtbTsWDBy63+9igN8Sar36biKhYGVKbMwnt+l/3tqwyAyUpBNv7rGSQ17odhAS/UsLWTgneWUOAu4XwR9+s/Y0Q6GBOA6UDst6/S8IoMsnYXftZInc9XG+IPhu75czjqq09xfe7by4iZPqyoLTGTheu9qbSniwA==
+ b=QbeT/t+QXxDpjUCJ0hzPd/76URGRh/w66NyumK3GBYYBMrthaeO2RU6dQlo14eiw3fiI9k7ekuN3jXfyN9rtIOas7Hb3hIMDGJyrOWaS4+0vAM5oBueh8sjK7nmMZNwdofwhM2hTDmXT5gEL1HdvZESZKbjw77YvHe7JJl98JmPLDNG4NtkMPPyM08OTyoGYANd9i2PUc65aIJSyxrYd/1emhKITQxbDK4ys19sOPpjpqcsiy0JvXU7yjrfFb2vg6FbF1MELz4H+biZhdCD/BjH4NRb/EddYCtSZg1PGYdL4HXB4af1oIwFOZV8ykox3xoTmjSO62KMTZeUxGswQKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CXbZEbsRu4n8mowJtawgrefzAQObySrKiO3WI8WyQT4=;
- b=OPaP3QCUGX91Rbn6rtZ+mu5N8mYnu4Cq80uqVaoO10M4aoC1WGWzJ0MxnuxerhpXo0+O9j0RVRuIYuJkMngXJtEOdXVoCYKuV9+pkXEHdT/f8plLRtPXiFJM44TJQpBHhYlaRaCuFm/Ade700VrDgzhnBZOogTKu0eMaRpeS/LDSclwm56aoInAH83ywAb6HOqnPIhn1tUPdXY3ijSBDwUDFqcQhgC9yNAdtpPMJveGZU+sR/xSWjcF7tyRLytkHRXURazViib6ATY5uPQyE0izS00fOT1muJ56bBDwQrXDfUepCHnB4Fduga3davQq8f7lw2SunXu7u/MEhD1xiTQ==
+ bh=ptyGMV9gTHnexXB/rS6dCRxrokDofAjqpnegzJ95k5A=;
+ b=NhDlWHBXzXnSmmdrXv5tDQWXk2wrVEY6+6IBYryczK5e5tdSLtDL4o3cbjyG9BnHJPoLKBVsorCOGkrUbh2q3vDHXRHYlxAHqMVI3S5bMhtBaTIoYXV/i5d7+hXBPIwTV/V6kcCnr/KX0KLnBWmdaiJchoFfTOdikzp9g2LOjyemfbtKQ+HurPMCGRuBS15sfmSMMxQnKBMI+XDMj2RZMkoXodAQGjXKtQC+qyTk+P5bDT2uqwwszGTCl7gleZY7yZq4rwzO+jPNIUvLbAGXQA9T4RmmCNirFPCBuLIuC0xmeZzabuDdr4FzJniq/b5kaRP6zuXJy89RfEMqzmWUKQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CXbZEbsRu4n8mowJtawgrefzAQObySrKiO3WI8WyQT4=;
- b=FxZLUKSb3uZffrGyW6XKewtyoBLJLAkufg49S4rHjtnjhhxlamAAP8431zSHmuD9UpT+bQG1KEy3LKooQWYEkNGFswDtVdbMTej9zFClFSLdGAMKkc9x9oUnknNQv626NL4sHKzIxxOX7Lu2AguJYbVZDpvxjwRZXSPhmkJqUWM=
+ bh=ptyGMV9gTHnexXB/rS6dCRxrokDofAjqpnegzJ95k5A=;
+ b=HmRP135HgF3teTuHCeDB3zjawnf26qGjlgODe00LSei2tUEdndaM1T/Jy3R2DkdNyx9PDnLLZScb497GKKTaejpZoF6WvMBRm1sCpfE1mJy09OouN7qdVmg07BXIsyjlJAQh5SqW8elVtQFkdFKCR28eovaV4IGooxGWAB+emXQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PA4PR04MB9567.eurprd04.prod.outlook.com (2603:10a6:102:26d::9) with
+ by PAXPR04MB8686.eurprd04.prod.outlook.com (2603:10a6:102:21d::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.40; Mon, 10 Oct
- 2022 20:34:04 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.15; Mon, 10 Oct
+ 2022 20:48:50 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::4d83:404:c74a:7563]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::4d83:404:c74a:7563%5]) with mapi id 15.20.5709.015; Mon, 10 Oct 2022
- 20:34:04 +0000
+ 20:48:47 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -45,16 +45,14 @@ Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
 	Shenwei Wang <shenwei.wang@nxp.com>
-Subject: [PATCH 2/2] net: stmmac: Enable mac_managed_pm phylink config
-Date: Mon, 10 Oct 2022 15:33:01 -0500
-Message-Id: <20221010203301.132622-3-shenwei.wang@nxp.com>
+Subject: [PATCH v4 0/2] net: phylink: add phylink_set_mac_pm() helper
+Date: Mon, 10 Oct 2022 15:48:25 -0500
+Message-Id: <20221010204827.153296-1-shenwei.wang@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221010203301.132622-1-shenwei.wang@nxp.com>
-References: <20221010203301.132622-1-shenwei.wang@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0118.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::33) To PAXPR04MB9185.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0280.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::15) To PAXPR04MB9185.eurprd04.prod.outlook.com
  (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -63,76 +61,74 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|PA4PR04MB9567:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5bcec43-f803-48cf-8d30-08daaafec3fe
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|PAXPR04MB8686:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08d43c7e-0bbf-45fd-9ea3-08daab00d403
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	WBG5IW9R9GZdvPzSlHToaBFNsm41l7rGntNo7XXfhPcd0wQJ1FIkLOEWray1NPWCiT+vyfGpQ7nbJjL8SIQBxfRz9ktPVnjg+8pyBAWsV2fHy8AAKzDBIZFYJJj/tQOutNPHMUyxQ7ErJd0noSTnPiTwKY/e0PLQfOl+OiDuUeEmzEbK2VmOrPYAgCtRCCXYRqmoTzXHWC6avK+LRP1rjXX27lq9nQjaDGR+XbjFmU9cClgBAimre+6EfYqwg0LkKxgmfbDMyM+B5nhClx8VmmsewbD72j5thBlIeIzO5yLCJmXjVB6PkHBAuFaMHk6v01TGUo234L9fCotWbZEliKTgZSvHv3PgviNaJVmV3RUquoaBQ/PWkm/dGvYpT1FTzNt8H9eOqUzQmakNjE91vannReCEzrEGYnrySwJVmJI4XbjUl4TcxkkrHW3/IOCD8CCisFbiqpimNq/9PtY3SjyQMEjogeNIN3qE8gNS12sqEDJPE8F3oRQ3TJlZqzKrD/g5GEZeXmXi7vU0koK6oWZ4A9nsIrsMaHDKjqL/P5/wrz9CVhvg9fgNg1PtreGGf++TTz3EFKI2003hq/OX1w0DEmX4mWnHrA2rlT7lmoPIFZ6cndWF6tT+SuqKjqV21ZN7ZshcCFUbSuditQiOKfHbEjU3K5sPTo+HtElglUsr0Wn34GrJ/p+d9eDTAVnDZBOmDeMxz7nTU1cetGSVxGWI2apwIpdX+lqM9WHRHLriwoaIqUc2xy/Y9wvtocI/NGcNRham/KPKaEMQBa0DtA==
+	IprSNtB+4FLaAdvs9+gruRb3QPRSx8fykIE28Or4BVHMnRpK/lqjGO/ZgQyaIJvFKiOs/s6XY142Lx4PpU5C0KSxUy0hOhMlTdQVqAspOL8xnjmjlV+G+KmPD9JJ767YUri+qPfCZJ47gcLMOgJkGIYFF9+Z6Lyi50GrJIcgZHgUL9XzgS0zGLSDHvvys+kXY0q8k4NumFq4EFvrLGdiy5A082rIwNu1Q7wfQe9B8uBYFt+yj35EA0RfmQirGFXawwccm1bEYlMFU+902flmej/VBWnd6NT3I+CDazcUGrbAPX7q52XP74eVW4dLJ4/bEUV+533K9SfnmAtaEnk7uiDG11Ot3nS3JtA9xTFdXGwryUq1Wgk0NiwV3NOo0WjmhcJYEY6J7eYmRlbDUFzsNBRoRBKCGvNy2zDGnEtxMVL4IYz457pKCumwJguONmOC7lnCRqLcUkXPRB51d7/tnTdjyxFN/n1ZZHfTyKlGl38bNljb9C8aeUiCC0K1fPpLgbWI24YfXSgYzysxw2y+jMSNEKPtIHcbcvaqxo9IiVA1m3TPCt0GQ65bBj7pV7+/D2Mjb8HSXx4cNAXxq7ekIXu2D/QUH1ru7sB6yWhz4wKs0MNG6WyOVCorqzm8IJ8MusYqtVpu410dQwO2d6MdXGkVXXeb9GmBdLmdwsQFP22Hh7b/Eu3rtE2n49XQKDC6H94Ldg/oZjZJyrB9Buq7meBpHWdlf5EEYAWIsEa9AwtGlUtO6mg7mUfXdUoU4gsVOaJUX7yioQOEZycg2LdC5A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(366004)(346002)(136003)(396003)(376002)(451199015)(66476007)(83380400001)(4326008)(44832011)(38100700002)(38350700002)(2616005)(1076003)(7416002)(4744005)(2906002)(5660300002)(86362001)(8936002)(6486002)(55236004)(52116002)(8676002)(316002)(26005)(6512007)(478600001)(6506007)(110136005)(54906003)(186003)(41300700001)(66946007)(6666004)(66556008)(36756003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(396003)(366004)(136003)(346002)(376002)(451199015)(66476007)(36756003)(38100700002)(66556008)(38350700002)(4326008)(66946007)(316002)(86362001)(8676002)(54906003)(2906002)(7416002)(6512007)(41300700001)(44832011)(4744005)(5660300002)(8936002)(110136005)(186003)(1076003)(6486002)(2616005)(6666004)(478600001)(55236004)(26005)(52116002)(6506007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Xoz8sC5FIKOVGKP0D529niPsjLcJYOxZxcRkjruWxyAOOl4AjxTgKfGjp/n4?=
- =?us-ascii?Q?GWsISt5KyioCmB0o9ip1ffBrK0lYuAM1+jaUGOawt4lS717d8sH7i+r486CF?=
- =?us-ascii?Q?2auG03qAG5vHIJZ1o5Mj0UUEMq6Vs8d175Pmm5NuiMIJj/OSqef7y1QOFsH7?=
- =?us-ascii?Q?m+HnC9lVz6QoMciuQyz0/ol3AI4Ei62v+g6bsSvf2gexrXx8HdP7Z1itr4iS?=
- =?us-ascii?Q?faxBLWj8feyLDTYi0B4OPc8isTW0xR1QRijOCU7s5VQwRK9ImouT1VN5bLUh?=
- =?us-ascii?Q?jgjzLTOj+BZGH7xwKR10VQ6kguhO5qso0rw4XqwfHLNfrN3Ee8LOISEH/5dY?=
- =?us-ascii?Q?AKCwO00L+JOgTXqPi/CuWu/csZ8pzWk9d9RQQgcnkLCSS5r0Zwg3W7ZU7rcg?=
- =?us-ascii?Q?el7nYMR7XaQp7LbOTrqcisaaXL1N2IqjqPc1sEm2/hI5+VUitGZLr37pqR68?=
- =?us-ascii?Q?TEmcRbRjNc82CMbo45Se/jxUhTGcequAlDtNQLA7HEB0JzO2DcUQG2hK9a/I?=
- =?us-ascii?Q?PH5ys9xLn4g2ztz0YKS4J7sLGJa+zkodm5tK0MQf5mTzAiY1ZxrVQGG9xdtb?=
- =?us-ascii?Q?N0f5mesWUu6D0XRTRlvFk/FpFFYHSowW+5gi6wU53gQ4EZca/6LJwm99cENB?=
- =?us-ascii?Q?sEQFjjxNp8xr80iRXgWYSZgEyxDpIzRsUcUpZW+PVVdWUCPwEKOvw8o6rdVg?=
- =?us-ascii?Q?jFWt7sfd29Qi8DW6Z0JQu+5fk45E1nB7lvQ5sxc/BWooLcBqJedbTwMxeKa9?=
- =?us-ascii?Q?OnO/ZQznv4OWbmXNIRrB/pFDTvzVK9m0mC8Tzv0Jcwyjpko743rydz2mN+/2?=
- =?us-ascii?Q?qgHUb2NaVDlovH7kY7i1cpNfGpS1K8n83e4Ok6F8eIJ69szrdpH0hC47lkpA?=
- =?us-ascii?Q?6No9cQjRoDtC7aee49LNJcDn5FWLmtqiUqieKolG5Ln5Z2EONvAyUmtdyTAe?=
- =?us-ascii?Q?TgTWwbCekcWK8ps7cuwziwluseTmTYRSRFEr9wDYW1lraw79Gt1Drm91gi40?=
- =?us-ascii?Q?TmbT7bAAlU0n25Y25BW+eqzgMl06xQZXeeYB/ICE81NhWV5AauYYtm/zUf5W?=
- =?us-ascii?Q?BG6ugkWS9aTaVdPFUrEWpvg4RVgVk0K55LNPcEcc3bV77HQ48pzVDKtSBPHd?=
- =?us-ascii?Q?SiCHBnB2DNSoHi/NU5FGBQODueMU02PTMss32h8OphWrg1HC+qJPT2DN8QEV?=
- =?us-ascii?Q?aylwoXQ6ARPpRrrW3FW1dai2O+42N3YQ12GQYq/jsfsY7nSTfy2i1sOJmt8O?=
- =?us-ascii?Q?o1TnNVoW15xlM7xizjzuHHT3GeW0oJqZ1FjumaiRXWrIJPPa4XSHSW9orP91?=
- =?us-ascii?Q?HyPaOs0tNMcdeoNTFeeJgggmmJAbD2tsYMpV4mVDMtGwKBdVTOaXruc7NtO/?=
- =?us-ascii?Q?0ZvInfvTvVkdiB/Q4znvGpvpqU6gIo9iHrfyXxWgrMQIPP52beapZrdv2kMF?=
- =?us-ascii?Q?+5wEvklvrbzBcLPiNnOZzXB1GJ5fh0Zg9ZF4l76oOZ7L/nfS+K0h/dx1ApNi?=
- =?us-ascii?Q?eBcfB7xUWajyge9vjGCQZVLxVUF7fS3F9BkIVJ6jpxWicDyAmEui0Efu4fod?=
- =?us-ascii?Q?pPdM+/paNciEYoCwrwi5jE+kb2fDelFpMQcoKVhr?=
+	=?us-ascii?Q?TWOvrJE33twAL6Yt90u5Zy3BGwsqIztRMdCkbD8C/m75U7AZ531bjAjqj4rn?=
+ =?us-ascii?Q?4cRBDGXvwBIOetBMmHjf5G+catrcLT/iegCHUempfhJ23N0tDOh+ARtmDKL0?=
+ =?us-ascii?Q?3pMTEncP24ry9U7ZNbOnisNioYS/cmB0Vndf/Aai2fYR7c8fgvVsxy74xRND?=
+ =?us-ascii?Q?BBGtB2B6kfCzFaoy5FRaCRpGA4TmcvuCcDa2vjiFInztlKUq6geTWCHg0Cq2?=
+ =?us-ascii?Q?ZnbjYsljrAhl4PIjKlcsGDs128o2RldkMfdNczVozMpZAjhmG//pbhKray/o?=
+ =?us-ascii?Q?gE/0I5llFluWS1b3U4bKGsYbvUYSLG0s2yJ5NTuDumBlmJ+fKqkeEE14Up/C?=
+ =?us-ascii?Q?KFde/LoCKE65KgZGpOUcISTBBIaau334R6nc6buXuCqwid7gbGh98ESW0fja?=
+ =?us-ascii?Q?R7AQ/yPXUZcwS4rQtlr/+0EePnIwkBEu8+xodtpAfoTMHjKOVBfuOegwYvJf?=
+ =?us-ascii?Q?D7/2HE3Ewz9D4MpSt8aTbarS56kHTwnWtFZJKpFtuGzXm99350H0Si22p6dT?=
+ =?us-ascii?Q?9KwMP1B8Jdy1focGyh5ndLEyp3dPo+U78Np9LjRBS/v/qp+H6L0BlVoda0hA?=
+ =?us-ascii?Q?iuU6O+rS66UamFGzCKKdGCaXhVK/fnIyOdDU3W6Z38G/TRN2dNxa2P33nN/1?=
+ =?us-ascii?Q?oXk4Lpt+ngnJtm3nV6Gl5oYPiB+S8sRJbVFWLdhw4ixSwOwtyTMi85FaPXfC?=
+ =?us-ascii?Q?ENYKO0hKG5yA/52ukXjAe707HrEWZ9ktIeX1piST0F1QOoDLvGiv8NEygCoM?=
+ =?us-ascii?Q?eRPmfHwtJP4XNJZcH3eDUEi+W0nhxdtEQxtJFf02CcN+oDF7mAHKIlYDZnCH?=
+ =?us-ascii?Q?LQoRBFYNVKMAWX65IhlwFNNuTaXwv45VeY8Si96/IZD3i50BQOC57Q0p04VW?=
+ =?us-ascii?Q?VroauWow/axxrmcOfHnvEaGJRLm22rkD68iqq0XZb+MrcxELhrKEjRhsnzKQ?=
+ =?us-ascii?Q?dj4Xu/pP4Kxpj74BrzjpV4ecFfzVDXVi0PUyMJMkrGab0e8MuCzuB3ln1HcI?=
+ =?us-ascii?Q?AYTs2Z5zVoFPg2eJ7OG0/N7GGO28spUpgKeaTck8hjtQ0hUOABnuMzb1rV0f?=
+ =?us-ascii?Q?a+5gACRKEaCipqYQpaJOxGJAxsLV9Y/h+xr49Npe/G4HsA9DR+LXv0RHWri3?=
+ =?us-ascii?Q?y5bhgOSK93TrEC1Ecg7DIu+7N+UbFSlaVHEffsa1S8RcmxX/UVK9+XCYBRjU?=
+ =?us-ascii?Q?fJ01Puk6aPjtgwLblmfz5YFKVQ4VabbC/orVYMheI/0nFxG1lSmqveTzX36t?=
+ =?us-ascii?Q?xMiOKnZPlPqcFIHVKenxvWvctMTHPPKaTlSGiUygIERBiLceZu6PJIg0MBul?=
+ =?us-ascii?Q?gKuppy025jJwXqpl9EPgb6jjpo2Hrwq92IccrIPD1x78txQ5PIxGk9avw0BR?=
+ =?us-ascii?Q?gukOBrO69OK8XEnbsmuTO5SC04fOVo6Lscc3s199a3eBVyp57Znt2Yh7n2R4?=
+ =?us-ascii?Q?f8bArWVTJzI/WuaN7AI5FctDc5o2HOD2eRpUri30tFcylqW5ji52NFMqSAJo?=
+ =?us-ascii?Q?5N5KtQJCeyEh6e4HHEi2zmar1kgP23zJjHsJSnJB8drfM5gXi/+lzpGxRIJX?=
+ =?us-ascii?Q?ccMmlyk3hAhnl3hErtXq3ZLJI2haWXS9T7qnFGmeP4DqjfD6ZSOdzzWi6umH?=
+ =?us-ascii?Q?iw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5bcec43-f803-48cf-8d30-08daaafec3fe
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08d43c7e-0bbf-45fd-9ea3-08daab00d403
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2022 20:34:04.0666
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2022 20:48:47.8126
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BOkDD+WQWfjacsUCxS8RGNeHT7BzpoRK2R1skg25JE5VcJU57qm4NL/VvjWVX5IxbiKreWWIVoDXZsCq8d23wQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9567
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1DL607p8FXpngNgDwNn8rfV9sYh5UyfbxAhxBr03+KjY7JV6ZdNm0e0aHK/aKUjsW0DBRVDKo/rXDEFjxNGpcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8686
 
-Enable the mac_managed_pm configuration in the phylink_config
-structure to avoid the kernel warning during system resume.
+Per Russell's suggestion, the implementation is changed from the helper
+function to add an extra property in phylink_config structure because this
+change can easily cover SFP usecase too.
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
----
+Changes in v4:
+ - Clean up the codes in phylink.c
+ - Continue the version number
+
+Shenwei Wang (2):
+  net: phylink: add mac_managed_pm in phylink_config structure
+  net: stmmac: Enable mac_managed_pm phylink config
+
  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/phylink.c                         | 3 +++
+ include/linux/phylink.h                           | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 8418e795cc21..537e8e61bb97 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1214,6 +1214,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 	if (priv->plat->tx_queues_to_use > 1)
- 		priv->phylink_config.mac_capabilities &=
- 			~(MAC_10HD | MAC_100HD | MAC_1000HD);
-+	priv->phylink_config.mac_managed_pm = true;
- 
- 	phylink = phylink_create(&priv->phylink_config, fwnode,
- 				 mode, &stmmac_phylink_mac_ops);
--- 
+--
 2.34.1
 
