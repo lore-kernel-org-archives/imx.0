@@ -1,171 +1,140 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80058.outbound.protection.outlook.com [40.107.8.58])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2042.outbound.protection.outlook.com [40.107.21.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02804365
-	for <imx@lists.linux.dev>; Fri, 14 Oct 2022 14:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DE423D2
+	for <imx@lists.linux.dev>; Fri, 14 Oct 2022 14:47:48 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=f9wZESrc9nqLYEqK/bJ/HDIlaBMMTW90EJzGQLYSi9B0IsL0v3Os5YdNBU+GPO6Fge4M5QyZSD7H/rgmr3qYG7qoRInnbnu0IyLnEIGe8+NdK0iHjfJQEbedGoap/dDGE3zCFi6WJpzUhUq7Ic6+XyQmVWeCgqYoL+hLO6st/3CjKl8t6n+nlsXanIPTbp3QDWW/UuQLMLfSTantnjNFG30bYkU4P23fdZ01qpm36CPX4AtGOtEiMgtAYcAKB5edNSq7gfy1bQQojd33MCWTA/9ludLy3iFQUw60v1bl96DBOyPLVTBToIV845CTvSx7ltiUej3cRu2wBFx1U91B8A==
+ b=Z/JcCQSAeJBF92cdpjtFK4nGS5v/szG0MY807HMuwxsL+ASnxKIroHktkAy1iYkrsZc0iYnPMAeA8/Qvo66FrZK3ixUNt/E153S/eJCG63Mc/ICA6Sv0NrXAiRGtHWi7ZVf9CfuO07evTcNydADhrWui1MgGPcVvTFczdIXhyfp6zeXjNqq1s6+KC+NlQkDJ83u+TedBJHVGI4ZXejEPV0qA4QAqmA5k1X36HLqYJRSfDGYcq+ZulBOeokGxbVAx8Bqbzw2Y/8PoEwW2wz3EtDPlI+P+Pelt8+WVut+wKiYF8PhhMyYjay7YXUoV7xMf8ZBaS0tzG/GG4xPQuTezLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6YaRtWA14DSi1o1oS62s+NcCDYkuanw4QmZ2a/e3WQY=;
- b=NSVFy0Qljwe4XTSvNRP0ccS2mOz1+bNWJYmQgzLhxiodBhgXNdQ1jdKbsuWW9WDAeA8UPRuWlhENRlJ1qwre3kGeMrhbMXmdnh7Z0pEUHgLeoa/lFXXKMJp6OTTdgcc1ZuzY+jYdgR1oe+6015yeM7APAPzCvftFWhMrVPfwljPGzjIKWj6lyBihDhU0qJxMJd9cZfYP2iI/ehFb2uMCBiFe4S8mjsrm6HpQX87hIeGP+5ko9bjGDPe1dHT3/6zI26VHCdZKtDILpYRYh+mNzUXBdRQXOqur+D3rnCROjdAM24T7zM0jr62m4VptQc19n3H4JZwVIzgqR+nD3xVFnw==
+ bh=a6F7Si9ccQWD5GOC3H8nn5imuehqAiiprmCizm4S8B8=;
+ b=RZo5g2Xv64kVNFgzbVdw65T6IG6Bn9u4ZwMhiFcjt/TbUJRqnJkeQ1mHWLBYsM/E1X2J+cfg/Ouyd/wN4CtqIWMH2xw5HeC164SQOikEOVzlVrrzw7a58LEfuxG3WCzeohDOmHQqLwJ0cIxgBI34KyUfvJKQgatjNORkePqie6Hj5Y0xBZAHE+QRKgMMbmIiqrbYVCU/ItZnPo0JZm/pCdlKU2rUAX2WKPCR/kFJ8cdacadiE93lKCDIAAKpFviz7A9WRAapCt4syGh0PpKiEhhHV6DKSZYCgKZpMK9LGCKQ0GaTgWE1WUlZlVhQEeK7EUKZd7+HtKyRFt5mLzl2uA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6YaRtWA14DSi1o1oS62s+NcCDYkuanw4QmZ2a/e3WQY=;
- b=NW6wEIoUwFWi6knpyZiQInDuoxvtwBDhLCDHUvm7hyDhETEOuuhs+7HV2iWzlBMg71Cfe5FtnY4eThKjoXQvlhYUOkCREOvZdm0wNu+AzstRTGRcSolm5SBvHXTK9D2XB51FYe3Xi74J6J+nw3g4DHziHnCvpVVQqrCeuCi2mPs=
+ bh=a6F7Si9ccQWD5GOC3H8nn5imuehqAiiprmCizm4S8B8=;
+ b=kip7DzADZm8Js5uEnoRw6owi9ZP+qou546SiNA+wLcRgXnK5+KIrdFFK6SKwEZST5v5SFy9vQtReupDtvKBEZa27gLs0cXBBOPvjA6e9b2pmJrIQIUClgapEOoKVDbKhqndh24QKfOZ9BdlDleqXmIqKVKtFGwolYLlo90iG85M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DU2PR04MB8631.eurprd04.prod.outlook.com (2603:10a6:10:2de::19) with
+ by GV1PR04MB9133.eurprd04.prod.outlook.com (2603:10a6:150:24::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.29; Fri, 14 Oct
- 2022 14:35:40 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.15; Fri, 14 Oct
+ 2022 14:47:44 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::4150:173b:56ec:dc6c]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::4150:173b:56ec:dc6c%7]) with mapi id 15.20.5723.029; Fri, 14 Oct 2022
- 14:35:39 +0000
+ 14:47:44 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Florian Fainelli <f.fainelli@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Russell
- King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
-	<hkallweit1@gmail.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
-	<joabreu@synopsys.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"\"linux-stm32@st-md-mailman.stormreply.com\""
-	<linux-stm32@st-md-mailman.stormreply.com>, "\"
- linux-arm-kernel@lists.infradead.org\""
-	<linux-arm-kernel@lists.infradead.org>, "\" imx@lists.linux.dev \""
-	<imx@lists.linux.dev>, Russell King <rmk+kernel@armlinux.org.uk>
-Subject: RE: [EXT] Re: [PATCH v5 1/2] net: phylink: add mac_managed_pm in
- phylink_config structure
-Thread-Topic: [EXT] Re: [PATCH v5 1/2] net: phylink: add mac_managed_pm in
- phylink_config structure
-Thread-Index: AQHY3wk+RdYbjETnMUqpkhkADdfnU64MqomAgAAKk7CAAD9ZgIABAG7g
-Date: Fri, 14 Oct 2022 14:35:36 +0000
-Message-ID:
- <PAXPR04MB918555BBE1A4B12736785BCD89249@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20221013133904.978802-1-shenwei.wang@nxp.com>
-	<20221013133904.978802-2-shenwei.wang@nxp.com>
-	<2c861748-b881-f464-abd1-1a1588e2a330@gmail.com>
-	<PAXPR04MB9185C63C94CE032DCEE60AE689259@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <20221013161229.73471c88@kernel.org>
-In-Reply-To: <20221013161229.73471c88@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DU2PR04MB8631:EE_
-x-ms-office365-filtering-correlation-id: afa5993a-7cc5-4dfa-e01a-08daadf15d52
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- QXPwy6MRyhvM5cs//j1jiFwbCfQV6bdyhrJiwGH1k4CYGm2cMsVhCDbyo9lxarqsfxVvx5Qe8clo3U6sETi3PgKVnGpBHVKYRDgyRrIkelLvKRpMW6zAVqgKbubFQlm6fLiZKYkvfV7FvGHYmKXLh3VIMje/y2LcxzArIXpkxI+VaKpASQq1qqU5TI4Cobc7R5Cph2OoF1gD4clxlmL+p1jjl3SKCGOEs4zdzRD9Q67NSh8PJFghCoDSk6vSb62HAllegyFhpYigSgCMBF3BBGG3KC22I6tkDv884fUzUBkw4Nt7pf8ma7nbNmX0/ccyc2ucCHpKAbRsI2GXAN6Pl0+GRAkQOEg8nuqlF2EpXYISvUwShNs1ovuQQM+P00KSlGu961oujI+9xU+0j6R/5XqqbaY78feWZRuzgeWy0D9AoRfzNCyhtpFs1uTjBE43BMXiSjb+Yt8TDDy7rZ6mYNacVQARgd8zS9g64liMxHn0UN62JWb0rMfrtN+75XUMUbUV7R1IaeMKy/zE0j6mQZBbI2FvNQXD8zVVi7FpCarsDdS5ZiS8aCzibOL3zqGrIYoHhKhTTlG1L+IfxMkfmd3aKeBcTWXxDayaHXYFs0iBUMzGQb7PoBElzIv6i7xP8ix+ljP19uclMiOXxYNWNix87vV0XbsYXcbmRrggDjPWExST9vmrFL05MERob87FkfmAtW85K8qd6HECMt4f2vrg433otoaqfA/x8zqQFSfOW34GI7/3DmTSrmnQ34pNU3qCBCWgNNJLtmhr+aAxFQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(346002)(39860400002)(366004)(136003)(396003)(451199015)(38100700002)(38070700005)(86362001)(76116006)(26005)(7696005)(6506007)(9686003)(71200400001)(55236004)(53546011)(41300700001)(186003)(8676002)(64756008)(66446008)(66476007)(66556008)(4326008)(66946007)(478600001)(316002)(122000001)(6666004)(6916009)(2906002)(5660300002)(52536014)(8936002)(83380400001)(44832011)(7416002)(4744005)(54906003)(55016003)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?xS0yDrgyd0cbyGpY5qsgMpXi4hLtAj+aB0SN6FtTO3gu8u1+9XoDq207tEPK?=
- =?us-ascii?Q?bZyUagx/gqRYCgqbFldh38/uAikHi/8/KVQMpJZpCxWSHlgih847A6agfkiu?=
- =?us-ascii?Q?LdQ09OO2cQ8s7AcmLYJX/1VZIVuOjqhpGgSq6UzeXP7Q8yVL4nVTYhGT3ZqB?=
- =?us-ascii?Q?7re8FACykmtcmjA+F3YUlvsGyV7QlDxvcOMyHpttqMC16hzzHek98I3YFfV/?=
- =?us-ascii?Q?FhnBndL+arXKQt2WXBO/DzUK+96fCLD9ZzQVSbjmHc30lqo0aDTgImmxNU2C?=
- =?us-ascii?Q?QT7MiuQIeeb12l7YvskcP4S9+TnwFa2xrrG66h3qcToKK+BC7hjz+qRkRb7J?=
- =?us-ascii?Q?5QjhHiP+vWLCYB9FV/C1snYHbKRyiCJkHN3FsmnmKuSwU/Gb6FYuiRhB0GFa?=
- =?us-ascii?Q?48mewINn3gGwZGQYmsvyJA5/r9hECQTDOXSprMyyl2sB7kV1gWkZEFEmpNhu?=
- =?us-ascii?Q?fnzllrJ1FP0yAnVn2VaTteFlW1Wpt6udVB6L51CS378ZkcwyftUGlsfafJet?=
- =?us-ascii?Q?dru/C/pEBri48PERt/TROqj1Jp1L8w2Gqqw0CA5AYvSUi/WXcgStdewLMaxY?=
- =?us-ascii?Q?HedmKgdRDgSqKj2O2sK3X04VpNKdHDxrIvvxCDbm0Q9e2S0gM42Kf4g0Bv0B?=
- =?us-ascii?Q?FBh9mF4c3Q09WmnzKKAy3bfHqkbO48NUV4/djXrPZZFIhxHNQWWqsjMYUQHe?=
- =?us-ascii?Q?+7IXhGkNKgp7QpyS0NtvKOi2eUAIhwNUTdXDtweBRPG8iGUwDVGj7aiTnvan?=
- =?us-ascii?Q?J0trLOI1K8jD3Qv76jMwJaTv84+i0wTJXpbwpQ+00QyoX/PnJ31vse/l2wBs?=
- =?us-ascii?Q?r4G87L5BRHuA19tqYxXPTH1iPo+pEgwCVBD5wWrgEZ9tQtNrJSFS2LOgyPhy?=
- =?us-ascii?Q?kaLHE92HFbYOLPhWnnZ1ANqeFACdmfZt8lV304XMkelRoZZmYZ2cvW4BH21s?=
- =?us-ascii?Q?N0CkxaJ00vc7qpi8G6RAXLqH440hWu5bgfQzs6N5psNpaaQ/WIWSpp5YUO/h?=
- =?us-ascii?Q?fSwEjTM9Z6JrMSuj3hRtaHUP2BMceyIHBB8NeFJxALHG7Kk7/mao4BawW4Os?=
- =?us-ascii?Q?4jqw4SKaS3SGOMoIy293sf7hPyu6+hAHBgWwQCx9nEF7loBdCEA5gBU8/wf4?=
- =?us-ascii?Q?WtP3zk3K3kv43XHYEy90CcxEuR5RxqP7a7H+hT2AtlNMxkTZONonP9wwcYqC?=
- =?us-ascii?Q?Qi+VEMWv0BmuS7UdrC0vHwcqa7VjYE9bI7gNk4Jf0cF3d787erkmHa15aVdM?=
- =?us-ascii?Q?RS+lb8mmSBWpnlIBkDXjgGms5obeThi3VFSEV6F06xuRU2uv8p36wHKOY6NG?=
- =?us-ascii?Q?ObWj5uIc6Q2Nm8aREQ0kLgWOpv5Xj/aoijfEarm4aXt99XxMSUvBIHLePM/z?=
- =?us-ascii?Q?t2Qo0zb/aG4i8Ji1Fmv8gqrlOGAk+CzlVY3izrhd3LE2vba4cwu5oHbX8fNO?=
- =?us-ascii?Q?xHmPjH9y1TWt/TffHLrDsiMN6Zf0oS/P/f1Q8/vH9zQwE1HOw3P+oLP0RH7A?=
- =?us-ascii?Q?bFRm6koQmo8yhSFhQLaD8a7A618Oz2EoM1PzIsJPD0pd0H1io5g4An7Rh6vo?=
- =?us-ascii?Q?ZyyQ5or4UmTUrB7zI0PZX2zV0YlJwHGGLe843d28?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH NET v6 0/2] net: phylink: add phylink_set_mac_pm() helper
+Date: Fri, 14 Oct 2022 09:47:27 -0500
+Message-Id: <20221014144729.1159257-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR05CA0057.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::34) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|GV1PR04MB9133:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a9cd047-0a0c-4812-0f79-08daadf30db8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	y9QB1Mbk9kbXFBieP6VFCuQQo4C+N4bYUfOLH/+yKwytJXSdljD6uoQN3AituSbjGqvQgE7mTC20kr30IVTwLEpS67ET5rEY5a/e6G8diWxOseYXpNyhqpG0gsXLu8nU8m4QCd0FoD4c7Ic3oQfz3j+ZPCySW6TandrVVPPsFf8j55/TU+1Cjl6+riOO4+q/tMAQwPNNN95w+1cU7w1iZBhWBd4UEL2HhJJmmBXuOXh1KvCrMnW12OPMUD2tjzXsD5xj1wbk69SLOhlLjnMzEuKaW771sg4+iqpefdm7B/AQFe38Va1DAC/0mGXyIzcGlGkUJCRQqWqmkz++XIOsefzy+09WMyMyfUCOCQTnn+x0mnweyXi6j1cJqHCZy1NyzYh7C47mNiDJ4UiGdeOlCEwBgc3uqJzhEipQSOfwbAMj+WYnEiTWSJC9eAWEp+tgzXRIVYEa4lkrnOPi1WhnNn1mYLUmLIJcbaiZO47zMGK4n5erChClbvzyTHGY0k6jzx9VqfxVa5zyxQBQ4TiUxSIi6DgR/68YuxZixFgJDsyAd4ubmoWlMfZhdK/bqtab0tstuHWxIGGSk3ByLAtRH1YdTYePv0GEthsoxFuZZ3OxUaOnOcg20yBm11ndHZPYOoCOAumkatsaoloPvtpE18g/mjJZjguvX54ahFrl1Jy0wVWIoSWFoXXMR+w89ZlGu/KfAM5TmL352p957PvTvraLdsXMtKmE4CjYmDSPi7EhJbbOn9/73WdcdKJSr1Cc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(376002)(39860400002)(136003)(366004)(396003)(451199015)(5660300002)(36756003)(8676002)(54906003)(41300700001)(6666004)(6486002)(86362001)(4326008)(44832011)(316002)(66556008)(66476007)(66946007)(8936002)(186003)(26005)(6512007)(38100700002)(7416002)(52116002)(38350700002)(2616005)(55236004)(110136005)(1076003)(6506007)(4744005)(2906002)(478600001)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?J25UiiObQeM2Bula7/5hqvADzcz+eE3GWQhX+U4PjkTVwVHhzLNIUUyWMwwv?=
+ =?us-ascii?Q?EeLzYHaCgtV5HFe9rJtdzd6ldm/jHFNiRyOoWr7gIVXyVTi5BH2IRxSMF93x?=
+ =?us-ascii?Q?zeIkjGEPVdvbmLIMcGavRD/2sqQvN+Dxuh10wqWOXhybbkDdsvxXdnUTew1f?=
+ =?us-ascii?Q?NIClWXeyQyyZg294a7xlQ6O3U8GyMG3mc90/DDae34aclhaTOgdCsjYP1/JY?=
+ =?us-ascii?Q?NKIAZc7cMkKsFPYcXoErTRzRMHdIZY563pVOuTq6uhQ2UKHuaMEhRv7qLLPs?=
+ =?us-ascii?Q?lsp0n/SCBkumQNq2Tur7Zi+AKKqYI4rO5Dn4aAuoHQA5AG77COcssqKMyDHW?=
+ =?us-ascii?Q?OpTcFtxCgKfF+SIDdOnwQewjMayaFY/jgDm4nMQZ95TXzzfPaJQXzVWPz0ha?=
+ =?us-ascii?Q?Xoc5DXatyH8GPLUUFQaK5QOasoMVWfxAgQ1O6jPW0+GxGQYNixRItlEi9xZ/?=
+ =?us-ascii?Q?yf9dU5CFOmo/t3VERP9y0jbPGYby2srD7nqRrIUxI3r4K8E7euXO7ERmLaz6?=
+ =?us-ascii?Q?zHcNrTPXW46F3ALxLn5u+YsXfJZFakHddiKltGFf5nMeAESUXpzg86XU9ase?=
+ =?us-ascii?Q?LTRxhUorjS8NlwG0YuKv/G9whIJytdQstM4Y5PisD8c1bfk79N4oXGiDAnRK?=
+ =?us-ascii?Q?4y4daKZUyyaJiJjaVXHAaaoGJqqXM/nookoWqUX2SHTeUmG8momHSBFMifEB?=
+ =?us-ascii?Q?LAXL41TqY39MMVDQiuHrWYNQ8LIXXaRicERFxZyDOFADTI5x2ZnaIr8uVczB?=
+ =?us-ascii?Q?LEqnLmY/LZidOgPzohBhkRCJ3N/rMVoMRmbolwnxuW6FSY9FtXq3WSDdI1wX?=
+ =?us-ascii?Q?uQi4wM0XK6rI1Lft1BUCySdoY2tMTNibNyOszeeUlHKJEMmDoYp9lx2Zr40J?=
+ =?us-ascii?Q?JaYT9nGwMm6EiVMSc8fcVq/ZdyjkivL4mprE3PT12Hkav9AmAPipmau3CZxL?=
+ =?us-ascii?Q?c6MQRrSQWzNOZmJpIhMBliTNBLxWmBoQjDstprs9IeJVQDJ/bvadaWxR1DuM?=
+ =?us-ascii?Q?Cr0Uwaxp+/QB6wR7XHbuXAmaDksdLe8uoG8HVRz6FBgRyAt9v08TEB9mtanD?=
+ =?us-ascii?Q?j1nVc76clU6MGLV9X/qDjdmARWxHAnlPAk3mrHCRtJ2rbc+Iv6ARTPjyhu3o?=
+ =?us-ascii?Q?tEQtaXNkoJo8dKwT3w704/OEomWERCs7vw9GevtN4bH9k6mIQu03ff5zzj7l?=
+ =?us-ascii?Q?2CVGicnV08TMQf2+6WBoXtcgj4a3bVzdN+IttDsM0Ps96MYKId/trk/rzQ1b?=
+ =?us-ascii?Q?BM/jvgcHzf6V1gOvQl+dBkaQbbHrfL2xY16cSn86W2A81FZk5vLZfFWGEtYS?=
+ =?us-ascii?Q?a4wwdbo/tcsgUfajbZNwkhHbZobke6JuYTTPYiItaYwxI4x3esXKVt3in5BI?=
+ =?us-ascii?Q?FgZdH+0PXK/pimho+/+vtPQGgM4HUGMwAf3F0w4KCFo7l+yjx3hVINsbM96B?=
+ =?us-ascii?Q?kVOG4lD6SvbDZGBEuFTGlZQ51GaeTsVu4J99OD10e5+nhEgt1Jc5o3HHcXZ0?=
+ =?us-ascii?Q?lHFy7jgzWXBWUQQLWEAnYaN0B1YGFY37t9cDmgSbDG49v1KIdi1fy8JJ+80Q?=
+ =?us-ascii?Q?OZpTN/o15T2K5c8PsLVFqTIFUMwm8/JtHeLiV+/p?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a9cd047-0a0c-4812-0f79-08daadf30db8
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: afa5993a-7cc5-4dfa-e01a-08daadf15d52
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2022 14:35:38.8751
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2022 14:47:44.7826
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: K4D/XkTg9tAeX7Vzz28gbQDb/tZGJLs1+cMMdzk+UddKM1cTVVBuOG6odKmUkZIsFL5g1Ve6wdqejKIGoM1Nxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8631
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5XUXXwgrTxQtQCluQ0m4yc7mTHW+yhOLzlAPHy5KdAsc30hoyd7pVviIVnYEXaQ8tHIWpHInO0tuJGw9StRMEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9133
 
+Per Russell's suggestion, the implementation is changed from the helper
+function to add an extra property in phylink_config structure because this
+change can easily cover SFP usecase too.
 
-RESEND because some recipients' mail address were somehow corrupted.
+Changes in v6:
+ - update the fix tag hash and format
 
-> -----Original Message-----
-> From: Jakub Kicinski <kuba@kernel.org>
-> Sent: Thursday, October 13, 2022 6:12 PM
-> To: Shenwei Wang <shenwei.wang@nxp.com> On Thu, 13 Oct 2022 19:28:45=20
-> +0000 Shenwei Wang wrote:
-> > > Fixes: 47ac7b2f6a1f ("net: phy: Warn about incorrect
-> > > mdio_bus_phy_resume() state"
-> > >
-> >
-> > That was my original format. But it met the following warning when=20
-> > ran
-> checkpatch.pl script:
-> >
-> > ./scripts/checkpatch.pl
-> > 0001-net-phylink-add-mac_managed_pm-in-phylink_config-str.patch
-> > WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1>=20
-> > ("<title
-> line>")' - ie: 'Fixes: e6a39ffcfe22 ("net: stmmac: Enable=20
-> line>mac_managed_pm
-> phylink config")'
-> > #20:
-> > Fixes: 47ac7b2f6a1f ("net: phy: Warn about incorrect
-> >
-> > That's why I changed to the current tag format.
->=20
-> It needs to be all on one line:
->=20
-> Fixes: 47ac7b2f6a1f ("net: phy: Warn about incorrect=20
-> mdio_bus_phy_resume()
-> state")
->=20
+Changes in v5:
+ - Add fix tag in the commit message
 
-En, that's the tricky.  Seems the rule of size limit is not applied for thi=
-s use case.
+Changes in v4:
+ - Clean up the codes in phylink.c
+ - Continue the version number
 
-> But I don't see 47ac7b2f6a1f in my trees, are you sure that's the=20
-> upstream commit id?
+Shenwei Wang (2):
+  net: phylink: add mac_managed_pm in phylink_config structure
+  net: stmmac: Enable mac_managed_pm phylink config
 
-Just had a check again, and commit id on the upstream changed to=20
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
+ drivers/net/phy/phylink.c                         | 3 +++
+ include/linux/phylink.h                           | 2 ++
+ 3 files changed, 6 insertions(+)
 
-commit 744d23c71af39c7dc77ac7c3cac87ae86a181a85 upstream
-
-Will post a new patches to fix the tag.
-
-Thanks,
-Shenwei
+--
+2.34.1
 
