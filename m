@@ -1,235 +1,276 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2086.outbound.protection.outlook.com [40.107.247.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5E023A8
-	for <imx@lists.linux.dev>; Tue, 18 Oct 2022 08:21:08 +0000 (UTC)
-Received: by mail-ed1-f51.google.com with SMTP id u21so19344525edi.9
-        for <imx@lists.linux.dev>; Tue, 18 Oct 2022 01:21:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlBhycv0qO+B/UR4Tbs6xf7dolFDGt0VcAQLm0zQj48=;
-        b=zp6/7E5MJU+2hOjkWqKFn5T5NzclrZwRKtR33QDdgbQU9GU/DK4nuUhzzgJmFCVISV
-         C1snUQqK5yO6iIu5z2+dunt2/cpUL5UCyiykb86XSExUduLeKg8q+3CZVI8rO5dkFm/o
-         AxXX6REm1g7izhD3UIJoZHmoWPu+hJuuBnJoGKDdMYI+n5Ferb06C7wisvfia/fzT72z
-         o/Qh5/vpihUt21pJ92VG4s24s54mrQWMvSzd9Dmyosi9NKjEfRbJgqIVXmY2irQPNvgP
-         oTjkhet+p7JEsKus2ynuE2wsYN+EkxVAofaeP8rQw2iVHOeM4jB6lyUx3xlYXTW/UjLL
-         Fn0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tlBhycv0qO+B/UR4Tbs6xf7dolFDGt0VcAQLm0zQj48=;
-        b=0GS45H/i0EQvauUTggoYMzJHJA+6d9UHvGtPcFVx4mFleKGjnOLUdZpQzrYdC7vDTZ
-         2OLZeG/fC9KP/R/yJOBTWd0mYrjhgrvbFH9Zv7tfVGu9Vw1EJwXJEM1vTWfoGXcrI/ms
-         0q/L7P2+KZkQnntJVhdlbJ8APEhiMKH64qwJYNlT3Ns4OBSuhEQJU/RS7dwm1cTblH62
-         idxmpcRG7h/io8Ip4cYcYRfF2Ys7Tu7iPgvi379nrEBSnXY8Uv/Kawy7esN32Hf97yov
-         UfFOU+rJTmiSaTRK5LwXIaPcFoM2+ZI0jlUQ28/bEopwxRt83AqSQoU/E9CY8GJxDpia
-         qxdw==
-X-Gm-Message-State: ACrzQf3lniG2b//zkf/zoV5EMZVjTM0JxMyGpAkhNOenUJ3hSO+8LuJQ
-	HBmYikkT3RPvpOKgWLkuk1a5CiHkgRi5nCZiTf1p8g==
-X-Google-Smtp-Source: AMsMyM4AnR0J5CEoykBYGszN3KnizRR6umUFmm4ObZz5qsZVI/oO361LJtUgvSCoLMQ6J1cgkjH8tEDp7M6FplFNFXk=
-X-Received: by 2002:a05:6402:4029:b0:45b:d50c:b9b0 with SMTP id
- d41-20020a056402402900b0045bd50cb9b0mr1535489eda.126.1666081266616; Tue, 18
- Oct 2022 01:21:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2461F4C98
+	for <imx@lists.linux.dev>; Tue, 18 Oct 2022 19:42:20 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Wubgg5RNEJK4R+G01e0AbaxZJ8VUnHoQo8SpEzutgxtrEP5YSy0k/7ZO2ERuBtPbQwrsJPYPkKHBYnAdEddEFigs8yJD1cUwxINRZZ8TCjrPVsfKMYmvyyoyQ1ef7lVK4xP9O87IWbg9COtUhruk6N8zLUwewnSQoQ70AjHaor3gjgazc+6kQ0gCAT2DewjYoLHNQKzAIcamPNDeoX3/pMjOELrfDoTs1Xeg294xpvq4EWACo2FB0f2Ne9G0AYLwPUzxxeK/Mxp49YIhRY9ojFNWqh62AhWfS0CiUcGmr2TIHNMHDVsezYdl33LksW0Hu+vCDzS881HGou7/iSs2Og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JZeAWPSO9jHaPEXnN3T3+qLHrMEs1jMqkegb1TijVe4=;
+ b=RLPCcMhfW6yHLxmjjdz1bDM3e0i3viChAWAitCRs3iYKHoStJ1eXPq5KsDlwB1I5K443luG9cyFa8hzQOX0dU4shw24bCsNZNASZdcJGurMrQSOr3dUx5kFaOgXcFQRCcU8DsgP6hcHhSotY3Rx7PNa5e3tbmMYFTvumR97a/VnfSHC+LMWT9j9jyGOsxiyp5QUvhm9vVTYzMxPh8G43a1d2z1QbSqQwnZWzgi6Sxy93E9pcYkpm22WLQEhtezUTtubxp7YbwR34r5jSmOxIrqxFSFHY0LB50hcsUgp1skAGjZnet5U9DA2MtRRZCV71qB0NsW+2MfIs556bvRfgIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JZeAWPSO9jHaPEXnN3T3+qLHrMEs1jMqkegb1TijVe4=;
+ b=batgmxG0MA+mpKU4sss1mYVZ8eWf80brH/E0ewt1qMA9fiHKgSRrhg2LmBsfS9pjGRZWIGHBZAv+kWalnizm2rSK+Vpw206ErDaTq1sgqHcgnIKESy3BtEygNx/JCpYB8QdIvxW3OszspV7FA9wBdI+gYCsqR5BnuWbckvCKlkk=
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AS8PR04MB8561.eurprd04.prod.outlook.com (2603:10a6:20b:420::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.26; Tue, 18 Oct
+ 2022 19:42:16 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::4150:173b:56ec:dc6c]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::4150:173b:56ec:dc6c%7]) with mapi id 15.20.5723.033; Tue, 18 Oct 2022
+ 19:42:15 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+CC: Aisheng Dong <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, "linux-gpio@vger.kernel.org"
+	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Marek Vasut <marex@denx.de>
+Subject: RE: [EXT] Re: [PATCH v2 1/1] gpio: mxc: add suspend/resume support
+ for i.mx8x SoCs
+Thread-Topic: [EXT] Re: [PATCH v2 1/1] gpio: mxc: add suspend/resume support
+ for i.mx8x SoCs
+Thread-Index: AQHY2mGOiCWmYydHdU6c31ilQ3tOMa4SY+WAgABCMgCAATo7gIAAQ8Pg
+Date: Tue, 18 Oct 2022 19:42:13 +0000
+Message-ID:
+ <PAXPR04MB9185639BA2F9D61FB935741589289@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20221007152853.838136-1-shenwei.wang@nxp.com>
+ <CACRpkdaKncznz5qej6owA2OGMeqbrif9e_QO3CWN6+sGhEApDw@mail.gmail.com>
+ <PAXPR04MB9185AE67BF20108CFBF0546289299@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CACRpkdZ1hCZ1WoTQ0e584bQxEyBWq9gkZKPPFnm85QnMnNyvHQ@mail.gmail.com>
+In-Reply-To:
+ <CACRpkdZ1hCZ1WoTQ0e584bQxEyBWq9gkZKPPFnm85QnMnNyvHQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AS8PR04MB8561:EE_
+x-ms-office365-filtering-correlation-id: 655838a9-7b89-4410-255f-08dab140dbb4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ LgJk37N3d1HZUojd1A++8mW7sBZptx7UgZncDY0ZVSp6tDwlhf7KLeGPmpc2NUlZKtltdD29tz9L0LEOvbwDlAExJRM6Bn6r+9hTwUgJxGjU0YUsgN9CImIeCp49pX+mgotThLj/P6hGT/IvUA2JOy+DO/m9Z5E3u8Yhp2CroMwm7nVcuFEZe92icqdBQ5eQmGkcL+gLuxvLGEcYu9fMIe4P3ndT7jtLDOgb4eNcdljMg7tleWxqpjvFipPepdxLygea62McSXBl3S+LB4TZW9R5Eithfw6l/gJkIHWq0MthW6GTM0Z/ELhJMpZt5Mqz78jdYNlL8Nb34p1b0Lncw4j/0XFnKSustbs8lrjuMCUIoIahnL0dZ/s8rReKwLnnTCxQFxVDrOPeF9MOslRIxOj4bJgFZt48u790DP+gFBYsb16th4fM+kr8wyOv5IW2gGQ0uZQyiE7q20hxvy5OmgsWWtcz++uuWZF5XOk3vT8gKHa+IfrYrLhCQodc3bVJnSXfIwKwIA2VLO20WsITZOfS+TosCD9iCQqlGr26Ky1/QS9E9y/CUUI+LZ8ToHA1Cq6wSDUp7VskMtgu9Ub2WBNRB8HwEegoe8kcDM9OnrZKO9TJ5FBUr+uMBEgB4+/1/AqSD1gV4LBnChb83+IIwi4t8PpA3jMAwP2RNdHZb5vEPWasw0nSYSkzheks+trFmTbMW5HO8t1ht6qXofRcpF6a73qKcPZv52hNv3ozIarRApZmgZv8KrkNHTrgvD7MUs7XVLm96pvczWGbiN+vCA==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(6029001)(4636009)(396003)(366004)(136003)(346002)(39860400002)(376002)(451199015)(55016003)(38100700002)(83380400001)(38070700005)(44832011)(2906002)(5660300002)(8936002)(15650500001)(41300700001)(54906003)(6916009)(52536014)(71200400001)(33656002)(316002)(8676002)(66946007)(66556008)(66476007)(66446008)(64756008)(4326008)(76116006)(26005)(9686003)(186003)(122000001)(86362001)(6506007)(7696005)(55236004)(478600001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?M3FySWcra09IVktrQUNuM2dkd096YWxlUXl2WHBHNUoxZFFVa09OLzNpWVdZ?=
+ =?utf-8?B?S05rV200YnJhV08vYXA0YTM4T3I0bFlWR3RSZkRmR1JKYkhsRjgyR2Z2dGI1?=
+ =?utf-8?B?ZEI5ZHpSZy9EWUE1VE9DeDR1am9BclQ0WnNtS2Qwci8xK2tTaTJTZkVMZ3ph?=
+ =?utf-8?B?dUM0Uy9OV0YzQ0pzRWdEMm45TERHWmZPaFhIOXVMWHZ3dDlWbGY1dVk3REVi?=
+ =?utf-8?B?TEZrcmVQWmxTUER0dEtwcEttaHZtSTRjTjhVT3Y5amRQcmh0YVpFSDVoUk93?=
+ =?utf-8?B?TkEyckpIRzA1NnIybU1vclpWZ0wrTXA1OUVIV3A3V0pZaHN0S2FhRG8wZk1V?=
+ =?utf-8?B?WVpOc2h0ZllNSk9OMVRvVU1PSTk1Zm40MWtmamFjNFlsajZJYTJuSFRHV0w2?=
+ =?utf-8?B?SGpibzU2YUFBa0lSUVJ1VERLMHdIM2VjZC9JbHRzN3JUVDVybC9SQU1pQU9s?=
+ =?utf-8?B?Q0hxWURFODZrRFBGUE5TUlk2NUhaN0dSbmxUNWN6bUJ1TEJOZVk2ZHE1K3Fy?=
+ =?utf-8?B?Tkx3KzlSMEhEV0VZRGhCWGxlVXJubStZWm9oSC9VOXd3dVhTaHB2bGppQTJm?=
+ =?utf-8?B?cXVQS0p2QzNpZVVaQzNSMWZjaXltMFdiTnVkcHhTTlFlMERtMGlhVG9aS2N4?=
+ =?utf-8?B?N1I3ZThtbFhFU01Td2ZnNjhyYVNjenNoWEwzbmdFeFdHRDhNN0RWdXRMMnRH?=
+ =?utf-8?B?R2tQczgyMHZIeTg1NVNSeWNaTVVoa05FK2hmYStiaUxFQUoveXYwK2lTaFUw?=
+ =?utf-8?B?Z1VRR1JOMTU3ZmVPT0EyckVLUzZxQlpVOWdrekwvMFFjM3JTOTFNQ21IdzM4?=
+ =?utf-8?B?eU9EM3lMTzZXaFdPbXVSVEtiVFpDWmxKRUpxeU05MFlPcTd4MFNKVmdiaUhj?=
+ =?utf-8?B?TnhCRjRMTVducnJlRXdKNURzRmlLZmFOTmh2UGdnNERyL3MzclNFbzAyMUFP?=
+ =?utf-8?B?RC94a0tiV3JYVnBWMHE4MzhwVUJ2bUhtMkczck5IV0E1U1dtalVtZ3NRQ2tV?=
+ =?utf-8?B?bXlsOEo2SU42b0hJNVVOTXF2ZVg2dGhSdExCa21oVGpHQnVoVHIvK2RHdHBr?=
+ =?utf-8?B?NmtNNlNKV0w0SU9yWHRGaWRvbXMrV2U3OWU1L3RTNlRlV0FtbWx2TmxKNDBa?=
+ =?utf-8?B?Y2xBVlczMmdaZTBqQUliaE5zeGlHUnhFZzFqSklHV2lxcnEybXcwb2lSZUxw?=
+ =?utf-8?B?K1g3c1NaUURxSkZ4ZWVzOWF4T2NyU0dhL1lBQVV3eVBPelEwTkkweGdvMlJt?=
+ =?utf-8?B?ZE1mVWptdERKamE0VWgxZFpQck5rMVMrRGsyUWU3c3RnRTRXcHZwV3VRQ29t?=
+ =?utf-8?B?S2VMRCttTFBHSXBjSTZMSVdVS01TUm5sNUdtRHBPTHhhZ0ZJb29BdERhTVoy?=
+ =?utf-8?B?R2diWXp0YXJZZmhSeThwY2E5SlJXQlFZUWxXTnV0REhadzFKQzJXbU9UYnpY?=
+ =?utf-8?B?U1lEeUEvS0VYUW9MQWJNZzhGanJRY3VBRi9VeDM3QUc3K0YyY2FRKzdVVWJ3?=
+ =?utf-8?B?U0JGZFBuTE5objJSelRRSEpBZmxQNU1qbTlGZE9hMUFHZ1hybG9oODI5S1FG?=
+ =?utf-8?B?cmowMEkwaWYzZTM2UjA2Z1RkWk9wdzMxcUtDcU16QUZJclpJN1JTTkpRN0ZS?=
+ =?utf-8?B?b0x3WFNITW0xOFhITi9YOUs3Wmorc3ZPMWc3aTRCWHdoY1dVVVFlVVBFaVZU?=
+ =?utf-8?B?NjByK0p5aTIzUlJ2OEhxUDVmY0tpcEVCS1lHTTNtZHVQeGI4RnVRdkJ1T080?=
+ =?utf-8?B?dFlJZm5qWG56d1BENWdFZ2NwRW5tUTduMnZNZlRRUksxVFRPSnpQWVI5TnM4?=
+ =?utf-8?B?a0R0Zm5jOFp4VUpNWTgyYzFBQnI3dTRPQVRaSXlqQ2tmeEdrc1owYmFxS2Qz?=
+ =?utf-8?B?ZVJBNjZ0U3NveXhjMll1U2FWUElrRzBpdE5QQzloUnI3NDRIaWhrcWJBNVIv?=
+ =?utf-8?B?QzZUc3ZjeVNQT1hxSEJGVHdsMFl1SC9UQ0dVYWJQMjdIczcxc3FwbTVvRDFp?=
+ =?utf-8?B?S1o0ZGJIZ3JRV3BlUlpZNmZITU9TWWFBYitXYytYcXNLaElBWllnUFJ4MW42?=
+ =?utf-8?B?V1VzTWcvVDdRTGJNOU5VUm50U3hMelJ3SmhMemlOTUtxZXhZOWU2KzdvQk95?=
+ =?utf-8?Q?9MmwUMx7clKBh7PtzQE3aDAsK?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20221007152853.838136-1-shenwei.wang@nxp.com> <CACRpkdaKncznz5qej6owA2OGMeqbrif9e_QO3CWN6+sGhEApDw@mail.gmail.com>
- <PAXPR04MB9185AE67BF20108CFBF0546289299@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB9185AE67BF20108CFBF0546289299@PAXPR04MB9185.eurprd04.prod.outlook.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 18 Oct 2022 10:20:55 +0200
-Message-ID: <CACRpkdZ1hCZ1WoTQ0e584bQxEyBWq9gkZKPPFnm85QnMnNyvHQ@mail.gmail.com>
-Subject: Re: [EXT] Re: [PATCH v2 1/1] gpio: mxc: add suspend/resume support
- for i.mx8x SoCs
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Aisheng Dong <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, Pengutronix Kernel Team <kernel@pengutronix.de>, Marek Vasut <marex@denx.de>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 655838a9-7b89-4410-255f-08dab140dbb4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2022 19:42:14.7917
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gL8vG+tZzNMPZ/DXuni6qLT9eC9XPnzB1r5fpf5I9VZ1lLn224uaVqBNNwlyYJtc3OU8HqlquDN6kyDqxvUepw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8561
 
-On Mon, Oct 17, 2022 at 3:55 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
-> > On Fri, Oct 7, 2022 at 5:29 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
-> >
-> > > On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
-> > > the GPIO block will be powered off when system enters into suspend
-> > > state. This can greatly reduce the power consumption of suspend state
-> > > because the whole partition can be shutdown. This is called PAD wakeup
-> > > feature on i.MX8x platform.
-> > >
-> > > This patch enables this wakeup feature on i.MX8QM/QXP/DXL platforms.
-> > >
-> > > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> > > ---
-> > >  Changes in v2:
-> > >  - fix a bug when finding the pad index
-> >
-> > This:
-> >
-> > > +#define IMX_SC_PAD_FUNC_GET_WAKEUP     9
-> > > +#define IMX_SC_PAD_FUNC_SET_WAKEUP     4
-> > > +#define IMX_SC_IRQ_GROUP_WAKE           3   /* Wakeup interrupts */
-> > > +#define IMX_SC_IRQ_PAD                 2    /* Pad wakeup */
-> > > +
-> > > +#define IMX_SC_PAD_WAKEUP_OFF          0
-> > > +#define IMX_SC_PAD_WAKEUP_LOW_LVL      4
-> > > +#define IMX_SC_PAD_WAKEUP_FALL_EDGE    5
-> > > +#define IMX_SC_PAD_WAKEUP_RISE_EDGE    6
-> > > +#define IMX_SC_PAD_WAKEUP_HIGH_LVL     7
-> > (...)
-> >
-> > > +const struct mxc_gpio_pad_map imx8qm_pad_map[] = {
-> > > +       /* GPIO0 */
-> > > +       {  0, IMX8QM_SIM0_CLK},
-> > > +       {  1, IMX8QM_SIM0_RST},
-> > > +       {  2, IMX8QM_SIM0_IO},
-> > > +       {  3, IMX8QM_SIM0_PD},
-> >
-> > this is pin control.
-> >
-> > I think you need to think about adding this to the i.MX pin control driver instead,
-> > possibly cooperaring with the GPIO driver.
-> >
-> > I'm not entirely certain about the relationship between MXC and i.MX so correct
-> > me if I get this wrong...
->
-> This is not pin control.
-
-So when something in a driver starts to enumerate all the pads on a
-system and assign
-them properties, I tend to think it is some kind of pin control.
-
-You have things like this:
-
-+const struct mxc_gpio_pad_map imx8qm_pad_map[] = {
-+       /* GPIO0 */
-+       {  0, IMX8QM_SIM0_CLK},
-+       {  1, IMX8QM_SIM0_RST},
-+       {  2, IMX8QM_SIM0_IO},
-+       {  3, IMX8QM_SIM0_PD},
-+       {  4, IMX8QM_SIM0_POWER_EN},
-+       {  5, IMX8QM_SIM0_GPIO0_00},
-+       {  6, IMX8QM_M40_I2C0_SCL},
-+       {  7, IMX8QM_M40_I2C0_SDA},
-+       {  8, IMX8QM_M40_GPIO0_00},
-+       {  9, IMX8QM_M40_GPIO0_01},
-+       { 10, IMX8QM_M41_I2C0_SCL},
-(...)
-
-
-Which is duplicating the same defines in
-drivers/pinctrl/freescale/pinctrl-imx8qm.c:
-
-static const struct pinctrl_pin_desc imx8qm_pinctrl_pads[] = {
-        IMX_PINCTRL_PIN(IMX8QM_SIM0_CLK),
-        IMX_PINCTRL_PIN(IMX8QM_SIM0_RST),
-        IMX_PINCTRL_PIN(IMX8QM_SIM0_IO),
-        IMX_PINCTRL_PIN(IMX8QM_SIM0_PD),
-        IMX_PINCTRL_PIN(IMX8QM_SIM0_POWER_EN),
-        IMX_PINCTRL_PIN(IMX8QM_SIM0_GPIO0_00),
-        IMX_PINCTRL_PIN(IMX8QM_COMP_CTL_GPIO_1V8_3V3_SIM),
-        IMX_PINCTRL_PIN(IMX8QM_M40_I2C0_SCL),
-        IMX_PINCTRL_PIN(IMX8QM_M40_I2C0_SDA),
-        IMX_PINCTRL_PIN(IMX8QM_M40_GPIO0_00),
-        IMX_PINCTRL_PIN(IMX8QM_M40_GPIO0_01),
-        IMX_PINCTRL_PIN(IMX8QM_M41_I2C0_SCL),
-(...)
-
-This is blatant code duplication, at the very least we need to find a way
-to share this pin library, because it is irresponsible to put the same
-information into the kernel twice. You can easily imagine what happens
-if one of these pin tables contain an error and it only gets fixed
-in one of these two places.
-
-> The wakeup function doesn't change any PINCtrl settings.  On i.MX8
-> platform, there is an extra pad wakeup logic and each pin can be configured as the wakeup source
-> during system suspend.
-
-So pads, pins, fingers - all these funny names for things like that - those are
-handled by the pin control subsystem.
-
-> Because GPIO module is powered off on i.MX8 platform in suspend
-> state, the GPIO's native wakeup won't work anymore. This patch just maps a GPIO wakeup to the
-> corresponding PAD wakeup, and this mapping doesn't impact or change any PINCtrl settings.
-> Also the pad wakeup feature here has a great power consumption advantage comparing with the
-> GPIO module's native wakeup.
->
-> >
-> > To me this looks like two drivers could end up fighting about the control of the
-> > same hardware if you don't.
-> >
->
-> It won't. This patch doesn't interact with any pinctrl relating registers at all.
-
-It interacts with the i.MX SCU and the i.MX pin control does exactly that.
-
-What it does at the end is to call this RPC to set up the asynchronous pad ring:
-
-ret = imx_scu_call_rpc(ipc_handle, &msg, true);
-
-Consider:
-drivers/pinctrl/freescale/pinctrl-scu.c
-
-Which also issues a while bunch of imx_scu_call_rpc().
-
-What I think you should do is call into the pin control back-end and have
-pinctrl-scu.c handle this for you.
-
-An ordinary vanilla pin controller would use the configs from
-include/linux/pinctrl/pinconf-generic.h
-but I think the i.MX pin config is custom different, so you need to
-figure out what config to pass and how.
-
-drivers/gpio/gpio-mxc.c should however implement gpio line
-configuration, somewhere along the lines of:
-
-port->gc.set_config = gpiochip_generic_config;
-
-Then if you look into gpiochip_generic_config you can see that this will
-call into the pin controller back-end:
-
-int gpiochip_generic_config(struct gpio_chip *gc, unsigned int offset,
-                            unsigned long config)
-{
-        return pinctrl_gpio_set_config(gc->gpiodev->base + offset, config);
-}
-
-At this point there must be a mechanism in place to cross-reference
-between GPIO lines and pins, the most common way to solve this is
-to use gpio-ranges, see Documentation/devicetree/bindings/gpio/gpio.txt.
-
-This will hopefully end up in .pin_config_set()->imx_pinconf_set, in
-drivers/pinctrl/freescale/pinctrl-imx.c which looks like this:
-
-static int imx_pinconf_set(struct pinctrl_dev *pctldev,
-                           unsigned pin_id, unsigned long *configs,
-                           unsigned num_configs)
-{
-        struct imx_pinctrl *ipctl = pinctrl_dev_get_drvdata(pctldev);
-        const struct imx_pinctrl_soc_info *info = ipctl->info;
-
-        if (info->flags & IMX_USE_SCU)
-                return info->imx_pinconf_set(pctldev, pin_id,
-                                           configs, num_configs);
-        else
-                return imx_pinconf_set_mmio(pctldev, pin_id,
-                                            configs, num_configs);
-}
-
-Here one path goes down into the SCU, and there your custom wakeup
-config will be handled.
-
-At least this is how I imagine it, the i.MX maintainers need to say how
-this should work in their opinion, but code duplication and two unsyncronized
-clients sending random messages to the SCU surely is not an
-option.
-
-Yours,
-Linus Walleij
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGludXMgV2FsbGVpaiA8
+bGludXMud2FsbGVpakBsaW5hcm8ub3JnPg0KPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVyIDE4LCAy
+MDIyIDM6MjEgQU0NCj4gPiA+ID4gKyAgICAgICB7ICAyLCBJTVg4UU1fU0lNMF9JT30sDQo+ID4g
+PiA+ICsgICAgICAgeyAgMywgSU1YOFFNX1NJTTBfUER9LA0KPiA+ID4NCj4gPiA+IHRoaXMgaXMg
+cGluIGNvbnRyb2wuDQo+ID4gPg0KPiA+ID4gSSB0aGluayB5b3UgbmVlZCB0byB0aGluayBhYm91
+dCBhZGRpbmcgdGhpcyB0byB0aGUgaS5NWCBwaW4gY29udHJvbA0KPiA+ID4gZHJpdmVyIGluc3Rl
+YWQsIHBvc3NpYmx5IGNvb3BlcmFyaW5nIHdpdGggdGhlIEdQSU8gZHJpdmVyLg0KPiA+ID4NCj4g
+PiA+IEknbSBub3QgZW50aXJlbHkgY2VydGFpbiBhYm91dCB0aGUgcmVsYXRpb25zaGlwIGJldHdl
+ZW4gTVhDIGFuZCBpLk1YDQo+ID4gPiBzbyBjb3JyZWN0IG1lIGlmIEkgZ2V0IHRoaXMgd3Jvbmcu
+Li4NCj4gPg0KPiA+IFRoaXMgaXMgbm90IHBpbiBjb250cm9sLg0KPiANCj4gU28gd2hlbiBzb21l
+dGhpbmcgaW4gYSBkcml2ZXIgc3RhcnRzIHRvIGVudW1lcmF0ZSBhbGwgdGhlIHBhZHMgb24gYSBz
+eXN0ZW0gYW5kDQo+IGFzc2lnbiB0aGVtIHByb3BlcnRpZXMsIEkgdGVuZCB0byB0aGluayBpdCBp
+cyBzb21lIGtpbmQgb2YgcGluIGNvbnRyb2wuDQo+IA0KPiBZb3UgaGF2ZSB0aGluZ3MgbGlrZSB0
+aGlzOg0KPiANCj4gK2NvbnN0IHN0cnVjdCBteGNfZ3Bpb19wYWRfbWFwIGlteDhxbV9wYWRfbWFw
+W10gPSB7DQo+ICsgICAgICAgLyogR1BJTzAgKi8NCj4gKyAgICAgICB7ICAwLCBJTVg4UU1fU0lN
+MF9DTEt9LA0KPiArICAgICAgIHsgIDEsIElNWDhRTV9TSU0wX1JTVH0sDQo+ICsgICAgICAgeyAg
+MiwgSU1YOFFNX1NJTTBfSU99LA0KPiArICAgICAgIHsgIDMsIElNWDhRTV9TSU0wX1BEfSwNCj4g
+KyAgICAgICB7ICA0LCBJTVg4UU1fU0lNMF9QT1dFUl9FTn0sDQo+ICsgICAgICAgeyAgNSwgSU1Y
+OFFNX1NJTTBfR1BJTzBfMDB9LA0KPiArICAgICAgIHsgIDYsIElNWDhRTV9NNDBfSTJDMF9TQ0x9
+LA0KPiArICAgICAgIHsgIDcsIElNWDhRTV9NNDBfSTJDMF9TREF9LA0KPiArICAgICAgIHsgIDgs
+IElNWDhRTV9NNDBfR1BJTzBfMDB9LA0KPiArICAgICAgIHsgIDksIElNWDhRTV9NNDBfR1BJTzBf
+MDF9LA0KPiArICAgICAgIHsgMTAsIElNWDhRTV9NNDFfSTJDMF9TQ0x9LA0KPiAoLi4uKQ0KPiAN
+Cj4gDQo+IFdoaWNoIGlzIGR1cGxpY2F0aW5nIHRoZSBzYW1lIGRlZmluZXMgaW4NCj4gZHJpdmVy
+cy9waW5jdHJsL2ZyZWVzY2FsZS9waW5jdHJsLWlteDhxbS5jOg0KPiANCj4gc3RhdGljIGNvbnN0
+IHN0cnVjdCBwaW5jdHJsX3Bpbl9kZXNjIGlteDhxbV9waW5jdHJsX3BhZHNbXSA9IHsNCj4gICAg
+ICAgICBJTVhfUElOQ1RSTF9QSU4oSU1YOFFNX1NJTTBfQ0xLKSwNCj4gICAgICAgICBJTVhfUElO
+Q1RSTF9QSU4oSU1YOFFNX1NJTTBfUlNUKSwNCj4gICAgICAgICBJTVhfUElOQ1RSTF9QSU4oSU1Y
+OFFNX1NJTTBfSU8pLA0KPiAgICAgICAgIElNWF9QSU5DVFJMX1BJTihJTVg4UU1fU0lNMF9QRCks
+DQo+ICAgICAgICAgSU1YX1BJTkNUUkxfUElOKElNWDhRTV9TSU0wX1BPV0VSX0VOKSwNCj4gICAg
+ICAgICBJTVhfUElOQ1RSTF9QSU4oSU1YOFFNX1NJTTBfR1BJTzBfMDApLA0KPiAgICAgICAgIElN
+WF9QSU5DVFJMX1BJTihJTVg4UU1fQ09NUF9DVExfR1BJT18xVjhfM1YzX1NJTSksDQo+ICAgICAg
+ICAgSU1YX1BJTkNUUkxfUElOKElNWDhRTV9NNDBfSTJDMF9TQ0wpLA0KPiAgICAgICAgIElNWF9Q
+SU5DVFJMX1BJTihJTVg4UU1fTTQwX0kyQzBfU0RBKSwNCj4gICAgICAgICBJTVhfUElOQ1RSTF9Q
+SU4oSU1YOFFNX000MF9HUElPMF8wMCksDQo+ICAgICAgICAgSU1YX1BJTkNUUkxfUElOKElNWDhR
+TV9NNDBfR1BJTzBfMDEpLA0KPiAgICAgICAgIElNWF9QSU5DVFJMX1BJTihJTVg4UU1fTTQxX0ky
+QzBfU0NMKSwNCj4gKC4uLikNCj4gDQoNClRoYW5rIHlvdSB2ZXJ5IG11Y2ggZm9yIHRoZSBkZXRh
+aWxlZCByZXZpZXcuDQoNCiNkZWZpbmUgUElOQ1RSTF9QSU4oYSwgYikgeyAubnVtYmVyID0gYSwg
+Lm5hbWUgPSBiIH0NCiNkZWZpbmUgSU1YX1BJTkNUUkxfUElOKHBpbikgUElOQ1RSTF9QSU4ocGlu
+LCAjcGluKQ0KDQpUaGUgaW14OHFtX3BpbmN0cmxfcGFkcyBhcnJheSBnaXZlcyBlYWNoIFBJTiBh
+IHN0cmluZyB0eXBlIG9mIG5hbWUuICBUaGUgYXJyYXkgSSBkZWZpbmVkIGluDQp0aGlzIHBhdGNo
+IGFkZHMgYW5vdGhlciBkaW1lbnNpb24gaW5mb3JtYXRpb24gb2YgdGhlIFBJTiwgd2hpY2ggaXMg
+dGhlIEdQSU8gaW5kZXguIFRoZXNlDQp0d28gYXJlIG5vdCBkdXBsaWNhdGVkIGluZm9ybWF0aW9u
+LiANCg0KV2hlbiBJIHN0YXJ0ZWQgdG8gaW1wbGVtZW50IHRoaXMgZmVhdHVyZSwgdGhlIGZpcnN0
+IHRoaW5nIEkgdGhvdWdodCBpcyB0byB1c2UgdGhlIGV4aXN0aW5nDQppbmZvcm1hdGlvbiB0byAg
+Y2FsY3VsYXRlIHRoZSBHUElPIGluZGV4LCBidXQgc2FkbHkgSSBjb3VsZG4ndCBmaW5kIGEgc29s
+dXRpb24gaW4gdGhlIGVuZC4NClRoZSBwdXJwb3NlIGZvciB0aGUgYXJyYXkgaGVyZSBpcyB0byBy
+ZWNvcmQgdGhlIHJlbGF0aW9uc2hpcCBvZiBhIEdQSU8gbGluZSB3aXRoIGEgUElOLg0KRnJvbSB0
+aGUgUElOQ1RSTCBkcml2ZXIsIHlvdSBtYXkgZ2V0IHRoZSBpbmZvcm1hdGlvbiByZWdhcmRpbmcg
+YSBQSU4ncyBNdXggc3RhdHVzDQphbmQgc29tZXRoaW5nIHJlbGF0aW5nIHRvIHRoZSBzaWduYWwg
+c2V0dGluZ3MgbGlrZSBwdWxsdXAvcHVsbGRvd24vZHJpdmUgc3RyZW5ndGguIFNvDQp5b3UgY2Fu
+IGtub3cgaWYgYSBQSU4gaXMgYSBHUElPIGZ1bmN0aW9uIFBJTiBvciBub3QsIGJ1dCB5b3UgY2Fu
+J3Qga25vdyB3aGljaCBHUElPIHBvcnQgYW5kDQp3aGljaCBHUElPIGxpbmUgdGhlIFBJTiBiZWxv
+bmdzIHRvLiAgDQoNCj4gVGhpcyBpcyBibGF0YW50IGNvZGUgZHVwbGljYXRpb24sIGF0IHRoZSB2
+ZXJ5IGxlYXN0IHdlIG5lZWQgdG8gZmluZCBhIHdheSB0byBzaGFyZQ0KPiB0aGlzIHBpbiBsaWJy
+YXJ5LCBiZWNhdXNlIGl0IGlzIGlycmVzcG9uc2libGUgdG8gcHV0IHRoZSBzYW1lIGluZm9ybWF0
+aW9uIGludG8gdGhlDQo+IGtlcm5lbCB0d2ljZS4gWW91IGNhbiBlYXNpbHkgaW1hZ2luZSB3aGF0
+IGhhcHBlbnMgaWYgb25lIG9mIHRoZXNlIHBpbiB0YWJsZXMNCj4gY29udGFpbiBhbiBlcnJvciBh
+bmQgaXQgb25seSBnZXRzIGZpeGVkIGluIG9uZSBvZiB0aGVzZSB0d28gcGxhY2VzLg0KPiANCg0K
+QXMgSSBleHBsYWluZWQgYWJvdmUsIHRoaXMgaXMgbm90IHRoZSBkdXBsaWNhdGVkIGluZm9ybWF0
+aW9uLiBJdCBhZGRzIGFub3RoZXINCmRpbWVuc2lvbiBvZiBhIGluZm9ybWF0aW9uIHJlZ2FyZGlu
+ZyBhIFBJTi4gQXMgdGhlc2UgaW5mb3JtYXRpb24gaXMgc3RhbmRhbG9uZQ0KYW5kIHNlbGYtY29u
+dGFpbmVkLCAgbm8gbWF0dGVyIGhvdyB5b3UgY2hhbmdlIHRoZSBwaW4gdGFibGVzLCBpdCB3b24n
+dCBpbXBhY3QNCnRoZSBmdW5jdGlvbiBoZXJlLg0KDQo+ID4gVGhlIHdha2V1cCBmdW5jdGlvbiBk
+b2Vzbid0IGNoYW5nZSBhbnkgUElOQ3RybCBzZXR0aW5ncy4gIE9uIGkuTVg4DQo+ID4gcGxhdGZv
+cm0sIHRoZXJlIGlzIGFuIGV4dHJhIHBhZCB3YWtldXAgbG9naWMgYW5kIGVhY2ggcGluIGNhbiBi
+ZQ0KPiA+IGNvbmZpZ3VyZWQgYXMgdGhlIHdha2V1cCBzb3VyY2UgZHVyaW5nIHN5c3RlbSBzdXNw
+ZW5kLg0KPiANCj4gU28gcGFkcywgcGlucywgZmluZ2VycyAtIGFsbCB0aGVzZSBmdW5ueSBuYW1l
+cyBmb3IgdGhpbmdzIGxpa2UgdGhhdCAtIHRob3NlIGFyZQ0KPiBoYW5kbGVkIGJ5IHRoZSBwaW4g
+Y29udHJvbCBzdWJzeXN0ZW0uDQo+IA0KDQpUaGlzIGlzIGEga2luZCBvZiBHUElPIHdha2V1cCBm
+dW5jdGlvbiwgYW5kIGl0IGhhcHBlbmVkIHRvIGJlIGdpdmVuIGEgbmFtZSBjYWxsZWQNCnBhZCB3
+YWtldXAuIEZyb20gdGhlIHVzZXIgcG9pbnQgb2YgdmlldywgaXQgd29ya3MgdGhlIHNhbWUgd2F5
+IGFzIHRoZSBuYXRpdmUNCkdQSU8gd2FrZXVwLiBFeGNlcHQgdGhlIG5hbWUgaXRzZWxmLCBpdCBo
+YXMgbm90aGluZyB0byBkbyB3aXRoIHRoZSBQSU5DVFJMLg0KDQo+ID4gQmVjYXVzZSBHUElPIG1v
+ZHVsZSBpcyBwb3dlcmVkIG9mZiBvbiBpLk1YOCBwbGF0Zm9ybSBpbiBzdXNwZW5kIHN0YXRlLA0K
+PiA+IHRoZSBHUElPJ3MgbmF0aXZlIHdha2V1cCB3b24ndCB3b3JrIGFueW1vcmUuIFRoaXMgcGF0
+Y2gganVzdCBtYXBzIGENCj4gPiBHUElPIHdha2V1cCB0byB0aGUgY29ycmVzcG9uZGluZyBQQUQg
+d2FrZXVwLCBhbmQgdGhpcyBtYXBwaW5nIGRvZXNuJ3QNCj4gaW1wYWN0IG9yIGNoYW5nZSBhbnkg
+UElOQ3RybCBzZXR0aW5ncy4NCj4gPiBBbHNvIHRoZSBwYWQgd2FrZXVwIGZlYXR1cmUgaGVyZSBo
+YXMgYSBncmVhdCBwb3dlciBjb25zdW1wdGlvbg0KPiA+IGFkdmFudGFnZSBjb21wYXJpbmcgd2l0
+aCB0aGUgR1BJTyBtb2R1bGUncyBuYXRpdmUgd2FrZXVwLg0KPiA+DQo+ID4gPg0KPiA+ID4gVG8g
+bWUgdGhpcyBsb29rcyBsaWtlIHR3byBkcml2ZXJzIGNvdWxkIGVuZCB1cCBmaWdodGluZyBhYm91
+dCB0aGUNCj4gPiA+IGNvbnRyb2wgb2YgdGhlIHNhbWUgaGFyZHdhcmUgaWYgeW91IGRvbid0Lg0K
+PiA+ID4NCj4gPg0KPiA+IEl0IHdvbid0LiBUaGlzIHBhdGNoIGRvZXNuJ3QgaW50ZXJhY3Qgd2l0
+aCBhbnkgcGluY3RybCByZWxhdGluZyByZWdpc3RlcnMgYXQgYWxsLg0KPiANCj4gSXQgaW50ZXJh
+Y3RzIHdpdGggdGhlIGkuTVggU0NVIGFuZCB0aGUgaS5NWCBwaW4gY29udHJvbCBkb2VzIGV4YWN0
+bHkgdGhhdC4NCj4gDQo+IFdoYXQgaXQgZG9lcyBhdCB0aGUgZW5kIGlzIHRvIGNhbGwgdGhpcyBS
+UEMgdG8gc2V0IHVwIHRoZSBhc3luY2hyb25vdXMgcGFkIHJpbmc6DQo+IA0KPiByZXQgPSBpbXhf
+c2N1X2NhbGxfcnBjKGlwY19oYW5kbGUsICZtc2csIHRydWUpOw0KPiANCj4gQ29uc2lkZXI6DQo+
+IGRyaXZlcnMvcGluY3RybC9mcmVlc2NhbGUvcGluY3RybC1zY3UuYw0KPiANCj4gV2hpY2ggYWxz
+byBpc3N1ZXMgYSB3aGlsZSBidW5jaCBvZiBpbXhfc2N1X2NhbGxfcnBjKCkuDQo+IA0KPiBXaGF0
+IEkgdGhpbmsgeW91IHNob3VsZCBkbyBpcyBjYWxsIGludG8gdGhlIHBpbiBjb250cm9sIGJhY2st
+ZW5kIGFuZCBoYXZlIHBpbmN0cmwtDQo+IHNjdS5jIGhhbmRsZSB0aGlzIGZvciB5b3UuDQo+IA0K
+DQpOb3JtYWxseSB0aGVyZSBhcmUgbXVsdGlwbGUgaW5mb3JtYXRpb24gYmVoaW5kIGEgcmVzb3Vy
+Y2UgZm9yIHRoZSBzY3UgQVBJIGNhbGxzLiANCkVhY2ggaW5mb3JtYXRpb24gbWF5IGRldGVybWlu
+ZSBpdHMgb3duIGZ1bmN0aW9uYWxpdHkuIExldCB0YWtlIHRoZSANCnJlc291cmNlIElNWF9TQ19S
+X1VBUlRfMCBhcyBhbiBleGFtcGxlLCBpdCBoYXMgUG93ZXIgZG9tYWluIGFuZCBDbG9jayBmdW5j
+dGlvbnMgDQphc3NvY2lhdGVkLiAgDQpZb3Ugd2lsbCBjYWxsIGlteF9zY3VfY2FsbF9ycGMgaW4g
+dGhlIHBvd2VyIGRvbWFpbiBkcml2ZXIgdG8gdHVybiBvbi9vZmYgaXRzIHBvd2VyLCBhbmQgY2Fs
+bA0KdGhlIGZ1bmN0aW9uIGlteF9zY3VfY2FsbF9ycGMgYWdhaW4gaW4gdGhlIGNsb2NrIGRyaXZl
+ciB0byB0dXJuIG9uL29mZiBpdHMgY2xvY2suIEhvd2V2ZXIsDQp5b3UgZG9uJ3QgbmVlZCB0byBz
+eW5jaHJvbml6ZSB0aGUgcG93ZXIgZG9tYWluIGRyaXZlciBhbmQgdGhlIGNsb2NrIGRyaXZlciwg
+YmVjYXVzZSB0aGV5DQphcmUgY29udHJvbGxpbmcgdHdvIGRpZmZlcmVudCByZXNvdXJjZXMuIFRo
+ZSBwYWQgd2FrZXVwIGZ1bmN0aW9uIGlzIHRoZSBzYW1lIGNvbmNlcHQgaGVyZSANCmNvbXBhcmlu
+ZyB3aXRoIHRoZSBvdGhlciBQSU5DVFJMIGluZm9ybWF0aW9uLg0KDQo+IEFuIG9yZGluYXJ5IHZh
+bmlsbGEgcGluIGNvbnRyb2xsZXIgd291bGQgdXNlIHRoZSBjb25maWdzIGZyb20NCj4gaW5jbHVk
+ZS9saW51eC9waW5jdHJsL3BpbmNvbmYtZ2VuZXJpYy5oDQo+IGJ1dCBJIHRoaW5rIHRoZSBpLk1Y
+IHBpbiBjb25maWcgaXMgY3VzdG9tIGRpZmZlcmVudCwgc28geW91IG5lZWQgdG8gZmlndXJlIG91
+dA0KPiB3aGF0IGNvbmZpZyB0byBwYXNzIGFuZCBob3cuDQo+IA0KPiBkcml2ZXJzL2dwaW8vZ3Bp
+by1teGMuYyBzaG91bGQgaG93ZXZlciBpbXBsZW1lbnQgZ3BpbyBsaW5lIGNvbmZpZ3VyYXRpb24s
+DQo+IHNvbWV3aGVyZSBhbG9uZyB0aGUgbGluZXMgb2Y6DQo+IA0KPiBwb3J0LT5nYy5zZXRfY29u
+ZmlnID0gZ3Bpb2NoaXBfZ2VuZXJpY19jb25maWc7DQo+IA0KPiBUaGVuIGlmIHlvdSBsb29rIGlu
+dG8gZ3Bpb2NoaXBfZ2VuZXJpY19jb25maWcgeW91IGNhbiBzZWUgdGhhdCB0aGlzIHdpbGwgY2Fs
+bCBpbnRvDQo+IHRoZSBwaW4gY29udHJvbGxlciBiYWNrLWVuZDoNCj4gDQo+IGludCBncGlvY2hp
+cF9nZW5lcmljX2NvbmZpZyhzdHJ1Y3QgZ3Bpb19jaGlwICpnYywgdW5zaWduZWQgaW50IG9mZnNl
+dCwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGxvbmcgY29uZmlnKSB7
+DQo+ICAgICAgICAgcmV0dXJuIHBpbmN0cmxfZ3Bpb19zZXRfY29uZmlnKGdjLT5ncGlvZGV2LT5i
+YXNlICsgb2Zmc2V0LCBjb25maWcpOyB9DQo+IA0KPiBBdCB0aGlzIHBvaW50IHRoZXJlIG11c3Qg
+YmUgYSBtZWNoYW5pc20gaW4gcGxhY2UgdG8gY3Jvc3MtcmVmZXJlbmNlIGJldHdlZW4NCj4gR1BJ
+TyBsaW5lcyBhbmQgcGlucywgdGhlIG1vc3QgY29tbW9uIHdheSB0byBzb2x2ZSB0aGlzIGlzIHRv
+IHVzZSBncGlvLXJhbmdlcywNCj4gc2VlIERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5n
+cy9ncGlvL2dwaW8udHh0Lg0KPiANCg0KSW4gb3JkZXIgdG8gYnVpbGQgdXAgdGhlIGNyb3NzLXJl
+ZmVyZW5jZSBiZXR3ZWVuIEdQSU8gbGluZXMgYW5kIHRoZSBQSU5zLCB5b3UgbmVlZA0KaGF2ZSBh
+IHByZS1wcmVwYXJlZCBncGlvLXJhbmdlcyBtYXBwaW5nIGluIGFkdmFuY2UuIEJlY2F1c2UgdGhl
+IHJlbGF0aW9uc2hpcCBiZXR3ZWVuDQp0aGUgUElOIGFuZCB0aGUgR1BJTyBsaW5lIGlzIG5vdCBh
+IGxpbmVhciwgeW91IGVuZCB1cCB0byBidWlsZCB1cCB0aGUgZ3Bpby1yYW5nZXMgaW4gdGhlIHNh
+bWUgDQp3YXkgbGlrZSB0aGUgYXJyYXkgaW4gdGhpcyBwYXRjaC4gVGhpcyB0dXJucyB0byBhIGNo
+aWNrZW4tZWdnIHByb2JsZW0uDQoNCj4gVGhpcyB3aWxsIGhvcGVmdWxseSBlbmQgdXAgaW4gLnBp
+bl9jb25maWdfc2V0KCktPmlteF9waW5jb25mX3NldCwgaW4NCj4gZHJpdmVycy9waW5jdHJsL2Zy
+ZWVzY2FsZS9waW5jdHJsLWlteC5jIHdoaWNoIGxvb2tzIGxpa2UgdGhpczoNCj4gDQo+IHN0YXRp
+YyBpbnQgaW14X3BpbmNvbmZfc2V0KHN0cnVjdCBwaW5jdHJsX2RldiAqcGN0bGRldiwNCj4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgcGluX2lkLCB1bnNpZ25lZCBsb25nICpj
+b25maWdzLA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICB1bnNpZ25lZCBudW1fY29uZmln
+cykgew0KPiAgICAgICAgIHN0cnVjdCBpbXhfcGluY3RybCAqaXBjdGwgPSBwaW5jdHJsX2Rldl9n
+ZXRfZHJ2ZGF0YShwY3RsZGV2KTsNCj4gICAgICAgICBjb25zdCBzdHJ1Y3QgaW14X3BpbmN0cmxf
+c29jX2luZm8gKmluZm8gPSBpcGN0bC0+aW5mbzsNCj4gDQo+ICAgICAgICAgaWYgKGluZm8tPmZs
+YWdzICYgSU1YX1VTRV9TQ1UpDQo+ICAgICAgICAgICAgICAgICByZXR1cm4gaW5mby0+aW14X3Bp
+bmNvbmZfc2V0KHBjdGxkZXYsIHBpbl9pZCwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIGNvbmZpZ3MsIG51bV9jb25maWdzKTsNCj4gICAgICAgICBlbHNlDQo+
+ICAgICAgICAgICAgICAgICByZXR1cm4gaW14X3BpbmNvbmZfc2V0X21taW8ocGN0bGRldiwgcGlu
+X2lkLA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbmZp
+Z3MsIG51bV9jb25maWdzKTsgfQ0KPiANCj4gSGVyZSBvbmUgcGF0aCBnb2VzIGRvd24gaW50byB0
+aGUgU0NVLCBhbmQgdGhlcmUgeW91ciBjdXN0b20gd2FrZXVwIGNvbmZpZw0KPiB3aWxsIGJlIGhh
+bmRsZWQuDQo+IA0KPiBBdCBsZWFzdCB0aGlzIGlzIGhvdyBJIGltYWdpbmUgaXQsIHRoZSBpLk1Y
+IG1haW50YWluZXJzIG5lZWQgdG8gc2F5IGhvdyB0aGlzIHNob3VsZA0KPiB3b3JrIGluIHRoZWly
+IG9waW5pb24sIGJ1dCBjb2RlIGR1cGxpY2F0aW9uIGFuZCB0d28gdW5zeW5jcm9uaXplZCBjbGll
+bnRzDQo+IHNlbmRpbmcgcmFuZG9tIG1lc3NhZ2VzIHRvIHRoZSBTQ1Ugc3VyZWx5IGlzIG5vdCBh
+biBvcHRpb24uDQoNCkFzIEkgZXhwbGFpbmVkIGluIHRoZSBhYm92ZSwgdGhpcyBpcyBub3QgdGhl
+IHByb2JsZW0gb2YgdHdvIGNsaWVudHMgYWNjZXNzaW5nIHRoZSBzYW1lDQpyZXNvdXJjZSwgc28g
+dGhlcmUgaXMgbm8gY29uZmxpY3QgYmV0d2VlbiB0aGUgdHdvIGRyaXZlcnMuIEl0IHdvcmtzIGlu
+IHRoZSBzYW1lIHdheSANCmxpa2UgU0NVIHBvd2VyIGRvbWFpbiBkcml2ZXIgYW5kIFNDVSBjbG9j
+ayBkcml2ZXIuIFRoZSBjb21tdW5pY2F0aW9uIGludGVncml0eSBpcyANCmd1YXJhbnRlZWQgYnkg
+dGhlIGNhbGwgb2YgaW14X3NjdV9jYWxsX3JwYyBpdHNlbGYuDQoNClJlZ2FyZHMsDQpTaGVud2Vp
+DQoNCj4gDQo+IFlvdXJzLA0KPiBMaW51cyBXYWxsZWlqDQo=
