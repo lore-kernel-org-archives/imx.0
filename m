@@ -1,477 +1,235 @@
-Received: from EUR02-VE1-obe.outbound.protection.outlook.com (mail-eopbgr20065.outbound.protection.outlook.com [40.107.2.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D994699;
-	Mon, 17 Oct 2022 20:06:45 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yzlhch1a3Htl5mbAnIWLxz9eVsLTkDgCyyzQSPqIttrIzXTGjUUfPW0u3wcEVTa0p/XLBBwSDbnvGYmvN/Omf1NazSIApofGocR3eYsO5LsPbgkrMcE4bXLI/RFhnx4Efb7XToHXU+CEXmpvfl2XanXt90gK1nauc2vIln/MpQooPSlqVMACKThEP0X8oWsCSEhe82WqGhZ2wpAEdyILd71+0fn4UTP8YeMyJMl/SSy7GSb7fnY/+1J4RzN1eqsg3SmyrSuUq2YTfi9TFvH1nDqA8iws1ReOa/fiGLvdnHBi26/hVoXGQTiJaBWCyuvPIyvwM1I5f59GpYgzXLicwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GbgrMawjgA5nKSTuND6LY+d8zOKLx/moRD7897Ye1M8=;
- b=i7hGEwn6NzHTPCHF1k6OG090d6y3D0Ht0He/orrELqQNHhbDsm3sqX5ONogfUAQd48pZmt2hNRwIvBm7lpJJRx35JYGmTabx7HavSb6hGNnHotKlosFlf93AgRh0eVMCE0ewvcNJDHMmpCNc7itMZHEAl0mNu6MrqQ7PPxp7a7OGO74VOW38TQ5a51TphpdWX/Wd8t1a/xCPAr/0WZyQAQlN8BxoGq2eRddGj41k2qMMMcxzZLte/HMcP4oR2rQb5kXfUl/wKpRWtY1JPzvIm8qezQUbu+K77cuS6TYfhHZrF1+KJBUbaMSwBhdSHnY8wHGepieScCR4OymkBXnpnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GbgrMawjgA5nKSTuND6LY+d8zOKLx/moRD7897Ye1M8=;
- b=i++kH2q3E67d5/5NJSSl+iCTsqwRUJXwVJr2Mlru6r+d8/xGcsxfM9OOV8qdoSwU3CaUkYdabu0RjAlZ8kJTH9S7jGfQSXk8Lxvd7Qit24nHPvLAC10g+dZmPup1jouknFK+OrwSUvdZ9ZrfZkO3iS/Yc96wWDAeYurNmmd8o6k=
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by AM0PR04MB7027.eurprd04.prod.outlook.com (2603:10a6:208:191::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.29; Mon, 17 Oct
- 2022 20:06:42 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::6110:8304:5648:88f5]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::6110:8304:5648:88f5%10]) with mapi id 15.20.5723.033; Mon, 17 Oct
- 2022 20:06:42 +0000
-From: Frank Li <frank.li@nxp.com>
-To: "imx@lists.linux.dev" <imx@lists.linux.dev>, Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Kishon
- Vijay Abraham I <kishon@ti.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, Manivannan Sadhasivam
-	<mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "open list:NTB DRIVER
- CORE" <ntb@lists.linux.dev>, "open list:PCI ENDPOINT SUBSYSTEM"
-	<linux-pci@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v13 1/6] PCI: endpoint: pci-epf-vntb: Clean up kernel_doc
- warning
-Thread-Topic: [PATCH v13 1/6] PCI: endpoint: pci-epf-vntb: Clean up kernel_doc
- warning
-Thread-Index: AQHY2oD4qq+oUIXVdEWBXF1BfLJvx64TErXQ
-Date: Mon, 17 Oct 2022 20:06:42 +0000
-Message-ID:
- <HE1PR0401MB2331096ADF6354AEEC09D56888299@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20221007191326.193079-1-Frank.Li@nxp.com>
- <20221007191326.193079-3-Frank.Li@nxp.com>
-In-Reply-To: <20221007191326.193079-3-Frank.Li@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|AM0PR04MB7027:EE_
-x-ms-office365-filtering-correlation-id: 34bb7ee0-7ce5-4d17-5c5b-08dab07b1be5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 2+ngsbGJYYjTj8SU2ELgzeVlMnaVyJwwtLt1d2cf1N5HPCU0hsQviSLMOAZ6EhsNZK+tfVKivEDWKQB1FtyeNBUMIEs+fT6adzy6b2oLatohC+UN5wzeTbkAzXh1ljPjWPPMGCsYpp2UMhOIqwxR7RSBDWVE7umHwBaBmzyudigzCtQQ9ifNNiWV48vjuNEul2qanGBz52UXoliGV8XR46cwyjNgnkxmP947QT+DmydA5CpD5rzPoRqBC1BeDr9PdFiy/rH5/JMy0lSLjmcigdlW00GdSg48sL1AMDZk2WdtYOJJDJhOwH3dkj1O6UB3RSonFube05sxpJYpUp2lJkvnv2Exo1s9MwvDLGL0i9GQZW7Z1u56SRrImMwnmEzkfJvMorYZMJLW6HhqK3L0Bb/FhTolw7KFdpp3vEWw+qFo3dn+U3GL5YMZuj0vLW7h37H306f+EzxiSUjiSW5mQ7Az6td39Q8cN1kufK0TvpaEpgf3FuhbThNVd5MjIb4BNqCbcsuMN2jw5rq8Wxf1wtc+Bb5BfFTFCo+oRJOJLGbOcvi1NqC5/iqc2D3E4HcVcb4n9GGW89tFUJF48RBU5v/YUS1gy+bVMHvMxz0WvxhiLlYDK5joMgGHioZs+92fhWj4ccjnghMxU2n1cOw8svku80I+bw0utLaK+MU5am80tw6QAaMR67mB0jUP27TCb/6QobEddGCDQmWxBo2KhFG6Obx3vWAxPKBLBgIG6syAfNzt5H2J7KFaUsjrKs5Yw4nduDKO6aU1J10qiWcZ3TUZsN4BxnZewgRBIbzB4CA=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(346002)(136003)(39860400002)(366004)(396003)(451199015)(83380400001)(66574015)(33656002)(38070700005)(921005)(86362001)(8936002)(38100700002)(44832011)(122000001)(52536014)(30864003)(5660300002)(53546011)(66556008)(66946007)(76116006)(41300700001)(8676002)(66446008)(9686003)(66476007)(2906002)(7696005)(7416002)(55236004)(6506007)(186003)(26005)(110136005)(316002)(55016003)(478600001)(64756008)(71200400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-2?Q?cUhA1jKFJhkTu83QP7OFqlxzUypFmglvGTJt/lRTX+anbQcSXNLC+U+Es3?=
- =?iso-8859-2?Q?0NFRQpemq1gxosX4K8afrphSAygYzm3rnxA47S/0KiyZDGP8m50YbHia5Z?=
- =?iso-8859-2?Q?j8tpDHHry8rkcB61tMYGPtoIRMd7lkqqSMUjFTBA+yMUdljk9dAsT8sSMc?=
- =?iso-8859-2?Q?0h/kBdyBTjp5QasNs6nta4CCiooZrIbdwlEAOwVCePQCvgWzFLAk/nUrb6?=
- =?iso-8859-2?Q?Q5XYuE8C/fxLPS67N4d8WyIWaJiikzHwawOsB5MLJldvDb+aFgOx5hyqW0?=
- =?iso-8859-2?Q?L1hsDpVGSwULjvdx6GIJJtBqGY54WwEsmIGJ4zbySIIVD9cqFrpX1AOTFm?=
- =?iso-8859-2?Q?Wz/TntLw0DTGT3ZwLKovfy1dFfyapIX86cYva9uLBtIC5o+VW3D65r09n4?=
- =?iso-8859-2?Q?fCHfnNbmvFfAByg6VMu6k8hWsotqUX+rGZZ/h040XrSyVsSN+j01UYdeAH?=
- =?iso-8859-2?Q?XiH/WDFqwkprD2Fc2pMwQhsiTT94hphArHb8ikvwmsRcocZyzVIYbbPSsy?=
- =?iso-8859-2?Q?OGv0vrMKhM3q6WN0ncn34rwrvpMYYpUXWlaJaPTFzD7Pes5s7wJdi3pnlu?=
- =?iso-8859-2?Q?huzyvuwb0aE8xRbch7eFDKMYLDw2CpCNav574HkPjkpQAvVpuyb9A2xUlN?=
- =?iso-8859-2?Q?oALpYnZMZSSMEj/44N5PfeUzmG2YiLXaMJkYBAPALedMFkUwjPDdthuysD?=
- =?iso-8859-2?Q?Moq9vHgPAEop8vFejZPC1TZXeZRo9ntX+/q2IYRhs7ZZLsBjKrHhq9Dajk?=
- =?iso-8859-2?Q?erYe4uoHE/FVblsrHyqzEl3BWAAJpltGyOBJEsI/fIm6d0t7Y6PRB5EHsm?=
- =?iso-8859-2?Q?eO4ia6HySxFX8rMLtUJIpY1h/e3DxKvfaPS6J2LTq4bkl/5/+OT28jd/NF?=
- =?iso-8859-2?Q?8PToosTWcUtLxxmJmbWiosKS7mKebu219XWfvIoufkAVWN+AkifQzkKqx0?=
- =?iso-8859-2?Q?VSN3Q8/O8CCs1GoLimQY/NArOloFiADNChNlIrPBCO0ObPRznVqeej6DnV?=
- =?iso-8859-2?Q?mp2aP5RoUrMndNdu7I3cshXCk2TONx0JE4RLcMyape/y3yUE33ejuHW2zI?=
- =?iso-8859-2?Q?Q/iROaKjFATbgdT9mq7y7PwhuepLuw47taMOihxeR+zBRFPW053nWqKIUd?=
- =?iso-8859-2?Q?aRFxu34C8CbhZA0eBzAeyiRpr5ozJoJ7MkjvMkLmb91RwzwYgzwGTZoF2H?=
- =?iso-8859-2?Q?ebh6/nk47J6AWKbKYjlVF3FldAwHsW4lLWvP0+oqbKwvSrEHnzS58RB5Bv?=
- =?iso-8859-2?Q?t9/r3qzWPyqaNc3+IMK++r5+X47idUkv8KtkPnhv/0grz8wuGToyk2r8Vh?=
- =?iso-8859-2?Q?N/DgMR+nBCzgt8HILW4vSe6NsThz0N/Vr1MNQH9brzAPV6VzFvHDszBgno?=
- =?iso-8859-2?Q?CHPxVYA2/ztHQmUNG/cCw1VcO2L1ysrFut8rhucTD7b+5Bc+LX/223Pef4?=
- =?iso-8859-2?Q?ZOcyAoHny5heDjmY1CkFT7LumUVh+ETI9BeiNRWx0ECpZ8zTEqYLstQUbg?=
- =?iso-8859-2?Q?beIpuvBeCiaNoEV8S/PcnIM86gRbsEzHKchDWAiXwXJ6jnyogn4nTTmnRq?=
- =?iso-8859-2?Q?4Ags3PXqUEstz7Cwr26JDIZC+7uvql1WoHu5v18RGkNolZ1onWiBnsk55o?=
- =?iso-8859-2?Q?Y4LeyriX6oWSE=3D?=
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5E023A8
+	for <imx@lists.linux.dev>; Tue, 18 Oct 2022 08:21:08 +0000 (UTC)
+Received: by mail-ed1-f51.google.com with SMTP id u21so19344525edi.9
+        for <imx@lists.linux.dev>; Tue, 18 Oct 2022 01:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tlBhycv0qO+B/UR4Tbs6xf7dolFDGt0VcAQLm0zQj48=;
+        b=zp6/7E5MJU+2hOjkWqKFn5T5NzclrZwRKtR33QDdgbQU9GU/DK4nuUhzzgJmFCVISV
+         C1snUQqK5yO6iIu5z2+dunt2/cpUL5UCyiykb86XSExUduLeKg8q+3CZVI8rO5dkFm/o
+         AxXX6REm1g7izhD3UIJoZHmoWPu+hJuuBnJoGKDdMYI+n5Ferb06C7wisvfia/fzT72z
+         o/Qh5/vpihUt21pJ92VG4s24s54mrQWMvSzd9Dmyosi9NKjEfRbJgqIVXmY2irQPNvgP
+         oTjkhet+p7JEsKus2ynuE2wsYN+EkxVAofaeP8rQw2iVHOeM4jB6lyUx3xlYXTW/UjLL
+         Fn0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tlBhycv0qO+B/UR4Tbs6xf7dolFDGt0VcAQLm0zQj48=;
+        b=0GS45H/i0EQvauUTggoYMzJHJA+6d9UHvGtPcFVx4mFleKGjnOLUdZpQzrYdC7vDTZ
+         2OLZeG/fC9KP/R/yJOBTWd0mYrjhgrvbFH9Zv7tfVGu9Vw1EJwXJEM1vTWfoGXcrI/ms
+         0q/L7P2+KZkQnntJVhdlbJ8APEhiMKH64qwJYNlT3Ns4OBSuhEQJU/RS7dwm1cTblH62
+         idxmpcRG7h/io8Ip4cYcYRfF2Ys7Tu7iPgvi379nrEBSnXY8Uv/Kawy7esN32Hf97yov
+         UfFOU+rJTmiSaTRK5LwXIaPcFoM2+ZI0jlUQ28/bEopwxRt83AqSQoU/E9CY8GJxDpia
+         qxdw==
+X-Gm-Message-State: ACrzQf3lniG2b//zkf/zoV5EMZVjTM0JxMyGpAkhNOenUJ3hSO+8LuJQ
+	HBmYikkT3RPvpOKgWLkuk1a5CiHkgRi5nCZiTf1p8g==
+X-Google-Smtp-Source: AMsMyM4AnR0J5CEoykBYGszN3KnizRR6umUFmm4ObZz5qsZVI/oO361LJtUgvSCoLMQ6J1cgkjH8tEDp7M6FplFNFXk=
+X-Received: by 2002:a05:6402:4029:b0:45b:d50c:b9b0 with SMTP id
+ d41-20020a056402402900b0045bd50cb9b0mr1535489eda.126.1666081266616; Tue, 18
+ Oct 2022 01:21:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34bb7ee0-7ce5-4d17-5c5b-08dab07b1be5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Oct 2022 20:06:42.1516
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aKiZPNGfTAzhmZy7Se85McoPoOydhptosZmSWp3VnCFyb7/En/knpKbMM5EBseOHVgwCtYz5JcCe6dGWZ3n7eA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7027
+References: <20221007152853.838136-1-shenwei.wang@nxp.com> <CACRpkdaKncznz5qej6owA2OGMeqbrif9e_QO3CWN6+sGhEApDw@mail.gmail.com>
+ <PAXPR04MB9185AE67BF20108CFBF0546289299@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB9185AE67BF20108CFBF0546289299@PAXPR04MB9185.eurprd04.prod.outlook.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 18 Oct 2022 10:20:55 +0200
+Message-ID: <CACRpkdZ1hCZ1WoTQ0e584bQxEyBWq9gkZKPPFnm85QnMnNyvHQ@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH v2 1/1] gpio: mxc: add suspend/resume support
+ for i.mx8x SoCs
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Aisheng Dong <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, Pengutronix Kernel Team <kernel@pengutronix.de>, Marek Vasut <marex@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+
+On Mon, Oct 17, 2022 at 3:55 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
+> > On Fri, Oct 7, 2022 at 5:29 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
+> >
+> > > On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
+> > > the GPIO block will be powered off when system enters into suspend
+> > > state. This can greatly reduce the power consumption of suspend state
+> > > because the whole partition can be shutdown. This is called PAD wakeup
+> > > feature on i.MX8x platform.
+> > >
+> > > This patch enables this wakeup feature on i.MX8QM/QXP/DXL platforms.
+> > >
+> > > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> > > ---
+> > >  Changes in v2:
+> > >  - fix a bug when finding the pad index
+> >
+> > This:
+> >
+> > > +#define IMX_SC_PAD_FUNC_GET_WAKEUP     9
+> > > +#define IMX_SC_PAD_FUNC_SET_WAKEUP     4
+> > > +#define IMX_SC_IRQ_GROUP_WAKE           3   /* Wakeup interrupts */
+> > > +#define IMX_SC_IRQ_PAD                 2    /* Pad wakeup */
+> > > +
+> > > +#define IMX_SC_PAD_WAKEUP_OFF          0
+> > > +#define IMX_SC_PAD_WAKEUP_LOW_LVL      4
+> > > +#define IMX_SC_PAD_WAKEUP_FALL_EDGE    5
+> > > +#define IMX_SC_PAD_WAKEUP_RISE_EDGE    6
+> > > +#define IMX_SC_PAD_WAKEUP_HIGH_LVL     7
+> > (...)
+> >
+> > > +const struct mxc_gpio_pad_map imx8qm_pad_map[] = {
+> > > +       /* GPIO0 */
+> > > +       {  0, IMX8QM_SIM0_CLK},
+> > > +       {  1, IMX8QM_SIM0_RST},
+> > > +       {  2, IMX8QM_SIM0_IO},
+> > > +       {  3, IMX8QM_SIM0_PD},
+> >
+> > this is pin control.
+> >
+> > I think you need to think about adding this to the i.MX pin control driver instead,
+> > possibly cooperaring with the GPIO driver.
+> >
+> > I'm not entirely certain about the relationship between MXC and i.MX so correct
+> > me if I get this wrong...
+>
+> This is not pin control.
+
+So when something in a driver starts to enumerate all the pads on a
+system and assign
+them properties, I tend to think it is some kind of pin control.
+
+You have things like this:
+
++const struct mxc_gpio_pad_map imx8qm_pad_map[] = {
++       /* GPIO0 */
++       {  0, IMX8QM_SIM0_CLK},
++       {  1, IMX8QM_SIM0_RST},
++       {  2, IMX8QM_SIM0_IO},
++       {  3, IMX8QM_SIM0_PD},
++       {  4, IMX8QM_SIM0_POWER_EN},
++       {  5, IMX8QM_SIM0_GPIO0_00},
++       {  6, IMX8QM_M40_I2C0_SCL},
++       {  7, IMX8QM_M40_I2C0_SDA},
++       {  8, IMX8QM_M40_GPIO0_00},
++       {  9, IMX8QM_M40_GPIO0_01},
++       { 10, IMX8QM_M41_I2C0_SCL},
+(...)
 
 
+Which is duplicating the same defines in
+drivers/pinctrl/freescale/pinctrl-imx8qm.c:
 
-> -----Original Message-----
-> From: Frank Li
-> Sent: Friday, October 7, 2022 2:14 PM
-> To: imx@lists.linux.dev; Jon Mason <jdmason@kudzu.us>; Dave Jiang
-> <dave.jiang@intel.com>; Allen Hubbe <allenbh@gmail.com>; Kishon Vijay
-> Abraham I <kishon@ti.com>; Lorenzo Pieralisi <lpieralisi@kernel.org>;
-> Krzysztof Wilczy=F1ski <kw@linux.com>; Manivannan Sadhasivam
-> <mani@kernel.org>; Bjorn Helgaas <bhelgaas@google.com>; open list:NTB
-> DRIVER CORE <ntb@lists.linux.dev>; open list:PCI ENDPOINT SUBSYSTEM
-> <linux-pci@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>
-> Subject: [PATCH v13 1/6] PCI: endpoint: pci-epf-vntb: Clean up kernel_doc
-> warning
+static const struct pinctrl_pin_desc imx8qm_pinctrl_pads[] = {
+        IMX_PINCTRL_PIN(IMX8QM_SIM0_CLK),
+        IMX_PINCTRL_PIN(IMX8QM_SIM0_RST),
+        IMX_PINCTRL_PIN(IMX8QM_SIM0_IO),
+        IMX_PINCTRL_PIN(IMX8QM_SIM0_PD),
+        IMX_PINCTRL_PIN(IMX8QM_SIM0_POWER_EN),
+        IMX_PINCTRL_PIN(IMX8QM_SIM0_GPIO0_00),
+        IMX_PINCTRL_PIN(IMX8QM_COMP_CTL_GPIO_1V8_3V3_SIM),
+        IMX_PINCTRL_PIN(IMX8QM_M40_I2C0_SCL),
+        IMX_PINCTRL_PIN(IMX8QM_M40_I2C0_SDA),
+        IMX_PINCTRL_PIN(IMX8QM_M40_GPIO0_00),
+        IMX_PINCTRL_PIN(IMX8QM_M40_GPIO0_01),
+        IMX_PINCTRL_PIN(IMX8QM_M41_I2C0_SCL),
+(...)
 
-[Frank Li] Friendly ping. =20
+This is blatant code duplication, at the very least we need to find a way
+to share this pin library, because it is irresponsible to put the same
+information into the kernel twice. You can easily imagine what happens
+if one of these pin tables contain an error and it only gets fixed
+in one of these two places.
 
->=20
-> From: Frank Li <frank.li@nxp.com>
->=20
-> Cleanup warning found by scripts/kernel-doc
-> Consolidate term
->     host, host1 to HOST
->     vhost, vHost, Vhost, VHOST2 to VHOST
->=20
-> Signed-off-by: Frank Li <frank.li@nxp.com>
-> ---
->  drivers/pci/endpoint/functions/pci-epf-vntb.c | 83 ++++++++++++-------
->  1 file changed, 54 insertions(+), 29 deletions(-)
->=20
-> diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> index 0ea85e1d292e..c0115bcb3b5e 100644
-> --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> @@ -11,7 +11,7 @@
->   * Author: Kishon Vijay Abraham I <kishon@ti.com>
->   */
->=20
-> -/**
-> +/*
->   * +------------+         +---------------------------------------+
->   * |            |         |                                       |
->   * +------------+         |                        +--------------+
-> @@ -156,12 +156,14 @@ static struct pci_epf_header epf_ntb_header =3D {
->  };
->=20
->  /**
-> - * epf_ntb_link_up() - Raise link_up interrupt to Virtual Host
-> + * epf_ntb_link_up() - Raise link_up interrupt to Virtual Host (VHOST)
->   * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   * @link_up: true or false indicating Link is UP or Down
->   *
->   * Once NTB function in HOST invoke ntb_link_enable(),
-> - * this NTB function driver will trigger a link event to vhost.
-> + * this NTB function driver will trigger a link event to VHOST.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_link_up(struct epf_ntb *ntb, bool link_up)
->  {
-> @@ -175,9 +177,9 @@ static int epf_ntb_link_up(struct epf_ntb *ntb, bool
-> link_up)
->  }
->=20
->  /**
-> - * epf_ntb_configure_mw() - Configure the Outbound Address Space for
-> vhost
-> - *   to access the memory window of host
-> - * @ntb: NTB device that facilitates communication between host and vhos=
-t
-> + * epf_ntb_configure_mw() - Configure the Outbound Address Space for
-> VHOST
-> + *   to access the memory window of HOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   * @mw: Index of the memory window (either 0, 1, 2 or 3)
->   *
->   *                          EP Outbound Window
-> @@ -194,7 +196,9 @@ static int epf_ntb_link_up(struct epf_ntb *ntb, bool
-> link_up)
->   * |        |              |           |
->   * |        |              |           |
->   * +--------+              +-----------+
-> - *  VHost                   PCI EP
-> + *  VHOST                   PCI EP
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_configure_mw(struct epf_ntb *ntb, u32 mw)
->  {
-> @@ -219,7 +223,7 @@ static int epf_ntb_configure_mw(struct epf_ntb *ntb,
-> u32 mw)
->=20
->  /**
->   * epf_ntb_teardown_mw() - Teardown the configured OB ATU
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   * @mw: Index of the memory window (either 0, 1, 2 or 3)
->   *
->   * Teardown the configured OB ATU configured in epf_ntb_configure_mw()
-> using
-> @@ -234,12 +238,12 @@ static void epf_ntb_teardown_mw(struct epf_ntb
-> *ntb, u32 mw)
->  }
->=20
->  /**
-> - * epf_ntb_cmd_handler() - Handle commands provided by the NTB Host
-> + * epf_ntb_cmd_handler() - Handle commands provided by the NTB HOST
->   * @work: work_struct for the epf_ntb_epc
->   *
->   * Workqueue function that gets invoked for the two epf_ntb_epc
->   * periodically (once every 5ms) to see if it has received any commands
-> - * from NTB host. The host can send commands to configure doorbell or
-> + * from NTB HOST. The HOST can send commands to configure doorbell or
->   * configure memory window or to update link status.
->   */
->  static void epf_ntb_cmd_handler(struct work_struct *work)
-> @@ -321,8 +325,8 @@ static void epf_ntb_cmd_handler(struct work_struct
-> *work)
->=20
->  /**
->   * epf_ntb_config_sspad_bar_clear() - Clear Config + Self scratchpad BAR
-> - * @ntb_epc: EPC associated with one of the HOST which holds peer's
-> outbound
-> - *	     address.
-> + * @ntb: EPC associated with one of the HOST which holds peer's outbound
-> + *	 address.
->   *
->   * Clear BAR0 of EP CONTROLLER 1 which contains the HOST1's config and
->   * self scratchpad region (removes inbound ATU configuration). While BAR=
-0
-> is
-> @@ -331,8 +335,10 @@ static void epf_ntb_cmd_handler(struct work_struct
-> *work)
->   * used for self scratchpad from epf_ntb_bar[BAR_CONFIG].
->   *
->   * Please note the self scratchpad region and config region is combined =
-to
-> - * a single region and mapped using the same BAR. Also note HOST2's peer
-> - * scratchpad is HOST1's self scratchpad.
-> + * a single region and mapped using the same BAR. Also note VHOST's peer
-> + * scratchpad is HOST's self scratchpad.
-> + *
-> + * Returns: void
->   */
->  static void epf_ntb_config_sspad_bar_clear(struct epf_ntb *ntb)
->  {
-> @@ -347,13 +353,15 @@ static void epf_ntb_config_sspad_bar_clear(struct
-> epf_ntb *ntb)
->=20
->  /**
->   * epf_ntb_config_sspad_bar_set() - Set Config + Self scratchpad BAR
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
-> - * Map BAR0 of EP CONTROLLER 1 which contains the HOST1's config and
-> + * Map BAR0 of EP CONTROLLER which contains the VHOST's config and
->   * self scratchpad region.
->   *
->   * Please note the self scratchpad region and config region is combined =
-to
->   * a single region and mapped using the same BAR.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_config_sspad_bar_set(struct epf_ntb *ntb)
->  {
-> @@ -380,7 +388,7 @@ static int epf_ntb_config_sspad_bar_set(struct
-> epf_ntb *ntb)
->  /**
->   * epf_ntb_config_spad_bar_free() - Free the physical memory associated
-> with
->   *   config + scratchpad region
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   */
->  static void epf_ntb_config_spad_bar_free(struct epf_ntb *ntb)
->  {
-> @@ -393,11 +401,13 @@ static void epf_ntb_config_spad_bar_free(struct
-> epf_ntb *ntb)
->  /**
->   * epf_ntb_config_spad_bar_alloc() - Allocate memory for config +
-> scratchpad
->   *   region
-> - * @ntb: NTB device that facilitates communication between HOST1 and
-> HOST2
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
->   * Allocate the Local Memory mentioned in the above diagram. The size of
->   * CONFIG REGION is sizeof(struct epf_ntb_ctrl) and size of SCRATCHPAD
-> REGION
->   * is obtained from "spad-count" configfs entry.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_config_spad_bar_alloc(struct epf_ntb *ntb)
->  {
-> @@ -465,11 +475,13 @@ static int epf_ntb_config_spad_bar_alloc(struct
-> epf_ntb *ntb)
->  }
->=20
->  /**
-> - * epf_ntb_configure_interrupt() - Configure MSI/MSI-X capaiblity
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * epf_ntb_configure_interrupt() - Configure MSI/MSI-X capability
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
->   * Configure MSI/MSI-X capability for each interface with number of
->   * interrupts equal to "db_count" configfs entry.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_configure_interrupt(struct epf_ntb *ntb)
->  {
-> @@ -511,7 +523,9 @@ static int epf_ntb_configure_interrupt(struct epf_ntb
-> *ntb)
->=20
->  /**
->   * epf_ntb_db_bar_init() - Configure Doorbell window BARs
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
->  {
-> @@ -566,7 +580,7 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb
-> *ntb, int num_mws);
->  /**
->   * epf_ntb_db_bar_clear() - Clear doorbell BAR and free memory
->   *   allocated in peer's outbound address space
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   */
->  static void epf_ntb_db_bar_clear(struct epf_ntb *ntb)
->  {
-> @@ -582,8 +596,9 @@ static void epf_ntb_db_bar_clear(struct epf_ntb *ntb)
->=20
->  /**
->   * epf_ntb_mw_bar_init() - Configure Memory window BARs
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_mw_bar_init(struct epf_ntb *ntb)
->  {
-> @@ -639,7 +654,7 @@ static int epf_ntb_mw_bar_init(struct epf_ntb *ntb)
->=20
->  /**
->   * epf_ntb_mw_bar_clear() - Clear Memory window BARs
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   */
->  static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws)
->  {
-> @@ -662,7 +677,7 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb
-> *ntb, int num_mws)
->=20
->  /**
->   * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
->   * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB
-> interfaces
->   */
-> @@ -675,7 +690,9 @@ static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
->  /**
->   * epf_ntb_init_epc_bar() - Identify BARs to be used for each of the NTB
->   * constructs (scratchpad region, doorbell, memorywindow)
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
->  {
-> @@ -716,11 +733,13 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb=
-)
->=20
->  /**
->   * epf_ntb_epc_init() - Initialize NTB interface
-> - * @ntb: NTB device that facilitates communication between HOST and
-> vHOST2
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
->   * Wrapper to initialize a particular EPC interface and start the workqu=
-eue
-> - * to check for commands from host. This function will write to the
-> + * to check for commands from HOST. This function will write to the
->   * EP controller HW for configuring it.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_epc_init(struct epf_ntb *ntb)
->  {
-> @@ -787,7 +806,7 @@ static int epf_ntb_epc_init(struct epf_ntb *ntb)
->=20
->  /**
->   * epf_ntb_epc_cleanup() - Cleanup all NTB interfaces
-> - * @ntb: NTB device that facilitates communication between HOST1 and
-> HOST2
-> + * @ntb: NTB device that facilitates communication between HOST and
-> VHOST
->   *
->   * Wrapper to cleanup all NTB interfaces.
->   */
-> @@ -951,6 +970,8 @@ static const struct config_item_type ntb_group_type
-> =3D {
->   *
->   * Add configfs directory specific to NTB. This directory will hold
->   * NTB specific properties like db_count, spad_count, num_mws etc.,
-> + *
-> + * Returns: Pointer to config_group
->   */
->  static struct config_group *epf_ntb_add_cfs(struct pci_epf *epf,
->  					    struct config_group *group)
-> @@ -1292,6 +1313,8 @@ static struct pci_driver vntb_pci_driver =3D {
->   * Invoked when a primary interface or secondary interface is bound to E=
-PC
->   * device. This function will succeed only when EPC is bound to both the
->   * interfaces.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_bind(struct pci_epf *epf)
->  {
-> @@ -1377,6 +1400,8 @@ static struct pci_epf_ops epf_ntb_ops =3D {
->   *
->   * Probe NTB function driver when endpoint function bus detects a NTB
->   * endpoint function.
-> + *
-> + * Returns: Zero for success, or an error code in case of failure
->   */
->  static int epf_ntb_probe(struct pci_epf *epf)
->  {
-> --
-> 2.34.1
+> The wakeup function doesn't change any PINCtrl settings.  On i.MX8
+> platform, there is an extra pad wakeup logic and each pin can be configured as the wakeup source
+> during system suspend.
 
+So pads, pins, fingers - all these funny names for things like that - those are
+handled by the pin control subsystem.
+
+> Because GPIO module is powered off on i.MX8 platform in suspend
+> state, the GPIO's native wakeup won't work anymore. This patch just maps a GPIO wakeup to the
+> corresponding PAD wakeup, and this mapping doesn't impact or change any PINCtrl settings.
+> Also the pad wakeup feature here has a great power consumption advantage comparing with the
+> GPIO module's native wakeup.
+>
+> >
+> > To me this looks like two drivers could end up fighting about the control of the
+> > same hardware if you don't.
+> >
+>
+> It won't. This patch doesn't interact with any pinctrl relating registers at all.
+
+It interacts with the i.MX SCU and the i.MX pin control does exactly that.
+
+What it does at the end is to call this RPC to set up the asynchronous pad ring:
+
+ret = imx_scu_call_rpc(ipc_handle, &msg, true);
+
+Consider:
+drivers/pinctrl/freescale/pinctrl-scu.c
+
+Which also issues a while bunch of imx_scu_call_rpc().
+
+What I think you should do is call into the pin control back-end and have
+pinctrl-scu.c handle this for you.
+
+An ordinary vanilla pin controller would use the configs from
+include/linux/pinctrl/pinconf-generic.h
+but I think the i.MX pin config is custom different, so you need to
+figure out what config to pass and how.
+
+drivers/gpio/gpio-mxc.c should however implement gpio line
+configuration, somewhere along the lines of:
+
+port->gc.set_config = gpiochip_generic_config;
+
+Then if you look into gpiochip_generic_config you can see that this will
+call into the pin controller back-end:
+
+int gpiochip_generic_config(struct gpio_chip *gc, unsigned int offset,
+                            unsigned long config)
+{
+        return pinctrl_gpio_set_config(gc->gpiodev->base + offset, config);
+}
+
+At this point there must be a mechanism in place to cross-reference
+between GPIO lines and pins, the most common way to solve this is
+to use gpio-ranges, see Documentation/devicetree/bindings/gpio/gpio.txt.
+
+This will hopefully end up in .pin_config_set()->imx_pinconf_set, in
+drivers/pinctrl/freescale/pinctrl-imx.c which looks like this:
+
+static int imx_pinconf_set(struct pinctrl_dev *pctldev,
+                           unsigned pin_id, unsigned long *configs,
+                           unsigned num_configs)
+{
+        struct imx_pinctrl *ipctl = pinctrl_dev_get_drvdata(pctldev);
+        const struct imx_pinctrl_soc_info *info = ipctl->info;
+
+        if (info->flags & IMX_USE_SCU)
+                return info->imx_pinconf_set(pctldev, pin_id,
+                                           configs, num_configs);
+        else
+                return imx_pinconf_set_mmio(pctldev, pin_id,
+                                            configs, num_configs);
+}
+
+Here one path goes down into the SCU, and there your custom wakeup
+config will be handled.
+
+At least this is how I imagine it, the i.MX maintainers need to say how
+this should work in their opinion, but code duplication and two unsyncronized
+clients sending random messages to the SCU surely is not an
+option.
+
+Yours,
+Linus Walleij
