@@ -1,214 +1,189 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2052.outbound.protection.outlook.com [40.107.22.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4726C3C0A;
-	Wed, 19 Oct 2022 16:39:42 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=P5R2CWkUbONfEC82y5KBksiLFZVv9Gin4ZHEXpnk8xVXHjB0S4mbMxTqATSoBNiFQa7QdfGdrXgJ3hJWwl2uxwTB+zrT3+kQZYitzPMFK80+7rXKNhWphqFbjFvJWx3Q+n8Jf/qmue78Sn/DRLxhZaUjR2vtHTOshWDdEhQKJTj1EiOZfeeWn61l+IUDArH0wj6K23pebivCytWUoErzSaxD+4FVtFg+m8bG86ziQ09kTtnsXT1jSV8/OrU+JhaqQxQSwl9wITPJApdDAi3wlYNYfmkmQtp5r6o+6EHobtTk5XZlBKUmFyXgd6EdqI6qJOkz65JWYiA9pm91XSROHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AF6juBIUfEb+5nX+4ySQMH0fMffTYAz1usWWEhHb174=;
- b=Nft1RDJ+UisH3JQKtXuc/FpA1Wcxybf5ZOzWGxxLnChNfYdR61YydBxJ0ywlfuiz+03ie9hL82zpp+mLYDu8cU2v7/wR2I68xFYN1xpJm/Itfe0X7RQFrOF08l0TuV9Hsd+W71vv1x8AnCY5HyDezTMbTOAOaXbcQCQnomlMbu72+XRUmmokzCTB58gFTIoTaN8rFipu64GAoMa+XeR8EdSd3ToIMAPt7sns7I8nOKx1FlGIgRIPyNp9dCTn/Wi4UBcfwXardp9eOJ7IsupL6NwgqL5X05Nx/2uQuF8XJEoI8GOwBGJvAkZhIBjiO9Jy7CpyYk/HjCEr0r2fZiTFjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AF6juBIUfEb+5nX+4ySQMH0fMffTYAz1usWWEhHb174=;
- b=MUScSGFY0HQcbo2RSTWpd+CtJiVr2clgHfxk1LMyxABoaooigctlZJQSqpd/fMnMr77gnNiYBVVO1HGyGWrc2mWnCYJbwz6XowQDlIkjFqm1mwCdRtoio8c8LiAM1bQZ9q+0NWKQJazr+wRYBd01KYwpWEYcQZCQNLgrJLpKlzk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by DBAPR04MB7318.eurprd04.prod.outlook.com (2603:10a6:10:1ab::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.26; Wed, 19 Oct
- 2022 16:39:38 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::6110:8304:5648:88f5]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::6110:8304:5648:88f5%10]) with mapi id 15.20.5723.034; Wed, 19 Oct
- 2022 16:39:38 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: helgaas@kernel.org
-Cc: Frank.Li@nxp.com,
-	allenbh@gmail.com,
-	bhelgaas@google.com,
-	dave.jiang@intel.com,
-	imx@lists.linux.dev,
-	jdmason@kudzu.us,
-	kw@linux.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	mani@kernel.org,
-	ntb@lists.linux.dev
-Subject: [RESENT PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix sparse build warning
-Date: Wed, 19 Oct 2022 12:38:55 -0400
-Message-Id: <20221019163855.1267295-7-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221019163855.1267295-1-Frank.Li@nxp.com>
-References: <20221019163855.1267295-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0352.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::27) To HE1PR0401MB2331.eurprd04.prod.outlook.com
- (2603:10a6:3:24::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE287E
+	for <imx@lists.linux.dev>; Fri, 21 Oct 2022 01:52:33 +0000 (UTC)
+Received: by mail-ua1-f52.google.com with SMTP id d8so1563897uaw.11
+        for <imx@lists.linux.dev>; Thu, 20 Oct 2022 18:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=A/X4BKH1+5rJ4rbxYZrtmnGpMfEo4yCisAmPOP1kbwI=;
+        b=M1GYgGlvvgUTcch6G0ibTLp+6fc1JTaQJHMyXkIR4uQ03w4fh6+GVol4YfXPqi+xz0
+         4bx75Zypsbg7LWhAv/PGMNY8DoZ74eUDLp16JKOVc8TY9z803fSXSjUwfR6KwO744mWD
+         vfCD2D/Iy3lQjyjOd+24dOpvyzMtteSVv9NhrzX2Fpk5yprLsoouMmVW5QT7g2cWBzTO
+         UBwQql7Pd6zXXwcZVY+E9IATn6hKOaBcjjTBIYF4AzlaXWvdGwbtK1JN9vAZJCJ3HvmG
+         irEXycAbXu3m0tUs1Fl15ke3N9VkBwsOw+avhOinTLYIjkYnboUpHYtIByzQxlp9MGfv
+         QyOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A/X4BKH1+5rJ4rbxYZrtmnGpMfEo4yCisAmPOP1kbwI=;
+        b=OAQw2QQ3bD1AyxBZ+oNEC6uJFv2KyzwDsHOPf2IE32CiZfKjT96gjL9tp5NSctsdBF
+         BSbtBsKX0f7lEt+oWjQMLwEl17dcNsXX/aQZQT8iamAshL/Z5NsclOrRdsP5zdlZfkES
+         0H5wHOKIECRmKVdjGc/fbp5R1gCT6TOSDCBxn/zWlp7019FE+lKBqZeqHHi08FTsycPW
+         vmr0LVnXe96+E1bczO+sGbk7kIvopIZI/fIgUf7bsGQuSSItzIIuBB5kwd4lDEz1kn2p
+         mQcPPfbPeiEjgEimnG03Id9ROJlltIQuSHXTHCNHgU54z5MoQlflNUL0E5WsGeErJW2T
+         dkVQ==
+X-Gm-Message-State: ACrzQf3ChtQfDDMG3V2H3+ltibkR4ut19z8Qiji0v5e+i2izdHBO7UKK
+	RmAomGNwZS/Nmku3PJ/zqbdCdRFeTtfQzUte1YU=
+X-Google-Smtp-Source: AMsMyM4qCIRUEQcZArW6VI8G3qndhgaFIp97VM27Zqwd3N05qAAwpR9XHHFc6IGzp1r775XT/G/ASF8jzfSuB7tqfD8=
+X-Received: by 2002:ab0:6511:0:b0:3e1:935d:3cc0 with SMTP id
+ w17-20020ab06511000000b003e1935d3cc0mr10408297uam.93.1666317152011; Thu, 20
+ Oct 2022 18:52:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|DBAPR04MB7318:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea78c336-4a2e-47b9-105e-08dab1f08396
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	nHvwUC9ANFqclWnICAlOaz13nRvRwsrO3zGL+ieWAN2hyjB4DTSwRBS6VvNwNmD6MLXSrH3aV8oj9pdZCrmPBFSYrZtP8zDb0kJ58vJhp9nN6WYH4KnxrteOGzbP1uA+7fcfHqpaHrQ1CLiAACtfqVxpE4mz31nTsg9t2Mnvzcagxpi64oRxa0YtwdACPoUgmy3E4D10gVgTUFt1ljNojYbuwKfRYAcilZrg6wAdlyUHDXTwQRCO5gEvnluNtKVaRt79/QSyuukcEAQzEcyn83yOSeZtLT2LI72bHBgacWw2qej3WrYjPfMgwVn9MTQJTQvFhGg+L0abb3SpEmeAHOVTWE3Wf7sS8OzMTQ8yztmV1JG7L0p37tel0L3c/EBYMhI+1F8UrQccZhxvivjNfGghB0IC9Q+mWNq9FbaTbHJO5bswmww6oA41m1klsyYNzkSuISo6k7HkxrAVel8w8aj0soZ/Stkcq+0IpRUChZ8vP0vPBxepBLe3kttWN+vxpzL9POSR7WyGZdwZlnY974dNzOpWOISgO0ZTeegNEMF6vfnBHg4Wq5OtsfV8ceoYUJuo/jq7PEFAUR3oSM11o1czV0T5ekyEdqkOnu4iFWdChUlx2YeOOb2tSruaDJERyD7DLK76mwbWBKiXixAz+3g85pusiTX0XEj2U0b7qRPb3729oDbFzXoJOYUokL8Dd6ZelJiMadwzg8RN6lUSKIhaEAmeJD/noPusLaVaHZz/zOtDrv4WexnuJncv7nMW0Mr1DwLTIPB14cCVT1Unyg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(376002)(366004)(346002)(396003)(451199015)(41300700001)(5660300002)(8936002)(2906002)(26005)(316002)(66946007)(7416002)(6916009)(4326008)(8676002)(38100700002)(66556008)(66476007)(83380400001)(38350700002)(6666004)(52116002)(86362001)(6486002)(6506007)(478600001)(6512007)(186003)(1076003)(2616005)(36756003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ut79OYt8KocfJOJkuP61HyKzkvqSAPXWOYtmFCq4++cs7pa+/0sNAw1ZRFDW?=
- =?us-ascii?Q?toAyZ29RXI7Na255bdTmTxpyEHt2pV1MqXtVZ5J9N5bKUQ7GLlIVgoEBVrV2?=
- =?us-ascii?Q?xLLVfu3UyVSq1G4d5sc6gV8E4gxtBVOWEb8a/P/gGolNShj3tre75EUCmGPr?=
- =?us-ascii?Q?PK+HNfluRiUySa6VB2MS9Byh7H8BvLr4P46VF2hzgx0VAIyn5tevK21GjJaj?=
- =?us-ascii?Q?FtKr8IMpRYtNYYkj7S8m5bKhSh7zSCYpihIFNjqhj6iGYMwwAIgJijb6h4IY?=
- =?us-ascii?Q?EnnqfOEdbmGaA7pf4AE3TXQiwonywC0PgizveQKDfRAADdhWY3r8CDf/rQZy?=
- =?us-ascii?Q?nliVAPxJ2tYh7XnYFuCvXhV/wJPf+Z5+VGJaI9X1V5YQONJgzOybWZ02IVum?=
- =?us-ascii?Q?8fA6NWOeYgT85bXHDmtQHc5bFdfYMf6ukGCa1VUw/jTUK4zng8A5GpfA65sW?=
- =?us-ascii?Q?ubstj8EdxNBnqoQsEyaUeC/RysjY0pfQSaC3+HiZUD6GCQVl05HrGO3FoSbf?=
- =?us-ascii?Q?utY6eGZL4A8hYOwcIXHw1o+f+uc9Gfp7tDQM5x1wEmQGsDhKaxlbhPP9X2oA?=
- =?us-ascii?Q?gOh+Jc2a9ApYATfF4fLJy672Eb5W6+UCuN+IfjbibkstCBbr7uIJCWqsp1+E?=
- =?us-ascii?Q?Z4ZI00+knWjXbFdyu3txzgnnx/2FGjwsyjfucpY28Jju4nmyZziGv9fLIFAp?=
- =?us-ascii?Q?1rodLDtR4G7AEkdDD7PlE399oG37cxZA9U6M1jEarAY0VoMRwiRwrDHl7TzP?=
- =?us-ascii?Q?bOFP5hZpj7vraYzQeUCXAPJ1xCRucbv1CZtMvSiK6W7P8F+pjBINnYIDTEF9?=
- =?us-ascii?Q?sfcqaMEwkP89pCcQF0YMfoTOz7nFBy73Egf7a26hyfkINGzEs/9rUPgZtgsA?=
- =?us-ascii?Q?tCHGcMuHkv9MvaxknJ9cNlyUl3+uGSZbevuqCSLeZrZwdIfz9fUQpgEab+JJ?=
- =?us-ascii?Q?F8BHKk37zpGb0nhE9Tct0Ls1+9z/OTP7I4Xk78jt75FAA9UxzIoBivD3JLtm?=
- =?us-ascii?Q?IRkwF0krtMNUxf/ntMwXz/vBTADQaDW5BpomNoMlNjCBj2c/f4ZnVD8Y4Y91?=
- =?us-ascii?Q?8QeiApCmuAaP380tRh8rpapRsZ2tXt90N1u7Sn7Qs3Hv8BaMfFOkNBpCbINQ?=
- =?us-ascii?Q?7yVdDJbD8nhQ9bOYguWOTLmRC/bf+kGx3ocHZ2bpgtZovmYkiIerbAQ19I4Q?=
- =?us-ascii?Q?Rzg/Gpmv7I+LkBtbUBtgxDBnGqAAhZtK5iLMUOZ1l+uq1S5sJgdy9oHsHqwf?=
- =?us-ascii?Q?Y6fC9gOBNql7TdWuYfXQpyIP6IU8X1caCaPfmNFeAGnDcR0vmQQczS5+m/bZ?=
- =?us-ascii?Q?+jxxOQW7PVgrJX3PJd50eVY/FAHHVRkgz9i1r5TSLYZcBTss83jBxyKZCzyV?=
- =?us-ascii?Q?fChsebnRimYYqCHeE98Qu29IQHkl8/n7NppwbpQxEcO8etYatP/c2MTit8KZ?=
- =?us-ascii?Q?B+K9qZmexVhv7ZIr6gE6RUY+qL9IsFuMniq6ddRvxmpbkdXfAoBXjFtMETuA?=
- =?us-ascii?Q?V+HM4xUO0LIQPiW+LpNbbpLGv4dD85pWPcsdJOyrKBphg9xCVxqx2fmF5DEG?=
- =?us-ascii?Q?GBiVpKJCK5KwUCRHFIJCzdteKznQsJ4IoCPVHFNz?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea78c336-4a2e-47b9-105e-08dab1f08396
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2022 16:39:38.6138
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7i9x2lYkG79TYZpgJnojePYeniz7g4tNQs3YxuTHC9wOu381KVQTDW+n5aNT6Q0GYgOtibFWG3Cv5v/xGpK1yw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7318
+References: <20221019152117.1234968-1-Frank.Li@nxp.com>
+In-Reply-To: <20221019152117.1234968-1-Frank.Li@nxp.com>
+From: Peter Chen <hzpeterchen@gmail.com>
+Date: Fri, 21 Oct 2022 09:51:46 +0800
+Message-ID: <CAL411-pHPiPeY0QTiMUwrGes+K9tQpq0OwVOnCHHkg7Aq2zy4g@mail.gmail.com>
+Subject: Re: [PATCH 1/1] usb: cdns3: host: fix endless superspeed hub port reset
+To: Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, Pawel Laszczak <pawell@cadence.com>, 
+	Peter Chen <peter.chen@kernel.org>, Roger Quadros <rogerq@kernel.org>, 
+	Aswath Govindraju <a-govindraju@ti.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"open list:CADENCE USBSSP DRD IP DRIVER" <linux-usb@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Frank Li <frank.li@nxp.com>
+On Wed, Oct 19, 2022 at 11:21 PM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> From: Li Jun <jun.li@nxp.com>
+>
+> When usb 3.0 hub connect with one USB 2.0 device and NO USB 3.0 device,
+> some usb hub reports endless port reset message.
+>
+> [  190.324169] usb 2-1: new SuperSpeed USB device number 88 using xhci-hcd
+> [  190.352834] hub 2-1:1.0: USB hub found
+> [  190.356995] hub 2-1:1.0: 4 ports detected
+> [  190.700056] usb 2-1: USB disconnect, device number 88
+> [  192.472139] usb 2-1: new SuperSpeed USB device number 89 using xhci-hcd
+> [  192.500820] hub 2-1:1.0: USB hub found
+> [  192.504977] hub 2-1:1.0: 4 ports detected
+> [  192.852066] usb 2-1: USB disconnect, device number 89
+>
+> The reason is the runtime pm state of USB2.0 port is active and
+> USB 3.0 port is suspend, so parent device is active state.
+>
+>  cat /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-hcd.1.auto/usb2/power/runtime_status
+>
+>  suspended
+>
+>  cat /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-hcd.1.auto/usb1/power/runtime_status
+>
+>  active
+>
+>  cat /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-hcd.1.auto/power/runtime_status
+>
+>  active
+>
+>  cat /sys/bus/platform/devices/5b110000.usb/5b130000.usb/power/runtime_status
+>
+>  active
+>
+> So xhci_cdns3_suspend_quirk() have not called. U3 configure is not applied.
+>
+> move U3 configure into host start
+>
+> Signed-off-by: Li Jun <jun.li@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/usb/cdns3/host.c | 58 +++++++++++++++++++++-------------------
+>  1 file changed, 31 insertions(+), 27 deletions(-)
+>
+> diff --git a/drivers/usb/cdns3/host.c b/drivers/usb/cdns3/host.c
+> index 9643b905e2d8..9092b6f4d7c4 100644
+> --- a/drivers/usb/cdns3/host.c
+> +++ b/drivers/usb/cdns3/host.c
+> @@ -24,11 +24,41 @@
+>  #define CFG_RXDET_P3_EN                BIT(15)
+>  #define LPM_2_STB_SWITCH_EN    BIT(25)
+>
+> -static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd);
+> +static void xhci_cdns3_plat_start(struct usb_hcd *hcd)
+> +{
+> +       struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+> +       u32 value;
+> +
+> +       /* set usbcmd.EU3S */
+> +       value = readl(&xhci->op_regs->command);
+> +       value |= CMD_PM_INDEX;
+> +       writel(value, &xhci->op_regs->command);
+> +
+> +       if (hcd->regs) {
+> +               value = readl(hcd->regs + XECP_AUX_CTRL_REG1);
+> +               value |= CFG_RXDET_P3_EN;
+> +               writel(value, hcd->regs + XECP_AUX_CTRL_REG1);
+> +
+> +               value = readl(hcd->regs + XECP_PORT_CAP_REG);
+> +               value |= LPM_2_STB_SWITCH_EN;
+> +               writel(value, hcd->regs + XECP_PORT_CAP_REG);
+> +       }
+> +}
+> +
+> +static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd)
+> +{
+> +       if (pm_runtime_status_suspended(hcd->self.controller))
+> +               return 0;
+> +
+> +       xhci_cdns3_plat_start(hcd);
+> +
 
-Using  epf_db[i] instead of readl() because epf_db is located in local
-memory and allocated by dma_alloc_coherent().
+Why does it need to call again at suspend?
 
-Sparse build warning when there are not __iomem at readl().
-Added __iomem force type convert in vntb_epf_peer_spad_read\write()
-and vntb_epf_spad_read\write(). This require strong order at read and
-write.
+Peter
 
-Signed-off-by: Frank Li <frank.li@nxp.com>
----
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 27 +++++++++----------
- 1 file changed, 13 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 54616281da9e..9f1ec6788e51 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -136,7 +136,7 @@ struct epf_ntb {
- 
- 	struct epf_ntb_ctrl *reg;
- 
--	void __iomem *epf_db;
-+	u32 *epf_db;
- 
- 	phys_addr_t vpci_mw_phy[MAX_MW];
- 	void __iomem *vpci_mw_addr[MAX_MW];
-@@ -257,12 +257,9 @@ static void epf_ntb_cmd_handler(struct work_struct *work)
- 	ntb = container_of(work, struct epf_ntb, cmd_handler.work);
- 
- 	for (i = 1; i < ntb->db_count; i++) {
--		if (readl(ntb->epf_db + i * sizeof(u32))) {
--			if (readl(ntb->epf_db + i * sizeof(u32)))
--				ntb->db |= 1 << (i - 1);
--
-+		if (ntb->epf_db[i]) {
- 			ntb_db_event(&ntb->ntb, i);
--			writel(0, ntb->epf_db + i * sizeof(u32));
-+			ntb->epf_db[i] = 0;
- 		}
- 	}
- 
-@@ -529,13 +526,15 @@ static int epf_ntb_configure_interrupt(struct epf_ntb *ntb)
- static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
- {
- 	const struct pci_epc_features *epc_features;
--	u32 align;
- 	struct device *dev = &ntb->epf->dev;
--	int ret;
- 	struct pci_epf_bar *epf_bar;
--	void __iomem *mw_addr;
- 	enum pci_barno barno;
--	size_t size = sizeof(u32) * ntb->db_count;
-+	void *mw_addr;
-+	size_t size;
-+	u32 align;
-+	int ret;
-+
-+	size = sizeof(u32) * ntb->db_count;
- 
- 	epc_features = pci_epc_get_features(ntb->epf->epc,
- 					    ntb->epf->func_no,
-@@ -1123,7 +1122,7 @@ static u32 vntb_epf_spad_read(struct ntb_dev *ndev, int idx)
- 	struct epf_ntb *ntb = ntb_ndev(ndev);
- 	int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * sizeof(u32);
- 	u32 val;
--	void __iomem *base = ntb->reg;
-+	void __iomem *base = (void __iomem *)ntb->reg;
- 
- 	val = readl(base + off + ct + idx * sizeof(u32));
- 	return val;
-@@ -1134,7 +1133,7 @@ static int vntb_epf_spad_write(struct ntb_dev *ndev, int idx, u32 val)
- 	struct epf_ntb *ntb = ntb_ndev(ndev);
- 	struct epf_ntb_ctrl *ctrl = ntb->reg;
- 	int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
--	void __iomem *base = ntb->reg;
-+	void __iomem *base = (void __iomem *)ntb->reg;
- 
- 	writel(val, base + off + ct + idx * sizeof(u32));
- 	return 0;
-@@ -1145,7 +1144,7 @@ static u32 vntb_epf_peer_spad_read(struct ntb_dev *ndev, int pidx, int idx)
- 	struct epf_ntb *ntb = ntb_ndev(ndev);
- 	struct epf_ntb_ctrl *ctrl = ntb->reg;
- 	int off = ctrl->spad_offset;
--	void __iomem *base = ntb->reg;
-+	void __iomem *base = (void __iomem *)ntb->reg;
- 	u32 val;
- 
- 	val = readl(base + off + idx * sizeof(u32));
-@@ -1157,7 +1156,7 @@ static int vntb_epf_peer_spad_write(struct ntb_dev *ndev, int pidx, int idx, u32
- 	struct epf_ntb *ntb = ntb_ndev(ndev);
- 	struct epf_ntb_ctrl *ctrl = ntb->reg;
- 	int off = ctrl->spad_offset;
--	void __iomem *base = ntb->reg;
-+	void __iomem *base = (void __iomem *)ntb->reg;
- 
- 	writel(val, base + off + idx * sizeof(u32));
- 	return 0;
--- 
-2.34.1
-
+> +       return 0;
+> +}
+>
+>  static const struct xhci_plat_priv xhci_plat_cdns3_xhci = {
+>         .quirks = XHCI_SKIP_PHY_INIT | XHCI_AVOID_BEI,
+>         .suspend_quirk = xhci_cdns3_suspend_quirk,
+> +       .plat_start = xhci_cdns3_plat_start,
+>  };
+>
+>  static int __cdns_host_init(struct cdns *cdns)
+> @@ -90,32 +120,6 @@ static int __cdns_host_init(struct cdns *cdns)
+>         return ret;
+>  }
+>
+> -static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd)
+> -{
+> -       struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+> -       u32 value;
+> -
+> -       if (pm_runtime_status_suspended(hcd->self.controller))
+> -               return 0;
+> -
+> -       /* set usbcmd.EU3S */
+> -       value = readl(&xhci->op_regs->command);
+> -       value |= CMD_PM_INDEX;
+> -       writel(value, &xhci->op_regs->command);
+> -
+> -       if (hcd->regs) {
+> -               value = readl(hcd->regs + XECP_AUX_CTRL_REG1);
+> -               value |= CFG_RXDET_P3_EN;
+> -               writel(value, hcd->regs + XECP_AUX_CTRL_REG1);
+> -
+> -               value = readl(hcd->regs + XECP_PORT_CAP_REG);
+> -               value |= LPM_2_STB_SWITCH_EN;
+> -               writel(value, hcd->regs + XECP_PORT_CAP_REG);
+> -       }
+> -
+> -       return 0;
+> -}
+> -
+>  static void cdns_host_exit(struct cdns *cdns)
+>  {
+>         kfree(cdns->xhci_plat_data);
+> --
+> 2.34.1
+>
