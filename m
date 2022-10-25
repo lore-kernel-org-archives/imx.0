@@ -1,61 +1,54 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2077.outbound.protection.outlook.com [40.107.21.77])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80087.outbound.protection.outlook.com [40.107.8.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD026FB0
-	for <imx@lists.linux.dev>; Tue, 25 Oct 2022 18:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CE46FC7
+	for <imx@lists.linux.dev>; Tue, 25 Oct 2022 20:12:12 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dAxdlyjeV+/0lg81c67g++wG7MsBcTgKBJGl062LyZDfvD0q5mfH/TMvYv5VTZ15DV5CqussLNI8pMFxhC4LROdpOrq+8KhuHSr+m16F8vryiNLZ9rfApQ+elY9/4z48oWnJQdnNoN5dXesUxMWJKTZOf5nRyED7+F/xKJMKsYmzbZAwhkOLWYRNIGny+FxBce0gznqMMyrIxzMCPCvr/iH/AT6AH8J8EzYQeRdDXPqsz44ALwPluRqhxDWT3DG8E7iJaS/blF2erR1Mq6bX9uhkKHRj4aUd8r+wRdJslb2arw3hpkiZ28fv1JfI88oKHXps/8QkjrWTT/kaFGRfBA==
+ b=gGJhdQGWllLlZmTbJ5F3IYZWFIv2kqcQrhzy+Q2XAwTabVSafFDUWRm235PPwaNL5PAMwC51zLTUPztBsvyJRAURCLVccCNx48MTJ13elVvDavJRvopU//iOgbDl3LRQmCS3YOzg6X6LJCElvxY9fMD2iF70OP+9QOrzs5zZ+BmqJcU0EP71ZkKnor58SaM3ojCnSOzOY3rRkmAn9of38lBBXFCKzp8IKZQ9UEd5phcIoK9l7MUXGWU9S5fZk2DIBjM4/GV5FfDVtAj4g1nMqUTXJXt6YrBLUq66+t2hjGlRyAw1/3GiWfCaDFEEa+0V/hVkDaiiZB4dq13NHtyH0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HK8umn/SaBCLANQD/iiVYz01sajoRlXqGCOCY0E7X04=;
- b=hVBhYvwJu8OCRVGnlUUChQGCUxak/CV/kJRk7YYuHLSGVcLNEQKMf1UkZPC1yU3JvaJLNoDVk/FY6QpAhF4nid4fxvZnYJntRhzIJWisk9g5yEK4L4bR6GR1u9IWiLbrXTZhn3jihaDlFUc6P17CrvgQzFJpyXkphUTQCZcX1he0wlMfBjSqDXLCiZJYaoc0Ln1sBkBCEe/0mzK7gU9Qz25JH84DPGAN1WxgBhoYElOlhIUHJkwwDpKQL0097UGTAVKM0kjulOf3Y9Aovx+shPSC3bq4iO7kXDlWxiI1vtoePWDDTcVhCHNXPiyPdBjetSGHiLxo3j/QY0DdK8k1Rw==
+ bh=CY0Mf+cak8f1Yg+uXoFTHb7p8Zaewn/8Cs6hhcjobSc=;
+ b=Qw4X2Yd2sBkS74TqwdstNpDxQSZ1fjPiREynpNcOqgoyOEIckm1E3K2nHbX8yNoBVi1HPHYqCHx+jzg5mexjNID4M3WhXPSPBfiG2TlxTtrzv6uaUjdDJTvT85fTQKSRApJx3j9jOZUDK9LAFZvaeeYIkYmACVSJ/DqvOOueTK6Q01TGE/RygFtA6BDd1Oe9tDlPfveAcLAa/a2xttCl6YJC8Pw4tyeYTE+OdLt9cAGZ2NwyaKdNJRy8ynYmU41t4kOuomrFjUCOTI9vPLphVmroBzK4Vo5sUpvKnNZuGs66XoSDPC4hNN0NuY9RUPQPNoLoFUw3GnZoYKTiyC9Yag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HK8umn/SaBCLANQD/iiVYz01sajoRlXqGCOCY0E7X04=;
- b=aMkrsmzjTCcu5Ez5Z1YgKUNnnHwQmg+Qfkq6XOF8YML6qdz7UCcZSTt5MxS8wTdq9kSjxFw9H+KxK4don5hLh5ACFN53IKSF48alRx5uN/wkv1Ys9wrQ6RaZvPcmx8i11Q0Ifubw2rile1uW+JixjE/WG9T1n6af5AqRjoA1YuQ=
+ bh=CY0Mf+cak8f1Yg+uXoFTHb7p8Zaewn/8Cs6hhcjobSc=;
+ b=jQD/n4osJmHitDu3cVezdzz3z1bZc8UThq5lvXbLnb9RiyyZrXJWlirN3QaB/lS2Ta2QkwfYHaNbMKMUJKiYZYjJSXwpbyN6Zet74LGq32wER8nrtJSZUsDYuMInngPF2z5kdXZAo0OgnxAWoE7O5xBNXLUD4Kke4VhtdIRBc+E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AS1PR04MB9581.eurprd04.prod.outlook.com (2603:10a6:20b:470::14) with
+ by AS8PR04MB8404.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.33; Tue, 25 Oct
- 2022 18:33:35 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.21; Tue, 25 Oct
+ 2022 20:12:09 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::4150:173b:56ec:dc6c]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::4150:173b:56ec:dc6c%9]) with mapi id 15.20.5746.028; Tue, 25 Oct 2022
- 18:33:35 +0000
+ 20:12:09 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 5/5] gpio: mxc: enable pad wakeup on i.MX8x platforms
-Date: Tue, 25 Oct 2022 13:32:44 -0500
-Message-Id: <20221025183244.615318-6-shenwei.wang@nxp.com>
+	imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH 1/1] net: fec: add initial XDP support
+Date: Tue, 25 Oct 2022 15:11:56 -0500
+Message-Id: <20221025201156.776576-1-shenwei.wang@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221025183244.615318-1-shenwei.wang@nxp.com>
-References: <20221025183244.615318-1-shenwei.wang@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY5PR17CA0028.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::41) To PAXPR04MB9185.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR05CA0137.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d::22) To PAXPR04MB9185.eurprd04.prod.outlook.com
  (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,234 +57,449 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AS1PR04MB9581:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dbaaf33-c275-4241-bf41-08dab6b76d54
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AS8PR04MB8404:EE_
+X-MS-Office365-Filtering-Correlation-Id: 05468644-8774-47f3-4e78-08dab6c531f5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	+yUtfNQebIU+OmS2waKdMPD0mx0p9/tcE9Ak6duQ0Ka4sQmq72F5UILv7OiKkmBhcyfaCIVAyzm+JP77uLxUDyjzPHZigztFPpwkxSUOhWn/2GrI9oC/kbTE3Bzwqrayz8pdDFwHEw08ymY9ipXOFohJvjtAPt9AzzgpOuGXCxpl5UaLCw3JlvMa4HNZ8SbmE5KOhdmtmF0MvyeU8FBkXolXwvi9TnJeW8bPFd52Uj0RxC+//h7jhKkZ7ISDCU4DKnKRKqTp9IYrhSLXWt8JGNLoJsJBfphnxM1CMIoWWtDv9S8UWfjyOu98jBSH+3MaqgNLe6DUVudz3uDATKuyR+eDTmZtDvsHxO51rk+cldNBL0W+blc2HRFmXlkEVIavD1SwNdJHk253rmoxM8B7m6WdZQLI22l07sNKr0fjrIri5dmjPCbnfmV8MI1MTvxbdICdri0m8C78CfjJMDBCZRvHK2MHPUT7k5sTcHC1G0t1cPxKRjoi6gH3c1tr42UprLKh9VXem7TOyCn9ZhAovuIXnIvQGSdVGu4eD7LAU2eLkYOOJqyBdEDwf1RFhZFUMrvz5zCfb1SNQU5ciWUmdsuTcCVsF2aSTPxw9KSaAhH/VhuBvfdW0zZ4hNnfjt30W7uOBTb1Smz/ijFJ46N62uJKjZw/XHUAvZtDKJf4B//F200oaVlyRSgTXWZfIa7Pwj6IQwGYv4SykIJKR0Zai8HaOCFFFMrFeZpauuqzJdCFQo5LHUYIld9DdNTWL2doefkEKltnj6Yyfp0i+G5HbA==
+	m+jRKSzmf7i0kES7dtgMOzO5sBfdiNaHLwqMDIjh7nnDlwf88UDUiET9MDpFx+YUmxX3dYFP7g+GphBm6P8EwXfuVRN819PCBI1ld+pnciRZE43Fk2T62gCXndXU/PCupARykGjkmOgs8mKS2XEhn5SZ0wn2KfHFB9sK/TACbR27sfvsL3DTrrDfhSFLSbYtKLIOqzpeajtuwgWvtK7KRoTJe2xNrUqy30pLDfsfMVqphm6juYl+54m5N5rqqdVryb6c0ZLIWpzkgnvpohDxX+b0h4jC+gi6kX6xZseXrmsAwxjylW8FYHcLdEr6OAAdDxVpgAwqmdM0Zf5ypJKdzywiwlbp+6inerLjEzOksRXaeUME+OxzJCC0VuQ1/56VVBZ/7Bw9vRjrcy+4eF7LaJq0lQlEgmXh1f0b42lardQyDWSEVpQelbsXjE5GRhxciqeQLXrm5XJsUeLMGiLa9F9utYw/mYNNnUuySDMyHoPTV/1yicBDs7FHZ9lW4kc9mDC57F4KcIFZY8D+vQi9W78wo9b/gCVQO4dCoVGNc2MmWt08or6hv5A5ELdB3wLMvcCEkkB32e3SZ6k+t9mimzVmhUVkAslBIhT2WbKQdpuFO6Mb0XCssugUAaAppos6YqO2qG2nQIMx81MerJt9pCMlfoq7XHsmXS+h+qcHmzXRYhs+UhENDtZCfrSoRxD72ggg87ux0tca27qZxF3K6CJCXFI5JSR6LKnncmVFV4kjDl6wp76QfNMLoEeXW9iqKwKJR5f9vyQM/o7HdBz8Fw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(396003)(366004)(376002)(346002)(451199015)(478600001)(38350700002)(38100700002)(7416002)(55236004)(6486002)(8676002)(86362001)(2906002)(52116002)(36756003)(44832011)(6636002)(66946007)(66476007)(110136005)(6506007)(8936002)(66556008)(4326008)(54906003)(26005)(41300700001)(5660300002)(6512007)(316002)(1076003)(186003)(2616005)(6666004)(83380400001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(376002)(396003)(366004)(346002)(39860400002)(451199015)(478600001)(110136005)(8936002)(38100700002)(36756003)(6486002)(54906003)(83380400001)(44832011)(38350700002)(30864003)(2906002)(66556008)(7416002)(66946007)(8676002)(5660300002)(316002)(66476007)(4326008)(6512007)(1076003)(186003)(2616005)(41300700001)(6666004)(26005)(55236004)(86362001)(6506007)(52116002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nMBIrvdGRmZEPorIdq0XEqszecXNk2DnDMer/liXnO384+d2Ilfqdzo/HBld?=
- =?us-ascii?Q?0ktAum8JpEbxDCyiivuBtjpw/FW5hSk2a8BvCUp4aLUK0nttHxjD9qIGfwEU?=
- =?us-ascii?Q?eqKY+toWkDM1KpkBKwpH2JoBsnj55AUZLHmWEaKGp4pWckdRAPoktYWDfuU2?=
- =?us-ascii?Q?UAvy+87X6pq4DWu5F8za5icKF37ZneMV5seXTy6hc4mcds5r1z+JTB68JjOc?=
- =?us-ascii?Q?UHANo3Ud7HznU1taAg9DSmZhymggTdYoOIFicMP15jINYxTPre9woyxU4AFe?=
- =?us-ascii?Q?gIG5A04mEVZT46ii3aAXl7SmxOptsipwI1Asc/vzX/2cRCXAMGKh76JS8map?=
- =?us-ascii?Q?/71QhlpoNlS2QMqymhUL5D0Kz57m4qEEat/9Cv7vjiMb6xnWZTy2+VzpH438?=
- =?us-ascii?Q?Xar+nimxIKAx5MyLpekLcZv7Ro0aJUHoiiZaPGR3k/inc1PiUmTbVykoh5l+?=
- =?us-ascii?Q?uRtEAD713x33dTcpEnUBaYnyN2iBhKVgsf2JiMKRtw0GJxcKiru1VT5YRMHX?=
- =?us-ascii?Q?2Seps6Jukp+/Dz3fvMyVkPnEd//YuHKkCjVafxfI2tD5qIvNrBOIJwrSBm4y?=
- =?us-ascii?Q?TAymky2Mpjdtvhi21CJyXNqnChuvRoPC1T8JmrHxKJio08Jz6EAPus4f5gCz?=
- =?us-ascii?Q?bJwVJ5r6/qw+yT2McMzMrpYLetXqgG3fo+e9on88Honl+uyBXRG+ZbZllEe8?=
- =?us-ascii?Q?N7TQR3mUjR+o/4jjVpft2ez0cKjaI8JpCafgFEbFJXBFQJQfp06aKiAw4v8R?=
- =?us-ascii?Q?qL3TLzbru4Xs/ye/ynJJxM1P/SjjO72/sIqoZJbxEVypLQ8ppVaMSlfDSNiC?=
- =?us-ascii?Q?QPWIAhk9wQCcihL7q7X4030v7+CXnvRtS16/JiPYoKwbwOKnWlOk6ZNk1FHY?=
- =?us-ascii?Q?QYuBjBCJNlmeLQpeT220C8MB6e2/ILHdSmbBzh3Bj20PanQhBOJwCxLMu3jV?=
- =?us-ascii?Q?WSiaOAkKu9llqKF4a+jIQbnL7Kha/+Vgl8TYS7NnVCKzbvp3twW496cEKHqh?=
- =?us-ascii?Q?4HvlXFg/a+mEuVU9Un5g6AOvtKeNiLW4bnqj3mAbdXp2Y/ixHKSoVc0xLSFZ?=
- =?us-ascii?Q?4iPFr66PoKJzDepoMnxAMTWh3Gd49wP5nFaeDXZ//Wfga9UVWIILHCd5/nrN?=
- =?us-ascii?Q?Ti6FJl9NF4PL+vnLj9K5wKaP/y3J2eE+CYUuTW0uImwaxvWd74htX0Xx4sue?=
- =?us-ascii?Q?0Al0FyviUiVAWVUfzAIfptRJrmy/hObq4X6i1sdqEMkc0nud2uV6iWwMd4P+?=
- =?us-ascii?Q?64laOS0WFX8bmjARaU4WWt+fbIkwQVOPSIsJfu7cu5l4RIF71t/6J1xVUjXS?=
- =?us-ascii?Q?EWp2BhZ7rllm1I0bLLpAAoC3VJm+JFFXXDl3Ac3J/U1pGoE8EgbvOT9/XNep?=
- =?us-ascii?Q?egG9i+4UlVba3gYQeMUlLiKuk5qWeaGJ5G/Zq6Rdw04WgAugnpgMQohfVSGO?=
- =?us-ascii?Q?KTmEYDsjpbzqq7/qaPF3GqvpYE1OrMiX408hzSMw5m0CPHlN1J8tCxhP10i5?=
- =?us-ascii?Q?v2EKyynXMqAT+9veO7fqyatYyBHn+uGUb09duElJU42XoVnrYNbEaQ9IZzZW?=
- =?us-ascii?Q?GJfY4ZqRc0S01xa+Uo6wrle+Lb6TTrBR59iO6zyp?=
+	=?us-ascii?Q?E+PLHqvcJEzL9w83GGeOMcwnajw/id0GIy8ThvLjOtKdmH5zUn8pISBqU8q8?=
+ =?us-ascii?Q?Q20ZZniNrY58qaUSIkXtfcO131EVwZAyDgLJEHqsjl7hsG6A3ZF1FmSmma2p?=
+ =?us-ascii?Q?BNKrGPBHDskPAsfZdqYej20YvwHHoHVliIdhqAxhvtu8+tVNVLFQYZbKdMLd?=
+ =?us-ascii?Q?7rEH68NfVNs36Sg9CYRTcrg0fH+LuhQt2JpmzYNQowX/bvJeGXXUjnaQ2FJF?=
+ =?us-ascii?Q?T5iYPilhf0Z1X9241AizUJu27SNwFabE5zPdp205cNwj87ipnp0TXPpIGwXe?=
+ =?us-ascii?Q?woOgyvoGfkIWi0lHguPaSxwfB+nUIpIeUhDuTHybrhArdK7mJ5lv0aZFzcS4?=
+ =?us-ascii?Q?MbFGLSGOZZyu+EU/5V8tA7rooE7h2Jkl07WlGmljeQVuZqLObXiEq7FitDvM?=
+ =?us-ascii?Q?oc3ZD9yWT+ZFUdTErMDdjtehbb6yWXW8vYoTl2bXUncJtQ1V4t8++TAdoL1Y?=
+ =?us-ascii?Q?zhCcOnckdYuo5tFsOn2HZ/n78OWusl0fFO7ZTtzriYPy+VpptIG2YfGekBTC?=
+ =?us-ascii?Q?Ia5Jxk1W6kqc6Dnqtq032hQzNAUm+bMrjULEgoiidVKuO47MMQQEyUUux1H7?=
+ =?us-ascii?Q?hByaGvDAl0uJcoPPMBInTDedp1JHE45E3HgYn0TYOIAquvWSShm2JSRAs8gQ?=
+ =?us-ascii?Q?awB7R6/CQXoTctTOqvn+T3443gH2Dg3uk0F13B1f3uaIcKas9hxDu6m8/3Ft?=
+ =?us-ascii?Q?yRMPbo8fZ/lrTE4u+ZXqkoQklHUOjH6tUKCegGboRF75ehhQgKs6X3ubDwKf?=
+ =?us-ascii?Q?KgRdG5bFPfY9EhB0mzEHIRDEf2/XDp9oGvcAp2zzneIV/5gQPg69St4nr01K?=
+ =?us-ascii?Q?8SmjTDBEPQ1vbjq49XhKmjON324rpsoQkwlI7eJEWdZCg3cOYH0jzdp62GJ6?=
+ =?us-ascii?Q?xvItjdbQgjOalygODlOlRDLxJTPmckNjqcAOcclEj5eeSs2+gGtzp9+IsnAi?=
+ =?us-ascii?Q?8nu+KAZVzEeIRaJk2I5cJljYPw5WU5Xhb4eQwMPX7BUhzSx20zu9JISQxAZl?=
+ =?us-ascii?Q?AtQEYKWhzcXAZVXQHGyehv4NcTODIAa+OyzNEUXE9lBkFtodd0vOTqN6/cmB?=
+ =?us-ascii?Q?Vvk6VCGYoXNoESC9q1svP65malGRmeij2BIav1L/3hcz4qmJ4dy4ZmVGzL8n?=
+ =?us-ascii?Q?PYbpd6fUjWrjRAr6yTMR991CORUSsP7aqDPv0BsuwF8QfEkUzPbyW8yYBzCV?=
+ =?us-ascii?Q?s0mUIhG4KEUihtsba0iX/ZQETYQ9JK74M4Jx/wfuHYB/453pNAm2GLN/ScNY?=
+ =?us-ascii?Q?LD5H6YgWqYa0G7QrNb2qDJ8+XEUq2aZ15JrUsqw8qoH4S7ajPa1kllJKUJcq?=
+ =?us-ascii?Q?MarzO1aUwfAJXda8gddtnOLi4WQdgmmf7x2putSlmJH4Pl6eOdhY40MGnZLB?=
+ =?us-ascii?Q?fpFb6NOiUooGbWK/p2RKjfgjm58qeKzcdUaoOUtp8m7u+gyWAJSWdGKDjumf?=
+ =?us-ascii?Q?SL607CaqiUVWsLcbF4QbuvxQHKgl/H5YfmgOM5RNV8FWO30WSvBtNoRTIhFz?=
+ =?us-ascii?Q?dHhVt4E7ce3XOozxJOcaVVLw5toynnxZrIYaN3TauAfWuBi8BS5nTlAcN2VP?=
+ =?us-ascii?Q?2hA3g0O+yJ14GqIrR7TAq7Gd6SUlGZV/gPTma/XUks+RHhRAU3cbGwTyQECn?=
+ =?us-ascii?Q?yw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dbaaf33-c275-4241-bf41-08dab6b76d54
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05468644-8774-47f3-4e78-08dab6c531f5
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2022 18:33:35.8230
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2022 20:12:09.1193
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ooWSnz/BuCVYXtHO1WjYeH0x+zxgEsCgUmyOiX3VrwRXd9J6xavmgZOCHDB2Y5IJk1f+YTTRAtK+D5x4adfWZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9581
+X-MS-Exchange-CrossTenant-UserPrincipalName: TRPH21lvDofqjXJ9cwdSC09oKeKRWpBNntukqDuwkMk2sStwkDf8XtEXp8oqe9ycv27wFQgHmIV8cCOvqeUSOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8404
 
-On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
-the GPIO block will be powered off when system enters into suspend
-state. This can greatly reduce the power consumption of suspend state
-because the whole partition can be shutdown. This is called PAD wakeup
-feature on i.MX8x platform.
+This patch adds the initial XDP support to Freescale driver. It supports
+XDP_PASS, XDP_DROP and XDP_REDIRECT actions. Upcoming patches will add
+support for XDP_TX and Zero Copy features.
 
-This patch adds the noirq suspend/resume hooks and uses the pad wakeup
-feature as the default wakeup method for GPIO modules on
-i.MX8QM/QXP/DXL platforms.
+As the patch is rather large, the part of codes to collect the
+statistics is separated and will prepare a dedicated patch for that
+part.
+
+The driver has a macro RX_RING_SIZE to configure the RX ring size. After
+testing with the RX ring size, it turned out the small the rign size the
+better the better performance for XDP mode. So the different ring size is
+selected for XDP mode and normal mode in this patch.
+
+I just tested with the application of xdpsock.
+  -- Native here means running command of "xdpsock -i eth0"
+  -- SKB-Mode means running command of "xdpsock -S -i eth0"
+
+RX Ring Size       16       32        64       128
+      Native      230K     227K      196K      160K
+    SKB-Mode      207K     208K      203K      204K
+
+Normal mode performance by iperf.
+
+RX Ring Size         16         64       128
+iperf              300Mbps    830Mbps   933Mbps
+
+The following are the testing result relating to XDP mode:
+
+ # ./xdpsock -i eth0
+ sock0@eth0:0 rxdrop xdp-drv
+                   pps            pkts           1.00
+ rx                 231166         905984
+ tx                 0              0
+
+ # xdpsock -S -i eth0         // skb-mode
+ sock0@eth0:0 rxdrop xdp-skb
+                    pps            pkts           1.00
+ rx                 205638         917288
+ tx                 0              0
+
+ # xdp2 eth0
+ proto 0:     571382 pkt/s
+ proto 0:     579849 pkt/s
+ proto 0:     582110 pkt/s
+
+ # xdp2 -S eth0    // skb-mode
+ proto 17:      71999 pkt/s
+ proto 17:      72000 pkt/s
+ proto 17:      71988 pkt/s
 
 Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 ---
- drivers/gpio/gpio-mxc.c | 91 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 90 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec.h      |   4 +
+ drivers/net/ethernet/freescale/fec_main.c | 241 +++++++++++++++++++++-
+ 2 files changed, 244 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-index c871602fc5ba..a6fe5ed3d320 100644
---- a/drivers/gpio/gpio-mxc.c
-+++ b/drivers/gpio/gpio-mxc.c
-@@ -24,6 +24,12 @@
- #include <linux/of_device.h>
- #include <linux/bug.h>
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index 476e3863a310..07e85fc3d7ba 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -348,6 +348,7 @@ struct bufdesc_ex {
+  */
  
-+#define IMX_SCU_WAKEUP_OFF		0
-+#define IMX_SCU_WAKEUP_LOW_LVL		4
-+#define IMX_SCU_WAKEUP_FALL_EDGE	5
-+#define IMX_SCU_WAKEUP_RISE_EDGE	6
-+#define IMX_SCU_WAKEUP_HIGH_LVL		7
+ #define FEC_ENET_XDP_HEADROOM	(XDP_PACKET_HEADROOM)
++#define XDP_RX_RING_SIZE	16
+ 
+ #define FEC_ENET_RX_PAGES	256
+ #define FEC_ENET_RX_FRSIZE	(PAGE_SIZE - FEC_ENET_XDP_HEADROOM \
+@@ -663,6 +664,9 @@ struct fec_enet_private {
+ 
+ 	struct imx_sc_ipc *ipc_handle;
+ 
++	/* XDP BPF Program */
++	struct bpf_prog *xdp_prog;
 +
- /* device type dependent stuff */
- struct mxc_gpio_hwdata {
- 	unsigned dr_reg;
-@@ -61,6 +67,9 @@ struct mxc_gpio_port {
- 	u32 both_edges;
- 	struct mxc_gpio_reg_saved gpio_saved_reg;
- 	bool power_off;
-+	u32 wakeup_pads;
-+	bool is_pad_wakeup;
-+	u32 pad_type[32];
- 	const struct mxc_gpio_hwdata *hwdata;
+ 	u64 ethtool_stats[];
  };
  
-@@ -130,6 +139,9 @@ static const struct of_device_id mxc_gpio_dt_ids[] = {
- 	{ .compatible = "fsl,imx31-gpio", .data = &imx31_gpio_hwdata },
- 	{ .compatible = "fsl,imx35-gpio", .data = &imx35_gpio_hwdata },
- 	{ .compatible = "fsl,imx7d-gpio", .data = &imx35_gpio_hwdata },
-+	{ .compatible = "fsl,imx8dxl-gpio", .data = &imx35_gpio_hwdata },
-+	{ .compatible = "fsl,imx8qm-gpio", .data = &imx35_gpio_hwdata },
-+	{ .compatible = "fsl,imx8qxp-gpio", .data = &imx35_gpio_hwdata },
- 	{ /* sentinel */ }
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 6986b74fb8af..2e4be4590f77 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -89,6 +89,11 @@ static const u16 fec_enet_vlan_pri_to_queue[8] = {0, 0, 1, 1, 1, 2, 2, 2};
+ #define FEC_ENET_OPD_V	0xFFF0
+ #define FEC_MDIO_PM_TIMEOUT  100 /* ms */
+ 
++#define FEC_ENET_XDP_PASS          0
++#define FEC_ENET_XDP_CONSUMED      BIT(0)
++#define FEC_ENET_XDP_TX            BIT(1)
++#define FEC_ENET_XDP_REDIR         BIT(2)
++
+ struct fec_devinfo {
+ 	u32 quirks;
  };
- MODULE_DEVICE_TABLE(of, mxc_gpio_dt_ids);
-@@ -203,6 +215,7 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
- 	}
- 
- 	writel(1 << gpio_idx, port->base + GPIO_ISR);
-+	port->pad_type[gpio_idx] = type;
- 
- 	return 0;
- }
-@@ -254,6 +267,9 @@ static void mx3_gpio_irq_handler(struct irq_desc *desc)
- 	struct mxc_gpio_port *port = irq_desc_get_handler_data(desc);
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 
-+	if (port->is_pad_wakeup)
-+		return;
-+
- 	chained_irq_enter(chip, desc);
- 
- 	irq_stat = readl(port->base + GPIO_ISR) & readl(port->base + GPIO_IMR);
-@@ -306,11 +322,13 @@ static int gpio_set_wake_irq(struct irq_data *d, u32 enable)
- 			ret = enable_irq_wake(port->irq_high);
- 		else
- 			ret = enable_irq_wake(port->irq);
-+		port->wakeup_pads |= (1<<gpio_idx);
- 	} else {
- 		if (port->irq_high && (gpio_idx >= 16))
- 			ret = disable_irq_wake(port->irq_high);
- 		else
- 			ret = disable_irq_wake(port->irq);
-+		port->wakeup_pads &= ~(1<<gpio_idx);
- 	}
- 
- 	return ret;
-@@ -365,7 +383,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	port->dev = &pdev->dev;
--
- 	port->hwdata = device_get_match_data(&pdev->dev);
- 
- 	port->base = devm_platform_ioremap_resource(pdev, 0);
-@@ -498,6 +515,77 @@ static void mxc_gpio_restore_regs(struct mxc_gpio_port *port)
- 	writel(port->gpio_saved_reg.dr, port->base + GPIO_DR);
- }
- 
-+static int mxc_gpio_generic_config(struct mxc_gpio_port *port,
-+		unsigned int offset, unsigned long config)
-+{
-+	struct device_node *np = port->dev->of_node;
-+
-+	if (of_device_is_compatible(np, "fsl,imx8dxl-gpio") ||
-+		of_device_is_compatible(np, "fsl,imx8qxp-gpio") ||
-+		of_device_is_compatible(np, "fsl,imx8qm-gpio"))
-+		return gpiochip_generic_config(&port->gc, offset, config);
-+
-+	return 0;
-+}
-+
-+static void mxc_gpio_set_pad_wakeup(struct mxc_gpio_port *port, bool enable)
-+{
-+	unsigned long config;
-+	int i, type;
-+
-+	static const u32 pad_type_map[] = {
-+		IMX_SCU_WAKEUP_OFF,		/* 0 */
-+		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
-+		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
-+		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
-+		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
-+		IMX_SCU_WAKEUP_OFF,		/* 5 */
-+		IMX_SCU_WAKEUP_OFF,		/* 6 */
-+		IMX_SCU_WAKEUP_OFF,		/* 7 */
-+		IMX_SCU_WAKEUP_LOW_LVL,		/* IRQ_TYPE_LEVEL_LOW */
-+	};
-+
-+	for (i = 0; i < 32; i++) {
-+		if ((port->wakeup_pads & (1<<i))) {
-+			type = port->pad_type[i];
-+			if (enable)
-+				config = pad_type_map[type];
-+			else
-+				config = IMX_SCU_WAKEUP_OFF;
-+			mxc_gpio_generic_config(port, i, config);
-+		}
-+	}
-+}
-+
-+static int __maybe_unused mxc_gpio_noirq_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct mxc_gpio_port *port = platform_get_drvdata(pdev);
-+
-+	if (port->wakeup_pads > 0) {
-+		mxc_gpio_set_pad_wakeup(port, true);
-+		port->is_pad_wakeup = true;
-+	}
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused mxc_gpio_noirq_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct mxc_gpio_port *port = platform_get_drvdata(pdev);
-+
-+	if (port->wakeup_pads > 0)
-+		mxc_gpio_set_pad_wakeup(port, false);
-+	port->is_pad_wakeup = false;
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops mxc_gpio_dev_pm_ops = {
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(mxc_gpio_noirq_suspend, mxc_gpio_noirq_resume)
-+};
-+
- static int mxc_gpio_syscore_suspend(void)
+@@ -418,13 +423,14 @@ static int
+ fec_enet_create_page_pool(struct fec_enet_private *fep,
+ 			  struct fec_enet_priv_rx_q *rxq, int size)
  {
- 	struct mxc_gpio_port *port;
-@@ -537,6 +625,7 @@ static struct platform_driver mxc_gpio_driver = {
- 		.name	= "gpio-mxc",
- 		.of_match_table = mxc_gpio_dt_ids,
- 		.suppress_bind_attrs = true,
-+		.pm = &mxc_gpio_dev_pm_ops,
- 	},
- 	.probe		= mxc_gpio_probe,
++	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+ 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.pool_size = size,
+ 		.nid = dev_to_node(&fep->pdev->dev),
+ 		.dev = &fep->pdev->dev,
+-		.dma_dir = DMA_FROM_DEVICE,
++		.dma_dir = xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE,
+ 		.offset = FEC_ENET_XDP_HEADROOM,
+ 		.max_len = FEC_ENET_RX_FRSIZE,
+ 	};
+@@ -1499,6 +1505,59 @@ static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
+ 	bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
+ }
+ 
++static u32
++fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
++		 struct xdp_buff *xdp, struct fec_enet_priv_rx_q *rxq, int index)
++{
++	unsigned int sync, len = xdp->data_end - xdp->data;
++	u32 ret = FEC_ENET_XDP_PASS;
++	struct page *page;
++	int err;
++	u32 act;
++
++	act = bpf_prog_run_xdp(prog, xdp);
++
++	/* Due xdp_adjust_tail: DMA sync for_device cover max len CPU touch */
++	sync = xdp->data_end - xdp->data_hard_start - FEC_ENET_XDP_HEADROOM;
++	sync = max(sync, len);
++
++	switch (act) {
++	case XDP_PASS:
++		ret = FEC_ENET_XDP_PASS;
++		break;
++
++	case XDP_REDIRECT:
++		err = xdp_do_redirect(fep->netdev, xdp, prog);
++		if (!err) {
++			ret = FEC_ENET_XDP_REDIR;
++		} else {
++			ret = FEC_ENET_XDP_CONSUMED;
++			page = virt_to_head_page(xdp->data);
++			page_pool_put_page(rxq->page_pool, page, sync, true);
++		}
++		break;
++
++	default:
++		bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
++		fallthrough;
++
++	case XDP_TX:
++		bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
++		fallthrough;
++
++	case XDP_ABORTED:
++		fallthrough;    /* handle aborts by dropping packet */
++
++	case XDP_DROP:
++		ret = FEC_ENET_XDP_CONSUMED;
++		page = virt_to_head_page(xdp->data);
++		page_pool_put_page(rxq->page_pool, page, sync, true);
++		break;
++	}
++
++	return ret;
++}
++
+ /* During a receive, the bd_rx.cur points to the current incoming buffer.
+  * When we update through the ring, if the next incoming buffer has
+  * not been given to the system, we just set the empty indicator,
+@@ -1520,6 +1579,9 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	u16	vlan_tag;
+ 	int	index = 0;
+ 	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
++	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
++	u32 ret, xdp_result = FEC_ENET_XDP_PASS;
++	struct xdp_buff xdp;
+ 	struct page *page;
+ 
+ #ifdef CONFIG_M532x
+@@ -1531,6 +1593,7 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	 * These get messed up if we get called due to a busy condition.
+ 	 */
+ 	bdp = rxq->bd.cur;
++	xdp_init_buff(&xdp, PAGE_SIZE, &rxq->xdp_rxq);
+ 
+ 	while (!((status = fec16_to_cpu(bdp->cbd_sc)) & BD_ENET_RX_EMPTY)) {
+ 
+@@ -1580,6 +1643,17 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		prefetch(page_address(page));
+ 		fec_enet_update_cbd(rxq, bdp, index);
+ 
++		if (xdp_prog) {
++			xdp_buff_clear_frags_flag(&xdp);
++			xdp_prepare_buff(&xdp, page_address(page),
++					 FEC_ENET_XDP_HEADROOM, pkt_len, false);
++
++			ret = fec_enet_run_xdp(fep, xdp_prog, &xdp, rxq, index);
++			xdp_result |= ret;
++			if (ret != FEC_ENET_XDP_PASS)
++				goto rx_processing_done;
++		}
++
+ 		/* The packet length includes FCS, but we don't want to
+ 		 * include that when passing upstream as it messes up
+ 		 * bridging applications.
+@@ -1675,6 +1749,10 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		writel(0, rxq->bd.reg_desc_active);
+ 	}
+ 	rxq->bd.cur = bdp;
++
++	if (xdp_result & FEC_ENET_XDP_REDIR)
++		xdp_do_flush_map();
++
+ 	return pkt_received;
+ }
+ 
+@@ -3476,6 +3554,165 @@ static u16 fec_enet_select_queue(struct net_device *ndev, struct sk_buff *skb,
+ 	return fec_enet_vlan_pri_to_queue[vlan_tag >> 13];
+ }
+ 
++static int fec_enet_bpf(struct net_device *dev, struct netdev_bpf *bpf)
++{
++	struct fec_enet_private *fep = netdev_priv(dev);
++	bool is_run = netif_running(dev);
++	struct bpf_prog *old_prog;
++	unsigned int dsize;
++	int i;
++
++	switch (bpf->command) {
++	case XDP_SETUP_PROG:
++		if (is_run)
++			fec_enet_close(dev);
++
++		old_prog = xchg(&fep->xdp_prog, bpf->prog);
++
++		/* Update RX ring size */
++		dsize = fep->bufdesc_ex ? sizeof(struct bufdesc_ex) :
++			sizeof(struct bufdesc);
++		for (i = 0; i < fep->num_rx_queues; i++) {
++			struct fec_enet_priv_rx_q *rxq = fep->rx_queue[i];
++			struct bufdesc *cbd_base;
++			unsigned int size;
++
++			cbd_base = rxq->bd.base;
++			if (bpf->prog)
++				rxq->bd.ring_size = XDP_RX_RING_SIZE;
++			else
++				rxq->bd.ring_size = RX_RING_SIZE;
++			size = dsize * rxq->bd.ring_size;
++			cbd_base = (struct bufdesc *)(((void *)cbd_base) + size);
++			rxq->bd.last = (struct bufdesc *)(((void *)cbd_base) - dsize);
++		}
++
++		if (is_run)
++			fec_enet_open(dev);
++
++		if (old_prog)
++			bpf_prog_put(old_prog);
++
++		return 0;
++
++	case XDP_SETUP_XSK_POOL:
++		return -EOPNOTSUPP;
++
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int
++fec_enet_xdp_get_tx_queue(struct fec_enet_private *fep, int cpu)
++{
++	int index = cpu;
++
++	if (unlikely(index < 0))
++		index = 0;
++
++	while (index >= fep->num_tx_queues)
++		index -= fep->num_tx_queues;
++
++	return index;
++}
++
++static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
++				   struct fec_enet_priv_tx_q *txq,
++				   struct xdp_frame *frame)
++{
++	unsigned int index, status, estatus;
++	struct bufdesc *bdp, *last_bdp;
++	dma_addr_t dma_addr;
++	int entries_free;
++
++	entries_free = fec_enet_get_free_txdesc_num(txq);
++	if (entries_free < MAX_SKB_FRAGS + 1) {
++		netdev_err(fep->netdev, "NOT enough BD for SG!\n");
++		return NETDEV_TX_OK;
++	}
++
++	/* Fill in a Tx ring entry */
++	bdp = txq->bd.cur;
++	last_bdp = bdp;
++	status = fec16_to_cpu(bdp->cbd_sc);
++	status &= ~BD_ENET_TX_STATS;
++
++	index = fec_enet_get_bd_index(bdp, &txq->bd);
++
++	dma_addr = dma_map_single(&fep->pdev->dev, frame->data,
++				  frame->len, DMA_TO_DEVICE);
++	if (dma_mapping_error(&fep->pdev->dev, dma_addr))
++		return FEC_ENET_XDP_CONSUMED;
++
++	status |= (BD_ENET_TX_INTR | BD_ENET_TX_LAST);
++	if (fep->bufdesc_ex)
++		estatus = BD_ENET_TX_INT;
++
++	bdp->cbd_bufaddr = cpu_to_fec32(dma_addr);
++	bdp->cbd_datlen = cpu_to_fec16(frame->len);
++
++	if (fep->bufdesc_ex) {
++		struct bufdesc_ex *ebdp = (struct bufdesc_ex *)bdp;
++
++		if (fep->quirks & FEC_QUIRK_HAS_AVB)
++			estatus |= FEC_TX_BD_FTYPE(txq->bd.qid);
++
++		ebdp->cbd_bdu = 0;
++		ebdp->cbd_esc = cpu_to_fec32(estatus);
++	}
++
++	index = fec_enet_get_bd_index(last_bdp, &txq->bd);
++	txq->tx_skbuff[index] = NULL;
++
++	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
++	 * it's the last BD of the frame, and to put the CRC on the end.
++	 */
++	status |= (BD_ENET_TX_READY | BD_ENET_TX_TC);
++	bdp->cbd_sc = cpu_to_fec16(status);
++
++	/* If this was the last BD in the ring, start at the beginning again. */
++	bdp = fec_enet_get_nextdesc(last_bdp, &txq->bd);
++
++	txq->bd.cur = bdp;
++
++	return 0;
++}
++
++static int fec_enet_xdp_xmit(struct net_device *dev,
++			     int num_frames,
++			     struct xdp_frame **frames,
++			     u32 flags)
++{
++	struct fec_enet_private *fep = netdev_priv(dev);
++	struct fec_enet_priv_tx_q *txq;
++	int cpu = smp_processor_id();
++	struct netdev_queue *nq;
++	unsigned int queue;
++	int i, nxmit = 0;
++
++	queue = fec_enet_xdp_get_tx_queue(fep, cpu);
++	txq = fep->tx_queue[queue];
++	nq = netdev_get_tx_queue(fep->netdev, queue);
++
++	__netif_tx_lock(nq, cpu);
++
++	for (i = 0; i < num_frames; i++) {
++		fec_enet_txq_xmit_frame(fep, txq, frames[i]);
++		nxmit++;
++	}
++
++	/* Make sure the update to bdp and tx_skbuff are performed. */
++	wmb();
++
++	/* Trigger transmission start */
++	writel(0, txq->bd.reg_desc_active);
++
++	__netif_tx_unlock(nq);
++
++	return num_frames;
++}
++
+ static const struct net_device_ops fec_netdev_ops = {
+ 	.ndo_open		= fec_enet_open,
+ 	.ndo_stop		= fec_enet_close,
+@@ -3490,6 +3727,8 @@ static const struct net_device_ops fec_netdev_ops = {
+ 	.ndo_poll_controller	= fec_poll_controller,
+ #endif
+ 	.ndo_set_features	= fec_set_features,
++	.ndo_bpf		= fec_enet_bpf,
++	.ndo_xdp_xmit		= fec_enet_xdp_xmit,
  };
+ 
+ static const unsigned short offset_des_active_rxq[] = {
 -- 
 2.34.1
 
