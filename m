@@ -1,300 +1,271 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2085.outbound.protection.outlook.com [40.107.21.85])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2065.outbound.protection.outlook.com [40.107.20.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12157B
-	for <imx@lists.linux.dev>; Thu, 27 Oct 2022 13:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1FC7B;
+	Thu, 27 Oct 2022 14:27:43 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V+si1J4+E+DlttlP2F8QMtW85bLSZKeMIt4Jc1b/CCryI0fAQXdvAdHxEYQbcxv9TasFBvrJ6UPPdqL9q244VYhWGDRlYNXZuei1Pri1fY2kMwrgWxW7WXGpe2yUXYAO+gvACfGuud7hibBJB1Y80/etA4qyhYKSM+0U9JdIEIr8+fQpo70nGPSSC3UpFr16rcmhysWmHjGwzHfhm8FKfSq2XfKJi2qjU9FizgIjcxWbnYtFgXn6I7Vkf6bRp3p7JYKpYXWqlj4kQJMI58CeculKXPObxpvGPteuaqI0wmh0Su6fN0ftTRviVMnKnAVV/sj415CikDrcyC/XrRFy9A==
+ b=mCwUDsZDaVg+OK7bwUH7fKnUrwmCtZxiSTVXsVe30sEo3OTtkD+1iZWZaBkWqN4l10if5gxTJW2XAV7yFp7CfAyqmYjBTxvXxt5unqRK4En1cdlJN154mvj3BDmxDUTJ5Ki2MBVlBSyeA0fdNXUUrOJyznfDpRigoRK5jqMQj0j/OBglwRdEpCxfLxLc5gWbKuIKHYLR8EbMQJ8xTiNwjmJtxM3tzvR0n5G4HYiC2Jd9FoR1QSF0mewUT3iYL9319NBRU/SE/KHV4ESU7tyA4jN3SQRj6bxIYcXdfqVbKr6Emzl6mfx8HUh1lxU5mxayNTB7WcPhGK74djjHf46l4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RQZfuvJnXI/eFijRUp7QGqWSIetSaEZLmeIl9T5qHUQ=;
- b=SXmYizy2/71YoR+w0R7xKG7ywFsndbHvzaml6Hx5jHXgcGw2lUObQWxR/+WAC3AsmEGw+WWJq4mIoXIQXVBre6byj7BcaxOsqdOmo1eVzg0elZuhdv4wbkR7XQcxw8rr2X4i1eSALJzSgGTaUqAAG2DanonSj4LnNh5HrI09BYC3jz8MffypZUWMvDU0m+8A0rNLVCIM5R7JxRF6aU1e/qVhalSit3YR90DcqothrsMJLxA0UvQ4pPEcgyZqsmxbjAAkAQoBumR/hm4VKlc94ImXdSArKaVXdzVdnt97SbIfkdhcFpDrf3yxgOtDvF8N10oQK7yq/VBl8ZvZiiYaRQ==
+ bh=N8sYciNNYgFSqkfaQH6D0qvZcS0AZoWpHTEiWlfjctQ=;
+ b=K0d5IxalGlrA2cYTOCg52+PzB7ayysoSDG60MaQmejf1zvGpprFfLR6im74t159368sRvbsyeqQig2BSJJ2wRUgSIHdQgCI4uTex0s5USQqbPKFbf6gRYQpBfMyQV6rNfD0kyVK9dd7VerZNJAN8/pJKQEjxDdC0sSn30at0gAURmVIPBrup7Xov/m+njE6A4QCPWAaRYS19RGGugXkGE4J9V9lIa8T4vPD+rdZNIGOPqprNem/LXJX0TDqGlMj281di9UWE2Oq7cep6FCwXq0UxGyVrMznr3o0ysVg2frhY3tDbEHkyPaJsWDb3HIqr6Rx72+hDlURmkmo46Fa+pw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RQZfuvJnXI/eFijRUp7QGqWSIetSaEZLmeIl9T5qHUQ=;
- b=Zwsu+sAgzcMOJsfqSk/IgJ4xksg03Oi7Z7fFfQb0YAVgNlDMtPMLHYsaTMt1IuGRAHXIRxPcggJUUPBW2ngpo1z5Qm9ie6sOn1bzFrn8kBip6w5bINS4V6xJfS3SVrLIKdXz8NzEXYLeJKwO+HLd2bQNPuu3EStNrBDjiBHJ7Tk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM7PR04MB6807.eurprd04.prod.outlook.com (2603:10a6:20b:104::21) with
+ bh=N8sYciNNYgFSqkfaQH6D0qvZcS0AZoWpHTEiWlfjctQ=;
+ b=Bkw5qWb1lMIdmGp1h9NCJ9r/5/uWsOr/CttbS7IrKNz0ENTcZbythnxnVk83lwei4aVb2zP7HMKfBmpDPtQSrGiLLPg1f0UKFaYQ2EMyavT6q5vYOpiIgtBBZiSYpzzmzLWTlSGX6g8xl7QhvhtKI7kV3ZzK7M9VFwHW5H67HP0=
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by PAXPR04MB8237.eurprd04.prod.outlook.com (2603:10a6:102:1cc::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.21; Thu, 27 Oct
- 2022 13:10:18 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b1ab:dd4f:9237:d9f8]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b1ab:dd4f:9237:d9f8%3]) with mapi id 15.20.5769.014; Thu, 27 Oct 2022
- 13:10:18 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v4 5/5] gpio: mxc: enable pad wakeup on i.MX8x platforms
-Date: Thu, 27 Oct 2022 08:08:59 -0500
-Message-Id: <20221027130859.1444412-6-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221027130859.1444412-1-shenwei.wang@nxp.com>
-References: <20221027130859.1444412-1-shenwei.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0044.namprd05.prod.outlook.com
- (2603:10b6:a03:33f::19) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.23; Thu, 27 Oct
+ 2022 14:27:40 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::44bb:8387:8f4b:6a28]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::44bb:8387:8f4b:6a28%10]) with mapi id 15.20.5746.028; Thu, 27 Oct
+ 2022 14:27:40 +0000
+From: Frank Li <frank.li@nxp.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Kishon
+ Vijay Abraham I <kishon@ti.com>, =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?=
+	<kw@linux.com>, Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
+	<bhelgaas@google.com>, "open list:NTB DRIVER CORE" <ntb@lists.linux.dev>,
+	"open list:PCI ENDPOINT SUBSYSTEM" <linux-pci@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix sparse
+ build warning
+Thread-Topic: [EXT] Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix
+ sparse build warning
+Thread-Index: AQHY2oECIepfinQVPkG9I1ZysDbaAa4iLKoAgAA8ZHA=
+Date: Thu, 27 Oct 2022 14:27:39 +0000
+Message-ID:
+ <HE1PR0401MB23316F10D8535A548127D39A88339@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+References: <20221007191326.193079-1-Frank.Li@nxp.com>
+ <20221007191326.193079-8-Frank.Li@nxp.com> <Y1pgoPAH/BZ46gif@lpieralisi>
+In-Reply-To: <Y1pgoPAH/BZ46gif@lpieralisi>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|PAXPR04MB8237:EE_
+x-ms-office365-filtering-correlation-id: 1b7942d5-cfeb-4cb5-8d5e-08dab827671a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ m92rGGTqReHHJGomeA+nayqNAkSUrXIe93nHI/6TytGWwmVq8s5A+itz4zmv8F0dxzsE2WFXN1EyrP9STv6DOqWcPZ22DF/0iT9EajIe2qv5LupF/RZiOUQZhKDrVL9ezZiaObONV7VizgQUEKzpPFeSoFUKe3mk7hVblfIZ14CoDA3WZSf/CGuzEOIAVLJMfDtyKci8tp9MMrGUeT4tR3q7en+auWFagekVkHUde3JayBqlxVAx0vfe+zozAn4jJ+8xvGoDTGqONfe8BaCu2QIDwHOg5hmgyigRzwaHYfR600UqIb/vKXmp/dIJ3ZYfuzpLGHEFclvlE2WkDZ2oCJf6l8B4sNwC4V1qZzlb7NbCjJOv2p1+aoh6AW5UMklF0dMpXPT0VpK9p+j4W20FoFU5HPhTJn0yVWbovSBXjU1GYVHngDDX90dGENNWfUV5mi0hRmlLJZW0LNePpdxmnTKgy2KhRrFyuiIwEU1exKWDs93yhB29KmLzfy5CpPRCyVpebqf8KyH82BRoaqEsx5Gn7lKTiKH7chezbOHd2x3n4iv07MgkPBG+R/NRlKTXq7evid+udBk50yMDw3LX20PZLLltrHu+7PtylWDWmz+4AXY1fNMZ4cES168HWXnF/JrN3BROgKsIikePUFTDr0va1wtDY+TDRBU6wqLJsUSYOj7iu49jkWZ7nYOd+nz+0CVQw6mWgA5pI8g6m/qmDC36MYhiY8E/WHzD+sdfJhkZezrMf077SiWui7z+Y9vI9ps3oNHc2OQI+rKbNgsM9A==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199015)(2906002)(8936002)(8676002)(33656002)(54906003)(6916009)(44832011)(52536014)(55236004)(5660300002)(41300700001)(55016003)(66574015)(64756008)(66446008)(66556008)(66946007)(4326008)(66476007)(86362001)(76116006)(7416002)(316002)(83380400001)(38070700005)(186003)(38100700002)(478600001)(71200400001)(26005)(9686003)(122000001)(53546011)(6506007)(7696005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-2?Q?Suuo5jYQjPLg6xWnDlwaWS0wYDZijkNLkziN6SWGy7rIshW3rDWrt/ZBUA?=
+ =?iso-8859-2?Q?84lbScLTQnje2vQLHzpuVWSeQm79OIXExpcnQXFwI9hCsP/t3KUOpvk4zG?=
+ =?iso-8859-2?Q?4AQ5TmzXNoeRBEANfDfROW/q3miipl2IwOIUWdrMc7kZgOy5H0WjCXJ99C?=
+ =?iso-8859-2?Q?hiYK5MvJPBuapKp+lFuN1F8kjQT22Kii9iB2n7vnUhZA9hLe17pug2Fhgl?=
+ =?iso-8859-2?Q?Soz8v8RlXAMEVjJbLiihM8iAeiSTy9vq1VEObzKn1xtskKEq4+BTjQhPgF?=
+ =?iso-8859-2?Q?aXZkC/l91UtOyXR7nj3VqzxhQBSFYF4N2ccxXjFxog1zrGGRdAbX/6c+NL?=
+ =?iso-8859-2?Q?/awVe5X0mR0MDPK5yyOpzDaj06YLc1dXxQUsqxiZtLxgRuw+i6vH6KcH3R?=
+ =?iso-8859-2?Q?yZOuYmWGhUtsBd7SUqN6iRpMKj33fXIdko8u9VtA9Gq4cmVrwaEw6cbuR+?=
+ =?iso-8859-2?Q?oFe4l1Xof1i+efgJj2NHp6/3F2FbI0jncAUWbrTt1yhxJV1QOmvFL1mANL?=
+ =?iso-8859-2?Q?GDDvhtN/VaxKOBCRkEOdS62b9aTvoqXTy5X9EC+Ik+zpqPRged3wzNm6Ke?=
+ =?iso-8859-2?Q?vNhNgwAU8WfGuaZDv7N+XB9EutmYLx6GNBX+0gUM9VvWDiBoi6VTzV9IGa?=
+ =?iso-8859-2?Q?DO615nXHDlhhvfEWkR4ARb0U+twNp6WFbQwAj3//Uk3S/812NgKeAbWYse?=
+ =?iso-8859-2?Q?3I5IPxTzuKyXavWOnYEA5omfhf2yB7/92AEN/z8Y1OtDMrrIhUlB1I4XwQ?=
+ =?iso-8859-2?Q?KTMfWX15KKsD29c69IitGjlh5dGPIMluE2RlUSVQuOmoargWxQWK4jSHvy?=
+ =?iso-8859-2?Q?cEJMGTQUON2SFHOCafEcBM10liRJGSFW90sXtRYNsF8A7KZCurDOGQWkNV?=
+ =?iso-8859-2?Q?4oFDO7tM5KKnou5EnWNL3b+xgk25W+UQDoJpi1stZu39X1NadJkA6W0X5G?=
+ =?iso-8859-2?Q?q8zPj1otOAx7LKamIhMkSSPfE0Qxf8qcWIKQ+PeynpJPSNT8Csb++LAk+A?=
+ =?iso-8859-2?Q?ciAEe6+DCUO0fbMypbIhbDZCUMLSWVsnE50cbhHGNVY+RQzBRXUMTnaZx1?=
+ =?iso-8859-2?Q?jLEhbDupDeRko0F0lHJ92vg01ClrbD1LEgIu7I4hlUQqEK0oWTPZFVSElr?=
+ =?iso-8859-2?Q?Cdq9xV2SXhzcl/xxUiyzU/M9t3CyYe9wWMZocv04ERL3LzrNFJiEZXCq3D?=
+ =?iso-8859-2?Q?yWLoyqeFonVozB3bmV9tag3ERjjDAueymc+exTLxwopuihG99cyL3/gzSY?=
+ =?iso-8859-2?Q?GacsRNgzJBhBjCL6uiFv7ZKTryWqNzhk+lDAQ1Opii+Jyn/nA6MNy8ngUn?=
+ =?iso-8859-2?Q?KWAcZZjyAgUacmKnyqCsM1lzLNjKvvqaThBgMOmCRrKhLlnfaD4TCl/u1T?=
+ =?iso-8859-2?Q?JPkkQ3FTsRw53PSTNibDISFqrtps+BSVst/BY/SMTUnfI7lvcPb1WJPqni?=
+ =?iso-8859-2?Q?7AQQofUDgdY91Og2iMOk7p6TByhXZDqTbG+DN2ak0Z2Xvao4SZijm08vmB?=
+ =?iso-8859-2?Q?+D9o3UkBv13J5hnJM6djXXD1d0IxOlPa57Mfg+DIqBBJaaxxn1ZERJ7RxF?=
+ =?iso-8859-2?Q?vUI2EXTlfhcW6lNdlGktTttJlNqSxLH2H1ayUz7nwnsmTqO9qxMv1Bn8QU?=
+ =?iso-8859-2?Q?9sf8tvdRZXwj8=3D?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AM7PR04MB6807:EE_
-X-MS-Office365-Filtering-Correlation-Id: bbe4d484-b5b5-4daf-9c43-08dab81c980e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ZoKjo7GUdyH/MN7V9NB08SogM3y8M45pXZqqqInG5i3kzezRHKDYST4uci+oWCJFdcoini8tpnKqbqWFasyHxL5CrWwDgp8Rb3dSSQ8hE1Ww7p7Kx4HtPcdD8VvsEmdAikcFIqbpG/c+OzW/TJn0rwHMg2zs6Rtz34NJ7TW/d2LQ3aDNHRng/MD7ND+o092s/6M0gr2qrEoUuwz+C2nT0JUjp3QRHLcrG1Y3TjukWrWKMxX7B8zSXbtLxKs+wWJAC4fpDURv2hxxz1ZlY8LYEBOC20iVgwdIzb1znWz293ExmjW8xHNsuxvwPXiYg9u8xKlNsHmlDf9F8wLe1P2yLXcaLBFG6aVKLUzmy7My5dbXacL1hWXL3C1dDQyQdoyPTV0kCoXn6Xo7vzM7nhg+05C+iShJ0PyruLBAzzaAKHrQn6nPTswvorw1bKF/kIOHOPZmLC8RCqYtukPmsCcSXxvxi91G1dSEMD/fcAiPKtQgGOCdgH5JHXP+NpMYN6EreZhzh/PCi4cz44ZMKD3fLChTKQ+Re1TOOFlYjCwethRezlATQHp252xPffH2xF3n5ZTle9ZgggLfAK+xIwEXxjUBX3+dBJLPAUa8NWDozh1DTeWhC0O3n4GyuycEGUnXBy2N8aUpsckrZmdg/dXIaBlVeLT8MN8zcq4XdK0Gx/0rHY/Yb+SIz8e6QtKD04XwdRdPG/hMYoGgI3/7tMcWHYX6n2VR7Mr4j3NsC3h9kRS7z8ugw0aq14vOOGkPj6Hoam9Cw+jZDlIjROlwpNc1VA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(376002)(396003)(39860400002)(366004)(346002)(451199015)(55236004)(1076003)(6512007)(26005)(52116002)(6666004)(83380400001)(6506007)(478600001)(186003)(2616005)(44832011)(2906002)(6636002)(5660300002)(54906003)(8676002)(110136005)(6486002)(316002)(41300700001)(66556008)(7416002)(66946007)(66476007)(4326008)(8936002)(36756003)(86362001)(38350700002)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YgIj2yHyuQttUD4ER99SAf2r8yK37aMz2NAtDPwWH1XUrUfdH00azFHh/GTs?=
- =?us-ascii?Q?WSFghLGywVecVp+hK+ho8vT6vqpSwhDErMYS3skT6VMSIwmtJR4VqMyOcqXL?=
- =?us-ascii?Q?WhUrfg1FMzjvS2ZdzhW9NsGeaL85m7VeOmpiRsOPR32c8/DTeWbZAljlIMwZ?=
- =?us-ascii?Q?LgoDqi1HllTRvCZoDLfNI2eB0BZjBqykk4g4+oA2Arm9SxxzWQUjHB6BrEv5?=
- =?us-ascii?Q?R5iBf69WRyo0gCTg97aAmAtC+4oP7vRU6kXd6buT8dszfSexnotHQjiS2Jyc?=
- =?us-ascii?Q?x3M0pHm+0WLfUTq4ouIIi+6np4ZqtAdz+WcgF8p2wUsLjkvhJC5r2VGTRZlV?=
- =?us-ascii?Q?2YU87GkuPZHrj2lrIycI394tnuzccqNRXQpYQp07XbqXzTlpEegf2FRgAY6S?=
- =?us-ascii?Q?9m0RgvCZMAQoC06BbcvVfFPN8p1NaDHrCX9aUrAT10yYg284XWk/64oPuS3z?=
- =?us-ascii?Q?wUae1ExGBW2U+ehlhmsmr27bgWH5iVQq1PlmHUEaBHkSWz7PvByuToJWUGTu?=
- =?us-ascii?Q?PGPV9WLYHGT+3+vIPiUPl7nvQ7jlgyIWKaemE8FjAGR0cMjxBkFuUZQqVCjz?=
- =?us-ascii?Q?8r/ys7177nkjwXSNQA4/1WYtJ2g/PzS2HTq3OWescjK2/vZ4ZIoDvTGZoC5K?=
- =?us-ascii?Q?NPci+oFPTOO6PJo2Q4oXVUN8/XnoOlBZcjNdmmOeflod2yZ8QuIkjYts2ODa?=
- =?us-ascii?Q?dnUoXEnr2Lq0PmV73VzmtY+yCiTQeWmaJm4tDVFhmw2RpwLn3CWMvEIIYn5/?=
- =?us-ascii?Q?yeQwFC9HHPNNqzVXZ4koOfgqS7iDdNs0BKk4klk8b+N+iObKLIhitLfgwWg3?=
- =?us-ascii?Q?JKokS9cNLG4cZRSFoWjDvnwWzk9XGmKaMPQW2ck+zcJ/kxtYYy4xMtaz7hhh?=
- =?us-ascii?Q?Oyj9IKxKFD1kfKHV/7yUiQsICJyFMVG6uwQWFMg0cQsh4BjuCVdnxk0iBU+M?=
- =?us-ascii?Q?8mF5mt0E6ftWkhVRkK3d2/QhYi7nldfbc7j2LvvEvcbH7gE/Jn1R9hrS7Lub?=
- =?us-ascii?Q?gAKjQ7FVCwM2moqEf2sAH1IKlNPEoljCd+lQgKnseeteYlRfZ0ZutO3RcMcy?=
- =?us-ascii?Q?N5BKbByZk8TeTn4XEfw8i1KaUgDcoxqK4igN6BEgqoamKpsmY28jBXP3ACoP?=
- =?us-ascii?Q?LvcQL6riGU2B0bPQQQkQXFxubJrcmsH/pjaVGZzhRRl6xyk0cMVQVL3TSyn0?=
- =?us-ascii?Q?zF2ZycgCK958aGQ0WGx5FOGVvIbEJN/lef48rhKXpxwJ+04Aub8ict6JijAa?=
- =?us-ascii?Q?QBAtie0BUl5KLFONu1N8MLQc1dvc3fgWPFMwjIU5s9cYNlx0F6rbnhK2pJhA?=
- =?us-ascii?Q?+ik4+w39wzZrCbjCvNc6u7wfP4PwWmzM+NweE3qZHsq4lUmkVPb69L3PWAT0?=
- =?us-ascii?Q?nCfGRxknXhucsglOs+fyrU/YCDXuimBxBqf6t8XXf11nfab1l2+qAtJsSwl5?=
- =?us-ascii?Q?x5EGLVM7ZqsRJ68B3pq4k7vuxAmH8e5C1nH1d8gUH1gnnaPCQq6SHfhqtk8u?=
- =?us-ascii?Q?iMDp4JVVgSOD0tliBRFnSEdNKKoblPluMZjsWr82vz2+25rKFBbzYlEMsktf?=
- =?us-ascii?Q?iln/8mb7g4YTsp1ueQh9RZGrmMkhL5QqilI8avy0hfkIXAmPpPeppzociHeb?=
- =?us-ascii?Q?Cw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbe4d484-b5b5-4daf-9c43-08dab81c980e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2022 13:10:17.9333
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b7942d5-cfeb-4cb5-8d5e-08dab827671a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2022 14:27:39.8906
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0SRmzfqxWFSgKVcXQb0836FvTV6k9/ii7Cr3FsI9Ex0HgQ8m22+VL5lauidzW9/BQJVmLwRTqOb6TLGMFMYtJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6807
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /F3rdpWgGJDE7+5yRVbqarDvnwrgdt8+WoGNinSdC1awJJUoio4Im7PMHQZmSNCu92YxTtMtuozJhPsps2vmGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8237
 
-On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
-the GPIO block will be powered off when system enters into suspend
-state. This can greatly reduce the power consumption of suspend state
-because the whole partition can be shutdown. This is called PAD wakeup
-feature on i.MX8x platform.
+> -----Original Message-----
+> From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Sent: Thursday, October 27, 2022 5:43 AM
+> To: Frank Li <frank.li@nxp.com>
+> Cc: imx@lists.linux.dev; Jon Mason <jdmason@kudzu.us>; Dave Jiang
+> <dave.jiang@intel.com>; Allen Hubbe <allenbh@gmail.com>; Kishon Vijay
+> Abraham I <kishon@ti.com>; Krzysztof Wilczy=F1ski <kw@linux.com>;
+> Manivannan Sadhasivam <mani@kernel.org>; Bjorn Helgaas
+> <bhelgaas@google.com>; open list:NTB DRIVER CORE <ntb@lists.linux.dev>;
+> open list:PCI ENDPOINT SUBSYSTEM <linux-pci@vger.kernel.org>; open list
+> <linux-kernel@vger.kernel.org>
+> Subject: [EXT] Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix spars=
+e
+> build warning
+>=20
+> Caution: EXT Email
+>=20
+> On Fri, Oct 07, 2022 at 03:13:26PM -0400, Frank Li wrote:
+> > From: Frank Li <frank.li@nxp.com>
+> >
+> > Using  epf_db[i] instead of readl() because epf_db is located in local
+> > memory and allocated by dma_alloc_coherent().
+> >
+> > Sparse build warning when there are not __iomem at readl().
+> > Added __iomem force type convert in vntb_epf_peer_spad_read\write()
+> > and vntb_epf_spad_read\write(). This require strong order at read and
+> > write.
+>=20
+> This commit log is unreadable sorry and this patch fixes multiple things
+> and even rearrange local variables in a way that is completely
+> unrelated to the patch aim itself.
 
-This patch adds the noirq suspend/resume hooks and uses the pad wakeup
-feature as the default wakeup method for GPIO modules on
-i.MX8QM/QXP/DXL platforms.
+[Frank Li] Not everyone is English native speaker.  If you think it is bad,=
+=20
+Please give me what you want to change to?=20
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/gpio/gpio-mxc.c | 92 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
+Abut rearrange local variable, It is my fault when split patch.=20
 
-diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-index c871602fc5ba..d5626c572d24 100644
---- a/drivers/gpio/gpio-mxc.c
-+++ b/drivers/gpio/gpio-mxc.c
-@@ -24,6 +24,12 @@
- #include <linux/of_device.h>
- #include <linux/bug.h>
- 
-+#define IMX_SCU_WAKEUP_OFF		0
-+#define IMX_SCU_WAKEUP_LOW_LVL		4
-+#define IMX_SCU_WAKEUP_FALL_EDGE	5
-+#define IMX_SCU_WAKEUP_RISE_EDGE	6
-+#define IMX_SCU_WAKEUP_HIGH_LVL		7
-+
- /* device type dependent stuff */
- struct mxc_gpio_hwdata {
- 	unsigned dr_reg;
-@@ -61,6 +67,9 @@ struct mxc_gpio_port {
- 	u32 both_edges;
- 	struct mxc_gpio_reg_saved gpio_saved_reg;
- 	bool power_off;
-+	u32 wakeup_pads;
-+	bool is_pad_wakeup;
-+	u32 pad_type[32];
- 	const struct mxc_gpio_hwdata *hwdata;
- };
- 
-@@ -130,6 +139,9 @@ static const struct of_device_id mxc_gpio_dt_ids[] = {
- 	{ .compatible = "fsl,imx31-gpio", .data = &imx31_gpio_hwdata },
- 	{ .compatible = "fsl,imx35-gpio", .data = &imx35_gpio_hwdata },
- 	{ .compatible = "fsl,imx7d-gpio", .data = &imx35_gpio_hwdata },
-+	{ .compatible = "fsl,imx8dxl-gpio", .data = &imx35_gpio_hwdata },
-+	{ .compatible = "fsl,imx8qm-gpio", .data = &imx35_gpio_hwdata },
-+	{ .compatible = "fsl,imx8qxp-gpio", .data = &imx35_gpio_hwdata },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, mxc_gpio_dt_ids);
-@@ -203,6 +215,7 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
- 	}
- 
- 	writel(1 << gpio_idx, port->base + GPIO_ISR);
-+	port->pad_type[gpio_idx] = type;
- 
- 	return 0;
- }
-@@ -254,6 +267,9 @@ static void mx3_gpio_irq_handler(struct irq_desc *desc)
- 	struct mxc_gpio_port *port = irq_desc_get_handler_data(desc);
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 
-+	if (port->is_pad_wakeup)
-+		return;
-+
- 	chained_irq_enter(chip, desc);
- 
- 	irq_stat = readl(port->base + GPIO_ISR) & readl(port->base + GPIO_IMR);
-@@ -306,11 +322,13 @@ static int gpio_set_wake_irq(struct irq_data *d, u32 enable)
- 			ret = enable_irq_wake(port->irq_high);
- 		else
- 			ret = enable_irq_wake(port->irq);
-+		port->wakeup_pads |= (1 << gpio_idx);
- 	} else {
- 		if (port->irq_high && (gpio_idx >= 16))
- 			ret = disable_irq_wake(port->irq_high);
- 		else
- 			ret = disable_irq_wake(port->irq);
-+		port->wakeup_pads &= ~(1 << gpio_idx);
- 	}
- 
- 	return ret;
-@@ -365,7 +383,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	port->dev = &pdev->dev;
--
- 	port->hwdata = device_get_match_data(&pdev->dev);
- 
- 	port->base = devm_platform_ioremap_resource(pdev, 0);
-@@ -498,6 +515,78 @@ static void mxc_gpio_restore_regs(struct mxc_gpio_port *port)
- 	writel(port->gpio_saved_reg.dr, port->base + GPIO_DR);
- }
- 
-+static bool mxc_gpio_generic_config(struct mxc_gpio_port *port,
-+		unsigned int offset, unsigned long conf)
-+{
-+	struct device_node *np = port->dev->of_node;
-+
-+	if (of_device_is_compatible(np, "fsl,imx8dxl-gpio") ||
-+	    of_device_is_compatible(np, "fsl,imx8qxp-gpio") ||
-+	    of_device_is_compatible(np, "fsl,imx8qm-gpio"))
-+		return (gpiochip_generic_config(&port->gc, offset, conf) == 0);
-+
-+	return false;
-+}
-+
-+static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_port *port, bool enable)
-+{
-+	unsigned long config;
-+	bool ret = false;
-+	int i, type;
-+
-+	static const u32 pad_type_map[] = {
-+		IMX_SCU_WAKEUP_OFF,		/* 0 */
-+		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
-+		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
-+		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
-+		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
-+		IMX_SCU_WAKEUP_OFF,		/* 5 */
-+		IMX_SCU_WAKEUP_OFF,		/* 6 */
-+		IMX_SCU_WAKEUP_OFF,		/* 7 */
-+		IMX_SCU_WAKEUP_LOW_LVL,		/* IRQ_TYPE_LEVEL_LOW */
-+	};
-+
-+	for (i = 0; i < 32; i++) {
-+		if ((port->wakeup_pads & (1 << i))) {
-+			type = port->pad_type[i];
-+			if (enable)
-+				config = pad_type_map[type];
-+			else
-+				config = IMX_SCU_WAKEUP_OFF;
-+			ret |= mxc_gpio_generic_config(port, i, config);
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static int __maybe_unused mxc_gpio_noirq_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct mxc_gpio_port *port = platform_get_drvdata(pdev);
-+
-+	if (port->wakeup_pads > 0)
-+		port->is_pad_wakeup = mxc_gpio_set_pad_wakeup(port, true);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused mxc_gpio_noirq_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct mxc_gpio_port *port = platform_get_drvdata(pdev);
-+
-+	if (port->wakeup_pads > 0)
-+		mxc_gpio_set_pad_wakeup(port, false);
-+	port->is_pad_wakeup = false;
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops mxc_gpio_dev_pm_ops = {
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(mxc_gpio_noirq_suspend, mxc_gpio_noirq_resume)
-+};
-+
- static int mxc_gpio_syscore_suspend(void)
- {
- 	struct mxc_gpio_port *port;
-@@ -537,6 +626,7 @@ static struct platform_driver mxc_gpio_driver = {
- 		.name	= "gpio-mxc",
- 		.of_match_table = mxc_gpio_dt_ids,
- 		.suppress_bind_attrs = true,
-+		.pm = &mxc_gpio_dev_pm_ops,
- 	},
- 	.probe		= mxc_gpio_probe,
- };
--- 
-2.34.1
+>=20
+> If you are fixing sparse warning reports the warnings and fix them
+> one by one.
 
+[Frank Li] Error in vntb_epf_peer_spad_write is the same as vntb_epf_peer_s=
+pad_read
+All are the same type error. Did you still prefer fixed one by one?=20
+
+>=20
+> Could you please pay attention to these details ? I don't have time
+> to do it for you, sorry.
+
+[Frank Li] Do you have other comments about other patches?=20
+
+>=20
+> Thanks,
+> Lorenzo
+>=20
+> > Signed-off-by: Frank Li <frank.li@nxp.com>
+> > ---
+> >  drivers/pci/endpoint/functions/pci-epf-vntb.c | 27 +++++++++----------
+> >  1 file changed, 13 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> > index 54616281da9e..9f1ec6788e51 100644
+> > --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> > +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> > @@ -136,7 +136,7 @@ struct epf_ntb {
+> >
+> >       struct epf_ntb_ctrl *reg;
+> >
+> > -     void __iomem *epf_db;
+> > +     u32 *epf_db;
+> >
+> >       phys_addr_t vpci_mw_phy[MAX_MW];
+> >       void __iomem *vpci_mw_addr[MAX_MW];
+> > @@ -257,12 +257,9 @@ static void epf_ntb_cmd_handler(struct
+> work_struct *work)
+> >       ntb =3D container_of(work, struct epf_ntb, cmd_handler.work);
+> >
+> >       for (i =3D 1; i < ntb->db_count; i++) {
+> > -             if (readl(ntb->epf_db + i * sizeof(u32))) {
+> > -                     if (readl(ntb->epf_db + i * sizeof(u32)))
+> > -                             ntb->db |=3D 1 << (i - 1);
+> > -
+> > +             if (ntb->epf_db[i]) {
+> >                       ntb_db_event(&ntb->ntb, i);
+> > -                     writel(0, ntb->epf_db + i * sizeof(u32));
+> > +                     ntb->epf_db[i] =3D 0;
+> >               }
+> >       }
+> >
+> > @@ -529,13 +526,15 @@ static int epf_ntb_configure_interrupt(struct
+> epf_ntb *ntb)
+> >  static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
+> >  {
+> >       const struct pci_epc_features *epc_features;
+> > -     u32 align;
+> >       struct device *dev =3D &ntb->epf->dev;
+> > -     int ret;
+> >       struct pci_epf_bar *epf_bar;
+> > -     void __iomem *mw_addr;
+> >       enum pci_barno barno;
+> > -     size_t size =3D sizeof(u32) * ntb->db_count;
+> > +     void *mw_addr;
+> > +     size_t size;
+> > +     u32 align;
+> > +     int ret;
+> > +
+> > +     size =3D sizeof(u32) * ntb->db_count;
+> >
+> >       epc_features =3D pci_epc_get_features(ntb->epf->epc,
+> >                                           ntb->epf->func_no,
+> > @@ -1123,7 +1122,7 @@ static u32 vntb_epf_spad_read(struct ntb_dev
+> *ndev, int idx)
+> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
+> >       int off =3D ntb->reg->spad_offset, ct =3D ntb->reg->spad_count * =
+sizeof(u32);
+> >       u32 val;
+> > -     void __iomem *base =3D ntb->reg;
+> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
+> >
+> >       val =3D readl(base + off + ct + idx * sizeof(u32));
+> >       return val;
+> > @@ -1134,7 +1133,7 @@ static int vntb_epf_spad_write(struct ntb_dev
+> *ndev, int idx, u32 val)
+> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
+> >       struct epf_ntb_ctrl *ctrl =3D ntb->reg;
+> >       int off =3D ctrl->spad_offset, ct =3D ctrl->spad_count * sizeof(u=
+32);
+> > -     void __iomem *base =3D ntb->reg;
+> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
+> >
+> >       writel(val, base + off + ct + idx * sizeof(u32));
+> >       return 0;
+> > @@ -1145,7 +1144,7 @@ static u32 vntb_epf_peer_spad_read(struct
+> ntb_dev *ndev, int pidx, int idx)
+> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
+> >       struct epf_ntb_ctrl *ctrl =3D ntb->reg;
+> >       int off =3D ctrl->spad_offset;
+> > -     void __iomem *base =3D ntb->reg;
+> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
+> >       u32 val;
+> >
+> >       val =3D readl(base + off + idx * sizeof(u32));
+> > @@ -1157,7 +1156,7 @@ static int vntb_epf_peer_spad_write(struct
+> ntb_dev *ndev, int pidx, int idx, u32
+> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
+> >       struct epf_ntb_ctrl *ctrl =3D ntb->reg;
+> >       int off =3D ctrl->spad_offset;
+> > -     void __iomem *base =3D ntb->reg;
+> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
+> >
+> >       writel(val, base + off + idx * sizeof(u32));
+> >       return 0;
+> > --
+> > 2.34.1
+> >
