@@ -1,208 +1,160 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27258BA25
-	for <imx@lists.linux.dev>; Thu, 27 Oct 2022 07:07:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1666854459; x=1698390459;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xFg7oOrxF7HbyrIiZPByc/B+nSnIpdZwB6Bt5w3mD/s=;
-  b=kwm4cIHFA/EDZUKCEIPF2gGAiIGF5C6eWqnzMh+LYETUCUi2pNRku/Yt
-   4wxhq2MTEGNMnolA7hwXmmDJ7i26hHx4shkWlKNJHhnWqk48x8WrN02t4
-   udLMQGyAkoqp5XlLmkE0t7zqTJGHhfRVKSVPFqDVyOtxn9rxjXEMG9p3F
-   7PbK61gBbO17aO+McfJqu4qlE6yvMLOmMIhduWiQMuXd9nxA3TNf7a5EV
-   uPZzwB2GlWA4U7bsHS4kUeJkYdfCka9z2VAMcR056/dWIdsU0vSQnOsEZ
-   5Vd4INsQmvgsJ0IDWQOr4FydfBQd9E61k0SjHRPwFHd3YQnVeSWAX9JDC
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.95,217,1661810400"; 
-   d="scan'208";a="27002168"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 27 Oct 2022 09:06:26 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Thu, 27 Oct 2022 09:06:26 +0200
-X-PGP-Universal: processed;
-	by tq-pgp-pr1.tq-net.de on Thu, 27 Oct 2022 09:06:26 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1666854386; x=1698390386;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xFg7oOrxF7HbyrIiZPByc/B+nSnIpdZwB6Bt5w3mD/s=;
-  b=Z3Wo+iC5qYcDa6g3IdzCQe6GjipkxOkRZHMHVEKKwgoK2fP1xqCUwoDA
-   5mxrFf9ErDVO21qNExDrhXSzMndyyVd44imbnjKB0A0MRRgVIhMKbztUO
-   zdTq/uqlnaJ08jAG6sIqtzie1OWyBsgc4REW/rG0iKhLulL0lzp46q5QB
-   k5cEelUpwVJyc87a56qRyaE1B5oRogI9a+tcXh5JS+I7HguPpYMqNm+fO
-   paLJ/ZlMUa5Oxr/vgTCk086r4cJyjv6Mif2BFNYxQvmABiOpQRYLTkz8G
-   z5fceF8cdd6nsQm243pdMN+w554dgYvIjdyBibZQiyxnqzMCyjzhgrknX
-   g==;
-X-IronPort-AV: E=Sophos;i="5.95,217,1661810400"; 
-   d="scan'208";a="27002167"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 27 Oct 2022 09:06:26 +0200
-Received: from steina-w.localnet (unknown [10.123.53.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 89ACC280056;
-	Thu, 27 Oct 2022 09:06:26 +0200 (CEST)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBA8186A;
+	Thu, 27 Oct 2022 10:42:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BF3C433B5;
+	Thu, 27 Oct 2022 10:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1666867367;
+	bh=waQiYVNsE5pL9GEJ8DPj4IjUhC/thrnPEqbg9j/HH+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dr+hSVG7jsB3+OXqWl9ONo9Q5EyopeKuPaUAtDpoJnI+yfv4h/m9YZ/ukYgOQn/Ek
+	 OWg8cR3ZhtE1RXCHqgBvKUVY8ewYQPPENZtdHJNCPK40TKxXXograuRpwyiL6URFQR
+	 J0749ItTFYEx3KaUrBbnuLKRbtnuFNTvrBy60XLjXmMvmA3EAqEWl5b5qQiUsEDfri
+	 e8A6CHi/r46/NvOirAP67mCsYe3GI4NeScqTBGEpT++USZTvVVIgpg2Un54LGtgH4B
+	 3kBiXuuLqhSOmTYs37P4IShctdLSy7SmQBvyEUIBwNUIJ3hzbc4Ni+fmxz/6pvuWWz
+	 bkXwntu8KoVCQ==
+Date: Thu, 27 Oct 2022 12:42:40 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: jun.li@nxp.com, frank.li@nxp.com, a-govindraju@ti.com, gregkh@linuxfoundation.org, hzpeterchen@gmail.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, pawell@cadence.com, peter.chen@kernel.org, rogerq@kernel.org, stable@kernel.org
-Subject: Re: [PATCH v2 1/1] usb: cdns3: host: fix endless superspeed hub port reset
-Date: Thu, 27 Oct 2022 09:06:22 +0200
-Message-ID: <5877757.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20221026190749.2280367-1-Frank.Li@nxp.com>
-References: <20221026190749.2280367-1-Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:NTB DRIVER CORE" <ntb@lists.linux.dev>,
+	"open list:PCI ENDPOINT SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix sparse build
+ warning
+Message-ID: <Y1pgoPAH/BZ46gif@lpieralisi>
+References: <20221007191326.193079-1-Frank.Li@nxp.com>
+ <20221007191326.193079-8-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221007191326.193079-8-Frank.Li@nxp.com>
 
-Am Mittwoch, 26. Oktober 2022, 21:07:49 CEST schrieb Frank Li:
-> From: Li Jun <jun.li@nxp.com>
+On Fri, Oct 07, 2022 at 03:13:26PM -0400, Frank Li wrote:
+> From: Frank Li <frank.li@nxp.com>
 > 
-> When usb 3.0 hub connect with one USB 2.0 device and NO USB 3.0 device,
-> some usb hub reports endless port reset message.
+> Using  epf_db[i] instead of readl() because epf_db is located in local
+> memory and allocated by dma_alloc_coherent().
 > 
-> [  190.324169] usb 2-1: new SuperSpeed USB device number 88 using xhci-hcd
-> [  190.352834] hub 2-1:1.0: USB hub found
-> [  190.356995] hub 2-1:1.0: 4 ports detected
-> [  190.700056] usb 2-1: USB disconnect, device number 88
-> [  192.472139] usb 2-1: new SuperSpeed USB device number 89 using xhci-hcd
-> [  192.500820] hub 2-1:1.0: USB hub found
-> [  192.504977] hub 2-1:1.0: 4 ports detected
-> [  192.852066] usb 2-1: USB disconnect, device number 89
-> 
-> The reason is the runtime pm state of USB2.0 port is active and
-> USB 3.0 port is suspend, so parent device is active state.
-> 
->  cat
-> /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-hcd.1.auto/usb2/po
-> wer/runtime_status
-> 
->  suspended
-> 
->  cat
-> /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-hcd.1.auto/usb1/po
-> wer/runtime_status
-> 
->  active
-> 
->  cat
-> /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-hcd.1.auto/power/r
-> untime_status
-> 
->  active
-> 
->  cat
-> /sys/bus/platform/devices/5b110000.usb/5b130000.usb/power/runtime_status
-> 
->  active
-> 
-> So xhci_cdns3_suspend_quirk() have not called. U3 configure is not applied.
-> 
-> move U3 configure into host start. Reinit again in resume function in case
-> controller power lost during suspend.
-> 
-> Cc: stable@vger.kernel.org 5.10
-> Signed-off-by: Li Jun <jun.li@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Sparse build warning when there are not __iomem at readl().
+> Added __iomem force type convert in vntb_epf_peer_spad_read\write()
+> and vntb_epf_spad_read\write(). This require strong order at read and
+> write.
+
+This commit log is unreadable sorry and this patch fixes multiple things
+and even rearrange local variables in a way that is completely
+unrelated to the patch aim itself.
+
+If you are fixing sparse warning reports the warnings and fix them
+one by one.
+
+Could you please pay attention to these details ? I don't have time
+to do it for you, sorry.
+
+Thanks,
+Lorenzo
+
+> Signed-off-by: Frank Li <frank.li@nxp.com>
 > ---
+>  drivers/pci/endpoint/functions/pci-epf-vntb.c | 27 +++++++++----------
+>  1 file changed, 13 insertions(+), 14 deletions(-)
 > 
-> Change from V1 to V2.
->  - call xhci_cdns3_plat_start() in xhci_cdns3_resume_quirk
-> in case power lost during suspend
-> 
->  drivers/usb/cdns3/host.c | 56 ++++++++++++++++++++--------------------
->  1 file changed, 28 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/usb/cdns3/host.c b/drivers/usb/cdns3/host.c
-> index 9643b905e2d8..6164fc4c96a4 100644
-> --- a/drivers/usb/cdns3/host.c
-> +++ b/drivers/usb/cdns3/host.c
-> @@ -24,11 +24,37 @@
->  #define CFG_RXDET_P3_EN		BIT(15)
->  #define LPM_2_STB_SWITCH_EN	BIT(25)
-> 
-> -static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd);
-> +static void xhci_cdns3_plat_start(struct usb_hcd *hcd)
-> +{
-> +	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
-> +	u32 value;
-> +
-> +	/* set usbcmd.EU3S */
-> +	value = readl(&xhci->op_regs->command);
-> +	value |= CMD_PM_INDEX;
-> +	writel(value, &xhci->op_regs->command);
-> +
-> +	if (hcd->regs) {
-> +		value = readl(hcd->regs + XECP_AUX_CTRL_REG1);
-> +		value |= CFG_RXDET_P3_EN;
-> +		writel(value, hcd->regs + XECP_AUX_CTRL_REG1);
-> +
-> +		value = readl(hcd->regs + XECP_PORT_CAP_REG);
-> +		value |= LPM_2_STB_SWITCH_EN;
-> +		writel(value, hcd->regs + XECP_PORT_CAP_REG);
-> +	}
-> +}
-> +
-> +static int xhci_cdns3_resume_quirk(struct usb_hcd *hcd)
-> +{
-> +	xhci_cdns3_plat_start(hcd);
-> +	return 0;
-> +}
-> 
->  static const struct xhci_plat_priv xhci_plat_cdns3_xhci = {
->  	.quirks = XHCI_SKIP_PHY_INIT | XHCI_AVOID_BEI,
-> -	.suspend_quirk = xhci_cdns3_suspend_quirk,
-> +	.plat_start = xhci_cdns3_plat_start,
-> +	.resume_quirk = xhci_cdns3_resume_quirk,
->  };
-> 
->  static int __cdns_host_init(struct cdns *cdns)
-> @@ -90,32 +116,6 @@ static int __cdns_host_init(struct cdns *cdns)
->  	return ret;
->  }
-> 
-> -static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd)
-> -{
-> -	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
-> -	u32 value;
+> diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> index 54616281da9e..9f1ec6788e51 100644
+> --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> @@ -136,7 +136,7 @@ struct epf_ntb {
+>  
+>  	struct epf_ntb_ctrl *reg;
+>  
+> -	void __iomem *epf_db;
+> +	u32 *epf_db;
+>  
+>  	phys_addr_t vpci_mw_phy[MAX_MW];
+>  	void __iomem *vpci_mw_addr[MAX_MW];
+> @@ -257,12 +257,9 @@ static void epf_ntb_cmd_handler(struct work_struct *work)
+>  	ntb = container_of(work, struct epf_ntb, cmd_handler.work);
+>  
+>  	for (i = 1; i < ntb->db_count; i++) {
+> -		if (readl(ntb->epf_db + i * sizeof(u32))) {
+> -			if (readl(ntb->epf_db + i * sizeof(u32)))
+> -				ntb->db |= 1 << (i - 1);
 > -
-> -	if (pm_runtime_status_suspended(hcd->self.controller))
-> -		return 0;
-> -
-> -	/* set usbcmd.EU3S */
-> -	value = readl(&xhci->op_regs->command);
-> -	value |= CMD_PM_INDEX;
-> -	writel(value, &xhci->op_regs->command);
-> -
-> -	if (hcd->regs) {
-> -		value = readl(hcd->regs + XECP_AUX_CTRL_REG1);
-> -		value |= CFG_RXDET_P3_EN;
-> -		writel(value, hcd->regs + XECP_AUX_CTRL_REG1);
-> -
-> -		value = readl(hcd->regs + XECP_PORT_CAP_REG);
-> -		value |= LPM_2_STB_SWITCH_EN;
-> -		writel(value, hcd->regs + XECP_PORT_CAP_REG);
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  static void cdns_host_exit(struct cdns *cdns)
+> +		if (ntb->epf_db[i]) {
+>  			ntb_db_event(&ntb->ntb, i);
+> -			writel(0, ntb->epf_db + i * sizeof(u32));
+> +			ntb->epf_db[i] = 0;
+>  		}
+>  	}
+>  
+> @@ -529,13 +526,15 @@ static int epf_ntb_configure_interrupt(struct epf_ntb *ntb)
+>  static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
 >  {
->  	kfree(cdns->xhci_plat_data);
-
-Although I could only test it on v5.15 downstream kernel
-Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-
-
+>  	const struct pci_epc_features *epc_features;
+> -	u32 align;
+>  	struct device *dev = &ntb->epf->dev;
+> -	int ret;
+>  	struct pci_epf_bar *epf_bar;
+> -	void __iomem *mw_addr;
+>  	enum pci_barno barno;
+> -	size_t size = sizeof(u32) * ntb->db_count;
+> +	void *mw_addr;
+> +	size_t size;
+> +	u32 align;
+> +	int ret;
+> +
+> +	size = sizeof(u32) * ntb->db_count;
+>  
+>  	epc_features = pci_epc_get_features(ntb->epf->epc,
+>  					    ntb->epf->func_no,
+> @@ -1123,7 +1122,7 @@ static u32 vntb_epf_spad_read(struct ntb_dev *ndev, int idx)
+>  	struct epf_ntb *ntb = ntb_ndev(ndev);
+>  	int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * sizeof(u32);
+>  	u32 val;
+> -	void __iomem *base = ntb->reg;
+> +	void __iomem *base = (void __iomem *)ntb->reg;
+>  
+>  	val = readl(base + off + ct + idx * sizeof(u32));
+>  	return val;
+> @@ -1134,7 +1133,7 @@ static int vntb_epf_spad_write(struct ntb_dev *ndev, int idx, u32 val)
+>  	struct epf_ntb *ntb = ntb_ndev(ndev);
+>  	struct epf_ntb_ctrl *ctrl = ntb->reg;
+>  	int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
+> -	void __iomem *base = ntb->reg;
+> +	void __iomem *base = (void __iomem *)ntb->reg;
+>  
+>  	writel(val, base + off + ct + idx * sizeof(u32));
+>  	return 0;
+> @@ -1145,7 +1144,7 @@ static u32 vntb_epf_peer_spad_read(struct ntb_dev *ndev, int pidx, int idx)
+>  	struct epf_ntb *ntb = ntb_ndev(ndev);
+>  	struct epf_ntb_ctrl *ctrl = ntb->reg;
+>  	int off = ctrl->spad_offset;
+> -	void __iomem *base = ntb->reg;
+> +	void __iomem *base = (void __iomem *)ntb->reg;
+>  	u32 val;
+>  
+>  	val = readl(base + off + idx * sizeof(u32));
+> @@ -1157,7 +1156,7 @@ static int vntb_epf_peer_spad_write(struct ntb_dev *ndev, int pidx, int idx, u32
+>  	struct epf_ntb *ntb = ntb_ndev(ndev);
+>  	struct epf_ntb_ctrl *ctrl = ntb->reg;
+>  	int off = ctrl->spad_offset;
+> -	void __iomem *base = ntb->reg;
+> +	void __iomem *base = (void __iomem *)ntb->reg;
+>  
+>  	writel(val, base + off + idx * sizeof(u32));
+>  	return 0;
+> -- 
+> 2.34.1
+> 
