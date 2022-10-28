@@ -1,271 +1,137 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2065.outbound.protection.outlook.com [40.107.20.65])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2044.outbound.protection.outlook.com [40.107.249.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1FC7B;
-	Thu, 27 Oct 2022 14:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7852328E8;
+	Fri, 28 Oct 2022 15:57:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mCwUDsZDaVg+OK7bwUH7fKnUrwmCtZxiSTVXsVe30sEo3OTtkD+1iZWZaBkWqN4l10if5gxTJW2XAV7yFp7CfAyqmYjBTxvXxt5unqRK4En1cdlJN154mvj3BDmxDUTJ5Ki2MBVlBSyeA0fdNXUUrOJyznfDpRigoRK5jqMQj0j/OBglwRdEpCxfLxLc5gWbKuIKHYLR8EbMQJ8xTiNwjmJtxM3tzvR0n5G4HYiC2Jd9FoR1QSF0mewUT3iYL9319NBRU/SE/KHV4ESU7tyA4jN3SQRj6bxIYcXdfqVbKr6Emzl6mfx8HUh1lxU5mxayNTB7WcPhGK74djjHf46l4A==
+ b=g8B8+TeOxYuNkwv2vpMjZYlQSUS+k8ZU77GkWZJMjNVTWBpkWleC6Q5rY+QH+hDC7gMTVdMrEewNSr6KtnazAt+hJgliIW9zogJQ4Y+bFsj8WhDSOAoXRWNRBbEWQNF4RB2tptpqL+HEOY38Le9IlyIfJ5PiOQBAX9oMB+mQhdvdnsNFFl0hKam4FSNOT12T8+FOCOxWNpdjrS8s5m9QVHTga5ZSZWgi5ae2Oa8siQB+0nkku0WtgwdIuUOarZjKD4iQUfNX+ABIR9oxAS/WMiJ9Xt6sVDQubf5NnZID8WSGf/q4D2r7dypcXnyRJ6pRjQSvrtUccW4w2haSb1hHiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N8sYciNNYgFSqkfaQH6D0qvZcS0AZoWpHTEiWlfjctQ=;
- b=K0d5IxalGlrA2cYTOCg52+PzB7ayysoSDG60MaQmejf1zvGpprFfLR6im74t159368sRvbsyeqQig2BSJJ2wRUgSIHdQgCI4uTex0s5USQqbPKFbf6gRYQpBfMyQV6rNfD0kyVK9dd7VerZNJAN8/pJKQEjxDdC0sSn30at0gAURmVIPBrup7Xov/m+njE6A4QCPWAaRYS19RGGugXkGE4J9V9lIa8T4vPD+rdZNIGOPqprNem/LXJX0TDqGlMj281di9UWE2Oq7cep6FCwXq0UxGyVrMznr3o0ysVg2frhY3tDbEHkyPaJsWDb3HIqr6Rx72+hDlURmkmo46Fa+pw==
+ bh=jXSrZX8phVrAfFRRBhKjVDWw2uITbVjHtV885yiR6I4=;
+ b=QX30y1J2GapDKXOwt+uzZS3yjdnZoXNw/usYK2xyuz/YXTmYbo68BpIIMQ2j9Oske7cbPaGS8PN9hpRPyXBHRY2uxvB6C7rU5zg9u40XLH5w8+w6KEZ8cZFwbfXed4OX216qW83MbHidNmfxk/cUh9VVoCvk+GHMQxLirPkE+hINoVuwbG5wjw+iHOiS59bq2dtU874X0r7yCTu1WBzs0l2KkB6Ezts+jqTVvh0bMaoq9gsd+qyX37abm3XqrY6PykA63Tlatybj4TnZDcF7lVE0rXBBoPzAU+NqTmJeoOzj2Q09iOYCiQ9hVzL9O2zAZEMd5PucS+6tuetmYEkn0g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N8sYciNNYgFSqkfaQH6D0qvZcS0AZoWpHTEiWlfjctQ=;
- b=Bkw5qWb1lMIdmGp1h9NCJ9r/5/uWsOr/CttbS7IrKNz0ENTcZbythnxnVk83lwei4aVb2zP7HMKfBmpDPtQSrGiLLPg1f0UKFaYQ2EMyavT6q5vYOpiIgtBBZiSYpzzmzLWTlSGX6g8xl7QhvhtKI7kV3ZzK7M9VFwHW5H67HP0=
+ bh=jXSrZX8phVrAfFRRBhKjVDWw2uITbVjHtV885yiR6I4=;
+ b=XOgEgVBv7N8888cPAkpuKg797XClyJaSOTyrgmyyvkHKJGwH1SZ8JL5GbwBTgJyuujIYEsw/dAyz+rbzNLrEyk8JCBLKrWb16JvDohCUTRQqDMLPQemwmTkELBIKPwkvINNkwFWP3bHC2fbvMVf6mC2u22EfE2V+Le5VFsr0fq0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by PAXPR04MB8237.eurprd04.prod.outlook.com (2603:10a6:102:1cc::23) with
+ by AM9PR04MB8323.eurprd04.prod.outlook.com (2603:10a6:20b:3e5::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.23; Thu, 27 Oct
- 2022 14:27:40 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.15; Fri, 28 Oct
+ 2022 15:57:26 +0000
 Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
  ([fe80::44bb:8387:8f4b:6a28]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::44bb:8387:8f4b:6a28%10]) with mapi id 15.20.5746.028; Thu, 27 Oct
- 2022 14:27:40 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Kishon
- Vijay Abraham I <kishon@ti.com>, =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?=
-	<kw@linux.com>, Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>, "open list:NTB DRIVER CORE" <ntb@lists.linux.dev>,
-	"open list:PCI ENDPOINT SUBSYSTEM" <linux-pci@vger.kernel.org>, open list
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [EXT] Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix sparse
- build warning
-Thread-Topic: [EXT] Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix
- sparse build warning
-Thread-Index: AQHY2oECIepfinQVPkG9I1ZysDbaAa4iLKoAgAA8ZHA=
-Date: Thu, 27 Oct 2022 14:27:39 +0000
-Message-ID:
- <HE1PR0401MB23316F10D8535A548127D39A88339@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20221007191326.193079-1-Frank.Li@nxp.com>
- <20221007191326.193079-8-Frank.Li@nxp.com> <Y1pgoPAH/BZ46gif@lpieralisi>
-In-Reply-To: <Y1pgoPAH/BZ46gif@lpieralisi>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|PAXPR04MB8237:EE_
-x-ms-office365-filtering-correlation-id: 1b7942d5-cfeb-4cb5-8d5e-08dab827671a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- m92rGGTqReHHJGomeA+nayqNAkSUrXIe93nHI/6TytGWwmVq8s5A+itz4zmv8F0dxzsE2WFXN1EyrP9STv6DOqWcPZ22DF/0iT9EajIe2qv5LupF/RZiOUQZhKDrVL9ezZiaObONV7VizgQUEKzpPFeSoFUKe3mk7hVblfIZ14CoDA3WZSf/CGuzEOIAVLJMfDtyKci8tp9MMrGUeT4tR3q7en+auWFagekVkHUde3JayBqlxVAx0vfe+zozAn4jJ+8xvGoDTGqONfe8BaCu2QIDwHOg5hmgyigRzwaHYfR600UqIb/vKXmp/dIJ3ZYfuzpLGHEFclvlE2WkDZ2oCJf6l8B4sNwC4V1qZzlb7NbCjJOv2p1+aoh6AW5UMklF0dMpXPT0VpK9p+j4W20FoFU5HPhTJn0yVWbovSBXjU1GYVHngDDX90dGENNWfUV5mi0hRmlLJZW0LNePpdxmnTKgy2KhRrFyuiIwEU1exKWDs93yhB29KmLzfy5CpPRCyVpebqf8KyH82BRoaqEsx5Gn7lKTiKH7chezbOHd2x3n4iv07MgkPBG+R/NRlKTXq7evid+udBk50yMDw3LX20PZLLltrHu+7PtylWDWmz+4AXY1fNMZ4cES168HWXnF/JrN3BROgKsIikePUFTDr0va1wtDY+TDRBU6wqLJsUSYOj7iu49jkWZ7nYOd+nz+0CVQw6mWgA5pI8g6m/qmDC36MYhiY8E/WHzD+sdfJhkZezrMf077SiWui7z+Y9vI9ps3oNHc2OQI+rKbNgsM9A==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199015)(2906002)(8936002)(8676002)(33656002)(54906003)(6916009)(44832011)(52536014)(55236004)(5660300002)(41300700001)(55016003)(66574015)(64756008)(66446008)(66556008)(66946007)(4326008)(66476007)(86362001)(76116006)(7416002)(316002)(83380400001)(38070700005)(186003)(38100700002)(478600001)(71200400001)(26005)(9686003)(122000001)(53546011)(6506007)(7696005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-2?Q?Suuo5jYQjPLg6xWnDlwaWS0wYDZijkNLkziN6SWGy7rIshW3rDWrt/ZBUA?=
- =?iso-8859-2?Q?84lbScLTQnje2vQLHzpuVWSeQm79OIXExpcnQXFwI9hCsP/t3KUOpvk4zG?=
- =?iso-8859-2?Q?4AQ5TmzXNoeRBEANfDfROW/q3miipl2IwOIUWdrMc7kZgOy5H0WjCXJ99C?=
- =?iso-8859-2?Q?hiYK5MvJPBuapKp+lFuN1F8kjQT22Kii9iB2n7vnUhZA9hLe17pug2Fhgl?=
- =?iso-8859-2?Q?Soz8v8RlXAMEVjJbLiihM8iAeiSTy9vq1VEObzKn1xtskKEq4+BTjQhPgF?=
- =?iso-8859-2?Q?aXZkC/l91UtOyXR7nj3VqzxhQBSFYF4N2ccxXjFxog1zrGGRdAbX/6c+NL?=
- =?iso-8859-2?Q?/awVe5X0mR0MDPK5yyOpzDaj06YLc1dXxQUsqxiZtLxgRuw+i6vH6KcH3R?=
- =?iso-8859-2?Q?yZOuYmWGhUtsBd7SUqN6iRpMKj33fXIdko8u9VtA9Gq4cmVrwaEw6cbuR+?=
- =?iso-8859-2?Q?oFe4l1Xof1i+efgJj2NHp6/3F2FbI0jncAUWbrTt1yhxJV1QOmvFL1mANL?=
- =?iso-8859-2?Q?GDDvhtN/VaxKOBCRkEOdS62b9aTvoqXTy5X9EC+Ik+zpqPRged3wzNm6Ke?=
- =?iso-8859-2?Q?vNhNgwAU8WfGuaZDv7N+XB9EutmYLx6GNBX+0gUM9VvWDiBoi6VTzV9IGa?=
- =?iso-8859-2?Q?DO615nXHDlhhvfEWkR4ARb0U+twNp6WFbQwAj3//Uk3S/812NgKeAbWYse?=
- =?iso-8859-2?Q?3I5IPxTzuKyXavWOnYEA5omfhf2yB7/92AEN/z8Y1OtDMrrIhUlB1I4XwQ?=
- =?iso-8859-2?Q?KTMfWX15KKsD29c69IitGjlh5dGPIMluE2RlUSVQuOmoargWxQWK4jSHvy?=
- =?iso-8859-2?Q?cEJMGTQUON2SFHOCafEcBM10liRJGSFW90sXtRYNsF8A7KZCurDOGQWkNV?=
- =?iso-8859-2?Q?4oFDO7tM5KKnou5EnWNL3b+xgk25W+UQDoJpi1stZu39X1NadJkA6W0X5G?=
- =?iso-8859-2?Q?q8zPj1otOAx7LKamIhMkSSPfE0Qxf8qcWIKQ+PeynpJPSNT8Csb++LAk+A?=
- =?iso-8859-2?Q?ciAEe6+DCUO0fbMypbIhbDZCUMLSWVsnE50cbhHGNVY+RQzBRXUMTnaZx1?=
- =?iso-8859-2?Q?jLEhbDupDeRko0F0lHJ92vg01ClrbD1LEgIu7I4hlUQqEK0oWTPZFVSElr?=
- =?iso-8859-2?Q?Cdq9xV2SXhzcl/xxUiyzU/M9t3CyYe9wWMZocv04ERL3LzrNFJiEZXCq3D?=
- =?iso-8859-2?Q?yWLoyqeFonVozB3bmV9tag3ERjjDAueymc+exTLxwopuihG99cyL3/gzSY?=
- =?iso-8859-2?Q?GacsRNgzJBhBjCL6uiFv7ZKTryWqNzhk+lDAQ1Opii+Jyn/nA6MNy8ngUn?=
- =?iso-8859-2?Q?KWAcZZjyAgUacmKnyqCsM1lzLNjKvvqaThBgMOmCRrKhLlnfaD4TCl/u1T?=
- =?iso-8859-2?Q?JPkkQ3FTsRw53PSTNibDISFqrtps+BSVst/BY/SMTUnfI7lvcPb1WJPqni?=
- =?iso-8859-2?Q?7AQQofUDgdY91Og2iMOk7p6TByhXZDqTbG+DN2ak0Z2Xvao4SZijm08vmB?=
- =?iso-8859-2?Q?+D9o3UkBv13J5hnJM6djXXD1d0IxOlPa57Mfg+DIqBBJaaxxn1ZERJ7RxF?=
- =?iso-8859-2?Q?vUI2EXTlfhcW6lNdlGktTttJlNqSxLH2H1ayUz7nwnsmTqO9qxMv1Bn8QU?=
- =?iso-8859-2?Q?9sf8tvdRZXwj8=3D?=
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+ ([fe80::44bb:8387:8f4b:6a28%10]) with mapi id 15.20.5746.028; Fri, 28 Oct
+ 2022 15:57:26 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com
+Cc: allenbh@gmail.com,
+	bhelgaas@google.com,
+	dave.jiang@intel.com,
+	helgaas@kernel.org,
+	imx@lists.linux.dev,
+	jdmason@kudzu.us,
+	kw@linux.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	mani@kernel.org,
+	ntb@lists.linux.dev
+Subject: [PATCH v14 0/7]  pci-epf-vntb clean up
+Date: Fri, 28 Oct 2022 11:56:56 -0400
+Message-Id: <20221028155703.318928-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR02CA0010.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::23) To HE1PR0401MB2331.eurprd04.prod.outlook.com
+ (2603:10a6:3:24::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|AM9PR04MB8323:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60d5fa76-09c2-4cec-fbb4-08dab8fd1b9d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	K/DcTCRLeencKMn3r9JbSTnwNKC67LiZBVTPb/zB/tTF8XIz43y/YMFOcG2btuYyriwvMGYeoOEuaRO6xuMh8qW27/uvu0USYuRQnKKj33uyyyq5xJ4wS7dHdysSqDhOrfI4YQy5k3itKiQV/LKpM3xIgvEnHLlYXbc26tuF6m2ygFIT/BtfUqRZwF4604mBRiuwHwY50DzXtihj4YLVpmpRQRcILWcp5mX3cKg/2FKUbm0C/0HIT1xZjjCAZ9Abxuk6FJJh4ZoVpN8uD6Wdo+91sj3BG+ZGtHhGxebny5apPzu/mVD4lOtnVL7U91fV6jKfOgwUVOthkglQ366Rfbadk4MUai62GzEsQGhh2I8I+g6o16n7sQGKmVZxqlepBtU0BWb9NK3Z3UF5slUKtmtbz/2ueYyOzjjnX/0aG2hMUaLHnx+GJLa/ZDUZ6axQKJUnJnGzk956TeAn6htXrlm4/StCs7631FmVfqsFLOH9rFgPh3I6qEluTLxME86VG+uXCODEkjg7MozRNKV91EwPaG11lWdzBP44DEw3UuHKZ+6xmOKnC2kT1vYQB59G2pbfpOVyPFpeK46TdsmY7SvQAQ0ivnk6Hsc8dLfoHypimIc96eqSbkgDGFLtfR0p/YLPZt1SVz88rj6m5p9zVRqjK3metrQJTVLF0yROZ3DRW94ep1UfQS6ut07YY/J8+s+FlMkq+7sPjJCPTlT/vFkpf5nEPSFHYo/rpZGE/HxMkESCYFYoIadMmgABni7LIfO+m9aEZTT9aHvGKP1aHHZcQbg+iH642XwHj5xtFvLeprm5wDlMFRX3WYefxUISdfGWw0Vd/+iDsmYZWYBLKQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(366004)(396003)(39860400002)(376002)(451199015)(6666004)(316002)(37006003)(34206002)(8936002)(5660300002)(4326008)(2616005)(186003)(1076003)(7416002)(8676002)(4744005)(52116002)(36756003)(6506007)(66476007)(66946007)(66556008)(6512007)(26005)(41300700001)(83380400001)(86362001)(38100700002)(2906002)(38350700002)(6486002)(966005)(478600001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?YbnbH47epcpjA/lay/XvcI05MiI8kyiyd3KyVotiDhm4zmZZQz+u0ZBC4+MV?=
+ =?us-ascii?Q?kFCjLpQMm83rfUENOUL7KTBVC9KxSJAWre31bLulTKwJyn+ymxwYvsoETzsX?=
+ =?us-ascii?Q?F9q3uq0gd0f/xHA0d81qyX9M4to2vyJP73qLOCkUyNI++pvwJBYmCo/QLA9J?=
+ =?us-ascii?Q?iw1LTlWequfGvcauU/hcZ9mb13T1GC5UOnc9Sw4zDO0zEe6ckeIJxYNvOZep?=
+ =?us-ascii?Q?8qJJJDvDmUFvD1KyLGAnLNKshZxjh6EgRO1OJMiGgthnViOOzMpTCVTDkNvI?=
+ =?us-ascii?Q?QzQ/ARryNYVZf7aGMB8oUhmWbB17Hf+bcIubrM5/YI19mhMNE7Ce87koaDqy?=
+ =?us-ascii?Q?FKrQCz2WBO1ApqCp6GlziRJvpqh4sZA23ubmy/qrsBRDO7iL1S1UDTUIdSFL?=
+ =?us-ascii?Q?goqOiGuQoyUrOeTrzWbxtV3uifm8T16dYSfGDb7pm/c84CQONgRVpWCZSkYG?=
+ =?us-ascii?Q?vES1K1zaFGrqdexc47ckrcuj2OdiSBk+7NlRpPgJS9M1YJcjBs8v58X9Zwa4?=
+ =?us-ascii?Q?ORlkbZBECa5GAJQHUkoJV+M3xr99MXTmMvAflBgKW1t/sObJZYI2KbNMtukf?=
+ =?us-ascii?Q?6GKVmb4OEBawG8lRxbuE2djf6rqT258rFDtU0plGuND84mhZPam0SfChuIj8?=
+ =?us-ascii?Q?nqDoUKHYkiDoyOzlYsv/ASgZtfJhnwzB3zfaXF6ju6oYe7VfJ61+Hmf/kqMa?=
+ =?us-ascii?Q?VujUZowmNAdyDtX39ATvY9wdpR+mn9OYHwja+FqRXsXXZ8LiYEKY4rjhb3Mm?=
+ =?us-ascii?Q?kljsk6/iaY0oZn2mdnKHSB2T5xyaOE60AyqwEwJDzZmA4QnOG/t/lceNeR2A?=
+ =?us-ascii?Q?YmX8n0vIv0ubKr/X5vB7Q2DRAgotOAPbl3trXuGnBCrpU1Y3yJsUfP8ywg0R?=
+ =?us-ascii?Q?4JNb8s9sqjygLeTfjP6+uCQuR5M1bAUT0tJST72ZMSRKoBILMgYvBzJYQBgn?=
+ =?us-ascii?Q?KuzlAzxhJGfCAeIvJ/XlSkhrOg8aMc3fZRfSbk3ytBVrjRZ8DTfETLjBWgSc?=
+ =?us-ascii?Q?yq66ooQCPnOpYaNHr1D3mfannp9wgZWKiZLop+Di3qd1L8XeSvBDDJy1buAa?=
+ =?us-ascii?Q?cJaX4YUSVR6zr77dW8yXhPEQIa52i69F6j4Id4R+zHMTjcaS8Pks60XVFVEo?=
+ =?us-ascii?Q?dgSBQ0zo70yGC3yjW93Xg7UAEspKmaWy061rnfVwwzK///rMzvEVfg288LCC?=
+ =?us-ascii?Q?ALMTNd4N9LYKbFDuV387kf7/Tiak0E2jxyvcVMHKLKbDDcxhMIekEcLFeaYL?=
+ =?us-ascii?Q?h4A3gN5rlAW7jk7qPNUiDaNXkXmcBF+21FX/K9AU96eQoBYSUDc6wUFOzymx?=
+ =?us-ascii?Q?v+7lW5IkVGwiBq+5CSRvvxD8vv7lnh849NDtRuTjL8l5AZL4Y/sQjh7E4B3G?=
+ =?us-ascii?Q?byQvyr8FM49CZ91ENU3tdhdaa0zpVgD+mutLDTRnlmjZyZ38J87YJBwMqb1v?=
+ =?us-ascii?Q?pX5wwDpCGYJ7Z1y6pylwt71DnbOz//O3EWUaqO/lR9pphkX9Gc+AjimHuN0P?=
+ =?us-ascii?Q?CZ7xcqqCaSnhPaandpTioJisPHVUdKPTrgY+GLjcaGtcwB855UBrwiaxWAGk?=
+ =?us-ascii?Q?pZvPpWX/+dcYjoYyy0Jo94R1YOeJOBHt6KM7gBqB?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60d5fa76-09c2-4cec-fbb4-08dab8fd1b9d
 X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b7942d5-cfeb-4cb5-8d5e-08dab827671a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2022 14:27:39.8906
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2022 15:57:25.9671
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /F3rdpWgGJDE7+5yRVbqarDvnwrgdt8+WoGNinSdC1awJJUoio4Im7PMHQZmSNCu92YxTtMtuozJhPsps2vmGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8237
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DyEUPFxNvbKbvfIatUEQtmirW2JQ6ZsMxSoL9+tMERN2/qdWy1zSKz9xu+q8FEV6E/Z4nq8mm3oG+foHe6Ahww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8323
 
-> -----Original Message-----
-> From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Sent: Thursday, October 27, 2022 5:43 AM
-> To: Frank Li <frank.li@nxp.com>
-> Cc: imx@lists.linux.dev; Jon Mason <jdmason@kudzu.us>; Dave Jiang
-> <dave.jiang@intel.com>; Allen Hubbe <allenbh@gmail.com>; Kishon Vijay
-> Abraham I <kishon@ti.com>; Krzysztof Wilczy=F1ski <kw@linux.com>;
-> Manivannan Sadhasivam <mani@kernel.org>; Bjorn Helgaas
-> <bhelgaas@google.com>; open list:NTB DRIVER CORE <ntb@lists.linux.dev>;
-> open list:PCI ENDPOINT SUBSYSTEM <linux-pci@vger.kernel.org>; open list
-> <linux-kernel@vger.kernel.org>
-> Subject: [EXT] Re: [PATCH v13 6/6] PCI: endpoint: pci-epf-vntb: fix spars=
-e
-> build warning
->=20
-> Caution: EXT Email
->=20
-> On Fri, Oct 07, 2022 at 03:13:26PM -0400, Frank Li wrote:
-> > From: Frank Li <frank.li@nxp.com>
-> >
-> > Using  epf_db[i] instead of readl() because epf_db is located in local
-> > memory and allocated by dma_alloc_coherent().
-> >
-> > Sparse build warning when there are not __iomem at readl().
-> > Added __iomem force type convert in vntb_epf_peer_spad_read\write()
-> > and vntb_epf_spad_read\write(). This require strong order at read and
-> > write.
->=20
-> This commit log is unreadable sorry and this patch fixes multiple things
-> and even rearrange local variables in a way that is completely
-> unrelated to the patch aim itself.
+continue patch series https://www.spinics.net/lists/linux-pci/msg130372.html
+https://www.spinics.net/lists/linux-pci/msg130924.html
 
-[Frank Li] Not everyone is English native speaker.  If you think it is bad,=
-=20
-Please give me what you want to change to?=20
+Lorenzo suggest create new series. Version number continue from old one
 
-Abut rearrange local variable, It is my fault when split patch.=20
 
->=20
-> If you are fixing sparse warning reports the warnings and fix them
-> one by one.
+Change from v13-v14
+  split spare warning fix to two patch
+  remove local variable reorder
 
-[Frank Li] Error in vntb_epf_peer_spad_write is the same as vntb_epf_peer_s=
-pad_read
-All are the same type error. Did you still prefer fixed one by one?=20
+Frank Li (7):
+  PCI: endpoint: pci-epf-vntb: Clean up kernel_doc warning
+  PCI: endpoint: pci-epf-vntb: Fix indentation of the struct
+    epf_ntb_ctrl
+  PCI: endpoint: pci-epf-vntb: fix call pci_epc_mem_free_addr at err
+    path
+  PCI: endpoint: pci-epf-vntb: remove unused field epf_db_phy
+  PCI: endpoint: pci-epf-vntb: replace hardcode 4 with sizeof(u32)
+  PCI: endpoint: pci-epf-vntb: fix sparse build warning at epf_db
+  PCI: endpoint: pci-epf-vntb: fix sparse build warning at ntb->reg
 
->=20
-> Could you please pay attention to these details ? I don't have time
-> to do it for you, sorry.
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 149 ++++++++++--------
+ 1 file changed, 85 insertions(+), 64 deletions(-)
 
-[Frank Li] Do you have other comments about other patches?=20
+-- 
+2.34.1
 
->=20
-> Thanks,
-> Lorenzo
->=20
-> > Signed-off-by: Frank Li <frank.li@nxp.com>
-> > ---
-> >  drivers/pci/endpoint/functions/pci-epf-vntb.c | 27 +++++++++----------
-> >  1 file changed, 13 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > index 54616281da9e..9f1ec6788e51 100644
-> > --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > @@ -136,7 +136,7 @@ struct epf_ntb {
-> >
-> >       struct epf_ntb_ctrl *reg;
-> >
-> > -     void __iomem *epf_db;
-> > +     u32 *epf_db;
-> >
-> >       phys_addr_t vpci_mw_phy[MAX_MW];
-> >       void __iomem *vpci_mw_addr[MAX_MW];
-> > @@ -257,12 +257,9 @@ static void epf_ntb_cmd_handler(struct
-> work_struct *work)
-> >       ntb =3D container_of(work, struct epf_ntb, cmd_handler.work);
-> >
-> >       for (i =3D 1; i < ntb->db_count; i++) {
-> > -             if (readl(ntb->epf_db + i * sizeof(u32))) {
-> > -                     if (readl(ntb->epf_db + i * sizeof(u32)))
-> > -                             ntb->db |=3D 1 << (i - 1);
-> > -
-> > +             if (ntb->epf_db[i]) {
-> >                       ntb_db_event(&ntb->ntb, i);
-> > -                     writel(0, ntb->epf_db + i * sizeof(u32));
-> > +                     ntb->epf_db[i] =3D 0;
-> >               }
-> >       }
-> >
-> > @@ -529,13 +526,15 @@ static int epf_ntb_configure_interrupt(struct
-> epf_ntb *ntb)
-> >  static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
-> >  {
-> >       const struct pci_epc_features *epc_features;
-> > -     u32 align;
-> >       struct device *dev =3D &ntb->epf->dev;
-> > -     int ret;
-> >       struct pci_epf_bar *epf_bar;
-> > -     void __iomem *mw_addr;
-> >       enum pci_barno barno;
-> > -     size_t size =3D sizeof(u32) * ntb->db_count;
-> > +     void *mw_addr;
-> > +     size_t size;
-> > +     u32 align;
-> > +     int ret;
-> > +
-> > +     size =3D sizeof(u32) * ntb->db_count;
-> >
-> >       epc_features =3D pci_epc_get_features(ntb->epf->epc,
-> >                                           ntb->epf->func_no,
-> > @@ -1123,7 +1122,7 @@ static u32 vntb_epf_spad_read(struct ntb_dev
-> *ndev, int idx)
-> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
-> >       int off =3D ntb->reg->spad_offset, ct =3D ntb->reg->spad_count * =
-sizeof(u32);
-> >       u32 val;
-> > -     void __iomem *base =3D ntb->reg;
-> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
-> >
-> >       val =3D readl(base + off + ct + idx * sizeof(u32));
-> >       return val;
-> > @@ -1134,7 +1133,7 @@ static int vntb_epf_spad_write(struct ntb_dev
-> *ndev, int idx, u32 val)
-> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
-> >       struct epf_ntb_ctrl *ctrl =3D ntb->reg;
-> >       int off =3D ctrl->spad_offset, ct =3D ctrl->spad_count * sizeof(u=
-32);
-> > -     void __iomem *base =3D ntb->reg;
-> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
-> >
-> >       writel(val, base + off + ct + idx * sizeof(u32));
-> >       return 0;
-> > @@ -1145,7 +1144,7 @@ static u32 vntb_epf_peer_spad_read(struct
-> ntb_dev *ndev, int pidx, int idx)
-> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
-> >       struct epf_ntb_ctrl *ctrl =3D ntb->reg;
-> >       int off =3D ctrl->spad_offset;
-> > -     void __iomem *base =3D ntb->reg;
-> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
-> >       u32 val;
-> >
-> >       val =3D readl(base + off + idx * sizeof(u32));
-> > @@ -1157,7 +1156,7 @@ static int vntb_epf_peer_spad_write(struct
-> ntb_dev *ndev, int pidx, int idx, u32
-> >       struct epf_ntb *ntb =3D ntb_ndev(ndev);
-> >       struct epf_ntb_ctrl *ctrl =3D ntb->reg;
-> >       int off =3D ctrl->spad_offset;
-> > -     void __iomem *base =3D ntb->reg;
-> > +     void __iomem *base =3D (void __iomem *)ntb->reg;
-> >
-> >       writel(val, base + off + idx * sizeof(u32));
-> >       return 0;
-> > --
-> > 2.34.1
-> >
