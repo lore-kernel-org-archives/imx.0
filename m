@@ -1,284 +1,222 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80054.outbound.protection.outlook.com [40.107.8.54])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2070.outbound.protection.outlook.com [40.107.20.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249547488
-	for <imx@lists.linux.dev>; Thu,  3 Nov 2022 15:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA4679C1
+	for <imx@lists.linux.dev>; Thu,  3 Nov 2022 21:58:09 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dUODWcfYBsHiMpiNjzaJJfuj27cxOhHozi9t7UAUsWkkOWsJIvUvgbri9hfO+U+TN0C7jG0AZ1RqUyVt7AQ5BQea47hLM6lxXFoZ8nIt1Nev/qBVxw9z/EJ2h+hH/NNmBQ1Eub1pOGTGJM9i+MpQ8hflgaJdHJkjNT/jDozJNGReB+gfmYsNJRhqx2Bxu6hEvuaOxV+81PhXkqQq4kLn2ZYxLhDek5nbVPwuCzmF+AL8d9FFDKt6GUVueCRLMCsmkutA+KmU5dRqZUyFqgjPybblqawMbU7J2AgmgxT2xY4fgNy6Psaa5wB+tb2l3uPei7lL2Z/IB7IxCdi46Jidcg==
+ b=amY5IF9rT/hT9/zXUJraMwSVqP12LfTbGcI9sSJK33AimE9jEFI0+ycvz5z2KQw4mME4nQwqWp5jX/nCRMwBBTcKZQj6SYk0ydBygnSBf5UDc/dzyKKJ7U3YieVc6ToiB+MskBD1sn/rcfwyEIfyVo7TjgjBFIe0rzZN63QmApVOtuVd+dkavjmj2AKpOBKa2Wp03nVscdaMDnO7yBu4nwQLFT7dA7ZzvXK1nawsBC56215Uzp+F9g80pcfRfrG9b5laiOiqTh7LE7EnjUXKW4QT5YMjhSOFSTD4njl5w1ane8bnYk5HbxSchfXEYDQweqP0p8QD2AWbp4pQhdcIZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jYxnS6zY/vcBWVsxIU/163a21mlWz8gvksItYS23Ncw=;
- b=kh5oWTZsx3VjShWg1XSXgTFujd+C+H9mIFFfpBw4swCJa565qooJ2ehL6fr9vIusp2aNgAsPP5Ixn4oCC/Cc45UOBF6jNm4tXdWl+x7FHxsGBa2iaEJEqeNlR9njxGGG4vdTHSxl0h9Kl9OPVgk00857c5ixRkkdDKRu3v+vwJUWFGcnViM/PMSlB8W1xGG+uDegsG6DPaHwR1e5mFMsOU1IBfVv3iO83rIGOKzWoYQj4pVriXEq6aeKYYPKZ/x2DIzTpcEOrEYlADbNytXSZ95BSf5WTTvV997ol0mE+8hk8DZRGl0y1Jkhiz4I4b+qiJUWcMmUAeEs5VTdcOLhyQ==
+ bh=vrL76Vm0XcTK1dRzx45bQKLHYwG1VC1p0+eDpcFDuGs=;
+ b=gCyhgEcVE7dR1oh93vaHFTNKnKcKpT2qkWvp0tLt2y1csHMZUVbfav5jJkZks/JU6TmRQbBulOIVF6Iq8LALR+RSgjUj+TOwx0QBAoTH6AjHwVYJ2PimnHkXq/8fZ5i+5CLiSWJHnOQ0oc2IWSEe+eQqLCcR6dFnaBxqJ3NyxmRwzjHZRWcRsqcewS30o5L62ci9zJ8oO6bg47hCi+eG15fvlUeD0N2bWxLu9y5ZwlPuz6Q6wmCuOFg0bQsRjy5IMfcgQ0i0vWJyt7O0XRJZ6/fBeCxhqGzpZwTzKsTvWMGaEOFbcryAcsPl+HHr+FFhrlnjeDwlKM1OjKji7OJ3AA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jYxnS6zY/vcBWVsxIU/163a21mlWz8gvksItYS23Ncw=;
- b=H/yY2swTtnb7y0UsGdFnLI3IFRTnzmBUmN8x7uMwSc9FMc2ukQ4GkO3BEXkb4w20oLoaF0a50LH4/hQXFaCErzQ28sPzCaC/OVwM+k+rqm/ofXzEzlJWepGI8lqGT0ZyTW+l3uvMRm1OPswQeUjYk/P54/JsYYxlRupVJP4nErQ=
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by PA4PR04MB7918.eurprd04.prod.outlook.com (2603:10a6:102:c7::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5791.20; Thu, 3 Nov
- 2022 15:29:04 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::44bb:8387:8f4b:6a28]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::44bb:8387:8f4b:6a28%11]) with mapi id 15.20.5769.022; Thu, 3 Nov 2022
- 15:29:04 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC: Jun Li <jun.li@nxp.com>, "a-govindraju@ti.com" <a-govindraju@ti.com>,
-	"hzpeterchen@gmail.com" <hzpeterchen@gmail.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "pawell@cadence.com" <pawell@cadence.com>,
-	"peter.chen@kernel.org" <peter.chen@kernel.org>, "rogerq@kernel.org"
-	<rogerq@kernel.org>, "stable@kernel.org" <stable@kernel.org>
-Subject: RE: [EXT] Re: [PATCH v2 1/1] usb: cdns3: host: fix endless superspeed
- hub port reset
-Thread-Topic: [EXT] Re: [PATCH v2 1/1] usb: cdns3: host: fix endless
- superspeed hub port reset
-Thread-Index: AQHY6W5IYTY5uF2C1Eunn77HPj5UCa4h0mAAgAuMaVA=
-Date: Thu, 3 Nov 2022 15:29:04 +0000
-Message-ID:
- <HE1PR0401MB2331E5EA4F974CDADEFAD8E788389@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20221026190749.2280367-1-Frank.Li@nxp.com>
- <5877757.lOV4Wx5bFT@steina-w>
-In-Reply-To: <5877757.lOV4Wx5bFT@steina-w>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=vrL76Vm0XcTK1dRzx45bQKLHYwG1VC1p0+eDpcFDuGs=;
+ b=MSqpBN71sPWj+2xFXF9xPDGoCaJ+boQPYQi/aLMXpgdpMD+0v8jHLeQmnoiqRxOaT48T4moDNwlD50B52cmcx0LchvOSGnwx3Yy60Y8/XvMPQf6RNnh2+4bA0jdFchz8J245U7Q1ploopu+2a0XMn5IpYiYb4wUeAPehLIN7u1A=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|PA4PR04MB7918:EE_
-x-ms-office365-filtering-correlation-id: bbbe086e-a0ff-4bef-1b84-08dabdb02406
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- LTaAwJP1WAy6MXkXgLaEiHArUbsGeYdLnXAbDD7xvNwYvrdDAskRrlver0DoKAEWe2uB4+8xi4ovom2zQCvQOCDEueEzhe/xcOQet4wMPc9lJ2edet1yYUkfXihYK6ZXJJvwfjI8qHfxAWVBpx/93kJr7/Tq6ztrT3vp7sEwz/Th7mZd6NWK+sMPhSUQpFvNEPt3X7DRnYh6YBYJ7trZHjkvFRECH9RZQ6RmJT6DU1wOfUjpsHU9CCzdTOdjtLyZkSPjTQlXDT/YGNgCRNC3De3ZnNfBrTQAw46PgzxUiAeSaEMUWbbhp+0QtH1MA9j1PWyX5qx8dVMZM2vPWMfn6uN1Z0FIIEGtMqcPhXR1OeadHXsMTD4xrc+tm61L3ucZvDDR2ibDL6OCrUvsYGSHkztQYxVj6sTC8tNwmuhQx1qxJAJHVsTJrO1jmi39r6woXPsz8HXM7UJzXeI0Zw3Vvm7QzsvxuV9VNyIjTej/8m8jF8B8H6eTiU28qErOtFCrJQx6snweqznJ4EJI/3+8Nljr2ewFZjbP9jPErSLYumgDmgyfq4IlCopSMUhMwXkdigGo8q+pJn84HX9uCveL3gJirZcrZXftkDw+a171J0OWoHxz5Juo3dn9QNsDmpH6CpL6gRjAV5hn7xVobbmfjZtjWUUSndwYCe5hC8QNCsNmLAnC3I9D6wmMn4L367MuBJFF++RhaoX4YwNUh82AD0qftLYpQOnR5461ZL7hqrF1cWuWLVKpMqsvl9zZJXx9B0+X8x84MmsmRHYTF4GUtDOzYWd0MqQcLciH6JIBc44=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(346002)(366004)(376002)(39860400002)(136003)(451199015)(38070700005)(66476007)(33656002)(8676002)(55016003)(83380400001)(86362001)(71200400001)(44832011)(478600001)(6506007)(2906002)(7696005)(316002)(38100700002)(64756008)(66446008)(4326008)(76116006)(66946007)(5660300002)(8936002)(52536014)(7416002)(66556008)(41300700001)(54906003)(110136005)(26005)(55236004)(53546011)(9686003)(122000001)(186003)(84970400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?drs6rHhpnBdPN0cYOy3NVPv1G6VaP004qRixpP2s9K8RP/4jjA96bDJ9VMvD?=
- =?us-ascii?Q?5Ejv6b9wIpQgBWWzpwoKvmj5q6I4Uo52W1k+YXaOzHAQ4qMkpfoHJlSYyMAM?=
- =?us-ascii?Q?XdC0obHSO3q8f8nuR4a7UDIQUPfy0t3Smte6/0iC2qIv0H/h53+DKjuOBwby?=
- =?us-ascii?Q?bg9vXrzIc5ckwnNdqOOEGUFGoydbyK+swIxuw4k9Viz6wRaykRSWxAKCg2Ev?=
- =?us-ascii?Q?WfRKi0PKrx9Oj6/dMli48Gv411zSUrHJP9GwF3+At9f+CDyakgnIqAfnJhMa?=
- =?us-ascii?Q?3Ahzhh3uXmEOuRqv4dXhvKUC8Nd4QC2M9Gl5yNBuZzaBx16oDax2w0MqXsoV?=
- =?us-ascii?Q?Yv+STAoayzUBC+VNoemkK+vG5LLn7MyGphZ3LMRdKv1KymTCgCv57eNkbWKK?=
- =?us-ascii?Q?EvfnjPs1IL+YZrZfc/hljbY9b4wsJE8aB+Cr4DW9BVKNS6R2Ou7pnygRq2AY?=
- =?us-ascii?Q?5kFXY/98zW88p93vvjm9dhdGGgjIruNyyz8yEbrGp/ZUicyDBPBpoqx+v82m?=
- =?us-ascii?Q?6DLOknXYdMA9htdl1CN5ko+4FhANJJMQwcV95ZcSU5XY7tigi2OKqEnrfF8e?=
- =?us-ascii?Q?eNpKfTeuz4Ub0pGNpwr3dbdHbtq5UgL4kdJ2AJTXwhHi34lEMW8qLl8YvC6B?=
- =?us-ascii?Q?ZahhJ5r4XSFNZoXYZV7dkEg0Y+8MSTqy5/hZ05G1jwkYJmVkBzq/r917sGKG?=
- =?us-ascii?Q?h/VLem5NODwfrDZj4nTZXw5Fv/soMIcQCq1RLFcapsjl4WpLXZPqYrdo6PWo?=
- =?us-ascii?Q?vh/fHf3Be/jpRB3PPI4atDX/uJsyl5kj4YDgCTWwe7Hq/X+bFGUaMeO8oj9P?=
- =?us-ascii?Q?Fy82wzEjNXtXDj2E/qTL4oWyJncyb7gGMScztDb9Z+9GffaMF+lwfh3Ijz5C?=
- =?us-ascii?Q?uims4yUeLCHS5f69o6Hvgql6NRJlbyl2D7YF1DHsHnKc0r6napA1y28baI26?=
- =?us-ascii?Q?XVycHYqfKZBR31lnKd+5WagnzB3IHUgYFmlzJiOTXGo6p+k6DVr6BiObxpbc?=
- =?us-ascii?Q?AJwCQ0DrH1sjHDA4ucE9fWT2PCe8Nl/HNL1iIa3Lu2OTUaPqeOYarccF++3u?=
- =?us-ascii?Q?qp+W2HDoibPVXuX2aFLjYWsf3E3BSjLKQGHGvXGybFNSzxgdVRvuOArdePOO?=
- =?us-ascii?Q?DnQ4C/BjZWscs9rpghgA7jBXUrPMBjARA8uicLKc51qoOxMlYELWZuuqUxCt?=
- =?us-ascii?Q?08SHEvPKlgfw46t2QcCLFsbyzzIQWHLiKzKI1qqDhITVszDhFn+HAfqDcd6l?=
- =?us-ascii?Q?waxSUwiMYz7kRF4fxgO3qn5F80MjEugeEA3NleHdLsEbNa7rlCQfffP95Ynv?=
- =?us-ascii?Q?hfz+Z8jPNqL/AUq6Hfiljaqvl+lCcD/j0Q+IIzpWDBQlcBW/OSnZtuKYxBlt?=
- =?us-ascii?Q?ZHMEmnABiRQW1JeRZP/v+ApZMcQvoiTTptfW6cJqgcM0E1Esm92wgcuw7qTs?=
- =?us-ascii?Q?O9Q3rGG7BscUz9+0K/usxW6qx5fUb0tFMhe+0cRYUEAKZSr31cX39VAThP7H?=
- =?us-ascii?Q?by6ln/BA1FAEwL55WCsQC1QsDRGXSXG9s6F0hGMZ0pwXlAxnbP0TA5uGnEWq?=
- =?us-ascii?Q?hIxoxzOrKhKnyzCmUoI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AM9PR04MB8828.eurprd04.prod.outlook.com (2603:10a6:20b:40b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.16; Thu, 3 Nov
+ 2022 21:58:06 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b1ab:dd4f:9237:d9f8]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b1ab:dd4f:9237:d9f8%3]) with mapi id 15.20.5791.022; Thu, 3 Nov 2022
+ 21:58:06 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH 1/1] net: fec: simplify the code logic of quirks
+Date: Thu,  3 Nov 2022 16:57:41 -0500
+Message-Id: <20221103215741.2735244-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR08CA0067.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::44) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AM9PR04MB8828:EE_
+X-MS-Office365-Filtering-Correlation-Id: 872e23fb-93ca-4539-c90a-08dabde67cda
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	rkNAKAyutCiHDFR9CHr9HHn34PEGldj5+4uOWGxag6qzghPVCuSvyVSsXIYYQDeoHHONv6T4doa4aAI59F0bInbYh9O/OG+KM+OPKa6L8oInx49NfNysMGr2+Lfj33Gcn3jW5raK/9aZnPi4BM+H1H14bVBFZGO4JrJLt6spO+aQXJRWFt5NiI5DEROHNuRH7WjHLY3G0Dsxp4uKrK8Khv/hTHNAHov+Siobmp1D/gQEANwxvwyzLgZUrwqQNw9zddIPHuXod2KUILLEB3mF5hHZ+7vFdkq6B3SvQa8U3Fii509q3AJ8ORjkE8OS01XPxOVqHsotcg1B/qsGr0kiO5qKUo90trL0eN6HVgajc9qmQcpNxgyC3s8FUPELkba1tNwmd/soSzAAfvdROaINMfU1qMPNuAODlB3gArjDbvqBWca9FlWzeKBHvEx5UYrwYh/3Nea8E7GOlpmOOW9Vx/FidAhHU0MkZFzxy5SkKFa61bxX0oEl5fY+4Bm+pPntbySnp9WBn/Dza8DWpqtCo9M5lOoG4n7vwT2Aw1zDIFc62dEOW7UmMLIcw+oFU4fH0ZbMw2UcjGkxeHUfHVq20Ew/nbGW48Fubbn8WTZ0Tel97hY6QII+BcmI1fRAuqNwCsxIzRYdWMmV4jTmLXSvZ0480Jdh4ovDvznIyI2+OeYjAH3e88DurWqUTbIKWAW73G85N8eIbTuOw3kb6PsSG0IlVSEuTbE2fCItB0pYUSYhXkNCn7827D2ZrkJDnhGz
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(396003)(346002)(39860400002)(136003)(376002)(451199015)(44832011)(38350700002)(86362001)(83380400001)(38100700002)(2906002)(7416002)(2616005)(5660300002)(66946007)(66556008)(6506007)(4326008)(6666004)(55236004)(8676002)(41300700001)(1076003)(66476007)(26005)(110136005)(6512007)(6486002)(54906003)(186003)(478600001)(52116002)(316002)(36756003)(8936002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?H/XS2De/0xo5DhmjB7LwcfNcxlNJOW2wxdGkXiQ4T08McCeFZmheoAf75D9s?=
+ =?us-ascii?Q?X21Wp7R7J3UZ2taNAO2Xdt56Zqro8SGRV9F7j5U0Apw2pFJ78rSn1DBwH/du?=
+ =?us-ascii?Q?1INcIDLXmZvrOEmvaTadTI6HZ/6MIFACzSN3RiSuWAXqw/x0Y9l4azv7Ez/Z?=
+ =?us-ascii?Q?d5B9Ozc/PGD3zOxrZn7gyRdrICBnXxfOd8dRW/e8bQLvzoPj6eOvChKWr/4d?=
+ =?us-ascii?Q?hHzUFQ0kAaddOjxVA+J1JwVDerN61lgkZZHhY9/p9SJ4yppg037QMh1inFRJ?=
+ =?us-ascii?Q?8U7qpTN3rY4s6LYn94PDP7ud5mpOsnO2Xs7xmNtElfO+nclkJ2mrSr2gJwE4?=
+ =?us-ascii?Q?AFl4aUzDH5RIpgaBfQQWH+XqsjI5b8nO2FU+AlBVTwQeZ5LuBr9/RoHOZagh?=
+ =?us-ascii?Q?S++0LvT6kVO+NUo1wlos9a88ytNp8D3l6qJFGWBPePl4twkgJgCPvVLMrOE0?=
+ =?us-ascii?Q?v9TrBQXLXVksE8seLh+q63ZlL5X9H/E9CUoEpIgpaAUQjmEy2isQm/3DmAxC?=
+ =?us-ascii?Q?VAP2/1sRl4hv5aYHl8J6h+Uy886ySedUhmouNFqBzUFX0HRfe1CUrvC1cSpC?=
+ =?us-ascii?Q?07bYLiLnFcys5/a6HW0WCnchk+W7mOsBCYCWXiYJGkGooIr12VFGFj2kZ1g+?=
+ =?us-ascii?Q?GriuISFP9Zy80dPSo7Mj/Iy24RyVVjC3zaBm0PYe4rFZTmDTy0wnWRO0U+K0?=
+ =?us-ascii?Q?Y0omfhAlUq45Jc085t0dFW6IzaiJqicifoP/9lE9otC/omg+5Y05yR5sIDDO?=
+ =?us-ascii?Q?T8TVr/rJjQQQR3hlwo6jmxRXjzt9hspFPAEh4Xp+ix3zC9F5EIWocmbYI5nA?=
+ =?us-ascii?Q?9Oiq18PGrWHWNLSV0iw2wp+5jTp46XYlKDR2GPAI6H/AKR7tuZyDNlRQoBnA?=
+ =?us-ascii?Q?r1u4QY2qhSm1p5ZnaDxkkfOjT8MxTZ/qeXWCOUuBcR7C2/NWMMYEV50dPoQL?=
+ =?us-ascii?Q?sxkc7ip7AE1AFd8ZQg7sQHgJ3cvTTvHZaG2k+JpkDXI/xMnHisYJmdOUrVpZ?=
+ =?us-ascii?Q?yWGFTIJKSqQy7KiM9sA8Y0gDFGSiRTPRHwnvzw73V0X2sNpK0iwj93QsBqlW?=
+ =?us-ascii?Q?+tlKzrgPDn8ZQFTZmHCE+QpwNhuz8nyrxaF4iwePLFrEIi+GG0tZC0+SoMRk?=
+ =?us-ascii?Q?OPkMWpI19CHSxcLpvISyWojl+ziaavkXhlK2mYlZNkxYFOYYBBTcb6+fQVzZ?=
+ =?us-ascii?Q?AVkUnSQPjCW7h8O/hOM5YHt6RRyXAE8xIVNMvCS6mH2k+GUcdmQQV+UKpesR?=
+ =?us-ascii?Q?RhCh1yCeC+Hc3sMvlZx9SJaD1/Edz1qNd0cxkfOKwpE8HceHxBwvikHpvFju?=
+ =?us-ascii?Q?xWabGAQbEP5xk60n4x3pes2gvR3cwDKHJyuJRKCio8/7Z/Cih7EKHi91Ofj+?=
+ =?us-ascii?Q?q4LMHph0RUCPzwSPIwWnTMnVmHvsT4zUAjfPGpHoD5g0XYm/eaGHE60uKqTv?=
+ =?us-ascii?Q?btcRtM6+jQiwrhw0CS+klwmhyXqARvFuM8nzxYibYd3C9OghSPzfTuqRru24?=
+ =?us-ascii?Q?xY40Rr/wUa2yn6lh8/Mccvx9tzh9xyWhe2Oux2f3OL3C/e1Ooalx3jZOLzlY?=
+ =?us-ascii?Q?yYj0T22mdGooBDTEAg4IT80zFroLigjcz98xv5Uk?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 872e23fb-93ca-4539-c90a-08dabde67cda
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbbe086e-a0ff-4bef-1b84-08dabdb02406
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2022 15:29:04.2151
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2022 21:58:06.3712
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z1rQrZPtGe4EwIQe8GL75ZtE/4seXE8RwT1/RpIlkcx0l5pJf0F7Y2C1iCP/mHOkgW9i61TzZRNIaFxEbATnSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7918
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6XzQpNY42v1LjuMWmKvFN8ozP/+nMuY1PmlX9UueUfPzm9/E2sqcjdN5ninGakt8wuGlkPRu91xJ12Btq/d8tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8828
 
+Simplify the code logic of handling the quirk of FEC_QUIRK_HAS_RACC.
+If a SoC has the RACC quirk, the driver will enable the 16bit shift
+by default in the probe function for a better performance.
 
+This patch handles the logic in one place to make the logic simple
+and clean. The patch optimizes the fec_enet_xdp_get_tx_queue function
+according to Paolo Abeni's comments, and it also exludes the SoCs that
+require to do frame swap from XDP support.
 
-> -----Original Message-----
-> From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Sent: Thursday, October 27, 2022 2:06 AM
-> To: Frank Li <frank.li@nxp.com>
-> Cc: Jun Li <jun.li@nxp.com>; Frank Li <frank.li@nxp.com>; a-
-> govindraju@ti.com; gregkh@linuxfoundation.org; hzpeterchen@gmail.com;
-> imx@lists.linux.dev; linux-kernel@vger.kernel.org; linux-
-> usb@vger.kernel.org; pawell@cadence.com; peter.chen@kernel.org;
-> rogerq@kernel.org; stable@kernel.org
-> Subject: [EXT] Re: [PATCH v2 1/1] usb: cdns3: host: fix endless superspee=
-d
-> hub port reset
->=20
-> Caution: EXT Email
->=20
-> Am Mittwoch, 26. Oktober 2022, 21:07:49 CEST schrieb Frank Li:
-> > From: Li Jun <jun.li@nxp.com>
-> >
-> > When usb 3.0 hub connect with one USB 2.0 device and NO USB 3.0 device,
-> > some usb hub reports endless port reset message.
-> >
-> > [  190.324169] usb 2-1: new SuperSpeed USB device number 88 using xhci-
-> hcd
-> > [  190.352834] hub 2-1:1.0: USB hub found
-> > [  190.356995] hub 2-1:1.0: 4 ports detected
-> > [  190.700056] usb 2-1: USB disconnect, device number 88
-> > [  192.472139] usb 2-1: new SuperSpeed USB device number 89 using xhci-
-> hcd
-> > [  192.500820] hub 2-1:1.0: USB hub found
-> > [  192.504977] hub 2-1:1.0: 4 ports detected
-> > [  192.852066] usb 2-1: USB disconnect, device number 89
-> >
-> > The reason is the runtime pm state of USB2.0 port is active and
-> > USB 3.0 port is suspend, so parent device is active state.
-> >
-> >  cat
-> > /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-
-> hcd.1.auto/usb2/po
-> > wer/runtime_status
-> >
-> >  suspended
-> >
-> >  cat
-> > /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-
-> hcd.1.auto/usb1/po
-> > wer/runtime_status
-> >
-> >  active
-> >
-> >  cat
-> > /sys/bus/platform/devices/5b110000.usb/5b130000.usb/xhci-
-> hcd.1.auto/power/r
-> > untime_status
-> >
-> >  active
-> >
-> >  cat
-> >
-> /sys/bus/platform/devices/5b110000.usb/5b130000.usb/power/runtime_sta
-> tus
-> >
-> >  active
-> >
-> > So xhci_cdns3_suspend_quirk() have not called. U3 configure is not appl=
-ied.
-> >
-> > move U3 configure into host start. Reinit again in resume function in c=
-ase
-> > controller power lost during suspend.
-> >
-> > Cc: stable@vger.kernel.org 5.10
-> > Signed-off-by: Li Jun <jun.li@nxp.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 47 ++++++++++++++---------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
 
-[Frank Li] @greg, friendly ping.
-
-> >
-> > Change from V1 to V2.
-> >  - call xhci_cdns3_plat_start() in xhci_cdns3_resume_quirk
-> > in case power lost during suspend
-> >
-> >  drivers/usb/cdns3/host.c | 56 ++++++++++++++++++++--------------------
-> >  1 file changed, 28 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/drivers/usb/cdns3/host.c b/drivers/usb/cdns3/host.c
-> > index 9643b905e2d8..6164fc4c96a4 100644
-> > --- a/drivers/usb/cdns3/host.c
-> > +++ b/drivers/usb/cdns3/host.c
-> > @@ -24,11 +24,37 @@
-> >  #define CFG_RXDET_P3_EN              BIT(15)
-> >  #define LPM_2_STB_SWITCH_EN  BIT(25)
-> >
-> > -static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd);
-> > +static void xhci_cdns3_plat_start(struct usb_hcd *hcd)
-> > +{
-> > +     struct xhci_hcd *xhci =3D hcd_to_xhci(hcd);
-> > +     u32 value;
-> > +
-> > +     /* set usbcmd.EU3S */
-> > +     value =3D readl(&xhci->op_regs->command);
-> > +     value |=3D CMD_PM_INDEX;
-> > +     writel(value, &xhci->op_regs->command);
-> > +
-> > +     if (hcd->regs) {
-> > +             value =3D readl(hcd->regs + XECP_AUX_CTRL_REG1);
-> > +             value |=3D CFG_RXDET_P3_EN;
-> > +             writel(value, hcd->regs + XECP_AUX_CTRL_REG1);
-> > +
-> > +             value =3D readl(hcd->regs + XECP_PORT_CAP_REG);
-> > +             value |=3D LPM_2_STB_SWITCH_EN;
-> > +             writel(value, hcd->regs + XECP_PORT_CAP_REG);
-> > +     }
-> > +}
-> > +
-> > +static int xhci_cdns3_resume_quirk(struct usb_hcd *hcd)
-> > +{
-> > +     xhci_cdns3_plat_start(hcd);
-> > +     return 0;
-> > +}
-> >
-> >  static const struct xhci_plat_priv xhci_plat_cdns3_xhci =3D {
-> >       .quirks =3D XHCI_SKIP_PHY_INIT | XHCI_AVOID_BEI,
-> > -     .suspend_quirk =3D xhci_cdns3_suspend_quirk,
-> > +     .plat_start =3D xhci_cdns3_plat_start,
-> > +     .resume_quirk =3D xhci_cdns3_resume_quirk,
-> >  };
-> >
-> >  static int __cdns_host_init(struct cdns *cdns)
-> > @@ -90,32 +116,6 @@ static int __cdns_host_init(struct cdns *cdns)
-> >       return ret;
-> >  }
-> >
-> > -static int xhci_cdns3_suspend_quirk(struct usb_hcd *hcd)
-> > -{
-> > -     struct xhci_hcd *xhci =3D hcd_to_xhci(hcd);
-> > -     u32 value;
-> > -
-> > -     if (pm_runtime_status_suspended(hcd->self.controller))
-> > -             return 0;
-> > -
-> > -     /* set usbcmd.EU3S */
-> > -     value =3D readl(&xhci->op_regs->command);
-> > -     value |=3D CMD_PM_INDEX;
-> > -     writel(value, &xhci->op_regs->command);
-> > -
-> > -     if (hcd->regs) {
-> > -             value =3D readl(hcd->regs + XECP_AUX_CTRL_REG1);
-> > -             value |=3D CFG_RXDET_P3_EN;
-> > -             writel(value, hcd->regs + XECP_AUX_CTRL_REG1);
-> > -
-> > -             value =3D readl(hcd->regs + XECP_PORT_CAP_REG);
-> > -             value |=3D LPM_2_STB_SWITCH_EN;
-> > -             writel(value, hcd->regs + XECP_PORT_CAP_REG);
-> > -     }
-> > -
-> > -     return 0;
-> > -}
-> > -
-> >  static void cdns_host_exit(struct cdns *cdns)
-> >  {
-> >       kfree(cdns->xhci_plat_data);
->=20
-> Although I could only test it on v5.15 downstream kernel
-> Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
->=20
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 6b062a0663f4..0c9a434e5b7b 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1581,8 +1581,20 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
+ 	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
+ 	u32 ret, xdp_result = FEC_ENET_XDP_PASS;
++	u32 data_start = FEC_ENET_XDP_HEADROOM;
+ 	struct xdp_buff xdp;
+ 	struct page *page;
++	u32 sub_len = 4;
++
++#if !defined(CONFIG_M5272)
++	/*If it has the FEC_QUIRK_HAS_RACC quirk property, the bit of
++	 * FEC_RACC_SHIFT16 is set by default in the probe function.
++	 */
++	if (fep->quirks & FEC_QUIRK_HAS_RACC) {
++		data_start += 2;
++		sub_len += 2;
++	}
++#endif
+ 
+ #ifdef CONFIG_M532x
+ 	flush_cache_all();
+@@ -1645,9 +1657,9 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 
+ 		if (xdp_prog) {
+ 			xdp_buff_clear_frags_flag(&xdp);
++			/* subtract 16bit shift and FCS */
+ 			xdp_prepare_buff(&xdp, page_address(page),
+-					 FEC_ENET_XDP_HEADROOM, pkt_len, false);
+-
++					 data_start, pkt_len - sub_len, false);
+ 			ret = fec_enet_run_xdp(fep, xdp_prog, &xdp, rxq, index);
+ 			xdp_result |= ret;
+ 			if (ret != FEC_ENET_XDP_PASS)
+@@ -1659,18 +1671,15 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		 * bridging applications.
+ 		 */
+ 		skb = build_skb(page_address(page), PAGE_SIZE);
+-		skb_reserve(skb, FEC_ENET_XDP_HEADROOM);
+-		skb_put(skb, pkt_len - 4);
++		skb_reserve(skb, data_start);
++		skb_put(skb, pkt_len - sub_len);
+ 		skb_mark_for_recycle(skb);
+ 		data = skb->data;
+ 
+-		if (need_swap)
++		if (unlikely(need_swap)) {
++			data = page_address(page) + FEC_ENET_XDP_HEADROOM;
+ 			swap_buffer(data, pkt_len);
+-
+-#if !defined(CONFIG_M5272)
+-		if (fep->quirks & FEC_QUIRK_HAS_RACC)
+-			data = skb_pull_inline(skb, 2);
+-#endif
++		}
+ 
+ 		/* Extract the enhanced buffer descriptor */
+ 		ebdp = NULL;
+@@ -3562,6 +3571,13 @@ static int fec_enet_bpf(struct net_device *dev, struct netdev_bpf *bpf)
+ 
+ 	switch (bpf->command) {
+ 	case XDP_SETUP_PROG:
++		/* No need to support the SoCs that require to
++		 * do the frame swap because the performance wouldn't be
++		 * better than the skb mode.
++		 */
++		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
++			return -EOPNOTSUPP;
++
+ 		if (is_run) {
+ 			napi_disable(&fep->napi);
+ 			netif_tx_disable(dev);
+@@ -3589,17 +3605,12 @@ static int fec_enet_bpf(struct net_device *dev, struct netdev_bpf *bpf)
+ }
+ 
+ static int
+-fec_enet_xdp_get_tx_queue(struct fec_enet_private *fep, int cpu)
++fec_enet_xdp_get_tx_queue(struct fec_enet_private *fep, int index)
+ {
+-	int index = cpu;
+-
+ 	if (unlikely(index < 0))
+-		index = 0;
+-
+-	while (index >= fep->num_tx_queues)
+-		index -= fep->num_tx_queues;
++		return 0;
+ 
+-	return index;
++	return (index % fep->num_tx_queues);
+ }
+ 
+ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+-- 
+2.34.1
 
