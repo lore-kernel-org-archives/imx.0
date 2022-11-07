@@ -1,118 +1,76 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2337F
-	for <imx@lists.linux.dev>; Mon,  7 Nov 2022 10:29:47 +0000 (UTC)
-Received: by mail-vk1-f170.google.com with SMTP id t85so6299166vkb.7
-        for <imx@lists.linux.dev>; Mon, 07 Nov 2022 02:29:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C36215B1
+	for <imx@lists.linux.dev>; Mon,  7 Nov 2022 10:30:31 +0000 (UTC)
+Received: by mail-vk1-f182.google.com with SMTP id b81so6307206vkf.1
+        for <imx@lists.linux.dev>; Mon, 07 Nov 2022 02:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zaNxkXQ1Y4JKbXCKNHnI42Q7eEAv3p2c5wJUZMq4jg0=;
-        b=LALeX+CQc6yEAIT60ZcvX38eVOtEox1MCHJCm/0G+Q1qAGru2yWXLRd6QBRUqHcjVw
-         +Icd2aOOOtpj6szG5Y5HbluYDK658QcJ1pC7e8Yd76bRz5goJZxaF4Dy6PNa2Svh5f8E
-         oOZBYeOzAX5bfxbgR0QGPyj0veg25b8GvR/kKsAZ0/q+ymIBotnrmLIPD3Orvvvz1Md1
-         DWjqcAKNoq39Rm810RCCfBBO0mq6UJR+p7uaer3mD+yBfN19cUYBACUqJoEmsbt5eOXf
-         pe/jtmGnlJL+BV8gkhtpMcJ8sESAPxYe7PhFW0/zCI2oNLv2E3p4C+6atNREHuuZuooP
-         lVaQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+8+uu9kKMEq8Y9OytB8gsVKut4lj3U0/a/S35uT3UQU=;
+        b=MDTYVKCNb0/qgY91nHj/Ep35Uoawu+BRg898hqS8zg/Je5DSaYTXknBqq7645UiEGb
+         mKIf5IfDCiYNikSC5gV+YsfKpkEZBFDrtQW+E7SGZl53VB1+CSORJ1wKHVVWBIbWfGa5
+         nepqOj5o1L74FadAoIMIuvYubN3MPSHk3Jf3HhhZgTjPMVdKvTe9dY1+/2BEsJRRY9/3
+         qdvNqs+AN6uFaVshhSTH9LgLvI0Z13z/iiSBHmbbIMo2sRKh8O3SYIRl6BFN8D299Yms
+         9F2l99bQgu4KlGxqwV0y8DKInddibkNB2OmXb7QBjn+76h7KtF/Rhn33LSn6Kq2kmUJy
+         Vzew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zaNxkXQ1Y4JKbXCKNHnI42Q7eEAv3p2c5wJUZMq4jg0=;
-        b=wP5pkA2fe51hFigqxhQ1rTVL4YvAJLzROlQTPOeMxYrxMMm+ghGdaIiGWEW163Izbk
-         oK01dkQMol3oTdcFckpouvVIXqMRRWWnowDJbVOSJ4bdu+4PAZNiSdDkFWHtsrwsCLAz
-         BG2y7G9cHkIpFsMMPvLDE9NOMpQ93Jab3+rJryQ/UicCMtmqdtPuO3azZ8WZe+IJSSWg
-         mqYdWz1UH2ZGr+WRTMg8gHfONmWu5eWAAhrRNWBZZrC1PMfRWaqGM3PRQ5dsp5McWIqz
-         X6+bjqJD8q/NTv0ZcBC3DXWY3q1wAVdGkTsKu6dg4CQyi31Rrwcy/tyUj3JGYezyDfZ1
-         GWiw==
-X-Gm-Message-State: ACrzQf1DN5lYtNaMi8cXtsdW0ceDDrmF3wLOG1YkltCzrqGLIVUbUl0r
-	nLBWoKRH8XJCkqxWa93kVXyLN+HVfSi9BrSVvrgEBw==
-X-Google-Smtp-Source: AMsMyM54Yr6hXkptY8k/m5E89W3bthkgvtDvkRDLzEyVct04WyInaLWAUG81rqK49HcbcfuEwdadpXGnAPKFDHFttEc=
-X-Received: by 2002:a05:6122:2219:b0:3b8:7fbd:9554 with SMTP id
- bb25-20020a056122221900b003b87fbd9554mr5383200vkb.27.1667816986458; Mon, 07
- Nov 2022 02:29:46 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+8+uu9kKMEq8Y9OytB8gsVKut4lj3U0/a/S35uT3UQU=;
+        b=4dC6RfuO+pxS5NanaadPuV3nRaOiVnlfyKq9nqlpCBNZAxhk0fKdK2T69l0ilrMBdO
+         FczSWprgQH/Hp7fH9pUJzSBGxW1lkk7oxvRlJwtrJviCb9Rgurifl1jyf2X4qZyzparG
+         mNpd9eegnfWDW6If+/L8ZbkoQCP1M/xtFRXXXjQtDoI9i2Z0ATnvNaDJd1O6Eraaq/oY
+         fNgVLm0zauSQ73vKaN2cd/n3oBvVqpZGDjPqLftknaN6c0IkK9XvMKxhtEOruhefhudi
+         HswmfUFXhVjJeVUPdqi3dM5+Gd5BLoOQFlCEKZp2WUq1I+pPIfu++uA4ljsQiit8xq8U
+         AADg==
+X-Gm-Message-State: ACrzQf324GV8VpFooQxT0g2x8s0w8279dquLZqMZZY3BuzMYOngj2Zvf
+	0tThckivjRLjTwF/umupalnEdYsUMZLBsrjVJ0RFEg==
+X-Google-Smtp-Source: AMsMyM40dfLheNyJpxRKrlruFqXHZd3uAgc7HrLOqZvbFfPbKtA0whtMMMLzf5d7lWMkSxfcWdRjVful/T9eocL8Dsk=
+X-Received: by 2002:a1f:e5c2:0:b0:3b7:3aca:9868 with SMTP id
+ c185-20020a1fe5c2000000b003b73aca9868mr7842964vkh.33.1667817030498; Mon, 07
+ Nov 2022 02:30:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20221027130859.1444412-1-shenwei.wang@nxp.com> <PAXPR04MB9185E538798F83B3C03C70EA89389@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB9185E538798F83B3C03C70EA89389@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20221027130859.1444412-1-shenwei.wang@nxp.com> <20221027130859.1444412-6-shenwei.wang@nxp.com>
+In-Reply-To: <20221027130859.1444412-6-shenwei.wang@nxp.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 7 Nov 2022 11:29:35 +0100
-Message-ID: <CAMRc=McPXjixgSJNDfFLRzR=OM2Q9SuAuCumqEpjb_s2fdYa-w@mail.gmail.com>
-Subject: Re: [PATCH v4 0/5] gpio: add suspend/resume support for i.mx8x SoCs
+Date: Mon, 7 Nov 2022 11:30:19 +0100
+Message-ID: <CAMRc=Mf+ByrcBt64gMdiWTgBRETuNHoJZNud1ZkW1T77rR6+QQ@mail.gmail.com>
+Subject: Re: [PATCH v4 5/5] gpio: mxc: enable pad wakeup on i.MX8x platforms
 To: Shenwei Wang <shenwei.wang@nxp.com>
 Cc: Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
-	Aisheng Dong <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	dl-linux-imx <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+	NXP Linux Team <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 3, 2022 at 11:01 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
+On Thu, Oct 27, 2022 at 3:10 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
 >
+> On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
+> the GPIO block will be powered off when system enters into suspend
+> state. This can greatly reduce the power consumption of suspend state
+> because the whole partition can be shutdown. This is called PAD wakeup
+> feature on i.MX8x platform.
 >
+> This patch adds the noirq suspend/resume hooks and uses the pad wakeup
+> feature as the default wakeup method for GPIO modules on
+> i.MX8QM/QXP/DXL platforms.
 >
-> > -----Original Message-----
-> > Subject: [PATCH v4 0/5] gpio: add suspend/resume support for i.mx8x SoC=
-s
-> >
-> > On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source, =
-the
-> > GPIO block will be powered off when system enters into suspend state. T=
-his can
-> > greatly reduce the power consumption of suspend state because the whole
-> > partition can be shutdown. This is called PAD wakeup feature on i.MX8x
-> > platform.
-> >
-> > This series of patches enable this wakeup feature on i.MX8QM/QXP/DXL
-> > platforms.
-> >
-> > Changes in v4:
-> >  - fixed the format issues reported by Peng Fan.
-> >  - change the return type of mxc_gpio_generic_config, and limit the
-> >    suspend/resume behavior changes only on i.MX8QM/QXP/DXL platform.
-> >
->
-> A soft ping. =F0=9F=98=8A
->
-> Regards,
-> Shenwei
->
-> > Changes in v3:
-> >  - According to the feedback from Linus Walleij, the wakeup feature is
-> >    moved to pinctrl driver, and the array of gpio-pin mapping is moved
-> >    to gpio device node and initialized via gpio-ranges property.
-> >
-> > Shenwei Wang (5):
-> >   arm64: dts: imx8dxl-ss-lsio: add gpio-ranges property
-> >   arm64: dts: imx8qm-ss-lsio: add gpio-ranges property
-> >   arm64: dts: imx8qxp-ss-lsio: add gpio-ranges property
-> >   pinctrl: freescale: add pad wakeup config
-> >   gpio: mxc: enable pad wakeup on i.MX8x platforms
-> >
-> >  .../boot/dts/freescale/imx8dxl-ss-lsio.dtsi   | 41 +++++++++
-> >  .../boot/dts/freescale/imx8qm-ss-lsio.dtsi    | 38 ++++++++
-> >  .../boot/dts/freescale/imx8qxp-ss-lsio.dtsi   | 25 +++++
-> >  drivers/gpio/gpio-mxc.c                       | 92 ++++++++++++++++++-
-> >  drivers/pinctrl/freescale/pinctrl-scu.c       | 30 ++++++
-> >  5 files changed, 225 insertions(+), 1 deletion(-)
-> >
-> > --
-> > 2.34.1
->
-
-GPIO part looks good to me.
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
 Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
