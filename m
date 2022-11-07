@@ -1,76 +1,127 @@
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80084.outbound.protection.outlook.com [40.107.8.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C36215B1
-	for <imx@lists.linux.dev>; Mon,  7 Nov 2022 10:30:31 +0000 (UTC)
-Received: by mail-vk1-f182.google.com with SMTP id b81so6307206vkf.1
-        for <imx@lists.linux.dev>; Mon, 07 Nov 2022 02:30:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+8+uu9kKMEq8Y9OytB8gsVKut4lj3U0/a/S35uT3UQU=;
-        b=MDTYVKCNb0/qgY91nHj/Ep35Uoawu+BRg898hqS8zg/Je5DSaYTXknBqq7645UiEGb
-         mKIf5IfDCiYNikSC5gV+YsfKpkEZBFDrtQW+E7SGZl53VB1+CSORJ1wKHVVWBIbWfGa5
-         nepqOj5o1L74FadAoIMIuvYubN3MPSHk3Jf3HhhZgTjPMVdKvTe9dY1+/2BEsJRRY9/3
-         qdvNqs+AN6uFaVshhSTH9LgLvI0Z13z/iiSBHmbbIMo2sRKh8O3SYIRl6BFN8D299Yms
-         9F2l99bQgu4KlGxqwV0y8DKInddibkNB2OmXb7QBjn+76h7KtF/Rhn33LSn6Kq2kmUJy
-         Vzew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+8+uu9kKMEq8Y9OytB8gsVKut4lj3U0/a/S35uT3UQU=;
-        b=4dC6RfuO+pxS5NanaadPuV3nRaOiVnlfyKq9nqlpCBNZAxhk0fKdK2T69l0ilrMBdO
-         FczSWprgQH/Hp7fH9pUJzSBGxW1lkk7oxvRlJwtrJviCb9Rgurifl1jyf2X4qZyzparG
-         mNpd9eegnfWDW6If+/L8ZbkoQCP1M/xtFRXXXjQtDoI9i2Z0ATnvNaDJd1O6Eraaq/oY
-         fNgVLm0zauSQ73vKaN2cd/n3oBvVqpZGDjPqLftknaN6c0IkK9XvMKxhtEOruhefhudi
-         HswmfUFXhVjJeVUPdqi3dM5+Gd5BLoOQFlCEKZp2WUq1I+pPIfu++uA4ljsQiit8xq8U
-         AADg==
-X-Gm-Message-State: ACrzQf324GV8VpFooQxT0g2x8s0w8279dquLZqMZZY3BuzMYOngj2Zvf
-	0tThckivjRLjTwF/umupalnEdYsUMZLBsrjVJ0RFEg==
-X-Google-Smtp-Source: AMsMyM40dfLheNyJpxRKrlruFqXHZd3uAgc7HrLOqZvbFfPbKtA0whtMMMLzf5d7lWMkSxfcWdRjVful/T9eocL8Dsk=
-X-Received: by 2002:a1f:e5c2:0:b0:3b7:3aca:9868 with SMTP id
- c185-20020a1fe5c2000000b003b73aca9868mr7842964vkh.33.1667817030498; Mon, 07
- Nov 2022 02:30:30 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE35D51D
+	for <imx@lists.linux.dev>; Mon,  7 Nov 2022 14:38:47 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YN9wmr8f8Yq08deXaQAMcSO2gu6D8tvM0EKgeJPEm434onptuONQxdoXkClLIY2JnGFeRw/M/2rQMVmejkU2g5WhQyUJxC5Tr8yHq/8Lur6GneoXkomk329x79H/ZaVJeKjGgIcW1pkR7jNOAqJvzZpFlNkiBa8ks5Nlsc1VCwPEk2pFuoFBH3emPyq0XjO77ShxyAphTnsGzpTNnZqF5SrLEek9sY2GkVUZWhFe5pssdjXgUO8eH30AD+v45lztMak+VYE84Sx1AukbqKjrkovG9oDJeQyIG5YUva+eFUSchBiLsju/OfuDap72UDnGqM2JMPp244RHEdRq+5n1Fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+DMi05oM+ZJ69choAeJAxEp8II5Afox17XDpjRIM1ts=;
+ b=ICjrVMtNrzioFpIjuDBhCN+O+G6Wh0TpP55cxF3mgfkElleiRI/kg1j4749Gk7F9cr07+Ywtup++BqhETKaEJyKLTM81P5Z+jJQPEo5KDQewhgNZBzfBFcRHOrTqEiVPT5v99EOlyvV81fv5DPajKbl7HyKOT2HZbe5udylqOmJC4iKuWPsLIc/cYOsa8wS8DCts5SZWloeQ0BWz5rGLOSgA+cjRUfy6q8x2scp8GI4y/RS0pmYGCVU6n54EtFDL9YYwiy4hTcxmyy6gLL4lOqdAjp3twOTU0VnFgMWbbqw5kU+zL6g7HVli52wHENNItrsRvVt5ygtFEuITdV3Aig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+DMi05oM+ZJ69choAeJAxEp8II5Afox17XDpjRIM1ts=;
+ b=PHkTXBT31IPSB2zXyIbmF8+AjRPF/XkN2QQcRJDlFfK8nrBw5tzqRMbPa5BwLVSoU8BPQjYuIjKogg8dxf4gZ2yyZM3Qo8l0E5DzE7En8KpJZz1ryrifjJ+v9tAggy0BeqGkPMn7RpVdbVDm8nGzqgU4UtCycSd7Qi1zirEgdP0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AS8PR04MB8385.eurprd04.prod.outlook.com (2603:10a6:20b:3f3::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5791.20; Mon, 7 Nov
+ 2022 14:38:44 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b1ab:dd4f:9237:d9f8]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b1ab:dd4f:9237:d9f8%3]) with mapi id 15.20.5791.026; Mon, 7 Nov 2022
+ 14:38:44 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH 0/2] optimization and statistics
+Date: Mon,  7 Nov 2022 08:38:23 -0600
+Message-Id: <20221107143825.3368602-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0239.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::34) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20221027130859.1444412-1-shenwei.wang@nxp.com> <20221027130859.1444412-6-shenwei.wang@nxp.com>
-In-Reply-To: <20221027130859.1444412-6-shenwei.wang@nxp.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 7 Nov 2022 11:30:19 +0100
-Message-ID: <CAMRc=Mf+ByrcBt64gMdiWTgBRETuNHoJZNud1ZkW1T77rR6+QQ@mail.gmail.com>
-Subject: Re: [PATCH v4 5/5] gpio: mxc: enable pad wakeup on i.MX8x platforms
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	NXP Linux Team <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AS8PR04MB8385:EE_
+X-MS-Office365-Filtering-Correlation-Id: 501a3226-2591-4b0f-af41-08dac0cdc5a9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	TSC4SCX6sxROVKohOwbiYa3HSvvj9hGS07lDL4u5EykjheK6SATItosIbzGb+IdRCfF9N6hfwCqm+2+TTZtWgXmOqgX/jE2Y7bOjFCI9dDb3VeBdqsRf+APaVqxpKs2d6DVQpIx9rfnTD/Oc/7q+s5NPl0k/4dAP8mOV9hM+QE8i7diMlUBl/KLO5SVZCG8lstMRn0kepCS8Zt4D9RWAHWEfM/zZLsnaGtB9vY3+MxW2M4IocSB1/5C5B6BjfHP1NM+wQAvkm5EwKJUkBseKgoMo0/naxYUGmn6QIS8tXpZ/UUvBK9v0kIfDnKgL6S70QcRRAOm7zWCzM6GsXHiOOAIzsE8LCLGgta/ibpGrpInLgv1gA2VHxD1zXj+Qs1Y2+1wzqVXAt/Tlrb7FwVmR+aF3S52e8sTKR1WCUxNopJv8y/W2Oed+TXf6/XT/gfOPxl+z73QLM8yFvthN71oNummH/HP8Ns9tos9nUtVie8Rbplo+Ewz6jbpO1rTUp6cfSTj5Zd1g72AEzfjxHHR7lyTxw4cDKD+QNmnQ8S+6hjbRPxIUC9FMKfI6Ut69UBoPK1cldvq5YEY8xAuOOJFe/Wtonpu1nE9DvTsFYe8PcX/3Q9c51VUUmJzdT5CF44QeScuZ8gt2wRk5TtqJlLmoX68uOs/6GPnujZ6eLoRCEhxyiGcGGxPQ9Q+hP34VbpVpNHcM9+lP3xEBMS/K035J/5cW0w+U6edsVbFrWmujFda+C6lhE/ufZk9N2Dmy62l3mypFma8mJsSCVXfhfcpTu7vfC2uutWF4GOdLk7cS59Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(376002)(366004)(396003)(39860400002)(451199015)(2906002)(66556008)(66476007)(8676002)(4326008)(66946007)(83380400001)(55236004)(52116002)(6666004)(6506007)(966005)(478600001)(86362001)(6486002)(2616005)(1076003)(186003)(316002)(6512007)(26005)(110136005)(36756003)(54906003)(5660300002)(8936002)(7416002)(38350700002)(38100700002)(4744005)(41300700001)(44832011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CoLR29I8VFz/jSwGSXtK0LAIzKq4imHdZN9tDX3UTzUOL/Nh8YqOh0YOrzPP?=
+ =?us-ascii?Q?XxkY7uz0TZGtVxNWzStckCJtmcXfp6BwXnE5lHaNusE/Cd72FmSFzgArAsSx?=
+ =?us-ascii?Q?eGknSh17g6hrRXEAZzQjSxxWQ63zTih7vlmnajQnmHDQVyRG+px9nOo17qIp?=
+ =?us-ascii?Q?4P7xhq8+dBKZggO+0hb0KtHD7pL5/Y8uk+JzZGajbaYfbi95vzEdKbCX6q0k?=
+ =?us-ascii?Q?VUDpCzkIfo3yQpzdSFoxO9uVai59we1xyCJD5KlN8oDpeKBmxO0w3ZNenzS3?=
+ =?us-ascii?Q?c9y8AWhuQLyrDJx9rIsWE2heQZFYUdSSK1clIRg+PkFsgGbEj8oanXdCABnS?=
+ =?us-ascii?Q?XA1St0Qx/OHp+gfdkYrPzSbY8Doiw7kaaGMkWR2obj4vnHapm3YSPxmXBVqS?=
+ =?us-ascii?Q?T/JUdeDvL2oFYjtxuYk6paxKfYbrv4+XEAlgnOfiMRDZClAXV3aLDeWCJTmM?=
+ =?us-ascii?Q?/pl6i8SFoxsXACPT/+pFj7dvVExluSe6FaTkJtLo9BT53fswvChY1bjSxBqH?=
+ =?us-ascii?Q?XdP3Bu/WFbDFALvyRwhNrgH/fYsxIp5CLJfZ48V0SzW4Xi4+ndA/sk9W0nTx?=
+ =?us-ascii?Q?UvLzHgU4oqLwh1xBmpPm830AJiSpS+9V9JtOZDs2Rksp8LIo6ztabYGlJrPl?=
+ =?us-ascii?Q?Mp30pB2XymWG+peBvs7r/6eKxQ5a2LX6tYu+a1vlUOdtrdmf8DRcqunNyvnx?=
+ =?us-ascii?Q?QxjryRajfSSi4VpoAfn6LiY6bEJKFE475tYdSMa4MkMatqUoPN2QiHbyEEKo?=
+ =?us-ascii?Q?+kAq5f7clnZfQeljc3q9jRE79NThQIivi0qR6bD7Kkx0oDsn3jk/NbSzM3sp?=
+ =?us-ascii?Q?xjBZ6GOKt2cwu1TgGWQBRltQ6sgo1Q23ZHEGTPIu0pIFPjRbxOH0U6tUa6o6?=
+ =?us-ascii?Q?VO4N0azApc/0OaQhcQnVcvr37ql8qfvAG0hBH6hdPqTbfS+S7IGWD8feZqTg?=
+ =?us-ascii?Q?tGVo+mw5PuSrPRlPQZN3gG7zmu6VkFy4GiW2BvDS+qrJFduKuLfKpILbOjyQ?=
+ =?us-ascii?Q?mR0AOY7IW/bJ9gmZga/g2PctYSMSc/8P/Cku39Rh0d6qaiWIhTj2MeCxwh0u?=
+ =?us-ascii?Q?rjAlrz+V+j3Vqs2+GYG+yAjx4vzmUaF8dQNmbsYmclOUTVd5dH3F8O2ke83y?=
+ =?us-ascii?Q?GDQahmeRnZu5yE1Et63wLjGqBYCZ8m5sdUuNAs/AEWB5f1p22sJE8l5R/R3R?=
+ =?us-ascii?Q?5aXvBQ9xHXQpNXqirYDcH3qc166v6y1UJa1BnZXnaKXCUUWybP/U12vV6VzM?=
+ =?us-ascii?Q?nV+fJyw9zrpPTTph23b4zX1W1wQIs58yVyeUPIeDC6UAUmxrmf+xkFERNwOp?=
+ =?us-ascii?Q?fqa4R1lgCaCNaPiQuOee2ixoZHpWZe7NLpAvqgITWlWwH0E3WiLpvuPuh3sN?=
+ =?us-ascii?Q?IcHmjic9cIKfoMVJOuyqeQpYHBBwmMEHs2jgM/9jAD83R4wVdFcDbtuQqZbA?=
+ =?us-ascii?Q?5Mh7OcZW7eW3YUWSFwQUq2sIz597TlvHhuxjmPBwplwjWbsZwAneE8juhkhb?=
+ =?us-ascii?Q?ub7l8Le/0rZ05lN95ZaNSOHv4iAIBnp81UViWlTNwc0xrUv3Jq37yBpmeFl8?=
+ =?us-ascii?Q?gKDWWSqTbVTvhLj4EzMbc3V0Q+yQTBT47OPIYdo8?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 501a3226-2591-4b0f-af41-08dac0cdc5a9
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2022 14:38:44.5125
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vrojEz9ccSewb6H/Y5MRQRYzj3MxihNh5XQLC+UowWnvvZRFXp4t4MUz6ZQ0o64VYggztYz1xH4WRzAO4++y7A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8385
 
-On Thu, Oct 27, 2022 at 3:10 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
->
-> On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
-> the GPIO block will be powered off when system enters into suspend
-> state. This can greatly reduce the power consumption of suspend state
-> because the whole partition can be shutdown. This is called PAD wakeup
-> feature on i.MX8x platform.
->
-> This patch adds the noirq suspend/resume hooks and uses the pad wakeup
-> feature as the default wakeup method for GPIO modules on
-> i.MX8QM/QXP/DXL platforms.
->
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> ---
+As the patch to add XDP statistics is based on the previous optimization
+patch, I've put the two patches together. The link to the optimization
+is the following:
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+https://lore.kernel.org/imx/20221104024754.2756412-1-shenwei.wang@nxp.com/
+
+
+Shenwei Wang (2):
+  net: fec: simplify the code logic of quirks
+  net: fec: add xdp and page pool statistics
+
+ drivers/net/ethernet/freescale/fec.h      |  12 +++
+ drivers/net/ethernet/freescale/fec_main.c | 119 ++++++++++++++++++----
+ 2 files changed, 109 insertions(+), 22 deletions(-)
+
+--
+2.34.1
+
