@@ -1,51 +1,51 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56648F4A
-	for <imx@lists.linux.dev>; Tue,  8 Nov 2022 10:24:35 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id k2so37386629ejr.2
-        for <imx@lists.linux.dev>; Tue, 08 Nov 2022 02:24:35 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977C38F4A
+	for <imx@lists.linux.dev>; Tue,  8 Nov 2022 10:24:56 +0000 (UTC)
+Received: by mail-ed1-f51.google.com with SMTP id i21so21715332edj.10
+        for <imx@lists.linux.dev>; Tue, 08 Nov 2022 02:24:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BTTHBNjBtTpYDRiI+nagl9P0lankquzjvOptk3WzP7A=;
-        b=o4IaTT6mhB9aAAypocUuyM2wEnWmwMci2CqOIhamCcZJft7dfV07Yi/lxD5tqDaSyd
-         L2aWt7W6dKFVwLMl0fk8yoK6DgH8pD7V5Zf5XWEVf72mnA8oxAvDjwoJoZ7GG0AvLKR6
-         E87H251kjTeHwZYlaHZ8+LeUlvEP4+cxss1jZZ68MvMsX8bZWHk4zc7O5usiF1WHi3xE
-         yj79OrOl0aAjhm2JJt62dC7OzxEqFLr9MnJGKcVx9Uu3CNJaShSn4u1A+vvB6t1V/Sue
-         ZbWEKlTDwTGsAxRQbqqrax+WkjN5H1Tt0Kn2iGd44eAnKt6oU7ieLXP4qyfSduLnbjI9
-         ixbg==
+        bh=3U9H2oDYo0jHZ5n7VD9WQgIXQHftQXj5Rvrab9Xb/3M=;
+        b=FoICTrB0HokDj9Jr/RWi2HeiYU3xlqoZr/QJxMZBhg5PgaXUia0hn4SzasJunwTCQi
+         a59ynF8QExOW/dv2VvDEGzEJ+4nEy2fmWW/CIKkF++Rvlh7B0mkvjIvBQ5UQ/+ZBVwLq
+         0en6zt2YjQxJqsexkTC9HaxD5t5dEhp9BBx4GBInvt0LzgIBuIMZUp0NhP4czatc80P5
+         ZnRfaPTyQkiWEBBkoVxs8b8umWvE1hkQpZzlqNQQzBa8n9YllreQs1gCq1gaEyXol0SY
+         4gI2NFkG/zwVc7S4pTrIk/eoPajcxNRH3YCJnxzdgBggAUUMmopZOn4+5qm3/I4g2i6p
+         0lpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BTTHBNjBtTpYDRiI+nagl9P0lankquzjvOptk3WzP7A=;
-        b=AoOEptsRTCiBakSMrGOh8mOFUdHvjpkRKzWZ9jt9gylEWI03esvzANVUFgRbe0W54+
-         g+H0v0/OmlBPbF0BjWfdfry8cCjB9lrqG0eNoRGMxR/9FLgpZviv4SeJw3827v+DW0X9
-         K+b5onXSjM1j5HyIZBGL/CBAJBojD7jS0njSJzB7BN1FJ2t5tqBYzTizzPXy+c+rW1K2
-         CIUeqf712TyJkN8X4xbwN2n6XA307Em6v3P0YyKiWpddCzDYOfBEcJJq2jKcXoMd1jU6
-         B/2jowRHV3R14eoEIO1uUeQXCpajmGgihfYzCqMkx7juaGz0qJLK3H3tOofMoxdRwD8t
-         2WSQ==
-X-Gm-Message-State: ANoB5pnxzH6k/dv6PoerDndwe4FNI98EJ7GezWrXb4LXGraPj3MrpM2d
-	2P0qFM1srs8+0wxTsFT2xiW241gR/5FzJX8qYIMa4Q==
-X-Google-Smtp-Source: AA0mqf5MOcAk17Z/aFvf+7ny+bpNY81RyNBA5Z+fpcYISwJidn/J6X0PdTakonxMEwooWMgTwTgz96R8CVOZ3Cwd1/U=
-X-Received: by 2002:a17:906:6acc:b0:7ae:658c:ee45 with SMTP id
- q12-20020a1709066acc00b007ae658cee45mr10466302ejs.190.1667903074024; Tue, 08
- Nov 2022 02:24:34 -0800 (PST)
+        bh=3U9H2oDYo0jHZ5n7VD9WQgIXQHftQXj5Rvrab9Xb/3M=;
+        b=By87WrJt3Bx6NDhZoRH9fgS0ZjfGzRjtFL3RFfRLWj5O9j3xd/zn9IyKS826v3FdUW
+         ybxvMGSwUeCfvE7PB65qGcdbHIiyUUbZUYyvvrLFVC4DgVEdGGXfvk/+sPKOYuxSozDZ
+         DjDOB1yiyMM+v8eMlHFsH2w2SRmVE7NEABwhNZo9A//6zp5mCwXQ+BgzpxmRqDz8bPWz
+         cWQtn+PN/ruOIr/b6REx8yhBgAQXgsMhsaxKh32OImuOjHamqPkKzuWUlDwhoPsmbSXm
+         ySYrHLXOOZim+/DnsCrNYOD1Q7F2rVUMvd48xyHVZ5xsid63q3GfK1sqBmBYuI368b0E
+         10xA==
+X-Gm-Message-State: ACrzQf3fxZsU64JIMeW2hCl4lBUZT6Rg7TTGHxEBrvxFLszH3NMkmpwY
+	QHh9HAiPEA6ekN8KPv0Kt91PfMHz+w1FPov59eHePA==
+X-Google-Smtp-Source: AMsMyM4+kmlt812NqsehPqTcJthwr/1SzuUus2LC5jb9udkKVf+AcR8z9rgNjpkcnZ+q75/1Cp00Q60NPGoskvtIQ5Q=
+X-Received: by 2002:aa7:d6d1:0:b0:463:ba50:e574 with SMTP id
+ x17-20020aa7d6d1000000b00463ba50e574mr37142535edr.158.1667903094898; Tue, 08
+ Nov 2022 02:24:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20221027130859.1444412-1-shenwei.wang@nxp.com> <20221027130859.1444412-2-shenwei.wang@nxp.com>
-In-Reply-To: <20221027130859.1444412-2-shenwei.wang@nxp.com>
+References: <20221027130859.1444412-1-shenwei.wang@nxp.com> <20221027130859.1444412-3-shenwei.wang@nxp.com>
+In-Reply-To: <20221027130859.1444412-3-shenwei.wang@nxp.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 8 Nov 2022 11:24:23 +0100
-Message-ID: <CACRpkdbrnxmHv-rn7fiuMkH=asK2D82fdiUUgdqk70Hs9V4b9g@mail.gmail.com>
-Subject: Re: [PATCH v4 1/5] arm64: dts: imx8dxl-ss-lsio: add gpio-ranges property
+Date: Tue, 8 Nov 2022 11:24:43 +0100
+Message-ID: <CACRpkdY5Eu6gb+nsw6Teg21C7PVUUKB8vpvPE_0y_qmqyK6_CQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] arm64: dts: imx8qm-ss-lsio: add gpio-ranges property
 To: Shenwei Wang <shenwei.wang@nxp.com>
 Cc: Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -59,7 +59,7 @@ Content-Type: text/plain; charset="UTF-8"
 
 On Thu, Oct 27, 2022 at 3:09 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
 
-> add gpio-ranges property for imx8dxl soc.
+> add gpio-ranges property for imx8qm soc.
 >
 > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 > Reviewed-by: Peng Fan <peng.fan@nxp.com>
