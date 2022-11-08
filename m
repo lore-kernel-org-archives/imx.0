@@ -1,191 +1,135 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CD42908
-	for <imx@lists.linux.dev>; Tue,  8 Nov 2022 03:04:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Cs3x9tc+ZgMBqe3I18ShxSkvk/KNHstoAyiOxOiMD/A=; b=IyKri1AWH2/qZZca8gTYBCxvn4
-	rroDdxIZk2HZSCtF665/NYyXTCUDgT1k5NulxF8NZVZrt9AbnG/Q35/62FGOlSSl+e891+JqZvXQa
-	dD0z/z2YJgvlG+SQTdHcq0PJgxlCLYALl3rualxXad6VNd75YqK8IokwYmP36kXQfSuY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1osEJM-001m0U-Dl; Tue, 08 Nov 2022 03:26:00 +0100
-Date: Tue, 8 Nov 2022 03:26:00 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] net: fec: add xdp and page pool statistics
-Message-ID: <Y2m+OHPaS6aV6GYx@lunn.ch>
-References: <20221107143825.3368602-1-shenwei.wang@nxp.com>
- <20221107143825.3368602-3-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82098F4A
+	for <imx@lists.linux.dev>; Tue,  8 Nov 2022 10:18:53 +0000 (UTC)
+Received: by mail-ed1-f41.google.com with SMTP id a67so21681739edf.12
+        for <imx@lists.linux.dev>; Tue, 08 Nov 2022 02:18:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gFvAEqcX2SoKxc0SrRrjfQO/ZDEDZy3wvqZ4CGCRRdY=;
+        b=UtRv2ephasNogp/Bf61ydaqIDXXvZ9eWiOJeIzhxKCyfygkFfe8X5PK/ZiWJLHFmwK
+         PMCVKjgbaCXHtRBQYpK8KjfDRli28GpClwLzcB0Lx3HG8Zu5ajbezFqGqZCIWPaTc45y
+         1hIAaSwL4i4jcB82qANzHwrmJB8m0c0R0q+OocobN4rGN0z4z5LJ9z18jwfwuIvaMZAK
+         usPE0+X9egrm5dDnqgUhQe2gOvSylQZOKU1j0slSdn/Xpz6mSnPKxu4rOlV5hbFk/PQj
+         umNginHwdoAexGLQ9kklqwEnp0ar/5US7blA8jzkp4L0KzgU/sL9dO7E7fUUXMT4A4w5
+         KCgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gFvAEqcX2SoKxc0SrRrjfQO/ZDEDZy3wvqZ4CGCRRdY=;
+        b=3fTr+WKAuK3mpoTtP5CtCzsUheryo2Xi4d95Af2ZhVypsf3pHOjm7zm3o82FZxKQ8e
+         IFiuGFOJdT9lotZqL+BfOwPtlDcFH6dRZiSDiZzILqA6ieG8cnoKevlM4kf1Kl9eqYgG
+         8DTOPruXGh3qoyReaoRTG1gweROoMLLerRePfGu8EfYMTGVQ3OujXgQXVaqGZp4CdkXc
+         5EYB44vkLhmimogKzOnnf9wou/5s3lm0ueFB62fHKnomo3sYy7VNMR/sCqatQN4beh18
+         MswdZbDIBZlJcmEhv13p+AiU1ilBvy1nnTNRDX6n8vuiI3A79diGnWdhXWKkjDufbz5K
+         Txgg==
+X-Gm-Message-State: ACrzQf10azG2pULecJwjZh3JiY9hdqT/BnBpTNMHsvMrl7g3X2LD6kAG
+	3JYCqRdv7UlvhcxDKyAXHxYgaVMDK8oPJBujMGpd/g==
+X-Google-Smtp-Source: AMsMyM7KDr4IoKerd9GxRXQW7LCbeRYZBOMMDpO3SZpyci03ZSKkDAoOOFmW/2XBy+0roMxXeYR4jZqJJ7zKp7LUYhU=
+X-Received: by 2002:aa7:d6d1:0:b0:463:ba50:e574 with SMTP id
+ x17-20020aa7d6d1000000b00463ba50e574mr37119966edr.158.1667902731962; Tue, 08
+ Nov 2022 02:18:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221107143825.3368602-3-shenwei.wang@nxp.com>
+References: <20221007152853.838136-1-shenwei.wang@nxp.com> <CACRpkdaKncznz5qej6owA2OGMeqbrif9e_QO3CWN6+sGhEApDw@mail.gmail.com>
+ <PAXPR04MB9185AE67BF20108CFBF0546289299@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CACRpkdZ1hCZ1WoTQ0e584bQxEyBWq9gkZKPPFnm85QnMnNyvHQ@mail.gmail.com>
+ <PAXPR04MB9185639BA2F9D61FB935741589289@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CACRpkdaa0=m9FNiV+3XJ7MUGF4eJxc5mNVKUEUn_d8SMBiOTSw@mail.gmail.com> <PAXPR04MB9185F5AF97CDB15AC8435487892E9@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB9185F5AF97CDB15AC8435487892E9@PAXPR04MB9185.eurprd04.prod.outlook.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 8 Nov 2022 11:18:40 +0100
+Message-ID: <CACRpkdbgOoR60G9k5DqzLcrPSX2oJE5wjT+oSZc9+1ihjEtChw@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH v2 1/1] gpio: mxc: add suspend/resume support
+ for i.mx8x SoCs
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Aisheng Dong <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, Pengutronix Kernel Team <kernel@pengutronix.de>, Marek Vasut <marex@denx.de>
+Content-Type: text/plain; charset="UTF-8"
 
-> +enum {
-> +	RX_XDP_REDIRECT = 0,
-> +	RX_XDP_PASS,
-> +	RX_XDP_DROP,
-> +	RX_XDP_TX,
-> +	RX_XDP_TX_ERRORS,
-> +	TX_XDP_XMIT,
-> +	TX_XDP_XMIT_ERRORS,
-> +	XDP_STATS_TOTAL,
-> +};
-> +
->  struct fec_enet_priv_tx_q {
->  	struct bufdesc_prop bd;
->  	unsigned char *tx_bounce[TX_RING_SIZE];
-> @@ -546,6 +557,7 @@ struct fec_enet_priv_rx_q {
->  	/* page_pool */
->  	struct page_pool *page_pool;
->  	struct xdp_rxq_info xdp_rxq;
-> +	u32 stats[XDP_STATS_TOTAL];
->  
->  	/* rx queue number, in the range 0-7 */
->  	u8 id;
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 3fb870340c22..89fef370bc10 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -1523,10 +1523,12 @@ fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
->  
->  	switch (act) {
->  	case XDP_PASS:
-> +		rxq->stats[RX_XDP_PASS]++;
->  		ret = FEC_ENET_XDP_PASS;
->  		break;
->  
->  	case XDP_REDIRECT:
-> +		rxq->stats[RX_XDP_REDIRECT]++;
->  		err = xdp_do_redirect(fep->netdev, xdp, prog);
->  		if (!err) {
->  			ret = FEC_ENET_XDP_REDIR;
-> @@ -1549,6 +1551,7 @@ fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
->  		fallthrough;    /* handle aborts by dropping packet */
->  
->  	case XDP_DROP:
-> +		rxq->stats[RX_XDP_DROP]++;
->  		ret = FEC_ENET_XDP_CONSUMED;
->  		page = virt_to_head_page(xdp->data);
->  		page_pool_put_page(rxq->page_pool, page, sync, true);
-> @@ -2657,37 +2660,91 @@ static const struct fec_stat {
->  	{ "IEEE_rx_octets_ok", IEEE_R_OCTETS_OK },
->  };
->  
-> -#define FEC_STATS_SIZE		(ARRAY_SIZE(fec_stats) * sizeof(u64))
-> +static struct fec_xdp_stat {
-> +	char name[ETH_GSTRING_LEN];
-> +	u64 count;
-> +} fec_xdp_stats[XDP_STATS_TOTAL] = {
-> +	{ "rx_xdp_redirect", 0 },           /* RX_XDP_REDIRECT = 0, */
-> +	{ "rx_xdp_pass", 0 },               /* RX_XDP_PASS, */
-> +	{ "rx_xdp_drop", 0 },               /* RX_XDP_DROP, */
-> +	{ "rx_xdp_tx", 0 },                 /* RX_XDP_TX, */
-> +	{ "rx_xdp_tx_errors", 0 },          /* RX_XDP_TX_ERRORS, */
-> +	{ "tx_xdp_xmit", 0 },               /* TX_XDP_XMIT, */
-> +	{ "tx_xdp_xmit_errors", 0 },        /* TX_XDP_XMIT_ERRORS, */
-> +};
+On Mon, Oct 24, 2022 at 5:05 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
 
-Why do you mix the string and the count?
+> > Cross-referencing GPIO line numbers to pins/pads is literally the job of gpio-
+> > ranges (the DT property) and we have excellent support in the GPIO library to do
+> > exactly this.
+> >
+> > It can even be made using static data in the driver if gpio-ranges for some
+> > reason cannot be encoded in the device tree.
+> >
+>
+> The current implementation is using the static data inside the gpio driver, although it
+> is not used the gpio-range data structure.
 
-> +
-> +#define FEC_STATS_SIZE	((ARRAY_SIZE(fec_stats) + \
-> +			ARRAY_SIZE(fec_xdp_stats)) * sizeof(u64))
->  
->  static void fec_enet_update_ethtool_stats(struct net_device *dev)
->  {
->  	struct fec_enet_private *fep = netdev_priv(dev);
-> -	int i;
-> +	struct fec_xdp_stat xdp_stats[7];
+So get to it. Use gpio-ranges and put this functionality in the pin control
+portions.
 
-You are allocating 7 x name[ETH_GSTRING_LEN], here, which you are not
-going to use. All you really need is u64 xdp_stats[XDP_STATS_TOTAL]
+> > I don't get it. gpio-ranges can contain any number of "holes" and whatever, the
+> > name "rangeS" (plural) implies it can be an array of ranges. If you want you can
+> > have a list of single-pin ranges, no problem.
+> >
+>
+>  No matter you prepare the mapping by using the gpio-ranges or the static array in the
+> driver,  they serve the same purpose. The only user to use the mapping is the gpio driver,
+> and the mapping is constant for a SoC family. That's why I chose to define the array inside
+> the driver.
 
-> +	int off = ARRAY_SIZE(fec_stats);
-> +	struct fec_enet_priv_rx_q *rxq;
-> +	int i, j;
->  
->  	for (i = 0; i < ARRAY_SIZE(fec_stats); i++)
->  		fep->ethtool_stats[i] = readl(fep->hwp + fec_stats[i].offset);
-> +
-> +	for (i = fep->num_rx_queues - 1; i >= 0; i--) {
-> +		rxq = fep->rx_queue[i];
-> +		for (j = 0; j < XDP_STATS_TOTAL; j++)
-> +			xdp_stats[j].count += rxq->stats[j];
-> +	}
-> +
-> +	for (i = 0; i < XDP_STATS_TOTAL; i++)
-> +		fep->ethtool_stats[i + off] = xdp_stats[i].count;
+This is not an excuse to not use gpio-ranges and duplicate code and
+data. Switch to using gpio-ranges.
 
-It would be more logical to use j here.
+> > The MMC/SD card bus has ways of waking up devices by pulling a line low, as
+> > does things such as UARTs. And then the pin isn't even used as GPIO.
+> >
+>
+> That's another kind of wakup method. Currently we are talking about the pad
+> wakeup. The examples you gave like SD/UART, they are not pad wakeup feature,
+> we can call them as IP native wakeup.
 
-It is also pretty messy. For fec_enet_get_strings() and
-fec_enet_get_sset_count() you deal with the three sets of stats
-individually. But here you combine normal stats and xdp stats in
-one. It will probably come out cleaner if you keep it all separate.
+Hm intersting!
 
->  static void fec_enet_get_ethtool_stats(struct net_device *dev,
->  				       struct ethtool_stats *stats, u64 *data)
->  {
->  	struct fec_enet_private *fep = netdev_priv(dev);
-> +	u64 *dst = data + FEC_STATS_SIZE / 8;
+> For those IP blocks' native wakeup, they are not managed by SCU. It is managed by
+> the block's driver directly. For example, the UART's native wakeup function is
+> enabled or disabled via the driver itself, and no communication required for SCU.
 
-Why 8? sizeof(u64) would be a bit clearer. Or just use
-ARRAY_SIZE(fec_stats) which is what you are actually wanting.
+OK I was wrong about that.
 
->  
->  	if (netif_running(dev))
->  		fec_enet_update_ethtool_stats(dev);
->  
->  	memcpy(data, fep->ethtool_stats, FEC_STATS_SIZE);
-> +
-> +	fec_enet_page_pool_stats(fep, dst);
->  }
->  
->  static void fec_enet_get_strings(struct net_device *netdev,
->  	u32 stringset, u8 *data)
->  {
-> +	int off = ARRAY_SIZE(fec_stats);
->  	int i;
->  	switch (stringset) {
->  	case ETH_SS_STATS:
->  		for (i = 0; i < ARRAY_SIZE(fec_stats); i++)
->  			memcpy(data + i * ETH_GSTRING_LEN,
->  				fec_stats[i].name, ETH_GSTRING_LEN);
-> +		for (i = 0; i < ARRAY_SIZE(fec_xdp_stats); i++)
-> +			memcpy(data + (i + off) * ETH_GSTRING_LEN,
-> +			       fec_xdp_stats[i].name, ETH_GSTRING_LEN);
-> +		off = (i + off) * ETH_GSTRING_LEN;
-> +		page_pool_ethtool_stats_get_strings(data + off);
+> > > As I explained in the above, this is not the problem of two clients
+> > > accessing the same resource, so there is no conflict between the two
+> > > drivers. It works in the same way like SCU power domain driver and SCU
+> > > clock driver. The communication integrity is guaranteed by the call of
+> > imx_scu_call_rpc itself.
+> >
+> > I understand that it makes your life simpler to just implement this as a hack in
+> > the MXC GPIO driver like this, but it is not a proper solution, and I ask you to do
+> > the more complicated and work consuming task instead.
+>
+> This is not a hack because the imx_scu_call_rpc function is designed to serve multiple threads
+> use case. As the pad wakeup function is an independent feature accompany
+> with the gpio function, I prefer to put the implementation inside the gpio driver.
 
-Probably simpler is:
+Our job as maintainers is to make sure the code is easy to maintain.
 
-		for (i = 0; i < ARRAY_SIZE(fec_stats); i++) {
-			memcpy(data, fec_stats[i].name, ETH_GSTRING_LEN);
-			data += ETH_GSTRING_LEN;
-		}
-		for (i = 0; i < ARRAY_SIZE(fec_xdp_stats); i++) {
-			memcpy(data, fec_xdp_stats[i].name, ETH_GSTRING_LEN);
-			data += ETH_GSTRING_LEN;
-		}
-		page_pool_ethtool_stats_get_strings(data);
-		
-	Andrew
+If duplicate data is stored in the GPIO driver and the pin control driver
+just because gpio-ranges are not used to be able to put the wakeup code
+together with the rest of the pad/pin related data, that means more work for
+us.
+
+For this reason:
+1. use gpio-ranges to reference the pin control subsystem
+2. Act on the config inside the SCU pin control driver which already knows
+  about all pads/pins.
+
+It just makes more sense for us.
+
+Yours,
+Linus Walleij
