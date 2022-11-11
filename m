@@ -1,57 +1,59 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70049.outbound.protection.outlook.com [40.107.7.49])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70045.outbound.protection.outlook.com [40.107.7.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C6324F25
-	for <imx@lists.linux.dev>; Fri, 11 Nov 2022 15:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6541EA12
+	for <imx@lists.linux.dev>; Fri, 11 Nov 2022 15:48:09 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G1Pf1Cf5ZOuEg/tUA7VaMxeXdgiN1iq8JgsjoRObHXSqIdEuXfFCsXcO056yOLU2doFTv5lw2al9SQXOj5WqbvDXygDaI8JNpIjwLdu9FLX2v0GYED42mQzwkA6JPf/LF/zPDrdPDxAgV3wq+1PE9MwTPePcRdFw2IG3M2T8vSLD8UMKlW8i3DvYx/fiUZR52R3NfR5+1P6zAhMHCc89QX9DFxbrsPl0tTJhcCKf2Ji7vBQBwVLY2agwNVhlJ7K9h0YJZLmem/E0dHPyfGKB7zOxDdawCkqBs4mQpNx4eXmgexymioOvMhIekym44/GbKA6JhVIAe4yX9AvDQ3K7OA==
+ b=TUSHwrlpUgHKU9+7M5RvCPwCQ7e5U0mDrcM5K57WkzhtQ7KRf3z4UZaZEOEBzYq3ZQjQ0AezY8b9FBrKjhGFw+e2yj5bBoa1vhduCPVnBKqzGBSehPjY68YQw9sMEutQV2aANP7sS+WuNjU0neiEY8v4mhB4UaBv1/Zb9l7M6lojRlI4xvInokGFNZ/EYacrNIEWnVnaoaZi7rdH+6aq3kv+MRLIBXCgZtzevmUWmYfw5n4TZslobrESNiY6mmaDHl9pmQ0We580Nkiy4yzd9nMktXVQwCcyr0OxJetG5HBNZVVD1gxS/tc3OgEElpjnF5+0rTLMSv1i/f0cKkOaBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zaverlrmz9D2s+LY2jz8pXhIGP+SQxVmyToq8RrYgnM=;
- b=gAUDgwWNQZh1aPJGmI2LYBWxOkWJ/ainyXDDK92T/yXZroHbngF0qaYk0NHp1/v/d8oHxIRaBguqDSaqgbtSJV36hwFXDcVUUezYXl2PVR5bJA7Zj9aKW9d1JLPoGYlBZpfZTMBTBOj7I1a6W0gjIfGQOCgvwvRC3/X9uu94hF6Z5vxTf/RLOEd6fPTQrUbmdufW0DO1FImz6hxaUWBifHrbinPeUWmG1rAzhX5eaywlsR7YqGIpvi3fsZ3H5pVYp22Tlmz74c6cxlUdfS58CSSmdyURPDunqiTzT1XD+4GoNWFtKnMOq4yPFs+M5xdRxlMbSWDGlBKD5NZ2bQCCDw==
+ bh=RZL4ovDrWWW6SUsEiZtDvoxaxcwxeayCjk3s2XKEWA4=;
+ b=XiUzqDpZ5mHgSk5ksZ8Fq4J6RCJVNCKzSEhKuXTD6zrA0bSkPHxNriydwTy6wzrMa93R/i5B5J6ZQUXbZ3e0iKeF1xNzXJGQjrE/Wx7H1MLvVdxF5acgHlpywF9TKvqZWe8RAXROXDKujavFuIh9ZRUgP3HyaFUoUvfsx1SOoXZU/V439OCQnjkpNwcjCOeIrujYZIupgCevGAVoyujkqJIHXdd/uTEsMNP4pbzdc9+9+xdT/12c1eJC/g7Hfu0BxZ5Q7BEDuJSNgvUC+KMtgjNX4Tijv2W2VEToqJmy+t4CrYzc5VIRRJhVCK7vDr3cFurqtOYI+uSn+Y8ay5h/GA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zaverlrmz9D2s+LY2jz8pXhIGP+SQxVmyToq8RrYgnM=;
- b=MVzeszlttS4nGDJX7URRWPY2bpcUoUP3Fbahi4YC7ouvwb2GsEbGClqbfBTihC0JC0//NzppsFktI1mj6U9gvbP3Plwod0qvaM5AFc2kDmAdIyYgkI3MsvE+IU+ZE+GQlgb9293v/8TtV7BQ5wB65b2EoX2K+nW1kvSfEYUfRss=
+ bh=RZL4ovDrWWW6SUsEiZtDvoxaxcwxeayCjk3s2XKEWA4=;
+ b=SqlE77l1busKv4y5pp6x+y8OWL43VZfNZXTVv4mYk1Yppxsx174aac2AXkUTBK+4kRc2f6N7OvHL+7zq9zJSzzDrXJsoreYAtvAbWjEkJ+eZt9YkfOXUfMtUUuzuuXvLW2+9y0T2wKGKJWvEmnYxrseZnngm/deIN1CU/a8XYtY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM8PR04MB7890.eurprd04.prod.outlook.com (2603:10a6:20b:24e::10) with
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by DB8PR04MB6969.eurprd04.prod.outlook.com (2603:10a6:10:11b::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5791.22; Fri, 11 Nov
- 2022 15:35:22 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::6b44:4677:ad1d:b33a]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::6b44:4677:ad1d:b33a%6]) with mapi id 15.20.5813.013; Fri, 11 Nov 2022
- 15:35:22 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+ 2022 15:48:05 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::a405:3557:91bc:9230]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::a405:3557:91bc:9230%12]) with mapi id 15.20.5813.013; Fri, 11 Nov
+ 2022 15:48:05 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: shawnguo@kernel.org
+Cc: Frank.Li@nxp.com,
+	aisheng.dong@nxp.com,
+	devicetree@vger.kernel.org,
+	festevam@gmail.com,
+	han.xu@nxp.com,
 	imx@lists.linux.dev,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v3 1/1] net: fec: add xdp and page pool statistics
-Date: Fri, 11 Nov 2022 09:35:05 -0600
-Message-Id: <20221111153505.434398-1-shenwei.wang@nxp.com>
+	kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org,
+	peng.fan@nxp.com,
+	robh+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	shenwei.wang@nxp.com
+Subject: [PATCH v2 0/6] add adc0 flexspi lpspi to 8dxl evk board dts
+Date: Fri, 11 Nov 2022 10:47:36 -0500
+Message-Id: <20221111154742.2753318-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0051.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::26) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+X-ClientProxiedBy: BYAPR05CA0046.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::23) To HE1PR0401MB2331.eurprd04.prod.outlook.com
+ (2603:10a6:3:24::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,285 +61,76 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AM8PR04MB7890:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc793eb7-434d-42eb-1e72-08dac3fa58b2
+X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|DB8PR04MB6969:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8aa7a24e-bfef-48be-9e84-08dac3fc1e61
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	seVO5TjBRXLTPh6QXgLHqf/zOGnoCrRGGmOqTSkh9TDweXm0Bsx6zwbjkqhmzS6JyoxQjUnnvx1gdMTBijkRCiVnwUe5V7qwyYGakjwRu5G6lSOSj0FvlyKS7LBR+Z/RmEeU60ci8WiGwmuuiBBBRSfAJXFLHDZcBne/s61pa0jVCqE11reTsBEfHiBrvliFjxYCCHfZIQM5/TJx/DBQTXtg/PKvzmjdyF32ZThzyZmkeESEpBqWfVdzghcTE9aKWYPb75AfMYlJORsdDGKir0vIBvvv0GPocdbUqHqvXWvxvxUEGLcE30cZneJyZBGLjXgAAzVrji7w0Up5m9ICbQrBLXLIRXWIEaEkiH95rdr/vclDuiaRSMBxj12veRlg3C4RFyRks1079t9Ble72sGmP3FQTLNyAec3s+Xxa5mQQroltcJkhufwktTiN/SrkJ2bYRRa8tvVyoq08Cv4T0ERgsqmJwSBAzi26oY6HzQWBmQhK46qflkNwIKDDVtPrxEULl7mH6IvoqqNtbj12GeEloS6VGfk+rLKZ2xDuSt8CwfQPxPj26oogWMY0cUvhISN/3H/qN78h0gZHrpYfERz+nc/k+fWbFdsGw3N8cS9Qg9ioy3u81kqQY6zWT2c/xFVLW+7zRC8UJ6bdaAsp7smhlCbw3df0rzvZDMtlFGTtOwqBuyhMNh0OIBthH+4IoKQc1oFACxbuPJ0+qLPELbn9Z+fPLVkiYie7tFRSJSVtS5OCrQPGUAbK1lFwqDPd
+	zViDb1E2Ytu2oEEhygcIEqd/nHQRoieCN27KFQ9vTy7jGq32EdKa7GazYzb9eMdZjooAWk+xGkEfT7UprerneJpG8Fy6WNtVVc6M/v1nb74LX2zibYYaZDh7Ffy4HvquvLLcuar6zVPYcpj4xQkuhZCjN6AUcYbC3HAW/61EiO8RdTbNSGLSsIYu53uVrrMS0mNJNGi0VgY97FeDsaM202QcOwynqBs2lESc3sfy7ximxnCBOOaFU919NG36L9gfrBJ8Et0Uk38kmi/cTQ2YgMp3hTx6PUmuoGkNTeypEh+Ad/yFoAXKH0Ps3sh6wkvJjrtbsGSM7kWk69qMj1lCHqVp0sYAMuxAstxkLZxSHmrwWS9CJm/pd5n6drAPSlnThB9r1Zqs4AtJxqu6n9Dy325Ljucgn+KF2A16R3hdk4OxvVjZNlE4hoP2mKYeLaK6H4qPYBH0loBe4mfAERv0ucpwZxpYjL+z8bXzf8ERXNDR7tv662zUVQQgq8C8NG+2nLKIJ2yG7CUGSIGkgsP3kNIX6dnHpJaZZZKG8tNCZA3IuPhLkP59BFXNPJd5De4KQVHFA7QtKU4iD4BYocBber9RJHXYlMS07mzAR+Rjpr9D1ODQdJ8eneTlbMKmifmmRwQC3JBbIw1xD35r/6GJK5cHM7It8HyYf28FEhmYCNk1I49GuhM6if4EiqTWyxZAAoSvfmICiEmf4Jj2/l0bhfq/0ihrNYuW6pbN7v5xb2JONAzj8WkfXhZlumN0pf3Y
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(376002)(39860400002)(346002)(136003)(396003)(451199015)(36756003)(38100700002)(44832011)(2906002)(8936002)(4326008)(5660300002)(7416002)(38350700002)(66946007)(86362001)(83380400001)(316002)(110136005)(54906003)(2616005)(6486002)(478600001)(186003)(66476007)(8676002)(41300700001)(1076003)(55236004)(66556008)(6512007)(6666004)(52116002)(26005)(6506007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(396003)(346002)(136003)(39860400002)(376002)(451199015)(86362001)(66476007)(83380400001)(38350700002)(38100700002)(478600001)(6506007)(8936002)(41300700001)(6486002)(8676002)(7416002)(4326008)(66946007)(66556008)(186003)(2616005)(316002)(26005)(1076003)(6512007)(2906002)(4744005)(6666004)(6916009)(5660300002)(52116002)(36756003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?S+F8CGIdXyLiOkbUR65S1I7vUoNDK1zHoIFZOjprPqZp23poz2OISeT5OYAi?=
- =?us-ascii?Q?VmPNMgvFgErxZf1OHLhJDU1M3CqpsR7dLtKh4SDjNEWvBMQo4nhBYXE0DGOZ?=
- =?us-ascii?Q?RThha2xFJfDNqtMVWZGQIkZY7tyNaOYOb1q8CQ3WIaZd56oPZ9wDoDg3kaR8?=
- =?us-ascii?Q?6c+3bUffh753jTcc9BRCToLcW66KqaiS6xFnIvuA8KcZwpbIhhLLSiKhHbJf?=
- =?us-ascii?Q?Yb1GBWoLFJtLt7PEE07VFE4LBSdAyRU89eQBXo9VPrErw2A1F88usJddUU5y?=
- =?us-ascii?Q?D9dARIONpA/gPcEevwKG4T0eBQlhV/TNoCOqNS3KAfLJ9MG05/EvTuocLDbE?=
- =?us-ascii?Q?jMdnewBHW1nNUmjtZpbis+cFjww4AhfVR+fkQIvDeu5BCFF4GLRk92XIVYpP?=
- =?us-ascii?Q?w47q4YzwLmRtV0sPiMkyeDX0e9pirX8KfG9am5e5JSA8ZP8FC+IhCxpLeiN2?=
- =?us-ascii?Q?JEyOfmKxwNejPaJb1NiLnJh2iB1+P94NJtD359E/nE8EQ8rIjYClXzYcdDey?=
- =?us-ascii?Q?QJeh9676FaYB0Xce2AAvMWNDE2c7OSqdwCHc18HzP7V0RjtKn1mu1L9t6Sk7?=
- =?us-ascii?Q?JF/So+ImqQe1Jnd4Zbu8MD0+8hbFRD0z9tT51YQYHyCmkKZfKo2Nx0ipEK+o?=
- =?us-ascii?Q?cjEKZQLfmNJHbgp8JQb5+TRkvdgKbGSQQI/Xdt8G8w+bhlMxubPMlIWJCIXS?=
- =?us-ascii?Q?pRZRVnFrqP1wsa1pxEeiMsdoXUoXCL4b7QlVfGeVEsrs9fa6G/WnTaEPd+Js?=
- =?us-ascii?Q?Ym/w/nYzt+bSEwjW9G2J2rpIf3/cQWv/6lLWi3BuOhpMB9830ja34rkswk1F?=
- =?us-ascii?Q?aHN91nEwPZaGkJJttKBY1+8mSUjQxWqOxcL+2jhPFxjqUmmL2jMYpv/1tIE2?=
- =?us-ascii?Q?Q4rFiTaYQ7bQrrtV5q6AQiNuxWqqQRAHXJtapm7lYBSkVoogwM0d24gU+Gan?=
- =?us-ascii?Q?hh857QQBx7zQL0cxEtjW4Huo7abc+BLKJfWMjajwClCSLg8IvqeyJ70sXfI5?=
- =?us-ascii?Q?wM8kKf22swf0SAdCJ45Ly0Nlu+gnOIk9s/W5KQDPkc22F21YY0q5eiHj6Fkk?=
- =?us-ascii?Q?lh+D16C6rs/xxjJzn7KqHBEwV6/XksXzY3SrwrW0cfF+HXKaycDVzNo/smAk?=
- =?us-ascii?Q?7MIu9kziO3xLKuRPI8FAInODYteDCC1F4fllzW+AyYWfGneIKwNQ0BO/IiUe?=
- =?us-ascii?Q?K4uA0CYn5TSj6HaOTdIwzSEu8DDgbyXGIKMI3ssZu+jsLJ/d233Tb9NOr7jn?=
- =?us-ascii?Q?iwUpOOBtPcvIjGImiQ0eOdcY4//NrpneHkaBV1UPcxyw3VZuXjHsN8opnqLo?=
- =?us-ascii?Q?/bWuiROMhY+U5qwxPIPGqqsXpg3xKH8FxnPr6gljDK5LDWzwmbThssj1G9E/?=
- =?us-ascii?Q?6mmPX2vkdB2xDm2Ny0snxuVcCvuaGwzOoAM3M3cWW9Vb5Vp/M5cSZcFclRTG?=
- =?us-ascii?Q?kBV9Bk8tMqF7d3bWFAItZZYHtoxAXmgtDuqW2tMi6Jffter7bXpEcPEKmTYJ?=
- =?us-ascii?Q?pLxmeOUpX0TntEoQtHZrZRSvHK2AT90G1oSmDeO8yjwaDIDk8kaiyw1ULthw?=
- =?us-ascii?Q?yk2LEUua1WjqMVtPXR67YfqVEWZm984Z3hzpaggR?=
+	=?us-ascii?Q?RjHzCWIEkNmDx1WLk8SnQx7P0hSgk1wJv5YXRM+bYHfG2GeW75R2v0TDbf+u?=
+ =?us-ascii?Q?qlXtnAp5A9vDBKaZ68ibCYKRo07Cre77LRN9HNQ83F8gBseOcyM2b+Hx1yKm?=
+ =?us-ascii?Q?envXXHEIHU0wTUnGb1HbHFHZ27GFKZqm4hkxplOAnP0gs/nsmLSGATYxLw9C?=
+ =?us-ascii?Q?t4DA8qmucFNOJcI4R200eXOe0MQPx/UjrefKCdN9y9hMGksvyLz9qLYMgBga?=
+ =?us-ascii?Q?nUECbc+4WJ5rg8ZtYYdfkcMbfAAJFFBDgWF3DS9gr//uqN6sHoQtnG9GOnhb?=
+ =?us-ascii?Q?BNrcfgLmg1InKVCdxle76E7SfelF3xNmHZ/PAdUPk3R0cW5YOCtxUiSN6LLq?=
+ =?us-ascii?Q?BoeZ4GWRdGcOfWT8+uM0JZdcLBhn3iCJdoWNKcTaX8rwIfe4E+CyQi/SIhkO?=
+ =?us-ascii?Q?8VAfax9+H0i2qj2WkDHMGHGbuFOYzulAI3J6saikwhssHRDO4Ke+VLgPkRdN?=
+ =?us-ascii?Q?lLNeuPCnyvy4xkpllEw2OIVmxtOBHVpsytdYRYE+dih2VPiQxZTZp4rrCLzT?=
+ =?us-ascii?Q?8zDHoz/Wi5+nJobAXNGVkLzS1pXdKjAdKQWsJWoAYFRFz3b8EObSUPkV2AJY?=
+ =?us-ascii?Q?M9E7Qs67+/1Ksms4d+Sm865ZYvsz1ij+hqA3kbm3RrX3PKZfhuu50ceY7l/y?=
+ =?us-ascii?Q?xJ9ZfElg9YrY0P9+q47aC8WxgPAaq6jESGObz912a2W7/Ij+i9rvwJTfoKTX?=
+ =?us-ascii?Q?Vti+8AjMmO86Ikb5Q3aBAj8x1cWy7I84hrcJgvjRiRkKfb8t1PMVjK1cAAsZ?=
+ =?us-ascii?Q?/0MBdK+1BnDCOiDZ5zI+DJYMzKTaH8btCsaoOiFmiOcNTdJyVj7PshtAS2Gb?=
+ =?us-ascii?Q?sotwhEYtXpP4G9b4oC8CY2FuREsLdMyoN5Gx1TIoBZGUAT9oniXkuV4lNHO3?=
+ =?us-ascii?Q?Nno7hdwxcH98Wli+SM05xB77LMJlFtQwPotZR305G4RSi4OaMz51qI9z2qKy?=
+ =?us-ascii?Q?LnnhCfHS6FdYJywGyYWPr8LHZg9bFjzKDhv9b1j8c7zEgBoFfc6lXr+87Tij?=
+ =?us-ascii?Q?kGBtDsvaGSztw21htWnyRkopQC6PQM8x/G91A06BIHg8tYxBZuH+JG4b9vCq?=
+ =?us-ascii?Q?ENJfrS4CiId9yZDWazU9eBOdAw+1PbHoKkcAaWM1Mo8BLYNsl+FHWVqxOtgK?=
+ =?us-ascii?Q?LA7QjORD3oEkBSvEvNrvW65ulrclY/tEkxhWJL2wUU4PBtn8F+RbLzhDkX2n?=
+ =?us-ascii?Q?5FYsSikpPYGmt6AolkYmn+2lAwGqj6AigvF22TW/JVFIYABvRBnvLlrJeT0d?=
+ =?us-ascii?Q?1or3H6QN1gj/960KDBt1x+BB8IdLMadclUXU20VX5OrFrPX9FHc93yDsyPi0?=
+ =?us-ascii?Q?JVdpT0bDBvvadJEoIXqbmL1IYGPiR+4GIYS1VyFqgAvEHJ/VosTTqcPhPfLM?=
+ =?us-ascii?Q?69p7pQCueWxHm2ktDhrKi1R43tGyl6LwMYDMeaiIvGFtrYvuLS3rTr3Hg/Cm?=
+ =?us-ascii?Q?9UYbMDCGbaC49uCXdKD9rSNxo8tHyF4F82oofoNPHrPjlsnPpMXcGiYa78RS?=
+ =?us-ascii?Q?z1xtkVFLVVjd7mSgdlOpx2pARXg+M/VBI86cYoAhTelW7Y9XlS1RDoJm9BjH?=
+ =?us-ascii?Q?u0oPHhbXhRoiDF7CnLI=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc793eb7-434d-42eb-1e72-08dac3fa58b2
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8aa7a24e-bfef-48be-9e84-08dac3fc1e61
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2022 15:35:22.6467
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2022 15:48:05.6796
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T0Vd++9ob96WFMIwXSRXYxUNevYTbX+XPlcv1fWT45NLbeXfblOiYljpwRsACR9VCQkZZGzH2gOFlGfE4hTUlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7890
+X-MS-Exchange-CrossTenant-UserPrincipalName: iTi3MtAvHKbT4FJwFc6HlAPOd3ekljjf7Jy+0tt+0PODAc3KJTGbGxIg/mzTPgSpfOxPxYK5fYh88TtCG5X+cw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6969
 
-Added xdp and page pool statistics.
-In order to make the implementation simple and compatible, the patch
-uses the 32bit integer to record the XDP statistics.
+Add adc0 flexspi lpspi and adc to 8dxl evk board dts
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Reported-by: kernel test robot <lkp@intel.com>
----
- Changes in v3:
- - change memcpy to strncpy to fix the warning reported by Paolo Abeni
- - fix the compile errors on powerpc
+Change from v1 to v2:
+	split SOC and board change to two patches.
 
- Changes in v2:
- - clean up and restructure the codes per Andrew Lunn's review comments
- - clear the statistics when the adaptor is down
+Frank Li (6):
+  arm64: dts: imx8dxl: add adc0 support
+  arm64: dts: imx8dxl_evk: add adc0 support
+  arm64: dts: imx8dxl: add flexspi0 support
+  arm64: dts: imx8dxl_evk: add flexspi0 support
+  arm64: dts: imx8dxl: add lpspi support
+  arm64: dts: imx8dxl_evk: add lpspi0 support
 
- drivers/net/ethernet/freescale/Kconfig    |  1 +
- drivers/net/ethernet/freescale/fec.h      | 14 ++++
- drivers/net/ethernet/freescale/fec_main.c | 85 +++++++++++++++++++++--
- 3 files changed, 95 insertions(+), 5 deletions(-)
+ .../arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 164 ++++++++++++++++++
+ .../boot/dts/freescale/imx8-ss-lsio.dtsi      |  17 +-
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts |  63 +++++++
+ .../boot/dts/freescale/imx8dxl-ss-adma.dtsi   |  20 +++
+ .../boot/dts/freescale/imx8dxl-ss-lsio.dtsi   |   5 +
+ 5 files changed, 268 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
-index ce866ae3df03..f1e80d6996ef 100644
---- a/drivers/net/ethernet/freescale/Kconfig
-+++ b/drivers/net/ethernet/freescale/Kconfig
-@@ -29,6 +29,7 @@ config FEC
- 	select CRC32
- 	select PHYLIB
- 	select PAGE_POOL
-+	select PAGE_POOL_STATS
- 	imply NET_SELFTESTS
- 	help
- 	  Say Y here if you want to use the built-in 10/100 Fast ethernet
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 61e847b18343..5ba1e0d71c68 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -526,6 +526,19 @@ struct fec_enet_priv_txrx_info {
- 	struct  sk_buff *skb;
- };
-
-+enum {
-+	RX_XDP_REDIRECT = 0,
-+	RX_XDP_PASS,
-+	RX_XDP_DROP,
-+	RX_XDP_TX,
-+	RX_XDP_TX_ERRORS,
-+	TX_XDP_XMIT,
-+	TX_XDP_XMIT_ERRORS,
-+
-+	/* The following must be the last one */
-+	XDP_STATS_TOTAL,
-+};
-+
- struct fec_enet_priv_tx_q {
- 	struct bufdesc_prop bd;
- 	unsigned char *tx_bounce[TX_RING_SIZE];
-@@ -546,6 +559,7 @@ struct fec_enet_priv_rx_q {
- 	/* page_pool */
- 	struct page_pool *page_pool;
- 	struct xdp_rxq_info xdp_rxq;
-+	u32 stats[XDP_STATS_TOTAL];
-
- 	/* rx queue number, in the range 0-7 */
- 	u8 id;
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 3fb870340c22..d3bf3ffe8349 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1523,10 +1523,12 @@ fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
-
- 	switch (act) {
- 	case XDP_PASS:
-+		rxq->stats[RX_XDP_PASS]++;
- 		ret = FEC_ENET_XDP_PASS;
- 		break;
-
- 	case XDP_REDIRECT:
-+		rxq->stats[RX_XDP_REDIRECT]++;
- 		err = xdp_do_redirect(fep->netdev, xdp, prog);
- 		if (!err) {
- 			ret = FEC_ENET_XDP_REDIR;
-@@ -1549,6 +1551,7 @@ fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
- 		fallthrough;    /* handle aborts by dropping packet */
-
- 	case XDP_DROP:
-+		rxq->stats[RX_XDP_DROP]++;
- 		ret = FEC_ENET_XDP_CONSUMED;
- 		page = virt_to_head_page(xdp->data);
- 		page_pool_put_page(rxq->page_pool, page, sync, true);
-@@ -2659,6 +2662,16 @@ static const struct fec_stat {
-
- #define FEC_STATS_SIZE		(ARRAY_SIZE(fec_stats) * sizeof(u64))
-
-+static const char *fec_xdp_stat_strs[XDP_STATS_TOTAL] = {
-+	"rx_xdp_redirect",           /* RX_XDP_REDIRECT = 0, */
-+	"rx_xdp_pass",               /* RX_XDP_PASS, */
-+	"rx_xdp_drop",               /* RX_XDP_DROP, */
-+	"rx_xdp_tx",                 /* RX_XDP_TX, */
-+	"rx_xdp_tx_errors",          /* RX_XDP_TX_ERRORS, */
-+	"tx_xdp_xmit",               /* TX_XDP_XMIT, */
-+	"tx_xdp_xmit_errors",        /* TX_XDP_XMIT_ERRORS, */
-+};
-+
- static void fec_enet_update_ethtool_stats(struct net_device *dev)
- {
- 	struct fec_enet_private *fep = netdev_priv(dev);
-@@ -2668,6 +2681,40 @@ static void fec_enet_update_ethtool_stats(struct net_device *dev)
- 		fep->ethtool_stats[i] = readl(fep->hwp + fec_stats[i].offset);
- }
-
-+static void fec_enet_get_xdp_stats(struct fec_enet_private *fep, u64 *data)
-+{
-+	u64 xdp_stats[XDP_STATS_TOTAL] = { 0 };
-+	struct fec_enet_priv_rx_q *rxq;
-+	int i, j;
-+
-+	for (i = fep->num_rx_queues - 1; i >= 0; i--) {
-+		rxq = fep->rx_queue[i];
-+
-+		for (j = 0; j < XDP_STATS_TOTAL; j++)
-+			xdp_stats[j] += rxq->stats[j];
-+	}
-+
-+	memcpy(data, xdp_stats, sizeof(xdp_stats));
-+}
-+
-+static void fec_enet_page_pool_stats(struct fec_enet_private *fep, u64 *data)
-+{
-+	struct page_pool_stats stats = {};
-+	struct fec_enet_priv_rx_q *rxq;
-+	int i;
-+
-+	for (i = fep->num_rx_queues - 1; i >= 0; i--) {
-+		rxq = fep->rx_queue[i];
-+
-+		if (!rxq->page_pool)
-+			continue;
-+
-+		page_pool_get_stats(rxq->page_pool, &stats);
-+	}
-+
-+	page_pool_ethtool_stats_get(data, &stats);
-+}
-+
- static void fec_enet_get_ethtool_stats(struct net_device *dev,
- 				       struct ethtool_stats *stats, u64 *data)
- {
-@@ -2677,6 +2724,12 @@ static void fec_enet_get_ethtool_stats(struct net_device *dev,
- 		fec_enet_update_ethtool_stats(dev);
-
- 	memcpy(data, fep->ethtool_stats, FEC_STATS_SIZE);
-+	data += FEC_STATS_SIZE / sizeof(u64);
-+
-+	fec_enet_get_xdp_stats(fep, data);
-+	data += XDP_STATS_TOTAL;
-+
-+	fec_enet_page_pool_stats(fep, data);
- }
-
- static void fec_enet_get_strings(struct net_device *netdev,
-@@ -2685,9 +2738,16 @@ static void fec_enet_get_strings(struct net_device *netdev,
- 	int i;
- 	switch (stringset) {
- 	case ETH_SS_STATS:
--		for (i = 0; i < ARRAY_SIZE(fec_stats); i++)
--			memcpy(data + i * ETH_GSTRING_LEN,
--				fec_stats[i].name, ETH_GSTRING_LEN);
-+		for (i = 0; i < ARRAY_SIZE(fec_stats); i++) {
-+			memcpy(data, fec_stats[i].name, ETH_GSTRING_LEN);
-+			data += ETH_GSTRING_LEN;
-+		}
-+		for (i = 0; i < ARRAY_SIZE(fec_xdp_stat_strs); i++) {
-+			strncpy(data, fec_xdp_stat_strs[i], ETH_GSTRING_LEN);
-+			data += ETH_GSTRING_LEN;
-+		}
-+		page_pool_ethtool_stats_get_strings(data);
-+
- 		break;
- 	case ETH_SS_TEST:
- 		net_selftest_get_strings(data);
-@@ -2697,9 +2757,14 @@ static void fec_enet_get_strings(struct net_device *netdev,
-
- static int fec_enet_get_sset_count(struct net_device *dev, int sset)
- {
-+	int count;
-+
- 	switch (sset) {
- 	case ETH_SS_STATS:
--		return ARRAY_SIZE(fec_stats);
-+		count = ARRAY_SIZE(fec_stats) + XDP_STATS_TOTAL;
-+		count += page_pool_ethtool_stats_get_count();
-+		return count;
-+
- 	case ETH_SS_TEST:
- 		return net_selftest_get_count();
- 	default:
-@@ -2710,7 +2775,8 @@ static int fec_enet_get_sset_count(struct net_device *dev, int sset)
- static void fec_enet_clear_ethtool_stats(struct net_device *dev)
- {
- 	struct fec_enet_private *fep = netdev_priv(dev);
--	int i;
-+	struct fec_enet_priv_rx_q *rxq;
-+	int i, j;
-
- 	/* Disable MIB statistics counters */
- 	writel(FEC_MIB_CTRLSTAT_DISABLE, fep->hwp + FEC_MIB_CTRLSTAT);
-@@ -2718,6 +2784,12 @@ static void fec_enet_clear_ethtool_stats(struct net_device *dev)
- 	for (i = 0; i < ARRAY_SIZE(fec_stats); i++)
- 		writel(0, fep->hwp + fec_stats[i].offset);
-
-+	for (i = fep->num_rx_queues - 1; i >= 0; i--) {
-+		rxq = fep->rx_queue[i];
-+		for (j = 0; j < XDP_STATS_TOTAL; j++)
-+			rxq->stats[j] = 0;
-+	}
-+
- 	/* Don't disable MIB statistics counters */
- 	writel(0, fep->hwp + FEC_MIB_CTRLSTAT);
- }
-@@ -3084,6 +3156,9 @@ static void fec_enet_free_buffers(struct net_device *ndev)
- 		for (i = 0; i < rxq->bd.ring_size; i++)
- 			page_pool_release_page(rxq->page_pool, rxq->rx_skb_info[i].page);
-
-+		for (i = 0; i < XDP_STATS_TOTAL; i++)
-+			rxq->stats[i] = 0;
-+
- 		if (xdp_rxq_info_is_reg(&rxq->xdp_rxq))
- 			xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 		page_pool_destroy(rxq->page_pool);
---
+-- 
 2.34.1
 
