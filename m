@@ -1,72 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120561FCE
-	for <imx@lists.linux.dev>; Mon, 14 Nov 2022 08:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F974C433B5;
-	Mon, 14 Nov 2022 08:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1668415954;
-	bh=LQSh5XFPUVPh99Anhh3nKbvcMi1wckZSME6gcm6RrHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KuvFX8AODIi1lKFWgWS5wvt6tI6YOUR4iLQQISE9agW6bUQoLALtLOHqHa+/2g+lS
-	 I6bmSVxfnaDnGpNnMw95jB59BWXGXfdHU+YkeDD35Ou6xP3njWgvvJh9etEcA11b9K
-	 TsfHPoN2U6LPYtM7VA07TWU2/k6BZbgRXQoyH+7wBWqS9hY+aG4S3xlDlqSwgwgT48
-	 Q8Cqny2CAAg71koBXfbTXw/HzXIr5C1k6fnvFD69j6oaBr45uYfoz5GF37sVcps8wf
-	 MfrPpeZnkXapyhnrtsc/CE5wFifsbi5YmgMjQyfIwxgxtGfiRM2Ih6eI3Jf7bBIsZg
-	 PF8MSBl2b9p/A==
-Date: Mon, 14 Nov 2022 16:52:27 +0800
-From: Shawn Guo <shawnguo@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223AB4C78
+	for <imx@lists.linux.dev>; Mon, 14 Nov 2022 13:35:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668432909; x=1699968909;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AerKXFsYG0MC60H6jSoivKzof9tjMF6SohiFF0KBOm0=;
+  b=GzYQCFu/T9hLNOvc7a6jCfgA3eUHJGrBAFjbx+WUZ450htRjKUbmz5oN
+   XZfXw73dNCBQ2rDOfBImzUPSc5F3me6h8pq+a9cgE6f2CLXALgufbXkw3
+   whdNfvzwlc+NQ/AfdAMzTzdRsbXkbsPBXybxqJ70TodMp+iPk0W331cS9
+   fFwsXeTUu23SmWU6bi897JAYyH2zxjx37s4kIRvA4tRekmXI8838Z5l4s
+   kIpW+SlrwGnep/GEqfiAneLH3Xb5yv+v3hm3Vu3w8moudKD1iHnHAUaM1
+   8YXi+4pMkFjFIXn3+KEcdw4Q5rLpyKophc64q+eetO0o2ZY/3FqznJ3sz
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="295330721"
+X-IronPort-AV: E=Sophos;i="5.96,161,1665471600"; 
+   d="scan'208";a="295330721"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2022 05:35:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="638477165"
+X-IronPort-AV: E=Sophos;i="5.96,161,1665471600"; 
+   d="scan'208";a="638477165"
+Received: from irvmail001.ir.intel.com ([10.43.11.63])
+  by orsmga002.jf.intel.com with ESMTP; 14 Nov 2022 05:35:05 -0800
+Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
+	by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 2AEDZ4LW004280;
+	Mon, 14 Nov 2022 13:35:04 GMT
+From: Alexander Lobakin <alexandr.lobakin@intel.com>
 To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v5 0/3] gpio: add suspend/resume support for i.mx8x SoCs
-Message-ID: <20221114085227.GV2649582@dragon>
-References: <20221111155016.434591-1-shenwei.wang@nxp.com>
+Cc: Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2 RESEND 1/1] net: fec: add xdp and page pool statistics
+Date: Mon, 14 Nov 2022 14:35:02 +0100
+Message-Id: <20221114133502.696740-1-alexandr.lobakin@intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <PAXPR04MB9185CDDD50250DFE5E492C7189019@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20221109023147.242904-1-shenwei.wang@nxp.com> <4349bc93a5f2130a95305287141fde369245f921.camel@redhat.com> <PAXPR04MB91853A6A1DDDBB06F33C975E89019@PAXPR04MB9185.eurprd04.prod.outlook.com> <20221110164321.3534977-1-alexandr.lobakin@intel.com> <PAXPR04MB9185CDDD50250DFE5E492C7189019@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221111155016.434591-1-shenwei.wang@nxp.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 11, 2022 at 09:50:13AM -0600, Shenwei Wang wrote:
-> On i.MX8QM/QXP/DXL SoCs, even a GPIO is selected as the wakeup source,
-> the GPIO block will be powered off when system enters into suspend
-> state. This can greatly reduce the power consumption of suspend state
-> because the whole partition can be shutdown. This is called PAD wakeup
-> feature on i.MX8x platform.
-> 
-> This series of patches enable this wakeup feature on i.MX8QM/QXP/DXL
-> platforms.
-> 
-> Changes in v5:
->  - improve the commit log per Fabio's feedback.
->  - remove the two patches accepted by Linus Walleij
-> 
-> Changes in v4:
->  - fixed the format issues reported by Peng Fan.
->  - change the return type of mxc_gpio_generic_config, and limit the
->    suspend/resume behavior changes only on i.MX8QM/QXP/DXL platform.
-> 
-> Changes in v3:
->  - According to the feedback from Linus Walleij, the wakeup feature is
->    moved to pinctrl driver, and the array of gpio-pin mapping is moved
->    to gpio device node and initialized via gpio-ranges property.
-> 
-> Shenwei Wang (3):
->   arm64: dts: imx8dxl-ss-lsio: add gpio-ranges property
->   arm64: dts: imx8qm-ss-lsio: add gpio-ranges property
->   arm64: dts: imx8qxp-ss-lsio: add gpio-ranges property
+From: Shenwei Wang <shenwei.wang@nxp.com>
+Date: Thu, 10 Nov 2022 21:40:21 +0000
 
-Applied all, thanks!
+> > -----Original Message-----
+> > From: Alexander Lobakin <alexandr.lobakin@intel.com>
+> > Sent: Thursday, November 10, 2022 10:43 AM
+> > To: Shenwei Wang <shenwei.wang@nxp.com>
+> > Cc: Alexander Lobakin <alexandr.lobakin@intel.com>; Paolo Abeni
+> > <pabeni@redhat.com>; David S. Miller <davem@davemloft.net>; Eric Dumazet
+> > <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Alexei
+> > > > at ../drivers/net/ethernet/freescale/fec_main.c:2788:4:
+> > > > ../include/linux/fortify-string.h:413:25: warning: call to
+> > '__read_overflow2_field'
+> > > > declared with attribute warning: detected read beyond size of field
+> > > > (2nd parameter); maybe use struct_group()? [-Wattribute-warning]
+> > > >   413 |                         __read_overflow2_field(q_size_field, size);
+> > > >       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > > >
+> > > > I think you can address it changing fec_xdp_stat_strs definition to:
+> > > >
+> > > > static const char
+> > > > fec_xdp_stat_strs[XDP_STATS_TOTAL][ETH_GSTRING_LEN] =
+> > >
+> > > That does a problem. How about just change the memcpy to strncpy?
+> > 
+> > Don't use a static char array, it would consume more memory than the current
+> > code. Just replace memcpy()s with strscpy().
+> > 
+> > Why u32 for the stats tho? It will overflow sooner or later. "To keep it simple
+> > and compatible" you can use u64_stats API :)
+> 
+> The reason to use u32 here is : 1. It is simple to implement. 2. To follow the same
+> behavior as the other MAC hardware statistic counters which are all 32bit. 3. I did
+> investigate the u64_stats API, and think it is still a little expensive here.
+
+1) u64_stats_t is not much harder.
+2) This only means your HW statistics handling in the driver is
+   wrong, as every driver which HW has 32-bit counter implements
+   64-bit containers and a periodic task to take fresh HW numbers
+   and clear them (so that the full stats are stored in the driver
+   only).
+3) Page Pool stats currently give you much more overhead as they are
+   pure 64-bit, not u64_stats_t, with no synchronization.
+   What is your machine and how fast your link is? Just curious, I
+   never had any serious regressions using u64_stats_t on either
+   high-end x86_64 servers or low-end MIPS32.
+
+> 
+> Thanks,
+> Shenwei
+> 
+> > 
+> > >
+> > > Regards,
+> > > Shenwei
+> > >
+> > > > { // ...
+> > > >
+> > > > Cheers,
+> > > >
+> > > > Paolo
+> > 
+> > Thanks,
+> > Olek
+
+Thanks,
+Olek
