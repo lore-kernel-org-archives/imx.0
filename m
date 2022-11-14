@@ -1,61 +1,56 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2071.outbound.protection.outlook.com [40.107.21.71])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60045.outbound.protection.outlook.com [40.107.6.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3434610E5
-	for <imx@lists.linux.dev>; Mon, 14 Nov 2022 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2C179F3
+	for <imx@lists.linux.dev>; Mon, 14 Nov 2022 21:17:52 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AMisxyshclXPLnE424Gtvt9vKkpooMU98swAy5IHtR+MwYKYJz4k9Uox5q8HwRMFcKa1h5ntZ5QH2gWcfH9zylRqFSqDAJ8f0fhx8jdgK6KF/Whlq3xnxuQ6rrvlEfKiwZgEJLNiU/EpF6H1XPVYtLaI3bddO6vGxvdiEFgX1d5QgPZb5Pjn2Me/8gWNDRG+yh7yInmKaILo2vln9zCIb4s5ICGlx0manGedmq+/BOhqYtazfy7Iy+8HFVzhru7kzn8IEyCmioUaXzo5/NtblsJS40qLrcLT7otR7URUbeCIGnFgsRdZ1kJblTklfo8dnb6U0hjxzKXZmluWDyfjxw==
+ b=L4smPb/uQOrtCx8+9d8djXxbO31XvJ85+TacfDOXTIvhOp+8U2ob7oa0My1+1yXZ0K6txBa71KtU/Xb/LUVTu40W4uOC7ONou9aVo4wb91Yxu8Vl9Do08eEak0Bl5871MmxVKe7ZXjrkDlEzrnoIVUgn/Ys+DECJDsGOCA9duls2UzBbgMqXiyuPglr6zl9TquVAf16OA+4/lDzowU6mLsJljmiXNDrYwYo/xzATQmPX1bhwBJp8Jzy55wxeAeE9sKWOholmRCl4C9mxlDiWEgnpGDH0V3UtvDOEV5u+SW6sPFiQhz5WOTP5j+GCV1IAw36dUWYP0ccQYZ60YgG+Cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N8Mqhc7Sndk6617/xZg+hOgTz7ghFTAOcFb+JoFVJ6M=;
- b=X5TS0eyFTFzyRpHwbL0F0J/y/+lhkLIai5FLEHnS0N0Yl00EuxYqNxRXvMbFcw1YDqV/bFvJ2Mlmq2AT4QBxTe8kUudKE1yr7yRUbh64P5EjR24UaWC8ewShCjiEUR2mPcAu2+kAmrRoDsLLsGoAMa9Hzr8XH2/m2eEv8u+yB4BVxA1Wf6RRwWB4Ph5Ce6xij3/+pm7rFvOw/bHr2yogc6jXP/RhDk4TF6r4NmzgAbplU3/FtCzoye25Fpbm+MXw30z6iLHJbq8/XfzfKoZYE3OCclP8iqxw7k7PONdMtIDYQp5Ni2RPZJqNzgOstH2gjMNuphNHz+Ca1NkmnN33MQ==
+ bh=OHt7h+E1hWnXHSKntySn/GSPSjQBzanNxSdYPWvlQGw=;
+ b=UQAvFjKEx00zvR/0TjiO2PTyucOLLwVgaqWoEohgDs+z41gdZOBp55XXLUGzdahTVnnshJyMF24NSiusZSfy0Wq0v4ySIp+ylYOt3+sWf8XLKtwzZyCB3dD3W/aHtuu6I2TKj9jLE45HfBNZowYnJ89X20CoAwcOzGT3Zm7+PVuxwInxOqHQUPKrYuCeSIPsx9SDq1/mfjhi6RMjT9h1WaRa+GEIWmOo+hhvFLOpG2zfHDzAwYcdu26M3pSFgNCi1s7Uo3t8hbT+gpR9YIWciza3eyKsR6shJvedvLAjq5jD/7jHTkAgwYN7vKg7e+T+xRWV/NBofeGKwFqnCpFpcg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N8Mqhc7Sndk6617/xZg+hOgTz7ghFTAOcFb+JoFVJ6M=;
- b=mwr3z3yX8t+bEFrVahzQ+1IeIXFhlJqkhNos+pBzRD5hXrg8v41+IA9gwJ5j/YZQNV2AMN43B0fZwdGNtK0B2Gd7Kr8p/ps7bizt38F3JXbLPc3oQEXOy7xLZq0JRN3NW5IeMYrGAwIm8maflBtferF9AEmU98/kmLaE3T/xnTY=
+ bh=OHt7h+E1hWnXHSKntySn/GSPSjQBzanNxSdYPWvlQGw=;
+ b=RcTPWbDOs9wWc4U045EMkKfwamPzdrJir2oFa5UrUNnEpDA+O6S9NndSvG+7QMgCh6Fsnppx8Oqao3nmqUzO/HyQ4HiUqkQoOeqm3QWACDknacb+bZdAzLPu+RCFXDc61S2Mf2pUY4frs+h189juYtuzDBgdzj622BLDpto7DLs=
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PA4PR04MB7565.eurprd04.prod.outlook.com (2603:10a6:102:e7::23) with
+ by PA4PR04MB9296.eurprd04.prod.outlook.com (2603:10a6:102:2a7::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.13; Mon, 14 Nov
- 2022 16:31:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.17; Mon, 14 Nov
+ 2022 21:17:49 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::6b44:4677:ad1d:b33a]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::6b44:4677:ad1d:b33a%6]) with mapi id 15.20.5813.017; Mon, 14 Nov 2022
- 16:31:47 +0000
+ ([fe80::6b44:4677:ad1d:b33a%6]) with mapi id 15.20.5813.018; Mon, 14 Nov 2022
+ 21:17:49 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Alexander Lobakin <alexandr.lobakin@intel.com>, Paolo Abeni
-	<pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Alexei Starovoitov
-	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
- Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+To: Alexander Lobakin <alexandr.lobakin@intel.com>
+CC: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, Wei Fang <wei.fang@nxp.com>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH v2 RESEND 1/1] net: fec: add xdp and page pool
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, kernel test robot
+	<lkp@intel.com>
+Subject: RE: [EXT] Re: [PATCH v3 1/1] net: fec: add xdp and page pool
  statistics
-Thread-Topic: [EXT] Re: [PATCH v2 RESEND 1/1] net: fec: add xdp and page pool
+Thread-Topic: [EXT] Re: [PATCH v3 1/1] net: fec: add xdp and page pool
  statistics
-Thread-Index:
- AQHY8+NzKrQRZ3k0YEy+QDrsvHgkC644DoaAgAAaV3CAADZxgIAAUdXAgAXC4QCAAARvAIAAAdMAgAAPjpCAABpqAIAAAKYA
-Date: Mon, 14 Nov 2022 16:31:46 +0000
+Thread-Index: AQHY9eM2DcCGX+tMv0uN92sufUZdVq4+cwAAgAAGTYCAAA76UIAABgiAgABeOBA=
+Date: Mon, 14 Nov 2022 21:17:48 +0000
 Message-ID:
- <PAXPR04MB91854E3A8555B067FDEFBED089059@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20221109023147.242904-1-shenwei.wang@nxp.com>
- <4349bc93a5f2130a95305287141fde369245f921.camel@redhat.com>
- <PAXPR04MB91853A6A1DDDBB06F33C975E89019@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <20221110164321.3534977-1-alexandr.lobakin@intel.com>
- <PAXPR04MB9185CDDD50250DFE5E492C7189019@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <20221114133502.696740-1-alexandr.lobakin@intel.com>
- <Y3JHvo4p10iC4QFH@lunn.ch>
- <20221114135726.698089-1-alexandr.lobakin@intel.com>
- <PAXPR04MB91850496D46660D3B8394B7F89059@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <Y3Jsenmh9dbAauQS@lunn.ch>
-In-Reply-To: <Y3Jsenmh9dbAauQS@lunn.ch>
+ <PAXPR04MB918589D35F8B10307D4D430E89059@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20221111153505.434398-1-shenwei.wang@nxp.com>
+ <20221114134542.697174-1-alexandr.lobakin@intel.com>
+ <Y3JLz1niXbdVbRH9@lunn.ch>
+ <PAXPR04MB91853D935E363E8A7E3ED7BF89059@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <20221114152327.702592-1-alexandr.lobakin@intel.com>
+In-Reply-To: <20221114152327.702592-1-alexandr.lobakin@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -63,44 +58,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA4PR04MB7565:EE_
-x-ms-office365-filtering-correlation-id: 87e27e6d-1f44-4a1a-106a-08dac65db950
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA4PR04MB9296:EE_
+x-ms-office365-filtering-correlation-id: 9ebc835c-9c10-4a21-5829-08dac685aed0
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- vI0LS76bMU9NRJ4MF0Dn9UaZq8TiG/43qLagAT5/Nr0oGSsJ94m48sdXrg+yZOjDCguYFNqC/mQxxUo+Kz99HvVZVaUweiTKoIxe5jE/n82d4kLrfkYci9tJcjaIohq9LkJaOrw0aw/0xmeZ6m5dG4wqILh49b2lOG/h/Te1RCNHJUtN4gvdz/EvNAKPgr+UblEb4tTenMOR1uVo/BoLY0LJiR9CZf/TISlNNspkExoVTI8koaRtavEY69SXOBMwc0K3Pfd+vW1Ovnz3/7yToMOCMIG7z+OIz4PRwLWTvUZJsHL+d8PGa83v7DiDAMcaQiEsY2fyh+QV+2LM98MWHMNc8x2y5TlxSWDN+99PvJ7VVNps/kKXWV69t2KU3I+6e6dynC8eGn2Fb1rXA5xXQG8CcWxtW9HwikesJ4LLWUudRxGncaWBMegu9V6NA942o7YmDCsvByvjELoo5wK/7KVou2bkqsa9u70QxFo0Gr4G9vweMZvGHUpC3v/LNX0urRJUkELr0ba0SFdsEbYPA2MnQalu71Gn2G6OZh4ZfyjqUtQftblleQN8admkFDvUWOlISMoBO8eAiL68rm4VRDieDzYsz4GSQ7plm3lR4OBOW33BteBDBaZxP4FoT0krO6D0BI6pM9PyZoZzJmn2GycW1rIO4cUMVQ6WIFq2ClEmcn/xOJjwhG2VLJr/ujm0n7REUMJH+Dj1oQjd9f25zp/Ua0xGu5nHbU2rDIcMNG37M8/ugRwQG4DAs3fqmV47pjTb3N3Iq2PZ74CtEwwzwA==
+ eRJ40Nuu79MXIIzj9jc+lwfOK2uEghfK1zWe4BQIbNiGN81CIZP3BSHzyvqVg7qXXnvDP5I2EN67RLyJbFt2oMW8Ykd0enH+MtcxqY4ip0ZlzWO6OrbPjzyVRrs5aqQZ1QFlBk4RtCsobFSCv1xh18e7tjUnpcgFXlwT2CKwOfI40ybEdgubjBGHU9USNlIaAb8amLSddSlroNXbXQlRJiGLh5VMKBaootXhjNSOYS/DzB7hBbF0WQ8pYwVrkTvzs8tFPBCuigT0WlJMNqslySV8fEIjvFyUuszI8EZkv+C8fzNbZ8SAZE8N0fOQM+4jq9f4pXzWwDnY9N4/NrKzo6cnVqumzN16hmCz4qJhGQ84iFMtKd5EHdvLy9VsHuGWhEbZjIp5hpodcIjy6cya1Z1yNCVqcGfmp/YKOkkvSa7kMqAsS7NM8wz9aikHJY8kVkNiqk/xThvAUzd79E/emaQRDfV4/cXtwtmvCzj/x88xqBe76qSeYEcIKJkQr4dh8wXE0Bdi60x11Mo3HbMcrkVYhYrI0D98ch8Md42c+giQzSN/jtQFbf6Yzq69UsddHNAmbRPVYbe9FAoYWzjXVW5BgH41uE/es5sETdQNq7fm8qNwC9MrRTN//1wWrogPy2k4UEV9YkSnJPakSFdFiZflOujFCzABOArRKwxXCkzGYvrjpXrr6kPdLeTF0CQp82+mFMIF5l444TF+r65Xc0hfSkEe/AzYdHZBcdJf8YWU9gmk0+pxetAR89qbaH9sBYvJJ/xRxmfGN8m0r8RSAw==
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(396003)(39860400002)(136003)(376002)(346002)(451199015)(71200400001)(33656002)(38070700005)(478600001)(54906003)(6506007)(7696005)(6916009)(316002)(55236004)(64756008)(5660300002)(8676002)(7416002)(26005)(186003)(4326008)(9686003)(66446008)(52536014)(41300700001)(44832011)(66946007)(4744005)(8936002)(66476007)(76116006)(55016003)(66556008)(83380400001)(2906002)(53546011)(38100700002)(122000001)(86362001);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(396003)(39860400002)(366004)(136003)(346002)(451199015)(52536014)(8676002)(186003)(66946007)(316002)(66556008)(9686003)(26005)(76116006)(55236004)(66446008)(64756008)(4326008)(66476007)(41300700001)(55016003)(44832011)(53546011)(7416002)(5660300002)(8936002)(122000001)(38100700002)(86362001)(83380400001)(2906002)(33656002)(71200400001)(478600001)(38070700005)(6916009)(54906003)(6506007)(7696005);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?AACzuL4VTJYUFrtH9VDvHUawEVn2YWB9/n74UeyBrPo8S3Quy0ZGpkF+Qa2Y?=
- =?us-ascii?Q?/9Mm0D506KymN6JAVU8mhZzfq9mvn4DpRnXxfIxZcW9ZHkS2VhS0AQOK6ZCL?=
- =?us-ascii?Q?Eh0vTFRozYRFEaPj9txyax8TpDNU6qnArEHuYuQ+UKjQYWZsMSCXv9ZH/0ol?=
- =?us-ascii?Q?N49GuBBD6oAN923HYJuIBrK05qa+lPIdZ5BWvRRpD4OH0nyB/wagBnWiNUHL?=
- =?us-ascii?Q?L+2K0SZOAkMyhedWrHRKotmrD95UUEXLKQpAPG+7WrG1zCaXVLL37SBCBAcu?=
- =?us-ascii?Q?Mp+wB4BnjH0/f2JXeiV967HZ23xG4JL8DM0klGTSY0/wvNfIBldCKujAs9pM?=
- =?us-ascii?Q?rrZkyYlb3i/BvNREWMeGi7mfyMMFPHmpWfobG5k8DHrgE8+fkaN3msvbFjMD?=
- =?us-ascii?Q?n4g+CkwJKHNtSF7VofUCb0oo8jpt8wgrI6Z0p3mgilvks/HNwncWeDfHjvVa?=
- =?us-ascii?Q?F5BGmAXZb0sFf+ytWpj+VSSS7FlWp9YhOVifkUI6youRLL70TMYBKPuHuTIn?=
- =?us-ascii?Q?PHY1Dj3Yoc3XZHpp5Ed28Xaz5Z0t+FPE4RzNqJyAsQifHa2MLrBWRshpDYv9?=
- =?us-ascii?Q?GbSLgwIHwQDAvrs1t1tQ1k/SBn2oEx7wj7kZPErBkQ5QAi39lVqkBHJcmGtn?=
- =?us-ascii?Q?uw1IVim+9WmxLdQRTGF6G7hrhU7eYxsU+MczFPRIJkH/SdvDZKs4aqM1rxQG?=
- =?us-ascii?Q?5b8KHnUJc/5cVSdxQ89bND8s3g1WLnpQbHERhJy2/JSAmquJkgMkO0fjbNSd?=
- =?us-ascii?Q?7C4yvFrZqReIHKj4EtC0dS+HavXkU6PEogS7/K8mVL9vgG965wINeh2KltpD?=
- =?us-ascii?Q?MGqognma3+6zLFvp2/GOszzGHA/5TYCNIDYjDvpn62xv1oNYpmMt0/Vd503+?=
- =?us-ascii?Q?Jqx97OtXUsu0FmI7/rythisHAJR1QucowH3/2SmVH1rzPpNsuI4oOdIaFpnl?=
- =?us-ascii?Q?lr5sRu5the8o4DSA9ntRgyHeRYWPxj/UA+adnRRPlQGqXa7dmucJ9a+2Cgkb?=
- =?us-ascii?Q?7MCghCi3bwGMcadJa9qPKc+mKHeidZuio0NCH8wHspvrXjYwgedKzj868szT?=
- =?us-ascii?Q?18OCb1aJuvKnvhFgI8sgC03XynwKLyw/3SBWTxcimQML55vcuxzlM9BGn1Ix?=
- =?us-ascii?Q?4p8kfP9lj94FtVbV57q2/YmfHBD3kweFcb5OSzmKfUELGdpRd1rutkEk7SOZ?=
- =?us-ascii?Q?et4PWlajg8w5vteSilx4+Ajqw/XJiMq34CPohpGPMXWm7bHrJjZhP23zXv9x?=
- =?us-ascii?Q?2rot3B5+9a5XbcM45V0AjAsUPiWpBlq91z4eCoRNSOVzZEmNGe25C/qW9Puz?=
- =?us-ascii?Q?Z6GTo6pHNdCZ3nxku8xpedZ79uona5c72GsyI1yuITDdDaOSbk4rAREinMtt?=
- =?us-ascii?Q?NSKcwXMItceGWQKdRdPL8xaur+4V7v7TZB8axk/Es1VYK1OwJruJIwQyqxeB?=
- =?us-ascii?Q?l/TX41fGyWU4mYQX8XTqV9F46Dk2Ezer1DKCSd6snSXH6qOWKMjW2Xebrssv?=
- =?us-ascii?Q?PE5S9OmVi5aNjbDzwH0+ke8BeMZVWCRAwBt4NKzZYa+ZikD/VeVbW8Xi2HdK?=
- =?us-ascii?Q?w9eIDWQ2wx5+QcieZxd3pYvTdtAE4u0lUx6pOvko?=
+ =?us-ascii?Q?xBFHl+V1G4L9DZ9coIzi7w434oYUUNg3lfCQsrDu1DOklYp6qe8GAW+tKnzg?=
+ =?us-ascii?Q?+acnuQlkdoXIYFUk7xvdW29t2h54lcFCI17A88Ns2ruUak0oQp/dCbR+MAuQ?=
+ =?us-ascii?Q?y4EMHHmUHEbe1jgwWteerDGwqw+ygjXIJD5mTuSb608lNHocbXd4v3E87wFO?=
+ =?us-ascii?Q?dWYEUAkyMdhG9eH1Nkwpg7/Lgo4F6MV3/LC0pQanGMbs9DWs+C7n+RH6u+8j?=
+ =?us-ascii?Q?5Y/fiOAdkRNB0AS8p2GjuoaiZ9ByRmQfpBVrNtii3txupFE/os5HacDWpTYJ?=
+ =?us-ascii?Q?Ozjjev77tVEiiMC0lwkVWk4i5Qya7uvXBAcvRPXZ5LJCZHPdD4GetaBCfx+I?=
+ =?us-ascii?Q?ufKwOtx+nftAjrIQaxz+6+Sren3Xy2aCS+3wioWtc+s4WB/S0KW3uuhE4T6R?=
+ =?us-ascii?Q?9qF7S8QQm1IYTGVTDoreAFT47vxnK8+ysH1K/DGo4iEiD+MObqPjS6Kv/8lp?=
+ =?us-ascii?Q?8DwKKPIiy1SJeuP/KcLyc75cJ4cavOljhT5y9Va6EyPtDTh8hlPWe/BHV6ci?=
+ =?us-ascii?Q?R5i0D0qjhFWTu9qzKmhLu8EA71A/2auAtrWvkeYTUeksI7ci7cib4fozyrGF?=
+ =?us-ascii?Q?4HYg827Gx0kSm9sNFsMd4IgkLVVd1f5H5vWshH7gqB93BYOITwqMGSXMfFXD?=
+ =?us-ascii?Q?EJIK1HK1uyzFlbsWneZgkMedQ78UT47vvlM6x7Dho9IthrBP6m4NZckbEa99?=
+ =?us-ascii?Q?4zt69SGgYX04aJlLSac9UjfTGsRi15NofClfzwYcCUoQvRMCzQOoDR8ko+MW?=
+ =?us-ascii?Q?sjce99NVJoCPcHk2WSBEMDzXSt9W7MKhxizEXg0qmxuRDlgFnpKIHLwyImeY?=
+ =?us-ascii?Q?uVzwXabqgj7aViYIGRiFshDWn5aunYfPZIqbx84YMYFTLTKnniGK7O2loijQ?=
+ =?us-ascii?Q?b2rbLQRcenbdomV4fO6gfMSIbYHel/WnrUKexb2uydI6lACFGV/doaxNzxep?=
+ =?us-ascii?Q?m3aP8+BPbsEMx8eg9XyQkuIBNKL2jKAyrjflIRzKGO1VPO6cxYaU+N529Cop?=
+ =?us-ascii?Q?s7nT1cq6luRV0FIvvdfuY6tH2G+OEhHQzs/X2jF5eAC1KNE/OWxOjtvdQAho?=
+ =?us-ascii?Q?yoM7rcm2T8Jg/8v7XYTlB8S6v6SuvtkYRoIn9s7VtJWOVqR0EcVwmTZi9Hv0?=
+ =?us-ascii?Q?3KfUGHSJcp3IgMp2Bm7Sh+Tl10LLEhhfyk8KZTQVnWIiVy1Xtu2eNJxrDi2Z?=
+ =?us-ascii?Q?oxrFht0wypMuR+rZxRX/awp4DUYGJG/YjlaPneSKxPG8ysWz6AE677xxWgA6?=
+ =?us-ascii?Q?bZgxzJlI5AXbGrR1odECbXCWBhpI2Pp1scJNosc3E02Y3BlezFLDC1180r8c?=
+ =?us-ascii?Q?kdfe3TNAsUH8hXIqM9TQ67JTK3MPzqrZjIwMwbiEcvDgql7vwjma2BHMwzu/?=
+ =?us-ascii?Q?MYy/uQsbVJpHR1xUwKYboXDoKH64+qR9gvv8CtJWEe23Pr44A8oif4SbsNyr?=
+ =?us-ascii?Q?F8wIVWNJuWOUoZTzHF2be9jj59kqQQeqOO2dJ3zVyRtVqVSs1z9ICCd194Pn?=
+ =?us-ascii?Q?t/Q+b7vtYQv+YaGVln5nt07ZJYlxZlD7Ga0Vdh1r9YUPZfkH8vgMQfF6gLM4?=
+ =?us-ascii?Q?iK+sed8v1poJEN+N1QIoDETWA63mEoiV5yivHBK0?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -112,47 +107,162 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87e27e6d-1f44-4a1a-106a-08dac65db950
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2022 16:31:46.9176
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ebc835c-9c10-4a21-5829-08dac685aed0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2022 21:17:49.1092
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2UFm/vXU05Kb+oihVVLJViUxGTm5+Bk4nZfOeQn4i+pEmji2al7H+yUOjZz80aelXBQVeIbT/ivJCpuQurMkbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7565
+X-MS-Exchange-CrossTenant-userprincipalname: eCaMk4etGe/ezQyQBvPmvaRfnN5jNPHwQCXyozec7OEASTtkgQvDm3JkDBBP2TyJ6XD54iB2ThENavVsbhOvsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9296
 
 
 
 > -----Original Message-----
-> From: Andrew Lunn <andrew@lunn.ch>
-> Sent: Monday, November 14, 2022 10:28 AM
+> From: Alexander Lobakin <alexandr.lobakin@intel.com>
+> Sent: Monday, November 14, 2022 9:23 AM
 > To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Alexander Lobakin <alexandr.lobakin@intel.com>; Paolo Abeni
-> <pabeni@redhat.com>; David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Alexei
-> Starovoitov <ast@kernel.org>; Daniel Borkmann <daniel@iogearbox.net>;
-> Jesper Dangaard Brouer <hawk@kernel.org>; John Fastabend
-> <john.fastabend@gmail.com>; netdev@vger.kernel.org; linux-
-> kernel@vger.kernel.org; imx@lists.linux.dev
-> Subject: Re: [EXT] Re: [PATCH v2 RESEND 1/1] net: fec: add xdp and page p=
-ool
-> statistics
+> Cc: Alexander Lobakin <alexandr.lobakin@intel.com>; Andrew Lunn
+> <andrew@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Alexei Starovoitov <ast@kernel.org>; Daniel Borkmann
+> <daniel@iogearbox.net>; Jesper Dangaard Brouer <hawk@kernel.org>; John
+> Fastabend <john.fastabend@gmail.com>; Wei Fang <wei.fang@nxp.com>;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev=
+;
+> kernel test robot <lkp@intel.com>
+> Subject: [EXT] Re: [PATCH v3 1/1] net: fec: add xdp and page pool statist=
+ics
 >=20
 > Caution: EXT Email
 >=20
-> > I did implement a quick version of u64_stats_t counters, and the
-> > performance impact was about 1~3Mbps on the i.MX8QXP which is 1.2GHz
-> > ARM64 Dual Core platform, which is about 1.5% performance decrease.
+> From: Shenwei Wang <shenwei.wang@nxp.com>
+> Date: Mon, 14 Nov 2022 15:06:04 +0000
 >=20
-> Please post your code.
+> > > -----Original Message-----
+> > > From: Andrew Lunn <andrew@lunn.ch>
+> > > Sent: Monday, November 14, 2022 8:08 AM
+> > > To: Alexander Lobakin <alexandr.lobakin@intel.com>
+> > > Cc: Shenwei Wang <shenwei.wang@nxp.com>; David S. Miller
+> > > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> > > Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Alexei
+> > > Starovoitov <ast@kernel.org>; Daniel Borkmann
+> > > <daniel@iogearbox.net>; Jesper Dangaard Brouer <hawk@kernel.org>;
+> > > John Fastabend <john.fastabend@gmail.com>; Wei Fang
+> > > <wei.fang@nxp.com>; netdev@vger.kernel.org;
+> > > linux-kernel@vger.kernel.org; imx@lists.linux.dev; kernel test robot
+> > > <lkp@intel.com>
+> > > Subject: [EXT] Re: [PATCH v3 1/1] net: fec: add xdp and page pool
+> > > statistics
+> > >
+> > > Caution: EXT Email
+> > >
+> > >> Drivers should never select PAGE_POOL_STATS. This Kconfig option
+> > >> was made to allow user to choose whether he wants stats or better
+> > >> performance on slower systems. It's pure user choice, if something
+> > >> doesn't build or link, it must be guarded with
+> > >> IS_ENABLED(CONFIG_PAGE_POOL_STATS).
+> > >
+> > > Given how simple the API is, and the stubs for when
+> > > CONFIG_PAGE_POOL_STATS is disabled, i doubt there is any need for the
+> driver to do anything.
+> > >
+> > >>>     struct page_pool *page_pool;
+> > >>>     struct xdp_rxq_info xdp_rxq;
+> > >>> +   u32 stats[XDP_STATS_TOTAL];
+> > >>
+> > >> Still not convinced it is okay to deliberately provoke overflows
+> > >> here, maybe we need some more reviewers to help us agree on what is
+> better?
+> > >
+> > > You will find that many embedded drivers only have 32 bit hardware
+> > > stats and do wrap around. And the hardware does not have atomic read
+> > > and clear so you can accumulate into a u64. The FEC is from the
+> > > times of MIB 2 ifTable, which only requires 32 bit counters. ifXtable=
+ is
+> modern compared to the FEC.
+> > >
+> > > Software counters like this are a different matter. The overhead of
+> > > a
+> > > u64 on a 32 bit system is probably in the noise, so i think there is
+> > > strong argument for using u64.
+> >
+> > If it is required to support u64 counters, the code logic need to
+> > change to record the counter locally per packet, and then update the
+> > counters for the fec instance when the napi receive loop is complete.
+> > In this way we can reduce the performance overhead.
 >=20
-> Which driver did you copy? Maybe you picked a bad example?
+> That's how it is usually done in the drivers. You put u32 counters on the=
+ stack,
+> it's impossible to overflow them in just one NAPI poll cycle. Then, after=
+ you're
+> done with processing descriptors, you just increment the 64-bit on-ring c=
+ounters
+> at once.
+>=20
 
-The implementation was not optimized because it updated the u64_stats_t cou=
-nters per packet.
+Did some testing with the atomic64_t counter, with the following codes to u=
+pdate
+the u64 counter in the end of every NAPI poll cycle.
 
-Thanks,
+@@ -1764,7 +1768,13 @@ fec_enet_rx_queue(struct net_device *ndev, int budge=
+t, u16 queue_id)
+=20
+        if (xdp_result & FEC_ENET_XDP_REDIR)
+                xdp_do_flush_map();
++#if 1
++       if (xdp_prog) {
++               int i;
++               for(i =3D 0; i < XDP_STATS_TOTAL; i++)
++                       atomic64_add(xdp_stats[i], &rxq->stats[i]);
++       }
++#endif
+        return pkt_received;
+ }
+
+With the codes above, the testing result is below:
+root@imx8qxpc0mek:~/bpf# ./xdpsock -i eth0
+ sock0@eth0:0 rxdrop xdp-drv
+                   pps            pkts           1.00
+rx                 349399         1035008
+tx                 0              0
+
+ sock0@eth0:0 rxdrop xdp-drv
+                   pps            pkts           1.00
+rx                 349407         1384640
+tx                 0              0
+
+Without  the atomic_add codes above, the testing result is below:
+root@imx8qxpc0mek:~/bpf# ./xdpsock -i eth0
+ sock0@eth0:0 rxdrop xdp-drv
+                   pps            pkts           1.00
+rx                 350109         1989130
+tx                 0              0
+
+ sock0@eth0:0 rxdrop xdp-drv
+                   pps            pkts           1.00
+rx                 350425         2339786
+tx                 0              0
+
+And regarding the u32 counter solution, the testing result is below:
+   root@imx8qxpc0mek:~/bpf# ./xdpsock -i eth0
+     sock0@eth0:0 rxdrop xdp-drv
+                       pps            pkts           1.00
+    rx                 361347         2637796
+    tx                 0              0
+
+There are about 10K pkts/s difference here. Do we really want the u64 count=
+ers?
+
+Regards,
 Shenwei
 
+> >
+> > Thanks,
+> > Shenwei
+> >
+> > >
+> > >        Andrew
 >=20
->       Andrew
+> Thanks,
+> Olek
