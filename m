@@ -1,233 +1,143 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2079.outbound.protection.outlook.com [40.107.22.79])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60086.outbound.protection.outlook.com [40.107.6.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543028498;
-	Tue, 15 Nov 2022 20:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5B78ACC
+	for <imx@lists.linux.dev>; Tue, 15 Nov 2022 20:50:07 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N3z68MzlU6bVKGnL8G/C2AatB8mQoPuKuzdUTdnCQsCgXU4r5dc56Sa6tG7zXnPCjHapVPD4NNsARjfmiGaD4fR8MBCo2JwiP+rcGBs+TfnBU4wtDZqSxKnkNODssrHfoU02YtVVyZHcteYszyihMkVXheMHB6MdR9Z/MXs/Erz6LNeGkXeZfIR0EczdxAayGlrNmoGpObdNpktwcGQECrC58vG0/ZBlv6RKXmaH15Hr1CpgWQ6cdqFVvu4E1Gr8dFR7Af2LPD7dEGVqkEKkNAw51Q0ES3fe3j8HMQhjdz9rsuLqRK1ZjS1Lhxx+fIApI1yttRj3NxF2Y+OkIuG7nw==
+ b=RWJ0IvRDtLbHVukaF0k/o0F0NzKAX1aVUw8XeUkthVihUIVDlxwvC0upNS10qdi9TLqRTqh3Sb3KpKIVF7sKRXbWT8EpE4Hh5awNogtmjglardEJbsw9v3mUKI/AjgtjUn6A2WjmncSsY7095eVS+r0ufVYC5ZZ5jT3dSNkaingwp8xEcbkxtDPyCyGbKQiSmTFyzr2zAaRzDCAjrIc/F++3YL7Obqb8OZ1BV5KJzWaAXQ3C9sUkDipmjSdYAFSE9p5c6tSHFJIO4FGZrK69hG/ku98p93w3S56+kBWkzUGEiMwy7EX18QYQy+lUltORnsljogxWhaSZmAMuDJ+inQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h2xd2luHoS4IU1h/aS5oxjSIiXbwn2f3Yc7CXEptHyc=;
- b=FEvybzntWPrh35Bb5YL8Oqf9C6qoMyjCovlxmyVfIYtDejGzeEVW0uSs5V546gLY/MdN+7S5YGbA2mVF+xTuJ5WKC0RQryRv4HHz00ojfffdOJrVZLBs3XwDyIIU/hdweXaeFaHk5TWgqsrSkUmdhaoGtR4zCuyB/hwr6DSmNUypb2ZQIvr+c4rDwND1T5K94Uu3NYxYxirEo8QeY4KVATRUQuuhhVqxi7j7UFjpFK0PrspxIU3k3XqE70ojFwFVOjAkOBQVnSuyZx1qkWrlMU2VLggKKIPGMh4EOQkCg/0qwn7RWpJoxYC09KYQQsJzr2WX85E/8dgfI2ePaPxtHQ==
+ bh=/bgvgUHpnHVYwxcYIoGZlKG83XXI2aZHk0axyOY23N8=;
+ b=bX1UIUYPx0osUKVWoMEOJmp2YVqaZ/whZsWwwuWbIhvQho+GxkfK/JH9AmouNx2ebw3CuDioVxZDfU9lxS1nACeopK0WLcPjT+AE3TdQpPwDwVCG+T5QYi1MKNwlxEny2JsGV/7YYQfjWXjBcCVVaCd3wx5ntcHJsOjxKDhPQQaxj71w0cAGbnRmWXmBJV9cg7AonX2PcrlvKZzPd41i8H9gKbe8LisXJ2UsjF1iv6+jU8egBfla4YHcIQj6ptWlAVXuB8UO2yv1Y33sL0t3s0RCHMJn23MR3RjSGPgayiV1MvidnkDTSUzML4DQuEKXF9qpt4g0JHJ1hTt4BX3vAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h2xd2luHoS4IU1h/aS5oxjSIiXbwn2f3Yc7CXEptHyc=;
- b=KJ04HTsM20W4MIly//EmOcTHINJJxnP4NIZl60otDHrEuwi/ZTJ1vhexqwPS30xiFKMiwP7leB7NbcP6cns1/UPuDUV6qUSNDLJfHb5XtxQIW3SQiXSUYCdhzTpAB6acD1x6Y1nZOQIvPzt2+Trz4ncUc85CaAOuItA+fcyhHkA=
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by AM7PR04MB7110.eurprd04.prod.outlook.com (2603:10a6:20b:119::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.15; Tue, 15 Nov
- 2022 20:49:53 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::a405:3557:91bc:9230]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::a405:3557:91bc:9230%12]) with mapi id 15.20.5813.018; Tue, 15 Nov
- 2022 20:49:52 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-CC: "mani@kernel.org" <mani@kernel.org>, "allenbh@gmail.com"
-	<allenbh@gmail.com>, "bhelgaas@google.com" <bhelgaas@google.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>, "helgaas@kernel.org"
-	<helgaas@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"jdmason@kudzu.us" <jdmason@kudzu.us>, "kw@linux.com" <kw@linux.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"ntb@lists.linux.dev" <ntb@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH v16 4/7] PCI: endpoint: pci-epf-vntb: remove
- unused field epf_db_phy
-Thread-Topic: [EXT] Re: [PATCH v16 4/7] PCI: endpoint: pci-epf-vntb: remove
- unused field epf_db_phy
-Thread-Index: AQHY7sTonrEmeP19GkSdtJORZ+azn644VMCAgAC5MsCAAIzCgIAG7pog
-Date: Tue, 15 Nov 2022 20:49:52 +0000
-Message-ID:
- <HE1PR0401MB23316A12EB6890260ACB9E8888049@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20221102141014.1025893-1-Frank.Li@nxp.com>
- <20221102141014.1025893-5-Frank.Li@nxp.com> <Y20Yt7T0bivqUvop@lpieralisi>
- <HE1PR0401MB23317A2372FCE691C230806E88009@HE1PR0401MB2331.eurprd04.prod.outlook.com>
- <Y24qJb9UisCqpdKZ@lpieralisi>
-In-Reply-To: <Y24qJb9UisCqpdKZ@lpieralisi>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=/bgvgUHpnHVYwxcYIoGZlKG83XXI2aZHk0axyOY23N8=;
+ b=kd4jS/TvuOEPTSdcjtWCcQS2xGrTCn4szzfBZiuo7aMrmmQrzirDU9Wyx3bicBwhuyJj6fxTwxiK8uyznV7A7z/srPgeEffJatUD5EcTju3T4pNuu/R6eYFW0DS6nVNdTgr4qGbeZaPBJOJeSTgS7/aIpiNapg7Wg4kWoJVeih0=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|AM7PR04MB7110:EE_
-x-ms-office365-filtering-correlation-id: b6801aab-ef43-42bd-0a8d-08dac74af1d6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- J+GRflNKG1FOCWcDReb++xiTMG5mX910l4GRoSNwUiWRXNIKvZdNjmDlYRZQTjWOSbNOJ/Bj60TV7KJbDAojpNTy2iiMOAnc78F5dR7E4XIsyOHgvr/xqci+V5Vlbl7QhWbaygn7vhdpTocNE06EMZi3cF64esk3eG3S3hk7lnLBUDOo0VcMvdDPkWglqBprSL4LZNy7O/wzk5uTKlNt6F/5gBrJrdrBw2HGqk4dOb1S0JMIsj3FHdv5CdMaN7jkKI59S2cLsfUR7pSEwjcG6/ZtDdivxMAbzBWA1eelIsdI+BTiQYCb+9ff5nDKHGQOENwrzqr29H84fXzjehAVJxaWah5wKaDDIJlQNvimX0xGGD/8gL7q0I0M4gxuxs4lOtfM3isB/bqid+NDjpIKOIhVI8I51U1Uo0op64oy2cQQ1gIF+LMqXf3bKXQVNKvze4ngP9puDAkY+5B0XgI8vdvc1TEEsUsh3aEqdmJ7mI3FwDrPidRea9RTAUiAIIPJzznx8LZZ7TNRodmma9GYJ1h8M52dKN+UCI1EhfLixsbAraQd96/BvZ1pbbRvF0sPlT0kOuSeJHBK8HiBYNnvnC7fe40GfCUmCNwWfQYkDPsJLPYvDuD5gUjfDUhWzD+0vAnUolqiCiBhiWds1E6Lk1sJT+0tHtP6zfDRtSnMKHg2AQmeKtpzKMhUfyyrgYQqOWNNoWBQpYqC/boK/ZxKt9kvREdW/HvV+osQyXi5AaG9EZLqwNOcCz5oIwETL2cpJEf4kGPn0ddDjMt7/v9FC+5B3OXhR9Q+kYTJwhcWCis=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(39860400002)(366004)(136003)(346002)(376002)(451199015)(5660300002)(316002)(6916009)(54906003)(4326008)(8676002)(41300700001)(186003)(66946007)(66446008)(66556008)(76116006)(122000001)(64756008)(66476007)(38100700002)(38070700005)(83380400001)(7416002)(8936002)(52536014)(44832011)(55016003)(33656002)(86362001)(2906002)(9686003)(7696005)(478600001)(966005)(6506007)(26005)(53546011)(71200400001)(45080400002)(55236004);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?LluW0ZJDTt/VCqPxnGVah7V47UVMtKuBDQg0HZJRhA5FyuA8mpmjmWnuur1Q?=
- =?us-ascii?Q?mEFUjLQMUU+Q76yMRFIBmann8Xe8H8vGsK5PZE+91QcIAiBZmsMlsZQhCIb+?=
- =?us-ascii?Q?Iuq447LsCPYxv68TNxPLC1AhuYVATLQ37+TfMSXLQqiV0jq5rvmTebDqY+XQ?=
- =?us-ascii?Q?R7gbkUYBMaOHZ3OYd9RarM1l0KD8e9uOUPsBlJSq3BKUyEaA2989/vEoUWh+?=
- =?us-ascii?Q?ri+kJ72k+iaw11fslX4bG7LvSfavH2zH1jrRJXX+t+/rIWpIfiBvdfQpJqC2?=
- =?us-ascii?Q?a4EE/R9WAsMRUBPKzO/eUgGYZjFuB8HvW4kIi9y5WWV5tzcgGNwDIgsE7Wi5?=
- =?us-ascii?Q?z2cotvton9dkIgD48uxh6THtoeQCyMNlQvcEoSMBnO5v5h8kP9Zq1o5T9rSh?=
- =?us-ascii?Q?wcebP0hY/xK51AjqwfICnU/qS0zG/JVfLYnmb/WJ53QUor9Q78mKS3e0tdCG?=
- =?us-ascii?Q?s7WdbzoiYxeOBR8I6/2NkJexnaPWaPpNKIFKAq+5W8iwX5bW/CddVSvGOw7v?=
- =?us-ascii?Q?1AY8TiOb4p0JGDyjqhVrx2zcdVI5eiInc70VZuzjAvikXLVQCBHj0ObV8W9U?=
- =?us-ascii?Q?s8M5d5fhsxuJH8WtlbwVoVuCu6WsTmmv9dP/8dArlJX5GIAi7szKVQjBYDS7?=
- =?us-ascii?Q?7Rv8L9kA5MZnx/nWnkAos17VV96iNp9b9P9ALThwZiPf5E1iaNPe+2qFK6ES?=
- =?us-ascii?Q?mzDIKn+yzA71eknxID/l1At+nKqU10HdmPnE62Jw+5PsS08bQj542kiFr+DY?=
- =?us-ascii?Q?ujZ0bfxmOUb38u9rhDzGHce+YsOrtx1oIqEWoV470oEdM4QpXZqKY7zMvyDb?=
- =?us-ascii?Q?oXLlJAr0VL/5PixKNE7WyVDJwQ3mhnLSSAKnrJG2k3etLGwL7gqZzpTy0pay?=
- =?us-ascii?Q?wzzSSx1cpjE6fWFFSWolDZmtoCrb/YOetYBeqpu7F6DXzxJgg532iBuU9VZI?=
- =?us-ascii?Q?Wmk5DeEbkRe8wlT/rl2IllaihFE2gRVIaEAZ2WmZckWz8HIO0a8qtjErjZZa?=
- =?us-ascii?Q?3/goMGjTDgn7ka6p4vSlMmf+voziCDHG0IQTY6FEhPAn6rPT1UjJC9GiLB03?=
- =?us-ascii?Q?+7fsLG8H9/LsKZmK8VmEEcf783tlAqEcTmgk4AXgU5bUDX1ozBPndQBexU+N?=
- =?us-ascii?Q?OjdtQA1paEBYLbKqbb/I0MeXQOrhjPpHhaU2yXh4SJZvSBGmMOr3g6J4PKIL?=
- =?us-ascii?Q?zXr750xv+b2TynRXP9nP+gtcbApdqTgQ1C4HuNA3fNplOKjuV0R4/lVWTPwA?=
- =?us-ascii?Q?QWODtuTIXn+EVWIgWBgEwakRJ7uuuZGbz35k+ECR9/wBezYfEn8Kox0HiDXm?=
- =?us-ascii?Q?c0wUd7YrxL/6uB960/lF2FwFVNjuRmN0dL54nyhz66ijf5WPwIiq3TS/U/hk?=
- =?us-ascii?Q?/tkE47PEyF73rgUjKjz3O25JYVJnXYnXRbk+JagpDKe05GlPzy6cNTcyiLQX?=
- =?us-ascii?Q?HqaiQr/YlFIp+6s0Tc4X+f5thvneXboJYlSR60djAtoqia2M5PtXG6JcO72v?=
- =?us-ascii?Q?QR5WRySv/9VXN+m3sHiebch/zqexoSgtAkQOMPIOFTlzem00C1pX9mUrlFIC?=
- =?us-ascii?Q?gAOzUiRSV84bv+8N/6c=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DB8PR04MB7129.eurprd04.prod.outlook.com (2603:10a6:10:127::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.13; Tue, 15 Nov
+ 2022 20:50:05 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::6b44:4677:ad1d:b33a]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::6b44:4677:ad1d:b33a%6]) with mapi id 15.20.5813.018; Tue, 15 Nov 2022
+ 20:50:05 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH v5 0/3] net: fec: add xdp and page pool statistics
+Date: Tue, 15 Nov 2022 14:49:48 -0600
+Message-Id: <20221115204951.370217-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0210.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::35) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DB8PR04MB7129:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66acdb00-6632-4cdb-d649-08dac74af934
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	G3jx33ioH1bYBzecEMQgdIguy0McAier46vppxU0jDtcdbSXMQgENwFf0/CXdMu7En4zBw7/XaufmUg1TzNe38090hl9Dn94wH3OSNeqxLgAJxvoWQDgR2GTFtum1jTdQke+ILcdqfUB7HE2EHGSg17DsetVVMzDQrwN38IPkkQJ7wN976Gbjkrsjo78ZjzoyQEkgXlXFMrvYAupW1I9sIDDkcxZ5hNCxEsziSCI3ToOrdvR24ef6Oz4SXnCguzXL3c01QpqZSD+nbumwd9YWD7cb20VzkTA7XYv+Xkr8omc+F9Hv2xEVQ/dHFuvwksaIn4HfIK7PO8HOjF/ADMRotiSeSV0AZti08z/FG594pUyvpS4Nu4RnINY0ATFAXkMrBnsTVjs9RRr1QKJrLRdxaLEVk8YsFRkxfwp+v0Okx4JlTH1+Wa7p/et02RWOf+2ZTeeVl4T6wz/lYDeckZEXGAgJS0em9Q8Lxvv83oidRRYIQVzvAgkHYatx+zuFEl198UKy6meyoTKOL02UxOHLFOW3iyetG36YCLcRZs6WREsNn70oJ9+CcAOhSZo3WF40VTkhiwc1Y3fdSMHGOTP9L0YxlEYQIMlWJWvUOsIP9rTeDQ6yStLmXhRVqoiLXvHjy6NjqMoU0SdHKIpX+3abQHQKn0XPF3+VR1VQMgo3pfPsUAjSacuI9BgOBGbNavB7ViRKQhzh7ThoAttDH58h0KgItMoAW52Bb0p8tXNvP4oiYu9TcILU2Vy9U2cLfALVKnSHvcdWd71Lmd/EZTF6w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(366004)(346002)(136003)(376002)(396003)(451199015)(66556008)(5660300002)(2616005)(66946007)(66476007)(6486002)(478600001)(86362001)(44832011)(7416002)(186003)(4744005)(110136005)(2906002)(36756003)(8936002)(1076003)(6512007)(6506007)(6666004)(54906003)(316002)(38100700002)(83380400001)(41300700001)(52116002)(55236004)(8676002)(4326008)(38350700002)(26005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LO/kYWjBISMMo8vTiMEQWtfVWFbA38/6DZ/CUJlyB+hCFquEPJVKsKJCWUrC?=
+ =?us-ascii?Q?DLFKUGilTIjYIfzt4XmLSVEJF5zc/iAhuy5OIIr5AVcRXkJIJRI4jLVbSopC?=
+ =?us-ascii?Q?FtRTF7jGJFbvCc6hZlVOZWi+d9cyGT3g+cF2daKiQVIEFLj8TYBmgsALTVkP?=
+ =?us-ascii?Q?ccP1K4fRXGXCaiZFO7C2wKHmIBp0FzMKArJiuOCE6AewogylPWVL+DBCBF1w?=
+ =?us-ascii?Q?KWRL9qx+1YvvH8ubJp9QCHxlWaBQSxQgYtQFhJQ8ysg9HC4sSTZOd8zuL/E3?=
+ =?us-ascii?Q?G5gJZaDZWmecd+m9JDGZSyAOUja7AB+b2naABdKjvPNSrppKFvUyRRxVpxvo?=
+ =?us-ascii?Q?9PPSqfx1vjUPZnp5igzVSBlu2dKoA5aMTDINZhNlJbS/PB+unWl5hRlvIhJn?=
+ =?us-ascii?Q?bz3pjynCEhq3oTLfB1IAbA/QmU/RSGJAT+KViqksGzTDG8yLtj1WYHiVVyCs?=
+ =?us-ascii?Q?ivQJ5Nxsr7pyuPK87QtXSaZT1CtJsZaDRN3TOaGgo22betALOOKwpvScSbyi?=
+ =?us-ascii?Q?zDYlw3qLacK0opvxT0QEyroAgpJPls7uzkwYAY//VOuMH/vb7YsvBVkk8j+g?=
+ =?us-ascii?Q?NHe8aPYXVBd0DWlj0ZR3irpJeitTFT1G/2AoAsWMjtV0B/NgywHWACgBpRaZ?=
+ =?us-ascii?Q?jopIf26133C1yUWKYwZgyD6nY7FB/whtuuhh2Ay7NDKq9tj1KOKAapYgzo9r?=
+ =?us-ascii?Q?WuPZYVr9fE9OTRcs/QWKXhNv48+fb3yahhnKN0GHWkHjFEi3rjpnRV4xygD2?=
+ =?us-ascii?Q?39fTadBj8pak/VoOnFpBdl8aUcakaeQNVg7oQfDziVViBG2YSw2q9y948Pg5?=
+ =?us-ascii?Q?QeCoZtFu3yqrLuvs52wohnCSjBNMzcZoxVbSPz4bQAa9RUHZU3P7yceB1iGx?=
+ =?us-ascii?Q?GO+J8BUYzhF1IXUDU6Ce9k3y0tv0FzH086N9IbFYm7DJdPETGD+0kH1WAzXb?=
+ =?us-ascii?Q?VBX4W0xkec/7WWk/GPXdGiA+Vk8ly+6vMW3EPIT1VsHQ2f0IANMdtO7ULYPf?=
+ =?us-ascii?Q?r62KVyCjWg8LZ271tZrpZhZmZOO7gQvllVa6Av885VGm8LUId42sviV7sNXu?=
+ =?us-ascii?Q?BnG94iSR9NKZMQc0C7TG3frizv+gETDspKIijSX+polRH8QPNYj8213GSkA6?=
+ =?us-ascii?Q?fiSBCT6ma2vtqR6aMHNpQBKOMbKL1IbSMHoGaj9AYy0fPzne1/MDjiw//4BA?=
+ =?us-ascii?Q?+VZuq3OLxJSj38YX8jMwndxqHrMRQLmv0RKNZ6EzJ34SykZTXoJKY7DmtNS3?=
+ =?us-ascii?Q?SDDU/ge2XzTqrGnN/FA7wCiSU/SMteK9nib0q9uLoHWlEhzUMAdSBNtcc44i?=
+ =?us-ascii?Q?D9Kzwk6QbmdnyaKeQ0rNUo9GF2795aoFb99Pmg4oWbh1XVpbN3Lt4glH14cs?=
+ =?us-ascii?Q?AnCNR0dFjW5Sg5CNiWo96bnNaU0oT5zDnmuuE0aOAma/qWJsmHKlKzNs9rHZ?=
+ =?us-ascii?Q?eE6njsSkr5CFCb6K31CssGMMapbcGP+232TO+uuYl+PFyT2LvgKo3N92LpOr?=
+ =?us-ascii?Q?aAzk5Q3L3cH77vl/ubDEYisK6ZOeOrACrZJha7swRpPIdUIsGNGLnepjcqDB?=
+ =?us-ascii?Q?KmnzzjhNWqurkpyzkMVG4pq+kBdvFya9h3eD0aqM?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66acdb00-6632-4cdb-d649-08dac74af934
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6801aab-ef43-42bd-0a8d-08dac74af1d6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Nov 2022 20:49:52.5034
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2022 20:50:04.9937
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: I4dgMs2MkqG+XbTbIFRgwZNf8lnTDZruK2ZvvaQI7OkaLBvaYJf/n398Sanlo9khDKF2Z6XWxkOZg6lbi66Lrg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7110
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M9GOPovUvrMVzzzmJPA6S9IqgodhYCchxOHnjfLQ7ifK9ZdMEuZa1UDaUXq255fFGJhBHIcdqp4QdvtwsAJNcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7129
 
+Changes in V5:
+ - split the patch into two: one for xdp statistics and one for page
+   pool
+ - fix the bug to zero xdp_stats array
+ - use empty 'page_pool_stats' when CONFIG_PAGE_POOL_STATS is disabled.
 
+Changes in V4:
+ - Using u64 to record the XDP statistics
+ - Changing strncpy to strscpy
+ - Remove the "PAGE_POOL_STATS" select per Alexander's feedback
+ - Export the page_pool_stats definition in the page_pool.h
 
-> -----Original Message-----
-> From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Sent: Friday, November 11, 2022 4:56 AM
-> To: Frank Li <frank.li@nxp.com>
-> Cc: mani@kernel.org; allenbh@gmail.com; bhelgaas@google.com;
-> dave.jiang@intel.com; helgaas@kernel.org; imx@lists.linux.dev;
-> jdmason@kudzu.us; kw@linux.com; linux-kernel@vger.kernel.org; linux-
-> pci@vger.kernel.org; ntb@lists.linux.dev
-> Subject: Re: [EXT] Re: [PATCH v16 4/7] PCI: endpoint: pci-epf-vntb: remov=
-e
-> unused field epf_db_phy
->=20
-> Caution: EXT Email
->=20
-> On Fri, Nov 11, 2022 at 02:39:12AM +0000, Frank Li wrote:
-> > > -----Original Message-----
-> > > From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > > Sent: Thursday, November 10, 2022 9:29 AM
-> > > To: Frank Li <frank.li@nxp.com>
-> > > Cc: mani@kernel.org; allenbh@gmail.com; bhelgaas@google.com;
-> > > dave.jiang@intel.com; helgaas@kernel.org; imx@lists.linux.dev;
-> > > jdmason@kudzu.us; kw@linux.com; linux-kernel@vger.kernel.org; linux-
-> > > pci@vger.kernel.org; ntb@lists.linux.dev
-> > > Subject: [EXT] Re: [PATCH v16 4/7] PCI: endpoint: pci-epf-vntb: remov=
-e
-> > > unused field epf_db_phy
-> > >
-> > > Caution: EXT Email
-> > >
-> > > On Wed, Nov 02, 2022 at 10:10:11AM -0400, Frank Li wrote:
-> > > > From: Frank Li <frank.li@nxp.com>
-> > > >
-> > > > epf_db_phy is not used, so remove it
-> > >
-> > > Sentences end with a period (.). I can fix these things but
-> > > we can't spend our lives telling you how to write a commit log,
-> > > check how they are written in the PCI subsystem and follow the
-> > > pattern.
-> >
-> > [Frank Li] Do you need me send new version to fix "."? Or you will plan
->=20
-> You don't have to write your name in brackets all the time in replies,
-> it is clear from the indentation what I am replying to and to whom.
->=20
-> > queue these patches?
->=20
-> I will queue them but next time I won't fix the commit log myself.
+ Changes in v3:
+ - change memcpy to strncpy to fix the warning reported by Paolo Abeni
+ - fix the compile errors on powerpc
 
-Do you have chance to queue it? I still have one patch (enable MSI)
-depend on these patch series.=20
+ Changes in v2:
+ - clean up and restructure the codes per Andrew Lunn's review comments
+ - clear the statistics when the adaptor is down
 
->=20
-> > My means:
-> > Mani's below feedback will make both live easy.
->=20
-> What feedback ? I am sorry I don't understand.
->=20
-> Thank you,
-> Lorenzo
->=20
-> >        >
-> >                > None use epf_db_phy and remove it.
-> >
-> >                   "epf_db_phy is not used, so remove it"
-> >
-> >                 >
-> >                 >
-> > >
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flore.=
-k
-> %2F&amp;data=3D05%7C01%7Cfrank.li%40nxp.com%7C200a354ecae54e7b1af
-> 408dac3d34892%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638
-> 037609466107831%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAi
-> LCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&a
-> mp;sdata=3D3ngvYAIP0oTTF1uwAAHFAFmBVi1FvKtgTTw1u3tDXUg%3D&amp;re
-> served=3D0
-> > > ernel.org%2Fall%2F20171026223701.GA25649%40bhelgaas-
-> > >
-> glaptop.roam.corp.google.com&amp;data=3D05%7C01%7CFrank.Li%40nxp.co
-> > >
-> m%7Ca0924bed538a494cbfd508dac3304e8e%7C686ea1d3bc2b4c6fa92cd99c
-> > >
-> 5c301635%7C0%7C0%7C638036909484154968%7CUnknown%7CTWFpbGZsb
-> > >
-> 3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0
-> > > %3D%7C3000%7C%7C%7C&amp;sdata=3DB3G7sfaSVdLDC8BG95WzpBPFO5l
-> PJ
-> > > QpThKDcEexOHfU%3D&amp;reserved=3D0
-> >
-> > [Frank Li] Thank you for your documents.
-> >
-> > >
-> > > >
-> > > > Signed-off-by: Frank Li <frank.li@nxp.com>
-> > > > Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-> > > > ---
-> > > >  drivers/pci/endpoint/functions/pci-epf-vntb.c | 1 -
-> > > >  1 file changed, 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > > b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > > > index 191924a83454..ee66101cb5c4 100644
-> > > > --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > > > +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-> > > > @@ -136,7 +136,6 @@ struct epf_ntb {
-> > > >
-> > > >       struct epf_ntb_ctrl *reg;
-> > > >
-> > > > -     phys_addr_t epf_db_phy;
-> > > >       void __iomem *epf_db;
-> > > >
-> > > >       phys_addr_t vpci_mw_phy[MAX_MW];
-> > > > --
-> > > > 2.34.1
-> > > >
+Shenwei Wang (3):
+  net: page_pool: export page_pool_stats definition
+  net: fec: add xdp statistics
+  net: fec: add page pool statistics
+
+ drivers/net/ethernet/freescale/fec.h      | 15 ++++
+ drivers/net/ethernet/freescale/fec_main.c | 96 +++++++++++++++++++++--
+ include/net/page_pool.h                   |  2 +
+ 3 files changed, 107 insertions(+), 6 deletions(-)
+
+--
+2.34.1
+
