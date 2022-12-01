@@ -1,278 +1,195 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2060.outbound.protection.outlook.com [40.107.22.60])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2088.outbound.protection.outlook.com [40.107.247.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6B763A8
-	for <imx@lists.linux.dev>; Wed, 30 Nov 2022 14:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DD22F5F
+	for <imx@lists.linux.dev>; Thu,  1 Dec 2022 14:01:48 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MEbLnfUBelk2YqDivhWCKDu1/Q9n6yhG6xHGke36HPM7CNZna0IU6hRYKnOmvcK4Cx+0fYR8URi9kDyRKukf/JwEXG4RCQzVo+9QPNle6FVW/RufJgLXil6aKOuNQY8vzdJw6Vqe9/jkY4dXNpghyieOPGYX3McCv8+3Dujp+SXeEA1m+QnKmzwA5MX7iTEmocXFiHGppcFPLtaiDBuUSQbk2MV7t7zhXSzEHphDShTlwMQV1+D8MRVaP27w8G8kdLqi3Bl+PGgq1tNxKO8sIzWqQrckmIO6ExVxkN4T7KnjQ79I2qlD3QlJPgHYOFuA7RX++ROUoTtq2qWb9b5dCA==
+ b=aaGrWNj41wGuuktjFtb6cOVb31FGOF8Em48Y1ddNTHI5TzJAFw/p6KRc4FozI06r7JzVPpoGkV+zVGbyAoDFNkochrYy5NSQuqot+4XEeYXi5J7hAK44/HQDpE4/T/0uwUj7LIcqPzJ5/f5pxuW7b3TAVGH1oRPlo4G1Wx/lpwmMmM1iXHWiiU3txrIUlye3yNpnVS9JQMywYWwZiEeUyiVffm4fbSLLQjWaVT+mguYyP235CLrVnCOpL/N/kUZtSr068Ckzn6VGtq58PiB60/myH5TPDgKeQHjFdaiEamgcGlFOe4CCt9/1ae2ahu6r6BnqtDZLq8v5zahD4fESgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B1BQFatqt9C13dZ0gqvdCcbJsegRprpF3FprMU0dqhQ=;
- b=ZcpZmXI491Ju59oZG1sKOih62DYccBDsXXyZE0h8TlVgR8lHcGESlnuuD9kZVTVjEs9HLWmgo6Fy/pNQfUwV3JM8XburJjxqHDsRxqOiMFNojKQ34wkWMulM2s62EoCfD/9nXu48T82tdIln2+mvAVJPAAL0V3n6TyJJ2bXlicXmQsXaQlv4u1IZ1UQ6Z/kwBXUuuwWdmLGoUb8PHyNSULJMwOh+3jcG74exnJx9Y0hjn2I5XHYXA6am2vG06JwD1lp6kWXX7JioxaSfdUQ6JzZ31VjUelh5LLrHN1KOiUn9ebStjbeTGneDOiwPfYEAqKmuc3krSS0IXupiik33kQ==
+ bh=lz8PRJOZnElxFCZ6PmbmRdQ0lO0d7shDrWiugbwPCj0=;
+ b=n88+ftNcNl+kOXcD2741fKp7ZVSqVPvmU+7aculcUKhYMTnIUoMkOGZPNmLQMxm1YJREnEkziVPVS/rWNXJKGg3gHOY8pqoPcfeWGhPkjKjEXo2K/6aLvkMvIH5MY5tXNT0ZOXRzgSaFnT1tElDnKAEaW0IUPZB5kb127NlbCUxuGhf1I0VVMpND2mh31Axobl+7DRA4Fy4Z22irCHX1RQA9xew9fHn1iZxEZKUs/ToGDjqkgdP+zyYt3X8riMWVhbMdzPtkeB/8mVX48GOYZFrPqPn2IP05DeKuEn6SI8ttgXkMP+cIoRW38TqHO8JjbZd6rH3B6T5ofmT7plqj8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B1BQFatqt9C13dZ0gqvdCcbJsegRprpF3FprMU0dqhQ=;
- b=ltKCRzY5gnZJ8eaiLj3WF7z5dr2RHTM7Zt7heD+C4sT8czFgKWQabikeW/YRF9z3wQkMccBmseAtCaNUOeqDve/gHZxNB6kLQB2mAzhOD6wnzsU+Ov0S60Vu5hawfy3QOFtYLegIyHKyR5ncbhaF6RsH9ZYkD3+ziz3fv0LTdTw=
+ bh=lz8PRJOZnElxFCZ6PmbmRdQ0lO0d7shDrWiugbwPCj0=;
+ b=TqWqv8GOBb7WTRtH53zrziR1sTCi+GhuhmTGQdgzZsE/8Iit0lpUO4N3on2CZmAKmGqpqTgnpkD96qS2G5pukSPCDgFk02Jp3ZSJnjeMz17VNYBv6UGv6e6/UYJV0zRicfw224126oZaPMQhlfMOAjjNctPaf0jrjp3UJaieHu0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by AS8PR04MB7861.eurprd04.prod.outlook.com (2603:10a6:20b:2a9::11) with
+ by PA4PR04MB7792.eurprd04.prod.outlook.com (2603:10a6:102:c0::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.17; Wed, 30 Nov
- 2022 14:09:01 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.19; Thu, 1 Dec
+ 2022 14:01:45 +0000
 Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
  ([fe80::203a:e5da:a4a:7663]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::203a:e5da:a4a:7663%12]) with mapi id 15.20.5857.023; Wed, 30 Nov 2022
- 14:09:00 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Bough Chen <haibo.chen@nxp.com>, Cai Huoqing <cai.huoqing@linux.dev>,
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>, "open list:NXP i.MX
- 8QXP ADC DRIVER" <linux-iio@vger.kernel.org>, "moderated list:ARM/FREESCALE
- IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list
-	<linux-kernel@vger.kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH 1/1] iio: imx8qxp-adc: fix irq flood when call
- imx8qxp_adc_read_raw()
-Thread-Topic: [PATCH 1/1] iio: imx8qxp-adc: fix irq flood when call
- imx8qxp_adc_read_raw()
-Thread-Index: AQHZBBITIcbXLdLL4k6c7baUCCsSgK5WG9cAgAEggQCAAEUfsA==
-Date: Wed, 30 Nov 2022 14:09:00 +0000
-Message-ID:
- <HE1PR0401MB23316F98F160D737F07D7E4A88159@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20221129164531.2164660-1-Frank.Li@nxp.com>
- <20221129164531.2164660-2-Frank.Li@nxp.com>
- <DB7PR04MB401094B273FB9F851CE9A06190159@DB7PR04MB4010.eurprd04.prod.outlook.com>
-In-Reply-To:
- <DB7PR04MB401094B273FB9F851CE9A06190159@DB7PR04MB4010.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|AS8PR04MB7861:EE_
-x-ms-office365-filtering-correlation-id: 6e9e29a9-9dec-4e57-238d-08dad2dc6e1d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 1bJ7Bz9YeiZ7qbodhk9GbCvVETCaq31zWvWJhv4qDIawgBs6FZ058OcozKLEebYE7gJCejJUnZ+bvKtjoLxjldiI0TvlHIIlXMvxhRv39TV64fJBHZR7nNzA2frIXOFuOvzFEfgbkB0vWQFw6W4ECipOpYGRf+RDndxbWgkaf0qbiRW6JKC9dnZGyypzfTjcyeZeVDiCPbbi+bBJunIgapSbeX0L/PiMMWdMnumPW9poJBXw701ZI+I+WIXi2LtiPCpRzONaS6DQxCvlgesbqbNvck5GjHwHp3zyYZ0Nkyq3/apb1tmBVdxM5JOMihoWVRB2+O+MPMbAGnIO4B7HCgOpBE8CrC9wBbYK9ht7cZd7wY3liC31hvrNRmwxwbc7rGdiwoI8aqnAhCcDnaORgwFEiAbZi9m9AHsma+42N+YtMZlCDB94r8gi24y5tVxkLRiVfeV+P/dHFHTAkf+rGIAOxZ1xoY9XWsnQsaf6HC4L+x3fjkyIPNr7qsSnjcsNdZoe0P1ztV/QER5uNWGUVQfFrt1EsC+AVLNdDHdsukytpv+5YNYFpo0Rx+82YGUkMpwH25vxJUWwi28OW8iLEReobOYRIiWaY7TjZIOHbQJ3GQsSAPKGYV8Vwdxwcuzk8sHrzSPdpDlss0XTOZqYK5VvtqDPdnPqYFr8soa0dMSj9cQIlU2so4g1i2To5eqrBmxetmlJ7TPRF/JkovAevOXmsFNy5RXbcSwsYLuLyr8ltQ+S9/DEFHEg8h+CaUj9
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(396003)(376002)(39860400002)(366004)(136003)(451199015)(7416002)(8936002)(5660300002)(44832011)(55016003)(9686003)(41300700001)(110136005)(33656002)(52536014)(316002)(66946007)(4326008)(66556008)(66476007)(66446008)(8676002)(122000001)(64756008)(186003)(26005)(38070700005)(38100700002)(921005)(2906002)(76116006)(86362001)(83380400001)(6506007)(7696005)(55236004)(53546011)(71200400001)(478600001)(32563001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-2022-jp?B?eTZPMUU3K2NUTENaMllpckE5NGJ1bGd3WFVIa01CRm5sMlhsNW9BTHpV?=
- =?iso-2022-jp?B?WWtxNUora3BSL29tZGtkcHZ3RGUzcmw3QWR1ZE1hTzhaem5CaE5kVmNF?=
- =?iso-2022-jp?B?bEhVVW9BZzdMYVE4UGJhbDVaTGUyMTRVMzgzSXN0K21uTThRNGFoVnAy?=
- =?iso-2022-jp?B?MWtZMW9RaDlDMjZwR05zeTdObGJ5N05VSEt1T3hjSExiR1FNNjhCUklR?=
- =?iso-2022-jp?B?WlNEamFXUmIvcFVhdFBZTkRYYWFhSUkxa3BnRzlWN1FqSC9nY1QrbTdW?=
- =?iso-2022-jp?B?T2R5SVVjalBaWW5NSE1qalNsUitteHdMTFdlWUFKbG9wNVJTNFVhdU9B?=
- =?iso-2022-jp?B?TjdnbFB6MHVvQ2RXTFZvalVKYy9oc1ZKQTZvMjh4bUV3VEE0WlVGV3Az?=
- =?iso-2022-jp?B?VG1Td2lzYklxWmF5Q0pkV2hDTm5QUXFKS2xuQUtTL0NYRmhablhoSE03?=
- =?iso-2022-jp?B?ZlFUdnlhSlpMT1pmUHVJNG91a3V5aXVBZVhEUVJNb3JoOG54TzBNMkpI?=
- =?iso-2022-jp?B?S3ZGT2hKS29Wam1LdG9hLy9nT3ZjZ1JzaHNNZGxHeDJhbFdTdW92QnNO?=
- =?iso-2022-jp?B?bVRMbU5OWVAxQU0xTjZ2RkhQTHRSdjlPVmRuREljd2d5L3VFV1BCK01M?=
- =?iso-2022-jp?B?OFdLYVhUbUVuY2F1dWJoNFgrdEdMUWVKeUdOek9wVk5PcjNBZFlwalFm?=
- =?iso-2022-jp?B?ell5OEJZajVrUHpTTGxGL2IxYW83QlNxamZoNWdsS2RCWDZHd0VuOTdP?=
- =?iso-2022-jp?B?TURvZEY1NXI5OHJ1N2RScU53c2xZdk5ub0p3YTJVb0hzQkx1UFpJbjlZ?=
- =?iso-2022-jp?B?bEtDVmhvazZpVTBNMDRhc25CSysxNVpPUkdQZmJKdThIcWQzUWM5am1w?=
- =?iso-2022-jp?B?OEpyRFpFL1JuSml5Q01wWWpzWFZ4bmhVbUtBQ0tDeGVUbHQrejg0NUVG?=
- =?iso-2022-jp?B?NmNKMDBINjVsdUd0cEFsTDBNVzNLUTRCUHVzTFNUTWt3aE9vdmg2RmQx?=
- =?iso-2022-jp?B?UTBmTENjQlJpanZRcXpPWWg5SXQ5VDUvZlBIWUZqNEtFVEVtSUFkWnpJ?=
- =?iso-2022-jp?B?L0ZRUk5VendSVFBOSmx0RmNQYU5DVXY1cEh5dy9Pb3gycm1RcjBvaFhJ?=
- =?iso-2022-jp?B?djBSdTA2NDkvNkNKYUM1ekJRMmF2VUxmb2U3VG1IdnBHOFBLYzdQeFNU?=
- =?iso-2022-jp?B?UGpFa0F6Q29OaGF0ZFh4MXNKNGNOV0Y2S0RPNWl0QUdreVRxMlVHc1ZH?=
- =?iso-2022-jp?B?a2R5anNMblNwcW1RVml1c1JvZWowc1Y3TlQxYzg1Nit3Ukx3Q25RUjZk?=
- =?iso-2022-jp?B?b2JDaVNYVjBTaTNBQVJITTZqTW5NeWQzS0twb1RLV0hmTnN5MmFFNmhR?=
- =?iso-2022-jp?B?djF3SGZpTGZSZWh4TTBFTGVrM085b1FuNytEdmpXRWxrUnNDdUloNGFI?=
- =?iso-2022-jp?B?NDF1c3FJTUpXNXluR3IzTjdPd2tOTGs3VlZTZVpXeHNQWExad0NNNWNr?=
- =?iso-2022-jp?B?MHJweDZPaVdmV2Z1d0VPb3diRWFPYTRrUFovSXA3UEZWcUVLUVdTTUNL?=
- =?iso-2022-jp?B?ajg4bnNtMWh1eWczK2tQSzFiV1NQc25JaUgxaGJnUmVsZytPSVp1bXNT?=
- =?iso-2022-jp?B?SlpSUXlXOXBhYS91ZzBiV1c4YXhzaG9vRTYrVktBSHFKZm1CSTVUSlNr?=
- =?iso-2022-jp?B?ZFpxR2tYWVl5dWJyQTM3Z0ZsTVM0K2piNW01MVRPOXpscDg1M0ltQ3ZB?=
- =?iso-2022-jp?B?d0VGYzZ2YkxobDlMVkFaTXZpUkxTMkZvUkcrNUM1V2ZYRmdndXNiL2JO?=
- =?iso-2022-jp?B?aUxwSjRJTGYwS2ZQcExHY2E4TkY5aXVaYnNIS084c0ZEYVhWMXdYWWU2?=
- =?iso-2022-jp?B?eGVyM0hzVHV2dlplZ3E2ZzAyc0pxUXFlZmFnU2Flb2h3WWg0RmVpYk14?=
- =?iso-2022-jp?B?VlJTekFjNXZCbU9WVTQ4dlpFRFRSbkIzeWdNUzllNWdoeUNzSFpGa1Vj?=
- =?iso-2022-jp?B?R29oc0JjbjZrRThBdE9xV0RrL280ZS9FbU5xUEdjMll3dC9jd0toMmh1?=
- =?iso-2022-jp?B?bEx6d0pqWm9xZ21TZ2wxcVVVNFBFdDQ5RWhSUXBpdTAwWTU0UmYvdlB3?=
- =?iso-2022-jp?B?d09SZ3ZQMVBOOFk4bzBSTEpXNGh1OFN4RWxVeGcza2tmVEpjU0FuL1BF?=
- =?iso-2022-jp?B?NFYvQit4dkphZzVFN1cxTVVBeE9keVRXdG1kRTl0YlFic0U3dnQ2SWVE?=
- =?iso-2022-jp?B?aTQxOGNGaWhWNFRteFdrZDlrY05ubmtOaz0=?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+ ([fe80::203a:e5da:a4a:7663%12]) with mapi id 15.20.5857.023; Thu, 1 Dec 2022
+ 14:01:45 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: haibo.chen@nxp.com
+Cc: cai.huoqing@linux.dev,
+	festevam@gmail.com,
+	frank.li@nxp.com,
+	imx@lists.linux.dev,
+	jic23@kernel.org,
+	kernel@pengutronix.de,
+	lars@metafoo.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-iio@vger.kernel.org,
+	linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call imx8qxp_adc_read_raw()
+Date: Thu,  1 Dec 2022 09:01:10 -0500
+Message-Id: <20221201140110.2653501-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR10CA0004.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::9) To HE1PR0401MB2331.eurprd04.prod.outlook.com
+ (2603:10a6:3:24::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|PA4PR04MB7792:EE_
+X-MS-Office365-Filtering-Correlation-Id: c562ef1a-c6e9-42ed-8452-08dad3a48b55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	KSGC5uMTYU7Be9hm9IIFjtfhx0ERrFgAiT+ZpdVz5Y+UONtvLkLhHmo6OLvuKavtx2JV9COAcFb40+/YaSxTx++ZfWtB2q0uExGaEXKN6jJ6t8VuJ7ZenneYRXTRxUVQqP4PvFxTCSH6D7A/5UxECczaeNHSaHZWnwnm9o6SWHUhfumw1SbnS1gvhMOl9FWCjLK6Od4X6bncdtd/V4kTg7CTygKerlpKq//RxguMZkC4kWrAyTDVHBooMUc+LSLi8Wn3WNbJsfrSckSDvor08TG4RK6w1WBF/3LZj5BNP0Wnsk5XJm7dfe3Cg6VoPzBXmeVUHZzrhVVZURU7ltt620Q7BKGn2zgG32ov4VAqldoYsh6Q4JfR1qDazivdN9kNJSN2reXTsjXg2vYYjBXeFE7b5wMPPdpyip+ogBlyHMOQTdc1XcaM7hPvYkGlUHY8tcTXp6Sj55iEZTZENtM/G9+p1ae2UmomxLRH5yKy4cR4ePwhwKgkwRKOt4ln1jyW6rHbpK9HZtYM6fCU4nPWmRRbKz8BhhwniKgm+wePTEn7IUHQ5h6m61H3dryDh2BbvmzkzhhjSxX31uZJUA8R2b/2n0qwmYHQ/1RoEG35D3IIJ9JLB/fUN6XlNCBxCs15KJzqj45mWJgp1ujXl3DXsRAhEp+YsFe6MQBwNVcOCOyR4u92zbh1tbGurjrmTgUBcZ+o9n6dGwpVihPeI2RSbeDVgxu3DyRFbib+XSu9omg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(39860400002)(346002)(136003)(366004)(451199015)(1076003)(2616005)(83380400001)(186003)(6506007)(52116002)(6512007)(26005)(6666004)(36756003)(316002)(37006003)(478600001)(6636002)(6486002)(34206002)(8676002)(2906002)(4326008)(38100700002)(38350700002)(66476007)(66946007)(41300700001)(66556008)(86362001)(7416002)(8936002)(5660300002)(32563001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?C5Zb/HKmTgHAJF8SC1ZrhJ8XYrwGV3avIKdV7CcrjY8eR0Z349ww7L84//5B?=
+ =?us-ascii?Q?rN9HJqszTd79BquYmerxjHcaOIo8eAxcdppQMsmh6z0LFeJuBEw4Mkb0D0JA?=
+ =?us-ascii?Q?++3pijwO08DE4vGIedf2J2wE6r+advzKQAPdR5hgoWYctYr1Bc4vwIfHqJ/y?=
+ =?us-ascii?Q?C9+yoqg7MwnxQJXn1srLADga9HqXT6tBuSyyH0q0LppLi2cCaVAu2UEomrDN?=
+ =?us-ascii?Q?pjhOgbwI48Zic3oFOGtmZZ9eU2hii+WttbAnasMMdAaEzqzGl7LCBKKpsLYo?=
+ =?us-ascii?Q?uvtseKHFrCRUL3QSI7+ZdcBzf53Z+nSfkoIKHZFIqYeaGz0WEE/10Nrp+Krt?=
+ =?us-ascii?Q?yTxj8W0QeVkvd+9NihgXpfSE+8dJTD5D0JbAOHAOcBpDqBxS2b2gsjuVQNjE?=
+ =?us-ascii?Q?Cd+ZgM71SwTBDEbwSPJfccudMS1f2Ld5StLn/YjBLvP1oEiqBsMVhBhetE3C?=
+ =?us-ascii?Q?bvVxwKMYBmn3hZsTHqTFhk6AEk2rLZeTsh46cQZesMCViiPFbRkS1HzIlKXs?=
+ =?us-ascii?Q?Yr1z+2ujM27Nm/WRsh0Qg/78nIRy4QikuRPJFDuxl1YztgZM9RmQ2DDuEUNH?=
+ =?us-ascii?Q?NXqbFDtz3bC1bOaYj1n2p/W+jRcebuu0j+xrBhR1QL6mzGOE6JZe6jNXYxbc?=
+ =?us-ascii?Q?89uC1mvno4fxtCUc7quyrzwSbZ7KjmmsimUb9XXFyDaD/XQZ2dxnujL3dhBh?=
+ =?us-ascii?Q?VEhXaXauMF+bocnfPNntUyXnIlTuabM0f2kX1mlisyV4j+H0HLiV1zEY5fJv?=
+ =?us-ascii?Q?e+7RcWKGESY6LDg1AVZrHilE+8VUkcCtW3QawGQcF8octmhfMpO7whZAFWx+?=
+ =?us-ascii?Q?nC0OJ0SgDwzWUK4DvJExfEHW6w4V3u52WhY/8/biBh9e5PvrLW61u4US2n4G?=
+ =?us-ascii?Q?ehs8eR7AD7T/b26eFWbyXABw/pGlxMoAXRRk+w7xKd7sTYjlI4Fq2T1eqqFL?=
+ =?us-ascii?Q?InPb06ajDuEGMufaymF3j5OQYejauEimKKJ71KbEI0wR+cpCB/KuNaxfg4N2?=
+ =?us-ascii?Q?0L75IDDbcieAik2OeSg5VEFIOKvVFSQCbUvUMk0ElUrCiUwZ/sCOBEFGWOlG?=
+ =?us-ascii?Q?hTv33Uc3b7lAT02kWk1ZVGHuV38YkaJ8bDpxCIporZl2LyxXu2Mej3XXmGoj?=
+ =?us-ascii?Q?sbktVGdzXPKQJ5Tc+g6vpy+FZNQZDoBzoDnr/pQwQw34hd2eKwNACbgMUnZi?=
+ =?us-ascii?Q?Mz5pEyI6PLrUfUwHwucWF7c7VD17Mp4ARw5dpcYFd4PXNhI3S/uyYc1DpFme?=
+ =?us-ascii?Q?ZuEWb4XW92nD43NmBwbnKqg3cykm3sT2aShzTNX09+edRU+ojoLACJRDdk8V?=
+ =?us-ascii?Q?VpNOSgZTZuex1//rO22k3J8c1xvzfz4hcWgSc+jI1o1lYWPbCQ+s5lP4Xzed?=
+ =?us-ascii?Q?KUF5ZeaFhHCoKGvNcKEVXS7Y3XEIKrzuH8+I/cv3ubkvmrWU+zztlQfe9rc7?=
+ =?us-ascii?Q?9rMxML2JudrSU3pNYN9gBfwjY/LlhxXuKTy5Voh2qnGc4Idfax79eZInd0A2?=
+ =?us-ascii?Q?+DIcVycy89Y7hu/ZQo4JSh71t52Sa+G//sHWRKtz9nHnQAQwezEQTfja2kV3?=
+ =?us-ascii?Q?4uG+Z5aOyGZtsgLnUsM=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: c562ef1a-c6e9-42ed-8452-08dad3a48b55
 X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e9e29a9-9dec-4e57-238d-08dad2dc6e1d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Nov 2022 14:09:00.8231
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2022 14:01:45.2692
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4uYxXI7ToMkIOFmL/JN5UtK2pqaWVL33A1HpCCYDxw/S3RdkBHXIjaZX65/tOl6jQiMgtIelIByNscReXOPgUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7861
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n6Bk//TSb2lKqojNKQ+EZ0uqjgV1FTzpnIEcB9pGagMaMhefZo3z6ilU4yXgsxRu41WWboUuFNMfZgnMOM1KeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7792
+
+irq flood happen when run
+    cat /sys/bus/iio/devices/iio:device0/in_voltage1_raw
+
+imx8qxp_adc_read_raw()
+{
+	...
+	enable irq
+	/* adc start */
+	writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
+	^^^^ trigger irq flood.
+	wait_for_completion_interruptible_timeout();
+	readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO);
+	^^^^ clear irq here.
+	...
+}
+
+There is only FIFO watermark interrupt at this ADC controller.
+IRQ line will be assert until software read data from FIFO.
+So IRQ flood happen during wait_for_completion_interruptible_timeout().
+
+Move FIFO read into irq handle to avoid irq flood.
+
+Fixes: 1e23dcaa1a9f ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC")
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+ - move complete() after read fifo
 
 
+ drivers/iio/adc/imx8qxp-adc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> -----Original Message-----
-> From: Bough Chen <haibo.chen@nxp.com>
-> Sent: Wednesday, November 30, 2022 3:58 AM
-> To: Frank Li <frank.li@nxp.com>; Cai Huoqing <cai.huoqing@linux.dev>;
-> Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen
-> <lars@metafoo.de>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; dl-linux-
-> imx <linux-imx@nxp.com>; open list:NXP i.MX 8QXP ADC DRIVER <linux-
-> iio@vger.kernel.org>; moderated list:ARM/FREESCALE IMX / MXC ARM
-> ARCHITECTURE <linux-arm-kernel@lists.infradead.org>; open list <linux-
-> kernel@vger.kernel.org>
-> Cc: imx@lists.linux.dev
-> Subject: RE: [PATCH 1/1] iio: imx8qxp-adc: fix irq flood when call
-> imx8qxp_adc_read_raw()
->=20
-> > -----Original Message-----
-> > From: Frank Li <frank.li@nxp.com>
-> > Sent: 2022=1B$BG/=1B(B11=1B$B7n=1B(B30=1B$BF|=1B(B 0:46
-> > To: Cai Huoqing <cai.huoqing@linux.dev>; Bough Chen
-> <haibo.chen@nxp.com>;
-> > Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen
-> <lars@metafoo.de>;
-> > Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> <s.hauer@pengutronix.de>;
-> > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; open list:NXP
-> i.MX
-> > 8QXP ADC DRIVER <linux-iio@vger.kernel.org>; moderated
-> > list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
-> > <linux-arm-kernel@lists.infradead.org>; open list <linux-
-> kernel@vger.kernel.org>
-> > Cc: imx@lists.linux.dev
-> > Subject: [PATCH 1/1] iio: imx8qxp-adc: fix irq flood when call
-> > imx8qxp_adc_read_raw()
-> >
-> > irq flood happen when run
-> >     cat /sys/bus/iio/devices/iio:device0/in_voltage1_raw
-> >
-> > imx8qxp_adc_read_raw()
-> > {
-> > 	...
-> > 	enable irq
-> > 	/* adc start */
-> > 	writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
-> > 	^^^^ trigger irq flood.
-> > 	wait_for_completion_interruptible_timeout();
-> > 	readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO);
-> > 	^^^^ clear irq here.
-> > 	...
-> > }
-> >
-> > There is only FIFO watermark interrupt at this ADC controller.
-> > IRQ line will be assert until software read data from FIFO.
-> > So IRQ flood happen during wait_for_completion_interruptible_timeout().
-> >
-> > Move FIFO read into irq handle to avoid irq flood.
-> >
-> > Fixes: 1e23dcaa1a9f ("iio: imx8qxp-adc: Add driver support for NXP
-> IMX8QXP
-> > ADC")
-> > Cc: stable@vger.kernel.org
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/iio/adc/imx8qxp-adc.c | 11 +++++++++--
-> >  1 file changed, 9 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-ad=
-c.c
-> index
-> > 36777b827165..3cfba5c0fa34 100644
-> > --- a/drivers/iio/adc/imx8qxp-adc.c
-> > +++ b/drivers/iio/adc/imx8qxp-adc.c
-> > @@ -86,6 +86,8 @@
-> >
-> >  #define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
-> >
-> > +#define IMX8QXP_ADC_MAX_FIFO_SIZE		16
-> > +
-> >  struct imx8qxp_adc {
-> >  	struct device *dev;
-> >  	void __iomem *regs;
-> > @@ -95,6 +97,7 @@ struct imx8qxp_adc {
-> >  	/* Serialise ADC channel reads */
-> >  	struct mutex lock;
-> >  	struct completion completion;
-> > +	u32 fifo[IMX8QXP_ADC_MAX_FIFO_SIZE];
-> >  };
-> >
-> >  #define IMX8QXP_ADC_CHAN(_idx) {				\
-> > @@ -238,8 +241,7 @@ static int imx8qxp_adc_read_raw(struct iio_dev
-> > *indio_dev,
-> >  			return ret;
-> >  		}
-> >
-> > -		*val =3D FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
-> > -				 readl(adc->regs +
-> IMX8QXP_ADR_ADC_RESFIFO));
-> > +		*val =3D adc->fifo[0];
-> >
-> >  		mutex_unlock(&adc->lock);
-> >  		return IIO_VAL_INT;
-> > @@ -265,6 +267,7 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void
-> *dev_id)
-> > {
-> >  	struct imx8qxp_adc *adc =3D dev_id;
-> >  	u32 fifo_count;
-> > +	int i;
-> >
-> >  	fifo_count =3D FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
-> >  			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
-> @@
-> > -272,6 +275,10 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void *dev=
-_id)
-> >  	if (fifo_count)
-> >  		complete(&adc->completion);
-> >
-> > +	for (i =3D 0; i < fifo_count; i++)
-> > +		adc->fifo[i] =3D FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
-> > +				readl_relaxed(adc->regs +
-> IMX8QXP_ADR_ADC_RESFIFO));
->=20
-> Hi Frank,
->=20
-> Since the ADC mode is config as single-ended 12-bit conversion, every tim=
-e
-> when trigger the ADC conversion, only one 12-bit data push into fifo.
-> And we also config the fifo watermark as 1. So here only need to read onc=
-e. I
-> already confirmed on my board.
-
-Interrupt handle should guarantee read all data from FIFO.  If somewhere in=
-crease
-Watermark or set auto continue sample,  irq flood will be happen again.
-
-Best regards
-Frank Li=20
-
->=20
-> Best Regards
-> Haibo Chen
-> > +
-> >  	return IRQ_HANDLED;
-> >  }
-> >
-> > --
-> > 2.34.1
+diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
+index 36777b827165..f5a0fc9e64c5 100644
+--- a/drivers/iio/adc/imx8qxp-adc.c
++++ b/drivers/iio/adc/imx8qxp-adc.c
+@@ -86,6 +86,8 @@
+ 
+ #define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
+ 
++#define IMX8QXP_ADC_MAX_FIFO_SIZE		16
++
+ struct imx8qxp_adc {
+ 	struct device *dev;
+ 	void __iomem *regs;
+@@ -95,6 +97,7 @@ struct imx8qxp_adc {
+ 	/* Serialise ADC channel reads */
+ 	struct mutex lock;
+ 	struct completion completion;
++	u32 fifo[IMX8QXP_ADC_MAX_FIFO_SIZE];
+ };
+ 
+ #define IMX8QXP_ADC_CHAN(_idx) {				\
+@@ -238,8 +241,7 @@ static int imx8qxp_adc_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
+ 		}
+ 
+-		*val = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
+-				 readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
++		*val = adc->fifo[0];
+ 
+ 		mutex_unlock(&adc->lock);
+ 		return IIO_VAL_INT;
+@@ -265,10 +267,15 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void *dev_id)
+ {
+ 	struct imx8qxp_adc *adc = dev_id;
+ 	u32 fifo_count;
++	int i;
+ 
+ 	fifo_count = FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
+ 			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
+ 
++	for (i = 0; i < fifo_count; i++)
++		adc->fifo[i] = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
++				readl_relaxed(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
++
+ 	if (fifo_count)
+ 		complete(&adc->completion);
+ 
+-- 
+2.34.1
 
