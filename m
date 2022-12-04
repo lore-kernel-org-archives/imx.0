@@ -1,144 +1,178 @@
-Received: from out-222.mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC437B
-	for <imx@lists.linux.dev>; Fri,  2 Dec 2022 12:28:06 +0000 (UTC)
-Date: Fri, 2 Dec 2022 17:05:54 +0800
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Cai Huoqing <cai.huoqing@linux.dev>
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, "festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"jic23@kernel.org" <jic23@kernel.org>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"lars@metafoo.de" <lars@metafoo.de>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8493C28
+	for <imx@lists.linux.dev>; Sun,  4 Dec 2022 15:40:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5423BC433C1;
+	Sun,  4 Dec 2022 15:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670168432;
+	bh=XivmGAMo4bgBcXNnSUPwpz9h0TTHV89rfEJTsZENORA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NQ7bmo4QMWxLIgcWGnjZBay9XfrlWS8fqH+oMgWkxSCzi89OBg/+Ufuslov8baNbI
+	 W1e2XRndmQgMjPshFlO/4JxaC29AFvFQk1ABZva5OgRPOtQwYEKnNps7mEBtsSrVlp
+	 98fZ6QWPBmn7KwjwLBMkNrcuqIpnYfBJkKelTS8JLBjgqvQ+LaQZm9H7B0LF4kcXa5
+	 E/s2GYjdatMw565/p/3nGeN2Twoy9mSKS53L9HsVcVsQ3wDpOlpBhMWi73S1i63CnP
+	 xLJ7gYzyKz8tNCo0butOgN705X8H2o69YkAqdc2pBDZ26sPFj2VgZv/SVlMVIBLV5u
+	 t99ACQigBwh1Q==
+Date: Sun, 4 Dec 2022 15:53:17 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Cai Huoqing <cai.huoqing@linux.dev>
+Cc: Bough Chen <haibo.chen@nxp.com>, Frank Li <frank.li@nxp.com>,
+ "festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "lars@metafoo.de" <lars@metafoo.de>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "shawnguo@kernel.org"
+ <shawnguo@kernel.org>
 Subject: Re: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call
  imx8qxp_adc_read_raw()
-Message-ID: <20221202090554.GA10754@chq-T47>
+Message-ID: <20221204155317.5b568fd6@jic23-huawei>
+In-Reply-To: <20221202090554.GA10754@chq-T47>
 References: <20221201140110.2653501-1-Frank.Li@nxp.com>
- <DB7PR04MB401084C620570D234A535EE990179@DB7PR04MB4010.eurprd04.prod.outlook.com>
+	<DB7PR04MB401084C620570D234A535EE990179@DB7PR04MB4010.eurprd04.prod.outlook.com>
+	<20221202090554.GA10754@chq-T47>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DB7PR04MB401084C620570D234A535EE990179@DB7PR04MB4010.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 02 12月 22 03:23:55, Bough Chen wrote:
-> > -----Original Message-----
-> > From: Frank Li <frank.li@nxp.com>
-> > Sent: 2022年12月1日 22:01
-> > To: Bough Chen <haibo.chen@nxp.com>
-> > Cc: cai.huoqing@linux.dev; festevam@gmail.com; Frank Li <frank.li@nxp.com>;
-> > imx@lists.linux.dev; jic23@kernel.org; kernel@pengutronix.de;
-> > lars@metafoo.de; linux-arm-kernel@lists.infradead.org;
-> > linux-iio@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>;
-> > linux-kernel@vger.kernel.org; s.hauer@pengutronix.de; shawnguo@kernel.org
-> > Subject: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call
-> > imx8qxp_adc_read_raw()
-> > 
-> > irq flood happen when run
-> >     cat /sys/bus/iio/devices/iio:device0/in_voltage1_raw
-> > 
-> > imx8qxp_adc_read_raw()
-> > {
-> > 	...
-> > 	enable irq
-> > 	/* adc start */
-> > 	writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
-> > 	^^^^ trigger irq flood.
-> > 	wait_for_completion_interruptible_timeout();
-> > 	readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO);
-> > 	^^^^ clear irq here.
-> > 	...
-> > }
-> > 
-> > There is only FIFO watermark interrupt at this ADC controller.
-> > IRQ line will be assert until software read data from FIFO.
-> > So IRQ flood happen during wait_for_completion_interruptible_timeout().
-> > 
-> > Move FIFO read into irq handle to avoid irq flood.
-> > 
-> > Fixes: 1e23dcaa1a9f ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP
-> > ADC")
-> > Cc: stable@vger.kernel.org
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> 
-> Thanks for the quick fix. The total read count in irq handler is fifo_count which is read from register, this is reasonable.
-> 
-> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-The same, thanks.
-Reviewed-by: Cai Huoqing <cai.huoqing@linux.dev>
-> 
-> Best Regards
-> Haibo Chen
-> > ---
-> > Change from v1 to v2
-> >  - move complete() after read fifo
-> > 
-> > 
-> >  drivers/iio/adc/imx8qxp-adc.c | 11 +++++++++--
-> >  1 file changed, 9 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c index
-> > 36777b827165..f5a0fc9e64c5 100644
-> > --- a/drivers/iio/adc/imx8qxp-adc.c
-> > +++ b/drivers/iio/adc/imx8qxp-adc.c
-> > @@ -86,6 +86,8 @@
-> > 
-> >  #define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
-> > 
-> > +#define IMX8QXP_ADC_MAX_FIFO_SIZE		16
-> > +
-> >  struct imx8qxp_adc {
-> >  	struct device *dev;
-> >  	void __iomem *regs;
-> > @@ -95,6 +97,7 @@ struct imx8qxp_adc {
-> >  	/* Serialise ADC channel reads */
-> >  	struct mutex lock;
-> >  	struct completion completion;
-> > +	u32 fifo[IMX8QXP_ADC_MAX_FIFO_SIZE];
-> >  };
-> > 
-> >  #define IMX8QXP_ADC_CHAN(_idx) {				\
-> > @@ -238,8 +241,7 @@ static int imx8qxp_adc_read_raw(struct iio_dev
-> > *indio_dev,
-> >  			return ret;
-> >  		}
-> > 
-> > -		*val = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
-> > -				 readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
-> > +		*val = adc->fifo[0];
-> > 
-> >  		mutex_unlock(&adc->lock);
-> >  		return IIO_VAL_INT;
-> > @@ -265,10 +267,15 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void
-> > *dev_id)  {
-> >  	struct imx8qxp_adc *adc = dev_id;
-> >  	u32 fifo_count;
-> > +	int i;
-> > 
-> >  	fifo_count = FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
-> >  			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
-> > 
-> > +	for (i = 0; i < fifo_count; i++)
-> > +		adc->fifo[i] = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
-> > +				readl_relaxed(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
-> > +
-> >  	if (fifo_count)
-> >  		complete(&adc->completion);
-> > 
-> > --
-> > 2.34.1
-> 
+On Fri, 2 Dec 2022 17:05:54 +0800
+Cai Huoqing <cai.huoqing@linux.dev> wrote:
+
+> On 02 12=E6=9C=88 22 03:23:55, Bough Chen wrote:
+> > > -----Original Message-----
+> > > From: Frank Li <frank.li@nxp.com>
+> > > Sent: 2022=E5=B9=B412=E6=9C=881=E6=97=A5 22:01
+> > > To: Bough Chen <haibo.chen@nxp.com>
+> > > Cc: cai.huoqing@linux.dev; festevam@gmail.com; Frank Li <frank.li@nxp=
+.com>;
+> > > imx@lists.linux.dev; jic23@kernel.org; kernel@pengutronix.de;
+> > > lars@metafoo.de; linux-arm-kernel@lists.infradead.org;
+> > > linux-iio@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>;
+> > > linux-kernel@vger.kernel.org; s.hauer@pengutronix.de; shawnguo@kernel=
+.org
+> > > Subject: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call
+> > > imx8qxp_adc_read_raw()
+> > >=20
+> > > irq flood happen when run
+> > >     cat /sys/bus/iio/devices/iio:device0/in_voltage1_raw
+> > >=20
+> > > imx8qxp_adc_read_raw()
+> > > {
+> > > 	...
+> > > 	enable irq
+> > > 	/* adc start */
+> > > 	writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
+> > > 	^^^^ trigger irq flood.
+> > > 	wait_for_completion_interruptible_timeout();
+> > > 	readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO);
+> > > 	^^^^ clear irq here.
+> > > 	...
+> > > }
+> > >=20
+> > > There is only FIFO watermark interrupt at this ADC controller.
+> > > IRQ line will be assert until software read data from FIFO.
+> > > So IRQ flood happen during wait_for_completion_interruptible_timeout(=
+).
+> > >=20
+> > > Move FIFO read into irq handle to avoid irq flood.
+> > >=20
+> > > Fixes: 1e23dcaa1a9f ("iio: imx8qxp-adc: Add driver support for NXP IM=
+X8QXP
+> > > ADC")
+> > > Cc: stable@vger.kernel.org
+> > >=20
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com> =20
+> >=20
+> > Thanks for the quick fix. The total read count in irq handler is fifo_c=
+ount which is read from register, this is reasonable.
+> >=20
+> > Reviewed-by: Haibo Chen <haibo.chen@nxp.com> =20
+> The same, thanks.
+> Reviewed-by: Cai Huoqing <cai.huoqing@linux.dev>
+
+I briefly wondered if it would be better to return the newest value,
+but given it's not obvious and they will be close together in this case,
+I'm fine with this.
+
+Applied to the fixes-togreg branch of iio.git and marked for
+stable inclusion.  Note I'm unlikely to send a pull request until after rc1=
+ now
+so this will take a few weeks to land upstream.
+
+Thanks,
+
+Jonathan
+
+> >=20
+> > Best Regards
+> > Haibo Chen =20
+> > > ---
+> > > Change from v1 to v2
+> > >  - move complete() after read fifo
+> > >=20
+> > >=20
+> > >  drivers/iio/adc/imx8qxp-adc.c | 11 +++++++++--
+> > >  1 file changed, 9 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-=
+adc.c index
+> > > 36777b827165..f5a0fc9e64c5 100644
+> > > --- a/drivers/iio/adc/imx8qxp-adc.c
+> > > +++ b/drivers/iio/adc/imx8qxp-adc.c
+> > > @@ -86,6 +86,8 @@
+> > >=20
+> > >  #define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
+> > >=20
+> > > +#define IMX8QXP_ADC_MAX_FIFO_SIZE		16
+> > > +
+> > >  struct imx8qxp_adc {
+> > >  	struct device *dev;
+> > >  	void __iomem *regs;
+> > > @@ -95,6 +97,7 @@ struct imx8qxp_adc {
+> > >  	/* Serialise ADC channel reads */
+> > >  	struct mutex lock;
+> > >  	struct completion completion;
+> > > +	u32 fifo[IMX8QXP_ADC_MAX_FIFO_SIZE];
+> > >  };
+> > >=20
+> > >  #define IMX8QXP_ADC_CHAN(_idx) {				\
+> > > @@ -238,8 +241,7 @@ static int imx8qxp_adc_read_raw(struct iio_dev
+> > > *indio_dev,
+> > >  			return ret;
+> > >  		}
+> > >=20
+> > > -		*val =3D FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
+> > > -				 readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
+> > > +		*val =3D adc->fifo[0];
+> > >=20
+> > >  		mutex_unlock(&adc->lock);
+> > >  		return IIO_VAL_INT;
+> > > @@ -265,10 +267,15 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void
+> > > *dev_id)  {
+> > >  	struct imx8qxp_adc *adc =3D dev_id;
+> > >  	u32 fifo_count;
+> > > +	int i;
+> > >=20
+> > >  	fifo_count =3D FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
+> > >  			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
+> > >=20
+> > > +	for (i =3D 0; i < fifo_count; i++)
+> > > +		adc->fifo[i] =3D FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
+> > > +				readl_relaxed(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
+> > > +
+> > >  	if (fifo_count)
+> > >  		complete(&adc->completion);
+> > >=20
+> > > --
+> > > 2.34.1 =20
+> >  =20
+
