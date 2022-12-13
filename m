@@ -1,110 +1,234 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2057.outbound.protection.outlook.com [40.107.105.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D006679C9
-	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 18:54:25 +0000 (UTC)
-Received: by mail-lj1-f177.google.com with SMTP id v11so4280699ljk.12
-        for <imx@lists.linux.dev>; Tue, 13 Dec 2022 10:54:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HIPMQhD3+psITxKXESoElrmEMixNnFBn4GX76EyPXww=;
-        b=thPT9NHQRmNNvE6uZeB9lnXFyKpwPIjWuyeDZ6fQ6lVHeVkpgPAsu4ejh7ASpjwJgw
-         puxo4E3U3wH+SK1e+0U4xxm1ArJnyAs7Wj2ZkqMgtblj0Vifu2W14qjvgnI93r/jWS9b
-         qXzQpQN1QJHA5nMSXECiQVpGVN/jvBDsPrFCl5jHrLvm08PF1BKU8ZvjTC4MwklHq7tR
-         eqy0u9Yi2GL4HLVly8xClK2LoNPGf1hu3DC7/i5YOoHtTp/drS1cEfjo+e4KkCIgjxVO
-         W8tIoTEoTvOOnV0+of4njCLTBKyZ/hkenluqL1ZViXHMmLQ0wSj4PHNPno14BHPn4FmH
-         kzoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HIPMQhD3+psITxKXESoElrmEMixNnFBn4GX76EyPXww=;
-        b=aJhpav+9/j2Lz4n62DNZvWVrZaQcwP3omICRn6EMVbfLEEGdZNmNZwccnopuPqwVvk
-         QYlCZwaFmunpy3X9VUr6n6/XSHjrIpxf7tV3+DDQJPskAkHIpcCSic9+gmt7XLTa6S9d
-         2VkDu8nZW/OGkibos2QsGHwlv9wg0f0IVJ93JWek7sx/tfFzr0KLU1sHBzr0lT1G4BYg
-         WPLcn51Rsej8biW3QBZhimn8Xbm2OVG4NnwbcRKL7gT3kQwlKrB23hfx3ffyKBxbJp3Z
-         Hm5hyk8uBzg1PKkG6Ldqv4dmB8mMBtP6tbtQ+ZCggy70R+8RbgImbJmza6W3HyteoA3W
-         +a0Q==
-X-Gm-Message-State: ANoB5plUChCqq/CVcE1/NH/x6+Ln03D2oG9ZK28YAgajhxMwLKga9tEU
-	9yMpvsbtLCwBdKKrxSvinSzfCg==
-X-Google-Smtp-Source: AA0mqf6qBN7nANaIrqMA455WhZcMcAiYFohX6+DXjFTkG/RaYdkRR9JGA3xhKnG9w2ocYukjJ5KNug==
-X-Received: by 2002:a2e:be1f:0:b0:26f:db35:7e42 with SMTP id z31-20020a2ebe1f000000b0026fdb357e42mr6893538ljq.17.1670957663947;
-        Tue, 13 Dec 2022 10:54:23 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id p13-20020a2eb98d000000b0027a02d2d4ecsm368642ljp.24.2022.12.13.10.54.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Dec 2022 10:54:23 -0800 (PST)
-Message-ID: <f47c1135-9c72-d21e-327e-511f7bf71a23@linaro.org>
-Date: Tue, 13 Dec 2022 19:54:21 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9750579FD
+	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 22:04:20 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=X6nO+7xvhgPS8AuMxNpC6g8l5pjStAb9FCVrjiJCV6Qolw5367fs5OZRSaXvPU8AGmF3w/Nm9/cBOi4PY7dCZWF2MmoGD8/RHKi7aF0vWW06fxnWKL9yVlM5OqBWmka/skzubUaBxoQ0pVmZIHIdRWAXJjzNB/WBMqNC1AvgbzcAfLQHCZMlK2jtLwR2lDX+WEnNz+FglOiUcZLocodR95ConVOrml6ijKLdIVNWT1VsLms/9BiKvvEnicWW/q0XoY5x9VW4veOV0seLz/Ln8wR+D/S+mXGnv5SjHt1l9N3HFxcz2PrPUVhnNWEAOrU5hJjUJuXzkQmoFrKPkaeOuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F6g5s/9eB0zMdHNRaRE0Nwl5TXFcNOlmIsalRklVRFE=;
+ b=gXbySAHhYx3AWtP963qzKeWAp6fM0MPU7Gkf9fdJeIvSm+T7mQkqq5OZGqzi8shPSo2vu7Lq4MznYxgV5NnGnBQu6qDhxv9fc+VrlXsCZbAeQYruwvyrWvaYHP4EDcSGExf0raN6eqf4lqrvbgHTPiGjlxAXsrayC/LsvvcIpK/S8AsXwflaLE4+3MbJflmjV+yxBHLzZXtv1Klf6XJDm7vJP5EJNARWDDieiW5sYG99xjO4KKyE62v0Gp3LUEj49hwXL9nlrMQMQXp0rWtRiB0iwjOiWKb9dd9UBRvEUo6ghS/WQTHS2VF6dRLR+0ZLsjBCtxDh5lGR3UjUe3iwog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F6g5s/9eB0zMdHNRaRE0Nwl5TXFcNOlmIsalRklVRFE=;
+ b=ZxsQqx854cQesQYRXRqI07BpQHy9LY8M7GMe0ZZMug45mhWQERb9oXNQo5uhYH4LGo5PEIouQl4AlLXf9HvtojXltCYYNb+evV/+jh6Yej5OiWR7nu/kyCMiHQ4PLG8QDpYQaBLN/Zw9qyshd57O/kzhZnqNNDcFzKsuQhqSG4U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by DB8PR04MB7196.eurprd04.prod.outlook.com (2603:10a6:10:123::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.10; Tue, 13 Dec
+ 2022 22:04:17 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::203a:e5da:a4a:7663]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::203a:e5da:a4a:7663%12]) with mapi id 15.20.5880.019; Tue, 13 Dec 2022
+ 22:04:16 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com
+Cc: balbi@kernel.org,
+	gregkh@linuxfoundation.org,
+	imx@lists.linux.dev,
+	linhaoguo86@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	stern@rowland.harvard.edu
+Subject: [PATCH v2 1/1] usb: gadget: Assign an unique name for each configfs driver
+Date: Tue, 13 Dec 2022 17:03:54 -0500
+Message-Id: <20221213220354.628013-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR20CA0032.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::45) To HE1PR0401MB2331.eurprd04.prod.outlook.com
+ (2603:10a6:3:24::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH v3 3/4] dt-bindings: iio: accel: fxls8962af: add new
- compatible string
-Content-Language: en-US
-To: Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Sean Nyekjaer <sean@geanix.com>,
- =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Clark Wang
- <xiaoning.wang@nxp.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev
-References: <20221213171536.1880089-1-han.xu@nxp.com>
- <20221213171536.1880089-5-han.xu@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221213171536.1880089-5-han.xu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|DB8PR04MB7196:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0d2ec48-80f8-4898-5ea5-08dadd55f93e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	QGjmxQ8edHxucuaYnuZJhagmvKb9OjyUw7HQtHAnMwz10beCujn8QsxpyhAY++XUGxgaScHiuOqsEat87kQFXLfRnYaMt0vpoyqgs1zVlXdXx72NTg8NEQNh4Bu3kvHIooXVGMdQlroDUnSN4EtDqIN317ALKR/14X0gM6SYQElO9e+FxrXmGAD1m7iHiqGQSWL2rZScZN8SAHhIEyMYn80/wasMtMbEUmUgtZphCUBy9/IXdtDoAZfCbg/MhKeXcRUskYxHjMmKjvhW0GR5VwZI9nhiEXLk+vaqr7tCZP1l3ij0YwJNFJmA0vLHuxWdbtBHANRMOY3mKPZcxmNxXbOiCExmhUYXYJVHwMyrqp8wicq9f0TRWK8m7FVOyAKXgdnP70rttCeAvy8dLCnhEVC717RPqrtAZKkZllBK7IZdf7ajN5KSfFw/gbxFuMEqbwDWdWDMg2MZrc6Vj8+wwDPZm8aRI2AG/XZnf4UdfdJsXz3MfWZmSEmSAlljRSRokNjvctom7S+SKmVQtnqIHnklPWbcUKJl8kDgMpz8G75beFAZHbU947N6T0JOonNUkceEBjuzeMMYcAazbVeyPj7RXsJPGme19dT/jLEXYFjc+DdNXO9AY7cD0f0osfsH6hCJmruB+EsSHh2bz74ePeTIq8w8911HrBeGF1ligN4lWCcnF+gFYQUyAtY8TAsr15RfQ0FvXJSd8V6Y5ellv4HhQ4RC4+cy2fjNFw8NJJ0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(39860400002)(136003)(346002)(376002)(366004)(451199015)(8936002)(5660300002)(37006003)(316002)(66556008)(8676002)(36756003)(66946007)(1076003)(41300700001)(66476007)(2616005)(4326008)(38100700002)(38350700002)(86362001)(83380400001)(2906002)(186003)(34206002)(6512007)(26005)(6486002)(966005)(52116002)(6506007)(478600001)(6666004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zwy026jCp6NS4iTTULB5c592+syYTCpSJMuzrqfzP1Sb2XHIwvWkRSqUtYh6?=
+ =?us-ascii?Q?18oWEFNOXhbJ6CbTbaPkGxFxBcn/s8PVbx/ZF6knzy3sPgSrHqTvUJIFouxn?=
+ =?us-ascii?Q?txvraBj4T/hoUaUxjA5ICCekzQJqxbw+eucZHIIGbOcpetMqkWvNHSvmDNYU?=
+ =?us-ascii?Q?YdNqVe39q0EuSDDnf0KJtBSWJfGUqznyVUUDF6IiwUbC3ySbrAzpfbI2EX29?=
+ =?us-ascii?Q?8rNkE/lHynl4pI+tCgaw2u6slRgLkkg7rj+/EMW/STDwqTsRKz5fCTL9wVbY?=
+ =?us-ascii?Q?loSvdNvoKSAOZx4N0UYaX4CHWgd+aQOm6HtslTo4UX+awZGTkFd12M4SkA0M?=
+ =?us-ascii?Q?gjKQaipAtyDYcaal+KJaU5cVBhtalHaMipsb2RBVWfTp5Y+ut4ojd51gjFNk?=
+ =?us-ascii?Q?4NW7BWyrIDyPOI/JTIesvp0PmtunXsFu5rFO+KPQK7SR/M2S+DD9IMMr8utV?=
+ =?us-ascii?Q?Snc2gb/Ow1crDcRadJ7qu4pLL+7a+Jk8GF/FR6iUcHZq2OWjRDubNePvVEVq?=
+ =?us-ascii?Q?eg8S2IC/Wc4yFM8PLVHqy3p8vi1BN0EoUd2epwRPNmXebb6XLU+ozrhfG46C?=
+ =?us-ascii?Q?dKwThsO0D/XZyVqivKXrdy1RVwpmBC0B8aA4V1if7667jsOJJ1UaBIpSoWwC?=
+ =?us-ascii?Q?RTdvMfnD4CWzUIYRDB5NEPx3wNJUlaletRYxG/ByvywjRQQrZMaDulKE7PpT?=
+ =?us-ascii?Q?A+u60gpnZezid9IdUrtrCE6U7Y01M7DDUuh7qm25HZdTNPj0+VWff40kW3Ht?=
+ =?us-ascii?Q?FxIaWZ0Ioc13+8MzbiJXfByrAdBZNN8VkdMs8UiZGOsJslH72/AkRk3GFGj2?=
+ =?us-ascii?Q?8MZwXPMDyJ1Z5gmn+WFNstMBw2kRzeUBv7leb8TfsUf3qgjh0/BLixy/vMgg?=
+ =?us-ascii?Q?IAh8HSe9UDMWPMNKCKmvzMRIBkN50whe+J/4Hty/32oGmbzy26DEtwUo62P7?=
+ =?us-ascii?Q?x7UdnkgHmChUOQ43UQK2NIPNKPNZYFYk4GD1jJUSMhY2fF0iWubDnML79wae?=
+ =?us-ascii?Q?b4tKN6xCDSZ2brLSWnsiKl4kFOCWJOgXpMS3JKkYr3ygPkiJYc34kp61JYh9?=
+ =?us-ascii?Q?Ya9fxAKB0UcMA/ejuoW9XY7DU7b6XnsvDOVEbcU44dO/1qphe40BVlw7Wd1y?=
+ =?us-ascii?Q?thfLBxY1teKddSm7yhTmWMOMeeNb7ZSVwg+P13Orvb9XQQSfSrmn26EHy/kW?=
+ =?us-ascii?Q?lNTd+rK4YFUfkjdRdhHpbTTAhnusbrLoDm3xSj2jaxQbTT+r3BV1NNdTOJ2h?=
+ =?us-ascii?Q?Tai0kL9eqovcp2TaPZiO0uqifvProAfQNPIZO7mkbgErFHLiknc49oMkg0AY?=
+ =?us-ascii?Q?zRexVtXWckFOpqb71RR+CiXj1mlPXayHrZLn8L+sdKsMvuWE0/ZDzPtfo0oh?=
+ =?us-ascii?Q?i7ArhSwyHaVVpoKkBYheBshcHa48Ug2MaVdDj5JbQgDW3ij822kj/XAqCA3J?=
+ =?us-ascii?Q?1Sv5GuWsJ46DL0uKIPaP6g0KHJLNg5l0oHTmVLwFuPtiDBtGVWVjg1rfkEA7?=
+ =?us-ascii?Q?NXNWCoW5OXjMEAaadSuVBEDW5h8SbPcEwPO4HnZYMJixseFh9l7w9YvcqE1e?=
+ =?us-ascii?Q?epZZuD4l8GgcNqgu5Y8bLluLRHeVNOpn+ke9j2E4?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0d2ec48-80f8-4898-5ea5-08dadd55f93e
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2022 22:04:16.8511
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 41672o7JSVFCbsL3ZztdvDdSGSfIFxbDO7ANJEzQlYMUO21KR7GOT1aKhSVav8x3l5rpA4PZ0MK1M4TWIDr2XA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7196
 
-On 13/12/2022 18:15, Han Xu wrote:
-> Add new compatible string for the NXP FXLS8967AF accelerometer sensor.
-> 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-> 
-> ---
-> changes in v3
-> - Start commit message in capital
-> - Describe all these chips are compatible
-> ---
->  .../devicetree/bindings/iio/accel/nxp,fxls8962af.yaml         | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> index 65ce8ea14b52..8f07ade21abb 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> @@ -14,12 +14,16 @@ description: |
->    SPI and I2C interface.
->      https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
->      https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
-> +    https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
->  
->  properties:
->    compatible:
-> +    description:
-> +      These chips are compatible with each other, just have different IDs.
+From: Rondreis <linhaoguo86@gmail.com>
 
-That's not what I meant.
+When use configfs to attach more than one gadget.
 
-Compatibility is expressed (check DT spec) by following specific
-compatible with a more generic one (fallback), so in DTS:
+Error: Driver 'configfs-gadget' is already registered, aborting...
 
-	compatible = "nxp,fxls8967af", "nxp,fxls8964af";
+	UDC core: g1: driver registration failed: -16
 
-Your driver changes partially suggested that (and driver changes should
-be probably skipped in such case), but now I wonder how it is in reality....
+The problem is that when creating multiple gadgets with configfs and
+binding them to different UDCs, the UDC drivers have the same name
+"configfs-gadget". Because of the addition of the "gadget" bus, naming
+conflicts will occur when more than one UDC drivers registered to the
+bus.
 
-Best regards,
-Krzysztof
+It's not an isolated case, this patch refers to the commit f2d8c2606825
+("usb: gadget: Fix non-unique driver names in raw-gadget driver").
+Each configfs-gadget driver will be assigned a unique name
+"configfs-gadget.N", with a different value of N for each driver
+instance.
+
+Fixes: fc274c1e9973 ("USB: gadget: Add a new bus for gadgets")
+
+Signed-off-by: Rondreis <linhaoguo86@gmail.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+
+This patch is based on https://lore.kernel.org/lkml/20220907112210.11949-1-linhaoguo86@gmail.com/
+fixed the all greg's comments.
+
+I met the same issue.  Look likes Rodrieis have not continue to work this
+patch since Sep, 2022.
+
+I don't know full name of Rondreis.
+
+ drivers/usb/gadget/configfs.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 3a6b4926193e..785be6aea720 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -4,12 +4,17 @@
+ #include <linux/slab.h>
+ #include <linux/device.h>
+ #include <linux/nls.h>
++#include <linux/idr.h>
+ #include <linux/usb/composite.h>
+ #include <linux/usb/gadget_configfs.h>
+ #include "configfs.h"
+ #include "u_f.h"
+ #include "u_os_desc.h"
+ 
++#define DRIVER_NAME "configfs-gadget"
++
++static DEFINE_IDA(driver_id_numbers);
++
+ int check_user_usb_string(const char *name,
+ 		struct usb_gadget_strings *stringtab_dev)
+ {
+@@ -46,6 +51,7 @@ struct gadget_info {
+ 
+ 	struct usb_composite_driver composite;
+ 	struct usb_composite_dev cdev;
++	int driver_id_number;
+ 	bool use_os_desc;
+ 	char b_vendor_code;
+ 	char qw_sign[OS_STRING_QW_SIGN_LEN];
+@@ -392,6 +398,8 @@ static void gadget_info_attr_release(struct config_item *item)
+ 	WARN_ON(!list_empty(&gi->string_list));
+ 	WARN_ON(!list_empty(&gi->available_func));
+ 	kfree(gi->composite.gadget_driver.function);
++	kfree(gi->composite.gadget_driver.driver.name);
++	ida_free(&driver_id_numbers, gi->driver_id_number);
+ 	kfree(gi);
+ }
+ 
+@@ -1571,7 +1579,6 @@ static const struct usb_gadget_driver configfs_driver_template = {
+ 	.max_speed	= USB_SPEED_SUPER_PLUS,
+ 	.driver = {
+ 		.owner          = THIS_MODULE,
+-		.name		= "configfs-gadget",
+ 	},
+ 	.match_existing_only = 1,
+ };
+@@ -1581,6 +1588,7 @@ static struct config_group *gadgets_make(
+ 		const char *name)
+ {
+ 	struct gadget_info *gi;
++	int ret = 0;
+ 
+ 	gi = kzalloc(sizeof(*gi), GFP_KERNEL);
+ 	if (!gi)
+@@ -1622,16 +1630,30 @@ static struct config_group *gadgets_make(
+ 
+ 	gi->composite.gadget_driver = configfs_driver_template;
+ 
++	ret = ida_alloc(&driver_id_numbers, GFP_KERNEL);
++	if (ret < 0)
++		goto err;
++	gi->driver_id_number = ret;
++
++	gi->composite.gadget_driver.driver.name =
++		kasprintf(GFP_KERNEL, DRIVER_NAME ".%d", gi->driver_id_number);
++
+ 	gi->composite.gadget_driver.function = kstrdup(name, GFP_KERNEL);
+ 	gi->composite.name = gi->composite.gadget_driver.function;
+ 
+-	if (!gi->composite.gadget_driver.function)
+-		goto err;
++	if (!gi->composite.gadget_driver.function) {
++		ret = -ENOMEM;
++		goto err_func;
++	}
+ 
+ 	return &gi->group;
++
++err_func:
++	kfree(gi->composite.gadget_driver.driver.name);
++	ida_free(&driver_id_numbers, gi->driver_id_number);
+ err:
+ 	kfree(gi);
+-	return ERR_PTR(-ENOMEM);
++	return ERR_PTR(ret);
+ }
+ 
+ static void gadgets_drop(struct config_group *group, struct config_item *item)
+-- 
+2.34.1
 
