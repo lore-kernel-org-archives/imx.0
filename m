@@ -1,201 +1,80 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2053.outbound.protection.outlook.com [40.107.7.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C19746F
-	for <imx@lists.linux.dev>; Mon, 12 Dec 2022 22:23:36 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bmWIGWIudoV6nyehsJNvyYWixwZuElUdqY3OOUFBGdB80w9lGEf66qN+8uiwowmL+fyii0SWIpi4wEp7ikioXr0ueHoeHWeqnS2bS5m3+XarjdeIxTnh6PiWJYAmCwzKPt5cZu7no3SBRqQScM2C4yjLc48smNEgRS7g+5YZ8nfG7ziOrYWYsUGALJ9qyhAgTcLu3O7CvOUZCHnBeMl0jhHLcIF6hc3EwPxghP+zzonHskUPtYpnqkwSC8FxH01FW9mEIxN/nNRoDJVHfcpnN+o+3K9tbMTam4t/klR9FhPmNv03dLECdCdNrYT/n0aR1FMhFFLtrmz/p7EQv1XP6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WRxAGG27YCFbJ+D2Hmo+WzFNQjbSUcjbCTx7RVedWC0=;
- b=IOjFFTOJrjICucMs30mhotU6mttb3lHNXp54OCTzJN6WJXPn0i2KNX9OGrCBwo917eaI751U9C68La1zs4F2+yMzGtDblceyNiiWkaVGnlu6VzUL+ezP4C1Ut2k03p/i3xcPTfnrYwCCovkTV/rLiKtdajGj1+YOW6jHjquUMg/B/6yiWwU2QATgBw3HLh4YwU0awNfK6wPQKua+OTm7eBdD/0vYHqfUbfDl6oolnTkF13VcVXQp8wOD+d0Joj2t2oTjEsBBMrfEi4DE86qwn2kLgDAEX9IKgmwdp7ibGLZza3okTiAsLMpmrGLFipDByhnHBnxy+StGHYlHYlixpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WRxAGG27YCFbJ+D2Hmo+WzFNQjbSUcjbCTx7RVedWC0=;
- b=HDDxC0wPwsmnJUTw/XTgHdKs/yYv63plHYNi7/NwnXTqA8oyCpyphNvvkjTnKrlHQB/TLbqW1cHCa3cEajaYDmlkCQ4LNsTHPx2JA4605aCWZGfDkQIDlYR34dK5bVAtcJ3xl6y1B+njNNVvfCsw0VJYyLET80kvWtM/He0xA8M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11)
- by AM7PR04MB6870.eurprd04.prod.outlook.com (2603:10a6:20b:107::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.11; Mon, 12 Dec
- 2022 22:23:32 +0000
-Received: from GV1PR04MB9071.eurprd04.prod.outlook.com
- ([fe80::ef72:e2bf:2ff6:a953]) by GV1PR04MB9071.eurprd04.prod.outlook.com
- ([fe80::ef72:e2bf:2ff6:a953%6]) with mapi id 15.20.5880.019; Mon, 12 Dec 2022
- 22:23:32 +0000
-Date: Mon, 12 Dec 2022 16:23:25 -0600
-From: Han Xu <han.xu@nxp.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Haibo Chen <haibo.chen@nxp.com>, Sean Nyekjaer <sean@geanix.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] iio: accel: add the new entry in driver for
- FXLS8967AF
-Message-ID: <20221212222325.jmsg4m4swsqkesus@umbrella>
-References: <20221207162045.669958-1-han.xu@nxp.com>
- <20221211130920.47f1c684@jic23-huawei>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221211130920.47f1c684@jic23-huawei>
-X-ClientProxiedBy: BYAPR05CA0094.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::35) To GV1PR04MB9071.eurprd04.prod.outlook.com
- (2603:10a6:150:22::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA2E33D4
+	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 13:17:59 +0000 (UTC)
+Received: by mail-lf1-f53.google.com with SMTP id j4so4923181lfk.0
+        for <imx@lists.linux.dev>; Tue, 13 Dec 2022 05:17:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sK9O9xDRdOK1WrQ5YzfOMAm6QizVb9/TslMyl19cgSA=;
+        b=BVCrhwkqYbbCuxBTv7OoVEHRERcVU/L6uLQgylYEGogZprgZX7UmHWxbHrzHadMUkn
+         WGs2dtiWJ2Fymvt26Jg4+QEY+x/rSvdDd7yzh2GxFLk2zT+6ouPC3YgsKLpFrMrClctb
+         jiMR3uqoHGM9Mvi7EfYZ34D/PJTiJSeLmL/6CFxdxBqqrq5sOyOORguBeQAxO0qNWMos
+         XoQEbDSDAq/fsBWH/Ldrxw1q88e0aA6jgLLA5LRrRX7W/4aVQZ8C4P7su+xsBaxHXlJg
+         v8iE6q30MHoJueE48XqotAVaeW1ODviMJgZ0XTciVAhwjg6c8FxGkCv4Lr0fqqqDfeTg
+         wIqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sK9O9xDRdOK1WrQ5YzfOMAm6QizVb9/TslMyl19cgSA=;
+        b=s550YNbLI8H9g2HOE2KuncXS0k1KsSUxIg74fXHjKHcjZeY60oNstsgoGdkrZXAaNH
+         q5VuVOWfNf3Ips23dyGpVXqmhuHCA7ffqFIVx+fYRlT6fRFfuv4TPc0OPmzrYfAPltHb
+         ZdhPpGv8wRB2O9pT0zB1iFNVWyDXmGLcuorIem7usetUI7VrWMp39PIbRgnPm0/oc+JX
+         oJG/J4qG6VGOXo2CpyLZbLUV3XIhdkGIj2WaowFx4ozLNNc19fSs5mP78oHoLsqfBjbp
+         TBzToQNPpb+chYpgyMMVa1EQ3azCsiIGkHTaSa7eMwwf7vWTg46ilfB8MP4hGNhCKON0
+         WYgQ==
+X-Gm-Message-State: ANoB5pm+R70UGMNexl6z+qaoXWFnXo/PgtDDrtxc6sdyJ16E0Glwc5id
+	fPJsONRHppOsOQ/moq8ksKhkaQ==
+X-Google-Smtp-Source: AA0mqf7u6xb7o7rg8pb4eSeKln0JmVaxnlIohuM03qO9ciiH14OYqKqk+YXSJLGt/om11bkytJp99A==
+X-Received: by 2002:a05:6512:2293:b0:4b5:5dea:ec68 with SMTP id f19-20020a056512229300b004b55deaec68mr6841531lfu.44.1670937478168;
+        Tue, 13 Dec 2022 05:17:58 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id u7-20020ac258c7000000b00494603953b6sm366089lfo.6.2022.12.13.05.17.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Dec 2022 05:17:57 -0800 (PST)
+Message-ID: <e6a5ef70-0fb5-67ed-f023-8a31fe2a6239@linaro.org>
+Date: Tue, 13 Dec 2022 14:17:56 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV1PR04MB9071:EE_|AM7PR04MB6870:EE_
-X-MS-Office365-Filtering-Correlation-Id: a91d1820-8366-485e-538a-08dadc8f80ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	mQulEuiLHBhK+/q/SsBR0jhLyDHXASNtcXt1ORAV0VXvR2FmSMS34m3ukbYe4fvva9zlfuEkF0FHufSe9/vCn2jtkZYWsHPl+74RJVAuzAWEge89kH6OPiKVj0B0Mn+zlGSKVLRk311dZzpaVYcmIid3Pyq42uhrzwt3AHJjWwCjaBTweAIzb8YBG/FzMUw0Jrap49534imnAjQLxAMv/NjElaAli/OtOqK7msZ3QkHHxIDimuZW3AP2EwoUcyGeXwXSzOJvhVVVjZZGe6YP44RvYaEv80iCEtOUxP1cMqazkjomjHwfwHW9g76GjdLUk8E45iwKijilVRv+XduRSJYO0EAkDSLMlbjjztj7ywsErt9NFoldqN//964RRiiZJawJtK6wUBzhTObRkPDjh+nx/TfIhfil/3AyXBN/aMbAx5iToA0NEEusFYJMmPEriEjc/3+j/XIHG3IFCtziKHmYb8xwaf6PPJ+0wzybbuytBDLrs67c9+H6PVvKnkbu3EGrtv3mLtr8UcpYfOd2HiHbrg9QHD9SkUyQwR0DGtJRkXMF0t5JuJowRYyiqAm2DpRev8o49XsctCzJCfZMUQGdmzTnQ6PDQSMhWykrAIM3BdXHQMD84WlbHMo8aLSBtwDnAKV5EAJdxDnSfClr+9V7pvAwArD95gepyPLGiQnYpERw8jyyqnnI0UyAm/QEh5PxfNtG7sJTKRzYTY8c4w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9071.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(4636009)(366004)(39860400002)(396003)(376002)(346002)(136003)(451199015)(33716001)(6486002)(478600001)(6506007)(6666004)(2906002)(86362001)(52116002)(38350700002)(26005)(5660300002)(6512007)(186003)(9686003)(44832011)(8936002)(38100700002)(1076003)(66946007)(83380400001)(6916009)(4326008)(54906003)(66476007)(41300700001)(66556008)(316002)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+fLVjG+lsUOAw6q1EhS5t58IsE0NjA2VXPxgO1v94g4xb0bsDABCo86NYsMG?=
- =?us-ascii?Q?IVraE3qAqc7AG/c7mop30W5mWWWnlch23FOZzqPKTq84Jx5nOGrTr6VOCGCO?=
- =?us-ascii?Q?vRs7imHf4IL5Qz1GtNsmKCBz+fy35MvjQXUHdgcNkbp3n8FmdyIIP8LPau/N?=
- =?us-ascii?Q?IR6pABNMW/RiQhjvpxFkqFEj90bA4mZ45vS91j46mxYzdHb5FgtOj2j1dGZC?=
- =?us-ascii?Q?dYjCYh5yRihBCtGYzdccRYNjOKIJu/Dd1GiRVyxAvkx5VS9cVkOytMLTFS/i?=
- =?us-ascii?Q?3TEp+YlZiE3JF75OHqNECmDCOF+obUDsdl368+lCOlluf5tvTIKajz8aeeaE?=
- =?us-ascii?Q?4IaSKlNORvLTaEy0n2t7H+th4RGC9e6G4X6MIJBvyP0s2P03UU0ISHKlVPvC?=
- =?us-ascii?Q?qOqSmCl3Ce9Wn43s+n4EJBSvw67C8oESSUuAij4HAGuJSgixzeVtiC68fitI?=
- =?us-ascii?Q?pzEOt+r2gIl59A991+ocSwhSjRDgXRECJgyj3ShF0b83GNRQBNKugtNTQkRR?=
- =?us-ascii?Q?QFFV5LVvflz+LLaBowmnj+YhyCDSeLWuXqwBKNgM7715rNuaWLpQg2qiFH/E?=
- =?us-ascii?Q?AsO/oKgJ4amDZBDSLiLcpPKZxq36RSwDBOhjIyrN7LAl2+cEkNwNSRIpTEFE?=
- =?us-ascii?Q?6hEmv4WnLsUWb3I11/k6KeEdzYeMxcXTCsNP38IjDMpXywvs8QQcTGZhCcc0?=
- =?us-ascii?Q?pA/DAVko53Te0gf4q/lxOo8EsXy8aFw6G8KwgmyhX7IkVULZDpkbyUwP6LYf?=
- =?us-ascii?Q?1CPy8SUJmACUpi+DhYw+RcFy35kr2bUMUVRbT9VML7VlpjxODPeatq4pP7kR?=
- =?us-ascii?Q?a15crljYjsuz7H6ZQX9k8+BMs2NKS9hbvmqwk0+Jik92FkkifCn1LHZ2/SjT?=
- =?us-ascii?Q?Hhb/m7ojEeRWF+B3lepc8Dr9aY7lUIHtD/syLhSGTzluadbjgLZM9w8nVbp9?=
- =?us-ascii?Q?lzChnidZGk3wTWBteIhxBImXJUqfOavKUcQ79vizqzCLh1o6refcxqidfKE5?=
- =?us-ascii?Q?cTEZcmY930OalRa0aFn2/V/GjwYjksKHxyCZuCV317nXqa9LN/73o2nS+Hdi?=
- =?us-ascii?Q?3xENZ+M4xejA/ngeVPFpZmDtzBk1ANcsVbwZ6ZeinRPh6uXJ78zclP6u08gv?=
- =?us-ascii?Q?Dc0PfzORhY7yjTuFUS05jXapTO/5sKeX0r/mvbaPVY21Q28l94G84Umb5oJl?=
- =?us-ascii?Q?oO38WVbutVKsvEm4KBpsQ3OS2J21OVPfg4YYOyOoQb6qLVTG4MONmCobNNwU?=
- =?us-ascii?Q?loDmeW7oAK6AjL7s3pqtCQjNPnhr3Ha8i3y1GK9GKrruR4dUprp5abfK+X3M?=
- =?us-ascii?Q?ZNodVNajEBP5wR24naUosCLz+iwN59UTB6vh4A4Ap7XHIkI/SH1GaRNPVTqn?=
- =?us-ascii?Q?YFEvW4pG5qLVUEtX/hfuW5fSZ5Bz3/nLag1uNQoCmIbV3u0NGaDpDp3/Adph?=
- =?us-ascii?Q?EkyDWKiM/iO3BdrqhdxWN2PKJCdZKo1t7JcUm/PhzlOW23iENT7n0r2WQAaP?=
- =?us-ascii?Q?CBHT4e0KCaXFYmRs2+YbsNJXAwVAcPGTidGSFtM9xH0wEoAyrVdMsGq7Fh09?=
- =?us-ascii?Q?R5vWB0suTJFFkrW1udw=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a91d1820-8366-485e-538a-08dadc8f80ac
-X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9071.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2022 22:23:32.5901
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wE2FG8RcsIxkMZ9ju1+jvenJWyEO1fnJrySjq8q/eyFNfFqM79P5lFwlWpUEQD8a
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6870
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH 0/4] FXLS8967AF and FXLS8974CF support
+Content-Language: en-US
+To: Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Sean Nyekjaer <sean@geanix.com>,
+ Haibo Chen <haibo.chen@nxp.com>, Matti Vaittinen <mazziesaccount@gmail.com>,
+ =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Clark Wang
+ <xiaoning.wang@nxp.com>, imx@lists.linux.dev
+References: <20221212220716.1829183-1-han.xu@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221212220716.1829183-1-han.xu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 22/12/11 01:09PM, Jonathan Cameron wrote:
-> On Wed,  7 Dec 2022 10:20:44 -0600
-> Han Xu <han.xu@nxp.com> wrote:
+On 12/12/2022 23:07, Han Xu wrote:
+> The patch set add two more NXP accelerometer entries for FXLS8967AF and
+> FXLS8974CF in driver and update related compatible string for dt bindings.
 > 
-> > Add this new device entry in the driver id table.
-> > 
-> > Signed-off-by: Han Xu <han.xu@nxp.com>
-> Hi Han,
-> 
-> I went to apply this and discovered the FXLs8974CF_DEVICE_ID etc
-> isn't yet present in the upstream driver.  Have a I missed a patch
-> set somewhere?
-> 
-> One comment inline.
+> Haibo Chen (1):
+>   iio: accel: add fxls8974cf support
 > 
 
-There is another local patch not upstreamed, just sent them out as a patch set.
+This contains some v2 some v1 patches. Please do not mix it. The entire
+series has one version. Your next will be v3 - for entire series.
 
-> 
-> > ---
-> >  drivers/iio/accel/fxls8962af-core.c | 7 +++++++
-> >  drivers/iio/accel/fxls8962af-i2c.c  | 2 ++
-> >  drivers/iio/accel/fxls8962af.h      | 1 +
-> >  3 files changed, 10 insertions(+)
-> > 
-> > diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> > index 17a6f4f4e06c..ddeb1b153499 100644
-> > --- a/drivers/iio/accel/fxls8962af-core.c
-> > +++ b/drivers/iio/accel/fxls8962af-core.c
-> > @@ -127,6 +127,7 @@
-> >  #define FXLS8962AF_DEVICE_ID			0x62
-> >  #define FXLS8964AF_DEVICE_ID			0x84
-> >  #define FXLS8974CF_DEVICE_ID			0x86
-> > +#define FXLS8967AF_DEVICE_ID			0x87
-> Fine with these being in numeric value order...
-> >  
-> >  /* Raw temp channel offset */
-> >  #define FXLS8962AF_TEMP_CENTER_VAL		25
-> > @@ -772,6 +773,12 @@ static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
-> >  		.channels = fxls8962af_channels,
-> >  		.num_channels = ARRAY_SIZE(fxls8962af_channels),
-> >  	},
-> > +	[fxls8967af] = {
-> 
-> I'd rather everything else was in 'alphabetical order as anyone looking down
-> the lists will expect that ordering rather than one based on IDs that they
-> probably won't have reason to know.
+Best regards,
+Krzysztof
 
-fixed in v2.
-
-> 
-> > +		.chip_id = FXLS8967AF_DEVICE_ID,
-> > +		.name = "fxls8967af",
-> > +		.channels = fxls8962af_channels,
-> > +		.num_channels = ARRAY_SIZE(fxls8962af_channels),
-> > +	},
-> >  };
-> >  
-> >  static const struct iio_info fxls8962af_info = {
-> > diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-> > index 4a755a39d702..fd21f524e04f 100644
-> > --- a/drivers/iio/accel/fxls8962af-i2c.c
-> > +++ b/drivers/iio/accel/fxls8962af-i2c.c
-> > @@ -31,6 +31,7 @@ static const struct i2c_device_id fxls8962af_id[] = {
-> >  	{ "fxls8962af", fxls8962af },
-> >  	{ "fxls8964af", fxls8964af },
-> >  	{ "fxls8974cf", fxls8974cf },
-> > +	{ "fxls8967af", fxls8967af },
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
-> > @@ -39,6 +40,7 @@ static const struct of_device_id fxls8962af_of_match[] = {
-> >  	{ .compatible = "nxp,fxls8962af" },
-> >  	{ .compatible = "nxp,fxls8964af" },
-> >  	{ .compatible = "nxp,fxls8974cf" },
-> > +	{ .compatible = "nxp,fxls8967af" },
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
-> > diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
-> > index 45c7e57412e0..7de924d15694 100644
-> > --- a/drivers/iio/accel/fxls8962af.h
-> > +++ b/drivers/iio/accel/fxls8962af.h
-> > @@ -12,6 +12,7 @@ enum {
-> >  	fxls8962af,
-> >  	fxls8964af,
-> >  	fxls8974cf,
-> > +	fxls8967af,
-> >  };
-> >  
-> >  int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
-> 
