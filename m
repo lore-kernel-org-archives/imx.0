@@ -1,102 +1,54 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEA833D4
-	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 13:20:10 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id cf42so4878358lfb.1
-        for <imx@lists.linux.dev>; Tue, 13 Dec 2022 05:20:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eHTfHjvJCeAfYwsNKCuYtmfXn7FoJBs8BtExGL5vLPE=;
-        b=hIOKKKQuEHUpmFAgcOUceta27QDdh5hPJp+W39bOv+ckN2c+q/x632X6YMgL+6euNy
-         yecM2wsji/kqaBH0iEKTDWZH4CpkuVVLcFx8qAeIiNGRyiCMQwDLdso+8x2HZ8uvodma
-         8kV7iXeXo3wiXaXchxqDQGToLLyJj2Hx3uUT6iEUDCJ16eSBKBMFUbBCBRTGzLNc1f2+
-         /+Cy3kSwUHh1ifrO1DPv+C4yfA4f1MOYHHz3TmXlXHwmTGUtD3EKSskMvUzAJW32olpM
-         3en0BlKvNVX4KdFJ3TZeYXEG6LkTv+cU9n9YOVPDgcrBTNDyE/AqOWTt+EifZ2qielt3
-         dC8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eHTfHjvJCeAfYwsNKCuYtmfXn7FoJBs8BtExGL5vLPE=;
-        b=24TmQeLZx4/2wP3Ptey5XqKPpcxRlXvjhmb7LXSc2eM2f8GxZPtUfdKy8JISlArPPs
-         D0X2pwqt/qd3dq6CDvFleV4jBGLMCKuM+B8rxEs2LOxo0WW7a7hfor/LdioqxriCh6L6
-         4n9csvLzrogrtGvBRl/8LL0+Tk5ZiFP3ZQpicMk/Y3CAjKCD+AVlTuSo+cg02CVg9cvD
-         EMlORx+U1j8w6EOaWZba9RIr9mqqjEd7tENPmhCdtzORbZ5fcZHJseE7uCn3DZPW47Qe
-         aUPJvHGT7+ljfdZ6Zym+8vK/yCXh/xDpIx4cqRU8NUacJuHfrHLuIA5nXphdbvgGYkEz
-         xUuQ==
-X-Gm-Message-State: ANoB5pmYuxw+KHdTeKYB1JqJyEn63IxZm6K/7eJnrIlENOC8R1b5/3Dl
-	XVo9uvLNo8er+w+64AZd57grTg==
-X-Google-Smtp-Source: AA0mqf4JoMBcFBCwMxYKEsdegjcV4U7LcoqRUr1o/cVIols41CuYYG+ho27bKHeu0T2hXokMT4Wt4Q==
-X-Received: by 2002:a05:6512:2c85:b0:4a4:68b8:f4d9 with SMTP id dw5-20020a0565122c8500b004a468b8f4d9mr5456750lfb.31.1670937609042;
-        Tue, 13 Dec 2022 05:20:09 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id l11-20020ac24a8b000000b004b55e16931fsm361341lfp.259.2022.12.13.05.20.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Dec 2022 05:20:08 -0800 (PST)
-Message-ID: <d493876d-6902-1196-4eee-400a7e4088d9@linaro.org>
-Date: Tue, 13 Dec 2022 14:20:07 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEFD33D4
+	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 13:21:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13209C433F1
+	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 13:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670937660;
+	bh=bHA+mTh20LO8LfXp7Tr6JCJUwbx5KaIlUkFvEivaSzQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Lgcjat+t4w3QN4ynKv20n7wNFsr7mqGOsQyvyv2px+fMlCHrddRwMo+f05JrJT7By
+	 W7CzoeGsVt9BxRdk2gEX/OFto8qjIUsgpQs6WsPdHvPP1x4FenxEEyM8CUNFA+FDLs
+	 RrNHb+X8xZlytAVD1GcC3csvoR0VFzm6SnVCAL6vtc8sPQA2krvLtiPjJD7SJMvtFE
+	 k4UPWytFON65DMsW1P8Sx2kSTE37JONMaaDKf/flyYzXxzItYYvgG4QgnkN41UmYN7
+	 BB86XaqRH8WEzHjVRZS5wbf0NskdYaeQ3oHcVaPE1xl6yglULTgKMzqr6OKP6dcpBm
+	 APp+SM4e0JGkw==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-3b5d9050e48so191077507b3.2
+        for <imx@lists.linux.dev>; Tue, 13 Dec 2022 05:21:00 -0800 (PST)
+X-Gm-Message-State: ANoB5pnae1LUAWJDVyV4dYA1aqLAr6VdxM+Mfd5Li6tWkcAPOaAbDDn6
+	ES0IBC3UeEKbFMqd0HP4cGNB4Eks6fBBRQLlYg==
+X-Google-Smtp-Source: AA0mqf5XDXV0XjkQ2YnS86NqU5WVeD2D8De6xdaMRKOLg/sDbcSF6jtPmY2sHOZT4r9U4WfB8l3vhZyYVG/Wj+0XOj8=
+X-Received: by 2002:a81:6908:0:b0:36b:fbd0:2f6b with SMTP id
+ e8-20020a816908000000b0036bfbd02f6bmr8036221ywc.387.1670937659013; Tue, 13
+ Dec 2022 05:20:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH 3/4] dt-bindings: iio: accel: fxls8962af: add new
- compatible string
-Content-Language: en-US
-To: Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Sean Nyekjaer <sean@geanix.com>,
- Haibo Chen <haibo.chen@nxp.com>, Matti Vaittinen <mazziesaccount@gmail.com>,
- =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Clark Wang
- <xiaoning.wang@nxp.com>, imx@lists.linux.dev
 References: <20221212220716.1829183-1-han.xu@nxp.com>
- <20221212220716.1829183-4-han.xu@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221212220716.1829183-4-han.xu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20221212220716.1829183-1-han.xu@nxp.com>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Tue, 13 Dec 2022 07:20:47 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJnh=N_6PDFDr79aUa8hcd44trvoz=CfaFGBVO2-Y8Szg@mail.gmail.com>
+Message-ID: <CAL_JsqJnh=N_6PDFDr79aUa8hcd44trvoz=CfaFGBVO2-Y8Szg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] FXLS8967AF and FXLS8974CF support
+To: Han Xu <han.xu@nxp.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Sean Nyekjaer <sean@geanix.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Matti Vaittinen <mazziesaccount@gmail.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, Clark Wang <xiaoning.wang@nxp.com>, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/12/2022 23:07, Han Xu wrote:
-> add new compatible string for the NXP FXLS8967AF accelerometer sensor.
+On Mon, Dec 12, 2022 at 4:08 PM Han Xu <han.xu@nxp.com> wrote:
+>
+> The patch set add two more NXP accelerometer entries for FXLS8967AF and
+> FXLS8974CF in driver and update related compatible string for dt bindings.
 
-Start with capital letter.
+Please resend to the lists that get_maintainers.pl tells you to.
 
-> 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-> ---
->  Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> index 65ce8ea14b52..400eff3ff315 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> @@ -14,12 +14,14 @@ description: |
->    SPI and I2C interface.
->      https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
->      https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
-> +    https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
->  
->  properties:
->    compatible:
->      enum:
->        - nxp,fxls8962af
->        - nxp,fxls8964af
-> +      - nxp,fxls8967af
-
-They are all compatible with each other, right? Looks like, so these
-should be expressed in the bindings.
-
-Best regards,
-Krzysztof
-
+Rob
