@@ -1,79 +1,110 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBD5610D
-	for <imx@lists.linux.dev>; Wed, 14 Dec 2022 09:54:44 +0000 (UTC)
-Received: by mail-lf1-f45.google.com with SMTP id c1so9522808lfi.7
-        for <imx@lists.linux.dev>; Wed, 14 Dec 2022 01:54:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DJHzz7Cr6mZdLR560syNh/uSUGyL1AkyOrCtyL2Bvwc=;
-        b=BZ8KWJbhZI9j9mmLKk5E0+GIQCI5UAqUlqbIyZY21NQCbE8ZAWeM/JQrKgwesdRT3P
-         3akYY+u69yNw6ES0KS9n0rRG0nKkyV1fTai1qJYAQAG+wwOwBSlpz2xXYuj6P9O6s1uX
-         MyE8snUQvLBh2d+v2QVBORATzoRtvTQJN0s9BMr3yWdXH5ymDN5TWzNHFQU6UOkVgH3D
-         lxk+HxEEFrZgdnalGqbO4u5xjtWKiJMM0muohPvg0PxDxv3ZZuJIEit+Yt0i330mnH9X
-         77mb0rCgxwcR0OvixPmnt79xXE5faLsBohdBmoX/+WG34TPVUovrlz2DoBYSGImvs6Ub
-         fWlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DJHzz7Cr6mZdLR560syNh/uSUGyL1AkyOrCtyL2Bvwc=;
-        b=MbKJJdD/Mu0iZRACXrt8B6Q3zBYXzWmootx70w0QgU3pXPy8+q6hFXI1uwjEBZ3B1N
-         Niauc2U53CVi+aOOjetqyLY+K0V/Db9EhDDi56kRhPPQuzv1NHrrptnAERw980xGu7C/
-         HQLlVqXTq06zu1L9xHA7l63nKUCN7Q6tgXGHG1w1sGfHkhJiklfj7plU+hFuSe1fIcA8
-         v7iDXwuyJW6oYsyQD9a2CHHyAJckj1NJ+ysA7sEGVhLIYgmVrF1aGbUAW40xlaYldIsg
-         VTY8Jvm487h8pXGf0tqxVrDo5h8k7BjvEWKb6PlcMNbw0zW67Af3egv1yTXRJY22593h
-         RPXw==
-X-Gm-Message-State: ANoB5pljVJwK9ibq95/x/aCz+3Rnf+8hIAtE4ePKvmUVxGnIRxVseBlS
-	zNi1FswVpFeucGNBsL5d0mpNTQ==
-X-Google-Smtp-Source: AA0mqf5+dPoClAGr/fcvhHv5/BoMUrcqY4rn7Vn3amkoNIZ0rTphTBFbZ5NlYEfynFQHbtVFlqIfOw==
-X-Received: by 2002:a05:6512:2110:b0:4b5:649a:9105 with SMTP id q16-20020a056512211000b004b5649a9105mr5804481lfr.65.1671011682872;
-        Wed, 14 Dec 2022 01:54:42 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id c36-20020a05651223a400b004b55da14ba8sm734743lfv.291.2022.12.14.01.54.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Dec 2022 01:54:42 -0800 (PST)
-Message-ID: <2e9e84ce-97c6-77de-6fb2-40c91fa81e51@linaro.org>
-Date: Wed, 14 Dec 2022 10:54:41 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2C16121;
+	Wed, 14 Dec 2022 11:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206B5C433EF;
+	Wed, 14 Dec 2022 11:35:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1671017714;
+	bh=x7XLustHOSDMG59c5AzsLExjEBqxv5w3RXRg+AC/mSs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Ri1Pco7zC/ok/zYT6h2PWNnIHK2RNawvDZX9FiEpoJl+S23tlzZGSIHZBl6yU3/zN
+	 GHAHDIO/ww1H6rViDM9KUg4CjJL2XeUOhVyK8eqkMOjl/snhyNWaz4xUl9hHY1l72o
+	 KyNC7tzgoEhvKHnz3oKpOk4eijW52/Z4raA8iwN8ltFiYRq1UDS+dEpQw22ThfLET6
+	 U6TWWVJnRTe+GVrVBDh0ygY/o0H2HAg65rWExss/baKkJSa/keiRBcS8dsezvWjd2T
+	 s1r6ZOyh3RtMNPB+le95RLL+M14nJmp3PGMV0lAr0s6yC5ZrPRIl2Tdh9MgZYCqq+p
+	 RWTcUR7hzlLJQ==
+Date: Wed, 14 Dec 2022 05:35:12 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <frank.li@nxp.com>
+Cc: "mani@kernel.org" <mani@kernel.org>,
+	"allenbh@gmail.com" <allenbh@gmail.com>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"jdmason@kudzu.us" <jdmason@kudzu.us>,
+	"kw@linux.com" <kw@linux.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"ntb@lists.linux.dev" <ntb@lists.linux.dev>
+Subject: Re: [EXT] Re: [PATCH v16 7/7] PCI: endpoint: pci-epf-vntb: fix
+ sparse build warning at ntb->reg
+Message-ID: <20221214113512.GA247043@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH v3 4/4] dt-bindings: iio: accel: fxls8974cf: add new
- compatible string
-Content-Language: en-US
-To: Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Sean Nyekjaer <sean@geanix.com>,
- =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Clark Wang
- <xiaoning.wang@nxp.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev
-References: <20221213171536.1880089-1-han.xu@nxp.com>
- <20221213171536.1880089-6-han.xu@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221213171536.1880089-6-han.xu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <HE1PR0401MB2331E04D41F5EF9F6F1E326288E09@HE1PR0401MB2331.eurprd04.prod.outlook.com>
 
-On 13/12/2022 18:15, Han Xu wrote:
-> Add new compatible string for the NXP FXLS8974CF accelerometer sensor.
+On Wed, Dec 14, 2022 at 12:49:15AM +0000, Frank Li wrote:
+> > 
+> > On Wed, Nov 02, 2022 at 10:10:14AM -0400, Frank Li wrote:
+> > > From: Frank Li <frank.li@nxp.com>
+> > >
+> > >   pci-epf-vntb.c:1128:33: sparse:     expected void [noderef] __iomem
+> > *base
+> > >   pci-epf-vntb.c:1128:33: sparse:     got struct epf_ntb_ctrl *reg
+> > >
+> > > Add __iomem type convert in vntb_epf_peer_spad_read() and
+> > > vntb_epf_peer_spad_write().
+> > 
+> > I don't understand all the bits and pieces here, but I'm a little
+> > dubious about adding all these "(void __iomem *)"casts.  There are
+> > very few of them in drivers/pci/, and I doubt this driver is so unique
+> > that it needs them.
 > 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
+> sparse compiler report warning without cast.  I write it at commit message.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+As a matter of fact, I did read your commit message.  My point is that
+I don't think littering the code with casts is the best solution.  I
+wrote more details below; please read the entire email.
 
-Best regards,
-Krzysztof
-
+> > > @@ -1121,7 +1121,7 @@ static u32 vntb_epf_spad_read(struct ntb_dev
+> > *ndev, int idx)
+> > >       struct epf_ntb *ntb = ntb_ndev(ndev);
+> > >       int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count *
+> > sizeof(u32);
+> > >       u32 val;
+> > > -     void __iomem *base = ntb->reg;
+> > > +     void __iomem *base = (void __iomem *)ntb->reg;
+> > >
+> > >       val = readl(base + off + ct + idx * sizeof(u32));
+> > >       return val;
+> > > @@ -1132,7 +1132,7 @@ static int vntb_epf_spad_write(struct ntb_dev
+> > *ndev, int idx, u32 val)
+> > >       struct epf_ntb *ntb = ntb_ndev(ndev);
+> > >       struct epf_ntb_ctrl *ctrl = ntb->reg;
+> > >       int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
+> > > -     void __iomem *base = ntb->reg;
+> > > +     void __iomem *base = (void __iomem *)ntb->reg;
+> > >
+> > >       writel(val, base + off + ct + idx * sizeof(u32));
+> > 
+> > These things look gratuitously different to begin with:
+> > 
+> >   int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * sizeof(u32);
+> >   int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
+> > 
+> > They're doing the same thing, and they should do it the same way.
+> > 
+> > Since db_data[] and db_offset[] are never referenced except to be
+> > initialized to zero, I'm guessing the point of vntb_epf_spad_read()
+> > and vntb_epf_spad_write() is to read/write things in those arrays?
+> > 
+> > You access other things in ntb->reg directly by dereferencing a
+> > pointer, e.g.,
+> > 
+> >   ntb->reg->link_status |= LINK_STATUS_UP;
+> >   addr = ntb->reg->addr;
+> >   ctrl->command_status = COMMAND_STATUS_OK;
+> > 
+> > Why don't you just compute the appropriate *index* and access the
+> > array directly instead of using readl() and writel()?
+> > 
+> > Bjorn
