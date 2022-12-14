@@ -1,133 +1,92 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2071.outbound.protection.outlook.com [40.107.15.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CCF8472
-	for <imx@lists.linux.dev>; Tue, 13 Dec 2022 23:46:41 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CW3HB3jd9QiP9j+C2VsOlozt2LwzUCMRoqFiMIoAmYja+SyRgJypK4YoXq2hC28lDkZ9V/lguajZI9IGP8qfPTAPROO/VEeCnRB3i0wlGXDHBlLgrk0sVT3uDklyl94KrF54qy3boJPwQrJQockanvGf2X2I/VKHiw5cEqet4kDV1hBEBbftsA5ObEG/UjZhOp0fnfmx3hfiZeB7l7Ov4zKTiDsJ6/oOf7VEu9GxHtoEE/Paflx9LUUXQB/PRdzPp3qIyr+js/GT5RzLAz3AiqD2gTbizqjMncUR8gXsDvPSNoOgXSMh6GneKLHlx5HyaY+C+J5owqHHgQDr16HFJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w4Kz90u9ABTU0UHoewoWC5ecuEFEPYuuwrj84Vtbnxk=;
- b=Lm+T9IvWt+s5ccYoApFqWVD3keLH30PWpVpvNGS73N6uBy2jAljoImvW4fek5thef7hbidaEXN5GeMfARDbw5A63BlNXGuxkRzLcpphQ0xdxMjesLEyOwbsGtEiEUxEabhX9fDoeAay5+W1+eMWDM4h82Ibd8eLtNlYxkhXJuCUOyBw8LG5tLBSe4NNT1+MrHf1ejJcyZk0RPZVJ7ju9Ov/bCww3q4W6QmskujCMHMk4GgFdIvDX2BTsVQrUU3QZE5L42sqdgMr0STqcqX81icIEsKVxvhtm4sYilQK+eeNmQLRI9T9EX0gYPBy93DGizuTZPGjSOglHiXX/eQGGaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w4Kz90u9ABTU0UHoewoWC5ecuEFEPYuuwrj84Vtbnxk=;
- b=DHctuGucjrr38y9cIfm7Uqp1choVGKhWavw8G8yf+DuIgiVU6w3tu0y4MPv3WiK25D+w6/VQfFOj9XIE2B8+RYpOKQnUMUMJeZ4DWIlMou85mnBCDEwxSGqTwoAAfloIJFFArwjCFcygzSArWR92b2LBsBeS9vz0tXzhCwdi0dE=
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by DB8PR04MB7099.eurprd04.prod.outlook.com (2603:10a6:10:12b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.10; Tue, 13 Dec
- 2022 23:46:39 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::203a:e5da:a4a:7663]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::203a:e5da:a4a:7663%12]) with mapi id 15.20.5880.019; Tue, 13 Dec 2022
- 23:46:38 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC: "balbi@kernel.org" <balbi@kernel.org>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linhaoguo86@gmail.com" <linhaoguo86@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"stern@rowland.harvard.edu" <stern@rowland.harvard.edu>, Chanh Nguyen
-	<chanh@os.amperecomputing.com>
-Subject: RE: [EXT] Re: [PATCH v2 1/1] usb: gadget: Assign an unique name for
- each configfs driver
-Thread-Topic: [EXT] Re: [PATCH v2 1/1] usb: gadget: Assign an unique name for
- each configfs driver
-Thread-Index: AQHZDz7Xq5KKpC+MIEabnI9j9xs4gK5sY74AgAAWKxA=
-Date: Tue, 13 Dec 2022 23:46:38 +0000
-Message-ID:
- <HE1PR0401MB23311A1B78E2D210079FE4A088E39@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20221213220354.628013-1-Frank.Li@nxp.com>
- <67878b69-89af-6a0c-24c6-ff111dae6ce6@wanadoo.fr>
-In-Reply-To: <67878b69-89af-6a0c-24c6-ff111dae6ce6@wanadoo.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|DB8PR04MB7099:EE_
-x-ms-office365-filtering-correlation-id: 5c1e4f2b-bb1f-4845-ea5f-08dadd64474d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 8kYoLXqyNtomtBtXfnaszFZ9DesukYl+XL0CLJANlaLzSKc4r8cDK0RX4dpdgI5pZlrn/WHbrCXI/w0CK8BpxuCAdCIryPk3iSlFq7bNtFiDjAnaeJ5KmYaJvI9myQGuyxuTdBF5ecqdzWCZpPEr3NIm6tR5Ti6G5BEKstFYvMr7jJEAjRdywtMf76CCxdgPiMy+t5bSWQSCR1jVixjfA7dxIM3Z1EF296i2VbCefoHgoZ7LDvWGxzm8vvwyahr4CRjGpCvthefYrT03/k9ZHfrCj3DcD2GZ5QrEZOsAj1FsTlSh4b/gRD+cLPVbGXJhwZkbYS+J8BbY1SDkUcCwI0l2I1892xiwKPTrjmiVMDf5ZOppW8yVck4W0WnpXdPpm0Eai1e3QAs1hf0ChJ7h154L7XZ+n0T5hj/TRiyA4lH6d9WGujeCmV1zd58q09dgX4WIjEdCOWD6DXysKGTyufYpbrYSk1T+CiAa0PhJMd2C+jSXnICKCILm3gsq7shCR2bCIyZl96JNHLrDwsLBe118/CwxdsQFutGtVAqaOdTrHg6o3KeBdcpJQT0AMIHDXdwu8sZ9Kd2f9LFTfxo7stXHI5c3BWayaxtLM5t7TNGJktshrrTF5QpXb0KUXwvipuQnPUGRzpRLiezEdy8w9AxST7CarBAQdH6w25NAuZcAloJgheXZmmelaRbOgxw91Of8ROFaTROWctgJ4J04G9zxElPIxvXJReW/spi79gU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(366004)(376002)(346002)(396003)(451199015)(122000001)(52536014)(8936002)(2906002)(38070700005)(5660300002)(4744005)(83380400001)(478600001)(44832011)(966005)(41300700001)(6916009)(316002)(7696005)(54906003)(86362001)(8676002)(66446008)(64756008)(76116006)(55016003)(33656002)(26005)(55236004)(4326008)(38100700002)(66946007)(66556008)(66476007)(71200400001)(9686003)(186003)(6506007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?fkrWtID+nTL/QGhy4jOpxQltDU4BMCEelGnrGHhzR8MKxUXbULtNqWrBH1HF?=
- =?us-ascii?Q?fhRM941PEHCA0Gkj/Znl8s3Od7V7DpY+JtytzU3viraxdOWgOek7w6YCrFgx?=
- =?us-ascii?Q?J7Qp+142f+thJA79nuVQSziXiBC34hHxUlPpeeGfNmtCYY9oMHJOCRDh0FG8?=
- =?us-ascii?Q?83FFK1XQdQ4g1aZjrqNIz0CZzwS4kYVffnFNeKqw6az01v1Qne8xeaha+hPG?=
- =?us-ascii?Q?XVvWvf1dmun2quOQeuLaKwxEGcjfd6DKZU6DnoURG1X01PZCc1J67aINjO/C?=
- =?us-ascii?Q?ixf55qyf0lBPLsWXUwb0lIQfvfucNor2ZsmvA1+bGnvzd9AiuTgrNfL+bjc/?=
- =?us-ascii?Q?IQfcff1h/xspki/e103/lvD/lqKZbPIR9OUF15XC8llUq2Fw0Xtg62IjrCH1?=
- =?us-ascii?Q?WQN2V5zimSPp1t3QQrxp3IdCuM9yeml6FotGEEoAUBS3ZdNydo0ClxYw+6j9?=
- =?us-ascii?Q?ajus2Rtij770lPwulgt4WeUwvHGwwHrHCc1FiTjdKSXR/eSinbQtvvya7wMS?=
- =?us-ascii?Q?EtspzBHTu679YiwnHVs04fmDt3bU1vg3WbvxlaEbR8fI52XDVlcOLma7aCHd?=
- =?us-ascii?Q?E9727e5wcspxrEUR3YVgWoh0TbVz4zHtKVVzs7OeIfP7g7a2K98C1saqH5DL?=
- =?us-ascii?Q?xc97o2naLSbsqN/sEVjSGTzRmUDkFfMCkR6h1XnXKJFkNjSpBad6ESy3qfTM?=
- =?us-ascii?Q?CJQ3V6l3vmr705SXQUODVxTWH4j0tR6lw1n+fMpO0d5rEiGhIISzNhxFB9/c?=
- =?us-ascii?Q?763r4XPKBSEBUilEBntk9ybqKaa3ZloFqbOqv0B8yfQZxunoru2fsbDIQst3?=
- =?us-ascii?Q?4LyUr/7ZJzAIH6hRL/eKVFiX1lbZ30bYd2xMmZOHMY0DeEx1n5IDVxY6AiZK?=
- =?us-ascii?Q?ZUU6dGxq9/nIwsM6wlKAK5psD23Zhi9MEVVVomBCf6ZuQp5tjdcBQSDAGrZq?=
- =?us-ascii?Q?Vk1O3ZSU3tLu8yhJElidC3qoJhkJ9EUX8pyr5fMtoR7Kgo/QXpxewzVc4HUK?=
- =?us-ascii?Q?4NT+JZJVbr8xHcpBlW7PCCQLnaRrIQCwlRkLkGrYIcOU4lmLWBaMJkY4maiR?=
- =?us-ascii?Q?+WMRzSzT1xpqaBZYZrNhqkV/KKDRUfSp+DuOxXQVLnrJqSg7hyPmvgKEW0nP?=
- =?us-ascii?Q?kLD9ws6jS39ZznOUvdHgQ0p0C+aff7I5bGd/dxzT+nzImlIpsxASw1n7cOqR?=
- =?us-ascii?Q?dtai8WlCl+Iv1BoRMDJXwL59UQjpwvLjQiRviO6gmo5MWp/cHN82sRCYSlYq?=
- =?us-ascii?Q?bI8ir0CKDzs+IzAbtHIxbmeKzDWtq+d5OtsZOXRpkVczZ22Wdr/tZRc/Y/v9?=
- =?us-ascii?Q?SYjFfOpEmgs2sxVFLzOpeOnExNRyyJRfRsjbEVk9zbMzdU9gZUnBGj94oGPP?=
- =?us-ascii?Q?qZY4gMYA/pO6a1Qmxay43NDgBDw8yDjn9kOM57kG2gW/AUzYLS3BExJmvYA1?=
- =?us-ascii?Q?yg/ZJWD1whu1lDSNj/IWin/61ZAOrpI3EOan4lrwKo9mF4ptl9uu7H3UBMl+?=
- =?us-ascii?Q?tw8fbUDuAXhpqGM/jGGU3j9jNZs0UPBZOQ0hPj+xeHfHk7c54Bj5YjjDmQaf?=
- =?us-ascii?Q?xnhatm/14RJJy5CxEuo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341027C;
+	Wed, 14 Dec 2022 00:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B43C433EF;
+	Wed, 14 Dec 2022 00:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670977603;
+	bh=NDgzNzla8xVcW0uTm0lMUqLVpqM6P7lvLIQIDHm7YwY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=hv51f69k1nOkqwhvVxLbREu63I/O7Y+KIgmKi81hYB/T91GuYo8bAuLiEJUFSQGSM
+	 dg42kpX9k2E9HlVKit9ZurnhoiUDRyaBB//FB1AbkTEUBSd3y2VWW6wzAXU9AKE3XA
+	 g9HMVocOgpwn5qzUivFll8Ki+HeILE2cs26K2W3qM6mGWJzp0VMVM6HY80/9Nxh28p
+	 9rKGd9c/YS7lvKDtl1z/ceTz3kM3UEftxKAc4j2jHs/KV/3E+rgiw7tzZmd4U76+8Z
+	 /v4kZM7Sytcm5Il+qUxoXcqnQiMlURELN5b4Dwgcj5uJiSxufbTzWwvB71l6OBNUWm
+	 VNMmGmDCah4Aw==
+Date: Tue, 13 Dec 2022 18:26:42 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: mani@kernel.org, allenbh@gmail.com, bhelgaas@google.com,
+	dave.jiang@intel.com, imx@lists.linux.dev, jdmason@kudzu.us,
+	kw@linux.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lpieralisi@kernel.org,
+	ntb@lists.linux.dev
+Subject: Re: [PATCH v16 7/7] PCI: endpoint: pci-epf-vntb: fix sparse build
+ warning at ntb->reg
+Message-ID: <20221214002642.GA216337@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c1e4f2b-bb1f-4845-ea5f-08dadd64474d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2022 23:46:38.8478
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Czq0m6fbdrGsOrz/RPJhHZAxT1Ucr82tCh/e2AFX3mqouwbX6Y9u6s4nIYdxCxx57TofriQ5LuixMSMMPSC4xQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7099
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221102141014.1025893-8-Frank.Li@nxp.com>
 
->=20
-> Hi,
->=20
-> Also, out of curiosity, any link with this patch:
-> =09
-> https://lore.kernel.org/all/20221213041203.21080-1-chanh@os.amperecomputi=
-ng.com/
->=20
-> Not exactly the same, but not very different.
->=20
-> (adding Chanh Nguyen in cc)
+On Wed, Nov 02, 2022 at 10:10:14AM -0400, Frank Li wrote:
+> From: Frank Li <frank.li@nxp.com>
+> 
+>   pci-epf-vntb.c:1128:33: sparse:     expected void [noderef] __iomem *base
+>   pci-epf-vntb.c:1128:33: sparse:     got struct epf_ntb_ctrl *reg
+> 
+> Add __iomem type convert in vntb_epf_peer_spad_read() and
+> vntb_epf_peer_spad_write().
 
-Yes, it is almost the same.=20
+I don't understand all the bits and pieces here, but I'm a little
+dubious about adding all these "(void __iomem *)"casts.  There are
+very few of them in drivers/pci/, and I doubt this driver is so unique
+that it needs them.
 
-I think it is not good place to free driver.name at gadget_drop function(),=
- it should be close to kfree(gi).
+> @@ -1121,7 +1121,7 @@ static u32 vntb_epf_spad_read(struct ntb_dev *ndev, int idx)
+>  	struct epf_ntb *ntb = ntb_ndev(ndev);
+>  	int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * sizeof(u32);
+>  	u32 val;
+> -	void __iomem *base = ntb->reg;
+> +	void __iomem *base = (void __iomem *)ntb->reg;
+>  
+>  	val = readl(base + off + ct + idx * sizeof(u32));
+>  	return val;
+> @@ -1132,7 +1132,7 @@ static int vntb_epf_spad_write(struct ntb_dev *ndev, int idx, u32 val)
+>  	struct epf_ntb *ntb = ntb_ndev(ndev);
+>  	struct epf_ntb_ctrl *ctrl = ntb->reg;
+>  	int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
+> -	void __iomem *base = ntb->reg;
+> +	void __iomem *base = (void __iomem *)ntb->reg;
+>  
+>  	writel(val, base + off + ct + idx * sizeof(u32));
 
->=20
-> CJ
->=20
+These things look gratuitously different to begin with:
+
+  int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * sizeof(u32);
+  int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
+
+They're doing the same thing, and they should do it the same way.
+
+Since db_data[] and db_offset[] are never referenced except to be
+initialized to zero, I'm guessing the point of vntb_epf_spad_read()
+and vntb_epf_spad_write() is to read/write things in those arrays?
+
+You access other things in ntb->reg directly by dereferencing a
+pointer, e.g.,
+
+  ntb->reg->link_status |= LINK_STATUS_UP;
+  addr = ntb->reg->addr;
+  ctrl->command_status = COMMAND_STATUS_OK;
+
+Why don't you just compute the appropriate *index* and access the
+array directly instead of using readl() and writel()?
+
+Bjorn
