@@ -1,104 +1,127 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606FB10EF
-	for <imx@lists.linux.dev>; Mon, 19 Dec 2022 09:39:59 +0000 (UTC)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NbF213xkJz6HJd5;
-	Mon, 19 Dec 2022 17:35:53 +0800 (CST)
-Received: from localhost (10.45.149.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 19 Dec
- 2022 09:39:49 +0000
-Date: Mon, 19 Dec 2022 09:39:46 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC: Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>, "Rob
- Herring" <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Sean Nyekjaer <sean@geanix.com>, Nuno =?ISO-8859-1?Q?S=E1?=
-	<nuno.sa@analog.com>, Matti Vaittinen <mazziesaccount@gmail.com>, "Haibo
- Chen" <haibo.chen@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>, "Clark
- Wang" <xiaoning.wang@nxp.com>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <imx@lists.linux.dev>
-Subject: Re: [PATCH v3 3/4] dt-bindings: iio: accel: fxls8962af: add new
- compatible string
-Message-ID: <20221219093946.00007411@Huawei.com>
-In-Reply-To: <76c5cdd9-7b90-7ce5-02c4-a2a6e5bb3a30@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF96F23A2
+	for <imx@lists.linux.dev>; Fri, 23 Dec 2022 17:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF59C433D2;
+	Fri, 23 Dec 2022 17:13:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1671815640;
+	bh=dwEik7RgM7nCQvfwXXmf5xrglwz239U9WH7gWpBC7yw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ixxJr1pXq53Gv4z5od6qWG/RvB6G8oUpHXXZx62Tj8l5XM3sukHV6iWnncM3p0rGI
+	 87h1sQGa53NNH3RLIgz68spLbLfuhPOAW2VVAAJVuXVn/HPbXjviCr0XL6RsNhYpmi
+	 o2iwZrg4tcDdCOFI7bocZqkwR9LLW2Fi4sdI5P/qG2P7b6NI0gMdfQ7WKQEeUrRkDW
+	 HbQ54s8iGmHPYqv9GXf62cNuUe9Iux2PJhYYK9kYsUxnmjIXtSAFMek7Jibbgsv9Ut
+	 v0pFwo561dqcwaT0p5x21b1r0ltwf681XsX6DhSkfawJ2OtuDxrklErmcUx88VZd7U
+	 0Rxvn4/bSqrtA==
+Date: Fri, 23 Dec 2022 17:27:08 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Han Xu <han.xu@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Sean Nyekjaer <sean@geanix.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Matti Vaittinen <mazziesaccount@gmail.com>, Haibo
+ Chen <haibo.chen@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/4] iio: accel: add fxls8974cf support
+Message-ID: <20221223172708.6bb84943@jic23-huawei>
+In-Reply-To: <20221213171536.1880089-2-han.xu@nxp.com>
 References: <20221213171536.1880089-1-han.xu@nxp.com>
-	<20221213171536.1880089-5-han.xu@nxp.com>
-	<76c5cdd9-7b90-7ce5-02c4-a2a6e5bb3a30@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	<20221213171536.1880089-2-han.xu@nxp.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.45.149.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
 
-On Wed, 14 Dec 2022 10:54:32 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Tue, 13 Dec 2022 11:15:32 -0600
+Han Xu <han.xu@nxp.com> wrote:
 
-> On 13/12/2022 18:15, Han Xu wrote:
-> > Add new compatible string for the NXP FXLS8967AF accelerometer sensor.
-> > 
-> > Signed-off-by: Han Xu <han.xu@nxp.com>
-> > 
-> > ---
-> > changes in v3
-> > - Start commit message in capital
-> > - Describe all these chips are compatible
-> > ---
-> >  .../devicetree/bindings/iio/accel/nxp,fxls8962af.yaml         | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> > index 65ce8ea14b52..8f07ade21abb 100644
-> > --- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> > @@ -14,12 +14,16 @@ description: |
-> >    SPI and I2C interface.
-> >      https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
-> >      https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
-> > +    https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
-> >  
-> >  properties:
-> >    compatible:
-> > +    description:
-> > +      These chips are compatible with each other, just have different IDs.  
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> As pointed in other mail, the chips are not compatible, so drop the comment.
-
-The difference is an ID register.  Given we have had a bunch of cases of board
-manufacturers swapping parts that aren't always compatible we have an old
-pattern that we are fixing of rejecting unmatched who am I registers.
-
-This driver should be relaxed to just print a message when the value doesn't
-match - that was the compromise we reached with still pointing out possible
-compatibility problems, whilst assuming the dts is correct.
-Even better would be to make it a little more clever so it doesn't bother moaning
-about part changes if the driver knows the new ID is compatible.
-
-Once that's done the comment would reflect how we treat it in the driver
-(which shouldn't matter to the binding anyway).
-
-I'm not entirely sure why this driver has handling to allow for different channel
-sets, but assume there are more parts to be upstreamed where that flexibility will
-be useful.
-
-Jonathan
-
-
-
+> FXLS8974CF is similar with FXLS8962AF, the only difference is the
+> device id change to 0x86.
 > 
-> Best regards,
-> Krzysztof
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> Reviewed-by: Clark Wang <xiaoning.wang@nxp.com>
+As per the discussion on bindings, we should establish
+1) Is this driver going to support devices that have different channel descriptions
+   If not - rip that support out as it is misleading.
+2) Drop the error return if we don't match IDs.  Assume that it is infact yet another
+   compatible part and use whatever it was said to be compatible with.
+   If they are all compatible, just use the first element for this - things
+   get more complex if there are multiple sets of compatible parts.
+
+either way, we should drop the driver_data in fxls8962af_id[] as it's not used
+anyway and that will avoid the complexity of the dt binding discussion.
+
+> ---
+>  drivers/iio/accel/fxls8962af-core.c | 7 +++++++
+>  drivers/iio/accel/fxls8962af-i2c.c  | 2 ++
+>  drivers/iio/accel/fxls8962af.h      | 1 +
+>  3 files changed, 10 insertions(+)
 > 
+> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+> index 0d672b1469e8..98811e4e16bb 100644
+> --- a/drivers/iio/accel/fxls8962af-core.c
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -126,6 +126,7 @@
+>  
+>  #define FXLS8962AF_DEVICE_ID			0x62
+>  #define FXLS8964AF_DEVICE_ID			0x84
+> +#define FXLS8974CF_DEVICE_ID			0x86
+>  
+>  /* Raw temp channel offset */
+>  #define FXLS8962AF_TEMP_CENTER_VAL		25
+> @@ -764,6 +765,12 @@ static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
+>  		.channels = fxls8962af_channels,
+>  		.num_channels = ARRAY_SIZE(fxls8962af_channels),
+>  	},
+> +	[fxls8974cf] = {
+> +		.chip_id = FXLS8974CF_DEVICE_ID,
+> +		.name = "fxls8974cf",
+> +		.channels = fxls8962af_channels,
+> +		.num_channels = ARRAY_SIZE(fxls8962af_channels),
+> +	},
+>  };
+>  
+>  static const struct iio_info fxls8962af_info = {
+> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
+> index 22640eaebac7..17dd56756ff9 100644
+> --- a/drivers/iio/accel/fxls8962af-i2c.c
+> +++ b/drivers/iio/accel/fxls8962af-i2c.c
+> @@ -30,6 +30,7 @@ static int fxls8962af_probe(struct i2c_client *client)
+>  static const struct i2c_device_id fxls8962af_id[] = {
+>  	{ "fxls8962af", fxls8962af },
+>  	{ "fxls8964af", fxls8964af },
+> +	{ "fxls8974cf", fxls8974cf },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
+> @@ -37,6 +38,7 @@ MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
+>  static const struct of_device_id fxls8962af_of_match[] = {
+>  	{ .compatible = "nxp,fxls8962af" },
+>  	{ .compatible = "nxp,fxls8964af" },
+> +	{ .compatible = "nxp,fxls8974cf" },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
+> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
+> index 9cbe98c3ba9a..45c7e57412e0 100644
+> --- a/drivers/iio/accel/fxls8962af.h
+> +++ b/drivers/iio/accel/fxls8962af.h
+> @@ -11,6 +11,7 @@ struct device;
+>  enum {
+>  	fxls8962af,
+>  	fxls8964af,
+> +	fxls8974cf,
+>  };
+>  
+>  int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
 
