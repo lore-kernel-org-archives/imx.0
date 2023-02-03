@@ -1,288 +1,249 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2053.outbound.protection.outlook.com [40.107.15.53])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E458F8F43
-	for <imx@lists.linux.dev>; Thu,  2 Feb 2023 17:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3346210FF
+	for <imx@lists.linux.dev>; Fri,  3 Feb 2023 05:18:11 +0000 (UTC)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3130O1Oo029043;
+	Fri, 3 Feb 2023 05:17:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2022-7-12;
+ bh=lb0D1hoBtSPaLNfZHIXqn14NBLIS1jj5oCHsXxGnS/I=;
+ b=0zBure27IbjA7kooKKG/H6YThy+Tx3IN7G6S0VWFHk702LchAvf0gd02Obaf2UpxDga1
+ 7950vHFvMyX58+JniUvhCIUMvkWg9HdHaT1eK15JguqbfUQPUck2TsN2B4AOW8iV5PNC
+ Wf1jE51uWdcjR5P7gMCM6aaeZiKbWEWt0CASpC+T0MyaGB2bSGr7Au6KtjP47l8qcI2r
+ GJkr5/aaJZf8JE4cXqA3B+HslFGjdvIq3naOeSFLWE5pBgRzfkDonRPmRaHIzsnuFRMd
+ EXf3tc+fZaHLCGRbUrYtNyhsA7468Uei7L6VFUihFg8qoiUVA8hdrcO2+WsviNXv7P7w bQ== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3nfn9yms6c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 03 Feb 2023 05:17:51 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 3133ajSD004992;
+	Fri, 3 Feb 2023 05:17:51 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3nct5h708u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 03 Feb 2023 05:17:51 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gINmPXnAkG9tZz//QMYXj+F6eQCXa2SkZfc1QNX1QRZHLNZCgs1ngAccV1ZYsS9x5YXs8vKBShcTfbieI5yqVc+m2+jXxRP1ei0ebdlK/ndSlGDm2Kg4io3cjXChJS4JBHwdjZH/dhcfimYGtQeVibq3wbJZt/fhV7JpH5V5oHF9s9hPcwcwECKxTffH4ds2yHAuERc9cYvkmKupOYvrpjaKKxMM/wS8vere45vT+32VClZL7GTifODXL8hvxFQN9OJTBNN3gerK6XVhjKwC6KjDncXzxayQQ+1s40mln1/yyf1jgjIEsS4SY57FctT67yLmSH89PdLaMmACtD0bRw==
+ b=lvUe6cH1vP1vUfRabVdvrqGPOBwlEycHsY1nV/3Ydaa6VWJZWAFo4rqICud6BxjAvhwvejGf4KSdRf7hwar0NJp/mTQ75x6qzJ0GoUhmLMBR2yOX+5M9r7JqHMr1Wlxg6Bgl6APbVfX9J9+uUHFcsyrQ4Ut4LybsAwqFqKUIqPz2v3LZVk/M9K/HvxC6yJwxU0ue5spOLKxR7fTZvJtP8+WAGZtIaZEoEBRwtPMlz+tTtul2+Tozb3J+SNhbFIOnaTTYDooLi9USggAKjrxIJ4A1YXCY4yzlbETlOsbmzHyJZqjCT0TyV5C6mj+fRJZu0wdLwT7vZtmKPHcc7hubAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pivN7g9MCH2SQ3PIvZgyvGakEcBuUDhYyGEBPLSRgNk=;
- b=ExRUJ2ms33WUHWPJ7FUK9rOOkNDoaIb1go9GjJYH8NBoS619xNCbaOhnreAUfokiVdpulpnf6Nli3Wf91Kz/ATW0Nw9D/WggFi9hV807iVUvhfysK22uTmJwxYwY+EbgLCk/2KMJv9rgQdussE7rhj6A4xS8nvngvkVv2wEXWz/eOkqXtqnMZIoQ1d+jiZAAvZ99PvRvCTF+aKGmp7zVl7zNhcJ94XzbRDKY0EZhLtRT4eQ8EQNhXXUjFwfxIfXcySOXxu4/fK1hdCba/cTknpgCI801xEpGMbVcCJ8xwayi9UqQ1kXQTREVvABAF2pLx0MbC8WQe5szkwAhNi4XZA==
+ bh=lb0D1hoBtSPaLNfZHIXqn14NBLIS1jj5oCHsXxGnS/I=;
+ b=B0d/5Sjrdd3aDww7NUkIZgwBxhFOGiDJcxTLNkFgW+CjoGtayr+V88mk/EgY2EleBE74XO8Cx0A49H4xFbOQRxuSjNY4+HMif5wG2dxF7xLJauKySZq/rGRNOn9LccMsPll6YJ8rArRpDXhNefxdbgkXB1/YQ4J7odkOPg/tiWOaEJdwclA70zTptt13jtboGiEhOEJ8CwdNQQyM1x9XFUtw2ChZxwGob8upwLfttOsDXgRBmINAPOkSoWbi69ZrT3t9bsgiIDJpb9zwC80QaSOD9ZusaXUDL7PIed1lCQq8mUx0P1FDltCHhEaMoEP1RRRCGsHlP8hA5vAOWkHFcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pivN7g9MCH2SQ3PIvZgyvGakEcBuUDhYyGEBPLSRgNk=;
- b=be42uc49jRCjRcrP1NQZRE8ks4CcaxqxsRrAQwmxmX/jj2FD7q6Ezj6Rg5zURgUNEqWw7ks+yieVvucUAgVqZlilkpU6/ahdCzfXmCaEEwxxBxkT/k3KU2no1PuThWCOhnJJSmOQhl9NB+pjlPtgbLW+R5NpvwVHSbqjlE1ZhT8=
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by AM7PR04MB7159.eurprd04.prod.outlook.com (2603:10a6:20b:111::12) with
+ bh=lb0D1hoBtSPaLNfZHIXqn14NBLIS1jj5oCHsXxGnS/I=;
+ b=qbLP738V8ole+QhETQZ0ZUcmbylNzEiTUWyMFxE+JNjhglbspP0ZguuJXbS3FDjttjgYfjhtvW16Hdgrb57Cwckd+0yoVUMSRKxvHWPc/ZyuOBPOSzBgHOtrpTFToUZX1Ix/ziTkPhnmp4L4j0AL0Poa2abmFBtQjYxq+dIcWPA=
+Received: from PH0PR10MB4581.namprd10.prod.outlook.com (2603:10b6:510:42::16)
+ by SJ0PR10MB4704.namprd10.prod.outlook.com (2603:10b6:a03:2db::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.30; Thu, 2 Feb
- 2023 17:43:43 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.6043.038; Thu, 2 Feb 2023
- 17:43:43 +0000
-From: Frank Li <frank.li@nxp.com>
-To: "M.H. Lian" <minghuan.lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy
- Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob
- Herring <robh@kernel.org>, =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?=
-	<kw@linux.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER
- FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, "open list:PCI
- DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, "moderated
- list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
-	<linux-arm-kernel@lists.infradead.org>, open list
-	<linux-kernel@vger.kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH 1/1] PCI: layerscape: Add the workaround for A-010305
-Thread-Topic: [PATCH 1/1] PCI: layerscape: Add the workaround for A-010305
-Thread-Index: AQHZJr5WwkFDleZU9E2wO25hi20GTK68DjRg
-Date: Thu, 2 Feb 2023 17:43:42 +0000
-Message-ID:
- <HE1PR0401MB233120D46B7AA9F23AFD51C688D69@HE1PR0401MB2331.eurprd04.prod.outlook.com>
-References: <20230112194433.1514149-1-Frank.Li@nxp.com>
-In-Reply-To: <20230112194433.1514149-1-Frank.Li@nxp.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.8; Fri, 3 Feb
+ 2023 05:17:47 +0000
+Received: from PH0PR10MB4581.namprd10.prod.outlook.com
+ ([fe80::9013:b768:5177:564a]) by PH0PR10MB4581.namprd10.prod.outlook.com
+ ([fe80::9013:b768:5177:564a%5]) with mapi id 15.20.6086.007; Fri, 3 Feb 2023
+ 05:17:46 +0000
+Message-ID: <199a5aff-fee8-71d3-bfcb-c0492667de1b@oracle.com>
+Date: Fri, 3 Feb 2023 10:47:34 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [External] : RE: [EXT] [PATCH v2 1/1] PCI: layerscape: Add EP
+ mode support for ls1028a
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR0401MB2331:EE_|AM7PR04MB7159:EE_
-x-ms-office365-filtering-correlation-id: ef24103c-069e-4606-c6ad-08db054506e9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- DGEflz6wdnebIGDiysOGHguxqCjzUFQji4FK8qCG2E1H9zO6Km7SLHhhB2daX6EqYNFxiaQhDrH7rVzauEBs45FPtubsT2INaYn3Z8B7Gv1XHz4UWTIDa0aYL4G/zd1GaMOp/K4ib/tZ8fLCdeKC7KO1KzSiMBaxPaY2U1mSdlY8+32JTaE1GwV+E01S2YYpNTcJ5Su8tsgKJKACUU7vg8IjqleNLi045t9CyUJaParp6DYSX2KKlhUxUhYKv8n5WgU8+aJ5Vb0r/HLEtUwgQzDw1876wIKQRKHxkIJWgszCo16heAnwWv7JsfclctX36M5BWCBr1s2P+QgYDGEdviEsMPkBLZLi+ev/gjLrH9XS+/AvkHb6yDIMnAT7XFU5uDm66sEpe+4kqOpIDns+zM0NFG70u3h9XocQg0vhrbNMJ3hPSYRqkbThO5H/CTOqaTB/VtxRp4CprX6Ip4hdjfgl11tWZs0YjHk9RmSYLYk0D60KNo3obIHAe6S7ZNaOsLIzCJsDa2OWGcE/J5PGllYCUQ1TjaE6uBG8ZcqDbV8MC1YNNzWw4eAtsAbtS9fsMQ31hS9zBc1+fO5iH3dPCZCm9tTo5Bg+w8g2GXr6iESmiil/0oDzWZYDKcSe0YLxXneEoj3lDgdOtyq67mt9QgBy6dbSH9x01fxbrLtEDPhrsUstxditWr4q5LgnwptzRECPxBBBB7CVuToye0ea/C9n7pEMgaQCfbk/QWK7Kgs=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(396003)(346002)(39860400002)(366004)(376002)(451199018)(66446008)(4326008)(76116006)(41300700001)(66556008)(83380400001)(8936002)(8676002)(64756008)(5660300002)(38070700005)(6506007)(55236004)(26005)(122000001)(66946007)(9686003)(66476007)(33656002)(2906002)(186003)(110136005)(52536014)(38100700002)(478600001)(44832011)(86362001)(921005)(55016003)(7696005)(71200400001)(316002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-2?Q?T0akJbOfptDp8OjDS+d2U4Au7Vpb/xBAPk1et1KsDa/KLmgNlI6hHd1Gqu?=
- =?iso-8859-2?Q?43s1jCCvHJgZ2hZ8MVL/y6ZiGESdHzBVn6TyU25P9umY3x/oov6orj0OQ9?=
- =?iso-8859-2?Q?yHnzJx395DXbjDavChe6o+Zwd58MoTpAUwRkn1vGBepJNZ8ux9fna7DZSE?=
- =?iso-8859-2?Q?KdPY4F/7Cv10CwK7IITRvOMJlET993xV4vFS53a0S0FfamPe8QkdnxzDeU?=
- =?iso-8859-2?Q?hRWuQhB/FwTmAsAskfuMc9XH9tH9H0XJa02XQKYikGPv61B6zZgSwqhU73?=
- =?iso-8859-2?Q?epWcEouwGtXXVGdiJCcXPmoMsQloiXcPSpvnpXjB+vPu/61240z2aO8XlE?=
- =?iso-8859-2?Q?LQoglmNak6Z4X3V/16b295FTIX+Z9QNC3/+nAQK9xejY2N/B+CR0zeeHdB?=
- =?iso-8859-2?Q?og0rG7bFZh2ooOuNJLruZqqLbrMQIlplYF5lDAe7l4vGOBz3KG2D6HxTB/?=
- =?iso-8859-2?Q?A4CoCWQrFjkHaCmiYIMxtICQ43po6CFv+Q7r73zweqBXUnfmgp7xgq8Hsz?=
- =?iso-8859-2?Q?iE0F0PjBvWZTLayKosb1cQB6C5BAwGvA3Pi2SO+eB6LnUXGSLNb20b06nK?=
- =?iso-8859-2?Q?t6suwp2Sr6z3KE30Vm1OmjcKRvfX3kglJ/uU6xPOIwYwEI9T+ykC2X7I04?=
- =?iso-8859-2?Q?tK1hXNzEpvG3ArurIoWTglaG5jHnC+kDRE/xIv4mKa1TNbFhn34QMIqRSd?=
- =?iso-8859-2?Q?93mhEhGKE+DFv1Ol5g1XJzNo4U137IUW4jL3TOdAJfdnI1F0sHIlUQAz63?=
- =?iso-8859-2?Q?Gq6c0qqwX1MGUFqtj1JubAPS6AVXUOLIqnstyOYMcfIWhsvABrhYOAoSBy?=
- =?iso-8859-2?Q?2y9eOuNVIoX8pztjnyojaxBQ5mAkML6anQpSA0QML+Qdx5sKGAeHa45Yal?=
- =?iso-8859-2?Q?S6OGiMeC0Zf5uXuGg11y5NteY/kYU4jRPg7oTP4BZ8nDqpbNUZGe/OrFLC?=
- =?iso-8859-2?Q?K///lYqSnfTtkXtXTifOQmpNuigQpQ6TP+vJfvwN+pWC2texNOVSdJW+Iz?=
- =?iso-8859-2?Q?SWJoJ7nzqiNWOeSb+e02GLcOzVxyFhDDY30KXpiw2gTQsisu8Ofa9WXHSU?=
- =?iso-8859-2?Q?NNAbP4jqdWfn5qTZSuiKjBuEclKwBugUfQpQetS9qepAYKTWf+wzn+Ty7a?=
- =?iso-8859-2?Q?/nOGMtwlJvJW3eIiRBAquiW+NyFL8+t+et2CqAHGlbxksva3C5o/Wypc82?=
- =?iso-8859-2?Q?HjCC6T3Rd9OQTLWEHZvsFX3CVWi7aGdFitJWDjncW3UQsq3EeWC1u9gwDI?=
- =?iso-8859-2?Q?NaCf1FSGnumS06WE2ocKTbCwq9iPTZ0RanJcfPmf2yZ1iKnBx1zUAQybys?=
- =?iso-8859-2?Q?y31gOm9II2EQniOkxcFtuft7GVM/AA0hXsqva5bhL4UTHVllrbGdA0AAs+?=
- =?iso-8859-2?Q?ku24MPPnYlFBNZtmUOsiOOpAVIquaZ2BevnYkY4KK7wUNNbQR0ptl0PWR6?=
- =?iso-8859-2?Q?XDxfhvjD3WwqvSUZQGnIvz38MqmnmWeQJoCCPwXMgbEbhIxHlTmiqrJ3N1?=
- =?iso-8859-2?Q?Iq/k2sKgkhqvDG5XToHLD+UQo2jXF3CZ2cZY6zYvF/KWtczVHtHTeSwBWB?=
- =?iso-8859-2?Q?Fpz0aVAmKeB8cr9xP8Gxyay1108dhZn5eRrIqAb4gMwgCTToVKeUpjsLCq?=
- =?iso-8859-2?Q?+JEIaXYzMuWtg=3D?=
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+To: Frank Li <frank.li@nxp.com>, "M.H. Lian" <minghuan.lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
+ <linuxppc-dev@lists.ozlabs.org>,
+        "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+        "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
+ <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>
+References: <20230112193442.1513372-1-Frank.Li@nxp.com>
+ <HE1PR0401MB2331C19D7474E6EAA4DC29C888D69@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+From: ALOK TIWARI <alok.a.tiwari@oracle.com>
+Organization: Oracle Corporation
+In-Reply-To: <HE1PR0401MB2331C19D7474E6EAA4DC29C888D69@HE1PR0401MB2331.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR01CA0032.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::18) To PH0PR10MB4581.namprd10.prod.outlook.com
+ (2603:10b6:510:42::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4581:EE_|SJ0PR10MB4704:EE_
+X-MS-Office365-Filtering-Correlation-Id: afc8216c-be80-40f9-027c-08db05a5fc5c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	KsH1Oy1hp6dhTOIbgqdTNZw3INfPqoFrXAlTd0nkh/HFsqReO0NVtbTDaWlKy/4piVoAyhQK3D2c4kYeOBx/VqYWU0wdR4yaASWfo077PPSPjDnLatRCSW1IZ9eU4IwNJ7X2rQHPlM1IN8mXttXYx7HUekTAbM6qKYKb0l6q8R7pGNaUMzRAv05gW0ymP0GDhLJzoodvM6sLvR+nWVqoR9NsoY8d43PUOmAXhJIsz9sGuxn6OoHzj0Re6yIozMaWo8V1/UDrVLBHPOxz2/0B1PQCjJOCcg6g5dhAOvgflW9+WdMV4k4LE16OktYZ3LG+1zZUuoBe16mC9Jy2yxIhTZX+OfYSfXBWc1MMPlncRDog0sga9+IZ6iEaR62/Gsxjvov4DVQdPSHut6sVGjyT1zO4OF97jIVDcnUdJWj3fKPbwlps5xOvqBfz72NGSaZkP8hEEWKtwqbUTLw3EWTbhFSqCZXefm9Y5E/FBpWHAV+e/mvZKFLYWXhzxTCQs0sivCP5s/jGyjtdXo+498ynsWeuGJ7vllCYFEZSeh97ZadjRWrqH88Xy95grohvxHD3Vd7EMUxNK4aUbEqu3+TmbPjs7Gdpv+y/oGfbRb9wchhmORIschV0yg0rrh0DuJJZH2GbHnutJe3KvDIqQ3/CCA6sUgu9HQwwLRJX3F0MZWBb2a1s+8G9axq8YDlWpn0ZJ4vONPW6s7Y9rYG7Q7l0L94nXX8uTPgPrfvE83/QNe2SQJz/H5wMHh3XqVW7V91GiJbEXfvcJWjjslz+8o20CQ==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4581.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(366004)(136003)(346002)(376002)(39860400002)(396003)(451199018)(31686004)(316002)(6666004)(110136005)(36756003)(2906002)(921005)(38100700002)(53546011)(45080400002)(6506007)(8676002)(6512007)(66556008)(66476007)(66946007)(26005)(6486002)(2616005)(36916002)(4326008)(186003)(966005)(86362001)(41300700001)(8936002)(31696002)(478600001)(7416002)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?TnlRWmYxOC8wU1BUVnVDam9ZNXFiTVV5cDdkVEZKQmhsYnRHQjNLNUJuTFF3?=
+ =?utf-8?B?UW9CaWRKang0TGJRdzVDdVVjVVhlTmU2U1F2Sms2SU9SakZQenBvT3N1N3A1?=
+ =?utf-8?B?aTEwQkI3RER5YUtBUWFBdW9KWnZXSmJNWlNNd2VwVlQzS2RsVnI2Zm45RzdR?=
+ =?utf-8?B?NkJhWVg4TDZkMVozL2hmV3J6Z0J2ckk0VXlDQzBPUXJqT2RmMW0rcW95UnNG?=
+ =?utf-8?B?ajQraDNGSHhNVEVkZjhYNnY0citIcmREdW1SWURoVkVCVUhFdmQ5ZlpUS05R?=
+ =?utf-8?B?TnlndWpna1lXS2lndWl1cjFYZWlnUjkvU3lVOW9wRmtVMnlndzc0b2JOazd5?=
+ =?utf-8?B?QTJaNnRRMzVqb0lHQ1ZQNERNS3g5MTkxNkpaT2JENC9QWDM5TE93S0tndFhl?=
+ =?utf-8?B?VDVWc1NMUEhmZS8rYyttVlF0dDQxamNZNit0R2lqUlRtaG95TFFPVzBkeDdZ?=
+ =?utf-8?B?bForaXZybkdCVTYvS0htM3psQVNyTlRuMFp5MWRjUTkzWUFHN3krZ3B2Sllr?=
+ =?utf-8?B?T0RpeElnSjE3a0krbG1teWMyRUZleU1haGx6OXRGRHFNVThFYmRsOFRBc243?=
+ =?utf-8?B?bm4vMzd5cnJoZEhSUHpxWkhJb0gvWFlzQWdnajdTZWVvNFY0R3dPL3lCRW5U?=
+ =?utf-8?B?aDZtUWlodFdCb0JTMG4xQVZOMEE4RWpGWml6VFY4Z2FYZ09DMFpLQ0N6MUxJ?=
+ =?utf-8?B?cjhtRnFNcTEyMVdvL29uckdIMjZNWVhOS0NPU3hvYmxSeTZuMVUzWUUxS1Zo?=
+ =?utf-8?B?NzR1LzZvNVJtYVA3RFFIMWV1THdwK3hqb0JFT09IcithNFdIVTRscldUd1lS?=
+ =?utf-8?B?S2F3WVdJczNNNktrWUwveWRwSlloTFptdXFxa3dRTzVsOEZXN09VcnI1UzNB?=
+ =?utf-8?B?QjNVTEE2dVI2THo3VnJFSWhzSysrbktUUnB4VTM0aWdXWDdEWDRTcXIwUTlH?=
+ =?utf-8?B?Rmg3VEpqWDF4S3ZvZWh5MU92cVJlcE5mK3A4cjdPbkJRUlRSbEh1K014UXF4?=
+ =?utf-8?B?bDBhL0tUdnMxTFpPaXRnZW5NeVUyZzdmUWV5NVI2MTFoR1VPM21ndHFCRFVh?=
+ =?utf-8?B?T0lUbmRQUFBxTGkyTnpFUHY4eGF1bGJuaWdhS1YwZit4T0NYL3dZeDArc1pv?=
+ =?utf-8?B?TGw4RVpGc0NPa3V0Qk16STlBeXUzeFJxTUdTRlN4RW90TGxnQ3pGMmRjRWxN?=
+ =?utf-8?B?Wmc5WVppY0lkTlF4alBqQXdtakVNeUZsSlFQSUJNSURodW96Z0p5QjZaSFNQ?=
+ =?utf-8?B?VHpzWHlxTEpIRER3dmZwUDhYd05iVkh3cjF0NUVvS0czaDI3cUwvRFZ0Y0RI?=
+ =?utf-8?B?N2crV2h1bFRpZDU5eXlPaVZNN2RuOW9JVkxxeGtzSzI5KzdONXgzbTBPUzRP?=
+ =?utf-8?B?QlZEc3F4aDVKWDZOL3hFKzVGVWhKSmZ4K2tncHoxZlhBNW93TW1zSG91NytI?=
+ =?utf-8?B?MXk2QmE5MEd1SFZLUHV2dTNzbnd0bG45ZjBnMWtWTHdmQmo5ZC9BVWRUR21J?=
+ =?utf-8?B?dU9SekZlWk91L0tMNGNkTTlVdjFuRHhhajA5N2R1d0RTOUtMZWhQVVlhd3Bq?=
+ =?utf-8?B?MGM5TGQ3QzI0eFVYbjdLZUVNb1AwUTYzTzZ4Y1VYZHdoRklFMk8vb3BqTTFU?=
+ =?utf-8?B?UzdmNFpXL1BMM09YWFJXbyswaFZRczFvWHJsMFpRYjRsMEU3ZzF1UHBhaFNB?=
+ =?utf-8?B?eW9sU0xJNHFrVnpPcWdhVlI2NXRoSmVPRkp0VVREODNqSnVyc2J3T01QK1VD?=
+ =?utf-8?B?S29UbWlTQXVTYldRVzZ0T081SnhqcmZRZG1TOUkwQnVCelMrS1RDNzhRY0pU?=
+ =?utf-8?B?L2p5WE5UN3o0ZE1TajlJZ3c5WWNuMW9rN21wWnhSME9TUyswQmhHUWI3dldy?=
+ =?utf-8?B?Z0tVNWYxNnYvTlg3OURPOGVaa3ZKck9lY2tJV1NDT1YrMGxFc0NTYTUxa3VV?=
+ =?utf-8?B?azNrWGVLYXAxVy9MNlpLQzdzU2RuWXpIbWxUYVp6ZWx0Z21QTXBGTTFSYk5U?=
+ =?utf-8?B?MUJTNVJ3QTR6OG52RkJiODRMZ1pYVmRaZDc3S2xUTHA2UDUwQ0tNQ2JzZ0Nv?=
+ =?utf-8?B?cWp2UFFFOFZLaVFRS1p5SDBFSWVuSUR2UTJaRnJpUGtRckZpeGZXOTdza3Nv?=
+ =?utf-8?B?bWF1bFVZWmdYZ3FKcUZ4WnNET2VsOFN0dzk4NUk0aHp6ak1mbVMxN2plR1BJ?=
+ =?utf-8?B?Z3c9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	=?utf-8?B?ZzR6M0dva0NZMWg1SzlQM0dGYWhzdGRRWHBXR0Y1YUtmcDdaVmNnbGFySXdm?=
+ =?utf-8?B?VGpnRHpHcUdZZWhBMkIzWEUwUkRDR0ZTSTRyczFjTU5yS3QvTTBWTXZkQnVz?=
+ =?utf-8?B?QlkvbmJieDJ0VUNmaGVNRmlwUGFvRzVvY296RnphYW1FTTAvVUkxb0hOdUlK?=
+ =?utf-8?B?c1M5UmlyUHhUNFF2QTdqMjAyd3hlOTVsQkJ0S2NRNzZ6bDlWaFlpaGxIemRy?=
+ =?utf-8?B?aXdOenhKSm1aZkdSclNqenB2R2dZYVRTaTc1aEgxcXkxY0hZTHZlU3cxUkdG?=
+ =?utf-8?B?UmoxdGFUc2NwOUk5RkpneEwxRy9BN3dPbzRYbHZpdk5VZmhPOVZBeFhibEgz?=
+ =?utf-8?B?ZUIycjB4S3hVbFN0bWlrTmNlMzVwQVZPb0FNbnc3UkY3dmx0Y3JjcTB1dlFu?=
+ =?utf-8?B?MEYweUdMWFNpOFpySHN6SGMyM1hwSFRoTlpLd2M3ZVByM2hIR0JncDZ1L1hk?=
+ =?utf-8?B?NnRVZi8xcGZ1MHlkbkhNRmpiQkwyYkFPeEF4YWthblJyTHlsamhGOWgzeXNu?=
+ =?utf-8?B?TUdoM2JNL1BnOFI4Z3kxU2NHQ1VhOWMrc1dGTlJiSm91SU9vcW92YU9VZE9V?=
+ =?utf-8?B?NkREVmgzYStISFY1VThhYUJ1R0tQWEhYTHpsUWtPZ0JNUURHdHNVVStpVjdt?=
+ =?utf-8?B?NC9vZHFNd1JGOW1BVHV6Ylp4VVRBUzRPYStDRDFqd3RRS1RxeDlSdHB1Q1Ju?=
+ =?utf-8?B?WGd3S0VUdDcxYTRPekMwc1FqbXFjRXZvNk5rM2JZSTlEZ1pIZXdJa21tTU5u?=
+ =?utf-8?B?Z1pyVmNDV2RwRC83blZiL3E3SkoxZ2kwbDd4Ukh6SVFXRXZFTS96Q3crbmtk?=
+ =?utf-8?B?MU1kbWFlalJPWFRTdGY2cVpHTnZ1dGFoMHF3Q21hTVpFdHhxTk1qZGhBbDg1?=
+ =?utf-8?B?RTN1L1VlSzVNeG5aWFQ3WWxIdnEvMTZmVFpiTDNyOXFiTHVaTktPYThBZWdX?=
+ =?utf-8?B?UVBRZWRnSU5vZllCNUl1RkY5SkVjcENvVGd4U29yeEJJWHptNGdlYThoUEdK?=
+ =?utf-8?B?R0tIa0RoakRnZVBrdXJ1MVVnWXNlU0N4dE1QdjFGM1ZaY2x3NzV0WmN4dHZt?=
+ =?utf-8?B?SjZpdkU4azFFUjVXM05hM0J1bHhyZHdaNHJ6dkhDelRuSzdsaXhqM1NkQXJJ?=
+ =?utf-8?B?OUk2WnJEZzRxT0RscmVIejdjQzN1UllERy9pS0pLcWdtR3BMN2hiYlZvd3Y5?=
+ =?utf-8?B?YVoxOGR4Q0pEWjZ5WmtrTjFQa3pJMlNCY1FrQTROOWVNWHhEQUF5QmJGTUZ6?=
+ =?utf-8?B?TnZWTnFYV3hzN2tZZW9vQlhha1M1Z3V0QjlRcU9NaVlaWHRCRzRVTjl6eGdt?=
+ =?utf-8?Q?mlBtTHRRBqgmA/k4hiJvLhmsZz7411GWZw?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: afc8216c-be80-40f9-027c-08db05a5fc5c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4581.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef24103c-069e-4606-c6ad-08db054506e9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2023 17:43:42.9454
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2023 05:17:46.8594
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SydCLz5SjhwQjK0n6QhQegRXeA4KLDW60W4k/Z3JBVn3FKmxSbbqnU3bbDZz4eVVi3SQHiN2ykmrFlpVSNHhGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7159
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EYazspEt8PGoQGN4OGHE+YPzEPlDFf+CKUciQBYzFqgzNl5txY4nTh20ctUyZq1oYrdnZVThTaQCfAVA9hWMnARIH7tGQyvtpn1VbVgOelc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4704
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-03_02,2023-02-02_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302030047
+X-Proofpoint-ORIG-GUID: a7gw57zwRRHEYtfEdbxTYiUdjRk7HTqm
+X-Proofpoint-GUID: a7gw57zwRRHEYtfEdbxTYiUdjRk7HTqm
 
-> Subject: [PATCH 1/1] PCI: layerscape: Add the workaround for A-010305
->=20
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
->=20
-> When a link down or hot reset event occurs, the PCI Express EP
-> controller's Link Capabilities Register should retain the values of
-> the Maximum Link Width and Supported Link Speed configured by RCW.
->=20
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+         { .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
++       { .compatible = "fsl,ls1028a-pcie-ep", .data = &ls1_ep_drvdata },
+	{ .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
 
-Ping
+can it be like this for better readability. ?
 
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 112 +++++++++++++++++-
->  1 file changed, 111 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index ed5cfc9408d9..1b884854c18e 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -18,6 +18,22 @@
->=20
->  #include "pcie-designware.h"
->=20
-> +#define PCIE_LINK_CAP			0x7C	/* PCIe Link
-> Capabilities*/
-> +#define MAX_LINK_SP_MASK		0x0F
-> +#define MAX_LINK_W_MASK			0x3F
-> +#define MAX_LINK_W_SHIFT		4
-> +
-> +/* PEX PFa PCIE pme and message interrupt registers*/
-> +#define PEX_PF0_PME_MES_DR             0xC0020
-> +#define PEX_PF0_PME_MES_DR_LUD         (1 << 7)
-> +#define PEX_PF0_PME_MES_DR_LDD         (1 << 9)
-> +#define PEX_PF0_PME_MES_DR_HRD         (1 << 10)
-> +
-> +#define PEX_PF0_PME_MES_IER            0xC0028
-> +#define PEX_PF0_PME_MES_IER_LUDIE      (1 << 7)
-> +#define PEX_PF0_PME_MES_IER_LDDIE      (1 << 9)
-> +#define PEX_PF0_PME_MES_IER_HRDIE      (1 << 10)
-> +
->  #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
->=20
->  struct ls_pcie_ep_drvdata {
-> @@ -30,8 +46,90 @@ struct ls_pcie_ep {
->  	struct dw_pcie			*pci;
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
-> +	u8				max_speed;
-> +	u8				max_width;
-> +	bool				big_endian;
-> +	int				irq;
->  };
->=20
-> +static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
-> +{
-> +	struct dw_pcie *pci =3D pcie->pci;
-> +
-> +	if (pcie->big_endian)
-> +		return ioread32be(pci->dbi_base + offset);
-> +	else
-> +		return ioread32(pci->dbi_base + offset);
-> +}
-> +
-> +static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset,
-> +			  u32 value)
-> +{
-> +	struct dw_pcie *pci =3D pcie->pci;
-> +
-> +	if (pcie->big_endian)
-> +		iowrite32be(value, pci->dbi_base + offset);
-> +	else
-> +		iowrite32(value, pci->dbi_base + offset);
-> +}
-> +
-> +static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> +{
-> +	struct ls_pcie_ep *pcie =3D (struct ls_pcie_ep *)dev_id;
-> +	struct dw_pcie *pci =3D pcie->pci;
-> +	u32 val;
-> +
-> +	val =3D ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-> +	if (!val)
-> +		return IRQ_NONE;
-> +
-> +	if (val & PEX_PF0_PME_MES_DR_LUD)
-> +		dev_info(pci->dev, "Detect the link up state !\n");
-> +	else if (val & PEX_PF0_PME_MES_DR_LDD)
-> +		dev_info(pci->dev, "Detect the link down state !\n");
-> +	else if (val & PEX_PF0_PME_MES_DR_HRD)
-> +		dev_info(pci->dev, "Detect the hot reset state !\n");
-> +
-> +	dw_pcie_dbi_ro_wr_en(pci);
-> +	dw_pcie_writew_dbi(pci, PCIE_LINK_CAP,
-> +			   (pcie->max_width << MAX_LINK_W_SHIFT) |
-> +			   pcie->max_speed);
-> +	dw_pcie_dbi_ro_wr_dis(pci);
-> +
-> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
-> +				     struct platform_device *pdev)
-> +{
-> +	u32 val;
-> +	int ret;
-> +
-> +	pcie->irq =3D platform_get_irq_byname(pdev, "pme");
-> +	if (pcie->irq < 0) {
-> +		dev_err(&pdev->dev, "Can't get 'pme' irq.\n");
-> +		return pcie->irq;
-> +	}
-> +
-> +	ret =3D devm_request_irq(&pdev->dev, pcie->irq,
-> +			       ls_pcie_ep_event_handler, IRQF_SHARED,
-> +			       pdev->name, pcie);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Can't register PCIe IRQ.\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Enable interrupts */
-> +	val =3D ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
-> +	val |=3D  PEX_PF0_PME_MES_IER_LDDIE |
-> PEX_PF0_PME_MES_IER_HRDIE |
-> +		PEX_PF0_PME_MES_IER_LUDIE;
-> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
-> +
-> +	return 0;
-> +}
-> +
->  static const struct pci_epc_features*
->  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
->  {
-> @@ -125,6 +223,7 @@ static int __init ls_pcie_ep_probe(struct
-> platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	int ret;
->=20
->  	pcie =3D devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
->  	if (!pcie)
-> @@ -155,9 +254,20 @@ static int __init ls_pcie_ep_probe(struct
-> platform_device *pdev)
->=20
->  	pci->ep.ops =3D &ls_pcie_ep_ops;
->=20
-> +	pcie->big_endian =3D of_property_read_bool(dev->of_node, "big-
-> endian");
-> +
-> +	pcie->max_speed =3D dw_pcie_readw_dbi(pci, PCIE_LINK_CAP) &
-> +			  MAX_LINK_SP_MASK;
-> +	pcie->max_width =3D (dw_pcie_readw_dbi(pci, PCIE_LINK_CAP) >>
-> +			  MAX_LINK_W_SHIFT) & MAX_LINK_W_MASK;
-> +
->  	platform_set_drvdata(pdev, pcie);
->=20
-> -	return dw_pcie_ep_init(&pci->ep);
-> +	ret =3D dw_pcie_ep_init(&pci->ep);
-> +	if (ret)
-> +		return  ret;
-> +
-> +	return  ls_pcie_ep_interrupt_init(pcie, pdev);
->  }
->=20
->  static struct platform_driver ls_pcie_ep_driver =3D {
-> --
-> 2.34.1
+Thanks,
+Alok
 
+On 2/2/2023 11:11 PM, Frank Li wrote:
+>> Subject: [EXT] [PATCH v2 1/1] PCI: layerscape: Add EP mode support for
+>> ls1028a
+>>
+>> Caution: EXT Email
+>>
+>> From: Xiaowei Bao <xiaowei.bao@nxp.com>
+>>
+>> Add PCIe EP mode support for ls1028a.
+>>
+>> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+>> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+>> Signed-off-by: Frank Li <Frank.Li@nxp>
+>> Acked-by:  Roy Zang <Roy.Zang@nxp.com>
+>>
+> [Frank Li] ping
+>
+>> ---
+>>
+>> Added
+>> Signed-off-by: Frank Li <Frank.Li@nxp>
+>> Acked-by:  Roy Zang <Roy.Zang@nxp.com>
+>>
+>>
+>> All other patches were already accepte by maintainer in
+>> https://urldefense.com/v3/__https://eur01.safelinks.protection.outlook.com/?url=https*3A*2F*2Flore.k__;JSUl!!ACWV5N9M2RV99hQ!PIKq0-lb3ccjBcAZNFo48kfWvbGPlh7_Wiws1olaNdTthUzhcGFrpLbw3vOMDaeops5LkajDO_y_vGPyuhE$
+>> ernel.org%2Flkml%2F20211112223457.10599-1-
+>> leoyang.li%40nxp.com%2F&data=05%7C01%7Cfrank.li%40nxp.com%7C29d1
+>> 5c05d59346e552be08daf4d573e5%7C686ea1d3bc2b4c6fa92cd99c5c301635%
+>> 7C0%7C0%7C638091494850726163%7CUnknown%7CTWFpbGZsb3d8eyJWIjo
+>> iMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C30
+>> 00%7C%7C%7C&sdata=0wnHTyuX%2FyLAiioKNvlFbBM83nVyF%2FCdhqsEmV
+>> f2sI4%3D&reserved=0
+>>
+>> But missed this one.
+>>
+>> Re-post.
+>>
+>>   drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>> b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>> index ad99707b3b99..ed5cfc9408d9 100644
+>> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>> @@ -112,6 +112,7 @@ static const struct ls_pcie_ep_drvdata
+>> lx2_ep_drvdata = {
+>>   static const struct of_device_id ls_pcie_ep_of_match[] = {
+>>          { .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
+>>          { .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
+>> +       { .compatible = "fsl,ls1028a-pcie-ep", .data = &ls1_ep_drvdata },
+>>          { .compatible = "fsl,ls2088a-pcie-ep", .data = &ls2_ep_drvdata },
+>>          { .compatible = "fsl,lx2160ar2-pcie-ep", .data = &lx2_ep_drvdata },
+>>          { },
+>> --
+>> 2.34.1
