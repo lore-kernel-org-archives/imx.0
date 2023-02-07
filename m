@@ -1,50 +1,59 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2057.outbound.protection.outlook.com [40.107.6.57])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2085.outbound.protection.outlook.com [40.107.14.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9656566B
-	for <imx@lists.linux.dev>; Tue,  7 Feb 2023 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9C8747F
+	for <imx@lists.linux.dev>; Tue,  7 Feb 2023 19:45:54 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dqvFLjNu+I4Lc33kanz2IqAgnSdEi/DyF6kMT14HNX1CVqGNm1buGQZrgiHu2naQMySpZ/YBQnSrPI0R/Z2nIx9nKWo6n2v4Qjqs8je9z7bqJBiTcJ5NLQhSHnhTpW376uzsDjZf+M9PchAFAe5i4Y/4X/wS8wLHK/Qup6a0Q2qGBsnkeIfkpmb5nsHPcSa9cMz6xtgruRs6i1bCwMZj2UKNLTq0uch19MTldSIrV/0qOK5WmxepuYCR9miHJB6/kzK+runOlvfRbm4G+f+l3xW/kUwvxMLGEnTCuf0AAu9RhUIOB6fJU6mZ21bshK8TpJPep2gmCbu62R8Z+n8M3w==
+ b=OAdJyuvAERh6F+gPSk4wbgi5ksCcVkBc2OmDehDI3sKVX1u1OODAB+7ValQLGceGo0VhJn0MTBOhIFDs215pXJ48kPiyD/XPNj1eaSHUlqqhDk9GO1jbnpcD4zpIHJpPSqYXEVJdn2vW93H/niGXLJAIEmO3WO1jZVwdD+Cmgw9KWU/2a+2e4obAirVq2idlU1KKeM3K/+XRBGjgjAkZFXZJMlyGNJZCjuVC+ZvczlZP5GEzPzKS61wy0+5VAxM4J7Zo383OqRqWw65Ql6nSfIbt0OWwnDAFMGWU9td1zkCsPXNrCBQQ6SXAUvqAqc3MYvakQFlRsTYHSKzkFDy9Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S9GZXle15rALtqmFeGl7uT7f2kUOGLulSuaNwcBmsBI=;
- b=hYb6NzW3p5GVSuAkMRziZ4Cx6rPc2zSqJm7W4CVywnf5kht4nbxBvVSWVPaIDK2BC6yT4On7GfxNogcC194xGqH5TlfA9wlHh4LDzkfbALPHbeNuL0fRoFmfFNd8A3Q48bsqLBgSjklus6aRSiLoBA7KhGsU5huxxc68amPL8lrmV0rUC5xqLM+QuHO8nPO9u89FqKJnFH8vdk1jkFmVgJ5Rgx65ctSRpn/SJJfnLeClXjodOwuhvb60KJ3DggV+7R5ZAHaN07EYAIZIVhtq5M3jdWsvyLd6VIcuYSomnOw/fDe4tdRdWW0FlKqPr0IGqOaBRzljzDl3hf+8K0VkIQ==
+ bh=qOA1C9qzBWIVM+eKFmW23eB/BzDI1Hn9aQVl2ZGRKuI=;
+ b=kr2J/YoVOVjfAZousRH6fprV8BkCNdydMZMeHodPuisnT08NPzBGQ79SCgosU08LHVQDh+VVP5Ys9PPC3OdJYsJjvbBRSRD3hLq5SE/5/jDKufvwh+qq6EjNwfWGsCM+2s/1rNDPU1nCmh47hkFxFOCkwXfxeOt8N0dOWdef+Nd4oyArUqSG9YHnmWY74ARsWwC5oNdzArT5Lcyj8itKEBCeeHzMD5h447+xBLPizEEVdXam97zvT7YMzCwoofkhFLZYenkmbB2C9hHqnUIajOhk7P04bf7siyaI0XD0kLaAobMKgOGPCmqB/zOACOmsFuVJ7e/V4DyTY/AY4DjQ7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S9GZXle15rALtqmFeGl7uT7f2kUOGLulSuaNwcBmsBI=;
- b=BKeMHWckoo3oRZZIn7uQzt7ek/j79bn0ZTphYTzOP2ccQqlrYXGcocpWn2x35AinWP1raQXDmXrJZOkbDZ+XN1iv/addYy+avDkPQ4quqZsJSWXtGyje5PS9l8k6nDiU6fnSX/lwGDGlr1W8b86h9+v17e+t3vIoDdmYzbP9Ueo=
+ bh=qOA1C9qzBWIVM+eKFmW23eB/BzDI1Hn9aQVl2ZGRKuI=;
+ b=bNVg1PCIJk6/Vyhm5S1EpmaGHjkvRwT/VRBsm9HQhEiX1PpDxky4K29ySfoBgjn2Pza3OT0AxNQRAx7/jfEh84Ql7VITlHvdAJEkX2VnTH1bXnM/9bXq4j+QSoeAjHC3u/9PEDQx5R7fIFNV4dV1fJd9J0TpQOKbN9P3awbAZvQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DBBPR04MB7626.eurprd04.prod.outlook.com (2603:10a6:10:201::23) with
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
+ by VI1PR04MB6925.eurprd04.prod.outlook.com (2603:10a6:803:135::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.34; Tue, 7 Feb
- 2023 16:25:20 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::31d:b51c:db92:cb15]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::31d:b51c:db92:cb15%7]) with mapi id 15.20.6043.032; Tue, 7 Feb 2023
- 16:25:20 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Sherry Sun <sherry.sun@nxp.com>
-Subject: [PATCH 1/1] serial: fsl_lpuart: fix RS485 RTS polariy inverse issue
-Date: Tue,  7 Feb 2023 10:24:20 -0600
-Message-Id: <20230207162420.3647904-1-shenwei.wang@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.36; Tue, 7 Feb
+ 2023 19:45:51 +0000
+Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
+ ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.6064.034; Tue, 7 Feb 2023
+ 19:45:50 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: mie@igel.co.jp,
+	imx@lists.linux.dev
+Cc: Frank.Li@nxp.com,
+	bhelgaas@google.com,
+	jasowang@redhat.com,
+	jdmason@kudzu.us,
+	kishon@kernel.org,
+	kw@linux.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	mani@kernel.org,
+	mst@redhat.com,
+	renzhijie2@huawei.com,
+	taki@igel.co.jp,
+	virtualization@lists.linux-foundation.org
+Subject: PCIe RC\EP virtio rdma solution discussion.
+Date: Tue,  7 Feb 2023 14:45:27 -0500
+Message-Id: <20230207194527.4071169-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0066.namprd11.prod.outlook.com
- (2603:10b6:a03:80::43) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+X-ClientProxiedBy: SJ0PR03CA0022.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::27) To HE1PR0401MB2331.eurprd04.prod.outlook.com
+ (2603:10a6:3:24::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,86 +61,148 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DBBPR04MB7626:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11206a24-468a-4e85-b0fb-08db0927e6fd
+X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|VI1PR04MB6925:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3875e180-6c14-4e55-5362-08db0943ea88
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	MK4D0xacsQLTCBpG4opcmuysA1KPrToamWrRoYWsN5DX5x6/toXqMxDND/HamAjX4tTN942oYEN22h3qJcttjqUdhfFEfV0Wo7HodqvFbZinUTrzjDYidUKfdCnnEvgMriYxoF9x5GcM/xbE7pVd2fDjK2yP0RXkS+ivH+OKxYl4Cb4IyBuasxYF8yKZWVgF0ZptHsTh8nRVnh3RcsPaVYp5WenSwBVtYPnTBzlsHCGx5rMZmnDCPeatOpbbV6u3fBByHnxz5w+N5fpvdZ/UMfiiSSlPIVFkZf78yYE1L2p0dVeyUx5JueUR14fUQQbk/Va8cp+FL6joBHLppoK7U+uMCFF2NPcc8AvkUpsVfRknKOvOPqGpYjZ/a3sBwufABr8pbKNR4bL2U3gbWu5LkpZJOvc/s+mCVlgb1mG/aoJMl2/KuuCF6o1+1xNtZy+FdTune+Tbs18cezs2ej0uithDbEfNvUXK32BWipI6extztWP5ugM4cW+wtaFc7j6sVwZHGsWQuxANJyWivVidlgD7Uld/1LY+MC5VDaoShIcoeuKuKSdYVtBIJ0kAUS932XFrnRZh9+8sTDFWCT9HzsuC/zeDCWDVrXBis9fC4J5U7MzNT4x84rE0uecRTux3MFw8EowuTqX9/J6pFdsYkWioTGtEoOpmMOtFODvqYyZxxnr0/ZWA5q2vU8o+3a7outpX1W1IC+p1rRlRVzDtHg==
+	xeevlhRFxpIwmE1A6Vqc6v3LbNoG3MPL2Sxkusn0O+aIFJ6UQC8tk8XGVeS3LA3dT8ahmoPigWvmf6x5gzTvrGSDDDlz/ov3HtMdQFZPC7TViWqyOSXfLP+nXxUptygE/L+PEG4+PFwcUmWtMsYM1tfRKLjQRX4xparEvwS9/w83SI/wmrzmcGZ7SrMyLR7cJO3KvCK7WWV8YEODUd+XMEXGy85Al0EzSSCvYAuZWPuOc4QLDBmvdiM2uNp5xW2mnaC6l4PW0IQhvrt2IhIu1nTQaSg5sdUfKO0ADBIXRybj+mDyY9W9xcE63e3VkgIJd0NOQoN7Ev4l1y1A06Ra7FIAN40bWojH0hprGkATUCC6NI2lp8PsbwCcz03PVGpFlr+O+yy1KW0bVzU+pTtFMxAbwHH6oPMffffXfkgfcx3M9zCZ4/dsd5Cw9bTIy5LZaBCsr3gNZM31v7Dr00K4fWsOf6hmfdUt3+KK+6B9E2wB9QNMAEAZvbnVTJ6wjzgufM+Zo0m/SjzVQfE0HTgHqBlb4IOoIDmQRBJEnHALQVzQCg8uVPjZtUd5UirEVt6Mdwfiz7V5C0R3+MKv3Aw/qlz39gHmkqQ6EVDOwyxwBhp1nMve2AJjMcm+aKZ50FCIMJOuUQCu2Yo3+ofRA9Wz2QBk5uBfoBGR2bNspYBT/iE9d5fjm0ulDjppLl2gWDj5wUDne6h3/LlFBlunv1L97JzZ2zOmooZi/VDFj5Bm6hROTRGkbHWdWJd1/Z1pwJ97HL0wtmZsBw2hAtmBcz9+oA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(346002)(396003)(39860400002)(366004)(376002)(451199018)(6916009)(66476007)(2616005)(1076003)(478600001)(6486002)(6506007)(55236004)(52116002)(8676002)(26005)(36756003)(6512007)(4326008)(66556008)(66946007)(316002)(186003)(54906003)(38350700002)(86362001)(38100700002)(83380400001)(44832011)(5660300002)(8936002)(41300700001)(2906002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(136003)(396003)(39860400002)(376002)(366004)(451199018)(478600001)(83380400001)(966005)(6666004)(6486002)(52116002)(6512007)(2616005)(26005)(1076003)(186003)(6506007)(36756003)(86362001)(66556008)(38350700002)(8936002)(66946007)(5660300002)(66476007)(41300700001)(38100700002)(2906002)(7416002)(316002)(8676002)(4326008);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vkmCbEM3egp/QGrmO4SdfyFSrf4yyIm5nTnT4W+lPaEHxtftzU0+d6ghrpit?=
- =?us-ascii?Q?ip7ODh9bQ8EjnEax1eegVpjpi0yZ22uEBu1PYICpbLk6fEHgttWazFSDL1ou?=
- =?us-ascii?Q?0j+7R/agIh6VfoN+05idQofT1QrtMfqYUh15hSYS9v7WOavacBSMFc4lG/NS?=
- =?us-ascii?Q?suO08qO/xamuzwDK7XTqfxZQgwpSZzKfk5skF694dV+LNP7tlU9Gsz78xBqw?=
- =?us-ascii?Q?i9iAJRgQIcrLZaqnulqf1rUVvYtybQ38sYRlyIkgXNC/06to2smTIlc5mdA3?=
- =?us-ascii?Q?p7hEL6ER2AgYBCaob7WZZdNmROfo3o4febjbE4imGqJXUYA52mc2FMImA/s+?=
- =?us-ascii?Q?L8fortBfJjikvwcQhsPJ5AqDRrCnfTO5UuVt6kXhYHA7CR8qmsVMFqkwfBJc?=
- =?us-ascii?Q?thM/UvSTx8MBNjAfk35fg+aCJlZ0ngUsabfh5xlG8B8RX1cY40NjnmqJrUKx?=
- =?us-ascii?Q?ZbK4rZxHJCDHgT5HCN5a8gr3aUSKphJUpJNyjZlUdKTYULx19rWLkHHYSXMS?=
- =?us-ascii?Q?Cz0T1DVE2tOmqOdSQuNYffwb37qhgoh9G7HgyLFrFMufENKNwL7evK8SDitK?=
- =?us-ascii?Q?JhSkxIOyn1jRWwdQpM6DzmZiKt7H5UgSEs8h9qKrKfrh56+AEb/UB1bKbC8X?=
- =?us-ascii?Q?PyNte3euoXKZVZu1UreNqFsIb3wGTI3F3KPfypKX4SskNnosVgDLo3jKhUKR?=
- =?us-ascii?Q?Qd4DUTdwp8QzsN8YO6ScsEI485lT7W0OoeXqJkT+CVRzlUqVwqFb8il/wlEQ?=
- =?us-ascii?Q?Jsh5aJ5VpF1XxW9WE/4FlEljhFoOme3Tzhdt8T7M1v6DVlHy610YqqQ3BObl?=
- =?us-ascii?Q?FzsfjmSixJC/pNCY3j1WqvhYjSjA0jyDS1/aImtdHbtCwW+2Y/dq0Atz5dsU?=
- =?us-ascii?Q?pglpL5tgabVbcUccvmfHenzM/OyU4l1lun7F5a0uZf1WzkKAzoQYeqMuRSow?=
- =?us-ascii?Q?E6KP78YHKTKwmlSLMUbt+ibnJX0aBmdaxvtx+ieM1tamRe45qzm86L0t8z8p?=
- =?us-ascii?Q?lt9j9h9+7mjguIrClS9+wjKCelr2S8MSLAKJIz0Rclq+O5Yog9hMnL/OzP57?=
- =?us-ascii?Q?ZlFL++1y8kmnBFqMlCOr5WAB6BYAJfeJG7HRJD+LVpdJOs3CGsnmHkAbnl0b?=
- =?us-ascii?Q?pDGCXJYksGd/kRIB57TDkLKX2FcW8OOJcLpbQztTeMa9gIB0N1DnDYppd0C4?=
- =?us-ascii?Q?eAMeCFDWWEKdXqVTQw6X54jjDWbmqHGwhRjZ1p3esDFy7cm1oc5NiltnJvl4?=
- =?us-ascii?Q?9rtaeDNyXVb8kHKnOia6BBUfS1SlLZPVcin+HvmWgql0hWWn3l7mcUPqo2W/?=
- =?us-ascii?Q?xGQBXXqhANU7vCx/NcSRp4ZBLwZ4aEhN201zFEgJI9MWJgl6dKsJEk4+TTvo?=
- =?us-ascii?Q?5F8L1//rRsfnHKo0qF8BVOXRb17/c8WD+VRxvEVwJkMkna6oIJ5oxaf4XEjO?=
- =?us-ascii?Q?zkiM7EENnKmHopttoiPy6L4BOUw+aWYbf4MpuPEQJ41pC4ssVH9SWGl/xwyh?=
- =?us-ascii?Q?8obeqBqRxhyqFIarRaL1P+NwSW3bUECjl1rOL4vF5whZ0ZXgtgRKUWncjL3R?=
- =?us-ascii?Q?f98hOAoGXT/CsUGBixpbEejliakNrgz9fK3PLBkp?=
+	=?utf-8?B?SmFxalZFSjYwenJNK0ZDQUhBWlBvb2tReGxnMHkzbkVibmo5emI0bWJTS05a?=
+ =?utf-8?B?N0xmc2twMEpBOHRBOWI4UVlON0Fua2NQVTZ6dHNNRnVOTUJVRGtSVXdGejJv?=
+ =?utf-8?B?OUFhRUtWOGhJZnJYMTlOSzdYVFdMTFF0RGtyU1dnbXFmMTMvdTMwbmY2dVpL?=
+ =?utf-8?B?YlM5dVNZMkFRS3NYT1RTNlZ5WlJBVE9RVSsrQ2k1YUJqSkRrZ2lNMlNxaWR3?=
+ =?utf-8?B?MTd0UnhLZzQxb0hvUHFaVW9XQXpjZHhnUEhuM2hTT2JJTDEwY2JZMmR1dW5u?=
+ =?utf-8?B?MTJKUm5QSXo1Kzlyb0RuS0x3dlh5OEdQREdPYVFqQUtWL25lYzQ2cjdxMXMw?=
+ =?utf-8?B?WWhGWEZud3dRSkFXeFE3VDNYY1VjOGRZV1I5a2w2dTFzNjlnZk40eUZNRWtm?=
+ =?utf-8?B?SW5CM1BkRGxuMUplSzZHYVllcE1icHROWmFoMWdleW5SSjJWbjYxZHJRUGl6?=
+ =?utf-8?B?SmlQb1FobXIrcnh2LzlsUmhqNDRBeGp6SHhsWWljYU9TS29nL0hxRGpydzcy?=
+ =?utf-8?B?OTJXclcwZ3V6MHlIRTAvQU5LSFdWUHNHdUtudHVuSXp2cE1GVWE4TFpiTFJT?=
+ =?utf-8?B?eTJPeExpTVNoVmN4UmsyelhUaElkQkJzUkFwaUp3S0ZuZjcwUUc0bGE2S3Fl?=
+ =?utf-8?B?bElmRE9zVE9XMmF4RXgxcGEvR0RTMXkrd2JpbTNqb1lxc3hnQXVMZkthVytk?=
+ =?utf-8?B?U1FOa0Q5OWQ2S1ZYdyszdEFXNDhnV2UzanNxN2RXOE1mdEtFWnlHNnVkbW56?=
+ =?utf-8?B?NkNEUTdDUkZDeWVRRDFHSjg0Z2pxSjZBWGNUc21vQkYxdnpHeGRhbC92Q1Bl?=
+ =?utf-8?B?a2xwWnlkNjJMcHM2a3ZVOUxPS0lUcTBTVjltZVBlNVB6UHVkOWwxWS8wRFQz?=
+ =?utf-8?B?cytNK2FiNWFVWWhSRDY3MlRiMytTR3AyZVFSYjF1eTQxQWFwU1RMS25MeVh3?=
+ =?utf-8?B?Mk8vYko4eThNSmlpamdlNVhCT0FmdHBpRWwwcEdhRkdma1gwa1FKbGJBdGFh?=
+ =?utf-8?B?RTMvcCt3N1VWSVZhSzY4emkwYi9yYkx5ZWtyY0YyVzNCMTMwUncxbnZyT3Zv?=
+ =?utf-8?B?Sk1vN3ZPNEN6YmtmS1d3UlU2YmpKY3N2ZHhXaUEyZnZSdnBTMHJqOEpHMHNy?=
+ =?utf-8?B?RUFMUW5EOXZ6aEl6Y0RGeGEyanZIVHdRaFJoRFgvSEF5MTg4VWJYdTNtYWls?=
+ =?utf-8?B?Skx4bnNvcHJJNURjcnZhZ3FDMEZYdmQ5YkhGdmt3V241VTFrK0pEbFdqWnB5?=
+ =?utf-8?B?L3hqV1JuTFkxWWE1aVRtRTV5Y01LNytmSWxyTkhXRE40dUw0RzQrK3cySWU2?=
+ =?utf-8?B?bDZ4VGJxU2dqYkxRdytOYlV1OXdGTnR6MDVSWHBQa01RVjUvTVpQOGFUWGxp?=
+ =?utf-8?B?ZU1QZnFHMGhJK2tnMUF0bUYzWVpCaldRVzNSM0J2ZTh2SlZJektBelZ3VzFW?=
+ =?utf-8?B?MVNwMUl0c2trb1djMXAzMmVpMlZCTEhLbVh3ekl3WmYxT3lpR1MzMjUxTHJl?=
+ =?utf-8?B?U0NEM3JyNnQzRnpsSFd6U2JzUTBCbXlUMWRvK2dVSVV5aVJ6SHFyR0YrT3ZQ?=
+ =?utf-8?B?S2ZjbURZalJNak16WW9VYXBnWXRuV3ZCQnFzSHhHcmIrdkdmTkxyZ3N6ZEJQ?=
+ =?utf-8?B?amt1N1hBSW1CYjJGbGMrYWdqdlRJMEQ1eXBTUytCWXpYSkNERVI5ekxRVzc5?=
+ =?utf-8?B?U1NzTmEvNmNtVnl4Y2ExWFJZK1ZJNlZWNmJuWDhyVmtZeEtRRFNhcllRZExm?=
+ =?utf-8?B?K1pIaDAxdSthSkw1WGxabVFOa2dBanFiUDA0ZW5IalNwUmU3YjhObytkRWJQ?=
+ =?utf-8?B?Wmt4TE00cW5LUEZGdFdMZmJScXhkc3UvWlpobmhWV3paWXlnbWVQNlIvUDZB?=
+ =?utf-8?B?S0RhVmRBWlNKSnFvd3ZOSGloNnJBS1BDNDhMTzdlTFhyVEtHT1FnK21iU0dx?=
+ =?utf-8?B?eG1xRXdhRzhXcWxGZ0w0TXZ3cFNydGdwYnJEQ2pmZm8waXRrb0lqcGlXVy8w?=
+ =?utf-8?B?VytIU3JmbHhZSU1lRnk1UWVWM3BqMFJqNUdKaFZMMTBKTkpBZVFGdWRRTFgw?=
+ =?utf-8?B?dDFaSUZidHl3WUVuTCt3RTFVTk5BaUJleXdFZ2ZKZG5YSGpmSWtzMmJNTnlO?=
+ =?utf-8?Q?1PfgN3f8ELSCZnaMnuZlmmCHL?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11206a24-468a-4e85-b0fb-08db0927e6fd
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3875e180-6c14-4e55-5362-08db0943ea88
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2023 16:25:19.9002
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2023 19:45:50.7349
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3CfYBOoDKDt79OgUx8hK75dOgIS0R57HmOJs107yard7jViUh+3EKj34x9h+PFl95rgTaBknDBTR8aO5sn49+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7626
+X-MS-Exchange-CrossTenant-UserPrincipalName: +gtZ0yATXITAdeaVoMZLbKsoGoOOJi4RrMVZUlv2f9qPAGBm6sClOrej7JyrEsj3bP+T23crFI8D1LiC3ZlvZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6925
 
-The previous 'commit 846651eca073 ("serial: fsl_lpuart: RS485 RTS
-polariy is inverse")' only fixed the inverse issue on lpuart 8bit
-platforms.
+From: Frank Li <Frank.li@nxp.com>
 
-This is a follow-up patch to fix the RS485 polarity inverse
-issue on lpuart 32bit platforms.
-
-Fixes: 03895cf41d18 ("tty: serial: fsl_lpuart: Add support for RS-485")
-Reported-by: Sherry Sun <sherry.sun@nxp.com>
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
----
- drivers/tty/serial/fsl_lpuart.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 5e69fb73f570..de606af200a8 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1387,9 +1387,9 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
- 		 * Note: UART is assumed to be active high.
- 		 */
- 		if (rs485->flags & SER_RS485_RTS_ON_SEND)
--			modem &= ~UARTMODEM_TXRTSPOL;
--		else if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
- 			modem |= UARTMODEM_TXRTSPOL;
-+		else if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
-+			modem &= ~UARTMODEM_TXRTSPOL;
- 	}
+Recently more and more people are interested in PCI RC and EP connection,
+especially network usage cases. I upstreamed a vntb solution last year. 
+But the transfer speed is not good enough. I initialized a discussion 
+at https://lore.kernel.org/imx/d098a631-9930-26d3-48f3-8f95386c8e50@ti.com/T/#t
  
- 	lpuart32_write(&sport->port, modem, UARTMODIR);
--- 
-2.34.1
+  ┌─────────────────────────────────┐   ┌──────────────┐
+  │                                 │   │              │
+  │                                 │   │              │
+  │   VirtQueue             RX      │   │  VirtQueue   │
+  │     TX                 ┌──┐     │   │    TX        │
+  │  ┌─────────┐           │  │     │   │ ┌─────────┐  │
+  │  │ SRC LEN ├─────┐  ┌──┤  │◄────┼───┼─┤ SRC LEN │  │
+  │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
+  │  │         │     │  │  │  │     │   │ │         │  │
+  │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
+  │  │         │     │  │  │  │     │   │ │         │  │
+  │  └─────────┘     │  │  └──┘     │   │ └─────────┘  │
+  │                  │  │           │   │              │
+  │     RX       ┌───┼──┘   TX      │   │    RX        │
+  │  ┌─────────┐ │   │     ┌──┐     │   │ ┌─────────┐  │
+  │  │         │◄┘   └────►│  ├─────┼───┼─┤         │  │
+  │  ├─────────┤           │  │     │   │ ├─────────┤  │
+  │  │         │           │  │     │   │ │         │  │
+  │  ├─────────┤           │  │     │   │ ├─────────┤  │
+  │  │         │           │  │     │   │ │         │  │
+  │  └─────────┘           │  │     │   │ └─────────┘  │
+  │   virtio_net           └──┘     │   │ virtio_net   │
+  │  Virtual PCI BUS   EDMA Queue   │   │              │
+  ├─────────────────────────────────┤   │              │
+  │  PCI EP Controller with eDMA    │   │  PCI Host    │
+  └─────────────────────────────────┘   └──────────────┘
+
+Basic idea is
+	1.	Both EP and host probe virtio_net driver
+	2.	There are two queues,  one is the EP side(EQ),  the other is the Host side. 
+	3.	EP side epf driver map Host side’s queue into EP’s space. Called HQ.
+	4.	One working thread 
+	5.	pick one TX from EQ and RX from HQ, combine and generate EDMA requests, 
+and put into the DMA TX queue.
+	6.	Pick one RX from EQ and TX from HQ, combine and generate EDMA requests,
+and put into the DMA RX queue. 
+	7.	EDMA done irq will mark related item in EP and HQ finished.
+
+The whole transfer is zero copied and uses a DMA queue.
+
+The Shunsuke Mie implemented the above idea. 
+ https://lore.kernel.org/linux-pci/CANXvt5q_qgLuAfF7dxxrqUirT_Ld4B=POCq8JcB9uPRvCGDiKg@mail.gmail.com/T/#t
+
+
+Similar solution posted at 2019, except use memcpy from/to PCI EP map windows. 
+Using DMA should be simpler because EDMA can access the whole HOST\EP side memory space. 
+https://lore.kernel.org/linux-pci/9f8e596f-b601-7f97-a98a-111763f966d1@ti.com/T/
+
+Solution 1 (Based on shunsuke):
+
+Both EP and Host side use virtio.
+Using EDMA to simplify data transfer and improve transfer speed.
+RDMA implement based on RoCE
+- proposal: https://lore.kernel.org/all/20220511095900.343-1-xieyongji@bytedance.com/T/
+- presentation on kvm forum: https://youtu.be/Qrhv6hC_YK4
+
+Solution 2(2020, Kishon)
+
+Previous https://lore.kernel.org/linux-pci/20200702082143.25259-1-kishon@ti.com/
+EP side use vhost, RC side use virtio.
+I don’t think anyone works on this thread now.
+If using eDMA, it needs both sides to have a transfer queue. 
+I don't know how to easily implement it on the vhost side. 
+
+Solution 3(I am working on)
+
+Implement infiniband rdma driver at both EP and RC side. 
+EP side build EDMA hardware queue based on EP/RC side’s send and receive
+queue and when eDMA finished, write status to complete queue for both EP/RC 
+side. Use ipoib implement network transfer.
+
+
+The whole upstream effort is quite huge for these. I don’t want to waste
+time and efforts because direction is wrong. 
+
+I think Solution 1 is an easy path.
+
+
 
