@@ -1,208 +1,75 @@
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2085.outbound.protection.outlook.com [40.107.14.85])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9C8747F
-	for <imx@lists.linux.dev>; Tue,  7 Feb 2023 19:45:54 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OAdJyuvAERh6F+gPSk4wbgi5ksCcVkBc2OmDehDI3sKVX1u1OODAB+7ValQLGceGo0VhJn0MTBOhIFDs215pXJ48kPiyD/XPNj1eaSHUlqqhDk9GO1jbnpcD4zpIHJpPSqYXEVJdn2vW93H/niGXLJAIEmO3WO1jZVwdD+Cmgw9KWU/2a+2e4obAirVq2idlU1KKeM3K/+XRBGjgjAkZFXZJMlyGNJZCjuVC+ZvczlZP5GEzPzKS61wy0+5VAxM4J7Zo383OqRqWw65Ql6nSfIbt0OWwnDAFMGWU9td1zkCsPXNrCBQQ6SXAUvqAqc3MYvakQFlRsTYHSKzkFDy9Ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qOA1C9qzBWIVM+eKFmW23eB/BzDI1Hn9aQVl2ZGRKuI=;
- b=kr2J/YoVOVjfAZousRH6fprV8BkCNdydMZMeHodPuisnT08NPzBGQ79SCgosU08LHVQDh+VVP5Ys9PPC3OdJYsJjvbBRSRD3hLq5SE/5/jDKufvwh+qq6EjNwfWGsCM+2s/1rNDPU1nCmh47hkFxFOCkwXfxeOt8N0dOWdef+Nd4oyArUqSG9YHnmWY74ARsWwC5oNdzArT5Lcyj8itKEBCeeHzMD5h447+xBLPizEEVdXam97zvT7YMzCwoofkhFLZYenkmbB2C9hHqnUIajOhk7P04bf7siyaI0XD0kLaAobMKgOGPCmqB/zOACOmsFuVJ7e/V4DyTY/AY4DjQ7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qOA1C9qzBWIVM+eKFmW23eB/BzDI1Hn9aQVl2ZGRKuI=;
- b=bNVg1PCIJk6/Vyhm5S1EpmaGHjkvRwT/VRBsm9HQhEiX1PpDxky4K29ySfoBgjn2Pza3OT0AxNQRAx7/jfEh84Ql7VITlHvdAJEkX2VnTH1bXnM/9bXq4j+QSoeAjHC3u/9PEDQx5R7fIFNV4dV1fJd9J0TpQOKbN9P3awbAZvQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by VI1PR04MB6925.eurprd04.prod.outlook.com (2603:10a6:803:135::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.36; Tue, 7 Feb
- 2023 19:45:51 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.6064.034; Tue, 7 Feb 2023
- 19:45:50 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: mie@igel.co.jp,
-	imx@lists.linux.dev
-Cc: Frank.Li@nxp.com,
-	bhelgaas@google.com,
-	jasowang@redhat.com,
-	jdmason@kudzu.us,
-	kishon@kernel.org,
-	kw@linux.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	mani@kernel.org,
-	mst@redhat.com,
-	renzhijie2@huawei.com,
-	taki@igel.co.jp,
-	virtualization@lists.linux-foundation.org
-Subject: PCIe RC\EP virtio rdma solution discussion.
-Date: Tue,  7 Feb 2023 14:45:27 -0500
-Message-Id: <20230207194527.4071169-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0022.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::27) To HE1PR0401MB2331.eurprd04.prod.outlook.com
- (2603:10a6:3:24::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF80E79D0
+	for <imx@lists.linux.dev>; Wed,  8 Feb 2023 22:23:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A47AC433EF;
+	Wed,  8 Feb 2023 22:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1675894993;
+	bh=OTzvcsJ+7/dblWvZKx0OO7rGkqobHrEhsSkHSFYQUeU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=CMTCSn9NLVq9SnuioEIW7nld5dGU6EYQNsWBNgVqAcaZUyloxU9EVuP/Qa0o13pkd
+	 B0XADOrQhPnRuX4Z//DGHrmcFUi/vVP7jaYx8B955g5Msag8gEW4BHWadctTjX/hjm
+	 WHvbflnndg9xNZ5rdvGPA8/ASkuUaHeSCg1e0vtBgxD6flaqaFsRo9MUlP+beKnBWh
+	 5c0wAxIqskNsY5dG/JDG2403gwPoYcxEE0Q9c+KFfioJoKd9L6taQI/B/D6WUJQfrH
+	 Gu1FQucseaD95r4B9oV7zzaSk4YWesnlDDw8jtBsMH/EGnANaC5b6GqN9Tze/BhVsl
+	 ZPuoGRGsF9QNQ==
+Date: Wed, 8 Feb 2023 16:23:11 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <frank.li@nxp.com>
+Cc: ALOK TIWARI <alok.a.tiwari@oracle.com>,
+	"M.H. Lian" <minghuan.lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [External] : RE: [EXT] [PATCH v2 1/1] PCI: layerscape: Add EP
+ mode support for ls1028a
+Message-ID: <20230208222311.GA2490083@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|VI1PR04MB6925:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3875e180-6c14-4e55-5362-08db0943ea88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	xeevlhRFxpIwmE1A6Vqc6v3LbNoG3MPL2Sxkusn0O+aIFJ6UQC8tk8XGVeS3LA3dT8ahmoPigWvmf6x5gzTvrGSDDDlz/ov3HtMdQFZPC7TViWqyOSXfLP+nXxUptygE/L+PEG4+PFwcUmWtMsYM1tfRKLjQRX4xparEvwS9/w83SI/wmrzmcGZ7SrMyLR7cJO3KvCK7WWV8YEODUd+XMEXGy85Al0EzSSCvYAuZWPuOc4QLDBmvdiM2uNp5xW2mnaC6l4PW0IQhvrt2IhIu1nTQaSg5sdUfKO0ADBIXRybj+mDyY9W9xcE63e3VkgIJd0NOQoN7Ev4l1y1A06Ra7FIAN40bWojH0hprGkATUCC6NI2lp8PsbwCcz03PVGpFlr+O+yy1KW0bVzU+pTtFMxAbwHH6oPMffffXfkgfcx3M9zCZ4/dsd5Cw9bTIy5LZaBCsr3gNZM31v7Dr00K4fWsOf6hmfdUt3+KK+6B9E2wB9QNMAEAZvbnVTJ6wjzgufM+Zo0m/SjzVQfE0HTgHqBlb4IOoIDmQRBJEnHALQVzQCg8uVPjZtUd5UirEVt6Mdwfiz7V5C0R3+MKv3Aw/qlz39gHmkqQ6EVDOwyxwBhp1nMve2AJjMcm+aKZ50FCIMJOuUQCu2Yo3+ofRA9Wz2QBk5uBfoBGR2bNspYBT/iE9d5fjm0ulDjppLl2gWDj5wUDne6h3/LlFBlunv1L97JzZ2zOmooZi/VDFj5Bm6hROTRGkbHWdWJd1/Z1pwJ97HL0wtmZsBw2hAtmBcz9+oA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(136003)(396003)(39860400002)(376002)(366004)(451199018)(478600001)(83380400001)(966005)(6666004)(6486002)(52116002)(6512007)(2616005)(26005)(1076003)(186003)(6506007)(36756003)(86362001)(66556008)(38350700002)(8936002)(66946007)(5660300002)(66476007)(41300700001)(38100700002)(2906002)(7416002)(316002)(8676002)(4326008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SmFxalZFSjYwenJNK0ZDQUhBWlBvb2tReGxnMHkzbkVibmo5emI0bWJTS05a?=
- =?utf-8?B?N0xmc2twMEpBOHRBOWI4UVlON0Fua2NQVTZ6dHNNRnVOTUJVRGtSVXdGejJv?=
- =?utf-8?B?OUFhRUtWOGhJZnJYMTlOSzdYVFdMTFF0RGtyU1dnbXFmMTMvdTMwbmY2dVpL?=
- =?utf-8?B?YlM5dVNZMkFRS3NYT1RTNlZ5WlJBVE9RVSsrQ2k1YUJqSkRrZ2lNMlNxaWR3?=
- =?utf-8?B?MTd0UnhLZzQxb0hvUHFaVW9XQXpjZHhnUEhuM2hTT2JJTDEwY2JZMmR1dW5u?=
- =?utf-8?B?MTJKUm5QSXo1Kzlyb0RuS0x3dlh5OEdQREdPYVFqQUtWL25lYzQ2cjdxMXMw?=
- =?utf-8?B?WWhGWEZud3dRSkFXeFE3VDNYY1VjOGRZV1I5a2w2dTFzNjlnZk40eUZNRWtm?=
- =?utf-8?B?SW5CM1BkRGxuMUplSzZHYVllcE1icHROWmFoMWdleW5SSjJWbjYxZHJRUGl6?=
- =?utf-8?B?SmlQb1FobXIrcnh2LzlsUmhqNDRBeGp6SHhsWWljYU9TS29nL0hxRGpydzcy?=
- =?utf-8?B?OTJXclcwZ3V6MHlIRTAvQU5LSFdWUHNHdUtudHVuSXp2cE1GVWE4TFpiTFJT?=
- =?utf-8?B?eTJPeExpTVNoVmN4UmsyelhUaElkQkJzUkFwaUp3S0ZuZjcwUUc0bGE2S3Fl?=
- =?utf-8?B?bElmRE9zVE9XMmF4RXgxcGEvR0RTMXkrd2JpbTNqb1lxc3hnQXVMZkthVytk?=
- =?utf-8?B?U1FOa0Q5OWQ2S1ZYdyszdEFXNDhnV2UzanNxN2RXOE1mdEtFWnlHNnVkbW56?=
- =?utf-8?B?NkNEUTdDUkZDeWVRRDFHSjg0Z2pxSjZBWGNUc21vQkYxdnpHeGRhbC92Q1Bl?=
- =?utf-8?B?a2xwWnlkNjJMcHM2a3ZVOUxPS0lUcTBTVjltZVBlNVB6UHVkOWwxWS8wRFQz?=
- =?utf-8?B?cytNK2FiNWFVWWhSRDY3MlRiMytTR3AyZVFSYjF1eTQxQWFwU1RMS25MeVh3?=
- =?utf-8?B?Mk8vYko4eThNSmlpamdlNVhCT0FmdHBpRWwwcEdhRkdma1gwa1FKbGJBdGFh?=
- =?utf-8?B?RTMvcCt3N1VWSVZhSzY4emkwYi9yYkx5ZWtyY0YyVzNCMTMwUncxbnZyT3Zv?=
- =?utf-8?B?Sk1vN3ZPNEN6YmtmS1d3UlU2YmpKY3N2ZHhXaUEyZnZSdnBTMHJqOEpHMHNy?=
- =?utf-8?B?RUFMUW5EOXZ6aEl6Y0RGeGEyanZIVHdRaFJoRFgvSEF5MTg4VWJYdTNtYWls?=
- =?utf-8?B?Skx4bnNvcHJJNURjcnZhZ3FDMEZYdmQ5YkhGdmt3V241VTFrK0pEbFdqWnB5?=
- =?utf-8?B?L3hqV1JuTFkxWWE1aVRtRTV5Y01LNytmSWxyTkhXRE40dUw0RzQrK3cySWU2?=
- =?utf-8?B?bDZ4VGJxU2dqYkxRdytOYlV1OXdGTnR6MDVSWHBQa01RVjUvTVpQOGFUWGxp?=
- =?utf-8?B?ZU1QZnFHMGhJK2tnMUF0bUYzWVpCaldRVzNSM0J2ZTh2SlZJektBelZ3VzFW?=
- =?utf-8?B?MVNwMUl0c2trb1djMXAzMmVpMlZCTEhLbVh3ekl3WmYxT3lpR1MzMjUxTHJl?=
- =?utf-8?B?U0NEM3JyNnQzRnpsSFd6U2JzUTBCbXlUMWRvK2dVSVV5aVJ6SHFyR0YrT3ZQ?=
- =?utf-8?B?S2ZjbURZalJNak16WW9VYXBnWXRuV3ZCQnFzSHhHcmIrdkdmTkxyZ3N6ZEJQ?=
- =?utf-8?B?amt1N1hBSW1CYjJGbGMrYWdqdlRJMEQ1eXBTUytCWXpYSkNERVI5ekxRVzc5?=
- =?utf-8?B?U1NzTmEvNmNtVnl4Y2ExWFJZK1ZJNlZWNmJuWDhyVmtZeEtRRFNhcllRZExm?=
- =?utf-8?B?K1pIaDAxdSthSkw1WGxabVFOa2dBanFiUDA0ZW5IalNwUmU3YjhObytkRWJQ?=
- =?utf-8?B?Wmt4TE00cW5LUEZGdFdMZmJScXhkc3UvWlpobmhWV3paWXlnbWVQNlIvUDZB?=
- =?utf-8?B?S0RhVmRBWlNKSnFvd3ZOSGloNnJBS1BDNDhMTzdlTFhyVEtHT1FnK21iU0dx?=
- =?utf-8?B?eG1xRXdhRzhXcWxGZ0w0TXZ3cFNydGdwYnJEQ2pmZm8waXRrb0lqcGlXVy8w?=
- =?utf-8?B?VytIU3JmbHhZSU1lRnk1UWVWM3BqMFJqNUdKaFZMMTBKTkpBZVFGdWRRTFgw?=
- =?utf-8?B?dDFaSUZidHl3WUVuTCt3RTFVTk5BaUJleXdFZ2ZKZG5YSGpmSWtzMmJNTnlO?=
- =?utf-8?Q?1PfgN3f8ELSCZnaMnuZlmmCHL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3875e180-6c14-4e55-5362-08db0943ea88
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2023 19:45:50.7349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +gtZ0yATXITAdeaVoMZLbKsoGoOOJi4RrMVZUlv2f9qPAGBm6sClOrej7JyrEsj3bP+T23crFI8D1LiC3ZlvZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6925
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <HE1PR0401MB2331634B29ED9EDAB032B73888DB9@HE1PR0401MB2331.eurprd04.prod.outlook.com>
 
-From: Frank Li <Frank.li@nxp.com>
+On Tue, Feb 07, 2023 at 04:20:21PM +0000, Frank Li wrote:
+> > Subject: Re: [External] : RE: [EXT] [PATCH v2 1/1] PCI: layerscape: Add EP
+> > mode support for ls1028a
+> > 
+> >          { .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
+> > +       { .compatible = "fsl,ls1028a-pcie-ep", .data = &ls1_ep_drvdata },
+> >         { .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
+> > 
+> > can it be like this for better readability. ?
+> 
+> It is just chip name and follow name conversion, which already
+> upstreamed and documented. 
+>
+> Why do you think it not is good readability? 
 
-Recently more and more people are interested in PCI RC and EP connection,
-especially network usage cases. I upstreamed a vntb solution last year. 
-But the transfer speed is not good enough. I initialized a discussion 
-at https://lore.kernel.org/imx/d098a631-9930-26d3-48f3-8f95386c8e50@ti.com/T/#t
- 
-  ┌─────────────────────────────────┐   ┌──────────────┐
-  │                                 │   │              │
-  │                                 │   │              │
-  │   VirtQueue             RX      │   │  VirtQueue   │
-  │     TX                 ┌──┐     │   │    TX        │
-  │  ┌─────────┐           │  │     │   │ ┌─────────┐  │
-  │  │ SRC LEN ├─────┐  ┌──┤  │◄────┼───┼─┤ SRC LEN │  │
-  │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
-  │  │         │     │  │  │  │     │   │ │         │  │
-  │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
-  │  │         │     │  │  │  │     │   │ │         │  │
-  │  └─────────┘     │  │  └──┘     │   │ └─────────┘  │
-  │                  │  │           │   │              │
-  │     RX       ┌───┼──┘   TX      │   │    RX        │
-  │  ┌─────────┐ │   │     ┌──┐     │   │ ┌─────────┐  │
-  │  │         │◄┘   └────►│  ├─────┼───┼─┤         │  │
-  │  ├─────────┤           │  │     │   │ ├─────────┤  │
-  │  │         │           │  │     │   │ │         │  │
-  │  ├─────────┤           │  │     │   │ ├─────────┤  │
-  │  │         │           │  │     │   │ │         │  │
-  │  └─────────┘           │  │     │   │ └─────────┘  │
-  │   virtio_net           └──┘     │   │ virtio_net   │
-  │  Virtual PCI BUS   EDMA Queue   │   │              │
-  ├─────────────────────────────────┤   │              │
-  │  PCI EP Controller with eDMA    │   │  PCI Host    │
-  └─────────────────────────────────┘   └──────────────┘
+I thought maybe ALOK's point was to sort the list, which does make a
+lot of sense.  But if you want to sort by the .data member, I would
+think you would make .compatible a secondary sort key, which means
+ls1028a would come before ls1046a, so you would end up with this
+instead:
 
-Basic idea is
-	1.	Both EP and host probe virtio_net driver
-	2.	There are two queues,  one is the EP side(EQ),  the other is the Host side. 
-	3.	EP side epf driver map Host side’s queue into EP’s space. Called HQ.
-	4.	One working thread 
-	5.	pick one TX from EQ and RX from HQ, combine and generate EDMA requests, 
-and put into the DMA TX queue.
-	6.	Pick one RX from EQ and TX from HQ, combine and generate EDMA requests,
-and put into the DMA RX queue. 
-	7.	EDMA done irq will mark related item in EP and HQ finished.
-
-The whole transfer is zero copied and uses a DMA queue.
-
-The Shunsuke Mie implemented the above idea. 
- https://lore.kernel.org/linux-pci/CANXvt5q_qgLuAfF7dxxrqUirT_Ld4B=POCq8JcB9uPRvCGDiKg@mail.gmail.com/T/#t
-
-
-Similar solution posted at 2019, except use memcpy from/to PCI EP map windows. 
-Using DMA should be simpler because EDMA can access the whole HOST\EP side memory space. 
-https://lore.kernel.org/linux-pci/9f8e596f-b601-7f97-a98a-111763f966d1@ti.com/T/
-
-Solution 1 (Based on shunsuke):
-
-Both EP and Host side use virtio.
-Using EDMA to simplify data transfer and improve transfer speed.
-RDMA implement based on RoCE
-- proposal: https://lore.kernel.org/all/20220511095900.343-1-xieyongji@bytedance.com/T/
-- presentation on kvm forum: https://youtu.be/Qrhv6hC_YK4
-
-Solution 2(2020, Kishon)
-
-Previous https://lore.kernel.org/linux-pci/20200702082143.25259-1-kishon@ti.com/
-EP side use vhost, RC side use virtio.
-I don’t think anyone works on this thread now.
-If using eDMA, it needs both sides to have a transfer queue. 
-I don't know how to easily implement it on the vhost side. 
-
-Solution 3(I am working on)
-
-Implement infiniband rdma driver at both EP and RC side. 
-EP side build EDMA hardware queue based on EP/RC side’s send and receive
-queue and when eDMA finished, write status to complete queue for both EP/RC 
-side. Use ipoib implement network transfer.
-
-
-The whole upstream effort is quite huge for these. I don’t want to waste
-time and efforts because direction is wrong. 
-
-I think Solution 1 is an easy path.
-
-
+ static const struct of_device_id ls_pcie_ep_of_match[] = {
++       { .compatible = "fsl,ls1028a-pcie-ep", .data = &ls1_ep_drvdata },
+        { .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
+        { .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
+        { .compatible = "fsl,ls2088a-pcie-ep", .data = &ls2_ep_drvdata },
+        { .compatible = "fsl,lx2160ar2-pcie-ep", .data = &lx2_ep_drvdata },
+        { },
+ };
 
