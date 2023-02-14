@@ -1,246 +1,166 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2076.outbound.protection.outlook.com [40.107.22.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421ECBA24
-	for <imx@lists.linux.dev>; Mon, 13 Feb 2023 22:22:58 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Km27YAM6lZ6TH6YK0W9WpNDFD4NKf6ZYOhUjniHa/wkBBaXFyRFgnR1kMHW0ij1XWb4etHea0CLWNTVfOpYfd4y6mbjd+tiZsQtPoXryZDpl+nZ3LQcfquhlMsXfnbEkzV0T+oqVMsxIsPgwPX+0d/i7EBc6gsIeALmApEuVYVVLqL3xLJQ32rkuX9+yDjBp7GMRlsOE+fjk7LLXoepfDfpV4gREBV5leeYzH9uDOzzrf/fkQ+c2XbZo+gdmz3WUkmOivRXQxUqjfZ5W4KiTxNDqvVBSy8lFDuGdSEKfkvM50kRa1cSk1B5AfAwisRFWlWYfTOFl29DZbctvuEJkUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7LIpkf+6B6pGBG5rA0oJi5017tojUEm4VkOVlQ8XJo0=;
- b=m0S2vcsU+4cfs7+OM9vobUfW0ui5EwdI2gX/MmnEU5mGbJkCpPpt8ei2pscjJs8dpQRCCjyPgR+tqn+JOoSink2Vk+DVZbvYXlnvXN5NZryS9KcUVOdxg3S/lj/VAXPShZRo1lxmIkuUwnm6iI8uCwc8FCmSR98QKsmHGzy3nCZX0xjVXDuHwNnDJFv6sGBNy5rDZIDEa2L0dY1xEjglw1PY7abThzaySaMJEMYpiAF95yIdAu65LbQ6Ap4JY3Fxetp3uxQ8RsFxg+iey5PW44X3Uj8/h2DMnvgeU8DzQyPhjvf1gu8kv2sVy4F5UCuMvhSqgCDcBbP35IZqHMDYSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7LIpkf+6B6pGBG5rA0oJi5017tojUEm4VkOVlQ8XJo0=;
- b=kG3G6cwBF5ubkjT3xsbST0JPcpX/q4UZU+LqvtPR/+Va+F/4s2F6x6pMnlJUFj7nQeVuFIxHUtLNqIeIpkgeT7zjBswhYQGYI7O24oLiDQKffKCgvluq58khUU7NAaCBqHVeq91HF7BLfVpqp05W+e9+kYEMxXGvNZ0eMv9VnsE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by AS8PR04MB8756.eurprd04.prod.outlook.com (2603:10a6:20b:42f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Mon, 13 Feb
- 2023 22:22:56 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::ca48:3816:f0b6:3fcd%6]) with mapi id 15.20.6086.023; Mon, 13 Feb 2023
- 22:22:56 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 2/2] arm64: dts: freescale: imx8qxp-mek: enable cadence usb3
-Date: Mon, 13 Feb 2023 17:22:28 -0500
-Message-Id: <20230213222229.686072-2-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230213222229.686072-1-Frank.Li@nxp.com>
-References: <20230213222229.686072-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0076.namprd05.prod.outlook.com
- (2603:10b6:a03:332::21) To HE1PR0401MB2331.eurprd04.prod.outlook.com
- (2603:10a6:3:24::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C777E
+	for <imx@lists.linux.dev>; Tue, 14 Feb 2023 03:24:50 +0000 (UTC)
+Received: by mail-pj1-f53.google.com with SMTP id fu4-20020a17090ad18400b002341fadc370so2261156pjb.1
+        for <imx@lists.linux.dev>; Mon, 13 Feb 2023 19:24:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=igel-co-jp.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YGMqgl5LW97AfsYc7W+xzShnJuseYgX2N3E9oQfC+t8=;
+        b=SH6A/885VYHXN9okhjHo8OtXfA1hRSX8gboZgnc4QaxbNQAAEmXLZErOZatPzAH0Ru
+         ZMntbixHRtH50YAENZZjrKrQgCrThfbTwJwiwv8LtUKpgqxkXbA03Fpx9wfZBdsdcPzQ
+         o/cfSIEX8EH/7aV+FM1k3ZslVTo0BvdOO7B2sDT0txr0UgUAX/bl2z9nY/cEb6ABB5/8
+         FS/UIrLLpP4n6cs3bdynndE2bv04sYfMLTxDmrhlxkIBsp1c+175AyY9TqHs5/kmkNCJ
+         uvtg7/Be0XVyZQj9Av1wEZGA8rxLu3bMba6NC9bYM4DlpogeWPsEuD8RNBVnwgxTs9Kv
+         wR8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YGMqgl5LW97AfsYc7W+xzShnJuseYgX2N3E9oQfC+t8=;
+        b=r0drKvbs9gHEkxLBXrNT8zqXEeW69iYm5bDbKh9VLmcvplbOoyBOfEu+d7cuf+Ae2+
+         B1MsghlCl1C7LrATwGkXYmAVH2RiRub1t9AmKWYvDDE+qLnRBPg9KLyICTIf+yuqyG2B
+         Nc8tdc2p8q0uj6Mf68UoVZ19F74C3SrPFF1KWpysET3RDk0rVvxsLwSDFqALKtdiO0F6
+         HDGhBK1cBYnwCAf1Y86HfxKHTgErPP+bq8PCMuclBx26R8x8wRhXLGf4ZbzUPj7M2okx
+         gKxMuCQe6vqlQNGZTJf5BsWXEkM6Sx2y4dozEvwtQavSjdsQgxgR1HQFgRd4DS2+f3ck
+         H+TA==
+X-Gm-Message-State: AO0yUKWvQAXqzJqt7/p2Rnr/2UHvDu4WL4VQP1x4Qq/q9YuudhUxyKe0
+	hwF9t7zz1PpZ7iKYex2qzXb3ZA==
+X-Google-Smtp-Source: AK7set+n/OQl8f+Pt808/MeY0liwC8YzfyLLbiOQmoBusBO7Lrudi/iQCUkvtjWFIPnPqiprJbvNCQ==
+X-Received: by 2002:a17:902:d102:b0:19a:8284:83a2 with SMTP id w2-20020a170902d10200b0019a828483a2mr941860plw.10.1676345090397;
+        Mon, 13 Feb 2023 19:24:50 -0800 (PST)
+Received: from [10.16.161.199] (napt.igel.co.jp. [219.106.231.132])
+        by smtp.gmail.com with ESMTPSA id p17-20020a1709028a9100b00198e663a856sm8898968plo.205.2023.02.13.19.24.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Feb 2023 19:24:49 -0800 (PST)
+Message-ID: <9f781dc0-e4d5-4c14-cad9-483f59b2a315@igel.co.jp>
+Date: Tue, 14 Feb 2023 12:24:45 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|AS8PR04MB8756:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73f6bce5-7623-4c0d-b192-08db0e10db3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	jYfic7h5dLHsc3WtiSLT1z95hv8kFqftlQUAC+J/pBWh2qxPL6zoNH/26ZW8r6YlYfxXc822KZzEDagWhaLVFJf4hOKgR6yvwn7JsNoO7m9RlBDFhfsf3JBxD/eNmx4dT5K7ZUwMsxCmb8D2PblTM1vBMgZKZ87aN/zxpn8rlVItOuGn0jKgBmFlDYAKqDBRDEIlPQNkUHHX/lPD58+ozvi34lHLaxVb24qTvs/mXVgQy6vmTUfgL9uBcta5hFt7TD++VRk7/LC3jkWM8XJieofB8UhiCY0Pi0Te36e6acyzzhZPAj6JtAHE8PGWgX9StJbGq+V/+qK878v9Z0ZsYbC/7WNEaWQ4OnSbfxi4TQe3J1Lc/7QENpXlGHnoRZI5w8sQJdrqkekgAYB611Sq5thqnnIpuEOP3AR1oihLqjVSAGYBPe27FRhzYqmCglS/Vi/MAejyxUWoRLyt4Nyps1EEq+Hw4eb/7GHCez5NphOa6Sv0vhMJMvRnVZq8Gj/2CYnjcWO+89jCNveX8Pacuslf1FGHbGo9vWMp7ogoi7rpxKtYo7VOuLrgAOb069e4fOQWDMYPLQYj/FXO6iM5e/0EIi4UTmQPAgPzbFZ+ZUggDHPlfsf2NoERTduck4yxzXBJ1EdwfGrcAo6v/BVq4Yk2voqGv7n3FUf4AgbrkVCqoTPht3GCfOQ4BBWEwRZw+KUOAlMPmo+uhH0p9CqUJeG/OBEMTjbeDg0GruQ3cZmGzuP3TqM+YXba9ATZQIsoVXDvYlD4uLFCepNbmJMQGQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(366004)(136003)(376002)(39860400002)(396003)(451199018)(38100700002)(86362001)(921005)(38350700002)(36756003)(4326008)(66476007)(41300700001)(66556008)(8676002)(110136005)(316002)(66946007)(7416002)(8936002)(2906002)(2616005)(5660300002)(6486002)(478600001)(6506007)(52116002)(186003)(26005)(6666004)(1076003)(6512007)(32563001)(473944003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kmFvkLga4936iSFSuF1qJ0WzmPk1JtZJbLpAx7LOAOTSqFFkfGvKS1mBfJEr?=
- =?us-ascii?Q?N+g5EeqyoZfKYmqY251C0HWbpghdiZYmilGcoyGtWaOeOXqofup22NMu6zvp?=
- =?us-ascii?Q?s4vxBjmv1cUmdBrBG2z50rkpbodhtopaVUrX5Znwi42DTzBo2ODshMM3Y446?=
- =?us-ascii?Q?bKaKC5ER7QNZVzTTCuWA/d3mQse3mpvkO2nR++w3IuEDL0rrb/8Z9h4sFdOC?=
- =?us-ascii?Q?7GTC7GF7lXAgZYgW67i2XUW7Ad7O0VPjuBoPuKCvmJWR/0+XfoMzezbXhsrn?=
- =?us-ascii?Q?qLLOn/p2Gks5hHVwL1SsBOMfw/hpAIquoNaMiphTHtaJutjgH4SsvzkQzENi?=
- =?us-ascii?Q?joUrwS/thM1xfTliVDE1y9YW7IXlYCI7HDPb9SJvfVHfwBcTzfppAuiXWbkL?=
- =?us-ascii?Q?NXVPa611OiwqPyeve1QSdM4N4pBXJYoN3EtEz8GNvxA3rRL5A+R3Eeo7fcOt?=
- =?us-ascii?Q?/0JrZy6pisedlGWE6fojqx0/1ytiG0xrMPto3vsF4thv8zysiuLfBIbj0+DM?=
- =?us-ascii?Q?MQ0ItaIKtY8gWgyzMVEK/6As2tjQ9U1+GSOsfrwBlD8IrXZT1Luk088BrEgE?=
- =?us-ascii?Q?dUQlYKw5wrIFX5jhybTGSdHSZxs1GfFlVm6pXeM9Il0Rgfm+X9igsai7KBfa?=
- =?us-ascii?Q?bNykeOIVexUdcG/WrURDPmhTqmgUH/Cuc61EzvfIVT7uefEiaeuBauk/Bgk/?=
- =?us-ascii?Q?3TDQxHaNSzkIwkCNTugCsnKVd57xPIaZjeoULN3HylCFokB11tIbSpTZAAaF?=
- =?us-ascii?Q?L7qWzpsR/ZLE/9jJFz0dh9+GwjeOpRE1+AhFj59MYm6PolkpE3SVXRzeJSoZ?=
- =?us-ascii?Q?eeohHwCytl2OLfKoJOyZ32Qq+6pOR8HTpNSXmD4t1hLrFbuumpZqCA5p6xIZ?=
- =?us-ascii?Q?ttQUoU/TWWGwX8fL9oGyclHbT7RW5ldPfgCnPqcAfZULGPact26hJq6z9aU2?=
- =?us-ascii?Q?sHxjTMCWtewIT2b2eJqSLOxHagUqwY9OeaIMmOnzdirCXyJq044SNj8FiZN5?=
- =?us-ascii?Q?P2fczs0T9JqY0A77NV8Ws4NaSJEDiE5uo68uReuLCQxuMxyYGQo5q0jS/+lD?=
- =?us-ascii?Q?l3l4ej7zojTV3Dw3SV9s4YxRO0RNKrBA9f3KKy/f1KsmEaY23/eAJmvsztYx?=
- =?us-ascii?Q?jLKxOXHHuQuGZr3aS7eDuSK1mQMn30UczI91aBMk8Rb2dI2cuv5x/jElxkny?=
- =?us-ascii?Q?pgi/0Rc8Ud/F9ga1F4y3bl5yjTiKMlY1r0y3Y/3hGhD5JOhj5RoUaLinGqFq?=
- =?us-ascii?Q?sZpBjuFdkcHNJsOeVFCZdMBhQHv6cQCyauZQ3qKbW25VMv7TdeG1VAnn/Dej?=
- =?us-ascii?Q?EVjZFMfeihMiD10vDUJ8DgXGfmKOphuQDDGIrR29V+GklJ7o6DgSt25qzhrQ?=
- =?us-ascii?Q?h2oz0pVXR75v/zX274WxPfsK/mFee3ZbC46oRw1osiTHym5d8BJ0m5Dl64uk?=
- =?us-ascii?Q?gVbsb2Lk36IVny5e9QpDpsONuXcdwVz6yQ3LgaOghrHaUBRHpL7Q69L8gbiw?=
- =?us-ascii?Q?0D7t5rG0oLI7j4Bmlzr/YR+eKd9PnQfUmUNLBSowPqo6sZXDBKReQa6EntCj?=
- =?us-ascii?Q?CFceCyvvBPuxqdnilnpFbS6xi6tQePKHdMn/7k1Y?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73f6bce5-7623-4c0d-b192-08db0e10db3b
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2023 22:22:56.5788
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7BbMqqTgjy565lkrTykQ+IgRiap81P6OEpjazv51SxSRHjL1TIS68AU8hHz0NOnVzOs/hepQFKM04GRE3d17Sw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8756
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.7.2
+From: Shunsuke Mie <mie@igel.co.jp>
+Subject: Re: PCIe RC\EP virtio rdma solution discussion.
+To: Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev
+Cc: bhelgaas@google.com, jasowang@redhat.com, jdmason@kudzu.us,
+ kishon@kernel.org, kw@linux.com, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, lpieralisi@kernel.org, mani@kernel.org,
+ mst@redhat.com, renzhijie2@huawei.com, taki@igel.co.jp,
+ virtualization@lists.linux-foundation.org
+References: <20230207194527.4071169-1-Frank.Li@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20230207194527.4071169-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Enable USB3 controller, phy and typec related nodes.
+Thanks for organizing the discussion.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 87 +++++++++++++++++++
- 1 file changed, 87 insertions(+)
+On 2023/02/08 4:45, Frank Li wrote:
+> From: Frank Li<Frank.li@nxp.com>
+>
+> Recently more and more people are interested in PCI RC and EP connection,
+> especially network usage cases. I upstreamed a vntb solution last year.
+> But the transfer speed is not good enough. I initialized a discussion
+> athttps://lore.kernel.org/imx/d098a631-9930-26d3-48f3-8f95386c8e50@ti.com/T/#t
+I've investigated the vntb + ntbnet device that uses ntb transfer. Is it
+difficult to adapt the eDMA to the ntb transfer? It is likely one of the
+solutions for the performance problem.
+>   
+>    ┌─────────────────────────────────┐   ┌──────────────┐
+>    │                                 │   │              │
+>    │                                 │   │              │
+>    │   VirtQueue             RX      │   │  VirtQueue   │
+>    │     TX                 ┌──┐     │   │    TX        │
+>    │  ┌─────────┐           │  │     │   │ ┌─────────┐  │
+>    │  │ SRC LEN ├─────┐  ┌──┤  │◄────┼───┼─┤ SRC LEN │  │
+>    │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
+>    │  │         │     │  │  │  │     │   │ │         │  │
+>    │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
+>    │  │         │     │  │  │  │     │   │ │         │  │
+>    │  └─────────┘     │  │  └──┘     │   │ └─────────┘  │
+>    │                  │  │           │   │              │
+>    │     RX       ┌───┼──┘   TX      │   │    RX        │
+>    │  ┌─────────┐ │   │     ┌──┐     │   │ ┌─────────┐  │
+>    │  │         │◄┘   └────►│  ├─────┼───┼─┤         │  │
+>    │  ├─────────┤           │  │     │   │ ├─────────┤  │
+>    │  │         │           │  │     │   │ │         │  │
+>    │  ├─────────┤           │  │     │   │ ├─────────┤  │
+>    │  │         │           │  │     │   │ │         │  │
+>    │  └─────────┘           │  │     │   │ └─────────┘  │
+>    │   virtio_net           └──┘     │   │ virtio_net   │
+>    │  Virtual PCI BUS   EDMA Queue   │   │              │
+>    ├─────────────────────────────────┤   │              │
+>    │  PCI EP Controller with eDMA    │   │  PCI Host    │
+>    └─────────────────────────────────┘   └──────────────┘
+>
+> Basic idea is
+> 	1.	Both EP and host probe virtio_net driver
+> 	2.	There are two queues,  one is the EP side(EQ),  the other is the Host side.
+> 	3.	EP side epf driver map Host side’s queue into EP’s space. Called HQ.
+> 	4.	One working thread
+> 	5.	pick one TX from EQ and RX from HQ, combine and generate EDMA requests,
+> and put into the DMA TX queue.
+> 	6.	Pick one RX from EQ and TX from HQ, combine and generate EDMA requests,
+> and put into the DMA RX queue.
+> 	7.	EDMA done irq will mark related item in EP and HQ finished.
+>
+> The whole transfer is zero copied and uses a DMA queue.
+>
+> The Shunsuke Mie implemented the above idea.
+>   https://lore.kernel.org/linux-pci/CANXvt5q_qgLuAfF7dxxrqUirT_Ld4B=POCq8JcB9uPRvCGDiKg@mail.gmail.com/T/#t
+>
+>
+> Similar solution posted at 2019, except use memcpy from/to PCI EP map windows.
+> Using DMA should be simpler because EDMA can access the whole HOST\EP side memory space.
+> https://lore.kernel.org/linux-pci/9f8e596f-b601-7f97-a98a-111763f966d1@ti.com/T/
+>
+> Solution 1 (Based on shunsuke):
+>
+> Both EP and Host side use virtio.
+> Using EDMA to simplify data transfer and improve transfer speed.
+> RDMA implement based on RoCE
+> - proposal:https://lore.kernel.org/all/20220511095900.343-1-xieyongji@bytedance.com/T/
+> - presentation on kvm forum:https://youtu.be/Qrhv6hC_YK4
+>
+> Solution 2(2020, Kishon)
+>
+> Previoushttps://lore.kernel.org/linux-pci/20200702082143.25259-1-kishon@ti.com/
+> EP side use vhost, RC side use virtio.
+> I don’t think anyone works on this thread now.
+> If using eDMA, it needs both sides to have a transfer queue.
+> I don't know how to easily implement it on the vhost side.
+We had implemented this solution at the design stage of our proposal.
+This solution has to prepare a network device and register to the kernel
+from scratch for the endpoint. There is a lot of duplicated code, so we
+think the solution 1 is better, as Frank said.
+> Solution 3(I am working on)
+>
+> Implement infiniband rdma driver at both EP and RC side.
+> EP side build EDMA hardware queue based on EP/RC side’s send and receive
+> queue and when eDMA finished, write status to complete queue for both EP/RC
+> side. Use ipoib implement network transfer.
+The new InfiniBand device has to implement an InfiniBand network layer.
+I think it is overengineered for this peer-to-peer communication. In
+addition, the driver of the InfiniBand device should be implemented or
+emulate the existing InfiniBand device to use the upstream driver. We
+want to reduce the cost of implementation and maintenance.
+> The whole upstream effort is quite huge for these. I don’t want to waste
+> time and efforts because direction is wrong.
+>
+> I think Solution 1 is an easy path.
+>
+>
+>
+Best,
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
-index afa883389456..64f20ff44ba7 100644
---- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
-@@ -6,6 +6,7 @@
- /dts-v1/;
- 
- #include "imx8qxp.dtsi"
-+#include <dt-bindings/usb/pd.h>
- 
- / {
- 	model = "Freescale i.MX8QXP MEK";
-@@ -28,6 +29,21 @@ reg_usdhc2_vmmc: usdhc2-vmmc {
- 		gpio = <&lsio_gpio4 19 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 	};
-+
-+	gpio-sbu-mux {
-+		compatible = "gpio-sbu-mux";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_typec_mux>;
-+		select-gpios = <&lsio_gpio5 9 GPIO_ACTIVE_LOW>;
-+		enable-gpios = <&pca9557_a 7 GPIO_ACTIVE_LOW>;
-+		orientation-switch;
-+
-+		port {
-+			usb3_data_ss: endpoint {
-+				remote-endpoint = <&typec_con_ss>;
-+			};
-+		};
-+	};
- };
- 
- &dsp {
-@@ -127,6 +143,44 @@ light-sensor@44 {
- 			};
- 		};
- 	};
-+
-+	ptn5110: tcpc@50 {
-+		compatible = "nxp,ptn5110";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_typec>;
-+		reg = <0x50>;
-+
-+		interrupt-parent = <&lsio_gpio1>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+		status = "okay";
-+
-+		port {
-+			typec_dr_sw: endpoint {
-+				remote-endpoint = <&usb3_drd_sw>;
-+			};
-+		};
-+
-+		usb_con1: connector {
-+			compatible = "usb-c-connector";
-+			label = "USB-C";
-+			power-role = "source";
-+			data-role = "dual";
-+			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@1 {
-+					reg = <1>;
-+						typec_con_ss: endpoint {
-+							remote-endpoint = <&usb3_data_ss>;
-+					};
-+				};
-+			};
-+		};
-+	};
-+
- };
- 
- &lpuart0 {
-@@ -204,6 +258,27 @@ &usdhc2 {
- 	status = "okay";
- };
- 
-+&usb3_phy {
-+	status = "okay";
-+};
-+
-+&usbotg3 {
-+	status = "okay";
-+};
-+
-+&usbotg3_cdns3 {
-+	dr_mode = "otg";
-+	usb-role-switch;
-+	status = "okay";
-+
-+	port {
-+		usb3_drd_sw: endpoint {
-+			remote-endpoint = <&typec_dr_sw>;
-+		};
-+	};
-+};
-+
-+
- &vpu {
- 	compatible = "nxp,imx8qxp-vpu";
- 	status = "okay";
-@@ -267,6 +342,18 @@ IMX8QXP_UART0_TX_ADMA_UART0_TX				0x06000020
- 		>;
- 	};
- 
-+	pinctrl_typec: typecgrp {
-+		fsl,pins = <
-+			IMX8QXP_SPI2_SCK_LSIO_GPIO1_IO03                        0x06000021
-+		>;
-+	};
-+
-+	pinctrl_typec_mux: typecmuxgrp {
-+		fsl,pins = <
-+			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09           0x60
-+		>;
-+	};
-+
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = <
- 			IMX8QXP_EMMC0_CLK_CONN_EMMC0_CLK			0x06000041
--- 
-2.34.1
+Shunsuke.
 
