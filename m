@@ -1,132 +1,137 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2077.outbound.protection.outlook.com [40.107.241.77])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C222F24
-	for <imx@lists.linux.dev>; Tue, 14 Feb 2023 22:47:02 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E6DNYk6Jrl4awFwjZYfy2gcoSuGXVLjE3lDpO9Bo4dtg0w08B3lcoCggmWe0FKo6y+o/K8eOjhJ1jpck09AgSb6XLFCDNeUlLP9Ja3Fm7oLNq9A8udmtcb5s7Jan3jyZtZwtxMUA/g0BWQg5rEdf4XL1Nl3bkgVTYcKM5yLJJtFqwTtKBGMN6T9g8Hps7RukyV1YFi34C+zVAN42B0+QxIr3Na4EGPJVnFXh9tmysENpsgU6rZsjv39DfUMgsEa1fr7QsdLSWxV/wlAFZX7YcjHjfAM+ZOiyJB0j29YkGvlUrG3KzmWrFpsEk8/mQjG/wIwxVwUabCNXfv9QymQp1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h9axAYRXd4Ww3xe9TkrOcjR2jo6/18d/nHxP9tEuhwY=;
- b=KMT0K432lxvfDFDgeIwFLOg/tfdnEt5DVD/klLcnYmRBVufWx2+7lVZ59h3oq4DYYg/AGOTqtlT8PDSgg0hhcQpAOjD9kAijoZoOBe03X4RCeY1+sijj3Esl/wl5nuxiY18Kjc1Y6FqUiVC4BKCYY7K+P3vkz1u7eyIAH4qeUF2iKQWojR1FiFzuXiboWy5/SZD0Ap0YYX56LAJ4D6XMBnhqxevUa0r3VhaInuVlFf9BQsVpMzMA1H9zaMrVC9jNet8vVIWGuoxM7BiTKtgr75E0FH0Y1NgO+aAQr+lm5kYVwDD/4jDn0GB/5eGD/T7BEY3e2xMX53rvvhW0biODeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h9axAYRXd4Ww3xe9TkrOcjR2jo6/18d/nHxP9tEuhwY=;
- b=OK006mmTWbxUfEtCq9MANdHqKJdvc2Yr3lsYdJzi3BC8aK19xwzgaMASJ4YjBNu4gzGyPMNgJoOLFweZjoX3h7oZa8x+qPSY61DELUCD3gtAzdNo8Y+Nv0yGamlZRhyw5mknRlR1ndZC8dK88iEYAbvWhhMF5Mtv6APpELgeEM4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PA4PR04MB7680.eurprd04.prod.outlook.com (2603:10a6:102:f3::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.23; Tue, 14 Feb
- 2023 22:46:59 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::31d:b51c:db92:cb15]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::31d:b51c:db92:cb15%7]) with mapi id 15.20.6086.026; Tue, 14 Feb 2023
- 22:46:59 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>
-Subject: [PATCH 1/1] gpio: mxc: remove static allocation of GPIO base
-Date: Tue, 14 Feb 2023 16:46:42 -0600
-Message-Id: <20230214224642.3804927-1-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR16CA0030.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::43) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF207B
+	for <imx@lists.linux.dev>; Wed, 15 Feb 2023 08:23:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E802C433D2;
+	Wed, 15 Feb 2023 08:23:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1676449437;
+	bh=8Lv+5x5vaq2UOptL53EzNlofhZ6WDJ1xNJrmCC+n8iA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o38quSWrL0kU02mKh3TGqIC3sURp9dZjhwlIbnnBaOGcDQDzfsrw3z1Xk0skTF3Br
+	 2fLFIl6BnmMj6dyVlqZ7bYYRYp+Q1IKja0RdwkpkATjt+KNRgSdLip8LBWVxjm5hxX
+	 fd5bRDeVIBxRXQtIh3qMwT+l5001mdgpZuJCg1Iq/NT1ID/os2dW7NwZLVvjiii1XL
+	 kfpb0Y4CGT6auZy2Yc9ARVSX7GdCE5lE+1ARrpk3YsSMIXJwUmHnXRXg6NDko8b0d2
+	 NSTI9bGQJnGPE0o/DKIMGDwkbDqeVZmRMFcCgZVdTcUujQAfCMwQoIuv6/VWkMP3Vm
+	 Dg5dADlGkGbmg==
+Date: Wed, 15 Feb 2023 13:53:43 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: mie@igel.co.jp, imx@lists.linux.dev, bhelgaas@google.com,
+	jasowang@redhat.com, jdmason@kudzu.us, kishon@kernel.org,
+	kw@linux.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lpieralisi@kernel.org, mani@kernel.org,
+	mst@redhat.com, renzhijie2@huawei.com, taki@igel.co.jp,
+	virtualization@lists.linux-foundation.org
+Subject: Re: PCIe RC\EP virtio rdma solution discussion.
+Message-ID: <20230215082343.GA6224@thinkpad>
+References: <20230207194527.4071169-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|PA4PR04MB7680:EE_
-X-MS-Office365-Filtering-Correlation-Id: 574c63b5-628e-457c-dbce-08db0edd6127
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ny243lCq0iysQ5ROh7v3q77dj8RrpNjo4VbZhkJuy+EHc8whUD6s3CSf4rbXtwvAbkXvGL92upAdPAIHWlBwCTrpVIeR37hR/WdT9xY96OqFCTw/YYJEZYmyLsQwdzne9bZHpxzg1rSqJW088IUOt37w1LBghIJEgGykBUUWI0KPAMEm5+8Cyo7hjaEZ9n60nYvgmqttol+w1n8Bp7F/IgkQiNISp+o+WtvS0kuy3HnD6EqXfixdkQoWCQSGITsW36jDY1AWMX7EoNCrO3uCB0lk1JJ3QLw0l9XV3WrSIfi2QbnDkX/CfxA10odJQY4RoH+ld2cdavvw0+VBRJ9ddRuo6vPl8KoGyuk5x9A3DCTiUI7Fp7i9LUWpekoIJB6lsTakIDIFuiE1BRauX2kRf0MCZrAOvUDZ+72U0pTqaRhQSOU+PnhnPeXKZIAHFysdLcOerE62WXhV7x/NCT2agWdIVR0riDmsF+KTk8vLcp8UPC5/6JSEqms3F252ZSYw26FNrG5EN0kmQJOMy8D8enfSozjeFY4q4Hxujssu40aBx3tR3MfiXZt8fqb1lhS2oKcVpDWwKMW3OnRELmvVcYBzVfdoc7gkFbKKKB4cbaJ9XziMautLFUZaWpGL7dXOOaCQdVwW0auefE7rNPQOTOp2zsFDWADGETPuL2FIWltJaMY6yo5+pgV79/byK7fAZT82SV+qbpxl8Pw2320SKg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(39860400002)(396003)(376002)(346002)(366004)(451199018)(26005)(6506007)(6666004)(1076003)(186003)(6512007)(52116002)(55236004)(2616005)(8676002)(110136005)(4326008)(66556008)(66946007)(6486002)(316002)(478600001)(8936002)(83380400001)(41300700001)(5660300002)(66476007)(44832011)(4744005)(2906002)(38350700002)(38100700002)(36756003)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lXRetyBUHH4f9Rk/aOIrtrSqOQ3so/H7nMyfHN9ms0JygByb1qhnhSfa7P7Q?=
- =?us-ascii?Q?Op8QvfSDR1i+09CBI311Slq8rulJPkC3pTnNdlKFGe56ZZ572mHflkiGPBCa?=
- =?us-ascii?Q?mcYwK2c025XnGOdcnNpQI3laoUmNekOCH0PC79/sWoRDGf0KgjCudwPElcLY?=
- =?us-ascii?Q?enwTkkub6OEzEU1YH39UgMufr/IZivegxvROHAWZQIbCNJ/zVEKMK2wHIy/J?=
- =?us-ascii?Q?k3Ttw5H0Fv4/7yBDXei7zegudjFFF0TaTSd3JZFZBK+FT1ezCty8f1+nJgOR?=
- =?us-ascii?Q?Zyojrzlctw3i2U/XimQv+MEzKDn8d3Ws9OrOmx4KsYcS1y19+zYfGYD2ENmV?=
- =?us-ascii?Q?bwQvKl74oznjr5aSjeDje9cJzbx4VzKCYByoQ1Z5OY4Uk52TOyJ1p/Xcf+Tz?=
- =?us-ascii?Q?yBSjb/Xyai4rQdgLxZ2og3q7s5dpBs6pk0b2cLqB2Bx2vae+eeN46/g6JCGG?=
- =?us-ascii?Q?SUyMjvPtFSKyC10/WQkjktHWsgdbcnJ54rjwcy4c7+xD3GgWkI71u3yDflnH?=
- =?us-ascii?Q?nJh7tTK2xi25vtuLbulvba94Ydj8/yYXiWb9fgaOapkrD/J6dYIHOUEIX89K?=
- =?us-ascii?Q?3ohOuNW6zczZR3M4K4oEouclODRnA2MwA4CaDbXehKwjMPXUyUn7KHt091SF?=
- =?us-ascii?Q?ys19I76Jgbc0YC51UNMzZ0GzteYEzk+Z+iVlPRSfGdUOo5rTFPf6NWuBl7hO?=
- =?us-ascii?Q?PizUmCE8JQg1awwTGi2jc0LitHYcB7doCdRDP0RxGKWio65W41VA4mieBd9Y?=
- =?us-ascii?Q?zuVsljSw/ocW0TVZPNwiSEalcCU5DQB6pf3BoLe8o98RnGJjNPOawI26ZVx2?=
- =?us-ascii?Q?bXNCUfaiwT7Gc2e4aWpdyAX8O6R0KrVMQTlQIPL1v0Qx5/3O8MPIkQj0SWWB?=
- =?us-ascii?Q?qcYhCzVWjm73Ob3PGfRKnDcTYS/MJFw//lniEGpbz9IhDH7gQaQnxolp3oN+?=
- =?us-ascii?Q?BjstxUf7J2tWsyS0ZAGcnLD0Si7tH6u4moVYAfG0b3ANf6pLgASeAi4DhGMU?=
- =?us-ascii?Q?7uItBp22mQayXw/xnHRtmD/llBq8U9MtfpRR20Ucu1UyOm0m/tbnEqtI+LZB?=
- =?us-ascii?Q?lDeJWw3+nOaQ8hoP1ayh9VhIvgNUIUc/CE1HwuGzeNfz3R/F4fb0dmRDmkg5?=
- =?us-ascii?Q?Vk+0tSynxr3szHUogwkmaLyVJo/NVSS2C3c/it/BeExG+WnUnPGRlX0+zBGe?=
- =?us-ascii?Q?3NxmQI8JrO4N/Xs4jVPhp5jbsOPI3tWVfvpn8xKykjnRms8okBCCrcDKTnZC?=
- =?us-ascii?Q?HaaxNbPZVEwH4jdFQbLdwO3rb6sIf/4DKpYfM52vgTOAly7SGWlsAr7iFatJ?=
- =?us-ascii?Q?PP+F+IJDlg03u0Dc8m6wkkbLFOXIsBOzUpI3GQ4xkX4KMjcGH6Cq+aW0MX5M?=
- =?us-ascii?Q?Ujj4tDWvJpKt0xnXJMaaNg8MqtGDzgBr9uHM0a3c2PZ7Q23so77XBozVSrfH?=
- =?us-ascii?Q?3W9Cxg2LC5IY3C/Pk8RCkDyRdm/QNQf7AWZF8v3d4NTYin8IujCOLZm5yi0M?=
- =?us-ascii?Q?zIT08e8Vd80u6suc5aq4IXv7W2tmlf43w41CuCcJziKL3UxTasJDFYZzDPQX?=
- =?us-ascii?Q?45029q61xuFdpK3aOSYmU4Xmze2ReFjv8ihwnY30?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 574c63b5-628e-457c-dbce-08db0edd6127
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2023 22:46:59.2851
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ge9LuNhzv3jCwLhdaXDafbV2HuUd+OYl/k6LuRHGNZxrhS6sJ9RRiUkD8FpmaIhwMHjcrL05th3EyuuDPAmP/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7680
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230207194527.4071169-1-Frank.Li@nxp.com>
 
-The latest gpio driver framework will give the following warning
-when it detects the static allocation of the GPIO bases.
+On Tue, Feb 07, 2023 at 02:45:27PM -0500, Frank Li wrote:
+> From: Frank Li <Frank.li@nxp.com>
+> 
+> Recently more and more people are interested in PCI RC and EP connection,
+> especially network usage cases. I upstreamed a vntb solution last year. 
+> But the transfer speed is not good enough. I initialized a discussion 
+> at https://lore.kernel.org/imx/d098a631-9930-26d3-48f3-8f95386c8e50@ti.com/T/#t
+>  
+>   ┌─────────────────────────────────┐   ┌──────────────┐
+>   │                                 │   │              │
+>   │                                 │   │              │
+>   │   VirtQueue             RX      │   │  VirtQueue   │
+>   │     TX                 ┌──┐     │   │    TX        │
+>   │  ┌─────────┐           │  │     │   │ ┌─────────┐  │
+>   │  │ SRC LEN ├─────┐  ┌──┤  │◄────┼───┼─┤ SRC LEN │  │
+>   │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
+>   │  │         │     │  │  │  │     │   │ │         │  │
+>   │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
+>   │  │         │     │  │  │  │     │   │ │         │  │
+>   │  └─────────┘     │  │  └──┘     │   │ └─────────┘  │
+>   │                  │  │           │   │              │
+>   │     RX       ┌───┼──┘   TX      │   │    RX        │
+>   │  ┌─────────┐ │   │     ┌──┐     │   │ ┌─────────┐  │
+>   │  │         │◄┘   └────►│  ├─────┼───┼─┤         │  │
+>   │  ├─────────┤           │  │     │   │ ├─────────┤  │
+>   │  │         │           │  │     │   │ │         │  │
+>   │  ├─────────┤           │  │     │   │ ├─────────┤  │
+>   │  │         │           │  │     │   │ │         │  │
+>   │  └─────────┘           │  │     │   │ └─────────┘  │
+>   │   virtio_net           └──┘     │   │ virtio_net   │
+>   │  Virtual PCI BUS   EDMA Queue   │   │              │
+>   ├─────────────────────────────────┤   │              │
+>   │  PCI EP Controller with eDMA    │   │  PCI Host    │
+>   └─────────────────────────────────┘   └──────────────┘
+> 
+> Basic idea is
+> 	1.	Both EP and host probe virtio_net driver
+> 	2.	There are two queues,  one is the EP side(EQ),  the other is the Host side. 
+> 	3.	EP side epf driver map Host side’s queue into EP’s space. Called HQ.
+> 	4.	One working thread 
+> 	5.	pick one TX from EQ and RX from HQ, combine and generate EDMA requests, 
+> and put into the DMA TX queue.
+> 	6.	Pick one RX from EQ and TX from HQ, combine and generate EDMA requests,
+> and put into the DMA RX queue. 
+> 	7.	EDMA done irq will mark related item in EP and HQ finished.
+> 
+> The whole transfer is zero copied and uses a DMA queue.
+> 
+> The Shunsuke Mie implemented the above idea. 
+>  https://lore.kernel.org/linux-pci/CANXvt5q_qgLuAfF7dxxrqUirT_Ld4B=POCq8JcB9uPRvCGDiKg@mail.gmail.com/T/#t
+> 
+> 
+> Similar solution posted at 2019, except use memcpy from/to PCI EP map windows. 
+> Using DMA should be simpler because EDMA can access the whole HOST\EP side memory space. 
+> https://lore.kernel.org/linux-pci/9f8e596f-b601-7f97-a98a-111763f966d1@ti.com/T/
+> 
+> Solution 1 (Based on shunsuke):
+> 
+> Both EP and Host side use virtio.
+> Using EDMA to simplify data transfer and improve transfer speed.
+> RDMA implement based on RoCE
+> - proposal: https://lore.kernel.org/all/20220511095900.343-1-xieyongji@bytedance.com/T/
+> - presentation on kvm forum: https://youtu.be/Qrhv6hC_YK4
+> 
+> Solution 2(2020, Kishon)
+> 
+> Previous https://lore.kernel.org/linux-pci/20200702082143.25259-1-kishon@ti.com/
+> EP side use vhost, RC side use virtio.
+> I don’t think anyone works on this thread now.
+> If using eDMA, it needs both sides to have a transfer queue. 
+> I don't know how to easily implement it on the vhost side. 
+> 
+> Solution 3(I am working on)
+> 
+> Implement infiniband rdma driver at both EP and RC side. 
+> EP side build EDMA hardware queue based on EP/RC side’s send and receive
+> queue and when eDMA finished, write status to complete queue for both EP/RC 
+> side. Use ipoib implement network transfer.
+> 
+> 
+> The whole upstream effort is quite huge for these. I don’t want to waste
+> time and efforts because direction is wrong. 
+> 
+> I think Solution 1 is an easy path.
+> 
 
-"[    1.329312] gpio gpiochip0: Static allocation of GPIO base is
-deprecated, use dynamic allocation."
+I didn't had time to look into Shunsuke's series, but from the initial look
+of the proposed solutions, option 1 seems to be the best for me.
 
-This patch removes the static allocation of GPIO base to get rid
-of the warning message.
+Thanks,
+Mani
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
----
- drivers/gpio/gpio-mxc.c | 2 --
- 1 file changed, 2 deletions(-)
+> 
+> 
 
-diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-index d5626c572d24..07948175441c 100644
---- a/drivers/gpio/gpio-mxc.c
-+++ b/drivers/gpio/gpio-mxc.c
-@@ -450,8 +450,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
- 	port->gc.request = gpiochip_generic_request;
- 	port->gc.free = gpiochip_generic_free;
- 	port->gc.to_irq = mxc_gpio_to_irq;
--	port->gc.base = (pdev->id < 0) ? of_alias_get_id(np, "gpio") * 32 :
--					     pdev->id * 32;
- 
- 	err = devm_gpiochip_add_data(&pdev->dev, &port->gc, port);
- 	if (err)
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
