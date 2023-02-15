@@ -1,137 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF207B
-	for <imx@lists.linux.dev>; Wed, 15 Feb 2023 08:23:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E802C433D2;
-	Wed, 15 Feb 2023 08:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1676449437;
-	bh=8Lv+5x5vaq2UOptL53EzNlofhZ6WDJ1xNJrmCC+n8iA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o38quSWrL0kU02mKh3TGqIC3sURp9dZjhwlIbnnBaOGcDQDzfsrw3z1Xk0skTF3Br
-	 2fLFIl6BnmMj6dyVlqZ7bYYRYp+Q1IKja0RdwkpkATjt+KNRgSdLip8LBWVxjm5hxX
-	 fd5bRDeVIBxRXQtIh3qMwT+l5001mdgpZuJCg1Iq/NT1ID/os2dW7NwZLVvjiii1XL
-	 kfpb0Y4CGT6auZy2Yc9ARVSX7GdCE5lE+1ARrpk3YsSMIXJwUmHnXRXg6NDko8b0d2
-	 NSTI9bGQJnGPE0o/DKIMGDwkbDqeVZmRMFcCgZVdTcUujQAfCMwQoIuv6/VWkMP3Vm
-	 Dg5dADlGkGbmg==
-Date: Wed, 15 Feb 2023 13:53:43 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: mie@igel.co.jp, imx@lists.linux.dev, bhelgaas@google.com,
-	jasowang@redhat.com, jdmason@kudzu.us, kishon@kernel.org,
-	kw@linux.com, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, lpieralisi@kernel.org, mani@kernel.org,
-	mst@redhat.com, renzhijie2@huawei.com, taki@igel.co.jp,
-	virtualization@lists.linux-foundation.org
-Subject: Re: PCIe RC\EP virtio rdma solution discussion.
-Message-ID: <20230215082343.GA6224@thinkpad>
-References: <20230207194527.4071169-1-Frank.Li@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBE57B
+	for <imx@lists.linux.dev>; Wed, 15 Feb 2023 08:29:47 +0000 (UTC)
+Received: by mail-ua1-f47.google.com with SMTP id s21so1332411uac.13
+        for <imx@lists.linux.dev>; Wed, 15 Feb 2023 00:29:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FXSI5E+3HvE6BYqHUHdzgDWtPGtSlXeME4AX7iotPWY=;
+        b=eMqKPTBZcGtq+ABL3ek1LxQUWDBIoO+kWpBdqjZE8z9N4TIEUEPL6VidC5wHfiIVDa
+         VFUdPROmFShkuyqqvvZa4ZgrLHVFa0/H98CvEPiY1dTNlbbK5JxH7QSEUym9vNob59Tr
+         AAB5K2JuSQm0l5rJxLXpLKIKes4bFIK/1t9mVlsiQFiAQNsI43nD2yuEWyIT1mMYbvPn
+         mEm80WqSl/A0HBcT6fUg0wfa3+sFnMyz0XyXpJVDfSlo2ZQfMekE/T9MaYehA9/Pt5T2
+         /C70d6gZ0bZTEofzof7/Fjk+3UkfIZua0uCzITBsQpnJ7idT8K49c3T/YLi+7/TE2JbB
+         nlkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FXSI5E+3HvE6BYqHUHdzgDWtPGtSlXeME4AX7iotPWY=;
+        b=FyMlyCOIZYkh949+3EkRA3krUqqxsKPO6olkXRRFLqtjWIr+F8XNaZxt4By9Mze0MQ
+         MsX5/crbZshFLxDhTO2Vtdp00Gy4jCkFEModa5aiXzFIFK6LlOifim2ru41W33NGY7qV
+         lfMNCHMtzUetbSrIS7lVT0EpVGHtmOOMOem2wzZxQHrZVUzDCpRRlK4a9L58GmSlORNY
+         iJ1utCbrIKRuudfA7fPrKPECQ/3PMttkQI8CTh4wynP5H5WYG8l6ayHQ+t+eY+/e55IA
+         YbncG0pN9aQb4LX5wrcxok9KGHx4wDMf5gn/MC98vNxxmCRItWMxbszQPUEhxKFX5i5y
+         jtUw==
+X-Gm-Message-State: AO0yUKW2MSFpzKjTGZejvoR74a3NykeqCwssmZw90AIYVGGS1JKtt1oE
+	fyKEye/h5CwNIIGrpnPWzxo9W0WgJm/c79vjAwQp1x6qM/lpl4Dz
+X-Google-Smtp-Source: AK7set/wOEKEM8x4UYollg4KJQQP4EGoy6F8kT5TGE7GywLwIdPiGDrNXiA0jX0JuHOPcsHW/TmCPUwYOhet75U92k0=
+X-Received: by 2002:ab0:654d:0:b0:68a:7054:58a6 with SMTP id
+ x13-20020ab0654d000000b0068a705458a6mr170019uap.22.1676449786783; Wed, 15 Feb
+ 2023 00:29:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230207194527.4071169-1-Frank.Li@nxp.com>
+References: <20230214224642.3804927-1-shenwei.wang@nxp.com>
+In-Reply-To: <20230214224642.3804927-1-shenwei.wang@nxp.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 15 Feb 2023 09:29:36 +0100
+Message-ID: <CAMRc=Mfv-fQPa6Sz9jQ-2BgcZkAsTN=T6UKKnLUUs=exRHiZsA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] gpio: mxc: remove static allocation of GPIO base
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 07, 2023 at 02:45:27PM -0500, Frank Li wrote:
-> From: Frank Li <Frank.li@nxp.com>
-> 
-> Recently more and more people are interested in PCI RC and EP connection,
-> especially network usage cases. I upstreamed a vntb solution last year. 
-> But the transfer speed is not good enough. I initialized a discussion 
-> at https://lore.kernel.org/imx/d098a631-9930-26d3-48f3-8f95386c8e50@ti.com/T/#t
->  
->   ┌─────────────────────────────────┐   ┌──────────────┐
->   │                                 │   │              │
->   │                                 │   │              │
->   │   VirtQueue             RX      │   │  VirtQueue   │
->   │     TX                 ┌──┐     │   │    TX        │
->   │  ┌─────────┐           │  │     │   │ ┌─────────┐  │
->   │  │ SRC LEN ├─────┐  ┌──┤  │◄────┼───┼─┤ SRC LEN │  │
->   │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
->   │  │         │     │  │  │  │     │   │ │         │  │
->   │  ├─────────┤     │  │  │  │     │   │ ├─────────┤  │
->   │  │         │     │  │  │  │     │   │ │         │  │
->   │  └─────────┘     │  │  └──┘     │   │ └─────────┘  │
->   │                  │  │           │   │              │
->   │     RX       ┌───┼──┘   TX      │   │    RX        │
->   │  ┌─────────┐ │   │     ┌──┐     │   │ ┌─────────┐  │
->   │  │         │◄┘   └────►│  ├─────┼───┼─┤         │  │
->   │  ├─────────┤           │  │     │   │ ├─────────┤  │
->   │  │         │           │  │     │   │ │         │  │
->   │  ├─────────┤           │  │     │   │ ├─────────┤  │
->   │  │         │           │  │     │   │ │         │  │
->   │  └─────────┘           │  │     │   │ └─────────┘  │
->   │   virtio_net           └──┘     │   │ virtio_net   │
->   │  Virtual PCI BUS   EDMA Queue   │   │              │
->   ├─────────────────────────────────┤   │              │
->   │  PCI EP Controller with eDMA    │   │  PCI Host    │
->   └─────────────────────────────────┘   └──────────────┘
-> 
-> Basic idea is
-> 	1.	Both EP and host probe virtio_net driver
-> 	2.	There are two queues,  one is the EP side(EQ),  the other is the Host side. 
-> 	3.	EP side epf driver map Host side’s queue into EP’s space. Called HQ.
-> 	4.	One working thread 
-> 	5.	pick one TX from EQ and RX from HQ, combine and generate EDMA requests, 
-> and put into the DMA TX queue.
-> 	6.	Pick one RX from EQ and TX from HQ, combine and generate EDMA requests,
-> and put into the DMA RX queue. 
-> 	7.	EDMA done irq will mark related item in EP and HQ finished.
-> 
-> The whole transfer is zero copied and uses a DMA queue.
-> 
-> The Shunsuke Mie implemented the above idea. 
->  https://lore.kernel.org/linux-pci/CANXvt5q_qgLuAfF7dxxrqUirT_Ld4B=POCq8JcB9uPRvCGDiKg@mail.gmail.com/T/#t
-> 
-> 
-> Similar solution posted at 2019, except use memcpy from/to PCI EP map windows. 
-> Using DMA should be simpler because EDMA can access the whole HOST\EP side memory space. 
-> https://lore.kernel.org/linux-pci/9f8e596f-b601-7f97-a98a-111763f966d1@ti.com/T/
-> 
-> Solution 1 (Based on shunsuke):
-> 
-> Both EP and Host side use virtio.
-> Using EDMA to simplify data transfer and improve transfer speed.
-> RDMA implement based on RoCE
-> - proposal: https://lore.kernel.org/all/20220511095900.343-1-xieyongji@bytedance.com/T/
-> - presentation on kvm forum: https://youtu.be/Qrhv6hC_YK4
-> 
-> Solution 2(2020, Kishon)
-> 
-> Previous https://lore.kernel.org/linux-pci/20200702082143.25259-1-kishon@ti.com/
-> EP side use vhost, RC side use virtio.
-> I don’t think anyone works on this thread now.
-> If using eDMA, it needs both sides to have a transfer queue. 
-> I don't know how to easily implement it on the vhost side. 
-> 
-> Solution 3(I am working on)
-> 
-> Implement infiniband rdma driver at both EP and RC side. 
-> EP side build EDMA hardware queue based on EP/RC side’s send and receive
-> queue and when eDMA finished, write status to complete queue for both EP/RC 
-> side. Use ipoib implement network transfer.
-> 
-> 
-> The whole upstream effort is quite huge for these. I don’t want to waste
-> time and efforts because direction is wrong. 
-> 
-> I think Solution 1 is an easy path.
-> 
+On Tue, Feb 14, 2023 at 11:47 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
+>
+> The latest gpio driver framework will give the following warning
+> when it detects the static allocation of the GPIO bases.
+>
+> "[    1.329312] gpio gpiochip0: Static allocation of GPIO base is
+> deprecated, use dynamic allocation."
+>
+> This patch removes the static allocation of GPIO base to get rid
+> of the warning message.
+>
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  drivers/gpio/gpio-mxc.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+> index d5626c572d24..07948175441c 100644
+> --- a/drivers/gpio/gpio-mxc.c
+> +++ b/drivers/gpio/gpio-mxc.c
+> @@ -450,8 +450,6 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+>         port->gc.request = gpiochip_generic_request;
+>         port->gc.free = gpiochip_generic_free;
+>         port->gc.to_irq = mxc_gpio_to_irq;
+> -       port->gc.base = (pdev->id < 0) ? of_alias_get_id(np, "gpio") * 32 :
+> -                                            pdev->id * 32;
+>
+>         err = devm_gpiochip_add_data(&pdev->dev, &port->gc, port);
+>         if (err)
+> --
+> 2.34.1
+>
 
-I didn't had time to look into Shunsuke's series, but from the initial look
-of the proposed solutions, option 1 seems to be the best for me.
+This is one of the drivers for which we can't do it yet:
+https://lore.kernel.org/linux-gpio/20230120104647.nwki4silrtd7bt3w@pengutronix.de/
 
-Thanks,
-Mani
-
-> 
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+Bart
