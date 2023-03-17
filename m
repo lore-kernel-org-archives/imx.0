@@ -1,86 +1,192 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CB1AD32
-	for <imx@lists.linux.dev>; Thu, 16 Mar 2023 22:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LzJVT1YLVSxCwyYJDFQ7AijDbKEfkNXaVr/FyexpV4g=; b=ZPnkfwVee81qlCfWipMdH+IPb9
-	Z851th9zA8IaRyynxVNRckhSEGJUp+5eoxxJwuTejp3zvJDBPglDUhkG/K+YJZNW2CrVQkBPMiRGK
-	YeqQT6lSq92JCLyJgNI3DDa0g6zrnbCXQZg5gDA9Rdd5UKyZTcY+IsRd1AUGdAheV5YZFT8VwHMcA
-	XDuu83i1XUCYctPW+ikU8WJuxBQkpebYTZwFwiMkvdf6iePrVGG5S0dcIp7KuDEcy1n/i0H/cNalf
-	dcyl7V89zs2B0Wgz52bjCfwqAIV74xwPeMjUniqOKxjoU5Lcn3o5EGKZgDRKM13vV4v1TNInze0sq
-	rIcKFnlQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59080)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1pcva2-0001Lk-Du; Thu, 16 Mar 2023 21:56:14 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1pcvZx-0002mv-Fu; Thu, 16 Mar 2023 21:56:09 +0000
-Date: Thu, 16 Mar 2023 21:56:09 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] net: stmmac: start PHY early in __stmmac_open
-Message-ID: <ZBOQecR6q5Xgr75F@shell.armlinux.org.uk>
-References: <20230316205449.1659395-1-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3BA65A
+	for <imx@lists.linux.dev>; Fri, 17 Mar 2023 06:40:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1679035225; x=1710571225;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=o+GGprb+XSzjmdDlXa4/4UaRSRUTLEq73/iJozAjmGA=;
+  b=CbQCP6kevJqUq0sMpAX+Vzp2IxIt5vn+r/HA2WfTMKAuVV1f0QrZ9h/2
+   q6uwSVQnyGp/BnODclX5LpFFGKa6tfBZ3qAa9mPLox/0RcyD+gZbZjN/9
+   ZewqErSfy6YUPhZw1j7EgPxPqGWnKDS5idVVxsk00uZ7YxcER9mzUIodR
+   zcKihhwhPiGG9jGa8R3Kt/At63KMKof8kJwRIRaQesfBSzXH/DEjnmwvw
+   4EzDseS2bXNLjxo6UPVVZTUHRQtW4ny66bMzJll4tgMzlE711n97f3yv4
+   qjF6Wkp1LKvt8r7l/cuz5OWiHnHRRGU4M2+GQQgd5k+4MjUx+fOMcqcE4
+   g==;
+X-IronPort-AV: E=Sophos;i="5.98,268,1673910000"; 
+   d="scan'208";a="29753071"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 17 Mar 2023 07:39:12 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Fri, 17 Mar 2023 07:39:12 +0100
+X-PGP-Universal: processed;
+	by tq-pgp-pr1.tq-net.de on Fri, 17 Mar 2023 07:39:12 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1679035152; x=1710571152;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=o+GGprb+XSzjmdDlXa4/4UaRSRUTLEq73/iJozAjmGA=;
+  b=b8llSi/Zng3Huzj6sUN2ORzmOIZhqumYUu1RpckAgOIH2EO9InrngZht
+   V1lBWAoV4vlbIVfMjYmIaANLf13y4MpMxR8nAIR3tq99nbyZbeR9Ff0CU
+   wBG2SDQjtYYWAJ2qRtu1+4OeMNGEd8DW07bLYxGX3mU5FOUvK8Tv0e+V6
+   OxCJOAffBaVe+gzC0esaeSQ6K0ghiFyUxviJacMglI8tFO7zzTfuj8/bZ
+   DyH/p6ZhVIplL3/7ZpxuDEiJirKsRxUQWoZsvNlAzjNxyey6ya740FAgr
+   ZhHUXdhwV6w7mDE+5DR788wiD0rMr7POk3OAmhgfeKmVQKXUKVfNf4Htk
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.98,268,1673910000"; 
+   d="scan'208";a="29753070"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 17 Mar 2023 07:39:12 +0100
+Received: from steina-w.localnet (unknown [10.123.53.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 0E09A280056;
+	Fri, 17 Mar 2023 07:39:12 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Frank.Li@nxp.com, devicetree@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 2/3] arm64: dts: imx8qxp: add cadence usb3 support
+Date: Fri, 17 Mar 2023 07:39:09 +0100
+Message-ID: <3810738.Icojqenx9y@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20230316212712.2426542-3-Frank.Li@nxp.com>
+References: <20230316212712.2426542-1-Frank.Li@nxp.com> <20230316212712.2426542-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230316205449.1659395-1-shenwei.wang@nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-On Thu, Mar 16, 2023 at 03:54:49PM -0500, Shenwei Wang wrote:
-> By initializing the PHY and establishing the link before setting the
-> MAC relating configurations, this change ensures that the PHY is
-> operational before the MAC logic starts relying on it. This can
-> prevent synchronization errors and improve system stability.
-> 
-> This change especially applies to the RMII mode, where the PHY may drive
-> the REF_CLK signal, which requires the PHY to be started and operational
-> before the MAC logic initializes.
-> 
-> This change should not impact other modes of operation.
+Am Donnerstag, 16. M=E4rz 2023, 22:27:10 CET schrieb Frank Li:
+> There are cadence usb3.0 controller in 8qxp and 8qm.
+> Add usb3 node at common connect subsystem.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx8-ss-conn.dtsi      | 72 +++++++++++++++++++
+>  1 file changed, 72 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+> b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi index
+> 4852760adeee..389f52f16a5c 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+> @@ -138,6 +138,56 @@ fec2: ethernet@5b050000 {
+>  		status =3D "disabled";
+>  	};
+>=20
+> +	usbotg3: usb@5b110000 {
+> +		compatible =3D "fsl,imx8qm-usb3";
 
-NAK. A patch similar to this has already been sent.
+Mh, is imx8qm considered a subset of imx8qxp or vice versa?
+Maybe it's worth adding a dedicated compatible for imx8qxp as well.
 
-The problem with just moving this is that phylink can call the
-mac_link_up() method *before* phylink_start() has returned - and as
-this driver has not completed the setup, it doesn't expect the link
-to come up at that point.
+Best regards,
+Alexander
 
-There are several issues with this driver wanting the PHY clock early,
-and there have been two people working on addressing this previously,
-proposing two different changes to phylink.
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <1>;
+> +		ranges;
+> +		reg =3D <0x5b110000 0x10000>;
+> +		clocks =3D <&usb3_lpcg IMX_LPCG_CLK_1>,
+> +			 <&usb3_lpcg IMX_LPCG_CLK_0>,
+> +			 <&usb3_lpcg IMX_LPCG_CLK_7>,
+> +			 <&usb3_lpcg IMX_LPCG_CLK_4>,
+> +			 <&usb3_lpcg IMX_LPCG_CLK_5>;
+> +		clock-names =3D "usb3_lpm_clk", "usb3_bus_clk", "usb3_aclk",
+> +			      "usb3_ipg_clk", "usb3_core_pclk";
+> +		assigned-clocks =3D <&clk IMX_SC_R_USB_2 IMX_SC_PM_CLK_PER>,
+> +				  <&clk IMX_SC_R_USB_2=20
+IMX_SC_PM_CLK_MISC>,
+> +				  <&clk IMX_SC_R_USB_2=20
+IMX_SC_PM_CLK_MST_BUS>;
+> +		assigned-clock-rates =3D <125000000>, <12000000>,=20
+<250000000>;
+> +		power-domains =3D <&pd IMX_SC_R_USB_2>;
+> +		status =3D "disabled";
+> +
+> +		usbotg3_cdns3: usb@5b120000 {
+> +			compatible =3D "cdns,usb3";
+> +			#address-cells =3D <1>;
+> +			#size-cells =3D <1>;
+> +			interrupt-parent =3D <&gic>;
+> +			interrupts =3D <GIC_SPI 271 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 271=20
+IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 271=20
+IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 271=20
+IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names =3D "host", "peripheral", "otg",=20
+"wakeup";
+> +			reg =3D <0x5b130000 0x10000>,     /* memory area=20
+for HOST registers */
+> +			      <0x5b140000 0x10000>,   /* memory area for=20
+DEVICE registers */
+> +			      <0x5b120000 0x10000>;   /* memory area for=20
+OTG/DRD registers */
+> +			reg-names =3D "xhci", "dev", "otg";
+> +			phys =3D <&usb3_phy>;
+> +			phy-names =3D "cdns3,usb3-phy";
+> +			status =3D "disabled";
+> +		};
+> +	};
+> +
+> +	usb3_phy: usb-phy@5b160000 {
+> +		compatible =3D "nxp,salvo-phy";
+> +		reg =3D <0x5b160000 0x40000>;
+> +		clocks =3D <&usb3_lpcg IMX_LPCG_CLK_6>;
+> +		clock-names =3D "salvo_phy_clk";
+> +		power-domains =3D <&pd IMX_SC_R_USB_2_PHY>;
+> +		#phy-cells =3D <0>;
+> +		status =3D "disabled";
+> +	};
+> +
+>  	/* LPCG clocks */
+>  	sdhc0_lpcg: clock-controller@5b200000 {
+>  		compatible =3D "fsl,imx8qxp-lpcg";
+> @@ -234,4 +284,26 @@ usb2_lpcg: clock-controller@5b270000 {
+>  		clock-output-names =3D "usboh3_ahb_clk",=20
+"usboh3_phy_ipg_clk";
+>  		power-domains =3D <&pd IMX_SC_R_USB_0_PHY>;
+>  	};
+> +
+> +	usb3_lpcg: clock-controller@5b280000 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5b280000 0x10000>;
+> +		#clock-cells =3D <1>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_1>,
+> +				<IMX_LPCG_CLK_4>, <IMX_LPCG_CLK_5>,
+> +				<IMX_LPCG_CLK_6>, <IMX_LPCG_CLK_7>;
+> +		clocks =3D <&clk IMX_SC_R_USB_2 IMX_SC_PM_CLK_PER>,
+> +			 <&clk IMX_SC_R_USB_2 IMX_SC_PM_CLK_MISC>,
+> +			 <&conn_ipg_clk>,
+> +			 <&conn_ipg_clk>,
+> +			 <&conn_ipg_clk>,
+> +			 <&clk IMX_SC_R_USB_2 IMX_SC_PM_CLK_MST_BUS>;
+> +		clock-output-names =3D "usb3_app_clk",
+> +				     "usb3_lpm_clk",
+> +				     "usb3_ipg_clk",
+> +				     "usb3_core_pclk",
+> +				     "usb3_phy_clk",
+> +				     "usb3_aclk";
+> +		power-domains =3D <&pd IMX_SC_R_USB_2_PHY>;
+> +	};
+>  };
 
-I sent them away to talk to each other and come back with a unified
-solution. Shock horror, they never came back.
 
-Now we seem to be starting again from the beginning.
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-stmmac folk really need to get a handle on this so reviewers are not
-having to NAK similar patches time and time again, resulting in the
-problem not being solved.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
