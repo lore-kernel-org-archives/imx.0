@@ -1,74 +1,206 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4F47475
-	for <imx@lists.linux.dev>; Fri, 17 Mar 2023 18:07:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=dcnDEPhnIALH7baeRcHtAIJ4mkDdFCeRzeKfND18+ng=; b=sb
-	jo6Js9MMCadEM1hTd96lZaYeoXZ441yzMf1bIctQ90QuLcUlud1xnuT1faDw1XwkuJ0XN/kdc1WuO
-	tJymoTVN0l/7ZJblaoY8ttP/50YiokT/3ARuUOEuMqPutrzLWzvyh9N503ZE041a4LaSNnGEXrAan
-	9UBzNMtCUmgEOR8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1pdDy1-007dXW-BO; Fri, 17 Mar 2023 18:34:13 +0100
-Date: Fri, 17 Mar 2023 18:34:13 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] net: stmmac: start PHY early in __stmmac_open
-Message-ID: <f348ece4-90ef-4368-893a-73de37410fd2@lunn.ch>
-References: <20230316205449.1659395-1-shenwei.wang@nxp.com>
- <ZBOQecR6q5Xgr75F@shell.armlinux.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A6111A
+	for <imx@lists.linux.dev>; Sun, 19 Mar 2023 11:13:05 +0000 (UTC)
+Received: by mail-ed1-f42.google.com with SMTP id cy23so36413534edb.12
+        for <imx@lists.linux.dev>; Sun, 19 Mar 2023 04:13:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679224384;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+wAjLoboDx0r/SSuYgDPISEh0CxZ6z8Uv6gqSJKOSJM=;
+        b=RfNGvta9sxl9+3QfJDJJ2migp4D2KHyHEgQmNrDQPfmD7S23CJz6o/K4SxyW2klahh
+         njQ59U9/Pl3D0bkTIxVHYTre7fEOfm4hA1tb8Zn2Q7jEWjtye4zhKwqODTSnH+RYe96F
+         2+mW61CmVQqV7Z1q1TFiSdDY/p2hHD91RC4gGGPHwTV7+0U/79ipNbQ235Ow9FQWLJMb
+         5EE13+F1LJ6H+FLRYfVhA3qtOOZxEuQWYJBcatMcYa8tk37v7yrOj3lNXoW5yGQHRpQt
+         0bCRDWeQAfn2hEY8B2/A0CbCsn79HLr7/8E5bS54b8geMl75NqkfFxnM/C9MzXNel43Y
+         YeHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679224384;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+wAjLoboDx0r/SSuYgDPISEh0CxZ6z8Uv6gqSJKOSJM=;
+        b=bYKG3mGPgKzrb6QKMCVH/nRWMeo+AD5oVnsr/gGBqgvtUzirjebwt3df4Z0MgsLPZi
+         sFFhMyE7zZrV+B5SugpjH4WyStajs57DwnWpQsLwyNeMQuIsY15zTI/V9MPrw27FKBZR
+         lNW0GHgOeqzoAZGruScL4mQxLspgmt42lgltxScB5l/3J6V8dQbMf1UKvyu6A9+bDIb8
+         go0JdH8KDgIb1dHlJNMRqQ1MVNqZnUoJRP47uLYv8QaNZVJjHlcGoXwev+NB01/grHb3
+         pvnVN2lrayI4k2Inzp4zgNzedfPJxF8YdYMan26/o54CLjjKap7g1297jPVfkrP/L9HO
+         yxXg==
+X-Gm-Message-State: AO0yUKUB6Q6W1a2KxX+wfVNricXGvUr0A6NCf4a+yUCXbskfaNa1wo/X
+	JZ8xdsxyORjE6WAIhwG8W+bKzg==
+X-Google-Smtp-Source: AK7set83XzTarAE7vHkDCKgIKwINs2PXJ81Vw+zmlP0LYsOL4m8Kay50J4Fivdn6jGmHkixiS5t7Qg==
+X-Received: by 2002:a17:906:a457:b0:92f:b47c:cefc with SMTP id cb23-20020a170906a45700b0092fb47ccefcmr5627461ejb.24.1679224383756;
+        Sun, 19 Mar 2023 04:13:03 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:5b5f:f22b:a0b:559d? ([2a02:810d:15c0:828:5b5f:f22b:a0b:559d])
+        by smtp.gmail.com with ESMTPSA id u7-20020a170906b10700b0092f38a6d082sm3128062ejy.209.2023.03.19.04.13.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Mar 2023 04:13:03 -0700 (PDT)
+Message-ID: <1fd1fe42-3da6-1598-a04d-cb99a9b4b145@linaro.org>
+Date: Sun, 19 Mar 2023 12:13:02 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZBOQecR6q5Xgr75F@shell.armlinux.org.uk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [EXT] Re: [PATCH v2 1/3] dt-bindings: usb: cdns-imx8qm: add
+ imx8qm cdns3 glue bindings
+Content-Language: en-US
+To: Frank Li <frank.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+References: <20230316212712.2426542-1-Frank.Li@nxp.com>
+ <20230316212712.2426542-2-Frank.Li@nxp.com>
+ <e6935c0c-375e-b763-ea91-3b8bbc906ebc@linaro.org>
+ <AM6PR04MB4838D1958A029701E1601BA588BD9@AM6PR04MB4838.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <AM6PR04MB4838D1958A029701E1601BA588BD9@AM6PR04MB4838.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> NAK. A patch similar to this has already been sent.
+On 17/03/2023 15:55, Frank Li wrote:
 > 
-> The problem with just moving this is that phylink can call the
-> mac_link_up() method *before* phylink_start() has returned - and as
-> this driver has not completed the setup, it doesn't expect the link
-> to come up at that point.
 > 
-> There are several issues with this driver wanting the PHY clock early,
-> and there have been two people working on addressing this previously,
-> proposing two different changes to phylink.
+>> -----Original Message-----
+>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Sent: Friday, March 17, 2023 4:09 AM
+>> To: Frank Li <frank.li@nxp.com>; shawnguo@kernel.org
+>> Cc: devicetree@vger.kernel.org; festevam@gmail.com; imx@lists.linux.dev;
+>> kernel@pengutronix.de; krzysztof.kozlowski+dt@linaro.org; linux-arm-
+>> kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>; linux-
+>> kernel@vger.kernel.org; robh+dt@kernel.org; s.hauer@pengutronix.de
+>> Subject: [EXT] Re: [PATCH v2 1/3] dt-bindings: usb: cdns-imx8qm: add
+>> imx8qm cdns3 glue bindings
+>>
+>> Caution: EXT Email
+>>
+>> On 16/03/2023 22:27, Frank Li wrote:
+>>> NXP imx8qm integrates 1 cdns3 IP. This is glue layer device bindings.
+>>>
+>>
+>> Subject: drop second/last, redundant "bindings". The "dt-bindings"
+>> prefix is already stating that these are bindings.
+>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>>  .../bindings/usb/fsl,imx8qm-cdns3.yaml        | 122 ++++++++++++++++++
+>>>  1 file changed, 122 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/usb/fsl,imx8qm-
+>> cdns3.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/usb/fsl,imx8qm-
+>> cdns3.yaml b/Documentation/devicetree/bindings/usb/fsl,imx8qm-
+>> cdns3.yaml
+>>> new file mode 100644
+>>> index 000000000000..fc24df1e4483
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/usb/fsl,imx8qm-cdns3.yaml
+>>> @@ -0,0 +1,122 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +# Copyright (c) 2020 NXP
+>>> +%YAML 1.2
+>>> +---
+>>> +$id:
+>> https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevice
+>> tree.org%2Fschemas%2Fusb%2Ffsl%2Cimx8qm-
+>> cdns3.yaml%23&data=05%7C01%7CFrank.Li%40nxp.com%7Cac9af3d617dc4cf
+>> 14baf08db26c74b07%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C6
+>> 38146409617970248%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMD
+>> AiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C
+>> &sdata=EczZhjyMUGnnp7ZGfSvTj4lmOUuGlOtWYIsxxXIlNXw%3D&reserved
+>> =0
+>>> +$schema:
+>> https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevice
+>> tree.org%2Fmeta-
+>> schemas%2Fcore.yaml%23&data=05%7C01%7CFrank.Li%40nxp.com%7Cac9a
+>> f3d617dc4cf14baf08db26c74b07%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C
+>> 0%7C0%7C638146409617970248%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiM
+>> C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000
+>> %7C%7C%7C&sdata=uTNYuDm%2ByhZ56oQET2pX8sHpEqVvsUYtmOBCPXEK
+>> v40%3D&reserved=0
+>>> +
+>>> +title: NXP iMX8QM Soc USB Controller
+>>> +
+>>> +maintainers:
+>>> +  - Frank Li <Frank.Li@nxp.com>
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: fsl,imx8qm-usb3
+>>> +
+>>> +  reg:
+>>> +    items:
+>>> +      - description: Address and length of the register set for iMX USB3
+>> Platform Control
+>>
+>> Drop "Address and length of the"... or actually just maxItems: 1,
+>> because the description is a bit obvious.
+>>
+>>> +
+>>> +  "#address-cells":
+>>> +    enum: [ 1, 2 ]
+>>> +
+>>> +  "#size-cells":
+>>> +    enum: [ 1, 2 ]
+>>> +
+>>> +  ranges: true
+>>> +
+>>> +  clocks:
+>>> +    description:
+>>> +      A list of phandle and clock-specifier pairs for the clocks
+>>> +      listed in clock-names.
+>>
+>> Drop description.
+>>
+>>> +    items:
+>>> +      - description: Standby clock. Used during ultra low power states.
+>>> +      - description: USB bus clock for usb3 controller.
+>>> +      - description: AXI clock for AXI interface.
+>>> +      - description: ipg clock for register access.
+>>> +      - description: Core clock for usb3 controller.
+>>> +
+>>> +  clock-names:
+>>> +    items:
+>>> +      - const: usb3_lpm_clk
+>>> +      - const: usb3_bus_clk
+>>> +      - const: usb3_aclk
+>>> +      - const: usb3_ipg_clk
+>>> +      - const: usb3_core_pclk
+>>> +
+>>> +  assigned-clocks:
+>>> +    items:
+>>> +      - description: Phandle and clock specifier of IMX_SC_PM_CLK_PER.
+>>> +      - description: Phandle and clock specifoer of IMX_SC_PM_CLK_MISC.
+>>> +      - description: Phandle and clock specifoer of
+>> IMX_SC_PM_CLK_MST_BUS.
+>>> +
+>>> +  assigned-clock-rates:
+>>> +    items:
+>>> +      - description: Must be 125 Mhz.
+>>> +      - description: Must be 12 Mhz.
+>>> +      - description: Must be 250 Mhz.
+>>
+>> I would argue that both properties above are not needed. If your
+>> hardware requires fixed frequencies, clock provider can fix them, can't it?
 > 
-> I sent them away to talk to each other and come back with a unified
-> solution. Shock horror, they never came back.
-> 
-> Now we seem to be starting again from the beginning.
-> 
-> stmmac folk really need to get a handle on this so reviewers are not
-> having to NAK similar patches time and time again, resulting in the
-> problem not being solved.
+> Clock provider don't know fixed value and turn on only used by client.
 
-And just adding to that, Developers should also get into the habit of
-searching to see if somebody has already tried and failed to solve the
-problem.
+So maybe fix the clock provider? Or this device driver? Requiring by
+binding specific frequencies for every board is a bit redundant.
 
-“Those Who Do Not Learn History Are Doomed To Repeat It.”
+Best regards,
+Krzysztof
 
-Try avoiding wasting everybody's times by learning a bit of history.
-
-    Andrew
