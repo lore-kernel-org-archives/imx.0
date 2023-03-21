@@ -1,597 +1,120 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540547E0
-	for <imx@lists.linux.dev>; Tue, 21 Mar 2023 00:10:51 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C1CD2496;
-	Tue, 21 Mar 2023 01:05:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1679357124;
-	bh=GPbRInuiNoKCViki/gXJjaRKzLTSK8FT2Wt3b7Xz0e8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JwWxx9H4VxsZgYJLPrQmqg9XPRD1f7Z6//rYuqXAI67sPMz/jigcC2u8QqNaKRTET
-	 Ek5wY7EZ1drw1q5Yrbw2wUomPcT9Qfus0rff7jgE4CEMFZCJvCXhFVdBwnXoV5sXuJ
-	 YdSahenRXsiys5Gma4rDxUwlunfFwEa/yeWvLmH4=
-Date: Tue, 21 Mar 2023 02:05:29 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Shawn Guo <shawnguo@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Marco Contenti <marco.c@variscite.com>,
-	Nate Drude <nate.d@variscite.com>,
-	FrancescoFerraro <francesco.f@variscite.com>,
-	Harshesh Valera <harshesh.v@variscite.com>
-Subject: Re: [PATCH v1 3/4] arm64: dts: freescale: Add support for the
- Variscite i.MX8MP DART8MCustomBoard
-Message-ID: <20230321000529.GX20234@pendragon.ideasonboard.com>
-References: <20230219031126.19372-1-laurent.pinchart@ideasonboard.com>
- <20230219031126.19372-4-laurent.pinchart@ideasonboard.com>
- <20230314023647.GG143566@dragon>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FB41FB8
+	for <imx@lists.linux.dev>; Tue, 21 Mar 2023 06:37:36 +0000 (UTC)
+Received: by mail-ed1-f43.google.com with SMTP id cy23so55532434edb.12
+        for <imx@lists.linux.dev>; Mon, 20 Mar 2023 23:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679380654;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Cx+KGeUp/wxOIZjrDPkHjblyuhe5J5nJa9fCaHcyiZw=;
+        b=BCi0uaCvv0+js1ecGX2/NRV5aUU6/IiNSTvSB4IiiLLJGg7DhzHLMBfwqoTXl+d5qB
+         O3m7iLjMOxi3eTn9Nx7+fU7M5PXE48TLcl5bn/feaRAEKYqYaWMwa8oU2FysPGejYS6j
+         SFtaEIyCHf/ct/pw3lXJP57bH9Fqh4RSD5XDFD6Q11dAjj+Xz1pbMFfvA2VbREGenwRE
+         4SVfJTB7+jnQ9wjYMnAbpfeSS3cNj81DlR2IQwR3Vjj5TKWkQdQek967Kr6kFtlWXiXz
+         sVSOe9Ywpg93cmPXy3vfpPosmOWjhuel+sR7beCS86CtU5VzQ9QuZyP1xAxruciHIL0r
+         hrUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679380654;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cx+KGeUp/wxOIZjrDPkHjblyuhe5J5nJa9fCaHcyiZw=;
+        b=KF03mikgXYeF3ann04IKL3NhYdkYvxLhl95tIgYafDgG9lGEDEAF9q3i9BFN3olMAT
+         4wx6qcI0r6nVrCsLQksjlakNZs9PqRjxW8kHvWFWpXKbc/z7G6GhiNZJvM6x9+CFm58r
+         iqiIphXR9qw3Vm3XavUl1kK2HGjg11JNyWOHaWWbbxAApUOGYGR9rjd+CfbD4N5LXLay
+         5HYH6FhKAO44F4KBUGhX43Sl9yTYVGiAdLCeiQHixVC6MEu4XLpdlRBnArJyMS+TMWZ3
+         Y8Y08zMwM7edIO5dOI9vQrdzB4dq+Jxy+yW3Xt0Lmhm/jYMeXbzxUZ4s06cYLmSx8LWz
+         2h2g==
+X-Gm-Message-State: AO0yUKX21JjGV7Hx0/f6PS7jWogR+WO1nZPqFKKAwDbXdfxx2k2YQVc0
+	7r7Oie7aePso3pwM2WHNfejc+A==
+X-Google-Smtp-Source: AK7set/T00OguACk3viJY9WGs6qdtUM6xsHRWD3xyJzjHRX/K4nsguPr/BBF2Vtic1IdmXJWJVDqUQ==
+X-Received: by 2002:a17:906:39da:b0:92c:a80e:225f with SMTP id i26-20020a17090639da00b0092ca80e225fmr1794550eje.52.1679380654368;
+        Mon, 20 Mar 2023 23:37:34 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:2142:d8da:5ae4:d817? ([2a02:810d:15c0:828:2142:d8da:5ae4:d817])
+        by smtp.gmail.com with ESMTPSA id la18-20020a170907781200b00914001c91fcsm5332603ejc.86.2023.03.20.23.37.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Mar 2023 23:37:33 -0700 (PDT)
+Message-ID: <48bdca7a-e4ec-a2e4-ff0d-dc9a08bf799e@linaro.org>
+Date: Tue, 21 Mar 2023 07:37:33 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230314023647.GG143566@dragon>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [EXT] Re: [PATCH v2 1/3] dt-bindings: usb: cdns-imx8qm: add
+ imx8qm cdns3 glue bindings
+Content-Language: en-US
+To: Frank Li <frank.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+References: <20230316212712.2426542-1-Frank.Li@nxp.com>
+ <20230316212712.2426542-2-Frank.Li@nxp.com>
+ <e6935c0c-375e-b763-ea91-3b8bbc906ebc@linaro.org>
+ <AM6PR04MB4838D1958A029701E1601BA588BD9@AM6PR04MB4838.eurprd04.prod.outlook.com>
+ <1fd1fe42-3da6-1598-a04d-cb99a9b4b145@linaro.org>
+ <AM6PR04MB483800D7CDCC7AF48F88BF9688809@AM6PR04MB4838.eurprd04.prod.outlook.com>
+ <b8801c83-f2dc-f144-de58-03e5c24436fd@linaro.org>
+ <AM6PR04MB4838F5C9EF13A588E799D5C488809@AM6PR04MB4838.eurprd04.prod.outlook.com>
+ <fc5c76d1-51cd-5992-9bfa-06f57874fc03@linaro.org>
+ <AM6PR04MB4838C6B05F46AD94153DDC8388809@AM6PR04MB4838.eurprd04.prod.outlook.com>
+ <614fa099-e666-03da-1b11-29cc804bf847@linaro.org>
+ <AM6PR04MB4838FC9492065F4DBCABE60D88809@AM6PR04MB4838.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <AM6PR04MB4838FC9492065F4DBCABE60D88809@AM6PR04MB4838.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Shawn,
-
-On Tue, Mar 14, 2023 at 10:36:47AM +0800, Shawn Guo wrote:
-> On Sun, Feb 19, 2023 at 05:11:25AM +0200, Laurent Pinchart wrote:
-> > The DT8MCustomBoard is a carrier board for DART i.MX8-based modules.
-> > This device tree file adds support for the DT8MCustomBoard v2.0 with a
-> > connected DART-MX8M-PLUS module.
-> > 
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
-> >  .../imx8mp-var-dart-dt8mcustomboard-v2.dts    | 499 ++++++++++++++++++
-> >  2 files changed, 500 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dts
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> > index ef6f364eaa18..4e6cfcd22e86 100644
-> > --- a/arch/arm64/boot/dts/freescale/Makefile
-> > +++ b/arch/arm64/boot/dts/freescale/Makefile
-> > @@ -92,6 +92,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-msc-sm2s-ep1.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
-> > +dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-dt8mcustomboard-v2.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw74xx.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dahlia.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dev.dtb
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dts b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dts
-> > new file mode 100644
-> > index 000000000000..5677236e0ef1
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dts
-> > @@ -0,0 +1,499 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> > +/*
-> > + * Copyright 2019 NXP
-> > + * Copyright 2020-2021 Variscite Ltd.
-> > + * Copyright 2023 Ideas on Board Oy
-> > + */
-> > +
-> > +#include "imx8mp-var-dart.dtsi"
-> > +
-> > +/ {
-> > +	compatible = "variscite,dart-mx8mp-dt8mcustomboard-v2",
-> > +		     "variscite,dart-mx8mp",
-> > +		     "fsl,imx8mp";
-> > +	model = "Variscite DART-MX8M-PLUS on DT8MCustomBoard 2.x";
-> > +
-> > +	chosen {
-> > +		stdout-path = &uart1;
-> > +	};
-> > +
-> > +	can0_osc: can0-osc {
+On 20/03/2023 20:59, Frank Li wrote:
+>>
+>> The second is a good example - as you can see, there is a choice of
+>> values, so they are not exactly fixed.
+>>
+>>>
+>>> Such frequency information is necessary.  We can put to dts or clock drivers.
+>> The clock driver
+>>
+>> If this is the argument, then the answer is NAK. Sorry, but DTS is not
+>> for offloading fixed stuff just because you do not want to work on
+>> drivers. The same for discoverable stuff.
+>>
+>>> Become bigger, or dts become bigger.  I think the key point is if property to
+>> descript hardware information.
+>>
+>> You have to understand that with your binding you are not allowing to
+>> any changes of these frequencies.
 > 
-> Maybe have a generic node name, something in pattern of clock-xxx?
+> Do you means it should be okay if one of  clocks is not fixed?
 
-I'll rename this to clock-can0.
+We have here long discussion why does your binding require fixed
+frequencies, because this is something unusual and not recommended. And
+if they are really fixed, then device driver probably should make the
+choice of frequencies.
 
-> > +		compatible = "fixed-clock";
-> > +		#clock-cells = <0>;
-> > +		clock-frequency = <40000000>;
-> > +	};
-> > +
-> > +	gpio-keys {
-> > +		compatible = "gpio-keys";
-> > +		status = "okay";
-> > +
-> > +		key-back {
-> > +			label = "BACK";
-> > +			linux,code = <KEY_BACK>;
-> > +			gpios = <&gpio_exp_1 7 GPIO_ACTIVE_LOW>;
-> > +			wakeup-source;
-> > +		};
-> > +
-> > +		key-up {
-> > +			label = "UP";
-> > +			linux,code = <KEY_UP>;
-> > +			gpios = <&gpio_exp_1 5 GPIO_ACTIVE_LOW>;
-> > +			wakeup-source;
-> > +		};
-> > +
-> > +		key-home {
-> > +			label = "HOME";
-> > +			linux,code = <KEY_HOME>;
-> > +			gpios = <&gpio_exp_1 4 GPIO_ACTIVE_LOW>;
-> > +			wakeup-source;
-> > +		};
-> > +
-> > +		key-down {
-> > +			label = "DOWN";
-> > +			linux,code = <KEY_DOWN>;
-> > +			gpios = <&gpio_exp_1 6 GPIO_ACTIVE_LOW>;
-> > +			wakeup-source;
-> > +		};
-> > +	};
-> > +
-> > +	gpio-leds {
-> > +		compatible = "gpio-leds";
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_gpio_leds>;
-> > +		status = "okay";
-> > +
-> > +		led1 {
-> > +			label = "LED1";
-> > +			gpios = <&gpio_exp_2 7 GPIO_ACTIVE_HIGH>;
-> > +			linux,default-trigger = "heartbeat";
-> > +		};
-> > +
-> > +		led2 {
-> > +			label = "LED2";
-> > +			gpios = <&gpio_exp_2 6 GPIO_ACTIVE_HIGH>;
-> > +		};
-> > +
-> > +		led3 {
-> > +			label = "LED3";
-> > +			gpios = <&gpio_exp_2 5 GPIO_ACTIVE_HIGH>;
-> > +		};
-> > +
-> > +		led4 {
-> > +			label = "LED4";
-> > +			gpios = <&gpio4 18 GPIO_ACTIVE_HIGH>;
-> > +			linux,default-trigger = "mmc2";
-> > +		};
-> > +	};
-> > +
-> > +	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
-> > +		compatible = "regulator-fixed";
-> > +		regulator-name = "VSD_3V3";
-> > +		regulator-min-microvolt = <3300000>;
-> > +		regulator-max-microvolt = <3300000>;
-> > +		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-> > +		enable-active-high;
-> > +		startup-delay-us = <100>;
-> > +		off-on-delay-us = <12000>;
-> > +	};
-> > +};
-> > +
-> > +&ecspi1 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_ecspi1>;
-> > +	cs-gpios = <&gpio5  9 GPIO_ACTIVE_LOW>,
-> > +		   <&gpio1 12 GPIO_ACTIVE_LOW>;
-> > +	status = "okay";
-> > +
-> > +	touch@0 {
-> > +		compatible = "ti,tsc2046";
-> > +		spi-max-frequency = <1500000>;
-> > +		reg = <0>;
-> > +		status = "disabled";
 > 
-> We usually have 'status' at the end of property list.
-
-I'll drop this, there's no reason to keep the
-
-> > +
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_restouch>;
-> > +
+> Previous owner already left nxp.  I double checked our documents and scfw source code. 
+> I miss understood a clock SC_PM_CLK_MST_BUS, which actually mapped to IP's aclk, which
+> ware 100Mhz to 600Mhz. 
 > 
-> Nitpick: we expect newlines at certain places like among nodes, or
-> between properties and child node, but not in middle of property list.
+>>
+>> Best regards,
+>> Krzysztof
+> 
 
-There are lots of device tree files in mainline where blank lines are
-used to separate groups of properties. I personally find this more
-readable than a large wall of text.
+Best regards,
+Krzysztof
 
-> > +		interrupt-parent = <&gpio1>;
-> > +		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-> > +
-> > +		pendown-gpio = <&gpio1 7 GPIO_ACTIVE_LOW>;
-> > +		wakeup-source;
-> > +
-> > +		touchscreen-min-x = <125>;
-> > +		touchscreen-min-y = <282>;
-> > +		touchscreen-size-x = <4009>;
-> > +		touchscreen-size-y = <3865>;
-> > +		touchscreen-max-pressure = <255>;
-> > +		touchscreen-average-samples = <10>;
-> > +
-> > +		ti,keep-vref-on;
-> > +		ti,settle-delay-usec = /bits/ 16 <150>;
-> > +		ti,x-plate-ohms = /bits/ 16 <180>;
-> > +		ti,debounce-tol = /bits/ 16 <3>;
-> > +		ti,debounce-rep = /bits/ 16 <1>;
-> > +	};
-> > +
-> > +	can@1 {
-> > +		compatible = "microchip,mcp2518fd";
-> > +		spi-max-frequency = <20000000>;
-> > +		reg = <1>;
-> > +		clocks = <&can0_osc>;
-> > +
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_can>;
-> > +
-> > +		interrupt-parent = <&gpio1>;
-> > +		interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
-> > +
-> > +		microchip,rx-int-gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
-> > +	};
-> > +};
-> > +
-> > +&eqos {
-> > +	mdio {
-> > +		ethphy1: ethernet-phy@1 {
-> > +			compatible = "ethernet-phy-ieee802.3-c22";
-> > +			reg = <1>;
-> > +			eee-broken-1000t;
-> > +			reset-gpios = <&gpio_exp_2 0 GPIO_ACTIVE_LOW>;
-> > +			reset-assert-us = <10000>;
-> > +			reset-deassert-us = <20000>;
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&fec {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_fec>;
-> > +	phy-mode = "rgmii";
-> > +	phy-handle = <&ethphy1>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&flexcan1 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_flexcan1>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&flexcan2 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_flexcan2>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&i2c2 {
-> > +	clock-frequency = <400000>;
-> > +	pinctrl-names = "default", "gpio";
-> > +	pinctrl-0 = <&pinctrl_i2c2>;
-> > +	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-> > +	scl-gpios = <&gpio5 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> > +	sda-gpios = <&gpio5 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> > +	status = "okay";
-> > +
-> > +	eeprom@54 {
-> > +		compatible = "rohm,24c04", "atmel,24c04";
-> > +		reg = <0x54>;
-> > +		pagesize = <16>;
-> > +	};
-> > +
-> > +	rtc@68 {
-> > +		compatible = "isil,isl12057";	/* dallas,ds1337 on v3.0 */
-> > +		reg = <0x68>;
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_rtc>;
-> > +		interrupt-parent = <&gpio1>;
-> > +		interrupts = <15 IRQ_TYPE_EDGE_FALLING>;
-> > +		wakeup-source;
-> > +	};
-> > +};
-> > +
-> > +&i2c3 {
-> > +	clock-frequency = <400000>;
-> > +	pinctrl-names = "default", "gpio";
-> > +	pinctrl-0 = <&pinctrl_i2c3>;
-> > +	pinctrl-1 = <&pinctrl_i2c3_gpio>;
-> > +	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> > +	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&i2c4 {
-> > +	clock-frequency = <400000>;
-> > +	pinctrl-names = "default", "gpio";
-> > +	pinctrl-0 = <&pinctrl_i2c4>;
-> > +	pinctrl-1 = <&pinctrl_i2c4_gpio>;
-> > +	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> > +	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> > +	status = "okay";
-> > +
-> > +	gpio_exp_1: gpio@20 {
-> > +		compatible = "ti,tca6408";	/* nxp,pcal6408 on v3.0 */
-> > +		reg = <0x20>;
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_pca6408>;
-> > +		interrupt-parent = <&gpio1>;
-> > +		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
-> > +		gpio-controller;
-> > +		#gpio-cells = <2>;
-> > +	};
-> > +
-> > +	gpio_exp_2: gpio@21 {
-> > +		compatible = "ti,tca6408";	/* nxp,pcal6408 on v3.0 */
-> > +		reg = <0x21>;
-> > +		gpio-controller;
-> > +		#gpio-cells = <2>;
-> > +	};
-> > +};
-> > +
-> > +/* Reference voltage for eQOS PHY */
-> > +&ldo4 {
-> > +	regulator-min-microvolt = <1800000>;
-> > +	regulator-max-microvolt = <1800000>;
-> > +};
-> > +
-> > +&pwm1 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_pwm1>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +/* Console */
-> > +&uart1 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_uart1>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +/* Header */
-> > +&uart2 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_uart2>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +/* Header */
-> > +&uart3 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_uart3>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&usb3_phy1 {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&usb3_1 {
-> > +	fsl,permanently-attached;
-> > +	fsl,disable-port-power-control;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&usb_dwc3_1 {
-> > +	dr_mode = "host";
-> > +	status = "okay";
-> > +};
-> > +
-> > +/* SD card connector */
-> > +&usdhc2 {
-> > +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> > +	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-> > +	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-> > +	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-> > +	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-> > +	vmmc-supply = <&reg_usdhc2_vmmc>;
-> > +	bus-width = <4>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&iomuxc {
-> > +	pinctrl_can: cangrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06				0x1c6
-> > +			MX8MP_IOMUXC_SPDIF_RX__GPIO5_IO04				0x16
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_ecspi1: ecspi1grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK				0x12
-> > +			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI				0x12
-> > +			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO				0x12
-> > +			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09				0x12
-> > +			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12				0x12
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_fec: fecgrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0				0x90
-> > +			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1				0x90
-> > +			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2				0x90
-> > +			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3				0x90
-> > +			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC				0x90
-> > +			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL			0x90
-> > +			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0				0x00
-> > +			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1				0x00
-> > +			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2				0x00
-> > +			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3				0x00
-> > +			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL			0x00
-> > +			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC				0x00
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_flexcan1: flexcan1grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SAI2_RXC__CAN1_TX					0x154
-> > +			MX8MP_IOMUXC_SAI2_TXC__CAN1_RX					0x154
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_flexcan2: flexcan2grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SAI2_MCLK__CAN2_RX					0x154
-> > +			MX8MP_IOMUXC_SAI2_TXD0__CAN2_TX					0x154
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_gpio_leds: ledgrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18				0xc6
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_i2c2: i2c2grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL					0x400001c2
-> > +			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA					0x400001c2
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_i2c3: i2c3grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL					0x400001c2
-> > +			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA					0x400001c2
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_i2c4: i2c4grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL					0x400001c2
-> > +			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA					0x400001c2
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_i2c2_gpio: i2c2gpiogrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_I2C2_SCL__GPIO5_IO16				0x1c2
-> > +			MX8MP_IOMUXC_I2C2_SDA__GPIO5_IO17				0x1c2
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_i2c3_gpio: i2c3gpiogrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_I2C3_SCL__GPIO5_IO18				0x1c2
-> > +			MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19				0x1c2
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_i2c4_gpio: i2c4gpiogrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_I2C4_SCL__GPIO5_IO20				0x1c2
-> > +			MX8MP_IOMUXC_I2C4_SDA__GPIO5_IO21				0x1c2
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_pca6408: pca6408grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05				0x1c6
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_pwm1: pwm1grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_GPIO1_IO01__PWM1_OUT				0x116
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_restouch: restouchgrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07				0xc0
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_rtc: rtcgrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_GPIO1_IO15__GPIO1_IO15				0x1c0
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_uart1: uart1grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX				0x40
-> > +			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX				0x40
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_uart2: uart2grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX				0x40
-> > +			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX				0x40
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_uart3: uart3grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX				0x40
-> > +			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX				0x40
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_usb0: usb0grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC				0x1c0
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12				0x1c4
-> > +			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19				0x40
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_usdhc2: usdhc2grp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK				0x190
-> > +			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD				0x1d0
-> > +			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0				0x1d0
-> > +			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1				0x1d0
-> > +			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2				0x1d0
-> > +			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3				0x1d0
-> > +			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT				0xc0
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK				0x194
-> > +			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD				0x1d4
-> > +			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0				0x1d4
-> > +			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1				0x1d4
-> > +			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2				0x1d4
-> > +			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3				0x1d4
-> > +			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT				0xc0
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-> > +		fsl,pins = <
-> > +			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK				0x196
-> > +			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD				0x1d6
-> > +			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0				0x1d6
-> > +			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1				0x1d6
-> > +			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2				0x1d6
-> > +			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3				0x1d6
-> > +			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT				0xc0
-> > +		>;
-> > +	};
-> > +};
-
--- 
-Regards,
-
-Laurent Pinchart
