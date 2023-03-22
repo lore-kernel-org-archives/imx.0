@@ -1,153 +1,158 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2063.outbound.protection.outlook.com [40.107.105.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDF09440
-	for <imx@lists.linux.dev>; Tue, 21 Mar 2023 21:05:45 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HCJy9smisJkxPHR1NEoSdPHKj2d9kWQ+E/tGlI1NNMzMs3icnLkhb8takRfWHuIxkrb00Dseq0Ka7dOlul89/4/nEA6tVptuTMIMgOpnKE6oLdC34KY+fiCbsHLV0HXIJHUzmKn28Yd8efVXlUMfTzu1FgsU7syna3LAvhDQ9b/kn1hNSquMsRcjpSblVTQ/os0xUPqHR8fq3YayvZmifcORgyH6XCc5uSPT8P4jasnfDrCd8b9E2Stjv9rq/xLMcUYiP+vpstacWD4zEafEOE1/JW5N0mqw2lQ1WC2Z0mWoAcJ1TxEFfpi2VeQzxRd4Rr/H84WjtYL73gTnOowdcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dfIMH94uN9Yr+x0ZqWlvL4rgxXRC9kwoBBw0cYLyNPs=;
- b=ccwzsOaselWp0h6cto3+/yeGiJaGydfkZhv+i6vbxeWon0GCWAtyctK/oFSb7Ruv/E2kSNEHIaE+XE6Pb7y4Zvq6zwt7SCHW8sZwFEG0dae2+gXNkPAM7ZqPM7uE7mNSo2S+Z+ZTMDwjzDXMiz87JhOIqD+HZ7h0tKDbiKtPYdb3+Wd2YsmbHQf1NFODpdS1E1D2nTS5qVaVQZh1ykGECsmM2vBdgH5PZpuDeTd9ksUSE/TJHmaKUAdq/qq1T4y/UB3r4/mReC7bix9vgSLp8KtDH5M+K2vW3AVcC2z2zwLgegSWFlh0aIqMQDX+EJGEKEOxYksNUvonE5Aaxw3AHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dfIMH94uN9Yr+x0ZqWlvL4rgxXRC9kwoBBw0cYLyNPs=;
- b=srBtuZBr1jY4eUEaGg1YIxLiUl++6C2/kryJA0CmCZolW0XOZnYVEx7RdysppKiH90zP+cW6O4BBmUSmnWfoGJQyajvM9x7RNkirmYN9YD7uINipJRg89F7OAQayME9oa+KLMfibWxthyaR6ny9Y7nd3FZcxiNGZ6KlS6exP9t4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM0PR04MB7092.eurprd04.prod.outlook.com (2603:10a6:208:19c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Tue, 21 Mar
- 2023 21:05:42 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::fb2a:a683:b78e:b9b5]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::fb2a:a683:b78e:b9b5%4]) with mapi id 15.20.6178.037; Tue, 21 Mar 2023
- 21:05:42 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Peter Chen <peter.chen@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Aswath Govindraju <a-govindraju@ti.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org (open list:CADENCE USB3 DRD IP DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] usb: cdns3: fix super speed mass storage gadget device failure at imx8qm
-Date: Tue, 21 Mar 2023 17:05:21 -0400
-Message-Id: <20230321210521.2806486-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR03CA0018.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::28) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B86D1FB1
+	for <imx@lists.linux.dev>; Wed, 22 Mar 2023 07:32:27 +0000 (UTC)
+Received: by mail-ed1-f41.google.com with SMTP id x3so68984960edb.10
+        for <imx@lists.linux.dev>; Wed, 22 Mar 2023 00:32:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679470345;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tbE8oOZ1qZy7ZlmJACzOLsropg794kzA9oxRKKssPU4=;
+        b=rosb2UzCDE310cFsKZvvlZEuOZU4dbBgS5Eo/Aj78i3YYF4d6XpfBhr7Ou7vQh/9z+
+         RLts7gLtWNeK/icyP6htyqPMcCs0DLcWjPT9ZpuLqNRbonOSDRYa4kW/Ks4tMTxdllxp
+         UIPF1R2Los/rPHB4/VkTLabY310QxilopTF6Tu4TqXci+Yt4UKc2caCvI2LN2H070Xmy
+         GQE4J1zNVSei0eUNdcCGw/9sxltTDYzkuWP3kBYFCD1buvmLI1Zmnb2hTMhILpWm+gDg
+         PJuBZHgChz9yECK+CbpJBYqscYCLbgk5WyKeL3KI4PodCdAVYF5RE/I8DQklVC1bs3TT
+         dBCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679470345;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tbE8oOZ1qZy7ZlmJACzOLsropg794kzA9oxRKKssPU4=;
+        b=k1ovIhxse/LUoGmx4aA4EtzIh3YoK1ApzgAwzo7XhjRlnGpl/Bkb7oyJGiEqLGQqJF
+         bmWrpL5NxWecIgUGoGUUYNuaar5Co0Xdc8TmpiNMzXfJkfa8OMazXlFvQOkETBy6of4g
+         52bMU610amBxuHYV+JyiKJuZpXe/fWum20i2hRYscVTOBRn1ZXlNQzdGgnHVdkjFbS/R
+         TYH+RWenW26QRV9wIAsdrL4aoneMxz3qLJ4UExJM0xd0wN50/JLwXt5LCObWFM2lJEZm
+         w6pigz3YyWq/DtkO1v0rtVDm+kIIYIvQ0oNnnfmFnGveAYGlANrYd/VtcveG0qCblwwv
+         bbLA==
+X-Gm-Message-State: AO0yUKXillBQjmd3HHNCMoctyIPgiBTzIk4GbrJWt7h+ENWLIgX4geFd
+	iOF9oeYPLofq/sRDOtTP1Hm/9SXGQLR0qldw+CE=
+X-Google-Smtp-Source: AK7set/wSSXlrbJsDDQXgAr2v2nJuUw7h9vQAscX1NrYfvyCXh6GOm7tutLrYb2SBwqnqt9K7pASpw==
+X-Received: by 2002:a17:906:7016:b0:930:45ea:4a28 with SMTP id n22-20020a170906701600b0093045ea4a28mr6718363ejj.35.1679470345270;
+        Wed, 22 Mar 2023 00:32:25 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:5050:151b:e755:1c6? ([2a02:810d:15c0:828:5050:151b:e755:1c6])
+        by smtp.gmail.com with ESMTPSA id h13-20020a170906110d00b009333aa81446sm5117276eja.115.2023.03.22.00.32.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 00:32:24 -0700 (PDT)
+Message-ID: <1ce3bf91-6bef-b4c1-1ec9-3a345518efeb@linaro.org>
+Date: Wed, 22 Mar 2023 08:32:23 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM0PR04MB7092:EE_
-X-MS-Office365-Filtering-Correlation-Id: 919b5af9-94d2-46f7-65f2-08db2a5007c9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	hmMQI6nuDuEzdki+86rbaflg6DeKYsyiSKZj94rBGyqxqYP1QKSy6t38jE+yO1tAZFATmjKl9J8YcNH9mKI54Q1Aaj0dm/2Fyjxqa9Jb9rfnCUdq0J/dCJN75JpAfPIxT6iy3HX0MpeHXcjVOWT1c8dT8+yBcFO5NLqV7vUrtVm2i8h7aikUpN9Yv0EqW+jcGpFtmU0s3oebUDOZ3tLkRYlr0ocwO1da3pUAlWrXeHquNEVCZlsvYD/Ja2OfH0TCzEpGT2VKHJioMXd9Qn6RNiUCXy8lrfGkpXmlxgEwj8cyrdbysA6URoMU//PY91lR9iYwh+RWbuWkZcUmAHU9e3qaMwyxfyeLbXQGuxtaXoSuOpEM5MCf0CPSpiecwynU17u1nD83CXkGAYxAfvQZHfRMIngEoTLpkJcg6VUBFi6HhN59i/GNzUSP4o8usCRswj41Zu3LW3L2IrURCN/nFzXHUVn9Dl52Qe0KbgaNJsDC6YswMsxKVLoFImZ4H424DZ+Z+BBxCjaSEvw34VSyQ132dPUuUooIMOD8JZtoqf/IEVc9FmUKEyJEGJ9+joQjMERQZCTKfuYbFUtNymO/eYNZC8clx+wJe8rOKMfBin0QnNKi3mKoMsCL6ZH2AGkQw/Uuv8RsR8VrIvELaKQ6nbxEenbABT1KRL9MTE5nBLT79Nr92kIYzE0tn8/9Qe3wjpYyAMd/VH00Zr6FEgBDe2KWthPeC/oEoZfaVOkjM6k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(39860400002)(346002)(366004)(396003)(376002)(451199018)(6486002)(41300700001)(66556008)(66476007)(110136005)(478600001)(66946007)(5660300002)(316002)(8936002)(8676002)(4326008)(36756003)(86362001)(52116002)(6512007)(6506007)(1076003)(186003)(26005)(6666004)(2616005)(2906002)(38350700002)(38100700002)(83380400001)(32563001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6jhIuWoQCzCTcKfJOPRbyzbTNPxIKFRgwUCeflW16jdfGoVV2dzp1B6AHKrt?=
- =?us-ascii?Q?qKvqCfAKrwRW39CGWdIeVkalTqhy/VXuz9B6JRyjX/XkU6Xy2ybbs6La55CD?=
- =?us-ascii?Q?u5ciEByQHxD9GGUR1/XSq4SdAzfp1RDq+UjIfbqCsaHpfu6+EWfeUccbjSyN?=
- =?us-ascii?Q?2ToIgT8p/X4mcYeFAfGoJZZ4ir79pFvXmkBbnKRyot4GYYHZFaHhVpK1y6IL?=
- =?us-ascii?Q?FogolmSPHzLg9ysUUxv6pXmucQQ/Xw+/xuOK12sIgd+DaDEE2onN7ujNjjOk?=
- =?us-ascii?Q?XQSISc1wcIluiVIplNxCWV3D2J1m60hVNwIUraO1jl9GdwDY2JHYcjLwD15j?=
- =?us-ascii?Q?a6NIqu4ZI1+4X8FjD/gEZg6d09nIS0f/KyLSTvCppRFPTIWhqdTcgXW3g/TW?=
- =?us-ascii?Q?zGaSjOrRi7rXB3mQyo+cAT2nuMnmbRoLpNcgsaqTlyQ98QAsAXovcH4fJnMY?=
- =?us-ascii?Q?FLEQPulldX5Bkfs2eim4ou2JaEOl9VWKTXKQljKci+EBd9ED1ffl96VAXt0S?=
- =?us-ascii?Q?Dp0LzAtwjIl8/f3dD/W6WYzyoxqJzdq/9ONqGqgR8RV/qgf+qgQdj3vWmGBx?=
- =?us-ascii?Q?rYH4NlMV+XvGBIAqUfEIf+3JXUdSike4ZuP2mcHpghe+YxmnxTeJMHg1WyU4?=
- =?us-ascii?Q?vX4Yy+13EaQsD+6r3zrgwAK/V0WovaZbRmmuTD2n1T8KvF9XTqDhY3UKuB9d?=
- =?us-ascii?Q?ZN+Hzx9O2sQewplE35+JSUj4qh8z3cZg+uxwJg3+wbZ2surnayJhDa+DbpGR?=
- =?us-ascii?Q?+jwCq4DgNdw4AvKlNF8zSQzmHI/PdhRZ+8P+dzHPgGZTpUKErdIE/0or/YMD?=
- =?us-ascii?Q?n2hw/xfvhELpYnQNOYt1oPyiP+zuzEsYjjTupkHNMpzzf8AsxI5/qGzpS+Y4?=
- =?us-ascii?Q?VGTKff3G4tqZBmq2KoBvRhSbWoxPgNdNbmoVn846xjg3Q5LmMaM9eaflyZ1x?=
- =?us-ascii?Q?85JhG6nEBbtfD6q/J/rQ2XGXx3cN+uxoDGbeN1smpPFbRWkhEOGA/B0P8e17?=
- =?us-ascii?Q?pV+Zi0CUNOObP8k9nRfpC/5i9PrGec3zSIKcwLSk7ZwkqrpZ8Bt9Q6Dm9zKI?=
- =?us-ascii?Q?0OIzR16aiIotIp6lMHavlCOMXBqTp5SlC1PrsLOfoI6cU/BLbLmigfzR+7YE?=
- =?us-ascii?Q?o7Bdro+6fCVAtW5a5IYfQ7krIvw81uAHUNQuN/JGAU005acTiinlqVWx9msL?=
- =?us-ascii?Q?6ANGUPqSSDZQUc3Nvoa0ASmrnS1VfiEFfUtsYQA7wsmhrqvSPQa6N4J+/0DE?=
- =?us-ascii?Q?/6MaOkaJcIGmKnOXAPaRQAgfRJjQdQ2SYKdA/JUDn9K1jMTdAFgwzTgQVHVY?=
- =?us-ascii?Q?5uf5cX9RfEum2x2kBScHK199gEO5wk/Aj+6roXVCIH+0UOAVilv9FTl5ChUb?=
- =?us-ascii?Q?IOOm41+X6wn7bpmIZajEPncdlfuxY4bbuy7D5ST/ASCIBIQ0gbpy73LE1rww?=
- =?us-ascii?Q?JtaWQ85e2O2O/LF0XoeuuRVkj8B5/MyDnxkgNvbx/HG8GzdMMS2aVQLfMiHE?=
- =?us-ascii?Q?drFj0fO4x8zrzM+e554cL7KuPa0XsVPyeWk4+9EeNg6Rhj7unAfMY2elI0sF?=
- =?us-ascii?Q?YzNjIeSlVjRuJLOfTrM0odUHzbxJBxeqIzmmtWrP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 919b5af9-94d2-46f7-65f2-08db2a5007c9
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2023 21:05:42.1165
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6k4U/JDJn1MYS4I7mInQsK/xNjxK0LsepiHgZZsKR/9ZFNvUfDeeWKDHTpYxbMddm23lryLWzfFI0syQpDijZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7092
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 1/3] dt-bindings: usb: cdns-imx8qm: add imx8qm cdns3
+ glue bindings
+To: Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
+ linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+ linux-kernel@vger.kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
+ shawnguo@kernel.org
+References: <20230321151951.2784286-1-Frank.Li@nxp.com>
+ <20230321151951.2784286-2-Frank.Li@nxp.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230321151951.2784286-2-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The mass storage gadget has one IN and one OUT endpoint. The below (Fixes)
-commit aimed to utilize all hardware FIFO to support composited gadget
-devices. This resulted in an ep_buf_size of 15 when a single gadget was
-enabled, such as the mass storage gadget.
+On 21/03/2023 16:19, Frank Li wrote:
+> NXP imx8qm integrates 1 cdns3 IP. This is glue layer device bindings.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-However, it was found that there are unknown limitations on the imx8qm and
-imx8qxp B0 platforms. The device would fail to work if ep_buf_size
-exceeded 9.
 
-To resolve this issue, this patch reverts to the old settings used before
-the below commit for the imx8qm and imx8qxp B0 platforms.
+Subject is still not fixed.
 
-Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
+> ---
+> Change from v2 to v3
+> - Drop two fixed frequency clocks, it is system reset value, no need set now.
+> If need, futher work/discuss on driver or dts change. It will not block this
+> basic enablement work.
+> - Drop lable
+> - Drop some descriptions
+> - Reg as second property.
+> 
+> Change from v1 to v2.
+> - new add binding doc
+> 
+>  .../bindings/usb/fsl,imx8qm-cdns3.yaml        | 114 ++++++++++++++++++
+>  1 file changed, 114 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/usb/fsl,imx8qm-cdns3.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/usb/fsl,imx8qm-cdns3.yaml b/Documentation/devicetree/bindings/usb/fsl,imx8qm-cdns3.yaml
+> new file mode 100644
+> index 000000000000..d876e3dab608
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/usb/fsl,imx8qm-cdns3.yaml
+> @@ -0,0 +1,112 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright (c) 2020 NXP
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/usb/fsl,imx8qm-cdns3.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP iMX8QM Soc USB Controller
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,imx8qm-usb3
+> +
+> +  reg:
+> +    items:
+> +      - description: Register set for iMX USB3 Platform Control
+> +
+> +  "#address-cells":
+> +    enum: [ 1, 2 ]
+> +
+> +  "#size-cells":
+> +    enum: [ 1, 2 ]
+> +
+> +  ranges: true
+> +
+> +  clocks:
+> +    items:
+> +      - description: Standby clock. Used during ultra low power states.
+> +      - description: USB bus clock for usb3 controller.
+> +      - description: AXI clock for AXI interface.
+> +      - description: ipg clock for register access.
+> +      - description: Core clock for usb3 controller.
+> +
+> +  clock-names:
+> +    items:
+> +      - const: usb3_lpm_clk
+> +      - const: usb3_bus_clk
+> +      - const: usb3_aclk
+> +      - const: usb3_ipg_clk
+> +      - const: usb3_core_pclk
+> +
+> +  assigned-clocks:
+> +    items:
+> +      - description: Phandle and clock specifoer of IMX_SC_PM_CLK_MST_BUS.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+Drop useless pieces so "Phandle and clock specifoer of " and name the
+hardware, not the syntax.
 
-I hope cdns engineer, such as pawell@cadence.com help identfy the root cause.
-Look like old version ip use more memory then what ep_cfg show.
+> +
+> +  assigned-clock-rates:
+> +    items:
+> +      - description: Should be in Range 100 - 600 Mhz.
 
- drivers/usb/cdns3/cdns3-gadget.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+That's better but I still do not understand why do you need it in the
+bindings. You never actually answered this question.
 
-diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-index 5adcb349718c..497c8e87dabf 100644
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -3005,6 +3005,17 @@ static int cdns3_gadget_check_config(struct usb_gadget *gadget)
- 	priv_dev->ep_buf_size = priv_dev->ep_iso_burst =
- 			(priv_dev->onchip_buffers - 2) / (n_in + 1);
- 
-+	/*
-+	 * There are unknown hardware limition: when work at super speed mode,
-+	 * ep_buffer_size can't bigger than 9 for one IN and OUT case at i.MX8QM
-+	 * and i.MX8QXP B0, which report there are 32k memory.
-+	 * Rollback to original settings for the these chipes.
-+	 */
-+	if (priv_dev->dev_ver < DEV_VER_V2) {
-+		priv_dev->ep_buf_size = min_t(u8, priv_dev->ep_buf_size, 4);
-+		priv_dev->ep_iso_burst = min_t(u8, priv_dev->ep_iso_burst, 3);
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.34.1
+Best regards,
+Krzysztof
 
