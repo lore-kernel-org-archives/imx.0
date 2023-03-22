@@ -1,51 +1,54 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2070.outbound.protection.outlook.com [40.107.104.70])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2065.outbound.protection.outlook.com [40.107.20.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C709D6FAA
-	for <imx@lists.linux.dev>; Wed, 22 Mar 2023 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD011FB1
+	for <imx@lists.linux.dev>; Wed, 22 Mar 2023 14:34:06 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RseKRsgHX2u/FvNpzJ/KmB6UDs9AsnJB5oE4i8xpVFJcAaO8p6Dgd0GHCdem73dfxiyJXsoC2mpZFwCsaTBBQM3qF79Ul/CojFtiSmNGTASt4LWmkH6AVpzNprvzN3hbQN0uQxjeb4fKBmGHnKVj1dcYG+6MYyY5WP2Mo8imEqldWKnpLysVBEYAhI0jdhrpecoxLfH5coJ97g5Gw4QZUzJTgXahQmmGRTj2Z70S7bP8q7a8jDO2XVeE4oThj5mc/Hk7ZoYrrId+eFy0NK7SzJgX9JlZ3LHKXv4Vkg2ksY0AUNg78ON3eYDwaOQAePSDaW+Zm+jlKauI5SWtdjeDgw==
+ b=oPF6YC5R3VCavX3WRf7jswwbjw+bEiZipW8bQyUVRdhgJP/gpwvKisYwrAMJmEGgMFn/X8A0pXjEIPdRgrZYTHq9ZlvRv6VgtfqtOlG4x2Zvq3vLCJVkykE1saMpzrxnKTZU1wpxPipsR/kp5CReCmlSVanLNLi2Nom2KUPU9Yq9J5Cq3Z8VTrbWzhhfXyU3/3jeiVHOtdlCs18HYUnckrWybtjbGV0wbvtFroXnRpkSAfOXD+w1dDOSA9qDaIkj7QvpNU6z0bGfEHqdb9mV1L8LxbcsNj9N8adrbtlCil99kwW136YoCl4zjQP9SxV+lKo2pBXPCImojLCq6PEd7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yj1gTM+1DFZkAS/+neHFbmm/GyyryM65bOxIjJ2oUxw=;
- b=K1tI9inpG+GclYtAYWa07rYRDVBYYxux7rYDSPfzzAVEJwnek28supLqp7SbMS9Mnamv32lViMmkA5hdgJ1JjOW8gbUb9flFEnYCh2wjlBGBP0uV8li4PTGT9lwWGrVvmlp746Wqcy67XV2r/npjAzdn826169MaPq5ReZfpEGAT/c2BVY5f+qnQLahqMBCaAGPiwsTIM6S0lQRQtZ/64Ad19ycSjA1U7VyYNhYyPT3C3jelYpO+AzEktP1agfx17Eor5h6EglJqHcWR2nr37uxo2ySR8FtqhaE+w9Gikk5UtMCEl+AC2EnNp74LQp9VRaQxcCt4XHpR8FEh2EGYBg==
+ bh=LmqjJ3fY6SOHwFgbpu0ludZiHvuO3ttlrZsP2hPEWw4=;
+ b=R6R+rsji+OThvN9LqYftO+04kJc+WzSo+9mWyhxF5zeWIRNOF9y+PqzH0fBmaVozF6gt1RlVaacrObmlwoF6EQ3CPTOWM/68nwc/tvu8HE+qw1t2nW9Dkwc6+LdLWsOXQyd1QQ7cyI7rhv64WRtbQ3udsCSJmgEaXgzaqp+nxELgjgxpQeLsUE34BM5uy5UiRWOk27Z33ZXG1T5pu/SS2/ds3MpubxLNNcQNdV/DK36pjN1C7lIRJdabKIubc091spGfP5gNCfh99PV7wBtMOLipyJgMUYSkof2KctOIATVFJy3qeC6e/HAhyOyaqk1haoQL6tcw8q+2uXvG62LQJA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yj1gTM+1DFZkAS/+neHFbmm/GyyryM65bOxIjJ2oUxw=;
- b=VDnm8bC7dkz66rwO9ICY0vAuUh/p9i8/iBTNhteWvBE+YzVODZcxAk7K2xn6Xs1Sb+P9mp0X7qK15RonzZGMkQ7DIHOitD4nGQW2qbpudD+uEyLBCMz2fKCGZmAOY/WzNaK6OXKePqn17TOCTrHFT9ybnxDb83m092oE3Ewt4SU=
+ bh=LmqjJ3fY6SOHwFgbpu0ludZiHvuO3ttlrZsP2hPEWw4=;
+ b=lWMHGzl5igZJ30fGnwq+igS+2M1rGVI798Roed0leSmZIs+vfmaLbR5/6HAnLgkNhWhhjm6pi7e18f/14ai9YNu/Q/1Z8TJPcKglZ1NilpOW9V8Edvob812NDHgFwxGRk4m+mYnsAG6ELbnsSsQh7CVbYThkM8tdmEVaOTS4dCc=
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DU2PR04MB9180.eurprd04.prod.outlook.com (2603:10a6:10:2f7::6) with
+ by AS8PR04MB7862.eurprd04.prod.outlook.com (2603:10a6:20b:2a1::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Wed, 22 Mar
- 2023 14:21:31 +0000
+ 2023 14:34:03 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::fb2a:a683:b78e:b9b5]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::fb2a:a683:b78e:b9b5%4]) with mapi id 15.20.6178.037; Wed, 22 Mar 2023
- 14:21:31 +0000
+ 14:34:03 +0000
 From: Frank Li <frank.li@nxp.com>
-To: Pawel Laszczak <pawell@cadence.com>, Peter Chen <peter.chen@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>, Aswath Govindraju <a-govindraju@ti.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "open list:CADENCE USB3 DRD
- IP DRIVER" <linux-usb@vger.kernel.org>, open list
-	<linux-kernel@vger.kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [EXT] RE: [PATCH 1/1] usb: cdns3: fix super speed mass storage
- gadget device failure at imx8qm
-Thread-Topic: [EXT] RE: [PATCH 1/1] usb: cdns3: fix super speed mass storage
- gadget device failure at imx8qm
-Thread-Index: AQHZXDjldDJOVpnVokGJ6I0Y4MvgKK8GZxoAgAA6OYCAADddsA==
-Date: Wed, 22 Mar 2023 14:21:31 +0000
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"robh+dt@kernel.org" <robh+dt@kernel.org>, "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>, "shawnguo@kernel.org" <shawnguo@kernel.org>
+Subject: RE: [EXT] Re: [PATCH v3 1/3] dt-bindings: usb: cdns-imx8qm: add
+ imx8qm cdns3 glue bindings
+Thread-Topic: [EXT] Re: [PATCH v3 1/3] dt-bindings: usb: cdns-imx8qm: add
+ imx8qm cdns3 glue bindings
+Thread-Index: AQHZXAih0MCX1q8KWEWxpTpi/nrVFq8GaNGAgAByipA=
+Date: Wed, 22 Mar 2023 14:34:02 +0000
 Message-ID:
- <AM6PR04MB48381649089FA348D8AB967588869@AM6PR04MB4838.eurprd04.prod.outlook.com>
-References: <20230321210521.2806486-1-Frank.Li@nxp.com>
- <BYAPR07MB538127FB75FE24832DC1BBD6DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
- <BYAPR07MB53812A0F803FB8185D63F077DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
-In-Reply-To:
- <BYAPR07MB53812A0F803FB8185D63F077DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
+ <AM6PR04MB483828FC1083E3C98930DF6488869@AM6PR04MB4838.eurprd04.prod.outlook.com>
+References: <20230321151951.2784286-1-Frank.Li@nxp.com>
+ <20230321151951.2784286-2-Frank.Li@nxp.com>
+ <1ce3bf91-6bef-b4c1-1ec9-3a345518efeb@linaro.org>
+In-Reply-To: <1ce3bf91-6bef-b4c1-1ec9-3a345518efeb@linaro.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -53,44 +56,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB4838:EE_|DU2PR04MB9180:EE_
-x-ms-office365-filtering-correlation-id: 6cf494f7-bb1c-4f6a-6349-08db2ae0bbd4
+x-ms-traffictypediagnostic: AM6PR04MB4838:EE_|AS8PR04MB7862:EE_
+x-ms-office365-filtering-correlation-id: 36e61d16-84c8-4c18-b9da-08db2ae27bb2
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- tWQT3395i8OgNdmbhJ+sTuX1eiiHoRaubGzKKmuJw4MjR2m5OfHfT/XMgItESPiE0IaZX8O6rKK5c3lz4ZXgfBx23OP1NdKwQXwjN2al+i7XjTFqigpGd9z8X58lW2tzpjOF8JH0IS7W7McZy7EQMs5rkz7JsRkRfGzSqLWmRZ5vbxNAPbn9uhhkPNrbFC2LhTt40EdEcd2P9EmuvRWoyoycZ9MP2o2xO7X2iRWQjw2lPQ7c1AiIVYAzsJemSHvea9FcYEed7IQfbLHCFzQLM9oYiEDzzYRsKHpkLkGeL9zUvGSkByNz8zhh7sg8L1K/kF0NauqKDMXqQqty5UjmqeGsArTAzIHrAxJf23VD00lnxVrvDf4Tqd7bArdRg8pcxBttNwmygNxnC+qw6wWIYiLtCoArjRffOihkG9hd/e+z8bs1tm+c+/lCjKt2+PPXFrc5E4c4oHgUKhHGS+8BF1Z1aSJ13kab2xPepF3s5iGeiXA1uLfePGx5CCg3vP8ldRccuNchTZ3wAvmOtmNWYjkduq0f23Hxw/bZ//265LVV2nRUOCmY8jyaQ/YAANXMnHiHGcHvUBL/tCIfoDrbDUk9ZETPtTD8vwAjwAnBmQpL4pqyCX1xes5SLSExM9Ai5at3dxV0zcGC9eoqZvVrQa+K8+ph1gzP+D/hfhk/oo87RbtaCcGCS4Ct7PuiBqbzpxtxReOtwjASsm1FPG66zkFBPcD8GBzUQbzYeFUwrV4glUy/p8eSMMXUlgEnkfCgr4VUTSBtBTl0qDaTixAEmbvZty830j+9BFa2zzmT9+o=
+ TJbCXQe4evXJUMm64rf+Kb9HAZhH6t564h2VjMpmQc9R1mfP3O20S+6Jcy3bvpY727TRzx1mjRKt3BX+Fe/Gjyou4TghOSepyhZPFAiLGT5U3mP46RjXv5fNkOGO1/rPjxHUDYrTvhjotqMQ99LMA7wr5Qm4KSmReuES6UV+MInxutfqXbaMbFuZKGTQLqC7ktroGRnXpxq+VeDHaz5xRYZ8Z3nMDBEduj5H1+C5v4qXxncaYNyYyrehMn0boSmN8FikqW8LCPS7LMiTtO3H7PmOIEoz5t20YDdfr6y3xYDc73LMeafOaT4FrHQr3imNYyKY1iPDamYAIoHu9qxIf0QNoyOZRwA0SehmRvB4WnZZGHnPcSP6nwzCLBwOAD/AI4LTcCufMUFPBWwxiQtSu1YLj0RE4G23lSH5Wyjc2xEf2ZWaJw8O3NZcI6EzJF7YnBZPEYNJrQAMr0jQar/Ymg726tm/cjQ5veDzyKlv6IrHwG51rx8w9DbhgfNBpB1AaVTAEqH+AiOwMhmDvjdNeFkJJbcGb0rLo/Qd/+wa95T7sHcjK36+LnZ9TKsvZ9i1VA8EN4EmlIQClx2XmLzljMgeFxGWp27N5/aCptwpanprWShF2EviBDYaTD/7tYlDOZLzYdCDfN+K/250lSYVsYjxCrtjEAzkFgwUwSAayQEbNPSU4X8iztaBi8nOymOjDWpsBgGRMdHhHC+KzxsvKJx3o4tMyQgC0blW0IhDG/M=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(346002)(136003)(376002)(396003)(39860400002)(451199018)(86362001)(55016003)(33656002)(316002)(4326008)(8676002)(66946007)(66446008)(83380400001)(186003)(110136005)(53546011)(66476007)(478600001)(55236004)(64756008)(26005)(9686003)(6506007)(76116006)(38070700005)(66556008)(38100700002)(71200400001)(7696005)(5660300002)(52536014)(44832011)(8936002)(41300700001)(122000001)(2906002)(32563001)(473944003)(414714003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(136003)(346002)(396003)(39860400002)(376002)(451199018)(122000001)(38070700005)(55236004)(53546011)(26005)(6506007)(186003)(71200400001)(9686003)(7696005)(38100700002)(44832011)(2906002)(86362001)(83380400001)(478600001)(8936002)(4326008)(8676002)(55016003)(4744005)(66476007)(316002)(54906003)(33656002)(64756008)(52536014)(6916009)(41300700001)(66446008)(76116006)(5660300002)(7416002)(66556008)(66946007)(32563001);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?D0aExSY0GWj5eEMXj3RMlYly0sSDVsmB3146V1WSkCl+QthPWOFGiezYv1QJ?=
- =?us-ascii?Q?k+MGtm3qy8Omsi8I9sL3FMjJgllylZ8HUaz/zwLy4BhG4ycURbVbeBIUwsy6?=
- =?us-ascii?Q?Eg6X8b2JL5zZOi9oecQbZU/hAyiHV05xgTenf6f9iuRb4voqrvxqCosvUviq?=
- =?us-ascii?Q?0zct9UmGwvv5mHjQLnX9zYvzXVpsBrF8i0JyO8hWzDzD8T/MzbZGy1yOUKDP?=
- =?us-ascii?Q?fbfilqGFsZPdhqRhfrA/4jG1YJoXpAcq57xHsw1hQdf6eGxjwi5iGf4Z4J7g?=
- =?us-ascii?Q?OR1tDCEJ+lD0c/CtzsI600W+ATwOx319Pvl3GiQwMDNsFoWAi4PsYxlyegq6?=
- =?us-ascii?Q?SPrXnhDULIjVXJSQLAfGL757BPxTHtOkiC5W5eJvbM0oVPefxqOq/wiqlz+4?=
- =?us-ascii?Q?mKOmhXm7yQlxE8SuDuO8u+6q+/r5fE5j45Ly5Ih8R8CHP4rhF/KpTbOrlZFP?=
- =?us-ascii?Q?Lz8X/65mWIJfuybTpjX+d5FIXxWah9zjxGUdzs3UvHiNnn1lMaHz86jOoZbN?=
- =?us-ascii?Q?TBr+KWnFgbh+6Zw7vveSQJCgVs9eEhIsMbXoOUM+XYCHPKBjZUNS0cZJtFEX?=
- =?us-ascii?Q?g76k3fTcC28HUjIHqCzn8tZM0trHx3XwNiHlvrlwbxbj+cKnrER+a/sw18YJ?=
- =?us-ascii?Q?AyKgMgSVj3E6Zw6IjNXsvjcwBQARgKXJcnAfclhmG0lO+EfDBMWfY2Q4zBhB?=
- =?us-ascii?Q?TDk6DNmqk2Yw4jgc5wK6ZWyt5JjIUq4Wu2Z9NWxwr0vMwY2hlsOJ9Jl1gPMO?=
- =?us-ascii?Q?ZCzkr36aNTrX5KEjSp5XR4J7RM6QtrZkf+LnHv08mRxsxFtSq4iCEcWy5QkI?=
- =?us-ascii?Q?fgNx0RRzpP5K1NJuKEj2yLFejP6JFZMhNBXS8wZfpKPdfPNHV0FCcrJMbn+B?=
- =?us-ascii?Q?uZ6mlXoRdZclghM1rpZj2aahT9t/6Yr/A+duFrNxNDcayfMbqYnJLAzYD7OW?=
- =?us-ascii?Q?ySqJuPwcTvI8ZrWkDQxPXbCBfKBoqFpW+xtshbm8FG3sbvSRvagwiqiGQoz5?=
- =?us-ascii?Q?cuXXyV/5sRjTHX0E7kf15J3fY6zN7C6RJjFN23BSkFY+KgakUjw5C8IFP4Bt?=
- =?us-ascii?Q?NATkL1DvVfR4jWqUspan+gCAtwLqEGPtkJ1xfw9BEUxurHkDJf8X6oZcEC/p?=
- =?us-ascii?Q?H8ScP7YWM7n0w+qhVzrovB08TCKIOOrjIcX7vmufH301Tu5MnilXE3jLu/vI?=
- =?us-ascii?Q?dYgl1MW2GTPH8aKGwm+Fb+RozRdV+CWUygb6IAU41OJAPLqSBJzKts0q/DEs?=
- =?us-ascii?Q?3lXmNjWKrMn1/5SKwiu6dWBeZ0N2aoHkKMXZI5hA9InILpb/gqL+/e5oKPjV?=
- =?us-ascii?Q?mGKrXyZymkfnfc0FibfWV9OmqIPfjz21woi6LYhLuvMWuZDVACLzcjZp6AGT?=
- =?us-ascii?Q?G99bfg/RrcrEBRTxJGWhBSbv+fM+R6ReDzWRnT6O03qxzT0l89j8agKZU4Ga?=
- =?us-ascii?Q?iDlIT6Nqonut9Sz9oxTnPReT3Pcod6LCZNrB5a8Z8R0/z2uLHVBAFWFm/vMj?=
- =?us-ascii?Q?cCVTZcjrsfRw1CgHRayFvVRZIDVCvUIZ4dGaxkvor7wfY4NZpN1MntQuQZLR?=
- =?us-ascii?Q?d1IjQv8xEaS/n4XLEAO1RoA9lQ58RzMi1cz6L7wh?=
+ =?us-ascii?Q?INkt/ekvOi9tBPusTIjBD4lUOLOUrv/VphE7yTtayQTMqSi6fQGVXJQJs+P3?=
+ =?us-ascii?Q?gDBPst+b+j7vQAfxdViSRVbjIG736ZZVkzJgSzgEfZ6e/s5xxtSdLehxs6yj?=
+ =?us-ascii?Q?930A7fcaiQc7OQsCb6wO7uJo/zqPLub/JiSTHor+mbydjrEr+0ntNPhEHnCX?=
+ =?us-ascii?Q?xIJv1+jMj4bD8FRToFx2Lb8WtMlpJkWqK3QoNC/fLzqdRDTT6xWso1Xar70m?=
+ =?us-ascii?Q?bcuwmYTda2f63dH51P1rsY6GB+afwRqUgYOmL6Mpape9HKubwXECJ+3BJDCh?=
+ =?us-ascii?Q?Xwpl8QxySXQU8KfSq+w7QcIQBnGmPq9ft5YT1NF6XFqkrfCTXPcGea7kh3vk?=
+ =?us-ascii?Q?HZiRHwAQ9fhb72MOdBNBYp9bo0e1xqspuR/W8y4vPbCBR0WlsLQysutMJOHK?=
+ =?us-ascii?Q?DqjipaQOix5Gzw+V6KJ5hms/fgWNDL/5atLTio3zAP1+Uoyv6GNeWL9TDXon?=
+ =?us-ascii?Q?s8GxQJ+A5w8SYV5MlTRY1gjz0tQKecgJkdY4FNzxkqEL/AmhnLUCugO+oHzJ?=
+ =?us-ascii?Q?aUjvUib8yMSbVCIT0J0ALl2wWnEUQ+Fie1/n9xEzXrARvRyghSjduc4xnaT1?=
+ =?us-ascii?Q?iwRs1omx40Ikf8NreiPXNmsb6lIchnTP89mgxK1bSEa6qJGYWGrcBoRgzqJk?=
+ =?us-ascii?Q?8cPKLzqhceda4doB/yXnnTYxEQZZZ8ugTKAM/sjZuxnvpdLJCqTeBkQNN4QU?=
+ =?us-ascii?Q?ObvGpQOio3WTFPgYgfpqhA+LWvWPF1ztp5ZpyBa4djDJTY5IRkbIWtnaN9yn?=
+ =?us-ascii?Q?Ymp6fxYvSIlpi/RtyqQymcz9q9Z0NJzYxh0QDtMJdT3T+ZaPYaVDXtJ3MRS9?=
+ =?us-ascii?Q?K/7JeXMRVosLwnAoD6nyi0GJFVC1AzSXpUZZG1GBu24U6wuErsA/8vnQ/eas?=
+ =?us-ascii?Q?x7IezMI0HRu/8PQmqP8pZ1u/I/ERYD4OQxOavPMWy0BpWZeiqJP4GJE9RgfS?=
+ =?us-ascii?Q?Lia/uP4HFlXjA6mUWYst3zPi7nlGmuqWrV3ju3aVAKyVS6aKN3Xle5WFsNGY?=
+ =?us-ascii?Q?86GyDJ7LiCSvns96IN/rzvb4YD5BF6tKcVVbSFkvIrZfhMGutBBnbrbSNrfz?=
+ =?us-ascii?Q?l6skqR/rXLQlRPVKpHWVStXVUeg/6W5pHNWiny0GkCvhdBa+ebjA2Neex5TR?=
+ =?us-ascii?Q?wI+MY/P9N2ifOeo16CQocRDXMNw4iaGnA6b9ppUdxkIUaflLYofKL2rGMgR7?=
+ =?us-ascii?Q?9soN5k8IfMHWX400jvx1xJptX4nFkxJj2Pk6Nxs/DzjPArPPI0jddpp+RT8f?=
+ =?us-ascii?Q?lC+gNtmo6+TfL8l61xcj3gYMdqnlOStrSwHOZey3FVbZOsIkT7uPntwD8F7R?=
+ =?us-ascii?Q?E6J5P2jIv5bwROfYka5BkdHMZ670kixM9lySsWoG3otEWHBeThBhqGROyhBW?=
+ =?us-ascii?Q?iSo3CkQAK1sUSpA05veWX1h85DYVuYw2FG+AxCxLjdgBgM7zU80maVAAAPn9?=
+ =?us-ascii?Q?IEzG6G2D+vr0XK/avxwxT0tnWgszM1NOk0g9znqpkWG7NVJFTGbT4OnU/VUL?=
+ =?us-ascii?Q?Q/tGCIYStSYKWc5HuCL7srJykYsMPsHcLezLnD4MG0xoYcuu30SCUI9WcJiC?=
+ =?us-ascii?Q?NkLFQdghiwsUZMpqvjaZPkaOqBiSGCXKngZyRLzU?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -102,119 +105,47 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cf494f7-bb1c-4f6a-6349-08db2ae0bbd4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2023 14:21:31.5044
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36e61d16-84c8-4c18-b9da-08db2ae27bb2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2023 14:34:02.8874
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /xrJVmEA5WAdRlAq7a48jHmQuD189gItLEyfrIwOE9bfx3W/9TyAfXoflv4HCii8+6FAaRxyTzELrcM5MXMADg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9180
+X-MS-Exchange-CrossTenant-userprincipalname: 07lXxAQKVnGXDGnNz0D0ayUeWvyKxTSh7eP+2FD/e1AcGlGfPGFmfFcFCiHPSV2l27uuZpS1KPfCOzbJDb31Og==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7862
 
 
 
 > -----Original Message-----
-> From: Pawel Laszczak <pawell@cadence.com>
-> Sent: Wednesday, March 22, 2023 5:56 AM
-> To: Frank Li <frank.li@nxp.com>; Peter Chen <peter.chen@kernel.org>;
-> Roger Quadros <rogerq@kernel.org>; Aswath Govindraju <a-
-> govindraju@ti.com>; Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
-> open list:CADENCE USB3 DRD IP DRIVER <linux-usb@vger.kernel.org>; open
-> list <linux-kernel@vger.kernel.org>
-> Cc: imx@lists.linux.dev
-> Subject: [EXT] RE: [PATCH 1/1] usb: cdns3: fix super speed mass storage
-> gadget device failure at imx8qm
+> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Sent: Wednesday, March 22, 2023 2:32 AM
+> To: Frank Li <frank.li@nxp.
+> > +      - const: usb3_aclk
+> > +      - const: usb3_ipg_clk
+> > +      - const: usb3_core_pclk
+> > +
+> > +  assigned-clocks:
+> > +    items:
+> > +      - description: Phandle and clock specifoer of
+> IMX_SC_PM_CLK_MST_BUS.
 >=20
-> Caution: EXT Email
+> Drop useless pieces so "Phandle and clock specifoer of " and name the
+> hardware, not the syntax.
 >=20
-> >>The mass storage gadget has one IN and one OUT endpoint. The below
-> >>(Fixes) commit aimed to utilize all hardware FIFO to support composited
-> >>gadget devices. This resulted in an ep_buf_size of 15 when a single
-> >>gadget was enabled, such as the mass storage gadget.
-> >>
-> >>However, it was found that there are unknown limitations on the imx8qm
-> >>and imx8qxp B0 platforms. The device would fail to work if ep_buf_size
-> >>exceeded 9.
-> >>
-> >>To resolve this issue, this patch reverts to the old settings used
-> >>before the below commit for the imx8qm and imx8qxp B0 platforms.
-> >>
-> >>Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to
-> >>composite EP number")
-> >>
-> >>Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> >>---
-> >>
-> >>I hope cdns engineer, such as pawell@cadence.com help identfy the root
-> >>cause.
-> >>Look like old version ip use more memory then what ep_cfg show.
-> >>
-> >> drivers/usb/cdns3/cdns3-gadget.c | 11 +++++++++++
-> >> 1 file changed, 11 insertions(+)
-> >>
-> >>diff --git a/drivers/usb/cdns3/cdns3-gadget.c
-> >>b/drivers/usb/cdns3/cdns3- gadget.c index 5adcb349718c..497c8e87dabf
-> >>100644
-> >>--- a/drivers/usb/cdns3/cdns3-gadget.c
-> >>+++ b/drivers/usb/cdns3/cdns3-gadget.c
-> >>@@ -3005,6 +3005,17 @@ static int cdns3_gadget_check_config(struct
-> >>usb_gadget *gadget)
-> >>      priv_dev->ep_buf_size =3D priv_dev->ep_iso_burst =3D
-> >>                      (priv_dev->onchip_buffers - 2) / (n_in + 1);
-> >>
-> >>+     /*
-> >>+      * There are unknown hardware limition: when work at super speed
-> >>mode,
-> >>+      * ep_buffer_size can't bigger than 9 for one IN and OUT case at
-> >>i.MX8QM
-> >>+      * and i.MX8QXP B0, which report there are 32k memory.
-> >>+      * Rollback to original settings for the these chipes.
-> >>+      */
-> >>+     if (priv_dev->dev_ver < DEV_VER_V2) {
-> >>+             priv_dev->ep_buf_size =3D min_t(u8, priv_dev->ep_buf_size=
-, 4);
-> >>+             priv_dev->ep_iso_burst =3D min_t(u8, priv_dev->ep_iso_bur=
-st,
-> >>3);
-> >>+     }
-> >>+
-> >>      return 0;
-> >> }
-> >
-> >I'm not sure whether you have 32KB. I remember that you had a Soc which
-> >have only 18KB on-chip memory and value in usb_cap2 was incorrect.
-> >It was the reason why the on-chip-buff-size property has been added to
-> >driver.
-> >
-> >Please confirm that you have 32KB, then I will recreate such test on my
-> testing
-> >board.
-> >
+> > +
+> > +  assigned-clock-rates:
+> > +    items:
+> > +      - description: Should be in Range 100 - 600 Mhz.
 >=20
-> I've made the MSC test with the following endpoint configuration;
-> [ 6732.999537] cdns-usb3 cdns-usb3.1: Configure ep1in: with val 74000e05
-> [ 6732.999565] cdns-usb3 cdns-usb3.1: Configure ep1out: with val 74000e15
->=20
-> So, I used the 14 buffers per endpoint and run bonnie++ as tester.
-> I didn't find any issue.
+> That's better but I still do not understand why do you need it in the
+> bindings. You never actually answered this question.
 
-Problem only happen at QM and QXP B0 and need work at *super speed* mode.
-Enumerate will be fail and continues reset. =20
-
-Highspeed mode work.=20
-
-I suspect 32KB problem because QXP C0 report is 18K.  It doesn't make sense=
- to
-reduce to 18K from 32k at QXP C0.
-
-But it work when IN/OUT is 9K.  9+9+2k(EP0) should bigger than 18K.  Let me=
- try
-Check IC design what's exact number in QM and QXPB0.
+I am not sure 100% sure the reason.=20
+I think difference system target's  axi bus frequency is difference,  =20
+And just one time work, needn't software to manage it.
+Following other driver's code style may be another reason.=20
 
 >=20
-> Regards,
-> Pawel
-> >>
-> >>--
-> >>2.34.1
+> Best regards,
+> Krzysztof
 
