@@ -1,48 +1,48 @@
-Received: from mx0a-0014ca01.pphosted.com (mx0b-0014ca01.pphosted.com [208.86.201.193])
+Received: from mx0a-0014ca01.pphosted.com (mx0a-0014ca01.pphosted.com [208.84.65.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733971FB1
-	for <imx@lists.linux.dev>; Wed, 22 Mar 2023 07:43:45 +0000 (UTC)
-Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
-	by mx0b-0014ca01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32M53Q7K009355;
-	Wed, 22 Mar 2023 00:27:40 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541DA2566
+	for <imx@lists.linux.dev>; Wed, 22 Mar 2023 12:05:55 +0000 (UTC)
+Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
+	by mx0a-0014ca01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32M9DWrh005391;
+	Wed, 22 Mar 2023 03:56:05 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
  subject : date : message-id : references : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=proofpoint;
- bh=QVnJywEvLgxwBXAQ1K6t8jeAFdtm+qDjBQ6fRjjYqWo=;
- b=PbQfnKlC/yRH9hsU0XpJYAp7W6iVmFDDfPP9X4SHJO1+BS5XhRKLutOmJPZhuu6H2ChP
- e4pMw0gQFfMVVJH0d7mbnF/M8hnN/pFuFLFoX+Wy+gX1r+eRs0mTpZBGuTemwaxBV65J
- KPg13V0I//P+xiaiGjRxbIcxki1301Jecf+YQtFLk8lpMC7gwnpxpKaGT93tFZxB6AJr
- 8sQlAWu9/qBBGF6hKYIcnaUJ4dblOqBWFIxWVsjjelSM9I/SwJ3CL+sEoaSv+bwdormC
- /dTTriEFU/bcZ3BT593IUVbADDQpw9lPlG/2+uwaj8Fehxq/8E4TPwwUk+cuh761vAv3 Hw== 
-Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04lp2045.outbound.protection.outlook.com [104.47.73.45])
-	by mx0b-0014ca01.pphosted.com (PPS) with ESMTPS id 3pd8w2nfc5-1
+ bh=35cvHfJ4sfS/9H25K2q0u+zdxRekBD8tQYlzSIZUHbU=;
+ b=PCnpdL7nu4up3X33X48S4pGHnSr76HQlrBg1Fn3ZLHMa+2K9UB1NGYccIT6iJUBBG2ty
+ j4UqtSVIEugrniZ98muDZLIW30uJYDVjX1KoPyla0xpzxa/ypvrW5w/2Zwm3/F1xX6nP
+ xR5ir7QqzofA+Q+h6XOBa7EIA2fxytL07xr7B1P2Xn+jQRTPbF/WyxG2DxY7Q2kGIdfW
+ 8sTKW6HMP+FZPqV9/6vL9BL49KJ0Ss9RyYSlVRyopwfRqJ5xaX0w55ywtO+hhu9N9sw+
+ IPRHt+8ub8vtSiw8qLqkDvevoJAmXkYEV88DAP4S+691xGzvzMAeYgsJIRuezuKlj7G+ 6Q== 
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2176.outbound.protection.outlook.com [104.47.55.176])
+	by mx0a-0014ca01.pphosted.com (PPS) with ESMTPS id 3pd9v0y8dw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Mar 2023 00:27:40 -0700
+	Wed, 22 Mar 2023 03:56:04 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bh7EJn8cquVlJc2MkRbUpQyShTOXKGLfjC/zpk4bFEM6pwCAJkMV60ksAY6TAiiFM0VTIwoyAdA0hdopFQ0K0b1ImAv6G7y17hx/M+CwomJwNxNp/XYtcA620wtU7LSE2XUGeoJloBaCtJRpx6Q7ba4yKMWfJgL31ebqmCSQpLEOx1LEA3Kws3UZza34vGP76Siyc5dBa+k9YPOiRCRvoT9neL07zh6sECeeDA5QcmSYdNw02HZsmHf5r7xLa7SznTpKeR23fF+Pwcv8nWgvvD5pCruYsK66mEjiKvWCSBFL5I7auxlCzz/OFU0sWW9kAhl3Ls8vlgtAf30B2sdGxw==
+ b=VpSSqozCcfiNfUSCMEzH86owefVeyqAShFFqlojyhhitXYO/N8x6Vpc6R6UtXSIIfCDOKjgmjQDWEPClKOTQJfccpi1ndNLuE2kNatIkNE4lv0IkIj8LAatsaMi6YfMP5AyagrP6xMAnH4Cn4TKO5eIpuJy4Dj5zsjCNwO3EMwoHJ6FAfO8OWMlFawDqiixAG2i2rGvB/67F5GNytWNPtz0gpM1fK5cu0DGwVqgX8lpCsJkYxKY5UVER/JY6QU0ydF0cUDJtext9D1Jqw1/1lOSA5mpxuCblnDTRxGaI8lVOIFRJLiK2CYplnzB5LxroTyEZrBdnOC2WLZ/VOuxiiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QVnJywEvLgxwBXAQ1K6t8jeAFdtm+qDjBQ6fRjjYqWo=;
- b=e+o65SQhzlTrYmLW/iAKSsNlTvuGlkaOjumn77nL9mGUxZT+18veEBqlTLRJPH5BZ1RHg+eg1wpE+7mdyGJm87SDJXN1Ps59/1h8lvSvAIew922Rzso7aDvTHYDIz/gV1bSmYIMb/Bygtxs8llp0w8pGnGhqEp4szb0XscsROY6QM9Afnir9MzskUyDQ5DNo5xJKv9t7cWDGl19zn52SBUH6LRWT3fl24iWjZmWeJnATLvj+O+W33ZPc1gYXi+AYmGsgxQ0E9FnGy4CpYAG5lnDmPLTECzpL2mQN/vzegu7F3+OrB05Js9DZ4BVGSGAnPs+3itZrIey6/qOvWLwSRg==
+ bh=35cvHfJ4sfS/9H25K2q0u+zdxRekBD8tQYlzSIZUHbU=;
+ b=LcULbiUO6s5pISiuCKvtRvfz12pd70s4zv/o1hSwBxLjT7aL1PJMSyNfr16CsBAVeAXNauKztVdkiXJLnM1AMRPLyQhilgRKBPle11n49iHZ15Fct3deT4rhsTNylFk+/JxyaaFN1B37cfhj2S9AFtodSLyfNcOvLnrXXcPV2WLmBhP2LmLwn8b9WohQtZPWwpBMgReCbKUhEgTbDK1CNkuj+C9bkunBuRGjL2hUaX0heHWeUc0Tacf8VW7qM0YeIDppDDMQ3S4a9wdEFq2ks8Zd6n6In2INM/szEbmfHOs/aOUEeiqFsyiLjC7n6aGKKdZn+cKowA4HNkeFH0YuZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
  dkim=pass header.d=cadence.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QVnJywEvLgxwBXAQ1K6t8jeAFdtm+qDjBQ6fRjjYqWo=;
- b=TZ81ZLjR7/rU6kix/aEhzJEMM06QF/OXbRedBTPd0ftJ6jE8GBvWt6Nj4yMeaaICAl7qMq5QAhhXUAqEw7YCpiuEwhl6gvHufXfE6qLh020tR3lYg7WNV6h3XUX2UjzT4FCjvHI0lvjio1d+Sn3FwsGnISBZ3BZ6dnlPX5XlS9M=
+ bh=35cvHfJ4sfS/9H25K2q0u+zdxRekBD8tQYlzSIZUHbU=;
+ b=r+MnWyzWHZSUk53O1JMUhaFnaF0BbCSRhgDXLliXBjfz6kEks/iA5nhPXzgfShMGrdsC6VSmZkOovDQxf4qwwpbRDDeEcExA2rbm35Luwd9hvJrY99KjvPrq1bToHKLs0pXFvO41K4JWjdJmK7dZQMCs2grbcXzaOPG+5l4PCLA=
 Received: from BYAPR07MB5381.namprd07.prod.outlook.com (2603:10b6:a03:6d::24)
- by BYAPR07MB4232.namprd07.prod.outlook.com (2603:10b6:a02:c0::12) with
+ by MN2PR07MB8064.namprd07.prod.outlook.com (2603:10b6:208:1b6::28) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Wed, 22 Mar
- 2023 07:27:37 +0000
+ 2023 10:55:59 +0000
 Received: from BYAPR07MB5381.namprd07.prod.outlook.com
  ([fe80::7a9f:f44:4172:5bb8]) by BYAPR07MB5381.namprd07.prod.outlook.com
  ([fe80::7a9f:f44:4172:5bb8%4]) with mapi id 15.20.6178.037; Wed, 22 Mar 2023
- 07:27:37 +0000
+ 10:55:59 +0000
 From: Pawel Laszczak <pawell@cadence.com>
 To: Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
         Roger
@@ -58,58 +58,60 @@ Subject: RE: [PATCH 1/1] usb: cdns3: fix super speed mass storage gadget
  device failure at imx8qm
 Thread-Topic: [PATCH 1/1] usb: cdns3: fix super speed mass storage gadget
  device failure at imx8qm
-Thread-Index: AQHZXDjqj8OQUmrUl0+OaTIEnBRe268GYozQ
-Date: Wed, 22 Mar 2023 07:27:36 +0000
+Thread-Index: AQHZXDjqj8OQUmrUl0+OaTIEnBRe268GYozQgAA8uRA=
+Date: Wed, 22 Mar 2023 10:55:59 +0000
 Message-ID: 
- <BYAPR07MB538127FB75FE24832DC1BBD6DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
+ <BYAPR07MB53812A0F803FB8185D63F077DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
 References: <20230321210521.2806486-1-Frank.Li@nxp.com>
-In-Reply-To: <20230321210521.2806486-1-Frank.Li@nxp.com>
+ <BYAPR07MB538127FB75FE24832DC1BBD6DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
+In-Reply-To: 
+ <BYAPR07MB538127FB75FE24832DC1BBD6DD869@BYAPR07MB5381.namprd07.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-dg-ref: 
- PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccGF3ZWxsXGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUzNWJcbXNnc1xtc2ctMDJmMTJhNTYtYzg4My0xMWVkLWE4NjItNjBhNWUyNWI5NmEzXGFtZS10ZXN0XDAyZjEyYTU4LWM4ODMtMTFlZC1hODYyLTYwYTVlMjViOTZhM2JvZHkudHh0IiBzej0iMjM0NiIgdD0iMTMzMjM5NDM2NTQ0MDcyOTYyIiBoPSJVcWQ1RmVsbUJJRW5uSGt6SmxWSHBESllseWc9IiBpZD0iIiBibD0iMCIgYm89IjEiLz48L21ldGE+
+ PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccGF3ZWxsXGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUzNWJcbXNnc1xtc2ctMWY3YzVjNTUtYzhhMC0xMWVkLWE4NjItNjBhNWUyNWI5NmEzXGFtZS10ZXN0XDFmN2M1YzU3LWM4YTAtMTFlZC1hODYyLTYwYTVlMjViOTZhM2JvZHkudHh0IiBzej0iMjcyNCIgdD0iMTMzMjM5NTYxNTc3MDAzMDIzIiBoPSJML1NFck9vdC9vTGxCQkd3YVVHeWxNc3RTWDg9IiBpZD0iIiBibD0iMCIgYm89IjEiLz48L21ldGE+
 x-dg-rorf: true
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR07MB5381:EE_|BYAPR07MB4232:EE_
-x-ms-office365-filtering-correlation-id: 5f4a551c-4184-4335-1d30-08db2aa6e952
+x-ms-traffictypediagnostic: BYAPR07MB5381:EE_|MN2PR07MB8064:EE_
+x-ms-office365-filtering-correlation-id: 7b81118d-7174-4cb4-e36d-08db2ac4052b
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info: 
- VZKoXKXJjWYIPXuowAX7Kx1Ew9ObEbQ0yxiwTF1ceqrPAd+sIR9N7jcXL8hZIbMapJuDATClhR1OTVhihGYKLy+2GqbN0hACbg86XdbS7HNPqJKY4iXioBMJld6VrHdWMgeveigAQ2vBG5WUN4TvQHdbGRuWhvffykUhW+yNOXKUvFUlVwNYQ/0ObllwaDOPWvSoGA4IkkhLuZ7uM1xJU8sL7k93HHcX82Xo/0wvtt3e3mdkaabM++k6BjBIKOSV53SGrTHW+9vd4f+qLhZ26g4Hb1Y8qncchVWa2q85RvWqm2zlA71aaI/k9jF7Q7nXcF59EtGyYS1ORUnnzojz0XLfoKb3uavC5iAVKd8CNRQ2j/HepthZVeT+CGPTwv3yCUrhh3rkmAOxrwUHZJmIwODOK9HqF7hvmHkAIY5qHqD42Ym+uwk35pwHgYIxcsjV3kfO1C/kkZvsNoDfjupa6VzZK7DAjL8odmUuLvvmpOLa/iGkmVmbYCc0X9q1gK0Jzw3hfs2q1A+ToixJJsCvYNgqQbdHRDPxEosJRv2nAd76xmva+XUm1k/Tkish+00OG50AxZJytdaw5vBrd+tTceQO1oLJliM2klMl3r3Aj8pUnyuBas3yt/jF3Jb/C0d16NO4ytzGWnzpYTBA+td9DKBvnYdGL9McJ+9i8aYzoAW69iodAaqYGTDbv8297rAJvE5bISP1xo0SECxOeFCsrv7Y3PyTHaRDLsG+sefO8g4=
+ /Om7Q/NBYHTTUNc4tSKNETTakGpFnd4pVo57DvgE6TThQQ7XPD4oOBukqvCY+Z3b7fOI0Yam25/Yx34rHA9ffK/gn77wO7w6sbbqmuOsnD58sOpLP6hN8/XkSLGuaP7E1fOGXtrtmomv7Mmjsrkdd1kfx5TDooO99WnHMqVcrnzPXDW2jvTFZbBL0WCr0LY7SAJ3U1F1d5gbqLmHmWfkpVOtIS393tiQJJGmWfav0kTOJD0S9qNNQxiKHuSmkCfHGDfc76IHSoNk6bdrGJ9PMXFnouQ9wRMHBGlP1+82Es1VLVj7UvneJ4r9Jl4bAXEnf5CQlshb2EhWimozz4Ble5qZC/CkmbXgOheCJWHG1l9wjciW0O0+2w6k3iwL1yEId0CmUtfjrK9T1DQLMBPu74q74vlmz7mYx3DmhjUgNkCm2nWGj1lWnizuS/ispvAoYI211atiyW3wsUoEQdUco6mCmXWr2yvVdlpXl5tfXveQ4culHEfpMgizAjdZLRBOWoP2iT3BmWn3su7KzeUlbVrmh7kqy/O/sIV4eiMu+Ov3UunoflAuobFRWDKYQiCi6qApfS73NyKkhZkOzP0mvSfEfkov7cIKG+0OTu0digzLx6ZY41gmXvUlM2m8pwdajCpek2zjaTEY5RqN0jfi609iktgW2JmRhlLH/t9/YwklgDCrBKwJOwDHJEdjyrYwx44XzCJyPmICn1fE8xhqIZn+gELB0SgflKCWmDsQxL3SLWKgbwL8vQJEFqkU93G5s0j9LmOOOdvd3RElhjq4jg==
 x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR07MB5381.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(346002)(136003)(366004)(39860400002)(376002)(36092001)(451199018)(186003)(41300700001)(7696005)(38100700002)(71200400001)(9686003)(52536014)(2906002)(478600001)(55016003)(26005)(6506007)(5660300002)(8936002)(110136005)(122000001)(316002)(33656002)(66446008)(64756008)(66556008)(66946007)(66476007)(38070700005)(76116006)(83380400001)(4326008)(86362001)(8676002)(32563001);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR07MB5381.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(396003)(136003)(376002)(366004)(39860400002)(36092001)(451199018)(86362001)(33656002)(55016003)(478600001)(83380400001)(71200400001)(66556008)(316002)(64756008)(76116006)(4326008)(52536014)(66446008)(8676002)(66476007)(66946007)(9686003)(186003)(26005)(2940100002)(110136005)(6506007)(38100700002)(7696005)(38070700005)(8936002)(5660300002)(41300700001)(122000001)(2906002)(32563001)(414714003)(473944003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?/mamy/Uk35nuCEzUP+FcFy3hxGYyogz2eXQPO2REYqHMvd379ogmso9Disiv?=
- =?us-ascii?Q?RQcWQcvXqSC50EHzaf6RjYLgGWdfeJDYH76PGBJbbE07MS4KYrlcMnb2YRPJ?=
- =?us-ascii?Q?XgecFFXibo+VwatjHEBtACVjlADERW2lYP5TDBuGsIiWG2nqMAL/bIbrjf3I?=
- =?us-ascii?Q?mWkGRddcWRqoUo/oa3JVcrD12QaeclNdTQ2uwOnzIXizpeBuE+ri02IBKcIf?=
- =?us-ascii?Q?JuXNnNeGIPseVbVCAunEVjJ6PmHARXSnQS0TWI42ynHppGAiVQGvZQGTM0J1?=
- =?us-ascii?Q?/FljrpIiYYLObWKq2+WDonm09gBlyt4eMw3M0J72gnpjQ7srHClNNuVgHslB?=
- =?us-ascii?Q?VnW5GNPgXHb1DwsgR1F/FABUTD1kgEOBL7OCZ4Jifr5RCQMMtSJ7vyyAlc59?=
- =?us-ascii?Q?zPqOFHyMEM0/qu+RskDNQtcwLI71p7HWAlse58Y2KeVWAmCgIGK0ovDo8rHr?=
- =?us-ascii?Q?BMwgzkBzSr1fO8ET+wX9pvhLCrpVpI0iJe5gVZFSii5/1seVe+LidKiOw2jf?=
- =?us-ascii?Q?fMFjvJGpHNMMWtClrBFdvQo2XzUg3013XVLy4ujV105gUNIg2JUmtyL62PCL?=
- =?us-ascii?Q?Jg9yxLS7CEr2SVXv6M4vvk22Fkl7U2zCjbzV00SV0QnFrhCs+q8KPzvXgPuC?=
- =?us-ascii?Q?tCZ5841b35mUhSnpuMpM5oOcRHhZWuEbIuwNHCHpIEa7hiF0cIPlSVI8BMqU?=
- =?us-ascii?Q?+IM/7unh5F1h9POYN6SsHsqGBIFFTX0cwulhBaZpt19oUOThdd/THzu2NSI8?=
- =?us-ascii?Q?loc2A3QB8mspqvdonbzXZRPDD82bc8NM4TVV13rD670RLkZdBvY1yA8RMS71?=
- =?us-ascii?Q?3xh2M1XCaroo+qouWHpWS6qB4mYg49yFb4EjyIqhy8TtH2uUTq2M1fo6gs2D?=
- =?us-ascii?Q?jPt/dvUOO12ewE84aoy9yCqj2vPUOAnRD3Cgjs2V9A5Ob17wGKhHW/IP6Qpz?=
- =?us-ascii?Q?NQmK3r/wLYffv0nE7DRd/YK1BOVRS+YiIdkVhgNgeTG93tc/3PoUNBIzj1zt?=
- =?us-ascii?Q?ZnV/p8StwcBgqY9ihzzu2sZ0KDxEcblZ/vgYCJIO7a+/e/yg1vFPuL2gqJ99?=
- =?us-ascii?Q?lqtGDX/PCmsjoicAn0FW+m5MMiaKaPPymqtd0zPk1mtYGZT7g1YnJzWaW8X2?=
- =?us-ascii?Q?MP1eXn4+ANUt/uYAXiQMBCHwVRo4jwBrbGTikJ/XAoUsBurxu89uTVhHMAt7?=
- =?us-ascii?Q?tnIec4yBO4B+vLOVRcOcgqgb4vEdJS96EvvDg/Nz9I1WvBW53B7bNKU5wbQj?=
- =?us-ascii?Q?L7AROqHU9SfcVhF2A9/BA6YEfOfj/AcxcesMTzU59UFNc1/w9zGdJD2fO6dT?=
- =?us-ascii?Q?AhSIZJ4itMth/5lTchFRlzkeRkWYBp7SbTW937RIlZATaxSiOv92F0FyE8mX?=
- =?us-ascii?Q?QNpEyxTZKVx5FIVD+YxeQ71y2CG2xKrDHxZF2xQ5JZOIJehC1mABrjEzUi1v?=
- =?us-ascii?Q?DmoSVVzFt5uqbAipoLPunGLL53b8wPbZZMDqydpgr48odcwD1dFTNczBIB1C?=
- =?us-ascii?Q?qb/wOKAKkGzExoXZ8KSlT8h4SkzFw/ElB1SfAsJRwarXMllIZBGoswMCW6I1?=
- =?us-ascii?Q?dATVqTIodqa638Y4T6HL/muxDuz4sNzzw3IoIk5C?=
+ =?us-ascii?Q?pQ6ftrVY7j9wAf9jHLtpK1GYnaOfPJUftfrr51DycqpZ1eaaNHUBLSM6cObW?=
+ =?us-ascii?Q?GqxRI4+bzB3Bx1wP/jQTsHe4TcCkbZeCCACJqM4j/46KVgr74NBcDJLqQ8A2?=
+ =?us-ascii?Q?ph6omAqPE81KuZjF+f7L6g7VWye8JqMlUOGsJlV+xL98OT18hQhDAMMORryy?=
+ =?us-ascii?Q?4vHRqqcPAShSWhc76xCokm3btZZ0NgJmU+DbXG3xnxZ0zLjqJWFj7o+nTszV?=
+ =?us-ascii?Q?GZJNlvIZCy+O2sr0ZkJNn9Q3/Y70TRLOPySD88rzVDNVfVbNUtakT+x9iWjx?=
+ =?us-ascii?Q?ROoyV1yfcLpTTFr4YVuYIFI+tvVzL424sFGJxriay8IICpqvuc6n0Dx5lsAZ?=
+ =?us-ascii?Q?yHdi2GHdovcC5VL2OTQE1z8zNg60VBaKaIISnX0gRiyoJZvHIykSmR9YvyZM?=
+ =?us-ascii?Q?OepoijRDsBgWrdTWYe7ROj5Ltgl025DyZcX3vZ5M5zw80iN8HwfPXj+DqIfD?=
+ =?us-ascii?Q?HA+UcmOKuDXTJ27fuzb9ZQI2qDt7WYSsuqzm6U5sWQOVQU8SWKeYbvOsuc5t?=
+ =?us-ascii?Q?eUlfU76Sb6uwm7Tx+ylUmgMITkGsfyUU6XRbnjFIF4HwlRwo715RUy4gNynV?=
+ =?us-ascii?Q?uqsnRogI3rvWgLjIHj4RwQXFc6YghZ4RZSiUFXJSeov2zrPXUAof0T1tJWjR?=
+ =?us-ascii?Q?t+mJRRkTgDjRZAm8wCaAZOhzcupbmmsWkfHaJnPoxSJIOu55cjiiDjFZA6kq?=
+ =?us-ascii?Q?rOf95QCPOWR9Fi09444cCGRXSavOW/wFRA8+bjJc1Ts4A8sLGOupIOrBu6C1?=
+ =?us-ascii?Q?K1JqhMNi0ro/qdD3oUXupBzeA/ZvqLeiYfg/69teG5gO7YTSifhGAyrLi1T1?=
+ =?us-ascii?Q?0hW2IFuEZLnVxDA1fbk3PYeCthO2g43MWYdcfpwCxJbRpUgsTr/M2khMQEAy?=
+ =?us-ascii?Q?pBnSNYQf1dX1mmeNqVhz54/kuinwPFNScOVebWJmSdOV3/86AOtTgCDgrjX8?=
+ =?us-ascii?Q?nekpgKzwOiU2goszz1P84YU/orADgvVQfIHPTvtneL4q+VnWBw9eUeyonrDi?=
+ =?us-ascii?Q?Jp6ukrWdVdRAFd2ZHSO0zLH0DUirx1yBXPOgrZcgF7HiOhQo1oZ3RI9FKOEC?=
+ =?us-ascii?Q?UhCQWxr9JBIPH1WNJERZZWeWkQnU/Px1A0uwooicNzLK1qkVMuoLChlWg7Ce?=
+ =?us-ascii?Q?IBb/bMWUlOQisz8ioMra5hVA8XVsIoryYnI7wAz8M07XxQ2CJCu2gsTXxHv+?=
+ =?us-ascii?Q?nTccDyufx2nwxsyYXYLMyCiizm2MZ6nc0JrUDT/ysDQNCtaIxnzs0+A+5MFP?=
+ =?us-ascii?Q?pDF1voDSosowVo6MK914TqY84x4l0POE02ADM0RZC3JDHV3UsgsUpHxhZ0SD?=
+ =?us-ascii?Q?zWWbZPIF/sDv2Rf+UTwW5aPnX42gdG0yZQ0nxlo6YvRrFmRYzNckqxEcDDNT?=
+ =?us-ascii?Q?x7Z7DgotbmukVHCs0AfLBS+MwwNT6gUOHzd8FiT7NX4t5hMuO5dDYJH2BLeh?=
+ =?us-ascii?Q?VLmwlevKLd1KRn+ZkqHTU6aY4/eLm0vzoDpIpQeO73gaLLZrIx24u1ogFYWR?=
+ =?us-ascii?Q?IKQh8nn93XB3+VEmc067WQIOGPFSrwIYZY2FK/F425rN71G2qekSsVlzx9a1?=
+ =?us-ascii?Q?pFPLQSotoPK+/5b9ozlAS3VbS8eiczdOPB+g8buE?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -121,92 +123,97 @@ MIME-Version: 1.0
 X-OriginatorOrg: cadence.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR07MB5381.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f4a551c-4184-4335-1d30-08db2aa6e952
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2023 07:27:36.9842
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b81118d-7174-4cb4-e36d-08db2ac4052b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2023 10:55:59.1151
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Fl3Qg2F4bBcleivxRRWX396SiYZwCe8W5JL6SaXX63ujF6iUElIALSEnV+0YzKohIO1k+4v5nhSsRURUF1lNebZWdLKqNHiaWbYeX6nzaOU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR07MB4232
-X-Proofpoint-ORIG-GUID: HyTJ2x6nRjro_FBkytQxQUBANk4K2FxN
-X-Proofpoint-GUID: HyTJ2x6nRjro_FBkytQxQUBANk4K2FxN
+X-MS-Exchange-CrossTenant-userprincipalname: FYJTa3XRvM45DHsuwJN6rv/JeOTolYpFkWqd2K25GepsBKPyzpc3Uv+klamziGbpl7nCfiTiHo7yhFAlwqLjQu/t3gM3ehGIF+SRnQNqkW8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR07MB8064
+X-Proofpoint-ORIG-GUID: kNZycGMM5VRNxkQBMf3VMzBcrazrCFrA
+X-Proofpoint-GUID: kNZycGMM5VRNxkQBMf3VMzBcrazrCFrA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-21_11,2023-03-21_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 clxscore=1011
- malwarescore=0 adultscore=0 mlxlogscore=838 spamscore=0 phishscore=0
- impostorscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2303150002 definitions=main-2303220051
+ definitions=2023-03-22_08,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ spamscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2303150002 definitions=main-2303220078
 
+>>The mass storage gadget has one IN and one OUT endpoint. The below
+>>(Fixes) commit aimed to utilize all hardware FIFO to support composited
+>>gadget devices. This resulted in an ep_buf_size of 15 when a single
+>>gadget was enabled, such as the mass storage gadget.
+>>
+>>However, it was found that there are unknown limitations on the imx8qm
+>>and imx8qxp B0 platforms. The device would fail to work if ep_buf_size
+>>exceeded 9.
+>>
+>>To resolve this issue, this patch reverts to the old settings used
+>>before the below commit for the imx8qm and imx8qxp B0 platforms.
+>>
+>>Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to
+>>composite EP number")
+>>
+>>Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>---
+>>
+>>I hope cdns engineer, such as pawell@cadence.com help identfy the root
+>>cause.
+>>Look like old version ip use more memory then what ep_cfg show.
+>>
+>> drivers/usb/cdns3/cdns3-gadget.c | 11 +++++++++++
+>> 1 file changed, 11 insertions(+)
+>>
+>>diff --git a/drivers/usb/cdns3/cdns3-gadget.c
+>>b/drivers/usb/cdns3/cdns3- gadget.c index 5adcb349718c..497c8e87dabf
+>>100644
+>>--- a/drivers/usb/cdns3/cdns3-gadget.c
+>>+++ b/drivers/usb/cdns3/cdns3-gadget.c
+>>@@ -3005,6 +3005,17 @@ static int cdns3_gadget_check_config(struct
+>>usb_gadget *gadget)
+>> 	priv_dev->ep_buf_size =3D priv_dev->ep_iso_burst =3D
+>> 			(priv_dev->onchip_buffers - 2) / (n_in + 1);
+>>
+>>+	/*
+>>+	 * There are unknown hardware limition: when work at super speed
+>>mode,
+>>+	 * ep_buffer_size can't bigger than 9 for one IN and OUT case at
+>>i.MX8QM
+>>+	 * and i.MX8QXP B0, which report there are 32k memory.
+>>+	 * Rollback to original settings for the these chipes.
+>>+	 */
+>>+	if (priv_dev->dev_ver < DEV_VER_V2) {
+>>+		priv_dev->ep_buf_size =3D min_t(u8, priv_dev->ep_buf_size, 4);
+>>+		priv_dev->ep_iso_burst =3D min_t(u8, priv_dev->ep_iso_burst,
+>>3);
+>>+	}
+>>+
+>> 	return 0;
+>> }
 >
->The mass storage gadget has one IN and one OUT endpoint. The below (Fixes)
->commit aimed to utilize all hardware FIFO to support composited gadget
->devices. This resulted in an ep_buf_size of 15 when a single gadget was
->enabled, such as the mass storage gadget.
+>I'm not sure whether you have 32KB. I remember that you had a Soc which
+>have only 18KB on-chip memory and value in usb_cap2 was incorrect.
+>It was the reason why the on-chip-buff-size property has been added to
+>driver.
 >
->However, it was found that there are unknown limitations on the imx8qm and
->imx8qxp B0 platforms. The device would fail to work if ep_buf_size exceede=
-d
->9.
+>Please confirm that you have 32KB, then I will recreate such test on my te=
+sting
+>board.
 >
->To resolve this issue, this patch reverts to the old settings used before =
-the
->below commit for the imx8qm and imx8qxp B0 platforms.
->
->Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to
->composite EP number")
->
->Signed-off-by: Frank Li <Frank.Li@nxp.com>
->---
->
->I hope cdns engineer, such as pawell@cadence.com help identfy the root
->cause.
->Look like old version ip use more memory then what ep_cfg show.
->
-> drivers/usb/cdns3/cdns3-gadget.c | 11 +++++++++++
-> 1 file changed, 11 insertions(+)
->
->diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-
->gadget.c
->index 5adcb349718c..497c8e87dabf 100644
->--- a/drivers/usb/cdns3/cdns3-gadget.c
->+++ b/drivers/usb/cdns3/cdns3-gadget.c
->@@ -3005,6 +3005,17 @@ static int cdns3_gadget_check_config(struct
->usb_gadget *gadget)
-> 	priv_dev->ep_buf_size =3D priv_dev->ep_iso_burst =3D
-> 			(priv_dev->onchip_buffers - 2) / (n_in + 1);
->
->+	/*
->+	 * There are unknown hardware limition: when work at super speed
->mode,
->+	 * ep_buffer_size can't bigger than 9 for one IN and OUT case at
->i.MX8QM
->+	 * and i.MX8QXP B0, which report there are 32k memory.
->+	 * Rollback to original settings for the these chipes.
->+	 */
->+	if (priv_dev->dev_ver < DEV_VER_V2) {
->+		priv_dev->ep_buf_size =3D min_t(u8, priv_dev->ep_buf_size, 4);
->+		priv_dev->ep_iso_burst =3D min_t(u8, priv_dev->ep_iso_burst,
->3);
->+	}
->+
-> 	return 0;
-> }
 
-I'm not sure whether you have 32KB. I remember that you had a Soc which hav=
-e only 18KB on-chip memory
-and value in usb_cap2 was incorrect.=20
-It was the reason why the on-chip-buff-size property has been added to driv=
-er.
+I've made the MSC test with the following endpoint configuration;
+[ 6732.999537] cdns-usb3 cdns-usb3.1: Configure ep1in: with val 74000e05
+[ 6732.999565] cdns-usb3 cdns-usb3.1: Configure ep1out: with val 74000e15
 
-Please confirm that you have 32KB, then I will recreate such test on my tes=
-ting board.=20
+So, I used the 14 buffers per endpoint and run bonnie++ as tester.
+I didn't find any issue. =20
 
 Regards,
 Pawel
->
->--
->2.34.1
+>>
+>>--
+>>2.34.1
 
