@@ -1,193 +1,196 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2084.outbound.protection.outlook.com [40.107.249.84])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2063.outbound.protection.outlook.com [40.107.22.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087325683
-	for <imx@lists.linux.dev>; Mon,  3 Apr 2023 13:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19506FA1
+	for <imx@lists.linux.dev>; Mon,  3 Apr 2023 15:24:36 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LJUj72PlQwKfo2j/uWPK4GcJ5tOOcpI/wfcOi34PFXkwDbkwoIwM+RAahUce62BJecrVTMrZA16ghMsl5bSFxde6y5XMhn6Cpy54PNiuQv1jy86mf9tigbyksP9dCBy9qSRj9jOaUjk9PPlAtHmPDViIvxSbeZWv/4OB6/MV3oq8+nd7gbd1n9PfREP8T9/XLcbDpoKYi8wKIK5has2UnR39suJQ7RVulTNKKr5k0HaAyU/pc7Py1cYHla3tkgFeMTF/BODgl9aX6HgHhcWwvrrfDc2uT3E88EaZqW/s3X0/usg+nhg9xKDb6FX8ANaMqFQEc7f3CXMmkVSPljXbcQ==
+ b=ZUAAaNeK83i4QJ34PUtCkf9M8M1oP99WIAsQcWQHRpXA5e3JsXPZWSy8xr04I6emK6CN2nIaIxyeZLjdxWGdZdZlgr0Ph/tSFOUo9OVxjRdesHyWqcDxYSog59KlZfAvkuKeMGf2A6b3aXPTDdw4EuJZmH6p80UlOuZZJefO5W2uvZqDAZwp48f3PJB0Lim1ifInAUAiYRqHGHlH6y0x0zYFMlbomr3h5HrALSR/9eoXcoLqXA5s4qqg8LlSlhERLQ5MB2y9LU3Ooc5kXk2hB9jIMPTsEfQDlrlgEhHEVIaq2QObQEHy1nd16zUGqfCFnOdbjllOkedgAv/vE0xcOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Phogb4otx13s2lTHAShWz0Vd/RL+cEgNlYF45g1zObs=;
- b=a8JFlj4GWd2JOIZ8gJgEHdd7AgbvR2NNDh0Leq0j+Y5EjCi36pRzkbe1uKXMv92sWH5iHndXfusOS9/fZtyHyy5F8bmyS8ewv3xy1mB/99EQdpPziTx88qi3P3G0JjjNKmyH8vY5ADEgSxKGpPmm4WN/kuEcJMie/hkHjfCSGsz3m+0G17HZwEXG5rKUc0dvaXyWbmdUYBDDOpLSccgBj1fiRe6spg0W7JrvjM59nLUW1CV2R2O/6j1fKs9d/CyljCQha7YnobSRBh/MqXM+YHFAA1nC6NdNswXt9lClcHfJmJS4DPj3ey+JP2dcOC4+cWjnkOVa+7yhaPZAc5VbIw==
+ bh=GxGReCJlmTHaMmHuzXzSEQ2BFfUN2YkWJccVtTR7tIU=;
+ b=Wb9GmjBJ/MiLbUDLrjVT1crEyMp4HePQCcvfLhRcIV0ltmHIP6nF2gWq6hgV6XZcrSaF4/WURQJGVGjTCBg56PEx+3x6K65BqeGYkifKwWsVFhUr8oCC7ayOHroQAklmHf+Gy3n+pFvddJ6ZbpgYIhXJQb+KCRZPSv0RpKNTZK0OUTrL9TXcf091GmzaJkfduKFvg/s6CfnhJFRt1+adj+Fr/l2GB0uHiNQV5uZiqFWeyGQ4cta8fltZy56U1PQKczLobNdZLfwFV4uzvUeNkX96niZ+WHftdpsKwMgAucwpIEbd/tEXfqj/10ffBXfoTpoPLJUrCyC5+MUTHDptNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Phogb4otx13s2lTHAShWz0Vd/RL+cEgNlYF45g1zObs=;
- b=DaxT8SL+lL03p8EGTJZRN0WxGB+Zj1JdiBrZlpNqM8Vg+BOo9lAZ/atAlMP74wRLuASzTBSi2/KXZejNvcl1hOgbFC7fIPtdJvCcSPU0DfrEd5/wI+3Lagdp4M3e7+wfEM8DQmpI9gMydY1k2E+ZozshQbvbULyyKcXcZTj74Po=
+ bh=GxGReCJlmTHaMmHuzXzSEQ2BFfUN2YkWJccVtTR7tIU=;
+ b=nhxdOlhpnkk5Gp2pF6/lIZotSfCf1Mvci0GFKaI5DbqH8zE1VTAqLXzxBGqe+vrA9vYD/IgAUYJ8JYR26omEGhfIpCgwQcvWt7bgF0tONHq6qCQ83k/YR76uJZQZ7qtcrLDsrjUxIeHRJ6jtjCNjp/N8fQZLOa0yyiJgsjsdblI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM9PR04MB8955.eurprd04.prod.outlook.com (2603:10a6:20b:40a::10) with
+ by PAXPR04MB8717.eurprd04.prod.outlook.com (2603:10a6:102:21c::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
- 2023 13:53:34 +0000
+ 2023 15:24:33 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::28fb:82ec:7a6:62f3]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::28fb:82ec:7a6:62f3%4]) with mapi id 15.20.6254.029; Mon, 3 Apr 2023
- 13:53:34 +0000
+ 15:24:33 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
-	<joabreu@synopsys.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>, Wong
- Vee Khee <veekhee@apple.com>, Kurt Kanzenbach <kurt@linutronix.de>, Revanth
- Kumar Uppala <ruppala@nvidia.com>, Andrey Konovalov
-	<andrey.konovalov@linaro.org>, Tan Tee Min <tee.min.tan@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH v4 1/2] net: stmmac: add support for platform
- specific reset
-Thread-Topic: [EXT] Re: [PATCH v4 1/2] net: stmmac: add support for platform
- specific reset
-Thread-Index: AQHZZBb4TGQjvgUNqEW50CFai25e2a8V5PUAgAO5o9A=
-Date: Mon, 3 Apr 2023 13:53:34 +0000
-Message-ID:
- <PAXPR04MB9185855577B999D41B3C9DC789929@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20230331212250.103017-1-shenwei.wang@nxp.com>
- <20230331215816.32d5aa35@kernel.org>
-In-Reply-To: <20230331215816.32d5aa35@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AM9PR04MB8955:EE_
-x-ms-office365-filtering-correlation-id: f126cf04-adaa-4c41-69aa-08db344ad11e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- VvJr837mVZWhqbtcSGfmjdYmT6jCnZHw8Jfag84UcSX4/O+QJ00t9ZZatRarZ4Zee4KSykBoUYEEARGR+mTf/6+npBqtKYRf+9h6+K2DhuPUuAjFeTnvRbkQfVJp/gfowZau5ULQqLUR/fJxeptfoZfMH2WGFY0Qsmi57KkmJAVcFiCp2Yece7R7nM7don/yxVhKMXek3jPjxaPCl67F9JCY63iX6XibsjAxckC7DxLLBCBd+QmGNe7RkJK4dD3PFowX8Om2RMU1KLo54jEil4bqYatKKApb8IFzUPqlp/0hV5iSWhOVR1NkXUNGe3QQcBMQEne1AsSLJdlx6jHj80s4lBMBF6Sn0kTwFU88E6EXoJTicdAkX75jOjkhXR8ATadHB5Pj9DHBYqbm6eJL1K2tnp4NJXojMHJ01Z2kMAgU6b2wDQXksZGFr8lwoTuG6JoEo2SIB6f+njLPAatzdDselmknlw4EyZjEDKKSyXuBiTJLvO/GgjDL1ZeTRn+SZg54C0fIMyT6s5TlvyeNkKkS4CogiED/K3lQPfwVgGP4VSdNta/YtSwIOBis5ILPLJlTu8rpjs2I/M5JjAgp7/AxsiCePiixSNvEE3rUo/4=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(136003)(346002)(396003)(376002)(39860400002)(451199021)(55016003)(8676002)(66476007)(4326008)(66556008)(64756008)(66946007)(66446008)(76116006)(478600001)(6916009)(316002)(54906003)(8936002)(52536014)(41300700001)(7416002)(38100700002)(122000001)(5660300002)(44832011)(53546011)(186003)(83380400001)(55236004)(966005)(71200400001)(45080400002)(26005)(6506007)(9686003)(86362001)(33656002)(2906002)(38070700005)(7696005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?c2sl9hXOjpPfIv3R+EYZxsjYiLIzSDobVMbldIOXCjNqXOM0lsUvzKU4ghnR?=
- =?us-ascii?Q?HUAIZ9wv+B2DBFojEENzzlGJ+QPsOx2MqqnOEhTk2fimeiioJj3zL7b2GR9T?=
- =?us-ascii?Q?5LJVcKeBych3++pUflF/KrjzdPi/s4L6FzAbrDebeyGptim6aMPMc58ExaSL?=
- =?us-ascii?Q?yj1Yd53mFlctrZHWqdn2SmEBUBingO9kAtyT27GuchsD8SKtaIshFF0aWaKY?=
- =?us-ascii?Q?ygqkH3BCd/NEhlTEb+u9FPuzEJA89f2EqDas5iqaQjuUtAnkdvXc7e+HwHLX?=
- =?us-ascii?Q?NMCHxE/x9CdCVE+RT9cn21oLNL8uoQAhtj/hKuVLZnv8jvWQE3KZhy8kYy/u?=
- =?us-ascii?Q?vILHlWPvaXDAaHrWKQgz7L39Vy1bGt0TsPX3kD03wGKRyuKf7fiktbnI5dD2?=
- =?us-ascii?Q?mCf5LuKVJ3LWkQqiUDmvUfR9xU1Ab5c49NnYQq92aMPRwAQxq81evS6EsYj3?=
- =?us-ascii?Q?eQ45X4vitGZs1C+3PXuhpVBU+VI2b10y7/THNslshH+tqJcwoStNAwsRRnd8?=
- =?us-ascii?Q?Dux1OWjMi0C+R5JNK9onITAAJ6egm4DbyDEKuDXPCz3c1IYr0EAhX2o4ix41?=
- =?us-ascii?Q?jJWPjyhW1NJKN0WCEL2X8FYwhbLQK/23rmb0yXES4rWVxXOeiIKt1VTl3ZIE?=
- =?us-ascii?Q?iGkdcvZ2Ebp303sgC0V2XkEbcKiEFS4/l7m6JcmH8Ow41QuuokO3CQ77Ager?=
- =?us-ascii?Q?p01vf5WTSYb1Lf16eMmBLYlDoPKIlD3IwPusXvzoftlq1Qr+Y4nd0O8lWQZF?=
- =?us-ascii?Q?cqG73tgP3Ftu/iasAhGDXjidObYNGQs9tE04JAQ0Vth83bYFgUKro0yNZ54G?=
- =?us-ascii?Q?PijSsedKlH/lFdlOnBn5bD79lMMf/ZQJuas7qDOcnq2IhXPBIHZEczDRqFPf?=
- =?us-ascii?Q?ZeyQvBjpl4moeIsiit9fWVWB0bIgmB3+2lj8AFMDTZ74yBOzvILgLhVT2wUP?=
- =?us-ascii?Q?tzYybC3Mpk2NTTJ0P7WDodaGshLdqA48Q7aCSIirIHmBIlNtnzP8Zus0+dYb?=
- =?us-ascii?Q?flbl8FUcqGeNj/EQGlUYuB3CTbD2AJXz2IN/6BJEcMewu8ed8vNrGmYFqSrA?=
- =?us-ascii?Q?vQBD5VakBEU2KL05XRE84tmAxev5z1TwPp1ZpN+++8GbLRGM58cSGJwA50I8?=
- =?us-ascii?Q?LsIQyv9oPsqJhcOc2wqTzl4GTs+AKGhNQDaY1w7rrEXUGdB/Vuy8dQDqa+Jx?=
- =?us-ascii?Q?bF62/7F3oRmDCk6TqUuRkeVD5YKnReQ7MQGe0m5D5MR4T2yDY4cZDuJwcgS8?=
- =?us-ascii?Q?X+7W5rzrNgFhh0x8tvfGJ6kG4zLPyeVd6T39lDXekWV0EqDaPsanLRrBqiIc?=
- =?us-ascii?Q?lZsXwHz1ke8RXPUOdu4Mkl04ZhPm/de+5ieNx7Eh1ajQIvoedG1SF1ezPUKv?=
- =?us-ascii?Q?LKaUz5Jqd4h/Sct4/PaQvfX/KMPaCWBGwBJB+OoOJayfmihFSH073Q/PIv6z?=
- =?us-ascii?Q?Qe1pUN3S83MebNkR4xdpsA2M3Y3HCwGpPdJ6KPC5PMMJViH2NiV0puvnlzHJ?=
- =?us-ascii?Q?vyqOGcxO7C02mTlITPgA6tyX6wroUrIT3HfQINdr7VAx/K7Z7hdXCwPi7lzu?=
- =?us-ascii?Q?p8VXD8ASIFp3n6g40M33ojSWlzCHTIPwvfpjaq87?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Wong Vee Khee <veekhee@apple.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Mohammad Athari Bin Ismail <mohammad.athari.ismail@intel.com>,
+	Andrey Konovalov <andrey.konovalov@linaro.org>,
+	Jochen Henneberg <jh@henneberg-systemdesign.com>,
+	Tan Tee Min <tee.min.tan@linux.intel.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	imx@lists.linux.dev
+Subject: [PATCH v5 1/2] net: stmmac: add support for platform specific reset
+Date: Mon,  3 Apr 2023 10:24:07 -0500
+Message-Id: <20230403152408.238530-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR11CA0104.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::45) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|PAXPR04MB8717:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59b657d7-73c6-4647-1a0e-08db345786a7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	e0cjH/TyqJATd15/dtoKEfyo1vlkEzTs6YYYG8VHUfQ4N8fJN7tHZm+nzLKoJCQLWtJPEXhDEmuaEVW4jqJAwDQy/72QRyQFQ9dRss2MmLPbvfez5CMyEtji2wxTl3kLnytEpOA5cLsP2xtxVxUayKzSi33k3UYOtHHg1vr+iFTD2rtrm3Tqw8iWimDsS1MjJh3aQ7rBlQXw0ACl/1IQqSgMftR+4ROs28hiuCTOeYjKKpO4BCxwOz78ypVn7M0WM319JhTywMeB+4CDTIccvDRZ0nHRe+WTgut2rHdByQWCjLrAAEu7NRH1o/zXbNAkuuGbI8SV9OGlnfYIPgU/dxqngenm/FQOgIQCEnoWcf9MI3ZqRV6IePm6VNR0E9TU4M1GM4rPT6k65pUMav64M9MmC+6BsjDFKCFdtaVfiUclCpwk26HoWLxrQd/as7gvz9pwV2Ehmik+YuCWdZAXTtjY8GthVfaBRkW+hSJPn+hLE/TnolFAyXLBaLbh6QtAg8VYaEve2uRsy8Y5/wU0ck7XoMpUxkVpAuhTNZMz0aDDN9ZT3wP1p0U7lEXUiofR3sjuGxS6MpO69cGl69fwsza9dhCmS6psiuCMSW21axmygwW3Bhys9azquZ5Ms6CR
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199021)(4326008)(41300700001)(38350700002)(86362001)(38100700002)(52116002)(83380400001)(55236004)(186003)(2616005)(6506007)(6512007)(1076003)(26005)(5660300002)(8936002)(8676002)(7416002)(44832011)(54906003)(110136005)(478600001)(316002)(66476007)(66946007)(66556008)(2906002)(6486002)(36756003)(6666004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?F/4YqvPIGoPIVPVwUDV84YgFlwLeEq5h4TDSv0rsG/sDV2ebjl22O/h3KvSc?=
+ =?us-ascii?Q?2vmgNIb6WgG0uJ5NwwthGXu41Mmc5qcJ92vP+HxwhCqSoJHsMwgqg93IK2K/?=
+ =?us-ascii?Q?9uaFB80f2D+2i9ipEvaJmLSEG9wCbbbtdAhDGUrYffJv6Ez4YoujI7o0BkMP?=
+ =?us-ascii?Q?I/foh7ImPK9PMRIssMFVC6hms3A8O1aXFHDCNfjyA95nXHR1yQACGFgVRGK2?=
+ =?us-ascii?Q?gELmwo81paIY3RLdhZrgBHJK9tVNM18F9CoSZ9bXQ4zHMAPplEWfl3krqTOI?=
+ =?us-ascii?Q?W13MHAUO1635TJoiDY/fZ2WOKEx/RIkqlIde0X/xTOCiTepEWs6y05//pf6v?=
+ =?us-ascii?Q?sRJl5jVmDRw5w22b/nEJxxH91ccRNxEK8SfpTmCIBY0A40vU9l2bFzuIiWga?=
+ =?us-ascii?Q?4qoCqj4z+ZXaSLT1fE03Ec/RE+NZ4Tm+Pd+JqnLnA8pkYj5axNjnHOciQnFz?=
+ =?us-ascii?Q?B1O7rsh6m3JWlme24vlYGN2drTui3ru/VBKFxmLJVP72TWJvMB75W7xslBHx?=
+ =?us-ascii?Q?y34kvIgt2zKBmdkLwG7NoSNpZ3BSNSev2QZOoc3pbxuBAPZd/miom4zzZfHx?=
+ =?us-ascii?Q?Nv8VL7ZBv7R3VCyU2jvnNJW+Bhikg9x+eqWtCXG2rvrGhBd+QAVhflFAX9Rv?=
+ =?us-ascii?Q?NL8jdUoi5rCb03bDqrIXoJqnA5715pxT8IGRvVQNJAuDLmO/50PsdBGJO+dG?=
+ =?us-ascii?Q?4uQUpRNnIeAbv2MooSRkfOMyeIJk0u2dud72OX/LWq+o3B1TCpQkRKgcztpx?=
+ =?us-ascii?Q?Vy/dhpqqcS+suiWqXSpaTOUNcgUI29ZmfiLdYTVjiPZSxcg/oTBA7KUMctoO?=
+ =?us-ascii?Q?SAF/0luNPzki3lND1yWEzekrkAhYT+/TMeRN91Dl97CjYSY7m4eoL0QjOGFD?=
+ =?us-ascii?Q?v97Q7/zyGOobUNk/ghDYfAaPemND/WN/QDk69ez/dUejQ3tWiTtYphA/E5kI?=
+ =?us-ascii?Q?aP9mMCBzKMkft5vM8+o9MmG0N0b8wNjKqYhGooTrrrWbGUQQaRAfPi7AVx47?=
+ =?us-ascii?Q?J8aI9s9JpzB35VFb/JAIBXMayj2deJrsERaSsDHJjKaxvSefcsFLLLSvcVZi?=
+ =?us-ascii?Q?mLz8FJJ6qfZXgKB8ZpeIjNUlXrQBKaFdQM15tTdixc/ZQUAzvY65rsMQyQRe?=
+ =?us-ascii?Q?lKMfVrQDXYzgOYcm9f9jSys8oF9NSfx87z3pbPz5g5D4LMG95tqrigE5VQ9e?=
+ =?us-ascii?Q?tJVNETqtvuTS2D661/BKuUb2lR4MCFrKwatTolnMQNaFrDBO1qh/xyLKBamH?=
+ =?us-ascii?Q?PtNstl7uQGmhpS1HCe/Jt+5CR+PRk/dmF3+zA2ZRAueRuhDeTSEVPiSnIiMA?=
+ =?us-ascii?Q?/tMnC7QDR2SDTd7rPCoSn4dtFm8s8AUszMt4kWIeLoWqO2M6wgfd9fXEz2pw?=
+ =?us-ascii?Q?A1I7K9ZlErKXFm6N/1ictas26px4q2TFMpWuh8cGw4pk7DjrWDZI9CcWsn3n?=
+ =?us-ascii?Q?0XOWliYMC2pjnkwxTaAPpsfgSTW36FBAPddER3T7G3XH/Zd3yqSrApu/sNBx?=
+ =?us-ascii?Q?Uxea1+H3G7S67qvC4cXXPNzi+l/ZlxGMAMDAz7xaE/NW5DmHRlpFziwXltfv?=
+ =?us-ascii?Q?gxXn+Jm1tL/ugencftFGqoW8GLDey9frwoxneX67?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59b657d7-73c6-4647-1a0e-08db345786a7
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f126cf04-adaa-4c41-69aa-08db344ad11e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Apr 2023 13:53:34.3227
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 15:24:33.1797
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eCj21rfK1/vraXVwsdAfWIiERMQkEp84gTrxo9rD8SR1ZVittxmT32b1gPmTRebmwmFCG0gKvgbb8Cc7Pgp5TQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8955
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L4utCq2ZMVQ7Cnesv68U4X7XKXfzzPRxGGRLGYXR9SLB5hEgAuws5uZMt9E8L0jQ9Yuyn0CPQ2Xj9+xFiHpsZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8717
 
+This patch adds support for platform-specific reset logic in the
+stmmac driver. Some SoCs require a different reset mechanism than
+the standard dwmac IP reset. To support these platforms, a new function
+pointer 'fix_soc_reset' is added to the plat_stmmacenet_data structure.
+The stmmac_reset in hwif.h is modified to call the 'fix_soc_reset'
+function if it exists. This enables the driver to use the platform-specific
+reset logic when necessary.
 
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+---
+ v5:
+  - add the missing __iomem tag in the stmmac_reset definition.
 
-> -----Original Message-----
-> From: Jakub Kicinski <kuba@kernel.org>
-> Sent: Friday, March 31, 2023 11:58 PM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Paolo Abeni <pabeni@redhat.com>; Shawn Guo
-> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>; Maxime
-> Coquelin <mcoquelin.stm32@gmail.com>; Giuseppe Cavallaro
-> <peppe.cavallaro@st.com>; Alexandre Torgue <alexandre.torgue@foss.st.com>=
-;
-> Jose Abreu <joabreu@synopsys.com>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; dl-linux-imx
-> <linux-imx@nxp.com>; Wong Vee Khee <veekhee@apple.com>; Kurt
-> Kanzenbach <kurt@linutronix.de>; Revanth Kumar Uppala
-> <ruppala@nvidia.com>; Andrey Konovalov <andrey.konovalov@linaro.org>; Tan
-> Tee Min <tee.min.tan@linux.intel.com>; netdev@vger.kernel.org; linux-arm-
-> kernel@lists.infradead.org; linux-stm32@st-md-mailman.stormreply.com;
-> imx@lists.linux.dev
-> Subject: [EXT] Re: [PATCH v4 1/2] net: stmmac: add support for platform s=
-pecific
-> reset
->=20
-> Caution: EXT Email
->=20
-> On Fri, 31 Mar 2023 16:22:49 -0500 Shenwei Wang wrote:
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> > b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> > index 16a7421715cb..47a68f506c10 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> > @@ -214,8 +214,6 @@ struct stmmac_dma_ops {
-> >       int (*enable_tbs)(void __iomem *ioaddr, bool en, u32 chan);  };
-> >
-> > -#define stmmac_reset(__priv, __args...) \
-> > -     stmmac_do_callback(__priv, dma, reset, __args)
-> >  #define stmmac_dma_init(__priv, __args...) \
-> >       stmmac_do_void_callback(__priv, dma, init, __args)  #define
-> > stmmac_init_chan(__priv, __args...) \ @@ -640,6 +638,7 @@ extern const
-> > struct stmmac_mmc_ops dwxgmac_mmc_ops;
-> >  #define GMAC_VERSION         0x00000020      /* GMAC CORE Version */
-> >  #define GMAC4_VERSION                0x00000110      /* GMAC4+ CORE Ve=
-rsion
-> */
-> >
-> > +int stmmac_reset(struct stmmac_priv *priv, void *ioaddr);
->=20
-> sparse reports missing annotation, I think it's this line.
-> It should have a __iomem tag. Try building with C=3D1 Also please take a =
-look at:
+ drivers/net/ethernet/stmicro/stmmac/hwif.c | 10 ++++++++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.h |  3 +--
+ include/linux/stmmac.h                     |  1 +
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-Tried to rebuild with C=3D1 but didn't reproduce the missing annotation iss=
-ue. However, the __iomem
-should be added here.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+index bb7114f970f8..0eefa697ffe8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+@@ -87,6 +87,16 @@ static int stmmac_dwxlgmac_quirks(struct stmmac_priv *priv)
+ 	return 0;
+ }
 
-Thanks,
-Shenwei
++int stmmac_reset(struct stmmac_priv *priv, void __iomem *ioaddr)
++{
++	struct plat_stmmacenet_data *plat = priv ? priv->plat : NULL;
++
++	if (plat && plat->fix_soc_reset)
++		return plat->fix_soc_reset(plat, ioaddr);
++
++	return stmmac_do_callback(priv, dma, reset, ioaddr);
++}
++
+ static const struct stmmac_hwif_entry {
+ 	bool gmac;
+ 	bool gmac4;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index 16a7421715cb..1cc286b000b6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -214,8 +214,6 @@ struct stmmac_dma_ops {
+ 	int (*enable_tbs)(void __iomem *ioaddr, bool en, u32 chan);
+ };
 
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.k=
-er
-> nel.org%2Fdoc%2Fhtml%2Fnext%2Fprocess%2Fmaintainer-
-> netdev.html&data=3D05%7C01%7Cshenwei.wang%40nxp.com%7Cb0c66303819f4
-> c5c2eec08db326db89d%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7
-> C638159219052564995%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwM
-> DAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C
-> &sdata=3D0j58wSNzzTirX%2FqaJKPxYEDZn6ezs7qC39trHa72YRA%3D&reserved=3D0
->=20
-> >  int stmmac_hwif_init(struct stmmac_priv *priv);
->=20
+-#define stmmac_reset(__priv, __args...) \
+-	stmmac_do_callback(__priv, dma, reset, __args)
+ #define stmmac_dma_init(__priv, __args...) \
+ 	stmmac_do_void_callback(__priv, dma, init, __args)
+ #define stmmac_init_chan(__priv, __args...) \
+@@ -640,6 +638,7 @@ extern const struct stmmac_mmc_ops dwxgmac_mmc_ops;
+ #define GMAC_VERSION		0x00000020	/* GMAC CORE Version */
+ #define GMAC4_VERSION		0x00000110	/* GMAC4+ CORE Version */
+
++int stmmac_reset(struct stmmac_priv *priv, void __iomem *ioaddr);
+ int stmmac_hwif_init(struct stmmac_priv *priv);
+
+ #endif /* __STMMAC_HWIF_H__ */
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index a2414c187483..dafa001e9e7a 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -223,6 +223,7 @@ struct plat_stmmacenet_data {
+ 	struct stmmac_rxq_cfg rx_queues_cfg[MTL_MAX_RX_QUEUES];
+ 	struct stmmac_txq_cfg tx_queues_cfg[MTL_MAX_TX_QUEUES];
+ 	void (*fix_mac_speed)(void *priv, unsigned int speed);
++	int (*fix_soc_reset)(void *priv, void __iomem *ioaddr);
+ 	int (*serdes_powerup)(struct net_device *ndev, void *priv);
+ 	void (*serdes_powerdown)(struct net_device *ndev, void *priv);
+ 	void (*speed_mode_2500)(struct net_device *ndev, void *priv);
+--
+2.34.1
 
