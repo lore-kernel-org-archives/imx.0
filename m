@@ -1,170 +1,214 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2114.outbound.protection.outlook.com [40.107.237.114])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2071.outbound.protection.outlook.com [40.107.7.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2DE8F6E
-	for <imx@lists.linux.dev>; Mon,  3 Apr 2023 19:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7D6A943
+	for <imx@lists.linux.dev>; Mon,  3 Apr 2023 22:16:50 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TZRuiSL2f6Fej2DmZAieeX9awMPuExr7nmDDiTVq4pPF9U+ODpRPnVF1crEJBt/O2Yu6kJ1Qb+/O0Wn69KGshDHzGsZJLE5huCq1KBjGAwzO9+dvm2g+cSCA7fJnw2Lpvk6JrQiDuOSX4g/eIgi24VDHZoz9CMxdmzb0EZJxzGABu/+/uA2dKhDor1Vr9ke14gGo+TMFCEwE95/OElJG/lOJryI5sKOFztBiSUqriMoRduve/wguMJYeksoSeXz/VKpqpGouvKHyLgWcMSgscUNevWa1d5+Kv5YWWsFq/BcwV+g2f+SswylU+EZlPImB9uHnrSa4ju0Kqn/RobvbYA==
+ b=k8g5JzIK0wGTAahRcSHbOj+U+JfohAjPVVbWufVJfI5kWot82Ei15A9PFwmYym+u/B7pUMy5/l5xLZHXhLL2yTyVmQb6gMG8lFWcq2VkCGJOMSlHqIBLssPfCzpS/ThZhq5AEk/qD0upvYNwh6The98azrmaDsrVIVHWd/lNCgoGxrXY6n6zaBAxTzkZXte7Wh3KO6Mi/MWjPewcPy2BQXHD+DYqm1nQHHaLHsgcmEfZNjxX9L9KCr0x8ULgk7evH3+aTvXU0r0vurKBTYOMJAcw7m00kjJBT/Uq20z5PPclViSu62moJTgR0B/Xm3ZVO6ZfbhpDQdDL/gEsqm3LOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CpgLzJK4cnQXaGeYevChFgqCyJbTelxMpRzCH5fO43Y=;
- b=Fsfv9KA5FyO4cwlv7AcTxNvSXwxQ2UHORspVeKBGevfWAiUUVYDFG3xrlpStqETS2QKZqEwr+mSm1/2IdeWMOeFTEFfOs5PczshNWNDF0VkefuQZwCxKHuu9lHxrvc/zD5teZiuhRnQNwIFxRjuYnzHsfJpnhAT91V/F9iXVPNJX3lvFZG3ZqtB/7Y26zdkILA1MJ3ljNaVqeKT+XQpCjiCxpuYzCxxRg7kQaG3Sl2S+maZDsnkitZKCkqrWM9DjySKXR4MGhid44J8CxmpTWRfmNFFDha+6cEVZzPKmwpRf9N+a7MbNgaULqqXqk/LB08Co4fNGSreigeGLOHJ2gA==
+ bh=jocy0mwBWjtJI4uYhC8QENQ7MrSTTy1uTe+bWj3QF+0=;
+ b=J/7/0pwMeaF4dZgozXb0FWJIZyiu60NukVGBWqYuO6MxYu6E/4b+CKdlpT5ayKeKH58ILk2aVeZyZ0vbvHNj6ZHvyWYeYDcH/ZPIH7saQ5f8xiGUT+C/NvHU+QgrE1kdBJZQd7pDVpP69XvcjhO/bj8ZcwbzbcxaV4JbhqMBn/vQ+Qr8Ymbqp6N/6H3Af6pjvpHf0fgfW+7+qi6Njk0NGS5TWECZBCEYxUZdoSbOf2ufVAE6+BFpJSyGCh9XeNSAlq9gss50H2nrk94J2K16+yOq8BGV6/5D6EvW2ybUAbyx03tDt0/C4VfryPXABXgAg0sFMCWV4/dGeuuZ9cHu8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CpgLzJK4cnQXaGeYevChFgqCyJbTelxMpRzCH5fO43Y=;
- b=uf0bq/NQ3RRibKtQFAR1BdvjwjD9VAP/zy4lXiiVMR/fzfn4IcLRHx+MwQ52ltw3yrrf4B0OxJCwlw/vJD+fM8389lz3Uno95iO3dUPOS6AQBGP+ONQBwOeW7oLDL3057huJqd6nzOBTlXjdEFy89VKTtJocoSRG3nT4sAFuQTo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BY3PR13MB4882.namprd13.prod.outlook.com (2603:10b6:a03:36e::22) with
+ bh=jocy0mwBWjtJI4uYhC8QENQ7MrSTTy1uTe+bWj3QF+0=;
+ b=Z7ij6jEvF/xk3sQThR4M7ix+eyyhY3oVKTjsCS0vlhF4Xo0QkiOQjdNgdJZZBMJjE4kHHgtKD/Y1K4UbqDHCfHhCOkO4L1kSFEDMiFibSeXL3GETLTDf7pQ+u/vILDvYkeUd58RylssbNvRGYjWpQyOZbV8qiQnU9JmscdQxMkU=
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com (2603:10a6:20b:44b::7)
+ by DU0PR04MB9495.eurprd04.prod.outlook.com (2603:10a6:10:32f::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
- 2023 19:51:42 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::c506:5243:557e:82cb]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::c506:5243:557e:82cb%5]) with mapi id 15.20.6254.030; Mon, 3 Apr 2023
- 19:51:42 +0000
-Date: Mon, 3 Apr 2023 21:51:32 +0200
-From: Simon Horman <simon.horman@corigine.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Wong Vee Khee <veekhee@apple.com>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Mohammad Athari Bin Ismail <mohammad.athari.ismail@intel.com>,
-	Andrey Konovalov <andrey.konovalov@linaro.org>,
-	Jochen Henneberg <jh@henneberg-systemdesign.com>,
-	Tan Tee Min <tee.min.tan@linux.intel.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev
-Subject: Re: [PATCH v5 2/2] net: stmmac: dwmac-imx: use platform specific
- reset for imx93 SoCs
-Message-ID: <ZCsuRDDAmIj571wl@corigine.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.30; Mon, 3 Apr
+ 2023 22:16:46 +0000
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::f829:2515:23f4:87b5]) by AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::f829:2515:23f4:87b5%9]) with mapi id 15.20.6254.035; Mon, 3 Apr 2023
+ 22:16:46 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Simon Horman <simon.horman@corigine.com>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Alexandre Torgue
+	<alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, Fabio
+ Estevam <festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Wong Vee Khee <veekhee@apple.com>, Kurt
+ Kanzenbach <kurt@linutronix.de>, Mohammad Athari Bin Ismail
+	<mohammad.athari.ismail@intel.com>, Andrey Konovalov
+	<andrey.konovalov@linaro.org>, Jochen Henneberg
+	<jh@henneberg-systemdesign.com>, Tan Tee Min <tee.min.tan@linux.intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: RE: [EXT] Re: [PATCH v5 1/2] net: stmmac: add support for platform
+ specific reset
+Thread-Topic: [EXT] Re: [PATCH v5 1/2] net: stmmac: add support for platform
+ specific reset
+Thread-Index: AQHZZkBkrKNMECxq30yLxNh6ONN7Gq8Z/mgAgAAjznA=
+Date: Mon, 3 Apr 2023 22:16:46 +0000
+Message-ID:
+ <AS8PR04MB91769E3A7396555DCAB43CC089929@AS8PR04MB9176.eurprd04.prod.outlook.com>
 References: <20230403152408.238530-1-shenwei.wang@nxp.com>
- <20230403152408.238530-2-shenwei.wang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230403152408.238530-2-shenwei.wang@nxp.com>
-X-ClientProxiedBy: AM3PR05CA0092.eurprd05.prod.outlook.com
- (2603:10a6:207:1::18) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+ <ZCst4PvQ+dlZEbgl@corigine.com>
+In-Reply-To: <ZCst4PvQ+dlZEbgl@corigine.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9176:EE_|DU0PR04MB9495:EE_
+x-ms-office365-filtering-correlation-id: 36160c8d-2dd7-4c02-91d1-08db34911d28
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ PzPTkoeraKiLxHhoFrW7TSnMsQRlP+7kO2ilBcRztxxxuTKTE5cmjGSOIEzha9KPqhw2JNiniBeZMVdOB24E6dDqzNB+UqV8bAMC/rJesVRx0a3iR0hlqup6SgsSnHQJY/v8RWoNc5srHoVPrv0WAgSKtGrMxRk9jQiR0nZ9HNleoHlyfV997lsJAKHW0fqiAFNkOJtOAsnGoSytTKeczoLoDNDbU3MlHS4vqLVWCqaPkCfcsMY7n2LSjwQmoVP4S0NLdjfUcsCd5tfgefjZOB63KTA+4IfCb/N8CdWy5MEut0hmMPo96HGamiLahXakFDdCjTqa5pswhPlCPL3ArjsBtRV6MyjE7Hxvs31Ti9sc9DVPKkk05kas+jkuqpnULwfIK/cg+1nz4JMXmjlG7uteWKztQ3SsFdcZm4i1yBzX1f7IF1VRpf6YI+gY9D2ZGS1SpwmsNbTR8Z39man1U2aH5a54X4oXTQiXYhsl9Gko3elPsPttQLKsTYLQcgYl0i+6L8xrDNr3KneGPg7XHnvoS34Ozwf7GJl6O1hD+6H2zjco2BTOTiXStSG7NLe21p38JXFBiByP6UervdnZugvZZjKtdr8sqlukxW7Uqs0zTqwp+tVyarCkk8HcR8Ed
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9176.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(396003)(366004)(376002)(346002)(39860400002)(451199021)(44832011)(478600001)(55016003)(186003)(71200400001)(53546011)(33656002)(26005)(55236004)(9686003)(6506007)(7696005)(2906002)(83380400001)(86362001)(54906003)(52536014)(66476007)(66556008)(66946007)(76116006)(64756008)(66446008)(8936002)(7416002)(5660300002)(8676002)(41300700001)(38100700002)(122000001)(6916009)(316002)(4326008)(38070700005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ZJ5iGRRTLGqmiNgh4hDmfuO+GNA2YsJgbtSP7hezHHzv/8vhZHSbRJcxdINN?=
+ =?us-ascii?Q?bbO+jdAhuotH5aEArxt9YZ27QjKnmAcQi8NWJxKPQdkDos2BGVPmg9D+3cIN?=
+ =?us-ascii?Q?LG9PMWDucoIDizC4SYwCRSWnL2EtvK8sjzIohG0EHiFDMqsQ6P8fHLmm1rs0?=
+ =?us-ascii?Q?Qaq/+TCdXYwSYJcMeEZr76aE6lvwJq+UYn9NtpETxsb5QFezPO16ILfGs5qK?=
+ =?us-ascii?Q?v3cgsuzy76GYHu9DkKY/xdf8Ujc3ahewwh+B/DrJ8N3hUAn5HHn8wOURukbf?=
+ =?us-ascii?Q?hwhfH4Ml8uwgnHIHOAk1k45EJ0yU6EGbBPMJqeuVXz0K8q/oAlyS8JZFskqi?=
+ =?us-ascii?Q?+bVbwJ/UDJY7xtCWz54XvT/WT9DHOTjyHmoLLEStPUBg0iol8cwthWlGakC4?=
+ =?us-ascii?Q?NgCCBKAeEGWZxubSaKpraHltPfs28shxjqRjBzVvS+QaxzCnkd9hVIiR/FKI?=
+ =?us-ascii?Q?ZfcyIc+m61twQ+XZx9K8wXEcUsUrJPNgMsS68uvH/McTW9tgvvM+LS0xmdsm?=
+ =?us-ascii?Q?jAShLKFZeO3a89SIA6lVKxUqeJh79GhNAl0M5VTArz0KVzkvpbMwJ0XHrAyF?=
+ =?us-ascii?Q?K+/M1bOTE1ZEqaowxVobPCv0LxC/+4IQig6rQ89ZjQ5unJ5uervYQUI/XbLc?=
+ =?us-ascii?Q?CnidoJQ0QAM1AATNLgYSVxi9BKpid71Y/fLAEDHO3B3+AmolU++T7rnp+qHT?=
+ =?us-ascii?Q?8oFyrBPDpFDysjQtp5qgEGsFVyd60oZh6edDGwn8fImZlsVCXJP95zF1gWOo?=
+ =?us-ascii?Q?MuHFxL8Q/5jil93Ntn9vjWM90bCXPu59eCgeCqUX3MeWKB7FYQ/RxKBu0JRd?=
+ =?us-ascii?Q?MqsSoPm86Sp0UZzc28iTBmKCIrPArKYP666NF2SP/tKKUUQrM6SR3RnxPrON?=
+ =?us-ascii?Q?+zT+gLKUqJo97be/wP5dt8fNqomJrfm/UY9uAWr+dy0B+XkY+5cU/kk+n0rK?=
+ =?us-ascii?Q?5exFBYQchsx1G/v+LZNkgz/q9VMb3jWB+qnX0ku7+8FY0Iub0MvbuX0Yvuln?=
+ =?us-ascii?Q?JGr8asv3tvkNmZbBzonXFzznCEVLXG94x5c1GXTquCr0wez92jgedw1RJdIf?=
+ =?us-ascii?Q?rXNZ3IvhIMcr1yqE88VMyXPGQUXipraJFoq3r/258XELyVbW/HIlx0qlQc0O?=
+ =?us-ascii?Q?iaLuJFvQfWi7IQAS+9CWF5k+K4JAKnXWoGDmpd7R7dAqbxkUEzMVgOWOzFfT?=
+ =?us-ascii?Q?+UteQl+vaBnCUMiAUET04NDmYFQOXEx3B4clyQQlv8NRiYUsIhaEvGyUHYGW?=
+ =?us-ascii?Q?wCPKlJaQuioZIyLCNEbQGu97rc7yxwqpz2xUJbvCrGlG9QiVE+URudBaem+3?=
+ =?us-ascii?Q?IjohMhvfRsmaQ7FauS7Va3sv1phRjqBHwc/OrmhcP3Qniz1pfjfr1VvKLFiL?=
+ =?us-ascii?Q?mw4qNP0U5HjJ1jWBINjKlNAvcccgP+5HDvwndc+cxryrceYyQAPn3clr7cwB?=
+ =?us-ascii?Q?HQBkU9UXQTYJ/wbXgDtH1jcVngdNw4tVzaK1CEe8cXbzrUM8dGvTLEZjUPnE?=
+ =?us-ascii?Q?7Zdmakf5iyZxaX4wZS5Fev9wwtuZOsAAVP7nGYSa8WoGw0pmijYXb27f2nJQ?=
+ =?us-ascii?Q?kH6CPtu6isM3dIA8oE4do96+cjXNe2LIT65BPe/I?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY3PR13MB4882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30b33b0f-e38c-489e-759e-08db347cd8bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ZP2NqlvcqkVLOnq+NlJrIVlm1mN02m3ZGTOgCxHWAbIIYXxds5OfmQCz8A3MENuwo5odyfZRZxKQfdV4dr04epKPMQ/7j55CVhyGNEvy4bahzEIqRCYvj3FLEyGUU6GLXMoOYsGHJjPZZdEpNlZ6T3/3A9meL7MMoeWJOvAIWmg0XXt4XRHUPdKX18KV6Bt5Q7elauxuSOmWqaVbjPVAXIYsragSDDQ2mkV7X26pF8TEjg3I+p5IHXegbQUt4g/vKKwJkk77Zcg4IW05MnDa+c0QBTZIS0uqE8qR/cVvkuJhZeD0F56vIVFEtCuCx6N019aGSTU3jklDRUa5cK8Pll/AA01ZbBR702v4BFk+LakvwikcRagF1MuLegOQ7ArwoeTAn4NbNH2gbpllGmI+aebqvhkO+vHm07MPn9seWdVOIh08EnAFOKvdQ7fezq71nbzviRIO3J5xDpFqloC/rChrBQWRQe7qBnoQCPDnx+3y7OobxMCzN6QQ4lxfm+9W4Cd0lvmGcSXkgCHaoKAPuPKwsbeSF0/2FlnuR5zRgjeIERJp52zLoDpWrtGuvAxF
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(6029001)(4636009)(366004)(136003)(346002)(396003)(376002)(39840400004)(451199021)(2906002)(44832011)(38100700002)(7416002)(5660300002)(66476007)(66556008)(66946007)(8936002)(41300700001)(4326008)(6916009)(8676002)(36756003)(54906003)(316002)(2616005)(86362001)(478600001)(186003)(6512007)(6506007)(6666004)(6486002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e8LcjUio4h6+Cf7c+493q4iaKOfANqypcrEaVEx4qABOsoR3QcU3y5XWdG7g?=
- =?us-ascii?Q?eaqQgHrRHwSTRWysdPAvIRdG8VMoZJ9kOvUHIL/nbC57DH4A7gD10iJGpPPI?=
- =?us-ascii?Q?rr9oDifQqGf9+DxPscpWWQnrq7QWdt8bfytLVz8D51YcLFcSpMt+m8M5aFP0?=
- =?us-ascii?Q?y6tdMh/FSZSNqsiCRzAkq2N410Bepapo7xxSzKptZ4H4G6vQz1bjH4S9tc4G?=
- =?us-ascii?Q?o3vz0loLodDXkdCOaiBOJadbj1QgRz9RJt5a1Nn9MgQTlDmi+GH6b4HMBC6+?=
- =?us-ascii?Q?EoSqp1ZK3VLzya1cwv8qWDwKKXptXxCLtz/W79bbe2ZbEhWgET2eZdyzqnSE?=
- =?us-ascii?Q?1ZE8dmEXWfT3GRAWTlgTdz9jrxO86WA10WdiF2pCrO7jWnpL4QUc3/7VI0B/?=
- =?us-ascii?Q?n8JeIbKdK1fzvwZ/FAvKyC0mUiSuAy7D0SOAZ9na51I/3MQBlqSB5YBrE6Q4?=
- =?us-ascii?Q?DkUzKoweXAsY8aeGAteZN+noEMPSmBwbgFtxkzwfCg94VmI6zwYLV3C3PEkR?=
- =?us-ascii?Q?i9FpZztRK/3hhn9D2Qfex3wvorCTH5RJTp6uIXmo0nRNHvfKmSXCCRY/y4bG?=
- =?us-ascii?Q?+LBIXs9/fnm6RqhiyeWS6Veida2akYaF3nG1kdWG8JGUZFLzTva6RnOxXV92?=
- =?us-ascii?Q?zNisSCS8GzvZNIINo2yPjOobhtjqobd0YK7Nm11Dre4nnKA5oSnMvUHU1N65?=
- =?us-ascii?Q?o6gFtQQnF9n3siPS9yzUOm4g8x81diGi568iNRbYWkm2UrSNsAWcgv93X+/9?=
- =?us-ascii?Q?+YzRXEbyuj54YpP1kYrNk6jf3oedWKoIEAK/MhQyQR4l0QyF2pSCPvzl8TGg?=
- =?us-ascii?Q?v4+6jrrog3BBH1tcqTSdKaj4ieM4/7RbTt2d+AaqAh44Tv+xpahbiSuISqtR?=
- =?us-ascii?Q?RBrVTUMcFGlKcnRCHlMhZfXZWazsB2ivsfNvUDpp9l5WoU0vyzktmjsDytX2?=
- =?us-ascii?Q?TjsnqqjSeRPYW/Ysyf2+iWvHRoVibr7z7kHVZzcbLmndn3BNutb3jkh9TJCG?=
- =?us-ascii?Q?d1AfiSDcR7QQIVNUq2B30c01N8k20+eb4l4WG3/Wx0R1LErMrUCIdsKHZcAP?=
- =?us-ascii?Q?xfAK0t5ixWjI87Gl3dr4rdjgpiXmBDLe90Ys6GOdmg5l0xDn/qLrnVAzZA4b?=
- =?us-ascii?Q?oLpJZVjyQev1rV5ppBFDs8xdwqYGmHipm03+zylqKoYFsT0+o+2LFr7Bglv/?=
- =?us-ascii?Q?YXipBz81xr84Oaf/GPOUU30TDn9OIElNrtptJ6REbMyfiEXgl+mm3CpnHL91?=
- =?us-ascii?Q?7koyfGUXdvL4GI45OIV55Dr1m/9ohet/udqhT0eqzZUMpJ5tBiJ1t5y9RGkV?=
- =?us-ascii?Q?mBr/A3XrUO3YmBCvYS9JSVV8lFpbztguFpSnDnINz9OJqB9qP1p7cFcBRfvj?=
- =?us-ascii?Q?itAwhNDuRPtUguC/9zgjRLuW8ncgJUywOSoRTENYuRvfejr4sSqrOPEV1aGB?=
- =?us-ascii?Q?Yc+3Qsm96ARUUEz/tXz7PDQwPFw4sdfhSEVGzzhh5bC9dPn/jQTWKh9jxHe9?=
- =?us-ascii?Q?Qf9JxSREt023lfE5MDSS9Hz944iErUvQuPmXd1FjDR9KJne4dklhsXNbVgfy?=
- =?us-ascii?Q?MpVzt5ZEX5kpzVJ9jvCb5Wv5pFCMcJf18iTYvOXIeMYSqieBEKG85vWJdAnC?=
- =?us-ascii?Q?zF+ab9Kkyq2f54802PZCdgsPkJf/u0eRw64qQLKvNPQAbAiTsZPWD4sPwUHR?=
- =?us-ascii?Q?YX5L2g=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30b33b0f-e38c-489e-759e-08db347cd8bd
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 19:51:42.2489
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9176.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36160c8d-2dd7-4c02-91d1-08db34911d28
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Apr 2023 22:16:46.7141
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CCtcoEry7/WcKDJ7Z/32nxiCivuWf4S6UBv91LV/rI6xRJXM6hNNy2V+VWxf/N5+ZykPkwHIickkN8ifSQ4UgNVvYfvHESIml2aHbWvHWAY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR13MB4882
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1PEV1quwh7DHzbRGLyic/IYvCpYNjQGwBtdqcGuqeBrTzchJVHOhidHpcCe8f7H0t2KC/3raZovSA9BW4lKw6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9495
 
-On Mon, Apr 03, 2023 at 10:24:08AM -0500, Shenwei Wang wrote:
-> The patch addresses an issue with the reset logic on the i.MX93 SoC, which
-> requires configuration of the correct interface speed under RMII mode to
-> complete the reset. The patch implements a fix_soc_reset function and uses
-> it specifically for the i.MX93 SoCs.
-> 
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 27 +++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> index 2a2be65d65a0..465de3392e4e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> @@ -37,10 +37,15 @@
->  #define MX93_GPR_ENET_QOS_INTF_SEL_RGMII	(0x1 << 1)
->  #define MX93_GPR_ENET_QOS_CLK_GEN_EN		(0x1 << 0)
->  
-> +#define DMA_BUS_MODE			0x00001000
-> +#define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
-> +#define RMII_RESET_SPEED		(0x3 << 14)
-> +
->  struct imx_dwmac_ops {
->  	u32 addr_width;
->  	bool mac_rgmii_txclk_auto_adj;
->  
-> +	int (*fix_soc_reset)(void *priv, void __iomem *ioaddr);
->  	int (*set_intf_mode)(struct plat_stmmacenet_data *plat_dat);
->  };
->  
-> @@ -207,6 +212,25 @@ static void imx_dwmac_fix_speed(void *priv, unsigned int speed)
->  		dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
->  }
->  
-> +static int imx_dwmac_mx93_reset(void *priv, void __iomem *ioaddr)
-> +{
-> +	u32 value = readl(ioaddr + DMA_BUS_MODE);
-> +	struct plat_stmmacenet_data *plat_dat = priv;
-> +
 
-nit: reverse xmas tree - longest line to shortest - for local variable
-     declarations.
 
-...
+> -----Original Message-----
+> From: Simon Horman <simon.horman@corigine.com>
+> Sent: Monday, April 3, 2023 2:50 PM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
+> <s.hauer@pengutronix.de>; Pengutronix Kernel Team <kernel@pengutronix.de>=
+;
+> Giuseppe Cavallaro <peppe.cavallaro@st.com>; Alexandre Torgue
+> <alexandre.torgue@foss.st.com>; Jose Abreu <joabreu@synopsys.com>; Fabio
+> Estevam <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; Maxime
+> Coquelin <mcoquelin.stm32@gmail.com>; Wong Vee Khee
+> <veekhee@apple.com>; Kurt Kanzenbach <kurt@linutronix.de>; Mohammad
+> Athari Bin Ismail <mohammad.athari.ismail@intel.com>; Andrey Konovalov
+> <andrey.konovalov@linaro.org>; Jochen Henneberg <jh@henneberg-
+> systemdesign.com>; Tan Tee Min <tee.min.tan@linux.intel.com>;
+> netdev@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-stm32=
+@st-
+> md-mailman.stormreply.com; imx@lists.linux.dev
+> Subject: [EXT] Re: [PATCH v5 1/2] net: stmmac: add support for platform s=
+pecific
+> reset
+>=20
+> Caution: EXT Email
+>=20
+> On Mon, Apr 03, 2023 at 10:24:07AM -0500, Shenwei Wang wrote:
+> > This patch adds support for platform-specific reset logic in the
+> > stmmac driver. Some SoCs require a different reset mechanism than the
+> > standard dwmac IP reset. To support these platforms, a new function
+> > pointer 'fix_soc_reset' is added to the plat_stmmacenet_data structure.
+> > The stmmac_reset in hwif.h is modified to call the 'fix_soc_reset'
+> > function if it exists. This enables the driver to use the
+> > platform-specific reset logic when necessary.
+> >
+> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> > ---
+> >  v5:
+> >   - add the missing __iomem tag in the stmmac_reset definition.
+> >
+> >  drivers/net/ethernet/stmicro/stmmac/hwif.c | 10 ++++++++++
+> > drivers/net/ethernet/stmicro/stmmac/hwif.h |  3 +--
+> >  include/linux/stmmac.h                     |  1 +
+> >  3 files changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c
+> > b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+> > index bb7114f970f8..0eefa697ffe8 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+> > @@ -87,6 +87,16 @@ static int stmmac_dwxlgmac_quirks(struct stmmac_priv
+> *priv)
+> >       return 0;
+> >  }
+> >
+> > +int stmmac_reset(struct stmmac_priv *priv, void __iomem *ioaddr) {
+> > +     struct plat_stmmacenet_data *plat =3D priv ? priv->plat : NULL;
+>=20
+> Here the case where priv is NULL is handled.
+>=20
+> > +
+> > +     if (plat && plat->fix_soc_reset)
+> > +             return plat->fix_soc_reset(plat, ioaddr);
+> > +
+> > +     return stmmac_do_callback(priv, dma, reset, ioaddr);
+>=20
+> But this will dereference priv unconditionally.
+>=20
+
+The original macro implementation assumes that the priv pointer will not be=
+ NULL. However, adding=20
+an extra condition check for priv in the stmmac_reset() function can ensure=
+ that the code is more=20
+robust and secure.
+
+Thanks,
+Shenwei
+
+> I think perhaps this is code that I suggested.
+> If so, sorry about not noticing this then.
+>=20
+> > +}
+> > +
+> >  static const struct stmmac_hwif_entry {
+> >       bool gmac;
+> >       bool gmac4;
+>=20
+> ...
