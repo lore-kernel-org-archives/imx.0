@@ -1,61 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E67ED
-	for <imx@lists.linux.dev>; Thu,  6 Apr 2023 01:44:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F808C433D2;
-	Thu,  6 Apr 2023 01:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C587E9
+	for <imx@lists.linux.dev>; Thu,  6 Apr 2023 02:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F76FC433D2;
+	Thu,  6 Apr 2023 02:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680745469;
-	bh=drgpXKJ+0i0RnCQqppOYsWBMOPpTHwhRC91xcePhIfY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lR7sXE7D2TE1JV0ZwCaWhqBsKFjdr2Hunvc9GBE4Iba7cegqS4JoYtKzjuBOjmhYt
-	 uTOwt7RSp1JhL7cdj4/18XGaTYtSaGQ6UPA/o4O1bclvvTzlmIMUXq28s6BJbB8rku
-	 x+Af5M153I2wJZIAI/KD2WUVIOksJMzBiLscLuYGex/bvjMgiaAAmmPd/Qo3/U8wgG
-	 bGiANCHREKHoeqbKCr3NEo71ZPcvaAhmQUJqNBugVE6rKxjAe+8OthzaRC9pFwSD/O
-	 Hqye4YT4BxMd7b0c4schKPjpR5M3x2pzREtHGQ6KHEOaWOgHH+6Z2YJW0T7hlAw8Dn
-	 bLXdXJE0j+Tnw==
-Date: Thu, 6 Apr 2023 09:44:22 +0800
-From: Shawn Guo <shawnguo@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
-	krzysztof.kozlowski@linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-	s.hauer@pengutronix.de
-Subject: Re: [PATCH v5 0/3] dts: imx8qxp add cdns usb3 port
-Message-ID: <20230406014422.GK11367@dragon>
-References: <20230327145523.3121810-1-Frank.Li@nxp.com>
+	s=k20201202; t=1680748218;
+	bh=3vmq/aqfbwSmZiecl7SOMVN6Ty8I+cMF/5ynkmxVNAM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=YOekC06V9atZffKzhqsJmRk6ZWz90aLzTAVi1gs16VFOtF/fJ0Vp9MVVKJJzzDdhF
+	 pHFza4svN2bQkN+IwtbG96WpFaZ7lNgFDh+buM9ykcz9LOP8dwBv3xope/BdkHzWtj
+	 4wEU72ubxe5q1tPObJA0W/OgRangwbvH+xRadUe/K8FygQuAtczQm3Vhxgo2nc4kHq
+	 SZiDnU9f6hfalpV26rUy6vvy4C9lYAq4ydYZWAzZvzqUV0N841Y6mjUhbOdmVmvyll
+	 4RcJxr4kyUv6l7tklgACppZeVcFsz39A3wtZrP+4Lmj1o52gQhfrir+mTIkTylyxL6
+	 l2R/qyrSxTFsg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 03682C395D8;
+	Thu,  6 Apr 2023 02:30:18 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230327145523.3121810-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v6 1/2] net: stmmac: add support for platform specific reset
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <168074821801.25080.4300121511824003788.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Apr 2023 02:30:18 +0000
+References: <20230403222302.328262-1-shenwei.wang@nxp.com>
+In-Reply-To: <20230403222302.328262-1-shenwei.wang@nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, peppe.cavallaro@st.com, alexandre.torgue@foss.st.com,
+ joabreu@synopsys.com, kernel@pengutronix.de, festevam@gmail.com,
+ linux-imx@nxp.com, veekhee@apple.com, tee.min.tan@linux.intel.com,
+ kurt@linutronix.de, andrey.konovalov@linaro.org, ruppala@nvidia.com,
+ jh@henneberg-systemdesign.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev
 
-On Mon, Mar 27, 2023 at 10:55:20AM -0400, Frank Li wrote:
-> cdns driver code already upstreamed. but missed dts part.
-> 
-> Change from v4 to v5
-> 1. using shorter clock name
-> 
-> Change from v3 to v4:
-> 1. drop assign-clock in yaml
-> 
-> Change from v2 to v3:
-> 1. drop fixed frequency clock binding
-> 
-> Change from v1 to v2:
-> 1. Add binding docoument.
-> 2. Fixed all shawn's comments
-> 
-> Frank Li (3):
->   dt-bindings: usb: cdns-imx8qm: add imx8qm cdns3 glue layer
->   arm64: dts: imx8qxp: add cadence usb3 support
->   arm64: dts: freescale: imx8qxp-mek: enable cadence usb3
+Hello:
 
-Applied two DTS patches, thanks!
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  3 Apr 2023 17:23:01 -0500 you wrote:
+> This patch adds support for platform-specific reset logic in the
+> stmmac driver. Some SoCs require a different reset mechanism than
+> the standard dwmac IP reset. To support these platforms, a new function
+> pointer 'fix_soc_reset' is added to the plat_stmmacenet_data structure.
+> The stmmac_reset in hwif.h is modified to call the 'fix_soc_reset'
+> function if it exists. This enables the driver to use the platform-specific
+> reset logic when necessary.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v6,1/2] net: stmmac: add support for platform specific reset
+    https://git.kernel.org/netdev/net-next/c/10739ea31328
+  - [v6,2/2] net: stmmac: dwmac-imx: use platform specific reset for imx93 SoCs
+    https://git.kernel.org/netdev/net-next/c/b536f32b5b03
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
