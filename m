@@ -1,73 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C587E9
-	for <imx@lists.linux.dev>; Thu,  6 Apr 2023 02:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F76FC433D2;
-	Thu,  6 Apr 2023 02:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342FA1841;
+	Sat,  8 Apr 2023 09:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711FEC433EF;
+	Sat,  8 Apr 2023 09:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1680748218;
-	bh=3vmq/aqfbwSmZiecl7SOMVN6Ty8I+cMF/5ynkmxVNAM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YOekC06V9atZffKzhqsJmRk6ZWz90aLzTAVi1gs16VFOtF/fJ0Vp9MVVKJJzzDdhF
-	 pHFza4svN2bQkN+IwtbG96WpFaZ7lNgFDh+buM9ykcz9LOP8dwBv3xope/BdkHzWtj
-	 4wEU72ubxe5q1tPObJA0W/OgRangwbvH+xRadUe/K8FygQuAtczQm3Vhxgo2nc4kHq
-	 SZiDnU9f6hfalpV26rUy6vvy4C9lYAq4ydYZWAzZvzqUV0N841Y6mjUhbOdmVmvyll
-	 4RcJxr4kyUv6l7tklgACppZeVcFsz39A3wtZrP+4Lmj1o52gQhfrir+mTIkTylyxL6
-	 l2R/qyrSxTFsg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 03682C395D8;
-	Thu,  6 Apr 2023 02:30:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1680946611;
+	bh=+k73FcTQ+O1Em4zMqm63dksd/hIneIxZldD6Q0gfaPw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n7O9Ufy020IvjnUTh+PB+o1iO5au1kw1epgfJab7qJeShOLtc4/66vdDnIcOzL9J0
+	 9b7dMDmoOUWrKiQ9WHJKULjtDyVJZASjo5jLN02/4hdR7yu8xmrpwriFOotp92jLt2
+	 EXhkRO5GJ5Eg4jHJYxmdhs7L7aTPZNYg0Bx4YfGr3d09T0OxKiXl5dSI2I6WszWbnc
+	 M3ti5A1xctwOoG4HqjLOHXXJrdZyLcecLA06/PXJfkJGRwEBewyXGAL7CFxCDYeslx
+	 VskgtbYxtH2NEfNbOvPsGPM84Cs56CoWgWH4qWSCafbT2dfnpYIDXIXtS3U/C5cnOl
+	 1QtrxFB8BKdIg==
+Date: Sat, 8 Apr 2023 15:06:44 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: lpieralisi@kernel.org, allenbh@gmail.com, bhelgaas@google.com,
+	dave.jiang@intel.com, helgaas@kernel.org, imx@lists.linux.dev,
+	jdmason@kudzu.us, kw@linux.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, ntb@lists.linux.dev
+Subject: Re: [PATCH 1/1] PCI: endpoint: pci-epf-vntb: fix typo span in
+ comments
+Message-ID: <20230408093644.GG11124@thinkpad>
+References: <20221214172254.668282-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 1/2] net: stmmac: add support for platform specific reset
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <168074821801.25080.4300121511824003788.git-patchwork-notify@kernel.org>
-Date: Thu, 06 Apr 2023 02:30:18 +0000
-References: <20230403222302.328262-1-shenwei.wang@nxp.com>
-In-Reply-To: <20230403222302.328262-1-shenwei.wang@nxp.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, peppe.cavallaro@st.com, alexandre.torgue@foss.st.com,
- joabreu@synopsys.com, kernel@pengutronix.de, festevam@gmail.com,
- linux-imx@nxp.com, veekhee@apple.com, tee.min.tan@linux.intel.com,
- kurt@linutronix.de, andrey.konovalov@linaro.org, ruppala@nvidia.com,
- jh@henneberg-systemdesign.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev
+In-Reply-To: <20221214172254.668282-1-Frank.Li@nxp.com>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  3 Apr 2023 17:23:01 -0500 you wrote:
-> This patch adds support for platform-specific reset logic in the
-> stmmac driver. Some SoCs require a different reset mechanism than
-> the standard dwmac IP reset. To support these platforms, a new function
-> pointer 'fix_soc_reset' is added to the plat_stmmacenet_data structure.
-> The stmmac_reset in hwif.h is modified to call the 'fix_soc_reset'
-> function if it exists. This enables the driver to use the platform-specific
-> reset logic when necessary.
+On Wed, Dec 14, 2022 at 12:22:54PM -0500, Frank Li wrote:
+> Replace span with spad.
 > 
-> [...]
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Here is the summary with links:
-  - [v6,1/2] net: stmmac: add support for platform specific reset
-    https://git.kernel.org/netdev/net-next/c/10739ea31328
-  - [v6,2/2] net: stmmac: dwmac-imx: use platform specific reset for imx93 SoCs
-    https://git.kernel.org/netdev/net-next/c/b536f32b5b03
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
 
-You are awesome, thank you!
+- Mani
+
+> ---
+>  drivers/pci/endpoint/functions/pci-epf-vntb.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> index 58a23ef4b572..935748244078 100644
+> --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> @@ -84,15 +84,15 @@ enum epf_ntb_bar {
+>   * |                                                  |
+>   * |                                                  |
+>   * |                                                  |
+> - * +-----------------------+--------------------------+ Base+span_offset
+> + * +-----------------------+--------------------------+ Base+spad_offset
+>   * |                       |                          |
+> - * |    Peer Span Space    |    Span Space            |
+> + * |    Peer Spad Space    |    Spad Space            |
+>   * |                       |                          |
+>   * |                       |                          |
+> - * +-----------------------+--------------------------+ Base+span_offset
+> - * |                       |                          |     +span_count * 4
+> + * +-----------------------+--------------------------+ Base+spad_offset
+> + * |                       |                          |     +spad_count * 4
+>   * |                       |                          |
+> - * |     Span Space        |   Peer Span Space        |
+> + * |     Spad Space        |   Peer Spad Space        |
+>   * |                       |                          |
+>   * +-----------------------+--------------------------+
+>   *       Virtual PCI             PCIe Endpoint
+> -- 
+> 2.34.1
+> 
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+மணிவண்ணன் சதாசிவம்
