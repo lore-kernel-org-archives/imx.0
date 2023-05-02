@@ -1,55 +1,49 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2054.outbound.protection.outlook.com [40.107.15.54])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2079.outbound.protection.outlook.com [40.107.8.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085EA651
-	for <imx@lists.linux.dev>; Mon,  1 May 2023 14:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55D68F6E
+	for <imx@lists.linux.dev>; Tue,  2 May 2023 19:07:16 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B76etKSjYOWtG/sIw84K/hciQSePhDP6NCHm38rZ0e1FkDzS37gVBbSZ3Oi9ha+MjX8+EwOT4QPPDR4GpMLudL972UnAmPyHVfWn8u2XGoKOYBWS4WZ1Z4ROBkF1Lrq1Ax3WkR86AcQjWgUiFQB6DcMQuojh0GeE4qB7JqEG5VFmSh1eF+aEzM7zF5BuBj9HGCLaf5Wn3XQ0JKKSBIQDYY7nHRx1R4UpfHPsezP1wDIFK9ruYiPMFaLhmXi3MrIeL+TUqF2hByGU1hhuUx64aG6UUxnrbtoKDH8aqpCwzGaq6oMV5fHdhFGl9kckHICEtpN5Kf8aQ9nDxtB8zb+bbQ==
+ b=ZnB0WsYC1+6E3icW+1xOr/JWYmiwAqitO93f8/mFxaSvqLoIEux4ITlbShj34DSCWpa87mnUXa9BZgSa11xrXEddUITsxB0bSLj/83HgpMsFQpS/LGsccPmbwHj5OSPCGMsFPVWMBRkSHfejiEToHUoUvqU6gCKKoO9ko8OKKDs27WVoo1ZcrRRcXcRo4LKy/4amtu3JovNQHYmQpldkXOuGMcIF+Nt2IjV4GidSl4D8+yB9iNGUyu6A40YgGYagT1QjavdzF4Ti3IhMBWvN6TaQc6MHhFzl6zvk5QLJYZiqdhX5ksesACHn4jTluMVoK/n6TVDw6c8DO6v4HvF0hg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UJCb6CBnDRZR0a3V9sER/CfxeQhN8R4aSNYlHWPQsX8=;
- b=g7riQRvR+/LmIrtmhMtanrEf/gYJb1COh4E668ZDSZwzZnUQ/YASVogSr35Xs5JzbAqd1eEjejqeEjpyBHNwDC/HxDykuRcTNgXWKV574cI16OkQ7+q0AwvLOcGnuugInB8xbnJLX1r996OdUVKl94M6ouY1aluxpgymzH49GtRewp8iL7i+hOiJlYuae4fWite8ommWPf2z5+xtZHTLpvq3qscpDJftbCGdkO9Phjy7ugiokHm9a/MOvVVOXyzv3MNkhNDh7CYrpExRjSpNHsRs2bTvjHt3dP3PetE0Jpk5OS0qhgT3iy9T4WIaoBmBx0WtbF0hofQhTOLdzTHZqg==
+ bh=B0UyvTleYzwDDtFG1ALHjUeLsuO8bjyPg0PEMdsoFQI=;
+ b=jkx78+wwxreClmR/S/H5HzcaDUhcmfWCYMGaaW89I+2d2aDiFG+8E7nsU+vQK1X83URWAj5K6BYI3/AWYiJ2OIbn9OWehpI7JVhbeQ8JPmUYFbmd6xEMny9mRYTeSRkDGZj8xAgkpoAnqHMQqGsFVytwEdjSUtEmxRhBwX4V/RvPvM/4W/emsMZpaSPfWxYdX1SBOMrVD2SX/fqVXCMEB7hkc+9vDqFIoWUjsnAlqDJ6XypVEOJBUElQZ9cFJvrZOJlTwxv9nTMn70eb5DgaDgYdx1rMMP/jyccWZFdH26wG0ovE5RUEXpVQXwXYCbVEunoNuFf51QkItmooJqddAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UJCb6CBnDRZR0a3V9sER/CfxeQhN8R4aSNYlHWPQsX8=;
- b=BeouNjuiEYsHttwHzEGdVryxDM1mhTCBntgV1cIetQubpRG58A3p+/e7JtG6DxbeghKeBwrM7u7aWORXFQbTbfnThNl/KrI0HHCIS2f2puPcKrO+Bl2FZRQw79o4MBYR//kloluvxYbl4XutW6XUSMF9MrE34W9Yv+JNuf5+nn8=
+ bh=B0UyvTleYzwDDtFG1ALHjUeLsuO8bjyPg0PEMdsoFQI=;
+ b=maiz/SOJ9b1/uSOVyvgO3ZLSU3S62hpuL+nc7yym6v76jld5l1HjQOsK9d0n6Hi5zf/zXAXccq6gUCUrbtcenaKKzYIkNTX/Q+HS2e08gIOmzLY0sZilTfAo8dGakpqFOIx+AZX9MT670ttwl1buLE05Q2HLxxVX8yNVE9nEnww=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by PAXPR04MB8333.eurprd04.prod.outlook.com (2603:10a6:102:1c0::21) with
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DU2PR04MB8952.eurprd04.prod.outlook.com (2603:10a6:10:2e3::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.30; Mon, 1 May
- 2023 14:48:26 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::bcdd:75c9:176c:39ed]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::bcdd:75c9:176c:39ed%4]) with mapi id 15.20.6340.027; Mon, 1 May 2023
- 14:48:26 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] PCI: layerscape: Add the endpoint linkup notifier support
-Date: Mon,  1 May 2023 10:48:06 -0400
-Message-Id: <20230501144807.1616244-1-Frank.Li@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.31; Tue, 2 May
+ 2023 19:07:13 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::28fb:82ec:7a6:62f3]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::28fb:82ec:7a6:62f3%5]) with mapi id 15.20.6340.031; Tue, 2 May 2023
+ 19:07:13 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-imx@nxp.com,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH 1/1] tty: serial: fsl_lpuart: optimize the timer based EOP logic
+Date: Tue,  2 May 2023 14:06:41 -0500
+Message-Id: <20230502190641.657483-1-shenwei.wang@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0161.namprd05.prod.outlook.com
- (2603:10b6:a03:339::16) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+X-ClientProxiedBy: SJ0PR13CA0093.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::8) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,218 +51,187 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB8333:EE_
-X-MS-Office365-Filtering-Correlation-Id: de1849de-54ae-4fed-efc4-08db4a531ea8
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DU2PR04MB8952:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f668baf-f253-428c-d344-08db4b40702a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	WxiU1Mf241nPoKMS+84xcFIWF3k6ToLMPcK1Kh/NF2yfuDkgWYaR6kTH89uIFgZJnCBShqVDhCcRv+YOCQv9Rpk7UPtf1ZrD3CIbMo7jnsVIdGjVDNXq7fftGRqs9yBQIn2PbFw8LxMHhxIOWu3sUU2sZXAVvOCgVOFTAN4jFQ6KPDv9LkMjsdyFXJxoNj+oE2KTcpPzcvBZ556HAUSerJZJ7eLddg5QWVuGfISW0F0ykQeVGPV/fVLzpbkDJYlmynWvOf2XZ9+XaJL5dTDPEcvuckji7BmPGU47yjuTqKBzmkSMvJVnB+lgZF0o/N4knnOoPIao5lnPetCIAKTFGJe5C/pRnbAdRU7PrdMuZAcYcErhbA1kTqM551fPeVvBd0utUxUf02bB1lXGufIyayVzNEhxpF9Zp4oZRGyPlUqu1rBnXV+cC8oY/373FJdkfo8WiXu3a1LGZKKGWGDFxfwRHO9buH2AfF88SfAgLPVO8gGKwxhapSrXJDSuFiEwIU7b85pCAkFKc/u2UkxpYO/3qsG/GXmovbObAMxBXz5VONUU0VrvcOlJwhapL98Sx5/DIW4riwrsctPwlrkKdN5gMk+GGZEYmbrTpYQrYTZgYIkW0qJYCA6SWtsUD2SByeqeYPI+QG3+5SYSR6dunQ==
+	nMZUppaGimZWo/BKqeXbltLx+4v9hbYtvKhomAhZ+S7uXMDgHnnGdXW25TiROt9+0HYlmrUiFyfankIKfoMY8LV/oImIdDWbJQIyzFy1bVluVXDfK2XPp02tVAGfj2BUSNGLLhydAaACm25izaEjkVHOMZT7LH3fSVGl73NrHXhAeJ3PlSyvJhnpVxPUyMVR8z5sW1UstYrVQg9vw3jSbZx+n2RRAjWX5Jyw2IKO1tpvAGRSU6gtLLGUcLtZbmxTUZBefdaThd3RFFd8mjUlgWyBi8tRS1ttXl2RIzrajunNwQ7aWOvTu2DrfXM0p4wXduKsCypp/vm6i4l2i5GXp8uXA1/fku6eqy0yf3nYFjU2/+DsO2Ag77qyO5d10VRzWLwwU1z5l96hxVHO/asurwMJjg8fewFTYCWPVtXfQY2i3AWuTbnZqfo4CKSBoTI5Z+mOv7Z47QUeKM66ZExDmGj+lQs+AOOtk/mHCJtuCNzCbBJu6plijHsd84pNSDtAlg99WLoIY20MXgaYXzEDZvRkvcAuSJi57AGaOXI1oWBW0kt01tno+Jj6BSPxlAu4jNRJwS7c13suKZeooU2fj+pG1P7yPGqmg78bubzXooYptE5vTltzwEQJg2Z/Elz5
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(376002)(396003)(346002)(136003)(451199021)(2616005)(316002)(4326008)(6512007)(6506007)(186003)(41300700001)(83380400001)(1076003)(66946007)(478600001)(26005)(110136005)(52116002)(6486002)(66556008)(6666004)(66476007)(38350700002)(38100700002)(2906002)(921005)(36756003)(86362001)(8936002)(8676002)(5660300002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(376002)(346002)(396003)(136003)(451199021)(44832011)(41300700001)(5660300002)(83380400001)(2906002)(66899021)(2616005)(8676002)(8936002)(316002)(6666004)(6486002)(6916009)(38350700002)(38100700002)(66556008)(66476007)(52116002)(4326008)(54906003)(86362001)(478600001)(36756003)(26005)(1076003)(186003)(6506007)(6512007)(66946007)(55236004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?H1g0Hhws+rBiIQUQRzwhztRSIKZx0+sDxsgpv1G2IVY/oIbXGCZqC8uQ1tCn?=
- =?us-ascii?Q?1TyImmq30GV/ikeAZlnVoIAx9NJXcSWx/bau4xaXt9eE/BeZAj/OFBqjbj69?=
- =?us-ascii?Q?tpP6YDOevxUXG1JkkYYavRpmOEVgPkTEiUnFNzBlP8UHWthUTEqvg4LWnqSf?=
- =?us-ascii?Q?qWi1h/8KEPwkh0fAtlyuyeA6UseGRVL+Aq2FbZXQnY5xrG+cECn+1BgfFgbr?=
- =?us-ascii?Q?tM3mBGISd5nfUIeQRawK8MXdQFGueh8r2lczYKmHRZgZGQyBYlsqJnwgtOfV?=
- =?us-ascii?Q?ixPCwjnUQPB6oGrtRN8syjPFmoF9MA5Bv/LErOPs/mFfxm5CxYaOJkozESxi?=
- =?us-ascii?Q?OoEZW11kkN5U8/ZyLIsgQ/SUmb/+6BCuSNRWwC0Sz1iIS47APRa0NXF21Xo8?=
- =?us-ascii?Q?B4kGLFUIO7Z8QymxQLBCxiCy/hfvyN5pLZOnYrKxtt6ha8Dkch7bXoxH2OP7?=
- =?us-ascii?Q?CqBc/QK7KjVIyYheTNWiyRUrufTrw8ObDfN1zc4mZDuiBb32tOJIQx008uvO?=
- =?us-ascii?Q?x3bvzGmJ/Bj7sW/5HL5MKeS9NcimWJWPAhqoIlCEzVlcRhvO/f1E70gyTWDp?=
- =?us-ascii?Q?6jpIOf2T0OQ69GkXdIQVI2JPjIXvmpVEknfp0B8dMwJsvkCl/2Kd8QES/7Sx?=
- =?us-ascii?Q?PEuPizGgOYxCHqi15q/EUzxaLG94BsPfVoyA4VAfpiMiFDSEbOS8GjYRZOWB?=
- =?us-ascii?Q?7X/HLv53zE7rzklKhij0kCO5mtDUy6mA7XPeq08192zUQq++v1ykyU0tkmQQ?=
- =?us-ascii?Q?5LQV9appX/lSggqIqaH+Jzgd4ZAH4KrypiplYeb/BHUsNGV1v3FMsbMa7KSj?=
- =?us-ascii?Q?gP1WthJwMi5D3iQcLZtj1A6WAjKmVZhiGE8wLHx9Fr+p1ca9IqnncJLiAr2E?=
- =?us-ascii?Q?L5Pt6MxI2YjN30sSWbLk/UvskBvrJXI2k0USvnuti8fEZMTepXop6K8MDftw?=
- =?us-ascii?Q?mlg8SmE1Z56T4vGK1WXta2cMv8sY2aV25shh4nwqsQ/JJua9xgFSOgop+rAV?=
- =?us-ascii?Q?9zz+RVWYge2dRMk5EpGgjMGdSQv7pVUEcwYn3Ghmi25yXDzyLHUIV0UvaciG?=
- =?us-ascii?Q?2N9ASzhRhG9GpbQIAFbUO7LuPUbZLpGo3rv3Hqc9kNzLToPqAJ98xcsg7xgw?=
- =?us-ascii?Q?TN5hCKIoBdkxacIHKu+cbFCpvXkQwtnaIdlhUOghbKZII7+ph+/Rng1FUwNz?=
- =?us-ascii?Q?8XXQpyb9ui/lkyFN3pyU2jhOKAyO4qQA/fHj5+NPcRfBPvkSAvxLVR4DpmHi?=
- =?us-ascii?Q?vbmjREeSDEHHjTnvyeS1KcCYjGDXW7T7bHoTgnTu1SpIzE3Ss5hBJljqPJ3t?=
- =?us-ascii?Q?Sr+/sKfTeaMHeZ/3k38MRBCvNq+9Mq1q/BAEc/s1UkiTHNXGgy48X3/FV9ZI?=
- =?us-ascii?Q?HskYOCdEnIbhefFuDgEkWxSb37BBCGBWtCjXxJ/mQ60XWQ1EpQ/tYuM4MqHK?=
- =?us-ascii?Q?eF3/ebXbnZhPfUacwTojiYoLqwYrbcLr0DDYA7InCldwZZO3nO7eC6jcaL84?=
- =?us-ascii?Q?s9tUHUNhhXtOtA7dAg2jRiFzFqOmbkkfMpEXMaFsNGOiw1si6uvXbUK9K9pX?=
- =?us-ascii?Q?9aWlY32Lj8EX7Vw8++05EKU5rf8AfyN6aqAvE+VP?=
+	=?us-ascii?Q?5WeQvHXltMrRqI3aAXf5dFSiuPDh+mvfP2JrSP8HoRj18Qj1ArklSfFEr1pj?=
+ =?us-ascii?Q?wSNbdyMvashiy3Qa7x7Ph+BrBzfAhf2HZeDBCO9DMdx4uHEAI/8aY45hsS5F?=
+ =?us-ascii?Q?4uJPXPLnXQJiLvvxr34QjGeJLKciTEF/AzY6bXzv161ekVScw2tymZ55QLp1?=
+ =?us-ascii?Q?Dxc8aZ7tMq3gkwwE24ijycDKivMaz8NN06113PVqeGoy5em8aynhf5+gvoX3?=
+ =?us-ascii?Q?941NnYoMcyMSRAxPyiYsb4lSOZPnhMX9qD5Hrl8Zn4pL1VjXB8MkNzNnujib?=
+ =?us-ascii?Q?d22fA2ZmuXe/9scEvGqJDZgDKYbtCRsuAJ7rBqSiSaN55rZ5fsoshUKSwZAo?=
+ =?us-ascii?Q?L8pZQhluWM2TJinpSCG+VGuPM5oNcOgjLLah9286JimrjH6kP+TeorZxeGG9?=
+ =?us-ascii?Q?TPRjB8ro2pZEm3yn62DDqUCrr6wQpv+5v0Bgh7f8gvNTbbARpUZ7qbLbW+xC?=
+ =?us-ascii?Q?vRT+v1t769KvBUA82Llh15nJSkjCKCEmFOrErGE5D/toq4Uy9GoeTEOFcPZg?=
+ =?us-ascii?Q?FFgtijuqUmO2rbk7hrUSvF0Lrk6jaW0cYR+q8zbGPegdI9ld1zcebDY0uDz6?=
+ =?us-ascii?Q?f6t3M/JHsN9MwjKigj3fUsVxZqeeuRYnMKbhdjGlURUs2Sz6wsWQPojU5hyD?=
+ =?us-ascii?Q?9qgmBzmvs6naqwNDVBqLKTO0QqAawbQgeHzW0aJgzY9ncPo8BCqLxbwHMkoA?=
+ =?us-ascii?Q?PrcPt+SQO69nwGl4tXHnx3ajFSxRJJFcF6Gnd99fVXlkfatP4DKvX0Cxmgun?=
+ =?us-ascii?Q?Pby6gGcYgcvcikDHHR3oWIqlXPXQUtsCKlpsjn7PRLFHinEpl9Wp44KIgQK5?=
+ =?us-ascii?Q?DI0zkWUe4YHuMm4f7tQ57RwgiOMGxlpTuShDcKc1nIROUEKyzkNojiJ1YYZk?=
+ =?us-ascii?Q?oUjHjIPDfN9zkjVGT+js9i15C8l0TTWz+OQag9FmWcI8HGGiZ5dNfqPkXLep?=
+ =?us-ascii?Q?soD7gEfQZUYBUCJd2JbM+EnEhMUfu2hgMIboM7d++RET6hF88xX6LzhBeDnB?=
+ =?us-ascii?Q?O3ROO5Ce1m67dAq/cdgJuRkdTC2fm4VywtmbQCUxdHoPnnGIi7ZXTzDBgfAt?=
+ =?us-ascii?Q?wOw6rA68DBxxvdL5oeDUP6G+qvkI1iHDn6E22FrORte48HTBTpbI4u2LcOA7?=
+ =?us-ascii?Q?Rup8Z6ZojzswfA3iXZ6/YkK6O4MvdOups0n6ZvEfQ3xPq59JzknnCWmo8Cv9?=
+ =?us-ascii?Q?bfhYS8O3SQ9Sm/Xh4OycvYbrrxvfKyaCTsV7l0Mv0Qc2KkYo3jaqIb9n9a3s?=
+ =?us-ascii?Q?aMRLrIa0vREqpOQFPXZuz1ZBBr7WErGCHVrJczmpaRAsMv8wQHQDiuMH0yeP?=
+ =?us-ascii?Q?+vxuvgTlQ5vzDtdcugC7a96Z+hsV7kUob2pdaTyVnl75iCOgAuvfN/gU6lJ4?=
+ =?us-ascii?Q?LQrQ+XKkdNRwC5Lww/2mkrkNFKB26zpUr2ShKxPkUzBmpNW4aCGXaZXD8axj?=
+ =?us-ascii?Q?x+Cuf+hI86u8MUts6a6WbBxknWc/bD3Hl6A46oGyJwGCn+/Vi2Muxfmp1gWw?=
+ =?us-ascii?Q?TYp29ZwbyUbgGQ/hXGIY9h0HtArPtvkMW6hOEnQ49IuXxu/lYjCwHnN1qvEz?=
+ =?us-ascii?Q?GI+FA9tnv5KyYf20SxRHzdr3X8qS1LyuyJ3agA6o?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de1849de-54ae-4fed-efc4-08db4a531ea8
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f668baf-f253-428c-d344-08db4b40702a
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2023 14:48:26.1675
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2023 19:07:13.7650
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CG8nSTC6y0RU/ihFfRdibYgr+eRbiVfodw4Zvv1mXi4RWIbsOD6gD84NklV+KMgSMlJCQxUf+fqTfeO9mIdF3g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8333
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZuWLvQvubcwiyzQvfz2DYz+VJtz1XlT7j6Ef6OFUnWivn6qeus+jMZ0gCEu7IQwxOhREr7nc30iJwF59lsxQ4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8952
 
-Layerscape has PME interrupt, which can be used as linkup notifier.
-Set CFG_READY bit when linkup detected.
+At low baud rates, the DMA transfer may end prematurely due to the timer,
+even during an active transfer. This does not accurately simulate an EOP
+event as intended. We expect the timer to only complete a DMA transfer
+once the idle period satisfies a specified interval.
 
-Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The patch checks the DMA residue count before copying data to the TTY
+buffer. If the residue count remains unchanged since the last interrupt,
+that indicates no new data was received. In this case, the DMA should
+complete as an EOP event. Instead, the timer restarts.
+
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 ---
-Change from v1 to v2
-- pme -> PME
-- irq -> IRQ
-- update dev_info message according to Bjorn's suggestion
-- remove '.' at error message
-	
- .../pci/controller/dwc/pci-layerscape-ep.c    | 104 +++++++++++++++++-
- 1 file changed, 103 insertions(+), 1 deletion(-)
+ drivers/tty/serial/fsl_lpuart.c | 52 ++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index c640db60edc6..e974fbe3b6d8 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -18,6 +18,20 @@
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index c91916e13648..8d21351fb3bd 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -238,6 +238,7 @@
  
- #include "pcie-designware.h"
+ /* Rx DMA timeout in ms, which is used to calculate Rx ring buffer size */
+ #define DMA_RX_TIMEOUT		(10)
++#define DMA_RX_IDLE_CHARS	(8)
+ #define UART_AUTOSUSPEND_TIMEOUT	3000
  
-+#define PEX_PF0_CONFIG			0xC0014
-+#define PEX_PF0_CFG_READY		BIT(0)
-+
-+/* PEX PFa PCIE PME and message interrupt registers*/
-+#define PEX_PF0_PME_MES_DR		0xC0020
-+#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
-+#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
-+#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
-+
-+#define PEX_PF0_PME_MES_IER		0xC0028
-+#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
-+#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
-+#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
-+
- #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
- 
- struct ls_pcie_ep_drvdata {
-@@ -30,8 +44,88 @@ struct ls_pcie_ep {
- 	struct dw_pcie			*pci;
- 	struct pci_epc_features		*ls_epc;
- 	const struct ls_pcie_ep_drvdata *drvdata;
-+	bool				big_endian;
-+	int				irq;
+ #define DRIVER_NAME	"fsl-lpuart"
+@@ -282,6 +283,7 @@ struct lpuart_port {
+ 	struct scatterlist	rx_sgl, tx_sgl[2];
+ 	struct circ_buf		rx_ring;
+ 	int			rx_dma_rng_buf_len;
++	int                     last_residue;
+ 	unsigned int		dma_tx_nents;
+ 	wait_queue_head_t	dma_wait;
+ 	bool			is_cs7; /* Set to true when character size is 7 */
+@@ -331,7 +333,7 @@ static struct lpuart_soc_data imx8qxp_data = {
+ 	.devtype = IMX8QXP_LPUART,
+ 	.iotype = UPIO_MEM32,
+ 	.reg_off = IMX_REG_OFF,
+-	.rx_watermark = 31,
++	.rx_watermark = 8, /* A lower watermark is ideal for low baud rates. */
  };
+ static struct lpuart_soc_data imxrt1050_data = {
+ 	.devtype = IMXRT1050_LPUART,
+@@ -1255,6 +1257,8 @@ static void lpuart_copy_rx_to_tty(struct lpuart_port *sport)
+ 		sport->port.icount.rx += copied;
+ 	}
  
-+static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
-+{
-+	struct dw_pcie *pci = pcie->pci;
++	sport->last_residue = state.residue;
 +
-+	if (pcie->big_endian)
-+		return ioread32be(pci->dbi_base + offset);
-+	else
-+		return ioread32(pci->dbi_base + offset);
-+}
-+
-+static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset,
-+			  u32 value)
-+{
-+	struct dw_pcie *pci = pcie->pci;
-+
-+	if (pcie->big_endian)
-+		iowrite32be(value, pci->dbi_base + offset);
-+	else
-+		iowrite32(value, pci->dbi_base + offset);
-+}
-+
-+static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-+{
-+	struct ls_pcie_ep *pcie = (struct ls_pcie_ep *)dev_id;
-+	struct dw_pcie *pci = pcie->pci;
-+	u32 val, cfg;
-+
-+	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-+	if (!val)
-+		return IRQ_NONE;
-+
-+	if (val & PEX_PF0_PME_MES_DR_LUD) {
-+		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
-+		cfg |= PEX_PF0_CFG_READY;
-+		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-+		dw_pcie_ep_linkup(&pci->ep);
-+
-+		dev_info(pci->dev, "Link up\n");
-+	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
-+		dev_info(pci->dev, "Link down\n");
-+	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
-+		dev_info(pci->dev, "Hot reset\n");
-+	}
-+
-+	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
-+				     struct platform_device *pdev)
-+{
-+	u32 val;
-+	int ret;
-+
-+	pcie->irq = platform_get_irq_byname(pdev, "pme");
-+	if (pcie->irq < 0) {
-+		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
-+		return pcie->irq;
-+	}
-+
-+	ret = devm_request_irq(&pdev->dev, pcie->irq,
-+			       ls_pcie_ep_event_handler, IRQF_SHARED,
-+			       pdev->name, pcie);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
-+		return ret;
-+	}
-+
-+	/* Enable interrupts */
-+	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
-+	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
-+		PEX_PF0_PME_MES_IER_LUDIE;
-+	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
-+
-+	return 0;
-+}
-+
- static const struct pci_epc_features*
- ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
- {
-@@ -125,6 +219,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	struct ls_pcie_ep *pcie;
- 	struct pci_epc_features *ls_epc;
- 	struct resource *dbi_base;
-+	int ret;
- 
- 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
- 	if (!pcie)
-@@ -144,6 +239,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	pci->ops = pcie->drvdata->dw_pcie_ops;
- 
- 	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
-+	ls_epc->linkup_notifier = true;
- 
- 	pcie->pci = pci;
- 	pcie->ls_epc = ls_epc;
-@@ -155,9 +251,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 
- 	pci->ep.ops = &ls_pcie_ep_ops;
- 
-+	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
-+
- 	platform_set_drvdata(pdev, pcie);
- 
--	return dw_pcie_ep_init(&pci->ep);
-+	ret = dw_pcie_ep_init(&pci->ep);
-+	if (ret)
-+		return  ret;
-+
-+	return  ls_pcie_ep_interrupt_init(pcie, pdev);
+ exit:
+ 	dma_sync_sg_for_device(chan->device->dev, &sport->rx_sgl, 1,
+ 			       DMA_FROM_DEVICE);
+@@ -1272,11 +1276,40 @@ static void lpuart_dma_rx_complete(void *arg)
+ 	lpuart_copy_rx_to_tty(sport);
  }
  
- static struct platform_driver ls_pcie_ep_driver = {
++/*
++ * Timer function to simulate the hardware EOP(End Of Package) event.
++ * The timer callback is to check for new RX data and copy to TTY buffer.
++ * If no new data since last interrupt, restart timer. Otherwise, copy data
++ * and continue normal logic.
++ */
+ static void lpuart_timer_func(struct timer_list *t)
+ {
+ 	struct lpuart_port *sport = from_timer(sport, t, lpuart_timer);
++	struct dma_chan *chan = sport->dma_rx_chan;
++	struct circ_buf *ring = &sport->rx_ring;
++	struct dma_tx_state state;
++	unsigned long flags;
++	int count = 0;
+ 
+-	lpuart_copy_rx_to_tty(sport);
++	dmaengine_tx_status(chan, sport->dma_rx_cookie, &state);
++	ring->head = sport->rx_sgl.length - state.residue;
++
++	if (ring->head < ring->tail)
++		count = sport->rx_sgl.length - ring->tail;
++	else if (ring->tail < ring->head)
++		count = ring->head - ring->tail;
++
++	/* Check if new data received before copying */
++	if ((count != 0) && (sport->last_residue == state.residue))
++		lpuart_copy_rx_to_tty(sport);
++	else
++		mod_timer(&sport->lpuart_timer,
++				jiffies + sport->dma_rx_timeout);
++
++	if (spin_trylock_irqsave(&sport->port.lock, flags)) {
++		sport->last_residue = state.residue;
++		spin_unlock_irqrestore(&sport->port.lock, flags);
++	}
+ }
+ 
+ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+@@ -1297,9 +1330,19 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 	 */
+ 	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
+ 	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
++	if (sport->rx_dma_rng_buf_len < sport->rxfifo_size * 2)
++		sport->rx_dma_rng_buf_len = sport->rxfifo_size * 2;
++
++	/*
++	 * Keep this condition check in case rxfifo_size is unavailable
++	 * for some SoCs.
++	 */
+ 	if (sport->rx_dma_rng_buf_len < 16)
+ 		sport->rx_dma_rng_buf_len = 16;
+ 
++	sport->dma_rx_timeout =
++		msecs_to_jiffies((1000 * 10 * DMA_RX_IDLE_CHARS) / baud + 1);
++
+ 	ring->buf = kzalloc(sport->rx_dma_rng_buf_len, GFP_ATOMIC);
+ 	if (!ring->buf)
+ 		return -ENOMEM;
+@@ -1687,12 +1730,13 @@ static void lpuart_rx_dma_startup(struct lpuart_port *sport)
+ 	if (!sport->dma_rx_chan)
+ 		goto err;
+ 
++	/* set default Rx DMA timeout */
++	sport->dma_rx_timeout = msecs_to_jiffies(DMA_RX_TIMEOUT);
++
+ 	ret = lpuart_start_rx_dma(sport);
+ 	if (ret)
+ 		goto err;
+ 
+-	/* set Rx DMA timeout */
+-	sport->dma_rx_timeout = msecs_to_jiffies(DMA_RX_TIMEOUT);
+ 	if (!sport->dma_rx_timeout)
+ 		sport->dma_rx_timeout = 1;
+ 
 -- 
 2.34.1
 
