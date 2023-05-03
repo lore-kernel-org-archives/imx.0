@@ -1,61 +1,228 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA2D9456
-	for <imx@lists.linux.dev>; Tue,  2 May 2023 23:19:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2l5Uv2F7D/BM238Fz1afWDTU9gd8SlLHR7GBsDFXHNE=; b=ua8uarLFqpT95yGaNxhsDrN2JU
-	QFWtZOol6DrBowgnIS3dd8eKz7LG4JvB1lhRFBmTqffhCcvDpiMcpsuqawuIRJnDd5/s0LQgIB//a
-	plFw9s8e8QFQl2QGajvptVWH8abV36oJwIyjecgR4M8SUas4JkWogD8w1SK6NVO1qnJ0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ptzGY-00Blwb-VN; Wed, 03 May 2023 01:18:38 +0200
-Date: Wed, 3 May 2023 01:18:38 +0200
-From: Andrew Lunn <andrew@lunn.ch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7693FEA5
+	for <imx@lists.linux.dev>; Wed,  3 May 2023 09:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683104592; x=1714640592;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=rXPn1GyqliLXTXsyK7GCOfhrWK4Hhvdl61jf5jO3gY0=;
+  b=FvYhct9i7XkK22Y0oS/QVw8FOVq6KnwS6o6XwkBVuKp9KPZqoqtRLrV6
+   ITYL6mlIACUnC/hrk6pLLN3Y6STgyjmWDocBbIszXmd0pJAk88XXE3xMD
+   L+tR9fg2V0cJzlIC7MSLiOybCwwDnQ+63hNAN+c9eyyfsYFyvvMJMlqgg
+   9BkA8MXWuDkcZ4RYlDbJ3/7MJoW7xb1zIqgNvBO1WF9BCx6pGdPDsc2l+
+   iVlqIn3qesnUZ3DeHrJCwKVbSKbQbDwweNm79pjMpCRT0uwr/HbU2GLqE
+   d3b/n5tbzJkbWUOR/WQZuZXS12lEOLEjCRPmvP1I3GTDktaqCGPS8ioij
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="337744270"
+X-IronPort-AV: E=Sophos;i="5.99,246,1677571200"; 
+   d="scan'208";a="337744270"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2023 02:03:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="674008417"
+X-IronPort-AV: E=Sophos;i="5.99,246,1677571200"; 
+   d="scan'208";a="674008417"
+Received: from bradocaj-mobl.ger.corp.intel.com ([10.249.37.14])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2023 02:03:09 -0700
+Date: Wed, 3 May 2023 12:03:04 +0300 (EEST)
+From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Alexander Lobakin <alexandr.lobakin@intel.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 net 2/2] net: fec: restructuring the functions to
- avoid forward declarations
-Message-ID: <6dff0a5b-c74b-4516-8461-26fcd5d615f3@lunn.ch>
-References: <20230502220818.691444-1-shenwei.wang@nxp.com>
- <20230502220818.691444-2-shenwei.wang@nxp.com>
+cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, imx@lists.linux.dev, 
+    linux-imx@nxp.com
+Subject: Re: [PATCH 1/1] tty: serial: fsl_lpuart: optimize the timer based
+ EOP logic
+In-Reply-To: <20230502190641.657483-1-shenwei.wang@nxp.com>
+Message-ID: <2a4bec70-4285-c48c-1bb9-c2e713ce3e0@linux.intel.com>
+References: <20230502190641.657483-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230502220818.691444-2-shenwei.wang@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, May 02, 2023 at 05:08:18PM -0500, Shenwei Wang wrote:
-> The patch reorganizes functions related to XDP frame transmission, moving
-> them above the fec_enet_run_xdp implementation. This eliminates the need
-> for forward declarations of these functions.
+On Tue, 2 May 2023, Shenwei Wang wrote:
 
-I'm confused. Are these two patches in the wrong order?
+> At low baud rates, the DMA transfer may end prematurely due to the timer,
+> even during an active transfer. This does not accurately simulate an EOP
+> event as intended. We expect the timer to only complete a DMA transfer
+> once the idle period satisfies a specified interval.
+> 
+> The patch checks the DMA residue count before copying data to the TTY
+> buffer. If the residue count remains unchanged since the last interrupt,
+> that indicates no new data was received. In this case, the DMA should
+> complete as an EOP event. Instead, the timer restarts.
 
-The reason that i asked you to fix the forward declaration in net-next
-is that it makes your fix two patches. Sometimes that is not obvious
-to people back porting patches, and one gets lost, causing build
-problems. So it is better to have a single patch which is maybe not
-100% best practice merged to stable, and then a cleanup patch merged
-to the head of development.
+This description is lacking something. It does not explain why the stuff 
+in second paragraph is necessary at all as setting a longer timer based on
+the (lower) baud rate would avoid the need to do the timer restart.
 
-   Andrew
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  drivers/tty/serial/fsl_lpuart.c | 52 ++++++++++++++++++++++++++++++---
+>  1 file changed, 48 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+> index c91916e13648..8d21351fb3bd 100644
+> --- a/drivers/tty/serial/fsl_lpuart.c
+> +++ b/drivers/tty/serial/fsl_lpuart.c
+> @@ -238,6 +238,7 @@
+>  
+>  /* Rx DMA timeout in ms, which is used to calculate Rx ring buffer size */
+>  #define DMA_RX_TIMEOUT		(10)
+> +#define DMA_RX_IDLE_CHARS	(8)
+>  #define UART_AUTOSUSPEND_TIMEOUT	3000
+>  
+>  #define DRIVER_NAME	"fsl-lpuart"
+> @@ -282,6 +283,7 @@ struct lpuart_port {
+>  	struct scatterlist	rx_sgl, tx_sgl[2];
+>  	struct circ_buf		rx_ring;
+>  	int			rx_dma_rng_buf_len;
+> +	int                     last_residue;
+>  	unsigned int		dma_tx_nents;
+>  	wait_queue_head_t	dma_wait;
+>  	bool			is_cs7; /* Set to true when character size is 7 */
+> @@ -331,7 +333,7 @@ static struct lpuart_soc_data imx8qxp_data = {
+>  	.devtype = IMX8QXP_LPUART,
+>  	.iotype = UPIO_MEM32,
+>  	.reg_off = IMX_REG_OFF,
+> -	.rx_watermark = 31,
+> +	.rx_watermark = 8, /* A lower watermark is ideal for low baud rates. */
+>  };
+>  static struct lpuart_soc_data imxrt1050_data = {
+>  	.devtype = IMXRT1050_LPUART,
+> @@ -1255,6 +1257,8 @@ static void lpuart_copy_rx_to_tty(struct lpuart_port *sport)
+>  		sport->port.icount.rx += copied;
+>  	}
+>  
+> +	sport->last_residue = state.residue;
+> +
+>  exit:
+>  	dma_sync_sg_for_device(chan->device->dev, &sport->rx_sgl, 1,
+>  			       DMA_FROM_DEVICE);
+> @@ -1272,11 +1276,40 @@ static void lpuart_dma_rx_complete(void *arg)
+>  	lpuart_copy_rx_to_tty(sport);
+>  }
+>  
+> +/*
+> + * Timer function to simulate the hardware EOP(End Of Package) event.
+
+Missing space
+
+> + * The timer callback is to check for new RX data and copy to TTY buffer.
+> + * If no new data since last interrupt, restart timer. Otherwise, copy data
+> + * and continue normal logic.
+> + */
+>  static void lpuart_timer_func(struct timer_list *t)
+>  {
+>  	struct lpuart_port *sport = from_timer(sport, t, lpuart_timer);
+> +	struct dma_chan *chan = sport->dma_rx_chan;
+> +	struct circ_buf *ring = &sport->rx_ring;
+> +	struct dma_tx_state state;
+> +	unsigned long flags;
+> +	int count = 0;
+>  
+> -	lpuart_copy_rx_to_tty(sport);
+> +	dmaengine_tx_status(chan, sport->dma_rx_cookie, &state);
+
+> +	ring->head = sport->rx_sgl.length - state.residue;
+> +
+> +	if (ring->head < ring->tail)
+> +		count = sport->rx_sgl.length - ring->tail;
+> +	else if (ring->tail < ring->head)
+> +		count = ring->head - ring->tail;
+
+linux/circ_buf.h has functions which likely handle what you want to do 
+here. They will get you true count across wrap too which this above does 
+not do.
+
+Given this is essentially duplicates count calculation some refactor 
+would seem more useful here rather than recalculating the count again in 
+lpuart_copy_rx_to_tty().
+
+Also lpuart_handle_sysrq() duplicates the same calculations.
+
+> +
+> +	/* Check if new data received before copying */
+> +	if ((count != 0) && (sport->last_residue == state.residue))
+
+I'm unsure about this condition being right.
+
+What will happen when rx_sgl.length (or -1 of that, I'm not sure which way 
+"full size" is here) worth of data has been DMA'ed. Does this condition 
+end up delaying copy such that it's done only on every other call here?
+
+Also, should you reset last_residue in lpuart_start_rx_dma() ? I think 
+that would solve the "full size" problem.
+
+> +		lpuart_copy_rx_to_tty(sport);
+> +	else
+> +		mod_timer(&sport->lpuart_timer,
+> +				jiffies + sport->dma_rx_timeout);
+> +
+> +	if (spin_trylock_irqsave(&sport->port.lock, flags)) {
+> +		sport->last_residue = state.residue;
+> +		spin_unlock_irqrestore(&sport->port.lock, flags);
+> +	}
+>  }
+>  
+>  static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+> @@ -1297,9 +1330,19 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+>  	 */
+>  	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
+>  	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
+> +	if (sport->rx_dma_rng_buf_len < sport->rxfifo_size * 2)
+> +		sport->rx_dma_rng_buf_len = sport->rxfifo_size * 2;
+
+max_t()
+
+> +
+> +	/*
+> +	 * Keep this condition check in case rxfifo_size is unavailable
+> +	 * for some SoCs.
+> +	 */
+>  	if (sport->rx_dma_rng_buf_len < 16)
+>  		sport->rx_dma_rng_buf_len = 16;
+>  
+> +	sport->dma_rx_timeout =
+> +		msecs_to_jiffies((1000 * 10 * DMA_RX_IDLE_CHARS) / baud + 1);
+
+There's ->frame_time these days in uart_port which you should base frame 
+timing related calculations. I wouldn't mind if that existing ->frame_time 
+math that is visible in your patch's context is also converted (in a 
+separate patch).
+
+I'm assuming that magic 10 is assumed number of bits and 1000 
+MSEC_PER_SEC. That +1 seems odd, did you mean DIV_ROUND_UP() ?
+
+> +
+>  	ring->buf = kzalloc(sport->rx_dma_rng_buf_len, GFP_ATOMIC);
+>  	if (!ring->buf)
+>  		return -ENOMEM;
+> @@ -1687,12 +1730,13 @@ static void lpuart_rx_dma_startup(struct lpuart_port *sport)
+>  	if (!sport->dma_rx_chan)
+>  		goto err;
+>  
+> +	/* set default Rx DMA timeout */
+> +	sport->dma_rx_timeout = msecs_to_jiffies(DMA_RX_TIMEOUT);
+> +
+>  	ret = lpuart_start_rx_dma(sport);
+>  	if (ret)
+>  		goto err;
+>  
+> -	/* set Rx DMA timeout */
+> -	sport->dma_rx_timeout = msecs_to_jiffies(DMA_RX_TIMEOUT);
+>  	if (!sport->dma_rx_timeout)
+>  		sport->dma_rx_timeout = 1;
+>  
+> 
+
+-- 
+ i.
+
