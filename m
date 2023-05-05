@@ -1,121 +1,339 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2044.outbound.protection.outlook.com [40.107.20.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0360DC12D;
-	Fri,  5 May 2023 19:23:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D229C433D2;
-	Fri,  5 May 2023 19:23:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683314633;
-	bh=bdU+nJ5tDBKsZGVPg25sg3cFr7mKjHTgsdrS7vgkuIU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=c2l6vIFtlSLOcbNMXMnmtAKAU3xlPDfAudVxE+dykAKpN0Fcy6y+26q4cgowlp4Yz
-	 6n6vSokr04c+agovMiKs50ry0aonHiWUrDIiIsRWYcxCgigtZW21amzQdHvRRHHl0F
-	 OJmS+YukgHX8cgYpoVV6Ro59T3FEjb9Gtir6fwtPqvyxQmDmCDROr4etYgrMD+pSWh
-	 kNominJyJLQPoFCerDPWxJvZeddteAoe1HjrPE+ZUfMxO6MlEpofv6ia73WkfPh0Yz
-	 m9shFM6LQNsU7X69JUTRoZI8o8YFRSXo2QEXmx1jacefXQaa5CsDxGyKxwKIELVwlY
-	 waI5lfvc5tPNw==
-Date: Fri, 5 May 2023 12:23:52 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Clark
- Wang <xiaoning.wang@nxp.com>, NXP Linux Team <linux-imx@nxp.com>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Alexander Lobakin <alexandr.lobakin@intel.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Gagandeep Singh <g.singh@nxp.com>
-Subject: Re: [PATCH v3 net 1/1] net: fec: correct the counting of XDP sent
- frames
-Message-ID: <20230505122352.0296f888@kernel.org>
-In-Reply-To: <20230504153517.816636-1-shenwei.wang@nxp.com>
-References: <20230504153517.816636-1-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95B3C12D
+	for <imx@lists.linux.dev>; Fri,  5 May 2023 19:52:16 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lCMxjodfGyRCk4H+VdjXUR7m2iM03q2FkSpIFudz3oGnE0P9WJUg5SDDsJHOPjCLP+p/kNuTfiP7e/QqcOpVfY7Xm1KcmZc2BofmXxUevmoKR/G8xTiqDEJVDLD62pLAY5IsWFqAJARQD0vCQiM4jpuwY+AX12AsJLZqIJ1PQCgi140ehv5IDYNWPFa6MVzXLhL4yt/ALTRICs5d2N/5Gus2+JIA7BM3hFDUjkLI+mdyHiWqNgG1vEULytMRrfxHIqYBXH3/q2dJLbEYp7Hq1gaJkMfliMv+7lrEniU3G4SVoPYyn9YF7HZWkDE6L0rZ11U97SPAx3mdC5ZK3S5a1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K4fd8x/WhVIrrd3/gXm+Ni9fXq8/3YZkDIR++hh2lMA=;
+ b=dqws/cG99UL6ct4fxjbfghzshuRluxwaf8n0SG8LgsIhJEqUTl2TJy2vSX2mou91nEDlrIgcUx/BdiT6E0+7FDAW/5IHL3Uyb8WIH1XCcZTnIdua8sKbW40WzUkplX04M2cyr7RzPom9isAoVMShJe+sWuVshET7P1iW4QGOkXkPBC0DNisLgc8Ej6zKbf3HlTnD6m3OBy6bkNUJWhn/+CmfZ5KIkEmeI98Y3UxhDRXRzRZ1KQPiPBqicT1eNnLu62XrSRX1Fa6Jyk8GtmLV0EdwkNJki2d6i/x5w5N5Sos8A2whZ8D06FYkAsoLXn0RsVPuUeu8so/jKykvPLW4DQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K4fd8x/WhVIrrd3/gXm+Ni9fXq8/3YZkDIR++hh2lMA=;
+ b=b2OC2xiCwwgdBzLzN8sddHiwPKAx0KTxuxd3AC8UJ97qbGytt4tWKRj+1k7/jazZOrX1ikZyTi7qILMc7nGKpcQurmfX2rRsCWQdB1JPHlgb5xbl9It+Qlms7NbUpASPVhh//wGQ0The4cIwpeafMITD7CImD1BTWRcYc5t515M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DBBPR04MB7548.eurprd04.prod.outlook.com (2603:10a6:10:20c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.27; Fri, 5 May
+ 2023 19:52:13 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::bcdd:75c9:176c:39ed]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::bcdd:75c9:176c:39ed%4]) with mapi id 15.20.6363.027; Fri, 5 May 2023
+ 19:52:13 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: imx@lists.linux.dev,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: coresight@lists.linaro.org
+Subject: [PATCH 1/1] arm64: dts: imx8mp: Add coresight trace components
+Date: Fri,  5 May 2023 15:51:51 -0400
+Message-Id: <20230505195151.1874071-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR06CA0059.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::36) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBBPR04MB7548:EE_
+X-MS-Office365-Filtering-Correlation-Id: be6bad67-f454-45ba-8623-08db4da23858
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	zI3+DdY3hXXN5dcjsea0lMhewCkXNkAxp31n9Ep/l7DtQ6BiGbUdon9I0vKJaDaQfISG4YXaz99nlNvxpxsu52LZ59brsla9WIey/7zn2sCeJuaO9ydTOd1QFdhsdPZzjF7Ex49BPD+LQTJ1ejoXoEtbHmWDWrj/28alZJc6CQrFYZu8GWo93sVQAv0m2DMJysIA3AgOJv8f1Y8+RiQgA5HaY4BcBESC4XiHz8iTP5Tm7EhS/Phr33zBAJWdUkbvi72ufXMp8SvK/joMtyxEe/mqzpUSxy8xVtJbEQxWhm4bi9iizdFPQkXzG3/Wxf9BeRCM10DJuIrYHAbZbxFdWH4EqEqULDe4hdMijdpoZHxrqv9S8wDAsmGe8y8R9I9M3cM0J5+rUE2k9B4wTnICQmtqUqAIgZVNjyMc8GO+DIIgWvhipj0yniAnigaeL3bNqZrCgr0cS2TsDBoi7RXLCGi0cX4BFjvzwdGVaj/4M5smFP8DCPIUyt7SYXtTBqqHCSaKjE50NY2/9AT+8zLa8UWfvWlrLiq3WdcZjaiVMk2p4MqJhuNAjpRByyqj2N6OrVymoBztMpRMN9/HPucyeFO41oHui9ZFNXqvQ8pY91PyHsR+dBvQN58OafxSKCN8/+6VWQz4SpbQrmIT+gqKCr7ToVidlZdk8Jr50aULUUM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(396003)(136003)(346002)(376002)(451199021)(2616005)(83380400001)(4326008)(41300700001)(38100700002)(921005)(8936002)(316002)(38350700002)(6506007)(1076003)(66946007)(478600001)(52116002)(66476007)(66556008)(8676002)(6512007)(26005)(6486002)(7416002)(86362001)(110136005)(186003)(5660300002)(6666004)(36756003)(2906002)(32563001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dHdDQUVUcSt6MVl2SnhjcGNJTVZsZnowWGVOcGY0KzYwdHdZejRwWEd3R0lw?=
+ =?utf-8?B?NnZyU3lQWkZYdSsySnpBSlJJcG1FZ0lLQVN6a3JMVk1mZXVyUnR4Nk5IUEdm?=
+ =?utf-8?B?QUJ3Qnc0MGlBd0tSM2ovZTVuM0tDT1A5RU1WdkYwOTIvb09WR3NlQjBLMERm?=
+ =?utf-8?B?LzYxekZZaFJFa3A1aGdUNDlXZEhnbXFTRUdyT1JNZktvYmZiZlZCNkREQ2c4?=
+ =?utf-8?B?ZndrWDVxcWlWemZoR1FnVVFaQVVmNjYvaUF5YW9Xc284bHB1Z1gvajNQRVpJ?=
+ =?utf-8?B?NjNIVlVsSzZkMUVuTnJZNkVPRzRHNE44M1lnbk0zVWJvVThLZzB2L1IrU0NT?=
+ =?utf-8?B?UjVZYTFiY1haeENtdDFkRTE4dUVSVXVMMXVkZU5aNXZiQjRoYUpoVjgwTUlB?=
+ =?utf-8?B?a2I3Zis4M3lBUE1sdUhtTGdIbmRsSU5pRzY0bzFoU09jVWcrZFFLb2RxNFJM?=
+ =?utf-8?B?eGV2UFNwRk9EQmpnd0FlaXI3aVVCcUV1OE1FdzBnbnoxK2hrY1hQK1AzMGZk?=
+ =?utf-8?B?Z25hNzRvdDNwK2tZV2VtOTFtUEhDZnZwMXRhSzI2U0xhakpWY0EvLyt0MFc5?=
+ =?utf-8?B?TDY0ODFROWE5OXM5T3dJUWlZY1YxSy9UWkFsOC84eE55dU1JMFNxNHlWVnRo?=
+ =?utf-8?B?Zzk2UWZ6WkpHOFp6K2dla3gwYzhsNGNKQ0c3c3ZnakQzQitUMW4zRUtDbmN3?=
+ =?utf-8?B?bDM4ejlYakdRZmpBN2M3OGpaV3VuallNd3U1b0ZCeEZBam9PTXVXYU5rcTNO?=
+ =?utf-8?B?a1ZiZG90RWN2ZzM5WSt0Njl0cHlKNUhVSGFrcFozTHpxcDVNK25pdGNlUDZY?=
+ =?utf-8?B?WVFteXQ3SUZvd0ljUEEyczRTV0pvbjB6K3NMdWhkeGZFenNtZ3ZTMHpiMHlo?=
+ =?utf-8?B?RXBoYnh0dlYvRmxXa3FwUXlDWENXUXF6c05hWDd1c09HWk4xRTZjdmJmbkI0?=
+ =?utf-8?B?dEJsay93ZUFhNjZRQlVRb1ZtUmlHQTh2Tm9qOWpjdmJua2RRM3IxaWJ5OVBU?=
+ =?utf-8?B?SEpBYkN3Y0hBSlBlNWdUV3k1OUhyVXh1Q0xGMGp2T3h5djNhdVVYbU91KzVG?=
+ =?utf-8?B?OWc0eXRsUGFndkVVcE5USDJMNm5jQXJFRlJrK0k0UkdJdmhZalk2YitxckNP?=
+ =?utf-8?B?UDh2Z01hZEUrSGFicDN0SWMzVms1NVJBcnJqWFhkT2x0UGV5TE10TTExWFFn?=
+ =?utf-8?B?VC9vcGN2Qkl5UU9BSXZKYUxnKzVBZ2tvanphN1NMTmpxbjZLdEVHYndQVmth?=
+ =?utf-8?B?VjNnaUcwdzA1TWpGZC9ST1pwdmZhZU41UmUrNGtKSFc2RlJtM1dFRXQ5bnND?=
+ =?utf-8?B?Q2RIL2hkaGw4a3kwV3FTZUt3aHh3d2paczhmanYwR1k4cjN5M2p3M2FaMmlG?=
+ =?utf-8?B?Q1dYK0dqdFBXV3JzeHp0eHNUeHd3b2s5K3dRbGxrQkpVZWtJSzh3cHFDZVds?=
+ =?utf-8?B?SEk0NlI3RFg1cUwyZnZqOXNQNlhlVVgzZU0weGpFSjcyVFR3b3BINDNIVVRi?=
+ =?utf-8?B?Q3cxY1MxRVJ6UFNWemRLSWxiT2hxd1dCVGtNNzZRVW5RdXJTTUdsTE04SzNr?=
+ =?utf-8?B?Z3FROVlaMXlPR2ExdThQUlVZRXlYMjVvWjdOWUlXemhqTmVjSURXUW1wNXhq?=
+ =?utf-8?B?M3FuNTRpbDdCbWNXWnU3VGZSeDhRaU95MWtKcitZZk1uYWZxWUZYcWpRZlE0?=
+ =?utf-8?B?UEpMK0xwa0RKSmJiRlBFY0tEMFJUSCtMbm1qMzlISlF0YUIxbHBUYUIxMkVu?=
+ =?utf-8?B?QzN1YnBid094eFA5eHdaQysyTDJ1Rk1YVnI2N243a2t0cXl6SUU2bmoxUkNQ?=
+ =?utf-8?B?bnVKaUxpdzdRZGtvWG1Fa21pTDRqaGM2cmRNYVhXaG1ZV0JsUDJmYXg0dHVi?=
+ =?utf-8?B?VytYRDBaT2hpYnZJSTJQbTNRZVFVdGUzU000THFEdUFMREJ1QUFOYjMzUW93?=
+ =?utf-8?B?ckdsNGZIY1AvR1VPMnhNVHhUSXU0MVU1V3VsamsxWGtXT0JjWnYrb0E1Tm5s?=
+ =?utf-8?B?YVJDYllDcy80MGl2d1A0eWJvM280VmxkdXUzN0JGR25vSUdaSmFYVzFqZUFP?=
+ =?utf-8?B?OEQvUUs4eVlyU0ZGUGx6TzV5QUdPR2lRU2s3WGh6OUIyblZOVE9FaTNOUDhp?=
+ =?utf-8?Q?u5u4=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: be6bad67-f454-45ba-8623-08db4da23858
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2023 19:52:13.0715
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q6vPiv/KwKObnYRyIuoCelwLDRFbTyEd9x00dD5FmNFd1tBBECjmLPUxTxrzb5dgdcom9n2hE/8kM3anu8aBzQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7548
 
-On Thu,  4 May 2023 10:35:17 -0500 Shenwei Wang wrote:
-> In the current xdp_xmit implementation, if any single frame fails to
-> transmit due to insufficient buffer descriptors, the function nevertheless
-> reports success in sending all frames. This results in erroneously
-> indicating that frames were transmitted when in fact they were dropped.
-> 
-> This patch fixes the issue by ensureing the return value properly
-> indicates the actual number of frames successfully transmitted, rather than
-> potentially reporting success for all frames when some could not transmit.
-> 
-> Fixes: 6d6b39f180b8 ("net: fec: add initial XDP support")
-> Signed-off-by: Gagandeep Singh <g.singh@nxp.com>
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  v3:
->   - resend the v2 fix for "net" as the standalone patch.
-> 
->  v2:
->   - only keep the bug fix part of codes according to Horatiu's comments.
->   - restructure the functions to avoid the forward declaration.
-> 
->  drivers/net/ethernet/freescale/fec_main.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 160c1b3525f5..42ec6ca3bf03 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -3798,7 +3798,8 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
->  	entries_free = fec_enet_get_free_txdesc_num(txq);
->  	if (entries_free < MAX_SKB_FRAGS + 1) {
->  		netdev_err(fep->netdev, "NOT enough BD for SG!\n");
+Add coresight trace components (ETM, ETF, ETB and Funnel).
 
-This should really be rate limited :(
+┌───────┐  ┌───────┐  ┌───────┐
+│ CPU0  ├─►│ ETM0  ├─►│       │
+└───────┘  └───────┘  │       │
+                      │       │
+┌───────┐  ┌───────┐  │  ATP  │
+│ CPU1  ├─►│ ETM1  ├─►│       │
+└───────┘  └───────┘  │       │
+                      │ FUNNEL│
+┌───────┐  ┌───────┐  │       │
+│ CPU2  ├─►│ ETM2  ├─►│       │
+└───────┘  └───────┘  │       │   ┌─────┐  ┌─────┐
+                      │       │   │     │  │     │
+┌───────┐  ┌───────┐  │       │   │ M7  │  │ DSP │
+│ CPU3  ├─►│ ETM3  ├─►│       │   │     │  │     │
+└───────┘  └───────┘  └───┬───┘   └──┬──┘  └──┬──┘               AXI
+                          │          │        │                   ▲
+                          ▼          ▼        ▼                   │
+                      ┌───────────────────────────┐   ┌─────┐   ┌─┴──┐
+                      │          ATP FUNNEL       ├──►│ETF  ├─► │ETR │
+                      └───────────────────────────┘   └─────┘   └────┘
 
-> -		return NETDEV_TX_OK;
-> +		xdp_return_frame(frame);
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 179 ++++++++++++++++++++++
+ 1 file changed, 179 insertions(+)
 
-Why return this frame? Since error is reported @sent_frames will not be
-incremented, and therefore bq_xmit_all() will take care of returning it,
-right?
-
-Otherwise the other error return path (see below) needs to be changed
-as well.
-
-> +		return NETDEV_TX_BUSY;
-
-On DMA mapping error this function returns FEC_ENET_XDP_CONSUMED,
-would be good if the functions return values where from the same
-"enum". Are you going to clean that part up in net-next?
-
->  	}
-> 
->  	/* Fill in a Tx ring entry */
-> @@ -3856,6 +3857,7 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
->  	struct fec_enet_private *fep = netdev_priv(dev);
->  	struct fec_enet_priv_tx_q *txq;
->  	int cpu = smp_processor_id();
-> +	unsigned int sent_frames = 0;
->  	struct netdev_queue *nq;
->  	unsigned int queue;
->  	int i;
-> @@ -3866,8 +3868,11 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
-> 
->  	__netif_tx_lock(nq, cpu);
-> 
-> -	for (i = 0; i < num_frames; i++)
-> -		fec_enet_txq_xmit_frame(fep, txq, frames[i]);
-> +	for (i = 0; i < num_frames; i++) {
-> +		if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) != 0)
-
-nit: you can skip the "!= 0", but up to you
-
-> +			break;
-> +		sent_frames++;
-> +	}
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index a19224fe1a6a..0fa74477b9e1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -304,6 +304,185 @@ soc: soc@0 {
+ 		nvmem-cells = <&imx8mp_uid>;
+ 		nvmem-cell-names = "soc_unique_id";
+ 
++		etm0: etm@28440000 {
++			compatible = "arm,coresight-etm4x", "arm,primecell";
++			reg = <0x28440000 0x10000>;
++			arm,primecell-periphid = <0xbb95d>;
++			cpu = <&A53_0>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			out-ports {
++				port {
++					etm0_out_port: endpoint {
++						remote-endpoint = <&ca_funnel_in_port0>;
++					};
++				};
++			};
++		};
++
++		etm1: etm@28540000 {
++			compatible = "arm,coresight-etm4x", "arm,primecell";
++			reg = <0x28540000 0x10000>;
++			arm,primecell-periphid = <0xbb95d>;
++			cpu = <&A53_1>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			out-ports {
++				port {
++					etm1_out_port: endpoint {
++						remote-endpoint = <&ca_funnel_in_port1>;
++					};
++				};
++			};
++		};
++
++		etm2: etm@28640000 {
++			compatible = "arm,coresight-etm4x", "arm,primecell";
++			reg = <0x28640000 0x10000>;
++			arm,primecell-periphid = <0xbb95d>;
++			cpu = <&A53_2>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			out-ports {
++				port {
++					etm2_out_port: endpoint {
++						remote-endpoint = <&ca_funnel_in_port2>;
++					};
++				};
++			};
++		};
++
++		etm3: etm@28740000 {
++			compatible = "arm,coresight-etm4x", "arm,primecell";
++			reg = <0x28740000 0x10000>;
++			arm,primecell-periphid = <0xbb95d>;
++			cpu = <&A53_3>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			out-ports {
++				port {
++					etm3_out_port: endpoint {
++						remote-endpoint = <&ca_funnel_in_port3>;
++					};
++				};
++			};
++		};
++
++		funnel {
++			/*
++			 * non-configurable funnel don't show up on the AMBA
++			 * bus.  As such no need to add "arm,primecell".
++			 */
++			compatible = "arm,coresight-static-funnel";
++			in-ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				port@0 {
++					reg = <0>;
++					ca_funnel_in_port0: endpoint {
++						remote-endpoint = <&etm0_out_port>;
++					};
++				};
++				port@1 {
++					reg = <1>;
++					ca_funnel_in_port1: endpoint {
++						remote-endpoint = <&etm1_out_port>;
++					};
++				};
++				port@2 {
++					reg = <2>;
++					ca_funnel_in_port2: endpoint {
++						remote-endpoint = <&etm2_out_port>;
++					};
++				};
++				port@3 {
++					reg = <3>;
++					ca_funnel_in_port3: endpoint {
++						remote-endpoint = <&etm3_out_port>;
++					};
++				};
++			};
++			out-ports {
++				port {
++					ca_funnel_out_port0: endpoint {
++						remote-endpoint = <&hugo_funnel_in_port0>;
++					};
++				};
++			};
++		};
++
++		funnel@28c03000 {
++			compatible = "arm,coresight-dynamic-funnel", "arm,primecell";
++			reg = <0x28c03000 0x1000>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			in-ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				port@0 {
++					reg = <0>;
++					hugo_funnel_in_port0: endpoint {
++						remote-endpoint = <&ca_funnel_out_port0>;
++					};
++				};
++				port@1 {
++					reg = <1>;
++					hugo_funnel_in_port1: endpoint {
++					/* M7 input */
++					};
++				};
++				port@2 {
++					reg = <2>;
++					hugo_funnel_in_port2: endpoint {
++					/* DSP input */
++					};
++				};
++				/* the other input ports are not connect to anything */
++			};
++			out-ports {
++				port {
++					hugo_funnel_out_port0: endpoint {
++						remote-endpoint = <&etf_in_port>;
++					};
++				};
++			};
++		};
++
++		etf@28c04000 {
++			compatible = "arm,coresight-tmc", "arm,primecell";
++			reg = <0x28c04000 0x1000>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			in-ports {
++				port {
++					etf_in_port: endpoint {
++						remote-endpoint = <&hugo_funnel_out_port0>;
++					};
++				};
++			};
++			out-ports {
++				port {
++					etf_out_port: endpoint {
++						remote-endpoint = <&etr_in_port>;
++					};
++				};
++			};
++		};
++
++		etr@28c06000 {
++			compatible = "arm,coresight-tmc", "arm,primecell";
++			reg = <0x28c06000 0x1000>;
++			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
++			clock-names = "apb_pclk";
++			in-ports {
++				port {
++					etr_in_port: endpoint {
++						remote-endpoint = <&etf_out_port>;
++					};
++				};
++			};
++		};
++
+ 		aips1: bus@30000000 {
+ 			compatible = "fsl,aips-bus", "simple-bus";
+ 			reg = <0x30000000 0x400000>;
 -- 
-pw-bot: cr
+2.34.1
+
