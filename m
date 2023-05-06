@@ -1,339 +1,266 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2044.outbound.protection.outlook.com [40.107.20.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95B3C12D
-	for <imx@lists.linux.dev>; Fri,  5 May 2023 19:52:16 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lCMxjodfGyRCk4H+VdjXUR7m2iM03q2FkSpIFudz3oGnE0P9WJUg5SDDsJHOPjCLP+p/kNuTfiP7e/QqcOpVfY7Xm1KcmZc2BofmXxUevmoKR/G8xTiqDEJVDLD62pLAY5IsWFqAJARQD0vCQiM4jpuwY+AX12AsJLZqIJ1PQCgi140ehv5IDYNWPFa6MVzXLhL4yt/ALTRICs5d2N/5Gus2+JIA7BM3hFDUjkLI+mdyHiWqNgG1vEULytMRrfxHIqYBXH3/q2dJLbEYp7Hq1gaJkMfliMv+7lrEniU3G4SVoPYyn9YF7HZWkDE6L0rZ11U97SPAx3mdC5ZK3S5a1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K4fd8x/WhVIrrd3/gXm+Ni9fXq8/3YZkDIR++hh2lMA=;
- b=dqws/cG99UL6ct4fxjbfghzshuRluxwaf8n0SG8LgsIhJEqUTl2TJy2vSX2mou91nEDlrIgcUx/BdiT6E0+7FDAW/5IHL3Uyb8WIH1XCcZTnIdua8sKbW40WzUkplX04M2cyr7RzPom9isAoVMShJe+sWuVshET7P1iW4QGOkXkPBC0DNisLgc8Ej6zKbf3HlTnD6m3OBy6bkNUJWhn/+CmfZ5KIkEmeI98Y3UxhDRXRzRZ1KQPiPBqicT1eNnLu62XrSRX1Fa6Jyk8GtmLV0EdwkNJki2d6i/x5w5N5Sos8A2whZ8D06FYkAsoLXn0RsVPuUeu8so/jKykvPLW4DQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K4fd8x/WhVIrrd3/gXm+Ni9fXq8/3YZkDIR++hh2lMA=;
- b=b2OC2xiCwwgdBzLzN8sddHiwPKAx0KTxuxd3AC8UJ97qbGytt4tWKRj+1k7/jazZOrX1ikZyTi7qILMc7nGKpcQurmfX2rRsCWQdB1JPHlgb5xbl9It+Qlms7NbUpASPVhh//wGQ0The4cIwpeafMITD7CImD1BTWRcYc5t515M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DBBPR04MB7548.eurprd04.prod.outlook.com (2603:10a6:10:20c::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.27; Fri, 5 May
- 2023 19:52:13 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::bcdd:75c9:176c:39ed]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::bcdd:75c9:176c:39ed%4]) with mapi id 15.20.6363.027; Fri, 5 May 2023
- 19:52:13 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: imx@lists.linux.dev,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: coresight@lists.linaro.org
-Subject: [PATCH 1/1] arm64: dts: imx8mp: Add coresight trace components
-Date: Fri,  5 May 2023 15:51:51 -0400
-Message-Id: <20230505195151.1874071-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR06CA0059.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::36) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FF61857
+	for <imx@lists.linux.dev>; Sat,  6 May 2023 07:58:45 +0000 (UTC)
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6436e004954so2858010b3a.0
+        for <imx@lists.linux.dev>; Sat, 06 May 2023 00:58:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683359925; x=1685951925;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9N1rc/5Fi1FR3PRXTb19F/ZGifHjTtA2q2Cae30+mlA=;
+        b=NQRCz43CT3Am3q/I02DZVA0uqVsD/A7hjEDQjanb1XYTXvdhgJhATgrvGC/pEKtZ53
+         czw2fdaLr3ZB76Bw6/1H9YubH2IK2ap/hVjLZcCwc/Bs75xT96EizfONWjqYhcfQUGXl
+         lwraI32bJREv8kOJ2O8aNUuSAN2Npeh9AFDoCzk6Nlrl4/YOkHEEPkdab4MOEyVV13gA
+         pmRSW3ebFAApIF65wN8wyLf6i/mlBP2PvkqKZPsRG6iXzCyGZPKW9aKEANwVLl3jNrBy
+         J2m0/s23etfyiSjR/Cbz+ylvBLzFaJBuHXbotkrFPdknOMrr4M6Na5Hoo2hysHuhtF81
+         kgLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683359925; x=1685951925;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9N1rc/5Fi1FR3PRXTb19F/ZGifHjTtA2q2Cae30+mlA=;
+        b=k0f9kOZGGImbcT954oD4Bn+GKJhAV8mfJfszITHg+MIcv/JfQKR4bH6EVGz7mawNbw
+         yvHQB29317JVI0YHaM/2S06Q0elPGle1kQVL9MWQaKKOh0iFMs501mTGw8NIUHheYs7V
+         FRFKuwc97Qn+EwDDglvMQ//HHlaoOBCVdCn9nGQV4bP0e/w7Y1BgjInzZVZOilvAIMKV
+         aC8qlJ6UnfBEnDYME3Be4SrWCWPr+7WGMJ6A6oYGCVdadW3HcIiMaIE6Tf7pa2uItcwp
+         d7S5dJNu8K/7f4OBhoyMRHajphwxBcUazpOktz0/8hVZNSkBg/nJsuEeX4VSkDGYSudw
+         M7ZA==
+X-Gm-Message-State: AC+VfDzlahdrAoubvOnZ40aEcMeMM3He0aq9KgPg8IkZcizk3jBhPI2E
+	/aFT7bmCDI9NUmMquE7e2RZZ
+X-Google-Smtp-Source: ACHHUZ6s1Jzex0YPfLJUb6h3oibL3F+U2pv0j40QoSsQ4BhKF3WctKGX8jpyOyBkUm482uYZcTvusw==
+X-Received: by 2002:a05:6a00:1686:b0:643:a35d:b8dc with SMTP id k6-20020a056a00168600b00643a35db8dcmr5053349pfc.28.1683359924874;
+        Sat, 06 May 2023 00:58:44 -0700 (PDT)
+Received: from thinkpad ([120.138.12.87])
+        by smtp.gmail.com with ESMTPSA id h16-20020aa786d0000000b0063b8f33cb81sm2728451pfo.93.2023.05.06.00.58.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 May 2023 00:58:44 -0700 (PDT)
+Date: Sat, 6 May 2023 13:28:37 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] PCI: layerscape: Add the endpoint linkup notifier
+ support
+Message-ID: <20230506075837.GA9238@thinkpad>
+References: <20230501144807.1616244-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBBPR04MB7548:EE_
-X-MS-Office365-Filtering-Correlation-Id: be6bad67-f454-45ba-8623-08db4da23858
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	zI3+DdY3hXXN5dcjsea0lMhewCkXNkAxp31n9Ep/l7DtQ6BiGbUdon9I0vKJaDaQfISG4YXaz99nlNvxpxsu52LZ59brsla9WIey/7zn2sCeJuaO9ydTOd1QFdhsdPZzjF7Ex49BPD+LQTJ1ejoXoEtbHmWDWrj/28alZJc6CQrFYZu8GWo93sVQAv0m2DMJysIA3AgOJv8f1Y8+RiQgA5HaY4BcBESC4XiHz8iTP5Tm7EhS/Phr33zBAJWdUkbvi72ufXMp8SvK/joMtyxEe/mqzpUSxy8xVtJbEQxWhm4bi9iizdFPQkXzG3/Wxf9BeRCM10DJuIrYHAbZbxFdWH4EqEqULDe4hdMijdpoZHxrqv9S8wDAsmGe8y8R9I9M3cM0J5+rUE2k9B4wTnICQmtqUqAIgZVNjyMc8GO+DIIgWvhipj0yniAnigaeL3bNqZrCgr0cS2TsDBoi7RXLCGi0cX4BFjvzwdGVaj/4M5smFP8DCPIUyt7SYXtTBqqHCSaKjE50NY2/9AT+8zLa8UWfvWlrLiq3WdcZjaiVMk2p4MqJhuNAjpRByyqj2N6OrVymoBztMpRMN9/HPucyeFO41oHui9ZFNXqvQ8pY91PyHsR+dBvQN58OafxSKCN8/+6VWQz4SpbQrmIT+gqKCr7ToVidlZdk8Jr50aULUUM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(396003)(136003)(346002)(376002)(451199021)(2616005)(83380400001)(4326008)(41300700001)(38100700002)(921005)(8936002)(316002)(38350700002)(6506007)(1076003)(66946007)(478600001)(52116002)(66476007)(66556008)(8676002)(6512007)(26005)(6486002)(7416002)(86362001)(110136005)(186003)(5660300002)(6666004)(36756003)(2906002)(32563001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dHdDQUVUcSt6MVl2SnhjcGNJTVZsZnowWGVOcGY0KzYwdHdZejRwWEd3R0lw?=
- =?utf-8?B?NnZyU3lQWkZYdSsySnpBSlJJcG1FZ0lLQVN6a3JMVk1mZXVyUnR4Nk5IUEdm?=
- =?utf-8?B?QUJ3Qnc0MGlBd0tSM2ovZTVuM0tDT1A5RU1WdkYwOTIvb09WR3NlQjBLMERm?=
- =?utf-8?B?LzYxekZZaFJFa3A1aGdUNDlXZEhnbXFTRUdyT1JNZktvYmZiZlZCNkREQ2c4?=
- =?utf-8?B?ZndrWDVxcWlWemZoR1FnVVFaQVVmNjYvaUF5YW9Xc284bHB1Z1gvajNQRVpJ?=
- =?utf-8?B?NjNIVlVsSzZkMUVuTnJZNkVPRzRHNE44M1lnbk0zVWJvVThLZzB2L1IrU0NT?=
- =?utf-8?B?UjVZYTFiY1haeENtdDFkRTE4dUVSVXVMMXVkZU5aNXZiQjRoYUpoVjgwTUlB?=
- =?utf-8?B?a2I3Zis4M3lBUE1sdUhtTGdIbmRsSU5pRzY0bzFoU09jVWcrZFFLb2RxNFJM?=
- =?utf-8?B?eGV2UFNwRk9EQmpnd0FlaXI3aVVCcUV1OE1FdzBnbnoxK2hrY1hQK1AzMGZk?=
- =?utf-8?B?Z25hNzRvdDNwK2tZV2VtOTFtUEhDZnZwMXRhSzI2U0xhakpWY0EvLyt0MFc5?=
- =?utf-8?B?TDY0ODFROWE5OXM5T3dJUWlZY1YxSy9UWkFsOC84eE55dU1JMFNxNHlWVnRo?=
- =?utf-8?B?Zzk2UWZ6WkpHOFp6K2dla3gwYzhsNGNKQ0c3c3ZnakQzQitUMW4zRUtDbmN3?=
- =?utf-8?B?bDM4ejlYakdRZmpBN2M3OGpaV3VuallNd3U1b0ZCeEZBam9PTXVXYU5rcTNO?=
- =?utf-8?B?a1ZiZG90RWN2ZzM5WSt0Njl0cHlKNUhVSGFrcFozTHpxcDVNK25pdGNlUDZY?=
- =?utf-8?B?WVFteXQ3SUZvd0ljUEEyczRTV0pvbjB6K3NMdWhkeGZFenNtZ3ZTMHpiMHlo?=
- =?utf-8?B?RXBoYnh0dlYvRmxXa3FwUXlDWENXUXF6c05hWDd1c09HWk4xRTZjdmJmbkI0?=
- =?utf-8?B?dEJsay93ZUFhNjZRQlVRb1ZtUmlHQTh2Tm9qOWpjdmJua2RRM3IxaWJ5OVBU?=
- =?utf-8?B?SEpBYkN3Y0hBSlBlNWdUV3k1OUhyVXh1Q0xGMGp2T3h5djNhdVVYbU91KzVG?=
- =?utf-8?B?OWc0eXRsUGFndkVVcE5USDJMNm5jQXJFRlJrK0k0UkdJdmhZalk2YitxckNP?=
- =?utf-8?B?UDh2Z01hZEUrSGFicDN0SWMzVms1NVJBcnJqWFhkT2x0UGV5TE10TTExWFFn?=
- =?utf-8?B?VC9vcGN2Qkl5UU9BSXZKYUxnKzVBZ2tvanphN1NMTmpxbjZLdEVHYndQVmth?=
- =?utf-8?B?VjNnaUcwdzA1TWpGZC9ST1pwdmZhZU41UmUrNGtKSFc2RlJtM1dFRXQ5bnND?=
- =?utf-8?B?Q2RIL2hkaGw4a3kwV3FTZUt3aHh3d2paczhmanYwR1k4cjN5M2p3M2FaMmlG?=
- =?utf-8?B?Q1dYK0dqdFBXV3JzeHp0eHNUeHd3b2s5K3dRbGxrQkpVZWtJSzh3cHFDZVds?=
- =?utf-8?B?SEk0NlI3RFg1cUwyZnZqOXNQNlhlVVgzZU0weGpFSjcyVFR3b3BINDNIVVRi?=
- =?utf-8?B?Q3cxY1MxRVJ6UFNWemRLSWxiT2hxd1dCVGtNNzZRVW5RdXJTTUdsTE04SzNr?=
- =?utf-8?B?Z3FROVlaMXlPR2ExdThQUlVZRXlYMjVvWjdOWUlXemhqTmVjSURXUW1wNXhq?=
- =?utf-8?B?M3FuNTRpbDdCbWNXWnU3VGZSeDhRaU95MWtKcitZZk1uYWZxWUZYcWpRZlE0?=
- =?utf-8?B?UEpMK0xwa0RKSmJiRlBFY0tEMFJUSCtMbm1qMzlISlF0YUIxbHBUYUIxMkVu?=
- =?utf-8?B?QzN1YnBid094eFA5eHdaQysyTDJ1Rk1YVnI2N243a2t0cXl6SUU2bmoxUkNQ?=
- =?utf-8?B?bnVKaUxpdzdRZGtvWG1Fa21pTDRqaGM2cmRNYVhXaG1ZV0JsUDJmYXg0dHVi?=
- =?utf-8?B?VytYRDBaT2hpYnZJSTJQbTNRZVFVdGUzU000THFEdUFMREJ1QUFOYjMzUW93?=
- =?utf-8?B?ckdsNGZIY1AvR1VPMnhNVHhUSXU0MVU1V3VsamsxWGtXT0JjWnYrb0E1Tm5s?=
- =?utf-8?B?YVJDYllDcy80MGl2d1A0eWJvM280VmxkdXUzN0JGR25vSUdaSmFYVzFqZUFP?=
- =?utf-8?B?OEQvUUs4eVlyU0ZGUGx6TzV5QUdPR2lRU2s3WGh6OUIyblZOVE9FaTNOUDhp?=
- =?utf-8?Q?u5u4=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be6bad67-f454-45ba-8623-08db4da23858
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2023 19:52:13.0715
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q6vPiv/KwKObnYRyIuoCelwLDRFbTyEd9x00dD5FmNFd1tBBECjmLPUxTxrzb5dgdcom9n2hE/8kM3anu8aBzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7548
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230501144807.1616244-1-Frank.Li@nxp.com>
 
-Add coresight trace components (ETM, ETF, ETB and Funnel).
+On Mon, May 01, 2023 at 10:48:06AM -0400, Frank Li wrote:
+> Layerscape has PME interrupt, which can be used as linkup notifier.
+> Set CFG_READY bit when linkup detected.
 
-┌───────┐  ┌───────┐  ┌───────┐
-│ CPU0  ├─►│ ETM0  ├─►│       │
-└───────┘  └───────┘  │       │
-                      │       │
-┌───────┐  ┌───────┐  │  ATP  │
-│ CPU1  ├─►│ ETM1  ├─►│       │
-└───────┘  └───────┘  │       │
-                      │ FUNNEL│
-┌───────┐  ┌───────┐  │       │
-│ CPU2  ├─►│ ETM2  ├─►│       │
-└───────┘  └───────┘  │       │   ┌─────┐  ┌─────┐
-                      │       │   │     │  │     │
-┌───────┐  ┌───────┐  │       │   │ M7  │  │ DSP │
-│ CPU3  ├─►│ ETM3  ├─►│       │   │     │  │     │
-└───────┘  └───────┘  └───┬───┘   └──┬──┘  └──┬──┘               AXI
-                          │          │        │                   ▲
-                          ▼          ▼        ▼                   │
-                      ┌───────────────────────────┐   ┌─────┐   ┌─┴──┐
-                      │          ATP FUNNEL       ├──►│ETF  ├─► │ETR │
-                      └───────────────────────────┘   └─────┘   └────┘
+Where are you setting this bit?
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 179 ++++++++++++++++++++++
- 1 file changed, 179 insertions(+)
+> 
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - pme -> PME
+> - irq -> IRQ
+> - update dev_info message according to Bjorn's suggestion
+> - remove '.' at error message
+> 	
+>  .../pci/controller/dwc/pci-layerscape-ep.c    | 104 +++++++++++++++++-
+>  1 file changed, 103 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index c640db60edc6..e974fbe3b6d8 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -18,6 +18,20 @@
+>  
+>  #include "pcie-designware.h"
+>  
+> +#define PEX_PF0_CONFIG			0xC0014
+> +#define PEX_PF0_CFG_READY		BIT(0)
+> +
+> +/* PEX PFa PCIE PME and message interrupt registers*/
+> +#define PEX_PF0_PME_MES_DR		0xC0020
+> +#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
+> +#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
+> +#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
+> +
+> +#define PEX_PF0_PME_MES_IER		0xC0028
+> +#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
+> +#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
+> +#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
+> +
+>  #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
+>  
+>  struct ls_pcie_ep_drvdata {
+> @@ -30,8 +44,88 @@ struct ls_pcie_ep {
+>  	struct dw_pcie			*pci;
+>  	struct pci_epc_features		*ls_epc;
+>  	const struct ls_pcie_ep_drvdata *drvdata;
+> +	bool				big_endian;
+> +	int				irq;
+>  };
+>  
+> +static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
+> +{
+> +	struct dw_pcie *pci = pcie->pci;
+> +
+> +	if (pcie->big_endian)
+> +		return ioread32be(pci->dbi_base + offset);
+> +	else
+> +		return ioread32(pci->dbi_base + offset);
+> +}
+> +
+> +static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset,
+> +			  u32 value)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index a19224fe1a6a..0fa74477b9e1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -304,6 +304,185 @@ soc: soc@0 {
- 		nvmem-cells = <&imx8mp_uid>;
- 		nvmem-cell-names = "soc_unique_id";
- 
-+		etm0: etm@28440000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28440000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_0>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			out-ports {
-+				port {
-+					etm0_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port0>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etm1: etm@28540000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28540000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_1>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			out-ports {
-+				port {
-+					etm1_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port1>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etm2: etm@28640000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28640000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_2>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			out-ports {
-+				port {
-+					etm2_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port2>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etm3: etm@28740000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28740000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_3>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			out-ports {
-+				port {
-+					etm3_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port3>;
-+					};
-+				};
-+			};
-+		};
-+
-+		funnel {
-+			/*
-+			 * non-configurable funnel don't show up on the AMBA
-+			 * bus.  As such no need to add "arm,primecell".
-+			 */
-+			compatible = "arm,coresight-static-funnel";
-+			in-ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				port@0 {
-+					reg = <0>;
-+					ca_funnel_in_port0: endpoint {
-+						remote-endpoint = <&etm0_out_port>;
-+					};
-+				};
-+				port@1 {
-+					reg = <1>;
-+					ca_funnel_in_port1: endpoint {
-+						remote-endpoint = <&etm1_out_port>;
-+					};
-+				};
-+				port@2 {
-+					reg = <2>;
-+					ca_funnel_in_port2: endpoint {
-+						remote-endpoint = <&etm2_out_port>;
-+					};
-+				};
-+				port@3 {
-+					reg = <3>;
-+					ca_funnel_in_port3: endpoint {
-+						remote-endpoint = <&etm3_out_port>;
-+					};
-+				};
-+			};
-+			out-ports {
-+				port {
-+					ca_funnel_out_port0: endpoint {
-+						remote-endpoint = <&hugo_funnel_in_port0>;
-+					};
-+				};
-+			};
-+		};
-+
-+		funnel@28c03000 {
-+			compatible = "arm,coresight-dynamic-funnel", "arm,primecell";
-+			reg = <0x28c03000 0x1000>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			in-ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				port@0 {
-+					reg = <0>;
-+					hugo_funnel_in_port0: endpoint {
-+						remote-endpoint = <&ca_funnel_out_port0>;
-+					};
-+				};
-+				port@1 {
-+					reg = <1>;
-+					hugo_funnel_in_port1: endpoint {
-+					/* M7 input */
-+					};
-+				};
-+				port@2 {
-+					reg = <2>;
-+					hugo_funnel_in_port2: endpoint {
-+					/* DSP input */
-+					};
-+				};
-+				/* the other input ports are not connect to anything */
-+			};
-+			out-ports {
-+				port {
-+					hugo_funnel_out_port0: endpoint {
-+						remote-endpoint = <&etf_in_port>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etf@28c04000 {
-+			compatible = "arm,coresight-tmc", "arm,primecell";
-+			reg = <0x28c04000 0x1000>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			in-ports {
-+				port {
-+					etf_in_port: endpoint {
-+						remote-endpoint = <&hugo_funnel_out_port0>;
-+					};
-+				};
-+			};
-+			out-ports {
-+				port {
-+					etf_out_port: endpoint {
-+						remote-endpoint = <&etr_in_port>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etr@28c06000 {
-+			compatible = "arm,coresight-tmc", "arm,primecell";
-+			reg = <0x28c06000 0x1000>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+			in-ports {
-+				port {
-+					etr_in_port: endpoint {
-+						remote-endpoint = <&etf_out_port>;
-+					};
-+				};
-+			};
-+		};
-+
- 		aips1: bus@30000000 {
- 			compatible = "fsl,aips-bus", "simple-bus";
- 			reg = <0x30000000 0x400000>;
+Above function argument could be wrapped within 80 columns.
+
+> +{
+> +	struct dw_pcie *pci = pcie->pci;
+> +
+> +	if (pcie->big_endian)
+> +		iowrite32be(value, pci->dbi_base + offset);
+> +	else
+> +		iowrite32(value, pci->dbi_base + offset);
+> +}
+> +
+> +static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
+> +{
+> +	struct ls_pcie_ep *pcie = (struct ls_pcie_ep *)dev_id;
+
+No need to do explicit typecase for void pointer.
+
+> +	struct dw_pcie *pci = pcie->pci;
+> +	u32 val, cfg;
+> +
+> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
+> +	if (!val)
+> +		return IRQ_NONE;
+> +
+> +	if (val & PEX_PF0_PME_MES_DR_LUD) {
+> +		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
+> +		cfg |= PEX_PF0_CFG_READY;
+> +		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
+> +		dw_pcie_ep_linkup(&pci->ep);
+> +
+> +		dev_info(pci->dev, "Link up\n");
+
+These messages could be demoted to dev_dbg() logs.
+
+> +	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
+> +		dev_info(pci->dev, "Link down\n");
+> +	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
+> +		dev_info(pci->dev, "Hot reset\n");
+> +	}
+> +
+> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
+
+You should clear the interrupts before processing.
+
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
+> +				     struct platform_device *pdev)
+> +{
+> +	u32 val;
+> +	int ret;
+> +
+> +	pcie->irq = platform_get_irq_byname(pdev, "pme");
+> +	if (pcie->irq < 0) {
+> +		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
+
+PME
+
+> +		return pcie->irq;
+> +	}
+> +
+> +	ret = devm_request_irq(&pdev->dev, pcie->irq,
+> +			       ls_pcie_ep_event_handler, IRQF_SHARED,
+> +			       pdev->name, pcie);
+
+Again, please wrap to fit the 80 column width.
+
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Enable interrupts */
+> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
+> +	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
+> +		PEX_PF0_PME_MES_IER_LUDIE;
+> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct pci_epc_features*
+>  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+>  {
+> @@ -125,6 +219,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  	struct ls_pcie_ep *pcie;
+>  	struct pci_epc_features *ls_epc;
+>  	struct resource *dbi_base;
+> +	int ret;
+>  
+>  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+>  	if (!pcie)
+> @@ -144,6 +239,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  	pci->ops = pcie->drvdata->dw_pcie_ops;
+>  
+>  	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
+> +	ls_epc->linkup_notifier = true;
+>  
+>  	pcie->pci = pci;
+>  	pcie->ls_epc = ls_epc;
+> @@ -155,9 +251,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  
+>  	pci->ep.ops = &ls_pcie_ep_ops;
+>  
+> +	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+> +
+>  	platform_set_drvdata(pdev, pcie);
+>  
+> -	return dw_pcie_ep_init(&pci->ep);
+> +	ret = dw_pcie_ep_init(&pci->ep);
+> +	if (ret)
+> +		return  ret;
+
+Double space after return.
+
+> +
+> +	return  ls_pcie_ep_interrupt_init(pcie, pdev);
+
+Double space after return.
+
+- Mani
+
+>  }
+>  
+>  static struct platform_driver ls_pcie_ep_driver = {
+> -- 
+> 2.34.1
+> 
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
