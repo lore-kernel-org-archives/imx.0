@@ -1,111 +1,103 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3742223A7
-	for <imx@lists.linux.dev>; Sat,  6 May 2023 10:30:43 +0000 (UTC)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-965cc5170bdso342473466b.2
-        for <imx@lists.linux.dev>; Sat, 06 May 2023 03:30:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683369041; x=1685961041;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=om5rBZjpQmGylRwHMCWGL04Qa98XCtT0ijIQXJtCbpg=;
-        b=Uof1PVeZ2PigSWjj/RuJh5B4jduLV1JTD2KLBJycgqsGK7m73CXn7eW88cHN4mC4Cr
-         dM4fQk0G5Ec0ZCl0qChvoy9Ai19Cm1VOFCegoZJK+wMQH2kQWdKNc6Bnb+r/KKDehW6t
-         qjRQfr3KSEzSZTExdnDOw9rRBTNb2OM6di47nseWiQMNk/tobd7o6VupZpsJmHLYPGZH
-         2qKRbnuxnkdgdDu3bu/svnaDlpe9jmOUeoXvEORdl9DayjnLdl/x5AeTZj915Svij+f6
-         rlVCVKnhXxZCzpK16zdCCsxGeNOWyrn1hNK+H1SVTLKOXbUlvPu0tzQAThDmY23Td5sc
-         ZT9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683369041; x=1685961041;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=om5rBZjpQmGylRwHMCWGL04Qa98XCtT0ijIQXJtCbpg=;
-        b=HgXErHt7RiZLoriDfu1xWsmBU+CZpr0EQ0kp09cZ4082YNfyuwdZLRcYLtgl+SqB56
-         9rNQHTra8A6dVtSekLVtycaXkM4P5IbIqMMLM5D4f8B93KozBtbdCzuM5E64rOxxDH3k
-         wbQEmm2/otYmWTtnZ6JORHftmnMlNLJ1wU1u8J9+12cASHfKsMrw2XuNiAI4CwTJWoRZ
-         AdrEwCJDlV4G91tQ1QHiBl4nNZiODMFhl1Ek3EMQvzBB9f2dFemHj0yzAQUkDDfCgPw8
-         edA4uSkT00Ueewm7+8oA1fuxJKRGoD1Mxqqm1J7IKqL67cZBeVfq2cAKl0EP5fMwtXXk
-         g9Lg==
-X-Gm-Message-State: AC+VfDzAd8dWAYQoruL6cK+5pPG0ZsX51LMb+mSkZdhWx3kvUlRyvqiH
-	FXn/2ThsUR1KoeHV9+gGjbcXgA==
-X-Google-Smtp-Source: ACHHUZ4as+xxLviDsQOX+GTc5E7TjPcuUmqsob35yRWQz41AIc++JNtv+eFKhD3MleB3Q6677/6v3w==
-X-Received: by 2002:a17:907:2d88:b0:878:711d:9310 with SMTP id gt8-20020a1709072d8800b00878711d9310mr4364603ejc.1.1683369041240;
-        Sat, 06 May 2023 03:30:41 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:efe5:7c03:a10a:7a40? ([2a02:810d:15c0:828:efe5:7c03:a10a:7a40])
-        by smtp.gmail.com with ESMTPSA id jz4-20020a170906bb0400b0094bb4c75695sm2123565ejb.194.2023.05.06.03.30.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 May 2023 03:30:40 -0700 (PDT)
-Message-ID: <0503436c-e3ea-7c28-e6d5-39fcd8c53d4d@linaro.org>
-Date: Sat, 6 May 2023 12:30:39 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED21523CD
+	for <imx@lists.linux.dev>; Sun,  7 May 2023 14:10:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB675C433D2;
+	Sun,  7 May 2023 14:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683468636;
+	bh=FddBsyxwkzQNOB0PnRvoKLTZYTgsFaQ477EH4b3Ox0g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cNnk7alK2asreMJtlx8iCgDmWxAUz9OY2kSeAkh4sUAgGn9yK7IR2Rw6Cibj+vUOF
+	 R1Fh49tdMjRqShflJXqRmaxOxUB/seCegIO243LCbmH/ghd0jiqmz2y8LsyV45Er0F
+	 6hH/ztkr/jfdGiSNS0ZfHDHNMy/pUbv5S+xBgCw3ApLHieZUHf2sYkJyUoUCTmm6aa
+	 Aal0Zr5nsxnihEJMX2Vz4jtugUykKL8u2G4EdhbYNwYTgSzmTchwIG/zgFNUsqU/2x
+	 Q2EeEL8NYfQAz7PiPr5tYHuK6ZhUNpQXQizxFsDcE/tZ/DghRucXIjmC/2L9X8dIf9
+	 Tluwh6NuksVfg==
+Date: Sun, 7 May 2023 15:26:29 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?=
+ =?UTF-8?B?Zw==?= <u.kleine-koenig@pengutronix.de>, Jeremy Kerr
+ <jk@codeconstruct.com.au>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, Ajay
+ Gupta <ajayg@nvidia.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Parthiban Nallathambi <pn@denx.de>,
+ linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+ linux-kernel@vger.kernel.org (open list), imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] iio: light: vcnl4035: fixed chip ID check
+Message-ID: <20230507152629.3a30e233@jic23-huawei>
+In-Reply-To: <20230501143605.1615549-1-Frank.Li@nxp.com>
+References: <20230501143605.1615549-1-Frank.Li@nxp.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 2/2] doc: dt-binding: cdns-salvo-phy: add property
- usb2-disconnect-threshold-microvolt
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de,
- linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, fushi.peng@nxp.com
-References: <20230505185247.1854677-1-Frank.Li@nxp.com>
- <20230505185247.1854677-2-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230505185247.1854677-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 05/05/2023 20:52, Frank Li wrote:
-> Add usb2-disconnect-threshold-microvolt property to address fake USB
-> disconnection issue during enumeration or suspend state for difference
-> platform.
+On Mon,  1 May 2023 10:36:04 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
 
-Use subject prefixes matching the subsystem (which you can get for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching). Two prefixes got wrong... It's not doc but it
-is dt-bindings.
-
+> VCNL4035 register(0xE) ID_L and ID_M define as:
 > 
+>  ID_L: 0x80
+>  ID_H: 7:6 (0:0)
+>        5:4 (0:0) slave address = 0x60 (7-bit)
+>            (0:1) slave address = 0x51 (7-bit)
+>            (1:0) slave address = 0x40 (7-bit)
+>            (1:0) slave address = 0x41 (7-bit)
+>        3:0 Version code default	(0:0:0:0)
+> 
+> So just check ID_L.
+> 
+> Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Applied to the fixes-togreg branch of iio.git
+
+Thanks,
+
+Jonathan
+
 > ---
->  Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
+> Change from v1 to V2: 
+> -define VCNL4035_DEV_ID_MASK instead hardcode 0xff
+> -using FIELD_GET
+> -update commit message, remove a space line between fixes and signed-off
 > 
-> diff --git a/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml b/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml
-> index 3a07285b5470..3c7f5b3f9211 100644
-> --- a/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml
-> @@ -31,6 +31,13 @@ properties:
->    "#phy-cells":
->      const: 0
+>  drivers/iio/light/vcnl4035.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+> index 3ed37f6057fb..a23c415fcb7a 100644
+> --- a/drivers/iio/light/vcnl4035.c
+> +++ b/drivers/iio/light/vcnl4035.c
+> @@ -8,6 +8,7 @@
+>   * TODO: Proximity
+>   */
+>  #include <linux/bitops.h>
+> +#include <linux/bitfield.h>
+>  #include <linux/i2c.h>
+>  #include <linux/module.h>
+>  #include <linux/pm_runtime.h>
+> @@ -42,6 +43,7 @@
+>  #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
+>  #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
+>  #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
+> +#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
 >  
-> +  usb2-disconnect-threshold-microvolt:
-> +    description: The microvolt threshold value utilized for detecting
-> +      USB disconnection event.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-
-Does not look like you tested the bindings. Please run `make
-dt_binding_check` (see
-Documentation/devicetree/bindings/writing-schema.rst for instructions).
-
-Drop ref. Add vendor prefix.
-
-> +    enum: [575, 610, 645]
-> +    default: 575
-> +
->  required:
->    - compatible
->    - reg
-
-Best regards,
-Krzysztof
+>  /* Default values */
+>  #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
+> @@ -413,6 +415,7 @@ static int vcnl4035_init(struct vcnl4035_data *data)
+>  		return ret;
+>  	}
+>  
+> +	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
+>  	if (id != VCNL4035_DEV_ID_VAL) {
+>  		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
+>  			id, VCNL4035_DEV_ID_VAL);
 
