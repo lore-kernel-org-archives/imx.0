@@ -1,49 +1,59 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2089.outbound.protection.outlook.com [40.107.7.89])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2082.outbound.protection.outlook.com [40.107.7.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418051361
-	for <imx@lists.linux.dev>; Mon,  8 May 2023 14:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD27620F9
+	for <imx@lists.linux.dev>; Mon,  8 May 2023 14:29:47 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YujMPtpCvT9P5MmKJVf+Cl62SKVcY2qCU+mYELDPLsxaTxvdfgCcbgZ1jSv7qIT/nqPGcSZVk51uIn5DwiY76/NlZZ9Xvw8wZGgNcLwSgE8Z9DH4C/1RLXiDPl0Nu+Dlpq8GK1+0riBiZZ1Z4kRns0RAjD14cxQk+JwNFPQb1iUjQ5m+xWTt2XGYMRL+lvPHgzETaqn3ciDwkPrHsUUklqR2zASBI3kNqj08RZ6iMT+fDWyT+deaf3C2EghTabHMELxtFE1O2/+zoaBDBcFBi/LUYamHaGc8P6oFijpnN6tWKwW6O4kbOqS3l8VwXBE6ESYSSft/DKdS/pngKPviqw==
+ b=j3QrkHXjSQSQYTPDfYdpfGAOkKLGLCGCMpEP0icgZjUeC2MYwHU+AVKQcnnFAdRFe4zh6ePbDdaNE3c+G8Rj2JPOYGTYPlhBUXxqma23LV8GdeY8AAufk1zbTUIEUK4V9v2rbqVk5VtOq+Wc/4oNGh3FbU7n9KjG+ejzggs2ok3RLM0pBc+hAR9eFnzuJmdUCIPNbsgDZzBfrs5HUtf4YlqGXeKvzB0C0FYQ6zxoo9tzxo+pEZqGKueQxvnEK764uOKDwFKTE/KuDiK5OSdxf6fYh6mTQUvHjiphSjmvA5aw00DYHCDcgII/jxeI6puZDNSzmMnFHobrX4nC6Umotg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XNRSfsBuGRV7hbkretziTy9yhvmkI/iJPZp6VifvHhA=;
- b=UgYlB156cOXeKDLvj4CiL2qx98jUy6BVW52+ef5buCi4Zu/Ovc+qDNx89x2ejJ4/LcUqbsCgfN7TVd+sFJuFBldBBeW5PIlA1ZEmBcFX/XTucNJ6WF+DA/vjt8QwiTyEnta3HEqmq5ym1A4LOBX8QPOhPgDQcRomIergqo9mPVgVvw8sWNWivWgAObyFTHHjJZocvm8n3Jx3Ns9wDddpkrafSLeHRRGuRdCSyDbD8r3ZWbXH+nKw/JNW9DJ+1sL2/2hgxmFcFZ8Lt1vSDaWCGiBLB+tGx/qZZGtestwrn+algfRtKFybNBDfSA8LfC7HkTvk9UdVdgaNQtP3nHm5bg==
+ bh=2Ak51wo9QF9+45g3AyhvJ96xnL8AaJnlRO0P2rBaUoA=;
+ b=XP5bXeRKP4Gli1d6pjXAgiwB5vadGkzk1PD1mqcU5yCWj+KrA3tIYGSFu9xANov/nESoddg9RxrEG/2CXa8oChcfmzzcydJz8Zh/E98YZA+6PUdb6TRz3tGULcpMU/big1/8GO/Oluya7/xjX7x26S7QUeLlhz6Kc9CW53FqDkPDk4AkJPWUr/WgQiW19hIq+sZCJ9CD5PLQIrOGKvXtQD40k962zSFBU9xlHC/X4LQckipzs+TkEhnrHY4UMEp/wC2a3ioQIAKUzWUJ+d/wluVT6P4CEweBomu24Fjr3q1cEOGK0GU7iF6s20bp7Qr29VnTcEP+Qb6iEIAAlOoteA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XNRSfsBuGRV7hbkretziTy9yhvmkI/iJPZp6VifvHhA=;
- b=r4nR0y8LYUxIeHx2wf+fydlbbtCu7JKoto4YyoMg502vm4yC6KeDw3HDZv0Ew8KulN73WW4NVah9gwYdYFajAQh+EacwSZX+DCB2toi9Sx98k5Xnzclm4Ucz66jzZcZifKSpHRJrlERju7WH/ueAoXFBKOYVd9tYf/7Z4PgqZ5U=
+ bh=2Ak51wo9QF9+45g3AyhvJ96xnL8AaJnlRO0P2rBaUoA=;
+ b=COH2butADl5C5zn7a6YeBff2mu8y3cuyvgi5aKTgk88M8TiiwdhSEnt3UpjVRtw9NdM0PzBuHPPjq6IbBpYD7wH6R2/fcDBLRpUW7ZWdfEg94Si+1XBcbcJ3aBCIPi/3Fu7Lh8/haeNfG/tsAkQ2eaxZ9k7Jb7ye2cAoMd/Zigw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DBBPR04MB7786.eurprd04.prod.outlook.com (2603:10a6:10:1e8::14) with
+ by VE1PR04MB7325.eurprd04.prod.outlook.com (2603:10a6:800:1af::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Mon, 8 May
- 2023 14:10:55 +0000
+ 2023 14:29:43 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::28fb:82ec:7a6:62f3]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::28fb:82ec:7a6:62f3%5]) with mapi id 15.20.6363.032; Mon, 8 May 2023
- 14:10:55 +0000
+ 14:29:43 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial@vger.kernel.org,
+To: Wei Fang <wei.fang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexander Lobakin <alexandr.lobakin@intel.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-imx@nxp.com,
-	Shenwei Wang <shenwei.wang@nxp.com>
-Subject: [PATCH v3 1/1] tty: serial: fsl_lpuart: optimize the timer based EOP logic
-Date: Mon,  8 May 2023 09:10:38 -0500
-Message-Id: <20230508141038.979924-1-shenwei.wang@nxp.com>
+	Gagandeep Singh <g.singh@nxp.com>
+Subject: [PATCH v4 1/1] net: fec: correct the counting of XDP sent frames
+Date: Mon,  8 May 2023 09:29:31 -0500
+Message-Id: <20230508142931.980196-1-shenwei.wang@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0050.namprd11.prod.outlook.com
- (2603:10b6:a03:80::27) To PAXPR04MB9185.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BY5PR17CA0066.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::43) To PAXPR04MB9185.eurprd04.prod.outlook.com
  (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -52,197 +62,136 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DBBPR04MB7786:EE_
-X-MS-Office365-Filtering-Correlation-Id: 628685e3-11c8-4e75-10a6-08db4fce0a06
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|VE1PR04MB7325:EE_
+X-MS-Office365-Filtering-Correlation-Id: f57a1871-9ab9-4695-ff6e-08db4fd0aa2e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	vl6wO5GKNKP8j2V6VcQ09CgQsOkiFdPQltwRkkQwz9QpxTl/1765nxwAuZAQTgAD474R9mwAB9sB1LfEh0BlSbfirhImdfi8mEo0FF9N/JWMvIDGXRGlcrlR+FaX3hr3nOtIRoq4fstft7cKGIXpfj4cnT6gYcFfZvv0rFxBjYr8wDqt1vMh7a1XuSqZPcIXIYq5BjcfgoSH5LyiU8QEPm+fY6QjUrqdfIHvYkS0PnIy9CBcjmyfSJfkq5sH3rfenAiETd1G9ZTAS7yd5zlxvLfC8pxmDxiXvrESMoUkIz2ZJSl6pz9t9UjJBM853Kb5HT5rc6Ed0ohooucdJ+nWEE/cM1nt71x4nLWWDJtdDTFzDv56kHh0rxKErAzmquNZ4Rk+k91vuJ6fwK3mYmaY3XurkUzaqTFsQBr9nSRsvU5CxTLrIcxVsbHU0VWaKfVSXWypeMB9QW+CaSlC4uT/tf5sNRinMxV17QKvnEH2Hfx+durhHjyRiDdMyouHhg0MqGrqfsDDIlOym4wDZ2nMRidBWp96xwR1m65YMuevg1LwBfHcw+Hor6A5X7SKozxpBQxRxKJXZr6fk61MuHrCAQUwZhUrIg4K4CCjeMFs2KyqJ3O2iF6i3Ac/BBvvSTKH
+	l9HMX+LpEafX+XysenJ5XaEPjRZMDpWMXzrhIjuOmMlmKKHx9yhj28Nx2C5AQgSfM7/qYKvLe7Zlgr1RGWSt9lYUXwozRdVd063E8JJP0KkuQFpsBUxZhmm1lnQdZYzoKnJAhHFeuCFZjPTQB9J/Va5GJvaby2lvomJI9EWvpvi9W9tY6hYCSVV9eIDSTSZoTUJNLQHNzIoUpOhfWRpIcfxk73HJRVz4EPBDE4PouOnFo6NGoAX/6gzuVN8GnKu5uq8ENCKrMKB5NW5GVuzCxmA0gbJmPsp5FDZ0LbCFW/HV1QkgTjODa0IW+3LFv5jZ5ROIpSk24FDTBpqH1TSLnW5x1AEhwYiIMg75w3xfywVtnobsjBDHSH6yvaabU/U+x69/eNhhCzWbXDVV9GAhzBCvxuoPIWMS2wyOEfTlHV4ZWA/oTA6Nof6rKtKQVCgiFNHN6B0QdTpCf2SwIWsfw25u0yEGxuc5H/B3iZeNafB/tB273OxXoME5xFmQND48DWJOVpAVonVtPrIh6VyXGoico+sFUdeWwCzz5Ie9Loj8+EEHD032APB7g64M4K/iQvGsVNRslI+YUiWuJUUt95m2ltYTh/7hm8Q2A3j+2xVv11YzBdXCfBrvF8UB5wXi
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(346002)(376002)(366004)(396003)(39860400002)(451199021)(83380400001)(6486002)(478600001)(6666004)(52116002)(54906003)(2616005)(6512007)(6506007)(1076003)(26005)(186003)(55236004)(44832011)(2906002)(38100700002)(36756003)(38350700002)(6916009)(66946007)(66476007)(8936002)(4326008)(41300700001)(66556008)(8676002)(86362001)(316002)(5660300002)(66899021);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(366004)(39860400002)(136003)(376002)(396003)(451199021)(52116002)(6486002)(6506007)(6512007)(26005)(55236004)(1076003)(83380400001)(36756003)(2616005)(38100700002)(38350700002)(86362001)(186003)(110136005)(44832011)(2906002)(7416002)(54906003)(316002)(8936002)(8676002)(41300700001)(4326008)(5660300002)(66946007)(66476007)(66556008)(478600001)(6666004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QG8U81VjyZZA0fnfa5+4qsVPo1TTkxUGb9D2UIuMp+Wrfu4Gz784hBE2qkdE?=
- =?us-ascii?Q?OOQibL1+meUCHhyceKDnzYGSzYw3oGC6INqajtZnKv3l9G9gcjtEy9ZtAGrZ?=
- =?us-ascii?Q?2l43UTUJfqQo5dtSGUomK7o0EPuVy2+3jIC7XDgArHqHX2ebgSnh9Lxm8Sa6?=
- =?us-ascii?Q?VFpABVgOUA6WD8SH70urlOgZVH79+ad/jeuVQItOJTctoDANJBKjXiDqF0MW?=
- =?us-ascii?Q?qZBdifcrKClc11DC2bBq4z2+mcKErLJ0toWQF5UWECvIwSMU9FbW75ae7Tjz?=
- =?us-ascii?Q?x+yzmqvTX4t9gqmNcqqJeTJc2sxs7sFChHCpxbW4qLofeE6yyiBIXeHEDcuZ?=
- =?us-ascii?Q?FXnTD2WcGfdHvTutSlIPp5r5BFv8CuLOaoRRjH9XKSeneLmENa3oz8CEyq5I?=
- =?us-ascii?Q?OgX81I8Z/1KJTN+ba3nWqT35fqhvf8+ekO2wYT8R15PQ59+G6FG5Ecp4P5XF?=
- =?us-ascii?Q?bLTCgjPEJyH0EA8oaEGc/cz5hyRtsmJMi9psbV2VQiEcf4FbYxjS1RqT3Epa?=
- =?us-ascii?Q?2nXpg24A/L5pM33U2cwPVM0ChWJinRyApRLcit4Ni0nW+CCNcvNqQ7L40V9B?=
- =?us-ascii?Q?QrK/3rH18gkAslWB13KxykaceqSNcO71IoCJynOStiJyCDfJogvqiCKRUSap?=
- =?us-ascii?Q?5Xbps2tYZlX2QQbC6jlXmt8UVZZ6+oPLQinxc+NT9hjbrGxRpwaiFjtOm3BY?=
- =?us-ascii?Q?vGVvncuNnowgDr0djl7AqoJi2mO23tu1XFOngdVvyIoPMqDA/x+3xPmudXxv?=
- =?us-ascii?Q?GAXQYZOVuqiwRT2EwXfAz7kD8nOQW7BfHyNhV32GrpUghq7JWRRfGtp0ypHC?=
- =?us-ascii?Q?x8T/IEFjZxQ7y4BN34TNrDgsvh5CMxe8nTpJgSdw2uQHU87EF01OuF+zmiHr?=
- =?us-ascii?Q?od+eKAJHCvTyQ8+1uWJl0WVQeTeolpbb6PwoGC61vK2cwKYLipzja+u0QagS?=
- =?us-ascii?Q?VCjRLHBGlJhnaVE05WUm8HeP3NjgNJgdjATxxWPo/NlNIaEBQ4JtqFB7/mgw?=
- =?us-ascii?Q?9JqZcfqzdjHoK5z7IpC8V6DPh6irSnHFFGxRPqbhTKWF85lpm1A8dXS6Oq/c?=
- =?us-ascii?Q?uIH12EJkT1dfX1qrtKxFLcOFsYkn3hEtx5VtOaeh3faRTIPZdY9vFUPwQS0D?=
- =?us-ascii?Q?7/Ocn/KWdUjslal5aTnyb7daofZuyz21kyvnrfA5e8mHaxB1V4VFzCyQUF1J?=
- =?us-ascii?Q?/ifSFDmzr+a1ROq97HR54JB8S2veatk06OF+9nI7LfusDpLCaRKz6DyNbkS+?=
- =?us-ascii?Q?duthk+c98nNlC4Y9JrH9aML6E16iMnF/I94Rw+lB0ixPdydjky4VEGudYQ0E?=
- =?us-ascii?Q?iqf2llHMz3pv2h/YO553QB0iIQXLlQ1gm7e5uHJVlmyeEWap4iVtXBerDNmt?=
- =?us-ascii?Q?mwsHS3zh8A1jlQt7mxG3vGICA3OOMuGU5ZPQWeoYeWpg8g4NKVkrC3t5cG/9?=
- =?us-ascii?Q?g+VXoruZ2wngausaUYYOeg39nQ7e/GqrmtPH3/TAkxR2r/B8MFrdqrAYFpgD?=
- =?us-ascii?Q?oH1knXkteyi/ewXd8k+dbY1JxtgwAaJmthy3EUoA1oAQTKe7A1mQfL/2huSg?=
- =?us-ascii?Q?LxexcoBn0dAIlE3iEgQFekJ9HL6l2OEg2WP7MTEh?=
+	=?us-ascii?Q?hgnbxc8IgYLEsvjYhscFU+VAKlNQk02+Nj0bV7zwomzMN48tj22xQxxCEANr?=
+ =?us-ascii?Q?Vl09S1iV2CTZhxw7T44JIm2UZWL+17J0nYNUhOR1BdpB5XGM7UaXQXWfnkPX?=
+ =?us-ascii?Q?MshKnqnHfflCRUKESGg+rlXzZJOr/FtTHNB+Xqxn488YH81eG7ZYGITZQHuX?=
+ =?us-ascii?Q?0uM8qLWtIZHd0LLxY2wOuJWccQiIMatdQTJ915qGBAC4WzZcux6ylQ68tptd?=
+ =?us-ascii?Q?UBGbQ9XPfO3AVbIQq8TLX0OLHtX7gYaRbEvT3wA7b3M7EvHiMYAHsocyqYSS?=
+ =?us-ascii?Q?JG4PYLRcOsCi9OClsMlPTnpB67Dc24UzArMOJosNRdIgA7yxv949hnNWQojo?=
+ =?us-ascii?Q?3n63KR5nUUKoNCTlTuyRCuOcEbVeTtzqzAzhXuTmMVQ5MNh6h3Yw5VsDhaLj?=
+ =?us-ascii?Q?9QM5QGz9JHtsf69l9j3H+xNzzSWglO+UzYgxptTC/LSTB0HXzpMDi4BM2riW?=
+ =?us-ascii?Q?zqAEiNFVdpx8x9v3FrvjqQBdhebRcWYkN56zE9Ht+kr26PmoFoEysBHQPrUb?=
+ =?us-ascii?Q?sevoromuZno1bmG2X6xDry+tdUh09fxvef3uxM8OLsAQKAssHUaa8WcOBd7S?=
+ =?us-ascii?Q?Jows1cRyiktrcfmvWLz07pNeWyne7aL1w9P9gTLLFS7YRxwo4j7WcKcIGN+A?=
+ =?us-ascii?Q?EgYVkG0zauciChxT4fV6QmwPBwEaFY7NmHdyB/K/zx9+jY4WoEcqOpyhTD57?=
+ =?us-ascii?Q?QrBdj/gb6QIdWxlzzL/XiNyb8QWHYsb7JhXv1OaLOEUaCdipmouyUMZjU3Vw?=
+ =?us-ascii?Q?e5gOJliVbbUl2bVipTfUGJmInNTvoZYg+8dbjjYXTjiRMhbGNFGDuz5M9Kyg?=
+ =?us-ascii?Q?zwizcyQac3qzb33oLEC3TiwzNdgMwPQSd0lC1TSUCbTnGBPFMNnDJsGIBo17?=
+ =?us-ascii?Q?v+pplU3VOs1S9ItAxar/bGuIBZJ5tWWljcoh16GxUFAEY2fCnieoq8EhqqOA?=
+ =?us-ascii?Q?s9Xj4u89F8Tq0eytAob8rYKMzC04rYUJSagWP+rRIb+ZgB0Cfkj5x6BEVTmo?=
+ =?us-ascii?Q?vZnvlUJxVoKU232mEuaJw0xGE5CWBY3BUy25ZHnOWweI75c0E0efrU5K26sq?=
+ =?us-ascii?Q?eemK810OM1X6AcB/Zqou5La1V6mF6hozbudAuZm9w7z02ZQf74gbsfR5rDQ0?=
+ =?us-ascii?Q?MvxaV6l6rwQ1EE5PypMKPjpugaLLn1z5UbnUKUisPW2ctnrt665/K/SCVnyf?=
+ =?us-ascii?Q?iwoyb6T/qWFN/H9oNlr8BSNakjOC7cf8robobeCWCVvAM3bQ2LV1RsPeAwk7?=
+ =?us-ascii?Q?IzEwv/RjRolyKZvk4YYyxiMcrQdxDD0N7PtnTRKOrcbS9gP9g+visQgRg7DG?=
+ =?us-ascii?Q?kT677w79Oset846vxSoajAsHkhDDUU5g9eYs177X8J1JpnP8UmpTvlWfNDVn?=
+ =?us-ascii?Q?pnDKmaIyMT6lH/hQX4/kbkHnuJzuzeF5sY4FbiknVkiLv7tul9S0rf7Lv5aw?=
+ =?us-ascii?Q?YlESeGEsLhWFTrzAc9lkCYWmIBVoVZQSuHQg7chYJ9ekKVieX6BJm6x6cXpr?=
+ =?us-ascii?Q?uqdIue86Qkzq4WRiqYkCfIHvsFrPsgCDfmFHSn+SZhYhteman6QpuxxBF7Gr?=
+ =?us-ascii?Q?fPnwUtQ/D8KwScda5IwL08lzkqzQIc+GpRqaUvjB?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 628685e3-11c8-4e75-10a6-08db4fce0a06
+X-MS-Exchange-CrossTenant-Network-Message-Id: f57a1871-9ab9-4695-ff6e-08db4fd0aa2e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 14:10:55.5008
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 14:29:43.2891
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K+QG5pUHHfy5JGaFE7Pzof+3qpbN7kSuIGXOsE9XmrIvr3A9YnBsAqscGVsqAC1WPFZt+25cErHk9jzdYH2SUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7786
+X-MS-Exchange-CrossTenant-UserPrincipalName: W43ZUhLDCXKQcMPJZsUGVi6GWidWLj0Ofb4gi6atbVD6CP02Z4rj2qKOQKXUUCYR+KUqmF5IE2tQX0XcjqsmcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7325
 
-At low baud rates, the DMA transfer may end prematurely due to the timer,
-even during an active transfer. This does not accurately simulate an EOP
-event as intended. We expect the timer to only complete a DMA transfer
-once the idle period satisfies a specified interval.
+In the current xdp_xmit implementation, if any single frame fails to
+transmit due to insufficient buffer descriptors, the function nevertheless
+reports success in sending all frames. This results in erroneously
+indicating that frames were transmitted when in fact they were dropped.
 
-The patch checks the DMA residue count before copying data to the TTY
-buffer. If the residue count remains unchanged since the last interrupt,
-that indicates no new data was received. In this case, the DMA should
-complete as an EOP event. Otherwise, it indicates that new data were
-received during the interval, the EOP condition was not met and the
-timer restarted.
+This patch fixes the issue by ensureing the return value properly
+indicates the actual number of frames successfully transmitted, rather than
+potentially reporting success for all frames when some could not transmit.
 
+Fixes: 6d6b39f180b8 ("net: fec: add initial XDP support")
+Signed-off-by: Gagandeep Singh <g.singh@nxp.com>
 Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 ---
-V3:
-  - change the rx_watermark from 8 to 7 because the dma request is
-    generated when the fifo level is greater than this value.
-V2:
-  - this version is to address the review feedback from Ilpo.
-  - reset the last_residue when rx dma starts.
-  - simplified the character counting in the RX circular buffer.
-  - use max_t() and DIV_ROUND_UP()
+ v4:
+  - the tx frame shouldn't be returned when error occurs.
+  - changed the function return values by using the standard errno.
 
- drivers/tty/serial/fsl_lpuart.c | 51 ++++++++++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 4 deletions(-)
+ v3:
+  - resend the v2 fix for "net" as the standalone patch.
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index c91916e13648..0ee1161bc789 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -238,6 +238,7 @@
+ v2:
+  - only keep the bug fix part of codes according to Horatiu's comments.
+  - restructure the functions to avoid the forward declaration.
 
- /* Rx DMA timeout in ms, which is used to calculate Rx ring buffer size */
- #define DMA_RX_TIMEOUT		(10)
-+#define DMA_RX_IDLE_CHARS	(8)
- #define UART_AUTOSUSPEND_TIMEOUT	3000
+ drivers/net/ethernet/freescale/fec_main.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
- #define DRIVER_NAME	"fsl-lpuart"
-@@ -282,6 +283,7 @@ struct lpuart_port {
- 	struct scatterlist	rx_sgl, tx_sgl[2];
- 	struct circ_buf		rx_ring;
- 	int			rx_dma_rng_buf_len;
-+	int                     last_residue;
- 	unsigned int		dma_tx_nents;
- 	wait_queue_head_t	dma_wait;
- 	bool			is_cs7; /* Set to true when character size is 7 */
-@@ -331,7 +333,7 @@ static struct lpuart_soc_data imx8qxp_data = {
- 	.devtype = IMX8QXP_LPUART,
- 	.iotype = UPIO_MEM32,
- 	.reg_off = IMX_REG_OFF,
--	.rx_watermark = 31,
-+	.rx_watermark = 7, /* A lower watermark is ideal for low baud rates. */
- };
- static struct lpuart_soc_data imxrt1050_data = {
- 	.devtype = IMXRT1050_LPUART,
-@@ -1255,6 +1257,8 @@ static void lpuart_copy_rx_to_tty(struct lpuart_port *sport)
- 		sport->port.icount.rx += copied;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 160c1b3525f5..36a3ee304482 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3798,7 +3798,7 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+ 	entries_free = fec_enet_get_free_txdesc_num(txq);
+ 	if (entries_free < MAX_SKB_FRAGS + 1) {
+ 		netdev_err(fep->netdev, "NOT enough BD for SG!\n");
+-		return NETDEV_TX_OK;
++		return -EBUSY;
  	}
 
-+	sport->last_residue = state.residue;
-+
- exit:
- 	dma_sync_sg_for_device(chan->device->dev, &sport->rx_sgl, 1,
- 			       DMA_FROM_DEVICE);
-@@ -1272,11 +1276,37 @@ static void lpuart_dma_rx_complete(void *arg)
- 	lpuart_copy_rx_to_tty(sport);
- }
+ 	/* Fill in a Tx ring entry */
+@@ -3812,7 +3812,7 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+ 	dma_addr = dma_map_single(&fep->pdev->dev, frame->data,
+ 				  frame->len, DMA_TO_DEVICE);
+ 	if (dma_mapping_error(&fep->pdev->dev, dma_addr))
+-		return FEC_ENET_XDP_CONSUMED;
++		return -ENOMEM;
 
-+/*
-+ * Timer function to simulate the hardware EOP (End Of Package) event.
-+ * The timer callback is to check for new RX data and copy to TTY buffer.
-+ * If no new data are received since last interval, the EOP condition is
-+ * met, complete the DMA transfer by copying the data. Otherwise, just
-+ * restart timer.
-+ */
- static void lpuart_timer_func(struct timer_list *t)
- {
- 	struct lpuart_port *sport = from_timer(sport, t, lpuart_timer);
-+	struct dma_chan *chan = sport->dma_rx_chan;
-+	struct circ_buf *ring = &sport->rx_ring;
-+	struct dma_tx_state state;
-+	unsigned long flags;
-+	int count;
+ 	status |= (BD_ENET_TX_INTR | BD_ENET_TX_LAST);
+ 	if (fep->bufdesc_ex)
+@@ -3856,6 +3856,7 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
+ 	struct fec_enet_private *fep = netdev_priv(dev);
+ 	struct fec_enet_priv_tx_q *txq;
+ 	int cpu = smp_processor_id();
++	unsigned int sent_frames = 0;
+ 	struct netdev_queue *nq;
+ 	unsigned int queue;
+ 	int i;
+@@ -3866,8 +3867,11 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
 
--	lpuart_copy_rx_to_tty(sport);
-+	dmaengine_tx_status(chan, sport->dma_rx_cookie, &state);
-+	ring->head = sport->rx_sgl.length - state.residue;
-+	count = CIRC_CNT(ring->head, ring->tail, sport->rx_sgl.length);
-+
-+	/* Check if new data received before copying */
-+	if ((count != 0) && (sport->last_residue == state.residue))
-+		lpuart_copy_rx_to_tty(sport);
-+	else
-+		mod_timer(&sport->lpuart_timer,
-+				jiffies + sport->dma_rx_timeout);
-+
-+	if (spin_trylock_irqsave(&sport->port.lock, flags)) {
-+		sport->last_residue = state.residue;
-+		spin_unlock_irqrestore(&sport->port.lock, flags);
+ 	__netif_tx_lock(nq, cpu);
+
+-	for (i = 0; i < num_frames; i++)
+-		fec_enet_txq_xmit_frame(fep, txq, frames[i]);
++	for (i = 0; i < num_frames; i++) {
++		if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) != 0)
++			break;
++		sent_frames++;
 +	}
+
+ 	/* Make sure the update to bdp and tx_skbuff are performed. */
+ 	wmb();
+@@ -3877,7 +3881,7 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
+
+ 	__netif_tx_unlock(nq);
+
+-	return num_frames;
++	return sent_frames;
  }
 
- static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
-@@ -1297,9 +1327,21 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 	 */
- 	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
- 	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
-+	sport->rx_dma_rng_buf_len = max_t(int,
-+			sport->rxfifo_size * 2,
-+			sport->rx_dma_rng_buf_len);
-+	/*
-+	 * Keep this condition check in case rxfifo_size is unavailable
-+	 * for some SoCs.
-+	 */
- 	if (sport->rx_dma_rng_buf_len < 16)
- 		sport->rx_dma_rng_buf_len = 16;
-
-+	sport->last_residue = 0;
-+	sport->dma_rx_timeout = msecs_to_jiffies(
-+		DIV_ROUND_UP(sport->port.frame_time * DMA_RX_IDLE_CHARS,
-+		NSEC_PER_MSEC));
-+
- 	ring->buf = kzalloc(sport->rx_dma_rng_buf_len, GFP_ATOMIC);
- 	if (!ring->buf)
- 		return -ENOMEM;
-@@ -1687,12 +1729,13 @@ static void lpuart_rx_dma_startup(struct lpuart_port *sport)
- 	if (!sport->dma_rx_chan)
- 		goto err;
-
-+	/* set default Rx DMA timeout */
-+	sport->dma_rx_timeout = msecs_to_jiffies(DMA_RX_TIMEOUT);
-+
- 	ret = lpuart_start_rx_dma(sport);
- 	if (ret)
- 		goto err;
-
--	/* set Rx DMA timeout */
--	sport->dma_rx_timeout = msecs_to_jiffies(DMA_RX_TIMEOUT);
- 	if (!sport->dma_rx_timeout)
- 		sport->dma_rx_timeout = 1;
-
+ static const struct net_device_ops fec_netdev_ops = {
 --
 2.34.1
 
