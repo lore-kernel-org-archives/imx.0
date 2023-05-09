@@ -1,90 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7DA391;
-	Tue,  9 May 2023 07:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B502C433EF;
-	Tue,  9 May 2023 07:45:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1683618306;
-	bh=hQf9pNjF7zwQYcyl32iKf1KLzffA/L5NTPvBZwMUTgQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V5LB7U1w8G4yNHH3tkFYJG0rDXq46KYsBP33UJPdV3muH7IJ0NBQ+GLscVF4mH3Fl
-	 l/UG0wo3OZFH1I1zVYup3sEMAaSEytVom8vPwn+MQdBrkcJzyrfxPq3AHzWBnwexvJ
-	 qmsMzYkIRIdc1bs00SywKw5YmU1oRhyMMFAbHZGJ5QsWExGoolS97YzimyCLwMhDKJ
-	 YLHtjtHuVm7YMkq7e3o836Cbwi2EABhQivy3SAfag6PeYF/ZHy2uk+fLoKS+d5AbGL
-	 h6Q9m+bZST3sf8Oj27QIrlw0VDTx4pHpm+DEU9EQct67JkatYU+MwuSvDCPh0NABnz
-	 ss+U6ERs6r7Mg==
-Date: Tue, 9 May 2023 10:45:02 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Alexander Lobakin <alexandr.lobakin@intel.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, Gagandeep Singh <g.singh@nxp.com>
-Subject: Re: [PATCH v4 1/1] net: fec: correct the counting of XDP sent frames
-Message-ID: <20230509074502.GB38143@unreal>
-References: <20230508142931.980196-1-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A6B17C2
+	for <imx@lists.linux.dev>; Tue,  9 May 2023 09:12:32 +0000 (UTC)
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-61b8faaa8daso27449866d6.3
+        for <imx@lists.linux.dev>; Tue, 09 May 2023 02:12:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683623551; x=1686215551;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lD4d87xGqwj8x/aAkdAtB6F7zNjiV/R05nAVNR7p0Yc=;
+        b=cyNNxcOgMAEz+pxIK8jws3GF/GGwMhJkgByFMbLlweStwKPs3fD/uGEYk18D0SnO0E
+         xP5BD9cS/mxaNydVKAFG9OHI1AoLSJ+KCl0y3AsmsShmVhprLCmKEpaSbHb4qLBA2PHY
+         PVFriZB/RgjH4iRxsiLW3hElqgz4nu3ljjlaZFUXXj2eHhQN5hkl6Ttvkj4p8ohmZ5Aa
+         TSFAy20YjtTi0vxfys+NOfYK+V78kxc4aD3FxGy5A+dJR7hLy1kvHGJOFIuQueVUjsd7
+         RQqVJeUxfEb8IGIICnA9HRXdIYvTXUsIHLh1EMQtlcIOWJnlM4+3qSxd1MvTmN+IGgB4
+         k8NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683623551; x=1686215551;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lD4d87xGqwj8x/aAkdAtB6F7zNjiV/R05nAVNR7p0Yc=;
+        b=N3DTvH1RcL41CdDkM8E0zJ50XHumjBKbJqHfmCnWQm/r4BfxQ9r00g7QntgYwSZRym
+         5/iS4+tTwShiVLY0CvfQh2n86VcpqGp6gcbB2DcUJGVnjC1I2P8gZ0NU+dy9Fd0TtFES
+         UDgJ7wo1jde/n16B3k/44gAcLy6iqhnMiUm8VboQJcSeRbO93URX5rYUQ6jrhWBWxKjl
+         U5eVMjkIHerQob7/tXMCINYGvyvqG2R6mxglcmgViK35DXXMy7OC/IgciSkaoM8o9nGx
+         erE0meAep+nNlCVqUuaNL8VKI8YGHBJ7SraBTI3FxJPGAKO6yw0K0MD1XK+aOmHNZVhm
+         MWLg==
+X-Gm-Message-State: AC+VfDya6D/KTmKI1TOyIV+oRMma5LLcviEamrBnr2wCejeuOzLtvrXQ
+	WUJ95mlAzssawIZbKwn9/VDzCwEiNZsgxKiL7/g=
+X-Google-Smtp-Source: ACHHUZ5BcIZfNZTH4hgGhb4e61mAhrMwQOYuyprUJnkY6wCix/GB42D/aI964LID1LLH3QEZTxuTdcl13nbKuBezaGk=
+X-Received: by 2002:a05:6214:d05:b0:61b:637a:64df with SMTP id
+ 5-20020a0562140d0500b0061b637a64dfmr16250848qvh.3.1683623551626; Tue, 09 May
+ 2023 02:12:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230508142931.980196-1-shenwei.wang@nxp.com>
+References: <20230508194555.1057007-1-shenwei.wang@nxp.com>
+In-Reply-To: <20230508194555.1057007-1-shenwei.wang@nxp.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 9 May 2023 12:11:54 +0300
+Message-ID: <CAHp75VesbGkmG_7haH3LvHawA1Z3=TGv+w-kqF5nUkaTd5tfag@mail.gmail.com>
+Subject: Re: [PATCH 1/1] gpio: mxc: use platform_get_irq_optional() to avoid
+ error message
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stephen Boyd <swboyd@chromium.org>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev, linux-imx@nxp.com, Fugang Duan <fugang.duan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 08, 2023 at 09:29:31AM -0500, Shenwei Wang wrote:
-> In the current xdp_xmit implementation, if any single frame fails to
-> transmit due to insufficient buffer descriptors, the function nevertheless
-> reports success in sending all frames. This results in erroneously
-> indicating that frames were transmitted when in fact they were dropped.
-> 
-> This patch fixes the issue by ensureing the return value properly
-> indicates the actual number of frames successfully transmitted, rather than
-> potentially reporting success for all frames when some could not transmit.
-> 
-> Fixes: 6d6b39f180b8 ("net: fec: add initial XDP support")
-> Signed-off-by: Gagandeep Singh <g.singh@nxp.com>
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  v4:
->   - the tx frame shouldn't be returned when error occurs.
->   - changed the function return values by using the standard errno.
-> 
->  v3:
->   - resend the v2 fix for "net" as the standalone patch.
-> 
->  v2:
->   - only keep the bug fix part of codes according to Horatiu's comments.
->   - restructure the functions to avoid the forward declaration.
-> 
->  drivers/net/ethernet/freescale/fec_main.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+On Mon, May 8, 2023 at 10:46=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com>=
+ wrote:
+>
+> From: Fugang Duan <fugang.duan@nxp.com>
+>
+> Use platform_get_irq_optional() to avoid error message for the
 
-<...>
+an error
 
-> -	for (i = 0; i < num_frames; i++)
-> -		fec_enet_txq_xmit_frame(fep, txq, frames[i]);
-> +	for (i = 0; i < num_frames; i++) {
-> +		if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) != 0)
-> +			break;
-> +		sent_frames++;
-> +	}
+> optional irq.
 
-net-next has commit 6312c685ae0 ("net: fec: correct the counting of XDP sent frames")
-which has exactly these lines.
+...
 
-Plus the patch is missing target tree in its subject line.
-For example: [PATCH net-next] ...
+>         if (irq_count > 1) {
+> -               port->irq_high =3D platform_get_irq(pdev, 1);
+> +               port->irq_high =3D platform_get_irq_optional(pdev, 1);
+>                 if (port->irq_high < 0)
+>                         port->irq_high =3D 0;
 
-Thanks
+I would rather do
+
+  err =3D platform_get_irq_optional(pdev, 1);
+  if (err >=3D 0)
+    port->irq_high =3D err;
+
+>         }
+
+And looking into the code the above piece makes more sense after
+asking for the first (mandatory) IRQ.
+
+--=20
+With Best Regards,
+Andy Shevchenko
