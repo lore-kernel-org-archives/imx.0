@@ -1,155 +1,99 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2058.outbound.protection.outlook.com [40.107.22.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B963817FF2
-	for <imx@lists.linux.dev>; Tue,  9 May 2023 16:24:45 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=koWJe9daadSVx4JrXbBM9Ny5iEHXGzKaFqFdjmbR8xx7M0hwmi+XxnspxR4b+WXbMpy9JXO7rajRbM0NhmoVylNZ32EPF4FOdRT0pkG0f28H3MgEO92e7BDS91b9FpwGPTUrO/D28ya2CtcXFry8HMxkGjYN/tUITOaRsOh5Pasedw+vIGMRSHEBGdoyAw4n19U1rLOAzhZEL673+ySxHOZbfmZ4Vktw+5RTDGTuykwAChkBD3gUAkGYJFOBFSbe4HSFReiHb5gERQnCX40rtCyEm9SA2SnIm1uLzbaeNDMPGRXuOFnlev08CQVC2WgaAJTkDPunLzJwjoud5AdV8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FcVq09bgqmTBhTkTbVOMPBlETrnLMuqWmQPsg5K9lPc=;
- b=ZPqpogfNTBwKJkhGXn4+Cz4i86u3od71QksJJasADOW4zeQKcjqs6+lIE8fi9KxQz5DtvfVQYjZKaRqMfk0CUEzGGlsP8xUB6kJx/E1q2vy9iBypOsTQxuBgbFFbdY3/aIVGVIgzj7Ol4H8j0LzAxB4n4VVHQ+w7fFiU2wvkwRMLXes7bqUfSiHg3xJ06oWOHtYyQ0vPQNIu6ZkosLyCo/PXkysf17qgQr7K8NRCgFxLptLqfZ76mttFlf9x9QaHMkZj7VpTiQTDOj3vGF+ZVGOP3fLTa/+ObZf5QQ+OL5+HQhBEzzpmVGhnsxbcjmnw4PnU1n6O1brvl6TPEcXH3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FcVq09bgqmTBhTkTbVOMPBlETrnLMuqWmQPsg5K9lPc=;
- b=jzOR58xeRKTN4pEOkA5Sg33W6jrvaffds8E/keI7K4/KroJv23OEm7uDA3PLpcJv8g++8+9P+MppmY1UQElfWmClwxZCx9kTW1HHGJG+oT+xrbqysXdZr6Wy7/bsQ7qODg2X4wcCS/9sr4G4h+UHINwQeBmMuUSOAdO9+EZx1Sw=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DB9PR04MB8137.eurprd04.prod.outlook.com (2603:10a6:10:244::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.33; Tue, 9 May
- 2023 16:24:42 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::28fb:82ec:7a6:62f3]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::28fb:82ec:7a6:62f3%5]) with mapi id 15.20.6363.032; Tue, 9 May 2023
- 16:24:42 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-CC: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
-	<brgl@bgdev.pl>, Stephen Boyd <swboyd@chromium.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael.j.wysocki@intel.com>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	dl-linux-imx <linux-imx@nxp.com>, Fugang Duan <fugang.duan@nxp.com>
-Subject: RE: [EXT] Re: [PATCH v2 1/1] gpio: mxc: use
- platform_get_irq_optional() to avoid an error message
-Thread-Topic: [EXT] Re: [PATCH v2 1/1] gpio: mxc: use
- platform_get_irq_optional() to avoid an error message
-Thread-Index: AQHZgo9tID5tPqP19EqnRrnR0N2AoK9SHAUAgAABzoA=
-Date: Tue, 9 May 2023 16:24:42 +0000
-Message-ID:
- <PAXPR04MB91854797933D5658CB64FBEA89769@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20230509160016.1074446-1-shenwei.wang@nxp.com>
- <CAHp75VdodcyQH+O3Pqa57KrJCsFytQDbz-nqoWbZ0727L+wXjA@mail.gmail.com>
-In-Reply-To:
- <CAHp75VdodcyQH+O3Pqa57KrJCsFytQDbz-nqoWbZ0727L+wXjA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DB9PR04MB8137:EE_
-x-ms-office365-filtering-correlation-id: 9be2826f-286c-4ed4-5f9e-08db50a9e4f5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 0EWunqu2InXiChj3FFHytk2kB9PLpr7QFp1tIumLYCpzdHI/XgJ+oADWrg+5qC/M/f8nCFW8S0xZJeCFj1T6x0mWe+XcZhZbVZo14OIabsZPDuDXyD+4IsPmx6Rg0q42GOu0YZ/A7N3/RnoD97QpnmBjyP88WoOmcLmBYAHwkJgpO9U4zJ4gCiS5rdn40N/MFqIeo4TcgjQCuT45wLkZajErAend7G6fJqqqjkWeicYEP6nlO6GThsqYobNiz9pt6iWVozvboKwjaVoZqHdeJl5tsnDXGd0Xug6n7ZfeDVvaCMWvjNqiMg+zcdQV/FYNHeHBuI7lse1tnHsKsr0sc41Nj9rUl6PCsanprCwT2b29YJ6hyPjlm3GK4pvwN9cF4OUfde7CzTqZ4eJaj+0LuOl/K0hQwjzoQV7BqptdCdbBe/AO2BjHzPHroPFHPLgqo2Ouh5Yg9obK5GlYTjO6XFbI3S1dVeeViBtP9oWFoMzIojKY8xatW8unjdMHM7i3z1zxizeR8kcYQSyYoGMPoIPRQMZeTzLFwkVlBCJtG+c5ShSjOqG65yCaPqnCMKBEK5OJa/rSuOzaoph+DWKIEeLeKxvJtqVDkMXIsWfWlp4=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(366004)(346002)(396003)(136003)(451199021)(38070700005)(86362001)(54906003)(316002)(66446008)(66476007)(7696005)(66556008)(71200400001)(76116006)(64756008)(41300700001)(66946007)(4326008)(6916009)(8936002)(8676002)(52536014)(5660300002)(478600001)(44832011)(53546011)(55236004)(15650500001)(33656002)(9686003)(26005)(6506007)(2906002)(186003)(122000001)(38100700002)(55016003)(83380400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?K3NXTW1xZnJzYU1ERXNVMVM1TXdHRXQzaCsvUDNxM2tnWWNZTERybEYydDVI?=
- =?utf-8?B?WXl2eEd5N3JhcmV4c3h4b3NTemFhdFZReXpyaE9pbzk5eUNIaFkwdGVqaXp1?=
- =?utf-8?B?L2pTRlRQcnRPUVQrQ0xzVUdpQlJTMGptZjNRWHdTTFJPdVFlODFjWUxXYUd2?=
- =?utf-8?B?MC9UaDRTZHpQb2R5aFc1Z0R2K01KRTY4SWtBOFI0ZldyUnA4Nnp1V1hmOVUr?=
- =?utf-8?B?TlNlL0VZcGUvT3huL3dFbU4yOTlIem5JLzdxazVWRjFnVm9YT1k5Z2NaY2Rk?=
- =?utf-8?B?Z0VCSkhrbm54YlFRSTNsUkpjM1ZuMjFHbTNIOVhmOURpd2VrcmJSSnZMMWN2?=
- =?utf-8?B?VGhKOVR2UG10V2Fxdlluc0NTNW1OZERjYkhONFU0a28ramdrS3Q2UjFjRDRG?=
- =?utf-8?B?UnV1bGl2M3MyOEFZS3VWdkhsV0c2OWxEL2lHQmJBR3cySU42MWRHK1UxYWR1?=
- =?utf-8?B?b0JSVXpnQnVNTjhDbUk1ckFPb0N2MlZGTmtVWjE3MXF4V0JEUEpOK1d0OFNj?=
- =?utf-8?B?ZlNDeEVUTWI0ZHFWVUNaQWozeVl2OExXaXdLSDJ4bDhDZE5MMDAyQnNPT0ZY?=
- =?utf-8?B?ZjVSTjloR3ZuRElJUUlSaFJsdFFSaXpTQTVVaXNUODZuek5nS2szQ21xeVhM?=
- =?utf-8?B?THNkM1l2dVh5M2gwcWJtMHlscC92Uzd5Sk9YVWRoWFFGUWpFbUFNQnlRUCth?=
- =?utf-8?B?WUdhOGZGdE5HTTZwTE0yRDBaN1pCQ2NLR1NYZ1JaOWxXcU9EQ2N3SXU5Vkdw?=
- =?utf-8?B?cGNuTldXODNZaitoVVhQMlMvYzNLa1lCOXJBTzN6d0xWR1hKNGlXRFloS2J1?=
- =?utf-8?B?VFpDaUpNWEFrT3F1QWI0ODUxcWtidXhOaVFrTU9tTWE2RGlCTkYyQXIrRGQ0?=
- =?utf-8?B?eDRJV0V4VzRsN2lzdVJJWkNsdVVaTUNueGJ3SmtwVU5nU0h1OE9PdEQ3a3FU?=
- =?utf-8?B?L2RwdlVjYnFpbDJ0Q05MdTlOMVg2d0pQTURHczRHa29iR2srVy91ZFAwSm9C?=
- =?utf-8?B?azhXejdzdnQyVitmYXV4K2hkdnJIUitPV0tNVzFuOGtMT2pOenhwS0xqUmZF?=
- =?utf-8?B?K3hWdGxVMDhjc245VHRZRW5jUGhrWkRCL2pIVDEyUGxOeEs3eWxOUUdyNDRp?=
- =?utf-8?B?SFNlVGhCWHZ5RmhiQkVHWko0Q1p4U2h4TEV2eUptV3B2MzVyMUhJMUNaMU03?=
- =?utf-8?B?alUxS295S1hwZkkvWWpUQi80MUs4bE1LQmJ6UXVxYzNJUFBsdEdLalFXQ1or?=
- =?utf-8?B?TWxWV211M2xRejJQOFlDYk1MU2pFd1VaUDIyNnVVMDg0c1lOVklPVTBUZFZ1?=
- =?utf-8?B?VTlTbHhBckQySUxWWEJlbW94NDFva1N4cHE2LzkxcmpuTDA0VDNyMDg5UGZ5?=
- =?utf-8?B?ektaQTRkTTRRMkdwb0JQOHA0QlZOUVN2VVNsMWczYitlZDZneGZkcFR3dGJx?=
- =?utf-8?B?bEpjVXFHSTNDSlZlZWhwdG5uNHludGViVGFzRDdLSUJpT0VIQkFGSzQxOTNz?=
- =?utf-8?B?K2svd3pYL3VBaTk1Sk5BeGl6ZDhzWHkwcUpaSUdNSnpyUGMxUXNjdjVpbWdS?=
- =?utf-8?B?UnFjbDkyeWFOZGRNN1RzM0REbGRDbDVyeTZ2Yzk4MGFsekh6NDRtSXZRRWxG?=
- =?utf-8?B?M2FmNHJsck04SW0zTUxDenhhWjZxOUQvbmluTDNoeDFybWpibXF4NjFTVEUw?=
- =?utf-8?B?bjlVOEcvZ3Vmdnd0K3hkZDNGUTVQaFNTTHNOYUtEdUpMVDVjMkl3Q1Y0dVNl?=
- =?utf-8?B?SzU3Njhqak1QTFo2ZVMrUHZjVU5MNzlrUzNnN0p6QUxBS3BvMkM2c1gyeXhT?=
- =?utf-8?B?S0x1RzErNk9rUEM2QVVSU0djS09uTmJ2L0EvRUZoNDBxbG80Q0ZSQW1Ed1Bm?=
- =?utf-8?B?WGx2QVFQTVZjUmx2NllMQkNGOWNVWi85cFp6WnowZlJ3aGYzbWZLZjhEUHJQ?=
- =?utf-8?B?RGY2RmIzZDdxdDFHaHA1WnRsOUo5VHNNaG9qWlRzME1CS3V0Mit2Y2E3aUty?=
- =?utf-8?B?V2JiL042Q3NkUEhWdmJDdEFNWVFnZVBhK1REWVZkUlBOa3prWHUvdUFEdkpQ?=
- =?utf-8?B?VEVHNmlYd3h5R1JWRVlDejBoQnFRRTUySEdJZGxRUDQxR01DMDd1U016N2ZU?=
- =?utf-8?Q?JpJiU37h32BwSMaO1d18sXCVU?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB27F9C9
+	for <imx@lists.linux.dev>; Tue,  9 May 2023 17:26:59 +0000 (UTC)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-50bcb4a81ceso11181921a12.2
+        for <imx@lists.linux.dev>; Tue, 09 May 2023 10:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683653217; x=1686245217;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Yxlpq7K/bU7lZnjiRmgqr2Ygu+qXnLZf5es9J2JbZxo=;
+        b=DeqyNvkjgehdMSRPOcRr052TILwaNCPPa0NkJl2KSusfiApqkG7OJWmjttvN1TYfx4
+         b6lVcaqGh07PbTq0igGHcshdrqOAiPO4vIg0E1SA0kYp3j59PyWsADpOXkRZkWNAP729
+         +xvguaWkFxqC4IZXbmsfKF+D0acyJ7ZLRqaMa/nCKuEfwltEdVEaKv7CqUUsGPypHHLQ
+         hNmde/S3BcUvF74Je1vymaDbQVRP67rqcxzvzRB0miWfyaurKNViWIwvw23DRSX3902t
+         Yi0dGKz4jE2D1Bh2NJwUks+67NRvBv1wVX9G0Fa6BxAkqJDR9W7CmDUxglAJ+Xbt8JiT
+         w2Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683653217; x=1686245217;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yxlpq7K/bU7lZnjiRmgqr2Ygu+qXnLZf5es9J2JbZxo=;
+        b=heeEpGEjcvyQHX/By/8dHPFPhJjvyfvEh9lqOWsQKLRfKQJqnaUPPJuwhLFD799ELw
+         XKOuENnQaBNYsQRWDjxkZo/edvR4Dd9U2QE7SrWUR5O5mjtPAJasnxG8U3oOF9bizyup
+         5Rm2/bVAewol4W1pWu+ye5KNNPb7w0p84ixslCjZBdfyLp9avnAy36Xi8BPbwaX5auP9
+         tQpwtQH45T2k1DQOTxlySZlgL8MaJtXHxEdtPpW/ziKaeKSwkU5lZzzhegx7/qacfYAa
+         UCv+/t4g0i31n1NfMjHhXVFBQpBWycJbCltXODjc+23TDkRhT7V9TwV2c1Vm8pxU/wRf
+         VWKA==
+X-Gm-Message-State: AC+VfDz1LVQD5RzgmI3XDcoPdKcXI/baDA+GWkGPP2HC2MGNfzkalUDT
+	m59mBz5YBXJLi9uBu8Gyhsc+VEz0zEzoXOxdZAE=
+X-Google-Smtp-Source: ACHHUZ4mYQim4Bq7wbUnWuh6MJfUB1Uy02jFLvYJtR/gmoWE17SyweBq4mewrZ6dVxEhXcsoCFWXfw==
+X-Received: by 2002:a17:907:d86:b0:953:42c0:86e7 with SMTP id go6-20020a1709070d8600b0095342c086e7mr12933092ejc.4.1683653217263;
+        Tue, 09 May 2023 10:26:57 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:d0d5:7818:2f46:5e76? ([2a02:810d:15c0:828:d0d5:7818:2f46:5e76])
+        by smtp.gmail.com with ESMTPSA id hg14-20020a1709072cce00b009662de1937dsm1553651ejc.131.2023.05.09.10.26.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 May 2023 10:26:56 -0700 (PDT)
+Message-ID: <21a23f39-5637-00db-f778-a2e8e333d6b2@linaro.org>
+Date: Tue, 9 May 2023 19:26:55 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9be2826f-286c-4ed4-5f9e-08db50a9e4f5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 May 2023 16:24:42.3922
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MEQdWNJpyXxnhCSzsSWrnyfRIUzGN7gQsXGJJBViKAJLkZwJrplGyrO/jibNEXIOwowTkkgzVwrptqOPC9UtPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8137
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 2/2] dt-bindings: phy: cdns,salvo: add property
+ usb2-disconnect-threshold-microvolt
+Content-Language: en-US
+To: Frank Li <Frank.Li@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de,
+ linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, fushi.peng@nxp.com
+References: <20230508131747.1933886-1-Frank.Li@nxp.com>
+ <20230508131747.1933886-2-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230508131747.1933886-2-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW5keSBTaGV2Y2hlbmtv
-IDxhbmR5LnNoZXZjaGVua29AZ21haWwuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBNYXkgOSwgMjAy
-MyAxMTowOSBBTQ0KPiBUbzogU2hlbndlaSBXYW5nIDxzaGVud2VpLndhbmdAbnhwLmNvbT4NCj4g
-Q2M6IExpbnVzIFdhbGxlaWogPGxpbnVzLndhbGxlaWpAbGluYXJvLm9yZz47IEJhcnRvc3ogR29s
-YXN6ZXdza2kNCj4gPGJyZ2xAYmdkZXYucGw+OyBTdGVwaGVuIEJveWQgPHN3Ym95ZEBjaHJvbWl1
-bS5vcmc+OyBHcmVnIEtyb2FoLQ0KPiBIYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9y
-Zz47IFJhZmFlbCBKLiBXeXNvY2tpDQo+IDxyYWZhZWwuai53eXNvY2tpQGludGVsLmNvbT47IGxp
-bnV4LWdwaW9Admdlci5rZXJuZWwub3JnOyBpbXhAbGlzdHMubGludXguZGV2Ow0KPiBkbC1saW51
-eC1pbXggPGxpbnV4LWlteEBueHAuY29tPjsgRnVnYW5nIER1YW4gPGZ1Z2FuZy5kdWFuQG54cC5j
-b20+DQo+IFN1YmplY3Q6IFtFWFRdIFJlOiBbUEFUQ0ggdjIgMS8xXSBncGlvOiBteGM6IHVzZSBw
-bGF0Zm9ybV9nZXRfaXJxX29wdGlvbmFsKCkgdG8NCj4gYXZvaWQgYW4gZXJyb3IgbWVzc2FnZQ0K
-PiANCj4gQ2F1dGlvbjogVGhpcyBpcyBhbiBleHRlcm5hbCBlbWFpbC4gUGxlYXNlIHRha2UgY2Fy
-ZSB3aGVuIGNsaWNraW5nIGxpbmtzIG9yDQo+IG9wZW5pbmcgYXR0YWNobWVudHMuIFdoZW4gaW4g
-ZG91YnQsIHJlcG9ydCB0aGUgbWVzc2FnZSB1c2luZyB0aGUgJ1JlcG9ydCB0aGlzDQo+IGVtYWls
-JyBidXR0b24NCj4gDQo+IA0KPiBPbiBUdWUsIE1heSA5LCAyMDIzIGF0IDc6MDDigK9QTSBTaGVu
-d2VpIFdhbmcgPHNoZW53ZWkud2FuZ0BueHAuY29tPg0KPiB3cm90ZToNCj4gPg0KPiA+IEZyb206
-IEZ1Z2FuZyBEdWFuIDxmdWdhbmcuZHVhbkBueHAuY29tPg0KPiA+DQo+ID4gVXNlIHBsYXRmb3Jt
-X2dldF9pcnFfb3B0aW9uYWwoKSB0byBhdm9pZCBhbiBlcnJvciBtZXNzYWdlIGZvciB0aGUNCj4g
-PiBvcHRpb25hbCBpcnEuDQo+IA0KPiBMb29raW5nIGludG8gdGhlIGNvZGUgbW9yZSwgdGhpcyB3
-b24ndCBoYXBwZW4gYXMgdGhlIGZpcnN0IG9wZXJhdGlvbiBpcyB0byBjaGVjaw0KPiBob3cgbWFu
-eSBJUlFzIHRoZSBkZXZpY2UgYWxyZWFkeSBoYXMuIFNvLCB5b3UgbWF5IGdvIGZ1cnRoZXIgYW5k
-IGtpbGwgdGhhdA0KPiBpcnFfY291bnQgdmFyaWFibGUgY29tcGxldGVseSB3aXRoIHlvdXIgc3Vn
-Z2VzdGlvbi4NCj4gDQo+ID4gUmVzdHJ1Y3R1cmluZyB0aGUgY29kZXMgdG8gYXNrIGZvciB0aGUg
-Zmlyc3QgbWFuZGF0b3J5IElSUSBiZWZvcmUgdGhlDQo+ID4gb3B0aW9uYWwgb25lLg0KPiA+DQo+
-ID4gRml4ZXM6IDc3MjNmNGM1ZWNkYiAoImRyaXZlciBjb3JlOiBwbGF0Zm9ybTogQWRkIGFuIGVy
-cm9yIG1lc3NhZ2UgdG8NCj4gPiBwbGF0Zm9ybV9nZXRfaXJxKigpIikNCj4gDQo+IEhtbS4uLg0K
-PiBXaXRoIHRoZSBhYm92ZSwgdGhlIHByb3Bvc2VkIGNoYW5nZSBkb2VzIG5vdCBmaXggYW55dGhp
-bmcsIEkgYmVsaWV2ZS4NCj4gQW5kIEknbSBub3Qgc3VyZSB0aGF0IHRoaXMgY29tbWl0IGlzIHdo
-YXQgd2Ugd2FudCB0byBhY3R1YWxseSBmaXguDQo+IA0KDQpBZnRlciByZS10aGlua2luZyB0aGUg
-bG9naWMgaGVyZSwgSSB0aGluayB5b3UgYXJlIHJpZ2h0LiBBcyBpdCBoYXMgYWxyZWFkeQ0KY2hl
-Y2tlZCB0aGUgaXJxY291bnQgYmVmb3JlIGFza2luZyBmb3IgdGhlIGlycSwgdGhpcyBwYXRjaCBk
-b2Vzbid0IGZpeCBhbnl0aGluZy4NCg0KVGhhbmtzLA0KU2hlbndlaQ0KDQo+IC0tDQo+IFdpdGgg
-QmVzdCBSZWdhcmRzLA0KPiBBbmR5IFNoZXZjaGVua28NCg==
+On 08/05/2023 15:17, Frank Li wrote:
+> Add usb2-disconnect-threshold-microvolt property to address fake USB
+> disconnection issue during enumeration or suspend state for difference
+> platform.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to V2:
+> - fixed subject
+> - fixed dt-binding-check warning
+> 
+>  Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml b/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml
+> index 3a07285b5470..be415b0a6d8b 100644
+> --- a/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml
+> +++ b/Documentation/devicetree/bindings/phy/cdns,salvo-phy.yaml
+> @@ -31,6 +31,12 @@ properties:
+>    "#phy-cells":
+>      const: 0
+>  
+> +  usb2-disconnect-threshold-microvolt:
+> +    description: The microvolt threshold value utilized for detecting
+> +      USB disconnection event.
+> +    enum: [575, 610, 645]
+> +    default: 575
+
+Vendor prefix still missing.
+
+Best regards,
+Krzysztof
+
