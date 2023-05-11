@@ -1,242 +1,165 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2084.outbound.protection.outlook.com [40.107.7.84])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2058.outbound.protection.outlook.com [40.107.14.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E4F369
-	for <imx@lists.linux.dev>; Thu, 11 May 2023 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41428629
+	for <imx@lists.linux.dev>; Thu, 11 May 2023 15:21:38 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UFsT6neM4M2QX8cESGQuk4JSLUpf0OQOrWDdgs7xs+IAQrcTL+eBSBZHzonpD9pvFjXP14Z+DKWp7fxTZlFmpAPWPk+bDfS8YfxyPgT8/NDXbhtKTricEGNFvyj5L7UvcU0yJ/3c9rS3gaiiRpsKofBqEX5tqd0h8Xq7arnZV/BCxlzQx3QJWoGUGcXuYu++E/pplTAujiA1YRKVpkU3IRY8TqWjsY50JIJ6yLrgJ2aG5mHBdj77cq023vIqWmLq6VjBCcBLXTYUoS24GYR13Qlhh7oRtRl5fyK5JFzawgbOl+d4tIFWJ/hY7ei9oVxdsLko/QRM2RpMJbtnUoOMOw==
+ b=C1cIyZki8O1kJ8vRo4f8D2roHQGQauOftSn+DQYoQxHy7/BDbnZBoULLGYwfzSsGVkFtQQNtld7OQCkepqljCsjqOvqPA4CvLXckSgNdSxbHIND7CTTtzKMSR8XtyR7bAFRxAQdetd/l0yUeZUTfFc0HQHqvWmAx98enqbnEpVwSvQ28Z4n9QQE9p9l4g8cVdEeyTVVHCxh9KK1eev0oH3XrJd2P+jLehnsC2YowsdMeYfeDE56L0qRAe/x4rS63gYtY6wmUr+BIuoWYOEE+Nu62W96La/L1krpiy0J6Xo2gH+FcTJo1ms1VWECfRzMBBYGhoLuZjZMfhNY1SmIMyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uEh6hYasODyrgeqklx3HNg/pIsQ+qf7/IomLuKJzSF0=;
- b=hxA14qJp5XtpQzyIXnwSBKV59jd/+97cdTYQM3XLrPcDZy3lg+m6MK7exM/QNtrDnaM2KCt5lWXUUz8zEcUTQywUlVpaZLEl0Zo+5E8b/6Rcl0TUpkZDg1SlCbLAWMgQI4Rflvu//3nvUGrJJuyGb+314AuDzxOg830C7G2frBIcECkVMNDSQ69O2xmc0aubQAU28/lyw3li151vYiytLaTPX7IR2s2/mqRZX0AJNV9FdXf/tzlIuah2JF5Vr99QHUMB0TdvGb0zU5eW/chsX6ZNA2eTXhfOxvtiposW+YNGxspptkyn0fJ8WGPcSwM87sptHBXe4amnne5kIPy23A==
+ bh=q5sUeZMnNsQcm3LajAujOtB5TursVNZTNcPqagCNQYQ=;
+ b=Co27qitpwokxj+Pcshq+e3k09fuDi3jgjtVVyytzRiLgXO0KQgvfaTN8GxjCYXMqovAxzMENRZploRpCFEIjZYGTtt0r0pOzOm82iWA/3qoRNUW5zxqJV98wVsubU+qCqPR8Xx2gqypskJ/OL/yiTTtf4714rK9E2mS8OgsC37wKpSbYeQRfels1tNLOqGt74PA1yk/RwdY3Ii8EU3u/Aa6k8tzdRIGtSn5SV2wfaycBNjAxZ1IQ+HKOALeI550aI4/kMI8uV+/YlNhmlDIzVB1ntwTG2XOsHfbVIoFwnCbXTCPx5VLIZg5Pi24KzBlgoNyop8WkIfaYMJcCrhpQ3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uEh6hYasODyrgeqklx3HNg/pIsQ+qf7/IomLuKJzSF0=;
- b=VM9NeK/9AP14NrVnfOLHH950lBwRGZJ0FSV8+ubxaZ/7eM4YSUZ7Ebr4rrGR5DXDQh+OEsMgYa14x/QRkum5lpb6NOwGCWaIfmaadUWnfXSqFeGaFw2npqHyhOAqqcAgUFCnONh7nkbfab7Irl1YxNPTLheVvUn0MkLFlWVqjx4=
+ bh=q5sUeZMnNsQcm3LajAujOtB5TursVNZTNcPqagCNQYQ=;
+ b=Slb1tgYJV/GD/lrDjFkA2WYuX3osX7R1v8l2GgdiHIEvRB2yxMS1dVMjS+KwfQiwkG32c6aN146uSSjiJZi0ioq3rlSSAZJDHRlf6RB6Xn/Ztoh8On8czsKlMAwVaua0jW5Jd2EqqFym3SSnSU+8mHumRgW7DhXY0bTYoR22Y/0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DB9PR04MB8137.eurprd04.prod.outlook.com (2603:10a6:10:244::9) with
+ by AS8PR04MB8040.eurprd04.prod.outlook.com (2603:10a6:20b:2a9::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.20; Thu, 11 May
- 2023 13:54:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.21; Thu, 11 May
+ 2023 15:21:35 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::28fb:82ec:7a6:62f3]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::28fb:82ec:7a6:62f3%5]) with mapi id 15.20.6387.020; Thu, 11 May 2023
- 13:54:57 +0000
+ 15:21:34 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-CC: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Clark Wang <xiaoning.wang@nxp.com>, dl-linux-imx
-	<linux-imx@nxp.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Alexander Lobakin
-	<alexandr.lobakin@intel.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH v2 net 1/1] net: fec: using the standard return
- codes when xdp xmit errors
-Thread-Topic: [EXT] Re: [PATCH v2 net 1/1] net: fec: using the standard return
- codes when xdp xmit errors
-Thread-Index: AQHZg3rJKrtAA7Kf+0qgpTXACE0A/K9UrGQAgABqq+A=
-Date: Thu, 11 May 2023 13:54:57 +0000
-Message-ID:
- <PAXPR04MB918534FB41385DC5353431E289749@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20230510200523.1352951-1-shenwei.wang@nxp.com>
- <20230511072452.umskoyoscsxgmcoo@soft-dev3-1>
-In-Reply-To: <20230511072452.umskoyoscsxgmcoo@soft-dev3-1>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DB9PR04MB8137:EE_
-x-ms-office365-filtering-correlation-id: eb8723ff-15b1-4d73-7ce9-08db52274e38
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- vbuCxmRuLNG73reOpTD8a0dD3zwoC1yiOCtv8v8bIlgILp+2HlBpinGJHabfz/v7Z82Gwt+hUicMnT37CsLPB7UsJc0GJiHAT9skvETzrblgWWAOC/y7z4IwXxNt6DqEf8EQ1nSO/jHHJcpjngJ3QNtog0eQj1RhCIAdUodqiLCioRmzPnrYJLIkfyTYQoKLTB5XsIU6rZiTzTovvikImog9zt5wzsHtpKRibg9w7tTZw3HRd8+s9j7hIa3Wks7d0UbL6P3nPSXU1NvRm6SouS1JK6FhOxJw79b33hyrAugbXyqvETgsX7HNA0mQd8dPjiJcbZ7t0T0vkuzU6t6arS9Ib3lIVe4V3ztUIYoO0KGGhPxBoF7tnkPIorCcY3hZUsoMvMwykQ80okhw/fuopox3AnqoPqKMqcga9F1/PYpEPcLo+OBH9g7tOzsd/CEYh5H+NcLhuMWFjJ0WdH0O0hIz3a+ktemQ23rNvArDRUbsLI+x743RTTsixWYfWt4r3uzvrgeqLkLs6s4/K/29C5cFH8WBcXwsTtNscJkT6RdV9Lluc5NarWSJACAC/b8RDlJexq4jmdOD6Bx8u1skjrbkTZi1MZLjO+ODAEpz3ZU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(136003)(366004)(346002)(396003)(451199021)(54906003)(316002)(6916009)(45080400002)(478600001)(7416002)(7696005)(966005)(86362001)(64756008)(4326008)(66946007)(76116006)(66476007)(66556008)(66446008)(83380400001)(8676002)(41300700001)(122000001)(33656002)(8936002)(38100700002)(38070700005)(44832011)(52536014)(55016003)(71200400001)(26005)(55236004)(186003)(2906002)(9686003)(6506007)(5660300002)(53546011);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?X7vCkmM1JGhtu6RUMQgMfDnx7wWygTwcuOG24yf2s57YTowKdzM2QCSqpRgW?=
- =?us-ascii?Q?CqZ4KhpfAWgNky3ZeZVehlTiMp0oQFe9KVlHxRz9y63XNX57hFSg34K6rva+?=
- =?us-ascii?Q?LRiyeFdgf3c8QbRr61zujqme4U98cLEHiAw/KKQrZ6t3UXe7KKoKe/5nvehS?=
- =?us-ascii?Q?kV5udpCfm0LhXmc6LfuxdTLFGZJVYccQOXjoiUO1qoxr42uJgvCqvx3T9GTS?=
- =?us-ascii?Q?fzPZKR+MWjHEYuPpuNYtb58Ab+lFbAU3DXVuSNcZXqny2v1OKFMq8/A4TkmD?=
- =?us-ascii?Q?Zs/WblqHb7+jGIQKyziOJ6RHY9zOQf0liBBJVEyvIrmKjSEY8fyvGLUwdDX/?=
- =?us-ascii?Q?HXAKuuJVIY7ROjNbfc+LPYPkvsfOISHz9vKOiHZ4/KQDnvURqjWsAcrapeOo?=
- =?us-ascii?Q?Vq3cRdmi1DZMmWMGvuPhirQ44KL261Ces2zitY9zcN0NNiVHq+ZbgOQ/6yqt?=
- =?us-ascii?Q?/kp0iydy2VwzKl16VBR2abkweksxI5p7vBjQCaRpdxqkOoBiGtdEJDWOT6p2?=
- =?us-ascii?Q?X+AyTqOjYy6MaG/sVz8Wzr8+ym0fgcB1njA2NELBdmPrKN2n0ZtIqIDu5MhG?=
- =?us-ascii?Q?QpIM5+A3/XR0BoLFSTRuAvM+lCp4iuMXVjZxfFjJy0+5o8eEFZmkV9QWsA5H?=
- =?us-ascii?Q?C5rglxHgxgYYImdvh2rIO8wejBx9JR4iGQmPWzsmKC//uL/elLpp7dEVUHaq?=
- =?us-ascii?Q?pCfonYjOcJWYqwdiyVzyEEceS7jblWsdZd1G9FRDdUoW0fUDUlsyiOOaEuGn?=
- =?us-ascii?Q?HI6OunSuRBtKx/lg6T5bP9LZabngG2r2HC7XhirZpyZQcHo8CemHInuVMfDe?=
- =?us-ascii?Q?nKL1qC4sX723/2HiRSvE01yMBSnxa1zwx9eOpV/71O19itqrHSspeMvfiXm6?=
- =?us-ascii?Q?KPYP4h2J7nV8K/tqrAoAuGJ+q5xwkqsc85/RMDaZFiIlfMxGe/w8vX7zq0Oe?=
- =?us-ascii?Q?djL5gw6xrg/N6ij+QlJ0X2vM4vbxtKH6qHL14ubrIjvKqVCI8i94wAy/fNlm?=
- =?us-ascii?Q?7KpWbPF0hmkr8sFshbRozkdvTgMAOvDmBM2/7W+BG5/Ql6fADzxwTyDohSyN?=
- =?us-ascii?Q?mD8G62oiS2WhfnhTRok7kKv3WmJi7my7UU5VGk1i1z5BPt5KDDfXJSA0ZGXi?=
- =?us-ascii?Q?DcocaJG3XlymYOzlT5DD1k5GoI5pcF0p8iUXJgoh5ynpHHY+l30ZPuaqS7Cs?=
- =?us-ascii?Q?mZ+issXwX05f1z6vRCqoSoIOm4tws8Lvwmlg4ww4SWCXqyZTujq6S8RiBJ2B?=
- =?us-ascii?Q?hbmFQhrWUUo5LdOFR+2TDlZ8SdTAi7JS1t9hiM4C8XsG7VgwWQAYJiCkhvM1?=
- =?us-ascii?Q?yJz6Q14Z8Bx3735hQWqOH66rDZYM5MpT3PaqZNOrFcIQLvAdAkSFLbNtrsoj?=
- =?us-ascii?Q?PWJrSbXe7BLuMgJeCYqcDtezaxq8B55UPQ7jBrJEyOdImJGMTEc/uPwhALlC?=
- =?us-ascii?Q?dhsSUvtAWGX+EsOQSfRfOsCGudvJqtM7FBypVXeDQS1talUr8h0kD/kiBdLD?=
- =?us-ascii?Q?PpyKENewdK5Lvr0JKdCNRM5QNj1fkde8VTmnrOndLTi4w0A2rRzGA6TOUL3/?=
- =?us-ascii?Q?FCtes4djLWu9X0hh50B7wAXJw6Pld69VkbC08L0P?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Wei Fang <wei.fang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexander Lobakin <alexandr.lobakin@intel.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v3 net-next] net: fec: using the standard return codes when xdp xmit errors
+Date: Thu, 11 May 2023 10:21:15 -0500
+Message-Id: <20230511152115.1355010-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR07CA0052.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::29) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AS8PR04MB8040:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ec2d9ee-d221-488b-edd3-08db523367ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	9nfFmPMWXjbAm34uEA8FXd1GZ9xCPUsjFwLRNrQDBVG9SN2P4eu5wkSbOpXkLrh0TsSPT5QXW82tPLALboTld2Cobb/WzX1kKv0zSITxtvFN4t1YeGw6iwxf7QxHvdvTV1Pk9O9MSQwD9HI+3ylFqSSlyvyZ+uCJ/FjXu6OBz6lKb8E4tIDn8rmz7Us/rJTlquMOBWSsMt4Dp0DAwbMR0OoHVmIstmLMHVhs8LEMTaQQRr97SlZkLCI0fc16HFyh+Otc9uHmoK9JLGeLVqYFyfV0Vw6RRx+aBY7NcpTgbBCs4opP8XV6WxjeemF1GILQn1Hc5saVpVgfMjevIl38w1sNkJsiBDzlinMx8X4WC3rtpUIpOg3KMAhmFFY7KRlsUaTt4yIEfA4Y1QH89wi2WwQ9av3fXVPaY+OfAx0IBE0e8p7De4eRhv2I1JTsGZJ3nRikklugMSf9BFIkr1HnShHG23oeR4+T8+QA3tk229GmLAbDSHe/4sQO93T5J8ryD+euGBXCvGQLfeAWYdcRa/z2MYr99TVZWvnErUecF/iyA4ryz4Wot/j9CHiQ0jPpVUg+hXStyofye5KhCPZBBTqrk5V/agGR3USjR1sDTarP/jwaCUFNlruOnGCdmcVI
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(366004)(39860400002)(346002)(136003)(451199021)(6512007)(6506007)(26005)(1076003)(2616005)(83380400001)(38100700002)(38350700002)(41300700001)(52116002)(6666004)(6486002)(186003)(55236004)(478600001)(110136005)(54906003)(66476007)(4326008)(66556008)(66946007)(316002)(5660300002)(7416002)(8676002)(8936002)(86362001)(2906002)(36756003)(44832011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9xbZisAlUNx7LKwdDt8dw38LUbryw5QM7Rx5FA1zK2S5ciRdhbc5YmyUE9HC?=
+ =?us-ascii?Q?iImakxiYhBNfyjGxBic6t5oSiBgoyqP0migJu0avs6L+ld9Ldor89e6ZOiP6?=
+ =?us-ascii?Q?IkhA2KFcicMrFTUBe9oQp5ISH5Y515uR5EohQ9YsHhAj0VecU4OyE1+FcBrp?=
+ =?us-ascii?Q?OyM2ansdZUNJYuH4a+9TwGk+KsmuZWfghhGdduyRwVoMOFACeAhhb+NS51VW?=
+ =?us-ascii?Q?TLLYh2gRbd9yrF4VTgeBOKkQHp5PIjO4nike/pk+l4G8i9UbQcc/AMDDbn5j?=
+ =?us-ascii?Q?h25iH7KhzsQkqKBi+w79+MWCK791lsrszGm7qlLQKviIrxmZyZYEH6mZMhtB?=
+ =?us-ascii?Q?q02bA20cJOyG1PY9mG2+FgNfhpMD5JcNPCsHJz6027iWoGT2ZKPiUOKs3yiN?=
+ =?us-ascii?Q?32njtRl8nl8ajHdrNmkP/55KJwru2M3Z/OsVqBT5fbf1Uq81a6uKJptMVUwQ?=
+ =?us-ascii?Q?GCpbVnypQZWDbfu4dq1HWiskzZmoCYoRKWH5pjAj0lWp53m1PyCNxspzHa54?=
+ =?us-ascii?Q?Mlb5asKmM8AzCppWSEdOs5yQVqKsnsbAZI0/Yf8ZYIf7IHu4aOLC8wDjU/Ov?=
+ =?us-ascii?Q?Asm1sT2EOumKy9Pc5yb/gGWAEJ6yku3/2y1T0ins8WrpiF2746/JirvcjVh1?=
+ =?us-ascii?Q?HybYQakWaJFqmtWnC+Ml2IijrlfaeMNUHLG5yzmF1MjgeQ9C0aEec2U4y7XW?=
+ =?us-ascii?Q?D8jBvCFn2QOrBJyitWfhfbP13vdXsehGbYMbOW3zQLq8NCTTXyqtCAxTVmps?=
+ =?us-ascii?Q?y95MCJonF0ilxahAB3bu3/HPb0Gbj4MLijXHVaSThOPZNLzDJ8uXN1oqKdBV?=
+ =?us-ascii?Q?ce5fbto7XLRSanGEuDcyyQ23l8ai827ltx1CCisuifS6qRnKNP1WSs05rkkB?=
+ =?us-ascii?Q?/4oql72AKJwADlO2I/7oyHqbWZpo12BpXK7zcIORwWVnaBrNeALg4IZWCOSs?=
+ =?us-ascii?Q?lnq679eRNUHPafegrpTCv+M6ydkCrRFG1HW+OlxyMUodR8eIu0YDnrCIQ4K0?=
+ =?us-ascii?Q?6qQAQp/xNO/x+pYZWctervhG3wuzWJ0N+LwzbsuPbfvlhA0zJd/EZnPgGjrN?=
+ =?us-ascii?Q?vPubajLz6GczmWKomM7Fd1fArcGqbt4MKyjzgoPjPAqImiM/P34mZ0sv4IP9?=
+ =?us-ascii?Q?vo2A1sm/gFDYsBhAARv7IKqrdFxTTE4XPmg3hVaHNyhLRs3MU1wFYIxIq8tu?=
+ =?us-ascii?Q?P/Uk8nDxPTomIbcDymUxhqhCnmPiNnZGwOuTF2zs7hx/Ij0MfpfyruOgoNun?=
+ =?us-ascii?Q?9founehXZYQj0eKbOZQNcMIyC8K/E+4eGQ03tC98rWxt/i3Vlxge1C0Dxjh3?=
+ =?us-ascii?Q?1qHJY24aUo/Bsn8eDRKQid0V2HBSTDy92rrYjAW6EQoc9pXP2xCSAkndwUlN?=
+ =?us-ascii?Q?CSGdJPahaoOxBbLn+wi0Y9TbegogAVuIn+/2Zlegh6tlaSfRAWj19swzOpcI?=
+ =?us-ascii?Q?QSST3d7AzML8uJpE8bcGdyBB98QU1pSyfGteHXhgwLCtSG5NOjAHmVPQxDrv?=
+ =?us-ascii?Q?7yUgGk+VylE1/4Q+nij3MfKcTrFkRBXpYFKdO60+pKlhdJjld2uPRwHzNSL4?=
+ =?us-ascii?Q?TudhhPlJh0n9dZIshG+C/MWWq9B7vDN7LKkubrwb?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ec2d9ee-d221-488b-edd3-08db523367ee
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb8723ff-15b1-4d73-7ce9-08db52274e38
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2023 13:54:57.2566
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2023 15:21:34.6791
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: W7XmZEKsgNgWu9OkypdL85cQv2ZcPEsaOTGLNPfO5r1QZGG8PSN97FLAeZ1oCfG15UhzcK5i8dMz3675ZGOAAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8137
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LgdInuFRtNhyNSbJsil0W4B25aLGNpRGn36K7ApIpF56i4ndwvNCvUp0e9K5rdgRkTRHZMpx05nxqlE+RunL6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8040
 
+This patch standardizes the inconsistent return values for unsuccessful
+XDP transmits by using standardized error codes (-EBUSY or -ENOMEM).
 
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+---
+ v3:
+  - remove the fix tag.
+  - resend to net-next
 
-> -----Original Message-----
-> From: Horatiu Vultur <horatiu.vultur@microchip.com>
-> Sent: Thursday, May 11, 2023 2:25 AM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Wei Fang <wei.fang@nxp.com>; David S. Miller <davem@davemloft.net>;
-> Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>;
-> Paolo Abeni <pabeni@redhat.com>; Clark Wang <xiaoning.wang@nxp.com>; dl-
-> linux-imx <linux-imx@nxp.com>; Alexei Starovoitov <ast@kernel.org>; Danie=
-l
-> Borkmann <daniel@iogearbox.net>; Jesper Dangaard Brouer
-> <hawk@kernel.org>; John Fastabend <john.fastabend@gmail.com>; Alexander
-> Lobakin <alexandr.lobakin@intel.com>; netdev@vger.kernel.org; linux-
-> kernel@vger.kernel.org; imx@lists.linux.dev
-> Subject: [EXT] Re: [PATCH v2 net 1/1] net: fec: using the standard return=
- codes
-> when xdp xmit errors
->
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report =
-this
-> email' button
->
->
-> The 05/10/2023 15:05, Shenwei Wang wrote:
-> >
-> > This patch standardizes the inconsistent return values for
-> > unsuccessful XDP transmits by using standardized error codes (-EBUSY or=
- -
-> ENOMEM).
->
-> Shouldn't this patch target net-next instead of net? As Simon suggested h=
-ere [1],
-> or maybe is just me who misunderstood that part.
+ v2:
+  - focusing on code clean up per Simon's feedback.
 
--               xdp_return_frame(frame);
--               return NETDEV_TX_BUSY;
-+               return -EBUSY;
-As the "xdp_return_frame(frame)" should not be called when error branch, th=
-e patch
-fix it too.
+ drivers/net/ethernet/freescale/fec_main.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-> Also it is nice to CC people who comment at your previous patches in all =
-the next
-> versions.
->
-> Just a small thing, if there is only 1 patch in the series, you don't nee=
-d to add 1/1
-> in the subject.
->
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 42ec6ca3bf03..6a021fe24dfe 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3798,8 +3798,7 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+ 	entries_free = fec_enet_get_free_txdesc_num(txq);
+ 	if (entries_free < MAX_SKB_FRAGS + 1) {
+ 		netdev_err(fep->netdev, "NOT enough BD for SG!\n");
+-		xdp_return_frame(frame);
+-		return NETDEV_TX_BUSY;
++		return -EBUSY;
+ 	}
 
-The patch was generated by using "git format-patch -n1". The strange thing =
-is that
-it appends "1/1" on some machines but not on others. The output seems incon=
-sistent.
-However, using "git format-patch -N1" can fix this.
+ 	/* Fill in a Tx ring entry */
+@@ -3813,7 +3812,7 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+ 	dma_addr = dma_map_single(&fep->pdev->dev, frame->data,
+ 				  frame->len, DMA_TO_DEVICE);
+ 	if (dma_mapping_error(&fep->pdev->dev, dma_addr))
+-		return FEC_ENET_XDP_CONSUMED;
++		return -ENOMEM;
 
-Thanks,
-Shenwei
+ 	status |= (BD_ENET_TX_INTR | BD_ENET_TX_LAST);
+ 	if (fep->bufdesc_ex)
+@@ -3869,7 +3868,7 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
+ 	__netif_tx_lock(nq, cpu);
 
-> [1]
-> https://lore.kern/
-> el.org%2Fnetdev%2F20230509193845.1090040-1-
-> shenwei.wang%40nxp.com%2FT%2F%23m4b6b21c75512391496294fc78db2fbd
-> f687f1381&data=3D05%7C01%7Cshenwei.wang%40nxp.com%7Ca92a1dbe84f348
-> 42e79e08db51f0d24f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C
-> 638193866998878533%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMD
-> AiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&s
-> data=3DMO7RbDtCUU82clB2CyltzpvEdc7%2FjwLWvcCzgGN8mDc%3D&reserved=3D0
->
-> >
-> > Fixes: 26312c685ae0 ("net: fec: correct the counting of XDP sent
-> > frames")
-> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> > ---
-> >  v2:
-> >   - focusing on code clean up per Simon's feedback.
-> >
-> >  drivers/net/ethernet/freescale/fec_main.c | 7 +++----
-> >  1 file changed, 3 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/freescale/fec_main.c
-> > b/drivers/net/ethernet/freescale/fec_main.c
-> > index 42ec6ca3bf03..6a021fe24dfe 100644
-> > --- a/drivers/net/ethernet/freescale/fec_main.c
-> > +++ b/drivers/net/ethernet/freescale/fec_main.c
-> > @@ -3798,8 +3798,7 @@ static int fec_enet_txq_xmit_frame(struct
-> fec_enet_private *fep,
-> >         entries_free =3D fec_enet_get_free_txdesc_num(txq);
-> >         if (entries_free < MAX_SKB_FRAGS + 1) {
-> >                 netdev_err(fep->netdev, "NOT enough BD for SG!\n");
-> > -               xdp_return_frame(frame);
-> > -               return NETDEV_TX_BUSY;
-> > +               return -EBUSY;
-> >         }
-> >
-> >         /* Fill in a Tx ring entry */
-> > @@ -3813,7 +3812,7 @@ static int fec_enet_txq_xmit_frame(struct
-> fec_enet_private *fep,
-> >         dma_addr =3D dma_map_single(&fep->pdev->dev, frame->data,
-> >                                   frame->len, DMA_TO_DEVICE);
-> >         if (dma_mapping_error(&fep->pdev->dev, dma_addr))
-> > -               return FEC_ENET_XDP_CONSUMED;
-> > +               return -ENOMEM;
-> >
-> >         status |=3D (BD_ENET_TX_INTR | BD_ENET_TX_LAST);
-> >         if (fep->bufdesc_ex)
-> > @@ -3869,7 +3868,7 @@ static int fec_enet_xdp_xmit(struct net_device *d=
-ev,
-> >         __netif_tx_lock(nq, cpu);
-> >
-> >         for (i =3D 0; i < num_frames; i++) {
-> > -               if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) !=3D 0=
-)
-> > +               if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) < 0)
-> >                         break;
-> >                 sent_frames++;
-> >         }
-> > --
-> > 2.34.1
-> >
-> >
->
-> --
-> /Horatiu
+ 	for (i = 0; i < num_frames; i++) {
+-		if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) != 0)
++		if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) < 0)
+ 			break;
+ 		sent_frames++;
+ 	}
+--
+2.34.1
+
