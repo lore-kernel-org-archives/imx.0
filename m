@@ -1,119 +1,79 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF3B81F
-	for <imx@lists.linux.dev>; Thu, 11 May 2023 07:24:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1683789895; x=1715325895;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K1mgrZfFCls8u5NmU8XyZVTtBs5ziCVIjjKenDOXFvU=;
-  b=s9023dD7z+df7yxHAX7mk9XQCrSfVifSO3ecYBEmWgvVDEhugD0RErsw
-   kLTfypimc738n3tNYpH8uvlTR50n0KqjlH5k1VYBS9V5HOvdvqMiU60bN
-   fhmHJ0adCbA6BZc2B7K1vDMRpiwShIuBWhCTZUqBEyHrAOWpY4iwm07uz
-   MdQNEo/0LosQrfPdkLS6XCwR+d6xYNASDRagFy25f+MMcyZs8ToHjH/ny
-   4NPPrsEcgpc03k+7GQCztEKdoCe3/eiahg93+SlClgZuXazv7sWUuIMDy
-   peg87tztdjhIx8cBAelxmG89l37k0SM3ZQEOIlBOlHMQlyOIZOFHi/dit
-   A==;
-X-IronPort-AV: E=Sophos;i="5.99,266,1677567600"; 
-   d="scan'208";a="213383976"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 11 May 2023 00:24:54 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 11 May 2023 00:24:53 -0700
-Received: from localhost (10.10.115.15) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
- Transport; Thu, 11 May 2023 00:24:52 -0700
-Date: Thu, 11 May 2023 09:24:52 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-CC: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Clark Wang <xiaoning.wang@nxp.com>, NXP Linux Team
-	<linux-imx@nxp.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Alexander Lobakin
-	<alexandr.lobakin@intel.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>
-Subject: Re: [PATCH v2 net 1/1] net: fec: using the standard return codes
- when xdp xmit errors
-Message-ID: <20230511072452.umskoyoscsxgmcoo@soft-dev3-1>
-References: <20230510200523.1352951-1-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46B21B919
+	for <imx@lists.linux.dev>; Thu, 11 May 2023 09:24:01 +0000 (UTC)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-959a3e2dd27so1480396466b.3
+        for <imx@lists.linux.dev>; Thu, 11 May 2023 02:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683797040; x=1686389040;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JA5xPjeOoojypgcBqSFOVnz99GxgTTj01ItFi8GBvTU=;
+        b=unHqB+68GfcbdTRlwsrD1KXnBOl3FzBk7YWKN3UPV9JxOPofTMog/lPUg+w0AC0zcV
+         u6HIfsNXkuptihF0Xn9jTfGEaiKZqPZypWJ6Rs8nIbEAXrNL5QJ9cRWvAtit8341mZyq
+         sJ/gm6mjb43TELC7kbwE8rgn42U4htFccqnnu+zEy1vre70l0u5lUKP2mX4vWSuoh2Br
+         7m847tcEFgHUx0KaeUATnTTQ/g5e0Dp88nL4ZSSN7z/XigiQsGHwZaCjGPV+tAilnNu6
+         QC6kWjHE/TEko46XZY3xMjE3ZyvS9hVRHfjUqrBuJg94kSc5JmYcXM219FkQM1457HHG
+         0g+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683797040; x=1686389040;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JA5xPjeOoojypgcBqSFOVnz99GxgTTj01ItFi8GBvTU=;
+        b=WPj87ln7gbjZ/VoxOW92LwXEQsAmVSy3uJ9DskrJKSPDg/qnOmuk00wbP9S0dtwWyN
+         60tRWgSresqpY6E4dnJHqVUsQjXJ74RfgXVDsn8q01HDr9FON/4UxTPzgI7RWCU588/h
+         Rn7OO9Q9mEc8lhONekOzhNclseL76V3HbbE5hr6cId4nrVcXQDhqPDtagD4SZulf/jPY
+         Ui+XsXj+Z+2386U0I1vPl1YdndBul47CVde8BQvM6hthJ99R449JmY2KXT30fkxgsIK5
+         DQX83mRHiOczbDxPU6dInD5NVl2qs57Fiv56psh+CVScM4ifNj31ABttFiygZbPiIkae
+         KjHw==
+X-Gm-Message-State: AC+VfDx38yLhhGq92ZPFrnEAeE0hl2Dvo8auFA/uR5l35X15/e3cHeUD
+	qyV4rI9n00CXNQFZICwPCaKvGg==
+X-Google-Smtp-Source: ACHHUZ6DpuG1Gh4nYwnUB6gFrZ70a2Esdrm6hR5ekuhcVRREIF6jJkfGUci/IR/Zuw7WtQmw5Q76xg==
+X-Received: by 2002:a17:907:7fa7:b0:94f:553:6fd6 with SMTP id qk39-20020a1709077fa700b0094f05536fd6mr21304211ejc.24.1683797040026;
+        Thu, 11 May 2023 02:24:00 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:7e61:f14a:c3a4:809e? ([2a02:810d:15c0:828:7e61:f14a:c3a4:809e])
+        by smtp.gmail.com with ESMTPSA id ia21-20020a170907a07500b00966392de4easm3781089ejc.14.2023.05.11.02.23.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 May 2023 02:23:59 -0700 (PDT)
+Message-ID: <7cf19b98-6de4-c576-4fe9-a123da298d75@linaro.org>
+Date: Thu, 11 May 2023 11:23:58 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20230510200523.1352951-1-shenwei.wang@nxp.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 2/2] dt-bindings: phy: cdns,salvo: add property
+ cdns,usb2-disconnect-threshold-microvolt
+Content-Language: en-US
+To: Frank Li <Frank.Li@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de,
+ linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, fushi.peng@nxp.com
+References: <20230510140504.2164565-1-Frank.Li@nxp.com>
+ <20230510140504.2164565-2-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230510140504.2164565-2-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The 05/10/2023 15:05, Shenwei Wang wrote:
+On 10/05/2023 16:05, Frank Li wrote:
+> Add cdns,usb2-disconnect-threshold-microvolt property to address fake USB
+> disconnection issue during enumeration or suspend state for difference
+> platform.
 > 
-> This patch standardizes the inconsistent return values for unsuccessful
-> XDP transmits by using standardized error codes (-EBUSY or -ENOMEM).
-
-Shouldn't this patch target net-next instead of net? As Simon suggested
-here [1], or maybe is just me who misunderstood that part.
-Also it is nice to CC people who comment at your previous patches in all
-the next versions.
-
-Just a small thing, if there is only 1 patch in the series, you don't
-need to add 1/1 in the subject.
-
-[1] https://lore.kernel.org/netdev/20230509193845.1090040-1-shenwei.wang@nxp.com/T/#m4b6b21c75512391496294fc78db2fbdf687f1381
-
-> 
-> Fixes: 26312c685ae0 ("net: fec: correct the counting of XDP sent frames")
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  v2:
->   - focusing on code clean up per Simon's feedback.
-> 
->  drivers/net/ethernet/freescale/fec_main.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 42ec6ca3bf03..6a021fe24dfe 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -3798,8 +3798,7 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
->         entries_free = fec_enet_get_free_txdesc_num(txq);
->         if (entries_free < MAX_SKB_FRAGS + 1) {
->                 netdev_err(fep->netdev, "NOT enough BD for SG!\n");
-> -               xdp_return_frame(frame);
-> -               return NETDEV_TX_BUSY;
-> +               return -EBUSY;
->         }
-> 
->         /* Fill in a Tx ring entry */
-> @@ -3813,7 +3812,7 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
->         dma_addr = dma_map_single(&fep->pdev->dev, frame->data,
->                                   frame->len, DMA_TO_DEVICE);
->         if (dma_mapping_error(&fep->pdev->dev, dma_addr))
-> -               return FEC_ENET_XDP_CONSUMED;
-> +               return -ENOMEM;
-> 
->         status |= (BD_ENET_TX_INTR | BD_ENET_TX_LAST);
->         if (fep->bufdesc_ex)
-> @@ -3869,7 +3868,7 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
->         __netif_tx_lock(nq, cpu);
-> 
->         for (i = 0; i < num_frames; i++) {
-> -               if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) != 0)
-> +               if (fec_enet_txq_xmit_frame(fep, txq, frames[i]) < 0)
->                         break;
->                 sent_frames++;
->         }
-> --
-> 2.34.1
-> 
-> 
 
--- 
-/Horatiu
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
