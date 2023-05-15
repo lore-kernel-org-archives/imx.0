@@ -1,53 +1,55 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2054.outbound.protection.outlook.com [40.107.6.54])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2046.outbound.protection.outlook.com [40.107.22.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B837DD516
-	for <imx@lists.linux.dev>; Mon, 15 May 2023 15:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339EAC2FD
+	for <imx@lists.linux.dev>; Mon, 15 May 2023 15:11:11 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Dma6LYDVHYGJ2OPpk+vQ8kr+BH83axBXUhJtScDFgnZf3zzgmIslYDYO3jZPG8jxFU+8SM8k4mXGKvIZqUJMRIDgfdrdKhg34pBZCXHzBeLfGik8uMlNiliePulWw2GKuTl4xWoM/YZGJBx/N0JD1KrXGxJHTyniPnPnWb+6nHJgpGBLrFj8clEtdzXYiu6ROV3pOzSJXmzC8Z0ohYh0+TNXlGH+4ccnq50kFiQyzEDAF7wwJpDgV0vIEh8NOpYc6gVsI2ho2sp+29L+WHJX63TAqIplsjKFbLH1DPFfYHhIFyrI6tuTnoXKOWsvwfPplzD5JOnbmRB9iC10g5CDKg==
+ b=fQ13WkHzzmSScXUemU9ACiNAZNEBaiSMrQGyCoOk+44RSWrdxFBkWFOopwZSsdxFGo86nRR3k8U/JAW5ZB80b4LD4eu55EKign+G/mmwZvJaMVOaz2KORKxTzEmeQqo4s3yAsXz0uoTWqt/kjLDuQk1nmW1PduspWv6zQsQrhxjf6MCKBieaIlcdebpG6JDMzLBYNUSFiZMAO1RkIEO7BtRo1pMYAlGuMMD6QWXPhayv/y7s/ZLCQwYyl7ZkVCsDJsb49S0xyKRGvCzhUoaa0zg9CjDLTWU7k5mGjJnSdxuvBDDZSRYlZDczDrTcUqYYs5mkMoRyMNfDRsI30FBtEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IxkVKHgf85H/BN3wEbmJPmZ872HDJ6SOkj1qjYztVe8=;
- b=TIlHkBOIXrXK1d/uBS9RitgsYI4xEgUT1cLwsQzYtTSQfUwKnRZ6bmtcU6v9LHI8I0V9Q1+iER15XN6Wo3v6P6N2he8s/KvyP+v/S99fHbfE7tZFdh/Y/Y22yn/wu7UslRyN2kCGaE/iaLPsMHTQhj43M6yU8NbQd1pcHRmslyPNGYJNXG3VrTw2xHkwxQWuUXqvfxNucUCqR0pva91kkGiAbDyU4H2cMST7WB1IYYHqoxFc10F9dHHDTrZi0EtUMNREZrKe7y2JoIEg02mBmVCMUEfdTpoLU+Cmeu3MX0Ofwf0d2QV1bAfoEpMPxCvI1g1kxUIHSgskZuJnh61Wow==
+ bh=MmoW8CkBzWddOW6kR9p58cG3bHx/cN1yvCC5Kj7rf8g=;
+ b=JXPF28SQAK00pDslHAeVCWr46FnbL4OfJYzoAiIjKZ9taYmdXhQunXB5iNnsOheGjBokjW8Mh/cXdzzNrk6xFBVKZEj4cibpTty3mhzBB5KMXTu+COkFhaBvecIw8A4VFrFYwas+b+NXHvHCRSoQJPvELanJMdtiWBG+8sjDk4nrIi4MnlRW8Q8ljEe87gl9NtBEzMMh9ltk1H921a/1A/bDouK6ztQc4UTLPFjrs8NcvfqPMBQ6Y2mmcbQSszDk3nwpBPOFC3POJxOAFMCqWvqiTN0Nq6lGNT2tEK0zwxPwRMkMIJpkUXeSQwzvgCAmfaUt+soVIcqRUrguPXje9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IxkVKHgf85H/BN3wEbmJPmZ872HDJ6SOkj1qjYztVe8=;
- b=Vva+hp+EkBU/c63LXwjw6X9cuYDXRmN4lfjAt4FkRKKbkRLXsm7nwO7HilUXL4A4hMMKNX2xfWB9131HPAwDf69eeQc8aMgHRXzllsl6Dh94nYKyoHA/P+oD/bRyCYoq/CH3kVWtV+0iFqsYDp2gca5i6SPtD3aP2j+2iNcod/8=
+ bh=MmoW8CkBzWddOW6kR9p58cG3bHx/cN1yvCC5Kj7rf8g=;
+ b=XFjRCzBrpgFEIntB8WRog2wrsDxm0PXwsgbDepKm1z4A74YakFeMC1NQOvWto9sQlWQhBRCio1/Wr9wgZZvfepBHgcdekfZhSXo+fkVmKabKqMkwe++weJ//ZlatPL10U2NPlS/u2ENt5YS0oTs12SS/rfmqgYZQR57KoiI41VY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM0PR04MB7011.eurprd04.prod.outlook.com (2603:10a6:208:193::10) with
+ by DU2PR04MB8872.eurprd04.prod.outlook.com (2603:10a6:10:2e3::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.30; Mon, 15 May
- 2023 15:02:07 +0000
+ 2023 15:11:07 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::25d3:de2:ef1:3884]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::25d3:de2:ef1:3884%4]) with mapi id 15.20.6387.030; Mon, 15 May 2023
- 15:02:07 +0000
+ 15:11:07 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+To: manivannan.sadhasivam@linaro.org,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] arm64: dts: imx8mp: Add coresight trace components
-Date: Mon, 15 May 2023 11:01:49 -0400
-Message-Id: <20230515150149.2790189-1-Frank.Li@nxp.com>
+Subject: [PATCH v4 1/1] PCI: layerscape: Add the endpoint linkup notifier support
+Date: Mon, 15 May 2023 11:10:49 -0400
+Message-Id: <20230515151049.2797105-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR05CA0075.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::16) To AM6PR04MB4838.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR16CA0023.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::36) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -56,312 +58,226 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM0PR04MB7011:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30bb8369-55b5-4d4c-6ef2-08db555559d5
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU2PR04MB8872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99648f0f-8352-4188-c507-08db55569c02
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	h5l6wheQHzEzSN/j0t8Sq4YXWe+CIXRZ73ySWEB+bxKdDnxF+0xL8XuUfEV4ZLKIrLBtwLMr1x5/NTswS4xLCS7hKFdT6fTy2fvYWpyzeNFFQHmkxghnmTfTC/i0CtyhR0+y/FAHbeZAl7Gcz0bAYFqnxuWj7BSSo3Szo81Jl9DqcP4nY2cy4sfS5JxgokY0ovSBsLaEP3QZwzWySB/oRmiS8aWcrtX3iANxpVGrEbasCAV8gVTMn5S4HenafDG9q+2TJdPoCGi7CMNkH0SvUs5mj0jmQhPt0xWUPOnA7W1fuHTNEmCPD33skXcaJgibYvQc9DdHeB6Z3szeRAkTD9PktxNo/qvg0V9PBLrFCjVCCF6F+13GZymr8lpl02nYP19vCsSGhwPNNna/z7fnHo6mEZUvazC4hHI1lfJF+V17UujAN0Puw4R3QACLnuGroGu+tHFzwjHNjbJtVL963d4fJUrty1aLPvL00t3wZiG1HXhmD4XI8NSoHEM+2HOXwm/mSFUPN4jVdmSpjFipj9GaFagge3yYNG9N2yoJIaD+nHsq7gwvB4Jq/WpnQgvVLM2tO4yRNDaC4Oj2DKwpX8IA+DVo42j+onjBLhbucSnT6BQYv8B4euSC/nc/sEOFEChIxTFRm+zjDSx29u4r/TbH1LIdKFwOcqiPOkmDL1A=
+	sJkQQZlGhug+YNJUwOK/dEkITe8qw15XwWdn1RUHAjEWYjFbHv8oQCylAifQxLJJXfK4jzv/9qseAc3dohIx774Voo/BKPteF9PG2A6HsFIYbXWN/WrIwlOSd7SeOP2rbzrjKAUhfWPtX/xSWdh2eDgI4rMLcdVCrskTakoovRpXMuenlpIEhwTzETh3Ba7MFgWn3DI/ysbKXB8amESoKKs7EmiYIWpcwKReQizpicF1MYjWEMdZOvtEsE0cWqa6R5Et3Bnp15ev1xy8CW8WNHmZ7gwkT2ra9uZVugvLhhWvWJyJTC+yT82uFHhWUY051piaQGB3uRzdz3+dgMQ8bheGosYsdvYYD086PLJGOzMlh3klaILU2Yh+EwnTdQ2rqg9M5OfnxfwZ4vcw/nj5dGFc7h6YwkY1hIq+Sn2ozM3+cWwUoq2IpIyXDi418sCB0oJk48gWgltzxMnkrknrSOxJwrD11CgTYw4G5yKHEQk8r2YwYG5mHetsWQU5RCavkp9jOfAGvMehymFtyVinOIHqFJNjUtbAfsO7UkTdgcpgxEJRskOm8qberjvL4xysP/wgx/qANO/JSgpaELGASXO+CLIzn7GjrLHL+tIZh6dgbPt/wJ9C3/pwHvYPVjYNLvpuLOD0vuOZrD2LJ8BUwg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(346002)(396003)(136003)(366004)(451199021)(66556008)(110136005)(478600001)(4326008)(66476007)(66946007)(6666004)(52116002)(316002)(6486002)(8936002)(2906002)(8676002)(41300700001)(7416002)(5660300002)(26005)(1076003)(921005)(86362001)(38100700002)(38350700002)(2616005)(83380400001)(6512007)(186003)(6506007)(36756003)(32563001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(136003)(396003)(346002)(376002)(39860400002)(451199021)(66556008)(4326008)(478600001)(66476007)(66946007)(110136005)(186003)(6506007)(6512007)(38350700002)(38100700002)(83380400001)(2616005)(36756003)(8676002)(8936002)(2906002)(6666004)(6486002)(52116002)(316002)(921005)(86362001)(5660300002)(41300700001)(7416002)(26005)(1076003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M2tqbnkxZ3Nua2w3YVZ1VXBJYk04M0RiakViQzJUS3p5SlNhYi9OMUFJSmo1?=
- =?utf-8?B?TVBFOStZZi9OOFBNWnp1d1lSWks3RWpMdGQwT2ZMckJoa1J0NG0vNFVvaXJq?=
- =?utf-8?B?YjZzc0xCdFV6dVdrbUdyRTNMU2ptOURoWGcrU1dJV2piVkZqVnJIRmY0OHhB?=
- =?utf-8?B?S0FOTVRDTzQyMFR2cHpLdG9BUjNENW92azBZMkoyTVZFMWhoQUF1N0dZOUNT?=
- =?utf-8?B?WjdsaWpRVGNLSnRUUzIwVkdDRUQ2WkMzRkVpRzk1dGpCWFdoOTA5WXNlUUdq?=
- =?utf-8?B?WDFwV2Q2NFE1ZnVmaURXTEJ1ZVpXSUhaY3VmdmY1NndZdUtYYVR6NmhvUjZR?=
- =?utf-8?B?L1BHaGpmRWQvdStSVWJsOUVWYm5tMVA0QkVrWVJYVGNtSlo4emk2OWE2MWJq?=
- =?utf-8?B?alFDSzdwTGUvTnBEd3Vic0xYZUlPTGdOc1VQT3FMK2FGWkpFS2xFa3JGejl4?=
- =?utf-8?B?ZVRUZ0Evb0xKWUdzeEhJWDVVRW1zMFZWOHBhNndWakN0UlJseGJteDV5WUF6?=
- =?utf-8?B?bWJyM3pZQTZFMVR1R1pOSGFxSXVYSWlmWmo0ejlNdzJrWks2SjlWMmtjRDJD?=
- =?utf-8?B?czB6bzZ0NnQxdWFNeEd2YnJvSHNlZHE0b3NYMC9YNFNZU0Qwb0pzRmJzOWdW?=
- =?utf-8?B?aUk0amVyd0tZT2daNEpMSWVhWHVjMTdmcDR3L1paUVE2dXdtNmgzMHVzeTZV?=
- =?utf-8?B?ZTNmRE9NZ0hXSlRUdTl4aUtYUDFSOG5oYWliZjFYamFIS3ZqU2c2eUdSSFFr?=
- =?utf-8?B?SjVQQ1NOQWpvdjM0aTQ4eGVhUktZd3pYcnBtTlRUU3pLTEFLQ3doVnB3Mnhr?=
- =?utf-8?B?RWxXdVU4bzR3eElZdzNhL2hkRm0vbTVQRXhBL3l4OUNnaWV0TmM3eWFNdFB0?=
- =?utf-8?B?OGNmdjJBOFB5WUdFdDFrZnE4Tml6aFpnR2VjOHhCemwzVVlPNktiNHYzcXhJ?=
- =?utf-8?B?WEgwVWpmaGNBMGJOSUlSeEE5VlFkREIvSjRFVS9ZUDZGenNENHpKUkllTzZh?=
- =?utf-8?B?TFovMmNCRnllQU4zRkhtQ1BLL1NuR3ZwUnVPd2NJaDJmU0xuOVNZaUdhMGhU?=
- =?utf-8?B?TzNZU0djcFRGc0kwVHkyLzNtcUN3dHdVWFExR2YzZnVYWUF1ZmhMU2ZhTTkx?=
- =?utf-8?B?RFFwVWhWVGxhYkt6WE5CSDFvVGM4QTV1M1VuT2IyNGdSbm5ERHYwYVArSHBa?=
- =?utf-8?B?eCt2TzhLODNhU3orb1RjV0NUM3pDeW9NT08xbEp5UkFISVN1V3RHRVo5QVBR?=
- =?utf-8?B?YU9Wc0NzSXh1YnBKWTNkVWdNVlV0dGI4c3RLYWx4bXpwdTZ3U0xHeHZ1RGJx?=
- =?utf-8?B?cmM3cHZReURpRXl0N21wTW5obTMrNzdqRFVSejNuSE5LdXIwVlBwYmtHMjdJ?=
- =?utf-8?B?RUNXbUV2SThzU0RnSUhrR2tlNUxIYjhNU2s3Rks4c1dZNEpldEc4cWxzaVhR?=
- =?utf-8?B?ZjlzU3RmMXpXVFhzcDI1QmE4UUcwYzYyUnp1amJkNXBXWm56VU5RWVJ6RHZU?=
- =?utf-8?B?UmloRDE3R1hXK3grQ1orQjBac3krUEc4cGN5YmFmUElMaXVBaEhzT2s3NVZH?=
- =?utf-8?B?Z0JnRFZra2xaZDFEc1diMHF0TWx5YThDZUxlWCtxUnFUNFpzWFNoOUdOcmJM?=
- =?utf-8?B?TGxWT2lLWUZzS1d5YlFCUWFGR2QwOGppekVXTmtveUVsZkdsN29TS3NQRUMz?=
- =?utf-8?B?QW5wQ1pZT01ETGI4cUZCRzUvRExPZTJLR3dXWjR3YUhQMHJKT1FISDBMOXhH?=
- =?utf-8?B?bDFlUVpTNUtUZ3dYZFBIL3hIZ3IzK2lab0ZSTkQvVHNnNXBld1ZCeHZVY2V3?=
- =?utf-8?B?c0h2RkgrOXRaOFJFOUxLc25MRDJZQ21PYUhPUEVreDZ3ZXE3Z2JzWWl5MElj?=
- =?utf-8?B?dWVyZXNVMXBtMEdVbVJUMk5XVHMwTGdVV1BLT2dWOU4yeVVJaGgvbjR1YW1s?=
- =?utf-8?B?OVlDK3JVMk9zanZNL3d6aHc2N3RIbk1yZm1EdnptVGlnY1ZWTTlWamNhejVo?=
- =?utf-8?B?WFdITTJpSnZFQm1BRWE0dVRlY2lweEUzcFN3RlY3ZHlDT1FNZ2ZOQTBSYzNm?=
- =?utf-8?B?TUV2a2o3eDVMOUhLVkZ5S29jazZBaGM2a3hiQm1EYXpLZDJrWlMzVUN4eW4v?=
- =?utf-8?Q?nijwSYiQ8IN9iT1Wbs+1Y2jud?=
+	=?us-ascii?Q?EYmgEHoriVAsjNeQPrm8f3F1Y8WyDHnOBXb8Bc4s8VFRggiYIKZmPVm2QjLw?=
+ =?us-ascii?Q?Kv1U61HiW7n4+Q1wNox58SB4nYYd2aInDbJA9pbaPir9UAUtEEdazJ1foA6y?=
+ =?us-ascii?Q?wbmMaWEXzTuv2ogzjIUEQbF+hZ4u1L/elPB6zX2E2yG5ljN5iG0QuTq1XamL?=
+ =?us-ascii?Q?mpo+Fob1of4l2V0vW5qPHwkWX4MMCKSa4HVthrJ0JoP7xkC0v4m4wgzSsmWn?=
+ =?us-ascii?Q?Fvz45imQPZh6T9Ba6+Q0uG+J2J8h0GTvp3r9k0gTnnDGGB4v2ReVC7deilYt?=
+ =?us-ascii?Q?e1VeZqqRik3ElqCKGy4Srzf4X1Y3axdeZmg+N8DygewoJF+u9h8EPoHnKXQz?=
+ =?us-ascii?Q?QKmB8L/OCRkT0PCJLbr7I44RYeW3xej9L35xTQXW1PLz8+TkNuhgT8RKQJRw?=
+ =?us-ascii?Q?XEP9t6hUsgeFMwH+1eXVlFwyTGXI/5ntDHgPu5k3RIsGfyi9LOVxMgRLa9KI?=
+ =?us-ascii?Q?auHSFuQCQOvzzBABq7SD4OVwQQD+z/bp09BZEBZgtYCC9MvVLWlHbbQxrDAV?=
+ =?us-ascii?Q?sRQM3MLLuFgJrkVFs2FkuDdySwSDycDixKK8gXz+Rpvj/2FaWby5gUfdCb3d?=
+ =?us-ascii?Q?vtWjiqYMK/70xXH86o1fwJmILKBYl/X5JPbSL3AYHecTjMXaTZu4lXnQdfOd?=
+ =?us-ascii?Q?YBeIzW+iptPAzlm61/fkbCVhjC6eP+HaoToRtQX4OWKUAwXKebRAyJECe71J?=
+ =?us-ascii?Q?CPgCDdEwiTj2YFfuFU/glGHBl2ikXjCHwG7qCBL11KMTXeAArzukrJQy6K4u?=
+ =?us-ascii?Q?uVq9qlBTY9WStI264tjTAs3rvfOhJmQ8ySknWU2JRcO02RREUbbu+lMZIVFl?=
+ =?us-ascii?Q?xYu7EoHf7CvzWxGIMrVNS3x91XOx+6CaPB4qdCVlgY9aMAYS4qf6Ak4erRVR?=
+ =?us-ascii?Q?oXolWsc3OUv0g7leKd/JWBXsCutzc1sdGP8MR9gMxodwrS43edDXOzlN/pcZ?=
+ =?us-ascii?Q?oHalw2tYUNhiQBnaxO/Kc8W4V1G0rZ8I0Yjfmr/+8A9fr+aUoB2hPKBlEij6?=
+ =?us-ascii?Q?hO24ggPTW7/rqemdV9GoZWtAgq1MpTlTy53Z5+cp2TTeOS8/+THsEoVaxOsz?=
+ =?us-ascii?Q?4pnbSVqGSjHvGHhRKnu/D4867d1lRFfONcHGOPbCD1j4h2yuK34AOduqVutC?=
+ =?us-ascii?Q?3KfdOHEa3xW0Gq6rp0PbuOEquTIUT/gXyJgUgp6urm4C662T19QC7lKeClca?=
+ =?us-ascii?Q?j8LErbZBPmGt0R1Cyc1AGW+EspmpWysUKLBMAkwrI13zdhb7I4E2+eHMr162?=
+ =?us-ascii?Q?FOQCD9nOoFbrEo1C7sguUGLz5oWNRK8CLc4sFNtzZD2tB7cKjwXHQAkEo8lg?=
+ =?us-ascii?Q?pwltBtwBGo0DpnL/DFdyofWBMcseHmVbMRS+TYAJm7k9Jv+FwVRtHFfDhl3l?=
+ =?us-ascii?Q?qsDbXS9bqpqZ1keEqUfqRvmIZ/J8Hk2tTBApZoKhh71lhyatmhhcywFm3m7n?=
+ =?us-ascii?Q?/rKF4wlH8bUWDkrOl0pXuse22mmIe6Te9ZEv0Dp+qtO77vpbn8DMXB9+znLF?=
+ =?us-ascii?Q?4mp1egMmC/ny/iwtPO5XeST1HuiD1H5imXXWtgNxBB34wY2g7dxtAAhLIRTx?=
+ =?us-ascii?Q?r5qSMbZPe8xjEiUuxGrHURZaBP18P0n92Sbk//qi?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30bb8369-55b5-4d4c-6ef2-08db555559d5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99648f0f-8352-4188-c507-08db55569c02
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 15:02:07.2332
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 15:11:07.7625
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cULbR/ewSfr+aHrPkjqRegqTZywo3ud9i6vpp1VAJTVeX4mLAJkxpQ8oren/7rBuCpPYHHsjinSbmJgXu/9W2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7011
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4pxIkmf/qD4x73w/eKg76gso1pJfcndod/59WoP2k3IAl4cXRv5EcemA1/JeJ2geCjosskn7ZN5iP751/qIA4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8872
 
-Add coresight trace components (ETM, ETF, ETB and Funnel).
+Layerscape has PME interrupt, which can be used as linkup notifier.
+Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
+when linkup detected.
 
-┌───────┐  ┌───────┐  ┌───────┐
-│ CPU0  ├─►│ ETM0  ├─►│       │
-└───────┘  └───────┘  │       │
-                      │       │
-┌───────┐  ┌───────┐  │  ATP  │
-│ CPU1  ├─►│ ETM1  ├─►│       │
-└───────┘  └───────┘  │       │
-                      │ FUNNEL│
-┌───────┐  ┌───────┐  │       │
-│ CPU2  ├─►│ ETM2  ├─►│       │
-└───────┘  └───────┘  │       │   ┌─────┐  ┌─────┐
-                      │       │   │     │  │     │
-┌───────┐  ┌───────┐  │       │   │ M7  │  │ DSP │
-│ CPU3  ├─►│ ETM3  ├─►│       │   │     │  │     │
-└───────┘  └───────┘  └───┬───┘   └──┬──┘  └──┬──┘               AXI
-                          │          │        │                   ▲
-                          ▼          ▼        ▼                   │
-                      ┌───────────────────────────┐   ┌─────┐   ┌─┴──┐
-                      │          ATP FUNNEL       ├──►│ETF  ├─► │ETR │
-                      └───────────────────────────┘   └─────┘   └────┘
-
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
+Change from v3 to v4
+ - swap irq and big_endian
+Change from v2 to v3
+ - align 80 column
+ - clear irq firstly
+ - dev_info to dev_dbg
+ - remove double space
+ - update commit message
+
 Change from v1 to v2
-- add new line between nodes
-- add new line between properties and child node
+- pme -> PME
+- irq -> IRQ
+- update dev_info message according to Bjorn's suggestion
 
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 204 ++++++++++++++++++++++
- 1 file changed, 204 insertions(+)
+ .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
+ 1 file changed, 101 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index a19224fe1a6a..1a25710c3a90 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -304,6 +304,210 @@ soc: soc@0 {
- 		nvmem-cells = <&imx8mp_uid>;
- 		nvmem-cell-names = "soc_unique_id";
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index c640db60edc6..5398641b6b7e 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -18,6 +18,20 @@
  
-+		etm0: etm@28440000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28440000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_0>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
+ #include "pcie-designware.h"
+ 
++#define PEX_PF0_CONFIG			0xC0014
++#define PEX_PF0_CFG_READY		BIT(0)
 +
-+			out-ports {
-+				port {
-+					etm0_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port0>;
-+					};
-+				};
-+			};
-+		};
++/* PEX PFa PCIE PME and message interrupt registers*/
++#define PEX_PF0_PME_MES_DR		0xC0020
++#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
++#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
++#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
 +
-+		etm1: etm@28540000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28540000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_1>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
++#define PEX_PF0_PME_MES_IER		0xC0028
++#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
++#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
++#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
 +
-+			out-ports {
-+				port {
-+					etm1_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port1>;
-+					};
-+				};
-+			};
-+		};
+ #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
+ 
+ struct ls_pcie_ep_drvdata {
+@@ -30,8 +44,86 @@ struct ls_pcie_ep {
+ 	struct dw_pcie			*pci;
+ 	struct pci_epc_features		*ls_epc;
+ 	const struct ls_pcie_ep_drvdata *drvdata;
++	int				irq;
++	bool				big_endian;
+ };
+ 
++static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
++{
++	struct dw_pcie *pci = pcie->pci;
 +
-+		etm2: etm@28640000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28640000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_2>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
++	if (pcie->big_endian)
++		return ioread32be(pci->dbi_base + offset);
++	else
++		return ioread32(pci->dbi_base + offset);
++}
 +
-+			out-ports {
-+				port {
-+					etm2_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port2>;
-+					};
-+				};
-+			};
-+		};
++static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
++{
++	struct dw_pcie *pci = pcie->pci;
 +
-+		etm3: etm@28740000 {
-+			compatible = "arm,coresight-etm4x", "arm,primecell";
-+			reg = <0x28740000 0x10000>;
-+			arm,primecell-periphid = <0xbb95d>;
-+			cpu = <&A53_3>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
++	if (pcie->big_endian)
++		iowrite32be(value, pci->dbi_base + offset);
++	else
++		iowrite32(value, pci->dbi_base + offset);
++}
 +
-+			out-ports {
-+				port {
-+					etm3_out_port: endpoint {
-+						remote-endpoint = <&ca_funnel_in_port3>;
-+					};
-+				};
-+			};
-+		};
++static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
++{
++	struct ls_pcie_ep *pcie = dev_id;
++	struct dw_pcie *pci = pcie->pci;
++	u32 val, cfg;
 +
-+		funnel {
-+			/*
-+			 * non-configurable funnel don't show up on the AMBA
-+			 * bus.  As such no need to add "arm,primecell".
-+			 */
-+			compatible = "arm,coresight-static-funnel";
++	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
++	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
 +
-+			in-ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
++	if (!val)
++		return IRQ_NONE;
 +
-+				port@0 {
-+					reg = <0>;
++	if (val & PEX_PF0_PME_MES_DR_LUD) {
++		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
++		cfg |= PEX_PF0_CFG_READY;
++		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
++		dw_pcie_ep_linkup(&pci->ep);
 +
-+					ca_funnel_in_port0: endpoint {
-+						remote-endpoint = <&etm0_out_port>;
-+					};
-+				};
++		dev_dbg(pci->dev, "Link up\n");
++	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
++		dev_dbg(pci->dev, "Link down\n");
++	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
++		dev_dbg(pci->dev, "Hot reset\n");
++	}
 +
-+				port@1 {
-+					reg = <1>;
++	return IRQ_HANDLED;
++}
 +
-+					ca_funnel_in_port1: endpoint {
-+						remote-endpoint = <&etm1_out_port>;
-+					};
-+				};
++static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
++				     struct platform_device *pdev)
++{
++	u32 val;
++	int ret;
 +
-+				port@2 {
-+					reg = <2>;
++	pcie->irq = platform_get_irq_byname(pdev, "pme");
++	if (pcie->irq < 0) {
++		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
++		return pcie->irq;
++	}
 +
-+					ca_funnel_in_port2: endpoint {
-+						remote-endpoint = <&etm2_out_port>;
-+					};
-+				};
++	ret = devm_request_irq(&pdev->dev, pcie->irq, ls_pcie_ep_event_handler,
++			       IRQF_SHARED, pdev->name, pcie);
++	if (ret) {
++		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
++		return ret;
++	}
 +
-+				port@3 {
-+					reg = <3>;
++	/* Enable interrupts */
++	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
++	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
++		PEX_PF0_PME_MES_IER_LUDIE;
++	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
 +
-+					ca_funnel_in_port3: endpoint {
-+						remote-endpoint = <&etm3_out_port>;
-+					};
-+				};
-+			};
++	return 0;
++}
 +
-+			out-ports {
-+				port {
-+					ca_funnel_out_port0: endpoint {
-+						remote-endpoint = <&hugo_funnel_in_port0>;
-+					};
-+				};
-+			};
-+		};
+ static const struct pci_epc_features*
+ ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+ {
+@@ -125,6 +217,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	struct ls_pcie_ep *pcie;
+ 	struct pci_epc_features *ls_epc;
+ 	struct resource *dbi_base;
++	int ret;
+ 
+ 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+ 	if (!pcie)
+@@ -144,6 +237,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	pci->ops = pcie->drvdata->dw_pcie_ops;
+ 
+ 	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
++	ls_epc->linkup_notifier = true;
+ 
+ 	pcie->pci = pci;
+ 	pcie->ls_epc = ls_epc;
+@@ -155,9 +249,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	pci->ep.ops = &ls_pcie_ep_ops;
+ 
++	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
 +
-+		funnel@28c03000 {
-+			compatible = "arm,coresight-dynamic-funnel", "arm,primecell";
-+			reg = <0x28c03000 0x1000>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
+ 	platform_set_drvdata(pdev, pcie);
+ 
+-	return dw_pcie_ep_init(&pci->ep);
++	ret = dw_pcie_ep_init(&pci->ep);
++	if (ret)
++		return ret;
 +
-+			in-ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+
-+					hugo_funnel_in_port0: endpoint {
-+						remote-endpoint = <&ca_funnel_out_port0>;
-+					};
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+
-+					hugo_funnel_in_port1: endpoint {
-+					/* M7 input */
-+					};
-+				};
-+
-+				port@2 {
-+					reg = <2>;
-+
-+					hugo_funnel_in_port2: endpoint {
-+					/* DSP input */
-+					};
-+				};
-+				/* the other input ports are not connect to anything */
-+			};
-+
-+			out-ports {
-+				port {
-+					hugo_funnel_out_port0: endpoint {
-+						remote-endpoint = <&etf_in_port>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etf@28c04000 {
-+			compatible = "arm,coresight-tmc", "arm,primecell";
-+			reg = <0x28c04000 0x1000>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+
-+			in-ports {
-+				port {
-+					etf_in_port: endpoint {
-+						remote-endpoint = <&hugo_funnel_out_port0>;
-+					};
-+				};
-+			};
-+
-+			out-ports {
-+				port {
-+					etf_out_port: endpoint {
-+						remote-endpoint = <&etr_in_port>;
-+					};
-+				};
-+			};
-+		};
-+
-+		etr@28c06000 {
-+			compatible = "arm,coresight-tmc", "arm,primecell";
-+			reg = <0x28c06000 0x1000>;
-+			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
-+			clock-names = "apb_pclk";
-+
-+			in-ports {
-+				port {
-+					etr_in_port: endpoint {
-+						remote-endpoint = <&etf_out_port>;
-+					};
-+				};
-+			};
-+		};
-+
- 		aips1: bus@30000000 {
- 			compatible = "fsl,aips-bus", "simple-bus";
- 			reg = <0x30000000 0x400000>;
++	return ls_pcie_ep_interrupt_init(pcie, pdev);
+ }
+ 
+ static struct platform_driver ls_pcie_ep_driver = {
 -- 
 2.34.1
 
