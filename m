@@ -1,60 +1,36 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8431117
-	for <imx@lists.linux.dev>; Sun, 14 May 2023 13:46:32 +0000 (UTC)
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1addac3de73so21706045ad.1
-        for <imx@lists.linux.dev>; Sun, 14 May 2023 06:46:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684071992; x=1686663992;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Kcb2f4Ev9/MrkBRrwgPUZL/+4rEBt9/dH5HyrPeBpO4=;
-        b=zRRMijhxUqcZNdU5t3A7v0iTTy5sp9JnGXlF+tE6U62rA927JXkfzTcDVK+vQUPhIu
-         2fe42bQ+Vp9ycOqoOi+lm+jpoGCHJkgxHzZsXSX608PBcrSeJQl6d8Rl0MfjOwGtLYyI
-         Uzmt0aHUvNVO02oaFXpSdzGZO5jM/ZBm6VqnrGHvVxTeJ32DCnO29zKE/SGDlnRbgHm7
-         1jdCsAgzRtTP3K8mdfCelYfl3ZzHK/sYCmQCvSJAgChtV+Cy+VLaOKVUZNtuRIQQunSc
-         sWuiV81BZq3SpDsL3VDBGF43CQPwt7pmPZqnZSU32L6A7wZLV39jTGo/7+qXVuElYWt4
-         mC+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684071992; x=1686663992;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kcb2f4Ev9/MrkBRrwgPUZL/+4rEBt9/dH5HyrPeBpO4=;
-        b=eq/VFz7ECxj5CQJLZxZKE1oOuLhPn7k23O+EGTswsInFQ8plsGQLTOwAO71yvqBI32
-         lt26G0J0T98E2JSKYfbnrhsGsrnrvENcBl3wpnbzPJ8xTusPet7KPNtR4EkeRi2VYV/D
-         Lfmg9mfqp1kpvbBjwt9SXpjMQEFSA79oGQyFZIUAdUama5xWhXtlT26tfIeNBnqyPQvy
-         Gkgdo8zmp8RgqiLK1lj5YAtmGVDrOzIt4bF7hveflZaGpqTmKvK21J1MYCpNqphkmllW
-         /khp+wWT+7PvsjHGtWfWGVq/EDbKsrMx3JvuYNioyLXSMQ+ZwLgW0eYjgBJQDWEOfyt2
-         25tA==
-X-Gm-Message-State: AC+VfDz2HgcsQGtLk+IEFPxp2hWJ5+JXuSZ8DplREherbxf9ifdx7nIq
-	IAqXb8RVtUrv+rdSbymP41/h
-X-Google-Smtp-Source: ACHHUZ4w5jCbkX6MzOxwLVijUmBV55zTb3NrD9AvLOeEjyB4nA4W4gawwMADr5WX8bC0T2xCDrg0YA==
-X-Received: by 2002:a17:902:b7cc:b0:1ac:3ddf:2299 with SMTP id v12-20020a170902b7cc00b001ac3ddf2299mr31094193plz.44.1684071992018;
-        Sun, 14 May 2023 06:46:32 -0700 (PDT)
-Received: from thinkpad ([120.138.12.96])
-        by smtp.gmail.com with ESMTPSA id w14-20020a170902e88e00b001ac591b0500sm4725357plg.134.2023.05.14.06.46.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 May 2023 06:46:31 -0700 (PDT)
-Date: Sun, 14 May 2023 19:16:25 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F74B10EA
+	for <imx@lists.linux.dev>; Mon, 15 May 2023 00:57:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC775C433D2;
+	Mon, 15 May 2023 00:57:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1684112261;
+	bh=ZlJ0oVkgI0zlprQ/KHy+1dFyoFMssfZ33Pdw+Ts3G5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NazBCmbOxlej/wvIz8qbl8Vl8u1N4E+MVuDyllmzUCkJBHkRKtjOpeTrtuHS+9U6U
+	 sKkDVuCzNZ9wYbF1PU96UaKmk9B6bo8SdwABM/sT59ASkK2uw8dK9kr8l1G58RMkEq
+	 BOdUUGbcla9igZeBjsD52hXm405Vf+npEz1abrw2RHSlePy5WhVJw9/x2Fg1b+ODkw
+	 u/cp8GeQiFIpqKQDBwpe/MsAWOzSR5yxaUxck3cXDNDfkBzg9E+fY1DnGd0+hHj9vR
+	 VntNfymGXOFd9EypCsX5qoGw+BME3kmeqP+Qf21k+Qhda5ZXiklRQA075Z6zc2t5M3
+	 qutCYEtL1P9yw==
+Date: Mon, 15 May 2023 08:57:30 +0800
+From: Shawn Guo <shawnguo@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
-	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] PCI: layerscape: Add the endpoint linkup notifier
- support
-Message-ID: <20230514134625.GB116991@thinkpad>
-References: <20230508215235.1994348-1-Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	coresight@lists.linaro.org
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: Add coresight trace components
+Message-ID: <20230515005730.GB727834@dragon>
+References: <20230505195151.1874071-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,190 +40,244 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230508215235.1994348-1-Frank.Li@nxp.com>
+In-Reply-To: <20230505195151.1874071-1-Frank.Li@nxp.com>
 
-On Mon, May 08, 2023 at 05:52:35PM -0400, Frank Li wrote:
-> Layerscape has PME interrupt, which can be used as linkup notifier.
-> Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
-> when linkup detected.
+On Fri, May 05, 2023 at 03:51:51PM -0400, Frank Li wrote:
+> Add coresight trace components (ETM, ETF, ETB and Funnel).
 > 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> ┌───────┐  ┌───────┐  ┌───────┐
+> │ CPU0  ├─►│ ETM0  ├─►│       │
+> └───────┘  └───────┘  │       │
+>                       │       │
+> ┌───────┐  ┌───────┐  │  ATP  │
+> │ CPU1  ├─►│ ETM1  ├─►│       │
+> └───────┘  └───────┘  │       │
+>                       │ FUNNEL│
+> ┌───────┐  ┌───────┐  │       │
+> │ CPU2  ├─►│ ETM2  ├─►│       │
+> └───────┘  └───────┘  │       │   ┌─────┐  ┌─────┐
+>                       │       │   │     │  │     │
+> ┌───────┐  ┌───────┐  │       │   │ M7  │  │ DSP │
+> │ CPU3  ├─►│ ETM3  ├─►│       │   │     │  │     │
+> └───────┘  └───────┘  └───┬───┘   └──┬──┘  └──┬──┘               AXI
+>                           │          │        │                   ▲
+>                           ▼          ▼        ▼                   │
+>                       ┌───────────────────────────┐   ┌─────┐   ┌─┴──┐
+>                       │          ATP FUNNEL       ├──►│ETF  ├─► │ETR │
+>                       └───────────────────────────┘   └─────┘   └────┘
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-One minor comment below. With that fixed,
-
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
 > ---
-> Change from v2 to v3
->  - align 80 column
->  - clear irq firstly
->  - dev_info to dev_dbg
->  - remove double space
->  - update commit message
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 179 ++++++++++++++++++++++
+>  1 file changed, 179 insertions(+)
 > 
-> Change from v1 to v2
-> - pme -> PME
-> - irq -> IRQ
-> - update dev_info message according to Bjorn's suggestion
-> - remove '.' at error message
-> 
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
->  1 file changed, 101 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index c640db60edc6..1a431a9be91e 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -18,6 +18,20 @@
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> index a19224fe1a6a..0fa74477b9e1 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -304,6 +304,185 @@ soc: soc@0 {
+>  		nvmem-cells = <&imx8mp_uid>;
+>  		nvmem-cell-names = "soc_unique_id";
 >  
->  #include "pcie-designware.h"
->  
-> +#define PEX_PF0_CONFIG			0xC0014
-> +#define PEX_PF0_CFG_READY		BIT(0)
-> +
-> +/* PEX PFa PCIE PME and message interrupt registers*/
-> +#define PEX_PF0_PME_MES_DR		0xC0020
-> +#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
-> +#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
-> +#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
-> +
-> +#define PEX_PF0_PME_MES_IER		0xC0028
-> +#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
-> +#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
-> +#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
-> +
->  #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
->  
->  struct ls_pcie_ep_drvdata {
-> @@ -30,8 +44,86 @@ struct ls_pcie_ep {
->  	struct dw_pcie			*pci;
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
-> +	bool				big_endian;
-> +	int				irq;
+> +		etm0: etm@28440000 {
+> +			compatible = "arm,coresight-etm4x", "arm,primecell";
+> +			reg = <0x28440000 0x10000>;
+> +			arm,primecell-periphid = <0xbb95d>;
+> +			cpu = <&A53_0>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
 
-Move bool to the end of struct to avoid holes.
+Have a newline between properties and child node.
 
-- Mani
+> +			out-ports {
+> +				port {
+> +					etm0_out_port: endpoint {
+> +						remote-endpoint = <&ca_funnel_in_port0>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +
+> +		etm1: etm@28540000 {
+> +			compatible = "arm,coresight-etm4x", "arm,primecell";
+> +			reg = <0x28540000 0x10000>;
+> +			arm,primecell-periphid = <0xbb95d>;
+> +			cpu = <&A53_1>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
+> +			out-ports {
+> +				port {
+> +					etm1_out_port: endpoint {
+> +						remote-endpoint = <&ca_funnel_in_port1>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +
+> +		etm2: etm@28640000 {
+> +			compatible = "arm,coresight-etm4x", "arm,primecell";
+> +			reg = <0x28640000 0x10000>;
+> +			arm,primecell-periphid = <0xbb95d>;
+> +			cpu = <&A53_2>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
+> +			out-ports {
+> +				port {
+> +					etm2_out_port: endpoint {
+> +						remote-endpoint = <&ca_funnel_in_port2>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +
+> +		etm3: etm@28740000 {
+> +			compatible = "arm,coresight-etm4x", "arm,primecell";
+> +			reg = <0x28740000 0x10000>;
+> +			arm,primecell-periphid = <0xbb95d>;
+> +			cpu = <&A53_3>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
+> +			out-ports {
+> +				port {
+> +					etm3_out_port: endpoint {
+> +						remote-endpoint = <&ca_funnel_in_port3>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +
+> +		funnel {
+> +			/*
+> +			 * non-configurable funnel don't show up on the AMBA
+> +			 * bus.  As such no need to add "arm,primecell".
+> +			 */
+> +			compatible = "arm,coresight-static-funnel";
 
->  };
->  
-> +static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
-> +{
-> +	struct dw_pcie *pci = pcie->pci;
+Ditto
+
+> +			in-ports {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+
+Ditto
+
+> +				port@0 {
+> +					reg = <0>;
+
+Ditto
+
+> +					ca_funnel_in_port0: endpoint {
+> +						remote-endpoint = <&etm0_out_port>;
+> +					};
+> +				};
+> +				port@1 {
+
+Have a newline between nodes.
+
+Shawn
+
+> +					reg = <1>;
+> +					ca_funnel_in_port1: endpoint {
+> +						remote-endpoint = <&etm1_out_port>;
+> +					};
+> +				};
+> +				port@2 {
+> +					reg = <2>;
+> +					ca_funnel_in_port2: endpoint {
+> +						remote-endpoint = <&etm2_out_port>;
+> +					};
+> +				};
+> +				port@3 {
+> +					reg = <3>;
+> +					ca_funnel_in_port3: endpoint {
+> +						remote-endpoint = <&etm3_out_port>;
+> +					};
+> +				};
+> +			};
+> +			out-ports {
+> +				port {
+> +					ca_funnel_out_port0: endpoint {
+> +						remote-endpoint = <&hugo_funnel_in_port0>;
+> +					};
+> +				};
+> +			};
+> +		};
 > +
-> +	if (pcie->big_endian)
-> +		return ioread32be(pci->dbi_base + offset);
-> +	else
-> +		return ioread32(pci->dbi_base + offset);
-> +}
+> +		funnel@28c03000 {
+> +			compatible = "arm,coresight-dynamic-funnel", "arm,primecell";
+> +			reg = <0x28c03000 0x1000>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
+> +			in-ports {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				port@0 {
+> +					reg = <0>;
+> +					hugo_funnel_in_port0: endpoint {
+> +						remote-endpoint = <&ca_funnel_out_port0>;
+> +					};
+> +				};
+> +				port@1 {
+> +					reg = <1>;
+> +					hugo_funnel_in_port1: endpoint {
+> +					/* M7 input */
+> +					};
+> +				};
+> +				port@2 {
+> +					reg = <2>;
+> +					hugo_funnel_in_port2: endpoint {
+> +					/* DSP input */
+> +					};
+> +				};
+> +				/* the other input ports are not connect to anything */
+> +			};
+> +			out-ports {
+> +				port {
+> +					hugo_funnel_out_port0: endpoint {
+> +						remote-endpoint = <&etf_in_port>;
+> +					};
+> +				};
+> +			};
+> +		};
 > +
-> +static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
-> +{
-> +	struct dw_pcie *pci = pcie->pci;
+> +		etf@28c04000 {
+> +			compatible = "arm,coresight-tmc", "arm,primecell";
+> +			reg = <0x28c04000 0x1000>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
+> +			in-ports {
+> +				port {
+> +					etf_in_port: endpoint {
+> +						remote-endpoint = <&hugo_funnel_out_port0>;
+> +					};
+> +				};
+> +			};
+> +			out-ports {
+> +				port {
+> +					etf_out_port: endpoint {
+> +						remote-endpoint = <&etr_in_port>;
+> +					};
+> +				};
+> +			};
+> +		};
 > +
-> +	if (pcie->big_endian)
-> +		iowrite32be(value, pci->dbi_base + offset);
-> +	else
-> +		iowrite32(value, pci->dbi_base + offset);
-> +}
+> +		etr@28c06000 {
+> +			compatible = "arm,coresight-tmc", "arm,primecell";
+> +			reg = <0x28c06000 0x1000>;
+> +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> +			clock-names = "apb_pclk";
+> +			in-ports {
+> +				port {
+> +					etr_in_port: endpoint {
+> +						remote-endpoint = <&etf_out_port>;
+> +					};
+> +				};
+> +			};
+> +		};
 > +
-> +static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> +{
-> +	struct ls_pcie_ep *pcie = dev_id;
-> +	struct dw_pcie *pci = pcie->pci;
-> +	u32 val, cfg;
-> +
-> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> +
-> +	if (!val)
-> +		return IRQ_NONE;
-> +
-> +	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
-> +		cfg |= PEX_PF0_CFG_READY;
-> +		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> +		dw_pcie_ep_linkup(&pci->ep);
-> +
-> +		dev_dbg(pci->dev, "Link up\n");
-> +	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
-> +		dev_dbg(pci->dev, "Link down\n");
-> +	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
-> +		dev_dbg(pci->dev, "Hot reset\n");
-> +	}
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
-> +				     struct platform_device *pdev)
-> +{
-> +	u32 val;
-> +	int ret;
-> +
-> +	pcie->irq = platform_get_irq_byname(pdev, "pme");
-> +	if (pcie->irq < 0) {
-> +		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
-> +		return pcie->irq;
-> +	}
-> +
-> +	ret = devm_request_irq(&pdev->dev, pcie->irq, ls_pcie_ep_event_handler,
-> +			       IRQF_SHARED, pdev->name, pcie);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Enable interrupts */
-> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
-> +	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
-> +		PEX_PF0_PME_MES_IER_LUDIE;
-> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
-> +
-> +	return 0;
-> +}
-> +
->  static const struct pci_epc_features*
->  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
->  {
-> @@ -125,6 +217,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	int ret;
->  
->  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
->  	if (!pcie)
-> @@ -144,6 +237,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	pci->ops = pcie->drvdata->dw_pcie_ops;
->  
->  	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
-> +	ls_epc->linkup_notifier = true;
->  
->  	pcie->pci = pci;
->  	pcie->ls_epc = ls_epc;
-> @@ -155,9 +249,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	pci->ep.ops = &ls_pcie_ep_ops;
->  
-> +	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
-> +
->  	platform_set_drvdata(pdev, pcie);
->  
-> -	return dw_pcie_ep_init(&pci->ep);
-> +	ret = dw_pcie_ep_init(&pci->ep);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ls_pcie_ep_interrupt_init(pcie, pdev);
->  }
->  
->  static struct platform_driver ls_pcie_ep_driver = {
+>  		aips1: bus@30000000 {
+>  			compatible = "fsl,aips-bus", "simple-bus";
+>  			reg = <0x30000000 0x400000>;
 > -- 
 > 2.34.1
 > 
-
--- 
-மணிவண்ணன் சதாசிவம்
