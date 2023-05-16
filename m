@@ -1,146 +1,86 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2040.outbound.protection.outlook.com [40.107.15.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D2CFBE0
-	for <imx@lists.linux.dev>; Mon, 15 May 2023 16:21:18 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hJ5FHH0ReA6OGFsrbqEiVD0N6vI4cPZMHQLU9sePqQKU+XcWfj8QPj3y/CppQXtgA+J509QEoffqTeQn5pw1ByyWx2hZiz4yzkIhESAruDJymJzvDrNi25XS15JKIx/VxJr+LbFortxMLGyObQKg4nmlJKYp2c999EARnR5IVmwpqwNES4xDJzOQa5PAaajUWM9PPU0ZmhcDvKzNA+4u7x/t4lmtRfozWUtXHKVsVV/2IgiH7ARzqCsCXV2mg+REGL1kNG7AItL3Ttr/z5Mr2YEj68RoJLEg0OUza3mEHVRYrOp9PJUEE+jySit2notOyWhmsHwNJ91n15XmQB6EZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=37QHTv7cLsVz+4ikoYkrwSpGRxKyw6m7AM8VdGcCJfs=;
- b=Wtvvw3LJ/3j71nubiVIaDb07/adw+JijY3D0vmx2LIJqweeIbK/jEgyJ3bx1KcWncPqzCQ9oB/6elq01xfPuWJ8Ca6znwA40N0uRxjKj2OYB4imtmRnLdrcELjfL/RddEpErtb5w0A456XcJNJoLMY0yYVxtueYa5ZFHZIAgBxhJfqcnRfJn5fGlkidvSWVKnxV15yHBLi3u9+zuzJBfvOPZD0mepOlMliCTIPOSGMInzQQEdBjVTnJ/U+jIIFVf4hIHxNr1sa+BV/mLZIpiFyIqs20AhkDg+4192gU2ksXKc2P6AEQBGD6sPXdEzemZEKOCrYs5sWj+vIZfvf1j7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=37QHTv7cLsVz+4ikoYkrwSpGRxKyw6m7AM8VdGcCJfs=;
- b=LNhwJbMNTdeMjNbFnDsl3pusZSbmKY1L7oHmileHagrvEVFvIawHoocnhleZSwt1nokbIo5628erRweGjHeTD7VGagEJscBmJCP81SsOQx7nGNmTRKsx5mZbqMBUfiC+9C+E8zZyWZeLgJeuuGwarGmA6370VKpPeY86JfUsa4Q=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by PR3PR04MB7371.eurprd04.prod.outlook.com (2603:10a6:102:87::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.27; Mon, 15 May
- 2023 16:21:15 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::25d3:de2:ef1:3884]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::25d3:de2:ef1:3884%4]) with mapi id 15.20.6387.030; Mon, 15 May 2023
- 16:21:15 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: shawnguo@kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v3 2/2] arm64: dts: imx8: fix USB 3.0 Gadget Failure in QM & QXPB0 at super speed
-Date: Mon, 15 May 2023 12:20:53 -0400
-Message-Id: <20230515162053.2825405-2-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230515162053.2825405-1-Frank.Li@nxp.com>
-References: <20230515162053.2825405-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR16CA0020.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::33) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23DB1DDC0
+	for <imx@lists.linux.dev>; Tue, 16 May 2023 07:44:08 +0000 (UTC)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-50db7f0a1b4so13012160a12.3
+        for <imx@lists.linux.dev>; Tue, 16 May 2023 00:44:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684223047; x=1686815047;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=knTSlcHxUZPKa0wlQrVdNwYp/jYVO/YuubSx7u5s0Ls=;
+        b=TeUx4gZf5l8kCwUOpM3vraO/dpj8ZKCYeYC+UyukIKK8PhquXj1z5nXdDveJhllDzO
+         BshJCjDBpjIFmHTSgQMbK5nlvJAj8qy5TSkVLti6rcNcETEJTJE/DNmYT9Iy1phRyozY
+         faALNzW2VFnPuBdXLSVjWQnJz23wFRiGnXXR38lifJWFxZH/jTUb2deWHS1k8grOCVRr
+         EUg5ANaFvAjuLMay07f9PvRLefzzI/xLgt5I3M1vL2j9AXIEzNyxZNqKJTMhd2FOBIUX
+         Obi1b3phqJj6B5VQX4/s7Z0cV+Wz4/wTYkrCtvm0rEgjG3FL94F9w8KmJVAS+nG+VQ8E
+         qsSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684223047; x=1686815047;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=knTSlcHxUZPKa0wlQrVdNwYp/jYVO/YuubSx7u5s0Ls=;
+        b=I5zqZEk80nO9+GZELQ9BGLr6CVSEkI/RBXYaTftvkBDAZA+aB7EgNl0NpFM/hPU/K3
+         u82XnyHZtyZ/Us1In73ScPlnE7RkLQZJNybceNaRg1CKRBrPJ9akQvweIimBALJPvRU1
+         6Bj3Qwp2tI+32735L/08ISi10D1KfQ9ogKd9HerDfDIaWxeB9qpLpiPltd0rs+xIO/vc
+         IxI36U4FoFE9hWySFstt9SzSrhIwSd4jdXaVG9UnLacrSNQB7IMukPMZUjm87n02wyJe
+         z452YMsgAiQN4EJNiqIvcwdHZSX0V0eViUhjaTyYf7cmmLTQi8KtLn462BOoHmbaX2Fv
+         i4Ew==
+X-Gm-Message-State: AC+VfDxN7T5w2FpouEVfazCbNSn4FOYEj613rsqRdEgVxK+w7s0aMAIW
+	sQPrc++tjKB1BoT+oQXANmRjhg==
+X-Google-Smtp-Source: ACHHUZ5Xc/3fLyfIt7CaeI8B9CHN4J4ETHB21vbWYlJ+ZxGKEsCjykxYrKvyB93jjVhaoBslUozBAw==
+X-Received: by 2002:a17:907:3daa:b0:96a:1cbf:3dcc with SMTP id he42-20020a1709073daa00b0096a1cbf3dccmr25286333ejc.54.1684223047014;
+        Tue, 16 May 2023 00:44:07 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:4d4a:9b97:62e:1439? ([2a02:810d:15c0:828:4d4a:9b97:62e:1439])
+        by smtp.gmail.com with ESMTPSA id n12-20020a1709065dac00b009663cf5dc2fsm10674369ejv.66.2023.05.16.00.44.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 May 2023 00:44:06 -0700 (PDT)
+Message-ID: <0a70fd40-fcf6-7297-8464-a23d3981afc3@linaro.org>
+Date: Tue, 16 May 2023 09:44:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PR3PR04MB7371:EE_
-X-MS-Office365-Filtering-Correlation-Id: cdc7ffd4-1e0e-4fc9-2505-08db5560680c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	1x1+zWRd5VP4qpBTHXuZoHA0cECr5EBBAbQINMBBcriLXx1p42ZKgZ7IDs8hmTiuBnb97xRUgs4YNCBHLuT6bBbP3GP/nKVyNq9lPK4J36l9q3f2DmoINJcke1fgbAQcR2GNdXfgWYt3eVEMYoZSmiaXAZi3Rw3wl92yvN6TVDynnuU4Gv/3GIJLHLXM3YdKrNgXH6D+vcRSmpZugJRhFNsaPqCbCBmG5JyF5ExZkMCi/DqlGYuHpT1JsmKYy5C+fqn1iqTDepC1jUG9MXPNnTb5ZWxZSU5DUCmybh8ofbnjzz85p+RpPh0UKN/4s47AA98BKXpAC2490om+j3tVHylUzhH+STTsjYwnDpSLh5H4YjEPaFZnteZqaDPL0e+le90jpRnrm94lTJtEXdb7fGO1XLLjtWES++wCt+vxZb3uSjzuK/AUnn9pOiw939Skc9KbiLHoZ6dDvZpV7HX+sodOLf91icv+CksGJ2UDQVZIWRNXLN2a+BMaqdzi1HTmYczGcRL9YYNHtFGqfAk3EnobSc1WM3T7Zxt/BBWpJKz0AXnXTamVnJzeIbg879bfwoaEeEVTN2sxiKuPFN/QenAGLlB8MWqZhm6X22KQ0w4T/UJdYm5vOXw8cMuhn9IXSGyYFrIlqJvipi/MA1aH7Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(396003)(39860400002)(366004)(346002)(451199021)(186003)(38350700002)(6506007)(38100700002)(921005)(36756003)(86362001)(26005)(6512007)(7416002)(8936002)(8676002)(2616005)(2906002)(110136005)(478600001)(41300700001)(6486002)(5660300002)(52116002)(6666004)(4326008)(66946007)(316002)(66476007)(66556008)(83380400001)(1076003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YxEWddRIm/wHZ/MFoPAJSzeasgfkidaa+4iLw528mgJRSaPBiJmk/rGPdSek?=
- =?us-ascii?Q?8Kr59ADdQ4ksdz+tvGDLWVmf0eU6nv39EOqihADUj+wRHFlVkatLvfPXeVxV?=
- =?us-ascii?Q?ZEp2vWh76uFOrc7qFs37CQMPr2SLgQUojQKc0ByFyvgYscwtuyamgofY6RfV?=
- =?us-ascii?Q?JRWQJwdyloy0MUhNdqBh+8gRMVTfRKtyjIXX2Q1x2XQgywXRF4rU2yapkaJt?=
- =?us-ascii?Q?MkmjCqcaOe0PQqZSUfKA1YkdtZGn3/r8v+WFlzGUy96jGNnud+Fz0GoHFriM?=
- =?us-ascii?Q?QFz9+EW8hnmwHnSYnOrM9UFhyn3+wlMRVYtpxHEoqyrpaTwhn64XHfGEhKGd?=
- =?us-ascii?Q?QxN2YHygmaAchPth+YJ7UyNnk0DmG1J/cA7kTMeoVFva9AzMqFVWYVeu7NM8?=
- =?us-ascii?Q?Aq1LOX9MQwPyQtwfa1qkaZ/XYp7YubVMVnJQGEoZMVAE+RGPXE1Jd/T6JUWF?=
- =?us-ascii?Q?/WmFP1BJhzf4HcBsn2jxdB8tBu4+GlOndJjRTpv8YQDxqqry4OZhRnEIbmLl?=
- =?us-ascii?Q?jbQxm10ysy1Ag9ZhcVbkxn5DOpiW8+jYcdxgpyevToScYR0X14Wj5kF5HEvZ?=
- =?us-ascii?Q?2U4Eid2WRK5ZgkkFEAhOb2y6x7E/RQs5NkKj+3zPYIxxMtI41OxdpFL8Kya4?=
- =?us-ascii?Q?C+oBdoNt6hFgydGkSfUcvZj9Q/SM7/GfZsCgQO9PMPEftVz4XmtElVaiJx5d?=
- =?us-ascii?Q?gyaO/0/DcBixUdqS7uPmS3xSC/iL1ydc3IUhSuXfKNLOt4AXDJFbRRHkVffS?=
- =?us-ascii?Q?1lFJCTFHgnaQNfHtYP1EXprsrB85GIPuc20KY0AMsVTiblzZXnWsmUwslHQj?=
- =?us-ascii?Q?XKA1ETCErH830TRyv7s8e7YRsfdNOVhLp91Tx+24gOcFvE0Fxtn+wsAnjkCa?=
- =?us-ascii?Q?V12XI+PNIzWhyeQ+rETDqMIaTZV/SDX28bJRIfregj6WOZlGlGz+u/FwLYLN?=
- =?us-ascii?Q?zypOdajZh8t6Hyx56DjlvNZ0mxw+D3LOMF3uqxT8/5DxZNoXWtP350OqFWBI?=
- =?us-ascii?Q?lxia1fw/VfO8mpo2vqC+Vxo/lGiDVpiOCiU9bGPpsvuWmWMhlE4mpRyiOUjS?=
- =?us-ascii?Q?lpRwrFjbIZR1Gc/MtTI3tGmAsIslTHUytEtHBg78DISLqZSfqsjklN8ocQqW?=
- =?us-ascii?Q?foioH6+rWWBL+BFGfpCWiKIRq3q6YdHBsy+kFlysTyNf7LMy/IlTQKD3TddO?=
- =?us-ascii?Q?Rk4LBFYv0TUsWDdce82yZQnBfY/9wyEX9vBaaR5fU6C2SGfdauEMx1crku8o?=
- =?us-ascii?Q?jeCFrTNV4VXP2Kzgur73zgJLTbT0PdAq8AsM18pETmbPEp2bZtbqndVsU9aw?=
- =?us-ascii?Q?tYGMKXcOT7kuep3HC3CDEjx70GaEQWTvIQ3vsEPmGBGf/liTvjodRRh6KjbB?=
- =?us-ascii?Q?QDOOTp96SiZwNtQaEV8Nc/eBl5LS2gpns4QQBG8MtJrRgHqR1JpHWso/9pW/?=
- =?us-ascii?Q?ulwVtKmOJW1PKMYIP7p6ZrAWN0+y3Tu5OW5AAKZvmUbJ4Lf9+BoG/u1aGLAx?=
- =?us-ascii?Q?E50ZU1SV01T2WKrZcLsOs7YewOG4+pRn6fwapUdsO73zAc8Z49/Wg5KC3rhw?=
- =?us-ascii?Q?MG21BjLb2k76Fg+3Sjg=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cdc7ffd4-1e0e-4fc9-2505-08db5560680c
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 16:21:15.6773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5e3c036nP+ozL2Wh/k8j4hg3gCLyUTkfED4Da8eIuwQO66uAKQgXRghps6akkEWGFBA19gxarXQx0cu5C22Ubw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7371
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 1/2] dt-binding: cdns,usb3: Fix cdns,on-chip-buff-size
+ type
+Content-Language: en-US
+To: Frank Li <Frank.Li@nxp.com>, shawnguo@kernel.org,
+ Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
+ Roger Quadros <rogerq@kernel.org>, Aswath Govindraju <a-govindraju@ti.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Felipe Balbi <balbi@kernel.org>,
+ "open list:CADENCE USB3 DRD IP DRIVER" <linux-usb@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20230515162053.2825405-1-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230515162053.2825405-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Resolve USB 3.0 gadget failure for QM and QXPB0 in super speed mode with
-single IN and OUT endpoints, like mass storage devices, due to incorrect
-ACTUAL_MEM_SIZE in ep_cap2 (32k instead of actual 18k). Implement dt
-property cdns,on-chip-buff-size to override ep_cap2 and set it to 18k for
-imx8QM and imx8QXP chips. No adverse effects for 8QXP C0.
+On 15/05/2023 18:20, Frank Li wrote:
+> In cdns3-gadget.c, 'cdns,on-chip-buff-size' was read using
+> device_property_read_u16(). It resulted in 0 if a 32bit value was used
+> in dts. This commit fixes the dt binding doc to declare it as u16.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 68989fe1c39d ("dt-bindings: usb: Convert cdns-usb3.txt to YAML schema")
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Cc: stable@vger.kernel.org
-Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v2 to v3
--cc stable
-change from v1 to v2
-- fixes warning from check-patch
-- update dt-binding doc
 
- arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-index b32c2e199c16..030c273c8be4 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-@@ -171,6 +171,7 @@ usbotg3_cdns3: usb@5b120000 {
- 			interrupt-names = "host", "peripheral", "otg", "wakeup";
- 			phys = <&usb3_phy>;
- 			phy-names = "cdns3,usb3-phy";
-+			cdns,on-chip-buff-size = /bits/ 16 <18>;
- 			status = "disabled";
- 		};
- 	};
--- 
-2.34.1
+Best regards,
+Krzysztof
 
