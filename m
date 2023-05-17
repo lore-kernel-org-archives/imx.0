@@ -1,128 +1,89 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2045.outbound.protection.outlook.com [40.107.7.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7561418B16
-	for <imx@lists.linux.dev>; Wed, 17 May 2023 14:25:26 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QzqOmrlNrqmZw36Ys0Vk+4zL7ihgarmEUAfDCpv1hMO2NFEnC1CFhXTddbtrjFeYzjhS9s4ddeOWwHrO4yQooFC1ckQJuShRcHQOlfrTjxKjyxy7MZQOYGxpW0P9FPSA+Rcv0tkphO1YBG9S+5VLjLszY3glJILRilRz5t1pH34oiMhlOd/vUUaYSW1fISvpmuzxQyZrdxL2PFF/pynLl6YQ+jwaDQN/yoGL1XlUIzE0toZH5DTb+YIJftGS3/f/0mRXM4bmhksYl0Ax1jmKHkcu8Phw+2DYjgZ+ngxcBePSeH0KhANOOBZlZKwdkmRcbubStTmg1cS7+Xis+ayOfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MeGK1jVV4yXBKIxT3F40WjJeg/KuApeWDVYYdN1Dmx8=;
- b=nAAIDTBLL8X9bXZWFLcR6EFaYzXwwL6A5cwUzE1xaRLtj2j6huSP2MKBLX7pXzfIghG7/YPAwzZdB5xhPnPZYupkgArzpE2ajLNDi0XDzv2IBiZSktMYeDcy4u85i7aTXnPLTZ9sAEbfvT/09vHFXwSdnatzH1xzNlQQ2nWv5ZpuGCTb3QSuTstFZhREY55OCSymVmmmb/itUPDa8CzjFqSoVFgVnGZTXlMkl51SSmKI7Tk0g20p0x0eGm8OwfkxyeHpDkOnr2anEBAggdyXd94LtRvLReYDBTz/GbKoYgdFUnEC+E7Y70p+TBDYpa4t5Vwg7Ek882boME7v606b9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MeGK1jVV4yXBKIxT3F40WjJeg/KuApeWDVYYdN1Dmx8=;
- b=ZjNbo50MgYH2xCYdW4ws94gaIxWkZhJtu9E9il0tvuc6oZQWASpb5sZeVXGvdYikODOO41FHcuLlC95sSd1wBU7fO9m1XUDSnW7rMwKraRZim/C6j/pD9xGY1hxKahGRNsUPzRH6i8vl2WO3ZPEUSBi4k3oPL2g7lr583FVk7eU=
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by PA4PR04MB7872.eurprd04.prod.outlook.com (2603:10a6:102:ce::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.34; Wed, 17 May
- 2023 14:25:23 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::25d3:de2:ef1:3884]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::25d3:de2:ef1:3884%4]) with mapi id 15.20.6387.033; Wed, 17 May 2023
- 14:25:22 +0000
-From: Frank Li <frank.li@nxp.com>
-To: Shawn Guo <shawnguo@kernel.org>, "krzysztof.kozlowski+dt@linaro.org"
-	<krzysztof.kozlowski+dt@linaro.org>, "krzysztof.kozlowski@linaro.org"
-	<krzysztof.kozlowski@linaro.org>
-CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"festevam@gmail.com" <festevam@gmail.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>
-Subject: RE: [EXT] Re: [PATCH v5 0/3] dts: imx8qxp add cdns usb3 port
-Thread-Topic: [EXT] Re: [PATCH v5 0/3] dts: imx8qxp add cdns usb3 port
-Thread-Index: AQHZYLwz9foY+34alUyR/LPBJOX9ma8dkSYAgEFDlPA=
-Date: Wed, 17 May 2023 14:25:22 +0000
-Message-ID:
- <AM6PR04MB4838A0B0FABE405800E00741887E9@AM6PR04MB4838.eurprd04.prod.outlook.com>
-References: <20230327145523.3121810-1-Frank.Li@nxp.com>
- <20230406014422.GK11367@dragon>
-In-Reply-To: <20230406014422.GK11367@dragon>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB4838:EE_|PA4PR04MB7872:EE_
-x-ms-office365-filtering-correlation-id: 82a34d15-b491-4570-fd95-08db56e28ce2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 9Cg7EE/QMK6/J+dnemuNrj3qXPoMOLrBy92/dJarlb7/BveQAHe3QXVQ6Rlai58AALPkABnFtHnk42KSPXK+BkVHHBtbfzmpvccfNRHrwrHmLGeB9qbImS6r6eCu8hBvyerBjImsR0/HEF7pmfNqKHszHGukJn8MnuuujLhuSMATDkRv5b+S+ugb04p4UebOOMxRAuDZyYIlWqHIPYb33lfQr70qF4PyGxWZHTCzfv5ZUgdybITuAwC/nIqeuNhXbNxknLY8NyxQtmplFdt6TdBqNc8nxrj6K9XwsirALejRxsUF9ovMoOWTHsOShdxwXKS5FXSY/Ga34PO2wEpJnPTWKPSTMYg+xqhdsJFc0D+fuwKDUxIcUpFAfLrF47F5tLz/HBkejf+iaRFYFJ63Ac2EyBlKtv6eefWeuiTt5WXzVqTh2kVdwUQgRwe9YfvqgfyXMFywqnC/iIOFBWclde/nNKPVNTBHmLgSaargzZ4OwCCfLS4I1dwGMX9yXxW9AMHNNoLPoW810jPOn9xfRp4XGLyTYDlTwn7u//MmzkJo0VbNb3B/LOXQ83QvAQpvb3VE5L81zopJFibv4BH91UOoGrqX/oe7k5FRGMKILsh+8zHmAofDgrrRnyApir8TgrgrErKnqpoDX5ImCpXMyQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(396003)(366004)(376002)(39860400002)(346002)(451199021)(76116006)(4326008)(66446008)(66556008)(64756008)(66476007)(5660300002)(66946007)(8676002)(8936002)(478600001)(54906003)(110136005)(4744005)(2906002)(7696005)(41300700001)(7416002)(44832011)(52536014)(316002)(71200400001)(26005)(6506007)(9686003)(55236004)(186003)(55016003)(38070700005)(122000001)(33656002)(86362001)(38100700002)(32563001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?IZr9fQ89Ui413BNxlOMA27h906q4P6ssMr8FRsgN1SFmoKGETgDiPvUe5su7?=
- =?us-ascii?Q?eoCCMLiSOLM2B46uchpUrQibzXuY9xnLgsu9SqH6gsBadbmb02nOHf0uUwdV?=
- =?us-ascii?Q?9jBS/G+fZKqWgMJqJgFODpl6MxXSrRv+pufa9ubegQ2qZZQbYSRZicvRf2WF?=
- =?us-ascii?Q?EqDt566tP0SA6ngPCyF1YvQdZqi4nJ1GpOVuPTCeRWiFjVyDVfhMzij+j8xD?=
- =?us-ascii?Q?dqGFPh+wEKzjGxmp/xE2s6/pDk/sY8xnlXlf2HMg1Ttrxmf2yCha7Aht4boD?=
- =?us-ascii?Q?OgY7yAqhV8Q8XX4o/CTA7MATXNAHvJpp0rFRVLpPtA/eNTzQ/KSklTo2mqLt?=
- =?us-ascii?Q?sFgWEpi0h8nMsLUS5/d89UAGSAniixpU43Pscyrx7WXcetN1CaP+Flzjm3ek?=
- =?us-ascii?Q?7hJb+c9kwfxp79Q59P2mgXMCXQGfyCnxQ97ogiG/Kf7UIWFVZNOS8Dy40un9?=
- =?us-ascii?Q?suu87ZcdOIJrAvaA2XdaMtGMWxSu0lw2Cyw/IXWmAokp7uJqfgxsI8Mx7hQW?=
- =?us-ascii?Q?JKOoaCVoVHQ3huIzNnn8sfz+pJMm02P5i7r+ReIBZ+4oPRAN/Njn8BVUMhsb?=
- =?us-ascii?Q?kegWWLDGAV66gZC4oOPaVkFA3ODj6lhc0MAkExbOmllNFRUOBM6ZPaVLQlJk?=
- =?us-ascii?Q?RSW+EsMnS/zdy22JttpGJGACAD7DTKrmPaeYJ1a6S4BypGIa0OSZV9F6a5Z6?=
- =?us-ascii?Q?DVZlZ5EpuB8t0mDNimM+BHQSWRyWiX2yH2jyW9Hl+ykgztPzyAq0ZeTN6Nnd?=
- =?us-ascii?Q?jPoULoI5gqC98zxNbRyHAE3Ga3Lh9FXIRG0furrg1VOba3zOuO2Kg22F+GOX?=
- =?us-ascii?Q?DGjOMoaiItSEc9hGKoGg9zkWHKLD9Q/y1JlnEuwMvBbSHKucq3RMDhLBy/QX?=
- =?us-ascii?Q?IU8dj7AK+UVW+ZVPHoA9tOpxEkLxYPGZg1sNXytpNR5MX2wLFoOJpTPRf71G?=
- =?us-ascii?Q?GBOj22QhvpM8qUD2GApc3y7Pspku9gWizXhRDOmF5s/h3Q3zD7E06nj8MhB6?=
- =?us-ascii?Q?FOYCPreEwvtbIWRQGWHr4aDqIqHSOcE6WPEc/82hr9ZXABFdwygSsQr/JVoZ?=
- =?us-ascii?Q?E+ScmEEoUsUkHYDl1qt5NyO7Vd7iDGA9IABAIMPpALDVRFgKhpznKQ1hJlqs?=
- =?us-ascii?Q?kfGrlaKZY5GbP/f3fxwW/82sGhcsT9zhZYckO8vlqfGfbubWOMdZ/zC1kzUK?=
- =?us-ascii?Q?v1VWcERcDqiE6zritT3lD8pDlpZ7cor0dKekbnxIE32pRb9SK9sVJZUrOXAx?=
- =?us-ascii?Q?GXDONLVNIbVRLOU+c1rpxiIZk+YwSgGqVV1uMcckt290Xrv47dJqZ/JENmm0?=
- =?us-ascii?Q?ZQTUbPsQgZnugwqYMsp8AegQZtdTeEGGIABfYZ/lRV1Pex1HoF/QisDZexN5?=
- =?us-ascii?Q?cWBAcsv6kcPIO0BPEfi39pJvflaK0h0+4bvZDJJs/RL6zFPS04uge9mvzKWC?=
- =?us-ascii?Q?IMJvP+5Ov8VnFyi+V5UPHIGNXQ1xjaGI9gzZvaKyirgpzWVoWLtJgBJ2Bg05?=
- =?us-ascii?Q?ha4glG2d30cISRvccIj8IOunOzPfMC5XZ+ki55eFaIG8fpTmmyFJKGI/mXM1?=
- =?us-ascii?Q?Hqu2AxgjU70jPfKgKnE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111FB28FC
+	for <imx@lists.linux.dev>; Wed, 17 May 2023 14:44:06 +0000 (UTC)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-96aae59bbd6so155119266b.3
+        for <imx@lists.linux.dev>; Wed, 17 May 2023 07:44:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684334645; x=1686926645;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iEhFrj7vz9yOABp0SkbN/pYddQZ33xU58y7pce4fLdo=;
+        b=JGjVjH6bHbptB8N6uV4nqUsn5hpfMdmSe5rRrLtgooxNm4omIWiqx90ybtylHqF/iS
+         grdgtXyu4J0pJo/MYLvodjvhiqL/pnQ7pgbt+kIQNk/R1+kLsydmRnoyjuWhhtqSdWlJ
+         7oU+UpIYLGig3odk8AJaLtnnllljLBC9bFBB3duanaG5TK2rUgzKgA54IzVDQEV7OdQp
+         J1aXUISvCfSzF9mU3kHklZJ7klkGLmhUM68QuyM4QbOghum8N/mWkqiTm7HNRxCS5Nov
+         EMoLnMqKRfa168gb1lilSET7laE+fgD0Wldj9EGcjV7n2cxdlAKkiEZp3IkdbkBKBIGB
+         CIAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684334645; x=1686926645;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iEhFrj7vz9yOABp0SkbN/pYddQZ33xU58y7pce4fLdo=;
+        b=E1QzR64wa6pdzgOH/DGq4e49TOqDSlaRgxqiyp1V88+Xle8Czpo1B32Sg8kb0t9ETv
+         mMDGcW6AKQs8cogw3FESPx+AFFvxx0vzUy8kJihqjFwTXjxBuabgxiYH9zeyWY0doT8y
+         hh+PK6J7BQe7/cpLr9lQr1LGU8WZ66j9NjfFi+VMcQqzlNJWumEYKwRdNn0Stc0s/Wce
+         CSftAN5hUlSLYlXWtbPs7nrNFU1kD8TtLKulJCC0txUgzfmtCETvsRsrnSuMCgZeKP3M
+         7IOsB0uG4BXXJEhIsfZgOa24yuor569wFYaYZLCPrmYzHPUuY9H15ckXXBDtIBEzRjDg
+         ZAow==
+X-Gm-Message-State: AC+VfDzJctFeqt2JenCDbOYdfLyJQKY1kkGj9KmBLGN7SicAluINnto6
+	4u58G936ij1MXpe+OW6yYMlkdg==
+X-Google-Smtp-Source: ACHHUZ4dkXnRgNc7bMtacQ5VCgtenN+fiWib2euaz/HKvRvhbvLTDL/znb5ge+1VTYnDjNSAwfsc/g==
+X-Received: by 2002:a17:907:72d6:b0:8b1:7de3:cfaa with SMTP id du22-20020a17090772d600b008b17de3cfaamr41028262ejc.3.1684334645199;
+        Wed, 17 May 2023 07:44:05 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:c9ff:4c84:dd21:568d? ([2a02:810d:15c0:828:c9ff:4c84:dd21:568d])
+        by smtp.gmail.com with ESMTPSA id d1-20020a170907272100b0094bb4c75695sm12462099ejl.194.2023.05.17.07.44.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 May 2023 07:44:04 -0700 (PDT)
+Message-ID: <cbb32d29-cbbd-7c01-7359-535f6afd701b@linaro.org>
+Date: Wed, 17 May 2023 16:44:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82a34d15-b491-4570-fd95-08db56e28ce2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2023 14:25:22.8858
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WA6VYHANcpUqeyiF5WdaGW9AE3d0Q0B6wvULx+zlFp8mnk7fM1+3cyBq0ZuAPsMlXRySbh9LtWdL5uv384b7Ig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7872
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [EXT] Re: [PATCH v5 0/3] dts: imx8qxp add cdns usb3 port
+Content-Language: en-US
+To: Frank Li <frank.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ "krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+References: <20230327145523.3121810-1-Frank.Li@nxp.com>
+ <20230406014422.GK11367@dragon>
+ <AM6PR04MB4838A0B0FABE405800E00741887E9@AM6PR04MB4838.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <AM6PR04MB4838A0B0FABE405800E00741887E9@AM6PR04MB4838.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> >
-> > Frank Li (3):
-> >   dt-bindings: usb: cdns-imx8qm: add imx8qm cdns3 glue layer
-> >   arm64: dts: imx8qxp: add cadence usb3 support
-> >   arm64: dts: freescale: imx8qxp-mek: enable cadence usb3
->=20
-> Applied two DTS patches, thanks!
+On 17/05/2023 16:25, Frank Li wrote:
+>>>
+>>> Frank Li (3):
+>>>   dt-bindings: usb: cdns-imx8qm: add imx8qm cdns3 glue layer
+>>>   arm64: dts: imx8qxp: add cadence usb3 support
+>>>   arm64: dts: freescale: imx8qxp-mek: enable cadence usb3
+>>
+>> Applied two DTS patches, thanks!
+> 
+> Krzysztof Kozlowski:
+> 
+> di-bindings missed, Can you pick up this one?
 
-Krzysztof Kozlowski:
+Please send DT bindings to USB maintainer.
 
-di-bindings missed, Can you pick up this one?
+Best regards,
+Krzysztof
 
-Best regards
-Frank Li
