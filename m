@@ -1,56 +1,52 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2045.outbound.protection.outlook.com [40.107.104.45])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2088.outbound.protection.outlook.com [40.107.13.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEC823C6A
-	for <imx@lists.linux.dev>; Thu, 18 May 2023 15:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BC253A8
+	for <imx@lists.linux.dev>; Thu, 18 May 2023 15:50:13 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B6Sk/1f5du/gDKhZaHVh3xyW7npt6t2xJakWNL1J4FwkQJW+5yB5wcWd0LBNZYNPWkPFoRul9h6NCG/2yCEV8yRU0nk8aSLKnaG4zCUwnV5VCY9a0HEkEbwypSel7Eezb115e7YS/lABxr1u1Og3eRNRmJaSbx5HqiW5ftxAJkMwwDv8hO/X4hpz5LpO2ecA+bOaT7pZdVRSeAsQwG7AweJuIV4fdx5ZB3ReDjzTuVP+b8X4eLbIPuNRHablpbyTno4cf9kK3DYjV5G0Hh8GXQV+dm9AkY4NYmN1ObYG/CD8Sk6HvZrj5hyVCenaLS6hib0d3PJKpD08uJ6C1Pe4Ig==
+ b=R/75X+NP4ptFIIn+2A7a4WNa3m27agi1RZetG8rRdzO/SLfArm4HFlKTfNEazdMmZYUqhKCDyzJU27AKojmo8OoNc30lYRoc8k+yzxOTmg8AD30lTxBFOdX154148ELfNkg8xXiU6SVOWc7x6EUFbWDJ3j6qP/ChrVWS1DIWg8059LUx2wFcoHU8+6wyGDxmDGqO+5cf1Q115OoJQaOSZpP1aNqKXD/WNugbChsmlIx5Smflx91hPs21muWjnZaHhaz1aCipIJwGFB6fNF7/xJFU2hFycZvmBIIU185sJI8sQS5baR1yY+idPB62nCunsuP1pfIvqAg50bQDfFSIAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aBG0cBkT1cY+BazwT04hOECXxopwNSQOYd+hjxNw2pw=;
- b=R9lyut6AdNx1wvEk9GpIQcmvYlU8Z0QIOhVpMCb/M3G5XwXoC0MdPujiTCKC5L2QxfCZUNE0zoO/33hs7L5JDOjhwfcuSOzOTT1GtGSpLqHWrTRJaMj/x4xsgEVe/di8D+WUml5ETY5pbRvm1XeHcJYtLS6HCXIhaaMz3kzjgarqpiXghlNcDmz89MWz1VfuXqmG/6gUNC1swx9RxyCxTTKtwgnungkqQBjBsKQ2KCpdErRVjaGMKtd66vvE9Oi4pHoq9wX31CSgzHGa8VYcNoWLoWJ+S90IDZZx7LrNnN68UR5hR11r0mavpWuDndlmyOAm4G1P1DLu7i5WgDUTpQ==
+ bh=qJyp9Ja7HPzsCqIP61WJPdlAkJWV/0UIWOrzgn7jlB0=;
+ b=cbuZXHrQa4MOG2q3mojCfqsqk46qbtjN7o7yTXzVJe/Yt+c+znBbHxBU0TCF6bZzYDbtu5D2KNCylOZ1iuzx2s1lLID7zFJbvsOE/L2m/xWax8bOotNZz/QagVMesUNSR2B23tcC7xFBujpMyGTep01vvqBh11iIYnQ7TMuo2OxXYLdFMj6nuVY5C5qb+JTizFgn2qlrEyfSGWnvSvlhhYuUa1beeqSUmYNQCjm+hR5ECyaIxLXwpZOshnSMWp6f9TjRn7tg3F+eSH3VsQKobtbVx5HV0d4JTtJ0UpVMcWpFCqLWM3SdU2ETJXzj34DuvzPpudUiDdKpwPKNDyPfHg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aBG0cBkT1cY+BazwT04hOECXxopwNSQOYd+hjxNw2pw=;
- b=SSpR+eC8OzbaASqYEJCDoC63QN+K/6rO0MHmwr8rg8XPYRvNZ13M42Xgzq+7ug3YcrZ8gzaTeyzVse/HmJiemW7GYopxvjsZNe1h8v7+cil61N+qoeCHKXi+AvXPl1xlo39iSzOCw6tTtg++Q0w++hfRP3FBMgS6lJr+YnkhOmY=
+ bh=qJyp9Ja7HPzsCqIP61WJPdlAkJWV/0UIWOrzgn7jlB0=;
+ b=U5RbwPq2nz1bE3XVDn/eENt22b/jVZFt4Acm3O2oxW2wbOYgJ9+tqlVsTJQO0z90HOjjsoGuoQl6vDPDHBJHEdJpVaws1c1fBGdXP/Hf9XEBjMMZrHxcCDO7kd7CXPqL6FQND0G3ATRo5tEQocibaWdqh0rRZUToeE5N8XWp5OY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DB9PR04MB9579.eurprd04.prod.outlook.com (2603:10a6:10:306::12) with
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AS8PR04MB7672.eurprd04.prod.outlook.com (2603:10a6:20b:23e::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.34; Thu, 18 May
- 2023 15:02:16 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::28fb:82ec:7a6:62f3]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::28fb:82ec:7a6:62f3%5]) with mapi id 15.20.6387.034; Thu, 18 May 2023
- 15:02:16 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	netdev@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 net] net: fec: add dma_wmb to ensure correct descriptor values
-Date: Thu, 18 May 2023 10:02:02 -0500
-Message-Id: <20230518150202.1920375-1-shenwei.wang@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Thu, 18 May
+ 2023 15:50:10 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::25d3:de2:ef1:3884]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::25d3:de2:ef1:3884%4]) with mapi id 15.20.6387.033; Thu, 18 May 2023
+ 15:50:10 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Peter Chen <peter.chen@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Felipe Balbi <felipe.balbi@linux.intel.com>,
+	linux-usb@vger.kernel.org (open list:CADENCE USB3 DRD IP DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM
+Date: Thu, 18 May 2023 11:49:45 -0400
+Message-Id: <20230518154946.3666662-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY3PR03CA0028.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::33) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+X-ClientProxiedBy: SJ0PR13CA0113.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::28) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,122 +54,104 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DB9PR04MB9579:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17d52490-fc43-4f60-0dbf-08db57b0de55
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB7672:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9dbeb117-621b-43bf-535a-08db57b78f42
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	QwmluleHd8oSBkAWh6eseBPvKHCjJZgDqT8qvHiOTQiBEG9qkOLry37Q/9DtI/lwgKgickK+T0CGxWugYhSMRFD3dgRO0uCdf9E7r7xIEiyWR0tTRufI06MX7JNiwlMkqqQjUGKdsNpRIi41+KE1MX5K7ozF5wC0wjARI5XVXutQzF1ITHaZUrCnuU/TbCCLJ3zCNRAY0BruUp2cE/duqx/PaogxC1zxWal8s08htDc9dPbEgFr0nTE71DYXesShZlESGfj4iOPnqtg+9gLLku9dOk12cyqiMYoeOwSGGY2vGy9+XOZeAnTJug3bcvq3yqRtkm3IU2NRootZ7X8rEeUYwWB7mBOOqIUB3yfBvNn0D0W5MSSjUBLYLM3fAygmhsk3Hn7yeRdx+vZixXzdpYQf/Kc30Gxgv+uET2Ncd6i7LhsgZGCRXFZ6+4N0a7cjTwjmx+awHbg9PjS6ca3mmdu6OexK/QnuLYdoHtYBuK8URLz4bV23RV/Ft2fsS7z4mPe1mLFpXiBERjaisKhOXhk4tjPmpQ6EYpEJdRfA7pYgAPSOn7XfmCb+6wErW2m1ekaO52knr69UtqdXh4q3w3iPlBfi2omrYt6nqqKH7jh2ONwLGYv2mSh/0+SsDqWI
+	NkamWxDuezq0VrMzmyhCWmXasxAepQtUcd30tBFmFdB6kQTOXleEsDbcsD56Nw6a72EtdPcLggmi1LYY8N6ymbMtFiQwDy0/z2HLVy98eFVl6hF5HoUZ7TyM2ade0SmYvpR0fvME5CfyTv8IPpCFkrf/Ndfd8gUrTYKLps8vyOMiL0b7JqZHQ2oUzFuvO3AEhqWJ6TCI3fRwq8ZgBAJw1w9Kfev9CA6IHO6WHBvYwH/MbYg8s8qRqdKJJThzVk4NoB81pCy1Pxyixzb/D7VBuDxRopJwCLDgpdqqILe4ulAS+mHXZAOMvRf8y3CZV1+FXRE+pl3azPBZ6hvG8kvZBZZETkyvikGQi6Gt2nmIu+CvPxJaJFgeYzXSnXmo2hfkaVvah0Bk9T9gXjPesbofSzUy1TPWZsGXOd8qKmqxGGxtDIzS7nOkbAccLKUtZvRWBNU0nnHaKuZAEdfSqJDYLm78gNvpxYMw9P3eBEnBrzXXoZJpz8Ek2bq1sxNMu+11OT8Pm6MhyBvyL/XwLxE5hpIlCERnII7NnOviCr1R9AjbqRoFHGQn0GRRvih7+BULHXrk2Qq96I/j2tp44XPpDK7tHCRz0fvS+qFbhrjXfW1cq9J85SZc5n/t7BbcHw7zOrrzVSdomwfXZpxKT4as3A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(366004)(39860400002)(376002)(396003)(451199021)(5660300002)(8936002)(8676002)(2616005)(83380400001)(2906002)(186003)(36756003)(38350700002)(38100700002)(86362001)(44832011)(26005)(55236004)(6506007)(1076003)(110136005)(54906003)(316002)(6512007)(6666004)(66476007)(478600001)(66556008)(4326008)(66946007)(6486002)(52116002)(41300700001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(346002)(39860400002)(376002)(396003)(451199021)(110136005)(41300700001)(6666004)(316002)(66556008)(66476007)(66946007)(52116002)(4326008)(6486002)(8676002)(8936002)(478600001)(5660300002)(86362001)(26005)(6506007)(6512007)(1076003)(186003)(2906002)(38350700002)(38100700002)(83380400001)(36756003)(2616005)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4OCcK5jbAeO6GPZC01bFmWwgFX+AdpmdWWa7eOUfqzHTI63ToCV8FraVTSwg?=
- =?us-ascii?Q?uO9DfARkq339HCyVu48Lq/7LWjUpk+BKyALXxnXayxp1wh52UOM6Su+BmOpW?=
- =?us-ascii?Q?Hpt3ya7n/3xsX1Hoc0+2XTLOtwejCYMvx+vt/ERGsOH80u+GVpeW+cIzYbTR?=
- =?us-ascii?Q?ebIjOkf1odaXRC0tdKEeNT/ad5E/MG9gDWUnx6zT20zZ7IPfGR0gqWuGVOIm?=
- =?us-ascii?Q?t4lsf/ytvP9YdruocF9k5L5290lVy7NsPbtzA3KquVwzyJvwf+aKNHsjBkN8?=
- =?us-ascii?Q?EAE2I5jbQrNpHqvXN3p+ESD64X+79JVFCbfEyh93PhPPuMpQjq39q4fmsa/6?=
- =?us-ascii?Q?16j8WSV7vC4RNEOPDq7oDaKyPPiXF9MYxw/IJ18M/8tjGyVwqjPXAWw2EqDF?=
- =?us-ascii?Q?UuqkX14Fswj5VQATRD0bSaCyzv1sFIPZ0F4GFFoN59cxRAHXAgemoqq+noKg?=
- =?us-ascii?Q?kDrl2KPLZTO5m/4WTqm0+reHYuIwkN/5K2enIdaz8XvrQBDyyrwtokIyuDgi?=
- =?us-ascii?Q?4/l8GTJqCsKKRL+sKDD5n4vvJCDh5QrfyV+wwZDLuG29PoaSFnj7Sj6bp7h/?=
- =?us-ascii?Q?VGZ/BK+3D/r+hI/ENjmIxwQynti2db1gA2MVBpe+Q+OnJgeU/vJZMMxpfpZi?=
- =?us-ascii?Q?ZG40D8etvlEZlxjVUJDN6Lq69cvQf9NG2grYLuOE9Tjn6XsF4WWHfTh0vhqW?=
- =?us-ascii?Q?13vfv9a3TDrwmBr/8RrqNj+j1K4ylTDS1LQBz9PstxcU2osOUi5UO0YXNo7T?=
- =?us-ascii?Q?DxSepdHEJgTKoSnzfrrjUE/k/kZ143fD+lVJykDUmv/hUc38U1kL9pOu6msw?=
- =?us-ascii?Q?n716mUR9NJAHkGbm7fHnIHVCNgB+ar9AYk3EAuiWekxBGRbTSksNa42EpXha?=
- =?us-ascii?Q?ueW8LnyYTO+dmd+6ZMl2f9gGQK8B5XaSVnuN2DMUAPGpaVwZRJ4Lo+4+6nOa?=
- =?us-ascii?Q?+ALRTh+qhfxgSqU3LHqDn7l78PB+lO9d0NFho7sh21gQB/IFL1G+qRfIvSFg?=
- =?us-ascii?Q?yPxLhsd2HdiqV0kPA/kMHUimkwkcXFNg5r/fKuQ1f8WrG71P6L2Ge0FVgQT+?=
- =?us-ascii?Q?gYwalwYEDo+BIbXdbKHsAZtpjOIxdkLZt0ThqWv1nqAGB3cHZoZScPaOZ110?=
- =?us-ascii?Q?AzA8UEAnv+fGtldPJeKQYmsfoJtD2JYU6hl/qFbqR5FOnaUPAPH9teHHIONy?=
- =?us-ascii?Q?wi0cjnSJk+jXiUz9g78XRDmxXivl/B08DpTz8hS2f5d/raRPVGhrEp9Msaj8?=
- =?us-ascii?Q?e+NWA3HyQwP4ekGF/SepW4dLeyy4P2F4+vf0MSPnBTVaj5nsnQE8iMVVAkPr?=
- =?us-ascii?Q?1LCAoS0cISDiqq/nnb4gWQ/AjUL7BlpaDcFEmiRxsPbPGXAluFyGnR7FRmjl?=
- =?us-ascii?Q?3egr6LcG9M1VPoQ8tu4tD4/Iec//DAPhvwnXX4UlvOOTDe8MBcmdMGTwVYq8?=
- =?us-ascii?Q?n/P8vZkeUJjhE/TodwgEvRn3ZJJNYoslpJMSNbAvTNij1x5ARzzMCW1vFECW?=
- =?us-ascii?Q?FRQ9Chhp79TV4YCne1Mp+Tw+G3ZDuaJfJd2TIKaRf2ewxdQZND4MwEn4pBiT?=
- =?us-ascii?Q?SbHAjK3xQ0xkjzDqdnylvefxvEKapG0BlpAgcIea?=
+	=?us-ascii?Q?/Xb7qgC7OfQ5tE6KCQeLBoGDaO2SiFe4yUMIIRVwA5WZX867Ogjc7OR6ZPEe?=
+ =?us-ascii?Q?TMOctYmFM+Rxb3hNNcMgCVASB2pD1Afoiompn6j00n3Qb2vSKqtVwk1HSdj0?=
+ =?us-ascii?Q?3zu+Xb7ZBAhgB7/kwSbsIrNwRBPbT4ROPexwbv4oPrI2GDmYX6GUyW0zBC2w?=
+ =?us-ascii?Q?gdIqJFE//LAD/ObheqVsOdpmB5G0e0fzR60qVhGBRbP4+cTiUkgJ1HZz/yp+?=
+ =?us-ascii?Q?jzVmku0+lrb0A7LSpvf3HKpB89KUbWARh/Dh3UPAuHXnUiScWzvKiah45Ea9?=
+ =?us-ascii?Q?ZmS5uduY1IqtazmCo77QepGU6jA7QE3exwgkEJjvs0c43YaKz+/uG3H2uycl?=
+ =?us-ascii?Q?Lvw2dzLPfgzKtkYvj9y83Pya2mZ/scjM7dLc+CWMCGNWV4N/6xKnbbocoxyz?=
+ =?us-ascii?Q?B5/7JRWPpuO8H/ye8a/+Fkm+VNqhGNXfywlz2wzzf5GZ+V6RTRFrfUdonwui?=
+ =?us-ascii?Q?3MP3ZPPtp9JXFRniDoYeLIuq79a17/bORB5z7NmtlPFAW64bLWr5RGpy7kbV?=
+ =?us-ascii?Q?I7V01725qtyJKpEjksGNYDrJuK5ml6YU1ulcBGL66AUaAvjmykWpuKkFHpf7?=
+ =?us-ascii?Q?FS2PsCnuQI0Bo02OSJc4poQ2aq1SOh84MBx1j3pramL1E+2nzmtDNQ6UdblS?=
+ =?us-ascii?Q?MTAjBJqHdq7QtRTAT4xwFLR6xR/8YZ3InEGFX72m0rboh6oIqD9QngC36qQY?=
+ =?us-ascii?Q?5t7uL8JXS6TrlXVjM3CS2dtF4aK2g6eSDdPoatDwOH839XeEQjY0pZtnrem7?=
+ =?us-ascii?Q?l/nXXG9rOss6oUTQn6BF3Z8LkYv20aFcVIzGs4bgcqujzg2lpQu305ZhGadt?=
+ =?us-ascii?Q?xP/gJPa1Ct8LG/Ks3APhOoWWONg6cplES1S9thNCNIYJbK9NXOx4YwlnnyC7?=
+ =?us-ascii?Q?CEA561APB9z4xT+0yAxweHZpS0zC6L7pdRJ7PsrxjEG7z9bMgiJxy9WCgP3P?=
+ =?us-ascii?Q?/ydJ6RbLejrpZcOPf+WyD0dHIr4URCXimtHdYAigzfgC5J8N43xUaP2rQfP6?=
+ =?us-ascii?Q?Z+2aHcVTeEBjIR5/F/3bvpi8Ov8lEkCNbWcbI/sJQ4s3SPXEhY06XtX2aoE5?=
+ =?us-ascii?Q?5N5XrAfwD/INasWQASIHrGyGuu19Z8SHV7kPcDbLHNcXkjViuIW4qIcyYiwr?=
+ =?us-ascii?Q?D9RJv/3GS9S7FKj67nb2ep+gtrTVfAGl8wGj+QGsd+wOy3hdYg11zpeMG/JV?=
+ =?us-ascii?Q?PUV4EedBC52iYrRNatApPMKaP+iLjwig7BWOjGD0+4bKtzX9bqc+cE1o1S1D?=
+ =?us-ascii?Q?2QltcJ0ObEoi/WGW2W4HuHy8xoUfbT3kIII4kIQE+pnTGa8o4Y0Vy1/Znfbd?=
+ =?us-ascii?Q?FPjNwHxFzj+K8Xwg95LvS85285iIoHfas1rMNsnY6HeF/MndpZkh/2890N8I?=
+ =?us-ascii?Q?g4/YMn4cNyFvJzWLUF7RP/vU7uou6eRuzUvx+LEKJZh7qZ4mhPOv39tEAEUt?=
+ =?us-ascii?Q?gQW/j8jGNF61VxCJJU31Suaie1IP1tBnftkGbOz22ToP6m36APHZQpms8A4R?=
+ =?us-ascii?Q?CfuHh4TozJts/QM94a/1BnkTuz4Yh12JAIIGnMoPEJe1eavNO4xOKyJsvul8?=
+ =?us-ascii?Q?p+9VLh9wlD1i4vDwUcpKg2Vy2bhBeK+Y6HGRNZJT?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17d52490-fc43-4f60-0dbf-08db57b0de55
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9dbeb117-621b-43bf-535a-08db57b78f42
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 15:02:16.2164
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 15:50:09.9647
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mE31FLdrkuoJHa3eHKcOG/yupc0SRceQN/xoI8yq2K+AzFumimlfxbPM47Ube7okAc47B+iS72N/s1iPjnwI4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9579
+X-MS-Exchange-CrossTenant-UserPrincipalName: iFM+LdLkUxJb+RCCAsKGpZ+UCo/snJ7qMUux5iO1Nahs7tc/YX7uVdP+LBW6svMk2U3esEEuWExRL6CTpXYGsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7672
 
-Two dma_wmb() are added in the XDP TX path to ensure proper ordering of
-descriptor and buffer updates:
-1. A dma_wmb() is added after updating the last BD to make sure
-   the updates to rest of the descriptor are visible before
-   transferring ownership to FEC.
-2. A dma_wmb() is also added after updating the bdp to ensure these
-   updates are visible before updating txq->bd.cur.
-3. Start the xmit of the frame immediately right after configuring the
-   tx descriptor.
+At iMX8QM platform, enable NCM gadget and run 'iperf3 -s'.
+At host, run 'iperf3 -V -c fe80::6863:98ff:feef:3e0%enxc6e147509498'
 
-Fixes: 6d6b39f180b8 ("net: fec: add initial XDP support")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+[  5]   0.00-1.00   sec  1.55 MBytes  13.0 Mbits/sec   90   4.18 KBytes
+[  5]   1.00-2.00   sec  1.44 MBytes  12.0 Mbits/sec   75   4.18 KBytes
+[  5]   2.00-3.00   sec  1.48 MBytes  12.4 Mbits/sec   75   4.18 KBytes
+
+Expected speed should be bigger than 300Mbits/sec.
+
+The root cause of this performance drop was found to be data corruption
+happening at 4K borders in some Ethernet packets, leading to TCP
+checksum errors. This corruption occurs from the position
+(4K - (address & 0x7F)) to 4K. The u_ether function's allocation of
+skb_buff reserves 64B, meaning all RX addresses resemble 0xXXXX0040.
+
+Force trb_burst_size to 16 can fix this problem.
+
+Cc: stable@vger.kernel.org
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- v3:
-  - use the lightweight memory barrier dma_wmb.
+ drivers/usb/cdns3/cdns3-gadget.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
- v2:
-  - update the inline comments for 2nd wmb per Wei Fang's review.
-
- drivers/net/ethernet/freescale/fec_main.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 6d0b46c76924..a5096c3cac01 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3834,6 +3834,11 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
- 	index = fec_enet_get_bd_index(last_bdp, &txq->bd);
- 	txq->tx_skbuff[index] = NULL;
-
-+	/* Make sure the updates to rest of the descriptor are performed before
-+	 * transferring ownership.
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index ccfaebca6faa..1dcadef933e3 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2097,6 +2097,19 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 	else
+ 		priv_ep->trb_burst_size = 16;
+ 
++	/*
++	 * In versions preceding DEV_VER_V2, for example, iMX8QM, there exit the bugs
++	 * in the DMA. These bugs occur when the trb_burst_size exceeds 16 and the
++	 * address is not aligned to 128 Bytes (which is a product of the 64-bit AXI
++	 * and AXI maximum burst length of 16 or 0xF+1, dma_axi_ctrl0[3:0]). This
++	 * results in data corruption when it crosses the 4K border. The corruption
++	 * specifically occurs from the position (4K - (address & 0x7F)) to 4K.
++	 *
++	 * So force trb_burst_size to 16 at such platform.
 +	 */
-+	dma_wmb();
++	if (priv_dev->dev_ver < DEV_VER_V2)
++		priv_ep->trb_burst_size = 16;
 +
- 	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
- 	 * it's the last BD of the frame, and to put the CRC on the end.
- 	 */
-@@ -3843,8 +3848,14 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
- 	/* If this was the last BD in the ring, start at the beginning again. */
- 	bdp = fec_enet_get_nextdesc(last_bdp, &txq->bd);
-
-+	/* Make sure the update to bdp are performed before txq->bd.cur. */
-+	dma_wmb();
-+
- 	txq->bd.cur = bdp;
-
-+	/* Trigger transmission start */
-+	writel(0, txq->bd.reg_desc_active);
-+
- 	return 0;
- }
-
-@@ -3873,12 +3884,6 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
- 		sent_frames++;
- 	}
-
--	/* Make sure the update to bdp and tx_skbuff are performed. */
--	wmb();
--
--	/* Trigger transmission start */
--	writel(0, txq->bd.reg_desc_active);
--
- 	__netif_tx_unlock(nq);
-
- 	return sent_frames;
---
+ 	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
+ 	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
+ 	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
+-- 
 2.34.1
 
