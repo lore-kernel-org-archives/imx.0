@@ -1,41 +1,41 @@
 Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2047.outbound.protection.outlook.com [40.107.7.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E19124142
-	for <imx@lists.linux.dev>; Thu, 25 May 2023 20:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C366224142
+	for <imx@lists.linux.dev>; Thu, 25 May 2023 20:02:35 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BV5yJT9rrJYXns5gg9Q4Yk5P0k/lnM8Ngo2x3dI77SjkVtmoH4AFk5ipwzVj4hwUvs6gLgUSViF8YP2+BExMy50k6yge2/6VQNJ88YANkaP3xDiDUdwKLhsZyIp6p4LNBiGgzftNriTcJTzRXdDdmf7cmBQr/m3wxOFlJIRGjM91pl+u5JW8j7VqjhYz1vOjPly5HLWK1O7XrHS3IM61aAynS0YIfuKn2NFDoLFR2lqv7UuHZLPOMYiE3BvgtboKVNghOHZG3YnwmvM55dQIkOiFwZm9BowKxjEv1FsZv9QNiESjq3GAwB5H6prVsEmRXCII3d/j7fea4yTgF3bPTw==
+ b=WcuMtNakXZGwGut9lzohPPIydLGM5OAauhY079Gy7xPLUMzkr+m1IR2RVgFtQTF7YJfQ/cqHmYEODp7w8vsMCqmg8y4H6QNpF6cbti4whowjwa3efUebkQGZIBa7Aks2AEm3T1GhuHHNQT5/rr8rE4GQb+vqmyKPxns2wT2/UVrge2ETeZM5KhW/vTcCtwbJ6PWeQRRY4GSG5izcCKGlDSvatrfMlbYzeSDHqZOe3q16aGSaIYFNjknhJ/J6z2hzXIJaZgJo0xPjzofQ6n9styDkmNRhND3sIRQbutOk31c5dm7vQJ8/kPQKrP/fnpUoM+aO8mkBmqZ8+fIEy8gQSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ISKgrdPrxzKwoDu3CGTHqw8SLWtu6pWcUHBCYREGJL4=;
- b=ctd+guaIuHtcyne5cxik05nkj304rd+O7O/7KUYBLeZ4nWSyXeyAvdgD4k8PC8FK8soMb3tEDDOPt+AbD/TmEfgzpJgoQr+3aITmb3pXyFRZ9gSuH5pGQuyqnAeDOJhYbet1cLgeyyX+A9dCDrK0c+N1JeJ/095g1eNgTYsepksbIa+ynZ5w/6iCI/lrotdCFMrCvmPhTBVkr283fcmLVrUG/Ix64ujTGQRLUfo6pdMk3/vwjAsa4iEnVqVDP4ZLctBJhf4sbOZV/3sXk4MdRUCfiKv0kKpi3a5NNsDUyphcRF0JqOJXVdfnbqLIECQMNr/lpSo01tSHvLQbZfW2Jg==
+ bh=BNjfU1dbjGe6WQ8dMx8AJBvEVMIU7B1H7pGqCNARUFM=;
+ b=Pdq8nXEBUbzgrLY6j2DV+n3lvZXJDQwOjHEfpS1uJO2XSp+o0jOFhXcMGsFwWi9LaC6eMJeuexiKJExqMhV43V0YE2jktN7UYOAcox8hPHpyAYm/pnwQUGGNlPjNvI/kNcrGNzcXDlpN9aZUHI0GL5Js/4t2OHlIS0d5P5boUNjtxRttIn8PgwPtMA/ugXJmPF1G4yxUCjeh73VGx2xRpJ1HGtYyJGv94rSeMbb9Li7CPkDdFUxmSSMNkryBZSAYyu9elmETAGZfyXY/gapb9d5Qc3n6rP5M1FicHgqEIwDD6beKwLav+pzt4OD4LK7H36pvTMsaqnoGnuZ60ByjFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ISKgrdPrxzKwoDu3CGTHqw8SLWtu6pWcUHBCYREGJL4=;
- b=q0he+A/Xzd1FWUJSBnCwh/pJFpT0gMHppEyqek1YfWIhvGt+l3vnTQKrYx+RCGcFnzl557HwJUEHaHMrJDRkjmmViLq7O/ufpo7m3JrbnS6SZT0J7y38DebRLJsPnqJw+PNhIObyLRuIBVFKdp5Kkctd/x4K3UUcq7An0DtGtCw=
+ bh=BNjfU1dbjGe6WQ8dMx8AJBvEVMIU7B1H7pGqCNARUFM=;
+ b=L/322uLSegpTeGkWfU2oek3FKwUbpvRT2gx//S6pVTSg7l4qdQsgGhE+lV+29yVnxpINfKE5KzJDQXZw4F2ui+joj0+gpVktD0BQYKThTskwvf1zszm6FB4P0XUSUZBYsGhYKO60dCVHc6qWX5YZL3vTtWuyjlzGsGXYuZsBdMw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
  by PA4PR04MB7934.eurprd04.prod.outlook.com (2603:10a6:102:ca::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.16; Thu, 25 May
- 2023 20:02:23 +0000
+ 2023 20:02:25 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::25d3:de2:ef1:3884]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::25d3:de2:ef1:3884%4]) with mapi id 15.20.6411.028; Thu, 25 May 2023
- 20:02:23 +0000
+ 20:02:25 +0000
 From: Frank Li <Frank.Li@nxp.com>
 To: peng.fan@nxp.com,
 	joy.zou@nxp.com,
 	shenwei.wang@nxp.com,
 	imx@lists.linux.dev
-Subject: [RFC PATCH 09/12] dmaengine: fsl-edma: refactor chan_name setup and safety
-Date: Thu, 25 May 2023 16:01:45 -0400
-Message-Id: <20230525200148.1015154-10-Frank.Li@nxp.com>
+Subject: [RFC PATCH 10/12] dmaengine: fsl-edma: move tcd into struct fsl_dma_chan
+Date: Thu, 25 May 2023 16:01:46 -0400
+Message-Id: <20230525200148.1015154-11-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230525200148.1015154-1-Frank.Li@nxp.com>
 References: <20230525200148.1015154-1-Frank.Li@nxp.com>
@@ -52,103 +52,271 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PA4PR04MB7934:EE_
-X-MS-Office365-Filtering-Correlation-Id: d0b30737-e79d-4573-1657-08db5d5af474
+X-MS-Office365-Filtering-Correlation-Id: 3fa01add-7df2-4d08-b671-08db5d5af57c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	dMvLzssyNucaCwC50Vpc/kz7W81tAdWUgN8Zn9fo25FZ3gUOU3DThzI1K4ushQ743bzNvN+u23iieTSgBsCeRRL53b9WOGqE2P7Q5b8GAUWypA67mgKC0R7lCLfFTnJv+XY5Un2ZADZBeTw7a0P1JK3M7Pam+99mE5XVJZEnRsdh89ZxGPrY1GY46qXIitHS3ObPfbilZpdAim4QjGkI9JDred1BdyrHTc2Zy+c3pVjFJXP8lP1882j6madaJFpV1HXuZ5N5QR4LxRWvJ6as02aHdD0h0DeCOATk4LsQpl27r3SXvzE329RX9OiDMKNsqzBA+iRMl/2V2BhCxW0mzMUUIjvRfCWbffU2j6LM0LIQAXWAz6MQNOg/kQRvXq0B3CPm7tY4gOgqD9n3qhXDrQA68RQRG/dvRiiyhVDH3Ia/iY050DE9XJSOBi0bQl8TRyVryTTvRjYI65/FmVilDsNjIH/rAkUC0N4tZtV85NaWQ/TkmfYOMT3/lTD7AjPcpxk3dZckNps7Bh4xgzuSpaiXwYDf3H49scgJh7/5hsTLlsOLYnVl5S/Y2VD8UsPu7eLfr5ZybvzUpmDDg6vrKs6QU3N0S6SLGimcSCZQWu93SNvUwH8TQCdispFcrd07
+	fIADXZa9exz1sB3eo0ENkj/HYl7tROzprMaeOX3FK+k3Uv6SYL5N2ojSTl08dE+ViV4s8gUwU4LsHf2uOUJvc5ejs9BWhYloryywx2kr+quXwhc7dmg00Y4307M5y4FjJuKiCPB6mXGynSWoSuAgtutOG9L3WSoFgU0OHvsvG64r+wF18qmcLTONb0De0PONGadHhtOvu4l+05LJbRdkXnSrP10uQXgLyrdK3we2sZsvad9UAvFgBIaf88uKr05kU3D6M0PM5F+evdbzJ8iWqw1WfEEXU9q0PvGHXRZXFrYdtgWr5+SXlbkSO/qY9vSbpDTJXzTGndxBnso3mPhdMmXZ+NCuTjFBqJTpIiG+QZDEIZVhBIVgnz1p8bRG7aXqFDyJYJOyfIfTUVOu5/QkB/w9tT6OYbnJma2Ha8p6xMS78VgUQcopvamBYbE28uTnJp4OPsdAplDNk4uEcXP4PQP0ecDgRrADtNhjTT/zSnafX1K6JGpFVrpq3BxxIGJN0YQcAxtc10x8yvT2xK/rqpCMSHa2EdhAE8HBopiqKggOFxyJsQA8TwXQhSSfwiGx90dLleWfQyVtqCXEl+oOsbJZfbd6J9yNa/Buxp0Ng0E2a/QwC/UkQ4IuUDBJsI+v
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(396003)(346002)(366004)(39860400002)(451199021)(36756003)(86362001)(52116002)(316002)(66556008)(66946007)(66476007)(478600001)(6486002)(6666004)(8936002)(8676002)(5660300002)(41300700001)(2906002)(38350700002)(38100700002)(1076003)(6506007)(26005)(6512007)(186003)(83380400001)(2616005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7w2ie5vBhP8g6ivfB6X+8vJMwR4gBaDnTmIpgWbT951KNyRSKJzBU8oCZqvQ?=
- =?us-ascii?Q?CwGI/QrNzrW9kg3rz+3sjxBr2xaIEAx9o3AS+p1ArImcPbskPEg54L8xbnhY?=
- =?us-ascii?Q?qAfNYuIxgnJhyg9rSXla4zfWO3k7X1Hcwy9MXeXUwIBmnAkyYZAZnMfXqIVE?=
- =?us-ascii?Q?8hxF8JXuSdvdCtA1T8zOeuq5lEgpg+zkEtNT7feChHZQKd6Sex/3CYmW9aAZ?=
- =?us-ascii?Q?1rJaWdmvUZBwAWCH0GkjucOZL70FI2kEIQNJvcUs2iPIlZkwZ7JhTLo4CSZC?=
- =?us-ascii?Q?FddAAJFgAvB7tkiKrEzuB6cb3ooV+bdJIm8c8No13C3kB4ezP0Z4wSYozVnK?=
- =?us-ascii?Q?k5lWtOOQGqbBJr2dnbm6BIchZ5vSKlHmTbvzmB3dhm2kOfvjRjOP9YT1GjdZ?=
- =?us-ascii?Q?xF3z//gri7Ct1XuoFlZuaPc0erzsNmQU1EbKenLE4cqkI77nmiurrsEh5Cs8?=
- =?us-ascii?Q?slh0hFMYxOCn8i1lqxQCJIz6RbpSGh0nIPjzfE5aPnJJPWwEZRH4liKOTG2P?=
- =?us-ascii?Q?UZAZrhlUvN6CLDeghQRL92utNeLlCWHStbfAH2p9kXXBrwRLiVtcEezje2gY?=
- =?us-ascii?Q?GbX5icN9zXuc+29Z9DEJqkzqEiHrMcahW8zI1FhQQcStfsKs78h/lToptof4?=
- =?us-ascii?Q?FFzn0T9mGaRH/5usPcXrig2DX2UzBwDAPKfW6LSR+engeRdL654qO9fNxmYW?=
- =?us-ascii?Q?nIXyhFQlpOanrDWaIf8/1bemHbEI3IYaZsHte8gkCNGr7QOLFfycCwb9CmJA?=
- =?us-ascii?Q?UoXJgvJ1ngvwfz1Sa5jWVdaR26DsHlZRL8xAaAgik4K3TbCutPZbXyrtzSk2?=
- =?us-ascii?Q?3rF+kHacWwuWVN3XighP6TL7jym1FUDd+HuJ/T9BMOd9J9pd6CBWCsw7qeJi?=
- =?us-ascii?Q?60x6RgjRFBlIMaGKZMvXuJSbkX8F5BHBglV4OyA6npllVxSj1xwx62j9a3Wb?=
- =?us-ascii?Q?xh67B5wX/avXMeajdekQ/xElgCsM7i7/DqqC147usjlp7z2Y4ZKuQ3QR+3m3?=
- =?us-ascii?Q?a9ZSMQ+j5lo3fVhlbqRv/38vClDhyclgCSN+j0mVen0MeGBmLyy+SI6D0JHt?=
- =?us-ascii?Q?Im2Vy4WQmSFutwXS607pwmvydZDaykVBSdAXbFmEBJ1l9Z36HjqE0ili9pGj?=
- =?us-ascii?Q?lgNGuOhzw7JxH2VX6ACqLGRsCDjnzSwegxgFI5lkrdGE9HWZzeEGitj9fpGi?=
- =?us-ascii?Q?5Q72m+5+7YDoEzLwnoB+FSJB5hsEqXUp14MjvT/jQUsoek+XXfi0HzLlT8Jk?=
- =?us-ascii?Q?LSxCbuzJ2hWKxWkLP21JSaw5+KQ0d0U1dLSgb+AEzB8V29Yq6VlW4wrZHIdH?=
- =?us-ascii?Q?WIRq+8ukdnawYkbzhqhcBuAtw9fAZQRKegX7DSAR49RnRCdvfd+d0J+r9W1o?=
- =?us-ascii?Q?GyfXcmO4JTT13keJ1XCzgHm+iN6R21NWhyfzU3Jnocb1H8irILhsuKDhEVnZ?=
- =?us-ascii?Q?Oqhpsx9N6rHUwrpda/1/b3Me8x7/tLcKJxBWdMBCHRGbBzLQ0bGOu0Hg65Nz?=
- =?us-ascii?Q?KPZZ7Z8UlCZzZbL+u1ikag0CVi7ghaFVkzEQsQ7ddSbfI7VQeFy+pO2M5iKe?=
- =?us-ascii?Q?QxNUyURzrZ0WZzmA9HBUNsLVFtF1ZQu6PygcL5FN?=
+	=?us-ascii?Q?litqZl1rxsdRJXXVlZ+E0xDvbA5aUToKAeDVgNbMU7P/oKXfHDgWQPwL2rgP?=
+ =?us-ascii?Q?mDNGdsjJbDKp+IcUjZIzvucgFQf4bqc7AI1IbziB+vEJ+YCec4ZwOTLpsG+E?=
+ =?us-ascii?Q?FWaIYYgVsDM4ppzJenMIjtyALPEX1H0aKIwKX81OclzXzxFZ0SCAi6gjeEiR?=
+ =?us-ascii?Q?3/jDI2zvJ1fbt1mEAVYZlu/R/bxkYd/yJPhA8ifiqu9Qc6E5cBxmhQCVwulm?=
+ =?us-ascii?Q?t4jigrhQ7FWreAtj718v19xM1Uck76YPPZNefPlSsshFf8YV3gJ3eXMdSZxB?=
+ =?us-ascii?Q?/iTuDV6LGje7qIFdl6f0KoY7P45fjKdOMBqMT8m4X7Zn+AiT+JdRWZB+cWOr?=
+ =?us-ascii?Q?K1VQi6VgdRVuzdQOo6rGjhCx8hXR/emy3JMgHHLfRIUit+QnJ+u/vVYpGiyE?=
+ =?us-ascii?Q?iq6I63PUS/9QJc1BCjyj+yZH5Hnb//vZdTvwTbw7pXno4jD6GCQDMybqjqlQ?=
+ =?us-ascii?Q?oqxGxEmGGzol8fCePtjOznHtFJGKYs/B7IGEuJHmNFl+DSJN5QQDz8/ozZAY?=
+ =?us-ascii?Q?AKKcsGugtt/Pz6qANHVWKxKBNcjD7oOhk3D5kesClSakG7mGM0BG0s5j8OPM?=
+ =?us-ascii?Q?L6ZnYeWC98Nz3n7Mk412oue9rPWusDlrtJwEeloZz3eDMd0Y4W7nijr70hxa?=
+ =?us-ascii?Q?oy2V1QjTnRo0QhMYJ4+Zhc9YCEKOxDL0JOC4mAs/yxvg41cjKKEC1rGIZu60?=
+ =?us-ascii?Q?VAuQ3nnmAoQX1y5OGEkWP4qICWnjWXr7CYAauMWiopsol6BgPNVjSF2+epXU?=
+ =?us-ascii?Q?XSw6XRBl9r0G6uA7psiN2ZHK/QD9yu0/F+8Z5JTBtBWyTq91ZdmCI6pLws/3?=
+ =?us-ascii?Q?jGpfqBYCtVCtJLLxxNpvt2r/CdbKzkje743yrTduvUUBLaTpy8AK/eW/SGg2?=
+ =?us-ascii?Q?Yy8CZzdJ5dY2CM3vqCdcu2WY5BO0NqW2ItPXb0KYGXJ6Z89MvegHFOfdqvlp?=
+ =?us-ascii?Q?5kACoGBaQ+86M8lqdi5nkuwQFyw91KAJ1VsMWKEKMD7jS+Pn2RJ3b7LHztPe?=
+ =?us-ascii?Q?PUtDgMggQk9ODwZm1u0g6s9UP/dNWld+sG4pOZVWKDNlhqr4OGLj8ckYvMrH?=
+ =?us-ascii?Q?LSIKU5AUUDurEui0y8kt+3oqfdo4hjQlQAMzgEudBaWnIWQIDVJPrI81sOJq?=
+ =?us-ascii?Q?JpJe2LKgYtwSOhSebstFY5ibuOA8F7K+gVmHyR/m9Ksn29lnKBhV6Oe4kOP7?=
+ =?us-ascii?Q?gcrbFMNQtaBcB3wKzcgxOGBuot7/VDYM2sKY9QkqKmvM8feEenNNVVBP4dXz?=
+ =?us-ascii?Q?Hltg7NDCAxnOUf/fPnhjUjyw+deyBCOvcWUHJhZ6wSQ0Mgxv2niYDTO1eYAS?=
+ =?us-ascii?Q?COGgYVUXmHRhPFchQ+ohkFZ6hCU0AgVpOqOoi1IBIZC/KoFA6PbLL2tT1zUp?=
+ =?us-ascii?Q?0VVn+QPoCjhdyhX+aAnS4qt0FrjSYO7TRlhEf7oROm942qIxN3VHTqAC3gEY?=
+ =?us-ascii?Q?a4mPWfw59gxxOgJXl7nuIZz+WZr+c1Af5OoryplY1PgyCIniHNkVNNWcn4kC?=
+ =?us-ascii?Q?ALOOuK6GPDCD1C1HBK8FXN7eIAd65nKWAcTdKPMJeIbq+Lfseyx7X2r/OCNN?=
+ =?us-ascii?Q?/g0hVYscMG12ic3nd77pQLVu+vmdTs29VhoucHPh?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0b30737-e79d-4573-1657-08db5d5af474
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fa01add-7df2-4d08-b671-08db5d5af57c
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 20:02:23.4999
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 20:02:25.2947
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /zuxhXFHnNLBSI52/dbTwZL+j0Knhw3LPJ6c1m9iZ5OLr9+Fi8uYjk1/XOir9Zy4NzEua/3OXs76LsQaty9ghg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: XywxL5TK/TmEkyIJlo2yTYw5okZ5j4iFYXP1pBaq8ZgLGV0w+x7sjY8S3W7/2t8pazV1/oUiI7D/0BO2HfVwTA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7934
 
-Relocated the setup of chan_name from setup_irq() to fsl_chan init. This
-change anticipates its future use in various locations.
+Relocates the tcd into the fsl_dma_chan structure. This adjustment reduces
+the need to reference back to fsl_edma_engine, paving the way for EDMA V3
+support.
 
-For increased safety, sprintf has been replaced with snprintf. In addition,
-The size of the fsl_chan->name[] array was expanded from 16 to 32.
+Unified the edma_writel and edma_writew functions for accessing TCD
+(Transfer Control Descriptor) registers. A new macro is added that can
+automatically detect whether a 32-bit or 16-bit access should be used
+based on the structure field definition. This provide better support
+64-bit TCD with future v5 version.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/dma/fsl-edma-common.h | 2 +-
- drivers/dma/fsl-edma-main.c   | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/dma/fsl-edma-common.c | 38 +++++++++++++----------------------
+ drivers/dma/fsl-edma-common.h | 22 +++++++++++++++++++-
+ drivers/dma/fsl-edma-main.c   |  6 ++++--
+ drivers/dma/mcf-edma-main.c   |  4 +++-
+ 4 files changed, 42 insertions(+), 28 deletions(-)
 
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index 659bef4a3b23..186b5c41d07f 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -40,8 +40,6 @@
+ #define EDMA64_ERRH		0x28
+ #define EDMA64_ERRL		0x2c
+ 
+-#define EDMA_TCD		0x1000
+-
+ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fsl_chan)
+ {
+ 	spin_lock(&fsl_chan->vchan.lock);
+@@ -285,8 +283,6 @@ static size_t fsl_edma_desc_residue(struct fsl_edma_chan *fsl_chan,
+ 		struct virt_dma_desc *vdesc, bool in_progress)
+ {
+ 	struct fsl_edma_desc *edesc = fsl_chan->edesc;
+-	struct edma_regs *regs = &fsl_chan->edma->regs;
+-	u32 ch = fsl_chan->vchan.chan.chan_id;
+ 	enum dma_transfer_direction dir = edesc->dirn;
+ 	dma_addr_t cur_addr, dma_addr;
+ 	size_t len, size;
+@@ -301,9 +297,9 @@ static size_t fsl_edma_desc_residue(struct fsl_edma_chan *fsl_chan,
+ 		return len;
+ 
+ 	if (dir == DMA_MEM_TO_DEV)
+-		cur_addr = edma_readl(fsl_chan->edma, &regs->tcd[ch].saddr);
++		cur_addr = edma_read_tcdreg(fsl_chan, saddr);
+ 	else
+-		cur_addr = edma_readl(fsl_chan->edma, &regs->tcd[ch].daddr);
++		cur_addr = edma_read_tcdreg(fsl_chan, daddr);
+ 
+ 	/* figure out the finished and calculate the residue */
+ 	for (i = 0; i < fsl_chan->edesc->n_tcds; i++) {
+@@ -358,9 +354,6 @@ enum dma_status fsl_edma_tx_status(struct dma_chan *chan,
+ static void fsl_edma_set_tcd_regs(struct fsl_edma_chan *fsl_chan,
+ 				  struct fsl_edma_hw_tcd *tcd)
+ {
+-	struct fsl_edma_engine *edma = fsl_chan->edma;
+-	struct edma_regs *regs = &fsl_chan->edma->regs;
+-	u32 ch = fsl_chan->vchan.chan.chan_id;
+ 	u16 csr = 0;
+ 
+ 	/*
+@@ -369,23 +362,22 @@ static void fsl_edma_set_tcd_regs(struct fsl_edma_chan *fsl_chan,
+ 	 * big- or little-endian obeying the eDMA engine model endian,
+ 	 * and this is performed from specific edma_write functions
+ 	 */
+-	edma_writew(edma, 0,  &regs->tcd[ch].csr);
++	edma_write_tcdreg(fsl_chan, 0, csr);
+ 
+-	edma_writel(edma, (s32)tcd->saddr, &regs->tcd[ch].saddr);
+-	edma_writel(edma, (s32)tcd->daddr, &regs->tcd[ch].daddr);
++	edma_write_tcdreg(fsl_chan, (s32)tcd->saddr, saddr);
++	edma_write_tcdreg(fsl_chan, (s32)tcd->daddr, daddr);
+ 
+-	edma_writew(edma, (s16)tcd->attr, &regs->tcd[ch].attr);
+-	edma_writew(edma, tcd->soff, &regs->tcd[ch].soff);
++	edma_write_tcdreg(fsl_chan, (s16)tcd->attr, attr);
++	edma_write_tcdreg(fsl_chan, tcd->soff, soff);
+ 
+-	edma_writel(edma, (s32)tcd->nbytes, &regs->tcd[ch].nbytes);
+-	edma_writel(edma, (s32)tcd->slast, &regs->tcd[ch].slast);
++	edma_write_tcdreg(fsl_chan, (s32)tcd->nbytes, nbytes);
++	edma_write_tcdreg(fsl_chan, (s32)tcd->slast, slast);
+ 
+-	edma_writew(edma, (s16)tcd->citer, &regs->tcd[ch].citer);
+-	edma_writew(edma, (s16)tcd->biter, &regs->tcd[ch].biter);
+-	edma_writew(edma, (s16)tcd->doff, &regs->tcd[ch].doff);
++	edma_write_tcdreg(fsl_chan, (s16)tcd->citer, citer);
++	edma_write_tcdreg(fsl_chan, (s16)tcd->biter, biter);
++	edma_write_tcdreg(fsl_chan, (s16)tcd->doff, doff);
+ 
+-	edma_writel(edma, (s32)tcd->dlast_sga,
+-			&regs->tcd[ch].dlast_sga);
++	edma_write_tcdreg(fsl_chan, (s32)tcd->dlast_sga, dlast_sga);
+ 
+ 	if (fsl_chan->is_sw) {
+ 		csr = le16_to_cpu(tcd->csr);
+@@ -393,7 +385,7 @@ static void fsl_edma_set_tcd_regs(struct fsl_edma_chan *fsl_chan,
+ 		tcd->csr = cpu_to_le16(csr);
+ 	}
+ 
+-	edma_writew(edma, (s16)tcd->csr, &regs->tcd[ch].csr);
++	edma_write_tcdreg(fsl_chan, (s16)tcd->csr, csr);
+ }
+ 
+ static inline
+@@ -745,7 +737,5 @@ void fsl_edma_setup_regs(struct fsl_edma_engine *edma)
+ 		edma->regs.errh = edma->membase + EDMA64_ERRH;
+ 		edma->regs.inth = edma->membase + EDMA64_INTH;
+ 	}
+-
+-	edma->regs.tcd = edma->membase + EDMA_TCD;
+ }
+ 
 diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
-index 3991956dbc11..39b5f903ba87 100644
+index 39b5f903ba87..0a95fd5d74f5 100644
 --- a/drivers/dma/fsl-edma-common.h
 +++ b/drivers/dma/fsl-edma-common.h
-@@ -116,7 +116,7 @@ struct fsl_edma_chan {
- 	dma_addr_t			dma_dev_addr;
+@@ -48,6 +48,8 @@
+ 
+ #define DMAMUX_NR	2
+ 
++#define EDMA_TCD                0x1000
++
+ #define FSL_EDMA_BUSWIDTHS	(BIT(DMA_SLAVE_BUSWIDTH_1_BYTE) | \
+ 				 BIT(DMA_SLAVE_BUSWIDTH_2_BYTES) | \
+ 				 BIT(DMA_SLAVE_BUSWIDTH_4_BYTES) | \
+@@ -93,7 +95,6 @@ struct edma_regs {
+ 	void __iomem *intl;
+ 	void __iomem *errh;
+ 	void __iomem *errl;
+-	struct fsl_edma_hw_tcd __iomem *tcd;
+ };
+ 
+ struct fsl_edma_sw_tcd {
+@@ -117,6 +118,7 @@ struct fsl_edma_chan {
  	u32				dma_dev_size;
  	enum dma_data_direction		dma_dir;
--	char				chan_name[16];
-+	char				chan_name[32];
+ 	char				chan_name[32];
++	struct fsl_edma_hw_tcd __iomem *tcd;
  };
  
  struct fsl_edma_desc {
+@@ -160,6 +162,16 @@ struct fsl_edma_engine {
+ 	struct fsl_edma_chan	chans[];
+ };
+ 
++#define edma_read_tcdreg(chan, __name)				\
++(sizeof(chan->tcd->__name) == sizeof(u32) ?			\
++	edma_readl(chan->edma, &chan->tcd->__name) :		\
++	edma_readw(chan->edma, &chan->tcd->__name))
++
++#define edma_write_tcdreg(chan, val, __name)			\
++(sizeof(chan->tcd->__name) == sizeof(u32) ?			\
++	edma_writel(chan->edma, val, &chan->tcd->__name) :	\
++	edma_writew(chan->edma, val, &chan->tcd->__name))
++
+ /*
+  * R/W functions for big- or little-endian registers:
+  * The eDMA controller's endian is independent of the CPU core's endian.
+@@ -174,6 +186,14 @@ static inline u32 edma_readl(struct fsl_edma_engine *edma, void __iomem *addr)
+ 		return ioread32(addr);
+ }
+ 
++static inline u16 edma_readw(struct fsl_edma_engine *edma, void __iomem *addr)
++{
++	if (edma->big_endian)
++		return ioread16be(addr);
++	else
++		return ioread16(addr);
++}
++
+ static inline void edma_writeb(struct fsl_edma_engine *edma,
+ 			       u8 val, void __iomem *addr)
+ {
 diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index cd734779f2eb..722ebecdc894 100644
+index 722ebecdc894..8d1d0100f6e6 100644
 --- a/drivers/dma/fsl-edma-main.c
 +++ b/drivers/dma/fsl-edma-main.c
-@@ -175,8 +175,6 @@ fsl_edma2_irq_init(struct platform_device *pdev,
- 		if (irq < 0)
- 			return -ENXIO;
+@@ -312,9 +312,11 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 		fsl_chan->idle = true;
+ 		fsl_chan->dma_dir = DMA_NONE;
+ 		fsl_chan->vchan.desc_free = fsl_edma_free_desc;
++		fsl_chan->tcd = fsl_edma->membase + EDMA_TCD
++				+ i * sizeof(struct fsl_edma_hw_tcd);
+ 		vchan_init(&fsl_chan->vchan, &fsl_edma->dma_dev);
  
--		sprintf(fsl_edma->chans[i].chan_name, "eDMA2-CH%02d", i);
--
- 		/* The last IRQ is for eDMA err */
- 		if (i == count - 1)
- 			ret = devm_request_irq(&pdev->dev, irq,
-@@ -305,6 +303,9 @@ static int fsl_edma_probe(struct platform_device *pdev)
+-		edma_writew(fsl_edma, 0x0, &regs->tcd[i].csr);
++		edma_write_tcdreg(fsl_chan, 0, csr);
+ 		fsl_edma_chan_mux(fsl_chan, 0, false);
+ 	}
+ 
+@@ -421,7 +423,7 @@ static int fsl_edma_resume_early(struct device *dev)
  	for (i = 0; i < fsl_edma->n_chans; i++) {
- 		struct fsl_edma_chan *fsl_chan = &fsl_edma->chans[i];
- 
-+		snprintf(fsl_chan->chan_name, sizeof(fsl_chan->chan_name), "%s-CH%02d",
-+							   dev_name(&pdev->dev), i);
-+
- 		fsl_chan->edma = fsl_edma;
+ 		fsl_chan = &fsl_edma->chans[i];
  		fsl_chan->pm_state = RUNNING;
- 		fsl_chan->slave_id = 0;
+-		edma_writew(fsl_edma, 0x0, &regs->tcd[i].csr);
++		edma_write_tcdreg(fsl_chan, 0, csr);
+ 		if (fsl_chan->slave_id != 0)
+ 			fsl_edma_chan_mux(fsl_chan, fsl_chan->slave_id, true);
+ 	}
+diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
+index af1b0e8a3021..d79a04a03fda 100644
+--- a/drivers/dma/mcf-edma-main.c
++++ b/drivers/dma/mcf-edma-main.c
+@@ -200,7 +200,9 @@ static int mcf_edma_probe(struct platform_device *pdev)
+ 		mcf_chan->dma_dir = DMA_NONE;
+ 		mcf_chan->vchan.desc_free = fsl_edma_free_desc;
+ 		vchan_init(&mcf_chan->vchan, &mcf_edma->dma_dev);
+-		iowrite32(0x0, &regs->tcd[i].csr);
++		mcf_chan->tcd = mcf_edma->membase + EDMA_TCD
++				+ i * sizeof(struct fsl_edma_hw_tcd);
++		iowrite32(0x0, &mcf_chan->tcd->csr);
+ 	}
+ 
+ 	iowrite32(~0, regs->inth);
 -- 
 2.34.1
 
