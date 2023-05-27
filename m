@@ -1,48 +1,36 @@
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEE1F9CB;
-	Sat, 27 May 2023 11:59:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685188745; x=1716724745;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1TPmWjxOFqFxwsJrDeSGVc93SPSkph7oWPfkq3d7EoY=;
-  b=dm4+kSjF7y2CYdlK3JcYU/fH1nLk2XS4aAqtvANzRTaCfKBP8/qlaTh2
-   sAxhpfeUQQmKx4Zu8mSTY9mwyLy7hPQQfYTe3dTj60DvfcjItm4tr07yB
-   G3hUvlhqvJF58GLy3u4WpwAgqW4Q8o+pqAr5JbR0vKbxpUBn0S96GBwaK
-   Vf0tiLC7C0sit3Dbu2AAuMdyuMcUXklu9welIr9wx1njx228ZgzO2AKxh
-   Zp5yu5b48t3+iVrFBQcX2mmJ2RtxtLlrLCxNjTFgR+AzKSWn/+a2rSjOZ
-   Byzo4K6lIIR/DqEp15OLC9HgfjiEhnmIpTy/yPv0M7EvkeWKyTlLO7/js
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10722"; a="353233931"
-X-IronPort-AV: E=Sophos;i="6.00,196,1681196400"; 
-   d="scan'208";a="353233931"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2023 04:59:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10722"; a="817840389"
-X-IronPort-AV: E=Sophos;i="6.00,196,1681196400"; 
-   d="scan'208";a="817840389"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 27 May 2023 04:59:02 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1q2sZZ-000Jwm-1H;
-	Sat, 27 May 2023 11:59:01 +0000
-Date: Sat, 27 May 2023 19:58:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, vkoul@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, dmaengine@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	peng.fan@nxp.com, joy.zou@nxp.com, shenwei.wang@nxp.com,
-	imx@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v1 10/12] dmaengine: fsl-edma: move tcd into struct
- fsl_dma_chan
-Message-ID: <202305271951.gmRobs3a-lkp@intel.com>
-References: <20230526143639.1037099-11-Frank.Li@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849932F41
+	for <imx@lists.linux.dev>; Sat, 27 May 2023 13:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0A0C433D2;
+	Sat, 27 May 2023 13:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685192469;
+	bh=F9xTzeEOGRmn8fyWTyrhNj2/z4IM29BIWQUvrump24A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VUv15hwoNzSd2m1ST90hEmDIneJiigCUL9psgX3zXM9pY+bPaC4ghmiKyDwVCuZbm
+	 LleFQepS6oajbvJIv5wLMwQ+NQL9frkLRfK4ogFgR3c86m/vdlT77+ycmnqMMhO70a
+	 PUqjt6rZI22OFFUjP4Wh+RQJMDlD6N1wW1BPgY5Rl3OjyU2z2NOzDoCCDeC/PdiJJi
+	 OPuYrgJr26M78O6IXFLfo2bZLzReYakwgquPefzWbZKeuNwfkNXhKTWzUSQuy2AwJs
+	 /oUai95zyo2XNckxAXnQxlPgM6YkgK2G4561Iu2jyoCC61k1c2GxFjyP9a/iCeRq64
+	 qB0QnToSo7CEw==
+Date: Sat, 27 May 2023 21:00:56 +0800
+From: Shawn Guo <shawnguo@kernel.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2] arm64: dts: imx8-ss-dma: assign default clock rate
+ for lpuarts
+Message-ID: <20230527130056.GW528183@dragon>
+References: <20230526153854.469239-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,109 +39,14 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230526143639.1037099-11-Frank.Li@nxp.com>
+In-Reply-To: <20230526153854.469239-1-shenwei.wang@nxp.com>
 
-Hi Frank,
+On Fri, May 26, 2023 at 10:38:54AM -0500, Shenwei Wang wrote:
+> Add the assigned-clocks and assigned-clock-rates properties for the
+> LPUARTx nodes. Without these properties, the default clock rate
+> used would be 0, which can cause the UART ports to fail when open.
+> 
+> Fixes: 35f4e9d7530f ("arm64: dts: imx8: split adma ss into dma and audio ss")
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on vkoul-dmaengine/next]
-[also build test WARNING on robh/for-next linus/master v6.4-rc3 next-20230525]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-fsl-edma-clean-up-EXPORT_SYMBOL_GPL-in-fsl-edma-common-c/20230526-224442
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git next
-patch link:    https://lore.kernel.org/r/20230526143639.1037099-11-Frank.Li%40nxp.com
-patch subject: [PATCH v1 10/12] dmaengine: fsl-edma: move tcd into struct fsl_dma_chan
-config: i386-randconfig-s003-20230526 (https://download.01.org/0day-ci/archive/20230527/202305271951.gmRobs3a-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.4-39-gce1a6720-dirty
-        # https://github.com/intel-lab-lkp/linux/commit/913c495a6c017a70bd6d7a518a9edbd361212985
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Frank-Li/dmaengine-fsl-edma-clean-up-EXPORT_SYMBOL_GPL-in-fsl-edma-common-c/20230526-224442
-        git checkout 913c495a6c017a70bd6d7a518a9edbd361212985
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 olddefconfig
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 SHELL=/bin/bash drivers/dma/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202305271951.gmRobs3a-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
-   drivers/dma/fsl-edma-common.c:367:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:367:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:368:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:368:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:370:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:370:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:371:9: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected unsigned short [usertype] val @@     got restricted __le16 [usertype] soff @@
-   drivers/dma/fsl-edma-common.c:371:9: sparse:     expected unsigned short [usertype] val
-   drivers/dma/fsl-edma-common.c:371:9: sparse:     got restricted __le16 [usertype] soff
->> drivers/dma/fsl-edma-common.c:371:9: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected unsigned int [usertype] val @@     got restricted __le16 [usertype] soff @@
-   drivers/dma/fsl-edma-common.c:371:9: sparse:     expected unsigned int [usertype] val
-   drivers/dma/fsl-edma-common.c:371:9: sparse:     got restricted __le16 [usertype] soff
-   drivers/dma/fsl-edma-common.c:373:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:373:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:374:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:374:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:376:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:376:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:377:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:377:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:378:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:378:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:380:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:380:9: sparse: sparse: cast from restricted __le32
-   drivers/dma/fsl-edma-common.c:388:9: sparse: sparse: cast from restricted __le16
-   drivers/dma/fsl-edma-common.c:388:9: sparse: sparse: cast from restricted __le16
-
-vim +371 drivers/dma/fsl-edma-common.c
-
-   353	
-   354	static void fsl_edma_set_tcd_regs(struct fsl_edma_chan *fsl_chan,
-   355					  struct fsl_edma_hw_tcd *tcd)
-   356	{
-   357		u16 csr = 0;
-   358	
-   359		/*
-   360		 * TCD parameters are stored in struct fsl_edma_hw_tcd in little
-   361		 * endian format. However, we need to load the TCD registers in
-   362		 * big- or little-endian obeying the eDMA engine model endian,
-   363		 * and this is performed from specific edma_write functions
-   364		 */
-   365		edma_write_tcdreg(fsl_chan, 0, csr);
-   366	
-   367		edma_write_tcdreg(fsl_chan, (s32)tcd->saddr, saddr);
-   368		edma_write_tcdreg(fsl_chan, (s32)tcd->daddr, daddr);
-   369	
-   370		edma_write_tcdreg(fsl_chan, (s16)tcd->attr, attr);
- > 371		edma_write_tcdreg(fsl_chan, tcd->soff, soff);
-   372	
-   373		edma_write_tcdreg(fsl_chan, (s32)tcd->nbytes, nbytes);
-   374		edma_write_tcdreg(fsl_chan, (s32)tcd->slast, slast);
-   375	
-   376		edma_write_tcdreg(fsl_chan, (s16)tcd->citer, citer);
-   377		edma_write_tcdreg(fsl_chan, (s16)tcd->biter, biter);
-   378		edma_write_tcdreg(fsl_chan, (s16)tcd->doff, doff);
-   379	
-   380		edma_write_tcdreg(fsl_chan, (s32)tcd->dlast_sga, dlast_sga);
-   381	
-   382		if (fsl_chan->is_sw) {
-   383			csr = le16_to_cpu(tcd->csr);
-   384			csr |= EDMA_TCD_CSR_START;
-   385			tcd->csr = cpu_to_le16(csr);
-   386		}
-   387	
-   388		edma_write_tcdreg(fsl_chan, (s16)tcd->csr, csr);
-   389	}
-   390	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Applied, thanks!
