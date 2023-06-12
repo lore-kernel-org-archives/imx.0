@@ -1,68 +1,56 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2040.outbound.protection.outlook.com [40.107.22.40])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2059.outbound.protection.outlook.com [40.107.14.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE611F18A;
-	Mon, 12 Jun 2023 16:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD723C3B
+	for <imx@lists.linux.dev>; Mon, 12 Jun 2023 18:53:41 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dWkf4CchhKOsHGMmZNTtEoLVJIw4HYc0NzcqWKMhMX5htPDDGFU2L9DeXroE7B5IktJF5iVMnUsc0H/gTJmIJTqgiraqr4hSkwwDxLwC//qeCqH0/rG/fN0tIE86DDt0XtxSnfLUAiyfH9rEDfCdfD4ECwC7j29Auc1BlU+h9SK8xdkMvJYemFnefNihZN/6FpGnGrxQbeHBQcbvcLVzxlyBlA1qXZbtpmEGw9TQRdker5+eaqIra2WW+K3Fb6lOfKN5YB1bz1JZHodB3sU4kVsEjEmSd4VR1u89aBqjhDrVIaZw34zTLcta0SquyHFSJjT3NW1Q73EFQs844xOyXQ==
+ b=djxOk+LFu9joxFBkycqjiYIwCgugWNj/1jwqUFRfjzXNTzW5DgnhAmehwtBAYZe+F28IRihUSOkxka/OV9sPYcYGUdVk75ZJ0zQlgXiqfkxToWr8xZlAcOhYfy1SYkDRNaS0vwqZR3cEcwCNzQws/cK06H9oouk/FjUPwjL5E0eLRXg5Mbk7vfoA8BMxb8bIzhPXtddDDjB0rBBsR85mwECZJutNhLfsa/jx7s+nShvnmGUsJGtfCbJq2odJhq6iXJARDvxllQFcijBR+hKQMt3VyCpxaR336qfpxfqQOVrE0sq0t4oSl8JhfNONXXaL3/xu8yybDIBWHWJDTWJdLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9QIocaVIciX4e7LM4z33tjRZAyZOTGT8mZ001d3bMxY=;
- b=S3Klb8InCHxB1fHvOvQw91VXumxcXDJBItBaU7guxh35ZSMPkcKRLHa2AcUTogescQbKvZURIj5D3N+Gpn9YpmMVHC8YXIPNTkQyU9sqOXUXQCGnxlh31FYiR4qpsr3xjBiYo8Ve+NaV0OmIuxLVFE0fZQZAVQDNkAxWYERlM6M76+HK0/ibovxYyRU5S1onnl93eKJJ3E/QDt8IM6OFtDQ7jZXkfuQCKFZCtlNdFS4DBavJxexVw2VGqu2nXUg7nBDW9heT5uVq0wSTM3XgXggZ5Sg/UMpYRz998MHu6Xqd+jCpMR7f91KkY8b9ZPNTsnQCJsw/XMMX/6DZuL4zlQ==
+ bh=7wtJp4XEZ4EAp7QNn3nwHulj1PV0ahNAGEuPN3tbq3o=;
+ b=Z8l42W66wN2NnvUNVQfGp4eVZ9GvyF3nQ6asMFRttpgOXRAKcykO8FzSGBh+/MKZUchW2b84smMd+3is4ATsxWhvmY8mS021OoKFFQZHLrd0lMcRggaWkOvWPvHwFtzDMcJ+2zv1X2rr4bMlmUQoPkxXaYWGK6KoDyTwRMVyCoYh6gn6KCkV0i/86FCy2WL8S67NbwpjKl/w+cpTOWo0mS4on0SUD7YtoAr3mAtX1Kft8p/ysmzgZytzXsQ58ybYdsPyPQmXtD0vhyn14wm0vzRoWBegtPQ29aSBRqaB6nhsD0Th1gpt+OUOaAFXf+nf+A3KPSs44GhlFwkIKxYtRg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9QIocaVIciX4e7LM4z33tjRZAyZOTGT8mZ001d3bMxY=;
- b=a3VF1W/M7T8VdbrxtAm2MAxR58kR1Lo1E03FLiXbMhAG5fW2svG1gru8k/JwNWWKFT+i+UfIO/OT1g4qPG709dganZlkynrubXoVjvDHEkDMLagXpJszzCsbPJPUCJHVR8qA1ODFIKPjUpKjRqwxKSV0FOvrnilSq/FxYAiYfZU=
+ bh=7wtJp4XEZ4EAp7QNn3nwHulj1PV0ahNAGEuPN3tbq3o=;
+ b=erPsANrgsif7EtRymn/sh3BhgCGukqDQiC4w8fFfWlSTrW2JQSoXuzdRydXWbGTdJD6q8MoMTzN4SQsM/OS6IHAijz6d9hPhVdVLvJAoGvojyd8rNgIH37Zcnj0JfOFm6Pc0+uu4ZF7HB2Tk9qyc3lt4FX8nIcro1JiEsDAcyb0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS8PR04MB8852.eurprd04.prod.outlook.com (2603:10a6:20b:42f::14) with
+ by PAXPR04MB8408.eurprd04.prod.outlook.com (2603:10a6:102:1c9::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.46; Mon, 12 Jun
- 2023 16:17:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.29; Mon, 12 Jun
+ 2023 18:53:37 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6477.028; Mon, 12 Jun 2023
- 16:17:42 +0000
-Date: Mon, 12 Jun 2023 12:17:25 -0400
+ 18:53:37 +0000
+Date: Mon, 12 Jun 2023 14:53:23 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>
-Cc: Aisheng Dong <aisheng.dong@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"jdmason@kudzu.us" <jdmason@kudzu.us>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"kishon@ti.com" <kishon@ti.com>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"ntb@lists.linux.dev" <ntb@lists.linux.dev>,
-	Peng Fan <peng.fan@nxp.com>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>
-Subject: Re: [PATCH 0/3] Add RC-to-EP doorbell with platform MSI controller
-Message-ID: <ZIdFFV5TdAy//Aat@lizhi-Precision-Tower-5810>
-References: <20230426203436.1277307-1-Frank.Li@nxp.com>
- <AM6PR04MB483849BE4788EE893306F38E88759@AM6PR04MB4838.eurprd04.prod.outlook.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	coresight@lists.linaro.org
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: Add coresight trace components
+Message-ID: <ZIdpo8UOg+d61xP6@lizhi-Precision-Tower-5810>
+References: <20230505195151.1874071-1-Frank.Li@nxp.com>
+ <2229161.iZASKD2KPV@steina-w>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM6PR04MB483849BE4788EE893306F38E88759@AM6PR04MB4838.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: SJ0PR03CA0190.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::15) To AM6PR04MB4838.eurprd04.prod.outlook.com
+In-Reply-To: <2229161.iZASKD2KPV@steina-w>
+X-ClientProxiedBy: BY3PR05CA0024.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::29) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,90 +59,81 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB8852:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4593aecf-3905-4b4a-b364-08db6b608c1d
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB8408:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f72b102-0898-45c6-5470-08db6b765456
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	30YnIGEm+8tbq4Ba3QRJIaG3vzpzSCWv2jDS+F1LOgK8wBhN8G2b22jFnr2V3rQYuoJS7C5MxEv24JAvydTw4JNEIXIf1CffdxUKliDA04hNRL9Uh7kO8PLrD+twOMIuxpiHZ/1ptqEZ+b7flHlos1Bxo3QepwkFkC/Pp53y4qhiIGMAom/l8o7JJFFxy3eRgJkdiM+ZOQOtZIm57slxE7Z+/Or0wAzao/FXgLcKhaAI/NtWIvSM/PivUoVgnOdEgg4+mgwqd44htT/12ZcbWD/bXHIf6pu54crt06eiVsJ7NZkxESrkRga6YrHqF1Hri2yxh14nn+OlHsZF5KVi072D7FwYa6kXKYD9wjvpTH9Tb0FWPLhUPL536ioGVpyAIl301XQbkbLL4awAa3s/Rh3zigZZaubI/EVqTUUFime3iM9+o9n48k4Ywz8Ng+kDgO+YwEZvy3olv9rRv+EmQi1nksJjIv8ZwxSfWOgsN3S7SuMy337s6rFrb+UuSwjF/Bgug5anGfMa04J7B2YFOKIFvag9KOh2VCGmrxejH4ZNopKjxU9fGvhSeSAN1nEnQeSbjqtPCytmKyXCDqA+ZQOf95uykQ/FuWDsG/XNVmuCwsoIbF63z2Fo1wri2yZm
+	D8xEr51RaJVa1fSGvIb19lh/g5cuyx+g9QOfNFKQNPjXorCcv2aoTYhs2fTOLwWqcFFRXK1WrIOtsn0+PtQRmD4dYEdDf/a+IrFCDl8Sb5ghkEJ2t2EkKMmQvS71B9ydJ55KXIxhzkrbZlf3CH1EvsCxdMcks/1PK8iQxQwT6w+H3X308f/Ki/++qG4im/JUBV8kjVRaaKpl9W02QyF9JmueVTajs9aWKcy3tDuiAzRayRadXhs8wyLe1BBpDIupP8g0zLRJQ6taJfIO+0pdagJe3FKixnANTrNkkI/Cjw+HB3A0193hS2nJgwawEKl8jef0Sg753CQ6A0LWHyFUe/qfa4j5toho3dfXnwxHlifDBP3bLCRqG72dHyo41Cdl4SHYxTrkoH8gf9yiwaPy0a2xJ85Wg0zn99/ZRqH5r6DOVxQg6hBVORrT3n2vsx98E0iSnpzbo0IVFUcoYkf/sHehCZe1FCUE9GFd2Rz7e4I+cVnjW9sMm4SW+OzJJ291l8jM6g45DaLscH7g8/QAYxA+mdW9wobu2O031Q3cJZu2tVHE/4IweVQaxN/0h8I/Wlfy67dzsiFn4K1VUdA8Ocn8lS4lprpUkmXISW/VQEVfCxOi8R5ON29UWOEcZKyJvDGTtZVKDnBFSiMAisVwfdlv8AVpS76/ZJOBdVtq/wA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(346002)(39860400002)(376002)(136003)(366004)(396003)(451199021)(5660300002)(110136005)(54906003)(7416002)(8676002)(4326008)(66946007)(66556008)(8936002)(41300700001)(316002)(186003)(2906002)(478600001)(66476007)(6666004)(6486002)(52116002)(9686003)(6512007)(6506007)(33716001)(26005)(83380400001)(86362001)(38100700002)(38350700002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(136003)(346002)(366004)(39860400002)(376002)(396003)(451199021)(86362001)(7416002)(6486002)(316002)(8676002)(33716001)(41300700001)(83380400001)(5660300002)(26005)(6512007)(38350700002)(52116002)(38100700002)(6506007)(6666004)(8936002)(9686003)(66476007)(66556008)(4326008)(66946007)(6916009)(478600001)(186003)(2906002)(4744005)(54906003)(32563001)(67856001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YhuvW0598AnPiqELE/F/ENd+HDjJ4pgPa/yAiJf8t64tg/TBTVI8QXjsqne5?=
- =?us-ascii?Q?X441C/3fXDKFK/by4OZwP6qUtozTZCLEAX+z56/09IJIntANylfJTONfAETk?=
- =?us-ascii?Q?JtWWB8uyBwnQbAX8YGJd9oITna3mFRaR+gx6p/8PPu+4H0FJPP12DO0hQr67?=
- =?us-ascii?Q?C1YQKbiJ40+w+x6ihGvLVlFOLygz8Id0+8w9+3FG3S1JoKVQlL8bShkLrUWQ?=
- =?us-ascii?Q?JL3bvrsB1KUL6EE1uke7z3UsMALI4h7YTpnYuTQYD+PZzMdiSIlHjJqyYfo2?=
- =?us-ascii?Q?Mv+QMydU80hPs0qO5z3iAV3FSrptVgI4DLE3PZfKbucEzSwPYpUSuJuHJ8sN?=
- =?us-ascii?Q?H5yjgP97TNvakYUtQWKlyEpvVNHP19VIZsQ2RGixiG6fpDfFaINILZxHHcZ0?=
- =?us-ascii?Q?AsMoy+vrDsH1n8sQn71jTW0I56bn97hsHDv5ZzgctUzH5SikFE6rnEw8WALz?=
- =?us-ascii?Q?6ihTZztozE/BdTsZxp3Hd/UTCLMGJo3Z6UF+9jTPrXw6kptFmNiVnGD75Fkn?=
- =?us-ascii?Q?MZEaP5dmRbbeDdL3MzUZNGoMo7EU657oOASX+qSIAx8rDdXkDJKCcWFtl04X?=
- =?us-ascii?Q?DnneLj6jUYa/BSHOLYXykpdFOZIkECN3WdCYJym/AOBESu6Ne1weewPIrh9U?=
- =?us-ascii?Q?bUv9glSJwgBL4iCaQPthmHFclNi6VInM6gNH0cPYmRfdE0LPzpLypwbpBAoB?=
- =?us-ascii?Q?jXX1ZA64a3zrsjMGn7/+5xdiC5D6e9A+pMJEsXQbXGRpMvGpCBvwnvmVTXAy?=
- =?us-ascii?Q?qm6XRU0YivLxZQSSpeJuig/AQLR3FV4vF0FhqVbIBmTOj5TcOCcH3yJv4NJK?=
- =?us-ascii?Q?Bjj/J3+vMPTQ5wkTsjmFVBkWNnTqSFdEiRCwETA7lCH9uY+AP/wTY5lRa49D?=
- =?us-ascii?Q?GPRMHoGpa7RB6/yCBDIKZ+go5+4IUjOhE+pe6IuAh+NJMMrF+lUfmdl4MPz5?=
- =?us-ascii?Q?GI3yJJVkiiLoKRK8tPtImC2m4PJQoJk6s9FuCalLsbLwUlLvqtRgzM7vfJEl?=
- =?us-ascii?Q?/hbpCrkyrAx5SXqzS23aJUty4GCP/K+/UT3oQuBgMs7oqowNkeaINoYsnEVZ?=
- =?us-ascii?Q?iQyL1ZtZtp5bmAc6vZ80tcp9azUDwEOg5AWkypaIvEzsu6bSxwnCSVNRokqI?=
- =?us-ascii?Q?LiPI75SmdQ1wn2iW81aoHDJLl84FweaM+phlL+tBTF3CyUHx494WqdDKZP10?=
- =?us-ascii?Q?+UtmH5R1xUgitSrNwU1jvnNG3ocfCDPBsKRCqEG5qHpF6rFE1pVvc6D1jv+k?=
- =?us-ascii?Q?kuSkUf1Scg+BO6QTZZzXbwxI19GuM+sHCO5C4UQKXhhXcxj4BaQbfz1TkcCC?=
- =?us-ascii?Q?+XH+kBikH2MqP0JzaWA/rE0699YJtBozlfCPgMijV4E7WKsF7lxYIbQPgMsf?=
- =?us-ascii?Q?PtJpUdmnQXcTDwPrgv+VR71oXW+sgtOfHEvtYe0syuzrx3+xcQXV2gQZxEjA?=
- =?us-ascii?Q?2vb/oa+d/Dv0/7k2RZcn5Q9cngeEMjuAa/chehgIaQSLSZGZw9DMF9ag33tk?=
- =?us-ascii?Q?CJICZHfqsjYGPWEczE4z5xLqP8mryG6GZRJJWng3muFLBIvrGK+pbIC3m4fx?=
- =?us-ascii?Q?1gWoLNcLgdyhOK/YV/gX8Ka+UwF0nlpfmtkOMqL9?=
+	=?us-ascii?Q?f4AoKl9y7nKE1lnz5k1I/59H8NbkkZ+XLN2j0y9eHpWmxLt3t2WglL69pFtY?=
+ =?us-ascii?Q?HHpsbEM1FO4m9uw7bAOJsOhpRQh67sxJqeoPhc3cBSfnEDYI//kLu3XpEP40?=
+ =?us-ascii?Q?o94CyBq0o8dlEpKuIBMBgq2fesw/GD3wRYMy8b+zk+UR3d8OXYe1cqMsjmfS?=
+ =?us-ascii?Q?vep/DYB5Z/AY7sP47rtBqVY1O+SdfH0nx3mBEQ+TergDGecTDOEY//xu7vnB?=
+ =?us-ascii?Q?nUrJ9EAQoAbRjaKJUp+OiR+LnpNb6GrwrwZ6Rz0cNFY1OCxImZyzaolYRwqs?=
+ =?us-ascii?Q?9TmC6l4Eq2up7Z7VuVx9dogGXg9eA74SDJzSQap0d+qxqWI/Nv3wm673glOY?=
+ =?us-ascii?Q?hXOHapTfvDN6dQI9QxgbzKMUcSCKYYYB6kk521oi3j8+mW8udqFrE176dsWJ?=
+ =?us-ascii?Q?LO/HaNK/cpm593kVQQ7W1YmwElleM4GnY2k9Z6b80kEFODd5W1OFPyL2ryjR?=
+ =?us-ascii?Q?eqG4eIBFQ4/h33Hr2/SOma05/l8Im6nvqTdLBYMZdiRP06C+M8P2nZRtaN8O?=
+ =?us-ascii?Q?9NKqqux4/BtrhVMFgvfCAD9u0RW95CzOpePXhoKPZQ7S0Jhr57vGruJcgV9r?=
+ =?us-ascii?Q?en3zhsGRh6zbbpfDlHbiHeOjMY/uD07HDqVqW2BZz96enfnf0GR/GyPRZ27f?=
+ =?us-ascii?Q?pPTrPyf4HsOlWyIr8BhnGBeCXyQSqt/17MvVA5WlsvFNOvelVpfRe3nhNPXy?=
+ =?us-ascii?Q?51kAAK6hkpnZ9OHv/92Al9BlJ8tGLbwZ7dMUokx90p0nqj9OPUEvpAyglMLk?=
+ =?us-ascii?Q?H6gY7/dqjObNb7iHKEMDM3TC6+j4smo/4yIp5vCTOXy5MPLLl3BCHXUp+Xg3?=
+ =?us-ascii?Q?r6+ToSqHX1tC7SPB1bjZ5CZdcAWijozuA1SNFIPI+DwXvdY+HekNpT/t7xMx?=
+ =?us-ascii?Q?NfKVFUsMGfcOlxV7DfNvVmtVYVjJmd7QrCMx1MNPzpvCYOHk840pa2Rs6gjf?=
+ =?us-ascii?Q?w0S66cqymkcirOgDEkwmoVxN71g9dAfeyQ+FhetKedJeGq+QnX9V+I0xfS20?=
+ =?us-ascii?Q?9a/oFpyluGWAmap219sfx2RwFysuyzOp7bjvS+pN+USJI15zuONvLq23ceE+?=
+ =?us-ascii?Q?1YaMVRCSNDGyVwzDGjaS1yovGTPDHPIRFMBEo0zlRGvJ4fDPNXxNRXQopD3b?=
+ =?us-ascii?Q?EWCbwdqL5i1r8SRYxkvPKj6KkZ2xB+SVy9QukEoxjBjE6eosJx5lhukTkN3E?=
+ =?us-ascii?Q?67VcsbK+vQyt6KHFG5pTJ4Nj4m4Kh0Kmirx2M4pI8sgOEOvwxR0qVqAWDokL?=
+ =?us-ascii?Q?O5LkVeEgSScq84TqOh5DE7IS3pFb28VqBBWEJXkSRhah8nPqzQES4p7JGgdb?=
+ =?us-ascii?Q?/912z3qBVoVwDBBoRUMbAaz6iAJ7PCcD6VxjcMdBRSfc/X6pa2AaOy7yXcwZ?=
+ =?us-ascii?Q?JxxjgFkkxz4EbeKStDQX1R3ofyQUazWgnXbb2UpM6/cJn3Bhi038CKazMaq1?=
+ =?us-ascii?Q?TvOCe8dCHJsrNbAE+LYyDEMaFVUCqLBpz0ixZpzFdC0s+p6atiAb2zGwAGpw?=
+ =?us-ascii?Q?DF9XTG2QRtUegFiWGa9w2TlEH+xrYptZS1ERSyPtfiKGCkCQCOkJZ3Lvan+r?=
+ =?us-ascii?Q?lWZB5nS+c3rQQDhCfaFQyp7Ta8T79vAHqsf1GlB4?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4593aecf-3905-4b4a-b364-08db6b608c1d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f72b102-0898-45c6-5470-08db6b765456
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2023 16:17:41.7638
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2023 18:53:37.0738
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: In37QbCbfH2WeV9CeYoC0C3NGqTYAZ7KMZe3Ab3/VU4HCaFl145gTAkf+rthWQtSEjfqdUmy4oVrC2shkUcAUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8852
+X-MS-Exchange-CrossTenant-UserPrincipalName: /9MNO54ydq1VA057tfrdXFAlBmaMbAN9KaM0lJKzCpv+Zr/Fh/DEqEkJanxxqnixGLA9CJZZKqEtuogDEh45PA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8408
 
-On Fri, May 12, 2023 at 02:45:12PM +0000, Frank Li wrote:
-> > 
-> > This patches add new API to pci-epf-core, so any EP driver can use it.
-> > 
-> > The key point is comments from Thomas Gleixner, who suggest use new
-> > PCI/IMS. But arm platform change still not be merged yet.
-> > 
-> > git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git devmsi-v2-arm
-> > 
-> > So I still use existed method implement RC to EP doorbell.
-> > 
-> > If Thomas Gleixner want to continue work on devmsi-v2-arm, I can help test
-> > and update this patch.
-> > 
+On Fri, Jun 09, 2023 at 10:20:16AM +0200, Alexander Stein wrote:
+> > +			};
+> > +		};
+> > +
+> > +		etf@28c04000 {
 > 
-> Ping?
+> The reference manual states "CXTMC_ETB" for this address. I don't have much 
+> knowledge about coresight, but ETB is not the same as ETF, right? Which one is 
+> correct?
+> 
+> Best regards,
+> Alexander
+> 
 
-Ping? 
+coresight tmc driver can auto detect etb and etf according to register value.
 
-> 
-> > Frank Li (3):
-> >   PCI: endpoint: Add RC-to-EP doorbell support using platform MSI
-> >     controller
-> >   misc: pci_endpoint_test: Add doorbell test case
-> >   tools: PCI: Add 'B' option for test doorbell
-> > 
-> >  drivers/misc/pci_endpoint_test.c    |  41 +++++++++++
-> >  drivers/pci/endpoint/pci-epf-core.c | 109
-> > ++++++++++++++++++++++++++++
-> >  include/linux/pci-epf.h             |  16 ++++
-> >  include/uapi/linux/pcitest.h        |   1 +
-> >  tools/pci/pcitest.c                 |  16 +++-
-> >  5 files changed, 182 insertions(+), 1 deletion(-)
-> > 
-> > --
-> > 2.34.1
-> 
+Frank
+
+
+> > +			compatible = "arm,coresight-tmc", 
+> "arm,primecell";
+> > +			reg = <0x28c04000 0x1000>;
+> > +			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+> > +			clock-names = "apb_pclk";
+> > +			in-ports {
+> > +				port {
+> > +					etf_in_port: endpoint {
+> > +						remote-endpoint = 
