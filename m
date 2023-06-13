@@ -1,217 +1,223 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2066.outbound.protection.outlook.com [40.107.104.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD04136A
-	for <imx@lists.linux.dev>; Tue, 13 Jun 2023 22:01:44 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=J1/3Yie/cevBOF/eEkFOwuoe8fjsu278R3c8TH5QwiHK/GG10EJoEMEFVxMih1mL+okKIvizF5zgkMzmcVkkUBsnq/C9rMOejaU90d7gxcuv0dc/Gp7hhxisvFOfdyBAt4T3BVEOEIdywdHKrFQSsRHV8kogcj3oAfQEH3zUK49cRzTiBr/77gKPpACrfdwX9mFw3TZRptckLmNJ9dSs8kx/OlArlNW7iWmQfsx8e9Ua0Ej+RhFSkaj2Msnj8firxqkWuElIOfFIuaGWkNUqW25ts3R3lSsgaS4WGlpICVdVwq+din3tSSv5noRgKoR9tVBkulj0RIMfmtmVSKU+oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7NPj8518QcUsbQOVef8+ATPB5cCzTvnb7rvOP3V8y78=;
- b=N1ig9bLNiBFAYAycDN+xEnZH365BIeqaLPI4Z9g416n4exLZy1h+1d6PJhUfGelpGx9nVitjDQxObJj5f+duKSimuLm8sjgbX8oCgUk9vXPIFHAei5DrAgfwL7G1eDoV3c46gm0R/fEeRAQQOfmRyf19wOmUYJccuvIDJcZOBaV9aRtPCXA05TfmTNosKv5TBYUiYlte2DFd/7YuIc9qZrjl1z8SmjwJEAu6AevT5GGt/isZB/MJqFZ+X8p/K0sQv+PlTIgenUNLT3J1k1ai+CHRJLUqml5pMfzJIyq30gnYkY4pJLoisl8c/tHsqX/4qVgNhiiqqoVWKI5DMT9AtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7NPj8518QcUsbQOVef8+ATPB5cCzTvnb7rvOP3V8y78=;
- b=gt0PiG8FUKxxcyAWqSfqYnQyCLwveemol6mlGDzvl4BT/XTlr+L9nMAFIGzt48SbHQ7hWC9O9VgYxjpyzhaoD2aV2I+hQ8eJezF90CwQtEuLoP3cETcSsCJuKcJ95+fzcpIXiAkb4z/DOGUXXRWXSqT0NiLMuBhSqsPMjcG3Vzs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DBAPR04MB7381.eurprd04.prod.outlook.com (2603:10a6:10:1a2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.44; Tue, 13 Jun
- 2023 22:01:41 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6477.035; Tue, 13 Jun 2023
- 22:01:40 +0000
-Date: Tue, 13 Jun 2023 18:01:27 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: vkoul@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, peng.fan@nxp.com, joy.zou@nxp.com,
-	shenwei.wang@nxp.com, imx@lists.linux.dev
-Subject: Re: [PATCH v5 12/12] dt-bindings: fsl-dma: fsl-edma: add edma3
- compatible string
-Message-ID: <ZIjnNzemHm17MNzV@lizhi-Precision-Tower-5810>
-References: <20230613213149.2076358-1-Frank.Li@nxp.com>
- <20230613213149.2076358-13-Frank.Li@nxp.com>
- <b3a25a5a-d39a-81bd-0593-7a4b76aeb9bf@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b3a25a5a-d39a-81bd-0593-7a4b76aeb9bf@linaro.org>
-X-ClientProxiedBy: SJ0PR13CA0040.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::15) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C2F1361
+	for <imx@lists.linux.dev>; Tue, 13 Jun 2023 23:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8812C433C9
+	for <imx@lists.linux.dev>; Tue, 13 Jun 2023 23:31:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686699116;
+	bh=aNJH35WRMNqV0lqZl8N98lkQSouazvy9Y1MphL/3tYg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=P5QlrbcFWh7WO7qIzYatE9h4nh2LMtoJoqbmvlUhmG+xX3L4nMF8JSkYNj3dGSRsH
+	 62UsqX5srRIENLVAAARr2cn6i+6N5fqi6aU7RbjgLfCIysgIagLzVuUwg2wNhp10m+
+	 K53Rmys1aL/uJqB/WyXJcfeBBEcYboH2agtTgcPfSeFaQ4lR4g3pKQFR9up1aIm3UV
+	 e1G5RGhchegpQvIM98stlnHyW6cu/xyLZSxQ6QS4naV58YhdTTWFdxp1YqFOKGVBd2
+	 skrpqTQ39P2WOY/qfxOkLNsh9TFbmGJ3byv0cwh1MSwo6lQGNu2LW7EN0e7TINNwqW
+	 8aeTjELvZe/JA==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2b34969e65fso108701fa.3
+        for <imx@lists.linux.dev>; Tue, 13 Jun 2023 16:31:56 -0700 (PDT)
+X-Gm-Message-State: AC+VfDz6VcgOlYiC5caIwC+XXC6ycSJovn0qDSx/2jr8nxsvh3ClpkWt
+	KdfVzQMsdqLLO9OFpE8eKjYZXxh0FlHXvgTzIw==
+X-Google-Smtp-Source: ACHHUZ4iBNHpRqCMQM3h4+6Wob2LPbB25k7cHf6W6lan03IqY+Tgwf1MVZ9lZskiFqgCTd3mlLVMfhsrEJSJ9Y2ozVs=
+X-Received: by 2002:a2e:91d7:0:b0:2b3:46ec:8014 with SMTP id
+ u23-20020a2e91d7000000b002b346ec8014mr376176ljg.47.1686699114810; Tue, 13 Jun
+ 2023 16:31:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBAPR04MB7381:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98139094-5a89-4113-2263-08db6c59c435
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	kD8Q1gGS394E9kW8Rdzq/Ph7hZ/Z5jzt8u72a8QFMb527uFpGb7xT2o4cSjIQWIGauPbsmwJB69PsCqqZvPPZaXQ6I1hjodab6iFln1z14tUVZ692eKYj2U+ipYN+YF8t5BpHykYU6J3IKQQVAAuo6b7ZDux6LUTp3LA/yCLz2+Y0tT/b9a+D1FtLtSfnP37nyq1OAhVIxABp/R4k4JYsfArk8tk6+xPK8w2WQmyzgMhuMnr5U5JcBs2xM8bN8Vu4GT165EOguqtZRrrLBj0DRJ/ENdUtWyUI8vN5xr+LoVKyzwAOAMZCCt3lxHZRm7CB1TyfGB9mHvUAM7iiU32ZsHmco4NpkF4dsG8fOd921oCWnGwz+rnhLD5MZMGsbv1gPLRL3GwW3xaK7fNd702jz8eaick2agR5yuKXUhNts0pUzEKShVQQswKSaXz9YDoGcpukeao0jVPrdI78VcJ+wPGao8vmap6gmymERzhkNKILie45bN/1504fCQuUVn8IpXB0SxC6+r/q7piqRkpZNv4lmFgIqTCud6zVDSnq4OR/cdMmMncmfJGXf0+urjBjYch9qgnIj7BIakqOV1BhrB+aO7coKmyCxH+3Nmi8jeIwoUQAwIHHoRemCaWKkYr
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(136003)(39860400002)(376002)(346002)(366004)(396003)(451199021)(5660300002)(4326008)(6916009)(316002)(8676002)(66946007)(8936002)(41300700001)(66556008)(186003)(2906002)(478600001)(66476007)(6666004)(52116002)(6486002)(26005)(6512007)(53546011)(6506007)(33716001)(83380400001)(9686003)(86362001)(38100700002)(38350700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KCBws9xKRm2R4pN3K8Fb/8IGrQouwGH2tKXrlW2GiZ7oMDpt1PLB4/WB0/8j?=
- =?us-ascii?Q?j9mlaszPVtxE9CJvQz3hq2WHnrJXZV0fwfSrfkLaZ8vKiR8Jn8yR8FR4W1n5?=
- =?us-ascii?Q?IouumtyB41xReZVXwOqLkE+7lAc5ZPsspKRTuxBaVAcUL5v1L90l0xobVMmh?=
- =?us-ascii?Q?0teIPfT/pHS4NCHuAgXDH6LMaL1v+iuXP5DRfXGkXxNAm4xuQw1aQg8zuLOx?=
- =?us-ascii?Q?DLs/3iUHbXVvafZ2sobj8EWamR/leF/eAb3H2OFCU8mKczIWp+nrmCpX+lcW?=
- =?us-ascii?Q?upfjnSvmIaE/XTwmL2iNc/2K8DbefzzhtUJUa5Hgr5s3lnjD4WZN9T2+ieZS?=
- =?us-ascii?Q?oCqEIZCB9MDcXnFHACqo/OyzYbnjI4BqI49lak6jUWwXKZlRYtnGKt3xlbb8?=
- =?us-ascii?Q?t6F26SyKRF7ddhHzWDZD5jyxsWXtPuM+dBpB0H3XQzQrCNTQwihCY+qXBZbR?=
- =?us-ascii?Q?Z5mQUBc3MLL/eGekR6fLVmQm+GwUX1jPt4DfZQpu/jf+eouBtlfxolKCt7j+?=
- =?us-ascii?Q?WJQnzrhmUk+0xEIpbbLRXwGV1VchyvhNbkeeC77CGNqFOI0GB031NoNlTdsj?=
- =?us-ascii?Q?ee8VKtkC3rV3uCav2R3UJaFEhevokVGMcic0+7JRPbbvhXRnvp9pytGNHuLg?=
- =?us-ascii?Q?lskYIsx/A2XNol/WgIZ4OxPAtnQOwnvNH1Hpj2jjASM6kDpxUSIJFKNq/mRb?=
- =?us-ascii?Q?RcWRNFXA7TNqHsgoPj3sIMRd0Cgc8iAY4RkxHHFrmrMMYyOiwb4e+uw2HxXd?=
- =?us-ascii?Q?PndqCSV0JGhQq3ZGOh1sP2hJaVYpmnE23W5CslIPhKwLxHm/And/tGFhcbw8?=
- =?us-ascii?Q?GMQlOxik6umGNIBsC4jweQRYxobsDiQrkBOCuTMjgHuCO6d9kU4Ql25yr4U6?=
- =?us-ascii?Q?ki1vK6s9zBdCds59ylVg+5SPpGGpYjqOuIzWv/AdAhhQfCLEc4in5CaqZvDu?=
- =?us-ascii?Q?+VB7BEM7aiF0SXHzLcvRw/2Q2BDYPtmuyOSp/W2yfTjNiSt/GLzlR7T42fSQ?=
- =?us-ascii?Q?0+Ot8QNWY2bcx839S5wknVcZH7/WBdT2+8oc8FHXcxSWEE1e7Pu6rOxDBo8j?=
- =?us-ascii?Q?ZGNOVpOZNliQgmxOggTaBBcYnyCakOAC1JMcjFshTlZlEhzawwPjXyjtpHp2?=
- =?us-ascii?Q?rPxUgHm2UvaGuKbAFFG7UimTYCO/rKe6ghI5x7IeJxCWpqsZTh15YfolHcVW?=
- =?us-ascii?Q?gHuAHKaUIkJfnLVwYMNa60j5Bx1/67sXU9PFujx2kK93Uq9E95b0o9sWEV9Y?=
- =?us-ascii?Q?UvwwE8WEtkgmPGmqAyFnJyV2gzHbUudSwW4pQIHbYKGQSL0BPsWiDLW51l9x?=
- =?us-ascii?Q?lD+AfzroK0kdT1O4BFxy2FMEOwYL6mWhFFpDX1rSILUNSwrFKjnkGFmjXBzL?=
- =?us-ascii?Q?jTKm3n+7XNE7Xv37D26JFykYaA1Ndr71pSX6g/llqiLAE8VOAtzz1SUNkKSA?=
- =?us-ascii?Q?BZqSz54cb3uPpYeTHM5pD2JY0oR1sGN9YizvxSH1aAm8ncZQDJo/bBYdR8Sd?=
- =?us-ascii?Q?/WhpVjEuEQZOP4QUzKcmyVy3hstf0ATG0jjaIfZgF5yZlmt867Dc5Vn/DURG?=
- =?us-ascii?Q?tZNLGRHyCykxbtnBJzM=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98139094-5a89-4113-2263-08db6c59c435
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2023 22:01:40.9238
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gJvS9bqgcOC9lqrTDapUQltmqSxXrEuaop2pbtwW7Lrx/o5z74lYqAT3WDE+2UJFMTw+KMtcDUq21/Tc0Z23PQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7381
+References: <20230515150149.2790189-1-Frank.Li@nxp.com>
+In-Reply-To: <20230515150149.2790189-1-Frank.Li@nxp.com>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Tue, 13 Jun 2023 17:31:42 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLMtf__1Q+5MiaoXXx1LO=49XG490HZxOxcD7yDveioiQ@mail.gmail.com>
+Message-ID: <CAL_JsqLMtf__1Q+5MiaoXXx1LO=49XG490HZxOxcD7yDveioiQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] arm64: dts: imx8mp: Add coresight trace components
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 13, 2023 at 11:43:31PM +0200, Krzysztof Kozlowski wrote:
-> On 13/06/2023 23:31, Frank Li wrote:
-> > Extend Freescale eDMA driver bindings to support eDMA3 IP blocks in
-> > i.MX8QM and i.MX8QXP SoCs. In i.MX93, both eDMA3 and eDMA4 are now.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../devicetree/bindings/dma/fsl,edma.yaml     | 118 +++++++++++++++---
-> >  1 file changed, 100 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> > index 5fd8fc604261..2f79492fb332 100644
-> > --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> > +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> > @@ -21,32 +21,20 @@ properties:
-> >        - enum:
-> >            - fsl,vf610-edma
-> >            - fsl,imx7ulp-edma
-> > +          - fsl,imx8qm-adma
-> > +          - fsl,imx8qm-edma
-> > +          - fsl,imx93-edma3
-> > +          - fsl,imx93-edma4
-> >        - items:
-> >            - const: fsl,ls1028a-edma
-> >            - const: fsl,vf610-edma
-> >  
-> > -  reg:
-> > -    minItems: 2
-> > -    maxItems: 3
-> > -
-> > -  interrupts:
-> > -    minItems: 2
-> > -    maxItems: 17
-> 
-> What is happening here?
+On Mon, May 15, 2023 at 9:02=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> Add coresight trace components (ETM, ETF, ETB and Funnel).
+>
+> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=90
+> =E2=94=82 CPU0  =E2=94=9C=E2=94=80=E2=96=BA=E2=94=82 ETM0  =E2=94=9C=E2=
+=94=80=E2=96=BA=E2=94=82       =E2=94=82
+> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98  =E2=94=82       =E2=94=82
+>                       =E2=94=82       =E2=94=82
+> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90  =E2=94=82  ATP  =E2=94=82
+> =E2=94=82 CPU1  =E2=94=9C=E2=94=80=E2=96=BA=E2=94=82 ETM1  =E2=94=9C=E2=
+=94=80=E2=96=BA=E2=94=82       =E2=94=82
+> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98  =E2=94=82       =E2=94=82
+>                       =E2=94=82 FUNNEL=E2=94=82
+> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90  =E2=94=82       =E2=94=82
+> =E2=94=82 CPU2  =E2=94=9C=E2=94=80=E2=96=BA=E2=94=82 ETM2  =E2=94=9C=E2=
+=94=80=E2=96=BA=E2=94=82       =E2=94=82
+> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98  =E2=94=82       =E2=94=82   =E2=94=8C=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=90
+>                       =E2=94=82       =E2=94=82   =E2=94=82     =E2=94=82=
+  =E2=94=82     =E2=94=82
+> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90  =E2=94=82       =E2=94=82   =E2=94=82 M7  =E2=94=82  =
+=E2=94=82 DSP =E2=94=82
+> =E2=94=82 CPU3  =E2=94=9C=E2=94=80=E2=96=BA=E2=94=82 ETM3  =E2=94=9C=E2=
+=94=80=E2=96=BA=E2=94=82       =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=
+=82     =E2=94=82
+> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98   =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=
+=E2=94=80=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=
+=E2=94=98               AXI
+>                           =E2=94=82          =E2=94=82        =E2=94=82  =
+                 =E2=96=B2
+>                           =E2=96=BC          =E2=96=BC        =E2=96=BC  =
+                 =E2=94=82
+>                       =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =E2=94=8C=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =E2=94=8C=E2=94=80=E2=
+=94=B4=E2=94=80=E2=94=80=E2=94=90
+>                       =E2=94=82          ATP FUNNEL       =E2=94=9C=E2=94=
+=80=E2=94=80=E2=96=BA=E2=94=82ETF  =E2=94=9C=E2=94=80=E2=96=BA =E2=94=82ETR=
+ =E2=94=82
+>                       =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98   =E2=94=94=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98   =E2=94=94=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=98
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - add new line between nodes
+> - add new line between properties and child node
+>
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 204 ++++++++++++++++++++++
+>  1 file changed, 204 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index a19224fe1a6a..1a25710c3a90 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -304,6 +304,210 @@ soc: soc@0 {
+>                 nvmem-cells =3D <&imx8mp_uid>;
+>                 nvmem-cell-names =3D "soc_unique_id";
+>
+> +               etm0: etm@28440000 {
+> +                       compatible =3D "arm,coresight-etm4x", "arm,primec=
+ell";
+> +                       reg =3D <0x28440000 0x10000>;
+> +                       arm,primecell-periphid =3D <0xbb95d>;
+> +                       cpu =3D <&A53_0>;
+> +                       clocks =3D <&clk IMX8MP_CLK_MAIN_AXI>;
+> +                       clock-names =3D "apb_pclk";
+> +
+> +                       out-ports {
+> +                               port {
+> +                                       etm0_out_port: endpoint {
+> +                                               remote-endpoint =3D <&ca_=
+funnel_in_port0>;
+> +                                       };
+> +                               };
+> +                       };
+> +               };
+> +
+> +               etm1: etm@28540000 {
+> +                       compatible =3D "arm,coresight-etm4x", "arm,primec=
+ell";
+> +                       reg =3D <0x28540000 0x10000>;
+> +                       arm,primecell-periphid =3D <0xbb95d>;
+> +                       cpu =3D <&A53_1>;
+> +                       clocks =3D <&clk IMX8MP_CLK_MAIN_AXI>;
+> +                       clock-names =3D "apb_pclk";
+> +
+> +                       out-ports {
+> +                               port {
+> +                                       etm1_out_port: endpoint {
+> +                                               remote-endpoint =3D <&ca_=
+funnel_in_port1>;
+> +                                       };
+> +                               };
+> +                       };
+> +               };
+> +
+> +               etm2: etm@28640000 {
+> +                       compatible =3D "arm,coresight-etm4x", "arm,primec=
+ell";
+> +                       reg =3D <0x28640000 0x10000>;
+> +                       arm,primecell-periphid =3D <0xbb95d>;
+> +                       cpu =3D <&A53_2>;
+> +                       clocks =3D <&clk IMX8MP_CLK_MAIN_AXI>;
+> +                       clock-names =3D "apb_pclk";
+> +
+> +                       out-ports {
+> +                               port {
+> +                                       etm2_out_port: endpoint {
+> +                                               remote-endpoint =3D <&ca_=
+funnel_in_port2>;
+> +                                       };
+> +                               };
+> +                       };
+> +               };
+> +
+> +               etm3: etm@28740000 {
+> +                       compatible =3D "arm,coresight-etm4x", "arm,primec=
+ell";
+> +                       reg =3D <0x28740000 0x10000>;
+> +                       arm,primecell-periphid =3D <0xbb95d>;
+> +                       cpu =3D <&A53_3>;
+> +                       clocks =3D <&clk IMX8MP_CLK_MAIN_AXI>;
+> +                       clock-names =3D "apb_pclk";
+> +
+> +                       out-ports {
+> +                               port {
+> +                                       etm3_out_port: endpoint {
+> +                                               remote-endpoint =3D <&ca_=
+funnel_in_port3>;
+> +                                       };
+> +                               };
+> +                       };
+> +               };
+> +
+> +               funnel {
+> +                       /*
+> +                        * non-configurable funnel don't show up on the A=
+MBA
+> +                        * bus.  As such no need to add "arm,primecell".
+> +                        */
+> +                       compatible =3D "arm,coresight-static-funnel";
 
-I found dt_check always check this part firstly, then check allOf.
+This device has no registers so it should not be under the bus node.
 
-> 
-> > -
-> > -  interrupt-names:
-> > -    minItems: 2
-> > -    maxItems: 17
-> > -
-> > -  "#dma-cells":
-> > -    const: 2
-> > -
-> > -  dma-channels:
-> > -    const: 32
-> 
-> No, why all these are being removed?
+This is pointed out by the dtschema checks. Please don't add new ones.
 
-I move common part ahead of if-then-else branch to read early.
-
-> 
-> > -
-> >    clocks:
-> > +    minItems: 1
-> >      maxItems: 2
-> >  
-> >    clock-names:
-> > +    minItems: 1
-> >      maxItems: 2
-> >  
-> >    big-endian:
-> > @@ -55,6 +43,43 @@ properties:
-> >        eDMA are implemented in big endian mode, otherwise in little mode.
-> >      type: boolean
-> >  
-> > +if:
-> 
-> This should not be outside of your allOf. This patch looks entirely
-> different than your v4 and I don't really understand why.
-> 
-
-allOf looks like addtional constraints addition to previous define.
-for example: 
-    if previous interrupts is 17, I can't overwrite to bigger value 64
-in this sesson. 
-
-previous version: dts check report two error, 
-first: interrupt is too long. (look like check top one)
-then: interrupt is too short. (look like check allOf part)
-
-> 
-> > +  properties:
-> > +    compatible:
-> > +      contains:
-> > +        enum:
-> > +          - fsl,imx8qm-adma
-> > +          - fsl,imx8qm-edma
-> > +          - fsl,imx93-edma3
-> > +          - fsl,imx93-edma4
-> > +then:
-> > +  properties:
-> > +    reg:
-> > +      maxItems: 1
-> > +    interrupts:
-> > +      minItems: 1
-> > +      maxItems: 64
-> 
-> What's more, you don't have these properties defined in top-level.
-> Sorry, they should not be moved. I did not ask for this.
-
-It is there. 
-if-then-else before "required"
-
-> 
-> Best regards,
-> Krzysztof
-> 
+Rob
