@@ -1,54 +1,56 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2077.outbound.protection.outlook.com [40.107.7.77])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2063.outbound.protection.outlook.com [40.107.6.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5659E11C9E
-	for <imx@lists.linux.dev>; Wed, 14 Jun 2023 19:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAFC2EC11
+	for <imx@lists.linux.dev>; Wed, 14 Jun 2023 19:59:39 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FMditC5rSAywr57d43fuQKCatxZCBFGaaWZ5lDbh09vREWLZ9iY7dCf4b8F5wf1+bx3QCBt5AzjieuHfh9RDdioaTBcrF+j4uWdy6IGadhcSqn6F6cgO9Q4bR1ZNVtbCgCiRLyHFYZ0nVIRDfO0TnLergQ4lSyUbge4JyUefoAnknWvJkbT0+GhLxt8zdNDIkq6qSaejUS2cAbhv9SMPVWsyxE1sqU6fRX7DYl2ViBv98WouILJtd7lZX7mkNxffzhPlTbRZuw4Mq6JAx7669Y1Z1w/+o+S/db7+Z8wLEfRedULecjKSe0YP6nmSFUgdLKXXIJKwgdaKUyvfei5DzQ==
+ b=jvalseU25Sv2hULHSOE2o5UcktVRFxV2QQo9+mB8oQrPVnunuimI6wCiEJ+Sjm21BU5/JXM45m8NExWOeln1TIesD38vJWsXyGQw2zPkaButZCU/29uj21wyfsqj2NL6759TNnMFwpjCxA7b7wjRcTqYo3122V078iRE9FaITU9kOQKXIzXTETh4T2hkPcI3ma0H5tRtvT14sT07KawjJAF0wyC4uv0kWjLiR/qp0RYx89a1uucHPEan+Kn9wa7JzGMoMnUH4C4AQKlaGWJGlgKHuwCPdWZ6nEhnwnhajaYOjCjufTvCtkEAtrxh6eHQyq4mar+b2pitq1GbadGpZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=114WxCPFVYq/9aNJyvsoT+DqgQkST53BKA2/YylCI0U=;
- b=lO0OiPw9G7/a3uYkKjTf0SvEYSJCVep5KQNilD5bB/PzoTK7kPN7oYDXf2DHwlfHVSm+ys3Snci+ftH4rZFKowr1D3oMWZlUJCIf9S7B91NMJnzRB14uOpzYnj+PDT3opNUBdD3pL7MCinvfj4/PHjKm6pYhWb2l5c/5IES0+U08r51iCunC74AasdlPET6TXLGrg839Ruzy33qkhNpLm3oOD1xnHpmpkrDjQQ5XwWP5DuM2rVzC85C3oGvrZVIFSfhVrJjCRszu+EIK87Sa9jXYe+GcFoudHr1saR/EPEbg2uMhAAV2vFjTE9PorJYPesFws6vpsLfuhVX4CWSEtA==
+ bh=BFC0K0wpsDVH2e+Q2JJzF79DZUD85zMAoA86MbRC+sk=;
+ b=jwRNOnhUQOthzC1tu/NaTLAw2FF2CRgAQlX5X8OX8DlO8B/zHyYOtonIraYbz5ZXHxsm+LHMFlS3P0DWMLlLoyPSDqDth1CRhbCUpSxWBf9KYwugL4AfYW3ZxDI6pI5Keppz4ZNIApiC3rKkjPqEFQ511OfK3Q4y98sZeqgVjU+CNUH7bTKhRS3aIyAAChrsPC20dAZJzkhrCDJzaPAe7bQPkJfE8s7FVfsTqJ1ejgcEVho4bRdfaJZfB8zEKHVcA9wT4NxniAzYAvpDmb3V5NWb4rynzQJywRX/O5i+JoQsQZS7SgZltHsUCoU3C0lHotgfcoVNSqOsRMFk/nUB2g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=114WxCPFVYq/9aNJyvsoT+DqgQkST53BKA2/YylCI0U=;
- b=JFM6cATvldSzAIEBDkQQKrS2Ne7TjvwUuHqNDkY+3taw1kfjcQU5bnbFMRC9OCXDLOlErbnJOucm2KxKXrdQjQ55imoMqg9819L4MtMb86LtCmfA54G3FJSQiW5NauQgMNNYNvjM+S2Ues8ZOZa4A5VCWD3QRlizNypp4zhjSYY=
+ bh=BFC0K0wpsDVH2e+Q2JJzF79DZUD85zMAoA86MbRC+sk=;
+ b=Z3Kv/Cn684YOyDJxyh7BtoSiUaCY8ed7NnrIMdO/2ZVAXf1PkmkO1n8ryanN1RLBZ2OzQNHumFIcd6/AMJr4wiRdmgjJ6LbgGnwnDcgGMbUOnaOPLiE0B1yQrpw1ypk14RF33Hs8AFj4LXotJ3gCWzC6H5jZ7EEX9rwV/T2PKbc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by VI1PR04MB9763.eurprd04.prod.outlook.com (2603:10a6:800:1d3::6) with
+ by DB8PR04MB6794.eurprd04.prod.outlook.com (2603:10a6:10:11b::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37; Wed, 14 Jun
- 2023 19:36:33 +0000
+ 2023 19:59:36 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6477.035; Wed, 14 Jun 2023
- 19:36:33 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: vkoul@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	dmaengine@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	peng.fan@nxp.com,
-	joy.zou@nxp.com,
-	shenwei.wang@nxp.com,
-	imx@lists.linux.dev
-Subject: [PATCH v6 12/12] dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string
-Date: Wed, 14 Jun 2023 15:35:44 -0400
-Message-Id: <20230614193544.2114603-13-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230614193544.2114603-1-Frank.Li@nxp.com>
-References: <20230614193544.2114603-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0051.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::26) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ 19:59:36 +0000
+Date: Wed, 14 Jun 2023 15:59:21 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: manivannan.sadhasivam@linaro.org, Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+Subject: Re: [PATCH v4 1/1] PCI: layerscape: Add the endpoint linkup notifier
+ support
+Message-ID: <ZIocGZfj2T4Wvpeq@lizhi-Precision-Tower-5810>
+References: <20230515151049.2797105-1-Frank.Li@nxp.com>
+ <ZIdEBXH5AztZ/jz5@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZIdEBXH5AztZ/jz5@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SJ0PR13CA0068.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::13) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -57,204 +59,92 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|VI1PR04MB9763:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11d733aa-ce2a-4e2e-6338-08db6d0ea8fd
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB8PR04MB6794:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d076545-7c42-4801-c575-08db6d11e124
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	GVSjlbMk1e0HNGu0emhmTrWak9L1dT8oPXKzqGLC0UvqxwrtafPE35EyWDloKdFVjaWT0oFRcqn5KpA7HIfT4V+MQbaTd4g1gqqOhBY3hkE8Zr4VzMXn86CFsEoSpCKJeP9NlAoute8wSpcz3xEKxw6T4GtbXv2hOen5Dtdl3K5G6hUquZ3axRn8R2bMhf6O0LO0jOkMRWmqYcyQqvXZ6fkSru+JhPoFBW1QP1TIiLqBlkY+gEbYZg5ezDPdCZixYgVObhBI/yFZNjlec9CJKbqkH3BlkWo8a83nHLrc50sxsbUo0CobsrPSrBbXzwpdIFXo5PycyhWgBuhQTXhmSOQfZBMH4VpE+Fc5UiU2lpV09BppX1Zi7GRi61eiLx/yF2pHzp4ZUjXTJ0YVS9PxIurc7AwHL6Ds/i21QMwzr489xXXI/N4Q7CZeVYnt3a8FsCHT6LW3A70KwiqxXsvKjU8e/fyuihNh6kADLa590YipCci+AbXISnITS7SxHJg6TxiAlHVwtXBGbHoyH5BftPbhBlkhwKks2s5eThh3aqN9s1sQknAydyRTYl6vv4MIHots3dziJiSztOrT7FsA+UuuG+JGII+3aPTA3yKrUy8RE/B0Yp0usu/ZJGloQLAy
+	Aaqyi7Dr1ZJfRoj1p+9Q8m/qQb9ZdNnbXqqXf2v2JOkrg0SwQsNXfMSasNVYOsu6/yHGX2VpzlaffF4rvRs6NS7YW+Lc8VUJD6LryQoc18n0G5cIoFWVgWiJsQEOjE6x+78W7cBRSWUlUfJqyuEPFgF6TCRqAlur0CinGXmXbgXWb15FS064wiOE6ISK+hVRE8cB3XJUvh4RLw9JlohiwxQyFLBe+eJpsos4DZrc0J3Li+vPnc2sjZupfiYnqjGVKJjeGKh8X+C8tGH7nc+2YiHyfor/yKY9tXD1QRsYiBDk//2aYPwn5wqc4EBf+AIbnxo1zRfuFf41oi/O9Dre9axDYTRING2kfe7zsVG0boRRMa3Hmx1yysSMyDzgRGlpzC9vIPaSXzvq/snIGHns5v5ydWXFZK6FA5dtcM2IjM3/1BnzB3vbjIu4xeJUii+Y9LGW8Cqdi8MkbdmQvedm93MvlgpZM670LN1vkVOSa94piETpwHDQG94WczpiEFtiOmioYxVKYR2vjAV3PulFHPySt+qdiOs5woQ0jdK/Dj99NjvoP/5E6Y2VqAOcWFDvgR14TYlr5k3VbOVC++r4ShayDxNgPetA9j1aQTju3V9tQkJBH6PiE4Gc4gGPh+rM
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(346002)(136003)(366004)(376002)(451199021)(5660300002)(6486002)(8676002)(52116002)(41300700001)(6666004)(8936002)(66556008)(66476007)(316002)(2906002)(186003)(478600001)(66946007)(83380400001)(38100700002)(38350700002)(921005)(86362001)(36756003)(26005)(6512007)(1076003)(6506007)(2616005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(376002)(39860400002)(346002)(366004)(396003)(136003)(451199021)(52116002)(6486002)(6666004)(478600001)(186003)(9686003)(26005)(6512007)(66476007)(8676002)(8936002)(6506007)(41300700001)(4326008)(316002)(5660300002)(66946007)(110136005)(7416002)(66556008)(921005)(38100700002)(38350700002)(2906002)(86362001)(83380400001)(33716001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/ReIzDPaEkeEyH9sfSu+XrKADYn/9b2tNdBjkAYnuI4WyQkCqPdlGGhcQGb5?=
- =?us-ascii?Q?vMvLzFe1q0sx6RT939jbw5GjlvbaGQKu4E5rEQmWZn5MBqeBAndIfzs87K0N?=
- =?us-ascii?Q?ry2A0Pcg9JZV/hEEmcWqsqBdCKvRHr+CNP/2pRy6HhFM9A2jOkjnqSjPz1O3?=
- =?us-ascii?Q?Ll7oLL4Yrijl/vEyC37PJllZkrrwNYhgdL8Ni9gTFhGd6dCiLSDskDSULQ7O?=
- =?us-ascii?Q?HfdW3XxIL8iHyo4IXEchF5Y0AzXxSbmzpWz13oCpns9VMMyC4uJr3jnyBEhD?=
- =?us-ascii?Q?k6sYp0YW/2A6qbyP8Vq+mwIkl9b6yfgsBhtIbPG31bfScc4aVWUPjStfMboF?=
- =?us-ascii?Q?dqbqHFcK0aP2O+TOFa0ZRXbr9kMfyVJz6pY1YRaNdFcHR5q5u72zqYKRFWoK?=
- =?us-ascii?Q?A4nXyu2LLCDhmqngS8MuBTfG3q1dCagOj+qfLCbQYOC/BJSqLkevW+Q5VP4K?=
- =?us-ascii?Q?Dgm9Uutohu3CyzAqa2ThAoapWJVqQ3QpNNjWIG7BBLDUmLOVm5vW1WIsXzpn?=
- =?us-ascii?Q?XIVUfcgUEpQZyoxVvUPISP2Vunr9K+IpKvIsnYZHs2keoM8C9Vppk7MtsZ5m?=
- =?us-ascii?Q?/kvZaNs+xKsrYcGg6gFNBC23xY1zfVXbWA53vIkcxOY19YqICmC4zpDIy4Tx?=
- =?us-ascii?Q?5quBW6nbeU1cCV54TDoE8REmurgbqeGtVaeYbQ/y3foJP3iE6TbDpeFmddm/?=
- =?us-ascii?Q?ojhE3h1QhFYptdsARwNjir3LLowUE7jSb8XXePoIvi7fz0+afdMoKGLPv5Sj?=
- =?us-ascii?Q?ZZg62bntaw4SZiBy7FFr+u2E6zBC6gsUUJrHJr7LO3qhuOAOR65dSBZ9qBKn?=
- =?us-ascii?Q?yeeDwJoLrxkA16Rs1aHkCLY6510ikBw43PXgHI/sX4IpP2cvWlx/gXeKN8Cq?=
- =?us-ascii?Q?7MrPrPOoHKDPQgJvjMq0uomL5/DZ6mkWQZfhXTd50Twea+cUW1vOO+jqn7CH?=
- =?us-ascii?Q?P3qszwGKOjZ/pBdiMrbnJIIBfBDqtETIFUtKGJUu+7T1Wqsh7CYHDzGHARc0?=
- =?us-ascii?Q?mdJsQPX6AU/y6WjBeJ0of4fC1bpMpm+hFEFRPQXDAEip4gzus4f5fxH/JEyB?=
- =?us-ascii?Q?htOgz77LR/+ASSgS4CbXUMyybpreEunXWCh2WCg0GCT6vxD3d0DQ/rQSbFi6?=
- =?us-ascii?Q?KqtH92eNVMHUlXVbTIFSGsmTG53LFLhCTikJW/rJEerKcG7G2FHALlcXPjC5?=
- =?us-ascii?Q?Ii2Ff1lzVaOtq+Zt/lp3pd05HrGcTH7AcOf43wNN7qLBxmdrvcxj7Knwej+Y?=
- =?us-ascii?Q?zxA3qVKrJAS1oDto4bYQNoXcmTJK91AXRwWJqAaSdpmUAJNsDCkwtN2JBish?=
- =?us-ascii?Q?RwK7ncSBvHROv6sgNlGgL0PVRHoztV0uoEyLKmcKWOWawL/WCd5DfAsWkGJf?=
- =?us-ascii?Q?uiGR/TKW+IaRmGGivZFV+am0sSS3J2TVaL2GFq+KN7QOlK84l++KzTsevca+?=
- =?us-ascii?Q?73g7feKbR43lfS0s5g5ge5EEFtXDww78bm/59ZsnxgkG5wqtevGIfIhIGdXk?=
- =?us-ascii?Q?HiMtaHC18SJ/jMdca5nrn8G3bXr3pBFlOYRJa/ZQxVzH7TQ3q7GsOiMUe5M5?=
- =?us-ascii?Q?Ybt2flfAOTCb6WpdS98=3D?=
+	=?us-ascii?Q?bNVkvlcFsPy9+1Ul804pnS2hcsxQ83wJYuBs3bBeDHgjNEmCAb7jnT94Gjdi?=
+ =?us-ascii?Q?Ir2Hocp8aio5Ymq3wZWYRAZobHWIXWstj2JLbN5ydZrrrCMRTRGrWotvBb9p?=
+ =?us-ascii?Q?uXWyAWId9IIEBxIvD1b9GP4GmgdezJ2xj37fpwqFoGwXHdBJe1xa5t+SgP4v?=
+ =?us-ascii?Q?cLiSFrPej+cuEXqmK7qhvRm+xygnmkIcVC+mjKzMSAsaXW9j64nNWsCYgJBm?=
+ =?us-ascii?Q?DHhh6EFaqShtB4OWMfBDMOdpxhT4xXbb13M57DGFv2EW1n3sMLx6zhX4KcbJ?=
+ =?us-ascii?Q?s8HG3Hn7+erKyQkWDVirWAI5WTz45qHO6SWyl0DfRZgvDKCgO2ABlN34ig/f?=
+ =?us-ascii?Q?RnPAAMR+FmD3GEHWpoKCJsUS1waoeSI4bUJcipm8/8ox0o3GrwtEeLuCGaKy?=
+ =?us-ascii?Q?kwR+NIDZBjsJwz0BnPs6bQ28QIpfPN6u4RyXYIGdOFoPSOot+PzP4cg12x77?=
+ =?us-ascii?Q?SSbQ4AfreFxC8+R9c/JrfUqdg5YVS8rb4hmZnrlRlfrA/y6/OEGaZoeRuy+a?=
+ =?us-ascii?Q?hAYAmXZbqEJ1BR1y50mJ2emeMDN9I/ugLaeJ+i/CA2/tLeOX2UABOBAWwL3z?=
+ =?us-ascii?Q?1Z7GsIjDPiblclWFmsGo9qD8rNoBqYTrS10D3SMJBlvDGDTvKM+JUnW9a0gz?=
+ =?us-ascii?Q?oLszcapp5kzRhhqnWYtc4hgsIEcdunUvno3S1Phhebzej8ExaBHey1Ig4boN?=
+ =?us-ascii?Q?se/JpcM4n5x8DL+6Bfp4WIb4MVuTz9o5drJq2NNQUkdhIbslRx/IojZTVJ8V?=
+ =?us-ascii?Q?e/nWbMzLG5IoX/xXwmPmWyHCB1aP+gf3Mj3pejwjTavKMkk9YVRIy0DC4tuq?=
+ =?us-ascii?Q?Az/to/KmY8I3f6Wny8/di5VJ7ZCubvqHxvbveG9+bk6/H7usrxnhhGpSuKuO?=
+ =?us-ascii?Q?/m4H5ATepM2yCC5IngwbyL3FOVvEuseq3FCSoGHY0wYdD8QCRwavLp5FLVaM?=
+ =?us-ascii?Q?pON2nIf359ee3yVhvNS++hl3oZ6pQOnPF9PPn74z6v13jfR6/rAWwc+a8JaO?=
+ =?us-ascii?Q?8w4t9ch1MIaZx0L7sEwVCxp1R5aW4lr69ruOeKZ9VcOZyRxyRpsP9/G8VG44?=
+ =?us-ascii?Q?HGKdaQDdO9S3hHeoQRNZrt3ev37FJ3Koaut3RQ7h8h83HY+xMnjRlGdAwPMT?=
+ =?us-ascii?Q?c60i3zEds/7/uZlJ2RAmwBoqobFC5QoExP8oAsXIT8dZrfXMPdve4nYpYRcw?=
+ =?us-ascii?Q?2viGBd2GAtt3ZWbnZPChH08LikfZbNxWoxShC7stBYAM2YaVyDJBJMDyH+jH?=
+ =?us-ascii?Q?hTF4JtBW8QNbX5M067pNZ0/AOhdCdBkmieCj+6yC9L5Jq1cITtHqN1lVzuPf?=
+ =?us-ascii?Q?fqKfXp50egTZJrMmso4xq4NFn/l+d/JRiymkV/6+DoLPZdaud+cmqUC4Jzet?=
+ =?us-ascii?Q?5KqrQy/PlRF5qy0SLeVEkudcINlJW8LG9jDRR1WEigQZeoFLVIeYNMqz6FDv?=
+ =?us-ascii?Q?kT9QWwsPG6p0UvDPkf4WU32DsCAWW2DstSQ7IvTBmJlrJY4FqdHGZ6Oisupw?=
+ =?us-ascii?Q?6LHvySxNxYrZJDoWaie88LDF6YweIj0JMgqNUCYENzls2S+EJacrfOeCf6wK?=
+ =?us-ascii?Q?5MI1cC3JwWYeEpJYg5Z6abniwvHJeL3op/wBJ5ts?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11d733aa-ce2a-4e2e-6338-08db6d0ea8fd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d076545-7c42-4801-c575-08db6d11e124
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2023 19:36:33.7111
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2023 19:59:36.3547
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iyzFYGZDOu5SFgvcop8hwW7evPJuoaxnSyD/LLcXnqUw5kAZ6ZpCDmicDIT3BNxfRAW/S/QHajHH7kyqw6UFMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9763
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fu0mYgWAbwQEtezru0eGQRwNJZn8hPFmpK8yWXLuqd+TrlVKeuZnQJH1tMrTDhQZJ0MeNU1R2bWzL5WTvDUm5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6794
 
-Extend Freescale eDMA driver bindings to support eDMA3 IP blocks in
-i.MX8QM and i.MX8QXP SoCs. In i.MX93, both eDMA3 and eDMA4 are now.
+On Mon, Jun 12, 2023 at 12:12:53PM -0400, Frank Li wrote:
+> On Mon, May 15, 2023 at 11:10:49AM -0400, Frank Li wrote:
+> > Layerscape has PME interrupt, which can be used as linkup notifier.
+> > Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
+> > when linkup detected.
+> > 
+> > Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> 
+> Ping, not comments almost over 1 months.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../devicetree/bindings/dma/fsl,edma.yaml     | 99 +++++++++++++++++--
- 1 file changed, 92 insertions(+), 7 deletions(-)
+@lorenzo and @Bjorn
 
-diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-index 5fd8fc604261..de8c44bd8a89 100644
---- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-+++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-@@ -21,32 +21,41 @@ properties:
-       - enum:
-           - fsl,vf610-edma
-           - fsl,imx7ulp-edma
-+          - fsl,imx8qm-adma
-+          - fsl,imx8qm-edma
-+          - fsl,imx93-edma3
-+          - fsl,imx93-edma4
-       - items:
-           - const: fsl,ls1028a-edma
-           - const: fsl,vf610-edma
- 
-   reg:
--    minItems: 2
-+    minItems: 1
-     maxItems: 3
- 
-   interrupts:
--    minItems: 2
--    maxItems: 17
-+    minItems: 1
-+    maxItems: 64
- 
-   interrupt-names:
--    minItems: 2
--    maxItems: 17
-+    minItems: 1
-+    maxItems: 64
- 
-   "#dma-cells":
--    const: 2
-+    enum:
-+      - 2
-+      - 3
- 
-   dma-channels:
--    const: 32
-+    minItems: 1
-+    maxItems: 64
- 
-   clocks:
-+    minItems: 1
-     maxItems: 2
- 
-   clock-names:
-+    minItems: 1
-     maxItems: 2
- 
-   big-endian:
-@@ -65,6 +74,38 @@ required:
- 
- allOf:
-   - $ref: dma-controller.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8qm-adma
-+              - fsl,imx8qm-edma
-+              - fsl,imx93-edma3
-+              - fsl,imx93-edma4
-+    then:
-+      properties:
-+        "#dma-cells":
-+          const: 3
-+        # It is not necessary to write the interrupt name for each channel.
-+        # instead, you can simply maintain the sequential IRQ numbers as
-+        # defined for the DMA channels.
-+        interrupt-names: false
-+        clock-names:
-+          const: dma
-+    else:
-+      properties:
-+        reg:
-+          minItems: 2
-+          maxItems: 3
-+        interrupts:
-+          minItems: 2
-+          maxItems: 17
-+        "#dma-cells":
-+          const: 2
-+        dma-channels:
-+          const: 32
-+
-   - if:
-       properties:
-         compatible:
-@@ -153,3 +194,47 @@ examples:
-        clock-names = "dma", "dmamux0";
-        clocks = <&pcc2 IMX7ULP_CLK_DMA1>, <&pcc2 IMX7ULP_CLK_DMA_MUX1>;
-     };
-+
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/imx93-clock.h>
-+
-+    dma-controller@44000000 {
-+      compatible = "fsl,imx93-edma3";
-+      reg = <0x44000000 0x200000>;
-+      #dma-cells = <3>;
-+      dma-channels = <31>;
-+      interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&clk IMX93_CLK_EDMA1_GATE>;
-+        clock-names = "dma";
-+    };
--- 
-2.34.1
+Could you please pick this patch? This just added a linkup notification for
+layerscape platform and there are not futher comments over 1 months.
 
+Frank
+
+> 
+> > Change from v3 to v4
+> >  - swap irq and big_endian
+> > Change from v2 to v3
+> >  - align 80 column
+> >  - clear irq firstly
+> >  - dev_info to dev_dbg
+> >  - remove double space
+> >  - update commit message
+> > 
+> > Change from v1 to v2
+> > - pme -> PME
+> > - irq -> IRQ
+> > - update dev_info message according to Bjorn's suggestion
+> > 
+> >  .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
+> >  1 file changed, 101 insertions(+), 1 deletion(-)
+> > 
+> > 
