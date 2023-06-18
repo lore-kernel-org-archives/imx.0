@@ -1,169 +1,202 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2059.outbound.protection.outlook.com [40.107.21.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7533D7FA
-	for <imx@lists.linux.dev>; Sat, 17 Jun 2023 08:57:48 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-977e0fbd742so218341066b.2
-        for <imx@lists.linux.dev>; Sat, 17 Jun 2023 01:57:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686992266; x=1689584266;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pgysnMUWPxrDeN0B1Faf6Ufq3sMPZzJpEejdj3yiLTo=;
-        b=Ep4rhGij69HlZdJB6dvhGBslIi5J1X0YN5FQ+uVyl9cBUJW4BfzzKi92yLruwMKJNR
-         x2v9cMCpTHOjdh3EcfEZ3ifxfGvgbxbZUCxDLXg4p/19hlPTRfpC5tBklY13lNSTpCPb
-         TR8Iw4gbKvN2ZSdKBNjvB+zyxe/7LRkOvAlGH50xTHBrn39SakHg6Q57hNlzZsg8R0oG
-         ZcpVtJJg1TTlp33Vx3YoVregwSDu/gJ/5ne2m0Go8KJJZx7lJdGiYMKzXC1K8IqQpWqu
-         g/R6Db3wS5nims712daAO7jHshKPIQ07PCu436EEUmojpzn1i6xX30JJvbK2zMYMhQ11
-         l4wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686992266; x=1689584266;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pgysnMUWPxrDeN0B1Faf6Ufq3sMPZzJpEejdj3yiLTo=;
-        b=NrKdJAghEfmYZO1HV48Z8EcF4NJcMMD8m2XuMZUqF+xQ7sRVL5IetSeVKfoeEx+t+4
-         LUpz73sXAk7LVrjfqsg4L5awoJKtYN8R3lddy7WIy7emNjGgTbuD7LcPFAbbs2WEMqYA
-         JayYViPJIA+luUcfK8Mc6CS/RTMxQajGKNtdqadWLg0J/PBFLn0p7YMjz1tPl3czWz2e
-         EZMWFhu/57cOaTLJEDe90X7UJ3xX6T/YA0JMnLD+ibyPhIKNBS6PPgMPU//V4l5WMDDV
-         mT7CVV0bllgiU4pDBSdoZtHEVUBTJKR1+InHXR9iwCYjow5e7q6uQ1N1YlHlmUiZNbpZ
-         jEyg==
-X-Gm-Message-State: AC+VfDwqv8/2RgZSdQyGZpNyULm59C+shH03HyIZqj6L/xdzhDwMd9xs
-	/m4ISS2/dby8eyJI/CAvio+Q1Q==
-X-Google-Smtp-Source: ACHHUZ61jEiVOPgq3xLBlRirBwI281rOwqromd11/oVJ0r1/1HEzj6D02KClx0KTTDExEFXIXQMDAA==
-X-Received: by 2002:a17:907:7290:b0:96b:48d2:1997 with SMTP id dt16-20020a170907729000b0096b48d21997mr4283094ejc.65.1686992266535;
-        Sat, 17 Jun 2023 01:57:46 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id g26-20020a1709064e5a00b00987ac9cfb8esm368474ejw.67.2023.06.17.01.57.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Jun 2023 01:57:45 -0700 (PDT)
-Message-ID: <ad189220-424b-89bb-a187-60b0294ae1a7@linaro.org>
-Date: Sat, 17 Jun 2023 10:57:44 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BEC1386
+	for <imx@lists.linux.dev>; Sun, 18 Jun 2023 18:09:48 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mNyW7K5yUm2oUBVH/ZRkkLKVBiKJP8kWa01cWw06+Xtg+dlQubC6tH2HeXiSOq7xdKCl6y0uIEFDxYqCMUTKowgsTZfZMTBvE4LBzTkA0jLVRQxo5t+dUBpvyV2B+AOmhSnL8LwmnDWHDr/wOvSVFJfen3rusVOvpDg95Oabhr0EtH9fN7AKxuDOuAF6Jqg8LJhfnLVc2UdYLFCaHP56c/kk2gJgiV46JXTVxxmgb6YG3t7aKhFSHF7im0WAUhmVoJ9ea+gdRGNwgDtMdj95PcY+OwUBdxDhe1WhkhW2XwRL9RHRGPqsYxTFeXNUc87BZWILBewaBPshWATM6p6XiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MEnGh6GNW3N201nd85++3IFZ1FlWARWFbB5j++mchM0=;
+ b=Iypca6en4rqqMB23b4uoSukujZrWTkN4qyudWf48mWrDOQt1ze8Hwcw6Xk7/YokfpOOnU1mnydJAwqD8WhOlB7EcJ8qmiEPKuy1AM1gLA20J1BuQPcZ5sa3riHk6PpuHxVgGJ66z4zJejozuLTvhebRqfw+RJfG8Tww06f/WF/qnpNyzVlDsbEte4PoDUf27K0iCgwJEeAS86ba+Wj8x2TgkTqJDfMvUGbrmvIu/PjBrlP1l7nQOdvxc0lGFP6juJ8Fi+JVGz70JLyFk2vA2OlXJDHlC5NsMKmPpq/QXKdnNH+1TlkVhHDXWkwNqJ+rIzAhiLzRwrqB+Hv/9G753QQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MEnGh6GNW3N201nd85++3IFZ1FlWARWFbB5j++mchM0=;
+ b=X7e186mVnTf+FiYP+E4mPgDXyPz9n53mZsPsVBvN+2B0GyOtI8jFqpc9OTKOCOAeErxtQGWWSg7cMUZcObmPIAtdCeVWEXAg3WtK1YjR02HZUSwvK/O7E1xuAifTBbmqPNwyd7j8Uo+3MS7cezzhi3DsRtaXUzH03J5R7VlkNMo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DB8PR04MB7019.eurprd04.prod.outlook.com (2603:10a6:10:12b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.29; Sun, 18 Jun
+ 2023 18:09:45 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6500.031; Sun, 18 Jun 2023
+ 18:09:45 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com
+Cc: devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	imx@lists.linux.dev,
+	joy.zou@nxp.com,
+	krzysztof.kozlowski+dt@linaro.org,
+	krzysztof.kozlowski@linaro.org,
+	linux-kernel@vger.kernel.org,
+	peng.fan@nxp.com,
+	robh+dt@kernel.org,
+	shenwei.wang@nxp.com,
+	vkoul@kernel.org
+Subject: [PATCH v8 00/12] dmaengine: edma: add freescale edma v3 support
+Date: Sun, 18 Jun 2023 14:09:13 -0400
+Message-Id: <20230618180925.2350169-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0048.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::23) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v7 12/12] dt-bindings: fsl-dma: fsl-edma: add edma3
- compatible string
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, vkoul@kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, dmaengine@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, peng.fan@nxp.com,
- joy.zou@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev
-References: <20230616153438.2299922-1-Frank.Li@nxp.com>
- <20230616153438.2299922-13-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230616153438.2299922-13-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB8PR04MB7019:EE_
+X-MS-Office365-Filtering-Correlation-Id: f07986ad-c600-4ee2-17d3-08db7027320f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	tuPEwiUkivlEm4cjZjK2vLXXfAOLCzj9u8f9s2Jt9E3P4VfnkTytUq5VwTSgPXOteTA9M/P5XmRsN4bfLtx3yV/Tq6j3H8mIOzrpIypiCQggRGWPZb06sCOgBlYl5350pSt0oZK5qvq7AbJZI/KreFqs73uFCDH/zM/ozibbdRaHWtAG3e2HeOdS5S9OrulN/H7V5mRrIrW/WHHAvyJovvcAMnqbKRS7kMQgI/Uyayhbee4F+7tfuix2hijVolki/g57wJ4fM5IvEecl5541E0Bwh3Kl4EwLFcDUsZLlCTZdl9xob+LpF2c+vXYBXhAHBBvOGBEFnV8zwtFR1cqOAWFcs3BKpfjylU8f8birkfvD8sAweDCWb6Jn8I5I6bxY/UoyGselrLYKJZZgKI2/1mZkicJUuAOj20FJshe4v+HD52+vP9laYabm8PZV2ACE5LTQhDpd43xxyJfam2GN7qJlg/pzCewR8BZ5XtvyAHblSpy6MvZ0nu47PHyZ1gkEplZI/Tx8MPvzNfXEb8i1GLMOYURzBkgbzyfEOUtubGWOAX+rlsjJif2OZp59RqcwQR8RxF/mcktyXCtIC30ZdvPWGD1yMai/jjE+3P/5NRhIUeYdorjeFtf8W41Vag7T
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(39860400002)(396003)(136003)(366004)(451199021)(66946007)(316002)(4326008)(478600001)(66476007)(37006003)(66556008)(86362001)(36756003)(186003)(6506007)(1076003)(83380400001)(26005)(6512007)(6486002)(34206002)(8676002)(8936002)(5660300002)(2906002)(6666004)(52116002)(38100700002)(38350700002)(2616005)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gJcFrkHL+PzJkBBjF2eBV41IHA66Y8jsbPglxGHZ7FrxR5IiNo7hSa0Yo13k?=
+ =?us-ascii?Q?sx1PbPwL2oxRwgzqSY/0B4UmHtQ3nQb6aKy2CSJkXMspN9SMRhSg/FCEMfbv?=
+ =?us-ascii?Q?tPi38YwKzS1iUSC/aEsK1dmfEdFBFic1qhX6GGoW2k0kzLq24SZecEfxf+rP?=
+ =?us-ascii?Q?oBt556mk2syOLYKBU2BR9GHYW2UGL0yJIj8U3Wiwbj9PIORlgAphTPM43dY0?=
+ =?us-ascii?Q?4Y2DGalCF9M3okfT5e8jgnvPIzRh8OyXfYHD1dFLp838D+2ejtD0AOVrrDnI?=
+ =?us-ascii?Q?7lOFfqrRF+OBMQ3+1n3rYY+qKRu7epMeFDc+Ycd4MVms4RUkCDAC1wkp7sL4?=
+ =?us-ascii?Q?IE0egtuAv/cisAG2ChIqJSSoHgST7nsDpTf7+kelCottMEoubjme9fisg5Ca?=
+ =?us-ascii?Q?WK26bmcFUfu0QKRnRX3l9elHQ464gerndAHl44XwUe1MbS7txiSsR8YfDRCq?=
+ =?us-ascii?Q?LkJvGiSLHSm1H3rNM2jh8ZDykG39PX/VAvEgP3boq3qCWvPPrjxCtnnZpKH1?=
+ =?us-ascii?Q?jt2R/c5v8Bd0LwmRQocbpNKP10z4V/UhpXSMPEhteLJQGruCiXZvRJDWUOCW?=
+ =?us-ascii?Q?asKsQqH52qULUD5WJNc+WPnIxAyVEcUjfGkP7t+uodFWOZZ1AlBgU/tsPg5T?=
+ =?us-ascii?Q?W7FU+3xckok+CPTNmhn0xDVqBNzmqo/hmIaX2uSTnDpEibK1pStdYAdHAbrw?=
+ =?us-ascii?Q?k9nitR0Q7IpAQ8HBLyeZ6vV8cbMdp4i4fMd4uQlvBtgOW/Tnp/VLL1efD/s2?=
+ =?us-ascii?Q?AmHHnn0OgGk0u8yW9X5AvT9xqSSv1xj7J2FSQA/UrMQof1Y5wSoLQiisNkyJ?=
+ =?us-ascii?Q?3mMQ6f6+RrM3Zto24Cho/i3FuaSV4pZjfcBgdEOHHD1VuDLHjRhllGhEK1l5?=
+ =?us-ascii?Q?z7A27x7O8nFM98w+1QHOjrD3Si3S7Yub4vKsLSeZ5+u+w7gv8c2wanq2PgFQ?=
+ =?us-ascii?Q?z5zt9tQakoccr6Xx/wYQ/w5zZkCWshhjBnsiVkwlCSah+ZzfL188d1XA3yld?=
+ =?us-ascii?Q?vvDgsmRGii+xnq2+UB/H1e87ldsXopcJVYhhFMv+XMnBf1dodBnCe5cJr9K3?=
+ =?us-ascii?Q?HIT2R/Cia/wF+GiR4eYp+QtSxIh2wSFYrXkVmpger66nXNWsH+vA+NmhLKFa?=
+ =?us-ascii?Q?PEPcJusozLwdF2s1d4Mnz53Lw6FSLmlIzz0i7OrJcTTuwl2b1zbPTB1L7I+o?=
+ =?us-ascii?Q?H4wKkXzSREQ9urCdI+ba5ApYcbkN866hfEiNkF+wO+SYHs5q6t4uDqYUgz9B?=
+ =?us-ascii?Q?OVWS1lq6tWfwBPZHA/eyl6tRUO+S2nAon8rv73WzE0UeIa2vA4rhSkJsvwCK?=
+ =?us-ascii?Q?KncQbiPXjakOpeNr9TFxQM5zgZ1rO8pBwFGC4lM0craKgUyxuclgo4WBlIm5?=
+ =?us-ascii?Q?3bso8ZSOVBbOVcUyNXigGd1SkVjRhDvfxjcYr5xjYUajAY+Fn/udL6SRWMmq?=
+ =?us-ascii?Q?PyTuUgnoLD18M3WiMWDJUHno/S6CYAUSkXbtVpo/MxBIiPgFEh2yV1+LIWs8?=
+ =?us-ascii?Q?zs1nBu/fK1ygnC5BkvpKZ944GP34XvypFlGKUo/wVHb9rtCMgy/0hYxgm3cB?=
+ =?us-ascii?Q?DQStZZzFe2XQ1iI/+4caxRLRtjw1Iw+trrP7gssM?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f07986ad-c600-4ee2-17d3-08db7027320f
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2023 18:09:45.0528
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X+Z37oqiN9Buhq+snG6eskXbjg5pgqhyjmOs0tGY1uJ77FsTWKqQloa45k8ui7ka40B65Gw3LffuBGn6DT05tQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7019
 
-On 16/06/2023 17:34, Frank Li wrote:
-> Extend Freescale eDMA driver bindings to support eDMA3 IP blocks in
-> i.MX8QM and i.MX8QXP SoCs. In i.MX93, both eDMA3 and eDMA4 are now.
+This patch series introduces support for the eDMA version 3 from
+Freescale. The eDMA v3 brings alterations in the register layout,
+particularly, the separation of channel control registers into
+different channels. The Transfer Control Descriptor (TCD) layout,
+however, remains identical with only the offset being changed.
+
+The first ten patches aim at tidying up the existing Freescale
+eDMA code and laying the groundwork for the integration of eDMA v3
+support.
+
+Patch 1-10:
+These patches primarily focus on cleaning up and refactoring the existing
+fsl_edma driver code. This is to accommodate the upcoming changes and new
+features introduced with the eDMA v3.
+
+Patch 11:
+This patch introduces support for eDMA v3. In addition, this patch has
+been designed with an eye towards future upgradability, specifically for
+transitioning to eDMA v5. The latter involves a significant upgrade
+where the TCD address would need to support 64 bits.
+
+Patch 12:
+This patch focuses on the device tree bindings and their modifications
+to properly handle and integrate the changes brought about by eDMA v3
+
+Change from v7 to v8
+-dt-bind: add missed part
+
+clock-names:
+> items:
+>   - const: dma
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/dma/fsl,edma.yaml     | 103 ++++++++++++++++--
->  1 file changed, 96 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> index 5fd8fc604261..2363c10e0d1c 100644
-> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> @@ -21,32 +21,41 @@ properties:
->        - enum:
->            - fsl,vf610-edma
->            - fsl,imx7ulp-edma
-> +          - fsl,imx8qm-adma
-> +          - fsl,imx8qm-edma
-> +          - fsl,imx93-edma3
-> +          - fsl,imx93-edma4
->        - items:
->            - const: fsl,ls1028a-edma
->            - const: fsl,vf610-edma
->  
->    reg:
-> -    minItems: 2
-> +    minItems: 1
->      maxItems: 3
->  
->    interrupts:
-> -    minItems: 2
-> -    maxItems: 17
-> +    minItems: 1
-> +    maxItems: 64
->  
->    interrupt-names:
-> -    minItems: 2
-> -    maxItems: 17
-> +    minItems: 1
-> +    maxItems: 64
->  
->    "#dma-cells":
-> -    const: 2
-> +    enum:
-> +      - 2
-> +      - 3
->  
->    dma-channels:
-> -    const: 32
-> +    minItems: 1
-> +    maxItems: 64
->  
->    clocks:
-> +    minItems: 1
->      maxItems: 2
->  
->    clock-names:
-> +    minItems: 1
->      maxItems: 2
->  
->    big-endian:
-> @@ -65,6 +74,26 @@ required:
->  
->  allOf:
->    - $ref: dma-controller.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx8qm-adma
-> +              - fsl,imx8qm-edma
-> +              - fsl,imx93-edma3
-> +              - fsl,imx93-edma4
-> +    then:
-> +      properties:
-> +        "#dma-cells":
-> +          const: 3
-> +        # It is not necessary to write the interrupt name for each channel.
-> +        # instead, you can simply maintain the sequential IRQ numbers as
-> +        # defined for the DMA channels.
-> +        interrupt-names: false
-> +        clock-names:
+> clocks:
+>   maxItems: 1
 
-items:
-  - const: dma
+Change from v6 to v7
+-dt-bind: remove "else" branch. 
 
-missing clocks...
+Change from v5 to v6
+- dt-bind: rework it by fixed top level constraint.
 
-oh wait, I already said this. Let's use reviewers time for doing the
-same review, why not. They work for free.
+Change from v4 to v5
+- dt-bind, add example for imx93 to trigger make dt_binding_check to
+generate the yaml error. fixed dt_binding_check error. 
+  keep compatible string ordered alphabetically.
 
-This is a friendly reminder during the review process.
+Change from v3 to v4.
+- use dma-channel-mask instead of fsl,channel-mask
+- don't use dmamux after v3. only use flags to distinguish the IP
+difference
+- fixed 8qm and imx93 have not CH_MUX register. Previous can work
+because dmamux is 0.
 
-It seems my previous comments were not fully addressed. Maybe my
-feedback got lost between the quotes, maybe you just forgot to apply it.
-Please go back to the previous discussion and either implement all
-requested changes or keep discussing them.
+Change from v2 to v3
+- dt-binding: add interrupt-names
+- dt-binding: add minItems
+- dt-binding: add missed property: fsl,channel-mask
+- rework patch 4, removed edma_version to avoid confuse with hardware
+IP version.
 
-Thank you.
+Change from v1 to v2
+- fixed issue found by make DT_CHECKER_FLAGS=-m dt_binding_check
+- fixed warning found by kernel test robot
 
-Best regards,
-Krzysztof
+Frank Li (12):
+1   dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL in fsl-edma-common.c
+2   dmaengine: fsl-edma: clean up fsl_edma_irq_exit()
+3   dmaengine: fsl-edma: transition from bool fields to bitmask flags in
+     drvdata
+4   dmaengine: fsl-edma: remove v3 from enum edma_version
+5   dmaengine: fsl-edma: move common IRQ handler to common.c
+6   dmaengine: fsl-edma: simply ATTR_DSIZE and ATTR_SSIZE by using ffs()
+7   dmaengine: fsl-edma: refactor using devm_clk_get_enabled
+8   dmaengine: fsl-edma: move clearing of register interrupt into
+     setup_irq function
+9   dmaengine: fsl-edma: refactor chan_name setup and safety
+10  dmaengine: fsl-edma: move tcd into struct fsl_dma_chan
+11  dmaengine: fsl-edma: integrate v3 support
+12  dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string
+
+ .../devicetree/bindings/dma/fsl,edma.yaml     |  19 ++
+ drivers/dma/Makefile                          |   6 +-
+ drivers/dma/fsl-edma-common.c                 | 267 +++++++++++----
+ drivers/dma/fsl-edma-common.h                 | 119 ++++++-
+ drivers/dma/{fsl-edma.c => fsl-edma-main.c}   | 323 ++++++++++++++----
+ drivers/dma/{mcf-edma.c => mcf-edma-main.c}   |  34 +-
+ 6 files changed, 578 insertions(+), 190 deletions(-)
+ rename drivers/dma/{fsl-edma.c => fsl-edma-main.c} (62%)
+ rename drivers/dma/{mcf-edma.c => mcf-edma-main.c} (91%)
+
+-- 
+2.34.1
 
