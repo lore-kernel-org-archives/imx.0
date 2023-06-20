@@ -1,77 +1,101 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C6A23D6
-	for <imx@lists.linux.dev>; Mon, 19 Jun 2023 06:20:07 +0000 (UTC)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-970028cfb6cso519826666b.1
-        for <imx@lists.linux.dev>; Sun, 18 Jun 2023 23:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687155605; x=1689747605;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tafC9rtGrSbEBkVw2li93WM31ICKV4+FzfLVdlGKanI=;
-        b=dPEJ0tP8ft0H1Y6IrgmhNyLHFA1WvqVZZG2hYBY7kuva657ir8JkP6vqC/C9nwAVCr
-         2BJcmm2GievWjQTyduZNEQyQZvatFFvbf4OkaDsQsZncjQHYYLWLP1lgEZ3i6UyTR+Qz
-         1+utCCTUDG5bmyerBPsygBCq8rmhpPSUz3eS5mD+6G8KDzT9SLjcp/38qq4QICgXJi0s
-         8o+rISB6M3mb94t3/KNO2RhguHp6fhm4tC8xy2H1rIQe1IvpSU19WGuXGYCQWfmQr1Yg
-         WbvHrJfAgH/LYasW+hiBJcdPhcUd1O7CQjPxpUg63AAJvaF478FC5Omeje4yFDXs7kUT
-         jkUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687155605; x=1689747605;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tafC9rtGrSbEBkVw2li93WM31ICKV4+FzfLVdlGKanI=;
-        b=SH7sQGePfoNzhabY6J0C2a+r24a53/FpmwQxRyGXm4VkaHZ9isLuodFTUqMq0+kq6k
-         e627yNhLrsjxU/AhBbkWEzMZ9uh10Vn1EzYhBSjPVOjjJ8whSWS579ylV1tLf5obOTpV
-         +ZQc0DzegP4jbAwsnvt30CujTe8mBbs2gHbS3QR2pyi+XrX+iOjrSOarYXZPcKJkGcn/
-         qgrbybmnHQcfQw1BXYiyxxB+sHQ2KgV3Sp5JAjs2DKeVWsF6GAKzxKoc4Dj3jdLTLPIc
-         Lq8cb/KQFUJC4EI5rjE0NXWUxrfOYgG3szG9zY7RE1MyqBoteJQJe8WLMIFLi8dETB6I
-         Q5cw==
-X-Gm-Message-State: AC+VfDx5pK3ls+ImLffdkf37fxoc8yLulJtr+SZ6EFlt0X2fREAXWPqC
-	4kx8Jwa6E/lFvPyN9GN1rymznw==
-X-Google-Smtp-Source: ACHHUZ6KehvgKkuQMI/k2qKPJ3Tw3gEZpAtv5I2vo/yLXgO7Ks+E178QWppZ+XoZnpUgK2+2/GnRCA==
-X-Received: by 2002:a17:907:9810:b0:96f:bcea:df87 with SMTP id ji16-20020a170907981000b0096fbceadf87mr9153893ejc.42.1687155605700;
-        Sun, 18 Jun 2023 23:20:05 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id k9-20020a170906128900b00965ffb8407asm14088745ejb.87.2023.06.18.23.20.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Jun 2023 23:20:05 -0700 (PDT)
-Message-ID: <9463188f-b176-c41c-8512-b0255eab27a6@linaro.org>
-Date: Mon, 19 Jun 2023 08:20:03 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70E72AB3A;
+	Tue, 20 Jun 2023 17:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687283434; x=1718819434;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/+vNaIXG9iaFY0nknjQbsz4ucYkJfdHZeLAfTVowxUw=;
+  b=KsWXrLQjclS4AZkJfy67zU12PXSFSajBYhjkysXx4CQRheLTVhWP+SN7
+   vFNQmITH0vCmmW4oFPZVZ8wNFl6Yd8ID5PYetmgce+r5Bbd2UWTDgL6Tm
+   D7QP1ubaW3sPuDGdyMQxE/Jq2IdodEZehZ1QLeE7/rC9DtM8ZTcKSjCEz
+   YAQy8niSbbK8j1UH18lKg8I6+ivSUPillS/oaDloCsETyOtqcXXDs2QGy
+   Izjki2jXB+fojlib88RoQSTdKK2LSNrtNNUBr8lqZi7/IfHxJttJ1S0CN
+   x+cBXQ/ktSKmU8U+yEt3nMjSnoIf4ZMmlaarQVK9C2BGsb85c+/DWWQS7
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="340278994"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
+   d="scan'208";a="340278994"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 10:50:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="827097063"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
+   d="scan'208";a="827097063"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 20 Jun 2023 10:50:31 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qBfUs-000664-1V;
+	Tue, 20 Jun 2023 17:50:30 +0000
+Date: Wed, 21 Jun 2023 01:49:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, imx@lists.linux.dev, joy.zou@nxp.com,
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
+	linux-kernel@vger.kernel.org, peng.fan@nxp.com, robh+dt@kernel.org,
+	shenwei.wang@nxp.com, vkoul@kernel.org
+Subject: Re: [PATCH v8 01/12] dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL
+ in fsl-edma-common.c
+Message-ID: <202306210131.zaHVasxz-lkp@intel.com>
+References: <20230618180925.2350169-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v8 12/12] dt-bindings: fsl-dma: fsl-edma: add edma3
- compatible string
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
- imx@lists.linux.dev, joy.zou@nxp.com, krzysztof.kozlowski+dt@linaro.org,
- linux-kernel@vger.kernel.org, peng.fan@nxp.com, robh+dt@kernel.org,
- shenwei.wang@nxp.com, vkoul@kernel.org
-References: <20230618180925.2350169-1-Frank.Li@nxp.com>
- <20230618180925.2350169-13-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230618180925.2350169-13-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230618180925.2350169-2-Frank.Li@nxp.com>
 
-On 18/06/2023 20:09, Frank Li wrote:
-> Extend Freescale eDMA driver bindings to support eDMA3 IP blocks in
-> i.MX8QM and i.MX8QXP SoCs. In i.MX93, both eDMA3 and eDMA4 are now.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+Hi Frank,
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+kernel test robot noticed the following build errors:
 
-Best regards,
-Krzysztof
+[auto build test ERROR on vkoul-dmaengine/next]
+[also build test ERROR on linus/master v6.4-rc7 next-20230620]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-fsl-edma-clean-up-EXPORT_SYMBOL_GPL-in-fsl-edma-common-c/20230619-021341
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git next
+patch link:    https://lore.kernel.org/r/20230618180925.2350169-2-Frank.Li%40nxp.com
+patch subject: [PATCH v8 01/12] dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL in fsl-edma-common.c
+config: s390-randconfig-c034-20230620 (https://download.01.org/0day-ci/archive/20230621/202306210131.zaHVasxz-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 12.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20230621/202306210131.zaHVasxz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306210131.zaHVasxz-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   s390-linux-ld: drivers/irqchip/irq-al-fic.o: in function `al_fic_init_dt':
+   irq-al-fic.c:(.init.text+0x58): undefined reference to `of_iomap'
+   s390-linux-ld: irq-al-fic.c:(.init.text+0xc8): undefined reference to `iounmap'
+   s390-linux-ld: drivers/dma/fsl-edma-main.o: in function `fsl_edma_probe':
+   fsl-edma-main.c:(.text+0xb5c): undefined reference to `devm_platform_ioremap_resource'
+>> s390-linux-ld: fsl-edma-main.c:(.text+0xf4c): undefined reference to `devm_platform_ioremap_resource'
+   s390-linux-ld: drivers/dma/idma64.o: in function `idma64_platform_probe':
+   idma64.c:(.text+0x20ea): undefined reference to `devm_platform_ioremap_resource'
+   s390-linux-ld: drivers/char/xillybus/xillybus_of.o: in function `xilly_drv_probe':
+   xillybus_of.c:(.text+0xaa): undefined reference to `devm_platform_ioremap_resource'
+   s390-linux-ld: drivers/pcmcia/cistpl.o: in function `set_cis_map':
+   drivers/pcmcia/cistpl.c:103: undefined reference to `ioremap'
+   s390-linux-ld: drivers/pcmcia/cistpl.c:110: undefined reference to `iounmap'
+   s390-linux-ld: drivers/pcmcia/cistpl.c:117: undefined reference to `iounmap'
+   s390-linux-ld: drivers/pcmcia/cistpl.c:118: undefined reference to `ioremap'
+   s390-linux-ld: drivers/pcmcia/cistpl.o: in function `release_cis_mem':
+   drivers/pcmcia/cistpl.c:72: undefined reference to `iounmap'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
