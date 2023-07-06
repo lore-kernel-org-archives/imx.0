@@ -1,64 +1,50 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2076.outbound.protection.outlook.com [40.107.104.76])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2087.outbound.protection.outlook.com [40.107.8.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADC69453
-	for <imx@lists.linux.dev>; Thu,  6 Jul 2023 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCBDA927
+	for <imx@lists.linux.dev>; Thu,  6 Jul 2023 14:56:24 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eqO8EkxNhWHBlJWztL/oP8h+cXde5cZsSSPhS5Ax1qJ69AxcUpme1fQcIKJ1JFjO7/np3lFXUQewJs61G9nAfWZZD8QacIexKGGo0ZoJQ779oZr+xHLErf6uIYriUvvdR7Fqa28CWieozNR1GWC2bldf15wRZS+QniQwjqI7ER9UVguqtXEuQjafYSYuvry7ktaPnniCyvdhsl0wG5NRaUDlqJ13wUrvBFWWsVgX4YzqT+SMynhaFRYj6R81n2Fy6WJPo8RViZSn/bSWt5dfagfcAmsepmTbiSXP76tJqeckuFVmNqa7A9jFW+A6fmy7Qh0GUV+MKmoTXb8k4aAh2Q==
+ b=V7wLuU/3Al+F8cEMU65boqQZfXDGiUwLFEBFKVoufeRtIr+29gGWYhecuaYQwVNQf5lEeCPKETnTQ9jhwhnQh288GY3GHEcJX6HJ2yWxhakODuapXj1ILxXxPlPNOZmcp0LyXNBzQA7Zo3oY7mpNkyP5IxDanLGn78xPGK3D9ycBoU07QnTu4ch9rheTPRfucsZsusXTL2hqCQEW0sdtnkIZOM47S1qvziV/Y9mfU+QDYqo8rDMxGY6Y5KHbYOKWTtaxjGk80iEfWCZQj6S9yzaT7UJCualC7hJ9sjEiFq1V2DO3MbriwLPP5fk3ALOYyU6e4tOZGLiqodfExmAT4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Imj3XPrPDCk+Y5ROEykh9ou423JxrXt2tIJuvEmAHWQ=;
- b=ezsWe+E6ZTDD4m9fTULJIoJ0THJ0q/oVkovbN0JuMTtMcjTaORJIvN0XYqc+4L5MtKSk+CS5ilpULCWwLcqIt6/o+48ngD+ICgSDe02VlRnVGFQ+fbYt18menx/+MqoFHWfqSF1JPd4rs5UCkN/h9334N53WsFIUv5PCA9juQrlBhVUGk3TQLjWqwkTYb8nNUsXTha+WUTUu8vvLEMEWop4a8tiva6aaIIEtlfef61mjcuVaCyTI5IelNbrMcSuB7OONdRJ5Rj6JlLTjCv6pFaTduKIYcL3JCXNBsAAvqVfkpp/FDDk9lN63YqvFGN7GNDkZwHbyx0jCYfAGVoyLsg==
+ bh=qxTiU0KNVbRL2Z/KZodByDsBE1btaFRQ7yx1kso0lcw=;
+ b=btdnKv6XBDCv4aVv+xjfalOd1UXklztV4NDiocB0Cd88hivzosiWBfebV+nyta5GhkbYbEB8rrpfQd0NFdczpkOdU2Mgowta1S7/6TTBxB5jZYXn7oV3PpAX8hWpiH4ihq67ahHxXbshTdfthLzJ81i8CtLoDFlx4yU3ZzsGvVu27eqf/PslFzcLN+IK3Dj/9te81drdOIHZlvxJWaD3e77TFle4IMEudU4Lhr10zvEvUt0wtie+4Wu0zf+/r/KNLdz7FkYhT5MuXKUQ7nCH4zZ+dOpuk4ysHbzaRJ+LWc5QJEXT0cqOg1BoPR7opBMos+YC0/2ynLuHTiB635tqtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Imj3XPrPDCk+Y5ROEykh9ou423JxrXt2tIJuvEmAHWQ=;
- b=hb3GLk2U199Hs+TcUkEd5XQrRESGcxA4jxEboEqI81tcgLS2VOSvAzXMU5yIM2aopWHLqo3Ojm2yta5COEqU9GG0Qs4Cc1/IAaA9iMlkyJk0WRrUjqdKiE/NvHU5agrxNmIAO8GJDLWZ1EJUH+BW58KeVYbwpCrms2yImqe2hd4=
+ bh=qxTiU0KNVbRL2Z/KZodByDsBE1btaFRQ7yx1kso0lcw=;
+ b=EDwdzV7nMudLuLRaybvg8QqLIzJeOPtQ+i8s8ohecNt2oI+IHM3YyyoctfKUEGrbU/0NQyORYNtcyOItwmOapo6P3dpix12DqHdydkjMUHVTN3gBoJFGGC675NzWo/yqtDdlnBcOe8GaOV+I0geOsyUd+XbdTaHngOgaATi9mGY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM7PR04MB6791.eurprd04.prod.outlook.com (2603:10a6:20b:103::19) with
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AS1PR04MB9681.eurprd04.prod.outlook.com (2603:10a6:20b:480::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Thu, 6 Jul
- 2023 14:39:26 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6565.016; Thu, 6 Jul 2023
- 14:39:26 +0000
-Date: Thu, 6 Jul 2023 10:39:07 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	suzuki.poulose@arm.com, coresight@lists.linaro.org,
-	imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>, Marek Vasut <marex@denx.de>,
-	Peng Fan <peng.fan@nxp.com>, Adam Ford <aford173@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm, primecell-periphid
- at etm nodes
-Message-ID: <ZKbSC8LBjLuo3ygD@lizhi-Precision-Tower-5810>
-References: <20230705205954.4159781-1-Frank.Li@nxp.com>
- <9405224.NyiUUSuA9g@steina-w>
- <0125c54fd1617f3f945bc3f4bbef5b914b701c24.camel@pengutronix.de>
- <49ef52b7-0269-898c-7cc2-096f2f1037fc@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49ef52b7-0269-898c-7cc2-096f2f1037fc@arm.com>
-X-ClientProxiedBy: BY3PR04CA0007.namprd04.prod.outlook.com
- (2603:10b6:a03:217::12) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+ 2023 14:56:21 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::67c5:d818:6a60:7e38]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::67c5:d818:6a60:7e38%7]) with mapi id 15.20.6544.024; Thu, 6 Jul 2023
+ 14:56:21 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-imx@nxp.com,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Subject: [PATCH v3] gpio: mxc: add runtime pm support
+Date: Thu,  6 Jul 2023 09:56:11 -0500
+Message-Id: <20230706145611.2660657-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0053.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::28) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,104 +52,225 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM7PR04MB6791:EE_
-X-MS-Office365-Filtering-Correlation-Id: 053cec3b-4225-43fd-eae6-08db7e2ecc3c
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AS1PR04MB9681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64ace7d8-7cf8-4cf6-f8ab-08db7e312900
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	qqGOhzjmZ+8fhYV3GsszpWOCup8HYHgscOuEj2ZIK1r5xc8Q8UFbV1AObuSv18KgX5u+pLmb3WboqKAFvnKQey/gLafxhaDtHHfZX8bEb126b1fv4yv/Q/cC3Vulsfzz4FppbHnUL7TjybwLnBD5RNkSa+U4nHMOZ+re/jSSvP+apHo4Ywd/5IGeUfEqPAdc5AFUHrT66hu3p0w6nl5vljpLdj2U902vOxgIgjtzyVNsbWTHNtS18JI6JetBkermO8iZTcN4kLt/c1q6iy2Y60WqnYtJE8QcBmzcTVWEQajPUd5Ui+a9KDEiyY3a78mxvYt8fZScaojIGSQEuVcPf8vORSumwf+mbwfaPBtJ+l59jbMHSolPGrmfp7s2SR2Yp4dqIFjsKX9ySX1KiJLSVt6RosWj0ipPE+Fe8hY3FEOYkEj7RVCLDzc8YAO519+Fvb1wFA3mDRYQjnKJR+gct24XcYvHSeqF3WqmSDcvlGH2FyMT+XyBdOV7NLR9sh/swiQSGcUij6ehJrAulKj3IFmstQqEDn+J8FaXJn8589STpkrvxKOltQu1sEPxJfHSJ/190qymahRY85Ht1MhM6SSaGfq27mYOIZcKthS228rMVnQ15Bxc5mUYxDN0xAGr
+	V6qtwXcGtATs7QCvJ4PLciBqtTJhueaH42i4eVFV4tYgtrb0n21G8wWSdRvSD4f4+l1t6z/hIKn97wNzP1QjUlK4vKPByid4ELc7/LerTOg0VP1GzIzJfe4jECJJphJF9Q5zabdaHka0vk88/+ehioW3XNpIbj+VOrMPBzJC/ttZsLrgAQlZOyYHFL6QJUJ/ouHjGKVd+oSW+mbElLzMgyMvUaa+DCXJbTR0nmMxnOHSRc5tQewGWxwjEvmIJ2z7ocpxtm64ZH4g5NAWERhevl/6erxreNG8LUaawOIiJ4CAPqhLt2QS9L/CNUB4Lild0GEGJySRnMngn6UE58nowmEzG0VrVAcivVSrzciBSpvHQkbTBohvoA2Nn/1Tx67Urzm59OhZcChTRyA84Z7ckt7q6+QXyydJZrEJ+lAjaHzdPQGbbjoZ+9BWTwemrshAJPMSbqoRbe4KH3hoAIbXJNr9Uut+5yDbzyxuP8cpnyvr8bQqLQI0YMJx3Q7d5YI9EYJOAXt6EpbyEmFv1mZ80ySc4gSSpP63MofrfmGqqjjBjyy0fhOMMcQYBIdpHfuNXRLHebhC8XmcSQ6KhcbQ+Q67TWzoTqEj8cMGcLj53ZjW0G/glT8sQoLjFr1B/nIC
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(39860400002)(396003)(376002)(136003)(366004)(346002)(451199021)(52116002)(6666004)(478600001)(6486002)(54906003)(83380400001)(26005)(86362001)(2906002)(66946007)(33716001)(9686003)(186003)(966005)(6506007)(6512007)(38350700002)(38100700002)(4326008)(316002)(6916009)(41300700001)(66556008)(66476007)(8676002)(8936002)(7416002)(5660300002)(32563001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(366004)(376002)(39860400002)(346002)(451199021)(2906002)(44832011)(8676002)(6486002)(2616005)(86362001)(66556008)(8936002)(5660300002)(110136005)(26005)(6666004)(55236004)(1076003)(478600001)(6512007)(52116002)(186003)(38100700002)(38350700002)(6506007)(83380400001)(66946007)(4326008)(316002)(36756003)(66476007)(41300700001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?F1r6/iH0SqJ81hHA/rqYMicLmo0dSdCeRwIG4meFF0aVqK1qxvy0dfXP2NMo?=
- =?us-ascii?Q?zMwrYC+4/5s0gF9T+xEZ4PSDIs2r9U5eZgOfzi5xRaplRVxqEkqlxAXYMg1k?=
- =?us-ascii?Q?ye4pnF/O1pzGhSSujZwr4MfYNkhNgP1GhsXFgzTI+JPUXp3cz4p1Z2NUvpFW?=
- =?us-ascii?Q?14n4+BxxOoPMVE6x2VDVmIPieNYKcJJGhb2SKr8Q1y73vDYxTEztHjna3B0R?=
- =?us-ascii?Q?jzjkPo7sl7O1aCtGHxqA84GRjCdXalCrnJUPA+QIDxr+HqdA1fVS7stkXRy3?=
- =?us-ascii?Q?Uj5e9Wi/cxaCq/dmrROeWf0J6EqOAo7uLTPkCs80NHpBtMVOugTF6is7DrTA?=
- =?us-ascii?Q?zBIqfxeJ6y6BLo/unFf54BoAwoSZZ1bI6+y/ClhWAbrXx1SjKUkn2MGUrPaF?=
- =?us-ascii?Q?gnylXWxf4HLmG12zZz2wNkpCUXLg+PHXZxZMgkhe8FZ/GpuVC8tWZyc/Zdr3?=
- =?us-ascii?Q?8qfq3haH1GwqWN6ZiI9VLApVpuZby7CDbLq64wglPdQwPbwye3s6kdnZChYo?=
- =?us-ascii?Q?yZRXO1ks0Ut3FXuicTt9ywC+FYbfNxG0JMFAoFljqgYRVBF7jxom547I/8b+?=
- =?us-ascii?Q?b1K0cbvdsgkA71uReB2Sei7jnytXu2EruSG2DBvUtA25Vk7QpErS/1ix8h1d?=
- =?us-ascii?Q?F7PxIJsxiSZWs1n6drkvs6YaY2COvAjZWX0JCCwgNq25eit01juOiKpQ2OIQ?=
- =?us-ascii?Q?SMXxYerEt950UIKEchL69OawpcOzufif7murN/a8XPe/+RIjCivSR+XzH7UH?=
- =?us-ascii?Q?hDXX7uGXFbsetqh/5abnurGYmuSyn7jQxYkToD+Bxf14ZPjANsyS9c+Hdkvh?=
- =?us-ascii?Q?WrzHK6kYFKpwsGP2Dk9ll4daMg8Do6PUx280lDBbUwGB2R3oZ7gW/ukuBN78?=
- =?us-ascii?Q?fewZODkMYBMPpvFiGp1IYWuPIzR5fc5cFE5zk7vo7XIVxaa1Tq8eDcYvTIio?=
- =?us-ascii?Q?z8hlXcR5waYiRNS/uJahXgj1XTw5wOZWgXifBVRZdzRPPW8k7hqR/AM9AKYZ?=
- =?us-ascii?Q?+N4q0c/e/xrrSNoHh1rToMz+IbhdBtc1nUkIMDi3FaNZ1repm0ZxBbVhS5QU?=
- =?us-ascii?Q?MlMzS69PtZrazgt3uY14+hNEmLYwo0KHXlarRnBOr0Vdrr12LT3F2PPk/jLn?=
- =?us-ascii?Q?AJzUeB9VpMVt+GARIorvQzMCvWyPCc4JtdRbMaLs5ENIMSHZX5BPbxBWUb0a?=
- =?us-ascii?Q?iiSV4eiNneFoKdX2BseopgBxYRCUvrax0Q4W5G/ZWYY0NlXs8HObZx4qW5Vj?=
- =?us-ascii?Q?L+05bO/Rbnn2tbeMhy3arpjdJSyrZ3+OpWdRxlqHzFrOcCS3e2dW1uH4ThWV?=
- =?us-ascii?Q?6WY9CwW/Mu7mKYuUthOR74rDlCksPw9J/mIY1I4zVfxC+sAXsuNtOY0MlZTS?=
- =?us-ascii?Q?tGQYm64ewTY+b2AkqKJ2R6p43FDNBiwb4IMmL17KVMKM4FTXxW9bTwdnBw/S?=
- =?us-ascii?Q?9a2k2BIFum0iNmSISxcDynJ6PgIkto4zQMCvMtA4MOojpTx8xZmfuQDyc4eN?=
- =?us-ascii?Q?EBNkdPrOatD9vXtazfQu9Hwa8depGBPIleHleiclpIgI+/FqSGD+vO+yCtWM?=
- =?us-ascii?Q?bRaxywt4MKh1jZoe4Hd2Qt4W4xq3wFee+gpHhO68?=
+	=?us-ascii?Q?x1ACzVtdcdbcySVA2/XU5rv5aZZGj9/sWshtAC8fuw/wbAKjgDAIwZglOfyO?=
+ =?us-ascii?Q?exCdVsKfHA8X0gXK6woTRzJc2Vtn82+JJBoPROPh+wCE0Ls8wg3D8OTwj/xX?=
+ =?us-ascii?Q?Il9pHMvfiBBtTG+QxTzZItuRz5JDpG1mgNt7nCDnnupT8kRUO1whKB7u2K4c?=
+ =?us-ascii?Q?KX3seeGO9XWvMmSGLTTjQmjjJ06vVQREZfPsEd8xP4XXIWpEiynj1FMf4Mzn?=
+ =?us-ascii?Q?r0lgLVRgNUW1ZnJ41UTqazhvHx0lcCvIeGgr/dlq4mkcIW4hgeS/5Ls7CvR1?=
+ =?us-ascii?Q?Qv3rv1K1MV27YFtLptwtWejDsX/37pq3JK2fAoy89b6hBhBWFwkQIDd8QZhN?=
+ =?us-ascii?Q?RnNqyEoHbJB/e5JXWjwUu3lcmuLGLvSIr48rTEuwbwMimclxFXfhe49NFxn2?=
+ =?us-ascii?Q?+QwAvuUlOTh50VP9j6oKIIFQoi4Qv2lY1RBd1pianqfK0crd8/g67duQ4ei5?=
+ =?us-ascii?Q?G8ypQKkM+TVZQyKEQORp/T4fWUeKWCmMBNIyQMKrpUmHD2c1vIxl3VBRPyoB?=
+ =?us-ascii?Q?tKKJjgihmyaeOyCeh+CKhWuvYnAXIhrO8Tq0ARjd2mxSVJOP2o0eTqPLXmmM?=
+ =?us-ascii?Q?yPzHQZGeEMSXmhWLgwLe83elE6ctdHNpMw5YzgZ22C1y7uprYm9fk6FMR68z?=
+ =?us-ascii?Q?5n7P2AmyTYUdBATvGwbMSqEOExbPC00Ii/VP0tElgRU4UTfNEDOa3W1XJD62?=
+ =?us-ascii?Q?eTd1qtIEJdRWdNSTAbTYo8zaHRSCbYkO8TqCBx+V5PrS+m5stUnPd/7KApXo?=
+ =?us-ascii?Q?132bw0JWvmaQkjRZhSOGlqdKabZUBDtwVJfdH7xD+w0ZnLEiGb9sBKWO5Jfk?=
+ =?us-ascii?Q?piblJ0tRKcb6sYo88cDNg1qNzBmA4rFqLz3+lu4QMv6Peowi10K+OZCdOeQh?=
+ =?us-ascii?Q?M9iXvwA6oBHb6DkHtKeutnCOkhODT/jlTzrTBTMJvT6Jo6pBFlx6w/BNWf0l?=
+ =?us-ascii?Q?OqiD00KINHxsBStB8ICDr1ykd4HTpx8v0O6EvUH1dLFqYlM+GOd2yMihBK9B?=
+ =?us-ascii?Q?NXueRY87bf0NHxFYz7jcCLUfqdwxy4wVk/2GJ5j/7WoEmUtSelMwu/1STZmu?=
+ =?us-ascii?Q?W5gyA0jTFhvwSfvDRNVg/+gKh3jecvl3yNYjtYtDYVNCNy5vlQXBWlC4RYyp?=
+ =?us-ascii?Q?c8eL5VO2EgJ2C9N15ecrKjAjmC9QH4RsITdBv59N6S1hC72oDZfZIOlEwyCO?=
+ =?us-ascii?Q?zS+VD8Wt1FQBoqbCuzm4+5AKr9XI0AnctbOiNxuNOlpZwjg77OtxciVVWhBw?=
+ =?us-ascii?Q?w6O7OS3mK41wJK0HB+A72SQNWM/91t4Csts28eqCZKF7/QhaieVFK8P2W7Or?=
+ =?us-ascii?Q?O7zuXhftmj6cLVDskYFOhIXRndjKNqzqiYvmAFPN4oJZzLRnWzTfwhkqaE5K?=
+ =?us-ascii?Q?/ammkVUG6c/zNPrvtt5YLtbV88Vdpe7zxZ7MO69iLdt4SZp323D2KyDsMMFi?=
+ =?us-ascii?Q?VtoeFUomN0lw/Q/Udol94nWBrh6rfocSyozcym1x9q7cLC6h9oXh9MV08taj?=
+ =?us-ascii?Q?L8fMjonno9twYeDP0kv8SQZJW/e9g00jf5KpNa3lIPzQz1qC2DbrGmvLgaQN?=
+ =?us-ascii?Q?4EdR6thgV1AM+mkuiDvqv44yaiowfol+LhKvEf3z?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 053cec3b-4225-43fd-eae6-08db7e2ecc3c
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64ace7d8-7cf8-4cf6-f8ab-08db7e312900
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2023 14:39:26.4601
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2023 14:56:21.2210
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f9JIebvs76FUYoPMuVdysk8/n0ZAoaJnDyG5JBUGJF+xHwdmtTQTqP0jzzUmVlAoZrYkYXCl3wtXw2RTd4jIyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6791
+X-MS-Exchange-CrossTenant-UserPrincipalName: 95gHNdKtEeuf/hJ/NhkeM/TS4re8eCuxtgHfyvcZY353jQVLaHnAd/puViDdocjRo6cELdylVP9Tw7IqS2OFAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9681
 
-On Thu, Jul 06, 2023 at 12:06:19PM +0100, Robin Murphy wrote:
-> > > 
-> > > Am Mittwoch, 5. Juli 2023, 22:59:53 CEST schrieb Frank Li:
-> > > > The reg size of etm nodes is incorrectly set to 64k instead of 4k. This
-> > > > leads to a crash when calling amba_read_periphid().  After corrected reg
-> > > > size, amba_read_periphid() retrieve the correct periphid.
-> > > > arm,primecell-periphid were removed from the etm nodes.
-> > > 
-> > > So this means the reference manual is wrong here? It clearly states the size
-> > > is 64kiB. Reference Manual i.MX8MP Rev 1. 06/2021
-> > > On a side note: Is imx8mq affected by this as well? The DAP memory table lists
-> > > similar sizes in the RM .
-> > > 
-> > Note that the 64K MMIO space per device is really an alignment thing.
-> > It's a recommendation from ARM to allow individual device MMIO regions
-> > to be mapped on kernels with 64K page size. Most of the time the real
-> > MMIO space occupied by the device is actually much smaller than 64K.
-> 
-> Indeed, it's quite common for TRM memory maps to be written in terms of the
-> interconnect configuration, i.e. from the point of view of the interconnect
-> itself, that whole range of address space is assigned to that peripheral,
-> and it may even be true that the entire range is routed to the port where
-> that peripheral is connected. However what's of more interest for DT is how
-> much of that range the peripheral itself actually decodes.
+Add runtime PM support and allow the GPIO controller to enter
+into runtime suspend automatically when not in use to save power.
+However, it will automatically resume and enable clocks when a
+GPIO or IRQ is requested.
 
-Yes, there are not problem by mapping bigger space in most case.
+While putting the GPIO module itself into power saving mode may not
+have an obvious impact on current dissipation, the function is necessary
+because the GPIO module disables its clock when idle. This enables the
+system an opportunity to power off the parent subsystem, and this conserves
+more power. The typical i.MX8 SoC features up to 8 GPIO controllers, but
+most of the controllers often remain unused.
 
-amba bus's periphal use close to end of region to show device's identical
-information.
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+---
+v3:
+  - Improved the error handling logic in the probe() function. Thanks a
+    lot to AndyS for reviewing and pointing out the issue.
 
-In drivers/amba/bus.c, 
+v2:
+  - improved the patch comments
+  - using pm_runtime_resume_and_get to avoid reference count disbalance
+    when errors
+  - removed the __maybe_unused identifier
 
-amba_read_periphid()
-{
-	...
-	size = resource_size(&dev->res);
-	...
-	for (pid = 0, i = 0; i < 4; i++)
-		pid |= (readl(tmp + size - 0x20 + 4 * i) & 255) << (i * 8);
-}
+ drivers/gpio/gpio-mxc.c | 61 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 59 insertions(+), 2 deletions(-)
 
-So the range in DTS for arm,primecell should be actual IP address space.
+diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+index 9d0cec4b82a3..a9fb6bd9aa6f 100644
+--- a/drivers/gpio/gpio-mxc.c
++++ b/drivers/gpio/gpio-mxc.c
+@@ -17,6 +17,7 @@
+ #include <linux/irqchip/chained_irq.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/syscore_ops.h>
+@@ -382,6 +383,23 @@ static int mxc_gpio_to_irq(struct gpio_chip *gc, unsigned offset)
+ 	return irq_find_mapping(port->domain, offset);
+ }
 
-> 
-> Robin.
-> 
-> > 
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
++static int mxc_gpio_request(struct gpio_chip *chip, unsigned int offset)
++{
++	int ret;
++
++	ret = gpiochip_generic_request(chip, offset);
++	if (ret)
++		return ret;
++
++	return pm_runtime_resume_and_get(chip->parent);
++}
++
++static void mxc_gpio_free(struct gpio_chip *chip, unsigned int offset)
++{
++	gpiochip_generic_free(chip, offset);
++	pm_runtime_put(chip->parent);
++}
++
+ static int mxc_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -429,6 +447,10 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+ 	if (of_device_is_compatible(np, "fsl,imx7d-gpio"))
+ 		port->power_off = true;
+
++	pm_runtime_get_noresume(&pdev->dev);
++	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
++
+ 	/* disable the interrupt and clear the status */
+ 	writel(0, port->base + GPIO_IMR);
+ 	writel(~0, port->base + GPIO_ISR);
+@@ -459,8 +481,8 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+ 	if (err)
+ 		goto out_bgio;
+
+-	port->gc.request = gpiochip_generic_request;
+-	port->gc.free = gpiochip_generic_free;
++	port->gc.request = mxc_gpio_request;
++	port->gc.free = mxc_gpio_free;
+ 	port->gc.to_irq = mxc_gpio_to_irq;
+ 	port->gc.base = (pdev->id < 0) ? of_alias_get_id(np, "gpio") * 32 :
+ 					     pdev->id * 32;
+@@ -482,6 +504,8 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+ 		goto out_bgio;
+ 	}
+
++	irq_domain_set_pm_device(port->domain, &pdev->dev);
++
+ 	/* gpio-mxc can be a generic irq chip */
+ 	err = mxc_gpio_init_gc(port, irq_base);
+ 	if (err < 0)
+@@ -490,12 +514,15 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+ 	list_add_tail(&port->node, &mxc_gpio_ports);
+
+ 	platform_set_drvdata(pdev, port);
++	pm_runtime_put_autosuspend(&pdev->dev);
+
+ 	return 0;
+
+ out_irqdomain_remove:
+ 	irq_domain_remove(port->domain);
+ out_bgio:
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
+ 	clk_disable_unprepare(port->clk);
+ 	dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, err);
+ 	return err;
+@@ -572,6 +599,30 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_port *port, bool enable)
+ 	return ret;
+ }
+
++static int mxc_gpio_runtime_suspend(struct device *dev)
++{
++	struct mxc_gpio_port *port = dev_get_drvdata(dev);
++
++	mxc_gpio_save_regs(port);
++	clk_disable_unprepare(port->clk);
++
++	return 0;
++}
++
++static int mxc_gpio_runtime_resume(struct device *dev)
++{
++	struct mxc_gpio_port *port = dev_get_drvdata(dev);
++	int ret;
++
++	ret = clk_prepare_enable(port->clk);
++	if (ret)
++		return ret;
++
++	mxc_gpio_restore_regs(port);
++
++	return 0;
++}
++
+ static int __maybe_unused mxc_gpio_noirq_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+@@ -597,14 +648,19 @@ static int __maybe_unused mxc_gpio_noirq_resume(struct device *dev)
+
+ static const struct dev_pm_ops mxc_gpio_dev_pm_ops = {
+ 	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(mxc_gpio_noirq_suspend, mxc_gpio_noirq_resume)
++	SET_RUNTIME_PM_OPS(mxc_gpio_runtime_suspend, mxc_gpio_runtime_resume, NULL)
+ };
+
+ static int mxc_gpio_syscore_suspend(void)
+ {
+ 	struct mxc_gpio_port *port;
++	int ret;
+
+ 	/* walk through all ports */
+ 	list_for_each_entry(port, &mxc_gpio_ports, node) {
++		ret = clk_prepare_enable(port->clk);
++		if (ret)
++			return ret;
+ 		mxc_gpio_save_regs(port);
+ 		clk_disable_unprepare(port->clk);
+ 	}
+@@ -625,6 +681,7 @@ static void mxc_gpio_syscore_resume(void)
+ 			return;
+ 		}
+ 		mxc_gpio_restore_regs(port);
++		clk_disable_unprepare(port->clk);
+ 	}
+ }
+
+--
+2.34.1
+
