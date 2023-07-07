@@ -1,165 +1,278 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2083.outbound.protection.outlook.com [40.107.14.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E740FBE45
-	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 12:25:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1688732755; x=1720268755;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fHVHlYyXVX/im36hgUnWjYzXHXB5AFCDep27NaHMXWM=;
-  b=EYZbuLjM5AHpiuLh/KQWOu42fstOU6fBqQ1/OssRffbO4HkwpvHTYwEa
-   x8tJDBAD8jxRL/FtW26XZ4aabIwqvqRo3UGR48incUC8UaVOwf9QEsY9H
-   qDyRW2EK1kO+YdeyPD27E/4BLi9r94nScGsUWXUCoLMcCyJApym3YN+00
-   Wgq6J0J7N50bN+sKdqIcu0NIKLMWJth18me22UCxhHEKFklommpA1UsEG
-   H/zvBwAIVzKtXv3fD2Pn+H9mCC2B/9Hhv73FLGgW4H/eJPwKcQChYj//4
-   YTMLTq3TIpzzOb9pjgbOs1AO13mJgHhFADco0qFqcNRCrjxTXkLOouiKU
-   g==;
-X-IronPort-AV: E=Sophos;i="6.01,187,1684792800"; 
-   d="scan'208";a="31813721"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 07 Jul 2023 14:25:49 +0200
-Received: from steina-w.localnet (unknown [10.123.53.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 97C4E280084;
-	Fri,  7 Jul 2023 14:25:49 +0200 (CEST)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>, Robin Murphy <robin.murphy@arm.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>, suzuki.poulose@arm.com, coresight@lists.linaro.org, imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Adam Ford <aford173@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm, primecell-periphid at etm nodes
-Date: Fri, 07 Jul 2023 14:25:49 +0200
-Message-ID: <6505804.Sb9uPGUboI@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <5cf23bfd-a3b7-3dde-146b-4892d75b3485@arm.com>
-References: <20230705205954.4159781-1-Frank.Li@nxp.com> <24260662.6Emhk5qWAg@steina-w> <5cf23bfd-a3b7-3dde-146b-4892d75b3485@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FD01FA7
+	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 16:21:24 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a5NmpCKsOb358/x3UkCqiQ8Y1srqFamilTJAKTpziGCYNPtmbbUDfGaa0pUaG7ZCy7/WkGDPyluK7Hv79LYXoqzc79MKg6aMNQ8l+yq0/qrKlRT4qtBi3BfHJy/J7wGN8CzZB+ILYpI/+hwlRRkfvSiqcuE5caEl7cRKJQJ7whQospBxVuy/g+Mxox3kpNwWRAwGZXpNcZ+Wig8cDu8K3R4G4zJLghe4/9fZsZlNWwFvcpHSCtCoQea8SB78icyaseUr2MOJZcFyJDM6JG/D1zKUbr1fiIhAw6BE3xlZFL8qxT7gXNPmafINM9ueo4uc2yPctR1DIJpS+CqlyCypww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kGhARiyZlOWZ2XlAo/LD1W+ckXW993mkfA0hmGzvr1k=;
+ b=UctWy3PLDjXp9mOsIms14EaEH8ZNaQotujqqL0lQpIV4agvXI8TIIwxdarY/FntSkUEY/HFTjk2GrgEFTGIe5LM4Dv8v9AoyhAiRnyuQiiiQCgIVf08ldjrYoraxpGMQHipvsfIHb7PFluxqykMEd7vcLJYSmr/RCQsqoiZxl5s4P+GixILsx7f8+Dxdhj70UOrO7qsqqwvXTGcsTiF+FOJHGE4XGyNqajU5ryVSf2Oc9G7dhck3ms034LZsm20LJehQrwcdsHdO2QprXcgogJKcuiq5XsUxlZrH4TYB4rdJWL5mg+Hyhg04PrsxkUqYiY+4mloamYEZq9I+7tgWkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kGhARiyZlOWZ2XlAo/LD1W+ckXW993mkfA0hmGzvr1k=;
+ b=VlLVNuLhlDhO6S9vnBMcOiP4DNQFGNB3PPLwygnY8mC5f+10Jbngs/x4chDUg42W5zookWpeIb7ZKpw1CT9G7M+mzPjRkm/c26lNkcX5RObIGFmjeU3t+omeMpn66EM9LKSoeN4ML+JUhJxF0wV3tGn3qFJbHXzexEYfy4zuEl8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DB9PR04MB8106.eurprd04.prod.outlook.com (2603:10a6:10:24b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Fri, 7 Jul
+ 2023 16:21:20 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6565.016; Fri, 7 Jul 2023
+ 16:21:20 +0000
+Date: Fri, 7 Jul 2023 12:21:03 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, peng.fan@nxp.com, joy.zou@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev
+Subject: Re: [PATCH v9 12/13] dmaengine: fsl-edma: integrate v3 support
+Message-ID: <ZKg7b/RJyCrmsQQ7@lizhi-Precision-Tower-5810>
+References: <20230620201221.2580428-1-Frank.Li@nxp.com>
+ <20230620201221.2580428-13-Frank.Li@nxp.com>
+ <ZKemOm9OfQK8NkpL@matsya>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZKemOm9OfQK8NkpL@matsya>
+X-ClientProxiedBy: BY3PR05CA0051.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::26) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB9PR04MB8106:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6ab1b6b-7e3e-423d-9b36-08db7f0632ef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	HYnXbw5kBqWJaAls1h3KsFJcj3GN5QPfXM+qHU/YIY/So38w4gjHxpVJmyW9OuLymkQkKXFq5V7Np1UT0eyku2vEMMCV2Htvp1qKPuFzA0SScw2hMWyA/ACEr71GUg+Me/KijtfLyhWWv+Bl9Gd6AXSWGK1LBWY07lXQop+F/15xfqrsoNgFI/z6souNNo4NpwI5v+mu0l64rNnvr/NldmgBh3F0feLXNLlpM7wqEU1OTWnHVqSwl9LthHhZ+2ikLiVpSgt5Kbw5+gNkBI862XUKAh3EUdWdoDPvwwEIP6WUwM7f3VVjGFofcQ9SgnUnIQ0w3opJOc1tgJX7iw35NG2I0n3WAS+3rTdlc7cF9vZjCGbRnl543OItZlHLK7wEX5x99JnaOf88/BiFzjaxAXjPkm7jVe1u5BTc/H+hydLsVnchV9yJUNh2FIOPOIkUlVLdhmlRffng0h6IBHPvdW7UP2laIXrbgnIeTnMOftPiC4brtizzPcx9Z5aNpKNxakh077pzE4I3zREeQPHft+7JjNL83pn0Ky7GB8uF4B8EBoZMkDItiwoq7fOISuoy7BjWzqQGC05mqD+JpCEHKnTSVjGw5YB8hVhxsZE1ogaMMlshpjqQxt3vjxoO1H9n
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(396003)(136003)(39860400002)(366004)(376002)(346002)(451199021)(4326008)(6486002)(52116002)(41300700001)(8936002)(6666004)(8676002)(66556008)(38350700002)(38100700002)(6916009)(66476007)(478600001)(83380400001)(186003)(6512007)(316002)(53546011)(6506007)(26005)(9686003)(5660300002)(33716001)(86362001)(2906002)(66946007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y0aStg/7iRj0t/w37ncIfs2dGHKr4cVqmmdJF9J6coSb7HnW0/jHDCllBebs?=
+ =?us-ascii?Q?fLbCLpdnGFzzFIkbNzKWEs+LdYjnRIDQrvVXzQHBWLWHsIQ4rAGYW/NeEj8u?=
+ =?us-ascii?Q?EvdjgZM2HZ371TTjp/p9AWHVYf6/Qvp7TsP1ipw2wcvQR3EsS/rsZipZWVwj?=
+ =?us-ascii?Q?Q5YcO1gBpSjmhOJg/oN7rmLgmrRDfiD1dvyTe+O2RmKyXxFoFmKdPadVnv/u?=
+ =?us-ascii?Q?QU9nwB4EScxYJrKUNBxhJ8afSZ+l6rZOyxQOjE6Zn2rTw/X4pe7a+26WByBv?=
+ =?us-ascii?Q?F1BCqBOa6dm5z/22AScu9gvek/a+Gqm8zjfRKqHPeMnudwPnecKk7UfRPf7D?=
+ =?us-ascii?Q?2tm8QmsRjo+/ieY5shqdCwkwbodDse8n+7BfI9SXNfLLEYLEyWd+NhT7cEmR?=
+ =?us-ascii?Q?bAgzFYw1zyMZ1OU5ufT8LHI0T15xrgZa2RrtJLOoMwCEBNx9KM8E3LVS0PVx?=
+ =?us-ascii?Q?4+nYtv59ax5PUUyV5C+HT/WosXhAOWei3JLYD+5dRX9YtNP9fKp8PdIW2fVh?=
+ =?us-ascii?Q?hij2DMFkK6rhetM9m7xmdAnAGt3ex6uoCOM74djQpfqDWMSQ8hEBAKc9IU6R?=
+ =?us-ascii?Q?/EbdGcsQh0K5ZXI5MlOxJFPk+IJhrvfpa4Y25R/OgZPtFkrieRksLekMf9wT?=
+ =?us-ascii?Q?BR21WLacPIXfB5JWS1HV391Kg3ipm0tGUu0hhkNRnd25SGqV+0hw29NQURhP?=
+ =?us-ascii?Q?UiL+2Yi79+IPxndlMV8hBUPr1DxJtIxCxtkJMLjGAmlLgzlpzwRhoIjzuudv?=
+ =?us-ascii?Q?S2CWSs6e9IBABnsihdtSN56wBOGoFkolFhU3/LpdZ428234bzHN2kg2oT9qF?=
+ =?us-ascii?Q?uMLaMfvzZ6Oud8FH92zTRVp4J3pJB6Rx4ZULfzY0wSO/08qZa3ZAJ/yCAeNb?=
+ =?us-ascii?Q?9XDln5TdiljeqE8V3l54Arlmc8XzQYc07RC4xM4zmZevPcjTEcAzKUMSnT8k?=
+ =?us-ascii?Q?+XaRRymraaQ8vvTa4UTI/jlYHqFXM4rYIQklo8rcerUfcsgMh3j5PkuNfVDy?=
+ =?us-ascii?Q?QcY6FFKXkH2uAyVBxVcrX5UsQXika/j7Oa8P3Zp0bPbqD5gif3LNu4czbG/e?=
+ =?us-ascii?Q?aE3q0S/KVSu0MvBIXNyY9Nn3f11fORyF5QBCvUtdg51P78zPY6X9b1wItzp2?=
+ =?us-ascii?Q?srocOSK3pdjLp9gzJnOB9yK53SAXvtTWxA7oFwlOigLIe9gypLJw6SsHdc6q?=
+ =?us-ascii?Q?4owmX8C2EuitcFG2YSxvyX5UGOyYsAsfDdIGOxlVpPpPAoCT2SUJrsZsV7Y6?=
+ =?us-ascii?Q?kzeRsyIWMVqYem6VOfEpO4q++uJU0uy37sXJYXkYFfwcOuYBskHazQ0genEH?=
+ =?us-ascii?Q?jyQrDSI1wkfxUUk2NR1AILfmB90wNQYtZb+xMXmn7G6uWM4ztymhG1BM/jt3?=
+ =?us-ascii?Q?lH1oJZzbNVYD1AAbhD8Ign3Gcv5SOkLc5q3RfKjo1Fz1YUolXmZytcI9yT9p?=
+ =?us-ascii?Q?P1GLfRZfe4quiM7WvGnj5lGlO7lVjHevEDH4hh7YA0jlj/JF8Dom151gyOeF?=
+ =?us-ascii?Q?Vjxsf6BJK/1XCsoSgZ9bfN33sh1AKMVho9JdpdBXquk0xSkfCDKGKIck9RaY?=
+ =?us-ascii?Q?0ghSwnhZd2GlYEjy1w0=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6ab1b6b-7e3e-423d-9b36-08db7f0632ef
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2023 16:21:20.6512
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mb2WNmypC2o6bg4QLlER/aZyVO/UKBtv/ePm0mXeEKwzSyahYpbaVZkeqQ/ClcFVuuaOzuP6pmGko4utt1f2TQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8106
 
-Hi Robin,
+On Fri, Jul 07, 2023 at 11:14:26AM +0530, Vinod Koul wrote:
+> On 20-06-23, 16:12, Frank Li wrote:
+> > +		}
+> > +
+> > +		fsl_chan->pd_dev = pd_chan;
+> > +
+> > +		pm_runtime_use_autosuspend(fsl_chan->pd_dev);
+> > +		pm_runtime_set_autosuspend_delay(fsl_chan->pd_dev, 200);
+> > +		pm_runtime_set_active(fsl_chan->pd_dev);
+> > +		//pm_runtime_put_sync_suspend(fsl_chan->pd_dev);
+> 
+> Ouch!
+> 
+> Always remember to run checkpatch on your code before sending!
+> 
 
-Am Freitag, 7. Juli 2023, 10:50:31 CEST schrieb Robin Murphy:
-> On 2023-07-07 06:34, Alexander Stein wrote:
-> > Hi Frank,
-> >=20
-> > Am Donnerstag, 6. Juli 2023, 16:39:07 CEST schrieb Frank Li:
-> >> On Thu, Jul 06, 2023 at 12:06:19PM +0100, Robin Murphy wrote:
-> >>>>> Am Mittwoch, 5. Juli 2023, 22:59:53 CEST schrieb Frank Li:
-> >>>>>> The reg size of etm nodes is incorrectly set to 64k instead of 4k.
-> >>>>>> This
-> >>>>>> leads to a crash when calling amba_read_periphid().  After correct=
-ed
-> >>>>>> reg
-> >>>>>> size, amba_read_periphid() retrieve the correct periphid.
-> >>>>>> arm,primecell-periphid were removed from the etm nodes.
-> >>>>>=20
-> >>>>> So this means the reference manual is wrong here? It clearly states
-> >>>>> the size is 64kiB. Reference Manual i.MX8MP Rev 1. 06/2021
-> >>>>> On a side note: Is imx8mq affected by this as well? The DAP memory
-> >>>>> table lists similar sizes in the RM .
-> >>>>=20
-> >>>> Note that the 64K MMIO space per device is really an alignment thing.
-> >>>> It's a recommendation from ARM to allow individual device MMIO regio=
-ns
-> >>>> to be mapped on kernels with 64K page size. Most of the time the real
-> >>>> MMIO space occupied by the device is actually much smaller than 64K.
-> >>>=20
-> >>> Indeed, it's quite common for TRM memory maps to be written in terms =
-of
-> >>> the
-> >>> interconnect configuration, i.e. from the point of view of the
-> >>> interconnect
-> >>> itself, that whole range of address space is assigned to that
-> >>> peripheral,
-> >>> and it may even be true that the entire range is routed to the port
-> >>> where
-> >>> that peripheral is connected. However what's of more interest for DT =
-is
-> >>> how
-> >>> much of that range the peripheral itself actually decodes.
-> >>=20
-> >> Yes, there are not problem by mapping bigger space in most case.
-> >>=20
-> >> amba bus's periphal use close to end of region to show device's identi=
-cal
-> >> information.
-> >=20
-> > Ah, thanks for the explanation. This make things more clear.
-> > But on the other is it sensible to assume the memory resource size to f=
-it
-> > the IP address space? It appears to me the size is fixed to 4kiB anyway.
-> > Would it make more sense to read the values from the address "base + 4K=
- -
-> > x" instead of "base + size - x"?
->=20
-> The size of PrimeCell components in general isn't necessarily 4KB
-> though, and the ID registers were defined relative to the *end* of the
-> register space. The old PrimeCell standards evolved into the CoreSight
-> spec, and from the oldest version of that I can easily link to[1]:
->=20
-> "Each component occupies one or more contiguous 4KB blocks of address
-> space. Where a component occupies more than one 4KB block, these
-> registers must appear in the highest 4KB block."
->=20
-> (FWIW the latest Coresight 3.0 spec relaxes this restriction, but we
-> tend to model newer stuff as platform drivers with explicit DT/ACPI
-> identifiers rather than amba drivers anyway)
+./scripts/checkpatch.pl v9-0012-dmaengine-fsl-edma-integrate-v3-support.patch
+total: 0 errors, 0 warnings, 769 lines checked
 
-Ah, I wasn't aware the register space for PrimeCells/CoreSight could be lar=
-ger=20
-than 4k. So the exact size must be known and used in DT. Thanks for=20
-explanation.
+v9-0012-dmaengine-fsl-edma-integrate-v3-support.patch has no obvious style problems and is ready for submission.
 
-Best regards,
-Alexander
+anyway, I will fix this.
 
-> Thanks,
-> Robin.
->=20
-> [1] https://developer.arm.com/documentation/ihi0029/d/?lang=3Den
->=20
-> > Best regards,
-> > Alexander
-> >=20
-> >> In drivers/amba/bus.c,
-> >>=20
-> >> amba_read_periphid()
-> >> {
-> >>=20
-> >> 	...
-> >> 	size =3D resource_size(&dev->res);
-> >> 	...
-> >> 	for (pid =3D 0, i =3D 0; i < 4; i++)
-> >> =09
-> >> 		pid |=3D (readl(tmp + size - 0x20 + 4 * i) & 255) << (i *
-> >=20
-> > 8);
-> >=20
-> >> }
-> >>=20
-> >> So the range in DTS for arm,primecell should be actual IP address spac=
-e.
-> >>=20
-> >>> Robin.
-> >>>=20
-> >>>> _______________________________________________
-> >>>> linux-arm-kernel mailing list
-> >>>> linux-arm-kernel@lists.infradead.org
-> >>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Frank
 
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int fsl_edma_probe(struct platform_device *pdev)
+> >  {
+> >  	const struct of_device_id *of_id =
+> > @@ -234,6 +412,7 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  	struct fsl_edma_engine *fsl_edma;
+> >  	const struct fsl_edma_drvdata *drvdata = NULL;
+> >  	struct fsl_edma_chan *fsl_chan;
+> > +	u32 chan_mask[2] = {0, 0};
+> >  	struct edma_regs *regs;
+> >  	int len, chans;
+> >  	int ret, i;
+> > @@ -264,8 +443,10 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  	if (IS_ERR(fsl_edma->membase))
+> >  		return PTR_ERR(fsl_edma->membase);
+> >  
+> > -	fsl_edma_setup_regs(fsl_edma);
+> > -	regs = &fsl_edma->regs;
+> > +	if (!(drvdata->flags & FSL_EDMA_DRV_SPLIT_REG)) {
+> > +		fsl_edma_setup_regs(fsl_edma);
+> > +		regs = &fsl_edma->regs;
+> > +	}
+> >  
+> >  	if (drvdata->flags & FSL_EDMA_DRV_HAS_DMACLK) {
+> >  		fsl_edma->dmaclk = devm_clk_get_enabled(&pdev->dev, "dma");
+> > @@ -275,9 +456,29 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  		}
+> >  	}
+> >  
+> > +	if (drvdata->flags & FSL_EDMA_DRV_HAS_CHCLK) {
+> > +		fsl_edma->chclk = devm_clk_get_enabled(&pdev->dev, "mp");
+> > +		if (IS_ERR(fsl_edma->chclk)) {
+> > +			dev_err(&pdev->dev, "Missing MP block clock.\n");
+> > +			return PTR_ERR(fsl_edma->chclk);
+> > +		}
+> > +	}
+> > +
+> > +	ret = of_property_read_variable_u32_array(np, "dma-channel-mask", chan_mask, 1, 2);
+> > +
+> > +	if (ret > 0) {
+> > +		fsl_edma->chan_masked = chan_mask[1];
+> > +		fsl_edma->chan_masked <<= 32;
+> > +		fsl_edma->chan_masked |= chan_mask[0];
+> > +	}
+> > +
+> >  	for (i = 0; i < fsl_edma->drvdata->dmamuxs; i++) {
+> >  		char clkname[32];
+> >  
+> > +		/* eDMAv3 mux register move to TCD area if ch_mux exist */
+> > +		if (drvdata->flags & FSL_EDMA_DRV_SPLIT_REG)
+> > +			break;
+> > +
+> >  		fsl_edma->muxbase[i] = devm_platform_ioremap_resource(pdev,
+> >  								      1 + i);
+> >  		if (IS_ERR(fsl_edma->muxbase[i])) {
+> > @@ -297,9 +498,18 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  
+> >  	fsl_edma->big_endian = of_property_read_bool(np, "big-endian");
+> >  
+> > +	if (drvdata->flags & FSL_EDMA_DRV_HAS_PD) {
+> > +		ret = fsl_edma3_attach_pd(pdev, fsl_edma);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +
+> >  	INIT_LIST_HEAD(&fsl_edma->dma_dev.channels);
+> >  	for (i = 0; i < fsl_edma->n_chans; i++) {
+> > -		struct fsl_edma_chan *fsl_chan = &fsl_edma->chans[i];
+> > +		fsl_chan = &fsl_edma->chans[i];
+> > +
+> > +		if (fsl_edma->chan_masked & BIT(i))
+> > +			continue;
+> >  
+> >  		snprintf(fsl_chan->chan_name, sizeof(fsl_chan->chan_name), "%s-CH%02d",
+> >  							   dev_name(&pdev->dev), i);
+> > @@ -310,8 +520,13 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  		fsl_chan->idle = true;
+> >  		fsl_chan->dma_dir = DMA_NONE;
+> >  		fsl_chan->vchan.desc_free = fsl_edma_free_desc;
+> > -		fsl_chan->tcd = fsl_edma->membase + EDMA_TCD
+> > -				+ i * sizeof(struct fsl_edma_hw_tcd);
+> > +
+> > +		len = (drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) ?
+> > +				offsetof(struct fsl_edma3_ch_reg, tcd) : 0;
+> > +		fsl_chan->tcd = fsl_edma->membase
+> > +				+ i * drvdata->chreg_space_sz + drvdata->chreg_off + len;
+> > +
+> > +		fsl_chan->pdev = pdev;
+> >  		vchan_init(&fsl_chan->vchan, &fsl_edma->dma_dev);
+> >  
+> >  		edma_write_tcdreg(fsl_chan, 0, csr);
+> > @@ -345,12 +560,25 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  
+> >  	fsl_edma->dma_dev.src_addr_widths = FSL_EDMA_BUSWIDTHS;
+> >  	fsl_edma->dma_dev.dst_addr_widths = FSL_EDMA_BUSWIDTHS;
+> > +
+> > +	if (drvdata->flags & FSL_EDMA_DRV_BUS_8BYTE) {
+> > +		fsl_edma->dma_dev.src_addr_widths |= BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> > +		fsl_edma->dma_dev.dst_addr_widths |= BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> > +	}
+> > +
+> >  	fsl_edma->dma_dev.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
+> > +	if (drvdata->flags & FSL_EDMA_DRV_DEV_TO_DEV)
+> > +		fsl_edma->dma_dev.directions |= BIT(DMA_DEV_TO_DEV);
+> > +
+> > +	fsl_edma->dma_dev.copy_align = drvdata->flags & FSL_EDMA_DRV_ALIGN_64BYTE ?
+> > +					DMAENGINE_ALIGN_64_BYTES :
+> > +					DMAENGINE_ALIGN_32_BYTES;
+> >  
+> > -	fsl_edma->dma_dev.copy_align = DMAENGINE_ALIGN_32_BYTES;
+> >  	/* Per worst case 'nbytes = 1' take CITER as the max_seg_size */
+> >  	dma_set_max_seg_size(fsl_edma->dma_dev.dev, 0x3fff);
+> >  
+> > +	fsl_edma->dma_dev.residue_granularity = DMA_RESIDUE_GRANULARITY_SEGMENT;
+> > +
+> >  	platform_set_drvdata(pdev, fsl_edma);
+> >  
+> >  	ret = dma_async_device_register(&fsl_edma->dma_dev);
+> > @@ -360,7 +588,9 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  		return ret;
+> >  	}
+> >  
+> > -	ret = of_dma_controller_register(np, fsl_edma_xlate, fsl_edma);
+> > +	ret = of_dma_controller_register(np,
+> > +			drvdata->flags & FSL_EDMA_DRV_SPLIT_REG ? fsl_edma3_xlate : fsl_edma_xlate,
+> > +			fsl_edma);
+> >  	if (ret) {
+> >  		dev_err(&pdev->dev,
+> >  			"Can't register Freescale eDMA of_dma. (%d)\n", ret);
+> > @@ -369,7 +599,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> >  	}
+> >  
+> >  	/* enable round robin arbitration */
+> > -	edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+> > +	if (!(drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
+> > +		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+> >  
+> >  	return 0;
+> >  }
+> > -- 
+> > 2.34.1
+> 
+> -- 
+> ~Vinod
