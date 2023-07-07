@@ -1,148 +1,165 @@
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D17C63C9
-	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 08:56:16 +0000 (UTC)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1qHhG1-0005rV-WC; Fri, 07 Jul 2023 10:56:06 +0200
-Message-ID: <6d1a6940f67eb2cd87817458d4ec9111b4fe7768.camel@pengutronix.de>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm, primecell-periphid
- at etm nodes
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>, Robin Murphy
-	 <robin.murphy@arm.com>, Frank Li <Frank.li@nxp.com>
-Cc: suzuki.poulose@arm.com, coresight@lists.linaro.org, imx@lists.linux.dev,
-  Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
- <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Marek Vasut
- <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Adam Ford
- <aford173@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, "moderated list:ARM/FREESCALE IMX / MXC ARM
- ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list
- <linux-kernel@vger.kernel.org>
-Date: Fri, 07 Jul 2023 10:56:03 +0200
-In-Reply-To: <24260662.6Emhk5qWAg@steina-w>
-References: <20230705205954.4159781-1-Frank.Li@nxp.com>
-	 <49ef52b7-0269-898c-7cc2-096f2f1037fc@arm.com>
-	 <ZKbSC8LBjLuo3ygD@lizhi-Precision-Tower-5810>
-	 <24260662.6Emhk5qWAg@steina-w>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E740FBE45
+	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 12:25:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1688732755; x=1720268755;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fHVHlYyXVX/im36hgUnWjYzXHXB5AFCDep27NaHMXWM=;
+  b=EYZbuLjM5AHpiuLh/KQWOu42fstOU6fBqQ1/OssRffbO4HkwpvHTYwEa
+   x8tJDBAD8jxRL/FtW26XZ4aabIwqvqRo3UGR48incUC8UaVOwf9QEsY9H
+   qDyRW2EK1kO+YdeyPD27E/4BLi9r94nScGsUWXUCoLMcCyJApym3YN+00
+   Wgq6J0J7N50bN+sKdqIcu0NIKLMWJth18me22UCxhHEKFklommpA1UsEG
+   H/zvBwAIVzKtXv3fD2Pn+H9mCC2B/9Hhv73FLGgW4H/eJPwKcQChYj//4
+   YTMLTq3TIpzzOb9pjgbOs1AO13mJgHhFADco0qFqcNRCrjxTXkLOouiKU
+   g==;
+X-IronPort-AV: E=Sophos;i="6.01,187,1684792800"; 
+   d="scan'208";a="31813721"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 07 Jul 2023 14:25:49 +0200
+Received: from steina-w.localnet (unknown [10.123.53.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 97C4E280084;
+	Fri,  7 Jul 2023 14:25:49 +0200 (CEST)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@nxp.com>, Robin Murphy <robin.murphy@arm.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>, suzuki.poulose@arm.com, coresight@lists.linaro.org, imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Adam Ford <aford173@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm, primecell-periphid at etm nodes
+Date: Fri, 07 Jul 2023 14:25:49 +0200
+Message-ID: <6505804.Sb9uPGUboI@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <5cf23bfd-a3b7-3dde-146b-4892d75b3485@arm.com>
+References: <20230705205954.4159781-1-Frank.Li@nxp.com> <24260662.6Emhk5qWAg@steina-w> <5cf23bfd-a3b7-3dde-146b-4892d75b3485@arm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-Am Freitag, dem 07.07.2023 um 07:34 +0200 schrieb Alexander Stein:
-> Hi Frank,
->=20
-> Am Donnerstag, 6. Juli 2023, 16:39:07 CEST schrieb Frank Li:
-> > On Thu, Jul 06, 2023 at 12:06:19PM +0100, Robin Murphy wrote:
-> > > > > Am Mittwoch, 5. Juli 2023, 22:59:53 CEST schrieb Frank Li:
-> > > > > > The reg size of etm nodes is incorrectly set to 64k instead of =
-4k.
-> > > > > > This
-> > > > > > leads to a crash when calling amba_read_periphid().  After corr=
-ected
-> > > > > > reg
-> > > > > > size, amba_read_periphid() retrieve the correct periphid.
-> > > > > > arm,primecell-periphid were removed from the etm nodes.
-> > > > >=20
-> > > > > So this means the reference manual is wrong here? It clearly stat=
-es
-> > > > > the size is 64kiB. Reference Manual i.MX8MP Rev 1. 06/2021
-> > > > > On a side note: Is imx8mq affected by this as well? The DAP memor=
-y
-> > > > > table lists similar sizes in the RM .
-> > > >=20
-> > > > Note that the 64K MMIO space per device is really an alignment thin=
-g.
-> > > > It's a recommendation from ARM to allow individual device MMIO regi=
-ons
-> > > > to be mapped on kernels with 64K page size. Most of the time the re=
-al
-> > > > MMIO space occupied by the device is actually much smaller than 64K=
-.
-> > >=20
-> > > Indeed, it's quite common for TRM memory maps to be written in terms =
+Hi Robin,
+
+Am Freitag, 7. Juli 2023, 10:50:31 CEST schrieb Robin Murphy:
+> On 2023-07-07 06:34, Alexander Stein wrote:
+> > Hi Frank,
+> >=20
+> > Am Donnerstag, 6. Juli 2023, 16:39:07 CEST schrieb Frank Li:
+> >> On Thu, Jul 06, 2023 at 12:06:19PM +0100, Robin Murphy wrote:
+> >>>>> Am Mittwoch, 5. Juli 2023, 22:59:53 CEST schrieb Frank Li:
+> >>>>>> The reg size of etm nodes is incorrectly set to 64k instead of 4k.
+> >>>>>> This
+> >>>>>> leads to a crash when calling amba_read_periphid().  After correct=
+ed
+> >>>>>> reg
+> >>>>>> size, amba_read_periphid() retrieve the correct periphid.
+> >>>>>> arm,primecell-periphid were removed from the etm nodes.
+> >>>>>=20
+> >>>>> So this means the reference manual is wrong here? It clearly states
+> >>>>> the size is 64kiB. Reference Manual i.MX8MP Rev 1. 06/2021
+> >>>>> On a side note: Is imx8mq affected by this as well? The DAP memory
+> >>>>> table lists similar sizes in the RM .
+> >>>>=20
+> >>>> Note that the 64K MMIO space per device is really an alignment thing.
+> >>>> It's a recommendation from ARM to allow individual device MMIO regio=
+ns
+> >>>> to be mapped on kernels with 64K page size. Most of the time the real
+> >>>> MMIO space occupied by the device is actually much smaller than 64K.
+> >>>=20
+> >>> Indeed, it's quite common for TRM memory maps to be written in terms =
 of
-> > > the
-> > > interconnect configuration, i.e. from the point of view of the
-> > > interconnect
-> > > itself, that whole range of address space is assigned to that periphe=
-ral,
-> > > and it may even be true that the entire range is routed to the port w=
-here
-> > > that peripheral is connected. However what's of more interest for DT =
+> >>> the
+> >>> interconnect configuration, i.e. from the point of view of the
+> >>> interconnect
+> >>> itself, that whole range of address space is assigned to that
+> >>> peripheral,
+> >>> and it may even be true that the entire range is routed to the port
+> >>> where
+> >>> that peripheral is connected. However what's of more interest for DT =
 is
-> > > how
-> > > much of that range the peripheral itself actually decodes.
+> >>> how
+> >>> much of that range the peripheral itself actually decodes.
+> >>=20
+> >> Yes, there are not problem by mapping bigger space in most case.
+> >>=20
+> >> amba bus's periphal use close to end of region to show device's identi=
+cal
+> >> information.
 > >=20
-> > Yes, there are not problem by mapping bigger space in most case.
-> >=20
-> > amba bus's periphal use close to end of region to show device's identic=
-al
-> > information.
+> > Ah, thanks for the explanation. This make things more clear.
+> > But on the other is it sensible to assume the memory resource size to f=
+it
+> > the IP address space? It appears to me the size is fixed to 4kiB anyway.
+> > Would it make more sense to read the values from the address "base + 4K=
+ -
+> > x" instead of "base + size - x"?
 >=20
-> Ah, thanks for the explanation. This make things more clear.
-> But on the other is it sensible to assume the memory resource size to fit=
- the=20
-> IP address space? It appears to me the size is fixed to 4kiB anyway. Woul=
-d it=20
-> make more sense to read the values from the address "base + 4K - x" inste=
-ad of=20
-> "base + size - x"?
+> The size of PrimeCell components in general isn't necessarily 4KB
+> though, and the ID registers were defined relative to the *end* of the
+> register space. The old PrimeCell standards evolved into the CoreSight
+> spec, and from the oldest version of that I can easily link to[1]:
 >=20
-Huh? Why would AMBA peripherals be fixed to 4K in MMIO size? The ID
-detection by reading offsets at the end of the MMIO range is generic
-AMBA bus behavior.
+> "Each component occupies one or more contiguous 4KB blocks of address
+> space. Where a component occupies more than one 4KB block, these
+> registers must appear in the highest 4KB block."
+>=20
+> (FWIW the latest Coresight 3.0 spec relaxes this restriction, but we
+> tend to model newer stuff as platform drivers with explicit DT/ACPI
+> identifiers rather than amba drivers anyway)
 
-The DT should declare the real peripheral MMIO size. Declaring the
-aligned size is not much of a problem on 64bit systems with huge
-address spaces but it still wastes vmap space when remapping the MMIO
-range. When the real peripheral decode size is known it should always
-be preferred over the aligned size.
+Ah, I wasn't aware the register space for PrimeCells/CoreSight could be lar=
+ger=20
+than 4k. So the exact size must be known and used in DT. Thanks for=20
+explanation.
 
-Regards,
-Lucas
+Best regards,
+Alexander
 
-> Best regards,
-> Alexander
+> Thanks,
+> Robin.
 >=20
-> > In drivers/amba/bus.c,
-> >=20
-> > amba_read_periphid()
-> > {
-> > 	...
-> > 	size =3D resource_size(&dev->res);
-> > 	...
-> > 	for (pid =3D 0, i =3D 0; i < 4; i++)
-> > 		pid |=3D (readl(tmp + size - 0x20 + 4 * i) & 255) << (i *=20
-> 8);
-> > }
-> >=20
-> > So the range in DTS for arm,primecell should be actual IP address space=
-.
-> >=20
-> > > Robin.
-> > >=20
-> > > > _______________________________________________
-> > > > linux-arm-kernel mailing list
-> > > > linux-arm-kernel@lists.infradead.org
-> > > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> [1] https://developer.arm.com/documentation/ihi0029/d/?lang=3Den
 >=20
->=20
+> > Best regards,
+> > Alexander
+> >=20
+> >> In drivers/amba/bus.c,
+> >>=20
+> >> amba_read_periphid()
+> >> {
+> >>=20
+> >> 	...
+> >> 	size =3D resource_size(&dev->res);
+> >> 	...
+> >> 	for (pid =3D 0, i =3D 0; i < 4; i++)
+> >> =09
+> >> 		pid |=3D (readl(tmp + size - 0x20 + 4 * i) & 255) << (i *
+> >=20
+> > 8);
+> >=20
+> >> }
+> >>=20
+> >> So the range in DTS for arm,primecell should be actual IP address spac=
+e.
+> >>=20
+> >>> Robin.
+> >>>=20
+> >>>> _______________________________________________
+> >>>> linux-arm-kernel mailing list
+> >>>> linux-arm-kernel@lists.infradead.org
+> >>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
