@@ -1,238 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D128120E0
-	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 05:45:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B01CC433C8;
-	Fri,  7 Jul 2023 05:45:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1688708706;
-	bh=BuNKHQM+AbtEogO//6uIHH2q4jczG+Dn/agtCsQXsPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KrXD2QMSGVojNIxOIZARbiT95dYwoiPqpcVoWANrwGbZSxqBmd9/VZK/OLOIH5aH/
-	 qUZWDXi1fPepzfJnYmnY2jQeBvN02RKS9DdQZgdLD90wFUglNM8t0NvesBPunPBA/t
-	 UVbnaHIrhZxztiuQWZUiY4xZZM5espZIj9mQPCEUkda7JwVJnlnJc27oOvw1CFkRHf
-	 3OXT7kJ9Xn1I8sHwhZjqI13JqL6n1mZq1SgB87GMi4T/jK7KsPh934XHctim0Vp9pv
-	 jBpEJ4hjaftSovpqdH2ofCE8dRwlifiWHi5N5GmHi4fbtXo67YFTpcT42xUoavPsXK
-	 CfUB0cVjui/8A==
-Date: Fri, 7 Jul 2023 11:15:02 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, peng.fan@nxp.com, joy.zou@nxp.com,
-	shenwei.wang@nxp.com, imx@lists.linux.dev
-Subject: Re: [PATCH v9 13/13] dt-bindings: fsl-dma: fsl-edma: add edma3
- compatible string
-Message-ID: <ZKemXv7geMnBQoZI@matsya>
-References: <20230620201221.2580428-1-Frank.Li@nxp.com>
- <20230620201221.2580428-14-Frank.Li@nxp.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C0F3C0B
+	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 08:50:44 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6526ED75;
+	Fri,  7 Jul 2023 01:51:25 -0700 (PDT)
+Received: from [10.57.28.254] (unknown [10.57.28.254])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B06E3F73F;
+	Fri,  7 Jul 2023 01:50:39 -0700 (PDT)
+Message-ID: <5cf23bfd-a3b7-3dde-146b-4892d75b3485@arm.com>
+Date: Fri, 7 Jul 2023 09:50:31 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230620201221.2580428-14-Frank.Li@nxp.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm, primecell-periphid at
+ etm nodes
+Content-Language: en-GB
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Frank Li <Frank.li@nxp.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>, suzuki.poulose@arm.com,
+ coresight@lists.linaro.org, imx@lists.linux.dev,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
+ Adam Ford <aford173@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20230705205954.4159781-1-Frank.Li@nxp.com>
+ <49ef52b7-0269-898c-7cc2-096f2f1037fc@arm.com>
+ <ZKbSC8LBjLuo3ygD@lizhi-Precision-Tower-5810> <24260662.6Emhk5qWAg@steina-w>
+From: Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <24260662.6Emhk5qWAg@steina-w>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 20-06-23, 16:12, Frank Li wrote:
-> Extend Freescale eDMA driver bindings to support eDMA3 IP blocks in
-> i.MX8QM and i.MX8QXP SoCs. In i.MX93, both eDMA3 and eDMA4 are now.
+On 2023-07-07 06:34, Alexander Stein wrote:
+> Hi Frank,
+> 
+> Am Donnerstag, 6. Juli 2023, 16:39:07 CEST schrieb Frank Li:
+>> On Thu, Jul 06, 2023 at 12:06:19PM +0100, Robin Murphy wrote:
+>>>>> Am Mittwoch, 5. Juli 2023, 22:59:53 CEST schrieb Frank Li:
+>>>>>> The reg size of etm nodes is incorrectly set to 64k instead of 4k.
+>>>>>> This
+>>>>>> leads to a crash when calling amba_read_periphid().  After corrected
+>>>>>> reg
+>>>>>> size, amba_read_periphid() retrieve the correct periphid.
+>>>>>> arm,primecell-periphid were removed from the etm nodes.
+>>>>>
+>>>>> So this means the reference manual is wrong here? It clearly states
+>>>>> the size is 64kiB. Reference Manual i.MX8MP Rev 1. 06/2021
+>>>>> On a side note: Is imx8mq affected by this as well? The DAP memory
+>>>>> table lists similar sizes in the RM .
+>>>>
+>>>> Note that the 64K MMIO space per device is really an alignment thing.
+>>>> It's a recommendation from ARM to allow individual device MMIO regions
+>>>> to be mapped on kernels with 64K page size. Most of the time the real
+>>>> MMIO space occupied by the device is actually much smaller than 64K.
+>>>
+>>> Indeed, it's quite common for TRM memory maps to be written in terms of
+>>> the
+>>> interconnect configuration, i.e. from the point of view of the
+>>> interconnect
+>>> itself, that whole range of address space is assigned to that peripheral,
+>>> and it may even be true that the entire range is routed to the port where
+>>> that peripheral is connected. However what's of more interest for DT is
+>>> how
+>>> much of that range the peripheral itself actually decodes.
+>>
+>> Yes, there are not problem by mapping bigger space in most case.
+>>
+>> amba bus's periphal use close to end of region to show device's identical
+>> information.
+> 
+> Ah, thanks for the explanation. This make things more clear.
+> But on the other is it sensible to assume the memory resource size to fit the
+> IP address space? It appears to me the size is fixed to 4kiB anyway. Would it
+> make more sense to read the values from the address "base + 4K - x" instead of
+> "base + size - x"?
 
-This should be patch before it use (which is 12th patch now right)
+The size of PrimeCell components in general isn't necessarily 4KB 
+though, and the ID registers were defined relative to the *end* of the 
+register space. The old PrimeCell standards evolved into the CoreSight 
+spec, and from the oldest version of that I can easily link to[1]:
+
+"Each component occupies one or more contiguous 4KB blocks of address 
+space. Where a component occupies more than one 4KB block, these 
+registers must appear in the highest 4KB block."
+
+(FWIW the latest Coresight 3.0 spec relaxes this restriction, but we 
+tend to model newer stuff as platform drivers with explicit DT/ACPI 
+identifiers rather than amba drivers anyway)
+
+Thanks,
+Robin.
+
+[1] https://developer.arm.com/documentation/ihi0029/d/?lang=en
 
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/dma/fsl,edma.yaml     | 106 ++++++++++++++++--
->  1 file changed, 99 insertions(+), 7 deletions(-)
+> Best regards,
+> Alexander
 > 
-> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> index 5fd8fc604261..437db0c62339 100644
-> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> @@ -21,32 +21,41 @@ properties:
->        - enum:
->            - fsl,vf610-edma
->            - fsl,imx7ulp-edma
-> +          - fsl,imx8qm-adma
-> +          - fsl,imx8qm-edma
-> +          - fsl,imx93-edma3
-> +          - fsl,imx93-edma4
->        - items:
->            - const: fsl,ls1028a-edma
->            - const: fsl,vf610-edma
->  
->    reg:
-> -    minItems: 2
-> +    minItems: 1
->      maxItems: 3
->  
->    interrupts:
-> -    minItems: 2
-> -    maxItems: 17
-> +    minItems: 1
-> +    maxItems: 64
->  
->    interrupt-names:
-> -    minItems: 2
-> -    maxItems: 17
-> +    minItems: 1
-> +    maxItems: 64
->  
->    "#dma-cells":
-> -    const: 2
-> +    enum:
-> +      - 2
-> +      - 3
->  
->    dma-channels:
-> -    const: 32
-> +    minItems: 1
-> +    maxItems: 64
->  
->    clocks:
-> +    minItems: 1
->      maxItems: 2
->  
->    clock-names:
-> +    minItems: 1
->      maxItems: 2
->  
->    big-endian:
-> @@ -65,6 +74,29 @@ required:
->  
->  allOf:
->    - $ref: dma-controller.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx8qm-adma
-> +              - fsl,imx8qm-edma
-> +              - fsl,imx93-edma3
-> +              - fsl,imx93-edma4
-> +    then:
-> +      properties:
-> +        "#dma-cells":
-> +          const: 3
-> +        # It is not necessary to write the interrupt name for each channel.
-> +        # instead, you can simply maintain the sequential IRQ numbers as
-> +        # defined for the DMA channels.
-> +        interrupt-names: false
-> +        clock-names:
-> +          items:
-> +            - const: dma
-> +        clocks:
-> +          maxItems: 1
-> +
->    - if:
->        properties:
->          compatible:
-> @@ -72,18 +104,26 @@ allOf:
->              const: fsl,vf610-edma
->      then:
->        properties:
-> +        clocks:
-> +          minItems: 2
->          clock-names:
->            items:
->              - const: dmamux0
->              - const: dmamux1
->          interrupts:
-> +          minItems: 2
->            maxItems: 2
->          interrupt-names:
->            items:
->              - const: edma-tx
->              - const: edma-err
->          reg:
-> +          minItems: 2
->            maxItems: 3
-> +        "#dma-cells":
-> +          const: 2
-> +        dma-channels:
-> +          const: 32
->  
->    - if:
->        properties:
-> @@ -92,14 +132,22 @@ allOf:
->              const: fsl,imx7ulp-edma
->      then:
->        properties:
-> +        clock:
-> +          minItems: 2
->          clock-names:
->            items:
->              - const: dma
->              - const: dmamux0
->          interrupts:
-> +          minItems: 2
->            maxItems: 17
->          reg:
-> +          minItems: 2
->            maxItems: 2
-> +        "#dma-cells":
-> +          const: 2
-> +        dma-channels:
-> +          const: 32
->  
->  unevaluatedProperties: false
->  
-> @@ -153,3 +201,47 @@ examples:
->         clock-names = "dma", "dmamux0";
->         clocks = <&pcc2 IMX7ULP_CLK_DMA1>, <&pcc2 IMX7ULP_CLK_DMA_MUX1>;
->      };
-> +
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/clock/imx93-clock.h>
-> +
-> +    dma-controller@44000000 {
-> +      compatible = "fsl,imx93-edma3";
-> +      reg = <0x44000000 0x200000>;
-> +      #dma-cells = <3>;
-> +      dma-channels = <31>;
-> +      interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>;
-> +        clocks = <&clk IMX93_CLK_EDMA1_GATE>;
-> +        clock-names = "dma";
-> +    };
-> -- 
-> 2.34.1
-
--- 
-~Vinod
+>> In drivers/amba/bus.c,
+>>
+>> amba_read_periphid()
+>> {
+>> 	...
+>> 	size = resource_size(&dev->res);
+>> 	...
+>> 	for (pid = 0, i = 0; i < 4; i++)
+>> 		pid |= (readl(tmp + size - 0x20 + 4 * i) & 255) << (i *
+> 8);
+>> }
+>>
+>> So the range in DTS for arm,primecell should be actual IP address space.
+>>
+>>> Robin.
+>>>
+>>>> _______________________________________________
+>>>> linux-arm-kernel mailing list
+>>>> linux-arm-kernel@lists.infradead.org
+>>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
+> 
