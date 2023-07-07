@@ -1,250 +1,127 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20848AD22
-	for <imx@lists.linux.dev>; Thu,  6 Jul 2023 15:27:00 +0000 (UTC)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-9923833737eso97569366b.3
-        for <imx@lists.linux.dev>; Thu, 06 Jul 2023 08:27:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6CE1847
+	for <imx@lists.linux.dev>; Fri,  7 Jul 2023 05:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688657219; x=1691249219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8rLjD5fOXkEsYyUXjnk5KFfhkSlrjQt4GGe1ZHO5yss=;
-        b=k9mY4BXC/IFz1590LRqybJuslykyGxG0/kN95UPZI3wMpE7NDMmegQBKgXASz2sCO/
-         +PGxIRCWBRcJ5eLqUEGUELFES2sOkGj9bhTTY0vJ3a1SIBZdPyBpUJFR95FcbILIjkO6
-         G5ymoEfeCsDnH1dDe+nKE3PPMwfD8/Uk5zRvc9F+S41HfdMKzC9rHquqToXbDtKBxESN
-         +puT7Dn3Q+fi9bvkxO5wwl3gd0mw0YreE4xzU4b+gG3zPOHSSFJVesTtPf5Ptfy6hfLI
-         20JeSkOr5qQbUDRehaNnxl2Sw/dg5cKpvR9XHpxtjmrX4W8K94BxURPZDwAmCTWTm2qf
-         +gzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688657219; x=1691249219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8rLjD5fOXkEsYyUXjnk5KFfhkSlrjQt4GGe1ZHO5yss=;
-        b=WmgtsxL3X/MzZIdds4x4SutMwFM9tH0UrFfRs0zbSt3XgoEAgu8MiLDFEKf37vTYxi
-         eXDGgUhCl80sibGZWPP2FkepC9LX6IpEOmwGVHOCyzDJl4SNh4XAjENhuKUTcypDK5ON
-         d9ciLjP+5aD+CY2Zo8Y1SxyOc7qH+7A6ApVwKEgBvxJi4YUBUhdIO2rsALmsZOSwQY0r
-         6g9xpTY12AV0P3snMRU6Lph00bzbzFZ8LasbM0pYud0u0tKT5JNrKqMZlIGvqfJwEswH
-         KPDTxxJNW05lWzjSdn+YMc00qt9MQkXvMkaFo9auhMWU15HYk31ClWXDGWoHVQ/1CFbD
-         uorw==
-X-Gm-Message-State: ABy/qLadgq4QhEyKzDCuYOV8VJ2t5PssAVuR7yqMduiow+jLUnAVk9ws
-	sPUp57ERTHQPAMBVP4G7shpjwBkMuzWgXegOeN0=
-X-Google-Smtp-Source: APBJJlGigJsoWAPUhCnq068j4bJ5EHYONGwMz0WW72XhWaEeDfeBA6rk1zBM9Sm1uIbaZRmXav3I8dRuN5OQlxy0Izc=
-X-Received: by 2002:a17:906:72cb:b0:974:20bd:6e15 with SMTP id
- m11-20020a17090672cb00b0097420bd6e15mr2355938ejl.4.1688657218978; Thu, 06 Jul
- 2023 08:26:58 -0700 (PDT)
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1688708072; x=1720244072;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+rD/hewzM2PrvRZh93DLP5SxI8Y+Nxb+YvSesx2inws=;
+  b=QofNVpAl26sIvU+lUigch7Q+nMZY6neSNlvZGQdqhtNNJ46uM2JLHr5w
+   jHTwcxp37SuK+N8KwkKnIHJQBgQCveeFUfUBe1H/Sn7ZgS2xw7jtO9XXP
+   rEDwpPAfhahJ9PV55LuEoVZ7jYtccwr9tcYfLETHRa+1JRD5r0irrUWLE
+   KpRpaUB/zpLvbYrlYYRP8gQsOeCp4euHUvH2fv577bsddkPZwDmzzxMME
+   ++kjMGgSGf4wOvr02nScZJ+2KyaL3LKbmA6tpLAC6caMOu04twcnjxXkt
+   pFBYyxYtbCTdx45E29FssW45pBc/0gqjhz47k6tW/YEY/lon9XeZ1pOgs
+   w==;
+X-IronPort-AV: E=Sophos;i="6.01,187,1684792800"; 
+   d="scan'208";a="31803225"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 07 Jul 2023 07:34:24 +0200
+Received: from steina-w.localnet (unknown [10.123.53.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id DFB9C280084;
+	Fri,  7 Jul 2023 07:34:23 +0200 (CEST)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Robin Murphy <robin.murphy@arm.com>, Frank Li <Frank.li@nxp.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>, suzuki.poulose@arm.com, coresight@lists.linaro.org, imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Adam Ford <aford173@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm, primecell-periphid at etm nodes
+Date: Fri, 07 Jul 2023 07:34:23 +0200
+Message-ID: <24260662.6Emhk5qWAg@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <ZKbSC8LBjLuo3ygD@lizhi-Precision-Tower-5810>
+References: <20230705205954.4159781-1-Frank.Li@nxp.com> <49ef52b7-0269-898c-7cc2-096f2f1037fc@arm.com> <ZKbSC8LBjLuo3ygD@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230706145611.2660657-1-shenwei.wang@nxp.com>
-In-Reply-To: <20230706145611.2660657-1-shenwei.wang@nxp.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 6 Jul 2023 18:26:22 +0300
-Message-ID: <CAHp75Vdnifkmue857fWZMSXVqHDWrcS_HEDEExXbDXynR0hyoQ@mail.gmail.com>
-Subject: Re: [PATCH v3] gpio: mxc: add runtime pm support
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Shevchenko <andy@kernel.org>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-imx@nxp.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-On Thu, Jul 6, 2023 at 5:56=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com> =
-wrote:
->
-> Add runtime PM support and allow the GPIO controller to enter
-> into runtime suspend automatically when not in use to save power.
-> However, it will automatically resume and enable clocks when a
-> GPIO or IRQ is requested.
->
-> While putting the GPIO module itself into power saving mode may not
-> have an obvious impact on current dissipation, the function is necessary
-> because the GPIO module disables its clock when idle. This enables the
-> system an opportunity to power off the parent subsystem, and this conserv=
-es
-> more power. The typical i.MX8 SoC features up to 8 GPIO controllers, but
-> most of the controllers often remain unused.
+Hi Frank,
 
-Looks better, thank you.
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Am Donnerstag, 6. Juli 2023, 16:39:07 CEST schrieb Frank Li:
+> On Thu, Jul 06, 2023 at 12:06:19PM +0100, Robin Murphy wrote:
+> > > > Am Mittwoch, 5. Juli 2023, 22:59:53 CEST schrieb Frank Li:
+> > > > > The reg size of etm nodes is incorrectly set to 64k instead of 4k.
+> > > > > This
+> > > > > leads to a crash when calling amba_read_periphid().  After correc=
+ted
+> > > > > reg
+> > > > > size, amba_read_periphid() retrieve the correct periphid.
+> > > > > arm,primecell-periphid were removed from the etm nodes.
+> > > >=20
+> > > > So this means the reference manual is wrong here? It clearly states
+> > > > the size is 64kiB. Reference Manual i.MX8MP Rev 1. 06/2021
+> > > > On a side note: Is imx8mq affected by this as well? The DAP memory
+> > > > table lists similar sizes in the RM .
+> > >=20
+> > > Note that the 64K MMIO space per device is really an alignment thing.
+> > > It's a recommendation from ARM to allow individual device MMIO regions
+> > > to be mapped on kernels with 64K page size. Most of the time the real
+> > > MMIO space occupied by the device is actually much smaller than 64K.
+> >=20
+> > Indeed, it's quite common for TRM memory maps to be written in terms of
+> > the
+> > interconnect configuration, i.e. from the point of view of the
+> > interconnect
+> > itself, that whole range of address space is assigned to that periphera=
+l,
+> > and it may even be true that the entire range is routed to the port whe=
+re
+> > that peripheral is connected. However what's of more interest for DT is
+> > how
+> > much of that range the peripheral itself actually decodes.
+>=20
+> Yes, there are not problem by mapping bigger space in most case.
+>=20
+> amba bus's periphal use close to end of region to show device's identical
+> information.
 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
-> v3:
->   - Improved the error handling logic in the probe() function. Thanks a
->     lot to AndyS for reviewing and pointing out the issue.
->
-> v2:
->   - improved the patch comments
->   - using pm_runtime_resume_and_get to avoid reference count disbalance
->     when errors
->   - removed the __maybe_unused identifier
->
->  drivers/gpio/gpio-mxc.c | 61 +++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 59 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 9d0cec4b82a3..a9fb6bd9aa6f 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -17,6 +17,7 @@
->  #include <linux/irqchip/chained_irq.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/syscore_ops.h>
-> @@ -382,6 +383,23 @@ static int mxc_gpio_to_irq(struct gpio_chip *gc, uns=
-igned offset)
->         return irq_find_mapping(port->domain, offset);
->  }
->
-> +static int mxc_gpio_request(struct gpio_chip *chip, unsigned int offset)
-> +{
-> +       int ret;
-> +
-> +       ret =3D gpiochip_generic_request(chip, offset);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return pm_runtime_resume_and_get(chip->parent);
-> +}
-> +
-> +static void mxc_gpio_free(struct gpio_chip *chip, unsigned int offset)
-> +{
-> +       gpiochip_generic_free(chip, offset);
-> +       pm_runtime_put(chip->parent);
-> +}
-> +
->  static int mxc_gpio_probe(struct platform_device *pdev)
->  {
->         struct device_node *np =3D pdev->dev.of_node;
-> @@ -429,6 +447,10 @@ static int mxc_gpio_probe(struct platform_device *pd=
-ev)
->         if (of_device_is_compatible(np, "fsl,imx7d-gpio"))
->                 port->power_off =3D true;
->
-> +       pm_runtime_get_noresume(&pdev->dev);
-> +       pm_runtime_set_active(&pdev->dev);
-> +       pm_runtime_enable(&pdev->dev);
-> +
->         /* disable the interrupt and clear the status */
->         writel(0, port->base + GPIO_IMR);
->         writel(~0, port->base + GPIO_ISR);
-> @@ -459,8 +481,8 @@ static int mxc_gpio_probe(struct platform_device *pde=
-v)
->         if (err)
->                 goto out_bgio;
->
-> -       port->gc.request =3D gpiochip_generic_request;
-> -       port->gc.free =3D gpiochip_generic_free;
-> +       port->gc.request =3D mxc_gpio_request;
-> +       port->gc.free =3D mxc_gpio_free;
->         port->gc.to_irq =3D mxc_gpio_to_irq;
->         port->gc.base =3D (pdev->id < 0) ? of_alias_get_id(np, "gpio") * =
-32 :
->                                              pdev->id * 32;
-> @@ -482,6 +504,8 @@ static int mxc_gpio_probe(struct platform_device *pde=
-v)
->                 goto out_bgio;
->         }
->
-> +       irq_domain_set_pm_device(port->domain, &pdev->dev);
-> +
->         /* gpio-mxc can be a generic irq chip */
->         err =3D mxc_gpio_init_gc(port, irq_base);
->         if (err < 0)
-> @@ -490,12 +514,15 @@ static int mxc_gpio_probe(struct platform_device *p=
-dev)
->         list_add_tail(&port->node, &mxc_gpio_ports);
->
->         platform_set_drvdata(pdev, port);
-> +       pm_runtime_put_autosuspend(&pdev->dev);
->
->         return 0;
->
->  out_irqdomain_remove:
->         irq_domain_remove(port->domain);
->  out_bgio:
-> +       pm_runtime_disable(&pdev->dev);
-> +       pm_runtime_put_noidle(&pdev->dev);
->         clk_disable_unprepare(port->clk);
->         dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, err);
->         return err;
-> @@ -572,6 +599,30 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_=
-port *port, bool enable)
->         return ret;
->  }
->
-> +static int mxc_gpio_runtime_suspend(struct device *dev)
-> +{
-> +       struct mxc_gpio_port *port =3D dev_get_drvdata(dev);
-> +
-> +       mxc_gpio_save_regs(port);
-> +       clk_disable_unprepare(port->clk);
-> +
-> +       return 0;
-> +}
-> +
-> +static int mxc_gpio_runtime_resume(struct device *dev)
-> +{
-> +       struct mxc_gpio_port *port =3D dev_get_drvdata(dev);
-> +       int ret;
-> +
-> +       ret =3D clk_prepare_enable(port->clk);
-> +       if (ret)
-> +               return ret;
-> +
-> +       mxc_gpio_restore_regs(port);
-> +
-> +       return 0;
-> +}
-> +
->  static int __maybe_unused mxc_gpio_noirq_suspend(struct device *dev)
->  {
->         struct platform_device *pdev =3D to_platform_device(dev);
-> @@ -597,14 +648,19 @@ static int __maybe_unused mxc_gpio_noirq_resume(str=
-uct device *dev)
->
->  static const struct dev_pm_ops mxc_gpio_dev_pm_ops =3D {
->         SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(mxc_gpio_noirq_suspend, mxc_gpio_no=
-irq_resume)
-> +       SET_RUNTIME_PM_OPS(mxc_gpio_runtime_suspend, mxc_gpio_runtime_res=
-ume, NULL)
->  };
->
->  static int mxc_gpio_syscore_suspend(void)
->  {
->         struct mxc_gpio_port *port;
-> +       int ret;
->
->         /* walk through all ports */
->         list_for_each_entry(port, &mxc_gpio_ports, node) {
-> +               ret =3D clk_prepare_enable(port->clk);
-> +               if (ret)
-> +                       return ret;
->                 mxc_gpio_save_regs(port);
->                 clk_disable_unprepare(port->clk);
->         }
-> @@ -625,6 +681,7 @@ static void mxc_gpio_syscore_resume(void)
->                         return;
->                 }
->                 mxc_gpio_restore_regs(port);
-> +               clk_disable_unprepare(port->clk);
->         }
->  }
->
-> --
-> 2.34.1
->
+Ah, thanks for the explanation. This make things more clear.
+But on the other is it sensible to assume the memory resource size to fit t=
+he=20
+IP address space? It appears to me the size is fixed to 4kiB anyway. Would =
+it=20
+make more sense to read the values from the address "base + 4K - x" instead=
+ of=20
+"base + size - x"?
+
+Best regards,
+Alexander
+
+> In drivers/amba/bus.c,
+>=20
+> amba_read_periphid()
+> {
+> 	...
+> 	size =3D resource_size(&dev->res);
+> 	...
+> 	for (pid =3D 0, i =3D 0; i < 4; i++)
+> 		pid |=3D (readl(tmp + size - 0x20 + 4 * i) & 255) << (i *=20
+8);
+> }
+>=20
+> So the range in DTS for arm,primecell should be actual IP address space.
+>=20
+> > Robin.
+> >=20
+> > > _______________________________________________
+> > > linux-arm-kernel mailing list
+> > > linux-arm-kernel@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
 
---=20
-With Best Regards,
-Andy Shevchenko
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
