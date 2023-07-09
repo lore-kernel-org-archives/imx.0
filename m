@@ -1,93 +1,221 @@
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE2815B5
-	for <imx@lists.linux.dev>; Sun,  9 Jul 2023 08:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1688891423; x=1689496223; i=markus.elfring@web.de;
- bh=E50qoiXbl4BQAlrBuHm+TafJOBOa0lGfmm8vrH65Xro=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=SuGy1PZ3JiJKtp+W/5IUHyVU3C4hlVCGgoAQczRn4EJna+8FVTqmJAZaV/yA9va1PN+JEcU
- b/ApM6elNJCKIr1NcTxWFqxNcSgjwKlrknwwInyc6sBxZPobOS8et2/YF+xZowHWLVUXuE+fI
- E5GnV1MNIdc3xDSNNQ77OwAvw3Z/eBlXJqW25xky8bUYbPatt27CZWWLRtapkmV1CaANtNjie
- RkXvNzAOuchKAuT3D57EQ5WBRMrjqoXHJZ3pT1veViaJRUvf4has1Itgx1zDLSZtcckEkdI/v
- zKHXXhiHgWavjtd4cSDze3doUtrWaaCcmvKtAczdx5aQHvBk/qmQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.90.83]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MKMA7-1qYaRc0NSh-00LUBF; Sun, 09
- Jul 2023 10:30:23 +0200
-Message-ID: <f2f29489-19ae-0fbf-b3a6-d528a5acbefc@web.de>
-Date: Sun, 9 Jul 2023 10:30:21 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423CD1FCE
+	for <imx@lists.linux.dev>; Sun,  9 Jul 2023 10:46:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081FDC433C8;
+	Sun,  9 Jul 2023 10:46:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1688899580;
+	bh=MFSm4hfkC4hsq6p/NQ8yKPw77r5Iebg5JnxW264clgU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Aq+XhyMl++xTDOAJC8f8Dj1ndI5RjxdmqfBl5+8yjTu/1mhBHpbnHtDwFAvBgmgDg
+	 9swwGinlU2if86dP3VzIR5zlhCEzco/URwgFO4Yz4WSgW6YLv1XHqyvwXtu6Qzzlwi
+	 LXt+zTElSywFKnR/rtyGUYPsxMgiWghOCYaDhn22ya1AjygWj4Aq1Y4kG+EXXYTGPO
+	 t33RpNrqh8czezbJSrFArQ9hx5/ekeLh8uFSUX6ooXAfzAz4fJ9SmlbTMOD9aUmaSy
+	 /2UH6Yn+/mYroYmA5Xqo7eBISaUncDbwgyE7hM7YXVPK2sjvHJllQCXZ1qpbPD/Hog
+	 WLqM9GjPhi5wg==
+Date: Sun, 9 Jul 2023 16:16:16 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, peng.fan@nxp.com, joy.zou@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev
+Subject: Re: [PATCH v9 12/13] dmaengine: fsl-edma: integrate v3 support
+Message-ID: <ZKqP+BNhFPswyXkB@matsya>
+References: <20230620201221.2580428-1-Frank.Li@nxp.com>
+ <20230620201221.2580428-13-Frank.Li@nxp.com>
+ <ZKemOm9OfQK8NkpL@matsya>
+ <ZKg7b/RJyCrmsQQ7@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [v2 2/2] usb: cdns3: fix incorrect calculation of ep_buf_size
- when more than one config
-Content-Language: en-GB
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Cc: Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Elson Roy Serrao <quic_eserrao@quicinc.com>,
- =?UTF-8?B?SsOzIMOBZ2lsYSBCaXRzY2g=?= <jgilab@gmail.com>,
- Jun Li <jun.li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
- Prashanth K <quic_prashk@quicinc.com>,
- Ravi Gunasekaran <r-gunasekaran@ti.com>, Roger Quadros <rogerq@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Sasha Levin <sashal@kernel.org>
-References: <20230707230015.494999-2-Frank.Li@nxp.com>
- <f803653c-8967-b187-8339-fbec0cdeef25@web.de>
- <2023070924-uncolored-bootleg-77d6@gregkh>
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <2023070924-uncolored-bootleg-77d6@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:p/tD8QteR6FlB4NWezjTU/8ofq6koWmAWi+0PwSCPrzv24Z4zRr
- GW4w6UJ5DLK36jrwUCMGuZZ8KqGYKWf9hLnjg2SDZ73dpwXy6mqeA0AevY4WrgX4HhnDvmn
- 6KM8Z2u6l7iR7ZU/KdFyd3lGbuyl3I4LD+HEd9Wj7vWO4jKLTH+S2mnNwCyb1NwZ8nb2Ldl
- FyflpqPURA60UbdA+hliA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:8W3MPxZLilY=;eKDYDLlyMSQuRXGWFuj+WgV9fF5
- VZPxJUzr+brjuyvDQxLSptppcNik1q0w/+d4qn2JNlzjN8EbMEdXVhA+eG1ijsDpuUkxsyyTM
- Q0Z6//SQPpv+EZGeNExaCkYuN7+wfq1SAd4vI+VP86P1rQFKDwMRfwdqm7A0Mvv+L8uv/v+JC
- +GDVZ1vTSGqCXH51czNQuFh1xUW+of1brVKzfVn7Ln8bAKxC7Lvmi3z7IwZ8lv2BYdMW1P7DC
- bfz+4H8/L+JMyUcdcwHXwqMFs2WnO6opD2OvJgaY/uDgkVCbgDoR7RaFvAh7Ufa1n7s2tSRnQ
- 6MR9eJpqNA5oFaV36yTXrrjwZUHkUmTbBsj9UuDwHJJQFRtH6JQ8yUas+cQmOS9bWgDO64VrK
- aTiOgvXxsiEdovfI7qYUx0qAdBG9jst7Qo6QZcMPGtsRwu1QFzJEH5/MNEopoQf/7d0eDzEIy
- RxBnBwron9LesvV35Wbt46MIXBdaruZFpcfOagrdXn4LzJFMQmhCOihFPFHYUJ2FU4KMM9Y/S
- rAjPC4jN0zncjHtfWyMUN2vYBmUAUndLlLNkC1BMadn5YG+k2lpA94PwSWt/DzkH321Ecp8Kn
- TIMM5wdtOn+bBKD8sKg/1eqEBSkhx/eNzobfp6Em+ZOPT4hZvs4jPC5LFBQMAHM9km7KoUwfj
- POvks1b0cLW/ost902BORu1XRvvYPRKhYuogSj2vjgHTUHwtLkDKc7/XYpWvh2shtGZnmmE2K
- yxLI0ETo/h9pcR/6xVQWWsgYx+oGM8KGmw/Z52/vUxI35ob+rhyMjWzIk4q16n6Io8YoMRis1
- UQ229//69W3bBw8kIUR97/cbGboULbWxYNUkt1uQPcs30lVWAhUtYOyz54WgydWe0Iwqfbpy4
- kRRVEcSGPdfEXaThbtI5KlRoTx6emejjyRwUORLt9XGifdJCiQkSx45gGUpDkmAfOWtQ46ve0
- qcyzdw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZKg7b/RJyCrmsQQ7@lizhi-Precision-Tower-5810>
 
->> =E2=80=A6
->>> The fix involves checking the private flags EP_CLAIMED instead of rely=
-ing
->>> on the "claimed" flag.
->> =E2=80=A6
->>
->> Please choose an imperative change suggestion.
->
-> Please do not review USB kernel patches, the comments you make are not
-> helpful for developers and will be ignored.
+On 07-07-23, 12:21, Frank Li wrote:
+> On Fri, Jul 07, 2023 at 11:14:26AM +0530, Vinod Koul wrote:
+> > On 20-06-23, 16:12, Frank Li wrote:
+> > > +		}
+> > > +
+> > > +		fsl_chan->pd_dev = pd_chan;
+> > > +
+> > > +		pm_runtime_use_autosuspend(fsl_chan->pd_dev);
+> > > +		pm_runtime_set_autosuspend_delay(fsl_chan->pd_dev, 200);
+> > > +		pm_runtime_set_active(fsl_chan->pd_dev);
+> > > +		//pm_runtime_put_sync_suspend(fsl_chan->pd_dev);
+> > 
+> > Ouch!
+> > 
+> > Always remember to run checkpatch on your code before sending!
+> > 
+> 
+> ./scripts/checkpatch.pl v9-0012-dmaengine-fsl-edma-integrate-v3-support.patch
+> total: 0 errors, 0 warnings, 769 lines checked
 
-Does such a response really indicate that you a reject a known advice
-from the Linux development documentation?
+This should have been caught, strange..
+Run with --strict option?
 
-Do you like the same patch reviews more by other contributors?
+> 
+> v9-0012-dmaengine-fsl-edma-integrate-v3-support.patch has no obvious style problems and is ready for submission.
+> 
+> anyway, I will fix this.
+> 
+> Frank
+> 
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  static int fsl_edma_probe(struct platform_device *pdev)
+> > >  {
+> > >  	const struct of_device_id *of_id =
+> > > @@ -234,6 +412,7 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  	struct fsl_edma_engine *fsl_edma;
+> > >  	const struct fsl_edma_drvdata *drvdata = NULL;
+> > >  	struct fsl_edma_chan *fsl_chan;
+> > > +	u32 chan_mask[2] = {0, 0};
+> > >  	struct edma_regs *regs;
+> > >  	int len, chans;
+> > >  	int ret, i;
+> > > @@ -264,8 +443,10 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  	if (IS_ERR(fsl_edma->membase))
+> > >  		return PTR_ERR(fsl_edma->membase);
+> > >  
+> > > -	fsl_edma_setup_regs(fsl_edma);
+> > > -	regs = &fsl_edma->regs;
+> > > +	if (!(drvdata->flags & FSL_EDMA_DRV_SPLIT_REG)) {
+> > > +		fsl_edma_setup_regs(fsl_edma);
+> > > +		regs = &fsl_edma->regs;
+> > > +	}
+> > >  
+> > >  	if (drvdata->flags & FSL_EDMA_DRV_HAS_DMACLK) {
+> > >  		fsl_edma->dmaclk = devm_clk_get_enabled(&pdev->dev, "dma");
+> > > @@ -275,9 +456,29 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  		}
+> > >  	}
+> > >  
+> > > +	if (drvdata->flags & FSL_EDMA_DRV_HAS_CHCLK) {
+> > > +		fsl_edma->chclk = devm_clk_get_enabled(&pdev->dev, "mp");
+> > > +		if (IS_ERR(fsl_edma->chclk)) {
+> > > +			dev_err(&pdev->dev, "Missing MP block clock.\n");
+> > > +			return PTR_ERR(fsl_edma->chclk);
+> > > +		}
+> > > +	}
+> > > +
+> > > +	ret = of_property_read_variable_u32_array(np, "dma-channel-mask", chan_mask, 1, 2);
+> > > +
+> > > +	if (ret > 0) {
+> > > +		fsl_edma->chan_masked = chan_mask[1];
+> > > +		fsl_edma->chan_masked <<= 32;
+> > > +		fsl_edma->chan_masked |= chan_mask[0];
+> > > +	}
+> > > +
+> > >  	for (i = 0; i < fsl_edma->drvdata->dmamuxs; i++) {
+> > >  		char clkname[32];
+> > >  
+> > > +		/* eDMAv3 mux register move to TCD area if ch_mux exist */
+> > > +		if (drvdata->flags & FSL_EDMA_DRV_SPLIT_REG)
+> > > +			break;
+> > > +
+> > >  		fsl_edma->muxbase[i] = devm_platform_ioremap_resource(pdev,
+> > >  								      1 + i);
+> > >  		if (IS_ERR(fsl_edma->muxbase[i])) {
+> > > @@ -297,9 +498,18 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  
+> > >  	fsl_edma->big_endian = of_property_read_bool(np, "big-endian");
+> > >  
+> > > +	if (drvdata->flags & FSL_EDMA_DRV_HAS_PD) {
+> > > +		ret = fsl_edma3_attach_pd(pdev, fsl_edma);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +	}
+> > > +
+> > >  	INIT_LIST_HEAD(&fsl_edma->dma_dev.channels);
+> > >  	for (i = 0; i < fsl_edma->n_chans; i++) {
+> > > -		struct fsl_edma_chan *fsl_chan = &fsl_edma->chans[i];
+> > > +		fsl_chan = &fsl_edma->chans[i];
+> > > +
+> > > +		if (fsl_edma->chan_masked & BIT(i))
+> > > +			continue;
+> > >  
+> > >  		snprintf(fsl_chan->chan_name, sizeof(fsl_chan->chan_name), "%s-CH%02d",
+> > >  							   dev_name(&pdev->dev), i);
+> > > @@ -310,8 +520,13 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  		fsl_chan->idle = true;
+> > >  		fsl_chan->dma_dir = DMA_NONE;
+> > >  		fsl_chan->vchan.desc_free = fsl_edma_free_desc;
+> > > -		fsl_chan->tcd = fsl_edma->membase + EDMA_TCD
+> > > -				+ i * sizeof(struct fsl_edma_hw_tcd);
+> > > +
+> > > +		len = (drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) ?
+> > > +				offsetof(struct fsl_edma3_ch_reg, tcd) : 0;
+> > > +		fsl_chan->tcd = fsl_edma->membase
+> > > +				+ i * drvdata->chreg_space_sz + drvdata->chreg_off + len;
+> > > +
+> > > +		fsl_chan->pdev = pdev;
+> > >  		vchan_init(&fsl_chan->vchan, &fsl_edma->dma_dev);
+> > >  
+> > >  		edma_write_tcdreg(fsl_chan, 0, csr);
+> > > @@ -345,12 +560,25 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  
+> > >  	fsl_edma->dma_dev.src_addr_widths = FSL_EDMA_BUSWIDTHS;
+> > >  	fsl_edma->dma_dev.dst_addr_widths = FSL_EDMA_BUSWIDTHS;
+> > > +
+> > > +	if (drvdata->flags & FSL_EDMA_DRV_BUS_8BYTE) {
+> > > +		fsl_edma->dma_dev.src_addr_widths |= BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> > > +		fsl_edma->dma_dev.dst_addr_widths |= BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> > > +	}
+> > > +
+> > >  	fsl_edma->dma_dev.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
+> > > +	if (drvdata->flags & FSL_EDMA_DRV_DEV_TO_DEV)
+> > > +		fsl_edma->dma_dev.directions |= BIT(DMA_DEV_TO_DEV);
+> > > +
+> > > +	fsl_edma->dma_dev.copy_align = drvdata->flags & FSL_EDMA_DRV_ALIGN_64BYTE ?
+> > > +					DMAENGINE_ALIGN_64_BYTES :
+> > > +					DMAENGINE_ALIGN_32_BYTES;
+> > >  
+> > > -	fsl_edma->dma_dev.copy_align = DMAENGINE_ALIGN_32_BYTES;
+> > >  	/* Per worst case 'nbytes = 1' take CITER as the max_seg_size */
+> > >  	dma_set_max_seg_size(fsl_edma->dma_dev.dev, 0x3fff);
+> > >  
+> > > +	fsl_edma->dma_dev.residue_granularity = DMA_RESIDUE_GRANULARITY_SEGMENT;
+> > > +
+> > >  	platform_set_drvdata(pdev, fsl_edma);
+> > >  
+> > >  	ret = dma_async_device_register(&fsl_edma->dma_dev);
+> > > @@ -360,7 +588,9 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  		return ret;
+> > >  	}
+> > >  
+> > > -	ret = of_dma_controller_register(np, fsl_edma_xlate, fsl_edma);
+> > > +	ret = of_dma_controller_register(np,
+> > > +			drvdata->flags & FSL_EDMA_DRV_SPLIT_REG ? fsl_edma3_xlate : fsl_edma_xlate,
+> > > +			fsl_edma);
+> > >  	if (ret) {
+> > >  		dev_err(&pdev->dev,
+> > >  			"Can't register Freescale eDMA of_dma. (%d)\n", ret);
+> > > @@ -369,7 +599,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
+> > >  	}
+> > >  
+> > >  	/* enable round robin arbitration */
+> > > -	edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+> > > +	if (!(drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
+> > > +		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+> > >  
+> > >  	return 0;
+> > >  }
+> > > -- 
+> > > 2.34.1
+> > 
+> > -- 
+> > ~Vinod
 
-
-By the way:
-Further change suggestions (including patches) from my selection are still=
- waiting on
-more positive and constructive feedback.
-
-Regards,
-Markus
+-- 
+~Vinod
