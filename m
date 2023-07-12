@@ -1,102 +1,136 @@
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2057.outbound.protection.outlook.com [40.107.20.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3121101C6
-	for <imx@lists.linux.dev>; Mon, 10 Jul 2023 13:02:50 +0000 (UTC)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 36ABEL7K017773;
-	Mon, 10 Jul 2023 06:14:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1688987661;
-	bh=lEG4EkiJoyjdNaLGVyxMsl1ogCUgIuEE4QUrYtNYdk0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=CkqGTlT3bDjBbrBV/D5MdRgXwxvj0N2B8RB1xeYPX855NIOOr9GvSnTI7AqjPrtwc
-	 fgueWR42oPr4DLxe3fle98IGtkztYxsZ3j85gX//dfc/5dmW0vmglCU2VJC25w704e
-	 zb5xlGBY5MakSE25Zt3snqOl3nReFPMZrvwVop1Q=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 36ABELtW023174
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 10 Jul 2023 06:14:21 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 10
- Jul 2023 06:14:20 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 10 Jul 2023 06:14:20 -0500
-Received: from [172.24.227.83] (ileaxei01-snat.itg.ti.com [10.180.69.5])
-	by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 36ABEGYW089298;
-	Mon, 10 Jul 2023 06:14:17 -0500
-Message-ID: <dc2abecb-c3c6-0265-4352-89737b26de66@ti.com>
-Date: Mon, 10 Jul 2023 16:44:16 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782E3DDC8
+	for <imx@lists.linux.dev>; Wed, 12 Jul 2023 21:05:29 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aHfrqPhw22ODSh1hDQ7DaiDipalPF9JhfKp18fciYicNY6Zod+W9sEfhg/rGGLzd04kjP8ZCXAeyaDnl5MEVrKGILPInDwkUgKy3JD+uDt552ad0SWu8HAVRoj3XVACF0krzPXKzbjCBUbOQ9AZ/N9D8Mrc80VDl6s5M7HM+NDJADDyJ98p+yWBPlBpqg/Q8qI3RTjW7q8gma4dGGiAQhnO5U/ZGGt9kUxIUw0kVHkH/eD9z/xTUjU16fpqQYVW5UXAje5PhrlDj3nVl2YXI5ES5Bep0FsOf+0BPq+mktyTA/bONWFK3FmA8Nvvyh/ZsK4gRInkqNzIf5ntcLEocBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m8bBiXDiBiIzLcqnVSCpmwDRzSHyjtEbEOS/qp8nXds=;
+ b=VuMxPYCqQsm5fmu/3R59X9WRtm2HM6CbjwwmNvskDIUz2qJtnYWMDPafOT390AoafcKKP4QxN3+OIIhk0+Aq5BqDCDqgbSePamcPTPhlTOSnSLiAvIAZ8BSQZuqZNAwMQOd9x+JKElMO+JNdOtrkke6cs7MKZ8psJ7IPadLeb/FDT2r4OmwOFbA1QJnfPsBv/UtP3iez5RGH87WGT7wcjTEPOWhFJdG1gX4ieYgFmrlaQZGYRAGsFHFcqrsPJPXyFLRRIjrjL4oaAk9t2AVWnSatfTJyP5dvhhVGFEqNYt6oPwXw3JsupH3ISdPhuQKyfLaoj/J65Wj9oK3iQWsOWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m8bBiXDiBiIzLcqnVSCpmwDRzSHyjtEbEOS/qp8nXds=;
+ b=JBoRT1gekXFOL4dNLJu7dilnXIIiN+QwmWUenJFcGic7B/IZK6OZE7Epi4ucjhksqYdhruwPJwBcYHylF/uRcm/V89vgYyNkC7df3sW/GJhgUdCHfMwhVyZWC3H4AfzSEhsS4BCZiOGxXyltIhJtmBhgEVESoVtbC0SI+Io4IcQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DB9PR04MB9627.eurprd04.prod.outlook.com (2603:10a6:10:30a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.32; Wed, 12 Jul
+ 2023 21:05:26 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::c479:12c5:ce68:5e45]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::c479:12c5:ce68:5e45%3]) with mapi id 15.20.6588.017; Wed, 12 Jul 2023
+ 21:05:26 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Amit Kucheria <amitk@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-pm@vger.kernel.org (open list:THERMAL),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] thermal/drivers/imx_sc_thermal: return -EAGAIN when SCFW turn off resource
+Date: Wed, 12 Jul 2023 17:05:04 -0400
+Message-Id: <20230712210505.1536416-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0005.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::10) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] usb: cdns3: fix incorrect calculation of
- ep_buf_size when more than one config
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>
-CC: <Thinh.Nguyen@synopsys.com>, <andriy.shevchenko@linux.intel.com>,
-        <gregkh@linuxfoundation.org>, <imx@lists.linux.dev>,
-        <jgilab@gmail.com>, <jun.li@nxp.com>, <linux-kernel@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <peter.chen@kernel.org>,
-        <quic_eserrao@quicinc.com>, <quic_prashk@quicinc.com>,
-        <rogerq@kernel.org>
-References: <20230707230015.494999-1-Frank.Li@nxp.com>
- <20230707230015.494999-2-Frank.Li@nxp.com>
-From: Ravi Gunasekaran <r-gunasekaran@ti.com>
-In-Reply-To: <20230707230015.494999-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB9PR04MB9627:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b9578e8-6b65-4031-2d34-08db831bb6d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	o2Qf024yhHKurzQ3pZ2GpoXDBUDFAeDrDdRmzUDBJHIpRLwZ+ynvVlBfQ6jvqu47+tBtGoDMIJY3SYDsBdRRsfQ/dp/0wkHVfXQSo7bA16eBb/gTmFOdc/jffgGO4m/eauLJLpB/FlWFAEbLTgF+o/ErUnNe2cTus8hvDdYal0Y6+s3x14iPOOfNxpo1hRHr6J9vimaV7eXTyVnlZKsxoPs0z08lPwUBQTinxhe0L86C2MngbPxxwuln0nX3W48hbN8q4m7rH3+iPwKnFBpklbMOTn9hk1vfi6rUpWyKWrYTsg7tr7mCFVS8l3Z1fyiRcVFKjWOOKE3n+7HgoMo90CLSKTlMADr7B4zdvbfyY9PsV2bUvrQP63GNY9Z/fejOdcc63PoTJvADnuVMZ2LPcqGLjQw60naNvYvH3OL5GaVHWfxam/VGy8ZYTueVCbWssNSCOZ7dyuiS4wSn1GbRDW81Z92PWlzFIMzh4xOiXAkn9t7P39mi9bk7v6RP/LFICQif4oN+Mbx04bnmFRHGFZP+GorW0zJ4+tTPwn/QyH4SQDvJWG8mDenP08xJa1yDY/Lpyl++1DYsk5fkBxnte3+aYOXe+RxVAvcAOfAY/rB8Yr1Spl4cwnPvalVBJ4w3DMtc8Ywxz13abcMRz0FoHA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(366004)(396003)(136003)(346002)(451199021)(83380400001)(86362001)(8676002)(8936002)(186003)(4744005)(2616005)(2906002)(36756003)(5660300002)(7416002)(26005)(6506007)(921005)(110136005)(38100700002)(38350700002)(52116002)(6666004)(66946007)(66556008)(6486002)(4326008)(66476007)(478600001)(1076003)(41300700001)(316002)(6512007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?plCW3g5x2irvAw7PQ8M5PEWy9ozPK4btFgF6Pr/3YTQ7w0obmsW5HXXaHGUX?=
+ =?us-ascii?Q?Th0suevRiWNO14jlolikhXTacdWppuy1DPkH/0v4Ohs3MohQAuYQvF4wzctv?=
+ =?us-ascii?Q?ZCAK8rXShGMblTzYPrQh8Berio+MvCTzGkamv3OxciEnq1WzGuzZASWIzjbk?=
+ =?us-ascii?Q?cYnKGVusc94huwMwF0QNtVu6LpwW4S/sWfjdZVwX34Dbq2E5g0t4/iJ3sqMl?=
+ =?us-ascii?Q?djqiwWbhV3VclEggDLlfYysvLu2H+uvWITXW7ecd18Zod9+F+MCfm8uv8L3O?=
+ =?us-ascii?Q?3PGSqvITg9tPAKg1aefGqI2td/q232eD39BlgjYkSkdTuccJ8V1Jbda5x5d1?=
+ =?us-ascii?Q?WChPQL+eZjK/v4w+vVPJjzaxRXmqkUX039d350dMEN674WkSwdpVA+qqF7Ff?=
+ =?us-ascii?Q?jDhgH7lr04mo3Tyb0d0TV2EAPndM4V9cWB7dzaQ6/RMttABU6rBaebldU6ua?=
+ =?us-ascii?Q?P9h7CsHkU4z8VMgSGc2tuxZG15WJS7c8+qYn85Kv2A9JpGaSdPxUezdIZaBv?=
+ =?us-ascii?Q?nVfJzdlK34RZmLiBfhyTZw242H0Tc0oC3ENu1EZNv2QzQ2ht2FACqkBZR72U?=
+ =?us-ascii?Q?4VlXnv9+mAMY4jAs1sjAIBhl+SY6OmGfFHGqmqoZINsa87217h3OyQqQwc6X?=
+ =?us-ascii?Q?TAWrWiV7roqPv9/Tted+xG4TB8CCSlHXp2acXm2/w5dzH/pJDFy/dUnHcItU?=
+ =?us-ascii?Q?cmbAnx7HIbnfIZq6fAy2GeTDCn7w8D8VaVXgUDj2S9rB9k4t2R3Wejk8rJAA?=
+ =?us-ascii?Q?IzdSKELQUboXRrshCd+XAEfzr1+iE4cZpFbMgYpsmf/WL+s9GRYapUKJDpLj?=
+ =?us-ascii?Q?it/4E7f41DI3E+G7rBO0YeM9CSdXj8bA5X36MnVmnTqTgJ6XwzKWc13yrhVR?=
+ =?us-ascii?Q?vc+enjI5nzkbezQR//zul8MuDulgPseKVmGgw/+kunehLn2uTEFrgm5CyTty?=
+ =?us-ascii?Q?IylqM0vyyWhILPA/wNpLxBMuOY9/YFNcnF9szBz/wFpokqssaxZp2zelPlGe?=
+ =?us-ascii?Q?ffko/f3fkm3vkY+PS1a/3mhLlqeLsI6zh8teu/x5g8oR9dwnNyW60KiW/1Nx?=
+ =?us-ascii?Q?d2Jt4BG9F8I08gglDFW5LVhuyPlma9J5vJN+MAQRYEURw+4H+ghO4/LJY1To?=
+ =?us-ascii?Q?e6TJ9AMqoz9t22X9PPN9fnQASjSjM20y4kYK5ys60+2H5qOsDE0eCt4L0HhP?=
+ =?us-ascii?Q?wVdf9PZ5cAUFssNtRWTVOThny4n0D0bTn28G3CMoYkWOS4VAxuEyC9XES54h?=
+ =?us-ascii?Q?m70tfs4OyiuIJULJlNvDNUPzRm+RFX9ovZoMqJjCZ3NTQhpCIYUzyigZhZXx?=
+ =?us-ascii?Q?H3T6Rdj/SLmattpz+uojaoJgVBtrpGHxoh0uDTODZ/bo5FV2BJv1DbNh+v2e?=
+ =?us-ascii?Q?Wq3/vd/t0wH++ul/B0iIySbqFlVX42XroMfPCaCevcvJIk3UIBazCMQ45sUx?=
+ =?us-ascii?Q?AzIyk/EBQha/ijw8ZY3eCOYOU+fqaiia3OLSBfhSNkcakWr+XxyLR3B9MMt4?=
+ =?us-ascii?Q?u5tmKuRccXjUCYznnvvZPSgmudp6TNKBsWogDW01gICGZjGDAr1SgOf8NMQE?=
+ =?us-ascii?Q?wcg3Q0O4/LxEYryFBNQ=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b9578e8-6b65-4031-2d34-08db831bb6d1
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2023 21:05:26.0513
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6Ptjuh2wLC5l1oK/VX4hagkQd056D46tSdhCc9snO+3oOIUZjshwkby8Ux8reSspqWTp8yjnnQKH74Fj+BWq1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9627
 
+Avoid endless print following message when SCFW turns off resource.
+ [ 1818.342337] thermal thermal_zone0: failed to read out thermal zone (-1)
 
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ drivers/thermal/imx_sc_thermal.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 7/8/23 4:30 AM, Frank Li wrote:
-> Previously, the cdns3_gadget_check_config() function in the cdns3 driver
-> mistakenly calculated the ep_buf_size by considering only one
-> configuration's endpoint information because "claimed" will be clear after
-> call usb_gadget_check_config().
-> 
-> The fix involves checking the private flags EP_CLAIMED instead of relying
-> on the "claimed" flag.
-> 
-> Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
-> Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/usb/cdns3/cdns3-gadget.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-> index ccfaebca6faa..3326955f6991 100644
-> --- a/drivers/usb/cdns3/cdns3-gadget.c
-> +++ b/drivers/usb/cdns3/cdns3-gadget.c
-> @@ -2999,12 +2999,14 @@ static int cdns3_gadget_udc_stop(struct usb_gadget *gadget)
->  static int cdns3_gadget_check_config(struct usb_gadget *gadget)
->  {
->  	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
-> +	struct cdns3_endpoint *priv_ep;
->  	struct usb_ep *ep;
->  	int n_in = 0;
->  	int total;
->  
->  	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
-> -		if (ep->claimed && (ep->address & USB_DIR_IN))
-> +		priv_ep = ep_to_cdns3_ep(ep);
-> +		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
->  			n_in++;
->  	}
->  
-
-Tested-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-
+diff --git a/drivers/thermal/imx_sc_thermal.c b/drivers/thermal/imx_sc_thermal.c
+index 8d6b4ef23746..0533d58f199f 100644
+--- a/drivers/thermal/imx_sc_thermal.c
++++ b/drivers/thermal/imx_sc_thermal.c
+@@ -58,7 +58,9 @@ static int imx_sc_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
+ 	hdr->size = 2;
+ 
+ 	ret = imx_scu_call_rpc(thermal_ipc_handle, &msg, true);
+-	if (ret)
++	if (ret == -EPERM) /* NO POWER */
++		return -EAGAIN;
++	else if (ret)
+ 		return ret;
+ 
+ 	*temp = msg.data.resp.celsius * 1000 + msg.data.resp.tenths * 100;
 -- 
-Regards,
-Ravi
+2.34.1
+
