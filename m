@@ -1,69 +1,60 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2081.outbound.protection.outlook.com [40.107.7.81])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2064.outbound.protection.outlook.com [40.107.6.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44964C98;
-	Mon, 17 Jul 2023 14:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8862E4C98
+	for <imx@lists.linux.dev>; Mon, 17 Jul 2023 14:11:39 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dTTo8Pn3df0Rs9/Do8cHeKIzsQxclSP1TVvhPtL94qkchc4p6mIZWNPnGdgSiEfKlrxtUvHE/42q0NRfPX+ksCqy2e4n5fgsoe0kxKVBbkF5QZsF1KRVner/TUZbHMqZz19mCn5oQ0HDSGT7jG6e4udcwctQbAuiwlhpIToB8hD1rHto660GI4wmLWNqxsLo3MvRc9McxIeqoYs+kxTEfqkBMATecrxi7EFMXikliGc7tXK46z6yWQ0c7bkarqNiMCEAN+i8G3luOJ9fnd3gkIjxhTlhleN+ZSKM59orBpNKmyT7KkRtsaTXdTn+72JNigqNxb2VJaLlyVtDeoqM0g==
+ b=d0ZsR4ikWM3hPa8zxNivXbjO30bkHGDg0ll+xsGr9Sshb8anK39F54AKPfARc0yLySIzQeYDAk2QSVK5bsr8LaWK5/Zb2sdPJRAEktWZhpbYdxezSvKZ4qtK4J/CxGum0qL3IzRXg8Zkny0J/+JYxHusmWimH06z53DMkhVMmVYCPV3yeqEk9APX3PVqkNHV6ymadFYqLAAlp3JMaS3Tr17j48gfE2TrvsJEgwC1DuI0IxfmGUH/D85xEU+p5z+uKrkOdvrcZWDTlFmfyuIMEXU5wYlE1RdwvgQNPN8UKmLtWh+xzcPuURXlTG0STPbRT6MFNyVMyQ9AwADTVvoK9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F9OQ5xnPKY1KWFbRwbp8EJtxzi5p9ygpr0ZyWA5WiYY=;
- b=FgDFxdWCMS+4kQtw1uDcwsilaViHR1Cz4zbE6cIB0yQsGKu6FRgA0XR330yjNgpFfSk7JFzbtK8FWt59w+kuUQZNy4mlZq089dpKXdm9tVrLL1/aP2FLZ9EVRp9whkO3p3EjO30rrnMvLtOI8Lo11oxgFX6lQp0juQ+DJOjlNE23eUVbvCBOPXfP4D9q9bYnlMO721pYZdmHjZn1NlI1Ti1e13r9S/ooXexbKZaWSaGBbf9Xu7jTphg6BLuTBWalgdvnWCpo2UrZ6woXgtQNZ6ug76CqH6S9dWdRJHb3aoVPeV/QdYATA22ZT2+QScqP6gkTJQwDPkfYW2wcQl8VKw==
+ bh=UoX2QODrX61kcO/6Dd27KIGWx9kbL/02+7CQqI7Rr4Q=;
+ b=fyJ/XWmaqbxHzDzgziz6V3QM13OZaPmopM1Grl6WEwuEggzz0tu/QDxFPX9vmT6bjrlJtVKJPZ8CByznn0JEzKKPXmF6u7bHdBHJVhmYHYL4OT/0oOS1+hSeLxc15kYrOpybh1EUn5luchi9wOjpoeLvkmQSu2dqh8dXe3EoCGOGU8TrV75yNuNe6nWArCNz91weA84zaLM7puNUTUkvZARaHiRf8x4cUzvxzr9pW3WsMIQBT9UJVNd2eTFsD4MPtUHeVJ29FJbDXU5VSha+Y4FAVBN8f/AVldM9SCyMlTgDRETCno+HjqP2YyWUyTh7htVx3luElh61nm3h9FG6vw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F9OQ5xnPKY1KWFbRwbp8EJtxzi5p9ygpr0ZyWA5WiYY=;
- b=KxNPTW6ZUIi8QL/XI9E/peUx6OThGzB1hewG5BrQrznkFjfG6aai7jKGbncBBWsswWuUqkOSd+Mknida9Ei24drNkaVNrbo5MIG42ctbGp8KZwchS7sBWa9GAA3pSB1dfQhM0kNl/P+vdnzgkYYUM+7b+9s4R0h8soSkIbz/OQQ=
+ bh=UoX2QODrX61kcO/6Dd27KIGWx9kbL/02+7CQqI7Rr4Q=;
+ b=EqnZ7ydFQoTBZrlJh/Wu7UTcrHn/18b5VsSCR6RcQh/uhTJMpdI5jIIiLX6wZs75KUCs8cje4iMCLXqa70zUXL0UySTmSiFJTdPtF2XJcCWIH/yjqlGM0GLg+/Ndie6PuIruII6ucZsZFNeEAlwPo08EvQGWjE7yE09vy4Fe0zo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS8PR04MB7607.eurprd04.prod.outlook.com (2603:10a6:20b:294::22) with
+ by DU0PR04MB9419.eurprd04.prod.outlook.com (2603:10a6:10:35a::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Mon, 17 Jul
- 2023 14:06:54 +0000
+ 2023 14:11:36 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::6cc2:14b2:ca51:6c0]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::6cc2:14b2:ca51:6c0%4]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
- 14:06:54 +0000
-Date: Mon, 17 Jul 2023 10:06:39 -0400
+ 14:11:36 +0000
+Date: Mon, 17 Jul 2023 10:11:22 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>
-Cc: Aisheng Dong <aisheng.dong@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"jdmason@kudzu.us" <jdmason@kudzu.us>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"kishon@ti.com" <kishon@ti.com>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"ntb@lists.linux.dev" <ntb@lists.linux.dev>,
+To: suzuki.poulose@arm.com, coresight@lists.linaro.org, imx@lists.linux.dev,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>, Marek Vasut <marex@denx.de>,
 	Peng Fan <peng.fan@nxp.com>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>
-Subject: Re: [PATCH 0/3] Add RC-to-EP doorbell with platform MSI controller
-Message-ID: <ZLVK7xX7kPjNaah+@lizhi-Precision-Tower-5810>
-References: <20230426203436.1277307-1-Frank.Li@nxp.com>
- <AM6PR04MB483849BE4788EE893306F38E88759@AM6PR04MB4838.eurprd04.prod.outlook.com>
- <ZIdFFV5TdAy//Aat@lizhi-Precision-Tower-5810>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Adam Ford <aford173@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: remove arm,primecell-periphid at
+ etm nodes
+Message-ID: <ZLVMCpNWB1xCvQzM@lizhi-Precision-Tower-5810>
+References: <20230705205954.4159781-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZIdFFV5TdAy//Aat@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: BYAPR05CA0001.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::14) To AM6PR04MB4838.eurprd04.prod.outlook.com
+In-Reply-To: <20230705205954.4159781-1-Frank.Li@nxp.com>
+X-ClientProxiedBy: SJ0PR05CA0087.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::32) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,94 +63,117 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB7607:EE_
-X-MS-Office365-Filtering-Correlation-Id: c32c2a49-fc47-451e-3df7-08db86cf1373
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU0PR04MB9419:EE_
+X-MS-Office365-Filtering-Correlation-Id: d49218d9-8d11-4cf5-bbe2-08db86cfbb58
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	fiwG9ZwnS4cI0fdpWpJOogSaqFIDLXE/Hm70CYbBoutB0NwWxaotG2HllLGfWuXXNCanvzk584fv4NZp0ts4SdB5kTYLtt3PLdK1gjP9Mnug99R1+x9z2PVJrYlwD7xf8sv0GYnGL36tJoWs14/RbcnRyw8adEGGQEwVjsmKZTm6BheoKdQ2wWrRC4j4GuUeuyobcCsWoiirG6TbjNRYF9leYIQlGCY8SLK5lDzwH6vb+KJHgQ3zOU2VoqKurJn2guN589U0LjDtFAy/3SqUgPepHE9/a5lGK351CWYFDaabJSoM2m98i/hVDitaf1cu3qFFkNbJB4FUiwMOTbC0hmKvPUeWlwRJ5qjOMNOhcnPzoRQ09n7NwgU2SkNfI6aq1+szmUgz6ZJS+ATlvXfi8hN/707XW8hBHXTmX6B2tlfh7INmtoSgWEX+B7CygXFChaIaRKHmCuXyyxHt79ZtLGNHHNWmPmIKtzHyCAjJyRpEODY2wpM10H0HmCVjzqxJO17L98EgrCh7SqEvlcqQrBe99jqbA7Kn9LVcv6p4ZJcOhxkPwhwVzOFboA3nfEP0QWbL3QHivBrcUZgejvpO1BbUDkjBAGnh5TsrTgUX/lFG5AGknx9RV0HtEr3Yg3yl
+	9Kai7IchwqRs64pLrty3KX3LDwJuTXXUppNAubVVBrcmVQ/6iR3wViWlNaXeDu5TzzIg0ZVS1UC5QkdvL5mS0s8TFCHu5xB+0xUO1B+FM6hc8wSxxoaxpf+u4+8reVyLjeknSwublM8zIDsqYoIytP29Ulqr9LyfqlgDip0DBVvZnCxiyFJBm1E5YSoQ65Sm3aPrBHBCixQUK+1GDfcGdH6RgDzO1Uscuoglv6OXCnBePqb0bTtZT2OA5aiB3XGCTDgRkCS7yxx0RVPKryPQg21b5Lm2fu7QoT4mea7VOAZgbnN8Lm0oJ9IDm+WUNhA9WPZlltwC/QkuykvpDKrBGgICGnyrdCaY7XWCcoLSOuFcOMeEUEpvSW78Lx8cKktVI1kg+f+jSjItx5fQZqdttUADcbO7rx+OY2zWEcdu8VUl4xEGSmQItMnFa5KNax5WyT/jEN4dxU1HL+zd8mVHWqUHKw+Xv9a+6UEvTZV4GYMw9oVxD1jAZ3OX8yep8oLtmdOvDGYqARA3NFKa+zX/Gdquvt0gupgDK3+2f0j9RBkR+ximWKxssrn61HsPMajzzFuKbxaoZPRuSZpjq4EySubxE4mu8LPAUu7R6ZmLKK1iwBcS6fuAeQpAKpMtlFQwVtsuLHqrMGVedvEqmOghWbcvZIeZSOthizw6dfvgQ4o=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(376002)(346002)(39860400002)(136003)(366004)(396003)(451199021)(6486002)(52116002)(26005)(6506007)(9686003)(6512007)(33716001)(83380400001)(38350700002)(86362001)(38100700002)(186003)(8936002)(8676002)(2906002)(41300700001)(478600001)(7416002)(5660300002)(4326008)(316002)(66556008)(66946007)(66476007)(54906003)(110136005)(6666004);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(39860400002)(376002)(346002)(396003)(366004)(136003)(451199021)(6486002)(52116002)(6506007)(9686003)(26005)(6512007)(33716001)(83380400001)(38350700002)(86362001)(38100700002)(921005)(186003)(8676002)(8936002)(2906002)(41300700001)(478600001)(7416002)(316002)(5660300002)(66946007)(66476007)(66556008)(110136005)(6666004)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RUyE5aGFt34Qxkn8zGUGw95WVeL8NX2MEV+v9NTkhciSZy6fEZWp3Ol104N9?=
- =?us-ascii?Q?fgCTiJz3iNkz0YnLwdEFa/kEB16+Tjv1RLBYDyu4iqQvp9IIl6qckISwWMJZ?=
- =?us-ascii?Q?mq+rAR+svA9O4dsMv+2Cql+RpDioaeNo6eQdqwvMe9AQAEBQFvMTVkuXrYI7?=
- =?us-ascii?Q?uJd7O/QSU+yGBDKYBB8ti+OZ97lt/BOZ0fSEGVAmQ4fzGGNRIK+2DmG61W2D?=
- =?us-ascii?Q?zx8iQOPQKLOYbN3Q00SXopwIbjuxeBd1bf3VCsejnP6IPXOaaTJ6n7YhUoj0?=
- =?us-ascii?Q?9sKFeZSEtcEu9BprzylIVnyx7Ub0IOsokKLxQ9rxrTPHIMnSLP7JbGsFocxg?=
- =?us-ascii?Q?G6aLibMS+9uMhKdlA6Uf0ctxFQJjfhSrz6ic8csaUgJcKXwZvWzgKEbp7UvA?=
- =?us-ascii?Q?DBQYdIgGZ5GHkXvT09qXm8jeTu+YIxxid3Ap9tugJh+thN3ebKtkKxumS+tG?=
- =?us-ascii?Q?GwEwUvwFzVmnOxkRCphgikEkSdVOzmVqqzBZaaTrBNbpCOH9fXmHSwncT7V0?=
- =?us-ascii?Q?ifHW3P0dKqqLomHBIPKoelRB5dp0yi7AIHJZAPisTpJydcbHpi0ml3db77uW?=
- =?us-ascii?Q?lnUWm+vPjvw+e6iPRCrmXBSL76kfcJOjUUezFsgKJI2w2CSY5+qFv1zcWkty?=
- =?us-ascii?Q?IAoXIJjKv05i6TI/NKwp+I8FAq+mpH2LNBvQiWXEAQOyd0WuGEnYQDDf3kbC?=
- =?us-ascii?Q?EI+TkZUvtn+GIVDXB2G9fpWNF3ZouIRZFOAuC3cQGUIkZhjOSyp3cfEKqaYk?=
- =?us-ascii?Q?LTnaB2V8OdRV+Z2aamJY8e9EgpQ7CcEHRKev88utVhLvjUskQL7fPtmRWPpr?=
- =?us-ascii?Q?xCIoiamCdPOgSofXfRKUQ2mo9J+Fe4qvKdoAxhC15nPdW2XO713ThvmIKilP?=
- =?us-ascii?Q?EDtLxJ8xt9Jgd1uWLXv/+rDWSy3xAZpTb9rb8WkBKggdNRMU3Gu31/PU6fNw?=
- =?us-ascii?Q?5gCHrRvaPZ/MZ7kWekbnBdHKEsah0aWd4CPzmccm5QNCQG3jYPPDB2vxdREh?=
- =?us-ascii?Q?NPfbn77U1qcqeRchbZ6LeAzOQIHp1AXL1MipFrQyKw2aS07WdKtpZiBt7QDN?=
- =?us-ascii?Q?Tu/k/H1IYOjq09i2s+c8YuQnBfUTc/WncioBLuWYGnxD0r81En6Mo5lLQWRI?=
- =?us-ascii?Q?cmkptVlD7a4ecBh5AFoltDLa8/vgkvfffh1SQdmIBvG1GpG3yVHznqTfC3dq?=
- =?us-ascii?Q?6tdB4lppKf9jidfC/zFO91/5Cde885P2Q5prBwQnWvjJZVjVNRtC/R/nKH8w?=
- =?us-ascii?Q?YskeX3cUce2lV8s+rZPCKdK3rtneAIIbxFXgh7kXDoNn6W11KLrZyM5UVxN9?=
- =?us-ascii?Q?5sXr096lj7HkNfYPw9fbZppdMPfMeiVRutXExmzx7vgHFEIvHl1BTNIENAed?=
- =?us-ascii?Q?bZk2ngZ4eNdv4HNiLdvaPvqkvquk+hYYKVuHh1BUNCBwuIPKyqfqIBjYl788?=
- =?us-ascii?Q?LB5/FSlnut8bsMVze1Jw2QCygXc6bGUoggLt7rAm4eISQAmAMXrg8AbxZxMb?=
- =?us-ascii?Q?XX3M49YvqWMv3hQ8Gn6LYwvTTnT0c6j38dW9dD2o7+Fp+jxHPQqL1OjmeCrK?=
- =?us-ascii?Q?3MsWlFSI1l84eXp8R1Vv5U/mtb/NDJH0eI8sFded?=
+	=?us-ascii?Q?u4dss/ZMlkuvUFpQZhWnN2aG8tPfIvoVrIR6RY7E1FwtTqR/+I2p2aRs2ZtF?=
+ =?us-ascii?Q?ZitrsMQFHx7OqozhQKuu6TjmvY5T6iePfxuCBz2DlrttJHBdE2jnOjCoRkMc?=
+ =?us-ascii?Q?ixjOrWHFRztoWE4/2J11DT8vFNtbG444zEiaTfscaBOHkaDkJ46azZXUkDik?=
+ =?us-ascii?Q?QotBaJOIaZ2h+LyZsGyGF74SQpmWbgwT1u3QZMk6pF3v37hfYw6HcAmkbC0i?=
+ =?us-ascii?Q?4vsP7ZlRw7K3yIU9Nq7iZSfDk5stbWQfDPtAjzLgcuSjWZe5wUyOTi3RBQ7D?=
+ =?us-ascii?Q?+TFD71fv+0d2FdBud2I5hUZLJZy2NttTyeHqtnhCqdN1mX1f5fLZpg9gkOGM?=
+ =?us-ascii?Q?yHeo16efoduXF34HrtZ+2axlj+Qm0JpLFtf2U5ZgyHn5n6kXWerKsGIJnFWr?=
+ =?us-ascii?Q?vGXG/IoArK+Fd4h74pBWzHVY3XNDpr40egCju3pmVhhIYAvH4AA569Vt5JLC?=
+ =?us-ascii?Q?zMobt5XybNBUF+csik6m6+39AT7Q5MlaPny6LWKm3uXKZslhKVzKH/zL2xOL?=
+ =?us-ascii?Q?Qdd3/KWdYhSo9tbkgBif/DzRRCxDjKSCvoDwHrEyK3yIeQF/ZRd0Z+EkLHeM?=
+ =?us-ascii?Q?sSyVcTx5hHQOLWXTd8vIO71u3NlTxxsq3Xl4WxaAxAFAHjpwrfa9bwCPUVt4?=
+ =?us-ascii?Q?D4VCf984K+aZk3ILr19C32l78Jn60QnHnc9DBi07mEVvW+nt+KcXk3Vh/0o0?=
+ =?us-ascii?Q?v2exG9fIsbtaArZhzPUU/tZWz56XoFA40WNAMCeJoGP0jjUUW/4zPJ7f6nm1?=
+ =?us-ascii?Q?NC1BH9iBMrHBmZKY8WYO3rc9cLGuNCCCdHLe35KxlCBbnrXtchglUXPolOgo?=
+ =?us-ascii?Q?4dj0FUrb7Z4TFaBJmSxeU/ndzFtZ8c60VQ5lr4iEGdNohoaawdsyjhLv6QQ3?=
+ =?us-ascii?Q?a8Y5BRMow8m7/9x3l8UAf5YbI0B+UofDGGg4bVKIBZEUJhBtWwoFLwlOIbLA?=
+ =?us-ascii?Q?0rSstVRovRSmyLC5KPGbaO/tzCBpy3PYAdtmlV3zH/fWKf+GkPsYZpp5RFpg?=
+ =?us-ascii?Q?GFLeiXz/N3LGwKGHLNAwexjBSWC98dzZrXeAkPow/Y73zrhM3WyrhStuvskY?=
+ =?us-ascii?Q?cE3LA2iB18W9N/qYIFsZKNtTIPXSW+y2Glo61o27aomfDazEBrmadE9+F0s1?=
+ =?us-ascii?Q?BwVNxbARoEMFSBiBXBNJmMzCkWGiQwkDffxREULQ2noP7Lkhb6C/mlRwPzVP?=
+ =?us-ascii?Q?+R67EOyztyHkMscPUwXLvxltt7wdv7ntwdhhZ890xG5uSZ6lCMQkyA0+AN2p?=
+ =?us-ascii?Q?K0yktTXmvgs5gtTSeulelf071VVK9hYBNbar5NVobYOtMl1/oNhE5W4C1bAo?=
+ =?us-ascii?Q?MXRIHA5rWlp4yFDzWxCQeL73A600BPim4E4Tj6Tewb+mjCDT0gBQn9Wh16Y8?=
+ =?us-ascii?Q?R5dWlZcQ+9LI9h0CWmqj+rZ29xIpXj0ml6YiV2m5PuKVL4Su9XeIF0dvMTPD?=
+ =?us-ascii?Q?iqhZqPQT3hv5Mn54/DHpYJlGeYrwvWOceKKBXdQxPFotIMv6hIjr7KMI4R1Q?=
+ =?us-ascii?Q?EzEpaGTmrx3dpI7ABMNPhrDm2Hz0NbE5esl591n/tNuLuUWa7a/c3dbYBCB6?=
+ =?us-ascii?Q?hWe6Nphf3aWf54TZ64QfD6GT3QqfTfL9dOZZqfW6?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c32c2a49-fc47-451e-3df7-08db86cf1373
+X-MS-Exchange-CrossTenant-Network-Message-Id: d49218d9-8d11-4cf5-bbe2-08db86cfbb58
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 14:06:54.7210
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 14:11:36.3946
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NYjnzGyZLAhOaIGOuemwBPZWsrSt+Ll8qAoDuGa0Qh8zEvB4plx9ZMMik2vL1M9dHjWb2qDq3KyR4Gdv+6mbZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7607
+X-MS-Exchange-CrossTenant-UserPrincipalName: kyE0HN9ESch5lvQ6gQ9h0WwewbG+J3QRVKNyrEG5vdR8xZ0kbAHjtQQmI+8A+Pf+lNQTqx3iLGkOiAF8MiNPBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9419
 
-On Mon, Jun 12, 2023 at 12:17:25PM -0400, Frank Li wrote:
-> On Fri, May 12, 2023 at 02:45:12PM +0000, Frank Li wrote:
-> > > 
-> > > This patches add new API to pci-epf-core, so any EP driver can use it.
-> > > 
-> > > The key point is comments from Thomas Gleixner, who suggest use new
-> > > PCI/IMS. But arm platform change still not be merged yet.
-> > > 
-> > > git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git devmsi-v2-arm
-> > > 
-> > > So I still use existed method implement RC to EP doorbell.
-> > > 
-> > > If Thomas Gleixner want to continue work on devmsi-v2-arm, I can help test
-> > > and update this patch.
-> > > 
-> > 
-> > Ping?
+On Wed, Jul 05, 2023 at 04:59:53PM -0400, Frank Li wrote:
+> The reg size of etm nodes is incorrectly set to 64k instead of 4k. This
+> leads to a crash when calling amba_read_periphid().  After corrected reg
+> size, amba_read_periphid() retrieve the correct periphid.
+> arm,primecell-periphid were removed from the etm nodes.
 > 
-> Ping? 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-ping? 
+@shawn:
+	Acutally the all comments is clear. No further change needed.
 
+Frank
+
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
 > 
-> > 
-> > > Frank Li (3):
-> > >   PCI: endpoint: Add RC-to-EP doorbell support using platform MSI
-> > >     controller
-> > >   misc: pci_endpoint_test: Add doorbell test case
-> > >   tools: PCI: Add 'B' option for test doorbell
-> > > 
-> > >  drivers/misc/pci_endpoint_test.c    |  41 +++++++++++
-> > >  drivers/pci/endpoint/pci-epf-core.c | 109
-> > > ++++++++++++++++++++++++++++
-> > >  include/linux/pci-epf.h             |  16 ++++
-> > >  include/uapi/linux/pcitest.h        |   1 +
-> > >  tools/pci/pcitest.c                 |  16 +++-
-> > >  5 files changed, 182 insertions(+), 1 deletion(-)
-> > > 
-> > > --
-> > > 2.34.1
-> > 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> index cc406bb338fe..e0ca82ff6f15 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -306,8 +306,7 @@ soc: soc@0 {
+>  
+>  		etm0: etm@28440000 {
+>  			compatible = "arm,coresight-etm4x", "arm,primecell";
+> -			reg = <0x28440000 0x10000>;
+> -			arm,primecell-periphid = <0xbb95d>;
+> +			reg = <0x28440000 0x1000>;
+>  			cpu = <&A53_0>;
+>  			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+>  			clock-names = "apb_pclk";
+> @@ -323,8 +322,7 @@ etm0_out_port: endpoint {
+>  
+>  		etm1: etm@28540000 {
+>  			compatible = "arm,coresight-etm4x", "arm,primecell";
+> -			reg = <0x28540000 0x10000>;
+> -			arm,primecell-periphid = <0xbb95d>;
+> +			reg = <0x28540000 0x1000>;
+>  			cpu = <&A53_1>;
+>  			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+>  			clock-names = "apb_pclk";
+> @@ -340,8 +338,7 @@ etm1_out_port: endpoint {
+>  
+>  		etm2: etm@28640000 {
+>  			compatible = "arm,coresight-etm4x", "arm,primecell";
+> -			reg = <0x28640000 0x10000>;
+> -			arm,primecell-periphid = <0xbb95d>;
+> +			reg = <0x28640000 0x1000>;
+>  			cpu = <&A53_2>;
+>  			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+>  			clock-names = "apb_pclk";
+> @@ -357,8 +354,7 @@ etm2_out_port: endpoint {
+>  
+>  		etm3: etm@28740000 {
+>  			compatible = "arm,coresight-etm4x", "arm,primecell";
+> -			reg = <0x28740000 0x10000>;
+> -			arm,primecell-periphid = <0xbb95d>;
+> +			reg = <0x28740000 0x1000>;
+>  			cpu = <&A53_3>;
+>  			clocks = <&clk IMX8MP_CLK_MAIN_AXI>;
+>  			clock-names = "apb_pclk";
+> -- 
+> 2.34.1
+> 
