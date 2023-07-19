@@ -1,78 +1,144 @@
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2063.outbound.protection.outlook.com [40.107.20.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617F2C138
-	for <imx@lists.linux.dev>; Wed, 19 Jul 2023 12:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1689769578; x=1690374378; i=markus.elfring@web.de;
- bh=BEg4VEyO1JURsTxwHcxFLPIFxlro5BRbE2q/bmQSx/0=;
- h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:In-Reply-To;
- b=iUGhsZUWUT8T9U7+qI1bKu1lyw3M5NpAGDaM3k7lIWX5s4dg6AHRbLqClkvZDuhrMouT/X7
- nj21mcve+4sjQpu7eHPxhPWia6g2LWUFQmCFQHg9EwU+vgp1lSa2wI+3NfVmSQmMGN+mUcnGY
- xZ5vb8yOTXL8EsaWQZKBZOCnex8TwOf9i7i/0FkK+wlZSH1YfDaJ/HP6rBYfdVi3lRzASYN0e
- iJvJ75adgnvIntIKX4grh777C70ATI2U1Ks6gCmKi6e4fb+QhPNdfFSNm/BoSYybK32bCbIv1
- Fx8aDnaAcajvMBU/awa/LcWkxtNUJx2uh2Vrm2BijTSBfVII6bAA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.90.83]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MqqTV-1pZJEm45yr-00mkG8; Wed, 19
- Jul 2023 14:26:18 +0200
-Message-ID: <48020d1a-471d-1f82-f399-52014651b822@web.de>
-Date: Wed, 19 Jul 2023 14:26:16 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795033D39B
+	for <imx@lists.linux.dev>; Wed, 19 Jul 2023 15:57:33 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=K20IQ9OqILpM+lerGEHXe3LirMemcpnaWZPYcPVmRErItHHTCIUencA1B/K03FX7wfQYPbyJh6GVwyloBDJ7xOSXWj3GM1BP2lcHcfIELkqR98+MEGpsCSS5jpzTYLM43FXb8N6wzmFWKBd8Fq4tXaP753/PVD89V6xsSvLKY8EqmlLEmEOFVw09MNauiG2NWtuV3WUpJaokTjNc9oyDn/nFKc/N8MxfEOxPkUB4fAB6AKmCH7O7nsdYzMRICSNFak2lT1lPf4nH3xA6SAtnf0fsRhNIGKSuVeFtVWM8CG5sGl9WlcaahAuN1aMSDxzm6Dys873vkjjs1jvsM9A7Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZycBneTbgXkUljC+nErl4NsfVXu1LOODZM00tD9/H3I=;
+ b=DIAEtOwSCvc2VMskPOKMjH3mXco36rsemS9OEmGq36cns5sTK19H2jzFro7tU9/6OFxM0prWVJXmjpVOlPSegRHSJ/S5qe9xJRxpRwg0yiEH5EYaGhTwvT0rLgOmd/8bIsEwyo9I7Hz5REXUGrX9o8ffLGfG4AQwEQA6XjvNwC7L/c2nFIzVxPps/ucYHl0VeBvOWVmzXONgbXJFXF+1/v5sllQLtZzsOGhEEx1Mf2pXNMH4B47Ly9brQV8JxNgdOn5RhunNqqxt9wO0fqHfGZZUqzVllpm4mSMQaTZ8qS1Ar052W0h44O4UKHN+4sWNDShrghx+AeRBu3x1PNdiiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZycBneTbgXkUljC+nErl4NsfVXu1LOODZM00tD9/H3I=;
+ b=bWSV0DA90r60pHAE2Lxr6aWssvwsEQR/5rDX/1ORupg3oLK6HEVgcqVRcGay/H3vD2eIUJWkqrm1FK1yhXCMPqHNxm8L5rwSNinUG+6c7QEr0Xd3zeO82YIhT+zuKXDsH9/1w0aSRowjWlTbLL5sub9A6fCOsWbDhKvBlZICpm8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DBAPR04MB7399.eurprd04.prod.outlook.com (2603:10a6:10:1a8::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.33; Wed, 19 Jul
+ 2023 15:57:30 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::d0d5:3604:98da:20b1]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::d0d5:3604:98da:20b1%7]) with mapi id 15.20.6609.024; Wed, 19 Jul 2023
+ 15:57:30 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: markus.elfring@web.de,
+	lpieralisi@kernel.org
+Cc: Frank.Li@nxp.com,
+	Zhiqiang.Hou@nxp.com,
+	bhelgaas@google.com,
+	imx@lists.linux.dev,
+	kernel-janitors@vger.kernel.org,
+	kw@linux.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	mani@kernel.org,
+	minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com,
+	robh@kernel.org,
+	roy.zang@nxp.com,
+	xiaowei.bao@nxp.com
+Subject: [PATCH v3 1/2] PCI: layerscape: Add support for Link down notification
+Date: Wed, 19 Jul 2023 11:57:06 -0400
+Message-Id: <20230719155707.1948698-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0137.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::22) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-To: Frank Li <Frank.Li@nxp.com>, Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
- Xiaowei Bao <xiaowei.bao@nxp.com>, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- kernel-janitors@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
- Rob Herring <robh@kernel.org>, Roy Zang <roy.zang@nxp.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-References: <20230615164113.2270698-2-Frank.Li@nxp.com>
-Subject: Re: [PATCH 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20230615164113.2270698-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:AIjvDM8s9vNXubm4WHz1OKvLwQ10Q4CK5reiwidoHJ97tp/jpdC
- qg+7hCtBXAiPdWKdT+6ZjAWzKXkUpmP1Y8lgIR26qmEzLyHgqXqmAShYm2Q+nVdvbkyDsqC
- Dg9LL26GuAixjmMpQkhPpevQ1wK48ZE2RlaZ55itD7PM0sWOzgqnIqDWbRrXe4qmI3IPSdo
- FDMlTVrCDQMGTYnp28QKA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FeeNq8iF1dU=;1zPylNP2C2RNFGo0QeONcWDFLqY
- 4eXnuUU/sMIYiR5eRB86wYzH16p1+ELAh2IdO6OrPiBvEZbDaGft6FF/wIjrv7HOApNMvxmij
- e586CHAURxtDU9guqB47XhOrVupROsl3j93/8D5YSugA+1psoyEsuPdfksGsvMZOPD1CmxE3z
- kp4AOb6r9bzyyUy6HFBByBloYx0RwWLxW/ksbwEjpUmnpnYVBpeYYky/jhXHx7R9DWC7WwfZg
- +nyhO8B53VfAwheRz26L2b8qvykFFxoxV+H3SgYu2PqcAtYvX/3ELoYTc7isP9xc0CqMsCY7B
- hJt9fnSvAZDjMBu9uKIAYV12AuCOtiHiA22VIAK1TOj/nlSTZBDCdY4LSaf5VQtdZXuijJ2ao
- oCL2ew7unTRE+EtdyWFtXAWmsrkzSnHGv++IssutDvDtxUtFnCofQSD4pCFWgAXtGXq5kMlyL
- 5Pgp84BFgWL1i1VUBE0PYb0bkZWmofcQmmHuR56zqritbuoZNmJEDTWfYP3j3BuGRUIMJHIWb
- f3p4pwai/UZ42I+4bnkhgpWpTUzAO+ykXgNQVUwXpPKl1Ipg/8rOVnqHn3LF9f5E9VLpbnCtR
- SsI6pIBOR2v1JU83MT+D1Mvch++8025xS/FXZPXp6OWLX3JkCRganZFgVSKqKDG3vA3xooqPa
- 2QPnZoI1Yvz0TQhuLGfvrKddVG6zAIpgmOqLbj0JhOg/S3K5m5ikHfg2UweNYY7CP3E2nDFwd
- kzDhtqitLpk0ytbe1hQRxPehASSlLLJa8R7kMIzhQd3OY0edADMtyAU7rH+gNDjFTYWEpQs4V
- NjZpZpdtldpDMuymwaf7giHnxV36cy/2RsqkESgd/fmXsQgXRTmv6ipLqzVYE1qm8815netEg
- 5LXK01YVq0dTNw/cfdOYAN3ckXlSEpJRI8u1cLyJRd//k9kU7hYZ3LctXEa0Wax/FPYQZBdcp
- nArXtw==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBAPR04MB7399:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1732285-a8af-43f1-ed96-08db8870db41
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	0fndd5lTac0My0bzYhTUuaxRneajdGgO5aAq90P4g/+lzZE/tw1uxeDNNooRBjh1wkRYRBlzUb9xyOp8tT3Zn2rY4xbhPWgXQKZjrpxwh1c0Y0q9/BmV+lLYMhAQv4iMu2dX4c1E90PizOcH3oANKeO/vZffVx48zMAxQ7mHFd48+FfOQf82CIMGS0W5Gzlz3m3pQ13A7N8qgAAUZSi6bqhuZRAl/ViFHO7jRSHAr9IIpGZYtxsoVGqooCMGiOt3QDTWPpfgk98SDd0dTgLsxl2ETi7wAV/yVJtww1udbkcTwyzjXirerSkgb+En1e0YdhceVtPSpAN/RdF1dI3VYuwXy59OdxKHLaKKWtoy9VxXu7niuNYvoI7Ba9Zk6GNBt2i3A4oTJKx0j2KEkGOvGipkKIhP8cfHKmc4FpdMUbCpvyif1vSUh7nr2mrQVGLjoxBTmX4194+mCDK/M/uwy/RLFLNCt7Bn5IfKfod3wi0mCirnd21NHmrFpmWeOOjSqwVHn2863eA4snztRqa6cJjfW8IKYb2Uix6UPST+AYOuksnBcqaaTDdBoW8KU1lnS/xbTnu2rWL/i10lDId428sJ+dsESkgg2ObWYIBveFEC6Tw4J2aS8Cy1AblWmKsk
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(366004)(39860400002)(136003)(376002)(396003)(451199021)(6512007)(6506007)(1076003)(15650500001)(36756003)(38350700002)(8936002)(7416002)(5660300002)(8676002)(86362001)(4326008)(2906002)(4744005)(316002)(66476007)(66556008)(41300700001)(66946007)(6486002)(26005)(38100700002)(6666004)(478600001)(186003)(2616005)(52116002)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?K4zVk2G1aWv+l9SAEUXvXaxgAIt1Bfc2tds50A3+FYEcZwww9THMG/sMyQL4?=
+ =?us-ascii?Q?2oDFdn38CtjaKXPAhNAcxvB+tyO7VSumSMR9HmkDzBuqYJwWopYMJZfWH239?=
+ =?us-ascii?Q?gagQ7Hev+c8PqMz1l9+oP9mrHyrQ9M7cUWpCFKygFJMmQ+60Qr8oHNixN/x2?=
+ =?us-ascii?Q?vSqYmG7jDD91cGobhN6IVyhB1oJqFGpeXVpXiLJYhlhiOLCGR9Xyy/At91C5?=
+ =?us-ascii?Q?r2T8ASI4hrHkJPAoVZU+6UfYqjCn1dwlDtm5e064FTF8JdGwCeJ04ZrM8aTB?=
+ =?us-ascii?Q?TFBnwsVab/qM/NDrrCl6mlZoNStKYx/SFJS81LMel+jTwhLlOk66IqOWauYT?=
+ =?us-ascii?Q?9HhB5p6zjxXPqY6PzN+P5myJXO9CQGQGnoaMhq5woRegqCCMu8psrwhxFeyl?=
+ =?us-ascii?Q?pxOL/YjEbzGjbSIBuKYeNq2ZD/VksxQ+XBE/uSfxw1duSM4OyYMmrbHWmK9O?=
+ =?us-ascii?Q?muq3U5CqTkCYKBW9TlCvNelPuxioxGc3XOudfLWjbnvSOyUitNQNR1pa80Mw?=
+ =?us-ascii?Q?OlVhK1qwCBaJjSBTBofzpAm80yWzxzkYkCCCHYbDaLEoKqpAda8fmf2JwTGg?=
+ =?us-ascii?Q?BUZf3EE0365WyOlfqAoY2svu4wKuY5Fk6URykZaNGM804We6IQbGBVj8398s?=
+ =?us-ascii?Q?2X7PjjYcnu85GTrJ45vxaEnHQlAsqpJjVqA0IJhxAXm0yLYqWlx8j3noKVPY?=
+ =?us-ascii?Q?20S8apJFGvS/8Cu7yiglz+hdjVcOpnmBdibTx2cfxnZ+H7H1UEATBxMFaRpi?=
+ =?us-ascii?Q?CfvEqCbCZTDtkRuRUZHKocJKYSeLzgmLvhu9sKGt2Xi9D7EMggwNay9huT/m?=
+ =?us-ascii?Q?3PIr9ysiOXOD0jxAEfxt+J+aXUbw79Eo9gdzNX3tQ2i8PDlTJ4SRme72Fcxu?=
+ =?us-ascii?Q?BNIDeDX/ZQbb1pUWN6B7if0mH5bHiCcu/MYgx8xX7JBLwdWMZMupd44fTR95?=
+ =?us-ascii?Q?aTEj/9ApOMkWxeyfTFeetwdANKAcx0MCfpCQMABlb0hsMcyzOby8VL8XPGWV?=
+ =?us-ascii?Q?bSrBQ1Jd2IaeDG7xPKCC7rrqJ5RNnlMdqYQsjRkIlcVlEv338EqEuMkWvhHR?=
+ =?us-ascii?Q?CKEyYHdyLScNKPHmEqOmZcuoP1BfjwLzQrSUe95dAb14TpSqdydAkmvRaL/2?=
+ =?us-ascii?Q?kfBq0oMh9A/bxS6nVLH1T/jDpHC36TmBFuepGkupYxSMVqELgs8Ks8bGEylr?=
+ =?us-ascii?Q?Ilf3BF+CtfTSqszbh949T01T1NrvlpBXKuv+6C42ILV3hTaSJXHFQvKhgPxG?=
+ =?us-ascii?Q?lYPfk+iv+aH6fdCmvAu1ENBOVVrVNKooA3crHdA9AR7C/Cmy70EREBrX6mrv?=
+ =?us-ascii?Q?BKtYK7t/V8HRG9ZlYWne0/wz+VSp34REUE3rDe1SwbewrNpoxolZaOfpXCS1?=
+ =?us-ascii?Q?crZx+h7Gx3Yed0RmJ+22tdPjLVvy67aELGt2yKCadGknFnsVGecnTpiGVNkV?=
+ =?us-ascii?Q?hVEkm057NTyQ2gdikPmUU/1SgfNUu+heWt0rZ7rDeYcNi4UeD+d2HhjDKdCM?=
+ =?us-ascii?Q?VHYgJjLMA1xYOoJLPqrMZFg4jwT/ltw1hpP27tK1RGxLizpsSnVuBtESphze?=
+ =?us-ascii?Q?wJmdqLPdvFFGdIuTcOs=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1732285-a8af-43f1-ed96-08db8870db41
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2023 15:57:30.2901
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O6ZNVRKNXJDfG7oPXRy4rOAfNGoqlITx4Vb42vEnmKq29fOF/UMkvMTWrtNbkGNKod74+jfRImUGjRm+pT6bAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7399
 
-> A workaround for the issue where =E2=80=A6
+Add support to pass Link down notification to Endpoint function driver
+so that the LINK_DOWN event can be processed by the function.
 
-Would you like to avoid a typo in the subject for the final commit message=
-?
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v2 to v3
+ - none
+Change from v1 to v2
+ - move pci_epc_linkdown() after dev_dbg()
 
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Will a cover letter become helpful also for the presented small patch seri=
-es?
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index de4c1758a6c3..e0969ff2ddf7 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -89,6 +89,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
+ 		dev_dbg(pci->dev, "Link up\n");
+ 	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
+ 		dev_dbg(pci->dev, "Link down\n");
++		pci_epc_linkdown(pci->ep.epc);
+ 	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
+ 		dev_dbg(pci->dev, "Hot reset\n");
+ 	}
+-- 
+2.34.1
 
-Regards,
-Markus
