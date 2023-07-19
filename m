@@ -1,130 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243B71FC1
-	for <imx@lists.linux.dev>; Wed, 19 Jul 2023 04:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7F7C433C7;
-	Wed, 19 Jul 2023 04:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A223A179
+	for <imx@lists.linux.dev>; Wed, 19 Jul 2023 06:34:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8C1C433CA;
+	Wed, 19 Jul 2023 06:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689740989;
-	bh=VsupOhAw0dkjCQ85UwV+mlGN3pD2O9GWV2eVO3RP9o8=;
+	s=k20201202; t=1689748479;
+	bh=DC++SzU0ArlXkyCLBy3GqoRal30WHgBs6Gr4teUpvQg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QQ8I5AIdXpyK55Mzzf/2HAnG3XS0KMKKjNJTQcWMnBJ7ngAsNyVlFqPF+Qdu4ovOW
-	 yWeGURj5MhyTQdhYUK9c9em02iktKVNnkBVveVRdxBOtShcUKm3zZGXXPsfWr6OyVl
-	 ZCO2dfRKMue8ng7w0dzyqvggMqnG2ouswxCj2tZorTSY35P7ktcFvI+eyQcse9MXO3
-	 rkXQcLsuzz+5onPv93gJ+GZKPwvhhwGOLvy/UwcnEqWyNLnKjMoF8HXoJpYVbq45dp
-	 tmtGidHlV+E8zudwWQE3mIcYTSvmcc+tGu1BKgF0JmZjCKamGe8yphhYRHJRj/Dg1t
-	 Yr+VgiB8Ci7hQ==
-Date: Wed, 19 Jul 2023 09:59:13 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
+	b=GOave3yKZ/oNcWg1QFZNWsCTTNRjXlkVdqycAOo7sWfK4ZnwlxBLXyIgLo+ZPhJII
+	 oPCLH1KPFqTkqOFyzAm2WFVh8/IFza1J4TnPbvP0HCQiOZJYnW40VwJFdUOCaN3emc
+	 yzujYaXnso6Pu0c5um9QpUNb3Ot0nCcDdqw1kPMpxl1NEE06FzNxcIZzyPDQaYUrn0
+	 vd9RoivHOUinEAxB+wH7Xf1zBJf0E06xKA2blm8oksurfOrmAdPvei4Q/8+Sm5uz9T
+	 vlvyD23nkVcARGxOYkAiYwSnMdFotTrZJk/I9XY1YIgI6qDAaLZYOt+JZS9Y+dZ+QR
+	 +VHLeRWElJBew==
+Date: Wed, 19 Jul 2023 14:34:25 +0800
+From: Shawn Guo <shawnguo@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: bhelgaas@google.com, imx@lists.linux.dev, kw@linux.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	lpieralisi@kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
-	robh@kernel.org, roy.zang@nxp.com
-Subject: Re: [PATCH v2 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-Message-ID: <20230719042913.GA5990@thinkpad>
-References: <20230718182142.1864070-1-Frank.Li@nxp.com>
- <20230718182142.1864070-2-Frank.Li@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Chester Lin <clin@suse.com>, Li Yang <leoyang.li@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Pierre Gondois <pierre.gondois@arm.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/3] arm64: dts: imx8qm: add cpu frequency table
+Message-ID: <20230719063425.GE151430@dragon>
+References: <20230713204932.1591255-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230718182142.1864070-2-Frank.Li@nxp.com>
+In-Reply-To: <20230713204932.1591255-1-Frank.Li@nxp.com>
 
-On Tue, Jul 18, 2023 at 02:21:42PM -0400, Frank Li wrote:
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
+On Thu, Jul 13, 2023 at 04:49:29PM -0400, Frank Li wrote:
+> Add A53 and A72 opp_table.
 > 
-> A workaround for the issue where the PCI Express Endpoint (EP) controller
-> loses the values of the Maximum Link Width and Supported Link Speed from
-> the Link Capabilities Register, which initially configured by the Reset
-> Configuration Word (RCW) during a link-down or hot reset event.
-> 
-> Fixes: a805770d8a22 ("PCI: layerscape: Add EP mode support")
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-
-- Mani
-
-> ---
-> change from v1 to v2:
->  - add comments at restore register
->  - add fixes tag
-> 
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index e0969ff2ddf7..b1faf41a2fae 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -45,6 +45,7 @@ struct ls_pcie_ep {
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
->  	int				irq;
-> +	u32				lnkcap;
->  	bool				big_endian;
->  };
->  
-> @@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  	struct ls_pcie_ep *pcie = dev_id;
->  	struct dw_pcie *pci = pcie->pci;
->  	u32 val, cfg;
-> +	u8 offset;
->  
->  	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
->  	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> @@ -81,6 +83,19 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  		return IRQ_NONE;
->  
->  	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +
-> +		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +
-> +		/*
-> +		 * The values of the Maximum Link Width and Supported Link
-> +		 * Speed from the Link Capabilities Register will be lost
-> +		 * during link down or hot reset. Restore initial value
-> +		 * that configured by the Reset Configuration Word (RCW).
-> +		 */
-> +		dw_pcie_dbi_ro_wr_en(pci);
-> +		dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
-> +		dw_pcie_dbi_ro_wr_dis(pci);
-> +
->  		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
->  		cfg |= PEX_PF0_CFG_READY;
->  		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> @@ -216,6 +231,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	u8 offset;
->  	int ret;
->  
->  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> @@ -252,6 +268,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, pcie);
->  
-> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> +
->  	ret = dw_pcie_ep_init(&pci->ep);
->  	if (ret)
->  		return ret;
-> -- 
-> 2.34.1
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+Applied all, thanks!
