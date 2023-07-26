@@ -1,44 +1,21 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061137C
-	for <imx@lists.linux.dev>; Wed, 26 Jul 2023 00:43:43 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-9939fbb7191so94732866b.0
-        for <imx@lists.linux.dev>; Tue, 25 Jul 2023 17:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690332222; x=1690937022;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kzMeq122EOx0WClFDw8E5FGXVSDQXhMLtpdYnB5KEhE=;
-        b=rCXOFOSZzvDmeeApZdiE2vysrOJpkwjtuwvtU1bf29LkRxM6AYlw2fZd7d2i9PcPjm
-         +W11XmK4je/aZMdDboBH2Lo1cM1xt/9foDHz5xhNeiDVUGJBeK+dGmrH5FM/qXKW9YLq
-         rM+29x7NL+0VFecSgb/VznJqSCYTW+HuGt0zBQzMxjcPkN3rXe+UjsHabvOOY9QKpGOA
-         yNqnSs5xBVg6wo8k5nPLWzXj0btLPz0dAytmBX4XbWKobx5M3c/k7mcaVWnzueYoXGK/
-         ChQdgYeJZlzovWokbo5/hSk/lDCCvkuN70z1uHYSBHVNOeTtdg8/8r0JCBtpKw+J2Xjm
-         8ZdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690332222; x=1690937022;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kzMeq122EOx0WClFDw8E5FGXVSDQXhMLtpdYnB5KEhE=;
-        b=ZEqckrdgzsHyumb6uIy18Yg3QdqI+3OH9WCWotDBhFTNbpeQ5rsgrBEWWZIdBuGzvQ
-         N5uJOnh7nJztbrbvxpM5qXn/3lIMFcQonqNVU42BUSOSo3YaUnGAtrbFHQ/iWVTlCi20
-         VPr7T4pvEc4o5G01n+SAtMGyfwyt0zzMKPufIkekbQkQ20dDfsV8JZnXxmaCcueEsFU8
-         cIWgrcHgxhli9wEvCXPlYWDJdjULIwqtP4qvUB6237e7ow3jCdWEEwSdy4cjm5TdpwG9
-         EOswLfEc8jjmjDEbrunYWzrB4bFRXg4NuGhg/lAvp7kZcgOxOlKEKX6Spk5KUJLVfsOT
-         QM+g==
-X-Gm-Message-State: ABy/qLbcDNuKBXjok8Vv0O6dLGcFknaUaK7TpYeR+7u2AY5g7pjLqD5i
-	SxlxW3T67C3WSO6cmfsAeJE=
-X-Google-Smtp-Source: APBJJlHwe2LqFb+lOsuZJE20DQkYEjOIxawrT1fLB/cSVFrUIWnFWKl8ujaoNdXJsqT52Aa++t2d0A==
-X-Received: by 2002:a17:906:2253:b0:993:e695:b585 with SMTP id 19-20020a170906225300b00993e695b585mr867715ejr.9.1690332221810;
-        Tue, 25 Jul 2023 17:43:41 -0700 (PDT)
-Received: from skbuf ([188.25.175.105])
-        by smtp.gmail.com with ESMTPSA id rl6-20020a170907216600b009920a690cd9sm8865097ejb.59.2023.07.25.17.43.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jul 2023 17:43:41 -0700 (PDT)
-Date: Wed, 26 Jul 2023 03:43:38 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3F1AD5A
+	for <imx@lists.linux.dev>; Wed, 26 Jul 2023 08:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=DVKYdVDWQpK5ELmAAq7qfDDuRr67/RTt9VHAA/B+NYk=; b=zIYZlmI+20RfYNSNHiAdSUsa1W
+	NxTqQLz1VrJIBJelddkipCtPBanAzQ9rvnuw9DG/g5nwJtgjedaPtCDd1xBY4MjeGrjPmc7jZuMZm
+	rNuikip9Wmb/RgyCErHyn0XMc/oe/X+9DUVJNQDnZPvQVu8kXNLH+IY0Vfu4rx6t+DME=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qOZw8-002L2e-JT; Wed, 26 Jul 2023 10:32:00 +0200
+Date: Wed, 26 Jul 2023 10:32:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
 To: Shenwei Wang <shenwei.wang@nxp.com>
 Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -56,7 +33,7 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
 	Frank Li <frank.li@nxp.com>
 Subject: Re: [PATCH] net: stmmac: dwmac-imx: pause the TXC clock in fixed-link
-Message-ID: <20230726004338.6i354ue576hb35of@skbuf>
+Message-ID: <93ffd7a5-2479-4726-b26a-aab10ac09d14@lunn.ch>
 References: <20230725194931.1989102-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -68,102 +45,17 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230725194931.1989102-1-shenwei.wang@nxp.com>
 
-Hi Shenwei,
-
 On Tue, Jul 25, 2023 at 02:49:31PM -0500, Shenwei Wang wrote:
 > When using a fixed-link setup, certain devices like the SJA1105 require a
 > small pause in the TXC clock line to enable their internal tunable
 > delay line (TDL).
-> 
-> To satisfy this requirement, this patch temporarily disables the TX clock,
-> and restarts it after a required period. This provides the required
-> silent interval on the clock line for SJA1105 to complete the frequency
-> transition and enable the internal TDLs.
-> 
-> So far we have only enabled this feature on the i.MX93 platform.
-> 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> Reviewed-by: Frank Li <frank.li@nxp.com>
-> ---
 
-Sorry for not responding off-list. Super busy.
+The SJA1105 has the problem, so i would expect it to be involved in
+the solution. Otherwise, how is this going to work for other MAC
+drivers?
 
-I've tested both this patch on top of net-next as well as the lf-6.1.y
-version you've sent separately - on a cold boot in both cases. Both the
-i.MX93 base board and the SJA1105 EVB (powered by an external power supply)
-were cold booted.
+Maybe you need to expose a common clock framework clock for the TXC
+clock line, which the SJA1105 can disable/enable? That then makes it
+clear what other MAC drivers need to do.
 
-Unfortunately, the patch does not appear to work as intended, and
-ethtool -S eth1 still shows no RX counter incrementing on the SJA1105
-CPU port when used in RGMII mode (where the problem is).
-
->  .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 62 +++++++++++++++++++
->  1 file changed, 62 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> index b9378a63f0e8..799aedeec094 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> @@ -40,6 +40,9 @@
->  #define DMA_BUS_MODE			0x00001000
->  #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
->  #define RMII_RESET_SPEED		(0x3 << 14)
-> +#define TEN_BASET_RESET_SPEED		(0x2 << 14)
-> +#define RGMII_RESET_SPEED		(0x0 << 14)
-> +#define CTRL_SPEED_MASK			(0x3 << 14)
->  
->  struct imx_dwmac_ops {
->  	u32 addr_width;
-> @@ -56,6 +59,7 @@ struct imx_priv_data {
->  	struct regmap *intf_regmap;
->  	u32 intf_reg_off;
->  	bool rmii_refclk_ext;
-> +	void __iomem *base_addr;
->  
->  	const struct imx_dwmac_ops *ops;
->  	struct plat_stmmacenet_data *plat_dat;
-> @@ -212,6 +216,61 @@ static void imx_dwmac_fix_speed(void *priv, unsigned int speed)
->  		dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
->  }
->  
-> +static bool imx_dwmac_is_fixed_link(struct imx_priv_data *dwmac)
-> +{
-> +	struct plat_stmmacenet_data *plat_dat;
-> +	struct device_node *dn;
-> +
-> +	if (!dwmac || !dwmac->plat_dat)
-> +		return false;
-> +
-> +	plat_dat = dwmac->plat_dat;
-> +	dn = of_get_child_by_name(dwmac->dev->of_node, "fixed-link");
-> +	if (!dn)
-> +		return false;
-> +
-> +	if (plat_dat->phy_node == dn || plat_dat->phylink_node == dn)
-> +		return true;
-> +
-> +	return false;
-> +}
-
-I'm really not sure what prompted the complication here, since instead of:
-
-if (imx_dwmac_is_fixed_link(dwmac)) {
-
-you can do:
-
-#include <linux/of_mdio.h>
-
-if (of_phy_is_fixed_link(dwmac->dev->of_node)) {
-
-and the latter has the advantage that it also matches (tested on
-imx93-11x11-evk-sja1105.dts). I've had to make this change for testing,
-because otherwise, the workaround wasn't even executing. Other than that,
-I've done no other debugging.
-
-Considering the fact that you need to resend a functional version even
-in principle anyway, let's continue the discussion and debugging off-list.
-
-Ah, please be aware of the message from the kernel test robot which said
-that you're setting but not using the plat_dat variable in imx_dwmac_fix_speed_mx93().
-It's probably a remnant of what later became imx_dwmac_is_fixed_link(),
-but it still needs to be removed.
+      Andrew
