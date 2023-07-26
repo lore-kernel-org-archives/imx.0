@@ -1,42 +1,41 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2053.outbound.protection.outlook.com [40.107.7.53])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2056.outbound.protection.outlook.com [40.107.241.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAE6E57F
-	for <imx@lists.linux.dev>; Wed, 26 Jul 2023 15:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2094CE57F
+	for <imx@lists.linux.dev>; Wed, 26 Jul 2023 16:10:14 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IeXJpazNcqZZJzC3HkrwkmkoPW0zXthIz4vlIHTKG4KmivaP9Fo+F1EeZE0m/meH6lAXVbb0XOv3fNvtvvs+aBOIX1SlSi1N3FwkGDW5iI/OroKgl/p2RDiRw06/k54sAWf6QiwK67qf5Y2lql509Juqb/5MMT0Zrddyd6J15rML1cS48dQRBygELiTSXvKfO7iOUXYEpZlLZNQSBhGLFBEWw3uPLDJZQ6zQZqVCTW0A0DEqaGCYWhbq4lyirN5BHZbQh5rzy5gXS9bWg4n3IGmmcZ1LgmLDPDFKHW4QX7GQRn+RlFP/u47HqiPxQ9cRDKjMS8OUbHMfpmeeM2Ui5Q==
+ b=kP2RbGCRni6SVj5qQmse0AlUqljWHZfDq5oa+alJl4dMUAcw1vjsgSNgX5SX1SAJS4xJA00AzrWZjmmlK3zbPXEAxbKjDCzuGgqHKbVctVBlWYV19U8kKoSniN/5R74SUiwX428YLyUIvgC6kOFhkOmJpSaWwoZioG0GLAXfl96i9xvXPtbZK+q1CzPZaDPfbflF0qQA5qKvPwbD/qgqirbQRcwFrVJfwbLiBHYMRl6vnjCRsV1unYKUiTB/97Q7sbdVtKuBWMnLmE9kp08aMHYi1IlnaQyyui798LB4ZzGTVJbgqRgqUUGhA64xADxScjrfR7cDQkEVwyuIIHf5Gg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vKLk4BgXZY0EquenSBa5i2KVy8wSESha6piVzonXAZU=;
- b=Fah4kyQGM6+N7CCDj/ftQ0mwGEFfH+LlRY3fqCdHUIgVeD7h8/9BoazHXpLxqF5li6sCvmOp0yK0tS8WzJ5K5JIWG2tjAiWxyrOvM7pL4RlH7mE3Kk6B5JeKsn29KadTHFjfaBVNur9LrJ/LCw8FAd0b0RXUsmNF0OvFKexL9l9R4kHZI3TIk4jPtMAvQX7taJjv+ECiXrfemXS7hVbcfWpPmuCUBMIY6VQV8lK1aINFB/bHDzInHMmoL1u8PGJPGiUrLOL9BaKBthKFx5514S6fByRutPKk9/wCe3TLJzm6+CpXOsNsYfvkKHKfXaLu/m/0b0zCQnFLb8JD/Y3RnA==
+ bh=0aH2N5j8G1WytfBqcn8rSwXLzVHCgcasa7/5SN8brTU=;
+ b=M3i6mrWFH/iPyfyk4LyfMeAig24jP8MW/4T0H3NugPTn/i4vWPafR5Tw6tscb0TYPJ1TUMOCfz6SHeN+elbTEmtQuCEhSvDyBmyLo+vElXgJ7tfB9e7Nzt/VyOP+WDvyD84cITZj8GkVF72uTXYvVfNoKzucpCJKhrsC8bAOjYjKY+SmYkfmsEmfkwNkBdpTXQbeA+sPo3856/znwm9EuewWefBaztkT+ED/9M7d18f/M1Sa6vkP3lDWRGKSu30tbUQpd2ZJURcQz+MGTY3DTGxDNueQ3JBA6qTXxfwRnrFR2b26FIorg9u8kpcIguDljO4HI1Fj7iHzEBM/BuLhDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vKLk4BgXZY0EquenSBa5i2KVy8wSESha6piVzonXAZU=;
- b=EyvWd/jK2kkCNIR3BypfCFcoXxh566V3qRxRSFkBpEW5Vtq5F3hN+MrvQ03znP98hTjmqwmw7TeRnV2B5g9o7/gehi4NVGJ2A9bACmbDc7FDROZ9XEu8gv5fablPeuAts4pZZS0qbIwokVkStiAnyLYWaoF7ND38IRreVKsnhwo=
+ bh=0aH2N5j8G1WytfBqcn8rSwXLzVHCgcasa7/5SN8brTU=;
+ b=J1rjXLWV43BtXBAs5uLZSg5h3StkgyFUh9FVq8qRdsEqZ/jgnkN0poSog55/TIw5uJYEof0W0C8TKp18HF+Fe4RLZl9CLllAnUFYvYAWdgS7OGxb2MLRdvrB/dDenGYEAeUT1prm4sQmIicvKwwOKSk3IMde4NoBltmLHCldVao=
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AS8PR04MB8119.eurprd04.prod.outlook.com (2603:10a6:20b:3f9::9) with
+ by AM9PR04MB8383.eurprd04.prod.outlook.com (2603:10a6:20b:3ed::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Wed, 26 Jul
- 2023 15:59:38 +0000
+ 2023 16:10:11 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::d4ee:8daa:92f4:9671]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::d4ee:8daa:92f4:9671%3]) with mapi id 15.20.6631.026; Wed, 26 Jul 2023
- 15:59:38 +0000
+ 16:10:11 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
 To: Russell King <linux@armlinux.org.uk>
-CC: Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Shawn Guo <shawnguo@kernel.org>, dl-linux-imx
-	<linux-imx@nxp.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Shawn Guo
+	<shawnguo@kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Giuseppe Cavallaro
+	<peppe.cavallaro@st.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"linux-stm32@st-md-mailman.stormreply.com"
 	<linux-stm32@st-md-mailman.stormreply.com>,
 	"linux-arm-kernel@lists.infradead.org"
@@ -46,15 +45,15 @@ Subject: RE: [EXT] Re: [PATCH] net: stmmac: dwmac-imx: pause the TXC clock in
  fixed-link
 Thread-Topic: [EXT] Re: [PATCH] net: stmmac: dwmac-imx: pause the TXC clock in
  fixed-link
-Thread-Index: AQHZvzEtwr0cB5x9EUCXrQC85+we9K/LNgwAgADv2GCAAAekgIAABiMw
-Date: Wed, 26 Jul 2023 15:59:38 +0000
+Thread-Index: AQHZvzEtwr0cB5x9EUCXrQC85+we9K/K+NqAgAEqaxCAAASrAIAAD2LQ
+Date: Wed, 26 Jul 2023 16:10:11 +0000
 Message-ID:
- <PAXPR04MB91856018959FE0752F1A27888900A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <PAXPR04MB9185A31E1E3DEBABE03C60F78900A@PAXPR04MB9185.eurprd04.prod.outlook.com>
 References: <20230725194931.1989102-1-shenwei.wang@nxp.com>
- <20230726004338.6i354ue576hb35of@skbuf>
- <PAXPR04MB9185C1A95E101AC2E08639B78900A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <ZME71epmSHYIB4DZ@shell.armlinux.org.uk>
-In-Reply-To: <ZME71epmSHYIB4DZ@shell.armlinux.org.uk>
+ <ZMA45XUMM94GTjHx@shell.armlinux.org.uk>
+ <PAXPR04MB91857EA7A0CECF71F961DC0B8900A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <ZME3JA9VuHMOzzWo@shell.armlinux.org.uk>
+In-Reply-To: <ZME3JA9VuHMOzzWo@shell.armlinux.org.uk>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -62,44 +61,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AS8PR04MB8119:EE_
-x-ms-office365-filtering-correlation-id: 296d8b1c-360b-4d36-1c1c-08db8df150e6
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AM9PR04MB8383:EE_
+x-ms-office365-filtering-correlation-id: 5cd38ec8-c557-4044-dba0-08db8df2ca08
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- QBI7YfU+EWmLGLimFCVFMitHfOGEOAma0N69xB0katX65cDvZm6BeyeywGc+/Ys48wbgkjId3D8/hF53xJ1H1pkCFKYpoW1MGA5anr+ajrsNA2kYQ1pXKW/d6bZR2RFQnOOfVqB31g354WOY0kfDop31PTl68kT5LQ/mkf3aZLYF5vHXpKxYzwhIwiXavAKDtORny00uk1lgADucl5+BgQz1h4y4Y2yH2HlgvpfKuBOe30nVECVixkotW6SLBM6123m944nkJsNT7mOAYaGO2YZOupWvxSw44K3YFxv48qKu9U4GjOlp86q49KRJIs6lcmyFDEI4siLPTcSlQqZ/J1kaextOC9CBs2WexgMW353hvs3JHxDFMl/YiTah2OwcvhnBq2qvkxxmChDTuLmlF6iPxIJgSG3y97ykrgNbCjsTuM67EvEfikjG9fP8+/TkatyZobEtMsc5FljZUCDLv414TSFJUgMfNDc4t/DmB0BLSOxLpfa/HGTZzwjmCqKjkw+4VNQOz4FPNK8pL6GP8gZDoLb/qL6DylWUjMts5nuRDcupeVOBqFNO6HuyvuvmZlU1t8MKw1zawH5EkJ/r6z72ZeBOtqD55W4WC9EDaUM=
+ dOWTGy6xD6J4cGXRNvc6f+LQTCFz4BrJ0lqe5rfAHxql+IMLLT9mm2jCjvbh1IXnu1OzcZtU2jv4k91Uf4f+N5C4W+xslan4BNjUCxl0EeUcep9NvBOQs3+JFajR6oZ0UveFOMlsTnPYkVpmZexC42MpFi8MVmzNi8FPAFESA1nUUckJun/ULpfeiKy62UuRaXnx4EUaN1IoyC2hCbvC2wzbgpN51h3lzPorqISZp4wHeBFBpFbL10tMEog70YwDOOCrB83L8/wU9p/Q7+QPRezstvanh+M/4eq8aU3a/fPYMVLEQJF4JErC+mDKpCEsg4XSxoONI3ZAC53d9QJ0NqIa00wQqh1tZuW4LIDAqN+0DBT4JyiTTyHb+Hx8Gf1zU94GYZQUKei01FPpbXEDUswOyX3xK77u8c1X5QQm8ku9fykbDhdYpxQCOYVMX5Kj8/X7i4K4k17kNWhNpiDOWDyNcVJegfGVnzcC/AfgpGwKJPbih08lNR7apvCYgFoepT4QWvMDXAHqAKvsgLBqCBYJRjrPUhyBQlbW34SgaG7JTl/GqVi1Ns40Xh8sZz4yrQPZR3HFYOx06b6Rn7u0osxF0L8evgj5FlBQ843oirI=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(136003)(376002)(366004)(396003)(451199021)(9686003)(54906003)(45080400002)(966005)(7696005)(478600001)(55236004)(26005)(53546011)(186003)(6506007)(2906002)(71200400001)(64756008)(66446008)(66556008)(66476007)(6916009)(4326008)(316002)(52536014)(66946007)(8676002)(7416002)(8936002)(5660300002)(44832011)(41300700001)(76116006)(122000001)(38100700002)(33656002)(55016003)(38070700005)(86362001)(83380400001);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(136003)(346002)(39860400002)(396003)(451199021)(2906002)(71200400001)(6506007)(186003)(26005)(316002)(122000001)(38100700002)(41300700001)(55236004)(83380400001)(5660300002)(52536014)(33656002)(66476007)(44832011)(66556008)(66946007)(53546011)(76116006)(66446008)(7416002)(8676002)(64756008)(8936002)(6916009)(38070700005)(86362001)(55016003)(54906003)(478600001)(966005)(7696005)(4326008)(9686003)(45080400002);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?5cM7YIUkG1NUAn7nGQ97UygZDPsIwW3qJmVkCpUSQLBLl5bn60DFrdtdqnvE?=
- =?us-ascii?Q?XrcihWaUWWIi9nbQpYHxUu93vxPjTK0rs6jtpviqRgfb8A79bFcuyiiV71hu?=
- =?us-ascii?Q?y+gyXhEFXCqtokC3E5k5PkBjWJBwPXd2EUV9Q7ZOggThAPqxkG1ZnwVixcmb?=
- =?us-ascii?Q?YFH/Ji36cuMUGeOhapT7EktDhMOenY48i44T/qVmwdUa4r9yUUvmnuZCDEdm?=
- =?us-ascii?Q?fxpZ1b/0qgeGoz05czxHzNZM8MCUDXE3g/DFFOyRjsbjp58horIYbjDPuDk4?=
- =?us-ascii?Q?xB4ODMN5Na2kbjASLTraCL1TOP8q1GozoOy+s7q9W94XE+KhHiYr+3A16bpX?=
- =?us-ascii?Q?VkFGD9hGH2H+1bSFarja7PGK7uxIdypEMIzB+e5CUtf2COGp3tEs77rkp+uL?=
- =?us-ascii?Q?jZXIX9kIKALGAvwvBZrrlHr2M8oI6S8JI/fNqddGcymA9x5PfhLAXtdl+DD4?=
- =?us-ascii?Q?iTxY+a11J0hy3P9JUDM3ThRXXjm99MXgWfVLIk3AHFSWwKPPv5DcFq23C+KY?=
- =?us-ascii?Q?YmI4kW1xAvMZkKexLJdAPRlmye/SrWb8CsDY1ti3pv6GvCETCBrJZPLe2nCA?=
- =?us-ascii?Q?4jgJOVxS7KmW1Li/XnP/sOPD/QCSaX8p+zZx+SWvJXcTNYSw4QZwz5r49jSl?=
- =?us-ascii?Q?KApVRCrH7OsVf/RBP4lqr+83GmN3v/38hVYlG9nwJnOEBkhxtdxOa3hIkBIA?=
- =?us-ascii?Q?eZkljTzW+2+ZoUT1xWGat81fN8XkmZqTAprehwzuYjJphjNJAJCLsAjEb3/k?=
- =?us-ascii?Q?R8jwrXxkhlSnDZFjOokVv79h2L4MiI7unldGYUO5fEEvpIbGIDb832XvoBcM?=
- =?us-ascii?Q?kS2TejZII1CqOE1hfhJwQpRq/AR3eu9x7s8dNoOIrZplE9nbPwLKNs+wpSAv?=
- =?us-ascii?Q?+GyvguEyIZR6z2DTA6LlCpE4di/fYRMrgroJ1XofYLGPJ1SXmsOUyEVJ07JL?=
- =?us-ascii?Q?yIQexLiQTgAOGOwDm6PMUdvqMOPQ6umJqIr/4F+kHo/MT2E3gKlJmGWZP+6I?=
- =?us-ascii?Q?oXDzrdkW+a3Dc5rXQBwXDHWvAMldGITTc4PWHBKGYk6e88hnaMpdJK54YNms?=
- =?us-ascii?Q?RrVm8gadTqypUdjcrG7j/lRyaB+Rx80TkZWWAzZEUk/InUJlfp6wDXtHXFUr?=
- =?us-ascii?Q?8pwVFYQ+BM/ukOVpUmCxCswy6EvytFRVCx2M2okvAO+DBr3IwfaVhTm6mVBY?=
- =?us-ascii?Q?HGgJJ0b0obyIRU1krXTjh0eQgllLJlMn9GRWj5tTPSUFjoZTZ3revxTV48vu?=
- =?us-ascii?Q?q2UVfWSJsZw42B5do8XM1dZm84Dq6s7fUrYiCTiq1BN2pfcWB+tgOY/wTMNz?=
- =?us-ascii?Q?pK3GhFNTmYwhxZQiTMwQRhTCd2gJh2aSUUpygvPK2UCwUDIyQw/w8MlvxnxJ?=
- =?us-ascii?Q?UAyfRpz7RdbKmQ9qnSe8NWy/ucZfiuB7EE+bRuLD/F5bQiV3YNt/h6cJjIjq?=
- =?us-ascii?Q?fFluR7ZqurNVXtkMxeCDEdXcRXez4DMaBPppM9zsE78LXZCcCTRRRB1fpfgf?=
- =?us-ascii?Q?54c7JRXX+YLWtjRNy4jGgx6FEo9h3kt9BzccnA5sinJ+Y7QjlfNDNpVfdb5A?=
- =?us-ascii?Q?2+xH5gF+PcbrfWs/HYOyThfrRk2dOKfFwU2b3aUt?=
+ =?us-ascii?Q?2pyDwBr0zsR+bvjheWRRLs5DZKPtRwQqO/aUtpv4oV6mWfwJOijjAIT/5m0p?=
+ =?us-ascii?Q?opXiAcyhy8nXYW85QxXbPGnW5D0JbcAVvegzXFxae0CWmdyBXx1pVYbGctFL?=
+ =?us-ascii?Q?lWTeGlkL7EnM7D1FPF/r79krQ4rroYNT+KuWsTfstS1CXBbleHFkW/NJP9yz?=
+ =?us-ascii?Q?bahW+ZCWZNbfy1ya/pMw0nLiuwp6thR6/hkS4MSpSKPRZnnFLI3fbNit/ZNn?=
+ =?us-ascii?Q?hAbLWVWImx1tPKWweGiSKjznrIekoUBhy3iwI7VvFEPnmcoNAeLyoO4K7KsT?=
+ =?us-ascii?Q?T9ryyFN6QHuCJjdlU0VZedTUC066Bp89ObYf+qu9LOtHLjFHQzTx80+ejVTt?=
+ =?us-ascii?Q?VAU9w7Pd51Xrp9fdjPunt0Q0hM8nWd9fcs/BVOJ2c2j2ki1CLgRgQ4eWEJFr?=
+ =?us-ascii?Q?Q73tq2xqKyfLQJhwtc4nhkgu+GlNJtjA1YM8Ce+mEk5wa1HjmY6/U5SPMsFr?=
+ =?us-ascii?Q?9cOLh+xQHfoIhhPO0m1CKBC0zKxnC7AdL0srJJnz7ZR8Io4eOxzJrxSIPTYA?=
+ =?us-ascii?Q?podjWsH8Trmk8d6NNmL5OE6vyljQlo16GTZ6Jzm3pNz6wufiVic6oiT3YTYF?=
+ =?us-ascii?Q?Ka5KbsHWA6KPbeLp82JWv8jlgHXksBAhctQoZPf436jXsEhNIe5hrnfxHsau?=
+ =?us-ascii?Q?4Bd/orDp4dqLq7knmSLpd6TTrDJktVo5GI9EKfTmI1OY1D4a38yOtYfu1tHg?=
+ =?us-ascii?Q?B5u3EqNTJUvbNX3EgEQ56izB+I0pKaJ81xpQq1a/K78oyeWQLd8p53vGXDnN?=
+ =?us-ascii?Q?YLQVmZ7BehHIn+xeFiMjt+LQrwVqPVPZIhrjOcAvYo8D/tk+ktQHZe+awi7s?=
+ =?us-ascii?Q?cehei9V0rlXXw+n0uI3qtdMrktZ7l4ALZOoD2u89bEBezul2A21cjxPkdbn0?=
+ =?us-ascii?Q?ZKUnH37BSbAHf6LK2mWdLQT26fMKf2fCDmrTWbFcUp3a2EwX3TrjFeYqfuOA?=
+ =?us-ascii?Q?OdnHqTx4VME+sOMhUTeR0pDPVE4UoAqVYLxiT5JffT/xvrRJUhGqZR/JyaA+?=
+ =?us-ascii?Q?717B/aNenTIH5op9pUWMtSRYd1mwr1YtL7g9Y7DTLi9hGQ1AsdrQABSOiboz?=
+ =?us-ascii?Q?gVKcltR0FvUi4xUXL3hSO9LYol/lGjfyRU6A0QO4aFDI8otU4glfqNHe7bl7?=
+ =?us-ascii?Q?Ib8b9Ivn55xosL1nUIOTNGCaMcVzvE8WOLwmJGCyA2GLZa9lFYceMk9WThpW?=
+ =?us-ascii?Q?7zpyEqMETJ2txCwoj6WtmsbsYXVANHgh4OV8KIU8/tc9seoaTPqEXFYBTS4B?=
+ =?us-ascii?Q?dOT7jEH+yabilaFreu9ci52/nm5fGBd3o99icxon00QdF88FrAt0THo3xYiB?=
+ =?us-ascii?Q?EcLG346wcItznIWzqU0m1FH1pEf8atDTU0x9GuBVy3JW6L/Gv8lRO/0oxeYG?=
+ =?us-ascii?Q?vlWk7airLc0qZegxBFBa1HnfntUNq3vBONIjze2bJkmqEDyBNixT3RnGlA4i?=
+ =?us-ascii?Q?ntiYrUhEkg/ONJ5sD7DHCD65Xs1sBPYCibnn2n9+nORahaJQ849QvyMDhRFh?=
+ =?us-ascii?Q?U0H8rWi5DIvuI2jfkJ0vLct501p+5RFLSTfWfryx/hKAeIWHjHpMC2LLn59H?=
+ =?us-ascii?Q?uhRe64VlXFiJYIS1A8iJ1GnkjjxEAGYmMpHiVsqi?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -111,33 +110,32 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 296d8b1c-360b-4d36-1c1c-08db8df150e6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jul 2023 15:59:38.6446
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cd38ec8-c557-4044-dba0-08db8df2ca08
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jul 2023 16:10:11.3672
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: txtrlGMIZj0AtCPTYbFwwGLFHI7CYgfo1P8YY67/lSt2SoXc2Rfe2MLoFARhrwH9hBOTULUub7l/8XE22hVsvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8119
+X-MS-Exchange-CrossTenant-userprincipalname: JDkjcX47acw/kr/G3l1U/2tas4LBSyPUaSwTYBbdARSPfHx7eOmibd1E5W6h9kfHczT9VFIeLzN8ExupoMDw3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8383
 
 
 
 > -----Original Message-----
 > From: Russell King <linux@armlinux.org.uk>
-> Sent: Wednesday, July 26, 2023 10:29 AM
+> Sent: Wednesday, July 26, 2023 10:09 AM
 > To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Vladimir Oltean <olteanv@gmail.com>; David S. Miller
-> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
-> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Maxime
-> Coquelin <mcoquelin.stm32@gmail.com>; Shawn Guo <shawnguo@kernel.org>;
-> dl-linux-imx <linux-imx@nxp.com>; Giuseppe Cavallaro
-> <peppe.cavallaro@st.com>; Alexandre Torgue <alexandre.torgue@foss.st.com>=
-;
-> Jose Abreu <joabreu@synopsys.com>; Sascha Hauer <s.hauer@pengutronix.de>;
-> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> <festevam@gmail.com>; netdev@vger.kernel.org; linux-stm32@st-md-
-> mailman.stormreply.com; linux-arm-kernel@lists.infradead.org;
-> imx@lists.linux.dev; Frank Li <frank.li@nxp.com>
+> Cc: David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Maxime Coquelin <mcoquelin.stm32@gmail.com>;
+> Shawn Guo <shawnguo@kernel.org>; dl-linux-imx <linux-imx@nxp.com>;
+> Giuseppe Cavallaro <peppe.cavallaro@st.com>; Alexandre Torgue
+> <alexandre.torgue@foss.st.com>; Jose Abreu <joabreu@synopsys.com>; Sascha
+> Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>;
+> netdev@vger.kernel.org; linux-stm32@st-md-mailman.stormreply.com; linux-
+> arm-kernel@lists.infradead.org; imx@lists.linux.dev; Frank Li <frank.li@n=
+xp.com>
 > Subject: Re: [EXT] Re: [PATCH] net: stmmac: dwmac-imx: pause the TXC cloc=
 k in
 > fixed-link
@@ -149,98 +147,130 @@ this
 > email' button
 >
 >
-> On Wed, Jul 26, 2023 at 03:10:19PM +0000, Shenwei Wang wrote:
-> > > if (of_phy_is_fixed_link(dwmac->dev->of_node)) {
+> On Wed, Jul 26, 2023 at 03:00:49PM +0000, Shenwei Wang wrote:
+> >
+> >
+> > > -----Original Message-----
+> > > From: Russell King <linux@armlinux.org.uk>
+> > > Sent: Tuesday, July 25, 2023 4:05 PM
+> > > To: Shenwei Wang <shenwei.wang@nxp.com>
+> > > Cc: David S. Miller <davem@davemloft.net>; Eric Dumazet
+> > > <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> > > <pabeni@redhat.com>; Maxime Coquelin <mcoquelin.stm32@gmail.com>;
+> > > Shawn Guo <shawnguo@kernel.org>; dl-linux-imx <linux-imx@nxp.com>;
+> > > Giuseppe Cavallaro <peppe.cavallaro@st.com>; Alexandre Torgue
+> > > <alexandre.torgue@foss.st.com>; Jose Abreu <joabreu@synopsys.com>;
+> > > Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> > > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>;
+> > > netdev@vger.kernel.org; linux-stm32@st-md-mailman.stormreply.com;
+> > > linux- arm-kernel@lists.infradead.org; imx@lists.linux.dev; Frank Li
+> > > <frank.li@nxp.com>
+> > > Subject: [EXT] Re: [PATCH] net: stmmac: dwmac-imx: pause the TXC
+> > > clock in fixed-link
+> > >
+> > > Caution: This is an external email. Please take care when clicking
+> > > links or opening attachments. When in doubt, report the message
+> > > using the 'Report this email' button
+> > >
+> > >
+> > > On Tue, Jul 25, 2023 at 02:49:31PM -0500, Shenwei Wang wrote:
+> > > > +static bool imx_dwmac_is_fixed_link(struct imx_priv_data *dwmac) {
+> > > > +     struct plat_stmmacenet_data *plat_dat;
+> > > > +     struct device_node *dn;
+> > > > +
+> > > > +     if (!dwmac || !dwmac->plat_dat)
+> > > > +             return false;
+> > > > +
+> > > > +     plat_dat =3D dwmac->plat_dat;
+> > > > +     dn =3D of_get_child_by_name(dwmac->dev->of_node, "fixed-link"=
+);
+> > > > +     if (!dn)
+> > > > +             return false;
+> > > > +
+> > > > +     if (plat_dat->phy_node =3D=3D dn || plat_dat->phylink_node =
+=3D=3D dn)
+> > > > +             return true;
+> > >
+> > > Why would the phy_node or the phylink_node ever be pointing at the
+> > > fixed-link node?
 > > >
 > >
-> > This does not help in this case. What I need to determine is if the PHY=
- currently
-> in use is a fixed-link.
-> > The dwmac DTS node may have multiple PHY nodes defined, including both
-> fixed-link and real PHYs.
+> > The logic was learned from the function of stmmac_probe_config_dt, and
+> > it normally save the phy handle to those two members: phy_node and
+> > phylink_node. But seems checking phy_node is enough here, right?
+> >
+> >         plat->phy_node =3D of_parse_phandle(np, "phy-handle", 0);
+> >
+> >         /* PHYLINK automatically parses the phy-handle property */
+> >         plat->phylink_node =3D np;
 >
-> ... and this makes me wonder what DT node structure you think would descr=
-ibe a
-> fixed-link.
+> So, plat->phy_node will never ever be equal to your "dn" above.
+> plat->phylink_node is the same as dwmac->dev->of_node above, and
+> so plat->phylink_node will never be your "dn" above either.
 >
-> A valid ethernet device node would be:
+> Those two together means that imx_dwmac_is_fixed_link() will _always_ ret=
+urn
+> false, and thus most of the code you're adding is rather useless.
 >
->         dwmac-node {
->                 phy-handle =3D <&phy1>;
->         };
+> It also means the code you're submitting probably hasn't been properly te=
+sted.
 >
-> In this case:
->         dwmac->dev->of_node points at "dwmac-node"
->         plat->phylink_node points at "dwmac-node"
->         plat->phy_node points at "phy1"
->         Your "dn" is NULL.
->         Therefore, your imx_dwmac_is_fixed_link() returns false.
->
->         dwmac-node {
->                 fixed-link {
->                         speed =3D <...>;
->                         full-duplex;
->                 };
->         };
->
-> In this case:
->         dwmac->dev->of_node points at "dwmac-node"
->         plat->phylink_node points at "dwmac-node"
->         plat->phy_node is NULL
->         Your "dn" points at the "fixed-link" node.
->         Therefore, your imx_dwmac_is_fixed_link() also returns false.
->
-> Now, as far as your comment "What I need to determine is if the PHY curre=
-ntly
-> in use is a fixed-link." I'm just going "Eh? What?" at that, because it m=
-akes zero
-> sense to me.
->
-> stmmac uses phylink. phylink doesn't use a PHY for fixed-links, unlike th=
-e old
-> phylib-based fixed-link implementation that software-emulated a clause-22=
- PHY.
-> With phylink, when fixed-link is specified, there is _no_ PHY.
-
-So you mean the fixed-link node will always be the highest priority to be u=
-sed in the phylink
-use case?  If so, I just need to check if there is a fixed-link node as Vla=
-dimir pointed out, right?
-
->
-> There is no need to do any of this poking about to determine if the link =
-that is
-> being brought up is a fixed-link or not, because phylink's callbacks into=
- the MAC
-> driver already contain this information in the "mode" argument. However, =
-that
-> is not passed to the driver's internal
-> priv->plat->fix_mac_speed() method - but this is the information you
-> need.
+> Have you confirmed that imx_dwmac_is_fixed_link() will actually return tr=
+ue in
+> your testing? Under what conditions did your testing reveal a true return=
+ value
+> from this function?
 >
 
-Yes, you are right. The best way is to change the fix_mac_speed prototype b=
-ut it
-will change several other platforms. That's why I didn't go that way.
+We can't make that assumption. In my testing code, I had trace statements i=
+n that
+section to indicate the code was actually executed. You may get some clues =
+from the following DTS:
+
++&eqos {
++       pinctrl-names =3D "default";
++       pinctrl-0 =3D <&pinctrl_eqos_rgmii>;
++       phy-mode =3D "rgmii-rxid";
++       phy-handle =3D <&fixed0>;
++       status =3D "okay";
++
++       fixed0: fixed-link {
++               speed =3D <1000>;
++               full-duplex;
++       };
++
++       mdio {
++               compatible =3D "snps,dwmac-mdio";
++               #address-cells =3D <1>;
++               #size-cells =3D <0>;
++               clock-frequency =3D <2500000>;
++
++               phy0: ethernet-phy@8 {
++                       reg =3D <0x8>;
++                       max-speed =3D <100>;
++                       #address-cells =3D <1>;
++                       #size-cells =3D <0>;
++
++                       phy1: ethernet-phy@9 {
++                               reg =3D <0x9>;
++                               max-speed =3D <100>;
++                       };
++               };
+...
+
 
 Thanks,
 Shenwei
 
-> There is no need to write code to try and second-guess this, phylink tell=
-s drivers
-> what mode it is operating under.
->
-> stmmac really needs to be cleaned up - and really doesn't need more compl=
-exity
-> when the information is already being provided to the driver.
->
+
+
 > --
 > RMK's Patch system:
 > https://www.ar/
 > mlinux.org.uk%2Fdeveloper%2Fpatches%2F&data=3D05%7C01%7Cshenwei.wang
-> %40nxp.com%7C3d20eec67cbe49ecdbf008db8ded1aab%7C686ea1d3bc2b4c6fa
-> 92cd99c5c301635%7C0%7C0%7C638259821712485867%7CUnknown%7CTWFp
-> bGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6
-> Mn0%3D%7C3000%7C%7C%7C&sdata=3DpMle7Mu4ed57Qjf7DR2PPQ67F5oKq9qr
-> GRG%2BNMpSMDM%3D&reserved=3D0
+> %40nxp.com%7C2793017863ea494fd07808db8dea50c3%7C686ea1d3bc2b4c6f
+> a92cd99c5c301635%7C0%7C0%7C638259809734982456%7CUnknown%7CTWF
+> pbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6
+> Mn0%3D%7C3000%7C%7C%7C&sdata=3D1HZj6eDR1nNvep6S9OXlg%2BbhbekGKjS
+> AWvw2LYEa9Ig%3D&reserved=3D0
 > FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
