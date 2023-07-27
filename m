@@ -1,236 +1,238 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2069.outbound.protection.outlook.com [40.107.22.69])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA43E18023
-	for <imx@lists.linux.dev>; Thu, 27 Jul 2023 15:25:41 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ACnDVclZpu3PdlECoxLgg0d/OUaNUMULAMnObIwE9GJ5B3DvdIXxDm8d/WbEWplRI09hLQQW2r+BERzJW0OVNF9u4PH4Ecs19acK38tXywfh9eZ3wqZKwiykESVHs7STbaTsTOGnVNqdn6EAGYCeELfWDZ4tv+yUO05UyfZrgN/Lvv9pPvrx55HVklUz/Aks9CQEzL+8vsWY13SVYvzcWs5a7JkG28kPXa5fWSKznYZaRiZIBWATQp4ykRRB+RJdVXtXrEKuotkDF5xFJm9zFnnJnD3/p7+70d5FjtfuVxk9YAY1umZnXzw8IORPu/AjBfYzDqcrRaGn9M70sQOdBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DnGeXiHXIDBm7s0zSh+ex4FGI2w1k84IOe+fdQrfUQc=;
- b=cbnGmkzgve2FUitgBvD8AdS3aak4+91PnRIE3x4dIzE9rkATVpCLZVkkdD3GefVS9fCspF2huNoFpVV47wbjZQYrvn12kq60IGfXCviAOIlD/+p16FnVc+NrTGVa0j6GW5eKNOaxToKaeagbZdfOZpqH8P/TPnR4c8YaJZPOmYmSlOO01Vdhp0LfPwNKcQv5BGhrymN/njddRqh30OLEZfzUrbkd1HDn2AFGSdpnvShp1aUmF6BtgvAm2cDm+vHu683ECv2wRTEIze3hqOqluqrTutb4anDHpAuZj4nl7wsKfY5BSV6erE1XD1j5s9ARrDgr6lOYG2SXoVNnGXOi5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DnGeXiHXIDBm7s0zSh+ex4FGI2w1k84IOe+fdQrfUQc=;
- b=d9vYQWTtuSUvJ3Cc+ToihoGfgttG1ppFD+9pKfp7IW4zlxzR3pZvTpS6sLqezLxk+MmMJ6ywv7lzzBvs/0RLyAuN8WsE/xZCgUD4z6BnNvNMKV/JInkgRdlyg1VEqoDDCF5I78TzYBgpdEph5V6TqML0QH7ApFvcjw8L/NQHe/Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM9PR04MB8257.eurprd04.prod.outlook.com (2603:10a6:20b:3b6::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Thu, 27 Jul
- 2023 15:25:39 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671%3]) with mapi id 15.20.6631.026; Thu, 27 Jul 2023
- 15:25:39 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>
-Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Simon Horman <simon.horman@corigine.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Wong Vee Khee <veekhee@apple.com>,
-	Revanth Kumar Uppala <ruppala@nvidia.com>,
-	Jochen Henneberg <jh@henneberg-systemdesign.com>,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	imx@lists.linux.dev,
-	Frank Li <frank.li@nxp.com>
-Subject: [PATCH v2 net 2/2] net: stmmac: dwmac-imx: pause the TXC clock in fixed-link
-Date: Thu, 27 Jul 2023 10:25:03 -0500
-Message-Id: <20230727152503.2199550-3-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230727152503.2199550-1-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D27127
+	for <imx@lists.linux.dev>; Thu, 27 Jul 2023 18:36:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690483012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y/ZOuF37rEmg7dV7sW7i6E+d7yQkyDTk71SeAdCrRk4=;
+	b=jVjvLaBXpzVwHghqCHJkmsyGEvdJx2AfNiheZbvjqDezQ2UavMI6ivbF9jv6OpklQjPViV
+	Rn3YgB1sF9k5uGKot6BEceDFDcKep0qOmwwW/mFIIS6To0FNh4JrmjBGD18ial0QphWtGd
+	V+zoOSGm2vobHT2bY0heaHET5j4uE3c=
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
+ [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-282-uxrZ7Yj0M3q3XQfUQ6xjJw-1; Thu, 27 Jul 2023 14:36:49 -0400
+X-MC-Unique: uxrZ7Yj0M3q3XQfUQ6xjJw-1
+Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-4864ca4e19dso324691e0c.3
+        for <imx@lists.linux.dev>; Thu, 27 Jul 2023 11:36:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690483009; x=1691087809;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y/ZOuF37rEmg7dV7sW7i6E+d7yQkyDTk71SeAdCrRk4=;
+        b=LrdGDPnOwDHQYuko6MdWTq9q2FxbeUCZH0hJy+tJG6Mn9uNQBYQ4B9SGRtuwJTIOTo
+         nhdMypvCsd3q1SNMXmJHFktfzsTxHvl/VPs4EerGmNNdGJiaSrKDot3kU0E9RXKEQlvj
+         gmk15xxeY6IN834ZknLEVgXbJ32zO9Z+e5ktqMzpKzBjHlg1CTeavvp8MDgP5XQzubo7
+         TVZRC5HrlhU6m8gO6AWU+52G73hE6AHvICb4Zo0dvTFbm2/k8gV0nrSNRXC300yOQyBh
+         R/ky6pN8KfQWkkgUe1ycMZnMY1ireJanwEtDnORoLBXRXICip9UlGZXgP0YkiBqnfOEx
+         LI/A==
+X-Gm-Message-State: ABy/qLZdjaN7Y1T8UwT793D7fvLKfx5NLFXkt1bkJQMpr5+sUM8ZKJN8
+	wj4Gmgf5GMqsE7Etf1ifoLduAt5DuELCKjAVghTJQYJWyyVXpw2OP/8iY5cXv6OekxWnz3Imx7C
+	Fm23SnTtj+9OS
+X-Received: by 2002:a1f:5f03:0:b0:486:4c0e:9ae5 with SMTP id t3-20020a1f5f03000000b004864c0e9ae5mr376073vkb.13.1690483008997;
+        Thu, 27 Jul 2023 11:36:48 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE53Gop5/7fuUY1ixEZawAnKaFZZ1nwoAdNLa3rzIVQi83+W1FiA0MBHmhVRBUb5DmjYcHCnQ==
+X-Received: by 2002:a1f:5f03:0:b0:486:4c0e:9ae5 with SMTP id t3-20020a1f5f03000000b004864c0e9ae5mr376063vkb.13.1690483008694;
+        Thu, 27 Jul 2023 11:36:48 -0700 (PDT)
+Received: from fedora ([2600:1700:1ff0:d0e0::17])
+        by smtp.gmail.com with ESMTPSA id c3-20020a0ce143000000b0063d32f515bbsm602059qvl.127.2023.07.27.11.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jul 2023 11:36:48 -0700 (PDT)
+Date: Thu, 27 Jul 2023 13:36:45 -0500
+From: Andrew Halaney <ahalaney@redhat.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Vinod Koul <vkoul@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Bhupesh Sharma <bhupesh.sharma@linaro.org>, Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, 
+	Simon Horman <simon.horman@corigine.com>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Wong Vee Khee <veekhee@apple.com>, Revanth Kumar Uppala <ruppala@nvidia.com>, 
+	Jochen Henneberg <jh@henneberg-systemdesign.com>, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	imx@lists.linux.dev, Frank Li <frank.li@nxp.com>
+Subject: Re: [PATCH v2 net 2/2] net: stmmac: dwmac-imx: pause the TXC clock
+ in fixed-link
+Message-ID: <4govb566nypifbtqp5lcbsjhvoyble5luww3onaa2liinboguf@4kgihys6vhrg>
 References: <20230727152503.2199550-1-shenwei.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0284.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::19) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+ <20230727152503.2199550-3-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AM9PR04MB8257:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2406c8b9-6464-4d13-73b7-08db8eb5bb6f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	1HzAltImfwT2KWSEyKjTvWw93tLTtwwvGXKhw0yyubT6Fh4A3EP/pofhnHUqpifCqw2SE/+Z1osEhJmBLKZVrl4GTJrabRWkUzv9asLUilS3n9bJNoT5n9+3G54GPkYTFl2OUiGhzN3198xTGipXHD2kT++CrEganp+t3hyoaeMEjs5H842P7qHS5lRXa89LveH+wYLANUoQ1Ivtv8TtMW68yapKeW82n8Qo8nRf79XK2aU9xX6QwAUFdxRA1qE+ghvCg4iroXl7qoKVg8o7ycacGosi+s0mR+mNmL6V0SHjdRy54xV2ble2ezq+5VSERhqtsT74e8LbHJe/81b9iBOKZx8y7zFvPvyRpIvju7dk3pXUXJgyWm6za+/XKTJkkMAr57NDEBYuQ6Sq0ZGl4pcNSqKfQcPK6/nJ5JLia/FB0jkds3G7HmmJSahUP1yvd+HgxIq8uiuvjO4kkRpaotMH2D3kXHi0gFk+zEYOdzhF8GxsAZju9yxMp1U9ksUMIn46rLxMB4u/LhVMXYop2bEOuPV721iTkjP/+hghttSwGhW1nxaTMY6FlzYVXIEuTUtYqzA/gEwjYjOx9bwTA1U7Ag91uTm1lxIce7xmz42Nfw95QczzwdDwAxrgcP8X2Uzyrw5lP8cC6kiZwSGTtQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(366004)(346002)(396003)(136003)(451199021)(316002)(2906002)(8676002)(8936002)(7416002)(7406005)(5660300002)(41300700001)(44832011)(36756003)(86362001)(6506007)(26005)(6512007)(1076003)(55236004)(6666004)(921005)(478600001)(52116002)(6486002)(83380400001)(186003)(2616005)(4326008)(66476007)(38350700002)(66556008)(38100700002)(54906003)(110136005)(66946007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qiWK1I4S9TV3jFnT3UlhNIfhqxYTgRO2uJ32epQdKzr7vdvJi8Tzik2CmV4Y?=
- =?us-ascii?Q?l/24b600tFS0AF5RNGYkMM/pyq+gp81CTSKYwlWfr6t+aO+asRMxw/mow+am?=
- =?us-ascii?Q?JVt5fpmWBtZPCiK+pTYTsNR8eRa1zE/Uig2Kl4iqh7iamZrxIq3t917T5nXl?=
- =?us-ascii?Q?o/tCUhGGVZnAX6RKbl0xFy22bl60tw9J1Z1jakt0AaEoji97aBREHIjfQkIA?=
- =?us-ascii?Q?qCRW7okx1nKajS6unHddfvsbp8Ur6zdhGXG06zrhaJfSJ6OmjSHKQ5Ucu+0O?=
- =?us-ascii?Q?xoszgjxz7JAnLaINg+kUIDU/oZxjF6X6j++a9Jl8llLfCK0kwsT14u6W3EvH?=
- =?us-ascii?Q?LGMJn5JS9qxG5kZvVmMHQcHHVPguVtwz5RCDwxyUpB+3cfy6pGyjgrsaSHmT?=
- =?us-ascii?Q?AUirMm0brqifcrhghaKo6MmZ0s26tP0ZrOIubHHr3bf/j+w/od+IPK619kvT?=
- =?us-ascii?Q?GCDUHLRoefa4VAhjRmG+WcbCYYrWR9QL8sm0waAUZJa0IGpCtYTTNTcmFOsw?=
- =?us-ascii?Q?/bj7AreVVG1jW9/Lwt9CPKTmlVzCdBdYS14yo1av/7/7XocHVAGRFyZp2NhJ?=
- =?us-ascii?Q?teUdWQwgEo+z/iJvj3+UTs0+I+MY/BFEqf5Yd9l7AJ2FhEVUe3dEA2DxLulE?=
- =?us-ascii?Q?mumdDFbrYNvF29SgWQzZ2/W9PQMu0DDvF/3c5V0KkLkQuSnHeEwR+ZD8+oo7?=
- =?us-ascii?Q?/RzQGCsywabElxLjE0NKufKDWmKgiGCAfvWqqwVOsx87m12uqFLUgOZaDItL?=
- =?us-ascii?Q?l9TNMJkjE84lzIZyWVZKBMYi6+j9veX+bMZKjaqudU2I/n7MUfVOW6BFnWE4?=
- =?us-ascii?Q?gSQpPtOI+n3cY0OUuXr78ee9XHnqHeWhmq/cD0zfJ8mzcB9RLzyooKi/ow1c?=
- =?us-ascii?Q?z75ADkslTVZPmH/C2ig1ME7WPuZTKnUYBxMGoXsjuigQIxYn82qxLNFZo8XY?=
- =?us-ascii?Q?p7KdIET06HlQ5WLsJ9QHmOiQ7TLrJKrDK0I6H+1aA1oWlnPqeNHG+v82p2Tj?=
- =?us-ascii?Q?Ni4DrA4ioHaDF3mKK0Z2TF5jMGZLSFjoIqOKx32/S8+j/FfsKEj/uYxj+7Pw?=
- =?us-ascii?Q?aQsK/lupW4b/CY3sIQSzskzvb1+cDgVehS3UBVtJcW3XGIR5R6nuUD2RJS+x?=
- =?us-ascii?Q?7WprR1yFAxyBNBXrRkFoPB3YxDMJLY7ecnJYzQvR6xAQoquTJMNcMBO+fAtL?=
- =?us-ascii?Q?CymIz6DejAgvr9wjmESuHybjKrpB/bgt+tW7efetA3PkHHI4MQHFN9D+DIGZ?=
- =?us-ascii?Q?MPPXzeDNZJjxrPGpGjeAfFxo4qVyTUgdMipp68nhergjmKbbzI53wfh9QL/a?=
- =?us-ascii?Q?hNRJBgYoYRXu9Bk3W2E8mqPAAiAg0ED0F3Ra2FOQS0TxUwauADp1OlnABjxe?=
- =?us-ascii?Q?MtbkmQSCW4SCLlra369WeJkQkJ0I3/pyPryIcdMT6O0A0cPUgUvM3D8IUIjc?=
- =?us-ascii?Q?Qqb0uU2GzpZXZUwfMZkvosGQUI3soUOC6A6igJvxCor43EcWNzrRlZZEi+hx?=
- =?us-ascii?Q?GVLCrV5FnRreDb85d3OmouGO/CUSI41fVLLp113anLbYG5uiuauB2keQkrIj?=
- =?us-ascii?Q?6GxQeN4F3IrVGBqgS7LW+oketmrhEJSoyM7Qyy1D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2406c8b9-6464-4d13-73b7-08db8eb5bb6f
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2023 15:25:38.9832
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oZqQqDflAO/+LocWExD9G9Fnw5JoKJCmrjMOtwBNuNVYSovyGQDgMJcLuhHNkafG8j7VQhNzYaE3ArNfiN4Z+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8257
+In-Reply-To: <20230727152503.2199550-3-shenwei.wang@nxp.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When using a fixed-link setup, certain devices like the SJA1105 require a
-small pause in the TXC clock line to enable their internal tunable
-delay line (TDL).
+On Thu, Jul 27, 2023 at 10:25:03AM -0500, Shenwei Wang wrote:
+> When using a fixed-link setup, certain devices like the SJA1105 require a
+> small pause in the TXC clock line to enable their internal tunable
+> delay line (TDL).
+> 
+> To satisfy this requirement, this patch temporarily disables the TX clock,
+> and restarts it after a required period. This provides the required
+> silent interval on the clock line for SJA1105 to complete the frequency
+> transition and enable the internal TDLs.
+> 
+> So far we have only enabled this feature on the i.MX93 platform.
+> 
 
-To satisfy this requirement, this patch temporarily disables the TX clock,
-and restarts it after a required period. This provides the required
-silent interval on the clock line for SJA1105 to complete the frequency
-transition and enable the internal TDLs.
+I'd just like to highlight that because of a quirk (I think this is not
+standard) in the particular connected switch on a board you're making the
+whole "fsl,imx93" platform (compatible) implement said switch quirk.
 
-So far we have only enabled this feature on the i.MX93 platform.
+If you don't think there's any harm in doing that for other fixed-link
+scenarios, that's fine I suppose... but just highlighting that.
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Reviewed-by: Frank Li <frank.li@nxp.com>
----
- .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 45 +++++++++++++++++++
- 1 file changed, 45 insertions(+)
+I have no idea at a higher level how else you'd tackle this. You could
+add a dt property for this, but I also don't love that you'd probably
+encode it in the MAC (maybe in the fixed-link description it would be
+more attractive). At least as a dt property it isn't unconditional.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 53ee5a42c071..e7819960128e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -40,6 +40,9 @@
- #define DMA_BUS_MODE			0x00001000
- #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
- #define RMII_RESET_SPEED		(0x3 << 14)
-+#define MII_RESET_SPEED			(0x2 << 14)
-+#define RGMII_RESET_SPEED		(0x0 << 14)
-+#define CTRL_SPEED_MASK			(0x3 << 14)
- 
- struct imx_dwmac_ops {
- 	u32 addr_width;
-@@ -56,6 +59,7 @@ struct imx_priv_data {
- 	struct regmap *intf_regmap;
- 	u32 intf_reg_off;
- 	bool rmii_refclk_ext;
-+	void __iomem *base_addr;
- 
- 	const struct imx_dwmac_ops *ops;
- 	struct plat_stmmacenet_data *plat_dat;
-@@ -212,6 +216,44 @@ static void imx_dwmac_fix_speed(void *priv, uint speed, uint mode)
- 		dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
- }
- 
-+static void imx_dwmac_fix_speed_mx93(void *priv, uint speed, uint mode)
-+{
-+	struct imx_priv_data *dwmac = priv;
-+	int ctrl, old_ctrl, iface;
-+
-+	imx_dwmac_fix_speed(priv, speed, mode);
-+
-+	if (!dwmac || mode != MLO_AN_FIXED)
-+		return;
-+
-+	if (regmap_read(dwmac->intf_regmap, dwmac->intf_reg_off, &iface))
-+		return;
-+
-+	iface &= MX93_GPR_ENET_QOS_INTF_MODE_MASK;
-+	old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
-+	ctrl = old_ctrl & ~CTRL_SPEED_MASK;
-+
-+	/* by default ctrl will be RGMII */
-+	if (iface == MX93_GPR_ENET_QOS_INTF_SEL_RMII)
-+		ctrl |= RMII_RESET_SPEED;
-+	if (iface == MX93_GPR_ENET_QOS_INTF_SEL_MII)
-+		ctrl |= MII_RESET_SPEED;
-+
-+	writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
-+
-+	/* Ensure the settings for CTRL are applied */
-+	wmb();
-+
-+	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
-+			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, 0);
-+	usleep_range(50, 100);
-+	iface |= MX93_GPR_ENET_QOS_CLK_GEN_EN;
-+	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
-+			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, iface);
-+
-+	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
-+}
-+
- static int imx_dwmac_mx93_reset(void *priv, void __iomem *ioaddr)
- {
- 	struct plat_stmmacenet_data *plat_dat = priv;
-@@ -317,8 +359,11 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->exit = imx_dwmac_exit;
- 	plat_dat->clks_config = imx_dwmac_clks_config;
- 	plat_dat->fix_mac_speed = imx_dwmac_fix_speed;
-+	if (of_machine_is_compatible("fsl,imx93"))
-+		plat_dat->fix_mac_speed = imx_dwmac_fix_speed_mx93;
- 	plat_dat->bsp_priv = dwmac;
- 	dwmac->plat_dat = plat_dat;
-+	dwmac->base_addr = stmmac_res.addr;
- 
- 	ret = imx_dwmac_clks_config(dwmac, true);
- 	if (ret)
--- 
-2.34.1
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> Reviewed-by: Frank Li <frank.li@nxp.com>
+> ---
+>  .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> index 53ee5a42c071..e7819960128e 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> @@ -40,6 +40,9 @@
+>  #define DMA_BUS_MODE			0x00001000
+>  #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
+>  #define RMII_RESET_SPEED		(0x3 << 14)
+> +#define MII_RESET_SPEED			(0x2 << 14)
+> +#define RGMII_RESET_SPEED		(0x0 << 14)
+> +#define CTRL_SPEED_MASK			(0x3 << 14)
+
+GENMASK() would be cleaner, as well as BIT() usage, but I do see
+the driver currently does shifts.. so /me shrugs
+
+>  
+>  struct imx_dwmac_ops {
+>  	u32 addr_width;
+> @@ -56,6 +59,7 @@ struct imx_priv_data {
+>  	struct regmap *intf_regmap;
+>  	u32 intf_reg_off;
+>  	bool rmii_refclk_ext;
+> +	void __iomem *base_addr;
+>  
+>  	const struct imx_dwmac_ops *ops;
+>  	struct plat_stmmacenet_data *plat_dat;
+> @@ -212,6 +216,44 @@ static void imx_dwmac_fix_speed(void *priv, uint speed, uint mode)
+>  		dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
+>  }
+>  
+> +static void imx_dwmac_fix_speed_mx93(void *priv, uint speed, uint mode)
+> +{
+> +	struct imx_priv_data *dwmac = priv;
+> +	int ctrl, old_ctrl, iface;
+> +
+> +	imx_dwmac_fix_speed(priv, speed, mode);
+> +
+> +	if (!dwmac || mode != MLO_AN_FIXED)
+> +		return;
+> +
+> +	if (regmap_read(dwmac->intf_regmap, dwmac->intf_reg_off, &iface))
+> +		return;
+> +
+> +	iface &= MX93_GPR_ENET_QOS_INTF_MODE_MASK;
+> +	old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
+> +	ctrl = old_ctrl & ~CTRL_SPEED_MASK;
+> +
+> +	/* by default ctrl will be RGMII */
+> +	if (iface == MX93_GPR_ENET_QOS_INTF_SEL_RMII)
+> +		ctrl |= RMII_RESET_SPEED;
+> +	if (iface == MX93_GPR_ENET_QOS_INTF_SEL_MII)
+> +		ctrl |= MII_RESET_SPEED;
+
+I see that ctrl right now would select RGMII, but I think it would
+read more clearly if you handled it and made the above an
+if/else if/else statement (since they're exclusive of eachother)
+vs two independent if's.
+
+> +
+> +	writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
+> +
+> +	/* Ensure the settings for CTRL are applied */
+> +	wmb();
+
+I saw this and recently have been wondering about this sort of pattern
+(not an expert on this). From what I can tell it seems reading the
+register back is the preferred pattern to force the write out. The above works,
+but it feels to me personally akin to how local_lock()
+in the kernel is a more fine grained mechanism than using
+preempt_disable(). But that's pretty opinionated. See device-io.rst
+and io_ordering.rst for how I came to that conclusion.
+
+> +
+> +	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
+> +			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, 0);
+> +	usleep_range(50, 100);
+> +	iface |= MX93_GPR_ENET_QOS_CLK_GEN_EN;
+> +	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
+> +			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, iface);
+> +
+> +	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
+> +}
+
+I don't have any documentation for the registers here, and as you can
+see I'm an amateur with respect to memory ordering based on my prior
+comment.
+
+But you:
+
+    1. Read intf_reg_off into variable iface
+    2. Write the RESET_SPEED for the appropriate mode to MAC_CTRL_REG
+    3. wmb() to ensure that write goes through
+    4. Read intf_reg_off (regmap_update_bits())
+    5. Write 0 to MX93_GPR_ENET_QOS_INTF_MODE_MASK within intf_reg_off (regmap_update_bits())
+    6. Sleep for 50-100 us
+    7. Read intf_reg_off (regmap_update_bits())
+    8. Write MX93_GPR_ENET_QOS_CLK_GEN_EN | iface (from 1) to
+       MX93_GPR_ENET_QOS_INTF_MODE_MASK within intf_reg_off (regmap_update_bits())
+
+I don't know what those bits do, but your description sounds like you
+are trying to stop the clock for 50-100 us. In your code, if I
+understand the memory ordering correctly, both of the following could
+occur:
+
+    1. Write RESET_SPEED
+    2. Write 0 to MX93_GPR_ENET_QOS_INTF_MODE_MASK
+    3. sleep
+    4. Restore MX93_GPR_ENET_QOS_CLK_GEN_EN | iface
+
+    or
+
+    1. Write RESET_SPEED
+    2. sleep
+    3. Write 0 to MX93_GPR_ENET_QOS_INTF_MODE_MASK
+    4. Restore MX93_GPR_ENET_QOS_CLK_GEN_EN | iface
+
+is the latter acceptable to you, or does that wmb() (or alternative)
+need to move? It seems to me only the first situation would stop
+the clock before sleeping, but that's going off the names in this driver
+only.
+
+In either case, shouldn't regmap_update_bits() force a
+read of said bits, which would remove the need for that wmb() altogether
+to synchronize the two writes?
 
