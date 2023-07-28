@@ -1,149 +1,297 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69531C06
-	for <imx@lists.linux.dev>; Fri, 28 Jul 2023 15:23:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=zFaTvjva0ryo1dGvlmwD9YwRXLb5KCK4M2vuVLGCmtY=; b=R648ApYvuLp9TRmpig3RK00k45
-	iwo/6SoqI2MGew0WOsD/C0Pmrd8pPKAp71PCdAHyf3DtaYQsTPecUkOn3Ka5apKAjNYX6GLNVerk9
-	FFE1jTiLl2rSU5G3jkLo1oh6P7XcoETkQj9jfhD9f6wgdOzCB8UBP3/wJV0846kRjE/XAE2JhyHZH
-	17FIB6eRR571XIYccm02B92tb7uFK5y7rI/XX8k2I4Kqoh8AAR60xEZyV2pvw8TPmoHWD372yIBE8
-	vccayBxsZXU4StXzIKMWl3/WmbHP3Z2Iz5Jy/oCU3DexPI5jEKpOQOtuhgX3I+d6ZmBAypVpilYa/
-	+TG9D+Kw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34660)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1qPPIQ-0007Qe-2c;
-	Fri, 28 Jul 2023 16:22:26 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1qPPIJ-00051L-6E; Fri, 28 Jul 2023 16:22:19 +0100
-Date: Fri, 28 Jul 2023 16:22:19 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Halaney <ahalaney@redhat.com>, Will Deacon <will@kernel.org>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>, Vinod Koul <vkoul@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Simon Horman <simon.horman@corigine.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Wong Vee Khee <veekhee@apple.com>,
-	Revanth Kumar Uppala <ruppala@nvidia.com>,
-	Jochen Henneberg <jh@henneberg-systemdesign.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
-	Frank Li <frank.li@nxp.com>
-Subject: Re: [PATCH v2 net 2/2] net: stmmac: dwmac-imx: pause the TXC clock
- in fixed-link
-Message-ID: <ZMPdKyOtpZKEMLsO@shell.armlinux.org.uk>
-References: <20230727152503.2199550-1-shenwei.wang@nxp.com>
- <20230727152503.2199550-3-shenwei.wang@nxp.com>
- <4govb566nypifbtqp5lcbsjhvoyble5luww3onaa2liinboguf@4kgihys6vhrg>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2792013FFD
+	for <imx@lists.linux.dev>; Fri, 28 Jul 2023 15:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533CAC433C8;
+	Fri, 28 Jul 2023 15:32:43 +0000 (UTC)
+Date: Fri, 28 Jul 2023 21:02:38 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: lorenzo.pieralisi@arm.com, bhelgaas@google.com,
+	devicetree@vger.kernel.org, gustavo.pimentel@synopsys.com,
+	helgaas@kernel.org, imx@lists.linux.dev, kw@linux.com,
+	leoyang.li@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, mani@kernel.org, minghuan.lian@nxp.com,
+	mingkai.hu@nxp.com, robh+dt@kernel.org, roy.zang@nxp.com,
+	shawnguo@kernel.org, zhiqiang.hou@nxp.com
+Subject: Re: [PATCH v5 1/2] PCI: dwc: Implement general suspend/resume
+ functionality for L2/L3 transitions
+Message-ID: <20230728153238.GA4719@thinkpad>
+References: <20230724215830.2253112-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4govb566nypifbtqp5lcbsjhvoyble5luww3onaa2liinboguf@4kgihys6vhrg>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230724215830.2253112-1-Frank.Li@nxp.com>
 
-On Thu, Jul 27, 2023 at 01:36:45PM -0500, Andrew Halaney wrote:
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> > index 53ee5a42c071..e7819960128e 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> > @@ -40,6 +40,9 @@
-> >  #define DMA_BUS_MODE			0x00001000
-> >  #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
-> >  #define RMII_RESET_SPEED		(0x3 << 14)
-> > +#define MII_RESET_SPEED			(0x2 << 14)
-> > +#define RGMII_RESET_SPEED		(0x0 << 14)
-> > +#define CTRL_SPEED_MASK			(0x3 << 14)
+On Mon, Jul 24, 2023 at 05:58:29PM -0400, Frank Li wrote:
+> Introduced helper function dw_pcie_get_ltssm to retrieve SMLH_LTSS_STATE.
+> Added API pme_turn_off and exit_from_l2 for managing L2/L3 state transitions.
 > 
-> GENMASK() would be cleaner, as well as BIT() usage, but I do see
-> the driver currently does shifts.. so /me shrugs
-
-BIT() is only useful for single-bit items, not for use with bitfields,
-and their use with bitfields just makes the whole thing perverse.
-
-#define CTRL_SPEED_MASK		GENMASK(15, 14)
-#define CTRL_SPEED_RGMII_RESET	0
-#define CTRL_SPEED_MII_RESET	2
-#define CTRL_SPEED_RMII_RESET	3
-
-and then its use:
-
-	FIELD_PREP(CTRL_SPEED_MASK, CTRL_SPEED_RGMII_RESET)
-or
-	FIELD_PREP(CTRL_SPEED_MASK, CTRL_SPEED_MII_RESET)
-or
-	FIELD_PREP(CTRL_SPEED_MASK, CTRL_SPEED_RMII_RESET)
-
-alternatively:
-
-        if (iface == MX93_GPR_ENET_QOS_INTF_SEL_RMII)
-                speed = CTRL_SPEED_RMII_RESET;
-        else (iface == MX93_GPR_ENET_QOS_INTF_SEL_MII)
-                speed = CTRL_SPEED_MII_RESET;
-	else
-		speed = CTRL_SPEED_RGMII_RESET;
-
-	old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
-	ctrl = old_ctrl & ~CTRL_SPEED_MASK;
-	ctrl |= FIELD_PREP(CTRL_SPEED_MASK, speed);
-	writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
-
-> I don't have any documentation for the registers here, and as you can
-> see I'm an amateur with respect to memory ordering based on my prior
-> comment.
+> Typical L2 entry workflow:
 > 
-> But you:
+> 1. Transmit PME turn off signal to PCI devices and wait for PME_To_Ack.
+> 2. Await link entering L2_IDLE state.
+> 3. Transition Root complex to D3 state.
 > 
->     1. Read intf_reg_off into variable iface
->     2. Write the RESET_SPEED for the appropriate mode to MAC_CTRL_REG
->     3. wmb() to ensure that write goes through
+> Typical L2 exit workflow:
+> 
+> 1. Transition Root complex to D0 state.
+> 2. Issue exit from L2 command.
+> 3. Reinitialize PCI host.
+> 4. Wait for link to become active.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v4 to v5:
+> - Closes: https://lore.kernel.org/oe-kbuild-all/202307211904.zExw4Q8H-lkp@intel.com/
+> Change from v3 to v4:
+> - change according to Manivannan's comments.
+>   I hope I have not missed anything. quite long discuss thread
+> Change from v2 to v3:
+> - Basic rewrite whole patch according rob herry suggestion.
+>   put common function into dwc, so more soc can share the same logic.
+> 
+>  .../pci/controller/dwc/pcie-designware-host.c | 95 +++++++++++++++++++
+>  drivers/pci/controller/dwc/pcie-designware.h  | 28 ++++++
+>  2 files changed, 123 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 9952057c8819..031e1f9c0d0c 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -8,6 +8,7 @@
+>   * Author: Jingoo Han <jg1.han@samsung.com>
+>   */
+>  
+> +#include <linux/iopoll.h>
+>  #include <linux/irqchip/chained_irq.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/msi.h>
+> @@ -807,3 +808,97 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+> +
+> +/*
+> + * This resemble the pci_set_power_state() interfaces, but these are for
 
-I wonder about whether that wmb() is required. If the mapping is
-device-like rather than memory-like, the write should be committed
-before the read that regmap_update_bits() does according to the ARM
-memory model. Maybe a bit of information about where this barrier
-has come from would be good, and maybe getting it reviewed by the
-arm64 barrier specialist, Will Deacon. :)
+s/interfaces/API
+s/these are/this is
 
-wmb() is normally required to be paired with a rmb(), but we're not
-talking about system memory here, so I also wonder whether wmb() is
-the correct barrier to use.
+> + * configuring host controllers, which are bridges *to* PCI devices but
+> + * are not PCI devices themselves.
+> + */
+> +static void dw_pcie_set_dstate(struct dw_pcie *pci, pci_power_t dstate)
+> +{
+> +	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_PM);
+> +	u16 val;
+> +
+> +	val = dw_pcie_readw_dbi(pci, offset + PCI_PM_CTRL);
+> +	val &= ~PCI_PM_CTRL_STATE_MASK;
+> +	val |= ((u16 __force)dstate) & PCI_PM_CTRL_STATE_MASK;
 
-Adding Will.
+Why can't just,
+
+val |= dstate;
+
+> +	dw_pcie_writew_dbi(pci, offset + PCI_PM_CTRL, val);
+> +}
+> +
+> +int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> +{
+> +	u8 offset;
+> +	u32 val;
+> +	int ret;
+> +
+> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+
+Just assign this during variable definition itself..
+
+> +	/*
+> +	 * If L1.1\L1.2 enable, devices (such as NVME) want short
+> +	 * resume latency, controller will not enter L2
+
+"If L1SS is supported, then do not put the link into L2 as some devices such as
+NVMe expect low resume latency."
+
+> +	 */
+> +	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+> +		return 0;
+> +
+> +	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> +		return 0;
+> +
+> +	if (!pci->pp.ops->pme_turn_off)
+> +		return -EINVAL;
+
+Can you just return 0 instead of failing? As per my comment below, if you move
+the D-state change before this callback, then this won't be a hard requirement.
+
+> +
+> +	pci->pp.ops->pme_turn_off(&pci->pp);
+> +
+> +	/*
+> +	 * PCI Express Base Specification Rev 4.0
+> +	 * 5.3.3.2.1 PME Synchronization
+> +	 * Recommand 1ms to 10ms timeout to check L2 ready
+
+"Recommends"
+
+Please use full 80 columns for comments.
+
+> +	 */
+> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> +				100, 10000, false, pci);
+> +	if (ret) {
+> +		dev_err(pci->dev, "PCIe link enter L2 timeout! ltssm = 0x%x\n", val);
+
+"Timeout waiting for L2 entry! LTSSM: 0x%x\n"
+
+> +		return ret;
+> +	}
+> +
+> +	dw_pcie_set_dstate(pci, PCI_D3hot);
+
+This should be done before initiating L2 entry as per
+PCI_Express_Base_Specification 3.0, section 5.2.
+
+> +
+> +	pci->suspended = true;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
+> +
+> +int dw_pcie_resume_noirq(struct dw_pcie *pci)
+> +{
+> +	int ret;
+> +
+> +	if (!pci->suspended)
+> +		return 0;
+> +
+> +	pci->suspended = false;
+> +
+> +	dw_pcie_set_dstate(pci, PCI_D0);
+> +
+> +	if (!pci->pp.ops->exit_from_l2)
+> +		return -EINVAL;
+
+Same comment as above.
+
+> +
+> +	pci->pp.ops->exit_from_l2(&pci->pp);
+> +
+> +	ret = pci->pp.ops->host_init(&pci->pp);
+
+I don't see matching host_deinit() in suspend.
+
+- Mani
+
+> +	if (ret) {
+> +		dev_err(pci->dev, "Host init failed! ret = 0x%x\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	dw_pcie_setup_rc(&pci->pp);
+> +
+> +	ret = dw_pcie_start_link(pci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = dw_pcie_wait_for_link(pci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 79713ce075cc..effb07a506e4 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -288,10 +288,21 @@ enum dw_pcie_core_rst {
+>  	DW_PCIE_NUM_CORE_RSTS
+>  };
+>  
+> +enum dw_pcie_ltssm {
+> +	DW_PCIE_LTSSM_UNKNOWN = 0xFFFFFFFF,
+> +	/* Need align PCIE_PORT_DEBUG0 bit0:5 */
+
+"Need to align with PCIE_PORT_DEBUG0 bits 0:5".
+
+- Mani
+
+> +	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
+> +	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
+> +	DW_PCIE_LTSSM_L0 = 0x11,
+> +	DW_PCIE_LTSSM_L2_IDLE = 0x15,
+> +};
+> +
+>  struct dw_pcie_host_ops {
+>  	int (*host_init)(struct dw_pcie_rp *pp);
+>  	void (*host_deinit)(struct dw_pcie_rp *pp);
+>  	int (*msi_host_init)(struct dw_pcie_rp *pp);
+> +	void (*pme_turn_off)(struct dw_pcie_rp *pp);
+> +	void (*exit_from_l2)(struct dw_pcie_rp *pp);
+>  };
+>  
+>  struct dw_pcie_rp {
+> @@ -364,6 +375,7 @@ struct dw_pcie_ops {
+>  	void    (*write_dbi2)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
+>  			      size_t size, u32 val);
+>  	int	(*link_up)(struct dw_pcie *pcie);
+> +	enum dw_pcie_ltssm (*get_ltssm)(struct dw_pcie *pcie);
+>  	int	(*start_link)(struct dw_pcie *pcie);
+>  	void	(*stop_link)(struct dw_pcie *pcie);
+>  };
+> @@ -393,6 +405,7 @@ struct dw_pcie {
+>  	struct reset_control_bulk_data	app_rsts[DW_PCIE_NUM_APP_RSTS];
+>  	struct reset_control_bulk_data	core_rsts[DW_PCIE_NUM_CORE_RSTS];
+>  	struct gpio_desc		*pe_rst;
+> +	bool			suspended;
+>  };
+>  
+>  #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
+> @@ -430,6 +443,9 @@ void dw_pcie_iatu_detect(struct dw_pcie *pci);
+>  int dw_pcie_edma_detect(struct dw_pcie *pci);
+>  void dw_pcie_edma_remove(struct dw_pcie *pci);
+>  
+> +int dw_pcie_suspend_noirq(struct dw_pcie *pci);
+> +int dw_pcie_resume_noirq(struct dw_pcie *pci);
+> +
+>  static inline void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val)
+>  {
+>  	dw_pcie_write_dbi(pci, reg, 0x4, val);
+> @@ -501,6 +517,18 @@ static inline void dw_pcie_stop_link(struct dw_pcie *pci)
+>  		pci->ops->stop_link(pci);
+>  }
+>  
+> +static inline enum dw_pcie_ltssm dw_pcie_get_ltssm(struct dw_pcie *pci)
+> +{
+> +	u32 val;
+> +
+> +	if (pci->ops && pci->ops->get_ltssm)
+> +		return pci->ops->get_ltssm(pci);
+> +
+> +	val = dw_pcie_readl_dbi(pci, PCIE_PORT_DEBUG0);
+> +
+> +	return (enum dw_pcie_ltssm)FIELD_GET(PORT_LOGIC_LTSSM_STATE_MASK, val);
+> +}
+> +
+>  #ifdef CONFIG_PCIE_DW_HOST
+>  irqreturn_t dw_handle_msi_irq(struct dw_pcie_rp *pp);
+>  int dw_pcie_setup_rc(struct dw_pcie_rp *pp);
+> -- 
+> 2.34.1
+> 
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+மணிவண்ணன் சதாசிவம்
