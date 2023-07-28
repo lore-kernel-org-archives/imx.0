@@ -1,238 +1,281 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D27127
-	for <imx@lists.linux.dev>; Thu, 27 Jul 2023 18:36:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690483012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y/ZOuF37rEmg7dV7sW7i6E+d7yQkyDTk71SeAdCrRk4=;
-	b=jVjvLaBXpzVwHghqCHJkmsyGEvdJx2AfNiheZbvjqDezQ2UavMI6ivbF9jv6OpklQjPViV
-	Rn3YgB1sF9k5uGKot6BEceDFDcKep0qOmwwW/mFIIS6To0FNh4JrmjBGD18ial0QphWtGd
-	V+zoOSGm2vobHT2bY0heaHET5j4uE3c=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-uxrZ7Yj0M3q3XQfUQ6xjJw-1; Thu, 27 Jul 2023 14:36:49 -0400
-X-MC-Unique: uxrZ7Yj0M3q3XQfUQ6xjJw-1
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-4864ca4e19dso324691e0c.3
-        for <imx@lists.linux.dev>; Thu, 27 Jul 2023 11:36:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690483009; x=1691087809;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y/ZOuF37rEmg7dV7sW7i6E+d7yQkyDTk71SeAdCrRk4=;
-        b=LrdGDPnOwDHQYuko6MdWTq9q2FxbeUCZH0hJy+tJG6Mn9uNQBYQ4B9SGRtuwJTIOTo
-         nhdMypvCsd3q1SNMXmJHFktfzsTxHvl/VPs4EerGmNNdGJiaSrKDot3kU0E9RXKEQlvj
-         gmk15xxeY6IN834ZknLEVgXbJ32zO9Z+e5ktqMzpKzBjHlg1CTeavvp8MDgP5XQzubo7
-         TVZRC5HrlhU6m8gO6AWU+52G73hE6AHvICb4Zo0dvTFbm2/k8gV0nrSNRXC300yOQyBh
-         R/ky6pN8KfQWkkgUe1ycMZnMY1ireJanwEtDnORoLBXRXICip9UlGZXgP0YkiBqnfOEx
-         LI/A==
-X-Gm-Message-State: ABy/qLZdjaN7Y1T8UwT793D7fvLKfx5NLFXkt1bkJQMpr5+sUM8ZKJN8
-	wj4Gmgf5GMqsE7Etf1ifoLduAt5DuELCKjAVghTJQYJWyyVXpw2OP/8iY5cXv6OekxWnz3Imx7C
-	Fm23SnTtj+9OS
-X-Received: by 2002:a1f:5f03:0:b0:486:4c0e:9ae5 with SMTP id t3-20020a1f5f03000000b004864c0e9ae5mr376073vkb.13.1690483008997;
-        Thu, 27 Jul 2023 11:36:48 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE53Gop5/7fuUY1ixEZawAnKaFZZ1nwoAdNLa3rzIVQi83+W1FiA0MBHmhVRBUb5DmjYcHCnQ==
-X-Received: by 2002:a1f:5f03:0:b0:486:4c0e:9ae5 with SMTP id t3-20020a1f5f03000000b004864c0e9ae5mr376063vkb.13.1690483008694;
-        Thu, 27 Jul 2023 11:36:48 -0700 (PDT)
-Received: from fedora ([2600:1700:1ff0:d0e0::17])
-        by smtp.gmail.com with ESMTPSA id c3-20020a0ce143000000b0063d32f515bbsm602059qvl.127.2023.07.27.11.36.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 11:36:48 -0700 (PDT)
-Date: Thu, 27 Jul 2023 13:36:45 -0500
-From: Andrew Halaney <ahalaney@redhat.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Vinod Koul <vkoul@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Bhupesh Sharma <bhupesh.sharma@linaro.org>, Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, 
-	Simon Horman <simon.horman@corigine.com>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Wong Vee Khee <veekhee@apple.com>, Revanth Kumar Uppala <ruppala@nvidia.com>, 
-	Jochen Henneberg <jh@henneberg-systemdesign.com>, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
-	imx@lists.linux.dev, Frank Li <frank.li@nxp.com>
-Subject: Re: [PATCH v2 net 2/2] net: stmmac: dwmac-imx: pause the TXC clock
- in fixed-link
-Message-ID: <4govb566nypifbtqp5lcbsjhvoyble5luww3onaa2liinboguf@4kgihys6vhrg>
-References: <20230727152503.2199550-1-shenwei.wang@nxp.com>
- <20230727152503.2199550-3-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C23101D9
+	for <imx@lists.linux.dev>; Fri, 28 Jul 2023 09:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC696C433C7;
+	Fri, 28 Jul 2023 09:05:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690535165;
+	bh=QptmNRGvAVVleAso7CRWA+pdBZnB6YfYc/hh8lqFVEg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DOJl4Z0NpkPprlbM3MBP52rD9J6ljQh5TZFxPUiJ8GGimcb91TLUTikpwPRUtoe5A
+	 j52ocLqmJtDveSZQrZX/WNRYxA9HRPF7GjrUVu3k7dzWQvCaZejgxGRki25jbtGkOY
+	 tbg1tg5MfLMedYA3ZLqTQ4IFliV+Xj3BLxV3h89QU7bCCLWJsxufzZ8Ju046DHvTLs
+	 K9d2Xkh+Ckfs1kGF01nNypehgP5I2XFzkH9AX3ULJlHQs37OYFJvdfVEgoVXGD3o6U
+	 gMjclmR8ImazZACWOioQ4b+IbVhdTsmvRAGIWc4qXZ+kKcI8r3dBFUiQPoVy/0DZCO
+	 G9aUu66J9YNQA==
+Date: Fri, 28 Jul 2023 11:05:56 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: lorenzo.pieralisi@arm.com, manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com, devicetree@vger.kernel.org,
+	gustavo.pimentel@synopsys.com, helgaas@kernel.org,
+	imx@lists.linux.dev, kw@linux.com, leoyang.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	mani@kernel.org, minghuan.lian@nxp.com, mingkai.hu@nxp.com,
+	robh+dt@kernel.org, roy.zang@nxp.com, shawnguo@kernel.org,
+	zhiqiang.hou@nxp.com
+Subject: Re: [PATCH v5 1/2] PCI: dwc: Implement general suspend/resume
+ functionality for L2/L3 transitions
+Message-ID: <ZMOE9PJ//y1ClpU+@lpieralisi>
+References: <20230724215830.2253112-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20230727152503.2199550-3-shenwei.wang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20230724215830.2253112-1-Frank.Li@nxp.com>
 
-On Thu, Jul 27, 2023 at 10:25:03AM -0500, Shenwei Wang wrote:
-> When using a fixed-link setup, certain devices like the SJA1105 require a
-> small pause in the TXC clock line to enable their internal tunable
-> delay line (TDL).
+On Mon, Jul 24, 2023 at 05:58:29PM -0400, Frank Li wrote:
+> Introduced helper function dw_pcie_get_ltssm to retrieve SMLH_LTSS_STATE.
+> Added API pme_turn_off and exit_from_l2 for managing L2/L3 state transitions.
+
+Commit logs should not use the past tense but the present tense.
+
+eg s/Introduced/Introduce
+
+Furthermore, read this post from Bjorn and follow it to the letter
+please:
+
+https://lore.kernel.org/linux-pci/20171026223701.GA25649@bhelgaas-glaptop.roam.corp.google.com
+
 > 
-> To satisfy this requirement, this patch temporarily disables the TX clock,
-> and restarts it after a required period. This provides the required
-> silent interval on the clock line for SJA1105 to complete the frequency
-> transition and enable the internal TDLs.
+> Typical L2 entry workflow:
 > 
-> So far we have only enabled this feature on the i.MX93 platform.
+> 1. Transmit PME turn off signal to PCI devices and wait for PME_To_Ack.
+> 2. Await link entering L2_IDLE state.
+> 3. Transition Root complex to D3 state.
 > 
+> Typical L2 exit workflow:
+> 
+> 1. Transition Root complex to D0 state.
+> 2. Issue exit from L2 command.
+> 3. Reinitialize PCI host.
+> 4. Wait for link to become active.
 
-I'd just like to highlight that because of a quirk (I think this is not
-standard) in the particular connected switch on a board you're making the
-whole "fsl,imx93" platform (compatible) implement said switch quirk.
+This does not explain what the patch does and why it does it.
 
-If you don't think there's any harm in doing that for other fixed-link
-scenarios, that's fine I suppose... but just highlighting that.
+Are you describing the L2 entry/exit as implemented in the code ?
 
-I have no idea at a higher level how else you'd tackle this. You could
-add a dt property for this, but I also don't love that you'd probably
-encode it in the MAC (maybe in the fixed-link description it would be
-more attractive). At least as a dt property it isn't unconditional.
-
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> Reviewed-by: Frank Li <frank.li@nxp.com>
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 45 +++++++++++++++++++
->  1 file changed, 45 insertions(+)
+> Change from v4 to v5:
+> - Closes: https://lore.kernel.org/oe-kbuild-all/202307211904.zExw4Q8H-lkp@intel.com/
+> Change from v3 to v4:
+> - change according to Manivannan's comments.
+
+I shall wait for Mani's comments on this series since he reviewed the
+previous one.
+
+Thanks,
+Lorenzo
+
+>   I hope I have not missed anything. quite long discuss thread
+> Change from v2 to v3:
+> - Basic rewrite whole patch according rob herry suggestion.
+>   put common function into dwc, so more soc can share the same logic.
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> index 53ee5a42c071..e7819960128e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> @@ -40,6 +40,9 @@
->  #define DMA_BUS_MODE			0x00001000
->  #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
->  #define RMII_RESET_SPEED		(0x3 << 14)
-> +#define MII_RESET_SPEED			(0x2 << 14)
-> +#define RGMII_RESET_SPEED		(0x0 << 14)
-> +#define CTRL_SPEED_MASK			(0x3 << 14)
-
-GENMASK() would be cleaner, as well as BIT() usage, but I do see
-the driver currently does shifts.. so /me shrugs
-
+>  .../pci/controller/dwc/pcie-designware-host.c | 95 +++++++++++++++++++
+>  drivers/pci/controller/dwc/pcie-designware.h  | 28 ++++++
+>  2 files changed, 123 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 9952057c8819..031e1f9c0d0c 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -8,6 +8,7 @@
+>   * Author: Jingoo Han <jg1.han@samsung.com>
+>   */
 >  
->  struct imx_dwmac_ops {
->  	u32 addr_width;
-> @@ -56,6 +59,7 @@ struct imx_priv_data {
->  	struct regmap *intf_regmap;
->  	u32 intf_reg_off;
->  	bool rmii_refclk_ext;
-> +	void __iomem *base_addr;
+> +#include <linux/iopoll.h>
+>  #include <linux/irqchip/chained_irq.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/msi.h>
+> @@ -807,3 +808,97 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+> +
+> +/*
+> + * This resemble the pci_set_power_state() interfaces, but these are for
+> + * configuring host controllers, which are bridges *to* PCI devices but
+> + * are not PCI devices themselves.
+> + */
+> +static void dw_pcie_set_dstate(struct dw_pcie *pci, pci_power_t dstate)
+> +{
+> +	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_PM);
+> +	u16 val;
+> +
+> +	val = dw_pcie_readw_dbi(pci, offset + PCI_PM_CTRL);
+> +	val &= ~PCI_PM_CTRL_STATE_MASK;
+> +	val |= ((u16 __force)dstate) & PCI_PM_CTRL_STATE_MASK;
+> +	dw_pcie_writew_dbi(pci, offset + PCI_PM_CTRL, val);
+> +}
+> +
+> +int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> +{
+> +	u8 offset;
+> +	u32 val;
+> +	int ret;
+> +
+> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +	/*
+> +	 * If L1.1\L1.2 enable, devices (such as NVME) want short
+> +	 * resume latency, controller will not enter L2
+> +	 */
+> +	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+> +		return 0;
+> +
+> +	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> +		return 0;
+> +
+> +	if (!pci->pp.ops->pme_turn_off)
+> +		return -EINVAL;
+> +
+> +	pci->pp.ops->pme_turn_off(&pci->pp);
+> +
+> +	/*
+> +	 * PCI Express Base Specification Rev 4.0
+> +	 * 5.3.3.2.1 PME Synchronization
+> +	 * Recommand 1ms to 10ms timeout to check L2 ready
+> +	 */
+> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> +				100, 10000, false, pci);
+> +	if (ret) {
+> +		dev_err(pci->dev, "PCIe link enter L2 timeout! ltssm = 0x%x\n", val);
+> +		return ret;
+> +	}
+> +
+> +	dw_pcie_set_dstate(pci, PCI_D3hot);
+> +
+> +	pci->suspended = true;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
+> +
+> +int dw_pcie_resume_noirq(struct dw_pcie *pci)
+> +{
+> +	int ret;
+> +
+> +	if (!pci->suspended)
+> +		return 0;
+> +
+> +	pci->suspended = false;
+> +
+> +	dw_pcie_set_dstate(pci, PCI_D0);
+> +
+> +	if (!pci->pp.ops->exit_from_l2)
+> +		return -EINVAL;
+> +
+> +	pci->pp.ops->exit_from_l2(&pci->pp);
+> +
+> +	ret = pci->pp.ops->host_init(&pci->pp);
+> +	if (ret) {
+> +		dev_err(pci->dev, "Host init failed! ret = 0x%x\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	dw_pcie_setup_rc(&pci->pp);
+> +
+> +	ret = dw_pcie_start_link(pci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = dw_pcie_wait_for_link(pci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 79713ce075cc..effb07a506e4 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -288,10 +288,21 @@ enum dw_pcie_core_rst {
+>  	DW_PCIE_NUM_CORE_RSTS
+>  };
 >  
->  	const struct imx_dwmac_ops *ops;
->  	struct plat_stmmacenet_data *plat_dat;
-> @@ -212,6 +216,44 @@ static void imx_dwmac_fix_speed(void *priv, uint speed, uint mode)
->  		dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
+> +enum dw_pcie_ltssm {
+> +	DW_PCIE_LTSSM_UNKNOWN = 0xFFFFFFFF,
+> +	/* Need align PCIE_PORT_DEBUG0 bit0:5 */
+> +	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
+> +	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
+> +	DW_PCIE_LTSSM_L0 = 0x11,
+> +	DW_PCIE_LTSSM_L2_IDLE = 0x15,
+> +};
+> +
+>  struct dw_pcie_host_ops {
+>  	int (*host_init)(struct dw_pcie_rp *pp);
+>  	void (*host_deinit)(struct dw_pcie_rp *pp);
+>  	int (*msi_host_init)(struct dw_pcie_rp *pp);
+> +	void (*pme_turn_off)(struct dw_pcie_rp *pp);
+> +	void (*exit_from_l2)(struct dw_pcie_rp *pp);
+>  };
+>  
+>  struct dw_pcie_rp {
+> @@ -364,6 +375,7 @@ struct dw_pcie_ops {
+>  	void    (*write_dbi2)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
+>  			      size_t size, u32 val);
+>  	int	(*link_up)(struct dw_pcie *pcie);
+> +	enum dw_pcie_ltssm (*get_ltssm)(struct dw_pcie *pcie);
+>  	int	(*start_link)(struct dw_pcie *pcie);
+>  	void	(*stop_link)(struct dw_pcie *pcie);
+>  };
+> @@ -393,6 +405,7 @@ struct dw_pcie {
+>  	struct reset_control_bulk_data	app_rsts[DW_PCIE_NUM_APP_RSTS];
+>  	struct reset_control_bulk_data	core_rsts[DW_PCIE_NUM_CORE_RSTS];
+>  	struct gpio_desc		*pe_rst;
+> +	bool			suspended;
+>  };
+>  
+>  #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
+> @@ -430,6 +443,9 @@ void dw_pcie_iatu_detect(struct dw_pcie *pci);
+>  int dw_pcie_edma_detect(struct dw_pcie *pci);
+>  void dw_pcie_edma_remove(struct dw_pcie *pci);
+>  
+> +int dw_pcie_suspend_noirq(struct dw_pcie *pci);
+> +int dw_pcie_resume_noirq(struct dw_pcie *pci);
+> +
+>  static inline void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val)
+>  {
+>  	dw_pcie_write_dbi(pci, reg, 0x4, val);
+> @@ -501,6 +517,18 @@ static inline void dw_pcie_stop_link(struct dw_pcie *pci)
+>  		pci->ops->stop_link(pci);
 >  }
 >  
-> +static void imx_dwmac_fix_speed_mx93(void *priv, uint speed, uint mode)
+> +static inline enum dw_pcie_ltssm dw_pcie_get_ltssm(struct dw_pcie *pci)
 > +{
-> +	struct imx_priv_data *dwmac = priv;
-> +	int ctrl, old_ctrl, iface;
+> +	u32 val;
 > +
-> +	imx_dwmac_fix_speed(priv, speed, mode);
+> +	if (pci->ops && pci->ops->get_ltssm)
+> +		return pci->ops->get_ltssm(pci);
 > +
-> +	if (!dwmac || mode != MLO_AN_FIXED)
-> +		return;
+> +	val = dw_pcie_readl_dbi(pci, PCIE_PORT_DEBUG0);
 > +
-> +	if (regmap_read(dwmac->intf_regmap, dwmac->intf_reg_off, &iface))
-> +		return;
-> +
-> +	iface &= MX93_GPR_ENET_QOS_INTF_MODE_MASK;
-> +	old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
-> +	ctrl = old_ctrl & ~CTRL_SPEED_MASK;
-> +
-> +	/* by default ctrl will be RGMII */
-> +	if (iface == MX93_GPR_ENET_QOS_INTF_SEL_RMII)
-> +		ctrl |= RMII_RESET_SPEED;
-> +	if (iface == MX93_GPR_ENET_QOS_INTF_SEL_MII)
-> +		ctrl |= MII_RESET_SPEED;
-
-I see that ctrl right now would select RGMII, but I think it would
-read more clearly if you handled it and made the above an
-if/else if/else statement (since they're exclusive of eachother)
-vs two independent if's.
-
-> +
-> +	writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
-> +
-> +	/* Ensure the settings for CTRL are applied */
-> +	wmb();
-
-I saw this and recently have been wondering about this sort of pattern
-(not an expert on this). From what I can tell it seems reading the
-register back is the preferred pattern to force the write out. The above works,
-but it feels to me personally akin to how local_lock()
-in the kernel is a more fine grained mechanism than using
-preempt_disable(). But that's pretty opinionated. See device-io.rst
-and io_ordering.rst for how I came to that conclusion.
-
-> +
-> +	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
-> +			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, 0);
-> +	usleep_range(50, 100);
-> +	iface |= MX93_GPR_ENET_QOS_CLK_GEN_EN;
-> +	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
-> +			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, iface);
-> +
-> +	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
+> +	return (enum dw_pcie_ltssm)FIELD_GET(PORT_LOGIC_LTSSM_STATE_MASK, val);
 > +}
-
-I don't have any documentation for the registers here, and as you can
-see I'm an amateur with respect to memory ordering based on my prior
-comment.
-
-But you:
-
-    1. Read intf_reg_off into variable iface
-    2. Write the RESET_SPEED for the appropriate mode to MAC_CTRL_REG
-    3. wmb() to ensure that write goes through
-    4. Read intf_reg_off (regmap_update_bits())
-    5. Write 0 to MX93_GPR_ENET_QOS_INTF_MODE_MASK within intf_reg_off (regmap_update_bits())
-    6. Sleep for 50-100 us
-    7. Read intf_reg_off (regmap_update_bits())
-    8. Write MX93_GPR_ENET_QOS_CLK_GEN_EN | iface (from 1) to
-       MX93_GPR_ENET_QOS_INTF_MODE_MASK within intf_reg_off (regmap_update_bits())
-
-I don't know what those bits do, but your description sounds like you
-are trying to stop the clock for 50-100 us. In your code, if I
-understand the memory ordering correctly, both of the following could
-occur:
-
-    1. Write RESET_SPEED
-    2. Write 0 to MX93_GPR_ENET_QOS_INTF_MODE_MASK
-    3. sleep
-    4. Restore MX93_GPR_ENET_QOS_CLK_GEN_EN | iface
-
-    or
-
-    1. Write RESET_SPEED
-    2. sleep
-    3. Write 0 to MX93_GPR_ENET_QOS_INTF_MODE_MASK
-    4. Restore MX93_GPR_ENET_QOS_CLK_GEN_EN | iface
-
-is the latter acceptable to you, or does that wmb() (or alternative)
-need to move? It seems to me only the first situation would stop
-the clock before sleeping, but that's going off the names in this driver
-only.
-
-In either case, shouldn't regmap_update_bits() force a
-read of said bits, which would remove the need for that wmb() altogether
-to synchronize the two writes?
-
+> +
+>  #ifdef CONFIG_PCIE_DW_HOST
+>  irqreturn_t dw_handle_msi_irq(struct dw_pcie_rp *pp);
+>  int dw_pcie_setup_rc(struct dw_pcie_rp *pp);
+> -- 
+> 2.34.1
+> 
