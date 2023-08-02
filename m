@@ -1,124 +1,281 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674A125170;
-	Tue,  1 Aug 2023 19:58:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7976AC433C7;
-	Tue,  1 Aug 2023 19:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CF715AA
+	for <imx@lists.linux.dev>; Wed,  2 Aug 2023 04:27:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64E7C433C8;
+	Wed,  2 Aug 2023 04:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690919910;
-	bh=79BwIOnM6SioCje3neXfEamXafGIUojs9GGzwDzIaT8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WaG0UuuiBslQIwwDoxSGmwylSNwUwUH7DIQ7eAy76ZMwNQxm6uzQTZe+DpR8IvAQD
-	 AR9sF34c6pu020pThaegFYojP886SrOpKscmfRnTNlEgNYWd06/PU127Un7orzG1/E
-	 9rUKbhIJY4SvTChDop2NC6sJMRkZgC9FxkLKSBCJ5AX8gdvgUcXJEF/V5ZaRjvw4ws
-	 g4igCCOm2Ui3wG63wvnwlKi2DoXv7gVow1xbUTW25ecmVHjRgzWHzoVjMTgMGAYnGS
-	 yrqItcGmOO8B2dQEyoty0KKnJhLztUcShDR3TUA3S9ggYOAW7cy5RY8WUi7dlpa5+q
-	 jNZZJhtmtcNHQ==
-Date: Tue, 1 Aug 2023 12:58:28 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Neil Armstrong
- <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Vinod
- Koul <vkoul@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Jose
- Abreu <joabreu@synopsys.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
- Simon Horman <simon.horman@corigine.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro
- <peppe.cavallaro@st.com>, Nobuhiro Iwamatsu
- <nobuhiro1.iwamatsu@toshiba.co.jp>, Fabio Estevam <festevam@gmail.com>,
- "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>, Jerome Brunet
- <jbrunet@baylibre.com>, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>, Wong Vee Khee <veekhee@apple.com>,
- dl-linux-imx <linux-imx@nxp.com>, Andrew Halaney <ahalaney@redhat.com>,
- Bhupesh Sharma <bhupesh.sharma@linaro.org>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Revanth Kumar Uppala
- <ruppala@nvidia.com>, Jochen Henneberg <jh@henneberg-systemdesign.com>,
- "linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
- <kernel@pengutronix.de>
-Subject: Re: [EXT] Re: [PATCH v3 net 1/2] net: stmmac: add new mode
- parameter for fix_mac_speed
-Message-ID: <20230801125828.209c5e88@kernel.org>
-In-Reply-To: <AS8PR04MB9176FC45B9663B5BF964F58A890AA@AS8PR04MB9176.eurprd04.prod.outlook.com>
-References: <20230731161929.2341584-1-shenwei.wang@nxp.com>
-	<20230731161929.2341584-2-shenwei.wang@nxp.com>
-	<20230801-portside-prepaid-513f1f39f245-mkl@pengutronix.de>
-	<AS8PR04MB9176FC45B9663B5BF964F58A890AA@AS8PR04MB9176.eurprd04.prod.outlook.com>
+	s=k20201202; t=1690950475;
+	bh=ARGKpRK5ccFF2WBp3+o3ZTCFCi+lfX0QrM54lqQi0UI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kRG+gKVSB7Mblt8WIHhzCa/OClFhK1yeWc5s+AthWAvAdW5Ta+iCcOvQR2KKRlr86
+	 xpinFfXVKCXYpA0j/LtQ45hIK2rXuaTd+DKKJTOBYvM5Mq/U3NXOrhhqwfATdw+a5n
+	 jAM46Dau1s3Y78/ZzWy1IqRt1ch0MxzpY8OzBWPvzFHy9wMvqtoA7Idk7pdrlJEv1u
+	 s3ek3MEVhjX6GyvL7AsWPVB4WsYackSprXdvCoyu1bl/cor0/1sYvyoFefEs2NkaQN
+	 GvL4BZ/a3NF4qMCFoDp+IDVz+Lr3u+l11m7AbnZLSbeEfN3WXVk7u1XFUYIH9NaOP5
+	 gW4pO65QuhDPg==
+Date: Wed, 2 Aug 2023 09:57:38 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: lpieralisi@kernel.org, bhelgaas@google.com, devicetree@vger.kernel.org,
+	gustavo.pimentel@synopsys.com, helgaas@kernel.org,
+	imx@lists.linux.dev, kw@linux.com, leoyang.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lorenzo.pieralisi@arm.com, manivannan.sadhasivam@linaro.org,
+	minghuan.lian@nxp.com, mingkai.hu@nxp.com, robh+dt@kernel.org,
+	roy.zang@nxp.com, shawnguo@kernel.org, zhiqiang.hou@nxp.com
+Subject: Re: [PATCH v6 1/2] PCI: dwc: Implement general suspend/resume
+ functionality for L2/L3 transitions
+Message-ID: <20230802042738.GD2370@thinkpad>
+References: <20230731194010.73016-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230731194010.73016-1-Frank.Li@nxp.com>
 
-On Tue, 1 Aug 2023 18:43:52 +0000 Shenwei Wang wrote:
-> Subject: RE: [EXT] Re: [PATCH v3 net 1/2] net: stmmac: add new mode parameter  for fix_mac_speed
-
-Looks like new platform enablement, the correct tree to target this 
-at is net-next (i.e. [PATCH net-next]).
-
-> > -----Original Message-----
-> > From: Marc Kleine-Budde <mkl@pengutronix.de>
-> > Sent: Tuesday, August 1, 2023 1:37 AM
-> > To: Shenwei Wang <shenwei.wang@nxp.com>
-> > Cc: Russell King <linux@armlinux.org.uk>; David S. Miller
-> > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
-> > Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Maxime
-> > Coquelin <mcoquelin.stm32@gmail.com>; Shawn Guo <shawnguo@kernel.org>;
-> > Sascha Hauer <s.hauer@pengutronix.de>; Neil Armstrong
-> > <neil.armstrong@linaro.org>; Kevin Hilman <khilman@baylibre.com>; Vinod
-> > Koul <vkoul@kernel.org>; Chen-Yu Tsai <wens@csie.org>; Jernej Skrabec
-> > <jernej.skrabec@gmail.com>; Samuel Holland <samuel@sholland.org>; Jose
-> > Abreu <joabreu@synopsys.com>; imx@lists.linux.dev; Simon Horman
-> > <simon.horman@corigine.com>; Alexandre Torgue
-> > <alexandre.torgue@foss.st.com>; Giuseppe Cavallaro
-> > <peppe.cavallaro@st.com>; Nobuhiro Iwamatsu
-> > <nobuhiro1.iwamatsu@toshiba.co.jp>; Fabio Estevam <festevam@gmail.com>;
-> > linux-stm32@st-md-mailman.stormreply.com; Jerome Brunet
-> > <jbrunet@baylibre.com>; Bartosz Golaszewski
-> > <bartosz.golaszewski@linaro.org>; Wong Vee Khee <veekhee@apple.com>; dl-
-> > linux-imx <linux-imx@nxp.com>; Andrew Halaney <ahalaney@redhat.com>;
-> > Bhupesh Sharma <bhupesh.sharma@linaro.org>; Martin Blumenstingl
-> > <martin.blumenstingl@googlemail.com>; Revanth Kumar Uppala
-> > <ruppala@nvidia.com>; Jochen Henneberg <jh@henneberg-systemdesign.com>;
-> > linux-amlogic@lists.infradead.org; linux-arm-kernel@lists.infradead.org;
-> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Pengutronix Kernel
-> > Team <kernel@pengutronix.de>
-> > Subject: [EXT] Re: [PATCH v3 net 1/2] net: stmmac: add new mode parameter
-> > for fix_mac_speed
-
-Why is this quote included? Please get a sane email client.
-
-> > On 31.07.2023 11:19:28, Shenwei Wang wrote:  
-> > > A mode parameter has been added to the callback function of
-> > > fix_mac_speed to indicate the physical layer type.
-> > >
-> > > The mode can be one the following:
-> > > 	MLO_AN_PHY	- Conventional PHY
-> > > 	MLO_AN_FIXED	- Fixed-link mode
-> > > 	MLO_AN_INBAND	- In-band protocol
-> > >
-> > > Also use short version of 'uint' to replace the 'unsigned int' in the
-> > > function definitions.  
-> > 
-> > There are not many users of 'uint' in the kernel and it's not used in the stmmac
-> > driver so far. From my point of view I would not introduce it and stick to the
-> > standard 'unsigned int'.
+On Mon, Jul 31, 2023 at 03:40:09PM -0400, Frank Li wrote:
+> Introduce helper function dw_pcie_get_ltssm to retrieve SMLH_LTSS_STATE.
 > 
-> Using 'uint' makes the code look cleaner because adding one extra
-> parameter may cause some function declarations to span multiple
-> lines.  This change keeps function declarations compact on a single
-> line.
+> Add callback .pme_turn_off and .exit_from_l2 for platform specific PME
+> handle.
 
-Marc is right. Just do it.
+s/handle/handling
+
+> 
+> Add common dw_pcie_suspend(resume)_noirq() API to avoid duplicated code
+> in dwc pci host controller platform driver.
+> 
+> Typical L2 entry workflow/dw_pcie_suspend_noirq()
+> 
+> 1. Transmit PME turn off signal to PCI devices and wait for PME_To_Ack.
+> 2. Await link entering L2_IDLE state.
+> 
+> Typical L2 exit workflow/dw_pcie_resume_noirq()
+> 
+> 1. Issue exit from L2 command.
+> 2. Reinitialize PCI host.
+> 3. Wait for link to become active.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v5 to v6:
+> - refine commit message
+>   change according to Manivannan's comments.
+>   - remove reduncate step dw_pcie_set_dstate()
+>   - return 0 when .pme_turn_off is zero
+>   - call host_deinit() in suspend
+>   - check .host_deinit and .host_init point before call.
+> 
+> Change from v4 to v5:
+> - Closes: https://lore.kernel.org/oe-kbuild-all/202307211904.zExw4Q8H-lkp@intel.com/
+> Change from v3 to v4:
+> - change according to Manivannan's comments.
+>   I hope I have not missed anything. quite long discuss thread
+> Change from v2 to v3:
+> - Basic rewrite whole patch according rob herry suggestion.
+>   put common function into dwc, so more soc can share the same logic.
+> 
+>  .../pci/controller/dwc/pcie-designware-host.c | 78 +++++++++++++++++++
+>  drivers/pci/controller/dwc/pcie-designware.h  | 28 +++++++
+>  2 files changed, 106 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 9952057c8819c..1822c04d370b2 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -8,6 +8,7 @@
+>   * Author: Jingoo Han <jg1.han@samsung.com>
+>   */
+>  
+> +#include <linux/iopoll.h>
+>  #include <linux/irqchip/chained_irq.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/msi.h>
+> @@ -807,3 +808,80 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+> +
+> +int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> +{
+> +	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +	u32 val;
+> +	int ret;
+> +
+> +	/*
+> +	 * If L1SS is supported, then do not put the link into L2 as some
+> +	 * devices such as NVMe expect low resume latency.
+> +	 */
+> +	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+> +		return 0;
+> +
+> +	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> +		return 0;
+> +
+> +	if (!pci->pp.ops->pme_turn_off)
+> +		return 0;
+> +
+> +	pci->pp.ops->pme_turn_off(&pci->pp);
+> +
+> +	/*
+> +	 * PCI Express Base Specification Rev 4.0 5.3.3.2.1 PME Synchronization
+
+Rev 4.0 Section 5.3.3.2.1
+
+> +	 * Recommands 1ms to 10ms timeout to check L2 ready
+
+Recommends
+
+Also add a full stop at the end of line.
+
+> +	 */
+> +	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> +				100, 10000, false, pci);
+
+sleep_us value should be 1000 for 1ms.
+
+> +	if (ret) {
+> +		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
+> +		return ret;
+> +	}
+> +
+> +	if (pci->pp.ops->host_deinit)
+> +		pci->pp.ops->host_deinit(&pci->pp);
+> +
+> +	pci->suspended = true;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
+> +
+> +int dw_pcie_resume_noirq(struct dw_pcie *pci)
+> +{
+> +	int ret;
+> +
+> +	if (!pci->suspended)
+> +		return 0;
+> +
+> +	pci->suspended = false;
+> +
+> +	if (!pci->pp.ops->exit_from_l2)
+> +		return 0;
+> +
+> +	pci->pp.ops->exit_from_l2(&pci->pp);
+> +
+> +	if (pci->pp.ops->host_init) {
+> +		ret = pci->pp.ops->host_init(&pci->pp);
+> +		if (ret) {
+> +			dev_err(pci->dev, "Host init failed! ret = 0x%x\n", ret);
+
+Why do you want to print "ret" in hex?
+
+How about,
+
+dev_err(pci->dev, "Host init failed: %d\n", ret);
+
+Rest looks good!
+
+- Mani
+
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	dw_pcie_setup_rc(&pci->pp);
+> +
+> +	ret = dw_pcie_start_link(pci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = dw_pcie_wait_for_link(pci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 79713ce075cc1..cbba3ed19b3c0 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -288,10 +288,21 @@ enum dw_pcie_core_rst {
+>  	DW_PCIE_NUM_CORE_RSTS
+>  };
+>  
+> +enum dw_pcie_ltssm {
+> +	DW_PCIE_LTSSM_UNKNOWN = 0xFFFFFFFF,
+> +	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
+> +	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
+> +	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
+> +	DW_PCIE_LTSSM_L0 = 0x11,
+> +	DW_PCIE_LTSSM_L2_IDLE = 0x15,
+> +};
+> +
+>  struct dw_pcie_host_ops {
+>  	int (*host_init)(struct dw_pcie_rp *pp);
+>  	void (*host_deinit)(struct dw_pcie_rp *pp);
+>  	int (*msi_host_init)(struct dw_pcie_rp *pp);
+> +	void (*pme_turn_off)(struct dw_pcie_rp *pp);
+> +	void (*exit_from_l2)(struct dw_pcie_rp *pp);
+>  };
+>  
+>  struct dw_pcie_rp {
+> @@ -364,6 +375,7 @@ struct dw_pcie_ops {
+>  	void    (*write_dbi2)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
+>  			      size_t size, u32 val);
+>  	int	(*link_up)(struct dw_pcie *pcie);
+> +	enum dw_pcie_ltssm (*get_ltssm)(struct dw_pcie *pcie);
+>  	int	(*start_link)(struct dw_pcie *pcie);
+>  	void	(*stop_link)(struct dw_pcie *pcie);
+>  };
+> @@ -393,6 +405,7 @@ struct dw_pcie {
+>  	struct reset_control_bulk_data	app_rsts[DW_PCIE_NUM_APP_RSTS];
+>  	struct reset_control_bulk_data	core_rsts[DW_PCIE_NUM_CORE_RSTS];
+>  	struct gpio_desc		*pe_rst;
+> +	bool			suspended;
+>  };
+>  
+>  #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
+> @@ -430,6 +443,9 @@ void dw_pcie_iatu_detect(struct dw_pcie *pci);
+>  int dw_pcie_edma_detect(struct dw_pcie *pci);
+>  void dw_pcie_edma_remove(struct dw_pcie *pci);
+>  
+> +int dw_pcie_suspend_noirq(struct dw_pcie *pci);
+> +int dw_pcie_resume_noirq(struct dw_pcie *pci);
+> +
+>  static inline void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val)
+>  {
+>  	dw_pcie_write_dbi(pci, reg, 0x4, val);
+> @@ -501,6 +517,18 @@ static inline void dw_pcie_stop_link(struct dw_pcie *pci)
+>  		pci->ops->stop_link(pci);
+>  }
+>  
+> +static inline enum dw_pcie_ltssm dw_pcie_get_ltssm(struct dw_pcie *pci)
+> +{
+> +	u32 val;
+> +
+> +	if (pci->ops && pci->ops->get_ltssm)
+> +		return pci->ops->get_ltssm(pci);
+> +
+> +	val = dw_pcie_readl_dbi(pci, PCIE_PORT_DEBUG0);
+> +
+> +	return (enum dw_pcie_ltssm)FIELD_GET(PORT_LOGIC_LTSSM_STATE_MASK, val);
+> +}
+> +
+>  #ifdef CONFIG_PCIE_DW_HOST
+>  irqreturn_t dw_handle_msi_irq(struct dw_pcie_rp *pp);
+>  int dw_pcie_setup_rc(struct dw_pcie_rp *pp);
+> -- 
+> 2.34.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
