@@ -1,364 +1,332 @@
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2045.outbound.protection.outlook.com [40.107.22.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38A179E1
-	for <imx@lists.linux.dev>; Wed,  2 Aug 2023 14:41:32 +0000 (UTC)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1qRD1e-0002R7-VB; Wed, 02 Aug 2023 16:40:35 +0200
-Message-ID: <49d52a10-20cf-9c5b-ebe3-07292664fe11@pengutronix.de>
-Date: Wed, 2 Aug 2023 16:40:21 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F9B8C0C
+	for <imx@lists.linux.dev>; Wed,  2 Aug 2023 15:58:15 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mFCVp3bF7S8tDJ7AkBQ1UYCaj546m51DXYbmce7WVre+w0BiEysFNhMaHbVN+YLyNtUpbUrvkCDUMDQyn6KjqpggIQ8MHj/VxKoiKQ1SJ8QvEkuSVhRVMhJ1Ef4kP8NWUmh4JXeJoyUeNvygn1xFOxs1T9OzSaQnaQMC6UN79ZCZwZUiq7TMY5Dz1B+DbeZuKBqtQka3TDjT20UHy2qib0UcpOoWh9mmVOXpZn6WTn8VFqDRLjhnyRF6Bmc/fLyBKYNEev9ZBSWln9BHbIS/lP17Dq7cpKUs0YDDrHs0LSdkG7NlpOjIR4wcJItyoOCkIhhapSrCxjXMdjXaJNxWjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=telKg++iOHJ+T0XogWYp8GLhmLfsie10xeuwoabuvZw=;
+ b=El3kQZIaXjoZpz4turPd2+zK8etOy8v36pHy58os0Uisk7tXl2KKwSBpI20k4YLUe3N3YrVs8+UrrePl3ScDUDXzUAJoBLFthrpFS3y6t30Sce3lDXZPM0icvzqoysqPOQDreYZe5dO/4JtQDepjQJyf/tJP7aFvUYLY6Vh2/3c7srpEmKomfxpFyiL9MK2/rkJKQ3GBG0zNXrrHOJgjK4pm2cBCJ+Cn83Oz9UPfs9ICAvKJwlhsswNNPFdRHhjjh6qb+Wv4jywiJBGozOKTJttL450C0jTIMtq+RpbK6FhYYAoYZsA0Z5jE+2TasLVlxZ/RxECD7krBcRgzYlWebA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=telKg++iOHJ+T0XogWYp8GLhmLfsie10xeuwoabuvZw=;
+ b=dJ7XOWe9Hha2QIokKYWDWn5rNYKgQVomc9FwgtOgROPMMNLHYgi75kPBsXVHXOqICK3FUOfkL5RfKcLGQNQLCfmQ1OpMr6OuDXzQCJWnWD4DS4R+bUQ7VxLI+28SHlZHAn/n2Trb/8NjUoshRdyIXX74EshqTIM85M2WKX2pqLI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AS8PR04MB7733.eurprd04.prod.outlook.com (2603:10a6:20b:288::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Wed, 2 Aug
+ 2023 15:58:12 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::d0d5:3604:98da:20b1]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::d0d5:3604:98da:20b1%7]) with mapi id 15.20.6631.045; Wed, 2 Aug 2023
+ 15:58:12 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: mani@kernel.org
+Cc: Frank.Li@nxp.com,
+	bhelgaas@google.com,
+	devicetree@vger.kernel.org,
+	gustavo.pimentel@synopsys.com,
+	helgaas@kernel.org,
+	imx@lists.linux.dev,
+	kw@linux.com,
+	leoyang.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lorenzo.pieralisi@arm.com,
+	lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	minghuan.lian@nxp.com,
+	mingkai.hu@nxp.com,
+	robh+dt@kernel.org,
+	roy.zang@nxp.com,
+	shawnguo@kernel.org,
+	zhiqiang.hou@nxp.com
+Subject: [PATCH v7 1/2] PCI: dwc: Implement general suspend/resume functionality for L2/L3 transitions
+Date: Wed,  2 Aug 2023 11:57:47 -0400
+Message-Id: <20230802155748.212377-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0178.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::33) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [EXT] Re: [PATCH v3 net 2/2] net: stmmac: dwmac-imx: pause the
- TXC clock in fixed-link
-Content-Language: en-US, de-DE
-To: Shenwei Wang <shenwei.wang@nxp.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Vinod Koul <vkoul@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>
-Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Bhupesh Sharma <bhupesh.sharma@linaro.org>,
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
- Simon Horman <simon.horman@corigine.com>,
- Andrew Halaney <ahalaney@redhat.com>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Wong Vee Khee <veekhee@apple.com>, Revanth Kumar Uppala
- <ruppala@nvidia.com>, Jochen Henneberg <jh@henneberg-systemdesign.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>, Frank Li <frank.li@nxp.com>
-References: <20230731161929.2341584-1-shenwei.wang@nxp.com>
- <20230731161929.2341584-3-shenwei.wang@nxp.com>
- <bf2979c4-0b63-be53-b530-3d7385796534@pengutronix.de>
- <PAXPR04MB9185D7D3B088E4786A216044890AA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <e32c89e1-7385-105b-63c9-74f58c2253cb@pengutronix.de>
- <PAXPR04MB91851BB5D1375AF0EF3C51B7890BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-From: Johannes Zink <j.zink@pengutronix.de>
-In-Reply-To: <PAXPR04MB91851BB5D1375AF0EF3C51B7890BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: j.zink@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB7733:EE_
+X-MS-Office365-Filtering-Correlation-Id: f54680d0-b307-48ba-e03a-08db937145ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Y5ffD6N5MJ0wdpChnzIo+snrFbNIm8y+VOoZtjdWK73lIA9ZE/y30YAiTsGJTMI+J6de6PvJg/enkNOd8goZYxFh1nV/ZMM/prBluhGQYZ0t1KABTDVksjXZq30Rs6fHRofb3SfSpOmJirwyELnVqjH2g6V08Jrx1McNTersAJVwexjV06Rq2bfQPBJGElTKj3fltA+/XPVExKBp91HwA0P38rgyThf5MNg2CNv/XpgtEEKrz4vHs7v9vJGXGfui+EipJQpO30uTU8UbjFRW8KQoZPStgIJLohLDaCxquwTilTHQalsz4flx1hpsNL8/Zijm232D+eXZybP19pBWyWB4h3pp1RHjFFkq5qToqOZ6Q3XuxCLnrVgKDkqwmvyuxcdNWanrYJgsrfSoFcPtFsj3cjFJWD9/VAFCgZnfLfT0NBW3RcLdfwSPAKmqqjTrgU1aa+DTDLNiHQhOBWfOEy7BQ0EPxQY9q6fX0HFGopOItHmhvD7lk056sWEdur6OXlfmDajhnTRSJ3uWCF5nYgEoFTZP7ty7B7mR2wHNsWNFThKAqWnqB9lujfAQj3GUgtaNLr7xFTMYRpw86bWaIUVH7ZPtJYdIXeE8G2/mu5w=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(136003)(346002)(376002)(39860400002)(451199021)(15650500001)(8936002)(7416002)(8676002)(316002)(5660300002)(6916009)(4326008)(41300700001)(2616005)(66556008)(2906002)(186003)(6486002)(66946007)(66476007)(52116002)(478600001)(6666004)(6512007)(6506007)(966005)(1076003)(86362001)(36756003)(83380400001)(26005)(38350700002)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9iBIWbLVxYZ4g8PrSIygGZREQA2y5r7YHhtjlWMfwzFNEgufwrvan4lILs5p?=
+ =?us-ascii?Q?cTea0Fetcc52Wo4JL5ZUcgAk5T60rwc0fxT305WLuPPn7u6D3corIbSMm5bp?=
+ =?us-ascii?Q?sF5r2QDiejHJ88Nj5ujRIcb8eUCIrlsGDTBoMc9x06zuSjGRN2hwQqtmVUIf?=
+ =?us-ascii?Q?wvyQuQBUyTD4xDYnNjIkrqq2ep7noz4miy5BVXxWBfYmyGt6TAHaXYiZ+Gfk?=
+ =?us-ascii?Q?1b+FnNI3VTMVA7lmUqR9emBHv8J2MNvfLKjPdBkUhSe8tKZcP50hLEbNunS7?=
+ =?us-ascii?Q?+U/v4h8/FYljvLmulXRjDPcSJqPvwOiuSZg7nIT3C3jwoeqPPkUhTomoXPcz?=
+ =?us-ascii?Q?PTJbzjCMFVFlv8fwUfNPJNjW2+cCjEENSmrIkdzdVubPwj7e09FPQ91WSoKF?=
+ =?us-ascii?Q?s5BBf6DH6a0VokyyYGWrWNGfycJsGfnpCgb+JdJ+s07Gqmhq/w6eEoqeic06?=
+ =?us-ascii?Q?ojpS43tWVlAVwCFb7gvFmfo1p5utZq0g5LrZdxvLxpE2b0CVrU0v5+WmbwEr?=
+ =?us-ascii?Q?3LDKWS+iTh03r1h4AEOZ/WlChrco6+aqHDcbLcBT57FjxtVNA3+ZYRpsBpyO?=
+ =?us-ascii?Q?wKrEzohbjC4eZeVV29jQ1z3BBJLOqN/WKBAfoLJ4fyk9fbP8t6Sx2Hxl8FaI?=
+ =?us-ascii?Q?4s0Q9mpUPE9Z306BjUofN80j85RtIuv8Sx+/HGCIehWjJhJuzo6bZQ7HkiAt?=
+ =?us-ascii?Q?SVgrMEd0I0FP69q/KNJDsrfSeEkXP0lGMzQHg1WvPcnYdjqQYfQZt/DqQcHs?=
+ =?us-ascii?Q?10siDZiXrZfkTFMC947Idid3LFQxVfY5KlCt/jYV1MeLq5gNf1ijSise9eOk?=
+ =?us-ascii?Q?nuxqQwyZyH9U4pdDJo0CdDsF2TDkdE5OAAwX4hZmEU8OFolM2ZXZZQEX5Z2X?=
+ =?us-ascii?Q?qPnOgEl26kg17dQdZug/AWBFwPe1k5EpUut3t5QMRwA+FCTjymvyf+mPjak7?=
+ =?us-ascii?Q?PyBQQ4cL3BGrCyrcowHzAVW70zpKGAnEWKF3XplDhvoUebD8EHN4A4GUxSxx?=
+ =?us-ascii?Q?DTt0U4/FLhctcB0GbcZWZlbprY/ZsQSzNrCa06EWmzaocbfHTQRv7cnIv0Bw?=
+ =?us-ascii?Q?SIOKWJ+imtB+3XXQr6961ekXCwYMW+T2uH4fp1X2E252xo3IOzEoLmfYfYBD?=
+ =?us-ascii?Q?ERFshx+sLxO86prIOgcU8flFDoxGaTECFI77Us10g+B4Y74gHQaN8NILQbAT?=
+ =?us-ascii?Q?rlH2/rqFVlOB2niq1r16jKSiroYE8y/uYuN30ssEobZNIzyfeRFTmpr3/iZy?=
+ =?us-ascii?Q?gkkECc9/ljJAHRm3SZWTFdnDFOF8Npa9O813RYnAwqJWC5lPBupf1W8hmHs6?=
+ =?us-ascii?Q?e9Gm/CITzSIJKz0c+yTy2mcYLkBrrkXCvydWjjueDQdKiP/3FRIPKDXFCxuv?=
+ =?us-ascii?Q?G82U1Kcnl6kMgTSDNQs/b0KLvmt/YLVG3u6UXMRdaQcu1SI2HFB/hp25sJWB?=
+ =?us-ascii?Q?MGJG/YNv64vwGB/3nfVE2mgy4g9YyQHYX7rJP2b2wxmAKWgYYYEcmRQM6fYP?=
+ =?us-ascii?Q?w4jSdbLBq+VCuR42ecb/6u+LDp08GCNkt8Dp7pWspW+qYB4XkEqDXPyvBB58?=
+ =?us-ascii?Q?3gb3U33DOAP/QwPMwog=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f54680d0-b307-48ba-e03a-08db937145ee
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2023 15:58:11.9676
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Hwwk7bhVxMYxJd8kePkXjxYIjWLUuiYKsdySH6DxFMjjh11jQCWucS8PLzyrLV64kj8+gUE9iJ4Pd2O9ysJE4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7733
 
-Hi Shenwei,
+Introduce helper function dw_pcie_get_ltssm to retrieve SMLH_LTSS_STATE.
 
-On 8/2/23 16:27, Shenwei Wang wrote:
-> 
-> 
->> -----Original Message-----
->> From: Johannes Zink <j.zink@pengutronix.de>
->> Sent: Wednesday, August 2, 2023 1:26 AM
->> To: Shenwei Wang <shenwei.wang@nxp.com>; Russell King
->> <linux@armlinux.org.uk>; David S. Miller <davem@davemloft.net>; Eric
->> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
->> Abeni <pabeni@redhat.com>; Maxime Coquelin
->> <mcoquelin.stm32@gmail.com>; Shawn Guo <shawnguo@kernel.org>; Sascha
->> Hauer <s.hauer@pengutronix.de>; Neil Armstrong <neil.armstrong@linaro.org>;
->> Kevin Hilman <khilman@baylibre.com>; Vinod Koul <vkoul@kernel.org>; Chen-
->> Yu Tsai <wens@csie.org>; Jernej Skrabec <jernej.skrabec@gmail.com>; Samuel
->> Holland <samuel@sholland.org>
->> Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>; Alexandre Torgue
->> <alexandre.torgue@foss.st.com>; Jose Abreu <joabreu@synopsys.com>;
->> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; Jerome Brunet
->> <jbrunet@baylibre.com>; Martin Blumenstingl
->> <martin.blumenstingl@googlemail.com>; Bhupesh Sharma
->> <bhupesh.sharma@linaro.org>; Nobuhiro Iwamatsu
->> <nobuhiro1.iwamatsu@toshiba.co.jp>; Simon Horman
->> <simon.horman@corigine.com>; Andrew Halaney <ahalaney@redhat.com>;
->> Bartosz Golaszewski <bartosz.golaszewski@linaro.org>; Wong Vee Khee
->> <veekhee@apple.com>; Revanth Kumar Uppala <ruppala@nvidia.com>; Jochen
->> Henneberg <jh@henneberg-systemdesign.com>; netdev@vger.kernel.org; linux-
->> stm32@st-md-mailman.stormreply.com; linux-arm-kernel@lists.infradead.org;
->> linux-kernel@vger.kernel.org; linux-amlogic@lists.infradead.org;
->> imx@lists.linux.dev; Frank Li <frank.li@nxp.com>
->> Subject: Re: [EXT] Re: [PATCH v3 net 2/2] net: stmmac: dwmac-imx: pause the
->> TXC clock in fixed-link
->>
->> Caution: This is an external email. Please take care when clicking links or
->> opening attachments. When in doubt, report the message using the 'Report this
->> email' button
->>
->>
->> Hi Shenwei,
->>
->> On 8/1/23 19:10, Shenwei Wang wrote:
->>>
->>>
->>>> -----Original Message-----
->>>> From: Johannes Zink <j.zink@pengutronix.de>
->>>> Sent: Tuesday, August 1, 2023 7:48 AM
->>>> To: Shenwei Wang <shenwei.wang@nxp.com>; Russell King
->>>> <linux@armlinux.org.uk>; David S. Miller <davem@davemloft.net>; Eric
->>>> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>;
->>>> Paolo Abeni <pabeni@redhat.com>; Maxime Coquelin
->>>> <mcoquelin.stm32@gmail.com>; Shawn Guo <shawnguo@kernel.org>;
->> Sascha
->>>> Hauer <s.hauer@pengutronix.de>; Neil Armstrong
->>>> <neil.armstrong@linaro.org>; Kevin Hilman <khilman@baylibre.com>;
->>>> Vinod Koul <vkoul@kernel.org>; Chen- Yu Tsai <wens@csie.org>; Jernej
->>>> Skrabec <jernej.skrabec@gmail.com>; Samuel Holland
->>>> <samuel@sholland.org>
->>>> Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>; Alexandre Torgue
->>>> <alexandre.torgue@foss.st.com>; Jose Abreu <joabreu@synopsys.com>;
->>>> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->>>> <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; Jerome Brunet
->>>> <jbrunet@baylibre.com>; Martin Blumenstingl
->>>> <martin.blumenstingl@googlemail.com>; Bhupesh Sharma
->>>> <bhupesh.sharma@linaro.org>; Nobuhiro Iwamatsu
->>>> <nobuhiro1.iwamatsu@toshiba.co.jp>; Simon Horman
->>>> <simon.horman@corigine.com>; Andrew Halaney <ahalaney@redhat.com>;
->>>> Bartosz Golaszewski <bartosz.golaszewski@linaro.org>; Wong Vee Khee
->>>> <veekhee@apple.com>; Revanth Kumar Uppala <ruppala@nvidia.com>;
->>>> Jochen Henneberg <jh@henneberg-systemdesign.com>;
->>>> netdev@vger.kernel.org; linux- stm32@st-md-mailman.stormreply.com;
->>>> linux-arm-kernel@lists.infradead.org;
->>>> linux-kernel@vger.kernel.org; linux-amlogic@lists.infradead.org;
->>>> imx@lists.linux.dev; Frank Li <frank.li@nxp.com>
->>>> Subject: [EXT] Re: [PATCH v3 net 2/2] net: stmmac: dwmac-imx: pause
->>>> the TXC clock in fixed-link
->>>>
->>>> Caution: This is an external email. Please take care when clicking
->>>> links or opening attachments. When in doubt, report the message using
->>>> the 'Report this email' button
->>>>
->>>>
->>>> Hi Shenwei,
->>>>
->>>> thanks for your patch.
->>>>
->>>> On 7/31/23 18:19, Shenwei Wang wrote:
->>>>> When using a fixed-link setup, certain devices like the SJA1105
->>>>> require a small pause in the TXC clock line to enable their internal
->>>>> tunable delay line (TDL).
->>>>
->>>> If this is only required for some devices, is it safe to enforce this
->>>> behaviour unconditionally for any kind of fixed link devices
->>>> connected to the MX93 EQOS or could this possibly break for other devices?
->>>>
->>>
->>> It won't impact normal devices. The link layer hasn't built up yet.
->>>
->>
->> As Russel suggested in [1] - maybe you could rephrase your commit message for
->> your v4 to point this out to future reviewers (apparently multiple people have
->> had questions about this...)  and have this fact also recorded in the git log later
->> on.
->>
-> 
-> Okay.
-> 
->> Also: does this only apply to i.MX93, or would we have to test and enable it on
->> e.g. i.MX8MP as well?
->>
-> 
-> Yes, it is required when the EQOS MAC is selected. However, this patch just enables
-> The feature on i.MX93.
+Add callback .pme_turn_off and .exit_from_l2 for platform specific PME
+handling.
 
-If this behaviour is required on all EQOS, I think the name 
-imx_dwmac_fix_speed_mx93() is misleading. It should either be 
-imx_dwmac_fix_speed() if applicable to all imx implementations, or 
-dwmac_fix_speed() (and moved to a non-gluecode file) if applicable for all 
-implementations in general.
+Add common dw_pcie_suspend(resume)_noirq() API to avoid duplicated code
+in dwc pci host controller platform driver.
 
-You can then add a second patch for enabling it for the i.mx93 in the gluecode 
-driver.
+Typical L2 entry workflow/dw_pcie_suspend_noirq()
 
-Johannes
+1. Transmit PME turn off signal to PCI devices and wait for PME_To_Ack.
+2. Await link entering L2_IDLE state.
 
+Typical L2 exit workflow/dw_pcie_resume_noirq()
 
-> 
-> Thanks,
-> Shenwei
-> 
->> Thanks
->> Johannes
->>
->> [1] ZMk/xqRP67zXHNrf@shell.armlinux.org.uk
->>
->>
->>> Thanks,
->>> Shenwei
->>>
->>>> Best regards
->>>> Johannes
->>>>
->>>>>
->>>>> To satisfy this requirement, this patch temporarily disables the TX
->>>>> clock, and restarts it after a required period. This provides the
->>>>> required silent interval on the clock line for SJA1105 to complete
->>>>> the frequency transition and enable the internal TDLs.
->>>>>
->>>>> So far we have only enabled this feature on the i.MX93 platform.
->>>>>
->>>>> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
->>>>> Reviewed-by: Frank Li <frank.li@nxp.com>
->>>>> ---
->>>>>     .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 42
->> +++++++++++++++++++
->>>>>     1 file changed, 42 insertions(+)
->>>>>
->>>>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
->>>>> b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
->>>>> index 53ee5a42c071..2e4173d099f3 100644
->>>>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
->>>>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
->>>>> @@ -32,6 +32,7 @@
->>>>>     #define GPR_ENET_QOS_RGMII_EN               (0x1 << 21)
->>>>>
->>>>>     #define MX93_GPR_ENET_QOS_INTF_MODE_MASK    GENMASK(3, 0)
->>>>> +#define MX93_GPR_ENET_QOS_INTF_MASK          GENMASK(3, 1)
->>>>>     #define MX93_GPR_ENET_QOS_INTF_SEL_MII              (0x0 << 1)
->>>>>     #define MX93_GPR_ENET_QOS_INTF_SEL_RMII             (0x4 << 1)
->>>>>     #define MX93_GPR_ENET_QOS_INTF_SEL_RGMII    (0x1 << 1)
->>>>> @@ -40,6 +41,7 @@
->>>>>     #define DMA_BUS_MODE                        0x00001000
->>>>>     #define DMA_BUS_MODE_SFT_RESET              (0x1 << 0)
->>>>>     #define RMII_RESET_SPEED            (0x3 << 14)
->>>>> +#define CTRL_SPEED_MASK                      GENMASK(15, 14)
->>>>>
->>>>>     struct imx_dwmac_ops {
->>>>>         u32 addr_width;
->>>>> @@ -56,6 +58,7 @@ struct imx_priv_data {
->>>>>         struct regmap *intf_regmap;
->>>>>         u32 intf_reg_off;
->>>>>         bool rmii_refclk_ext;
->>>>> +     void __iomem *base_addr;
->>>>>
->>>>>         const struct imx_dwmac_ops *ops;
->>>>>         struct plat_stmmacenet_data *plat_dat; @@ -212,6 +215,42 @@
->>>>> static void imx_dwmac_fix_speed(void *priv, uint speed, uint mode)
->>>>>                 dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
->>>>>     }
->>>>>
->>>>> +static void imx_dwmac_fix_speed_mx93(void *priv, uint speed, uint
->>>>> +mode) {
->>>>> +     struct imx_priv_data *dwmac = priv;
->>>>> +     int ctrl, old_ctrl, iface;
->>>>> +
->>>>> +     imx_dwmac_fix_speed(priv, speed, mode);
->>>>> +
->>>>> +     if (!dwmac || mode != MLO_AN_FIXED)
->>>>> +             return;
->>>>> +
->>>>> +     if (regmap_read(dwmac->intf_regmap, dwmac->intf_reg_off, &iface))
->>>>> +             return;
->>>>> +
->>>>> +     iface &= MX93_GPR_ENET_QOS_INTF_MASK;
->>>>> +     if (iface != MX93_GPR_ENET_QOS_INTF_SEL_RGMII)
->>>>> +             return;
->>>>> +
->>>>> +     old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
->>>>> +     ctrl = old_ctrl & ~CTRL_SPEED_MASK;
->>>>> +     regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
->>>>> +                        MX93_GPR_ENET_QOS_INTF_MODE_MASK, 0);
->>>>> +     writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
->>>>> +
->>>>> +     /* Ensure the settings for CTRL are applied and avoid CPU/Compiler
->>>>> +      * reordering.
->>>>> +      */
->>>>> +     wmb();
->>>>> +
->>>>> +     usleep_range(10, 20);
->>>>> +     iface |= MX93_GPR_ENET_QOS_CLK_GEN_EN;
->>>>> +     regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
->>>>> +                        MX93_GPR_ENET_QOS_INTF_MODE_MASK, iface);
->>>>> +
->>>>> +     writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG); }
->>>>> +
->>>>>     static int imx_dwmac_mx93_reset(void *priv, void __iomem *ioaddr)
->>>>>     {
->>>>>         struct plat_stmmacenet_data *plat_dat = priv; @@ -317,8
->>>>> +356,11 @@ static int imx_dwmac_probe(struct platform_device *pdev)
->>>>>         plat_dat->exit = imx_dwmac_exit;
->>>>>         plat_dat->clks_config = imx_dwmac_clks_config;
->>>>>         plat_dat->fix_mac_speed = imx_dwmac_fix_speed;
->>>>> +     if (of_machine_is_compatible("fsl,imx93"))
->>>>> +             plat_dat->fix_mac_speed = imx_dwmac_fix_speed_mx93;
->>>>>         plat_dat->bsp_priv = dwmac;
->>>>>         dwmac->plat_dat = plat_dat;
->>>>> +     dwmac->base_addr = stmmac_res.addr;
->>>>>
->>>>>         ret = imx_dwmac_clks_config(dwmac, true);
->>>>>         if (ret)
->>>>
->>>> --
->>>> Pengutronix e.K.                | Johannes Zink                  |
->>>> Steuerwalder Str. 21            |
->>>> https://www/
->>>> .pe%2F&data=05%7C01%7Cshenwei.wang%40nxp.com%7Ccfd142f0d60a461
->> ee01408
->>>>
->> db9321578d%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63826554
->> 36335
->>>>
->> 61986%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luM
->> zIiLCJ
->>>>
->> BTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=CV10o1M%2BOj
->> DPOaH5C
->>>> y%2Fka%2B0aOMs0IaVapMH7aa3RnTI%3D&reserved=0
->>>>
->> ngutronix.de%2F&data=05%7C01%7Cshenwei.wang%40nxp.com%7C761fbb75c
->>>>
->> 1c24cfe091508db928d8ade%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C
->>>>
->> 0%7C638264908852977732%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA
->>>>
->> wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%
->>>>
->> 7C&sdata=2l2zNfIaNnRJENmERehNae8g%2F%2BQqlxD2YRx7ksY2X%2BE%3D&r
->>>> eserved=0    |
->>>> 31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
->>>> Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
->>>
->>>
->>
->> --
->> Pengutronix e.K.                | Johannes Zink                  |
->> Steuerwalder Str. 21            |
->> https://www.pe/
->> ngutronix.de%2F&data=05%7C01%7Cshenwei.wang%40nxp.com%7Ccfd142f0d
->> 60a461ee01408db9321578d%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7
->> C0%7C638265543633561986%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLj
->> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C
->> %7C&sdata=yKzNPsHqD%2FxU%2FRmzLn4JSQjmuT9tU8SabLxHyGTTmms%3D&r
->> eserved=0    |
->> 31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
->> Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
-> 
-> 
+1. Issue exit from L2 command.
+2. Reinitialize PCI host.
+3. Wait for link to become active.
 
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ Change from v6 to v7
+ - change according to Manivannan's comments.
+   fix sleep value 100 (should be 1000 for 1ms).
+   use dev_err when timeout
+ Change from v5 to v6:
+ - refine commit message
+   change according to Manivannan's comments.
+   - remove reduncate step dw_pcie_set_dstate()
+   - return 0 when .pme_turn_off is zero
+   - call host_deinit() in suspend
+   - check .host_deinit and .host_init point before call.
+
+ Change from v4 to v5:
+ - Closes: https://lore.kernel.org/oe-kbuild-all/202307211904.zExw4Q8H-lkp@intel.com/
+ Change from v3 to v4:
+ - change according to Manivannan's comments.
+   I hope I have not missed anything. quite long discuss thread
+ Change from v2 to v3:
+ - Basic rewrite whole patch according rob herry suggestion.
+   put common function into dwc, so more soc can share the same logic.
+
+ .../pci/controller/dwc/pcie-designware-host.c | 78 +++++++++++++++++++
+ drivers/pci/controller/dwc/pcie-designware.h  | 28 +++++++
+ 2 files changed, 106 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index 9952057c8819c..bc01ecc1c3ec8 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -8,6 +8,7 @@
+  * Author: Jingoo Han <jg1.han@samsung.com>
+  */
+ 
++#include <linux/iopoll.h>
+ #include <linux/irqchip/chained_irq.h>
+ #include <linux/irqdomain.h>
+ #include <linux/msi.h>
+@@ -807,3 +808,80 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
++
++int dw_pcie_suspend_noirq(struct dw_pcie *pci)
++{
++	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	u32 val;
++	int ret;
++
++	/*
++	 * If L1SS is supported, then do not put the link into L2 as some
++	 * devices such as NVMe expect low resume latency.
++	 */
++	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
++		return 0;
++
++	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
++		return 0;
++
++	if (!pci->pp.ops->pme_turn_off)
++		return 0;
++
++	pci->pp.ops->pme_turn_off(&pci->pp);
++
++	/*
++	 * PCI Express Base Specification Rev 4.0 Section 5.3.3.2.1 PME
++	 * Synchronization Recommends 1ms to 10ms timeout to check L2 ready.
++	 */
++	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
++				1000, 10000, false, pci);
++	if (ret) {
++		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
++		return ret;
++	}
++
++	if (pci->pp.ops->host_deinit)
++		pci->pp.ops->host_deinit(&pci->pp);
++
++	pci->suspended = true;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
++
++int dw_pcie_resume_noirq(struct dw_pcie *pci)
++{
++	int ret;
++
++	if (!pci->suspended)
++		return 0;
++
++	pci->suspended = false;
++
++	if (!pci->pp.ops->exit_from_l2)
++		return 0;
++
++	pci->pp.ops->exit_from_l2(&pci->pp);
++
++	if (pci->pp.ops->host_init) {
++		ret = pci->pp.ops->host_init(&pci->pp);
++		if (ret) {
++			dev_err(pci->dev, "Host init failed! ret = %d\n", ret);
++			return ret;
++		}
++	}
++
++	dw_pcie_setup_rc(&pci->pp);
++
++	ret = dw_pcie_start_link(pci);
++	if (ret)
++		return ret;
++
++	ret = dw_pcie_wait_for_link(pci);
++	if (ret)
++		return ret;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 79713ce075cc1..cbba3ed19b3c0 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -288,10 +288,21 @@ enum dw_pcie_core_rst {
+ 	DW_PCIE_NUM_CORE_RSTS
+ };
+ 
++enum dw_pcie_ltssm {
++	DW_PCIE_LTSSM_UNKNOWN = 0xFFFFFFFF,
++	/* Need to align with PCIE_PORT_DEBUG0 bits 0:5 */
++	DW_PCIE_LTSSM_DETECT_QUIET = 0x0,
++	DW_PCIE_LTSSM_DETECT_ACT = 0x1,
++	DW_PCIE_LTSSM_L0 = 0x11,
++	DW_PCIE_LTSSM_L2_IDLE = 0x15,
++};
++
+ struct dw_pcie_host_ops {
+ 	int (*host_init)(struct dw_pcie_rp *pp);
+ 	void (*host_deinit)(struct dw_pcie_rp *pp);
+ 	int (*msi_host_init)(struct dw_pcie_rp *pp);
++	void (*pme_turn_off)(struct dw_pcie_rp *pp);
++	void (*exit_from_l2)(struct dw_pcie_rp *pp);
+ };
+ 
+ struct dw_pcie_rp {
+@@ -364,6 +375,7 @@ struct dw_pcie_ops {
+ 	void    (*write_dbi2)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
+ 			      size_t size, u32 val);
+ 	int	(*link_up)(struct dw_pcie *pcie);
++	enum dw_pcie_ltssm (*get_ltssm)(struct dw_pcie *pcie);
+ 	int	(*start_link)(struct dw_pcie *pcie);
+ 	void	(*stop_link)(struct dw_pcie *pcie);
+ };
+@@ -393,6 +405,7 @@ struct dw_pcie {
+ 	struct reset_control_bulk_data	app_rsts[DW_PCIE_NUM_APP_RSTS];
+ 	struct reset_control_bulk_data	core_rsts[DW_PCIE_NUM_CORE_RSTS];
+ 	struct gpio_desc		*pe_rst;
++	bool			suspended;
+ };
+ 
+ #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
+@@ -430,6 +443,9 @@ void dw_pcie_iatu_detect(struct dw_pcie *pci);
+ int dw_pcie_edma_detect(struct dw_pcie *pci);
+ void dw_pcie_edma_remove(struct dw_pcie *pci);
+ 
++int dw_pcie_suspend_noirq(struct dw_pcie *pci);
++int dw_pcie_resume_noirq(struct dw_pcie *pci);
++
+ static inline void dw_pcie_writel_dbi(struct dw_pcie *pci, u32 reg, u32 val)
+ {
+ 	dw_pcie_write_dbi(pci, reg, 0x4, val);
+@@ -501,6 +517,18 @@ static inline void dw_pcie_stop_link(struct dw_pcie *pci)
+ 		pci->ops->stop_link(pci);
+ }
+ 
++static inline enum dw_pcie_ltssm dw_pcie_get_ltssm(struct dw_pcie *pci)
++{
++	u32 val;
++
++	if (pci->ops && pci->ops->get_ltssm)
++		return pci->ops->get_ltssm(pci);
++
++	val = dw_pcie_readl_dbi(pci, PCIE_PORT_DEBUG0);
++
++	return (enum dw_pcie_ltssm)FIELD_GET(PORT_LOGIC_LTSSM_STATE_MASK, val);
++}
++
+ #ifdef CONFIG_PCIE_DW_HOST
+ irqreturn_t dw_handle_msi_irq(struct dw_pcie_rp *pp);
+ int dw_pcie_setup_rc(struct dw_pcie_rp *pp);
 -- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+2.34.1
 
