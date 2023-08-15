@@ -1,117 +1,65 @@
-Received: from chg.server2.ideacentral.com (unknown [108.163.232.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DFA1842
-	for <imx@lists.linux.dev>; Mon, 14 Aug 2023 08:39:12 +0000 (UTC)
-Received: from mailnull by ns-196.awsdns-24.com with local (Exim 4.96)
-	id 1qVT6W-00HG2O-08
-	for imx@lists.linux.dev;
-	Mon, 14 Aug 2023 03:39:12 -0500
-X-Failed-Recipients: imx@lists.linux.dev
-Auto-Submitted: auto-replied
-From: Mail Delivery System <Mailer-Daemon@ns-196.awsdns-24.com>
-To: imx@lists.linux.dev
-References: <20230814093908.58A41D84261385F6@lists.linux.dev>
-Content-Type: multipart/report; report-type=delivery-status; boundary=1692002352-eximdsn-1331443503
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A53622
+	for <imx@lists.linux.dev>; Tue, 15 Aug 2023 03:18:53 +0000 (UTC)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1c52dbc300bso31677fac.2
+        for <imx@lists.linux.dev>; Mon, 14 Aug 2023 20:18:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692069533; x=1692674333;
+        h=mime-version:date:content-transfer-encoding:message-id:subject
+         :in-reply-to:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uc05jbMKk12/1+xjQXOnRQ2X0n56cn1ROi4ow++Q8Hg=;
+        b=K8OoKyp2gKSdvFKTm0VQzMc74fSGNswF6iF68sWp08dr2VHqHk7PWpbBCPw3otLbrS
+         U3tzXQgM8beSxwEiqzxQYQenKy7UX4q5qYtUztoteRSH6h/PZCa3eLhBqzfIxfcPXvJ2
+         P5u8NIzWBmN2gjnYEE/6zCXNV+Z7EMGaWeh2mo+HdjTFwHJl91syyfIWsp6GOkjqjpyo
+         IaiXv59lpS9uFc/5i53Aot5iCtn4PbO86BWZ9YaP8pcY1vTjcw6+06Rcfulz0Lai0/dR
+         jyF5eM5kzMGHvBVjdqcClHkuGYaKC86pQMPzK09n9ti2+Wm6QK/M7Qd5/1FfOC8tIl4W
+         8C3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692069533; x=1692674333;
+        h=mime-version:date:content-transfer-encoding:message-id:subject
+         :in-reply-to:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uc05jbMKk12/1+xjQXOnRQ2X0n56cn1ROi4ow++Q8Hg=;
+        b=FxPEQi/n+iHddTANfXYiH7TF5y6cIxt3Jza2jYIH8SBoy4dEPklreJ2XLn1PEzJ0Lz
+         1QiE21yuKFLaO+QLfqYwowOR3LPl6vHuBPL2MOHGLCD6OitbE9s9nfE+xshGTOsglmdW
+         tVeBSipif0RINhf7b3ivxg4u9nFhc7LnjozIzFgwLSLe9srgAJfQWdpni2ZUjnQ89p2n
+         0PbQq7Iptm0HgQMCKXP3fk0vHZOstLQfejrCIPgDIa+by7HPDCmUooOVLr4Dcp1V4TtW
+         tTUd/7FpBnf8zlB9uvKKufackg4PEpmTDy3LKIbl9eOfJvK8kohd4UsHLrSYANrCoUxl
+         LwhA==
+X-Gm-Message-State: AOJu0YwTbk8gN1HuywIMYYnJ2oMhWcitRztCmOPC99kwpeXX+fnme9O2
+	QgDoUZ5Oot3gpK3SRF4HFbg=
+X-Google-Smtp-Source: AGHT+IGF/zMWGSotR20rtrN1fmVjQMbIzT6dMg6s5PsA4LNVlQ75emCfy7gWuz54+AiAAdM3o3cX/w==
+X-Received: by 2002:a05:6870:c086:b0:1bf:5096:7dbb with SMTP id c6-20020a056870c08600b001bf50967dbbmr12699711oad.44.1692069532643;
+        Mon, 14 Aug 2023 20:18:52 -0700 (PDT)
+Received: from [127.0.0.1] (cpe-70-112-65-167.austin.res.rr.com. [70.112.65.167])
+        by smtp.gmail.com with ESMTPSA id q3-20020a9d6643000000b006b94aba1f0bsm4961614otm.43.2023.08.14.20.18.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Aug 2023 20:18:52 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+From: Qi Wang <harrynicomama@gmail.com>
+To: harrynicomama@gmail.com
+Cc: extensiontest66@gmail.com, imx@lists.linux.dev
+In-Reply-To:
+ <CAC5d1WLVsXR3PvovoviRoTHqh4h7+e=mMM4CyeazdFyNdiE5wQ@mail.gmail.com>
+Subject: Quick Reply Extension Testing
+Message-ID: <d8b65463-0442-5b72-292e-46abd2536b51@gmail.com>
+Content-Transfer-Encoding: 7bit
+Date: Tue, 15 Aug 2023 03:18:51 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Mail delivery failed: returning message to sender
-Message-Id: <E1qVT6W-00HG2O-08@ns-196.awsdns-24.com>
-Date: Mon, 14 Aug 2023 03:39:12 -0500
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - ns-196.awsdns-24.com
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - 
-X-Get-Message-Sender-Via: ns-196.awsdns-24.com: sender_ident via received_protocol == local: mailnull/primary_hostname/system user
-X-Authenticated-Sender: ns-196.awsdns-24.com: mailnull
 
---1692002352-eximdsn-1331443503
-Content-type: text/plain; charset=us-ascii
+> > > > > > Browser extension test thread for quick email replies.
+> >
+> >
+> > > > > > Please Ignore.
 
-This message was created automatically by mail delivery software.
+smtp server
 
-A message that you sent could not be delivered to one or more of its
-recipients. This is a permanent error. The following address(es) failed:
-
-  imx@lists.linux.dev
-    host smtp.subspace.kernel.org [44.238.234.78]
-    SMTP error from remote mail server after end of data:
-    550 5.7.1 Blocked by SpamAssassin
-
---1692002352-eximdsn-1331443503
-Content-type: message/delivery-status
-
-Reporting-MTA: dns; ns-196.awsdns-24.com
-
-Action: failed
-Final-Recipient: rfc822;imx@lists.linux.dev
-Status: 5.0.0
-Remote-MTA: dns; smtp.subspace.kernel.org
-Diagnostic-Code: smtp; 550 5.7.1 Blocked by SpamAssassin
-
---1692002352-eximdsn-1331443503
-Content-type: message/rfc822
-
-Return-path: <imx@lists.linux.dev>
-Received: from v-104-153-108-120.unman-vds.premium-chicago.nfoservers.com ([104.153.108.120]:51718)
-	by ns-196.awsdns-24.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <imx@lists.linux.dev>)
-	id 1qVT6T-00HFmX-17
-	for imx@lists.linux.dev;
-	Mon, 14 Aug 2023 03:39:09 -0500
-From: lists.linux.devAdministrator<imx@lists.linux.dev>
-To: imx@lists.linux.dev
-Subject: =?UTF-8?B?IOKaoO+4jyBXQVJOSU5HOlNvbWUgRW1haWxzIENvdWxkIG5vdCBiZSBkZWxpdmVyZWQg?=
-Date: 14 Aug 2023 09:39:08 +0100
-Message-ID: <20230814093908.58A41D84261385F6@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html>
-
-<html><head><title></title>
-<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.19003">
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body><span style=3D"background-color: rgb(204, 204, 204);"><b><i><font col=
-or=3D"#ff0000">Some Emails Could not be Delivered , Action Required</font><=
-/i></b>.</span><div><br><font color=3D"#3d85c6"><font size=3D"4"><b>Quarant=
-ined Messages Report</b> </font>&nbsp;</font><br>imx@lists.linux.dev<div>14=
--08-2023, 08:00AM <br>&nbsp;<br>Dear imx,</div><div><br>
-4 messages addressed to you are currently on hold awaiting your further act=
-ion. You can release all of your held messages and permit or block future e=
-mails from the senders, or manage messages individually.<br><br>
-<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPa=
-nxX?clientID=3Dimx@lists.linux.dev" target=3D"_blank" data-saferedirecturl=
-=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Email-%5D%=
-5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwLZWfJX-=
-xB2LHrk7CvessvAOsg">Review all</a>
-&nbsp; &nbsp;<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGb=
-cFJkycxN8DaPanxX?clientID=3Dimx@lists.linux.dev" target=3D"_blank" data-saf=
-eredirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5=
-B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQj=
-CNFFwLZWfJX-xB2LHrk7CvessvAOsg">Release all</a>
-&nbsp; &nbsp; <a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRG=
-bcFJkycxN8DaPanxX?clientID=3Dimx@lists.linux.dev" target=3D"_blank" data-sa=
-feredirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%=
-5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQ=
-jCNFFwLZWfJX-xB2LHrk7CvessvAOsg">Block all</a><br><br>Further Information: =
-<br>
-To view your entire quarantine inbox or manage your preferences, <a href=3D=
-"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPanxX?client=
-ID=3Dimx@lists.linux.dev" target=3D"_blank" data-saferedirecturl=3D"https:/=
-/www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Email-%5D%5D&amp;sour=
-ce=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwLZWfJX-xB2LHrk7Cve=
-ssvAOsg">Click Here</a><br><br>The system generated this notice on 14-08-20=
-23, at 09:00AM<br>Do not reply to this automated message.<br>
-&copy; 2023 lists.linux.dev. All rights reserved.</div></div>
-</body></html>
-
---1692002352-eximdsn-1331443503--
+====================================================
+Replied with love by Quick Reply Extension :)
