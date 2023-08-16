@@ -1,117 +1,76 @@
-Received: from chg.server2.ideacentral.com (unknown [108.163.232.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4606FC2F0
-	for <imx@lists.linux.dev>; Wed, 16 Aug 2023 09:03:09 +0000 (UTC)
-Received: from mailnull by ns-196.awsdns-24.com with local (Exim 4.96)
-	id 1qWCQm-006vVL-1c
-	for imx@lists.linux.dev;
-	Wed, 16 Aug 2023 04:03:08 -0500
-X-Failed-Recipients: imx@lists.linux.dev
-Auto-Submitted: auto-replied
-From: Mail Delivery System <Mailer-Daemon@ns-196.awsdns-24.com>
-To: imx@lists.linux.dev
-References: <20230816100304.F9930AA917EDA9DA@lists.linux.dev>
-Content-Type: multipart/report; report-type=delivery-status; boundary=1692176588-eximdsn-1822919435
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C90D2EE
+	for <imx@lists.linux.dev>; Wed, 16 Aug 2023 10:20:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE55C433C7;
+	Wed, 16 Aug 2023 10:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692181216;
+	bh=ow9tRMf0gu4FTJ9byjkAVUH5QDlP42E17BJRLDwt9RA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KjXMvG819bch8IgneZCLWkZCSJF80daxdWAssagyRcUVBv9nv+bDoyLEX+1ChG936
+	 Wy/wuHLaFGAClxUGHX6RmKDlbUyFZGU0o2Sz3ZeiyvZoezDdxbjjBN60nxF71esZIi
+	 Kri3fioFD/PVEcYygkhx3SR8gOCiY4fDc8RwmBwzC+gH7o4118PgMZ4Cnn1bhUmA8L
+	 qdsGVM4nW1ZrA97aCAWP/f3CDFXAP/SNQZ7melJAj8mnx9q8mUi6V3AkxExjw6ecLI
+	 xHb0eQB7Ftjz6u3TDq6TFpEFTKwAwSMCBMx1aTwyzh391k1DhguZhqL6hO/OhbHgNi
+	 Oj3t4RFxl2RrA==
+Date: Wed, 16 Aug 2023 12:20:08 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, bhelgaas@google.com
+Cc: helgaas@kernel.org, devicetree@vger.kernel.org,
+	gustavo.pimentel@synopsys.com, imx@lists.linux.dev, kw@linux.com,
+	leoyang.li@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
+	mani@kernel.org, manivannan.sadhasivam@linaro.org,
+	minghuan.lian@nxp.com, mingkai.hu@nxp.com, robh+dt@kernel.org,
+	roy.zang@nxp.com, shawnguo@kernel.org, zhiqiang.hou@nxp.com
+Subject: Re: [PATCH v11 1/3] PCI: Add macro PCIE_PME_TO_L2_TIMEOUT_US
+Message-ID: <ZNyi2BkInSyUPYEU@lpieralisi>
+References: <20230809153540.834653-1-Frank.Li@nxp.com>
+ <20230809153540.834653-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Mail delivery failed: returning message to sender
-Message-Id: <E1qWCQm-006vVL-1c@ns-196.awsdns-24.com>
-Date: Wed, 16 Aug 2023 04:03:08 -0500
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - ns-196.awsdns-24.com
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - 
-X-Get-Message-Sender-Via: ns-196.awsdns-24.com: sender_ident via received_protocol == local: mailnull/primary_hostname/system user
-X-Authenticated-Sender: ns-196.awsdns-24.com: mailnull
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230809153540.834653-2-Frank.Li@nxp.com>
 
---1692176588-eximdsn-1822919435
-Content-type: text/plain; charset=us-ascii
+On Wed, Aug 09, 2023 at 11:35:38AM -0400, Frank Li wrote:
+> Introduce the PCIE_PME_TO_L2_TIMEOUT_US macro to facilitate checking the
+> L2 ready timeout in the PCI subsystem.
+> 
+> Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/pci.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-This message was created automatically by mail delivery software.
+This patch requires Bjorn's ACK.
 
-A message that you sent could not be delivered to one or more of its
-recipients. This is a permanent error. The following address(es) failed:
+Lorenzo
 
-  imx@lists.linux.dev
-    host smtp.subspace.kernel.org [44.238.234.78]
-    SMTP error from remote mail server after end of data:
-    550 5.7.1 Blocked by SpamAssassin
-
---1692176588-eximdsn-1822919435
-Content-type: message/delivery-status
-
-Reporting-MTA: dns; ns-196.awsdns-24.com
-
-Action: failed
-Final-Recipient: rfc822;imx@lists.linux.dev
-Status: 5.0.0
-Remote-MTA: dns; smtp.subspace.kernel.org
-Diagnostic-Code: smtp; 550 5.7.1 Blocked by SpamAssassin
-
---1692176588-eximdsn-1822919435
-Content-type: message/rfc822
-
-Return-path: <imx@lists.linux.dev>
-Received: from v-104-153-108-120.unman-vds.premium-chicago.nfoservers.com ([104.153.108.120]:62585)
-	by ns-196.awsdns-24.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <imx@lists.linux.dev>)
-	id 1qWCQj-006urH-1H
-	for imx@lists.linux.dev;
-	Wed, 16 Aug 2023 04:03:05 -0500
-From: lists.linux.devAdministrator<imx@lists.linux.dev>
-To: imx@lists.linux.dev
-Subject: =?UTF-8?B?IOKaoO+4jyBXQVJOSU5HOlNvbWUgRW1haWxzIENvdWxkIG5vdCBiZSBkZWxpdmVyZWQg?=
-Date: 16 Aug 2023 10:03:04 +0100
-Message-ID: <20230816100304.F9930AA917EDA9DA@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html>
-
-<html><head><title></title>
-<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.19003">
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body><span style=3D"background-color: rgb(204, 204, 204);"><b><i><font col=
-or=3D"#ff0000">Some Emails Could not be Delivered , Action Required</font><=
-/i></b>.</span><div><br><font color=3D"#3d85c6"><font size=3D"4"><b>Quarant=
-ined Messages Report</b> </font>&nbsp;</font><br>imx@lists.linux.dev<div>16=
--08-2023, 08:00AM <br>&nbsp;<br>Dear imx,</div><div><br>
-4 messages addressed to you are currently on hold awaiting your further act=
-ion. You can release all of your held messages and permit or block future e=
-mails from the senders, or manage messages individually.<br><br>
-<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPa=
-nxX?clientID=3Dimx@lists.linux.dev" target=3D"_blank" data-saferedirecturl=
-=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Email-%5D%=
-5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwLZWfJX-=
-xB2LHrk7CvessvAOsg">Review all</a>
-&nbsp; &nbsp;<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGb=
-cFJkycxN8DaPanxX?clientID=3Dimx@lists.linux.dev" target=3D"_blank" data-saf=
-eredirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5=
-B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQj=
-CNFFwLZWfJX-xB2LHrk7CvessvAOsg">Release all</a>
-&nbsp; &nbsp; <a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRG=
-bcFJkycxN8DaPanxX?clientID=3Dimx@lists.linux.dev" target=3D"_blank" data-sa=
-feredirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%=
-5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQ=
-jCNFFwLZWfJX-xB2LHrk7CvessvAOsg">Block all</a><br><br>Further Information: =
-<br>
-To view your entire quarantine inbox or manage your preferences, <a href=3D=
-"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPanxX?client=
-ID=3Dimx@lists.linux.dev" target=3D"_blank" data-saferedirecturl=3D"https:/=
-/www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Email-%5D%5D&amp;sour=
-ce=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwLZWfJX-xB2LHrk7Cve=
-ssvAOsg">Click Here</a><br><br>The system generated this notice on 16-08-20=
-23, at 09:00AM<br>Do not reply to this automated message.<br>
-&copy; 2023 lists.linux.dev. All rights reserved.</div></div>
-</body></html>
-
---1692176588-eximdsn-1822919435--
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index a4c3974340576..da8156663c825 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -13,6 +13,12 @@
+>  
+>  #define PCIE_LINK_RETRAIN_TIMEOUT_MS	1000
+>  
+> +/*
+> + * PCIe r6.0, sec 5.3.3.2.1 <PME Synchronization>
+> + * Recommends 1ms to 10ms timeout to check L2 ready.
+> + */
+> +#define PCIE_PME_TO_L2_TIMEOUT_US	10000
+> +
+>  extern const unsigned char pcie_link_speed[];
+>  extern bool pci_early_dump;
+>  
+> -- 
+> 2.34.1
+> 
