@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C90D2EE
-	for <imx@lists.linux.dev>; Wed, 16 Aug 2023 10:20:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE55C433C7;
-	Wed, 16 Aug 2023 10:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577BD101C8
+	for <imx@lists.linux.dev>; Wed, 16 Aug 2023 11:45:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECC2C433C7;
+	Wed, 16 Aug 2023 11:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692181216;
-	bh=ow9tRMf0gu4FTJ9byjkAVUH5QDlP42E17BJRLDwt9RA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KjXMvG819bch8IgneZCLWkZCSJF80daxdWAssagyRcUVBv9nv+bDoyLEX+1ChG936
-	 Wy/wuHLaFGAClxUGHX6RmKDlbUyFZGU0o2Sz3ZeiyvZoezDdxbjjBN60nxF71esZIi
-	 Kri3fioFD/PVEcYygkhx3SR8gOCiY4fDc8RwmBwzC+gH7o4118PgMZ4Cnn1bhUmA8L
-	 qdsGVM4nW1ZrA97aCAWP/f3CDFXAP/SNQZ7melJAj8mnx9q8mUi6V3AkxExjw6ecLI
-	 xHb0eQB7Ftjz6u3TDq6TFpEFTKwAwSMCBMx1aTwyzh391k1DhguZhqL6hO/OhbHgNi
-	 Oj3t4RFxl2RrA==
-Date: Wed, 16 Aug 2023 12:20:08 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, bhelgaas@google.com
-Cc: helgaas@kernel.org, devicetree@vger.kernel.org,
+	s=k20201202; t=1692186301;
+	bh=zWNrCC9D/ZGZLVx6/MNogtB5y4I71xfms58Io+1Vxhg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=HrMr+pjtgrAkRbb4vE11dFmpCmp9zzwJcqbmWnO65g9F9hiJULyc+WCzKGCpYC3Md
+	 Axw/XJr/4JIvfHpZOmweW9sE5CuNBU9eaCF/nClsBnP2Z/vld/akXe+48yD11fRSsX
+	 lokhOaE5gwkDzCSo57oXRtIdksNfOSA9WgdOIFQTh1bzacBKdaPfxgpeo3DsDuFVdq
+	 unf8bLX4SSuQWYMMQi5PAG7ycVEaY3y1uKebUKpSaDcc5I8MMI/5j3C1TjYFhxq/rH
+	 t8yHKkAOnzlh9h1BNG0IdQwA0YZ5xVjR6gICiQVShzPBIr1itAYMDOZ/AYx5yw9a42
+	 S5+WU9npF/slg==
+Date: Wed, 16 Aug 2023 06:44:59 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: bhelgaas@google.com, devicetree@vger.kernel.org,
 	gustavo.pimentel@synopsys.com, imx@lists.linux.dev, kw@linux.com,
 	leoyang.li@nxp.com, linux-arm-kernel@lists.infradead.org,
 	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
-	mani@kernel.org, manivannan.sadhasivam@linaro.org,
-	minghuan.lian@nxp.com, mingkai.hu@nxp.com, robh+dt@kernel.org,
-	roy.zang@nxp.com, shawnguo@kernel.org, zhiqiang.hou@nxp.com
+	lpieralisi@kernel.org, mani@kernel.org,
+	manivannan.sadhasivam@linaro.org, minghuan.lian@nxp.com,
+	mingkai.hu@nxp.com, robh+dt@kernel.org, roy.zang@nxp.com,
+	shawnguo@kernel.org, zhiqiang.hou@nxp.com
 Subject: Re: [PATCH v11 1/3] PCI: Add macro PCIE_PME_TO_L2_TIMEOUT_US
-Message-ID: <ZNyi2BkInSyUPYEU@lpieralisi>
-References: <20230809153540.834653-1-Frank.Li@nxp.com>
- <20230809153540.834653-2-Frank.Li@nxp.com>
+Message-ID: <20230816114459.GA284194@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,14 +45,15 @@ On Wed, Aug 09, 2023 at 11:35:38AM -0400, Frank Li wrote:
 > 
 > Acked-by: Manivannan Sadhasivam <mani@kernel.org>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Looks good, thanks!
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
 > ---
 >  drivers/pci/pci.h | 6 ++++++
 >  1 file changed, 6 insertions(+)
-
-This patch requires Bjorn's ACK.
-
-Lorenzo
-
+> 
 > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
 > index a4c3974340576..da8156663c825 100644
 > --- a/drivers/pci/pci.h
@@ -74,3 +74,8 @@ Lorenzo
 > -- 
 > 2.34.1
 > 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
