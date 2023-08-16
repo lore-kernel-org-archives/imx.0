@@ -1,53 +1,60 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2041.outbound.protection.outlook.com [40.107.105.41])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2087.outbound.protection.outlook.com [40.107.14.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32DADDD0
-	for <imx@lists.linux.dev>; Wed, 16 Aug 2023 15:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4A616414
+	for <imx@lists.linux.dev>; Wed, 16 Aug 2023 16:29:03 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M35YHVHW+x6BC9y/31RIgFBUzKPo68lbHpSUYgXGiJano0ZSwisOyIL3wGU49DByFhwQ14gfPIJnF/sUB6cDJSZXRDeaqo0u5T8K/26NsZ3RyPPomYif8WJYmYN2mvi+Um3yMVqi0CfCDo9xsFBE8yVu8aTYSbiFsv4sZgkg90t0WgXQgbmInEJw0iKKZCbgbqnPLsxKHNVJlr4B1VnYmJoeBfE7FSPu/2D5rFlzY1o5SQ01h9JmtIq7nTiUe9TwAM+aa6BrEX3j0UnSYGWXnIDbFbWXOb55GJkJHMdaInpbeVGhNDpZJkcBifaD6xxwB/JSm0V8OBoPTddoRWddww==
+ b=c/nAZwvhz82lbf0C6+ZvIZ/Xe6Mj+MIxVEGCsy4yN2g7ztezdN0xBOmNRB9862BlW+4qAmSo5FxaGWIZIVQ9PIUQzIDvxIlvG23yhsN7DFi4Jmq/UQS4MxSYxRhE0xQ4C77lDgpBZQxSZqZXQw9ue5PEIicUqc74BYdXoUwUmMUP0FaHRIRIc8C4efj9BP5PaK3+R2Vx+ioum39DAwDRwUxdyoVFff3Dxstgzq54sia0+itYD3MNir2cPH/TFkmdg2O1HFKLDze5O5HouYh3LUNVEL9okMsKoOM/v60WHwed+Je/6f7texil31ORnj9djZWtjZfv15H2MEkWFq5TLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d391qkuOlYAxy95a7vc3ORlEjt147k68OrXsMDzBgxo=;
- b=lSLgZdGD5zHpOFcKJ/GO43+FYkLL4kN/M30m4kzREclnyWtYXmZu5zlpxg2WZCLIa/jX5Y3aP6aUWvpZAnj/bwwqvaT8ox92F1iADFgtuKutoYwcr+gCBEeY6cwygdfBUPQ41PsYOr8VJxCTazNpoTdgvBaeGO81QC6AveQ+adIlIv8qkahRWVDhBWXkJbhKse8h/fRSPGdVShXrhD5SPC73O0zbPY+p1h40fGYmG4H6LZi2fJA/euMgbNdavMuRjLhsBMLGbcKtWB/S3sVzUbHhSAeiflUMFv9mX7zOra+PDu671uixIbqWNAZCjQBWAbP0El+q1wRkrtCtAbAoBA==
+ bh=SbrMgCfBEWNZsDhEUnapzHTgtTC7Qj++VrDEx5Fr/Us=;
+ b=C992SfKi/dd411hGZKd3XQSFpqYvD0++WDNyXAZwUX5tRdp0XZP5omyfqJwlhfeGLC0TSj//5nUBHIkCoFMuCK3VLN5gLuvqyZmcDf55OzMDR3EQfvdaBxGAGJGI2WVEBWsVJK4W5KXLkrloZ6o29cuNUpakKrWkZbKCYtp60ZOwiF0M3kPnkigJB/NN0x9OSa5v7TrIIjt61d416M8BmSBmVOuibsTE5M06b2bCbaCEGBVT0cd0M0derVlOqfI5CcQ2RzJlyOQfzsw005PkRICs19VMfk1YWtnli2s6GbTh7UcYoJ5XEoCVV9r6XcZBUn2RhjMubsBqH46oHq7NGw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d391qkuOlYAxy95a7vc3ORlEjt147k68OrXsMDzBgxo=;
- b=dcIfsRQMY2AjVQmtGqFvOnBsazxsIrLXU9epaNXzQDqjl4VQq5GdiD43fcGaBscvkYsp+35hprJ5GgFJ3v1YRtkgSk7S3P/Z2Opkp8arA587QxqjuPtpFZatvTqmVnjIl8Qw29qAbjU2wkkOU2i7BbASAO6z3a9+CliiIBpRNjM=
+ bh=SbrMgCfBEWNZsDhEUnapzHTgtTC7Qj++VrDEx5Fr/Us=;
+ b=GXVDEKAw4Ettn47cdJZI8n/nYha5x8SeInbw1KDzj3A4FCK0zsaapoPd6Mb1AGaGGCxqCiOKfBdjg+NW1b0DI0ICHupC49ISqs7/C7J7ZAZB4amJ9NlmKbBdD85OzOvETd42j45aszAJFyKSd9zilydPQWl/ZIbL9Pidu28dE0M=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by PAXPR04MB8736.eurprd04.prod.outlook.com (2603:10a6:102:20c::21) with
+ by AS1PR04MB9502.eurprd04.prod.outlook.com (2603:10a6:20b:4d0::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.24; Wed, 16 Aug
- 2023 15:53:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Wed, 16 Aug
+ 2023 16:28:59 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::a680:2943:82d1:6aa8]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::a680:2943:82d1:6aa8%3]) with mapi id 15.20.6678.029; Wed, 16 Aug 2023
- 15:53:32 +0000
-Date: Wed, 16 Aug 2023 11:53:16 -0400
+ 16:28:59 +0000
+Date: Wed, 16 Aug 2023 12:28:44 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: lpieralisi@kernel.org
-Cc: Zhiqiang.Hou@nxp.com, bhelgaas@google.com, imx@lists.linux.dev,
-	kernel-janitors@vger.kernel.org, kw@linux.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	mani@kernel.org, markus.elfring@web.de, minghuan.Lian@nxp.com,
-	mingkai.hu@nxp.com, robh@kernel.org, roy.zang@nxp.com,
-	xiaowei.bao@nxp.com
-Subject: Re: [PATCH v4 1/2] PCI: layerscape: Add support for Link down
- notification
-Message-ID: <ZNzw7MPF00t3i3bn@lizhi-Precision-Tower-5810>
-References: <20230720135834.1977616-1-Frank.Li@nxp.com>
- <ZMfN9w6ixBFBmof7@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Amit Kucheria <amitk@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	"open list:THERMAL" <linux-pm@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 1/1] thermal/drivers/imx_sc_thermal: return -EAGAIN when
+ SCFW turn off resource
+Message-ID: <ZNz5Drb+EVLjWxRV@lizhi-Precision-Tower-5810>
+References: <20230712210505.1536416-1-Frank.Li@nxp.com>
+ <f1d4ed62-8d01-173f-6e41-4671228782fd@linaro.org>
+ <ZLGDhOffQwh7xW/n@lizhi-Precision-Tower-5810>
+ <7eacc4da-ab14-3df5-2864-44a7262bac27@linaro.org>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZMfN9w6ixBFBmof7@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SJ0PR13CA0204.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::29) To AM6PR04MB4838.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7eacc4da-ab14-3df5-2864-44a7262bac27@linaro.org>
+X-ClientProxiedBy: SJ0PR05CA0001.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b::6) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -56,95 +63,141 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB8736:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8d1d7cca-28f8-4013-5457-08db9e70f0ca
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS1PR04MB9502:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2123201e-fb7b-4361-09a9-08db9e75e50d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	XfYMjMMxIQ8RGs4mb1tHwD5D40nEGJDgKjmeO5rDleZ284Ok0ARZzrfgKX7ID0GPEnDNh1x+FEYYmVUtmjxQ49cAPmwGieTiFrAchUNbPT/+1et4XSYGikLdnG/ri0qG6dotmZfp4BUHMFIgirLgsmwmmTBWuvpeFxEjlQ/rWhkYNEyS2sPGpc17w2g0dhpyZ3Q3UaIM4jukT06+aEztU/vLU8o4RAQygw4zviKPrVmUpxnWONoQMXrKtV8txWRta8ZeHT5yH/KnNbjn/YDOhT1OO2YRB7nVKZCk0Jr+Z4/9JHONXz6H6kJON2nwaL3eRoNCGitdCZGT7aekSibu0eOgWM/QMCcQqNISkSbJ+KWOgZ7eR3SV1n91e6lR7yCFfM1+h1OqcaHAdOXBh2o+h11Sm4gJodnhUAfBrV8vSU3POqkxk4gPUOlZxX+XTqkNb+vL1XojEUD8FLgo5hies44wKnuef5KUdTugwFZxUNWCOIuxRtOhhvoKB+DiF8WXWJZmc8+EK9K+uWFf+HTy4AoxIb1YN9gcaLGr8qHWrJ88qaCQT+CterbMllJhLyqNZheTmx5c96+90NENj827XsZa7TjQoU5nMlEXqt6PXGqvAjLuhq5vtoZdkvPtgWYO
+	CKbMp+EgcL/7OYG9ROFQCYq0b8+KIK1su/0vLFT3Vx6EeOoUzW6UK7ntnwPdxaSTTPjRRihZy/vcSPbu9izKpySzuHvuFLNixva7xtQUYhxkpsT473ayI3hlDq4nEwwaurjw7sbM9NXy/gp2Al3wDcGGWtYurI42hNsZ5OD3pvhNeKOuoWLuSKnH5TYHSdiYJa7ISKVwThVNG6Lm3XrsOeShkYetyhzH2PjZHNO/A0POwMw8hUi/3Akwmlj5hIbua+uU4nt/DH/9iHvUSPc6QekHqeTvdW+pBHcUb1oyYVPEfJvk7/WE0+iK/w+ULBIpjVIXGTypwoCSNz60eGUdHDa1ng3tlTH8I8YnoxiqHgTI0O4p/T8K141O78jFnbswJKVWWnf5ShqTGqcGnfFo2K9ReATMMsqjQSiC7ywP7jh6z3dtJhEOuqXmGnjgdqEtfhDQDpL7U0wlAfWdg9yT50tcDAm+a6MSFVuQ9HcFu4T4jiBau2lky8ZG7tcdnLJjdIEfbhvtmmZkEoxCXtBZT1Rh4cBbxEFgeCRowpBp0QGdVlXd3rPFEEw/5fhtKCVGUWLrzbw9Oc3621StU6t7Y3HXYJeCOYK/usH/nBU66c5Rxd1MKIqvV9i2XNZku4ul
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(39860400002)(346002)(366004)(376002)(136003)(1800799009)(451199024)(186009)(316002)(6916009)(66946007)(66476007)(66556008)(41300700001)(5660300002)(38350700002)(38100700002)(8676002)(4326008)(8936002)(33716001)(2906002)(15650500001)(83380400001)(26005)(478600001)(7416002)(86362001)(9686003)(6512007)(52116002)(6506007)(6666004)(6486002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(39860400002)(346002)(366004)(376002)(136003)(1800799009)(451199024)(186009)(316002)(54906003)(6916009)(66946007)(66476007)(66556008)(41300700001)(5660300002)(38350700002)(38100700002)(8676002)(4326008)(8936002)(33716001)(2906002)(83380400001)(26005)(478600001)(7416002)(86362001)(9686003)(6512007)(53546011)(52116002)(6506007)(6666004)(6486002)(67856001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xa8991cvwjolQB7qPe8SJpwu6RgYk39N9UkNL4TcnoWTDn8+aWrS8MylDiP+?=
- =?us-ascii?Q?aNxOLH1cHGyH63uKOK4FXfwha/YIDxFhl3Zu3IRHqm9D4zMtaKqomFGnbej7?=
- =?us-ascii?Q?cjEvlrqDUxUFrma10qRtEEDgFOEXayOfGK3El4oBIuCL2IY1TAKk8YlX7kdD?=
- =?us-ascii?Q?/QDu4QUbC8S+BXW0Z1heqdzXFYwUh5oWJg+wCwndJYr38XXRN1uUA/ZnSi32?=
- =?us-ascii?Q?Wh3XOQTAz8i9sGSQBlnSctZbeWPvQ0rzHrqQ7blJjcndAGQL5EUMjbfCKceY?=
- =?us-ascii?Q?CGedZaIyI4gnzLd919ydkHuNCw9T9yoEMbkXPFyeIBLYRmGt34ZNa3S9O5PP?=
- =?us-ascii?Q?3BBpcoc7hFXXZ/fQL1FQGG70eQgat8zfCtXS987+P/JkkvFTAW/KbM9sQGpe?=
- =?us-ascii?Q?UA/EG0yceGYR1inNFsUPLEJH5oAvUWYNZi9Hsu3VdtTfHJHoQtw/71XBLnZb?=
- =?us-ascii?Q?PpzLFJQoZ2dST9GE/7br278FN3mDiGt6iT9ZSPte0d0un85rllxhkF7au+oD?=
- =?us-ascii?Q?pFIl+/cT73sdJxDY0QIIGHt/D7nzqj1wabuHW0Ea0TwbmC33fa9yZTxfjraf?=
- =?us-ascii?Q?19W1zGRJXnG9An8bo67j5atlIlN8NBvtmumHBzqTHrUKz85HGJi+2cTBebRB?=
- =?us-ascii?Q?dPlmS99dTlQbTVwGdsp114Lycg272+Nt4Ff9pHCmBlpDgKLilvx5M9EtgRVK?=
- =?us-ascii?Q?KmXAK1f9wVa/WvJmv7mXIrhlfD8R91YqefrK3lVgRVuvadrL2oY4/WBF4FH8?=
- =?us-ascii?Q?+dKpRNt5ofRWExBCJ6Hy1fx4s/nrpWCUUVdbhaNgqrbId0OCjIGPh25GIj5P?=
- =?us-ascii?Q?ht7gdlC4MsO87iGn38GK0kQTzXQd4f+32pEXxl66K2ZONMScEPlRw76iY85z?=
- =?us-ascii?Q?o/pLsHJAGK+fwY++BGYGr3jNvK3FL5p2pyM+tqJv3878P11ar0n932fLP1lX?=
- =?us-ascii?Q?gibelHmh0IoQ3xT3msHdhNRNNr6iDe8kA/TsFg3swMcsBDzeOP2ZtdyNP+UG?=
- =?us-ascii?Q?vc97Q05imgYOp6HIjmNkoYZL1Rp2ls4JUOLWMTXwx97H8eY622J5knn0JtYh?=
- =?us-ascii?Q?uQBZerpTMHwH2jMSiYN0wfNj4QtOEBNiG0m4+Gml5ds786DtFyCKMMjEhIVs?=
- =?us-ascii?Q?jx1ohyUZCtWLelVk3grqWSTqwmBKm+XQHl3Jq8n8amFK5+7kpJKhRj8WWgmQ?=
- =?us-ascii?Q?nSltABoiX47T/FXBbzwJlJCY3BAEqR26ZeT7hvdemO8mSUTE6eSlFo3irV4h?=
- =?us-ascii?Q?j4sRoGDG442VxFNsl1EHl4Ze0pY8tNKey41wB2Xn9JSotYV0NnIGanDX+2l2?=
- =?us-ascii?Q?YxPnpP3k5QKrnhLcgVaumPuTZgGb7N8j6HAdEL/KAGnAVi++NncKf+wnDcax?=
- =?us-ascii?Q?8WflbGeARjlpFWziR4oPdco0F/tH92AFlRGlwIa5DSl/N3mavGNf2VnW6Bg1?=
- =?us-ascii?Q?g06n06jLQZclseDJuB++4SiFgMmzwp44Hx2/D6iXKuei4nZYw617T9SD7aHJ?=
- =?us-ascii?Q?VHuI76YxacTRnfc7YlLuiPzXkpQZF0J5b+criNHXGkso2OTZHRqo/UhEgQsY?=
- =?us-ascii?Q?EH8vsmoLtsnDiiz3KlwnPLxJPJExbgP9GCAWrc4x?=
+	=?utf-8?B?TCthV2lyd3MxU0RGbU9kejU5emtvWExTWUpUZEVjWEFMd1VwR0Z0dnRSY1Jl?=
+ =?utf-8?B?KzcvNytZblB6Z0pBM3pOVFpwdVlSNWtmNFJtWXBxRUZyRmIzMkdoYUplTkJX?=
+ =?utf-8?B?S2dROW8va0NKSGxoZDFlQUVRdXNKY1BkcDVrajQwK1ZZN0c0N3J3T1JGUFl3?=
+ =?utf-8?B?WGREOXB6MXJTTE5oSjVLVTBEcUUxLzhMeVdlY2h4OUUyUTN0MDZTNWFnWUFz?=
+ =?utf-8?B?Q0Zwb3YxWWtNd1Iybm5DN1J5THZpV1BhTFdaa0NIM0pYZTlTY2NkWExLeDkr?=
+ =?utf-8?B?TUtnaWNFN3FFa01IVTVZNFNlenl2U0dnUk5ONldTd0FuR1krR2xkQ2gyRlJF?=
+ =?utf-8?B?d1dKT2c2T3lHay84TllIQmNtQm83WkNTNHNqbkZaV2wvYnhhRXBYZmZlY1Vi?=
+ =?utf-8?B?bDZpUDY5REpVRk02U1o1a3BJM1JOZUNwd1JmVjNSMWJNU3ViOVdXc1FTSEhx?=
+ =?utf-8?B?QVo0djJEQXZSNXpFY3FMR2FlUHFJY1dxR1VQVmlzbW9EVzJldWdZa1dmZ2FF?=
+ =?utf-8?B?VWJ3bEx0T0FlMm5nZmZVRjZ5cDlBSjZ5U0Rvc3B5Vmgyc1ZpYXBCR2hJRllz?=
+ =?utf-8?B?MFBISjQwMmlmUFhVL2E1VW9VdlN5UFQzQk4vWER5NEdmWGpaeGxLcUttb3pl?=
+ =?utf-8?B?dnlkbWhaN2dEeU9vejJ6SWFoSEhEQjZyaHFHazg0eCtxaG5aQmoxTVlLcUkz?=
+ =?utf-8?B?dnRkUTFIaWFIWlR6c2t1bUErSjV1ZkFteGdXcU1WeURtaGpNYXUxNTVZSGhO?=
+ =?utf-8?B?cDVVWlpDMEJtYzV2UnJNdTZlaFYyU1BXSFR5eHZTWTFXMHpEMzh3b293ZFI1?=
+ =?utf-8?B?cW9xVnNlQzNyTTh2R0tSWitPaUxWbUJycncxSm5mOS84bkVJcCtqQVVZZlFO?=
+ =?utf-8?B?Wm9mTnBsdEJFZlRMVllhM0NrTnFqMGUwM3kxZzlDdXYyd1BRenZxN3k2WUNx?=
+ =?utf-8?B?U2NoV1ViRVpGMHFXMUhZYjVmNWY1cE02eWRpSUExYkNTNkdiT2VjditXdUd6?=
+ =?utf-8?B?K0JyRXRxRG16QU9tTFJrTndXTmxDdW54ZVZNS3dPa2NDT2s5c1FmRTZWbHdx?=
+ =?utf-8?B?Z25tcTFlVWdPQnZCWGxveWtTS1hKQzdJWGZTOVBnN2R6S3FHR3Q3YWhHNzRv?=
+ =?utf-8?B?aWRxUGFCZ1FOWU5lQmszZjFHMWVuY3NWZXVQS0lkMmdwQU41c2IrNG43ZjY4?=
+ =?utf-8?B?ZG9Pa043aU15S2dBR3NvSUJEVGROZ243TVc0ZWd0dTROK2F5c21mUnA3YzZl?=
+ =?utf-8?B?T0t1dFpRQ0FSYjNSOU1nZ0RoV2Z3QWdkeENhempzY0J3dHRDbENzU09NbjdM?=
+ =?utf-8?B?V01CcWRYaUErcnZ3Zmd0anVwQkZ5WjRwUTNLL0hjVTBhOFM1UExPeHBBd3dC?=
+ =?utf-8?B?b3RxTWFDdFQrQy9hUU1hOWE3UGg1VS9KZEVjSDY3Wm5ZZWJ4dkhncEtCSTBz?=
+ =?utf-8?B?MkxsN1dZYnUzR00rQ0hYbWRPWG8zeko3YW43UGtZUG5hQzBoNC9waVBUZWdh?=
+ =?utf-8?B?TE5ZNVIzYUNibTZwcnRjRkhTcW4wdHdCWmJicFRCL2ZZY0RIQ2xucXNoUTV2?=
+ =?utf-8?B?R292dE9VSkE0dmRMRDYrZ01LcG02QnBoWGtqeVlFVnlVclNxSHhXRGZUVmpD?=
+ =?utf-8?B?MDgrTk5Jam1QbFNmZTEvdzdEcUd4TEZjakNlS3o2V0U0TGM0c25BTVk1b1cw?=
+ =?utf-8?B?NWVGaDNjTUw4Qmc2c29obzJ4MUsvVWtCZmxiRDNjTUhxOVVJMHhZUGRpZEJC?=
+ =?utf-8?B?d1ZIa1hTdnpUaEx5Z0RVcC85WTQ4L1B6MkM0UTJ1U21PamZGd21MNGlNVG5V?=
+ =?utf-8?B?QXFBZGlNRE1jSS9UOFlqN3RxSXgyZ1lyWE1aVEVsSDRNaVl2WnpKbUlFaTRt?=
+ =?utf-8?B?MTQvRitkb1lOVDRwV3ExTkFBT0ZxdHdYNFNFM285OGZRTXR6VXFHUTQwRzBz?=
+ =?utf-8?B?V3l3aCttVWhpQ1d4NzdJcVNHL3V6cjg4MWQyTHdYRHl2ZUVwUEF1Skl0WmN4?=
+ =?utf-8?B?eWdPRnhyTVdYSDZ3RVhOaVY2VXZlcFZJQlRNVVg0RW0zdDBHSTVUc3ExYmhm?=
+ =?utf-8?B?bUwrdWhlS1dGYzNFL0s1UkxMTUNEd2tIbE85TkxMOGhjQ202bmpPcFlSMXZu?=
+ =?utf-8?Q?5gJE=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d1d7cca-28f8-4013-5457-08db9e70f0ca
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2123201e-fb7b-4361-09a9-08db9e75e50d
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2023 15:53:32.2115
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2023 16:28:59.6970
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 31rXa89BWZeqPf3Qu6vP4tOMO4pJGHWF0DzhKr2rJ6MRo8XfSjxzNJ5CX6x6EK0jI/8Gm6jbFMC2IbSV5kmlDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8736
+X-MS-Exchange-CrossTenant-UserPrincipalName: QLDwyy0FDWSaGqBltd2HNWXTMa7HdmLsFbcqp/ymKXxnRsltH0KIxewlwXWah0QN9KpOtKxlEZWnf52M6G0MLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9502
 
-On Mon, Jul 31, 2023 at 11:06:31AM -0400, Frank Li wrote:
-> On Thu, Jul 20, 2023 at 09:58:33AM -0400, Frank Li wrote:
-> > Add support to pass Link down notification to Endpoint function driver
-> > so that the LINK_DOWN event can be processed by the function.
+On Wed, Aug 16, 2023 at 10:44:32AM +0200, Daniel Lezcano wrote:
+> 
+> Hi Frank,
+> 
+> sorry for the delay
+> 
+> On 14/07/2023 19:19, Frank Li wrote:
+> > On Thu, Jul 13, 2023 at 02:49:54PM +0200, Daniel Lezcano wrote:
+> > > On 12/07/2023 23:05, Frank Li wrote:
+> > > > Avoid endless print following message when SCFW turns off resource.
+> > > >    [ 1818.342337] thermal thermal_zone0: failed to read out thermal zone (-1)
+> > > > 
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > >    drivers/thermal/imx_sc_thermal.c | 4 +++-
+> > > >    1 file changed, 3 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/thermal/imx_sc_thermal.c b/drivers/thermal/imx_sc_thermal.c
+> > > > index 8d6b4ef23746..0533d58f199f 100644
+> > > > --- a/drivers/thermal/imx_sc_thermal.c
+> > > > +++ b/drivers/thermal/imx_sc_thermal.c
+> > > > @@ -58,7 +58,9 @@ static int imx_sc_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
+> > > >    	hdr->size = 2;
+> > > >    	ret = imx_scu_call_rpc(thermal_ipc_handle, &msg, true);
+> > > > -	if (ret)
+> > > > +	if (ret == -EPERM) /* NO POWER */
+> > > > +		return -EAGAIN;
+> > > 
+> > > Isn't there a chain call somewhere when the resource is turned off, so the
+> > > thermal zone can be disabled?
 > > 
-> > Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
+> > A possible place in drivers/firmware/imx/scu-pd.c. but I am not sure how to
+> > get thermal devices. I just found a API thermal_zone_get_zone_by_name(). I
+> > am not sure if it is good to depend on "name", which add coupling between
+> > two drivers and if there are external thermal devices(such as) has the
+> > same name, it will wrong turn off.
 > 
-> @Lorenzo
+> Correct
 > 
-> Could you please consider pick both patches?
-> Manivannan already reviewed and only impact layerscape.
+> > If add power domain notification in thermal driver, I am not how to get
+> > other devices's pd in thermal driver.
+> > 
+> > Any example I can refer?
+> > 
+> > Or this is simple enough solution.
+> 
+> The solution works for removing the error message but it does not solve the
+> root cause of the issue. The thermal zone keeps monitoring while the sensor
+> is down.
+> 
+> So the question is why the sensor is shut down if it is in use?
 
-@lorenzo:
-	ping
+Do you know if there are any code I reference? I supposed it is quite common.
+
+Frank
 
 > 
-> Frank
 > 
-> > Change from v2 to v4
-> >  - none
-> > Change from v1 to v2
-> > 
-> >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > index de4c1758a6c3..e0969ff2ddf7 100644
-> > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > @@ -89,6 +89,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> >  		dev_dbg(pci->dev, "Link up\n");
-> >  	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
-> >  		dev_dbg(pci->dev, "Link down\n");
-> > +		pci_epc_linkdown(pci->ep.epc);
-> >  	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
-> >  		dev_dbg(pci->dev, "Hot reset\n");
-> >  	}
-> > -- 
-> > 2.34.1
-> > 
+> 
+> > > 
+> > > > +	else if (ret)
+> > > >    		return ret;
+> > > >    	*temp = msg.data.resp.celsius * 1000 + msg.data.resp.tenths * 100;
+> > > 
+> > > -- 
+> > > <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> > > 
+> > > Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+> > > <http://twitter.com/#!/linaroorg> Twitter |
+> > > <http://www.linaro.org/linaro-blog/> Blog
+> > > 
+> 
+> -- 
+> <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> 
+> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+> <http://twitter.com/#!/linaroorg> Twitter |
+> <http://www.linaro.org/linaro-blog/> Blog
+> 
