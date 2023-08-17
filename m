@@ -1,70 +1,58 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DB614011
-	for <imx@lists.linux.dev>; Thu, 17 Aug 2023 16:24:39 +0000 (UTC)
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5234f2c6c1dso10666907a12.1
-        for <imx@lists.linux.dev>; Thu, 17 Aug 2023 09:24:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E029154AD
+	for <imx@lists.linux.dev>; Thu, 17 Aug 2023 16:56:12 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4fe48d0ab0fso12459689e87.1
+        for <imx@lists.linux.dev>; Thu, 17 Aug 2023 09:56:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692289477; x=1692894277;
+        d=gmail.com; s=20221208; t=1692291370; x=1692896170;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0c135ujaCozgo2ppMj7W88GVXAZnzLCd6ei8zmy7CJU=;
-        b=UYd4Xgekl1M4AJgjm7IR1r/WhRusz/LkbSZD6Eva49dT24SsPy5i6yEkoh6RoU1soE
-         +q61HkuzmcCOFzMLIX/s+f9vCXLjgLpJbcIA8cs9ZjTg5cVEzUFtHsfqHOVOw3IbvL8Q
-         5Y3Qjf+QAMwiMob8Ir+oCo+Gl8/Nt7NrW+sr9cQuzRSISOZIQD0rSkeHw3oENGBX+wQq
-         YOIzJsB9dKVtx1p+Oir2n5U2ys6PY3LE6lCfJ2NohaVlXxKR4AQYO00KbGDLh5JL0+hL
-         R1YjwIIlM7RNjWLOZDDBzMrYEuZSKvh1GrospU1Yzb02GkyY/jHB4d3Xp0dwhgOBxTh4
-         Fy/Q==
+        bh=45M2x5YAhqV9cY4arczfg6gy2q4n012sd/EVZZdA15A=;
+        b=fiHhncNo19ca3MjlyK3XGOyofHSPIWPo4NzKCwm6qisU2CvZhNxKbja5qB37Lor6MP
+         gKM+ZgE4j4xVzoCwcSudY1UlAhfR5s9GIqB0hwzSKuwAXWsC7ZU7f+zlMIOsSey/CESK
+         4YI+vAhclLclQtkaL3UsFP22A0Vdllam30AY9XhzCsyWPpoSDTwfE7KNPZBmHS03LFC6
+         hP/fvDwLhhEA3ecQVQtQ1MvAqzw5lPEBdY2t75znTET9O9zvwvDlqKhUqzEtcEDiLU/c
+         iPEwEeA+GuINWHDQDtH05n4Hv+QWixZn4VG/dhrHT8cCNHaNIVO7b2uMa8oRQBqduymq
+         lMyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692289477; x=1692894277;
+        d=1e100.net; s=20221208; t=1692291370; x=1692896170;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0c135ujaCozgo2ppMj7W88GVXAZnzLCd6ei8zmy7CJU=;
-        b=CkkUh76DSw9qJurqBUlXMhufnglyQq8amiqhtNZ8ejz4g6Ynn19NVSmpgrwomy2GWb
-         ijNoMGvoyxpKzUzA7UE+mx/O7oK9vL8Z1cbIW/Uq4yctFzDOiPcFWztxF4GUXtcMRr66
-         fwURl5zEuWNmPM5PIInH1tOMlZisR+La7rnPS6viPy450gwwJvqXbhKOtqnp/My+0R6t
-         t8TfzENI/6GT+ESm/Y0+A/QL+Q+QooqF+hGKZ/xNqDjdIKLCSh2rS42mvs7m6MhPd9Jp
-         MpVsitrGEGJld2Pq/IBYodoPBDjot5vLenKfxfUrQ35Q1BrCEszrcwXM+nyzKOi4ZVzg
-         /8bA==
-X-Gm-Message-State: AOJu0Yxvnr/imR5osWmtSpiOViSU1q1eQ4H3Jcm+GuHqBFPqFB7we9z0
-	xwodI1gOecGvwPzye7a323ZxzHm2pTDgyabhJFs=
-X-Google-Smtp-Source: AGHT+IFUGqK9MtLVduzK0TP6QXH8UsDtOnkD7HuBKvhJvEvkAyQWizsrTlnV0UG05ZHwfXfs53HyOsuLHIoHXD4/mCc=
+        bh=45M2x5YAhqV9cY4arczfg6gy2q4n012sd/EVZZdA15A=;
+        b=XJscedrO9RZYHBXzVDbR4LogbWPsbV1FtLcmDaI1efGrRa4EnEI9iCB9McgZN9L2QH
+         jnK89WpwElDm8P9ttP5Q9fPrU01AJDw03ZxFvCmbTJG9CfTh6z+bnIrukXoAI3lCb1tX
+         4kKnDQYpTs5oXiuEqKi2S99o9wkbHM6JppIqZzHbfg3S2Jt+HG1YVVrMDOTigAMbuMeU
+         dP5A98zOGELq49k2MwDAZYeDdm1w+13v0WPbC2q4dmMmk6WBAlkguJAVCWgvji5r6zQ2
+         wJ8worioXXHiTpBvz7ZJTrVl4lutLqYb8rXqxzZQR0GznK6/r0HEj7YtzcdsZbm/a6u7
+         Icxw==
+X-Gm-Message-State: AOJu0YyNv0ZhY30DBGQnNYnendknRJH1s+zEMR1FES/qe1niUZ0UfnQD
+	VBOl7E/lEyebn0+TNb6c+anr1u53laW6ViNwGMw=
+X-Google-Smtp-Source: AGHT+IEwy+g9JTQvGscvmkpeyhD+ig+OzZ1CDCUUdXg28Mbxc2d7g50QNpCdnMa5tyqIwqmR1dY2oKXPj0Q77vzS8OQ=
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6402:895:b0:525:70b3:72c2 with SMTP id
- e21-20020a056402089500b0052570b372c2mr177905edy.14.1692289477565; Thu, 17 Aug
- 2023 09:24:37 -0700 (PDT)
+X-Received: by 2002:a05:6512:b17:b0:4fd:faa5:64ed with SMTP id
+ w23-20020a0565120b1700b004fdfaa564edmr4699079lfu.11.1692291369783; Thu, 17
+ Aug 2023 09:56:09 -0700 (PDT)
 Received: from 170827741999 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 17 Aug 2023 09:24:37 -0700
-In-Reply-To: <AS8PR04MB9176F282E953D6802A26DD238915A@AS8PR04MB9176.eurprd04.prod.outlook.com>
-References: <AS8PR04MB9176F282E953D6802A26DD238915A@AS8PR04MB9176.eurprd04.prod.outlook.com>
+ HTTPREST; Thu, 17 Aug 2023 09:56:09 -0700
+In-Reply-To: <CAC5d1WLEzaXEM50Yvp1GdEthMMC_jGEn5JUPdmeuB9Rd1VqM-g@mail.gmail.com>
+References: <CAC5d1WLEzaXEM50Yvp1GdEthMMC_jGEn5JUPdmeuB9Rd1VqM-g@mail.gmail.com>
 From: harrynicomama@gmail.com
-Date: Thu, 17 Aug 2023 09:24:37 -0700
-Message-ID: <CAC5d1WLEzaXEM50Yvp1GdEthMMC_jGEn5JUPdmeuB9Rd1VqM-g@mail.gmail.com>
+Date: Thu, 17 Aug 2023 09:56:09 -0700
+Message-ID: <CAC5d1WJvp_MkFXO61ivF_2r1TWj03TnjEx4EiJChd1r01yo=gA@mail.gmail.com>
 Subject: RE: [EXT] Quick Reply Extension Testing
-To: shenwei.wang@nxp.com
-Cc: extensiontest66@gmail.com, harrynicomama@gmail.com, imx@lists.linux.dev
+To: harrynicomama@gmail.com
+Cc: extensiontest66@gmail.com, imx@lists.linux.dev, shenwei.wang@nxp.com
 Content-Type: text/plain; charset="UTF-8"
 
-> > > > > > Browser extension test thread for quick email replies.
-> >
-> >
-> > > > > > Please Ignore.
-
-
-> > > > > > > > Browser extension test thread for quick email replies.
-> > > >
-> > > >
-> > > > > > > > Please Ignore.
-
-local storage token
-
+populating local storage
 
 ==============================
 Replied with love by Quick Reply Extension
