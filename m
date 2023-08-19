@@ -1,59 +1,107 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743B7111A
-	for <imx@lists.linux.dev>; Sat, 19 Aug 2023 03:51:04 +0000 (UTC)
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-523b066d7ceso1856070a12.2
-        for <imx@lists.linux.dev>; Fri, 18 Aug 2023 20:51:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD551879
+	for <imx@lists.linux.dev>; Sat, 19 Aug 2023 08:04:09 +0000 (UTC)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-99d90ffed68so581078866b.0
+        for <imx@lists.linux.dev>; Sat, 19 Aug 2023 01:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692417062; x=1693021862;
-        h=cc:to:subject:message-id:date:references:in-reply-to:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZuYSgLHT3MoqhGNrbgDBeVIF5TSOMRtuMod209QNTyA=;
-        b=FJ3shT2vpl/f/M3aG6Tlr7Poa0/0A23lknPX5wErMXzEsyoD9EwzUM6SsAsl3m5z97
-         gjKRySpBg9LDA/enDc+DwrIGvAI49MYXzUBho1+1gEqeXoVakjhavbyRjWOo94YRf0iU
-         KthX5v4dLzgqgNbCOHmp6pSAWdOtDyRGUBzdrmkQ19edOEzq/2/YjfHujFKbwkUb9VMT
-         X1BqpmHQLCk3SaATL/x1wLGXrVRzGkE7okblBPV6PB1xaFBi++dTZ9Gde3xHRF/wVnXK
-         QgEC5+RxCe+8Ytj2SSkESLNWbcQWMs9ZaHBDEHp6qxOlADqeycFY+c5P0aG3u00pkx40
-         Dsog==
+        d=linaro.org; s=google; t=1692432247; x=1693037047;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=deRfy4MmWhNo/qJGo68CHwTkl2+R+5alRlJweBHZEfs=;
+        b=aCgvU0CiVM/aEDBPDLFu+sF3l8qpjC4PkigK2hLvR3K7RKhfJxz3HS/75ABvsvSWoN
+         3rs+wNfGBianQpt1CpPz2wuk0SMhpaO4hNJVHxGUWCddxhtAjqehLYh2eeF6Cd2gfprt
+         u99N5o2xA+OV9mkJEvHL8v9Sml9QxHE5RSYlEoG19qytqLjYIQrrBy0qzFM2unicwyLa
+         mN/wOmmb8gJoRVSAd/vndrNCjmRKhfuPY1Oj6vJIcmhGH8NULGtsPXJiRwsfqQijm+12
+         V21avF6ka3kRNfArK+MavM1X5UQ8aoJ14k4YvOe8lMxAi1ufEq9rfBchTMt6jERjp1tv
+         sIKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692417062; x=1693021862;
-        h=cc:to:subject:message-id:date:references:in-reply-to:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZuYSgLHT3MoqhGNrbgDBeVIF5TSOMRtuMod209QNTyA=;
-        b=DDSlWhYCddZLaL0mFYk5PARruiL3mkzKXicuphnQ5jGinO2pgiiHNpyWKw4eBNGdfc
-         bngm0/6ohTB4spAk01nRKW6fT06UqJihD/DHDDaoQXuh2QH5mCCuhjvnec/pmRbQae1Z
-         MW1YtkZAQXao4tsfm5eT3tHtRwq8KUEyRa7w1Ug+zLaTySsK4e0lbmK781KJKUPDhwAM
-         mDvdU7IyDkADa9HNode2PbbWv5N9daVMesiukuxrBl2qoewhA+ysjvH/AewfNARTe5hS
-         HFkquqGkZoV7ekNrMsgA7lsiyy2bTRnGFv3WJXhT0ZdO3e27GLzOh76biy0Bf22S5V8l
-         KkGg==
-X-Gm-Message-State: AOJu0YzXKeKLPuKmfjzwsUgwfhZfy6zidticbQvic8Wsa6e6tGIsNtXQ
-	lt9xgBRW9c4NuaRw5VyDBOPtjkbYE/4OEM9TkK3bXr06cVs=
-X-Google-Smtp-Source: AGHT+IHY7KgKqw8R7ce3Js89WN1zvI8mxYVrieXtBcDBdfwUtuG9rHeJ2kuMySVeBPb7p3/9F5es4HhsWfrlaGQG4OY=
+        d=1e100.net; s=20221208; t=1692432247; x=1693037047;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=deRfy4MmWhNo/qJGo68CHwTkl2+R+5alRlJweBHZEfs=;
+        b=b5jSscE2C7GAz8jJYJ28c7CGLRTfACpQpQ5+6OWeeBUlk4oClGm1yVrWiA/OgtyGSX
+         1Hxbh5+Uttliv0v0fMAmpR4atmmmBg1lPubtEKFIhxF4X1rpMMHPbUPnW4PNjSQmR5uZ
+         FOCIlG1fzGywBhLEqLqvIV/rKlzBkPTcGRVxeb4h8ZIcOh6Ob0P5u97Ut+PbQ5mPAMTN
+         fGJJAqSmTTF56553PLq/HxSES+cwPwNvd4vHwDeMemH4JcEwtSLmDKniTdG/UGpab4/I
+         0gz0eI19ZLSdN2yIaSng92ZiDPNDk55f13DXs2+lZGnGRITOfpLYAjh0kuMYKjq7RY/C
+         2xZw==
+X-Gm-Message-State: AOJu0YzkHzTsIuT2TbS4DYDkWuc2Q5XqZXp5qc1e0v1solceIMAjWhs2
+	qKoOpamDYzixkXhO8i7vKtRWbg==
+X-Google-Smtp-Source: AGHT+IHBzvmTwnBZ67sD/6WjMdA5xmu96I7L2+RI5CGp7G/r5zU7hudwu/IAczFJtEBUGVFcm5NiSw==
+X-Received: by 2002:a17:906:8a73:b0:99d:e417:d6fb with SMTP id hy19-20020a1709068a7300b0099de417d6fbmr1522299ejc.25.1692432247428;
+        Sat, 19 Aug 2023 01:04:07 -0700 (PDT)
+Received: from [192.168.0.22] ([77.252.47.198])
+        by smtp.gmail.com with ESMTPSA id u22-20020a170906409600b009929ab17be0sm2265161ejj.162.2023.08.19.01.04.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Aug 2023 01:04:06 -0700 (PDT)
+Message-ID: <9927403d-6dd9-3e5e-8f9d-f38e6640f95f@linaro.org>
+Date: Sat, 19 Aug 2023 10:04:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:aa7:c391:0:b0:525:5a65:6dfa with SMTP id
- k17-20020aa7c391000000b005255a656dfamr757890edq.14.1692417062333; Fri, 18 Aug
- 2023 20:51:02 -0700 (PDT)
-Received: from 170827741999 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 18 Aug 2023 20:51:02 -0700
-From: Qi Wang <harrynicomama@gmail.com>
-In-Reply-To: <CAC5d1WKzudMYnfXpGFrbNAucB7KawMBMDZkiigZpbyX2YE0xng@mail.gmail.com>
-References: <CAC5d1WKzudMYnfXpGFrbNAucB7KawMBMDZkiigZpbyX2YE0xng@mail.gmail.com>
-Date: Fri, 18 Aug 2023 20:51:02 -0700
-Message-ID: <CAC5d1W+NRdK06Mu9b4c=6gZtdfzJKE7tOWTwWDvMwKfrhfH96Q@mail.gmail.com>
-Subject: RE: [EXT] Quick Reply Extension Testing
-To: harrynicomama@gmail.com
-Cc: extensiontest66@gmail.com, imx@lists.linux.dev, shenwei.wang@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+Content-Language: en-US
+To: Shenwei Wang <shenwei.wang@nxp.com>, Rob Herring <robh+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ dl-linux-imx <linux-imx@nxp.com>
+References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
+ <CAL_Jsq+XA_P-aRK9_WuGPmJ0_xJgsSr9smZy4BRbKZbmVsMQBQ@mail.gmail.com>
+ <PAXPR04MB918539A19B8F817F623BBD1F891BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <PAXPR04MB918539A19B8F817F623BBD1F891BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-test 4
+On 18/08/2023 23:06, Shenwei Wang wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Rob Herring <robh+dt@kernel.org>
+>> Sent: Friday, August 18, 2023 3:52 PM
+>> To: Shenwei Wang <shenwei.wang@nxp.com>
+>> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
+>> <conor+dt@kernel.org>; Ulf Hansson <ulf.hansson@linaro.org>; Liam Girdwood
+>> <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+>> imx@lists.linux.dev; devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
+>> dl-linux-imx <linux-imx@nxp.com>
+>> Subject: [EXT] Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+>>>
+>>> Documenting the regulator power domain properties and usage examples.
+>>
+>> This needs to answer why we need this.
+>>
+>> It looks like just an abstraction layer to make regulators look like a power
+>> domain.
+>>
+> 
+> Yes, it is a wrapper that allows using regulators as a power domain. This removes 
+> the need to add regulator operating code in each consumer device driver. As a power 
+> domain, the regulator will be managed automatically by the device driver framework 
+> and PM subsystem.
+> 
+> This is very useful when a device's power is controlled by a GPIO pin, which currently 
+> requires using the fixed-regulator to achieve the same purpose. However, the 
+> fixed-regulator approach may have to add code in the driver in order to use it.
 
-==============================
-Replied with love by Quick Reply Extension
-https://github.com/HarryWangATX/quick-reply-extension
+Why do you start discussion from zero ignoring all previous history of
+this patchset?
+
+https://lore.kernel.org/all/20220609150851.23084-1-max.oss.09@gmail.com/
+
+Best regards,
+Krzysztof
+
