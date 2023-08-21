@@ -1,60 +1,53 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2066.outbound.protection.outlook.com [40.107.21.66])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2064.outbound.protection.outlook.com [40.107.241.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958D979F1
-	for <imx@lists.linux.dev>; Mon, 21 Aug 2023 15:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC77883B
+	for <imx@lists.linux.dev>; Mon, 21 Aug 2023 16:16:39 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Py/KNI4NG6jN5dcTqahwhwFhjAV1uepROtXC6jMrXtS1gmGyX/p2+QwS+WSzvvm9vDL0WF8VsuFftI0pZC1DKtejUP9EAM9tmH2nFPV8wkEnMRKr5mZNxe0N44FTmM24cYCPKiDT0raE02zC6J3KxaXkD2cymP89oRHTzfDHlyerTWJrKrKwojze3aE9kyz341AP7+PIFmOMaTgV0gYEUvrgLEVSiFlv0eRFs10OViyMvOHNpsGoE8oehPZKuEKJeGOv3o/zrG4hnAX2iTU2X5SkFey/See1aMFIe14PvO7qTt3aW4g8QTvKNRsm37f7na35dUbmlPRptvH26eOBuA==
+ b=E+g+YLCpjVd3C2XCEkfzo8HRZbLx8EiolOMtBsPscimygijL6D6yO+Y34up7j00wS5oL0eBg3App3cM2LaRUhH/8K4WhheJhEIAh+D6VyqKIUMehAjAYGmbVrtfg0uYTlaYjSx/xmGfGbHXXUMA7ngD7G16TUx1bgG5S58lRZQYCyTGABy0yxEtXVICWON1XqTyqKaQh+GGU5eSDa8ynWo26RDvGHQrtyT54r2I3UBYMET0bQ6dkwgtAf7COC/lUsvMzPImlr6y0Cd1BSs0M11qqlul0aYU8Xfc7CpmgwR8G1G5vUl06TuqE3ITGQPcG03se1x30oAOjDwglwOXhjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FwCFeABb07X7XRPAri9widF2bfVqybF848zEJt9DQ0M=;
- b=AO+ZQL5bbaQMguCAOYz7/fHbzxzEG6TRIWcz8HMuVPQRn9sQKIleosC/bfpXSZbATrLMkNlW+QrEIKbQeaQ6bYgulJEDeMImIONfLAOxtzrZmOLt6y1UQ3BafU+rKlQynTuxZ2hanJvrD3jZsPI8wQljP4LZRn7WQSiD2dAdsGnaLluXzMWM9SC1mVJNLlWqUVcXB625+OPna9AlxSNMU7vl8W7JNRb94XNx5omnXvYN4Yo44HUUOksXwAS9wsAlNgwYb+c42CWjecx5DYN0BWPML1O8DSjaO04q5m8dHLeM6yhjlc7h1nYG0fEOQf0DaWIGErq+PGDck9StngF6iA==
+ bh=mYpai8k9wksvkSPCkBhGaaPPsM7bHfFSzkZ37c9QiGg=;
+ b=a2PojJUt6Gcif1+svzRaXplW4dS8iMr2Ma2l2uZWLgu+UzyuGriKx6j9Xk2wMvxLjJ5rzIo2BcAxCZfTEKyO1jiM6n80gubZvMTgfLAMylnsrU9EIbTA5UOx3IqHUJApkGc4Vj04PG8U7x1TWbhTo2jnBaenQ4QtbwI0Kd1dXEwMdw6fVi0BDEsahc3m71yfJlffQu8mOdyEpCJLEorzy6K4X3USsJtDu6UjlVPdHSqB8/UhjPu3zo1g3ELu5ZX3mMWyc8GaJHINBYTcavufsmqz/fvyJhxsPW/lSi86hBVWa7f6xZsOvn0At7RFu2IIdU58nfeJ/tY59k7yO7VlHg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FwCFeABb07X7XRPAri9widF2bfVqybF848zEJt9DQ0M=;
- b=D0rfnTr5DCvkbiWe54zKCBax5KRcwkHGsWq9G3zZkaqKV6nuF0BCoUTUJZKpLdyKLFqdebbeR5KLodDOKxlBGQ4HlvkBLI0jlXjOgSJLquhIqbk9v+47v1Dpncc5RPnBlKtVCBTFMhQJW1bTaYvrJUlUIxgHSz69lMmOQ7CBnU8=
+ bh=mYpai8k9wksvkSPCkBhGaaPPsM7bHfFSzkZ37c9QiGg=;
+ b=Udbruv50q9MF79sWZWZsOf8nQlBX2PpGAl1z8kSVXD+g/pvUOSKxKmG9AezMfHiuAM+LcNBW7jDLqDZhvBsPatO2lNA2xZMhD2EA1nf+xuj+YobjNiiH5y32to8Kwd3K2ReJ130wy/VAz+p5KOHpub/cCyjFYfJeLxE1VBT/pJ0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS8PR04MB9512.eurprd04.prod.outlook.com (2603:10a6:20b:40f::7) with
+ by DB9PR04MB8464.eurprd04.prod.outlook.com (2603:10a6:10:2c1::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Mon, 21 Aug
- 2023 15:24:01 +0000
+ 2023 16:16:36 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::a680:2943:82d1:6aa8]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::a680:2943:82d1:6aa8%3]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
- 15:24:01 +0000
-Date: Mon, 21 Aug 2023 11:23:42 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	manivannan.sadhasivam@linaro.org, helgaas@kernel.org,
-	bhelgaas@google.com, devicetree@vger.kernel.org,
-	gustavo.pimentel@synopsys.com, imx@lists.linux.dev, kw@linux.com,
-	leoyang.li@nxp.com, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
-	minghuan.lian@nxp.com, mingkai.hu@nxp.com, robh+dt@kernel.org,
-	roy.zang@nxp.com, shawnguo@kernel.org, zhiqiang.hou@nxp.com
-Subject: Re: [PATCH v11 3/3] PCI: layerscape: Add power management support
- for ls1028a
-Message-ID: <ZOOAUlPEMWG4LrUI@lizhi-Precision-Tower-5810>
-References: <20230809153540.834653-1-Frank.Li@nxp.com>
- <20230809153540.834653-4-Frank.Li@nxp.com>
- <ZNzrgr3a13vm6Yqi@lpieralisi>
- <ZN6iarqhryMHmwLh@lizhi-Precision-Tower-5810>
- <ZOMecaueyN3cutUH@lpieralisi>
- <20230821103357.GA36455@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ 16:16:36 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com,
+	vkoul@kernel.org
+Cc: devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	imx@lists.linux.dev,
+	joy.zou@nxp.com,
+	krzysztof.kozlowski+dt@linaro.org,
+	linux-kernel@vger.kernel.org,
+	peng.fan@nxp.com,
+	robh+dt@kernel.org,
+	shenwei.wang@nxp.com
+Subject: [PATCH v11 00/12] dmaengine: edma: add freescale edma v3 support
+Date: Mon, 21 Aug 2023 12:16:05 -0400
+Message-Id: <20230821161617.2142561-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230821103357.GA36455@thinkpad>
-X-ClientProxiedBy: BYAPR11CA0067.namprd11.prod.outlook.com
- (2603:10b6:a03:80::44) To AM6PR04MB4838.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR05CA0053.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::30) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -63,256 +56,161 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB9512:EE_
-X-MS-Office365-Filtering-Correlation-Id: bace7f2d-cbd2-4d3e-e1af-08dba25aa58c
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB9PR04MB8464:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b6a217f-e9d0-4aaa-5eec-08dba261fdf9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	lN1v5sGJAHylZTLdev8dqy+VlCeffVQJKNSuilO/BY5wcmD/o9J2bLzTaowCk+8szWcOqHucv855s8/hlHErQmq98M/fyxt/g6xABkyn8Lsg0xIOcbMnb6wr+s4FNkoztRjpHHYSoj0fLNaNldnDfU1LEu33+xbTHMauI18JCapNgPe6h6keIgc8FDNBTor7IEYxDAWTASJkh1WpsetRZxv83lGB9RSLd/szFroy5Fn2bzE7Ar9uriwpisVk4rVqrYoIeAO5LIL8xt2LdzaEdFT4/jMSRkw7ZgnXS5PhbxsijucfEHjdHONSQaQkmf6EQxUD3BAOqa2WYeLPhdQ9U9ecTIGWB/PJboD0zZDkabzT8nl+DKn3LNHqmaVnw+4ufH6zMQPWCHHiOuXOPtvhIj1TIjTWLyK7tTvYyYa/9MVM9xvAbHEn114p0lM65K9oxy8CV782M6/1t79Hp8L3aoxnI2K+0vur+lrcsXiE0R4BtZtNQEQ8sWKSgF8btUAGPRMYTz/PJZhH855rVjscpaEiZIY7/IkXU7ckW1fpL9UJAuwRAFF4T0mrlTGYe4ByjwfmvVkArQyrstVjy8I0f5h0dnVDnHDWiPTnwKZ0T7LCcDhGQ1O6UvmW1Dw6avHa
+	TT8K5p6fRizMXLVXBtj6By2vsz4xt7Cf65NjqU5QOOq+Lt3wrrmHDN89zSkOZViAiYo2103tn6YuvcYWMT9k9lEc3PWL31BK4KyF4nFf+fXdXr5WcRKRTNUDpHm6FuqOFitGSDoEUSB9SOFROEA9L8eKZNuZ7otRLkMtA1nq2Ktf+QMKXG+UT9PNePY6HVh8tJOUP9i232wf0LklWsfP6qP4J4C4i/lJCVzIHrHH/lIsTUZOtS4pAYaSkxDvpRu75UGl9t+Nbd+ovb/RTomi2IFsyhlsYKDgl/atGDB3eA59pc7Vw8uTZx9Uo0aPecBYrLoFoVOQ7Ko6jc6jRT62UO/XvFuSuFNA/+1+urUilNnPQ72OYc3n6k5m8QW5rgSxqIZ257EheYE0ycrvVVp18h8e/DhYjiXQfaO7CC4mOpOYYZGng2bzLmOKnD+GdQkGrtO+goImEm8YO/vkEFMDQYwdxo5PyqphTuCt3TadY7+hknHulwhB6dcAB7K9Wc5qmIuaU6d9mnukr3xkNzkd1KGzBPh79K9/0IcfJpwb32JerYmbZmkW3Jo7wxmhGi5yhT7dc1Uw3hYlpehKn2uubZXu2d4NjBUe655R/+zLDH+DcwsQJ83BSUIJ+rcwvxe9
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(366004)(39860400002)(376002)(136003)(396003)(451199024)(186009)(1800799009)(2906002)(7416002)(52116002)(38350700002)(38100700002)(6506007)(6486002)(83380400001)(5660300002)(26005)(86362001)(8676002)(8936002)(4326008)(316002)(9686003)(66946007)(6512007)(6916009)(66556008)(66476007)(478600001)(6666004)(41300700001)(33716001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(346002)(396003)(136003)(376002)(451199024)(1800799009)(186009)(2906002)(52116002)(38350700002)(38100700002)(6486002)(6506007)(83380400001)(5660300002)(26005)(86362001)(8676002)(2616005)(8936002)(4326008)(316002)(6512007)(66946007)(66556008)(66476007)(478600001)(6666004)(36756003)(41300700001)(1076003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N2ExTFd0Z1VXMzBocTZ5Mmx4UUFwV0dlbkxaN0djd3k2eFJTaUhtRU9QUkRP?=
- =?utf-8?B?Y1JvZzZtVlFWcDltYVl0azV5dEd6TE9leXhtcHpDUWdqTkxzcU5Bb0wxbjBT?=
- =?utf-8?B?Q1dtVUJjOUdERTZraDIwNGg3UFY3dWlVRmVaaHpRZVFpSzdzS2xvVThMc1BH?=
- =?utf-8?B?U3g5L29LL1dub2N0enJmcktPcHpkVjlITXVLcXdadG5ZRFltcWdPZTlXMUpR?=
- =?utf-8?B?dHgyZUpSOTIvdTh0R1VUTzl4ZDU5aEhsMzl2QWNzZThuSXlFOUF6ZVNhK281?=
- =?utf-8?B?MFNudjBERzhmRTVDbXB1c2RyTThqcmREdmVBOFhOd2lFUjFaNldLaXRYeFg3?=
- =?utf-8?B?Uzg2QVd5Q3BxQ1pEZlVRdUlEMXBqSHBlbjdIVVFYOVJidDV5aDhQdE5UU3dV?=
- =?utf-8?B?aWJrOEFTaG4zN3hwTkRJcVNtMlFIMjMzRk1HQlZFWmN2Ymc4M2VRRW82ZUxF?=
- =?utf-8?B?aHMxRVVJSC9yZk0vYzdwcUxMdTVJa3p6WGRxbnl4WnlxQ0ZLZU9DcGJiL0R5?=
- =?utf-8?B?blNneEMxcGw0QktZbzhNRW9iU0VzcTNTVHE4cmVLcTF1NHA3TXoyMEsyUy9v?=
- =?utf-8?B?T0FYb1BTSGswdjVYZjBCMURvL3FYaUtML085L1lBNEhRNDZVV2Y3L0hQdnYw?=
- =?utf-8?B?Sk5meEdkUWJyK29MRThYN3dOSXlqdHp4eTJLdVpuNjhVWFMrTHFzV0FvQXlu?=
- =?utf-8?B?bk1sUVJyRDVjSjJyMlI2eS9KZHdWNml6Qit6K3BHUVJybzN3M0M1RG1yUGIv?=
- =?utf-8?B?SU9hS1BvWkJzTzBuNDFkVjhtZCtkd0FvOXZGc1B1R3R2ME5lWGIzek9NTllW?=
- =?utf-8?B?NkZWejlTbnJoRTc0WWhZNGwzaU56L01GMEdUVkZwcXJNd2VaaVpZSkgrcS9M?=
- =?utf-8?B?dFJESzg1Rm1hWEIxc0dndWRVaWNWSVljQTlUSlU2WFdSY2pDYTlNTVVPVU1H?=
- =?utf-8?B?cTVKNEJlakxaZ3pyaWZNazhvL1V6UUZSS09GanFqRUJYVDJ4U204VXhXeDFw?=
- =?utf-8?B?Y2h1ODZ4cGpGU1pOdmZHS0dpQXBQU0VBc3JULzZxSGxXMCtmeWhNUnRIY0NE?=
- =?utf-8?B?WjNHVzRxeHlSRjRBRlJtczFKTm1KQnpVWDhKYXl4MkdGOWZtSEdRaytOL2lG?=
- =?utf-8?B?akxzQ3pJTENhUGRNTEFuUW40N29SRnVHWVV3Mkw2L1Mva1lBK1d5RXByR3g3?=
- =?utf-8?B?OGlReldZMnRzWkdiWHg2eTQ3UHJCdm1iSGt1M2d5WXl6QVV2SFFTajhkKzBW?=
- =?utf-8?B?NXErZys3Q3ZjNTNkcTFyVExsNTJidHBOMjJzTzNsUUo5TzY4eHZWSzFTTWZk?=
- =?utf-8?B?MmptSGVuWVVsazhuOWNnUTFlZkFIVWh0UVl5Vmw0eEdWQmVMUVZGRVp0RGRF?=
- =?utf-8?B?SHRQdzBBWE0zMS9meUoyL3Q4NWNhVGdxeHNLQXByQldDMTNDSWorWXBWYmlj?=
- =?utf-8?B?MDZobnJvRGsxUXJEQlMxcndWeW9GM3JjL3BLS2tldHdOWk5Bbk9RZUZKMHFx?=
- =?utf-8?B?cTN4TDNpMTVTb1ZueVUwczhCaURDdGNOUkx3dHIwWlpLc05FMHhHc1RjcGx2?=
- =?utf-8?B?NHdrMHVobG5ScUt1VGRqS09YbXI0di9tOElHYWpJZzM0ekpjTERvNjFNWjV3?=
- =?utf-8?B?d1RTcm1ub21qUER4Unc1U1orOTc5ZmczUFZzd0FRRkFGYUM3T1dXd3pVQnRi?=
- =?utf-8?B?dS9abXBNdjhEbm5lMVQyVFM5cVBoSnlFeU9vRnQzdGE5UU5mUDJTNW5ORGRY?=
- =?utf-8?B?Y2RNOURVTVJYZVZmMmsyUUx5Ynp3U0UxaHZoQnVjekFaNHFMZU5KTXZXalRk?=
- =?utf-8?B?RHJpeGVQTkgxR0VlaEk2OTNrejM4R240R3dpWDJBTkIrQ0JMTUpmMGFXcGFL?=
- =?utf-8?B?YzFXNldiVEtSamJTc1JyN3ZZU0gvTUorNXgzcytVYThZdHNMb0ptUlU1Y2VM?=
- =?utf-8?B?V09MN0RZbGFYcjhiV012OXRvUkxtUlpSSUxyeVpRbFkyd044VEEySVVoOG01?=
- =?utf-8?B?dFNMWFZ1czBFM0JTMk53REN6aENpRDdTcThQTFlQRkVuRk1NanovYklYRzdG?=
- =?utf-8?B?WEhMNERiaWh5dTcyQWVPN2hVWlZkTlZJOWIvOE1rRWg3a1lNZ3VhSDNkSHRL?=
- =?utf-8?Q?uvDY1syAWUf6VEQZidgVvMaXG?=
+	=?us-ascii?Q?vIShwcOVLTip22AyPwUUDQpfwsZZSAqgftIyWLFQ+/iKyMGv72dBTL0xx+BI?=
+ =?us-ascii?Q?wUVywNPUQVWdLgPCT6zv8wBeUMTLkM3KwoueE1II7FTikBRbi4pmAx+SiVrs?=
+ =?us-ascii?Q?jefk0ZWsPwdDma3BeroijrwUq6UtmOH27zHXHHDxD42OHXkjuu1LnPXM9IXB?=
+ =?us-ascii?Q?ZJk/wEGqli0sTrjEMbSzpEZVqeXRD7lpTU+8jIWwPHv8ElS4VKrZ0XrX7HYB?=
+ =?us-ascii?Q?dmWvIM2o+6DNwPvOCxnZ6+DXEtX5HrvUxLqrjz/kS6lJa1UT36wA6zmxM92j?=
+ =?us-ascii?Q?ViXF/5akWAbqUXHCms352yAQxGU7kJ1oe5AmAEnAvDtIS27nwu9Lz6aisI1o?=
+ =?us-ascii?Q?a0+0u19y7iwEwmW3JYa0tLcPOk3z+b6z1Z6kykCwuibH6c83afRQYqVuSVJr?=
+ =?us-ascii?Q?0cCsuzgl4Cr8jttcW6+v79/r4WWxW150/O2kmJz2j1C5lv6xITqsxlla/JsW?=
+ =?us-ascii?Q?M8OOavMzKChm0usedRWZQ6owURAvthxfJ1Va5DoL5iF9RrM7s6ZiFx1Hc2jY?=
+ =?us-ascii?Q?gX8zLM5jsw8RgrlEpcuSsjyTcGFg4gB5VoblIyWQJf2EQKx9ngF8EgdmHbTB?=
+ =?us-ascii?Q?dZ+oLqVupz786vjQhOnuAzQ1xPwUn7D/T+yAtYzIq6GqK1JR/pQBIvOmVg6n?=
+ =?us-ascii?Q?FW/htoi/e5tHo/2WqzbVnSujpmaTPFwTcBICQstj/kNs4CIrOFk9itQOkKHX?=
+ =?us-ascii?Q?CJXn1r1X+LtTxH+EEPGcOAVki/NF1tm4v0nJXzFPlD2FrDYQgTWK7WQMSHus?=
+ =?us-ascii?Q?s1pEoDXmlPHwt1lM+2kDTPaLbQZ3SXpaDLby/5OxVEcPo0lvRMoiXUXksgW5?=
+ =?us-ascii?Q?BfZaozkQmR4zugPgUTZE2LseHcWR16ypXxnbPvJYDNwT1czbsoCh0cmxRMPL?=
+ =?us-ascii?Q?WSHD0yokAjDrjWzstN6oSBy6Ncb8Gg+x5DtP1XaVIocyjMnk3MgChmObIP+B?=
+ =?us-ascii?Q?pCg9oisZBTgMFOIywYUXmxDLTV9Qpd9XGnblrx1jDq0J7CfCyUubY7ixoB5h?=
+ =?us-ascii?Q?VuepVfOjizDEauNFeJSP6Ipgskknj2aQyoOB9DrF8AL7DMIXz+nCWFdlWlhn?=
+ =?us-ascii?Q?ETpS88QNcRL3p1bAPEJik7iwsnyoM+vFIKbrSndDnQBKuKZNnUuGZsfdYDye?=
+ =?us-ascii?Q?RoId/YY3QrawVFlZ2iOmrgizE0bVRX0cqmGvQZeSEBC5HkCFIHce5O8uYtGs?=
+ =?us-ascii?Q?qTNK0WwQtulh5hW6Ye5JJY6w9NojuzCKB2hw4JrMH3W67vPTv05MD2zzaKo/?=
+ =?us-ascii?Q?LR/Lz/6MKdsDkD9wLLDamM1b3LDkNgF7Ng14FisJHwMyGjPM8qdtJtd/JJHL?=
+ =?us-ascii?Q?DsueGdr0feC6QBRBB/x5Ecs/7JVYg8FI+1GvDw3AlbGHJFVp2YFJBuEAHdWV?=
+ =?us-ascii?Q?y1XZf9lpBqv10ZX0mFVGrWx4J/rBEi43Qw2uIBL6eFGSEkf7mcuLbJkJu55E?=
+ =?us-ascii?Q?fL7+eKDymKSW8PWOMAZVFhTqEegDG7ItQ7K8r+qpF5ZWafZa/GbLMV04Prmq?=
+ =?us-ascii?Q?HAodSWe05by2RzgEXG6L9goUXLPWV38sWOeGAI870oA9arfrx5NiBVa+lLxR?=
+ =?us-ascii?Q?Dy1ApzhjIfjkyyJzJZE=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bace7f2d-cbd2-4d3e-e1af-08dba25aa58c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b6a217f-e9d0-4aaa-5eec-08dba261fdf9
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 15:24:01.3010
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 16:16:36.1619
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7RACZziD68an1RPHZSQOv/1KHozEr0G42CPPLDk+6ptxuVU1VYj+/lei57sXP2TUMSDKmgo1SoFokDTYXypOHg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9512
+X-MS-Exchange-CrossTenant-UserPrincipalName: KyuCV0u4iSFKm04VFQd6cE9/4z/+D+AIPcLNZ3T535p6g9lgPGPSmENelGphvUW6rpog+TRrBW4T+uFnaRYmsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8464
 
-On Mon, Aug 21, 2023 at 04:03:57PM +0530, Manivannan Sadhasivam wrote:
-> On Mon, Aug 21, 2023 at 10:21:05AM +0200, Lorenzo Pieralisi wrote:
-> > On Thu, Aug 17, 2023 at 06:42:50PM -0400, Frank Li wrote:
-> > > On Wed, Aug 16, 2023 at 05:30:10PM +0200, Lorenzo Pieralisi wrote:
-> > > > On Wed, Aug 09, 2023 at 11:35:40AM -0400, Frank Li wrote:
-> > > > > From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> > > > > 
-> > > > > Add PME_Turn_off/PME_TO_Ack handshake sequence for ls1028a platform. Call
-> > > > > common dwc dw_pcie_suspend(resume)_noirq() function when system enter/exit
-> > > > > suspend state.
-> > > > > 
-> > > > > Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-> > > > > Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > >  drivers/pci/controller/dwc/pci-layerscape.c | 130 ++++++++++++++++++--
-> > > > >  1 file changed, 121 insertions(+), 9 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > > > index ed5fb492fe084..b49f654335fd7 100644
-> > > > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> > > > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > > > @@ -8,9 +8,11 @@
-> > > > >   * Author: Minghuan Lian <Minghuan.Lian@freescale.com>
-> > > > >   */
-> > > > >  
-> > > > > +#include <linux/delay.h>
-> > > > >  #include <linux/kernel.h>
-> > > > >  #include <linux/interrupt.h>
-> > > > >  #include <linux/init.h>
-> > > > > +#include <linux/iopoll.h>
-> > > > >  #include <linux/of_pci.h>
-> > > > >  #include <linux/of_platform.h>
-> > > > >  #include <linux/of_address.h>
-> > > > > @@ -20,6 +22,7 @@
-> > > > >  #include <linux/mfd/syscon.h>
-> > > > >  #include <linux/regmap.h>
-> > > > >  
-> > > > > +#include "../../pci.h"
-> > > > >  #include "pcie-designware.h"
-> > > > >  
-> > > > >  /* PEX Internal Configuration Registers */
-> > > > > @@ -27,12 +30,26 @@
-> > > > >  #define PCIE_ABSERR		0x8d0 /* Bridge Slave Error Response Register */
-> > > > >  #define PCIE_ABSERR_SETTING	0x9401 /* Forward error of non-posted request */
-> > > > >  
-> > > > > +/* PF Message Command Register */
-> > > > > +#define LS_PCIE_PF_MCR		0x2c
-> > > > > +#define PF_MCR_PTOMR		BIT(0)
-> > > > > +#define PF_MCR_EXL2S		BIT(1)
-> > > > > +
-> > > > >  #define PCIE_IATU_NUM		6
-> > > > >  
-> > > > > +struct ls_pcie_drvdata {
-> > > > > +	const u32 pf_off;
-> > > > > +	bool pm_support;
-> > > > > +};
-> > > > > +
-> > > > >  struct ls_pcie {
-> > > > >  	struct dw_pcie *pci;
-> > > > > +	const struct ls_pcie_drvdata *drvdata;
-> > > > > +	void __iomem *pf_base;
-> > > > > +	bool big_endian;
-> > > > >  };
-> > > > >  
-> > > > > +#define ls_pcie_pf_readl_addr(addr)	ls_pcie_pf_readl(pcie, addr)
-> > > > >  #define to_ls_pcie(x)	dev_get_drvdata((x)->dev)
-> > > > >  
-> > > > >  static bool ls_pcie_is_bridge(struct ls_pcie *pcie)
-> > > > > @@ -73,6 +90,60 @@ static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
-> > > > >  	iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
-> > > > >  }
-> > > > >  
-> > > > > +static u32 ls_pcie_pf_readl(struct ls_pcie *pcie, u32 off)
-> > > > > +{
-> > > > > +	if (pcie->big_endian)
-> > > > > +		return ioread32be(pcie->pf_base + off);
-> > > > > +
-> > > > > +	return ioread32(pcie->pf_base + off);
-> > > > > +}
-> > > > > +
-> > > > > +static void ls_pcie_pf_writel(struct ls_pcie *pcie, u32 off, u32 val)
-> > > > > +{
-> > > > > +	if (pcie->big_endian)
-> > > > > +		iowrite32be(val, pcie->pf_base + off);
-> > > > > +	else
-> > > > > +		iowrite32(val, pcie->pf_base + off);
-> > > > > +}
-> > > > > +
-> > > > > +static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-> > > > > +{
-> > > > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > > > +	u32 val;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
-> > > > > +	val |= PF_MCR_PTOMR;
-> > > > > +	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
-> > > > > +
-> > > > > +	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
-> > > > > +				 val, !(val & PF_MCR_PTOMR),
-> > > > > +				 PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > > > +				 PCIE_PME_TO_L2_TIMEOUT_US);
-> > > > > +	if (ret)
-> > > > > +		dev_err(pcie->pci->dev, "PME_Turn_off timeout\n");
-> > > > > +}
-> > > > > +
-> > > > > +static void ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-> > > > > +{
-> > > > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > > > +	u32 val;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
-> > > > > +	val |= PF_MCR_EXL2S;
-> > > > > +	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
-> > > > 
-> > > > What is this write transaction generating in HW ?
-> > > 
-> > > I don't think send anything to to pci bus because it was called before
-> > > host init.
-> > > 
-> > > The spec of ls1028 is not clear enough.
-> > > 
-> > > `EXL2S: exit l2 state command. when set to 1, an L2 exit command is
-> > > generated. The bit is self clearing. Once the bit is set. SW needs to wait
-> > > for the bit to selfclear before sending a new command'
-> > > 
-> > > > 
-> > > > Why is it needed ? Shouldn't L2 exit happen automatically
-> > > > in HW ?
-> > > 
-> > > I tried remove this, PCI can't resume. I think this is specific for ls1028
-> > > chip to clear internal logic.
-> > 
-> > Well, if you don't even know what this does how can you write a sane
-> > device driver ?
-> > 
-> > Can you ask designers a more detailed description please ?
-> > 
-> 
-> I often encounter hw quirks like this one and the hw designers will just say
-> that "set bit X to make Y happpen". IMO a comment saying that the driver need to
-> set PF_MCR_EXL2S bit in LS_PCIE_PF_MCR register for the link to exit L2 state is
-> good enough.
-> 
-> > > > > +
-> > > > > +	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
-> > > > > +				 val, !(val & PF_MCR_EXL2S),
-> > > > > +				 PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > > > +			PCIE_PME_TO_L2_TIMEOUT_US);
-> > > > 
-> > > > And why is the timeout value the same used for the PME_turn_off message ?
-> > > 
-> > > I think No spec define it, just reused it. use PCIE_PME_TO_L2_TIMEOUT_US
-> > > may cause confuse. What's do you prefered? Just use number,such as 10ms.
-> > 
-> > This delay value is misleading, it is not good to reuse a value for
-> > a delay that is most certainly controller specific.
-> > 
-> > From this discussion I would say that having pme_turn_off() and
-> > exit_from_l2() hooks is generalizing something we don't know yet
-> > it is needed for all DWC based controllers.
-> > 
-> > It is probably worth keeping the layerscape specific changes in
-> > the layerscape driver and from there call the "generic" DWC
-> > suspend/resume functions:
-> > 
-> > dw_pcie_suspend_noirq()
-> > dw_pcie_resume_noirq()
-> > 
-> > rather than adding hooks that we barely know what they are needed for.
-> > 
-> > Mani, what do you think ?
-> > 
-> 
-> PME_Turn_off procedure may vary between controllers and is really required
-> from core DWC perspective. So I'd prefer to keep the pme_turn_off() callback
-> and leave exit_from_l2() since later seems to be only required for layerscape.
+This patch series introduces support for the eDMA version 3 from
+Freescale. The eDMA v3 brings alterations in the register layout,
+particularly, the separation of channel control registers into
+different channels. The Transfer Control Descriptor (TCD) layout,
+however, remains identical with only the offset being changed.
 
-There are at least two chips that need use exit_from_l2 at layerscape
-platform. I think not all dwc platforms implement suspend/resume yet. 
-Maybe some platform need it also. Of course I can leave it to layerscape
-driver. we can change when new platform really need it.
+The first 11 patches aim at tidying up the existing Freescale
+eDMA code and laying the groundwork for the integration of eDMA v3
+support.
 
-Frank
+Patch 1-11:
+These patches primarily focus on cleaning up and refactoring the existing
+fsl_edma driver code. This is to accommodate the upcoming changes and new
+features introduced with the eDMA v3.
 
-> 
-> - Mani
-> 
-> -- 
-> மணிவண்ணன் சதாசிவம்
+Patch 12:
+This patch introduces support for eDMA v3. In addition, this patch has
+been designed with an eye towards future upgradability, specifically for
+transitioning to eDMA v5. The latter involves a significant upgrade
+where the TCD address would need to support 64 bits.
+
+Patch 13:
+This patch focuses on the device tree bindings and their modifications
+to properly handle and integrate the changes brought about by eDMA v3
+
+Change from v10 to v11
+- rebase to latest dmaengine/next and fix build error cause by commit
+33a0b73
+
+Change from v9 to v10
+- use HAS_IOMEM
+- move dt-bind before enable v3
+- remove a unused code
+- drop patch3 clean up fsl_edma_irq_exit()
+
+Change from v8 to v9
+- add dmaengine: fsl-edma: fix build error when arch is s390
+  fix kernel test robot build issue
+
+Change from v7 to v8
+-dt-bind: add missed part
+
+clock-names:
+> items:
+>   - const: dma
+>
+> clocks:
+>   maxItems: 1
+
+Change from v6 to v7
+-dt-bind: remove "else" branch.
+
+Change from v5 to v6
+- dt-bind: rework it by fixed top level constraint.
+
+Change from v4 to v5
+- dt-bind, add example for imx93 to trigger make dt_binding_check to
+generate the yaml error. fixed dt_binding_check error.
+  keep compatible string ordered alphabetically.
+
+Change from v3 to v4.
+- use dma-channel-mask instead of fsl,channel-mask
+- don't use dmamux after v3. only use flags to distinguish the IP
+difference
+- fixed 8qm and imx93 have not CH_MUX register. Previous can work
+because dmamux is 0.
+
+Change from v2 to v3
+- dt-binding: add interrupt-names
+- dt-binding: add minItems
+- dt-binding: add missed property: fsl,channel-mask
+- rework patch 4, removed edma_version to avoid confuse with hardware
+IP version.
+
+Change from v1 to v2
+- fixed issue found by make DT_CHECKER_FLAGS=-m dt_binding_check
+- fixed warning found by kernel test robot
+
+Frank Li (12):
+  dmaengine: fsl-edma: fix build error when arch is s390
+  dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL in fsl-edma-common.c
+  dmaengine: fsl-edma: transition from bool fields to bitmask flags in
+    drvdata
+  dmaengine: fsl-edma: Remove enum edma_version
+  dmaengine: fsl-edma: move common IRQ handler to common.c
+  dmaengine: fsl-edma: simply ATTR_DSIZE and ATTR_SSIZE by using ffs()
+  dmaengine: fsl-edma: refactor using devm_clk_get_enabled
+  dmaengine: fsl-edma: move clearing of register interrupt into
+    setup_irq function
+  dmaengine: fsl-edma: refactor chan_name setup and safety
+  dmaengine: fsl-edma: move tcd into struct fsl_dma_chan
+  dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string
+  dmaengine: fsl-edma: integrate v3 support
+
+ .../devicetree/bindings/dma/fsl,edma.yaml     | 106 +++++-
+ drivers/dma/Kconfig                           |   1 +
+ drivers/dma/Makefile                          |   6 +-
+ drivers/dma/fsl-edma-common.c                 | 307 ++++++++++++------
+ drivers/dma/fsl-edma-common.h                 | 127 ++++++--
+ drivers/dma/{fsl-edma.c => fsl-edma-main.c}   | 306 +++++++++++++----
+ drivers/dma/{mcf-edma.c => mcf-edma-main.c}   |  36 +-
+ 7 files changed, 676 insertions(+), 213 deletions(-)
+ rename drivers/dma/{fsl-edma.c => fsl-edma-main.c} (63%)
+ rename drivers/dma/{mcf-edma.c => mcf-edma-main.c} (90%)
+
+-- 
+2.34.1
+
