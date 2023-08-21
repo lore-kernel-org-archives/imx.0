@@ -1,181 +1,318 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2088.outbound.protection.outlook.com [40.107.20.88])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2066.outbound.protection.outlook.com [40.107.21.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54516FC2
-	for <imx@lists.linux.dev>; Mon, 21 Aug 2023 13:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958D979F1
+	for <imx@lists.linux.dev>; Mon, 21 Aug 2023 15:24:05 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AXQXYBJogHtpKHOiczJVMDdLpVcKGCEpuMtD5FiDj5VlGF1o+AtVQpH/lC0RralN7UcOm8GmFK5wo+ENSumCm08y6JEsaLZHrUuSkdHPpx2dGv+RdhuZWnlKYvhzjTzIfWnwxhp38bFncNpSkeTbOXWfzocgwjEMU1CZOV1BgmjRdpBqpq7TdsDA8ansu3/0hL7wgU1/ABtCHcIN5sQefmhamQUqzy1Q+guzPuvMTRpS1rnvlTIrhiqFSAX/OVyaQse22GSg38GBqzrVPBR90fS/l6ZJLBZOg8SZS16VWQlk3NLkhVahHSL+IxjTSO0fJ1VtxUZXcphmucE7UkvWCw==
+ b=Py/KNI4NG6jN5dcTqahwhwFhjAV1uepROtXC6jMrXtS1gmGyX/p2+QwS+WSzvvm9vDL0WF8VsuFftI0pZC1DKtejUP9EAM9tmH2nFPV8wkEnMRKr5mZNxe0N44FTmM24cYCPKiDT0raE02zC6J3KxaXkD2cymP89oRHTzfDHlyerTWJrKrKwojze3aE9kyz341AP7+PIFmOMaTgV0gYEUvrgLEVSiFlv0eRFs10OViyMvOHNpsGoE8oehPZKuEKJeGOv3o/zrG4hnAX2iTU2X5SkFey/See1aMFIe14PvO7qTt3aW4g8QTvKNRsm37f7na35dUbmlPRptvH26eOBuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J7VZmrtIa7quUdwT3nqOGU6/vLzhqylM+o+xejs/fgM=;
- b=VEV0HhBiTLCQrSDj8paQb5Rc/lGYGjc1NoKZl76+41K6OsT6wyB81tCG7uBzMveZNLyfav4656Ync4r3Ryw6YUgnqU2oEoYxZUM1q6zcRzn28TyseP3jVkjq+pthvGSSfaX6aB8mKMBO2tD095t5jraGa209BAalByw9oTVFauuLpz8edoXAo26By35znZBl7Bz92fhrEC9Y+fqIzuzbnYq2jkQaEw5orxRCCDlM4Idfg+QiEByKxVgkEE1FoUaER7iQfHbUatrEDMXS+DO05+D0hhdeHX0lrGeNSvogkqyIOenO4hbb9Pk4F7rvJm/OZUNY0xqJ+2ghDaygP72I4w==
+ bh=FwCFeABb07X7XRPAri9widF2bfVqybF848zEJt9DQ0M=;
+ b=AO+ZQL5bbaQMguCAOYz7/fHbzxzEG6TRIWcz8HMuVPQRn9sQKIleosC/bfpXSZbATrLMkNlW+QrEIKbQeaQ6bYgulJEDeMImIONfLAOxtzrZmOLt6y1UQ3BafU+rKlQynTuxZ2hanJvrD3jZsPI8wQljP4LZRn7WQSiD2dAdsGnaLluXzMWM9SC1mVJNLlWqUVcXB625+OPna9AlxSNMU7vl8W7JNRb94XNx5omnXvYN4Yo44HUUOksXwAS9wsAlNgwYb+c42CWjecx5DYN0BWPML1O8DSjaO04q5m8dHLeM6yhjlc7h1nYG0fEOQf0DaWIGErq+PGDck9StngF6iA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J7VZmrtIa7quUdwT3nqOGU6/vLzhqylM+o+xejs/fgM=;
- b=U8UiSqyqDZJ9O+nTxU1df2jHLpXuP8bQnvPdJbrPO+ZXK3QkjE9yf3CTHnOnpnqxJlPgfRQYTt7ol3PWDAxd4jTYeT+eM8Ys7Mwyn8F2684bRbzydbs6eETrdY4cb51HtU1WtcO4H2hPSeedzpXZaQAzCQhNRsWrUPhQRLx1WSo=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DUZPR04MB9824.eurprd04.prod.outlook.com (2603:10a6:10:4dc::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Mon, 21 Aug
- 2023 13:22:50 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671%3]) with mapi id 15.20.6699.020; Mon, 21 Aug 2023
- 13:22:50 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring
-	<robh+dt@kernel.org>
-CC: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Liam Girdwood
-	<lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-Thread-Topic: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-Thread-Index: AQHZ1DKVlmuct1FdqkW6dkezlQtrJw==
-Date: Mon, 21 Aug 2023 13:22:50 +0000
-Message-ID:
- <PAXPR04MB91850D8807CE374BD7C30CC5891EA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
- <CAL_Jsq+XA_P-aRK9_WuGPmJ0_xJgsSr9smZy4BRbKZbmVsMQBQ@mail.gmail.com>
- <PAXPR04MB918539A19B8F817F623BBD1F891BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <9927403d-6dd9-3e5e-8f9d-f38e6640f95f@linaro.org>
-In-Reply-To: <9927403d-6dd9-3e5e-8f9d-f38e6640f95f@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=FwCFeABb07X7XRPAri9widF2bfVqybF848zEJt9DQ0M=;
+ b=D0rfnTr5DCvkbiWe54zKCBax5KRcwkHGsWq9G3zZkaqKV6nuF0BCoUTUJZKpLdyKLFqdebbeR5KLodDOKxlBGQ4HlvkBLI0jlXjOgSJLquhIqbk9v+47v1Dpncc5RPnBlKtVCBTFMhQJW1bTaYvrJUlUIxgHSz69lMmOQ7CBnU8=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DUZPR04MB9824:EE_
-x-ms-office365-filtering-correlation-id: f952da94-e547-49ed-c111-08dba249b7ed
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 52vlQqFzyHu312bbADJfVr4z7NRsXKysxqEXNhuiNQ94T0mAdyvjd1KmZsALd+rpS6uR93c+yG8AoUUe3EfJ32APjMy9cuFCWXAndSwIJSEF9i5D+vgzM4O/3kAKuj8UqWgYzt0hTdPOP6McHb1M79HlXioDwxPC+zN4trvVxu/aRUwQDLzDUvVfNmw2tYV1/145B2KSxG/58tGX1bgxcUm6lgq6QJGYQak8AbOa+MxDQa8yQrKlyZ/z+IwIysudcy6+R1cmQ8gODvsHCihxKHY4GLP0bgpp04LLQvT8J6INHEvwyrDYwh3ijdaitmvlT4gwDgiF6qCEJAhoxedVlpP9Gw6uUfL27qxI27ewU04Vjkuc4W8SvzBwlE5Urve5bfdzTSaWnejucHtO3ZdgW92MJnvzdxBJmayC54RKKi0sJxpZbJd8Ud0NmK6sl1AuRAoNAPNorI62X/Yz46yJ2xn/ZovMi0GxiLF3et3MmrusZ26gk3h/GAHoXWKUTovcv7QvXgrA5iCKjX+Br2Xrngd9JDhgnlyZsxGAjVQ/anka5nCOt846u1ud++h9voC8zxPXsUJg6ZPhQW9SaDG/A1c45q3twwF5zw+v9v2rAQA=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(39860400002)(376002)(136003)(396003)(451199024)(186009)(1800799009)(2906002)(7416002)(45080400002)(53546011)(55236004)(38100700002)(38070700005)(6506007)(83380400001)(5660300002)(44832011)(52536014)(33656002)(26005)(7696005)(86362001)(8676002)(8936002)(4326008)(316002)(9686003)(66946007)(64756008)(54906003)(66446008)(66556008)(76116006)(66476007)(110136005)(966005)(478600001)(122000001)(55016003)(71200400001)(41300700001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?sZdJQfJSIuyPj2n2R+qK+WR2wdEJP2RJ2DkpRhi3XSVC1eZgOc4qJJp2fooJ?=
- =?us-ascii?Q?UqAqA3D6QMXcwNlAG72PjYe1AxkdVbLEjmPQyHOPaQtJ9gOSwwo7s4C8vfoq?=
- =?us-ascii?Q?FXV9qRw8qRQwAVNnQzs4ZjGAcM7ntFyChjLZnVU71D9OZJC3IYIZ3XiFdzna?=
- =?us-ascii?Q?bYCUsZ/2xyTwbO9Rt9xoLFCLBzfNmR9UErKklHCQe6CupMqhIWt9ZkXjhtAe?=
- =?us-ascii?Q?EdtdQomdmySEFEKM1ylyWrL1IUIAdvV0H71+DK27urTmT/kfyfQvC7udHTFk?=
- =?us-ascii?Q?e9Z58PT53aOzfh1MnZh6VFb4IDexnfbb5f/fBlRKhoTRvVCemyFhMc1Q1xsn?=
- =?us-ascii?Q?F1Qg+UwHLshysVl8Z2N40xNAvSfpYFjPHj3cegrDMbk5yj5/P7+ItMnrF1ny?=
- =?us-ascii?Q?ybFbsub//afIp23/5k6mkm/jnH+Kpv3ThlwbGBRjtMm8JWDDrT6SDTi5jZw9?=
- =?us-ascii?Q?asr8NSgXV59uxh+llD1difPhM4S4TikvFSVWuH386InsuQh3P85sTlHE2qf6?=
- =?us-ascii?Q?QmnnuBNuhOSpVEuij7KkjP87E/syaEEF0rrs0jG9rC8G+7oISVSGYH8Gi2VY?=
- =?us-ascii?Q?1zV+0J5cLT8JMkI7AdRi6pPB+Sfs6lABzs9IC0PGDbAJVrljvKjKWwWsA3k6?=
- =?us-ascii?Q?BihFzXpvLZoiP5+VpiUHHUDyDh+DeGq4o0hyLbrtSWv50ZMFE/1VL4leWjyq?=
- =?us-ascii?Q?7WxjZbxD93tsyQtr/u5ptI8xyFsMAx0pchvLv5wvRxpEyQJ9rtFoH02hbRaU?=
- =?us-ascii?Q?3yQov2RytAtwzB3LgSTdBa5BaUcby7w+CqL3SoU9H3fgCbVSut912pRLxGcD?=
- =?us-ascii?Q?2zpWA2eoX1nH3VosoIx+HcEoVskJQjtED6jh55ph8Jioe6d7cHrMPHAE5DZ0?=
- =?us-ascii?Q?P9QuVkeyWBCpvw8UNd83Ftvz3YeunBBHwnOAQNZO93rsZwTfCD8Uu+E4QJqC?=
- =?us-ascii?Q?anus2A1aHBWzNv6rPiPOiXgSYFj86XFeE7s4nvB2kPIImCyeVYoe+hp5Rpzu?=
- =?us-ascii?Q?lWYG0Whdgod98esL1h7GzuSzyG/VneYFu77AcqLavpITL7iyopnMCJLX3amC?=
- =?us-ascii?Q?6nzCj28zgQR8QH9xzrO3zvLQEe0eoVKchjcCj2lUz6Z6U7hv18Yb73F3hTki?=
- =?us-ascii?Q?D/V5GU6aI+johTWt1ibQ9LFqEvWJkQ2mqvNhA3cDKJy2cD/DtRjc3T4vdx0l?=
- =?us-ascii?Q?TWlAf6TgIcsSJQQ8VTVK7awyqJx5XlCcpbJJb6nJq7jO73BwuDBwrk6X5Mmc?=
- =?us-ascii?Q?7eQeULddz2JTD3rYj5cjEQSZ/POdqsQIAWu0c3wAMPUaDcc1rzxVIOteUQb3?=
- =?us-ascii?Q?XiYEPYzc5ljhNiJ/xYr/FijCn6AanCzrXEQygBqq3J2zYTtSqWrqdSr427y+?=
- =?us-ascii?Q?aqCw9zHl3vS0PM7JU62QMZkx10NtRGu5gbqoacYRhOEHNe5ygmDH5K9ho3qz?=
- =?us-ascii?Q?Tnm8MFN8tpss9kPJm6iOdRonwPOcNbx8fh6wHHxgN8LtXn2yDV/7w0n4gN/H?=
- =?us-ascii?Q?YqdKBmcDnsncDxBteCDEvjRvKM6+77Ny8Lw/WpLFIs/Fw8PTrvg4UUV2b8wL?=
- =?us-ascii?Q?5bRHhFb2gHxvscIBNH6GD8EhjhMLbf9MlXS5LLWv?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AS8PR04MB9512.eurprd04.prod.outlook.com (2603:10a6:20b:40f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Mon, 21 Aug
+ 2023 15:24:01 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::a680:2943:82d1:6aa8]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::a680:2943:82d1:6aa8%3]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
+ 15:24:01 +0000
+Date: Mon, 21 Aug 2023 11:23:42 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	manivannan.sadhasivam@linaro.org, helgaas@kernel.org,
+	bhelgaas@google.com, devicetree@vger.kernel.org,
+	gustavo.pimentel@synopsys.com, imx@lists.linux.dev, kw@linux.com,
+	leoyang.li@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
+	minghuan.lian@nxp.com, mingkai.hu@nxp.com, robh+dt@kernel.org,
+	roy.zang@nxp.com, shawnguo@kernel.org, zhiqiang.hou@nxp.com
+Subject: Re: [PATCH v11 3/3] PCI: layerscape: Add power management support
+ for ls1028a
+Message-ID: <ZOOAUlPEMWG4LrUI@lizhi-Precision-Tower-5810>
+References: <20230809153540.834653-1-Frank.Li@nxp.com>
+ <20230809153540.834653-4-Frank.Li@nxp.com>
+ <ZNzrgr3a13vm6Yqi@lpieralisi>
+ <ZN6iarqhryMHmwLh@lizhi-Precision-Tower-5810>
+ <ZOMecaueyN3cutUH@lpieralisi>
+ <20230821103357.GA36455@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230821103357.GA36455@thinkpad>
+X-ClientProxiedBy: BYAPR11CA0067.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::44) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB9512:EE_
+X-MS-Office365-Filtering-Correlation-Id: bace7f2d-cbd2-4d3e-e1af-08dba25aa58c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	lN1v5sGJAHylZTLdev8dqy+VlCeffVQJKNSuilO/BY5wcmD/o9J2bLzTaowCk+8szWcOqHucv855s8/hlHErQmq98M/fyxt/g6xABkyn8Lsg0xIOcbMnb6wr+s4FNkoztRjpHHYSoj0fLNaNldnDfU1LEu33+xbTHMauI18JCapNgPe6h6keIgc8FDNBTor7IEYxDAWTASJkh1WpsetRZxv83lGB9RSLd/szFroy5Fn2bzE7Ar9uriwpisVk4rVqrYoIeAO5LIL8xt2LdzaEdFT4/jMSRkw7ZgnXS5PhbxsijucfEHjdHONSQaQkmf6EQxUD3BAOqa2WYeLPhdQ9U9ecTIGWB/PJboD0zZDkabzT8nl+DKn3LNHqmaVnw+4ufH6zMQPWCHHiOuXOPtvhIj1TIjTWLyK7tTvYyYa/9MVM9xvAbHEn114p0lM65K9oxy8CV782M6/1t79Hp8L3aoxnI2K+0vur+lrcsXiE0R4BtZtNQEQ8sWKSgF8btUAGPRMYTz/PJZhH855rVjscpaEiZIY7/IkXU7ckW1fpL9UJAuwRAFF4T0mrlTGYe4ByjwfmvVkArQyrstVjy8I0f5h0dnVDnHDWiPTnwKZ0T7LCcDhGQ1O6UvmW1Dw6avHa
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(366004)(39860400002)(376002)(136003)(396003)(451199024)(186009)(1800799009)(2906002)(7416002)(52116002)(38350700002)(38100700002)(6506007)(6486002)(83380400001)(5660300002)(26005)(86362001)(8676002)(8936002)(4326008)(316002)(9686003)(66946007)(6512007)(6916009)(66556008)(66476007)(478600001)(6666004)(41300700001)(33716001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N2ExTFd0Z1VXMzBocTZ5Mmx4UUFwV0dlbkxaN0djd3k2eFJTaUhtRU9QUkRP?=
+ =?utf-8?B?Y1JvZzZtVlFWcDltYVl0azV5dEd6TE9leXhtcHpDUWdqTkxzcU5Bb0wxbjBT?=
+ =?utf-8?B?Q1dtVUJjOUdERTZraDIwNGg3UFY3dWlVRmVaaHpRZVFpSzdzS2xvVThMc1BH?=
+ =?utf-8?B?U3g5L29LL1dub2N0enJmcktPcHpkVjlITXVLcXdadG5ZRFltcWdPZTlXMUpR?=
+ =?utf-8?B?dHgyZUpSOTIvdTh0R1VUTzl4ZDU5aEhsMzl2QWNzZThuSXlFOUF6ZVNhK281?=
+ =?utf-8?B?MFNudjBERzhmRTVDbXB1c2RyTThqcmREdmVBOFhOd2lFUjFaNldLaXRYeFg3?=
+ =?utf-8?B?Uzg2QVd5Q3BxQ1pEZlVRdUlEMXBqSHBlbjdIVVFYOVJidDV5aDhQdE5UU3dV?=
+ =?utf-8?B?aWJrOEFTaG4zN3hwTkRJcVNtMlFIMjMzRk1HQlZFWmN2Ymc4M2VRRW82ZUxF?=
+ =?utf-8?B?aHMxRVVJSC9yZk0vYzdwcUxMdTVJa3p6WGRxbnl4WnlxQ0ZLZU9DcGJiL0R5?=
+ =?utf-8?B?blNneEMxcGw0QktZbzhNRW9iU0VzcTNTVHE4cmVLcTF1NHA3TXoyMEsyUy9v?=
+ =?utf-8?B?T0FYb1BTSGswdjVYZjBCMURvL3FYaUtML085L1lBNEhRNDZVV2Y3L0hQdnYw?=
+ =?utf-8?B?Sk5meEdkUWJyK29MRThYN3dOSXlqdHp4eTJLdVpuNjhVWFMrTHFzV0FvQXlu?=
+ =?utf-8?B?bk1sUVJyRDVjSjJyMlI2eS9KZHdWNml6Qit6K3BHUVJybzN3M0M1RG1yUGIv?=
+ =?utf-8?B?SU9hS1BvWkJzTzBuNDFkVjhtZCtkd0FvOXZGc1B1R3R2ME5lWGIzek9NTllW?=
+ =?utf-8?B?NkZWejlTbnJoRTc0WWhZNGwzaU56L01GMEdUVkZwcXJNd2VaaVpZSkgrcS9M?=
+ =?utf-8?B?dFJESzg1Rm1hWEIxc0dndWRVaWNWSVljQTlUSlU2WFdSY2pDYTlNTVVPVU1H?=
+ =?utf-8?B?cTVKNEJlakxaZ3pyaWZNazhvL1V6UUZSS09GanFqRUJYVDJ4U204VXhXeDFw?=
+ =?utf-8?B?Y2h1ODZ4cGpGU1pOdmZHS0dpQXBQU0VBc3JULzZxSGxXMCtmeWhNUnRIY0NE?=
+ =?utf-8?B?WjNHVzRxeHlSRjRBRlJtczFKTm1KQnpVWDhKYXl4MkdGOWZtSEdRaytOL2lG?=
+ =?utf-8?B?akxzQ3pJTENhUGRNTEFuUW40N29SRnVHWVV3Mkw2L1Mva1lBK1d5RXByR3g3?=
+ =?utf-8?B?OGlReldZMnRzWkdiWHg2eTQ3UHJCdm1iSGt1M2d5WXl6QVV2SFFTajhkKzBW?=
+ =?utf-8?B?NXErZys3Q3ZjNTNkcTFyVExsNTJidHBOMjJzTzNsUUo5TzY4eHZWSzFTTWZk?=
+ =?utf-8?B?MmptSGVuWVVsazhuOWNnUTFlZkFIVWh0UVl5Vmw0eEdWQmVMUVZGRVp0RGRF?=
+ =?utf-8?B?SHRQdzBBWE0zMS9meUoyL3Q4NWNhVGdxeHNLQXByQldDMTNDSWorWXBWYmlj?=
+ =?utf-8?B?MDZobnJvRGsxUXJEQlMxcndWeW9GM3JjL3BLS2tldHdOWk5Bbk9RZUZKMHFx?=
+ =?utf-8?B?cTN4TDNpMTVTb1ZueVUwczhCaURDdGNOUkx3dHIwWlpLc05FMHhHc1RjcGx2?=
+ =?utf-8?B?NHdrMHVobG5ScUt1VGRqS09YbXI0di9tOElHYWpJZzM0ekpjTERvNjFNWjV3?=
+ =?utf-8?B?d1RTcm1ub21qUER4Unc1U1orOTc5ZmczUFZzd0FRRkFGYUM3T1dXd3pVQnRi?=
+ =?utf-8?B?dS9abXBNdjhEbm5lMVQyVFM5cVBoSnlFeU9vRnQzdGE5UU5mUDJTNW5ORGRY?=
+ =?utf-8?B?Y2RNOURVTVJYZVZmMmsyUUx5Ynp3U0UxaHZoQnVjekFaNHFMZU5KTXZXalRk?=
+ =?utf-8?B?RHJpeGVQTkgxR0VlaEk2OTNrejM4R240R3dpWDJBTkIrQ0JMTUpmMGFXcGFL?=
+ =?utf-8?B?YzFXNldiVEtSamJTc1JyN3ZZU0gvTUorNXgzcytVYThZdHNMb0ptUlU1Y2VM?=
+ =?utf-8?B?V09MN0RZbGFYcjhiV012OXRvUkxtUlpSSUxyeVpRbFkyd044VEEySVVoOG01?=
+ =?utf-8?B?dFNMWFZ1czBFM0JTMk53REN6aENpRDdTcThQTFlQRkVuRk1NanovYklYRzdG?=
+ =?utf-8?B?WEhMNERiaWh5dTcyQWVPN2hVWlZkTlZJOWIvOE1rRWg3a1lNZ3VhSDNkSHRL?=
+ =?utf-8?Q?uvDY1syAWUf6VEQZidgVvMaXG?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bace7f2d-cbd2-4d3e-e1af-08dba25aa58c
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f952da94-e547-49ed-c111-08dba249b7ed
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2023 13:22:50.4890
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 15:24:01.3010
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: scGoqU+uwSUc0LCwgTRe3ig+sUDx3YPdBwlFS7u8Ey2vj5kIiVt9dCmoItPdXDPqiIaZEcOcpR1nz/akZjD4oQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9824
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7RACZziD68an1RPHZSQOv/1KHozEr0G42CPPLDk+6ptxuVU1VYj+/lei57sXP2TUMSDKmgo1SoFokDTYXypOHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9512
 
+On Mon, Aug 21, 2023 at 04:03:57PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Aug 21, 2023 at 10:21:05AM +0200, Lorenzo Pieralisi wrote:
+> > On Thu, Aug 17, 2023 at 06:42:50PM -0400, Frank Li wrote:
+> > > On Wed, Aug 16, 2023 at 05:30:10PM +0200, Lorenzo Pieralisi wrote:
+> > > > On Wed, Aug 09, 2023 at 11:35:40AM -0400, Frank Li wrote:
+> > > > > From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> > > > > 
+> > > > > Add PME_Turn_off/PME_TO_Ack handshake sequence for ls1028a platform. Call
+> > > > > common dwc dw_pcie_suspend(resume)_noirq() function when system enter/exit
+> > > > > suspend state.
+> > > > > 
+> > > > > Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+> > > > > Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > >  drivers/pci/controller/dwc/pci-layerscape.c | 130 ++++++++++++++++++--
+> > > > >  1 file changed, 121 insertions(+), 9 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> > > > > index ed5fb492fe084..b49f654335fd7 100644
+> > > > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> > > > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> > > > > @@ -8,9 +8,11 @@
+> > > > >   * Author: Minghuan Lian <Minghuan.Lian@freescale.com>
+> > > > >   */
+> > > > >  
+> > > > > +#include <linux/delay.h>
+> > > > >  #include <linux/kernel.h>
+> > > > >  #include <linux/interrupt.h>
+> > > > >  #include <linux/init.h>
+> > > > > +#include <linux/iopoll.h>
+> > > > >  #include <linux/of_pci.h>
+> > > > >  #include <linux/of_platform.h>
+> > > > >  #include <linux/of_address.h>
+> > > > > @@ -20,6 +22,7 @@
+> > > > >  #include <linux/mfd/syscon.h>
+> > > > >  #include <linux/regmap.h>
+> > > > >  
+> > > > > +#include "../../pci.h"
+> > > > >  #include "pcie-designware.h"
+> > > > >  
+> > > > >  /* PEX Internal Configuration Registers */
+> > > > > @@ -27,12 +30,26 @@
+> > > > >  #define PCIE_ABSERR		0x8d0 /* Bridge Slave Error Response Register */
+> > > > >  #define PCIE_ABSERR_SETTING	0x9401 /* Forward error of non-posted request */
+> > > > >  
+> > > > > +/* PF Message Command Register */
+> > > > > +#define LS_PCIE_PF_MCR		0x2c
+> > > > > +#define PF_MCR_PTOMR		BIT(0)
+> > > > > +#define PF_MCR_EXL2S		BIT(1)
+> > > > > +
+> > > > >  #define PCIE_IATU_NUM		6
+> > > > >  
+> > > > > +struct ls_pcie_drvdata {
+> > > > > +	const u32 pf_off;
+> > > > > +	bool pm_support;
+> > > > > +};
+> > > > > +
+> > > > >  struct ls_pcie {
+> > > > >  	struct dw_pcie *pci;
+> > > > > +	const struct ls_pcie_drvdata *drvdata;
+> > > > > +	void __iomem *pf_base;
+> > > > > +	bool big_endian;
+> > > > >  };
+> > > > >  
+> > > > > +#define ls_pcie_pf_readl_addr(addr)	ls_pcie_pf_readl(pcie, addr)
+> > > > >  #define to_ls_pcie(x)	dev_get_drvdata((x)->dev)
+> > > > >  
+> > > > >  static bool ls_pcie_is_bridge(struct ls_pcie *pcie)
+> > > > > @@ -73,6 +90,60 @@ static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
+> > > > >  	iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
+> > > > >  }
+> > > > >  
+> > > > > +static u32 ls_pcie_pf_readl(struct ls_pcie *pcie, u32 off)
+> > > > > +{
+> > > > > +	if (pcie->big_endian)
+> > > > > +		return ioread32be(pcie->pf_base + off);
+> > > > > +
+> > > > > +	return ioread32(pcie->pf_base + off);
+> > > > > +}
+> > > > > +
+> > > > > +static void ls_pcie_pf_writel(struct ls_pcie *pcie, u32 off, u32 val)
+> > > > > +{
+> > > > > +	if (pcie->big_endian)
+> > > > > +		iowrite32be(val, pcie->pf_base + off);
+> > > > > +	else
+> > > > > +		iowrite32(val, pcie->pf_base + off);
+> > > > > +}
+> > > > > +
+> > > > > +static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> > > > > +{
+> > > > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > > > +	u32 val;
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
+> > > > > +	val |= PF_MCR_PTOMR;
+> > > > > +	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
+> > > > > +
+> > > > > +	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
+> > > > > +				 val, !(val & PF_MCR_PTOMR),
+> > > > > +				 PCIE_PME_TO_L2_TIMEOUT_US/10,
+> > > > > +				 PCIE_PME_TO_L2_TIMEOUT_US);
+> > > > > +	if (ret)
+> > > > > +		dev_err(pcie->pci->dev, "PME_Turn_off timeout\n");
+> > > > > +}
+> > > > > +
+> > > > > +static void ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> > > > > +{
+> > > > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > > > +	u32 val;
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
+> > > > > +	val |= PF_MCR_EXL2S;
+> > > > > +	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
+> > > > 
+> > > > What is this write transaction generating in HW ?
+> > > 
+> > > I don't think send anything to to pci bus because it was called before
+> > > host init.
+> > > 
+> > > The spec of ls1028 is not clear enough.
+> > > 
+> > > `EXL2S: exit l2 state command. when set to 1, an L2 exit command is
+> > > generated. The bit is self clearing. Once the bit is set. SW needs to wait
+> > > for the bit to selfclear before sending a new command'
+> > > 
+> > > > 
+> > > > Why is it needed ? Shouldn't L2 exit happen automatically
+> > > > in HW ?
+> > > 
+> > > I tried remove this, PCI can't resume. I think this is specific for ls1028
+> > > chip to clear internal logic.
+> > 
+> > Well, if you don't even know what this does how can you write a sane
+> > device driver ?
+> > 
+> > Can you ask designers a more detailed description please ?
+> > 
+> 
+> I often encounter hw quirks like this one and the hw designers will just say
+> that "set bit X to make Y happpen". IMO a comment saying that the driver need to
+> set PF_MCR_EXL2S bit in LS_PCIE_PF_MCR register for the link to exit L2 state is
+> good enough.
+> 
+> > > > > +
+> > > > > +	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
+> > > > > +				 val, !(val & PF_MCR_EXL2S),
+> > > > > +				 PCIE_PME_TO_L2_TIMEOUT_US/10,
+> > > > > +			PCIE_PME_TO_L2_TIMEOUT_US);
+> > > > 
+> > > > And why is the timeout value the same used for the PME_turn_off message ?
+> > > 
+> > > I think No spec define it, just reused it. use PCIE_PME_TO_L2_TIMEOUT_US
+> > > may cause confuse. What's do you prefered? Just use number,such as 10ms.
+> > 
+> > This delay value is misleading, it is not good to reuse a value for
+> > a delay that is most certainly controller specific.
+> > 
+> > From this discussion I would say that having pme_turn_off() and
+> > exit_from_l2() hooks is generalizing something we don't know yet
+> > it is needed for all DWC based controllers.
+> > 
+> > It is probably worth keeping the layerscape specific changes in
+> > the layerscape driver and from there call the "generic" DWC
+> > suspend/resume functions:
+> > 
+> > dw_pcie_suspend_noirq()
+> > dw_pcie_resume_noirq()
+> > 
+> > rather than adding hooks that we barely know what they are needed for.
+> > 
+> > Mani, what do you think ?
+> > 
+> 
+> PME_Turn_off procedure may vary between controllers and is really required
+> from core DWC perspective. So I'd prefer to keep the pme_turn_off() callback
+> and leave exit_from_l2() since later seems to be only required for layerscape.
 
+There are at least two chips that need use exit_from_l2 at layerscape
+platform. I think not all dwc platforms implement suspend/resume yet. 
+Maybe some platform need it also. Of course I can leave it to layerscape
+driver. we can change when new platform really need it.
 
-> -----Original Message-----
-> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Sent: Saturday, August 19, 2023 3:04 AM
-> To: Shenwei Wang <shenwei.wang@nxp.com>; Rob Herring
-> <robh+dt@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
-> <conor+dt@kernel.org>; Ulf Hansson <ulf.hansson@linaro.org>; Liam Girdwoo=
-d
-> <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
-> imx@lists.linux.dev; devicetree@vger.kernel.org; linux-kernel@vger.kernel=
-.org;
-> dl-linux-imx <linux-imx@nxp.com>
-> Subject: [EXT] Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml =
-file
->
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report =
-this
-> email' button
->
->
-> >>
-> >> This needs to answer why we need this.
-> >>
-> >> It looks like just an abstraction layer to make regulators look like
-> >> a power domain.
-> >>
-> >
-> > Yes, it is a wrapper that allows using regulators as a power domain.
-> > This removes the need to add regulator operating code in each consumer
-> > device driver. As a power domain, the regulator will be managed
-> > automatically by the device driver framework and PM subsystem.
-> >
-> > This is very useful when a device's power is controlled by a GPIO pin,
-> > which currently requires using the fixed-regulator to achieve the same
-> > purpose. However, the fixed-regulator approach may have to add code in =
-the
-> driver in order to use it.
->
-> Why do you start discussion from zero ignoring all previous history of th=
-is
-> patchset?
->
+Frank
 
-Thank you for providing the link. After reviewing the entire thread, I stil=
-l don't understand how
-to proceed. What is the conclusion regarding this commonly used use case bu=
-t overlooked feature
-in the upstream kernel?
-
-Thanks,
-Shenwei
-
-> https://lore.kern/
-> el.org%2Fall%2F20220609150851.23084-1-
-> max.oss.09%40gmail.com%2F&data=3D05%7C01%7Cshenwei.wang%40nxp.com%
-> 7C2cf40d23202c430302c908dba08add2e%7C686ea1d3bc2b4c6fa92cd99c5c301
-> 635%7C0%7C0%7C638280290493921016%7CUnknown%7CTWFpbGZsb3d8eyJ
-> WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C
-> 3000%7C%7C%7C&sdata=3D0O%2FIytE6YbJL26je7hoxEu0ayZYs07PBjfZkBDVaC1M
-> %3D&reserved=3D0
->
-> Best regards,
-> Krzysztof
-
+> 
+> - Mani
+> 
+> -- 
+> மணிவண்ணன் சதாசிவம்
