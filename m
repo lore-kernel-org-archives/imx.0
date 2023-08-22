@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87C08F64
-	for <imx@lists.linux.dev>; Tue, 22 Aug 2023 14:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC300C433C7;
-	Tue, 22 Aug 2023 14:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0E38F64
+	for <imx@lists.linux.dev>; Tue, 22 Aug 2023 14:42:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BF6C433CA;
+	Tue, 22 Aug 2023 14:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692715352;
-	bh=J3GAhb/I7LzEywurlsumMwhnHmUV2YSx6l1Q4MRLxiU=;
+	s=k20201202; t=1692715356;
+	bh=78etBwqIulZAxtSP6vzLcQz3jThbF+e2by8dDPEtsJw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=mDEORbtq/338mS6ZiS5ys15nENs8/HqZkdSMU30/CDe+ajlaAr7V3pVjzwnECdows
-	 rjddvyoQe6BL3DdaSgtXt2nblg4Dc3YfZb0Ch8DEhiG5MRsf32x90ilOrjp7F6miot
-	 hyqhto3L4qKLIbWhVtiiycX5rZp7jId08MFvP5ue2assIXNi1vS9psRelvRv8nWDSG
-	 CK3+L9LWk+fw5gzE/DwYHHdAiQrLCbhQufwKBEi4oum98J5mhc8CWKyAa9StqA9cad
-	 pla7Se0/r2Uu+7/AGkvfJFnCXnAW1X65Jwfc4VkIx6zEH183Rq5e/3Z7ildKfdsBfD
-	 vM1XCoddfi89w==
+	b=PRaKJF73zOMN/MdcizaIwOqV5QuDPY+TN8KdgSeoNTwsNaDuMumVkee1vVlK20txd
+	 InC869de2kZJJrca9Ye91eInFwTxuO29TV9spDSGq6qeS/7WKtgwYqCgL2xq8Ft0SZ
+	 rWZydIuIBuQ9wUO2MJdj7lKcWyIPkB8Im+RkUC6Ta7v2eWvI+XuvCay6ZskEL8Ah8X
+	 LvMhXpyYaox69tVOytoqFWmlTOiKKE6NK+oPL2GGXiIuazaJyTG9REx0o/QCDUqG9L
+	 fYDkHQwNoildA4oYhyGSu9MZ7Pqg4H4ihQ9SkqhPkvZsUvkm5X+LSIBhxX32tvuy2t
+	 11dbzmvYTf88Q==
 From: Vinod Koul <vkoul@kernel.org>
 To: frank.li@nxp.com, Frank Li <Frank.Li@nxp.com>
 Cc: devicetree@vger.kernel.org, dmaengine@vger.kernel.org, 
  imx@lists.linux.dev, joy.zou@nxp.com, krzysztof.kozlowski+dt@linaro.org, 
  linux-kernel@vger.kernel.org, peng.fan@nxp.com, robh+dt@kernel.org, 
  shenwei.wang@nxp.com
-In-Reply-To: <20230707190029.476005-1-Frank.Li@nxp.com>
-References: <20230707190029.476005-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH v10 00/12] dmaengine: edma: add freescale edma v3
+In-Reply-To: <20230821161617.2142561-1-Frank.Li@nxp.com>
+References: <20230821161617.2142561-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v11 00/12] dmaengine: edma: add freescale edma v3
  support
-Message-Id: <169271534836.283614.7735690823757895003.b4-ty@kernel.org>
-Date: Tue, 22 Aug 2023 20:12:28 +0530
+Message-Id: <169271535260.283614.11148717591970248196.b4-ty@kernel.org>
+Date: Tue, 22 Aug 2023 20:12:32 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -38,7 +38,7 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 
 
-On Fri, 07 Jul 2023 15:00:17 -0400, Frank Li wrote:
+On Mon, 21 Aug 2023 12:16:05 -0400, Frank Li wrote:
 > This patch series introduces support for the eDMA version 3 from
 > Freescale. The eDMA v3 brings alterations in the register layout,
 > particularly, the separation of channel control registers into
