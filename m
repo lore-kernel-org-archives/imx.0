@@ -1,123 +1,286 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0892F4FC
-	for <imx@lists.linux.dev>; Mon, 21 Aug 2023 18:49:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89136C433C7
-	for <imx@lists.linux.dev>; Mon, 21 Aug 2023 18:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A55979C8
+	for <imx@lists.linux.dev>; Tue, 22 Aug 2023 09:02:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281D1C433C7;
+	Tue, 22 Aug 2023 09:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692643789;
-	bh=CVbQN8aFbF/lszSWAiZHC0MM1azE5zB/xw5F4oGVpFs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=P6xmYqq/jGkG0G7Fwnpj9dOhOdbTEfxxHpdxsyxsk3eiNX6gz72IPdyIid+V5exRv
-	 lcF24D1KybKREWXF2WCa26boXOejOUw7X7Gnk0nT+KgTCyKWAwgwVo2cD7HYhMOTC0
-	 u+AUvDDr72Si0s0q2S6frMLkZzyhzxNVKLImaZrBpAG6GtndoMMvLqe71/OY7rOEb+
-	 G5l8iEEQ4LmjPspaQy3Bvr6n/3rsTAijAdIvxEObOiijGkpMM0rg9gzZ7w7zjI1VP+
-	 +rj+BPnslr/cX4HIfPfWj1Lw/cRGm1+d5LjYdaNFRkmZhGm2v91Mv1vFicZwFVGDg0
-	 is31kIWxedN3A==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2b9cdba1228so58999551fa.2
-        for <imx@lists.linux.dev>; Mon, 21 Aug 2023 11:49:49 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyMVPE+ufG6nKZx/5UjqRgdF/L9Op6ORm4fD14rDSbgwhZ99qoF
-	FpgkwV9SafaPDkYXQRu55k8CCWt/Pwek/BV3uQ==
-X-Google-Smtp-Source: AGHT+IEFpz1/S+p70gRjtooul/NDbXoG4wUZlvVmeCGNcP59Ogss0GXZ8bGAiYdy0vXPV0+2E3FQkWfRLH+nQyYEPFI=
-X-Received: by 2002:a2e:b0f0:0:b0:2bb:be03:4599 with SMTP id
- h16-20020a2eb0f0000000b002bbbe034599mr5079859ljl.11.1692643787551; Mon, 21
- Aug 2023 11:49:47 -0700 (PDT)
+	s=k20201202; t=1692694940;
+	bh=54luh6aWDj+Dj6PCgagvuO1k+5MIOroKY5M7KCBKnsw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I5NWbbQmafaI/unLPzRx2CDciEoxctCBCvzlAgz2f0THOSfkd6gFdWSKEx3ZHmox6
+	 5g3aIfJgb3li19UAfb41tbDKfwnxVn6OD3bvIkx085TRPEm11sXWYz0q76RKDkeuWs
+	 86CsYc8qV+tXfj7ANzydP9E+9I0kYqVrVqgwIm+45ZCW6Cnt5H39EZvuwxgLWm1nCx
+	 ZOJMiLxNlYz/FdtelyeoXu5MrT3FQSTCDJ3/avpHrmhjoId5hs7Qm6vMTcAa0nC5tB
+	 mF3+KyKwPhMuyutmf2nDVDS2u+TcQDfdyRA8n7g7BW89aAeeeEMNcWmWUZ4z75xu68
+	 Tb828Ha8kERMQ==
+Date: Tue, 22 Aug 2023 11:02:11 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: bhelgaas@google.com, devicetree@vger.kernel.org,
+	gustavo.pimentel@synopsys.com, helgaas@kernel.org,
+	imx@lists.linux.dev, kw@linux.com, leoyang.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lorenzo.pieralisi@arm.com, mani@kernel.org,
+	manivannan.sadhasivam@linaro.org, minghuan.lian@nxp.com,
+	mingkai.hu@nxp.com, robh+dt@kernel.org, roy.zang@nxp.com,
+	shawnguo@kernel.org, zhiqiang.hou@nxp.com
+Subject: Re: [PATCH v12 3/3] PCI: layerscape: Add power management support
+ for ls1028a
+Message-ID: <ZOR5k7B3qRFEjPXR@lpieralisi>
+References: <20230821184815.2167131-1-Frank.Li@nxp.com>
+ <20230821184815.2167131-4-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
- <CAL_Jsq+XA_P-aRK9_WuGPmJ0_xJgsSr9smZy4BRbKZbmVsMQBQ@mail.gmail.com>
- <PAXPR04MB918539A19B8F817F623BBD1F891BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <9927403d-6dd9-3e5e-8f9d-f38e6640f95f@linaro.org> <PAXPR04MB91850D8807CE374BD7C30CC5891EA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB91850D8807CE374BD7C30CC5891EA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Mon, 21 Aug 2023 13:49:34 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJ3dr7gxq+D5DYG8oQ=igzjARz=beQoYL7rrydV4SwDTw@mail.gmail.com>
-Message-ID: <CAL_JsqJ3dr7gxq+D5DYG8oQ=igzjARz=beQoYL7rrydV4SwDTw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230821184815.2167131-4-Frank.Li@nxp.com>
 
-On Mon, Aug 21, 2023 at 8:22=E2=80=AFAM Shenwei Wang <shenwei.wang@nxp.com>=
- wrote:
->
->
->
-> > -----Original Message-----
-> > From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Sent: Saturday, August 19, 2023 3:04 AM
-> > To: Shenwei Wang <shenwei.wang@nxp.com>; Rob Herring
-> > <robh+dt@kernel.org>
-> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dool=
-ey
-> > <conor+dt@kernel.org>; Ulf Hansson <ulf.hansson@linaro.org>; Liam Girdw=
-ood
-> > <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
-> > imx@lists.linux.dev; devicetree@vger.kernel.org; linux-kernel@vger.kern=
-el.org;
-> > dl-linux-imx <linux-imx@nxp.com>
-> > Subject: [EXT] Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yam=
-l file
-> >
-> > Caution: This is an external email. Please take care when clicking link=
-s or
-> > opening attachments. When in doubt, report the message using the 'Repor=
-t this
-> > email' button
-> >
-> >
-> > >>
-> > >> This needs to answer why we need this.
-> > >>
-> > >> It looks like just an abstraction layer to make regulators look like
-> > >> a power domain.
-> > >>
-> > >
-> > > Yes, it is a wrapper that allows using regulators as a power domain.
-> > > This removes the need to add regulator operating code in each consume=
-r
-> > > device driver. As a power domain, the regulator will be managed
-> > > automatically by the device driver framework and PM subsystem.
-> > >
-> > > This is very useful when a device's power is controlled by a GPIO pin=
-,
-> > > which currently requires using the fixed-regulator to achieve the sam=
-e
-> > > purpose. However, the fixed-regulator approach may have to add code i=
-n the
-> > driver in order to use it.
-> >
-> > Why do you start discussion from zero ignoring all previous history of =
-this
-> > patchset?
-> >
->
-> Thank you for providing the link. After reviewing the entire thread, I st=
-ill don't understand how
-> to proceed. What is the conclusion regarding this commonly used use case =
-but overlooked feature
-> in the upstream kernel?
+On Mon, Aug 21, 2023 at 02:48:15PM -0400, Frank Li wrote:
+> From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> 
+> Add PME_Turn_off/PME_TO_Ack handshake sequence for ls1028a platform. Call
+> common dwc dw_pcie_suspend(resume)_noirq() function when system enter/exit
+> suspend state.
+> 
+> Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-layerscape.c | 135 ++++++++++++++++++--
+>  1 file changed, 126 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index ed5fb492fe08..97b8d3329df7 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -8,9 +8,11 @@
+>   * Author: Minghuan Lian <Minghuan.Lian@freescale.com>
+>   */
+>  
+> +#include <linux/delay.h>
+>  #include <linux/kernel.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/init.h>
+> +#include <linux/iopoll.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/of_address.h>
+> @@ -20,6 +22,7 @@
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/regmap.h>
+>  
+> +#include "../../pci.h"
+>  #include "pcie-designware.h"
+>  
+>  /* PEX Internal Configuration Registers */
+> @@ -27,12 +30,26 @@
+>  #define PCIE_ABSERR		0x8d0 /* Bridge Slave Error Response Register */
+>  #define PCIE_ABSERR_SETTING	0x9401 /* Forward error of non-posted request */
+>  
+> +/* PF Message Command Register */
+> +#define LS_PCIE_PF_MCR		0x2c
+> +#define PF_MCR_PTOMR		BIT(0)
+> +#define PF_MCR_EXL2S		BIT(1)
+> +
+>  #define PCIE_IATU_NUM		6
+>  
+> +struct ls_pcie_drvdata {
+> +	const u32 pf_off;
+> +	bool pm_support;
+> +};
+> +
+>  struct ls_pcie {
+>  	struct dw_pcie *pci;
+> +	const struct ls_pcie_drvdata *drvdata;
+> +	void __iomem *pf_base;
+> +	bool big_endian;
+>  };
+>  
+> +#define ls_pcie_pf_readl_addr(addr)	ls_pcie_pf_readl(pcie, addr)
+>  #define to_ls_pcie(x)	dev_get_drvdata((x)->dev)
+>  
+>  static bool ls_pcie_is_bridge(struct ls_pcie *pcie)
+> @@ -73,6 +90,64 @@ static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
+>  	iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
+>  }
+>  
+> +static u32 ls_pcie_pf_readl(struct ls_pcie *pcie, u32 off)
+> +{
+> +	if (pcie->big_endian)
+> +		return ioread32be(pcie->pf_base + off);
+> +
+> +	return ioread32(pcie->pf_base + off);
+> +}
+> +
+> +static void ls_pcie_pf_writel(struct ls_pcie *pcie, u32 off, u32 val)
+> +{
+> +	if (pcie->big_endian)
+> +		iowrite32be(val, pcie->pf_base + off);
+> +	else
+> +		iowrite32(val, pcie->pf_base + off);
+> +}
+> +
+> +static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +	u32 val;
+> +	int ret;
+> +
+> +	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
+> +	val |= PF_MCR_PTOMR;
+> +	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
+> +
+> +	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
+> +				 val, !(val & PF_MCR_PTOMR),
+> +				 PCIE_PME_TO_L2_TIMEOUT_US/10,
+> +				 PCIE_PME_TO_L2_TIMEOUT_US);
+> +	if (ret)
+> +		dev_err(pcie->pci->dev, "PME_Turn_off timeout\n");
+> +}
+> +
+> +static void ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +	u32 val;
+> +	int ret;
+> +
+> +	/*
+> +	 * Set PF_MCR_EXL2S bit in LS_PCIE_PF_MCR register for the link
+> +	 * to exit L2 state.
+> +	 */
+> +	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
+> +	val |= PF_MCR_EXL2S;
+> +	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
+> +
+> +	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
+> +				 val, !(val & PF_MCR_EXL2S),
+> +				 1000,
+> +				 10000);
 
-Overlooked implies we missed and ignored it, but the same concept has
-been submitted twice and rejected twice. What use case cannot be
-supported?
+I can add a comment myself - please explain how this delay was chosen,
+any piece of information could be useful for a future developer, let
+me know and I will add it.
 
-The detail that power-domains get handled automatically is an
-implementation detail in the kernel (currently). That could easily
-change and you'd be in the same position as with regulator supplies.
-We could just as easily decide to make the driver core turn on all
-supplies in a node. That would give you the same "feature". Why would
-you design your DT around implementation decisions of the OS?
+> +	if (ret)
+> +		dev_err(pcie->pci->dev, "L2 exit timeout\n");
+> +}
+> +
+>  static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> @@ -91,18 +166,27 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+>  
+>  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
+>  	.host_init = ls_pcie_host_init,
+> +	.pme_turn_off = ls_pcie_send_turnoff_msg,
+> +};
+> +
+> +static const struct ls_pcie_drvdata ls1021a_drvdata = {
 
-Rob
+I suggest adding .pm_support = false explicitly here, I can
+do it myself.
+
+Thanks,
+Lorenzo
+
+> +};
+> +
+> +static const struct ls_pcie_drvdata layerscape_drvdata = {
+> +	.pf_off = 0xc0000,
+> +	.pm_support = true,
+>  };
+>  
+>  static const struct of_device_id ls_pcie_of_match[] = {
+> -	{ .compatible = "fsl,ls1012a-pcie", },
+> -	{ .compatible = "fsl,ls1021a-pcie", },
+> -	{ .compatible = "fsl,ls1028a-pcie", },
+> -	{ .compatible = "fsl,ls1043a-pcie", },
+> -	{ .compatible = "fsl,ls1046a-pcie", },
+> -	{ .compatible = "fsl,ls2080a-pcie", },
+> -	{ .compatible = "fsl,ls2085a-pcie", },
+> -	{ .compatible = "fsl,ls2088a-pcie", },
+> -	{ .compatible = "fsl,ls1088a-pcie", },
+> +	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
+> +	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
+> +	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
+> +	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
+> +	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
+> +	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
+> +	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
+> +	{ .compatible = "fsl,ls2088a-pcie", .data = &layerscape_drvdata },
+> +	{ .compatible = "fsl,ls1088a-pcie", .data = &layerscape_drvdata },
+>  	{ },
+>  };
+>  
+> @@ -121,6 +205,8 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	if (!pci)
+>  		return -ENOMEM;
+>  
+> +	pcie->drvdata = of_device_get_match_data(dev);
+> +
+>  	pci->dev = dev;
+>  	pci->pp.ops = &ls_pcie_host_ops;
+>  
+> @@ -131,6 +217,10 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	if (IS_ERR(pci->dbi_base))
+>  		return PTR_ERR(pci->dbi_base);
+>  
+> +	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+> +
+> +	pcie->pf_base = pci->dbi_base + pcie->drvdata->pf_off;
+> +
+>  	if (!ls_pcie_is_bridge(pcie))
+>  		return -ENODEV;
+>  
+> @@ -139,12 +229,39 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	return dw_pcie_host_init(&pci->pp);
+>  }
+>  
+> +static int ls_pcie_suspend_noirq(struct device *dev)
+> +{
+> +	struct ls_pcie *pcie = dev_get_drvdata(dev);
+> +
+> +	if (!pcie->drvdata->pm_support)
+> +		return 0;
+> +
+> +	return dw_pcie_suspend_noirq(pcie->pci);
+> +}
+> +
+> +static int ls_pcie_resume_noirq(struct device *dev)
+> +{
+> +	struct ls_pcie *pcie = dev_get_drvdata(dev);
+> +
+> +	if (!pcie->drvdata->pm_support)
+> +		return 0;
+> +
+> +	ls_pcie_exit_from_l2(&pcie->pci->pp);
+> +
+> +	return dw_pcie_resume_noirq(pcie->pci);
+> +}
+> +
+> +static const struct dev_pm_ops ls_pcie_pm_ops = {
+> +	NOIRQ_SYSTEM_SLEEP_PM_OPS(ls_pcie_suspend_noirq, ls_pcie_resume_noirq)
+> +};
+> +
+>  static struct platform_driver ls_pcie_driver = {
+>  	.probe = ls_pcie_probe,
+>  	.driver = {
+>  		.name = "layerscape-pcie",
+>  		.of_match_table = ls_pcie_of_match,
+>  		.suppress_bind_attrs = true,
+> +		.pm = &ls_pcie_pm_ops,
+>  	},
+>  };
+>  builtin_platform_driver(ls_pcie_driver);
+> -- 
+> 2.34.1
+> 
