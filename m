@@ -1,162 +1,132 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2089.outbound.protection.outlook.com [40.107.6.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E091FD0
-	for <imx@lists.linux.dev>; Tue, 22 Aug 2023 15:18:09 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q7z2DrDHkuMidlepbU0vmR+PYBYGMS4ucJt3fHyGEs1sm8VaPn/b933E+ASUFiXoi882TZYsdcX6DCrfkMSk2M5tvNdVW8CNd45rAN14PsUkROQfEGuEVZcGKOJmM+Wf8nu3uGp8hU9mMldjpaff61QzJzMVRkZuIS9ZtN1PwcKYcbxQ4FcgbGjKJTH/O1oisoted3cOH31DPwcFN5TqcYMKBu41RPYD/9yUaBIi18bQMiqS9AMCU1uDIswiTt1eJcySxwFrdfPD3Ts0X702gGmwBZ/+H91gLBpk0RQkNYlFFQ5PgibU/+VdJCZC2GsR44kV1veV9GFtqODFbw5Iaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z6zShbY+YxMS+i8BRW82Hpb295/JOVkSNDvCTAmN1lY=;
- b=GtFxenruYSgS68hrhP1VEGBL9BDXgRUGyVd3AWbPnHmzkbplho5qDr93ihLthdUdh6sCNnAzBkru9330gRHCHJRTLAyxzs9gQ1+VpHPz4LZGkipYKOZjJNa/WT0byUY2vuI9AdaBPen61AtzjURJnLEVmr8SmGyLctoU5mO2axGMXPlYKHAd9ZfG49qNS+QAFSbekvNU4vtFySErTr1gUFKLRCUHoJrAt4Pil9k/kkaN8ek+HswUkcmEpLBaBiPcuNeJJXpkARUYMLQUgVQRRMPBAbFwRnBPaFOkaXxU7kgt5vWC6yJKPmusNbOjl0dxeIZfqgwwjNR1cDbHGAKoYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z6zShbY+YxMS+i8BRW82Hpb295/JOVkSNDvCTAmN1lY=;
- b=nq9UklTjVmGLkBhjYCp/O0XxHJTMrSQivZzDVieTgixneVRmykOM62gFMYIkp5EuDg5P6/vcp+G4P83CoOEoB8OZsDjRcu8NjDgis75UG0+Fw7h1/RyhrrSYhd8ItJXm65p6nzj86Fe59HgtQC48t9zjHnuqQVGXKA56e9YqRfM=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DB8PR04MB7193.eurprd04.prod.outlook.com (2603:10a6:10:121::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Tue, 22 Aug
- 2023 15:18:06 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671%3]) with mapi id 15.20.6699.020; Tue, 22 Aug 2023
- 15:18:06 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Rob Herring <robh+dt@kernel.org>
-CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Ulf
- Hansson <ulf.hansson@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
- Brown <broonie@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, dl-linux-imx
-	<linux-imx@nxp.com>
-Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-Thread-Topic: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-Thread-Index: AQHZ1Qvad0tEZmhA00uHLX8j50FdDA==
-Date: Tue, 22 Aug 2023 15:18:06 +0000
-Message-ID:
- <PAXPR04MB918567C378D420DB4830B869891FA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
- <CAL_Jsq+XA_P-aRK9_WuGPmJ0_xJgsSr9smZy4BRbKZbmVsMQBQ@mail.gmail.com>
- <PAXPR04MB918539A19B8F817F623BBD1F891BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <9927403d-6dd9-3e5e-8f9d-f38e6640f95f@linaro.org>
- <PAXPR04MB91850D8807CE374BD7C30CC5891EA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CAL_JsqJ3dr7gxq+D5DYG8oQ=igzjARz=beQoYL7rrydV4SwDTw@mail.gmail.com>
-In-Reply-To:
- <CAL_JsqJ3dr7gxq+D5DYG8oQ=igzjARz=beQoYL7rrydV4SwDTw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DB8PR04MB7193:EE_
-x-ms-office365-filtering-correlation-id: 2306967b-afd5-4a6b-eedc-08dba322fc9d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- ZofGKZViJq5lVOjvibHvRo8QD7ahbBwXar/uZdBCdNohuTnJ+KzbcLFcexTyUVdzyet8jH97pJd8Z/gjN0wHC3lnY4dqqIO9Bb2f44gfTn9OfeDu2Bon5kf1IJt4w9O6VyBwYQBW9CElz9qqPkQwW6L/s+Q+piFM8xsiH4p7I3x8Yws20skJ2c4/Tv9Zvj5nKPyvKDIAQ7+KX3z7Ok3NcCiEbfeGRSBjkWrROZNBx5QSvU5gzxelAFyek4dmDdEw9Wymz67zCcyWSmXQoarCLSIittpDZVj1ejSgah6LnAXZaxqq8k8YQyLX67duqd6CFsCWjWDbfiZhH72qpKQDIQ1LXIniN/Rz7d3MPnYy1BTbNzC0Hci2S+apvz1/CY+lbM3ciiIFU0axGn1VfWVixUC8gC9wS8bK1kQPSy8BFjnBPlywD3m3GmYERWwer8qhmCDgyTmNGCwuwyzIVoJhIZ5wPJ0JIipYOUlsE/C73wc7J94oZshQOQIE7bmHeRHFb4NS3wC88b1wnQn7U9r6J3GvY3G7RGRDm7nJf6y4/+ceKdVJjRMiOL3mTaXxUazx6iA3A7kDf9p8cczPTPrVumdLPta1DwMB7E5zYXRrPo0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(366004)(136003)(396003)(376002)(451199024)(186009)(1800799009)(83380400001)(2906002)(7416002)(55236004)(53546011)(6506007)(38100700002)(5660300002)(44832011)(33656002)(52536014)(26005)(86362001)(38070700005)(8676002)(4326008)(8936002)(66946007)(9686003)(316002)(64756008)(54906003)(66556008)(66446008)(76116006)(66476007)(478600001)(122000001)(55016003)(71200400001)(7696005)(41300700001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NkxkREoyZW9UQ2NLcVdxL1RXeXRyaXc0WEtqdmJoV3krLzM5UWREaXYxU0N1?=
- =?utf-8?B?bTRDdUxWM1V6b09tTVVpM1d6aTI5MXl0SVNVOWVjdHJXaEsyRWFVc2NZMlFy?=
- =?utf-8?B?TXlWcENZelBGdjhRTXRqTXZrazNJcmNxMjY2a3JDRG9FelJtTGdzR0xMbU1s?=
- =?utf-8?B?Uy8wdXFJeCtxZ2NXWFdyOUVYU25EVXRtcjQ4bFBlWjZUUUZ4Y2d5RzZDcFpK?=
- =?utf-8?B?Q3E3YmRhRktETkMvbnBPUmxkemJ3TFduM2NTVFVaSXN2VkRqbGdNaE83bkI1?=
- =?utf-8?B?TmFLRWMwNUVUUG4rQVVYQjc0ZkxGOHpMVFNtWXhaZTBWc3NLYmx2bVBvY0tR?=
- =?utf-8?B?emhlRXdzRml0Z282RmI4UEV0czJ2RytmWHpiODUvSUxLZnpaUi96ckFmbmdh?=
- =?utf-8?B?UjZQVklsUys2Zkxqbk1FZUdVQzlobW9vd3pQd01LRzBaeFhCZDJhekNnam1N?=
- =?utf-8?B?THYvcWo0L1YySUNER1RvaG5wQ3YrNk9WQ1dZVGF6L0lxbHRBalhnaUtvVlhv?=
- =?utf-8?B?VExIV0hxZnRNQjZpanRVMjlwemVkYVh3dVJQbDhEb2xPdk5QT21ucWxCRHRw?=
- =?utf-8?B?OUlIS0k4dVl3WWdiSGp2MTY2THVCb3RuRWZWdkJuay9hUE1DWStSNllOZ2pi?=
- =?utf-8?B?d1FkWU8rbTMwdGhmQWxRNWpzRXJpYWhuZ1VhT0Z0SFBzdTluZ2pHYjBUY3pL?=
- =?utf-8?B?WmxBNjFnMmloeHZvdFVyWlcrTC9FNHMzbGVuZytqa3lpaTR3YVdJckw5aVU3?=
- =?utf-8?B?UllYUTZHYkdUTEUrWnlhLzF5K2RyRnkzaDRxV2FEaGVNaE1rRm4wOUIveWI5?=
- =?utf-8?B?RHczcTJjenRDalZEdnVmYlArMnVQUU1OaFlYekhUcE1uSmcwY3BTeWpqRDZH?=
- =?utf-8?B?Q3pZWk9vTnRreEpkSUZDQ1k3Mmp4MDdEd043NTArQysyN0xnalJRbHhjcDJk?=
- =?utf-8?B?VjdQQldQK21leWlQMUR6ZnJ6dkRZU0xRVGdoQ1VxYUM0dnNmN2EzTWVvY3Q0?=
- =?utf-8?B?K282THZwKzdMVFkwYUt0c1JIZGpxQmdkblllYklFOTRaNzJ6VVRGNzZHZS9s?=
- =?utf-8?B?bHgycnAzSEwwVW5iLzBNekNFRG5FT1RRUCtseTdkUFhlT1BkWW1Vd0sxUGJ0?=
- =?utf-8?B?WThybTNKQ2pUdDJ3eDZuaW1hK1pQam9WMnE5b0p1dWxrdC9DMEVDQVNPVE9Y?=
- =?utf-8?B?VTRqc1YzR0hGd3BjaFQzRGk5SDRqVjZBMnNXSnlhdHZhZzZ2MUZUWFFqd00v?=
- =?utf-8?B?NlQ5RkxMaGlpT1BieDZ0S1JabVU5SUJLdStyTXVkbXJiU0FOaVFaY1NpMkxZ?=
- =?utf-8?B?YllTM1pVVDE4dzF0bUlSY2dVTVBEYUk4WnpJM1ZFRmFTQTMzNlFzTnUwLzNu?=
- =?utf-8?B?VjBJSTRLM2U5S0pYM3lzU3FTS0F0OU1Ba3E1Znd4cmxJTVBXTUJHWFYvbHNp?=
- =?utf-8?B?LzkwZVZEcG9weGdzVU5wUjY3a2Q1ZVRNUmpyN3YwTE1FTUNkczR5S3d2Rmo3?=
- =?utf-8?B?VGp1dEIzZlNyZHVuK1hLRFFNbDB3M2F6eFoyMVA2Wjd1RGhwb0dINGxmM0pW?=
- =?utf-8?B?TUdSMjlpRmd3K3Q5Zjc4SVFQdTBYYUJ1ZzNkYlJTR3FEdkZlVStxK0JsSnhU?=
- =?utf-8?B?Q3NZVkE0NWpLckpyc3dGU3R5UXh3MHlRQ3FFL2JXSDRPM1hpZVVyWVFSSzlN?=
- =?utf-8?B?b1hhQlVOVFA1V205WVc2aDhJbDBETDJLc3A2UzFSOG5zazVxd2oyOUo5a1JZ?=
- =?utf-8?B?Qjh2VE0xa2RSQTVoRGQzVm5jRytvMGdnMUVQUEpNVmFJZFNIblhScXlKdHNZ?=
- =?utf-8?B?aVE4S2JWZUttWnFDYWxKU1k4V0FhWDBFcGFQWjMySnMvYzd3NXhZeXJmcWVQ?=
- =?utf-8?B?d1VlRFJpayt0MUUyQklBelhmZkFHMG0vTFRpejZXczVmbnlZMVNlMnBVdWZW?=
- =?utf-8?B?V2dtc0VQVkdMMzlsK1pnNGFuLzRDNlg1dmRNdHNkL0NDWTZYcXB0U253TXNT?=
- =?utf-8?B?ZXU4TnlqRkFVcUM2Qmg3NDJUUkI2aG1odzE4NzJjL016aC9ZYVU2YWxwbGpN?=
- =?utf-8?B?ay9QTllLb2pwUjFVTFFMMkVBSUVMeW9OQmc0clNwd0I0OVRjUEdHNy9Lc1pR?=
- =?utf-8?Q?hoPdUlRIgaHWyipVV5sYeiX3B?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EC818AE5
+	for <imx@lists.linux.dev>; Tue, 22 Aug 2023 15:25:34 +0000 (UTC)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-500913779f5so790075e87.2
+        for <imx@lists.linux.dev>; Tue, 22 Aug 2023 08:25:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692717932; x=1693322732;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y5CLA2KNaAWPxWmHn3gOeMHV9Mij34aiTzhvlGQZaYA=;
+        b=gULeZIZxM1UDkuR2e7pdWHGfHRhZ7hVBNnziyChiJpXZtA8T3Lqt+zNhR6YmWG8Lwd
+         QWBDk2Z+lS01O37XqNHRJSstML1IdWhRdagmgLmOh8F1UVKj2u6KdJIhaVgrLGJ62cu9
+         9l+hB8Q0CMROKXQboZwHmJvR4FbuIk4gKvAiSF9Ui4hRAQq1m9jLUcBe9fr+z+i775In
+         +CKEeno8a3QEIhXyeR+jl+I9E/QS0akU0BwMO4UTivyi19E07TmPdEoreD0/IzdVaf2t
+         atoCkHSiJtBC3X2vkbFGITe+xTv5Ohp06mrMnm6al1e0DQF5lRpG18xOjGuZOihQOZl/
+         RxRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692717932; x=1693322732;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y5CLA2KNaAWPxWmHn3gOeMHV9Mij34aiTzhvlGQZaYA=;
+        b=MtkRFsPx1dXMyGL2MKZ5ec5MvapvkvEePugDFqXOtul186HFc02WFPiJAea0LDx4Tk
+         ELXZ5o+qwZW93wAlvgDRSdED8RfsYG7z2l5uzmqJHEyUzXKOEpO4qzWrOkxQaIaJqasQ
+         V2yc0ByjkKusk7FPXIBe/o3D/gnlGpBtmfxi8Zh6uyqj8Qm8SpzxuFGWdb0rrD/ZvAY6
+         94E6/D77oobAMmhfOHLBolIxEEGaPo6SVTE8HUPx1cIhkJ3lMWmFv0Ns+5DrPZ1BGV6q
+         8h2MCwiXGM7FBfbGXeXKjzkCGKei5owscIqrzWfiEUdPBAVMEMz51ATf59uz1nq6V1rC
+         l4Dg==
+X-Gm-Message-State: AOJu0YzsV8+9GqCM+X5EFXXJ8P1/B3yS0IfT4QyyKpZCnJ3fk4sc/oHq
+	NzPFM/g9/GBKVkTYJpSYAi4X8w==
+X-Google-Smtp-Source: AGHT+IEZBABvrUJyOnUqIjt8DQpu4/Ght7kXWGlnDfbg74DLs7ajvH75DORb8rvzSwmWJ5nrCs9TaA==
+X-Received: by 2002:a05:6512:39d1:b0:4f8:6625:f2ca with SMTP id k17-20020a05651239d100b004f86625f2camr7199083lfu.61.1692717932388;
+        Tue, 22 Aug 2023 08:25:32 -0700 (PDT)
+Received: from [192.168.0.22] ([77.252.47.198])
+        by smtp.gmail.com with ESMTPSA id l2-20020aa7cac2000000b0052239012c65sm7794477edt.82.2023.08.22.08.25.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Aug 2023 08:25:31 -0700 (PDT)
+Message-ID: <51bc0ccf-425b-5f16-b8f2-94d7cc979fae@linaro.org>
+Date: Tue, 22 Aug 2023 17:25:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2306967b-afd5-4a6b-eedc-08dba322fc9d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Aug 2023 15:18:06.5241
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4j3Mw9PrZhiwm1egV+wZnsSgMInJde4qaQl7WO6q2vOM1k36oUcGXR4S/itIgPyJ6ZyRtCaybEO9OxXhAi4iEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7193
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+To: Shenwei Wang <shenwei.wang@nxp.com>, Rob Herring <robh+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ dl-linux-imx <linux-imx@nxp.com>
+References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
+ <CAL_Jsq+XA_P-aRK9_WuGPmJ0_xJgsSr9smZy4BRbKZbmVsMQBQ@mail.gmail.com>
+ <PAXPR04MB918539A19B8F817F623BBD1F891BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <9927403d-6dd9-3e5e-8f9d-f38e6640f95f@linaro.org>
+ <PAXPR04MB91850D8807CE374BD7C30CC5891EA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CAL_JsqJ3dr7gxq+D5DYG8oQ=igzjARz=beQoYL7rrydV4SwDTw@mail.gmail.com>
+ <PAXPR04MB918567C378D420DB4830B869891FA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <PAXPR04MB918567C378D420DB4830B869891FA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUm9iIEhlcnJpbmcgPHJv
-YmgrZHRAa2VybmVsLm9yZz4NCj4gU2VudDogTW9uZGF5LCBBdWd1c3QgMjEsIDIwMjMgMTo1MCBQ
-TQ0KPiBUbzogU2hlbndlaSBXYW5nIDxzaGVud2VpLndhbmdAbnhwLmNvbT4NCj4gQ2M6IEtyenlz
-enRvZiBLb3psb3dza2kgPGtyenlzenRvZi5rb3psb3dza2lAbGluYXJvLm9yZz47IEtyenlzenRv
-ZiBLb3psb3dza2kNCj4gPGtyenlzenRvZi5rb3psb3dza2krZHRAbGluYXJvLm9yZz47IENvbm9y
-IERvb2xleSA8Y29ub3IrZHRAa2VybmVsLm9yZz47DQo+IFVsZiBIYW5zc29uIDx1bGYuaGFuc3Nv
-bkBsaW5hcm8ub3JnPjsgTGlhbSBHaXJkd29vZA0KPiA8bGdpcmR3b29kQGdtYWlsLmNvbT47IE1h
-cmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz47DQo+ID4gVGhhbmsgeW91IGZvciBwcm92aWRp
-bmcgdGhlIGxpbmsuIEFmdGVyIHJldmlld2luZyB0aGUgZW50aXJlIHRocmVhZCwgSQ0KPiA+IHN0
-aWxsIGRvbid0IHVuZGVyc3RhbmQgaG93IHRvIHByb2NlZWQuIFdoYXQgaXMgdGhlIGNvbmNsdXNp
-b24NCj4gPiByZWdhcmRpbmcgdGhpcyBjb21tb25seSB1c2VkIHVzZSBjYXNlIGJ1dCBvdmVybG9v
-a2VkIGZlYXR1cmUgaW4gdGhlDQo+IHVwc3RyZWFtIGtlcm5lbD8NCj4gDQo+IE92ZXJsb29rZWQg
-aW1wbGllcyB3ZSBtaXNzZWQgYW5kIGlnbm9yZWQgaXQsIGJ1dCB0aGUgc2FtZSBjb25jZXB0IGhh
-cyBiZWVuDQo+IHN1Ym1pdHRlZCB0d2ljZSBhbmQgcmVqZWN0ZWQgdHdpY2UuIFdoYXQgdXNlIGNh
-c2UgY2Fubm90IGJlIHN1cHBvcnRlZD8NCj4gDQoNCk5vIG9mZmVuZC4gOikgU29ycnkgZm9yIG15
-IHBvb3Igd29yZC4gVG8gcHJvdmlkZSBtb3JlIGNvbnRleHQsIGEgY29tbW9uIHVzZSBjYXNlIA0K
-ZXhhbXBsZSBpcyB1c2luZyBhIEdQSU8gcGluIGFzIGEgcG93ZXIgc3dpdGNoLiBUaGUgY3VycmVu
-dCBpbXBsZW1lbnRhdGlvbiBvcGVyYXRlcyANCmFzIGEgZml4ZWQgcmVndWxhdG9yLCB3aGljaCBt
-YWtlcyBpdCBkaWZmaWN1bHQgdG8gY29udHJvbCB0aGUgb24vb2ZmIHRpbWluZyB3aXRob3V0IG1v
-ZGlmeWluZw0KaXRzIGRyaXZlci4gSXQgYWxzbyBsYWNrcyBwb3dlciBtYW5hZ2VtZW50IHN1cHBv
-cnQuIA0KDQo+IFRoZSBkZXRhaWwgdGhhdCBwb3dlci1kb21haW5zIGdldCBoYW5kbGVkIGF1dG9t
-YXRpY2FsbHkgaXMgYW4gaW1wbGVtZW50YXRpb24NCj4gZGV0YWlsIGluIHRoZSBrZXJuZWwgKGN1
-cnJlbnRseSkuIFRoYXQgY291bGQgZWFzaWx5IGNoYW5nZSBhbmQgeW91J2QgYmUgaW4gdGhlIHNh
-bWUNCj4gcG9zaXRpb24gYXMgd2l0aCByZWd1bGF0b3Igc3VwcGxpZXMuDQoNClRoZSBwcm9wb3Nl
-ZCByZWd1bGF0b3ItcGQgZHJpdmVyIGZvbGxvd3MgdGhlIHN0YW5kYXJkIFBEIGRyaXZlciBmcmFt
-ZXdvcmssIHNvIGl0IGZvciBzdXJlDQpyZWxpZXMgb24gY2VydGFpbiBrZXJuZWwgaW1wbGVtZW50
-YXRpb24gZGV0YWlscy4gSWYgdGhvc2UgdW5kZXJseWluZyBpbXBsZW1lbnRhdGlvbiBkZXRhaWxz
-IA0KY2hhbmdlIGluIHRoZSBmdXR1cmUsIHRoaXMgZHJpdmVyIGFzIHdlbGwgYXMgb3RoZXIgUEQg
-ZHJpdmVycyBidWlsdCBvbiB0aGUgc2FtZSBmcmFtZXdvcmsgDQp3b3VsZCBuZWVkIHRvIGJlIHVw
-ZGF0ZWQgYWNjb3JkaW5nbHkuIA0KDQo+IFdlIGNvdWxkIGp1c3QgYXMgZWFzaWx5IGRlY2lkZSB0
-byBtYWtlIHRoZSBkcml2ZXIgY29yZSB0dXJuIG9uIGFsbCBzdXBwbGllcyBpbiBhDQo+IG5vZGUu
-IFRoYXQgd291bGQgZ2l2ZSB5b3UgdGhlIHNhbWUgImZlYXR1cmUiLiBXaHkgd291bGQgeW91IGRl
-c2lnbiB5b3VyIERUDQo+IGFyb3VuZCBpbXBsZW1lbnRhdGlvbiBkZWNpc2lvbnMgb2YgdGhlIE9T
-Pw0KPiANCg0KVGhpcyBEVCBwcm9wZXJ0aWVzIGFyZSBwcm9wb3NlZCBzb2xlbHkgZm9yIHRoaXMg
-c3BlY2lmaWMgZHJpdmVyLCBub3QgdG8gaGFjayB0aGUgT1MuIFRoaXMgDQppcyBubyBkaWZmZXJl
-bnQgdGhhbiBvdGhlciBQRCBkcml2ZXJzIGxpa2UgZ3BjL3NjdS1wZC9pbXg5My1wZC4NCg0KVGhh
-bmtzLA0KU2hlbndlaQ0KDQo+IFJvYg0K
+On 22/08/2023 17:18, Shenwei Wang wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Rob Herring <robh+dt@kernel.org>
+>> Sent: Monday, August 21, 2023 1:50 PM
+>> To: Shenwei Wang <shenwei.wang@nxp.com>
+>> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>; Krzysztof Kozlowski
+>> <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
+>> Ulf Hansson <ulf.hansson@linaro.org>; Liam Girdwood
+>> <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+>>> Thank you for providing the link. After reviewing the entire thread, I
+>>> still don't understand how to proceed. What is the conclusion
+>>> regarding this commonly used use case but overlooked feature in the
+>> upstream kernel?
+>>
+>> Overlooked implies we missed and ignored it, but the same concept has been
+>> submitted twice and rejected twice. What use case cannot be supported?
+>>
+> 
+> No offend. :) Sorry for my poor word. To provide more context, a common use case 
+> example is using a GPIO pin as a power switch. The current implementation operates 
+> as a fixed regulator, which makes it difficult to control the on/off timing without modifying
+> its driver. 
+
+So it is a problem of a driver?
+
+> It also lacks power management support. 
+
+Which is not related to bindings but implementation in given driver.
+
+> 
+>> The detail that power-domains get handled automatically is an implementation
+>> detail in the kernel (currently). That could easily change and you'd be in the same
+>> position as with regulator supplies.
+> 
+> The proposed regulator-pd driver follows the standard PD driver framework, so it for sure
+> relies on certain kernel implementation details. If those underlying implementation details 
+> change in the future, this driver as well as other PD drivers built on the same framework 
+> would need to be updated accordingly. 
+
+We talk about bindings which you would not be allowed to change. Thus
+your case would stop working...
+
+> 
+>> We could just as easily decide to make the driver core turn on all supplies in a
+>> node. That would give you the same "feature". Why would you design your DT
+>> around implementation decisions of the OS?
+>>
+> 
+> This DT properties are proposed solely for this specific driver, not to hack the OS. This 
+> is no different than other PD drivers like gpc/scu-pd/imx93-pd.
+
+I am not sure if you got Rob's point, I have feelings that not. Argument
+that some OS implements something some way, is not an argument for a new
+binding, barely hardware related.
+
+Best regards,
+Krzysztof
+
