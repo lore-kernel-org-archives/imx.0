@@ -1,90 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2056.outbound.protection.outlook.com [40.107.20.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC63C8EC
-	for <imx@lists.linux.dev>; Wed, 23 Aug 2023 16:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04537C433C8;
-	Wed, 23 Aug 2023 16:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692807120;
-	bh=pNHMDSofAvP8QX/d2Msi3h2uJ91bbmjTCRWGWU/RVIw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A7TFU5kwyCBeCDZIsZVe2kTo4ubtSfffDk1Gy2QGeC8f3zJuI+Jg1rdeWOBjledj6
-	 9lXcoK47lDbiRx/0n/lwu7/065jhnCVkVymkJHRVK7FJkvPcsYxgURmJPmUtZxLvT7
-	 tjgTLbPelxBGZfPGI9uMhBiDdaVtvH6ruxbFB28vLCsPbrhdt7AmgbFpDTw0leLDMI
-	 pm1cKYnzISHsfFrU09v/nu8QIWekX5ODFbwCilNjrQYI3qh6Tl2KoaSBIoB7pyG+rV
-	 aseiaHA0pj0mOWPu2cDuYAGPn+eEScHvUyzYdhUOhDQ4nc0LIUXysvE0dySMtop8w0
-	 qrvWeYRIkNesg==
-Date: Wed, 23 Aug 2023 18:11:53 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Zhiqiang.Hou@nxp.com, bhelgaas@google.com, imx@lists.linux.dev,
-	kernel-janitors@vger.kernel.org, kw@linux.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	mani@kernel.org, markus.elfring@web.de, minghuan.Lian@nxp.com,
-	mingkai.hu@nxp.com, robh@kernel.org, roy.zang@nxp.com,
-	xiaowei.bao@nxp.com
-Subject: Re: [PATCH v4 1/2] PCI: layerscape: Add support for Link down
- notification
-Message-ID: <ZOYvyUgC1o2lWAzE@lpieralisi>
-References: <20230720135834.1977616-1-Frank.Li@nxp.com>
- <ZMfN9w6ixBFBmof7@lizhi-Precision-Tower-5810>
- <ZNzw7MPF00t3i3bn@lizhi-Precision-Tower-5810>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71561ED47
+	for <imx@lists.linux.dev>; Wed, 23 Aug 2023 18:01:17 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jlOP6d8oKR4kXEVdWFcAACIx8Hk1wFjKoiTKeiHDV6caAdiyAFZ66tVaM0YbhD8n/6BorSOU/5H+G2+Balgfl8QIcB03Sqz2J4iATkBMqN/GHR71tBsFBNiI8SA380Ej6sMElVbP+LYEpmvuvMvtOySeDhbABDHrwPK9OpoIBooS+sPhJtldRw0u/PT0KTuRirgKvvniWO8Zfii0iV1FK5A6RS3207wwq6jlRSnUEXD6GnpzyYGOJu27IZolN2mFORgf4KeTgtAPNvO93x9cnSF0ENL82ru0ka5Aa4FHS7Sp/xo3HBbVC9tMvrpzFswkeVmferdxTq58C3LZSwdJ6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BBB3qladE1zFG2bDYfZwyEv0BttKj2dIsrPvr16kfd4=;
+ b=hmm/8WHRzMdhavXP3Ky4C0Js46EOqgGgr+elg8sGQhMunJhPDkEq1cGVNjB2zLDZT9fQodnNAbOmn/2dBBULkp9QcY2wcsTRi9AOaNSMfgV7aw1O6Q0UEZco7KiVxj3cNSQzvsYK28hb7u74bpx6p5VRs1zFqvoqM6LFf/TEBRJZjOEpUXv2P2oIHuYVEjw3wC9JkamS/0FMJbxBlPuYMvsfUT8O4Lko2zbBMvpRZYfInnTJOEuLZ/SUtEGtnIrFtSbxoJ32Rgf2xJ8x4oXQj7HmyQJbfmgk4Os76o5XUGAaoF+VxK+8W70Ef7jAXoPD3mDuphsGbBB4sHC2ABgmKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BBB3qladE1zFG2bDYfZwyEv0BttKj2dIsrPvr16kfd4=;
+ b=RtknpxA5Yu4GJjo5zcHZLnkGW2hWcyT76vz3X0unAH50d58Nej05cjdfERd1+8KViXRggMaozlTICFF8t9vqrbVnbTupntfyY7C8Um9bi8NQyICAngsWg8LdMw+FTHCspS4zMqts2SUwQYi5l3ML0mlB+YRXSMQtQSSWOrLJN5I=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by PA4PR04MB7502.eurprd04.prod.outlook.com (2603:10a6:102:ef::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Wed, 23 Aug
+ 2023 18:01:14 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::a680:2943:82d1:6aa8]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::a680:2943:82d1:6aa8%3]) with mapi id 15.20.6699.022; Wed, 23 Aug 2023
+ 18:01:14 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com
+Cc: clin@suse.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	eagle.zhou@nxp.com,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	joy.zou@nxp.com,
+	kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org,
+	leoyang.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org,
+	pierre.gondois@arm.com,
+	robh+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org,
+	shenwei.wang@nxp.com,
+	sherry.sun@nxp.com
+Subject: [PATCH 0/3] arm: dts: imx93: add edmav3 support
+Date: Wed, 23 Aug 2023 14:00:52 -0400
+Message-Id: <20230823180055.2605191-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0051.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::26) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZNzw7MPF00t3i3bn@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PA4PR04MB7502:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2943d525-6861-40a4-2ac4-08dba402f0ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	4HpOAjRLhrsW+B3QBKeWPnaEPttcTXyu043ROXg7680iuPm+Ln6w9XhD7wev8vHR5FGc2yqbW+LvKbNyZcZcuc9lEZpp1cJhgUwPUqjdEkWf02h919E6tlqCbYcDqSoLMxwOpBRn0aum3iRqMOw2cBnGARCpJRiZY9K7Nb2P6JD7LGEg9/UKoH1iUQtugrpxfeNkw7FJScO7WLTfOmJsQVGHd40KG5Bri9TRrIeuf4VwkYsb97EUaff/dmJ5CagvRB32c3DWdSJT394wOHZNWWk+VX1fJqSbugXKuqCRZIQKmf3tAsGv/cfwhxzv5UsGyQQa+NLsFpULozJ+ul9x7eGVuaSnlh5MnQbzG9cWpdo0+cXVK+2y1BY2N3UlbLpycHO/Id0db+jMxUE6MKJH3Zb2T/UTKi0WwUU7rblW2H9KBsCtTUzx2VYtNl4/n2RtKY5pBMpWC2wNLZQ5fMM58tE3pVfxZLvTMx2QpFdA9G8uLmmJnuic5RNfwONZzgsNLDMWlBJlE5XoO8B3lJLyx/ZoZa4maypSBLmkLCdErRXl3H6iojNbkxdTUPNRdxDZPIR9V2SwXU7xuRuQDGbTApoy6odwGnakJTaXy3Hrv8Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(346002)(136003)(396003)(376002)(451199024)(1800799009)(186009)(2906002)(7416002)(6506007)(6486002)(52116002)(38350700002)(38100700002)(4744005)(5660300002)(26005)(86362001)(34206002)(8676002)(2616005)(8936002)(4326008)(37006003)(66946007)(316002)(6512007)(66476007)(66556008)(966005)(478600001)(6666004)(36756003)(1076003)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/COXx0GWJQYap+5Y2JHiqEbKjhRl4JXsSb3yb8Wm2xVQLj4fte1jERJlzzox?=
+ =?us-ascii?Q?dhK+qB4C6LoUcPX7JOEor45L+LC0dmsCzpi4P0xI0rGQ3GP6eYH/ozBIMaQc?=
+ =?us-ascii?Q?q8inGDI2IjhV0qvB9Rzi9g99/fpNBa3H7u607fcD/eAXgv61Kl8cZuYaxrU0?=
+ =?us-ascii?Q?kQQA362OFrRNB2kaL0gVpAKlMapg2oo9ZrTu9EXk/7zGDMcnvGMpiac6m2ig?=
+ =?us-ascii?Q?iIsUEQCRS+VvP+wEcA8heSsjBhKmfpjN3UALhSAHTtsml2upPmpesopIBNZ7?=
+ =?us-ascii?Q?zRTGNV/ShuPnyoJED+oI27bRTuw3NmUa3seTvYPUAO2uCPrHIfbZ62DdUW4F?=
+ =?us-ascii?Q?kX7pJDBR4K0o2Hw+TKYWdk6B5cCLsSmlGvvbPfZYU2rcKd6tgVs8HNtLNot8?=
+ =?us-ascii?Q?KBYYuNscIRxks9CCQxSCjsV6QdJBpGHKGG4ct2hEI1hbMRGIwGRafIe8dRRT?=
+ =?us-ascii?Q?LW5Zsin9822VlmnPmlehfikz3wyQidw0tCCNuLKiFaDmU5HcCigNl0r0g0Sp?=
+ =?us-ascii?Q?e+CN2zTqsg0U0oFrSMfwFV0Xo/soL07alxzdcVWSTVPOU3w5pfPpMsEd65m+?=
+ =?us-ascii?Q?2ho9UC85GyC+Fljx0uKH0TmyMPiwFp1359EPXmRI1Ao0fHro7Dy3nowDYHdo?=
+ =?us-ascii?Q?7B5/sPCj7h+kMPtAdIL80cBc3P7PuatWhl/eO2zrVO+F3XcCk6kVukvTaACa?=
+ =?us-ascii?Q?Icq82QYu5uJFHLZgAWGfP2hWBwvi7tdTVWzpQk4ILaWqYdaFdNRuPeui5iF9?=
+ =?us-ascii?Q?71t//mC30xSUuZG0ffkELLUI9L0QeRsxmGoN7gYfiTHZ6qzRtvHE3F1iYBnz?=
+ =?us-ascii?Q?ETblOITVLVfK1k8gIdKZJM7chK8dDjHmwVFgx5TUBGXqSxXgmIIuaT1/eq1w?=
+ =?us-ascii?Q?RDfB76XtXLGK5vdN2B7hKNpp0cLE9Yir7Nvh27azAWutTQIT/0AF3j+XOWFJ?=
+ =?us-ascii?Q?E5OKGUXqCobATFpHUUtYQEHi3w93Qi9SkBDwl2lulTqxip1XqMDX+a3UTEH+?=
+ =?us-ascii?Q?5La+ZfK8AIxeO522vs5WAtR2fbrGWa1t/FoFolFf6bWQPO/decQWFjta0hyc?=
+ =?us-ascii?Q?I751HzG0U+BR+OZZ5ROlJ0j/0efbmLNg8bictAlGJwcjImrbjBDlSZoRmC2F?=
+ =?us-ascii?Q?s5gZUdx94SUxPVB8kb5LgGKQi/+gSJyawggbT5ndvda5dO2uXLy2YWs9Sgk0?=
+ =?us-ascii?Q?812fHaXGjsDUxwmzz1cluTC3L3SqVPSrvqA4t+/qauQqBjjKWXVkraRMI+l7?=
+ =?us-ascii?Q?lMaQgb4CXeCWK7WQQUAWZoiU31OoQfkix28xxfDYvWUhkCgQNeM6bZEEHxfk?=
+ =?us-ascii?Q?NnvD2HvNqHajsJtCveJ3RuTVEK/SZQnPQkLkNhxynUTooWwD50O3uWPb3sKo?=
+ =?us-ascii?Q?4zP1ioYDq1PK2A/Qe7AxSnaFZPIRN2pz738QJuqS1Q77EULhtkEce4kWdMWb?=
+ =?us-ascii?Q?XguvCQrQ+p5wAA/Z9ARaR99b08Byii/COXz691PyfepCKkSu/PMeQb9tBO0U?=
+ =?us-ascii?Q?ayykBYSMJBNh2iArM5G3C4lqIeqnNmS1BCYYDItAobhvs7vwWAu/CRisK6lb?=
+ =?us-ascii?Q?zN4OFsmAeslkmDjwxJw=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2943d525-6861-40a4-2ac4-08dba402f0ab
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 18:01:14.1525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: whLInxK7OrEpsK2h8PoPUf8F0q62AOmVsusm0BJATo9u46f+M0qQSa4gnX35qwxR0ExfDmXF6zcNdf8/1U7alQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7502
 
-On Wed, Aug 16, 2023 at 11:53:16AM -0400, Frank Li wrote:
-> On Mon, Jul 31, 2023 at 11:06:31AM -0400, Frank Li wrote:
-> > On Thu, Jul 20, 2023 at 09:58:33AM -0400, Frank Li wrote:
-> > > Add support to pass Link down notification to Endpoint function driver
-> > > so that the LINK_DOWN event can be processed by the function.
-> > > 
-> > > Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > 
-> > @Lorenzo
-> > 
-> > Could you please consider pick both patches?
-> > Manivannan already reviewed and only impact layerscape.
-> 
-> @lorenzo:
-> 	ping
+edmav3 patch already accepted.
 
-I will have a look tomorrow.
+https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git/log/?h=next
 
-Lorenzo
+Add dts part for imx93
 
-> > 
-> > Frank
-> > 
-> > > Change from v2 to v4
-> > >  - none
-> > > Change from v1 to v2
-> > > 
-> > >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > index de4c1758a6c3..e0969ff2ddf7 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > @@ -89,6 +89,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> > >  		dev_dbg(pci->dev, "Link up\n");
-> > >  	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
-> > >  		dev_dbg(pci->dev, "Link down\n");
-> > > +		pci_epc_linkdown(pci->ep.epc);
-> > >  	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
-> > >  		dev_dbg(pci->dev, "Hot reset\n");
-> > >  	}
-> > > -- 
-> > > 2.34.1
-> > > 
+Frank Li (3):
+  arm64: dts: imx93: add edma1 and edma2
+  arm64: dts: imx93: add dma support for lpuart[2..9]
+  arm64: dts: imx93-evk: add uart5
+
+ .../boot/dts/freescale/imx93-11x11-evk.dts    |  15 ++
+ arch/arm64/boot/dts/freescale/imx93.dtsi      | 130 ++++++++++++++++++
+ 2 files changed, 145 insertions(+)
+
+-- 
+2.34.1
+
