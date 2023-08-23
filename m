@@ -1,76 +1,149 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2083.outbound.protection.outlook.com [40.107.15.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BB71ED47
-	for <imx@lists.linux.dev>; Wed, 23 Aug 2023 18:12:50 +0000 (UTC)
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-26fa19322b5so323053a91.0
-        for <imx@lists.linux.dev>; Wed, 23 Aug 2023 11:12:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692814369; x=1693419169;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nfi1MCjIHEtRlK5qwURcP28HIGYnPOfh0hAIrnuyXfs=;
-        b=bw0Ib7Wvc3T8Jiw1TxIWLOXGEWigdrNUj+Hz6YzcrlTKkrK3yLz/GeZZkVa8tsF+9p
-         pOJ4tkcJ9g5a+HU4xOKhAT3jq5ENubE7Y4PEiNP89o/cKTxdjO6sU3AGykOB6yp3y+3x
-         Ope0Xn6VUoThLRJibm/zzh/ArlkhHT07L25JWfzmCm+FyqVqsO/Vq6p7GrFsX6gvIkqu
-         bbKHFBl1LBjjEq3U02Hu0GMKklx1ut/SJ+qS7U4+KrYU2ds+XejZlAVaunahO7+iqhE0
-         aj4VG0oZh5g4mY6wwb4iHUi/N/gORbDOSReKxzNFutkqAQ8pTEOlS/zxPw4zdMzWHIav
-         RwQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692814369; x=1693419169;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nfi1MCjIHEtRlK5qwURcP28HIGYnPOfh0hAIrnuyXfs=;
-        b=btTI+nInn/2Uh9PqdtsZX2SM3hs7OxWEES3I070+fJhF4FSEPv7SC+lNurX6w1nq3x
-         cmnCZAh0kNAwTa/lXbVjL+tAm8eRWeKmaEGIZct7wD3uE4xQRszGzBSKGsH8ipBbEE28
-         oUctLw/waoBS0qR766Z8iLqlM7RTtOoGprYHaYDVDmAtVeZy2m559aI8HnTjbQ0AbapR
-         ChNkW/GIE3gvvNpBnSBqCvfIcNRq6DUSAmpZnBdsVp0Vz83TgWItnFfDp2Eq1QWP2RIz
-         969dYmjQmx1L9UwAfnBU/VTImkCezPok1Rv03HbXFOH6AS9bmIW6ZR1sfQSmr4BQLxcp
-         ZEKg==
-X-Gm-Message-State: AOJu0YwzdbVLv8k0YuZzaPJTcYyorl29AZULewb0OwwyhpW0hdk00Zq5
-	jrDGF7Y9IMeiff25qYl55NHdciP63jEIIzy2cro=
-X-Google-Smtp-Source: AGHT+IFF6OhUZ8qx+TAuEvDeAWn7ceIKu3CsmvmhMsA1uaEzf9RUbmyJ5z0dSEIdDcW6jmU2KkQBF68KWTyCDe1AxX0=
-X-Received: by 2002:a17:90a:9e2:b0:26d:1eff:619f with SMTP id
- 89-20020a17090a09e200b0026d1eff619fmr11985687pjo.2.1692814369623; Wed, 23 Aug
- 2023 11:12:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C851ED47
+	for <imx@lists.linux.dev>; Wed, 23 Aug 2023 18:27:01 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hCavMQyahhzujB3by+/IDo7rzsqeuxcC2cADEez8zGV8CpxWpjb2olO+hn8CEPKb17v2jjqxgY1ZguVe9rirxA4DQl+HxzmPoLZRAtQELZ3O9/OavTdOVuXbH4+pNwXcrcC+HhdcjCPSc1MH/vhj/FgqBoYELlvnj2BvqpKZ65jV+RHeLy2M751vuIE0zsSJJTpzwMk2dn4yEm4cbM1UU9ghoLor4Y1jFfSHuhUppVtkT9ZaTdxgOsVIphZ2txXYhpjJ4Q1SKU4IijJjaVHfBT4Ph3uAz4bIr/KQL64BEloSIvpyBa5diTRpfdXZWcx3SK/4MtkriZ1GEuFD/RfhIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G+HhOaFE0Lu7eQOYxoTMn672CLEoIm2Vol59QiXEVP8=;
+ b=n2a6FSqXxICR78mV8zU+rg1FqDJ0Mm8QoSm+llVXzLbxlh9sr0TJDbcRqRr9UuRt+cra007xknm6qT6KzBhT2DNmzGBiG3vZ9NlW5cJhystFyIaLqXamSHW1srmtyCxjxfd5Rs+UuUqQpbBveBqS99e66i4zF9JFSECb8tF8TPE7FCysVIRZlqglKohWD3QY1MCTUTVisTGbvAELOLOAcFs1nxxSpHFxb+HzPFhcgnv/FFgmsmX5rU59MnrvGDD/tiroX5369OnXTAufTMpNLtx4dYgtlsaOGSD9CCW7w3sa8wyL4TbEOAO4JZhLRe7FiFU/alhoviiGZFTMRsS9WQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G+HhOaFE0Lu7eQOYxoTMn672CLEoIm2Vol59QiXEVP8=;
+ b=d/6hijS2KDBxzkGyhf9vDtxbLUqspX7gCnkh/g9qqYftKUTbdQ4gmrGgY6dbHq1T9lq4Gh2kjsOirKO8R/pD5c3Ky+xjfRKGfSMJh7nQIb+n7bxMNnSZ2hp0sqjoxGmz6qFxt8DPZcbS211DszRe8o4FY1KI5P0u88q0IIXKLsw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DU0PR04MB9393.eurprd04.prod.outlook.com (2603:10a6:10:358::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.25; Wed, 23 Aug
+ 2023 18:26:58 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::a680:2943:82d1:6aa8]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::a680:2943:82d1:6aa8%3]) with mapi id 15.20.6699.022; Wed, 23 Aug 2023
+ 18:26:58 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: vkoul@kernel.org
+Cc: devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	frank.li@nxp.com,
+	imx@lists.linux.dev,
+	joy.zou@nxp.com,
+	krzysztof.kozlowski+dt@linaro.org,
+	linux-kernel@vger.kernel.org,
+	peng.fan@nxp.com,
+	robh+dt@kernel.org,
+	shenwei.wang@nxp.com
+Subject: [PATCH 1/1] dmaengine: fsl-edma: fix edma4 channel enable failure on second attempt
+Date: Wed, 23 Aug 2023 14:26:35 -0400
+Message-Id: <20230823182635.2618118-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR13CA0028.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::41) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230823180055.2605191-1-Frank.Li@nxp.com> <20230823180055.2605191-3-Frank.Li@nxp.com>
-In-Reply-To: <20230823180055.2605191-3-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 23 Aug 2023 15:12:37 -0300
-Message-ID: <CAOMZO5BBLXyn7zpmb-DKNgJhY9DDP5_TgLZzPGREt-V_curvDw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] arm64: dts: imx93: add dma support for lpuart[2..9]
-To: Frank Li <Frank.Li@nxp.com>
-Cc: clin@suse.com, conor+dt@kernel.org, devicetree@vger.kernel.org, 
-	eagle.zhou@nxp.com, imx@lists.linux.dev, joy.zou@nxp.com, 
-	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org, leoyang.li@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, 
-	linux-kernel@vger.kernel.org, pierre.gondois@arm.com, robh+dt@kernel.org, 
-	s.hauer@pengutronix.de, shawnguo@kernel.org, shenwei.wang@nxp.com, 
-	sherry.sun@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU0PR04MB9393:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96ed612b-fd15-4d60-e86b-08dba4068940
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	RXnVqifhOV5o3IV29ghIEfnC8PjVzIBbO0NE5aAA0FalXW15flLuhXAuRH1PWEN452n/eoui5SZ4YdbbYg/uV8w1Gzx/CTmwcOtI+5qegFlAWIP84ZOH4G72+I2vrUzQGLE2tHY+HJ4T2dYIaaRPzE+dZQhe95knFdvjrRDQkSlrITKkzDFunPkEOW6sHZBlvd8HuoLcKkH9KXIE3uLA0P3O7K2m91NMKXZT7gxG4T4DUSEs/Ee+MkkYJSV08fV8zOoHiRZEUD8aWeN3g0B4BEH2P2YnltM2DkFAOYYuZXI0QSO439fS59vZyQOgJ146dukJaD0Yo36rXp2po8pWtprqCIyfpCh8No2qlcXwVlGngjRWYiqm9Wd+t6AI/FRtcFui2uZBtix/bcfT4C2sWpVkVlB4NCFchn2FFv+nz48D27+fl/4SW8kWlEI4+3narTZ4zus8zmJCvoYztJtEferIKS7AEex9TwZ1un5IJLH3yYIsGAd6Xsh5ljk1TZ3bp66amONUHhhJc+8V/rqi2cCOe1KTHyPwLSop7d6rNYKIPHdhe29XQkMgZf5JGN6r+4T/WiPZ9MG7z/jHE0OPuJdR+6dALOxl183HphqzUd1UNkfHmfc4JZDyAk34WU2G
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(39860400002)(376002)(396003)(451199024)(186009)(1800799009)(478600001)(86362001)(36756003)(6486002)(6506007)(66476007)(66556008)(316002)(6916009)(66946007)(6666004)(52116002)(41300700001)(6512007)(38100700002)(8676002)(38350700002)(4326008)(8936002)(5660300002)(1076003)(26005)(2616005)(83380400001)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RfjwH5f/VuR9K5GsaHPtNLNXRopqxiu8Nwlt9WmOQdAHdzcII5wCAmoFjN3F?=
+ =?us-ascii?Q?nyBQegHuVT+byJNx12JoA0J1eu4XMgxrzgwUSrbA8p6wSZQyBh80gId+smCZ?=
+ =?us-ascii?Q?nL3S5gUkHmWNkj3v5BsAbta3S//Rla1U0jzeiv+eNb1+Pictjl+B4ad0xJV9?=
+ =?us-ascii?Q?1l1j9yU63QPhL0KB42lzJPpQiPIOekt3I2rCayl3Db6It+9iDQ0CxCIWZy7T?=
+ =?us-ascii?Q?iTp48T8L0SBSP64hNdBnbmrUR04zv0dJ4IMtkRPjeUOTZBAHzpuovpD5tp/4?=
+ =?us-ascii?Q?o8YTMI2bl6pebk3K6tNaWF3V8O6WJTN6AP7GO7NEyHfuWTzQPYiu+eWutIL0?=
+ =?us-ascii?Q?H+65vrx1fwF7kbmtcUwlPQbQSpuWP5ZxQptRsIoWsOBbP3qQcCbs3ZSgXjTQ?=
+ =?us-ascii?Q?5VuhXPsvdKJbvD0zDM/2kmIwDW4On+k+UZIBqQ93NWpJhTeaLLU6TV3TEd9X?=
+ =?us-ascii?Q?vCkOQ4LV3HsJEnrdb3TNMPemLyNpYQQkwvZE2fEQk8r7s+aYvdfAhD8wxNs1?=
+ =?us-ascii?Q?+Ry8xaYzi6jiLc8dK1FQiQP785WvJi7PljD9AfU/aduD5JKnCC3s9zNT7xkg?=
+ =?us-ascii?Q?Bq7I/9VIW9USNj+x/SYfLBygolzBt/D934o55WjYt2yyzRxrSpUwRZndsjUW?=
+ =?us-ascii?Q?E7jYEhpPMWhqC0SDV4OT1CtGp/2/ttNuxmwJYjdi6Jj9v8V+FgFOoEv61NYe?=
+ =?us-ascii?Q?F0vWbmZCResknrE0Vh2YEvjyHnOZc/sn1Ed3xAep2h0D58fNK1M4qqaRd39B?=
+ =?us-ascii?Q?T8+28B13PxWUko4oXONCEx36RQQ4vcCqWfE6XaVXDijR/uxEGkEbot6tZmPf?=
+ =?us-ascii?Q?24cFKBQTJ9q0dPx9Jll8Paud2avHazPJTKgUTpMtVKR8eh4O5BXbqZqjIKrB?=
+ =?us-ascii?Q?QKXKlhWDm+FPZdr5E9YQh+0lwNHaHfOXfYDshqHWbPiOSqfTKgVyzzaR7H0R?=
+ =?us-ascii?Q?CRL38iAnIfDqPZ2fcXwjNQXJKShBPw3WRHd8+qE38Iim+5DauaFysdtqPCln?=
+ =?us-ascii?Q?F45CciYlc7u2mFDt3h+6MiOOO0BkurTXaa6VxszyPIItv3nh0jgXLqhNyzer?=
+ =?us-ascii?Q?8r/x0VMSQEkbiiy0wZOvCph0TN6K0x2G852Y8+4dfGBtS6orRK8+Xc8EDrn5?=
+ =?us-ascii?Q?wsY5GP/fLkurEeAyXxUwKs4qFBB+Mv69zAr9z9Ji5d2FNOat/T4AbV1d3vj4?=
+ =?us-ascii?Q?ZXuLt20Z0e2zTe8hhlff0lt7kkLiUTKFRGuRpP71Pi7qHyA0Pwj6OrxXhUtw?=
+ =?us-ascii?Q?awf8rLTu+l4sRLMDYyAEUhwhloeHb8Gw24dDwY5qCsyHDiN0+GYYfL5dgSwk?=
+ =?us-ascii?Q?1HeQa/bO91yPgQfaQJdC80KNHJiM+/YsHVzy4DBQ3ZbYx8smRVEtmyniFAlk?=
+ =?us-ascii?Q?SAWldLkH6IVP3PxmNep3n9U72DeFD5jrKoTowwBdtJYLXSFrXnMSEjq4mMSA?=
+ =?us-ascii?Q?hWAAEsYnccQbKn0Ax8UT4qPUgMw8qr8BGeNIGbQADyxrmvd8BEdfK2kxFceh?=
+ =?us-ascii?Q?s3stRbuU63w8CAr08DFXHcHU811EUI1sEEjk7uuyVPpoq+t3EUxGik6mIB2v?=
+ =?us-ascii?Q?u14vBOTV5ztq2kN5Kp0=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96ed612b-fd15-4d60-e86b-08dba4068940
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 18:26:58.4122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jOagCePGQEjiv2Vj2r7juST39vuGKXynXmCYb2qDAAi9VLdUUPeOLE2t6PBy+SyGFUjOwtnKWbj4pUrt5/W8rQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9393
 
-Hi Frank,
+When attempting to start DMA for the second time using
+fsl_edma3_enable_request(), channel never start.
 
-On Wed, Aug 23, 2023 at 3:01=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Add dma support for lpuart[2..9]. The lpuart1 is debug console.
+CHn_MUX must have a unique value when selecting a peripheral slot in the
+channel mux configuration. The only value that may overlap is source 0.
+If there is an attempt to write a mux configuration value that is already
+consumed by another channel, a mux configuration of 0 (SRC = 0) will be
+written.
 
-LPUART1 is the debug console on a particular board, but nothing prevents so=
-meone
-to design an imx93 board that has another LPUART port as the debug console.
+Check CHn_MUX before writing in fsl_edma3_enable_request().
 
-I suggest enabling DMA for all ports. That's what we do with other i.MX dev=
-ices.
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ drivers/dma/fsl-edma-common.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-By the way, the fsl_lpuart driver disables DMA for the console:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dri=
-vers/tty/serial/fsl_lpuart.c?h=3Dv6.5-rc7#n1696
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index a0f5741abcc4..edb92fa93315 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -92,8 +92,14 @@ static void fsl_edma3_enable_request(struct fsl_edma_chan *fsl_chan)
+ 
+ 	edma_writel_chreg(fsl_chan, val, ch_sbr);
+ 
+-	if (flags & FSL_EDMA_DRV_HAS_CHMUX)
+-		edma_writel_chreg(fsl_chan, fsl_chan->srcid, ch_mux);
++	if (flags & FSL_EDMA_DRV_HAS_CHMUX) {
++		/*
++		 * ch_mux: With the exception of 0, attempts to write a value
++		 * already in use will be forced to 0.
++		 */
++		if (!edma_readl_chreg(fsl_chan, ch_mux))
++			edma_writel_chreg(fsl_chan, fsl_chan->srcid, ch_mux);
++	}
+ 
+ 	val = edma_readl_chreg(fsl_chan, ch_csr);
+ 	val |= EDMA_V3_CH_CSR_ERQ;
+-- 
+2.34.1
+
