@@ -1,87 +1,121 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543427F
-	for <imx@lists.linux.dev>; Thu, 24 Aug 2023 21:01:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=Fl4eLz5lzAqdsfi+t5jmV/ItDNikXzAC07w0ACaPhec=; b=GPHn5098lZiSjTzuo3IGsOnJNk
-	qP73ttw0VHgGqMzH/iIiNBWV+fcJuQPZH8dPNTH5XtAVh81T480f6FuXpviXDeibvvf2UZns0RZx9
-	sDNPS1KjlXrZdxhkluzYLuUzhPUCZJFAiJA0iAROcD0JTfGWi9+ejji9Elr1a7IDnfqwQF9BlKVGx
-	7Aned0DSUddatLZ53TBpwtaH+FaO9PCZsRnckMiYdNwv9yohkH+gPiDieFCol1jT8pSxeHTFm8N5B
-	IN0NURRkb7LuBfrWH3sY/aX/3aZuOh9J49Um9ZflAREyXb9tpyW4Y4zK22JZ5JjAlorIlaLykoVYQ
-	vpkm+lpg==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qZHSG-003n2q-0r;
-	Thu, 24 Aug 2023 21:01:24 +0000
-Message-ID: <b1c5ba0d-748f-ae2e-4a5f-e1e853161d16@infradead.org>
-Date: Thu, 24 Aug 2023 14:01:20 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB417FA;
+	Fri, 25 Aug 2023 08:34:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E9DC433C8;
+	Fri, 25 Aug 2023 08:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692952475;
+	bh=FCtRh2nslorTFJV46o2tCNp1DvRCnNrBaxwZsCG8tak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YjUNLrJPPiUJlG4lIcryD4r6V7wD8BPdtN0Ru12DQxleU4yaYHjuDkNDBDT/NXTYM
+	 foQVACKGxnBJNgqBD/Ws8daYb96WqoJeu+rQzFCM8cvktNR5z2N++6A+E3jjn+YTAk
+	 /ohehroDPeQdRm3mrlNgtQcwknIF7kyqIjYcOUr7lMgoGGxKSzTTPFWneav12hT9IU
+	 WqRprG4dHsJr+lkGpeZsLMMhIPlg+Nz8tV1LqqtAbqdnMFIsqCcX/tfh33E5TUCo2s
+	 hqXsqYxB2vEcU5tvL5c/JAWCneZdAKxec1eKgxrMUnLZGQ3TZeMpuEsuEMk6YWDGr0
+	 kP+8Ix7YnG26w==
+Date: Fri, 25 Aug 2023 14:04:22 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	Aisheng Dong <aisheng.dong@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"jdmason@kudzu.us" <jdmason@kudzu.us>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"kishon@ti.com" <kishon@ti.com>,
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+	"kw@linux.com" <kw@linux.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	dl-linux-imx <linux-imx@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"ntb@lists.linux.dev" <ntb@lists.linux.dev>,
+	Peng Fan <peng.fan@nxp.com>,
+	"robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>
+Subject: Re: [PATCH 0/3] Add RC-to-EP doorbell with platform MSI controller
+Message-ID: <20230825083422.GB6005@thinkpad>
+References: <20230426203436.1277307-1-Frank.Li@nxp.com>
+ <AM6PR04MB483849BE4788EE893306F38E88759@AM6PR04MB4838.eurprd04.prod.outlook.com>
+ <ZIdFFV5TdAy//Aat@lizhi-Precision-Tower-5810>
+ <ZLVK7xX7kPjNaah+@lizhi-Precision-Tower-5810>
+ <ZOepCkqSnUmTdGHX@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v3 1/1] MAINTAINERS: Add entries for NXP(Freescale) eDMA
- drivers
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>
-Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev, joy.zou@nxp.com,
- linux-kernel@vger.kernel.org, peng.fan@nxp.com, shenwei.wang@nxp.com,
- vkoul@kernel.org
-References: <20230824145834.2825847-1-Frank.Li@nxp.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230824145834.2825847-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZOepCkqSnUmTdGHX@lizhi-Precision-Tower-5810>
 
-
-
-On 8/24/23 07:58, Frank Li wrote:
-> Add the MAINTAINERS entries for NXP(Freescale) eDMA drivers
+On Thu, Aug 24, 2023 at 03:01:30PM -0400, Frank Li wrote:
+> On Mon, Jul 17, 2023 at 10:06:39AM -0400, Frank Li wrote:
+> > On Mon, Jun 12, 2023 at 12:17:25PM -0400, Frank Li wrote:
+> > > On Fri, May 12, 2023 at 02:45:12PM +0000, Frank Li wrote:
+> > > > > 
+> > > > > This patches add new API to pci-epf-core, so any EP driver can use it.
+> > > > > 
+> > > > > The key point is comments from Thomas Gleixner, who suggest use new
+> > > > > PCI/IMS. But arm platform change still not be merged yet.
+> > > > > 
+> > > > > git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git devmsi-v2-arm
+> > > > > 
+> > > > > So I still use existed method implement RC to EP doorbell.
+> > > > > 
+> > > > > If Thomas Gleixner want to continue work on devmsi-v2-arm, I can help test
+> > > > > and update this patch.
+> > > > > 
+> > > > 
+> > > > Ping?
+> > > 
+> > > Ping? 
+> > 
+> > ping? 
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks for fixing. :)
-
-> ---
+> @Mani
+>      Do you have chance to review these patches? It provide a common
+> method with GIC ITS to implement notification from RC to EP.
 > 
-> Notes:
->     Change from v2 to v3
->     - Again, fixed order
->     
->     Change from v1 to v2
->     - alphabetical order
+
+Sorry for the delay. I was wating for a review from Thomas. But since this
+series hasn't caught his attention, I'll provide my review next week.
+
+- Mani
+
+> Frank
 > 
->  MAINTAINERS | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 23eafda02056..c1c7a9ae244f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8236,6 +8236,14 @@ F:	Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
->  F:	drivers/spi/spi-fsl-dspi.c
->  F:	include/linux/spi/spi-fsl-dspi.h
->  
-> +FREESCALE eDMA DRIVER
-> +M:	Frank Li <Frank.Li@nxp.com>
-> +L:	imx@lists.linux.dev
-> +L:	dmaengine@vger.kernel.org
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> +F:	drivers/dma/fsl-edma*.*
-> +
->  FREESCALE ENETC ETHERNET DRIVERS
->  M:	Claudiu Manoil <claudiu.manoil@nxp.com>
->  M:	Vladimir Oltean <vladimir.oltean@nxp.com>
+> > 
+> > > 
+> > > > 
+> > > > > Frank Li (3):
+> > > > >   PCI: endpoint: Add RC-to-EP doorbell support using platform MSI
+> > > > >     controller
+> > > > >   misc: pci_endpoint_test: Add doorbell test case
+> > > > >   tools: PCI: Add 'B' option for test doorbell
+> > > > > 
+> > > > >  drivers/misc/pci_endpoint_test.c    |  41 +++++++++++
+> > > > >  drivers/pci/endpoint/pci-epf-core.c | 109
+> > > > > ++++++++++++++++++++++++++++
+> > > > >  include/linux/pci-epf.h             |  16 ++++
+> > > > >  include/uapi/linux/pcitest.h        |   1 +
+> > > > >  tools/pci/pcitest.c                 |  16 +++-
+> > > > >  5 files changed, 182 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > --
+> > > > > 2.34.1
+> > > > 
 
 -- 
-~Randy
+மணிவண்ணன் சதாசிவம்
