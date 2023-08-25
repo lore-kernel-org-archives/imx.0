@@ -1,121 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB417FA;
-	Fri, 25 Aug 2023 08:34:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E9DC433C8;
-	Fri, 25 Aug 2023 08:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692952475;
-	bh=FCtRh2nslorTFJV46o2tCNp1DvRCnNrBaxwZsCG8tak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YjUNLrJPPiUJlG4lIcryD4r6V7wD8BPdtN0Ru12DQxleU4yaYHjuDkNDBDT/NXTYM
-	 foQVACKGxnBJNgqBD/Ws8daYb96WqoJeu+rQzFCM8cvktNR5z2N++6A+E3jjn+YTAk
-	 /ohehroDPeQdRm3mrlNgtQcwknIF7kyqIjYcOUr7lMgoGGxKSzTTPFWneav12hT9IU
-	 WqRprG4dHsJr+lkGpeZsLMMhIPlg+Nz8tV1LqqtAbqdnMFIsqCcX/tfh33E5TUCo2s
-	 hqXsqYxB2vEcU5tvL5c/JAWCneZdAKxec1eKgxrMUnLZGQ3TZeMpuEsuEMk6YWDGr0
-	 kP+8Ix7YnG26w==
-Date: Fri, 25 Aug 2023 14:04:22 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"jdmason@kudzu.us" <jdmason@kudzu.us>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"kishon@ti.com" <kishon@ti.com>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"ntb@lists.linux.dev" <ntb@lists.linux.dev>,
-	Peng Fan <peng.fan@nxp.com>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>
-Subject: Re: [PATCH 0/3] Add RC-to-EP doorbell with platform MSI controller
-Message-ID: <20230825083422.GB6005@thinkpad>
-References: <20230426203436.1277307-1-Frank.Li@nxp.com>
- <AM6PR04MB483849BE4788EE893306F38E88759@AM6PR04MB4838.eurprd04.prod.outlook.com>
- <ZIdFFV5TdAy//Aat@lizhi-Precision-Tower-5810>
- <ZLVK7xX7kPjNaah+@lizhi-Precision-Tower-5810>
- <ZOepCkqSnUmTdGHX@lizhi-Precision-Tower-5810>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA7ED50B
+	for <imx@lists.linux.dev>; Fri, 25 Aug 2023 12:25:19 +0000 (UTC)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-59289606ca6so10142047b3.0
+        for <imx@lists.linux.dev>; Fri, 25 Aug 2023 05:25:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692966318; x=1693571118;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=imTtF6oMDfUUdZZOXaDJRn5vC8nuYTa4GJ6U0uaioBA=;
+        b=LjrX5q74j68I1VUl5oO9TUBIMmOBTPj1Vwy6sA95yTKrKny16GyqMuCQdgRCJS2sSf
+         UyO1ObVQ3ldNV4uvynAiIi0Xw6LVJPGWO0XCW7F2EndaB9TnUNtxXTpceKVazPHulz0T
+         lcmoPSbi+9SMB9UkWv7CQC4MHQm0sjDdLAHz69csq8RrwX5fDFGCMmzGRsm5j5mkno5W
+         8EeFqLMHe3jsA1B7VuoUPgPOLFGtGeUv72Oa5cvHCDU/ONZ7bD3/4sK5SDY/SHs45AdE
+         wbsQey/XRGdkEQyTeblklJJOxHVSpXRSVfKLd7Q0/MEL+96lUlvSNdKxStk5EzKxnlLP
+         UT7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692966318; x=1693571118;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=imTtF6oMDfUUdZZOXaDJRn5vC8nuYTa4GJ6U0uaioBA=;
+        b=UpaUIw5r3lVk1tqdQ9ITRygLH3WY+VJe4vnMDZU61jOufpdAP0JgAVlyrGHQUkJn9V
+         MKpzJJtjU2DMoflAcudp0K0uPTinIcr02pHrtX4Af2vGopQURfPFF9kYCVw7uve92hnj
+         S5+3e25c9cuJBBeWKXmdUZjPXpO1AwF00MnQ6Ey2bWXXW/oU3nxvuDXi11T1UdtXMQFc
+         KWmzycmvLDysFlzCYQ8tEtqDwIRm/oSBMWLxo79LR6Chbope5UYoDKhyPDmnQCposaxl
+         4IJa+qCLuRpD4iy0WIgPqOkV0uYLSQq3e0O5nHeiEgOjd5xohA7Tlnus1TA+GPlMRG3p
+         mXjg==
+X-Gm-Message-State: AOJu0YysNit1IoThYn6Hc/CjcMMFGkKnG4EMeyzhThAN5764RfS8nSbF
+	7tYCeys/LpdblrKkY8zhmJxHoeRzCccAu6Vk53o2wQ==
+X-Google-Smtp-Source: AGHT+IGzX+k1WodF6SQPMN6CDVYnV4vxVt6RIf05NBatVhakz7fxdBWuUoY22uoRqj2+6v0uLXCfzghx5tVitq3nYq0=
+X-Received: by 2002:a81:df0d:0:b0:586:9ce4:14e8 with SMTP id
+ c13-20020a81df0d000000b005869ce414e8mr15051293ywn.52.1692966318735; Fri, 25
+ Aug 2023 05:25:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZOepCkqSnUmTdGHX@lizhi-Precision-Tower-5810>
+References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
+ <CAPDyKFqsn6kVjPFUdVyRxNDiOaHO9hq=9c+6eAK4N-v-LVWUPw@mail.gmail.com> <PAXPR04MB91858254554272C90822FED1891DA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB91858254554272C90822FED1891DA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 25 Aug 2023 14:24:43 +0200
+Message-ID: <CAPDyKFoV2Z=-WUiF3SgXqhF+K+r5QqsLgz8_hau0WKfZxTzYpg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 24, 2023 at 03:01:30PM -0400, Frank Li wrote:
-> On Mon, Jul 17, 2023 at 10:06:39AM -0400, Frank Li wrote:
-> > On Mon, Jun 12, 2023 at 12:17:25PM -0400, Frank Li wrote:
-> > > On Fri, May 12, 2023 at 02:45:12PM +0000, Frank Li wrote:
-> > > > > 
-> > > > > This patches add new API to pci-epf-core, so any EP driver can use it.
-> > > > > 
-> > > > > The key point is comments from Thomas Gleixner, who suggest use new
-> > > > > PCI/IMS. But arm platform change still not be merged yet.
-> > > > > 
-> > > > > git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git devmsi-v2-arm
-> > > > > 
-> > > > > So I still use existed method implement RC to EP doorbell.
-> > > > > 
-> > > > > If Thomas Gleixner want to continue work on devmsi-v2-arm, I can help test
-> > > > > and update this patch.
-> > > > > 
-> > > > 
-> > > > Ping?
-> > > 
-> > > Ping? 
-> > 
-> > ping? 
-> 
-> @Mani
->      Do you have chance to review these patches? It provide a common
-> method with GIC ITS to implement notification from RC to EP.
-> 
+On Thu, 24 Aug 2023 at 18:35, Shenwei Wang <shenwei.wang@nxp.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Ulf Hansson <ulf.hansson@linaro.org>
+> > Sent: Thursday, August 24, 2023 4:27 AM
+> > To: Shenwei Wang <shenwei.wang@nxp.com>
+> > Cc: Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
+> > <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
+> > Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+> > imx@lists.linux.dev; devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > dl-linux-imx <linux-imx@nxp.com>
+> > Subject: [EXT] Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+> >
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report this
+> > email' button
+> >
+> >
+> > On Fri, 18 Aug 2023 at 17:35, Shenwei Wang <shenwei.wang@nxp.com> wrote:
+> > >
+> > > Documenting the regulator power domain properties and usage examples.
+> >
+> > As Rob and Krzysztof already pointed out, I agree that this binding looks a bit
+> > questionable.
+> >
+> > Rather than adding a new DT binding, why can't we just use the existing way of
+> > describing a platform specific power-domain provider?
+>
+> Can you please provide more details on how you thought we should implement this
+> feature using the existing way? Very appreciate if you could provide a simple example.
+>
+> > This still looks platform specific to me.
+>
+> What does platform specific exactly mean here?  I want to make sure I understand
+> what you were referring to.
 
-Sorry for the delay. I was wating for a review from Thomas. But since this
-series hasn't caught his attention, I'll provide my review next week.
+There are plenty of examples of how a platform specific genpd provider
+looks in DT. You may have a look a imx platforms for example.
 
-- Mani
+git grep "#power-domain-cells" arch/arm/boot/dts/nxp/imx
 
-> Frank
-> 
-> > 
-> > > 
-> > > > 
-> > > > > Frank Li (3):
-> > > > >   PCI: endpoint: Add RC-to-EP doorbell support using platform MSI
-> > > > >     controller
-> > > > >   misc: pci_endpoint_test: Add doorbell test case
-> > > > >   tools: PCI: Add 'B' option for test doorbell
-> > > > > 
-> > > > >  drivers/misc/pci_endpoint_test.c    |  41 +++++++++++
-> > > > >  drivers/pci/endpoint/pci-epf-core.c | 109
-> > > > > ++++++++++++++++++++++++++++
-> > > > >  include/linux/pci-epf.h             |  16 ++++
-> > > > >  include/uapi/linux/pcitest.h        |   1 +
-> > > > >  tools/pci/pcitest.c                 |  16 +++-
-> > > > >  5 files changed, 182 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > --
-> > > > > 2.34.1
-> > > > 
+The genpd provider then needs to be a consumer of the resources it
+needs. In this case a couple of regulators it seems like.
 
--- 
-மணிவண்ணன் சதாசிவம்
+[...]
+
+Kind regards
+Uffe
