@@ -1,101 +1,106 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB3C2C9C
-	for <imx@lists.linux.dev>; Sat, 26 Aug 2023 17:31:39 +0000 (UTC)
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2bb8a12e819so29297021fa.1
-        for <imx@lists.linux.dev>; Sat, 26 Aug 2023 10:31:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671236AA6
+	for <imx@lists.linux.dev>; Mon, 28 Aug 2023 09:59:38 +0000 (UTC)
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-d77f97a0e72so2991884276.0
+        for <imx@lists.linux.dev>; Mon, 28 Aug 2023 02:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693071098; x=1693675898;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K2rKCSZsu8/cjHlt5rvny4PL6NtTe+upkivFRUnpx0M=;
-        b=Sfrkbp2WO5UZ4s7fvSATxmQVfafN3gdvAubgBwTMywsS7OSelTX/DaXC6INNMsasHF
-         uMPZYL5l9RcDkb5Ymuqj+/EGRpT0RUTdzKX8tYEsxdgetDBey8E1ntZSElFAFWUx5RsF
-         QUd5FbluY8iOXyrqvyOQQ+6Akwi3qJFlNLzd8xRYJSe0eo/KMZf06uy6k2xEUUm0E3GP
-         IWUh/sCuCnYb4ozQ3fbUW26dINL4QX9XilChawQZR+1BXK7athc43Rp7lXm3kjOiueBd
-         UbpgNFZPu8Nl4us7OSoYTvatrW2dHyuXacZ6VXg7IJ5ANT9y7QGqvCUWuKoJpQZFmg0C
-         +bpQ==
+        d=linaro.org; s=google; t=1693216777; x=1693821577;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Ae2B/bJD6+pwU7iQXkYD7WW81UmVpdPoOKJ3dyD5y8=;
+        b=f8Yzvy+q9p7b+uTEWqZMvv9SEdH8DMylAj82MSyBNZMaceHWqEOUBmJ2QPp2Fq0Jhe
+         QZVJGaai3aWlYCwFJtU4A2K6OzSN0cFANsnL3Qjp2eilj8ChFys5NtfM3SC51dk7x0Li
+         AdPbQwd7PlborWBlILgSxNJm6rqtxx5fFfLlJp73GpBlt5hjU/Hm0Fpsou0XZiw6r5R3
+         0eg9Bghw94yVk/3e5KQqm3k0J02UvM+kA5BsCdeVpsvAqFoF2lvRh4wyiUzhak3DNBWH
+         BlNx7NDUaV0vY33rKkfDAdOOq0kuqp3oR6RFxMc/hrKsPOJmhC+HXH4EDZ9DiYPgNMSG
+         LkRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693071098; x=1693675898;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K2rKCSZsu8/cjHlt5rvny4PL6NtTe+upkivFRUnpx0M=;
-        b=VwpUPrYV2wYog2kD2RFADuGCSt4EShcp9FaSN8rQfDOblxWQzG1+BjvWu0hXn/Taiu
-         rfa6pM/8XroufTYojXlC/Adh+J+WK3TTRr6UvpeVlQHtD6UdNg2nkRrwYp+0vjo+AX9h
-         fxngyF5TZDwtIjzUKArmYbiDwdoWTTJNA/Xm6UB062erTtee8RZp519XxAeQm2Szf2a0
-         Od7qouHMnZUZp0Vkx6exEG9atc48ulYUvdqGvpsHuVwn0eimRfN6aDIv8nHzrI845bOH
-         135DvYG8VuBA0cdv4od2CAQAYJXBfgXO/0mea83OHKHbZDqm04ULO1j1IxWADRP15l+g
-         14rw==
-X-Gm-Message-State: AOJu0YyChJDaTdn1sZ79vmS+iXmLCWnDECPoXL7pN/mziBUPQUCzvanh
-	ihjuJBGA+Wme9K5GFFODBVmqJQ==
-X-Google-Smtp-Source: AGHT+IG9DjB0A++FAUKlFtKnVs7soasltg8AxGuvsxRAUqvxAEnosyk2s9yePUFBDzY+a78jDRIuhg==
-X-Received: by 2002:a2e:9d08:0:b0:2b9:b4eb:c39c with SMTP id t8-20020a2e9d08000000b002b9b4ebc39cmr14967716lji.8.1693071097760;
-        Sat, 26 Aug 2023 10:31:37 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id n18-20020a170906841200b0099ce23c57e6sm2401208ejx.224.2023.08.26.10.31.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Aug 2023 10:31:37 -0700 (PDT)
-Message-ID: <4e2c18e3-b1ed-6361-3998-5de060d2bcf0@linaro.org>
-Date: Sat, 26 Aug 2023 19:31:35 +0200
+        d=1e100.net; s=20221208; t=1693216777; x=1693821577;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Ae2B/bJD6+pwU7iQXkYD7WW81UmVpdPoOKJ3dyD5y8=;
+        b=f3ld03T7OzPlZsDQzsidS/eM2FmuMQHrcrw8ImtMpXK1Dd3duAa74LA1gH3PLK73X4
+         15SziY6YK3oSLerXOiGWuvzY7jruy12ycJvL+T7aTLVRmoTJyu1ZWl1TaoD3GfxCNyzk
+         dX4ZvX6G+Q6Tq1FkfvL6mLVUW01E17zGm7vPkz/eaOk4X4mB+xdKMlgGq4nIjOwfCVM6
+         7z4rp03DJRsQESvecDyT4O1/e76flJuErGzKBpRi6lmrovhweYAf+7VpliUHQRNJ+0iW
+         jcbFRYfkl0eIZlJA6wApj2X7K4NWb5O1iUURG7ww7JRjieeu8f5e7rd+doqwTFg08Osv
+         Du8A==
+X-Gm-Message-State: AOJu0YzK+eFq/Td2b4C4ry2agkuz9CWN7TrEMY7VwsuC4nZTqEL/V/2y
+	h3HF9/9t0x3bhrduZeIfvfreVLMA0oVl4lT1oUg3Xg==
+X-Google-Smtp-Source: AGHT+IEaCoCpMUCPjNNvMpqNFEuip8dU+C99qMdfR/6PRAdeSAMP7ht991M5faWrDlN7Kt9uuuksTVQFdukE70njB/g=
+X-Received: by 2002:a25:2641:0:b0:d7a:c626:538a with SMTP id
+ m62-20020a252641000000b00d7ac626538amr6186920ybm.62.1693216777261; Mon, 28
+ Aug 2023 02:59:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-To: Shenwei Wang <shenwei.wang@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- dl-linux-imx <linux-imx@nxp.com>
 References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
  <CAPDyKFqsn6kVjPFUdVyRxNDiOaHO9hq=9c+6eAK4N-v-LVWUPw@mail.gmail.com>
  <PAXPR04MB91858254554272C90822FED1891DA@PAXPR04MB9185.eurprd04.prod.outlook.com>
  <CAPDyKFoV2Z=-WUiF3SgXqhF+K+r5QqsLgz8_hau0WKfZxTzYpg@mail.gmail.com>
  <PAXPR04MB9185F6AA20B0440B8FAB847789E3A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <PAXPR04MB9185F6AA20B0440B8FAB847789E3A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <4e2c18e3-b1ed-6361-3998-5de060d2bcf0@linaro.org>
+In-Reply-To: <4e2c18e3-b1ed-6361-3998-5de060d2bcf0@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 28 Aug 2023 11:59:00 +0200
+Message-ID: <CAPDyKFro6roynXuS1caARpMK08hvARQ7mQfiJcDgCyJXiw=nzw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 25/08/2023 17:44, Shenwei Wang wrote:
->>
->> The genpd provider then needs to be a consumer of the resources it needs. In
->> this case a couple of regulators it seems like.
->>
-> 
-> If I understood your reply correctly,  it seems that the current implementation of 
-> regulator-pd is what you have described. Please correct me if I'm mistaken.
-> 
-> The following are the diff of scu-pd and this regulator-pd.
-> 
->     power-controller {						    power-controller {
->         compatible = "fsl,imx8qxp-scu-pd", "fsl,scu-pd";      |	        compatible = "regulator-power-domain";
->         #power-domain-cells = <1>;				        #power-domain-cells = <1>;
-> 							      >
-> 							      >	        regulator-number = <2>;
-> 							      >	        regulator-0-supply = <&reg1>;
-> 							      >	        regulator-1-supply = <&reg2>;
->     };								    };
-> 
-> Are you suggesting to move the regulator-pd to the imx directory and add a company prefix
-> to the compatible string?
+On Sat, 26 Aug 2023 at 19:31, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 25/08/2023 17:44, Shenwei Wang wrote:
+> >>
+> >> The genpd provider then needs to be a consumer of the resources it needs. In
+> >> this case a couple of regulators it seems like.
+> >>
+> >
+> > If I understood your reply correctly,  it seems that the current implementation of
+> > regulator-pd is what you have described. Please correct me if I'm mistaken.
+> >
+> > The following are the diff of scu-pd and this regulator-pd.
+> >
+> >     power-controller {                                                    power-controller {
+> >         compatible = "fsl,imx8qxp-scu-pd", "fsl,scu-pd";      |               compatible = "regulator-power-domain";
+> >         #power-domain-cells = <1>;                                    #power-domain-cells = <1>;
+> >                                                             >
+> >                                                             >         regulator-number = <2>;
+> >                                                             >         regulator-0-supply = <&reg1>;
+> >                                                             >         regulator-1-supply = <&reg2>;
+> >     };                                                                    };
+> >
+> > Are you suggesting to move the regulator-pd to the imx directory and add a company prefix
+> > to the compatible string?
+>
+> There is no such part of iMX processor as such regulator-power-domain,
+> so I don't recommend that approach. DTS nodes represent hardware, not
+> your SW layers.
 
-There is no such part of iMX processor as such regulator-power-domain,
-so I don't recommend that approach. DTS nodes represent hardware, not
-your SW layers.
+I would agree if this was pure SW layers, but I don't think it is. At
+least, if I have understood the earlier discussions correctly [1],
+there are certainly one or more power-domains here. The power-domains
+just happen to be powered through something that can be modelled as a
+regular regulator(s). No?
 
-Best regards,
-Krzysztof
+Note that, we already have other power-domains that are consumers of
+regulators too.
 
+Kind regards
+Uffe
+
+[1]
+https://lore.kernel.org/all/20220609150851.23084-1-max.oss.09@gmail.com/
