@@ -1,46 +1,63 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2071.outbound.protection.outlook.com [40.107.8.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E086B29AB
-	for <imx@lists.linux.dev>; Mon, 28 Aug 2023 19:09:40 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZiiFWcQj3rXLIEqvtgrVeQYfFC7Rree9L5ptNvffAY1X5wpbmLt8vEVRnjOWinRJYc/6ZkphzgOvKn+M5SyZRmZA3dlsV7Ex6xO6TmSwAKx7ID80N7enhLqGemg24xeJIfkjfG4QwaLZFSfNYzAI+/Q0r7bF2VS1piZtApjwBmGM6Vu2oCyyiNOP6hv6tD4hpmonSss/6lG3dXYZ35yQOua0sI7rpwnrIB9EeoBp05FEjjP0pBwTASpljCl1VCY+V/4taWYm4k3hYnl0/m7aUSxQVMwmeiVfBA0bgtA1BE4tdIAAEB+ftQArQFv5QaGha8pIRJ1UiBfg31HqCzeZGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u9fK4ct5WsLzoGbJAI7PL7odmUZAOAJK8hgPyEeYdw8=;
- b=SiSZCtyyJWf6gYiQXlzE0g2a3T0L/adFC5tnfl78jKMjm4WAPoSk/8tpw3MQ+9bEWDIugxtdixgIFcMDzmOpSR5UXR1/kUI9ClFcIOF445Kv/md1x5jm0Q7VqhNJ+XWNQ/IVuaWIlU54QzaakgNEKmx56r0HWRFcRHdIgh1OJOIsbCMRGd0KmYatXa7xZF/1XuVx5RfsVyk2F2SaFi+548AT7cUcNj9q+y3Qn4lKKl44KC4Pgij0aioaUzOSW9W9QmAXjC9zLCzPzlAW3bfA/qZ+gHMTedix0siSopG7HpYhfmUqjCRlF9eRLYqkvm1zhj9mP+ijNyfWznqOm/zLow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u9fK4ct5WsLzoGbJAI7PL7odmUZAOAJK8hgPyEeYdw8=;
- b=GBsZPMd4n/iltapjT3g+xeBTrk3YzxPnoa5wiOCrAMQyDyOQ4Rwu07/mxTA7OMtWyzV/iIULiexhSVcXfNW6zF1WtLlkKtAIWPJmVGgsYSmkFJoIEvTi4B0Sb6tUKKxHuhFu1RXKYvBLAfjdG+Gnj6O8yJTy2SuI4BdZ0hIchaQ=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PAWPR04MB10006.eurprd04.prod.outlook.com (2603:10a6:102:380::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Mon, 28 Aug
- 2023 19:09:37 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::d4ee:8daa:92f4:9671%3]) with mapi id 15.20.6699.034; Mon, 28 Aug 2023
- 19:09:36 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Ulf Hansson
-	<ulf.hansson@linaro.org>
-CC: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F35929AB
+	for <imx@lists.linux.dev>; Mon, 28 Aug 2023 19:11:39 +0000 (UTC)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-9a2185bd83cso466134866b.0
+        for <imx@lists.linux.dev>; Mon, 28 Aug 2023 12:11:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1693249897; x=1693854697;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bJpk0152nUK7MAn+YHkTbH/h73b7L0QzmLeU7H8QQVw=;
+        b=BMHlkVU7vOt8RhnhlNEUEQzhKuwUno5YJ5C8yTDb2SMAZ4ImaLh9xAQMSudCjWyjCU
+         nErdsiSar1QqN3KvJmtYDNs/19kXyCbx5kqTHC5RkkeBlxMrJ2IyF6IQ3qmswiKKgPPV
+         Mg9LpGGGeS6Eb87m4ewNlPtmQ6LLCjPzzn8hSdtD65Z2G40Lbz8OYzgIJUujZESPkxJ1
+         xwgxm0GoX5wBkKUhYh/fIz1gwNRK9NKHtwAFNMPvE2IqGxXycGUg+ysfJSiS6kOGEVon
+         KeF3Tad1LzUerju5/ZtCnGjKQ9VICYuE7+P16eL6+buPA827pUrPBAnxiQ9J1S4wAiLT
+         2AZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693249897; x=1693854697;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJpk0152nUK7MAn+YHkTbH/h73b7L0QzmLeU7H8QQVw=;
+        b=WjxhqI7IHkeDYnd5fnxNPQdgyGHSAwl4cUwN1+uA1pGPpoT8d3QXR2Pzi6t0QqYvpq
+         Yc44rn0d0nMxDd5wSCMCFwFCDrSyuhjoJg7NgCBB8rbOmKvPHzE4j80lLrQkIPoIO5NU
+         j6QErRRgSJReX1/HiZciqccLEpB+l3xKMYG17WpT9y2AeLHREGPTrzlFnvaOMxruDKpL
+         57cy/vtEdGfP4cfJNmmSDwMEetlZI3ootwdmqXbta5DOWiH8EL1NGV16MVWbnMG+6kBz
+         XXTdf+X/uNiz1OA5DoGx5jOPgH49rFvJv6gQY6H5lmAKsGKU04qlwXWvbgsH0p1gf8U3
+         9m1Q==
+X-Gm-Message-State: AOJu0Yy2ovoAvWtZCPlJs1Z0t0Om2r6pdV0i5AEiJlUIQpJMQ36NO+OR
+	X3aNmK9XscKYpqnPU1Ud/D+AXA==
+X-Google-Smtp-Source: AGHT+IFAlLZZ7/DQKN9k+MBu0E+BaiPGpFYDLSfsZbH5elEegq7maUi4CQhGqVXz5H6zpB+iEWMoug==
+X-Received: by 2002:a17:907:770f:b0:9a5:7759:19c0 with SMTP id kw15-20020a170907770f00b009a5775919c0mr6873428ejc.64.1693249897414;
+        Mon, 28 Aug 2023 12:11:37 -0700 (PDT)
+Received: from [192.168.0.22] ([77.252.47.225])
+        by smtp.gmail.com with ESMTPSA id l21-20020a1709061c5500b009882e53a42csm4947462ejg.81.2023.08.28.12.11.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Aug 2023 12:11:36 -0700 (PDT)
+Message-ID: <465e61a0-895d-54b9-d1b9-424265c82855@linaro.org>
+Date: Mon, 28 Aug 2023 21:11:35 +0200
+Precedence: bulk
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
 Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-Thread-Topic: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-Thread-Index: AQHZ2eMvcFa+iifit0Wlgxkc5z6VlA==
-Date: Mon, 28 Aug 2023 19:09:36 +0000
-Message-ID:
- <PAXPR04MB9185D87525AA88A8C3543EEA89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ dl-linux-imx <linux-imx@nxp.com>
 References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
  <CAPDyKFqsn6kVjPFUdVyRxNDiOaHO9hq=9c+6eAK4N-v-LVWUPw@mail.gmail.com>
  <PAXPR04MB91858254554272C90822FED1891DA@PAXPR04MB9185.eurprd04.prod.outlook.com>
@@ -53,140 +70,100 @@ References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
  <154b36de-652b-3931-96e6-04e99253a09f@linaro.org>
  <PAXPR04MB91852AD4E5242306B57A910B89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
  <f3e89479-14ab-d1d0-ad87-6f457f313c39@linaro.org>
-In-Reply-To: <f3e89479-14ab-d1d0-ad87-6f457f313c39@linaro.org>
-Accept-Language: en-US
+ <PAXPR04MB9185D87525AA88A8C3543EEA89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PAWPR04MB10006:EE_
-x-ms-office365-filtering-correlation-id: 4d21eb5f-d99c-4d61-f8aa-08dba7fa524d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- rSXPh0JzrY78uGuApECvcFmsc42hHBo3aGiWDTAf4SAJXg2rOPMgA1n2faxcW6sRVHXnE+16/QAVlgIZFezRBSDnX3I0Qd+trb2FlZaV9pPry0XKy2AHCg2hCaRz/njYFbr+UxkSjFO+zhcD+G3VvyqEl6Wzl6X8y8SyGZ4s0fxf5rKfjLCbxFDMKtLzQYrYy9sf8f2TxfAdV98BzBy3++4u4AfEhjGKEC0JsfCjPQKZlSS5MuOwXEyoxuhdHUD79cv8MyKFwp/kTKtmYxyDZ34mrHMFCF+6OPF5Rx9A6pmg+MKHz5bhd09gG+4Z0N9Lznoh5C+ZBuQRP1wbVrpJ6VkDowXByL6Lh76i97AFIfugCZ4FA8ftA8nkQLiUDgkhTfMrgcnypDYR9QKTcTR+oWszicj2OdhEF8PJdZFq0ft+Ag9OLKiNL2SRjgi4aBQtaf0WRSSwQh9aHA2ognbIhqnMuVpOdkfGY6+y/bdfhBwRlNCE/onPiaxDSnRRFrGwlwF/UAYce5rfjL0A7l6VZuwLm0/e4JxoflG0cAHNsPM5qvAoS1pnXp8Ex4a0HCMwcjqQH2rmHy61YZcz/RcYYFSggpR1R87VIBDMg90JNy0MQ9zuj6N6fL/E5xWm8aaF
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(39860400002)(376002)(366004)(346002)(1800799009)(186009)(451199024)(6506007)(7696005)(71200400001)(9686003)(33656002)(86362001)(38100700002)(38070700005)(122000001)(55016003)(83380400001)(2906002)(26005)(53546011)(55236004)(478600001)(76116006)(110136005)(52536014)(66946007)(66556008)(66476007)(4326008)(8676002)(8936002)(5660300002)(44832011)(41300700001)(7416002)(66446008)(54906003)(316002)(64756008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?bVlPVUpocGZZY0pCczM5ZHVLZThnOCtnMUluVlJzMDRRZklLN2drRDBnSDVz?=
- =?utf-8?B?dXFLNFhIMGlyQmsxSUFWdFJMOXMxWk9ab2pwVkRTeEcxZTkrRVpIUTV2STVq?=
- =?utf-8?B?aC8wTXpaZXZVemJqZHB4UTZJYTVRVE1FbFBDYWhFdWd1cWJNWHU5N0FaVWpz?=
- =?utf-8?B?M1Fkbi84Z3BFRWcxcERiUCtjTWtVRmJkc09JWW5UNHRPUWkvT241d1FFZTNJ?=
- =?utf-8?B?V1FVL3NzcGNWQ2U5bC83dlFUVGY1K1ZjdW9RbVhYQnRkeXhRTTVUb0xuajRY?=
- =?utf-8?B?VWMvMUl1ZWhNOHVJOGR1OG1oZVNRMUhDQkRoT3NUeXVxNjVWM2NOeHhVdU80?=
- =?utf-8?B?VGJ1ZFZka1NTTDFndlp2MkUzK3BmSjc4enZkTHNmU0V1ZTJZWDlZZ01sMURu?=
- =?utf-8?B?MTJkSjEyMW5GdWpQeWUxazZYS3BQY3ZYcGRZOFdwc00yV25VcWJyM2YxMFBJ?=
- =?utf-8?B?aGlxSmZrQzRhTmlWTEdzRlRTQVNEVThnTnY4RFJqR1ZlU0FlV3lBaFh3QUpG?=
- =?utf-8?B?MXg2Um9vcHhJTWY4T2FsZ1I3QVYxNWFKT2prNGF6K0ZJbW1Nd2wxT3hsbmY1?=
- =?utf-8?B?dGZXM2EvdGlUR2xWeW1oSitJeEVTY083SmFSRm0ycTRkQWtHYi8wMFdudldu?=
- =?utf-8?B?OEs0QUlSMzVYM2d1SzVDcEh6dzdDa2pBbXB1LzRaRUZKbWJlMnVwczRkR1A3?=
- =?utf-8?B?WXpnZ21LZXVmMUpCN3BlTUlzWGYxYks1VDJJUTZkZ3VOdE5pRHEzVVNJSmR4?=
- =?utf-8?B?WUN4Qm9OQXdGdUJjdXBqSHlTYVJzNnJtTjRtVFg2Z0o4OUZPTnNhOXdSZjV6?=
- =?utf-8?B?RXZ2U08rSlIvSFBONHRIZjZEc3JjTGgySmMvOTBlOHhUblhsZ3lGenNQZVpr?=
- =?utf-8?B?dnhqZFpySUxPUTdaMFFFekJJSUdTT2VJYVl0cUkzR0pYNzd2cWZueS9DekZW?=
- =?utf-8?B?SW83S0Z4aXBWZDZhVE16eDhEVm56Z0NrZmZIVzlwUnZabjlrYVVjZDlBUFo4?=
- =?utf-8?B?c3l4cWxDbEliUkhnZk9vcHhVS0Jlb1plaFNrTmFrajh0dWExZlUzYUV2dDdI?=
- =?utf-8?B?K2RqOW5wMFJTWUZzb1NrNnFTbFFEaVVWQ2RJeE9ZL2ZubDJhSHRuL3pyTk1Q?=
- =?utf-8?B?RDlXcXJjcDBxK0Q3WUZYS3J1SzNlNjNuU09waVozOGtuRlRhV3IzbXV1bWs0?=
- =?utf-8?B?YjN1RWpVK1NBUmp1bXBCOUdBWW1JKzVzd0xDa0F4RXk0eVczaXQrNnpFcWhy?=
- =?utf-8?B?S1ZoOEM1V0xVY3BwUEFjY2xSVGlxTlExQU5ZYlcyM3Q2VFNiYTY4Si9ud2NV?=
- =?utf-8?B?L3BaMzBHUEhqV290ZjBzSThrNzNvd3Zzc1lNaGdVUElIdENYYWd5cGhxbHRx?=
- =?utf-8?B?MzZzaUtDWWVzSjJ5SmhLT3FCTmJGUjh2NnFxQkFXcGRRd2ZDY2xURHpTbkls?=
- =?utf-8?B?MEVsdW5kSlQxcmVrMlNqbS94cEhrUkxYVkoxMXF2WFNqR2NxWTZKN2QwR1NO?=
- =?utf-8?B?dU1GcXhyOVhNMnlURFJkV2Q5MTkwRDRrZi9GVzZyQWl2WjdQSGVHUCtXdzM0?=
- =?utf-8?B?YWd5SlM1TE5CRUovcGhwV2lPS0RzRDMrOEJ5Q2VYWkVBUGVVeWI2dHI2MGtN?=
- =?utf-8?B?enhVUUt1M1BuM3lRbWhDTE1kOFhZelhmbEhna1A5dHJ2ckpzR2NzUUN6aWhy?=
- =?utf-8?B?MUJUVURkbEI2TVR1S1AwUWltc3hPUlRJUHFBaDcyMjZ1c2pPZ3hXMTJ0TDRU?=
- =?utf-8?B?bXVqZktQZ3hxWDBaTXlibGpLWW9EdUswWjRzODFrUEcvbmdwaHRtT2phOTNq?=
- =?utf-8?B?akZ3OUtzbmpLTllnb0NVeUEvSlVnREZFaStjalJibW1VSXhWSStmUlBkcHNj?=
- =?utf-8?B?VTZPbzhlaS9EaVJsQ1pjcmJ4U2xkbVVMTEFOTEtVdU5WY1VMRUUrTUdEWFUv?=
- =?utf-8?B?RitDTlR3RGJQa1AwZngzSlh3YzZKd0tMS2o0cXcxK0hzZExpWlpNMHlaQzdE?=
- =?utf-8?B?T0c3TFdmK091WXN3RFJvYkMyRGpFMzFHY3EwQVRPenErUGtlcVpqNWFlRlQr?=
- =?utf-8?B?cUZFZXhWK0grVUdVUkJKellrQnF3dzZpc0FycENYL2llbGZGeHVsblRqUEVH?=
- =?utf-8?Q?cc+J8JWMX+yGgmhKiGh74l2Ik?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Precedence: bulk
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d21eb5f-d99c-4d61-f8aa-08dba7fa524d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2023 19:09:36.7387
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +Icc0/GrWc8BrVL86SVUoeUmrRsLK5o5XgWKQTZzXvi5cwpYOpmU3og1f+UK/yV7De2DOGbe66cDNpLncuZkUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10006
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <PAXPR04MB9185D87525AA88A8C3543EEA89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS3J6eXN6dG9mIEtvemxv
-d3NraSA8a3J6eXN6dG9mLmtvemxvd3NraUBsaW5hcm8ub3JnPg0KPiBTZW50OiBNb25kYXksIEF1
-Z3VzdCAyOCwgMjAyMyAxOjUzIFBNDQo+IFRvOiBTaGVud2VpIFdhbmcgPHNoZW53ZWkud2FuZ0Bu
-eHAuY29tPjsgVWxmIEhhbnNzb24NCj4gPHVsZi5oYW5zc29uQGxpbmFyby5vcmc+DQo+IENjOiBS
-b2IgSGVycmluZyA8cm9iaCtkdEBrZXJuZWwub3JnPjsgS3J6eXN6dG9mIEtvemxvd3NraQ0KPiA8
-a3J6eXN6dG9mLmtvemxvd3NraStkdEBsaW5hcm8ub3JnPjsgQ29ub3IgRG9vbGV5IDxjb25vcitk
-dEBrZXJuZWwub3JnPjsNCj4gTGlhbSBHaXJkd29vZCA8bGdpcmR3b29kQGdtYWlsLmNvbT47IE1h
-cmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz47DQo+IGlteEBsaXN0cy5saW51eC5kZXY7IGRl
-dmljZXRyZWVAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0K
-PiBkbC1saW51eC1pbXggPGxpbnV4LWlteEBueHAuY29tPg0KPiBTdWJqZWN0OiBbRVhUXSBSZTog
-W1BBVENIIDEvMl0gZHQtYmluZGluZ3M6IHBvd2VyOiBBZGQgcmVndWxhdG9yLXBkIHlhbWwgZmls
-ZQ0KPiA+Pj4+Pj4+IEFyZSB5b3Ugc3VnZ2VzdGluZyB0byBtb3ZlIHRoZSByZWd1bGF0b3ItcGQg
-dG8gdGhlIGlteCBkaXJlY3RvcnkNCj4gPj4+Pj4+PiBhbmQgYWRkIGEgY29tcGFueSBwcmVmaXgg
-dG8gdGhlIGNvbXBhdGlibGUgc3RyaW5nPw0KPiA+Pj4+Pj4NCj4gPj4+Pj4+IFRoZXJlIGlzIG5v
-IHN1Y2ggcGFydCBvZiBpTVggcHJvY2Vzc29yIGFzIHN1Y2gNCj4gPj4+Pj4+IHJlZ3VsYXRvci1w
-b3dlci1kb21haW4sIHNvIEkgZG9uJ3QgcmVjb21tZW5kIHRoYXQgYXBwcm9hY2guIERUUw0KPiA+
-Pj4+Pj4gbm9kZXMgcmVwcmVzZW50IGhhcmR3YXJlLCBub3QgeW91ciBTVyBsYXllcnMuDQo+ID4+
-Pj4+Pg0KPiA+Pj4+Pg0KPiA+Pj4+PiBUaGF0J3Mgbm90IGFsd2F5cyB0aGUgY2FzZSwgYXMgd2Ug
-ZG8gc29tZXRpbWVzIG5lZWQgYSB2aXJ0dWFsIGRldmljZS4NCj4gPj4+Pj4gQXMgYW4gZXhhbXBs
-ZSwgdGhlICJyZWd1bGF0b3ItZml4ZWQiIGFjdHMgYXMgYSBzb2Z0d2FyZQ0KPiA+Pj4+PiBhYnN0
-cmFjdGlvbiBsYXllciB0byBjcmVhdGUgdmlydHVhbCByZWd1bGF0b3IgZGV2aWNlcyBieQ0KPiA+
-Pj4+PiBpbnRlcmZhY2luZyB3aXRoIHRoZSB1bmRlcmx5aW5nDQo+ID4+Pj4gR1BJTyBkcml2ZXJz
-Lg0KPiA+Pj4+DQo+ID4+Pj4gTm90IHRydWUuIFRoaXMgaXMgYSByZWFsIHJlZ3VsYXRvciBkZXZp
-Y2UuIFJlYWwgaGFyZHdhcmUgb24gdGhlIGJvYXJkLg0KPiA+Pj4+IFlvdSBjYW4gZXZlbiBzZWUg
-YW5kIHRvdWNoIGl0Lg0KPiA+Pj4+DQo+ID4+Pg0KPiA+Pj4gVGhlIHBoeXNpY2FsIGhhcmR3YXJl
-IGNvbXBvbmVudCBpcyB0aGUgR1BJTyBwaW4sIHdoaWNoIGlzIHdoYXQgeW91DQo+ID4+PiBjYW4g
-b25seQ0KPiA+PiB0b3VjaC4NCj4gPj4NCj4gPj4gTm8uIFRoZSByZWd1bGF0b3IgaXMgdGhlIGNo
-aXAuDQo+ID4+DQo+ID4NCj4gPiBJbiB0aGUgZGVmaW5pdGlvbiBvZiBkdHMgbm9kZSBiZWxvdywg
-d2hlcmUgaXMgdGhlIGNoaXA/IFRoZSByZWFsIGhhcmR3YXJlIGlzIGp1c3QNCj4gYSBHUElPIFBp
-bi4NCj4gPiAgICAgcmVnMTogcmVndWxhdG9yLTEgew0KPiA+ICAgICAgIGNvbXBhdGlibGUgPSAi
-cmVndWxhdG9yLWZpeGVkIjsNCj4gPiAgICAgICByZWd1bGF0b3ItbmFtZSA9ICJSRUcxIjsNCj4g
-PiAgICAgICByZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDwzMDAwMDAwPjsNCj4gPiAgICAgICBy
-ZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwzMDAwMDAwPjsNCj4gPiAgICAgICBncGlvID0gPCZs
-c2lvX2dwaW80IDE5IEdQSU9fQUNUSVZFX0hJR0g+Ow0KPiA+ICAgICAgIGVuYWJsZS1hY3RpdmUt
-aGlnaDsNCj4gPiAgICAgfTsNCj4gDQo+IFRoZXJlIGlzIGEgY2hpcC4gVGhpcyBpcyB0aGUgY2hp
-cC4gSWYgeW91IGhhdmUgdGhlcmUgb25seSBHUElPIHBpbiwgdGhlbiB5b3VyIERUUyBpcw0KPiBq
-dXN0IHdyb25nLiBEcm9wIGl0LiBJZiB5b3UgbGVhcm4gZnJvbSB3cm9uZyBEVFMsIHRoZW4gc3Vy
-ZSwgcG93ZXItZG9tYWluLQ0KPiByZWd1bGF0b3Igc2VlbXMgbGlrZSBncmVhdCBpZGVhLi4uDQo+
-IA0KDQpXaGVuIHlvdSB0YWxrIGFib3V0IHRoZSBjaGlwLCBjYW4geW91IHBsZWFzZSBiZSBtb3Jl
-IHNwZWNpZmljPw0KDQpSZWdhcmRpbmcgdGhlIGR0cyBub2RlLCBob3cgYWJvdXQgdGhlIGV4YW1w
-bGUgaW4gdGhlIGZpeGVkLXJlZ3VsYXRvci55YW1sIHVuZGVyIHRoZSBiaW5kaW5ncyBkaXJlY3Rv
-cnkuDQoNCiAgICByZWdfMXY4OiByZWd1bGF0b3ItMXY4IHsNCiAgICAgIGNvbXBhdGlibGUgPSAi
-cmVndWxhdG9yLWZpeGVkIjsNCiAgICAgIHJlZ3VsYXRvci1uYW1lID0gIjF2OCI7DQogICAgICBy
-ZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDwxODAwMDAwPjsNCiAgICAgIHJlZ3VsYXRvci1tYXgt
-bWljcm92b2x0ID0gPDE4MDAwMDA+Ow0KICAgICAgZ3BpbyA9IDwmZ3BpbzEgMTYgMD47DQogICAg
-ICBzdGFydHVwLWRlbGF5LXVzID0gPDcwMDAwPjsNCiAgICAgIGVuYWJsZS1hY3RpdmUtaGlnaDsN
-CiAgICAgIHJlZ3VsYXRvci1ib290LW9uOw0KICAgICAgZ3Bpby1vcGVuLWRyYWluOw0KICAgICAg
-dmluLXN1cHBseSA9IDwmcGFyZW50X3JlZz47DQogICAgfTsNCg0KSWYgeW91IHRha2UgYSBsb29r
-IGF0IHRoZSBmaXhlZCByZWd1bGF0b3IgZHJpdmVyIChmaXhlZC5jKSwgSSBkb24ndCB0aGluayB5
-b3UnbGwgZmluZCBhbnl0aGluZyByZWxhdGVkIHRvIGEgaGFyZHdhcmUgDQpjb21wb25lbnQgKGNo
-aXApIG90aGVyIHRoYW4gdGhlIEdQSU8gUGluLg0KDQpUaGFua3MsDQpTaGVud2VpDQoNCj4gPg0K
-PiA+Pj4gVGhlIHJlZ3VsYXRvciBmdW5jdGlvbnMgdmlydHVhbGx5IHRocm91Z2ggc29mdHdhcmUg
-bGF5ZXIgYWJvdmUgb2YNCj4gPj4+IHRoZSBHUElPIGRyaXZlci4gV2hpbGUgd2UgbWF5IGNhbGwg
-aXQgYSAicmVndWxhdG9yIiBvciB3aGF0ZXZlcg0KPiA+Pj4gZWxzZSwgdGhpcyBjYW5ub3Qgb2Jz
-Y3VyZSB0aGUgZmFjdCB0aGF0IHRoZSB1bmRlcmx5aW5nIGhhcmR3YXJlIGlzDQo+ID4+PiBqdXN0
-IGEgR1BJTyBwaW4gYmVpbmcNCj4gPj4gdXNlZCBpbiBhIHNwZWNpYWxpemVkIHdheS4NCj4gPj4N
-Cj4gPj4gVGhlIHJlZ3VsYXRvciBpcyBzb21lIHRpbnkgbGl0dGxlIGJveCwgeW91IGNhbiB0b3Vj
-aCBhbmQgY2FsbGVkDQo+ID4+IHRpLHRwczUxNjMyIG9yIHNpbWlsYXIuDQo+ID4+DQo+ID4NCj4g
-PiBXZSBhcmUgdGFsa2luZyBhYm91dCB0aGUgc3BlY2lmaWMgInJlZ3VsYXRvci1maXhlZCIgZHJp
-dmVyLCB3aHkgZGlkIHlvdSBicmluZyB1cA0KPiAidGksdHBzNTE2MzIiIGhlcmU/DQo+IA0KPiBK
-dXN0IGFuIGV4YW1wbGUuIENhbiBiZSBUUFMxMjMwOTguDQo+IA0KPiBCZXN0IHJlZ2FyZHMsDQo+
-IEtyenlzenRvZg0KDQo=
+On 28/08/2023 21:09, Shenwei Wang wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Sent: Monday, August 28, 2023 1:53 PM
+>> To: Shenwei Wang <shenwei.wang@nxp.com>; Ulf Hansson
+>> <ulf.hansson@linaro.org>
+>> Cc: Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
+>> <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
+>> Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+>> imx@lists.linux.dev; devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
+>> dl-linux-imx <linux-imx@nxp.com>
+>> Subject: [EXT] Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
+>>>>>>>>> Are you suggesting to move the regulator-pd to the imx directory
+>>>>>>>>> and add a company prefix to the compatible string?
+>>>>>>>>
+>>>>>>>> There is no such part of iMX processor as such
+>>>>>>>> regulator-power-domain, so I don't recommend that approach. DTS
+>>>>>>>> nodes represent hardware, not your SW layers.
+>>>>>>>>
+>>>>>>>
+>>>>>>> That's not always the case, as we do sometimes need a virtual device.
+>>>>>>> As an example, the "regulator-fixed" acts as a software
+>>>>>>> abstraction layer to create virtual regulator devices by
+>>>>>>> interfacing with the underlying
+>>>>>> GPIO drivers.
+>>>>>>
+>>>>>> Not true. This is a real regulator device. Real hardware on the board.
+>>>>>> You can even see and touch it.
+>>>>>>
+>>>>>
+>>>>> The physical hardware component is the GPIO pin, which is what you
+>>>>> can only
+>>>> touch.
+>>>>
+>>>> No. The regulator is the chip.
+>>>>
+>>>
+>>> In the definition of dts node below, where is the chip? The real hardware is just
+>> a GPIO Pin.
+>>>     reg1: regulator-1 {
+>>>       compatible = "regulator-fixed";
+>>>       regulator-name = "REG1";
+>>>       regulator-min-microvolt = <3000000>;
+>>>       regulator-max-microvolt = <3000000>;
+>>>       gpio = <&lsio_gpio4 19 GPIO_ACTIVE_HIGH>;
+>>>       enable-active-high;
+>>>     };
+>>
+>> There is a chip. This is the chip. If you have there only GPIO pin, then your DTS is
+>> just wrong. Drop it. If you learn from wrong DTS, then sure, power-domain-
+>> regulator seems like great idea...
+>>
+> 
+> When you talk about the chip, can you please be more specific?
+
+What to say more? The device node you quoted above is the regulator. You
+brought specific example and now claim this is not a regulator, but just
+GPIO. Please fix your DTS.
+
+> 
+> Regarding the dts node, how about the example in the fixed-regulator.yaml under the bindings directory.
+
+That's an example, how is it related to anything?
+
+> 
+>     reg_1v8: regulator-1v8 {
+>       compatible = "regulator-fixed";
+>       regulator-name = "1v8";
+>       regulator-min-microvolt = <1800000>;
+>       regulator-max-microvolt = <1800000>;
+>       gpio = <&gpio1 16 0>;
+>       startup-delay-us = <70000>;
+>       enable-active-high;
+>       regulator-boot-on;
+>       gpio-open-drain;
+>       vin-supply = <&parent_reg>;
+>     };
+> 
+> If you take a look at the fixed regulator driver (fixed.c), I don't think you'll find anything related to a hardware 
+> component (chip) other than the GPIO Pin.
+
+That's a driver. How is it related to this discussion? Bindings are not
+about drivers.
+
+
+Best regards,
+Krzysztof
+
