@@ -1,120 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE7610F4
-	for <imx@lists.linux.dev>; Mon, 28 Aug 2023 21:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED3CC433C9
-	for <imx@lists.linux.dev>; Mon, 28 Aug 2023 21:13:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693257233;
-	bh=Ppe8+p29OpZk3rbylj8fht9T7CmPmpiixY5GfGHua0E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d3dVyCIGfHTBKRalWRYwYC5OjBmgXAQX5cOGn/tJi05U173ZRwRSK79Vr8v9uFMqJ
-	 +Zt5FQPAiI4eKuASq8CNPdimQ8OHj1BT16f7Cq6MZwNvrUPm3aJD25qw5WJ4ofyesR
-	 h0YSdZExp7aWeQpFaaXihthZYSM5/P5RBk4ML0eKf+5w/R2OMW22NsN6W2cvdJ0/Js
-	 h2hyOUavYv5WYg9z/+nhtk6KvrZ3X8r1IcIlo3NGT8RSmQ4qPvb0xbCNF549IabtES
-	 eYGCQGhVKfxNs74OnX3IAVxEddkZlTMLuJIIOB8bC0JG+ISALIYdD47I+rK/4htzNk
-	 zaAtx9KWtBi6g==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2bbad32bc79so54964881fa.0
-        for <imx@lists.linux.dev>; Mon, 28 Aug 2023 14:13:53 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxVOb1NbGVUPXgOMAJ5dhTYnOCQW/QEV8OHWZCqIZi8MPArPs3r
-	jReU20qAIEJ6maj9aiuipJPm2YVdiZRPT4cRbg==
-X-Google-Smtp-Source: AGHT+IFP9EEfxSRqcNnINa90szPTTfdsfOVO6T6jksgEg/Fal2zDHTsroKNHyRrkkbYV00WL7Dn0BQnUYDAr6Uo1JZg=
-X-Received: by 2002:a2e:7810:0:b0:2bc:e46d:f4d0 with SMTP id
- t16-20020a2e7810000000b002bce46df4d0mr9678271ljc.2.1693257231210; Mon, 28 Aug
- 2023 14:13:51 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0FE13FF4
+	for <imx@lists.linux.dev>; Tue, 29 Aug 2023 09:28:35 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (unknown [217.70.183.201])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id DF7E4CDE63
+	for <imx@lists.linux.dev>; Tue, 29 Aug 2023 09:16:21 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 508541BF207;
+	Tue, 29 Aug 2023 09:16:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1693300574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9vq4ofEpHyOMcy5b5TahWFabzG08hTAP6j/W1z24Ls4=;
+	b=EO9fZGZj4zW35tOltEoCC0KpG+J/t9xY52fGD7MMn72vc92p0culeB24Sgw72b9zWBgMUD
+	5VpQCIv7B2+DUz9b0Usyfy2zTQdDbEqrRqDulP6p3yMfFykZ73BfupGRbpbkyN4T8SZ+s6
+	USd0LZqzAkTcK3Po6m7jLwAsvEKZ8bA0ou9F9fxY78WLQI9ffiFmkGAKKlMIgCXfn1Q0Eb
+	qJMJNCVk6GO/jZhdtxBDbt6s3liyg5P/xI9TMDyeYvOpD2igO+ibBZ3zc12jd0VPt+l8Pp
+	BN2ZRWvewcN0gJ/KjqXTl/2xYSsEzIsrqs06RJnUSFAHfAscyD02TITD62DXbw==
+Date: Tue, 29 Aug 2023 11:16:11 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, linux-i3c@lists.infradead.org (moderated
+ list:SILVACO I3C DUAL-ROLE MASTER), linux-kernel@vger.kernel.org (open
+ list), imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] i3c: master: svc: fix probe failure when no i3c
+ device exist
+Message-ID: <20230829111611.12f91348@xps-13>
+In-Reply-To: <20230828192502.3525418-2-Frank.Li@nxp.com>
+References: <20230828192502.3525418-1-Frank.Li@nxp.com>
+	<20230828192502.3525418-2-Frank.Li@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230818153446.1076027-1-shenwei.wang@nxp.com>
- <PAXPR04MB91858254554272C90822FED1891DA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CAPDyKFoV2Z=-WUiF3SgXqhF+K+r5QqsLgz8_hau0WKfZxTzYpg@mail.gmail.com>
- <PAXPR04MB9185F6AA20B0440B8FAB847789E3A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <4e2c18e3-b1ed-6361-3998-5de060d2bcf0@linaro.org> <PAXPR04MB9185957B729588D3E7CA3A5089E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <51fe3126-16ba-ade6-b106-e3683f96ad26@linaro.org> <PAXPR04MB9185DC79721E78E631F9889589E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <154b36de-652b-3931-96e6-04e99253a09f@linaro.org> <PAXPR04MB91852AD4E5242306B57A910B89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <f3e89479-14ab-d1d0-ad87-6f457f313c39@linaro.org> <PAXPR04MB9185D87525AA88A8C3543EEA89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <465e61a0-895d-54b9-d1b9-424265c82855@linaro.org> <PAXPR04MB91851302EAB989EC8261AEFD89E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <2bd01950-20e0-51f1-91d2-88c9ee2e8dc0@linaro.org> <PAXPR04MB9185526385C775306A87D85989E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB9185526385C775306A87D85989E0A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Mon, 28 Aug 2023 16:13:38 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKki2pcf+4q_7e-dEH+B59zr8uUtv-Y7ZCP0hb9jX25PA@mail.gmail.com>
-Message-ID: <CAL_JsqKki2pcf+4q_7e-dEH+B59zr8uUtv-Y7ZCP0hb9jX25PA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd yaml file
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Mon, Aug 28, 2023 at 2:49=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com>=
- wrote:
->
->
->
-> > -----Original Message-----
-> > From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Sent: Monday, August 28, 2023 2:31 PM
-> > To: Shenwei Wang <shenwei.wang@nxp.com>; Ulf Hansson
-> > <ulf.hansson@linaro.org>
-> > Cc: Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
-> > <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>=
-;
-> > Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
-> > imx@lists.linux.dev; devicetree@vger.kernel.org; linux-kernel@vger.kern=
-el.org;
-> > dl-linux-imx <linux-imx@nxp.com>
-> > Subject: Re: [EXT] Re: [PATCH 1/2] dt-bindings: power: Add regulator-pd=
- yaml
-> > > The fixed-regulator is a virtual regulator driver that uses the GPIO =
-pin.
-> >
-> > We do not talk about drivers but bindings and DTS. Why do you bring aga=
-in
-> > drivers, all the time?
-> >
-> > > You claimed this
-> > > as a hardware chip.
-> >
-> > ??? Sorry, this is getting boring. The DTS-snippet is a hardware chip.
-> > If it is not, then drop it from your DTS. I insist. Srsly, third time I=
- insist.
-> >
-> >
-> > >
-> > > The regulator-pd driver also uses the same GPIO pin.
-> >
-> > Again, what is with the drivers? Can you stop bringing it to the discus=
-sion?
-> >
->
-> I have to admit you have a real talent for debate.
+Hi Frank,
 
-It takes 2...
+Frank.Li@nxp.com wrote on Mon, 28 Aug 2023 15:25:02 -0400:
 
-You've gotten feedback from multiple people that your proposal is not
-going to be accepted. The prior attempt of the same thing had similar
-feedback from even more people. Please go re-read the responses until
-you understand.
+> If there are not i3c device, all ccc command will get NACK. Set
 
-For fixed-regulator, I can tell you very easily what the h/w looks like:
+		no					NACKed?
 
-Vfix---|gate|---Vfix-gated
-            |
-GPIO--------|
+> i3c_ccc_cmd::err as I3C_ERROR_M2.
 
-'gate' here may be a chip or discrete transistor. That's a very common
-board level component.
+This sentence should come last and be slightly more explicit.
 
-If you want to discuss this any further, describe the h/w in terms of
-simplified schematics. Otherwise, there is nothing more to discuss.
+> Return success when no i3c device found at svc_i3c_master_do_daa_locked().
 
-Rob
+Please explain why this is important/useful.
+
+> Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+
+Shall we consider a backport into stable kernels?
+
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/i3c/master/svc-i3c-master.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
+-i3c-master.c
+> index 770b40e28015e..a5620103acb73 100644
+> --- a/drivers/i3c/master/svc-i3c-master.c
+> +++ b/drivers/i3c/master/svc-i3c-master.c
+> @@ -789,6 +789,9 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3=
+c_master *master,
+>  				 */
+>  				break;
+>  			} else if (SVC_I3C_MSTATUS_NACKED(reg)) {
+> +				/* No I3C devices attached */
+> +				if (dev_nb =3D=3D 0)
+> +					break;
+
+\n ?
+
+>  				/*
+>  				 * A slave device nacked the address, this is
+>  				 * allowed only once, DAA will be stopped and
+> @@ -1263,11 +1266,17 @@ static int svc_i3c_master_send_ccc_cmd(struct i3c=
+_master_controller *m,
+>  {
+>  	struct svc_i3c_master *master =3D to_svc_i3c_master(m);
+>  	bool broadcast =3D cmd->id < 0x80;
+> +	int ret;
+> =20
+>  	if (broadcast)
+> -		return svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
+> +		ret =3D svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
+>  	else
+> -		return svc_i3c_master_send_direct_ccc_cmd(master, cmd);
+> +		ret =3D svc_i3c_master_send_direct_ccc_cmd(master, cmd);
+> +
+> +	if (ret)
+> +		cmd->err =3D I3C_ERROR_M2;
+> +
+> +	return ret;
+>  }
+> =20
+>  static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+
+
+Thanks,
+Miqu=C3=A8l
