@@ -1,70 +1,172 @@
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77FF1847;
-	Wed, 30 Aug 2023 07:37:04 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; t=1693380989; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Xh+6YYqVFs13LVGx52JUHtqyAYhbtT8LtZhcS/UPImSUToBxnKy388gOpj4B2oIM2dBHiPxKKIMO12FWT7wZoCkf2BFhB87Pjr7/3mhq+Yak2G4KoDYLaS36CAgzpVWQsbV8zeQl+FBEhHzhDfLlOiojeruBqV7T7V3u/c+BiZs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1693380989; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jenJxNPD4sIUE9oxP6Q3NIl26GLGxyIRqGTHEYAup1E=; 
-	b=kAGY7pjuGVCOqff8MBzCUCUDmD+rv1Os3tJr3kzxv5KoCMNJYM9PtxZYSXTqLEmJkX3SbwgQnz7TCpMm6G82LJW6XoPvSXBHfAIi2su539vFVD65f1c11qxe4TKTxPcKkk/TcY+bvbZROGcBxzqBmwDnCrVcTPX/fAxrUF3p8+o=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1693380989;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=Date:Date:Message-ID:From:From:To:To:Subject:Subject:In-Reply-To:Cc:Cc:References:MIME-Version:Content-Type:Message-Id:Reply-To;
-	bh=jenJxNPD4sIUE9oxP6Q3NIl26GLGxyIRqGTHEYAup1E=;
-	b=mXnEp4LtfrSD1zWIqdrfehZXi5ir+35k+PpJBpxAdHZH56ArwR5xL694kUG2CgPx
-	IawhbSsjBXrPmdUxqHH8pcK7CxVBI1Ud+e93Ly+ugvVU8AYgnH+ieaXN/49rT7msiBM
-	YsU9rFL3RRMwQZSJUsKN/CpAOF0Sb4midiIvPTS0=
-Received: from lchen-ArchLinux.linux.beauty (180.169.129.130 [180.169.129.130]) by mx.zohomail.com
-	with SMTPS id 1693380987315851.5942332068321; Wed, 30 Aug 2023 00:36:27 -0700 (PDT)
-Date: Wed, 30 Aug 2023 15:36:05 +0800
-Message-ID: <877cpdvv6i.wl-me@linux.beauty>
-From: Li Chen <me@linux.beauty>
-To: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 0/3] Add RC-to-EP doorbell with platform MSI controller
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-In-Reply-To: <20230426203436.1277307-1-Frank.Li@nxp.com> (message from Frank Li on Wed, 26 Apr 2023 16:34:33 -0400)
-Cc: tglx@linutronix.de, aisheng.dong@nxp.com, bhelgaas@google.com,
-        devicetree@vger.kernel.org, festevam@gmail.com, frank.li@nxp.com,
-        imx@lists.linux.dev, jdmason@kudzu.us, kernel@pengutronix.de,
-        kishon@ti.com, krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        lorenzo.pieralisi@arm.com, lpieralisi@kernel.org,
-        manivannan.sadhasivam@linaro.org, maz@kernel.org,
-        ntb@lists.linux.dev, peng.fan@nxp.com, robh+dt@kernel.org,
-        s.hauer@pengutronix.de, shawnguo@kernel.org
-References: <20230426203436.1277307-1-Frank.Li@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEA7636
+	for <imx@lists.linux.dev>; Wed, 30 Aug 2023 09:02:49 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::226])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id C61AACFB61
+	for <imx@lists.linux.dev>; Wed, 30 Aug 2023 08:52:22 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4BEE4C0005;
+	Wed, 30 Aug 2023 08:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1693385535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K3IPdpdNAX0heK2EMwiRVGcgLnPwKyCy4SVQ40VHFd8=;
+	b=cW3eD0wTfmK9yzIdEgMv3RfiJ9U4DJGSduiSl1991omQCdYwjwgeyX4xnZzpgOwexa5CTW
+	S8oUWbXT63DheDhiXrntg+/tGlhmq5WJndCFT6fsTY13oNTEyo+Kx+aD/NsiVGxHHyh8Ni
+	RvcaMS+2ZRr7zo4Co2w5mWsS5YwwDz4zseNxKWj9YTgz805tR1RgcGUKUC0hbKJdZ6Ox2w
+	10ePVbaw5dN9qzwHy2B+aIcJapyzFsc3gROekZlGx2TINsKW0ex3aCirVXE+mVOxX1PIzq
+	HF0KX+ufo9OvdRXS7uatq3Ybwc/zg3p7IMQQKis+DwGGMNF5ONCp+cq0uPJuFw==
+Date: Wed, 30 Aug 2023 10:52:11 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, "moderated list:SILVACO I3C DUAL-ROLE
+ MASTER" <linux-i3c@lists.infradead.org>, open list
+ <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] i3c: master: svc: fix probe failure when no i3c
+ device exist
+Message-ID: <20230830105211.07a2c790@xps-13>
+In-Reply-To: <ZO4OMnPNCYecYImQ@lizhi-Precision-Tower-5810>
+References: <20230828192502.3525418-1-Frank.Li@nxp.com>
+	<20230828192502.3525418-2-Frank.Li@nxp.com>
+	<20230829111611.12f91348@xps-13>
+	<ZO4OMnPNCYecYImQ@lizhi-Precision-Tower-5810>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-ZohoMailClient: External
-
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hi Frank,
 
-Frank Li <Frank.Li@nxp.com> writes:
+Frank.li@nxp.com wrote on Tue, 29 Aug 2023 11:26:42 -0400:
 
-> drivers/misc/pci_endpoint_test.c | 41 +++++++++++
-> drivers/pci/endpoint/pci-epf-core.c | 109 ++++++++++++++++++++++++++++
-> include/linux/pci-epf.h | 16 ++++
-> include/uapi/linux/pcitest.h | 1 +
-> tools/pci/pcitest.c | 16 +++-
-> 5 files changed, 182 insertions(+), 1 deletion(-)
+> On Tue, Aug 29, 2023 at 11:16:11AM +0200, Miquel Raynal wrote:
+> > Hi Frank,
+> >=20
+> > Frank.Li@nxp.com wrote on Mon, 28 Aug 2023 15:25:02 -0400:
+> >  =20
+> > > If there are not i3c device, all ccc command will get NACK. Set =20
+> >=20
+> > 		no					NACKed?
+> >  =20
+> > > i3c_ccc_cmd::err as I3C_ERROR_M2. =20
+> >=20
+> > This sentence should come last and be slightly more explicit.
+> >  =20
+> > > Return success when no i3c device found at svc_i3c_master_do_daa_lock=
+ed(). =20
+> >=20
+> > Please explain why this is important/useful. =20
+>=20
+> If return failure, driver will probe failure when there are no any i3c
+> devices. I3C master supposed support hot join. The probe failure don't
+> make sense if no i3c devices found when master driver probe.
+>=20
+> How about rewrite commit log as
 
-It seems that you forgot to add changes to drivers/pci/endpoint/functions/pci-epf-test.c.
+Much better, let me propose something slightly clearer.
 
-Regards,
-Li
+> "I3C master supports device hot join, it doesn't make sense master driver
+> probe failure when there are no I3C devices.
+>
+> When there are no I3C devices attached, all CCC commands are NACKed. So
+> SVC I3C master fails to probe.
+
+What about:
+
+I3C masters are expected to support hot-join. This means at
+initialization time we might not yet discover any device and this
+should not be treated as a fatal error.
+
+During the DAA procedure which happens at probe time, if no device has
+joined, all CCC will be NACKed (from a bus perspective). This leads to
+an early return with an error code which fails the probe of the master.
+
+Let's avoid this by just telling the core through an I3C_ERROR_M2
+return command code that no device was discovered, which is a valid
+situation. This way the master will no longer bail out and fail to
+probe for a wrong reason.
+
+> Set i3c_cc_cmd:err as I3C_ERROR_M2. So I3C master framework
+> i3c_master_rstdaa_locked() can return expected ERROR code and continue
+> driver probe process.
+>=20
+> Return success at svc_i3c_master_do_daa_locked() if no i3c devices found.
+> So SVC master driver can probe successfully even if no I3C devices are
+> attached"
+>=20
+> >  =20
+> > > Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver=
+") =20
+> >=20
+> > Shall we consider a backport into stable kernels? =20
+>=20
+> Yes, I can add stable tag at next version.
+
+Yes, please.
+
+> >  =20
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/i3c/master/svc-i3c-master.c | 13 +++++++++++--
+> > >  1 file changed, 11 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master=
+/svc-i3c-master.c
+> > > index 770b40e28015e..a5620103acb73 100644
+> > > --- a/drivers/i3c/master/svc-i3c-master.c
+> > > +++ b/drivers/i3c/master/svc-i3c-master.c
+> > > @@ -789,6 +789,9 @@ static int svc_i3c_master_do_daa_locked(struct sv=
+c_i3c_master *master,
+> > >  				 */
+> > >  				break;
+> > >  			} else if (SVC_I3C_MSTATUS_NACKED(reg)) {
+> > > +				/* No I3C devices attached */
+> > > +				if (dev_nb =3D=3D 0)
+> > > +					break; =20
+> >=20
+> > \n ?
+> >  =20
+> > >  				/*
+> > >  				 * A slave device nacked the address, this is
+> > >  				 * allowed only once, DAA will be stopped and
+> > > @@ -1263,11 +1266,17 @@ static int svc_i3c_master_send_ccc_cmd(struct=
+ i3c_master_controller *m,
+> > >  {
+> > >  	struct svc_i3c_master *master =3D to_svc_i3c_master(m);
+> > >  	bool broadcast =3D cmd->id < 0x80;
+> > > +	int ret;
+> > > =20
+> > >  	if (broadcast)
+> > > -		return svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
+> > > +		ret =3D svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
+> > >  	else
+> > > -		return svc_i3c_master_send_direct_ccc_cmd(master, cmd);
+> > > +		ret =3D svc_i3c_master_send_direct_ccc_cmd(master, cmd);
+> > > +
+> > > +	if (ret)
+> > > +		cmd->err =3D I3C_ERROR_M2;
+> > > +
+> > > +	return ret;
+> > >  }
+> > > =20
+> > >  static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev, =20
+> >=20
+> >=20
+> > Thanks,
+> > Miqu=C3=A8l =20
+
+
+Thanks,
+Miqu=C3=A8l
