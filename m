@@ -1,132 +1,128 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2056.outbound.protection.outlook.com [40.107.247.56])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E76FCE;
-	Wed, 30 Aug 2023 18:27:24 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lFmM0U5K/re/I72JvB/LIivFyhvdS5jOM5qjFqKT950tBGn5AopJPmmS15krhbtArYT4RwF17GPsmQylXEK4h8nuHTFShen001BQWMYY7e6S8MjFDWgToaNWsLvneDTjVg7eZmqvanskzuKMgK1mr+EyRMyI3KW2OHH2bn9bYnSDRuf/+h9grOz+AvzwcO9dGpLJGIiJH4t069q8XhSo0s21xdrJDZqz8FWs7G4iLLpA5ATbfKwkeWMP263RVovQkNgMEkClsG/CY11kwmomZkhnzO8p/ZkJG2GXSk2m5OrVO6GO3b7amzchaKxeehuBD/h62yoDWko0nHZHGvmvOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UnP7U9jS81eVV6fyH48zwT6sfcUWwvbka9JYFNwBrok=;
- b=VlAO8GhLh1UmSZqLpTHqUMtXLjBfZZ+k/S1L3s7uMGILQSR9w8aRT74v1g6fkkrU568NeCpZqNP2t4l7um681KcawOsQTNvX7eh+5C8ISwilX5M3/kgpt6sB+KQwXYY/BEeC5JPZPfi7qLL/cyic24mWnIlKfbR0wQcfXOu/QIwigHcgm3VAXJUv4IJquepSiGvE7X6ZWh9Sy7mFKJ9SsPXZlGIAr3W281C3h0mBRY8S3W9ou2PinbEbsYNoHHgEg2RtRBaJXldk721aMzVVNYM5zO9HUO6hBC2o10lP8GXL1cYf5HlBQcWHt0pNkUfKh0KndjWr+NF27JbKEYr++w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UnP7U9jS81eVV6fyH48zwT6sfcUWwvbka9JYFNwBrok=;
- b=lPxVQy3FQFp2KHe1ZzvItHeDZebciQhsCvGrbMnlpR9vqcBq45ecSy81wM4rUg/m8Jsi4/KUxCT5YuEKWUWny/4qpvh3SIO3OfLH+UoT+7XBU+KfchbMMz3cYGfBb+7imTzSPx7uokXNFtt0KGkh06sHczXwSFj8hlD47cRuTKI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by PA4PR04MB7693.eurprd04.prod.outlook.com (2603:10a6:102:e0::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.21; Wed, 30 Aug
- 2023 18:27:22 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::a680:2943:82d1:6aa8]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::a680:2943:82d1:6aa8%3]) with mapi id 15.20.6699.035; Wed, 30 Aug 2023
- 18:27:21 +0000
-Date: Wed, 30 Aug 2023 14:27:05 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Li Chen <me@linux.beauty>
-Cc: tglx@linutronix.de, aisheng.dong@nxp.com, bhelgaas@google.com,
-	devicetree@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev,
-	jdmason@kudzu.us, kernel@pengutronix.de, kishon@ti.com,
-	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lorenzo.pieralisi@arm.com, lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org, maz@kernel.org,
-	ntb@lists.linux.dev, peng.fan@nxp.com, robh+dt@kernel.org,
-	s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH 0/3] Add RC-to-EP doorbell with platform MSI controller
-Message-ID: <ZO+J+eg3TbvEKIUh@lizhi-Precision-Tower-5810>
-References: <20230426203436.1277307-1-Frank.Li@nxp.com>
- <877cpdvv6i.wl-me@linux.beauty>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877cpdvv6i.wl-me@linux.beauty>
-X-ClientProxiedBy: SJ0PR05CA0005.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::10) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508371FDC
+	for <imx@lists.linux.dev>; Thu, 31 Aug 2023 06:57:40 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 737EB1BF209;
+	Thu, 31 Aug 2023 06:57:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1693465052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zzbhzTtPf3ec6YQsIX0eVjI9QDgXGYAHWymqPTgWjpE=;
+	b=ZOHtdvSFKUMR5+t4LWACes1D2gKjWTL32s4Dpd4ORL8RrY0dLbriIIO+hQPQqfRB4pvXfO
+	zCeHT4Zz0oIUIqtnE6yXXxShZ/Uubd/KefGP5KupDKpaTcMu0ZUKpU0OyO4zqo5WHJqocG
+	FMW4LuJNOHX41Ikl8Q+RvalLuJ/NJRVCd4gZTK426Rt7JWVyprCeYyxva7pfAo/JxPIc/i
+	ARLAISIOl460kyq+CEitIk97PfT99d+Fcqe0PfTr0fo9torhSv7EF7DDXWjjFY/PH9lwo7
+	bxL9y2WANKMp6EcB4Tg6WMEzYIbnBUbRP7sgdnbd1QEaDOvOvFriu/Xofoz+kw==
+Date: Thu, 31 Aug 2023 08:57:28 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+ imx@lists.linux.dev, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] i3c: master: fixes i3c bus driver probe failure
+ if no i3c device attached
+Message-ID: <20230831085728.0becee29@xps-13>
+In-Reply-To: <ZO9vHAZT7M8hNueW@lizhi-Precision-Tower-5810>
+References: <20230830141727.3794152-1-Frank.Li@nxp.com>
+	<20230830175355.4bc2b8d2@xps-13>
+	<ZO9vHAZT7M8hNueW@lizhi-Precision-Tower-5810>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PA4PR04MB7693:EE_
-X-MS-Office365-Filtering-Correlation-Id: d35aa1ca-a8ac-4738-336d-08dba986c000
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	8DMbIqRmcB78tEAE+eft/f+8NzN8l3TffjsD2RPz6LTL1c76TQESxeopOhpoQ6mdlGklCfP6fgIXcxvToUm/Ll1y+lIQNt8jOCm+diPIWZHV86H/L01JUcE5tfeQMnIBXGpbqBEqw5Wg3yP9HHeffUhsMJ7hwEAh5TsuSKq6XGxd21sOkyq0hLA5gZYv30jZN4oA9Zj08JYTn/6y2PqLNEvGDX9zWLbrki64dslFXD7Tl4y0DYdxEbmt0A6d1IHXZPj7RD+MKrMe+zkV23kPuag6L2kuGGJjYX+SrFmKdRUzhSfaFHA4CmFEB+pOFuXDPepHzSBEAppayK3c+bbTlF3bIQIGGmVKNnEDOOdj0NfUTtqfih793X25LhWQHg3VOeWblVXZsWt7/Ja8TA1cU368cgeod2FRG793+yW45Pbx5XCQ8rhUJgr3lgOv5pLTZ3WRE3yIgvW+UwYC2jXujuWSTRyQKnjLYNvZoYCyBMSxCLzr8x04gYMkfsKUKqr6+tXOmGEqacFTMEXC6NkVn7TcBFH0Y9bT/V1ANl0w6HbyffK+sh6a4C7p/vJdHINbWisei76y3kb2cBtgw0V59Bbu2Mw1/CGg5x4f5M94boenBzPWG2/HhKV6bJQNNo+h
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(39860400002)(346002)(136003)(366004)(396003)(1800799009)(451199024)(186009)(41300700001)(7416002)(33716001)(38350700002)(38100700002)(86362001)(478600001)(83380400001)(6666004)(26005)(9686003)(6512007)(6486002)(6506007)(52116002)(4744005)(66946007)(2906002)(66556008)(6916009)(316002)(66476007)(5660300002)(8936002)(4326008)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?C2ZXriP3Z/hVEadtqx3S2/lORO+D0PHSpnOJwSCek63cK3PaSSEbK1wMBoNg?=
- =?us-ascii?Q?3uaQm8xtYtweJr5/iCoyrANgbgAyWr+OZ1O3qAoifwonwITBIurAI+ltOq5q?=
- =?us-ascii?Q?fl3HgHneNrmBKKETp3mthJtskWIQ+hWxb/9a/vkZ47mkxE7WFBvXguftA72U?=
- =?us-ascii?Q?ubH5VC7K7h2haQnZnc8PNOp9SCAOCQlQngF/ykzcxvRd69nv/asLjD+Z38A3?=
- =?us-ascii?Q?ryEOfD+vGLnBOh8WqJ5OfDdUqxht4wEA6mNN6s29rnwddgdkOwcDVsnWZfS0?=
- =?us-ascii?Q?/dvxvDijCrja/Seppy/yAfXvtHTf+ANQe3jQqqBpbFbzGtTOD4Uzj4kqv64F?=
- =?us-ascii?Q?b0hrPqH1H8rFQEtVWCzDPZzAoyZ8ow7bKXlgOb+qojLa1VCUjvl8ecwkxyaY?=
- =?us-ascii?Q?eG1vEpF1Eg4riRtK5hAwq7RTykNnbtP5sFYGYpOywQSFpqyNs0O4m+Trlaj8?=
- =?us-ascii?Q?MOYqHTMZovpoDD6Co3bkEjNW3nKdr9rt86FAq0rWei0pPKVI8VXabxOiJXyI?=
- =?us-ascii?Q?eyBTS771/2RJI8OqHH/F54KHZCJh+utxyZJDvAZqXBYV4nKidI/rrwJdpkS6?=
- =?us-ascii?Q?bRNydpiyMR/E3CHLv8rtvUDSiuhyuaoe7/VQxQ801q+vyWYpy6uCAKA2JLxp?=
- =?us-ascii?Q?SizZG3cbUa+mNFFWWZ/xE8zLOlIERccB3EFFd5nbpeDm9fbFub+XrOkvOHSa?=
- =?us-ascii?Q?tx2Vq2P01FbyZZtf+HP2Jm0k1XZBFCPUUKv5+2VpaqapXbuzsVsqeX7qCzBx?=
- =?us-ascii?Q?od5mE3Mk+vvzBwm2oX9P7k91fD5jhRGpVd1Si+f2TfM34gXhL94/v+XMqdDb?=
- =?us-ascii?Q?0q4638HEuFlQ0U5G4NgQtGqXgkrYTvLxULFvgbAceuJi5Yd7BiM1XITnG0bI?=
- =?us-ascii?Q?u1t5eZnCLRxqq0c6m2esogvjmhVJ46Fe/oyWLTkSSFtZWfU7g9wIq8NztIRm?=
- =?us-ascii?Q?j3HGspCfhIhayhz12Ft48ATLTTDEqxHBi72tZrOyuxMr6FV8NKargJGwVvxM?=
- =?us-ascii?Q?A8mt6sIfZA1qqmxLFEDsDPoQ9ayEurkS66OFZwxBc7Nxr8/BmEs6MCF7xvME?=
- =?us-ascii?Q?E65DdG9AhwfVO3sZQGp36Sq9BzG/k5d9qs2lRn54TIO4SBKT2gUb2hQGjoFW?=
- =?us-ascii?Q?JhRokhH6HY3oZx+tTEM3Knw8+AcnUU5q+sLam2FKLlMIOkvDLDJzgMCbAA4Y?=
- =?us-ascii?Q?qIMMjWwAGOclsNdWSPjge8apmfwK3AO65uMXRuphbGncdVqPaot58DeNd+E3?=
- =?us-ascii?Q?6Qm5MUiXvCAHMf/GfaeYWy5cfZeEsxlv6r+g+HBsLynkmE40f51hZytIwQob?=
- =?us-ascii?Q?6bkUZYr4/QMUs5JmgDP6Vr+OvhvYteGLj46X2pKhwIC9hoTPG2IWWFC2YXIw?=
- =?us-ascii?Q?y43GigAV1iL3QqpPy1ck2CsBXCcv0zCEZ5RJQLdrxYll/2BXQXnpRIK5nh8l?=
- =?us-ascii?Q?z7tbyqRwRo6W325/273SzPZbIjqOROLWaPt0ebT0J0n7cMeX1MZSznAlB4cY?=
- =?us-ascii?Q?TWPf3QSgFUgQu9aTd48PMrRZF6uSTXloe8wYyVQbHCjocPNz1QXp4oSc7ahn?=
- =?us-ascii?Q?NM51KqQhz7s44P88zVE=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d35aa1ca-a8ac-4738-336d-08dba986c000
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2023 18:27:21.6482
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lM68itc1bBGiES5tBibXwGTfB1QmPALrNaC0Gx5YBENzwiKmG4Ew4o42wVamv7T/28ib68veEdnX7OFRPO/qsQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7693
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Wed, Aug 30, 2023 at 03:36:05PM +0800, Li Chen wrote:
-> 
-> Hi Frank,
-> 
-> Frank Li <Frank.Li@nxp.com> writes:
-> 
-> > drivers/misc/pci_endpoint_test.c | 41 +++++++++++
-> > drivers/pci/endpoint/pci-epf-core.c | 109 ++++++++++++++++++++++++++++
-> > include/linux/pci-epf.h | 16 ++++
-> > include/uapi/linux/pcitest.h | 1 +
-> > tools/pci/pcitest.c | 16 +++-
-> > 5 files changed, 182 insertions(+), 1 deletion(-)
-> 
-> It seems that you forgot to add changes to drivers/pci/endpoint/functions/pci-epf-test.c.
+Hi Frank,
 
-Yes, let us wait for mani's feedback and Update together.
+Frank.li@nxp.com wrote on Wed, 30 Aug 2023 12:32:28 -0400:
 
-Frank
+> On Wed, Aug 30, 2023 at 05:53:55PM +0200, Miquel Raynal wrote:
+> > Hi Frank,
+> >=20
+> > Frank.Li@nxp.com wrote on Wed, 30 Aug 2023 10:17:26 -0400:
+> >  =20
+> > > In i3c_master_bus_init()
+> > > {	...
+> > > 	ret =3D i3c_master_rstdaa_locked(master, I3C_BROADCAST_ADDR);
+> > > 	if (ret && ret !=3D I3C_ERROR_M2)
+> > > 			  ^^^ // it is enum i3c_error_code
+> > > 	...
+> > > }
+> > >=20
+> > > In dw-i3c-master.c implementation:
+> > > dw_i3c_ccc_set()
+> > > {	...
+> > > 	ret =3D xfer->ret;
+> > > 	if (xfer->cmds[0].error =3D=3D RESPONSE_ERROR_IBA_NACK)
+> > > 		ccc->err =3D I3C_ERROR_M2;
+> > >=20
+> > > 	dw_i3c_master_free_xfer(xfer);
+> > >=20
+> > > 	return ret;
+> > > }
+> > >=20
+> > > Return enum i3c_error_code when error happen in i3c_master_rstdaa_loc=
+ked(). =20
+> >=20
+> > I am sorry but the commit log needs to be worked on.
+> >  =20
+> > >=20
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >=20
+> > > Notes:
+> > >     Change from v1 to v2:
+> > >     - cc stable
+> > >=20
+> > >  drivers/i3c/master.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >=20
+> > > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> > > index 08aeb69a78003..00a82f3ab9ac0 100644
+> > > --- a/drivers/i3c/master.c
+> > > +++ b/drivers/i3c/master.c
+> > > @@ -783,6 +783,9 @@ static int i3c_master_rstdaa_locked(struct i3c_ma=
+ster_controller *master,
+> > >  	ret =3D i3c_master_send_ccc_cmd_locked(master, &cmd);
+> > >  	i3c_ccc_cmd_dest_cleanup(&dest);
+> > > =20
+> > > +	if (ret)
+> > > +		ret =3D cmd.err; =20
+> >=20
+> > Shouldn't this happen in i3c_master_send_ccc_cmd_locked()? =20
+>=20
+> Sorry, This patch is not necesary at all.
+> i3c_master_send_ccc_cmd_locked() already handled it.
+> Only need second patch. You can discard this patch.
+>=20
+> Do you need me send 2nd patch only? Or you can just pick 2nd one?
 
-> 
-> Regards,
-> Li
+It is quite unclear what you are finally trying to do. Please send a
+proper v3, with a changelog.
+
+>=20
+> >  =20
+> > > +
+> > >  	return ret;
+> > >  }
+> > >   =20
+> >=20
+> >=20
+> > Thanks,
+> > Miqu=C3=A8l =20
+
+
+Thanks,
+Miqu=C3=A8l
