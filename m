@@ -1,142 +1,1505 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2080.outbound.protection.outlook.com [40.107.7.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from fd01.gateway.ufhost.com (fd01.gateway.ufhost.com [61.152.239.71])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31F6AA5
-	for <imx@lists.linux.dev>; Thu,  7 Sep 2023 14:29:06 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NGHqcQqwdLy1ARDVulOJgV1lkESN3Gcqdks9SSSRfgDKQm6YmNEtLVzf1nwkfx2rLEYWtN+ksJNQmu6YI0gRWyN74Eu8MwZSy4UcvDIbOUXnFz9mOlKdfqv2oI2Fj5ethqIcj3hIx8pofqWmq4KKlrqDu2zOYOMMVzuDhVAJVSeLobTu+Uu9YmilyYcF6ckA+39AmU2Mh8fpnrwJfRUSDI5ZQ5xiyDxKU0UJVS2Cht3SvsXj8NVt5cMb+dWqWMqzZpS6a/1chcILqm771/5E6lCfKPa/XBmX+b/Q1gLsJUk19YUDE9jzqMGS4et6sMIcPmBTySNPXcqrd71vNPvblQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HogHCOuUF2Rn3dRl2Mz5hHSZ5NQqH4hr4gu/McGOOTM=;
- b=aS6jckBklpnObH6cmxEb3ZAbeNUYUP9eh7LFLBYmMTzrzwXjfYPXz1vE9aFmw7HO1qpGdbG8g0N4si/ASG2tF9+wszDEuCD4+pmuJ/X3cP+09F0psmIeUQZckTlehePIsoeLjqcvBYJaWZmE7hWrYzpGCwz4hi6MYMyq9p/QmGyIDukz5gdMPjmdCgTFRAyouXgKpBcfz3SuAMXKm86CcsQrdahCbd4mT7zD6rE7+gEEquTqzcydErSs4Nz5yHkwXdA+HyVPkCwvF8BoOspVEWyDiqyJYEhKDi+ZbOoz/K3RZMo8yMBNc9AbKq36DSnG8hYml/qeF1IX/tjiYMDX6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HogHCOuUF2Rn3dRl2Mz5hHSZ5NQqH4hr4gu/McGOOTM=;
- b=UfJi4vpfSXzBs+ryYjMaGnYsGxk+78bPZnWOqpyK/RIIhEFgez3yhCUq3HQljssxiC8oDsNYn9Fl2WGLjauSQvAC80jecxAx8SLEokkGbajX/lPbVHg54ljNalPQ7Epm7WQS9Gxb4cSNABqsskqK6eV4cGScOmWREzW5W3MkZxU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM8PR04MB7250.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36; Thu, 7 Sep
- 2023 14:29:03 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::aa90:117d:c1d0:346a]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::aa90:117d:c1d0:346a%3]) with mapi id 15.20.6745.034; Thu, 7 Sep 2023
- 14:29:03 +0000
-Date: Thu, 7 Sep 2023 10:28:51 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: miquel.raynal@bootlin.com, alexandre.belloni@bootlin.com,
-	conor.culhane@silvaco.com, imx@lists.linux.dev,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 4/9] dt-bindings: i3c: svc: add compatible string
- i3c: silvaco,i3c-slave-v1
-Message-ID: <ZPneI4KUw8UXBUze@lizhi-Precision-Tower-5810>
-References: <20230905213842.3035779-1-Frank.Li@nxp.com>
- <20230905213842.3035779-5-Frank.Li@nxp.com>
- <e9880548-11c5-2790-7c77-7ca031849182@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9880548-11c5-2790-7c77-7ca031849182@kernel.org>
-X-ClientProxiedBy: BY5PR17CA0050.namprd17.prod.outlook.com
- (2603:10b6:a03:167::27) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F70BE67
+	for <imx@lists.linux.dev>; Mon, 11 Sep 2023 11:17:13 +0000 (UTC)
+Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
+	by fd01.gateway.ufhost.com (Postfix) with ESMTP id 849FE8284;
+	Mon, 11 Sep 2023 19:14:48 +0800 (CST)
+Received: from EXMBX066.cuchost.com (172.16.7.66) by EXMBX165.cuchost.com
+ (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 11 Sep
+ 2023 19:14:48 +0800
+Received: from [192.168.151.232] (172.16.6.8) by EXMBX066.cuchost.com
+ (172.16.6.66) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 11 Sep
+ 2023 19:14:46 +0800
+Message-ID: <2e42bee0-937e-1dcf-2d18-91b362d35be4@starfivetech.com>
+Date: Mon, 11 Sep 2023 19:14:45 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM8PR04MB7250:EE_
-X-MS-Office365-Filtering-Correlation-Id: 156087e2-b07e-4e6d-13cd-08dbafaec8f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	+QsZaOP98aASuudS20sVHBjuGMrTgkYKU2LTDmHaHYJuuVt2+QUSj5mbZb/are5WdE7RsH7bzhQaTdHZm1PrxegOKQUxtrTkJ+4eYYzLH8FYB6MNXD31xoyy8crjvB4fpAoyM2zRBfA8K9UITLCm49Z6Ij5ShHi42EiaGDaClsv8s9ZLJZhPA1dojsYK8icJT8rG0ikXUVbo4KkibnUqT7+4HOdnLCo0YV+K7a4VurVh/ryoPuZNbiTocjjiZylxUblbgbtjKAGeaScfZ2/cziYocgj/V+fjey2oJA2Rprlxg4Qz3qfRpdBhEC682MZXbIIKwkpkkd4FeIttHcClp0Dn94o86wrLfqFAVBPN4Zb6RuamckWf8/euRnUXMfQdQCYZebEcFK0shb7/Air5JWmYaXyCZfG6Ago9N3OAgtv5cM8YJT9wu4UNOkoSlseFF6a1mwLYGQGBqBpdn+ZLY9ThzC+chRFyd0vP6VNbZ3hBA5NXkpkyb7ZV7Q8Srh5Wr1KOGOTQ+v1/5/6ahfvK2lrqDPxR8NlbJ/foW8UBiGuw3axPRAUkMj83GGqIhwSggvn2OoeC0JAjzrnERwDZZli9QEdIuPCDHywaSphaCoEAQfiq0zEGmF9+Mut/1653d86LfKdF5dpDkPI4TQSXKrqYMwOqrK5dCiji++TETLI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(366004)(136003)(396003)(39860400002)(346002)(1800799009)(451199024)(186009)(6666004)(52116002)(53546011)(6486002)(6506007)(38100700002)(86362001)(38350700002)(26005)(9686003)(6512007)(478600001)(8936002)(8676002)(5660300002)(4326008)(2906002)(66556008)(66476007)(6916009)(316002)(66946007)(33716001)(41300700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KUf8xRbmvSZ8bCc06q26ljkE0kc7mikuepvitijJmD47b803qW20z+z9Lx7S?=
- =?us-ascii?Q?IkZhm1nk5irwiq5rLXcwU02p6prsbdF8oa/6fxWAkMCdJ5NGq/KBIG4wi9ts?=
- =?us-ascii?Q?R29t8mzYMMYCUBmW2NLveubR3dEy2sQ9UvPR1a4kYWyNOVFdp9UFY7Opa97h?=
- =?us-ascii?Q?fK0MU3AMAOqFxNDxCu5oYojUod/Fw1kMiv+90uyocEI7j5XVIW4tCYmxSezG?=
- =?us-ascii?Q?aibyb8kWglJBXOzKiAa9NYLgrbQ8eY0ssiv1oVnwsCmfaYSFup0OazkC4peh?=
- =?us-ascii?Q?pS6H4tlA1v29XxMghEU9o5JVeqMKYoRMX0Ya3bvnC98Bvq66xiJL3oeOBUda?=
- =?us-ascii?Q?xY7WpurUFKvR4hxA/fo2ddx/8xBxUpMZI8onAEuhFRQz7dekmYD8fKESVuu+?=
- =?us-ascii?Q?EA84+R4a/LBst4i0HDZJw5b9AQ5PD7WozHc/VKuLgc4mBF14YItSW42wFXlQ?=
- =?us-ascii?Q?uHfUgLbJRvCg3FOZpW6jMkqH5YXpS6r5OSbhhimFxLjnxEwBK09qOsyiBQbA?=
- =?us-ascii?Q?UtkQRj1LyC/MdfIl/4ivMZmeHnTLHVWwsyFLlAYcY+YXYfIZ0HrE3OrhzIYM?=
- =?us-ascii?Q?ONsp1bQhzp4Q4Xu59UCbghx5/kuMTU4APPVUTyASSe3F6I+IJLoHJJaUHwio?=
- =?us-ascii?Q?l39I37Gu/pxcHMUBm0XSpd9NFXeTocfpeR0UYMgVhb30waWbzDMzWNfRsEHH?=
- =?us-ascii?Q?vth6XH51On4dDG92vfRX0RbCVj/GPZf0mv65uMXC42AYNScKPUO7P98j7+6q?=
- =?us-ascii?Q?rk/E9Ye3A5k7S7Yrel197kznhIvACSkEGI3tQ0Ctf5iSJcszU6b10uE0ylnV?=
- =?us-ascii?Q?7bb2XQ+WvqFGnZcd97Xkwam/t1nTkj3++kqWlrMFsWwOml0pERLwZNgqICxq?=
- =?us-ascii?Q?pX4NmrwFL9Vcv34upzwVL3BXuSMyXdRVuq2DfQ+KjtaB/B4sinNY1QSZpEWv?=
- =?us-ascii?Q?WOMetiBQWS9cbH+w+ExjafvLfWNixX8ntxYCwCHW6W9phjSOvf50DD+uXXMr?=
- =?us-ascii?Q?mWBwJDxKfkUGYCZ8T35A5SuW0TFCND+llUUa2yLVmxSQhByCK9afp2AZXBMK?=
- =?us-ascii?Q?4+K5kixI01Sm9TuqxzFRfvSOUbMXqD7I6gXiYhPyMC01eIKgjlULed9ykysE?=
- =?us-ascii?Q?2VQlP0k2Iomr1lBlnk+sSsL56fonie2a2dXtATbVQmKRuj7D6Zg6QxW4WStS?=
- =?us-ascii?Q?eZulJkWXnz16uL7e7nlH65liTweYH7aydYJ4//tFQ5Ki5Fun4SKrH3TyIBYp?=
- =?us-ascii?Q?KRtqFrjh6QGVWuyLwibHkKiBifTCuG6oNPP73bmO2IBWhi6ylDCsn152o52J?=
- =?us-ascii?Q?k7jXsn3HAQEzhGfCavIbolkfA/aYUHmZYba/uwxH8oyZY/nGu4WPFjxjmY7T?=
- =?us-ascii?Q?4r4imn7gSGSwuzyuZUUg+IKfIHsG0ubruHIESEqhLwNGCOwJcGCR8u0H+DC4?=
- =?us-ascii?Q?gHLOXrNfzY7VWOGxsVeaB0HGVTsHDivsgryNK1KWI1VZ1FMJ7QNxh3F8r9rv?=
- =?us-ascii?Q?tYlolXAYXcX3LW+L7Nhx3/AYo9LBSrkeK2DnTYc4sJrQ5an+KydttJ/LsHJm?=
- =?us-ascii?Q?TqinWSos4eMPQGJJYWAc17FaJTg13y3pWRZBF58k?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 156087e2-b07e-4e6d-13cd-08dbafaec8f4
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2023 14:29:03.5736
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K7l27WPsvL0Tq9F2h1bWtb7fvp/JapwSkO1ddopiL1P2891VbpcWtQD3lUgL/31u28i7EpUhVKJXdjRkN6pu9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7250
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [RFC PATCH 5/9] i3c: add slave mode support
+Content-Language: en-US
+To: Frank Li <Frank.Li@nxp.com>, <miquel.raynal@bootlin.com>
+CC: <alexandre.belloni@bootlin.com>, <conor.culhane@silvaco.com>,
+	<imx@lists.linux.dev>, <linux-i3c@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20230905213842.3035779-1-Frank.Li@nxp.com>
+ <20230905213842.3035779-6-Frank.Li@nxp.com>
+From: Joshua Yeong <joshua.yeong@starfivetech.com>
+In-Reply-To: <20230905213842.3035779-6-Frank.Li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Originating-IP: [172.16.6.8]
+X-ClientProxiedBy: EXCAS081.cuchost.com (172.16.6.41) To EXMBX066.cuchost.com
+ (172.16.6.66)
+X-YovoleRuleAgent: yovoleflag
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 06, 2023 at 10:01:40AM +0200, Krzysztof Kozlowski wrote:
-> On 05/09/2023 23:38, Frank Li wrote:
-> > Add compatible string 'silvaco,i3c-slave-v1' for slave mode.
-> > 
-> 
-> No, it's the same device.
-> 
-> Anyway, this was not tested.
-> 
-> Please use scripts/get_maintainers.pl to get a list of necessary people
-> and lists to CC. It might happen, that command when run on an older
-> kernel, gives you outdated entries. Therefore please be sure you base
-> your patches on recent Linux kernel.
-> 
-> You missed at least devicetree list (maybe more), so this won't be
-> tested by automated tooling. Performing review on untested code might be
-> a waste of time, thus I will skip this patch entirely till you follow
-> the process allowing the patch to be tested.
-> 
-> Please kindly resend and include all necessary To/Cc entries.
 
-Thank you for your comments. I write notes at RFC cover letter, this
-patches is not totally completed yet. I want to get more feedback about
-i3c slave mode API and configfs design, which will impact the overall
-design.
+ >--- a/drivers/i3c/Makefile
+ >+++ b/drivers/i3c/Makefile
+ >@@ -2,3 +2,5 @@
+ =C2=A0>i3c-y=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=
+=A0=C2=A0=C2=A0 :=3D device.o master.o
+ > obj-$(CONFIG_I3C)=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 +=3D i3c.o
+ > obj-$(CONFIG_I3C)=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 +=3D master/
+ >+obj-$(CONFIG_I3C_SLAVE)=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 +=3D slav=
+e.o
+ >+obj-$(CONFIG_I3C_SLAVE_CONFIGFS)=C2=A0=C2=A0=C2=A0 +=3D i3c-cfs.o
 
-So I have not included tty mail list and you in review list.
-I send out all patches just because let i3c reviewer know how to use these
-API. 
+Shall we consider to include the content of i3c-cfs.c part of slave.c ?
 
-Frank
 
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
+On 06-Sep-23 5:38 AM, Frank Li wrote:
+> Introduce a new slave core layer in order to support slave functions in
+> linux kernel. This comprises the controller library and function librar=
+y.
+> Controller library implements functions specific to an slave controller
+> and function library implements functions specific to an slave function=
+.
+>
+> Introduce a new configfs entry to configure the slave function configur=
+ing
+> and bind the slave function with slave controller.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>   drivers/i3c/Kconfig       |  29 +++
+>   drivers/i3c/Makefile      |   2 +
+>   drivers/i3c/i3c-cfs.c     | 361 ++++++++++++++++++++++++++++++
+>   drivers/i3c/slave.c       | 441 ++++++++++++++++++++++++++++++++++++
+>   include/linux/i3c/slave.h | 458 +++++++++++++++++++++++++++++++++++++=
++
+>   5 files changed, 1291 insertions(+)
+>   create mode 100644 drivers/i3c/i3c-cfs.c
+>   create mode 100644 drivers/i3c/slave.c
+>   create mode 100644 include/linux/i3c/slave.h
+>
+> diff --git a/drivers/i3c/Kconfig b/drivers/i3c/Kconfig
+> index 30a441506f61c..bdc173bc0da12 100644
+> --- a/drivers/i3c/Kconfig
+> +++ b/drivers/i3c/Kconfig
+> @@ -22,3 +22,32 @@ menuconfig I3C
+>   if I3C
+>   source "drivers/i3c/master/Kconfig"
+>   endif # I3C
+> +
+> +config I3C_SLAVE
+> +	bool "I3C Slave Support"
+> +	help
+> +	  Support I3C Slave Mode.
+> +
+> +	  Enable this configuration option to support configurable I3C slave.
+> +	  This should be enabled if the platform has a I3C controller that ca=
+n
+> +	  operate in slave mode.
+> +
+> +	  Enabling this option will build the I3C slave library, which includ=
+es
+> +	  slave controller library and slave function library.
+> +
+> +	  If in doubt, say "N" to disable slave support.
+> +
+> +config I3C_SLAVE_CONFIGFS
+> +	bool "I3C Slave Configfs Support"
+> +	depends on I3C_SLAVE
+> +	select CONFIGFS_FS
+> +	help
+> +	  Configfs entry for slave function and controller.
+> +
+> +	  This will enable the configfs entry that can be used to configure
+> +	  the slave function and used to bind the function with a slave
+> +	  controller.
+> +
+> +if I3C_SLAVE
+> +source "drivers/i3c/slave/Kconfig"
+> +endif #I#C_SLAVE
+> diff --git a/drivers/i3c/Makefile b/drivers/i3c/Makefile
+> index 11982efbc6d91..6407ddec3a4a9 100644
+> --- a/drivers/i3c/Makefile
+> +++ b/drivers/i3c/Makefile
+> @@ -2,3 +2,5 @@
+>   i3c-y				:=3D device.o master.o
+>   obj-$(CONFIG_I3C)		+=3D i3c.o
+>   obj-$(CONFIG_I3C)		+=3D master/
+> +obj-$(CONFIG_I3C_SLAVE)		+=3D slave.o
+> +obj-$(CONFIG_I3C_SLAVE_CONFIGFS)	+=3D i3c-cfs.o
+> diff --git a/drivers/i3c/i3c-cfs.c b/drivers/i3c/i3c-cfs.c
+> new file mode 100644
+> index 0000000000000..1f53fada43645
+> --- /dev/null
+> +++ b/drivers/i3c/i3c-cfs.c
+> @@ -0,0 +1,361 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Configfs to configure the I3C Slave
+> + *
+> + * Copyright (C) 2023 NXP
+> + * Author: Frank Li <Frank.Li@nxp.com>
+> + */
+> +
+> +#include <linux/configfs.h>
+> +#include <linux/module.h>
+> +#include <linux/i3c/slave.h>
+> +#include <linux/idr.h>
+> +#include <linux/slab.h>
+> +
+> +static DEFINE_MUTEX(functions_mutex);
+> +static struct config_group *functions_group;
+> +static struct config_group *controllers_group;
+> +
+> +struct i3c_slave_func_group {
+> +	struct config_group group;
+> +	struct i3c_slave_func *func;
+> +};
+> +
+> +struct i3c_slave_ctrl_group {
+> +	struct config_group group;
+> +	struct i3c_slave_ctrl *ctrl;
+> +};
+> +
+> +static inline struct i3c_slave_func_group *to_i3c_slave_func_group(str=
+uct config_item *item)
+> +{
+> +	return container_of(to_config_group(item), struct i3c_slave_func_grou=
+p, group);
+> +}
+> +
+> +static inline struct i3c_slave_ctrl_group *to_i3c_slave_ctrl_group(str=
+uct config_item *item)
+> +{
+> +	return container_of(to_config_group(item), struct i3c_slave_ctrl_grou=
+p, group);
+> +}
+> +
+> +static int i3c_slave_ctrl_func_link(struct config_item *ctrl_cfg, stru=
+ct config_item *func_cfg)
+> +{
+> +	struct i3c_slave_func_group *func_group =3D to_i3c_slave_func_group(f=
+unc_cfg);
+> +	struct i3c_slave_ctrl_group *ctrl_group =3D to_i3c_slave_ctrl_group(c=
+trl_cfg);
+> +	struct i3c_slave_ctrl *ctrl =3D ctrl_group->ctrl;
+> +	struct i3c_slave_func *func =3D func_group->func;
+> +	int ret;
+> +
+> +	ret =3D i3c_slave_ctrl_add_func(ctrl, func);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D i3c_slave_func_bind(func);
+> +	if (ret) {
+> +		i3c_slave_ctrl_remove_func(ctrl, func);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void i3c_slave_ctrl_func_unlink(struct config_item *ctrl_cfg, s=
+truct config_item *func_cfg)
+> +{
+> +	struct i3c_slave_func_group *func_group =3D to_i3c_slave_func_group(f=
+unc_cfg->ci_parent);
+> +	struct i3c_slave_ctrl_group *ctrl_group =3D to_i3c_slave_ctrl_group(c=
+trl_cfg);
+> +	struct i3c_slave_ctrl *ctrl =3D ctrl_group->ctrl;
+> +	struct i3c_slave_func *func =3D func_group->func;
+> +
+> +	i3c_slave_func_unbind(func);
+> +	i3c_slave_ctrl_remove_func(ctrl, func);
+> +}
+> +
+> +static struct configfs_item_operations i3c_slave_ctrl_item_ops =3D {
+> +	.allow_link     =3D i3c_slave_ctrl_func_link,
+> +	.drop_link      =3D i3c_slave_ctrl_func_unlink,
+> +};
+> +
+> +static const struct config_item_type i3c_slave_ctrl_type =3D {
+> +	.ct_item_ops    =3D &i3c_slave_ctrl_item_ops,
+> +	.ct_owner       =3D THIS_MODULE,
+> +};
+> +
+> +/**
+> + * i3c_slave_cfs_add_ctrl_group() - add I3C slave controller group
+> + * @ctrl: I3C slave controller device
+> + *
+> + * Return: Pointer to struct config_group
+> + */
+> +struct config_group *i3c_slave_cfs_add_ctrl_group(struct i3c_slave_ctr=
+l *ctrl)
+> +{
+> +	struct i3c_slave_ctrl_group *ctrl_group;
+> +	struct config_group *group;
+> +	int ret;
+> +
+> +	ctrl_group =3D kzalloc(sizeof(*ctrl_group), GFP_KERNEL);
+> +	if (!ctrl_group) {
+> +		ret =3D -ENOMEM;
+> +		goto err;
+> +	}
+> +
+> +	group =3D &ctrl_group->group;
+> +
+> +	config_group_init_type_name(group, dev_name(&ctrl->dev), &i3c_slave_c=
+trl_type);
+> +	ret =3D configfs_register_group(controllers_group, group);
+> +	if (ret) {
+> +		pr_err("failed to register configfs group for %s\n", dev_name(&ctrl-=
+>dev));
+> +		goto err_register_group;
+> +	}
+> +
+> +	ctrl_group->ctrl =3D ctrl;
+> +
+> +	return group;
+> +
+> +err_register_group:
+> +	kfree(ctrl_group);
+> +
+> +err:
+> +	return ERR_PTR(ret);
+> +}
+> +EXPORT_SYMBOL(i3c_slave_cfs_add_ctrl_group);
+> +
+> +/**
+> + * i3c_slave_cfs_remove_ctrl_group() - remove I3C slave controller gro=
+up
+> + * @group: the group to be removed
+> + */
+> +void i3c_slave_cfs_remove_ctrl_group(struct config_group *group)
+> +{
+> +	struct i3c_slave_ctrl_group *ctrl_group;
+> +
+> +	if (!group)
+> +		return;
+> +
+> +	ctrl_group =3D container_of(group, struct i3c_slave_ctrl_group, group=
+);
+> +	i3c_slave_ctrl_put(ctrl_group->ctrl);
+> +	configfs_unregister_group(&ctrl_group->group);
+> +	kfree(ctrl_group);
+> +}
+> +EXPORT_SYMBOL(i3c_slave_cfs_remove_ctrl_group);
+> +
+> +#define I3C_SLAVE_ATTR_R(_name)                                       =
+         \
+> +static ssize_t i3c_slave_func_##_name##_show(struct config_item *item,=
+ char *page)    \
+> +{                                                                     =
+         \
+> +	struct i3c_slave_func *func =3D to_i3c_slave_func_group(item)->func; =
+                    \
+> +	return sysfs_emit(page, "0x%04x\n", func->_name);               \
+> +}
+> +
+> +#define I3C_SLAVE_ATTR_W(_name, _u)                                   =
+         \
+> +static ssize_t i3c_slave_func_##_name##_store(struct config_item *item=
+,               \
+> +				       const char *page, size_t len)           \
+> +{                                                                     =
+         \
+> +	_u val;                                                              =
+ \
+> +	struct i3c_slave_func *func =3D to_i3c_slave_func_group(item)->func; =
+                    \
+> +	if (kstrto##_u(page, 0, &val) < 0)                                   =
+   \
+> +		return -EINVAL;                                                \
+> +	func->_name =3D val;                                              \
+> +	return len;                                                          =
+  \
+> +}
+> +
+> +I3C_SLAVE_ATTR_R(vendor_id);
+> +I3C_SLAVE_ATTR_W(vendor_id, u16);
+> +CONFIGFS_ATTR(i3c_slave_func_, vendor_id);
+> +
+> +I3C_SLAVE_ATTR_R(vendor_info);
+> +I3C_SLAVE_ATTR_W(vendor_info, u16);
+> +CONFIGFS_ATTR(i3c_slave_func_, vendor_info);
+> +
+> +I3C_SLAVE_ATTR_R(part_id);
+> +I3C_SLAVE_ATTR_W(part_id, u16);
+> +CONFIGFS_ATTR(i3c_slave_func_, part_id);
+> +
+> +I3C_SLAVE_ATTR_R(instance_id);
+> +I3C_SLAVE_ATTR_W(instance_id, u8);
+> +CONFIGFS_ATTR(i3c_slave_func_, instance_id);
+> +
+> +I3C_SLAVE_ATTR_R(ext_id);
+> +I3C_SLAVE_ATTR_W(ext_id, u16);
+> +CONFIGFS_ATTR(i3c_slave_func_, ext_id);
+> +
+> +I3C_SLAVE_ATTR_R(max_write_len);
+> +I3C_SLAVE_ATTR_W(max_write_len, u16);
+> +CONFIGFS_ATTR(i3c_slave_func_, max_write_len);
+> +
+> +I3C_SLAVE_ATTR_R(max_read_len);
+> +I3C_SLAVE_ATTR_W(max_read_len, u16);
+> +CONFIGFS_ATTR(i3c_slave_func_, max_read_len);
+> +
+> +I3C_SLAVE_ATTR_R(bcr);
+> +I3C_SLAVE_ATTR_W(bcr, u8);
+> +CONFIGFS_ATTR(i3c_slave_func_, bcr);
+> +
+> +I3C_SLAVE_ATTR_R(dcr);
+> +I3C_SLAVE_ATTR_W(dcr, u8);
+> +CONFIGFS_ATTR(i3c_slave_func_, dcr);
+> +
+> +static struct configfs_attribute *i3c_slave_func_attrs[] =3D {
+> +	&i3c_slave_func_attr_vendor_id,
+> +	&i3c_slave_func_attr_vendor_info,
+> +	&i3c_slave_func_attr_part_id,
+> +	&i3c_slave_func_attr_instance_id,
+> +	&i3c_slave_func_attr_ext_id,
+> +	&i3c_slave_func_attr_max_write_len,
+> +	&i3c_slave_func_attr_max_read_len,
+> +	&i3c_slave_func_attr_bcr,
+> +	&i3c_slave_func_attr_dcr,
+> +	NULL,
+> +};
+> +
+> +static const struct config_item_type i3c_slave_func_type =3D {
+> +	.ct_attrs       =3D i3c_slave_func_attrs,
+> +	.ct_owner       =3D THIS_MODULE,
+> +};
+> +
+> +static struct config_group *i3c_slave_func_make(struct config_group *g=
+roup, const char *name)
+> +{
+> +	struct i3c_slave_func_group *func_group;
+> +	struct i3c_slave_func *func;
+> +	int err;
+> +
+> +	func_group =3D kzalloc(sizeof(*func_group), GFP_KERNEL);
+> +	if (!func_group)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	config_group_init_type_name(&func_group->group, name, &i3c_slave_func=
+_type);
+> +
+> +	func =3D i3c_slave_func_create(group->cg_item.ci_name, name);
+> +	if (IS_ERR(func)) {
+> +		pr_err("failed to create i3c slave function device\n");
+> +		err =3D -EINVAL;
+> +		goto free_group;
+> +	}
+> +
+> +	func->group =3D &func_group->group;
+> +
+> +	func_group->func =3D func;
+> +
+> +	return &func_group->group;
+> +
+> +free_group:
+> +	kfree(func_group);
+> +
+> +	return ERR_PTR(err);
+> +}
+> +
+> +static void i3c_slave_func_drop(struct config_group *group, struct con=
+fig_item *item)
+> +{
+> +	config_item_put(item);
+> +}
+> +
+> +static struct configfs_group_operations i3c_slave_func_group_ops =3D {
+> +	.make_group     =3D &i3c_slave_func_make,
+> +	.drop_item      =3D &i3c_slave_func_drop,
+> +};
+> +
+> +static const struct config_item_type i3c_slave_func_group_type =3D {
+> +	.ct_group_ops   =3D &i3c_slave_func_group_ops,
+> +	.ct_owner       =3D THIS_MODULE,
+> +};
+> +
+> +/**
+> + * i3c_slave_cfs_add_func_group() - add I3C slave function group
+> + * @name: group name
+> + *
+> + * Return: Pointer to struct config_group
+> + */
+> +struct config_group *i3c_slave_cfs_add_func_group(const char *name)
+> +{
+> +	struct config_group *group;
+> +
+> +	group =3D configfs_register_default_group(functions_group, name,
+> +						&i3c_slave_func_group_type);
+> +	if (IS_ERR(group))
+> +		pr_err("failed to register configfs group for %s function\n",
+> +		       name);
+> +
+> +	return group;
+> +}
+> +EXPORT_SYMBOL(i3c_slave_cfs_add_func_group);
+> +
+> +/**
+> + * i3c_slave_cfs_remove_func_group() - add I3C slave function group
+> + * @group: group to be removed
+> + */
+> +void i3c_slave_cfs_remove_func_group(struct config_group *group)
+> +{
+> +	if (IS_ERR_OR_NULL(group))
+> +		return;
+> +
+> +	configfs_unregister_default_group(group);
+> +}
+> +EXPORT_SYMBOL(i3c_slave_cfs_remove_func_group);
+> +
+> +static const struct config_item_type i3c_slave_controllers_type =3D {
+> +	.ct_owner       =3D THIS_MODULE,
+> +};
+> +
+> +static const struct config_item_type i3c_slave_functions_type =3D {
+> +	.ct_owner       =3D THIS_MODULE,
+> +};
+> +
+> +static const struct config_item_type i3c_slave_type =3D {
+> +	.ct_owner       =3D THIS_MODULE,
+> +};
+> +
+> +static struct configfs_subsystem i3c_slave_cfs_subsys =3D {
+> +	.su_group =3D {
+> +		.cg_item =3D {
+> +			.ci_namebuf =3D "i3c_slave",
+> +			.ci_type =3D &i3c_slave_type,
+> +		},
+> +	},
+> +	.su_mutex =3D __MUTEX_INITIALIZER(i3c_slave_cfs_subsys.su_mutex),
+> +};
+> +
+> +static int __init i3c_slave_cfs_init(void)
+> +{
+> +	int ret;
+> +	struct config_group *root =3D &i3c_slave_cfs_subsys.su_group;
+> +
+> +	config_group_init(root);
+> +
+> +	ret =3D configfs_register_subsystem(&i3c_slave_cfs_subsys);
+> +	if (ret) {
+> +		pr_err("Error %d while registering subsystem %s\n",
+> +		       ret, root->cg_item.ci_namebuf);
+> +		goto err;
+> +	}
+> +
+> +	functions_group =3D configfs_register_default_group(root, "functions"=
+,
+> +							  &i3c_slave_functions_type);
+> +	if (IS_ERR(functions_group)) {
+> +		ret =3D PTR_ERR(functions_group);
+> +		pr_err("Error %d while registering functions group\n",
+> +		       ret);
+> +		goto err_functions_group;
+> +	}
+> +
+> +	controllers_group =3D
+> +		configfs_register_default_group(root, "controllers",
+> +						&i3c_slave_controllers_type);
+> +	if (IS_ERR(controllers_group)) {
+> +		ret =3D PTR_ERR(controllers_group);
+> +		pr_err("Error %d while registering controllers group\n",
+> +		       ret);
+> +		goto err_controllers_group;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_controllers_group:
+> +	configfs_unregister_default_group(functions_group);
+> +
+> +err_functions_group:
+> +	configfs_unregister_subsystem(&i3c_slave_cfs_subsys);
+> +
+> +err:
+> +	return ret;
+> +}
+> +module_init(i3c_slave_cfs_init);
+> +
+> +MODULE_DESCRIPTION("I3C FUNC CONFIGFS");
+> +MODULE_AUTHOR("Frank Li <Frank.Li@nxp.com>");
+> +
+> +
+> diff --git a/drivers/i3c/slave.c b/drivers/i3c/slave.c
+> new file mode 100644
+> index 0000000000000..edd7a2888271b
+> --- /dev/null
+> +++ b/drivers/i3c/slave.c
+> @@ -0,0 +1,441 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * configfs to configure the I3C Slave
+> + *
+> + * Copyright (C) 2023 NXP
+> + * Author: Frank Li <Frank.Li@nxp.com>
+> + */
+> +
+> +#include <linux/configfs.h>
+> +#include <linux/module.h>
+> +#include <linux/i3c/slave.h>
+> +#include <linux/idr.h>
+> +#include <linux/slab.h>
+> +
+> +static DEFINE_MUTEX(func_lock);
+> +static struct class *i3c_slave_ctrl_class;
+> +
+> +static void i3c_slave_func_dev_release(struct device *dev)
+> +{
+> +	struct i3c_slave_func *func =3D to_i3c_slave_func(dev);
+> +
+> +	kfree(func->name);
+> +	kfree(func);
+> +}
+> +
+> +static const struct device_type i3c_slave_func_type =3D {
+> +	.release        =3D i3c_slave_func_dev_release,
+> +};
+> +
+> +static int i3c_slave_func_match_driver(struct device *dev, struct devi=
+ce_driver *drv)
+> +{
+> +	return !strncmp(dev_name(dev), drv->name, strlen(drv->name));
+> +}
+> +
+> +static int i3c_slave_func_device_probe(struct device *dev)
+> +{
+> +	struct i3c_slave_func *func =3D to_i3c_slave_func(dev);
+> +	struct i3c_slave_func_driver *driver =3D to_i3c_slave_func_driver(dev=
+->driver);
+> +
+> +	if (!driver->probe)
+> +		return -ENODEV;
+> +
+> +	func->driver =3D driver;
+> +
+> +	return driver->probe(func);
+> +}
+> +
+> +static void i3c_slave_func_device_remove(struct device *dev)
+> +{
+> +	struct i3c_slave_func *func =3D to_i3c_slave_func(dev);
+> +	struct i3c_slave_func_driver *driver =3D to_i3c_slave_func_driver(dev=
+->driver);
+> +
+> +	if (driver->remove)
+> +		driver->remove(func);
+> +	func->driver =3D NULL;
+> +}
+> +
+> +static const struct bus_type i3c_slave_func_bus_type =3D {
+> +	.name =3D "i3c_slave_func",
+> +	.probe =3D i3c_slave_func_device_probe,
+> +	.remove =3D i3c_slave_func_device_remove,
+> +	.match =3D i3c_slave_func_match_driver,
+> +};
+> +
+> +static void i3c_slave_ctrl_release(struct device *dev)
+> +{
+> +	kfree(to_i3c_slave_ctrl(dev));
+> +}
+> +
+> +static void devm_i3c_slave_ctrl_release(struct device *dev, void *res)
+> +{
+> +	struct i3c_slave_ctrl *ctrl =3D *(struct i3c_slave_ctrl **)res;
+> +
+> +	i3c_slave_ctrl_destroy(ctrl);
+> +}
+> +
+> +struct i3c_slave_ctrl *
+> +__devm_i3c_slave_ctrl_create(struct device *dev, const struct i3c_slav=
+e_ctrl_ops *ops,
+> +		      struct module *owner)
+> +{
+> +	struct i3c_slave_ctrl **ptr, *ctrl;
+> +
+> +	ptr =3D devres_alloc(devm_i3c_slave_ctrl_release, sizeof(*ptr), GFP_K=
+ERNEL);
+> +	if (!ptr)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	ctrl =3D __i3c_slave_ctrl_create(dev, ops, owner);
+> +	if (!IS_ERR(ctrl)) {
+> +		*ptr =3D ctrl;
+> +		devres_add(dev, ptr);
+> +	} else {
+> +		devres_free(ptr);
+> +	}
+> +
+> +	return ctrl;
+> +}
+> +
+> +static int devm_i3c_slave_ctrl_match(struct device *dev, void *res, vo=
+id *match_data)
+> +{
+> +	struct i3c_slave_ctrl **ptr =3D res;
+> +
+> +	return *ptr =3D=3D match_data;
+> +}
+> +
+> +/**
+> + * __i3c_slave_ctrl_create() - create a new slave controller device
+> + * @dev: device that is creating the new slave controller
+> + * @ops: function pointers for performing slave controller  operations
+> + * @owner: the owner of the module that creates the slave controller d=
+evice
+> + *
+> + * Return: Pointer to struct i3c_slave_ctrl
+> + */
+> +struct i3c_slave_ctrl *
+> +__i3c_slave_ctrl_create(struct device *dev, const struct i3c_slave_ctr=
+l_ops *ops,
+> +			struct module *owner)
+> +{
+> +	struct i3c_slave_ctrl *ctrl;
+> +	int ret;
+> +
+> +	if (WARN_ON(!dev))
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	ctrl =3D kzalloc(sizeof(*ctrl), GFP_KERNEL);
+> +	if (!ctrl)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	device_initialize(&ctrl->dev);
+> +	ctrl->dev.class =3D i3c_slave_ctrl_class;
+> +	ctrl->dev.parent =3D dev;
+> +	ctrl->dev.release =3D i3c_slave_ctrl_release;
+> +	ctrl->ops =3D ops;
+> +
+> +	ret =3D dev_set_name(&ctrl->dev, "%s", dev_name(dev));
+> +	if (ret)
+> +		goto put_dev;
+> +
+> +	ret =3D device_add(&ctrl->dev);
+> +	if (ret)
+> +		goto put_dev;
+> +
+> +	ctrl->group =3D i3c_slave_cfs_add_ctrl_group(ctrl);
+> +	if (!ctrl->group)
+> +		goto put_dev;
+> +
+> +	return ctrl;
+> +
+> +put_dev:
+> +	put_device(&ctrl->dev);
+> +	kfree(ctrl);
+> +
+> +	return ERR_PTR(ret);
+> +}
+> +EXPORT_SYMBOL_GPL(__i3c_slave_ctrl_create);
+> +
+> +/**
+> + * devm_i3c_slave_ctrl_destroy() - destroy the slave controller device
+> + * @dev: device that is creating the new slave controller device
+> + * @ops: function pointers for performing slave controller operations
+> + * @owner: the owner of the module that creates the slave controller d=
+evice
+> + *
+> + * Invoke to create a new slave controller device and add it to i3c_sl=
+ave class. While at that, it
+> + * also associates the device with the i3c_slave using devres. On driv=
+er detach, release function is
+> + * invoked on the devres data, then devres data is freed.
+> + */
+> +void devm_i3c_slave_ctrl_destroy(struct device *dev, struct i3c_slave_=
+ctrl *ctrl)
+> +{
+> +	int r;
+> +
+> +	r =3D devres_destroy(dev, devm_i3c_slave_ctrl_release, devm_i3c_slave=
+_ctrl_match,
+> +			   ctrl);
+> +	dev_WARN_ONCE(dev, r, "couldn't find I3C controller resource\n");
+> +}
+> +EXPORT_SYMBOL_GPL(devm_i3c_slave_ctrl_destroy);
+> +
+> +
+> +
+> +/**
+> + * i3c_slave_ctrl_destroy() - destroy the slave controller device
+> + * @ctrl: the slave controller device that has to be destroyed
+> + *
+> + * Invoke to destroy the I3C slave device
+> + */
+> +void i3c_slave_ctrl_destroy(struct i3c_slave_ctrl *ctrl)
+> +{
+> +	i3c_slave_cfs_remove_ctrl_group(ctrl->group);
+> +	device_unregister(&ctrl->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_ctrl_destroy);
+> +
+> +/**
+> + * i3c_slave_ctrl_add_func() - bind I3C slave function to an slave con=
+troller
+> + * @ctrl: the controller device to which the slave function should be =
+added
+> + * @func: the slave function to be added
+> + *
+> + * An I3C slave device can have only one functions.
+> + */
+> +int i3c_slave_ctrl_add_func(struct i3c_slave_ctrl *ctrl, struct i3c_sl=
+ave_func *func)
+> +{
+> +	if (ctrl->func)
+> +		return -EBUSY;
+> +
+> +	ctrl->func =3D func;
+> +	func->ctrl =3D ctrl;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_ctrl_add_func);
+> +
+> +/**
+> + * i3c_slave_ctrl_remove_func() - unbind I3C slave function to an slav=
+e controller
+> + * @ctrl: the controller device to which the slave function should be =
+removed
+> + * @func: the slave function to be removed
+> + *
+> + * An I3C slave device can have only one functions.
+> + */
+> +void i3c_slave_ctrl_remove_func(struct i3c_slave_ctrl *ctrl, struct i3=
+c_slave_func *func)
+> +{
+> +	ctrl->func =3D NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_ctrl_remove_func);
+> +
+> +
+> +/**
+> + * i3c_slave_ctrl() - get the I3C slave controller
+> + * @name: device name of the slave controller
+> + *
+> + * Invoke to get struct i3c_slave_ctrl * corresponding to the device n=
+ame of the
+> + * slave controller
+> + */
+> +struct i3c_slave_ctrl *i3c_slave_ctrl_get(const char *name)
+> +{
+> +	int ret =3D -EINVAL;
+> +	struct i3c_slave_ctrl *ctrl;
+> +	struct device *dev;
+> +	struct class_dev_iter iter;
+> +
+> +	class_dev_iter_init(&iter, i3c_slave_ctrl_class, NULL, NULL);
+> +	while ((dev =3D class_dev_iter_next(&iter))) {
+> +		if (strcmp(name, dev_name(dev)))
+> +			continue;
+> +
+> +		ctrl =3D to_i3c_slave_ctrl(dev);
+> +		if (!try_module_get(ctrl->ops->owner)) {
+> +			ret =3D -EINVAL;
+> +			goto err;
+> +		}
+> +
+> +		class_dev_iter_exit(&iter);
+> +		get_device(&ctrl->dev);
+> +		return ctrl;
+> +	}
+> +
+> +err:
+> +	class_dev_iter_exit(&iter);
+> +	return ERR_PTR(ret);
+> +
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_ctrl_get);
+> +
+> +/**
+> + * i3c_slave_ctrl_put() - release the I3C endpoint controller
+> + * @slave: slave returned by pci_slave_get()
+> + *
+> + * release the refcount the caller obtained by invoking i3c_slave_ctrl=
+_get()
+> + */
+> +void i3c_slave_ctrl_put(struct i3c_slave_ctrl *ctrl)
+> +{
+> +	if (!ctrl || IS_ERR(ctrl))
+> +		return;
+> +
+> +	module_put(ctrl->ops->owner);
+> +	put_device(&ctrl->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_ctrl_put);
+> +
+> +/**
+> + * i3c_slave_func_bind() - Notify the function driver that the functio=
+n device has been bound to a
+> + *			   controller device
+> + * @func: the function device which has been bound to the controller d=
+evice
+> + *
+> + * Invoke to notify the function driver that it has been bound to a co=
+ntroller device
+> + */
+> +int i3c_slave_func_bind(struct i3c_slave_func *func)
+> +{
+> +	struct device *dev =3D &func->dev;
+> +	int ret;
+> +
+> +	if (!func->driver) {
+> +		dev_WARN(dev, "func device not bound to driver\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!try_module_get(func->driver->owner))
+> +		return -EAGAIN;
+> +
+> +	mutex_lock(&func->lock);
+> +	ret =3D func->driver->ops->bind(func);
+> +	if (!ret)
+> +		func->is_bound =3D true;
+> +	mutex_unlock(&func->lock);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_func_bind);
+> +
+> +/**
+> + * i3c_slave_func_unbind() - Notify the function driver that the bindi=
+ng between the function device
+> + *			     and controller device has been lost
+> + * @func: the function device which has lost the binding with the cont=
+roller device
+> + *
+> + * Invoke to notify the function driver that the binding between the f=
+unction device and controller
+> + * device has been lost.
+> + */
+> +void i3c_slave_func_unbind(struct i3c_slave_func *func)
+> +{
+> +	if (!func->driver) {
+> +		dev_WARN(&func->dev, "func device not bound to driver\n");
+> +		return;
+> +	}
+> +
+> +	mutex_lock(&func->lock);
+> +	if (func->is_bound)
+> +		func->driver->ops->unbind(func);
+> +	mutex_unlock(&func->lock);
+> +
+> +	module_put(func->driver->owner);
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_func_unbind);
+> +
+> +/**
+> + * i3c_slave_func_create() - create a new I3C function device
+> + * @drv_name: the driver name of the I3C function device.
+> + * @name: the name of the function device.
+> + *
+> + * Invoke to create a new I3C function device by providing the name of=
+ the function device.
+> + */
+> +struct i3c_slave_func *i3c_slave_func_create(const char *drv_name, con=
+st char *name)
+> +{
+> +	struct i3c_slave_func *func;
+> +	struct device *dev;
+> +	int ret;
+> +
+> +	func =3D kzalloc(sizeof(*func), GFP_KERNEL);
+> +	if (!func)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	dev =3D &func->dev;
+> +	device_initialize(dev);
+> +	dev->bus =3D &i3c_slave_func_bus_type;
+> +	dev->type =3D &i3c_slave_func_type;
+> +	mutex_init(&func->lock);
+> +
+> +	ret =3D dev_set_name(dev, "%s.%s", drv_name, name);
+> +	if (ret) {
+> +		put_device(dev);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	ret =3D device_add(dev);
+> +	if (ret) {
+> +		put_device(dev);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	return func;
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_func_create);
+> +
+> +/**
+> + * __i3c_slave_func_register_driver() - register a new I3C function dr=
+iver
+> + * @driver: structure representing I3C function driver
+> + * @owner: the owner of the module that registers the I3C function dri=
+ver
+> + *
+> + * Invoke to register a new I3C function driver.
+> + */
+> +int __i3c_slave_func_register_driver(struct i3c_slave_func_driver *dri=
+ver, struct module *owner)
+> +{
+> +	int ret =3D -EEXIST;
+> +
+> +	if (!driver->ops)
+> +		return -EINVAL;
+> +
+> +	if (!driver->ops->bind || !driver->ops->unbind)
+> +		return -EINVAL;
+> +
+> +	driver->driver.bus =3D &i3c_slave_func_bus_type;
+> +	driver->driver.owner =3D owner;
+> +
+> +	ret =3D driver_register(&driver->driver);
+> +	if (ret)
+> +		return ret;
+> +
+> +	i3c_slave_cfs_add_func_group(driver->driver.name);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(__i3c_slave_func_register_driver);
+> +
+> +/**
+> + * i3c_slave_func_unregister_driver() - unregister the I3C function dr=
+iver
+> + * @driver: the I3C function driver that has to be unregistered
+> + *
+> + * Invoke to unregister the I3C function driver.
+> + */
+> +void i3c_slave_func_unregister_driver(struct i3c_slave_func_driver *fd=
+)
+> +{
+> +	mutex_lock(&func_lock);
+> +	mutex_unlock(&func_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_slave_func_unregister_driver);
+> +
+> +static int __init i3c_slave_init(void)
+> +{
+> +	int ret;
+> +
+> +	i3c_slave_ctrl_class =3D class_create("i3c_slave");
+> +	if (IS_ERR(i3c_slave_ctrl_class)) {
+> +		pr_err("failed to create i3c slave class --> %ld\n",
+> +			PTR_ERR(i3c_slave_ctrl_class));
+> +		return PTR_ERR(i3c_slave_ctrl_class);
+> +	}
+> +
+> +	ret =3D bus_register(&i3c_slave_func_bus_type);
+> +	if (ret) {
+> +		class_destroy(i3c_slave_ctrl_class);
+> +		pr_err("failed to register i3c slave func bus --> %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +module_init(i3c_slave_init);
+> +
+> +static void __exit i3c_slave_exit(void)
+> +{
+> +	class_destroy(i3c_slave_ctrl_class);
+> +	bus_unregister(&i3c_slave_func_bus_type);
+> +
+> +}
+> +module_exit(i3c_slave_exit);
+> +
+> diff --git a/include/linux/i3c/slave.h b/include/linux/i3c/slave.h
+> new file mode 100644
+> index 0000000000000..a4cbbfc6d6ea9
+> --- /dev/null
+> +++ b/include/linux/i3c/slave.h
+> @@ -0,0 +1,458 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright 2023 NXP.
+> + *
+> + * Author: Frank Li <Frank.Li@nxp.com>
+> + */
+> +
+> +#ifndef I3C_SLAVE_H
+> +#define I3C_SLAVE_H
+> +
+> +#include <linux/device.h>
+> +
+> +struct i3c_slave_func;
+> +struct i3c_slave_ctrl;
+> +
+> +/**
+> + * struct i3c_slave_func_ops - set of function pointers for performing=
+ i3c slave function operations
+> + * @bind: ops to perform when a controller device has been bound to fu=
+nction device
+> + * @unbind: ops to perform when a binding has been lost between a cont=
+roller device and function
+> + *	    device
+> + */
+> +struct i3c_slave_func_ops {
+> +	int (*bind)(struct i3c_slave_func *func);
+> +	void (*unbind)(struct i3c_slave_func *func);
+> +};
+> +
+> +/**
+> + * struct i3c_slave_func_driver - represents the I3C function driver
+> + * @probe: ops to perform when a new function device has been bound to=
+ the function driver
+> + * @remove: ops to perform when the binding between the function devic=
+e and function driver is
+> + *	    broken
+> + * @driver: I3C Function driver
+> + * @ops: set of function pointers for performing function operations
+> + * @owner: the owner of the module that registers the I3C function dri=
+ver
+> + * @epf_group: list of configfs group corresponding to the I3C functio=
+n driver
+> + */
+> +struct i3c_slave_func_driver {
+> +	int (*probe)(struct i3c_slave_func *func);
+> +	void (*remove)(struct i3c_slave_func *func);
+> +
+> +	char *name;
+> +	struct device_driver driver;
+> +	struct i3c_slave_func_ops *ops;
+> +	struct module *owner;
+> +};
+> +
+> +/**
+> + * struct i3c_slave_func - represents the I3C function device
+> + * @dev: the I3C function device
+> + * @name: the name of the I3C function device
+> + * @driver: the function driver to which this function device is bound
+> + * @group: configfs group associated with the EPF device
+> + * @lock: mutex to protect i3c_slave_func_ops
+> + * @ctrl: binded I3C controller device
+> + * @is_bound: indicates if bind notification to function driver has be=
+en invoked
+> + * @vednor_id: vendor id
+> + * @part_id: part id
+> + * @instance_id: instance id
+> + * @ext_id: ext id
+> + * @vendor_info: vendor info
+> + * @static_addr: static address for I2C. It is 0 for I3C.
+> + * @max_write_len: maxium write length
+> + * @max_read_len: maxium read length
+> + * @bcr: bus characteristics register (BCR)
+> + * @dcr: device characteristics register (DCR)
+> + */
+> +struct i3c_slave_func {
+> +	struct device dev;
+> +	char *name;
+> +	struct i3c_slave_func_driver *driver;
+> +	struct config_group *group;
+> +	/* mutex to protect against concurrent access of i3c_slave_func_ops *=
+/
+> +	struct mutex lock;
+> +	struct i3c_slave_ctrl *ctrl;
+> +	bool is_bound;
+> +
+> +	u16 vendor_id;
+> +	u16 part_id;
+> +	u8 instance_id;
+> +	u16 ext_id;
+> +	u8 vendor_info;
+> +	u16 static_addr;
+> +	u16 max_write_len;	//0 is hardware default max value
+> +	u16 max_read_len;	//0 is hardware default max value
+> +	u8 bcr;
+> +	u8 dcr;
+> +};
+> +
+> +enum i3c_request_stat {
+> +	I3C_REQUEST_OKAY,
+> +	I3C_REQUEST_PARTIAL,
+> +	I3C_REQUEST_ERR,
+> +	I3C_REQUEST_CANCEL,
+> +};
+> +
+> +/**
+> + * struct i3c_request - represents the an I3C transfer request
+> + * @buf: data buffer
+> + * @length: data length
+> + * @complete: call back function when request finished or cancelled
+> + * @context: general data for complete callback function
+> + * @status: transfer status
+> + * @actual: how much actually transferred
+> + * @ctrl: I3C slave controller associate with this request
+> + * @tx: transfer direction, 1: slave to master, 0: master to slave
+> + */
+> +struct i3c_request {
+> +	void *buf;
+> +	unsigned int length;
+> +
+> +	void (*complete)(struct i3c_request *req);
+> +	void *context;
+> +	struct list_head list;
+> +
+> +	enum i3c_request_stat status;
+> +	unsigned int actual;
+> +	struct i3c_slave_ctrl *ctrl;
+> +	bool tx;
+> +};
+> +
+> +/**
+> + * struct i3c_slave_ctrl_features - represents I3C slave controller fe=
+atures.
+> + * @tx_fifo_sz: tx hardware fifo size
+> + * @rx_fifo_sz: rx hardware fifo size
+> + */
+> +struct i3c_slave_ctrl_features {
+> +	u32 tx_fifo_sz;
+> +	u32 rx_fifo_sz;
+> +};
+> +
+> +/**
+> + * struct i3c_slave_ctrl_ops - set of function pointers for performing=
+ controller operations
+> + * @set_config: set I3C controller configuration
+> + * @enable: enable I3C controller
+> + * @disable: disable I3C controller
+> + * @raise_ibi: rasie IBI interrupt to master
+> + * @queue: queue an I3C transfer
+> + * @dequeue: dequeue an I3C transfer
+> + * @cancel_all_reqs: call all pending requests
+> + * @fifo_status: current FIFO status
+> + * @fifo_flush: flush hardware FIFO
+> + * @get_features: ops to get the features supported by the I3C slave c=
+ontroller
+> + * @owner: the module owner containing the ops
+> + */
+> +struct i3c_slave_ctrl_ops {
+> +	int (*set_config)(struct i3c_slave_ctrl *ctrl, struct i3c_slave_func =
+*func);
+> +	int (*enable)(struct i3c_slave_ctrl *ctrl);
+> +	int (*disable)(struct i3c_slave_ctrl *ctrl);
+> +	int (*raise_ibi)(struct i3c_slave_ctrl *ctrl, void *p, u8 size);
+> +
+> +	struct i3c_request *(*alloc_request)(struct i3c_slave_ctrl *ctrl, gfp=
+_t gfp_flags);
+> +	void (*free_request)(struct i3c_request *req);
+> +
+> +	int (*queue)(struct i3c_request *req, gfp_t gfp_flags);
+> +	int (*dequeue)(struct i3c_request *req);
+> +
+> +	void (*cancel_all_reqs)(struct i3c_slave_ctrl *ctrl, bool tx);
+> +
+> +	int (*fifo_status)(struct i3c_slave_ctrl *ctrl, bool tx);
+> +	void (*fifo_flush)(struct i3c_slave_ctrl *ctrl, bool tx);
+> +
+> +	const struct i3c_slave_ctrl_features *(*get_features)(struct i3c_slav=
+e_ctrl *ctrl);
+> +	struct module *owner;
+> +};
+> +
+> +/**
+> + * struct i3c_slave_ctrl - represents the I3C slave device
+> + * @dev: I3C slave device
+> + * @ops: function pointers for performing endpoint operations
+> + * @func: slave functions present in this controller device
+> + * @group: configfs group representing the I3C controller device
+> + */
+> +struct i3c_slave_ctrl {
+> +	struct device dev;
+> +	const struct i3c_slave_ctrl_ops *ops;
+> +	struct i3c_slave_func *func;
+> +	struct config_group *group;
+> +};
+> +
+> +/**
+> + * i3c_slave_ctrl_raise_ibi() - Raise IBI to master
+> + * @ctrl: I3C slave controller
+> + * @p: optional data for IBI
+> + * @size: size of optional data
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline int i3c_slave_ctrl_raise_ibi(struct i3c_slave_ctrl *ctrl=
+, void *p, u8 size)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->raise_ibi)
+> +		return ctrl->ops->raise_ibi(ctrl, p, size);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_cancel_all_reqs() - Cancel all pending request
+> + * @ctrl: I3C slave controller
+> + * @tx: Transfer diretion queue
+> + * @size: size of optional data
+> + */
+> +static inline void i3c_slave_ctrl_cancel_all_reqs(struct i3c_slave_ctr=
+l *ctrl, bool tx)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->cancel_all_reqs)
+> +		ctrl->ops->cancel_all_reqs(ctrl, tx);
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_set_config() - Set controller configuration
+> + * @ctrl: I3C slave controller device
+> + * @func: Function device
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline int
+> +i3c_slave_ctrl_set_config(struct i3c_slave_ctrl *ctrl, struct i3c_slav=
+e_func *func)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->set_config)
+> +		return ctrl->ops->set_config(ctrl, func);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_enable() - Enable I3C controller
+> + * @ctrl: I3C slave controller device
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline int
+> +i3c_slave_ctrl_enable(struct i3c_slave_ctrl *ctrl)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->enable)
+> +		return ctrl->ops->enable(ctrl);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_disable() - Disable I3C controller
+> + * @ctrl: I3C slave controller device
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline int
+> +i3c_slave_ctrl_disable(struct i3c_slave_ctrl *ctrl)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->disable)
+> +		return ctrl->ops->disable(ctrl);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_alloc_request() - Alloc an I3C transfer
+> + * @ctrl: I3C slave controller device
+> + * gfp_flags: additional gfp flags used when allocating the buffers
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline struct i3c_request *
+> +i3c_slave_ctrl_alloc_request(struct i3c_slave_ctrl *ctrl, gfp_t gfp_fl=
+ags)
+> +{
+> +	struct i3c_request *req =3D NULL;
+> +
+> +	if (ctrl && ctrl->ops && ctrl->ops->alloc_request)
+> +		req =3D ctrl->ops->alloc_request(ctrl, gfp_flags);
+> +	else
+> +		req =3D kzalloc(sizeof(*req), gfp_flags);
+> +
+> +	if (req)
+> +		req->ctrl =3D ctrl;
+> +
+> +	return req;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_free_request() - Free an I3C transfer
+> + * @ctrl: I3C slave controller device
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline void
+> +i3c_slave_ctrl_free_request(struct i3c_request *req)
+> +{
+> +	struct i3c_slave_ctrl *ctrl;
+> +
+> +	if (!req)
+> +		return;
+> +
+> +	ctrl =3D req->ctrl;
+> +	if (ctrl && ctrl->ops && ctrl->ops->free_request)
+> +		ctrl->ops->free_request(req);
+> +	else
+> +		kfree(req);
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_queue() - Queue an I3C transfer
+> + * @ctrl: I3C slave controller device
+> + * gfp_flags: additional gfp flags used when allocating the buffers
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline int
+> +i3c_slave_ctrl_queue(struct i3c_request *req, gfp_t gfp_flags)
+> +{
+> +	struct i3c_slave_ctrl *ctrl;
+> +	int ret =3D -EINVAL;
+> +
+> +	if (!req)
+> +		return -EINVAL;
+> +
+> +	ctrl =3D req->ctrl;
+> +
+> +	req->actual =3D 0;
+> +	req->status =3D 0;
+> +	if (ctrl && ctrl->ops && ctrl->ops->queue)
+> +		ret =3D ctrl->ops->queue(req, gfp_flags);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_dequeue() - Dequeue an I3C transfer
+> + * @ctrl: I3C slave controller device
+> + *
+> + * Returns: Zero for success, or an error code in case of failure
+> + */
+> +static inline int
+> +i3c_slave_ctrl_dequeue(struct i3c_request *req)
+> +{
+> +	struct i3c_slave_ctrl *ctrl;
+> +	int ret =3D -EINVAL;
+> +
+> +	if (!req)
+> +		return -EINVAL;
+> +
+> +	ctrl =3D req->ctrl;
+> +	if (ctrl && ctrl->ops && ctrl->ops->dequeue)
+> +		ret =3D ctrl->ops->dequeue(req);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_fifo_status() - Get controller FIFO status
+> + * @ctrl: I3C slave controller device
+> + * @tx: 1: Slave to master, 0: master to slave
+> + *
+> + * Returns: How much data in FIFO
+> + */
+> +static inline int
+> +i3c_slave_ctrl_fifo_status(struct i3c_slave_ctrl *ctrl, bool tx)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->fifo_status)
+> +		return ctrl->ops->fifo_status(ctrl, tx);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_fifo_flush() - Flush controller FIFO
+> + * @ctrl: I3C slave controller device
+> + * @tx: 1: Slave to master, 0: master to slave
+> + *
+> + */
+> +static inline void
+> +i3c_slave_ctrl_fifo_flush(struct i3c_slave_ctrl *ctrl, bool tx)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->fifo_flush)
+> +		return ctrl->ops->fifo_flush(ctrl, tx);
+> +}
+> +
+> +/**
+> + * i3c_slave_ctrl_get_features() - Get controller supported features
+> + * @ctrl: I3C slave controller device
+> + *
+> + * Returns: The pointer to struct i3c_slave_ctrl_features
+> + */
+> +static inline const struct i3c_slave_ctrl_features*
+> +i3c_slave_ctrl_get_features(struct i3c_slave_ctrl *ctrl)
+> +{
+> +	if (ctrl && ctrl->ops && ctrl->ops->get_features)
+> +		return ctrl->ops->get_features(ctrl);
+> +
+> +	return NULL;
+> +}
+> +
+> +#define to_i3c_slave_ctrl(device) container_of((device), struct i3c_sl=
+ave_ctrl, dev)
+> +
+> +#define to_i3c_slave_func(func_dev) container_of((func_dev), struct i3=
+c_slave_func, dev)
+> +#define to_i3c_slave_func_driver(drv) (container_of((drv), struct i3c_=
+slave_func_driver, driver))
+> +
+> +#define i3c_slave_ctrl_create(dev, ops) \
+> +		__i3c_slave_ctrl_create((dev), (ops), THIS_MODULE)
+> +#define devm_i3c_slave_ctrl_create(dev, ops) \
+> +		__devm_i3c_slave_ctrl_create((dev), (ops), THIS_MODULE)
+> +
+> +struct i3c_slave_ctrl *
+> +__devm_i3c_slave_ctrl_create(struct device *dev, const struct i3c_slav=
+e_ctrl_ops *ops,
+> +		      struct module *owner);
+> +struct i3c_slave_ctrl *
+> +__i3c_slave_ctrl_create(struct device *dev, const struct i3c_slave_ctr=
+l_ops *ops,
+> +		 struct module *owner);
+> +
+> +void devm_i3c_slave_ctrl_destroy(struct device *dev, struct i3c_slave_=
+ctrl *epc);
+> +void i3c_slave_ctrl_destroy(struct i3c_slave_ctrl *epc);
+> +
+> +
+> +int i3c_slave_ctrl_add_func(struct i3c_slave_ctrl *ctrl, struct i3c_sl=
+ave_func *func);
+> +void i3c_slave_ctrl_remove_func(struct i3c_slave_ctrl *ctrl, struct i3=
+c_slave_func *func);
+> +
+> +struct config_group *i3c_slave_cfs_add_ctrl_group(struct i3c_slave_ctr=
+l *ctrl);
+> +
+> +
+> +void i3c_slave_cfs_remove_ctrl_group(struct config_group *group);
+> +struct config_group *i3c_slave_cfs_add_func_group(const char *name);
+> +void i3c_slave_cfs_remove_func_group(struct config_group *group);
+> +struct i3c_slave_ctrl *i3c_slave_ctrl_get(const char *name);
+> +void i3c_slave_ctrl_put(struct i3c_slave_ctrl *ctrl);
+> +
+> +int i3c_slave_func_bind(struct i3c_slave_func *func);
+> +void i3c_slave_func_unbind(struct i3c_slave_func *func);
+> +struct i3c_slave_func *i3c_slave_func_create(const char *drv_name, con=
+st char *name);
+> +
+> +#define i3c_slave_func_register_driver(drv) \
+> +	__i3c_slave_func_register_driver(drv, THIS_MODULE)
+> +
+> +int __i3c_slave_func_register_driver(struct i3c_slave_func_driver *drv=
+, struct module *owner);
+> +void i3c_slave_func_unregister_driver(struct i3c_slave_func_driver *dr=
+v);
+> +
+> +#define DECLARE_I3C_SLAVE_FUNC(_name, _probe, _remove, _ops)			\
+> +	static struct i3c_slave_func_driver _name ## i3c_func =3D {		\
+> +		.driver.name =3D __stringify(_name),				\
+> +		.owner  =3D THIS_MODULE,						\
+> +		.probe =3D _probe,						\
+> +		.remove =3D _remove,						\
+> +		.ops =3D _ops							\
+> +	};									\
+> +	MODULE_ALIAS("i3cfunc:"__stringify(_name))
+> +
+> +#define DECLARE_I3C_SLAVE_INIT(_name, _probe, _remove, _ops)			\
+> +	DECLARE_I3C_SLAVE_FUNC(_name, _probe, _remove, _ops);			\
+> +	static int __init _name ## mod_init(void)				\
+> +	{									\
+> +		return i3c_slave_func_register_driver(&_name ## i3c_func);	\
+> +	}									\
+> +	static void __exit _name ## mod_exit(void)				\
+> +	{									\
+> +		i3c_slave_func_unregister_driver(&_name ## i3c_func);		\
+> +	}									\
+> +	module_init(_name ## mod_init);						\
+> +	module_exit(_name ## mod_exit)
+> +
+> +#endif
+> +
+> +
