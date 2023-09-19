@@ -1,269 +1,172 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2083.outbound.protection.outlook.com [40.107.21.83])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2064.outbound.protection.outlook.com [40.107.241.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC6B1097E
-	for <imx@lists.linux.dev>; Fri, 15 Sep 2023 18:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658EA35885
+	for <imx@lists.linux.dev>; Tue, 19 Sep 2023 04:31:24 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VGHFUePS8t/3S0CE6B0Pq+pUHXBNZPTO9Io6yTtVo1FvCwdvOF3w8iFW6oyGlsEX4Q/596QlKIjiJ9XLQYwPZZw37D9OjqCQ1IIYzPvgNo0gE6OI8ESMx29WMe/oQlvO5n9PqhZwPXRo5HRNzvmeASEEaWgPtzD9ZrBwzyGYQShfJMsVdgaHqmQoIBacn8tSxL9Trwg8Euv2BXoK86AmTzihR7z36dNdoe824lK27FZynWuyNcVeSkmxs9fOeVu9tqd5k20K8yvol6H1CLbOZaNlgII64ewgP4U2872CBGpJKAB+r+tI9sVGAP60FD0rBpKSeCHwLg3XOW6dvL32Rw==
+ b=WzxXZNdZ5B7jjKzcIc8KjmNW6ZiJFlqx+oif5p39lT+d/2PYLZyVsphfjPoeNhLmnILHRQj42SU9lTe/gjOiTyPusCA07fEW2gdhn0QsZeuDzuQuCJz/VBTOXEUAmbDpMW/BIUpm68W+zhsOUOxRyO+R4TVkKfIjlqBfjsHGqFFGHrrxlzFNiuyMnrv8FpbGeNR3GIVcXr572VHZFv5q1YNRLLNU8oEfnwm8t4vXlRrDF4nblH60y8v29V8rNmSOooTveQ8t6X7wuC9V109+fZOMc8fGOXZqg7PUjcbirLNUkmap37YYOd7VSASfdbNHws2UtPTue9b9qeF9sl6ygQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yOAmxkk1FLpr83vxYch5SYzBkOWvzUHP+VAG6W4Homw=;
- b=KwR0jU8yWQCNppinBFjNgM5ODu0hhUKZadRGRJLwZCslkbEpRsXUp7PQKmebdnshihqE3iBngfu+NrPRSQVvTOOsrLQUJg6BLXUGt9A55szb8gMaxMrssSTgbO3QtkPIPgVgrT5giwBWOdxLD8p5sIAQMO5NE9pQBqbvwc+UGgeRrxvNEen1eJBpVAfIO+I3y9AeGBYXta8Y7z1jRX19K5FRgTMEDKwy+JRTFNoT8pZTJ4at/OyYV+xFYQ7e30sav820EaiDvxWXWNoXuKDycZv4Ahwee3HFB9HHT8KnP53wsw4kOaQwQmXl4pbPRwl/Eao+m4ngIgk/9J2hujG/8Q==
+ bh=KvoL18q2kGjzfKnPWTbaaS+dIdB0reU7G6nRILWZz4k=;
+ b=is/vs7fLcPmlYZWuU4aRJuNnxUuIGMMPipTPWbSmGpH4n2wW0GezeJfz2iWsp4ks+pkEhfTQdUgb+YmFVBB1JMmF818bu2h6W6dq8Ne0BwmqTCA6qbNsau+WobOf7tS7Hwmy9wB6Ns/mL32Z3UpGqllP0DANzdzOFAWoJ2f6/Y1oi90U4joLUTQo9lLU54yAQIkHKQQmdkjV+Ldz97Lwj0iJ3Opv/gw8I3+yfkGXfVDDCF2iMpN48L1KH0l70O7yoIPjM3fBkhJEKtMXdeb1yYVzSYPUTqHWcuueiBBisQMPiQYL5iCg+proLkYk9Wu0pYPcY8OFFFf1ZPXnQxPUtA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yOAmxkk1FLpr83vxYch5SYzBkOWvzUHP+VAG6W4Homw=;
- b=niQbs9gxA/f+4yw++Ux/+i3keVoGIU7j5Fou+C6EBuFbBFgjcb317RFrpxnYiank0mm8Qm2tys8+8MAgSt7Ea3GKRMdfo689BsEnBQO99t8dAJ2Il/1iFy1ek0d7Urmt02Ks4Ub/LCwjKFVrZVb8FZpznQ42KtEUtgF5I+Lu/Mc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
+ bh=KvoL18q2kGjzfKnPWTbaaS+dIdB0reU7G6nRILWZz4k=;
+ b=e5lr6L0Yt3IDZyTc0v00RQR5iY1+cRF/OyjCiabQwrSO8e+VqP4Lt+5hQjOsp7wIqEMYm2wvSW5YXTTv3TUIftN4zaFC698d2iiHzjV8paGsL0gKs0IqXDXoE3rCyVCHKiQw+lBJf4QacNVNXXabbIRO4wJsutpqTi4uOhMqj2A=
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by GV1PR04MB9184.eurprd04.prod.outlook.com (2603:10a6:150:28::14) with
+ by PAXPR04MB8640.eurprd04.prod.outlook.com (2603:10a6:102:21f::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Fri, 15 Sep
- 2023 18:43:34 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Tue, 19 Sep
+ 2023 04:31:22 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::aa90:117d:c1d0:346a]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::aa90:117d:c1d0:346a%3]) with mapi id 15.20.6792.020; Fri, 15 Sep 2023
- 18:43:34 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 3/3] PCI: layerscape: add suspend/resume for ls1043a
-Date: Fri, 15 Sep 2023 14:43:06 -0400
-Message-Id: <20230915184306.2374670-3-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230915184306.2374670-1-Frank.Li@nxp.com>
-References: <20230915184306.2374670-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0186.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::11) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+ ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6792.026; Tue, 19 Sep 2023
+ 04:31:22 +0000
+From: Frank Li <frank.li@nxp.com>
+To: "vkoul@kernel.org" <vkoul@kernel.org>
+CC: "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, Joy Zou <joy.zou@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Peng Fan
+	<peng.fan@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>
+Subject: RE: [PATCH 1/1] dmaengine: fsl-edma: fix edma4 channel enable failure
+ on second attempt
+Thread-Topic: [PATCH 1/1] dmaengine: fsl-edma: fix edma4 channel enable
+ failure on second attempt
+Thread-Index: AQHZ1e9mmza5A/RDR0WvWihDLR0nlrAhuAZQ
+Date: Tue, 19 Sep 2023 04:31:22 +0000
+Message-ID:
+ <AM6PR04MB4838EC7BBD1125F60A3F389D88FAA@AM6PR04MB4838.eurprd04.prod.outlook.com>
+References: <20230823182635.2618118-1-Frank.Li@nxp.com>
+In-Reply-To: <20230823182635.2618118-1-Frank.Li@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM6PR04MB4838:EE_|PAXPR04MB8640:EE_
+x-ms-office365-filtering-correlation-id: 328e03cb-99bd-4e57-076a-08dbb8c9470b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ bQ2UL1QgCPp9bU1Cgw/f9EqXG92c5xXstFEHGkpBo2cgOa7Dpx9tVqO8sVv5New81EQqk/K8j2KI4rX9tnM0M0jVm7lpRjonMdc3eeWsuDWSjoxHxESeHtESZ+HWYd8Z8VBdSe+HOU2k8AHsEDH0kUC4GammB/RrGrFUtmYgJUKzDKr/jZLTgNE/fGYR5ysL+B7alkbXyeDOvv3CLskQdxTVBEXPk4+I21qbsN51aKocFRpTRQWlF2eTUmE7yBYBU8VEruKtHGFEaH69A4lzU2LazPmCfTfAGEL4Q0r/k04elKXCG27GJNVOgy0d4aJxyibs4Zak1P7PmPONryrJmT8vVSLclrJVAyHJ8t7lSw3Pq8kuTo+F4JClvdhUfKkCeXyTR+/anpsR+CBy9KM/I/1RQfcVFaVQelE2AGiiPWK2piapz1kigVz5oXu4cFTWBMCl58jVzh0WOldh9BHTx02rWEB1SN7IouDQIvyzWahj7b9szPUBdfXX6Jq3TnOuuktULU2dgWFV7iP0aCwFL513J9EsP11+wv+TWCC3HIG9B+gMc8/18Lg8zpz2T7jBDpizxi0emMApyFbb8Ur51lhy18SfWt66w9NT2oMr6Yux+G5LNUB1tCna0vTEGXr2
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(136003)(376002)(396003)(346002)(1800799009)(186009)(451199024)(122000001)(38100700002)(38070700005)(33656002)(55016003)(86362001)(2906002)(44832011)(55236004)(53546011)(478600001)(6506007)(66946007)(66476007)(66446008)(76116006)(64756008)(4326008)(52536014)(66556008)(71200400001)(8936002)(8676002)(7696005)(54906003)(9686003)(83380400001)(5660300002)(41300700001)(316002)(6916009)(26005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Qtoq6K1vP2SXaYaUMOLU5IXxoNaPinYlcTJuxH5HG+uv6KTClVxSpoW9EVSk?=
+ =?us-ascii?Q?Zdd1nZMq49HE3uan/3MIVji362dJM6F6u2xeygUUgQqo0oZ8LfUYCSut2KNO?=
+ =?us-ascii?Q?4qWPZlFNkOq7OGD8fMXW+tBhVSSWg/VcjDa8i3vtjdxp09rBwYEyMBK28MeO?=
+ =?us-ascii?Q?nozuISh+S7YZrSo63M6AH4r34UP4RePAPciiNBLGs0DtLA/lcXlg5mwvM0gF?=
+ =?us-ascii?Q?sJFNqhtpwRwKzk+vHxRFZ5Imis6mTu4O5RFhDBN3I8a4M90N7lAx+LEJZnZX?=
+ =?us-ascii?Q?J9UhOTxlbf5s47L6uWnuOqDZrce2MnclJLJgNpSS/qyY+6GqCxOXyik7Qu8D?=
+ =?us-ascii?Q?/8Qd3mPQ1GOTAb8ab6t3GpRdWBMlnc17ESrXE+pZowBH/YBLefOGn1lfavCF?=
+ =?us-ascii?Q?8fATcNjvB+WyOIWb7Bg4pZOw1PwQTa2waOO8zRa++tTrPjmsQgowevp1Qmpw?=
+ =?us-ascii?Q?/U2XzzqkTHSsUk9Y8/efgj7yiAABVasEatgBcqeeWMaY4PV/U2GvNxMziJQY?=
+ =?us-ascii?Q?3p6O98pbHjHnpcuJl7KaMs7MNZ7eivs43myU7h4ZGF3GNCjOyHlmTuFxGFSq?=
+ =?us-ascii?Q?Oz6enrgKrZ25uzGfDOPHAmHZnFH453uNPbH6SrEVcXdWVfcyVC8gWVPW8/q3?=
+ =?us-ascii?Q?dJVw45jZlT0QcgNJQWH/5xDglULGamfH6ADU8TuOxOTqu0EVhb1YYxAtlA62?=
+ =?us-ascii?Q?eZspdv4SJ8JmR2ANTvxHOSeXUk9zWJHuqS9fPQJjevokHwgTyhOXF/ulA3HI?=
+ =?us-ascii?Q?6qhbi3bqMnFKTMn/lF2aZVBjGTka53VJgmXw9T89WhXkeO22XTcE1bP8cZ8I?=
+ =?us-ascii?Q?KEI9m574zGsdlaoFl+LtR7LbXZwhYLzP4ZyOx10vkPujQvWoPDZtkQs9wAfb?=
+ =?us-ascii?Q?M36HKwyiouBjPSkxws2GZhtBT64KdCel/CNB11IcSWhpzanh0TtRWefN/01H?=
+ =?us-ascii?Q?ePUQpqncI5zpRUfltik8zAz8VAYe8x8/qu+5r1yBG3rBfb9WBDFwb1CYDHXu?=
+ =?us-ascii?Q?vwSSIPTnN8dCZGqiGaCCe/YB1tw3YGXdia3Es9p09BJqu9grNoi6v0vo/Xcl?=
+ =?us-ascii?Q?xhU5LshAFlWCXRMQuma8+W4ySh4wFoGgtPVxWWkPLyw+MkkjoKh0biVWV0ip?=
+ =?us-ascii?Q?rnMG+pR65Fu9o+jvG9kNyPlqOToKHPmXhnTklZoSTZZIT5veoHviY/fCBZrc?=
+ =?us-ascii?Q?0WBRqlN2B+VBfEZOLscQQrE8qrQX+OJiMIxdI+VNi62HNoVn/fGqJJ7cM7vj?=
+ =?us-ascii?Q?B2hC+2nvgrFDcm5HkXGyUr+2dpvK4CnFa3Y9F6Gy0a2URc3BwXjfc2nt+fvU?=
+ =?us-ascii?Q?qpa8V56lK3tWxLJRLaQelaSrr2+EEsb4/eXb0tSmmEe8TujXQqd+PluQtiDk?=
+ =?us-ascii?Q?qaHB7vIDgEHAUFRIA+6ARr6xT5fdLfmmXo1eE3Yaoc2KypRS5mrmXLHns+Jq?=
+ =?us-ascii?Q?2srCfK1xoTGD85y4SRDfc9rYB0I2qqjjOZbx2/ywB+ySJgQZe89WScpS/g4f?=
+ =?us-ascii?Q?jUWflxCeS1X4c+duvdyQWJHzzBxkKXVqf4u8OQd7ri1qHamNSuLoCP2HK2N3?=
+ =?us-ascii?Q?ExKA/FOi8+3swYdnJ1A=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|GV1PR04MB9184:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5964a72b-a75b-4a12-bcc9-08dbb61baa51
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	i9s4GNz6l4Lk12jFDBu8d1S8PBMt0cLW/EFpOHnhzDrfH2KRea4rd3UhVPrwf3TxsNffgB1FO5JVRyndoE7VgE7JjAVvwa0MWFvbVJwDOeQ/O7iGMpmG3A/BN6sQChsQVTQJm+HouWMFsZIKYe7XLrwvN+g8L8QmieYroauRT2yZgqtg6OtcxY7E0XCP+ny92r1ijTwFLhRQKJvzzZOutIjblmuZcFnCVvka2c5DIhGFBuBXv7ySCAqP3xlopSoBSmhG15TxvmjR3H1qNjpllRehulHbtzSDyIdeKKqTSBiNQKwKz/QUAx2lZTuacLLqfL+omp+WcCidwLg+FUx357g//gKIEpQYnytBjO7mpRsPqFnEy9qTgYLQCoLbGq416FJ7a00Rd7bTft/3DYUJc8uBm2Bi1M7IqmLmfbvhGyz8m1wztZ32Lrdf3BfnU1WI2m2oMYXXdNsJ/5ZTKU3dn62xHYdLNiNGX/h49Pj0RQBtiSFTh8CF/32V32Pxwdlau+D0we6cuxiDag7oVv2uyd8sRzDg5Eu4bAY1j48LK34n7sjdC9bjcgUqF9Ik3rTqGTmWI8kn5C3lTs46RdnckJ/gduo8psmBnzNsIjjKkD6M+YpEWiKZsYZEABCzac+wjTE7u+cSUoPNGR7Q+KHV0g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(136003)(376002)(366004)(396003)(451199024)(1800799009)(186009)(15650500001)(478600001)(6512007)(6506007)(6486002)(6666004)(52116002)(2906002)(4326008)(86362001)(8676002)(5660300002)(8936002)(41300700001)(316002)(110136005)(66476007)(66946007)(66556008)(38350700002)(1076003)(2616005)(26005)(921005)(36756003)(83380400001)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VCT5wDmLrdnSBPYkhO5FPKNzyOBOHfu9tWKJLfrgl/aHFdYCAkoGDlGFF7bH?=
- =?us-ascii?Q?J0njq0rZMOwCyTucnSJkxMQ706TXqC6zsku2dJN0K5wRDNef5Y7JwLOnZnOz?=
- =?us-ascii?Q?36Gf0ZX1lfkalOik5ieTXnVzvT8ew0gGZG1QShhz80naivoxayikuXYah6rG?=
- =?us-ascii?Q?WmiT47FBK+US1xZQbiArhKlm2TDbqSc8LKdLDbHPAnRppH8PmHOJYuGtxb/l?=
- =?us-ascii?Q?lT/ZYGcMqRiG9lIZLSSQucyNGn0Xq67D7aJ+pBva+JoeJR33hWw+mUpz3x8H?=
- =?us-ascii?Q?y6VfgT1g12ae77ik29etPTaGWQvcFV8zpk+4CGWc9mgC0OeMgcdPBjC1szMP?=
- =?us-ascii?Q?SKy2hPba8baXiJZ1wIXI7MIggbOfOajI+H5FtD6esxZmUgxZqqNgKk7tzaH/?=
- =?us-ascii?Q?vfDg8nLxfzrgc+BmvcFtN2XeWFYT5hw2VzE3JEM8t6k2wif4SETPhht4qehC?=
- =?us-ascii?Q?9J39vvtyLy32D2Rgyqo3d+hjzTAKcKTT6wPRzaSefgNatGWRgVqvIAnWYbgq?=
- =?us-ascii?Q?4EQplQsP7Sktun/drra21P8MLkp3y0f1X8OZ10MtSK581j0QhfE57+PN1Va0?=
- =?us-ascii?Q?YLElQLwZeZfkxE3eEiZEh/XuXHk20fWqoFSwKFWJMBjKc1y9NzhG0T6eKnGr?=
- =?us-ascii?Q?oA2ejR9ENqHuz5KWPWSD9FGQFOVU/SjCdACgYog92THbSw4zOXOd5JT7Aj9c?=
- =?us-ascii?Q?REMW/2m8rXuC2/QOFSvELccbWGxKne94g28iamyyKTKV6syhPOYWCXdMyrg9?=
- =?us-ascii?Q?MyCMQgF3TECL1nApJVa+DzSVUOFcAk4YTDXqEt0NCEPeWaO3lUro6e8JbTD7?=
- =?us-ascii?Q?/+9ZA3aq/5fUJPf/WqAgPqsTmJARcIOrQHd3eRTINAzu6LRFsRCA2l/rzeHr?=
- =?us-ascii?Q?78DWVQNRyhRTjn0A7NIdxB6ZGeH5uSEsBlrFCYtddGuKcZN6+KQ7bvJp7iX4?=
- =?us-ascii?Q?ZlR31r/qKlm/+ZqpsZ/IVnK/RprdPQzeG6La2WBKS1KtwUBRgfkXipgVETGU?=
- =?us-ascii?Q?Y2nH2UiBmFtsFGMiHkyCr3JHlDUemTB3yoGI9MGsGR0KYSTqoL3/jGVtiAxR?=
- =?us-ascii?Q?lSgpz2lkJi4Em/CNXYDz/wYWyQDT/2uyf/FPXFFisCZcaS2umXJl5JxL19t6?=
- =?us-ascii?Q?1KAa19mb0mCs++NOXansO3IMn1uXH9IKgbeUTIetu5nHT+9sHku/g3y6G+FH?=
- =?us-ascii?Q?nXWK4RcKjIm5QBeXeNIhd/87fEjyttLM3cVueCL/FzryaZqhrVarIBp5o1TO?=
- =?us-ascii?Q?6rRHgHFa4IDcc4XO2DFU0cim9Nbt5tlKi/2E0U3YI+CAKwhE7vw/XxiYglOC?=
- =?us-ascii?Q?77YnXt3BQ/x22p6Ak6Wqf5zBqHLxrArcpG+8VHcKrb+OYGGi0vlayY/2eXw2?=
- =?us-ascii?Q?byzP3Nv3MdIEFCArhTxb+HlMyjjz2bzsLEtlHhEqw1ub7t093U4FAfSImGVw?=
- =?us-ascii?Q?9XCKnu0Oe/C8p3J2eaQGX/4I72ECe9N2fsEVS6If1cIzCMYSyCzphmqBt6r7?=
- =?us-ascii?Q?vgBKqPY5L3VQfDpt8YEAc5uicvPfYR6YIzzibq2VGF9aks+GBMXEcGzRwkhq?=
- =?us-ascii?Q?E5Y9GgJL0qcfVfiuUgbRSnI6eZ64+wQjoaYuQItj?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5964a72b-a75b-4a12-bcc9-08dbb61baa51
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2023 18:43:34.2398
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 328e03cb-99bd-4e57-076a-08dbb8c9470b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2023 04:31:22.2894
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vTlLAEQjFlNkqHkgpiuyANJd9Q2Xgv+NpOCXhjXX13RU6uJkm8ym2xy6WFphAO9ze8jVD+TwE7OgptqQNfRDLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9184
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hKTf7cOWyMuMJxWdTX6SBLzv+OQ9au+K1rAIgN0q4f4a29JA4MSvOo5PunvCnGtsd1wYq/7ovymzJAa3EF1xRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8640
 
-ls1043a add suspend/resume support.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/pci/controller/dwc/pci-layerscape.c | 91 ++++++++++++++++++++-
- 1 file changed, 90 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-index bc5a8ff1a26ce..debabb9bb41f4 100644
---- a/drivers/pci/controller/dwc/pci-layerscape.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape.c
-@@ -41,10 +41,20 @@
- #define SCFG_PEXSFTRSTCR	0x190
- #define PEXSR(idx)		BIT(idx)
- 
-+/* LS1043A PEX PME control register */
-+#define SCFG_PEXPMECR		0x144
-+#define PEXPME(idx)		BIT(31 - (idx) * 4)
-+
-+/* LS1043A PEX LUT debug register */
-+#define LS_PCIE_LDBG	0x7fc
-+#define LDBG_SR		BIT(30)
-+#define LDBG_WE		BIT(31)
-+
- #define PCIE_IATU_NUM		6
- 
- struct ls_pcie_drvdata {
- 	const u32 pf_off;
-+	const u32 lut_off;
- 	const struct dw_pcie_host_ops *ops;
- 	void (*exit_from_l2)(struct dw_pcie_rp *pp);
- 	bool pm_support;
-@@ -54,6 +64,7 @@ struct ls_pcie {
- 	struct dw_pcie *pci;
- 	const struct ls_pcie_drvdata *drvdata;
- 	void __iomem *pf_base;
-+	void __iomem *lut_base;
- 	struct regmap *scfg;
- 	int index;
- 	bool big_endian;
-@@ -116,6 +127,23 @@ static void ls_pcie_pf_writel(struct ls_pcie *pcie, u32 off, u32 val)
- 		iowrite32(val, pcie->pf_base + off);
- }
- 
-+static u32 ls_pcie_lut_readl(struct ls_pcie *pcie, u32 off)
-+{
-+	if (pcie->big_endian)
-+		return ioread32be(pcie->lut_base + off);
-+
-+	return ioread32(pcie->lut_base + off);
-+}
-+
-+static void ls_pcie_lut_writel(struct ls_pcie *pcie, u32 off, u32 val)
-+{
-+	if (pcie->big_endian)
-+		iowrite32be(val, pcie->lut_base + off);
-+	else
-+		iowrite32(val, pcie->lut_base + off);
-+}
-+
-+
- static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-@@ -249,6 +277,54 @@ static int ls1021a_pcie_host_init(struct dw_pcie_rp *pp)
- 	return ret;
- }
- 
-+static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct ls_pcie *pcie = to_ls_pcie(pci);
-+	u32 val;
-+
-+	if (!pcie->scfg) {
-+		dev_dbg(pcie->pci->dev, "SYSCFG is NULL\n");
-+		return;
-+	}
-+
-+	/* Send Turn_off message */
-+	regmap_read(pcie->scfg, SCFG_PEXPMECR, &val);
-+	val |= PEXPME(pcie->index);
-+	regmap_write(pcie->scfg, SCFG_PEXPMECR, val);
-+
-+	/* There are not register to check ACK, so wait PCIE_PME_TO_L2_TIMEOUT_US */
-+	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
-+
-+	/* Clear Turn_off message */
-+	regmap_read(pcie->scfg, SCFG_PEXPMECR, &val);
-+	val &= ~PEXPME(pcie->index);
-+	regmap_write(pcie->scfg, SCFG_PEXPMECR, val);
-+}
-+
-+static void ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct ls_pcie *pcie = to_ls_pcie(pci);
-+	u32 val;
-+
-+	val = ls_pcie_lut_readl(pcie, LS_PCIE_LDBG);
-+	val |= LDBG_WE;
-+	ls_pcie_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_lut_readl(pcie, LS_PCIE_LDBG);
-+	val |= LDBG_SR;
-+	ls_pcie_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_lut_readl(pcie, LS_PCIE_LDBG);
-+	val &= ~LDBG_SR;
-+	ls_pcie_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_lut_readl(pcie, LS_PCIE_LDBG);
-+	val &= ~LDBG_WE;
-+	ls_pcie_lut_writel(pcie, LS_PCIE_LDBG, val);
-+}
-+
- static const struct dw_pcie_host_ops ls_pcie_host_ops = {
- 	.host_init = ls_pcie_host_init,
- 	.pme_turn_off = ls_pcie_send_turnoff_msg,
-@@ -265,6 +341,18 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
- 	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
- };
- 
-+static const struct dw_pcie_host_ops ls1043a_pcie_host_ops = {
-+	.host_init = ls1021a_pcie_host_init, /* the same as ls1021 */
-+	.pme_turn_off = ls1043a_pcie_send_turnoff_msg,
-+};
-+
-+static const struct ls_pcie_drvdata ls1043a_drvdata = {
-+	.lut_off = 0x10000,
-+	.pm_support = true,
-+	.ops = &ls1043a_pcie_host_ops,
-+	.exit_from_l2 = ls1043a_pcie_exit_from_l2,
-+};
-+
- static const struct ls_pcie_drvdata layerscape_drvdata = {
- 	.pf_off = 0xc0000,
- 	.pm_support = true,
-@@ -275,7 +363,7 @@ static const struct of_device_id ls_pcie_of_match[] = {
- 	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
- 	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
--	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
-+	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
- 	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
-@@ -314,6 +402,7 @@ static int ls_pcie_probe(struct platform_device *pdev)
- 	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
- 
- 	pcie->pf_base = pci->dbi_base + pcie->drvdata->pf_off;
-+	pcie->lut_base = pci->dbi_base + pcie->drvdata->lut_off;
- 
- 	if (!ls_pcie_is_bridge(pcie))
- 		return -ENODEV;
--- 
-2.34.1
+> -----Original Message-----
+> From: Frank Li <frank.li@nxp.com>
+> Sent: Wednesday, August 23, 2023 1:27 PM
+> To: vkoul@kernel.org
+> Cc: devicetree@vger.kernel.org; dmaengine@vger.kernel.org; Frank Li
+> <frank.li@nxp.com>; imx@lists.linux.dev; Joy Zou <joy.zou@nxp.com>;
+> krzysztof.kozlowski+dt@linaro.org; linux-kernel@vger.kernel.org; Peng Fan
+> <peng.fan@nxp.com>; robh+dt@kernel.org; Shenwei Wang
+> <shenwei.wang@nxp.com>
+> Subject: [PATCH 1/1] dmaengine: fsl-edma: fix edma4 channel enable failur=
+e
+> on second attempt
+>=20
+> When attempting to start DMA for the second time using
+> fsl_edma3_enable_request(), channel never start.
+>=20
+> CHn_MUX must have a unique value when selecting a peripheral slot in the
+> channel mux configuration. The only value that may overlap is source 0.
+> If there is an attempt to write a mux configuration value that is already
+> consumed by another channel, a mux configuration of 0 (SRC =3D 0) will be
+> written.
+>=20
+> Check CHn_MUX before writing in fsl_edma3_enable_request().
+>=20
+> Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+
+@vinod:=20
+	ping=20
+
+>  drivers/dma/fsl-edma-common.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-
+> common.c
+> index a0f5741abcc4..edb92fa93315 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -92,8 +92,14 @@ static void fsl_edma3_enable_request(struct
+> fsl_edma_chan *fsl_chan)
+>=20
+>  	edma_writel_chreg(fsl_chan, val, ch_sbr);
+>=20
+> -	if (flags & FSL_EDMA_DRV_HAS_CHMUX)
+> -		edma_writel_chreg(fsl_chan, fsl_chan->srcid, ch_mux);
+> +	if (flags & FSL_EDMA_DRV_HAS_CHMUX) {
+> +		/*
+> +		 * ch_mux: With the exception of 0, attempts to write a value
+> +		 * already in use will be forced to 0.
+> +		 */
+> +		if (!edma_readl_chreg(fsl_chan, ch_mux))
+> +			edma_writel_chreg(fsl_chan, fsl_chan->srcid,
+> ch_mux);
+> +	}
+>=20
+>  	val =3D edma_readl_chreg(fsl_chan, ch_csr);
+>  	val |=3D EDMA_V3_CH_CSR_ERQ;
+> --
+> 2.34.1
 
