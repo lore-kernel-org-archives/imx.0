@@ -1,59 +1,57 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2071.outbound.protection.outlook.com [40.107.104.71])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2041.outbound.protection.outlook.com [40.107.22.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAA21947B
-	for <imx@lists.linux.dev>; Thu, 21 Sep 2023 22:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA79E20E7
+	for <imx@lists.linux.dev>; Fri, 22 Sep 2023 04:28:59 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aeYm0Xm1PNWKWzxEzGeo1jVSY1K8GTVuZaxvwOni4Na4WS206QZ/KVtoaPcHkcw283ovW5K8S5uGyBGKzOgr/JMtIS92hgv3c3+KvuSbkYQAMFG/lBZCABfalqDweTvOvT/nI8Da4AwZPYSS6ljlxRoatWyj+392N9d//JMhKf0cAM4592okjtGUjkKtVBe9eGAlo9NXXPz0CVG3502spyQk/aYbKow0E1ik2DHloHpxUj8pRsJyXYspfAZRWkiO6KHI0RLAb82kyKxhUSkHSxV1x48LJwGrZXXQ0Bw+27c3TJ+zNjl/1mkJKOUq42Zudx42atDmoy6z9lhSvCVaeg==
+ b=fIrY/v1vmG4R/C8F9oOcpRAMNazU0fJ5C9w4H88SiXDDTPKFLX1hDgsHkggzS1p8SkaRu8KwbpUCezerMouLacRmNbA7MNDZGa4grt5GatLhkbl6StogNbMNio6I0djFghhQBDi4gdGnBf2HdXYkwhXp8QVkMc82EemaF1uJm27zyNupnCjuULfeOD6u+pkXDfjw2kTCflPl6nXzbUKn+aTi9C27XKLsFQbXoHaibppyZy3juNGS9+e0LrQEGK16n91JEE8SD+WSJ/l7SEG6A0d0xZeyKVC78htjwAHMwxl3N8+9LiK1TYAGMV/CXFiCS6eysCsVjgittUY/Ldt73w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gLgIsHXv7kHX58g0x7DAvnY9dv97IrMJaCgdiBqHV94=;
- b=U+LSn34YGnso3eUUroARwxDZ05V0IKHqHIehGt9E9s7KIHg2wZJxlB8R4BtvdhDqVSp2Hgk4ZobhbyFIYNDj70sLetTRk6t4cfn6oG/2bCb9kHC5lPQruN3+YhNu7Qxuw2yB68UoTvqWJldjPMI1cJYnq7RJCisEqJgtFyhyQsla1rcRcda1Tt5AMAFK9w3bn4/uwGLMzfqyB8y8I2gzgFXtacNTwv+/kc3RsPdI+SqP0EIrcQnbjiwsNpyQZgcjrToTrMAQXWMHmAsU5HFXoplX/nsbR/hLgXFPXbc84KNF0E+5jbePXIXuoKqCmq+VAKdsEzz6IF5E4HQ+c3pRoA==
+ bh=ch0fIy8u8ZzKD9dw6NfdlEgvdYMI3x8irCe6QTsdiEI=;
+ b=D7i39q61muuBz4F2TKw8gksm+EHXNncyi/QXqO4ON71mOPQitRNas6Ho7qGS4bQmYpAzitsixwsAfS/Lkvi2awp1QCKhi/B5Yn6NIN8J/nOBJShPGWUD9EP/zbftVAbMjK/5v0jUxDuDUB6B6ATJt/dm9naPIxG7JkmYpYPlyR6af2zOHSrKERwu6/bPssRBZfJJhWNf01nyLlSdmukI3pGEuVbbowFu3KcnL4Fh2fn0RnRjdgAVurC8PrLP0TBWtGh5BjLZDoGe8D4OY/pTm7nY96xFbXGfF/+MlK3fvBfstASixqigiEsIjsUm9bG/c1eeMPespms6DcSyfsdHIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gLgIsHXv7kHX58g0x7DAvnY9dv97IrMJaCgdiBqHV94=;
- b=QJmJXdMWaMaZROJdASK/0jypDBeNkLliYYY3c521f6z2ypJjY0H2L6Xq58Umt17twHglLqIzY4H8QjrhMGfA0UNqit/mzpFadOwznhN9riLTJS5Tr5nCRVNobwfVdKX9/2jgl/aRMWUr/HjAuZhvfX6ttcaPEuNWk+2Qtx9Y4pQ=
+ bh=ch0fIy8u8ZzKD9dw6NfdlEgvdYMI3x8irCe6QTsdiEI=;
+ b=VlLuyN0yLobAu9Q6AJhRPjiFactcunRp7s0BIn1W1wDJi4Q3Jl26EAg5+qESkj69ianvnjUXabLI2tugp+xReNxXHxWeLOdZJWLgmsQhfdT0KsSlNenazfOdan4baYYnyDRBbc9q2NaWlbRm1vIEDcIiK2rcPQty06cD+KXaxB4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by VI1PR04MB6864.eurprd04.prod.outlook.com (2603:10a6:803:138::20) with
+ by AS8PR04MB8851.eurprd04.prod.outlook.com (2603:10a6:20b:42e::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Thu, 21 Sep
- 2023 22:05:55 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Fri, 22 Sep
+ 2023 04:28:57 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6792.026; Thu, 21 Sep 2023
- 22:05:55 +0000
-Date: Thu, 21 Sep 2023 18:05:45 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	imx@lists.linux.dev, Rob Herring <robh@kernel.org>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
-	Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
-	Mingkai Hu <mingkai.hu@nxp.com>,
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 1/1] PCI: layerscape-ep: set 64-bit DMA mask
-Message-ID: <ZQy+ORjAR3nhUpQB@lizhi-Precision-Tower-5810>
-References: <20230921153702.3281289-1-Frank.Li@nxp.com>
- <925da248-f582-6dd5-57ab-0fadc4e84f9e@wanadoo.fr>
- <ZQyM+9uxFoX5TgPa@lizhi-Precision-Tower-5810>
- <c6f07289-2e69-fab4-32dc-46fe5e5713e7@wanadoo.fr>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6792.026; Fri, 22 Sep 2023
+ 04:28:56 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: christophe.jaillet@wanadoo.fr
+Cc: Frank.li@nxp.com,
+	bhelgaas@google.com,
+	hch@infradead.org,
+	imx@lists.linux.dev,
+	kw@linux.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lpieralisi@kernel.org,
+	minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com,
+	robh@kernel.org,
+	roy.zang@nxp.com
+Subject: [PATCH v2 1/1] PCI: layerscape-ep: set 64-bit DMA mask
+Date: Fri, 22 Sep 2023 00:28:36 -0400
+Message-Id: <20230922042836.3311689-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c6f07289-2e69-fab4-32dc-46fe5e5713e7@wanadoo.fr>
-X-ClientProxiedBy: PH8PR22CA0003.namprd22.prod.outlook.com
- (2603:10b6:510:2d1::6) To AM6PR04MB4838.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: PH7PR17CA0016.namprd17.prod.outlook.com
+ (2603:10b6:510:324::19) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -62,183 +60,88 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|VI1PR04MB6864:EE_
-X-MS-Office365-Filtering-Correlation-Id: 915de401-b5a8-482e-ce6e-08dbbaeeed5d
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB8851:EE_
+X-MS-Office365-Filtering-Correlation-Id: 705c4718-dbc7-470d-0730-08dbbb246f47
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	yStd1Fqy5Mot/4LZneeidFaQCShHWGGXW/0A3iO20kLR1hm8GHZwXPkDt9MhwXS7AyfSnoGA8TFfWQoK4hP1qnrFUIwKT9tHoEFsm7hb4bKmEOyiDqMQeVQl2cRIWI8dDhW3Qd8S1fw4SR5fkdcqV9KQpVNo60yX/q2HD1l/VJDQDKV0ux+tmL0O9Inba73v+mTwE4geReZ0bwSiUV9IP12APNymcq702z3SwL/kdhbCWLWwFFbM2hFVjaZ0Dhz0NKZBgpk2AU0TfrIFwT5eOrqZZq7IgKoqzD7XfR/CwXMyXAC9Fnq5L+7AHPxkIgmyogeQm6uS/DZiUloOfYy3Kn6WvBd7xCpkB5AssbpWjyUZG0p6fpxNTcMUigtAMO5JlZ+y3EVsIOd1STrb3uWjtd415YjJyk2UwbiCyreEK/YFFN3KZlQbY97XUaWLc1W3oTAywfTUfiBKZYkS5w823G1rKn2Lv/MrnmYyGT5vb0b85mQVbAFXsWKLJFsnQSHLESbrvYZiuP43MP7tehgYdgqs8VUq+1H6+EarixNZGtz+PypxIrSp6+kqJiQvfAxZ5wYIDYyCHR+dP4RD4JNssXacuQdlhI5xS4DnQ/5ebe5GuqjZxcC30G+/wsaz2Zy+
+	gEnN5iZ3hfrZVgq0qL+t+CWfkapi/9ziOccaFx6xHJ2TFlbZaM25Y19xOeNyIUbrRrtk+AY9viyVyG/KYbJmHxP9jHPKec0RZIatVcV/C+rlzFb2f0vISbkiMGrbjda8AiwhvZk2Tj9iKRUW5oSUObMDuFxeHgAIz3sOdWXe7LilTUgKskybb8V7OfYIuNK8+m3Gz192DbW2l42ALtPIOrto8qJfsaYHP7D+PaJxh3RKtncdYXxAmZXOMwnrPuiayPl1Uima2SSu3gpe8sBGTGJ1mhzVwJYaAGOhX28H+zxyHoxdBwi8lRKv+NLQHHaKtDkH6ZoOE41n+qoLtzJNUDKsW+LID81DbsSYoQQ0UwXwT+znxZn2xkZ93OQAHpC/ItpRzC5iZepAatt7ssUuMgDvfsM+6DrbFjTH6AcC5qq4npz7XoNmjMIuY6wd5FqUWLuYSx1a00G6zj+y6dX8gd5dB46I54cUMpyVhwqbFpwx6CeYSDDgY5RTzH0LPSJkfwlLfvuwtyVrcKx0ABqARZIZYsDhBy4I5BPUL1sCrWyV7vS4y8ul09CKAOQqF56K04R8VhoxTUqNDAOepuSNc17bHwWVifSnFh/UW85pD8JQrPhctNoLrz1ntZxooSnm3MnjUWDoM+bhW58hLjjmvGOUo38sab1AMSirtURS2BY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(136003)(39860400002)(376002)(346002)(366004)(186009)(1800799009)(451199024)(966005)(52116002)(6486002)(6506007)(6666004)(478600001)(9686003)(7416002)(38350700002)(83380400001)(66574015)(26005)(4326008)(2906002)(8676002)(54906003)(41300700001)(66946007)(33716001)(6512007)(5660300002)(316002)(6916009)(8936002)(66556008)(66476007)(86362001)(38100700002)(67856001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(136003)(366004)(39860400002)(376002)(1800799009)(451199024)(186009)(6666004)(38350700002)(38100700002)(1076003)(6512007)(2616005)(86362001)(7416002)(4326008)(36756003)(5660300002)(8936002)(2906002)(6506007)(66476007)(66946007)(66556008)(6486002)(52116002)(6916009)(41300700001)(316002)(26005)(478600001)(8676002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?rklgurMOdg8Yuk5kbQ9EGb54oDo8orRwIFbA09XyVhXemG/Xqm1dSEikCF?=
- =?iso-8859-1?Q?5/RRESIEN86+OLq98X7oZm5jx5VxdLWsfTGJh6b6rjkiTg+SfYJA9vAB24?=
- =?iso-8859-1?Q?QBmIMcPOmGQ6ilxPGR3qzT7FC3zX+y2efl6q5SVuwxt6moCUN5AkpWbaQb?=
- =?iso-8859-1?Q?JlESrcSg/7sFC7XtqaY+9jljbaPpq14PbZwWZ83rEuxY2glftrAQt6ZEBB?=
- =?iso-8859-1?Q?1OTrT+SPQLFCCHJBxvTyfwTMvMjVloeL2d8YXUF8iZAm4X6iR7KiSCIIrb?=
- =?iso-8859-1?Q?wNQWTAmhhjLE/5AZzRxBjj3tJ+xbSXV/sCCcZmu0Hx4Qj9oFYyuoZ2Iq49?=
- =?iso-8859-1?Q?Oh456eFOimsqWL4Qs2arRSMnoPY0V9Bio6weZIlaH3Fk4it3IWvCw2Yv1j?=
- =?iso-8859-1?Q?P5ankc+ZoY7UOoPQeFoD5Sg6c4lQmuWc6svsS6RXqQiGcVRKBOPkJHW/rW?=
- =?iso-8859-1?Q?yiQPs9+PS9hxX0U03AsY5HBwrNFc0hZTj0TwAthKilYvhMfHWmVh/AVxBy?=
- =?iso-8859-1?Q?ZhOgjVhOTplYjWqOgRXLUrrwDR8YW1YYHH6f7nLRrl0i8mTi7pEeazykSO?=
- =?iso-8859-1?Q?aNRHMIWZ2+q0SuYgJqNbOL0K610BQnNIupE/DC9BZzbI1/H+ThWQB4nWGu?=
- =?iso-8859-1?Q?gl9LNhrqDCtkMNZnVPAeDRXMAC+JiEWd7vaKcRP1//rx7c/mVymoVVwwYj?=
- =?iso-8859-1?Q?U9wq19twxqoAt3va8ohNA3/Nxo7BHmJwmyckBh5L0M0UT2OyyHWdFb+kwJ?=
- =?iso-8859-1?Q?7ycusl7szPwKtj2CbYF4X8V3Zpri8fHallMf23XUA9VfkANq6QZPB8I3UD?=
- =?iso-8859-1?Q?b1Buy7VZtYQNEaNDB9ucKQF+yea07BZXQbtKD/klcjin8AwL8V6nl/KZFc?=
- =?iso-8859-1?Q?T4nTYoFivte69QsG9Q03gzBD1AQDnlw9S7Yxw3toHjOcKrvmm71H3c+kID?=
- =?iso-8859-1?Q?nygWyP/4UZ7dc5j2TpuZq14vOBcJg44hOzOZ7YY2U2nvR1B0rNMsMh3btH?=
- =?iso-8859-1?Q?wRyAL5g1nCvW1CJl27mt91ac4MJsuWBjmmWTuIFVGrx8i1eG3CJjRemA4x?=
- =?iso-8859-1?Q?RXgZfoCBOJmuF/DJR+30OK/NNyuJzZ7jaaPWCEvTb/3pz4lt0QaGydZ//z?=
- =?iso-8859-1?Q?oY44RPGDUpUFuJafw6A5pkR+3tGY5Y69ch1ZsIP8MHrANU9+HfHC6XHNba?=
- =?iso-8859-1?Q?hNFJFMqXfUZ0brS4czNKB4klZx/Tpgqo0XFf5zex8wk/Vnr8B67U7ys1Gf?=
- =?iso-8859-1?Q?N2A1+xLrypmhddH/At+a8GXHmiVzON8RffqwhsutbxePooffRl8SIGY1j3?=
- =?iso-8859-1?Q?VDFiIbrgn2HFXYqVYBW4jb2qfAdEKaB5bgaSrJNwdyponyyF7BgbX8Mppp?=
- =?iso-8859-1?Q?xePLZEGH3sabYu0zgZNIh3VZlsVo8YKxYCzkPpOfptJvURkWxfOuB/gt/1?=
- =?iso-8859-1?Q?HAtbF9zumOLp3GhoCh4AnHnd6ZWuTSswnEAXAbUAH69CE9YIPlIwQcq62m?=
- =?iso-8859-1?Q?xZ6yHtvsfrYsxB4SXevPwP+Ut8iD6eq1+iDoQ14aUnlJTAVhWRiYy5BnYn?=
- =?iso-8859-1?Q?bpjqBJFR1jWZvvqPLSYy9wgY/e08reofj2Co2B5PrWjUj8fm8KFno7Xm4p?=
- =?iso-8859-1?Q?B8aMdr4oZkv6QQsyO18SQf7toOGKzO9Shw?=
+	=?us-ascii?Q?WNcGkH5YfBpfyFMsHSCfaCh/tt0QnQyrp5v7z8+sMU5o17lGJrKjstxf5PWG?=
+ =?us-ascii?Q?VcpB/ssdWamagxNdqts83OqZEKL3Ck3SfIo2432ZL7KoQwzLnVKgxnJ8FycE?=
+ =?us-ascii?Q?dz/ycGNB5Q3NL0ifR4YAJWUQ5+vwDbY+JG9KGyYpCL+d0wF8VromGHVYac2k?=
+ =?us-ascii?Q?hftLwwZBEEX2sLbGcLoRzYEw/c1DygDStnf9nVq+5NpZuD2D/4LiPo8QyKJp?=
+ =?us-ascii?Q?OPH7RQeUhXEdakFdc4lpvoSf5+IAZaUSCJcVBw9co1QgRmazvaNcAVLHlug8?=
+ =?us-ascii?Q?khcohfX5jm7XQFsAAyULhipVziwCkXqN64unEzyaVPvLwyJm523/2cdx+pOI?=
+ =?us-ascii?Q?YfAr2tuPebEpmDu2OTXRKE1TovERZ+gyvLEhrzTwYWO0I19AdQ2emiUwoD0/?=
+ =?us-ascii?Q?K87aR2AYe21sX/7lfHBMbPXBBibOikyJQ8umW7rdfB40ldGPFmMkh6TR18PJ?=
+ =?us-ascii?Q?s19IPehqNFi7TLJkVZdrhyLj5mQkrBSMz4TPbe47n3TuK5XFGBrpECsnQgxs?=
+ =?us-ascii?Q?WqLdhfmHNvBDDunqMh591piBNRQQY7jSmPCOmEOrtdNrFzBdpeukiCK0UbTR?=
+ =?us-ascii?Q?BqTKIjdRk4eY2hUebsh1EabWTzOxDVfQCBBa12YrQio4HzuKvlEHUKARtkHg?=
+ =?us-ascii?Q?2sUsrNO9TtwDeMh5jSUUKBnzHLg25cjrb6cW5nAcBGSpbu+EhggavQ3raIaY?=
+ =?us-ascii?Q?+M6ERn03Hie7rTKiQNwbp1vbeCnOm/2KqooUlEnYj6xQ3e3JH4POFYEWgXZ2?=
+ =?us-ascii?Q?1+Ok36MqB24CCynpBaN2QthZRZM8XCeTw4AE7DKSCI3MVwwAERrQGkE2cbYv?=
+ =?us-ascii?Q?FVO4IOf9MgOz/CWPWOklDMn0HXz/bUp3PO9cV4c2ZARaU1mr3y40VuWu1f6u?=
+ =?us-ascii?Q?+Csgaa5Wbyltr7uIplL2FI7iHKt7v5HmzEA/bSpW3ZUR46+SCHozpdwIOrlk?=
+ =?us-ascii?Q?sDw9Nmj/3FD1qeib31dR7X0IXW5xTWnpFbzEoCEJmiW1PONifKP8t1Rt65R3?=
+ =?us-ascii?Q?/ggHZEhNX0LnU3gMmvxSteZYt5Yq23djdeaCwLfUZEDnnz0f2SGjy0QCYkAZ?=
+ =?us-ascii?Q?HHAWGuG8Yjyn8k0lC7b8Lm2YNFx/rb4av6bRrLP0Q+hP/Fa1bLZOJsq+h/yP?=
+ =?us-ascii?Q?dkgzwgT7K0VKOOh+bxB0Nr70AMTO3VQQ4tZoCCDVqAuV2wtmQz1rCO8Vo0fH?=
+ =?us-ascii?Q?hsM7CwfmwkdeFAfgwN33V3LE7hQQSmormJIM4hqz1SJz5ayO5RQAK1Zi4ADm?=
+ =?us-ascii?Q?yO6mTyZ3k/k/Vtv8aYDdnWrPJhbw0/H4RjGwgbh9gibdVqdSj5+7h1Ocv3QH?=
+ =?us-ascii?Q?HNTVJmUrTsNmdt7ZejS4mAux141ffvPihcXWQOhXAnoTbqmgsVHe9RBU/zbr?=
+ =?us-ascii?Q?yFj3/OIFVpNiwWskR7cy57+mQqCTiiMuhrEwCJfJ2WhzIQ/xL2jdcerhtJS3?=
+ =?us-ascii?Q?gew6kR+hiSNvv4DeuoiyaJZ2TmWqKsIXmM3BeQMiixHpUaCh11JDvya5hiEh?=
+ =?us-ascii?Q?9e5aN+Qui/8LamMZO7eBpcM2toSORGFDaNnIH0F3JWe7YO29lAOZ5WYAwGks?=
+ =?us-ascii?Q?3ZtBiP+AbhEyw4wIlko=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 915de401-b5a8-482e-ce6e-08dbbaeeed5d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 705c4718-dbc7-470d-0730-08dbbb246f47
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 22:05:55.2352
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 04:28:56.7340
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YKZRyF4hpTTepdgOxcixJGHZm0I2sezsTJcoBgBD00YrNjkKzV6DfC7gmS2nCl/sgEhPRoSII5FYDbwNNLMP0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6864
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7hXAINvKAJocNDMqZ+KTdEDkY9Tqr2Qk6orHWU9L/aFISryKpBuviqoBPWRA6QnKNgQ9W5oDIQ/zmzNcJC86Jg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8851
 
-On Thu, Sep 21, 2023 at 10:04:31PM +0200, Christophe JAILLET wrote:
-> Le 21/09/2023 à 20:35, Frank Li a écrit :
-> > On Thu, Sep 21, 2023 at 07:59:51PM +0200, Christophe JAILLET wrote:
-> > > Le 21/09/2023 à 17:37, Frank Li a écrit :
-> > > > From: Guanhua Gao <guanhua.gao@nxp.com>
-> > > > 
-> > > > Set DMA mask and coherent DMA mask to enable 64-bit addressing.
-> > > > 
-> > > > Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
-> > > > Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
-> > > >    drivers/pci/controller/dwc/pci-layerscape-ep.c | 5 +++++
-> > > >    1 file changed, 5 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > index de4c1758a6c33..6fd0dea38a32c 100644
-> > > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > @@ -249,6 +249,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
-> > > >    	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
-> > > > +	/* set 64-bit DMA mask and coherent DMA mask */
-> > > > +	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
-> > > > +		if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32)))
-> > > 
-> > > As stated in [1], dma_set_mask() with a 64-bit mask will never
-> > > fail if dev->dma_mask is non-NULL.
-> > > 
-> > > So, if it fails, the 32 bits case will also fail for the same reason.
-> > > There is no need for the 2nd test.
-> > > 
-> > > 
-> > > See [1] for Christoph Hellwig comment about it.
-> > 
-> > I don't think it is true. the below is dma_set_mask()'s implementation
-> 
-> I'll try to recollect a more detailled explanation from Christoph.
-> 
-> I also checked all paths some times ago, and the conclusion was that if
-> dma_set_mask(64) failed, dma_set_mask(32) would fail for the exact same
-> reasons.
-> 
-> I'll try to find the corresponding mail and come back to you.
+From: Guanhua Gao <guanhua.gao@nxp.com>
 
-I go through iommu driver and code carefully. You are right.
-The dma_supported() actual means iommu require minimized dma capatiblity.
+Set DMA mask and coherent DMA mask to enable 64-bit addressing.
 
-It is quite miss leading. There are many codes in driver like these pattern. 
+Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
 
-A example: 
-static int sba_dma_supported( struct device *dev, u64 mask)()
-{
-	...
-	 * check if mask is >= than the current max IO Virt Address                                 
-         * The max IO Virt address will *always* < 30 bits.                                         
-         */                                                                                         
-        return((int)(mask >= (ioc->ibase - 1 +                                                      
-                        (ioc->pdir_size / sizeof(u64) * IOVP_SIZE) )));
-	...
-}
+Notes:
+    change from v1 to v2
+    - Remove 32bit DMA mask set.
 
-1 means supported. 0 means unsupported. 
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-So dma_set_mask(64) is enough. Let me send new patch.
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index de4c1758a6c33..026bf08611e13 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -249,6 +249,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+ 
++	/* set 64-bit DMA mask and coherent DMA mask */
++	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++	if (ret)
++		return ret;
++
+ 	platform_set_drvdata(pdev, pcie);
+ 
+ 	ret = dw_pcie_ep_init(&pci->ep);
+-- 
+2.34.1
 
-Frank
-
-
-> 
-> I don't thing that implementation details have changed since that times, so
-> the conclusion should still be valid.
-> 
-> Adding Christoph in cc, if he wants to give another look at it, or if he
-> beats me finding the 1 or 2 years old mails.
-> 
-> CJ
-> 
-> > 
-> > int dma_set_mask(struct device *dev, u64 mask)
-> > {
-> > 	/*
-> > 	 * Truncate the mask to the actually supported dma_addr_t width to
-> > 	 * avoid generating unsupportable addresses.
-> > 	 */
-> > 	mask = (dma_addr_t)mask;
-> > 
-> > 	if (!dev->dma_mask || !dma_supported(dev, mask))
-> > 				^^^^^^^
-> > 		return -EIO;
-> > 
-> > 	arch_dma_set_mask(dev, mask);
-> > 	*dev->dma_mask = mask;
-> > 	return 0;
-> > }
-> > 
-> > dma_supported() may return failiure.
-> > 
-> > static int dma_supported(struct device *dev, u64 mask)
-> > {
-> > 	const struct dma_map_ops *ops = get_dma_ops(dev);
-> > 
-> > 	/*
-> > 	 * ->dma_supported sets the bypass flag, so we must always call
-> > 	 * into the method here unless the device is truly direct mapped.
-> > 	 */
-> > 	if (!ops)
-> > 		return dma_direct_supported(dev, mask);
-> > 	if (!ops->dma_supported)
-> > 		return 1;
-> > 	return ops->dma_supported(dev, mask);
-> >                      ^^^^^^
-> > 			DMA driver or IOMMU driver may return failure.
-> > }
-> > 
-> > Frank
-> > 
-> > > 
-> > > CJ
-> > > 
-> > > 
-> > > [1]: https://lkml.org/lkml/2021/6/7/398
-> > > 
-> > > > +			return -EIO;
-> > > > +
-> > > >    	platform_set_drvdata(pdev, pcie);
-> > > >    	ret = dw_pcie_ep_init(&pci->ep);
-> > > 
-> > 
-> 
