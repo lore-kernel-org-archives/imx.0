@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866F67E;
-	Mon, 25 Sep 2023 00:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E447C433C7;
-	Mon, 25 Sep 2023 00:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73EB371;
+	Mon, 25 Sep 2023 00:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D8AC433C7;
+	Mon, 25 Sep 2023 00:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695601800;
-	bh=bChhotaAUBhB0O2eKgHOOJkaqSlCFPcPt2ZxA4qg+tE=;
+	s=k20201202; t=1695602008;
+	bh=YOabgbAw23v6Lo5+imY7xlOKOFQFR3ooh03BmYV8U9o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j+JdsvcNckN40SXxAULRNaA0AJCYPRQ0AVHRbVZ+umjjAQdB3tGJQ6vRuZHE7CE4m
-	 jcFKyIqTJus7dQy+VNZnKDqbpcUt57jgeV9Gfre4BvXON5P3hK1A4C8VQBD5he5wyC
-	 OsmPMT7Rj3pD0u5m7ctHUVI9FfakaetKvM0p2p+I8irlJE+kvSOhY6xcU9LQ6sVQD7
-	 IcosE7cLhF3umJXR6W34px/5ek1AFod6Md2xyMpR1+ARP5/rLB6fZfquvGp/VZfeDQ
-	 3k0g/RkQzhdtkgQr7K1qtYEqWQ0wCIbiSQ1D0zdJrYbCFyq1qAXaSGXTQ/ArV8+doK
-	 a37kmxwv0v1Fw==
-Date: Mon, 25 Sep 2023 08:29:46 +0800
+	b=Wb++vxCUecfenACiqdgN5n2xfXnyjrhLxmEzSyhZevgqqlB1nkZMLJbct+HDzuxZj
+	 W98iE20anXGk0fyY+a1fpxv2iLCiJV7j2alTvJ6LhrG7e2qzUkRg/u2uYf2mkiV8Gi
+	 APqCFn3/77GCSr/7nu0Pq8vL6CmgNIvZ+jTuGGm5x5E/HmckI8ttBH615RFiPeSg7d
+	 PB1/PjeJR4QtBQMXA0W5rRJn3mg/UK+zI64papvfSX8E4T+p35BdVq015qVQPvA+TL
+	 M0WRxcfh408UZAGAT/K9Jwxt02Gk1KrOajYszAkuZ54bG+2wUtqPqAwEzq+Ibm+u1y
+	 ZN897/jcdWIYA==
+Date: Mon, 25 Sep 2023 08:33:14 +0800
 From: Shawn Guo <shawnguo@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: joy.zou@nxp.com, shenwei.wang@nxp.com, sherry.sun@nxp.com,
-	clin@suse.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+Cc: clin@suse.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
 	eagle.zhou@nxp.com, festevam@gmail.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
-	leoyang.li@nxp.com, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-	pierre.gondois@arm.com, robh+dt@kernel.org, s.hauer@pengutronix.de
-Subject: Re: [PATCH 2/5] arm64: dts: imx8: add edma[0..3]
-Message-ID: <20230925002946.GU7231@dragon>
-References: <20230822155333.2261262-1-Frank.Li@nxp.com>
- <20230822155333.2261262-3-Frank.Li@nxp.com>
+	joy.zou@nxp.com, kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org, leoyang.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, pierre.gondois@arm.com,
+	robh+dt@kernel.org, s.hauer@pengutronix.de, shenwei.wang@nxp.com,
+	sherry.sun@nxp.com
+Subject: Re: [PATCH 1/3] arm64: dts: imx93: add edma1 and edma2
+Message-ID: <20230925003314.GV7231@dragon>
+References: <20230823180055.2605191-1-Frank.Li@nxp.com>
+ <20230823180055.2605191-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,247 +38,158 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230822155333.2261262-3-Frank.Li@nxp.com>
+In-Reply-To: <20230823180055.2605191-2-Frank.Li@nxp.com>
 
-On Tue, Aug 22, 2023 at 11:53:30AM -0400, Frank Li wrote:
-> edma<n> is missed, add them
+On Wed, Aug 23, 2023 at 02:00:53PM -0400, Frank Li wrote:
+> Add edma<n> nodes.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../boot/dts/freescale/imx8-ss-audio.dtsi     | 88 +++++++++++++++++++
->  .../arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 62 +++++++++++++
->  .../boot/dts/freescale/imx8dxl-ss-adma.dtsi   | 30 +++++++
->  3 files changed, 180 insertions(+)
+>  arch/arm64/boot/dts/freescale/imx93.dtsi | 116 +++++++++++++++++++++++
+>  1 file changed, 116 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> index 6c8d75ef9250..8870acf8f743 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> @@ -20,6 +20,63 @@ audio_ipg_clk: clock-audio-ipg {
->  		clock-output-names = "audio_ipg_clk";
->  	};
+> diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> index 6f85a05ee7e1..acdca18673b7 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> @@ -185,6 +185,46 @@ aips1: bus@44000000 {
+>  			#size-cells = <1>;
+>  			ranges;
 >  
-> +	edma0: dma-controller@591F0000 {
-
-Lowercase for hex value.
-
-> +		compatible = "fsl,imx8qm-edma";
-> +		reg =   <0x591f0000 0x190000>;
-
-One space after =
-
-> +		#dma-cells = <3>;
-> +		shared-interrupt;
-> +		dma-channels = <24>;
-> +		dma-channel-mask = <0x5c0c00>;
-> +		interrupts = <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>, /* 0 asrc 0 */
-> +			     <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>, /* 1 */
-> +			     <GIC_SPI 376 IRQ_TYPE_LEVEL_HIGH>, /* 2 */
-> +			     <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>, /* 3 */
-> +			     <GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>, /* 4 */
-> +			     <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>, /* 5 */
-> +			     <GIC_SPI 410 IRQ_TYPE_LEVEL_HIGH>, /* 6 esai0 */
-> +			     <GIC_SPI 410 IRQ_TYPE_LEVEL_HIGH>, /* 7 */
-> +			     <GIC_SPI 457 IRQ_TYPE_LEVEL_HIGH>, /* 8 spdif0 */
-> +			     <GIC_SPI 459 IRQ_TYPE_LEVEL_HIGH>, /* 9 */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 10 unused */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 11 unused */
-> +			     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>, /* 12 sai0 */
-> +			     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>, /* 13 */
-> +			     <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>, /* 14 sai1 */
-> +			     <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>, /* 15 */
-> +			     <GIC_SPI 319 IRQ_TYPE_LEVEL_HIGH>, /* 16 sai2 */
-> +			     <GIC_SPI 324 IRQ_TYPE_LEVEL_HIGH>, /* 17 sai3 */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 18 unused */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 19 unused */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 20 unused */
-> +			     <GIC_SPI 391 IRQ_TYPE_LEVEL_HIGH>, /* 21 */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 22 unused */
-> +			     <GIC_SPI 393 IRQ_TYPE_LEVEL_HIGH>; /* 23 unused */
-> +		power-domains = <&pd IMX_SC_R_DMA_0_CH0>,
-> +				<&pd IMX_SC_R_DMA_0_CH1>,
-> +				<&pd IMX_SC_R_DMA_0_CH2>,
-> +				<&pd IMX_SC_R_DMA_0_CH3>,
-> +				<&pd IMX_SC_R_DMA_0_CH4>,
-> +				<&pd IMX_SC_R_DMA_0_CH5>,
-> +				<&pd IMX_SC_R_DMA_0_CH6>,
-> +				<&pd IMX_SC_R_DMA_0_CH7>,
-> +				<&pd IMX_SC_R_DMA_0_CH8>,
-> +				<&pd IMX_SC_R_DMA_0_CH9>,
-> +				<&pd IMX_SC_R_DMA_0_CH10>,
-> +				<&pd IMX_SC_R_DMA_0_CH11>,
-> +				<&pd IMX_SC_R_DMA_0_CH12>,
-> +				<&pd IMX_SC_R_DMA_0_CH13>,
-> +				<&pd IMX_SC_R_DMA_0_CH14>,
-> +				<&pd IMX_SC_R_DMA_0_CH15>,
-> +				<&pd IMX_SC_R_DMA_0_CH16>,
-> +				<&pd IMX_SC_R_DMA_0_CH17>,
-> +				<&pd IMX_SC_R_DMA_0_CH18>,
-> +				<&pd IMX_SC_R_DMA_0_CH19>,
-> +				<&pd IMX_SC_R_DMA_0_CH20>,
-> +				<&pd IMX_SC_R_DMA_0_CH21>,
-> +				<&pd IMX_SC_R_DMA_0_CH22>,
-> +				<&pd IMX_SC_R_DMA_0_CH23>;
-> +	};
+> +			edma1: dma-controller@44000000{
+> +				compatible = "fsl,imx93-edma3";
+> +				reg = <0x44000000 0x200000>;
+> +				#dma-cells = <3>;
+> +				dma-channels = <31>;
+> +				interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>,  //  0: Reserved
+> +					     <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>,  //  1: CANFD1
+> +					     <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>,  //  2: Reserved
+> +					     <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>,  //  3: GPIO1 CH0
+> +					     <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>,  //  4: GPIO1 CH1
+> +					     <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>, //  5: I3C1 TO Bus
+> +					     <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>, //  6: I3C1 From Bus
+> +					     <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>, //  7: LPI2C1 M TX
+> +					     <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>, //  8: LPI2C1 S TX
+> +					     <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>, //  9: LPI2C2 M RX
+> +					     <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>, // 10: LPI2C2 S RX
+> +					     <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>, // 11: LPSPI1 TX
+> +					     <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>, // 12: LPSPI1 RX
+> +					     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, // 13: LPSPI2 TX
+> +					     <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>, // 14: LPSPI2 RX
+> +					     <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>, // 15: LPTMR1
+> +					     <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>, // 16: LPUART1 TX
+> +					     <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>, // 17: LPUART1 RX
+> +					     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>, // 18: LPUART2 TX
+> +					     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>, // 19: LPUART2 RX
+> +					     <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>, // 20: S400
+> +					     <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>, // 21: SAI TX
+> +					     <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>, // 22: SAI RX
+> +					     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>, // 23: TPM1 CH0/CH2
+> +					     <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>, // 24: TPM1 CH1/CH3
+> +					     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>, // 25: TPM1 Overflow
+> +					     <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>, // 26: TMP2 CH0/CH2
+> +					     <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>, // 27: TMP2 CH1/CH3
+> +					     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, // 28: TMP2 Overflow
+> +					     <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>, // 29: PDM
+> +					     <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>; // 30: ADC1
+> +				clocks = <&clk IMX93_CLK_EDMA1_GATE>;
+> +				clock-names = "dma";
+> +			};
 > +
->  	dsp_lpcg: clock-controller@59580000 {
->  		compatible = "fsl,imx8qxp-lpcg";
->  		reg = <0x59580000 0x10000>;
-> @@ -65,4 +122,35 @@ dsp: dsp@596e8000 {
->  		memory-region = <&dsp_reserved>;
->  		status = "disabled";
->  	};
-> +
-> +	edma1: dma-controller@599f0000 {
-> +		compatible = "fsl,imx8qm-edma";
-> +		reg =   <0x599f0000 0xc0000>;
+>  			anomix_ns_gpr: syscon@44210000 {
+>  				compatible = "fsl,imx93-aonmix-ns-syscfg", "syscon";
+>  				reg = <0x44210000 0x1000>;
+> @@ -423,6 +463,82 @@ aips2: bus@42000000 {
+>  			#size-cells = <1>;
+>  			ranges;
+>  
+> +			edma2: dma-controller@42000000{
+> +				compatible = "fsl,imx93-edma4";
+> +				reg = <0x42000000 0x210000>;
+> +				#dma-cells = <3>;
+> +				shared-interrupt;
+> +				dma-channels = <64>;
+> +				interrupts = <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 134 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 134 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 135 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 135 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 139 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 139 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 149 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 149 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 154 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 154 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks = <&clk IMX93_CLK_EDMA2_GATE>;
+> +				clock-names = "dma";
+> +				fsl,edma-axi;
 
-Ditto
+I do not find this property in bindings doc.
+
+> +				status = "okay";
+
+Unnecessary 'status'.
 
 Shawn
 
-> +		#dma-cells = <3>;
-> +		shared-interrupt;
-> +		dma-channels = <11>;
-> +		dma-channel-mask = <0xc0>;
-> +		interrupts = <GIC_SPI 382 IRQ_TYPE_LEVEL_HIGH>, /* 0 asrc 1 */
-> +			     <GIC_SPI 383 IRQ_TYPE_LEVEL_HIGH>, /* 1 */
-> +			     <GIC_SPI 384 IRQ_TYPE_LEVEL_HIGH>, /* 2 */
-> +			     <GIC_SPI 385 IRQ_TYPE_LEVEL_HIGH>, /* 3 */
-> +			     <GIC_SPI 386 IRQ_TYPE_LEVEL_HIGH>, /* 4 */
-> +			     <GIC_SPI 387 IRQ_TYPE_LEVEL_HIGH>, /* 5 */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 6 unused */
-> +			     <GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>, /* 7 unused */
-> +			     <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>, /* sai4 */
-> +			     <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 332 IRQ_TYPE_LEVEL_HIGH>; /* sai5 */
-> +		power-domains = <&pd IMX_SC_R_DMA_1_CH0>,
-> +				<&pd IMX_SC_R_DMA_1_CH1>,
-> +				<&pd IMX_SC_R_DMA_1_CH2>,
-> +				<&pd IMX_SC_R_DMA_1_CH3>,
-> +				<&pd IMX_SC_R_DMA_1_CH4>,
-> +				<&pd IMX_SC_R_DMA_1_CH5>,
-> +				<&pd IMX_SC_R_DMA_1_CH6>,
-> +				<&pd IMX_SC_R_DMA_1_CH7>,
-> +				<&pd IMX_SC_R_DMA_1_CH8>,
-> +				<&pd IMX_SC_R_DMA_1_CH9>,
-> +				<&pd IMX_SC_R_DMA_1_CH10>;
-> +	};
->  };
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> index adb98a72bdfd..76e4aaaf307f 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> @@ -132,6 +132,68 @@ lpuart3: serial@5a090000 {
->  		status = "disabled";
->  	};
->  
-> +	edma2: dma-controller@5a1f0000 {
-> +		compatible = "fsl,imx8qm-edma";
-> +		reg = <0x5a1f0000 0x170000>;
-> +		#dma-cells = <3>;
-> +		dma-channels = <16>;
-> +		interrupts = <GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 417 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 418 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 420 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 421 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 422 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 434 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 435 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 436 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 437 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 438 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 439 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 440 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 441 IRQ_TYPE_LEVEL_HIGH>;
-> +		power-domains = <&pd IMX_SC_R_DMA_2_CH0>,
-> +				<&pd IMX_SC_R_DMA_2_CH1>,
-> +				<&pd IMX_SC_R_DMA_2_CH2>,
-> +				<&pd IMX_SC_R_DMA_2_CH3>,
-> +				<&pd IMX_SC_R_DMA_2_CH4>,
-> +				<&pd IMX_SC_R_DMA_2_CH5>,
-> +				<&pd IMX_SC_R_DMA_2_CH6>,
-> +				<&pd IMX_SC_R_DMA_2_CH7>,
-> +				<&pd IMX_SC_R_DMA_2_CH8>,
-> +				<&pd IMX_SC_R_DMA_2_CH9>,
-> +				<&pd IMX_SC_R_DMA_2_CH10>,
-> +				<&pd IMX_SC_R_DMA_2_CH11>,
-> +				<&pd IMX_SC_R_DMA_2_CH12>,
-> +				<&pd IMX_SC_R_DMA_2_CH13>,
-> +				<&pd IMX_SC_R_DMA_2_CH14>,
-> +				<&pd IMX_SC_R_DMA_2_CH15>;
-> +	};
+> +			};
 > +
-> +	edma3: dma-controller@5a9f0000 {
-> +		compatible = "fsl,imx8qm-edma";
-> +		reg = <0x5a9f0000 0x90000>;
-> +		#dma-cells = <3>;
-> +		dma-channels = <8>;
-> +		interrupts = <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 426 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 427 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 428 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 429 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 430 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>;
-> +		power-domains = <&pd IMX_SC_R_DMA_3_CH0>,
-> +				<&pd IMX_SC_R_DMA_3_CH1>,
-> +				<&pd IMX_SC_R_DMA_3_CH2>,
-> +				<&pd IMX_SC_R_DMA_3_CH3>,
-> +				<&pd IMX_SC_R_DMA_3_CH4>,
-> +				<&pd IMX_SC_R_DMA_3_CH5>,
-> +				<&pd IMX_SC_R_DMA_3_CH6>,
-> +				<&pd IMX_SC_R_DMA_3_CH7>;
-> +	};
-> +
->  	spi0_lpcg: clock-controller@5a400000 {
->  		compatible = "fsl,imx8qxp-lpcg";
->  		reg = <0x5a400000 0x10000>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
-> index 6881330ab4c6..7e98c5e5624b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
-> @@ -15,6 +15,36 @@ &adc0 {
->  	interrupts = <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
->  };
->  
-> +&edma2 {
-> +	interrupts = <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 290 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 291 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 292 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 293 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 294 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 295 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>;
-> +};
-> +
-> +&edma3 {
-> +	interrupts = <GIC_SPI 296 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 297 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 298 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 299 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 303 IRQ_TYPE_LEVEL_HIGH>;
-> +};
-> +
->  &i2c0 {
->  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
->  	interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+>  			wakeupmix_gpr: syscon@42420000 {
+>  				compatible = "fsl,imx93-wakeupmix-syscfg", "syscon";
+>  				reg = <0x42420000 0x1000>;
 > -- 
 > 2.34.1
 > 
