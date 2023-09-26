@@ -1,52 +1,120 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2054.outbound.protection.outlook.com [40.107.22.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACA263AB
-	for <imx@lists.linux.dev>; Tue, 26 Sep 2023 07:27:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=C1EY996H2+nH9kVv7VeJU7gdej000u01sa7M392CTh8=; b=GgDOX9CWEbDc4YMM/aQ26SsUk2
-	b9PNZ3qRQ6wNjEp8D24yZ6pSz/DQ5m1/YwEnvv/vklPcFF5gm0sMGut4fYDXCa853VmHgFPt2DDsI
-	Gyc7MZtPtTnNdZYMJoJ/J0l4z9YT8UojXVzWfacia1N+QBRRUcrzKF/d9LD+Kl0yiAQoSgXgVqWU1
-	Xvocw4+WXqLTIH8G9ThPqN+WWHPYGyfTe0RRIAp7d6WbjXXqN9BISlhYc5K3Yt00i0/yOOkaj06ii
-	YkyyObq/BrQCFSHSN4HbNzEfnoXd8Xaza4pACStfXRAxPAEcvrAWy95GTZ3Gw7wo9RsnXSw7DKlY0
-	8woO0Dcg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1ql2Tk-00FnKk-0i;
-	Tue, 26 Sep 2023 07:27:32 +0000
-Date: Tue, 26 Sep 2023 00:27:32 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: christophe.jaillet@wanadoo.fr, bhelgaas@google.com, hch@infradead.org,
-	imx@lists.linux.dev, kw@linux.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	lpieralisi@kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
-	robh@kernel.org, roy.zang@nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E436929430
+	for <imx@lists.linux.dev>; Tue, 26 Sep 2023 14:00:34 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AWb8qQneDuuqSDxsgUo3+RopZrDM9r4QKsKyITXvR2XmEJ/az03eaylRcmyeQYAW5IU8Bza2hE4wr0+g+kcs7Za0VUKfICnusGQvM6qet6Zk6G4WDDXOX0xxwfo35naebMomxwqSMvZpCwTjK0+dudxV8HsHSSATbtczh/vgCpyl0oZLVSZnXFi/u6bFfkFUL9BckMuQdbAbicdHRLZ6b+YUTfkRgArZ6tOx8xYsmJqc8oVNoWVK3l7dS0MkJkJoz/YODPIB/w2Gm9Oz5PEt78X+LMd4AC390ptmfPU1NTSRlgxTtJCMIrTgyzkdUg6YundGf8E5SnB+6jc/zyKGhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yn43rfHET6DXaSDlUmpGZixca78ritdYAzW44QgFm4c=;
+ b=crhMdKwZX6nrCQ6jOk1PTzSaFvBsO7YWr7aTRS1wiRChiHPRStkGmrNCiVJGqWIOGxSxQq/mu4URIifmQR+6dR7diieLX3lzef9bEw19Fj3JYNojX754irAUHslDQohde4q9Cu7eJCD3u0CZtbGquL6YEzwOHF6q6C005YwnI11sAWWiB56zlLWEQsghQz3Ew+/Dgiek6he/de5aqqWLf6iDm8iPcZpJK7k+rnKG0wzvIy/Yz1rjJTzmUwTlBIa8hQQoeS7qPLrIe+phlk8s5r3qF6UwtdOwja5wDVqk9fOxvNXCDBA/avZlzWVzfX9lb5XGIlk91WNdeCjjRCXWsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yn43rfHET6DXaSDlUmpGZixca78ritdYAzW44QgFm4c=;
+ b=YpNPVnNQHv2Q0NlZwTW0b5/59+ApnPi24ZquYyHtdTytJ6KfTtYgAWy8rOBcuUDHw4CipVDDiT4nWT/qQXCJKofKSJ6F1TrwvxgxouHqOzeEFxVh292KreudWvA7q0HC4FRx212wM94MpSWmgldbVF9IGMgXkuC1VD+u9sGapDA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AM9PR04MB8923.eurprd04.prod.outlook.com (2603:10a6:20b:40a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Tue, 26 Sep
+ 2023 14:00:29 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6813.027; Tue, 26 Sep 2023
+ 14:00:29 +0000
+Date: Tue, 26 Sep 2023 10:00:18 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: christophe.jaillet@wanadoo.fr, bhelgaas@google.com, imx@lists.linux.dev,
+	kw@linux.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, lpieralisi@kernel.org,
+	minghuan.Lian@nxp.com, mingkai.hu@nxp.com, robh@kernel.org,
+	roy.zang@nxp.com
 Subject: Re: [PATCH v2 1/1] PCI: layerscape-ep: set 64-bit DMA mask
-Message-ID: <ZRKH5CTucrT5BFwC@infradead.org>
+Message-ID: <ZRLj8nHJrXB1DkkO@lizhi-Precision-Tower-5810>
 References: <20230922042836.3311689-1-Frank.Li@nxp.com>
+ <ZRKH5CTucrT5BFwC@infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZRKH5CTucrT5BFwC@infradead.org>
+X-ClientProxiedBy: BY5PR13CA0008.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::21) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922042836.3311689-1-Frank.Li@nxp.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM9PR04MB8923:EE_
+X-MS-Office365-Filtering-Correlation-Id: bdd9632a-704a-4d9e-aba3-08dbbe98f0ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	IGUgPTBSj5bANXhEicKQTcoC9JliBJ3CUQLEdxlFEewT64dD/TRgXV9jlWpOnQpyr84D/o5Z2gZ1ZwY9IknZQfJRvPxZHM1nk6S3IeanOc0uozPgDig9Bl65GVt+JV6aDK46n2AoTx8ha/ZbCLUYTEXPFe6/KoweqmVOovqM7hHZUGA6PFqelxCd+6CjIlIdftfeoMwE9pk73N5t7PCSyhY1rfoOpSnNkVCQ6M+HoXZNPDReXeNCH3FirN6RjOUzMKDOTFpjAdvXYRa1gEk/NLdRljxwn7gbWDhatp8+mWyAadursJH3Dvi8QfDjjKgI+9n8x/94KFWeCFAQpEUq1x7HHk9jyfxKhM+04dmEASbzh7KtUaz5088MFWiLyDsHh+tzoBrR5hNcBlu9uoyldATkmVsPyQDloVm/MKA7tG8Smu9/uh4H9YQ4/i7FkvY4YFylxvLOJVxbv8aiBoU4du0dGEFuAIV/xe7vr6b9yTa9Z71wSZI1QqrWemnVPJ+45z+FxMw/iuHPQV0vnB86+Rb7pQ1GJElaO/BVff1SJFZmckxYrdv38QmtCBmAnKX8rALmmsEu+gLEjcsbu6wvo9hymHSA02ZZz2zqYp/qZYIRo4Rl3FSR5BOCPqHkEURK
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(39860400002)(396003)(376002)(136003)(346002)(230922051799003)(1800799009)(451199024)(186009)(7416002)(4326008)(4744005)(2906002)(5660300002)(316002)(41300700001)(6916009)(8676002)(8936002)(66946007)(66476007)(86362001)(66556008)(6666004)(52116002)(6506007)(9686003)(6486002)(6512007)(26005)(38100700002)(38350700002)(33716001)(478600001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?M49ymGOOQwP2cwMW1GZV8o29L3yoIPXUdCmVM+i4ngvNVkI/fzRPLunZUi+o?=
+ =?us-ascii?Q?1vKRD/0yeWd0Gi31Szi1a8ixbrrUgFRikiKJ9Q3ocXCC2AyeDvkfAlHjiOw+?=
+ =?us-ascii?Q?udop1Svj0tSzoqCypvHniEdyMymkQ6ct44Lp2c3h3ljBzf4rJtTjUTy3QAoa?=
+ =?us-ascii?Q?02U5scc1SzneMnL6Kn6NLQ1pJmtiUSiw6bgls2I4sASTnYuvrNnqsn5oxU+J?=
+ =?us-ascii?Q?1H+jId4brTRKu8OB3aUAogcpZuVHTfhmsbRkutE3ju/whzmOk8xn5O10wfyF?=
+ =?us-ascii?Q?/A5wQosKjwSnd/2CM0Tk7uMk1RHBe6x0cwEBXtHiD9Gccm2c75g4a2MVDCrC?=
+ =?us-ascii?Q?3nXeoCvsyWuHnuHO7/gWMNaSC6mp0uno+w2H4dlqr4s7M4+T6H2bZF+yYDJP?=
+ =?us-ascii?Q?fzrT6HqXxGCwoExfMnn2ItN53cuAE7l1TdpmtHuHRIMFlCazRdvy/tJg3UMu?=
+ =?us-ascii?Q?IWwG1ATrwEif2IXC9hj0GCeCLNszLon8DtOKKdeyAzqoAodnF2hKEe1UEnj7?=
+ =?us-ascii?Q?NIjlHo0ExsaVpkunKnNk5vNZ9GGGowU54+ROPmcXLTwvvABdnNrUBJ/oaeQM?=
+ =?us-ascii?Q?2Zna8PJRyD6V5e4LcwHwCm5fxeO0GhBXIr/eBVLqvAOmBG7hs+WXwz+l0xpH?=
+ =?us-ascii?Q?i4hDwQ1UcEeVdfL039TLbhGLNs8Gly+Mq7v+9T5vHa6upEM0E727iF2aWa+B?=
+ =?us-ascii?Q?gD0EmsNz7GaZfAXVd2NoKF6YJrdOWcfOdQq2mQOvOvsAsiu1Y+i1yqJwqXMq?=
+ =?us-ascii?Q?oioxP+p6PkJGCAV1iDu7gCwEzSYcXrdNSbQUjUD1v+NV5Vu2EaeZKu8cZ3OX?=
+ =?us-ascii?Q?tFK9WEqNcRu7U57L1VaLs3V/JA+4Au3pj7G1Sg11pGaIddXJsKeGpX1xkMl8?=
+ =?us-ascii?Q?JGIQweMCYM8w802zCUv+3OvfOubUhC1jDay9jpJfVXJjY83OQ2omJvJni1T1?=
+ =?us-ascii?Q?IMlDffpLak022oIVPP8W3+OY+X5vXzmGZpPRKoQLvEIy7lA4AgHFN8QIhxu8?=
+ =?us-ascii?Q?hCz0+tRfKUyBB9S1/55PfNDhEMIb36MdET/DnAWHqYW1WkJ2hozf8YmGRZSv?=
+ =?us-ascii?Q?huR7l2X388Vb2DYvkn4tV/lDThtAx75AoseyNYjcY9HnbLlfA9xi6E/WoBLC?=
+ =?us-ascii?Q?At4NXYViVx18KDwHEzbsNVSUaSVnEAVr6mbeKthdzUwNJsDARSylyC6so4Mq?=
+ =?us-ascii?Q?5s3UYZJRahPUJMFDbx3albJhLDAg6/msrzQlecNbHpQTMaT+YuyeBlriR3rr?=
+ =?us-ascii?Q?tcbcAnJK2CXysV06hRN3jw+nSGhCX9bziLshwcvIWXRoQxEz1nHdUrZ7zVSh?=
+ =?us-ascii?Q?r3OIDHdKE2s6wcAZfLWBlJojlrxuSD5M2VquQIINvLq3aFGracoHVNE/tuBC?=
+ =?us-ascii?Q?sB4C31ET76m8RjKs+mT1YvINE7aINohctYsPzmD3/j4MdMEzYRWWixgZHHiy?=
+ =?us-ascii?Q?HZMZVwmG5mCaewjm7cqOkKAKKLE97zgCwZGyCL6eJOvrAWyJbOFOU9Zqbb65?=
+ =?us-ascii?Q?HQfKAEuub6WuSE9rlJKPGphd7aaqRnYg223ScMn60IVIPWIKLITl2gkXm539?=
+ =?us-ascii?Q?V82p2/HrBRyHai3Ivmg=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdd9632a-704a-4d9e-aba3-08dbbe98f0ca
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2023 14:00:28.8704
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CNYGWIaWW8PwVJbOmNBlRL5i3oo9uWkGearFF2JLuNg/75Hdp5rRH8SR36EEpoq6hUL3r5ZXz7DzpIwXweZ0Gw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8923
 
-> +	/* set 64-bit DMA mask and coherent DMA mask */
-> +	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+On Tue, Sep 26, 2023 at 12:27:32AM -0700, Christoph Hellwig wrote:
+> > +	/* set 64-bit DMA mask and coherent DMA mask */
+> > +	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+> 
+> The comment is a bit silly :)
+> 
+> > +	if (ret)
+> > +		return ret;
+> 
+> Also no need to check the return value when setting a 64-bit mask,
+> but I guess it desn't hurt here.
+> 
 
-The comment is a bit silly :)
-
-> +	if (ret)
-> +		return ret;
-
-Also no need to check the return value when setting a 64-bit mask,
-but I guess it desn't hurt here.
-
+You are right, let me remove check.
