@@ -1,62 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2063.outbound.protection.outlook.com [40.107.6.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E715328AD;
-	Thu, 28 Sep 2023 12:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7506BC433CC;
-	Thu, 28 Sep 2023 12:08:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695902887;
-	bh=bLTi58mxVFlKGFAcTubys3KnVF+uKf+DzNo2r7H9PaE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=oyBbzhT9sCQX+q/pJiWa+uz4kh+0XkbK7/0vggm4qa6b64Pb0YQOoUO3L/gcR/vZH
-	 yaUPxbd0mUWJv8alpRRt8gBEhl+/UBkDNFVBFkxioCYIkFaJGo8quixGNL4KxWsyR6
-	 PiCbRXrYfqG8qrfeH9vTgujj+uZ9BYb1ZmYMDPZ7gOhdH4QwKSooaSMIBQFyoMaRnq
-	 p1YLKNaBIDY7PIJ0+fO80L5lZmfl6jux/WaWj+IQ6vrMLuC3Iwp8Xc46fq/CahmBvd
-	 5uCFCCqLGWLOiRdMu9PHN5lF0N/9cEqmF5GpRqxVBQmRpl/CbBhuPCOCDv3iZLVLaN
-	 wf252Gew3n92Q==
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, dmaengine@vger.kernel.org, frank.li@nxp.com, 
- imx@lists.linux.dev, joy.zou@nxp.com, krzysztof.kozlowski+dt@linaro.org, 
- linux-kernel@vger.kernel.org, peng.fan@nxp.com, robh+dt@kernel.org, 
- shenwei.wang@nxp.com
-In-Reply-To: <20230823182635.2618118-1-Frank.Li@nxp.com>
-References: <20230823182635.2618118-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] dmaengine: fsl-edma: fix edma4 channel enable
- failure on second attempt
-Message-Id: <169590288411.161554.4755205256529438708.b4-ty@kernel.org>
-Date: Thu, 28 Sep 2023 17:38:04 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9151F34194
+	for <imx@lists.linux.dev>; Thu, 28 Sep 2023 14:14:06 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BgLFKbfFMl2LgVZFQofCIQC7HRnCSjpuOp19KNF4+pHkACcKKXerdPfxsUshjklDzIP6wohpVgR1h9+DwmLNaVJTmvYE8vh53RwPqNgyufG02WMSZXDUgn+jN6dQ5y4ORPD7Ki5S49wpRdtete2dnaZd3P3Mjet5+O85vHB40HJOpZlT4vyISoZ05NxTp7fFlbUxmmolKqwLDat8fxJvLk9U8WH2dOpQEGYYExjvT60/zl/WDhp1hikuVzelSv+xjxyrY80culAOOTwfwvL214iHTuxdnn2jik2MwL8QjVueoLF0XyTnlMz46SyfhLa8ne9kNARHG7ahn3IHlWU5UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZrIkbRt96Xz+xfdQePvpa6jZl/cpS3na/3K2/qTvajc=;
+ b=bmj6kIWBDAOiVGkYlIiNdPq2oypqgDELjWB8H4AqL69EF0Oxaey/DIejC5wiqDNxM7rVpW1iXGJC6Sa9YUYh47OGrGxDcg8YV/ge4FNgeuJwG5Gxo5CVE9EcbsBi9Hksztvi67zQtBTA0keNV1Grrmc53+VaY10URy4yPgH+5+Pk252rtnsEidLS/V/7gV3LyFM2Nwh/8FUECNl9761jEPQ+GFbOHqpWho/ARvbE/ezdhx6MtvTu4XWKhq+S6CAioaM7bM+QhYFPsa2qBpfJPPCPhSz+I7s9UsFPq3fB0sHJVzNK/bFoGGri4MTZwZhdyP8nI0oA9lyru7dBb9QR0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZrIkbRt96Xz+xfdQePvpa6jZl/cpS3na/3K2/qTvajc=;
+ b=W/LZvdscVBkGcSgnue71WjJFB8Gvb+8Jqb/9aVMjt4InmgNVyOUuFyvDoshh6vq8kcbKLvZ31jd19Opz9rAMH29hG+DHgjVZgXJLNXGGkzUgw+XdwmBH78ZMyK0tpCEZBQq5IDpHo/vTuzvA6gYFeKE7vQbYcBYXBZQS3MibKdY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DU2PR04MB8503.eurprd04.prod.outlook.com (2603:10a6:10:2d2::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.23; Thu, 28 Sep
+ 2023 14:14:03 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6813.027; Thu, 28 Sep 2023
+ 14:14:02 +0000
+Date: Thu, 28 Sep 2023 10:13:51 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev, joy.zou@nxp.com,
+	linux-kernel@vger.kernel.org, peng.fan@nxp.com,
+	shenwei.wang@nxp.com, vkoul@kernel.org
+Subject: Re: [PATCH v3 1/1] MAINTAINERS: Add entries for NXP(Freescale) eDMA
+ drivers
+Message-ID: <ZRWKH1gSwdLMhBCt@lizhi-Precision-Tower-5810>
+References: <20230824145834.2825847-1-Frank.Li@nxp.com>
+ <b1c5ba0d-748f-ae2e-4a5f-e1e853161d16@infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b1c5ba0d-748f-ae2e-4a5f-e1e853161d16@infradead.org>
+X-ClientProxiedBy: SJ0PR05CA0071.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::16) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU2PR04MB8503:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff7ab9cb-743a-43f3-cfa3-08dbc02d2a42
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	tN1CJuBF1utcLiEGS/t8Bf1NeV0cTxYXSVja9ZcBz3gEkAznewToGEuMKt74Be5I2j83+e4pbIplPErnbLJrZt9RnAOVe8RXcqxNpoy+17rDtTzQrqS6YI+87SdfwPy9gCKATjawQLn5Y3CufN8eQDyrHGES96k6wOdJG6Q6zMUMqCr6Cdw+puKKI136V3HlAVsbuCYD7Lcbz+FsasjMcvHMatLKWLCAUg8j1bUmohyhlPtD4UfZ9KJyCG5tuDzz/DlJHKh6Wv1P7RLN9zchT4YuTKGvVhGERg+2V5KHcw18dSklpbrcwakJU6XGdbgUmVH920fgQc6iOTi6s5Io5W19p1v0lV3OxOY/wyJmtik9iKI0gfFxr/L9ugRXiTunidpJpdkhjl59riFZeVaSvcKawaSNjtY72ViwWLn215pJMq6y84lGRwh2I93AVGYXMlVoHq7AW+2i6n7YCLvKlYG2KR7yHRTVuvo2/Jh/CgKV8jg7nbAQi75ZWzCsRwAcsg1y5xWA9PgfD7mCPLp/OZvDJ1tZvRsdELWWoQHInIe1JhFUjouPcunnvgxYxaQgxEeAQLjc3uS/wqWuaAPtiMwcPmht5nIfGcVflgOMK9h8xuKTKnIhIrZw1PhjZ3HG
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(366004)(346002)(396003)(39860400002)(136003)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(86362001)(33716001)(478600001)(6506007)(6512007)(6486002)(4326008)(53546011)(52116002)(9686003)(66946007)(66556008)(66476007)(41300700001)(316002)(5660300002)(6916009)(26005)(6666004)(8676002)(8936002)(2906002)(38100700002)(38350700002)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MuXE3OKZe6c6e0APjvhYcfbs0E7l56R6aaodzScQxrkG1JZLNrMep0FIghH8?=
+ =?us-ascii?Q?ECHhtW45DhBdsZ7l0AmNYwNQ7r1fqCvPBu9ZUk15kubmfZoyHZzhfD3pYlYp?=
+ =?us-ascii?Q?C9M81ZguzM3pN2h/lQS+oz9vQDEcG2vDyQmf7LD3TBLZyJwCXmWUAKtm1V42?=
+ =?us-ascii?Q?O8k4L8Tf6XlIF3sarHJIGqUUSDcY2Sh7502v2RTEmhiVsoHFJgc8s41nP7bu?=
+ =?us-ascii?Q?YPOH7UFh5ZLrJF1cF5mRemy6YAiDJRnQ3VuU9O/MSulAnRUHARJgZW/qanbp?=
+ =?us-ascii?Q?1x0v3JQSO9Q7/Xs76NVBbGeIpVRw8/aBvP9OD5PPKzDWW6CjCuSPtkK7MWsP?=
+ =?us-ascii?Q?CshiKqHaPEEy4S2bEHXc/LBNJ1YvnXbrGgGJgkD/UOAo1xMOU18o8tu053wY?=
+ =?us-ascii?Q?z6LEdTjR8WJN/PT63wyfvukl1U6r6UcHlMjzDv0fzRWRueWtKZDu3YLto9/z?=
+ =?us-ascii?Q?bYpOba7f93U4+oQh9YPAf0OabciqTBHfg4VMr8mmmE9nDOzDdVQpEdQTuxct?=
+ =?us-ascii?Q?c3fp4LV//JyvOcDFgAjhRrHwYGZyokUqXSFB7s9N+LmH5Df4YT+PLLnVRW18?=
+ =?us-ascii?Q?Ru7PUh6kNOI0T0iYxJaQ4JAq4KDvLm7wq+Up/pvX9VImed/ro9UL2HgK78HO?=
+ =?us-ascii?Q?nBT3D7oOld4IYDpK6uV8Q/LbY+1i/O9zZ8D0sEHzmXEcLLlDMUzBSIRTwwSS?=
+ =?us-ascii?Q?ME1GRHsULkXHMyAdHVL9MJFS/MCR1ymnaopmFj7EpxwSuhKxl7imboS3JUFK?=
+ =?us-ascii?Q?ukVcAPWNbOLAp8nHRtPW3EySSasvsTRT5CrNqceqREBqEn1UUEiDxLWvTANI?=
+ =?us-ascii?Q?quG816pJbP7y83PXFK9vKN2Mpr9O6baZN9mviRDJSol8ltuUO4BkB97MX2PX?=
+ =?us-ascii?Q?Nbpu0EXs8W74lrhVfwtwlvTM8K2mnN0m/DOMmCAKM/4g77e4NBco5F+ke2AQ?=
+ =?us-ascii?Q?uP502NsfIxvfrDe3c//zjSrn1eJoCuzqfsLwl7k9IOrOMOGGHuF8xa9EhR3g?=
+ =?us-ascii?Q?f8qN1dsNN2m3euJsOIsCWo5jQN36kkIvv/voPJzrebhlx3UcvrDZtiRoasB2?=
+ =?us-ascii?Q?maNN/1I46qPSatKqOtDKoDvbt8nL9S1P0zpRCFnV4lCIJ/WI0SQPh6/nU/Km?=
+ =?us-ascii?Q?vF2RYMWBVVvfebw//aGPdZzzpeK67I1f63fAJ5HYiLOILAFRLHzcT9Y1rpYU?=
+ =?us-ascii?Q?nuk16fILf9svpWHKOCTWxAviD0J/DJ1wz0X/26z5i3YIFPvLdTKd5gis0mN6?=
+ =?us-ascii?Q?E0AKDlXu1Ju2mMkOgAhHvJ9l6SObMjsZfMQMEfCx4PL+WAhfVRgBSFwsmoC4?=
+ =?us-ascii?Q?GRYO3w+0KWmWg4VoTaIhUWlE353OpaLUYwuuy1bmyZ2J3TIP2/FFcwjNWO6y?=
+ =?us-ascii?Q?tLXJTdn1mpbrE4rt/UOJ1EgopboFPF+m7fxb40y0d4CRh2QkqJyS721vOcdn?=
+ =?us-ascii?Q?ZIrbn5ISJsSld7kUfd4EZE5TgTRPraQz2bn2/85iOe2d/jFa2afVm+JOUB2o?=
+ =?us-ascii?Q?J4rsMiuoHicGGpVFjk7CQDNGYuYkbowV5Z5hpn52FySYTTNi4Qr5V34Te93Y?=
+ =?us-ascii?Q?0Cf/t/BoXhv0CRpAclk=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff7ab9cb-743a-43f3-cfa3-08dbc02d2a42
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2023 14:14:02.0441
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OSDL2ZI/OG2podivqrSuKagxe4L9JlJJ8BisESGecT+gHQ6AV9d023J6e1F+6Y3R/lhtKEA5f675CQE/kGeKCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8503
 
-
-On Wed, 23 Aug 2023 14:26:35 -0400, Frank Li wrote:
-> When attempting to start DMA for the second time using
-> fsl_edma3_enable_request(), channel never start.
+On Thu, Aug 24, 2023 at 02:01:20PM -0700, Randy Dunlap wrote:
 > 
-> CHn_MUX must have a unique value when selecting a peripheral slot in the
-> channel mux configuration. The only value that may overlap is source 0.
-> If there is an attempt to write a mux configuration value that is already
-> consumed by another channel, a mux configuration of 0 (SRC = 0) will be
-> written.
 > 
-> [...]
+> On 8/24/23 07:58, Frank Li wrote:
+> > Add the MAINTAINERS entries for NXP(Freescale) eDMA drivers
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> Acked-by: Randy Dunlap <rdunlap@infradead.org>
+> 
+> Thanks for fixing. :)
 
-Applied, thanks!
+@Vinod:
+	ping
 
-[1/1] dmaengine: fsl-edma: fix edma4 channel enable failure on second attempt
-      commit: 3f4b82167a3b1f4ddb33d890f758a042ef4ceef1
+Frank
 
-Best regards,
--- 
-~Vinod
-
-
+> 
+> > ---
+> > 
+> > Notes:
+> >     Change from v2 to v3
+> >     - Again, fixed order
+> >     
+> >     Change from v1 to v2
+> >     - alphabetical order
+> > 
+> >  MAINTAINERS | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 23eafda02056..c1c7a9ae244f 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -8236,6 +8236,14 @@ F:	Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+> >  F:	drivers/spi/spi-fsl-dspi.c
+> >  F:	include/linux/spi/spi-fsl-dspi.h
+> >  
+> > +FREESCALE eDMA DRIVER
+> > +M:	Frank Li <Frank.Li@nxp.com>
+> > +L:	imx@lists.linux.dev
+> > +L:	dmaengine@vger.kernel.org
+> > +S:	Maintained
+> > +F:	Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> > +F:	drivers/dma/fsl-edma*.*
+> > +
+> >  FREESCALE ENETC ETHERNET DRIVERS
+> >  M:	Claudiu Manoil <claudiu.manoil@nxp.com>
+> >  M:	Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> -- 
+> ~Randy
