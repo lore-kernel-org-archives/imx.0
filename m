@@ -1,54 +1,53 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BB47E
-	for <imx@lists.linux.dev>; Thu,  5 Oct 2023 03:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="I3bUDcNv"
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=POQt14miUY9FOD6uKlKlWtDFJK8h+2insygX+sUhCuM=; b=I3bUDcNvyhEtxetKZCLrB79lEj
-	ZV9GKL34uhMhAuaP9oR1YyeRkedZAQIlvg/pH3OkTtkAcIqpcFWrncI3ndxoFjiG3DR1slC8cImio
-	U9zDn0lk4Km2cM8MB+lv2wTQdHjh+Vboi1MBCUONMqhR/qtGproDIUwTmK9V1P+g/UCs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qoEjy-008IHz-4u; Thu, 05 Oct 2023 05:09:30 +0200
-Date: Thu, 5 Oct 2023 05:09:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev,
-	Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
-Subject: Re: [PATCH net] net: stmmac: dwmac-imx: request high frequency mode
-Message-ID: <164e5e28-6a56-480f-81dd-8a31ee7e5285@lunn.ch>
-References: <20231004195442.414766-1-shenwei.wang@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC824C92
+	for <imx@lists.linux.dev>; Thu,  5 Oct 2023 06:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qoHqG-0000ah-LH; Thu, 05 Oct 2023 08:28:12 +0200
+Message-ID: <7f3f0f83-8288-bea4-48a0-38786b18edc4@pengutronix.de>
+Date: Thu, 5 Oct 2023 08:28:08 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [Linux-stm32] [PATCH net] net: stmmac: dwmac-imx: request high
+ frequency mode
+Content-Language: en-US
+To: Shenwei Wang <shenwei.wang@nxp.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
+ Jose Abreu <joabreu@synopsys.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20231004195442.414766-1-shenwei.wang@nxp.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 In-Reply-To: <20231004195442.414766-1-shenwei.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, Oct 04, 2023 at 02:54:42PM -0500, Shenwei Wang wrote:
+Hello Shenwei,
+
+On 04.10.23 21:54, Shenwei Wang wrote:
 > Some i.MX SoCs like the i.mx8mq support adjusting the frequency of the
 > DDR, AHB, and AXI buses based on system loading. If the dwmac interface
 > in the driver does not request a HIGH frequency, it can significantly
@@ -65,15 +64,51 @@ On Wed, Oct 04, 2023 at 02:54:42PM -0500, Shenwei Wang wrote:
 > the high frequency mode. Requesting high frequency in the dwmac driver is
 > essential to maintain full throughput when the i.MX SoC adjusts bus speeds
 > for power savings.
+> 
+> Signed-off-by: Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> Tested-by: Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> index 8f730ada71f91..ba6ae0465ecaa 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> @@ -6,6 +6,7 @@
+>   *
+>   */
+>  
+> +#include <linux/busfreq-imx.h>
+>  #include <linux/clk.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/kernel.h>
+> @@ -152,7 +153,9 @@ static int imx_dwmac_clks_config(void *priv, bool enabled)
+>  			clk_disable_unprepare(dwmac->clk_mem);
+>  			return ret;
+>  		}
+> +		request_bus_freq(BUS_FREQ_HIGH);
 
-Isn't this going to cause a power regression? I expect there are
-applications which expect this behaviour and are happy with
-100Mbps. And you are going to change it so their battery goes flatter
-faster, or they need to run their fan more often. So maybe you need a
-DT property to always forcing high speed.
+I don't find request_bus_freq in linux-next (next-20231005). AFAIK, it was only ever
+suggested as RFC and never went beyond that as a reimplmeentation on top of devfreq
+was requested instead of the i.MX-specific API used in the vendor fork.
 
-And as Florian pointed out, maybe you should look at the negotiated
-speed, and if you have a 10 or 100Mbps link, the MAC does not need
-high frequency, so why not allow it to be low and safe some power.
+Did you observe this performance pregression with mainline?
 
-     Andrew
+Cheers,
+Ahmad
+
+
+>  	} else {
+> +		release_bus_freq(BUS_FREQ_HIGH);
+>  		clk_disable_unprepare(dwmac->clk_tx);
+>  		clk_disable_unprepare(dwmac->clk_mem);
+>  	}
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
