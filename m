@@ -1,114 +1,117 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC824C92
-	for <imx@lists.linux.dev>; Thu,  5 Oct 2023 06:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qoHqG-0000ah-LH; Thu, 05 Oct 2023 08:28:12 +0200
-Message-ID: <7f3f0f83-8288-bea4-48a0-38786b18edc4@pengutronix.de>
-Date: Thu, 5 Oct 2023 08:28:08 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833967477;
+	Thu,  5 Oct 2023 10:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WpIW4eUK"
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696502583; x=1728038583;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GqKe2kbO3tMy/0EgmQO31nknlkfPS8TEimBu+0qpdrE=;
+  b=WpIW4eUK7568iej4NZigY+kb5qu9yxzFLRWKKJL0/MGBKbKufXRw2jIc
+   bc1zz2rq/PcxweuEiwbBSloUqyxe9XoV+9nyrvZpbAiOxilTJpOcVi25e
+   bQ15vinj7we3CkM4Ib2EI5m6wiZPUM0kKnf7ePI2/vmNzqveFJeP6FahC
+   wCh5XQwGV/+kPnoGHH8rV8C4pcuiqU8nir6cq1LyS5oq6pEB+CZLfdirL
+   xghfOQUbG2uTsvGGgVrWNWMoICzUoW5EqiMLgMZvIId3Jx6oeq2OEekS+
+   8KDkUg5Y9L66gOE/d7p4vcOILZj4mtsaWinUzO4lmILbxkgpVsr+IhW6x
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="380743617"
+X-IronPort-AV: E=Sophos;i="6.03,202,1694761200"; 
+   d="scan'208";a="380743617"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 03:42:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="786921899"
+X-IronPort-AV: E=Sophos;i="6.03,202,1694761200"; 
+   d="scan'208";a="786921899"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 05 Oct 2023 03:42:54 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qoLoi-000LJS-2I;
+	Thu, 05 Oct 2023 10:42:52 +0000
+Date: Thu, 5 Oct 2023 18:42:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
+Subject: Re: [PATCH net] net: stmmac: dwmac-imx: request high frequency mode
+Message-ID: <202310051811.Rltsgr8J-lkp@intel.com>
+References: <20231004195442.414766-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [Linux-stm32] [PATCH net] net: stmmac: dwmac-imx: request high
- frequency mode
-Content-Language: en-US
-To: Shenwei Wang <shenwei.wang@nxp.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
- Jose Abreu <joabreu@synopsys.com>, NXP Linux Team <linux-imx@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>,
- Fabio Estevam <festevam@gmail.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20231004195442.414766-1-shenwei.wang@nxp.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20231004195442.414766-1-shenwei.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hello Shenwei,
+Hi Shenwei,
 
-On 04.10.23 21:54, Shenwei Wang wrote:
-> Some i.MX SoCs like the i.mx8mq support adjusting the frequency of the
-> DDR, AHB, and AXI buses based on system loading. If the dwmac interface
-> in the driver does not request a HIGH frequency, it can significantly
-> degrade performance when the system switches to a lower frequency to
-> conserve power.
-> 
-> For example, on an i.MX8MQ EVK board, the throughput dropped to around
-> 100Mbit/s on a 1Gbit connection:
-> 
->     [ ID] Interval           Transfer     Bitrate
->     [  5]   0.00-10.00  sec   117 MBytes  97.9 Mbits/sec
-> 
-> However, throughput can return to expected levels after its driver requests
-> the high frequency mode. Requesting high frequency in the dwmac driver is
-> essential to maintain full throughput when the i.MX SoC adjusts bus speeds
-> for power savings.
-> 
-> Signed-off-by: Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> Tested-by: Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> index 8f730ada71f91..ba6ae0465ecaa 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-> @@ -6,6 +6,7 @@
->   *
->   */
->  
-> +#include <linux/busfreq-imx.h>
->  #include <linux/clk.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/kernel.h>
-> @@ -152,7 +153,9 @@ static int imx_dwmac_clks_config(void *priv, bool enabled)
->  			clk_disable_unprepare(dwmac->clk_mem);
->  			return ret;
->  		}
-> +		request_bus_freq(BUS_FREQ_HIGH);
+kernel test robot noticed the following build errors:
 
-I don't find request_bus_freq in linux-next (next-20231005). AFAIK, it was only ever
-suggested as RFC and never went beyond that as a reimplmeentation on top of devfreq
-was requested instead of the i.MX-specific API used in the vendor fork.
+[auto build test ERROR on net/main]
 
-Did you observe this performance pregression with mainline?
+url:    https://github.com/intel-lab-lkp/linux/commits/Shenwei-Wang/net-stmmac-dwmac-imx-request-high-frequency-mode/20231005-035606
+base:   net/main
+patch link:    https://lore.kernel.org/r/20231004195442.414766-1-shenwei.wang%40nxp.com
+patch subject: [PATCH net] net: stmmac: dwmac-imx: request high frequency mode
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20231005/202310051811.Rltsgr8J-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231005/202310051811.Rltsgr8J-lkp@intel.com/reproduce)
 
-Cheers,
-Ahmad
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310051811.Rltsgr8J-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c:9:10: fatal error: linux/busfreq-imx.h: No such file or directory
+       9 | #include <linux/busfreq-imx.h>
+         |          ^~~~~~~~~~~~~~~~~~~~~
+   compilation terminated.
 
 
->  	} else {
-> +		release_bus_freq(BUS_FREQ_HIGH);
->  		clk_disable_unprepare(dwmac->clk_tx);
->  		clk_disable_unprepare(dwmac->clk_mem);
->  	}
+vim +9 drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+
+   > 9	#include <linux/busfreq-imx.h>
+    10	#include <linux/clk.h>
+    11	#include <linux/gpio/consumer.h>
+    12	#include <linux/kernel.h>
+    13	#include <linux/mfd/syscon.h>
+    14	#include <linux/module.h>
+    15	#include <linux/of.h>
+    16	#include <linux/of_net.h>
+    17	#include <linux/phy.h>
+    18	#include <linux/platform_device.h>
+    19	#include <linux/pm_wakeirq.h>
+    20	#include <linux/regmap.h>
+    21	#include <linux/slab.h>
+    22	#include <linux/stmmac.h>
+    23	
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
