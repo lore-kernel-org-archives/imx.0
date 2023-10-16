@@ -1,51 +1,59 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2044.outbound.protection.outlook.com [40.107.249.44])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2080.outbound.protection.outlook.com [40.107.22.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02E327ECC;
-	Mon, 16 Oct 2023 14:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BED14288
+	for <imx@lists.linux.dev>; Mon, 16 Oct 2023 14:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Mfx6Ebyj"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="WtY9iA6Y"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=imYKRZBEuqFeDQfjcu8BWZiv830Pzw7v83x9cFhg1rKGXO0oNLN1gTtIH1OK7FFqQ1inG59dvTz0aHqC80YUN8iW+28FIz9tmKEAcCIfXNy95dRqMPmoRZXaUmJsaIiZCVifA/TFUUM3CdIwNj/D18NkGyhLTHqRzt/GOcm81CASUu8dYPNy43hYG9Mo7BE2O+BsfipmwspGARG4NsPZUpGAVxG7I+vEE8L3aCPxKrBhAwsofiYgyQas126hpLXDCE3Pt6t60f5W3JqWThvjf1R7rmVqpny+MmT6GazLb4XjnnyjXQ0T7ReujIfH7+5H0X9hWaio0J1+dNeKdfcsJQ==
+ b=OLV99L2ZUbb9on3+785Cx3RAPLuwFOr8AtCR+Dh6BCXb5DRq9TPej3ghs+8A40I3LJP5zq/xSY2lSM46kHkuSKwb5C4N1G9ckMixCgX6Kydy711Z6kFM037Tle0xClo4hCkuPC+u9QQJSVFn5MI3su7s7vpCrNy5rRve8yefxqzZJtPYvdcT5sAQ9Vwb6X6coU9XN2fF9JR+cpGuh2Dj28ms+WO4NSP4B8/T2csXyCzKHdg3tqXVYN0ZaQjxuEppztgJIKZjVMUoCOw7iPeTs9tNPa1BpVIpFqHLCvqqEfzS1dTvXkKWcVU6bupZ5mRiT0XZfM/3rPyxbsEcghryVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8F2IDySJK2AzyxaqBahCm6XqENXkY+c7XtoQcOJsf+8=;
- b=HjzL+HHpAnqNvxdIIjnSmdrHu9dhtg51C349bPt4CCO8GQOOdmTKnHzaZzQJX6zFUwC/N+c0CGRB/7VvfPI5LP9uGWBMnfn10EhnqkhE/yxNVMCemK4y0j5VfBhn6635q6rT5hhYrrc8MVHD3swq3ynD7c6sFK3ZlL93Nbs/WGCT21mA94ADVa6F8VAoKM3LuG1qzxwOUiyljuFxu1Ki63FCqBT3C1XzSB+totqPJhi4z2gEFV12wlFrRgZttHbFS9uBIK+c5I0X0OTpO90dKb3YXxTPQchfKPgjlaEG1hauzPO+o8FFt5JgIgpISEWtIrzPwIj6RHI3cFav/0LXHQ==
+ bh=VUKYQ7FMpF1VMgPFZFpCJdlZckGLoBEqjgcocEcG0vk=;
+ b=ioZv5ywWoYLoGrPgowLHNUfPPs8xAQb7jNSsgxUqgDqQDsj+2CgoCXalGLnpYnH1exhcyRy/FVvWNOXv1JlhT8Bt96xVPfDjj+hk60Hk263AKzp0mjwCQTi5FWCY13CQo2cYobC8iSNRrim1Y5E7NxHKbxN+LfGB5+jUQ2PryFI3zMO+BLqEC/3QIc1Dz17tdnMoc83F30f/63k/UylVuIooWN+cO1i+bUZCtw1jTz7Bk23A2sQQ71gCPvftWu4fE5JVK4agrgjiEIR6v/byBvMsX3hFQcyCrzw3fYm3kfWN5gidW7znQbnQYOXCGxbd7JVJnNZUBmsTrkm4SYkStw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8F2IDySJK2AzyxaqBahCm6XqENXkY+c7XtoQcOJsf+8=;
- b=Mfx6EbyjJhtMUuDTZv2q53KwmlmQ2dXxE9mDcJpF+xXLAuebPL2Iw3Dmbxmlg6mNfbbz/WDa0Nf4sMAZ3bnsN5A6sGz711q+MnoBP5NSOyXTO4b6F0g4E4Q1LIgHAdr7Uo25Qs9DBfygWhQR+jN9PBvgqVyZfc3BzFyYBFj20Pk=
+ bh=VUKYQ7FMpF1VMgPFZFpCJdlZckGLoBEqjgcocEcG0vk=;
+ b=WtY9iA6Yc1OBwmHxoy+hNEwxNEvka5ezfaSI5lvGMi3VxVVpYqcW2Ib2neieoVJ/pElq/dFBKdYTlNMJIgYkiSWz8T76dx8D4XxvO0s+kZOeiYorobex6yJBMYmFD1MA3M0CdTbX5AU4pLfbN2spbUKEg8Oth6R85PvbWVXkrvw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by GV1PR04MB9151.eurprd04.prod.outlook.com (2603:10a6:150:26::9) with
+ by PAXPR04MB9570.eurprd04.prod.outlook.com (2603:10a6:102:24d::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Mon, 16 Oct
- 2023 14:48:07 +0000
+ 2023 14:51:09 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6886.034; Mon, 16 Oct 2023
- 14:48:07 +0000
-Date: Mon, 16 Oct 2023 10:47:59 -0400
+ 14:51:09 +0000
+Date: Mon, 16 Oct 2023 10:50:58 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: arnd@arndb.de, vkoul@kernel.org
-Cc: bhe@redhat.com, dmaengine@vger.kernel.org, gregkh@linuxfoundation.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, lkp@intel.com,
-	oe-kbuild-all@lists.linux.dev, rafael@kernel.org
-Subject: Re: [PATCH v6 0/3] dmaengine: fsl_edma: add trace and debugfs support
-Message-ID: <ZS1NHwdTiHrAoEbk@lizhi-Precision-Tower-5810>
-References: <20231003145212.662955-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: aisheng.dong@nxp.com, bhelgaas@google.com, devicetree@vger.kernel.org,
+	festevam@gmail.com, imx@lists.linux.dev, jdmason@kudzu.us,
+	kernel@pengutronix.de, kishon@kernel.org, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lorenzo.pieralisi@arm.com, lpieralisi@kernel.org, maz@kernel.org,
+	s.hauer@pengutronix.de, shawnguo@kernel.org, tglx@linutronix.de
+Subject: Re: [PATCH v2 0/5] Add RC-to-EP doorbell with platform MSI controller
+Message-ID: <ZS1N0jgGYfmMsgrJ@lizhi-Precision-Tower-5810>
+References: <20230911220920.1817033-1-Frank.Li@nxp.com>
+ <ZQtmpL2vCMgR+Upu@lizhi-Precision-Tower-5810>
+ <20230930090249.GB3564@thinkpad>
+ <ZSVd5GN7lJUfdF8L@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231003145212.662955-1-Frank.Li@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0079.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::24) To AM6PR04MB4838.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZSVd5GN7lJUfdF8L@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: BYAPR06CA0005.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::18) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -54,136 +62,150 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|GV1PR04MB9151:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09c0762c-1ef1-4546-9cfd-08dbce56e896
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB9570:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e0c0bcc-03ad-4018-7f22-08dbce575530
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	bV/1vzRLtovlluli7zcnc2O91yf0ZCtkP2/OfV12gFIZpoewCqwikrSz755X0umuYNuSRgcdd9S4XV95jnNnP3KWttf6pj5PylvraZLfDaEG3dxaUQw69bdWsrlkz3KF+x0Jv5UzivFOI2XmuBntnFSt2tSoZdjkeP8k+YnDs6b38QnMHJGbrqF6nXRRQ4QsvPJdUGuHX1gUYt07Equ3dSrLWaoatuqYvgFbK3QUErmXojDXJRCljH88037reCIpQua6NBH9Jny+geGjD8PGdyZ67Ye30dMWe9EQRQIZZi24WGz0btIgy4TYu9pO4C9CSGb8XS+jvkLf84PGQyPf5kDMg7Fv00xfpyzqKXcmFfEj2iJVQf4qbHkA5HB843BkmfpOEuSVV2iRB0OI0fPlC2HyTMa9oxKiRId5dqDfH5KeCpXxgLNlQhethr4wkFBcny3mxfKpK7+a55BRNWDYFv8z/ppTBk+8HmlxOsJaSguCzRwfZz0NKbCeJPyv/8wd3Wx7lT33Bibwe+zrFPQG7z6qjwLGd5CQHiGQ7f/7CpUnCAjC0n8BFC5KNTAbb4xqD1XAxOWXJUsozNzXnm7SRWZIzS6ULIzR2BjRyxsZKKU=
+	UHDWD6KFZ/xaGAitQyao6sFFBFqhNgiFoxEyki8tATD1H5J9dEbDAx72seE/987BbXssyXB3UxpaOUhR2BZBIrPqgNfphg6GVytI4JnodhBdPduIqrSOGDWK2tA3IBwIWvlQD8FiX5X8/eyM29++C9D8q04BKtjesUgcK/CQ1JasBQk6sI8q4tsDA2ZWRiW44VxXVIYN0o8UeXQADVnP3pNq4RQxYOwnFF7f7aJrj7vp1gF4J0SIlg0rRtNwwpADz8SPGhb43iR8eBJv77Fh4s+zvHyTp8Z3Qo3APDm386Q8+Pl608TzNDDzPTwxAtqHGqGchJqwyKmMHjNSyR/B7neylKfBh+er8lqQaddUo8vuyEYsQXYmxpnWLWDOj/CWipt52C7R/W4iDjXgq9YL7vTratD9ZzUyVbSmC0ugUh8dcrBB/UuYP7zt0+9MWNbUccLdFlkiXFOMIxcQYqa8zYEQ3hAOAi6r2Eo0vQGcW3c3BQ69o8AN5FO2bX1YF+a2nfTCBJUvI06JyJ7036mgc/jRsACMQsGQqzDOcnyrk9aKQHRYpMzmxmgsFobOHhJbXTnJWdQqjJ7yFcta8kRZCPARMaqzJgPgoFnI2FPNwwc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(366004)(396003)(136003)(39860400002)(346002)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(26005)(8676002)(8936002)(4326008)(33716001)(38100700002)(5660300002)(83380400001)(41300700001)(478600001)(86362001)(6486002)(966005)(38350700005)(7416002)(2906002)(316002)(6666004)(6506007)(6512007)(9686003)(52116002)(66946007)(66556008)(66476007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(376002)(366004)(136003)(346002)(396003)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(966005)(6486002)(6916009)(66476007)(66556008)(66946007)(478600001)(316002)(26005)(52116002)(6512007)(6506007)(5660300002)(33716001)(8676002)(8936002)(4326008)(9686003)(2906002)(7416002)(41300700001)(86362001)(6666004)(38350700005)(38100700002)(83380400001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lYSlykP7hJ+WDsW/zfL9mVfgPfhR8l+5xx0NJfe3HhI9j64zfMKYxFqYYE/L?=
- =?us-ascii?Q?ZqUsE9B06BIhypyu7KstFMVNDB0celjsGkfBs/zPvkC5D7yg/VGK+g4+NbFK?=
- =?us-ascii?Q?SbRVpszPOiyhffl4J091OLLkmmiitkr9jieQWz7nGe5JVnKWwT3rUi5/rqvS?=
- =?us-ascii?Q?O+8ZdWShPlZDMehZVukarZKOf3soarUrAxPikKewAmbH52spZfAuPiO8gpIO?=
- =?us-ascii?Q?Hvme7KDsRTy9ZuIgS83GLWwBg12emE/scBogV+dXQNyBxTYkqfmZ9l/KXVFp?=
- =?us-ascii?Q?tS6G+TMzjOV4Ox6OM3TW2gqsV7mSIgEXivKLfY8Nmst5cYckoaDSpb0z/4h/?=
- =?us-ascii?Q?hCE0yRZXTaVGaulU0anOt4qfEuZo9P6rj9qqu93UGmpOgLYzKCDpsoVm8UE1?=
- =?us-ascii?Q?g/2/DKjs9Wuc56sN66kobq0QrAsmbXPqcFLaOdbPkko/iFFXDuPRP7mafBOf?=
- =?us-ascii?Q?xcnjACD42KKNI6b499wVb4CS/8+u9c2Hi3epNTy96TOdnirWIM4/Tf42x4dy?=
- =?us-ascii?Q?/2swna7KOsINa3TcfDM5skceF/vxpahYlVWiIkY518kbKRZD7pRw2DrGhKet?=
- =?us-ascii?Q?Ko1HoefKDPlXO/GvN6w3bPFYl6iD0YJnTyTDYhLJAxDgiWaZZHBPIaKspnel?=
- =?us-ascii?Q?FBFfLlSYnOQpLNL9Pa/0+7WTYAjOo0GuL7iqMWkc5SlELNDqi3rlGlrDoods?=
- =?us-ascii?Q?n7PVoH2+GZqowNilYP+WAd7GNnsSgFOKTba0akDTyzZatQQglhrogRBsuI8s?=
- =?us-ascii?Q?iAp6KMHlufxAceJ7joEc3hNVVFdWJK0lqXfCtqF4zQshnqSQBVQOXKTMyn4t?=
- =?us-ascii?Q?NJGAfO30ud3Oo0UAjFP/KstTCxlVWt/5o5nYU7IzoY3TClxA4UQqIiqooK3f?=
- =?us-ascii?Q?BnYL/8Nv4XOobEur2WI8JO1VIRAYpY9BHfH1V2hDOK40EPQpjMIIYtWFw1W7?=
- =?us-ascii?Q?v9NpxTLRjEeYAry7QdXxu84AXmoIvRQ8/1Dajb2+G4nKq/HTFCGaaFuSnTER?=
- =?us-ascii?Q?MXuqFCI5i4CycoXneQAD4gVHHXGRQSu7nDpuXABDKIX3UR/N25DN2LG1N0av?=
- =?us-ascii?Q?UAyELttw1zhPoZQdEUq8FFdna2QVDUFi5rga42Hv3u1dFHeSFLPWNLyFLWJ4?=
- =?us-ascii?Q?mg8gz+gdXLhX3lRB4DWcA+uYnI+URW2lEXjV3e1F43l4LS7h8Hu2gi2/H8Da?=
- =?us-ascii?Q?ydlUp7SFsxhMEmA0hofGNbBPKAlKpJkfxo7znC28e10dmrxX96UZiu9bVqyk?=
- =?us-ascii?Q?IUkGEp1W6qjrv8wmEjdcof6raVzde6XalFSzAwnfJwWCBWwI7FWH+3nQaUhx?=
- =?us-ascii?Q?HVmLzOpo2SngdCAZH7/Cd6oC7e79qfAO+ITiqmER2mieN76X4s3Lb91v61ll?=
- =?us-ascii?Q?rmJ7WQ9G+oN7Ryb385bXPxQ5NuyIsHEjfnXYr6fdBL3T2pGW2iPjYnJFHB+2?=
- =?us-ascii?Q?yJSsSSvSAyweDYa8bwXGSwc8q3R9n+6qOIpqF/yaxjBPjSLVAwJbcH/P13Xj?=
- =?us-ascii?Q?AoM6mdBRP+0EOSm7X/7uaWcgxgizTZ88co5EvdgqWBXi8bdn9w/OCzxpt4Eb?=
- =?us-ascii?Q?xHjd9HR3+W8fZEUsbhLP9Z6NZ1OKrmzX6QwuOrpD?=
+	=?utf-8?B?amdiQlVZcCsrT3puak9lbnJBUTJ5cjN1TXNNdjZhck5qMzkvVjRtZlVVdGZN?=
+ =?utf-8?B?RXhkemg3ejA1bnVGU2NyT2Y1ZUY5SU5QYmdUWkpIS3ZIdy9iOW12bmNIK000?=
+ =?utf-8?B?bzFIM29mcm5oOG41cnlWeVpjUVZBbUJJRmZRazkzZWlVcklwNkhOVUJMN2JX?=
+ =?utf-8?B?SHFJWDI0d2x1U2FaZlkvWXdmdEE5RnkvMmEzSUdIYlA2cGJUYnNpTU5LZUd2?=
+ =?utf-8?B?eVZHUzd6dG5HblZzdmMyRjBNQS9paU5KTXFsQkNIY1hwZmJFcWdaK3hMeHZW?=
+ =?utf-8?B?Q1paZE1lbHdaVkdGV2pwcGVHZ0tTOXhUOTQyMXdhZEFvVGFIUEUxUW1DdVcz?=
+ =?utf-8?B?d3pQeWthVjQ2WWRyVkRuajNUS2FkOWRYcnNicTh5MDlSYU5TWVBValBIUnZn?=
+ =?utf-8?B?S3M0czY1QnRxTnljTzI3eDF4Snhna3dOYUtEejVhSjJzbWlBYUdNUFlwWnpE?=
+ =?utf-8?B?UCtvcnlNYno2TWJya3ZtY1ZBSVV2Y3R6bWpDYUFuTlFLT1MxT0NjSWV5ZG8v?=
+ =?utf-8?B?b1h1SHBvSkdBSUx0K3cvRHJrOWdGQVBvNFNqTTBEb3FJcmRnN21ET1FKQWFH?=
+ =?utf-8?B?dWFsdExJOEVsWG0vN1ZiU1BzVTBYUm5RdldEYmVRSjJGdG10RnhZaTZzRE82?=
+ =?utf-8?B?MTlhcGU4MjloUDRGSTJlZndGYkI0UjBVZDB3MzhMUmNGbWFSRm1xUFB1L0JT?=
+ =?utf-8?B?VkQxZ3dqa0laTU1zdGlPeVZoNk5zMlQvTERhcWlEUGlaNVUvQ0g3ajZUc1Fs?=
+ =?utf-8?B?OVVaV2xCTDdrbU5wd2JINHdybXgxbDI3VzhYVFc5NUlCV3ErV2U4dm05cFdo?=
+ =?utf-8?B?cmFhQ21aMVBheE96SHlWQ2x2bUNyK0prOUZTYXliQ3FIOXpjL1dxSnVaclpT?=
+ =?utf-8?B?dkpLWTRuRFhDOGZEazJHaWhHY0RJem9VRzVMczY0ajR2aHE2VXFsVmR3emxM?=
+ =?utf-8?B?cnFCS2lIbGdGVXhYb0piY29JU2xodytqZFFhK3BiK1ZxYkt1VW0xMTBDQXc0?=
+ =?utf-8?B?bVlNQ2J5ZUN5Znc0YkhiRFhLTGI4YmJYSVhyVDlza1I4UFVWNHl5UFVJcXZ0?=
+ =?utf-8?B?Z282RXZPamtYRmNXZTl2akhsUnZyck5SOGYvaVpEWitaYTVpbmh3UzBsZ2V2?=
+ =?utf-8?B?YThFUGs1UERoZ0JDTndIWDZXcFZrRGVMYjF3RkJHT1dTQ3p0dEN2SWs5cXVE?=
+ =?utf-8?B?cExpMEVVNFZxNTJzN1dFTG1kbFhnRWd1aklnOWk3ZFBEWnN6Z0ZPQ1g2ZTFB?=
+ =?utf-8?B?U2FUc1hQRko3OE1mamNLU2JNYUdmWkVrb3NqRGNndldtd3pneWpvZU5wNG14?=
+ =?utf-8?B?QnE2OG9vS2J1VkY3Ry9kSkpLM2FUTDNLM3ltOGFrWDExVU5UanFDaGhiZmZ1?=
+ =?utf-8?B?QjFUTUdIOWFIdDZVWnV1bmxvbzA1c3Q0WEdndFJCSk1SUFU0MWQ1cVhLR1ZH?=
+ =?utf-8?B?UUlkYzZxR2VZRURpejVXbHlXd3VxNW5GSUVyckFwZzZhNDRiVTRPbGV5UUZ1?=
+ =?utf-8?B?VUJzdVhraFJMNW5uc0dGRFFzeklPbVBDZFUyNld6NXhBdURnRXl5WFBpOGhM?=
+ =?utf-8?B?cDE5S3ZwNHFrbUFhWDgxRlNaSXQ5WDFkK3FFUEYwUk1jZHRtbGptcWtPdWQv?=
+ =?utf-8?B?UW1SQzJpeVFteGMrUmp0Unk3MnBhSDcyaUplZUxjdFo1cW1SRWNqUnVPWS84?=
+ =?utf-8?B?RHdSM05kL2wrU014UUpIc2hTUXhGamtibk5YdVprdGcxUDJBSTdJNkVNSXBu?=
+ =?utf-8?B?NUhUbUJmVUYxTnVLUlRTUGV3V1dCMGVSRnZ0VGxpWE12MEpnWVBOUXYzTTJJ?=
+ =?utf-8?B?eWJ0OXI1NHoyZlhkS01LOEg0TFFOS2EvNTRQVkIzL3hWU3N3M2UzTS9IUllq?=
+ =?utf-8?B?eHcyWkV2NSszNExZZUxNN0RxYldqajVJQ2lTRzBENXkraC9OQ091aEsyTnFo?=
+ =?utf-8?B?VXFGaWFEYWZPNlNqckJkNWpBZTN6YjB0ZHlHV0lqcFhrVUI3ZlR0YnVpS0pH?=
+ =?utf-8?B?MVFtRnUrTThua3Q1anNMejZZZmRXdE1BMjJtLzEwalk3aThaelozaTJjbGh5?=
+ =?utf-8?B?TndhQ3lCaHQrdWIxa3VPNzJULy9GdWRNa0c2NUJ0SlhkTVMvZDNVK015UGVu?=
+ =?utf-8?Q?arh4=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09c0762c-1ef1-4546-9cfd-08dbce56e896
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e0c0bcc-03ad-4018-7f22-08dbce575530
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2023 14:48:07.0584
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2023 14:51:09.1036
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1904xQzqPAyQ7d1o9mpS34mlE3bM5X2wLiA+iP8+1P/hX6ngd1A6pd4iycppJJAauPPpWzJYjHHddEkr4myQdA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9151
+X-MS-Exchange-CrossTenant-UserPrincipalName: gFPgsZHfnfR8uNiCRXhnDp7woaAad6cmi41cLvGCdqFIjYbtd2rXv0R/w42obJOi2+dJjeQj69Zo0rDPtbF7og==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9570
 
-On Tue, Oct 03, 2023 at 10:52:09AM -0400, Frank Li wrote:
-> Change from v5 to v6
-> - Use case 0 and case sizeof(u32) instead of default
+On Tue, Oct 10, 2023 at 10:21:24AM -0400, Frank Li wrote:
+> On Sat, Sep 30, 2023 at 11:02:49AM +0200, Manivannan Sadhasivam wrote:
+> > On Wed, Sep 20, 2023 at 05:39:48PM -0400, Frank Li wrote:
+> > > On Mon, Sep 11, 2023 at 06:09:15PM -0400, Frank Li wrote:
+> > > > ┌────────────┐   ┌───────────────────────────────────┐   ┌────────────────┐
+> > > > │            │   │                                   │   │                │
+> > > > │            │   │ PCI Endpoint                      │   │ PCI Host       │
+> > > > │            │   │                                   │   │                │
+> > > > │            │◄──┤ 1.platform_msi_domain_alloc_irqs()│   │                │
+> > > > │            │   │                                   │   │                │
+> > > > │ MSI        ├──►│ 2.write_msi_msg()                 ├──►├─BAR<n>         │
+> > > > │ Controller │   │   update doorbell register address│   │                │
+> > > > │            │   │   for BAR                         │   │                │
+> > > > │            │   │                                   │   │ 3. Write BAR<n>│
+> > > > │            │◄──┼───────────────────────────────────┼───┤                │
+> > > > │            │   │                                   │   │                │
+> > > > │            ├──►│ 4.Irq Handle                      │   │                │
+> > > > │            │   │                                   │   │                │
+> > > > │            │   │                                   │   │                │
+> > > > └────────────┘   └───────────────────────────────────┘   └────────────────┘
+> > > 
+> > > @mani:
+> > > 	Do you have chance to review this patch again?
+> > 
+> > I was on vacation for past few weeks. Will take a look in the coming week.
+> 
+> Ping?
+> 
+> Frank
 
-Ping. I fixed build issue. 
+@mani: did you have chance to look at this?
 
 > 
-> Change from v4 to v5
-> - There are still some discussion about 64bit register access.
->   Drop 64 register support and use sperate patch to enable 64bit register
-> support in future.
-> 
-> Change from v3 to v4
-> - Fix build warning
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202309210500.owiirl4c-lkp@intel.com/
-> 
-> Change from v2 to v3
-> - Fixed sparse build warning
-> - improve debugfs_create_regset32 and use debugfs_create_regset() to dump
->   all registers
-> 
-> Change from v1 to v2
-> - Fixed tcd trace issue, data need be saved firstly.
-> 
-> === Trace ===
-> 
-> echo 1 >/sys/kernel/debug/tracing/tracing_on
-> echo 1 >/sys/kernel/debug/tracing/events/fsl_edma/enable
-> 
-> Run any dma test
-> ...
-> 
-> cat /sys/kernel/debug/tracing/trace
-> 
->  uart_testapp_11-448     [000] d..1.    69.185019: edma_fill_tcd:
-> ==== TCD =====
->   saddr:  0x831ee020
->   soff:       0x8000
->   attr:       0xffff
->   nbytes: 0xfba40000
->   slast:  0x00000000
->   daddr:  0x8aaa4800
->   doff:       0x0001
->   citer:      0x0800
->   dlast:  0xfba40020
->   csr:        0x0052
->   biter:      0x0800
-> 
->  uart_testapp_11-448     [000] d..2.    69.185022: edma_writew: offset 0001803c: value 00000000
->  uart_testapp_11-448     [000] d..2.    69.185023: edma_writel: offset 00018020: value 4259001c
->  uart_testapp_11-448     [000] d..2.    69.185024: edma_writel: offset 00018030: value 8aaa4000
-> 
-> === DebugFS ===
-> 
-> cat /sys/kernel/debug/dmaengine/42000000.dma-controller/42000000.dma-controller-CH00/ch_sbr
-> 0x00208003
-> 
-> Frank Li (3):
->   debugfs_create_regset32() support 8/16 bit width registers
->   dmaengine: fsl-emda: add debugfs support
->   dmaengine: fsl-edma: add trace event support
-> 
->  drivers/dma/Makefile           |   7 +-
->  drivers/dma/fsl-edma-common.c  |   2 +
->  drivers/dma/fsl-edma-common.h  |  37 +++++-
->  drivers/dma/fsl-edma-debugfs.c | 200 +++++++++++++++++++++++++++++++++
->  drivers/dma/fsl-edma-main.c    |   2 +
->  drivers/dma/fsl-edma-trace.c   |   4 +
->  drivers/dma/fsl-edma-trace.h   | 134 ++++++++++++++++++++++
->  fs/debugfs/file.c              |  54 ++++++---
->  include/linux/debugfs.h        |  17 ++-
->  9 files changed, 429 insertions(+), 28 deletions(-)
->  create mode 100644 drivers/dma/fsl-edma-debugfs.c
->  create mode 100644 drivers/dma/fsl-edma-trace.c
->  create mode 100644 drivers/dma/fsl-edma-trace.h
-> 
-> -- 
-> 2.34.1
-> 
+> > 
+> > - Mani
+> > 
+> > > 
+> > > Frank
+> > > 
+> > > > 
+> > > > This patches based on old https://lore.kernel.org/imx/20221124055036.1630573-1-Frank.Li@nxp.com/
+> > > > 
+> > > > Original patch only target to vntb driver. But actually it is common
+> > > > method.
+> > > > 
+> > > > This patches add new API to pci-epf-core, so any EP driver can use it.
+> > > > 
+> > > > The key point is comments from Thomas Gleixner, who suggest use new
+> > > > PCI/IMS. But arm platform change still not be merged yet.
+> > > > 
+> > > > git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git devmsi-v2-arm
+> > > > 
+> > > > So I still use existed method implement RC to EP doorbell.
+> > > > 
+> > > > If Thomas Gleixner want to continue work on devmsi-v2-arm, I can help test
+> > > > and update this patch.
+> > > > 
+> > > > Change from v1 to v2
+> > > > - Add missed patch for endpont/pci-epf-test.c
+> > > > - Move alloc and free to epc driver from epf.
+> > > > - Provide general help function for EPC driver to alloc platform msi irq.
+> > > > - Fixed manivannan's comments.
+> > > > 
+> > > > Frank Li (5):
+> > > >   PCI: endpoint: Add RC-to-EP doorbell support using platform MSI
+> > > >     controller
+> > > >   PCI: dwc: add doorbell support by use MSI controller
+> > > >   PCI: endpoint: pci-epf-test: add doorbell test
+> > > >   misc: pci_endpoint_test: Add doorbell test case
+> > > >   tools: PCI: Add 'B' option for test doorbell
+> > > > 
+> > > >  drivers/misc/pci_endpoint_test.c              |  48 +++++
+> > > >  .../pci/controller/dwc/pcie-designware-ep.c   |   2 +
+> > > >  drivers/pci/endpoint/functions/pci-epf-test.c |  59 +++++-
+> > > >  drivers/pci/endpoint/pci-epc-core.c           | 192 ++++++++++++++++++
+> > > >  drivers/pci/endpoint/pci-epf-core.c           |  44 ++++
+> > > >  include/linux/pci-epc.h                       |   6 +
+> > > >  include/linux/pci-epf.h                       |   7 +
+> > > >  include/uapi/linux/pcitest.h                  |   1 +
+> > > >  tools/pci/pcitest.c                           |  16 +-
+> > > >  9 files changed, 373 insertions(+), 2 deletions(-)
+> > > > 
+> > > > -- 
+> > > > 2.34.1
+> > > > 
+> > 
+> > -- 
+> > மணிவண்ணன் சதாசிவம்
