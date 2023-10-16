@@ -1,55 +1,58 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2046.outbound.protection.outlook.com [40.107.105.46])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2077.outbound.protection.outlook.com [40.107.8.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445412AB59
-	for <imx@lists.linux.dev>; Mon, 16 Oct 2023 15:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AD42E656
+	for <imx@lists.linux.dev>; Mon, 16 Oct 2023 16:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LXRe+7ms"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="R7sJvleT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PKz8g9SX+ugY25mhv1ZZr1kaclV9s6Y+1/0b6fGQexmz3OJs0Xb66zeMSH60bg/6ce7uhYV0dKNzMLiKPsOAZ0tt5rVlOpsZlU4tJyXNCZOp3D1adQfJ5vZYDueWYyROJRF9X3gYPkRP3dtTLo4eFIOuFUOoqSLzSoms5zu8EPEdi4MvFUsSl62JkR/aGzX8d9H5cUFwzSIVZEfMcN6gIWMrl4fFSNdfqsXzm/WthBlgYqdjljNszwPo9JRqX26XUjaZ8zy9UvdzNmNvdyJs/djGEbnT7RqqStRhLnvZICPghwr055eRnoWpyjZQT83MpBStVhbqBpo3P1Q/5ydmQg==
+ b=HdPVsB2LDZ1kHVzGCxgDCVa4UUWsOOPPBr+AVrQD+R7ijdtl10AR0zavaye9K9C0agmr5VaM9E5HqWNDdbo+E19gUG4Z8ejAXODVo+fxLlwBm+npy9rZk31w6lKo48MtiDq7hvZuS/pz+Dcwb1TV8SRflW2TqD5cgCZ9xh0QuKbWmJCGdCGlP11jRaBJZFTqgriwzFlerjke2bPKyWw/RKDVrAHGjlOgoZ9MOMXb01pj7pwTt4eIUGbYoRR+igVjh0mktP0MCAPTXBjRlinJas3kRC+APNLDkSDO0GO2lw6aYc3OVNYL063NyI/OXkVxqbWzpjcqBH316182ABneXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pr4HS15qL0Lr/tIXBZpHIbmsN7TKrO1OgsFr9lMg6OA=;
- b=jHg4dQXSSYYR0q9D2SGAeeUV/Br2C6IGpEBE+ak+wDv4XT1wI4cLD71SP0PVvoOWYgP9nmSXKZnHWQsR3+Y4KlptWhQS5GKY896awW/PzeQXDrJ7h24pKXrMnctWevUyFRpDqmBFFdwfCqr8KWVDiBVpqSwodu13rsCmsIAdtKdMb63gUy7750Qx3VV7m+BPg9Z2yY4NuavbutggohRbo4os9S5Qk5mh52vQwNWbEpe7+8Q9FlCqVt8OIwYnA0dkhoGfvnqoc+R6azgHUT+dZNvC6h9S+6SvAazoSWWAwg7PtABRVR9za9W5ZEilAp7B8/WBkssgCHPAS2bhFFRCPg==
+ bh=SGSEAiI0wn8Om4JXxTYJU/H+ysdlKP7h3jBF0DnpftE=;
+ b=VsoHGW1bx8w3RqY7bWsm5sdCn7AFqBeWMYTUJIAS3cF+8OynF8XTqAQnOMocWHhrWyKNXRdhRZtk+IghELNHAPwOKkF7WnxS8BoQLl03x1xM+A9CLCgmwFJiYTJe+eTqhtf2y4CqkCaSgRd3on8Cs5h+kDHL9gZsdE1a7WsN7gldATTk8Y31Sa5XRDFYgvgmrLpCzh4zO+XUgtpenWRznClkkXcbhMZLgKyjBcFhztH7P8347M/xJNCTBkriBufIHx4bc7hGrYJZmlNDxbay0G8Lr4XXy0875i+KCArf6esJT/3lCiYTghNM0Ap2Yn9njKdDRErmXVoQtB63g/QeQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pr4HS15qL0Lr/tIXBZpHIbmsN7TKrO1OgsFr9lMg6OA=;
- b=LXRe+7ms000qs+sOyh1LPEHpfMf3Xc8pFBfO3JxADVMrAOAPtiLbRqIXkR0ZZX0XwsKU0Wt/fZlIzSr8ECnSs/h/C4Mm7hGXBINBVpzWUCSFzQVGXUrN/LEC0G0bA24b3EB4xCQpuZqyku7dhUpZX2G0f0aJFsOZE1kIhZEr1fs=
+ bh=SGSEAiI0wn8Om4JXxTYJU/H+ysdlKP7h3jBF0DnpftE=;
+ b=R7sJvleTg04XI3o3xJnPuvQcaEVK+wqAMVDg1D8WOjyaoSc94grHMlXUSU1Knmh/E/JAhinJitMeP/7HiMOJ/G/Or5vpVOueYf0NeUqMRgCammt21WBU1WbzVxcj3vp938iqvnKz8yD1ie8Oeh2iUWT5OzDffFVZdQq3Ub/EbEQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DB9PR04MB8329.eurprd04.prod.outlook.com (2603:10a6:10:24c::20) with
+ by VI1PR04MB9905.eurprd04.prod.outlook.com (2603:10a6:800:1df::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.47; Mon, 16 Oct
- 2023 15:46:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.46; Mon, 16 Oct
+ 2023 16:11:13 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6886.034; Mon, 16 Oct 2023
- 15:46:59 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: alexandre.belloni@bootlin.com,
-	miquel.raynal@bootlin.com,
-	conor.culhane@silvaco.com,
-	joe@perches.com,
-	linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH 5/5] i3c: add API i3c_dev_gettstatus_format1() to get target device status
-Date: Mon, 16 Oct 2023 11:46:32 -0400
-Message-Id: <20231016154632.2851957-6-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231016154632.2851957-1-Frank.Li@nxp.com>
-References: <20231016154632.2851957-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0089.namprd03.prod.outlook.com
- (2603:10b6:a03:331::34) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ 16:11:13 +0000
+Date: Mon, 16 Oct 2023 12:11:04 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 2/3] PCI: layerscape: add suspend/resume for ls1021a
+Message-ID: <ZS1gmJiz8+PKIuwp@lizhi-Precision-Tower-5810>
+References: <ZS1Mhe9JOsY2JJER@lizhi-Precision-Tower-5810>
+ <20231016152211.GA1209639@bhelgaas>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231016152211.GA1209639@bhelgaas>
+X-ClientProxiedBy: SJ0PR13CA0026.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::31) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -58,162 +61,154 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB9PR04MB8329:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e822f8a-11cf-40be-f505-08dbce5f21f6
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|VI1PR04MB9905:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20adf9f4-9aeb-4684-6d9f-08dbce6284a6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	VfqJhnqUGNDaA6+YFVt6oS/spGgX26bblxho9jI2UtCMiMxfDh7iPhMYVa3o58cnoQgZR2i48wA4BW6WmyFxXKc8+SpFMHF5XGGlvTrIbt5ySY+/w1vtCNN9np11Qm2JoJG1qAqeLIv1Gp9i/MioIUZVsnT9R55HMT9dJscA4bFy3as93A3C7n+rsZ6I7hjkopDTrf/kJjkpM18NJluc3W0mtuUoHBiyNLGuIOwmMHKKtgUAQM65fSEsyf/Dc4KGDRwe67DbU0wmV9I0/YlgOxIgxGI9sh6UZ8avdFdb1gR5p98rkIy2v5+TxCnWg96L4jP0LrjJYxrGqa2fpFtLfvliiIRIR8mB5nYnBLqDlctf9FO0qk3CdRpDaZPjbA+iv0uItkah3JUgiS6y2/Bf7VlS8AjBB6ESp7xQZcJ9PM9Tk9CvOvDYXVh8x/mTBK1d52x6IO+TcE8R7AGxTrO6+VMi1s8oudtFoom78j71WGV5AQZM0nVWFZppS7ekOUMybV1TU6zTVe34qc1dZdf26wAfe57Co8fio7o7EmGN3MCoID8Wr2Tld0HexM1tg4OUx//27n2FNUuruUXSkFVkJ24ozkT8KYzomRoU5wrFVoKyzH5wk1RieUMKdGEJVxvq
+	lVB6nNC+lssT1WFxAP0rpeW9Yw7rq7mgzwcLfsijqREiJplnpluuCEdi4lHa/4bj8qWEFxErdL5PnwrZHFcFN+MR5XO4Sn48XJvwhSt4xiKfu6+nGXoJtN/N+20J1ZEzu4IXl5XQ5gtlRJ/CveHcNCDBPD8s3uOxo27dAfrCjUmEo11Gavf1TPyHn52Rs6CN5SIl9Z2CMstTYiMGNsmlHTJpOJM3EOsFQknEl/Y+RCxdAfO+KZYk8KelYQDhz6E+86kyk1XdcQpo2cKGmAZWEfcaEUSapChoY8PMQOwDLgCqfnDIqaaLYOTwryxD01Ze86t2Z6vT3FZB9cdJUfNgFGnJVzWmOLI/Xlai8AFJrycrGZP6BSWDVCPPrXG6IPLOcdgLKvnAjZHbbvq5V4KIlMOEENQR0CoNquxh44oGc9/hMf/wTAvZEim8aEk0epegM9cqMosKN1uo7a+m1+qxnxjQw5Swn3cjeGuWAIUsUKh4SSE5LsuG8kZs/FyNT4pQD98Or4aZU6nwrNXYFoI5NfZH8Hju7nLpKhhIcGG1tWCzIBrWtPMG/R43HX0nk3y5OejcY0qdS6miZas6rq5Rc6PYIoZK7JYYr72CYiMeyrMRQiBgMRNpvAlYYit0s109
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(136003)(346002)(376002)(396003)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(6666004)(6512007)(6506007)(52116002)(5660300002)(8936002)(8676002)(38350700005)(478600001)(6486002)(1076003)(83380400001)(2616005)(26005)(66476007)(66556008)(66946007)(316002)(41300700001)(86362001)(38100700002)(2906002)(36756003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(396003)(366004)(346002)(136003)(39860400002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(478600001)(6486002)(966005)(66946007)(6916009)(66556008)(6666004)(54906003)(66476007)(83380400001)(86362001)(38100700002)(9686003)(316002)(6512007)(26005)(6506007)(52116002)(5660300002)(41300700001)(4326008)(8936002)(38350700005)(8676002)(7416002)(33716001)(15650500001)(2906002)(67856001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wvZS4rMownKFy30Ttmq8onegMjl2kViS/IJ8ZfTOr11gvvSXEq6KXwRpRUmb?=
- =?us-ascii?Q?ni2U50Ng3xITwvWnUfJTbEJsJfSyv5KyRMcoUxqs0DAeh3Upb3mdoqJAt0rX?=
- =?us-ascii?Q?1mCu915QwjJyu+wwD7WPa3YAQ5wr2ZZO+EjI8I8Nkex7W4zjkWjNBlz68UG6?=
- =?us-ascii?Q?7JpOaFtqiWNX6oiDiTtboOKEI7S/5RuBFq9o6OdBsBhetLoonBmTa5H3soNS?=
- =?us-ascii?Q?/Ej1zYKjnSryfuoDOlbNercaNgiY8idA2EKhdakYWeB4KQ1oYhTv8AgCkhxI?=
- =?us-ascii?Q?XNXqmALx0zzGHh8sfuI6Aa2aBZ/lfLSXxH3MbQKCdKHX+/YLEKRUR4cqHODB?=
- =?us-ascii?Q?wvMvvVl08OtZtmaCx80yXAwEk2AlsJrnSZfXcERk+q4BQp8Z/7GrEcTdzRqp?=
- =?us-ascii?Q?2SMnrwrzDMRTItiZmHn6cz1lRAaZvoGCTE2Zk6LCFdL0QOIkWwkQ/jhUoTdH?=
- =?us-ascii?Q?KGIqWNrz42FKPnHCbP6m4VOQlMfJsH3sMvHP88U1HtCOFMSqqNgNFJiiE/3y?=
- =?us-ascii?Q?q/iNk+TqjRCYT+qRGPRYM+M66myEV0XdnKuH7xXTzq14ZupT5U9BYbIDK07r?=
- =?us-ascii?Q?Dy+RJbjqiOUE7buD0ZwqlpBwcNTFcfbliGDSTE1GAEb8HmVWbeuQDpkZIiWS?=
- =?us-ascii?Q?RIopvm6fLNchKW7rspMPjAjJIKeyFTOGiuBxoeSkCL5RVK9d9c64OSWMoG//?=
- =?us-ascii?Q?4aXywg136HwvxcyWI9vts8IJglfj8keZEdSQjdt4oBaEg53rkh0LQMoa8iyL?=
- =?us-ascii?Q?uT8P3zHRpuuiGtJNQbfhmSIFqaPuwWAsqjdOO0LuxSwaDZ/Sv1hRemx4k5Ca?=
- =?us-ascii?Q?o8YQVoLXUBloySxWjLCGlk2MjToECQD3rewUJlP6Y48AoZqjrJTDFY7LGEUm?=
- =?us-ascii?Q?64gLe137cPz6U+ZUIpgMGjQjjF8b9u4avQw1rWSlxW4KfWUdVLyxiOGwIorV?=
- =?us-ascii?Q?BGd+sgQu9OVaYkLvghI/ZliaA0DzLs8e4ooSZWC5SM57hl1kLjfSZxx4qZl+?=
- =?us-ascii?Q?xAI9JUrGC7V/9usaUpSeWubFjpXSIg9wK4Q9XSkSwmuZHuF8IleO2y/jSGUw?=
- =?us-ascii?Q?ahH3/uClhLuBbOqSun0a7KLC9skt2PuSYWTYkTQqI/axsuA61ZZnnqRjbh7z?=
- =?us-ascii?Q?Gtm6LwuGmdb6d/VsiIVul2DalQNHBUHGlfMq+dggopdE4JNnZNFVfo1OD7S+?=
- =?us-ascii?Q?+915THTLn13NiVNT04DOpVpCrsVykUNoNhZxnm4L03SmGYAR+URA7e8XOxca?=
- =?us-ascii?Q?6GP5fmXUCbCMOWpHfQdXw3d7Wtoz6jk5+EGZOUeb7jE9SZeEcwYqrn0XbcL9?=
- =?us-ascii?Q?X0syD3ovo1iuHNQJEGkdHszAzg1Q4lWFkxd+JpDTsUOqyKfGY2lU4N+/paIt?=
- =?us-ascii?Q?5lBFmz02xB9Y9rfruZEs1o7HlUL/EQtHwsiqbEleVK0B5ew5i0Vy7BIVQ56D?=
- =?us-ascii?Q?0MIXSQGsF/ss311yNBdLNATEnX8nvks+8/d7XhYhcIq+UKE7tXF3+dly37rB?=
- =?us-ascii?Q?nCzuw6jrd0Fp/q0EfSYkbdebLJLpCBV4nee3vPtdgEZTiShB6OX2ApfdTImQ?=
- =?us-ascii?Q?mAM61FZJi2F7B1t6CXk=3D?=
+	=?us-ascii?Q?Ct0HVMfqiOZy67CZu+c0EnNQ8xseoolAO2vgrp6h6lGw1SBcnwBfva1ExKZ9?=
+ =?us-ascii?Q?oLc6QwNIBMdt+cfJnxudSF5i09A/UPkUbTLTxuVlQPlZfyB2ror0rj2dbvcx?=
+ =?us-ascii?Q?v5xXSsAOm0jPpxH6sArSjy+EyyFDLlnVbAb0ZliVyDJ78118sM2bu4ZXR3Nj?=
+ =?us-ascii?Q?e+HB+1m0sb8mbChN8/yqxIpYYWJU4T2ms//UH+xz5KJSx1hf0wccaQ7R9Afd?=
+ =?us-ascii?Q?dZzZAoauoYZdhA6fIHrjU671n5OGav/VEO5aCcZl+UuANq2ppoOqe3ZmPwG7?=
+ =?us-ascii?Q?s98vVD5GBXfWrvMR5S86/Unh8afn/59k9pyLUJvZOGZJ4zm2nG2zjPTuRVeC?=
+ =?us-ascii?Q?tRUcqlNHy4dkAUaHJ8HO9VItoCzUmy4SNyaazEPQg94kZfAP08EHwyRSNcgd?=
+ =?us-ascii?Q?zH29e8A9hPsHlZ1kbpQCM3gLu2wpGYKncjweGGW6ATIOn6FrPLJniT0d/9bi?=
+ =?us-ascii?Q?4FiZ3RUvb3iKU5rWk6lZBNOxiulBTCtgIMIK01i4simDUBn6FLNogOmvZUju?=
+ =?us-ascii?Q?/U5Yia5GeZ8ZaDwiaWLqMCT4YUdsnjHfccQO0js6Mv9o2Zk+T2F4UJVoPp9E?=
+ =?us-ascii?Q?oalkdDBybwl8lNvT76bemfZpHlSFulZnOull/RE0RjeXb9YinFlPn4x5XWAP?=
+ =?us-ascii?Q?nT79nA+9KiF2eU6tElaDT1M0ALhks+TV9VSxp/AMYMziyQnfg4VQP4v+xomM?=
+ =?us-ascii?Q?obW7E4ZuzaVXgUtCISig8BXgI7qqXIeRthIOBdyPVDdJElliwYMdnOsDotmd?=
+ =?us-ascii?Q?iYQt6u8q1i6j2+SSWvsqw+Gy9eOpWG2QXRhBuX6KGkZOrQbTSsTZY5Y6gXfa?=
+ =?us-ascii?Q?Rgn5z63t3EfdHWQ8/wuqKPvNdxG3jaQNl8ZcFbZngIDxHGVStnhcifeC9c8m?=
+ =?us-ascii?Q?WR9fxzDksv8KmNR7HAsFIAttKoVHob7BhOX7QRQTmeQdEPTb/CptDdGb/Whp?=
+ =?us-ascii?Q?FYMsk0pKMwnxQgC7Nnom9OFGkZ3zVzGlVmucMJFNLaIzn98jBU8HQhGPSHVz?=
+ =?us-ascii?Q?L/BU9OAt4WqFd1CcYVpPMkg9d13IfC61Hf/3Io7iphMDufFl3OZHq+EvfWMK?=
+ =?us-ascii?Q?quUUV7rgPj7ZlXCf0YyTpzazlGh+k7Ya974gO7Qkz7UrRFaafxtuTo3bfW5H?=
+ =?us-ascii?Q?OkODZXDhYboqZ62H/8mPRBXet//oI1xo2Ga4u6l3mOzWGXg9NW5ZFazDu9wG?=
+ =?us-ascii?Q?cbSngxGp/J52iiiwqOMULG2sHbTNUQLh5DmJ257ZHDI+X7un3WLufXxxJPG4?=
+ =?us-ascii?Q?3O/4uIkH6tEWlVMAkeb3I/Mqg03CpWRlphz3UOSYN2y9BQyYRjXCeW5G0QDD?=
+ =?us-ascii?Q?0vMQy4TvwuyQiYB+XEEiZV9AKiz8IALZPmbJpYEZeuLFQPf+ZC2OP/9wtwdK?=
+ =?us-ascii?Q?ngj09PIap0/i1q+tmAbTj06O6759QaFayHPB5UA/stQNWjaRwDgFuB2Wrch1?=
+ =?us-ascii?Q?Or+X++g6TPUiqO+O5rHV4qU0cSk/7vouXXtkNV5aRS/Gcxh6szWiuudOsssb?=
+ =?us-ascii?Q?ssNrgTyhto779SMM9mJ4bcRAWh3oR8f8fWdXryGylF2xRm4M8ELiQ3Y6u0EQ?=
+ =?us-ascii?Q?+rc8Rq1L/pPZUoel8RDe/1TbjoV4IuKd8EPXWJIC?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e822f8a-11cf-40be-f505-08dbce5f21f6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20adf9f4-9aeb-4684-6d9f-08dbce6284a6
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2023 15:46:59.1855
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2023 16:11:13.2782
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JeQ6TXz93fDbAFi8r/aBnp5ou9uTh7T6EqDbdedPEPJqsk64LpmUhgDs8nvEuRm1Y9MH2moiCjeMIxet3PK0Ug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8329
+X-MS-Exchange-CrossTenant-UserPrincipalName: ALOakVC0kLLoXrmFwLvNmF8wqqhJRwrU+1MEoMbGs+Id3CFQa+GmgQyeIKlJZQyuhslUTwi9+OOP6LkiTN98Xw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9905
 
-I3C standard 5.1.9.3.15 Get Device Status (GETSTATUS):
-Get request for one I3C Target Device to return its current status.
+On Mon, Oct 16, 2023 at 10:22:11AM -0500, Bjorn Helgaas wrote:
+> On Mon, Oct 16, 2023 at 10:45:25AM -0400, Frank Li wrote:
+> > On Tue, Oct 10, 2023 at 06:02:36PM +0200, Lorenzo Pieralisi wrote:
+> > > On Tue, Oct 10, 2023 at 10:20:12AM -0400, Frank Li wrote:
+> 
+> > > > Ping
+> > > 
+> > > Read and follow please (and then ping us):
+> > > https://lore.kernel.org/linux-pci/20171026223701.GA25649@bhelgaas-glaptop.roam.corp.google.com
+> > 
+> > Could you please help point which specic one was not follow aboved guide?
+> > Then I can update my code. I think that's efficial communication method. I
+> > think I have read it serial times. But not sure which one violate the
+> > guide?
+> > 
+> > @Bjorn Helgaas. How do you think so? 
+> 
+> Since Lorenzo didn't point out anything specific in the patch itself,
+> I think he was probably referring to the subject line and this advice:
+> 
+>   - Follow the existing convention, i.e., run "git log --oneline
+>     <file>" and make yours match in format, capitalization, and
+>     sentence structure.  For example, native host bridge driver patch
+>     titles look like this:
+> 
+>       PCI: altera: Fix platform_get_irq() error handling
+>       PCI: vmd: Remove IRQ affinity so we can allocate more IRQs
+>       PCI: mediatek: Add MSI support for MT2712 and MT7622
+>       PCI: rockchip: Remove IRQ domain if probe fails
+> 
+> In this case, your subject line was:
+> 
+>   PCI: layerscape: add suspend/resume for ls1021a
+> 
+> The advice was to run this:
+> 
+>   $ git log --oneline drivers/pci/controller/dwc/pci-layerscape.c
+>   83c088148c8e PCI: Use PCI_HEADER_TYPE_* instead of literals
+>   9fda4d09905d PCI: layerscape: Add power management support for ls1028a
+>   277004d7a4a3 PCI: Remove unnecessary <linux/of_irq.h> includes
+>   60b3c27fb9b9 PCI: dwc: Rename struct pcie_port to dw_pcie_rp
+>   d23f0c11aca2 PCI: layerscape: Change to use the DWC common link-up check function
+>   7007b745a508 PCI: layerscape: Convert to builtin_platform_driver()
+>   60f5b73fa0f2 PCI: dwc: Remove unnecessary wrappers around dw_pcie_host_init()
+>   b9ac0f9dc8ea PCI: dwc: Move dw_pcie_setup_rc() to DWC common code
+>   f78f02638af5 PCI: dwc: Rework MSI initialization
+> 
+> Note that these summaries are all complete sentences that start with a
+> capital letter:
+> 
+>   Use PCI_HEADER_TYPE_* instead of literals
+>   Add power management support for ls1028a
+>   Remove unnecessary <linux/of_irq.h> includes
+>   ...
+> 
+> So yours could be this:
+> 
+>   PCI: layerscape: Add suspend/resume for ls1021a
+>                    ^
+> 
+> This is trivial, obviously.  But the uppercase/lowercase distinction
+> carries information, and it's an unnecessary distraction to notice
+> that "oh, this is different from the rest; is the difference
+> important or should I ignore it?"
 
-Add API to fetch it with format1.
+Thanks. Not everyone think it is trivial. Especially for the one, who
+English are not native language.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/i3c/device.c       | 24 ++++++++++++++++++++++++
- drivers/i3c/internals.h    |  1 +
- drivers/i3c/master.c       | 27 +++++++++++++++++++++++++++
- include/linux/i3c/device.h |  1 +
- 4 files changed, 53 insertions(+)
+> 
+> Obviously Lorenzo *could* edit all your subject lines on your behalf,
+> but it makes everybody's life easier if people look at the existing
+> code and follow the style when making changes.
 
-diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
-index 1a6a8703dbc3..0566ab9f1498 100644
---- a/drivers/i3c/device.c
-+++ b/drivers/i3c/device.c
-@@ -196,6 +196,30 @@ void i3c_device_free_ibi(struct i3c_device *dev)
- }
- EXPORT_SYMBOL_GPL(i3c_device_free_ibi);
+Understand, but simple mark 'a' and 'A' to me. I will update patches and
+take care for next time instead search whole docuemnt to guess which one
+violated. I know I make some mistakes at here. But I am working on many
+difference kernel subsystems, some require upper case, some require low
+case, someone doesn't care.
  
-+/**
-+ * i3c_device_getstatus_format1() - Get device status with format 1.
-+ * @dev: device for which you want to get status.
-+ * @status: I3C status format 1
-+ *
-+ * Return: 0 in case of success, a negative error core otherwise.
-+ */
-+int i3c_device_getstatus_format1(struct i3c_device *dev, u16 *status)
-+{
-+	int ret = -EINVAL;
-+
-+	if (!status)
-+		return -EINVAL;
-+
-+	i3c_bus_normaluse_lock(dev->bus);
-+	if (dev->desc) {
-+		ret = i3c_dev_getstatus_format1_locked(dev->desc, status);
-+	}
-+	i3c_bus_normaluse_unlock(dev->bus);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(i3c_device_getstatus_format1);
-+
- /**
-  * i3cdev_to_dev() - Returns the device embedded in @i3cdev
-  * @i3cdev: I3C device
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 908a807badaf..976ad26ca79c 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -24,4 +24,5 @@ int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
- int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
- 			       const struct i3c_ibi_setup *req);
- void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev);
-+int i3c_dev_getstatus_format1_locked(struct i3c_dev_desc *dev, u16 *status);
- #endif /* I3C_INTERNAL_H */
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 08aeb69a7800..fa831721f305 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2840,6 +2840,33 @@ void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev)
- 	dev->ibi = NULL;
- }
- 
-+int i3c_dev_getstatus_format1_locked(struct i3c_dev_desc *dev, u16 *status)
-+{
-+	struct i3c_master_controller *master = i3c_dev_get_master(dev);
-+	struct i3c_ccc_getstatus *format1;
-+	struct i3c_ccc_cmd_dest dest;
-+	struct i3c_ccc_cmd cmd;
-+	int ret;
-+
-+	format1 = i3c_ccc_cmd_dest_init(&dest, dev->info.dyn_addr,
-+					  sizeof(*format1));
-+	if (!format1)
-+		return -ENOMEM;
-+
-+	i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETSTATUS, &dest, 1);
-+
-+	ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
-+	if (ret)
-+		goto out;
-+
-+	*status = be16_to_cpu(format1->status);
-+
-+out:
-+	i3c_ccc_cmd_dest_cleanup(&dest);
-+
-+	return ret;
-+}
-+
- static int __init i3c_init(void)
- {
- 	int res;
-diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
-index f2fa7ee5d96d..212cdcd17179 100644
---- a/include/linux/i3c/device.h
-+++ b/include/linux/i3c/device.h
-@@ -344,4 +344,5 @@ void i3c_device_free_ibi(struct i3c_device *dev);
- int i3c_device_enable_ibi(struct i3c_device *dev);
- int i3c_device_disable_ibi(struct i3c_device *dev);
- 
-+int i3c_device_getstatus_format1(struct i3c_device *dev, u16 *status);
- #endif /* I3C_DEV_H */
--- 
-2.34.1
+I respected all reviewer's and maintaner's time, but I hope respected
+the contributor's time also.
 
+Just simple words like , 'a' to 'A' or
+run git log --oneline to check subject. I will know what exact means. 
+
+Do you think it will better than below words
+
+"Read and follow please (and then ping us):                           
+https://lore.kernel.org/linux-pci/20171026223701.GA25649@bhelgaas-glaptop.roam.corp.google.com"
+
+Frank
+
+> 
+> E.g., write subject lines that are similar in style to previous ones,
+> name local variables similarly to other functions, use line lengths
+> consistent with the rest of the file, etc.  After applying a change,
+> the file should look like a coherent whole; we should not be able to
+> tell that this hunk was added later by somebody else.  This all helps
+> make the code (and the git history) more readable and maintainable.
+> 
+> Bjorn
