@@ -1,112 +1,169 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2069.outbound.protection.outlook.com [40.107.241.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415AE4448F
-	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 15:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6ABEBE
+	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 15:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DIhz5rgP"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A7F301BF208;
-	Tue, 17 Oct 2023 15:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697556191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVpv3WCrcUghzXlwdsPDnGHWlQrs/lOsKY8Fyqs4GAM=;
-	b=DIhz5rgPZ36rK8mD+gdaQxrgw0fY9/A9YOcPdTjc33JOXHZBlVR7ziGYL/IkzSV2WD8qsu
-	o1+OMbjIyKh+jUnWN2FsTxHXsjJ6GrdABSJjnpZAx85w1dOCOmdUm+Ffrza3nA/b1VzFUq
-	/EAa/1gP+xXSmYOh8MpxexztnBM7aw5LyUGfVRuSji7LGLDmZeZG3YZndJhxXHTis5wQ5a
-	TL3mIJQjVYQOOrJCV2PhoIXJ/r88LrVfprNviuTNsUtgNzl8aqwcXruVnzx9yCdHvkHvVt
-	UxZDlDn/zDQPuPEUffcwqonekT4QHbxLUYfdaHyn735jx0AQOsd2Zr5+txiXFQ==
-Date: Tue, 17 Oct 2023 17:23:09 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="GLvXg4+y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TcV1zp2LxqSavayH2ymx2lq/wkA5MttX6t+vvx/akAZ02prYRGuLWFzAOKOO/DhPPTk319XDUHubnTUxMUP4eMdtNZzJxnXf+XdzX1xo0ztTdlrLMGGdkCSzQkYc6yYL4jZFEXrWb34zdsKoAHvop8mVfsliEdaWeRHHjU/FutefwcHdT95s+05Hl7gdUKWlglQOQEUTJbWr7TK+B71gyc/YfpZzr02A+pRZWIoteXdz/8te6v0DXDDQasoP7PTDyRTzUPka8dRPIpjnP23g3tsfHZAY0Hksvs58iDzSSiuTZsDnczX5jgALasCiJtizoP3SFUSEVe9Jy8KW6MQ3Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BhpL+3p/lYUiDJGPKlnyBtBYFV8mchDVP4HqJ9uv/DA=;
+ b=k1BRyzs4ykhDRTExn4EetyiWbIsu9EJCuSRmpVCRzhMs1IYGPYiWKpAU1M3vOAFHOSjQSUwwddW1PoNDBl+zbZd1b+8rdTIJ33cQ9BIP4RTqRVPxAXmJ9y5yE1AxYWf2K8Sf5tttYkQMAN3rirnuPRmNGHxghEbjOpGZ80bkcid6QrMgpMA83xbdcUJeYMDBJf1YdqPKT6E2IbdqxaQQnxNWzf6Vkz5kq7vLwgB+eHqsTT19oBgEDfu+ZBvgjZ0iDpp3DyMI68NDZdRh3JuHOBZRmFSE0cFVbPgUVzJJMRDYSmIhcP5eP20YmCmnSijcdTlWuhSw7wu9n2Pe5bXEDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BhpL+3p/lYUiDJGPKlnyBtBYFV8mchDVP4HqJ9uv/DA=;
+ b=GLvXg4+yOUo8kDArRm+5OHhR/6r82gPgsnhQN9mRwgbYZEpRyrVZEbA+oLUG+OkI2yqGbEjpZ30b4er36KlqPEsxRbZn678ARo3JBFTi1JYXU9JkT3RVWaAexjMXRUhHpZRsw59aKMKDtUIUO04L0NR445YSGuhiVme3Jr75pmw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DB9PR04MB8185.eurprd04.prod.outlook.com (2603:10a6:10:240::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Tue, 17 Oct
+ 2023 15:25:44 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6886.034; Tue, 17 Oct 2023
+ 15:25:44 +0000
+Date: Tue, 17 Oct 2023 11:25:37 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
 Cc: conor.culhane@silvaco.com, alexandre.belloni@bootlin.com,
- joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/6] i3c: master: svc: fix race condition in ibi work
- thread
-Message-ID: <20231017172309.2a251393@xps-13>
-In-Reply-To: <ZS6j/tpqEppFADk1@lizhi-Precision-Tower-5810>
+	joe@perches.com, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 6/6] i3c: master: svc: fix random hot join failure since
+ timeout error
+Message-ID: <ZS6ncZeNaen13s1b@lizhi-Precision-Tower-5810>
 References: <20231016153232.2851095-1-Frank.Li@nxp.com>
-	<20231016153232.2851095-2-Frank.Li@nxp.com>
-	<20231017161658.2de6d9f3@xps-13>
-	<ZS6cRULPrwWjCL02@lizhi-Precision-Tower-5810>
-	<20231017164946.623abd0d@xps-13>
-	<ZS6j/tpqEppFADk1@lizhi-Precision-Tower-5810>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+ <20231016153232.2851095-7-Frank.Li@nxp.com>
+ <20231017163335.16770af2@xps-13>
+ <ZS6d+mANtuhoAcuX@lizhi-Precision-Tower-5810>
+ <20231017170603.5ef996c2@xps-13>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231017170603.5ef996c2@xps-13>
+X-ClientProxiedBy: BYAPR11CA0086.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::27) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB9PR04MB8185:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9b4d50b-179a-4ae3-e4dd-08dbcf2554b6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	jmLouNxbQdaCfpRM0iA1PQAjpqyVVYzBbMfGnOZQgIpguW6vabnkkqduwC5fNfBP+0Lt6Fd/R62tHYRPjmzQ4XOgBEqSq8JsNl9/yOaGcscvgNgv1ODGX8vaEjEYX6zk/YPfdTYxOB0RnepTf8BDwApJniO+7RKmRzix/sSTvt8nNW1Baax8IETTpcyWDNq3LvUUHkwZ7hl5gjRsL2+mky9LuExbSFWmRgXEW48fgG5iIlfiIdAeZZPHIvyVHX3NIEjI6OChemZ2c/SdklvX2lvgUxy1Bl/3UOhctWJXmdN0KlecI4vqMaxyC+DZ3yP7kf8aw6K2ykQY69g2e05ABDcGTD/3kLl9el+AV23zggXzd/5axNSOTDJ2RtG7cwCPHKyJrxS50PdGPrM/wNLVNn7LOqcHKoB/7l3pgqqmMkiDGwqB0E8+9x7rNnQ2eSE64Wu5h8sI8ihgCZEOYdFf/rSHqbD3OMV8sHMNm0MuZD+b2oxuXRezoVgYGRnrfcTkemfwCQcM8bhkepsdv1BJwrH1jniTgCPlY0GfoVw9YRcLIwpmZitAzN39ub07cCz5kgbfo0KyDrclFBb+QpRF20GUXuo3m9jzs4ebJGHuK4a6d81fYkbUGety/ex/i4ge
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(366004)(396003)(39860400002)(136003)(376002)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(26005)(6666004)(66574015)(8936002)(52116002)(6506007)(83380400001)(41300700001)(4326008)(5660300002)(8676002)(2906002)(6486002)(33716001)(478600001)(66946007)(66556008)(6916009)(66476007)(316002)(38100700002)(86362001)(38350700005)(9686003)(6512007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?elVhSXVqRnQ5ZTFRMnpvajBQTU1tNmk3YnJ0eW50L2VEOXFRWlZjZ0RhTEhQ?=
+ =?utf-8?B?endwSlcrZGQ2K0VOVENXUzRsUnVjaVpnZ2ZmcGczR0lkbmV3d3JENDlyaGpK?=
+ =?utf-8?B?TW1xQlRETTN5US9pMXU3QXNWOFMyYXhRQmdhemhPUU5zQ1VKR1N1SDNNNk9t?=
+ =?utf-8?B?TENUSVlLR3ArS3g4RGxuSmt3TWxoaGxzcHpPMFlKS0hZbEp4bkdrdTVpV3dp?=
+ =?utf-8?B?TU1BaHo2dzZGWkdDaGd1Rlp4Uy9aTUhDaERQemVGdDBwcFdFaVZBZDlSZ09o?=
+ =?utf-8?B?eTJzME13WVUydlhvU0VEYm5xdTlUaUdVUUpuWkdWYVRMMkQ1UkVxTmI1WHlL?=
+ =?utf-8?B?RUNZeUNUS0JOVXdUQ0k0eFBUVDE0cVRhdWxIditwdHhKbkd5NGlacXlMM3BE?=
+ =?utf-8?B?Y3dIM2tlK25QTFBsdTNlRTFpaHg5L0twWEFwODhPR1VFR1ZEWllUZm5rZThQ?=
+ =?utf-8?B?ZHl1SmhmSzBGRkFNSGljQWt1ZWZBUGNDZGNGVTNYVklyT3UwY0xKVktFR01w?=
+ =?utf-8?B?aWNWNjZWVUtDWmltNEFkOE5aVUJnc3d6MWJtUHRWejBBTTRhd3Y2S3NsSzlD?=
+ =?utf-8?B?NUJGdnR4V3pKc0RzSm5FWVVjREoxNFdyb2ZYMnl3WUpCOEJrSzI1M0NlNENR?=
+ =?utf-8?B?V01HNENnWWdhbEtCZ0lKQy9zdnM3MmN6RzQzWWE4TEhOUDdieExlbGRFd2pY?=
+ =?utf-8?B?TVdyQ2kxZHZ2VVFSYi9EVUVCYk9BNzBvbkkxL1ZIUlhtM2dqV1lMOXJnUGtF?=
+ =?utf-8?B?NVVTdmE2c1EzSWtkU3NQV2hycW1QTVpXaTBPMGZ4UEFQWC9IanNhaEpzZDlF?=
+ =?utf-8?B?ZzJDSzUzUlBFYWd4bDlnaFJ6a2JvWWtOR3dJZ1FsY1REbkhIVzljSTJja0Jq?=
+ =?utf-8?B?NnRZTlhjTjJiQzNSQmU4c3lqbm9QaTEvODI4eVlDWGJka2o3SVltV2tqRDNL?=
+ =?utf-8?B?b1JmWDROV0VzY3RDOW9vbFByN2NOMldwUS9PNVdlYitZaFhhd094YzBFMzl1?=
+ =?utf-8?B?Q0JjblRKa1FML3lVdCtmVms0MnI3THovRUJ4WHh3enRId1VZMVJ1d0xwUndY?=
+ =?utf-8?B?QVNVQjVOVUYrUEZUdU44NjRxQk9SOVg2RHZHTXAxZVdBVkJOa0d5c3YxYlpl?=
+ =?utf-8?B?SU8vb1k0NkpoWWVhdy8veDVoSVZQT0R1TlJnNzM3bzJtVzVQM3g4RHFLa2Ry?=
+ =?utf-8?B?N2Vlc3NGVkd2RjNkdExSVGdUbTVtb1UzcWs3ZHNINHdRTlhkYnBYcXFtZ2ZM?=
+ =?utf-8?B?TlBrZzg3R2dvS3U5RzF5OTFZanNKS1htY1BnWU1YQTN0QXFmZTE5Q1JVNjdE?=
+ =?utf-8?B?WXJlU2tnai9SeDIvZ0U2L3U0TVQ2NnNpNUoxZmpDVWlsLzJ0RzJPRW5qVGpV?=
+ =?utf-8?B?bkVBU0Iwd0gyQ0F0UXVIUFZxTWxnZVBnS3pzQlB5aVVNSjVYdVhCYk4yMUZr?=
+ =?utf-8?B?SEVrUFRxWXR0MGhBU0xBSUVYeW5FalE4TEJMM1F2d25DUFZEY2Zhb3hqYndW?=
+ =?utf-8?B?bzNnNndhTUk3NGRtbngweGFseEtBK1I1L2VPYnJiY01RcFF3U0FqWXd1dzJ1?=
+ =?utf-8?B?SWloYnpnc1V4WmRXL2NTanJBenlIdm5QcFJiZFY0dGRvUEw3TGxDYWhmY0gy?=
+ =?utf-8?B?Zmw5TWlXUjBMa1pHL1pkdXBPVWpWcDZnU2hIeE1HUVNvZ3ZULzlhU3NydWZq?=
+ =?utf-8?B?U0M1SWtIcGFLSWZmZ3ljSDNmb2NBNWllSGJGTERIazlTdUp6eDFxSS9oWm5r?=
+ =?utf-8?B?TVVTa05Lc1RMS1FxQS9JbzdxYUZSMHljd1BIZnhKRmNiN1J2bVlMR2hEN09Z?=
+ =?utf-8?B?WmdaMnB3MHpkNHA2Q0VLRnpFUjl2bGtqSGRUVUUrNFowVUJnMWpYeU10cDB2?=
+ =?utf-8?B?ZkI5RHpjbm10L2hDanh2VkhFZmZPSGhqTnFIelJDMlk3Z1RaNnZrMWdXd2dT?=
+ =?utf-8?B?U012bzNvVFFDSTl5ZUtmSE9KdVdEeVhQZTBwMHJ5dWRqcFFaSWRmdUZOL3o5?=
+ =?utf-8?B?WTFNQVdCNzRvMHhVZWcrUVA5cTViTmQzM2I3VDZ3VXRFaFo2Q3NPL3ZmYUJy?=
+ =?utf-8?B?SVpPbVNaaDlSVU42SWgzWGNISmVqQmxFZmxoWWh3S3psbXh6WjlTWVQvYmVu?=
+ =?utf-8?Q?8rB3SFMk7RndBci5OnSKG5vE6?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9b4d50b-179a-4ae3-e4dd-08dbcf2554b6
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2023 15:25:44.6186
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 03OhmdVEmqhuInnFDxq2A9SvPTrmdIBKzSPU5boRe4uPXaKgAg0O119z4Uwz5vl1t4vyiFXih+hM0UK18N84IQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8185
 
-Hi Frank,
+On Tue, Oct 17, 2023 at 05:06:03PM +0200, Miquel Raynal wrote:
+> Hi Frank,
+> 
+> Frank.li@nxp.com wrote on Tue, 17 Oct 2023 10:45:14 -0400:
+> 
+> > On Tue, Oct 17, 2023 at 04:33:35PM +0200, Miquel Raynal wrote:
+> > > Hi Frank,
+> > > 
+> > > Frank.Li@nxp.com wrote on Mon, 16 Oct 2023 11:32:32 -0400:
+> > >   
+> > > > master side report:
+> > > >   silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x020090c7, MERRWARN 0x00100000
+> > > > 
+> > > > BIT 20: TIMEOUT error
+> > > >   The module has stalled too long in a frame. This happens when:
+> > > >   - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
+> > > > middle of a message,
+> > > >   - No STOP was issued and between messages,
+> > > >   - IBI manual is used and no decision was made.
+> > > >   The maximum stall period is 10 KHz or 100 μs.
+> > > > 
+> > > > This is a just warning. System irq thread schedule latency is possible  
+> > > 
+> > > 							can be bigger  
+> > > > bigger than 100us. Just omit this waring.  
+> > > 
+> > > I'm not sure this is the correct approach. It's a real issue but there
+> > > is not much we can do about it. Perhaps dev_err is too high, but I
+> > > would not entirely drop this message. Maybe a comment and turning the
+> > > message into a dbg printk would be more appropriate?  
+> > 
+> > The key is not message. It return true, means IBI/HJ thread will not run.
+> 
+> But why should the workers run if it's too late?
 
-Frank.li@nxp.com wrote on Tue, 17 Oct 2023 11:10:54 -0400:
+IBI ACK already sent, target think master already accepted IBI. then master
+driver check TIMEOUT, 
 
-> On Tue, Oct 17, 2023 at 04:49:46PM +0200, Miquel Raynal wrote:
-> > Hi Frank,
-> >=20
-> > Frank.li@nxp.com wrote on Tue, 17 Oct 2023 10:37:57 -0400:
-> >  =20
-> > > On Tue, Oct 17, 2023 at 04:16:58PM +0200, Miquel Raynal wrote: =20
-> > > > Hi Frank,
-> > > >=20
-> > > > Frank.Li@nxp.com wrote on Mon, 16 Oct 2023 11:32:27 -0400:
-> > > >    =20
-> > > > > The ibi work thread operates asynchronously with other transfers,=
- such as
-> > > > > svc_i3c_master_priv_xfers(). Introduces mutex protection to ensur=
-e the   =20
-> > > >=20
-> > > > Introduce
-> > > >    =20
-> > > > > completion of the entire i3c/i2c transaction.   =20
-> > > >=20
-> > > > Did you experience faulty conditions or was it reported thanks to
-> > > > static analysis?   =20
-> > >=20
-> > > Yes, I met. But it needs my slave part patches, which will be ready s=
-ent
-> > > out review soon. =20
-> >=20
-> > I believe several of the "fixes" in this series are related to newer
-> > uses (typically your i3c slave support) which were not in the scope of
-> > the original submission. As these new features are not supposed to be
-> > backported in stable kernels and because these are new corner cases,you
-> > may drop the CC:/Fixes tags to avoid useless backports. =20
->=20
-> I don't think so. The issue exists. Just difficult to find it. If there a=
-re
-> i3c device that use IBI frequently. The problem should be trigger. My case
-> just make it easy to trigger the problem.
->=20
-> In previous existed code, IBI is supported.
->=20
-> I think it is typical case, which need CC/Fixes.
+If without run IBI thread, target's driver will wait target sent IBI. And
+target wait for driver handle IBI. 
 
-I am not talking about this patch in particular.
+So the whole system may lock or wait for long time out.
 
->=20
-> Frank
->=20
-> >=20
-> > Some of them however are real fixes for situations we may happen with
-> > the current level of support, please keep the tags in these, and move
-> > them all to the beginning of your series.
-> >=20
-> > Thanks,
-> > Miqu=C3=A8l =20
+Hardware check TIMEOUT and software send ACK is totally async.
 
-
-Thanks,
-Miqu=C3=A8l
+> 
+> Thanks,
+> Miquèl
