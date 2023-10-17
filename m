@@ -1,43 +1,40 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EDA405C8
-	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 15:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B34A1F5FA
+	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 15:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TxZk4ixl"
-Received: from relay4-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::224])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 0BACEC13AD
-	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 14:49:58 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9263EE0009;
-	Tue, 17 Oct 2023 14:49:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gMNSrwXt"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 37DB8C0004;
+	Tue, 17 Oct 2023 15:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697554190;
+	t=1697555166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EKj1C9R90LP8I9gAVutZrILL7DKw51ojM2nAHRNjCCs=;
-	b=TxZk4ixlicRIp/4Ps3f+sezpa4q8mtLWj4oe7Byd36WixDBXRuVjTaFqlgCjCoTUnugI37
-	i6fruBhlMXWVotKpuFTJ6mlOOsG9tPqM2PPlxZ8mNcRHlxpyj34GGIrKhnRDyPt9TjePd9
-	szT/b4qoKkak9uqtlBk6eVM+e3nAF5b74j5JlxHME1Q8ZchY03hfxvgJ/i5czh+fdeIpMr
-	bDGXpvLsZJDCVEUemPt6KYmww2exDJixY78LbNNFfQutfMUxw/cHbvO68bDhRWtKqBbJ39
-	75gEG/4SV5SKotlDLU0L47OwgAEoJi2sQAT6AS344MSYIrP7DYBvTT78EliF1g==
-Date: Tue, 17 Oct 2023 16:49:46 +0200
+	bh=wcKDvBb6jnUJQGfQIZYJmILk9qMhN/wgRJD69FE2Nq8=;
+	b=gMNSrwXtyQfHLaxBZdIC7zCUVCGh1Q4jYEI8oNA7aj8wZrGUVUZnJJ2AOnfBq0kvZIDa/l
+	iZSE4toLtXxLjDvoLhNhYS1rmWaB6TdwNqpJOURBet+RsqkbUJkMbbia+bpWt3expJJLsP
+	U7vHEx01/8914YAG7RIzVmmrvwfX0HnHI0z3wJwmlc/GJ4FWVdZmWzVf7vhwiCbFqrOXEk
+	JU4QoVYHpoRxtTz1Me9AJ+fHggBbIBE8IrixH5KWQcC+s8eMvbm8/8X7HlRKxOnEJNKTF5
+	SBa2fjyDdx+w+F6Ka4caG+wTX5qObjvF5Bit16RQVavw8M2Iq95RK50EUruRag==
+Date: Tue, 17 Oct 2023 17:06:03 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Frank Li <Frank.li@nxp.com>
 Cc: conor.culhane@silvaco.com, alexandre.belloni@bootlin.com,
  joe@perches.com, linux-i3c@lists.infradead.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/6] i3c: master: svc: fix race condition in ibi work
- thread
-Message-ID: <20231017164946.623abd0d@xps-13>
-In-Reply-To: <ZS6cRULPrwWjCL02@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH 6/6] i3c: master: svc: fix random hot join failure since
+ timeout error
+Message-ID: <20231017170603.5ef996c2@xps-13>
+In-Reply-To: <ZS6d+mANtuhoAcuX@lizhi-Precision-Tower-5810>
 References: <20231016153232.2851095-1-Frank.Li@nxp.com>
-	<20231016153232.2851095-2-Frank.Li@nxp.com>
-	<20231017161658.2de6d9f3@xps-13>
-	<ZS6cRULPrwWjCL02@lizhi-Precision-Tower-5810>
+	<20231016153232.2851095-7-Frank.Li@nxp.com>
+	<20231017163335.16770af2@xps-13>
+	<ZS6d+mANtuhoAcuX@lizhi-Precision-Tower-5810>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -52,37 +49,39 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hi Frank,
 
-Frank.li@nxp.com wrote on Tue, 17 Oct 2023 10:37:57 -0400:
+Frank.li@nxp.com wrote on Tue, 17 Oct 2023 10:45:14 -0400:
 
-> On Tue, Oct 17, 2023 at 04:16:58PM +0200, Miquel Raynal wrote:
+> On Tue, Oct 17, 2023 at 04:33:35PM +0200, Miquel Raynal wrote:
 > > Hi Frank,
 > >=20
-> > Frank.Li@nxp.com wrote on Mon, 16 Oct 2023 11:32:27 -0400:
+> > Frank.Li@nxp.com wrote on Mon, 16 Oct 2023 11:32:32 -0400:
 > >  =20
-> > > The ibi work thread operates asynchronously with other transfers, suc=
-h as
-> > > svc_i3c_master_priv_xfers(). Introduces mutex protection to ensure th=
+> > > master side report:
+> > >   silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x=
+020090c7, MERRWARN 0x00100000
+> > >=20
+> > > BIT 20: TIMEOUT error
+> > >   The module has stalled too long in a frame. This happens when:
+> > >   - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
+> > > middle of a message,
+> > >   - No STOP was issued and between messages,
+> > >   - IBI manual is used and no decision was made.
+> > >   The maximum stall period is 10 KHz or 100 =CE=BCs.
+> > >=20
+> > > This is a just warning. System irq thread schedule latency is possibl=
 e =20
 > >=20
-> > Introduce
-> >  =20
-> > > completion of the entire i3c/i2c transaction. =20
+> > 							can be bigger =20
+> > > bigger than 100us. Just omit this waring. =20
 > >=20
-> > Did you experience faulty conditions or was it reported thanks to
-> > static analysis? =20
+> > I'm not sure this is the correct approach. It's a real issue but there
+> > is not much we can do about it. Perhaps dev_err is too high, but I
+> > would not entirely drop this message. Maybe a comment and turning the
+> > message into a dbg printk would be more appropriate? =20
 >=20
-> Yes, I met. But it needs my slave part patches, which will be ready sent
-> out review soon.
+> The key is not message. It return true, means IBI/HJ thread will not run.
 
-I believe several of the "fixes" in this series are related to newer
-uses (typically your i3c slave support) which were not in the scope of
-the original submission. As these new features are not supposed to be
-backported in stable kernels and because these are new corner cases,you
-may drop the CC:/Fixes tags to avoid useless backports.
-
-Some of them however are real fixes for situations we may happen with
-the current level of support, please keep the tags in these, and move
-them all to the beginning of your series.
+But why should the workers run if it's too late?
 
 Thanks,
 Miqu=C3=A8l
