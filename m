@@ -1,257 +1,81 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1500D3AC12
-	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 08:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230C93D394
+	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 08:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OrDujKv7"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-578b4997decso4009194a12.0
-        for <imx@lists.linux.dev>; Tue, 17 Oct 2023 01:17:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697530659; x=1698135459; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
-        b=OrDujKv79J40e+pcADsQaMP74IU4guQZ/gPjaKldFDcqnaMg7FwQTZjIsSl/zxSFb5
-         Y81j1Xbhtl1Y/PsjemnnsEXC0TOvPjugIeduxL5TsReKXPfBgu6/YDPm3iv9pXnb8DDZ
-         FS3ZKZsmdeRU5Gbx8QFWZM2fXvljocfnVltJvpt4Q1FmkMx/wVXcVjEKgkgc7ni86/lK
-         hvw8/R/SfQaWT7GASdnwu8V7R5wi8wmOqvk6Fsav6u6a7A2+ZWMM0yK8zXNAJf8u/K4Q
-         6TIfyIg5wR1VUYmgKMJC4EAOSA+s9Ww9mmwUKUT6QmcXmZv7qkcvZaXNlD821rAupHH/
-         JnnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697530659; x=1698135459;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
-        b=dZcHZ3F+EQgLXY9R2V9VEWEjoobLPzoRLVQhxqkv/m7UHuawcBUeRF+zyLC2uUwvMT
-         NIG4S8cGhO68aFpCK9DdBhBqKzUiIEujMvdkQIDtZzUsTAhYj37ixsqy9gTNyslcbOLV
-         cAS/rktmXVql1gkzyIlZuhpEvfr/U3a3pkc9tpBP8Rwyey2bwo3StefO1P9CMkRveU1m
-         xM0lm1xJlstig/hM3pkb9YFZQL2VfVunW/F3G/4HYiTuchvDoZOU7Cb1akcp4GmiyaQr
-         QvAwkPUgr+kdJKgEVuCFolBYC+9Zhjkni0DhjquD49iP35s9/bslgHgsECSruMc/pIYa
-         XEpQ==
-X-Gm-Message-State: AOJu0YyXgUz1grvtovEzKOJhDN4R2V1tuVuPmQk6PPGOHPpIWx2d744N
-	iWo3aoLlujlfMMpG3u1XiMQl
-X-Google-Smtp-Source: AGHT+IFJ+XwjBNsHb401tnImJrgO8tIl7GAykVmzgDpD/pNzSxKnSUYd1c7yondYd4ensK7UNVBRzA==
-X-Received: by 2002:a17:90a:d98d:b0:261:685:95b6 with SMTP id d13-20020a17090ad98d00b00261068595b6mr1492510pjv.13.1697530659344;
-        Tue, 17 Oct 2023 01:17:39 -0700 (PDT)
-Received: from thinkpad ([117.207.31.199])
-        by smtp.gmail.com with ESMTPSA id h16-20020a17090adb9000b002791d5a3e29sm769640pjv.6.2023.10.17.01.17.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 01:17:38 -0700 (PDT)
-Date: Tue, 17 Oct 2023 13:47:31 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
-	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 2/3] PCI: layerscape: add suspend/resume for ls1021a
-Message-ID: <20231017081731.GD5274@thinkpad>
-References: <20230915184306.2374670-1-Frank.Li@nxp.com>
- <20230915184306.2374670-2-Frank.Li@nxp.com>
- <20231016165824.GF39962@thinkpad>
- <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UzOvyc3b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697531618; x=1729067618;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=MxayT2/XEWdFuARMII+EG5lLXg5UMsqpoavndXRXyTw=;
+  b=UzOvyc3bcCh4vIhBPt8hOwglkAuLMPasGxNDKb16omSgPUkwDNsoHs7P
+   lqvdNJ9L2HxdhVnAvQ/JrT156cojkOS3B6ij6DJC4k0C4cKL9CCzLkUPe
+   WVO/TRfHYdoDtNwTy7O2wB9MuQSlZEOngY5FiTMxsrGjo2PTX9b5xdzTp
+   iM3jzRjWvLh4GLkjiRN0eT3aV7tC9/hNf9cagMUgresSZmAquhq/mTnLX
+   4gwrfFaEoEfDEeAAzAmYbzMkbG4EPFjw6b0TlmpscWGO7vJdVv4XTL9mA
+   Jl4sTmpgtkmwVOOH3NsJIn/es6pJ9rIwo3cnntNTflQxOZamni4BCAeV+
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="384608512"
+X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
+   d="scan'208";a="384608512"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 01:33:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="826353237"
+X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
+   d="scan'208";a="826353237"
+Received: from mylly.fi.intel.com (HELO [10.237.72.161]) ([10.237.72.161])
+  by fmsmga004.fm.intel.com with ESMTP; 17 Oct 2023 01:33:35 -0700
+Message-ID: <af35a533-2126-4a61-a6cd-31ed1e615f2b@linux.intel.com>
+Date: Tue, 17 Oct 2023 11:33:34 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] i3c: master: svc return actual transfer data len
+Content-Language: en-US
+To: Frank Li <Frank.Li@nxp.com>, alexandre.belloni@bootlin.com,
+ miquel.raynal@bootlin.com, conor.culhane@silvaco.com, joe@perches.com,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+References: <20231016154632.2851957-1-Frank.Li@nxp.com>
+ <20231016154632.2851957-5-Frank.Li@nxp.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+In-Reply-To: <20231016154632.2851957-5-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 16, 2023 at 04:18:36PM -0400, Frank Li wrote:
-> On Mon, Oct 16, 2023 at 10:28:24PM +0530, Manivannan Sadhasivam wrote:
-> > On Fri, Sep 15, 2023 at 02:43:05PM -0400, Frank Li wrote:
-> > > ls1021a add suspend/resume support.
-> > > 
-> > 
-> > Please add what the driver is doing during suspend/resume.
-> > 
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-layerscape.c | 88 ++++++++++++++++++++-
-> > >  1 file changed, 87 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > index 20c48c06e2248..bc5a8ff1a26ce 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > @@ -35,6 +35,12 @@
-> > >  #define PF_MCR_PTOMR		BIT(0)
-> > >  #define PF_MCR_EXL2S		BIT(1)
-> > >  
-> > > +/* LS1021A PEXn PM Write Control Register */
-> > > +#define SCFG_PEXPMWRCR(idx)	(0x5c + (idx) * 0x64)
-> > > +#define PMXMTTURNOFF		BIT(31)
-> > > +#define SCFG_PEXSFTRSTCR	0x190
-> > > +#define PEXSR(idx)		BIT(idx)
-> > > +
-> > >  #define PCIE_IATU_NUM		6
-> > >  
-> > >  struct ls_pcie_drvdata {
-> > > @@ -48,6 +54,8 @@ struct ls_pcie {
-> > >  	struct dw_pcie *pci;
-> > >  	const struct ls_pcie_drvdata *drvdata;
-> > >  	void __iomem *pf_base;
-> > > +	struct regmap *scfg;
-> > > +	int index;
-> > >  	bool big_endian;
-> > >  };
-> > >  
-> > > @@ -170,13 +178,91 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	u32 val;
-> > > +
-> > > +	if (!pcie->scfg) {
-> > 
-> > Can this ever happen?
-> > 
-> > > +		dev_dbg(pcie->pci->dev, "SYSCFG is NULL\n");
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	/* Send Turn_off message */
-> > 
-> > "Send PME_Turn_Off message"
-> > 
-> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
-> > > +	val |= PMXMTTURNOFF;
-> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
-> > > +
-> > > +	/* There are not register to check ACK, so wait PCIE_PME_TO_L2_TIMEOUT_US */
-> > 
-> > "There is no specific register to check for PME_To_Ack from endpoint. So on the
-> > safe side, wait for PCIE_PME_TO_L2_TIMEOUT_US."
-> > 
-> > > +	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
-> > > +
-> > > +	/* Clear Turn_off message */
-> > 
-> > "PME_Turn_off". But I'm not sure if this is really required. Are you doing it
-> > because the layerspace hw implements the PME_Turn_Off bit as "level triggered"?
+Hi
+
+On 10/16/23 18:46, Frank Li wrote:
+> I3C allow devices early terminate data transfer. So set "actual" to
+> indicate how much data get by i3c_priv_xfer.
 > 
-> I am not sure how hardware implement this. But reference manual said:
->  
-> PMXMTTURNOFF:
-> Generate PM turnoff message for power management of PCI Express controllers.
-> This bit should be cleared by software.
-> 0 Clear PM turnoff (default)
-> 1 Trigger PM turnoff
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>   drivers/i3c/master/svc-i3c-master.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
 > 
-
-Hmm, okay. Atleast add the below comment to make it understandable in the
-future:
-
-"Layerscape hardware reference manual recommends clearing the PMXMTTURNOFF bit
-to complete the PME_Turn_Off handshake."
-
-- Mani
-
-> Frank
-> 
-> > 
-> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
-> > > +	val &= ~PMXMTTURNOFF;
-> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
-> > > +}
-> > > +
-> > > +static void ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	u32 val;
-> > > +
-> > 
-> > A comment here would be good.
-> > 
-> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
-> > > +	val |= PEXSR(pcie->index);
-> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
-> > > +
-> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
-> > > +	val &= ~PEXSR(pcie->index);
-> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
-> > > +}
-> > > +
-> > > +static int ls1021a_pcie_host_init(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	struct device *dev = pcie->pci->dev;
-> > > +	u32 index[2];
-> > > +	int ret;
-> > > +
-> > > +	ret = ls_pcie_host_init(pp);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
-> > > +	if (IS_ERR(pcie->scfg)) {
-> > > +		ret = PTR_ERR(pcie->scfg);
-> > > +		dev_err(dev, "No syscfg phandle specified\n");
-> > > +		pcie->scfg = NULL;
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
-> > > +	if (ret) {
-> > > +		pcie->scfg = NULL;
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	pcie->index = index[1];
-> > > +
-> > 
-> > The above syscon parsing could be done conditionally during probe itself. There
-> > is no need to do it during host_init() time.
-> > 
-> > - Mani
-> > 
-> > > +	return ret;
-> > > +}
-> > > +
-> > >  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
-> > >  	.host_init = ls_pcie_host_init,
-> > >  	.pme_turn_off = ls_pcie_send_turnoff_msg,
-> > >  };
-> > >  
-> > > +static const struct dw_pcie_host_ops ls1021a_pcie_host_ops = {
-> > > +	.host_init = ls1021a_pcie_host_init,
-> > > +	.pme_turn_off = ls1021a_pcie_send_turnoff_msg,
-> > > +};
-> > > +
-> > >  static const struct ls_pcie_drvdata ls1021a_drvdata = {
-> > > -	.pm_support = false,
-> > > +	.pm_support = true,
-> > > +	.ops = &ls1021a_pcie_host_ops,
-> > > +	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
-> > >  };
-> > >  
-> > >  static const struct ls_pcie_drvdata layerscape_drvdata = {
-> > > -- 
-> > > 2.34.1
-> > > 
-> > 
-> > -- 
-> > மணிவண்ணன் சதாசிவம்
-
--- 
-மணிவண்ணன் சதாசிவம்
+> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+> index 3570b709cf60..444825aafa6f 100644
+> --- a/drivers/i3c/master/svc-i3c-master.c
+> +++ b/drivers/i3c/master/svc-i3c-master.c
+> @@ -138,6 +138,7 @@ struct svc_i3c_cmd {
+>   	const void *out;
+>   	unsigned int len;
+>   	unsigned int actual_len;
+> +	struct i3c_priv_xfer *xfer;
+>   	bool continued;
+>   };
+>   
+I'm thinking would it make sense to combine this and previous patch by 
+removing the read_len/actual_len variable from this structure and use 
+the added one (by the patch 2/5) from "struct i3c_priv_xfer" directly?
