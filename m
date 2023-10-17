@@ -1,62 +1,257 @@
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E3FC2CD
-	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 06:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from omf01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24F71C0F2B;
-	Tue, 17 Oct 2023 06:48:07 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf01.hostedemail.com (Postfix) with ESMTPA id DAD026000F;
-	Tue, 17 Oct 2023 06:48:04 +0000 (UTC)
-Message-ID: <fe2148dd4e1547a937624ebb63653ab0ccb04383.camel@perches.com>
-Subject: Re: [PATCH 1/5] i3c: master: svc: enable hotjoin default
-From: Joe Perches <joe@perches.com>
-To: Frank Li <Frank.Li@nxp.com>, alexandre.belloni@bootlin.com, 
- miquel.raynal@bootlin.com, conor.culhane@silvaco.com, 
- linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-Date: Mon, 16 Oct 2023 23:48:03 -0700
-In-Reply-To: <20231016154632.2851957-2-Frank.Li@nxp.com>
-References: <20231016154632.2851957-1-Frank.Li@nxp.com>
-	 <20231016154632.2851957-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1500D3AC12
+	for <imx@lists.linux.dev>; Tue, 17 Oct 2023 08:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OrDujKv7"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-578b4997decso4009194a12.0
+        for <imx@lists.linux.dev>; Tue, 17 Oct 2023 01:17:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697530659; x=1698135459; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
+        b=OrDujKv79J40e+pcADsQaMP74IU4guQZ/gPjaKldFDcqnaMg7FwQTZjIsSl/zxSFb5
+         Y81j1Xbhtl1Y/PsjemnnsEXC0TOvPjugIeduxL5TsReKXPfBgu6/YDPm3iv9pXnb8DDZ
+         FS3ZKZsmdeRU5Gbx8QFWZM2fXvljocfnVltJvpt4Q1FmkMx/wVXcVjEKgkgc7ni86/lK
+         hvw8/R/SfQaWT7GASdnwu8V7R5wi8wmOqvk6Fsav6u6a7A2+ZWMM0yK8zXNAJf8u/K4Q
+         6TIfyIg5wR1VUYmgKMJC4EAOSA+s9Ww9mmwUKUT6QmcXmZv7qkcvZaXNlD821rAupHH/
+         JnnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697530659; x=1698135459;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
+        b=dZcHZ3F+EQgLXY9R2V9VEWEjoobLPzoRLVQhxqkv/m7UHuawcBUeRF+zyLC2uUwvMT
+         NIG4S8cGhO68aFpCK9DdBhBqKzUiIEujMvdkQIDtZzUsTAhYj37ixsqy9gTNyslcbOLV
+         cAS/rktmXVql1gkzyIlZuhpEvfr/U3a3pkc9tpBP8Rwyey2bwo3StefO1P9CMkRveU1m
+         xM0lm1xJlstig/hM3pkb9YFZQL2VfVunW/F3G/4HYiTuchvDoZOU7Cb1akcp4GmiyaQr
+         QvAwkPUgr+kdJKgEVuCFolBYC+9Zhjkni0DhjquD49iP35s9/bslgHgsECSruMc/pIYa
+         XEpQ==
+X-Gm-Message-State: AOJu0YyXgUz1grvtovEzKOJhDN4R2V1tuVuPmQk6PPGOHPpIWx2d744N
+	iWo3aoLlujlfMMpG3u1XiMQl
+X-Google-Smtp-Source: AGHT+IFJ+XwjBNsHb401tnImJrgO8tIl7GAykVmzgDpD/pNzSxKnSUYd1c7yondYd4ensK7UNVBRzA==
+X-Received: by 2002:a17:90a:d98d:b0:261:685:95b6 with SMTP id d13-20020a17090ad98d00b00261068595b6mr1492510pjv.13.1697530659344;
+        Tue, 17 Oct 2023 01:17:39 -0700 (PDT)
+Received: from thinkpad ([117.207.31.199])
+        by smtp.gmail.com with ESMTPSA id h16-20020a17090adb9000b002791d5a3e29sm769640pjv.6.2023.10.17.01.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 01:17:38 -0700 (PDT)
+Date: Tue, 17 Oct 2023 13:47:31 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 2/3] PCI: layerscape: add suspend/resume for ls1021a
+Message-ID: <20231017081731.GD5274@thinkpad>
+References: <20230915184306.2374670-1-Frank.Li@nxp.com>
+ <20230915184306.2374670-2-Frank.Li@nxp.com>
+ <20231016165824.GF39962@thinkpad>
+ <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Stat-Signature: et6su1xwce3dtrnwgysedozf1b4j9j5n
-X-Rspamd-Server: rspamout07
-X-Spam-Status: No, score=-0.35
-X-Rspamd-Queue-Id: DAD026000F
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19nBGLglaohdnaFWs3DLGAZ7gvN1Q9+Zm0=
-X-HE-Tag: 1697525284-635529
-X-HE-Meta: U2FsdGVkX18ETq3OzcCKkIPupHhpUnAvv10wje3N9/qYvE1f392xyyMaj5KGvniZGbc7fo2/0vv3QM+FZi69qvrUgs8R9MBHFEPUIjzz4gOYK4+V71tXP+Xbyodzz9Os+dW/uBD1Fe2AAhfPBt1Hi7Yumt+cN32t0xEmmbu+uFhlpzpozFJipxDHpbHb8TZNZOUnJUlgDi2LOfCO26IHPa1RMYfZP/SiEZaXKa+/Bw9+lBqwXnZIF+5ZSCvpvgecnK1YJw0/OHXHg1l7KFq6W3kPkN7ZRTPQbLf8haVMzdb/mgkOesa2KQkXdOdEq460
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
 
-On Mon, 2023-10-16 at 11:46 -0400, Frank Li wrote:
-> Hotjoin require clock running and enable SLVSTART irq.
-> Add module parameter 'hotjoin' to disable hotjoin and enable runtime_pm t=
-o
-> save power.
-[]
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
--i3c-master.c
-[]
-> @@ -128,6 +128,9 @@
->  /* This parameter depends on the implementation and may be tuned */
->  #define SVC_I3C_FIFO_SIZE 16
-> =20
-> +static bool hotjoin =3D true;
-> +module_param(hotjoin, bool, S_IRUGO | S_IWUSR);
+On Mon, Oct 16, 2023 at 04:18:36PM -0400, Frank Li wrote:
+> On Mon, Oct 16, 2023 at 10:28:24PM +0530, Manivannan Sadhasivam wrote:
+> > On Fri, Sep 15, 2023 at 02:43:05PM -0400, Frank Li wrote:
+> > > ls1021a add suspend/resume support.
+> > > 
+> > 
+> > Please add what the driver is doing during suspend/resume.
+> > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pci-layerscape.c | 88 ++++++++++++++++++++-
+> > >  1 file changed, 87 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> > > index 20c48c06e2248..bc5a8ff1a26ce 100644
+> > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> > > @@ -35,6 +35,12 @@
+> > >  #define PF_MCR_PTOMR		BIT(0)
+> > >  #define PF_MCR_EXL2S		BIT(1)
+> > >  
+> > > +/* LS1021A PEXn PM Write Control Register */
+> > > +#define SCFG_PEXPMWRCR(idx)	(0x5c + (idx) * 0x64)
+> > > +#define PMXMTTURNOFF		BIT(31)
+> > > +#define SCFG_PEXSFTRSTCR	0x190
+> > > +#define PEXSR(idx)		BIT(idx)
+> > > +
+> > >  #define PCIE_IATU_NUM		6
+> > >  
+> > >  struct ls_pcie_drvdata {
+> > > @@ -48,6 +54,8 @@ struct ls_pcie {
+> > >  	struct dw_pcie *pci;
+> > >  	const struct ls_pcie_drvdata *drvdata;
+> > >  	void __iomem *pf_base;
+> > > +	struct regmap *scfg;
+> > > +	int index;
+> > >  	bool big_endian;
+> > >  };
+> > >  
+> > > @@ -170,13 +178,91 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > +static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > +	u32 val;
+> > > +
+> > > +	if (!pcie->scfg) {
+> > 
+> > Can this ever happen?
+> > 
+> > > +		dev_dbg(pcie->pci->dev, "SYSCFG is NULL\n");
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	/* Send Turn_off message */
+> > 
+> > "Send PME_Turn_Off message"
+> > 
+> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
+> > > +	val |= PMXMTTURNOFF;
+> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
+> > > +
+> > > +	/* There are not register to check ACK, so wait PCIE_PME_TO_L2_TIMEOUT_US */
+> > 
+> > "There is no specific register to check for PME_To_Ack from endpoint. So on the
+> > safe side, wait for PCIE_PME_TO_L2_TIMEOUT_US."
+> > 
+> > > +	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
+> > > +
+> > > +	/* Clear Turn_off message */
+> > 
+> > "PME_Turn_off". But I'm not sure if this is really required. Are you doing it
+> > because the layerspace hw implements the PME_Turn_Off bit as "level triggered"?
+> 
+> I am not sure how hardware implement this. But reference manual said:
+>  
+> PMXMTTURNOFF:
+> Generate PM turnoff message for power management of PCI Express controllers.
+> This bit should be cleared by software.
+> 0 Clear PM turnoff (default)
+> 1 Trigger PM turnoff
+> 
 
-Might be nicer using 0644
+Hmm, okay. Atleast add the below comment to make it understandable in the
+future:
 
-Consider using checkpatch --strict on the series.
+"Layerscape hardware reference manual recommends clearing the PMXMTTURNOFF bit
+to complete the PME_Turn_Off handshake."
 
+- Mani
+
+> Frank
+> 
+> > 
+> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
+> > > +	val &= ~PMXMTTURNOFF;
+> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
+> > > +}
+> > > +
+> > > +static void ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > +	u32 val;
+> > > +
+> > 
+> > A comment here would be good.
+> > 
+> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
+> > > +	val |= PEXSR(pcie->index);
+> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
+> > > +
+> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
+> > > +	val &= ~PEXSR(pcie->index);
+> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
+> > > +}
+> > > +
+> > > +static int ls1021a_pcie_host_init(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > +	struct device *dev = pcie->pci->dev;
+> > > +	u32 index[2];
+> > > +	int ret;
+> > > +
+> > > +	ret = ls_pcie_host_init(pp);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
+> > > +	if (IS_ERR(pcie->scfg)) {
+> > > +		ret = PTR_ERR(pcie->scfg);
+> > > +		dev_err(dev, "No syscfg phandle specified\n");
+> > > +		pcie->scfg = NULL;
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
+> > > +	if (ret) {
+> > > +		pcie->scfg = NULL;
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	pcie->index = index[1];
+> > > +
+> > 
+> > The above syscon parsing could be done conditionally during probe itself. There
+> > is no need to do it during host_init() time.
+> > 
+> > - Mani
+> > 
+> > > +	return ret;
+> > > +}
+> > > +
+> > >  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
+> > >  	.host_init = ls_pcie_host_init,
+> > >  	.pme_turn_off = ls_pcie_send_turnoff_msg,
+> > >  };
+> > >  
+> > > +static const struct dw_pcie_host_ops ls1021a_pcie_host_ops = {
+> > > +	.host_init = ls1021a_pcie_host_init,
+> > > +	.pme_turn_off = ls1021a_pcie_send_turnoff_msg,
+> > > +};
+> > > +
+> > >  static const struct ls_pcie_drvdata ls1021a_drvdata = {
+> > > -	.pm_support = false,
+> > > +	.pm_support = true,
+> > > +	.ops = &ls1021a_pcie_host_ops,
+> > > +	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
+> > >  };
+> > >  
+> > >  static const struct ls_pcie_drvdata layerscape_drvdata = {
+> > > -- 
+> > > 2.34.1
+> > > 
+> > 
+> > -- 
+> > மணிவண்ணன் சதாசிவம்
+
+-- 
+மணிவண்ணன் சதாசிவம்
