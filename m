@@ -1,58 +1,84 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2055.outbound.protection.outlook.com [40.107.22.55])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96F347DE
-	for <imx@lists.linux.dev>; Wed, 18 Oct 2023 22:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429B138C;
+	Thu, 19 Oct 2023 01:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="pYZRCdIb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fUc51n0C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697678888; x=1729214888;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   mime-version;
+  bh=xdarTUSzMjZZI7UcAjk3wzTzTJa008SMfTLc7WQUQrc=;
+  b=fUc51n0C8inv9v5D0Rl5oKF3nKcZijOvXCbDkfz2vBhvNfHpJ/4a7E4C
+   dr4tzwQBAcxgTbh0ju1yZz0a5bIwmd9qJwK+JA4awo6xNFo8cdBUSBzQD
+   561+a6bjghwE5fcyfe6pzw4eJdbqVpzov/yCXY/iUt4Tlbxa1aV+fwwfA
+   h2DnzBnZpXE4UAxquJBq76ElEMMSsr5PnMjXaIMSDAWArmh/VLtisYi6j
+   3BgSMhQMDzeqwPNReTbeZsVnDAigG1p2oTqwnYkTaA0S5QUEV3gMMV+dT
+   Zdkz/7HOmbCSCET4zRjBXL/hqvous9KsGUTCgj6dmUR9V0IQvFf6dl482
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="389010170"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; 
+   d="scan'208";a="389010170"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 18:28:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="880450436"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; 
+   d="scan'208";a="880450436"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Oct 2023 18:28:07 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 18 Oct 2023 18:28:07 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Wed, 18 Oct 2023 18:28:07 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Wed, 18 Oct 2023 18:28:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UsoSnBhf4L241ZmAnRsssrtYC/z8QIvRptGxWTlSpO7TyarqTtTjsc3wCwUMtC/N5hX9sIJ17X6ILrOgGoLSGUqRjtpgBIo5cTmaVwiqk8ZiGwkB9ksFntDdNAA0PWAwN4d1Jb8CufiUYyrtO20Sv9HDlmOkA5hauhbi8Jc2keCFcKQcswgGNtnV29AQNyQJ9v1wrbNv/qzstdTWLEIzEatmKT2+amEWY3dYLsJqgnT0gsURNPxkgIRdhOZiAzmaGYnm4+JY1IV+4sEu1MCqT/H52Kzs1JYHZZ1KOhPzZya4uhvTVxMrUYmHvwVPt314MsPGg4PZ/ULoPUXghL0eqA==
+ b=gktscDNm78qHEp2/P2mtwBmKtf5X3jwPL6binLe0ot+mhEauma1zc+0EAH1kC6Ew9Lj6KwLyJxi/zSTsi+877D3MHdaHmfZDT15UWf0geTqcIjPP5BP7LHZpJp23S9AhUvRS/wj3Fp0zEWVYKiHbprou84+K4oOOh6UUM2WCgmu2ixb44IDb3EvhiGBJvItG8tLgRQihHsYQSIbgrDlsqbo6PvYOQlkWVEbIckvSijKVBB5/mg/WOrhSebmHd2dc9DG3T6tlvexHTto0PDqsQ1EOU7TgQSLJuaFYcgk+hzPYxA2cAavJhVOZAwQQs87o6PCmUXQqPg1kxpJtwiT/ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rsPwt67BaTg8sv/50n2tPR++KP6lvXVwazl2upcBULI=;
- b=Kt6TYb9iOjBPvureMuJHfNv7zoLHgvu+WBChg7rt0D8H/kMJ+B5FtZ0dBCk8vX1J3sJUARTb7YFFdgL6tp5e17WP5l5brQp74vIpq/dHBQFiBDjBtV78QiVib5ctUBORtDp09UOrEcpnhTTC2gbaAEVCXDCHb1D1Yi8Nl1cfGVMh0sXbvBrVC55E60m/IF6KZlAYDCVi9stUpo0f29GxzGZQlxmeRs4fCUFT5FE+LHnN72ETbL8pEMlSiNnsyED41+EJ5bRLu4izBdkEX0owVwAjFoYIbD14X6lqholnAyCgBSu6NJGyh1M9A5Yms2JOLKOB1CEAvfIofd0TPChrcw==
+ bh=5bzPyettRcUkEp3ZYCbrnztNalwK6wMXpPSE8fknrzE=;
+ b=O1nLubJi1S28eD0zoQdQK3OvElh1CbWS/EG88Ah8GPCDw8zM44n4kRGHADnwEYM3uvqnh98eio8wexyf8tVBhMPu/E9m82MXz6M6qFz9x9aytM/8dLQjUaCpDSeZbVmmSZY82PAFA+BwOPd2H6hUVmbmAD7h6HMf7Vwdv/gxDSHtod5lf2VaZ/GVrwZthMTlf/y2ei6/2R5U5YNWyJRkQbYiiSP6juDfBfjny6kfMAb/0fDeYJw9b+q7JzP8IIB5yXErXcpadiSQx+5uUP21K/W0unPtPIaueGf1zUPUN7BePYUEKAiXBoLX7vDuWE6JuVfsGols2KBDRJ75v9aolA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rsPwt67BaTg8sv/50n2tPR++KP6lvXVwazl2upcBULI=;
- b=pYZRCdIbij6SbU28DmeTXBlXjDGMcxeKAOxEOByis7DkER+XEVxlJWcSerkVwFDNwLIUwcQAJOnmmL13U+JIr80gskJAOUpFUaFbaVaD5ZdsEQWMjH9rvj7Ywy1/dWNzJyBbCLXLKNaUQTiSs7n/4yzXThcNu8JQuqTcUX+COeE=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DB9PR04MB9750.eurprd04.prod.outlook.com (2603:10a6:10:4c5::8) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6392.namprd11.prod.outlook.com (2603:10b6:930:37::15)
+ by PH7PR11MB7514.namprd11.prod.outlook.com (2603:10b6:510:276::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.25; Wed, 18 Oct
- 2023 22:07:26 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6907.022; Wed, 18 Oct 2023
- 22:07:26 +0000
-Date: Wed, 18 Oct 2023 18:07:17 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: miquel.raynal@bootlin.com, conor.culhane@silvaco.com,
-	alexandre.belloni@bootlin.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	corbet@lwn.net, joe@perches.com, linux-i3c@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, imx@lists.linux.dev, jirislaby@kernel.org,
-	linux-serial@vger.kernel.org
-Subject: Re: [PATCH 5/5] Documentation: i3c: Add I3C slave mode controller
- and function
-Message-ID: <ZTBXFd1lOjWTiAI9@lizhi-Precision-Tower-5810>
-References: <20231018215809.3477437-1-Frank.Li@nxp.com>
- <20231018215809.3477437-6-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Thu, 19 Oct
+ 2023 01:28:04 +0000
+Received: from CY5PR11MB6392.namprd11.prod.outlook.com
+ ([fe80::21f8:775f:a94d:e1c0]) by CY5PR11MB6392.namprd11.prod.outlook.com
+ ([fe80::21f8:775f:a94d:e1c0%4]) with mapi id 15.20.6907.022; Thu, 19 Oct 2023
+ 01:28:04 +0000
+Date: Thu, 19 Oct 2023 09:23:13 +0800
+From: kernel test robot <yujie.liu@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, <miquel.raynal@bootlin.com>
+CC: <oe-kbuild-all@lists.linux.dev>, <Frank.Li@nxp.com>,
+	<alexandre.belloni@bootlin.com>, <conor.culhane@silvaco.com>,
+	<imx@lists.linux.dev>, <joe@perches.com>, <linux-i3c@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/6] i3c: master: svc: add hot join support
+Message-ID: <202310190611.b14M4mH3-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231018215809.3477437-6-Frank.Li@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0150.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::35) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+In-Reply-To: <20231018205929.3435110-3-Frank.Li@nxp.com>
+X-ClientProxiedBy: SG2PR01CA0174.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:28::30) To CY5PR11MB6392.namprd11.prod.outlook.com
+ (2603:10b6:930:37::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,640 +86,148 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB9PR04MB9750:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a12d39b-362d-40f8-1e45-08dbd0269ca5
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6392:EE_|PH7PR11MB7514:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfdb78da-de38-4dd7-887f-08dbd042a3f0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Tk9SjclsGT5DldAtF5MvBJeWovDaAfqR1FiziTpFCHBAnc1zf2hi7rz+dVj2erGS7u79NmxUqw7UMxOyFkuqSzoc3yNklMW6gLXSA3H+vxc8nJB3CHSilDz+kuFLTUIEKQBWkJWEqlKN95CddhQIm3oatDkt/2+W/blQ6sBLVGtSiAU2srDJvslrp27HXo4Gx1pQ1qMEkUD8KQUQJ5t+0wEUlsZE6rzU0srxybp5OC1jdInQQ3pW67gJ/vfjMoIc5v4yeQ+oGM1Wmk+/LFZlXkxOE4t5aH/dxgmWo9OlMOvA/tUbhNKt0DkSARDHL93FFt3mLXRDQLqEVvcBInsdcsniRRc7pT3Um9cGjQjbGb69chuxAp8CpmGQZe5lyclJ20ki9ZscV0VFuEF3GSn1TDWkr7QYBN/xPftvfsS+QeTC7jjtXwAbAVhOkR+SAvvUk4gGfAXYDxP0xQAoBkE1PpMPff+v//NZfnIo4D5ADou8DRhWuMSktkE2xo0PObKsCsW69bLHc80jYvMwa7XOIf+A6Ul7rUf8OB9IPwurxaTQKGS3WeXk/f0E78mCeYR1vitcxGkumGx9FKuMF8agP7TKbxt2LbVJNDVaKF7D7PrOiQuJBVvT3wv9oypd5DuXza6dq9LRa294G725n5cMZg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(376002)(396003)(39860400002)(136003)(366004)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(66946007)(66556008)(66476007)(316002)(6666004)(478600001)(6486002)(8936002)(8676002)(5660300002)(41300700001)(4326008)(30864003)(2906002)(86362001)(7416002)(38100700002)(52116002)(9686003)(6512007)(83380400001)(6506007)(26005)(921005)(33716001)(38350700005);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: qda3HCOq9WPnWqsjKz2TZEj9WAEAnYO/ZszHFSserXOJ5VVE8CgY38edzJDDnfForygQ999T7Y7ChXNs3oijaymFDTTbBze3CST34KxUH5mOcebrW1+295U+5jpKYRiG3GAf5lirHTyjFyqtaqtR3BEZouaPODbUepMUIWiqVbrV0m860lggWzepQnzqK2eQWiRRlpkQ6b9eTJMTyXZRaDDAGs2jb+IUUWK01Ygtc9azxQxTvuUKvUEJKEur0sZW3rsqzjJlc0Zq6Db2DZJyQWYB4KOu6ynKB4MT5SgG1YIlb7xa4Hm0Zj2pcvIoDdRPsxakgG7+9GXlfa+lEVB19eCOhLmjOVLv59/yfVHg6qBhh2m39MtQGVcG5tDnTvFix/OTjj20j6r58vcheSawa/6nnEMRu2rE7f/ovnQxtkUOa8Gcy5fvkDx6NWD79QVdm8rn7jdNzVlCLQaHfwGnkXAQ4CF0IfSv0ytZwuAy8nkoXvSghac3MzoogiFda9MoZ8/fNpfDe9cY61bSfmGOngE1Ht6Wwtwxk1WPLlm4yEY50uWygmWZsLkxjmJbIz20/GcvaN5xukdKcj+Z9xEBKw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6392.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(136003)(366004)(346002)(376002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(36756003)(1076003)(8936002)(6506007)(6666004)(26005)(2616005)(966005)(478600001)(83380400001)(41300700001)(8676002)(4326008)(2906002)(6486002)(4001150100001)(5660300002)(66476007)(66946007)(66556008)(316002)(86362001)(82960400001)(38100700002)(6512007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Yl+OQEM+sGzgoACMvRorpHiq8bMj3Kpo8ltTPn+bv6WbBiesQ2AGQEP/H7Y1?=
- =?us-ascii?Q?gnBFI5Uncyfg0GzCyECcS/CXlWbdQLBYwDRkXmV6dT9MeiUVqFHJAZ4Pht6i?=
- =?us-ascii?Q?glgXHAH4p/PdReC6z2vgBl9psDGm6GKbB3ifMtEVKI3/cFiVufCDsuHuJSOV?=
- =?us-ascii?Q?ftA4Cka/+EXn3TZx13CU1X2Xe/I4zzoeefijSQI+mPKzluleID23K5gmlzt+?=
- =?us-ascii?Q?KsJayokEXD/nrPYL6EO0vvV9NubFwf2hQRVbc8dzL7T5lWndE0ArrG1SG+bg?=
- =?us-ascii?Q?sYwG0ccoG1Gsk4mpfOo6YXFLjbzxhmN0zEBKGUwmvGMBdIZsm9rsNSJhbRSo?=
- =?us-ascii?Q?zE9rRyBY+BwTeaYB0f71UzPNCVhS1Z61RLcYBJm9k0T0vZ2xXVfWmu9H4PT/?=
- =?us-ascii?Q?bnRHYGs7AOiAe2dnw7teAZM/61EBEwPyfV3+U32RtaBNOgP6LGWjLCjD8Hro?=
- =?us-ascii?Q?3UP372RsGoiE1fk/058fxCP4Hnof7pemqEDfBLb2lNqDTo6QYzJVHBmZeSz9?=
- =?us-ascii?Q?CUapjnBKKCBjCEbAggpe5uFAmSAGf2xHCwyrsqZtGhlbJcIpcWSQPOtnVo87?=
- =?us-ascii?Q?Og0Ovbv8162zIdCwYmHF3Ee2iYqvMAvd59c69+czU3QE6zPPeumXpCX6B9Gy?=
- =?us-ascii?Q?2MlwD6zea4TimLwfCFPH5mS/owIPvc2kKjJYEAsj5EwwLEjxhUk2g2Tw2hIX?=
- =?us-ascii?Q?Zsu/JXaRBxWX6ZT1QmCPIKtZBFu1mYHvd7ct9tyieQZYS+7P0Hv+S54C7h9R?=
- =?us-ascii?Q?p5ti5mLSh95TmX52wP/A97USIPQRggye6Gz6+ZJLggVpEFUhRyX1tLO7O9C+?=
- =?us-ascii?Q?fUhsCKCh7Xx8OfaRCvZMhQenAi219mSDB7wxGtUumZDYbDaqqFDGDL/ZiJf1?=
- =?us-ascii?Q?C+2q8Wi3DtkoFGNaK/+Ov/q+Ua23VYjg9KSHEUUZT8Tj5lo0gjDw965BUFy3?=
- =?us-ascii?Q?3+1I0H7kSqMFjGwfTFr2LZiDfeGLHU1Dtv07IzxWAPoNslxfXYPehlLhnI31?=
- =?us-ascii?Q?MdlbdHr8+bCyiuYd27f8DSJ3RRPq18Krl06Os0lIthrYKLOH+3eu7EU8XNPH?=
- =?us-ascii?Q?L70SuAOTHLTaRld2VPv20lrbZHX+1CVLVGcN14TP2Kfs+JCPS5oiC4RHrxvj?=
- =?us-ascii?Q?RvY2jkkfB+YtP2dacAmKQPukWoVbP7Dc8G1xYc0HbShOFzQqekW5VEGx4bkx?=
- =?us-ascii?Q?5qn56pI7VVhpuepWT0kqPKx96jjs//Aasqz6KwHVd6ikg5p5oiRlaiZzoM2N?=
- =?us-ascii?Q?IqyJwucrqXf/cngCCUyvBLHIKOhFfMt/XWTyqWcOmCXn4FyfNV2TSscPLkc/?=
- =?us-ascii?Q?skWUIJHN286z9wu9XmiqCtwgSgLAvSzYb6QEjdKJY9r9+qoa2VSJELnxSOm2?=
- =?us-ascii?Q?WbmFaGFT0TlkD9BrttoivyfmEan4+fF9SA6UKJmV4lUMWNwODCe1aOlSsEwm?=
- =?us-ascii?Q?oIdJkUjdMs2Aa7EdqzaFNQA9QNhCFgGhDB+Bt1Caqsa1K+x8YEopxyO8NwHa?=
- =?us-ascii?Q?OvUrMgTZ6CkMIMyxIR8xOpqK30B54VRyDg6FFZhP4oA3N+s40tFVmZKnrUlY?=
- =?us-ascii?Q?KuligmxbHfmSB2CERzc=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a12d39b-362d-40f8-1e45-08dbd0269ca5
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iRepuQAfEnmnoxqL0u+WyCYgx+eDLNUEAGkhzHA+y4/+HHQQilNKMcxnOhp3?=
+ =?us-ascii?Q?8pkQt1K0sdGKnhBmQCulwcWRZsk0DpJ4r/gPkv80OA/PFdIqs9B7f8b/kI8h?=
+ =?us-ascii?Q?DYu9a0z+ieTjeiMlfI1rANZ3X3fEoPGBMfh0377OsTbYBKcbNmkNwJLAKDlM?=
+ =?us-ascii?Q?ggoSBuMm+t73oOkBfMGyCUZMYvgS1sjrilR0A7ukzpC8b0KVDd1z4u60GIu2?=
+ =?us-ascii?Q?ua4XBeYDCW/FIIZbQK0toH/WshDwno3s2YXIC9dt1ocL6sD16Wjh5d6WwDwg?=
+ =?us-ascii?Q?5PoWAk+ouBrHgKfVLtF64cKn1ZS8REJ4pOsh1Nc6CL4rewq9CXunMN3IqIii?=
+ =?us-ascii?Q?oqRi5mbSDNIcF74W3D3bN53yWmh8EtqFN/xDwpkqJ7Vq/Vtlsk03lgT/++xp?=
+ =?us-ascii?Q?S02tgLmvhjXNCWCm01j790rGDldDqvhdjEPNAYgBbV78bsEcmo06K4MecTrF?=
+ =?us-ascii?Q?UZud1jMbTxLwOG4vip+2ClqVe+4Md9wxhsT4PBtm8o2Xfi4bFYxJqGjhn/36?=
+ =?us-ascii?Q?18StJKmlQ6JOySiGuUavkGzGb/p6djlLVMcPUoeFy9hazfzoe2rnLMaXnHCn?=
+ =?us-ascii?Q?jXt8pHuilHPgsrPgShB+7/L5VTrJJM3MQykuKnQhwdBLCVbMsfyQ5e7hTIXN?=
+ =?us-ascii?Q?6+zaR77rj3jTt0lV5HDOu+VdTU51Crt9O4/A6/9ls9KegUyoDG8hp40aTjtw?=
+ =?us-ascii?Q?Mj6spZYYRRuAsNo7sb5sWaT3k20yqioJy1LHezgxEDtbuhdko0d+trJpp+aa?=
+ =?us-ascii?Q?RqFH0ZJL4N1L4clUQUNAPsljKVZxJNSNZtWINqnVwf5MxstezoenHVWpTYv6?=
+ =?us-ascii?Q?ri8Stv8lwGwi8GCpsai4UeCeWis07fJQRTZkXGesYHuDa1hTevw6vDmc01zu?=
+ =?us-ascii?Q?6WOOumoQa17V0dOnuMb0XdhHUgr8QCYNOkLbF4gygdUdRgvQqlgEb9zIDTM0?=
+ =?us-ascii?Q?ievEVUdZO/IAz81f/yLBa8z85arqwUK8TWxsFDcdjXPcVd16v9fj+gp49LRk?=
+ =?us-ascii?Q?mAtW6xUZ9nEYN/o/UJH4yu0hIp8FYt4XZ45rWBT9vi0K3WrZIklI9JrJyt5h?=
+ =?us-ascii?Q?AXfTcJg7mVYNno0zYuk5pBRflu/8o15vXvXrwTyzhG7SSbR9QmbXSkekmSeM?=
+ =?us-ascii?Q?4TnvwnJKJvgnf2LL1DfHEG+I2jhVursEtqUHzvcgf4uBZzMOI+FmsZXDc9q0?=
+ =?us-ascii?Q?HUMfBm2XAEFMgIJumsqPLAgUFN21VsE3RHrg+f8FD4obrElZLvBhiqfQ8SNV?=
+ =?us-ascii?Q?CYMT629jBhd0vEwiS7Cpm8CVTR5UJK9kJibuywJagLIOk/lgBAJOg1vXZzUD?=
+ =?us-ascii?Q?uF33yiDYN8S9vmRYbJur7MmLJNU4ODIc01iCFyHQff+6mKPjL5O1bWe9OgML?=
+ =?us-ascii?Q?xuvPUAbOKZvfaqzsHe8JsqwEuDNCpDc43aewzb/4OKIx3PMtPm9P0vQznZLc?=
+ =?us-ascii?Q?KOmLf9KQ4BFfcolfdkimH83JTiXJPQYOLzyDtHwHiNgrw+QXAXu+FGmqfN6N?=
+ =?us-ascii?Q?MEICN7dbkk7nPz4vcrwYH+zdM/g9KsmC1vU41f0Wb/FmRkkyvLEHXapno9HN?=
+ =?us-ascii?Q?xJZN2fZJ+t//Q4QHiLbZAzr5YcAV19DUaj0/jkJU?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfdb78da-de38-4dd7-887f-08dbd042a3f0
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6392.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2023 22:07:26.1657
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 01:28:04.3066
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P40bk32Zhzgg67WoPIBnA0bk5Ly96DFAORVEVa1GSrmXG3GHm/7tJ0jVNQenYCAAYazJH673hO1wJ5LfVpbHVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9750
+X-MS-Exchange-CrossTenant-UserPrincipalName: eg9ByuUwr2qaVE20cKeaRs2YSyqhbYd1z6xIBeq+oQ2yeMl74+jpGu5dBngN3KsSMJsD8kbheqEoJ6qgrJTZhQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7514
+X-OriginatorOrg: intel.com
 
-On Wed, Oct 18, 2023 at 05:58:09PM -0400, Frank Li wrote:
-> Add I3C slave mode and tty over i3c func driver document.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/driver-api/i3c/index.rst        |   1 +
->  .../driver-api/i3c/slave/i3c-slave-cfs.rst    | 109 ++++++++++
->  .../driver-api/i3c/slave/i3c-slave.rst        | 189 ++++++++++++++++++
->  .../driver-api/i3c/slave/i3c-tty-function.rst | 103 ++++++++++
->  .../driver-api/i3c/slave/i3c-tty-howto.rst    | 109 ++++++++++
->  Documentation/driver-api/i3c/slave/index.rst  |  13 ++
->  6 files changed, 524 insertions(+)
->  create mode 100644 Documentation/driver-api/i3c/slave/i3c-slave-cfs.rst
->  create mode 100644 Documentation/driver-api/i3c/slave/i3c-slave.rst
->  create mode 100644 Documentation/driver-api/i3c/slave/i3c-tty-function.rst
+Hi Frank,
 
-Please omit i3c-tty-function.rst. This one accidently add to here.
-I will remove it at next version.
+kernel test robot noticed the following build warnings:
 
->  create mode 100644 Documentation/driver-api/i3c/slave/i3c-tty-howto.rst
->  create mode 100644 Documentation/driver-api/i3c/slave/index.rst
-> 
-> diff --git a/Documentation/driver-api/i3c/index.rst b/Documentation/driver-api/i3c/index.rst
-> index 783d6dad054b6..63fc51fc8bd58 100644
-> --- a/Documentation/driver-api/i3c/index.rst
-> +++ b/Documentation/driver-api/i3c/index.rst
-> @@ -9,3 +9,4 @@ I3C subsystem
->     protocol
->     device-driver-api
->     master-driver-api
-> +   slave/index
-> diff --git a/Documentation/driver-api/i3c/slave/i3c-slave-cfs.rst b/Documentation/driver-api/i3c/slave/i3c-slave-cfs.rst
-> new file mode 100644
-> index 0000000000000..d78fcbc4e5587
-> --- /dev/null
-> +++ b/Documentation/driver-api/i3c/slave/i3c-slave-cfs.rst
-> @@ -0,0 +1,109 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +=======================================
-> +Configuring I3C Slave Using CONFIGFS
-> +=======================================
-> +
-> +:Author: Frank Li <Frank.Li@nxp.com>
-> +
-> +The I3C Slave Core exposes configfs entry (i3c_slave) to configure the I3C
-> +slave function and to bind the slave function
-> +with the slave controller. (For introducing other mechanisms to
-> +configure the I3C Slave Function refer to [1]).
-> +
-> +Mounting configfs
-> +=================
-> +
-> +The I3C Slave Core layer creates i3c_slave directory in the mounted configfs
-> +directory. configfs can be mounted using the following command::
-> +
-> +	mount -t configfs none /sys/kernel/config
-> +
-> +Directory Structure
-> +===================
-> +
-> +The i3c_slave configfs has two directories at its root: controllers and
-> +functions. Every Controller device present in the system will have an entry in
-> +the *controllers* directory and every Function driver present in the system
-> +will have an entry in the *functions* directory.
-> +::
-> +
-> +	/sys/kernel/config/i3c_slave/
-> +		.. controllers/
-> +		.. functions/
-> +
-> +Creating Function Device
-> +===================
-> +
-> +Every registered Function driver will be listed in controllers directory. The
-> +entries corresponding to Function driver will be created by the Function core.
-> +::
-> +
-> +	/sys/kernel/config/i3c_slave/functions/
-> +		.. <Function Driver1>/
-> +			... <Function Device 11>/
-> +			... <Function Device 21>/
-> +			... <Function Device 31>/
-> +		.. <Function Driver2>/
-> +			... <Function Device 12>/
-> +			... <Function Device 22>/
-> +
-> +In order to create a <Function device> of the type probed by <Function Driver>,
-> +the user has to create a directory inside <Function DriverN>.
-> +
-> +Every <Function device> directory consists of the following entries that can be
-> +used to configure the standard configuration header of the slave function.
-> +(These entries are created by the framework when any new <Function Device> is
-> +created)
-> +::
-> +
-> +		.. <Function Driver1>/
-> +			... <Function Device 11>/
-> +				... vendor_id
-> +				... part_id
-> +				... bcr
-> +				... dcr
-> +				... ext_id
-> +				... instance_id
-> +				... max_read_len
-> +				... max_write_len
-> +				... vendor_info
-> +
-> +Controller Device
-> +==========
-> +
-> +Every registered Controller device will be listed in controllers directory. The
-> +entries corresponding to Controller device will be created by the Controller
-> +core.
-> +::
-> +
-> +	/sys/kernel/config/i3c_slave/controllers/
-> +		.. <Controller Device1>/
-> +			... <Symlink Function Device11>/
-> +		.. <Controller Device2>/
-> +			... <Symlink Function Device21>/
-> +
-> +The <Controller Device> directory will have a list of symbolic links to
-> +<Function Device>. These symbolic links should be created by the user to
-> +represent the functions present in the slave device. Only <Function Device>
-> +that represents a physical function can be linked to a Controller device.
-> +
-> +::
-> +
-> +			 | controllers/
-> +				| <Directory: Controller name>/
-> +					| <Symbolic Link: Function>
-> +			 | functions/
-> +				| <Directory: Function driver>/
-> +					| <Directory: Function device>/
-> +						| vendor_id
-> +						| part_id
-> +						| bcr
-> +						| dcr
-> +						| ext_id
-> +						| instance_id
-> +						| max_read_len
-> +						| max_write_len
-> +						| vendor_info
-> +
-> +[1] Documentation/I3C/slave/pci-slave.rst
-> diff --git a/Documentation/driver-api/i3c/slave/i3c-slave.rst b/Documentation/driver-api/i3c/slave/i3c-slave.rst
-> new file mode 100644
-> index 0000000000000..363421241b594
-> --- /dev/null
-> +++ b/Documentation/driver-api/i3c/slave/i3c-slave.rst
-> @@ -0,0 +1,189 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +:Author: Frank Li <Frank.Li@nxp.com>
-> +
-> +This document is a guide to use the I3C Slave Framework in order to create
-> +slave controller driver, slave function driver, and using configfs
-> +interface to bind the function driver to the controller driver.
-> +
-> +Introduction
-> +============
-> +
-> +Linux has a comprehensive I3C subsystem to support I3C controllers that
-> +operates in master mode. The subsystem has capability to scan I3C bus,assign
-> +i3c device address, load I3C driver (based on Manufacturer ID, part ID),
-> +support other services like hot-join, In-Band Interrupt(IBI).
-> +
-> +However the I3C controller IP integrated in some SoCs is capable of operating
-> +either in Master mode or Slave mode. I3C Slave Framework will add slave mode
-> +support in Linux. This will help to run Linux in an slave system which can
-> +have a wide variety of use cases from testing or validation, co-processor
-> +accelerator, etc.
-> +
-> +I3C Slave Core
-> +=================
-> +
-> +The I3C Slave Core layer comprises 3 components: the Slave Controller
-> +library, the Slave Function library, and the configfs layer to bind the
-> +slave function with the slave controller.
-> +
-> +I3C Slave Controller Library
-> +------------------------------------
-> +
-> +The Controller library provides APIs to be used by the controller that can
-> +operate in slave mode. It also provides APIs to be used by function
-> +driver/library in order to implement a particular slave function.
-> +
-> +APIs for the I3C Slave controller Driver
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +This section lists the APIs that the I3C Slave core provides to be used
-> +by the I3C controller driver.
-> +
-> +* devm_i3c_slave_ctrl_create()/i3c_slave_ctrl_create()
-> +
-> +   The I3C controller driver should implement the following ops:
-> +
-> +	* set_config: ops to set i3c configuration
-> +	* enable: ops to enable controller
-> +	* disable: ops to disable controller
-> +	* raise_ibi: ops to raise IBI to master controller
-> +	* alloc_request: ops to alloc a transfer request
-> +	* free_request: ops to free a transfer request
-> +	* queue: ops to queue a request to transfer queue
-> +	* dequeue: ops to dequeue a request from transfer queue
-> +	* cancel_all_reqs: ops to cancel all request from transfer queue
-> +        * fifo_status: ops to get fifo status
-> +        * fifo_flush: ops to flush hardware fifo
-> +	* get_features: ops to get controller supported features
-> +
-> +   The I3C controller driver can then create a new Controller device by
-> +   invoking devm_i3c_slave_ctrl_create()/i3c_slave_ctrl_create().
-> +
-> +* devm_i3c_slave_ctrl_destroy()/i3c_slave_ctrl_destroy()
-> +
-> +   The I3C controller driver can destroy the Controller device created by
-> +   either devm_i3c_slave_ctrl_create() or i3c_slave_ctrl_create() using
-> +   devm_i3c_slave_ctrl_destroy() or i3c_slave_ctrl_destroy().
-> +
-> +I3C Slave Controller APIs for the I3C Slave Function Driver
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +This section lists the APIs that the I3C Slave core provides to be used
-> +by the I3C slave function driver.
-> +
-> +* i3c_slave_ctrl_set_config()
-> +
-> +   The I3C slave function driver should use i3c_slave_ctrl_set_config() to
-> +   write i3c configuration to the slave controller.
-> +
-> +* i3c_slave_ctrl_enable()/i3c_slave_ctrl_disable()
-> +
-> +   The I3C slave function driver should use i3c_slave_ctrl_enable()/
-> +   i3c_slave_ctrl_disable() to enable/disable i3c slave controller.
-> +
-> +* i3c_slave_ctrl_alloc_request()/i3c_slave_ctrl_free_request()
-> +
-> +   The I3C slave function driver should usei3c_slave_ctrl_alloc_request() /
-> +   i3c_slave_ctrl_free_request() to alloc/free a i3c request.
-> +
-> +* i3c_slave_ctrl_raise_ibi()
-> +
-> +   The I3C slave function driver should use i3c_slave_ctrl_raise_ibi() to
-> +   raise IBI.
-> +
-> +* i3c_slave_ctrl_queue()/i3c_slave_ctrl_dequeue()
-> +
-> +   The I3C slave function driver should use i3c_slave_ctrl_queue()/
-> +   i3c_slave_ctrl_dequeue(), to queue/dequeue I3C transfer to/from transfer
-> +   queue.
-> +
-> +* i3c_slave_ctrl_get_features()
-> +
-> +   The I3C slave function driver should use i3c_slave_ctrl_get_features()
-> +   to get I3C slave controller supported features.
-> +
-> +Other I3C Slave Controller APIs
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +There are other APIs provided by the Controller library. These are used for
-> +binding the I3C Slave Function device with Controlller device. i3c-cfs.c can
-> +be used as reference for using these APIs.
-> +
-> +* i3c_slave_ctrl_get()
-> +
-> +   Get a reference to the I3C slave controller based on the device name of
-> +   the controller.
-> +
-> +* i3c_slave_ctrl_put()
-> +
-> +   Release the reference to the I3C slave controller obtained using
-> +   i3c_slave_ctrl_get()
-> +
-> +* i3c_slave_ctrl_add_func()
-> +
-> +   Add a I3C slave function to a I3C slave controller.
-> +
-> +* i3c_slave_ctrl_remove_func()
-> +
-> +   Remove the I3C slave function from I3C slave controller.
-> +
-> +I3C Slave Function Library
-> +----------------------------------
-> +
-> +The I3C Slave Function library provides APIs to be used by the function driver
-> +and the Controller library to provide slave mode functionality.
-> +
-> +I3C Slave Function APIs for the I3C Slave Function Driver
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +This section lists the APIs that the I3C Slave core provides to be used
-> +by the I3C slave function driver.
-> +
-> +* i3c_slave_func_register_driver()
-> +
-> +   The I3C Slave Function driver should implement the following ops:
-> +	 * bind: ops to perform when a Controller device has been bound to
-> +	   Function device
-> +	 * unbind: ops to perform when a binding has been lost between a
-> +	   Controller device and Function device
-> +
-> +  The I3C Function driver can then register the I3C Function driver by using
-> +  i3c_slave_func_register_driver().
-> +
-> +* i3c_slave_func_unregister_driver()
-> +
-> +  The I3C Function driver can unregister the I3C Function driver by using
-> +  i3c_epf_unregister_driver().
-> +
-> +APIs for the I3C Slave Controller Library
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +This section lists the APIs that the I3C Slave core provides to be used
-> +by the I3C slave controller library.
-> +
-> +Other I3C Slave APIs
-> +~~~~~~~~~~~~~~~~~~~~
-> +
-> +There are other APIs provided by the Function library. These are used to
-> +notify the function driver when the Function device is bound to the EPC device.
-> +i3c-cfs.c can be used as reference for using these APIs.
-> +
-> +* i3c_slave_func_create()
-> +
-> +   Create a new I3C Function device by passing the name of the I3C EPF device.
-> +   This name will be used to bind the Function device to a Function driver.
-> +
-> +* i3c_slave_func_destroy()
-> +
-> +   Destroy the created I3C Function device.
-> +
-> +* i3c_slave_func_bind()
-> +
-> +   i3c_slave_func_bind() should be invoked when the EPF device has been bound
-> +   to a Controller device.
-> +
-> +* i3c_slave_func_unbind()
-> +
-> +   i3c_slave_func_unbind() should be invoked when the binding between EPC
-> +   device and function device is lost.
-> diff --git a/Documentation/driver-api/i3c/slave/i3c-tty-function.rst b/Documentation/driver-api/i3c/slave/i3c-tty-function.rst
-> new file mode 100644
-> index 0000000000000..3c8521d7aa31a
-> --- /dev/null
-> +++ b/Documentation/driver-api/i3c/slave/i3c-tty-function.rst
-> @@ -0,0 +1,103 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +=================
-> +PCI Test Function
-> +=================
-> +
-> +:Author: Kishon Vijay Abraham I <kishon@ti.com>
-> +
-> +Traditionally PCI RC has always been validated by using standard
-> +PCI cards like ethernet PCI cards or USB PCI cards or SATA PCI cards.
-> +However with the addition of EP-core in linux kernel, it is possible
-> +to configure a PCI controller that can operate in EP mode to work as
-> +a test device.
-> +
-> +The PCI endpoint test device is a virtual device (defined in software)
-> +used to test the endpoint functionality and serve as a sample driver
-> +for other PCI endpoint devices (to use the EP framework).
-> +
-> +The PCI endpoint test device has the following registers:
-> +
-> +	1) PCI_ENDPOINT_TEST_MAGIC
-> +	2) PCI_ENDPOINT_TEST_COMMAND
-> +	3) PCI_ENDPOINT_TEST_STATUS
-> +	4) PCI_ENDPOINT_TEST_SRC_ADDR
-> +	5) PCI_ENDPOINT_TEST_DST_ADDR
-> +	6) PCI_ENDPOINT_TEST_SIZE
-> +	7) PCI_ENDPOINT_TEST_CHECKSUM
-> +	8) PCI_ENDPOINT_TEST_IRQ_TYPE
-> +	9) PCI_ENDPOINT_TEST_IRQ_NUMBER
-> +
-> +* PCI_ENDPOINT_TEST_MAGIC
-> +
-> +This register will be used to test BAR0. A known pattern will be written
-> +and read back from MAGIC register to verify BAR0.
-> +
-> +* PCI_ENDPOINT_TEST_COMMAND
-> +
-> +This register will be used by the host driver to indicate the function
-> +that the endpoint device must perform.
-> +
-> +========	================================================================
-> +Bitfield	Description
-> +========	================================================================
-> +Bit 0		raise legacy IRQ
-> +Bit 1		raise MSI IRQ
-> +Bit 2		raise MSI-X IRQ
-> +Bit 3		read command (read data from RC buffer)
-> +Bit 4		write command (write data to RC buffer)
-> +Bit 5		copy command (copy data from one RC buffer to another RC buffer)
-> +========	================================================================
-> +
-> +* PCI_ENDPOINT_TEST_STATUS
-> +
-> +This register reflects the status of the PCI endpoint device.
-> +
-> +========	==============================
-> +Bitfield	Description
-> +========	==============================
-> +Bit 0		read success
-> +Bit 1		read fail
-> +Bit 2		write success
-> +Bit 3		write fail
-> +Bit 4		copy success
-> +Bit 5		copy fail
-> +Bit 6		IRQ raised
-> +Bit 7		source address is invalid
-> +Bit 8		destination address is invalid
-> +========	==============================
-> +
-> +* PCI_ENDPOINT_TEST_SRC_ADDR
-> +
-> +This register contains the source address (RC buffer address) for the
-> +COPY/READ command.
-> +
-> +* PCI_ENDPOINT_TEST_DST_ADDR
-> +
-> +This register contains the destination address (RC buffer address) for
-> +the COPY/WRITE command.
-> +
-> +* PCI_ENDPOINT_TEST_IRQ_TYPE
-> +
-> +This register contains the interrupt type (Legacy/MSI) triggered
-> +for the READ/WRITE/COPY and raise IRQ (Legacy/MSI) commands.
-> +
-> +Possible types:
-> +
-> +======	==
-> +Legacy	0
-> +MSI	1
-> +MSI-X	2
-> +======	==
-> +
-> +* PCI_ENDPOINT_TEST_IRQ_NUMBER
-> +
-> +This register contains the triggered ID interrupt.
-> +
-> +Admissible values:
-> +
-> +======	===========
-> +Legacy	0
-> +MSI	[1 .. 32]
-> +MSI-X	[1 .. 2048]
-> +======	===========
-> diff --git a/Documentation/driver-api/i3c/slave/i3c-tty-howto.rst b/Documentation/driver-api/i3c/slave/i3c-tty-howto.rst
-> new file mode 100644
-> index 0000000000000..11c8900fd16f3
-> --- /dev/null
-> +++ b/Documentation/driver-api/i3c/slave/i3c-tty-howto.rst
-> @@ -0,0 +1,109 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +===================
-> +I3C TTY User Guide
-> +===================
-> +
-> +:Author: Frank Li <Frank.Li@nxp.com>
-> +
-> +This document is a guide to help users use i3c-slave-tty function driver
-> +and i3ctty master driver for testing I3C. The list of steps to be followed in the
-> +master side and slave side is given below.
-> +
-> +Endpoint Device
-> +===============
-> +
-> +Endpoint Controller Devices
-> +---------------------------
-> +
-> +To find the list of slave controller devices in the system::
-> +
-> +	# ls  /sys/class/i3c_slave/
-> +	  44330000.i3c-slave
-> +
-> +If CONFIG_I3C_SLAVE_CONFIGFS is enabled::
-> +
-> +	# ls /sys/kernel/config/i3c_slave/controllers/
-> +	  44330000.i3c-slave
-> +
-> +
-> +Endpoint Function Drivers
-> +-------------------------
-> +
-> +To find the list of slave function drivers in the system::
-> +
-> +	# ls /sys/bus/i3c_slave_func/drivers
-> +	  tty
-> +
-> +If CONFIG_I3C_SLAVE_CONFIGFS is enabled::
-> +
-> +	# ls /sys/kernel/config/i3c_slave/functions
-> +	  tty
-> +
-> +
-> +Creating i3c-slave-tty Device
-> +----------------------------
-> +
-> +I3C slave function device can be created using the configfs. To create
-> +i3c-slave-tty device, the following commands can be used::
-> +
-> +	# mount -t configfs none /sys/kernel/config
-> +	# cd /sys/kernel/config/i3c_slave/
-> +	# mkdir functions/tty/func1
-> +
-> +The "mkdir func1" above creates the i3c-slave-tty function device that will
-> +be probed by i3c tty driver.
-> +
-> +The I3C slave framework populates the directory with the following
-> +configurable fields::
-> +
-> +	# ls functions/tty/func1
-> +	bcr  dcr  ext_id  instance_id  max_read_len  max_write_len
-> +	part_id  vendor_id  vendor_info
-> +
-> +The I3C slave function driver populates these entries with default values
-> +when the device is bound to the driver. The i3c-slave-tty driver populates
-> +vendorid with 0xffff and interrupt_pin with 0x0001::
-> +
-> +	# cat functions/tty/func1/vendor_id
-> +	  0x0
-> +
-> +Configuring i3c-slave-tty Device
-> +-------------------------------
-> +
-> +The user can configure the i3c-slave-tty device using configfs entry. In order
-> +to change the vendorid, the following commands can be used::
-> +
-> +	# echo 0x011b > functions/tty/func1/vendor_id
-> +	# echo 0x1000 > functions/tty/func1/part_id
-> +	# echo 0x6 > functions/tty/t/bcr
-> +
-> +Binding i3c-slave-tty Device to slave Controller
-> +------------------------------------------------
-> +
-> +In order for the slave function device to be useful, it has to be bound to
-> +a I3C slave controller driver. Use the configfs to bind the function
-> +device to one of the controller driver present in the system::
-> +
-> +	# ln -s functions/pci_epf_test/func1 controllers/44330000.i3c-slave/
-> +
-> +I3C Master Device
-> +================
-> +
-> +Check I3C tty device is probed
-> +
-> +	# ls /sys/bus/i3c/devices/0-23610000000
-> +	0-23610000000:0  bcr  dcr  driver  dynamic_address  hdrcap
-> +	modalias  pid  power  subsystem  tty  uevent
-> +
-> +Using Slave TTY function Device
-> +-----------------------------------
-> +
-> +Host side:
-> +	cat /dev/ttyI3C0
-> +Slave side
-> +	echo abc >/dev/ttyI3C0
-> +
-> +You will see "abc" show at console.
-> +
-> +You can use other tty tool to test I3C slave tty device.
-> diff --git a/Documentation/driver-api/i3c/slave/index.rst b/Documentation/driver-api/i3c/slave/index.rst
-> new file mode 100644
-> index 0000000000000..69727ccf985db
-> --- /dev/null
-> +++ b/Documentation/driver-api/i3c/slave/index.rst
-> @@ -0,0 +1,13 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +======================
-> +I3C Slave Framework
-> +======================
-> +
-> +.. toctree::
-> +   :maxdepth: 2
-> +
-> +   i3c-slave
-> +   i3c-slave-cfs
-> +   i3c-tty-howto
-> +
-> -- 
-> 2.34.1
-> 
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.6-rc6 next-20231018]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-master-add-enable-disable-hot-join-in-sys-entry/20231019-051444
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20231018205929.3435110-3-Frank.Li%40nxp.com
+patch subject: [PATCH v2 2/6] i3c: master: svc: add hot join support
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20231019/202310190611.b14M4mH3-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231019/202310190611.b14M4mH3-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yujie.liu@intel.com>
+| Closes: https://lore.kernel.org/r/202310190611.b14M4mH3-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/i3c/master/svc-i3c-master.c:212: warning: Function parameter or member 'lock' not described in 'svc_i3c_master'
+>> drivers/i3c/master/svc-i3c-master.c:212: warning: Function parameter or member 'enabled_events' not described in 'svc_i3c_master'
+   2 warnings as Errors
+
+
+vim +212 drivers/i3c/master/svc-i3c-master.c
+
+1c5ee2a77b1bac Clark Wang    2023-05-17  157  
+dd3c52846d5954 Miquel Raynal 2021-01-21  158  /**
+dd3c52846d5954 Miquel Raynal 2021-01-21  159   * struct svc_i3c_master - Silvaco I3C Master structure
+dd3c52846d5954 Miquel Raynal 2021-01-21  160   * @base: I3C master controller
+dd3c52846d5954 Miquel Raynal 2021-01-21  161   * @dev: Corresponding device
+dd3c52846d5954 Miquel Raynal 2021-01-21  162   * @regs: Memory mapping
+5496eac6ad7428 Miquel Raynal 2023-08-17  163   * @saved_regs: Volatile values for PM operations
+dd3c52846d5954 Miquel Raynal 2021-01-21  164   * @free_slots: Bit array of available slots
+dd3c52846d5954 Miquel Raynal 2021-01-21  165   * @addrs: Array containing the dynamic addresses of each attached device
+dd3c52846d5954 Miquel Raynal 2021-01-21  166   * @descs: Array of descriptors, one per attached device
+dd3c52846d5954 Miquel Raynal 2021-01-21  167   * @hj_work: Hot-join work
+dd3c52846d5954 Miquel Raynal 2021-01-21  168   * @ibi_work: IBI work
+dd3c52846d5954 Miquel Raynal 2021-01-21  169   * @irq: Main interrupt
+dd3c52846d5954 Miquel Raynal 2021-01-21  170   * @pclk: System clock
+dd3c52846d5954 Miquel Raynal 2021-01-21  171   * @fclk: Fast clock (bus)
+dd3c52846d5954 Miquel Raynal 2021-01-21  172   * @sclk: Slow clock (other events)
+dd3c52846d5954 Miquel Raynal 2021-01-21  173   * @xferqueue: Transfer queue structure
+dd3c52846d5954 Miquel Raynal 2021-01-21  174   * @xferqueue.list: List member
+dd3c52846d5954 Miquel Raynal 2021-01-21  175   * @xferqueue.cur: Current ongoing transfer
+dd3c52846d5954 Miquel Raynal 2021-01-21  176   * @xferqueue.lock: Queue lock
+dd3c52846d5954 Miquel Raynal 2021-01-21  177   * @ibi: IBI structure
+dd3c52846d5954 Miquel Raynal 2021-01-21  178   * @ibi.num_slots: Number of slots available in @ibi.slots
+dd3c52846d5954 Miquel Raynal 2021-01-21  179   * @ibi.slots: Available IBI slots
+dd3c52846d5954 Miquel Raynal 2021-01-21  180   * @ibi.tbq_slot: To be queued IBI slot
+dd3c52846d5954 Miquel Raynal 2021-01-21  181   * @ibi.lock: IBI lock
+
+* @lock: <description>
+* @enabled_events: <description>
+
+dd3c52846d5954 Miquel Raynal 2021-01-21  182   */
+dd3c52846d5954 Miquel Raynal 2021-01-21  183  struct svc_i3c_master {
+dd3c52846d5954 Miquel Raynal 2021-01-21  184  	struct i3c_master_controller base;
+dd3c52846d5954 Miquel Raynal 2021-01-21  185  	struct device *dev;
+dd3c52846d5954 Miquel Raynal 2021-01-21  186  	void __iomem *regs;
+1c5ee2a77b1bac Clark Wang    2023-05-17  187  	struct svc_i3c_regs_save saved_regs;
+dd3c52846d5954 Miquel Raynal 2021-01-21  188  	u32 free_slots;
+dd3c52846d5954 Miquel Raynal 2021-01-21  189  	u8 addrs[SVC_I3C_MAX_DEVS];
+dd3c52846d5954 Miquel Raynal 2021-01-21  190  	struct i3c_dev_desc *descs[SVC_I3C_MAX_DEVS];
+dd3c52846d5954 Miquel Raynal 2021-01-21  191  	struct work_struct hj_work;
+dd3c52846d5954 Miquel Raynal 2021-01-21  192  	struct work_struct ibi_work;
+dd3c52846d5954 Miquel Raynal 2021-01-21  193  	int irq;
+dd3c52846d5954 Miquel Raynal 2021-01-21  194  	struct clk *pclk;
+dd3c52846d5954 Miquel Raynal 2021-01-21  195  	struct clk *fclk;
+dd3c52846d5954 Miquel Raynal 2021-01-21  196  	struct clk *sclk;
+dd3c52846d5954 Miquel Raynal 2021-01-21  197  	struct {
+dd3c52846d5954 Miquel Raynal 2021-01-21  198  		struct list_head list;
+dd3c52846d5954 Miquel Raynal 2021-01-21  199  		struct svc_i3c_xfer *cur;
+dd3c52846d5954 Miquel Raynal 2021-01-21  200  		/* Prevent races between transfers */
+dd3c52846d5954 Miquel Raynal 2021-01-21  201  		spinlock_t lock;
+dd3c52846d5954 Miquel Raynal 2021-01-21  202  	} xferqueue;
+dd3c52846d5954 Miquel Raynal 2021-01-21  203  	struct {
+dd3c52846d5954 Miquel Raynal 2021-01-21  204  		unsigned int num_slots;
+dd3c52846d5954 Miquel Raynal 2021-01-21  205  		struct i3c_dev_desc **slots;
+dd3c52846d5954 Miquel Raynal 2021-01-21  206  		struct i3c_ibi_slot *tbq_slot;
+dd3c52846d5954 Miquel Raynal 2021-01-21  207  		/* Prevent races within IBI handlers */
+dd3c52846d5954 Miquel Raynal 2021-01-21  208  		spinlock_t lock;
+dd3c52846d5954 Miquel Raynal 2021-01-21  209  	} ibi;
+85bebb554b09b1 Frank Li      2023-10-16  210  	struct mutex lock;
+e00571e38f466c Frank Li      2023-10-18  211  	int enabled_events;
+dd3c52846d5954 Miquel Raynal 2021-01-21 @212  };
+dd3c52846d5954 Miquel Raynal 2021-01-21  213  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
