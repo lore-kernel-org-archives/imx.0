@@ -1,215 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0148C847D
-	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 08:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9661619BA6;
+	Fri, 20 Oct 2023 12:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kd+QWSGk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oEREyZY7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697792134; x=1729328134;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ldKD9vWG59M8ubPGySLlaVJYtWih/t+41frfCeRocik=;
-  b=Kd+QWSGkdRu5/ZN2XJEF3GPoIknT1E5YmAqmpqAf1LN7pY/kxJF41bXs
-   P8H86hKSImmgWqtD8I1dV0az1BQvS48BRrXdvwKP/b97so7S6DOQ4hmZR
-   EpZ+R8NSfBe2o7At8BBMr7ImQNyHdIGFqg336m+lxSaTtfh17xBPcn0v/
-   v+o+3Lhvnx67k6u0uhIfnuzDqlfDjWlff6aeV55OHnlpq4MFrgCTKfaON
-   UoPMWEgomE9UNijakmfzZ8YFf/BbpTwnePUUuXHkqnISeZFRFVgyRhMID
-   l90+WtaXJKp2+yfDPSxqakXwJ1Cyscxydits2ocDTTYKovCYT4429Pha9
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="366690150"
+  t=1697803391; x=1729339391;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a0cCePIIEGKptYoyh7Pp+IV6nY/vFaOdAf4qBUS5Nws=;
+  b=oEREyZY7TT0rSKTajf4gbz050HzsGx2dXVkc6Ens+kWtvdk0HD8iu+a1
+   XqSpS5GXdpuKAd9Q2c8LLy162ZmlatQWpmjX1nXSFy6u12wUuTTvwHggT
+   04DRMQCs3td3OAxmWbfJwS9BYHJdXeUGYMzo5zzTeU9+NwMiDJF0Ded3J
+   urmw8KdVYe9zLDDNHdwxiZQPSqLXh2Z+HhEZEXBW73F+Jmf98CjE+B5oR
+   T49fxsTPtH6vEshn4a2as5wo0TXM/vxEtMKGWzctThXxxk11GUmW7xiQd
+   uQJEYa4mC9SYCxi4yrtw66uklmNJhKg6fcaFZWswYMW2zSbMc5QpjDspd
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="452962002"
 X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="366690150"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 01:55:33 -0700
+   d="scan'208";a="452962002"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 05:03:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="750855353"
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="901123585"
 X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="750855353"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 01:55:32 -0700
-Received: from [10.252.61.130] (zlukwins-mobl.ger.corp.intel.com [10.252.61.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by linux.intel.com (Postfix) with ESMTPS id 2B53C580BE3;
-	Fri, 20 Oct 2023 01:55:29 -0700 (PDT)
-Message-ID: <57efe6de-cf65-32ed-fd1e-a388e1676c70@linux.intel.com>
-Date: Fri, 20 Oct 2023 10:55:27 +0200
+   d="scan'208";a="901123585"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Oct 2023 05:00:58 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qtoDZ-0003Uk-22;
+	Fri, 20 Oct 2023 12:03:05 +0000
+Date: Fri, 20 Oct 2023 20:02:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-serial@vger.kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, alexandre.belloni@bootlin.com,
+	conor.culhane@silvaco.com, imx@lists.linux.dev, joe@perches.com,
+	linux-i3c@lists.infradead.org, miquel.raynal@bootlin.com
+Subject: Re: [PATCH 1/1] tty: i3c: add tty over i3c master support
+Message-ID: <202310201933.9lZn2Ebl-lkp@intel.com>
+References: <20231018211111.3437929-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/6] i3c: master: add enable(disable) hot join in sys
- entry
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, miquel.raynal@bootlin.com
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20231018205929.3435110-1-Frank.Li@nxp.com>
- <20231018205929.3435110-2-Frank.Li@nxp.com>
-From: "Zbigniew, Lukwinski" <zbigniew.lukwinski@linux.intel.com>
-In-Reply-To: <20231018205929.3435110-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231018211111.3437929-1-Frank.Li@nxp.com>
 
-On 10/18/2023 10:59 PM, Frank Li wrote:
-> Add hotjoin entry in sys file system allow user enable/disable hotjoin
-> feature.
->
-> Add (*enable(disable)_hotjoin)() to i3c_master_controller_ops.
-> Add api i3c_master_enable(disable)_hotjoin();
+Hi Frank,
 
-What is the use case for having HJ enable knob in sysfs available for 
-user space other than for debug stuff? In other words, does user space 
-really need to enable/disable HJ in runtime for other reason but debug? 
-If it is only for debug maybe it  could be move to debugFS?
+kernel test robot noticed the following build warnings:
 
-I think that maybe HJ enable knob shall be available in DT so you could 
-control the default state for this feature also at compilation phase?
+[auto build test WARNING on tty/tty-testing]
+[also build test WARNING on tty/tty-next tty/tty-linus linus/master v6.6-rc6 next-20231019]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->   drivers/i3c/master.c       | 84 ++++++++++++++++++++++++++++++++++++++
->   include/linux/i3c/master.h |  5 +++
->   2 files changed, 89 insertions(+)
->
-> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> index 08aeb69a78003..ed5e27cd20811 100644
-> --- a/drivers/i3c/master.c
-> +++ b/drivers/i3c/master.c
-> @@ -526,6 +526,89 @@ static ssize_t i2c_scl_frequency_show(struct device *dev,
->   }
->   static DEVICE_ATTR_RO(i2c_scl_frequency);
->   
-> +static int i3c_set_hotjoin(struct i3c_master_controller *master, bool enable)
-> +{
-> +	int ret;
-> +
-> +	if (!master ||
-> +	    !master->ops ||
-> +	    !master->ops->enable_hotjoin ||
-> +	    !master->ops->disable_hotjoin
-> +	   )
-> +		return -EINVAL;
-> +
-> +	i3c_bus_normaluse_lock(&master->bus);
-> +
-> +	if (enable)
-> +		ret = master->ops->enable_hotjoin(master);
-> +	else
-> +		ret = master->ops->disable_hotjoin(master);
-> +
-> +	master->hotjoin = enable;
-> +
-> +	i3c_bus_normaluse_unlock(&master->bus);
-> +
-> +	return ret;
-> +}
-> +
-> +static ssize_t hotjoin_store(struct device *dev, struct device_attribute *attr,
-> +			     const char *buf, size_t count)
-> +{
-> +	struct i3c_bus *i3cbus = dev_to_i3cbus(dev);
-> +	int ret;
-> +	long res;
-> +
-> +	if (!i3cbus->cur_master)
-> +		return -EINVAL;
-> +
-> +	if (kstrtol(buf, 10, &res))
-> +		return -EINVAL;
-> +
-> +	ret = i3c_set_hotjoin(i3cbus->cur_master->common.master, !!res);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +/*
-> + * i3c_master_enable_hotjoin - Enable hotjoin
-> + * @master: I3C master object
-> + *
-> + * Return: a 0 in case of success, an negative error code otherwise.
-> + */
-> +int i3c_master_enable_hotjoin(struct i3c_master_controller *master)
-> +{
-> +	return i3c_set_hotjoin(master, true);
-> +}
-> +EXPORT_SYMBOL_GPL(i3c_master_enable_hotjoin);
-> +
-> +/*
-> + * i3c_master_disable_hotjoin - Disable hotjoin
-> + * @master: I3C master object
-> + *
-> + * Return: a 0 in case of success, an negative error code otherwise.
-> + */
-> +int i3c_master_disable_hotjoin(struct i3c_master_controller *master)
-> +{
-> +	return i3c_set_hotjoin(master, false);
-> +}
-> +EXPORT_SYMBOL_GPL(i3c_master_disable_hotjoin);
-> +
-> +static ssize_t hotjoin_show(struct device *dev, struct device_attribute *da, char *buf)
-> +{
-> +	struct i3c_bus *i3cbus = dev_to_i3cbus(dev);
-> +	ssize_t ret;
-> +
-> +	i3c_bus_normaluse_lock(i3cbus);
-> +	ret = sysfs_emit(buf, "%d\n", i3cbus->cur_master->common.master->hotjoin);
-> +	i3c_bus_normaluse_unlock(i3cbus);
-> +
-> +	return ret;
-> +}
-> +
-> +static DEVICE_ATTR_RW(hotjoin);
-> +
->   static struct attribute *i3c_masterdev_attrs[] = {
->   	&dev_attr_mode.attr,
->   	&dev_attr_current_master.attr,
-> @@ -536,6 +619,7 @@ static struct attribute *i3c_masterdev_attrs[] = {
->   	&dev_attr_pid.attr,
->   	&dev_attr_dynamic_address.attr,
->   	&dev_attr_hdrcap.attr,
-> +	&dev_attr_hotjoin.attr,
->   	NULL,
->   };
->   ATTRIBUTE_GROUPS(i3c_masterdev);
-> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-> index 0b52da4f23467..65b8965968af2 100644
-> --- a/include/linux/i3c/master.h
-> +++ b/include/linux/i3c/master.h
-> @@ -452,6 +452,8 @@ struct i3c_master_controller_ops {
->   	int (*disable_ibi)(struct i3c_dev_desc *dev);
->   	void (*recycle_ibi_slot)(struct i3c_dev_desc *dev,
->   				 struct i3c_ibi_slot *slot);
-> +	int (*enable_hotjoin)(struct i3c_master_controller *master);
-> +	int (*disable_hotjoin)(struct i3c_master_controller *master);
->   };
->   
->   /**
-> @@ -487,6 +489,7 @@ struct i3c_master_controller {
->   	const struct i3c_master_controller_ops *ops;
->   	unsigned int secondary : 1;
->   	unsigned int init_done : 1;
-> +	unsigned int hotjoin: 1;
->   	struct {
->   		struct list_head i3c;
->   		struct list_head i2c;
-> @@ -543,6 +546,8 @@ int i3c_master_register(struct i3c_master_controller *master,
->   			const struct i3c_master_controller_ops *ops,
->   			bool secondary);
->   void i3c_master_unregister(struct i3c_master_controller *master);
-> +int i3c_master_enable_hotjoin(struct i3c_master_controller *master);
-> +int i3c_master_disable_hotjoin(struct i3c_master_controller *master);
->   
->   /**
->    * i3c_dev_get_master_data() - get master private data attached to an I3C
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/tty-i3c-add-tty-over-i3c-master-support/20231019-051407
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
+patch link:    https://lore.kernel.org/r/20231018211111.3437929-1-Frank.Li%40nxp.com
+patch subject: [PATCH 1/1] tty: i3c: add tty over i3c master support
+config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20231020/202310201933.9lZn2Ebl-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231020/202310201933.9lZn2Ebl-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310201933.9lZn2Ebl-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/tty/i3c_tty.c: In function 'tty_i3c_rxwork':
+   drivers/tty/i3c_tty.c:265:26: error: 'struct i3c_priv_xfer' has no member named 'actual_len'
+     265 |                 if (xfers.actual_len) {
+         |                          ^
+   drivers/tty/i3c_tty.c:266:82: error: 'struct i3c_priv_xfer' has no member named 'actual_len'
+     266 |                         tty_insert_flip_string(&sport->port, sport->buffer, xfers.actual_len);
+         |                                                                                  ^
+   drivers/tty/i3c_tty.c:271:25: error: implicit declaration of function 'i3c_device_getstatus_format1' [-Werror=implicit-function-declaration]
+     271 |                         i3c_device_getstatus_format1(sport->i3cdev, &status);
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/tty/i3c_tty.c: At top level:
+>> drivers/tty/i3c_tty.c:400:6: warning: no previous prototype for 'i3c_remove' [-Wmissing-prototypes]
+     400 | void i3c_remove(struct i3c_device *dev)
+         |      ^~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/i3c_remove +400 drivers/tty/i3c_tty.c
+
+   399	
+ > 400	void i3c_remove(struct i3c_device *dev)
+   401	{
+   402		struct ttyi3c_port *sport = dev_get_drvdata(&dev->dev);
+   403	
+   404		tty_port_unregister_device(&sport->port, i3c_tty_driver, sport->minor);
+   405		cancel_work_sync(&sport->txwork);
+   406		destroy_workqueue(sport->workqueue);
+   407	}
+   408	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
