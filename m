@@ -1,57 +1,57 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2088.outbound.protection.outlook.com [40.107.21.88])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2064.outbound.protection.outlook.com [40.107.22.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8732F1D532
-	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 14:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75DD1A29D
+	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="r8KAmNyc"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="PY0nPHZN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VnNA9ZbGaaUWl4NaTlSzDsq37ONbTl6om7RXpGsUelrcD51hy6vq5ftleRYNsSH/FVefZ0Ffmjrp8LDhfX1xrqiGFc75rIayyf+WpGMjjoQZPbAuO4KhU18P8Vo9Xpek8KEa0l9miv7sUnuO9cKSoi0bs1sKmCdP7ETmKDnEF854lGBsSq4AX3H9H1lR4GQCC4BtntevkNJiQME1iFuPzQ1ODvg2PypgEAWkrB+rLtJQnLZFqhKNxvVnjd1njrPZpuq/w2WlUDkTUBs+wZdHbO93oWmK0OmRm+CCfxZ+57TTyFLvp3+LGHTl732f1ZkVMit7dwHJncxOdKQZmLjtSA==
+ b=KWLNbzFs1+wGN+QThyRPJr3fUSroZqjyK0w5ODsoL7NKegceC/D3bj038LtWD/6bL9CFEemiibrUIb3G6SNhx2dlSmYQkblOZ3LpnUHXOqJnJbxXUE295AwF49OIS/2g+U5Wp6B9jxVG60WKeesJlK9iWuAv1ucK5D9xOz/mf6D7USgc+1Z+ZjcLWsVP8yBrg4Nzt8tFVZqGZQ8w0TKcArwhpMlKbMz8JdrZF8evGkCEXn5W8p2HmgnLIe8MA9VTavDMhgBF0ptpecgzlF39vfZfCkqNpXNvxL95u8NltA5ILNJHodpBXd5PdH04mu2Ex7cK+NMQ9gX19rhznMteqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QhoPxG6wRCNe1W0w6x7WTuNoBxrj/Qn9Z2kElRwpkrk=;
- b=lwAxb0i4kUHo7xHt5mitC40I/WmDDmhFEZ6YuY48omHMvAof7inuWzX2dRXFWywpMIxrBF9j2f1r4LP2mSM/a8+a98d4cZ7kDU4LV2zCwE+FWCx0c7DRdzFDbzKOCTOk9088h8qwOAHhh4JR+mdrnMnpnEU6db9yQBeblF3HiEtlrdG1Pbxzl8Eyn6SexaqWrGcjxu9M//rJCk0AI+VftJieqY+H9jk52sR1AwZrQjmdtlYvSZP4DS9IMk7z8TlfBdhGJYKDroFFVYxyHxT6HiJ6n8ETnh1xRSg/Oncw+YJZzSNvk7GiQR4KR2VE8I6soG0txNg1LpMyqlvcHVfHeA==
+ bh=PGTavYzMU6lqaWzOCOaheL+FHdUYizenARmC4f/D4L4=;
+ b=D0S9MCImstWO2SqdWj1GB539TYNuQfWxD1IDVjL9h0drVYkR2ymc/RBh64Q4BN/gqh6pPuMqWBY28l4Ls14UDGkqNK7Y7TdA8cH9Y3hO8lbf4OpFEouY8jAr5WGda3SvhZtEAP6OZszhgS00RXHxCkB1FJylx9Sh5GOyaIQ3KGm3XaQRLKe5v4g3EYmJmqu1Nb0TVbla04WiY5lmwNpTZhlUTMb+0E3KIfBvb9QBGcOwd9K1tLvUZRBd4BISCnfP6U7t2qriuMFk8hEcEn1aK4CjpDR/z1lAPVM5OVNJjFINW9DEg3MX7Npl2mFYKhtcXCNgVDBtRmM/h1QVAFs2/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QhoPxG6wRCNe1W0w6x7WTuNoBxrj/Qn9Z2kElRwpkrk=;
- b=r8KAmNyc0epj5nOMp+66e3iW2EFf/bnKrFtHQheLJRciki7F7uYYTuqooOltklZGjirX3tKC52tIlDVL1Zzur/WnBDMMSCSZSD9xEGgLzojhkfyoNY+ie4xgZZfnItkQ9at16YOG/jMLop/lzz+biN07R3tkhqZT9Ffx65BaRco=
+ bh=PGTavYzMU6lqaWzOCOaheL+FHdUYizenARmC4f/D4L4=;
+ b=PY0nPHZN9CZjIMzV9LApSy42UqXFzeCnNJnr2w+TQreRTBvJsZ3UNzNvQnhgn1e9J/aqUxXqJgVOGHuM924E+31kU8odTZs//LM8Yd/PL37a4/nCuMUXAcCR2uUH7obGiFm1OFUWLLRzSse+YAN/DJBL4a8WuAUEluVBgvRXLTQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
  by AM9PR04MB7619.eurprd04.prod.outlook.com (2603:10a6:20b:284::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.9; Fri, 20 Oct
- 2023 14:19:01 +0000
+ 2023 14:21:04 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6907.022; Fri, 20 Oct 2023
- 14:19:01 +0000
-Date: Fri, 20 Oct 2023 10:18:55 -0400
+ 14:21:04 +0000
+Date: Fri, 20 Oct 2023 10:20:57 -0400
 From: Frank Li <Frank.li@nxp.com>
 To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+Cc: "Zbigniew, Lukwinski" <zbigniew.lukwinski@linux.intel.com>,
+	alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
 	imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 Resent 6/6] i3c: master: svc: fix random hot join
- failure since timeout error
-Message-ID: <ZTKMTwU6cVAfGCKG@lizhi-Precision-Tower-5810>
-References: <20231018155926.3305476-1-Frank.Li@nxp.com>
- <20231018155926.3305476-7-Frank.Li@nxp.com>
- <20231019084452.11fd0645@xps-13>
- <ZTFNvrsSoHOS3P2g@lizhi-Precision-Tower-5810>
- <20231020160645.67e678ee@xps-13>
-Content-Type: text/plain; charset=utf-8
+Subject: Re: [PATCH v2 1/6] i3c: master: add enable(disable) hot join in sys
+ entry
+Message-ID: <ZTKMyW939rB6sSKq@lizhi-Precision-Tower-5810>
+References: <20231018205929.3435110-1-Frank.Li@nxp.com>
+ <20231018205929.3435110-2-Frank.Li@nxp.com>
+ <57efe6de-cf65-32ed-fd1e-a388e1676c70@linux.intel.com>
+ <20231020154528.2f5f68f5@xps-13>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231020160645.67e678ee@xps-13>
-X-ClientProxiedBy: BYAPR07CA0053.namprd07.prod.outlook.com
- (2603:10b6:a03:60::30) To AM6PR04MB4838.eurprd04.prod.outlook.com
+In-Reply-To: <20231020154528.2f5f68f5@xps-13>
+X-ClientProxiedBy: SJ0PR13CA0095.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::10) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -61,158 +61,85 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM9PR04MB7619:EE_
-X-MS-Office365-Filtering-Correlation-Id: c68eab64-2003-43a9-7f06-08dbd1778208
+X-MS-Office365-Filtering-Correlation-Id: 0559ed9d-6a96-42c0-c349-08dbd177cadc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	Db9yeFfPQ8NoaH0TTtYQlR3154Fom+TNqmP5WIn9OEFGHeB9a3srbhm2QGJLzYBzdC/9PsaRhoVCY72Ca1SJC+Z3MTZ1vV4EicedH2FIOOo6cd2gm2C98MyuAfPinzB/eAc2d7ya/Y+hnmWw3ctJ0SH0P17X7jpWYmsJrQ7QLThITOaiUYHsvZRUdCHg62EOn99J7WS3uzTu1PaqS0sgWKk/eyYAbwK0XnaB3h7yPAU8nEY9H/SZrDxXqXAUM0rZTd7bA6wHGFlEYWKCGBAkR+982s9qLybSsm1WSWizdv+oWNOie1ZKPPSRwfZsvSEpaLpzB5OtINS8YuG45RpU56ctBEiHOhn1ThppMLUdonVFCzDOYgGWYVDGv8HAFKNPAqQJcbfgrf6Egiwv4zLa32JvxJyW359pr7VKu1dn5pUCVaDi8GSwXsjS3+SPzKnmCRdMeIxAV5R2KFq7fY2q9/kGk8sUsOt1wn0VXRAFUisMKOSz3jpPtK3ZQ3uljrZTKjreArGOIE4qSXSDoRoNVtT6/KyIAI4VkZopoCA0t7qT83Yi1uDeDdU6IM3z18byQ/kcaa313Mxju6XUuil+RK7RE/Sb+K6K91exnS26TzrsXMubv2gNce+Nc7Mde5BP
+	kKcyV3OHakdnnZ4Onj8347Lp7U70JX8YVRrXSsLfCYw8ZgKhhMx+l8x41VniouD4h7djvi23aYa2jl39j4NbXtPz0gZF1XEz4K0dAY8k0MZIgSfg2a2cHQBK14fOeZ3PQRDC9N5t0yFtEHZfV009uXWKQTmQ7O0AbeM1A6U1fNynSK80WAkdRHF7kTTTvtfn3VV6/03FtRVBftUahbJ3UV3bqWr/xU4kSg4REy1Q1K6HA1eeYZUXWv3W+mecEofXn/BIzFnUvsVWCyLQCzUyvbnDcgNH4IHEjytxVhx9ojtOWqsFwzFtGC/Wd/CgnPI940Kb6ovvvLof/82Ke5Sv4AiNy/qg689dBL1NZbJMlL2fq1IiZ2r7YUNZGqDiCau8B1AsShjLMWCJR6iTFb35oQmvw8FK+SdifzwlPl6aVlXXQkvUKLTSVXinf12lNa0ezB0JJiVYlUeR3IwKl37UJL2MjxwhhtVFxc2xvQFAFPWNB9XQAndEEtcSHLM5pOsIiUuA4DLLofmYbJ3Hen5+WUKd3Ku+c0gAPH5uQokal3bl3NQJHn0Yxeq0VLWmP9tBx3DEWWY+jXtWKdj8Ab9ZZmwAKjMWQPRYf+fIrD+99UkWgFYgn0rE2fYP61HMOlN4
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(396003)(39860400002)(376002)(136003)(346002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(6916009)(38350700005)(2906002)(6486002)(5660300002)(8936002)(8676002)(6666004)(4326008)(41300700001)(38100700002)(66556008)(26005)(86362001)(66946007)(33716001)(316002)(478600001)(6506007)(9686003)(52116002)(66574015)(66476007)(6512007)(83380400001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(396003)(39860400002)(376002)(136003)(346002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(6916009)(38350700005)(2906002)(6486002)(5660300002)(8936002)(8676002)(6666004)(4326008)(41300700001)(38100700002)(66556008)(26005)(86362001)(66946007)(33716001)(316002)(478600001)(6506007)(9686003)(53546011)(52116002)(66476007)(6512007)(83380400001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RmR6VlRxL0VYVW45aVFmVmM4UTIxb1pHN1A5OW5xN2VWWFMzTHJsWGgzTGp2?=
- =?utf-8?B?K3lZdGVyZGE1NTlTRllmK2FYWXhoYTU4bllkeVJMNDduT3l5ek0wV1ZmeFhm?=
- =?utf-8?B?MEt6RW5jOTBuOUk5OEhvRjFoWjNNa3A4OGJ5amtmRmhqWlFCNHo3OWRQelFO?=
- =?utf-8?B?dW5Hd0tXOVIwV0JjWnBLR3M1OEY2ZFFxdHduc0IxVjVqTnNSdGtGNFFMYXQ4?=
- =?utf-8?B?dWdQRlRFWHk3dm1GS290RGY0RVlvSXNpcWRIemkwclRHVFViSHQrV0ZXL3J4?=
- =?utf-8?B?d0QvMjdvblRndjNpVGw5ekowQnNWZzg2QUdZRFdHZWsrdWIvbVBxY2U4SUlz?=
- =?utf-8?B?M0pGenFiYXhaRHQ4d2pzSk9HTFJWeXFnMFFsaUVQMEVkNHlBWU91clF5cUY0?=
- =?utf-8?B?TXZ3NDFwWHhnL0o0ZjdlbWt0dFVER3RBNlk0eC9HYjlKUkwxWlZsWUpSeU5t?=
- =?utf-8?B?Zy9MWVEwbmZrNGY3bUpzYjBJdjYwMlB0UEdyTExaUlVremtRVzhIWmNPSzQ1?=
- =?utf-8?B?eFlJc2krNFdVeG9lUDBsbW92RzFqc1R4ZWxnRDNWWHFLUUJkcDJGbGZlNTVp?=
- =?utf-8?B?VlA1dnAxaU9FMEVVdVYreGVZbEdlL0lXTTNybGN4K2grVE4zQk1FV3NPQVFz?=
- =?utf-8?B?OGZFTEtMK2R3bjZuZHVVdTdaUGJZS2s3RjdObFhOVnFyanJoWXNMMlc3cGNY?=
- =?utf-8?B?WmpjazQ0OXNQSldjTk5ZNjNkcUtueXMreHBWN084aFJGK2txMHNnVGg5ZzN6?=
- =?utf-8?B?akF4R0dXUnpxNE41UU45R3dGRjRIS3lqVDdJNGxrdVE2MHJmZ05KUllTVmNW?=
- =?utf-8?B?K0NwS29nWEZ5bkxnaGxDMDVXRW5XMjJzQWZHWlNXWGI4R0hGSXBXOUNmWDlC?=
- =?utf-8?B?Sllsb0RhdWxYQlVxblcrSmw5UmozR09EZm5ZdHljZ1VnMzl4OVpsMk1LN3Zl?=
- =?utf-8?B?QzBWdDZPVEl4Wmp6dE1LM3FxN2srSm1pZHhvdm5VWTFBQWpSWWNvZThYRVlN?=
- =?utf-8?B?Y1JOclFMQUdiQnBZOThVcTc0RVdybjltVlUrRjNvNXJ4OFhwVFUrZ0pUV0lB?=
- =?utf-8?B?cVdMZUc3VlptZkk5UkRGT29NL3duRmtxbnQxRXlUQjArZE9lUXlyVzhCc1BJ?=
- =?utf-8?B?Q2RHbDFycGtrR1RHMFY3S1JlbmpsSWtsZllzVm9zV3Jpb0I0c1BkMlljV21W?=
- =?utf-8?B?Z1pnUmZ2cXBRWno2NHhiUW9hRGJrSDh6SURxTitFc1VZTSt0VTJteVpXVU45?=
- =?utf-8?B?YnFTSTl6Ynowak95aFBLNENFNmptWUlrNDJmekx1Y202Vlp0MFMrVWtkZEZK?=
- =?utf-8?B?dU9EbFFsYktNMjk1cS9iQURkbTdTTzFLSVAxazU1NURWVGtYK1ltUHBqTmdq?=
- =?utf-8?B?TVBUNzJUcVJ2dXhJT3d1NVp6N2NDQkhZYXhHZXNoc0V1YzVlMkw2UkNnOGZQ?=
- =?utf-8?B?bUNZSmpPVnF1ZWxST2hHN2RZY21aUFV5cHpsTUwxZ3dkSHl4OVpWYVRaZEJV?=
- =?utf-8?B?UG44KzdQaVU3WTBOSlMxK3d3Y1I4OUlLN2N6Mk5HS1puS0l1Q2hPZzd3bnJJ?=
- =?utf-8?B?QUhnWFF5UENwNjZOL2ZUcVBUWG1KcktJT2cwUVhkTi8zTFM3a1Vydm9WZnRt?=
- =?utf-8?B?RTF0QnUwNUtGVHpBby9DVVgzV2Z5c0htTUZ5TjZKNnZJZmJoaUhzVm4vRmxZ?=
- =?utf-8?B?VlNqV092L242QWxyTzlzV0VVZzNJMGNCRnBTdEs5cGNCK0hxL3FsY2ZpZGp3?=
- =?utf-8?B?NkxKMEV5R2h4SXE3WE0waXhJcUdNVVlZNDBNZXI2QUZTbkx3UFd6THoycDR1?=
- =?utf-8?B?eXRIMTFwSHdjSXphalo5SU5RcUVLK0VGQ01GZHdaZWdBTnBJQmJBTUVOb1Iz?=
- =?utf-8?B?VzF2OC8waFM5cjhWa1hGRGZSaVFjVmdFa0hucTBTdE1ocmE0ZVJUczRkc2cv?=
- =?utf-8?B?eUptZ0djczRzaUhEYmxSOFJYcGVMekZHRFBad1F4TU1KWUwwZnhGNS90M3By?=
- =?utf-8?B?S1NQeTlVWWVXdHIxZTVDb0lBMnRWUExxY2hLS25INlc4QytXQUhBMTBtY0lO?=
- =?utf-8?B?SmJjc3JORDR1SnFqdFh1U2lheDl2K2lPVUJwcmJKcGoxT0RIRlFJdWRVTWFV?=
- =?utf-8?Q?0ViM=3D?=
+	=?iso-8859-1?Q?yVkOVRHy+/2Sum8oGpcgkYuortQ7JaCXegiwtbdVKb/A1ZK3WET/yFvQDr?=
+ =?iso-8859-1?Q?EiHLb1SiHKIdc71YfeEJtCpyXfc6980Wc6aQ9rZZzCKKkN057tM4NDYIQM?=
+ =?iso-8859-1?Q?68RRc2X+9MWizTtglV/+Wc61F23/9r0v30tgtGEeeWIMihM5gq4lgqoSPI?=
+ =?iso-8859-1?Q?oetmiCVrn+ewJQZrmAj2WOGiIlWcnRGcWHO5Co3NTaQf4sZLOeNyMoEFWz?=
+ =?iso-8859-1?Q?bwD4clhFASjMnPDE6yMTv4ubDQRziH5QCinAS/br8AkNej21TK97ixeEzw?=
+ =?iso-8859-1?Q?RNyPtoN56y1fKvMilSACkXUbSzhrxVN5BV8W9L+ouO5aDYjrPaTQ/oTD5I?=
+ =?iso-8859-1?Q?LA7kI3S+kWNgSRiXPRoBoG6/bMYwUl2t8Bex11pwMuu9qSeTaqEIHMjo0N?=
+ =?iso-8859-1?Q?WUTF/MA9wH5UPM/DXdf4nSrzGPctIfWOcJTa1b/qEbD1Cw82w6w4V9xU84?=
+ =?iso-8859-1?Q?7Klq0LukrYk1bqxV0n9n40dNE8uTd62lRhG1HDEv5TFA2Rr/dltzhrrZk+?=
+ =?iso-8859-1?Q?AX3qF616AX0KkUvqt1aVHSlAIySdx4y1OlJv5jkge9t7GqGH3tB50NoxUm?=
+ =?iso-8859-1?Q?oJBPaO1KOwwXD+Y/EzZcCqb9Dq1M/3MU9/l1eDY1sB01dZR+u+WBMVN7hU?=
+ =?iso-8859-1?Q?7KD/6UCYZkVmjoDbMS1SpoVkUR6NQY389iqwHhC2Mx3HaKMB9gD0WpjBFJ?=
+ =?iso-8859-1?Q?2AMsA8LAfAXMFpL+BAK7EdRTUWhCk0P2CPos9KgtBi9VV24byXclnx9oMZ?=
+ =?iso-8859-1?Q?KahRe+T8h5CJnSClARbr1MileBf5uUGiw1i1mHfG+2AF1sKlJnW8ldy950?=
+ =?iso-8859-1?Q?I4WPR3FE96Oisy1hzBgUcDHXutFaDlMBedihy/lTBJ04/m/GMxuNI8WsU+?=
+ =?iso-8859-1?Q?QKWRrLR+1M14HRFxAdUGTSyA4NIjoKYydAF3kiHCTKbLO6VFZ33QFwEX7+?=
+ =?iso-8859-1?Q?r8yfCKT4geR9eWTUrEx7yQXCBTFgETBOmDM2ri4fvhxvKH6ZbS0DxK2m41?=
+ =?iso-8859-1?Q?qrRYhGHqM1ppAMTplHg4c2eRkjmcymGP0KUON3kLHW8qw0mKwji3ct5KcM?=
+ =?iso-8859-1?Q?HUJ1Twow1SYGMoiyg6Ldf0+KeNte6PhG4vWolBseXELloa4Kx0Ax4zCcMj?=
+ =?iso-8859-1?Q?t2xD6eBic1RHnhwRlYEPFT+rI00twzMuTYEmVLoH8shY/SIRLHkYpx/qcZ?=
+ =?iso-8859-1?Q?Pn4W8mTbJgX7zDdP62Sc3adyfxUjRIefb375SJzaBnmzlcJz0KPFyuDB8P?=
+ =?iso-8859-1?Q?+a2zkASlIxppN6yG3aceDxNRipgs/hVAd1Fs3qd6v4t4pZX/RMXp6vHUzK?=
+ =?iso-8859-1?Q?XgFba87BtaOZSP9JlD91b2dKNJ0UlB6JrenGfIPReh2+nRBsIUO8HiekcO?=
+ =?iso-8859-1?Q?v9VW6WsMAutvGoPKq+fHenjEU2kj6k4s+JA+A2hrARX4bOQMpL67ri0oxS?=
+ =?iso-8859-1?Q?UyBFqUPlCmr6RQRyX4gbNjlOpzlQvgnW7buWI+CcQtMFWFe6nPDc8RGU7U?=
+ =?iso-8859-1?Q?Z9nfYAjS6I8y6IGSGO4LECZy+T74oB7J34VQY1XIcRmevwbw2AIFQ9r+Hn?=
+ =?iso-8859-1?Q?l3tvWW+Ml+w4I/1NbP69o/OjQw/o8jmvhsBywdLwr2PYnW/nTc8oXh45Ts?=
+ =?iso-8859-1?Q?bMyv1GDnPYf4i+ee6Pb4Pyos0Ndiz+Hesx?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c68eab64-2003-43a9-7f06-08dbd1778208
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0559ed9d-6a96-42c0-c349-08dbd177cadc
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 14:19:01.7527
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 14:21:04.0188
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wp/fO9057pPOvppddgSbBl+KysH6Qi0mW8KfHOG59+WMFQGjidMuWddNOh1HYXC/HsRNVLOhUkLCtrKXH0XAqQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: /SCxUJzzXPYp/5XfN8ZbUDgFlTuTZ4Sl9iJOUFnKrAJ2TEtvWDWPmtp0LALt7yu5mgpTwDRWBAn7hdgTW8OGsg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7619
 
-On Fri, Oct 20, 2023 at 04:06:45PM +0200, Miquel Raynal wrote:
-> Hi Frank,
+On Fri, Oct 20, 2023 at 03:45:28PM +0200, Miquel Raynal wrote:
+> Hi Lukwinski,
 > 
-> Frank.li@nxp.com wrote on Thu, 19 Oct 2023 11:39:42 -0400:
+> zbigniew.lukwinski@linux.intel.com wrote on Fri, 20 Oct 2023 10:55:27
+> +0200:
 > 
-> > On Thu, Oct 19, 2023 at 08:44:52AM +0200, Miquel Raynal wrote:
-> > > Hi Frank,
-> > > 
-> > > Frank.Li@nxp.com wrote on Wed, 18 Oct 2023 11:59:26 -0400:
-> > >   
-> > > > master side report:
-> > > >   silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x020090c7, MERRWARN 0x00100000
-> > > > 
-> > > > BIT 20: TIMEOUT error
-> > > >   The module has stalled too long in a frame. This happens when:
-> > > >   - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
-> > > > middle of a message,
-> > > >   - No STOP was issued and between messages,
-> > > >   - IBI manual is used and no decision was made.  
-> > > 
-> > > I am still not convinced this should be ignored in all cases.
-> > > 
-> > > Case 1 is a problem because the hardware failed somehow.  
+> > On 10/18/2023 10:59 PM, Frank Li wrote:
+> > > Add hotjoin entry in sys file system allow user enable/disable hotjoin
+> > > feature.
+> > >
+> > > Add (*enable(disable)_hotjoin)() to i3c_master_controller_ops.
+> > > Add api i3c_master_enable(disable)_hotjoin();  
 > > 
-> > But so far, no action to handle this case in current code.
+> > What is the use case for having HJ enable knob in sysfs available for user space other than for debug stuff? In other words, does user space really need to enable/disable HJ in runtime for other reason but debug? If it is only for debug maybe it  could be move to debugFS?
 > 
-> Yes, but if you detect an issue and ignore it, it's not better than
-> reporting it without handling it. Instead of totally ignoring this I
-> would at least write a debug message (identical to what's below) before
-> returning false, even though I am not convinced unconditionally
-> returning false here is wise. If you fail a hardware sequence because
-> you added a printk, it's a problem. Maybe you consider this line as
-> noise, but I believe it's still an error condition. Maybe, however,
-> this bit gets set after the whole sequence, and this is just a "bus
-> is idle" condition. If that's the case, then you need some
-> additional heuristics to properly ignore the bit?
+> I don't think hotjoin should be considered as a debug feature. The
+> problem here is the power consumption which is higher if you enable
+> this feature (you need to keep everything clocked and ready to handle
+> an IBI) whereas if your design is "fixed" (more like an I2C bus) you
+> may save power by disabling this feature.
 > 
+> A module parameter does not fit here because it's a per-bus
+> configuration.
 
-                dev_err(master->dev,                                       
-                        "Error condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
-                        mstatus, merrwarn);
-+
-+		/* ignore timeout error */
-+		if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT)
-+			return false;
-+
-
-Is it okay move SVC_I3C_MERRWARN_TIMEOUT after dev_err?
+I agree. sys entry is more flexiable. and let controller choose better
+power saving policy for difference user case.
 
 Frank
 
-
-> > In svc_i3c_master_xfer() have not check this flags. also have not enable
-> > ERRWARN irq.
-> > 
-> > If we met this case, we can add new functions/argument to handle this.
-> > Then we can real debug the code and recover bus.
-> > 
-> > Without this patch, simplest add some debug message before issue
-> > SVC_I3C_MCTRL_REQUEST_AUTO_IBI, TIMEOUT will be set.
-> 
-> Yes, and sometimes it won't be an issue, but sometimes it may. Maybe we
-> can find more advanced heuristics there.
-> 
-> > And svc_i3c_master_error() was only called by svc_i3c_master_ibi_work().
-> >
-> > So I can think only case 3 happen in svc_i3c_master_ibi_work().
-> 
-> Case 3 cannot be handled by Linux (because of the natural latency of
-> the OS).
-> 
-> > 
-> > Frank
-> > 
-> > > Case 2 is fine I guess.
-> > > Case 3 is not possible in Linux, this will not be supported.
-> > >   
-> > > >   The maximum stall period is 10 KHz or 100 Î¼s.  
-> > > 
-> > > s/10 KHz//
-> > >   
-> > > > 
-> > > > This is a just warning. System irq thread schedule latency is possible
-> > > > bigger than 100us. Just omit this waring.  
-> > > 
-> > > This can be considered as being just a warning as the system IRQ
-> > > latency can easily be greater than 100us.
-> 
-> This was skipped in your v3.
-> 
-> > > > Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
 > 
 > Thanks,
-> MiquÃ¨l
+> Miquèl
