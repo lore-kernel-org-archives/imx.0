@@ -1,155 +1,215 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2048.outbound.protection.outlook.com [40.107.6.48])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78744369
-	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 00:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0148C847D
+	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 08:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="lQlvzuP+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UTILc/BtZsQ5MDhGnvuMC36oAB6xbntA10MWxtiKfTkRwEDOtiI4H5UgmcHi73dU5vAHSytpwlbEnrnppLJ0nRTtxMEsR/qstfkJ05Rtk3mU+0npQLViC8/msozFIcsB83+NTetERiedJ3hV0tSWJ5v/pEMPw4X6/ACqqaNq08Wdix2hvPy1gJvnrfBtkNAvhP/lWIp4S6oieN54UQpKnEm5ndG0DVCJ51lk6RAmst/YC5XLUBFXMkC+jJB9AiT7SYFWUunzONjQZxu6G9oWyx9EsqONdSlrBBStjxniTlYFLq8r1gMXWLksD0YIrOrZRW8/Nvj0hnRpUxkwaBjJyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D6R4JAiDZYS7/Pom32y1V3IWQrjJn0fswcBulp/uyy4=;
- b=cPS2mIv3i/hLfSl1g86FjAGaXAxN9rz8lMLI6P8rcioxgDo5/LG7cQvjKSRdPMZOlAikunYTQEICzmqnBvQuwkB8zRLsk/435d7ot2zycb2RH8kTHFPgRTfARzZMrN1VDzApDHKk2vSCAPe6qeabHSyTtswBnJ3Ot39IyFLrTpr3TLjS8CVZN4oQqvgMb4ojA3juvp33jagNVuSF+K50sb2mxkgh10MlPe7u7ViLQ+ljVllo9ayvBXtF4pZGXi/pLmGZH0CcGfFeKdSPx6XOHvjLZu4ZOUqZsyNbY682gMr8Dn5Iem9PiIj15QDuRt6DSrZzn1KQIE8z9aeaFTcewA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6R4JAiDZYS7/Pom32y1V3IWQrjJn0fswcBulp/uyy4=;
- b=lQlvzuP+ueOAfIw7EakxWKo5Q9GL/D+EwR7HMSFUVrUcVyM36aw0yrZ2xFt5ptR4cgy0Xv3fAJDK/U+A0bYlpAf7OZl37zFotaSQTr/9ptgLV/94RcmksrmfO2ljIVAhhE4nupO45qlTKjGelmmIV+ztRdjYtuJyliqc3Ah3++U=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS8PR04MB7528.eurprd04.prod.outlook.com (2603:10a6:20b:297::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.8; Fri, 20 Oct
- 2023 00:28:34 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6907.022; Fri, 20 Oct 2023
- 00:28:34 +0000
-Date: Thu, 19 Oct 2023 20:28:27 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: miquel.raynal@bootlin.com
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
-	imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] i3c: master: svc: fix SDA keep low when polling
- IBIWON timeout happen
-Message-ID: <ZTHJq+9OKHVRaXGW@lizhi-Precision-Tower-5810>
-References: <20231019222725.3598022-1-Frank.Li@nxp.com>
- <20231019222725.3598022-6-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231019222725.3598022-6-Frank.Li@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0129.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::14) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kd+QWSGk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697792134; x=1729328134;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ldKD9vWG59M8ubPGySLlaVJYtWih/t+41frfCeRocik=;
+  b=Kd+QWSGkdRu5/ZN2XJEF3GPoIknT1E5YmAqmpqAf1LN7pY/kxJF41bXs
+   P8H86hKSImmgWqtD8I1dV0az1BQvS48BRrXdvwKP/b97so7S6DOQ4hmZR
+   EpZ+R8NSfBe2o7At8BBMr7ImQNyHdIGFqg336m+lxSaTtfh17xBPcn0v/
+   v+o+3Lhvnx67k6u0uhIfnuzDqlfDjWlff6aeV55OHnlpq4MFrgCTKfaON
+   UoPMWEgomE9UNijakmfzZ8YFf/BbpTwnePUUuXHkqnISeZFRFVgyRhMID
+   l90+WtaXJKp2+yfDPSxqakXwJ1Cyscxydits2ocDTTYKovCYT4429Pha9
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="366690150"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="366690150"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 01:55:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="750855353"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="750855353"
+Received: from linux.intel.com ([10.54.29.200])
+  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 01:55:32 -0700
+Received: from [10.252.61.130] (zlukwins-mobl.ger.corp.intel.com [10.252.61.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by linux.intel.com (Postfix) with ESMTPS id 2B53C580BE3;
+	Fri, 20 Oct 2023 01:55:29 -0700 (PDT)
+Message-ID: <57efe6de-cf65-32ed-fd1e-a388e1676c70@linux.intel.com>
+Date: Fri, 20 Oct 2023 10:55:27 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB7528:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d7563ee-e665-454e-fe96-08dbd1037e75
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	h+p7Xx/MJR7XVc9CdbTdgz5OpXDsYtYRA+BOpoJZsoGuWpuj17y1hH0aK1kTWU3pPtX8nc68oq1zwDDW+oXhhFElhOw41Q3IorIVEmxFXR332HKg9e8+npZtAy72zF4wje8uIT0dP2GNGydkv3hd49Em1EOhnpuU3wGLMJZtzQ/SkrCS6VcAvpMIQe240Ukor15FQ5L3DZnJWUARj3n8CnY2PgN0P0VNFl6hp13jLu4W8klHvapdgCkWeG18jan9z5CjEz2G4c7+HvUItuI8iZp/dRfXeDSeaaPMDyWToBkmbzNIjeSzHJyReJPOBEWJZfV6eMY5nyQdf9JgWR/pWOVSolKmzHlt7IlGwzf/kGdSTqYYr9l92XKVK7YXzCEw2M3GZZM4+nebyRVxi/DtahSWyb1dq7dH9Fzxns8bYdFdRgroW98coFbG5mu9PlsRXatTbRS+t6VG97KpgIDX90AJ5OI6ZjdfN0u69WGctL0J/7sTiaMAJ8+wz8Wldejam6MnQApy24elGolAMwvXD8ugvy5UqMlyfm2bDesN92SPVPkkrey2mSWnMcJsbLNTTCII/jfjH4LmwOBpmFI0AvS+ulHzonP9nXRIJn3mrqUYyHrluisnBnYLBUjHMZBj6qzX6VhjeARX6CLRn4Hu6Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(376002)(39860400002)(136003)(346002)(396003)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(86362001)(9686003)(6512007)(26005)(41300700001)(478600001)(6486002)(5660300002)(8936002)(2906002)(4326008)(66946007)(6916009)(316002)(33716001)(66556008)(66476007)(8676002)(52116002)(6666004)(6506007)(38350700005)(38100700002)(83380400001)(67856001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TzazHxC5b4RNrSF8xVcMDXngaJ2ANuh8rTWGzW9izZh54PI/bMO5dUuSt6W0?=
- =?us-ascii?Q?KjTm0ZENNPDcEEx1IThIjm66W4S0wdz9dQ0B3c2RMZC4CK1M8fiwvRoWqplm?=
- =?us-ascii?Q?vWzui3MN/dWsq8O0F91/z1hHgD6ylyfYY6r8rgtrIOWH9EMKbYp3PhEIr5Y5?=
- =?us-ascii?Q?hY1IuViJorPAKnk/ZUxj82dr9YaAFbpZALsd2VTvRqPLg3LLuBooUpy0wr8C?=
- =?us-ascii?Q?n+w6GLfiw+uNq6js0XAIuuOQddc5DXdD44QFsojZYEDW+aH2EUKfT0t3fMZI?=
- =?us-ascii?Q?+mL4kQoEyNi4w5p572RbnYu/DRDGeotHNndscUriLZP/uSk02eaAsldLcOks?=
- =?us-ascii?Q?bP3VO2Ih8KJEX8c9J7R8uPX1mvWB5PoBfG9CdWuidWNt57bkOwJ3cMVRZ2d5?=
- =?us-ascii?Q?bc27nurFUP0G5rh9enCL18It+vKd2MFkMCU/BRqLPaL8je9upfv/osPUCLnm?=
- =?us-ascii?Q?tP3ozs3neSvtj0Bu42SCRIKfMFGq4S4mxisxWapKRg+zC1ipAf057iDKu9sa?=
- =?us-ascii?Q?J1m+NRXFuuvzcGohgc0X1+9vBR0+8mlgHInUqEjYUFIqPIefdJnKCztEoKEq?=
- =?us-ascii?Q?dVMnBJfry+VZ3UkKGY6gCD6LBDL3dp2LSuBiM7tEioGF+Gykg1Rlm+bark02?=
- =?us-ascii?Q?ljS5UYm3v5Ss6YrdMegv82SlUv4oWDlLKkItfoOWJfeCBjqefdi0j5C+GT3H?=
- =?us-ascii?Q?ZTxwJrAnvv1lvb8ApvIdEY8ZOPsvqTE5/LeuY2AzRwpK+e4aLDTJ8rhThsr3?=
- =?us-ascii?Q?gkucZcysGpgQgp/hKrlcH+i+Vbs2sZhFa7y21fCuHwgYaHMygtlU6cKAz0Gb?=
- =?us-ascii?Q?/nEMQ9VfIgJNBrEG1TCzub25XNJtFyv3J9r0x0xHnaocUE3PagXLQ08e2rMR?=
- =?us-ascii?Q?9qxlg7hQtcCi3EAAP0JMnP8x8BU9FOI0KmhqtE0Fa59rYNucc/OjTV/J+CpV?=
- =?us-ascii?Q?0C20Q9+0fmAiwHrDthFThdEUOJcS5pAOqssGfz2sNusl/jr8UNCxLc6yKjcH?=
- =?us-ascii?Q?lMeAxe0SkWLYqSj5mYj+I2kYx9SsrZ0AGEioyVxs2n15fgPQu2Wqjm5A/cC2?=
- =?us-ascii?Q?wCk/4kRKAZ6zDX4nPOcTCJ6AByz//eMxjhlvEmFg5Ttnl3MDvn/o1OvjvT2I?=
- =?us-ascii?Q?ziwQB5EJFcYeTn2Bek/qfC0VKSjzHAInPeJ2T+D6p3hXAB7B0FJxr5j8/1dj?=
- =?us-ascii?Q?rxB31tmQUVt9S8DO957FgMMZNUk1qIty9TwRybFDLcSSnmlfP44eLrgOfDcb?=
- =?us-ascii?Q?0507STfa8mTli0JfrzbPn17X9V63kJtp7cMWirbgLlMsr5axxlcXUW9UnCX+?=
- =?us-ascii?Q?Xz3ZmVnn6wDVgtEdd/MjhIH8v815ryr2Ma2pKXOSlVO6rfaBsewi/ay62Xs6?=
- =?us-ascii?Q?s2qcZJD2ym1uFP457KvYaB1LvlQDAE14/KeNrGBeJs9zzfr4QPbc+z74uFDC?=
- =?us-ascii?Q?vOLu0c6tfO/TZiF5p/aK05bNhv89vr84i2Btv2s/n0V/AgoUw1tb1KggvnI5?=
- =?us-ascii?Q?O+8AoBLYwoT+8WP4dsBUWXk8/icg6IT0LCKWUxHF7KsFTkt+MBU+RBbbXXcm?=
- =?us-ascii?Q?j8g45Ud0k1JU6A9n7PB7H9+6JGVvBdq03DhNZlev?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d7563ee-e665-454e-fe96-08dbd1037e75
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 00:28:34.1301
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WqpGvkBJfk96WEq4ORCoMWtN6rUV+be1Es+M1tNKFCyDh8cvfIG4bJOsRr84xwZGta4CxaOUKr6HRQHFz4uDkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7528
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 1/6] i3c: master: add enable(disable) hot join in sys
+ entry
+Content-Language: en-US
+To: Frank Li <Frank.Li@nxp.com>, miquel.raynal@bootlin.com
+Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+ imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20231018205929.3435110-1-Frank.Li@nxp.com>
+ <20231018205929.3435110-2-Frank.Li@nxp.com>
+From: "Zbigniew, Lukwinski" <zbigniew.lukwinski@linux.intel.com>
+In-Reply-To: <20231018205929.3435110-2-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 19, 2023 at 06:27:24PM -0400, Frank Li wrote:
-> Upon IBIWON timeout, the SDA line will always be kept low if we don't emit
-> a stop. Calling svc_i3c_master_emit_stop() there will let the bus return to
-> idle state.
-> 
-> Call svc_i3c_master_emit_stop() to let i3c bus come back to idle statue
-> when IBIWON timeout happen.
+On 10/18/2023 10:59 PM, Frank Li wrote:
+> Add hotjoin entry in sys file system allow user enable/disable hotjoin
+> feature.
+>
+> Add (*enable(disable)_hotjoin)() to i3c_master_controller_ops.
+> Add api i3c_master_enable(disable)_hotjoin();
 
-I forget delete this line. will remove it at next version.
+What is the use case for having HJ enable knob in sysfs available for 
+user space other than for debug stuff? In other words, does user space 
+really need to enable/disable HJ in runtime for other reason but debug? 
+If it is only for debug maybe it  could be move to debugFS?
 
-Frank.
+I think that maybe HJ enable knob shall be available in DT so you could 
+control the default state for this feature also at compilation phase?
 
-> 
-> Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> 
-> Notes:
->     Change from v2 to v3
->     - Update commit message and add review tag
->     
->     Change from v1 to v2
->     - Update commite message
->     
->     Change from v1 to v2
->     - Update commite message
-> 
->  drivers/i3c/master/svc-i3c-master.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> index b113460f059c3..1a57fdebaa26d 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -404,6 +404,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
->  					 SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
->  	if (ret) {
->  		dev_err(master->dev, "Timeout when polling for IBIWON\n");
-> +		svc_i3c_master_emit_stop(master);
->  		goto reenable_ibis;
->  	}
->  
-> -- 
-> 2.34.1
-> 
+>   drivers/i3c/master.c       | 84 ++++++++++++++++++++++++++++++++++++++
+>   include/linux/i3c/master.h |  5 +++
+>   2 files changed, 89 insertions(+)
+>
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index 08aeb69a78003..ed5e27cd20811 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -526,6 +526,89 @@ static ssize_t i2c_scl_frequency_show(struct device *dev,
+>   }
+>   static DEVICE_ATTR_RO(i2c_scl_frequency);
+>   
+> +static int i3c_set_hotjoin(struct i3c_master_controller *master, bool enable)
+> +{
+> +	int ret;
+> +
+> +	if (!master ||
+> +	    !master->ops ||
+> +	    !master->ops->enable_hotjoin ||
+> +	    !master->ops->disable_hotjoin
+> +	   )
+> +		return -EINVAL;
+> +
+> +	i3c_bus_normaluse_lock(&master->bus);
+> +
+> +	if (enable)
+> +		ret = master->ops->enable_hotjoin(master);
+> +	else
+> +		ret = master->ops->disable_hotjoin(master);
+> +
+> +	master->hotjoin = enable;
+> +
+> +	i3c_bus_normaluse_unlock(&master->bus);
+> +
+> +	return ret;
+> +}
+> +
+> +static ssize_t hotjoin_store(struct device *dev, struct device_attribute *attr,
+> +			     const char *buf, size_t count)
+> +{
+> +	struct i3c_bus *i3cbus = dev_to_i3cbus(dev);
+> +	int ret;
+> +	long res;
+> +
+> +	if (!i3cbus->cur_master)
+> +		return -EINVAL;
+> +
+> +	if (kstrtol(buf, 10, &res))
+> +		return -EINVAL;
+> +
+> +	ret = i3c_set_hotjoin(i3cbus->cur_master->common.master, !!res);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return count;
+> +}
+> +
+> +/*
+> + * i3c_master_enable_hotjoin - Enable hotjoin
+> + * @master: I3C master object
+> + *
+> + * Return: a 0 in case of success, an negative error code otherwise.
+> + */
+> +int i3c_master_enable_hotjoin(struct i3c_master_controller *master)
+> +{
+> +	return i3c_set_hotjoin(master, true);
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_master_enable_hotjoin);
+> +
+> +/*
+> + * i3c_master_disable_hotjoin - Disable hotjoin
+> + * @master: I3C master object
+> + *
+> + * Return: a 0 in case of success, an negative error code otherwise.
+> + */
+> +int i3c_master_disable_hotjoin(struct i3c_master_controller *master)
+> +{
+> +	return i3c_set_hotjoin(master, false);
+> +}
+> +EXPORT_SYMBOL_GPL(i3c_master_disable_hotjoin);
+> +
+> +static ssize_t hotjoin_show(struct device *dev, struct device_attribute *da, char *buf)
+> +{
+> +	struct i3c_bus *i3cbus = dev_to_i3cbus(dev);
+> +	ssize_t ret;
+> +
+> +	i3c_bus_normaluse_lock(i3cbus);
+> +	ret = sysfs_emit(buf, "%d\n", i3cbus->cur_master->common.master->hotjoin);
+> +	i3c_bus_normaluse_unlock(i3cbus);
+> +
+> +	return ret;
+> +}
+> +
+> +static DEVICE_ATTR_RW(hotjoin);
+> +
+>   static struct attribute *i3c_masterdev_attrs[] = {
+>   	&dev_attr_mode.attr,
+>   	&dev_attr_current_master.attr,
+> @@ -536,6 +619,7 @@ static struct attribute *i3c_masterdev_attrs[] = {
+>   	&dev_attr_pid.attr,
+>   	&dev_attr_dynamic_address.attr,
+>   	&dev_attr_hdrcap.attr,
+> +	&dev_attr_hotjoin.attr,
+>   	NULL,
+>   };
+>   ATTRIBUTE_GROUPS(i3c_masterdev);
+> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> index 0b52da4f23467..65b8965968af2 100644
+> --- a/include/linux/i3c/master.h
+> +++ b/include/linux/i3c/master.h
+> @@ -452,6 +452,8 @@ struct i3c_master_controller_ops {
+>   	int (*disable_ibi)(struct i3c_dev_desc *dev);
+>   	void (*recycle_ibi_slot)(struct i3c_dev_desc *dev,
+>   				 struct i3c_ibi_slot *slot);
+> +	int (*enable_hotjoin)(struct i3c_master_controller *master);
+> +	int (*disable_hotjoin)(struct i3c_master_controller *master);
+>   };
+>   
+>   /**
+> @@ -487,6 +489,7 @@ struct i3c_master_controller {
+>   	const struct i3c_master_controller_ops *ops;
+>   	unsigned int secondary : 1;
+>   	unsigned int init_done : 1;
+> +	unsigned int hotjoin: 1;
+>   	struct {
+>   		struct list_head i3c;
+>   		struct list_head i2c;
+> @@ -543,6 +546,8 @@ int i3c_master_register(struct i3c_master_controller *master,
+>   			const struct i3c_master_controller_ops *ops,
+>   			bool secondary);
+>   void i3c_master_unregister(struct i3c_master_controller *master);
+> +int i3c_master_enable_hotjoin(struct i3c_master_controller *master);
+> +int i3c_master_disable_hotjoin(struct i3c_master_controller *master);
+>   
+>   /**
+>    * i3c_dev_get_master_data() - get master private data attached to an I3C
