@@ -1,188 +1,430 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31081F940
-	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 17:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mRGEZ679"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D944140004;
-	Fri, 20 Oct 2023 17:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697821419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u12+nGJMZaiiMrsLReza/Q7S146dX0nFCHWkZWl7fl8=;
-	b=mRGEZ679UgWRTeS2PIjJA3JrloelBLoGHV9z9nnlkmDGo3YptdekMKV1Phky5wNcL03S7R
-	veNDpBQFol+O0UVac2q/6gOHw0UY2aJNumoLkCCqCTu20U0lX8uwDtyn6Blfpf1XZer2fB
-	pIp0t8mlgbeQPPD03qsRxmyBZZKU+VYnb4Yid15Kybt5fKwY1/wufAp0EXpJYln9wwACZW
-	PO7AYS9xWP6YfMeuvJweacgPDX3AOSs/a1xL48vYWtB3RQiaCkqc/rWQflEW3NGcCkJJeg
-	8tibZYj6Al4nN1O0cFiZq/DNPBCesGLz1MAngbuF9Io2YUjbZ305LFulibhjNQ==
-Date: Fri, 20 Oct 2023 19:03:37 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89979200C8;
+	Fri, 20 Oct 2023 17:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D000EC433C8;
+	Fri, 20 Oct 2023 17:12:20 +0000 (UTC)
+Date: Fri, 20 Oct 2023 22:42:15 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.li@nxp.com>
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 Resent 6/6] i3c: master: svc: fix random hot join
- failure since timeout errory
-Message-ID: <20231020190337.13ef5638@xps-13>
-In-Reply-To: <ZTKhJOAAz4CaupEf@lizhi-Precision-Tower-5810>
-References: <20231018155926.3305476-1-Frank.Li@nxp.com>
-	<20231018155926.3305476-7-Frank.Li@nxp.com>
-	<20231019084452.11fd0645@xps-13>
-	<ZTFNvrsSoHOS3P2g@lizhi-Precision-Tower-5810>
-	<20231020160645.67e678ee@xps-13>
-	<ZTKMTwU6cVAfGCKG@lizhi-Precision-Tower-5810>
-	<20231020163525.66485920@xps-13>
-	<ZTKTGG7J55Sj19Nd@lizhi-Precision-Tower-5810>
-	<20231020172006.5de0998b@xps-13>
-	<ZTKhJOAAz4CaupEf@lizhi-Precision-Tower-5810>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Cc: Manivannan Sadhasivam <mani@kernel.org>, aisheng.dong@nxp.com,
+	bhelgaas@google.com, devicetree@vger.kernel.org, festevam@gmail.com,
+	imx@lists.linux.dev, jdmason@kudzu.us, kernel@pengutronix.de,
+	kishon@kernel.org, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lorenzo.pieralisi@arm.com, lpieralisi@kernel.org, maz@kernel.org,
+	s.hauer@pengutronix.de, shawnguo@kernel.org, tglx@linutronix.de
+Subject: Re: [PATCH v2 1/5] PCI: endpoint: Add RC-to-EP doorbell support
+ using platform MSI controllery
+Message-ID: <20231020171215.GA46191@thinkpad>
+References: <20230911220920.1817033-1-Frank.Li@nxp.com>
+ <20230911220920.1817033-2-Frank.Li@nxp.com>
+ <20231017183722.GB137137@thinkpad>
+ <ZS7YvWSlkQluPtg3@lizhi-Precision-Tower-5810>
+ <20231019150441.GA7254@thinkpad>
+ <ZTFSlpnF41BDzyiX@lizhi-Precision-Tower-5810>
+ <20231019172347.GC7254@thinkpad>
+ <ZTFxSnpqfHtVR1JJ@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZTFxSnpqfHtVR1JJ@lizhi-Precision-Tower-5810>
 
-Hi Frank,
+On Thu, Oct 19, 2023 at 02:11:22PM -0400, Frank Li wrote:
+> On Thu, Oct 19, 2023 at 10:53:47PM +0530, Manivannan Sadhasivam wrote:
+> > On Thu, Oct 19, 2023 at 12:00:22PM -0400, Frank Li wrote:
+> > > On Thu, Oct 19, 2023 at 08:34:41PM +0530, Manivannan Sadhasivam wrote:
+> > > > On Tue, Oct 17, 2023 at 02:55:57PM -0400, Frank Li wrote:
+> > > > > On Wed, Oct 18, 2023 at 12:07:22AM +0530, Manivannan Sadhasivam wrote:
+> > > > > > On Mon, Sep 11, 2023 at 06:09:16PM -0400, Frank Li wrote:
+> > > > > > > This commit introduces a common method for sending messages from the Root
+> > > > > > > Complex (RC) to the Endpoint (EP) by utilizing the platform MSI interrupt
+> > > > > > > controller, such as ARM GIC, as an EP doorbell. Maps the memory assigned
+> > > > > > > for the BAR region by the PCI host to the message address of the platform
+> > > > > > > MSI interrupt controller in the PCI EP. As a result, when the PCI RC writes
+> > > > > > 
+> > > > > > "Doorbell feature is implemented by mapping the EP's MSI interrupt controller
+> > > > > > message address to a dedicated BAR in the EPC core. It is the responsibility
+> > > > > > of the EPF driver to pass the actual message data to be written by the host to
+> > > > > > the doorbell BAR region through its own logic."
+> > > > > > 
+> > > > > > > to the BAR region, it triggers an IRQ at the EP. This implementation serves
+> > > > > > > as a common method for all endpoint function drivers.
+> > > > > > > 
+> > > > > > > However, it currently supports only one EP physical function due to
+> > > > > > > limitations in ARM MSI/IMS readiness.
+> > > > > > > 
+> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > ---
+> > > > > > >  drivers/pci/endpoint/pci-epc-core.c | 192 ++++++++++++++++++++++++++++
+> > > > > > >  drivers/pci/endpoint/pci-epf-core.c |  44 +++++++
+> > > > > > >  include/linux/pci-epc.h             |   6 +
+> > > > > > >  include/linux/pci-epf.h             |   7 +
+> > > > > > >  4 files changed, 249 insertions(+)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+> > > > > > > index 5a4a8b0be6262..d336a99c6a94f 100644
+> > > > > > > --- a/drivers/pci/endpoint/pci-epc-core.c
+> > > > > > > +++ b/drivers/pci/endpoint/pci-epc-core.c
+> > > > > > > @@ -10,6 +10,7 @@
+> > > > > > >  #include <linux/slab.h>
+> > > > > > >  #include <linux/module.h>
+> > > > > > >  
+> > > > > > > +#include <linux/msi.h>
+> > > > > > >  #include <linux/pci-epc.h>
+> > > > > > >  #include <linux/pci-epf.h>
+> > > > > > >  #include <linux/pci-ep-cfs.h>
+> > > > > > > @@ -783,6 +784,197 @@ void pci_epc_bme_notify(struct pci_epc *epc)
+> > > > > > >  }
+> > > > > > >  EXPORT_SYMBOL_GPL(pci_epc_bme_notify);
+> > > > > > >  
+> > > > > > > +/**
+> > > > > > > + * pci_epc_alloc_doorbell() - alloc an address space to let RC trigger EP side IRQ by write data to
+> > > > > > > + *			      the space.
+> > > > > > 
+> > > > > > "Allocate platform specific doorbell IRQs to be used by the host to trigger
+> > > > > > doorbells on EP."
+> > > > > > 
+> > > > > > > + *
+> > > > > > > + * @epc: the EPC device that need doorbell address and data from RC.
+> > > > > > 
+> > > > > > EPC device for which the doorbell needs to be allocated
+> > > > > > 
+> > > > > > > + * @func_no: the physical endpoint function number in the EPC device.
+> > > > > > > + * @vfunc_no: the virtual endpoint function number in the physical function.
+> > > > > > > + * @num_msgs: the total number of doorbell messages
+> > > > > > 
+> > > > > > s/num_msgs/num_db
+> > > > > > 
+> > > > > > > + *
+> > > > > > > + * Return: 0 success, other is failure
+> > > > > > > + */
+> > > > > > > +int pci_epc_alloc_doorbell(struct pci_epc *epc, u8 func_no, u8 vfunc_no, int num_msgs)
+> > > > > > > +{
+> > > > > > > +	int ret;
+> > > > > > > +
+> > > > > > > +	if (IS_ERR_OR_NULL(epc) || func_no >= epc->max_functions)
+> > > > > > > +		return -EINVAL;
+> > > > > > > +
+> > > > > > > +	if (vfunc_no > 0 && (!epc->max_vfs || vfunc_no > epc->max_vfs[func_no]))
+> > > > > > > +		return -EINVAL;
+> > > > > > > +
+> > > > > > > +	if (!epc->ops->alloc_doorbell)
+> > > > > > > +		return 0;
+> > > > > > 
+> > > > > > You mentioned 0 is a success. So if there is no callback, you want to return
+> > > > > > success?
+> > > > > > 
+> > > > > > > +
+> > > > > > > +	mutex_lock(&epc->lock);
+> > > > > > > +	ret = epc->ops->alloc_doorbell(epc, func_no, vfunc_no, num_msgs);
+> > > > > > 
+> > > > > > Why can't you just call the generic function here and in other places instead of
+> > > > > > implementing callbacks? I do not see a necessity for EPC specific callbacks. If
+> > > > > > there is one, please specify.
+> > > > > 
+> > > > > 1. Refer v1 your comments.
+> > > > > https://lore.kernel.org/imx/20230906145227.GC5930@thinkpad/
+> > > > 
+> > > > I do not find where I suggested the callback approach.
+> > > 
+> > > 	> > > If that, Each EPF driver need do duplicate work. 
+> > > 	> > > 
+> > > 	> > 
+> > > 	> > Yes, and that's how it should be. EPF core has no job in supplying the of_node.
+> > > 	> > It is the responsibility of the EPF drivers as they depend on OF for platform
+> > > 	> > support.
+> > > 	> 
+> > > 	> EPF driver still not depend on OF. such pci-epf-test, which was probed by
+> > > 	> configfs.
+> > > 	> 
+> > > 
+> > > 	Hmm, yeah. Then it should be part of the EPC driver.
+> > > 
+> > > 	Sorry for the confusion.
+> > > 
+> > > Here, all "EPF" should be "EPC". The key problem is of_node. EPC core have
+> > > not of_node, EPC core's parent driver (like dwc-ep driver) have of_node. 
+> > > 
+> > > pci_epc_generic_alloc_doorbell(dev), dev is probed by platform driver, such
+> > > as dwc-ep, which have of_node,  EPC core will create child device.
+> > > 
+> > > dwc-ep device
+> > >  |- epc core device
+> > > 
+> > > we can direct call pci_epc_generic_alloc_doorbell(epc->parent) here.
+> > > 
+> > > I may miss understand what your means. I think you want to dwc-ep
+> > > (with of_node) handle these alloc functions. 
+> > > 
+> > 
+> > My comment was to have just one function definition. But looking at it again, I
+> > think it is better to move all the (alloc, free, write_msg) definitions to
+> > dwc-ep, since the contents of those functions are not EPC core specific.
+> 
+> There are still problem. (alloc, free, write_msg) is quite common for all
+> controller and the system with MSI.
+> 
+> If move these into dwc-ep,  cdns or other controller have to duplicate 
+> these codes.
+> 
+> If you think it is not EPC core specific, how about create new help files?
+> 
 
-Frank.li@nxp.com wrote on Fri, 20 Oct 2023 11:47:48 -0400:
+Hmm, that sounds good to me. I think the best place would be:
+drivers/pci/endpoint/pci-ep-msi.c
 
-> On Fri, Oct 20, 2023 at 05:20:06PM +0200, Miquel Raynal wrote:
-> > Hi Frank,
-> >=20
-> > Frank.li@nxp.com wrote on Fri, 20 Oct 2023 10:47:52 -0400:
-> >  =20
-> > > On Fri, Oct 20, 2023 at 04:35:25PM +0200, Miquel Raynal wrote: =20
-> > > > Hi Frank,
-> > > >=20
-> > > > Frank.li@nxp.com wrote on Fri, 20 Oct 2023 10:18:55 -0400:
-> > > >    =20
-> > > > > On Fri, Oct 20, 2023 at 04:06:45PM +0200, Miquel Raynal wrote:   =
-=20
-> > > > > > Hi Frank,
-> > > > > >=20
-> > > > > > Frank.li@nxp.com wrote on Thu, 19 Oct 2023 11:39:42 -0400:
-> > > > > >      =20
-> > > > > > > On Thu, Oct 19, 2023 at 08:44:52AM +0200, Miquel Raynal wrote=
-:     =20
-> > > > > > > > Hi Frank,
-> > > > > > > >=20
-> > > > > > > > Frank.Li@nxp.com wrote on Wed, 18 Oct 2023 11:59:26 -0400:
-> > > > > > > >        =20
-> > > > > > > > > master side report:
-> > > > > > > > >   silvaco-i3c-master 44330000.i3c-master: Error condition=
-: MSTATUS 0x020090c7, MERRWARN 0x00100000
-> > > > > > > > >=20
-> > > > > > > > > BIT 20: TIMEOUT error
-> > > > > > > > >   The module has stalled too long in a frame. This happen=
-s when:
-> > > > > > > > >   - The TX FIFO or RX FIFO is not handled and the bus is =
-stuck in the
-> > > > > > > > > middle of a message,
-> > > > > > > > >   - No STOP was issued and between messages,
-> > > > > > > > >   - IBI manual is used and no decision was made.       =20
-> > > > > > > >=20
-> > > > > > > > I am still not convinced this should be ignored in all case=
-s.
-> > > > > > > >=20
-> > > > > > > > Case 1 is a problem because the hardware failed somehow.   =
-    =20
-> > > > > > >=20
-> > > > > > > But so far, no action to handle this case in current code.   =
-  =20
-> > > > > >=20
-> > > > > > Yes, but if you detect an issue and ignore it, it's not better =
-than
-> > > > > > reporting it without handling it. Instead of totally ignoring t=
-his I
-> > > > > > would at least write a debug message (identical to what's below=
-) before
-> > > > > > returning false, even though I am not convinced unconditionally
-> > > > > > returning false here is wise. If you fail a hardware sequence b=
-ecause
-> > > > > > you added a printk, it's a problem. Maybe you consider this lin=
-e as
-> > > > > > noise, but I believe it's still an error condition. Maybe, howe=
-ver,
-> > > > > > this bit gets set after the whole sequence, and this is just a =
-"bus
-> > > > > > is idle" condition. If that's the case, then you need some
-> > > > > > additional heuristics to properly ignore the bit?
-> > > > > >      =20
-> > > > >=20
-> > > > >                 dev_err(master->dev,                             =
-         =20
-> > > > >                         "Error condition: MSTATUS 0x%08x, MERRWAR=
-N 0x%08x\n",
-> > > > >                         mstatus, merrwarn);
-> > > > > +
-> > > > > +		/* ignore timeout error */
-> > > > > +		if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT)
-> > > > > +			return false;
-> > > > > +
-> > > > >=20
-> > > > > Is it okay move SVC_I3C_MERRWARN_TIMEOUT after dev_err?   =20
-> > > >=20
-> > > > I think you mentioned earlier that the problem was not the printk b=
-ut
-> > > > the return value. So perhaps there is a way to know if the timeout
-> > > > happened after a transaction and was legitimate or not?   =20
-> > >=20
-> > > Error message just annoise user, don't impact function. But return fa=
-lse
-> > > let IBI thread running to avoid dead lock.=20
-> > >  =20
-> > > >=20
-> > > > In any case we should probably lower the log level for this error. =
-  =20
-> > >=20
-> > > Only SVC_I3C_MERRWARN_TIMEOUT is warning
-> > >=20
-> > > Maybe below logic is better
-> > >=20
-> > > 	if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT) {
-> > > 		dev_dbg(master->dev,=20
-> > >                         "Error condition: MSTATUS 0x%08x, MERRWARN 0x=
-%08x\n",
-> > > 			mstatus, merrwarn);
-> > > 		return false;
-> > > 	}=20
-> > > =09
-> > > 	dev_err(master->dev,                                    =20
-> > >                 "Error condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
-> > >                  mstatus, merrwarn);=20
-> > > 	....
-> > >  =20
-> >=20
-> > Yes, this looks better but I wonder if we should add an additional
-> > condition to just return false in this case;  =20
->=20
-> What's additional condition we can check?
+Reason is, we cannot have this generic code under drivers/pci/controller/ as it
+is not a standalone PCI controller but a platform MSI controller. So having it
+under pci/endpoint/ makes much sense to me.
 
-Well, you're the one bothered with an error case which is not a real
-error. You're saying "this error is never a problem" and I am saying
-that I believe it is not a problem is your particular case, but in
-general there might be situations where it *is* a problem. So you need
-to find proper conditions to check against in order to determine
-whether this is just an info with no consequence or an error.
+And this is not specific to EPF drivers as well, so we cannot have it under
+pci/endpoint/functions/.
 
-> > something saying "this
-> > timeout is legitimate and has no impact". =20
->=20
-> Add comments "this timeout is legitimate and has no impact" or dev_dbg
-> print that?
+- Mani
 
-No I'm talking about the additional heuristics.
+> Frank
+> 
+> > 
+> > In the EPC core, you can still have the callbacks specific to each EPC. This
+> > also solves your of_node problem.
+> > 
+> > - Mani
+> > 
+> > > > 
+> > > > > 2. Maybe some ep controller have built-in doorbell support. Write to some
+> > > > > address to trigger doorbell irq.
+> > > > > 
+> > > > 
+> > > > We will handle it whenever such EP controllers arrive. Until then, let's keep it
+> > > > simple.
+> > > > 
+> > > > - Mani
+> > > > 
+> > > > > Frank
+> > > > > 
+> > > > > > 
+> > > > > > > +	mutex_unlock(&epc->lock);
+> > > > > > > +
+> > > > > > > +	return ret;
+> > > > > > > +}
+> > > > > > > +EXPORT_SYMBOL_GPL(pci_epc_alloc_doorbell);
+> > > > > > > +
+> > > > > > > +/**
+> > > > > > > + * pci_epc_free_doorbell() - free resource allocated by pci_epc_alloc_doorbell()
+> > > > > > > + *
+> > > > > > > + * @epc: the EPC device that need doorbell address and data from RC.
+> > > > > > 
+> > > > > > Same as above.
+> > > > > > 
+> > > > > > > + * @func_no: the physical endpoint function number in the EPC device.
+> > > > > > > + * @vfunc_no: the virtual endpoint function number in the physical function.
+> > > > > > > + *
+> > > > > > > + * Return: 0 success, other is failure
+> > > > > > > + */
+> > > > > > > +void pci_epc_free_doorbell(struct pci_epc *epc, u8 func_no, u8 vfunc_no)
+> > > > > > > +{
+> > > > > > > +	if (IS_ERR_OR_NULL(epc) || func_no >= epc->max_functions)
+> > > > > > > +		return;
+> > > > > > > +
+> > > > > > > +	if (vfunc_no > 0 && (!epc->max_vfs || vfunc_no > epc->max_vfs[func_no]))
+> > > > > > > +		return;
+> > > > > > > +
+> > > > > > > +	if (!epc->ops->free_doorbell)
+> > > > > > > +		return;
+> > > > > > > +
+> > > > > > > +	mutex_lock(&epc->lock);
+> > > > > > > +	epc->ops->free_doorbell(epc, func_no, vfunc_no);
+> > > > > > 
+> > > > > > Same as suggested above.
+> > > > > > 
+> > > > > > > +	mutex_unlock(&epc->lock);
+> > > > > > > +}
+> > > > > > > +EXPORT_SYMBOL_GPL(pci_epc_free_doorbell);
+> > > > > > > +
+> > > > > > > +static irqreturn_t pci_epf_generic_doorbell_handler(int irq, void *data)
+> > > > > > > +{
+> > > > > > > +	struct pci_epf *epf = data;
+> > > > > > > +
+> > > > > > > +	if (epf->event_ops && epf->event_ops->doorbell)
+> > > > > > > +		epf->event_ops->doorbell(epf, irq - epf->virq_base);
+> > > > > > 
+> > > > > > Same as suggested above.
+> > > > > > 
+> > > > > > > +
+> > > > > > > +	return IRQ_HANDLED;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +static void pci_epc_generic_write_msi_msg(struct msi_desc *desc, struct msi_msg *msg)
+> > > > > > > +{
+> > > > > > > +	struct pci_epc *epc = NULL;
+> > > > > > > +	struct class_dev_iter iter;
+> > > > > > > +	struct pci_epf *epf;
+> > > > > > > +	struct device *dev;
+> > > > > > > +
+> > > > > > > +	class_dev_iter_init(&iter, pci_epc_class, NULL, NULL);
+> > > > > > > +	while ((dev = class_dev_iter_next(&iter))) {
+> > > > > > > +		if (dev->parent != desc->dev)
+> > > > > > > +			continue;
+> > > > > > > +
+> > > > > > > +		epc = to_pci_epc(dev);
+> > > > > > > +
+> > > > > > > +		class_dev_iter_exit(&iter);
+> > > > > > > +		break;
+> > > > > > > +	}
+> > > > > > > +
+> > > > > > > +	if (!epc)
+> > > > > > > +		return;
+> > > > > > > +
+> > > > > > > +	/* Only support one EPF for doorbell */
+> > > > > > > +	epf = list_first_entry_or_null(&epc->pci_epf, struct pci_epf, list);
+> > > > > > > +
+> > > > > > 
+> > > > > > No need of this newline
+> > > > > > 
+> > > > > > > +	if (!epf)
+> > > > > > > +		return;
+> > > > > > > +
+> > > > > > > +	if (epf->msg && desc->msi_index < epf->num_msgs)
+> > > > > > > +		epf->msg[desc->msi_index] = *msg;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +
+> > > > > > 
+> > > > > > Remove extra newline
+> > > > > > 
+> > > > > > > +/**
+> > > > > > > + * pci_epc_generic_alloc_doorbell() - Common help function. Allocate address space from MSI
+> > > > > > > + *                                    controller
+> > > > > > > + *
+> > > > > > > + * @epc: the EPC device that need doorbell address and data from RC.
+> > > > > > > + * @func_no: the physical endpoint function number in the EPC device.
+> > > > > > > + * @vfunc_no: the virtual endpoint function number in the physical function.
+> > > > > > > + * @num_msgs: the total number of doorbell messages
+> > > > > > > + *
+> > > > > > 
+> > > > > > Same comment as for pci_epc_alloc_doorbell()
+> > > > > > 
+> > > > > > > + * Remark: use this function only if EPC driver just register one EPC device.
+> > > > > > > + *
+> > > > > > > + * Return: 0 success, other is failure
+> > > > > > > + */
+> > > > > > > +int pci_epc_generic_alloc_doorbell(struct pci_epc *epc, u8 func_no, u8 vfunc_no, int num_msgs)
+> > > > > > > +{
+> > > > > > > +	struct pci_epf *epf;
+> > > > > > > +	struct device *dev;
+> > > > > > > +	int virq, last;
+> > > > > > > +	int ret;
+> > > > > > > +	int i;
+> > > > > > > +
+> > > > > > > +	if (IS_ERR_OR_NULL(epc))
+> > > > > > > +		return -EINVAL;
+> > > > > > > +
+> > > > > > > +	/* Currently only support one func and one vfunc for doorbell */
+> > > > > > > +	if (func_no || vfunc_no)
+> > > > > > > +		return -EINVAL;
+> > > > > > > +
+> > > > > > > +	epf = list_first_entry_or_null(&epc->pci_epf, struct pci_epf, list);
+> > > > > > > +	if (!epf)
+> > > > > > > +		return -EINVAL;
+> > > > > > > +
+> > > > > > > +	dev = epc->dev.parent;
+> > > > > > > +	ret = platform_msi_domain_alloc_irqs(dev, num_msgs, pci_epc_generic_write_msi_msg);
+> > > > > > > +	if (ret) {
+> > > > > > > +		dev_err(dev, "Failed to allocate MSI\n");
+> > > > > > > +		return -ENOMEM;
+> > > > > > > +	}
+> > > > > > > +
+> > > > > > > +	last = -1;
+> > > > > > > +	for (i = 0; i < num_msgs; i++) {
+> > > > > > 
+> > > > > > You should iterate over msi_desc as below:
+> > > > > > 
+> > > > > >         msi_lock_descs(dev);
+> > > > > >         msi_for_each_desc(desc, dev, MSI_DESC_ALL) {
+> > > > > > 		...
+> > > > > > 	}
+> > > > > > 	msi_unlock_descs(dev);
+> > > > > > 
+> > > > > > > +		virq = msi_get_virq(dev, i);
+> > > > > > > +		if (i == 0)
+> > > > > > > +			epf->virq_base = virq;
+> > > > > > > +
+> > > > > > > +		ret = request_irq(virq, pci_epf_generic_doorbell_handler, 0,
+> > > > > > 
+> > > > > > 	request_irq(desc->irq, ...)
+> > > > > > 
+> > > > > > > +				  kasprintf(GFP_KERNEL, "pci-epc-doorbell%d", i), epf);
+> > > > > > > +
+> > > > > > > +		if (ret) {
+> > > > > > > +			dev_err(dev, "Failed to request doorbell\n");
+> > > > > > > +			goto err_free_irq;
+> > > > > > > +		}
+> > > > > > > +		last = i;
+> > > > > > > +	}
+> > > > > > > +
+> > > > > > > +	return 0;
+> > > > > > > +
+> > > > > > > +err_free_irq:
+> > > > > > > +	for (i = 0; i < last; i++)
+> > > > > > > +		kfree(free_irq(epf->virq_base + i, epf));
+> > > > > > > +	platform_msi_domain_free_irqs(dev);
+> > > > > > > +
+> > > > > > > +	return -EINVAL;
+> > > > > > 
+> > > > > > 	return ret;
+> > > > > > 
+> > > > > > > +}
+> > > > > > > +EXPORT_SYMBOL_GPL(pci_epc_generic_alloc_doorbell);
+> > > > > > > +
+> > > > > > 
+> > > > > > [...]
+> > > > > > 
+> > > > > > > diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
+> > > > > > > index 3f44b6aec4770..485c146a5efe2 100644
+> > > > > > > --- a/include/linux/pci-epf.h
+> > > > > > > +++ b/include/linux/pci-epf.h
+> > > > > > > @@ -79,6 +79,7 @@ struct pci_epc_event_ops {
+> > > > > > >  	int (*link_up)(struct pci_epf *epf);
+> > > > > > >  	int (*link_down)(struct pci_epf *epf);
+> > > > > > >  	int (*bme)(struct pci_epf *epf);
+> > > > > > > +	int (*doorbell)(struct pci_epf *epf, int index);
+> > > > > > 
+> > > > > > kdoc missing.
+> > > > > > 
+> > > > > > >  };
+> > > > > > >  
+> > > > > > >  /**
+> > > > > > > @@ -180,6 +181,9 @@ struct pci_epf {
+> > > > > > >  	unsigned long		vfunction_num_map;
+> > > > > > >  	struct list_head	pci_vepf;
+> > > > > > >  	const struct pci_epc_event_ops *event_ops;
+> > > > > > > +	struct msi_msg *msg;
+> > > > > > > +	u16 num_msgs;
+> > > > > > 
+> > > > > > num_db
+> > > > > > 
+> > > > > > You also need to add kdoc for each new member.
+> > > > > > 
+> > > > > > - Mani
+> > > > > > 
+> > > > > > -- 
+> > > > > > மணிவண்ணன் சதாசிவம்
+> > > > 
+> > > > -- 
+> > > > மணிவண்ணன் சதாசிவம்
+> > 
+> > -- 
+> > மணிவண்ணன் சதாசிவம்
 
-Thanks,
-Miqu=C3=A8l
+-- 
+மணிவண்ணன் சதாசிவம்
