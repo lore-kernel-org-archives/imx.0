@@ -1,38 +1,38 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834061BDC5
-	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 13:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A9A1CF85
+	for <imx@lists.linux.dev>; Fri, 20 Oct 2023 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RPknoZfe"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F0681C0009;
-	Fri, 20 Oct 2023 13:51:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iAr0lMGu"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D2F44240017;
+	Fri, 20 Oct 2023 13:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697809860;
+	t=1697810164;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LEJdh2dlht0YbkjGiXzj0O1UFXr5Vq+0OYseTVm5gD0=;
-	b=RPknoZfelsjqVnX7ujKayYxTjgpay25KcKrzIsmenLT/Ui3+XA2AWDhTG+mBuOUh9nP0CY
-	JEFOgENRhrNcQ3L57X5oK5O4+Oqm2XdXmCDLbxbGvpypRHVlPUlHslOlxbH83G1L7pEQrp
-	ClpVmJXFXM2i9IkHNJqwynQ6hfuL6PYO3PgQkc79hFwJAioHedmAPC8U7vC14IYtbz5fQm
-	uB1WjhVbU7LHV6u6lap1+mbVFztdN8T/f+W7GpFZ1K+GRwIr9SSxRv4f1SyLolsRDlG6T6
-	v9440lfZ4lvyfA7GGImIAjb23Li7gJE2+g6/gT9iudLRSD9lDSOjWEUM2CMj0g==
-Date: Fri, 20 Oct 2023 15:50:59 +0200
+	bh=guw01RKGbn1f3hLQyDo30kntXr8E8ttJ8J7CZjAKzjs=;
+	b=iAr0lMGu8lG5QiztzmvYFF7EeDTGk7e9deIr8sIygM2F03wozOgIGiI1DoxPx8aTtaoQrQ
+	vQj0cte+G92WrfW2bba0M9XqksyCfSaq066ICISm66+OzOTimCLmNrX94ybnzwfQFuAsDA
+	BaSQPVy2KSCZhyEVQgbhgfx/QMvd8Vxybkk1Huhvisek5eSEmgwGJ4YRew64YWuUKQ1Z/h
+	IaobZza12XF0rPFnjtI4Yn46Paq8xIm4fG61Wqy0/qwwSjAK421P1H0DFf8bbmrRAEWTcR
+	TwUlFvxG+TzbUj3KO3FnjkOxOCcpR4hmt6gj1dKdktqBER+rPr3iX5qnCDomvw==
+Date: Fri, 20 Oct 2023 15:56:03 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
  imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/6] i3c: master: svc: fix check wrong status
- register in irq handler
-Message-ID: <20231020155059.4dfd4109@xps-13>
-In-Reply-To: <20231019222725.3598022-5-Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 2/6] i3c: master: svc: fix wrong data return when IBI
+ happen during start frame
+Message-ID: <20231020155603.52cc7206@xps-13>
+In-Reply-To: <20231019222725.3598022-3-Frank.Li@nxp.com>
 References: <20231019222725.3598022-1-Frank.Li@nxp.com>
-	<20231019222725.3598022-5-Frank.Li@nxp.com>
+	<20231019222725.3598022-3-Frank.Li@nxp.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -47,14 +47,53 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hi Frank,
 
-Frank.Li@nxp.com wrote on Thu, 19 Oct 2023 18:27:23 -0400:
+Frank.Li@nxp.com wrote on Thu, 19 Oct 2023 18:27:21 -0400:
 
-> svc_i3c_master_irq_handler() wrong check register SVC_I3C_MINTMASKED. It
+>      =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90     =
+=E2=94=8F=E2=94=80=E2=94=80=E2=94=90  =E2=94=8F=E2=94=80=E2=94=80=E2=94=90 =
+ =E2=94=8F=E2=94=80=E2=94=80=E2=94=90  =E2=94=8F=E2=94=80=E2=94=80=E2=94=90=
+  =E2=94=8F=E2=94=80=E2=94=80=E2=94=90  =E2=94=8F=E2=94=80=E2=94=80=E2=94=
+=90  =E2=94=8F=E2=94=80=E2=94=80=E2=94=90  =E2=94=8F=E2=94=80=E2=94=80=E2=
+=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80
+> SCL: =E2=94=98     =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=9B  =E2=94=94=E2=94=80=E2=94=80=E2=94=9B  =E2=94=94=E2=94=80=E2=94=
+=80=E2=94=9B  =E2=94=94=E2=94=80=E2=94=80=E2=94=9B  =E2=94=94=E2=94=80=E2=
+=94=80=E2=94=9B  =E2=94=94=E2=94=80=E2=94=80=E2=94=9B  =E2=94=94=E2=94=80=
+=E2=94=80=E2=94=9B  =E2=94=94=E2=94=80=E2=94=80=E2=94=9B  =E2=94=94=E2=94=
+=80=E2=94=80=E2=94=98
+>      =E2=94=80=E2=94=80=E2=94=80=E2=94=90                       =E2=94=8C=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90     =E2=94=8C=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90     =E2=94=8C=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=90
+> SDA:    =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=98     =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=98     =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98 =
+          =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80
+>      xxx=E2=95=B1    =E2=95=B2=E2=95=B1                                  =
+      =E2=95=B2=E2=95=B1    =E2=95=B2=E2=95=B1    =E2=95=B2=E2=95=B1    =E2=
+=95=B2
+>    : xxx=E2=95=B2IBI =E2=95=B1=E2=95=B2               Addr(0x0a)         =
+      =E2=95=B1=E2=95=B2 RW =E2=95=B1=E2=95=B2NACK=E2=95=B1=E2=95=B2 S  =E2=
+=95=B1
+>=20
+> If an In-Band Interrupt (IBI) occurs and IBI work thread is not immediate=
+ly
+> scheduled, When svc_i3c_master_priv_xfers() initiates the I3C transfer and
 
-This sentence still needs to be corrected, please read carefully my
-reviews.
+nit:		when
 
-> should be SVC_I3C_MSTATUS.
+> attempts to send address 0x7e, the target interprets it as an
+> IBI handler and returns the target address 0x0a.
+>=20
+> However, svc_i3c_master_priv_xfers() does not handle this case and procee=
+ds
+> with other transfers, resulting in incorrect data being returned.
+>=20
+> Add IBIWON check in svc_i3c_master_xfer(). In case this situation occurs,
+> return a failure to the driver.
 >=20
 > Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
 > Cc: stable@vger.kernel.org
