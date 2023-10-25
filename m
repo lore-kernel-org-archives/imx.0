@@ -1,118 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE02C866;
-	Tue, 24 Oct 2023 16:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74852D626
+	for <imx@lists.linux.dev>; Wed, 25 Oct 2023 16:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iapgXHGF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698164236; x=1729700236;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vU6NUxn0dSy8CYFpKW21RatM/5zlQn8ad7r9qtdb8U4=;
-  b=iapgXHGFcwqgC4c37OBq9E2w3Sz/ff+2brfdMDtKdseSzRncxgqXIPc+
-   g6bMFlbFV88i8nmbY8vRe3ARtOD9TrddcsB7x3DRj7WijkSb3P8q5wPFV
-   77v30zoYGPqF4hpXUuPrefABxuy06thsZuYBK4R1QWzeiAHy9qVMIz7kO
-   6YoSHRcNJsNI5Ou056gbUXxfj4hMbjVPdDc7btsmiq32gebo+iM3o3hn1
-   zSTRh0BBrhgTRbadDHxLQMjLf0kbN6vuQax9MVp/R6b861Rh1i4dMLIbV
-   DlzUV1AQgVBysaUlbgxeef5aZTbGnx1QYlhgAQbvJ9kiqrq/piM4emiAQ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="5725473"
-X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
-   d="scan'208";a="5725473"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 09:17:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="735081789"
-X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
-   d="scan'208";a="735081789"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 24 Oct 2023 09:17:10 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qvK5b-00081n-38;
-	Tue, 24 Oct 2023 16:17:07 +0000
-Date: Wed, 25 Oct 2023 00:16:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="LMKgg6/X"
+Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 78A62669;
+	Wed, 25 Oct 2023 18:50:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1698252639;
+	bh=7K1olaVKCwfA8ZPuGeuySDhYia+lM9SqFRJEvSWL0QE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LMKgg6/XTtJ4HovsVcBk+5iGbKpaJu9wx5GOug3Yt+ewhLi1hjqc/N/jtnRoRBxCu
+	 YbwJ2wSuFDxgU6pm7FQp7+w7Xk+G9n+eeWfAanKvleA0xSme/4TI7Pv9GBisVEB3lr
+	 UbphT9kgblUVhzh4Nn/t9JmNxcM3KBWvUqhStRck=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Cc: devicetree@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Mario Castaneda <mario.ignacio.castaneda.lopez@nxp.com>
-Subject: Re: [PATCH net] net: stmmac: dwmac-imx: request high frequency mode
-Message-ID: <202310250045.xYg3qn6G-lkp@intel.com>
-References: <20231004195442.414766-1-shenwei.wang@nxp.com>
+	Li Yang <leoyang.li@nxp.com>,
+	Marco Contenti <marco.c@variscite.com>,
+	Nate Drude <nate.d@variscite.com>,
+	FrancescoFerraro <francesco.f@variscite.com>,
+	Harshesh Valera <harshesh.v@variscite.com>
+Subject: [PATCH v2 0/4] arm64: dts: freescale: Add Variscite i.MX8MP DART8MCustomBoard v2
+Date: Wed, 25 Oct 2023 19:50:54 +0300
+Message-ID: <20231025165058.31697-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231004195442.414766-1-shenwei.wang@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Shenwei,
+Hello,
 
-kernel test robot noticed the following build errors:
+This patch series adds support for the Variscite DART8MCustomBoard v2
+carrier board with a DART-MX8M-PLUS module.
 
-[auto build test ERROR on net/main]
+The device tree code originates from Variscite's BSP, and has been
+heavily refactored to adapt to mainline DT bindings. Some features have
+been left out:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shenwei-Wang/net-stmmac-dwmac-imx-request-high-frequency-mode/20231005-035606
-base:   net/main
-patch link:    https://lore.kernel.org/r/20231004195442.414766-1-shenwei.wang%40nxp.com
-patch subject: [PATCH net] net: stmmac: dwmac-imx: request high frequency mode
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20231025/202310250045.xYg3qn6G-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231025/202310250045.xYg3qn6G-lkp@intel.com/reproduce)
+- Camera: cameras should be enabled through overlays as they're not part
+  of the carrier board itself. I have successfully tested both camera
+  ports with modules that currently require out-of-tree drivers, so I
+  haven't included them in this series.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310250045.xYg3qn6G-lkp@intel.com/
+- HDMI: I have successfully tested this with DT bindings and drivers
+  that have been posted to mailing lists but not merged yet. I will
+  submit a patch to enable HDMI once the dependencies will be available
+  upstream.
 
-All errors (new ones prefixed by >>):
+- USB OTG: the carrier board has a PTN5150 but doesn't route its
+  interrupt pin to the SoC. It should be possible to work around that in
+  the driver by implementing polling, but that requires more work that I
+  can perform at the moment.
 
->> drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c:9:10: fatal error: 'linux/busfreq-imx.h' file not found
-   #include <linux/busfreq-imx.h>
-            ^~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
+- WiFi, Bluetooth and audio support: those are part of the DART SoM
+  itself, for which schematics isn't available, so I can't easily
+  troubleshoot them.
+
+- PCIe: I lack test hardware for this.
+
+The LVDS display panel is integrated in the carrier board device tree in
+the BSP, I have split it out to an overlay in this series as it is
+shipped with the development kit but isn't an integral part of the
+carrier board.
+
+May I tempt someone from Variscite to submit patches to enable at least
+WiFi, Bluetooth, audio and PCIe ? :-)
+
+Laurent Pinchart (4):
+  dt-bindings: arm: fsl: Add Variscite DT8MCustomBoard with DART
+    MX8M-PLUS
+  arm64: dts: freescale: Add support for the Variscite DART-MX8M-PLUS
+    SoM
+  arm64: dts: freescale: Add support for the Variscite i.MX8MP
+    DART8MCustomBoard
+  arm64: dts: freescale: Add panel overlay for Variscite DART
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   3 +
+ .../imx8mp-var-dart-dt8mcustomboard-v2.dts    | 500 ++++++++++++++++++
+ .../imx8mp-var-dart-panel-gktw70sdae4se.dtso  |  99 ++++
+ .../boot/dts/freescale/imx8mp-var-dart.dtsi   | 305 +++++++++++
+ 5 files changed, 913 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
 
 
-vim +9 drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-
-   > 9	#include <linux/busfreq-imx.h>
-    10	#include <linux/clk.h>
-    11	#include <linux/gpio/consumer.h>
-    12	#include <linux/kernel.h>
-    13	#include <linux/mfd/syscon.h>
-    14	#include <linux/module.h>
-    15	#include <linux/of.h>
-    16	#include <linux/of_net.h>
-    17	#include <linux/phy.h>
-    18	#include <linux/platform_device.h>
-    19	#include <linux/pm_wakeirq.h>
-    20	#include <linux/regmap.h>
-    21	#include <linux/slab.h>
-    22	#include <linux/stmmac.h>
-    23	
-
+base-commit: 05d3ef8bba77c1b5f98d941d8b2d4aeab8118ef1
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+
+Laurent Pinchart
+
