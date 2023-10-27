@@ -1,185 +1,196 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A71F50A
-	for <imx@lists.linux.dev>; Wed, 25 Oct 2023 16:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC238BCE
+	for <imx@lists.linux.dev>; Fri, 27 Oct 2023 16:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="r5nGp8M4"
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AAEF91010;
-	Wed, 25 Oct 2023 18:50:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1698252644;
-	bh=Vstx2/uLnLoK3+ATkIxZe9Jtui8pXM6YKsGUNqaLrb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5nGp8M4wV+kZ94TOPY3zt38Kq4MvhrSQz62C5cYIcvBW/lEixjPqD6fjdiirIGkk
-	 3oCCQcoDNxSWP9nT+QBdz3o5BuCtjWnIhVHxAVY/pYlNmaCBYwPVWwjARpz7Akva5z
-	 581j8QjqG5wHXwDC7AZVyRTGHH589DfCcCIFz+4k=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-arm-kernel@lists.infradead.org,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QoSukLAO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dUFbhibYywzVw5OShReH70fCvAbc/9LTf27TEq2jwD2VAhf5Q6XtrZFdnBCOlPzRn2IvChqyWbppipA7Am9ZZ3GNX00PKgKkKsgVDAaMj+FOy0E7+yNC8isdiUhUxc8bIhJ427FC+A3irA0T+jgyOcMtEHUbJA3n7W5rOwBRzUIEQIqAM5FmmRS83cmGJnd9lmo82zjaVMVrQvHyr+b8ij+waLyFGQ8X2XX2gcB90xmA7HULf/5pABKvpARJevtoPashHXhmsdcZHmug+Tk7v4/ZW8Jaq+ozopnzL3Ut5nrxmrCLsj5qyFJDVuEvsUVAKttiaSxhIXmRxONShHVkmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fWXw4SvB6tHPZ7CSptVCnZLmNA8+hdDH/Z2BcGnqMPA=;
+ b=f4Xwddu13Ykdr6j91Lfc8HDCl39a2Dc/xkIZLfSKbMldY1GFSaS2lJw9K0dawUmstFB4EbcoWAtU8jGcLbbPkKaTCuc6aaUq769S5wLwMd1fStqEnsZBE/X44l348VjV4ebTg37oO4fMvN6QYFbhCQC4Hbu7mEXDop+98cXoF2uWl/A9VxDHTeOcl6FnFkIilU5PasEFwXOiu8h2PKaVHWImoijBf8TRjQEpJpUz9+ID8K3hB7ayoEryFrnV9/diTGKiOOZGQLU89sE1Apgl/kvBzsYH6FrvENK7uMNumfHi7fEFksqGtwLjmAEezQduvF/m+ISjzYV73hW6yHHiug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fWXw4SvB6tHPZ7CSptVCnZLmNA8+hdDH/Z2BcGnqMPA=;
+ b=QoSukLAO20qgb/7HzM6gziY8mVbaOh9vuarX+oAvmimVzYjwHRaXc0trTup+aBGfHBu6CJ4arZeyPxOUER+JEKaSCgRhvPusbTHWKOhW40R6oKJrFQ9g33z41iTDAqloDv30yQkmwkEV+0XGO6d0k03PRTj80CiGAP4A+belxmo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by PAXPR04MB9326.eurprd04.prod.outlook.com (2603:10a6:102:2b8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.8; Fri, 27 Oct
+ 2023 16:11:06 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::97ca:a905:8e64:c098]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::97ca:a905:8e64:c098%6]) with mapi id 15.20.6933.011; Fri, 27 Oct 2023
+ 16:11:06 +0000
+Date: Fri, 27 Oct 2023 12:10:58 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: pawell@cadence.com, peter.chen@kernel.org, rogerq@kernel.org,
+	a-govindraju@ti.com, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
 	imx@lists.linux.dev
-Cc: devicetree@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Marco Contenti <marco.c@variscite.com>,
-	Nate Drude <nate.d@variscite.com>,
-	FrancescoFerraro <francesco.f@variscite.com>,
-	Harshesh Valera <harshesh.v@variscite.com>
-Subject: [PATCH v2 4/4] arm64: dts: freescale: Add panel overlay for Variscite DART
-Date: Wed, 25 Oct 2023 19:50:58 +0300
-Message-ID: <20231025165058.31697-5-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231025165058.31697-1-laurent.pinchart@ideasonboard.com>
-References: <20231025165058.31697-1-laurent.pinchart@ideasonboard.com>
+Subject: cdns3 uvc first ISO parkage lost problem
+Message-ID: <ZTvhEl+JcnhJXcrl@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-ClientProxiedBy: SJ0PR13CA0044.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::19) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB9326:EE_
+X-MS-Office365-Filtering-Correlation-Id: 327b96b6-5762-4c6d-f11c-08dbd70752f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	v7bi1/dy50Eif5feuoD3wDVaPJb5QEqG53PtyTRXIY9O34dy80odt6noe8gZbTBkdmA7hmnNShkQCkZHErZ+nARvyhsK1gK6gRccSxNKNo4/fXkCSJSDfI5fw+4Ou5FXnOltzI3Y9sXeCTMIWKDVy/0vSxudmyMuojuFSGmEdTE9m3cmuRZFNa+FnWhz5vVn6I7BUnxLnVOl3V69HSIowG0WmKtzShmYJ2Y88r3bzF4w+5oPvUGdopbARQmj5bMad8zRi1sGFVi/hucpj/yjWcCoZRTrLv+UcMEOLgKPbp82p2AW02IsAqEOmSky2dOt3qvKyxnycagHVd+yBMzYWAWc1RddYga+6rj/qz0v2xFPmpdK/JXCtqxmw9W3xtQb5qe6pPFmUm1YSBCkK2NJoFxWsNZxXF6JESchg8UtQqDbJvjrqaY3kD5uFjwAoW9oSJTuR00fH3ukitrQ6QBheDTZTkPcBpi/E6X1LNfkNUpFDk4f7h/HcNhYgR7fSu63u4sxBeljqKQFpnmFfOR8AiSYqvKBrpyXvUqov0xovVIZHaQfiMoYnI83nUInbIhzrfceP3U2xLvKFXAtSolSkqt29corzSdWVBh8nJLukjYBA8R3u2adVUG9xhhwsnNW
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(376002)(39860400002)(366004)(136003)(346002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(316002)(66946007)(2906002)(966005)(52116002)(6666004)(8676002)(86362001)(6512007)(8936002)(41300700001)(38350700005)(66556008)(26005)(66476007)(33716001)(6486002)(9686003)(6506007)(478600001)(5660300002)(38100700002)(83380400001)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LQTK+xcWpO2yNiQC/FiYXXcTH0epYtWazlNaT5mesuYoWtv4FjfN39B+KZmm?=
+ =?us-ascii?Q?pj7/9IA3wmO2h/u7DEhPTxLU8nTW4CWOeHArc2umStc11/nJCd2+8Q/zmkCI?=
+ =?us-ascii?Q?nv5wqj7RfMWDfC2mV4b0vCheOWXu3Wu4TKKl2VoRKIjkKzQJxbNZ9cq3G2ym?=
+ =?us-ascii?Q?kBVHPiZOmxOFOOJyfW4VTrsGNqtOVw/bw4rF29Ba0Wk9gq01HOhfWeuKXJ0F?=
+ =?us-ascii?Q?2GB1yKf4/yiD/dBachiA2nQg3A7bfKXL01Vjy8oDIho0Nv6WnGGNu64JogY3?=
+ =?us-ascii?Q?pYN6pWgH646JTHWRVowbjZRNWSWFWYy6wWKQsoyJEHxmTXEfOqWka8Dk8ATg?=
+ =?us-ascii?Q?QYP9AEHV5a1kLb9rfnuiEugTl/d/tjzIlcoK4ikZENNLeAhPS8lUopvjl0+k?=
+ =?us-ascii?Q?Cm79TZlS6jyayzpZfZH9l4f0elizxU7vsJdRjKfqW+Q6rPb8+7wsRrMcHmIf?=
+ =?us-ascii?Q?pwpCLVIq69WhfvdTGLK9jSvjc/2l5W65YdETHupbiVs6LSdlLNrm2pPa/w3T?=
+ =?us-ascii?Q?oC1UDx4VSatQzkzCWVEjw1B6hdcZ4rlX54gyM7b72ky1BmV41svlwNUIW2jz?=
+ =?us-ascii?Q?Pxn0jUQJefs0FnF1K8aQdhABdHCbcZ+o864pDQpp27nOIDM3lGxZzNIIU46H?=
+ =?us-ascii?Q?dqbeh9hkJh9Lkh0CVYDg6Gsxc4NezaRZQEqQDnh6e0hT8xOe9zd01/LpAu9Q?=
+ =?us-ascii?Q?9Tz8+RWm8nNycWAa9L3+jjFZjQMQY0fJM5urYxxLgOosgRaMJGAnxg5t8ARE?=
+ =?us-ascii?Q?G/taatE6jE/+jvZ+qy95rqh3S4+qxEo1JBPzaGK4p3U9uX6cMziD2uYXgUh5?=
+ =?us-ascii?Q?C15UkQO2BFeyBi73blaALoA/Jjn9JS52se1ZHw889TcPiQimmHNFth7qGH+H?=
+ =?us-ascii?Q?8mnhgZ9sQx+ybi75dow7A0Y5QTJBdE0Z7kuR6eh+mm+gLEaSn8vvnSLrgCTv?=
+ =?us-ascii?Q?NLCd3sJ+zTa1DVN7tzZ3j8Em6w3nT2SVPYwyJz6rPdt5eRDaTrHP2wu8GUZ6?=
+ =?us-ascii?Q?m8l927Ug0q/4FIEJusP1sen9xxe5tbQw4KZGK8+kNNXfrZ+QjO9NFqrTSOTj?=
+ =?us-ascii?Q?ZVF8FUK9AQcaTll6/EYCuKUXkCX85xsp+aXRFH6CQU5e3WDroBft6eQ7ML0W?=
+ =?us-ascii?Q?CwsBpmGJJ1B+SWWvLgNQ1lFqkEKnx1RzJ1Sq5yQ+K0pU3yLwp7xINVX6qW9F?=
+ =?us-ascii?Q?yhOrHjkDGFt27rJMLvTAGl3lFfqwsiVhMdLWs5FuI6ZCMRaU/PjRk8oZRbb/?=
+ =?us-ascii?Q?E4OIF91dLVRIhzeeOMUsVypLGwR8WOwG9pDW8jYxWp/BI0U95xayQ7tg9CDr?=
+ =?us-ascii?Q?nrNjKYl9bLmtrGAAoT/zPafIQIY+9Trjj/JemmaBh8tebc1G1qFXFXgLxQcK?=
+ =?us-ascii?Q?qUEeaszeqry0B+o/OOTSyESButN76smRSuPhRa3oNm0LV2k+90tSzdwQVFkV?=
+ =?us-ascii?Q?5I2IsbRctMbTE5wDMqUu4XKvkni8tH5HlSnpX6xVVMeV5ljHDFM0weLTopaZ?=
+ =?us-ascii?Q?SbPvcDfZwnZrDKpKti+vAo2eqNuL1OOzHWXgM+X1pISjwv9LH2bGJCvU1tZs?=
+ =?us-ascii?Q?TQWv4UGki68upM6akMvWXgy+E7RAVVWkSyl0Yw6O?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 327b96b6-5762-4c6d-f11c-08dbd70752f8
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 16:11:06.2862
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SCqrDArIzRXd2AA3RTNfWwTp6Bpr7LHsYLH+3xDQzUnErpk0fPA72ClWtA5+tb8wT6nik2XWczQMZhMh/2xCpw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9326
 
-Add a DT overlay for the Variscite i.MX8MP DT8MCustomBoard that models
-the GKTW70SDAE4SE LVDS panel found in the evaluation kit.
+hi Pawel Laszczak
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- .../imx8mp-var-dart-panel-gktw70sdae4se.dtso  | 99 +++++++++++++++++++
- 2 files changed, 101 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
+Recently, I met the problem when use uvc. UVC report jpg header error.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 19637302397f..20514cb1c505 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -150,6 +150,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+Basic reproduce steps.
+Gadget side:
+1 - 
+	https://gist.github.com/kbingham/c39c4cc7c20882a104c08df5206e2f9f?permalink_comment_id=3270713
+	uvc-gadget.sh start
+2 -
+	https://git.ideasonboard.org/uvc-gadget.git
+	uvc-gadget -i test.jpg
+
+
+Host side:
+	https://github.com/thekvs/uvccapture2
+	uvccapture2 --device /dev/video0  --resolution 640x360 --count 1 --result 8qxp.jpeg
+
+	It will report jpeg header error.
+
+
+After debugs, I found two problem. 
+
+Problem 1, sg is enabled. so uvc driver will use sg. each package include
+two trb,  trb0 is 8bytes header, trb1 is 1016bytes. total 1024.
+
+num_trb here is wrong.
+it should be 
+	num_trb = priv_ep->interval * request->num_mapped_sgs.
+
+because priv_ep->interval is 1, I just simple set to request->num_mapped_sg
+as below patch. USB analyer show one whole 1024 ISO package sent out as
+expectation although document said only support one TD when use ISO (Maybe
+my doc is too old).
+
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index 69a44bd7e5d02..8cc99a885883f 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1125,10 +1125,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+        struct scatterlist *s = NULL;
+        bool sg_supported = !!(request->num_mapped_sgs);
  
-+imx8mp-var-dart-panel-gktw70sdae4se-dtbs := imx8mp-var-dart-dt8mcustomboard-v2.dtb imx8mp-var-dart-panel-gktw70sdae4se.dtbo
- imx8mm-venice-gw72xx-0x-imx219-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-imx219.dtbo
- imx8mm-venice-gw72xx-0x-rpidsi-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rpidsi.dtbo
- imx8mm-venice-gw72xx-0x-rs232-rts-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rs232-rts.dtbo
-@@ -162,6 +163,7 @@ imx8mm-venice-gw73xx-0x-rs422-dtbs	:= imx8mm-venice-gw73xx-0x.dtb imx8mm-venice-
- imx8mm-venice-gw73xx-0x-rs485-dtbs	:= imx8mm-venice-gw73xx-0x.dtb imx8mm-venice-gw73xx-0x-rs485.dtbo
- imx8mp-venice-gw74xx-rpidsi-dtbs	:= imx8mp-venice-gw74xx.dtb imx8mp-venice-gw74xx-rpidsi.dtbo
+-       if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
+-               num_trb = priv_ep->interval;
+-       else
+-               num_trb = sg_supported ? request->num_mapped_sgs : 1;
++       num_trb = sg_supported ? request->num_mapped_sgs : 1;
  
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-panel-gktw70sdae4se.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw72xx-0x-imx219.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw72xx-0x-rpidsi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw72xx-0x-rs232-rts.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
-new file mode 100644
-index 000000000000..d5f61e157bc2
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2020-2021 Variscite Ltd.
-+ * Copyright 2023 Ideas on Board Oy
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include "imx8mp-pinfunc.h"
-+
-+&{/} {
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm1 0 1000000 0>;
-+	};
-+
-+	panel {
-+		compatible = "sgd,gktw70sdae4se", "panel-lvds";
-+		backlight = <&backlight>;
-+		width-mm = <153>;
-+		height-mm = <87>;
-+		label = "gktw70sdae4se";
-+		data-mapping = "jeida-24";
-+
-+		panel-timing {
-+			clock-frequency = <29232000>;
-+			hactive = <800>;
-+			vactive = <480>;
-+			hback-porch = <40>;
-+			hfront-porch = <40>;
-+			vback-porch = <29>;
-+			vfront-porch = <13>;
-+			hsync-len = <48>;
-+			vsync-len = <3>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			de-active = <1>;
-+		};
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+};
-+
-+&i2c2 {
-+	touch@38 {
-+		compatible = "edt,edt-ft5206";
-+		reg = <0x38>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_captouch>;
-+
-+		reset-gpios = <&gpio_exp_2 4 GPIO_ACTIVE_LOW>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
-+		wakeup-source;
-+
-+		touchscreen-size-x = <800>;
-+		touchscreen-size-y = <480>;
-+		touchscreen-inverted-x;
-+		touchscreen-inverted-y;
-+	};
-+};
-+
-+&lcdif2 {
-+	/*
-+	 * The pixel clock should be configured by the lcdif driver, but the
-+	 * clock frequency propagation in the clock framework stops at the PIX2
-+	 * clock and doesn't reach the VIDEO_PLL1 clock. As a workaround, set
-+	 * the VIDEO_PLL1 rate manually.
-+	 *
-+	 * For a 60Hz refresh rate, the panel requires a pixel clock of 29.232
-+	 * MHz. The LVDS clock frequency is 7 times higher, or 204.624 MHz.
-+	 */
-+	assigned-clock-rates = <0>, <204624000>;
-+	status = "okay";
-+};
-+
-+&ldb_lvds_ch0 {
-+	remote-endpoint = <&panel_in>;
-+};
-+
-+&lvds_bridge {
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_captouch: captouchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14				0x16
-+		>;
-+	};
-+};
--- 
-Regards,
+        if (num_trb > priv_ep->free_trbs) {
+                priv_ep->flags |= EP_RING_FULL;
 
-Laurent Pinchart
+
+*** Problem 2 ***
+
+According to doc and my observation, looks like hardware fetch data into
+FIFO when get SOF, then transfer data when get IN token. Each SOF will
+increase TRB regardless it is ready or not.
+
+When gadget complete equeue ISO data, so SOF will increase TRB regardless
+if there are IN token. 
+
+   SOF       SOF       SOF     SOF  IN    SOF ....
+      TRB0      TRB1      TRB2      TRB3  ...
+
+
+Host may start get data at some time after gadget queue data.
+
+So TRB0..2 data will be lost.
+
+If it is audio data, it should be okay. But for uvc, it is jpeg header, so
+host side report error.
+
+I checked dwc gadget driver, which start equeue ISO data only get NYET.
+
+I check cdns spec, there are ISOERR. But it is never happen. According to
+document, ISOERR should issue when IN token and FIFO no data. 
+
+I tried below method
+	1.  Delay queue TRB, but no ISOERR.
+	2.  queue a lenght 0 TRB,but no ISOERR 
+
+My question is how to delay queue TRB to ISO IN token really happen to
+avoid lost JPEG header.
+
+Frank
+
+
+
+ 
+
 
