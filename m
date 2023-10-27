@@ -1,49 +1,54 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2043.outbound.protection.outlook.com [40.107.20.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC238BCE
-	for <imx@lists.linux.dev>; Fri, 27 Oct 2023 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D638C38BCE
+	for <imx@lists.linux.dev>; Fri, 27 Oct 2023 16:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QoSukLAO"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="dD4gZ2WL"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dUFbhibYywzVw5OShReH70fCvAbc/9LTf27TEq2jwD2VAhf5Q6XtrZFdnBCOlPzRn2IvChqyWbppipA7Am9ZZ3GNX00PKgKkKsgVDAaMj+FOy0E7+yNC8isdiUhUxc8bIhJ427FC+A3irA0T+jgyOcMtEHUbJA3n7W5rOwBRzUIEQIqAM5FmmRS83cmGJnd9lmo82zjaVMVrQvHyr+b8ij+waLyFGQ8X2XX2gcB90xmA7HULf/5pABKvpARJevtoPashHXhmsdcZHmug+Tk7v4/ZW8Jaq+ozopnzL3Ut5nrxmrCLsj5qyFJDVuEvsUVAKttiaSxhIXmRxONShHVkmw==
+ b=NEcYHgA5ky5sJmlgFPB2d5Xd1iClM9vnp+u20RSYQBu7+c+G9KYDDjioXv+TMZGJFvdBlvF4n7deYijdc1VMHbmFwmWkHO0EZSrq71k1i9UoKjkdwyBJAl11NGkAk/mexPIx1EBohpQ26M/MJSW4OqtPDamL75xKhG+Yfja9WLkuS0UJvFTFJfNa18eRV0//ewLLieLNlTG6QupiFEf1uCEOlkuvxvoBAZIKSz9ESpaeyLRbeYAkKklEjFMV8VN2irkChusaFurgUqQ+qFCZOLtwRPFbX+qZgbY82RVAjZTm/O9Elm4hVIH12PbZySepZrfakgl4o6KXUgaBQbUFBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fWXw4SvB6tHPZ7CSptVCnZLmNA8+hdDH/Z2BcGnqMPA=;
- b=f4Xwddu13Ykdr6j91Lfc8HDCl39a2Dc/xkIZLfSKbMldY1GFSaS2lJw9K0dawUmstFB4EbcoWAtU8jGcLbbPkKaTCuc6aaUq769S5wLwMd1fStqEnsZBE/X44l348VjV4ebTg37oO4fMvN6QYFbhCQC4Hbu7mEXDop+98cXoF2uWl/A9VxDHTeOcl6FnFkIilU5PasEFwXOiu8h2PKaVHWImoijBf8TRjQEpJpUz9+ID8K3hB7ayoEryFrnV9/diTGKiOOZGQLU89sE1Apgl/kvBzsYH6FrvENK7uMNumfHi7fEFksqGtwLjmAEezQduvF/m+ISjzYV73hW6yHHiug==
+ bh=WShDxNiXMiu6KEAYL3G8vyEob1ehxCnViYThduEi1PI=;
+ b=ChsYBKjqZQlMOb7YFowLuzLc4AsglN5S9gO2rwY62m1z947b5k6aHGJLUsbby1CBMvKl3qTYR+meXR6Dk+muV5y74glbs2uDQAdotnX2wwPrVwFKp7rKPFXopt1at6nMX2xi7jiTRwkpeThEk89n5kqmgkraPJ4n2bdqyh99NE/E74TWa2Ub2zwhNPA/UnGst3bFQoLhFNiIC5s8pkErQ6zEMnXHbGM6aJ/qx77dlxi+b+W+Wms5/YXW+DmtlVYbXdvnUlMsDKc5yjGacm6CLxhQZ8PadMzKRDD5vt3x/Q0HNTvi0N7tigG5SGo2DjvuE0E2+L0uQueSCbBN1T1rgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fWXw4SvB6tHPZ7CSptVCnZLmNA8+hdDH/Z2BcGnqMPA=;
- b=QoSukLAO20qgb/7HzM6gziY8mVbaOh9vuarX+oAvmimVzYjwHRaXc0trTup+aBGfHBu6CJ4arZeyPxOUER+JEKaSCgRhvPusbTHWKOhW40R6oKJrFQ9g33z41iTDAqloDv30yQkmwkEV+0XGO6d0k03PRTj80CiGAP4A+belxmo=
+ bh=WShDxNiXMiu6KEAYL3G8vyEob1ehxCnViYThduEi1PI=;
+ b=dD4gZ2WLBNbozKUGUsRstXLgVrMv/H2AGl7ADN71TH1lnQdpmOSLqPD+tpPXT40NkNcoYeZDQ1tc8TCMpU9D4tllamo1gKvkI/lhsreFjTerX6XC7PWHNma4ikrjj5pj9mCzT6tMDoouMEH8IQFiS+SEWS/vxuBuHBY0lkNm4KQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by PAXPR04MB9326.eurprd04.prod.outlook.com (2603:10a6:102:2b8::19) with
+ by VI1PR04MB7184.eurprd04.prod.outlook.com (2603:10a6:800:125::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.8; Fri, 27 Oct
- 2023 16:11:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.14; Fri, 27 Oct
+ 2023 16:27:09 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::97ca:a905:8e64:c098]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::97ca:a905:8e64:c098%6]) with mapi id 15.20.6933.011; Fri, 27 Oct 2023
- 16:11:06 +0000
-Date: Fri, 27 Oct 2023 12:10:58 -0400
+ 16:27:09 +0000
+Date: Fri, 27 Oct 2023 12:27:00 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: pawell@cadence.com, peter.chen@kernel.org, rogerq@kernel.org,
-	a-govindraju@ti.com, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: cdns3 uvc first ISO parkage lost problem
-Message-ID: <ZTvhEl+JcnhJXcrl@lizhi-Precision-Tower-5810>
+To: manivannan.sadhasivam@linaro.org
+Cc: bhelgaas@google.com, imx@lists.linux.dev, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	lpieralisi@kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
+	robh@kernel.org, roy.zang@nxp.com
+Subject: Re: [PATCH v3 0/4] PCI: layerscape: Add suspend/resume support for
+ ls1043 and ls1021
+Message-ID: <ZTvk1Mo/cg0CKKJ3@lizhi-Precision-Tower-5810>
+References: <20231017193145.3198380-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-ClientProxiedBy: SJ0PR13CA0044.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::19) To AM6PR04MB4838.eurprd04.prod.outlook.com
+In-Reply-To: <20231017193145.3198380-1-Frank.Li@nxp.com>
+X-ClientProxiedBy: BYAPR08CA0047.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::24) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -52,145 +57,75 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB9326:EE_
-X-MS-Office365-Filtering-Correlation-Id: 327b96b6-5762-4c6d-f11c-08dbd70752f8
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|VI1PR04MB7184:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7167e7b3-1c94-49ab-a217-08dbd70990de
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	v7bi1/dy50Eif5feuoD3wDVaPJb5QEqG53PtyTRXIY9O34dy80odt6noe8gZbTBkdmA7hmnNShkQCkZHErZ+nARvyhsK1gK6gRccSxNKNo4/fXkCSJSDfI5fw+4Ou5FXnOltzI3Y9sXeCTMIWKDVy/0vSxudmyMuojuFSGmEdTE9m3cmuRZFNa+FnWhz5vVn6I7BUnxLnVOl3V69HSIowG0WmKtzShmYJ2Y88r3bzF4w+5oPvUGdopbARQmj5bMad8zRi1sGFVi/hucpj/yjWcCoZRTrLv+UcMEOLgKPbp82p2AW02IsAqEOmSky2dOt3qvKyxnycagHVd+yBMzYWAWc1RddYga+6rj/qz0v2xFPmpdK/JXCtqxmw9W3xtQb5qe6pPFmUm1YSBCkK2NJoFxWsNZxXF6JESchg8UtQqDbJvjrqaY3kD5uFjwAoW9oSJTuR00fH3ukitrQ6QBheDTZTkPcBpi/E6X1LNfkNUpFDk4f7h/HcNhYgR7fSu63u4sxBeljqKQFpnmFfOR8AiSYqvKBrpyXvUqov0xovVIZHaQfiMoYnI83nUInbIhzrfceP3U2xLvKFXAtSolSkqt29corzSdWVBh8nJLukjYBA8R3u2adVUG9xhhwsnNW
+	3AOcWX9I9wcvCNasC7rR8ye1FDwQaCcdxufoTNjLNwdx09Up04XPLyMCaTCRbBa5dfJ4lDy+lUJVTfeoa5T1+ubukTpS/+9GFj2ARgZwc8v152y6WmyBiL8lMdAiuOVMv8CATzu7IwauIgO1V6hNHzgxxmo+PCyZDB24676hWfJvMwpI8/6LW7TLw4V2dfZY41TEvyTFSfGExCEPJIC+iqL9Z/iAyueM4E427nYc82zm1h5c7WbICbObqsWLmFvvntsMmwa1LfsTkroJlq/bfqi9rLjgbh/Y1+AdQaie/9wdASV7vYf0qBEASH98km/EzHYhPDnf903WIOn8mGitUql/7vTqWN6g0cBjbcM3NF8z0QrRmAkCzAGk3Rbuj7JxlXISjHa55aGiPkRbedgteRJa+ynYOonjVdpL3v7HfK3w4UkyCmU6JOICusPPw9jiKzpNP5vRQsO7p5ra3gWFopqVcvUkuTV+Icr1wgwaIE4d7+6P53+vISp8a6Kp20eZFJXA/r/dsgPJdEnm8uGkUc2+UrO9/kqi5Gh2Md0ICyQ/lkIfdAVHhwQgq2CqV9jvrIKoLlMdzYhcOWFSo8ASjNzUX8pocEY54SKMunhECa6QrbZV1TutTBOjt1m/UZP3
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(376002)(39860400002)(366004)(136003)(346002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(316002)(66946007)(2906002)(966005)(52116002)(6666004)(8676002)(86362001)(6512007)(8936002)(41300700001)(38350700005)(66556008)(26005)(66476007)(33716001)(6486002)(9686003)(6506007)(478600001)(5660300002)(38100700002)(83380400001)(67856001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(136003)(396003)(39860400002)(346002)(366004)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(9686003)(6512007)(6666004)(6506007)(83380400001)(66946007)(6916009)(52116002)(478600001)(316002)(66556008)(66476007)(5660300002)(8676002)(8936002)(4326008)(6486002)(41300700001)(4744005)(7416002)(2906002)(38100700002)(38350700005)(33716001)(15650500001)(26005)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LQTK+xcWpO2yNiQC/FiYXXcTH0epYtWazlNaT5mesuYoWtv4FjfN39B+KZmm?=
- =?us-ascii?Q?pj7/9IA3wmO2h/u7DEhPTxLU8nTW4CWOeHArc2umStc11/nJCd2+8Q/zmkCI?=
- =?us-ascii?Q?nv5wqj7RfMWDfC2mV4b0vCheOWXu3Wu4TKKl2VoRKIjkKzQJxbNZ9cq3G2ym?=
- =?us-ascii?Q?kBVHPiZOmxOFOOJyfW4VTrsGNqtOVw/bw4rF29Ba0Wk9gq01HOhfWeuKXJ0F?=
- =?us-ascii?Q?2GB1yKf4/yiD/dBachiA2nQg3A7bfKXL01Vjy8oDIho0Nv6WnGGNu64JogY3?=
- =?us-ascii?Q?pYN6pWgH646JTHWRVowbjZRNWSWFWYy6wWKQsoyJEHxmTXEfOqWka8Dk8ATg?=
- =?us-ascii?Q?QYP9AEHV5a1kLb9rfnuiEugTl/d/tjzIlcoK4ikZENNLeAhPS8lUopvjl0+k?=
- =?us-ascii?Q?Cm79TZlS6jyayzpZfZH9l4f0elizxU7vsJdRjKfqW+Q6rPb8+7wsRrMcHmIf?=
- =?us-ascii?Q?pwpCLVIq69WhfvdTGLK9jSvjc/2l5W65YdETHupbiVs6LSdlLNrm2pPa/w3T?=
- =?us-ascii?Q?oC1UDx4VSatQzkzCWVEjw1B6hdcZ4rlX54gyM7b72ky1BmV41svlwNUIW2jz?=
- =?us-ascii?Q?Pxn0jUQJefs0FnF1K8aQdhABdHCbcZ+o864pDQpp27nOIDM3lGxZzNIIU46H?=
- =?us-ascii?Q?dqbeh9hkJh9Lkh0CVYDg6Gsxc4NezaRZQEqQDnh6e0hT8xOe9zd01/LpAu9Q?=
- =?us-ascii?Q?9Tz8+RWm8nNycWAa9L3+jjFZjQMQY0fJM5urYxxLgOosgRaMJGAnxg5t8ARE?=
- =?us-ascii?Q?G/taatE6jE/+jvZ+qy95rqh3S4+qxEo1JBPzaGK4p3U9uX6cMziD2uYXgUh5?=
- =?us-ascii?Q?C15UkQO2BFeyBi73blaALoA/Jjn9JS52se1ZHw889TcPiQimmHNFth7qGH+H?=
- =?us-ascii?Q?8mnhgZ9sQx+ybi75dow7A0Y5QTJBdE0Z7kuR6eh+mm+gLEaSn8vvnSLrgCTv?=
- =?us-ascii?Q?NLCd3sJ+zTa1DVN7tzZ3j8Em6w3nT2SVPYwyJz6rPdt5eRDaTrHP2wu8GUZ6?=
- =?us-ascii?Q?m8l927Ug0q/4FIEJusP1sen9xxe5tbQw4KZGK8+kNNXfrZ+QjO9NFqrTSOTj?=
- =?us-ascii?Q?ZVF8FUK9AQcaTll6/EYCuKUXkCX85xsp+aXRFH6CQU5e3WDroBft6eQ7ML0W?=
- =?us-ascii?Q?CwsBpmGJJ1B+SWWvLgNQ1lFqkEKnx1RzJ1Sq5yQ+K0pU3yLwp7xINVX6qW9F?=
- =?us-ascii?Q?yhOrHjkDGFt27rJMLvTAGl3lFfqwsiVhMdLWs5FuI6ZCMRaU/PjRk8oZRbb/?=
- =?us-ascii?Q?E4OIF91dLVRIhzeeOMUsVypLGwR8WOwG9pDW8jYxWp/BI0U95xayQ7tg9CDr?=
- =?us-ascii?Q?nrNjKYl9bLmtrGAAoT/zPafIQIY+9Trjj/JemmaBh8tebc1G1qFXFXgLxQcK?=
- =?us-ascii?Q?qUEeaszeqry0B+o/OOTSyESButN76smRSuPhRa3oNm0LV2k+90tSzdwQVFkV?=
- =?us-ascii?Q?5I2IsbRctMbTE5wDMqUu4XKvkni8tH5HlSnpX6xVVMeV5ljHDFM0weLTopaZ?=
- =?us-ascii?Q?SbPvcDfZwnZrDKpKti+vAo2eqNuL1OOzHWXgM+X1pISjwv9LH2bGJCvU1tZs?=
- =?us-ascii?Q?TQWv4UGki68upM6akMvWXgy+E7RAVVWkSyl0Yw6O?=
+	=?us-ascii?Q?CJsGDbQABsLgqNHh4IkyMXPYSzyLh398wgoUntrn0H14qOB7IDHPfzkEtMF7?=
+ =?us-ascii?Q?O0Z0F//Sjm3AmKzYxSCR4QBpHUqaGE9WL8HC6X4vl5NqiiqOwWR942xJpPA6?=
+ =?us-ascii?Q?NzQJhLFnIynxKofYVYEEjDNUlTWO9mXnx/MI5yEBD8obof5aY/tn79BtNrDU?=
+ =?us-ascii?Q?a2NrMMIrNXMT0n8oydGONtIP9RP+jNgeljCDEOj2U5Z66EvsaD/DcX6I6kUn?=
+ =?us-ascii?Q?nBNaVJvwvfXY1ys7FXpa5bKmsgjb8KpcV7RwMGRBFM3m82Zlb47epieryjQu?=
+ =?us-ascii?Q?AG7jkwoHMXrDLw6xt6f99ccH2TMX9gNxX5CcysUZMuo8lPfHgaEOddTQ2INO?=
+ =?us-ascii?Q?ubhONm1NMEpu4+cOH3Vc7IDJZohqG/bFcXmz80Nruddz3XuzH65J8aV1KEeN?=
+ =?us-ascii?Q?fy5xNAXW0unSTXLyPwBP5fBhDvw3Ga4pI6JlPkaNf+sY1YoWWQn0FaGqEO++?=
+ =?us-ascii?Q?HMLvBc072Sc4W/aGAj8qPRhp20kDDBpeh3CkKUMILKeWa33SV59Jp/m0kpqQ?=
+ =?us-ascii?Q?dasoy6LTP0WIEyG6557yxzQtIdiI7nu9LZa0/MnsxGIB4mavRG5p2zHQOExl?=
+ =?us-ascii?Q?4HHpfaH/yNkhBQG107aZME3YNnHWAt8p/tUH1qahGUotSLI5lMD+9QRfR57G?=
+ =?us-ascii?Q?X/3mh+NtPwRLchrNBj2F5cCTBLTJy010/YGtcCgmW83loHzv1ubfDWQLfL8k?=
+ =?us-ascii?Q?NAWkjTbjCKjcC2nlG2rjmMm+4fvgKdkwkTvl/I+SwY18dYAo2ues3emPI9MG?=
+ =?us-ascii?Q?b2rvvq6i8IpiTKXHyBoTrT7mMgttH5i1u1R4FeOCUR2gHT6YxyfzSYqyQ+8a?=
+ =?us-ascii?Q?edp4uJSIelSZcaXAzEJRVQ0ZKFvkQfJYfIkPM+NstIGsLwKV4Li23OmCuYBc?=
+ =?us-ascii?Q?zdQDNtsAYsNcbRck+ufPmqsE9D4CeJzMD9cUDTapS/B9NF/zRg4F6IgwOOhy?=
+ =?us-ascii?Q?28rPkCGlLtAgTHl+G7gNH+ZdZkf4/mBCnWq4WgVsCuPZxfaLdUhTy7l0HgRx?=
+ =?us-ascii?Q?sfMO5TKOLprILAUvsr4/ZyI5IcA8NFcZXVybED6AzGRERIo1qcyqCBEKjPRF?=
+ =?us-ascii?Q?ghHgAsS6ZBuv7QWRMEYL9B/sqWTxjAvVGszf2K4otSKHWoDyFIg+zVIXehJO?=
+ =?us-ascii?Q?G68H7Euab+OdqXwBJV4/rdzWPw5CS3cPv9thJHp2exd3N6Rsh1Lu/6ZOWdyL?=
+ =?us-ascii?Q?UMsSFDMhpMiE1S3Wid4rYWnEuGib71+4zfaN2W9UfUplu86Q2VdwJVIZjeBp?=
+ =?us-ascii?Q?rG78YN/dSltqmDkC5Qjs5RytHJgREAWo2tXB2iNbI1pGPFOCfBNEYw47D6k7?=
+ =?us-ascii?Q?geGt0m6TuHOoH7u0rAF5Hln6YJ3sKPD2pRa2ocelpdQt1CEv2FDYjimKR9Ho?=
+ =?us-ascii?Q?akp8wOySipCHkHhPgMKg5VqO9VzCWJtNgo1mFIn+5/KBnSehqgc7LaCN9BuP?=
+ =?us-ascii?Q?VOR+FTIdORYRgZ1vVx98gtAo9Ts94pgcgVEPiNaIuLcUbWgPjp4ayY3biU37?=
+ =?us-ascii?Q?CHTrkdXaVU2HXQVkpYIoWwvrKk+evw/bxptk7I3XqcOaoxLbVVxeAbBPhD+l?=
+ =?us-ascii?Q?7DMxqf0w57FkbxN/rHBwmlCjg06+8sIjS2UA3QOe?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 327b96b6-5762-4c6d-f11c-08dbd70752f8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7167e7b3-1c94-49ab-a217-08dbd70990de
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 16:11:06.2862
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 16:27:08.9813
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SCqrDArIzRXd2AA3RTNfWwTp6Bpr7LHsYLH+3xDQzUnErpk0fPA72ClWtA5+tb8wT6nik2XWczQMZhMh/2xCpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9326
+X-MS-Exchange-CrossTenant-UserPrincipalName: Uw+1qHxxwdwKCaxTth+3pnCScSz5FuncHi2COcuzcRV3buPn7EpZseAuSvzM0EtPtrpBZf01Fkn+1OKUjfCu5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7184
 
-hi Pawel Laszczak
+On Tue, Oct 17, 2023 at 03:31:41PM -0400, Frank Li wrote:
+> Add suspend/resume support for ls1043 and ls1021.
+> Change log see each patch
+> 
+> Frank Li (4):
+>   PCI: layerscape: Add function pointer for exit_from_l2()
+>   PCI: layerscape: Add suspend/resume for ls1021a
+>   PCI: layerscape: Rename pf_* as pf_lut_*
+>   PCI: layerscape: Add suspend/resume for ls1043a
+> 
 
-Recently, I met the problem when use uvc. UVC report jpg header error.
-
-Basic reproduce steps.
-Gadget side:
-1 - 
-	https://gist.github.com/kbingham/c39c4cc7c20882a104c08df5206e2f9f?permalink_comment_id=3270713
-	uvc-gadget.sh start
-2 -
-	https://git.ideasonboard.org/uvc-gadget.git
-	uvc-gadget -i test.jpg
-
-
-Host side:
-	https://github.com/thekvs/uvccapture2
-	uvccapture2 --device /dev/video0  --resolution 640x360 --count 1 --result 8qxp.jpeg
-
-	It will report jpeg header error.
-
-
-After debugs, I found two problem. 
-
-Problem 1, sg is enabled. so uvc driver will use sg. each package include
-two trb,  trb0 is 8bytes header, trb1 is 1016bytes. total 1024.
-
-num_trb here is wrong.
-it should be 
-	num_trb = priv_ep->interval * request->num_mapped_sgs.
-
-because priv_ep->interval is 1, I just simple set to request->num_mapped_sg
-as below patch. USB analyer show one whole 1024 ISO package sent out as
-expectation although document said only support one TD when use ISO (Maybe
-my doc is too old).
-
-diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-index 69a44bd7e5d02..8cc99a885883f 100644
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -1125,10 +1125,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
-        struct scatterlist *s = NULL;
-        bool sg_supported = !!(request->num_mapped_sgs);
- 
--       if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
--               num_trb = priv_ep->interval;
--       else
--               num_trb = sg_supported ? request->num_mapped_sgs : 1;
-+       num_trb = sg_supported ? request->num_mapped_sgs : 1;
- 
-        if (num_trb > priv_ep->free_trbs) {
-                priv_ep->flags |= EP_RING_FULL;
-
-
-*** Problem 2 ***
-
-According to doc and my observation, looks like hardware fetch data into
-FIFO when get SOF, then transfer data when get IN token. Each SOF will
-increase TRB regardless it is ready or not.
-
-When gadget complete equeue ISO data, so SOF will increase TRB regardless
-if there are IN token. 
-
-   SOF       SOF       SOF     SOF  IN    SOF ....
-      TRB0      TRB1      TRB2      TRB3  ...
-
-
-Host may start get data at some time after gadget queue data.
-
-So TRB0..2 data will be lost.
-
-If it is audio data, it should be okay. But for uvc, it is jpeg header, so
-host side report error.
-
-I checked dwc gadget driver, which start equeue ISO data only get NYET.
-
-I check cdns spec, there are ISOERR. But it is never happen. According to
-document, ISOERR should issue when IN token and FIFO no data. 
-
-I tried below method
-	1.  Delay queue TRB, but no ISOERR.
-	2.  queue a lenght 0 TRB,but no ISOERR 
-
-My question is how to delay queue TRB to ISO IN token really happen to
-avoid lost JPEG header.
+@mani:
+	Do you have any additional comments for these?
 
 Frank
 
-
-
- 
-
-
+>  drivers/pci/controller/dwc/pci-layerscape.c | 217 ++++++++++++++++++--
+>  1 file changed, 196 insertions(+), 21 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
