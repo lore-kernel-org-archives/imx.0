@@ -1,282 +1,262 @@
-Received: from mx0a-0014ca01.pphosted.com (mx0a-0014ca01.pphosted.com [208.84.65.235])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2072.outbound.protection.outlook.com [40.107.21.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFA0D261
-	for <imx@lists.linux.dev>; Mon, 30 Oct 2023 08:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0039B18C2F
+	for <imx@lists.linux.dev>; Mon, 30 Oct 2023 16:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="o2DId5VY";
-	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="2Whkmwig"
-Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
-	by mx0a-0014ca01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39TNQLp5025267;
-	Sun, 29 Oct 2023 23:34:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
-	from:to:subject:date:message-id:references:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=
-	proofpoint; bh=Gu0JQoNERRbp2wjLjA7EI1/FWIavHzFYLpndyh8dRck=; b=o
-	2DId5VYBl7Irv0gJtawTr6sDZePEXzbHpXQ1tsaBdPr4b3RgJ7f9DFCgFG6oFN9U
-	KW7tBkCIsacI0LQ42PHZWvhtY2tVZA2wcB6Z+zd+Ud/85qzQAgmgnmRpsFD1dbg3
-	L+Ppj8Uj9TfjhT0MTlAgW5EnzpkTwbwdYsXYVHS8UT9BUt9kbCmd3flZkwbyZgtS
-	Y9khSF1xEGYaWRwjBuqaiJ4FSH8cqpwv17qDuhwQu7c1L5alZBEnsOerIFqDUID9
-	N6TpDMTuOLUDmkgb30n/z7Ux1OaoXd2jS9+x57ilk58D6XstOo5b5j7gdNphZgtK
-	jAL46i0e1ErgHW0vMDbEg==
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2101.outbound.protection.outlook.com [104.47.58.101])
-	by mx0a-0014ca01.pphosted.com (PPS) with ESMTPS id 3u0xusn9dk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 29 Oct 2023 23:34:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QDebjEHS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I43PjNxaDByib2OUFeHsmLeTpdy4s6s4sgNlsQ8LBtVujVbY/djXtyoFV5eAXrLtiAAhPtlXiZkCTtuhcLjQZJtd3xB4s6LNvMn8LyFOhdWPcuqpbkHfB6Rwcjy5BhgPIRZDHWkV32u+cuV4StRhee5yri3RXcvgvTXiAquu9RFY3EoOdb+EFlPeueXmxCUWu43htsxPHJlwZCoppksNjiIIK0Vy8uPhTandUyS7qOxtn5DuoSu+F1fLdPKvkfyzUMpIOROP5kch23RLdEAgmcEy+sv8Qh+paP+Ro5EhIQ4n27TiIcLfhykA4nFIcGY1h3b629icYmMR2dH49L0svQ==
+ b=hNtg1qMhyX+vN6KwxK+aQF51aYMI2ev2pSeY6XWLmuEHLj9/vfbUXTifYtHvOcmpDNzrwR3QikKMomdW540JC3J2SbzeKFxnICu6en9+8zr0W87xN+zYNGRQ5V/6it7v0sdS+mYWUBk5mOBFrDqNXFyYdTmjUOIhy7w8sTHm+ahObb3e6lPuzLTZSjyAf6q4mTZxlaNK+5FtWCZoWwoJA7So3BUED2i9s/tjPiZWwABMaty/zf/ut9KxXdFabvjfbX/lXQtbLnRgZIE6u9XtCDPvsvcXAXfo0vIxiGn6vUXssNuUPIlF1cemV4d16KXUeWY3mH6/pyAuiuTVKTQV3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gu0JQoNERRbp2wjLjA7EI1/FWIavHzFYLpndyh8dRck=;
- b=QHniITdCGNgileMiY3zcovEJcaWekzdKpy4B7GJ0G8Dx4E/DKS4dsf4eJ7nB6Q5itWxBGIGxzwXE6PhHeMVd9QOvzZQ8mKMIoTs8jaQvYqMEWNV/EbaE1UCwTpQkD86WVG8LJ9nBaBUrbqza3dRC3/2nSU3P+0iOVut8reMY3ZMjhe5iFPFwnQQ2AepcJaGHGKcvCuIqJplsgw8EurQXxru4MU5tEztlFkjlaswGN1fpIoO4CEsQ89ksbNaUYWDQgHpQ4xqxYHpwsxx0gvid3UqOWCVkMljv8uBHUI52oSznESEu7CHBKZXhvqinLoJs5BbHpGAbkn3nKGqkHCfEoQ==
+ bh=Y38L2EqdgHsvE0BDZos2jnfFi+3YkHIIo43lCl4t9oQ=;
+ b=I/18GMFLLTus9x9dJ7XfeizQHHUTvMSeEBSLYPbjjQEDb3MmWyy56HGd2RMeQap9fAPJbnfNkaIlSpSSb8MwguNFd/9JiIVRFfXdE3hif52o7FkBTkpo+z8in2Gf8inrnV5R3Gh+GLzx9ZukSk00UZcGAjMkmCKmBlhOTz39bO52QrxEoUs+StXR1m/fFM1uPiNnKSvmq6woogFvjjtnI4ezQKvL0CXc81pSlNDGhOovDvNGDtY9t+SMRAaTB3sv0QqQshTsDt6LE9TPZUU077d0PLvGYyDPAPkwg0BDZ5MTdj2C5p/ffeFNv1elq27PnAlUOKXhmCfJnlxLJYTbiw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
- dkim=pass header.d=cadence.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
- s=selector2;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gu0JQoNERRbp2wjLjA7EI1/FWIavHzFYLpndyh8dRck=;
- b=2WhkmwigfWY5CuzuPIqJSoF4+1AXIZJZ1Quf57owHsgQf9+Ybx49A6qsm1vjeaOcbTA1kM72OWvKxAr8QWkUuKM4eG7DIC3izsAOaaUU8kGB6aLlS8tulsX+5piidQpdw/szEiS3eYbWo1Yj3IPYWFwjpwc9N0+3yGq/VOhlNaU=
-Received: from BYAPR07MB5381.namprd07.prod.outlook.com (2603:10b6:a03:6d::24)
- by MW4PR07MB9638.namprd07.prod.outlook.com (2603:10b6:303:22f::13) with
+ bh=Y38L2EqdgHsvE0BDZos2jnfFi+3YkHIIo43lCl4t9oQ=;
+ b=QDebjEHSewECZjMeiN0gAYIVLPik9qrJJD+He/0WDSHdzOHe1MIvmk9zZW70uaUifOgNiHBS2EDv4lLWOamr4bT1iwnNl52D4JRK1dIUaRuuGq2SWA1okBofUhDkzNPBwSsugykmVY0xl0GORlfpkMMFP6mCJyl3IsHNWKtVt3w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DU2PR04MB8566.eurprd04.prod.outlook.com (2603:10a6:10:2d5::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.28; Mon, 30 Oct
- 2023 06:34:50 +0000
-Received: from BYAPR07MB5381.namprd07.prod.outlook.com
- ([fe80::36f1:c501:add4:45d1]) by BYAPR07MB5381.namprd07.prod.outlook.com
- ([fe80::36f1:c501:add4:45d1%6]) with mapi id 15.20.6933.026; Mon, 30 Oct 2023
- 06:34:49 +0000
-From: Pawel Laszczak <pawell@cadence.com>
-To: Frank Li <Frank.li@nxp.com>,
-        "peter.chen@kernel.org"
-	<peter.chen@kernel.org>,
-        "rogerq@kernel.org" <rogerq@kernel.org>,
-        "a-govindraju@ti.com" <a-govindraju@ti.com>,
-        "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: cdns3 uvc first ISO parkage lost problem
-Thread-Topic: cdns3 uvc first ISO parkage lost problem
-Thread-Index: AQHaCPA13WAOp4MeAkqlygNsWSmHvrBh2GoQ
-Date: Mon, 30 Oct 2023 06:34:48 +0000
-Message-ID: 
- <BYAPR07MB5381F7224612F0C0793B6B29DDA1A@BYAPR07MB5381.namprd07.prod.outlook.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.16; Mon, 30 Oct
+ 2023 16:21:41 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::97ca:a905:8e64:c098]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::97ca:a905:8e64:c098%6]) with mapi id 15.20.6933.011; Mon, 30 Oct 2023
+ 16:21:40 +0000
+Date: Mon, 30 Oct 2023 12:21:32 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Pawel Laszczak <pawell@cadence.com>
+Cc: "peter.chen@kernel.org" <peter.chen@kernel.org>,
+	"rogerq@kernel.org" <rogerq@kernel.org>,
+	"a-govindraju@ti.com" <a-govindraju@ti.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: cdns3 uvc first ISO parkage lost problem
+Message-ID: <ZT/XkhOvbucxA90V@lizhi-Precision-Tower-5810>
 References: <ZTvhEl+JcnhJXcrl@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZTvhEl+JcnhJXcrl@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: 
- PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccGF3ZWxsXGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUzNWJcbXNnc1xtc2ctNjlmODM1NzgtNzZlZS0xMWVlLWE4ODQtMDBiZTQzMTQxNTFlXGFtZS10ZXN0XDY5ZjgzNTdhLTc2ZWUtMTFlZS1hODg0LTAwYmU0MzE0MTUxZWJvZHkudHh0IiBzej0iODIyOCIgdD0iMTMzNDMxMjEyODU3MzUyMzI2IiBoPSJhSVh6Wm9PM2kra0dNbit4QXRlcEtESlFoTE09IiBpZD0iIiBibD0iMCIgYm89IjEiLz48L21ldGE+
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR07MB5381:EE_|MW4PR07MB9638:EE_
-x-ms-office365-filtering-correlation-id: 9a67c2ce-227d-4301-b215-08dbd9125066
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- WRIx+oe0PdTAb4N1lwxI+GEj5+Y3o4kUp7Kq9cVpKEAmHs1sfiWAwbLKqdI4WtRJtU7ewv1Nui07Q28Du/EA7cgirEiXRj21T3bbCHmBcZZTfQhLklkQaQN1dVmcQQiRhcukVGE0k3AiZP2C3OLz7HarBQn6DSpaDqbbH3wrDW7fHlgPV+GnetobdqFHkk7qDeCgRfqbUB0+qBUwyUz3nEME3DdFjA/+5L28UotMTfe0iTbDnVUz86lGDvNicepvan4xcrAyads2vVy+ZWN/BxVtvsssWuGUqQSd5mn+VylkW7vMnP+8E7QacmRudCZ5miYFZVGTznzUUT94iHDuBvKFStClOc+6LZxAQXpJ5j1Ho3AlxiIG/fdrGe1SpoPEWUbg/8R6+Yp0hxHNurGjxdyyYgCgjhb7cAmnFNM3uBpILb0E5pDZJvC2hg6l2d3WGi0kvtNnhkZwbv5vTDbMq0Ri5qiDIuwCBxKGIjX2yJreTWOJc1W+3nMAdd6IfcNqVeyKkvmHEljMtXITLSR0gyXYdT7xTH4wmoHPaUIchQiq5Qwd2rm6Pby6IyRZh+zi9gbjq/t25RMarxUJrtKNY6ql0mLtFK1ftrpCoy/L1OLrF77u/MTPb4nSUs6rdPAIKUwc29kriF+N2fYJ/XoP9Q==
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR07MB5381.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(346002)(39860400002)(136003)(366004)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(55016003)(66556008)(66476007)(66446008)(64756008)(122000001)(316002)(38100700002)(71200400001)(7696005)(9686003)(966005)(478600001)(110136005)(83380400001)(76116006)(66946007)(6506007)(26005)(5660300002)(41300700001)(2906002)(8676002)(8936002)(86362001)(33656002)(52536014)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?aLzu7n0jCAETyQlAKXTGgWUEePYA8g0c9gja0PPQ5u8Pl2LJ3jhpGIXdNclp?=
- =?us-ascii?Q?Z65r5j60TevCl2DaVSZLIk2s6I9Lhq6mFcIfZadf0uzeVyWUoEiCdicyPalQ?=
- =?us-ascii?Q?m7CWj4W/PtF3ge5R/lThBTgDRDw/tTImV8lz8/gy7yQ/mCpARk/iSqkgzd8b?=
- =?us-ascii?Q?V8G8fXT1aljUYHg2UI0ut9VclK5f3wcjTyOtvEGaxAXPPwkWLt6bDDpoRAPd?=
- =?us-ascii?Q?GeLlqKe5gFqaBtzMlxqRouVpOdZdZPmdExsat8G95BVUCYnKxoMrjMydW0E6?=
- =?us-ascii?Q?IwFLWnzuRGtK2OMxW2eg18ndnJnp3s0CQoeQtRYKsOBJ81b7PpTYjcHyqH2r?=
- =?us-ascii?Q?mHFUpaOeg2lcR2YVHwd4qhMhXEW2qotwEwAxIgTPhTwCEXNNoftkDZ7Zpn1C?=
- =?us-ascii?Q?CbaWB5zlGp1HFbzjmNU5frBz7ssC5dXYhe/1vEvuXmI/Gt6ReNYvOua3nOLD?=
- =?us-ascii?Q?8o4Ix+oB7st3hCcOWc4hb8DD2rcsDaH//ffd2m0sUL0gArnIe9VUSIZ21lgi?=
- =?us-ascii?Q?OvAcmQYHfvTD2gqm4OgPpZS2IUPnNR+isQt6dk2+tB/pULW2++lJ7rlSL6ZF?=
- =?us-ascii?Q?f+HfHdsdym+ZhXm1aVtOGpRuMbIhSof9YkfdgS1LeAvRkJiagOJsnrP48aNO?=
- =?us-ascii?Q?XGESKHOpYYj5bV/3i/p6YhqPrIrene2a9h4MfnYqS+9sEb5SmP5BIY+niBsm?=
- =?us-ascii?Q?HM0TqjL8fgaSRTfOJj9E+e/FwK38qUihOLudcEzBq53dk5oeyq5cSrVv0xO4?=
- =?us-ascii?Q?KvbZFT79Ti/avJnqPkPNM7khu9zTD7OCxdS3YHT9EDvO08CLwvlGPvIzn1t+?=
- =?us-ascii?Q?dE4zJLOT4zZbTsXtqf0zh5laIj+SCnRZiLrqLdFr+pnLMvkaQ1u0jgueIdQh?=
- =?us-ascii?Q?/4N38QQ6a8+lWcHboXTJ07kDByW8E414sQTRAyfdukmzFik+JD/5FcnziW+e?=
- =?us-ascii?Q?FF33nfGUotEQUgVaYmmyq2HgEpSJpwMVJNDJvwtSYxHSBGedkt7J8oUh0a1X?=
- =?us-ascii?Q?qbau7kRDG6oMtqhSwKHPA/jKpofmygMPvv40sJhESPwO4UBq8Hy0p42DamwY?=
- =?us-ascii?Q?5cKWYzSFPNcSzAnnFScLc0FaEo0eEDatEpaVmwB8I8Up2cMWXvHhVLiIvZjd?=
- =?us-ascii?Q?9ANlxpCrZUgecfCshuhY3ey/TNlCQxoqZXutsGumyJlOGTCOhDj4fo0KBPqk?=
- =?us-ascii?Q?JX+Ai3DUWtbCdjdUqH3748ytdia9ckfgkenRwfg4jvXjkzRyvltjxzTzireA?=
- =?us-ascii?Q?jJnYaY7vGwfcdcfrkAF2WMoql177LC21MwFu06e3GvoHXw8XKlY3DCTTl123?=
- =?us-ascii?Q?MelWS1ZUi1CHWj5jFVNn1Fonwymh39Sc2D2i43gMKEbVY9uXq/6ZXas+83hi?=
- =?us-ascii?Q?jW8NFU8A6m/iKmcZ87Cld2OQQ17vjdc7zd/y7vwK6Tyxwrdjj9gOlWngPkDr?=
- =?us-ascii?Q?fH3wK8ezoNgZ040VbhK/q3087rvs+5VzGS3DNB+DLSVv6zjw1tz9kO873USd?=
- =?us-ascii?Q?WTmXLCkNQjQjnN21QABld+LfT/r7IS70ViSdVTVDgPzj17SB6k3FrDvVPTR3?=
- =?us-ascii?Q?SBg/deLHEtK0CBuQIydjtQ7Xb/EBRch741WpNCN1?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <BYAPR07MB5381F7224612F0C0793B6B29DDA1A@BYAPR07MB5381.namprd07.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BYAPR07MB5381F7224612F0C0793B6B29DDA1A@BYAPR07MB5381.namprd07.prod.outlook.com>
+X-ClientProxiedBy: BYAPR07CA0031.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::44) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: cadence.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU2PR04MB8566:EE_
+X-MS-Office365-Filtering-Correlation-Id: 136ef04d-367a-4d88-e823-08dbd9644c4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	ZEM/r1YRgvh/YLqJsfgjDwvhRY3Q1I0A+Jlct4XVkAmJb6m6XeeBsh9kHpVDHPVzSfaleaChbJmHUOaOnJcpPhqNVSmeiZPrpwV5n3l8TXUs5pUUzuTJeRI+OMNOfT74ZC7wnzkgbCKL4W3WYu4bBkaOK3yXToCLtvugjDjMxqoxL4ZRIv0Bds2XYdWiX8FbZFoZquknyXg5681klTfVQWW7g1KATCaSPD+MLM9TNdPqonJAbbvc/WV9wMnrBhmOs84korR+Ez1Vdy2L2Q7PtypA+rqOhiP2jdoKYcf3QqDvUEibHi0HeTG0kbmlw76Ikk/Ce6DV8xs2cwtAwb1XnoB2bxfXW27xU9WtnhzzN6R4+vVW+HVoyb1/QP4H+5yh05pwubY5WfuHJTQFU8QWp7+O5BoLRiXjdJzLpHRf7XF6WJw1QPyK5HQBi4cizFWE847U4Orlly+jbuv0uVchmz9oRvZtm6PlA+Fn2QytM04wz8KpK7eCI1XHNoROJ4KZUDS7rihw3UxAEErb0sT0+lunOkUiYrQgFFEASlJgXrizwNNUWr2FQnoPSYO+zNcFVcQnycngjJ0+bA4QCPku8JBn8NnoYw6RCm1VmMOvOn0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(136003)(396003)(376002)(39860400002)(346002)(230922051799003)(64100799003)(186009)(1800799009)(451199024)(83380400001)(41300700001)(2906002)(5660300002)(86362001)(26005)(33716001)(38100700002)(6512007)(6506007)(9686003)(6666004)(52116002)(6486002)(478600001)(966005)(54906003)(8676002)(66946007)(66476007)(8936002)(66556008)(4326008)(316002)(6916009)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Nd4S6CYL1HvWIxTPyT6EtaB78aidWHGxhICfAdeMcKzGPRyD60MRJDjUACnR?=
+ =?us-ascii?Q?N5FysTDARewOd+WoULLE1JVuBo/JM4f+94bxhjXfUOdWb1noCRXJODGTJykk?=
+ =?us-ascii?Q?t1UNZahYqvkkq5r3PiABf8+dOxQo/DUhAxdx+ITmzkZVRqQfhA2jOhkrbyvZ?=
+ =?us-ascii?Q?I/uFm8PErzwRfUJWozR551PsA9xrvgM7shqbu5lJSq+1gIyhFvxj9y90t3e3?=
+ =?us-ascii?Q?3NfvrfgMD8BL5lmkuVUhsEcXpELCqHwWOrC2yJ2nM7nG1u139ettNi/lJHb6?=
+ =?us-ascii?Q?EeZOqlsKqT2K3Q+lhpLuv9XN8IdxObjLk/JNMQqq9xM8eAwNbnSy057vdIGF?=
+ =?us-ascii?Q?/a8IHnnu1Lya9RZ29hMLaZSJDXk4f0MofrUuP/AAFHnl84fSm2WcyVrRE6Gc?=
+ =?us-ascii?Q?Tab7ZVAcysnfMEhVOTUFEroISDYHzC1In4iT2Rx2AGZ4NOygDHz5+6d7cySr?=
+ =?us-ascii?Q?zsSEequSeWEutOjulXBFuw8gpXaM6oYJtnKJx43xKcxZeON9HzNuMtAaeZSS?=
+ =?us-ascii?Q?UcyTgxVMdMnnbsjpiUafbMNpEusmXeC9LWWk4ACQGWzyiK2YIw49eWkEJuU4?=
+ =?us-ascii?Q?/blHTL7Nxe/kiXGrCIERBGSt3zlPCTpgwsXXnl9+xxUTGofW8C0l5gWdXyrL?=
+ =?us-ascii?Q?zVwVKXqerkE9Iet9yi9eF61Ofjel2m9VHkVD+R/MFa/BRPvodfFySRN2/cXr?=
+ =?us-ascii?Q?H0PRIJlWp3Z2pd+bbR8LuxRMV3tsRRqFHwymM+Yaqx+ROn3gYanskUqpcp9E?=
+ =?us-ascii?Q?F4vz4chz8sj3KgDrMploJOex3u6Nwn3tvAQtypciL55lJH8os8Fxb97XZWem?=
+ =?us-ascii?Q?DF1gFzxNoO6QRIhmdVaiftxVdMZ13CFJ0uG9cyMTy0cGgOpz7sggtvhoB4st?=
+ =?us-ascii?Q?MtJ+b/AcNoAY+Wdr8VT0SRB1Jx+FK4Sen4jsp4wJjoJn75MnDqogAjanZdRe?=
+ =?us-ascii?Q?HmXVBV4eAjGfqlQWfMESb7+iwPdD0jzbNgAP0jClVgLnxYFp+GZDSxsZ5q1b?=
+ =?us-ascii?Q?ewAzz25ZydQERmIUf1f3MbUYOGua262MHIZJHUYdWIJCfiKKS0T+hlYLtPax?=
+ =?us-ascii?Q?6mRnI2oAYDWivNJLS7sMg/WT2phDVo737G0HeEZw5tY9w91MxFRMNfdW7imU?=
+ =?us-ascii?Q?zF92a2kZPm9OAlRKQkXDxzNxU9h/o82hYNaf52HiaWDscdqpivupMfdDtpKF?=
+ =?us-ascii?Q?uYMuILM3oVLd6UoLvFFRyU28M2q14IfHeSGQDGhRrG+lTw0zjDxJWwnXdLoU?=
+ =?us-ascii?Q?vI3sGoZwV89AKntBgYyXKf9moJGOGeQq06GhvS+CMtfzTpKxu2sljwwRmCu4?=
+ =?us-ascii?Q?Y/Gqp5cyph334uwq2U8cP6EF9Y5xrlH0rmDUoA9g81Z66dD61s6OyrnX+Gsm?=
+ =?us-ascii?Q?iQ8ezFHBd0rtIasjDzZ0JK6sGUMr+XNSuzy0kYKRRZLzZDKmWKNfrrRC0g9g?=
+ =?us-ascii?Q?4KTcarOLo2IUtftpkoFjFBnQYWJ3F/QyqJRxHxTbCNDwWlcZe8HclUeqHEPM?=
+ =?us-ascii?Q?M4z+jB3HHfua3+7vMfamiPjHrBGLOjHtxGkUBDC/DZEj9UyOTYhsFMRpNKsm?=
+ =?us-ascii?Q?+vhRTmOHkyIOWZejbxU=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 136ef04d-367a-4d88-e823-08dbd9644c4f
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR07MB5381.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a67c2ce-227d-4301-b215-08dbd9125066
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Oct 2023 06:34:48.4093
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 16:21:40.6003
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ke764k1xtysxzUWnVVuyX5zkLIFZMh1OTleY238tLfqIeFUK9QMj/wwk3um+BkPU4olA6kESFEyQzJjfHnMcoQ8IPxDLZT/SzJTl6rnV2Tw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR07MB9638
-X-Proofpoint-GUID: Y_-8z6jeGl8qi8UKRADJnbgaoeheyi7g
-X-Proofpoint-ORIG-GUID: Y_-8z6jeGl8qi8UKRADJnbgaoeheyi7g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-30_04,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 clxscore=1011
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 mlxlogscore=464
- mlxscore=0 phishscore=0 spamscore=0 impostorscore=0 bulkscore=0
- adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2310240000 definitions=main-2310300048
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eAaioME1vfQL5GTPICAabnvp3evdCDZZEQCxCOL+uhnz2bZzMAkjQ5wByCKENF8fn1o2X2kL08ATfuTIrGRo7A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8566
+
+On Mon, Oct 30, 2023 at 06:34:48AM +0000, Pawel Laszczak wrote:
+> 
+> >
+> >hi Pawel Laszczak
+> >
+> >Recently, I met the problem when use uvc. UVC report jpg header error.
+> >
+> >Basic reproduce steps.
+> >Gadget side:
+> >1 -
+> >	https://urldefense.com/v3/__https://gist.github.com/kbingham/c39c
+> >4cc7c20882a104c08df5206e2f9f?permalink_comment_id=3270713__;!!EHscm
+> >S1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9zeMkjAGXUAPYyPXDL
+> >FasSqYt16xq0RGT0Ff-cP4A$
+> >	uvc-gadget.sh start
+> >2 -
+> >	https://urldefense.com/v3/__https://git.ideasonboard.org/uvc-
+> >gadget.git__;!!EHscmS1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9z
+> >eMkjAGXUAPYyPXDLFasSqYt16xq0RGT1ogOdRQA$
+> >	uvc-gadget -i test.jpg
+> >
+> >
+> >Host side:
+> >	https://urldefense.com/v3/__https://github.com/thekvs/uvccapture2
+> >__;!!EHscmS1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9zeMkjAGX
+> >UAPYyPXDLFasSqYt16xq0RGT1MNlKiXA$
+> >	uvccapture2 --device /dev/video0  --resolution 640x360 --count 1 --
+> >result 8qxp.jpeg
+> >
+> >	It will report jpeg header error.
+> >
+> >
+> >After debugs, I found two problem.
+> >
+> >Problem 1, sg is enabled. so uvc driver will use sg. each package include two
+> >trb,  trb0 is 8bytes header, trb1 is 1016bytes. total 1024.
+> >
+> >num_trb here is wrong.
+> >it should be
+> >	num_trb = priv_ep->interval * request->num_mapped_sgs.
+> >
+> >because priv_ep->interval is 1, I just simple set to request->num_mapped_sg
+> >as below patch. USB analyer show one whole 1024 ISO package sent out as
+> >expectation although document said only support one TD when use ISO
+> >(Maybe my doc is too old).
+> 
+> Support for sg  in uvc has been added after upstreaming this driver, so the driver
+> needs some improvement. 
+> 
+> Calculating of num_trb probably will more complicated change.
+> 
+> You can see how it is implemented in 
+> https://elixir.bootlin.com/linux/latest/source/drivers/usb/gadget/udc/cdns2/cdns2-gadget.c#L412.
+> 
+> CDNS2 is different controller and support only HS but has borrowed the DMA part from CDNS3.
+> It was upsteamed after adding sg to UVC.
+> 
+> Regarding TD, it is true that controller can support only one TD per  SOF but this TD can contain many TRBs
+
+Okay, great. I can work a patch if I can resolve problem 2.
+
+> 
+> >
+> >diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-
+> >gadget.c
+> >index 69a44bd7e5d02..8cc99a885883f 100644
+> >--- a/drivers/usb/cdns3/cdns3-gadget.c
+> >+++ b/drivers/usb/cdns3/cdns3-gadget.c
+> >@@ -1125,10 +1125,7 @@ static int cdns3_ep_run_transfer(struct
+> >cdns3_endpoint *priv_ep,
+> >        struct scatterlist *s = NULL;
+> >        bool sg_supported = !!(request->num_mapped_sgs);
+> >
+> >-       if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
+> >-               num_trb = priv_ep->interval;
+> >-       else
+> >-               num_trb = sg_supported ? request->num_mapped_sgs : 1;
+> >+       num_trb = sg_supported ? request->num_mapped_sgs : 1;
+> >
+> >        if (num_trb > priv_ep->free_trbs) {
+> >                priv_ep->flags |= EP_RING_FULL;
+> >
+> >
+> >*** Problem 2 ***
+> >
+> >According to doc and my observation, looks like hardware fetch data into FIFO
+> >when get SOF, then transfer data when get IN token. Each SOF will increase
+> >TRB regardless it is ready or not.
+> 
+> Yes, but this fetched data will be sent in next  ITP. 
+> 
+> >
+> >When gadget complete equeue ISO data, so SOF will increase TRB regardless if
+> >there are IN token.
+> >
+> >   SOF       SOF       SOF     SOF  IN    SOF ....
+> >      TRB0      TRB1      TRB2      TRB3  ...
+> >
+> >
+> >Host may start get data at some time after gadget queue data.
+> >
+> >So TRB0..2 data will be lost.
+> >
+> >If it is audio data, it should be okay. But for uvc, it is jpeg header, so host side
+> >report error.
+> >
+> >I checked dwc gadget driver, which start equeue ISO data only get NYET.
+> >
+> >I check cdns spec, there are ISOERR. But it is never happen. According to
+> >document, ISOERR should issue when IN token and FIFO no data.
+> >
+> 
+> Current CDNS3 driver has disabled ISOERR. Did you enable it?
+
+Yes, I enabled all IRQ.
+
++       if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir) {
++               priv_ep->flags |= EP_QUIRK_ISO_IN_NOST;
++               reg |= 0xFFFF;
++       }
+
+Supposed ISOERR should happen even DMA is disabled. 
+But I also tried enable DMA, and using lenght 0 TRB and link to loop.
+
+Still no ISOERR happen. I can see TRBADDR changed, but still no ISOERR 
 
 
->
->hi Pawel Laszczak
->
->Recently, I met the problem when use uvc. UVC report jpg header error.
->
->Basic reproduce steps.
->Gadget side:
->1 -
->	https://urldefense.com/v3/__https://gist.github.com/kbingham/c39c
->4cc7c20882a104c08df5206e2f9f?permalink_comment_id=3D3270713__;!!EHscm
->S1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9zeMkjAGXUAPYyPXDL
->FasSqYt16xq0RGT0Ff-cP4A$
->	uvc-gadget.sh start
->2 -
->	https://urldefense.com/v3/__https://git.ideasonboard.org/uvc-
->gadget.git__;!!EHscmS1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9z
->eMkjAGXUAPYyPXDLFasSqYt16xq0RGT1ogOdRQA$
->	uvc-gadget -i test.jpg
->
->
->Host side:
->	https://urldefense.com/v3/__https://github.com/thekvs/uvccapture2
->__;!!EHscmS1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9zeMkjAGX
->UAPYyPXDLFasSqYt16xq0RGT1MNlKiXA$
->	uvccapture2 --device /dev/video0  --resolution 640x360 --count 1 --
->result 8qxp.jpeg
->
->	It will report jpeg header error.
->
->
->After debugs, I found two problem.
->
->Problem 1, sg is enabled. so uvc driver will use sg. each package include =
-two
->trb,  trb0 is 8bytes header, trb1 is 1016bytes. total 1024.
->
->num_trb here is wrong.
->it should be
->	num_trb =3D priv_ep->interval * request->num_mapped_sgs.
->
->because priv_ep->interval is 1, I just simple set to request->num_mapped_s=
-g
->as below patch. USB analyer show one whole 1024 ISO package sent out as
->expectation although document said only support one TD when use ISO
->(Maybe my doc is too old).
+ irq/447-5b13000-200     [000] d..1.    78.662729: cdns3_epx_irq: IRQ for ep2in: 00000804 IOC , ep_traddr: c0086018 ep_last_sid: 00000000 use_streams: 0                                           
+										 ^^^^^^^
+ irq/447-5b13000-200     [000] d..1.    78.662851: cdns3_epx_irq: IRQ for ep2in: 00000804 IOC , ep_traddr: c008600c ep_last_sid: 00000000 use_streams: 0                                                           
+ irq/447-5b13000-200     [000] d..1.    78.662975: cdns3_epx_irq: IRQ for ep2in: 00000804 IOC , ep_traddr: c0086018 ep_last_sid: 00000000 use_streams: 0 
 
-Support for sg  in uvc has been added after upstreaming this driver, so the=
- driver
-needs some improvement.=20
+STS is 0x804, only IOC set. 
 
-Calculating of num_trb probably will more complicated change.
+Frank
 
-You can see how it is implemented in=20
-https://elixir.bootlin.com/linux/latest/source/drivers/usb/gadget/udc/cdns2=
-/cdns2-gadget.c#L412.
-
-CDNS2 is different controller and support only HS but has borrowed the DMA =
-part from CDNS3.
-It was upsteamed after adding sg to UVC.
-
-Regarding TD, it is true that controller can support only one TD per  SOF b=
-ut this TD can contain many TRBs
-
->
->diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-
->gadget.c
->index 69a44bd7e5d02..8cc99a885883f 100644
->--- a/drivers/usb/cdns3/cdns3-gadget.c
->+++ b/drivers/usb/cdns3/cdns3-gadget.c
->@@ -1125,10 +1125,7 @@ static int cdns3_ep_run_transfer(struct
->cdns3_endpoint *priv_ep,
->        struct scatterlist *s =3D NULL;
->        bool sg_supported =3D !!(request->num_mapped_sgs);
->
->-       if (priv_ep->type =3D=3D USB_ENDPOINT_XFER_ISOC)
->-               num_trb =3D priv_ep->interval;
->-       else
->-               num_trb =3D sg_supported ? request->num_mapped_sgs : 1;
->+       num_trb =3D sg_supported ? request->num_mapped_sgs : 1;
->
->        if (num_trb > priv_ep->free_trbs) {
->                priv_ep->flags |=3D EP_RING_FULL;
->
->
->*** Problem 2 ***
->
->According to doc and my observation, looks like hardware fetch data into F=
-IFO
->when get SOF, then transfer data when get IN token. Each SOF will increase
->TRB regardless it is ready or not.
-
-Yes, but this fetched data will be sent in next  ITP.=20
-
->
->When gadget complete equeue ISO data, so SOF will increase TRB regardless =
-if
->there are IN token.
->
->   SOF       SOF       SOF     SOF  IN    SOF ....
->      TRB0      TRB1      TRB2      TRB3  ...
->
->
->Host may start get data at some time after gadget queue data.
->
->So TRB0..2 data will be lost.
->
->If it is audio data, it should be okay. But for uvc, it is jpeg header, so=
- host side
->report error.
->
->I checked dwc gadget driver, which start equeue ISO data only get NYET.
->
->I check cdns spec, there are ISOERR. But it is never happen. According to
->document, ISOERR should issue when IN token and FIFO no data.
->
-
-Current CDNS3 driver has disabled ISOERR. Did you enable it?
-
->I tried below method
->	1.  Delay queue TRB, but no ISOERR.
->	2.  queue a lenght 0 TRB,but no ISOERR
->
->My question is how to delay queue TRB to ISO IN token really happen to avo=
-id
->lost JPEG header.
->
->Frank
->
->
->
->
->
-
+> 
+> >I tried below method
+> >	1.  Delay queue TRB, but no ISOERR.
+> >	2.  queue a lenght 0 TRB,but no ISOERR
+> >
+> >My question is how to delay queue TRB to ISO IN token really happen to avoid
+> >lost JPEG header.
+> >
+> >Frank
+> >
+> >
+> >
+> >
+> >
+> 
