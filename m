@@ -1,56 +1,62 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2072.outbound.protection.outlook.com [40.107.21.72])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2049.outbound.protection.outlook.com [40.107.8.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0039B18C2F
-	for <imx@lists.linux.dev>; Mon, 30 Oct 2023 16:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F3019BBE
+	for <imx@lists.linux.dev>; Mon, 30 Oct 2023 18:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QDebjEHS"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="W7uWBRts"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hNtg1qMhyX+vN6KwxK+aQF51aYMI2ev2pSeY6XWLmuEHLj9/vfbUXTifYtHvOcmpDNzrwR3QikKMomdW540JC3J2SbzeKFxnICu6en9+8zr0W87xN+zYNGRQ5V/6it7v0sdS+mYWUBk5mOBFrDqNXFyYdTmjUOIhy7w8sTHm+ahObb3e6lPuzLTZSjyAf6q4mTZxlaNK+5FtWCZoWwoJA7So3BUED2i9s/tjPiZWwABMaty/zf/ut9KxXdFabvjfbX/lXQtbLnRgZIE6u9XtCDPvsvcXAXfo0vIxiGn6vUXssNuUPIlF1cemV4d16KXUeWY3mH6/pyAuiuTVKTQV3A==
+ b=Nr6CF/vphWcSEO23gFMtcVJGR5kH3h0K85kp5CsYhmo1NHk68qJjcQmTxeawqMQClaaPljZce13LEPO/egA6XIgHef74h/aM770Jw2GBKKqhKhbf/vAvyqQCQRf3bmb7ayVDtTyKtOQ+dk+0Ztf/Iu28XlVqynYEXf4byvxIpNC9w4ueYDQPwjLuHS+oKG8L6EcFlCaRgkNM+Uo03lZ2w6x26ls9Kc6G1Y4f+S64rZpvJvuIK5+gTwdho/Cn1uwrsYzlV3yDIez8wT3pw7t1vtqGUtawnqriGLXnJc+7yYmSJ1wrGG6+dIhYxlAKpb3jWVnvdtiRdKKFZnMG7X/CYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y38L2EqdgHsvE0BDZos2jnfFi+3YkHIIo43lCl4t9oQ=;
- b=I/18GMFLLTus9x9dJ7XfeizQHHUTvMSeEBSLYPbjjQEDb3MmWyy56HGd2RMeQap9fAPJbnfNkaIlSpSSb8MwguNFd/9JiIVRFfXdE3hif52o7FkBTkpo+z8in2Gf8inrnV5R3Gh+GLzx9ZukSk00UZcGAjMkmCKmBlhOTz39bO52QrxEoUs+StXR1m/fFM1uPiNnKSvmq6woogFvjjtnI4ezQKvL0CXc81pSlNDGhOovDvNGDtY9t+SMRAaTB3sv0QqQshTsDt6LE9TPZUU077d0PLvGYyDPAPkwg0BDZ5MTdj2C5p/ffeFNv1elq27PnAlUOKXhmCfJnlxLJYTbiw==
+ bh=/cPl+isM1llFv5Iidiqr22m8i6TDE/vfmFqVs/mDPAM=;
+ b=ezIFbHT+fFIwbLFTE8XUzNPyCaQbz7VUFcJ7Q7i2oRMe//xAZ+D5aFkyUZHskvwloFogKlFut0DlITJ1y7NJrw6oqQ35vhxmL8RZ6ZWALWZWmI+sqJ8Ova4NHrvbq7FPUxJLhnERSNKtSye5AHHbGX9yYcw5cSszejDz8yh3zQJOs3zgXdGlJOq1FXOSg1tpwMKftgT9N04vhUk5ikWIRBXT1/8LFZw+WKifxlMQJSsd0aQJMXA9LIwlLpoUsQ07o3iiPV8sCeoEVUtRPdVJ1YGFag8fXbFBbfdBNYUGknCYr/QpPgzN9C9xpAEu7uDhqRZ8+yeRIX50qHLxpG/1Wg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y38L2EqdgHsvE0BDZos2jnfFi+3YkHIIo43lCl4t9oQ=;
- b=QDebjEHSewECZjMeiN0gAYIVLPik9qrJJD+He/0WDSHdzOHe1MIvmk9zZW70uaUifOgNiHBS2EDv4lLWOamr4bT1iwnNl52D4JRK1dIUaRuuGq2SWA1okBofUhDkzNPBwSsugykmVY0xl0GORlfpkMMFP6mCJyl3IsHNWKtVt3w=
+ bh=/cPl+isM1llFv5Iidiqr22m8i6TDE/vfmFqVs/mDPAM=;
+ b=W7uWBRts/gpyEOfoH+u7EMM+W3Dh9ZNcBsBvT7iJcA0kI2BJ2xRE9BTQ2MA5kCOXhoT7bm0HAgQyrKsKgQW3pHscG8K51yYB/ez9umkRdhbQcBzb3BgH5B+ddz9JwEypFSwqkaK15pfhyCpGaKMknMcJoCNYh9GdQbcUu/LNcBA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DU2PR04MB8566.eurprd04.prod.outlook.com (2603:10a6:10:2d5::5) with
+ by AM9PR04MB8211.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.16; Mon, 30 Oct
- 2023 16:21:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19; Mon, 30 Oct
+ 2023 18:33:42 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::97ca:a905:8e64:c098]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::97ca:a905:8e64:c098%6]) with mapi id 15.20.6933.011; Mon, 30 Oct 2023
- 16:21:40 +0000
-Date: Mon, 30 Oct 2023 12:21:32 -0400
+ 18:33:42 +0000
+Date: Mon, 30 Oct 2023 14:33:33 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "peter.chen@kernel.org" <peter.chen@kernel.org>,
-	"rogerq@kernel.org" <rogerq@kernel.org>,
-	"a-govindraju@ti.com" <a-govindraju@ti.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: cdns3 uvc first ISO parkage lost problem
-Message-ID: <ZT/XkhOvbucxA90V@lizhi-Precision-Tower-5810>
-References: <ZTvhEl+JcnhJXcrl@lizhi-Precision-Tower-5810>
- <BYAPR07MB5381F7224612F0C0793B6B29DDA1A@BYAPR07MB5381.namprd07.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: manivannan.sadhasivam@linaro.org, aisheng.dong@nxp.com,
+	bhelgaas@google.com, devicetree@vger.kernel.org, festevam@gmail.com,
+	imx@lists.linux.dev, jdmason@kudzu.us, kernel@pengutronix.de,
+	kishon@kernel.org, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lorenzo.pieralisi@arm.com, lpieralisi@kernel.org, maz@kernel.org,
+	s.hauer@pengutronix.de, shawnguo@kernel.org, tglx@linutronix.de
+Subject: Re: [PATCH v2 4/5] misc: pci_endpoint_test: Add doorbell test case
+Message-ID: <ZT/2/SSoS4azNJnb@lizhi-Precision-Tower-5810>
+References: <20230911220920.1817033-1-Frank.Li@nxp.com>
+ <20230911220920.1817033-5-Frank.Li@nxp.com>
+ <20231020175304.GC46191@thinkpad>
+ <20231020180139.GE46191@thinkpad>
+ <ZTLBxvM/qNGw/FLd@lizhi-Precision-Tower-5810>
+ <20231020182643.GG46191@thinkpad>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <BYAPR07MB5381F7224612F0C0793B6B29DDA1A@BYAPR07MB5381.namprd07.prod.outlook.com>
-X-ClientProxiedBy: BYAPR07CA0031.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::44) To AM6PR04MB4838.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231020182643.GG46191@thinkpad>
+X-ClientProxiedBy: SJ0PR05CA0002.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b::7) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -59,204 +65,267 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU2PR04MB8566:EE_
-X-MS-Office365-Filtering-Correlation-Id: 136ef04d-367a-4d88-e823-08dbd9644c4f
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM9PR04MB8211:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37dcc282-abb5-4306-7982-08dbd976be57
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	ZEM/r1YRgvh/YLqJsfgjDwvhRY3Q1I0A+Jlct4XVkAmJb6m6XeeBsh9kHpVDHPVzSfaleaChbJmHUOaOnJcpPhqNVSmeiZPrpwV5n3l8TXUs5pUUzuTJeRI+OMNOfT74ZC7wnzkgbCKL4W3WYu4bBkaOK3yXToCLtvugjDjMxqoxL4ZRIv0Bds2XYdWiX8FbZFoZquknyXg5681klTfVQWW7g1KATCaSPD+MLM9TNdPqonJAbbvc/WV9wMnrBhmOs84korR+Ez1Vdy2L2Q7PtypA+rqOhiP2jdoKYcf3QqDvUEibHi0HeTG0kbmlw76Ikk/Ce6DV8xs2cwtAwb1XnoB2bxfXW27xU9WtnhzzN6R4+vVW+HVoyb1/QP4H+5yh05pwubY5WfuHJTQFU8QWp7+O5BoLRiXjdJzLpHRf7XF6WJw1QPyK5HQBi4cizFWE847U4Orlly+jbuv0uVchmz9oRvZtm6PlA+Fn2QytM04wz8KpK7eCI1XHNoROJ4KZUDS7rihw3UxAEErb0sT0+lunOkUiYrQgFFEASlJgXrizwNNUWr2FQnoPSYO+zNcFVcQnycngjJ0+bA4QCPku8JBn8NnoYw6RCm1VmMOvOn0=
+	rPz+ZjrXF/0/KUpgXEtrqxNnOK6JczXShnFRW2QgazAA7o2lP8UJMM+TsooPVV/2TFOTBYhZcd2Dhyz5OL2mdHGHDxJ1qYhMmzEVdH9h15n4lcL1CTSkUT0H9daAUWo2JXJzYd9n6cqBuwTtZtlb+VsJ4KJDFN8r+OlC7dO13S8FK2OhK/IXzj+ahUMlY6SftEaLh2kmc9uehocb2VQLprEQLCwXBUFeP2qCupbVeOj4NYOQFa4aI7YYl4zHz7ojYXlkmXeQRAMg6CL+uOBOZtRh2CobiwNafcb3VzmaBJbE/rZD49T9xG2/ZUWL6PKEMYs299F13EE89RU6eNvBOQDXWq6Yf8vQrRo6DmWqeIteQzt1nLth6NImBXjf5rqAzRys9O0LLN+ZY+GirkvA+hilvYra7q6iyXfMOJUFu0IoCIwjHIDaQIWa3BLA1znWyTxb94njCcESPGK12TqB3YyvwZ14pBIgRUPWnmNAeXTWHq/2aj0JLsa/LlYaGzKIW2nFxkA9bhdjsMq3xZyuD+KwDua/FXXtOGvwP3k72jq7b6gV/V9znXlFcERyHbhWArBjIQFJVjOsqhfZIp61xuzTLlXX2OJZoMyaIjjpOF55E3/ZHDwwXsxZ2vV/bJYZ
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(136003)(396003)(376002)(39860400002)(346002)(230922051799003)(64100799003)(186009)(1800799009)(451199024)(83380400001)(41300700001)(2906002)(5660300002)(86362001)(26005)(33716001)(38100700002)(6512007)(6506007)(9686003)(6666004)(52116002)(6486002)(478600001)(966005)(54906003)(8676002)(66946007)(66476007)(8936002)(66556008)(4326008)(316002)(6916009)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(396003)(39860400002)(136003)(366004)(376002)(230922051799003)(64100799003)(186009)(1800799009)(451199024)(38100700002)(26005)(6512007)(6506007)(52116002)(9686003)(38350700005)(33716001)(6486002)(8676002)(8936002)(41300700001)(4326008)(86362001)(6916009)(5660300002)(316002)(2906002)(6666004)(66556008)(478600001)(66946007)(7416002)(66476007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nd4S6CYL1HvWIxTPyT6EtaB78aidWHGxhICfAdeMcKzGPRyD60MRJDjUACnR?=
- =?us-ascii?Q?N5FysTDARewOd+WoULLE1JVuBo/JM4f+94bxhjXfUOdWb1noCRXJODGTJykk?=
- =?us-ascii?Q?t1UNZahYqvkkq5r3PiABf8+dOxQo/DUhAxdx+ITmzkZVRqQfhA2jOhkrbyvZ?=
- =?us-ascii?Q?I/uFm8PErzwRfUJWozR551PsA9xrvgM7shqbu5lJSq+1gIyhFvxj9y90t3e3?=
- =?us-ascii?Q?3NfvrfgMD8BL5lmkuVUhsEcXpELCqHwWOrC2yJ2nM7nG1u139ettNi/lJHb6?=
- =?us-ascii?Q?EeZOqlsKqT2K3Q+lhpLuv9XN8IdxObjLk/JNMQqq9xM8eAwNbnSy057vdIGF?=
- =?us-ascii?Q?/a8IHnnu1Lya9RZ29hMLaZSJDXk4f0MofrUuP/AAFHnl84fSm2WcyVrRE6Gc?=
- =?us-ascii?Q?Tab7ZVAcysnfMEhVOTUFEroISDYHzC1In4iT2Rx2AGZ4NOygDHz5+6d7cySr?=
- =?us-ascii?Q?zsSEequSeWEutOjulXBFuw8gpXaM6oYJtnKJx43xKcxZeON9HzNuMtAaeZSS?=
- =?us-ascii?Q?UcyTgxVMdMnnbsjpiUafbMNpEusmXeC9LWWk4ACQGWzyiK2YIw49eWkEJuU4?=
- =?us-ascii?Q?/blHTL7Nxe/kiXGrCIERBGSt3zlPCTpgwsXXnl9+xxUTGofW8C0l5gWdXyrL?=
- =?us-ascii?Q?zVwVKXqerkE9Iet9yi9eF61Ofjel2m9VHkVD+R/MFa/BRPvodfFySRN2/cXr?=
- =?us-ascii?Q?H0PRIJlWp3Z2pd+bbR8LuxRMV3tsRRqFHwymM+Yaqx+ROn3gYanskUqpcp9E?=
- =?us-ascii?Q?F4vz4chz8sj3KgDrMploJOex3u6Nwn3tvAQtypciL55lJH8os8Fxb97XZWem?=
- =?us-ascii?Q?DF1gFzxNoO6QRIhmdVaiftxVdMZ13CFJ0uG9cyMTy0cGgOpz7sggtvhoB4st?=
- =?us-ascii?Q?MtJ+b/AcNoAY+Wdr8VT0SRB1Jx+FK4Sen4jsp4wJjoJn75MnDqogAjanZdRe?=
- =?us-ascii?Q?HmXVBV4eAjGfqlQWfMESb7+iwPdD0jzbNgAP0jClVgLnxYFp+GZDSxsZ5q1b?=
- =?us-ascii?Q?ewAzz25ZydQERmIUf1f3MbUYOGua262MHIZJHUYdWIJCfiKKS0T+hlYLtPax?=
- =?us-ascii?Q?6mRnI2oAYDWivNJLS7sMg/WT2phDVo737G0HeEZw5tY9w91MxFRMNfdW7imU?=
- =?us-ascii?Q?zF92a2kZPm9OAlRKQkXDxzNxU9h/o82hYNaf52HiaWDscdqpivupMfdDtpKF?=
- =?us-ascii?Q?uYMuILM3oVLd6UoLvFFRyU28M2q14IfHeSGQDGhRrG+lTw0zjDxJWwnXdLoU?=
- =?us-ascii?Q?vI3sGoZwV89AKntBgYyXKf9moJGOGeQq06GhvS+CMtfzTpKxu2sljwwRmCu4?=
- =?us-ascii?Q?Y/Gqp5cyph334uwq2U8cP6EF9Y5xrlH0rmDUoA9g81Z66dD61s6OyrnX+Gsm?=
- =?us-ascii?Q?iQ8ezFHBd0rtIasjDzZ0JK6sGUMr+XNSuzy0kYKRRZLzZDKmWKNfrrRC0g9g?=
- =?us-ascii?Q?4KTcarOLo2IUtftpkoFjFBnQYWJ3F/QyqJRxHxTbCNDwWlcZe8HclUeqHEPM?=
- =?us-ascii?Q?M4z+jB3HHfua3+7vMfamiPjHrBGLOjHtxGkUBDC/DZEj9UyOTYhsFMRpNKsm?=
- =?us-ascii?Q?+vhRTmOHkyIOWZejbxU=3D?=
+	=?utf-8?B?SzZLbFZFUGFhcEowNlE1eDlBdzJaVHFSOUlDcVQ3cmRCV1lKWTkyUkpNWEtw?=
+ =?utf-8?B?ZngzZE9zcmhLSjM2cm1VMithQXZ4S1NBaU9DRVdTbklhR3Y3MitDNFNFTTRC?=
+ =?utf-8?B?VW1HRWFOVGwwNUZHS1RYSXV3dkRCNWJ4NEFSWHJNVjA0UDhBdnphWjdoMnZB?=
+ =?utf-8?B?ZEhYNTMzYWp6YzRNRVlLTkdHd0VWdHNOb28rK0NIOHhuem9PRmVxbjNXK3lO?=
+ =?utf-8?B?b0NFTnBtbEN4QmRZNUJoc0Qrekk1Z0k5Rm1mZFdMU0ZsajdjSTFxKysyVDVy?=
+ =?utf-8?B?bnc0RFhpVnFia2UvN2pjbURnWTNKZnZyVVJCYnc4dkZ1SmtmK3UrbUprR2dW?=
+ =?utf-8?B?Rjl6V3lFVUl3NnNoclRvQVpjSHZwSnhnT25XZ0hoL3dsVFVjczBCOStnOHEx?=
+ =?utf-8?B?Q2I2bGZWVW1ackwwenl2OUpaUmE1RWU5a2c0a1B3YWxDWkJPK01WelExeE9W?=
+ =?utf-8?B?ckRDQjh0RTFScGFpMzlFeFNRSU1PcUVTV2ZnV0YrcE8xS0dyM2dwUHFKaFlX?=
+ =?utf-8?B?aWFTMmNBQnpOWENOMUdNcHRRblhJWHNkZGFTZjJaWCt1T2ZsWk1uc3NiUUIr?=
+ =?utf-8?B?bkIvWUNjYmJFN0dHYXU0VkxWS0dFcWRqUFMrZ05HZlEyQ2ExV0NyNkp4dkJw?=
+ =?utf-8?B?RzhUMHJVWk1Dd2QyVjhEckFJRlFCdzZpK1JOc0hwZlFpaHplU3Y2K3NKYnlV?=
+ =?utf-8?B?M1J3ajZ2Y29VVzhwU2JqRmhsYitZMDdWYXl4RG9QUlhZcm5aK256TVI2U0Vz?=
+ =?utf-8?B?Wis2Zmhlc2tlYW9IOVA2SFdKUTdxKzZyYVBuVzFjK3BaODMwR25tcDc4Z0Fi?=
+ =?utf-8?B?c09yS29qM2F5TUVwTi9jZ0FNcUg4bng1cXUvNDNRcEdhSi9QZTd1SysyTHFh?=
+ =?utf-8?B?OHNFZ2hJWUNYZFE5dVBKbitwalI3TW4zc21qZnNhbE1NZVZRWndyRkY5OVJU?=
+ =?utf-8?B?RlJUZ2oxdHhYRDAyZWRaSkt2Q2dMS0VYZEVUQzBKTmFUYzRna1hzTytoUVFh?=
+ =?utf-8?B?RlB6bHBka1I2OFg5L24rR3NiV1lkVnRldGRsMkhWYnVtcFlyRW5DeGtKZlJi?=
+ =?utf-8?B?cGVGYXQvYnV1eFJxSzRrck43dWt6L0NTM3RXK1ZGQUFlV245NEI4RUJMV0dB?=
+ =?utf-8?B?Z0NSdXhZdnpHRS9CYWFDZWFpZ3dRVkFyVjF5SXdVeWpRTk5sMGo0b2EzdUpm?=
+ =?utf-8?B?Y2Qwc1FjQ0VkNjh5WnV5K0F3NlBFaUxxOU00bXFGRzMyYnRTeFdqc1FvekNa?=
+ =?utf-8?B?YzRUMDM3Y1JTSU01VFNtRy84Q3UxZ0FicVh6eFNmaERDeDIrb0V3eGdQK2ZC?=
+ =?utf-8?B?L2drNWVyMVIvd3VpSmZlc2lGTDUwSVkzQkxsTkY2RHJFMEU3eTRiT244cUV1?=
+ =?utf-8?B?dFRZalZzZjVuNTFrQUdFOG95SU1NSk4vQndpamF1bVcvTHR4SGE3VWZ4SHFQ?=
+ =?utf-8?B?QWZuWkloVFdMTGhjakxCRy9MZkk0aW9WZ0xQb1hkVVdDS2daUlVFOFMxS0lt?=
+ =?utf-8?B?SE1DRTE4TnV2QmQ1TWN2dE5ZdG1paEo1OXNRcVliczd1dXlPeWdkbTlqT2RE?=
+ =?utf-8?B?azY3WkRPK3QvQWRVRHc2bk5RaWtNQTJ2RjFFdUtTQldQTElSeEcvcUl2TTM1?=
+ =?utf-8?B?dGNUbUJneU1EZTdOYndUUHBxZno2ckhFNGpMTHNGWVg4cWdVYVBjbmpodWgw?=
+ =?utf-8?B?V0FxM3VzRDBjVC80bkJlQXkzM3pPeTdBMlRBZ1VSTVNyTjlQT2N2MDF3Nlkw?=
+ =?utf-8?B?aVQwK3lmNFhxWHpDQWdsY2lXdWY3bStQQ3dTQUZWczNtS3dCaC9sbDhueGZq?=
+ =?utf-8?B?cVROYVJwczdzWlVRQTc1dUd3ZmI4THdQM3RTMEwvTmFIZ0VKa1JPOURjRGY2?=
+ =?utf-8?B?RERXeWZYR2JNOXNwSFJsemRDRnJLQVNycFppTUFVTlJDc3N3cHM2bXRwekNX?=
+ =?utf-8?B?cEJRcElTazkwL2UxQktGdUJJd25UT0dKZjB5QmNhc1VtQlFmREZPWnNwNWRZ?=
+ =?utf-8?B?N3NUUHZCbENYU25jZnh3RDZ5TmthakJ4WXZkM1pkVTdjckE2dy8zRFJoMnNj?=
+ =?utf-8?B?VUtCWHg0RUZHVHZEWFl1THBHMTJNYUczdGNaNysrWXZlQzk2UXdkeWs0K1Qz?=
+ =?utf-8?Q?cOww=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 136ef04d-367a-4d88-e823-08dbd9644c4f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37dcc282-abb5-4306-7982-08dbd976be57
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 16:21:40.6003
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 18:33:42.7583
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eAaioME1vfQL5GTPICAabnvp3evdCDZZEQCxCOL+uhnz2bZzMAkjQ5wByCKENF8fn1o2X2kL08ATfuTIrGRo7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8566
+X-MS-Exchange-CrossTenant-UserPrincipalName: kg8lcAZiuqhyIEAB2P1x3itSPvW9dqGYN/Lmv2wSIntikVBREdohmEN9YuqJmcRBR/aYIPvb1eGlwqEHbKxeCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8211
 
-On Mon, Oct 30, 2023 at 06:34:48AM +0000, Pawel Laszczak wrote:
-> 
-> >
-> >hi Pawel Laszczak
-> >
-> >Recently, I met the problem when use uvc. UVC report jpg header error.
-> >
-> >Basic reproduce steps.
-> >Gadget side:
-> >1 -
-> >	https://urldefense.com/v3/__https://gist.github.com/kbingham/c39c
-> >4cc7c20882a104c08df5206e2f9f?permalink_comment_id=3270713__;!!EHscm
-> >S1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9zeMkjAGXUAPYyPXDL
-> >FasSqYt16xq0RGT0Ff-cP4A$
-> >	uvc-gadget.sh start
-> >2 -
-> >	https://urldefense.com/v3/__https://git.ideasonboard.org/uvc-
-> >gadget.git__;!!EHscmS1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9z
-> >eMkjAGXUAPYyPXDLFasSqYt16xq0RGT1ogOdRQA$
-> >	uvc-gadget -i test.jpg
-> >
-> >
-> >Host side:
-> >	https://urldefense.com/v3/__https://github.com/thekvs/uvccapture2
-> >__;!!EHscmS1ygiU1lA!H1h8GlLnbS6vqklXm_2qGyinP638O62Kk2eLB9zeMkjAGX
-> >UAPYyPXDLFasSqYt16xq0RGT1MNlKiXA$
-> >	uvccapture2 --device /dev/video0  --resolution 640x360 --count 1 --
-> >result 8qxp.jpeg
-> >
-> >	It will report jpeg header error.
-> >
-> >
-> >After debugs, I found two problem.
-> >
-> >Problem 1, sg is enabled. so uvc driver will use sg. each package include two
-> >trb,  trb0 is 8bytes header, trb1 is 1016bytes. total 1024.
-> >
-> >num_trb here is wrong.
-> >it should be
-> >	num_trb = priv_ep->interval * request->num_mapped_sgs.
-> >
-> >because priv_ep->interval is 1, I just simple set to request->num_mapped_sg
-> >as below patch. USB analyer show one whole 1024 ISO package sent out as
-> >expectation although document said only support one TD when use ISO
-> >(Maybe my doc is too old).
-> 
-> Support for sg  in uvc has been added after upstreaming this driver, so the driver
-> needs some improvement. 
-> 
-> Calculating of num_trb probably will more complicated change.
-> 
-> You can see how it is implemented in 
-> https://elixir.bootlin.com/linux/latest/source/drivers/usb/gadget/udc/cdns2/cdns2-gadget.c#L412.
-> 
-> CDNS2 is different controller and support only HS but has borrowed the DMA part from CDNS3.
-> It was upsteamed after adding sg to UVC.
-> 
-> Regarding TD, it is true that controller can support only one TD per  SOF but this TD can contain many TRBs
-
-Okay, great. I can work a patch if I can resolve problem 2.
-
-> 
-> >
-> >diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-
-> >gadget.c
-> >index 69a44bd7e5d02..8cc99a885883f 100644
-> >--- a/drivers/usb/cdns3/cdns3-gadget.c
-> >+++ b/drivers/usb/cdns3/cdns3-gadget.c
-> >@@ -1125,10 +1125,7 @@ static int cdns3_ep_run_transfer(struct
-> >cdns3_endpoint *priv_ep,
-> >        struct scatterlist *s = NULL;
-> >        bool sg_supported = !!(request->num_mapped_sgs);
-> >
-> >-       if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
-> >-               num_trb = priv_ep->interval;
-> >-       else
-> >-               num_trb = sg_supported ? request->num_mapped_sgs : 1;
-> >+       num_trb = sg_supported ? request->num_mapped_sgs : 1;
-> >
-> >        if (num_trb > priv_ep->free_trbs) {
-> >                priv_ep->flags |= EP_RING_FULL;
-> >
-> >
-> >*** Problem 2 ***
-> >
-> >According to doc and my observation, looks like hardware fetch data into FIFO
-> >when get SOF, then transfer data when get IN token. Each SOF will increase
-> >TRB regardless it is ready or not.
-> 
-> Yes, but this fetched data will be sent in next  ITP. 
-> 
-> >
-> >When gadget complete equeue ISO data, so SOF will increase TRB regardless if
-> >there are IN token.
-> >
-> >   SOF       SOF       SOF     SOF  IN    SOF ....
-> >      TRB0      TRB1      TRB2      TRB3  ...
-> >
-> >
-> >Host may start get data at some time after gadget queue data.
-> >
-> >So TRB0..2 data will be lost.
-> >
-> >If it is audio data, it should be okay. But for uvc, it is jpeg header, so host side
-> >report error.
-> >
-> >I checked dwc gadget driver, which start equeue ISO data only get NYET.
-> >
-> >I check cdns spec, there are ISOERR. But it is never happen. According to
-> >document, ISOERR should issue when IN token and FIFO no data.
+On Fri, Oct 20, 2023 at 11:56:43PM +0530, Manivannan Sadhasivam wrote:
+> On Fri, Oct 20, 2023 at 02:07:02PM -0400, Frank Li wrote:
+> > On Fri, Oct 20, 2023 at 11:31:39PM +0530, Manivannan Sadhasivam wrote:
+> > > On Fri, Oct 20, 2023 at 11:23:04PM +0530, Manivannan Sadhasivam wrote:
+> > > > On Mon, Sep 11, 2023 at 06:09:19PM -0400, Frank Li wrote:
+> > > > > Using bit 0..7 of magic as version number in pci_endpoint_test struct to
+> > > > > support older driver versions. Save to 'version' field of struct
+> > > > > pci_endpoint_test to prevent reading non-existent address.
+> > > > > 
+> > > > 
+> > > > Since both drivers are in the kernel, I don't see a necessity to maintain
+> > > > compatibility. Does it make sense to load drivers of previous kernel revision
+> > > > with a new kernel?
+> > > > 
+> > > 
+> > > Shoot... Sorry, I completely forgot that one is EP and another is host. Yes, we
+> > > do need to maintain compatibility.
+> > > 
+> > > But can't we use the doorbell register contents to determine that?
+> > 
+> > Doorbell register is not exist at old EP driver. If old EP driver register
+> > size is 64Byte,  doorbell register is 64 - 68.
 > >
 > 
-> Current CDNS3 driver has disabled ISOERR. Did you enable it?
+> Yes, I know!
+>  
+> > Read unexisted, or unmapped space will cause kernel dump or other side
+> > effects.
+> > 
+> 
+> For sure it won't be unmapped as the BAR0 size is 512B. I thought we could infer
+> something from the uninitialized registers. I need to think about other options.
+> But changing the semantics of MAGIC register is a no-go.
 
-Yes, I enabled all IRQ.
+@Mani:
 
-+       if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir) {
-+               priv_ep->flags |= EP_QUIRK_ISO_IN_NOST;
-+               reg |= 0xFFFF;
-+       }
-
-Supposed ISOERR should happen even DMA is disabled. 
-But I also tried enable DMA, and using lenght 0 TRB and link to loop.
-
-Still no ISOERR happen. I can see TRBADDR changed, but still no ISOERR 
-
-
- irq/447-5b13000-200     [000] d..1.    78.662729: cdns3_epx_irq: IRQ for ep2in: 00000804 IOC , ep_traddr: c0086018 ep_last_sid: 00000000 use_streams: 0                                           
-										 ^^^^^^^
- irq/447-5b13000-200     [000] d..1.    78.662851: cdns3_epx_irq: IRQ for ep2in: 00000804 IOC , ep_traddr: c008600c ep_last_sid: 00000000 use_streams: 0                                                           
- irq/447-5b13000-200     [000] d..1.    78.662975: cdns3_epx_irq: IRQ for ep2in: 00000804 IOC , ep_traddr: c0086018 ep_last_sid: 00000000 use_streams: 0 
-
-STS is 0x804, only IOC set. 
+Any other options? I plan respin these patches soon
 
 Frank
 
 > 
-> >I tried below method
-> >	1.  Delay queue TRB, but no ISOERR.
-> >	2.  queue a lenght 0 TRB,but no ISOERR
-> >
-> >My question is how to delay queue TRB to ISO IN token really happen to avoid
-> >lost JPEG header.
-> >
-> >Frank
-> >
-> >
-> >
-> >
-> >
+> - Mani
 > 
+> > Frank
+> > 
+> > > 
+> > > - Mani
+> > > 
+> > > > > Add three registers: PCIE_ENDPOINT_TEST_DB_BAR, PCIE_ENDPOINT_TEST_DB_ADDR,
+> > > > > PCIE_ENDPOINT_TEST_DB_DATA.
+> > > > > 
+> > > > 
+> > > > This patch is not adding these registers and not this driver also. So this
+> > > > statement is wrong.
+> > > > 
+> > > > > Write data from PCI_ENDPOINT_TEST_DB_DATA to address from
+> > > > > PCI_ENDPOINT_TEST_DB_ADDR to trigger doorbell and wait for endpoint
+> > > > > feedback.
+> > > > > 
+> > > > 
+> > > > You can reuse a part of the commit description I suggested for previous patch.
+> > > > 
+> > > > Rest looks good to me.
+> > > > 
+> > > > - Mani
+> > > > 
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > >  drivers/misc/pci_endpoint_test.c | 48 ++++++++++++++++++++++++++++++++
+> > > > >  include/uapi/linux/pcitest.h     |  1 +
+> > > > >  2 files changed, 49 insertions(+)
+> > > > > 
+> > > > > diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+> > > > > index ed4d0ef5e5c31..ed0b025132d17 100644
+> > > > > --- a/drivers/misc/pci_endpoint_test.c
+> > > > > +++ b/drivers/misc/pci_endpoint_test.c
+> > > > > @@ -33,6 +33,8 @@
+> > > > >  #define IRQ_TYPE_MSIX				2
+> > > > >  
+> > > > >  #define PCI_ENDPOINT_TEST_MAGIC			0x0
+> > > > > +#define PCI_MAGIC_VERSION_MASK			GENMASK(7, 0)
+> > > > > +#define PCI_ENDPOINT_TEST_V1			0x1
+> > > > >  
+> > > > >  #define PCI_ENDPOINT_TEST_COMMAND		0x4
+> > > > >  #define COMMAND_RAISE_LEGACY_IRQ		BIT(0)
+> > > > > @@ -52,6 +54,7 @@
+> > > > >  #define STATUS_IRQ_RAISED			BIT(6)
+> > > > >  #define STATUS_SRC_ADDR_INVALID			BIT(7)
+> > > > >  #define STATUS_DST_ADDR_INVALID			BIT(8)
+> > > > > +#define STATUS_DOORBELL_SUCCESS			BIT(9)
+> > > > >  
+> > > > >  #define PCI_ENDPOINT_TEST_LOWER_SRC_ADDR	0x0c
+> > > > >  #define PCI_ENDPOINT_TEST_UPPER_SRC_ADDR	0x10
+> > > > > @@ -66,7 +69,12 @@
+> > > > >  #define PCI_ENDPOINT_TEST_IRQ_NUMBER		0x28
+> > > > >  
+> > > > >  #define PCI_ENDPOINT_TEST_FLAGS			0x2c
+> > > > > +#define PCI_ENDPOINT_TEST_DB_BAR		0x30
+> > > > > +#define PCI_ENDPOINT_TEST_DB_ADDR		0x34
+> > > > > +#define PCI_ENDPOINT_TEST_DB_DATA		0x38
+> > > > > +
+> > > > >  #define FLAG_USE_DMA				BIT(0)
+> > > > > +#define FLAG_SUPPORT_DOORBELL			BIT(1)
+> > > > >  
+> > > > >  #define PCI_DEVICE_ID_TI_AM654			0xb00c
+> > > > >  #define PCI_DEVICE_ID_TI_J7200			0xb00f
+> > > > > @@ -102,6 +110,7 @@ enum pci_barno {
+> > > > >  	BAR_3,
+> > > > >  	BAR_4,
+> > > > >  	BAR_5,
+> > > > > +	NO_BAR = -1,
+> > > > >  };
+> > > > >  
+> > > > >  struct pci_endpoint_test {
+> > > > > @@ -118,6 +127,7 @@ struct pci_endpoint_test {
+> > > > >  	enum pci_barno test_reg_bar;
+> > > > >  	size_t alignment;
+> > > > >  	const char *name;
+> > > > > +	u8 version;
+> > > > >  };
+> > > > >  
+> > > > >  struct pci_endpoint_test_data {
+> > > > > @@ -713,6 +723,38 @@ static bool pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
+> > > > >  	return false;
+> > > > >  }
+> > > > >  
+> > > > > +static bool pci_endpoint_test_doorbell(struct pci_endpoint_test *test)
+> > > > > +{
+> > > > > +	enum pci_barno bar;
+> > > > > +	u32 data, status;
+> > > > > +	u32 addr;
+> > > > > +
+> > > > > +	if (test->version < PCI_ENDPOINT_TEST_V1)
+> > > > > +		return false;
+> > > > > +
+> > > > > +	bar = pci_endpoint_test_readl(test, PCI_ENDPOINT_TEST_DB_BAR);
+> > > > > +	if (bar == NO_BAR)
+> > > > > +		return false;
+> > > > > +
+> > > > > +	data = pci_endpoint_test_readl(test, PCI_ENDPOINT_TEST_DB_DATA);
+> > > > > +	addr = pci_endpoint_test_readl(test, PCI_ENDPOINT_TEST_DB_ADDR);
+> > > > > +	bar = pci_endpoint_test_readl(test, PCI_ENDPOINT_TEST_DB_BAR);
+> > > > > +
+> > > > > +	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_TYPE, irq_type);
+> > > > > +	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_IRQ_NUMBER, 1);
+> > > > > +
+> > > > > +	pci_endpoint_test_writel(test, PCI_ENDPOINT_TEST_STATUS, 0);
+> > > > > +	pci_endpoint_test_bar_writel(test, bar, addr, data);
+> > > > > +
+> > > > > +	wait_for_completion_timeout(&test->irq_raised, msecs_to_jiffies(1000));
+> > > > > +
+> > > > > +	status = pci_endpoint_test_readl(test, PCI_ENDPOINT_TEST_STATUS);
+> > > > > +	if (status & STATUS_DOORBELL_SUCCESS)
+> > > > > +		return true;
+> > > > > +
+> > > > > +	return false;
+> > > > > +}
+> > > > > +
+> > > > >  static long pci_endpoint_test_ioctl(struct file *file, unsigned int cmd,
+> > > > >  				    unsigned long arg)
+> > > > >  {
+> > > > > @@ -760,6 +802,9 @@ static long pci_endpoint_test_ioctl(struct file *file, unsigned int cmd,
+> > > > >  	case PCITEST_CLEAR_IRQ:
+> > > > >  		ret = pci_endpoint_test_clear_irq(test);
+> > > > >  		break;
+> > > > > +	case PCITEST_DOORBELL:
+> > > > > +		ret = pci_endpoint_test_doorbell(test);
+> > > > > +		break;
+> > > > >  	}
+> > > > >  
+> > > > >  ret:
+> > > > > @@ -887,6 +932,9 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+> > > > >  	misc_device->parent = &pdev->dev;
+> > > > >  	misc_device->fops = &pci_endpoint_test_fops;
+> > > > >  
+> > > > > +	test->version = FIELD_GET(PCI_MAGIC_VERSION_MASK,
+> > > > > +				  pci_endpoint_test_readl(test, PCI_ENDPOINT_TEST_MAGIC));
+> > > > > +
+> > > > >  	err = misc_register(misc_device);
+> > > > >  	if (err) {
+> > > > >  		dev_err(dev, "Failed to register device\n");
+> > > > > diff --git a/include/uapi/linux/pcitest.h b/include/uapi/linux/pcitest.h
+> > > > > index f9c1af8d141b4..479ca1aa3ae0b 100644
+> > > > > --- a/include/uapi/linux/pcitest.h
+> > > > > +++ b/include/uapi/linux/pcitest.h
+> > > > > @@ -20,6 +20,7 @@
+> > > > >  #define PCITEST_SET_IRQTYPE	_IOW('P', 0x8, int)
+> > > > >  #define PCITEST_GET_IRQTYPE	_IO('P', 0x9)
+> > > > >  #define PCITEST_CLEAR_IRQ	_IO('P', 0x10)
+> > > > > +#define PCITEST_DOORBELL	_IO('P', 0x11)
+> > > > >  
+> > > > >  #define PCITEST_FLAGS_USE_DMA	0x00000001
+> > > > >  
+> > > > > -- 
+> > > > > 2.34.1
+> > > > > 
+> > > > 
+> > > > -- 
+> > > > மணிவண்ணன் சதாசிவம்
+> > > 
+> > > -- 
+> > > மணிவண்ணன் சதாசிவம்
+> 
+> -- 
+> மணிவண்ணன் சதாசிவம்
