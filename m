@@ -1,37 +1,41 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A7B224D7
-	for <imx@lists.linux.dev>; Fri,  3 Nov 2023 19:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910FB21107
+	for <imx@lists.linux.dev>; Fri,  3 Nov 2023 19:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AotkSUlt"
-Received: from relay9-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::229])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 3EE31D1520
-	for <imx@lists.linux.dev>; Fri,  3 Nov 2023 18:51:20 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 20399FF806;
-	Fri,  3 Nov 2023 18:51:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N4Lw034G"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 727D1FF805;
+	Fri,  3 Nov 2023 19:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1699037471;
+	t=1699038241;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IDuaV2o26ipn18Dth3c/+CRuMDxlnBDkzFnwfW4wPK4=;
-	b=AotkSUlt+cvUxCNRruWpyimBanIZ5u43UQp2V7aTrUb+lRvE7OzcN4hwD6DJlN0IpcEUxw
-	lRAJcrQ3KG/Pdv8dcm8HSy86f8M738+nM+QkKxa9O764AwIVkhCsTntKlbh+956zAx7zVB
-	lAYygv8WB/IeKYLmeQJ80anvxqdZatFulL7bytfQcSYN2bkvCVZMJ26M9+ClT6idI9gNxr
-	B1KCHcpIC+IasoPIJOPVtR7uTcHv4XneDpT++dRKFniF0h+v8usuhVK6JS/qDBlKpxuyaS
-	SC1Fh5rtgXRgZ/5xJQ0dX9qW4CFf5vCaTf/oBz9hL3rorHIgtC4xmNMR7yNn+A==
-Date: Fri, 3 Nov 2023 19:51:10 +0100
+	bh=dss+61W/+HYAg0e5xd/Pz/gyDtB4Y0Iwbk0N61bIATc=;
+	b=N4Lw034G7uM2A93eso9Bw/JSrNQnmJRPBniVBxbVSxgtyFjQf2yN8hb5Qn/H58vXodfjbQ
+	JBcHn0KksFszWgp+TxmL7M3e5uuL2/V8IZvbrcgnmS2/xKjOG3kkYIre4IHNgqCkdJvh2f
+	eYkc8FCMLZYt1PPEjJGSCqb9FpCPf5oHDyAANyrA8mRhaIgBmfX0yh53NCpu7pmdXEkARN
+	lBHtaZvS8FLV1kaJRReVBMYGeKlRwg4RrAUlaN/rqXMXCF+UHYzceETrKY52ucqr8v4C6q
+	miXWqx3hX9O15Kugv8k5M8iQX0UTgt6j47M06dyGPiXeatYmYGQEMblSD1Vcng==
+Date: Fri, 3 Nov 2023 20:04:00 +0100
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 To: miquel.raynal@bootlin.com, Frank Li <Frank.Li@nxp.com>
-Cc: Frank.li@nxp.com, conor.culhane@silvaco.com, imx@lists.linux.dev,
-	joe@perches.com, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/6] i3c: master: svc: collection of bugs fixes
-Message-ID: <169903733135.383554.5820823171048383962.b4-ty@bootlin.com>
-References: <20231023161658.3890811-1-Frank.Li@nxp.com>
+Cc: alexander.stein@ew.tq-group.com, conor+dt@kernel.org,
+	conor.culhane@silvaco.com, conor@kernel.org,
+	devicetree@vger.kernel.org, festevam@gmail.com, haibo.chen@nxp.com,
+	imx@lists.linux.dev, joe@perches.com, kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
+	linux-arm-kernel@lists.infradead.org, linux-i3c@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org, peng.fan@nxp.com,
+	ping.bai@nxp.com, robh+dt@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org, sherry.sun@nxp.com, xiaoning.wang@nxp.com
+Subject: Re: [PATCH v2 1/2] i3c: master: svc: fix compatibility string
+ mismatch with binding doc
+Message-ID: <169903821819.391162.6378829151615918079.b4-ty@bootlin.com>
+References: <20231017194657.3199749-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,35 +44,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231023161658.3890811-1-Frank.Li@nxp.com>
+In-Reply-To: <20231017194657.3199749-1-Frank.Li@nxp.com>
 X-GND-Sasl: alexandre.belloni@bootlin.com
 
 
-On Mon, 23 Oct 2023 12:16:52 -0400, Frank Li wrote:
-> Each patch is indepedents. See commit message for detail.
+On Tue, 17 Oct 2023 15:46:56 -0400, Frank Li wrote:
+> In the binding documentation, the compatible string is specified as
+> 'silvaco,i3c-master-v1', but in the driver, it is defined as
+> 'silvaco,i3c-master'.
 > 
-> Change from v1 to v4.
-> See each patch notes
-> 
-> If there are not notes between v2 to v4, that's means not change.
+> Rename 'silvaco,i3c-master' to 'silvaco,i3c-master-v1' to ensure
+> compatibility with the documentation.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/6] i3c: master: svc: fix race condition in ibi work thread
-      commit: 6bf3fc268183816856c96b8794cd66146bc27b35
-[2/6] i3c: master: svc: fix wrong data return when IBI happen during start frame
-      commit: 5e5e3c92e748a6d859190e123b9193cf4911fcca
-[3/6] i3c: master: svc: fix ibi may not return mandatory data byte
-      commit: c85e209b799f12d18a90ae6353b997b1bb1274a5
-[4/6] i3c: master: svc: fix check wrong status register in irq handler
-      commit: 225d5ef048c4ed01a475c95d94833bd7dd61072d
-[5/6] i3c: master: svc: fix SDA keep low when polling IBIWON timeout happen
-      commit: dfd7cd6aafdb1f5ba93828e97e56b38304b23a05
-[6/6] i3c: master: svc: fix random hot join failure since timeout error
-      commit: 9aaeef113c55248ecf3ab941c2e4460aaa8b8b9a
+[1/2] i3c: master: svc: fix compatibility string mismatch with binding doc
+      commit: 8911eae9c8a947e5c1cc4fcce40473f1f5e475cd
 
+Best regards,
 
 -- 
 Alexandre Belloni, co-owner and COO, Bootlin
