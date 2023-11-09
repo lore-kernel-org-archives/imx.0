@@ -1,135 +1,132 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2069.outbound.protection.outlook.com [40.107.105.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BD21DDC3
-	for <imx@lists.linux.dev>; Thu,  9 Nov 2023 16:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293A1374CF
+	for <imx@lists.linux.dev>; Thu,  9 Nov 2023 21:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y94ZZoPN"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-53b32dca0bfso2295455a12.0
-        for <imx@lists.linux.dev>; Thu, 09 Nov 2023 08:51:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699548702; x=1700153502; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EB/GVelCwv918J74mEa2RtiTqM5Zt5ATdZIb7vJjWqs=;
-        b=Y94ZZoPNcEiujcgd/qVb9/N8mMlwvkCV0b3YczuygosJ4q5JFHxCyOmjI0/PWmFzKU
-         qujrpL+qc21fpcKlnKlseh2OJXm8DDCXDs1UM7znaXkp4XPacgrxOZhIasVpAQYmJ/7f
-         uH0MABThsIPrXOCNgHr23KGoG0Da6eOxOx4KUE5mHLBY76HWuFDgE1VlgVCeAcaoWmLv
-         xTFfIfwgP+Sa4NvvTjuBchgSQb3RKwWe9uXB5jjsEwet72VBW3LgDT5+W4F5/fKO998a
-         EJVecfRv+POspP0gdSnrjuc6PUiJGWZjQ73t6od7roV68N4xbg09Xc50ujg31N2cAP9M
-         kDZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699548702; x=1700153502;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EB/GVelCwv918J74mEa2RtiTqM5Zt5ATdZIb7vJjWqs=;
-        b=HA0hBw2rZp0AmlBdskl/Iu3XbxV3t2DqtRapGddYMwkTy+zjDZtsZnVNHif8KhbacM
-         iIzvZcU6tbOVfrVyczX33C3cEGx5bzDL/9uE9dpsCN0fXwwg2UMB3COUTQ5PixW30j6Q
-         /1q0ocrV5V9oVlfMkQjkK9KY/YNZjRl2++LQ66ge4/hSDenIf/WuNM6aowU9BSO5RSLm
-         OmYSBDfhVRD/Wx4HGl5bgwkJ8naWGT1OrXgEAmM9Tq+33djKjnv7OrOhYBAJat0a6BIJ
-         X9h7PUdjgEGGG6HkE497ytuZ0YqFfErG7ZsAhP2ysiJJb6g5G+OQHlH5YwDNBHrneRsF
-         tStw==
-X-Gm-Message-State: AOJu0Yxxnm0hnWz4potxtFaaNd6WNZ/sxzhy2Udcmy+J62k0pqghcRjE
-	mtCkp5azh7EOUSUZ6tonEeGmKQ==
-X-Google-Smtp-Source: AGHT+IFbGuVzjNYYjJEj8Z6UtrMmOE+jObppKQkMkmfZJeCsI4LVyZRa2bt4nhjL41nb+31LKc8H+w==
-X-Received: by 2002:aa7:c79a:0:b0:531:14c4:ae30 with SMTP id n26-20020aa7c79a000000b0053114c4ae30mr5471759eds.0.1699548702186;
-        Thu, 09 Nov 2023 08:51:42 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.126])
-        by smtp.gmail.com with ESMTPSA id d4-20020a056402516400b0052febc781bfsm34335ede.36.2023.11.09.08.51.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 08:51:41 -0800 (PST)
-Message-ID: <847fc857-0229-4e5e-9cac-4be5bec6e9c1@linaro.org>
-Date: Thu, 9 Nov 2023 17:51:39 +0100
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="lMIuPyGM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A5PrIqHlEgT7P6U+JznsaabdM/03bLWzvFtEGjepIqoEsMlSuEfMMg8s8N27GjZboNxR7HUOV+uoM6nuS06yfyrlLgELUwglQYQvRqZxP3k00E8Dul5P3U1AJB6snjSZ7bcl3IeXeiRAPdbB7qkq3/qd5ofoVcPhrmJtedvgNtZwtKlTUBhHktK72TTVouc6iy6SfU65wHe+4skfRkGGznh4Iejvc+zyfdO5Z+/mbupinIPPCw0W1aBdmzITLPUVgfYbZyXeBFBrdT0CC4ZDRxxmpsrVSeKvRKB1S91Hp96zDJxozmcIpuiTrM1XUVZDMR0huRwLdMj4NA7OX3Nw4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v1Mx6XeawNDc81uQYBW7oPzCVcocQG1tHT/QCKiv7FM=;
+ b=Qxybucc/hEuL/tm6p/KQOpHOOXjtU3au2hB2fk5P37GeEzdbyYuiubL/Ip0XJdPLsRfVmg/Z/zIXkRxVbzkY90UGL67l/zWLXwSqMSiMw0bqTbEEyIEa5jd8huC8mrEQRw2O2gh5u6r93sEYRXL/NdUPglp13vjKzMWbkfAkNRAeJNpBbCNsMx2EYjE6/OTaoGR95CWShBtsXH4J/65ISkMc2TaPlAmGVpQ/pWUsd4syouZync0S1c+7SUbKm24F8gaXX9hH4bLkRe1yDuFKPOKofo54es8x4jTEPJ4GltFfJKwvJfTHnznrJ99ahdNts/JkAPURTsC8By0VYmSctQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v1Mx6XeawNDc81uQYBW7oPzCVcocQG1tHT/QCKiv7FM=;
+ b=lMIuPyGM7o6CGfFmbyLozvKMWYeG2GVu3sSmkZuwYMaS3QrbNsD15cFWJNbBnes9WCxfE4xIDJRqiKgUeH+Ol+hpiamWJtcmi6VeWlpZyGjIL1ybiXej0PwvqWC8UE/HaPAysVFTvIbzBe9ApkUOP4dQsVZ54P+NNfsjnNHFbf4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DBBPR04MB7836.eurprd04.prod.outlook.com (2603:10a6:10:1f3::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.7; Thu, 9 Nov
+ 2023 21:21:34 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::55e7:3fd0:68f4:8885]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::55e7:3fd0:68f4:8885%4]) with mapi id 15.20.6977.018; Thu, 9 Nov 2023
+ 21:21:34 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com
+Cc: devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	imx@lists.linux.dev,
+	joy.zou@nxp.com,
+	krzysztof.kozlowski+dt@linaro.org,
+	linux-kernel@vger.kernel.org,
+	peng.fan@nxp.com,
+	robh+dt@kernel.org,
+	shenwei.wang@nxp.com,
+	vkoul@kernel.org
+Subject: [PATCH 0/4] dmaengine: fsl-edma: integrate TCD64 support for 64bit physical address
+Date: Thu,  9 Nov 2023 16:20:55 -0500
+Message-Id: <20231109212059.1894646-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7PR17CA0013.namprd17.prod.outlook.com
+ (2603:10b6:510:324::6) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: imx93: add i3c1 and i3c2
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>, shawnguo@kernel.org
-Cc: alexander.stein@ew.tq-group.com, alexandre.belloni@bootlin.com,
- conor+dt@kernel.org, conor.culhane@silvaco.com, conor@kernel.org,
- devicetree@vger.kernel.org, festevam@gmail.com, haibo.chen@nxp.com,
- imx@lists.linux.dev, joe@perches.com, kernel@pengutronix.de,
- krzysztof.kozlowski+dt@linaro.org, linux-arm-kernel@lists.infradead.org,
- linux-i3c@lists.infradead.org, linux-imx@nxp.com,
- linux-kernel@vger.kernel.org, peng.fan@nxp.com, ping.bai@nxp.com,
- robh+dt@kernel.org, s.hauer@pengutronix.de, sherry.sun@nxp.com,
- xiaoning.wang@nxp.com
-References: <20231017194657.3199749-1-Frank.Li@nxp.com>
- <20231017194657.3199749-2-Frank.Li@nxp.com>
- <ZUz/8fBWtnwdSW9w@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZUz/8fBWtnwdSW9w@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBBPR04MB7836:EE_
+X-MS-Office365-Filtering-Correlation-Id: f92e7a45-07ec-480a-7804-08dbe169d988
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	0LZBAb7IY4M/j5DazMBZVHODJH5SkDe0ahPJ/Y0SVYgIN9BQ4AT0mIHhoilOKtAHLle1Ti2/fpc7/EFr1xkRWzQZLNuc4JEpvtyIbK5lpqfVaOb1o+cqIbzhYeyQD/TVjYiNpNxEeg9vMWATG8vH/y++HkzxFw1uNk0BiUX72BbI+pM5qwDCG9n6oFH5QQGlHPo4UbJvwMP6pufDp/x8/buLiZ67bxl0pno9+9dvnuVdDYJSTvxkSHNfDAIRjV/3YSO9/2KXvGhBzFB7iuUH7rUfNTVyYiQUP4i/Ty9mvUOh2i8XQURN2e0/enaF4lvLzA1RTNxavR32gcHGIpkQXDCQuPa/zsQI+EH3LIfY39mGHQCQr6jcRdga1oiSM7siE7Sz3zJxhIe+S376JqH7ZAJo+FTF6cYDDHYBRcfSGTwwN0wyFxkJTxp5SrY/ebv5VKRJSilYr+9BfisvcwoJBL9O0MHQKBoUJWVd6WpgYE7QFWJdm/2S0osVegejzFZq5wk0k8PfnofFP1UVpmALnydeZERt3HcPUEVXFU5LgoJG7xd2pgrb557e+xtu0UklwcVgv+ibVCwdTztjPcNzoC4aHPeNV9fRAk0RDK6J0lCct5QxtiR0ql2D+w/TovvF
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(346002)(396003)(39860400002)(376002)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(66556008)(66476007)(316002)(37006003)(1076003)(6512007)(6486002)(52116002)(26005)(66946007)(6666004)(8676002)(83380400001)(8936002)(6506007)(4326008)(34206002)(2616005)(478600001)(5660300002)(4744005)(86362001)(38100700002)(41300700001)(2906002)(36756003)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mOko3Geg62SBYdZ4AcJmOFKBK4EKgDYUFP3xXXpBaxwoLrnEvo8zMqf9oAOS?=
+ =?us-ascii?Q?f+FwKDXj5TVlEoF+64M2ZGJWHphc6xvAwUBW1T5eEMA8IJG/+dBiqEdG909o?=
+ =?us-ascii?Q?DmlZWLj0BVlDr+VEsgdenuXmPyCLG2V81vBtckd5RgfpHJuxvXF2Cq3MdapY?=
+ =?us-ascii?Q?ELBW1HbIZFCrOJ3pTXv5V2h3eClbr3cCJ0pU/tn8EdHDg28g9vhfuz6Oy2b8?=
+ =?us-ascii?Q?0W9L3fpLeTSHmAkbkGknB5DqpqnDHiP4tD1cArgLeiSb4WQyQADZHSmlnn23?=
+ =?us-ascii?Q?wBfmVNpr/8tWkRhVnfDDr6Wo6GlkrbrYnZxYdgdfOBTCfIgjuafcy2PKoOiu?=
+ =?us-ascii?Q?1xW+NtjXkCjgSLcIOWDDP+mW4NHNMynIvNj18q1SR3lPDqHDv+wL+XjXGJzf?=
+ =?us-ascii?Q?9aqHxfK++ZMeYc2aK45Xv32K7Ykj2s1+XNV3skNw7JAgm2k5IsUZ4dk0ykBq?=
+ =?us-ascii?Q?JLJfICCr0xqiEmkVtcBXwemxmfIH/Lk9I0Sh1mQZMHsmSmEjTZxPmote8Kmy?=
+ =?us-ascii?Q?PqMDofibFRXMUtk8iw99mXcnDUDVEpTZhIuxna57CprX9VQqXq/O+JB7MGi9?=
+ =?us-ascii?Q?/Jbjom02XJ6VqaHL6arnBSl/bE10t7Kn9NPcHDt5CBt9gg/F0T5I1TOw5Y87?=
+ =?us-ascii?Q?t6O211h+UlFFUJINpzuboVf0+iJVyQVKC3UzC50XnQL1TPyOHfJAUodILIyw?=
+ =?us-ascii?Q?Tu1ienlk5q/ctrE3AqlH1064HuwxFJFsHLQqZ/SngG1H31xO3fgDaXwQdSLp?=
+ =?us-ascii?Q?OZhEPt2OKeqHFSOtsPM1XcAQtvoZLHccLBOxz6DDk1koBVH+OPEaxQ79cTUY?=
+ =?us-ascii?Q?5mgLGaMS+L1U9WAMjdOkDgB89vxsnMqhLR7kwzJ2bMXGPJGeQf5Stc5lJK+p?=
+ =?us-ascii?Q?3pbAi0aKuaJNoeupcsYqTSWxSvKi7KcUmZ4K73jZzGcPdEQ9f8D9ZB7YYRlw?=
+ =?us-ascii?Q?e82cCtDo6VNSAO0A8Uas/adKNCFJWeXBxP0Q/oe9Wt9UqNM9EEVkcOuQcVpI?=
+ =?us-ascii?Q?DPI/nDlnZ8Y8rdBc4hkYp1mKhNltqmAbGOwVl+kIT6Fr2Umh0UlHAUYfqU7j?=
+ =?us-ascii?Q?UlNJWpWgM9E+NxzZ0Dw8gmmbpSnMSvmXAQpWhk04AaHB4Fwb+7TYwhhS6On/?=
+ =?us-ascii?Q?ETbb+q+8MhhOx7RNxxje9GAXuGoYbeQgKVdqCpJAhAfc5EbBcgrFoekHfNGu?=
+ =?us-ascii?Q?7TFRHSyGpNQZsBkKLO5cEwy5ZgfAS9US652UmkHhTuC2+sPjkm/NGT1gsnwl?=
+ =?us-ascii?Q?ku+R2t7fl/GelAWmIhb3CueLmRnugg1utjYySfYMXXUdCOSBNtJMkRVpPnvA?=
+ =?us-ascii?Q?ZMfiWO9HGxZNUuXltuzwF5+Bga6tBGed4b5uRvjeteHTdv271tYLdlbmlVI1?=
+ =?us-ascii?Q?puPgWoXjuifm/qFbl4oBeaLvYUbL1f3lkfRfNYCBXI3aPGL16M1ezRb5p1wq?=
+ =?us-ascii?Q?Db6mzf4y9qsREOSzVfXxjqFj/Rhh+Vq9V/yfB75OfwSNddZh4YyrRx5HoEVT?=
+ =?us-ascii?Q?NUBLD3PnoObcUX/2h0mya4kgkVMnXf+HJmzxYMvmj7gDNH+VnFRa7J0j0F+d?=
+ =?us-ascii?Q?S0U/l9x+VNZNYN/KLUoFZfel+W9IAi2cYhjCxX3E?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f92e7a45-07ec-480a-7804-08dbe169d988
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 21:21:34.3702
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3GPpkAwgV7xDKYXxQoMtItbuN+v0WKwjcCAs+busPLFdAj2d0AB9OLh8B+BCfj/3x5RIyXnpp2Vzm4O7/6l81g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7836
 
-On 09/11/2023 16:51, Frank Li wrote:
-> On Tue, Oct 17, 2023 at 03:46:57PM -0400, Frank Li wrote:
->> Add I3C1 and I3C2.
->>
->> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->> ---
-> 
-> @Guo Shawn:
-> 
-> Driver part already merged. 
-> 
-> Please pick up dts part
+first 2 patch is prepare, No function change.
+3rd patch is dt-bind doc
+4rd patch is actuall support TCD64
 
-It's merge window. What do you expect exactly?
+Frank Li (4):
+  dmaengine: fsl-edma: involve help macro fsl_edma_set(get)_tcd()
+  dmaengine: fsl-edma: add address for channel mux register in
+    fsl_edma_chan
+  dt-bindings: fsl-dma: fsl-edma: add fsl,imx95-edma5 compatible string
+  dmaengine: fsl-edma: integrate TCD64 support for i.MX95
 
-Best regards,
-Krzysztof
+ .../devicetree/bindings/dma/fsl,edma.yaml     |   2 +
+ drivers/dma/fsl-edma-common.c                 |  85 ++++++------
+ drivers/dma/fsl-edma-common.h                 | 126 ++++++++++++++++--
+ drivers/dma/fsl-edma-main.c                   |  17 +++
+ 4 files changed, 178 insertions(+), 52 deletions(-)
+
+-- 
+2.34.1
 
