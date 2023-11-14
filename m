@@ -1,63 +1,53 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2070.outbound.protection.outlook.com [40.107.7.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32B62D631
-	for <imx@lists.linux.dev>; Mon, 13 Nov 2023 22:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E68D41227
+	for <imx@lists.linux.dev>; Tue, 14 Nov 2023 15:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="J3L+PLKo"
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ADBZ16A012916;
-	Mon, 13 Nov 2023 14:57:34 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=from:to:cc:subject:date:message-id:in-reply-to:references
-	:content-transfer-encoding:content-type:mime-version; s=
-	PPS06212021; bh=4hGwZs/gkFgvgh64pmtZQPr1ae5vVRucOKAiY2toD9A=; b=
-	J3L+PLKoF1KiB17wbXsGPjWVIhjxUXl9CWXkBdYr+RCAjQn7MXnoyJNcwKv46a/U
-	k9ajtygNtM2UhtyOTXCkeBwHY8Znt0PHzybHG2L1U48TfJGDGsKTPSzoALoxFa4l
-	cVJqdgo2ItSNyB40LD4RR7LE1ROdM/VZ64TMkHwytQGIAKAriTjZEStTe6OI9nNP
-	SNRvGTh3i7Oo5qUpSa/WKrovGawzRdNq5L2Apuww+ZLtDoO37JjmddvS1BUuY52h
-	ywLIYKjuxKwloRKMZFIOfwyurgexVmK0XGuCA3znT7yXCeW3JhfrKGsWy/FEoeQk
-	4g08wHpA0nzsA1MAJ47JVQ==
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ua5s4sw6g-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Nov 2023 14:57:34 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="C8hjEUDO"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KihoWP35qTwez3trQv9nGuiPrJvDJEPLXIQZorpZUzl+jooi/zlBx/PgX+yh2zLbxKvNEmoSRDQDNdHO8ZTXbJE8ngJy24Qrp3R2bQrsbQLR+3QVz6yYD4u3DgRkqMZKtYfE39gkrxsCwmX5t+YTesSfCl3IU4w+1SHxDQgL2QiYmDFIuSUprnUj/75roj5Ce8pZ751FISIPTxL4c0FLj7hd7uhK5HosaRij2+Q1IlDEcLQFX9eK6zfvY5FI1OUENSLqJg9pKgtzFfTTX8Hi/6nqerne6qcAidBxzWQLHn7W9brysm1UjhiyLJ6XTsbWQgM2ikLJNecB2gKPTQgD2Q==
+ b=SfS/SVUVMRyNDICrDBsS6nlGoQg3cyaY1a9PuAQhzqlpgOq48c9CssuuR2sk5zeGikxBl2DbMhmcAlzp1fNmKlxwuYR7xGs/zsmKKC7WAfZM3a+YY6G2jx3sbXGijG0ICeVkmRGkU6oEeeVUPljU1cPZOD7eweAG8xk2k+vMG7cj5DVLpnRlVyxzEjaZdSNjCTgbQnrrSHGfXMbMuEHOOqZMWZOMozhxvjsWgou7u6xY51+47/GgE2QWq7vie9GbHEAlnrYHONS03vbARtKSiAUXklsJtuClVJ+nWOwClBucHW7H7DxAOvnVQ+wwVoFrTS11/stZWGM1qqbhArbqdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4hGwZs/gkFgvgh64pmtZQPr1ae5vVRucOKAiY2toD9A=;
- b=U8C/Vsx0vET+manC3mQuq65a6ybqAn0f33ggc4B2PUJNZGZPODmp3sjbmJ6TkOA1B7aEJcu/HBOfhdCkLnz8sen0zYGPpnXIowge66YnRtroLpUHafKsFxclC8uE1t8+qEnlywlUYg5SOPb+gKnDDEmbB/VltsA+La97F3qgUSgnbXA4BmHucHmtqeOAxL50udCfk5RU+KUjHoQK6ntLtRCL2RXgNklgC3euP1eWUybmvuen3hEwTl/GAqvQMKiHB3JQ414PWzYpNwmneMg9wtrFnqeXd94RF4l+hlBiPFqjCfAQZomOjZl5FjTd0T7n+3nMsWfmMIC8vPrvmEKuqg==
+ bh=1SAU5x7X14RGLZmCU1oRp7TgvU4QRnu3vrTZva+yBoA=;
+ b=ob3ftlcK4CAnJxmFgXaGPBvsOmZqvejUTFNkdWgiKZy09jKn0hn6BU86x/rMu2V5Bu5ysQKApzzH/eAbhU4Qb45rP8uXO6i0EFyObe/1q6VEwT0xwLFjy49C99+09IvkMCPjYoAEpg/ZLC9IlQzt61c9FzqH9VlNMcpy+GGhxzOrYwTZLOwrJih+b5N57psHunKYnqGREOwrrrclTyMkBuCBURcyqOSsBWuOffcuCsdLL/Yv5tom4FrtMMN+d0SoNDwIDgZZ+qklvI6+fQ1Hm2nHTapqjsBMMk0IlRhEkA53iYuvFTY/sor7pq3kGfL8jKXkkQcTdHyEdHXTyiBw0A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from MW5PR11MB5764.namprd11.prod.outlook.com (2603:10b6:303:197::8)
- by CY8PR11MB7136.namprd11.prod.outlook.com (2603:10b6:930:60::6) with
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1SAU5x7X14RGLZmCU1oRp7TgvU4QRnu3vrTZva+yBoA=;
+ b=C8hjEUDO/54pNbuGYPisvQ+C2ZLmIwRHUf2XSWNu2Le3iAsqczscaLbVeulyUfcmGYzXOL4fe38DLSL0quACr1MHA7i20x8rbWrPH5B32bY9Aha3B5E9R1pVxxU1xHswCQQrRIMnouTpVUghJ2QLXaz3S/6lwOVtl5T9h2iU1K4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AS8PR04MB7493.eurprd04.prod.outlook.com (2603:10a6:20b:293::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.29; Mon, 13 Nov
- 2023 22:57:33 +0000
-Received: from MW5PR11MB5764.namprd11.prod.outlook.com
- ([fe80::7d7c:4379:e96:3537]) by MW5PR11MB5764.namprd11.prod.outlook.com
- ([fe80::7d7c:4379:e96:3537%7]) with mapi id 15.20.6977.029; Mon, 13 Nov 2023
- 22:57:33 +0000
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
-To: Frank.Li@nxp.com, vkoul@kernel.org
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] dmaengine: fsl-edma: Add judgment on enabling round robin arbitration
-Date: Tue, 14 Nov 2023 06:57:13 +0800
-Message-Id: <20231113225713.1892643-3-xiaolei.wang@windriver.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231113225713.1892643-1-xiaolei.wang@windriver.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.15; Tue, 14 Nov
+ 2023 15:09:51 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::bc7:1dcd:684d:4494]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::bc7:1dcd:684d:4494%4]) with mapi id 15.20.7002.015; Tue, 14 Nov 2023
+ 15:09:51 +0000
+Date: Tue, 14 Nov 2023 10:09:42 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Xiaolei Wang <xiaolei.wang@windriver.com>
+Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dmaengine: fsl-edma: Add judgment on enabling
+ round robin arbitration
+Message-ID: <ZVONtnCSK2owAhbd@lizhi-Precision-Tower-5810>
 References: <20231113225713.1892643-1-xiaolei.wang@windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYAPR01CA0137.jpnprd01.prod.outlook.com
- (2603:1096:404:2d::29) To MW5PR11MB5764.namprd11.prod.outlook.com
- (2603:10b6:303:197::8)
+ <20231113225713.1892643-3-xiaolei.wang@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231113225713.1892643-3-xiaolei.wang@windriver.com>
+X-ClientProxiedBy: BYAPR07CA0056.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::33) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,111 +55,104 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW5PR11MB5764:EE_|CY8PR11MB7136:EE_
-X-MS-Office365-Filtering-Correlation-Id: a65f2aea-4bd4-455a-79a0-08dbe49bebcd
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB7493:EE_
+X-MS-Office365-Filtering-Correlation-Id: f283bcac-74a8-4ce9-d41c-08dbe523bfd2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	Bf3JEcfO2xzk7rnNiCLBegozCsvfeV5Vi39TDPsqslzK8G0MEOQ+DnO17zouNSyGaFsvnVgJTraPKmfqqYm9LiUkLpnRxOjFY/qnK+3CoeiCnUV8kar2oMrIPMrbE8XRXgwLvasx5HGbYZy144NW2p1xJPtJZdM7aw1vMhCBXqsIt39Bm0dDuZswppEBHULhzL/2bG4LqBK1w/QCxJzCiyAf7SavGv1fhmhYf2T5d8o6BHB8zcf2J3h6yApUPVDJy0V2gtIhdoG1hYtY6uhEigW4SIj30IzwuX1j4ebJNF2dMUw0OdREbNt2R+12lbSslHYyG+VByyuIW2EG3LtZd/VDHaEqYOmLwzvsnE+wIuMYijM31Lh9Ykwy19J7iXFA0wluE7NTBIEePUvpn423E8VIhKK3QszvrfC69G+KpdGn0rRzd8847iJVB5Qz4T/4vUHYdNtZiIs6vUXSvuMVN2GTrE/RthxfQ/C2lpO/WkcEakzA9wRCtxzqGsfBsnnuL5JTN9xDKDbH4UWrDGDIW3GrLAReKG1PX3uVlWiAGO4YEScpE0yHdQSJEamOZteEsIaaGhTZn8gX7ziCh4HtmCrm+X2n4eY+qLiaZH1owrge95ekotryQFAIu73BC3BI
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR11MB5764.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(366004)(346002)(39850400004)(136003)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(38100700002)(2616005)(1076003)(8936002)(8676002)(4326008)(44832011)(52116002)(6512007)(6506007)(83380400001)(26005)(6486002)(6666004)(478600001)(66946007)(66476007)(66556008)(316002)(38350700005)(36756003)(41300700001)(2906002)(86362001)(5660300002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info:
+	D1vnrpJ24PtbrE8nalyyB42LR6nbpBh24Ddk554vJYlIv2dCu4M5ityeWuAACIEgS0usgkdBDY2AdOsAGz1L7Cd4Pkx591vp26NEDY25xNYlu9pJmW8zDAhRFxYfmNf18v8AknRjGHCMXamliTX872I/a6KyiKAEyWAnsSu3Ykn5fhOHZH7gec3yJeZM5LTRmDb0aCgfsLu66WlfclTUab9HFwK9Nfj5wjrLLUGztbezNqftZCWC9PWyusZQ//2loOsE0fR1p/hGRv3/ni9BvUGaseGwy3q4EBxXhrr1owAq8MZulz7yCHIuSF8Ua37DNLEyVRH7KlmCdZgAJjwEUwGFCburmoQ+JyPApNxQuIALBlxetkGCUu2V3aG/QEyE/TEBkXnxbIkF/rHCemCQdsIVBOB3/EGpQ6DV7N5fl7gKpHHo5/RIAN+9pFkV6uQWsJPAhrizRgJtfHSAwQhvh+69irMDEjErB5nLRDaHC2tsMXioPm8QvEl+3sbEELS37uqyj7u8iNid7N+YyFHzXlXor1Uh+QJ72x+Gx6WFRvr3eLJsTR0i3Wa4XajvEFD4dnScv7Wz2azYDR/hpEFfQ1rJPOxxLmYiKr7CDuSaS7RFh/gwHUmJLRoSvhbnimNw
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(376002)(366004)(396003)(39860400002)(346002)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(6512007)(6666004)(6486002)(478600001)(9686003)(52116002)(6506007)(38100700002)(86362001)(33716001)(66476007)(6916009)(66946007)(2906002)(66556008)(41300700001)(83380400001)(26005)(5660300002)(38350700005)(4326008)(316002)(8936002)(8676002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?AQfvsNzAsfPH7KKcWExd0xJI6/CYxzZGwSLRip3rhNCiYZ8ewHmLGcmrd4uV?=
- =?us-ascii?Q?RyW6vNuvBrGF6cn8mehCwXZsjwaW4Ojg3m4PMcUpCllarFa9FbLuRV4fofSg?=
- =?us-ascii?Q?xoEHiN8c5ry4G2RNIfMgYKmINww5M6rFJrtNYK5sxENOXsbi2CxtiTfVhiEF?=
- =?us-ascii?Q?49FXNj9jRh1kmWFetJn6FsHvAVKm1mdat8iw9uIpmd+oidfZGy9K9OCqBJ6P?=
- =?us-ascii?Q?vYQzs2Q4U+uZJ2ZMq6SnYqEbp02E+ZAr4vsBxxIismbICDgL68IzOUp8nMJ8?=
- =?us-ascii?Q?PYe20Ni05WxpvwbKyfPY7E9uEErvNFhWhBrqsoc5ZOrXQ3IJhfwouXD6wybj?=
- =?us-ascii?Q?Cftufj6XAnaTJS73EyTHTe93XzCG/FNcZgxBTW+zH6a4Q7jTw48looDHqRJE?=
- =?us-ascii?Q?VMPBEIc5sBaRG3/UKY8g5007w6foq9kt84Au1KXqvuHyaxRStzKqUhNI7ZXS?=
- =?us-ascii?Q?EDr15mG70MBo3w9YRHt8njLj+EPFtu7q2GzdIKTnGYIhfXEysxjOHhMzZitF?=
- =?us-ascii?Q?rMCd+yOBtyLQj1OxlWBz7vPi7NFEFM89JNZfhnQL9Tncy2DHj0u2ncPdheK9?=
- =?us-ascii?Q?1XIHJNizescceKjNfu9NOW63B6aBtRpmUfG4t8+rYsRCQrZHfjMkrrWrXrx7?=
- =?us-ascii?Q?mndqJoFWR3VDbelVnBu9kN3XxHPyHAI940y1bM+wWyGWlvMk2bxBdqIYXVzQ?=
- =?us-ascii?Q?JdH9dtnYs2W7dj6wr0dj6YECY0mchs7o2k1NY6UK6ccQZ564Z0eWnd3iXmDp?=
- =?us-ascii?Q?rU/XGGvSgwfdzkVTqT87puFcBuK/KUhb4l8FHDC7BkVp10ouLV6gEIhGHuOT?=
- =?us-ascii?Q?bJTHBciKd0M32apLkw4q96mve1gkzfceKxUL5sFM4QjeIb43u4DppF1YzTZC?=
- =?us-ascii?Q?1Wjmkzurg/1y3h99hBMachPSanCBCjQmZQzCQKbXaVjxcvdIj4Xd4gHwaQUL?=
- =?us-ascii?Q?bU1atHuWomaU2vOHi4WTFCFcwZYeRtdOe0RouL/C91mF8Xq1of1aQEotofru?=
- =?us-ascii?Q?7/hShFCmkbb1A3Uo9jdqUNDqyhjZrl1rub59nbA6E7Egni7mM0KTAt6Tw7yU?=
- =?us-ascii?Q?PtvW/qPfmd4FKj9Ei4BqwZb1QFeGAYwU9bNoDJjS41yxPECB/6Lw4Sy/Wb+G?=
- =?us-ascii?Q?t2VIgXXVcz0caAp9wDG3rwvseTN0zwl21PpGIcw2SXzm5pBh+ex/FTj23eCo?=
- =?us-ascii?Q?qa+XMsq6Txh1Aam85RKGfoOu+/PPJAPTkRYgMUItziwUaT1OZM9TGSVliHpJ?=
- =?us-ascii?Q?CEiba5BJ0sxrttfRwDiLM1NIafDJyhehYNM7TY430xD0owZFA3mNDKMMKBoB?=
- =?us-ascii?Q?s6plROSDYv53kbiev0c4GS2B0q40DHsb6k+2JQVyM4ce6b4bqBXFFFagRhCb?=
- =?us-ascii?Q?Q+iWKErjVnQLazqQTn+wAjpD39NN2rqa1ly58TuL6ZkHj+EONxtzN0RZljJT?=
- =?us-ascii?Q?Tab+w1pDDSF71MkAk0LZGllA9TMqxbNqVKzmbkW0woAefzs/TMIYMLlHXZDh?=
- =?us-ascii?Q?7w5CVp/9BRndO8OMdX+UQk+bivZXSoI/LI2pqPAIrzhxG0vfkanEJVC2n7z2?=
- =?us-ascii?Q?ZUZhHmfDV6/rTPqElFixIKKE8TG35FFnVHJ2Su16lF5wB36hGjxUDWfSUbxG?=
- =?us-ascii?Q?2g=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a65f2aea-4bd4-455a-79a0-08dbe49bebcd
-X-MS-Exchange-CrossTenant-AuthSource: MW5PR11MB5764.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aQzqgfaU6eH+UhbX4eLXvkXbI2Aoc6CFUHnyzpEwY3NKPl3t+R6e+vM2+ku5?=
+ =?us-ascii?Q?h7K2NhCkhRfmPjKj0WVMlQ+METyMdnOdJmfC62V656kfugRz6/iZqqN2MBby?=
+ =?us-ascii?Q?cClWL40ODba0pzJyCLsdMZoCrgAHLBINyk7RBZYQtW9BI0iM2s/Hvg8udeVL?=
+ =?us-ascii?Q?qr2Y/DXMD3KEQoN84SEs41U3XulxEZru3XRZ/QrYXcMqPf00cnbl4VFukrTp?=
+ =?us-ascii?Q?mFb1g6B9El6UP9i6xf4edKcKAP/EIU44EljM7g8wMo255miYlwCu8YHyyOt1?=
+ =?us-ascii?Q?XF20GD/CsJyVHVlbSiUEqB6166ZVG+44uYb9PZPCcRZg1hDVyzXMdaEkt3vY?=
+ =?us-ascii?Q?hlZ/oqL6eZTgwjm88lJMLNzsRbFBE8MkAYq+Zf9aMalEVgSBUJncJu6lAn5P?=
+ =?us-ascii?Q?CVkHEiiHtzlUzNVmBDTkmHM2dBn8DLL3qQ6Rbs89RcrePhub/3r+TLgmjtPx?=
+ =?us-ascii?Q?SSSphPq0Lg4kRxXNvQBEut0hoXjKGN3yiHGw7/tIUShn1UvO88lyEMeHJanG?=
+ =?us-ascii?Q?RGH0BuRolM3Vg9kdzf0tMxKC6Ke6tOmGgAh2jNvgU5HjH9FVJoUYhmI6zyLX?=
+ =?us-ascii?Q?G2W+LLpO64i01d4Pmn8Z4KpxOA05wkScwr/HWp2NlPSVnlMnWpskDvOUqbjO?=
+ =?us-ascii?Q?A7RT5wREDHWau0jeabdce2jVpozec1WjXm+Q0+3ll7wpkdSouck5/p+Fudw3?=
+ =?us-ascii?Q?DeGRvcwQ5+e//slbF/7bKETEVp7F4mlnpSchVIVz9CLLrh0iEfNUF/OtIA40?=
+ =?us-ascii?Q?e76iZ45HUJfKbKWVuu6TIfzVTv0ZjShL92uxohtQgo+AWs/kWJYNfHFjYzFp?=
+ =?us-ascii?Q?wnwFCVCKUyp/pNcqiugOBaa4ILqWY4LWY+5ViDjsUsoyLm3z40PZBwGVvhmc?=
+ =?us-ascii?Q?M/sUneen7dVFwzDTNKNLG38KZsP2zzDoO6tkVNE2Fwa0QHsvXQcUWSzncUQl?=
+ =?us-ascii?Q?4XbHlPtNCZPT4hw0gycwVYK0YcACqOksMYIZmig1hmvPG7Os0DdvsYtZ2Rup?=
+ =?us-ascii?Q?MJXddIytTPJr9zs9GmcJhyRNUqUUI1nMeWytqBOdQZGS4EI1lvx4oyCFzfbT?=
+ =?us-ascii?Q?Aj9WYMnvxB/4G57JuSYLa8oWE8hbjIwboxL1yDQBg+5rf4i4IBPlrYzhrQ06?=
+ =?us-ascii?Q?CcMKJ8MYXROwDTwHxlAY/BRmENM1Uthxknp1qZ+YTaDB6TjoL6/1xb7A9Xry?=
+ =?us-ascii?Q?MWvGYwqzAB62f6UTe77lrnt3O8/bxNS4sfwIG635ZIO15qrKfRB/A4ZfGqkl?=
+ =?us-ascii?Q?JgF0U/Lr7VbmRKQCCmfOx9wRjdBodGc9V6jo6x4JdtPU0RCXDjWHQt3+xDiQ?=
+ =?us-ascii?Q?OboiKlBoPQgPF57aR/UunLxb8lV8jmbvfmdd7Yvqdr4jFkL/H6a0tS4OnocU?=
+ =?us-ascii?Q?bNtUQnu1bAoGX9DPFmnFlZZwRThP7nmm2l8hLoUJR3BqJoz0sUuvj/sW9tLl?=
+ =?us-ascii?Q?ejS+0fin3qCQOreoj+ruRec3tvlfRAlAcjWB49LxrQATCIm9PB4KEnRUu4wk?=
+ =?us-ascii?Q?cy9l/1ULbyQ6O1SG6AXtgieMMMn1gQpGrSlM8r3am8LFEvbZSC9Wp0Z0MHq2?=
+ =?us-ascii?Q?kUryKRQNefbGQzYo/fUzIqqYtkXnQo4NuYC6ys8a?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f283bcac-74a8-4ce9-d41c-08dbe523bfd2
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2023 22:57:33.1884
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2023 15:09:51.0014
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LuoO7h0dl7AfVHqy8ZHJ3DyaDHcetu8mqxlUgZnqftZm0xfWYfHKiUdRQSHOvCGJpwd8oA4VIqr/qOdg9MWRsWz5hAibHZFqCY9SUkHmIhQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7136
-X-Proofpoint-GUID: MTQPTcT57abejzkFke0GyINJX-Gvzp7A
-X-Proofpoint-ORIG-GUID: MTQPTcT57abejzkFke0GyINJX-Gvzp7A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-13_12,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=699 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 spamscore=0
- suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311060001 definitions=main-2311130179
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1TC+LapF+kFn8v+OzItbGRSzC/LNy2UqTEJkLyuf2R26KoRaLscgh3A49Q9CPOJ5cWPDdIyVwPyM86IMQ0mnsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7493
 
-Add judgment on enabling round robin arbitration to avoid
-exceptions if this function is not supported.
+On Tue, Nov 14, 2023 at 06:57:13AM +0800, Xiaolei Wang wrote:
+> Add judgment on enabling round robin arbitration to avoid
+> exceptions if this function is not supported.
+> 
+> Call trace:
+>  fsl_edma_resume_early+0x1d4/0x208
+>  dpm_run_callback+0xd4/0x304
+>  device_resume_early+0xb0/0x208
+>  dpm_resume_early+0x224/0x528
+>  suspend_devices_and_enter+0x3e4/0xd00
+>  pm_suspend+0x3c4/0x910
+>  state_store+0x90/0x124
+>  kobj_attr_store+0x48/0x64
+>  sysfs_kf_write+0x84/0xb4
+>  kernfs_fop_write_iter+0x19c/0x264
+>  vfs_write+0x664/0x858
+>  ksys_write+0xc8/0x180
+>  __arm64_sys_write+0x44/0x58
+>  invoke_syscall+0x5c/0x178
+>  el0_svc_common.constprop.0+0x11c/0x14c
+>  do_el0_svc+0x30/0x40
+>  el0_svc+0x58/0xa8
+>  el0t_64_sync_handler+0xc0/0xc4
+>  el0t_64_sync+0x190/0x194
+> 
+> Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+> ---
 
-Call trace:
- fsl_edma_resume_early+0x1d4/0x208
- dpm_run_callback+0xd4/0x304
- device_resume_early+0xb0/0x208
- dpm_resume_early+0x224/0x528
- suspend_devices_and_enter+0x3e4/0xd00
- pm_suspend+0x3c4/0x910
- state_store+0x90/0x124
- kobj_attr_store+0x48/0x64
- sysfs_kf_write+0x84/0xb4
- kernfs_fop_write_iter+0x19c/0x264
- vfs_write+0x664/0x858
- ksys_write+0xc8/0x180
- __arm64_sys_write+0x44/0x58
- invoke_syscall+0x5c/0x178
- el0_svc_common.constprop.0+0x11c/0x14c
- do_el0_svc+0x30/0x40
- el0_svc+0x58/0xa8
- el0t_64_sync_handler+0xc0/0xc4
- el0t_64_sync+0x190/0x194
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
----
- drivers/dma/fsl-edma-main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 52577fffc62b..aea7a703dda7 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -665,7 +665,8 @@ static int fsl_edma_resume_early(struct device *dev)
- 			fsl_edma_chan_mux(fsl_chan, fsl_chan->slave_id, true);
- 	}
- 
--	edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-+	if (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
-+		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
- 
- 	return 0;
- }
--- 
-2.25.1
-
+>  drivers/dma/fsl-edma-main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> index 52577fffc62b..aea7a703dda7 100644
+> --- a/drivers/dma/fsl-edma-main.c
+> +++ b/drivers/dma/fsl-edma-main.c
+> @@ -665,7 +665,8 @@ static int fsl_edma_resume_early(struct device *dev)
+>  			fsl_edma_chan_mux(fsl_chan, fsl_chan->slave_id, true);
+>  	}
+>  
+> -	edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+> +	if (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
+> +		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.25.1
+> 
