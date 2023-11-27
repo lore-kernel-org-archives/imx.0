@@ -1,39 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D45810F3;
-	Mon, 27 Nov 2023 02:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2420D441F;
+	Mon, 27 Nov 2023 03:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esUJY4t2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E88C433C8;
-	Mon, 27 Nov 2023 02:21:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4ZPLxqU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BBFC433C8;
+	Mon, 27 Nov 2023 03:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701051707;
-	bh=bC2ssL/QECbp/dStYuVy7bosUCcMH2N8jkkHjJLYJnk=;
+	s=k20201202; t=1701054996;
+	bh=BrdY3KVSz3OKjfp8VA3lQbt0q3Ax4cix+/DXFjr6lSQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=esUJY4t28KqAgZi/NF1BJyvYwUsOTktrX0mBJwlFALH1aUm04CCexiidqrEj62rrR
-	 BG3QcWecVE5NUN60mHWGx4SGYzV233ltR7ooW1dO42dWuU2bitFPGi9MxptzCzFJSs
-	 t+TvM3XCED+uQ7NK6D28ct22hL54NBucjrD+CH6Qpt0ANLIt7FMrWUJMq16cSinVwR
-	 DbhGZeqLSi1vlqqoXpq4fHYOD+qkpKDuhz+507iEc5l1M1pRHLDryb2/rtVL9Xd4h7
-	 iaOugiYBPUotxLOhUh9R/IX/Qi5F97X3OW46oWQcrLwBqeevgXmwVQk/JgZSSSFTNb
-	 eAAtKGtcIWwJA==
-Date: Mon, 27 Nov 2023 10:21:40 +0800
+	b=T4ZPLxqUsdmWhtzfzEfLUAoEd0RgJ81X/iZXnEipjkR/cKj26g69Yl7syz/mUClAX
+	 l6gIuW4zgxYc7zIc8mmH08hJ7Mk8heJLmYLrNmMzozTfpebJDRq6AIOwjKIVwNH2Xo
+	 jtlgQcCr6AE3tJY5CruRSunR2zL24ByQ8mY0MZMJxwDuDYwHc7llE6vXrQFl+ucfGh
+	 vZmefcrzYNGMJI+xBGp7WVzM88SKGkGfqwu6ZNyXMNJRgLUasM/3Cz+1wYO5Al+PLi
+	 C6uSjzh205MUsEiNVIANWXseZeAmoRS/7v6DSuxUHbrx8grieunOg/FPj3LGipFeGn
+	 +Tk8mRAkHZ7CQ==
+Date: Mon, 27 Nov 2023 11:16:31 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: alexander.stein@ew.tq-group.com, alexandre.belloni@bootlin.com,
-	conor+dt@kernel.org, conor.culhane@silvaco.com, conor@kernel.org,
-	devicetree@vger.kernel.org, festevam@gmail.com, haibo.chen@nxp.com,
-	imx@lists.linux.dev, joe@perches.com, kernel@pengutronix.de,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	linux-arm-kernel@lists.infradead.org, linux-i3c@lists.infradead.org,
-	linux-imx@nxp.com, linux-kernel@vger.kernel.org, peng.fan@nxp.com,
-	ping.bai@nxp.com, robh+dt@kernel.org, s.hauer@pengutronix.de,
-	sherry.sun@nxp.com, xiaoning.wang@nxp.com
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: imx93: add i3c1 and i3c2
-Message-ID: <20231127022140.GJ87953@dragon>
-References: <20231017194657.3199749-1-Frank.Li@nxp.com>
- <20231017194657.3199749-2-Frank.Li@nxp.com>
- <ZUz/8fBWtnwdSW9w@lizhi-Precision-Tower-5810>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Li Yang <leoyang.li@nxp.com>,
+	Marco Contenti <marco.c@variscite.com>,
+	Nate Drude <nate.d@variscite.com>,
+	FrancescoFerraro <francesco.f@variscite.com>,
+	Harshesh Valera <harshesh.v@variscite.com>
+Subject: Re: [PATCH v2 4/4] arm64: dts: freescale: Add panel overlay for
+ Variscite DART
+Message-ID: <20231127031631.GY87953@dragon>
+References: <20231025165058.31697-1-laurent.pinchart@ideasonboard.com>
+ <20231025165058.31697-5-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,24 +41,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZUz/8fBWtnwdSW9w@lizhi-Precision-Tower-5810>
+In-Reply-To: <20231025165058.31697-5-laurent.pinchart@ideasonboard.com>
 
-On Thu, Nov 09, 2023 at 10:51:13AM -0500, Frank Li wrote:
-> On Tue, Oct 17, 2023 at 03:46:57PM -0400, Frank Li wrote:
-> > Add I3C1 and I3C2.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
+On Wed, Oct 25, 2023 at 07:50:58PM +0300, Laurent Pinchart wrote:
+> Add a DT overlay for the Variscite i.MX8MP DT8MCustomBoard that models
+> the GKTW70SDAE4SE LVDS panel found in the evaluation kit.
 > 
-> @Guo Shawn:
-> 
-> Driver part already merged. 
-> 
-> Please pick up dts part
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Rob had a comment [1] about SoC specific compatible.  That's not what we
-want?
+It doesn't apply to imx/dt64 branch, and I managed to manually apply it.
+However, here is what I'm getting from 'make ARCH=arm64 dtbs'.
+
+../arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:54.3-16: Warning (reg_format): /fragment@1/__overlay__/touch@38:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+../arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:52.11-68.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/touch@38: Relying on default #address-cells value
+../arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:52.11-68.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/touch@38: Relying on default #size-cells value
+arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (graph_port): /fragment@3: graph port node name should be 'port'
+../arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:85.15-87.3: Warning (graph_endpoint): /fragment@3/__overlay__: graph endpoint node name should be 'endpoint'
+../arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:85.15-87.3: Warning (graph_endpoint): /fragment@3/__overlay__: graph connection to node '/fragment@0/__overlay__/panel/port/endpoint' is not bidirectional
 
 Shawn
-
-[1] https://lkml.iu.edu/hypermail/linux/kernel/2310.2/03035.html
