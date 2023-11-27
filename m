@@ -1,113 +1,177 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2085.outbound.protection.outlook.com [40.107.6.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D27733E0
-	for <imx@lists.linux.dev>; Mon, 27 Nov 2023 09:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00B131A9A
+	for <imx@lists.linux.dev>; Mon, 27 Nov 2023 15:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="bLOSLya2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1701077812; x=1732613812;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wbYc5Mi0mkxvIgJBVWC8WKPY+n3fl5ePEg7lSS5YolQ=;
-  b=bLOSLya289p/3zYYKSgwHTm3Z4bSo4tBw+KTcR0RqlnObJgUtN6QO4gX
-   4rtHc6n1101DnrbC7inv/ND5a8jxXX/5ubummVy3IoYpjzyR6K0/B7cch
-   jK448Q2hsyp/FVKiWTu5WHxzk8OhxKeQRQGOcBuI8QUFuyXnrRPdU3pYT
-   LPzMg86Ljc0WWmgRavNx6LZEWmLwvnsgsBYBXe5ZpW4r86WYj5nWmmUv6
-   XuWIhxjDEFvjGYcF7CZ48vofAFBGfK+888+tOfZliPFnsjfQ1iDRfX8kc
-   j4h3ve8JNc/yBsIsyKY3BzApEvW8WOV0Q6cZGfpia6SY4QkvnyWyHbNOk
-   Q==;
-X-CSE-ConnectionGUID: jcaihvjJQZmUBLk5lTFEhQ==
-X-CSE-MsgGUID: XSNrlY2nTJy6E+xCTC4UsA==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.04,230,1695711600"; 
-   d="asc'?scan'208";a="12595217"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Nov 2023 02:36:43 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 27 Nov 2023 02:36:12 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 27 Nov 2023 02:36:08 -0700
-Date: Mon, 27 Nov 2023 09:35:39 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Shawn Guo <shawnguo@kernel.org>
-CC: Frank Li <Frank.li@nxp.com>, <alexander.stein@ew.tq-group.com>,
-	<alexandre.belloni@bootlin.com>, <conor+dt@kernel.org>,
-	<conor.culhane@silvaco.com>, <conor@kernel.org>,
-	<devicetree@vger.kernel.org>, <festevam@gmail.com>, <haibo.chen@nxp.com>,
-	<imx@lists.linux.dev>, <joe@perches.com>, <kernel@pengutronix.de>,
-	<krzysztof.kozlowski+dt@linaro.org>, <krzysztof.kozlowski@linaro.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-i3c@lists.infradead.org>,
-	<linux-imx@nxp.com>, <linux-kernel@vger.kernel.org>, <peng.fan@nxp.com>,
-	<ping.bai@nxp.com>, <robh+dt@kernel.org>, <s.hauer@pengutronix.de>,
-	<sherry.sun@nxp.com>, <xiaoning.wang@nxp.com>
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: imx93: add i3c1 and i3c2
-Message-ID: <20231127-cherisher-falsify-8193656e8872@wendy>
-References: <20231017194657.3199749-1-Frank.Li@nxp.com>
- <20231017194657.3199749-2-Frank.Li@nxp.com>
- <ZUz/8fBWtnwdSW9w@lizhi-Precision-Tower-5810>
- <20231127022140.GJ87953@dragon>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="AahtNgUD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QXYANBbNHM7VweXHp5cuoMu9Wl+B/VT9akN9jPH/rd4sS4SjUEC1CfL2BOEOaZyB49VsSlNoYCWqCsrdrkjIUM2/6NPP5KCiwDVM553b9oOCg9tKGGh78xYd4n4gIM8qKDC/FrPiq7A5609ym0T6ggImXZupbZq6YWGEfyjLR+NqDqtY7ysh3JsYMZhUajxZT7PT7LGnDXecDDLDetmXvBfvDbM282hJSepJAiuQ6tKC5IGXOORiVppTk++27PcUgj9G0UIY+CPaEjQGJJ0y2cBHobMiQ+Ky2VvG1XaGzFfSCbxqKDC/02R0ANAjXTcJD+KrDNqHX3y0nVavvSelAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qUWltBBsIZE4eUYAIWtqNILb3mSl1d9ipSKOn96uw9k=;
+ b=hviesataSvTUlpOwVF07DH1ikyLKM4WGEForUwTh4YjC4fTPtpuBSt2Em3DJA11CtTpQFGENOjDNS3NUwmLiXafj4VSFPR0nI63U6qX2AIc9DiAYTzZwAedLwNRgW4Bf0EIYBXZWp/KUJnqCd2zATFpOuXuF7uQ4YklHAwwL2BLmAMSnwpQFz87fuBdWqyXYUD+RU8iPE6GOhefd8yB9b80A3YvJ1aakUTqhn4LlNEmtU4COtMu6kzEKNC/CP8ADN3Y05qSk/sWmWTKb5IXfbYTs2jm2YgEGNdt0na59OrucaQgBM8w0CoNmTnBi43sGLWy0+7wDkmr4FrI+emIenw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qUWltBBsIZE4eUYAIWtqNILb3mSl1d9ipSKOn96uw9k=;
+ b=AahtNgUD7e8gc8PNQqKMHjvbYHZ0KLdBJ9pqcysv4lBqdkSYLMXLTxip0hC0lIWsfIWlW45ZsJI9XUHT5jXPGLRargoWeVL9g+PRYx4glh+FTLD/cnzEpPtLJsYeTnlwMyuznF8ntiy/PIPlLA2IVscCqokOz7A5607O+pvFbpg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB4845.eurprd04.prod.outlook.com (2603:10a6:803:51::30)
+ by AS1PR04MB9456.eurprd04.prod.outlook.com (2603:10a6:20b:4d7::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.19; Mon, 27 Nov
+ 2023 15:29:07 +0000
+Received: from VI1PR04MB4845.eurprd04.prod.outlook.com
+ ([fe80::6410:9a52:b833:5bc1]) by VI1PR04MB4845.eurprd04.prod.outlook.com
+ ([fe80::6410:9a52:b833:5bc1%4]) with mapi id 15.20.7046.015; Mon, 27 Nov 2023
+ 15:29:07 +0000
+Date: Mon, 27 Nov 2023 10:28:57 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Peter Chen <peter.chen@kernel.org>, gregkh@linuxfoundation.org
+Cc: imx@lists.linux.dev, Pawel Laszczak <pawell@cadence.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"open list:CADENCE USB3 DRD IP DRIVER" <linux-usb@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] usb: cdns3: skip set TRB_IOC when usb_request:
+ no_interrupt is true
+Message-ID: <ZWS1ucR7dXs153R1@lizhi-Precision-Tower-5810>
+References: <20231027183919.664271-1-Frank.Li@nxp.com>
+ <20231031084521.GA1948529@nchen-desktop>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231031084521.GA1948529@nchen-desktop>
+X-ClientProxiedBy: SJ0PR13CA0067.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::12) To VI1PR04MB4845.eurprd04.prod.outlook.com
+ (2603:10a6:803:51::30)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="RBuY3wpHZRfr7ruc"
-Content-Disposition: inline
-In-Reply-To: <20231127022140.GJ87953@dragon>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB4845:EE_|AS1PR04MB9456:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ad2a7af-da0e-4ed6-5217-08dbef5d984d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	/fGPnU+TxaVY+JlBCnxTkf6H77Knt+pi6gZgW2TOA476SU0SDhJqxleUk1MxtIAVyzwGWqqVsdCiVrnXMMEBbNDfplDPxMQpO+wS9sWYcZHLNN5xFSmsv28tA658/L4GxTWRgkmAcvksPp/TmGIYY2x4qIdZDV5BHfgi//jn98ly5xFRhSp5vEh7wsVYvhLK3fKCj4aBEjHQw8SHbh8RZwSIhujyTY9YRdPxjh1EIfEws3NQxpsF9kRbAUber9dpCrdLHWOEgCqm09j44ENSwk1hZOzvCG6UB9ureEUIMplk2QuBjxD6DpCPt6xoq/lm/kVIvxMoo9y5i6lI9wqlWuWGGj+uSEHCwVeNSfbO7uAUFmuqoHkaphth5dLOGzCOlYFy/GZGi4g9jaxUugP2IQKspMi6jz+QJzKpUR/BXdzUFFrlVd8brT/07DVabqXWwb3sWakP4sMLUg0SvBamoxLL/d5JABZHn91kSoF3BcYp+MytAjSoyJPmWxWIGN8dVIIOy0N+RVLxnfy/zhx3slxtxN8dI2d4Lt2lOLUzJ+BM6dWWxD9gErIy8l05XBYpL1Mb4s0nZxqIrw9IVoY+xPUMmihtbUZAzcBtbsOTMSL7dyK0HwOCNFRTTvH+VX7m
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4845.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(346002)(396003)(376002)(39860400002)(366004)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(38100700002)(33716001)(38350700005)(86362001)(54906003)(316002)(66556008)(66476007)(8936002)(8676002)(41300700001)(66946007)(9686003)(6512007)(53546011)(52116002)(6666004)(6506007)(478600001)(6486002)(4326008)(5660300002)(2906002)(26005)(83380400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Gwd4fPMcATdQDWFGRtynUJdrVRVcmS89LBa/JWFi89zamPtrtT3tmnaG65yD?=
+ =?us-ascii?Q?wcbK0VTICdbJsEmbeY0up8cfNUUUWkjizOO2AZI0oGcxmcXYfTcWWa0tYO8/?=
+ =?us-ascii?Q?ZwZTxPtC7fF13RbxdsIgRsgaboTiUDL8/TwLg7MRdeH3CNF36sxJlfLrHbTa?=
+ =?us-ascii?Q?zRzbIxh2+Ls9DqbjtAlphbkbGxqhUoo/TK2v5KiRMRtB2i+J+V19OXJxxEE1?=
+ =?us-ascii?Q?GxCmceU7osFiNy38zb5zNQw2EsY6jKN4EYHMEUcdBaug0gbtTsGTKDvjthsZ?=
+ =?us-ascii?Q?k8A9JB+DW3AAFuZ1BI/wNA2Kvj9zpN98GM/v69HErHR/hDL+QXQxvJ3mFZ8a?=
+ =?us-ascii?Q?/7PDD11IpsC1pymk9UbqofxoJQrsmastwqsSAr45LblUzjpUOji+mph8NsXG?=
+ =?us-ascii?Q?FJwlsRQeIqFbYnAm+lPEfoQSaZmmPU4Ontz6Wn1D4q+9GZK1J8yJfMIOqX45?=
+ =?us-ascii?Q?4QavtBEivPTCT3TkYp5tEJY4deOAY3S0Onr7aClHLyh0RIQ9ekqgzokOzQ+s?=
+ =?us-ascii?Q?MJtF8gX0QZ2Crc9Db9KD/T3YY3wNVvoSvyapLgGz8SBV6Flr6Fd+Mh+oH2T0?=
+ =?us-ascii?Q?zra/1qxzQGjMOaAgJLwvFpX83A3fX1ElrQIduHyL93SXzD6Q9Va8PgQBspaf?=
+ =?us-ascii?Q?HUYDW6QcMwpltzemCZPKFdqR5xgC7Mi3lY9+xENOsVcrzI1abn3Bf8NB+AC7?=
+ =?us-ascii?Q?aVfEm0WxFy0HEex3qH+tzSidxJ1QYRkVyxHGeWvyc/t4HddXxPUoXx5IEe0v?=
+ =?us-ascii?Q?Ty+724W6y4wylovQ5xgErA1hYvdyelzowOMnnG3pO8ZkVwQDoR/vB77MFNjn?=
+ =?us-ascii?Q?XTrWLXgFINWfz46pkfIY44JgNRxIdhjgWRk7oNWKN2vsVoPdRsL7cVbII4oV?=
+ =?us-ascii?Q?i9yotu4ZAsxPbkbw/sU/vgYUz55M7t7y0EodzenCKZXWJNv/D82XP1af9Cfx?=
+ =?us-ascii?Q?74UYQlHAUcG+3mIE2jG/Fxfb0s2wvNtuXONsHuR5rRzlol5wMLXVf9gvkysU?=
+ =?us-ascii?Q?chjSLlEPiGs405QSIbZgG6f8B4kku4ExS7XF+V5nivpL2wsxuxKii8Ndlt/5?=
+ =?us-ascii?Q?osWsGN/OOnnL77Pz9R6U28I6HSdOxbqzP/eJk1eEOWdfQMp/MGM3IpPXI5VE?=
+ =?us-ascii?Q?Au1oF8nhZn4ByV3b+DKCOon1BDCL7qwrQe6zDl1C9NDTZDqDbDgK7mfVl1uE?=
+ =?us-ascii?Q?tYl2/j+lPWfjyhX73XP3HON1l1nb11zrB4vZj5GsT+rAdAY3PS0Ph+7c3HKI?=
+ =?us-ascii?Q?OPcQxXqIMZA89AEKszJn+FiZcZdBnzPqIPoakJjTXN0mnGJuPpRyCPLVDaE5?=
+ =?us-ascii?Q?c996NhNzlllcozMJnlvh4jgV0CHpXXU670UWjLmfDFQZtwO1X6p29/BIx0W1?=
+ =?us-ascii?Q?i8S1CUEzpIf0WX/wgWoDz0q+09vHaJXwl5KbsCizu2jfdii8q8yAqKecYQio?=
+ =?us-ascii?Q?5Q2tlKie951JSoI5KSlI6tkYYjNA3EN0wrHDDPqVcy9sTIHLQcZHriD1jR89?=
+ =?us-ascii?Q?rOYnYanbu659ZT1/kQFsMbwuSIXkbt9TWl8dsASNLz2nlqd4GPSrnzxkTZ8r?=
+ =?us-ascii?Q?absXwUl+bxIX/RtZ1S8=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ad2a7af-da0e-4ed6-5217-08dbef5d984d
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4845.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2023 15:29:07.1181
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vndQcXH6hQcj/8C9sHW+tzGSTsAZ0xftpOD5JRMEWBh8VdkW0rBRpeR9Srv23QsdsFbAqtzEV9WpmuswC6x3bQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9456
 
---RBuY3wpHZRfr7ruc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Oct 31, 2023 at 04:45:21PM +0800, Peter Chen wrote:
+> On 23-10-27 14:39:19, Frank Li wrote:
+> > No completion irq is needed if no_interrupt is true. Needn't set TRB_IOC
+> > at this case.
+> > 
+> > Check usb_request: no_interrupt and set/skip TRB_IOC in
+> > cdns3_ep_run_transfer().
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> Acked-by: Peter Chen <peter.chen@kernel.org>
 
-On Mon, Nov 27, 2023 at 10:21:40AM +0800, Shawn Guo wrote:
-> On Thu, Nov 09, 2023 at 10:51:13AM -0500, Frank Li wrote:
-> > On Tue, Oct 17, 2023 at 03:46:57PM -0400, Frank Li wrote:
-> > > Add I3C1 and I3C2.
-> > >=20
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> >=20
-> > @Guo Shawn:
-> >=20
-> > Driver part already merged.=20
-> >=20
-> > Please pick up dts part
->=20
-> Rob had a comment [1] about SoC specific compatible.  That's not what we
-> want?
->=20
-> Shawn
->=20
-> [1] https://lkml.iu.edu/hypermail/linux/kernel/2310.2/03035.html
+@Greg:
+	ping
 
-Yeah, Rob's request here looks valid to me. Should just be a bindings
-change Frank & fall back to the "silvaco,i3c-master-v1" compatible.
+Frank
 
-Cheers,
-Conor.
-
---RBuY3wpHZRfr7ruc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWRi6wAKCRB4tDGHoIJi
-0nspAP9lVMYJ86MSdG5h+V1vbfIvJIfnVFsNNAu0e5dCZZ8xXQD8CpX4tfnJEZWp
-2021AvHbHZl6OuVBbSpSQ5Kdq+dTjQY=
-=yohp
------END PGP SIGNATURE-----
-
---RBuY3wpHZRfr7ruc--
+> 
+> Peter
+> > ---
+> >  drivers/usb/cdns3/cdns3-gadget.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+> > index 69a44bd7e5d02..cd08897f8da8b 100644
+> > --- a/drivers/usb/cdns3/cdns3-gadget.c
+> > +++ b/drivers/usb/cdns3/cdns3-gadget.c
+> > @@ -1124,6 +1124,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+> >  	u16 total_tdl = 0;
+> >  	struct scatterlist *s = NULL;
+> >  	bool sg_supported = !!(request->num_mapped_sgs);
+> > +	u32 ioc = request->no_interrupt ? 0 : TRB_IOC;
+> >  
+> >  	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
+> >  		num_trb = priv_ep->interval;
+> > @@ -1233,11 +1234,11 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+> >  			control |= pcs;
+> >  
+> >  		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC  && !priv_ep->dir) {
+> > -			control |= TRB_IOC | TRB_ISP;
+> > +			control |= ioc | TRB_ISP;
+> >  		} else {
+> >  			/* for last element in TD or in SG list */
+> >  			if (sg_iter == (num_trb - 1) && sg_iter != 0)
+> > -				control |= pcs | TRB_IOC | TRB_ISP;
+> > +				control |= pcs | ioc | TRB_ISP;
+> >  		}
+> >  
+> >  		if (sg_iter)
+> > @@ -1268,7 +1269,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+> >  	priv_req->num_of_trb = num_trb;
+> >  
+> >  	if (sg_iter == 1)
+> > -		trb->control |= cpu_to_le32(TRB_IOC | TRB_ISP);
+> > +		trb->control |= cpu_to_le32(ioc | TRB_ISP);
+> >  
+> >  	if (priv_dev->dev_ver < DEV_VER_V2 &&
+> >  	    (priv_ep->flags & EP_TDLCHK_EN)) {
+> > -- 
+> > 2.34.1
+> > 
+> 
+> -- 
+> 
+> Thanks,
+> Peter Chen
