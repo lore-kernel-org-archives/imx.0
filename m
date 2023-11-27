@@ -1,153 +1,113 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16D41879
-	for <imx@lists.linux.dev>; Mon, 27 Nov 2023 06:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7UsE-0004vi-Dd; Mon, 27 Nov 2023 07:13:38 +0100
-Message-ID: <7046940b-854c-c4c0-461a-c817484f5d50@pengutronix.de>
-Date: Mon, 27 Nov 2023 07:13:37 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D27733E0
+	for <imx@lists.linux.dev>; Mon, 27 Nov 2023 09:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="bLOSLya2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1701077812; x=1732613812;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wbYc5Mi0mkxvIgJBVWC8WKPY+n3fl5ePEg7lSS5YolQ=;
+  b=bLOSLya289p/3zYYKSgwHTm3Z4bSo4tBw+KTcR0RqlnObJgUtN6QO4gX
+   4rtHc6n1101DnrbC7inv/ND5a8jxXX/5ubummVy3IoYpjzyR6K0/B7cch
+   jK448Q2hsyp/FVKiWTu5WHxzk8OhxKeQRQGOcBuI8QUFuyXnrRPdU3pYT
+   LPzMg86Ljc0WWmgRavNx6LZEWmLwvnsgsBYBXe5ZpW4r86WYj5nWmmUv6
+   XuWIhxjDEFvjGYcF7CZ48vofAFBGfK+888+tOfZliPFnsjfQ1iDRfX8kc
+   j4h3ve8JNc/yBsIsyKY3BzApEvW8WOV0Q6cZGfpia6SY4QkvnyWyHbNOk
+   Q==;
+X-CSE-ConnectionGUID: jcaihvjJQZmUBLk5lTFEhQ==
+X-CSE-MsgGUID: XSNrlY2nTJy6E+xCTC4UsA==
+X-ThreatScanner-Verdict: Negative
+X-IronPort-AV: E=Sophos;i="6.04,230,1695711600"; 
+   d="asc'?scan'208";a="12595217"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Nov 2023 02:36:43 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 27 Nov 2023 02:36:12 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 27 Nov 2023 02:36:08 -0700
+Date: Mon, 27 Nov 2023 09:35:39 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Shawn Guo <shawnguo@kernel.org>
+CC: Frank Li <Frank.li@nxp.com>, <alexander.stein@ew.tq-group.com>,
+	<alexandre.belloni@bootlin.com>, <conor+dt@kernel.org>,
+	<conor.culhane@silvaco.com>, <conor@kernel.org>,
+	<devicetree@vger.kernel.org>, <festevam@gmail.com>, <haibo.chen@nxp.com>,
+	<imx@lists.linux.dev>, <joe@perches.com>, <kernel@pengutronix.de>,
+	<krzysztof.kozlowski+dt@linaro.org>, <krzysztof.kozlowski@linaro.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-i3c@lists.infradead.org>,
+	<linux-imx@nxp.com>, <linux-kernel@vger.kernel.org>, <peng.fan@nxp.com>,
+	<ping.bai@nxp.com>, <robh+dt@kernel.org>, <s.hauer@pengutronix.de>,
+	<sherry.sun@nxp.com>, <xiaoning.wang@nxp.com>
+Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: imx93: add i3c1 and i3c2
+Message-ID: <20231127-cherisher-falsify-8193656e8872@wendy>
+References: <20231017194657.3199749-1-Frank.Li@nxp.com>
+ <20231017194657.3199749-2-Frank.Li@nxp.com>
+ <ZUz/8fBWtnwdSW9w@lizhi-Precision-Tower-5810>
+ <20231127022140.GJ87953@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 2/4] arm64: dts: freescale: Add support for the
- Variscite DART-MX8M-PLUS SoM
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Cc: devicetree@vger.kernel.org, Harshesh Valera <harshesh.v@variscite.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Li Yang
- <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- FrancescoFerraro <francesco.f@variscite.com>,
- Nate Drude <nate.d@variscite.com>, Shawn Guo <shawnguo@kernel.org>,
- Marco Contenti <marco.c@variscite.com>
-References: <20231025165058.31697-1-laurent.pinchart@ideasonboard.com>
- <20231025165058.31697-3-laurent.pinchart@ideasonboard.com>
- <962e1d33-bc97-6bf8-b94d-581762dd6afa@pengutronix.de>
-In-Reply-To: <962e1d33-bc97-6bf8-b94d-581762dd6afa@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="RBuY3wpHZRfr7ruc"
+Content-Disposition: inline
+In-Reply-To: <20231127022140.GJ87953@dragon>
 
-On 27.11.23 06:58, Ahmad Fatoum wrote:
-> Hello Laurent,
+--RBuY3wpHZRfr7ruc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Ah, I see now, that this series was about to be merged. I missed it at first,
-because of the MAINTAINERS entry losing a F:, which I now sent a fix for.
+On Mon, Nov 27, 2023 at 10:21:40AM +0800, Shawn Guo wrote:
+> On Thu, Nov 09, 2023 at 10:51:13AM -0500, Frank Li wrote:
+> > On Tue, Oct 17, 2023 at 03:46:57PM -0400, Frank Li wrote:
+> > > Add I3C1 and I3C2.
+> > >=20
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> >=20
+> > @Guo Shawn:
+> >=20
+> > Driver part already merged.=20
+> >=20
+> > Please pick up dts part
+>=20
+> Rob had a comment [1] about SoC specific compatible.  That's not what we
+> want?
+>=20
+> Shawn
+>=20
+> [1] https://lkml.iu.edu/hypermail/linux/kernel/2310.2/03035.html
 
-Anyways, should you resend to fix the binding errors, you could address some
-of the nitpicks, but I found nothing critical.
+Yeah, Rob's request here looks valid to me. Should just be a bindings
+change Frank & fall back to the "silvaco,i3c-master-v1" compatible.
 
 Cheers,
-Ahmad
+Conor.
 
-> 
-> On 25.10.23 18:50, Laurent Pinchart wrote:
->> +	reg_eqos_phy: regulator-eqos-phy {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "eqos-phy";
->> +		regulator-min-microvolt = <3300000>;
->> +		regulator-max-microvolt = <3300000>;
->> +		gpio = <&gpio2 20 GPIO_ACTIVE_HIGH>;
->> +		enable-active-high;
->> +		regulator-always-on;
-> 
-> Apparently, https://lore.kernel.org/all/20230721110345.3925719-1-m.felsch@pengutronix.de/
-> didn't make it upstream. Perhaps you mentioning that you could use this would help get
-> it unstuck? :)
-> 
->> +&eqos {
->> +	pinctrl-names = "default";
->> +	pinctrl-0 = <&pinctrl_eqos>;
->> +	phy-mode = "rgmii";
->> +	phy-handle = <&ethphy0>;
->> +	status = "okay";
->> +
->> +	mdio {
->> +		compatible = "snps,dwmac-mdio";
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		ethphy0: ethernet-phy@0 {
->> +			compatible = "ethernet-phy-ieee802.3-c22";
->> +			reg = <0>;
->> +			eee-broken-1000t;
->> +			reset-gpios = <&gpio2 11 GPIO_ACTIVE_LOW>;
-> 
-> Nitpick: Separate pinctrl entry for PHY GPIOs that's added to the PHY node?
-> Makes it easier to check that all used signals are indeed muxed.
-> 
->> +	pmic@25 {
->> +		compatible = "nxp,pca9450c";
->> +		reg = <0x25>;
->> +		pinctrl-names = "default";
->> +		pinctrl-0 = <&pinctrl_pmic>;
->> +		interrupt-parent = <&gpio1>;
->> +		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
->> +
->> +		regulators {
->> +			BUCK1 {
->> +				regulator-name = "BUCK1";
->> +				regulator-min-microvolt = <600000>;
->> +				regulator-max-microvolt = <2187500>;
-> 
-> Nitpick: These may be the limits of what the BUCK can output, but they
-> don't look like a safe operating range for the board. The Linux driver already
-> has ranges hardcoded to cover what's possible by the hardware, so if you specify
-> regulator range here, it should pertain to what the board and SoC are designed
-> to handle.
-> 
->> +/* eMMC */
->> +&usdhc3 {
->> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->> +	pinctrl-0 = <&pinctrl_usdhc3>;
->> +	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
->> +	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
->> +	bus-width = <8>;
->> +	non-removable;
-> 
-> no-sd
-> no-sdio
-> 
-> may give you a tiny bit of speedup during probe, if you know that there will
-> always be an eMMC here.
-> 
->> +	pinctrl_i2c1: i2c1grp {
->> +		fsl,pins = <
->> +			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL					0x400001c2
->> +			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA					0x400001c2
->> +		>;
->> +	};
->> +
->> +	pinctrl_i2c1_gpio: i2c1gpiogrp {
->> +		fsl,pins = <
->> +			MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14				0x1c2
->> +			MX8MP_IOMUXC_I2C1_SDA__GPIO5_IO15				0x1c2
-> 
-> This surprises me. I'd expect that the SION bit needs to be set for GPIO bus recovery.
-> 
-> Cheers,
-> Ahmad
-> 
+--RBuY3wpHZRfr7ruc
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWRi6wAKCRB4tDGHoIJi
+0nspAP9lVMYJ86MSdG5h+V1vbfIvJIfnVFsNNAu0e5dCZZ8xXQD8CpX4tfnJEZWp
+2021AvHbHZl6OuVBbSpSQ5Kdq+dTjQY=
+=yohp
+-----END PGP SIGNATURE-----
+
+--RBuY3wpHZRfr7ruc--
