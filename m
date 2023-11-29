@@ -1,82 +1,126 @@
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D402B12B82
-	for <imx@lists.linux.dev>; Wed, 29 Nov 2023 08:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SgCpd1w05z4f3jJC
-	for <imx@lists.linux.dev>; Wed, 29 Nov 2023 16:55:53 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 3645B1A0B0C
-	for <imx@lists.linux.dev>; Wed, 29 Nov 2023 16:55:55 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.103.91])
-	by APP1 (Coremail) with SMTP id cCh0CgCnqxGV_GZlHhEBCQ--.28112S4;
-	Wed, 29 Nov 2023 16:55:55 +0800 (CST)
-From: Yang Yingliang <yangyingliang@huaweicloud.com>
-To: dmaengine@vger.kernel.org,
-	imx@lists.linux.dev
-Cc: Frank.Li@nxp.com,
-	vkoul@kernel.org,
-	yangyingliang@huawei.com
-Subject: [PATCH] dmaengine: fsl-edma: fix wrong pointer check in fsl_edma3_attach_pd()
-Date: Wed, 29 Nov 2023 17:00:00 +0800
-Message-Id: <20231129090000.841440-1-yangyingliang@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD2514F82
+	for <imx@lists.linux.dev>; Wed, 29 Nov 2023 09:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hyShzCOA"
+Received: from relay6-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::226])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 0B5CBCA81B
+	for <imx@lists.linux.dev>; Wed, 29 Nov 2023 09:22:50 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A2F4EC0008;
+	Wed, 29 Nov 2023 09:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701249762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnxhmWhKod+T+4LCypr8ik7zHyv3bJXdbVMlq11F12E=;
+	b=hyShzCOAkPU664FpZa49HzvaBVbBB7nD9iiFGCOUUjL6DsTnyd55cTvZlc7ChFGcX7OA74
+	CdYrPw5rsLGC2tTwQgkKYagWIw9631/+roJL+jo7ZEenQxbnBbQTYGcpCiWeAPP5TXBBh7
+	fBxQTecdPg2UT8I+qWU8Emjah2iOtNrgQkWbFD+6vbMlztCrblSOFpZiKiRR3plRqwYqCX
+	3ZEzp84ZIMmekUjV2yc0TiIbI20j7HqNWOEhMZM6Rtz5SNoJ80XXh/6UwBhxFwIVQIfa0c
+	z21i0T2f2S/KSqJk+OIVDezrBvXGrV39b4dU5CpLuKKNXa2/jHPyJGnjfDX6IQ==
+Date: Wed, 29 Nov 2023 10:22:40 +0100
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: linux-wireless@vger.kernel.org
+Cc: imx@lists.linux.dev
+Subject: Linux v6.6 sporadic reboot failures with ath9k on i.MX6Q
+Message-ID: <20231129102240.183f94ba@booty>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgCnqxGV_GZlHhEBCQ--.28112S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7XFW7Xry8Kr1kCw4rCw1fXrb_yoWDCrg_JF
-	1rZrW7uryktF1ayr1Ykw47ZrZ5ZrWj939a9w1vy34fJFy5Zw1fXrWktr1Yvr17XFW29FyU
-	WF1kZr1ruFySkjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbr8YFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-	AF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
-	IxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WF
-	yUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIY
-	CTnIWIevJa73UjIFyTuYvjxUzeOJUUUUU
-X-CM-SenderInfo: 51dqw5xlqjzxhdqjqx5xdzvxpfor3voofrz/
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+Hello,
 
-device_link_add() returns NULL pointer not PTR_ERR() when it fails,
-so replace the IS_ERR() check with NULL pointer check.
+since several weeks I am investigating a sporadic reboot failure on a
+custom board based on i.MX6Q. There is an ATH9K Wi-Fi card connected
+over PCIe, and the main suspect is the ath9k driver.
 
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/dma/fsl-edma-main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Anybody aware of this kind of bug with ath9k?
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index aea7a703dda7..238a69bd0d6f 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -396,9 +396,8 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
- 		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
- 					     DL_FLAG_PM_RUNTIME |
- 					     DL_FLAG_RPM_ACTIVE);
--		if (IS_ERR(link)) {
--			dev_err(dev, "Failed to add device_link to %d: %ld\n", i,
--				PTR_ERR(link));
-+		if (!link) {
-+			dev_err(dev, "Failed to add device_link to %d\n", i);
- 			return -EINVAL;
- 		}
- 
+Some details about my tests follow.
+
+This is on mainline v6.6 Linux, with only the board dts and a defconfig
+added. The board dts itself is based on imx6q.dtsi and among others it
+adds:
+
+&pcie {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_pcie>;
+        reset-gpio = <&gpio2 20 GPIO_ACTIVE_LOW>;
+        status = "okay";
+};
+
+and:
+
+&iomuxc {
+/* ... */
+        imx6qdl-sabresd {
+/* ... */
+                pinctrl_pcie: pciegrp {
+                        fsl,pins = <
+                                MX6QDL_PAD_EIM_A18__GPIO2_IO20  0x1b0b0
+                        >;
+                };
+/* ... */
+        };
+};
+                                                                                                                                                                                             
+Reboot usually works fine, but fails randomly in 1-5% of the
+cases. The symptom is that the console stops producing any messages
+at some random point in the shutdown sequence, even in the middle of a
+line.
+
+After about 7000 reboot attempts with different configurations it is
+clear that enabling or disabling CONFIG_ATH9K is what makes the
+difference:
+
+ 1. kernels with CONFIG_ATH9K=n never fail
+ 2. kernels with CONFIG_ATH9K=y do fail
+
+Kernels built with CONFIG_ATH9K=y do fail even disabling all optional
+CONFIG_ATH9K* options (rfkill, pcoem, btcoex and no_eeprom).
+
+Similarly:
+
+ 1. removing pcie from the device tree makes reboot work
+ 2. leaving pcie in the device tree and removing all the peripherals
+    not required for booting, reboot does fail
+
+On top of v6.6 I have applied all the potentially related commits from
+master that appear as of now (8 in total):
+
+  git log --oneline --reverse --format=%H v6.6..origin/master -- \
+      drivers/net/wireless/ath/*.[ch] drivers/net/wireless/ath/ath9k/ \
+    | xargs git cherry-pick
+
+and reboot still fails.
+
+I have tested these mainline kernel versions, which no result: 
+v6.1.60, v5.15.137, v5.10.199, v5.10.
+
+A first look at the ath9k driver code did not show anything obviously
+wrong.
+
+Any clues about how to further investigate would be very welcome.
+
+I am obviously available to provide more info.
+
+Best regards,
+Luca
+
 -- 
-2.25.1
-
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
