@@ -1,57 +1,55 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2054.outbound.protection.outlook.com [40.107.22.54])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2072.outbound.protection.outlook.com [40.107.7.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F68853E07
-	for <imx@lists.linux.dev>; Thu, 30 Nov 2023 20:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772295EE9C
+	for <imx@lists.linux.dev>; Thu, 30 Nov 2023 22:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="YrPS4NiX"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="B0ycI+ZM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b4Iqp4jI4ivTDxynlLB/BujNgzUMFF6W4l/vjL7R7jU8SzspDFrbikgpNoA3RJlmhWoNA4xqs7F+NimJU3eO2I2+7kXri3Ic9eud420nYoW+RYkb7kHE6I+q+zUAeGk28TwmvuV3MCdLDty4nbO+3D6V7Uytl449P92X5VkOtausxHXyBO/ybv0OsYtdZOvh4zb4WyC6fkA2O7vYX2DIjMNzU96AoJJZ1jZ6arlYKueVypbOx7UCVKqwgCcu6mIUuF0PWolT+yftceyEJXNb4ywoPooXLEEM8z0EYz6bwun3RR2PCN4rZstAKaGf2f2nit//SmWHXMyoXJBREKk+FQ==
+ b=GNSLkU+EYw0SmaAUDcqqqZ75nHtHqAXl0Hx3036ZuXA8KStF9Ergj/y0sxTyV1+UGDsHPYxfhdaZAieXtNXkbt6Pzn7YoLI6n8/y38oB0BfGxj4NrJ5gTlteOsYeVCLbdkPCJT04T4OsCV8cg/OUMS2lXBuDG6jH0yqKJRDKjRobubZ8NnIqoz3do2/4jDVkBMs+KqoLml00CsBeeVIylEdq9LUc/GXjgMHV8nRQXJYdb8qf7yTJ8GNjU073D/FOoYasi/V6Dj6z0DI4wG86z3xFZYYFMTUfmmTrIYFyl0AmbrnWNmq7RfLFcqssDcWQ6hCTykOISgT2Zg//5cl7eQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gNEYgLR8lZfNLdch+CpRImkHKu5C7Er52qddf/Bg11Q=;
- b=RMs0IPZqgXXY2QXJlVCyNugDGOakvlpSMiuDLYNN+Cn8MpyyXAvH7iL9uiMVvKkE+W3pd+WzkKOjbu56seUUK1QJVy2/Ik7Luu+D43sCAItmfKYXSlAJRI8+cYvQZSLpAnz4gbgiaq1wITKUDyUAV1FptTfJzBPp4JGBlU809BvOJO5e1U2r0F5+HfcMz6mDY1aPqdEmRxSXNe9/AeG2rRHZUdn+VU2baaKu4Eqaa3xrb5XZlPeaOp6LleKSiHgMTxg2GUhaOBYrdOSnBH20126lUf5peug+TS/HwxwR47tU34z8xnjmYSeQTZzTT94UYAqDoJGGUzAaqFVkb6HA3w==
+ bh=zbB7fLVU7Rh4unQt2fXNYoK5SNQ0WRIoM6f1/wDA+pI=;
+ b=b1IEe0a/HUSni2Tr90XHgm/NiX9LfvwhNOOUnRyrpzi6ozkzdgWQQ2hUrbcGs91R6kA13rVd2vqa+YGbl9Eh2aTpfomoGzqPFq1Un6vmrAis2BGW57alKsDYsUmj1e17WIXe4JjaTbgoFAEHF4csRPKGWGB5JckzgcnGrpc+eFveEecH4QyVo3SWE6tJer7QGwwXVnvfvhQ/AvtpEeF66rxrbRRK1O+MVsMYEv2sxiUrYzfcnAyGXL+sqPwpZTVB0+EFGACdkyejlHj2TjcQgENuP+y+yy70/v3o5NVdjE2/OyAvVDvQUmXkLpjNw6gTTf20zMnsxLAeftMu68s6Qw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gNEYgLR8lZfNLdch+CpRImkHKu5C7Er52qddf/Bg11Q=;
- b=YrPS4NiXDyZHqRrbNAjzObTVdubu3Bp/H2JfdjTZ6ueBdZiTTCAMUxFApWB+lYyLb39x6aeXJB3eUBFoJXMySD6CGmGf+xmApPLidRYePPuMRf0gBQ7t4oj2fDtW6OobAPmB9YgGOR8Nwokm0kxzBH6hY9/tO8Tw04FQXD8awJQ=
+ bh=zbB7fLVU7Rh4unQt2fXNYoK5SNQ0WRIoM6f1/wDA+pI=;
+ b=B0ycI+ZM9HCwBTVXvBlnQxESMntS7oNrzabHNowvg8xuTj/o/BA7gcDTPVxAfhfU+HWpaKhlPsXyfZBgIVFkv2cDEYS3uivrCq/A6/pi0sauUe4+LFd+9Pgg2Uv7WiyXnVVdvStYvbceD99H6qV3n6lQvoBMo1MQYjx1btFXocc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM7PR04MB6838.eurprd04.prod.outlook.com (2603:10a6:20b:10a::17) with
+ by PA4PR04MB9392.eurprd04.prod.outlook.com (2603:10a6:102:2ab::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.13; Thu, 30 Nov
- 2023 20:22:22 +0000
+ 2023 22:00:13 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7046.015; Thu, 30 Nov 2023
- 20:22:22 +0000
-Date: Thu, 30 Nov 2023 15:22:14 -0500
+ 22:00:12 +0000
+Date: Thu, 30 Nov 2023 17:00:05 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: bhelgaas@google.com, imx@lists.linux.dev, kw@linux.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	lpieralisi@kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
-	robh@kernel.org, roy.zang@nxp.com
-Subject: Re: [PATCH v4 4/4] PCI: layerscape: Add suspend/resume for ls1043a
-Message-ID: <ZWju9s/HBS7jNTYX@lizhi-Precision-Tower-5810>
-References: <20231129214412.327633-1-Frank.Li@nxp.com>
- <20231129214412.327633-5-Frank.Li@nxp.com>
- <20231130165100.GV3043@thinkpad>
- <ZWjt412xtyZWVjdL@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=utf-8
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+	imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, zbigniew.lukwinski@linux.intel.com
+Subject: Re: [PATCH v4 6/6] i3c: add API i3c_dev_gettstatus_format1() to get
+ target device statusy
+Message-ID: <ZWkF5TTkMcdUVTaP@lizhi-Precision-Tower-5810>
+References: <20231129221225.387952-1-Frank.Li@nxp.com>
+ <20231129221225.387952-7-Frank.Li@nxp.com>
+ <20231130111959.11afd8a8@xps-13>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZWjt412xtyZWVjdL@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: BYAPR03CA0019.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::32) To AM6PR04MB4838.eurprd04.prod.outlook.com
+In-Reply-To: <20231130111959.11afd8a8@xps-13>
+X-ClientProxiedBy: BYAPR04CA0034.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::47) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -60,225 +58,127 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM7PR04MB6838:EE_
-X-MS-Office365-Filtering-Correlation-Id: da5cd070-efe9-4c81-4155-08dbf1e20f71
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PA4PR04MB9392:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf00c2db-5b2a-48b3-aa7a-08dbf1efba41
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	8GanVi4RU+WbN5SihxamlEspCCvf4bCTw3B1ju3lI3kGVBz/cJcd656xPU4JDAnXnBcjOTxTyuWallwjTLkEgu9eY5LmnAgcR18vHrQ0k0v5SQuQ8QLcX5yxSLvX74GsknrgkX4/JK0x7oXo6oeZvlg5ku8zOawMEPA1GmIW646qnx0nHQgGarBig/TqO6x81iiPabyBOezNpzGEwgl5AOMKSkCJihJKC7OP8NTJXtwHmj/94EXVU+kWyY8YjMlTpfnelbsfYKLbXsDpfBR2pwNFN+zocbcPeh2WfID+Abrg+/ptp5cCUcRDNgP3vQePEYEn8IBW5MfSvu5k3Koxt958ZfNbdo78/1PF8cm8rDUrTpZgVW2KuqAUHcrQj4X2q0OLc/a579FU/UrU+kCDVP6Me7HmooLygmK+wtqR1pYd9Y/J7Yu+Mtl3ZAIjBy3rFm10/CWoyI/2BxoJdvS2xwR1F25IiRI3Im96Szu/jI5PnL+c1JRW5ICQtuD5H/Nl0JTjGMpqqmxIZST4hlNmRiRMT0G53Ni3YmjVtAi2RTafmFsy6jhgCxRKzanVNURT20Q3Yx4UaU5ySVrfLu1QpHqSnyGOkvFUCoE3fDfWX+fmb4hGQcrZp+GhRqeZORBE+5to7Vpgy2fNXxL9bmqNRogCkbNqUnlescikmVsMzNo=
+	eMFXG3WddDFOozE3M7VuCCguSo2pZWEwphooq132tKpe6CiBVTY4z/U9PIarfM+q+1KsW7vaAlaycJV6p/5zVuIrDFyYO+0axOWFy9rl22JJyIvT7DHH+f6DgGSiE1V2PCDXlRykmJeUaGdO8Q3u4+ufk3iHQYyxlrIyCwnLw4Zsju/Ous1c4vwpF41JlrAgNnJfMuoiGeeSBIEHURRQ5qAuIwRuaZJMECsioLIhUJTCaUi+wpC3pPnZbaDVKhMzfvOxim/p/82CmWTvJXToQ6Qr3IfJ5e+GBnOmWuSAxBHePK5g0Edh7A8qkQIaimRntiKdoEYraDoK1Vr2HyrmO5W8o8FieN2NKVwf7WS9ExXBIT2M0P1dLx3Yfn5kQ4Ksw21tvZp3DHbG4bg81VJ+fWASSToUMv0e20+A6ypcbKG5wSOmwQLPtXRgpjvm5Mt3LrEXqtuSn2N1CIhrwWOq+KZ+pEIWVT7jhf41WQiHEjYYKb3ordwglxUyaFqRNFDairIg2mlfEDxYNSpxEu+p8AeME+5OUJmLx00DPoDb/h7LWUtWwvQqmZNKD0rFuIrUKrQPM7AUzUVtApLKe//OWBxutbCCLT4CHmJCEQR6YY24oS/NUfZyqsosEozEx7tt
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(376002)(346002)(39860400002)(366004)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(38350700005)(86362001)(66946007)(66476007)(6916009)(38100700002)(83380400001)(26005)(6506007)(6512007)(52116002)(9686003)(6666004)(2906002)(316002)(33716001)(66556008)(15650500001)(6486002)(8676002)(5660300002)(478600001)(4326008)(7416002)(8936002)(41300700001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(396003)(39860400002)(136003)(366004)(376002)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(5660300002)(86362001)(2906002)(38100700002)(83380400001)(26005)(66574015)(8676002)(316002)(6506007)(52116002)(6512007)(9686003)(4326008)(66476007)(6916009)(66946007)(8936002)(66556008)(38350700005)(41300700001)(6486002)(6666004)(478600001)(33716001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NVExSm1XMThIckxBeGg4SE40UTNvMTFwaHdZSDR4ZitvWVRRNU8xV1dkZDFF?=
- =?utf-8?B?U0E0MVJabEcyczlRQkV2TEluSFVkSktGY3JYV2FOaUQ0bjBJL2dLNHNMamY3?=
- =?utf-8?B?ZklMWXdoOGpVY0dSc3JTaUZUeFY1dU5WcE1Ib0ltYkpma2pDQ1JGb1RTRnho?=
- =?utf-8?B?Z3ZIMElHYmFUUjhOVEk4b0F5ZUFPRzZDSlBwY2hLMlY4bjkzR0tKVk1OVkxz?=
- =?utf-8?B?U3BGc245c2ZRQy96U2YwbmJaR1ovajQwSkxiODNEK2NIa3k3TEZLUVBzeHZh?=
- =?utf-8?B?QWo2RDFpUGc1U2dKaFBORUlVamtNeXlmOEhLVlcyN20zYTJsVnJXVHdqYXI4?=
- =?utf-8?B?a2pubE1YQk1LZ0RLUExEUFlITU9tL0FDSzYvaVdZRnMwb01qSXkweXFOSUtr?=
- =?utf-8?B?V2Radk8zK090ZjdjR3JzQVlDOHQ3NkNUQkIycko5N0tGTmpvVS9rR2dOYnlx?=
- =?utf-8?B?T29kZW5sREcwNVJDdFFlbjR6TGIxUFZmdERUS1hIa0JMRWsvT3p1VTE5VGEv?=
- =?utf-8?B?MXZkbk9LeHgvaWV0ajVpbzgvejVtK0Z3YkdYNU1WcmVUcThXaFBrNlRWcm8x?=
- =?utf-8?B?ZXM4YXdncm14TXhTZzlvTkZBV0ZCSkk1S0t1ZkJoeWlZM3lKL2JhSzZhV1pw?=
- =?utf-8?B?R1ZWd2pRaTk3ZTJhbVc0RFVxczh3STFlNXJnQjNML1A3b214dXM0V1Q1U3RI?=
- =?utf-8?B?SmRGRGZRM0FsZ0NLZnBPU0QwWXVaYXJOTjAyN1E1Q2dqcXI1djEzaDJvTW9y?=
- =?utf-8?B?QjNuUjRxK3FxV28xVTNDN2tKMklZS2kwbWE1bFMwQXFpMjRoSmZSdW9vd2dH?=
- =?utf-8?B?ZW1xczQrQjAveE9lZ2JJTk00bEVuamlrelp2TzNZK1Boc0RnK0FVM1NhNWg0?=
- =?utf-8?B?aXNtWWFUaUFoLzhCdVRjbmFTekVNMlN2UmtKZFVrNmtIb01JREdkOCtIQTQz?=
- =?utf-8?B?eTc0S3FkSkVNbjcrbWVWSURnZjZUZkpORFAzQ3JKOUhKN0lvUjNmelVZTlpm?=
- =?utf-8?B?MHhJblZYUHpiRHREUzh4SWQxMHdsd2dJSU5FVXZnUVgwOG4wN0hzV3diVmRI?=
- =?utf-8?B?dHFHRk5kRkJTcTlJczBBVnJEdUF0Yy9Oc21uWEdtWXFyS3JtNEtsZmpFb203?=
- =?utf-8?B?K2l5V3RzWkZvZ29BMVFhVjF6VlMvOHhCZTgrVlVDQUx3VW9ZcnEySGtVWDFN?=
- =?utf-8?B?d3NOWUN1KzM0Z2lGOTI1d2kwa1lnMUJ2RXB4cXVOR29kVVdQZ0g2c2UveWpj?=
- =?utf-8?B?dWhxaHRBOFBMOFdvQ3Vobk5UeUlCbnd1R1FNTk5zWkYwK0RYVXFPbW8ydFc5?=
- =?utf-8?B?MjJSU2tDcWdBNnFZbXRRNU1pM1BKN0xrU1ZnOVFWS0NBTHNVMW54cDNBSnd0?=
- =?utf-8?B?TWl5M1U1dEpPSDhsaFlUTWZkcG1EUnVJUUovd1BDTkV0M3oyN25KUWpUUnE2?=
- =?utf-8?B?WkRmZjBsRytyeFcySy9mQ1oreEFDUkFyOWNzY1hXQjhyS3hoSERRZDc1MUdE?=
- =?utf-8?B?cFF1djJOV3hyb3RGdFUxUTlNWWtLMXB1Ymw0dTVDQ2ZRSXQvVzNHOEkwWjFt?=
- =?utf-8?B?MVZFdFozcmZ0WDRyYWtSQW1RRTRJalBSblQ5L2JHUlVSR3VuL2NtRE5seEVx?=
- =?utf-8?B?NjhNdUJRcFlFMXpNMDJmbDJMbjNneWU2ek5qbUR5aWluR0NnemhCSVk2SFlx?=
- =?utf-8?B?TTdMbElTS2JoL2JsUEM1ZjlQZlUwUnY1UWt2ZnEvYkhwenEyb3EzRytCcFZa?=
- =?utf-8?B?NXpVQ0dvVGQzWTJyb2R2SmJuRkZ1czlVUW5ReW9IZWRUb2RCMEcycllBNFpT?=
- =?utf-8?B?dGlNQklvWXZnbVpncHNsbnVFMUowam9jY29oTHloSnc0ZzZsaWRERG5WTGdM?=
- =?utf-8?B?MFNQc3pWVmJZZlZZK3VrWmFrWmFqb0lFNXhXUStwZmJ6ZnFmN0JhRXM1Q3BM?=
- =?utf-8?B?RXdRTXhyTTREOFBoVUJQZVF2SFZvWm8yOFl2aXJjOUh6TUVSWkRvZnE5d01W?=
- =?utf-8?B?bFc3MTlnV0ZFa28wZVN3anBvakcxU2lDZEkvcXl6MnZpa1B6NUVGRGYvQVlu?=
- =?utf-8?B?dGNMT0VWRElYeDB3N2VwemJDQ2NuNURJeXZ1VTNlMmRmWXhoT3ptcEI4OW9O?=
- =?utf-8?Q?RHgaKgk+W7wJ6GDKRHDp/xUiy?=
+	=?iso-8859-1?Q?qfQe9mzy8JQEHAzb8h5aTwZPumbn9okilKaKIcEoSxMkKTg4y0I/dgFhSt?=
+ =?iso-8859-1?Q?abrU7AOoJBpqiZsakaP+Od695t14ebtmUQFRQZcVG+fYBCd4NfETK0G6uX?=
+ =?iso-8859-1?Q?cNbXHLw8yUMhd/YXu5rvKpnV19T3/8715RwwWXHOS/g6IzslgQHKnSMFSM?=
+ =?iso-8859-1?Q?p2y1/Whv3s360qNLCmBQC8fshCU288NBqz91I8iAym40Mr2efIhm6OKZ6k?=
+ =?iso-8859-1?Q?XupwhQUpZXe2AGLgvYRD1PcUYHMXBCI0bEknHVb8LD+5GLsuvFSYq4/3kc?=
+ =?iso-8859-1?Q?gBo2I+DnldQ7jdbfEqBpuNC7VOJ/2RbxTyt4nYbQrh7gCUm6Kx0wi8PVLn?=
+ =?iso-8859-1?Q?TcPemy4AvIO55/njXZq+wsnAQgj/Ylkm5yEQLupny6unKO1KTYSxQuPOQT?=
+ =?iso-8859-1?Q?ZhT1AykCvBjAy+94PTQ0kwEM3HqpE/6spyz5fEJSQz289yzz0c+EC+pIJ6?=
+ =?iso-8859-1?Q?wWNpbsmMoAkErlZicmucZwx95m+AWpWYMS8ibM8sf0ip5+OexqMo/jAHw4?=
+ =?iso-8859-1?Q?5QxC8VGBzjJbbQVaA3JNYYh3P5FFJIYOTDdPKuVmw5RKKzeF3iMy2Cl+zM?=
+ =?iso-8859-1?Q?M3VxWZBFD4+0wr8Ctng6F65XyHKtpD1aJ1vA2xeghM1o7KaJ/kAmMcMtDj?=
+ =?iso-8859-1?Q?zPk3qqa298c0H6BmvTvtIHOrL6aXuOb7/qt+ajDTsC8U/67+mjX0Oei3oZ?=
+ =?iso-8859-1?Q?0XpZRkGSqX95wYhlYmKirqJSyQGYzj7V5SuBmp33fpUZEVLLUFoknSYxy3?=
+ =?iso-8859-1?Q?GmyXDvdqc30VxTwmJieh3QbvlxQSpLJ4P2OSjYbRtP3xozZ3sJthUBgOoa?=
+ =?iso-8859-1?Q?9VlOl9CEYLXW828tAlJMJAMDPnZPfI9NWkVxnCVjaaU9O+lNcVftRU8n2z?=
+ =?iso-8859-1?Q?M/Kp7501bQin+WOuQuEbkyKw9QgruPNAg3cIG4eBpSjnnL0sis5lgDTnIx?=
+ =?iso-8859-1?Q?N3//9fjkA+0qNOthNVBHw1e8QHIUtRn5mQp3IUGurd5FnYHQP3sLkRwcq5?=
+ =?iso-8859-1?Q?eZRBvj6cP/CCOmksAJ3urzQw3j9HwWcUpTSFPSFjRg36vGfBd223by+gi7?=
+ =?iso-8859-1?Q?t/RdshrkYkMPb5gbwzCbiiS3x3G1VEEgMcUMbkdl/vpe2Vtww5ppjOl27z?=
+ =?iso-8859-1?Q?rU7U7LfYpMNs0c82DUr+C1wpC5qgec8Lrpup2jJ+JsirydOvcPCmNsLAzR?=
+ =?iso-8859-1?Q?nVEcC3G8ehk/U5P0Xh1sgnBw9qp0V33F+H0e60NijfJyvFnf85WjJm36Eu?=
+ =?iso-8859-1?Q?W/YtB2jZzbbIm3hNHV7aW7Cvj+5SeLaYbTCCVti6P26ZMZBfVnnF3S8bKA?=
+ =?iso-8859-1?Q?0DK9sjlMrgOGAZFjoHe7aRHrp8TkWEtnY3fRaLrIjj1vrHR8JizpPq6bTD?=
+ =?iso-8859-1?Q?k6MbykIx+kijko1NvHyitlkVTakD/AULpp1MRTfuWh+BHNus2EzPSDlJZ3?=
+ =?iso-8859-1?Q?2oI1+SlvEQTOlhmgboYhfJXIpBHicBep7LlHh6pYYfWzFWKI/FfK8b+niK?=
+ =?iso-8859-1?Q?g/inhrjzj1jYVLWPvxldWCyRNsnEmXKCXypppwBy4/tUVd/2zxXw5Me1PJ?=
+ =?iso-8859-1?Q?FXY981hyS24hXCW8ixKF/OV8xHlmGgs5yildzdlXRpOaDpYnVbD03XwQbr?=
+ =?iso-8859-1?Q?tt1TvxARsNaqM4qwP+10VFPHeYeF4Ohym7?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da5cd070-efe9-4c81-4155-08dbf1e20f71
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf00c2db-5b2a-48b3-aa7a-08dbf1efba41
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2023 20:22:22.8829
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2023 22:00:12.8792
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CIQGndyN9FxLOkmD1z6F/F54lG4Zygl0EtWL3kA+Qsdn1NPEEgzyqnWiegXZkekCa/l1+gYSBYF5h+9tV1kDrQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6838
+X-MS-Exchange-CrossTenant-UserPrincipalName: rWhLRqf0jPyBCS8vdXpu/R5Nna+VJKpuRAZKD+Tkri73t1Xsjx51lw9MDVF7vn0eZM21Ik2PIth39h/jZY00Tw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9392
 
-On Thu, Nov 30, 2023 at 03:17:39PM -0500, Frank Li wrote:
-> On Thu, Nov 30, 2023 at 10:21:00PM +0530, Manivannan Sadhasivam wrote:
-> > On Wed, Nov 29, 2023 at 04:44:12PM -0500, Frank Li wrote:
-> > > In the suspend path, PME_Turn_Off message is sent to the endpoint to
-> > > transition the link to L2/L3_Ready state. In this SoC, there is no way to
-> > > check if the controller has received the PME_To_Ack from the endpoint or
-> > > not. So to be on the safer side, the driver just waits for
-> > > PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
-> > > bit to complete the PME_Turn_Off handshake. This link would then enter
-> > > L2/L3 state depending on the VAUX supply.
-> > > 
-> > > In the resume path, the link is brought back from L2 to L0 by doing a
-> > > software reset.
-> > > 
-> > 
-> > Same comment on the patch description as on patch 2/4.
-> > 
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > 
-> > > Notes:
-> > >     Change from v3 to v4
-> > >     - Call scfg_pcie_send_turnoff_msg() shared with ls1021a
-> > >     - update commit message
-> > >     
-> > >     Change from v2 to v3
-> > >     - Remove ls_pcie_lut_readl(writel) function
-> > >     
-> > >     Change from v1 to v2
-> > >     - Update subject 'a' to 'A'
-> > > 
-> > >  drivers/pci/controller/dwc/pci-layerscape.c | 63 ++++++++++++++++++++-
-> > >  1 file changed, 62 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > index 590e07bb27002..d39700b3afaaa 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > @@ -41,6 +41,15 @@
-> > >  #define SCFG_PEXSFTRSTCR	0x190
-> > >  #define PEXSR(idx)		BIT(idx)
-> > >  
-> > > +/* LS1043A PEX PME control register */
-> > > +#define SCFG_PEXPMECR		0x144
-> > > +#define PEXPME(idx)		BIT(31 - (idx) * 4)
-> > > +
-> > > +/* LS1043A PEX LUT debug register */
-> > > +#define LS_PCIE_LDBG	0x7fc
-> > > +#define LDBG_SR		BIT(30)
-> > > +#define LDBG_WE		BIT(31)
-> > > +
-> > >  #define PCIE_IATU_NUM		6
-> > >  
-> > >  struct ls_pcie_drvdata {
-> > > @@ -225,6 +234,45 @@ static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-> > >  	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
-> > >  }
-> > >  
-> > > +static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +
-> > > +	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR, PEXPME(pcie->index));
-> > > +}
-> > > +
-> > > +static int ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	u32 val;
-> > > +
-> > > +	/*
-> > > +	 * Only way let PEX module exit L2 is do a software reset.
-> > 
-> > Can you expand PEX? What is it used for?
-> > 
-> > Also if the reset is only for the PEX module, please use the same comment in
-> > both patches 2 and 4. Patch 2 doesn't mention PEX in the comment.
+On Thu, Nov 30, 2023 at 11:19:59AM +0100, Miquel Raynal wrote:
+> Hi Frank,
 > 
-> After read spec again, I think PEX is pci express. So it should software
-> reset controller. I don't know what exactly did in the chip. But without
-> below code, PCIe can't exit L2/L3.
+> Frank.Li@nxp.com wrote on Wed, 29 Nov 2023 17:12:25 -0500:
 > 
-> Any harmful if dwc controller reset? Anyway these code works well with
-> intel network card.
+> > I3C standard 5.1.9.3.15 Get Device Status (GETSTATUS):
+> > Get request for one I3C Target Device to return its current status.
+> > 
+> > Add API to fetch it with format1.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  drivers/i3c/device.c       | 24 ++++++++++++++++++++++++
+> >  drivers/i3c/internals.h    |  1 +
+> >  drivers/i3c/master.c       | 26 ++++++++++++++++++++++++++
+> >  include/linux/i3c/device.h |  1 +
+> >  4 files changed, 52 insertions(+)
+> > 
+> > diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
+> > index 1a6a8703dbc3a..aa26cf50ab9c6 100644
+> > --- a/drivers/i3c/device.c
+> > +++ b/drivers/i3c/device.c
+> > @@ -196,6 +196,30 @@ void i3c_device_free_ibi(struct i3c_device *dev)
+> >  }
+> >  EXPORT_SYMBOL_GPL(i3c_device_free_ibi);
+> >  
+> > +/**
+> > + * i3c_device_getstatus_format1() - Get device status with format 1.
+> > + * @dev: device for which you want to get status.
+> > + * @status: I3C status format 1
+> > + *
+> > + * Return: 0 in case of success, a negative error core otherwise.
+> > + */
+> > +int i3c_device_getstatus_format1(struct i3c_device *dev, u16 *status)
+> 
+> I'm not a big fan of the opposition between "i3c_device" and "i3c_dev".
+> Could we clarify the prefixes?
+> 
+> > +{
+> > +	int ret = -EINVAL;
+> 
+> Init not useful
 
-Sorry, sent too quick. It is PCIe express wrapper
-
-Copy from spec: 
-
-"PEXLDBG[SR]. Once set the
-PEXLDBG[SR] will enable the soft reset to the PEX wrapper."
+No, if dev->desc is NULL, ret will be random value without init.
 
 Frank
 
 > 
-> Frank
+> > +
+> > +	if (!status)
+> > +		return -EINVAL;
+> > +
+> > +	i3c_bus_normaluse_lock(dev->bus);
+> > +	if (dev->desc)
+> > +		ret = i3c_dev_getstatus_format1_locked(dev->desc, status);
+> > +
+> > +	i3c_bus_normaluse_unlock(dev->bus);
+> > +
+> > +	return ret;
+> > +}
+> > +EXPORT_SYMBOL_GPL(i3c_device_getstatus_format1);
 > 
-> > 
-> > - Mani
-> > 
-> > > +	 * LDBG_WE: allows the user to have write access to the PEXDBG[SR] for both setting and
-> > > +	 *	    clearing the soft reset on the PEX module.
-> > > +	 * LDBG_SR: When SR is set to 1, the PEX module enters soft reset.
-> > > +	 */
-> > > +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> > > +	val |= LDBG_WE;
-> > > +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> > > +
-> > > +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> > > +	val |= LDBG_SR;
-> > > +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> > > +
-> > > +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> > > +	val &= ~LDBG_SR;
-> > > +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> > > +
-> > > +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> > > +	val &= ~LDBG_WE;
-> > > +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
-> > >  	.host_init = ls_pcie_host_init,
-> > >  	.pme_turn_off = ls_pcie_send_turnoff_msg,
-> > > @@ -242,6 +290,19 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
-> > >  	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
-> > >  };
-> > >  
-> > > +static const struct dw_pcie_host_ops ls1043a_pcie_host_ops = {
-> > > +	.host_init = ls_pcie_host_init,
-> > > +	.pme_turn_off = ls1043a_pcie_send_turnoff_msg,
-> > > +};
-> > > +
-> > > +static const struct ls_pcie_drvdata ls1043a_drvdata = {
-> > > +	.pf_lut_off = 0x10000,
-> > > +	.pm_support = true,
-> > > +	.scfg_support = true,
-> > > +	.ops = &ls1043a_pcie_host_ops,
-> > > +	.exit_from_l2 = ls1043a_pcie_exit_from_l2,
-> > > +};
-> > > +
-> > >  static const struct ls_pcie_drvdata layerscape_drvdata = {
-> > >  	.pf_lut_off = 0xc0000,
-> > >  	.pm_support = true,
-> > > @@ -252,7 +313,7 @@ static const struct of_device_id ls_pcie_of_match[] = {
-> > >  	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
-> > >  	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
-> > >  	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
-> > > -	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
-> > > +	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
-> > >  	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
-> > >  	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
-> > >  	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
-> > > -- 
-> > > 2.34.1
-> > > 
-> > 
-> > -- 
-> > மணிவண்ணன் சதாசிவம்
+> There is no user yet. Maybe this needs to be done in another series?
+> Same below.
+> 
+> ...
+> 
+> > +int i3c_dev_getstatus_format1_locked(struct i3c_dev_desc *dev, u16 *status)
+> 
+> ...
+> 
+> Thanks,
+> Miqu�l
