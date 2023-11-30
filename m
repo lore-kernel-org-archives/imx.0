@@ -1,118 +1,264 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379423C06F
-	for <imx@lists.linux.dev>; Thu, 30 Nov 2023 10:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0A54F9C
+	for <imx@lists.linux.dev>; Thu, 30 Nov 2023 16:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SzsJiaOH"
-Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 61DA6D8754
-	for <imx@lists.linux.dev>; Thu, 30 Nov 2023 10:20:10 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CF88124000B;
-	Thu, 30 Nov 2023 10:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701339602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gxeX2wy4DYJyBHFFmjfGARbNkbZtBHOZlxHLk2Rp2VQ=;
-	b=SzsJiaOHAQP9sp5gZ+zR81XoshHOseb+8oXeDl1RCkHAzNJ68S1q73PKpRl+AoMxS0aHIF
-	vq/qJlTVWyE2FPOQdgAV+6fOr2ifbXHP9h7QuzYn/7vxdfz1bA+vFqEd44x9008qz7k9G3
-	bpQe3BkalvPYk+j7teQklvpV4k7yLJ5mTwyydgNOxn4A46ZEo8dG/xV8gm0xiGTPUbmTbG
-	cS3PZx8fTmgffK6P5UUrzhhOtI3eXJ9A1Xhu8M80vgejYMx7ox4IyEDfmf9PlrCfPJkFHH
-	2WUwYsBNAM4L5W1YCRy+X+mDS311DYBfmRIkkpG2eBb+H4WF6CWDVB14qX45QQ==
-Date: Thu, 30 Nov 2023 11:19:59 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j/HHt/He"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-77dce4d41d5so53167385a.3
+        for <imx@lists.linux.dev>; Thu, 30 Nov 2023 08:43:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701362613; x=1701967413; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RR929/inZVg6ya67dtiU9fWfLeIFrIte2BBVvFM3wXQ=;
+        b=j/HHt/HeYFo7W4mBymTOF7I1CXXTVef4kEtdRSPpzbLhY2RYz7XcWByonuS5eU/QCt
+         X2i/AQpB6TbFPB9Rn7zVEkGEK4PrFKMHCGqJPEg949Dq87oYhnLdpcfx5MJtRa/57HWA
+         oQlNUVpAZamp1GNgzvMoVcICQ0LeDoVPC0o/at5j6z8rNOz6gQ1iWqEnhC321VnBKpo9
+         /imtZw1Bq7fxjsWQXTp1mTl4qbe0l9bf/KmX0qe2fOdWp623hiEy24ZGdXzzov2UOx0p
+         OI1awQlYKLzf7Xj8hNd6hAkMQoGCbcu3RKL6r1yviuQvLS8ibnN7kb11T7UcyaD3MUBy
+         2J2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701362613; x=1701967413;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RR929/inZVg6ya67dtiU9fWfLeIFrIte2BBVvFM3wXQ=;
+        b=ezV04iD1QjxrZKcEmUSlDra7Qyoji2VvVKEeNCJDOoKtYxzUHIfDXwDv129K1axHpR
+         H2q65Wg+Melk0oGFQp0E6tBrLuJ4q04DBMBzGt4lpDjD7eQk3BCLqQvDfv1I9SFehnRr
+         Z2w5e6+BmS769jwEOV5/s98hjY1xmv3vC4kWVEpuuzMiqNL+bdyoBN+WUNvL7vqU4Qw+
+         kPZb21H/jJ8pzI1l2DWvbXJOPVHH9Xe7uyiZ8IuNbIK3GMZ4Pwk72rhpsFwnO8qw69kN
+         CPjS/1vbEMBiOKb1n+HE5pC4aS1nVxKTiuREbzy29RZjGYqLKGqJ93E9Ya6C/hKzWNfH
+         ChPQ==
+X-Gm-Message-State: AOJu0Yw5FUd3BNwuvOVopge4cQ+Ot5ejBpD3UIR7t0KmDthPrmJ2CN+i
+	VYujXIQaepgho/ustPYPfhpa
+X-Google-Smtp-Source: AGHT+IH4fdEjtTxeNLnBTzLGisqbKQLWEsMOBV/mouxbIc6qh43GktT+t9VymOEMBtx9xmzDq1qiMw==
+X-Received: by 2002:a05:620a:269d:b0:77d:9dc9:cd05 with SMTP id c29-20020a05620a269d00b0077d9dc9cd05mr16628267qkp.11.1701362613426;
+        Thu, 30 Nov 2023 08:43:33 -0800 (PST)
+Received: from thinkpad ([117.213.102.92])
+        by smtp.gmail.com with ESMTPSA id bm27-20020a05620a199b00b0077da0832d6csm639505qkb.22.2023.11.30.08.43.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Nov 2023 08:43:32 -0800 (PST)
+Date: Thu, 30 Nov 2023 22:13:23 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH v4 6/6] i3c: add API i3c_dev_gettstatus_format1() to get
- target device status
-Message-ID: <20231130111959.11afd8a8@xps-13>
-In-Reply-To: <20231129221225.387952-7-Frank.Li@nxp.com>
-References: <20231129221225.387952-1-Frank.Li@nxp.com>
-	<20231129221225.387952-7-Frank.Li@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Cc: bhelgaas@google.com, imx@lists.linux.dev, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	lpieralisi@kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
+	robh@kernel.org, roy.zang@nxp.com
+Subject: Re: [PATCH v4 2/4] PCI: layerscape: Add suspend/resume for ls1021a
+Message-ID: <20231130164323.GT3043@thinkpad>
+References: <20231129214412.327633-1-Frank.Li@nxp.com>
+ <20231129214412.327633-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231129214412.327633-3-Frank.Li@nxp.com>
 
-Hi Frank,
+On Wed, Nov 29, 2023 at 04:44:10PM -0500, Frank Li wrote:
+> ls1021a add suspend/resume support.
+> 
 
-Frank.Li@nxp.com wrote on Wed, 29 Nov 2023 17:12:25 -0500:
+"Add suspend/resume support for Layerscape LS1021a"
 
-> I3C standard 5.1.9.3.15 Get Device Status (GETSTATUS):
-> Get request for one I3C Target Device to return its current status.
->=20
-> Add API to fetch it with format1.
->=20
+> In the suspend path, PME_Turn_Off message is sent to the endpoint to
+> transition the link to L2/L3_Ready state. In this SoC, there is no way to
+> check if the controller has received the PME_To_Ack from the endpoint or
+> not. So to be on the safer side, the driver just waits for
+> PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
+> bit to complete the PME_Turn_Off handshake. This link would then enter
+
+"Then the link would enter L2/L3 state depending on the VAUX supply."
+
+> L2/L3 state depending on the VAUX supply.
+> 
+> In the resume path, the link is brought back from L2 to L0 by doing a
+> software reset.
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Couple of comments below. But the patch is looking good now. Thanks for the
+update.
+
 > ---
->  drivers/i3c/device.c       | 24 ++++++++++++++++++++++++
->  drivers/i3c/internals.h    |  1 +
->  drivers/i3c/master.c       | 26 ++++++++++++++++++++++++++
->  include/linux/i3c/device.h |  1 +
->  4 files changed, 52 insertions(+)
->=20
-> diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
-> index 1a6a8703dbc3a..aa26cf50ab9c6 100644
-> --- a/drivers/i3c/device.c
-> +++ b/drivers/i3c/device.c
-> @@ -196,6 +196,30 @@ void i3c_device_free_ibi(struct i3c_device *dev)
+> 
+> Notes:
+>     Change from v3 to v4
+>     - update commit message.
+>     - it is reset a glue logic part for PCI controller.
+>     - use regmap_write_bits() to reduce code change.
+>     
+>     Change from v2 to v3
+>     - update according to mani's feedback
+>     change from v1 to v2
+>     - change subject 'a' to 'A'
+> 
+>  drivers/pci/controller/dwc/pci-layerscape.c | 83 ++++++++++++++++++++-
+>  1 file changed, 82 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index aea89926bcc4f..42bca2c3b5c3e 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -35,11 +35,19 @@
+>  #define PF_MCR_PTOMR		BIT(0)
+>  #define PF_MCR_EXL2S		BIT(1)
+>  
+> +/* LS1021A PEXn PM Write Control Register */
+> +#define SCFG_PEXPMWRCR(idx)	(0x5c + (idx) * 0x64)
+> +#define PMXMTTURNOFF		BIT(31)
+> +#define SCFG_PEXSFTRSTCR	0x190
+> +#define PEXSR(idx)		BIT(idx)
+> +
+>  #define PCIE_IATU_NUM		6
+>  
+>  struct ls_pcie_drvdata {
+>  	const u32 pf_off;
+> +	const struct dw_pcie_host_ops *ops;
+>  	int (*exit_from_l2)(struct dw_pcie_rp *pp);
+> +	bool scfg_support;
+>  	bool pm_support;
+>  };
+>  
+> @@ -47,6 +55,8 @@ struct ls_pcie {
+>  	struct dw_pcie *pci;
+>  	const struct ls_pcie_drvdata *drvdata;
+>  	void __iomem *pf_base;
+> +	struct regmap *scfg;
+> +	int index;
+>  	bool big_endian;
+>  };
+>  
+> @@ -171,13 +181,65 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
 >  }
->  EXPORT_SYMBOL_GPL(i3c_device_free_ibi);
-> =20
-> +/**
-> + * i3c_device_getstatus_format1() - Get device status with format 1.
-> + * @dev: device for which you want to get status.
-> + * @status: I3C status format 1
-> + *
-> + * Return: 0 in case of success, a negative error core otherwise.
-> + */
-> +int i3c_device_getstatus_format1(struct i3c_device *dev, u16 *status)
-
-I'm not a big fan of the opposition between "i3c_device" and "i3c_dev".
-Could we clarify the prefixes?
-
+>  
+> +static void scfg_pcie_send_turnoff_msg(struct regmap *scfg, u32 reg, u32 mask)
 > +{
-> +	int ret =3D -EINVAL;
-
-Init not useful
-
+> +	/* Send PME_Turn_Off message */
+> +	regmap_write_bits(scfg, reg, mask, mask);
 > +
-> +	if (!status)
-> +		return -EINVAL;
+> +	/*
+> +	 * There is no specific register to check for PME_To_Ack from endpoint.
+> +	 * So on the safe side, wait for PCIE_PME_TO_L2_TIMEOUT_US.
+> +	 */
+> +	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
 > +
-> +	i3c_bus_normaluse_lock(dev->bus);
-> +	if (dev->desc)
-> +		ret =3D i3c_dev_getstatus_format1_locked(dev->desc, status);
-> +
-> +	i3c_bus_normaluse_unlock(dev->bus);
-> +
-> +	return ret;
+> +	/*
+> +	 * Layerscape hardware reference manual recommends clearing the PMXMTTURNOFF bit
+> +	 * to complete the PME_Turn_Off handshake.
+> +	 */
+> +	regmap_write_bits(scfg, reg, mask, 0);
 > +}
-> +EXPORT_SYMBOL_GPL(i3c_device_getstatus_format1);
+> +
+> +static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +
+> +	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), PMXMTTURNOFF);
+> +}
+> +
+> +static int scfg_pcie_exit_from_l2(struct regmap *scfg, u32 reg, u32 mask)
+> +{
+> +	/* Only way exit from l2 is that do software reset */
 
-There is no user yet. Maybe this needs to be done in another series?
-Same below.
+"Only way exit from L2 is by doing a software reset of the controller"
 
-...
+I really hope that the reset is not a global controller reset i.e., not
+resetting all CSRs.
 
-> +int i3c_dev_getstatus_format1_locked(struct i3c_dev_desc *dev, u16 *stat=
-us)
+> +	regmap_write_bits(scfg, reg, mask, mask);
+> +
 
-...
+No need of a newline.
 
-Thanks,
-Miqu=C3=A8l
+> +	regmap_write_bits(scfg, reg, mask, 0);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +
+> +	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
+> +}
+> +
+>  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
+>  	.host_init = ls_pcie_host_init,
+>  	.pme_turn_off = ls_pcie_send_turnoff_msg,
+>  };
+>  
+> +static const struct dw_pcie_host_ops ls1021a_pcie_host_ops = {
+> +	.host_init = ls_pcie_host_init,
+> +	.pme_turn_off = ls1021a_pcie_send_turnoff_msg,
+> +};
+> +
+>  static const struct ls_pcie_drvdata ls1021a_drvdata = {
+> -	.pm_support = false,
+> +	.pm_support = true,
+> +	.scfg_support = true,
+> +	.ops = &ls1021a_pcie_host_ops,
+> +	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
+>  };
+>  
+>  static const struct ls_pcie_drvdata layerscape_drvdata = {
+> @@ -205,6 +267,8 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	struct dw_pcie *pci;
+>  	struct ls_pcie *pcie;
+>  	struct resource *dbi_base;
+> +	u32 index[2];
+> +	int ret;
+>  
+>  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+>  	if (!pcie)
+> @@ -220,6 +284,7 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	pci->pp.ops = &ls_pcie_host_ops;
+>  
+>  	pcie->pci = pci;
+> +	pci->pp.ops = pcie->drvdata->ops ? pcie->drvdata->ops : &ls_pcie_host_ops;
+
+pp.ops is already assigned to &ls_pcie_host_ops above. But I think for
+consistency, you should pass ls_pcie_host_ops to the "ops" member of
+layerscape_drvdata and just use:
+
+	pci->pp.ops = pcie->drvdata->ops;
+
+It looks a lot cleaner.
+
+>  
+>  	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
+>  	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
+> @@ -230,6 +295,22 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  
+>  	pcie->pf_base = pci->dbi_base + pcie->drvdata->pf_off;
+>  
+> +	if (pcie->drvdata->scfg_support) {
+> +		pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
+> +		if (IS_ERR(pcie->scfg)) {
+> +			dev_err(dev, "No syscfg phandle specified\n");
+> +			return PTR_ERR(pcie->scfg);
+> +		}
+> +
+> +		ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
+> +		if (ret) {
+> +			pcie->scfg = NULL;
+
+No need to set it to NULL in the case of probe failure.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
