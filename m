@@ -1,39 +1,35 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA77414275
-	for <imx@lists.linux.dev>; Fri,  1 Dec 2023 11:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07E448789
+	for <imx@lists.linux.dev>; Fri,  1 Dec 2023 15:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aknrodqp"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D652FE000A;
-	Fri,  1 Dec 2023 11:59:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JptvBWSp"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7418D1C000C;
+	Fri,  1 Dec 2023 15:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701431948;
+	t=1701444389;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qo1HW2RbWjsXr4I+NcN2RIgPr28kFzpwIsFkOjIb1/c=;
-	b=aknrodqpRG28RyGgGka+xHoWLNUVL0+VgCHlH3dl8FAyFZ4vciFVq5dxSMV8DE6pj6Yg4N
-	67gm8OISrrdTcXYKjI3Mvo9GQo+dIu89iK6JJwA7HFtKmS0uhGQ/35nkgJBfREPcFQHUGE
-	NbX+2R73R2fuUYLP2zkoFL4VeJcy7z8c7eD8Evik1rI+C3KPcOjIycS9qkEAkeC4i20W2T
-	AkL+F14wiuquY3YC660bGdvSCx3HtkT0uwAt8cZA8unonCahx4l7nWPqSK0m8/fwj+snm3
-	8RVzvODTGH4NSO1P7g0IfPWwV6yo2PWQ6UbrcbOGsKxmE3QI5GCUxBSlcaXxkQ==
-Date: Fri, 1 Dec 2023 12:59:04 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, zbigniew.lukwinski@linux.intel.com,
- gregkh@linuxfoundation.org, jirislaby@kernel.org,
- linux-serial@vger.kernel.org
-Subject: Re: [PATCH v5 7/7] tty: i3c: add TTY over I3C master support
-Message-ID: <20231201125904.6c8128b1@xps-13>
-In-Reply-To: <20231130224408.3591288-8-Frank.Li@nxp.com>
-References: <20231130224408.3591288-1-Frank.Li@nxp.com>
-	<20231130224408.3591288-8-Frank.Li@nxp.com>
+	bh=0OqJCJBqZM2rydliN3oe3qwJoihri9qJCPDRkEfP5wA=;
+	b=JptvBWSpz20wwgm8UIw1JHUPyOBMriaHoqc4EiaseI2gkPxZk2EON0TeBSWGJe1fyyhElK
+	yv9rdC6fYL2jS1lULOCeKgJNAZHb2cEM5Of9U1Lwh6Qf/U7QFOPE6cBfYnC7kX/VrPRh38
+	ENjHY9hHx1LFHx/CnN1b4bRRPpFAfXsjX1QVmUn+d0rTf7tK2deNMGQRM0PMUbScLBBeux
+	FTKC1QKs9tiagWirmMzO1fZz8tYFkv1SdgBKqgjPm6JDhH9hL08r9HihE+bM08LTdYiPb9
+	+kAdGj26PfcWaTtHJ9BSt50h3hVEVvu8CWf1NHF0TyFm3CN/ODHehASCEbFA+A==
+Date: Fri, 1 Dec 2023 16:26:28 +0100
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: linux-wireless@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: Linux v6.6 sporadic reboot failures with ath9k on i.MX6Q
+Message-ID: <20231201162628.715983d6@booty>
+In-Reply-To: <016b48b0-2021-434f-88c7-deb1bf08d14a@gmail.com>
+References: <20231129102240.183f94ba@booty>
+	<016b48b0-2021-434f-88c7-deb1bf08d14a@gmail.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -42,38 +38,42 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Hi Frank,
+Hello Florian,
 
-Frank.Li@nxp.com wrote on Thu, 30 Nov 2023 17:44:08 -0500:
+On Wed, 29 Nov 2023 21:10:44 -0800
+Florian Fainelli <f.fainelli@gmail.com> wrote:
 
-> In typical embedded Linux systems, UART consoles require at least two pin=
-s,
-> TX and RX. In scenarios where I2C/I3C devices like sensors or PMICs are
-> present, we can save these two pins by using this driver. Pins is crucial
-> resources, especially in small chip packages.
->=20
-> This introduces support for using the I3C bus to transfer console tty dat=
-a,
-> effectively replacing the need for dedicated UART pins. This not only
-> conserves valuable pin resources but also facilitates testing of I3C's
-> advanced features, including early termination, in-band interrupt (IBI)
-> support, and the creation of more complex data patterns. Additionally,
-> it aids in identifying and addressing issues within the I3C controller
-> driver.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->=20
-> Notes:
->     Change from v4 to v5
->     - send in i3c improvememtn patches.
+> Do you have a reboot log with "initcall_debug debug" set on the kernel 
+> command line and if so, does it always point to the PCI bus shutting 
+> down the device drivers, pcie ports and ultimately the root complex?
+> 
+> We have seen something similar before with ath10k_pci and our 
+> pcie-brcmstb driver which eventually was a result of having made 
+> incorrect assumptions while implementing the platform_driver::shutdown 
+> routine. There was a hard hang in ath10k_remove(), I do not recall the 
+> details, but we were definitively doing something improper there.
+> 
+> imx6_pcie_shutdown() seems to much simpler, but my first guess would be 
+> there.
 
-This is not what I said, I believe this patch and the previous patch
-should be sent separately.
+I had attempted using initcall_debug but the hang was happening on a
+different line across tests, so it did not reliably point to a specific
+place. Perhaps the serial port just stopped working before being able
+to flush the last few lines.
 
-Thanks,
-Miqu=C3=A8l
+I will have the shutdown code, even though it did not seems to the
+problematic.
+
+Thank you for your hints.
+
+Best regards,
+Luca
+
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
