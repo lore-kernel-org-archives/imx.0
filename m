@@ -1,79 +1,132 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2052.outbound.protection.outlook.com [40.107.247.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07E448789
-	for <imx@lists.linux.dev>; Fri,  1 Dec 2023 15:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5F91171C
+	for <imx@lists.linux.dev>; Fri,  1 Dec 2023 16:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JptvBWSp"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7418D1C000C;
-	Fri,  1 Dec 2023 15:26:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701444389;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0OqJCJBqZM2rydliN3oe3qwJoihri9qJCPDRkEfP5wA=;
-	b=JptvBWSpz20wwgm8UIw1JHUPyOBMriaHoqc4EiaseI2gkPxZk2EON0TeBSWGJe1fyyhElK
-	yv9rdC6fYL2jS1lULOCeKgJNAZHb2cEM5Of9U1Lwh6Qf/U7QFOPE6cBfYnC7kX/VrPRh38
-	ENjHY9hHx1LFHx/CnN1b4bRRPpFAfXsjX1QVmUn+d0rTf7tK2deNMGQRM0PMUbScLBBeux
-	FTKC1QKs9tiagWirmMzO1fZz8tYFkv1SdgBKqgjPm6JDhH9hL08r9HihE+bM08LTdYiPb9
-	+kAdGj26PfcWaTtHJ9BSt50h3hVEVvu8CWf1NHF0TyFm3CN/ODHehASCEbFA+A==
-Date: Fri, 1 Dec 2023 16:26:28 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: linux-wireless@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: Linux v6.6 sporadic reboot failures with ath9k on i.MX6Q
-Message-ID: <20231201162628.715983d6@booty>
-In-Reply-To: <016b48b0-2021-434f-88c7-deb1bf08d14a@gmail.com>
-References: <20231129102240.183f94ba@booty>
-	<016b48b0-2021-434f-88c7-deb1bf08d14a@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TOqLeWcq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JEAMwHiw/G5p1x108Sq7DeG523uIgvyFFYv0vvr7dpPDABW8DiOqSYITR/o5Q7VfSN2Uya/hBEsGoF4dPLlGOQ7wMTCNPoGh7Wdx+Cl9RklVP1A0IM5SvShD/qFuYwhx658YwZ9SM6ddEwXogrJPHNhF6ctl60d8Fqjsxwjz+/nQstrXIsn8tQbwhH427eRPQG+uVIQ3BQo46hEVXaG3bMHlNGbqcsRPponiwUHbCnyUAe1nAGDXX1H5eNE7iKm4UunPiMLEKEYXHgN+JnFjJnTD8Aj7FgscUachPE94WzVgZAy4fjgjIlx4PwIxUOYjVYPMZdz7L2RXYgUphD3YWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6RVXyhFtosqOA2JzUqe9x5BXdxAOCgwOpJ/QwjabWDw=;
+ b=D9zf+dp4b1MLPogSl0RPSwoxsOdr5QHcVK7y+m9GB2D3Qsbk7Q5VGDyoOWKnAv6OMXUvVmkBY+w26j9BVV36H6bkF5Ll3jPIYfjb6ibCpfBRhLvANwvirrtpZVXIqMBqEaGXvplvH0eT5njlu4zW3NRI0eVcCoq+kUjHCIh7FcdWH5JIu5qykcDBPfeLb3EqYYtv7aCcTVfMN1nC0RXtDixiRHAHx6Qgq/mo4j44J9WwLBVy9urtlPcoq2Q3Na4wu+gdVuYAS3ZcLrTczCVt2XhMu4R4+cxFEqEYc51+1L4I3P2vZCA46Lk0h3e0jRqGH2bkXrw88v4wnn648t7wIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6RVXyhFtosqOA2JzUqe9x5BXdxAOCgwOpJ/QwjabWDw=;
+ b=TOqLeWcqo4SFcEVPKfUch3nOYCuKRsT8EU0GE2f8Dv10ZzsioUjJUZ1eEbDI29Cc3mPT5hmi6etvuT5ZCZLCJiT0+K3ZR3WeTUOHl2x8h4+jfnBPDjd0vJ6x6dtilVfqWEgeXNxKR0k1b21BdVmxtj7tBONaZiAhzDN+LTmjJeQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DU2PR04MB8695.eurprd04.prod.outlook.com (2603:10a6:10:2de::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.13; Fri, 1 Dec
+ 2023 16:17:31 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7046.015; Fri, 1 Dec 2023
+ 16:17:31 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: manivannan.sadhasivam@linaro.org
+Cc: Frank.Li@nxp.com,
+	bhelgaas@google.com,
+	imx@lists.linux.dev,
+	kw@linux.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lpieralisi@kernel.org,
+	minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com,
+	robh@kernel.org,
+	roy.zang@nxp.com
+Subject: [PATCH v5 0/4] PCI: layerscape: Add suspend/resume support for ls1043 and ls1021
+Date: Fri,  1 Dec 2023 11:17:08 -0500
+Message-Id: <20231201161712.1645987-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR17CA0070.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::47) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DU2PR04MB8695:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46c3919d-c080-493a-19d7-08dbf28904f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	rnkL5zYYEYWFALcrMASqmklnqWXeC8+Jtla8JHuDvFDHSn/ERIYNxHc8Nc6Z1z3YThKiHTBVpkevGFTwK18792OTr1ihZPl9Oy9JdsviJ7DdiEhUAKsaap2j536hfY3YaxNLQFoPStEIHuAC9zQvVF3iQLyEi1hM+CiloY7Qn4JcjqvMub9B99y7dprrIi6RN5dvrt74K1bbfeGXftWJZT3ZrjpMUZieNDrQlkZCYn51nGIE+HfbDxYNKHKn2ac4sLwajSVsJeVYNmy9kXyiZwxKpc8GUMPfYLR9+/IZWKq/b4RXkjaGF58V/Hh+sAM/d/cXKtCZGvMTVaRXhDDEIqrLRoc0tlRgzFDbH59zbn7SQsEstYE/P9uo9dIrLKc4y5cjY3OtA7WiEYX3EdpxRqE7jQI5HP1XXkb5MZ4QUpt5kzJEWLtG7muN5ND6m/qcdCya3yEM5Zb7A2XewssLMC6WQ+UPO5P9PLE/x+auqwXHei8DuwgQw4yuqTrEuPqw+4EExYXygMat6JeMiMpDWtU28kOWogtR6CiX3kGgfkOEH2BdRx0XdrsDs3dr+OCPS5+FStBTXMV6ORcbD5+vrtGgKw9J7dE+eoz0NwlGmnUSo/tI2ibSdLgF4HqwF/tM
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(376002)(396003)(39860400002)(346002)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(38100700002)(38350700005)(6512007)(41300700001)(83380400001)(2616005)(316002)(6486002)(6916009)(52116002)(66556008)(66946007)(6666004)(6506007)(66476007)(478600001)(36756003)(5660300002)(2906002)(4744005)(7416002)(15650500001)(26005)(4326008)(8676002)(8936002)(86362001)(1076003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/mg4Uj6QGrjh+a34vRwCGCBc54pQepGyxsOOEhcJMuK1YCs2Dl1DlorUtl2E?=
+ =?us-ascii?Q?ykqXjfhBmAhoraYkpQ+zXVr7Yvl2Xp2hwzApwCY8LQEW4LzajypYsTuCi/7k?=
+ =?us-ascii?Q?mSd9/2yM5rEMy89IgBsC8ydq/uXY8EHXj4F+lSaDZoES0FsuupI+olCEu/va?=
+ =?us-ascii?Q?s5CzuVgGV+inhCWVXVrVL/AVUX+DeeTJTW4vqkIXw3oV6t7Aa0P/FNCdKf8E?=
+ =?us-ascii?Q?bX8m6mK5KCitENN3eLFnb8ZT67okZE1Izn9QpRJOYZ0pJENRolSagt2KN15P?=
+ =?us-ascii?Q?eGAkGgAs+hx0BLeBsAlv8X54GxVSf00WnRO4/uTJWIP+sIO6goz20b2XD+k2?=
+ =?us-ascii?Q?FzTe4vitSsMOn0qvEm+OJ8vA99kcmylnlmIZEDOvXgdSf96S9KV8oOPpFFIB?=
+ =?us-ascii?Q?FzgOnzZLOm7Vyjl/zslOXql3dHjdyWYieV7DkHTkRXqbhv4rUyNOBMiUR9Kg?=
+ =?us-ascii?Q?wAGAFQe+MybVfa3et2B6vVAyCmGHswKBGXjLQxBy0V3NdcbctCZVFpK6JHYS?=
+ =?us-ascii?Q?icWQ9WAD/zSFnXl+HkisZ88xnIzazNhR+hTLcuo+fo/Wu01VEOFSc5iMZ+w0?=
+ =?us-ascii?Q?Cpo5ebDPIaO0k0TfHLRlC6OdOW1/LGtOBt6ukDOr3qqUJVzr2YPdaaBc0KAX?=
+ =?us-ascii?Q?j0VVoFNJKl0GdDmdBRA7Tm3NWIJijo2yrZEdnL2EB9PszPEWti0fU3sB+wJ8?=
+ =?us-ascii?Q?S/JuSqjzuiN6TnG0iG7q+8yXfUwodnjb3cZHyC1ZvpNsbugPs86F7RqeFV5e?=
+ =?us-ascii?Q?N7zfNHSA8wvU05e1PKb/BwUxClm+Z8Nvz9ucC50+iOdT7B7iAe8M/fet3RVr?=
+ =?us-ascii?Q?C8P1c6h4fOlIOFm7o6Sg+prGIPkqktUfqPRKB4vC4UgCoapGMTVvWgSj7aX8?=
+ =?us-ascii?Q?byYhA6ver219pdDEo3HfCpx3TJ+ZTWM6ZeXhsCPbZdeVjxUfWicYBRolIG9X?=
+ =?us-ascii?Q?UR7XPL+PUWxLuuwlJBx1tnh6wmYOJpqGEH5lX2wkUj54hj1fOb1mEbdMUH8A?=
+ =?us-ascii?Q?Rk0BvW1gjYmZLwChFUJ3OLCxML3oE7GiiZKa+92ejZfxFGdatAPMJnHfmFp4?=
+ =?us-ascii?Q?y76UHRkxgrlZ4xafh40Y6DEy6e/dhKoUMac589+995/ZHM0AqUbuBmegOlqb?=
+ =?us-ascii?Q?gXwhnIegPPQa2r00bFCi9L1j7exfnM4o/XaonLLQFGm1jrHmOFSlbDWC4RaV?=
+ =?us-ascii?Q?H5/z5OffQ9LaVTNOAtEqVGM3rjjdPrahKZSZAvAIpmThr1rMqWlyP11dmY/g?=
+ =?us-ascii?Q?hxUnVyl5uBuXjjxppMqCyKwzvXbi2uZiITxbq1+jT/mTDs//4EcH9VzFyZ09?=
+ =?us-ascii?Q?32MVvcJKkhmRGwGhYAfnveH7lvF8WeZNJ9XAow9tEb7XC/ssgODAG2GIiSH0?=
+ =?us-ascii?Q?nCgbCL2dgNBRlqDgIeIDjq4fw/RQP4AXD8Fbx9xVzYafgKf8M/ls8JIUBX/c?=
+ =?us-ascii?Q?U4J2lV/Ipg8gPYY6IKPz/ChNmstZ9AmwhEpbMS+9tUKQymQFP+uAPVde5LEW?=
+ =?us-ascii?Q?DSmwu1VFIMQVT2C+JwO8F8EZkUP9khvndqck9G4w6VNYFhATNPGUskLNQlBK?=
+ =?us-ascii?Q?oJrbxYJX9CM82K/IQbDRC4HrOpBVBEAYXk92V8Ga?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46c3919d-c080-493a-19d7-08dbf28904f8
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2023 16:17:31.4485
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2kVvUM5vOeyQ5Um2a6in7pOYJWCXz7C7OLvJdFaRdx2yQpudgDKwozTI0PAzg9kTSnyerHWynibBBEUHW5wbwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8695
 
-Hello Florian,
+Add suspend/resume support for ls1043 and ls1021.
 
-On Wed, 29 Nov 2023 21:10:44 -0800
-Florian Fainelli <f.fainelli@gmail.com> wrote:
+Change log see each patch
 
-> Do you have a reboot log with "initcall_debug debug" set on the kernel 
-> command line and if so, does it always point to the PCI bus shutting 
-> down the device drivers, pcie ports and ultimately the root complex?
-> 
-> We have seen something similar before with ath10k_pci and our 
-> pcie-brcmstb driver which eventually was a result of having made 
-> incorrect assumptions while implementing the platform_driver::shutdown 
-> routine. There was a hard hang in ath10k_remove(), I do not recall the 
-> details, but we were definitively doing something improper there.
-> 
-> imx6_pcie_shutdown() seems to much simpler, but my first guess would be 
-> there.
+Frank Li (4):
+  PCI: layerscape: Add function pointer for exit_from_l2()
+  PCI: layerscape: Add suspend/resume for ls1021a
+  PCI: layerscape(ep): Rename pf_* as pf_lut_*
+  PCI: layerscape: Add suspend/resume for ls1043a
 
-I had attempted using initcall_debug but the hang was happening on a
-different line across tests, so it did not reliably point to a specific
-place. Perhaps the serial port just stopped working before being able
-to flush the last few lines.
-
-I will have the shutdown code, even though it did not seems to the
-problematic.
-
-Thank you for your hints.
-
-Best regards,
-Luca
+ .../pci/controller/dwc/pci-layerscape-ep.c    |  16 +-
+ drivers/pci/controller/dwc/pci-layerscape.c   | 189 ++++++++++++++++--
+ 2 files changed, 176 insertions(+), 29 deletions(-)
 
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
+
