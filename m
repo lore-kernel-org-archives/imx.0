@@ -1,228 +1,266 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2049.outbound.protection.outlook.com [40.107.22.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC301619A0
-	for <imx@lists.linux.dev>; Fri,  1 Dec 2023 22:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC581C6B6
+	for <imx@lists.linux.dev>; Mon,  4 Dec 2023 10:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="hue24GSU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LPNNC790ltESOQ2eLaifteaXDkyeF7bj/B/9hYQ6bFs2cI94K/W+4CQUuEdWBPEXBkPDevHAKH1u1J+D/GxyJhuo+/xuvv1iL1WXQJdRu/9Jjw+Z5bWj0KMHjCIcHLt5U+3Sy9O6ZY8DAEDL5G7xOZAIXTH8/XV59KCV2XmuzfhuyK9NNleoxBO+r59vQSXdVZxNvJ+tMF7u5Y495cUsgYs0Z/I9UaEMx7yi2V1SAZvyCbGJmL6IObWJGFcpcEyjLBT0GbM+oacWTScluO1cqJIW4RKoaRmH0vnek6r4/WrsOiuNF3CkYm2i4FgOmMnZJ/gGtbqwuTIVUP1HOuqldg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FUJfh4y+uyDpoIRsDDLcoFS7UqmQdjwckiiFGvUdGQM=;
- b=dZRFAtfjUxwTYMR1Wun3fiC3JzdeU9/672PvrlzrsTFz7xy1YmPH0gkHgEa5JMJqOvAgF/FqvZV4/YD0WXrECNh5eFzeEKz5KlCxrxWHbVhq3/FstSPsmCbPo6QiM1Hb4m0n3bj7CvpZ9awXSDJWGFHer8ASFfinn4v4CjUrLvL/oHhfgFzKKUO8ZU1YjvbP7rMMvySjyVD26K3nFGjmizq3gi+7MTV3aCZKswpvShHUtqKjBQooNzg1Kv/aJTZVWuUjS4ggFxjOCqnNdQdE5ZyJ89LtzT6HVxkNaz7E7+ZNJCb6X3eRN03Ls0/zgFX0HKQ08WD4MBGkMv8ZbkZLHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FUJfh4y+uyDpoIRsDDLcoFS7UqmQdjwckiiFGvUdGQM=;
- b=hue24GSU6ydUoHWoXO58NQo3bWMmxbxSK5oWfUo9N7sDJP9UPzbwKUc6Gv9VsWt9KXG9cIIyoqCBIChhEQyuPnadAjgmktqPsl/yWOGSNdJ+/lnPyCbkPyNjGInDhMTYKTDzT0Iy9KhOnzfT8+BdDVwkHdwMrJZqeYtTxX6Clsc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS4PR04MB9573.eurprd04.prod.outlook.com (2603:10a6:20b:4fb::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.13; Fri, 1 Dec
- 2023 22:26:10 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7068.016; Fri, 1 Dec 2023
- 22:26:10 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: miquel.raynal@bootlin.com
-Cc: Frank.li@nxp.com,
-	alexandre.belloni@bootlin.com,
-	conor.culhane@silvaco.com,
-	imx@lists.linux.dev,
-	joe@perches.com,
-	linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	zbigniew.lukwinski@linux.intel.com
-Subject: [v5 resend 6/6] i3c: add API i3c_dev_gettstatus_format1() to get target device status
-Date: Fri,  1 Dec 2023 17:25:32 -0500
-Message-Id: <20231201222532.2431484-7-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231201222532.2431484-1-Frank.Li@nxp.com>
-References: <20231201222532.2431484-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR17CA0022.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::35) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I1yfZKzm"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4b2ee700323so52673e0c.3
+        for <imx@lists.linux.dev>; Mon, 04 Dec 2023 02:59:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701687581; x=1702292381; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7bEx0tCg0pBB2RGpWhKyVXvpL7LgHhHvq8+rdmdgSd4=;
+        b=I1yfZKzm4FSKP4jQfsx+GEokY2WjwyF6/Z+7s07RHYt/2rAeEPQFA/87eG+E4FaXnQ
+         DhJgF/+192lbezlKOulNeCxBPnI/a65uF1/410m1haIJa1MO4cyFknKQEnDSlzaCt5rl
+         G6Yx6eKdMc/MhV0fAlakA757VaUkjD9bEACfty0Va1E2IzLY9wfIxWqjW0eTgcd/Yxj8
+         oAra9IjNCC4TO7YZgQhR/Ttny4Ium9Xp5SqgFyp5Ha+5esV8fihGxP5Ohfs/N7rEYoJO
+         PVBaQSDTLvicQjw503PhnwasTfI06/VZ9ACkTjDpYe9htA96T4QA0/Iqw3utcjRefKeF
+         Gkyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701687581; x=1702292381;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7bEx0tCg0pBB2RGpWhKyVXvpL7LgHhHvq8+rdmdgSd4=;
+        b=R/ryvWM5f0mtCA/iiPVCgD5HkxWsZOWTKqCE9ryMdF1zYRJ3TqHctdTRHOMwwsox4O
+         GRlCzvkxWBV8Kt5agIv0ISWT8HgEkf/dc/+ovFJsp2LGjQZRcwt15U/x0xZz+uh1lm+t
+         0l5L6t36qpgrf9+eqx4+68g5laA9J2xQwcuDSSp8eDxkEinMUJFTXps5PfYPpU47AtOd
+         z6Rb/NuWWkqzoZZEtaS9O4HeBwRgs7ScgfDllTCg0OKPTilRHDlIXgi4/jIbt8UiqkNf
+         nf2vSi69FN+pBtqMiFcdkEYgNydJZekYe35xp/7FpnErF6JAN8nyGOuv7phYQqufpZBK
+         /xrg==
+X-Gm-Message-State: AOJu0Yy1zh6PuNeJ6yUOJ4IHxVhPz6sv66VMiaEMc8vaCaO2bfiNwTe7
+	8pORfqYnvyzH09x72ogLRYs8
+X-Google-Smtp-Source: AGHT+IHaxXfyDhijP6/BJkFg6aoA3IV347qjEa/qt4rjuAXnbel85JEDfVEpxBpRpyh9yIkK0iQFMw==
+X-Received: by 2002:ac5:cfed:0:b0:4b2:c554:eeff with SMTP id m45-20020ac5cfed000000b004b2c554eeffmr1436442vkf.17.1701687581647;
+        Mon, 04 Dec 2023 02:59:41 -0800 (PST)
+Received: from thinkpad ([117.213.101.240])
+        by smtp.gmail.com with ESMTPSA id k13-20020a05620a07ed00b0077d61831eb2sm4137123qkk.40.2023.12.04.02.59.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 02:59:41 -0800 (PST)
+Date: Mon, 4 Dec 2023 16:29:31 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: bhelgaas@google.com, imx@lists.linux.dev, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	lpieralisi@kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
+	robh@kernel.org, roy.zang@nxp.com
+Subject: Re: [PATCH v5 2/4] PCI: layerscape: Add suspend/resume for ls1021a
+Message-ID: <20231204105931.GB35383@thinkpad>
+References: <20231201161712.1645987-1-Frank.Li@nxp.com>
+ <20231201161712.1645987-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS4PR04MB9573:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9749e2b5-c88f-4dc2-d62f-08dbf2bc854e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	tzKcmsMber+YWmSvxvUaIUCWnpLSOEowKGO1+rtt6uOzvUN7ps9IdOKJhwEcnq8fNxbZfbKC4NgqN7xGk0bQd2e1AfM7uNp1UUoAESy+euP9ALb3s9j0xMtJlsGenrfq9TzW6mUyX6R6U7rNpoCLEvPUrtKuFbmu4PB81latjEeUl6BhXciTM2PeNkQAbtHQDQpwbJ2W3bFZtrHssIybhAHu3j1M9VNJEFqFR/UstSvlwkVDkKafvRqtvQSBjFNF8bajs+bUkk5O3ft+brOTUIvE57gWpm8Y6BuVp/FapNzpgFQN+sYm30RsLDlnLxlR9iqTgJdC6l8WYgvCt7Ym1dZFoRNnNFms+fpzeQIHMoow0Jd4ShsNWt8KxYRXj0ELorPlGo1I9ozy6MMCTgnIjaW4qhNV4J7YE9hKPJmLj03rJhKZVSkAsYHg6a9wudR9/1j0fLeC27Tb3mWGFLcZU48eC2WUoGUjg8C3CG2PCtEcTD9BXEPj4kGdhczp3EPrRdG4RrWwNeAWLy2qpQwgEese6OdrvhKXcSQs1WxW682AtfWj2KBH2K/cD0Bs8YZQ3VAPLmbxFFmaFXbrA84u5ueaLO2A4X2Qa3qIIicrtmY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(346002)(376002)(136003)(396003)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(83380400001)(86362001)(6506007)(26005)(1076003)(6666004)(52116002)(2616005)(6512007)(41300700001)(5660300002)(8936002)(8676002)(6486002)(478600001)(2906002)(966005)(4326008)(316002)(66556008)(6916009)(66476007)(36756003)(38100700002)(66946007)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SeKz2SmTZa98kF2FD3jNDQyn+9EsLDed3LNdxGXuHE5XveAgYMazA3ik/eMC?=
- =?us-ascii?Q?yBRlBQBJFABmBOc1EAp3NG5zKCR7jNUu84xt9wxApsmTBX4L44qCMYETznln?=
- =?us-ascii?Q?vtOtIFjK6T5hGltuYNZo9UUHvmM6x/8bCBoxLycLM5YJV+t9ae0qmUUsSskS?=
- =?us-ascii?Q?aYQ8UYsFqxnyJCCp7+U0YwwisVRwEfyNKSgcsUNIAr83V/ID/0ymkkkpuRYv?=
- =?us-ascii?Q?1oxeMTDrgWU9wADyXbwdnVenrxMTDxF6vVfqXr44TorAjEK9hxYiUfh9KUwF?=
- =?us-ascii?Q?L/OKwlNVys90ETvNnno83pTBKNfEBds6YuLYuSc2iCzQykp+8vt69HN4FfKA?=
- =?us-ascii?Q?UX13ZR+Ab+b5/muo3iDpZM5iTRB1cmRWv8gXxoHZb4/kkgBsM2c6U/Doz7ho?=
- =?us-ascii?Q?qrRYHXAqSDb9afr41Ok77SJCFm0QLUA3JxspEvlIrh7DCXn+/YPsv3tePdF1?=
- =?us-ascii?Q?ZoePgrz0qFoLjHXg7Zup7L5yBBs50CN7tKSTX+NTBnGya34iEOcpbj3/ZhrE?=
- =?us-ascii?Q?dISjNYv0Dy3rzbh1ufyndqJkiVUy/fRy06ZkgPvM+kF61oOIeRnAMaWDmKv7?=
- =?us-ascii?Q?An5GIb8Whqnerztm7CnWFfVxjxh3UDgZVvHgOovpPBLfP9pDvYZ/Zc8potNc?=
- =?us-ascii?Q?2p4mddkXGUaRHteBxFZxgKbe1hGr9dHXCyd8TK9uijLCpSa0I4UiGsy/OJX9?=
- =?us-ascii?Q?QWTkMazcWWndYdm00tBfmfGynXdvpXCD2DF1F2KhsMBO+6hSoTrTzXI2gGpJ?=
- =?us-ascii?Q?Gk2AxEuYPaKOSfGWEc/9M9LubgZXimXEN78lC0JF7mO5ijg/WeO51UDuX7oC?=
- =?us-ascii?Q?KZdYScdJZ28vpu3jeKH5OmKsRJ/02AmOL5egO778HTvwGeZaZtwBcHDNFHWx?=
- =?us-ascii?Q?fVEstFmVE3Th0Ne3U9ZW64rQs1jq0TPNRtMvdh0k7KqsOa+j0WnEYgRGfo1R?=
- =?us-ascii?Q?qvPPcjafekgpxfYwFf18PxZ2ESGsRNdYj/8/cibpmSxeL5Jv4/GQk3YbXLWV?=
- =?us-ascii?Q?NWbV4jQP/RmV/MAHwzEBIodpk+f8Vv6GFGrQziA8A1+LtNivB74ymZGhcdP8?=
- =?us-ascii?Q?i72M9Y5I5MXlBoX9qGuN8qd1sKSEDNuw8uGllp64mjcRIy5qHDHNlrSsKEs1?=
- =?us-ascii?Q?cXD9TI4q9wmwML6lJAPVFTl/QjqPIJjcjGaGMPscsjuKX8SBFFLndBaBtiG7?=
- =?us-ascii?Q?P+0eiJ7EvXEVHTvm/LrWCDNSj1aHE3eCshVTkuRTU5YwVC+8mBoga/WoweCI?=
- =?us-ascii?Q?K12nPfSw6YBMfs6vji98fYklQ+EGRbocxn801TpooRlz476yh+7VHu4zDW9n?=
- =?us-ascii?Q?n5MKCXHBPQXhk8w/Mk7oKICDFJ2AUtjxSXS6NNie6q9b9sxqldkMkLp7bAdv?=
- =?us-ascii?Q?SgaR64Ms8sr31XfC9WX4mRTSLFruT7svPNJhKfERmx0o3+PZmIkzeWXcPM5F?=
- =?us-ascii?Q?sJJX3I8tbzloVwH41TJylKbaJClUz4pnJ/5kyZDf5dSDVtY7ry9E+lLGcgXG?=
- =?us-ascii?Q?6y38HwOH9814D80vK1jApnOFU7C2KUjfKl2ai77YxhYPuMkkHw3Gez4kwow4?=
- =?us-ascii?Q?o+bgwxlPIoh+DANvZ9lpp9GiG4DawPGtHyeO/a1W?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9749e2b5-c88f-4dc2-d62f-08dbf2bc854e
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2023 22:26:10.8798
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 69DL4H7GH6ZiF3kCVeMlpaUJj778oUxq2pY+hGIwbE6A/x+oP+b93bIQO8m23Pi5lhcdYBmBUBM+fwLWidgQFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9573
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231201161712.1645987-3-Frank.Li@nxp.com>
 
-I3C standard 5.1.9.3.15 Get Device Status (GETSTATUS):
-Get request for one I3C Target Device to return its current status.
+On Fri, Dec 01, 2023 at 11:17:10AM -0500, Frank Li wrote:
+> Add suspend/resume support for Layerscape LS1021a.
+> 
+> In the suspend path, PME_Turn_Off message is sent to the endpoint to
+> transition the link to L2/L3_Ready state. In this SoC, there is no way to
+> check if the controller has received the PME_To_Ack from the endpoint or
+> not. So to be on the safer side, the driver just waits for
+> PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
+> bit to complete the PME_Turn_Off handshake. Then the link would enter L2/L3
+> state depending on the VAUX supply.
+> 
+> In the resume path, the link is brought back from L2 to L0 by doing a
+> software reset.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Add API to fetch it with format1.
+One comment below. With that addressed,
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Notes:
-    See below patch, which call i3c_dev_gettstatus_format1()
-    https://lore.kernel.org/imx/202311070330.5mylauLR-lkp@intel.com/T/#t
-    
-    Change from v4 to v5
-    - none
+> ---
+> 
+> Notes:
+>     Change from v4 to v5
+>     - update comit message
+>     - remove a empty line
+>     - use comments
+>     /* Reset the PEX wrapper to bring the link out of L2 */
+>     - pci->pp.ops = pcie->drvdata->ops,
+>     ls_pcie_host_ops to the "ops" member of layerscape_drvdata.
+>     - don't set pcie->scfg = NULL at error path
+>     
+>     Change from v3 to v4
+>     - update commit message.
+>     - it is reset a glue logic part for PCI controller.
+>     - use regmap_write_bits() to reduce code change.
+>     
+>     Change from v2 to v3
+>     - update according to mani's feedback
+>     change from v1 to v2
+>     - change subject 'a' to 'A'
+> 
+>  drivers/pci/controller/dwc/pci-layerscape.c | 81 ++++++++++++++++++++-
+>  1 file changed, 80 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index aea89926bcc4f..8bdaae9be7d56 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -35,11 +35,19 @@
+>  #define PF_MCR_PTOMR		BIT(0)
+>  #define PF_MCR_EXL2S		BIT(1)
+>  
+> +/* LS1021A PEXn PM Write Control Register */
+> +#define SCFG_PEXPMWRCR(idx)	(0x5c + (idx) * 0x64)
+> +#define PMXMTTURNOFF		BIT(31)
+> +#define SCFG_PEXSFTRSTCR	0x190
+> +#define PEXSR(idx)		BIT(idx)
+> +
+>  #define PCIE_IATU_NUM		6
+>  
+>  struct ls_pcie_drvdata {
+>  	const u32 pf_off;
+> +	const struct dw_pcie_host_ops *ops;
+>  	int (*exit_from_l2)(struct dw_pcie_rp *pp);
+> +	bool scfg_support;
+>  	bool pm_support;
+>  };
+>  
+> @@ -47,6 +55,8 @@ struct ls_pcie {
+>  	struct dw_pcie *pci;
+>  	const struct ls_pcie_drvdata *drvdata;
+>  	void __iomem *pf_base;
+> +	struct regmap *scfg;
+> +	int index;
+>  	bool big_endian;
+>  };
+>  
+> @@ -171,18 +181,70 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  
+> +static void scfg_pcie_send_turnoff_msg(struct regmap *scfg, u32 reg, u32 mask)
+> +{
+> +	/* Send PME_Turn_Off message */
+> +	regmap_write_bits(scfg, reg, mask, mask);
+> +
+> +	/*
+> +	 * There is no specific register to check for PME_To_Ack from endpoint.
+> +	 * So on the safe side, wait for PCIE_PME_TO_L2_TIMEOUT_US.
+> +	 */
+> +	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
+> +
+> +	/*
+> +	 * Layerscape hardware reference manual recommends clearing the PMXMTTURNOFF bit
+> +	 * to complete the PME_Turn_Off handshake.
+> +	 */
+> +	regmap_write_bits(scfg, reg, mask, 0);
+> +}
+> +
+> +static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +
+> +	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), PMXMTTURNOFF);
+> +}
+> +
+> +static int scfg_pcie_exit_from_l2(struct regmap *scfg, u32 reg, u32 mask)
+> +{
+> +	/* Reset the PEX wrapper to bring the link out of L2 */
+> +	regmap_write_bits(scfg, reg, mask, mask);
+> +	regmap_write_bits(scfg, reg, mask, 0);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +
+> +	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
+> +}
+> +
+>  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
+>  	.host_init = ls_pcie_host_init,
+>  	.pme_turn_off = ls_pcie_send_turnoff_msg,
+>  };
+>  
+> +static const struct dw_pcie_host_ops ls1021a_pcie_host_ops = {
+> +	.host_init = ls_pcie_host_init,
+> +	.pme_turn_off = ls1021a_pcie_send_turnoff_msg,
+> +};
+> +
+>  static const struct ls_pcie_drvdata ls1021a_drvdata = {
+> -	.pm_support = false,
+> +	.pm_support = true,
+> +	.scfg_support = true,
+> +	.ops = &ls1021a_pcie_host_ops,
+> +	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
+>  };
+>  
+>  static const struct ls_pcie_drvdata layerscape_drvdata = {
+>  	.pf_off = 0xc0000,
+>  	.pm_support = true,
+> +	.ops = &ls_pcie_host_ops;
+>  	.exit_from_l2 = ls_pcie_exit_from_l2,
+>  };
+>  
+> @@ -205,6 +267,8 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	struct dw_pcie *pci;
+>  	struct ls_pcie *pcie;
+>  	struct resource *dbi_base;
+> +	u32 index[2];
+> +	int ret;
+>  
+>  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+>  	if (!pcie)
+> @@ -220,6 +284,7 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	pci->pp.ops = &ls_pcie_host_ops;
 
- drivers/i3c/device.c       | 24 ++++++++++++++++++++++++
- drivers/i3c/internals.h    |  1 +
- drivers/i3c/master.c       | 26 ++++++++++++++++++++++++++
- include/linux/i3c/device.h |  1 +
- 4 files changed, 52 insertions(+)
+This should be removed now.
 
-diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
-index 1a6a8703dbc3a..aa26cf50ab9c6 100644
---- a/drivers/i3c/device.c
-+++ b/drivers/i3c/device.c
-@@ -196,6 +196,30 @@ void i3c_device_free_ibi(struct i3c_device *dev)
- }
- EXPORT_SYMBOL_GPL(i3c_device_free_ibi);
- 
-+/**
-+ * i3c_device_getstatus_format1() - Get device status with format 1.
-+ * @dev: device for which you want to get status.
-+ * @status: I3C status format 1
-+ *
-+ * Return: 0 in case of success, a negative error core otherwise.
-+ */
-+int i3c_device_getstatus_format1(struct i3c_device *dev, u16 *status)
-+{
-+	int ret = -EINVAL;
-+
-+	if (!status)
-+		return -EINVAL;
-+
-+	i3c_bus_normaluse_lock(dev->bus);
-+	if (dev->desc)
-+		ret = i3c_dev_getstatus_format1_locked(dev->desc, status);
-+
-+	i3c_bus_normaluse_unlock(dev->bus);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(i3c_device_getstatus_format1);
-+
- /**
-  * i3cdev_to_dev() - Returns the device embedded in @i3cdev
-  * @i3cdev: I3C device
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 908a807badaf9..976ad26ca79c2 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -24,4 +24,5 @@ int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
- int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
- 			       const struct i3c_ibi_setup *req);
- void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev);
-+int i3c_dev_getstatus_format1_locked(struct i3c_dev_desc *dev, u16 *status);
- #endif /* I3C_INTERNAL_H */
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index d3b56c9f601e2..81611a3e3585a 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2923,6 +2923,32 @@ void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev)
- 	dev->ibi = NULL;
- }
- 
-+int i3c_dev_getstatus_format1_locked(struct i3c_dev_desc *dev, u16 *status)
-+{
-+	struct i3c_master_controller *master = i3c_dev_get_master(dev);
-+	struct i3c_ccc_getstatus *format1;
-+	struct i3c_ccc_cmd_dest dest;
-+	struct i3c_ccc_cmd cmd;
-+	int ret;
-+
-+	format1 = i3c_ccc_cmd_dest_init(&dest, dev->info.dyn_addr, sizeof(*format1));
-+	if (!format1)
-+		return -ENOMEM;
-+
-+	i3c_ccc_cmd_init(&cmd, true, I3C_CCC_GETSTATUS, &dest, 1);
-+
-+	ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
-+	if (ret)
-+		goto out;
-+
-+	*status = be16_to_cpu(format1->status);
-+
-+out:
-+	i3c_ccc_cmd_dest_cleanup(&dest);
-+
-+	return ret;
-+}
-+
- static int __init i3c_init(void)
- {
- 	int res;
-diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
-index ef6217da8253b..5f511bd400f11 100644
---- a/include/linux/i3c/device.h
-+++ b/include/linux/i3c/device.h
-@@ -345,4 +345,5 @@ void i3c_device_free_ibi(struct i3c_device *dev);
- int i3c_device_enable_ibi(struct i3c_device *dev);
- int i3c_device_disable_ibi(struct i3c_device *dev);
- 
-+int i3c_device_getstatus_format1(struct i3c_device *dev, u16 *status);
- #endif /* I3C_DEV_H */
+- Mani
+
+>  
+>  	pcie->pci = pci;
+> +	pci->pp.ops = pcie->drvdata->ops;
+>  
+>  	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
+>  	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
+> @@ -230,6 +295,20 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  
+>  	pcie->pf_base = pci->dbi_base + pcie->drvdata->pf_off;
+>  
+> +	if (pcie->drvdata->scfg_support) {
+> +		pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
+> +		if (IS_ERR(pcie->scfg)) {
+> +			dev_err(dev, "No syscfg phandle specified\n");
+> +			return PTR_ERR(pcie->scfg);
+> +		}
+> +
+> +		ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
+> +		if (ret)
+> +			return ret;
+> +
+> +		pcie->index = index[1];
+> +	}
+> +
+>  	if (!ls_pcie_is_bridge(pcie))
+>  		return -ENODEV;
+>  
+> -- 
+> 2.34.1
+> 
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
