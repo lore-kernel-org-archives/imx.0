@@ -1,254 +1,387 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2059.outbound.protection.outlook.com [40.107.247.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFD05395
-	for <imx@lists.linux.dev>; Mon,  4 Dec 2023 16:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="PAkSx8ec"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=K1LswuWNSbw0GnM4DGZ9h+gKTzFA2398BAcR0njB6i6MSl0jmKC7CJDa3EspBEZzoY8YMVUvCp7vYh9njaM34M0RagwgtRlaJfz2446yQiax+Q/W8F0/7KdPPk3dXGvcscOOGN4r39kM9SxasAfP3xvvw6JA1x9WZMqD2xH+tysrGOW5aQezzNjMsGiqu3NR3L8/wURcyQoSu8B+H0KbivLkgvMgx1vO1dI/xxkhwxCwVXBhU140iZAtPhY8h4ttdZW8aWR5bHHUdPc+2Gu1KSM98Ga9DRKrHZ5ARcOZRJ5fYTNv+sJdwSwFPaTczEKBQs2pa5w3RfRY3w5hQWZxKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=twXB3m7Tim7njEZaZz/z5gMshLBBUVg2EBfjuL0WGag=;
- b=GBJ/dg1j9VEKVnaS8AfgNC97EpIKy6uhJV9pC9HKpU5FRjFRkGutFlULnbH2c0Dz/5dpgrCQ08MhcBX2LHlA9/heQ6+0xRcWm7qXMOOAOiaCfEneWxb2Q+lebdWuzi37rkdUPa0mrXG3vYdUPwKeh2EbM/Byw/3szQ3vOaYo3HuNdJ5Unomhr+9C6xIdwkBlyP3OiV5HVPR3VLqYAnZJAcOXGo+iJGbTtcEo8TQJ5Uu0w1Zzq4O5PccorokJHngWt1+uxv8qTQl2XTN0gVXsHgjkXgktYflU1HXpGZ3LOW0XL4xFhlf/QCnD7soMDXuChFeI2kaYXp+2RohXqtxB8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=twXB3m7Tim7njEZaZz/z5gMshLBBUVg2EBfjuL0WGag=;
- b=PAkSx8ecZHqqW4FxWgl5rlKhc8w5y/q9nmvtHtApt3bP67frT3i9n1kgsp+Fcr2IH1DyJFxeC3kFnxxXE2JT4O3TVIx7s7kwGYCMky5mE/tBQBuTNJ+0zWIN2CWODWWvSbMXIejnn1OmJYwX4/y/sgd+/2JAymVrnqHZma6d+Jk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DBBPR04MB8057.eurprd04.prod.outlook.com (2603:10a6:10:1f1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.22; Mon, 4 Dec
- 2023 16:09:03 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7068.022; Mon, 4 Dec 2023
- 16:09:03 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: manivannan.sadhasivam@linaro.org
-Cc: Frank.Li@nxp.com,
-	bhelgaas@google.com,
-	imx@lists.linux.dev,
-	kw@linux.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	lpieralisi@kernel.org,
-	minghuan.Lian@nxp.com,
-	mingkai.hu@nxp.com,
-	robh@kernel.org,
-	roy.zang@nxp.com
-Subject: [PATCH v6 4/4] PCI: layerscape: Add suspend/resume for ls1043a
-Date: Mon,  4 Dec 2023 11:08:29 -0500
-Message-Id: <20231204160829.2498703-5-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231204160829.2498703-1-Frank.Li@nxp.com>
-References: <20231204160829.2498703-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR21CA0027.namprd21.prod.outlook.com
- (2603:10b6:a03:114::37) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25B34AF95
+	for <imx@lists.linux.dev>; Tue,  5 Dec 2023 09:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-40b595bf5d2so58113525e9.2
+        for <imx@lists.linux.dev>; Tue, 05 Dec 2023 01:56:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701770171; x=1702374971;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NCpUoGEbLa7UgEiPGpxMZ6i6kOTLzyq3xsvNy4X6SA0=;
+        b=EsK8YaPe51g+J2342pHMYDiu/nIcMxxcl/KQQ/Z08r3L7vHVnl04R7haaHzxwy7Gv7
+         8ewpS1AY5PJlGtwzPdq1M8BTC2a2+A24WxzFWqzo/l60ieA9eaW8WpAW4FLeqBTIAxrg
+         Fsj+ALCpatSV5KlEkNSfRS58NaEY5eSj6J/WfwufaxNbG5RIqA78DXLWjjJ2tX72hWq0
+         0cBRk8mBKHNOMSg2mXtVtmzb8Y9uCGp+Zpst2hXUuyvZH0CDTz57tXp2mNYBo6KTbanG
+         mG95auL31OSgfWqmY9Y2uP/w4JnTrh0yf28V7pkyFs3DalsT7FTyian2c9KBbuvdFksM
+         hFPg==
+X-Gm-Message-State: AOJu0YxqJFIPBdgZvdk+TsW28sloDPf9C/8eIf7k8vHCxTFyym/3hQrt
+	y2fOsjNmcrY8X8srHtsQ6nY=
+X-Google-Smtp-Source: AGHT+IErga5sMFcOAXTtwbBqiAzKsvmtb3tfiJ5mpDctNhrImPKy2RXAdmg4Zz6tiUMSv/PO7R35tQ==
+X-Received: by 2002:a05:600c:5013:b0:40b:5e21:c596 with SMTP id n19-20020a05600c501300b0040b5e21c596mr213614wmr.100.1701770170934;
+        Tue, 05 Dec 2023 01:56:10 -0800 (PST)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id bh12-20020a05600c3d0c00b0040b2976eb02sm18178185wmb.10.2023.12.05.01.56.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Dec 2023 01:56:10 -0800 (PST)
+Message-ID: <2c3824d7-0960-4de7-8fae-01478fdef8fe@kernel.org>
+Date: Tue, 5 Dec 2023 10:56:09 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBBPR04MB8057:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9d7ed75-10f3-475c-c2a7-08dbf4e35593
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	nXHqNjqZ+lxKeeeAWX2IPrPJinPpjVLIm1bDqSrI4ITLYoI3XAK+Mv/oXHZfdYrlFc3cAFyO33EMxL7dgsEKgIr6UsqyHiBaYCciluJkwyCOV/QIeL5Sx5Cj16+X1vqzAgGTvPCxHG/KH+5Fl4t+JWTEpBq4fmrU67KSZIRawBt8+vgV46QnRHQS/c40mQf/29m/HNM+sXVNuuzo23ixVDUvik2LBZuLv1kSnX2Z9lpyXgrb5/3p1di9q3x8Zib2ByhVVkt+nnyHbpcZ7awHtNo54i+SGmT6VV87FwLIaWC8d3MNiJPEG7kXAvnZgN5XddXq+Tbc5iVF86bJM0kq3OvaaumOljDM99PtpDML5AEa93BuvQ7QCwrpU/gRkVy5NaQCCHZVRZlm2mBQcSXUO4bSAdwogP3uvm+AyX69JFyJehJ8dwottFz4GkOZuo4Utyb9bEgB8X++adIgnrbFsc1muJG25k6o2uxfbX1CmWY1ivDdTyeu4uUHbcPRo+PizZLQYGLvzUCKkkfAkhfT+lx5u7+x1UDXG31BXSw3Sx7ZS1hwYR++Q5UhdMA8T/todfG5rfQd5a76FIKpFcXK4Kyoiz7IPqTrlJuvabLT2T+qmJqwdYjydsb0Ha5/iEhN
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(39860400002)(366004)(376002)(346002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(6916009)(66556008)(66476007)(8936002)(316002)(86362001)(8676002)(4326008)(6486002)(478600001)(66946007)(36756003)(41300700001)(38350700005)(15650500001)(2906002)(7416002)(5660300002)(26005)(2616005)(1076003)(6506007)(6512007)(52116002)(83380400001)(6666004)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wazukdBV3FKFMAbcBiDbf33+ZJ/ToHfcd5dBck4iULRsBYSFUVAaWo5ehD0+?=
- =?us-ascii?Q?lhwLD09mZSLQwIQUL8kpPxG9yfs1wy+6Q3izdI+M7Ed681uWMYX3Csso9+zP?=
- =?us-ascii?Q?o056DY/sxkz68bH5t7W07XVwzAPJWZHtjQ1Ivw6e9oLZOlCiSVZZtpUPGFVJ?=
- =?us-ascii?Q?JcrkzwhZGwtQiMWVLiZJQji7IaDrNVxvjaRoaY844sm2jHB+22xY4pzBmNDU?=
- =?us-ascii?Q?m69WeUokuSJnxM4d7Ac/11LP/7K8rZqMQwm7+OaOxOHuSEMTAfyY/tvJQNdM?=
- =?us-ascii?Q?YFZHL+g5GIV2UNyo9M+UYpQXfXl9/okLJzY5lF3ImbBThdTX8u9oFWx4A//V?=
- =?us-ascii?Q?GP0xZiBdR+OQfW4lY22QbfYLP8cbh3e8sqmUNouLHPsSMzm+dFwHD1d3CZKr?=
- =?us-ascii?Q?VnoYXyVOnH9UaiPBTeYfyBtQLXD9sMLBA/Uc7wtMA/n8qiZ7pycTM9GuDCn/?=
- =?us-ascii?Q?l6Q2Um1yRu8+gFn+GwBukx54c137fB9TNmt9FJSVieUPPlvg3/8L63OOXNh0?=
- =?us-ascii?Q?TCzuOL10m98MrTp+4iQOQmRy6H3nuWtDkfzx9AzF65YdFCLNhmFrVDyvpxR8?=
- =?us-ascii?Q?n46HNx9w9wIKEeI4aDjjj5JVzbsuun9f76k1EpL1SaxIksRmL/jg9yttWvo9?=
- =?us-ascii?Q?5P2AvXfqbUoQ502bxh5Dh8TQbmKrpXPy+lO5gumhh3cwxyf8OkdpEooikfNc?=
- =?us-ascii?Q?OKTi2vFD57Rfu2LGqPiVi8MDo51nV44/7YMgIB8FvSD/Wk7tSmKATilp+mXa?=
- =?us-ascii?Q?sZOGQJXiu8E4zoVzTOLaVqeWKpgdqDb138jE0EIU9Fj8O6pvpT3+qDLBt2fR?=
- =?us-ascii?Q?G94TA3RVllZHOC9BtWZGDqU/lUOpqpufvVPmBO6cosqZcGYhWrdmAjhpF9o5?=
- =?us-ascii?Q?WkpRtYGjzVRI0p/SfiVeFMh2whpcjec615b7jEce273CMWy3hKlqgWkEIsyd?=
- =?us-ascii?Q?lY2JBtCM0lj0Dg5FYfH5YijZhbkM3VJffl2MQtk3x9JT2OTCEYq0TTd2YX8u?=
- =?us-ascii?Q?rKOnkBG5Yvcl/O2IutzNCtZf3r/K7sNdYAGTmPFNlhIVbNuKxJRAyW/HT9h7?=
- =?us-ascii?Q?JDI/LnAs9/ey9fF/8H2ZqKdEYZOlUEuly3106SgGxfBndEAqvena05H/z3XK?=
- =?us-ascii?Q?EAnmVMMfDmldcjJpsDUY/1UZuL/mnDAdtrlNb8TwdsDccHY2pOrX/B5Ons9o?=
- =?us-ascii?Q?yGkaS952+yfu57uEXz+bchMNE6RhyVkjV0ElVgRtJkd3WinGz5tFvBfDXt7O?=
- =?us-ascii?Q?OZBUXKFqpW2Ve6Vvdh6bUdgELtgZ18/QiZQCIz6tLwKVSGitu9iAP4iABE8R?=
- =?us-ascii?Q?xTHi04G5I+bTaqYQIW2JiLiZHkszc+rpZ7YeJI6AlfChF3fi5D81bXqrDlzJ?=
- =?us-ascii?Q?I6OTJGpaPzfUJ5WE3V1ExBOJ+9SvBRSS0hSjgdWOFQSwuEm2EMaZoyHsfkKF?=
- =?us-ascii?Q?meS+kl/opOq1qBYHSJ/W6hI3yjqtldJbhat8cyy6pBvtMREWnHn3cJYfC1vD?=
- =?us-ascii?Q?ACUoMUdDWvR/EamoefD5/KfkLACdQwkA2yg4ZfhFHqWifs072eXUlI/n5dVV?=
- =?us-ascii?Q?B0Uc14g5H/2F9kuEjDUJ6SSAGNw3/66K7M1xWayb?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9d7ed75-10f3-475c-c2a7-08dbf4e35593
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 16:09:03.5363
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: warSZXDLyiFS6+GMyL6cXJVfI9dplmdgqUFKMCbgiXF0kVDPGOJE21Jwusp0hS1UNGWcweShiAl3HuXgciEz9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8057
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 7/7] tty: i3c: add TTY over I3C master support
+To: Frank Li <Frank.Li@nxp.com>, miquel.raynal@bootlin.com
+Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+ imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, zbigniew.lukwinski@linux.intel.com,
+ gregkh@linuxfoundation.org, linux-serial@vger.kernel.org
+References: <20231130224408.3591288-1-Frank.Li@nxp.com>
+ <20231130224408.3591288-8-Frank.Li@nxp.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20231130224408.3591288-8-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add suspend/resume support for Layerscape LS1043a.
+On 30. 11. 23, 23:44, Frank Li wrote:
+> In typical embedded Linux systems, UART consoles require at least two pins,
+> TX and RX. In scenarios where I2C/I3C devices like sensors or PMICs are
+> present, we can save these two pins by using this driver. Pins is crucial
+> resources, especially in small chip packages.
+> 
+> This introduces support for using the I3C bus to transfer console tty data,
+> effectively replacing the need for dedicated UART pins. This not only
+> conserves valuable pin resources but also facilitates testing of I3C's
+> advanced features, including early termination, in-band interrupt (IBI)
+> support, and the creation of more complex data patterns. Additionally,
+> it aids in identifying and addressing issues within the I3C controller
+> driver.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+...
+> --- a/drivers/tty/Kconfig
+> +++ b/drivers/tty/Kconfig
+> @@ -412,6 +412,19 @@ config RPMSG_TTY
+>   	  To compile this driver as a module, choose M here: the module will be
+>   	  called rpmsg_tty.
+>   
+> +config I3C_TTY
+> +	tristate "TTY over I3C"
+> +	depends on I3C
+> +	help
+> +	  Select this options if you'd like use TTY over I3C master controller
 
-In the suspend path, PME_Turn_Off message is sent to the endpoint to
-transition the link to L2/L3_Ready state. In this SoC, there is no way to
-check if the controller has received the PME_To_Ack from the endpoint or
-not. So to be on the safer side, the driver just waits for
-PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
-bit to complete the PME_Turn_Off handshake. Then the link would enter L2/L3
-state depending on the VAUX supply.
+this option
+to use
+add a period to the end.
 
-In the resume path, the link is brought back from L2 to L0 by doing a
-software reset.
+> +
+> +	  This makes it possible for user-space programs to send and receive
+> +	  data as a standard tty protocol. I3C provide relatively higher data
+> +	  transfer rate and less pin numbers, SDA/SCL are shared with other
+> +	  devices.
+> +
+> +	  If unsure, say N
+> +
+>   endif # TTY
+>   
+>   source "drivers/tty/serdev/Kconfig"
+...
+> --- /dev/null
+> +++ b/drivers/tty/i3c_tty.c
+> @@ -0,0 +1,443 @@
+...
+> +struct ttyi3c_port {
+> +	struct tty_port port;
+> +	int minor;
+> +	spinlock_t xlock; /* protect xmit */
+> +	char tx_buff[I3C_TTY_TRANS_SIZE];
+> +	char rx_buff[I3C_TTY_TRANS_SIZE];
 
-Acked-by: Roy Zang <Roy.Zang@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+These should be u8 as per the other changes throughout the tty layer.
 
-Notes:
-    Chagne from v5 to v6
-    - none
-    Change from v4 to v5
-    - update commit message
-    - use comments
-    /* Reset the PEX wrapper to bring the link out of L2 */
-    
-    Change from v3 to v4
-    - Call scfg_pcie_send_turnoff_msg() shared with ls1021a
-    - update commit message
-    
-    Change from v2 to v3
-    - Remove ls_pcie_lut_readl(writel) function
-    
-    Change from v1 to v2
-    - Update subject 'a' to 'A'
+> +	struct i3c_device *i3cdev;
+> +	struct work_struct txwork;
+> +	struct work_struct rxwork;
+> +	struct completion txcomplete;
+> +	unsigned long status;
+> +	int buf_overrun;
 
- drivers/pci/controller/dwc/pci-layerscape.c | 63 ++++++++++++++++++++-
- 1 file changed, 62 insertions(+), 1 deletion(-)
+Can this be ever negative?
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-index f3dfb70066fb7..7cdada200de7e 100644
---- a/drivers/pci/controller/dwc/pci-layerscape.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape.c
-@@ -41,6 +41,15 @@
- #define SCFG_PEXSFTRSTCR	0x190
- #define PEXSR(idx)		BIT(idx)
- 
-+/* LS1043A PEX PME control register */
-+#define SCFG_PEXPMECR		0x144
-+#define PEXPME(idx)		BIT(31 - (idx) * 4)
-+
-+/* LS1043A PEX LUT debug register */
-+#define LS_PCIE_LDBG	0x7fc
-+#define LDBG_SR		BIT(30)
-+#define LDBG_WE		BIT(31)
-+
- #define PCIE_IATU_NUM		6
- 
- struct ls_pcie_drvdata {
-@@ -224,6 +233,45 @@ static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
- 	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
- }
- 
-+static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct ls_pcie *pcie = to_ls_pcie(pci);
-+
-+	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR, PEXPME(pcie->index));
-+}
-+
-+static int ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct ls_pcie *pcie = to_ls_pcie(pci);
-+	u32 val;
-+
-+	/*
-+	 * Reset the PEX wrapper to bring the link out of L2.
-+	 * LDBG_WE: allows the user to have write access to the PEXDBG[SR] for both setting and
-+	 *	    clearing the soft reset on the PEX module.
-+	 * LDBG_SR: When SR is set to 1, the PEX module enters soft reset.
-+	 */
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val |= LDBG_WE;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val |= LDBG_SR;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val &= ~LDBG_SR;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val &= ~LDBG_WE;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	return 0;
-+}
-+
- static const struct dw_pcie_host_ops ls_pcie_host_ops = {
- 	.host_init = ls_pcie_host_init,
- 	.pme_turn_off = ls_pcie_send_turnoff_msg,
-@@ -241,6 +289,19 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
- 	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
- };
- 
-+static const struct dw_pcie_host_ops ls1043a_pcie_host_ops = {
-+	.host_init = ls_pcie_host_init,
-+	.pme_turn_off = ls1043a_pcie_send_turnoff_msg,
-+};
-+
-+static const struct ls_pcie_drvdata ls1043a_drvdata = {
-+	.pf_lut_off = 0x10000,
-+	.pm_support = true,
-+	.scfg_support = true,
-+	.ops = &ls1043a_pcie_host_ops,
-+	.exit_from_l2 = ls1043a_pcie_exit_from_l2,
-+};
-+
- static const struct ls_pcie_drvdata layerscape_drvdata = {
- 	.pf_lut_off = 0xc0000,
- 	.pm_support = true,
-@@ -252,7 +313,7 @@ static const struct of_device_id ls_pcie_of_match[] = {
- 	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
- 	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
--	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
-+	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
- 	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
+> +};
+> +
+> +struct workqueue_struct *workqueue;
+
+Is this related:
+     Still below items not be fixed (according to Jiri Slaby's comments)
+     - rxwork thread: need trigger from two position.
+     - common thread queue: need some suggestion
+?
+
+As I don't remember, could you elaborate again why you need your own 
+workqueue? You need to do it in the commit log anyway.
+
+...
+> +static ssize_t i3c_write(struct tty_struct *tty, const unsigned char *buf, size_t count)
+> +{
+> +	struct ttyi3c_port *sport = tty->driver_data;
+> +	unsigned long flags;
+> +	bool is_empty;
+> +	int ret;
+> +
+> +	spin_lock_irqsave(&sport->xlock, flags);
+> +	ret = kfifo_in(&sport->port.xmit_fifo, buf, count);
+> +	is_empty = kfifo_is_empty(&sport->port.xmit_fifo);
+> +	spin_unlock_irqrestore(&sport->xlock, flags);
+> +
+> +	if (!is_empty)
+> +		queue_work(workqueue, &sport->txwork);
+> +
+> +	return ret;
+> +}
+> +
+> +static int i3c_put_char(struct tty_struct *tty, unsigned char ch)
+> +{
+> +	struct ttyi3c_port *sport = tty->driver_data;
+> +	unsigned long flags;
+> +	int ret = 0;
+
+Unneeded initialization.
+
+> +
+> +	spin_lock_irqsave(&sport->xlock, flags);
+> +	ret = kfifo_put(&sport->port.xmit_fifo, ch);
+> +	spin_unlock_irqrestore(&sport->xlock, flags);
+> +
+> +	return ret;
+> +}
+...
+> +static void tty_i3c_rxwork(struct work_struct *work)
+> +{
+> +	struct ttyi3c_port *sport = container_of(work, struct ttyi3c_port, rxwork);
+> +	struct i3c_priv_xfer xfers;
+> +	int retry = I3C_TTY_RETRY;
+
+Likely, should be unsigned.
+
+> +	u16 status = BIT(0);
+> +	int ret;
+> +
+> +	memset(&xfers, 0, sizeof(xfers));
+> +	xfers.data.in = sport->rx_buff;
+> +	xfers.len = I3C_TTY_TRANS_SIZE;
+> +	xfers.rnw = 1;
+> +
+> +	do {
+> +		if (test_bit(I3C_TTY_RX_STOP, &sport->status))
+> +			break;
+> +
+> +		i3c_device_do_priv_xfers(sport->i3cdev, &xfers, 1);
+> +
+> +		if (xfers.actual_len) {
+> +			ret = tty_insert_flip_string(&sport->port, sport->rx_buff,
+> +						     xfers.actual_len);
+> +			if (ret < xfers.actual_len)
+> +				sport->buf_overrun++;
+> +
+> +			retry = I3C_TTY_RETRY;
+> +			continue;
+> +		}
+> +
+> +		status = BIT(0);
+> +		i3c_device_getstatus_format1(sport->i3cdev, &status);
+> +		/*
+> +		 * Target side needs some time to fill data into fifo. Target side may not
+> +		 * have hardware update status in real time. Software update status always
+> +		 * needs some delays.
+> +		 *
+> +		 * Generally, target side have circular buffer in memory, it will be moved
+> +		 * into FIFO by CPU or DMA. 'status' just show if circular buffer empty. But
+> +		 * there are gap, especially CPU have not response irq to fill FIFO in time.
+> +		 * So xfers.actual will be zero, wait for little time to avoid flood
+> +		 * transfer in i3c bus.
+> +		 */
+> +		usleep_range(I3C_TTY_YIELD_US, 10 * I3C_TTY_YIELD_US);
+> +		retry--;
+> +
+> +	} while (retry && (status & BIT(0)));
+> +
+> +	tty_flip_buffer_push(&sport->port);
+> +}
+> +
+> +static void tty_i3c_txwork(struct work_struct *work)
+> +{
+> +	struct ttyi3c_port *sport = container_of(work, struct ttyi3c_port, txwork);
+> +	struct i3c_priv_xfer xfers;
+> +	int retry = I3C_TTY_RETRY;
+
+Detto.
+
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	xfers.rnw = 0;
+> +	xfers.data.out = sport->tx_buff;
+> +
+> +	while (!kfifo_is_empty(&sport->port.xmit_fifo) && retry) {
+> +		xfers.len = kfifo_len(&sport->port.xmit_fifo);
+> +		xfers.len = min_t(u16, I3C_TTY_TRANS_SIZE, xfers.len);
+> +
+> +		xfers.len = kfifo_out_peek(&sport->port.xmit_fifo, sport->tx_buff, xfers.len);
+
+Can this simply be:
+xfers.len = kfifo_out_peek(&sport->port.xmit_fifo, sport->tx_buff, 
+I3C_TTY_TRANS_SIZE);
+?
+
+> +
+> +		ret = i3c_device_do_priv_xfers(sport->i3cdev, &xfers, 1);
+> +		if (ret) {
+> +			/*
+> +			 * Target side may not move data out of FIFO. delay can't resolve problem,
+> +			 * just reduce some possiblity. Target can't end I3C SDR mode write
+> +			 * transfer, discard data is reasonable when FIFO overrun.
+> +			 */
+> +			usleep_range(I3C_TTY_YIELD_US, 10 * I3C_TTY_YIELD_US);
+> +			retry--;
+> +		} else {
+> +			retry = I3C_TTY_RETRY;
+> +			ret = kfifo_out(&sport->port.xmit_fifo, sport->tx_buff, xfers.len);
+
+Just to make sure: xfers.len is nor overwritten by 
+i3c_device_do_priv_xfers(), right?
+
+> +		}
+> +	}
+> +
+> +	spin_lock_irqsave(&sport->xlock, flags);
+
+Why do you take the lock here, but not during the kfifo operations above?
+
+> +	if (kfifo_is_empty(&sport->port.xmit_fifo))
+> +		complete(&sport->txcomplete);
+> +	spin_unlock_irqrestore(&sport->xlock, flags);
+> +}
+
+> +static int __init i3c_tty_init(void)
+> +{
+> +	int ret;
+> +
+> +	i3c_tty_driver = tty_alloc_driver(I3C_TTY_MINORS,
+> +					  TTY_DRIVER_REAL_RAW | TTY_DRIVER_DYNAMIC_DEV);
+> +
+> +	if (IS_ERR(i3c_tty_driver))
+> +		return PTR_ERR(i3c_tty_driver);
+> +
+> +	i3c_tty_driver->driver_name = "ttyI3C";
+> +	i3c_tty_driver->name = "ttyI3C";
+> +	i3c_tty_driver->minor_start = 0,
+> +	i3c_tty_driver->type = TTY_DRIVER_TYPE_SERIAL,
+> +	i3c_tty_driver->subtype = SERIAL_TYPE_NORMAL,
+> +	i3c_tty_driver->init_termios = tty_std_termios;
+> +	i3c_tty_driver->init_termios.c_cflag = B9600 | CS8 | CREAD | HUPCL |
+> +					       CLOCAL;
+> +	i3c_tty_driver->init_termios.c_lflag = 0;
+> +
+> +	tty_set_operations(i3c_tty_driver, &i3c_tty_ops);
+> +
+> +	ret = tty_register_driver(i3c_tty_driver);
+> +	if (ret)
+> +		goto err_tty_register_driver;
+> +
+> +	ret = i3c_driver_register(&i3c_driver);
+> +	if (ret)
+> +		goto err_i3c_driver_register;
+> +
+> +	workqueue = alloc_workqueue("ttyI3C", 0, 0);
+
+Can it happen that you already queue something on this wq, while not 
+allocated yet? I mean: should this be done first in i3c_tty_init()?
+
+> +	if (!workqueue) {
+> +		ret = PTR_ERR(workqueue);
+> +		goto err_alloc_workqueue;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_alloc_workqueue:
+> +	i3c_driver_unregister(&i3c_driver);
+> +
+> +err_i3c_driver_register:
+> +	tty_unregister_driver(i3c_tty_driver);
+> +
+> +err_tty_register_driver:
+> +	tty_driver_kref_put(i3c_tty_driver);
+> +
+> +	return ret;
+> +}
+> +
+> +static void __exit i3c_tty_exit(void)
+> +{
+> +	i3c_driver_unregister(&i3c_driver);
+> +	tty_unregister_driver(i3c_tty_driver);
+> +	tty_driver_kref_put(i3c_tty_driver);
+> +	idr_destroy(&i3c_tty_minors);
+
+What about the wq?
+
+> +}
+
+regards,
 -- 
-2.34.1
+js
+suse labs
 
