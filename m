@@ -1,64 +1,60 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2081.outbound.protection.outlook.com [40.107.21.81])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2048.outbound.protection.outlook.com [40.107.105.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B96F37160
-	for <imx@lists.linux.dev>; Wed,  6 Dec 2023 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9622F47F44
+	for <imx@lists.linux.dev>; Wed,  6 Dec 2023 20:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="FD5X/j61"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ISQAS75F"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZWw+fqm7rDyEkKbae+lj0lVP8nNQYgwrrTtHdBF2hCpB9FrpdQUEE0+IzbMfGV3ndgT1AQHBN4kgHBBJBN7me8DEy8BE7K3f7GdA8bzmg1Ic/1S4ekIhsBkCriGFynq1PtHhfphW3k4icUv1CQBLBHphHjl83atwudaMIqRk8C5NwUNuimMd9gjNdXZ0W2w2iK3+BfYjlAApwDbSiYJwJLUinb1tPARRmldjjJeXYiaghispHdy/p8oCiO0oKvSIoLPE2C3LI3cPDMeNTFL3OV1gR/RmNdoSTJLZPQRfcEbugqtr3PYJkPwXSAV8imiBRY/srt7O0von4b71bLdzSw==
+ b=UgCbSjmxluW0uPVu//0Q/S1Ynvq/cd6ShY4WFC3nVN674r1IN5ZiOZ4CT1JsdY6LpstG3UFkYWuJZxkZ+WGwAAqiTaMO7Xo6SsN0v5MGyp+RoPI1J51YN4wQM3wQbVnkJxS5U2IbfdNE8DkFT54Gh0idIOeSCALigb7ER0PmwAJAbSLA4SlBWy8rnNRqz09tAQ98JBtaGBvoZzafEKZotbFyEcGVgL+YIrQSz9JrGwKhHRYi1VaoEnZl3psqobgZvW0fLbVb4mmeDDM/toAAN4DiQjUOPmm/rJ0Vkd80G/J1HT5lQ/QJS8wIqPntoa+YaJpyX465OucU82x5elfXRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k1wCyBM1+eCE7XF3bmKzo4H2Km+WyCO2evHnDVPaJQU=;
- b=g9yuvDQTKtwGS99MbIuwNiHZt7989oa+1MbRNw3/fbDpqZO5XvGrlvHNIKluU9NAQzDjDJdJE+zOlKRcUjJeMFZF9DrCOpyU5ytxBMz0IA3TKdB7TlHdnj/VbPlACWXdL7olcv0kNsxeLmKXgEJwSyglo/V2pZPnzx1l7ISp0ymfwJG3gR+8PoZBqI6Sa+KUAPcrOdsnNcNsIrUL/caN/mEo6umXVtBICw6QvdGhDHN/Tney/iBl4+u7p8wzQi6fuyUFSYL1DYSv+7Wy7UhC+sHh5Y/XhFvu1U1S69JgBH6YB6XmPTWngKbd0OVrtRsdMgg3/NrnOAfG1f6F2kYsMg==
+ bh=nVRgza5vkrMlpm4NVL1c+VPmiT8Fv9VRp0VzVsNY1Qw=;
+ b=i2D7BWxbK4+xxadHyVT6P6lb2e3fOZbhu4KnszKNIMDW0l5znFmadYQPFvuE+ZdY0gs7Tc8Vi7xYlQShxIpqVXBAzDRgGG3k3dtVgtt5MAN4y/aO1pGlgUtsmb0BimF2cirVQ3mrXCT0BRJgiyUdJrR3qGfxezwivGRPyirmwsDdE+Yfv3w+PWfZcPitYjeDwiMqFwWYaqc2oEodJ/PthxvkARUkRDaMBevPE/ILyHOZxoo9niA5zIp9SUoVbgKhNEjOEjofqMnF5bCz4QeGd6Z4gd33gmar6GrILGJyGZxbkLkJMi0PcZgfd0Jcg/Rcm7weextKcQgji4Q9w8cKAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k1wCyBM1+eCE7XF3bmKzo4H2Km+WyCO2evHnDVPaJQU=;
- b=FD5X/j614EfD/1kwvAc7lShPJM8ddMaZzWvW3aQq9eD/3OWfUkW8YOjqDoBOlmeQP+sZ2ZSly8FcwO+Q7JIJUt1CTAsekRfZVVuJGGls8RZbWo6jQZnzOVDv4PSwQ+925TKI7Y9KmhZaoVE9hmigf+nXpI0r2VgI0SehLnx8CZ4=
+ bh=nVRgza5vkrMlpm4NVL1c+VPmiT8Fv9VRp0VzVsNY1Qw=;
+ b=ISQAS75FCOGHgNeYU+WfuLDTUR7FzZHgYmwyCnTZBd2POmSCkFrUv38LRX+IlEUMQ8YrpzIoj2oaG12x7Si+NehsDRAPSZWbk24vq2jXS8sRqAVxtSGjlnnY0v9/loUA4yQvOnb/9O03Y07y0DHregGhDjwZ5lbExBdkr3dbR4E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB4845.eurprd04.prod.outlook.com (2603:10a6:803:51::30)
- by PAXPR04MB9253.eurprd04.prod.outlook.com (2603:10a6:102:2bd::14) with
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AM9PR04MB8842.eurprd04.prod.outlook.com (2603:10a6:20b:409::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.24; Wed, 6 Dec
- 2023 17:07:17 +0000
-Received: from VI1PR04MB4845.eurprd04.prod.outlook.com
- ([fe80::dfaa:e869:45eb:76e5]) by VI1PR04MB4845.eurprd04.prod.outlook.com
- ([fe80::dfaa:e869:45eb:76e5%6]) with mapi id 15.20.7068.022; Wed, 6 Dec 2023
- 17:07:16 +0000
-Date: Wed, 6 Dec 2023 12:07:00 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: imx@lists.linux.dev, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.25; Wed, 6 Dec
+ 2023 20:13:16 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7068.026; Wed, 6 Dec 2023
+ 20:13:16 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: imx@lists.linux.dev,
+	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	NXP Linux Team <linux-imx@nxp.com>,
-	"open list:PCI DRIVER FOR IMX6" <linux-pci@vger.kernel.org>,
-	"moderated list:PCI DRIVER FOR IMX6" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/9] PCI: imx6: Using "linux,pci-domain" as slot ID
-Message-ID: <ZXCqNI3VZ8Sn23WM@lizhi-Precision-Tower-5810>
-References: <ZXCmSOwTWR6AVpGB@lizhi-Precision-Tower-5810>
- <20231206165953.GA717921@bhelgaas>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231206165953.GA717921@bhelgaas>
-X-ClientProxiedBy: SJ0PR05CA0126.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::11) To AM6PR04MB4838.eurprd04.prod.outlook.com
+	Joakim Zhang <qiangqing.zhang@nxp.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 1/1] arm64: dts: imx8qm: Fix edma3 power-domains and interrupt number
+Date: Wed,  6 Dec 2023 15:12:55 -0500
+Message-Id: <20231206201256.1113800-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR08CA0027.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::40) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,131 +63,142 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB4845:EE_|PAXPR04MB9253:EE_
-X-MS-Office365-Filtering-Correlation-Id: 470673d6-267c-41af-f3e0-08dbf67dc82b
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM9PR04MB8842:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7820a84-31ea-4479-9c59-08dbf697c7e9
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	4a4+9fYg1RfaxzFql1IsMZVeMHdQ2AB3oPeTScfOhKWirSpr7oFZagbdWUCCiaAposO73u/fHU7VkBBqTjSqnvqGClF2LFx4oxFG4G33hQUmGr4WxE8Ilx7Emhut6PCas6ZoA5Y20UKSC5iDIbU2rBgLS98Yq5QbfELChW28e38mQ2ipc5ql0eJYP+JeLXfxGnohJoovf3TzW7PVrstOfd19chiGXNyjt2RoL+2z0deQEIe2PjnfKEOeGRMIYpJ8LNXn1JRUR7w994TY3uUzXDSeRMgjj+vf1bVk5zgY3NQyht9/Io/ngCadKX6+1r6uqpLUEh0ykpzCWn1oUawS+5K5JWyRJ3PF50SUuyp+WM8RSj+UhLYrNatYFpcTJx53JMJPOBtHiOeOhEynbo9N/FWYj8rjmenVrbg49T/EjlnpKKJwt9HsdsAZR3qX/EO4gM5sWnFy56GrJACysMXIRGuEAxY+N2eqcxmahmXHYskw6ErYSwnoXmseTnndfmqlxesrdjYEhGuOXhsRQW1+9kNmKX+W/xpfaMQY+EnbjHT3VMVGaRg7LDVra/liHRIyRP9EE8NIp+yXFkISAsYPD7ETPdJbo4sCscrKPawfRfjaAZOFf93JiKX3oC3NqBhJ
+ OhSXwB+x/6h0J5/EsrlCAkMReL6J29FrmVg7wFOWc7j43anPHmIpaJTSVdM/2YBJLjgbliwGbmfwCQcP7Knv2ocuUZvA7wm26uqHzBuxAZ4SisLkET0oOTNoobaNFXZ8aX5AGJK1bm48SeKhpyf2faNaNmOi/9VPbvcVE3yhY6g/Cd7wcwJFjM9L9yqSgjyCOtvXDOoqwsA2lm4byoWM8JxIygeCnw64Y+4pFtU3ahgKqMaCLSipcJlAsZgaD7Y5SMhC+rsWImfF9bwEfypJxzS20ASgzn85YJ6ODd1jVqkKe2+aXbY+gYMX6rotF5zO2mul+3hOk+sexRJFpTczfoQ/6Uam2wiam63wmpSApGl/yDineib9jRxhZ54MmNCmWsQLPuV8Mwj6JzA1OAUL0sezzRGjbkhs1302BpV6TKwDbnKEmk7QdFt6NCXW0VWBkrxEGFH+x1fbayKiBrxyDFCTfpobSA9rrf9SztW2oIUi0LnpBc1KSqWCxh/6icZGlkfgMUrpJErlD+PLJxF9Yg/auioxSfl9ewcTDhG+C7sLqQK5Gc1Y/mVcRRZav4wJNdskA+6AiQdlPtTg4CRWgXM1/3uwW1ERwxHUHlpBQbygUvbPkEHWOITVnU/4Efc16XASdjI6AZoHFwL7qxEZZohVyI9P4RnSBODEzXf5NfM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4845.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(346002)(396003)(376002)(39860400002)(366004)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(8936002)(8676002)(4326008)(52116002)(6506007)(6666004)(26005)(6512007)(9686003)(316002)(54906003)(66946007)(66556008)(66476007)(6916009)(6486002)(478600001)(41300700001)(7416002)(5660300002)(33716001)(2906002)(86362001)(38100700002)(38350700005)(83380400001);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(346002)(396003)(366004)(39860400002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(41300700001)(83380400001)(6512007)(26005)(1076003)(2616005)(38100700002)(38350700005)(86362001)(921008)(36756003)(6486002)(2906002)(478600001)(66476007)(66556008)(66946007)(5660300002)(110136005)(7416002)(316002)(52116002)(6506007)(8676002)(6666004)(8936002)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iIz5Y76F2jzW29g9dAfkJJINQdSo5eoacjD4xoEiq0+gOe+xwlUJ0sbD2BHG?=
- =?us-ascii?Q?OMzS9avHtS+KEpydpJcfp/7HhzyQFAg0Qf/u4PjmRAr475iUGkcAt7hdq7Z+?=
- =?us-ascii?Q?Bpe861zCkuU4zb2BaZ/NjblRM7ffcsFORovf4TOKdX/Dk97DKWgpgYj9XCAd?=
- =?us-ascii?Q?lcPAjmXcd+cBZvE9/LX2TJcpPGtivhzTsyBGF4djrsJVaAYsFyJNoTujAbM3?=
- =?us-ascii?Q?5PNhoZqyFcB3LmRteps4OO6uCAi8kfsrQaL5ndoBugmLMKK/IpmpwYUbfB4/?=
- =?us-ascii?Q?pHWOJiiJjoqvu6DkZHKlkdgMBCmlVVIIK5187g+G2TJdT06zJ/sCliUpeMOr?=
- =?us-ascii?Q?z7IThryE+VYrFi4mM8IeUQ85c2dHuisr8yopDJBQJqTGjY2lxluJ9TrXODH0?=
- =?us-ascii?Q?U2xML5QoPhxcQKnz/zhddlwSjKvh2A20GYeW47aJ660uXAcA6D6UiySKK5B2?=
- =?us-ascii?Q?jInY6bLouWn32WMYcKoC4HaqNyNa29Dn6W0SafLk8Ce5fG6tNFdou9+ToLGc?=
- =?us-ascii?Q?fLRKdfKzsJBM5T3BeAgBmtbFLqcWl2PyfrHhXobb56ug6Wcf3TsqRocpq3qc?=
- =?us-ascii?Q?5MHQ7UwPEr9EDptqu72HunnWYabzlh2fqx1Oq47Higs6g0XCc1ciiIAGJQ1Y?=
- =?us-ascii?Q?sh/PxCfhdKD+q/wkBuiL4yE/5+enZk8E8Xqw7EEf0xkXix4MGNIM44mAXVFR?=
- =?us-ascii?Q?+THwEv3mbBmWoWqCJJikwBns1U5LBidB5zuaErSg3JeB5ejEv7CfL1jbsiXj?=
- =?us-ascii?Q?QCgdouW1n11o2J8ixPXEzrOAaeB2hKqSiKfJCYKcLEo13bLuAaDV2qOESW17?=
- =?us-ascii?Q?1ybUt4tTzmE68dUMlnKvMunna9nAmy9KPs8m435n6/GrM2ZrCbx7UCrhJJFE?=
- =?us-ascii?Q?pTNDWzj3TkrP5bB+zFt4431KsERk8C8si7NYz+F/FVuHkNZCYIIqFrJROpnW?=
- =?us-ascii?Q?cSianWAYDjF/DVVwf5rMNP6EFWdhJCF9z6T6EHksG4DNU5AoTdXw+bowoOKk?=
- =?us-ascii?Q?Bk/Yz3XP3S4RvABJZ1CMACUF3HBxm2xPl6HAW3cAM2Jbc3QOBj9WwyDdEwaE?=
- =?us-ascii?Q?qUdakuGeNgln7uhdF6yAjFsBomW2EfCAWJX6EEYfNLd+BGzsUMTCTBjjMwSx?=
- =?us-ascii?Q?v3ieWCHdivunjfU1pTY038WOFngDac2t4vZlM6mWL7gfr1MXNFQYcAeY7A85?=
- =?us-ascii?Q?jz/E3Rkwu/Y5gkradbpmsnSYJ2jvtDUY1swTKFnTPbji9rfZs6HsEvU03ufA?=
- =?us-ascii?Q?0DS6Vn9+kwHZeYvtmv1pdiR+CsUZ1SgQRov/wDN321xKvei8qwr4ZKfaglzP?=
- =?us-ascii?Q?nBh8uuDQbxqsHQXsh2Q4lT2cbWAryx8UZvPZQ3+qFG32zfKzPTFl0EepvZ4p?=
- =?us-ascii?Q?p6ecrxH9F4S3aMPerq79o5cPC7QFcwLpdWPK0cJ+ovai1u4JVZ+PsN3bFHLL?=
- =?us-ascii?Q?QFPXgWnSm5Noqw9ztQAe0gRVfXHlvVBH3ZI2ZX+cEH9sjaguj4Bcy6gdxjLL?=
- =?us-ascii?Q?gMhoOvZMlLd8M+PrgT9FaXi5eMH+zZZDxYYFYaitdt1/ctWAkE3wuu8iwcKo?=
- =?us-ascii?Q?+lEvjisXdjhiOacx74KaUkkUzFqNArfNDp+ygN7K?=
+ =?us-ascii?Q?3R6yBVuL9Pl8pGaJqXzbRc9n2HFVwT0QKztl6+FsdoiO01hrvBrQUf284K4i?=
+ =?us-ascii?Q?1VfH/8nrArax/S+obHKRE9X0GZYRmmaBA1xPQrd41dC99cCuOBOBQwwk2poP?=
+ =?us-ascii?Q?HMtw0Igx3EIMc2CY7QaMADmpj9n6At8negOIhPLfHan61RSvH6opi5kO8iMG?=
+ =?us-ascii?Q?8oKc7kENsyqBOZdEPz7o7RVdjaVZxyVmI1/rFQUBQUXsQ3SA5tmOPeFB3JjM?=
+ =?us-ascii?Q?ajHd9B3MrJWayTNKbOXT/Z4D/Hx3oPMQf6HgkP9hXnNIXM0qMl8e+T8zV/M9?=
+ =?us-ascii?Q?kCWmDJgYQXqgE4nwt0RG61Bp3OGkss8nWYAbaCUP/fGZ6hiI5+8lWLFdRl4m?=
+ =?us-ascii?Q?APacdBMBsKnLJJzHhbgmioi4wypC38Z7Fi7wKT3srsrT4JeZe5KdLMtMlYej?=
+ =?us-ascii?Q?qD04NpOIW7ljD6GPQUUkrQapGtAHkQNldIDzHA9W0N04vtCWndSL1aaKeW2b?=
+ =?us-ascii?Q?Qi7Eo/7F1/vXmUI0d4Ajwj4aZJcsu/7ZFQkfGruRk3zb3F9xYuAuLSfc7VV2?=
+ =?us-ascii?Q?O9JdBJlJqsGvtWPNctxmihn7BjIT9pu/Uu2BSfbSC7WAYmTRPZo1UAk+Xiug?=
+ =?us-ascii?Q?YM7RTRVAZYtZ7JIH7TkC+hujqx7OMeR8r7rHshb0MiUL5UwgQdLSnAKdI0Uh?=
+ =?us-ascii?Q?m44jWjKJLa49ssTXmccFnFrhAAWPu1HOVtyOSDuemxoxQtxe90nfI8QiGxm8?=
+ =?us-ascii?Q?XUfGLIbdCziMmGtsPQxk0f4C71AGmaZibKGyq1iBFesSRIVcF2C6roPZM7rB?=
+ =?us-ascii?Q?i5mE36haJ7S5KnYIpFrtJSFMveUW2OuniygVN/A3ddqKFl1jXV6Vnzc2DQ3n?=
+ =?us-ascii?Q?Amap43sjK+9bklZknkf4hQSfmGeFxApFnLlNKdvemXA8S3Do//xy5tUiq6qe?=
+ =?us-ascii?Q?4EF02/MmRsSysXkdL9zEhwjkQo/+cp5apCNSLE3XAq1VLmzIGVg3R9SCFGAq?=
+ =?us-ascii?Q?2Vl1NigjQIktcs6+gEXERjk2hgX3ngbzMAs7lRfOgO0Klp8gB7UWpaLtlJWa?=
+ =?us-ascii?Q?ubnTu//qDJ53xpkc8hCFKFe1AJu6WaIQEEPtfFntCf1ZQHw0k3rpcEswQ4hU?=
+ =?us-ascii?Q?KwYjkbjRr4Qx8JJ8twsxJPguHFaT7e2xgqltG9csw/QCA+EXcx87e5snBpU6?=
+ =?us-ascii?Q?7LxI73FLz4PjCb1hodWJ4r5lR9MxfK1m0CqlNOl0Fdz7cTM/mTX1Xtb5hfNw?=
+ =?us-ascii?Q?T3foi7fE44Ar6qOmweygBJjzQsAeHrVsEZ7T6rNNATikkt5X/JhWLOcpa1RQ?=
+ =?us-ascii?Q?wZ3rhXiDirQNQbkFDBTCJf1JFMylwPHCG4Lotb1SgDfSdYp1IaASNF2l5MwA?=
+ =?us-ascii?Q?ehntFjxnDWot+rPXjPdGNpMevb7L78Kme2UIEtAFM/Ev7fq2HfFZbgIwulwI?=
+ =?us-ascii?Q?tlEgbomkOt2HHNJdjVvrgMJS+6XQIRYUnoNlVaFtuP+eWDlf4/xzKWfS8ccR?=
+ =?us-ascii?Q?yNUywBlkvQPVyry7B+/8jQH37AM8F91WCIg1GPMlRrsij+O9e4GmQPBvwD+O?=
+ =?us-ascii?Q?m8xomnZwX3HasF2fNZeS4t/hzLzjzvt+3pUVC/uTLoYUBYEMI4yZo13aiTRQ?=
+ =?us-ascii?Q?aSOdgYpz0vHMTl8Ukqehwlyz/bO+I093ejl9P5UA?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 470673d6-267c-41af-f3e0-08dbf67dc82b
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7820a84-31ea-4479-9c59-08dbf697c7e9
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 17:07:16.2747
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 20:13:16.0498
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mdM9Esu3sM9WKT/5C7cQINGq6W6yWR6hHJfmS2wrWA0TXlnp7n1ujW3PvA//TGGy0oYcZqXVFkiw1o1NpUmAaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9253
+X-MS-Exchange-CrossTenant-UserPrincipalName: FaOgRoS6hYEmVuKCCfiXodQqOrgETDwqP28W4ZTB1l7GlfSk8LsXeAffMk7XUITsDkH1xSUVz3s8jHyNlf8XHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8842
 
-On Wed, Dec 06, 2023 at 10:59:53AM -0600, Bjorn Helgaas wrote:
-> On Wed, Dec 06, 2023 at 11:50:16AM -0500, Frank Li wrote:
-> > On Wed, Dec 06, 2023 at 10:36:56AM -0600, Bjorn Helgaas wrote:
-> > > In subject, maybe you mean "Use 'linux,pci-domain' as slot ID"?
-> > > "Using" is the wrong verb form here.
-> > > 
-> > > On Wed, Dec 06, 2023 at 10:58:58AM -0500, Frank Li wrote:
-> > > > Avoid use get slot id by compared with register physical address. If there
-> > > > are more than 2 slots, compared logic will become complex.
-> > > 
-> > > But this doesn't say anything about "linux,pci-domain", and I don't
-> > > see anything about a register physical address in the patch.
-> > > 
-> > > Maybe this commit log was meant for a different patch?  I'm confused.
-> > > 
-> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
-> > > >  drivers/pci/controller/dwc/pci-imx6.c | 6 ++++++
-> > > >  1 file changed, 6 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > index 62d77fabd82a..239ef439ba70 100644
-> > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > @@ -33,6 +33,7 @@
-> > > >  #include <linux/pm_domain.h>
-> > > >  #include <linux/pm_runtime.h>
-> > > >  
-> > > > +#include "../../pci.h"
-> > > >  #include "pcie-designware.h"
-> > > >  
-> > > >  #define IMX8MQ_GPR_PCIE_REF_USE_PAD		BIT(9)
-> > > > @@ -1333,6 +1334,11 @@ static int imx6_pcie_probe(struct platform_device *pdev)
-> > > >  					     "Failed to get PCIEPHY reset control\n");
-> > > >  	}
-> > > >  
-> > > > +	/* Using linux,pci-domain as PCI slot id */
-> > > > +	imx6_pcie->controller_id = of_get_pci_domain_nr(node);
-> > > > +	if (imx6_pcie->controller_id)
-> > > > +		imx6_pcie->controller_id = 0;
-> > > 
-> > > I don't understand what this is doing.  It looks the same as just:
-> > 
-> > Good capture. It should be 
-> > if (imx6_pcie->controller_id < 0)
-> > 	imx6_pcie->controller_id = 0;
-> > 
-> > for only one PCI controller case. I just tested first one slot before send
-> > patch, so not met problem.
-> > 
-> > Previously, we use below logic
-> > 	if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> > 		imx6_pcie->controller_id = 1;
-> > 
-> > It is not good to depend on register's base address. If there are 3
-> > controllers, check logic will becomoe ugly.
-> 
-> Makes sense.  If the previous code depended on the base address, this
-> patch would make more sense if it contained both the addition of the
-> of_get_pci_domain_nr() call and the removal of the base address code.
+Fixed a kernel dump when access edma3 registers.
 
-Remove base address code will block existed functions. My plan is
-1. this patch upstreamed
-2. related dts add linux,pci-domain.
-3. removed base address compare code.
+[    1.517547] SError Interrupt on CPU1, code 0x00000000bf000002 -- SError
+[    1.517556] CPU: 1 PID: 59 Comm: kworker/u8:2 Not tainted 6.7.0-rc3-next-20231129-dirty #3
+[    1.517564] Hardware name: Freescale i.MX8QM MEK (DT)
+[    1.517570] Workqueue: events_unbound deferred_probe_work_func
+[    1.517593] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    1.517601] pc : vsnprintf+0x60/0x770
+[    1.517612] lr : snprintf+0x58/0x80
+[    1.517619] sp : ffff800082f0b9e0
+[    1.517622] x29: ffff800082f0b9e0 x28: ffff8000819a8af8 x27: ffff000801f90080
+[    1.517632] x26: ffff000801f90510 x25: 0000000000000001 x24: 0000000000000020
+[    1.517640] x23: 00000000ffffffd8 x22: ffff000800114800 x21: ffff800082f0baf0
+[    1.517650] x20: ffff000801f90698 x19: ffff000801f906b8 x18: ffffffffffffffff
+[    1.517659] x17: 6e6f632d616d642e x16: 3030303066396135 x15: ffff800102f0b687
+[    1.517668] x14: 0000000000000000 x13: 30206e6168632065 x12: 74697277203a7265
+[    1.517677] x11: 6c6c6f72746e6f63 x10: 2d616d642e303030 x9 : 72656c6c6f72746e
+[    1.517686] x8 : ffff000800396740 x7 : 205d333337383035 x6 : ffff800082f0baf0
+[    1.517694] x5 : 00000000ffffffd8 x4 : ffff000800396740 x3 : ffff800082f0ba70
+[    1.517703] x2 : ffff8000819a8af8 x1 : ffff800082f0baf0 x0 : 0000000000000025
+[    1.517713] Kernel panic - not syncing: Asynchronous SError Interrupt
+[    1.517718] CPU: 1 PID: 59 Comm: kworker/u8:2 Not tainted 6.7.0-rc3-next-20231129-dirty #3
+[    1.517724] Hardware name: Freescale i.MX8QM MEK (DT)
+[    1.517727] Workqueue: events_unbound deferred_probe_work_func
+[    1.517736] Call trace:
+[    1.517739]  dump_backtrace+0x90/0xe8
+[    1.517752]  show_stack+0x18/0x24
+[    1.517761]  dump_stack_lvl+0x48/0x60
+[    1.517771]  dump_stack+0x18/0x24
+[    1.517780]  panic+0x36c/0x3ac
+[    1.517789]  nmi_panic+0x48/0x94
+[    1.517796]  arm64_serror_panic+0x6c/0x78
+[    1.517801]  do_serror+0x3c/0x78
+[    1.517806]  el1h_64_error_handler+0x30/0x48
+[    1.517813]  el1h_64_error+0x64/0x68
+[    1.517819]  vsnprintf+0x60/0x770
+[    1.517827]  snprintf+0x58/0x80
+[    1.517834]  fsl_edma_probe+0x2ac/0x830
 
-Frank
+It is eDMA1 at QM, which have the same register with eDMA3 at qxp.
 
-> 
-> > > Maybe this is a typo?  As written, it doesn't look like there's any
-> > > point in calling of_get_pci_domain_nr().
-> > > 
-> > > >  	switch (imx6_pcie->drvdata->variant) {
-> > > >  	case IMX7D:
-> > > >  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> > > > -- 
-> > > > 2.34.1
-> > > > 
+Fixes: e4d7a330fb7a ("arm64: dts: imx8: add edma[0..3]")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../boot/dts/freescale/imx8qm-ss-dma.dtsi     | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+index 01539df335f8c..5d76b4dee4cef 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+@@ -44,6 +44,33 @@ can2_lpcg: clock-controller@5acf0000 {
+ 	};
+ };
+ 
++/* It is eDMA1 in 8QM RM, but 8QXP it is eDMA3 */
++&edma3 {
++	reg = <0x5a9f0000 0x210000>;
++	dma-channels = <10>;
++	interrupts = <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 426 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 427 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 428 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 429 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 430 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH>,
++		     <GIC_SPI 433 IRQ_TYPE_LEVEL_HIGH>;
++	power-domains = <&pd IMX_SC_R_DMA_1_CH0>,
++			<&pd IMX_SC_R_DMA_1_CH1>,
++			<&pd IMX_SC_R_DMA_1_CH2>,
++			<&pd IMX_SC_R_DMA_1_CH3>,
++			<&pd IMX_SC_R_DMA_1_CH4>,
++			<&pd IMX_SC_R_DMA_1_CH5>,
++			<&pd IMX_SC_R_DMA_1_CH6>,
++			<&pd IMX_SC_R_DMA_1_CH7>,
++			<&pd IMX_SC_R_DMA_1_CH8>,
++			<&pd IMX_SC_R_DMA_1_CH9>;
++};
++
++/* It is edma0 in 8QM RM, but it is eDMA2 at 8QXP */
+ &edma2 {
+ 	reg = <0x5a1f0000 0x170000>;
+ 	#dma-cells = <3>;
+-- 
+2.34.1
+
