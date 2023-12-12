@@ -1,148 +1,295 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2040.outbound.protection.outlook.com [40.107.8.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEAF7765B
-	for <imx@lists.linux.dev>; Tue, 12 Dec 2023 16:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769507A233
+	for <imx@lists.linux.dev>; Tue, 12 Dec 2023 16:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="g/kBGTHy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JldctLwq4NTWudRQq0g9x3kExrb3XW3ulqwk1KJB/X9QcJ02CVB3SHVtEObrOrIOux4FQD8pdq1jF7SZ4tjhlxjp3NSHFjNYjyPYgPoQtFGRdM3carxLenVOylXQaj+o4kgGOqylRBw2n+/NuYDwytvuaLN9tF/nI/4/wwmPqspqq/U5LNn44+WS8OlRQUsEeWINC5u7L8Euxwrnfct57ufg3eVJG1Peez5AyaqeMoTu9lnIsYi9Rcls22hm9GOunJWir7TQjjw6Hl+KQL9/vtNjwqwJRn5NtbPDNh33wxR/CzNGSZmLPvO+JRX9/Mpt+U0dxK8yGppQKGLlZs5pOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5TLQ87kPb4QjTLo3Uzq+zy3Bj5yyPhpZLzrCGIC6r7c=;
- b=FvwwO5B9YddAD28hoN6Tl+d41Z4bFh7WzPZ/oRdq4g34o/7JypP5z9XO81620r7E4IYU0N283aA5wxD/EgxQt1t5QBaVJp/l0wXLQRbmD4TnNcEmK33XNUgTm7FwPQqltoV1cBUA/1XlDkokAm5LGGi0lFL6fgW+wW80n/4LU1CYyIt8KwHzxkMcPuKwZCfqN9NP+QajJqb9VQ/Db7prGij9GeaROST2SdOElud1R+4MYqQ0RfNlujbNg1uiuee/qD4dyrYOXZ65h0HItacbsynaft/zCxs4tJU/iuvG1f/Wf3Y+Sf99hkVZK/E1RGdvk3qVG7CzAKN1k8sFIDax2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5TLQ87kPb4QjTLo3Uzq+zy3Bj5yyPhpZLzrCGIC6r7c=;
- b=g/kBGTHyhUuK67OhR5bZrcoY+K0aHB+660TqEgh7m6v8KNSMhc5YMOBsDntxCGPCihqWUzIixKEKaSyIcGaMfxu5kwUypWkkvCWS6lOKwd5pHjDayDg5A0ycrCA6zViaABYbxi9I/UWzZlPQUsGR2f30UqjI8i9xmI51aJXmnNk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS8PR04MB8978.eurprd04.prod.outlook.com (2603:10a6:20b:42d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Tue, 12 Dec
- 2023 16:19:40 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7068.033; Tue, 12 Dec 2023
- 16:19:40 +0000
-Date: Tue, 12 Dec 2023 11:19:32 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: vkoul@kernel.org
-Cc: devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, joy.zou@nxp.com,
-	krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
-	peng.fan@nxp.com, robh+dt@kernel.org, shenwei.wang@nxp.com
-Subject: Re: [PATCH v3 0/6] dmaengine: fsl-edma: integrate TCD64 support for
- 64bit physical address
-Message-ID: <ZXiIFEhJLh/y8QqL@lizhi-Precision-Tower-5810>
-References: <20231127225542.2744711-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231127225542.2744711-1-Frank.Li@nxp.com>
-X-ClientProxiedBy: BYAPR08CA0012.namprd08.prod.outlook.com
- (2603:10b6:a03:100::25) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ypb+Rmd2"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5c629a9fe79so3179480a12.3
+        for <imx@lists.linux.dev>; Tue, 12 Dec 2023 08:49:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702399764; x=1703004564; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=O3Qb4Pmctf3QLFWZxDCGFwLHLw9E0QvAVnQNcESZf+I=;
+        b=ypb+Rmd2v0PCVp2ryMB/4l0pau4tURHjtpYI68lqEnJFKl9TfxB8cbfbINDf2TrN8D
+         QkCzd/nbcF548utxDOZzVBoeRmJqdmH8KkUfLixuujW+7K8F5yU9JEmQf79a6vzPR0L2
+         GqtoVTcRFkdCCi9o79xZH2gXxsiCbgkN79zNRDyzMtP+2tNBLznKVrEH138zRaLhdAdf
+         366X08EE28l+Y7wh7dvlYCVQsEZ5k9B9uCGx5aUmmPJCBEinlBhMeK+zl027GA4gEUGN
+         +0LBgd/T59oa9A2YxuhDnSUi89ONuCo03KiByg74Jy5f7R/p8JB0XNq5BdIsKZRkdwDm
+         mAVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702399764; x=1703004564;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O3Qb4Pmctf3QLFWZxDCGFwLHLw9E0QvAVnQNcESZf+I=;
+        b=KFYvS3gOaf7RCTi79sapdNdnk9VxxPlXg3z6A1RB483OQvD6+3gDIacy73xmNG+6pe
+         7YEgAglZBjfuZo2CQhx6d/HwZlmBSfg2E5xLRIxWTMGCK7IMqznbPGMoKEmVxnmz6Miu
+         1B5T29g2JLdAoEZg0CpbRURLE6hKXbi7zat1nrn36EwuW6mGqmpfC8r6SWVZvlVm5ekv
+         1auy0jaxxaySd3/y0DulhmuasVhsr9pl/DK2yXgiUsFmwq4JGd45/q5u6n3Vwz9miEpI
+         XDTwga+M/5KNl3mSE0SJqayu5PrT16T3Vkm/nZsWipUFjuSLfmsYbspR/c3J/8qAy+qe
+         TQzQ==
+X-Gm-Message-State: AOJu0YzpyKVGC1eF7PEc/Bwv3pRAyTbyfVj0tBzBnlCy6LTwTX6aKChw
+	SVTQGxw3Q/YuseUW1/fKp0x7
+X-Google-Smtp-Source: AGHT+IEdRCICFtznyHHkBUNYDtZL2BWvbWNge5n8xa4XWLlDEc4bBXuXkjMOrYe3szp98CDGiy/H6w==
+X-Received: by 2002:a05:6a21:3281:b0:18b:985e:8035 with SMTP id yt1-20020a056a21328100b0018b985e8035mr3756929pzb.12.1702399763615;
+        Tue, 12 Dec 2023 08:49:23 -0800 (PST)
+Received: from thinkpad ([117.202.189.222])
+        by smtp.gmail.com with ESMTPSA id v29-20020a63481d000000b005c19c586cb7sm8368570pga.33.2023.12.12.08.49.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 08:49:22 -0800 (PST)
+Date: Tue, 12 Dec 2023 22:19:13 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+	festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
+	l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lpieralisi@kernel.org, robh@kernel.org,
+	s.hauer@pengutronix.de, shawnguo@kernel.org
+Subject: Re: [PATCH v3 01/13] PCI: imx6: Simplify clock handling by using
+ HAS_CLK_* bitmask
+Message-ID: <20231212164913.GA21240@thinkpad>
+References: <20231211215842.134823-1-Frank.Li@nxp.com>
+ <20231211215842.134823-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB8978:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69ed4690-f2c6-40a8-9f8a-08dbfb2e242d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	PvqD9F7m2Yu5uAfgkYGgfFmHuLzld8YdFm0mOLs+sJe4rsUMmtZobWCE3IsZ+4qKeSw2PINrr/13vBrmZMCXnunER+krxsqpbmuTDUvUCk6gWq0hoRxuUyj1xt7OeBaOOn1c0x6SHii7Scn9aQVjhjVZBRSvGZcaVjhRxOENZXbF1aFXmYbmY1otwOGxCTjo1rrYFig9sobcJMyXFa2AM1Y+iaF8fkUhj0UJNwjtYQHPnxE4mrZUMf4eSRzcpjZLCTtqf15fLJeMq1IDY2xrm8XaoNT/NfN7CtGgcSV35DytTKLaoepGuS3+O7VWKVPo+TM+keHrCTKXewtVOlMNdyHrY2EqXHZVV1FRJoI7e0iOhaiWz21tVyr2SHVXXoS2Kl3gVYgSb8Q99m9FQ1si7W/N+djhJYpRA3kNh0fuh4oGHYpCk1DmcOFfzcd73RTvu5L5nhsIcp+RQypYsYN+5NG4ZQttxdacbtNAHKYrD+R/nSk7RGUF8XKuof8gKU7SgzRYjbfSwGcT42ijqmeaUd2A8aSRsPj1FzHrQYEhi/eucFwAXiXi0PYS1isR5fckyDITlr54uVcAwYAApnMDIStVq3pM71Fdepq3bTpEKijqzJ63sri9or6nwXzkatgawxzWeLvtzXnI70SP5bKwDCB6IkJmbJg2gR9SMhgnWxM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(366004)(136003)(396003)(346002)(376002)(230273577357003)(230922051799003)(230173577357003)(186009)(1800799012)(64100799003)(451199024)(478600001)(6512007)(6666004)(52116002)(26005)(6506007)(9686003)(6486002)(38350700005)(38100700002)(86362001)(33716001)(2906002)(66946007)(6916009)(66476007)(66556008)(41300700001)(5660300002)(83380400001)(316002)(4326008)(8936002)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LOgSzdKzNfqW6QuFM//ohWCELdLb+XvTcu3yHAMYL4my3CJopEmmhoJhajwF?=
- =?us-ascii?Q?M1hclbALlwclCWqZAM5Qle89jCCuvDEjw+/qzisyKXzjXfpekRk1KkOzAXyq?=
- =?us-ascii?Q?e6i9PwXR058B4cLY86oGguM4Z20NhR64qSW8E8NeWaolvnHHD8CyzA78Yfkh?=
- =?us-ascii?Q?EfbdyH534L60gcCp9jZy2vhfh4f+olxmJSgBPhGGm5435tQkXN9Pt32yVThg?=
- =?us-ascii?Q?PC2L+T5wlRrziqxv7V81/U7eNBJBmFvo60HSUaXSSj3y87yle8BHCsbNq0NM?=
- =?us-ascii?Q?ewIzwjHi7SkOV5z05OigDK1BNBxoMRGpRSXaOYGxr5rlLjNQqPDhDtB6P2cm?=
- =?us-ascii?Q?uEUfGPTEudrHYoi2n9IbI5atQkLyZGN9Qhn7f8H0ol8mb2lSB9aaEltRLwYg?=
- =?us-ascii?Q?Cw9EwwPVMYgcHF3Wbvvm+nJ1o41OunLQhexPabiPQ1eI59TfOjzehGJpjqFb?=
- =?us-ascii?Q?9Xs5Sbrxr7QoGiDgQwk6CB3LAGzQezH3YBBJad2c0vMBuZfQKxpGv9M0SOU3?=
- =?us-ascii?Q?oaqeoFditMyGXWSQ5bJVlDgUSCFpt20K2YDlWsZ04/uQIrOB7xK5oz7+jxKS?=
- =?us-ascii?Q?UUdcWiV03X26CInxUQ7ghbYC0nN7iecATmrQ0RPfa2QQwEd2caLXog6HEkJj?=
- =?us-ascii?Q?YgjfXcy2uaZAVAucqXl0JMp3Ovh9M3DNrIfkfhF86AuOUnFOa28S9AcaWWk6?=
- =?us-ascii?Q?JPUbn/TVE7YfbaBfkbPp+o3cwAp3cp2GDaWpFnIVpqgueR1rS3A3ooN9FJak?=
- =?us-ascii?Q?q5PzEM2PiTktInOMZ1Z2lYLcSBbbT3LDYOegt7+VaQXSQvq//5r0sUmikVT6?=
- =?us-ascii?Q?MCqOEPRg461F95+3Q7yZns5oKsrEN44lJnN47FSgi3CI0gkA5zWhjsDU3yVp?=
- =?us-ascii?Q?1rF4Zekac8wFah1iixNl0p1SgWkHXswHOfbkTmgcBqiZj8NZJJ73Dc/KlykF?=
- =?us-ascii?Q?W/IEa9FbM/8oQzt/WSD9BHOqPTKHPObyMM+WsgYy6t8p9Tx3uLHFvs9jLnxI?=
- =?us-ascii?Q?rcKNQDiijMtvBlL2LMYksHtcvoRzbbs6PKKanD3+Ue8niZb+OIDK+6cl/ds5?=
- =?us-ascii?Q?uubB5FaRYXSB3hVSR0EmdeLp81ShXV2UHSWhh7SzWrpZwGQdgg/l3SzTxuPJ?=
- =?us-ascii?Q?QjeH8DWLpJNlgb20ndWlwm/rWrEQCeeVTx9zkTsd8lIIPQKxermcMHYaBXIz?=
- =?us-ascii?Q?3aLN20aerelMuKVpaVBLVv4Xu+cvH9pXyRnKMVAOhKlglleqe96NXUP2o2La?=
- =?us-ascii?Q?fF6MV7zQxwaogjar+BS80662zppcDiFdLK52PHTzuhtjzKOcG+i8rk96evls?=
- =?us-ascii?Q?2UbKHovmc6e8UUKTsAIX0dwbU988UHPOPzBR02qqIwkz7TGu5BQdakNanJOb?=
- =?us-ascii?Q?oCAvfHBJFjKbao8IyohUziVomCAJz+hsMn1i4X/G52H1MN0fWrP+5VAbvMAV?=
- =?us-ascii?Q?M3ikcc917X8l+dff+pLh0texU0vJFJCbjT5Ejr2sgYLhqHlG36Gwrw7wwzeE?=
- =?us-ascii?Q?vlIRgAEhuuACgT9NL6+VZiLb4QF89bQD/KHxIKyzKAY/Qd5GjcvaPW3swLO1?=
- =?us-ascii?Q?qxXzpWh5T0UiFAAYjxajMENBNNomtgK9JzvTr1AA?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69ed4690-f2c6-40a8-9f8a-08dbfb2e242d
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2023 16:19:40.0272
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BiWL3tyXtNE7WJtMbHK/oS4YLv36gt45/uZHtIJtFPsdmWlBuroanc1oACBbnXhERloWTI1lZTzzeZhCixJ+dg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8978
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231211215842.134823-2-Frank.Li@nxp.com>
 
-On Mon, Nov 27, 2023 at 05:55:36PM -0500, Frank Li wrote:
-> Change from v2 to v3:
->  - fix sparse build warning
+On Mon, Dec 11, 2023 at 04:58:30PM -0500, Frank Li wrote:
+> Refactors the clock handling logic in the imx6 PCI driver by adding
+> HAS_CLK_* bitmask define for drvdata::flags . Simplifies the code and makes
+> it more maintainable, as future additions of SOC support will only require
+> straightforward changes. The drvdata::flags and a bitmask ensures a cleaner
+> and more scalable switch-case structure for handling clocks.
 > 
-> Change from v1 to v2:
-> - fixed mcf-edma-main.c build error.
-> - fixed readq build error. readq actually is not atomic read in imx95.
-> So split to two ioread32\iowrite32.
->   It needs read at least twice to avoid lower 32 bit part wrap during read
-> up 32bit part.
-> 
-> first 2 patch is prepare, No function change.
-> 3rd patch is dt-bind doc
-> 4rd patch is actuall support TCD64
 
-@vnod:
-	Do you have chance to look at these patches?
+Is there any necessity to validate each clock in the driver? I mean, can't you
+just rely on devicetree to provide enough clocks for the functioning of the PCIe
+controller?
 
-Frank
+If you can rely on devicetree (everyone should in an ideal world), then you can
+just use devm_clk_bulk_get_all() to get all available clocks for the SoC and
+just enable/disable whatever is available.
 
+This will greatly simplify the code.
+
+Only downside of this approach is, if the devicetree is not supplying enough
+clocks, then it will be difficult to find why PCIe is not working. But this also
+means that the devicetree is screwed.
+
+- Mani
+
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 > 
-> Frank Li (6):
->   dmaengine: fsl-edma: involve help macro fsl_edma_set(get)_tcd()
->   dmaengine: fsl-edma: fix spare build warning
->   dmaengine: fsl-edma: add address for channel mux register in
->     fsl_edma_chan
->   dmaengine: mcf-edma: utilize edma_write_tcdreg() macro for TCD Access
->   dt-bindings: fsl-dma: fsl-edma: add fsl,imx95-edma5 compatible string
->   dmaengine: fsl-edma: integrate TCD64 support for i.MX95
+> Notes:
+>     Change from v1 to v3
+>     - none
 > 
->  .../devicetree/bindings/dma/fsl,edma.yaml     |   2 +
->  drivers/dma/fsl-edma-common.c                 | 101 ++++++-----
->  drivers/dma/fsl-edma-common.h                 | 161 ++++++++++++++++--
->  drivers/dma/fsl-edma-main.c                   |  19 ++-
->  drivers/dma/mcf-edma-main.c                   |   2 +-
->  5 files changed, 223 insertions(+), 62 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 84 +++++++++++++--------------
+>  1 file changed, 42 insertions(+), 42 deletions(-)
 > 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 74703362aeec7..8a9b527934f80 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -60,6 +60,10 @@ enum imx6_pcie_variants {
+>  #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
+>  #define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
+>  #define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
+> +#define IMX6_PCIE_FLAG_HAS_CLK_INBOUND_AXI	BIT(3)
+> +#define IMX6_PCIE_FLAG_HAS_CLK_AUX		BIT(4)
+> +
+> +#define imx6_check_flag(pci, val)	(pci->drvdata->flags & val)
+>  
+>  struct imx6_pcie_drvdata {
+>  	enum imx6_pcie_variants variant;
+> @@ -550,19 +554,23 @@ static int imx6_pcie_attach_pd(struct device *dev)
+>  
+>  static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  {
+> -	struct dw_pcie *pci = imx6_pcie->pci;
+> -	struct device *dev = pci->dev;
+>  	unsigned int offset;
+>  	int ret = 0;
+>  
+> -	switch (imx6_pcie->drvdata->variant) {
+> -	case IMX6SX:
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_CLK_INBOUND_AXI)) {
+>  		ret = clk_prepare_enable(imx6_pcie->pcie_inbound_axi);
+> -		if (ret) {
+> -			dev_err(dev, "unable to enable pcie_axi clock\n");
+> -			break;
+> -		}
+> +		if (ret)
+> +			return ret;
+> +	}
+>  
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_CLK_AUX)) {
+> +		ret = clk_prepare_enable(imx6_pcie->pcie_aux);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	switch (imx6_pcie->drvdata->variant) {
+> +	case IMX6SX:
+>  		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
+>  				   IMX6SX_GPR12_PCIE_TEST_POWERDOWN, 0);
+>  		break;
+> @@ -589,12 +597,6 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  	case IMX8MQ_EP:
+>  	case IMX8MP:
+>  	case IMX8MP_EP:
+> -		ret = clk_prepare_enable(imx6_pcie->pcie_aux);
+> -		if (ret) {
+> -			dev_err(dev, "unable to enable pcie_aux clock\n");
+> -			break;
+> -		}
+> -
+>  		offset = imx6_pcie_grp_offset(imx6_pcie);
+>  		/*
+>  		 * Set the over ride low and enabled
+> @@ -614,10 +616,13 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  
+>  static void imx6_pcie_disable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  {
+> -	switch (imx6_pcie->drvdata->variant) {
+> -	case IMX6SX:
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_CLK_INBOUND_AXI))
+>  		clk_disable_unprepare(imx6_pcie->pcie_inbound_axi);
+> -		break;
+> +
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_CLK_AUX))
+> +		clk_disable_unprepare(imx6_pcie->pcie_aux);
+> +
+> +	switch (imx6_pcie->drvdata->variant) {
+>  	case IMX6QP:
+>  	case IMX6Q:
+>  		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> @@ -631,14 +636,6 @@ static void imx6_pcie_disable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
+>  				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+>  		break;
+> -	case IMX8MM:
+> -	case IMX8MM_EP:
+> -	case IMX8MQ:
+> -	case IMX8MQ_EP:
+> -	case IMX8MP:
+> -	case IMX8MP_EP:
+> -		clk_disable_unprepare(imx6_pcie->pcie_aux);
+> -		break;
+>  	default:
+>  		break;
+>  	}
+> @@ -1316,21 +1313,21 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie),
+>  				     "pcie clock source missing or invalid\n");
+>  
+> -	switch (imx6_pcie->drvdata->variant) {
+> -	case IMX6SX:
+> -		imx6_pcie->pcie_inbound_axi = devm_clk_get(dev,
+> -							   "pcie_inbound_axi");
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_CLK_INBOUND_AXI)) {
+> +		imx6_pcie->pcie_inbound_axi = devm_clk_get(dev, "pcie_inbound_axi");
+>  		if (IS_ERR(imx6_pcie->pcie_inbound_axi))
+> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_inbound_axi),
+> -					     "pcie_inbound_axi clock missing or invalid\n");
+> -		break;
+> -	case IMX8MQ:
+> -	case IMX8MQ_EP:
+> +			dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_inbound_axi),
+> +				      "pcie_inbound_axi clock missing or invalid\n");
+> +	}
+> +
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_CLK_AUX)) {
+>  		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
+>  		if (IS_ERR(imx6_pcie->pcie_aux))
+>  			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
+>  					     "pcie_aux clock source missing or invalid\n");
+> -		fallthrough;
+> +	}
+> +
+> +	switch (imx6_pcie->drvdata->variant) {
+>  	case IMX7D:
+>  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+>  			imx6_pcie->controller_id = 1;
+> @@ -1353,10 +1350,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  	case IMX8MM_EP:
+>  	case IMX8MP:
+>  	case IMX8MP_EP:
+> -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
+> -		if (IS_ERR(imx6_pcie->pcie_aux))
+> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
+> -					     "pcie_aux clock source missing or invalid\n");
+>  		imx6_pcie->apps_reset = devm_reset_control_get_exclusive(dev,
+>  									 "apps");
+>  		if (IS_ERR(imx6_pcie->apps_reset))
+> @@ -1482,7 +1475,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.variant = IMX6SX,
+>  		.flags = IMX6_PCIE_FLAG_IMX6_PHY |
+>  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE |
+> -			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX6_PCIE_FLAG_HAS_CLK_INBOUND_AXI,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+>  	},
+>  	[IMX6QP] = {
+> @@ -1500,30 +1494,36 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  	},
+>  	[IMX8MQ] = {
+>  		.variant = IMX8MQ,
+> +		.flags = IMX6_PCIE_FLAG_HAS_CLK_AUX,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+>  	},
+>  	[IMX8MM] = {
+>  		.variant = IMX8MM,
+> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX6_PCIE_FLAG_HAS_CLK_AUX,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  	},
+>  	[IMX8MP] = {
+>  		.variant = IMX8MP,
+> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX6_PCIE_FLAG_HAS_CLK_AUX,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  	},
+>  	[IMX8MQ_EP] = {
+>  		.variant = IMX8MQ_EP,
+> +		.flags = IMX6_PCIE_FLAG_HAS_CLK_AUX,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+>  	},
+>  	[IMX8MM_EP] = {
+>  		.variant = IMX8MM_EP,
+> +		.flags = IMX6_PCIE_FLAG_HAS_CLK_AUX,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  	},
+>  	[IMX8MP_EP] = {
+>  		.variant = IMX8MP_EP,
+> +		.flags = IMX6_PCIE_FLAG_HAS_CLK_AUX,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  	},
 > -- 
 > 2.34.1
 > 
+
+-- 
+மணிவண்ணன் சதாசிவம்
