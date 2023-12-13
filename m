@@ -1,242 +1,91 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2075.outbound.protection.outlook.com [40.107.7.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018B51D684
-	for <imx@lists.linux.dev>; Wed, 13 Dec 2023 16:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FA5FF00
+	for <imx@lists.linux.dev>; Wed, 13 Dec 2023 18:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="snloEPjB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mowc99NtHz47QLKdjiBzEvOMcXsXa4/Vr0X/2GBvL2uOxnTF2DPv35C5i8RbcD/OJydKWziLyk8EekvoAKD3f6J0Lh5kgwu+pLssJptM2CStDvZw5whsebSnn/wDolcNurlrx7mNbh3UtR6F606GVEiyICZnZO6ZyRpbw4HzJ4drBPnKO7Z2FOEOuwicdD1vbE0FKkS78lLBvffUpSKWjDiCqQeR9ctFWyySFObDFf3/8mhb97kfBRhO7b00y+//6Q9q4bIZVL6+LjQuM9FURNl9JhFkLE/1voNgehlKsADfquEsA6sHVPLls+ddkSDl/iM3Iar35q+nXoHWiItWJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MNB7bRzLd5iMaSu8kBuGdZDtr1yGJg+cwbxar1W8oDA=;
- b=RHHDIH4IjtkmcG2RhisMaZJLT6vAPLf5Ea2k1kGnY9Boa5e3NMK75BD1wAefswucM8DFeeCXlXpXtOpkztJ1Gg7RUxJb76SkXXQ5eJMvYAh1xrvxYdUGpBcU44qRIdCia37aWibQvSbTDvOG2xDOAoQuvdN924ARM7NXG6hSCmwyNQmNGKE8HnqCYM2GYyoX31niw1qcsa5A96kYCvwAnTj+Dwzxa8xl8qUhuVujs7Wq8ERUjhdf+2J89Ub9kvbfmRUVhTeGO/KmCvZgN7fHzL4YNxoY4VLF77Q6zp1BzTbqURS7cnZXSSVkFunAQ1O3ZiP3UfrdBJPyvbYap4UCUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MNB7bRzLd5iMaSu8kBuGdZDtr1yGJg+cwbxar1W8oDA=;
- b=snloEPjB4Wo4TCcGOCfHF5YG8T/3N8eBEtDpoPiRK3KX6Pz/eGYqxukiuyUsjcPqRqMJuQFkTpfFDA7d5stEzWeYnC/qEaK95CYKa1StUSqBD3a5sllabO+de4tAVFIr5jaP494NphV2AQzPH30aq7hah3wqd8igqldWZngy3eE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB4845.eurprd04.prod.outlook.com (2603:10a6:803:51::30)
- by PA4PR04MB8061.eurprd04.prod.outlook.com (2603:10a6:102:bb::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Wed, 13 Dec
- 2023 16:46:35 +0000
-Received: from VI1PR04MB4845.eurprd04.prod.outlook.com
- ([fe80::dfaa:e869:45eb:76e5]) by VI1PR04MB4845.eurprd04.prod.outlook.com
- ([fe80::dfaa:e869:45eb:76e5%7]) with mapi id 15.20.7091.022; Wed, 13 Dec 2023
- 16:46:35 +0000
-Date: Wed, 13 Dec 2023 11:46:17 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
-	l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org, s.hauer@pengutronix.de,
-	shawnguo@kernel.org
-Subject: Re: [PATCH v3 08/13] dt-bindings: imx6q-pcie: Add imx95 pcie
- compatible string
-Message-ID: <ZXnf2f8C2i2TFVBh@lizhi-Precision-Tower-5810>
-References: <20231211215842.134823-1-Frank.Li@nxp.com>
- <20231211215842.134823-9-Frank.Li@nxp.com>
- <20231212224426.GA2948988-robh@kernel.org>
- <ZXjsq2QtFa2V0BAl@lizhi-Precision-Tower-5810>
- <20231213143615.GA1093782-robh@kernel.org>
- <ZXnQKBnweCT+si6/@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXnQKBnweCT+si6/@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SJ0PR05CA0001.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::6) To AM0PR04MB4834.eurprd04.prod.outlook.com
- (2603:10a6:208:c8::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GF3HlV9X"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-551ee7d5214so2522290a12.0
+        for <imx@lists.linux.dev>; Wed, 13 Dec 2023 10:47:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702493232; x=1703098032; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=62yBjsgi+zv0UBH+9qC3ziccvi8e4k04RuA6gZp2ubI=;
+        b=GF3HlV9X+ZZEAsiIlZ1KjRIhPCbPlqk/Hocny7czI5IQK7ksml1esjJSIM6Nsmsyzm
+         k7W+LQEkU/4j4it9oWcoMHUn/6KgbkdrFpkPxiCqpagf5c1uFeJ7yJYqC2aBOnu1n/0X
+         PFVC7fAPyOghSc9dXH587hF90olarca82rXjLkdAtwTyOJryEcBXB0zhjM38Gff/hOJJ
+         s3F/EFMZcBDn1XnTsrH8QymZhHTSUisrfzIIHda/r872T6xOmE82gFXxM+4R/L0XSFnQ
+         IOj+UM5436TMoJWWhDaQA6heCSa9BjDCnVVF65q+CPfQNwVn0EQoBPD1S68gQNPq0pAM
+         LsRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702493232; x=1703098032;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=62yBjsgi+zv0UBH+9qC3ziccvi8e4k04RuA6gZp2ubI=;
+        b=rqONgUdjueZPNmVYJKbAfWnt5ysjiRV6W5RWTlj2hinF3f6JSnmmTEGJsD1ZcgT0yi
+         uScO4VxDesTHBJ2/6Vp+SNPF+FfWCN5G2R6Ps2si5i6FpHSdrv/DXGtTk8hU8wp0cIrn
+         Lz/HkINuaWJCYW3LeUld/AyRGqn3Mqrui9lhjIz58DsU/XX1Kr4yZAcovuBxd9Vl0MUj
+         yQL7ge2TfQsieaQQdSvcpZ8MhG7+vibpzs0Xo+N/B6E9I+uL+gMK5LWCxztylFVf8JWn
+         Iel4wXI9DAB1E5KAYYbFxY1Tbj7OQFO4/JdEVCAtDVv1L7fQsAAHUOG3LxipXVZh+fFb
+         +9Pg==
+X-Gm-Message-State: AOJu0YxUQSzAG778FRr4aJwD+k8S8L6fJaPfHYOtt4eR78mesKT+C1PT
+	wVX4Druvm50VBhKCm7Iawc7qM0stmFWJzo5pZenCaF3BrAZZGA==
+X-Google-Smtp-Source: AGHT+IFjOGnlWpP9AbytLlyVQgYHx8PcwK62uIs/SkzboftaiLcNrod+YPbcKMB0vOeOluRnqCMSnwlaEuVY+E3b3O8=
+X-Received: by 2002:a17:906:1c9:b0:a1d:1fb9:da08 with SMTP id
+ 9-20020a17090601c900b00a1d1fb9da08mr7037785ejj.8.1702493231744; Wed, 13 Dec
+ 2023 10:47:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB4845:EE_|PA4PR04MB8061:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c02e721-99f8-44f3-7c9c-08dbfbfb10ba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	rT1wxvPi/D7Z6LCMgPXyJEq/MZgabvNN/82c7GLC4FF5vXOfOGJL2Jst5t2SL/7SY5ipPe9Dngf7VL4zzwq3SpFtffZF/WmTvXFB9wgXGwp2UItGdu8j6Cj+t7sTwBZ752PTeUBrhwXUL7wQTHrgBw7MKBeqW+PBPI1dt7vG4qeMz0QeaKYBIBY602Fv2oUnLbTi+fA6r/N+NGOBHjW+Ex5+z98HQfDK10KS1DV3Lm/1SPOys8IxlOiGC6aT9Vt8uW+rlr31WWte/owY3OuNGk/axvwcRzB3HoVMygo7U1mTRM/yPTor6soNoycOVVRXUYfTpqEjwH6/PfMtF+Q7AyppZJVD707tqYda9mgIZPGGbXn845VAigyHigagPS88+ANNFswJpmHk/kkXVyE5g2Z+N63+LoDtV1jyLGPAyt3sbT7/2pjdTDTYOTthLFInhQgnWisZLhu18c/VmkJrWVHTtVhFCSWGJdk80lRV4Cks8Ea01CcTV21QE6ap+2c7EatT/0CBMwQiK5KkDTbwYENIDd7MOyrO4gPS6cutV8H3+lKJOJQx0dqUZXKu3v6qXIMfBQFvybhj/VHWZtRF+IMtMyfW6PEpRzVvmp+YhpRRJPJ+zI5KZQNtI6mxv6wtiLZ9jkmKm/Ik5Qj7zcbk+ZDCenQ2qHThu4M3PGQp90E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4845.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(136003)(376002)(39860400002)(346002)(396003)(230173577357003)(230273577357003)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(478600001)(6506007)(9686003)(6486002)(6666004)(26005)(52116002)(966005)(6512007)(33716001)(7416002)(66556008)(5660300002)(6916009)(41300700001)(2906002)(83380400001)(66476007)(8676002)(4326008)(66946007)(8936002)(316002)(38100700002)(38350700005)(86362001)(32563001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rOmK5wroOmcrdhzrVKOoEXXq5FEA3urPIudniVA50c8E3i9FGBbjJi7R9XZF?=
- =?us-ascii?Q?ZjkD1919G1oPmy6ax2xjHZeSkIHyb8VzAHAfZ2nxiyt4gpQk44tCPvWSOxJ1?=
- =?us-ascii?Q?rKU31h0DtLzr/ZtjRBXTNKwC2wM+nywIWi9vFO5SHaJMWt057GVQf2oRlLft?=
- =?us-ascii?Q?FiOGxVR6jXD9ol/C2f4cgijfJKV2rckI7N41H8AxtXdVdn4rpvT9HuN6uRhT?=
- =?us-ascii?Q?WGhZ1f1ZCgmZv7L+ishn6arNCgTlf04F/HPmKCoJoPNprOP4aehEZrUnIEDq?=
- =?us-ascii?Q?wnR9dXCYJ9KPktkkV6RWukF4ejQkFQGdV2BbIxbaewUTHRd81+xxqiThf+mM?=
- =?us-ascii?Q?ntqG7HGBDCRx8CC6Eh9OPROuZICodJVSLYSi+7vtEpyV1q3BiGuveXDFawIv?=
- =?us-ascii?Q?nl9X1s+MpmyzZs5viuuU2ZXv5JAnzKcs9RACAZv3mDrWb4TKOF6d8y5sbdBj?=
- =?us-ascii?Q?vLYaKfjnDQCFklDVktgIllQ4MKYZYcjIQPHYU15Hk2z4y2mqBvhWfXPQ1uhs?=
- =?us-ascii?Q?nFDMgMugabxEtPSDbz1USn3hJV3Qgn827gebWMiDZGh7Fjd+pqciSR28CRY2?=
- =?us-ascii?Q?kRgamIKOYH7KVGAbEg9aggS9TKVDtYBYYQ9GX1AUjVGkGJMW+jugaa9M5pYD?=
- =?us-ascii?Q?ce6fskgxEQU1nc0sRL4lDwiDlWF3iEiItcxaTQYEnp3c0KGWR2YqelohufgR?=
- =?us-ascii?Q?d3ZBXF0w0C1G276jVpY/n2tkZmnPqMd+6qFOBoJHNNQdhFnBOsJ35rxzkqHH?=
- =?us-ascii?Q?Jg0Lm7mSwA6Qka8y8cEZUcogLQCCbrQjJCSSZFVV21mT+UcvaOfy6M6PxLVW?=
- =?us-ascii?Q?d3AFKqAai+egy9UYbYErwLq+dgwO35SX2w3m9JFswLnUoOWednS0cMRxg+us?=
- =?us-ascii?Q?6CEXPXdFnKp79uvSh/PS4wkBwB9J1D31kTnJRuuUWjrVt8ql41OpsNxNdpRw?=
- =?us-ascii?Q?4nuuEvieUKd+oTFPHXqJg7bBKQrFCl+0Y/4AJ400aRwAMRNFSLf3V4KdeRf4?=
- =?us-ascii?Q?l2YH6UzWSgJNkYpQGnvrzR/ykJZkakPJjza8u5SrA9RIraArq+OjXh6eApyX?=
- =?us-ascii?Q?7iyWe2aFWSUf1jryotjTy2A5munnEBHWYF7Anuek6DO7bwyUO16fPovYlvs4?=
- =?us-ascii?Q?yrwJj1pfq94ifJHUF7KZJyhBGQ/QnJI1plKdy13swaWPuAL5srClwatmqYzI?=
- =?us-ascii?Q?JgSB+DmPGYQxnoFgtS6ZT3DI4xhdrk6+qCiQ4vUEzraT2FoGQ+jPd4J2Eo43?=
- =?us-ascii?Q?SmQ2ZM+1Y14IHx4TeW93gz42KLKhiIIVFd5asRIg5VF8YDCcibTqGSrHL4t3?=
- =?us-ascii?Q?Q01ogWmtCqPbM13/wGUKrDo9llN/I3kgBA3svyqcRkzMTb1TGRdWQMMQDrhv?=
- =?us-ascii?Q?BysnPV0MNnEMihuCyAebCybyYcrAxe8ew1UxJsOY7pgdo997LvDT4nGmWLSu?=
- =?us-ascii?Q?76sJ2m4BALFCgVD+2wyq1ms6/KYjZLC2PrRFm1FkrTkOv5v2bsvQjaqx35DM?=
- =?us-ascii?Q?drQn2NEEqGKNJ8B9ufK/ga7qgvkumPYlhj+tdw9Wl3+m2zah3mB9sVjYs9ng?=
- =?us-ascii?Q?SLqnyA4liYaZqZ8i54y+o10RGsBm5yoMD+EPXW6D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c02e721-99f8-44f3-7c9c-08dbfbfb10ba
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB4834.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 16:46:34.6079
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z5k9hAZ2lEt+0AtyEWqpd0JILNaAxCg5snLVNKn8oNj3IVofHgREvlrRdH3XJombdXMzQKW2nw9IsMq009wc4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8061
+From: Patryk <pbiel7@gmail.com>
+Date: Wed, 13 Dec 2023 19:47:00 +0100
+Message-ID: <CA+DkFDZeAV-XtdWe690RJ2Y=BCvur-LX6_Qqyntx0nJUKo2k2g@mail.gmail.com>
+Subject: Question regarding FlexSPI controller
+To: imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Dec 13, 2023 at 10:39:20AM -0500, Frank Li wrote:
-> On Wed, Dec 13, 2023 at 08:36:15AM -0600, Rob Herring wrote:
-> > On Tue, Dec 12, 2023 at 06:28:43PM -0500, Frank Li wrote:
-> > > On Tue, Dec 12, 2023 at 04:44:26PM -0600, Rob Herring wrote:
-> > > > On Mon, Dec 11, 2023 at 04:58:37PM -0500, Frank Li wrote:
-> > > > > From: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > > 
-> > > > > Add i.MX95 PCIe "fsl,imx95-pcie" compatible string.
-> > > > > Add "atu" and "serdes" to reg-names.
-> > > > > 
-> > > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > > ---
-> > > > > 
-> > > > > Notes:
-> > > > >     Change from v2 to v3
-> > > > >     - Remove krzy's ACK tag
-> > > > >     - Add condition check for imx95, which required more reg-names then old
-> > > > >     platform, so need Krzy review again,
-> > > > >     
-> > > > >     Change from v1 to v2
-> > > > >     - add Krzy's ACK tag
-> > > > > 
-> > > > >  .../bindings/pci/fsl,imx6q-pcie.yaml           | 18 ++++++++++++++++++
-> > > > >  1 file changed, 18 insertions(+)
-> > > > > 
-> > > > > diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > > > > index 81bbb8728f0f9..b8fcf8258f031 100644
-> > > > > --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > > > > @@ -29,6 +29,7 @@ properties:
-> > > > >        - fsl,imx8mq-pcie
-> > > > >        - fsl,imx8mm-pcie
-> > > > >        - fsl,imx8mp-pcie
-> > > > > +      - fsl,imx95-pcie
-> > > > >  
-> > > > >    reg:
-> > > > >      items:
-> > > > > @@ -90,6 +91,22 @@ required:
-> > > > >  allOf:
-> > > > >    - $ref: /schemas/pci/snps,dw-pcie.yaml#
-> > > > >    - $ref: /schemas/pci/fsl,imx6q-pcie-common.yaml#
-> > > > > +  - if:
-> > > > > +      properties:
-> > > > > +        compatible:
-> > > > > +          enum:
-> > > > > +            - fsl,imx95-pcie
-> > > > > +    then:
-> > > > > +      properties:
-> > > > > +        reg:
-> > > > > +          minItems: 4
-> > > > > +        reg-names:
-> > > > > +          items:
-> > > > > +            - const: dbi
-> > > > > +            - const: serdes
-> > > > 
-> > > > Did you test this? It should fail because 'serdes' would need to be 
-> > > > added to snps,dw-pcie.yaml.
-> > > 
-> > > I run "make dt_binding_check DT_SCHEMA_FILES=/pci/", no error report.
-> > 
-> > Only because you have no example. What about your actual .dts?
-> 
-> I see. 95 is quite new. Still have not good base yet.
-> I may just take take care this session.
-> 
-> > 
-> > > And PCIe function can work.
-> > > 
-> > > > 
-> > > > Is this really not a separate phy block?
-> > > 
-> > > This is misc block, which included phy and also include some registers
-> > > about SID for each PCI devices. I plan do it later.
-> > 
-> > Sounds like it should be a separate node and use the phy binding. Do it 
-> > correctly from the start, not later. Later is an ABI break.
-> 
-> Actually, I considerred phy binding. The major problem is LUT (look up
-> table) for MSI and SMMU. LUT need be config according to some PCI device
-> information. I have not find good hook for that at PHY driver.
-> 
-> > 
-> > What is SID?
-> 
-> Stream ID, each device master have SID, which pass to IOMMU and GIC ITS.
-> 
-> Frank
+Hi,
+I've got a question regarding FlexSPI controller available on e.g
+imx8mm or ls1028/2160 boards.
+To not waste your time here is tldr;
+Does spi-nxp-fspi controller (and Linux driver) support simultaneous
+read/write transactions?
 
-Similar case at
+More details here:
+I have two boards, the first one is LS1028a, and the second one is
+Hilsher netX90 and I need to connect these two over SPI. The only
+available SPI controller I have on my board is FlexSPI. From what I've
+found in the documentation by using LUT sequences I should be able to
+adapt it to the protocol that is needed by netX90.
+There is just one problem: netX immediately sends some status
+information (1 status byte followed by 3 undefined bytes) once the
+master starts clocking, which results in simultaneous transfer on both
+MOSI and MISO lines.
 
-commit c6523c4a301d3adff7ddcf57515b9c847beb7566
-Author: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Fri May 6 18:21:02 2022 +0300
+Eg when I want to issue a read operation on netx, I send the following
+byte stream:(1 byte cmd, 3 bytes addr, 1 byte length)
 
-    dt-bindings: PCI: qcom: Specify reg-names explicitly
-    
-    Instead of specifying the enum of possible reg-names, specify them
-    explicitly. This allows us to specify which chipsets need the "atu"
-    regions and which do not. Also it clearly describes which platforms
-    enumerate PCIe cores using the dbi region and which use parf region for
-    that.
-    
-    Link: https://lore.kernel.org/r/20220506152107.1527552-4-dmitry.baryshkov@linaro.org
-    Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-    Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-    Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-    Acked-by: Rob Herring <robh@kernel.org>
+MOSI: 0x80 | 0x12 0x34 0x56 | 0x4
 
+MISO: 0x11 | 0xXX 0xXX 0xXX | data[0]... data[3]
 
-+            - const: dbi # DesignWare PCIe registers
-+            - const: elbi # External local bus interface registers
-+            - const: parf # Qualcomm specific registers
-                      ^^^^
+As you can see the status byte - 0x11 (followed by some undefined 3
+bytes) is immediately sent over the MISO line. Then, data[0]...data[3]
+is actual data that was requested to fetch.
+I tried to use spi-mem framework that is supported by spi-nxp-fspi
+controller driver, but it does not support handling simultaneous
+transfer thus at the end of the SPI transaction I ended up with a rx
+buffer consisting of data[0]...data[3] only.
 
-+            - const: config # PCIe configuration space
+Kindly asking for any advice. Unfortunately, there is no way to use a
+traditional SPI controller in this case, as all of them are used for
+other purposes.
 
-Qualcomm called "part",  nxp call "serdes"
-
-Frank
-
-> 
-> > 
-> > Rob
+BR
+Patrick
