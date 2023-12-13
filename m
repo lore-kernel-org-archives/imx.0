@@ -1,49 +1,49 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB359F9F7
-	for <imx@lists.linux.dev>; Wed, 13 Dec 2023 06:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35E7101CF
+	for <imx@lists.linux.dev>; Wed, 13 Dec 2023 06:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DYyFUJ1R"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2cc259392a6so35594281fa.2
-        for <imx@lists.linux.dev>; Tue, 12 Dec 2023 22:28:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UB93mWMK"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-54f4f7d082cso7064545a12.0
+        for <imx@lists.linux.dev>; Tue, 12 Dec 2023 22:29:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702448890; x=1703053690; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1702448964; x=1703053764; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=B2t8hozxFxq5t5CAXeioYWvOLvwHdP83F/jAbrrScuk=;
-        b=DYyFUJ1RLKBRNOGI3xq6Y7RPihg4z0xRBmulycDa7fCkAdnF9jXGetDvf6kEuMAld8
-         58D49f1aXX4VvSlSX0Zgv1b28QHmf6QKcw8yt3r16tU6hplEHPMlSY2HBEVptHwgPif+
-         UN9TGOj20KdbIwISYFl2QMqxEbEkTxjjt0gEmBZzAO+gamvMOSqXi+rvhLFEmJu5ORr1
-         5p0rh6Sgl0xVqoE7W+RU7PbD3M30Er19HOQG9N6db66KboUiKN19a5vzb3CP5nRfIUJf
-         JUIjV2s3WypWMMN8WgIMNrArrjHIlzVaCAX0+PxIJGk+cFmzV/G1xNwkeDgmMqpcYTE+
-         KPzQ==
+        bh=OhhTT2JZjKcz8l8JL5GA9GOQF5AQhyukyYV3lNeTdtc=;
+        b=UB93mWMKeDU6Hk2EH6WUnNnvFRBhI0ijGCO0vHu0NRPQtbcHfF9p06OthiHIO5fbgN
+         UT6i5yXVLKXsZIYs1h8SOjqaSZzxn5Be0aic+GeQJviP8l/hbNfWx+9OSA0kLx+1GTXp
+         /Ww9O+EtoThYTt9lKFJ+6dHnuNonxIHz8ir9DwCyeJ1D/I8UL+zR4Uge0HPCkM4bbJ41
+         7T4ULA0HniLYNyo8kc8rGkf8o0ohrmRMIRqYqkMe+NvFKlvYvzC4+5J0FQY+S5hNfvUx
+         yCrsOK+MQ5uZREZ2U0jT5Eu/CGO/ZwLybnuizV0mMOKtugx/6v7bk4HkilqkA4BYbpP3
+         mQMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702448890; x=1703053690;
+        d=1e100.net; s=20230601; t=1702448964; x=1703053764;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B2t8hozxFxq5t5CAXeioYWvOLvwHdP83F/jAbrrScuk=;
-        b=hRVRIGRhUAy337zjlZMziTMHo16azPk+bVjrQzLIdRYyUvhHIuIH/SawJVfYVpIbaI
-         CuRcYGgA/UO1biJQARwQgM4nnHRPiH1hIaajIz3NkVPcJYbNkuL47DK4c4CDYdxP+7lf
-         PYF3X4WnYcsJJfpShQ2ibkOvnW7WpUs5ACsmJxNPgm2JRBWxk2pSg4r07NOng2L62a80
-         QEh08AWHfshje/exGO5d9CIAImFVLDBRGeb7m5Ed5HzMElNdqjcsKBDTU5jI3VPrZcF1
-         y/9li9JrIN4Uuzk6x5FisqeSkg5jbT8H3FoXOcuzBWLxfiZ4XSoAi7L4+fGt5qmN+5NG
-         1UIA==
-X-Gm-Message-State: AOJu0YwYgzYQ7i+jyb+VWBmeObIvR9u5cn9lv8ebN2QhusgR4gJDQ9x5
-	OjIq9Wi/X38D2lXk7VuzxECZ1A==
-X-Google-Smtp-Source: AGHT+IHHZoVmjDWhy9GURQv+supetmAnz/ygdNDQCUpBrIPQbV8/LpENCIUD8FYRQUQZ7k18uvGYsA==
-X-Received: by 2002:a2e:a80d:0:b0:2cc:1ec1:90f4 with SMTP id l13-20020a2ea80d000000b002cc1ec190f4mr4106608ljq.69.1702448889989;
-        Tue, 12 Dec 2023 22:28:09 -0800 (PST)
+        bh=OhhTT2JZjKcz8l8JL5GA9GOQF5AQhyukyYV3lNeTdtc=;
+        b=uKKsktysoZeiak3fA1RVdw/M7t3K8jAu4VKUk8dH3TkgaZOFMNs3DHaoqe9/AV6vya
+         RlwdKRNeDc75JGLBF+4vjw/pOBfQD2GLYQMKyeQe05OzroNH06bOvSPctezicOy3MaV2
+         gzHFVU3QWaLvMHIdUz0vfT8jh5kUA7NSNL9XmP9YAJyjm+iRo3Z6k2Zq3NX3XofsjrYi
+         Uhn+1oC06EtlU5GiuGiL+5WgRJOQIhe/ZcqRSOICf5q/CVKD3o7ADnc/dhfYQz6tM/CD
+         W0fZZ3v+4pSuO57tPJwVmfyLObPIIcYFq/hv8G2ub6f6HOeknhhZcYal+dOiYgCQb4mu
+         sreQ==
+X-Gm-Message-State: AOJu0YzmQBFugiXsMlUm05UlsXf/J2jlpGeIlMgPGuPOZwh9j69dh/wJ
+	JSM/KLvBep53dUcOKfwNnBlrtg==
+X-Google-Smtp-Source: AGHT+IEf6AMh+maIl3AI5UbHxiKdaSqI65hLDhYop0OZCcbr7HdwskIA8+n1Ti9rwcTb5FsiiOk00Q==
+X-Received: by 2002:a50:d692:0:b0:551:e5ea:cd32 with SMTP id r18-20020a50d692000000b00551e5eacd32mr581150edi.23.1702448964138;
+        Tue, 12 Dec 2023 22:29:24 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id s28-20020a50ab1c000000b0054c6b50df3asm5566246edc.92.2023.12.12.22.28.08
+        by smtp.gmail.com with ESMTPSA id s28-20020a50ab1c000000b0054c6b50df3asm5566246edc.92.2023.12.12.22.29.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Dec 2023 22:28:09 -0800 (PST)
-Message-ID: <8ea476e0-e026-4599-a5d5-66a499a1f422@linaro.org>
-Date: Wed, 13 Dec 2023 07:28:07 +0100
+        Tue, 12 Dec 2023 22:29:23 -0800 (PST)
+Message-ID: <de84c311-ee02-4bb7-89cf-8b4f4d80d204@linaro.org>
+Date: Wed, 13 Dec 2023 07:29:22 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,22 +51,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/13] dt-bindings: imx6q-pcie: Add imx95 pcie
+Subject: Re: [PATCH v3 12/13] dt-bindings: imx6q-pcie: Add iMX95 pcie endpoint
  compatible string
 Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>, Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
  festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
  imx@lists.linux.dev, kernel@pengutronix.de,
  krzysztof.kozlowski+dt@linaro.org, kw@linux.com, l.stach@pengutronix.de,
  linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
  linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org,
+ lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org, robh@kernel.org,
  s.hauer@pengutronix.de, shawnguo@kernel.org
 References: <20231211215842.134823-1-Frank.Li@nxp.com>
- <20231211215842.134823-9-Frank.Li@nxp.com>
- <20231212224426.GA2948988-robh@kernel.org>
- <ZXjsq2QtFa2V0BAl@lizhi-Precision-Tower-5810>
+ <20231211215842.134823-13-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -112,40 +110,62 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZXjsq2QtFa2V0BAl@lizhi-Precision-Tower-5810>
+In-Reply-To: <20231211215842.134823-13-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/12/2023 00:28, Frank Li wrote:
-	>>>      items:
->>> @@ -90,6 +91,22 @@ required:
->>>  allOf:
->>>    - $ref: /schemas/pci/snps,dw-pcie.yaml#
->>>    - $ref: /schemas/pci/fsl,imx6q-pcie-common.yaml#
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          enum:
->>> +            - fsl,imx95-pcie
->>> +    then:
->>> +      properties:
->>> +        reg:
->>> +          minItems: 4
->>> +        reg-names:
->>> +          items:
->>> +            - const: dbi
->>> +            - const: serdes
->>
->> Did you test this? It should fail because 'serdes' would need to be 
->> added to snps,dw-pcie.yaml.
+On 11/12/2023 22:58, Frank Li wrote:
+> Add i.MX95 PCIe "fsl,imx95-pcie-ep" compatible string.
+> Add reg-name: "atu", "dbi2", "dma" and "serdes".
 > 
-> I run "make dt_binding_check DT_SCHEMA_FILES=/pci/", no error report.
-> And PCIe function can work.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> 
+> Notes:
+>     Change from v1 to v3
+>     - new patches at v3
+> 
+>  .../bindings/pci/fsl,imx6q-pcie-ep.yaml       | 20 +++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+> index ee155ed5f1811..36d8f117fdfb3 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+> @@ -22,6 +22,7 @@ properties:
+>        - fsl,imx8mm-pcie-ep
+>        - fsl,imx8mq-pcie-ep
+>        - fsl,imx8mp-pcie-ep
+> +      - fsl,imx95-pcie-ep
+>  
+>    reg:
+>      minItems: 2
+> @@ -62,11 +63,30 @@ required:
+>  allOf:
+>    - $ref: /schemas/pci/snps,dw-pcie-ep.yaml#
+>    - $ref: /schemas/pci/fsl,imx6q-pcie-common.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - fsl,imx95-pcie-ep
+> +    then:
+> +      properties:
+> +        reg:
+> +          minItems: 6
+> +        reg-names:
+> +          items:
+> +            - const: dbi
+> +            - const: atu
+> +            - const: dbi2
+> +            - const: serdes
+> +            - const: dma
+> +            - const: addr_space
 
-Did you test your DTS. The answer is, like Rob suspected: no, you did
-not test it.
+Again, was it tested? Testing in this context means: bindings check pass
+(dt_binding_check) and all your DTS pass, or at least do not introduce
+any new warning.
 
-This fails.
 
 Best regards,
 Krzysztof
