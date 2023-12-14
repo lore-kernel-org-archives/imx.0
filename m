@@ -1,91 +1,146 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FA5FF00
-	for <imx@lists.linux.dev>; Wed, 13 Dec 2023 18:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D682656;
+	Thu, 14 Dec 2023 02:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GF3HlV9X"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-551ee7d5214so2522290a12.0
-        for <imx@lists.linux.dev>; Wed, 13 Dec 2023 10:47:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702493232; x=1703098032; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=62yBjsgi+zv0UBH+9qC3ziccvi8e4k04RuA6gZp2ubI=;
-        b=GF3HlV9X+ZZEAsiIlZ1KjRIhPCbPlqk/Hocny7czI5IQK7ksml1esjJSIM6Nsmsyzm
-         k7W+LQEkU/4j4it9oWcoMHUn/6KgbkdrFpkPxiCqpagf5c1uFeJ7yJYqC2aBOnu1n/0X
-         PFVC7fAPyOghSc9dXH587hF90olarca82rXjLkdAtwTyOJryEcBXB0zhjM38Gff/hOJJ
-         s3F/EFMZcBDn1XnTsrH8QymZhHTSUisrfzIIHda/r872T6xOmE82gFXxM+4R/L0XSFnQ
-         IOj+UM5436TMoJWWhDaQA6heCSa9BjDCnVVF65q+CPfQNwVn0EQoBPD1S68gQNPq0pAM
-         LsRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702493232; x=1703098032;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=62yBjsgi+zv0UBH+9qC3ziccvi8e4k04RuA6gZp2ubI=;
-        b=rqONgUdjueZPNmVYJKbAfWnt5ysjiRV6W5RWTlj2hinF3f6JSnmmTEGJsD1ZcgT0yi
-         uScO4VxDesTHBJ2/6Vp+SNPF+FfWCN5G2R6Ps2si5i6FpHSdrv/DXGtTk8hU8wp0cIrn
-         Lz/HkINuaWJCYW3LeUld/AyRGqn3Mqrui9lhjIz58DsU/XX1Kr4yZAcovuBxd9Vl0MUj
-         yQL7ge2TfQsieaQQdSvcpZ8MhG7+vibpzs0Xo+N/B6E9I+uL+gMK5LWCxztylFVf8JWn
-         Iel4wXI9DAB1E5KAYYbFxY1Tbj7OQFO4/JdEVCAtDVv1L7fQsAAHUOG3LxipXVZh+fFb
-         +9Pg==
-X-Gm-Message-State: AOJu0YxUQSzAG778FRr4aJwD+k8S8L6fJaPfHYOtt4eR78mesKT+C1PT
-	wVX4Druvm50VBhKCm7Iawc7qM0stmFWJzo5pZenCaF3BrAZZGA==
-X-Google-Smtp-Source: AGHT+IFjOGnlWpP9AbytLlyVQgYHx8PcwK62uIs/SkzboftaiLcNrod+YPbcKMB0vOeOluRnqCMSnwlaEuVY+E3b3O8=
-X-Received: by 2002:a17:906:1c9:b0:a1d:1fb9:da08 with SMTP id
- 9-20020a17090601c900b00a1d1fb9da08mr7037785ejj.8.1702493231744; Wed, 13 Dec
- 2023 10:47:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bbv6SkU2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCE5C433C7;
+	Thu, 14 Dec 2023 02:00:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702519259;
+	bh=mJwp9Wt+3zEWxjwj3NDYHejaJVXV/U4TQs6qHUx4VHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bbv6SkU2FR2YvI6T24wzRg992B38pmh7L41ohUxSe6RXDkhpste+v8Cob4JbuN9jg
+	 jdCG3utQeZLu1nGgTVPcR46Fxy1m3aW8mf6NvCUF2aRpy8ZIIFBpjx6QNfLFnJeN8D
+	 JgfjFC7NCZakROeSipOhMOb2H0Azjj2lUOIUu5B76WL6a5JSi0OFFfrsZr3ri9WpJx
+	 dBV1AABeAZJyUo4doOWyNjhrNDLeyQmhcrCmP5+wm6Yau9G8w/2QEmzAIcmaBkDdaG
+	 1y6bJmfr1VNUT4EWbUeK1ZMsDAOUSuQwwilHV3F+YtkoVTAwkigMSlLpVxjK61lmrT
+	 8YzXqiz+Cu9Vw==
+Date: Thu, 14 Dec 2023 10:00:53 +0800
+From: Shawn Guo <shawnguo@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Joakim Zhang <qiangqing.zhang@nxp.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8qm: Fix edma3 power-domains and
+ interrupt number
+Message-ID: <20231214020053.GQ270430@dragon>
+References: <20231206201256.1113800-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Patryk <pbiel7@gmail.com>
-Date: Wed, 13 Dec 2023 19:47:00 +0100
-Message-ID: <CA+DkFDZeAV-XtdWe690RJ2Y=BCvur-LX6_Qqyntx0nJUKo2k2g@mail.gmail.com>
-Subject: Question regarding FlexSPI controller
-To: imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231206201256.1113800-1-Frank.Li@nxp.com>
 
-Hi,
-I've got a question regarding FlexSPI controller available on e.g
-imx8mm or ls1028/2160 boards.
-To not waste your time here is tldr;
-Does spi-nxp-fspi controller (and Linux driver) support simultaneous
-read/write transactions?
+On Wed, Dec 06, 2023 at 03:12:55PM -0500, Frank Li wrote:
+> Fixed a kernel dump when access edma3 registers.
+> 
+> [    1.517547] SError Interrupt on CPU1, code 0x00000000bf000002 -- SError
+> [    1.517556] CPU: 1 PID: 59 Comm: kworker/u8:2 Not tainted 6.7.0-rc3-next-20231129-dirty #3
+> [    1.517564] Hardware name: Freescale i.MX8QM MEK (DT)
+> [    1.517570] Workqueue: events_unbound deferred_probe_work_func
+> [    1.517593] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [    1.517601] pc : vsnprintf+0x60/0x770
+> [    1.517612] lr : snprintf+0x58/0x80
+> [    1.517619] sp : ffff800082f0b9e0
+> [    1.517622] x29: ffff800082f0b9e0 x28: ffff8000819a8af8 x27: ffff000801f90080
+> [    1.517632] x26: ffff000801f90510 x25: 0000000000000001 x24: 0000000000000020
+> [    1.517640] x23: 00000000ffffffd8 x22: ffff000800114800 x21: ffff800082f0baf0
+> [    1.517650] x20: ffff000801f90698 x19: ffff000801f906b8 x18: ffffffffffffffff
+> [    1.517659] x17: 6e6f632d616d642e x16: 3030303066396135 x15: ffff800102f0b687
+> [    1.517668] x14: 0000000000000000 x13: 30206e6168632065 x12: 74697277203a7265
+> [    1.517677] x11: 6c6c6f72746e6f63 x10: 2d616d642e303030 x9 : 72656c6c6f72746e
+> [    1.517686] x8 : ffff000800396740 x7 : 205d333337383035 x6 : ffff800082f0baf0
+> [    1.517694] x5 : 00000000ffffffd8 x4 : ffff000800396740 x3 : ffff800082f0ba70
+> [    1.517703] x2 : ffff8000819a8af8 x1 : ffff800082f0baf0 x0 : 0000000000000025
+> [    1.517713] Kernel panic - not syncing: Asynchronous SError Interrupt
+> [    1.517718] CPU: 1 PID: 59 Comm: kworker/u8:2 Not tainted 6.7.0-rc3-next-20231129-dirty #3
+> [    1.517724] Hardware name: Freescale i.MX8QM MEK (DT)
+> [    1.517727] Workqueue: events_unbound deferred_probe_work_func
+> [    1.517736] Call trace:
+> [    1.517739]  dump_backtrace+0x90/0xe8
+> [    1.517752]  show_stack+0x18/0x24
+> [    1.517761]  dump_stack_lvl+0x48/0x60
+> [    1.517771]  dump_stack+0x18/0x24
+> [    1.517780]  panic+0x36c/0x3ac
+> [    1.517789]  nmi_panic+0x48/0x94
+> [    1.517796]  arm64_serror_panic+0x6c/0x78
+> [    1.517801]  do_serror+0x3c/0x78
+> [    1.517806]  el1h_64_error_handler+0x30/0x48
+> [    1.517813]  el1h_64_error+0x64/0x68
+> [    1.517819]  vsnprintf+0x60/0x770
+> [    1.517827]  snprintf+0x58/0x80
+> [    1.517834]  fsl_edma_probe+0x2ac/0x830
+> 
+> It is eDMA1 at QM, which have the same register with eDMA3 at qxp.
+> 
+> Fixes: e4d7a330fb7a ("arm64: dts: imx8: add edma[0..3]")
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-More details here:
-I have two boards, the first one is LS1028a, and the second one is
-Hilsher netX90 and I need to connect these two over SPI. The only
-available SPI controller I have on my board is FlexSPI. From what I've
-found in the documentation by using LUT sequences I should be able to
-adapt it to the protocol that is needed by netX90.
-There is just one problem: netX immediately sends some status
-information (1 status byte followed by 3 undefined bytes) once the
-master starts clocking, which results in simultaneous transfer on both
-MOSI and MISO lines.
+Hi Frank,
 
-Eg when I want to issue a read operation on netx, I send the following
-byte stream:(1 byte cmd, 3 bytes addr, 1 byte length)
+Did you see the fix [1] from Xiaolei?  It has landed on Linus' tree.
 
-MOSI: 0x80 | 0x12 0x34 0x56 | 0x4
+Shawn
 
-MISO: 0x11 | 0xXX 0xXX 0xXX | data[0]... data[3]
+[1] https://lore.kernel.org/all/20231110072531.1957891-1-xiaolei.wang@windriver.com/
 
-As you can see the status byte - 0x11 (followed by some undefined 3
-bytes) is immediately sent over the MISO line. Then, data[0]...data[3]
-is actual data that was requested to fetch.
-I tried to use spi-mem framework that is supported by spi-nxp-fspi
-controller driver, but it does not support handling simultaneous
-transfer thus at the end of the SPI transaction I ended up with a rx
-buffer consisting of data[0]...data[3] only.
-
-Kindly asking for any advice. Unfortunately, there is no way to use a
-traditional SPI controller in this case, as all of them are used for
-other purposes.
-
-BR
-Patrick
+> ---
+>  .../boot/dts/freescale/imx8qm-ss-dma.dtsi     | 27 +++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> index 01539df335f8c..5d76b4dee4cef 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> @@ -44,6 +44,33 @@ can2_lpcg: clock-controller@5acf0000 {
+>  	};
+>  };
+>  
+> +/* It is eDMA1 in 8QM RM, but 8QXP it is eDMA3 */
+> +&edma3 {
+> +	reg = <0x5a9f0000 0x210000>;
+> +	dma-channels = <10>;
+> +	interrupts = <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 426 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 427 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 428 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 429 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 430 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH>,
+> +		     <GIC_SPI 433 IRQ_TYPE_LEVEL_HIGH>;
+> +	power-domains = <&pd IMX_SC_R_DMA_1_CH0>,
+> +			<&pd IMX_SC_R_DMA_1_CH1>,
+> +			<&pd IMX_SC_R_DMA_1_CH2>,
+> +			<&pd IMX_SC_R_DMA_1_CH3>,
+> +			<&pd IMX_SC_R_DMA_1_CH4>,
+> +			<&pd IMX_SC_R_DMA_1_CH5>,
+> +			<&pd IMX_SC_R_DMA_1_CH6>,
+> +			<&pd IMX_SC_R_DMA_1_CH7>,
+> +			<&pd IMX_SC_R_DMA_1_CH8>,
+> +			<&pd IMX_SC_R_DMA_1_CH9>;
+> +};
+> +
+> +/* It is edma0 in 8QM RM, but it is eDMA2 at 8QXP */
+>  &edma2 {
+>  	reg = <0x5a1f0000 0x170000>;
+>  	#dma-cells = <3>;
+> -- 
+> 2.34.1
+> 
