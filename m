@@ -1,55 +1,69 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2063.outbound.protection.outlook.com [40.107.104.63])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2078.outbound.protection.outlook.com [40.107.247.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2BA5692
-	for <imx@lists.linux.dev>; Fri, 15 Dec 2023 05:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2B21374
+	for <imx@lists.linux.dev>; Sun, 17 Dec 2023 05:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="fHdM8lVo"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KaWMz0hr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=idZULi7Of9CCZ2hiQCub4SBy0JrdObw/Tl6QlS+atbIcdnS1R1yzPf95RshfOV6v57fbzvxtEv+yRHBfn7qR3OEdnPkgVHwIeJJoGXkmKi0lRJ2XiNE+wbnrhbuXiXxmtLDRQ4VRGcFkwG4+4NL0yobYEHH7SvPjCjXJlVV0W6FZZna9IVZX7J8r0KLIT1OvFLJsOxTHBOQI39EmCdDBH0d14UG43dpftEibXQJ6eNvF+D9XeuTx8VEPsKc6Kd1fPDiKDYrWMV1UAWMAmPRZeCje2XSLkp8DUfySwAM0Rt5Ub3675WeCGJm1zDw8duSYRSN+4tpqoLxIIUYJtjoDIQ==
+ b=LGNLime9wPvojAQQNMxevcNOeLrC5I/DTS+Xda6E2WhcJju8iKS4RB++n+zuA6h+1pNiwKxcpAIUWHjX6LNcrl/sjkJe1oXk+SmrmnhstNwRx46qg/OEHlY842jsqtkJL9iAY/w2DpJQiy503+TJDuOnVyLFuHShgOWXNbX5la3ROcPP02lhS04oQUzvetT2//l5k9ChL9FpX/ZzeSXkrPOXYo3jdRUvIZ2GYgdJdGvJXmB6xf4dR8NvSIVKzcCfAHaoDlRxAGJPe32Va4u5PpEMgbJGqlHpQZRexoZfqVZQzgCb8QaAeKibwh5NjmCh+KoJHX6WoxxBxOpqf8tZrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9+Z0KMEgY9mk188TyBhhqCnmZ9Z1niI5ahCrn69K+jQ=;
- b=l37gXC9HCLPWUoJEJMa4926zAYjzpcj2p2yrVkVdQ3/YS76VtmgnFoYs6jMbb6vtWSv11YDYiCQPVX/dEODvTkoWjreAlrtNF06yFpaX6jvWlsKqDZFTvnfizfgQX8ep3O6hKAsMaham71bOqR64UnUB8gw1TZ61H4Egn+VZu2ltZCw0w2qlr9Vq23rCEu5NqTB8D9gwXaNS79FwroBkwLEoDcOYUv5Us1Ef2K6r5D6qkB+4XIWEOifVI3i4QpveWETmMCxJpKI5rRK3y2UXoCT6Ciy8ovO0nUMGp3qB4+lyD1gPV5tLr+R+ZNFUzVs21a6IBpBorqcDZ7MuPKqSSg==
+ bh=Dvj0d9FBcMOKsEeJUls//kqQ5j1iixGM+C3FC7YnFgQ=;
+ b=QoU1cvVaaW70x01aOKB5GBL3UBuJAdv4TqBmm5kGEOHICQ8EMn7nrC4rldo7kDiddXc8mTXG47v5qWdDiMUCPpMiyGYz3XSvd1YNG0lpWPzxKHx/4KWNfNKclt0rKhk7nRQ9fGeiXUmo2fr8u6BofhkXodednyAbJ+MYyGkqIorSR4c39Gdg0nYJ4w/8hEn8HU0J+RS0ErPdR+vOFbBE+9+j0YYJDcq9mIJJ41rg7YXjnN11kOi+AjCsHOTYxQvl5EUX5YW+/ikVpwVirxPaumLEJmTo0j+76HVddAH6303R62Y/6h5UgafCDRKqwIMA/5bshfwcSI3FLr7tnlzmLg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9+Z0KMEgY9mk188TyBhhqCnmZ9Z1niI5ahCrn69K+jQ=;
- b=fHdM8lVoB/tTiYzBE1bhpyj77QBTJ7wnwOQZtoh6JbiePSZTUGZ47oEJayycD5Shbk9xeTK3hCYeDC42VwmJOlRftSww7fAouI5FWEarpN2KuveDWc8GWGTvevq0lkjBpHhpcSeMCBeEscMdj8gMb+dgWZuSXXgYhl/ZT4ssqm8=
+ bh=Dvj0d9FBcMOKsEeJUls//kqQ5j1iixGM+C3FC7YnFgQ=;
+ b=KaWMz0hr6MWwpC76D7g/aCo4g1yAPLSelGDY3YKTulYICVWYgdi6O9+DXNKinApGmlxWVyKwvS5g+bSOlNAgkWYq5Rpn3NkKa/1PQxagpXOFNVpEVDjvte2zSQABSJYi0d+1AINYmoAfAIX2JNSvYtzuAOF5W7o0hIKbM09y9Ro=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM0PR04MB7025.eurprd04.prod.outlook.com (2603:10a6:208:19c::19) with
+ by PAXPR04MB8174.eurprd04.prod.outlook.com (2603:10a6:102:1c4::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.30; Fri, 15 Dec
- 2023 05:04:55 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.36; Sun, 17 Dec
+ 2023 05:12:35 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40%7]) with mapi id 15.20.7091.030; Fri, 15 Dec 2023
- 05:04:55 +0000
-Date: Fri, 15 Dec 2023 00:04:45 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: krzysztof.kozlowski@linaro.org, shawnguo@kernel.org, festevam@denx.de
-Cc: devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, joy.zou@nxp.com,
-	krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
-	peng.fan@nxp.com, robh+dt@kernel.org, shenwei.wang@nxp.com,
-	vkoul@kernel.org
-Subject: Re: [PATCH 0/4] dmaengine: fsl-edma: fix eDMAv4 uart dma loop test
- failure
-Message-ID: <ZXvebWSmOhHRIcZc@lizhi-Precision-Tower-5810>
-References: <20231114154824.3617255-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231114154824.3617255-1-Frank.Li@nxp.com>
-X-ClientProxiedBy: BYAPR05CA0105.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::46) To VI1PR04MB4845.eurprd04.prod.outlook.com
- (2603:10a6:803:51::30)
+ ([fe80::95f5:5118:258f:ee40%7]) with mapi id 15.20.7091.034; Sun, 17 Dec 2023
+ 05:12:35 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: krzysztof.kozlowski@linaro.org
+Cc: Frank.li@nxp.com,
+	bhelgaas@google.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	festevam@gmail.com,
+	helgaas@kernel.org,
+	hongxing.zhu@nxp.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org,
+	kw@linux.com,
+	l.stach@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: [PATCH v4 00/15] PCI: imx6: Clean up and add imx95 pci support
+Date: Sun, 17 Dec 2023 00:11:55 -0500
+Message-Id: <20231217051210.754832-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR04CA0007.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::20) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,87 +71,168 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM0PR04MB7025:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22ef390e-d369-462e-1828-08dbfd2b604a
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|PAXPR04MB8174:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6be6589d-1a35-4ee9-f4de-08dbfebec7a4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	rQwtQc5l5/tiG50+vWG3/JNNUJcuf20MNmOgoOv8hKiXNnDLjCTdgW0cEtOYejpscMb8mGATa55Mhsm5XAsCKDEkzXh/31MKEWcCSen+2SsMqd3ae+7tK2sDM36wmjQTtonBMlwcTcpJBSgy22eti9g3pNV6SQXRpaMvz+yGvEoHYacwYlt2ajTKxeYhEjwWbpUi/oy9eUMWCtvDSdH3bjuQTqMGs1LTEWCtu8K1bp4VnubGnA3bjxrXVC+3gYWcl2a6zi1iCivmKeFdvEs0Uzad04Y5pD+JxX/uNOdu/zKQQgkxNSDu3wlO/EUoe7Vkb4dtZEH6wNif7JD+a7hllXLJ159AAQ+7klgv33w0C3kA/gvdNqgSgPATiugNh7/+0wTRwSzHKMjUMqgFEgEYpEbyoXXTqtVzUSH9UnSxjbZIw1Gj2GfAQMVsK1UlhG+H4Mv/7GWPJmtvi1Fd2VpgpITkrQ3E+S46iK+1M2lppCNHydGsG9HR7v7bDrfQrhUdV4Pqq08kAMZ/P1YRjuiPooLiH/SeRbQm3YgrwygqkVmZNk6z/KR03lrN6KP9mJFoiC8wERUbg3ggmnuTQ6kU1w46x4rl1scHGbMviKgiSTdK5AOQKhGkumGZya6x9Pu5
+	1JEPZYYV+U3xJSEMGij54ojgAOVI2oxvJk79ZEFo8GNvxc4U/2AZp4ou3hZJ2Neh3eHaaplAvBgeWpvXz1UFgLD+vMXOzUnXcTj7zz9oXE8c/I97GNbKI7VrQdcebLtFoy3F1+mUaKODJcahtldpWdUwEYvbiuRgGE+iR6UJahJ321b8vvIYMZJzXXHYzO4NfT0gvGN8RrJWVs1MtYSJCdggT1dspGbxEyhHOXKs7klOslWRQiQbsD8BZmA6rwbb3Gy/ZOYt/KIZPbpcUdKRM5nA8pJiMr/1kSOz+Gh5aGBoSR6GhJfC+DTkz3TIfdhFjbJVQRiUrL1a9ex+nqK0mxIFVno2pQj1OnDJRccHoE5jD6hLNejWuTkqLN0cX2Zk+5RyqDHGLaJY1BrYKrNjaRrcequoahROPTcJ9HVxfrv9VN08DaZ09S2a3eKJOlbiVzySP9lMDaaEs+VCxnEYjmr8IhtmFRDt+76pEhmtbLjH8iHAEY3FUDemQKYL93tIhXIpj4cqMoodMiNoA5QFdaPN+RYRAfKXPZKwTwVooAps8mi62I///11lR6YQ+6DreKEd4nq3Fq90DHPeOq6FDfi9sWof9wnAZTdYUCTwNqCeRZOstyp25Vbl9334Ex9y
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(396003)(136003)(346002)(376002)(366004)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(4326008)(8936002)(8676002)(2906002)(7416002)(5660300002)(478600001)(6506007)(6512007)(6666004)(9686003)(52116002)(66476007)(66556008)(66946007)(316002)(6486002)(33716001)(41300700001)(38100700002)(86362001)(38350700005)(26005)(83380400001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(136003)(396003)(39860400002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(38350700005)(86362001)(36756003)(38100700002)(83380400001)(26005)(52116002)(2616005)(1076003)(478600001)(6486002)(2906002)(66476007)(66556008)(6916009)(6666004)(6512007)(6506007)(4326008)(8936002)(8676002)(66946007)(316002)(41300700001)(7416002)(5660300002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cuCklYpZ7n0k8fvHOG3AHqev+vNEKpCZnY0uuVCEaX7pOi3vMore45tnuj1l?=
- =?us-ascii?Q?cC5h3ty86S538rl7+fNRD0VfNjSTBDMoaVALea5L3pf1AowkqS2k18UTWKJk?=
- =?us-ascii?Q?nALq6VWPZfkjH5PY8I+RKzytxuNZRChKYSjxsC19EYEzOQvwe6idM2lolN/Z?=
- =?us-ascii?Q?lCbEKnrZqYmiilHWYZHmHZShQ/2IoCU56ce8jUIf7o6Q1J6ciGPlmkhDDYDB?=
- =?us-ascii?Q?44c3Mk83LcBlabCWiC2XmCHmVcjHOv3+xn6Wkdev57PXAoWXajDMEgPrhNhU?=
- =?us-ascii?Q?OnjrxmXDGXhV1Ff44FzP2TD2VuNq91WdQfoe1gizCBMZHtpXiy9McBO9Hon6?=
- =?us-ascii?Q?LKi2oHQBbNLh3JQfUqhNPUWkbIq5JeQnfHSGMGOtL45PkX/awJkUEQArEJig?=
- =?us-ascii?Q?Odmf4cXtVhHaeUiHwa1tE9V+HhneaxdDHaPSJs3DX+WSXtdvrvcb9T/zYFQe?=
- =?us-ascii?Q?tmtVHzneuqgZoIPKDnTFu4zuR9zKKp96pC5uI0vqfo+I7USU5jJHYqyWyTZP?=
- =?us-ascii?Q?Z06LCHD2OlEcF47urryBIBjEAreW5af3o1JJ1IHTyM7wLl5ZwkksYA2tZgh4?=
- =?us-ascii?Q?43PaM2aglHCJWFafKw8+/srU3t4k28T8WTINEOszRjia7ZAABHVYeT/7+Xfv?=
- =?us-ascii?Q?souvQNXwc9qiGfBJ8+iDiL5jfgyZQscnyUxYcH8vruk3bEil9whnqi4OpLhA?=
- =?us-ascii?Q?y/j02+gC2LewmOV4I7c2JWk+cCshJOXTD9+gA+VQ8/u58LqhaOft1lqr4Fc2?=
- =?us-ascii?Q?dNcipHY9XO4lB1hIrDk69PSwpanRKZoSvoQ3WGjtypWfBu/RksL4XAOeOFrf?=
- =?us-ascii?Q?LuoILqz+yXIvYxXt9c1JxqmKkN6pUfiJZXgoWTlzfBXx+cNxpgZedagxwtjp?=
- =?us-ascii?Q?cVaHqn641GKGercPPGljYL9+IfDk89dq0s4AeodccXY7apvTMypkmV4lbvbG?=
- =?us-ascii?Q?OzREArZB8GnH/RZsAZekfwjf6uehTY9U9/Ncl2g1jMkPbdy+BgX1SejfIvVS?=
- =?us-ascii?Q?LssaBSQ+W0oAkVzqeG2vHZ093V0BpD2/r0WQ7xqYQ1F+x9BN8LteX1KkvoRO?=
- =?us-ascii?Q?qCvirR3RE0EUY8hFHZo3DnBAlLqduXMC9ZPfZZEiLawBoR6WvT5HJZEr4RlK?=
- =?us-ascii?Q?1OyefjIijSCXxZJ6YzKzW8gy5H8FTPiPIqvjT+m9tvAOQ2jiULF8XFcqyWoB?=
- =?us-ascii?Q?5VbmSWmimFBftkkzEY5ZFl2ZNno+p5pC4eZ7FctCtS6L+ydKAZz2cdedqj65?=
- =?us-ascii?Q?RE2pYxXpqZbMKhlOhBfGpTaoHTO5KGvh2E3r/C3VsnvhaNy1+UPCsQg+Qi7/?=
- =?us-ascii?Q?rnsMmlGPO15tkRtu2RRACkYMNNDwjq/YCDLlbWhWHeGxdsxI6vOUqG9h7Sf2?=
- =?us-ascii?Q?qpdbVItrcf9B1Wxc13r9AmIduWpdWbQYqVIrJXI2kjlAURSSzIsT8SWhvpXd?=
- =?us-ascii?Q?vnuyHLH8sTDvGST31d+/LXBgiZZLXG8bKSMO+gTk3IKgNTmbgfaYjOI52Psk?=
- =?us-ascii?Q?vcpWHuAU0LX9GsCBWAW8TiFQYcFD9sSXdJiBdV8Y/BaQgvq+29SfHW+Xx24h?=
- =?us-ascii?Q?e6LWZfyMdv0023kI7Wo=3D?=
+	=?us-ascii?Q?dtZbq3tZW27aoictjXOcdIQXx8fPfUtmpyvS5AZQbZaHwCcH2LMj3CY7+zj1?=
+ =?us-ascii?Q?cE4+b0SEZDZOPf9YYa2W2PdPRMjlw5A1Ud01TeW8ehPNV6Zd/q2BUkVXtDc9?=
+ =?us-ascii?Q?7K7J9Bl2lVOQHFRO4ITInYOkk4SbgnZq+V+OTYFGDnfxCRgqklTO8moppher?=
+ =?us-ascii?Q?YQeL3kHchcC6Ertrha4H3sUm+McNhNUQM4NE2vkFuftHYoXz+S1Ps3Xf3v2r?=
+ =?us-ascii?Q?z8JTldb56GXgW04Pkd3DG6aRUOKW08UR1ouZtFlTUUSugpbBgX00Sp6l26mv?=
+ =?us-ascii?Q?g9Y1hJkLGFuDpWpZ4B2cmvXKzIZA/lRys7az/hWm+2QRbX7/AaTlh7YMbYca?=
+ =?us-ascii?Q?9CuDtwmNSvEUBbTqyxQ33hC07jm77QYCGhGwmfKdaNtsJYhRZLdLjkH5tjEh?=
+ =?us-ascii?Q?CDqSJ0YNdOGMMKYt+k6m4+bWk199ymLUbc/mszHFCDdASQauf7oR9QD6K2kQ?=
+ =?us-ascii?Q?FlOSg60mz91KeDuzhpvRx47lSdLpbu+f/Oc//jPJFLiXJGFFvZJD4zbDdE3D?=
+ =?us-ascii?Q?TMFrZaA8wjEMHJIWC3s2pKHNNKvn+bbstAcdKxb+eLvsI3Gi9yX/aSe8VmIH?=
+ =?us-ascii?Q?T0k0ZXffSpfFndlWUCmUb0fF+lkyEKs3JpA7eY4Y9zbygDN9xgwz5y1PtLbN?=
+ =?us-ascii?Q?HoNdw8oCIkd8wchsvWVBseOUWBGN3hR0YxZSf4w9m0Gnp3j5JpL4F4/5cSYu?=
+ =?us-ascii?Q?oBgqJQrrSK9kXBMRJRxeE6I5YiCTSmDAGideC0O7+Q7ogdB8Ca3CSQLcQzr6?=
+ =?us-ascii?Q?k+U/qwy5cTMpRLr22BvDK2Z/Ch/PQXfipgvarHioZZYJfim3GOwgzP8lt9dB?=
+ =?us-ascii?Q?VZHfdzcFT4b18S9+fILfW0Z1ckORj+F54SQvr4ye+9K6oP1YHF5ou09EFKez?=
+ =?us-ascii?Q?OkmkUtX3muiarEbp4m7Hyva5YNyI4/Ok+1SipAx2vdk9Zil2UvL42iFw+vEa?=
+ =?us-ascii?Q?KSHyMy5LltVfxi4ywqs7Gam2AQ1E8DbFlzZSFVr+bLJdIlzpvHxn8qrAzX7g?=
+ =?us-ascii?Q?RK92tRJOubzFOCMibLHa2rzaiw6VjQ8dqumKTJPfyfkAZFZURkhQn8W7JMBA?=
+ =?us-ascii?Q?WLtTJF+mfOZpaxaUpNGynh++FK31jsUIGAbz70/CHDKSK6wWE7ED1WEerOTe?=
+ =?us-ascii?Q?HIKmHzEbolEBddPM7chPnSpRBYrADBktlsZzM2UVmywzg0d5nm16ipHhM4Hc?=
+ =?us-ascii?Q?HPUWmKeW4sUCJ7f8gLar+55Ghox7MTjfqoWZHWWWfjhw0CmWKuCphJzF2y2V?=
+ =?us-ascii?Q?5X3JSA3K/HdME/YomqhCCf4w6K5MVGl7HpyiD2ozChwncZVhdIIelmv7m+jb?=
+ =?us-ascii?Q?0+bGcg0VV6LhIVFurBoZIPjBLUBde2gY3K1EZgaLm6I1yWhiyi1ujBLPeVa8?=
+ =?us-ascii?Q?1HqPnox7s7NrS8DLjQKtX6+Z9vgEKEIlVQ4fjmMHcyO4Do25XY2nrUjCbwNQ?=
+ =?us-ascii?Q?NQR8WiJC163r4l4sqUMiXbD4B1jbLEdX6vNmvUsoP+nujFxq/MDf3CzF/LmK?=
+ =?us-ascii?Q?IWJLDw++f+coMVbfHpJhTfBvaKLFqMAydcOqzg0x+HCY5Q+l+W+08pJFQMHX?=
+ =?us-ascii?Q?vFUa0nIjrEloBYt754U=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22ef390e-d369-462e-1828-08dbfd2b604a
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4845.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6be6589d-1a35-4ee9-f4de-08dbfebec7a4
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 05:04:55.5435
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2023 05:12:35.2159
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l8mD6zCkjjugoKRKihtGZp41PecBi3JFmQB2L/30bkMC/tp1kh0KQDt7gayq+lss1ZnAYvhBVQw+Lclv6+4TqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7025
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z9bFaX8HeLQGfIFUElTu+GwfixB2U+0AI0RyNqd9CP5+hYIoPl0tQ0b67iDIiamxQj1Gk1Ncqh7OTY4NWxKGDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8174
 
-On Tue, Nov 14, 2023 at 10:48:20AM -0500, Frank Li wrote:
-> The commit a725990557e7d ("arm64: dts: imx93: Fix the dmas entries order")
-> trigger a hidden eDMAv4 hardware limitation.
-> 
-> Some channel require stick to odd number, some require stick to even
-> number.
-> 
-> This fixes include 3 part.
-> 1. add limitation at eDMA driver.
-> 2. create dt-binding header file to share define between driver and dts
-> 3. add ODD and EVEN requirement for uart driver at dts file.
+first 6 patches use drvdata: flags to simplify some switch-case code.
+Improve maintaince and easy to read code.
 
-@vkoul:
-	Did you have chance to check this patch?
+Then add imx95 basic pci host function.
 
-Frank	
+follow two patch do endpoint code clean up.
+Then add imx95 basic endpont function.
 
-> 
-> Frank Li (4):
->   dmaengine: fsl-edma: fix eDMAv4 channel allocation issue
->   dt-bindings: dma: fsl-edma: Add fsl-edma.h to prevent hardcoding in
->     dts
->   dmaengine: fsl-edma: utilize common dt-binding header file
->   arm64: dts: imx93: Fix EDMA transfer failure
-> 
->  arch/arm64/boot/dts/freescale/imx93.dtsi | 13 +++++++++----
->  drivers/dma/fsl-edma-main.c              | 17 ++++++++++-------
->  include/dt-bindings/dma/fsl-edma.h       | 21 +++++++++++++++++++++
->  3 files changed, 40 insertions(+), 11 deletions(-)
->  create mode 100644 include/dt-bindings/dma/fsl-edma.h
-> 
-> -- 
-> 2.34.1
-> 
+Compared with v2, added EP function support and some fixes,  please change
+notes at each patches.
+
+dt-binding pass pcie node:
+
+pcie0: pcie@4c300000 {
+                        compatible = "fsl,imx95-pcie";
+                        reg = <0 0x4c300000 0 0x40000>,
+                                <0 0x4c360000 0 0x10000>,
+                                <0 0x4c340000 0 0x20000>,
+                                <0 0x60100000 0 0xfe00000>;
+                        reg-names = "dbi", "atu", "app", "config";
+                        #address-cells = <3>;
+                        #size-cells = <2>;
+                        device_type = "pci";
+                        linux,pci-domain = <0>;
+                        bus-range = <0x00 0xff>;
+                        ranges = <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
+                                 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
+                        num-lanes = <1>;
+                        num-viewport = <8>;
+                        interrupts = <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+                        interrupt-names = "msi";
+                        #interrupt-cells = <1>;
+                        interrupt-map-mask = <0 0 0 0x7>;
+                        interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 2 &gic 0 0 GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 3 &gic 0 0 GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 4 &gic 0 0 GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>;
+                        fsl,max-link-speed = <3>;
+                        clocks = <&scmi_clk IMX95_CLK_HSIO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+                        assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                         <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                         <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+                        assigned-clock-parents = <0>, <0>,
+                                                 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+                        power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+                        /* 0x30~0x37 stream id for pci0 */
+                        /*
+                         * iommu-map = <0x000 &apps_smmu 0x30 0x1>,
+                         * <0x100 &apps_smmu 0x31 0x1>;
+                         */
+                        status = "disabled";
+                };
+
+pcie1: pcie-ep@4c380000 {
+                        compatible = "fsl,imx95-pcie-ep";
+                        reg = <0 0x4c380000 0 0x20000>,
+                              <0 0x4c3e0000 0 0x1000>,
+                              <0 0x4c3a0000 0 0x1000>,
+                              <0 0x4c3c0000 0 0x10000>,
+                              <0 0x4c3f0000 0 0x10000>,
+                              <0xa 0 1 0>;
+                        reg-names = "dbi", "atu", "dbi2", "app", "dma", "addr_space";
+                        interrupts = <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>;
+                        interrupt-names = "dma";
+                        fsl,max-link-speed = <3>;
+                        clocks = <&scmi_clk IMX95_CLK_HSIO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+                        assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                         <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                         <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+                        assigned-clock-parents = <0>, <0>,
+                                                 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+                        power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+                        status = "disabled";
+                };
+
+Frank Li (14):
+  PCI: imx6: Simplify clock handling by using bulk_clk_*() function
+  PCI: imx6: Simplify phy handling by using by using
+    IMX6_PCIE_FLAG_HAS_PHY
+  PCI: imx6: Simplify reset handling by using by using
+    *_FLAG_HAS_*_RESET
+  PCI: imx6: Using "linux,pci-domain" as slot ID
+  PCI: imx6: Simplify ltssm_enable() by using ltssm_off and ltssm_mask
+  PCI: imx6: Simplify configure_type() by using mode_off and mode_mask
+  PCI: imx6: Simplify switch-case logic by involve init_phy callback
+  dt-bindings: imx6q-pcie: Clean up irrationality clocks check
+  dt-bindings: imx6q-pcie: remove reg and reg-name
+  PCI: imx6: Add iMX95 PCIe support
+  PCI: imx6: Clean up get addr_space code
+  PCI: imx6: Add epc_features in imx6_pcie_drvdata
+  dt-bindings: imx6q-pcie: Add iMX95 pcie endpoint compatible string
+  PCI: imx6: Add iMX95 Endpoint (EP) function support
+
+Richard Zhu (1):
+  dt-bindings: imx6q-pcie: Add imx95 pcie compatible string
+
+ .../bindings/pci/fsl,imx6q-pcie-common.yaml   |  17 +-
+ .../bindings/pci/fsl,imx6q-pcie-ep.yaml       |  52 +-
+ .../bindings/pci/fsl,imx6q-pcie.yaml          |  28 +-
+ drivers/pci/controller/dwc/pci-imx6.c         | 628 ++++++++++--------
+ 4 files changed, 415 insertions(+), 310 deletions(-)
+
+-- 
+2.34.1
+
