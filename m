@@ -1,48 +1,48 @@
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE245C0C
-	for <imx@lists.linux.dev>; Sun, 17 Dec 2023 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC3E46B8F
+	for <imx@lists.linux.dev>; Sun, 17 Dec 2023 17:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w2DWBvTa"
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7b7c33eb6ceso54481139f.3
-        for <imx@lists.linux.dev>; Sun, 17 Dec 2023 09:18:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GK5Fwv3p"
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7b7876fe9f0so112599239f.2
+        for <imx@lists.linux.dev>; Sun, 17 Dec 2023 09:34:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702833501; x=1703438301; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1702834497; x=1703439297; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=yvzvPPOvURo9eUay1zjag8iF5jEJZnvBduw4ZeL4Nkg=;
-        b=w2DWBvTaPy+QBHTy5ykQsazjXtMl8cY/rQZYQsBp6X2+veui5qVQ0dVafSI3mqBUqh
-         5MoW8cIs8lGbqsqP+6R3O09oXhb7PSGdWUPFWygr16wjUgOwmVU1BPL2ko/s9gPDOfxB
-         cKoGbd+IeFfeg7pXnYHl9GRtjsxan1wT1s3MmLcA18iEA93JSnIZZ8+I0w+XQNJNyljn
-         Ahmu33Eix2W6A6ddVoxxdJ5wFQnXOZjGG5vs+yclYcqHs3GSCynHS6zPzEgxECjjGvyE
-         77lOCkyZUYrq33n0rtm91Wfp6NotvcT2VBP0xTJaezDGVhL7n4O5InuQ85fP5b4IeRMu
-         ZBmg==
+        bh=CpKSkkBtYtil8YsODktdMUzC93N2+NEa5cKCVj6f1J8=;
+        b=GK5Fwv3pGpFk3xQL2c0/vIOK+ItB2t+7Or5hnZkmbFu75o8TxeMcX1S4T0FPlSQuwG
+         LV51zsJphntiTqhiRhaVnipfKcTHrvLb722fLO9wppzHReR4junnmRjZgWOdFksGHy3x
+         7/zMWBvk2/Mlpt3Kr4TW/i04C1y2pE4U5p7yVMh2ZXQvGqptA0YgyJeq71agzfEmg6x6
+         2jelsHk3HVJRmbeqGTDFuruJi6rBc9JkHJOOux6IjBm+yuGzzgTlahWhxsd6HUhQEKhh
+         j6+IQ56GV1zW4YYMrrsGJK8Yp94HACgOvvhbCL5uEhcRDD3TIbFw9HIqVjUT2GMNzDM9
+         3X6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702833501; x=1703438301;
+        d=1e100.net; s=20230601; t=1702834497; x=1703439297;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yvzvPPOvURo9eUay1zjag8iF5jEJZnvBduw4ZeL4Nkg=;
-        b=LIGsa/1B5yRfXcgomPZtdtyTgk9fx7LSWsNDGwtfZfOcC+jfNH6Nh47M2fkInczJZz
-         CDqCXl1i6zVm7nkrikyyPONFNjCJ4cxkEiwoxtalPl1afayWDDiy8NoWXgFd45Yk4aDJ
-         AkSWwKfS4cb02jYzkBxV266AG/G0EwuEhPGWkaocaG/6XiNB6oZWTOmaO7/kMV1BZtbb
-         k6X4H0MuTAlxy3wzuwAV1zOjBv3fjkXJQ52YEuNxvJW2oEMl1YJ+FloUhyWU5kSrI/Ay
-         gHcQlPm9nouMmDnbNO9oD+QMk+Xc94apYuIwz0LSsPpg3ILuswYG+z2M00heFN2fPLQr
-         tUDw==
-X-Gm-Message-State: AOJu0YxVi0XB8X1s//mI0Z8EyA8sEaWp22hVyhKPYS7y4ohffGNJewoB
-	Kyzs678s4/3QL3trXr1SDfjt
-X-Google-Smtp-Source: AGHT+IG3iO9wwq2fHlKI2rNEIawMaBY13xkH+6DklBN+WvV2sdv33dbHZONs8rR6f4Lcf7btRm5LJw==
-X-Received: by 2002:a05:6602:4902:b0:7b6:fc2d:6b52 with SMTP id ef2-20020a056602490200b007b6fc2d6b52mr17463986iob.4.1702833501039;
-        Sun, 17 Dec 2023 09:18:21 -0800 (PST)
+        bh=CpKSkkBtYtil8YsODktdMUzC93N2+NEa5cKCVj6f1J8=;
+        b=TVKHWtB3X/aN0cc/P/ufkLNeq8ZM+6Ugy26ajKIgJKJ2BBtR0Yk/q2ddQXTHDwg1Kb
+         wX25vYvJbryfZ3v02+vP2+6g4nbgCigJjWpgu+ChFMmPJBT5FHbNf9L/1KLD6qfkAVlE
+         +X8bqitLzcbNF4dqs1BZ1xf45HAk8hIfEFhxu5RG+Wh6Um7aadxuZun5j8eM0SyU5qAo
+         +Eb6Ifb+4hMLQ5u9gW5dUDjiMwha+9dljOvHXpv1FaYyeN2AsgFbkKXzLPAoyhT75pbp
+         QAuTQ/GefwMCl5W11wgOi2wPqCjbfxY69VpuXi5p7UYJ8eR9GTNhU/ee4HysnHwGzNls
+         C+ZA==
+X-Gm-Message-State: AOJu0YyFQtobIsaoRB1xuabiwxcvsHumBJ7YGfQjIN3l1VL5GwqoWMV/
+	7N88HWjVAf6livO7AX2n9IXt
+X-Google-Smtp-Source: AGHT+IGHWdluX+d13fjmLz/ABghE6j6WwAmobyNjIu6qplVK/PaeUQ8SB784FrCWR5EvBvm3cuqloQ==
+X-Received: by 2002:a92:c54f:0:b0:35f:9d17:846e with SMTP id a15-20020a92c54f000000b0035f9d17846emr4967548ilj.31.1702834496885;
+        Sun, 17 Dec 2023 09:34:56 -0800 (PST)
 Received: from thinkpad ([103.28.246.178])
-        by smtp.gmail.com with ESMTPSA id q18-20020a17090311d200b001d3867b6424sm4383852plh.113.2023.12.17.09.18.13
+        by smtp.gmail.com with ESMTPSA id b21-20020a170902d31500b001d35516262esm1303557plc.158.2023.12.17.09.34.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Dec 2023 09:18:20 -0800 (PST)
-Date: Sun, 17 Dec 2023 22:48:11 +0530
+        Sun, 17 Dec 2023 09:34:56 -0800 (PST)
+Date: Sun, 17 Dec 2023 23:04:49 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
@@ -54,11 +54,11 @@ Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
 	shawnguo@kernel.org
-Subject: Re: [PATCH v4 02/15] PCI: imx6: Simplify phy handling by using by
- using IMX6_PCIE_FLAG_HAS_PHY
-Message-ID: <20231217171811.GD6748@thinkpad>
+Subject: Re: [PATCH v4 03/15] PCI: imx6: Simplify reset handling by using by
+ using *_FLAG_HAS_*_RESET
+Message-ID: <20231217173449.GE6748@thinkpad>
 References: <20231217051210.754832-1-Frank.Li@nxp.com>
- <20231217051210.754832-3-Frank.Li@nxp.com>
+ <20231217051210.754832-4-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,112 +68,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231217051210.754832-3-Frank.Li@nxp.com>
+In-Reply-To: <20231217051210.754832-4-Frank.Li@nxp.com>
 
-On Sun, Dec 17, 2023 at 12:11:57AM -0500, Frank Li wrote:
-> Refactors the phy handling logic in the imx6 PCI driver by adding
-> IMX6_PCIE_FLAG_HAS_PHY bitmask define for drvdata::flags.
+On Sun, Dec 17, 2023 at 12:11:58AM -0500, Frank Li wrote:
+> Refactors the reset handling logic in the imx6 PCI driver by adding
+> IMX6_PCIE_FLAG_HAS_*_RESET bitmask define for drvdata::flags.
 > 
 > The drvdata::flags and a bitmask ensures a cleaner and more scalable
-> switch-case structure for handling phy.
+> switch-case structure for handling reset.
 > 
+> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+One nitpick below. With that fixed,
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
 > ---
 > 
 > Notes:
->     Change from v1 to v3:
->     - none
+>     Change from v2 to v3:
+>     - add Philipp's Reviewed-by tag
+>     Change from v1 to v2:
+>     - remove condition check before reset_control_(de)assert() because it is
+>       none ops if a NULL pointer pass down.
+>     - still keep condition check at probe to help identify dts file mismatch
+>       problem.
+>     
+>     Change from v1 to v2:
+>     - remove condition check before reset_control_(de)assert() because it is
+>       none ops if a NULL pointer pass down.
+>     - still keep condition check at probe to help identify dts file mismatch
+>       problem.
 > 
->  drivers/pci/controller/dwc/pci-imx6.c | 23 ++++++++++++++++-------
->  1 file changed, 16 insertions(+), 7 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 108 ++++++++++----------------
+>  1 file changed, 41 insertions(+), 67 deletions(-)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 2086214345e9a..91ba26a4b4c3d 100644
+> index 91ba26a4b4c3d..c1fb38a2ebeb6 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -60,6 +60,9 @@ enum imx6_pcie_variants {
->  #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
->  #define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
->  #define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
-> +#define IMX6_PCIE_FLAG_HAS_PHY			BIT(3)
-> +
-> +#define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
->  
->  #define IMX6_PCIE_MAX_CLKS       6
->  
-> @@ -1277,6 +1280,13 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_PHY)) {
-> +		imx6_pcie->phy = devm_phy_get(dev, "pcie-phy");
 
-Can't you use devm_phy_optional_get()? This will return NULL if the PHY is not
-defined in DT. So you can use IS_ERR() to catch error if there are issues in
-acquiring PHY if defined and NULL can be safely passed to other PHY APIs like
-phy_init() as well.
+[...]
 
-With this, you won't need a flag in drv_data and can also get rid of the
-condition around PHY APIs.
-
-- Mani
-
-> +		if (IS_ERR(imx6_pcie->phy))
-> +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->phy),
-> +					     "failed to get pcie phy\n");
-> +	}
-> +
->  	switch (imx6_pcie->drvdata->variant) {
->  	case IMX7D:
->  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> @@ -1306,11 +1316,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  			return dev_err_probe(dev, PTR_ERR(imx6_pcie->apps_reset),
->  					     "failed to get pcie apps reset control\n");
->  
-> -		imx6_pcie->phy = devm_phy_get(dev, "pcie-phy");
-> -		if (IS_ERR(imx6_pcie->phy))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->phy),
-> -					     "failed to get pcie phy\n");
-> -
->  		break;
->  	default:
->  		break;
-> @@ -1447,13 +1452,15 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+> @@ -1441,31 +1407,39 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  	},
+>  	[IMX7D] = {
+>  		.variant = IMX7D,
+> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX6_PCIE_FLAG_HAS_APP_RESET |
+> +			 IMX6_PCIE_FLAG_HAS_PHY_RESET,
+>  		.gpr = "fsl,imx7d-iomuxc-gpr",
+>  		.clk_names = {IMX6_CLKS_NO_PHYDRV},
+>  	},
+>  	[IMX8MQ] = {
+>  		.variant = IMX8MQ,
+> +		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
+> +			 IMX6_PCIE_FLAG_HAS_PHY_RESET,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+>  		.clk_names = {IMX6_CLKS_NO_PHYDRV, "pcie_aux"},
 >  	},
 >  	[IMX8MM] = {
 >  		.variant = IMX8MM,
-> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
-> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
-> +			 IMX6_PCIE_FLAG_HAS_PHY,
+>  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> -			 IMX6_PCIE_FLAG_HAS_PHY,
+> +			 IMX6_PCIE_FLAG_HAS_PHY |
+> +			 IMX6_PCIE_FLAG_HAS_APP_RESET,
 >  		.gpr = "fsl,imx8mm-iomuxc-gpr",
 >  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
 >  	},
 >  	[IMX8MP] = {
 >  		.variant = IMX8MP,
-> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
-> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
-> +			 IMX6_PCIE_FLAG_HAS_PHY,
+>  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> -			 IMX6_PCIE_FLAG_HAS_PHY,
+> +			 IMX6_PCIE_FLAG_HAS_PHY |
+> +			 IMX6_PCIE_FLAG_HAS_APP_RESET,
 >  		.gpr = "fsl,imx8mp-iomuxc-gpr",
 >  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
 >  	},
-> @@ -1465,12 +1472,14 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  	},
->  	[IMX8MM_EP] = {
->  		.variant = IMX8MM_EP,
-> +		.flags = IMX6_PCIE_FLAG_HAS_PHY,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mm-iomuxc-gpr",
->  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
->  	},
->  	[IMX8MP_EP] = {
->  		.variant = IMX8MP_EP,
-> +		.flags = IMX6_PCIE_FLAG_HAS_PHY,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mp-iomuxc-gpr",
->  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
-> -- 
-> 2.34.1
-> 
+>  	[IMX8MQ_EP] = {
+>  		.variant = IMX8MQ_EP,
+> +		.flags = IMX6_PCIE_FLAG_HAS_PHY |
+
+This change is not part of this patch.
+
+- Mani
 
 -- 
 மணிவண்ணன் சதாசிவம்
