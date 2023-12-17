@@ -1,48 +1,48 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07024596C
-	for <imx@lists.linux.dev>; Sun, 17 Dec 2023 17:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE245C0C
+	for <imx@lists.linux.dev>; Sun, 17 Dec 2023 17:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H0RhyzlY"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d0c4d84bf6so7997365ad.1
-        for <imx@lists.linux.dev>; Sun, 17 Dec 2023 09:07:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w2DWBvTa"
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7b7c33eb6ceso54481139f.3
+        for <imx@lists.linux.dev>; Sun, 17 Dec 2023 09:18:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702832827; x=1703437627; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1702833501; x=1703438301; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/K03hCZQCPV3Olg5sBkXZ+1FaJknZTPPokPGS7pirfk=;
-        b=H0RhyzlYfakpN6Gu9KN4L/K9bMAJeHhvG6y0Rv0JCWo4RseIpczrsXWClWJPCoEWaT
-         Z9BHLtrzQ3Rg256/uqSpOknlB2gyw0W0zufkmT0Dv6C0ia7FiJ2mah/6x9ui4ntI9hwg
-         jkqpzhb2/L/l4ek6wN1AoKgi/ZyF4asWOWgyTIZIC7fAfXFkZTdXcHs2VQeGkAg30TZu
-         fbnaCPCZTXpwdnmKvB2n7k6KUxovHSubzd74/IWkHZoq9GngO/28I9V+W8MKTDBtODFT
-         U1JnOBP5ka9AQQ/pZKODkfM1QVSCXNi3dsDG+xaSG8cDTQDkW41X9mnWlyR0GYqUgbTT
-         NkYw==
+        bh=yvzvPPOvURo9eUay1zjag8iF5jEJZnvBduw4ZeL4Nkg=;
+        b=w2DWBvTaPy+QBHTy5ykQsazjXtMl8cY/rQZYQsBp6X2+veui5qVQ0dVafSI3mqBUqh
+         5MoW8cIs8lGbqsqP+6R3O09oXhb7PSGdWUPFWygr16wjUgOwmVU1BPL2ko/s9gPDOfxB
+         cKoGbd+IeFfeg7pXnYHl9GRtjsxan1wT1s3MmLcA18iEA93JSnIZZ8+I0w+XQNJNyljn
+         Ahmu33Eix2W6A6ddVoxxdJ5wFQnXOZjGG5vs+yclYcqHs3GSCynHS6zPzEgxECjjGvyE
+         77lOCkyZUYrq33n0rtm91Wfp6NotvcT2VBP0xTJaezDGVhL7n4O5InuQ85fP5b4IeRMu
+         ZBmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702832827; x=1703437627;
+        d=1e100.net; s=20230601; t=1702833501; x=1703438301;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/K03hCZQCPV3Olg5sBkXZ+1FaJknZTPPokPGS7pirfk=;
-        b=HE55gYR0OeaeWnugoDNSne2b7iXdC4CNDjC3W3uOVA3N4wyxBDmYPbLI5TBke9Z7X8
-         xeRKDdL8VutDH2ZQvB9nne9uhySW2TirxyDTXaG1OdlG0mD8NOgdB/VVZ/LJ3uuRfkTp
-         541aUvio4kHfsfjs/qI2oVRhDXbOsoDlmkRzNlH3zoRICbWxqHZTh1pttufsYFBloZlO
-         /8X935LytX5EZSeJRAkME/PtimDsyY4oH/gd+C/hdV2qY/lEwvLdQmynNH4BDi6UpOz9
-         EGOwknjlCom9aR49o56pHx4wPr8qBH5cOQnlSueVvQKoWlrk70XnVXedTd8gYjXhKcfj
-         kalw==
-X-Gm-Message-State: AOJu0Yx/HzpOGl38SQ3pQBFrl3GmCS8UVhS0YIwbOCSy74zl0AmD+FA4
-	woLcQuOjDirzBdiCJjaVdd0p
-X-Google-Smtp-Source: AGHT+IF87cHE/NtQnAKvY7hzR4Yb1+nieura/Ja8Di49a65zvK6JCuAZ11jhxfgrEwKDGnHgmwq5ug==
-X-Received: by 2002:a17:903:11c7:b0:1d3:4783:cfc with SMTP id q7-20020a17090311c700b001d347830cfcmr5578132plh.93.1702832827014;
-        Sun, 17 Dec 2023 09:07:07 -0800 (PST)
+        bh=yvzvPPOvURo9eUay1zjag8iF5jEJZnvBduw4ZeL4Nkg=;
+        b=LIGsa/1B5yRfXcgomPZtdtyTgk9fx7LSWsNDGwtfZfOcC+jfNH6Nh47M2fkInczJZz
+         CDqCXl1i6zVm7nkrikyyPONFNjCJ4cxkEiwoxtalPl1afayWDDiy8NoWXgFd45Yk4aDJ
+         AkSWwKfS4cb02jYzkBxV266AG/G0EwuEhPGWkaocaG/6XiNB6oZWTOmaO7/kMV1BZtbb
+         k6X4H0MuTAlxy3wzuwAV1zOjBv3fjkXJQ52YEuNxvJW2oEMl1YJ+FloUhyWU5kSrI/Ay
+         gHcQlPm9nouMmDnbNO9oD+QMk+Xc94apYuIwz0LSsPpg3ILuswYG+z2M00heFN2fPLQr
+         tUDw==
+X-Gm-Message-State: AOJu0YxVi0XB8X1s//mI0Z8EyA8sEaWp22hVyhKPYS7y4ohffGNJewoB
+	Kyzs678s4/3QL3trXr1SDfjt
+X-Google-Smtp-Source: AGHT+IG3iO9wwq2fHlKI2rNEIawMaBY13xkH+6DklBN+WvV2sdv33dbHZONs8rR6f4Lcf7btRm5LJw==
+X-Received: by 2002:a05:6602:4902:b0:7b6:fc2d:6b52 with SMTP id ef2-20020a056602490200b007b6fc2d6b52mr17463986iob.4.1702833501039;
+        Sun, 17 Dec 2023 09:18:21 -0800 (PST)
 Received: from thinkpad ([103.28.246.178])
-        by smtp.gmail.com with ESMTPSA id i11-20020a170902c94b00b001d359db2370sm7463049pla.152.2023.12.17.09.06.59
+        by smtp.gmail.com with ESMTPSA id q18-20020a17090311d200b001d3867b6424sm4383852plh.113.2023.12.17.09.18.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Dec 2023 09:07:06 -0800 (PST)
-Date: Sun, 17 Dec 2023 22:36:55 +0530
+        Sun, 17 Dec 2023 09:18:20 -0800 (PST)
+Date: Sun, 17 Dec 2023 22:48:11 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
@@ -54,11 +54,11 @@ Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
 	shawnguo@kernel.org
-Subject: Re: [PATCH v4 01/15] PCI: imx6: Simplify clock handling by using
- bulk_clk_*() function
-Message-ID: <20231217170655.GC6748@thinkpad>
+Subject: Re: [PATCH v4 02/15] PCI: imx6: Simplify phy handling by using by
+ using IMX6_PCIE_FLAG_HAS_PHY
+Message-ID: <20231217171811.GD6748@thinkpad>
 References: <20231217051210.754832-1-Frank.Li@nxp.com>
- <20231217051210.754832-2-Frank.Li@nxp.com>
+ <20231217051210.754832-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,129 +68,112 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231217051210.754832-2-Frank.Li@nxp.com>
+In-Reply-To: <20231217051210.754832-3-Frank.Li@nxp.com>
 
-On Sun, Dec 17, 2023 at 12:11:56AM -0500, Frank Li wrote:
-> Refactors the clock handling logic in the imx6 PCI driver by adding
-> clk_names[] define in drvdata . Simplifies the code and makes it more
-> maintainable, as future additions of SOC support will only require
-> straightforward changes.
+On Sun, Dec 17, 2023 at 12:11:57AM -0500, Frank Li wrote:
+> Refactors the phy handling logic in the imx6 PCI driver by adding
+> IMX6_PCIE_FLAG_HAS_PHY bitmask define for drvdata::flags.
 > 
-
-Commit description should be in imperative mood as per
-Documentation/process/submitting-patches.rst:
-
-"Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-to do frotz", as if you are giving orders to the codebase to change
-its behaviour."
-
+> The drvdata::flags and a bitmask ensures a cleaner and more scalable
+> switch-case structure for handling phy.
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
 > 
 > Notes:
->     Change from v3 to v4
->     - using clk_bulk_*() API
->     Change from v1 to v3
+>     Change from v1 to v3:
 >     - none
 > 
->  drivers/pci/controller/dwc/pci-imx6.c | 128 ++++++++------------------
->  1 file changed, 38 insertions(+), 90 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 23 ++++++++++++++++-------
+>  1 file changed, 16 insertions(+), 7 deletions(-)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 74703362aeec7..2086214345e9a 100644
+> index 2086214345e9a..91ba26a4b4c3d 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-
-[...]
-
->  static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
-> @@ -1305,32 +1265,19 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  		return imx6_pcie->reset_gpio;
->  	}
->  
-> -	/* Fetch clocks */
-> -	imx6_pcie->pcie_bus = devm_clk_get(dev, "pcie_bus");
-> -	if (IS_ERR(imx6_pcie->pcie_bus))
-> -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_bus),
-> -				     "pcie_bus clock source missing or invalid\n");
-> +	while (imx6_pcie->drvdata->clk_names[imx6_pcie->clks_cnt]) {
-> +		int i = imx6_pcie->clks_cnt;
->  
-> -	imx6_pcie->pcie = devm_clk_get(dev, "pcie");
-> -	if (IS_ERR(imx6_pcie->pcie))
-> -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie),
-> -				     "pcie clock source missing or invalid\n");
-> +		imx6_pcie->clks[i].id = imx6_pcie->drvdata->clk_names[i];
-> +		imx6_pcie->clks_cnt++;
-
-You can just initialize clks_cnt in drv_data with sizeof() of clk_names.
-
-> +	}
+> @@ -60,6 +60,9 @@ enum imx6_pcie_variants {
+>  #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
+>  #define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
+>  #define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
+> +#define IMX6_PCIE_FLAG_HAS_PHY			BIT(3)
 > +
-> +	/* Fetch clocks */
-> +	ret = devm_clk_bulk_get(dev, imx6_pcie->clks_cnt, imx6_pcie->clks);
-> +	if (ret)
-> +		return ret;
+> +#define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
 >  
->  	switch (imx6_pcie->drvdata->variant) {
-> -	case IMX6SX:
-> -		imx6_pcie->pcie_inbound_axi = devm_clk_get(dev,
-> -							   "pcie_inbound_axi");
-> -		if (IS_ERR(imx6_pcie->pcie_inbound_axi))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_inbound_axi),
-> -					     "pcie_inbound_axi clock missing or invalid\n");
-> -		break;
-> -	case IMX8MQ:
-> -	case IMX8MQ_EP:
-> -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
-> -		if (IS_ERR(imx6_pcie->pcie_aux))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
-> -					     "pcie_aux clock source missing or invalid\n");
-> -		fallthrough;
->  	case IMX7D:
->  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
->  			imx6_pcie->controller_id = 1;
-> @@ -1353,10 +1300,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  	case IMX8MM_EP:
->  	case IMX8MP:
->  	case IMX8MP_EP:
-> -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
-> -		if (IS_ERR(imx6_pcie->pcie_aux))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
-> -					     "pcie_aux clock source missing or invalid\n");
->  		imx6_pcie->apps_reset = devm_reset_control_get_exclusive(dev,
->  									 "apps");
->  		if (IS_ERR(imx6_pcie->apps_reset))
-> @@ -1372,14 +1315,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  	default:
->  		break;
->  	}
-> -	/* Don't fetch the pcie_phy clock, if it has abstract PHY driver */
-> -	if (imx6_pcie->phy == NULL) {
-> -		imx6_pcie->pcie_phy = devm_clk_get(dev, "pcie_phy");
-> -		if (IS_ERR(imx6_pcie->pcie_phy))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_phy),
-> -					     "pcie_phy clock source missing or invalid\n");
-> -	}
-> -
+>  #define IMX6_PCIE_MAX_CLKS       6
 >  
->  	/* Grab turnoff reset */
->  	imx6_pcie->turnoff_reset = devm_reset_control_get_optional_exclusive(dev, "turnoff");
-> @@ -1470,6 +1405,9 @@ static void imx6_pcie_shutdown(struct platform_device *pdev)
->  	imx6_pcie_assert_core_reset(imx6_pcie);
->  }
+> @@ -1277,6 +1280,13 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		return ret;
 >  
-> +#define IMX6_CLKS_COMMON "pcie_bus", "pcie"
-> +#define IMX6_CLKS_NO_PHYDRV IMX6_CLKS_COMMON, "pcie_phy"
-> +
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_PHY)) {
+> +		imx6_pcie->phy = devm_phy_get(dev, "pcie-phy");
 
-Just use the clock names directly instead of definitions. It makes the code more
-readable.
+Can't you use devm_phy_optional_get()? This will return NULL if the PHY is not
+defined in DT. So you can use IS_ERR() to catch error if there are issues in
+acquiring PHY if defined and NULL can be safely passed to other PHY APIs like
+phy_init() as well.
 
-Rest LGTM!
+With this, you won't need a flag in drv_data and can also get rid of the
+condition around PHY APIs.
 
 - Mani
+
+> +		if (IS_ERR(imx6_pcie->phy))
+> +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->phy),
+> +					     "failed to get pcie phy\n");
+> +	}
+> +
+>  	switch (imx6_pcie->drvdata->variant) {
+>  	case IMX7D:
+>  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+> @@ -1306,11 +1316,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  			return dev_err_probe(dev, PTR_ERR(imx6_pcie->apps_reset),
+>  					     "failed to get pcie apps reset control\n");
+>  
+> -		imx6_pcie->phy = devm_phy_get(dev, "pcie-phy");
+> -		if (IS_ERR(imx6_pcie->phy))
+> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->phy),
+> -					     "failed to get pcie phy\n");
+> -
+>  		break;
+>  	default:
+>  		break;
+> @@ -1447,13 +1452,15 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  	},
+>  	[IMX8MM] = {
+>  		.variant = IMX8MM,
+> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX6_PCIE_FLAG_HAS_PHY,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
+>  	},
+>  	[IMX8MP] = {
+>  		.variant = IMX8MP,
+> -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX6_PCIE_FLAG_HAS_PHY,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
+>  	},
+> @@ -1465,12 +1472,14 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  	},
+>  	[IMX8MM_EP] = {
+>  		.variant = IMX8MM_EP,
+> +		.flags = IMX6_PCIE_FLAG_HAS_PHY,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
+>  	},
+>  	[IMX8MP_EP] = {
+>  		.variant = IMX8MP_EP,
+> +		.flags = IMX6_PCIE_FLAG_HAS_PHY,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  		.clk_names = {IMX6_CLKS_COMMON, "pcie_aux"},
+> -- 
+> 2.34.1
+> 
 
 -- 
 மணிவண்ணன் சதாசிவம்
