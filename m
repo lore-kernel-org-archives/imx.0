@@ -1,56 +1,69 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2089.outbound.protection.outlook.com [40.107.21.89])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2040.outbound.protection.outlook.com [40.107.20.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F01495D9
-	for <imx@lists.linux.dev>; Wed, 20 Dec 2023 20:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C996C487AF
+	for <imx@lists.linux.dev>; Wed, 20 Dec 2023 21:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Wx3ZWVgD"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="IVMXGxVo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Rib03Pw8Go9JUBIckA/VCOuavgMsAJxCs3LueeuFVeqZojsLvli9aKnBMwB1DryqbIOcEyu/vvYGOjjdfNjToe221MPVM5CHrdGxDR16Kx5yhz5MelBRBadJ34hrRxa74JEiN1R3rgyG/WVqdbwgNko/y2Nw0jv4vNkzU37H2qHZaIgiEI5LpLCJkR48UPCw1RLWRSCYu2ZAxNcm0GNMBJEtYWcCB6mfir2yvMvrTeskHcAQcNb5k1xcCjPYWiVIEzcjVmFsmgPmOApZrsjVlZdmuc6HD9LD0rB6mkRSrJspOvnLxw/IRWMw2jPwetkhpfLE/uO5/w5YaHwZ/3pcpA==
+ b=VwrREwPvFDm/3NrYS8cQXrjIA66LszvwiwI3C8aTdU//Vs6Ek/zzB/ffgbV5J4+lmR5lISGUV065XsoJuarF7KyX34fMY3q2o/mpmTS48Fw4veElHH0lLsGYDChcNIV8UKFMbgeqBSYou8EMmsxaP9XqQv7rREQyoljMRL8VcYq0CL9fhUNk7nSXb0D0q5kLOkC379GO2DVuINBcbNXNjlh0K4ci/YpmhzEGHsSqBlcVj2NXVVoy2DlFwtwLQVG1uobr7T/0wxLHetrr6k7IrRLIBBnBBJD6TCjKi2+j4GfGFeLA9O3gGQbdsGFlGzUYUd7t2ticERPyhubbuh+H9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IMmqdNqWeBI/k9PJ5woNz6J3+/zQQRQaw3Bwp4YM1l8=;
- b=YZVU1PhVOEDyvXm58AjwTpRImHIjdytLzzdvL8sE1Tos2S64xIIDZsS0oEXyaeLyN7x9aHmlu+d/r1YLFxOO+kyvmCL2VO7UWOyV1SbAw7QEr6KL87FScc1oLiDiW24izxtJ9vMYo8Qx8UYJQYGKyoKqi00GrBzDpnkERv/b1gXchQSf082nJrMaTFzQZmEkyQcXLW30n1neygCtDOIKz5b3AI6GiiGGqbyB9bWXzrL/Zx/VG44UmHWeYBfWyjw07mVzIUyBllsoPL9a0FDWd9GdoCTazQQQGfAAk296dX0uL6O7Vs5HvsFAM9rLE7IKnPS6KZ8oOEsKfzDIDJkZCQ==
+ bh=T2UhOf4tMLjqCdjZTnvsMfNrO8+jEp5Nx4eT91hkVBA=;
+ b=JAu18B6L8JL8OBH0ZYdQphEeeTsbzD8qj+IQU4jfmCYlNTZDpii1eYtQj6FRHw05+xnQzJ/BZzDceruq9ziB/3VYNwJfquxodny8Jvnnnaf4ePnuZu07u9RWRJL4ba9yo18MA5Xv9eDkd3RbEm9jUmjcHGrRyybXVV4mwyLavdMGtKly+GKf+FXjaa3SgtPVENDVXD4edUK85bPVB/fcULprJjkAWByJuV5EbpEhFZ+pI56JQcjVciibMTi5feQfJVINWXqD6uAJjt7Weusfgol2DGK/s8kgUthyIEjuxEtfWUkb3nX7FeXIWGJERzTuOUOm/KvV7acRirx5y2dx+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IMmqdNqWeBI/k9PJ5woNz6J3+/zQQRQaw3Bwp4YM1l8=;
- b=Wx3ZWVgDyC3Ex0OwIaOCzSiorQYe4j2n/Szsa951/Q5gofpgRnMPth0+Gu9xERuZMdc9fKempk0OgAgd8l7wCXzOP2rcFW88fA9O3YrrROlhb577yKa7kq+Ql7vmsRqNlYtKhMX2yv+SFPEhnp133KCf2/eIQPfs/NMPFJWuIPA=
+ bh=T2UhOf4tMLjqCdjZTnvsMfNrO8+jEp5Nx4eT91hkVBA=;
+ b=IVMXGxVow5ckQW8DYz7TESE81V/aJQLGZfL9C2RVAmGthmuHpqyYopyJ8rCodvg8SavKdWN+wBumfl1yNcyvsETPDcA6IRQgTh5X0bmH3IAqHp7ZwkqiokXoSkvnywdVDnldDRzL0jx+eecQAaYJsMRHx8hE+oQMVkmKUhxGp3o=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM8PR04MB7729.eurprd04.prod.outlook.com (2603:10a6:20b:24c::24) with
+ by DB8PR04MB6777.eurprd04.prod.outlook.com (2603:10a6:10:11f::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Wed, 20 Dec
- 2023 20:56:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.20; Wed, 20 Dec
+ 2023 21:36:43 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40%7]) with mapi id 15.20.7113.019; Wed, 20 Dec 2023
- 20:56:06 +0000
-Date: Wed, 20 Dec 2023 15:55:59 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Joshua Yeong <joshua.yeong@starfivetech.com>
-Cc: miquel.raynal@bootlin.com, alexandre.belloni@bootlin.com,
-	conor.culhane@silvaco.com, imx@lists.linux.dev, joe@perches.com,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	zbigniew.lukwinski@linux.intel.com
-Subject: Re: [v5 resend 3/6] i3c: add actual_len in i3c_priv_xfer
-Message-ID: <ZYNU36BoLwMVyHPv@lizhi-Precision-Tower-5810>
-References: <20231201222532.2431484-1-Frank.Li@nxp.com>
- <20231201222532.2431484-4-Frank.Li@nxp.com>
- <2cfc670f-56ad-4453-82f3-d72dcfd05840@starfivetech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ 21:36:43 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: manivannan.sadhasivam@linaro.org
+Cc: Frank.Li@nxp.com,
+	bhelgaas@google.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	festevam@gmail.com,
+	helgaas@kernel.org,
+	hongxing.zhu@nxp.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org,
+	krzysztof.kozlowski@linaro.org,
+	kw@linux.com,
+	l.stach@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	robh@kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: [PATCH v5 00/16] PCI: imx6: Clean up and add imx95 pci support
+Date: Wed, 20 Dec 2023 16:35:59 -0500
+Message-Id: <20231220213615.1561528-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2cfc670f-56ad-4453-82f3-d72dcfd05840@starfivetech.com>
-X-ClientProxiedBy: PH8PR02CA0006.namprd02.prod.outlook.com
- (2603:10b6:510:2d0::23) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+Content-Type: text/plain
+X-ClientProxiedBy: PH0PR07CA0110.namprd07.prod.outlook.com
+ (2603:10b6:510:4::25) To AM0PR04MB4834.eurprd04.prod.outlook.com
+ (2603:10a6:208:c8::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,121 +71,169 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM8PR04MB7729:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5342cd92-5a57-46d6-42ca-08dc019e15cf
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB8PR04MB6777:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8ec618b-7e3b-41bf-246b-08dc01a3c21f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	Pduo9ZDSdBA0FwFy3dbX3hLPyVPf/4kDrj2PUXwotG+lFuF3y4goOgPkUOF+CvFuhMM39rLTmY7Bc34mBGPIXAOyGIYUUmK285cWSU1SAaR51Lr/evqZklM22DAVyWwapIh3Lqk1AAaq5T0eWunKhd9d700A72Ci4pbaAhjqaTZDQJ0i503J9//l2sDxWW/hKPnRiCYDupHPmpR7C1Apy9NYAunqQjK3uY9NNKIkW//B0v2qVkpXlNqJ/Fj3QiAqj6NhLh5/pmwlHoWCt2G6HwavoqDvJCiCDZ2+crhsYQwxb1QYqH9JUmmiQu2Hn+P76rOzKWMofAUWJ7fFFq9A7tK0svA8B8uMYAcNPWZtbUjF7kc/vOTuKFGJAiIBtQ3WAkQZVJKZ1Lggs32jzaUxHUfLtypAigLAEzO8U7G8oF4mhMz3BC7OqyqERd6dCM2QL0MEMvJctKVxmqJ4XcBRaVRkFj5bJ1uALVUmA/75leRimYcazPzbjJZI26moXTeZ2UFOCOVxQUH68A+KE3YI66OJgXfAeZs8smGUwt1cCMrg4buZVzgAdMjRRcMi9ag6o2jC3IHoFBsqP+Q0IziEWj5U7gLeLv5NA5n8MnOB0XAfBDz8jbPR5MC54JbOJ8BN
+	9TzhUcUeOAl1BFfp5pAQrbzc/Uns4nyxS60m3EloN4EXp3fQZ2ob9yiASebBf6s2Ustoz4w9DRgw4+AUTd/tzJmhvk3OmlhAtRHNfiNnq9yxftQxGk1DOyVkeZ01QMpF/JqtioDe+4+aMGM42w/P2LcbSNCOXTwDymmkWhctKXWz3mnb6FBUmXXxwNuQRzE27SpLMMRxXpOYyZmlslY5x1c+517QILJWvhSYPDbqQnSfH5gSWQNx8RmnJnnjiHhGNWaqWwc0IzMnYjCz6OI5q5B5bATdq3wOG1EipwODcFJbLD1YVWdilGzMlLx3kE4nkhqOL0i3iKCOCCWTKjdoic8vF6qwgPEncr7wWWj+tsJ8vWcTAWOXktmLdtiAQwH0xA00Y0k/yr+276bTAwN/YF/+QPvr5VGS33MadK03z19GrLz8xwPhas4tHvtVtXHquwH0OZbmFNCXxqjVy0gcXOuAAMnJqL1j5Z3evC/wZ267CxbOBTrlQ6sybXdPzbJ9BlbWPXaYrnPBbaDtPLjScIHauyJQ+griQHSGHxRLQRjlL4dV2d5uhZQuwJKQmcZ00bcoJ3eUus/wSEFaJah6NmH+Xz2/qK/2fzO4bLXvDcjrLayA3RFIRqiWpflMl47/
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(396003)(39860400002)(136003)(346002)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(33716001)(38100700002)(38350700005)(5660300002)(4326008)(8676002)(8936002)(2906002)(26005)(6486002)(53546011)(52116002)(9686003)(66556008)(66476007)(6916009)(316002)(66946007)(6506007)(6666004)(478600001)(41300700001)(6512007)(86362001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(376002)(396003)(39860400002)(136003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(6486002)(6666004)(316002)(478600001)(6916009)(66476007)(66556008)(8676002)(8936002)(66946007)(83380400001)(6506007)(6512007)(52116002)(1076003)(26005)(2616005)(41300700001)(2906002)(7416002)(4326008)(5660300002)(86362001)(38350700005)(36756003)(38100700002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VDNQQ2lLL0NiUUtIQkJrZGhRTUNvbTE1NlJmbmNqa3U1MldHWndJMXRtV04y?=
- =?utf-8?B?TG9tbmVhOUx6MmEzUnBYRlJUN1NMbU0vY0I0blBROFQ3NWpCWUhLNVlWekF1?=
- =?utf-8?B?TW0wbVYvdzcySmQzRWlJdEVTejkrZmVkRi9Ca0swbW4xN01pVjAyUUdtVURJ?=
- =?utf-8?B?VDlzbXNkUDNuUG5YK0ovRE54MCs2ZmgyanhjMG9sdld0R0RPWE1Bb08vTndH?=
- =?utf-8?B?aDB4N3plWTl5K1puQnM5OTdGMWdpTmFWY1RzL1J5TElYd1VjNFBCcWJ4RVpp?=
- =?utf-8?B?Rm81MW9jb3I1eU1wUndpY25kVkppS2JUWWtuaXZiSzhJWENjRFdwRzJ4ekFS?=
- =?utf-8?B?MVB5cHZkcFVTamt0Ymh5d3JZZEZRQ0hCVVNLZHlja3FWWGEybW9WL3pZQUdF?=
- =?utf-8?B?VjRWSGsva1R6dnFGZlJTdW5iSTVmRFdyZHY5NmxUVzgvQVZzTW0yR252OEFa?=
- =?utf-8?B?eGxvUTg5TkJDRFVHYndNdVRYbnZ4WEFEWldwN2ZTbUFhVVBSL1B3eVZ5TjRP?=
- =?utf-8?B?NWgwN2RCcGhhMkdLbzN1WXBVeFpoSkRNdTd4a3FKci9lVTdjVWo5RWFTcDAw?=
- =?utf-8?B?MTczQzE1UVRVSVV5TGZIZ0toZ3FnWmJhWTJ5aVNVVkhJVWUvYXB2OEJtaHNr?=
- =?utf-8?B?TURLUmF3dkE2aHVBUTcwbkY4SnV2Q05lSnBIWmdyb1RuRndXNURHSjkvV0Y0?=
- =?utf-8?B?eENSYWIrMzR3ZGZRZ21zWXV0UGoyN2pPeVFvZG51UlRVOTBjZGVJQWlIcStC?=
- =?utf-8?B?dE05NE80K1NtM0RUanFHaEFGR1IrdmlvYnBUNEh4elhpb0FHcDcyblh6OE9B?=
- =?utf-8?B?aTgzUndjMFlkbGRYQnFQYkFoOUlHQ2loWnN1UmlSQTNrNlZFcG1aMjVvUUFy?=
- =?utf-8?B?d0lJbGlGOFM2VDFKUVJreUNGTFoxblVMdUU0bGplN3pleVo4cmpSZ2VVZjRN?=
- =?utf-8?B?SEpLQ0wrVG9vbTgxbE04OWMzNjJxd0VUbFN1Vk9COGFFUXl1enNaQmY2cTJu?=
- =?utf-8?B?VWJWUmEyS3FlMVpMaXRZb1JvUGlPMFpVREtkUEJYL21KNzRINVMyRERIdHBH?=
- =?utf-8?B?UVhTNk02V01ORGxBV1E2aTltNmsxV2hFL2U1blNaY3pzMlE5TFpURjE2U3hB?=
- =?utf-8?B?TjcwbVBvb0NydnluTC94S1g4TEhkZFRrWFd4ZVB1UG5obWp0cS9uc2ZHSnE0?=
- =?utf-8?B?TTVPVmZkSnVoTm5xSUIxeHNLSGZqWXIwSjdvQ0NvTHZ4SmJHSHcyQ1JXVElw?=
- =?utf-8?B?Z0hjd2hwVHhpSkVwZzlyQXNQUTBrUU9VUllDU1NWTzF2QXAxZGdIbjI5Tkdn?=
- =?utf-8?B?NDM4K2xvUWJwS2NHT2htT3RLQ2x6YWRCQXRaWUtoTnk1RlN3TlE1ZmMwcVNW?=
- =?utf-8?B?YmhHMnZXSGVFVFFPdy95RjVRZ01IbGxEUEFudDhENDlmckpjcTNZbnhsT1VQ?=
- =?utf-8?B?ajdXaTFCMG53YUo5VmlrTTMrQi9GZWhoaUxWTWVIZGhndWhlbG00QWdKck9k?=
- =?utf-8?B?Q2UyS2JDZmpIbXBjNHFsL3h2eC8xS1Ezb09Eb3RPNTlnaytLSUhUZ29JSmhh?=
- =?utf-8?B?M3dSdkZqZEV3WFA4T0dqTXE0ajBBelFpeXFGWHk0QWRqT2FaKzR2ek94N1k4?=
- =?utf-8?B?dys0YTRKQS9OR3RuekpUT2VwdUwwZGxCaTlVS3dkMmtNaVM4UXF2bUsvQ0RN?=
- =?utf-8?B?dWt0WGtSM0R3dk9UWTVXeTNMME82MEFOUUdranhRTUhBU3pZd3ROdXB2Zngx?=
- =?utf-8?B?ekFrckFqOVNhRExrWEdIQjNBY2tnamUzYlpac3dKb0J5cm4yZ28rOVJhdFBS?=
- =?utf-8?B?dXBubTRpcC9zUWZiOUJ3TERUbThWZEdGaVRQbkxkdndCZDYzRUJ6dkN0Q1Rz?=
- =?utf-8?B?QmNtK0ZPTlQ1U2huOXVkRG5Zc2ZMUmYrOGxEQWlBamEzMmx4NCt5dGZ2dFJj?=
- =?utf-8?B?ZU9IT3V4Q3ppT2JGdVBjU0tXczlSSFVKakdOeXROenhQaHpJQlZhcEx2aUlS?=
- =?utf-8?B?NE1ZMTBudHh0ZHVPdEszK00wZ09YY29qTXpzb25JSC80R2dZY1ptYlhlcFRB?=
- =?utf-8?B?RVJHc1J6NEJZNmg4SW53b1RoOHFnalpyckIvY2NURmE1ZGo3T0h2OGdGWnF3?=
- =?utf-8?Q?YU8FgF5vCYF4oFLC0pLH50zvv?=
+	=?us-ascii?Q?RRR9uAteuIHU5QPmrcH6Nre5/BjxIw6GS7elUNsoyBpNfcgvgMXj8exAVPPg?=
+ =?us-ascii?Q?YC35qV6vPXPXc0T/PV0WEHFUx2Y/95T3ueU+YEmH82eJwLMUbphgcJrAMTlY?=
+ =?us-ascii?Q?AF+dc+ouW8e0pJFzjaQy/yur2px+tszEB9V/4H4i637B8q2w/9Yu783VGnBZ?=
+ =?us-ascii?Q?CvXmcOelo7KOu5KJDLoPsnKHTGvsI+1FqprE74cvsrL8ii7a78qSeSuTw0vH?=
+ =?us-ascii?Q?MJwI1AE0w2/k8wNSoHRB53unGpcPS5zp65XFgCAoQHXgmmibQYvyKOufuJHO?=
+ =?us-ascii?Q?pr+lPKhSlNYaHuaBtmQy2iei7Kphc+/aNXtLrkfrYiqth7pxZsaUFdLlW8xK?=
+ =?us-ascii?Q?dWTNvSgXYSq0k2M42pklroNW1adQ7DikMF8bNvYINWqv7uUXxvXeNA47hjAp?=
+ =?us-ascii?Q?hQ8rUk68S+Pqr3nAUdwzFLR5a/7UW6uUS+fIt61iSs8HN/3Azb2togGEKjh2?=
+ =?us-ascii?Q?eXqnYlZqqHIwAems9pW87jGA826f8XdwLO7bBHOlsTZmUfQvKOP/zS8aDOGf?=
+ =?us-ascii?Q?MLmo9XzeZ1/e4ZlirjD3+15jl731WI/amZbe315MY4jN0QKcsqxmnTQyWSK+?=
+ =?us-ascii?Q?8B5W2juQY4i9e0gAcZLFrvxL7EDROYnavUd8njcerUTx3mtFDN3f2eNcdemU?=
+ =?us-ascii?Q?KOtiVfEP0d0sxnmEhtir3obAPwKMkdlqjqhqbOOkI1iX/jr3kLZDVSbYOiKG?=
+ =?us-ascii?Q?mO2zBXuMraHa3a5NvLhppRazUXGZupztCXU/ofCCbFL7obDBhWB52TD36mRd?=
+ =?us-ascii?Q?JJvqwXi6Tupx6+xkWk1jr/+P0CstJGMEcXD5CfG3Dcd2TnTeVBT82pbymPe7?=
+ =?us-ascii?Q?CeV8S3055eLvHnP+VhBcf1eB6kH+5rTBeKIy9LwHkQZJusKTj6B2qH9hMRCd?=
+ =?us-ascii?Q?KyXf2UfElf87itts0duTfkPMkwDfMKqb3T77jrUgizN1xkWK54tIERTh10Ju?=
+ =?us-ascii?Q?35zwqdSVji5fQXFQbdSFKv+XBbN3khHvsiDkq0SbIEbBx5dle6+MXIgAYNMB?=
+ =?us-ascii?Q?BtMMfdW/IYlAsVC1JURba3wrEYYfqGNZAoWpHv/7NXsAvj6vUV+gmX1CJBI/?=
+ =?us-ascii?Q?ceaY+O9H7/GHLTDV3CeuIZPAz15KfKBWArcMl9WXw9T8zUIr3M9wCtlUCf0J?=
+ =?us-ascii?Q?jdoGs7k2fjny6BA90NgeY/waiFmxHKBPvnPLkaPITObQz9DHrg/QxDE6jvIz?=
+ =?us-ascii?Q?j00mH2dcUnSP7qvr1IVAbov9nAQfgUHx8TKoLrDiPc4Xd9wncd/GLz93ouD8?=
+ =?us-ascii?Q?F3pQvlvC1J6EBTyTw3ye/kXy7+5sDcEZ45/bqEyt12DWlny4Ws2DOCQm2G43?=
+ =?us-ascii?Q?JgwR7BwfwO+Qeit9hglUNMDit1Jx7NcJAE13YV8WSj2WmdFPgkxLHCPiDq62?=
+ =?us-ascii?Q?pVgELVQ4K9NlELO/HNPdo/iSCKf8Kak6rlHS73LEO2cPeGFI8Ir+UsNV4PXx?=
+ =?us-ascii?Q?9BOUwS43JOV5AIysHeAIy4Ra5G6R3DAO9rL8wG565wDlcWvN5qOIXCCzTPWm?=
+ =?us-ascii?Q?G1zX+FFr2Qx5XPVXBjg4KogbU5L5qliPfKaPntutD5NdZeHuyvzZ5KafR45x?=
+ =?us-ascii?Q?5ZwhMxtTlT+Gg3MlTtE=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5342cd92-5a57-46d6-42ca-08dc019e15cf
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8ec618b-7e3b-41bf-246b-08dc01a3c21f
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB4834.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 20:56:06.4288
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 21:36:43.1684
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rrgdk7YiyW9srCIs8qj8ScKDULQYSBYztKC49sjj2XbGecDCdPXmW8jlz/rJcimwVERnT1T/fo7GbkovdNkm3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7729
+X-MS-Exchange-CrossTenant-UserPrincipalName: zjrkKh2+MQ6TPcmXRTU6qkZQlCM6DzU8eJ9RfIQRhw7vRAp05YKezEdrMUAEbbIkSuUwtk0nLNtYcFNCKK/Muw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6777
 
-On Wed, Dec 20, 2023 at 09:55:26AM +0800, Joshua Yeong wrote:
-> 
-> On 02/12/2023 6:25 AM, Frank Li wrote:
-> > In MIPI I3C Specification:
-> > 
-> > "Ninth Bit of SDR Target Returned (Read) Data as End-of-Data: In I2C, the
-> > ninth Data bit from Target to Controller is an ACK by the Controller. By
-> > contrast, in I3C this bit allows the Target to end a Read, and allows the
-> > Controller to Abort a Read. In SDR terms, the ninth bit of Read data is
-> > referred to as the T-Bit (for ‘Transition’)"
-> > 
-> > I3C allow devices early terminate data transfer. So need "actual_len" field
-> > to indicate how much get by i3c_priv_xfer.
-> > 
-> > Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > 
-> > Notes:
-> >      change from v4 to v5
-> >      - Add Miquel review tag
-> > 
-> >   include/linux/i3c/device.h | 2 ++
-> >   1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
-> > index 90fa83464f003..ef6217da8253b 100644
-> > --- a/include/linux/i3c/device.h
-> > +++ b/include/linux/i3c/device.h
-> > @@ -54,6 +54,7 @@ enum i3c_hdr_mode {
-> >    * struct i3c_priv_xfer - I3C SDR private transfer
-> >    * @rnw: encodes the transfer direction. true for a read, false for a write
-> >    * @len: transfer length in bytes of the transfer
-> > + * @actual_len: actual length in bytes are transferred by the controller
-> >    * @data: input/output buffer
-> >    * @data.in: input buffer. Must point to a DMA-able buffer
-> >    * @data.out: output buffer. Must point to a DMA-able buffer
-> > @@ -62,6 +63,7 @@ enum i3c_hdr_mode {
-> >   struct i3c_priv_xfer {
-> >   	u8 rnw;
-> >   	u16 len;
-> What happens if I3C device does not terminate the T-Bit because it expects
-> extra length from master?
+first 6 patches use drvdata: flags to simplify some switch-case code.
+Improve maintaince and easy to read code.
 
-If devices don't terminate T, there are two cases.
+Then add imx95 basic pci host function.
 
-1. Master send STOP, then START new transfer. I3C Devices can decide start
-new transfer, or continue transfer left data, which is totally up to how
-I3C device and devices' driver implementation.
+follow two patch do endpoint code clean up.
+Then add imx95 basic endpont function.
 
-2. Master continue toggle SCL to get extra data. Just like a low frequency
-at short period.
+Compared with v2, added EP function support and some fixes,  please change
+notes at each patches.
 
-Frank
+dt-binding pass pcie node:
 
-> > +	u16 actual_len;
-> >   	union {
-> >   		void *in;
-> >   		const void *out;
+pcie0: pcie@4c300000 {
+                        compatible = "fsl,imx95-pcie";
+                        reg = <0 0x4c300000 0 0x40000>,
+                                <0 0x4c360000 0 0x10000>,
+                                <0 0x4c340000 0 0x20000>,
+                                <0 0x60100000 0 0xfe00000>;
+                        reg-names = "dbi", "atu", "app", "config";
+                        #address-cells = <3>;
+                        #size-cells = <2>;
+                        device_type = "pci";
+                        linux,pci-domain = <0>;
+                        bus-range = <0x00 0xff>;
+                        ranges = <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
+                                 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
+                        num-lanes = <1>;
+                        num-viewport = <8>;
+                        interrupts = <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+                        interrupt-names = "msi";
+                        #interrupt-cells = <1>;
+                        interrupt-map-mask = <0 0 0 0x7>;
+                        interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 2 &gic 0 0 GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 3 &gic 0 0 GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 4 &gic 0 0 GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>;
+                        fsl,max-link-speed = <3>;
+                        clocks = <&scmi_clk IMX95_CLK_HSIO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+                        assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                         <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                         <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+                        assigned-clock-parents = <0>, <0>,
+                                                 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+                        power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+                        /* 0x30~0x37 stream id for pci0 */
+                        /*
+                         * iommu-map = <0x000 &apps_smmu 0x30 0x1>,
+                         * <0x100 &apps_smmu 0x31 0x1>;
+                         */
+                        status = "disabled";
+                };
+
+pcie1: pcie-ep@4c380000 {
+                        compatible = "fsl,imx95-pcie-ep";
+                        reg = <0 0x4c380000 0 0x20000>,
+                              <0 0x4c3e0000 0 0x1000>,
+                              <0 0x4c3a0000 0 0x1000>,
+                              <0 0x4c3c0000 0 0x10000>,
+                              <0 0x4c3f0000 0 0x10000>,
+                              <0xa 0 1 0>;
+                        reg-names = "dbi", "atu", "dbi2", "app", "dma", "addr_space";
+                        interrupts = <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>;
+                        interrupt-names = "dma";
+                        fsl,max-link-speed = <3>;
+                        clocks = <&scmi_clk IMX95_CLK_HSIO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+                        assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                         <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                         <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+                        assigned-clock-parents = <0>, <0>,
+                                                 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+                        power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+                        status = "disabled";
+                };
+
+Frank Li (15):
+  PCI: imx6: Simplify clock handling by using bulk_clk_*() function
+  PCI: imx6: Simplify phy handling by using by using
+    IMX6_PCIE_FLAG_HAS_PHY
+  PCI: imx6: Simplify reset handling by using by using
+    *_FLAG_HAS_*_RESET
+  dt-bindings: imx6q-pcie: Add linux,pci-domain as required for iMX8MQ
+  PCI: imx6: Using "linux,pci-domain" as slot ID
+  PCI: imx6: Simplify ltssm_enable() by using ltssm_off and ltssm_mask
+  PCI: imx6: Simplify configure_type() by using mode_off and mode_mask
+  PCI: imx6: Simplify switch-case logic by involve init_phy callback
+  dt-bindings: imx6q-pcie: Clean up irrationality clocks check
+  dt-bindings: imx6q-pcie: remove reg and reg-name
+  PCI: imx6: Add iMX95 PCIe support
+  PCI: imx6: Clean up get addr_space code
+  PCI: imx6: Add epc_features in imx6_pcie_drvdata
+  dt-bindings: imx6q-pcie: Add iMX95 pcie endpoint compatible string
+  PCI: imx6: Add iMX95 Endpoint (EP) function support
+
+Richard Zhu (1):
+  dt-bindings: imx6q-pcie: Add imx95 pcie compatible string
+
+ .../bindings/pci/fsl,imx6q-pcie-common.yaml   |  28 +-
+ .../bindings/pci/fsl,imx6q-pcie-ep.yaml       |  52 +-
+ .../bindings/pci/fsl,imx6q-pcie.yaml          |  28 +-
+ drivers/pci/controller/dwc/pci-imx6.c         | 628 ++++++++++--------
+ 4 files changed, 426 insertions(+), 310 deletions(-)
+
+-- 
+2.34.1
+
