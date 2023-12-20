@@ -1,59 +1,55 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2087.outbound.protection.outlook.com [40.107.6.87])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2089.outbound.protection.outlook.com [40.107.21.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC41B48780;
-	Wed, 20 Dec 2023 19:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F01495D9
+	for <imx@lists.linux.dev>; Wed, 20 Dec 2023 20:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="RO6v6mRy"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Wx3ZWVgD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A4azvvNSYPkvqAU0DnO4pQXOAlCCTYq1GzS7w1r65AjACWO6AGfmQMFNEOQMaduHT6eaRVgOusuXXlj9BQrHhb4NW3uvldo+9A1HlMdfWU4SrfG4v3k0wzw4fCM45DJXuyPGgoT4kHDpjs5rksKpzcBmcgU5CIQx0IvBqRaaJM88ertc73CsEaC7W+jQIyt4q7JN2g0JQuCfK3tdDHqVKzLEnWuIBgJlyfL143yZisaYkHg+EEQ5A50Uf55LQVYbBir1C2XwPskS985PBr2V+SpkYYKZbdfnd/B3qgRmvQ/6NdQUmlQyuWFpcnBi1gORXL7PqDYV8VGR7wOHmsd8lA==
+ b=Rib03Pw8Go9JUBIckA/VCOuavgMsAJxCs3LueeuFVeqZojsLvli9aKnBMwB1DryqbIOcEyu/vvYGOjjdfNjToe221MPVM5CHrdGxDR16Kx5yhz5MelBRBadJ34hrRxa74JEiN1R3rgyG/WVqdbwgNko/y2Nw0jv4vNkzU37H2qHZaIgiEI5LpLCJkR48UPCw1RLWRSCYu2ZAxNcm0GNMBJEtYWcCB6mfir2yvMvrTeskHcAQcNb5k1xcCjPYWiVIEzcjVmFsmgPmOApZrsjVlZdmuc6HD9LD0rB6mkRSrJspOvnLxw/IRWMw2jPwetkhpfLE/uO5/w5YaHwZ/3pcpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NW8j7GQyne+PkeRuV22J8yGlE2PlpSrquGMqnGLBI7Q=;
- b=JoUrMnqHOEICXm9wcF1/Tr3nGLxn1v9x/xUGtIppXfx0BrTchhJIyoOrZj5XKXrEvHY79Fjxo8GeLNqwuHrqUezSQWr2QA0V2ez82fjkQOxV32kt2uInhYogRocrgwj9bWC34UQdjET+htxEY6ZUHDLOekyorzeroMl21HA/qnrFQX5TyOJpUUc4qfunbY+7AR8S5Yqo/iLJD0iewpDk6fPK/HGzwa+Kd/83B8+QFXuYNY1V+6VD8maEBzPfCrFRGE7ETzk0TG4dxkywDbKM1LFJtQGa1rYVqGBltcRH8HmHBoJiS2g2lH0Ge60WvZQEz6MHUQE+uMw+pEGK09mECw==
+ bh=IMmqdNqWeBI/k9PJ5woNz6J3+/zQQRQaw3Bwp4YM1l8=;
+ b=YZVU1PhVOEDyvXm58AjwTpRImHIjdytLzzdvL8sE1Tos2S64xIIDZsS0oEXyaeLyN7x9aHmlu+d/r1YLFxOO+kyvmCL2VO7UWOyV1SbAw7QEr6KL87FScc1oLiDiW24izxtJ9vMYo8Qx8UYJQYGKyoKqi00GrBzDpnkERv/b1gXchQSf082nJrMaTFzQZmEkyQcXLW30n1neygCtDOIKz5b3AI6GiiGGqbyB9bWXzrL/Zx/VG44UmHWeYBfWyjw07mVzIUyBllsoPL9a0FDWd9GdoCTazQQQGfAAk296dX0uL6O7Vs5HvsFAM9rLE7IKnPS6KZ8oOEsKfzDIDJkZCQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NW8j7GQyne+PkeRuV22J8yGlE2PlpSrquGMqnGLBI7Q=;
- b=RO6v6mRysLB/p6WUsyQc1ojDuQcyxd2hD0DfaHKGeMfH8jVWcpaFY2ue76BGu9b0erA1dsoy9uttHsj6hHZ0v9Ri+/HoZSJRRsxEGAr5At3zQiILAqO/kn1hNRgm8L6HsT8qL+uioTYB20lj+Yl7smwKdsZU4NWtddSWKhkGhIo=
+ bh=IMmqdNqWeBI/k9PJ5woNz6J3+/zQQRQaw3Bwp4YM1l8=;
+ b=Wx3ZWVgDyC3Ex0OwIaOCzSiorQYe4j2n/Szsa951/Q5gofpgRnMPth0+Gu9xERuZMdc9fKempk0OgAgd8l7wCXzOP2rcFW88fA9O3YrrROlhb577yKa7kq+Ql7vmsRqNlYtKhMX2yv+SFPEhnp133KCf2/eIQPfs/NMPFJWuIPA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB4845.eurprd04.prod.outlook.com (2603:10a6:803:51::30)
- by GVXPR04MB9759.eurprd04.prod.outlook.com (2603:10a6:150:111::11) with
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AM8PR04MB7729.eurprd04.prod.outlook.com (2603:10a6:20b:24c::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38; Wed, 20 Dec
- 2023 19:25:01 +0000
-Received: from VI1PR04MB4845.eurprd04.prod.outlook.com
- ([fe80::dfaa:e869:45eb:76e5]) by VI1PR04MB4845.eurprd04.prod.outlook.com
- ([fe80::dfaa:e869:45eb:76e5%7]) with mapi id 15.20.7091.034; Wed, 20 Dec 2023
- 19:25:01 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: mani@kernel.org
-Cc: Frank.li@nxp.com,
-	allenbh@gmail.com,
-	bhelgaas@google.com,
-	dave.jiang@intel.com,
-	imx@lists.linux.dev,
-	jdmason@kudzu.us,
-	kishon@kernel.org,
-	kw@linux.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	ntb@lists.linux.dev
-Subject: [PATCH v3 1/1] PCI: endpoint: pci-epf-vntb: Fix transfer failure for fixed size BARs
-Date: Wed, 20 Dec 2023 14:24:27 -0500
-Message-Id: <20231220192427.1530460-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Wed, 20 Dec
+ 2023 20:56:06 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40%7]) with mapi id 15.20.7113.019; Wed, 20 Dec 2023
+ 20:56:06 +0000
+Date: Wed, 20 Dec 2023 15:55:59 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Joshua Yeong <joshua.yeong@starfivetech.com>
+Cc: miquel.raynal@bootlin.com, alexandre.belloni@bootlin.com,
+	conor.culhane@silvaco.com, imx@lists.linux.dev, joe@perches.com,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	zbigniew.lukwinski@linux.intel.com
+Subject: Re: [v5 resend 3/6] i3c: add actual_len in i3c_priv_xfer
+Message-ID: <ZYNU36BoLwMVyHPv@lizhi-Precision-Tower-5810>
+References: <20231201222532.2431484-1-Frank.Li@nxp.com>
+ <20231201222532.2431484-4-Frank.Li@nxp.com>
+ <2cfc670f-56ad-4453-82f3-d72dcfd05840@starfivetech.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0354.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::29) To AM6PR04MB4838.eurprd04.prod.outlook.com
+In-Reply-To: <2cfc670f-56ad-4453-82f3-d72dcfd05840@starfivetech.com>
+X-ClientProxiedBy: PH8PR02CA0006.namprd02.prod.outlook.com
+ (2603:10b6:510:2d0::23) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -62,102 +58,121 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB4845:EE_|GVXPR04MB9759:EE_
-X-MS-Office365-Filtering-Correlation-Id: 835c913a-674c-4459-6f77-08dc01915388
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM8PR04MB7729:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5342cd92-5a57-46d6-42ca-08dc019e15cf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	H8Rk1OeZGYRf5NCJ9BlyTkSW85UbU6ITzJm7U1xjkK9oQpRZ2y14EmoHacGICtIwjiISUpGErGbfK9BP9HRotkAhlwBouMC2uOdJssPulg4Ckysh1JRoPGDCDMAr3BebASJcmxGtLLxFZJ6OpPvHAgkOBzS0Wqte1I/nSpTS/hPVuZfHYw3pm0PPMtN2d/QodEdJ0AG5PWr2tgNGBqCVtKhhdhKzPeZvS5gBTif7nb1dLgYdBGLo2rcJw3uCz2/YAi1kBUIO5/IRCysvz/zgzigBcNJ9mNzg0996NwBC87Z+5ICshm54rpLVxhDZ1f8gAXJKZ5bfn1mE0CqConcbxM5skH2u4Qn9Hg09W+ihb2LyfO2ApD0FGb/b/fl5WZvgiQNFu1P+B8Idla2grecFxOHH1B219ouX+KcqoEBdSguUWWKugfjiuoNaLLvoK54ravLyAP5WDAzvVINbPToyaZrQqZSgtoy7JhcSzV8cSji5osPCiqJjwPpSXrkVKephYNTfVAl+G2Vojmc2nUNhhz4E4Fn00V2VHoyhMewLuSF68w/XCTr4W7RyWttsqZUGnvCThah95Q30Qbxf1swm0EDvXHeDjYmKaK4pYj3iVPifAY4C+54SwLp5vfC/3Pff
+	Pduo9ZDSdBA0FwFy3dbX3hLPyVPf/4kDrj2PUXwotG+lFuF3y4goOgPkUOF+CvFuhMM39rLTmY7Bc34mBGPIXAOyGIYUUmK285cWSU1SAaR51Lr/evqZklM22DAVyWwapIh3Lqk1AAaq5T0eWunKhd9d700A72Ci4pbaAhjqaTZDQJ0i503J9//l2sDxWW/hKPnRiCYDupHPmpR7C1Apy9NYAunqQjK3uY9NNKIkW//B0v2qVkpXlNqJ/Fj3QiAqj6NhLh5/pmwlHoWCt2G6HwavoqDvJCiCDZ2+crhsYQwxb1QYqH9JUmmiQu2Hn+P76rOzKWMofAUWJ7fFFq9A7tK0svA8B8uMYAcNPWZtbUjF7kc/vOTuKFGJAiIBtQ3WAkQZVJKZ1Lggs32jzaUxHUfLtypAigLAEzO8U7G8oF4mhMz3BC7OqyqERd6dCM2QL0MEMvJctKVxmqJ4XcBRaVRkFj5bJ1uALVUmA/75leRimYcazPzbjJZI26moXTeZ2UFOCOVxQUH68A+KE3YI66OJgXfAeZs8smGUwt1cCMrg4buZVzgAdMjRRcMi9ag6o2jC3IHoFBsqP+Q0IziEWj5U7gLeLv5NA5n8MnOB0XAfBDz8jbPR5MC54JbOJ8BN
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4845.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(346002)(396003)(39860400002)(136003)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(8936002)(8676002)(4326008)(6666004)(6506007)(6512007)(316002)(6916009)(83380400001)(66476007)(7416002)(52116002)(66556008)(2906002)(5660300002)(66946007)(36756003)(38100700002)(41300700001)(6486002)(1076003)(478600001)(2616005)(26005)(86362001)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(396003)(39860400002)(136003)(346002)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(33716001)(38100700002)(38350700005)(5660300002)(4326008)(8676002)(8936002)(2906002)(26005)(6486002)(53546011)(52116002)(9686003)(66556008)(66476007)(6916009)(316002)(66946007)(6506007)(6666004)(478600001)(41300700001)(6512007)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2OjFeElPyO0t0Y1weRqqJzzPHVtgmC/joE9Dioel/MxK6racuocExP1XoT5V?=
- =?us-ascii?Q?+PGeWTEG74nPr4oNhtcu7ZPJLTYQ/slu3s7IeuVsk15t6n1bCNEv0zf134tX?=
- =?us-ascii?Q?mrPPAl3dYlAHVYwrXfXh3IUZQTLesVWOpZ6bAcmy1A9RyDXHMlWu2d1IFjpT?=
- =?us-ascii?Q?bTOW+9rbPxxErDs0PUWgIW1dvQcySzocwv4vePwudoYZtfAKyEwevCZndlq0?=
- =?us-ascii?Q?0jKuzkP8VoToBY7confTyUG0JdwN01w5ubTup7ttgx2Rn85TIAxu08f3V0T+?=
- =?us-ascii?Q?otM3d9adOi/qWwCY0e+1z0NduamnhOBQG7+tIPMnQ0Um43Cil3gB0HAYzvjG?=
- =?us-ascii?Q?4JqoTwfYsGiIDgz+A4cTtuU0nVHiGLgQwglW4sR3XNCRlzWFYLpkRliPXMvD?=
- =?us-ascii?Q?wuoBDD+xYKqO+yoqqwkD23uF9VLgPdBWvWxXVaYUB+wjKdyfgniGcDNCFrMg?=
- =?us-ascii?Q?utdrHdwTeYNnrLTmylYksQg1xusDAorH/Rv48UQbCiYQmG8eGtSZuJ+qEBdO?=
- =?us-ascii?Q?Y4IvXvilSf0Fxs6iQdvlGUG68s3HjrA+owL1szEGc+QnlIzatlcuZN23Zs3b?=
- =?us-ascii?Q?04AYG9k3GarDJ4cPlh4KbvEFDf0tRXzY93O/p/1IVZElGJqN3/xlbOMqAKRl?=
- =?us-ascii?Q?vCBXA2tfiejKyGs+tR4OcBB2+FOLIUUFjPBkC6zvzp/8G+N3/KC05nUjYl/d?=
- =?us-ascii?Q?eOTUUQtqpMGE6SrdJnJncPiS+rz3cG2OKQknJ7XZRhHuXYYi6RhaAJUD6qwQ?=
- =?us-ascii?Q?4iIh4I2dHfhQSBb5sbr4XRVOcw+wD1pSq206SEPWThOdkQHwlV17VBnQGAw6?=
- =?us-ascii?Q?Mza8ynE77RRjugEM8oz2BDIwK+1NGHGmZZdYwCiPUTphjNMMcYwSFt/DErdJ?=
- =?us-ascii?Q?7AQGPZ3T7hb7ff81UMU3chcQLgUU5Y9C7lYR59VUiH9CdngHFOD3cbjlpHz+?=
- =?us-ascii?Q?us4Wm6qwBsQmK/px8W/rj+zrcALKQbmJEGFRKslrvx1JHOeRYwKwKoi3dC38?=
- =?us-ascii?Q?xfK5/KcJgKgFRwvA/nHHyr9NxjfJrfhNXg5Ba+72hIQ3UoYW3TrRaKTLPsFq?=
- =?us-ascii?Q?LREJWcnH1N0hGx4PIQodMxHk30+KcT73tuHkHsaYBUEOejzKZ6nEE1DwzQ4N?=
- =?us-ascii?Q?6S/i4sXjbFocDKSdIJmogWKNBj1KCitY0FFtsNl3poHqxeOLMtM5+bOlOy5f?=
- =?us-ascii?Q?3tdqU5ZyR6JY1Ha4J7Y/4qKB0/ByOLoySVFifvHP8hSiGErElETvwy5BDqV2?=
- =?us-ascii?Q?0oF76o8XEIdVEOzhlI3jRgqygtJXUs1HE6dKb9Tegck4p8rMFoDUHwi2UYuA?=
- =?us-ascii?Q?rB5moH54GiE5Z+dBZeFs9zvXkMfKorX19R3mMSsdsdkiG8p4e1tnm+4m2bCr?=
- =?us-ascii?Q?wMVYb/iY67mAVet5dXvxxBH/eMcjPNAy2nbTFCMygvGP9VXza+LaORpta+X/?=
- =?us-ascii?Q?WuyQsvzaoMPG+gH3HUuhGS9Wpu4tHiFrjMPX/ISAoHVLmyl1KoevPKn2MLCq?=
- =?us-ascii?Q?lDMHD4J1szy6W13Zn3akWZu+oPtGeRb2XM0WKeVOp7tur6jM3Gc+Y7wz5a/h?=
- =?us-ascii?Q?Acsph6QyviC+kLeFOxU=3D?=
+	=?utf-8?B?VDNQQ2lLL0NiUUtIQkJrZGhRTUNvbTE1NlJmbmNqa3U1MldHWndJMXRtV04y?=
+ =?utf-8?B?TG9tbmVhOUx6MmEzUnBYRlJUN1NMbU0vY0I0blBROFQ3NWpCWUhLNVlWekF1?=
+ =?utf-8?B?TW0wbVYvdzcySmQzRWlJdEVTejkrZmVkRi9Ca0swbW4xN01pVjAyUUdtVURJ?=
+ =?utf-8?B?VDlzbXNkUDNuUG5YK0ovRE54MCs2ZmgyanhjMG9sdld0R0RPWE1Bb08vTndH?=
+ =?utf-8?B?aDB4N3plWTl5K1puQnM5OTdGMWdpTmFWY1RzL1J5TElYd1VjNFBCcWJ4RVpp?=
+ =?utf-8?B?Rm81MW9jb3I1eU1wUndpY25kVkppS2JUWWtuaXZiSzhJWENjRFdwRzJ4ekFS?=
+ =?utf-8?B?MVB5cHZkcFVTamt0Ymh5d3JZZEZRQ0hCVVNLZHlja3FWWGEybW9WL3pZQUdF?=
+ =?utf-8?B?VjRWSGsva1R6dnFGZlJTdW5iSTVmRFdyZHY5NmxUVzgvQVZzTW0yR252OEFa?=
+ =?utf-8?B?eGxvUTg5TkJDRFVHYndNdVRYbnZ4WEFEWldwN2ZTbUFhVVBSL1B3eVZ5TjRP?=
+ =?utf-8?B?NWgwN2RCcGhhMkdLbzN1WXBVeFpoSkRNdTd4a3FKci9lVTdjVWo5RWFTcDAw?=
+ =?utf-8?B?MTczQzE1UVRVSVV5TGZIZ0toZ3FnWmJhWTJ5aVNVVkhJVWUvYXB2OEJtaHNr?=
+ =?utf-8?B?TURLUmF3dkE2aHVBUTcwbkY4SnV2Q05lSnBIWmdyb1RuRndXNURHSjkvV0Y0?=
+ =?utf-8?B?eENSYWIrMzR3ZGZRZ21zWXV0UGoyN2pPeVFvZG51UlRVOTBjZGVJQWlIcStC?=
+ =?utf-8?B?dE05NE80K1NtM0RUanFHaEFGR1IrdmlvYnBUNEh4elhpb0FHcDcyblh6OE9B?=
+ =?utf-8?B?aTgzUndjMFlkbGRYQnFQYkFoOUlHQ2loWnN1UmlSQTNrNlZFcG1aMjVvUUFy?=
+ =?utf-8?B?d0lJbGlGOFM2VDFKUVJreUNGTFoxblVMdUU0bGplN3pleVo4cmpSZ2VVZjRN?=
+ =?utf-8?B?SEpLQ0wrVG9vbTgxbE04OWMzNjJxd0VUbFN1Vk9COGFFUXl1enNaQmY2cTJu?=
+ =?utf-8?B?VWJWUmEyS3FlMVpMaXRZb1JvUGlPMFpVREtkUEJYL21KNzRINVMyRERIdHBH?=
+ =?utf-8?B?UVhTNk02V01ORGxBV1E2aTltNmsxV2hFL2U1blNaY3pzMlE5TFpURjE2U3hB?=
+ =?utf-8?B?TjcwbVBvb0NydnluTC94S1g4TEhkZFRrWFd4ZVB1UG5obWp0cS9uc2ZHSnE0?=
+ =?utf-8?B?TTVPVmZkSnVoTm5xSUIxeHNLSGZqWXIwSjdvQ0NvTHZ4SmJHSHcyQ1JXVElw?=
+ =?utf-8?B?Z0hjd2hwVHhpSkVwZzlyQXNQUTBrUU9VUllDU1NWTzF2QXAxZGdIbjI5Tkdn?=
+ =?utf-8?B?NDM4K2xvUWJwS2NHT2htT3RLQ2x6YWRCQXRaWUtoTnk1RlN3TlE1ZmMwcVNW?=
+ =?utf-8?B?YmhHMnZXSGVFVFFPdy95RjVRZ01IbGxEUEFudDhENDlmckpjcTNZbnhsT1VQ?=
+ =?utf-8?B?ajdXaTFCMG53YUo5VmlrTTMrQi9GZWhoaUxWTWVIZGhndWhlbG00QWdKck9k?=
+ =?utf-8?B?Q2UyS2JDZmpIbXBjNHFsL3h2eC8xS1Ezb09Eb3RPNTlnaytLSUhUZ29JSmhh?=
+ =?utf-8?B?M3dSdkZqZEV3WFA4T0dqTXE0ajBBelFpeXFGWHk0QWRqT2FaKzR2ek94N1k4?=
+ =?utf-8?B?dys0YTRKQS9OR3RuekpUT2VwdUwwZGxCaTlVS3dkMmtNaVM4UXF2bUsvQ0RN?=
+ =?utf-8?B?dWt0WGtSM0R3dk9UWTVXeTNMME82MEFOUUdranhRTUhBU3pZd3ROdXB2Zngx?=
+ =?utf-8?B?ekFrckFqOVNhRExrWEdIQjNBY2tnamUzYlpac3dKb0J5cm4yZ28rOVJhdFBS?=
+ =?utf-8?B?dXBubTRpcC9zUWZiOUJ3TERUbThWZEdGaVRQbkxkdndCZDYzRUJ6dkN0Q1Rz?=
+ =?utf-8?B?QmNtK0ZPTlQ1U2huOXVkRG5Zc2ZMUmYrOGxEQWlBamEzMmx4NCt5dGZ2dFJj?=
+ =?utf-8?B?ZU9IT3V4Q3ppT2JGdVBjU0tXczlSSFVKakdOeXROenhQaHpJQlZhcEx2aUlS?=
+ =?utf-8?B?NE1ZMTBudHh0ZHVPdEszK00wZ09YY29qTXpzb25JSC80R2dZY1ptYlhlcFRB?=
+ =?utf-8?B?RVJHc1J6NEJZNmg4SW53b1RoOHFnalpyckIvY2NURmE1ZGo3T0h2OGdGWnF3?=
+ =?utf-8?Q?YU8FgF5vCYF4oFLC0pLH50zvv?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 835c913a-674c-4459-6f77-08dc01915388
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5342cd92-5a57-46d6-42ca-08dc019e15cf
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 19:25:01.0973
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 20:56:06.4288
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XRZEXJpHIgZCeWaAhU2QjdtAFWjjjjnVKDjoOWDzNU2o4RDOiin+xWxBvxn6EOnuMcO1Ra2XroLCexZtX0ZEoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9759
+X-MS-Exchange-CrossTenant-UserPrincipalName: rrgdk7YiyW9srCIs8qj8ScKDULQYSBYztKC49sjj2XbGecDCdPXmW8jlz/rJcimwVERnT1T/fo7GbkovdNkm3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7729
 
-For the inbound MEM/IO TLPs, iATU on the endpoint expects the target
-address to be aligned to the size of the BAR. For configurable BARs, there
-is no issue because both host and endpoint will know the exact size of the
-BAR region. But for fixed size BARs available in some controllers, if the
-BAR size advertised by the endpoint is not same as of the actual BAR size
-used in the controller, then the MEM/IO TLPs generated by the host will not
-be translated properly by the endpoint iATU.
+On Wed, Dec 20, 2023 at 09:55:26AM +0800, Joshua Yeong wrote:
+> 
+> On 02/12/2023 6:25 AM, Frank Li wrote:
+> > In MIPI I3C Specification:
+> > 
+> > "Ninth Bit of SDR Target Returned (Read) Data as End-of-Data: In I2C, the
+> > ninth Data bit from Target to Controller is an ACK by the Controller. By
+> > contrast, in I3C this bit allows the Target to end a Read, and allows the
+> > Controller to Abort a Read. In SDR terms, the ninth bit of Read data is
+> > referred to as the T-Bit (for ‘Transition’)"
+> > 
+> > I3C allow devices early terminate data transfer. So need "actual_len" field
+> > to indicate how much get by i3c_priv_xfer.
+> > 
+> > Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > 
+> > Notes:
+> >      change from v4 to v5
+> >      - Add Miquel review tag
+> > 
+> >   include/linux/i3c/device.h | 2 ++
+> >   1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
+> > index 90fa83464f003..ef6217da8253b 100644
+> > --- a/include/linux/i3c/device.h
+> > +++ b/include/linux/i3c/device.h
+> > @@ -54,6 +54,7 @@ enum i3c_hdr_mode {
+> >    * struct i3c_priv_xfer - I3C SDR private transfer
+> >    * @rnw: encodes the transfer direction. true for a read, false for a write
+> >    * @len: transfer length in bytes of the transfer
+> > + * @actual_len: actual length in bytes are transferred by the controller
+> >    * @data: input/output buffer
+> >    * @data.in: input buffer. Must point to a DMA-able buffer
+> >    * @data.out: output buffer. Must point to a DMA-able buffer
+> > @@ -62,6 +63,7 @@ enum i3c_hdr_mode {
+> >   struct i3c_priv_xfer {
+> >   	u8 rnw;
+> >   	u16 len;
+> What happens if I3C device does not terminate the T-Bit because it expects
+> extra length from master?
 
-So if the fixed size BARs are available in endpoint controllers, always use
-the actual BAR size.
+If devices don't terminate T, there are two cases.
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+1. Master send STOP, then START new transfer. I3C Devices can decide start
+new transfer, or continue transfer left data, which is totally up to how
+I3C device and devices' driver implementation.
 
-Notes:
-    Change from v2 to v3
-    - rework commti message
-    - add fixes and cc stable
-    - return -ENOMEN when request size > fix bar size
-    Change from v1 to v2
-    - Remove unnessary set align when fix_bar_size.
+2. Master continue toggle SCL to get extra data. Just like a low frequency
+at short period.
 
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Frank
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 3f60128560ed0..85120978fb8c9 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -550,6 +550,14 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
- 
- 	barno = ntb->epf_ntb_bar[BAR_DB];
- 
-+	if (epc_features->bar_fixed_size[barno]) {
-+		if (size > epc_features->bar_fixed_size[barno]) {
-+			dev_err(dev, "Fixed BAR%d is too small for doorbell\n", barno);
-+			return -ENOMEM;
-+		}
-+		size = epc_features->bar_fixed_size[barno];
-+	}
-+
- 	mw_addr = pci_epf_alloc_space(ntb->epf, size, barno, align, 0);
- 	if (!mw_addr) {
- 		dev_err(dev, "Failed to allocate OB address\n");
--- 
-2.34.1
-
+> > +	u16 actual_len;
+> >   	union {
+> >   		void *in;
+> >   		const void *out;
