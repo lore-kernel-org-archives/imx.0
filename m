@@ -1,124 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BAC78E64;
-	Thu, 21 Dec 2023 22:52:21 +0000 (UTC)
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.215])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF121804E
+	for <imx@lists.linux.dev>; Fri, 22 Dec 2023 12:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNLxSN+7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F25C433C8;
-	Thu, 21 Dec 2023 22:52:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703199141;
-	bh=2Fl8vOhQ64Y7+GgI7caXKohE+Cft0TcjWAivLqeuiFQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XNLxSN+70e8qMK73Id71VXLGuAaG3NTghRPhaZpVfAD2rF/O45r/AQ3iqsrWqacAE
-	 U4eipX3qpFy7P8RiHpK8b9sL+ue0nyzfspB9FI1EA+iR0szp/pHUzZagySvSzQ5qLF
-	 EyHNw/jWoYr6RCBT2PWpHfj68Vyts84fRPDcdCGnL3u/1SErtA5td8dmoalY9/qjHL
-	 XEnxuVi5SZBgpyXT4cpbEeqgJ+qvDbAYZVOGdOypLMfZUME8fXP9deNNZLT4vY3VIO
-	 NGVNEr3+aYhQ+ScrV5rhEIyI/G549Zx1GnmhyCH6Q+tdLNMIgrYdIc9xkshr7Yy9rG
-	 Rwpzdwx520EZQ==
-Received: (nullmailer pid 234434 invoked by uid 1000);
-	Thu, 21 Dec 2023 22:52:18 -0000
-Date: Thu, 21 Dec 2023 16:52:18 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: manivannan.sadhasivam@linaro.org, bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev, kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org, kw@linux.com, l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, lpieralisi@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH v5 11/16] dt-bindings: imx6q-pcie: Add imx95 pcie
- compatible string
-Message-ID: <20231221225218.GA232422-robh@kernel.org>
-References: <20231220213615.1561528-1-Frank.Li@nxp.com>
- <20231220213615.1561528-12-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="p+Cyvlqo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=6lNfPcJ9vgueCowbSfbMeQeA1QK5J3XCK2/SVo88cZw=;
+	b=p+CyvlqoaM1DlLmGvPWaPaqex3Qn9UPhvDQBcZEsSlvxc2aHj9dS3nOa7Jd6aO
+	G/XDCbFbe5gqTevFru8Vez0EPOe1wmiTzgPXqC1tDRuCC8fz6p+99yctdG2MCt+i
+	ge0SHmU1EJ/XNSNdO+Rtw+cEMl6U3ly3GJTRbYox241ik=
+Received: from [192.168.71.6] (unknown [114.92.108.205])
+	by zwqz-smtp-mta-g5-0 (Coremail) with SMTP id _____wDXH3RlgIVlc7QaCg--.29733S2;
+	Fri, 22 Dec 2023 20:26:29 +0800 (CST)
+Message-ID: <3c51ffb5-8198-459f-b4db-b9136a407c08@163.com>
+Date: Fri, 22 Dec 2023 20:26:13 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231220213615.1561528-12-Frank.Li@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] Revert "usb: gadget: f_uvc: change endpoint
+ allocation in uvc_function_bind()"
+To: Frank Li <Frank.Li@nxp.com>, peter.chen@kernel.org
+Cc: a-govindraju@ti.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, pawell@cadence.com,
+ rogerq@kernel.org
+References: <20231221165426.1590866-1-Frank.Li@nxp.com>
+ <20231221165426.1590866-5-Frank.Li@nxp.com>
+Content-Language: en-US
+From: yuan linyu <cugyly@163.com>
+In-Reply-To: <20231221165426.1590866-5-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDXH3RlgIVlc7QaCg--.29733S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar4UKw4kXw1xJr45Xr4Dtwb_yoW8ZF18pa
+	1rJ3yrCr47tFZxtwn7Jwn5ZF47Xan2qrWqgF9rK343Zr43Xr93CFyUK348KFy5Cr97AF40
+	qFZak3yS9r9YkrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j1mhrUUUUU=
+X-CM-SenderInfo: pfxj5zr16rljoofrz/1tbiERdO417++Nl7bwAAs+
 
-On Wed, Dec 20, 2023 at 04:36:10PM -0500, Frank Li wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
-> 
-> Add i.MX95 PCIe "fsl,imx95-pcie" compatible string.
-> Add "atu" and "app" to reg-names.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+
+On 2023/12/22 00:54, Frank Li wrote:
+> This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
+>
+> gadget_is_{super|dual}speed() API check UDC controller capitblity. It
+> should pass down highest speed endpoint descriptor to UDC controller. So
+> UDC controller driver can reserve enough resource at check_config(),
+> especially mult and maxburst. So UDC driver (such as cdns3) can know need
+> at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
+> this uvc functions.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> 
-> Notes:
->     Change from v2 to v3
->     - Remove krzy's ACK tag
->     - Add condition check for imx95, which required more reg-names then old
->     platform, so need Krzy review again,
->     
->     Change from v1 to v2
->     - add Krzy's ACK tag
-> 
->  .../bindings/pci/fsl,imx6q-pcie-common.yaml    |  1 +
->  .../bindings/pci/fsl,imx6q-pcie.yaml           | 18 ++++++++++++++++++
->  2 files changed, 19 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-> index a284a27c5e873..1b63089ff0aee 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-> @@ -207,6 +207,7 @@ allOf:
->                  - fsl,imx6sx-pcie
->                  - fsl,imx6q-pcie
->                  - fsl,imx6qp-pcie
-> +                - fsl,imx95-pcie
->                  - fsl,imx6sx-pcie-ep
->                  - fsl,imx6q-pcie-ep
->                  - fsl,imx6qp-pcie-ep
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> index f20d4f0e3cb6c..8633c622bd178 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> @@ -29,6 +29,7 @@ properties:
->        - fsl,imx8mq-pcie
->        - fsl,imx8mm-pcie
->        - fsl,imx8mp-pcie
-> +      - fsl,imx95-pcie
+>  drivers/usb/gadget/function/f_uvc.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
+> index faa398109431f..cc4e08c8169b4 100644
+> --- a/drivers/usb/gadget/function/f_uvc.c
+> +++ b/drivers/usb/gadget/function/f_uvc.c
+> @@ -719,13 +719,21 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
+>  	}
+>  	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
 >  
->    clocks:
->      minItems: 3
-> @@ -80,6 +81,22 @@ required:
->  allOf:
->    - $ref: /schemas/pci/snps,dw-pcie.yaml#
->    - $ref: /schemas/pci/fsl,imx6q-pcie-common.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - fsl,imx95-pcie
-> +    then:
-> +      properties:
-> +        reg:
-> +          minItems: 4
-> +        reg-names:
-> +          items:
-> +            - const: dbi
-> +            - const: atu
-> +            - const: app
-> +            - const: config
+> -	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
 
-Add new entries to the end. Originally, you had dbi and config. Add ata 
-and app on the end.
+how about all none-0 endpoint used for all uvc ?
 
+please add some comment if currently this is only way to fix your issue.
+
+need it for stable ?
+
+> +	if (gadget_is_superspeed(c->cdev->gadget))
+> +		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
+> +					  &uvc_ss_streaming_comp);
+> +	else if (gadget_is_dualspeed(cdev->gadget))
+> +		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
+> +	else
+> +		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
 > +
->    - if:
->        properties:
->          compatible:
-> @@ -101,6 +118,7 @@ allOf:
->          compatible:
->            enum:
->              - fsl,imx8mq-pcie
-> +            - fsl,imx95-pcie
->      then:
->        properties:
->          clocks:
-> -- 
-> 2.34.1
-> 
+>  	if (!ep) {
+>  		uvcg_info(f, "Unable to allocate streaming EP\n");
+>  		goto error;
+>  	}
+>  	uvc->video.ep = ep;
+>  
+> +	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+>  	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+>  	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+>  
+
