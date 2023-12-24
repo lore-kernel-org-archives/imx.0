@@ -1,58 +1,68 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2050.outbound.protection.outlook.com [40.107.20.50])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2079.outbound.protection.outlook.com [40.107.22.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925F9DF58
-	for <imx@lists.linux.dev>; Sun, 24 Dec 2023 15:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95916D267
+	for <imx@lists.linux.dev>; Sun, 24 Dec 2023 18:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="OiOc/23p"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EEXJ7kx3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QoPflTfSURGHyFTUdjlpToZ4nVhCSleAxa9LyICZDot4vN5X5abSIWTfndc6c71Ip3SEoSsOisXHTwzxA+EIp0HPI1nr9aLxqDifsqNzKnYUAVXKcE+3zj5ZaZav6qGKraELOM3sz3p2zHesw0ov7zJ3vVJ0eFvf4kfHCxuWHcfeoK2xGV4/2n0EnaPboRmSxmz3DsSzo7aUOgjWzn2URVzWNP4xX6TrNuF/CR8fCtVeDpQ9n0Dqjw5ajrPoevSxQ1Nok7hUj5q3KoJeJJsAZHARSqJsTAQotfbQypP6YbvKJxmqCqrivmP0FII+TwsqkGn1p2rdkTLwIAw4V5uGvg==
+ b=B1v4FqNvm8O9gtTKvdW8QvRpjrPGRxmK2dhMHJjMjbQ10WegDVM2VXGr7hL2/BcOpJ62z9wuUaVdQ9MykjDr4wCEnI7WoXej3jA/qioGNMK1bwM0qLR7dwuBXSPdoM85VLAhkBY1AsSx3vjnjT5uCXAVUt2D9MvrauUipQOmb/CY1uR2Xci//Y/xcClG/uuHwEkYBeWgMfGVyE9d2rlFQzPjWNGFi5BIh++ja86ol1/Msv0EuMrxgPXhqz350ao/J+IDJwLgjrjEJNVn5x5fljXRHdF9Y17XaZFI7aZ0ymqJBN/66a7ESQDqAxnbHP/3tvAxGZrSlJo5Vz3v1pHQjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XXpaAagGWQhxWjrKD7Fn5u0Z2e0L3PSMrRONa1XQftI=;
- b=FIvkjoGTec5XA4n3ME2mzhV2qMBAx8ks3lZF1MOSicBTdpfyWM58SFwCF/EUPYY2qn9TweAHwACLSu3KhrvDSPlPnZpc3cvbXUP99TWtLRyL4yAcjdddwLuPzJ4gxwF//6FVQ6jB1GjgJq/G4BWWF+GR/N/mLCJqxKK187G9LSfqOI3xdxZUuuP2J8VGMrAQuu4ekzI+I3S6t0XofurtMEreh0fL4H3qGEjXb50WBj9+YYPGYqYjtOeYYyzqaWiPXaUJbVaf/rDmj3bjOhJ4DQffActf8j6aLzGODT/uxkRxQFSNcsdUIY0uNtGMMFlrnDEGY9IkDiDwLDuHmVbfKw==
+ bh=DzfXaHwhpGJrlOiicly0YZxCE/pScxhw2QhpZqk9HcA=;
+ b=nIEDPflh+Tyzpzx9EKL1bGxDphQT3oMKwvsMsUNftvB4PNzPB74Ic3dpJnEjum6Owky+1MTNPtiNUHsoBBPn4oIlmLrG8fJA+MdHtpwNHNqfmOrVHlBUaJ9+PQs8UUcqkEBMfcPUwGlBLa6YEOKcuDyLjz3Sjx+9MuHiHHeqJpFPIFdnNj9Gm1L2aF2k/peLYjXiHsrjV/4ioGyaSVFMHhIjx+MublXvJJzh+WtRJJBAUa64RS9I5yfU8wMsNwaugOlkJP+diPL/DMtNY6qyY/daWFRFpvKWjwcoFRt1L56LuIFZd9mHEe2KUxvNplq1wDLHTe1Sp0u2ii37MP5LZw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XXpaAagGWQhxWjrKD7Fn5u0Z2e0L3PSMrRONa1XQftI=;
- b=OiOc/23p1335SugnglauWSc08httD8TURRuYCjPqatkUwCAhpMgq+TFz2lflNCAtBhG+YF064u+8ZYUR+KlZgXriSkg+hCOoZ496t4N2Fp9El2LEf29RZQDNgMr7R/p9RsipDKEythSSZdYD7cy4yls+Fub+WsqtY9MCzKDNagk=
+ bh=DzfXaHwhpGJrlOiicly0YZxCE/pScxhw2QhpZqk9HcA=;
+ b=EEXJ7kx3Ef2blFEZ1EwEysUN6Z88ZilZmvbCbaO3tMreWkmn6ueWbZvumf+4HJKuUjoFtWADWieIe1y0dnfyAuuWw6IkX+yg/yQ012jDLeFY1hKzuq8MMF1sxV9CoIjMtBRJzCPDdflPYqamTDr3d96MWSEylx1h9aV+H57MSMg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DBAPR04MB7285.eurprd04.prod.outlook.com (2603:10a6:10:1ac::7) with
+ by AS5PR04MB10020.eurprd04.prod.outlook.com (2603:10a6:20b:682::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.24; Sun, 24 Dec
- 2023 15:38:45 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.26; Sun, 24 Dec
+ 2023 18:33:01 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::95f5:5118:258f:ee40%7]) with mapi id 15.20.7113.026; Sun, 24 Dec 2023
- 15:38:45 +0000
+ 18:33:00 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: cugyly@163.com
+To: krzysztof.kozlowski@linaro.org
 Cc: Frank.Li@nxp.com,
-	a-govindraju@ti.com,
-	gregkh@linuxfoundation.org,
+	bhelgaas@google.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	festevam@gmail.com,
+	helgaas@kernel.org,
+	hongxing.zhu@nxp.com,
 	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org,
+	kw@linux.com,
+	l.stach@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
 	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	pawell@cadence.com,
-	peter.chen@kernel.org,
-	rogerq@kernel.org
-Subject: [PATCH v2 4/4] Revert "usb: gadget: f_uvc: change endpoint allocation in uvc_function_bind()"
-Date: Sun, 24 Dec 2023 10:38:16 -0500
-Message-Id: <20231224153816.1664687-5-Frank.Li@nxp.com>
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: [PATCH v6 00/16] PCI: imx6: Clean up and add imx95 pci support
+Date: Sun, 24 Dec 2023 13:32:26 -0500
+Message-Id: <20231224183242.1675372-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231224153816.1664687-1-Frank.Li@nxp.com>
-References: <20231224153816.1664687-1-Frank.Li@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0058.namprd11.prod.outlook.com
- (2603:10b6:a03:80::35) To AM6PR04MB4838.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0169.namprd03.prod.outlook.com
+ (2603:10b6:a03:338::24) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -61,106 +71,169 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBAPR04MB7285:EE_
-X-MS-Office365-Filtering-Correlation-Id: f29f1699-46d7-4a6c-5f5e-08dc04966a1d
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS5PR04MB10020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cb67010-debf-43c4-ad3d-08dc04aec186
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	LlwfngmD7DMyOLGaZng41dNWX8he15EEXZX/N3YULuQD3janEH+PMrjCdDXzlZJt8FQlkj+n3Q0MLIP2UYT9h1//rOUpV6+hOUnrUR38r/574NYmNQ3ih+DdTwoqWjcJefGTzw1L0TYHSUXaHQcIldUgh8mO3LYyp9kT+y51rcrW08jxYVjySwDM/qeeGbplt08tOGEJsdYtOhCz07g7Em0soyIjipyBafHDOB3aHWAs20iRS1bByidGMj2Ro6DtSnwMgJ536G/3D0MYa27iQFEbiaMYikZu6j10aCM8SXbrdHmMlNbr2TAf4D29mWaCHewB5HZ2b6ddE+u+OtxkbLVIO/7+KimsuJwi4c3ZHWJqhb+GsnoLT6+zqtrYVMgIeatA+JRxL234+jzyvV24+hc7qssDqjm6JRyrROA2v21DirnAQ8dwnQNW2GjLJfG1aDPFz1ZPtS9S7GUpzepcE3yaqiYSg0k9vba0Lr7B1aAvSC/dfL3qtJLsMAoEn1yWZgXenclm2BNGl9bnuGGpUwnz5UEfy9hg8E7p2l3izpdWA+zNknu7DBHfWzl4RLhX4DbhEZF9R9a3jjE9rxfF5KNeMCcj8yWkCgkltPRp3E1heeXqZlVNLpcYBlldxVmoyptlz10xAu+hZnCq2Mvokg==
+	9wHTQ4py+wAESetb1eOEYmTlNhQdEFBIAyCQVD2iBBedrBfF1E7xabsBIDZKDhnf0YyESF+vUW0OKhueEtR7rXm2Li1XRDbmVJpl+KZFO8PrYJgzmtVqW/oiR2V6o/dvN4LCXnFM6CTxkv0y0VSUnEtE3tMRORLxFUdUfgObgWjzevjFYV/F8fU+8Y0Ix5NNHaDswcUDhqKcEVh3CPUILUErKGjqX63NVA+uq/1C+b4GR/MaOaRGIiuMRbkFa/QosugHifrIeD72obXwx0D3T1H4pc7dhq5hglB4Pzkacxxs0eKZu9eOHjuK0V3t6ZMIu8nK9UROteeBSB3eD3GqPEkOd4Rd4YMbigeUj6cMEj/qu2hMiLrBTrsOH6DUili8uS/tqqnaH3LaiH/dp4jGNxg4VsSRdNUCoLw28epPQzNf1kSehTurwX1E+TN3TVUk1+bQ18CI/6MWHSlwJuPXKluMIlcAhg1jiw2jkkcY1wdH1CK2Z4pXSEF0UsWiZCaMzNr50UT3gkR3FHbjDxiWvyOJWDhShNSpW4Z2fZcsqS1hlr/JT01MRAfQ2enMfuQzo8jC/ltb9kXDd9AsnQQS+368Ua27fN7/XHhdd5AlOgxY9x5DD7MiaoMxY8ZyyPcm
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(136003)(376002)(366004)(39850400004)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(66556008)(66476007)(66946007)(38100700002)(6916009)(316002)(2616005)(1076003)(26005)(4326008)(8936002)(8676002)(478600001)(6486002)(83380400001)(41300700001)(52116002)(2906002)(6506007)(6666004)(6512007)(36756003)(86362001)(38350700005)(5660300002)(1491003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(366004)(346002)(376002)(136003)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(38350700005)(41300700001)(86362001)(26005)(36756003)(2616005)(1076003)(83380400001)(38100700002)(52116002)(478600001)(6916009)(316002)(66476007)(6666004)(66946007)(66556008)(6512007)(6506007)(8676002)(8936002)(7416002)(5660300002)(2906002)(4326008)(6486002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2bZHOFYsc5VXbvKiyPUaXlV2CeGfgGU+iU4abCTlqYyehKg9yDdJy0v7s92A?=
- =?us-ascii?Q?HvhjIuzeutAfKz4m5MtzgMIbjSogBB0HkG5KBQXdnMjEjZqp7IJMchxiSqVB?=
- =?us-ascii?Q?dnH4vZQ1/uwZoFN6bZ4DwWS5U9C2VuVb4bzX2vcFEe8NVoYfTVB0D040hqki?=
- =?us-ascii?Q?xYx5+U0XTmiSitwJH22Ru7lhW0IITWJuNPAfHnDbitK1nUp2h2d4OMtdhNSv?=
- =?us-ascii?Q?7UQQr0LNq38oaT1OsL8aGu1XbYZLIkC0KInBu7ZU9mcwYgnwZ+QTtWUVL503?=
- =?us-ascii?Q?slFlIi307QmE2Ie8KfvwRrUJuXgSuQ4sgasS6IUhsNaWDSZ0zZxyGy3HUlZI?=
- =?us-ascii?Q?zGWx6VXsNITDq9R4wrXHUrBq/QeS2fb2Lk+Ppj0ecoYGEPnxEIT+aD+AGzur?=
- =?us-ascii?Q?rPiaUKOh3x1ksxlgmavHpWghcFoZiy+Xb+n7TDZWGcRznPHKQbuxq6/8z6th?=
- =?us-ascii?Q?Gjf4yQ5VeTaNElra4mKSepv0BaJk0YUww9ovM1gIaRaGH5O0PjuQJirtHtKK?=
- =?us-ascii?Q?kMNOPh6G0vZKoV4OGcNGuVOPx/o5DaadBQdhwr4LuEkfKLvrmPenLdpHvhTS?=
- =?us-ascii?Q?OKyTOr45jkyqRE7yyXgI0UzvdMY2wDoNBzP0ne2BuDYoieyJ/Z3M30yi7icx?=
- =?us-ascii?Q?DHatVave8ZhwuOLCZ7PJPWSmytbx5zbu5SVUGJ/CgZcvc+LiU/q3LZni5bd0?=
- =?us-ascii?Q?XZP/SfL/d9ukdVb2c4Y1NXLxBj+UiNo9Q6V+jrnM/HCzvMBn/hAk7q9MKjXH?=
- =?us-ascii?Q?esb7lRTKzp2FPmz55hy98maRZLZSle3rgqhz0LXYz+3PqzULg8VBZUmngJyU?=
- =?us-ascii?Q?u8FW1AY1LBglJ4wA0q/5qku8IQ5mh6TzZ2z249jkUBly89DFNIWcEf4ITrG4?=
- =?us-ascii?Q?aRT/r7A7Zst8P6m3mO+hsy4euWozQNh2pwDcB4LbS9fK5gbcFabXSH/xiew5?=
- =?us-ascii?Q?PeUrY3VIbNTm29uB7iEK9dOrlg+G9YkBjDLJbXWNzoASHdDFAWQhSYE1CfWz?=
- =?us-ascii?Q?wZeNtqvrHrXVFaBpSuVKd502JV2t+Dof22OrziDPbNdyQh4EBfsEp3Mlb5Kg?=
- =?us-ascii?Q?8ufvvvQVUYe1n0DfUgMSEq2GJSmzWn8BccxisOG2Lf+oLhJOme4w/lsF3oT5?=
- =?us-ascii?Q?dMo8PiCgu2F9ecU45yZKwaCpaXMrDtW2242eLNjxMzXzZrBXXwrXimOQpPDx?=
- =?us-ascii?Q?cz+9WuhGRodn36Zby94umLCCWNbQ1stQ4RRVVq3zLuUhWZXe+9U9u9E2wqIe?=
- =?us-ascii?Q?e4p1zm+WR9B4qTYNsDxFvwfPomx02xppn+5LjyAsdEB/3wpRLfjMGuJtptrp?=
- =?us-ascii?Q?qy7MBVTLZaSur7vCJ/d8EP9hbjzeQQ2tla6SlzGBzIFD7Nhvg4va/oQVBeXa?=
- =?us-ascii?Q?IaV+qq5lJ/W9FAcZNX+fd+y2SU3o3S+cnjsZPvLX2880SNdRh48c6WiyUe/r?=
- =?us-ascii?Q?gm3KnxwHmR96MOXio1B6wYL6z7iIwixNU+odpTAwOjZXYNwffr7kLjlYGIal?=
- =?us-ascii?Q?sZ98Pyq8xz6Dx/mZE6w4by1hTnvUHDIppGRfs9TJLTTaZ826iMfPqn21v6WU?=
- =?us-ascii?Q?W1OqsK4bugMTXk5VQZc=3D?=
+	=?us-ascii?Q?AQFC51soZ3e9ogtmL46ryFz7A+kBWAGaMFmNJjgHZfqHYpp4/C84gM9qybUK?=
+ =?us-ascii?Q?QujqFDKCsH3QszO2fzKEyNxDfrsbThzxLmNsFbd27bEtBxSZuXYskOfVe6VA?=
+ =?us-ascii?Q?alvtyj8J+oPY1uZi24zWd88bRXXZDtw1+QqQyPzI5EfMw6hXR4ln09ghAIjg?=
+ =?us-ascii?Q?wv9tJmK2NJ+W4p76C2MGfN+qXbld7nL3V31AhFhT38c6uJyf57ThGYYQgFKf?=
+ =?us-ascii?Q?rOvjBjPYbaV1GYw/+qWD5F2isZhOMMykn0W/K4m37JjcE6GUaCk1tbWSGYu0?=
+ =?us-ascii?Q?Q+A1euv3PCS8hKj1uO3lwsxY5otuSMuXQiCIPkz9NgLYOWN4Jd23WWJxQvOV?=
+ =?us-ascii?Q?jsGvpx/hHgR1v7BpV8mVShOvzfTDe1Cx/9AXWhu8/sH8lmFAuC5LFkw3dJCu?=
+ =?us-ascii?Q?1jrlgJcs+Ve3DEqlMTCyyIBk3DM9R9a2/NPEVAMkiNXwLnBBBzKLt13iqzQH?=
+ =?us-ascii?Q?meUYb6POc0q/6JnSBDz70lKb8o3hu9hjsOcyB2N7YUKbhy7aUevcCtX0O8wC?=
+ =?us-ascii?Q?B3PJu+voUct140SLxRanfTxxMYQDtGRIfU1TLzpC179cnsDmRfrB6bkqwTGs?=
+ =?us-ascii?Q?0z9sEKjGrNnq4odiR5kLs6P/psl5pABQ4PhdmUCYJxC0uabctG1s1W1zBZS6?=
+ =?us-ascii?Q?7hZgE7KIn6DAfrpD1w1glkqSyqIYgY983iNsjGTZbDFYgZ9Jg4xdQ5Hvqvd7?=
+ =?us-ascii?Q?le+/yZChs3l2P8HeFKHU9Lzy4Gss25B9yvaE44BgpUEcvFVulf4WLacbf4Pw?=
+ =?us-ascii?Q?C/H/qxHWnyDBzo5I3euglW5wl6LMSxFBPYc+uouYDltVH+LpueE7lFRnOJTB?=
+ =?us-ascii?Q?fqpeh5KeyYGlxqEad8yKMO+Y/nCwcjDu98GG9ivuy01h2H5Yh/OZa3/CcMdI?=
+ =?us-ascii?Q?sAtHKrAC7NJatT41Fk1u0HHfH8L4J5vAeAgMctkJ+jd8A2fLhIASqJVuGvrB?=
+ =?us-ascii?Q?sEkLcTKbzTT2xtjIkqw/MXva7bqk4S1pfKSyS6Z9qWLB11XKfDod1aVgs201?=
+ =?us-ascii?Q?50IBSj/A9dfq/+mp+ptu+4YKpvncWXGAfc3x1z9YjNsVp26EGAv6FQS9vQmz?=
+ =?us-ascii?Q?ptcpWVcCEEFLYt1OGiCq+g5Mlss7m+toZCfl8xzAXASCaHtCREfbu7bcyirt?=
+ =?us-ascii?Q?19PSoJpmMMjDEIc8jVlqza4vpXILn2xavryPrMs2HIH+26lr1oXzt7ejB3bF?=
+ =?us-ascii?Q?yX6JmMIRumlzqDk3VRgd+Aeh1XgTkVzDh1LJbjtobxoQsda+ZmDJEnUQD3El?=
+ =?us-ascii?Q?tpl5EVnMSd6I7fEpGKlE0ESHFcwjv69ogW1JtYvbw/P/JVaC6qvsTz+vSU9Y?=
+ =?us-ascii?Q?2xRLlmOK/OhpLXO2OFPjObZDiUkaIPJhIz5Bme0bIp1uelphMNYis46l8iZC?=
+ =?us-ascii?Q?KLZaZ6DWIPm8I28iTX/IEmXQoUVsV3DjkVENY8E7Iq7r645S7Ztb58nymPod?=
+ =?us-ascii?Q?jDuSsWjjNmKy0suZmseQAT84qD5gadGuJquJ8cy+DQy3FvX8qcrmc+EQI8la?=
+ =?us-ascii?Q?q2fuyqOMh2fqchjphaeij/wo5b1WuqvJYbfzkGF9mz6NtM5Y/ZQMR0Imbemy?=
+ =?us-ascii?Q?3HSjzM83K2W4f85k8GE=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f29f1699-46d7-4a6c-5f5e-08dc04966a1d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb67010-debf-43c4-ad3d-08dc04aec186
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2023 15:38:45.3239
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2023 18:33:00.4757
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WeZZzOsWEhLg27En6EUwRFvH3Z1iByx4hetxlfEMpllhXWu1sDLiy1eEJWBAmUPrxBU/6YOQ6eXvlqeOAwXbJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7285
+X-MS-Exchange-CrossTenant-UserPrincipalName: bN5KFMp/VK3gWdjVejJTJKWrGXCl3S+wURG3Rc5CCR5IVTcCw0UliZ+pGW9q0AH0DM2e1chvyFc5LFK+AwdaOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10020
 
-This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
+first 6 patches use drvdata: flags to simplify some switch-case code.
+Improve maintaince and easy to read code.
 
-gadget_is_{super|dual}speed() API check UDC controller capitblity. It
-should pass down highest speed endpoint descriptor to UDC controller. So
-UDC controller driver can reserve enough resource at check_config(),
-especially mult and maxburst. So UDC driver (such as cdns3) can know need
-at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
-this uvc functions.
+Then add imx95 basic pci host function.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/usb/gadget/function/f_uvc.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+follow two patch do endpoint code clean up.
+Then add imx95 basic endpont function.
 
-diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-index faa398109431f..3d5c03e1361e4 100644
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -719,13 +719,29 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
- 	}
- 	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
- 
--	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
-+	/*
-+	 * gadget_is_{super|dual}speed() API check UDC controller capitblity. It should pass down
-+	 * highest speed endpoint descriptor to UDC controller. So UDC controller driver can reserve
-+	 * enough resource at check_config(), especially mult and maxburst. So UDC driver (such as
-+	 * cdns3) can know need at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal
-+	 * memory for this uvc functions. This is the only straightforward method to resolve the UDC
-+	 * resource allocation issue in the current gadget framework.
-+	 */
-+	if (gadget_is_superspeed(c->cdev->gadget))
-+		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
-+					  &uvc_ss_streaming_comp);
-+	else if (gadget_is_dualspeed(cdev->gadget))
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
-+	else
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
-+
- 	if (!ep) {
- 		uvcg_info(f, "Unable to allocate streaming EP\n");
- 		goto error;
- 	}
- 	uvc->video.ep = ep;
- 
-+	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 
+Compared with v2, added EP function support and some fixes,  please change
+notes at each patches.
+
+dt-binding pass pcie node:
+
+pcie0: pcie@4c300000 {
+                        compatible = "fsl,imx95-pcie";
+                        reg = <0 0x4c300000 0 0x40000>,
+                                <0 0x4c360000 0 0x10000>,
+                                <0 0x4c340000 0 0x20000>,
+                                <0 0x60100000 0 0xfe00000>;
+                        reg-names = "dbi", "atu", "app", "config";
+                        #address-cells = <3>;
+                        #size-cells = <2>;
+                        device_type = "pci";
+                        linux,pci-domain = <0>;
+                        bus-range = <0x00 0xff>;
+                        ranges = <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
+                                 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
+                        num-lanes = <1>;
+                        num-viewport = <8>;
+                        interrupts = <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+                        interrupt-names = "msi";
+                        #interrupt-cells = <1>;
+                        interrupt-map-mask = <0 0 0 0x7>;
+                        interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 2 &gic 0 0 GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 3 &gic 0 0 GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
+                                        <0 0 0 4 &gic 0 0 GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>;
+                        fsl,max-link-speed = <3>;
+                        clocks = <&scmi_clk IMX95_CLK_HSIO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+                        assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                         <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                         <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+                        assigned-clock-parents = <0>, <0>,
+                                                 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+                        power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+                        /* 0x30~0x37 stream id for pci0 */
+                        /*
+                         * iommu-map = <0x000 &apps_smmu 0x30 0x1>,
+                         * <0x100 &apps_smmu 0x31 0x1>;
+                         */
+                        status = "disabled";
+                };
+
+pcie1: pcie-ep@4c380000 {
+                        compatible = "fsl,imx95-pcie-ep";
+                        reg = <0 0x4c380000 0 0x20000>,
+                              <0 0x4c3e0000 0 0x1000>,
+                              <0 0x4c3a0000 0 0x1000>,
+                              <0 0x4c3c0000 0 0x10000>,
+                              <0 0x4c3f0000 0 0x10000>,
+                              <0xa 0 1 0>;
+                        reg-names = "dbi", "atu", "dbi2", "app", "dma", "addr_space";
+                        interrupts = <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>;
+                        interrupt-names = "dma";
+                        fsl,max-link-speed = <3>;
+                        clocks = <&scmi_clk IMX95_CLK_HSIO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+                        assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+                                         <&scmi_clk IMX95_CLK_HSIOPLL>,
+                                         <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+                        assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+                        assigned-clock-parents = <0>, <0>,
+                                                 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+                        power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+                        status = "disabled";
+                };
+
+Frank Li (15):
+  PCI: imx6: Simplify clock handling by using bulk_clk_*() function
+  PCI: imx6: Simplify phy handling by using by using
+    IMX6_PCIE_FLAG_HAS_PHY
+  PCI: imx6: Simplify reset handling by using by using
+    *_FLAG_HAS_*_RESET
+  dt-bindings: imx6q-pcie: Add linux,pci-domain as required for iMX8MQ
+  PCI: imx6: Using "linux,pci-domain" as slot ID
+  PCI: imx6: Simplify ltssm_enable() by using ltssm_off and ltssm_mask
+  PCI: imx6: Simplify configure_type() by using mode_off and mode_mask
+  PCI: imx6: Simplify switch-case logic by involve init_phy callback
+  dt-bindings: imx6q-pcie: Clean up irrationality clocks check
+  dt-bindings: imx6q-pcie: restruct reg and reg-name
+  PCI: imx6: Add iMX95 PCIe support
+  PCI: imx6: Clean up get addr_space code
+  PCI: imx6: Add epc_features in imx6_pcie_drvdata
+  dt-bindings: imx6q-pcie: Add iMX95 pcie endpoint compatible string
+  PCI: imx6: Add iMX95 Endpoint (EP) function support
+
+Richard Zhu (1):
+  dt-bindings: imx6q-pcie: Add imx95 pcie compatible string
+
+ .../bindings/pci/fsl,imx6q-pcie-common.yaml   |  28 +-
+ .../bindings/pci/fsl,imx6q-pcie-ep.yaml       |  57 +-
+ .../bindings/pci/fsl,imx6q-pcie.yaml          |  49 +-
+ drivers/pci/controller/dwc/pci-imx6.c         | 628 ++++++++++--------
+ 4 files changed, 452 insertions(+), 310 deletions(-)
+
 -- 
 2.34.1
 
