@@ -1,163 +1,177 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2050.outbound.protection.outlook.com [40.107.20.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D9E15C2
-	for <imx@lists.linux.dev>; Sun, 24 Dec 2023 09:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295B463B2
+	for <imx@lists.linux.dev>; Sun, 24 Dec 2023 15:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ihKlN3Qa"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-554473c653aso2444815a12.0
-        for <imx@lists.linux.dev>; Sun, 24 Dec 2023 01:09:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703408990; x=1704013790; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0ahUPKt92hONYigUcgDHyggf6b+R+BYkSbn9Gja+1+U=;
-        b=ihKlN3QavL/XUufv839FSlgtwdSjyzXdAqTiSOyb1NAuSvGcrn6UJz9KjMiPwsAbat
-         mxSDhFYOrTrDbgUWnT8oYdEFuhFJRCpEviI7sNhOa9EhYPsgm8ep/D/TvOVRakfeYqX5
-         iyPwxVPYLiBUV1uz5XgfDsmX2JDq258ds0KAI9mBa18I0Kr78Mllaiini6Fqp8bCX7Xn
-         iPbg1Rf071MOJO+ktonO8tUbDYpe150WtNaiQ6BxYI3+gA3xaL4gt4ndjftfYhayZAeB
-         3vaHl05xO24kG4NnZ87CbxASfzISbQCWwduoiqwUQOc+fhsSFtVrpU5XATffrLjmqlY9
-         pUWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703408990; x=1704013790;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ahUPKt92hONYigUcgDHyggf6b+R+BYkSbn9Gja+1+U=;
-        b=puoobiUsT2Zhd/fS86DpuFnaFTUbRIyVlxF09BLBkSqO60woKPxypYp7yOvVr86wCr
-         c/9VIwlEAfIA+TGhg8R2J7MlR/Uwh53IVgTzlRAeidWllwsr2kpEPERixFM23ERJgqpK
-         lnV1GyQYJgUPenn9AqUvqSSWNFo7x1uG6NQpRJmH1B9/ezgucNv3W4cLQYTEHl+UaEI9
-         +kz1NvBJ+Exs/ElAdPNC8rE8UFLX3N3ZFxmF+9CzBlQ02qLw0DMBD2BGk42ER9wr6d+i
-         Rp2Es0gKc3/Sk5YZBMTgmJF7Go50oWGdhRBm6Iu0UDMzGSpWbxlUKzKi7ooy0DmyWuZg
-         IuWw==
-X-Gm-Message-State: AOJu0YztIqzkSBbRgWeZ29cPHT9HUC0SdJPEFeTFMDkHOOanimjv6Tc0
-	s04ee3sivsNpCgsyRlX3bCZVvKE3tePabQ==
-X-Google-Smtp-Source: AGHT+IFet/WmYMfv0IiYS+M4ysfiZApvLfjMgkeLl/ZfzaAdQW1ngYenxiwU3fQGv7gG5P8CIgxt2g==
-X-Received: by 2002:a17:906:217:b0:a23:309b:e0cb with SMTP id 23-20020a170906021700b00a23309be0cbmr1830456ejd.155.1703408990725;
-        Sun, 24 Dec 2023 01:09:50 -0800 (PST)
-Received: from [192.168.0.22] ([78.10.206.178])
-        by smtp.gmail.com with ESMTPSA id kx26-20020a170907775a00b00a1f65433d08sm3858248ejc.172.2023.12.24.01.09.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Dec 2023 01:09:50 -0800 (PST)
-Message-ID: <5676cb8d-c1fb-4b01-b0e0-beb76f2b6ca5@linaro.org>
-Date: Sun, 24 Dec 2023 10:09:48 +0100
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kwg0wfts"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SRXFw9IPx3a4wJxvGwD1oliOcrgf8dlUBehwU9r1sUjLZZYh0krg/ZRjAcbfM8wCv6dQGJZCS/nn49YZlqvgk7TItNt+B7EcSdHLajVRCdhtTil2Emp+y6DNlAeUtzWyvRQ3OhdhvqAUFBTY/voXVSrgFjmg4qoMA+W+S0OU4wcMUZl2QDoaBb+vjBbGESle81ZUOdCnfwazebJixz6RNliw/EX5kgA4jdRaUgRnrb3aYh1Lt62sHq8q4Vaf5DRCmWgdjqQSM77gyeu7KV0cGHBhrTYyC7d2glOwOD6FzuoGoh/L+SPml70i1B3E2O5+d2UTK91qy2A93UW2fIMtrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zn656wf7jWRtMbaJ0yciWoaFHp398qLzkH39Y1NJk/4=;
+ b=DTM5DGEV2tkKHlRqB7yjlfAvUCBTf5mFyq6/4GmdeLMokcCX/n/fsXOJzGxdvEoWfdE8mBJOtG5i+Z7CTrIYsHTW6XzJGY0CS8r3ZRPDDa2K6RzsNsxGRsUmzh2kEr4XTIB3jtOo9NMG5JmXrBz4OYKtYIQ0WVT/Wk+i0AZLVnjKUtp4YvlA83O6stfmy6iZqjD4IkqyfxH/yH0CGb0cXRXqExgg7q+ZXkNcytC/iUFdIqhgQ/QZv+Em+e1AZeUmx1AbosuNzGm8Fewm79dkd/2s8sIHNqAHtxYmxrpRSl6JC9cArtTZAt/jWU/ftGTtEJ8UGN0KH8PemtpcpRUk+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zn656wf7jWRtMbaJ0yciWoaFHp398qLzkH39Y1NJk/4=;
+ b=Kwg0wftscqtc71b/AGuLNbaSUwg7WKUnYpdvvPIFYwRKvAePwcyhBiLURCCPiYHucnlFxA08h1xBMKWrYM9bHl6QhE09/BTPMllmZiJg3FzW2SVnajCxHNPHvPJzL7vBZIRRtJCkn/J6YLBulGCrYXyh88IFDZkBzIk3cVwuBf8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by DBAPR04MB7285.eurprd04.prod.outlook.com (2603:10a6:10:1ac::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.24; Sun, 24 Dec
+ 2023 15:38:34 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::95f5:5118:258f:ee40%7]) with mapi id 15.20.7113.026; Sun, 24 Dec 2023
+ 15:38:33 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: cugyly@163.com
+Cc: Frank.Li@nxp.com,
+	a-govindraju@ti.com,
+	gregkh@linuxfoundation.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	pawell@cadence.com,
+	peter.chen@kernel.org,
+	rogerq@kernel.org
+Subject: [PATCH v2 0/4] usb: cdns3: usb uvc iso transfer fix
+Date: Sun, 24 Dec 2023 10:38:12 -0500
+Message-Id: <20231224153816.1664687-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR11CA0058.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::35) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/16] dt-bindings: imx6q-pcie: Add iMX95 pcie endpoint
- compatible string
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>
-Cc: manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
- conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
- helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
- kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
- l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org,
- linux-imx@nxp.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
- shawnguo@kernel.org
-References: <20231220213615.1561528-1-Frank.Li@nxp.com>
- <20231220213615.1561528-16-Frank.Li@nxp.com>
- <8fb359da-2d35-4cea-8a62-199fde1d9a29@linaro.org>
- <ZYe30jb7dxRxQ3hr@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZYe30jb7dxRxQ3hr@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBAPR04MB7285:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00ddd024-24ef-4122-b2af-08dc04966336
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	LwSF1GBeYwVHRlEmGazblcWv42DrtLXl9839kpDnM27Fhvxs0AeuZH3pmGKevCAN75o2pFHzD+bSQVusJipj31w/VOS6QJCnAvqat49OcDIlGSOAoLTMYwrifkxEIDfDtP63ewCMHlAJqYbUfLiPt0JLmyL0hh/vFPV8FqJfIlPItE99GXKOezq7fAQTtGIcjap4/GC6sJ7ZY78XRbTOJQA5LOcUOeVSZPVbJmc71qzXIY1WeXMKw4P/zZJIRXI2SCMYA67yUpaWLT4Oc7UCQrIhZIfMRBlAL7+5YJcse3qJCvclOqrq50TgcqGsoFK4oJbnaKojFMdXAp6KhJTTeBZd4ogbO8aNRtnB1GxFK8hqpe8OPRkFFrRPnZX1oriXo9ybakPn0t/M39tY4tReL+b30ze1yeHEksCydPeLJzkQXTBOeXovNjHUNF8GuchGOSid6FIh7BqRfd9rotd58uZHcoPsfaOvmm55dooGuOPO2RhSw34TPCVQAJODdrWxim7FBVTnKXY7nRUrIl8NrjMVClKS85s0jr295yrmqeHJpPxkSmrznd6TY7oFocOM0B9eaaorTCkq0/nTRLnWF2HYhawZxqCss1olTQRmoncLUrEMlNAzE3CTR4qKC7FZNZoOqwQ6OBfCYP01dUVp8g==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(136003)(376002)(366004)(39850400004)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(66556008)(66476007)(66946007)(38100700002)(6916009)(316002)(2616005)(1076003)(26005)(4326008)(8936002)(8676002)(478600001)(6486002)(83380400001)(41300700001)(52116002)(2906002)(6506007)(6666004)(6512007)(36756003)(86362001)(38350700005)(5660300002)(1491003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RV5+YNCMOB3qE8DZ+yrt8H3XUiNLX6b4UfhjzXUyqI009r9sKPJw8oK0gkSl?=
+ =?us-ascii?Q?dKIerafq9YVCdp4jkbRjRmHR/1hsUPMM2kKy4KcSYeJKsObBu4c6mcU3zJTj?=
+ =?us-ascii?Q?NNYPi2WueCbLbU7vfXO8AoWVHFAt2Tv3bzegrxnkH9fP7Q4nWDWdhy7VxfMX?=
+ =?us-ascii?Q?DtGHqEl4CyRTI5nxS5X8nJYg0x+vGSAk2q2wzu+P0QUhRQMyuGH5awC5ZBdV?=
+ =?us-ascii?Q?5nezGnjpSFDPWDGT10s1EbO0GjPA5eJ2ZYzOYlSGF7yQtTWz1nCD9sGrwxpU?=
+ =?us-ascii?Q?K35YPp67Xqs/eRiwRSYKJylf9VmJGDdwTlw8wfPl3SkhZ5UtDxMUBnzFyewH?=
+ =?us-ascii?Q?JwQ3yzI0Inp1bqYL3XXyFInXOvBaKRWePE2KanAUlNqRsv/Tn1TJkYJfH9MA?=
+ =?us-ascii?Q?nrKuRk4K/hlpUF7VdjmmBB3UTi6cgomCTyi1P7NCYXjl426lyBgFVJa0naSJ?=
+ =?us-ascii?Q?s7Iok1l8qhpvkwdzhhw++5ycRYVCk3IGhVXSrKZnYcZCPpnrx7CGt3R19bvM?=
+ =?us-ascii?Q?iqWw/s0xqr/rIwzqQQH2jTS0lD9KNbTMv8FmKFfsZR70F9Wd1TIDOvDMdKFe?=
+ =?us-ascii?Q?Wrmk4gOhgCNgr0W8294Au1YAnYoGSPXJm0xnWoQXgseNPunb9ymQWepDmXhE?=
+ =?us-ascii?Q?Y+yfD0cYzw7ZNQPVk+6Zjk/BiGJ2NRqfdz0EfBfXaaUpWPdP94psWuq46oLU?=
+ =?us-ascii?Q?hnO1nwOU/cKkeiFpIlDkdh0dwFLeHDCutV6zBfSLRmDy8WRBLYqkIgGyaoo2?=
+ =?us-ascii?Q?032WPsI2lbeHb2Bc/zm5rG2Kb2NlS9mhu3B90BPP3dgG8oc5fFBHgkE+4OAG?=
+ =?us-ascii?Q?ciNfS4FuUu7vu7kMcVLHgBLfUQiQJNlKgC8PRFUnfG5yYSplN+dd5lddBtc/?=
+ =?us-ascii?Q?u8USiHT4ogvBfpws9jGEUP9iBoJnQDrXAJA2WdGO+0MB9nYZ11j4HHwzcAiY?=
+ =?us-ascii?Q?yCS6HlV5oqDX1NVdDDtXWdHAxdmGZiB78FPU8RZIrvwASzAIYSnyVDqjg8Am?=
+ =?us-ascii?Q?91P+c9exq1kxLTe1x5ydKBSfBE4NVg0+F/KKwuW1rjbJjBXCkcyy/90d0iqU?=
+ =?us-ascii?Q?P+C9RGgwvM4Q4P59rmKukQedj0AWa3CZKIGoFzu0XkpDrUoPoTWuVM8138rf?=
+ =?us-ascii?Q?NbHbDsLNiJkjKNgqKDEXvd0JGYZ6aRGOE8qq9+TMrbzFMkuzV0bcbdYMuRwP?=
+ =?us-ascii?Q?IdWQrTjJnmJ9RAtQAqHJuB8zbsWENZTM3hy69l71OkSK+IPDGsP+ljY6Zqjt?=
+ =?us-ascii?Q?ncIpBx+O9LawCaVQNJ4Fe4MJuDjd/NCB2bKwBsd9qg+XkPKYMYvWsx0Shz70?=
+ =?us-ascii?Q?yTnhvD4Rwc7Wy3TulmyJ7cC50FRW31OO9dCNcOydI1vRClD1VohOvEd2jJna?=
+ =?us-ascii?Q?Mp///c+ArYxaVjWm8HOJSR2X9QKvDX+aBNOE5MraopuFBLWPjUUKwLTaQYxo?=
+ =?us-ascii?Q?HLy9E+LicF8F6qvihjk38+AwIgv6EfT76/BQlss38kQr3Kg7Yzi+H6dDml6/?=
+ =?us-ascii?Q?9cbW67l7n2wMTCScT0mDWh7+4w3BLVyf+ivx98F6h/dmPcZ8dA0D8SISmXAA?=
+ =?us-ascii?Q?Z4DGio16X4Muj0hxuOw=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00ddd024-24ef-4122-b2af-08dc04966336
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2023 15:38:33.8507
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xI/OnEkr2WndQJdZ8g3lWq5T/J+GjBTKikiftf5dIfxQRUUy8snRcP3MSEjw3TZlffaLYow7Gbbo1A2b+uSe0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7285
 
-On 24/12/2023 05:47, Frank Li wrote:
-> On Sat, Dec 23, 2023 at 07:44:30PM +0100, Krzysztof Kozlowski wrote:
->> On 20/12/2023 22:36, Frank Li wrote:
->>> Add i.MX95 PCIe "fsl,imx95-pcie-ep" compatible string.
->>> Add reg-name: "atu", "dbi2", "dma" and "serdes".
->>>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>> ---
->>>
->>> Notes:
->>>     Change from v1 to v3
->>>     - new patches at v3
->>>
->>>  .../bindings/pci/fsl,imx6q-pcie-ep.yaml       | 52 ++++++++++++++++---
->>>  1 file changed, 44 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
->>> index ee155ed5f1811..be9ea77ce8548 100644
->>> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
->>> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
->>> @@ -22,14 +22,7 @@ properties:
->>>        - fsl,imx8mm-pcie-ep
->>>        - fsl,imx8mq-pcie-ep
->>>        - fsl,imx8mp-pcie-ep
->>> -
->>> -  reg:
->>> -    minItems: 2
->>> -
->>> -  reg-names:
->>> -    items:
->>> -      - const: dbi
->>> -      - const: addr_space
->>
->> No, why? Entries should be defined top-level. If you remove them here,
->> where are they defined (in which schema)?
-> 
-> See: pci/snps,dw-pcie.yaml
+Fix UVC ISO transfer since enable sg.
 
-OK
+The basic there are 4 major problems.
 
+Problem 1:
+	Previous code have not conside sg enable case at all for ISO transfer.
+A typcial UVC package is
+	UVC Header: 8bytes
+	UVC DATA: P(1K,2K... 3K) - 8
+     So need prepare two TRB for this TD transfer.
+	CHAIN TRB
+	DATA TRB.
 
+	Hardware will fetch it when get every SOF regardless IN token. So
+driver have to dupicate it to interval.
+	for example, if interval is 4.  driver need duplcate 4 times
 
-Best regards,
-Krzysztof
+        [CHIAN TRB] [DATA TRB]
+	[CHIAN TRB] [DATA TRB]
+	[CHIAN TRB] [DATA TRB]
+	[CHIAN TRB] [DATA TRB]
+
+	Hardware have limitation,  LINK have to be first one when
+ISO transfer.  another words, the below pattern is *invalidate*
+	[CHIAN TRB] [LINK TRB] [DATA TRB]
+
+	So need insert some DUMMY LINK TRB when close to end of TRB list.
+
+Problem 2:
+	When mult and wMaxburst is not zero, EP hardware config need match
+EP descriptor, otherwise some data will be lost. for example: if mult is 2
+at EP descipor, but hardware EP_CFG is 0, only 1 package will be transfer.
+If 2k data lost every 3k data.
+
+Problem 3:
+	Look like hardware have not fixed cross 4k bound problem at 8QXP
+for ISO transfer. If dma buffer + length cross 4k bound,  DMA will fetch
+wrong data
+
+Problem 4:
+	Latest f_uvc.c pass full speed descriptor, so missed mult and
+wMaxBurst information, so cdns3 check_config() have not reserve enough
+internal FIFO memory to ISO endponit.
+
+Linux and ardroid UVC test passed. NCM/masstorage test passed.
+
+Change from v1 to v2.
+-Add comment at f_uvc.c
+
+Please more detail for each patches.
+
+Frank Li (4):
+  usb: cdns3: fix uvc failure work since sg support enabled
+  usb: cdns3: fix iso transfer error when mult is not zero
+  usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg  enabled
+  Revert "usb: gadget: f_uvc: change endpoint allocation in
+    uvc_function_bind()"
+
+ drivers/usb/cdns3/cdns3-gadget.c    | 142 +++++++++++++++++++++-------
+ drivers/usb/cdns3/cdns3-gadget.h    |   3 +
+ drivers/usb/gadget/function/f_uvc.c |  18 +++-
+ 3 files changed, 127 insertions(+), 36 deletions(-)
+
+-- 
+2.34.1
 
