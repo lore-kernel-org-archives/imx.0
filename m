@@ -1,49 +1,50 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB39B52F9C
-	for <imx@lists.linux.dev>; Mon, 25 Dec 2023 19:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4708E537F5
+	for <imx@lists.linux.dev>; Mon, 25 Dec 2023 19:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hOPvBiWS"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a235500d0e1so400732766b.2
-        for <imx@lists.linux.dev>; Mon, 25 Dec 2023 11:05:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ghAB+aTd"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a2335d81693so682137766b.0
+        for <imx@lists.linux.dev>; Mon, 25 Dec 2023 11:09:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703531158; x=1704135958; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kPhBbAdE7d6cKSPyf8U6dhUpO4g2tJuvPvD5da5ovzA=;
-        b=hOPvBiWS/YgQR4uhjpvP1PwiISyGWl/S7ria/FuLJvpsWdS5he/KpVpmY92xfxp2M4
-         jokjpfTQRonXemh64w4vd0Lfdj89GVm1F7O5mpgf7nxFWrynPIaMM2AJMT4lm28gnIuE
-         qWv5RJhfY7BUK+XJ1brXznUgGu+SVkSU8U1TKbNwWNxGSSh3rdCyXXpbMegB2PRYn92E
-         p0pnv36dDOn7rm+5tUI9+DWvnUsLp2yEXKrZb1S7GUjESO/tWpcY7OSUOwoEF7c7gZXh
-         r0v9Spg2iTtPHyfBXqmILZqCkWi9vomFC0UNFWffv+wnDrq3q9bLejNnYZIlM3idYLQi
-         z17A==
+        d=linaro.org; s=google; t=1703531393; x=1704136193; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=BTiGJJJC0cES6MsB3xVVydw9CgvmShHu6CVakswdI1s=;
+        b=ghAB+aTdwAKSVVnGByOENMyrui6oaby/NassC28Rypsc/Jhbf1EOfpWHDKTi93pyJB
+         +I8IoJHUr2JGUf+481+TooIsubKoW9DveZaTftG2jUgISOl40CRmgh0X4m6VWXZpNqMP
+         FHIdSMcBtn7JMR5ircGE/HslP2EpH80z6QQg9JJ3YbDk23toAnslGRiEKtIWlBtkH8TZ
+         9fR7Ax6saaih5NQAQonnheyPjMk/RbIwDB0qZLg5qNeSh9zd/7BmtIpLKjSS5ZaBuzJf
+         VmJTjjDk4ZX0+C+scMbZXWYNNoGUhJTJAN/7jJr9wK+bsNIhnwyQxu4mMM57wfWpcVMF
+         C5mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703531158; x=1704135958;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPhBbAdE7d6cKSPyf8U6dhUpO4g2tJuvPvD5da5ovzA=;
-        b=QcDO1YrUuiaftR7JPNVsP95TjpKG5U0tHWbdJ/G8D4/3RZzpnYcqWAtNGZbNx9yGpw
-         Vm5raapW4C6wmsdP3YyuDmqPvI1w6lQstTXW9D1vWuj/uTHgXE46GxARWChG41gl/kAY
-         w1PsepvPAtTMjSpKYmqNkhG5ouFM7vW1YysPijyGBteBltMHFZXGZ1c1SGQhugI7Y2ss
-         6cPfEgaBnh993x9kx+Gc/XRuvM9cLpSvltGKRQun28d5eiLzm4IeFVodmrwc0QsX05kQ
-         bL+8lt60seSchy4vT0iPNN6rk4/fzvCmKH2gDDmSBQdvFeHMiGcy4BfgSfZ/9IooSUJ0
-         jfdw==
-X-Gm-Message-State: AOJu0YyYn7/12UzqvQZwLYyAe42Yldv4LXNAO/eo2P46a7zVbJs9zlYU
-	bl26IeGn/GJxh1WgkxqvchrcfL0WJs6ftg==
-X-Google-Smtp-Source: AGHT+IFPqC8mWE+xw33Z7UPyeyxIObWtg6LvA27WxcLDKHMQTBc+nJXipDgIqtygM5TrafeFcJCGow==
-X-Received: by 2002:a17:906:154:b0:a26:d9b4:b310 with SMTP id 20-20020a170906015400b00a26d9b4b310mr957611ejh.144.1703531157913;
-        Mon, 25 Dec 2023 11:05:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703531393; x=1704136193;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BTiGJJJC0cES6MsB3xVVydw9CgvmShHu6CVakswdI1s=;
+        b=k3lJOAEvY6Dh3+iQbPCvuqGMFmd44QncDz8r/OxlvDSdknVDk9E+zQBeo9Whp13yim
+         ocIOQWrficX3ZG6wWbN8LwBHcI6/D0/s04QM6+qeJOgkeGiSoXm+29KT7vGyV0ZhuSVT
+         8cOXRAjJJK1nnd9IYjNwdkp/fdSNMooPRCbzlvQPvUHFteJcZv/oLHD+Es1xTrO6xogs
+         NA/mj0BRgd0itOo4RJD1H82iPI5m9uqFgGOKlgi8UYDdwxorJQEq2F/3Qz7SrPh0NEG1
+         B+pCjigF+wXztEvwgzZNqyN/nZ2Q3/RgMiXFQVNEhJdygN7wnf+mmaUCdzBhxzDt2Kq1
+         vrpA==
+X-Gm-Message-State: AOJu0YyVcyTyptnOK1eFWZsS7kUGLLSfx+ScxC3j4Tg7b4V8rKbfw8V+
+	RONTLFvgD8xkOvyCiYi4yaT0kkEtLYWRfA==
+X-Google-Smtp-Source: AGHT+IGQYvBdGSxgNQm3Hqu4O/wa5rUElI4dKsYmgnihnnf0Jla9pZDUPfBxVK4TeImWbrATkAXyYQ==
+X-Received: by 2002:a17:906:1609:b0:a25:cc77:8f95 with SMTP id m9-20020a170906160900b00a25cc778f95mr6718979ejd.32.1703531393534;
+        Mon, 25 Dec 2023 11:09:53 -0800 (PST)
 Received: from [192.168.0.22] ([78.10.206.178])
-        by smtp.gmail.com with ESMTPSA id wl1-20020a170907310100b00a236378a43fsm5032996ejb.62.2023.12.25.11.05.56
+        by smtp.gmail.com with ESMTPSA id u23-20020aa7d0d7000000b005533a9934b6sm6529379edo.54.2023.12.25.11.09.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Dec 2023 11:05:57 -0800 (PST)
-Message-ID: <63d93850-e88b-4311-accb-e7fa9a89d44f@linaro.org>
-Date: Mon, 25 Dec 2023 20:05:55 +0100
+        Mon, 25 Dec 2023 11:09:53 -0800 (PST)
+Message-ID: <cf5fd42f-6ca8-4109-a314-3ede9810a5ed@linaro.org>
+Date: Mon, 25 Dec 2023 20:09:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,6 +55,7 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 09/16] dt-bindings: imx6q-pcie: Clean up irrationality
  clocks check
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
  festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
@@ -65,7 +67,7 @@ Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
  s.hauer@pengutronix.de, shawnguo@kernel.org
 References: <20231224183242.1675372-1-Frank.Li@nxp.com>
  <20231224183242.1675372-10-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ <63d93850-e88b-4311-accb-e7fa9a89d44f@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -110,29 +112,33 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231224183242.1675372-10-Frank.Li@nxp.com>
+In-Reply-To: <63d93850-e88b-4311-accb-e7fa9a89d44f@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 24/12/2023 19:32, Frank Li wrote:
-> There are clocks and clock-names restriction for difference compatible
-> string. So needn't irrationality check again for clock's miniItems and
-> maxItems.
+On 25/12/2023 20:05, Krzysztof Kozlowski wrote:
+> On 24/12/2023 19:32, Frank Li wrote:
+>> There are clocks and clock-names restriction for difference compatible
+>> string. So needn't irrationality check again for clock's miniItems and
+>> maxItems.
+>>
+>> In fsl,imx6q-pcie-ep.yaml
 > 
-> In fsl,imx6q-pcie-ep.yaml
-
-It is enough to say that bindings referencing this file already define
-these constraints for each of the variants, so the if:else: is redundant.
-
-Two lines instead of ~20.
-
-> 	...
+> It is enough to say that bindings referencing this file already define
+> these constraints for each of the variants, so the if:else: is redundant.
 > 
-> Acked-by: Rob Herring <robh@kernel.org>
+> Two lines instead of ~20.
+> 
+>> 	...
+>>
+>> Acked-by: Rob Herring <robh@kernel.org>
+> 
+> How did you get it? Please point me to the lore link. This patch
+> appeared in v5 and there was no response from Rob, AFAIK.
 
-How did you get it? Please point me to the lore link. This patch
-appeared in v5 and there was no response from Rob, AFAIK.
-
+Ah, this patch was added at v4 and Rob acked that one. It's fine then,
+but you still could narrow the commit msg, if there is going to be a
+resend. Please write informative but concise messages.
 
 Best regards,
 Krzysztof
