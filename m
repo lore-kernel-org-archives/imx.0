@@ -1,40 +1,50 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2055.outbound.protection.outlook.com [40.107.105.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20A911CAD
-	for <imx@lists.linux.dev>; Sun,  7 Jan 2024 04:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BEF11CB1
+	for <imx@lists.linux.dev>; Sun,  7 Jan 2024 05:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ppo8SZj6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AsWTOP63BQL83mUgRboSv4mxfD2F3lEsnFJx+RY7M5FazwcbujULKUfSaVyiKxnoxJaC0Dy1KVpZYZQmlvlClgou+syo6qflIHpMk8BJipUKzMBLI4ErTZOgXEMmxKY6XzwIuDNjGBT3BwbwCyCjI67E/uHfZPDtFbhu0Zo7U8IoizafC/NCJ8m9pzCmqtyLZTlz7PffayRDsbflGqX90m3M23TnrVMsUiLncsIUW+6/Gwn/YfLGPDqTC+l7w/wEosUGHfDXEZtZZfzO3tsvizMIyGROCJ7zO9aEH5mwlVUAb1t/5FMdO8cL61xSPZZGWcqZZ0/c6jfEoEYuZ+F6Rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lah4of7i259VvGLz3f31uFgrjVuGLjjRoQWwOvCZsc0=;
- b=kdAgZY14pbGPRCJ7L1TLfy/GBD/RzwF1MtWX3PLJ6Gskdgafov6ORk0VPX/qNT7FwV3AngA48y4MX+bca6TKR1mu3Ak/mNpJzEHEazYW40KtQ3X6uQOaCIAsEwfPumIROtPGwlfZnZ+C4TJzQ6cXW4PfU4ldHr9b+Juzx/vKFp/V4L4G9rv/DwS3CUgfg4een06z1PWPWwxwPyhKTYOXSZTGRaRDeaWDUj4vnftSR9FuLFfjG8sRftWWs9ROYmHghI9+cmIyFIN/IyBiy2pxpuN78w19lLv+p8ypx+W8HU2AvaAp7ZwXLh+JH9Yo4mzOqpNGdQUJMrhfmf21vgYPig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lah4of7i259VvGLz3f31uFgrjVuGLjjRoQWwOvCZsc0=;
- b=ppo8SZj6uzDUi8p46M8104jOn/IcKW5KTBu50rSt3JMc5eURbCrbY9VQHQ+p+kvWuuiFzTWA1ixu6L55DkRSf1StFCpMKRmW2lZC9teuwuUxo8iD7hhs3wXpifXflba1Drwh8hluNaZG6VyMDKpKKBwOfADr8CfNRLbyLwUzOM4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB7511.eurprd04.prod.outlook.com (2603:10a6:20b:23f::5)
- by AM8PR04MB7363.eurprd04.prod.outlook.com (2603:10a6:20b:1c7::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.20; Sun, 7 Jan
- 2024 04:47:47 +0000
-Received: from AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469]) by AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469%4]) with mapi id 15.20.7159.020; Sun, 7 Jan 2024
- 04:47:47 +0000
-Date: Sat, 6 Jan 2024 23:47:36 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K/BVlirx"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-28b82dc11e6so249035a91.1
+        for <imx@lists.linux.dev>; Sat, 06 Jan 2024 21:17:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704604625; x=1705209425; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NWyB8TfZzCqz702pXUBpDot48wicywENtsPUdumX/6U=;
+        b=K/BVlirxPHXy9qIiFPegp2HnBuo8sWyyZDhRlAN2WuJdSWw58/QziYptgI2UKZ3+Tq
+         khE/gPSS3eu3qbuWhE229pTodUrf1AVI/DN1QSWNV+01dS2Wr5AjIjWdeicYYGIJsM3J
+         bE9N3PlHYtWwTgr+ErqU/zT86l8cnLpcFD05vp6tDzMdzvzKjITcBz3UbcY7v5WtgLcE
+         QfA7240tJJc3g6YWQ1TkkcghIs88MHkKUzrgsyQk0+LACuFne3NeajurGyzUxMjMlIPh
+         JVgWm2oSTHw/axzdzz9hO7/mQ2SsNuskhl9J59+huWk9FHJunh3lUc/HWM1+PKYfUy3a
+         +YbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704604625; x=1705209425;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NWyB8TfZzCqz702pXUBpDot48wicywENtsPUdumX/6U=;
+        b=XoI+IprK69uWkjZ5zLRoxCzWdR6Ud2NmymKjM90nzt1GOD6TY7YAviCUv9Y6f1MyIT
+         DSCjfRC2CWyUrV5Er0t52E1m0/2JDyydfnk+ibMUH+5lmMFnBgGaP0SsUZ9rMd8wnYOw
+         YY/FtOVfeBeBnDqtmGRjGG/GDDOGfe2H8gPMJ/40Cabr18OSUjUlLNhxX6RFo+W2DuMJ
+         30KRC/aMdAbNj5iANoYiuD2XF+7eKBUABEkbhID+v7QmthvK97w3dattj8VV1KJSJR6B
+         XC/EPAmDihGIkxllLk51PBjaXMBtIBjVh1rsdhNDrAGSBG0YPmtrcNWMn54ZmTdY0RbZ
+         iISg==
+X-Gm-Message-State: AOJu0Yw1HgLeq33McCr0TQM8Jhk+DZDNEcNehZPhyxCloTZa3fu3m+xH
+	239L+Ur7zOG00OfN0QnegJaKHkam8NfU
+X-Google-Smtp-Source: AGHT+IFBdvFE2Q0qIHSiOlcgmOnRSvw0TrAzPtxFZEro5J/kLPEpFkDeJ6Tv7L+vQOYwllLbaQkyGQ==
+X-Received: by 2002:a05:6a20:3252:b0:18f:97c:8267 with SMTP id hm18-20020a056a20325200b0018f097c8267mr467006pzc.113.1704604625435;
+        Sat, 06 Jan 2024 21:17:05 -0800 (PST)
+Received: from thinkpad ([103.197.115.97])
+        by smtp.gmail.com with ESMTPSA id q15-20020a170902dacf00b001d337b8c0b2sm3852056plx.7.2024.01.06.21.16.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jan 2024 21:17:05 -0800 (PST)
+Date: Sun, 7 Jan 2024 10:46:55 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
 	helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
@@ -44,181 +54,220 @@ Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
 	shawnguo@kernel.org
-Subject: Re: [PATCH v7 04/16] dt-bindings: imx6q-pcie: Add linux,pci-domain
- as required for iMX8MQ
-Message-ID: <ZZos6LDk4NTfQHyU@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v7 07/16] PCI: imx6: Simplify configure_type() by using
+ mode_off and mode_mask
+Message-ID: <20240107051655.GF3416@thinkpad>
 References: <20231227182727.1747435-1-Frank.Li@nxp.com>
- <20231227182727.1747435-5-Frank.Li@nxp.com>
- <20240107031506.GC3416@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240107031506.GC3416@thinkpad>
-X-ClientProxiedBy: SJ0PR03CA0094.namprd03.prod.outlook.com
- (2603:10b6:a03:333::9) To AS8PR04MB7511.eurprd04.prod.outlook.com
- (2603:10a6:20b:23f::5)
+ <20231227182727.1747435-8-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB7511:EE_|AM8PR04MB7363:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27d23a14-ef46-4a94-733f-08dc0f3bcb90
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	H/WV4bO9AFRrQLp8GH/r7uDW7ody62cc0NkHTO9CQ9qews6EjYsh3QsSPkqICaDPu0deZxvwZvUW7pMn2kxGiBpfgUbXfNRQigB036/FjTGxNfPDkjf/P1I3eEdf41fnCZ+Wqp8mzUqLqGBja17C3Wj1uufpUQaEhi5zStESLEYtveyOhKHvSctGnxZwy+xTz8zdg8U+WPidBf7OkAI2BkP4AfCBbVVBGpyEALbvkoQXEdyy/eT293LYm5DQkrApI+rGmspbNa7M7mZIqAENpnek3bb5wQyNH+8VRwIzcO56CBGVxK3EZxc10FYN6qGp8u4on9Hh8F9lo/pzh5vylNePtaClU0Vgk19j7hVEBbdd9AnTicmKA81UApqH2pbWRh+qb1DIk2BfyQnHKUVg5o9Ntj2i2oDGy2wxDNjV7WqC4O3qNeNRGP5kOaYzbxj5WR3RAvdX4CFVvf88SDuSlqgls8ugccxQ8MchxRmVY4zG7HA4ZdCGYjMSzjXCw0MfU8ZQ9cOv2SHKKMkohY8+6dpLAsnZnViGkNc+vycVE+Xzm0Gzeq8eZKwThpI0F6Vqn0IpawG+U1vo0k/cVeSq+X9h2oXisO4cKu1e829MuhhfbnKCu/JkgXnCafKXE+29pkh+QrFsUU4mSG4641x3o10I+RF+TyPXEL337cWjCJ7Bl+wz4QtZARrzugFTSkl3
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7511.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(396003)(376002)(346002)(136003)(366004)(230273577357003)(230173577357003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(33716001)(8676002)(8936002)(316002)(6916009)(5660300002)(4326008)(83380400001)(478600001)(9686003)(6506007)(6512007)(6666004)(52116002)(26005)(66946007)(66556008)(66476007)(38350700005)(6486002)(41300700001)(38100700002)(7416002)(2906002)(86362001)(32563001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TExNU0Q3VVFCcFFaSkpCYmpybUdIV09JOGhuWUdzVmp6KzVzdE9oajFDbXJY?=
- =?utf-8?B?LzF4R2VzUmNqREhGSFBLanVzWjI3S2tMYWFnV3JGa2tOakROSHRsNXlwWjlE?=
- =?utf-8?B?aVprVFE2eGxEUGU2bkEzR3MxS1J3UkRtaXNuRHVtbzZJczNaU3NGYnZDRGF4?=
- =?utf-8?B?VmJLbXpIZWxvbVk3TFUrREkyMW4wQkxpN2xpcFQxMW1OVVJEWmtUdU93RUJi?=
- =?utf-8?B?M1hUNmQ1cDduN3ZSTlBMRUEyRHRCeFZwczBmTWcvR0lISDE3YXJjVk95M2ls?=
- =?utf-8?B?VUxUVHQ5UUpmZHNnQ0JqN2xxRkVkV0hkcTZQV2taSVMzcFY5Vm1wWlRGckV1?=
- =?utf-8?B?SHlIMGdYVWcvcks4VDlkK3hKWGxSaFN1djc0eEloaTA2ZkU1dGFINzBjdkY2?=
- =?utf-8?B?UE9henYzSU1BSThZT0ZnZVVXaEU0OWlsazFiREN5b05zSm1IdGI1ckdtQytX?=
- =?utf-8?B?QlhPUi9aY0ZmcUtZUk11UzU4c0g1TS9sWmtJb2RlVHdNclNvTFhkTWNwd1kv?=
- =?utf-8?B?T3lFQVZmS0p1YVlLSGc5K1ZTYVg5ZGEwZnVYcWl1L01CN2k0MGZsUDhkODRM?=
- =?utf-8?B?VVNTOWxlcWdsNFpMSWtnTzNQNWxKMWtDZitHVDlHSzAxUHNYdkY0TVZobDRj?=
- =?utf-8?B?UTdDM2NSVU9Pc042bjlpcGpDNUFqTVdzaktpYWZRaDRkWmFpVndtOWY0T0dH?=
- =?utf-8?B?b1hDdk9oVVJwWDdOUENEYUtzTWUrVDJWbmpMUUV4VHJjWlJYTkpZT3NTUkR2?=
- =?utf-8?B?SytqUlpaSmljN21SVVNaODFvZXlCbkk2dzBzUUpvd2FYMVp5Um8rbm5hN1dH?=
- =?utf-8?B?SlVaZzJONjgzeWRSNkZtS0hkRXJwdE1idFlvNi9Lc09TWW1kQWtQRkFqZmtj?=
- =?utf-8?B?ZFY4MzR5SHpJUjNwL095QjJnWjhEMGR6S1hyVEhkY29LYXJoempLVU9pcVJl?=
- =?utf-8?B?SmRrN0VJREN0eHBiQkhRR1R1NlhmZGVzWGoxSTJjN0hLK3o1ZTROTDRSNDRi?=
- =?utf-8?B?WUJFTWhrMWxzT2hNWnRodjUxZU4xRURBNmJFcjd5SFV3VFVlZnBsdVBOM3hT?=
- =?utf-8?B?cm4xaVgxQzl6TkMxU0NJU1FlNWJQOGJqSmFORzJqV0tpN3hCZFhoWVhNc3dE?=
- =?utf-8?B?cUZuZjNPYlNic3dvbHdaTkVGalYwU2N6SWcvYm12aWhOeW04R2NHTTZQTnVX?=
- =?utf-8?B?a000YlU0UGVndDBXamJONFIycnE3RlRLTFFBUUF3TmJyR0o1cmhvd3Rjd093?=
- =?utf-8?B?emk0NXZPeG1jVlJ6djNGeThTOW16bVJpNUpyN3RrUkQ1cURsRmlnbDhrOXNl?=
- =?utf-8?B?eE5CTVdBSG5YQUR0LzFJaVA5OEQ0c3FaZDVuRHNXK1VtRVlRNnZ3SzI2OEI3?=
- =?utf-8?B?RzluMm1hOURpL1JEa05nNnBVMXVpQUl0cExHSHA2TTFHV1Y4b0pRWUZDT2Vq?=
- =?utf-8?B?N3ppMU9wYjhIbTJnUmdmVHIzQ1liamwvTXJkek9tbEpBL3g1Q3hINlRteklL?=
- =?utf-8?B?ZW5DdzdjbmZHUUhOTnFvdW9QMzIwZWlKT1ovdGZTZjJWTGlBYkhtZ1lXVDBJ?=
- =?utf-8?B?NFdPZGZoOElNNFVwVTVVSTVBOWt1bTMvK3NNS2dKaWpWcEFMV2tGTnk4SjFT?=
- =?utf-8?B?Ykh4RUFLb3BOMUFzNTZGbUNBVmltSlp4Z1F5K2d6SU5BaXBwcHZqR3VraFkw?=
- =?utf-8?B?SnprUEN0Wm9VZHVieXVoUTI0ZHIrZU40QWk0aDQwVnp2dlpzNzJRWW5VM0dj?=
- =?utf-8?B?T3VkODZsaXRmYzJIay9vTmZHM2FGR3QyY0R2RDlEVjYwYUV1WlFhdHNvK1pn?=
- =?utf-8?B?UHFubGE2ZTZFME9KNlRyWnl6SWdlcFFqWXE3dVdXblcyUU5jWjB1dXNGYnkz?=
- =?utf-8?B?MUYxQXVlQTczWkduWk5QU2ZKdnlYbGhiZ1ZEWWl5WU14N3llOHZxK20xYTRt?=
- =?utf-8?B?L0RLRUxhWWs1dmpUTEpSUzdFS1dpTFpSYmovUjFwWkF5MGN2N2QyOE1abWlz?=
- =?utf-8?B?QkxZTFltb1cwWVJQKzVWbXpRQ1RmMjMxNUJVWnFlMnNHR0RySzJPTWRYU2I4?=
- =?utf-8?B?VjVIZ1pLR2p1SlFRMnRLeVpkRlp3bXo5RjJWSjNYUkpaSlkvYmJIdXpVSjNB?=
- =?utf-8?Q?s5Z8=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27d23a14-ef46-4a94-733f-08dc0f3bcb90
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB7511.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2024 04:47:47.4312
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zn1MvnIXNkWyhceYvtx16711qu/ieXyZ69VkEw/pmfVwdbbWAf8E+Yr/QhGmRXaZF4vTlo4PLv+qDUFYMCB/gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7363
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231227182727.1747435-8-Frank.Li@nxp.com>
 
-On Sun, Jan 07, 2024 at 08:45:06AM +0530, Manivannan Sadhasivam wrote:
-> On Wed, Dec 27, 2023 at 01:27:15PM -0500, Frank Li wrote:
-> > iMX8MQ have two pci controllers. Adds "linux,pci-domain" as required
-> > proptery for iMX8MQ to indicate pci controller index.
-> > 
-> 
-> property
-> 
-> > This adjustment paves the way for eliminating the hardcoded check on the
-> > base register for acquiring the controller_id.
-> > 
-> > 	...
-> > 	if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> > 		imx6_pcie->controller_id = 1;
-> > 	...
-> > 
-> > The controller_id is crucial and utilized for certain register bit
-> > positions. It must align precisely with the controller index in the SoC.
-> > An auto-incremented ID don't fit this case. The DTS or fuse configurations
-> > may deactivate specific PCI controllers.
-> > 
-> 
-> You cannot change the binding for the sake of driver. But you can make this
-> change in other way. See below...
-> 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > 
-> > Notes:
-> >     Change from v5 to v6
-> >     - rework commit message to explain why need required and why auto increase
-> >     id not work
-> >     
-> >     Change from v4 to v5
-> >     - new patch at v5
-> > 
-> >  .../bindings/pci/fsl,imx6q-pcie-common.yaml           | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-> > index d91b639ae7ae7..8f39b4e6e8491 100644
-> > --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-> > +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-> > @@ -265,6 +265,17 @@ allOf:
-> >              - const: apps
-> >              - const: turnoff
-> >  
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - fsl,imx8mq-pcie
-> > +              - fsl,imx8mq-pcie-ep
-> 
-> "linux,pci-domain" is a generic property. So you cannot make it required only
-> for certain SoCs. 
+On Wed, Dec 27, 2023 at 01:27:18PM -0500, Frank Li wrote:
+> Add drvdata::mode_off and drvdata::mode_mask to simple
 
-Sorry, why not? there are many generic property.
+simplify
 
-> But you can make it so for all SoCs. This way, the drivers
-> can also rely on it.
+> imx6_pcie_configure_type() logic.
 > 
-> Now, you should get rid of the commit message about driver internals:
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Not all dts already added "linux,pci-domain" yet. If required for all SOCs,
-it will cause dtb check warnings.
+Couple of comments below.
 
-Frank
+> ---
 > 
-> > This adjustment paves the way for eliminating the hardcoded check on the
-> > base register for acquiring the controller_id.
-> > 
-> >       ...
-> >       if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> >               imx6_pcie->controller_id = 1;
-> >       ...
-> > 
-> > The controller_id is crucial and utilized for certain register bit
-> > positions. It must align precisely with the controller index in the SoC.
-> > An auto-incremented ID don't fit this case. The DTS or fuse configurations
-> > may deactivate specific PCI controllers.
-> > 
+> Notes:
+>     Change from v2 to v3
+>     - none
+>     Change from v1 to v2
+>     - use ffs() to fixe build error.
 > 
-> - Mani
+>  drivers/pci/controller/dwc/pci-imx6.c | 60 ++++++++++++++++++---------
+>  1 file changed, 40 insertions(+), 20 deletions(-)
 > 
-> > +    then:
-> > +      required:
-> > +        - linux,pci-domain
-> > +
-> >  additionalProperties: true
-> >  
-> >  ...
-> > -- 
-> > 2.34.1
-> > 
-> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 588bfb616260e..717e8fa030deb 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -68,6 +68,7 @@ enum imx6_pcie_variants {
+>  
+>  #define IMX6_PCIE_MAX_CLKS       6
+>  
+> +#define IMX6_PCIE_MAX_INSTANCES			2
+>  struct imx6_pcie_drvdata {
+>  	enum imx6_pcie_variants variant;
+>  	enum dw_pcie_device_mode mode;
+> @@ -77,6 +78,8 @@ struct imx6_pcie_drvdata {
+>  	const char *clk_names[IMX6_PCIE_MAX_CLKS];
+>  	const u32 ltssm_off;
+>  	const u32 ltssm_mask;
+> +	const u32 mode_off[IMX6_PCIE_MAX_INSTANCES];
+> +	const u32 mode_mask[IMX6_PCIE_MAX_INSTANCES];
+>  };
+>  
+>  struct imx6_pcie {
+> @@ -174,32 +177,25 @@ static unsigned int imx6_pcie_grp_offset(const struct imx6_pcie *imx6_pcie)
+>  
+>  static void imx6_pcie_configure_type(struct imx6_pcie *imx6_pcie)
+>  {
+> -	unsigned int mask, val, mode;
+> +	const struct imx6_pcie_drvdata *drvdata = imx6_pcie->drvdata;
+> +	unsigned int mask, val, mode, id;
+>  
+> -	if (imx6_pcie->drvdata->mode == DW_PCIE_EP_TYPE)
+> +	if (drvdata->mode == DW_PCIE_EP_TYPE)
+>  		mode = PCI_EXP_TYPE_ENDPOINT;
+>  	else
+>  		mode = PCI_EXP_TYPE_ROOT_PORT;
+>  
+> -	switch (imx6_pcie->drvdata->variant) {
+> -	case IMX8MQ:
+> -	case IMX8MQ_EP:
+> -		if (imx6_pcie->controller_id == 1) {
+> -			mask = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE;
+> -			val  = FIELD_PREP(IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
+> -					  mode);
+> -		} else {
+> -			mask = IMX6Q_GPR12_DEVICE_TYPE;
+> -			val  = FIELD_PREP(IMX6Q_GPR12_DEVICE_TYPE, mode);
+> -		}
+> -		break;
+> -	default:
+> -		mask = IMX6Q_GPR12_DEVICE_TYPE;
+> -		val  = FIELD_PREP(IMX6Q_GPR12_DEVICE_TYPE, mode);
+> -		break;
+> -	}
+> +	id = imx6_pcie->controller_id;
+> +
+> +	/* If mode_mask[id] is zero, means each controller have its individual gpr */
+> +	if (!drvdata->mode_mask[id])
+> +		id = 0;
+> +
+> +	mask = drvdata->mode_mask[id];
+> +	/* FIELD_PREP mask have been constant */
+
+No need of this comment.
+
+> +	val = mode << (ffs(mask) - 1);
+>  
+> -	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12, mask, val);
+> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, drvdata->mode_off[id], mask, val);
+>  }
+>  
+>  static int pcie_phy_poll_ack(struct imx6_pcie *imx6_pcie, bool exp_val)
+> @@ -1376,6 +1372,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_phy"},
+>  		.ltssm_off = IOMUXC_GPR12,
+>  		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX6SX] = {
+>  		.variant = IMX6SX,
+> @@ -1386,6 +1384,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"},
+>  		.ltssm_off = IOMUXC_GPR12,
+>  		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX6QP] = {
+>  		.variant = IMX6QP,
+> @@ -1397,6 +1397,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_phy"},
+>  		.ltssm_off = IOMUXC_GPR12,
+>  		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX7D] = {
+>  		.variant = IMX7D,
+> @@ -1405,6 +1407,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_HAS_PHY_RESET,
+>  		.gpr = "fsl,imx7d-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_phy"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX8MQ] = {
+>  		.variant = IMX8MQ,
+> @@ -1412,6 +1416,10 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_HAS_PHY_RESET,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+> +		.mode_off[1] = IOMUXC_GPR12,
+> +		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
+
+Is the mode_mask differ between SoCs or fixed based on instances? I mean, if
+there is a guarantee that it is going to be IMX6Q_GPR12_DEVICE_TYPE for instance
+1 and IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE for instance 2 etc...
+
+Then we can avoid these SoC specific config and simplify the code further.
+
+- Mani
+
+>  	},
+>  	[IMX8MM] = {
+>  		.variant = IMX8MM,
+> @@ -1420,6 +1428,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_HAS_APP_RESET,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX8MP] = {
+>  		.variant = IMX8MP,
+> @@ -1428,6 +1438,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_HAS_APP_RESET,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX8MQ_EP] = {
+>  		.variant = IMX8MQ_EP,
+> @@ -1436,6 +1448,10 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+> +		.mode_off[1] = IOMUXC_GPR12,
+> +		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
+>  	},
+>  	[IMX8MM_EP] = {
+>  		.variant = IMX8MM_EP,
+> @@ -1443,6 +1459,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  	[IMX8MP_EP] = {
+>  		.variant = IMX8MP_EP,
+> @@ -1450,6 +1468,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> +		.mode_off[0] = IOMUXC_GPR12,
+> +		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+>  };
+>  
 > -- 
-> மணிவண்ணன் சதாசிவம்
+> 2.34.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
