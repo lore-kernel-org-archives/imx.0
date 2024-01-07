@@ -1,40 +1,50 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2055.outbound.protection.outlook.com [40.107.22.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106CE882A
-	for <imx@lists.linux.dev>; Sat,  6 Jan 2024 16:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E528610A0E
+	for <imx@lists.linux.dev>; Sun,  7 Jan 2024 03:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Z043RiT0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UwNxNP4c+tx3XgPRivoEJHHOaSPJPAYwlGvJAvsu5S55/i4ta/EO1AHjyxHR1/dAFXcP6wzZmtCgacCn3y4tIU4u/b0sZ50Y9ghQNyMN5FDOS0QpIxUFqRuk7z2cJ/59BDDB4gPAb3+gdpxUnJXcphumAzgYlb2DcABKohteq5qLSlAHnCy0wia4KcxTH5OR3tH79yrcfyg5zcDGdjDrwhz9PYSOJwWeO7xpDFFellAH7wqM4J3581NJKtLrgrE9BUCHFSlZ2jTzzMjPWEieRVIuQhNSBx/RRwQCXHixQ4OV/TSy8GQzMF1bRRRzmXWBfGxTyoPhYsb2lJbDW2W4kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=djT/2ArV1NVeObskytQ0tgqY6b/N93M6RD2cMVPkE4g=;
- b=Gf7ITErQowNJBTw+n6HgK7NKWIrdKklpVRiPEpZADTkzxuwxC4Nz7jrWZWZ/yUhZAt5bLw82qHbzD0lXkrWhdTsuFSkQ1HiEEqOu3KvrJ0ixIsADlpgO1lEQmulZU67/uJzymT68s9d8wP5jG4j/GhJlO3fRi8cCEZ5p7su3GGKj33LiqPaesjrjxBd1LuBH8Lws1W+oV0TP9fv9cxCWmwNVajZMWLulHm1NO2INgZPMkgLpylmyMavo6mkk4/I3a4Z/w6JVVavDcob+23lauyTUGAAdgKkSsuK2OpznSNG5YFd67e47nzUEr5iumTYS6C3LDap3NV1euxrQKzny3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=djT/2ArV1NVeObskytQ0tgqY6b/N93M6RD2cMVPkE4g=;
- b=Z043RiT08bvm8pyjEBrowwty+8FAFsU7Rkh34OjV6IbaoPT7lWghDtL6h18+SOXQE5bFoqVnGRITmHcueh5hzLvW2bnciFoQD2b/IRBuAU0ZmV/L1kRAsKU0d/zK19TKVz9btnMR+rLe+WOPXSY1BQVZCfBMGPAX8oD7neVU20E=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB7511.eurprd04.prod.outlook.com (2603:10a6:20b:23f::5)
- by DU2PR04MB8598.eurprd04.prod.outlook.com (2603:10a6:10:2d9::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.19; Sat, 6 Jan
- 2024 16:50:39 +0000
-Received: from AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469]) by AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469%4]) with mapi id 15.20.7159.018; Sat, 6 Jan 2024
- 16:50:39 +0000
-Date: Sat, 6 Jan 2024 11:50:28 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jP+xBW9w"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-28d0052beb0so385885a91.0
+        for <imx@lists.linux.dev>; Sat, 06 Jan 2024 19:02:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704596578; x=1705201378; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4snqkhUuEW8ZG394EttlpuQ67DH0d6MbBqMG4Ly3wkQ=;
+        b=jP+xBW9w/B6FzX8Gs1tHIN9LFlKZoZcvWM/xUDbxj3pw6c8j+rApzGL3KFnWtVVWLC
+         D2VwffTBEJFQybvVA/R+DBngE7nz3C2buKlWtB0iW9aw9TIaviTnfDxFgEjJNGy9A8gs
+         IBurGZjks/Nmceo32chfy1N99AHlgnVmSorSvCAjsv3U/NsWKUsm5OcaoEeZb438EgU4
+         w2YrcwHFG5gvDrAICGTAOe4naGInNogn6y2/kNOgTS4ZoC+JseApPEgA9KNJYvztC/tD
+         O+oQNUxGBFlGTFPiKnX6ck/+mvaaBkn7ZfvniPqLCyZJWePAK505CY4it/pz0zGX2b0B
+         CKpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704596578; x=1705201378;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4snqkhUuEW8ZG394EttlpuQ67DH0d6MbBqMG4Ly3wkQ=;
+        b=CkKg5VfOfoLiRQ/7UwwKQoFXHp6wZoun/aqspS+SxPp2BDox23MhbG7FzL4z6Z18k9
+         LQhql/qzfvcnLuhVcTQ4ghUOQH4f2LdHhqyg8FS1vVtPm4d3+i6kyg5SZHHxCB468eQj
+         V9SjypDux6fcE7m8W7jYr4NBwHynCr8jytaBLY48/xYwhxZG14yYWjR8qW9zwmf2QN9w
+         upeMLdOYjFqKmQryrzFpJVhJQnupIki3fb9FkaP0dM3I6RaM4C9Bsz9MlsE62uERzhRA
+         dEn8E05pXO/E0nmYWH+j72LN1/Zx2UAW2oY8roWY2CMEYJbdhMCLzftDrDlSfigPhkng
+         jW8Q==
+X-Gm-Message-State: AOJu0YxMBlU9jPmvV5FwTk70eyzecQAMrhIErZ982gsjGRpX+wfTvXNF
+	u3NzObX0DpZYUZ3ORYrTusUIcKRWCP4+
+X-Google-Smtp-Source: AGHT+IFWNyeYcLOxjx7kAt+wXSssgse708DUrf3+R7FincnxfWyy3UrvW3wRM0k+wcgdhEKojCyxOg==
+X-Received: by 2002:a05:6a20:a89a:b0:199:a10e:13e5 with SMTP id ca26-20020a056a20a89a00b00199a10e13e5mr5093pzb.43.1704596578093;
+        Sat, 06 Jan 2024 19:02:58 -0800 (PST)
+Received: from thinkpad ([103.197.115.97])
+        by smtp.gmail.com with ESMTPSA id jb19-20020a170903259300b001d4bcf6cc43sm3707804plb.81.2024.01.06.19.02.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jan 2024 19:02:57 -0800 (PST)
+Date: Sun, 7 Jan 2024 08:32:47 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
 Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
 	helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
@@ -44,199 +54,256 @@ Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
 	shawnguo@kernel.org
-Subject: Re: [PATCH v7 02/16] PCI: imx6: Simplify phy handling by using by
- using IMX6_PCIE_FLAG_HAS_PHY
-Message-ID: <ZZmE1NV6ShVBm5FU@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v7 01/16] PCI: imx6: Simplify clock handling by using
+ bulk_clk_*() function
+Message-ID: <20240107030247.GA3416@thinkpad>
 References: <20231227182727.1747435-1-Frank.Li@nxp.com>
- <20231227182727.1747435-3-Frank.Li@nxp.com>
- <20240106153323.GE2512@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240106153323.GE2512@thinkpad>
-X-ClientProxiedBy: BY5PR17CA0062.namprd17.prod.outlook.com
- (2603:10b6:a03:167::39) To AS8PR04MB7511.eurprd04.prod.outlook.com
- (2603:10a6:20b:23f::5)
+ <20231227182727.1747435-2-Frank.Li@nxp.com>
+ <20240106152708.GD2512@thinkpad>
+ <ZZmEY5d6IRcCZjl7@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB7511:EE_|DU2PR04MB8598:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6a1e80c-5c31-4d49-67d7-08dc0ed79ca5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	DeYAsw/7AeO3qtLjEMTEyz8PfEzjGj8pFpDGyRfItnh+GEjbwmVH4qqiXxniXW1dPWmH4c3ITDDTe5vYfspkkY0cdXZ1bSj/Eat0vdfn+8kdKrJQ1ekSMhlycvgByg1AbXYisLmrxJ6k7fWhBwtyxoC5DrS5hYzRNHH0AV6AN9yb7vmGPZIxPBLq2GUTIYHblzWFNf7uCScW8/Zq4wMFW+RqUZ7pqSF4ZaAiqTc1Thnd5qpUDbbv4LXZkHmtT/sFRitva8s3YkDQYTARdRcP7vbgUVpcrQIULdETdVxvUph8iml0POnsaoC+Kp9D258ruMAlaZKc/HoDYXU8tnEcFKHSLDHoNJfJIuQ0rxfyse5MDNPKjHSHV956KEq+EjmZI5bVppa3los8S6YGulFJO6w/CXhPSkcBicES3d+rrFAIujbBR70yn2b+ncE0u0HamMKt1tAomhdJJTp5MaG+TuNlbRxoy/YXgeRhrPFREgWVzmoyFGqTHBnYhYU5AG63wolNoF0Bm8godl4aprLNlxKQlwP6KR5Y1tHCShYGhfjpT4hroDp0sNWkLuszfJbCfeUmDv5/XXHd7KZNwYcoEFrxpMs+T8qgy/Gx68pdeprHYAiRK/IqjLBLXZxdkgP6aHRqzTSwJeagciMwp+GaQdVFQkNGbPWAOUZ6Qy4goDw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7511.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(396003)(136003)(346002)(39850400004)(366004)(230273577357003)(230922051799003)(230173577357003)(1800799012)(451199024)(64100799003)(186009)(6486002)(52116002)(26005)(9686003)(478600001)(6506007)(6512007)(6666004)(83380400001)(5660300002)(2906002)(7416002)(41300700001)(33716001)(66476007)(66556008)(66946007)(6916009)(316002)(4326008)(8936002)(8676002)(38100700002)(86362001)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ODV0OURxL1FmaG1LeTcvWjI0M25ZUEdyUnRvd21ueVgrT1dFV0dnMFlzNFdR?=
- =?utf-8?B?NlpEWmwxVUg2RWRlMEdNQ01nTGY2WWxTbUZpaGtuOGNCZndHbGRERGdscFJ6?=
- =?utf-8?B?SDQ1NDZ6ampGRmlvMmRBVVcvR0RKbDlYOStQdzRDMEhtaEU3STRmdy9TNnVR?=
- =?utf-8?B?MzFKRzJuNlBPK1UxRkhFWm45VHM3VnYwTkVpdEFDeVB5ZUlxWDNMRnpUYytO?=
- =?utf-8?B?U0FkQUEydk1FdmhmQmtKVWZKRDh0NHQzaGZkMFduQ3RrK1owcTRrMEM2eDAw?=
- =?utf-8?B?cGZsaENxV3dVLzNMNjZDN3AyTVBFaUhvYnV0ZHRxQ0grUnFCZSt2RWRSbmpK?=
- =?utf-8?B?NUdiQmI3VXprZWc4eklRbWIrWm5SNm5IdU1HYkNaamxvVytjcVM3QUZyeEFD?=
- =?utf-8?B?TVpZK0xLM0RCeE5iWWc0U0hmVzdUYUJXcXlVWEVzaFFCZFRvVHdoSGYyU0lI?=
- =?utf-8?B?ZVBidzRNeTJpcXV2L3NweUxZeC91aDl2dm9sMTBLMTltaHB6VHBaZm1YelAy?=
- =?utf-8?B?M3JKR1ZHY2FkOHRZSWRPU01BdHFvSjJJeG1LOXRydWJ1RUFKbnpZNDBiNTRT?=
- =?utf-8?B?dEFJT2J5WExDWFlEZlBEOHR0WWpvNS9uWmNQVFdvQjJLUFp1YjdyWWdkTzg3?=
- =?utf-8?B?WlJQZWxCRmovV0w0VjRwbkRvYzVaUDFzd3JpUlU0R3hMeC90cHRiV2RBa2ht?=
- =?utf-8?B?ZDZjS2FndDZZTzhKY2FlL1JMOTRrZXp5RVRLTVJEM1BManhaOHl5clFUWHdj?=
- =?utf-8?B?bTY2UVVkZDIvTnVKc2VxVmN4dlhPektJUnlmSmFPcTF6NE5wNGU2aVduTDUw?=
- =?utf-8?B?aFRnV01PK3JhTmJSbHJ4YVZJK3ZJMnZkV2xwbUpLQXFheFhodXRKNkdQTW5S?=
- =?utf-8?B?dGdPU3N3RDNUTk8weG11Tnowcmh0RnFqNzkyd3NsSVNmdkhRbGt3R0hWSkR6?=
- =?utf-8?B?SlVqUitjWnJPaXcySGV1M0F2cEhsc0h2Mm03RjRBQURRTkxWRU5BQnFCeTg0?=
- =?utf-8?B?a09UbFU1a2IrWUtnd0grblNVZnJsbGQ3bzFBTHBaN2YxK1BuSmdzUDdlRXZJ?=
- =?utf-8?B?dFgwQ0xiNzJEd2JQU2VwRjNpRHNNRzVrL1Y4dUorMGNmazlHKy9ZQVVsUVlY?=
- =?utf-8?B?bUdrUHJNdkRoRGxubXdLdk5hU2w5cWJiNC93d1o2SEpuYkxQQWp5Z2hOdWtr?=
- =?utf-8?B?dVJsbUovNk5ZWWpkeS9BUmhiQUI3NlEwWDN3YXBrOU9FVGhPZWtCMnRxcE15?=
- =?utf-8?B?eGlyNWNRSSthZjF4dkVIMS96T01zQmE1VWMrY2c5U0MvdWlmRGxxajVHWVZr?=
- =?utf-8?B?TzdoclUrb3dIamswT2NVNEN2dGQvdVo3YnFGOVU0ZHJGbzFvbXJ2L0hyNnVl?=
- =?utf-8?B?L1NoVlpBbFdnNTRhdFhrZFRKNEZ6MWd2ZGpiRC9pYW5Iamgvb0ZOYmxtSVhw?=
- =?utf-8?B?WW9hRFN6NXRrdXhLeS83V2N0cHRyRDRNdmtDSng5clZRWUZqSU1RQmJKVDJ1?=
- =?utf-8?B?aVR5Rko2cmI4blRPeHpGQjVPMDVJMWhyNGczSmtKVUR6QkJkMzdveTkyOTRY?=
- =?utf-8?B?MlN4d0hmWENZZ0pWZ1U4bVlaUDBhSXVtenczS1BmdE4wekxkNjJhNFNtcVY3?=
- =?utf-8?B?T05Uck50MmJIK3dJbW1XLzlVWk1WU2ZSdTZXVEhvc2RoZzhnMHk3STY3Wity?=
- =?utf-8?B?UmhzWTBpdlkxREFZanhMbGhRSmgwWmxaNkJyRzJQYUJXMlFJRVU5WGVTZDZY?=
- =?utf-8?B?REhsbkpsN1RsSWxGZmdUa2xST1lZblFSTUZ5TDJFU0JnM25wT285T0hEVXBs?=
- =?utf-8?B?TjI0TnF3MHZmemxXV3MwdGl3MmlVcEU5YXcxYnBmayszVHBoSkQ1U3lsNGFm?=
- =?utf-8?B?eGVJRWJtL0h3ditNZEZ4VlZkV3VYd1FBRFVqTEZ3bkkvL1pqZ0o5ajRsUi9x?=
- =?utf-8?B?Vnova09paDJBOVhlT241djdScXg3bWFYMWNYQ0dHQldaRzBWdGhLZGU4RzMz?=
- =?utf-8?B?T1NmaW9zL1pnaTRaS2RBZ0hEaHJ5S2hCaFlSUDBLWXJ5WmFNM05vODBoRXNz?=
- =?utf-8?B?Y0o1cnEyRVlCbmw0UnU3VFZDbTh6ZC9ENDlKQ3FvbjA4Rmd6UFRTcWs2YUFz?=
- =?utf-8?Q?W+ak=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6a1e80c-5c31-4d49-67d7-08dc0ed79ca5
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB7511.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2024 16:50:38.9669
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zw8HiBb3Sx+ZvQXtqcZNdg6UGKWWjNgGdwnRfs4hrDX2txjvuldcvRS+cMAR7XtmFpC60AP3oxftRkRBLizXAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8598
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZZmEY5d6IRcCZjl7@lizhi-Precision-Tower-5810>
 
-On Sat, Jan 06, 2024 at 09:03:23PM +0530, Manivannan Sadhasivam wrote:
-> On Wed, Dec 27, 2023 at 01:27:13PM -0500, Frank Li wrote:
-> > Refactors the phy handling logic in the imx6 PCI driver by adding
-> > IMX6_PCIE_FLAG_HAS_PHY bitmask define for drvdata::flags.
+On Sat, Jan 06, 2024 at 11:48:35AM -0500, Frank Li wrote:
+> On Sat, Jan 06, 2024 at 08:57:08PM +0530, Manivannan Sadhasivam wrote:
+> > On Wed, Dec 27, 2023 at 01:27:12PM -0500, Frank Li wrote:
 > > 
-> > The drvdata::flags and a bitmask ensures a cleaner and more scalable
-> > switch-case structure for handling phy.
+> > Subject mentions, 'bulk_clk' APIs but there is no such thing. It should be
+> > 'clk_bulk()' APIs.
 > > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
+> > > Refactors the clock handling logic. Adds clk_names[] define in drvdata.
+> > > Using clk_bulk*() api simplifies the code.
+> > > 
 > > 
-> > Notes:
-> >     Change from v4 to v5:
-> >     - none, Keep IMX6_PCIE_FLAG_HAS_PHY to indicate dts mismatch when platform
-> >     require phy suppport.
-> >     
-> >     Change from v1 to v3:
-> >     - none
+> > I've mentioned this many times in the past. But let me reiterate here again:
 > > 
-> >  drivers/pci/controller/dwc/pci-imx6.c | 23 ++++++++++++++++-------
-> >  1 file changed, 16 insertions(+), 7 deletions(-)
+> > Commit message should be in imperative mood as per Linux Kernel rules for
+> > submitting patches. Please see here:
+> > Documentation/process/submitting-patches.rst
 > > 
-> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > index 50d9faaa17f71..4d620249f3d52 100644
-> > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > @@ -60,6 +60,9 @@ enum imx6_pcie_variants {
-> >  #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
-> >  #define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
-> >  #define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
-> > +#define IMX6_PCIE_FLAG_HAS_PHY			BIT(3)
+> > The relevant part is:
+> > 
+> > "Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
+> > instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
+> > to do frotz", as if you are giving orders to the codebase to change
+> > its behaviour."
+> > 
+> > Please use this same format for rest of the patches as well for future ones.
 > 
-> Every PCIe setup requires PHY for its operation. Perhaps you are referring to
-> external PHY? If so, please rename this to IMX6_PCIE_FLAG_HAS_EXT_PHY.
+> I may have not understand *imperative mode*. Asked an English native
+> speaker. Do you menas
+> 
+> *Refector* the clock handling logic. *Add* clk_names[] define in drvdata.
+> *Use* clk_bulk*() api *simplify* the code.
 
-Actually, it means use phy driver. How about using IMX6_PCIE_HAS_PHYDRV?
+Yes!
 
 > 
-> > +
-> > +#define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
-> >  
-> >  #define IMX6_PCIE_MAX_CLKS       6
-> >  
-> > @@ -1277,6 +1280,13 @@ static int imx6_pcie_probe(struct platform_device *pdev)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_PHY)) {
+> > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > 
+> > > Notes:
+> > >     Change from v4 to v5
+> > >     - update commit message
+> > >     - direct using clk name list, instead of macro
+> > >     - still keep caculate clk list count because sizeof return pre allocated
+> > >     array size.
+> > >     
+> > >     Change from v3 to v4
+> > >     - using clk_bulk_*() API
+> > >     Change from v1 to v3
+> > >     - none
+> > > 
+> > >  drivers/pci/controller/dwc/pci-imx6.c | 125 ++++++++------------------
+> > >  1 file changed, 35 insertions(+), 90 deletions(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > > index 74703362aeec7..50d9faaa17f71 100644
+> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+
+[...]
+
+> > >  
+> > > -	/* Fetch clocks */
+> > > -	imx6_pcie->pcie_bus = devm_clk_get(dev, "pcie_bus");
+> > > -	if (IS_ERR(imx6_pcie->pcie_bus))
+> > > -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_bus),
+> > > -				     "pcie_bus clock source missing or invalid\n");
+> > > +	while (imx6_pcie->drvdata->clk_names[imx6_pcie->clks_cnt]) {
+> > > +		int i = imx6_pcie->clks_cnt;
+> > 
+> > Why can't you initialize i to 0 directly?
 > 
-> IMO, we would not need these kind of checks in the driver if the DT binding is
-> properly validated using schema. But folks always want to validate "broken DT"
-> in the drivers :(
+> can't init i to 0 directly here, otherwise next loop i will not increase.
+> i just reduce refer imx6_pcie->clks_cnt in 
 > 
-> But I'm fine with this check for now since not everyone agree with above.
+> imx6_pcie->clks[i].id = imx6_pcie->drvdata->clk_names[i];
 > 
-> - Mani
+
+Wait... Can't you just use ARRAY_SIZE() to calculate the clks_cnt statically?
+
+Like,
+
+	static const char * const imx8_clk_names[] = {
+		"pcie_bus", "pcie", "pcie_aux",
+	};
+
+	[...]
+
+		.clk_names = imx8_clk_names,
+		.clks_cnt = ARRAY_SIZE(imx8_clk_names),
+
+You can use the same clk_names array for multiple SoCs if the clocks are same.
+I should've mentioned this in last review itself. Sorry about that.
+
+- Mani
+
+> Frank
 > 
-> > +		imx6_pcie->phy = devm_phy_get(dev, "pcie-phy");
-> > +		if (IS_ERR(imx6_pcie->phy))
-> > +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->phy),
-> > +					     "failed to get pcie phy\n");
-> > +	}
-> > +
-> >  	switch (imx6_pcie->drvdata->variant) {
-> >  	case IMX7D:
-> >  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> > @@ -1306,11 +1316,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
-> >  			return dev_err_probe(dev, PTR_ERR(imx6_pcie->apps_reset),
-> >  					     "failed to get pcie apps reset control\n");
-> >  
-> > -		imx6_pcie->phy = devm_phy_get(dev, "pcie-phy");
-> > -		if (IS_ERR(imx6_pcie->phy))
-> > -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->phy),
-> > -					     "failed to get pcie phy\n");
-> > -
-> >  		break;
-> >  	default:
-> >  		break;
-> > @@ -1444,13 +1449,15 @@ static const struct imx6_pcie_drvdata drvdata[] = {
-> >  	},
-> >  	[IMX8MM] = {
-> >  		.variant = IMX8MM,
-> > -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
-> > +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
-> > +			 IMX6_PCIE_FLAG_HAS_PHY,
-> >  		.gpr = "fsl,imx8mm-iomuxc-gpr",
-> >  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
-> >  	},
-> >  	[IMX8MP] = {
-> >  		.variant = IMX8MP,
-> > -		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
-> > +		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND |
-> > +			 IMX6_PCIE_FLAG_HAS_PHY,
-> >  		.gpr = "fsl,imx8mp-iomuxc-gpr",
-> >  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
-> >  	},
-> > @@ -1462,12 +1469,14 @@ static const struct imx6_pcie_drvdata drvdata[] = {
-> >  	},
-> >  	[IMX8MM_EP] = {
-> >  		.variant = IMX8MM_EP,
-> > +		.flags = IMX6_PCIE_FLAG_HAS_PHY,
-> >  		.mode = DW_PCIE_EP_TYPE,
-> >  		.gpr = "fsl,imx8mm-iomuxc-gpr",
-> >  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
-> >  	},
-> >  	[IMX8MP_EP] = {
-> >  		.variant = IMX8MP_EP,
-> > +		.flags = IMX6_PCIE_FLAG_HAS_PHY,
-> >  		.mode = DW_PCIE_EP_TYPE,
-> >  		.gpr = "fsl,imx8mp-iomuxc-gpr",
-> >  		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> > 
+> > Rest looks good to me.
+> > 
+> > - Mani
+> > 
+> > > +
+> > > +		imx6_pcie->clks[i].id = imx6_pcie->drvdata->clk_names[i];
+> > > +		imx6_pcie->clks_cnt++;
+> > > +	}
+> > >  
+> > > -	imx6_pcie->pcie = devm_clk_get(dev, "pcie");
+> > > -	if (IS_ERR(imx6_pcie->pcie))
+> > > -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie),
+> > > -				     "pcie clock source missing or invalid\n");
+> > > +	/* Fetch clocks */
+> > > +	ret = devm_clk_bulk_get(dev, imx6_pcie->clks_cnt, imx6_pcie->clks);
+> > > +	if (ret)
+> > > +		return ret;
+> > >  
+> > >  	switch (imx6_pcie->drvdata->variant) {
+> > > -	case IMX6SX:
+> > > -		imx6_pcie->pcie_inbound_axi = devm_clk_get(dev,
+> > > -							   "pcie_inbound_axi");
+> > > -		if (IS_ERR(imx6_pcie->pcie_inbound_axi))
+> > > -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_inbound_axi),
+> > > -					     "pcie_inbound_axi clock missing or invalid\n");
+> > > -		break;
+> > > -	case IMX8MQ:
+> > > -	case IMX8MQ_EP:
+> > > -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
+> > > -		if (IS_ERR(imx6_pcie->pcie_aux))
+> > > -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
+> > > -					     "pcie_aux clock source missing or invalid\n");
+> > > -		fallthrough;
+> > >  	case IMX7D:
+> > >  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+> > >  			imx6_pcie->controller_id = 1;
+> > > @@ -1353,10 +1300,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+> > >  	case IMX8MM_EP:
+> > >  	case IMX8MP:
+> > >  	case IMX8MP_EP:
+> > > -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
+> > > -		if (IS_ERR(imx6_pcie->pcie_aux))
+> > > -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
+> > > -					     "pcie_aux clock source missing or invalid\n");
+> > >  		imx6_pcie->apps_reset = devm_reset_control_get_exclusive(dev,
+> > >  									 "apps");
+> > >  		if (IS_ERR(imx6_pcie->apps_reset))
+> > > @@ -1372,14 +1315,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+> > >  	default:
+> > >  		break;
+> > >  	}
+> > > -	/* Don't fetch the pcie_phy clock, if it has abstract PHY driver */
+> > > -	if (imx6_pcie->phy == NULL) {
+> > > -		imx6_pcie->pcie_phy = devm_clk_get(dev, "pcie_phy");
+> > > -		if (IS_ERR(imx6_pcie->pcie_phy))
+> > > -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_phy),
+> > > -					     "pcie_phy clock source missing or invalid\n");
+> > > -	}
+> > > -
+> > >  
+> > >  	/* Grab turnoff reset */
+> > >  	imx6_pcie->turnoff_reset = devm_reset_control_get_optional_exclusive(dev, "turnoff");
+> > > @@ -1477,6 +1412,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+> > >  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
+> > >  		.dbi_length = 0x200,
+> > >  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_phy"},
+> > >  	},
+> > >  	[IMX6SX] = {
+> > >  		.variant = IMX6SX,
+> > > @@ -1484,6 +1420,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+> > >  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE |
+> > >  			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> > >  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"},
+> > >  	},
+> > >  	[IMX6QP] = {
+> > >  		.variant = IMX6QP,
+> > > @@ -1492,40 +1429,48 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+> > >  			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> > >  		.dbi_length = 0x200,
+> > >  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_phy"},
+> > >  	},
+> > >  	[IMX7D] = {
+> > >  		.variant = IMX7D,
+> > >  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> > >  		.gpr = "fsl,imx7d-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_phy"},
+> > >  	},
+> > >  	[IMX8MQ] = {
+> > >  		.variant = IMX8MQ,
+> > >  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"},
+> > >  	},
+> > >  	[IMX8MM] = {
+> > >  		.variant = IMX8MM,
+> > >  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> > >  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> > >  	},
+> > >  	[IMX8MP] = {
+> > >  		.variant = IMX8MP,
+> > >  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+> > >  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> > >  	},
+> > >  	[IMX8MQ_EP] = {
+> > >  		.variant = IMX8MQ_EP,
+> > >  		.mode = DW_PCIE_EP_TYPE,
+> > >  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"},
+> > >  	},
+> > >  	[IMX8MM_EP] = {
+> > >  		.variant = IMX8MM_EP,
+> > >  		.mode = DW_PCIE_EP_TYPE,
+> > >  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> > >  	},
+> > >  	[IMX8MP_EP] = {
+> > >  		.variant = IMX8MP_EP,
+> > >  		.mode = DW_PCIE_EP_TYPE,
+> > >  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+> > > +		.clk_names = {"pcie_bus", "pcie", "pcie_aux"},
+> > >  	},
+> > >  };
+> > >  
+> > > -- 
+> > > 2.34.1
+> > > 
+> > 
 > > -- 
-> > 2.34.1
-> > 
-> 
-> -- 
-> மணிவண்ணன் சதாசிவம்
+> > மணிவண்ணன் சதாசிவம்
+
+-- 
+மணிவண்ணன் சதாசிவம்
