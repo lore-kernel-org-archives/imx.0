@@ -1,91 +1,66 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B89455
-	for <imx@lists.linux.dev>; Tue,  9 Jan 2024 07:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AF522068
+	for <imx@lists.linux.dev>; Tue,  9 Jan 2024 08:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Okic1hZF"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D68EBFF806;
-	Tue,  9 Jan 2024 07:35:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PKD6vNYD"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 41022240002;
+	Tue,  9 Jan 2024 08:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1704785708;
+	t=1704787827;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g4dJB2jrYpwd2emaRyG+9ezzrTSheoF2q2JvQuIR+aI=;
-	b=Okic1hZFBhRED0jVi5a/v1nlbL5qAeWosYPSGQ0PoUP5NaEgToPwxWNwPa/JFVhjfujpGq
-	OXU0Hx+x3SuKWMp5/fHmBBJ2lIvnqUgdhF51VuHs0LnbroBE4tYpg8td/nUOznMtHWETzl
-	EGuh4hkC/LtN/apG3z5CydTwscAGAtkfeUzk2ePP0prJkuTmbg/WzYEXnbqAbrDpKQi8ah
-	sOlbNVOFaBDLk1+92X3Hd3AzvqdEXj6cynnJxfJGwq3Yxt7L7JDHqHnEJYQpx1X1NLltbZ
-	WIsf5Puyqzh5sl8S9Gerb/YSSTfnKwDMD2FQxZvjDPzyuMrFAtK4etiFSVwbuQ==
-Date: Tue, 9 Jan 2024 08:35:07 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: miquel.raynal@bootlin.com, conor.culhane@silvaco.com,
-	imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, zbigniew.lukwinski@linux.intel.com
-Subject: Re: (subset) [v5 resend 0/6] i3c: master: some improvment for i3c
- master
-Message-ID: <2024010907350708773e04@mail.local>
-References: <20231201222532.2431484-1-Frank.Li@nxp.com>
- <170467220283.558820.13886846242749418731.b4-ty@bootlin.com>
- <ZZyfL/wWSW1oMOec@lizhi-Precision-Tower-5810>
+	bh=NsnJZM8mE/E1TbZzElehXy7zAO8n/tIH97gjvK7JStQ=;
+	b=PKD6vNYD/FbOVrUM3CYaa+zlkv7q4fQjwQ4CYAGkUu9dbRT/gSc9SMnDfXX6QArEjRa3dv
+	YYWiXEh4wfbE9gkVcLCaIjIexTO0perzPNa/rCUBpP7HSJVEq2oWDDU5uc9pfj/gk5H96z
+	m8C1vNj4qP1x8f71peSujRM26olrEq5PX3+nEBIlE8PnD3RdVFpm0gms2jkyt/YqHpYd16
+	2FSRphA573USMrXhtNtpZdKzJ1JJg9/a3rEqnmcIc3C4QeUY8HhZctRi3rU8ZUyoKxo0K1
+	Oi3wyrABs+N+EyQohINnOEYD6z5OWHGhk+ehyiuPxerrZ8RUw9EwldBraT1tpg==
+Date: Tue, 9 Jan 2024 09:10:24 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
+ linux-next@vger.kernel.org, conor.culhane@silvaco.com, imx@lists.linux.dev,
+ joe@perches.com, linux-i3c@lists.infradead.org,
+ zbigniew.lukwinski@linux.intel.com
+Subject: Re: [PATCH 1/1] i3c: master: fix kernel-doc check warning
+Message-ID: <20240109091024.40fd1dfb@xps-13>
+In-Reply-To: <20240109052548.2128133-1-Frank.Li@nxp.com>
+References: <20240109052548.2128133-1-Frank.Li@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZZyfL/wWSW1oMOec@lizhi-Precision-Tower-5810>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 08/01/2024 20:19:43-0500, Frank Li wrote:
-> On Mon, Jan 08, 2024 at 01:03:50AM +0100, Alexandre Belloni wrote:
-> > 
-> > On Fri, 01 Dec 2023 17:25:26 -0500, Frank Li wrote:
-> > > There are three major improvement
-> > > 
-> > > 1. Add actual size in i3c_transfer because i3c allow target early termiate
-> > > transfer.
-> > > 2. Add API for i3c_dev_gettstatus_format1 for i3c comand GET_STATUS.
-> > > 3. svc master support hotjoin
-> > > 
-> > > [...]
-> > 
-> > Applied, thanks!
-> > 
-> > [1/6] i3c: master: add enable(disable) hot join in sys entry
-> >       commit: 317bacf960a4879af22d12175f47d284930b3273
-> > [2/6] i3c: master: svc: add hot join support
-> >       commit: 05b26c31a4859af9e75b7de77458e99358364fe1
-> > [3/6] i3c: add actual_len in i3c_priv_xfer
-> >       commit: e5e3df06ac98d15cfb10bb5c12356709365e91b2
-> > [4/6] i3c: master: svc: rename read_len as actual_len
-> >       commit: 6fb61734a74eaa307a5b6a0bee770e736d8acf89
-> > [5/6] i3c: master: svc: return actual transfer data len
-> >       commit: 6d1a19d34e2cc07ca9cdad8892da94e716e9d15f
-> 
-> Why not pckup 6/6: 
->  i3c: add API i3c_dev_gettstatus_format1() to get target device status
-> 
+Hi Frank,
 
-As it was discussed, it doesn't have any users.
+Frank.Li@nxp.com wrote on Tue,  9 Jan 2024 00:25:48 -0500:
 
-> Frank
-> 
-> > 
-> > Best regards,
-> > 
-> > -- 
-> > Alexandre Belloni, co-owner and COO, Bootlin
-> > Embedded Linux and Kernel engineering
-> > https://bootlin.com
+> Fix warning found by
+> 	'scripts/kernel-doc -v -none include/linux/i3c/master.h'
+>=20
+> include/linux/i3c/master.h:457: warning: Function parameter or member 'en=
+able_hotjoin' not described in 'i3c_master_controller_ops'
+> include/linux/i3c/master.h:457: warning: Function parameter or member 'di=
+sable_hotjoin' not described in 'i3c_master_controller_ops'
+> include/linux/i3c/master.h:499: warning: Function parameter or member 'ho=
+tjoin' not described in 'i3c_master_controller'
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miqu=C3=A8l
