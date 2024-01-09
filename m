@@ -1,70 +1,53 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2041.outbound.protection.outlook.com [40.107.8.41])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2060.outbound.protection.outlook.com [40.107.6.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4062A59144
-	for <imx@lists.linux.dev>; Mon,  8 Jan 2024 23:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E100138A
+	for <imx@lists.linux.dev>; Tue,  9 Jan 2024 01:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="U/YYGQFL"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="P8Vqe5dP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nLXtFdx+M2btqOrMR67fDRHhGG2z5U6iLNDr3e71C1wEeq8TDi93zfipGPFMMDZcfXtJFyvn5qJMZ8O+XWakIgFsjE5I5/a1xJRoT3F1WqYNUoMDN05hRn5XWzk9UUNzLXaReW5MXu/eAOxTnVjtqmwgGKPLYSX3K0+yHTvvLD8OfERnHOqHLDoTIGUGuWwue3GV3x8sQQ03rzBFsJrMKjbGOJRQ1/H8zI3SS92qklwJHZ/edDi+dwSmdVSfuH1BNu0iG6Aa1w3pH+iJzIzSALk+XqPpyvnHTCmpIM9FOC8V3TYqpB6FK9bhnjgnHzSmpj7uT92cVlV6mKrf8Ndobg==
+ b=BNOtVCdvZH/JqKneUCS7RB10S6IsxR1ve9YuFXbydmWFz6ex9xqSwAAXC6I9iI7nnoVgGT9Ktpu+xv8xC4KR5zf2xHkCZtGSNuxvj1R+qghVDuO4ag/H0FpA1Jb8G4Xv/3DvgJNHcHt648Jbv3yDoJh/1n2fyJY/dA10S+sV7BPW+XUzxThBItnG+wXB5qg9VzTjO/3SN5rnQ9DBK3QZNaYhIqMc5hEP5meO4ftvhe326ZiHuZ8qFzfUzIUUpNNGNoUaLoObjwwiIQg53A6vbXWppon1aFC9SAfUBFgNddb0UFNWI+eJtL79yCB8pDygtY4JZElRrKggPiZiRWtfEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ex0NRJz1s3XkmopQ66EFlSMsjJr6NnBSpyJnaz+J2ec=;
- b=l2afhn7K/Wg4Ug3dWAMsCyXVM6z0UCsIeRXOWL2wNGI+eoOJqIeWeMpop4o1BPsm3EfBn7cpiEv3F/fPiPPswnVm4rMK++zifUjEHqNk/WQ7Pze0U2rbHfkoFyultE8TBBEPzUWfA+t6BmWHf/GAShhsrrvUsoYetPqUbcKMCUwGqfDuzoAlMDbX75kZ2V2NzhzslXpg8smDiG6rfdyYP1Lz+RIGwti+Wl6QarmM4zrjR7yrovQ8WTIdbkl14pknY/w6zaILXwpZ/Y9oJAayyJjqnUOcMVhYC1mo2OkjD09cEUonD9JH5oZZWiD48n1FIaud6i5cn8vKHqqbLoANEg==
+ bh=iACVS5WH3GRolIzoz9lhuvnGGRZ8Pa6PTZF0GC5bYjE=;
+ b=gXzzJ9YGaumdsHVmTVvhEIs4YYC0KUeeex+EBGNNSuke6Z+jzPlclKekCvrUtFDSMsdP/GRKx06PjJfbxa5ZnSjsAkVYB1RqnYOZykq/l4YErgo9+tSeH6A/BucAR3Bk0rsNLhZLrHwALNfName3DE1kBTUEeZpw7Op5zkprmsi3MK8QOa6m8SOqQvN9tpkQOuHXbqqBTZQ7K/NWqlh2VRtxa+XDICHdGVrw+W3AJy7/aO8EAHagWLLxujkNzfcq4UASzazgB6Bu2F4yYdpoC7IKffG6+HKtt1pPqtGRGsvl0V+CP1jS945KiDHl/L9Fkw7BAaGauuhHp+R6G6XNRw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ex0NRJz1s3XkmopQ66EFlSMsjJr6NnBSpyJnaz+J2ec=;
- b=U/YYGQFLfJczEPCzbS+uinm/VFkqR4lIxATV3GialI9NN+/c1h7YT67zl69fF60N3KoNpDVTOKyPJE3z1p7mdK542Us8dzM83nRRsaG4GoNxJEFWzhxwO6c7yQxucBDbCnSMY5iPjJYnbywvlI+D9IOJ+hOcLo1XoHD//f/HkLE=
+ bh=iACVS5WH3GRolIzoz9lhuvnGGRZ8Pa6PTZF0GC5bYjE=;
+ b=P8Vqe5dPDcs50UeyEuP2w3sJOW08HVU9C+ukRbxwrDdFiDeYEbCzJufg/yrcVpLjx4C1IAQT7kDr91jy1Yj+ANolZkfDpIlP0S9dEaRT1gbVBvZzAcBD9ojlhDQ1sr+6zq1daxsWftELGPmUz9k9sBoA9bAO3ED4H9J/UzaXq7E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AS8PR04MB7511.eurprd04.prod.outlook.com (2603:10a6:20b:23f::5)
- by AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17) with
+ by DUZPR04MB9899.eurprd04.prod.outlook.com (2603:10a6:10:4de::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.21; Mon, 8 Jan
- 2024 23:23:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
+ 2024 01:19:51 +0000
 Received: from AS8PR04MB7511.eurprd04.prod.outlook.com
  ([fe80::8ee3:bac5:a2da:d469]) by AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469%4]) with mapi id 15.20.7159.020; Mon, 8 Jan 2024
- 23:23:30 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: krzysztof.kozlowski@linaro.org
-Cc: Frank.Li@nxp.com,
-	bhelgaas@google.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	festevam@gmail.com,
-	helgaas@kernel.org,
-	hongxing.zhu@nxp.com,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	krzysztof.kozlowski+dt@linaro.org,
-	kw@linux.com,
-	l.stach@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	robh@kernel.org,
-	s.hauer@pengutronix.de,
-	shawnguo@kernel.org
-Subject: [PATCH v8 16/16] PCI: imx6: Add iMX95 Endpoint (EP) support
-Date: Mon,  8 Jan 2024 18:21:45 -0500
-Message-Id: <20240108232145.2116455-17-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240108232145.2116455-1-Frank.Li@nxp.com>
-References: <20240108232145.2116455-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR02CA0063.namprd02.prod.outlook.com
- (2603:10b6:a03:54::40) To AS8PR04MB7511.eurprd04.prod.outlook.com
+ ([fe80::8ee3:bac5:a2da:d469%4]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
+ 01:19:51 +0000
+Date: Mon, 8 Jan 2024 20:19:43 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: miquel.raynal@bootlin.com, conor.culhane@silvaco.com,
+	imx@lists.linux.dev, joe@perches.com, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, zbigniew.lukwinski@linux.intel.com
+Subject: Re: (subset) [v5 resend 0/6] i3c: master: some improvment for i3c
+ master
+Message-ID: <ZZyfL/wWSW1oMOec@lizhi-Precision-Tower-5810>
+References: <20231201222532.2431484-1-Frank.Li@nxp.com>
+ <170467220283.558820.13886846242749418731.b4-ty@bootlin.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170467220283.558820.13886846242749418731.b4-ty@bootlin.com>
+X-ClientProxiedBy: BY3PR04CA0022.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::27) To AS8PR04MB7511.eurprd04.prod.outlook.com
  (2603:10a6:20b:23f::5)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,185 +56,90 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB7511:EE_|AS4PR04MB9338:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76bfa3e0-ae2e-480c-d7cb-08dc10a0d312
+X-MS-TrafficTypeDiagnostic: AS8PR04MB7511:EE_|DUZPR04MB9899:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2e63829-e725-46a5-8ca5-08dc10b1144d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	2CcwRfqxkBDtGiBVU/9cWsaW2HqdL1e1i3Rx4BivEheTeH02klpL3Bwrkv3gdTNt6P87J6fqv5JBFHwZOawSbpg9gpak2TVUf9/yYzXpA/WJxCzMHKLs/hHP8WkUHgfO/XVLr6o5ePznEyJgMYz5ZquHPKAFmUYJfEq758J2hLlndPZXsyuav6Gmcpm2+oRHvqmE2tblTScQE7HnzKvpAP6M/ruJs2Tkqxza4DJHholXKJI3ohcd302D7oQh+zHgWfbUMqYWvNERRqbgZmEzOPAfwVLXuJcxw0Bf9usJcixOUuevsFZNuryYIjD2vcxiioyGvC8nLfJjmkj49/dUU+sTRDuePH6cJ9XG+fvoXi63yorNnxgjQZF9NKJqvHdOXHm4/ITh1YR1zqy8NzJi6vKY2Cg0mj2JRvOCdooEaQQE+H3VUThy4930CKMQJeKIif/fwrDqFo/rGxsoBoZAfRSI+bhVC0E+EV4APppPWdQ6mvGvxtYhZ2prCysA3jG2RT9uBvLdheTeX3T5FoNR4TbhqFIIgypxFZwWtRN6CxmAYdPHuXjkowMJStnkXsHf5UpOcmVDFN+RS/QmpCIqS8aQJg2alXvIVgJOVUHRIDj2qBhlQ2HLf3tuh0bDsSf2
+	POo/zlZuGwrafYBC3vy/Oczrskzntfr4ad3W/563UDgr0ePwgNHxVQ0l0eQ4hWe7xtW3E7eH8qAT7wL2DhDqrtEETCiMpoCW+cwJg6VCgkxcb1qJ3WZcuQw0VVf07f4C7MdfQPY8cBWvHf/mKARceXCb+HmJYk24sz8gpj6QRACKoCrTDTOjCMQgfoPTCjlrORcMrtWYIRDkcCNJSH1LRbrPyi7mFEuo1MqD/x7UArumCOQrgwh0jv6imJpXYOV8JRrqG2wIC3pX7Ppk78Gao8cCGVIICJ0328FiCOE25h0yJoYBePshR8cCRuLj5fSnCWkC5OVlpRNFzZtOvu9CHdQGZnFALcocub4UnP8GtalUVVrNfpvTYnh3VszfQm4oTI1r/XHKgEoOyg4Wb6utv+1PviwQsaKvrHRbHvPeFX13x4daVxGf1pW1UIcbUw9sT8AUH6gPwwXGu0ATy2rc/6KHjIudIl7AjPDqhzt/Zc+YsMOceGdqjMhB7PnEHQfiP5iMeueDgiPhOAIjLeXZq7HE0HAx0bMs3xjXxzROvqfjNoyIX6PPEbSSsEXfypu64hnV8P+6xoUihqxwARXfKhDMNIGycs7t3EdpgBdWeG6Jme3shgZMvxQ695OUgpAs
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7511.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(376002)(346002)(396003)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(52116002)(6506007)(2616005)(1076003)(6666004)(6512007)(478600001)(26005)(6486002)(38100700002)(86362001)(38350700005)(36756003)(41300700001)(83380400001)(7416002)(66556008)(2906002)(316002)(66476007)(6916009)(4326008)(5660300002)(8676002)(8936002)(66946007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7511.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(39860400002)(396003)(346002)(366004)(136003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(4326008)(41300700001)(38100700002)(8676002)(8936002)(66556008)(66476007)(6916009)(33716001)(316002)(26005)(9686003)(52116002)(6512007)(66946007)(2906002)(6506007)(6666004)(966005)(478600001)(6486002)(5660300002)(38350700005)(86362001)(42413004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Z4qUdLbxxC6M850aU7g/Kp2pR44GQr+R9JidUyBjPCa2T4GcS+8NNl7O2bdu?=
- =?us-ascii?Q?2++KN35ZmiIxjeme6B5hQUakLv4ltfsRRVIbrvJXSQHTKit+R/JAbo38OeOd?=
- =?us-ascii?Q?ZLe9M0aaLXwLIxmmNXy98LBNAkmmWQPZm2fdKv9rQJva8wAHPzYDVGfHj4lW?=
- =?us-ascii?Q?NOmXYCBcPyeNSUpqUVYQULx2W4wTeZUeDvy+89JBYbU9lddlt5PlFCuCvkU4?=
- =?us-ascii?Q?YJ/6OPfX4PRrfHBevD2Nb7GBcr/pObfEsRmdj8BfUvAXzXlpDVhUDJ0CcGgM?=
- =?us-ascii?Q?Rkzll4M5n42MkvpfeINJT43LycOD2WctH0e9DB29jeaiZT8XdBd6qVyNgeQq?=
- =?us-ascii?Q?4wOmhkI9J50kiypyGyqxW0DgjgeN1ormL+5mTShV+1ZN0wOYamJH7SaQRvU0?=
- =?us-ascii?Q?PmqyIr0iMvOB5f1daJZFDt/rGokukmUTywpeaiyaBAo/E4N9yqAunkzb2ipl?=
- =?us-ascii?Q?TNrUayPDKQ8tjHLW6ELWMUWtDQit9p33N/71DqEntACqN1zNKfTwnSEz0PnL?=
- =?us-ascii?Q?3KGbUjK4c9wxtaTswb0dCiTL21qLx8zC7+AjnlZ4CyUWN/tjPs38K4BB4+8y?=
- =?us-ascii?Q?4dfTsl6rdKe6OsOoeBL0TIISjznqzXI2Wl2Hzs8kqjn+WIDI1BpTeCaO92YX?=
- =?us-ascii?Q?B7F2k0hqHHUafQHJ/9jzQ9qUtX7RpEuYZAGQ94zTddaKwMM8edlbu1OiS4x8?=
- =?us-ascii?Q?Mj8IX6pa39McQjEmGulEnsVifWvbx1qQ8zvh+/9OkqrlzZ3WZmKfWDnJs+AN?=
- =?us-ascii?Q?O2PXRL/ZNVhHLfcpLJtA1maZVtfb/PVIdFGx6TJi9yNaQIIktuCJmrd/A5k0?=
- =?us-ascii?Q?Ny0wId7i4fE15pIEWlHIwOgnBH9ZhbrtDSDjjPl9GTD4WloHOYD04JGq1goU?=
- =?us-ascii?Q?hzKBSdkyrdCXXGKAWP/TMD6hsjRGxOwxJOcNynTV/oj9tsWVxJBmCzMgtN2i?=
- =?us-ascii?Q?pcOvEkCmyTdUf5iFZDfEGsyadx6b41wLQaQzmQxEOtRLaWrfF/Yz8NQlxjZI?=
- =?us-ascii?Q?2fns6NcIfqqNQHLV+UKYlhkcyF0Ds63CXwH/WeoxFEMATG47emijco9dKDKb?=
- =?us-ascii?Q?slH2DcTK3hS6sT4To8Edb9XxzGyCG2YR8GYwGF7KUCjgEpK65BZJtgygoFpg?=
- =?us-ascii?Q?OSYpstIDxUu1YInGAsai+AtwmemYltue7UPOANgwYmalOdRnAEAnr48+ynyo?=
- =?us-ascii?Q?L4WLnStlbZr3wh1WwzJFfaGdelc8heW22pRcK/u4IJsqYo7cVuu/KF//5ouI?=
- =?us-ascii?Q?+KChq13nbqHbwipS5jCbijaNCP0uL+LnXf/R+cQ8K+2ViZYuox4ke80At2Ri?=
- =?us-ascii?Q?xpAOqgdAGdhNf8Ma2nN9zjZOqZx8ZJbCpUxZI0XUeh2yvTvDzF82ZIvyTCDv?=
- =?us-ascii?Q?QmhUgw6jIJ8coX87o5oLT9TLuMq8iiowYmcUV13/txFWx2a3Xg0xtYPGA29t?=
- =?us-ascii?Q?nrv+fi3Q9SdNIOyUre1QIfL/DYSRqqDYcSa6HZCk6mnqn0wwR0wCk3szrSrW?=
- =?us-ascii?Q?Qoa44vKZCZ8aQPDSe99QKqsV1X+m8o/1LIdZ/AtatsJvbXTrMuYDhul2p+ab?=
- =?us-ascii?Q?bh1UnyxSwYzo1/+mZE3YTHrZHouz52sXjPKqPs8P?=
+	=?us-ascii?Q?WbEQMX1KMfxEK4w+iPil+hh5b1/BT4lcI5ZUtTK5DBBqumSr5koG7NRqsAoh?=
+ =?us-ascii?Q?Uoi1t/OtZ0Hb8B7FSb0ib4UGTY7QINnF2f6zzy3gxEoIx3cEvwrnOnKRPqv6?=
+ =?us-ascii?Q?mreohji5NZYxPXyDOgn+QV87pNGGCxsFG+c6SwsQqIUl90eElzVQFXQU3lHq?=
+ =?us-ascii?Q?PwnjkWAFpESqRyESWj5D5WYFlsGpjur7N2dm7Cfxz9QF2s3LMd4XmT8iW4mZ?=
+ =?us-ascii?Q?k3adyJuImR+/n25zRxyMeycCzjDx/V4e2SaAYNXO6ckUIttYbjbr3N+pK0bf?=
+ =?us-ascii?Q?UmarTiuXIe+MFatisNA3nDS6AJfFFCmOFtBWXy18Z6GBl9AmnUpuOQgBVAuq?=
+ =?us-ascii?Q?gJ2yRjV+QwXqdmmwCIjEK5/KUkXxYqzk3V5a8KwznLEOQkxXn4YKL9voJLNM?=
+ =?us-ascii?Q?Pe+DjgekUiA/jmyMISPhAPUe41XEjRonADV1UGH8+E2hbGurxVMYWIOwC0/i?=
+ =?us-ascii?Q?sefdKb4t7LjBinrkufGHwXqsFcgJBVxRNRDO2Hp8uYzIQL+EX7qxKAUld2al?=
+ =?us-ascii?Q?HykKX9qW4xXAm2PGQy0JRWWwF1O4ftSwNQovi0gcA8WVXWy598QXuu9ECTNS?=
+ =?us-ascii?Q?Q5dQRVfiIYIgm1uFzAy0ppn+OKEmyn2h4LxN7Jlzj9NwdAeMUFCaVDyLHxVr?=
+ =?us-ascii?Q?p7L4CZvctvazKkwF9LcKUEMHNDvrHKG78In8Q9ir59RCUDgPbsQkwRB5O4ar?=
+ =?us-ascii?Q?OMuE7bYe3tIhgmpGLY1vVBkBvidhrJpiEg50o0kJIEp+eyQoHO6RgCbnIrE7?=
+ =?us-ascii?Q?YVb13k4ADAotTBRpk5bwgYirfgWuB22G+Ebjmrpk/+zTr7BK9ERe7p/OHkhT?=
+ =?us-ascii?Q?QUUoYus1uzwE0EOwLYqRsbEEZ4kws68cPeVP7QSfGzFirEi8FvFrCztUZ2gM?=
+ =?us-ascii?Q?2Fq32w7XNHfvRH/3uuEl5szLA4yA69c+NwSUjlEMHR7dlArroe7efcg503mq?=
+ =?us-ascii?Q?JlsDkjkhvx9oJeIvt1yuxzEpJcTnWbWFX4RE9ffAhoHAWRx7bVOaHG8CAwSs?=
+ =?us-ascii?Q?yJ3trKIvIop48CfwA93nSKqttb9SfF84LJRKIoEclcwoH/SJBj+/lsuFUyU4?=
+ =?us-ascii?Q?UaxYCuD72ky8GiM6vEPhCH1B2sTLtUWHAOR1N1FWWbfDJBzIFDddlIqDk4pE?=
+ =?us-ascii?Q?sI61qqoGExRmFV+nX9N9LNQ5iujmC18FH3T9uDnFfEg8GO9ogVs6lWgp8Pbw?=
+ =?us-ascii?Q?ma24VCu5sOI/SqCsvcPj+bCHj5kNsBkotbMgO0xFcbFyK1GRmwgMUH3I+KE0?=
+ =?us-ascii?Q?QslM1X5hbKT9bBf00VA7ZEZdl8VtaY514MDdqn+MwWv2xlkRePSYiOJHWhsc?=
+ =?us-ascii?Q?395dWwZjy9+y0uKmTiOiMCsPzrtIFZuW1JsJRTS74KMVnTRmg0+CL5vpgQvH?=
+ =?us-ascii?Q?BYc7SdMexgRqRaKlwzyUwmj7LiEQY6q1LwpVufM7Zxv52PwSz1CCh7PGvb8X?=
+ =?us-ascii?Q?z5kQTKnX+IX1FjS0Xt2oEuPiGfHSdD+P5geGkpAwsFsA63kfiDbcb6AINqgY?=
+ =?us-ascii?Q?dfOzfjJq3fvcjA5skcUhNh6NrwyAFSeZ6ZbnIiUi8p5eVn5VBmPpsBBjdX5u?=
+ =?us-ascii?Q?KIN5YVOiRsRqUG8h/za7t1UYPi8IYdIpgeHVSMFR?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76bfa3e0-ae2e-480c-d7cb-08dc10a0d312
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2e63829-e725-46a5-8ca5-08dc10b1144d
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB7511.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2024 23:23:30.5805
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 01:19:51.7222
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: domPJ/hD2jfiG2bOMNnYKFQXoda/XHnN+gkYFNi8lhC9JQR2eb/qKCE1EejU69vPRYRvjVuduiAjeJj7kneDDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9338
+X-MS-Exchange-CrossTenant-UserPrincipalName: NJARsOdlvjKNG8vNEjj886HJdr+P28J8mzBF++AQz9igzzedxy6qXQXefSx7NXtBcbqOLpMNlpOg10sE9ZS1RA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9899
 
-Add iMX95 EP support and add 64bit address support. Internal bus bridge for
-PCI support 64bit dma address in iMX95. Hence, call
-dma_set_mask_and_coherent() to set 64 bit DMA mask.
+On Mon, Jan 08, 2024 at 01:03:50AM +0100, Alexandre Belloni wrote:
+> 
+> On Fri, 01 Dec 2023 17:25:26 -0500, Frank Li wrote:
+> > There are three major improvement
+> > 
+> > 1. Add actual size in i3c_transfer because i3c allow target early termiate
+> > transfer.
+> > 2. Add API for i3c_dev_gettstatus_format1 for i3c comand GET_STATUS.
+> > 3. svc master support hotjoin
+> > 
+> > [...]
+> 
+> Applied, thanks!
+> 
+> [1/6] i3c: master: add enable(disable) hot join in sys entry
+>       commit: 317bacf960a4879af22d12175f47d284930b3273
+> [2/6] i3c: master: svc: add hot join support
+>       commit: 05b26c31a4859af9e75b7de77458e99358364fe1
+> [3/6] i3c: add actual_len in i3c_priv_xfer
+>       commit: e5e3df06ac98d15cfb10bb5c12356709365e91b2
+> [4/6] i3c: master: svc: rename read_len as actual_len
+>       commit: 6fb61734a74eaa307a5b6a0bee770e736d8acf89
+> [5/6] i3c: master: svc: return actual transfer data len
+>       commit: 6d1a19d34e2cc07ca9cdad8892da94e716e9d15f
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+Why not pckup 6/6: 
+ i3c: add API i3c_dev_gettstatus_format1() to get target device status
 
-Notes:
-    Change from v7 to v8
-    - Update commit message
-    - Using Fixme
-    - Update clks_cnts by ARRAY_SIZE
-    
-    Change from v4 to v7
-    - none
-    Change from v3 to v4
-    - change align to 4k for imx95
-    Change from v1 to v3
-    - new patches at v3
+Frank
 
- drivers/pci/controller/dwc/pci-imx6.c | 46 +++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
-
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 3f474d4749dce..69ba72c3a9c9c 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -75,6 +75,7 @@ enum imx6_pcie_variants {
- 	IMX8MQ_EP,
- 	IMX8MM_EP,
- 	IMX8MP_EP,
-+	IMX95_EP,
- };
- 
- #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
-@@ -84,6 +85,7 @@ enum imx6_pcie_variants {
- #define IMX6_PCIE_FLAG_HAS_APP_RESET		BIT(4)
- #define IMX6_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
- #define IMX6_PCIE_FLAG_HAS_SERDES		BIT(6)
-+#define IMX6_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
- 
- #define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
- 
-@@ -616,6 +618,7 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
- 		break;
- 	case IMX7D:
- 	case IMX95:
-+	case IMX95_EP:
- 		break;
- 	case IMX8MM:
- 	case IMX8MM_EP:
-@@ -1050,6 +1053,23 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
- 	.align = SZ_64K,
- };
- 
-+/*
-+ * BAR#	| Default BAR enable	| Default BAR Type	| Default BAR Size	| BAR Sizing Scheme
-+ * ================================================================================================
-+ * BAR0	| Enable		| 64-bit		| 1 MB			| Programmable Size
-+ * BAR1	| Disable		| 32-bit		| 64 KB			| Fixed Size
-+ *	| (If BAR0 is 64-bit)	| (if BAR0 is 32-bit)	| (if BAR0 is 32-bit)	| As Bar0 is 64bit
-+ * BAR2	| Enable		| 32-bit		| 1 MB			| Programmable Size
-+ * BAR3	| Enable		| 32-bit		| 64 KB			| Programmable Size
-+ * BAR4	| Enable		| 32-bit		| 1M			| Programmable Size
-+ * BAR5	| Enable		| 32-bit		| 64 KB			| Programmable Size
-+ */
-+static const struct pci_epc_features imx95_pcie_epc_features = {
-+	.msi_capable = true,
-+	.bar_fixed_size[1] = SZ_64K,
-+	.align = SZ_4K,
-+};
-+
- static const struct pci_epc_features*
- imx6_pcie_ep_get_features(struct dw_pcie_ep *ep)
- {
-@@ -1092,6 +1112,14 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
- 
- 	pci->dbi_base2 = pci->dbi_base + pcie_dbi2_offset;
- 
-+	/*
-+	 * FIXME: dbi2 information should fetch from dtb file. dw_pcie_ep_init() can get dbi_base2
-+	 * from "dbi2" if pci->dbi_base2 is NULL. All code related pcie_dbi2_offset should be
-+	 * removed after all dts added "dbi2" reg.
-+	 */
-+	if (imx6_pcie->drvdata->variant == IMX95_EP)
-+		pci->dbi_base2 = NULL;
-+
- 	ret = dw_pcie_ep_init(ep);
- 	if (ret) {
- 		dev_err(dev, "failed to initialize endpoint\n");
-@@ -1345,6 +1373,9 @@ static int imx6_pcie_probe(struct platform_device *pdev)
- 					     "unable to find iomuxc registers\n");
- 	}
- 
-+	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_SUPPORT_64BIT))
-+		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
-+
- 	/* Grab PCIe PHY Tx Settings */
- 	if (of_property_read_u32(node, "fsl,tx-deemph-gen1",
- 				 &imx6_pcie->tx_deemph_gen1))
-@@ -1567,6 +1598,20 @@ static const struct imx6_pcie_drvdata drvdata[] = {
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.epc_features = &imx8m_pcie_epc_features,
- 	},
-+	[IMX95_EP] = {
-+		.variant = IMX95_EP,
-+		.flags = IMX6_PCIE_FLAG_HAS_SERDES |
-+			 IMX6_PCIE_FLAG_SUPPORT_64BIT,
-+		.clk_names = imx6_4clks_bus_pcie_phy_aux,
-+		.clks_cnt = ARRAY_SIZE(imx6_4clks_bus_pcie_phy_aux),
-+		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
-+		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
-+		.mode_off[0]  = IMX95_PE0_GEN_CTRL_1,
-+		.mode_mask[0] = IMX95_PCIE_DEVICE_TYPE,
-+		.init_phy = imx95_pcie_init_phy,
-+		.epc_features = &imx95_pcie_epc_features,
-+		.mode = DW_PCIE_EP_TYPE,
-+	},
- };
- 
- static const struct of_device_id imx6_pcie_of_match[] = {
-@@ -1581,6 +1626,7 @@ static const struct of_device_id imx6_pcie_of_match[] = {
- 	{ .compatible = "fsl,imx8mq-pcie-ep", .data = &drvdata[IMX8MQ_EP], },
- 	{ .compatible = "fsl,imx8mm-pcie-ep", .data = &drvdata[IMX8MM_EP], },
- 	{ .compatible = "fsl,imx8mp-pcie-ep", .data = &drvdata[IMX8MP_EP], },
-+	{ .compatible = "fsl,imx95-pcie-ep", .data = &drvdata[IMX95_EP], },
- 	{},
- };
- 
--- 
-2.34.1
-
+> 
+> Best regards,
+> 
+> -- 
+> Alexandre Belloni, co-owner and COO, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
