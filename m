@@ -1,204 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2075.outbound.protection.outlook.com [40.107.13.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CC121378;
-	Thu, 11 Jan 2024 13:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130CC4F5E9
+	for <imx@lists.linux.dev>; Thu, 11 Jan 2024 16:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlCmgUxy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704981017; x=1736517017;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=df3bhwFei4ovFhoesxHUexUNJ8++z5Jxwlx+x83xoIQ=;
-  b=XlCmgUxyV6MhvXdzP36tl35Wb5Tt1MyOJfE5mDi5qccbhFVEEmYiZNlE
-   QZe67pmFuF7BWWsTKdsIyV447fn/xZObIKvE6CIvHttm4XTZOUqJG0M/6
-   WwF2VAp5xEqrMu02/Uipu00nC5dNbR1zcSrmqxdZezzWR6+4lP242rXIh
-   VFxp2Z18CveAILnGtvvXWngxpZvoAuyMqA1UkHHh4LMliEsKDD2CzblmW
-   recfvAMxozGy5VOFdZ9QSBIGQkg+AohsMkbfBOGJLln7fP4O4ohxXtKbR
-   AQzLKy5VcSr2qIV8SLJXM8OOflLqOUQ3RgPkTjx6uRLbmE377a1hCdNFR
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="5929641"
-X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="5929641"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 05:50:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="926018931"
-X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="926018931"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Jan 2024 05:50:11 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rNvRh-0008Jd-2N;
-	Thu, 11 Jan 2024 13:50:09 +0000
-Date: Thu, 11 Jan 2024 21:49:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, robh@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
-	gregkh@linuxfoundation.org, imx@lists.linux.dev,
-	jirislaby@kernel.org, joe@perches.com,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
-	zbigniew.lukwinski@linux.intel.com, devicetree@vger.kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org
-Subject: Re: [PATCH v2 4/7] i3c: target: add svc target controller support
-Message-ID: <202401112149.TbWJpRfM-lkp@intel.com>
-References: <20240110175221.2335480-5-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="jb2fyZuO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SO86N7X68ksbhpeOmADvtl/JIA7qAPrNhXtw2ctOJYMPpDjNDBae37/qwdu+01nXJOyny1OFVIsdxRdpvNqjFbLP9dXO0rlcsdB53Ge138hP5H1+FNPfqYi0DVcq/36j27Q8kzCcs7f41FJNJfXSXNPZTiGsj42YeBacyNomDGtkjbF62Bv/XDgMRij4mT4qqWdpN/YSSfcD8BLyxnwbHiNwJaYKqDxERWUvUXXxwXuOM5XtoG/YoIB0GH2rxp0Tknen6MBCmi1n1xxvKiDWrrp/Yh2Q7xxY9fjob8XDZP2zPKHMzdg+vvjCve867PPPDaz8t6QaHAtJcVTM3+QqtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jTS4IQNsDXHG7aIBJ9ZwW45udhw/kN+YghsHriV55eE=;
+ b=jxs93MwMqieg7CBmj7KavvRurOntn2zVSTzrP64ne7wtDZVoxzmmvineL5FmMwWmLifa/ip6d0EAUGhpxYJ+9l8qg64f1sAEIg6elvNRHY+h34kYppudcPI8fK3OFDHef26gQKkE8+UZY5vzHEVV7GqIF0ur06m1BMnbBB6TpbV8onUfmRttr1b5rfjxH4/cmu4NauXEmltCxml2p116Ulp4Plxs8V90/S7AHGpcU72wvR6+WY9Y0rj9VdMilrmvJ+st23WzDur3Jl5k4wugUcUk6fCmWnYnz+oRD3g+y5Df5vQUcg9XIE2NGUV2eGa0ew+5GdZw4eh8Ihh+1JOiRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jTS4IQNsDXHG7aIBJ9ZwW45udhw/kN+YghsHriV55eE=;
+ b=jb2fyZuO7xvfLvf0tpFvOIWMf802RDJFHdwOsS8V5c1HVhAI6a8UvCeP4S5x9UohT2QipLXeIYq9uY071VKRNs8zWNB4l8LNqLATRRnIWLt1ipwZjXE1aJ93UGjwfoNXQRqj0/Qim9dyn/FZMr08hBEbm/QwtgpWlAvJ0f2eD0w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB7511.eurprd04.prod.outlook.com (2603:10a6:20b:23f::5)
+ by PAXPR04MB8765.eurprd04.prod.outlook.com (2603:10a6:102:20c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Thu, 11 Jan
+ 2024 16:09:31 +0000
+Received: from AS8PR04MB7511.eurprd04.prod.outlook.com
+ ([fe80::8ee3:bac5:a2da:d469]) by AS8PR04MB7511.eurprd04.prod.outlook.com
+ ([fe80::8ee3:bac5:a2da:d469%4]) with mapi id 15.20.7181.019; Thu, 11 Jan 2024
+ 16:09:31 +0000
+Date: Thu, 11 Jan 2024 11:09:22 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>, Fabio Estevam <festevam@denx.de>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH] dmaengine: fsl-edma: fix Makefile logic
+Message-ID: <ZaASsqnq5ZYdcjm6@lizhi-Precision-Tower-5810>
+References: <20240110232255.1099757-1-arnd@kernel.org>
+ <ZZ8wMWQMo4eGnSuG@lizhi-Precision-Tower-5810>
+ <343cedc4-a078-4cf8-ba3b-a1a8df74185b@app.fastmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <343cedc4-a078-4cf8-ba3b-a1a8df74185b@app.fastmail.com>
+X-ClientProxiedBy: BY5PR04CA0020.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::30) To AS8PR04MB7511.eurprd04.prod.outlook.com
+ (2603:10a6:20b:23f::5)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240110175221.2335480-5-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB7511:EE_|PAXPR04MB8765:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef9d41f6-e324-4546-232c-08dc12bfb1c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	IDASIq+du+lFPuMQw3orQvUeDZhDCFr81LlYlMH1I2pZsH+9cIxBAHhvtec9y1KvsnhPkpqLT1G8JVjgblR5qORlV438JAkaKvII/IhKAZQfx4/FS/YOkns73jImbYrbzpSG59DMv6EQeYV4zVyA7DQGxSvtaTSfMMmRSQ8YVpbv7cFJlGAvQxkFhTBYlXOyk9DHUJjUrvPpQh9b1N5CyLQwaTkqHAj0EV2vFgzco941tujcT74KfdyhrVBR/EJe3r4ilZApO6WWaJ4/dX8PVyGr0RP1LrhnYg8XO9v7VSHVaL3NVNFNVVpnNYKliiqBM+k2r3ODn0GIeQ2Es2eD7iZeAbvY0TqaTZC8ZdO0OcSYRBkTfgjBEm6C3mUaXmMuyECf92O8kCNfmFP5DYfKv4E9dTXfj79E0pBgMcoVcbQsWQ799d28IHvvPOmnDbnFOefYJEECyf8NqMk/I39yKrToqYReV3FuMUzPvQCCPRZ3T8X2VWmcxJQg2bY5MlZyal+Nb+zunQJeA/ySuIEk0Mp98UiR4IGDnSywp+0zh3B5AC2kXIDZJaiq6DPpWKDdgfvCLf4Tcpaai/S7zsv9ECZ86+oMhmkmhPNrzgbHpI6DhReLsViDm7Kz0yUs/D7y
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7511.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(396003)(39860400002)(136003)(346002)(366004)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(66899024)(2906002)(6666004)(5660300002)(478600001)(6512007)(4326008)(38350700005)(41300700001)(6916009)(8936002)(66556008)(66476007)(316002)(66946007)(54906003)(6486002)(9686003)(8676002)(6506007)(86362001)(52116002)(33716001)(26005)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?26cqKAndKbs/gp0Okx6qDlQ4S0/JF/dsbS6sxQAQjnmB8HoN6i+EsON1vs+o?=
+ =?us-ascii?Q?/D2+Q8rVShhfM6URFeRhlappwTfwhyRL9hDxCh3JI+IRR+Sl8dEeeasTChHY?=
+ =?us-ascii?Q?34mST7KmHoeFVenzHgY9DkTN1mc5knpdYzDSz6A1tbaa3lawq8jGRbgneWHA?=
+ =?us-ascii?Q?3it2uSEWg+ryZeyMm7TgMnE1KilTk8+GEq3y1OYB8rME39hVSMty6kmN777S?=
+ =?us-ascii?Q?AO6hy20y6Wol8mU2XeeDvNZvwA5zdhaNFUxiZeiO6/eHTtjaJz+ppf4pk7gk?=
+ =?us-ascii?Q?Zwz83JpD8gMp0SHLUsHkukhtioXyagvc//eZPbCKeNCG7ndXXjmK+vtBtey4?=
+ =?us-ascii?Q?nKFDPvcv38dSCiKYAUfz9Jv6Jer+EJG+tsFquAoallt6LKIMtF5E1NdsxP0S?=
+ =?us-ascii?Q?ADVr3L9gsCzHC1HzG9D0y4viDBnUKoa51Yk0g/XpSEUBYtxt/fa/oT5ZazCz?=
+ =?us-ascii?Q?92Mg/+1dhWAE8hI+80ffuM7IaxXc9DphfuYRils+D3E2EYtV8mezd7Lw8/q6?=
+ =?us-ascii?Q?EAjqGebx5ptLJr0V0AfVUFJlOlP9Dr+wW+aU3GQjKBILOD9YfFXQF7LuzFsz?=
+ =?us-ascii?Q?+sHjEAaKJVx1W+ERSX1wxc4azl1ob9IezBrWD29v9pHTDB7dFCQ8ak0RzsPM?=
+ =?us-ascii?Q?5iLdS45JBXyfCBjekb39kGWTWATBUd7bXhnD4CsxPM/HtPZnDXCzK+RC+rZc?=
+ =?us-ascii?Q?q9OnCPgodUr8WIQ5qfkMuZDCNEC5mwvjKjV6Ck0ekxAMGtk+GcZwFZv9C/A/?=
+ =?us-ascii?Q?NygLtT0actYalF7IuDcMmKtPZ22c7etOrYk63Ywc7CNQXxY/Rg9OYx2spzCq?=
+ =?us-ascii?Q?qXw6mYsFT8U5dZjeAcRf/QxndQdgWqFF2z8avD7oNz0bhGUjhrKdAF3FUjXA?=
+ =?us-ascii?Q?yyanXNVpq/E57uarcAYQIJUaFv7dUY1wqNheBGRjAvDY6QntjfsEsDN8TFZA?=
+ =?us-ascii?Q?b6BiNJqk7jTAioGykJP0F+0peqAU9sDlk9lbQ8gvHgK55H+Pt3QXJ9dUOlBw?=
+ =?us-ascii?Q?RLjpbE8CAZMLDk+8EaN/MLTmGaM7fg+9kcB879cwDDUkrJGNKMaoSYAQe55A?=
+ =?us-ascii?Q?U2v9ctLP34WAHJwNM87Nc9N4QlY2DQe1Y7WVzSidQOKIoBGlJXaqENn5M4Cf?=
+ =?us-ascii?Q?745Y9nLUj1KUDBz86grsWs8rRkRl6q4JYTNrN1AhPI+oqANv/ftnek5QTGXa?=
+ =?us-ascii?Q?XpcuVYwifBoqa4qXbKZkuY7aCOkHQgaS8rxnSt3KV9xiDuy0IbcOBsOIn2zf?=
+ =?us-ascii?Q?cIHE/VdfH57ufcuaq/SjCN3j0D4hze3gqs1d/fJzHGuei7Tq/FKuX4TlW75m?=
+ =?us-ascii?Q?64yzI9sQmQrxSIswPVxrDjqBJi/Il6c6vFW0oBPVLcB0sUCO6FR8apLp6Tze?=
+ =?us-ascii?Q?RG/DD1bwof11vgyISOZIrHjOxDH/t1mNuGRGgfevZ4u6lRptvj9tgLz2RbsP?=
+ =?us-ascii?Q?R+EUJOefAw4YGoqwW3b4S/9/FcYFtOj9lIBa9cM/Usl88YDf/dHm9Cjc4xHx?=
+ =?us-ascii?Q?WrP1aFNpMm+4EcpCLT6tWFnDb9qf3bQ2R9LC3y/E+WuTsLLn/ymVD39y4M2H?=
+ =?us-ascii?Q?eItWd9N7LmEZYHCXldUm8OEwaMIBsjs1M2A1prar?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef9d41f6-e324-4546-232c-08dc12bfb1c2
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB7511.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2024 16:09:31.1700
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RjpoCY+H5+wSqI+x967mwBLkEmjFYKzMX0hdBp9jx36Di3FBHCmru2p17OE9ggWVa0QTEWz+Ee8UPXePuRyFlg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8765
 
-Hi Frank,
+On Thu, Jan 11, 2024 at 07:23:34AM +0100, Arnd Bergmann wrote:
+> On Thu, Jan 11, 2024, at 01:02, Frank Li wrote:
+> > On Thu, Jan 11, 2024 at 12:03:42AM +0100, Arnd Bergmann wrote:
+> >> From: Arnd Bergmann <arnd@arndb.de>
+> >> 
+> >> A change to remove some unnecessary exports ended up removing some
+> >> necessary ones as well, and caused a build regression by trying to
+> >> link a single source file into two separate modules:
+> >
+> > You should fix Kconfig to provent fsl-edma and mcf-edma build at the same
+> > time.
+> 
+> That sounds like the wrong approach since it prevents
+> compile-testing one of the drivers in an allmodconfig
+> build.
+> 
+> > EXPORT_SYMBOL_GPL is not necesary at all.
+> >
+> > mcf-edma is quit old. ideally, it should be merged into fsl-edma.
+> 
+> I have no specific interest in either of the drivers, just
+> trying to fix the build regression. I see no harm in exporting
+> the symbols, but I can refactor the drivers to link all three
+> files into the same module and add a hack to register both
+> platform_driver instances from a shared module_init() if
+> you think that's better. Unfortunately we can't have more
+> than one initcall in a loadable module.
 
-kernel test robot noticed the following build warnings:
+It should be better link into same module because some debugfs and trace
+improvement are on my TODO list. Export symbols will make more unnessary
+complex. Or simple exclude MCF_EDMA by change Kconfig
 
-[auto build test WARNING on tty/tty-testing]
-[also build test WARNING on tty/tty-next tty/tty-linus robh/for-next linus/master v6.7 next-20240111]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-mode-support/20240111-015711
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20240110175221.2335480-5-Frank.Li%40nxp.com
-patch subject: [PATCH v2 4/7] i3c: target: add svc target controller support
-config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20240111/202401112149.TbWJpRfM-lkp@intel.com/config)
-compiler: ClangBuiltLinux clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240111/202401112149.TbWJpRfM-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401112149.TbWJpRfM-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/i3c/target/svc-i3c-target.c:211:40: warning: no previous prototype for function 'svc_i3c_get_features' [-Wmissing-prototypes]
-     211 | const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
-         |                                        ^
-   drivers/i3c/target/svc-i3c-target.c:211:7: note: declare 'static' if the function is not intended to be used outside of this translation unit
-     211 | const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
-         |       ^
-         | static 
->> drivers/i3c/target/svc-i3c-target.c:268:63: warning: omitting the parameter name in a function definition is a C2x extension [-Wc2x-extensions]
-     268 | static int svc_i3c_target_queue(struct i3c_request *req, gfp_t)
-         |                                                               ^
->> drivers/i3c/target/svc-i3c-target.c:666:5: warning: no previous prototype for function 'svc_i3c_fifo_status' [-Wmissing-prototypes]
-     666 | int svc_i3c_fifo_status(struct i3c_target_ctrl *ctrl, bool tx)
-         |     ^
-   drivers/i3c/target/svc-i3c-target.c:666:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-     666 | int svc_i3c_fifo_status(struct i3c_target_ctrl *ctrl, bool tx)
-         | ^
-         | static 
-   3 warnings generated.
+config MCF_EDMA                                                            
+        tristate "Freescale eDMA engine support, ColdFire mcf5441x SoCs"   
+        depends on !FSL_EDMA
+		   ^^^^^
+	depends on M5441x || COMPILE_TEST 
 
 
-vim +/svc_i3c_get_features +211 drivers/i3c/target/svc-i3c-target.c
-
-   210	
- > 211	const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
-   212	{
-   213		struct svc_i3c_target *svc;
-   214	
-   215		svc = dev_get_drvdata(&ctrl->dev);
-   216	
-   217		if (!svc)
-   218			return NULL;
-   219	
-   220		return &svc->features;
-   221	}
-   222	
-   223	static void svc_i3c_queue_complete(struct svc_i3c_target *svc, struct i3c_request *complete)
-   224	{
-   225		unsigned long flags;
-   226	
-   227		spin_lock_irqsave(&svc->cq_lock, flags);
-   228		list_add_tail(&complete->list, &svc->cq);
-   229		spin_unlock_irqrestore(&svc->cq_lock, flags);
-   230		queue_work(svc->workqueue, &svc->work);
-   231	}
-   232	
-   233	static void svc_i3c_fill_txfifo(struct svc_i3c_target *svc)
-   234	{
-   235		struct i3c_request *req, *complete = NULL;
-   236		unsigned long flags;
-   237		int val;
-   238	
-   239		spin_lock_irqsave(&svc->txq_lock, flags);
-   240		while ((!!(req = list_first_entry_or_null(&svc->txq, struct i3c_request, list))) &&
-   241		       !((readl_relaxed(svc->regs + I3C_SDATACTRL) & I3C_SDATACTRL_TXFULL_MASK))) {
-   242			while (!(readl_relaxed(svc->regs + I3C_SDATACTRL)
-   243						& I3C_SDATACTRL_TXFULL_MASK)) {
-   244				val = *(u8 *)(req->buf + req->actual);
-   245	
-   246				if (req->actual + 1 == req->length)
-   247					writel_relaxed(val, svc->regs + I3C_SWDATAE);
-   248				else
-   249					writel_relaxed(val, svc->regs + I3C_SWDATAB);
-   250	
-   251				req->actual++;
-   252	
-   253				if (req->actual == req->length) {
-   254					list_del(&req->list);
-   255					complete = req;
-   256					spin_unlock_irqrestore(&svc->txq_lock, flags);
-   257	
-   258					svc_i3c_queue_complete(svc, complete);
-   259	
-   260					spin_lock_irqsave(&svc->txq_lock, flags);
-   261					break;
-   262				}
-   263			}
-   264		}
-   265		spin_unlock_irqrestore(&svc->txq_lock, flags);
-   266	}
-   267	
- > 268	static int svc_i3c_target_queue(struct i3c_request *req, gfp_t)
-   269	{
-   270		struct svc_i3c_target *svc;
-   271		struct list_head *q;
-   272		unsigned long flags;
-   273		spinlock_t *lk;
-   274	
-   275		svc = dev_get_drvdata(&req->ctrl->dev);
-   276		if (!svc)
-   277			return -EINVAL;
-   278	
-   279		if (req->tx) {
-   280			q = &svc->txq;
-   281			lk = &svc->txq_lock;
-   282		} else {
-   283			q = &svc->rxq;
-   284			lk = &svc->rxq_lock;
-   285		}
-   286	
-   287		spin_lock_irqsave(lk, flags);
-   288		list_add_tail(&req->list, q);
-   289		spin_unlock_irqrestore(lk, flags);
-   290	
-   291		if (req->tx)
-   292			svc_i3c_fill_txfifo(svc);
-   293	
-   294		if (req->tx)
-   295			writel_relaxed(I3C_SINT_TXSEND, svc->regs + I3C_SINTSET);
-   296		else
-   297			writel_relaxed(I3C_SINT_RXPEND, svc->regs + I3C_SINTSET);
-   298	
-   299		return 0;
-   300	}
-   301	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+>      Arnd
