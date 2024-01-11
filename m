@@ -1,41 +1,41 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510AC12E4B;
-	Thu, 11 Jan 2024 10:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CC121378;
+	Thu, 11 Jan 2024 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UniYFP67"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlCmgUxy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704967348; x=1736503348;
+  t=1704981017; x=1736517017;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=aq7/NBSBsP1a6bhCozJ0konwlEKNIZaN14AkP6FPIOI=;
-  b=UniYFP67RWvJa4DGpyOhDB3JuPOVyFZftxGtmvA4HVSARw8PB23Q0r3/
-   TkpGmiPVL1LsX/KMPH+YBsBhmVv6N89LMSquSn954NG7bHudVKLjX4VTG
-   OZdOq+hctFYRCoaNgH9q315YpxqzF80sC0/MboNwON2N4pp8RbpwztPWJ
-   mLvU4C2O6N4sCbpO7sPF2bvXof/lpp/iZU6LGtB6rBYwYvMrORPSkHqle
-   9Re2dIZ8pDmqoEk69npFTBGPdvEkRyinpgpdX9AJ/L5TyeIjrFmbqCOiJ
-   ga/PtvHixuZs+mCslpkJBurkxXRiVkBcD1wPBQ1fd2NbFZvfGd/+Ce6z1
+  bh=df3bhwFei4ovFhoesxHUexUNJ8++z5Jxwlx+x83xoIQ=;
+  b=XlCmgUxyV6MhvXdzP36tl35Wb5Tt1MyOJfE5mDi5qccbhFVEEmYiZNlE
+   QZe67pmFuF7BWWsTKdsIyV447fn/xZObIKvE6CIvHttm4XTZOUqJG0M/6
+   WwF2VAp5xEqrMu02/Uipu00nC5dNbR1zcSrmqxdZezzWR6+4lP242rXIh
+   VFxp2Z18CveAILnGtvvXWngxpZvoAuyMqA1UkHHh4LMliEsKDD2CzblmW
+   recfvAMxozGy5VOFdZ9QSBIGQkg+AohsMkbfBOGJLln7fP4O4ohxXtKbR
+   AQzLKy5VcSr2qIV8SLJXM8OOflLqOUQ3RgPkTjx6uRLbmE377a1hCdNFR
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="12157126"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
-   d="scan'208";a="12157126"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 02:02:28 -0800
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="5929641"
+X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
+   d="scan'208";a="5929641"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 05:50:16 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="905898121"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
-   d="scan'208";a="905898121"
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="926018931"
+X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
+   d="scan'208";a="926018931"
 Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 11 Jan 2024 02:02:23 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 11 Jan 2024 05:50:11 -0800
 Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rNrtE-00086m-21;
-	Thu, 11 Jan 2024 10:02:20 +0000
-Date: Thu, 11 Jan 2024 18:01:43 +0800
+	id 1rNvRh-0008Jd-2N;
+	Thu, 11 Jan 2024 13:50:09 +0000
+Date: Thu, 11 Jan 2024 21:49:22 +0800
 From: kernel test robot <lkp@intel.com>
 To: Frank Li <Frank.Li@nxp.com>, robh@kernel.org
 Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
@@ -47,7 +47,7 @@ Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	zbigniew.lukwinski@linux.intel.com, devicetree@vger.kernel.org,
 	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org
 Subject: Re: [PATCH v2 4/7] i3c: target: add svc target controller support
-Message-ID: <202401111724.LiPgx2yU-lkp@intel.com>
+Message-ID: <202401112149.TbWJpRfM-lkp@intel.com>
 References: <20240110175221.2335480-5-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,132 +73,96 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-m
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
 patch link:    https://lore.kernel.org/r/20240110175221.2335480-5-Frank.Li%40nxp.com
 patch subject: [PATCH v2 4/7] i3c: target: add svc target controller support
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240111/202401111724.LiPgx2yU-lkp@intel.com/config)
-compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project 9bde5becb44ea071f5e1fa1f5d4071dc8788b18c)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240111/202401111724.LiPgx2yU-lkp@intel.com/reproduce)
+config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20240111/202401112149.TbWJpRfM-lkp@intel.com/config)
+compiler: ClangBuiltLinux clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240111/202401112149.TbWJpRfM-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401111724.LiPgx2yU-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401112149.TbWJpRfM-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:1084:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:186:1: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     186 | _SIG_SET_OP(signotset, _sig_not)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:176:10: note: expanded from macro '_SIG_SET_OP'
-     176 |         case 2: set->sig[1] = op(set->sig[1]);                          \
-         |                 ^        ~
-   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
-      18 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from drivers/i3c/target/svc-i3c-target.c:14:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:1084:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:197:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     197 |         case 2: set->sig[1] = 0;
-         |                 ^        ~
-   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
-      18 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from drivers/i3c/target/svc-i3c-target.c:14:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:1084:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:210:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     210 |         case 2: set->sig[1] = -1;
-         |                 ^        ~
-   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
-      18 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from drivers/i3c/target/svc-i3c-target.c:14:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:1084:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:241:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     241 |         case 2: set->sig[1] = 0;
-         |                 ^        ~
-   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
-      18 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from drivers/i3c/target/svc-i3c-target.c:14:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:1084:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:254:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     254 |         case 2: set->sig[1] = -1;
-         |                 ^        ~
-   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
-      18 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   drivers/i3c/target/svc-i3c-target.c:211:40: warning: no previous prototype for function 'svc_i3c_get_features' [-Wmissing-prototypes]
+>> drivers/i3c/target/svc-i3c-target.c:211:40: warning: no previous prototype for function 'svc_i3c_get_features' [-Wmissing-prototypes]
      211 | const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
          |                                        ^
    drivers/i3c/target/svc-i3c-target.c:211:7: note: declare 'static' if the function is not intended to be used outside of this translation unit
      211 | const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
          |       ^
          | static 
->> drivers/i3c/target/svc-i3c-target.c:268:63: warning: omitting the parameter name in a function definition is a C23 extension [-Wc23-extensions]
+>> drivers/i3c/target/svc-i3c-target.c:268:63: warning: omitting the parameter name in a function definition is a C2x extension [-Wc2x-extensions]
      268 | static int svc_i3c_target_queue(struct i3c_request *req, gfp_t)
          |                                                               ^
-   drivers/i3c/target/svc-i3c-target.c:666:5: warning: no previous prototype for function 'svc_i3c_fifo_status' [-Wmissing-prototypes]
+>> drivers/i3c/target/svc-i3c-target.c:666:5: warning: no previous prototype for function 'svc_i3c_fifo_status' [-Wmissing-prototypes]
      666 | int svc_i3c_fifo_status(struct i3c_target_ctrl *ctrl, bool tx)
          |     ^
    drivers/i3c/target/svc-i3c-target.c:666:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
      666 | int svc_i3c_fifo_status(struct i3c_target_ctrl *ctrl, bool tx)
          | ^
          | static 
-   52 warnings and 5 errors generated.
+   3 warnings generated.
 
 
-vim +268 drivers/i3c/target/svc-i3c-target.c
+vim +/svc_i3c_get_features +211 drivers/i3c/target/svc-i3c-target.c
 
+   210	
+ > 211	const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
+   212	{
+   213		struct svc_i3c_target *svc;
+   214	
+   215		svc = dev_get_drvdata(&ctrl->dev);
+   216	
+   217		if (!svc)
+   218			return NULL;
+   219	
+   220		return &svc->features;
+   221	}
+   222	
+   223	static void svc_i3c_queue_complete(struct svc_i3c_target *svc, struct i3c_request *complete)
+   224	{
+   225		unsigned long flags;
+   226	
+   227		spin_lock_irqsave(&svc->cq_lock, flags);
+   228		list_add_tail(&complete->list, &svc->cq);
+   229		spin_unlock_irqrestore(&svc->cq_lock, flags);
+   230		queue_work(svc->workqueue, &svc->work);
+   231	}
+   232	
+   233	static void svc_i3c_fill_txfifo(struct svc_i3c_target *svc)
+   234	{
+   235		struct i3c_request *req, *complete = NULL;
+   236		unsigned long flags;
+   237		int val;
+   238	
+   239		spin_lock_irqsave(&svc->txq_lock, flags);
+   240		while ((!!(req = list_first_entry_or_null(&svc->txq, struct i3c_request, list))) &&
+   241		       !((readl_relaxed(svc->regs + I3C_SDATACTRL) & I3C_SDATACTRL_TXFULL_MASK))) {
+   242			while (!(readl_relaxed(svc->regs + I3C_SDATACTRL)
+   243						& I3C_SDATACTRL_TXFULL_MASK)) {
+   244				val = *(u8 *)(req->buf + req->actual);
+   245	
+   246				if (req->actual + 1 == req->length)
+   247					writel_relaxed(val, svc->regs + I3C_SWDATAE);
+   248				else
+   249					writel_relaxed(val, svc->regs + I3C_SWDATAB);
+   250	
+   251				req->actual++;
+   252	
+   253				if (req->actual == req->length) {
+   254					list_del(&req->list);
+   255					complete = req;
+   256					spin_unlock_irqrestore(&svc->txq_lock, flags);
+   257	
+   258					svc_i3c_queue_complete(svc, complete);
+   259	
+   260					spin_lock_irqsave(&svc->txq_lock, flags);
+   261					break;
+   262				}
+   263			}
+   264		}
+   265		spin_unlock_irqrestore(&svc->txq_lock, flags);
+   266	}
    267	
  > 268	static int svc_i3c_target_queue(struct i3c_request *req, gfp_t)
    269	{
