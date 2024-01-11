@@ -1,151 +1,108 @@
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2040.outbound.protection.outlook.com [40.107.14.40])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77413537E3
-	for <imx@lists.linux.dev>; Thu, 11 Jan 2024 17:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C77FBFE;
+	Thu, 11 Jan 2024 23:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="RSbD7mge"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OjMLUqdvO3wcVb0Z7DW9QXTcZX+CCMILTJFa3Z2j5iupFETgTT30GaeD6ZWRzCsAF9TsxuhfeAbVwCkk8LL+/zInS3HarEz6UMHh5a/9YXZQNDSlydksUS/iPpO0cMumj4Rmsd42S7RpAro+ydlfSkQui5F3rWMeWaaYDCeNTWDJyQCEXyCM1Y+x/xXVd0D0njIWG0W8eD+67/PiUxYHkn3u1DevnavWUT5sdj5QDQM0i8/P/m8CHpIa/c9uab9SfsGD8g9XUAAG4bnR4E85CsCQcjoebDfzi3gZhoE02rWbroDcORyDcHNSAqPwPwK0LdsZmPD/ySAjXGtZWg8tog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EyDqb6dIjKs/bSyVZNWkRJ6cyxo1vc7oLWtagoNkFz8=;
- b=IHAXd384GBTZUMxI+8sBrwA7T2hOik/8IYrUzmAoYaWRR52ng16Ja+wWS9itzOCkxZDm+FpR0tIHun37653ib0zXN5rVBg3tAlz2SYuhg91C0O7lWsMYWl9+z/e8cqI/oS6EdkSWrkLIHnaAPG8fW40o+ACHopPwcAb61aJFFtAUUT4jgDf1dUsnTMliRw24WYqXoyZpH6c0rpQmQf8RP25noaX2I3SwNFwQmqhvpFwqCV0phaL7L8k7+T9ImWyvEjgnFIgSf3qR3Q/ZvBqaXYBWwzAPZeMIY6yCPNFOLj/cgvfjpSSa2TzjtZEYx3ZCRoLditQ3WnGTTDhryH7ZDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EyDqb6dIjKs/bSyVZNWkRJ6cyxo1vc7oLWtagoNkFz8=;
- b=RSbD7mgeSRuJZtIVUvELkZif+py7mW5d8HVZrsq4E4OCaOMYa8yU1iRdgR5lTcqO+hEjLkuuDgFD2RTbF45VvhU1FdJHXGrSYTbrkeEbQfAJyXsa3q5KeXWbbe8/tjpQFEOqoj8qF1Yj9o/Q9RPRRmFg/zJlU6XLnE1BTKFohaE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB7511.eurprd04.prod.outlook.com (2603:10a6:20b:23f::5)
- by VI1PR04MB7200.eurprd04.prod.outlook.com (2603:10a6:800:12d::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.19; Thu, 11 Jan
- 2024 17:29:08 +0000
-Received: from AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469]) by AS8PR04MB7511.eurprd04.prod.outlook.com
- ([fe80::8ee3:bac5:a2da:d469%4]) with mapi id 15.20.7181.019; Thu, 11 Jan 2024
- 17:29:08 +0000
-Date: Thu, 11 Jan 2024 12:29:00 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: conor.culhane@silvaco.com, imx@lists.linux.dev, joe@perches.com,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	miquel.raynal@bootlin.com, zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH 1/1] i3c: master: svc: return error when read length
- bigger than 255
-Message-ID: <ZaAlXJQuZbej5o+r@lizhi-Precision-Tower-5810>
-References: <20240110222503.2381599-1-Frank.Li@nxp.com>
- <20240111001523f69f6a29@mail.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111001523f69f6a29@mail.local>
-X-ClientProxiedBy: SJ0PR03CA0283.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::18) To AS8PR04MB7511.eurprd04.prod.outlook.com
- (2603:10a6:20b:23f::5)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LyXCygAr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705016713; x=1736552713;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v72etu5y7sZ+gduFKZmkV/OgzunlUF6teBcVsS2AH8k=;
+  b=LyXCygArFCnvrY7S3rSZ3De3sMiMNY/BsKqyrXdseNcietPeVhFnSiLz
+   kNo53MNparly6YHdq82BthEcpwQuIBFAFfVnX1yAIVtsZvV7c8B1T+YmK
+   hJpg2iMNg05t1Z6GSaGBxKmfgbT9xrsIK71scjaGYowuA1UpJad2fh6Fe
+   F0561ZKhjTFLpROu6fQf+OrN6GO4nWOR7i/UQ6I3rr3PzllEyjPrZo8Z4
+   fn6TZ1OEYSYvYZmk3fiqfc/H1II/d2LuaohSqKU7rtMXbzguXOmZpULMr
+   QDkUL1tdE9J2ph2HCBCq+U827ah/owF9VhdjmxE6dw8M+42mmiZpRATiD
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="463314018"
+X-IronPort-AV: E=Sophos;i="6.04,187,1695711600"; 
+   d="scan'208";a="463314018"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 15:45:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="1114016155"
+X-IronPort-AV: E=Sophos;i="6.04,187,1695711600"; 
+   d="scan'208";a="1114016155"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 11 Jan 2024 15:45:09 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rO4jT-0008rC-0I;
+	Thu, 11 Jan 2024 23:45:07 +0000
+Date: Fri, 12 Jan 2024 07:45:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Arnd Bergmann <arnd@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+	Fabio Estevam <festevam@denx.de>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] dmaengine: fsl-edma: fix Makefile logic
+Message-ID: <202401120722.iFJbAOb8-lkp@intel.com>
+References: <20240110232255.1099757-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB7511:EE_|VI1PR04MB7200:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5cbb2574-713d-4148-ae17-08dc12cad157
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	4SRjBrsKYZk0jJWZHAgAaedpwDhGGY/79fO2rglejM2zjAxl8zXB5TB2R2bzuXFnmys4wi3YHd9qXnnP3RtEvkqufjIFbrexclgsVDakfbcFFZPePJMV+ITFabPTWeS6itLl1Mu1UmxNEQKVJaW38lM4AXY8YqOyq4qxezwx29peQ0rgFAulOaUZo3EJy/k9EUVj6ehCTVrGDVT/c2PQwuBQ1l4rg7HCp7KBJD5uu3k+Tsh88fF42OsbMKOeeST+0q6u6klSIUDBRc/zyv/jTkxDUkxJJa0IsQzf1WA1uzfwwSUYB1XHKqVhe4j2Nmy94V8JQggbV9WNl+efEuTmqA8yF2QxxFXCYPIKvBYmj4bdsAIO/W1yRjGZrkWgUdku0eH+GEFQjbAlCPpjmFN9HzxV1TV+qFI/CqYBX1qBcXWteCDxPZZbuKNczzSC4akFt5mJ75dtKbWGpMApwC4NjSwVp3pd3bswkUviBa5C05oLVw5SwhB5O9960eiQWj6fxeicXgcInKN8MVNA+DRSRjN/4JsgoAkncGzB57TWE400/0L8qKS0se6utbKvPY86kklFLfKomHJxnD5ZqpbpPeiK0yoOoFZAGlygFFnYLbb65YsUEGgdEK7pqOAX61aizZYPS27KmJ0m617n2VshCQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7511.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(366004)(396003)(39860400002)(346002)(376002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(966005)(38100700002)(6666004)(478600001)(83380400001)(6512007)(9686003)(26005)(6506007)(52116002)(8936002)(8676002)(316002)(4326008)(2906002)(5660300002)(6486002)(6916009)(38350700005)(66946007)(66556008)(66476007)(41300700001)(86362001)(33716001)(135533001)(67856001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mutMHT5mGQi0TBVNxdCEwMJRATH7WJttnNni2O6/LSfn0VNQ2BOssY+S4ieC?=
- =?us-ascii?Q?gK2Ja2nYiEwHvo0z/xKkT5kpNeGxM5n/tikZEx62NYRvKohyRmadzuJOMbdN?=
- =?us-ascii?Q?Mrg8nbyX+pDxDfWOV7vCSnhLTtu2I68Nh8NMsXCFte0L/QG/4ZUdY2eLj2ss?=
- =?us-ascii?Q?8m86/WpTexbOrRN+5dgjoArfAIG/CycwQG73nymUbzUWFDFHKgm0djaOkRJb?=
- =?us-ascii?Q?A41o6v+oAXPtWPeeZZzsT9aaWN/vhziV3zbmpbBcyym9Fj1HCoS2KIId03bw?=
- =?us-ascii?Q?WWbFJUTbhP8wjMiWLyj5/sBwWWAmyFQK6cizv9gff+VGstg7aB8asu18aHzm?=
- =?us-ascii?Q?Azk7+J1jsrCA2o4M0FaFVRZr98e0+j+FGCuUKvWb3qdE7rnhso41dYyO2MIi?=
- =?us-ascii?Q?2AdH2dQ811B0i15Zk7rlqcjDv7jHi5U9ZtDX0+IBeN/E5IQIOaqV3mjEmbeo?=
- =?us-ascii?Q?dUtxFHEkeB52IDStAZ4m+dk+Hzy/+HOWdiIPe48CFgCCBLPnkss/8FqKoMC+?=
- =?us-ascii?Q?v9Hqnm8+HEDzQC9ew6P25QG5DJwyl/bH0ffQSt6NjQU33zyHTJJMGelcfthx?=
- =?us-ascii?Q?1PHFOpEBGwDGL1gptCkut6vwCSCvSGyjmYmCKdp9H3smLiGtGQEf8KJ+LH+P?=
- =?us-ascii?Q?9F+MLn8EWSb4267U02y3e/ZvfMafpoyHmS/OynOysEHf340AFfwvkQ3RxoPn?=
- =?us-ascii?Q?Wr6o7CfeL7XRPC+D/EhHKo6g7D2pW+x8YPks/HR2rjbdDgENZL0CssCA5hSB?=
- =?us-ascii?Q?10Lfrik5DnsAOvDniQPJntQbr8q2eJxU11EXAo2OxWHVoCroz3RNhm5x36Xy?=
- =?us-ascii?Q?kqNVhEyMqwuGna+jbfBnn8Wyb/esdTBx+kgtBrwEreOOZARoiYXzKQDNl5W2?=
- =?us-ascii?Q?VBqrFsHK0R5G/5Y6Il+K39oNPvIVgUnwfit0nDESms+gT4noQU84ySAJcqsB?=
- =?us-ascii?Q?aTjyMZ5Pw+TevkwsAa+3g8WeLX8Jq/VndPnxWDC5cjdJDDHY6lB9WAODtkL1?=
- =?us-ascii?Q?QGFax8gT7YfaHhQeCOmKJ4nXmNm+yS4R03UJ4S2TjtG9cO1DtQdCw7v08x9T?=
- =?us-ascii?Q?C6/Fl+68qcJFNSEr/f4roF7yPMJvQGAu6SuiCG1Jp8wXvZDPoGCYaiz7PRQz?=
- =?us-ascii?Q?RbKHDHzgbC0mpWSNAqmyFZfcqQDNR4hmOm+KBq1/6E0DAdCTa8eJ5P3OX/NH?=
- =?us-ascii?Q?nAMuY77zJkd1dtx3lPdHwqaOvPbjbzipgw6plg79m0N7NUoBLW8We+ojf6PS?=
- =?us-ascii?Q?WofUVLSo/NT9OCF5ylvqIozUWdUMDsKeDWcYf1PJ+Sj0DqPaYCo31jIrdH9/?=
- =?us-ascii?Q?pETAvQYML0MC4mjUIZkczdYlhkumSSwueK8cKFq1iglm1ulR0hCXBot+DoMK?=
- =?us-ascii?Q?1t6HEMSg6J0f0tVA6YKRZcxwy5JVh0b6Xkb8BbY1MlH7Ny01P5of/uMeWMHS?=
- =?us-ascii?Q?5dDzvUH/Rcs3D2oTaJUdPE4ySZSbE90lW9ON/MV8qNoDeZiq79j9zRpWBtm5?=
- =?us-ascii?Q?VLOabJOTTxhh6A6x2NJZyvthF6XquAmVOKqxxC7GjF9jlQ2R7WcdAGVLj6Em?=
- =?us-ascii?Q?IELdPGe+ilnd2n/d+A5whzP3ln9MVzmMgQsZ/8Wp?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cbb2574-713d-4148-ae17-08dc12cad157
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB7511.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2024 17:29:08.6330
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PgVf2bbFq8p6CjEnJX7c5vC4dtD1KdqgzjdZjD06cYrS6ItHIXI1KWzN5caRS2SXeB1du0S1G5hwTCY5kUouXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7200
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240110232255.1099757-1-arnd@kernel.org>
 
-On Thu, Jan 11, 2024 at 01:15:23AM +0100, Alexandre Belloni wrote:
-> On 10/01/2024 17:25:03-0500, Frank Li wrote:
-> > RDTERM in MCTRL is 8 bits. Add a length check to prevent silent data errors
-> > when the read length exceeds 255 bytes during each i3c_priv_xfer operation.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/i3c/master/svc-i3c-master.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> > index bd10bb698da0f..181b56953fb28 100644
-> > --- a/drivers/i3c/master/svc-i3c-master.c
-> > +++ b/drivers/i3c/master/svc-i3c-master.c
-> > @@ -1375,6 +1375,11 @@ static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> >  		cmd->len = xfers[i].len;
-> >  		cmd->actual_len = xfers[i].rnw ? xfers[i].len : 0;
-> >  		cmd->continued = (i + 1) < nxfers;
-> > +
-> > +		if (cmd->rnw && cmd->len > 255) {
-> > +			dev_err(master->dev, "only support read less than 255 each xfer\n");
-> 
-> What would be the end user action upon seeing this message? Is it actually
-> useful?
+Hi Arnd,
 
-Hold on, I found an method. It may support > 255 transfer.
+kernel test robot noticed the following build errors:
 
-Frank Li
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.7 next-20240111]
+[cannot apply to vkoul-dmaengine/next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> 
-> > +			return -EINVAL;
-> > +		}
-> >  	}
-> >  
-> >  	mutex_lock(&master->lock);
-> > -- 
-> > 2.34.1
-> > 
-> 
-> -- 
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+url:    https://github.com/intel-lab-lkp/linux/commits/Arnd-Bergmann/dmaengine-fsl-edma-fix-Makefile-logic/20240111-072410
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20240110232255.1099757-1-arnd%40kernel.org
+patch subject: [PATCH] dmaengine: fsl-edma: fix Makefile logic
+config: m68k-stmark2_defconfig (https://download.01.org/0day-ci/archive/20240112/202401120722.iFJbAOb8-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240112/202401120722.iFJbAOb8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401120722.iFJbAOb8-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   m68k-linux-ld: drivers/dma/mcf-edma-main.o: in function `mcf_edma_probe':
+>> mcf-edma-main.c:(.text+0x4de): undefined reference to `fsl_edma_alloc_chan_resources'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x4f8): undefined reference to `fsl_edma_slave_config'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x506): undefined reference to `fsl_edma_prep_slave_sg'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x516): undefined reference to `fsl_edma_pause'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x524): undefined reference to `fsl_edma_terminate_all'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x5d2): undefined reference to `fsl_edma_free_desc'
+   m68k-linux-ld: drivers/dma/mcf-edma-main.o: in function `mcf_edma_remove':
+>> mcf-edma-main.c:(.text+0xb4): undefined reference to `fsl_edma_cleanup_vchan'
+   m68k-linux-ld: drivers/dma/mcf-edma-main.o: in function `mcf_edma_err_handler':
+>> mcf-edma-main.c:(.text+0x12e): undefined reference to `fsl_edma_disable_request'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x17a): undefined reference to `fsl_edma_disable_request'
+   m68k-linux-ld: drivers/dma/mcf-edma-main.o: in function `mcf_edma_tx_handler':
+>> mcf-edma-main.c:(.text+0x20e): undefined reference to `fsl_edma_tx_chan_handler'
+   m68k-linux-ld: drivers/dma/mcf-edma-main.o: in function `mcf_edma_probe':
+>> mcf-edma-main.c:(.text+0x466): undefined reference to `fsl_edma_setup_regs'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x4d4): undefined reference to `fsl_edma_free_chan_resources'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x4e4): undefined reference to `fsl_edma_prep_dma_cyclic'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x4ee): undefined reference to `fsl_edma_tx_status'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x50c): undefined reference to `fsl_edma_resume'
+>> m68k-linux-ld: mcf-edma-main.c:(.text+0x52a): undefined reference to `fsl_edma_issue_pending'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
