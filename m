@@ -1,104 +1,240 @@
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1D5FBEE
-	for <imx@lists.linux.dev>; Thu, 11 Jan 2024 06:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510AC12E4B;
+	Thu, 11 Jan 2024 10:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="GkipVFTE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y/8wUkSJ"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id BE0CE3200A7A;
-	Thu, 11 Jan 2024 01:24:17 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Thu, 11 Jan 2024 01:24:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1704954257; x=1705040657; bh=DrHB+y9Pgc
-	vV0CSGp8H420Yn6g7abiIoAQ9Qr6Gyars=; b=GkipVFTE0PStlL9e/y52pEHOHM
-	+nDgLIhX+lPWbqe7arZFqGvrxEt/mZ2l+BGl0OvhbIbEPvLfL1/Y1Qngp+0+Z+aY
-	ua4T6YTQxQl6G1i4M4Dx9lXbiodzGTXB0ZCE6zn5qhxfmc//SR0UyHHkypMqGs21
-	GVTc8LiPYV2ObPT2XVVQflil3evqzbZ5gOu1J/5jZcrQjP2mG6chgGRBCUuNmbIO
-	276SYaLT+zSGmYn2LS3pQ8xEMnqywOtbo2oRX7dTggg3QFaRs0Uwi9URroObMNf1
-	A85G+p0O8KWiXf/pV0YFXLRvK/YBlm5FPQeJQBa/sawDBpG+G1CKdlMFniNA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1704954257; x=1705040657; bh=DrHB+y9PgcvV0CSGp8H420Yn6g7a
-	biIoAQ9Qr6Gyars=; b=Y/8wUkSJEobH2iVWvcsm87q14HOzEf7pmiM7brlRtgQX
-	4L/XOIQ3jsYxcIELJUxK/d5vS4fg4bOf9TrGu9/+HRslPN/3bzXGndLFMq2u5mA/
-	1X8DZhvGY+RucQ7w/2slxRdFODZA4i7KOf6OdbuxnWyKx4tF05DUN1drg3YKrHbe
-	3uKiuIKe6XyazwypVu4xDflhDoAOa1KSGMFKiMQyO8qCAPtaDokB2ioy1sYLm9LU
-	joRdj6mJ3ikCQBFIpiqaj+huP+Gbf6ZtVDeGqAaVnekDjpLcHrJUSjOzCZgPRdL8
-	jnxMLt2UJMOPdVusDcoeSqJj2s3LyklhjexnBI7m6g==
-X-ME-Sender: <xms:kImfZToohpB0iiVwCIIpSA4gA8h7hnsWXOMP1kX45e4dmbma1uipEA>
-    <xme:kImfZdpYsbq9wZTS4w6n_ZGDR_1uhdy7I8Nttm2_w71c6dyIx9PEn8b8iBRB4f7BL
-    Ox0xvU51Q6rj8Hrtg0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeivddgledvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:kImfZQMJr7-RRGACZLQVMhlKrezabwoIQZr8tLGh9sHILBFP-TjdVA>
-    <xmx:kImfZW70Rg18t07fBnnqOk5jWKeaPE8d7rS0if3N8_In5hv4BRVotw>
-    <xmx:kImfZS6rfFwcP9SjhxgzptIJvPsVAlIDJIycNmX4dOtn1SsNwYMtOA>
-    <xmx:kYmfZUSa1bIot4l6cbwDd7RBweTaKAxT-SNfrk_Eo9CQDZGFWdFhqA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id D2E92B6008D; Thu, 11 Jan 2024 01:24:16 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1374-gc37f3abe3d-fm-20240102.001-gc37f3abe
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UniYFP67"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704967348; x=1736503348;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aq7/NBSBsP1a6bhCozJ0konwlEKNIZaN14AkP6FPIOI=;
+  b=UniYFP67RWvJa4DGpyOhDB3JuPOVyFZftxGtmvA4HVSARw8PB23Q0r3/
+   TkpGmiPVL1LsX/KMPH+YBsBhmVv6N89LMSquSn954NG7bHudVKLjX4VTG
+   OZdOq+hctFYRCoaNgH9q315YpxqzF80sC0/MboNwON2N4pp8RbpwztPWJ
+   mLvU4C2O6N4sCbpO7sPF2bvXof/lpp/iZU6LGtB6rBYwYvMrORPSkHqle
+   9Re2dIZ8pDmqoEk69npFTBGPdvEkRyinpgpdX9AJ/L5TyeIjrFmbqCOiJ
+   ga/PtvHixuZs+mCslpkJBurkxXRiVkBcD1wPBQ1fd2NbFZvfGd/+Ce6z1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="12157126"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
+   d="scan'208";a="12157126"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 02:02:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="905898121"
+X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
+   d="scan'208";a="905898121"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 11 Jan 2024 02:02:23 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rNrtE-00086m-21;
+	Thu, 11 Jan 2024 10:02:20 +0000
+Date: Thu, 11 Jan 2024 18:01:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, robh@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+	gregkh@linuxfoundation.org, imx@lists.linux.dev,
+	jirislaby@kernel.org, joe@perches.com,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
+	zbigniew.lukwinski@linux.intel.com, devicetree@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org
+Subject: Re: [PATCH v2 4/7] i3c: target: add svc target controller support
+Message-ID: <202401111724.LiPgx2yU-lkp@intel.com>
+References: <20240110175221.2335480-5-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <343cedc4-a078-4cf8-ba3b-a1a8df74185b@app.fastmail.com>
-In-Reply-To: <ZZ8wMWQMo4eGnSuG@lizhi-Precision-Tower-5810>
-References: <20240110232255.1099757-1-arnd@kernel.org>
- <ZZ8wMWQMo4eGnSuG@lizhi-Precision-Tower-5810>
-Date: Thu, 11 Jan 2024 07:23:34 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Frank Li" <Frank.li@nxp.com>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Vinod Koul" <vkoul@kernel.org>, "Peng Fan" <peng.fan@nxp.com>,
- "Fabio Estevam" <festevam@denx.de>, dmaengine@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] dmaengine: fsl-edma: fix Makefile logic
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240110175221.2335480-5-Frank.Li@nxp.com>
 
-On Thu, Jan 11, 2024, at 01:02, Frank Li wrote:
-> On Thu, Jan 11, 2024 at 12:03:42AM +0100, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> A change to remove some unnecessary exports ended up removing some
->> necessary ones as well, and caused a build regression by trying to
->> link a single source file into two separate modules:
->
-> You should fix Kconfig to provent fsl-edma and mcf-edma build at the same
-> time.
+Hi Frank,
 
-That sounds like the wrong approach since it prevents
-compile-testing one of the drivers in an allmodconfig
-build.
+kernel test robot noticed the following build warnings:
 
-> EXPORT_SYMBOL_GPL is not necesary at all.
->
-> mcf-edma is quit old. ideally, it should be merged into fsl-edma.
+[auto build test WARNING on tty/tty-testing]
+[also build test WARNING on tty/tty-next tty/tty-linus robh/for-next linus/master v6.7 next-20240111]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I have no specific interest in either of the drivers, just
-trying to fix the build regression. I see no harm in exporting
-the symbols, but I can refactor the drivers to link all three
-files into the same module and add a hack to register both
-platform_driver instances from a shared module_init() if
-you think that's better. Unfortunately we can't have more
-than one initcall in a loadable module.
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-mode-support/20240111-015711
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
+patch link:    https://lore.kernel.org/r/20240110175221.2335480-5-Frank.Li%40nxp.com
+patch subject: [PATCH v2 4/7] i3c: target: add svc target controller support
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240111/202401111724.LiPgx2yU-lkp@intel.com/config)
+compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project 9bde5becb44ea071f5e1fa1f5d4071dc8788b18c)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240111/202401111724.LiPgx2yU-lkp@intel.com/reproduce)
 
-     Arnd
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401111724.LiPgx2yU-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:24:
+   In file included from include/linux/mm.h:1084:
+   In file included from include/linux/huge_mm.h:8:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:186:1: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     186 | _SIG_SET_OP(signotset, _sig_not)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/signal.h:176:10: note: expanded from macro '_SIG_SET_OP'
+     176 |         case 2: set->sig[1] = op(set->sig[1]);                          \
+         |                 ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from drivers/i3c/target/svc-i3c-target.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:24:
+   In file included from include/linux/mm.h:1084:
+   In file included from include/linux/huge_mm.h:8:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:197:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     197 |         case 2: set->sig[1] = 0;
+         |                 ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from drivers/i3c/target/svc-i3c-target.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:24:
+   In file included from include/linux/mm.h:1084:
+   In file included from include/linux/huge_mm.h:8:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:210:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     210 |         case 2: set->sig[1] = -1;
+         |                 ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from drivers/i3c/target/svc-i3c-target.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:24:
+   In file included from include/linux/mm.h:1084:
+   In file included from include/linux/huge_mm.h:8:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:241:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     241 |         case 2: set->sig[1] = 0;
+         |                 ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from drivers/i3c/target/svc-i3c-target.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:24:
+   In file included from include/linux/mm.h:1084:
+   In file included from include/linux/huge_mm.h:8:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:254:10: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     254 |         case 2: set->sig[1] = -1;
+         |                 ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   drivers/i3c/target/svc-i3c-target.c:211:40: warning: no previous prototype for function 'svc_i3c_get_features' [-Wmissing-prototypes]
+     211 | const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
+         |                                        ^
+   drivers/i3c/target/svc-i3c-target.c:211:7: note: declare 'static' if the function is not intended to be used outside of this translation unit
+     211 | const struct i3c_target_ctrl_features *svc_i3c_get_features(struct i3c_target_ctrl *ctrl)
+         |       ^
+         | static 
+>> drivers/i3c/target/svc-i3c-target.c:268:63: warning: omitting the parameter name in a function definition is a C23 extension [-Wc23-extensions]
+     268 | static int svc_i3c_target_queue(struct i3c_request *req, gfp_t)
+         |                                                               ^
+   drivers/i3c/target/svc-i3c-target.c:666:5: warning: no previous prototype for function 'svc_i3c_fifo_status' [-Wmissing-prototypes]
+     666 | int svc_i3c_fifo_status(struct i3c_target_ctrl *ctrl, bool tx)
+         |     ^
+   drivers/i3c/target/svc-i3c-target.c:666:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+     666 | int svc_i3c_fifo_status(struct i3c_target_ctrl *ctrl, bool tx)
+         | ^
+         | static 
+   52 warnings and 5 errors generated.
+
+
+vim +268 drivers/i3c/target/svc-i3c-target.c
+
+   267	
+ > 268	static int svc_i3c_target_queue(struct i3c_request *req, gfp_t)
+   269	{
+   270		struct svc_i3c_target *svc;
+   271		struct list_head *q;
+   272		unsigned long flags;
+   273		spinlock_t *lk;
+   274	
+   275		svc = dev_get_drvdata(&req->ctrl->dev);
+   276		if (!svc)
+   277			return -EINVAL;
+   278	
+   279		if (req->tx) {
+   280			q = &svc->txq;
+   281			lk = &svc->txq_lock;
+   282		} else {
+   283			q = &svc->rxq;
+   284			lk = &svc->rxq_lock;
+   285		}
+   286	
+   287		spin_lock_irqsave(lk, flags);
+   288		list_add_tail(&req->list, q);
+   289		spin_unlock_irqrestore(lk, flags);
+   290	
+   291		if (req->tx)
+   292			svc_i3c_fill_txfifo(svc);
+   293	
+   294		if (req->tx)
+   295			writel_relaxed(I3C_SINT_TXSEND, svc->regs + I3C_SINTSET);
+   296		else
+   297			writel_relaxed(I3C_SINT_RXPEND, svc->regs + I3C_SINTSET);
+   298	
+   299		return 0;
+   300	}
+   301	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
