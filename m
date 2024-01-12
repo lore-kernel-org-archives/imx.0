@@ -1,49 +1,50 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1E6EB6C
-	for <imx@lists.linux.dev>; Fri, 12 Jan 2024 15:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D33E6EB74
+	for <imx@lists.linux.dev>; Fri, 12 Jan 2024 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oF46Forz"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40e60e135a7so15977135e9.0
-        for <imx@lists.linux.dev>; Fri, 12 Jan 2024 07:50:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gjv9TZp0"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3374c693f92so4771636f8f.1
+        for <imx@lists.linux.dev>; Fri, 12 Jan 2024 08:00:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705074629; x=1705679429; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cp/H85Lwsjf3tcgZ0u/DpAjCJttqwMqWLJoD2uHpj3M=;
-        b=oF46Forz0rFBv9qUjxvp/gi9QSws//f6na30KObnxJvxhTV79l3TIkzreLd9MlC5b3
-         U9EVwKd7fOu9yZB3LIF+V0AMFxWAPmB9B2KiRacdtgorGc8hmCCRcWGz5DKLzk04A2OD
-         VNIhkUJ0cOOFRFCFQrWl5QGbJs3T8/EInck6hFeLHXA7iBdDh0BlIWNqx6UO3TAYkDQP
-         MI5rgYmU6KHjFUL9pagIU3QD3zRTzH3AFRqeROaTbtw8o6ol1Gqb7hHw9BETOCv0LtQK
-         ASKixa7XhmDUgrxl2pAsLtPTw8fvV+yWXe3NX4pZpuo6YqI20IhxLR47GofZWL2KtnTz
-         Rauw==
+        d=linaro.org; s=google; t=1705075221; x=1705680021; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=KNSnE31mUWTtAu62zxte7+wGFbNxIAXcVNWvFpXarq8=;
+        b=Gjv9TZp0mgQprpnOWOnhTl/0GV24hE6PkrfhV6tmySoBfGJGRm1/IuXRHYYkoS5muG
+         VKA3rCo7O/XbFmKSMDIZGTk7eV1EWcE0ZVVSyf6K8TeRmgZk9wxK3UGs8/j/brDbooLh
+         gecNaWIPOMkAJTdSB0QaL0w0F38220CGIwRxUhzuAzz2s+t1GgPow4pkPWJSyO7x0i/l
+         9R2WPL4FfvQFnrQGW6o49zJ0IJHhfFGCnBXviyrq1tsSA32Q7bQ7mIZNAyK5MBdQVm79
+         DNT9DG7XggNYKBhpAAW/P7JN6Yf2gMrEet9NzZ9zlPWpZbmGgBivAzB02hq/xENEvZbt
+         6ZOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705074629; x=1705679429;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cp/H85Lwsjf3tcgZ0u/DpAjCJttqwMqWLJoD2uHpj3M=;
-        b=KEu5G/k1l4io6OIjet8UP4Czmu53S3inUac/mopKOT2bTbo2Is4gL0VYWRrTcCqxxG
-         3LyCOsE5qNwOz2V1rMTnTqEIKVGXZx9YceI1G7oEKmun0W5JyrfFWGMaj+OTgzRHFgTd
-         jW+kPeLEypmIqPvOAN6yOJp1LyTgbPI4vSa3B3BnAaOdXM/Nl20ZlxuO2lzZLBIS3CJA
-         fSTEwnH3O94BqUXRdakBS6tlWiKgtBVkVkRnuRuSoF7sLwCTfsjhTvTETAswJ9MOJANy
-         3MF91kRm3889bvvUNpaXroAwBEiisAE3S34ucgX8+ETf8FIX1+9Xdv4mS3yg5bA0xBNa
-         GRWw==
-X-Gm-Message-State: AOJu0YzwnbqtcaHlA4PUo2Rcj4uXidrIgw8B3q8aByy8bdK9lJ9rQ3yU
-	TNqKR2+WtnH87n1/nYtF3MRES9SCtXjwbg==
-X-Google-Smtp-Source: AGHT+IFQ0wwxHMbsO7rImvKNPCgXFNMyq7s9NR+qP7VR8oYOcMMCyggi1J6yPwwHHWIU8T46Tj7ARQ==
-X-Received: by 2002:a05:600c:3549:b0:40e:6208:21f6 with SMTP id i9-20020a05600c354900b0040e620821f6mr850989wmq.9.1705074629119;
-        Fri, 12 Jan 2024 07:50:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705075221; x=1705680021;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KNSnE31mUWTtAu62zxte7+wGFbNxIAXcVNWvFpXarq8=;
+        b=UjoSC1nkPIRjhXV0PmwuCOcNeOf+JaVujOQUO/yENI5TRi81FbpIftq17uXtzF9kdI
+         OYR9m5eY3m6SMYyrVGIADgXRAQ6HDXp6Lgc6MgoVJJD5tJ70IB79pncyfRIOQpI5iREu
+         uxcOvnpgDzb7NrIckDo5wcsrsmPmd+bozd0E2DFX63LaxcUNXETZuvaaQ8+izgoC49na
+         nnz7Q320UYTySrQj5TdQtLvCe7wEkcLr/MryQJNU0aAodPoGg+TtFKajrHtJjsvVKiXg
+         TKocBExtEWm/M6uLwge9pHIMgS2VFFnPsEy7L7V3J4drETIgM9c+k1J4EXedueHVDq6g
+         07cg==
+X-Gm-Message-State: AOJu0YzhXipsmysJ25r4bkUZldZOo2Kedc8pZQMvURbZ7/wCmfoFMrUs
+	KnT5VoJiSDPiQEwVcVo7YvjBMHP2Sihh7w==
+X-Google-Smtp-Source: AGHT+IG0t8vwy4/T+jnfap/4JzmpTGUHJHK3NjF9tz0RjHW21dsfZTqkn2BSN+XKUADqV25rHt7bjA==
+X-Received: by 2002:adf:e8c6:0:b0:336:1182:6475 with SMTP id k6-20020adfe8c6000000b0033611826475mr875372wrn.34.1705075221351;
+        Fri, 12 Jan 2024 08:00:21 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id z10-20020a05600c0a0a00b0040e486bc0dfsm10223362wmp.27.2024.01.12.07.50.26
+        by smtp.gmail.com with ESMTPSA id b6-20020adfee86000000b00337478efa4fsm4200905wro.60.2024.01.12.08.00.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jan 2024 07:50:27 -0800 (PST)
-Message-ID: <e3b9aa63-25a5-41cc-9eb7-6e7d1eacb136@linaro.org>
-Date: Fri, 12 Jan 2024 16:50:25 +0100
+        Fri, 12 Jan 2024 08:00:20 -0800 (PST)
+Message-ID: <a1e673be-9c4e-4bbc-abe6-56466f8a01ad@linaro.org>
+Date: Fri, 12 Jan 2024 17:00:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,6 +55,7 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/7] dt-bindings: i3c: svc: add compatible string i3c:
  silvaco,i3c-target-v1
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Frank Li <Frank.li@nxp.com>
 Cc: robh@kernel.org, alexandre.belloni@bootlin.com,
  conor.culhane@silvaco.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
@@ -65,7 +67,7 @@ References: <20240110175221.2335480-1-Frank.Li@nxp.com>
  <20240110175221.2335480-3-Frank.Li@nxp.com>
  <3c0be658-e7a6-4231-b206-86ffb47e0cb2@linaro.org>
  <ZaFbbeQrC7o2dchO@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ <e3b9aa63-25a5-41cc-9eb7-6e7d1eacb136@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -110,48 +112,53 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZaFbbeQrC7o2dchO@lizhi-Precision-Tower-5810>
+In-Reply-To: <e3b9aa63-25a5-41cc-9eb7-6e7d1eacb136@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/01/2024 16:31, Frank Li wrote:
-> I review previous comments. The previous RFC patches and I just want I3C
-> expert review to check if there are comments about whole software
-> architecture. Of course, thank you for your comments about "slave".
+On 12/01/2024 16:50, Krzysztof Kozlowski wrote:
+> On 12/01/2024 16:31, Frank Li wrote:
+>> I review previous comments. The previous RFC patches and I just want I3C
+>> expert review to check if there are comments about whole software
+>> architecture. Of course, thank you for your comments about "slave".
+>>
+>> Go back this binding doc problem. 
+>>
+>>   "No, it's the same device.
+>>
+>>    Anyway, this was not tested.
+>>
+>>    Please use scripts/get_maintainers.pl to get a list of necessary people
+>>    and lists to CC. It might happen, that command when run on an older
+>>    kernel, gives you outdated entries. Therefore please be sure you base
+>>    your patches on recent Linux kernel.
+>>
+>>    You missed at least devicetree list (maybe more), so this won't be
+>>    tested by automated tooling. Performing review on untested code might be
+>>    a waste of time, thus I will skip this patch entirely till you follow
+>>    the process allowing the patch to be tested.
+>>
+>>    Please kindly resend and include all necessary To/Cc entries.
+>>    "
+>>
+>> It is the same devices, work at difference mode (master  and target).
+>> what's do you want to change to?
+>>
+>> Copy to new file like pci/pci-ep? all context is the same, except for
+>> compatible string. 
+>>
 > 
-> Go back this binding doc problem. 
+> Apologies, I mixed up a bit patches, so this was not obvious. I meant
+> this comment:
 > 
->   "No, it's the same device.
+> https://lore.kernel.org/all/20231017201404.GA2570433-robh@kernel.org/
 > 
->    Anyway, this was not tested.
-> 
->    Please use scripts/get_maintainers.pl to get a list of necessary people
->    and lists to CC. It might happen, that command when run on an older
->    kernel, gives you outdated entries. Therefore please be sure you base
->    your patches on recent Linux kernel.
-> 
->    You missed at least devicetree list (maybe more), so this won't be
->    tested by automated tooling. Performing review on untested code might be
->    a waste of time, thus I will skip this patch entirely till you follow
->    the process allowing the patch to be tested.
-> 
->    Please kindly resend and include all necessary To/Cc entries.
->    "
-> 
-> It is the same devices, work at difference mode (master  and target).
-> what's do you want to change to?
-> 
-> Copy to new file like pci/pci-ep? all context is the same, except for
-> compatible string. 
-> 
+> There is no indication in your commit msg that these concerns were
+> addressed.
 
-Apologies, I mixed up a bit patches, so this was not obvious. I meant
-this comment:
+And here:
 
-https://lore.kernel.org/all/20231017201404.GA2570433-robh@kernel.org/
-
-There is no indication in your commit msg that these concerns were
-addressed.
+https://lore.kernel.org/all/6110c58a-8003-4889-9a4b-6a7d1821c00e@linaro.org/
 
 Best regards,
 Krzysztof
