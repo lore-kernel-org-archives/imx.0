@@ -1,85 +1,78 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2040.outbound.protection.outlook.com [40.107.104.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E701F61C
-	for <imx@lists.linux.dev>; Tue, 16 Jan 2024 21:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705438907; cv=none; b=nQH7Hlo8Kg9C/N67tvKZbwD1UoLiTiT7rQ2RLXpX2Fg9ixSQebJ2D4qEuUhjGskkr8JQq7TU27iKhqOE+B+XtleIby9SNakJ7SDZaXLkJvjlxG4mevzWn5uFHccuzulfkzTDTXs1tHPe6b0WGDs84IsZIXhXTKnyothyu7QYeLg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705438907; c=relaxed/simple;
-	bh=PNx+QXbDWvXWtLz50dOxThikUZ335c3MC79aRH2BLb4=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
-	 From:To:Cc:References:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=bsIJ6JALzpERflG3EORyuuhFLbOyeKXsBG8LofDvTJswKBfO42AnPLyKk1stugl4HXT/4GIQqN/TRahR0kfq7Pg3fSPQiZRZCQ4jitbQ+iCby16HV3z6lPti5HmfvpkRj7S9c/CuIsOhf9+6emsBFUMCNBnMUSKmVrk1mcWWCpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ozwm22GV; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAB534CFE
+	for <imx@lists.linux.dev>; Tue, 16 Jan 2024 21:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705440696; cv=fail; b=MfE2Y4Hb2psqKmr52jthFu9hsIvDp5jZgsl2mtofP0NeUzXnMxjJLEr0HPzbsoB1rT+rMGQRiWu/7QJ+JfNthTPg5vRmJh4v0ea8u//Lr9kXJIMmHLPyBMD+gY7C7SpOktLxXOZa7ZeOaq4r7Qxwm9V0qGa563oleQ5nsGAYZCE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705440696; c=relaxed/simple;
+	bh=q/Zp2P2YMM80FvOslMjjcAyQu4VkqA4rWeTrmTh6o+Q=;
+	h=ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
+	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped; b=oVjA0OvMnnhW5KsCoXusipeIMaZbD8UNubDUIp9onnt8rzuWwm2H4UkpLHGiLZbY7fSJ6rlDWQGls3U7Q0glW6jpgSQqzgaqT4ALj9LV2DOoT0psh5UYFZHUU0vdkk45J6mV78xFlL76RdxpOlVGjeigRcTRj4tSUGNYNPNGd0A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=a6YyNgL3; arc=fail smtp.client-ip=40.107.104.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ozwm22GV"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-557ad92cabbso10293165a12.0
-        for <imx@lists.linux.dev>; Tue, 16 Jan 2024 13:01:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705438904; x=1706043704; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=BI0JqMsCv4VcqbNYt8+RzCV7QHNt5sRA33XbIYq+33c=;
-        b=ozwm22GVn/kpC4rWZGYpX6LNzP3HstW2YCfCgDOOWqqEmHBAPf9GRmfwfFtQuH3gio
-         G38ex4o4kPhCAB8zFfwTJ5grHcGjrwI/RWyv5Bfpb4rCutxwiC9Sk0xcd0mtcg6PTSGa
-         c50X8sYd/KOvyXP4tAWAduDcnwbooCOOiWlSntV/Mj95c5hm4sjG3bTNciBHK5FheLNY
-         ej59vUk+YzSDpCi7yw5KktXt0P6c8gIUQbpz3olb0eKuayQPy+IS8tKVICkozLAuOr1r
-         DGL3nTY6UpB/uXXypxA8UDBUv0SlyujyGZck5NttAVQFiOpQkx3ttZTRGdO/8LilmHoy
-         z0Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705438904; x=1706043704;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BI0JqMsCv4VcqbNYt8+RzCV7QHNt5sRA33XbIYq+33c=;
-        b=gv1y6Jr+WsvgIa/QHfHBsbgUVz7z7tSOtF3ncE02aoE/SNRg80iw4IOcNTkVjVDGdl
-         loNF+5VW8QsBr7j1DuSpn24eQclHSBX0periZsNApMlDYkYWl0wdMcneYcrukMb9wCPl
-         Iu6BHxPst6+8ptWP46ZGtuR2rSQ7W49pYYHJle2jMTv1aMBfk4/eDKWhDydih4Cmdl4r
-         foHxXPKLHXk3LVWacLyhU+F+Mhr75exXrZknlq51drpj45Vl+BEspmHYt6XgjHht574v
-         qYpHjvd4B3SSnxoQs27BiiX164dD8BGCsn+O2sSeC+uv26kX9MYqPwHDuZ2eahTrljMz
-         LchQ==
-X-Gm-Message-State: AOJu0YyP6kIOH1FH6hY8QL2fxSabApj3SiaUBmX63JK6Yqn5oYlOa+NL
-	skSIOOcSGQTE1WkOeOMx70liA6ScK2Dppw==
-X-Google-Smtp-Source: AGHT+IHSKQjn3iRQ2ltMWmBiWTkmis4S2DCRaFDXIur/tWNxSSuIXUs/UXtiIZnENnqyI9dAW4sdDA==
-X-Received: by 2002:a17:907:a80a:b0:a2d:2328:6d52 with SMTP id vo10-20020a170907a80a00b00a2d23286d52mr1363322ejc.276.1705438904380;
-        Tue, 16 Jan 2024 13:01:44 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id v1-20020a17090606c100b00a2a04754eb1sm6939441ejb.8.2024.01.16.13.01.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jan 2024 13:01:43 -0800 (PST)
-Message-ID: <e54e2b30-03e7-40e3-bb33-dc71de8511a4@linaro.org>
-Date: Tue, 16 Jan 2024 22:01:42 +0100
-Precedence: bulk
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="a6YyNgL3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cSPUBESebe92Fk4jZFmJArkeoZEGBjSsLNw7cfLEhiMO5dL4CNUGh4TBUSigCow/9IWiWyMBiO28yMR+BVutUVBu443BhmxnAKTbM30aGzBDrlzhTs3PqrOknqRdgC5bOdrz1NfrLLebvtJxY01qjGTqQsIs97fnmxg6MYlZKkRCQ5RvbQ+14na7dsSUixQ1cYAMjse/V2puvJXaihzXINdPVJYoD2XeB3lC6e1qZOiUI1imRZijjzeMW5T1h9yZDUwsYRasqf8tPMaK2/ga+57ux1xitetnErGXqvN7lPvIWCisaewfe6Dwmt2/PgawBa3rxmOXqmKMAafawiiKng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c+sTjEyfxPEL8kx5rJB5VNZQv3KU8jt3fK70feRwJ+k=;
+ b=fJ8M8W4bpaSl5CGCNDPAC/tZwHzPBhlQujbrwGyGjGvU2GH1bvSU0NrAmUjF0G74gkETRQ7jpVXi/YNqgu0UfdNvDQMMFd+ZoFW3UAvXlJ4BHAaO+WJaWkkNWv9zdTWmSj5uSnn32Xl1XAFKQ82/49qGvAhvJmMGmyHeF5l5PS5mP+r14fNGkz/+LyCWV5nUKnL7PnmvKv/oMBFpsAH3X58PxyhDe2iN2LSTSLz78WsmsqS4pjH5rmmf6JZBMtcfDx4e8yVQpCuGxyl4I1zewi50RWHpjqTm2G8O1fZ5BzdB9hZu2OesYGidRSKl+Hssnmf7I70D4mZZMOvTeCeoMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c+sTjEyfxPEL8kx5rJB5VNZQv3KU8jt3fK70feRwJ+k=;
+ b=a6YyNgL3pmOSaRt1BGNlbzRVOaduzfQvui0l7HRlwLJmBXRgjDzxY0I7ycFz8bkoHjLEA8ghc06hUkFCzJNFFJ9AOlbOe0r8KB5peVV3J/J+YrpMaOPcGPNta6T5XQ3TiG0gSKYwOqzqDa5QsnSZvJLCVSx98AUSjAFyocizSmA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM8PR04MB7347.eurprd04.prod.outlook.com (2603:10a6:20b:1d0::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.28; Tue, 16 Jan
+ 2024 21:31:31 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::b8af:bfe5:dffd:59a9]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::b8af:bfe5:dffd:59a9%4]) with mapi id 15.20.7202.020; Tue, 16 Jan 2024
+ 21:31:31 +0000
+Date: Tue, 16 Jan 2024 16:31:22 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Conor Dooley <conor@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>, robh@kernel.org,
+	alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+	gregkh@linuxfoundation.org, imx@lists.linux.dev,
+	jirislaby@kernel.org, joe@perches.com,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
+	zbigniew.lukwinski@linux.intel.com, devicetree@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org
 Subject: Re: [PATCH v2 2/7] dt-bindings: i3c: svc: add compatible string i3c:
  silvaco,i3c-target-v1
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Conor Dooley <conor@kernel.org>, Conor Dooley
- <conor.dooley@microchip.com>, robh@kernel.org,
- alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- gregkh@linuxfoundation.org, imx@lists.linux.dev, jirislaby@kernel.org,
- joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- miquel.raynal@bootlin.com, zbigniew.lukwinski@linux.intel.com,
- devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org
-References: <1b628901-7f71-4c97-9a16-723912988417@linaro.org>
- <ZaXqCoCHPWER94Hh@lizhi-Precision-Tower-5810>
- <d45e31c4-914e-4cea-a145-9775b6f516ab@linaro.org>
+Message-ID: <Zab1qj3+6daX8QH0@lizhi-Precision-Tower-5810>
+References: <d45e31c4-914e-4cea-a145-9775b6f516ab@linaro.org>
  <20240116-bleach-herbicide-48d636967134@wendy>
  <3199c245-3d2d-49e8-951e-2b059de4d683@linaro.org>
  <20240116-achiness-thievish-10a12b3c08cd@wendy>
@@ -89,125 +82,155 @@ References: <1b628901-7f71-4c97-9a16-723912988417@linaro.org>
  <4a9ed1ca-cd13-4b61-af06-a3d7935aeeee@linaro.org>
  <ZabqxHD4wtiPn6ep@lizhi-Precision-Tower-5810>
  <c760b89c-efec-489e-8333-c60b38fb5a47@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <c760b89c-efec-489e-8333-c60b38fb5a47@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0098.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
+Precedence: bulk
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7347:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82b99023-1c1d-48db-dd04-08dc16da819a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	uEXuF3XAToHNandBhdqWvd4qivcavfSR/9xUiEY51ESzkCH9grdGvEJUDhwoU/Ke0CkpbhVGk3jAox58SgTZF9yJMlf7c4XDuSNWxhN9709nL9vnLifZZA4muEuTx9ckcxfS8djoMfgwhjHWccnhEV/j5SHVjAcNldRmHbKdmnclCC6nbvWaSn0mkbTUp6s/1cQoNPfkBHkqDNDOjBRizN33UB7YTjG3241GU/3i9Gi0zzFpMnD6FpABc0LfeLZGDgZu7SxgBPqDy5Wb8gX2pmitktfqWkUDFXfyoVKaSzReCNYeLTfx+Gt0qzF5Y9L3972RBpQ8oWgvsfZXsojgQtWXRHB1KbPbgOAov9g98jHkLiOp639r8+ZkIsQ+02v8xUr6fSvEJDjltwIxec+hZ8R1zVIn5NLM5d7f4Jv6vYaMTJkYcMXxu1Jrd4xCQ7/zn0Td0SHdrrNcjzsni5vQ8Io1MSFhBTxoP17UPbVl+xsedVVUaCCx77eSZslME8EbrOulTPQtuo9E++dkVvmLwlhN1uR6hQx9dYaGcj2FmDvJSELzPG1OUv/604DVnTY4vTuwBACXLD20F5cpGkzTV9bPgrwibEr9dS+hMQYwrPN0UanrIENKHheXUaIto71M
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(346002)(396003)(376002)(136003)(366004)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(83380400001)(33716001)(86362001)(41300700001)(4326008)(38100700002)(6486002)(966005)(2906002)(66946007)(66556008)(316002)(66476007)(6916009)(54906003)(9686003)(26005)(478600001)(8936002)(5660300002)(52116002)(6666004)(8676002)(53546011)(6506007)(6512007)(7416002)(38350700005)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mdzvnar0aNQ04yLrosFEvM9osILalEHahv7Mwp4xLaOJZ+s4IZSl7711yswl?=
+ =?us-ascii?Q?RmqH3rh/ZaADyaVK1a/2reNkFUBPMnSX5QRZjcnWZ+eDOsW8wFP+HjOdmL4D?=
+ =?us-ascii?Q?Sob/cFT7xiEpjk5EDU4ntjrWXeQ7u970Ni+Kfulv5q71WZDn3z5ybbrkEVsq?=
+ =?us-ascii?Q?D26sM6uGEpXSUXXcOLw/UuTghrF0YUMbDJEUpxKAtfdGXeoLDCD7NHerWhKr?=
+ =?us-ascii?Q?12Us7RaRuwqpx2aFhIFs1rM4KwjJEMsWXJUn7Jvvil0Z5pc4vIRvnVj497kK?=
+ =?us-ascii?Q?xY1Z0VgioZfaCTZa3C18XcMzOEiCHHk7rD08q3bewtx3sqw0POaUv+82vGwa?=
+ =?us-ascii?Q?2C0s6hVPoDp630WFXI1UqvhTB+JxERUe6pmq3b3YLFySOJo5dXJSfFaprowz?=
+ =?us-ascii?Q?yk4b5uQ7BJw0uIj1ALUJHZMxm3cdhBhhz7ojcekHrlVuj2DINGRCLbTkqx4J?=
+ =?us-ascii?Q?DstxqJdfaIbyz9Q40qcBEU3EjaurB4kYZmMeRMLZpdy06+3XPJa/znMrVPDh?=
+ =?us-ascii?Q?ez9MH1t6u2Ujj+P0NB9+gicdVfCyolSNg8rAp+lvs0TrzcrFIF48KDY/rZ6h?=
+ =?us-ascii?Q?qjP1dUFC4sltHF/IHFUW5vE9rq3n+l6I7stb7uEbAckANCeJp48slQ8mIqgP?=
+ =?us-ascii?Q?K9cwsvGNbVIkm9SFyNaHy49omChxIgtuGp21Br9cugsTY3GCkjbhhGywp8J1?=
+ =?us-ascii?Q?wS3XZJbovFXMjBLu0QjbUS0xbggXYMzYOQI0HabRg7im5rSpQabMw5o0ZtVF?=
+ =?us-ascii?Q?DYdP7bcKIpBvKlqBTonGQoYIfCFCTh5mrHNyQKDCK2HrdWJZJdClNxUHlBBk?=
+ =?us-ascii?Q?fbAUCA6Qr3+uh1A9ycqUaFlzFmqnPZExduYHh3GKkuS3IJQJ7f/G7hbNwKCc?=
+ =?us-ascii?Q?J2v6stNtUBLCydbxF8QJrV9jMmsybdrY8PR8hWz7t2txem2j6wYoWSbn9x8j?=
+ =?us-ascii?Q?D06wnKtMS00a49qvG0rrNHptWgYDsS5BaDXYcTsFoKCF0fnrpBV7IkHUELwq?=
+ =?us-ascii?Q?Omas6ygLYyO8IRJlCVmM/pNCU6EMi69vLfOO//iuyrP3re2CZN6/F3ek8ho7?=
+ =?us-ascii?Q?OhoP50js/1Ay5y54TE30z9c0BNAf3KhFafiHb/SwAwaZ195DibMmwtvU87K3?=
+ =?us-ascii?Q?MPZlP0gYiiHlTD4zAyT9h7UERPO7Ga6s7onPNCtMcreoM745EzzV6oRabc3F?=
+ =?us-ascii?Q?zfC2cJTe6X7wBc00q2pinA/YMIx3UOJcRfkO063DzjI9Ultk1Sm3XKQfFbJ1?=
+ =?us-ascii?Q?fLdjbfZ4gpwkCgR8T1kQEyrMMC0bC5tdLqICSw7wYoqH7CHQu5TEWgXWBeHo?=
+ =?us-ascii?Q?O/2ad/ZgAwBAtSlZaajhF+DfO2xp9vHgjef23eEpRNJ1iKeFSGVm1HBMOggQ?=
+ =?us-ascii?Q?mLTKSrjjoozlkMP6xEoJh5RaSjzMVmhALAyhKiZdcG3AdbGaLswkH8IP3gq5?=
+ =?us-ascii?Q?qWdCdoORRNgQu8V28ZPcMtu9l8EVN43lw3asUi1Q2HphjrNjdmZqh/6vRTA2?=
+ =?us-ascii?Q?znjmvhUjTcRQXsdo+dh3U/eZ5qQh6LyVE+Ce4hDKw4i7LeiGp5mS6OM5siaD?=
+ =?us-ascii?Q?fkVW7nq7vEMwOX4iHqs=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82b99023-1c1d-48db-dd04-08dc16da819a
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2024 21:31:31.4099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bRL9gIuejYMhL17XZ08w1DOHoDFKLMjbGBUvNK0iLQLJd2khMpFMP0688U86ADD8FzFnU0vwQmPtj5OL4C1rEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7347
 
-On 16/01/2024 21:56, Krzysztof Kozlowski wrote:
+On Tue, Jan 16, 2024 at 09:56:03PM +0100, Krzysztof Kozlowski wrote:
 > On 16/01/2024 21:44, Frank Li wrote:
->> On Tue, Jan 16, 2024 at 09:30:24PM +0100, Krzysztof Kozlowski wrote:
->>> On 16/01/2024 20:13, Frank Li wrote:
->>>> On Tue, Jan 16, 2024 at 06:23:09PM +0000, Conor Dooley wrote:
->>>>> On Tue, Jan 16, 2024 at 12:35:44PM -0500, Frank Li wrote:
->>>>>> On Tue, Jan 16, 2024 at 09:48:08AM +0000, Conor Dooley wrote:
->>>>>>> On Tue, Jan 16, 2024 at 10:33:48AM +0100, Krzysztof Kozlowski wrote:
->>>>>>>> On 16/01/2024 10:30, Conor Dooley wrote:
->>>>>>>>> On Tue, Jan 16, 2024 at 08:24:20AM +0100, Krzysztof Kozlowski wrote:
->>>>>>>>>> On 16/01/2024 03:29, Frank Li wrote:
->>>>>>>>>>>>> 	Patches were accepted after discussion, what you ponit to. So I
->>>>>>>>>>>>> think everyone agree on the name 'silvaco,i3c-master-v1'.
->>>>>>>>>>>>> 	I plan send next version to fix auto build error. Any additional
->>>>>>>>>>>>> comments about this?
->>>>>>>>>>>>
->>>>>>>>>>>> I still do not see how did you address Rob's comment and his point is
->>>>>>>>>>>> valid. You just did not reply to it.
->>>>>>>>>>>
->>>>>>>>>>> See https://lore.kernel.org/imx/ZXCiaKfMYYShoiXK@lizhi-Precision-Tower-5810/
->>>>>>>>>>
->>>>>>>>>> First of all, that's not the answer to Rob's email, but some other
->>>>>>>>>> thread which is 99% ignored by Rob (unless he has filters for
->>>>>>>>>> "@Rob"...). Therefore no, it does not count as valid answer.
->>>>>>>>>>
->>>>>>>>>> Second, explanation does not make sense. There is no argument granting
->>>>>>>>>> you exception from SoC specific compatibles.
->>>>>>>>>
->>>>>>>>> The patch could have been applied two months ago had Frank done as
->>>>>>>>> was requested (multiple times). I don't understand the resistance
->>>>>>>>> towards doing so given the process has taken way way longer as a result.
->>>>>>>>
->>>>>>>> I think that Rob's comment was just skipped and original master binding
->>>>>>>> was merged without addressing it. I don't want to repeat the same
->>>>>>>> process for the "target". Indeed I could point this earlier... if I only
->>>>>>>> knew that Rob pointed out that issue.
->>>>>>>
->>>>>>> Oh I think I got confused here. The context for this mail led me to
->>>>>>> think that this was still trying to push the i3c-master-v1 stuff through
->>>>>>> and I was commenting on my frustration with the resistance to applying
->>>>>>> the feedback received. I didn't realise that this was for another
->>>>>>> patch adding a target.
->>>>>>>
->>>>>>> I think you already said it, but NAK to adding any more compatibles here
->>>>>>> until the soc-specific compatible that was asked for for the imx93 is
->>>>>>> added.
->>>>>>
->>>>>> Is it okay for 'silvaco,i3c-target-imx93'?
->>>
->>> No, because imx93 is product of NXP, not Silvaco.
->>>
->>> You need regular SoC-block compatibles, just like we have for all other
->>> snps, dwc and cdns.
->>
->> "nxp,imx93-svc-i3c-target" ? 
+> > On Tue, Jan 16, 2024 at 09:30:24PM +0100, Krzysztof Kozlowski wrote:
+> >> On 16/01/2024 20:13, Frank Li wrote:
+> >>> On Tue, Jan 16, 2024 at 06:23:09PM +0000, Conor Dooley wrote:
+> >>>> On Tue, Jan 16, 2024 at 12:35:44PM -0500, Frank Li wrote:
+> >>>>> On Tue, Jan 16, 2024 at 09:48:08AM +0000, Conor Dooley wrote:
+> >>>>>> On Tue, Jan 16, 2024 at 10:33:48AM +0100, Krzysztof Kozlowski wrote:
+> >>>>>>> On 16/01/2024 10:30, Conor Dooley wrote:
+> >>>>>>>> On Tue, Jan 16, 2024 at 08:24:20AM +0100, Krzysztof Kozlowski wrote:
+> >>>>>>>>> On 16/01/2024 03:29, Frank Li wrote:
+> >>>>>>>>>>>> 	Patches were accepted after discussion, what you ponit to. So I
+> >>>>>>>>>>>> think everyone agree on the name 'silvaco,i3c-master-v1'.
+> >>>>>>>>>>>> 	I plan send next version to fix auto build error. Any additional
+> >>>>>>>>>>>> comments about this?
+> >>>>>>>>>>>
+> >>>>>>>>>>> I still do not see how did you address Rob's comment and his point is
+> >>>>>>>>>>> valid. You just did not reply to it.
+> >>>>>>>>>>
+> >>>>>>>>>> See https://lore.kernel.org/imx/ZXCiaKfMYYShoiXK@lizhi-Precision-Tower-5810/
+> >>>>>>>>>
+> >>>>>>>>> First of all, that's not the answer to Rob's email, but some other
+> >>>>>>>>> thread which is 99% ignored by Rob (unless he has filters for
+> >>>>>>>>> "@Rob"...). Therefore no, it does not count as valid answer.
+> >>>>>>>>>
+> >>>>>>>>> Second, explanation does not make sense. There is no argument granting
+> >>>>>>>>> you exception from SoC specific compatibles.
+> >>>>>>>>
+> >>>>>>>> The patch could have been applied two months ago had Frank done as
+> >>>>>>>> was requested (multiple times). I don't understand the resistance
+> >>>>>>>> towards doing so given the process has taken way way longer as a result.
+> >>>>>>>
+> >>>>>>> I think that Rob's comment was just skipped and original master binding
+> >>>>>>> was merged without addressing it. I don't want to repeat the same
+> >>>>>>> process for the "target". Indeed I could point this earlier... if I only
+> >>>>>>> knew that Rob pointed out that issue.
+> >>>>>>
+> >>>>>> Oh I think I got confused here. The context for this mail led me to
+> >>>>>> think that this was still trying to push the i3c-master-v1 stuff through
+> >>>>>> and I was commenting on my frustration with the resistance to applying
+> >>>>>> the feedback received. I didn't realise that this was for another
+> >>>>>> patch adding a target.
+> >>>>>>
+> >>>>>> I think you already said it, but NAK to adding any more compatibles here
+> >>>>>> until the soc-specific compatible that was asked for for the imx93 is
+> >>>>>> added.
+> >>>>>
+> >>>>> Is it okay for 'silvaco,i3c-target-imx93'?
+> >>
+> >> No, because imx93 is product of NXP, not Silvaco.
+> >>
+> >> You need regular SoC-block compatibles, just like we have for all other
+> >> snps, dwc and cdns.
+> > 
+> > "nxp,imx93-svc-i3c-target" ? 
 > 
 > Could be, now please point me to patch adding such code to DTS. I would
 > like to see the real use case for it.
 
-Probably I was not clear enough, so let's be more precise: I think you
-might have troubles pointing to such code, because it just does not
-exist. It is a bit contradicting to single hardware description, because
-you want to describe one hardware in two different ways, with two
-different compatibles.
+This part have not sent to review yet. basically in imx93evk.dts add
 
-Your commit msg is here empty - it says what  patch is does, which is
-obvious. Tells nothing about the hardware being described here, which
-does not help this discussion. This would need solving as well, but main
-point stays - don't add new compatibles for the same hardware, at least
-not without valid reason/explanation.
+&i3c1 { 
+	compatible = "silvaco,i3c-target-v1";
+        pinctrl-names = "default", "sleep";                                
+        pinctrl-0 = <&pinctrl_i3c1>;                                       
+        pinctrl-1 = <&pinctrl_i3c1>;                                       
+        status = "okay"
+}
 
-Best regards,
-Krzysztof
-
+> 
+> > Just little bit strange for binding file name
+> > is silvaco,i3c-master.yaml.
+> 
+> Many other bindings do it. I don't see a problem in creating device
+> specific schema sharing some parts, if you have some common pieces.
+> 
+> > 
+> > look like "dwc,*" compatitble string's file name is "dwc,*".yaml.
+> 
+> ? I don't understand how is this related, but if this is what you want
+> to discuss then look:
+> Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
+> 
+> or many other examples. Please open dwc, snps and cdns bindings and look
+> how it is done there.
+> 
+> Best regards,
+> Krzysztof
+> 
