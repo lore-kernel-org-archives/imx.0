@@ -1,83 +1,78 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2054.outbound.protection.outlook.com [40.107.7.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989A6225AA
-	for <imx@lists.linux.dev>; Wed, 17 Jan 2024 17:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705511758; cv=none; b=GlrZiH5fPo5yBa6qu+6Lku3/iVgXO8cVDZ63voMu8+V1+1Omn9rkSIkDG/qVrMM3ke1D4suZ7SK/yaTSThpd5i5ur8r726mnHAmlFzWLuzWHusYe4FaHpdQ3903F7yxS/20Rx/XqjpLLpjrD1KtNyZ6ZgU/pPulW9udKo/YBgq0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705511758; c=relaxed/simple;
-	bh=uoW4HUk29kpHj68SF+hGOItA0f/Gp6jWrZH8lGth7lA=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
-	 To:Cc:References:From:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=BxPGN2oQ9hQbi4p4OUV1Chic9ugmrJo++jju/4hw0lrp25MFNWNcpCcmn1e8gDe7pvHTsUcipl2opQavAAhPsRzecUvsE+OVTaP1g8q4LwS+ZM8hcIJ5a2IUrKelcGGe+VvMolBmE3Z/XesBk2yCx72fVTVHGn7wUNbUuoLPcaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aDoqk4so; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0E022EE4
+	for <imx@lists.linux.dev>; Wed, 17 Jan 2024 18:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705514790; cv=fail; b=Eye1K9kU23DBj0vsDiqkIJ92M5P111mqt/qNC5R6LVO1Vs+5vi795o55gXyhfwdqY04leagI3FDK+F8NzZ+OTqB0bCicD3mwzt3mG1jry+eBpnP0TkhXZ7bGb3c4pkqC44yVabfRCCC+PB9eONFOiFr/88cq9s7MzXn4NpH74jI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705514790; c=relaxed/simple;
+	bh=i8n34s2WQwcNftYiiWqT6lIOFthFitPKtWc+GUQfWkE=;
+	h=ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
+	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped; b=slkhLWrz9IonDYWywr1a1BmnIbIwiLlFml9+S+RTaqVRkcw0hlLaog/gk7Hz3x4nwIe0NqxALW2bGLnIy3NwTjDwwU2l7JF/rWO5n3P9ZDkGjK0X9q3r7QkQGjrdtxadCB/bEWU6Ukdn4DxmFf8JgX35tV3a0kLrKBI9oI6P8zQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cuhwSpt7; arc=fail smtp.client-ip=40.107.7.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aDoqk4so"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-50e766937ddso12848028e87.3
-        for <imx@lists.linux.dev>; Wed, 17 Jan 2024 09:15:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705511755; x=1706116555; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zVT3PU0cW+s0avKE1jP7V15SsbgqFqqu1SCavUYDkpg=;
-        b=aDoqk4soZt5ADtSoXHHPyCWXhDyJhdAVqkwbeoj7RCM2H75IZDUZzURs8IjgHOu22L
-         PX/1GKE/veAxe+WqAhoIC702G2l0Cd1CtAWhktoXchVjOh76p4E2o/NOvV4ZMTQINWiN
-         bJl8i848y/eGENZ18Jj2j3xkLBaxqihAynvYK4BMoaZIoVNewPzXn2tyH9+9jftYn/K+
-         IrjXNEQs489V1pHy7FQA8nWLQRbH7Tfrypmh04H0yKgZt5Z+stUw1pBSD9xGNY1l11fc
-         LvXyyq3jkaZkoLkVNPXd63p90Zr01Tv5pNgzABSNdztR4A0D+jD2Xv2UmqWnIw2XfuXd
-         PfAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705511755; x=1706116555;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zVT3PU0cW+s0avKE1jP7V15SsbgqFqqu1SCavUYDkpg=;
-        b=XGTVH9lsYgT+QDT+1FxmcFLL+0TAQt6Xv62lRhZhdwhvHdm/CQGJwZqFgK6cp4tN7x
-         w9AT22cYxekOT68cwPGkMXRmgY+Nvdt34Pz9pdlOtliQcKaCTtCxh7fw9yEmDMJk00vO
-         9BaweRMKy75nHwKRgWC95VefQMWSRF9WswOiRdGnoS7HEOxi/Z8n2LmQdM65gcPO/Y9c
-         hSJkirS6aAvDE93pvVhZlaUiQdbv3o9gl3X2e7nOwazvfifZ3ej7YqV+D3HheTKEa8Ej
-         pokQlQGY5bxG8oKx+sCCfV2sxttj5NsRVS0Sm8YCZ1bXQoxurptE7KYXH5pXedOcdnCv
-         h9uw==
-X-Gm-Message-State: AOJu0YzlGR2DeaQWy047YzFkKXGxA+0k+9ItH2vTnQNYdcKI9RGKQ6FV
-	+puEwsMsVKLN3QDMph2kxi61Zz8O6kNWug==
-X-Google-Smtp-Source: AGHT+IGBUV0P9JgYWmc06edXGkUIL1yy8hFL2bGz5t8Trptc6qb405fVHccjXHsBBVlQawuu97nrgA==
-X-Received: by 2002:a05:6512:15a9:b0:50e:b3ae:dd67 with SMTP id bp41-20020a05651215a900b0050eb3aedd67mr4915092lfb.2.1705511754673;
-        Wed, 17 Jan 2024 09:15:54 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id l18-20020a17090612d200b00a28fd9607a8sm7958704ejb.81.2024.01.17.09.15.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jan 2024 09:15:54 -0800 (PST)
-Message-ID: <e57d7f34-3abe-4860-8986-0cb7070819a4@linaro.org>
-Date: Wed, 17 Jan 2024 18:15:51 +0100
-Precedence: bulk
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cuhwSpt7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eFx8bV5Qe5USl+Iwt3jPDix21Izb2cAd4mSLKHY1BYRNV2HXjEXEuNIffneA4z3Vb0b0z8nnSIqSw01LLISHILzcZ9hazac3+/s8j/No++oCwVBNSJSGrSEdmm9j5nVBCVqmhez6Q5CMVCDq1BsbRROb0qEZI6NvP+B3Q3SjX0j++BXMYiKeBKvQ9hK6BjAH2Xo8jb+vX580WoCqyjK1yQooVQSZL/BytQyCj5zzymVBXC4aJv7AbRxe05qf7Syv8nY2wle7Fn6U7DXaG0gBijEIdnjGAlCGTBA+5lS8syinbcfkUzpejwmj7mQr0jjoDph++g/S9J6KoFSV4yy0Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UYrPdPAbUnM1/oZoRYeg8LwQRiVNYQUQDml4Uo6Xig4=;
+ b=oDvOMGxKZ5i0YlGyrLnos5zLOf+ZdnlCqcTg6tAf/jwoiRt2+QsSg/K+T2qRZSV7QvzvlYvacgSmh1nlfuBLVF/xZ3vgZdXwDCXQ8yWm9fx/oh6yid8C/V3DZMchWvyJfHD0c9hwQjgrTqauQQqoUizicNQ4I94VAs7R7jiHaZk63UmcTr6i1m42nXUR3QPQ3ksJnjQLSauUxCW+kfPL0ZZREnlIxdbnVwb4mQTUhrDzVIYuAdcoUrLTqXy+LzYnqxkn/qy2GMPnKEVcKATJErPtxmKJ+oPyQP9ukwZDfqFscTYHym5jJ3k9jtC9EPyGrelwbWBawwqW06w+dfKhwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UYrPdPAbUnM1/oZoRYeg8LwQRiVNYQUQDml4Uo6Xig4=;
+ b=cuhwSpt734wCOdcstZyoA9hx2iPJEVZ2hUd3xO6O2W+mAQ5IHVzSgeVtknkVNXan4rHa7OkIFCWiH54uaABdKxjwkKd6zemub+QqtHpnpm2LqyTSGHEJY/CrpxRzR5swWNqjFU0AvzjsVRASVvN+iwwgsNkB+qUk8c2ZT9662IE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI1PR04MB10027.eurprd04.prod.outlook.com (2603:10a6:800:1e1::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.23; Wed, 17 Jan
+ 2024 18:06:23 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::b8af:bfe5:dffd:59a9]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::b8af:bfe5:dffd:59a9%4]) with mapi id 15.20.7202.020; Wed, 17 Jan 2024
+ 18:06:23 +0000
+Date: Wed, 17 Jan 2024 13:06:15 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Conor Dooley <conor@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>, robh@kernel.org,
+	alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
+	gregkh@linuxfoundation.org, imx@lists.linux.dev,
+	jirislaby@kernel.org, joe@perches.com,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
+	zbigniew.lukwinski@linux.intel.com, devicetree@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org
 Subject: Re: [PATCH v2 2/7] dt-bindings: i3c: svc: add compatible string i3c:
  silvaco,i3c-target-v1
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>
-Cc: Conor Dooley <conor@kernel.org>, Conor Dooley
- <conor.dooley@microchip.com>, robh@kernel.org,
- alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- gregkh@linuxfoundation.org, imx@lists.linux.dev, jirislaby@kernel.org,
- joe@perches.com, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- miquel.raynal@bootlin.com, zbigniew.lukwinski@linux.intel.com,
- devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org
-References: <20240116-achiness-thievish-10a12b3c08cd@wendy>
- <Zaa+cLGVVDSB5MYr@lizhi-Precision-Tower-5810>
- <20240116-retract-conclude-c47a7fc8cb21@spud>
+Message-ID: <ZagXF6vMHVxvZX+6@lizhi-Precision-Tower-5810>
+References: <20240116-retract-conclude-c47a7fc8cb21@spud>
  <ZabVSYgq1Mz3LPpC@lizhi-Precision-Tower-5810>
  <4a9ed1ca-cd13-4b61-af06-a3d7935aeeee@linaro.org>
  <ZabqxHD4wtiPn6ep@lizhi-Precision-Tower-5810>
@@ -86,169 +81,230 @@ References: <20240116-achiness-thievish-10a12b3c08cd@wendy>
  <ZacCQ1Eysqq5FnA4@lizhi-Precision-Tower-5810>
  <ad44d51a-ba64-4a4b-bba9-205faa760c78@linaro.org>
  <Zaf+Gn6rYstttnrA@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <Zaf+Gn6rYstttnrA@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <e57d7f34-3abe-4860-8986-0cb7070819a4@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e57d7f34-3abe-4860-8986-0cb7070819a4@linaro.org>
+X-ClientProxiedBy: BYAPR08CA0024.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
+Precedence: bulk
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB10027:EE_
+X-MS-Office365-Filtering-Correlation-Id: e125a726-5146-436a-9f7b-08dc178703df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	2+Y/EG0zl+aTI/qtwv35PLY76buMNSBVFKbFi3/EUcSF4wbdKYDRQl1mSJWOa7w+bZwXnUFB3omFXgzqB3C1FVVxbs/t/4RoyDEjs9n8y6t5rV0s6smv3NybuBh7GX9wTDSGwq5bVrcB9gRMWpzsFXHktvnF+cAZ0G09Ds/GTzaD27msKDuTJyNh81ctUt3ZDlzAgtBbsHWmi29K7Yi+0pavd3F4eCM7VBO4aIOuNs9vSFNhCKo2oxRBDNVmL/KyT+7T+ye4Vyux+fs/fFhU0v5ZZ8zKUQFaS79CFqeRVcPqNkvcbNJ6iZJxeZAoBXIlrwJJR+/3RyAhh9WYREdM1i7RkNXR+3WJqqOCdkeJYfsr6rBh3YW6mSCGuNYnB/NNloDK6miVE4dPqA5R8ZW9BKnqembGW7kLS/rGnXAUMG1bdRY1nRg4KqNLJeT73+wP+H2eZEPkpGmMipqGnqIiKFpaurYzvyCNv/bH8la4d6O7V3vJtL48imrR/Lgg4e4V6Uu6pYeWq4Q7qJrdM1XYBd1IYpp0KAQx0FjNzHBOsEnoiSQaghwydSpCTxs1a46nA5yM3MJ/BgJmRP1iFPrKOwBpafHOwL967S6tH8BCkhUzY4CFjC+FVA5MzrUYzA3wRHn0pKB3BWL/qO1Zhs2ltQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(39860400002)(136003)(366004)(376002)(346002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(26005)(6666004)(53546011)(6512007)(52116002)(83380400001)(54906003)(7416002)(41300700001)(5660300002)(4326008)(478600001)(33716001)(6486002)(6916009)(66476007)(316002)(8676002)(66946007)(8936002)(2906002)(66556008)(86362001)(6506007)(38350700005)(38100700002)(9686003)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JopKBLt8tRYeNAc52epQzKk50kvtO948wrNGpjmH73zmvsGcr6214fva6Goe?=
+ =?us-ascii?Q?EvO8F6JC8mdflky9d9DM32wKGoidl4ILxbNz7RP2rbfHDhwT7+qvfV/Udi1x?=
+ =?us-ascii?Q?5JaEp2HLUBcLeDSUJubdmsI2GfJGDB28TRHunbGTTHMroPLLdLoRZifIK/xW?=
+ =?us-ascii?Q?iX/zr3NRW1VK0I/RUhsiStXg8qnUJzLnvX8cNe/65j4058qYGK4lo2j6ZBlg?=
+ =?us-ascii?Q?my2Q5UTvdYgO4wxtpaqpExgOdCzaHc687WVImpaXDMPUblpsbHBaGSv1VWgH?=
+ =?us-ascii?Q?eNFL9FFOxCd3y5CzS15JcyeJu03Cm8F/TafpCCzYP+ckpeln75jzngyi6H9v?=
+ =?us-ascii?Q?3ri4zOxOFvKCJsZkfZ0O4cxjV4tbSC+4P3de4+3n+tLUWX6nW204K0/rUQwS?=
+ =?us-ascii?Q?c0Bw5gHPcbRF4MePmdVUB376gXItdW3DGna+u9TthMmGpvAOd+wkA57p3KeL?=
+ =?us-ascii?Q?pf43wUIqvhb5XiI0jIomZNzja1lJnfubdQIkmatMU5Q15Ie6iRi4UKbATiLX?=
+ =?us-ascii?Q?PaTu9pa0rvOkL1xHrcG0hapyZy8mAyRqUfLYqfeBSNYdMI3FlTYqA2sg8e/x?=
+ =?us-ascii?Q?B0gh0pgnGCJM2yLKPY/cDFNxU2G9Z3lskv0CM3KMKnFDfB6FoGNpaFYJ9za1?=
+ =?us-ascii?Q?HUfyF0bbL8wdAP4UwQBETw9gHhzk8TFDBILagvVpl3a2apoVvRyat12MZcxf?=
+ =?us-ascii?Q?JQgo4FZkMCqPMKAeB1fARmG5IHt7tQJDLMM5PHdCZ91EdPdXs8f6ws1kJbDh?=
+ =?us-ascii?Q?pMYxmA/F1sZjcQs9H+SXem8wADSkU9wM9DwIttB9LKzA1nJQymQclxTjgPtz?=
+ =?us-ascii?Q?MKUTfjX1Sshyb5WKkuSRbP5D6IysqDhrLqAjA/m3eHyO/Ug+lXSU1K1qB2Lx?=
+ =?us-ascii?Q?QbXqHw8Zo0E3iqKsFiE36gXn2Z+MQsBbS/sHdzNaI2rgs66QVWIX8RkVp2jm?=
+ =?us-ascii?Q?ou2NKdKJWxngltBWCA5EC7FWr3+/MfvmxJJ+9sLyYTLel0SIPQhMxQU0DKHe?=
+ =?us-ascii?Q?SeH2biN4v45EKe4ZDdcwHwtsle6mDzIgclI1Og3AisJxp/AESZEPsPlAadwF?=
+ =?us-ascii?Q?cEqgS9edy72UvUVc3bMYs+RhgjzrbUM9XiuSDqBR8epxmAnmmHeDFioTovhU?=
+ =?us-ascii?Q?mA/dkK96yr+M5aHCr/0tpQrE4xSfWf4L+R+xrgqH+uUmAI0eJ5RyC6ySq0//?=
+ =?us-ascii?Q?nN4ozpFq5thchtc2i7gIuNFA+HDrvwXz3XaHilRdlX9t4Ne1NoH8nCZi/IrF?=
+ =?us-ascii?Q?QsVDM7UIltuAjy+NhjAlat9Ef97LTt57S+UdSICjOF3zidYan4NTrsWrzWcH?=
+ =?us-ascii?Q?mZaHfpDpF2/22VVPzV69Cfs4SLIZO0yNhprucsNPLQMB8g+lTE1t6agXFYid?=
+ =?us-ascii?Q?AbglzEeFJry/ta+wmwEY32WU+cDyKRyBZg2s0UQfW9KQ2vMmIc1+QMDwuusB?=
+ =?us-ascii?Q?12AA6PnmSEPvY+j6soEwhOiIPddKb7aYygYrjn0ypOil2WZij59u4AOtKt0R?=
+ =?us-ascii?Q?V5A293hSBlWYkJvYD7Q4m0pY6d0TmVOKXVN8ijAuBoVqgGQ/JjmcI0foDrxK?=
+ =?us-ascii?Q?+6+0zF9v0cPHdp4O4PSPSGABDq+MBN1Fyk0GRhps?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e125a726-5146-436a-9f7b-08dc178703df
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2024 18:06:23.4576
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4e+xKmLoxRSq/n35VOBEZwAhJ+HumtLvQGFkwKB+xQuvtFg/+LWBQE5tsBs39TwVtuD0CizeHP2QnPu5J70UMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB10027
 
-On 17/01/2024 17:19, Frank Li wrote:
->>
->> Not really, because compatible describes hardware and it is the same
->> hardware here. We do not have two different compatibles for GPIOs being
->> input or output.  Or two different compatibles for serial engines (ones
->> providing UART, SPI or I2C).
+On Wed, Jan 17, 2024 at 06:15:51PM +0100, Krzysztof Kozlowski wrote:
+> On 17/01/2024 17:19, Frank Li wrote:
+> >>
+> >> Not really, because compatible describes hardware and it is the same
+> >> hardware here. We do not have two different compatibles for GPIOs being
+> >> input or output.  Or two different compatibles for serial engines (ones
+> >> providing UART, SPI or I2C).
+> > 
+> > GPIO and UART is simple. Actuall SPI and I2C have two mode, slave and
 > 
-> GPIO and UART is simple. Actuall SPI and I2C have two mode, slave and
-
-I talked about serial engines which can be multiple: UART, SPI and I2C.
-
-> master. Many SPI/I2C is dual mode controller. Just seldom use slave mode
-> at linux side. So you just see master mode SPI/I2C controller in dt-binding
-> and dts file. So few people upstream slave part to linux kernel community.
-> They have the exact same problems if support slave mode.
+> I talked about serial engines which can be multiple: UART, SPI and I2C.
 > 
-> PCI is typical example: 
-> EP mode:  Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-> RC mode:  Documentation/devicetree/bindings/pci/qcom,pcie.yaml
+> > master. Many SPI/I2C is dual mode controller. Just seldom use slave mode
+> > at linux side. So you just see master mode SPI/I2C controller in dt-binding
+> > and dts file. So few people upstream slave part to linux kernel community.
+> > They have the exact same problems if support slave mode.
+> > 
+> > PCI is typical example: 
+> > EP mode:  Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
+> > RC mode:  Documentation/devicetree/bindings/pci/qcom,pcie.yaml
+> > 
+> > Which is the same hardware for two difference compatible string.
 > 
-> Which is the same hardware for two difference compatible string.
+> That's the only case, I recall.
 
-That's the only case, I recall.
-
->>
->>>
->>> I can write git commit message like:
->>>
->>> dt-bindings: i3c: svc: add compatible string nxp,imx93-svc-i3c-target
->>>
->>> silvaco i3c controller is dual mode controller, which can work as master
->>> and target mode. All clock, reg, irq are the same for both mode. Add
->>> compatible string "nxp,imx93-svc-i3c-target" to let silivaco i3c
->>> controller work as target mode.
->>>
->>> Of course, alternate method to added a property "mode" to distingiush
->>> master and target mode. but old "silvaco,i3c-master-v1" will actually work
->>> as dual mode support. Driver structure will become complex.
->>
->> Please send full DTS of user for this, which works for 100%, so we can
->> see how it differs from controller mode. If your code snippet from other
->> thread is correct, then it would suggest "mode" property or lack of
->> children. Maybe lack of children is not enough, if user-space could
->> control I3C bus.
-> 
-> According to current implment, only need change imx93.dtsi's @i3c1's 
-> compatible string to "silvaco,i3c-target-v1". I attached imx93 dts node for
-> your reference.
-> 
-> 	i3c1: i3c-master@44330000 {                        
->                                 compatible = "silvaco,i3c-master-v1"; 
-> 					     ^^^^ only need change here!
-
-Nope, don't change compatibles of existing nodes. Unreadable and
-unmanageable code.
-
->    
->                                 reg = <0x44330000 0x10000>;                
->                                 interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
->                                 #address-cells = <3>;                      
->                                 #size-cells = <0>;                         
->                                 clocks = <&clk IMX93_CLK_BUS_AON>,         
->                                          <&clk IMX93_CLK_I3C1_GATE>,       
->                                          <&clk IMX93_CLK_I3C1_SLOW>;       
->                                 clock-names = "pclk", "fast_clk", "slow_clk";
->                                 dmas = <&edma1 6 0 1>, <&edma1 5 0 0>;     
->                                 dma-names = "rx", "tx";                    
->                                 status = "disabled";                       
->                         }; 
-
-That's not a patch for existing file. I did not claim you cannot write
-such DTS. I claimed you don't have such DTS for upstream...
+As my knowledge, yes. 
 
 > 
-> For master mode:
-> Unlike i2c. Genenally I3C can auto probe children node like USB can auto
-> detect attached devices. So I3C master can work without children nodes.
-> Such as auto load i3c sensor driver according to i3c standard vendor id and
-> production id.
+> >>
+> >>>
+> >>> I can write git commit message like:
+> >>>
+> >>> dt-bindings: i3c: svc: add compatible string nxp,imx93-svc-i3c-target
+> >>>
+> >>> silvaco i3c controller is dual mode controller, which can work as master
+> >>> and target mode. All clock, reg, irq are the same for both mode. Add
+> >>> compatible string "nxp,imx93-svc-i3c-target" to let silivaco i3c
+> >>> controller work as target mode.
+> >>>
+> >>> Of course, alternate method to added a property "mode" to distingiush
+> >>> master and target mode. but old "silvaco,i3c-master-v1" will actually work
+> >>> as dual mode support. Driver structure will become complex.
+> >>
+> >> Please send full DTS of user for this, which works for 100%, so we can
+> >> see how it differs from controller mode. If your code snippet from other
+> >> thread is correct, then it would suggest "mode" property or lack of
+> >> children. Maybe lack of children is not enough, if user-space could
+> >> control I3C bus.
+> > 
+> > According to current implment, only need change imx93.dtsi's @i3c1's 
+> > compatible string to "silvaco,i3c-target-v1". I attached imx93 dts node for
+> > your reference.
+> > 
+> > 	i3c1: i3c-master@44330000 {                        
+> >                                 compatible = "silvaco,i3c-master-v1"; 
+> > 					     ^^^^ only need change here!
+> 
+> Nope, don't change compatibles of existing nodes. Unreadable and
+> unmanageable code.
 
-Then presence of children cannot be used.
+It is just show minimize difference.
+
+Normally, it should be.
+
+	i3c1: i3c-master@44330000 {
+		...
+		compatible = "silvaco,i3c-master-v1";
+		...
+		status = disabled;
+	}
+	
+	i3c1-target: i3c-target@44330000 {
+		...
+		compatible = "silvaco,i3c-target-v1";
+		...
+		status = disabled;
+	}
+
+in board dts
+
+@i3c1{
+	status = "okay";
+}
+
+Or
+@i3c1-target{
+	status = "okay";
+}
+> 
+> >    
+> >                                 reg = <0x44330000 0x10000>;                
+> >                                 interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
+> >                                 #address-cells = <3>;                      
+> >                                 #size-cells = <0>;                         
+> >                                 clocks = <&clk IMX93_CLK_BUS_AON>,         
+> >                                          <&clk IMX93_CLK_I3C1_GATE>,       
+> >                                          <&clk IMX93_CLK_I3C1_SLOW>;       
+> >                                 clock-names = "pclk", "fast_clk", "slow_clk";
+> >                                 dmas = <&edma1 6 0 1>, <&edma1 5 0 0>;     
+> >                                 dma-names = "rx", "tx";                    
+> >                                 status = "disabled";                       
+> >                         }; 
+> 
+> That's not a patch for existing file. I did not claim you cannot write
+> such DTS. I claimed you don't have such DTS for upstream...
+
+Yes, it need finialize this topic before handle dts upstream.
 
 > 
-> For target mode: using configfs to controller I3C.
+> > 
+> > For master mode:
+> > Unlike i2c. Genenally I3C can auto probe children node like USB can auto
+> > detect attached devices. So I3C master can work without children nodes.
+> > Such as auto load i3c sensor driver according to i3c standard vendor id and
+> > production id.
 > 
-> mkdir /sys/kernel/config/i3c_target/functions/tty/t
-> echo 0x011b > /sys/kernel/config/i3c_target/functions/tty/t/vendor_id
-> echo 0x1000 > /sys/kernel/config/i3c_target/functions/tty/t/part_id
-> echo 0x6 > /sys/kernel/config/i3c_target/functions/tty/t/bcr
+> Then presence of children cannot be used.
 > 
-> ln -s /sys/kernel/config/i3c_target/functions/tty/t /sys/kernel/config/i3c_target/controllers/44330000.i3c-master/
+> > 
+> > For target mode: using configfs to controller I3C.
+> > 
+> > mkdir /sys/kernel/config/i3c_target/functions/tty/t
+> > echo 0x011b > /sys/kernel/config/i3c_target/functions/tty/t/vendor_id
+> > echo 0x1000 > /sys/kernel/config/i3c_target/functions/tty/t/part_id
+> > echo 0x6 > /sys/kernel/config/i3c_target/functions/tty/t/bcr
+> > 
+> > ln -s /sys/kernel/config/i3c_target/functions/tty/t /sys/kernel/config/i3c_target/controllers/44330000.i3c-master/
+> > 
+> > Then you echo test >/dev/ttySI3C0.
+> > 
+> > Unlike USB, user can switch host and gadget mode dymatically. Suppose I3C
+> > only work on one of master or slave mode only, which is static.
 > 
-> Then you echo test >/dev/ttySI3C0.
-> 
-> Unlike USB, user can switch host and gadget mode dymatically. Suppose I3C
-> only work on one of master or slave mode only, which is static.
+> I don't understand this. So it can switch dynamically or not?
 
-I don't understand this. So it can switch dynamically or not?
+I3C Protocal allow do that. But no one really do that. 
 
 > 
-> Although it is one hardware, I think it is exculsive multi function device.
+> > 
+> > Although it is one hardware, I think it is exculsive multi function device.
+> 
+> Just like serial engines. Do you see there replacing compatibles? No.
+> 
+> > 
+> > Summary: basice two option to distingiush controller and target mode.
+> > 1. by "compatible" string
+> > 2. by "mode"
+> > 
+> > I think 1 is relatively simple and easy to understand.
+> 
+> Eh, if you only saw my comments on people replacing compatibles...
+> Anyway, I stated my reasons, so to reiterate: NAK.
 
-Just like serial engines. Do you see there replacing compatibles? No.
+I know it.  Needn't emphase it every time.
+
+Is using "mode" ('controller' and 'target') proptery okay?
+
+Frank
 
 > 
-> Summary: basice two option to distingiush controller and target mode.
-> 1. by "compatible" string
-> 2. by "mode"
+> Best regards,
+> Krzysztof
 > 
-> I think 1 is relatively simple and easy to understand.
-
-Eh, if you only saw my comments on people replacing compatibles...
-Anyway, I stated my reasons, so to reiterate: NAK.
-
-Best regards,
-Krzysztof
-
