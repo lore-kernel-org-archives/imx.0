@@ -1,57 +1,57 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624A525776
-	for <imx@lists.linux.dev>; Fri, 19 Jan 2024 08:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFFC28E08
+	for <imx@lists.linux.dev>; Fri, 19 Jan 2024 08:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705652764; cv=none; b=Cov1pJZvI2CkyaLSS325k35FRJqiZ116t6uhuuww05cTJS4AAexZDRGRyD0+zeRduPZqOnN0mRd72BTgBONicw6222IinVUCmA9yQA23n3jMbbfzNskOJ5qq+sC6jDvctR5naCAF/PgIDdnHbl4E+Wb3NiacAm8e1Jf2ZJIcix8=
+	t=1705652855; cv=none; b=d8SjqXyUOq0/b8ELEvcjrRfaUeX9MgLkWNgROZxLrOCMomM/e+/qPMSyxcAfLIplvw9aTANV3IarBeObYkA+pUlFA5mGLkQFavo7jUE6FWmXYhZKBR+sx6iftVSVtEtI8R88/Fqj5G51M0UXn5KCAOYVMiqSAzYEC2JC0kdPqXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705652764; c=relaxed/simple;
-	bh=14enbQNT425H/s7qxuMVbS/EvYQp4sjrhMrRGBV63bo=;
+	s=arc-20240116; t=1705652855; c=relaxed/simple;
+	bh=fhJ4bDbWi3zDE3rFX30T25ydBeO6PsuMRdUVAAKN8Lg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O8vAQKBGg29aJKJHBITbcGpK3MbkSF8O1mNBOYKo2fbx5xJf0hgeIOG7EFCDh5m3c++vfyomY8vkiIx8wsYFFw9HzLv/sNKNiGKFoPd//pJBV6N9UTuEcfQj8qdOspt0EYB+5BCHZnH1+qfBVk8EPTJI3NnQ/dNDcufWdok5Vw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M8LSS7Fj; arc=none smtp.client-ip=209.85.161.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=Akbv5bRx7QraprlMAPo3HpEyxFIwrsFzNiLo/jqTNCTWbXC7ek2awo5CJ9FGAOfJFW1EOuxUwqeiQYdfdXsBVTi29Xar1+9vkSuha2i5MQxXTJifNGqC37Jg9sVsJaOLJtsiszZFwm74HR9lx/3ha4TNS+DU89ikUHW7gclO/Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EZi382/W; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M8LSS7Fj"
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-598a5448ef5so299590eaf.0
-        for <imx@lists.linux.dev>; Fri, 19 Jan 2024 00:26:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EZi382/W"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d7232dcb3eso804475ad.2
+        for <imx@lists.linux.dev>; Fri, 19 Jan 2024 00:27:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705652761; x=1706257561; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1705652852; x=1706257652; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=KkWXmKH0r8EujnkQjuJIPEC6n7Ky9X3nKqyBzdmGTX4=;
-        b=M8LSS7FjEcwm4y0AYXM6OXI4fSnUjbD8eS5FEm19hTsNj1CM9p7bBERR6kClTYQwmz
-         2JxL7Z4mvaSUxnCbecrXpHKCNbti2VtfmAT6ryjC/ju63wtK32KzQMJFT1nla6PK5ek4
-         qHOVbDtnJ17lo1OwRJs6Enj9z9JDC8M8qiyiaECUKJVmv5UW6HFyefWFcPo2hE3JqV2/
-         lWptr5xbsY6Uvy1kYVagyn/uQAWpXVYJyjhMw5Q99Acz1SpbxmX0EOy+GBQ7Dxrz6jgz
-         O0vsubMiNjs08LMLd7t/XzeQ6/p6yQkIdOmWjGgVUvGiwACqdpPGsJj5asXDMDlIUrD0
-         eZlQ==
+        bh=LR+SAY5vhVQKjS7aGLC0MWFLnWjLp9TblT0nHaLa0mM=;
+        b=EZi382/WXsiq6kDGI50aM9tjrFbx17m3IHlBPau7DCFkbFw7LSh8FKxnLc9jgqVRqZ
+         yirytek7Dma6aCqnvEk1V4GEd1O5Dkl7EH9nYzd3MYf91LcJ4t4hjaIiqtpg789pEoBV
+         k83+Ld7mEm13jCpzT8w3fG0A0K4vHWVZ1pOCQnB8MQNAwvNEBWu85+gfdNLTA6G63xjN
+         bzotaJIWM4+Ies2kq6aj0vwyNJdPbGbzMM98RPNmgD5hgPQu+gIjY5PqximiLCiFVFq4
+         YjVAhWuZlCZTO+Z3dJwtocxdcgvHPPNCgxF4mepf4Cpy8cZYBXOQDjz2O53fyi7eAiGQ
+         wWjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705652761; x=1706257561;
+        d=1e100.net; s=20230601; t=1705652852; x=1706257652;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KkWXmKH0r8EujnkQjuJIPEC6n7Ky9X3nKqyBzdmGTX4=;
-        b=qdNiH4jiv0SsKiZI8Nqqjb6lnEEl3rkcqdqsZ60kp7IN8Tj5mLw0CwvaXQTnTf+O4E
-         B4b9QwEgqqXDzeuTu9+PmvAFvg87vxJ6q5MC/kWdr8Ujx7bPsJqjTrX2MtlLpbboPXXQ
-         mgEqUOXeTEMI5UcJ3H4shgOgndUpABM5B6VlZtEas3oUSGRZzW1vzHQqHl+GBHruBomL
-         ufzmPgatAdUOjZT1yML9S2Gisaom+3XgZluD+pY8rTYbXYXE2Nr/sLms71k4p9HXY7jO
-         T0DD79mD5F9osfxZ9zNaZctHxm2DeYDaKol202lo+MBxyqeKQ22IUpUA2gPO734Mjs15
-         4zJA==
-X-Gm-Message-State: AOJu0YwDEo+cQNS0CroCVSHiPK9d+gzrU0CFOrdkKq5V6XHQd4jhq2LH
-	H4AljjUDvRGIjAEweCn1SggqzEnHZiRcw313ZD72dDyJZ0fipiPbWphGU4xDKg==
-X-Google-Smtp-Source: AGHT+IH4zHVhjf2dGBDi9fXZGMfVXKS+wYAhsQnF5CU4QOXjKDKMimg65NlxwYiYaoOMd3gXW0pP8w==
-X-Received: by 2002:a05:6359:3511:b0:175:bfae:a564 with SMTP id un17-20020a056359351100b00175bfaea564mr1866729rwb.38.1705652761382;
-        Fri, 19 Jan 2024 00:26:01 -0800 (PST)
+        bh=LR+SAY5vhVQKjS7aGLC0MWFLnWjLp9TblT0nHaLa0mM=;
+        b=g1zGXRh7bcn7dgorAAFXfzjUhxG7iJGdl7GVUMp4mmaDj3p8nariqNuyL2tHU0SLcm
+         lCJpTEswJSNl+VgCUVWwsoPWxii01lEDp0VGXAthXRP8EBbkFLku4XyLReD4PRQDNXBz
+         UYrXPMrzOZfE20kudDNux507mIL7Ze0xs4jSRjC6O+lej77/AecRFIaI/5gK0C9NMjkB
+         v9jAMI5Uorccx9cu0WbU937elQ1KCRuP4RhtiVVMJOZXB2UDkRj0sp6ncmt900SxSwhi
+         qSlOOZXw9woY43Z8kC31pgk+WmuBlkFNXs+aki3cqwY1bUnCKzP/xhi3/zrNN6Fk/y0H
+         MurA==
+X-Gm-Message-State: AOJu0YyXZx19FkbJ5GVeMfCEcdY6zrO0NxfFOpucjMTz6VPev9Uqamqd
+	pKaV1tAwOtI447tHWHW46BcA2hfXIY85NKEG59Q7CnlLNDYfq3oZbbRBraAA0w==
+X-Google-Smtp-Source: AGHT+IGAYtsT3XiUBVbv5vAjJPw+V4vnusYgLd3mRbJj4CjHgWv7Cb0pdrUS5rWD+Kx8NOpzFRwHtA==
+X-Received: by 2002:a17:902:c195:b0:1d7:14e2:23dc with SMTP id d21-20020a170902c19500b001d714e223dcmr1453303pld.129.1705652852609;
+        Fri, 19 Jan 2024 00:27:32 -0800 (PST)
 Received: from thinkpad ([117.248.2.56])
-        by smtp.gmail.com with ESMTPSA id p27-20020a056a0026db00b006dbad3a1b84sm2346449pfw.190.2024.01.19.00.25.54
+        by smtp.gmail.com with ESMTPSA id kv4-20020a17090328c400b001d5b93560c3sm2546861plb.167.2024.01.19.00.27.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jan 2024 00:26:00 -0800 (PST)
-Date: Fri, 19 Jan 2024 13:55:52 +0530
+        Fri, 19 Jan 2024 00:27:32 -0800 (PST)
+Date: Fri, 19 Jan 2024 13:57:25 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
@@ -63,11 +63,10 @@ Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
 	shawnguo@kernel.org
-Subject: Re: [PATCH v8 08/16] PCI: imx6: Simplify switch-case logic by
- involve init_phy callback
-Message-ID: <20240119082552.GG2866@thinkpad>
+Subject: Re: [PATCH v8 12/16] PCI: imx6: Add iMX95 PCIe Root Complex support
+Message-ID: <20240119082725.GH2866@thinkpad>
 References: <20240108232145.2116455-1-Frank.Li@nxp.com>
- <20240108232145.2116455-9-Frank.Li@nxp.com>
+ <20240108232145.2116455-13-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,16 +76,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240108232145.2116455-9-Frank.Li@nxp.com>
+In-Reply-To: <20240108232145.2116455-13-Frank.Li@nxp.com>
 
-On Mon, Jan 08, 2024 at 06:21:37PM -0500, Frank Li wrote:
-> Simplify switch-case logic by involve init_phy callback.
+On Mon, Jan 08, 2024 at 06:21:41PM -0500, Frank Li wrote:
+> Add iMX95 PCIe Root Complex support.
 > 
-
-"Instead of using the switch case statement to initialize the PHY handled by
-this driver itself, let's introduce a new callback init_phy() and define it for
-platforms that require it. This simplifies the code."
-
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
@@ -96,231 +90,162 @@ Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
 > 
 > Notes:
->     Change from v7 to v8:
->     - rework commit message
->     - wrap comments to 100 chars
->     - return 0 at imx7d_pcie_init_phy()
+>     Change from v7 to v8
+>     - Update commit subject
+>     - add const from regmap
+>     - remove unnessary logic in imx6_pcie_deassert_core_reset()
 >     
->     change from v1 to v4:
+>     Change from v4 to v7
+>     - none
+>     Change from v1 to v3
 >     - none
 > 
->  drivers/pci/controller/dwc/pci-imx6.c | 134 +++++++++++++-------------
->  1 file changed, 69 insertions(+), 65 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 82 +++++++++++++++++++++++++--
+>  1 file changed, 77 insertions(+), 5 deletions(-)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index fd83af238fa60..ac338a88fe21e 100644
+> index ac338a88fe21e..c0d08cd55d681 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -69,6 +69,9 @@ enum imx6_pcie_variants {
->  #define IMX6_PCIE_MAX_CLKS       6
+> @@ -42,6 +42,25 @@
+>  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+>  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
 >  
->  #define IMX6_PCIE_MAX_INSTANCES			2
+> +#define IMX95_PCIE_PHY_GEN_CTRL			0x0
+> +#define IMX95_PCIE_REF_USE_PAD			BIT(17)
 > +
-> +struct imx6_pcie;
+> +#define IMX95_PCIE_PHY_MPLLA_CTRL		0x10
+> +#define IMX95_PCIE_PHY_MPLL_STATE		BIT(30)
 > +
->  struct imx6_pcie_drvdata {
->  	enum imx6_pcie_variants variant;
->  	enum dw_pcie_device_mode mode;
-> @@ -81,6 +84,7 @@ struct imx6_pcie_drvdata {
->  	const u32 ltssm_mask;
->  	const u32 mode_off[IMX6_PCIE_MAX_INSTANCES];
->  	const u32 mode_mask[IMX6_PCIE_MAX_INSTANCES];
-> +	int (*init_phy)(struct imx6_pcie *pcie);
->  };
+> +#define IMX95_PCIE_SS_RW_REG_0			0xf0
+> +#define IMX95_PCIE_REF_CLKEN			BIT(23)
+> +#define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
+> +
+> +#define IMX95_PE0_GEN_CTRL_1			0x1050
+> +#define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
+> +
+> +#define IMX95_PE0_GEN_CTRL_3			0x1058
+> +#define IMX95_PCIE_LTSSM_EN			BIT(0)
+> +
+> +#define IMX95_PE0_PM_STS			0x1064
+> +#define IMX95_PCIE_PM_LINKST_IN_L2		BIT(14)
+> +
+>  #define to_imx6_pcie(x)	dev_get_drvdata((x)->dev)
 >  
->  struct imx6_pcie {
-> @@ -322,76 +326,66 @@ static int pcie_phy_write(struct imx6_pcie *imx6_pcie, int addr, u16 data)
->  	return 0;
+>  enum imx6_pcie_variants {
+> @@ -52,6 +71,7 @@ enum imx6_pcie_variants {
+>  	IMX8MQ,
+>  	IMX8MM,
+>  	IMX8MP,
+> +	IMX95,
+>  	IMX8MQ_EP,
+>  	IMX8MM_EP,
+>  	IMX8MP_EP,
+> @@ -63,6 +83,7 @@ enum imx6_pcie_variants {
+>  #define IMX6_PCIE_FLAG_HAS_PHYDRV			BIT(3)
+>  #define IMX6_PCIE_FLAG_HAS_APP_RESET		BIT(4)
+>  #define IMX6_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> +#define IMX6_PCIE_FLAG_HAS_SERDES		BIT(6)
+>  
+>  #define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
+>  
+> @@ -179,6 +200,24 @@ static unsigned int imx6_pcie_grp_offset(const struct imx6_pcie *imx6_pcie)
+>  	return imx6_pcie->controller_id == 1 ? IOMUXC_GPR16 : IOMUXC_GPR14;
 >  }
 >  
-> -static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
-> +static int imx8mq_pcie_init_phy(struct imx6_pcie *imx6_pcie)
->  {
-> -	switch (imx6_pcie->drvdata->variant) {
-> -	case IMX8MM:
-> -	case IMX8MM_EP:
-> -	case IMX8MP:
-> -	case IMX8MP_EP:
-> -		/*
-> -		 * The PHY initialization had been done in the PHY
-> -		 * driver, break here directly.
-> -		 */
-> -		break;
-> -	case IMX8MQ:
-> -	case IMX8MQ_EP:
-> -		/*
-> -		 * TODO: Currently this code assumes external
-> -		 * oscillator is being used
-> -		 */
-> +	/* TODO: Currently this code assumes external oscillator is being used */
+> +static int imx95_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+> +{
 > +	regmap_update_bits(imx6_pcie->iomuxc_gpr,
-> +			   imx6_pcie_grp_offset(imx6_pcie),
-> +			   IMX8MQ_GPR_PCIE_REF_USE_PAD,
-> +			   IMX8MQ_GPR_PCIE_REF_USE_PAD);
-> +	/*
-> +	 * Regarding the datasheet, the PCIE_VPH is suggested to be 1.8V. If the PCIE_VPH is
-> +	 * supplied by 3.3V, the VREG_BYPASS should be cleared to zero.
-> +	 */
-> +	if (imx6_pcie->vph && regulator_get_voltage(imx6_pcie->vph) > 3000000)
->  		regmap_update_bits(imx6_pcie->iomuxc_gpr,
->  				   imx6_pcie_grp_offset(imx6_pcie),
-> -				   IMX8MQ_GPR_PCIE_REF_USE_PAD,
-> -				   IMX8MQ_GPR_PCIE_REF_USE_PAD);
-> -		/*
-> -		 * Regarding the datasheet, the PCIE_VPH is suggested
-> -		 * to be 1.8V. If the PCIE_VPH is supplied by 3.3V, the
-> -		 * VREG_BYPASS should be cleared to zero.
-> -		 */
-> -		if (imx6_pcie->vph &&
-> -		    regulator_get_voltage(imx6_pcie->vph) > 3000000)
-> -			regmap_update_bits(imx6_pcie->iomuxc_gpr,
-> -					   imx6_pcie_grp_offset(imx6_pcie),
-> -					   IMX8MQ_GPR_PCIE_VREG_BYPASS,
-> -					   0);
-> -		break;
-> -	case IMX7D:
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> -				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL, 0);
-> -		break;
-> -	case IMX6SX:
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> -				   IMX6SX_GPR12_PCIE_RX_EQ_MASK,
-> -				   IMX6SX_GPR12_PCIE_RX_EQ_2);
-> -		fallthrough;
-> -	default:
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> +				   IMX8MQ_GPR_PCIE_VREG_BYPASS,
-> +				   0);
+> +			IMX95_PCIE_SS_RW_REG_0,
+> +			IMX95_PCIE_PHY_CR_PARA_SEL,
+> +			IMX95_PCIE_PHY_CR_PARA_SEL);
+> +
+> +	regmap_update_bits(imx6_pcie->iomuxc_gpr,
+> +			   IMX95_PCIE_PHY_GEN_CTRL,
+> +			   IMX95_PCIE_REF_USE_PAD, 0);
+> +	regmap_update_bits(imx6_pcie->iomuxc_gpr,
+> +			   IMX95_PCIE_SS_RW_REG_0,
+> +			   IMX95_PCIE_REF_CLKEN,
+> +			   IMX95_PCIE_REF_CLKEN);
 > +
 > +	return 0;
 > +}
 > +
-> +static int imx7d_pcie_init_phy(struct imx6_pcie *imx6_pcie)
-> +{
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX7D_GPR12_PCIE_PHY_REFCLK_SEL, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
-> +{
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
->  				   IMX6Q_GPR12_PCIE_CTL_2, 0 << 10);
->  
-> -		/* configure constant input signal to the pcie ctrl and phy */
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> -				   IMX6Q_GPR12_LOS_LEVEL, 9 << 4);
-> -
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> -				   IMX6Q_GPR8_TX_DEEMPH_GEN1,
-> -				   imx6_pcie->tx_deemph_gen1 << 0);
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> -				   IMX6Q_GPR8_TX_DEEMPH_GEN2_3P5DB,
-> -				   imx6_pcie->tx_deemph_gen2_3p5db << 6);
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> -				   IMX6Q_GPR8_TX_DEEMPH_GEN2_6DB,
-> -				   imx6_pcie->tx_deemph_gen2_6db << 12);
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> -				   IMX6Q_GPR8_TX_SWING_FULL,
-> -				   imx6_pcie->tx_swing_full << 18);
-> -		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> -				   IMX6Q_GPR8_TX_SWING_LOW,
-> -				   imx6_pcie->tx_swing_low << 25);
-> -		break;
-> -	}
-> +	/* configure constant input signal to the pcie ctrl and phy */
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> +			   IMX6Q_GPR12_LOS_LEVEL, 9 << 4);
-> +
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> +			   IMX6Q_GPR8_TX_DEEMPH_GEN1,
-> +			   imx6_pcie->tx_deemph_gen1 << 0);
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> +			   IMX6Q_GPR8_TX_DEEMPH_GEN2_3P5DB,
-> +			   imx6_pcie->tx_deemph_gen2_3p5db << 6);
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> +			   IMX6Q_GPR8_TX_DEEMPH_GEN2_6DB,
-> +			   imx6_pcie->tx_deemph_gen2_6db << 12);
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> +			   IMX6Q_GPR8_TX_SWING_FULL,
-> +			   imx6_pcie->tx_swing_full << 18);
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR8,
-> +			   IMX6Q_GPR8_TX_SWING_LOW,
-> +			   imx6_pcie->tx_swing_low << 25);
-> +	return 0;
-> +}
->  
-> -	imx6_pcie_configure_type(imx6_pcie);
-> +static int imx6sx_pcie_init_phy(struct imx6_pcie *imx6_pcie)
-> +{
-> +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> +			   IMX6SX_GPR12_PCIE_RX_EQ_MASK, IMX6SX_GPR12_PCIE_RX_EQ_2);
-> +
-> +	return imx6_pcie_init_phy(imx6_pcie);
->  }
->  
->  static void imx7d_pcie_wait_for_phy_pll_lock(struct imx6_pcie *imx6_pcie)
-> @@ -902,7 +896,11 @@ static int imx6_pcie_host_init(struct dw_pcie_rp *pp)
+>  static void imx6_pcie_configure_type(struct imx6_pcie *imx6_pcie)
+>  {
+>  	const struct imx6_pcie_drvdata *drvdata = imx6_pcie->drvdata;
+> @@ -575,6 +614,7 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  				   IMX6Q_GPR1_PCIE_REF_CLK_EN, 1 << 16);
+>  		break;
+>  	case IMX7D:
+> +	case IMX95:
+>  		break;
+>  	case IMX8MM:
+>  	case IMX8MM_EP:
+> @@ -1280,12 +1320,32 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  		return PTR_ERR(imx6_pcie->turnoff_reset);
 >  	}
 >  
->  	imx6_pcie_assert_core_reset(imx6_pcie);
-> -	imx6_pcie_init_phy(imx6_pcie);
+> +	if (imx6_pcie->drvdata->gpr) {
+>  	/* Grab GPR config register range */
+> -	imx6_pcie->iomuxc_gpr =
+> -		 syscon_regmap_lookup_by_compatible(imx6_pcie->drvdata->gpr);
+> -	if (IS_ERR(imx6_pcie->iomuxc_gpr)) {
+> -		dev_err(dev, "unable to find iomuxc registers\n");
+> -		return PTR_ERR(imx6_pcie->iomuxc_gpr);
+> +		imx6_pcie->iomuxc_gpr =
+> +			 syscon_regmap_lookup_by_compatible(imx6_pcie->drvdata->gpr);
+> +		if (IS_ERR(imx6_pcie->iomuxc_gpr))
+> +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->iomuxc_gpr),
+> +					     "unable to find iomuxc registers\n");
+> +	}
 > +
-> +	if (imx6_pcie->drvdata->init_phy)
-> +		imx6_pcie->drvdata->init_phy(imx6_pcie);
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_SERDES)) {
+> +		void __iomem *off = devm_platform_ioremap_resource_byname(pdev, "app");
 > +
-> +	imx6_pcie_configure_type(imx6_pcie);
+> +		if (IS_ERR(off))
+> +			return dev_err_probe(dev, PTR_ERR(off),
+> +					     "unable to find serdes registers\n");
+> +
+> +		static const struct regmap_config regmap_config = {
+> +			.reg_bits = 32,
+> +			.val_bits = 32,
+> +			.reg_stride = 4,
+> +		};
+> +
+> +		imx6_pcie->iomuxc_gpr = devm_regmap_init_mmio(dev, off, &regmap_config);
+> +		if (IS_ERR(imx6_pcie->iomuxc_gpr))
+> +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->iomuxc_gpr),
+> +					     "unable to find iomuxc registers\n");
+>  	}
 >  
->  	ret = imx6_pcie_clk_enable(imx6_pcie);
->  	if (ret) {
-> @@ -1386,6 +1384,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
+>  	/* Grab PCIe PHY Tx Settings */
+> @@ -1462,6 +1522,17 @@ static const struct imx6_pcie_drvdata drvdata[] = {
 >  		.mode_off[0] = IOMUXC_GPR12,
 >  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
-> +		.init_phy = imx6_pcie_init_phy,
 >  	},
->  	[IMX6SX] = {
->  		.variant = IMX6SX,
-> @@ -1399,6 +1398,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
-> +		.init_phy = imx6sx_pcie_init_phy,
->  	},
->  	[IMX6QP] = {
->  		.variant = IMX6QP,
-> @@ -1413,6 +1413,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  		.ltssm_mask = IMX6Q_GPR12_PCIE_CTL_2,
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
-> +		.init_phy = imx6_pcie_init_phy,
->  	},
->  	[IMX7D] = {
->  		.variant = IMX7D,
-> @@ -1424,6 +1425,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_phy),
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
-> +		.init_phy = imx7d_pcie_init_phy,
->  	},
->  	[IMX8MQ] = {
->  		.variant = IMX8MQ,
-> @@ -1436,6 +1438,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.mode_off[1] = IOMUXC_GPR12,
->  		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
-> +		.init_phy = imx8mq_pcie_init_phy,
->  	},
->  	[IMX8MM] = {
->  		.variant = IMX8MM,
-> @@ -1471,6 +1474,7 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.mode_off[1] = IOMUXC_GPR12,
->  		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
-> +		.init_phy = imx8mq_pcie_init_phy,
->  	},
->  	[IMX8MM_EP] = {
->  		.variant = IMX8MM_EP,
+> +	[IMX95] = {
+> +		.variant = IMX95,
+> +		.flags = IMX6_PCIE_FLAG_HAS_SERDES,
+> +		.clk_names = imx6_4clks_bus_pcie_phy_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_4clks_bus_pcie_phy_aux),
+> +		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+> +		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
+> +		.mode_off[0]  = IMX95_PE0_GEN_CTRL_1,
+> +		.mode_mask[0] = IMX95_PCIE_DEVICE_TYPE,
+> +		.init_phy = imx95_pcie_init_phy,
+> +	},
+>  	[IMX8MQ_EP] = {
+>  		.variant = IMX8MQ_EP,
+>  		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
+> @@ -1506,6 +1577,7 @@ static const struct of_device_id imx6_pcie_of_match[] = {
+>  	{ .compatible = "fsl,imx8mq-pcie", .data = &drvdata[IMX8MQ], },
+>  	{ .compatible = "fsl,imx8mm-pcie", .data = &drvdata[IMX8MM], },
+>  	{ .compatible = "fsl,imx8mp-pcie", .data = &drvdata[IMX8MP], },
+> +	{ .compatible = "fsl,imx95-pcie", .data = &drvdata[IMX95], },
+>  	{ .compatible = "fsl,imx8mq-pcie-ep", .data = &drvdata[IMX8MQ_EP], },
+>  	{ .compatible = "fsl,imx8mm-pcie-ep", .data = &drvdata[IMX8MM_EP], },
+>  	{ .compatible = "fsl,imx8mp-pcie-ep", .data = &drvdata[IMX8MP_EP], },
 > -- 
 > 2.34.1
 > 
