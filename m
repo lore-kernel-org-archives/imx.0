@@ -1,275 +1,238 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2048.outbound.protection.outlook.com [40.107.8.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922052E62A
-	for <imx@lists.linux.dev>; Thu, 18 Jan 2024 20:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705608868; cv=fail; b=pW4S2oCimFvmt7Vanl+AjDv3iOIHUFwwFcKQeRBds+2KJDholbQyKJaTroGD4lvfjmnb0wnBtqDO5yI3LtIr5vis3ZN5bBeC7FBDr9FfGro947ciQKCsrCEwHAaV91w64BsaK98OWK1bOWjssuuET7ff7nZLjmt3nFesUyZ/mDw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705608868; c=relaxed/simple;
-	bh=abdnJ0kFPeSaoEs1eC3wd5y1yhbqK5qSnpTDwRVpV/w=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FX0p6TLAwiyfpWLuKckmV/snq7nRch8RweerYOPT40yJ4NFBq0GH2N5WC1oPHh4ofE6ofGuWGtFTKB0e6tlLXjSTiti6V12HAIQprfs5QeXg8/GCfbuCEPII153X/8PDzH/AGFpqsD3CK4GFGnXZ5s3RkbbbAdl//hrXkF0cNCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=NH6eKYLY; arc=fail smtp.client-ip=40.107.8.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70978DDAE
+	for <imx@lists.linux.dev>; Fri, 19 Jan 2024 08:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705652232; cv=none; b=WBWvQkSi1IXEhthhdRjjSdcXancyqPzfaESLnzEMQQZCoYqikhy42imgOZJ2Uc+7e7fmZggGS5molGyeBzA74/UWX/tgtqWwCEdnA8E2/pe2DyEJ5D18KxAqE9hMgpccpgKDRZyYo4eVkgkZgDLT24cU1Srq1VQOrEjikrocb8c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705652232; c=relaxed/simple;
+	bh=oKKbj+jvfOiHePyNHPvlPksDgVHym+JYEXU4x7rTGMg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z1pC0JhzW0RMbq4ZmlRJIvumY+XdLAqW2mf2RWpvcjeB7ODeB/IG+PqCa1h/OBoKh3JfwefGPx7K1JSv29nq6SchHsPIu/1JfUOn90E3Q82wDLvhQkE9kkyWpPzt7LiQBMrfn9dv17thxjfvilZbrHQo/JkXNHpfLoASzXMgSNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EBTG68eB; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="NH6eKYLY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O4a0yNDzIcv2a/rCZNi119VZ1QmEmiaJQ69oHFlY2bHT6e2WC0m5GHaCMvw6LzI6SFYOuIqJJ0R6CcvQq//UefPWP07f6Lc8hBH1youpub0MSaJij9soMoC7x8DbKSHqynzXL1L5Dm31UjMrUuCJw/Nkku3KVLyjxH3Tr9iNYvwDG/PdcBA7c07htQ7bEOW31YQB7MGkiRyU7tJ+y4uGxE0BPiYvtGB+oEzZigNea0/nw3nE1zQh703JyMm8pItocg2gkOTc+kyLViXNcDBPZnkVWsQxgeFdBw6JnPCMxrSD/JfQT3FG799KixLXelmG18Ll7ZPhXUmM//rrCGb2Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E5sBQ3bIW518NjHmlQ39W/vxBk3FihyBIMCtZNqieu0=;
- b=hzyhoBRW61jKkLgNdak5d4Eaqfw8PYr7IOSbMgYRGEOBrBrVpePBCM6bgELO5q5UO3fdeq4qWqX0WEnWpcr6p+LsOpnOwgRgD2kc7W5l/KuzCY6ZACNqQsBNRyrVLfN0ahdJBKG/n7LyEUi3+8r0ILhwO+VQOdvZP/DgjiSvgthmB5/PmYRzm+SMf0c3tpXiyavtvKrbEyl5s7W3srXeR2UJ71P2OJqlelzPdWWWv3i/b/nHScH13rOzROSbd8XWWRjd/Jy8Qsx2RZWMv3y4jolbmmZyFZIi0RqsYQPPNYLwv7rFamGWVowmTXBWGig8m55MCrUhX39fEAhoaVhwFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E5sBQ3bIW518NjHmlQ39W/vxBk3FihyBIMCtZNqieu0=;
- b=NH6eKYLYuXa2hmvg2rc8lw8n+ZOV1ujQvEsm/vm3U1MBIF57vgbBpwP3lVhGj1F2MFb4o0vhQFMpOwvsWRbXD2AyrvaLnrUcnAG409Ge+2X/bAzHj8d75KimVN2aOpugbMIkl9WvLeg4dzuT52WHLf/foMdDQYGZ/5e+3uI+b0Q=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM7PR04MB6936.eurprd04.prod.outlook.com (2603:10a6:20b:106::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24; Thu, 18 Jan
- 2024 20:14:23 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::b8af:bfe5:dffd:59a9]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::b8af:bfe5:dffd:59a9%4]) with mapi id 15.20.7202.020; Thu, 18 Jan 2024
- 20:14:23 +0000
-Date: Thu, 18 Jan 2024 15:14:16 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: imx@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
-	Conor Culhane <conor.culhane@silvaco.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	"moderated list:SILVACO I3C DUAL-ROLE MASTER" <linux-i3c@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] i3c: master: svc: add support for read len bigger
- than 255
-Message-ID: <ZamGmNe0KMbEHu+0@lizhi-Precision-Tower-5810>
-References: <20240117225009.2931699-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240117225009.2931699-1-Frank.Li@nxp.com>
-X-ClientProxiedBy: PH7PR13CA0004.namprd13.prod.outlook.com
- (2603:10b6:510:174::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EBTG68eB"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so417669a12.1
+        for <imx@lists.linux.dev>; Fri, 19 Jan 2024 00:17:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1705652231; x=1706257031; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CKeQxr74v0/RAxO8TgttZrcsw2Yx0+jcWvQmI1Qe2Zw=;
+        b=EBTG68eBlp9B0sxoPqKfUMSiY0rSIgA7rJuJJEuzt8XoeGrng6eCFAuY7a/zLB1qtb
+         laoIu4dJ0lSzItjmR0/RavVCO86Vvgv/8OQldmVQotoRHfhQz9WusdPbHBlgyVJJM5WE
+         ICTSFUIjI+ytBcaARwE1so7yduFHASoaMvrbrG118mBFe14Ul0BQP2hFWqomRl3fNpbA
+         wWGIAkzxozhPwmMKeDVmph355bCewUczcr3MMhx+RcV+Tgq69q0pgEgDIAVdgT4VtncX
+         DufHQ64qQChj/MjhUsHx0DqG37R+yS1IDjEx22tDTjylwW2z6JWC2RVOsG2NQRrLHmwA
+         9R4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705652231; x=1706257031;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CKeQxr74v0/RAxO8TgttZrcsw2Yx0+jcWvQmI1Qe2Zw=;
+        b=uUqynhLcd5pAoafMRup2thWVYGenZL/2i1TT/zHMadGiakxr2wKxPI3FCGClDwz6jq
+         5fq3ajW3Tv0OBEoycyQ3+JZLJAJHmdi1acRzb9Q+61K03iK3Uu4FC1DTi4QsJSpPPQqE
+         36jqxzo4pHkc83ybR6xyt5fBBxBugP11Z1MPEP0OAofu2+P4axV8VdLJ2T+NPi/R0xOS
+         ePAnhWVEUNRRhK2NpEKh8iB8oi9LDyPflI+1cOVeqqwMX+45piaq5XOaK9Oh3/YBMXoY
+         rmLoNycUqMaVdNGNu5I0T5PdzQA4L4sGp0JP21yGBUuiQtrXM3a/n9WjM+pOGUDvxT7l
+         cXtA==
+X-Gm-Message-State: AOJu0YxYLGUkKPPBB27idU3dihatwcspkkhfyDa/ACGjM6/NXekWsF3S
+	0erdZbTE+EjyOvSM0dGwoTP5zmhFNbhijFx9TLMXdsmyBAsZcDDtcHLvHoJfnw==
+X-Google-Smtp-Source: AGHT+IGS5Ltk1U1ZHIZAH9/TpF9urtmkWgrvxjyopbIMgOLF9edEyr5g7jMcF0En2+zgNlJcEzObqA==
+X-Received: by 2002:a05:6a20:7fa4:b0:19a:21b8:ab6a with SMTP id d36-20020a056a207fa400b0019a21b8ab6amr2476870pzj.27.1705652230687;
+        Fri, 19 Jan 2024 00:17:10 -0800 (PST)
+Received: from thinkpad ([117.248.2.56])
+        by smtp.gmail.com with ESMTPSA id fb30-20020a056a002d9e00b006d9af8c25easm4506321pfb.84.2024.01.19.00.17.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jan 2024 00:17:10 -0800 (PST)
+Date: Fri, 19 Jan 2024 13:47:00 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: krzysztof.kozlowski@linaro.org, bhelgaas@google.com,
+	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+	helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
+	kw@linux.com, l.stach@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: Re: [PATCH v8 01/16] PCI: imx6: Simplify clock handling by using
+ clk_bulk*() function
+Message-ID: <20240119081700.GD2866@thinkpad>
+References: <20240108232145.2116455-1-Frank.Li@nxp.com>
+ <20240108232145.2116455-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB6936:EE_
-X-MS-Office365-Filtering-Correlation-Id: be3662e0-b435-4d9d-330e-08dc18620fb9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ihn2xCTv83KZf6Qy1nRybU0D58mJaag7+YdsA7oSZ0GUkz5FGED39YjRZvaB7Hy7bmYCQEnR1iBVC79jY9wFGYrG4yUb9hsFUNbQDU/uGSmy/mRGbMUuZ7kah7xCn/FPIPP1jnE40hSh/vZUihPLE+9th06W2lqGlNPM7O+nPBOPFU4BgGEHajxXQDNImQ67PPC4/Ud+PBHr8AY30+r81JuZuMR4DC4+51KlKc7kWjxwwPSLZIUJTYa5NnBe8yrNWtzJfUrRxc70Il/H18DFNhmI8S3k1X+CNdBmUDIjgRLBbrCkoppsnBR8Erdr7yiPjDZULW+A8kY7vbX/8JTXlNB8kbt4Tg/X4zwMJJX0oo2ZKP/FLKYOL1BZC7Ha73yWfHqgyyZ6sZ9Vr+sSTgqXFc/xYdt19o4hkWbMGUjcZoUQ9VDLiaG1smQwmZz0LIShqRCj3N1Ko/7Y4jvZDVbYGAfBwU7t5DUJlPL7NsAWYdm9rniK6mW7U1J2/GOCUCAKZe1k+IHyXVGMwCqSLxKDVX01A74uSpkGTLdp8llkk2sg1agQ/154wF1w4UM671PJucRzLeK9SXG1+83YyUis1upzs9CODMaf6Euc647r6cYV/0b3gEsSDF9x1HxZPwdO1kw7iNAbRUwRgAZQfj57eL038bSTvmEQfBqCubBz6FsTHN/8ynKHoknFBGOBd0IVqknLMdymKGXLogpg9CMJmA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(376002)(396003)(346002)(39860400002)(136003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(86362001)(8676002)(8936002)(26005)(38100700002)(2906002)(83380400001)(5660300002)(478600001)(52116002)(66476007)(66556008)(6486002)(66946007)(6506007)(9686003)(6512007)(6666004)(110136005)(316002)(41300700001)(38350700005)(33716001)(135533001)(67856001)(309714004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dDI1bW91NXloRnRjZ1E4SGltcWxIbnpIU2kweU1Zdk1MS1hzNXZWNFVkZklK?=
- =?utf-8?B?bDZlcmtERE1IWjdOWTludXEzOHkxWlA0V3U2clBiZGdrMnRVTENRcS9veE5a?=
- =?utf-8?B?TXRJN3BCLzBTb0l1QTdMU3VXbzUvRFBocGxTTnJ6RDE4K0t5VzRsNmlUQUpz?=
- =?utf-8?B?SlhqVVk1SHV0TzV4aCtoMEhIcjFqVW1ZL01zM2lPV0grUXdYMUJhdG5ac2V6?=
- =?utf-8?B?SmVWNWNOWFlDcjNyQ0dXa0ZiTUtTc0U5aHo4Vy9JZG9nbG1BRVY4Z2I2U1V0?=
- =?utf-8?B?WGoyZWV5VVVTN2xRcUdhcTYzWWhQQnNqSi9FWVhQU285U0lCQTAwWWJvUDR3?=
- =?utf-8?B?R1NLNlpDSEVoMHBkS2tSTXMvdVhILzZqdGczd2xVYi95SmFjbTdDcGdGL2Fq?=
- =?utf-8?B?QTdEanFpL3BOQm9YVFZpamRMd2E3MnhidFJVNWNxUEFid3dlL2NWcllYQzhq?=
- =?utf-8?B?VE5kdmwrUCtYaUhod2ZpblJyRVIyNExxK3hWY0tzRDZ4WkV2MTFTbmIrOU5l?=
- =?utf-8?B?YkZ1cERWcmNFMC8xVkJsdmxoRVFFVThBeEFPb0JxdVpjSmdLOW5OV1hkK01x?=
- =?utf-8?B?bGFyQ3VSMGNDUk5QelBPRS9PamZ3WTZvNXBGSVFFNERXbFlsdDRxa0YycDdW?=
- =?utf-8?B?MkdaQklSUHRLRUNjMlZNRkZRWmZaa09DTjMxUnNCaU5KdUxzaXJIdjducjQy?=
- =?utf-8?B?bjlmcExWTWpqczBoK2daTndrMTNjdGFXdDN0Y3RFQ1I2WmdnSUFaajhLaVV0?=
- =?utf-8?B?TVJnckcxUVNaSlI4MkhxcDhSbzFvdTNiMjhtek40ZzFpQnZjOXNaK1FhZGVp?=
- =?utf-8?B?K0JIdHZiK1I2cGUwdWE1aG84aEt3QTRoTGkwcUk3N3lBZGtod1FvOENQblkw?=
- =?utf-8?B?a3A3SXhlMUxhVC90OFZsc1N0V2dieXhmZFlTclI1ZEpEVWVGbXZPRlJLSGVD?=
- =?utf-8?B?VVhYR2Fseno2bzVERUcxeDUrcXZ1Y3RuSktlVkJYYWhiUU9wblpuVzl5Mzhh?=
- =?utf-8?B?N1FEbUEyZHJUNUhoNzNTaDFORXY0YkhkNUNYOUJWNW1pTVhNU2pYdzVnaDFD?=
- =?utf-8?B?VXNlNlh0ZjYraGhGSWRnRzMvR3ZzSDYwYksxYUlMYXBPOHRLMW9ZNk1lcytm?=
- =?utf-8?B?WWtmS0dHN0VqVk9oTjJXaHBkM2lxUVJFTUwzbHVycUc3aDgxQXhXVFIyQ1Jz?=
- =?utf-8?B?UFV4ZjJINGtWenJ1QzdVQjZpbklPd0JnYXFweFo5STZyWDdDT0ZpTmk1Q1RV?=
- =?utf-8?B?aW9hV3E5dHNOU1llcXpCaUFtakJBWXV1Qko1d094VGJ2aHluZFJXOUlWbEFM?=
- =?utf-8?B?SC9vam5PYzR2aXQ3WC9sZFBWR2NqWU9Pb0hJeTBPcEZzdGRaOTA2WWFKL2ky?=
- =?utf-8?B?TENUVzZiV1NDWkUwZ1pLUFZ1K2RyQ2RBUy9OY0NmY2dUUDkxRmhhTW9JRVJM?=
- =?utf-8?B?eEpjNGxLZTRaSm5BY1c5Y3NBNmhDZFhjT3BQRlVSN3l1MXdKOGRnTU80WmFq?=
- =?utf-8?B?RFNlSldmZEl5cUg2cFVkMDJYOUg4QTh6K2VlUkhhajFDOHRsUVpRZThuYkhi?=
- =?utf-8?B?Z3dmN3l4SXB5NUp0d2h2YzNZK1dzWTY5NVpRc3dnRkM2OVZRTEdsOElDbnNX?=
- =?utf-8?B?ZHVMbHZLL2hIM202UWMwK2tjNFNmd2JmN1l5VllIZDdhd01MSWhaQjdTN2pR?=
- =?utf-8?B?V3F5WmNYRTRGdFBDNjdTbDlEYVA2QTlGR1lsYUxnVzh1VytSak1kdEp5S1N6?=
- =?utf-8?B?QnB6d0dxUlFPZzZqdkVpRU9wcjBsOTlyaTVqMlMzSXhUNUtjb0szQkJ1bUdJ?=
- =?utf-8?B?cnNzcUJvWXJCRGs3VmpOQ2xndU93MDUyY3UwVHI3cHczZnZFTGpzb0Rxb0U4?=
- =?utf-8?B?YTZKeGswWEdwZ2ZjWjExdlFQV3kyOGY1UE4yM1RhTnY5RVZUT2RNWVkxbm1h?=
- =?utf-8?B?SFMvNGwyWm1LS0ErVzJjVGJmdWdVeWxRSEQvRll6eHBuM0lZRmR5WDVPSGxH?=
- =?utf-8?B?SWhVVGdqZGExZzJHbVFMZS9yVWh0ZE1TdFRJblpRTjQ5a0tNRUhYU2owd3Fs?=
- =?utf-8?B?djVEdmxmOFdKSHhHNXZUU3hySktEdDJkU0RKUVJJWDF1eVh0S255TzFkUkpD?=
- =?utf-8?Q?V5sc=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be3662e0-b435-4d9d-330e-08dc18620fb9
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2024 20:14:23.3523
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3eMEJbX4v9V3yJlvEkJCgE/JraouShDEU7o3mvjmTin04bZf5S34NQBTmkiGyUgP76rIUJwOxIbQ61sh3Zhlhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6936
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240108232145.2116455-2-Frank.Li@nxp.com>
 
-On Wed, Jan 17, 2024 at 05:50:09PM -0500, Frank Li wrote:
-> RDTERM is 8bit. Only support max 255 read transfer for auto terminate. Use
-> manual terminate when read len bigger than 255.
-> 
-> When left data length is FIFO size + 1, issue terminate
-> (RDTERM(1) | REQUEST_NONE). So hardware will stop fetch data after next
-> data.
-> 	│ ◄──────────  buff length     ────────►│
-> 	│                                       │
-> 	│                       ┌─┬─────────────┤
-> 	│                       │ │  FIFO SIZE  │
-> 	│                       └─┴─────────────┘
-> 	                        ▲
-> 	                        │
-> 	                  Wait FIFO Full and Issue read termniate here!!
+On Mon, Jan 08, 2024 at 06:21:30PM -0500, Frank Li wrote:
+> Refector the clock handling logic. Add 'clk_names' define in drvdata. Use
+> clk_bulk*() api simplify the code.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Sorry, please hold. I found failure at corner case.
-will improve and send next version later.
-
-Frank
 > ---
->  drivers/i3c/master/svc-i3c-master.c | 76 ++++++++++++++++++++++++-----
->  1 file changed, 64 insertions(+), 12 deletions(-)
+
+One comment below. With that addressed,
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
 > 
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> index 5ee4db68988e2..58047ad357791 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -977,7 +977,7 @@ static int svc_i3c_master_do_daa(struct i3c_master_controller *m)
->  }
+> Notes:
+>     Change from v7 to v8
+>     - update comment message
+>     - using ARRAY_SIZE to count clk_names.
+>     Change from v6 to v7
+>     - none
+>     Change from v4 to v5
+>     - update commit message
+>     - direct using clk name list, instead of macro
+>     - still keep caculate clk list count because sizeof return pre allocated
+>     array size.
+>     
+>     Change from v3 to v4
+>     - using clk_bulk_*() API
+>     Change from v1 to v3
+>     - none
+>     
+>     Change from v4 to v5
+>     - update commit message
+>     - direct using clk name list, instead of macro
+>     - still keep caculate clk list count because sizeof return pre allocated
+>     array size.
+>     
+>     Change from v3 to v4
+>     - using clk_bulk_*() API
+>     Change from v1 to v3
+>     - none
+> 
+>  drivers/pci/controller/dwc/pci-imx6.c | 144 ++++++++++----------------
+>  1 file changed, 54 insertions(+), 90 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 74703362aeec7..4912c6b08ecf8 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+
+[...]
+
 >  
->  static int svc_i3c_master_read(struct svc_i3c_master *master,
-> -			       u8 *in, unsigned int len)
-> +			       u8 *in, unsigned int len, bool auto_term)
->  {
->  	int offset = 0, i;
->  	u32 mdctrl, mstatus;
-> @@ -995,16 +995,60 @@ static int svc_i3c_master_read(struct svc_i3c_master *master,
->  			return -ETIMEDOUT;
->  		}
->  
-> -		mdctrl = readl(master->regs + SVC_I3C_MDATACTRL);
-> -		count = SVC_I3C_MDATACTRL_RXCOUNT(mdctrl);
-> -		if (offset + count > len) {
-> -			dev_err(master->dev, "I3C receive length too long!\n");
-> -			return -EINVAL;
-> -		}
-> -		for (i = 0; i < count; i++)
-> -			in[offset + i] = readl(master->regs + SVC_I3C_MRDATAB);
-> +		if (auto_term || completed) {
-> +			/* auto termate or early termate by target */
-> +			mdctrl = readl(master->regs + SVC_I3C_MDATACTRL);
-> +			count = SVC_I3C_MDATACTRL_RXCOUNT(mdctrl);
-> +			if (offset + count > len) {
-> +				dev_err(master->dev, "I3C receive length too long!\n");
-> +				return -EINVAL;
-> +			}
-> +			for (i = 0; i < count; i++)
-> +				in[offset + i] = readl(master->regs + SVC_I3C_MRDATAB);
+> +static const char * const
+> +imx6_3clks_bus_pcie_phy[] = {"pcie_bus", "pcie", "pcie_phy"};
+> +static const char * const
+> +imx6_3clks_bus_pcie_aux[] = {"pcie_bus", "pcie", "pcie_aux"};
+> +static const char * const
+> +imx6_4clks_bus_pcie_phy_aux[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"};
+> +static const char * const
+> +imx6_4clks_bus_pcie_phy_axi[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"};
 > +
-> +			offset += count;
+
+Use platform names for defining the array. Like,
+
+imx6q_clks[]
+imx6sx_clks[]
+imx8mq_clks[]
+imx8mm_clks[]
+
+and reuse them for other platforms as well. This gives an idea of how the clocks
+got inherited from some base platforms.
+
+- Mani
+
+>  static const struct imx6_pcie_drvdata drvdata[] = {
+>  	[IMX6Q] = {
+>  		.variant = IMX6Q,
+> @@ -1477,6 +1421,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
+>  		.dbi_length = 0x200,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_phy,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_phy),
+>  	},
+>  	[IMX6SX] = {
+>  		.variant = IMX6SX,
+> @@ -1484,6 +1430,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE |
+>  			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> +		.clk_names = imx6_4clks_bus_pcie_phy_axi,
+> +		.clks_cnt = ARRAY_SIZE(imx6_4clks_bus_pcie_phy_axi),
+>  	},
+>  	[IMX6QP] = {
+>  		.variant = IMX6QP,
+> @@ -1492,40 +1440,56 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.dbi_length = 0x200,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_phy,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_phy),
+>  	},
+>  	[IMX7D] = {
+>  		.variant = IMX7D,
+>  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx7d-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_phy,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_phy),
+>  	},
+>  	[IMX8MQ] = {
+>  		.variant = IMX8MQ,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+> +		.clk_names = imx6_4clks_bus_pcie_phy_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_4clks_bus_pcie_phy_aux),
+>  	},
+>  	[IMX8MM] = {
+>  		.variant = IMX8MM,
+>  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_aux),
+>  	},
+>  	[IMX8MP] = {
+>  		.variant = IMX8MP,
+>  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_aux),
+>  	},
+>  	[IMX8MQ_EP] = {
+>  		.variant = IMX8MQ_EP,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+> +		.clk_names = imx6_4clks_bus_pcie_phy_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_4clks_bus_pcie_phy_aux),
+>  	},
+>  	[IMX8MM_EP] = {
+>  		.variant = IMX8MM_EP,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_aux),
+>  	},
+>  	[IMX8MP_EP] = {
+>  		.variant = IMX8MP_EP,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+> +		.clk_names = imx6_3clks_bus_pcie_aux,
+> +		.clks_cnt = ARRAY_SIZE(imx6_3clks_bus_pcie_aux),
+>  	},
+>  };
 >  
-> -		offset += count;
-> +		} else {
-> +			/*
-> +			 * Controller will fill whole RX FIFO in manual mode. FIFO full can prevent
-> +			 * controller continue fetch data from target.
-> +			 *
-> +			 * When left data length is FIFO size + 1, issue terminate
-> +			 * (RDTERM(1) | REQUEST_NONE). So hardware will stop fetch data after next
-> +			 * data.
-> +			 *
-> +			 * │ ◄──────────  buff length     ────────►│
-> +			 * │                                       │
-> +			 * │                       ┌─┬─────────────┤
-> +			 * │                       │ │  FIFO SIZE  │
-> +			 * │                       └─┴─────────────┘
-> +			 *                         ▲
-> +			 *                         │
-> +			 *                         Wait FIFO Full and Issue read termniate here!!
-> +			 */
-> +			mdctrl = readl_relaxed(master->regs + SVC_I3C_MDATACTRL);
-> +			count = SVC_I3C_MDATACTRL_RXCOUNT(mdctrl);
-> +
-> +			if (offset + count + SVC_I3C_FIFO_SIZE < len) {
-> +				for (i = 0; i < count; i++) {
-> +					in[offset] = readl_relaxed(master->regs + SVC_I3C_MRDATAB);
-> +					offset++;
-> +				}
-> +			} else {
-> +				if (count != SVC_I3C_FIFO_SIZE)
-> +					continue;
-> +
-> +				/* Issue manual read terminate at next data */
-> +				if (offset + SVC_I3C_FIFO_SIZE == len - 1)
-> +					writel_relaxed(SVC_I3C_MCTRL_REQUEST_NONE |
-> +						       SVC_I3C_MCTRL_DIR(1) |
-> +						       SVC_I3C_MCTRL_RDTERM(1),
-> +						       master->regs + SVC_I3C_MCTRL);
-> +
-> +				in[offset] = readl_relaxed(master->regs + SVC_I3C_MRDATAB);
-> +				offset++;
-> +			}
-> +		}
->  	}
->  
->  	return offset;
-> @@ -1042,9 +1086,17 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
->  			       u8 *in, const u8 *out, unsigned int xfer_len,
->  			       unsigned int *actual_len, bool continued)
->  {
-> +	int rdterm = 0;
->  	u32 reg;
->  	int ret;
->  
-> +	if (rnw)
-> +		rdterm = xfer_len;
-> +
-> +	/* If read length > max RDTERM in MCTRL, using manual terminate */
-> +	if (xfer_len > 255)
-> +		rdterm = 0;
-> +
->  	/* clean SVC_I3C_MINT_IBIWON w1c bits */
->  	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
->  
-> @@ -1053,7 +1105,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
->  	       SVC_I3C_MCTRL_IBIRESP_NACK |
->  	       SVC_I3C_MCTRL_DIR(rnw) |
->  	       SVC_I3C_MCTRL_ADDR(addr) |
-> -	       SVC_I3C_MCTRL_RDTERM(*actual_len),
-> +	       SVC_I3C_MCTRL_RDTERM(rdterm),
->  	       master->regs + SVC_I3C_MCTRL);
->  
->  	ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-> @@ -1086,7 +1138,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
->  	}
->  
->  	if (rnw)
-> -		ret = svc_i3c_master_read(master, in, xfer_len);
-> +		ret = svc_i3c_master_read(master, in, xfer_len, !!rdterm);
->  	else
->  		ret = svc_i3c_master_write(master, out, xfer_len);
->  	if (ret < 0)
 > -- 
 > 2.34.1
 > 
+
+-- 
+மணிவண்ணன் சதாசிவம்
