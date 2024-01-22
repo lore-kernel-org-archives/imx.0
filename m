@@ -1,266 +1,236 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2083.outbound.protection.outlook.com [40.107.22.83])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1DD39AD7
-	for <imx@lists.linux.dev>; Sun, 21 Jan 2024 22:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705875904; cv=fail; b=edYYBY1RMjx80686xsmbLft2vd3V8vlWxtogQf+2il7oE7gZyNFlf7RqmmJN7p49ZLhpMAKKc5FB0ZZ2T90TSQhcokgJfMn7Y1xF1TOn/g0TTURImdK4Mc4AXk4LeRIraoI3fDSyKV/TbmIWIJSt1zBjVVwedLiHhbLNoHhGuHg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705875904; c=relaxed/simple;
-	bh=XVV1gSwV1UV1ScFgRL+jni2ulTpDQ7D9i/nGFyLqyAM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iQY+ccxLuNFhvg2fbQ5uxc6ISo7vQfLxvF1ACsu4DWZ6Ysqqx9OTa90855K29xlFEfLokNBpIyuennTlE8IKaa9+YKHRUGh+FUtK0ufP+KMF+RnQ7LzvkhO2YINOs+8I58X1Uost66x2hs03uvJxsDTR7EgU286uvHPKzx1vzcI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=m/ISb2s5; arc=fail smtp.client-ip=40.107.22.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449E93FE20;
+	Mon, 22 Jan 2024 11:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705922854; cv=none; b=PCG2Zb1VUwQR4svPN9uOCULR1mpwq9KeXwXy+xkC6EW/m2dhMpjRD8aZxNOywc48Oq+ra/nUISpo7NtxpzlgiUtieQYMrfxDdToQFy5y8bIizQ6mOUWNq1f52KBwHBchcOMaAWjVlVtk/4FY8hxaJz2Ng5TuvHXR6fcvfvnW0xU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705922854; c=relaxed/simple;
+	bh=IOtL/1l3eNennUM4no86ztpLcWr9CqAsQwvfWH0uZJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPhpDa6RtqIoFrSbDkpg9B47iSOkodNBd2A46Cd62ucVxEh9OfAyCUJmnLQU1DeEsN7eY76F49uCAZ2bUsOXKMXuBgcmcQ3ITUhNzfuTH9iaURW2xlcue8K8q7z7U3Bn1kXIe3HZm+1fOGx+GokH69XKBdXMQMko8F3GaFXCMmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOFz3uNI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="m/ISb2s5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ffz62ZuZTocsviF5YRFG0mNS7R+JfA31xnyYrej4uBbFLJltwfuO6U8NDECsKwbPHQmo1uBQKUpujKTotNitfxltORFEba7g/ZTmVrthemeY1C7uMom1h0Odsh1eEJ9nQIj2JfjMZM063TE0UoGe9B5bBmIE2DY/XJcQ0sIAFtSFwe96HY+6ub6RwE66a0OxsfvzJjtHT2WTalV7ohskhscamuOMGKimLEnT7De8CxDI6oO7jmTPAO4N797CrDgC4qctc0n3IoBahQpo/OVzmTLXgZfi8RI3LOewl+m0uKreGQDe9KgzTCXIkrHWJPy35hU8Nm8T7DrWIuW8wGJM5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6WjEhoaKrfQXQ/3+dXzeqTAvAdn0vYPi9jBmGKxZQCs=;
- b=iw+SGziU5SikRd5cbV/7XRgM32Y0Nf+ZJh+GYLEp9uFfQstg7k+drqpJLHN12qpgy5BmOV4MlTt7oA31WQCQY0P980U8A2DDSreMRKKl2GJyBpl58syeUEtCahrVtdL71o2gtHkHQAgeHOIr/aWtRSgsD1tniUujUcxEt2+pKThOQI1KvOoEMf7+3gEWF0lF4UdxJTsZSGtotczmFIysZN00X0wacOcY6TC3J2VtFSv6ZrKUlJqeatjV5ya+hiRAlRW4meQPIbhn0Nul+dKvGiB4O1/sG4PC+h/Ofs75FjflYTWHNlTlKfr0xnQZmCsutJGPur8pysyaAA7DKckHnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6WjEhoaKrfQXQ/3+dXzeqTAvAdn0vYPi9jBmGKxZQCs=;
- b=m/ISb2s5dSJBbnhwa8TH5813rDd1EM1CoHEQYAkgeF5EjASQUtq/sfApe47UTs3hfQ47BznpiEtG9FXKAq6ymE1NSeQMBFCvTFhFnQmORSCTlq5Z83/srvdZOIAd9YX8Uu20swkq9XzKYU1eNohULpBCwqyJl/GJo7SXnGWdnOQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB9074.eurprd04.prod.outlook.com (2603:10a6:102:227::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.31; Sun, 21 Jan
- 2024 22:24:58 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7202.031; Sun, 21 Jan 2024
- 22:24:58 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: frank.li@nxp.com,
-	mathias.nyman@intel.com
-Cc: Thinh.Nguyen@synopsys.com,
-	balbi@kernel.org,
-	devicetree@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	mark.rutland@arm.com,
-	pku.leo@gmail.com,
-	ran.wang_1@nxp.com,
-	robh+dt@kernel.org,
-	sergei.shtylyov@cogentembedded.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOFz3uNI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057B6C433C7;
+	Mon, 22 Jan 2024 11:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705922853;
+	bh=IOtL/1l3eNennUM4no86ztpLcWr9CqAsQwvfWH0uZJU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GOFz3uNIQq0tLT6FSbdqdug4jloaxHBf9c4w3FnUBckfbeu4RHdt2Bc5pNjMQakkZ
+	 SoyPTuC9Cpl/GulchIEIfZ6X8bBaDpnGTDzJwkR6yQ0P/5K9wPQNskCdgYsvh0WaGu
+	 Y+3c8th1q9SJ1tN2TwobMzl4Q2nWjKi+XL6MDbCng2ffXaJ4yuIbNwk6nCeeWTbKaM
+	 W2xkeE+6jxY+hpk1zCuJBy4UFM1LSrg6x7HPR1om8silys1OfIgFyx2joLj1B73GtD
+	 1u+l6JCOtiUwTWqRHFyEIDiOYJNg6FAknfVXV/9ewOzEGTm1sez21tr1o9C+Gw7Naa
+	 RHeoh7+GP+nWw==
+Date: Mon, 22 Jan 2024 16:57:29 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Arnd Bergmann <arnd@arndb.de>, Fabio Estevam <festevam@denx.de>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev
-Subject: [PATCH v2 3/3] usb: dwc3: Add workaround for host mode VBUS glitch when boot
-Date: Sun, 21 Jan 2024 17:24:28 -0500
-Message-Id: <20240121222428.3396428-4-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240121222428.3396428-1-Frank.Li@nxp.com>
-References: <20240121222428.3396428-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR17CA0063.namprd17.prod.outlook.com
- (2603:10b6:a03:167::40) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+Subject: Re: [PATCH] dmaengine: fsl-edma: fix Makefile logic
+Message-ID: <Za5RIcRK6sXglPxp@matsya>
+References: <20240110232255.1099757-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9074:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b938549-5803-483e-2b05-08dc1acfcd1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	XaIwgAakE21eHL/WMoh9wZJ33kO/BYafDY0M2EaCLHKVA76TYsyFBtsLhohdDTD1B7JaDPml+Px7CyIOeaIxIPvlkoouKOPqk2j7ZTMAyxjGDM4ZmB2qW6KDhjqoZzuiAByRb4sr+5TIRLaVZGFpg0gPE8wGajoovdaQNPhjvjESI9RukRcJsof5wpmI/GOArBWf65nvORWlprhX2yVEB/m/2cuHHoxiNshFXyXL5USVtrQ/2k/ndHsxcGOMIkUITCJkQOdiEkw24nBIgHe2LXyNReWXm0WanJtgWBRdt1EZBC0ngYTWcig5O1oNoGJbvFr2Jl6o4WeRfY4r7+kSSznnRT8ZONGSt/aeYNpsHWOgqvoIOyrzOXTviWgXTzVYGVl1RTfjFEY2/qMOP6E9rSF67ZDkFVGwa72GI36ZJB0yzjELSD4v1sNTzZuwog8XOShxUdJK4TnJoMc0ozyKPlxvSfvZXTqX+yebgPFtAjrrDrlGoQhHlJS54KWQ4J+A7tR6i8BAnxtbDIWuhrmL/fDOvlkt+y9H3YaNRYXUpJUGXF5HEkjdInnwZqQfY3FCowLs1xqMdAyi4dccbD+VPvbCe3XJdhkaEp8PvsnNnTan8gkgq+s29rBp8QUvbL0v
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(396003)(39860400002)(376002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(86362001)(8936002)(4326008)(8676002)(316002)(66556008)(66476007)(66946007)(36756003)(5660300002)(6506007)(6486002)(2906002)(41300700001)(52116002)(7416002)(38100700002)(38350700005)(83380400001)(26005)(1076003)(2616005)(6512007)(6666004)(478600001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?B5o11h7AC9ublTvHs7kqJiE+ZjuPInpBeCCpJRALyMRrhFRgrubRH6fb2zmW?=
- =?us-ascii?Q?NxAtbGnaYRFx96TZKgJwsi4k2Lfs06wdwlaMsAlHUSVfDWtFhdRDHFRrGT9v?=
- =?us-ascii?Q?R/6hKxM5wc8w5FooGqeYfXlcoR1SOkqiPFxxuYwz/CrwMHMFf1+kUuJpfV9M?=
- =?us-ascii?Q?UGzEPp+sykS4C/tdqddCn0wpOfTzhrPyY6xJkKQcceJ8X+qxiIhW27PNB/+U?=
- =?us-ascii?Q?xfQAlgZi77kb3V2ORMuH8sWIRmrt92AfJCJin7lffje0fXVPgTituwrwy4MP?=
- =?us-ascii?Q?E/pBfotgpjm1xFVCfvOzm/0U0pdkSF1KmLTbOp61h0INv1Ub/BYeLlv7XfQn?=
- =?us-ascii?Q?cOFXS1xNJ2rT5c4BdmT4Ia8UOdKJxZ7fH3+CO/6ueShbIQKOpDrr1Hl9mBhv?=
- =?us-ascii?Q?cHk9gfbFN+B6J/giRTPYnkQaZRtWOxScD/mGajT4EsZUWH4JJczgoAkwdIQf?=
- =?us-ascii?Q?MFHrTbw/P/JsAxqpKuxNPPt7w4szAqMFHlbSt8N7LNMlfjMjVz2ruDMwUaEI?=
- =?us-ascii?Q?QpXSG/AxbjA7l5ukgrR1SrnzOLSuPO3jc1E1OmJ1ovjZ9KW7/U5HPRm3Jrf/?=
- =?us-ascii?Q?XrTvWA5xujtd69MTwOHZ/z/DKhoyAl6mzjlSsiv6ALHHuOOkwCXFzQ6cy7Io?=
- =?us-ascii?Q?bUVkHcU/EVFb2IduUPByDUd0fTq5eKsufHRcK/N8K5TKs0sZzag72lG8qQ48?=
- =?us-ascii?Q?ksCjBPGajl9t3t35LbBSVWMfoce2hnuNb5yj5sEFM8vhql0S5HWdLSJYdTIN?=
- =?us-ascii?Q?7/q9SVUgVfdrv52yYUijZvCU5Q15R8f1JU+4Mj4O3LwCPdDPkCA+xaBsN73n?=
- =?us-ascii?Q?P9wVBRmT6hh32Tm3GBa8+BCEkRPWy/IGluJa4STruu5rxRXaXVW1we2dgpKT?=
- =?us-ascii?Q?VoBIdaur2yNSrVGMOa2CiT9894/aZbhHJ3BYl5qwfQ4Y45L3M2KGrYtu50mr?=
- =?us-ascii?Q?jMlh6eNA9ohWfY+P9JogcMh/tU+HBm3ahyuu831013d4g2wftc7f/0BF6p7t?=
- =?us-ascii?Q?Tr8esROsNwqUtHCSIYwxqNid5ibkf9B0yxCGcxKdrKIve3cszjUA1VGtfiVp?=
- =?us-ascii?Q?UD4lCMil6cbxIyCFD/6JxY6JdVD8QTvTLp6pM+newqP+Ci5FCasZ05iqJgvY?=
- =?us-ascii?Q?KwRw90kebF5YdwcXPc4436haj0gnLbAwYfXNmPhe/Ar0i8h9l9yNF2slocpM?=
- =?us-ascii?Q?OKfgSDaLTmRrbvMEhrY89yc3HwB7h+Pa+KyVBjpDZpHV176TdZo0Ds8oeMo8?=
- =?us-ascii?Q?hNldthzTO2rcmXMQy1dzgJcDyIiiu1SvVtkYGfAvKlxpwe8rxk10WgsO34ZG?=
- =?us-ascii?Q?t+RvU/bInpUj+CjslCTJJmYAOTqjmPEem0PH6+ThqeG7VcMBY3UU6zctuwA0?=
- =?us-ascii?Q?3xQlMElOSN4ojp9P0zczjgX/lV9WuiiC4+yOaoQ+h2ZM22JAUkimbidUiBkS?=
- =?us-ascii?Q?FHfWZubhtpaf25IdWmOjaehiU44y8t3qal63PMIpyVOg106oZNCQ4omimEwm?=
- =?us-ascii?Q?g1i9TARcqzGkdcTQMz0ZBNCMB5ni8VbCU5kGgvXRZv0eg5uXyoK1qz8MkiZ9?=
- =?us-ascii?Q?UZabRkpTPXfxefdDl50=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b938549-5803-483e-2b05-08dc1acfcd1c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2024 22:24:58.5101
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fm87IuUU8ol6+LQ0hAKigFNrqdS3XJVu1OzJo/uBpB8sHeknB9PqoQoqFPFZfq9LvC22e6AzP/Rcjw4H4XkqYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9074
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240110232255.1099757-1-arnd@kernel.org>
 
-From: Ran Wang <ran.wang_1@nxp.com>
+Hey Arnd,
 
-When DWC3 is set to host mode by programming register DWC3_GCTL, VBUS
-(or its control signal) will be turned on immediately on related Root Hub
-ports. Then, the VBUS is turned off for a little while(15us) when do xhci
-reset (conducted by xhci driver) and back to normal finally, we can
-observe a negative glitch of related signal happen.
+On 11-01-24, 00:03, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> A change to remove some unnecessary exports ended up removing some
+> necessary ones as well, and caused a build regression by trying to
+> link a single source file into two separate modules:
+> 
+> scripts/Makefile.build:243: drivers/dma/Makefile: fsl-edma-common.o is added to multiple modules: fsl-edma mcf-edma
+> 
+> While the two drivers cannot be used on the same CPU architecture,
+> building both is still possible for compile testing.
 
-This VBUS glitch might cause some USB devices enumeration fail if kernel
-boot with them connected. Such as LS1012AFWRY/LS1043ARDB/LX2160AQDS
-/LS1088ARDB with Kingston 16GB USB2.0/Kingston USB3.0/JetFlash Transcend
-4GB USB2.0 drives. The fail cases include enumerated as full-speed device
-or report wrong device descriptor, etc.
+Do you have an update for this patch? I noticed kbot complain as well
 
-One SW workaround which can fix this is by programing all xhci PORTSC[PP]
-to 0 to turn off VBUS immediately after setting host mode in DWC3 driver
-(per signal measurement result, it will be too late to do it in
-xhci-plat.c or xhci.c). Then, after xhci reset complete in xhci driver,
-PORTSC[PP]s' value will back to 1 automatically and VBUS on at that time,
-no glitch happen and normal enumeration process has no impact.
+> 
+> Fixes: 66aac8ea0a6c ("dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL in fsl-edma-common.c")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/dma/Makefile          |  8 ++++----
+>  drivers/dma/fsl-edma-common.c | 17 +++++++++++++++++
+>  2 files changed, 21 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
+> index dfd40d14e408..302b7b0fbb8e 100644
+> --- a/drivers/dma/Makefile
+> +++ b/drivers/dma/Makefile
+> @@ -31,10 +31,10 @@ obj-$(CONFIG_DW_AXI_DMAC) += dw-axi-dmac/
+>  obj-$(CONFIG_DW_DMAC_CORE) += dw/
+>  obj-$(CONFIG_DW_EDMA) += dw-edma/
+>  obj-$(CONFIG_EP93XX_DMA) += ep93xx_dma.o
+> -obj-$(CONFIG_FSL_DMA) += fsldma.o
+> -fsl-edma-objs := fsl-edma-main.o fsl-edma-common.o
+> -obj-$(CONFIG_FSL_EDMA) += fsl-edma.o
+> -mcf-edma-objs := mcf-edma-main.o fsl-edma-common.o
+> +obj-$(CONFIG_FSL_DMA) += fsldma.o fsl-edma-common.o
+> +fsl-edma-objs := fsl-edma-main.o
+> +obj-$(CONFIG_FSL_EDMA) += fsl-edma.o fsl-edma-common.o
+> +mcf-edma-objs := mcf-edma-main.o
+>  obj-$(CONFIG_MCF_EDMA) += mcf-edma.o
+>  obj-$(CONFIG_FSL_QDMA) += fsl-qdma.o
+>  obj-$(CONFIG_FSL_RAID) += fsl_raid.o
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index b53f46245c37..05b31985a93b 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -67,6 +67,7 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fsl_chan)
+>  
+>  	spin_unlock(&fsl_chan->vchan.lock);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_tx_chan_handler);
+>  
+>  static void fsl_edma3_enable_request(struct fsl_edma_chan *fsl_chan)
+>  {
+> @@ -159,6 +160,7 @@ void fsl_edma_disable_request(struct fsl_edma_chan *fsl_chan)
+>  		iowrite8(EDMA_CEEI_CEEI(ch), regs->ceei);
+>  	}
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_disable_request);
+>  
+>  static void mux_configure8(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
+>  			   u32 off, u32 slot, bool enable)
+> @@ -212,6 +214,7 @@ void fsl_edma_chan_mux(struct fsl_edma_chan *fsl_chan,
+>  	else
+>  		mux_configure8(fsl_chan, muxaddr, ch_off, slot, enable);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_chan_mux);
+>  
+>  static unsigned int fsl_edma_get_tcd_attr(enum dma_slave_buswidth addr_width)
+>  {
+> @@ -235,6 +238,7 @@ void fsl_edma_free_desc(struct virt_dma_desc *vdesc)
+>  			      fsl_desc->tcd[i].ptcd);
+>  	kfree(fsl_desc);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_free_desc);
+>  
+>  int fsl_edma_terminate_all(struct dma_chan *chan)
+>  {
+> @@ -255,6 +259,7 @@ int fsl_edma_terminate_all(struct dma_chan *chan)
+>  
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_terminate_all);
+>  
+>  int fsl_edma_pause(struct dma_chan *chan)
+>  {
+> @@ -270,6 +275,7 @@ int fsl_edma_pause(struct dma_chan *chan)
+>  	spin_unlock_irqrestore(&fsl_chan->vchan.lock, flags);
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_pause);
+>  
+>  int fsl_edma_resume(struct dma_chan *chan)
+>  {
+> @@ -285,6 +291,7 @@ int fsl_edma_resume(struct dma_chan *chan)
+>  	spin_unlock_irqrestore(&fsl_chan->vchan.lock, flags);
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_resume);
+>  
+>  static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
+>  {
+> @@ -345,6 +352,7 @@ int fsl_edma_slave_config(struct dma_chan *chan,
+>  
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_slave_config);
+>  
+>  static size_t fsl_edma_desc_residue(struct fsl_edma_chan *fsl_chan,
+>  		struct virt_dma_desc *vdesc, bool in_progress)
+> @@ -425,6 +433,7 @@ enum dma_status fsl_edma_tx_status(struct dma_chan *chan,
+>  
+>  	return fsl_chan->status;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_tx_status);
+>  
+>  static void fsl_edma_set_tcd_regs(struct fsl_edma_chan *fsl_chan,
+>  				  struct fsl_edma_hw_tcd *tcd)
+> @@ -644,6 +653,7 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
+>  
+>  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_prep_dma_cyclic);
+>  
+>  struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
+>  		struct dma_chan *chan, struct scatterlist *sgl,
+> @@ -740,6 +750,7 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
+>  
+>  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_prep_slave_sg);
+>  
+>  struct dma_async_tx_descriptor *fsl_edma_prep_memcpy(struct dma_chan *chan,
+>  						     dma_addr_t dma_dst, dma_addr_t dma_src,
+> @@ -762,6 +773,7 @@ struct dma_async_tx_descriptor *fsl_edma_prep_memcpy(struct dma_chan *chan,
+>  
+>  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_prep_memcpy);
+>  
+>  void fsl_edma_xfer_desc(struct fsl_edma_chan *fsl_chan)
+>  {
+> @@ -797,6 +809,7 @@ void fsl_edma_issue_pending(struct dma_chan *chan)
+>  
+>  	spin_unlock_irqrestore(&fsl_chan->vchan.lock, flags);
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_issue_pending);
+>  
+>  int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+>  {
+> @@ -807,6 +820,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+>  				32, 0);
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_alloc_chan_resources);
+>  
+>  void fsl_edma_free_chan_resources(struct dma_chan *chan)
+>  {
+> @@ -830,6 +844,7 @@ void fsl_edma_free_chan_resources(struct dma_chan *chan)
+>  	fsl_chan->is_sw = false;
+>  	fsl_chan->srcid = 0;
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_free_chan_resources);
+>  
+>  void fsl_edma_cleanup_vchan(struct dma_device *dmadev)
+>  {
+> @@ -841,6 +856,7 @@ void fsl_edma_cleanup_vchan(struct dma_device *dmadev)
+>  		tasklet_kill(&chan->vchan.task);
+>  	}
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_cleanup_vchan);
+>  
+>  /*
+>   * On the 32 channels Vybrid/mpc577x edma version, register offsets are
+> @@ -877,5 +893,6 @@ void fsl_edma_setup_regs(struct fsl_edma_engine *edma)
+>  		edma->regs.inth = edma->membase + EDMA64_INTH;
+>  	}
+>  }
+> +EXPORT_SYMBOL_GPL(fsl_edma_setup_regs);
+>  
+>  MODULE_LICENSE("GPL v2");
+> -- 
+> 2.39.2
+> 
 
-Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-Reviewed-by: Peter Chen <peter.chen@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/usb/dwc3/core.c |  3 +++
- drivers/usb/dwc3/core.h |  2 ++
- drivers/usb/dwc3/host.c | 48 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 3e55838c00014..3b68e8e45b8b9 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1626,6 +1626,9 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 	dwc->dis_split_quirk = device_property_read_bool(dev,
- 				"snps,dis-split-quirk");
- 
-+	dwc->host_vbus_glitches_quirk = device_property_read_bool(dev,
-+				"snps,host-vbus-glitches-quirk");
-+
- 	dwc->lpm_nyet_threshold = lpm_nyet_threshold;
- 	dwc->tx_de_emphasis = tx_de_emphasis;
- 
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index e3eea965e57bf..df544ec730d22 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1132,6 +1132,7 @@ struct dwc3_scratchpad_array {
-  *	2	- No de-emphasis
-  *	3	- Reserved
-  * @dis_metastability_quirk: set to disable metastability quirk.
-+ * @host_vbus_glitches_quirk: set to avoid vbus glitch during xhci reset.
-  * @dis_split_quirk: set to disable split boundary.
-  * @wakeup_configured: set if the device is configured for remote wakeup.
-  * @suspended: set to track suspend event due to U3/L2.
-@@ -1353,6 +1354,7 @@ struct dwc3 {
- 	unsigned		tx_de_emphasis:2;
- 
- 	unsigned		dis_metastability_quirk:1;
-+	unsigned		host_vbus_glitches_quirk:1;
- 
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
-diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
-index 61f57fe5bb783..ee1ffe1500560 100644
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -11,6 +11,9 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- 
-+#include "../host/xhci-port.h"
-+#include "../host/xhci-ext-caps.h"
-+#include "../host/xhci-caps.h"
- #include "core.h"
- 
- static void dwc3_host_fill_xhci_irq_res(struct dwc3 *dwc,
-@@ -28,6 +31,44 @@ static void dwc3_host_fill_xhci_irq_res(struct dwc3 *dwc,
- 		dwc->xhci_resources[1].name = name;
- }
- 
-+#define XHCI_HCSPARAMS1		0x4
-+#define XHCI_PORTSC_BASE	0x400
-+
-+/*
-+ * dwc3_power_off_all_roothub_ports - Power off all Root hub ports
-+ * @dwc3: Pointer to our controller context structure
-+ */
-+static void dwc3_power_off_all_roothub_ports(struct dwc3 *dwc)
-+{
-+	int i, port_num;
-+	u32 reg, op_regs_base, offset;
-+	void __iomem *xhci_regs;
-+
-+	/* xhci regs is not mapped yet, do it temperary here */
-+	if (dwc->xhci_resources[0].start) {
-+		xhci_regs = ioremap(dwc->xhci_resources[0].start, DWC3_XHCI_REGS_END);
-+		if (IS_ERR(xhci_regs)) {
-+			dev_err(dwc->dev, "Failed to ioremap xhci_regs\n");
-+			return;
-+		}
-+
-+		op_regs_base = HC_LENGTH(readl(xhci_regs));
-+		reg = readl(xhci_regs + XHCI_HCSPARAMS1);
-+		port_num = HCS_MAX_PORTS(reg);
-+
-+		for (i = 1; i <= port_num; i++) {
-+			offset = op_regs_base + XHCI_PORTSC_BASE + 0x10 * (i - 1);
-+			reg = readl(xhci_regs + offset);
-+			reg &= ~PORT_POWER;
-+			writel(reg, xhci_regs + offset);
-+		}
-+
-+		iounmap(xhci_regs);
-+	} else {
-+		dev_err(dwc->dev, "xhci base reg invalid\n");
-+	}
-+}
-+
- static int dwc3_host_get_irq(struct dwc3 *dwc)
- {
- 	struct platform_device	*dwc3_pdev = to_platform_device(dwc->dev);
-@@ -66,6 +107,13 @@ int dwc3_host_init(struct dwc3 *dwc)
- 	int			ret, irq;
- 	int			prop_idx = 0;
- 
-+	/*
-+	 * We have to power off all Root hub ports immediately after DWC3 set
-+	 * to host mode to avoid VBUS glitch happen when xhci get reset later.
-+	 */
-+	if (dwc->host_vbus_glitches_quirk)
-+		dwc3_power_off_all_roothub_ports(dwc);
-+
- 	irq = dwc3_host_get_irq(dwc);
- 	if (irq < 0)
- 		return irq;
 -- 
-2.34.1
-
+~Vinod
