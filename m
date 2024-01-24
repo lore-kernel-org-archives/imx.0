@@ -1,282 +1,293 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2087.outbound.protection.outlook.com [40.107.241.87])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55037C083
-	for <imx@lists.linux.dev>; Wed, 24 Jan 2024 15:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706109958; cv=fail; b=eZsp1Zq1zc2jtP3H3b9/4umUUc8nCJ6284SgDpH3VI+k4cEVG2J6pGXDKBOp8JqsNnO0WEwkQ8d/QcYwmctnAdG8bkeeTfu2yZ73ukgojlsP3H/RTkPdkvOKddqp84fzBADsSLszsL+V54oYW3gZFYIu7FgvbtWyVIDM3pVEAc4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706109958; c=relaxed/simple;
-	bh=abDY/yrrV6cszdmoSe7YlOSvUwccd5V8yKBucTZlMs0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DkQRW3L5/vH2WBd0PmJ/7Mba83a+Hts3x0SZEiWpg05CUOyjZ7UR0q9ZHpWfZX4pl6LY7QFcEdZ9JxpG+SH2WARKzXVm0SgD02cib4uorNRtf6kUhWfeFbP8jJEJGiOZnsLuAAauqa1Ex3TA9wicmFKaCdvK3p2gzPVT/x3g2WE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=OT9/Rdsi; arc=fail smtp.client-ip=40.107.241.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2F7C08E
+	for <imx@lists.linux.dev>; Wed, 24 Jan 2024 15:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.120
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706110028; cv=none; b=nqhInpVJBjoY8DteCWfdWmplVZVwUOXorYtIffV8ti9yHtDHZSIwdz8Qla3EebBmvvyrJ4SENiZXrL5g0knEUT5u7I4pLBQM3b08tryD/clG6VeSZ0F9XmAD1RZprYwK4spKjDyssyX+1jBZzAH7ksbmK2TKvZ3UygddVmHmsyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706110028; c=relaxed/simple;
+	bh=eWgI5cQzGgxjU8IqhiNLaIrbAIei/iVfjxJTyMVtWCw=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=NhGedrQ1LykI2f76q0vWwqG/fLwgpTPIONfjnS4/Oy5aemnxjMRuMJR/j/LPNzZ+rsHrhvKTZHTPdYjdVA/Hzel/Uufqdbi246PbpwAmJkNnQTcbzbaYnGelV0SGauYM8LmX778p3GC2TqheM64FPHyIRXY9EbmIRToH2vfXnoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/GI0v9C; arc=none smtp.client-ip=192.55.52.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="OT9/Rdsi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Jpx6ibOlkWycl95+0bkKfcz3mJIu8dfOVXMiS0g+zD+5xvqDSYx72I6siXIXhITLAUDZF/yxNpeKW35KhDvNSNcJdEih56mGCsVKlJgO4aM8T6To2NRPNsQiNqAjv4FMVVqw/jWCtW8Nirbn1aHmKMx/9Rc74NPGo5aAby3OP3lfZGnOxkrjvFIPdKM632+uwY7qbC0ElNm7W+wQRJwgAFR9BXABqChAt30Ud1lKF3dXyguzQ3dVUQV0/pYk/oFntmuEuTt9l6uMyqrxMFfsG25JZF4Ef5+EDL3JBsDfkGyfa8eikgwOhz5Nh/huPlEHmhYTdhnN+gG6dEs3FGGFPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q2YNLwFlK/0DlmwVYel/SooaFewXK6BFhZACn8VSamI=;
- b=f54sgrgaWdDSkA+EvXARtP8vPJ1+3LOJN7ph0w+KVQ+EyeNIhFfa5bCfhpSNdker2lqhe8vxokHxhIL2ysSR1uEEmFlh6Jj0qu5lH0tSPIzEL5WQMWtAD1yTZBvw2py6s3JfmjoTSkUSDtOyqf6RC+NW3W8998he+dhyvKTqUa9ee6lQCSuxtVrgEI7junz84kHBcnzp4gvvZastnU6lK8G7THjwAVqCTZS+JQGpwH10qo5C47Z3MiB2rAM56uvwBgl3a0ljD0HDqI2tT3DQzFaIaatdir2Xf7mUPBziNbdhNdZihptkU6OHHtu2WqV3clVQD0rIvKRcv/CmQsHiLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q2YNLwFlK/0DlmwVYel/SooaFewXK6BFhZACn8VSamI=;
- b=OT9/RdsiQLo53JBhT5e/js0LbO9+bKfoLyeKmu1l1S5RWq7BNTiiAGpKl6WJA3s6Xx0qLaplH+Ec36cSwAFNTF0Heb5EPctRiO5PrEhxrX5t6vVeEa3HGPdz+s31gi3Sn8CO2n6ObrBh0TPKX/uIpFGYXN+g6LGz1NL7tOKG1o0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB10001.eurprd04.prod.outlook.com (2603:10a6:800:1d9::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Wed, 24 Jan
- 2024 15:25:52 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7202.035; Wed, 24 Jan 2024
- 15:25:51 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: thinh.nguyen@synopsys.com
-Cc: Frank.Li@nxp.com,
-	balbi@kernel.org,
-	devicetree@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	mark.rutland@arm.com,
-	mathias.nyman@intel.com,
-	pku.leo@gmail.com,
-	ran.wang_1@nxp.com,
-	robh+dt@kernel.org,
-	sergei.shtylyov@cogentembedded.com
-Subject: [PATCH v4 3/3] usb: dwc3: Add workaround for host mode VBUS glitch when boot
-Date: Wed, 24 Jan 2024 10:25:25 -0500
-Message-Id: <20240124152525.3910311-4-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240124152525.3910311-1-Frank.Li@nxp.com>
-References: <20240124152525.3910311-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR04CA0017.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::27) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/GI0v9C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706110026; x=1737646026;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=eWgI5cQzGgxjU8IqhiNLaIrbAIei/iVfjxJTyMVtWCw=;
+  b=a/GI0v9CdeJzNMJE9SdbZs++m0rOwtAev/4Y1kW9iFOrclVpjKIz153E
+   dUO8KnZO49m5Vvx3h86P017S/uSbyBkLELZUwOv6lK4srKJoYLHMp4MOe
+   jObWMrf4Bi/t6jyiL0219zzL3oxUOZ1rNfczbut4K25WTquP2T8Q+c23m
+   8o/F0KGIxXewPuuKqgZnhNv8CVv7f09IQVMp3awrFtTE2zue+fCGwOSm1
+   ee12UGCHItnxEjlAA1pB9OZuINyf7YvX37NqAs8IwKAIAXRXN8OFdruX7
+   k6MAFRE3PHjT3eJRxqOnrpz2MiYCHBFAQKiY4WIqFL2Wuf6nMwyFUP18Q
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400730350"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="400730350"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 07:27:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="2073769"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.48.46])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 07:27:00 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 24 Jan 2024 17:26:55 +0200 (EET)
+To: Frank Li <Frank.Li@nxp.com>
+cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com, 
+    devicetree@vger.kernel.org, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, imx@lists.linux.dev, 
+    Jiri Slaby <jirislaby@kernel.org>, joe@perches.com, 
+    krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org, 
+    linux-i3c@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, miquel.raynal@bootlin.com, 
+    robh@kernel.org, zbigniew.lukwinski@linux.intel.com
+Subject: Re: [PATCH v4 8/8] tty: i3c: add TTY over I3C master support
+In-Reply-To: <20240123231043.3891847-9-Frank.Li@nxp.com>
+Message-ID: <a2716dab-8681-3bce-d0fb-b83789c51362@linux.intel.com>
+References: <20240123231043.3891847-1-Frank.Li@nxp.com> <20240123231043.3891847-9-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB10001:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d266023-b713-45d0-e134-08dc1cf0bfdd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Y9Xc2U68SxmJWXpzKb/vSdGbquMnEAe3TVDDIkr5kFhB2ozM0p8vJRA926cz7dmZb3ltQRmVTL0kHjbQHFsPyxdISoDSHx4rwF0+7zZuw3+/zOvdAOPZcL7TVoVPm38+ODJ/nBfB2HLEhriWPHTTu0r8KNgH7wosZEFddqRzACdqhMfrfWyKenRFaOKJ9PITrHYgQ6NMN7YOM3CK52iDEFjB4Cbio2Ns9wmsjZUHWDrffON3Qy/DwB2q2Ql659rMpZQzz8PeIRXY79W+98ceNxOvDNlCeE9IqS4p1RkFrp8myIaMCiiHrfFgZTYBt4ziuNl5Id/FFBQ8puTIL2LWvU8H6BUoxLRoP3/kacTNoDAddja1OBn6hSXGNrX/FCSJMGzuPhkjdGQ0E2kgcFt7AhxmAHaqP1csWlxR+k0SjKtnrwjW7Q82cIkgIwo9fQcutFiWA2hwMdXrvTVlEEx0NhXFE7s1eNRwuRHpbl+pmTS2Ab2C427C0YezEDXNg2FBM0L3vAAJrtCbacC0zRvZaPdIl1nR8egfhZXvANCzzmc5Nb09kG/GeeCVJanengatEbq4yU47hRMWyy4XXvoPHr7F1f5JOAdi1ats8ROOBes=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(396003)(39860400002)(376002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(4326008)(8676002)(5660300002)(8936002)(66556008)(66946007)(316002)(66476007)(6916009)(2906002)(38350700005)(36756003)(86362001)(41300700001)(7416002)(45080400002)(38100700002)(52116002)(6506007)(6512007)(6666004)(83380400001)(966005)(26005)(478600001)(6486002)(2616005)(1076003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1lXehTAJG+amwUHGzdxT8eqoI5wzi2T3wi1bcOZS6K8NLVbq1htuB6naulRE?=
- =?us-ascii?Q?AB9UASY7sld4iCJ25FWJXb2kLBxUJjBY0U9Iyh8HMZqou1KBCZagIJ8mKbca?=
- =?us-ascii?Q?MCYv3WjIVezSQSVXf1F5S6FKap8AI4Ih2bWugZ8BW6XCW7n14kOLgQe7Vz2C?=
- =?us-ascii?Q?kWi9A173s1pgfMYafV5eYdHsMsVYPYRRHofV/7OGXSFXMkLx1h4aXzEGbhZD?=
- =?us-ascii?Q?63onpp/ze+2f/mM0Iulkb8sLqVhWdK9M4CccLupuXu5abdllhaCfZQfMm2VV?=
- =?us-ascii?Q?H3wX28bP6zBWiPTBBFV9DDbGprC7J/NKOlVnqiTzbUD70jLlqiD7jMWbCLa4?=
- =?us-ascii?Q?iQyu+8hCJ4EtWfZlQUTzt6CDuvjVdXqUefJtnj8bLb/RkU4sqvJXHJ7TZJxH?=
- =?us-ascii?Q?Tr8zLdpKoPBhBedNSHqDYVnL7+UARz3oCyscR7RIpDYItWSVcdyQ/JL2p/qq?=
- =?us-ascii?Q?4aYilWVsT7A7/Fqgu7+Gk0jq5P6wf/z7XKhGCnvfP6McvnVgrKm9IBbxbBAW?=
- =?us-ascii?Q?MmlVxXTnvGQtj2Oay0ZUGz6gcpMiiikaG7E/qH0zf8XNkH/hRGDTnIiazM2+?=
- =?us-ascii?Q?Rhv4MEq1T9Jdnzamrv77tboBnd6OGBlExSgQ9ojhvmfpY6Uxs7XasxA+g4FD?=
- =?us-ascii?Q?kasS1FPiNhAZ31lFTl6J8qcNkdeOigexPi4WmnFuPVCgmzqNT9InODi5PfC1?=
- =?us-ascii?Q?M79M29nnT+flg4CweBUJM1idHY44B1YWMB125h6xAuYGVfhIG0WnrUnXzfBp?=
- =?us-ascii?Q?u2V0q9UYJSp3HYBJPLz2B+DChMAot1F4rNURq59ZQecLxNk6NoZtG/hI2ANa?=
- =?us-ascii?Q?OpX64h1/4qI2tVRVzLrJz3sqj1YABj9kZHx23rInVRMnbtKDBUGcZcEVSUCj?=
- =?us-ascii?Q?eOp378Qzx25Mn5uI9H06dXybcrbUU48Hz2F/gPbmwBM26g0EWiMr7e8eZArp?=
- =?us-ascii?Q?ntAmt6tSumLWqRK8zdU4ZYv+yYOcC0XPuE1PVwdmOPsmPrGqqPjU98/Y7nfO?=
- =?us-ascii?Q?kcAEcd1pkzKqW4v7xQ1PncPpRLUgkWRYr6cqc8gwLK+mWQw+QjVMX6uh06U3?=
- =?us-ascii?Q?49lBRcJgC05RYNCDg2hefLObUD16aOXsos37iQFQduBM0SozBQhibzXKW3Rb?=
- =?us-ascii?Q?KZKOmpOZxS1mlwQMq10422fgGhfavzu+mkAUagPQWA9Xn8zrzAlM0KDgGOam?=
- =?us-ascii?Q?Xfi+GlL7bbHJUmj7vIhPJ55dW6Yw+szqp4uMR0LSdTOGxZ0l+ELpN7HZNFxM?=
- =?us-ascii?Q?PN3gOzL5AW96y/+dg6tW2fgOTCAVceHYvKEmPJ1ZxJ2EqWsI3H/eYgjzyW1E?=
- =?us-ascii?Q?8hlMbSL8lLrXVCuiRAe7tVR38AmSx5HUnOzm5Pi2agVhUwfwDdpo5jFp1Gqk?=
- =?us-ascii?Q?joMZjxMOO49uAgWPznjp70V2Dra4K5C0YW3xMWdaNO7j7yFzoKZcouZpzUR9?=
- =?us-ascii?Q?MgR0eTx8HZOmeNB0ll4jmoVGzVr0c60Y3tp83mu7h3P1POpxYL7jlOy7NJAd?=
- =?us-ascii?Q?Jk7XAjh6jPfGuQ31iY/+pcG87FtY2OZNfRvv2ai51jXQyk5jjdTFB3NAYxYb?=
- =?us-ascii?Q?sJ5GyIC3eLPAPdShPVPYXH5jsrpOdg/FvM10p6u+?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d266023-b713-45d0-e134-08dc1cf0bfdd
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2024 15:25:51.8455
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3MWDFmdq9WBm7GrrAawHT+KmfP7yyJZ1BNIt5RzdQGi2z/7ZTXppQ5XBSIxCF5S82aO7lvACUU87FNqmokE2qA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB10001
+Content-Type: text/plain; charset=US-ASCII
 
-From: Ran Wang <ran.wang_1@nxp.com>
+On Tue, 23 Jan 2024, Frank Li wrote:
 
-When DWC3 is set to host mode by programming register DWC3_GCTL, VBUS
-(or its control signal) will be turned on immediately on related Root Hub
-ports. Then, the VBUS is turned off for a little while(15us) when do xhci
-reset (conducted by xhci driver) and back to normal finally, we can
-observe a negative glitch of related signal happen.
+> In typical embedded Linux systems, UART consoles require at least two pins,
+> TX and RX. In scenarios where I2C/I3C devices like sensors or PMICs are
+> present, we can save these two pins by using this driver. Pins is crucial
+> resources, especially in small chip packages.
+> 
+> This introduces support for using the I3C bus to transfer console tty data,
+> effectively replacing the need for dedicated UART pins. This not only
+> conserves valuable pin resources but also facilitates testing of I3C's
+> advanced features, including early termination, in-band interrupt (IBI)
+> support, and the creation of more complex data patterns. Additionally,
+> it aids in identifying and addressing issues within the I3C controller
+> driver.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> 
+> Notes:
+>     Notes:
+>         Version number use i3c target patches.
+>         Change from v3 to v4
+>         - add static at i3c_remove()
+>         Change v2
+>         - using system_unbound_wq working queue
+>         - fixed accoring to Jiri Slaby's comments
+>     
+>         Change before send with i3c target support
+>     
+>         Change from v4 to v5
+>         - send in i3c improvememtn patches.
+>     
+>         Change from v2 to v4
+>         - none
+>     
+>         Change from v1 to v2
+>         - update commit message.
+>         - using goto for err handle
+>         - using one working queue for all tty-i3c device
+>         - fixed typo found by js
+>         - update kconfig help
+>         - using kfifo
+>     
+>         Still below items not be fixed (according to Jiri Slaby's comments)
+>         - rxwork thread: need trigger from two position.
+>         - common thread queue: need some suggestion
+> 
+>  drivers/tty/Kconfig   |  13 ++
+>  drivers/tty/Makefile  |   1 +
+>  drivers/tty/i3c_tty.c | 426 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 440 insertions(+)
+>  create mode 100644 drivers/tty/i3c_tty.c
+> 
+> diff --git a/drivers/tty/Kconfig b/drivers/tty/Kconfig
+> index 5646dc6242cd9..9ab4cd480e9f8 100644
+> --- a/drivers/tty/Kconfig
+> +++ b/drivers/tty/Kconfig
+> @@ -412,6 +412,19 @@ config RPMSG_TTY
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called rpmsg_tty.
+>  
+> +config I3C_TTY
+> +	tristate "TTY over I3C"
+> +	depends on I3C
+> +	help
+> +	  Select this option to use TTY over I3C master controller.
+> +
+> +	  This makes it possible for user-space programs to send and receive
+> +	  data as a standard tty protocol. I3C provide relatively higher data
+> +	  transfer rate and less pin numbers, SDA/SCL are shared with other
+> +	  devices.
+> +
+> +	  If unsure, say N
+> +
+>  endif # TTY
+>  
+>  source "drivers/tty/serdev/Kconfig"
+> diff --git a/drivers/tty/Makefile b/drivers/tty/Makefile
+> index 07aca5184a55d..f329f9c7d308a 100644
+> --- a/drivers/tty/Makefile
+> +++ b/drivers/tty/Makefile
+> @@ -27,5 +27,6 @@ obj-$(CONFIG_GOLDFISH_TTY)	+= goldfish.o
+>  obj-$(CONFIG_MIPS_EJTAG_FDC_TTY) += mips_ejtag_fdc.o
+>  obj-$(CONFIG_VCC)		+= vcc.o
+>  obj-$(CONFIG_RPMSG_TTY)		+= rpmsg_tty.o
+> +obj-$(CONFIG_I3C_TTY)		+= i3c_tty.o
+>  
+>  obj-y += ipwireless/
+> diff --git a/drivers/tty/i3c_tty.c b/drivers/tty/i3c_tty.c
+> new file mode 100644
+> index 0000000000000..8f4e87dfa01cd
+> --- /dev/null
+> +++ b/drivers/tty/i3c_tty.c
+> @@ -0,0 +1,426 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright 2023 NXP.
+> + *
+> + * Author: Frank Li <Frank.Li@nxp.com>
+> + */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/i3c/device.h>
+> +#include <linux/i3c/master.h>
+> +#include <linux/slab.h>
+> +#include <linux/console.h>
+> +#include <linux/serial_core.h>
+> +#include <linux/interrupt.h>
 
-This VBUS glitch might cause some USB devices enumeration fail if kernel
-boot with them connected. Such as LS1012AFWRY/LS1043ARDB/LX2160AQDS
-/LS1088ARDB with Kingston 16GB USB2.0/Kingston USB3.0/JetFlash Transcend
-4GB USB2.0 drives. The fail cases include enumerated as full-speed device
-or report wrong device descriptor, etc.
+Do you need this header.
 
-One SW workaround which can fix this is by programing all xhci PORTSC[PP]
-to 0 to turn off VBUS immediately after setting host mode in DWC3 driver
-(per signal measurement result, it will be too late to do it in
-xhci-plat.c or xhci.c). Then, after xhci reset complete in xhci driver,
-PORTSC[PP]s' value will back to 1 automatically and VBUS on at that time,
-no glitch happen and normal enumeration process has no impact.
+> +#include <linux/workqueue.h>
+> +#include <linux/tty_flip.h>
+> +
+> +static DEFINE_IDR(i3c_tty_minors);
+> +static DEFINE_MUTEX(i3c_tty_minors_lock);
+> +
+> +static struct tty_driver *i3c_tty_driver;
+> +
+> +#define I3C_TTY_MINORS		8
+> +#define I3C_TTY_TRANS_SIZE	16
+> +#define I3C_TTY_RX_STOP		0
+> +#define I3C_TTY_RETRY		20
+> +#define I3C_TTY_YIELD_US	100
+> +
+> +struct ttyi3c_port {
+> +	struct tty_port port;
 
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-Reviewed-by: Peter Chen <peter.chen@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+Missing #include
 
-Notes:
-    Chang from v3 to v4
-    - fix kernel-doc comments.
-    - fix ./script/kernel-doc check error.
-    - Add Thinh's ACK tag
-    Change from v2 to v3
-    - reversed christmas tree
-    - please move major change hunk to the top
-    - Reword "We have to ..." to "Some platforms need to ... "
-    
-    Change from v1 to v2:
-    - split xhci.h
-    Last review at June 06, 2019. Fixed all review comments and sent again.
-    
-    https://lore.kernel.org/linux-kernel/AM5PR0402MB2865979E26017BC5937DBBA5F1170@AM5PR0402MB2865.eurprd04.prod.outlook.com/
+> +	int minor;
+> +	spinlock_t xlock; /* protect xmit */
 
- drivers/usb/dwc3/core.c |  3 +++
- drivers/usb/dwc3/core.h |  2 ++
- drivers/usb/dwc3/host.c | 51 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 56 insertions(+)
+Missing #include
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 3e55838c00014..3b68e8e45b8b9 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1626,6 +1626,9 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 	dwc->dis_split_quirk = device_property_read_bool(dev,
- 				"snps,dis-split-quirk");
- 
-+	dwc->host_vbus_glitches_quirk = device_property_read_bool(dev,
-+				"snps,host-vbus-glitches-quirk");
-+
- 	dwc->lpm_nyet_threshold = lpm_nyet_threshold;
- 	dwc->tx_de_emphasis = tx_de_emphasis;
- 
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index e3eea965e57bf..df544ec730d22 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1132,6 +1132,7 @@ struct dwc3_scratchpad_array {
-  *	2	- No de-emphasis
-  *	3	- Reserved
-  * @dis_metastability_quirk: set to disable metastability quirk.
-+ * @host_vbus_glitches_quirk: set to avoid vbus glitch during xhci reset.
-  * @dis_split_quirk: set to disable split boundary.
-  * @wakeup_configured: set if the device is configured for remote wakeup.
-  * @suspended: set to track suspend event due to U3/L2.
-@@ -1353,6 +1354,7 @@ struct dwc3 {
- 	unsigned		tx_de_emphasis:2;
- 
- 	unsigned		dis_metastability_quirk:1;
-+	unsigned		host_vbus_glitches_quirk:1;
- 
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
-diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
-index 61f57fe5bb783..4957b9765dc56 100644
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -11,8 +11,52 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- 
-+#include "../host/xhci-port.h"
-+#include "../host/xhci-ext-caps.h"
-+#include "../host/xhci-caps.h"
- #include "core.h"
- 
-+#define XHCI_HCSPARAMS1		0x4
-+#define XHCI_PORTSC_BASE	0x400
-+
-+/**
-+ * dwc3_power_off_all_roothub_ports - Power off all Root hub ports
-+ * @dwc: Pointer to our controller context structure
-+ */
-+static void dwc3_power_off_all_roothub_ports(struct dwc3 *dwc)
-+{
-+	void __iomem *xhci_regs;
-+	u32 op_regs_base;
-+	int port_num;
-+	u32 offset;
-+	u32 reg;
-+	int i;
-+
-+	/* xhci regs is not mapped yet, do it temperary here */
-+	if (dwc->xhci_resources[0].start) {
-+		xhci_regs = ioremap(dwc->xhci_resources[0].start, DWC3_XHCI_REGS_END);
-+		if (IS_ERR(xhci_regs)) {
-+			dev_err(dwc->dev, "Failed to ioremap xhci_regs\n");
-+			return;
-+		}
-+
-+		op_regs_base = HC_LENGTH(readl(xhci_regs));
-+		reg = readl(xhci_regs + XHCI_HCSPARAMS1);
-+		port_num = HCS_MAX_PORTS(reg);
-+
-+		for (i = 1; i <= port_num; i++) {
-+			offset = op_regs_base + XHCI_PORTSC_BASE + 0x10 * (i - 1);
-+			reg = readl(xhci_regs + offset);
-+			reg &= ~PORT_POWER;
-+			writel(reg, xhci_regs + offset);
-+		}
-+
-+		iounmap(xhci_regs);
-+	} else {
-+		dev_err(dwc->dev, "xhci base reg invalid\n");
-+	}
-+}
-+
- static void dwc3_host_fill_xhci_irq_res(struct dwc3 *dwc,
- 					int irq, char *name)
- {
-@@ -66,6 +110,13 @@ int dwc3_host_init(struct dwc3 *dwc)
- 	int			ret, irq;
- 	int			prop_idx = 0;
- 
-+	/*
-+	 * Some platforms need to power off all Root hub ports immediately after DWC3 set to host
-+	 * mode to avoid VBUS glitch happen when xhci get reset later.
-+	 */
-+	if (dwc->host_vbus_glitches_quirk)
-+		dwc3_power_off_all_roothub_ports(dwc);
-+
- 	irq = dwc3_host_get_irq(dwc);
- 	if (irq < 0)
- 		return irq;
+> +	u8 tx_buff[I3C_TTY_TRANS_SIZE];
+> +	u8 rx_buff[I3C_TTY_TRANS_SIZE];
+> +	struct i3c_device *i3cdev;
+> +	struct work_struct txwork;
+> +	struct work_struct rxwork;
+> +	struct completion txcomplete;
+
+Missing #include
+
+> +	unsigned long status;
+> +	u32 buf_overrun;
+> +};
+
+> +static void i3c_port_shutdown(struct tty_port *port)
+> +{
+> +	struct ttyi3c_port *sport =
+> +		container_of(port, struct ttyi3c_port, port);
+
+On one line.
+
+> +
+> +	i3c_device_disable_ibi(sport->i3cdev);
+> +	tty_port_free_xmit_buf(port);
+> +}
+> +
+> +static void i3c_port_destruct(struct tty_port *port)
+> +{
+> +	struct ttyi3c_port *sport =
+> +		container_of(port, struct ttyi3c_port, port);
+
+Ditto.
+
+> +static void tty_i3c_rxwork(struct work_struct *work)
+> +{
+> +	struct ttyi3c_port *sport = container_of(work, struct ttyi3c_port, rxwork);
+> +	struct i3c_priv_xfer xfers;
+> +	u32 retry = I3C_TTY_RETRY;
+> +	u16 status = BIT(0);
+
+Unnecessary initialization.
+
+> +	int ret;
+> +
+> +	memset(&xfers, 0, sizeof(xfers));
+> +	xfers.data.in = sport->rx_buff;
+> +	xfers.len = I3C_TTY_TRANS_SIZE;
+> +	xfers.rnw = 1;
+> +
+> +	do {
+> +		if (test_bit(I3C_TTY_RX_STOP, &sport->status))
+> +			break;
+> +
+> +		i3c_device_do_priv_xfers(sport->i3cdev, &xfers, 1);
+> +
+> +		if (xfers.actual_len) {
+> +			ret = tty_insert_flip_string(&sport->port, sport->rx_buff,
+> +						     xfers.actual_len);
+> +			if (ret < xfers.actual_len)
+> +				sport->buf_overrun++;
+> +
+> +			retry = I3C_TTY_RETRY;
+> +			continue;
+> +		}
+> +
+> +		status = BIT(0);
+
+Can this BIT(0) be named with a #define?
+
+> +		i3c_device_getstatus_format1(sport->i3cdev, &status);
+> +		/*
+> +		 * Target side needs some time to fill data into fifo. Target side may not
+> +		 * have hardware update status in real time. Software update status always
+> +		 * needs some delays.
+> +		 *
+> +		 * Generally, target side have circular buffer in memory, it will be moved
+> +		 * into FIFO by CPU or DMA. 'status' just show if circular buffer empty. But
+> +		 * there are gap, especially CPU have not response irq to fill FIFO in time.
+> +		 * So xfers.actual will be zero, wait for little time to avoid flood
+> +		 * transfer in i3c bus.
+> +		 */
+> +		usleep_range(I3C_TTY_YIELD_US, 10 * I3C_TTY_YIELD_US);
+> +		retry--;
+> +
+> +	} while (retry && (status & BIT(0)));
+
+Name with define?
+
+
 -- 
-2.34.1
+ i.
 
