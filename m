@@ -1,293 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2041.outbound.protection.outlook.com [40.107.13.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2F7C08E
-	for <imx@lists.linux.dev>; Wed, 24 Jan 2024 15:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.120
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706110028; cv=none; b=nqhInpVJBjoY8DteCWfdWmplVZVwUOXorYtIffV8ti9yHtDHZSIwdz8Qla3EebBmvvyrJ4SENiZXrL5g0knEUT5u7I4pLBQM3b08tryD/clG6VeSZ0F9XmAD1RZprYwK4spKjDyssyX+1jBZzAH7ksbmK2TKvZ3UygddVmHmsyk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706110028; c=relaxed/simple;
-	bh=eWgI5cQzGgxjU8IqhiNLaIrbAIei/iVfjxJTyMVtWCw=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=NhGedrQ1LykI2f76q0vWwqG/fLwgpTPIONfjnS4/Oy5aemnxjMRuMJR/j/LPNzZ+rsHrhvKTZHTPdYjdVA/Hzel/Uufqdbi246PbpwAmJkNnQTcbzbaYnGelV0SGauYM8LmX778p3GC2TqheM64FPHyIRXY9EbmIRToH2vfXnoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/GI0v9C; arc=none smtp.client-ip=192.55.52.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D273D7A721
+	for <imx@lists.linux.dev>; Wed, 24 Jan 2024 17:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706116216; cv=fail; b=O11jtU/c3wewkLKztL9HftQtrWmNdw2SRzLn6c7ufs1Qi2HNRyQNWQ4cs/6I4Oj+6d8JuKgpki6SAlf7wNmjlTg+lLgo/dAohxVfH3ZXoXeQO7DwsVIX0tKJSM75zmHZDCIwa/3Pv3NWiOaMas0u7OcN0xCqakOqzD4BsAXofAk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706116216; c=relaxed/simple;
+	bh=rPKWNF+1BWb2OGAB86SIOLpmDziq+ER6c02Pw2sB78Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HfF4MD3MgWPUAS60ILzEAnMK3qYokI61ZdMfO9d/RO5sKrZv2iAs95QDp5BPcG2v6anmWYvW74gyLyUHu+7d1fA6CEPi2sa+0aNTQFlkbAECPfCAP9IwGIePoaa48ONT+DvB+duzZAOSImZPTsO8zrXVnCLWH2pgAzU9UKVYek8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=BmWmrSq4; arc=fail smtp.client-ip=40.107.13.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/GI0v9C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706110026; x=1737646026;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=eWgI5cQzGgxjU8IqhiNLaIrbAIei/iVfjxJTyMVtWCw=;
-  b=a/GI0v9CdeJzNMJE9SdbZs++m0rOwtAev/4Y1kW9iFOrclVpjKIz153E
-   dUO8KnZO49m5Vvx3h86P017S/uSbyBkLELZUwOv6lK4srKJoYLHMp4MOe
-   jObWMrf4Bi/t6jyiL0219zzL3oxUOZ1rNfczbut4K25WTquP2T8Q+c23m
-   8o/F0KGIxXewPuuKqgZnhNv8CVv7f09IQVMp3awrFtTE2zue+fCGwOSm1
-   ee12UGCHItnxEjlAA1pB9OZuINyf7YvX37NqAs8IwKAIAXRXN8OFdruX7
-   k6MAFRE3PHjT3eJRxqOnrpz2MiYCHBFAQKiY4WIqFL2Wuf6nMwyFUP18Q
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400730350"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="400730350"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 07:27:05 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2073769"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.48.46])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 07:27:00 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 24 Jan 2024 17:26:55 +0200 (EET)
-To: Frank Li <Frank.Li@nxp.com>
-cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com, 
-    devicetree@vger.kernel.org, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, imx@lists.linux.dev, 
-    Jiri Slaby <jirislaby@kernel.org>, joe@perches.com, 
-    krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org, 
-    linux-i3c@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>, 
-    linux-serial <linux-serial@vger.kernel.org>, miquel.raynal@bootlin.com, 
-    robh@kernel.org, zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH v4 8/8] tty: i3c: add TTY over I3C master support
-In-Reply-To: <20240123231043.3891847-9-Frank.Li@nxp.com>
-Message-ID: <a2716dab-8681-3bce-d0fb-b83789c51362@linux.intel.com>
-References: <20240123231043.3891847-1-Frank.Li@nxp.com> <20240123231043.3891847-9-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="BmWmrSq4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LbieraNWdqMfXSMZwotkCnLwvdtPSVD2CkfPYfJpkZeoLksOkAcPbLDn1wVGYeM7GtfWHVQvuruPfnQyeqVpDwhx8Rg8f6jN6y30acGJXkqeKUFJqEBBvIh5uSE0H45XiewZq7onx5MrXmHH7+nv9Qtl4kS4NPBY+rK3qyPUt5VEj9ojEXuSczGin2mvq39UOke7Q0XNovel53CQxnyaC3ijka8WfDP/TurDUERYVzhfmxvl5WfOMdjthUh6pk8t8t+ndwwiTXDcvudy0YNikybfujBzNR6rkex1vGVGZdMfgdDf4pbSANpRTbNyAJbLDCbSdSAyhQP9Y/WUfgto1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FsE4CQ5kR0aFxV9whG0c5qhjLZfaFGbW3waw65kyMQw=;
+ b=X6+VO3bKpV76BsZKXLWWTTp60wsklhd99LzaUHHNWDxGTBCodKL0z7HWEr6iiWia5Uk5Z/rXs15nEhs/+qZsahEOHMk0wtKewEy996ye4cETVXe32xo2Yc9Gj+XYBx3ZuWkBoj1Wr/vAIARuXWUY0bE+oWpnw5oGkV0x8vESdtJ/wPhWTOmtYw9OzjI96KlPMbyS8enhQr1m3EvEOk+nggqV7vgGaoxV2oR8yYvIu0xKQOCbGHp9XLzTPqR14dniYpJS7kLm4XUEDMfhekEH79+yrtxNHrWdOWsseWX4dne7y3rwPAGijv7xLDy6Ziad0NDgR1wNL1G+RzEsOzb7hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FsE4CQ5kR0aFxV9whG0c5qhjLZfaFGbW3waw65kyMQw=;
+ b=BmWmrSq45WE+ghff3+4t/52YU8cuEYgl7ljL8yokUB/17eZ5ait4UL50C4Hb0jldShRUVrVpuT2Ua+f/bDk0oUKuvEw0P09QsvX+Tq/VXS8Iap0BYEsnW/f8ouiDssoKkzcelk0VNF1RnCM56bRNhbSvJg6r5MSXEDqxiX0kzyE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBBPR04MB7963.eurprd04.prod.outlook.com (2603:10a6:10:1e1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Wed, 24 Jan
+ 2024 17:10:10 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7202.035; Wed, 24 Jan 2024
+ 17:10:10 +0000
+Date: Wed, 24 Jan 2024 12:10:01 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Niklas Cassel <Niklas.Cassel@wdc.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	"open list:PCI DRIVER FOR SYNOPSYS DESIGNWARE" <linux-pci@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] PCI: dwc: Fix BAR0 wrong map to iATU6 after root
+ complex reinit endpoint
+Message-ID: <ZbFEafUmqmE0nrPx@lizhi-Precision-Tower-5810>
+References: <20231219044844.1195294-1-Frank.Li@nxp.com>
+ <ZYFrUWM7JXdv7rtb@x1-carbon>
+ <ZYGmpaf18pJgM/qj@lizhi-Precision-Tower-5810>
+ <ZYGq6RdCfdhXFF/9@x1-carbon>
+ <ZZ1Pj3MvhQNMnP8M@x1-carbon>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZZ1Pj3MvhQNMnP8M@x1-carbon>
+X-ClientProxiedBy: BYAPR01CA0052.prod.exchangelabs.com (2603:10b6:a03:94::29)
+ To PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7963:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68f5ead5-230d-47b3-78a8-08dc1cff5265
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	+gmvM++Jj7p6+q8rV6KorRTFbc7HMcE4TPL0NWoKvVA/vl+Bmv4OMJHwVWjfd8fD46KNQ2+/w62xK7K0wGkR/N9NH1xXRe608QmsvEXAIrZkg0/Z5noNSvOISWKzOPDcTuC7wac8K6mI0hBm5AvL8diRhucPO1Qr5QKfEo5KpDSz8XLzIpdqK9j3OujdnFyEsyg1qBdMtZ5YcyKCIgS/sD+uKwut0Jk1cU1bXscOWSdCoe1cyLa4ipeR3ZxuBjlQtLWS54i9IHd8+SsbuP4RM5KljYs/IGj7RlucJB5OcL+rxlCWwLmwc3XackIx0yv2Jjcj028YF0gKO4GKwZl1noYo+rLq48/Ox0FTxkn5HTO5eEK6XU2MpWpVGUTa4oom4fm4S9sN+suskX6MXMcdsA7b5bocLgGH+fAM+6+p6TYhv3B29/xaev2POkNaPtx3eIp9qZSrHGh1r+kJVqse9xdzm3rwNgjGtTzX2CuHKDMCuEjkvWRN7iN7NaDk31VvGwhSTl0+xe43rVnNWMPspZhTypR6ATP+ZDbPJfUjlp+yLigVj7JQ/ru4DSmc08pWu8W0zRP+/vRqZ8KZmd5CHN0NwZ15tOhIuSOByGk8iMA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(396003)(376002)(136003)(366004)(39860400002)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(83380400001)(26005)(33716001)(38100700002)(66476007)(54906003)(66946007)(41300700001)(7416002)(8676002)(6916009)(5660300002)(316002)(2906002)(8936002)(66556008)(9686003)(6506007)(4326008)(6512007)(6666004)(478600001)(6486002)(966005)(38350700005)(86362001)(52116002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+91QVmSUMxPXi1wYkwET9c35QpBSqME6iNw9yAg8oG8XAGmPpfXSP22UkSQ4?=
+ =?us-ascii?Q?V6qoAs1oLlwBZFseBKJ9DHjAE3fGTkNQkNS/IOncHSxPD6w+xRlaK2nJ6c6B?=
+ =?us-ascii?Q?Mkg3sdpDIS9ularjx+R1pKLKwdkMdypgck2vOpP2Pw+Rz1UXFSbhkSJvVkig?=
+ =?us-ascii?Q?Cc3OzzyiJ5J/MEZqHkQpl8K+HJCQ9vh6KwJbyQQK+/vQq2hlRrpKgA5aY8uh?=
+ =?us-ascii?Q?KsKh75dDSHM8KhNe7I7E8i+1Ehgv5jaR7kEZXQykBzEVbknO6B+jAYtCXz7h?=
+ =?us-ascii?Q?bOE57Dfm/40zqPqdmizbKqykVJDp120oxntgTqh6tBCw4HFNCLk4Qk0pyOTP?=
+ =?us-ascii?Q?Y5OGFu1RL00kDMonI/gu3rgnA706lHwgAIZVGS35CE3POqQU4rp9WmTNtIAz?=
+ =?us-ascii?Q?kJPng81eLPg98m7PylIfuPCSk/jDmS3J0xFrmGiqGl/ZGgS5XXVjqYtiJoSM?=
+ =?us-ascii?Q?uGP2polITlvp0WefxoID3RrmaBII1Jfcd7BKQSRWJ8vjhkOD7q4+sseKSq7W?=
+ =?us-ascii?Q?Er4LdDhKBAeYtnq6RPH/9LVW42bEF2+9/r4fEGHLq53fvr7hXVx6XIo7rK6f?=
+ =?us-ascii?Q?azLl1efggLuuKCDRVnv1yYxizwyYckHYICnZVUW7ZF2cG4T2lyR2RyVY+Ov0?=
+ =?us-ascii?Q?28ISwIuSs3jmidatk6GBziCYJqagnLG3YnTKIcNZS2vCqeiefVtLiKWoM7iZ?=
+ =?us-ascii?Q?nxCJzDYR84pLxmOfdAfVN1EVs3eEmJ3YSv9NQWCw5C+Rf7ApeB4e+TacsCkm?=
+ =?us-ascii?Q?pj/dCjlAXmjQ2XdpeBhqI5LS+jLFM+sv/Lb/TMQV4lkpWC8J19Kk7Cle9Oft?=
+ =?us-ascii?Q?ysOCWsktM3Qyp1tSkZ/808ulIaPu5dRvZBRzMy/Ed/8QRP0dM1PjpZatstCy?=
+ =?us-ascii?Q?r+2qSeXW+hGOr6ErpIP/kisfcR0v9liMYmMX3yNxETyVAEU7HO0eALyu9FVy?=
+ =?us-ascii?Q?QAHNJG6ZqAW8VrueYPIaRZdFhlfAx/dVVRjE6PAwVp7o2Z6zScon6oj5fwRA?=
+ =?us-ascii?Q?v5gAQ2HZtXL3IwBatWW11on/vdc3MwGMStM/V6yeq9EJwDgIm+gB9nW6NR/X?=
+ =?us-ascii?Q?7cAITZiaBo4R4X33iUP3WUuUDeGTxQ9u3YkmWhpnWsqvZVdSmHkchfr4zxU9?=
+ =?us-ascii?Q?9suFFLzLt+3j3xrOEJn5mLTTA2H4NnuLHUPpL4Mkd8mk/iu2Nj2RtBR1Ucgm?=
+ =?us-ascii?Q?GA0+2oM8auofg4PWVOa+fxNrnTBUKLHx7L6Hz94m45Cu2tSmZPZTxDQPYVdD?=
+ =?us-ascii?Q?G8RLMkYdPHKiGUAa2zd3+K75RGM8TcsjYov5irfU6iUNvAQ55OEjqK5nRl6a?=
+ =?us-ascii?Q?GTOQ9nPJxsjFDo/8LG0/0iEyGISDoIMqdKM1lsMO8qbbBUMgvZxnXacRBC8i?=
+ =?us-ascii?Q?Dc6sQ8zuPju0JqPxC9wLdFEKzHFdqxV9HAtS3YATYDpFmEPkHibCbTnj0s2l?=
+ =?us-ascii?Q?cdqSeiin4C9B9ivgPP7jVxUsWdWnrEygr1T23TvL9xzA/XTsyiPN98CzpuoH?=
+ =?us-ascii?Q?AZZTxOVbKxqDtACrvWC49BjPApIhlDqwxMP5M7R8WU73MHfHWiQjjdse6nfo?=
+ =?us-ascii?Q?fYnGtBX2kZ3FcS+WVgXVZ7hLta4+fIWzf1z9Wr45?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68f5ead5-230d-47b3-78a8-08dc1cff5265
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2024 17:10:10.5534
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: caRfqR3NChS66Nq0Ph0PW5Z/EyEGny58QDDGjnvU+xVLELAgufk6DN/uldU1Kh/uJksLeJd1wwSSFbIYSu0GUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7963
 
-On Tue, 23 Jan 2024, Frank Li wrote:
-
-> In typical embedded Linux systems, UART consoles require at least two pins,
-> TX and RX. In scenarios where I2C/I3C devices like sensors or PMICs are
-> present, we can save these two pins by using this driver. Pins is crucial
-> resources, especially in small chip packages.
+On Tue, Jan 09, 2024 at 01:52:15PM +0000, Niklas Cassel wrote:
+> Hello Frank,
 > 
-> This introduces support for using the I3C bus to transfer console tty data,
-> effectively replacing the need for dedicated UART pins. This not only
-> conserves valuable pin resources but also facilitates testing of I3C's
-> advanced features, including early termination, in-band interrupt (IBI)
-> support, and the creation of more complex data patterns. Additionally,
-> it aids in identifying and addressing issues within the I3C controller
-> driver.
+> On Tue, Dec 19, 2023 at 03:38:33PM +0100, Niklas Cassel wrote:
+> > On Tue, Dec 19, 2023 at 09:20:21AM -0500, Frank Li wrote:
+> > > On Tue, Dec 19, 2023 at 10:07:14AM +0000, Niklas Cassel wrote:
+> > > > On Mon, Dec 18, 2023 at 11:48:43PM -0500, Frank Li wrote:
+> > > > > dw_pcie_ep_inbound_atu()
+> > > > > {
+> > > > > 	...
+> > > > > 	if (!ep->bar_to_atu[bar])
+> > > > > 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+> > > > > 	else
+> > > > > 		free_win = ep->bar_to_atu[bar];
+> > > > > 	...
+> > > > > }
+> > > > > 
+> > > > > The atu index 0 is valid case for atu number. The find_first_zero_bit()
+> > > > > will return 6 when second time call into this function if atu is 0. Suppose
+> > > > > it should use branch 'free_win = ep->bar_to_atu[bar]'.
+> > > > > 
+> > > > > Change 'bar_to_atu' to s8. Initialize bar_to_atu as -1 to indicate it have
+> > > > > not allocate atu to the bar.
+> > > > > 
+> > > > > Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
+> > > > > Close: https://lore.kernel.org/linux-pci/ZXt2A+Fusfz3luQV@x1-carbon/T/#u
+> > > > > Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > > 
+> > > > > Notes:
+> > > > >     @Niklas:
+> > > > >     	I have not test your case. I should be equal to previous's fix in
+> > > > >     mail list.
+> > > > 
+> > > > Hello Frank,
+> > > > 
+> > > > Thank you for sending a proper fix for this!
+> > > > 
+> > > > Personally, I slightly prefer your fix that saves the iatu index + 1, and
+> > > > keeps 0 to mean unused. That way, you don't need the memset, and you don't
+> > > > need to change the type to signed, but either way is fine by me, so:
+> > > 
+> > > index + 1 don't match hardware iATU index. It will be confused because
+> > > other parts is 0 based.
+> > > 
+> > > So I choose "-1" as free iATU.
+> > 
+> > A s8 can hold a max value of 127.
+> > CX_ATU_NUM_OUTBOUND_REGIONS seems to be 0-255.
+> > 
+> > Since the DWC code can be synthesized with 256 iATUs,
+> > your code will not work on systems with 128 or more iATUs.
+> > 
+> > If we continue to use a u8, and offset the saved value by one,
+> > we will at least be able to support 255-1 == 254 iATUs.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+> Do you plan to send out a v2?
+
+@mani:
+	Do you have any comments about this fixes except u8's problem?
+
+Frank
+
 > 
-> Notes:
->     Notes:
->         Version number use i3c target patches.
->         Change from v3 to v4
->         - add static at i3c_remove()
->         Change v2
->         - using system_unbound_wq working queue
->         - fixed accoring to Jiri Slaby's comments
->     
->         Change before send with i3c target support
->     
->         Change from v4 to v5
->         - send in i3c improvememtn patches.
->     
->         Change from v2 to v4
->         - none
->     
->         Change from v1 to v2
->         - update commit message.
->         - using goto for err handle
->         - using one working queue for all tty-i3c device
->         - fixed typo found by js
->         - update kconfig help
->         - using kfifo
->     
->         Still below items not be fixed (according to Jiri Slaby's comments)
->         - rxwork thread: need trigger from two position.
->         - common thread queue: need some suggestion
 > 
->  drivers/tty/Kconfig   |  13 ++
->  drivers/tty/Makefile  |   1 +
->  drivers/tty/i3c_tty.c | 426 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 440 insertions(+)
->  create mode 100644 drivers/tty/i3c_tty.c
-> 
-> diff --git a/drivers/tty/Kconfig b/drivers/tty/Kconfig
-> index 5646dc6242cd9..9ab4cd480e9f8 100644
-> --- a/drivers/tty/Kconfig
-> +++ b/drivers/tty/Kconfig
-> @@ -412,6 +412,19 @@ config RPMSG_TTY
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called rpmsg_tty.
->  
-> +config I3C_TTY
-> +	tristate "TTY over I3C"
-> +	depends on I3C
-> +	help
-> +	  Select this option to use TTY over I3C master controller.
-> +
-> +	  This makes it possible for user-space programs to send and receive
-> +	  data as a standard tty protocol. I3C provide relatively higher data
-> +	  transfer rate and less pin numbers, SDA/SCL are shared with other
-> +	  devices.
-> +
-> +	  If unsure, say N
-> +
->  endif # TTY
->  
->  source "drivers/tty/serdev/Kconfig"
-> diff --git a/drivers/tty/Makefile b/drivers/tty/Makefile
-> index 07aca5184a55d..f329f9c7d308a 100644
-> --- a/drivers/tty/Makefile
-> +++ b/drivers/tty/Makefile
-> @@ -27,5 +27,6 @@ obj-$(CONFIG_GOLDFISH_TTY)	+= goldfish.o
->  obj-$(CONFIG_MIPS_EJTAG_FDC_TTY) += mips_ejtag_fdc.o
->  obj-$(CONFIG_VCC)		+= vcc.o
->  obj-$(CONFIG_RPMSG_TTY)		+= rpmsg_tty.o
-> +obj-$(CONFIG_I3C_TTY)		+= i3c_tty.o
->  
->  obj-y += ipwireless/
-> diff --git a/drivers/tty/i3c_tty.c b/drivers/tty/i3c_tty.c
-> new file mode 100644
-> index 0000000000000..8f4e87dfa01cd
-> --- /dev/null
-> +++ b/drivers/tty/i3c_tty.c
-> @@ -0,0 +1,426 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2023 NXP.
-> + *
-> + * Author: Frank Li <Frank.Li@nxp.com>
-> + */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/i3c/device.h>
-> +#include <linux/i3c/master.h>
-> +#include <linux/slab.h>
-> +#include <linux/console.h>
-> +#include <linux/serial_core.h>
-> +#include <linux/interrupt.h>
-
-Do you need this header.
-
-> +#include <linux/workqueue.h>
-> +#include <linux/tty_flip.h>
-> +
-> +static DEFINE_IDR(i3c_tty_minors);
-> +static DEFINE_MUTEX(i3c_tty_minors_lock);
-> +
-> +static struct tty_driver *i3c_tty_driver;
-> +
-> +#define I3C_TTY_MINORS		8
-> +#define I3C_TTY_TRANS_SIZE	16
-> +#define I3C_TTY_RX_STOP		0
-> +#define I3C_TTY_RETRY		20
-> +#define I3C_TTY_YIELD_US	100
-> +
-> +struct ttyi3c_port {
-> +	struct tty_port port;
-
-Missing #include
-
-> +	int minor;
-> +	spinlock_t xlock; /* protect xmit */
-
-Missing #include
-
-> +	u8 tx_buff[I3C_TTY_TRANS_SIZE];
-> +	u8 rx_buff[I3C_TTY_TRANS_SIZE];
-> +	struct i3c_device *i3cdev;
-> +	struct work_struct txwork;
-> +	struct work_struct rxwork;
-> +	struct completion txcomplete;
-
-Missing #include
-
-> +	unsigned long status;
-> +	u32 buf_overrun;
-> +};
-
-> +static void i3c_port_shutdown(struct tty_port *port)
-> +{
-> +	struct ttyi3c_port *sport =
-> +		container_of(port, struct ttyi3c_port, port);
-
-On one line.
-
-> +
-> +	i3c_device_disable_ibi(sport->i3cdev);
-> +	tty_port_free_xmit_buf(port);
-> +}
-> +
-> +static void i3c_port_destruct(struct tty_port *port)
-> +{
-> +	struct ttyi3c_port *sport =
-> +		container_of(port, struct ttyi3c_port, port);
-
-Ditto.
-
-> +static void tty_i3c_rxwork(struct work_struct *work)
-> +{
-> +	struct ttyi3c_port *sport = container_of(work, struct ttyi3c_port, rxwork);
-> +	struct i3c_priv_xfer xfers;
-> +	u32 retry = I3C_TTY_RETRY;
-> +	u16 status = BIT(0);
-
-Unnecessary initialization.
-
-> +	int ret;
-> +
-> +	memset(&xfers, 0, sizeof(xfers));
-> +	xfers.data.in = sport->rx_buff;
-> +	xfers.len = I3C_TTY_TRANS_SIZE;
-> +	xfers.rnw = 1;
-> +
-> +	do {
-> +		if (test_bit(I3C_TTY_RX_STOP, &sport->status))
-> +			break;
-> +
-> +		i3c_device_do_priv_xfers(sport->i3cdev, &xfers, 1);
-> +
-> +		if (xfers.actual_len) {
-> +			ret = tty_insert_flip_string(&sport->port, sport->rx_buff,
-> +						     xfers.actual_len);
-> +			if (ret < xfers.actual_len)
-> +				sport->buf_overrun++;
-> +
-> +			retry = I3C_TTY_RETRY;
-> +			continue;
-> +		}
-> +
-> +		status = BIT(0);
-
-Can this BIT(0) be named with a #define?
-
-> +		i3c_device_getstatus_format1(sport->i3cdev, &status);
-> +		/*
-> +		 * Target side needs some time to fill data into fifo. Target side may not
-> +		 * have hardware update status in real time. Software update status always
-> +		 * needs some delays.
-> +		 *
-> +		 * Generally, target side have circular buffer in memory, it will be moved
-> +		 * into FIFO by CPU or DMA. 'status' just show if circular buffer empty. But
-> +		 * there are gap, especially CPU have not response irq to fill FIFO in time.
-> +		 * So xfers.actual will be zero, wait for little time to avoid flood
-> +		 * transfer in i3c bus.
-> +		 */
-> +		usleep_range(I3C_TTY_YIELD_US, 10 * I3C_TTY_YIELD_US);
-> +		retry--;
-> +
-> +	} while (retry && (status & BIT(0)));
-
-Name with define?
-
-
--- 
- i.
-
+> Kind regards,
+> Niklas
