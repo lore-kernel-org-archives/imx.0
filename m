@@ -1,166 +1,187 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2080.outbound.protection.outlook.com [40.107.22.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB4E4680;
-	Sat, 27 Jan 2024 00:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706317138; cv=none; b=QVRkf3uk7a3/HAnpQDoIhLiHCVWAedugycsTR65Z0CycGhiMr8OJRtIcDtgmP8QeyiXAUdx+hBEQ04rVb1QvmcilSnV10BmQFbVeQt2QlRCdRbV9HrfEZYPsxHavR4uq1bJ1TLu71kNr8K5Y5mFmm1zNTdL1Oz80sfMdYQN7VK0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706317138; c=relaxed/simple;
-	bh=7W44hQbjWJUDeDb618E3eurSBWCBLQAykx5uVsOx6TY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jrU+WJkDYPrakx++ujBs0gX7AeOAgfPpU2GvevyHLf8V+eP1kMAj29j6TGyx8rR1bVo2ZDbfNpPR2mGZZmlcnmvZ7+YnMBzWj7Q9glM3K1NGsWC7vvY/16OCTpOwqC5qpTrqv6I3AIC6O1MQhWORetO+2tKA3SgVBYIedztz9mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HQYlZwyj; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAE415350D
+	for <imx@lists.linux.dev>; Mon, 29 Jan 2024 15:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706541578; cv=fail; b=qagMJRnSqy0BDxHjbNz5gTwWDyutWToJTLw8TIdQpsn99bPigdQ3y29rL1qJCzMbJ3ZSM6RxxMGkmgdkeZcoeA9mmDEFFigxFVchhVywiNCTZnW0wr2QCqsixrZz4MM72H1G2tGQvZG/XiiRU/n/Fi63dblq02XY4eUlFxcLUEw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706541578; c=relaxed/simple;
+	bh=zOYB8AU0JM6SD/hKjAKdhCChxDwjTPuKVPxfZJWbnHU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ixr+TgqZ2WmOFdvcmkhGkXrIuT2MUuZG/SUHt0zg9nVwBgIPXW94hZdfing26KoyDTZBq6oMmjgMx72jpQwEnrhPm3OnzxZb19fIqyWfvBWztFlPzng7C4gUbC8eBLki26lFU2+zkiKyyTvNOicoXAJOdgR+cNINmwZFXWB9yms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=GUHQyq9m; arc=fail smtp.client-ip=40.107.22.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HQYlZwyj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706317136; x=1737853136;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7W44hQbjWJUDeDb618E3eurSBWCBLQAykx5uVsOx6TY=;
-  b=HQYlZwyjI04R1ozKpv3V/Wfdy+lQQTZJa3MddMXtFIWVTJPd7y0dYX+r
-   E39RkukbCDRFBOTAHR4l+6qdl6KQeEUYUtCjuUOKCJQcKb8NktFmjc0hZ
-   z2977DfLS5rJHTIHKszTveGWgKMygYMdfWqPX7tm0RX0iNJKOJj30NAah
-   f1PeeUpFQ3s6E8Xxbp0EzbGqDL0Lbit8bJAUKtd4Qb0ZvvaNgDQyFr4/p
-   CmtMwMZAfufM2ueGAZAhALxp2wlWUvu2apQXQ51P1BZFFXJEIGh/QyKs6
-   9o3xTqQ77/auiuUS1ezg+fo/OMADR56ApKkGmhu+XSQaVywBd59ZiQGDB
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="24080948"
-X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="24080948"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 16:58:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="35585165"
-Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 26 Jan 2024 16:58:51 -0800
-Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rTX20-0001V8-2f;
-	Sat, 27 Jan 2024 00:58:48 +0000
-Date: Sat, 27 Jan 2024 08:58:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: oe-kbuild-all@lists.linux.dev, alexandre.belloni@bootlin.com,
-	conor.culhane@silvaco.com, devicetree@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="GUHQyq9m"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TnfqyuhpXR0WbwOTN3onphVCcdMqNy2/rV/nUQCRh4ZB/Y2CJxjwOPlZGuZNfNiTw+2NJx3S32RGWrNJ5PKFXWyrhMph/opIMVtHULYGiMVbMYDmzjISBiiXlK2DOMPL79mtvyak+rTsOx4rvYzg4BCsYephoe381ZVDvdX/kkBhnmnB0aodjPxL4BG6XyUb5eBHwUuXTbFR+RkUYXLGKLcdzvOiNn0q52Yvn/A1kF2D3phi4MPM8zAyAuaBahCd3O39O9mMb/De53NTfdWbjSxG2tOU0Wu/EA9YCGyP99gb5UDFQHRWrLigiOP1QW8KKobEDvixiiPltQRWDDX3DQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zwqMHeB5ZgtIk91nH8YXqey9JNJknLuPeem3hhIYquk=;
+ b=XomDoVpeVvHYbgo0Kt4u71woXliXm8XpULGCLZ8lgJb7/57+FMsCdO1xNZQZ6R1sQfwJMsWy49EJc0WLLyDtsVybXfXydego0It6DdCdNgM6p482rwlnxBmSlD5YTCUCselDQfvyIFE9ynsJTn8obcFww4mSNcP2gMbD2faf/HSizi4N+w8gOwrPdHdtpbaIbXX4UX/IummUCzs+LU4Q0hh9x0nSjnVwf7G02ABkGjSPMSHUFcMsc70EDMd02HmPYRyjBLwpCDZ+eJcKe7iknepD5XdlGE7GeM8gkla/ubHB0LLGcOyGLlVGDhi9tlJEdk6KzRMBmUm9a39akOHrpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zwqMHeB5ZgtIk91nH8YXqey9JNJknLuPeem3hhIYquk=;
+ b=GUHQyq9mjQwmHRVuHD+Dxy5GcxYZnyp6bpgsF4fO767qLgDxkAwzew/dXgvKJNuoJ7cu1gleycz6d5b2mPbuKJTpst7pJ1XhNIQqWukGLuoL0NUlS9GKlSK/2smZtAI8fFPAT5cA7gpjhmChpuL8IN8/UTvmmB2vpIAOg9Ztzxc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DUZPR04MB9966.eurprd04.prod.outlook.com (2603:10a6:10:4d9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.32; Mon, 29 Jan
+ 2024 15:19:33 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7228.029; Mon, 29 Jan 2024
+ 15:19:33 +0000
+Date: Mon, 29 Jan 2024 10:19:24 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Conor Dooley <conor@kernel.org>, thinh.nguyen@synopsys.com,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, balbi@kernel.org, devicetree@vger.kernel.org,
 	gregkh@linuxfoundation.org, imx@lists.linux.dev,
-	jirislaby@kernel.org, joe@perches.com,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
-	robh@kernel.org, zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH v4 5/8] i3c: target: add svc target controller support
-Message-ID: <202401270838.wdxHPaAT-lkp@intel.com>
-References: <20240123231043.3891847-6-Frank.Li@nxp.com>
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	mark.rutland@arm.com, mathias.nyman@intel.com, pku.leo@gmail.com,
+	sergei.shtylyov@cogentembedded.com
+Subject: Re: [PATCH 1/2] dt-bindings: usb: dwc3: Add system bus request info
+Message-ID: <ZbfB/KT+fzO/F2e5@lizhi-Precision-Tower-5810>
+References: <20240123170206.3702413-1-Frank.Li@nxp.com>
+ <20240123-poking-geography-33be2b5ae578@spud>
+ <Za/8J8MDJaZEPEKO@lizhi-Precision-Tower-5810>
+ <20240123-anew-lilly-0d645bdbfb30@spud>
+ <Za//LX9U6QG5A5NW@lizhi-Precision-Tower-5810>
+ <20240123-nanometer-atlantic-6465b270043a@spud>
+ <ZbAR/NQvjUnf2At+@lizhi-Precision-Tower-5810>
+ <46781012-2678-4f6c-9aee-b020cabcbb28@linaro.org>
+ <ZbA8ea9Ex+hMdDDZ@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZbA8ea9Ex+hMdDDZ@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SJ0PR13CA0106.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240123231043.3891847-6-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DUZPR04MB9966:EE_
+X-MS-Office365-Filtering-Correlation-Id: aabc90f4-e57f-42e4-296b-08dc20ddb217
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	31vt7xfyriK4TBSWzPyCiYCIzgkKD7jH922ovsEnEqrhCA/H9Ld1MwuYyJAkn/TKQX/udkYf3OacXoHzA42vrIZd/RgrV4+p0gqA+xLcCisjRY2wlzcSEf4sJsBgGSVmddwnwOv7F1kGV0kjNufREMzfM2RJhcb5dX8s0ZajWp1REBnYObfV7LBQ1xUFvt2PkYsBndKFoDBD8wWtAZRTeSj/mvJi2OGRdHjm/XVcyr36Vczu4qxmAhRbjuDPyIuEO2kJU3Srd5VKWqMYwSUyk7ktY2YugbZwccAcsosf4cvclvQgaz9o25Tj3okzVMAQMHynf+zKCQC8NZP28SIxzM79wWq5cPNp9GIoCU6NlGAcwXJjy+vWn0j/rdsEgSvZ+cnEqSHyYIs1XVo148nHDJDMi0N1/zVO+P6yceenlg1Hy6xGWwfo/PGw5UXaYgHf+Dm5Xq0ISvbIOr9jTa9kKTCiR/PrJu3ACfhOOajxNozT/shDRNkF5q9ygOTzU8SOV8/n+JZk3RtHVrMYYWXB8PKCWWkdCIPdW6PFCJQbjsqijqePJSUxIl70nRkeWfF1YlwnuimcCHfBrQVt2yzaBsgiNkQMZSEn7CcgSTQs0iow1Q7j+dGPM1seEqZwdAXO
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(136003)(346002)(396003)(366004)(39860400002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(52116002)(26005)(83380400001)(6512007)(6666004)(6506007)(53546011)(38100700002)(9686003)(66556008)(5660300002)(4326008)(7416002)(8676002)(8936002)(33716001)(41300700001)(478600001)(2906002)(6486002)(316002)(66476007)(66946007)(6916009)(86362001)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GGrgZUdWrc2Y4saG64mheCwHWWv/wueQBM7kNkw2TAS3chJHi6uE9czFzH+k?=
+ =?us-ascii?Q?bsXgIeAfaUsEZxiktaFhKc1fhf5T9/xyp8hrV0tUweTv/N8dIL9gsgH4PQ45?=
+ =?us-ascii?Q?YfN3ZN19IL37SKuuTrwdTSBFWyTOAzreoaG6Qh/mAqA/UnXwNkOzBzBPklZA?=
+ =?us-ascii?Q?eK51+6E8qZCmXukjLPi9XV5qiopUd7bJGjHLVaItO7zUXSUxdeUz4NNmyxDU?=
+ =?us-ascii?Q?yCfI13M7bmRU0nxjsRFum7Hn8zCIfFXOWYCjuzkK4i3IEHZ6DJXiiTLJY+sW?=
+ =?us-ascii?Q?SUxxnYpAittvABKYMbSRnI4E6xhYOzicbKEKiZ4k+a3PPBhLC0PBx0uhQnY9?=
+ =?us-ascii?Q?I2Bwv+Ixw9hltDYDzEK5uC3eKGAOJhuKUTtI489TTwHYg4+jcessHVC43jYs?=
+ =?us-ascii?Q?hwvmeCqIpwupeBeHOU489xVLD2r3/JyYsbYebx3GL2WUIKBegTCFbY9E08Hd?=
+ =?us-ascii?Q?oNa1oHm6Fexun4SpoBSF3eLzKhc+rXf11+uPZLMRQtMh6xPi5jbcZk0uaqgz?=
+ =?us-ascii?Q?/0g8XuVZaHyUE5MPiGXbJM+2ycZTNLjievK3/DBRX4qMcBQ4U3nWEoReXrX9?=
+ =?us-ascii?Q?6Tlcoc5SjyGCH+OQUTXrpvbgUZf18dubpM2+rgLzXqsVZQl0obx1lzjvYBUA?=
+ =?us-ascii?Q?D5/uZXngWOWvij4KOPrfQnFk7sZvrEN/tGon9uIZ0IZSDz7yiR3MvglAQ7UD?=
+ =?us-ascii?Q?WL19fT9J0YuDao3GckxY+/Lfpsq6pIf9vohqx2TEyjjv2a8R2ozNlSprONWn?=
+ =?us-ascii?Q?/YHYy5d/lp977kEBH3oEipW3774D4jeWuubU19RC6DTPDChlLhw6tpgVsIpj?=
+ =?us-ascii?Q?Rlm236cQ9+5mSi1N4X8BEvxKOTRjr3hRlYxEoTinatKfDrhYTZTH2hUNGmWF?=
+ =?us-ascii?Q?k09qhtUWNMuvHjXBGaR5149Zp8RdYa1WbhOnKMuyHXNqOMnygi/0s0SQGi6o?=
+ =?us-ascii?Q?IPzeSdRBb1NIozRH1LsUDeqESXa+Vb2+W9rSF8R/jr7/xKd96Z4fSYTs94KI?=
+ =?us-ascii?Q?YtIe6wgXCZXkmnmY/MN9MPIV+nIJ+s7DrlyO5c5PQMZM/zSgv2gBpeyvolll?=
+ =?us-ascii?Q?zKOdptWL/cSJDOYQCU46rcFHxODmhiK4M14NZ0PkpTQYHhEvDyqspikfctYJ?=
+ =?us-ascii?Q?hjZE3Mzw7S7aarO69vCv2b/RZLNLMQ444fTcawG8CctAgUSiYdNgGnRpduJQ?=
+ =?us-ascii?Q?K0Pi0t6d2WkkM3Lcf3WTdHsb4esz8DPACiiTrYJvjv7hjfjCPr+qgxKgv5XI?=
+ =?us-ascii?Q?lonwOvyvh3M0RN7DIgeGE0Q7S2RuhN2mCL/7/NdicFdNqXIUfXgiZURsYZvS?=
+ =?us-ascii?Q?t1PJ2WBcIhEC/uh2rs3frLAKyFYYXtwxGyr+PT2hiA6bmDQzeBRl9N6LdBYH?=
+ =?us-ascii?Q?PdD9Lm0A7sFqRP8rOprpKypX1ukaxQ0h1TPJALQbOziVlGhJ0eetrEW8RK1e?=
+ =?us-ascii?Q?WWy/JY9XzURwutv3658GxT60uvsCK6PBmLHka5jS0im+/SQI5xv5UNbBZY84?=
+ =?us-ascii?Q?SBotIhuhHCKvH3LKBxcHdwYr0KNQbGqjAQcXECFplwVLPdSyJBKVDBAAZxZO?=
+ =?us-ascii?Q?Q0wRmiAa7u89PB2HGtY=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aabc90f4-e57f-42e4-296b-08dc20ddb217
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 15:19:33.0027
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IUxxEMeUkIQ3KiGH0s8gxJBV2rkLpe6OAmqP3EL/dlJMxVqxwNzIV55U9rhZJQHUomEynrSNakpI/xQZtjwJyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9966
 
-Hi Frank,
+On Tue, Jan 23, 2024 at 05:23:53PM -0500, Frank Li wrote:
+> On Tue, Jan 23, 2024 at 10:46:39PM +0100, Krzysztof Kozlowski wrote:
+> > On 23/01/2024 20:22, Frank Li wrote:
+> > > On Tue, Jan 23, 2024 at 06:42:27PM +0000, Conor Dooley wrote:
+> > >> On Tue, Jan 23, 2024 at 01:02:21PM -0500, Frank Li wrote:
+> > >>> On Tue, Jan 23, 2024 at 05:51:48PM +0000, Conor Dooley wrote:
+> > >>>> On Tue, Jan 23, 2024 at 12:49:27PM -0500, Frank Li wrote:
+> > >>>>> On Tue, Jan 23, 2024 at 05:27:13PM +0000, Conor Dooley wrote:
+> > >>>>>> On Tue, Jan 23, 2024 at 12:02:05PM -0500, Frank Li wrote:
+> > >>>>>>> Add device tree binding allow platform overwrite default value of *REQIN in
+> > >>>>>>> GSBUSCFG0.
+> > >>>>>>
+> > >>>>>> Why might a platform actually want to do this? Why does this need to be
+> > >>>>>> set at the board level and being aware of which SoC is in use is not
+> > >>>>>> sufficient for the driver to set the correct values?
+> > >>>>>
+> > >>>>> In snps,dwc3.yaml, there are already similary proptery, such as
+> > >>>>> snps,incr-burst-type-adjustment. Use this method can keep whole dwc3 usb
+> > >>>>> driver keep consistent. And not all platform try enable hardware
+> > >>>>> dma_cohenrence. It is configable for difference platform.
+> > >>>>
+> > >>>> When you say "platform", what do you mean? I understand that term to
+> > >>>> mean a combination of board, soc and firmware.
+> > >>>
+> > >>> In my company's environment, "platform" is "board". I will use "board" in
+> > >>> future. Is it big difference here?
+> > >>
+> > >> Nah, that's close enough that it makes no difference here.
+> > >>
+> > >> I'd still like an explanation for why a platform would need to actually
+> > >> set these properties though, and why information about coherency cannot
+> > >> be determined from whether or not the boss the usb controller is on is
+> > >> communicated to be dma coherent via the existing devicetree properties
+> > >> for that purpose.
+> > > 
+> > > Actually, I am not very clear about reason. I guest maybe treat off power
+> > > consumption and performance.
+> > > 
+> > > What's your judgement about proptery, which should be in dts. Such as
+> > > reg, clk, reset, dma and irq, which is tighted with SOC. It is the fixed
+> > > value for every SOC. The board dts never change these.
+> > 
+> > Then it can be deduced from the compatible and there is no need for new
+> > properties.
+> 
+> Okay, I think "*reqinfo" match this. When new Soc(using compatible dwc usb
+> controller) appear regardless dma-cohorence or not, connect by AXI3 or
+> AXI4, needn't add new propterties. 
 
-kernel test robot noticed the following build errors:
+Anyone have objection? I will prepare v2 to fix rob's bot error.
 
-[auto build test ERROR on tty/tty-testing]
-[also build test ERROR on tty/tty-next tty/tty-linus robh/for-next linus/master v6.8-rc1 next-20240125]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Frank
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-mode-support/20240124-071453
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20240123231043.3891847-6-Frank.Li%40nxp.com
-patch subject: [PATCH v4 5/8] i3c: target: add svc target controller support
-config: i386-buildonly-randconfig-003-20240127 (https://download.01.org/0day-ci/archive/20240127/202401270838.wdxHPaAT-lkp@intel.com/config)
-compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240127/202401270838.wdxHPaAT-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from drivers/i3c/master/svc-i3c-target.c:12:0:
-   include/linux/i3c/target.h: In function 'i3c_target_ctrl_alloc_request':
-   include/linux/i3c/target.h:280:9: error: implicit declaration of function 'kzalloc'; did you mean 'xa_alloc'? [-Werror=implicit-function-declaration]
-      req = kzalloc(sizeof(*req), gfp_flags);
-            ^~~~~~~
-            xa_alloc
->> include/linux/i3c/target.h:280:7: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-      req = kzalloc(sizeof(*req), gfp_flags);
-          ^
-   include/linux/i3c/target.h: In function 'i3c_target_ctrl_free_request':
-   include/linux/i3c/target.h:306:3: error: implicit declaration of function 'kfree'; did you mean '__free'? [-Werror=implicit-function-declaration]
-      kfree(req);
-      ^~~~~
-      __free
-   In file included from include/linux/resource_ext.h:11:0,
-                    from include/linux/acpi.h:13,
-                    from include/linux/i2c.h:13,
-                    from include/linux/i3c/device.h:13,
-                    from drivers/i3c/master/svc-i3c-target.c:24:
-   include/linux/slab.h: At top level:
->> include/linux/slab.h:227:6: warning: conflicting types for 'kfree'
-    void kfree(const void *objp);
-         ^~~~~
-   In file included from drivers/i3c/master/svc-i3c-target.c:12:0:
-   include/linux/i3c/target.h:306:3: note: previous implicit declaration of 'kfree' was here
-      kfree(req);
-      ^~~~~
-   In file included from include/linux/resource_ext.h:11:0,
-                    from include/linux/acpi.h:13,
-                    from include/linux/i2c.h:13,
-                    from include/linux/i3c/device.h:13,
-                    from drivers/i3c/master/svc-i3c-target.c:24:
->> include/linux/slab.h:709:37: error: conflicting types for 'kzalloc'
-    static inline __alloc_size(1) void *kzalloc(size_t size, gfp_t flags)
-                                        ^~~~~~~
-   In file included from drivers/i3c/master/svc-i3c-target.c:12:0:
-   include/linux/i3c/target.h:280:9: note: previous implicit declaration of 'kzalloc' was here
-      req = kzalloc(sizeof(*req), gfp_flags);
-            ^~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +280 include/linux/i3c/target.h
-
-ebda81e6094f36 Frank Li 2024-01-23  264  
-ebda81e6094f36 Frank Li 2024-01-23  265  /**
-ebda81e6094f36 Frank Li 2024-01-23  266   * i3c_target_ctrl_alloc_request() - Alloc an I3C transfer
-ebda81e6094f36 Frank Li 2024-01-23  267   * @ctrl: I3C target controller device
-ebda81e6094f36 Frank Li 2024-01-23  268   * @gfp_flags: additional gfp flags used when allocating the buffers
-ebda81e6094f36 Frank Li 2024-01-23  269   *
-ebda81e6094f36 Frank Li 2024-01-23  270   * Returns: Zero for success, or an error code in case of failure
-ebda81e6094f36 Frank Li 2024-01-23  271   */
-ebda81e6094f36 Frank Li 2024-01-23  272  static inline struct i3c_request *
-ebda81e6094f36 Frank Li 2024-01-23  273  i3c_target_ctrl_alloc_request(struct i3c_target_ctrl *ctrl, gfp_t gfp_flags)
-ebda81e6094f36 Frank Li 2024-01-23  274  {
-ebda81e6094f36 Frank Li 2024-01-23  275  	struct i3c_request *req = NULL;
-ebda81e6094f36 Frank Li 2024-01-23  276  
-ebda81e6094f36 Frank Li 2024-01-23  277  	if (ctrl && ctrl->ops && ctrl->ops->alloc_request)
-ebda81e6094f36 Frank Li 2024-01-23  278  		req = ctrl->ops->alloc_request(ctrl, gfp_flags);
-ebda81e6094f36 Frank Li 2024-01-23  279  	else
-ebda81e6094f36 Frank Li 2024-01-23 @280  		req = kzalloc(sizeof(*req), gfp_flags);
-ebda81e6094f36 Frank Li 2024-01-23  281  
-ebda81e6094f36 Frank Li 2024-01-23  282  	if (req)
-ebda81e6094f36 Frank Li 2024-01-23  283  		req->ctrl = ctrl;
-ebda81e6094f36 Frank Li 2024-01-23  284  
-ebda81e6094f36 Frank Li 2024-01-23  285  	return req;
-ebda81e6094f36 Frank Li 2024-01-23  286  }
-ebda81e6094f36 Frank Li 2024-01-23  287  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> Frank
+> 
+> > 
+> > Best regards,
+> > Krzysztof
+> > 
