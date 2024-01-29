@@ -1,74 +1,71 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2087.outbound.protection.outlook.com [40.107.20.87])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2082.outbound.protection.outlook.com [40.107.13.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E69E15705E
-	for <imx@lists.linux.dev>; Mon, 29 Jan 2024 17:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3587D6F099
+	for <imx@lists.linux.dev>; Mon, 29 Jan 2024 19:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706550132; cv=fail; b=ZsIA2RrGrqyCoR/xITtIQcqTdpqsldzSW5BHK5UHxb2E/SVuNpzKrqBgFdlUgcZG4YUvSX4WvPNQ4MYT4gygpiizFP7iEsj3clz1hfL6IYoadlnqy728K33+rH5ZeCP3GeC65GpU0QleE/lw/FNhvFaojT1Of3BAARJhdQk0z8c=
+	t=1706558026; cv=fail; b=HfskAXR14J7T5W8txtyn8wsvtSVjTfg5Dyl+2mWGdw2hQrboYyRRtUrXrtYNPZzFory1QloywHGljr4uCAKoJcCLgmGXn2rqDsv1KgjxgtTsZR3vAlPnVEVyCI2GVek7HICf5E5OmgxltT6QL0MmaTxq4kC41l1skZss8aIcAlI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706550132; c=relaxed/simple;
-	bh=PgUDlpWkhKiM7+RBCUahwzLxvLYtqt4AWASLiq3rodU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=anLvaGgmRrdd6xi77EzZh3V8+wq+ywtlIO41I9SufvqSDAND+3WWWvX2AaaC1fjpmRbIsDFZpbYmwohyxQZbFPmrnFReDf6WifbTUx26kMbmhfHURUPEO92BF1AmS9tx2d4o27vZ0wFOsDAHJZUTn58AsuO2nDig7wvU09CGO1A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=kMfYRqH5; arc=fail smtp.client-ip=40.107.20.87
+	s=arc-20240116; t=1706558026; c=relaxed/simple;
+	bh=OTZuh7LsRm3+WrJQaCFl+RFNll6i2ZbpeAkdLWbLnHo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XUfsI0vYNYKe2gwB8KBAGYFHH/jt7MXcLVYQrvLvQHrsHuwbxDPSDitPy5AV1FqHvzcMAn9nCQGD/94xZmetGA3oQKsRRkNbHipulKuJnnoRvBhF7Uj10DmpV7pSmAL8fG1KbdP2etUTV2QoHKnBXvVmL7+ScBAmmFa849lHY3A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=K/WVvUO6; arc=fail smtp.client-ip=40.107.13.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="kMfYRqH5"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="K/WVvUO6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fjoZm9oEPSizbTD1hUXu2qn9SG+E0H8OfyOeL/T3D6YwdkXwWC9Gfr41XNhyPAFwjd6OxcwryxK/H61Dwm3Hs+pqPA8QIFpC7f+Mcr4R/d3/rgdDlxIMqV6K3QRrf/opBFbnZbe8flYe3GVTPhcvZ01vVUEC7hL5N3zjW5wsF6UWVIkTrwcSkEA43Of7m3F2VX6IQFIDC5B1a6ttWc/+Cc1R9jGq5DUl/6rfg/J29YjwqwU9Jv0IdIJhUqoDakysJw60IfVYT+dUXl7VlwRDZq8nItb0ZXFmWfDKG5jtY1kDbI3DxUcBUiK0iGTnIfCg8fVjHaOeplprbBpiElDfuQ==
+ b=WC4DOqupsXpcOKpSBlxRArPxAtEJ2fI6m76XWhEJbNsdcZzq9lnezyRmRTWwav0ymTBKfv4ZuYlVARpoPBg58QD+NxETzVs4ZDEeA+Kx4tcVq/Pr46uA1of6zpFt06Z3xCEMvwsGWLiRfkO281i7VeHNYiQInZ4iSIbSNncG5mkQUXdDVs2gDr7s8kQrEA4iF01IaYfG97d4l9cCs6YRdJ9w1Voh5i5WS7gFeXUOimB3OwH5p68T/IYFLEQvqZtONZzxqURJma3rseMlUMoH49IsqiAOrRCt0XFg5OY3W0H99/G6DdymKWM2kzjLzV3xBLxZ/SIXj/cv9sAko5PZrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wcEe9rDOI0d0OqgK/IUcDXjO+Wp9Jsluy8urzAnUPNY=;
- b=dJyIjB2f5JjPmIs63Trq/0m9YZkdFeOZLNWE8C/LFqDaWW8KzrZVuGhIPNclf+aBKmGrv9q237RsrDWLFzXQERhbOBzY5k0XHFdUSFwwfL3+3e1Us6ZxHnE5HGIN4zZsQgXF6DpFF1Etj4OvFZCE4gKRZ/g1wg2QjjeYea54IirdObV1eaRBKFLu8X0oTLcrBB7sSqGtt3aj8IPjWbcDh4qg7dRcvD5nGSEeA+0/vZ2OeDi+ncMBZbRJqz+SCq78dflKck6acmoqA3D244s+LjuYAF9k7SL+nERRAw3k4lledNg+DFGcChSq71mDFj2K7tF0dVN+5kewJAwtzdSyZQ==
+ bh=7xvDCYPn0CBpTHGLkColV0AhTkpbGViu/rysOlyeMLo=;
+ b=Pt5WOTV5Y6OYQt/XxitBm0ZkEydBzhkfiX/2i7jXdWdROqyHQ3vr1/3/JDtxUKTNcnUpX5XLlIoBxdMUYGX7FXBd0HJJByh8ym9jd89vS0deH1dI9sRXaVx2Em706ezwuzoqbSQXWNimgjZyF7VTpm34k/OOM8mw4nNKljivmfYp0j75eCpI9BDbcHIfmBzo5DpnsytvByS8BazwZ9TlF6/XJX8Hk1rKwgxX8CzmW3Vficav3ejtDH07anB/TK95dxRd7Z6AKDCoYxwyYPc71aKZmfCxs+u5cuOS8TEiQ7Wec07/xKEYkuYFLtpNxAPnt7AtZl5H/Pba0UJ/rgRX4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wcEe9rDOI0d0OqgK/IUcDXjO+Wp9Jsluy8urzAnUPNY=;
- b=kMfYRqH5XUgDVu9BUJnl02cWgF9y4bV6zhzwtFNMdZ81UzQfIZqAEOuz/goDlXuT3QS8+aOHgv6AsUoSsp7AY4RCv1ZJsnG/xWj7VfjzE5e1pk3nh5a11umn4i4QE0ukgIMSenDu0nO5d0ImJLEgUV9gmEBQNIgNULmsNzANQ8k=
+ bh=7xvDCYPn0CBpTHGLkColV0AhTkpbGViu/rysOlyeMLo=;
+ b=K/WVvUO6ENw5GzcC2MhwXZizHmHQsV+jEUqrTJ13tiJvAtEEgo+DhXy1Nhm49xy4lOAYj9pSAxnbU4UHFUKxAWtx5sasw+XUYvq4pLbj5hmFBMqMD6WagNOYcPa5Tc8hNSXXxGZveDR8eKvr5tgqccxCr+PLsopt22gEGDthOog=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS1PR04MB9632.eurprd04.prod.outlook.com (2603:10a6:20b:477::22) with
+ by PAXPR04MB8128.eurprd04.prod.outlook.com (2603:10a6:102:1c8::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.32; Mon, 29 Jan
- 2024 17:42:06 +0000
+ 2024 19:53:40 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7228.029; Mon, 29 Jan 2024
- 17:42:06 +0000
-Date: Mon, 29 Jan 2024 12:41:58 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	thinh.nguyen@synopsys.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	balbi@kernel.org, devicetree@vger.kernel.org,
-	gregkh@linuxfoundation.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	mark.rutland@arm.com, mathias.nyman@intel.com, pku.leo@gmail.com,
-	sergei.shtylyov@cogentembedded.com
-Subject: Re: [PATCH 1/2] dt-bindings: usb: dwc3: Add system bus request info
-Message-ID: <ZbfjZoHiH7BsKyzl@lizhi-Precision-Tower-5810>
-References: <20240123-poking-geography-33be2b5ae578@spud>
- <Za/8J8MDJaZEPEKO@lizhi-Precision-Tower-5810>
- <20240123-anew-lilly-0d645bdbfb30@spud>
- <Za//LX9U6QG5A5NW@lizhi-Precision-Tower-5810>
- <20240123-nanometer-atlantic-6465b270043a@spud>
- <ZbAR/NQvjUnf2At+@lizhi-Precision-Tower-5810>
- <46781012-2678-4f6c-9aee-b020cabcbb28@linaro.org>
- <ZbA8ea9Ex+hMdDDZ@lizhi-Precision-Tower-5810>
- <ZbfB/KT+fzO/F2e5@lizhi-Precision-Tower-5810>
- <20240129-encode-catchable-f5712d561a47@spud>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240129-encode-catchable-f5712d561a47@spud>
-X-ClientProxiedBy: SJ0PR03CA0379.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 19:53:40 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: ilpo.jarvinen@linux.intel.com
+Cc: Frank.Li@nxp.com,
+	alexandre.belloni@bootlin.com,
+	conor.culhane@silvaco.com,
+	devicetree@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	imx@lists.linux.dev,
+	jirislaby@kernel.org,
+	joe@perches.com,
+	krzysztof.kozlowski+dt@linaro.org,
+	krzysztof.kozlowski@linaro.org,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	robh@kernel.org,
+	zbigniew.lukwinski@linux.intel.com
+Subject: [PATCH v5 0/8] I3C target mode support
+Date: Mon, 29 Jan 2024 14:53:13 -0500
+Message-Id: <20240129195321.229867-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR05CA0091.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,134 +74,153 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9632:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1d36698-3bc8-4208-5a50-08dc20f19cb4
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8128:EE_
+X-MS-Office365-Filtering-Correlation-Id: d40ca076-0864-4214-e758-08dc2103fd66
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	EjZV7sJp82A4vqPr8F/9tB9Su2aTP8t49TnCfVWDzwb6FyD49wFbk9S0kOFH/LBbyzcH1zInOPKVgVeSHgEQBDWyEidjIj7rrshkWKNgkIEPbc0FMau9viLb98p3lqvrr6gWLGt3iZ6Rp48DlVVO2xi7Z9mAlRXI6gvZkHV/w7tTT317X9/UVFQZZLVtdu6iE9Hfft6iSFpvn6Bf6KwV5uNh4EPx3eWz0jyjH7DcgMkbj+Hv1i7BABWf7/UvB/n9JyQgVgEyG7gs7Eiqc2lqxWYk7pvIsyuNe3ImgnPzKgiT2ueLHcI3V8jaDbwa3y3vV4gphnF/nQ88G4M6HmT/QcZNw2dWo7N3itkBhqAhMObeVCXVMpvodPmHkWT/g0uIpB8ly5QGgkwGQJPXh8WNj9rF5+yRCIjTLg7Sw5VLnzpv446Yw3fugVw1uc9RnHN76I/wSsb1UGFtZ4P1sApCJs5H2RKRSNUt5/hBRHlLO/8fp2g8YWR52h9akb/d8DLLCza9W3RGgXWW6wnlRlgwBaPLoXOHpTkS4pr5scuRoyyRBMzXPxmUjRbG1q78XY+dwFCTyuzSJyxeYZNSPul3LwZCd9nMofo2QSLZreytMx9p3FRiC537EOOLjASsjrkK
+	Qkg79M6YkMsTNCARYaXvctYEaT6DxYiEszN1MtZlxuAv5d4/JH9CLaC1rurKHiOceeuWzyE3JoLkU/DrHoSkwKJo7urC0n2/bA3mImecJLM+O2c+R+KfmJAO85thhbduk2QI7s+/09VX/FF4w5y/GwjqXxeC25ozvz3dna02Z3IeCiDTCrgtNXNFNkUOkpcHK2EK9W/K1TF9A5LEAzD5DCbzUop+0l7a+dnztCqZGC+JbAh2V7ZetdhfP3EPyU34mymMKaf6hyayTpVgJW17xH771RpDmbYRjgtHVEsL7LhLHR5pwGJq3Gs+FqE0eiqGkZM7+yw440MhLjBs+S7XVPPZxzZiWTbLGczhiUFXnxJUNnuo00G3GatasBPdWqWYf8+cn6ya42RxQRiKkz8DagJMoDruD2EYVzWjoeNhlWCDi7998YFSp+oKaKhCg27CpPai3AyD2X0DP9nZB7Uz9Cq+Z10si48SVap/q4Y/yflNPGF++MPBWfGpfyJ170Z7AAnCSd2gp/mo4J1cICjyDSlUuXNY8wX7krjDRZORKK7Nl4kyvklNpTri5JPKnpkSjUDt8NQegKnNXEtviO7Tds0Xa/ZeqfcfCtl2y4No9ZieQPfJtf7QeSj9BVPeZwTKeait0USU6fpfd3l2kypseKFUdYX1ZY8I3CKBa/CCLrA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(396003)(136003)(346002)(376002)(366004)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(53546011)(8676002)(6506007)(9686003)(6512007)(26005)(41300700001)(38350700005)(4326008)(2906002)(6916009)(7416002)(8936002)(316002)(66556008)(66946007)(66476007)(5660300002)(86362001)(52116002)(6666004)(33716001)(478600001)(6486002)(83380400001)(38100700002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(136003)(366004)(346002)(396003)(230922051799003)(230173577357003)(230273577357003)(451199024)(1800799012)(186009)(64100799003)(1076003)(26005)(52116002)(83380400001)(6512007)(6666004)(6506007)(38100700002)(66946007)(4326008)(5660300002)(8936002)(8676002)(7416002)(41300700001)(2616005)(316002)(478600001)(6916009)(2906002)(66476007)(6486002)(66556008)(86362001)(36756003)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lk92JZCfVmPhlFj80T8Wskr4dKIMaKhndNysMj6IOaffYlzZqk9YCKx9roRE?=
- =?us-ascii?Q?M+vRdxtjkywZdtAL1XPUz8cy3WlHyDKSU7EZdMksg2sf9xypKbX/benHUYZw?=
- =?us-ascii?Q?3d4fXFcYbZB5OmD4UUNsJXebtCD/sz4S9O08Fc5FZMLJVQIWFDy891xPvxT1?=
- =?us-ascii?Q?LP85oHcGK0NZpHUGWqc2IPudaZ4soKK1rX5qxlcZqcODD3BVRIBsty9U4Mjq?=
- =?us-ascii?Q?6k12XwFl4iqIvvYWLpBJu/Xselnbe6s7GKxwZL8DavFvy0Vdb2/i2Dwpwr2n?=
- =?us-ascii?Q?rkBvGnJaiMb/uu18xToCGJDFnmrKsbX1HXj8lNKyT2lRz/XDgDPT3gePSrnb?=
- =?us-ascii?Q?JiMwmaeaj/8MR/b5h2kzzCisRhhX8ykT17A/0B8CHjfXAU9ssFM4a87CuYr7?=
- =?us-ascii?Q?iNxwA/NdJuPlL+ObciaDZUqK8UQOEPMPGHNHet4+/4saL+j9BOEmzZtPZG0k?=
- =?us-ascii?Q?JlmEZ7GU6u7C5eUVwTM5Pv3xPbw0SrOvGB0HIMOV8lOyX2HX/0WmJyFVAeOk?=
- =?us-ascii?Q?QhYoc33LqcDM7YiiuK2xy+u2XarzEkaQMnY5WR/awD+dwM7aZRXvPEK76Ur7?=
- =?us-ascii?Q?jYhSOX+EneIFJsCdyYGLSpMKElu0WjLS+Hn4z+1YpLGuumR8USkywKZmIpN7?=
- =?us-ascii?Q?sgUX246EbKUXiheUMaonnS9xghEDeXyxBrumU2HKQttFqaFlHy+g3K/80nea?=
- =?us-ascii?Q?8BfPDWocSXBYCdbvKaEu+LUD2qkW5ICX2qw+81ApYS0VYswFi7PWygZlYb3r?=
- =?us-ascii?Q?7zd/w/ZIwy5roqC3d0R+vW23TaJkh/twsv1arl50iTuA94mkbn5H/lxMdzFR?=
- =?us-ascii?Q?zOhZFsj5jue7zjoKMEL52ES14V468vghvJ1u8n6gj33Gmz1TLG7YK9nPbC9j?=
- =?us-ascii?Q?xYCq5wDhe90CyK1I7mvFa8YXlEyHPnbPNYCXARZYlF4Zko2f4Uh1HBFXxvNc?=
- =?us-ascii?Q?E2MAeZB/tUxZPtmv2wAtRHXLARk77ZMRvgmhcwDoO+JnKpBBwXqJR37YQno0?=
- =?us-ascii?Q?vsOGgF3IVjd0/uxmY1mVYU82rPWvwWWt9AX6IudqEWZm4po9dlV/VoI8KzH8?=
- =?us-ascii?Q?JpyHACbNneDyY/VdnP46i8MvOPBtOYb4yTYc8MUB4uWqxyr/RsSdBbT2XTzP?=
- =?us-ascii?Q?EKmXckNKpsTA4AQhRh22Vg1TOAd3b/WqcgH5M4Kzb2glwHwMfHDZDWtbM2G/?=
- =?us-ascii?Q?Gvo0Y1SL8n85wapBGxq4R8fF4Uz38wMuD52XdSqpVZPBWdMD6KD026WkC4JI?=
- =?us-ascii?Q?THjQvSbEPhMC3SvHfjBNYyb0DeD3dHBBwD0l7DWQRAKbeO8WnvubqelxvtqE?=
- =?us-ascii?Q?GdNyCS0AWriCayKKm4vE5AKBtLuCiKPyyf1oBGUK8CDLGUOeTfwBJuH03tKR?=
- =?us-ascii?Q?2OYVcAqCkvXwZm98mS6O/+HApGHozU0NADVh4bixM4eYvaTUv+OQUxZsIshT?=
- =?us-ascii?Q?BZ25TBqfxYFl9l5fledPZWav2hn9GPR51gw/AcbA9ZYd4nMeVF1j7qZV0E16?=
- =?us-ascii?Q?xrC75U0f5IzQBYB3dXdiOH0GYDWgoRRGKki92YWHeNKrQ7OwANLImLpufwZ6?=
- =?us-ascii?Q?ZfBk53GPXh+ceB/oowvYL4Ni1yrFHI5TuGtA3K+3?=
+	=?us-ascii?Q?OqXCalIMX8Yhk0atflS7Q/IdRwzIJ4gOgKiJtwx2tIMWcgweXLc/BTWQHLjj?=
+ =?us-ascii?Q?hpfpvnDev5ZL5KaTVu4OfHVD7uYkbWeqUyttziljbavKf0T+XxUyI2Um1+dL?=
+ =?us-ascii?Q?Dor0otReIJvccfAOXSH5trp9xSV8kRU+r7uoUV/O6AXbvxrD2DoB9Sk2+45N?=
+ =?us-ascii?Q?9FxSjb/1fGxlYszPjAdsJcE7aVvyd7g00hkH+EonnEi9flBOcB9zSgkohLL0?=
+ =?us-ascii?Q?KKT4KQE4e1ESw/+cFsT5X+9K0/4LlXC5m3dMqfRlGtuZ5lHGzIhJt9zF0G1O?=
+ =?us-ascii?Q?4ospgYQfRaHFNbN7bBeNJWwdO+zLGAn3THbvc7RamLL0t9b9vMPNpgklzmOb?=
+ =?us-ascii?Q?j58CuLihD8EijMz1bW2cdGzIEWu1xl/CBUhtrz+n7gp0kpMnJA8WL1UirkAM?=
+ =?us-ascii?Q?+LdLdxIjEqkSKc9wOIe3u4aCKV3j3OXKCo2uK2FG2IAMsH89TBS1CljXPdJf?=
+ =?us-ascii?Q?x38Mqj1I5uQcTWQA6cYRgdv/QZRGGJnFCO98zy6uVNf7VUE3rtADn/YtGQc1?=
+ =?us-ascii?Q?75POy3dEMHIcN1+ANqpLflbEg8WKMi7kyX9+xFH07Dr3oGKpCdIBG8ix/eZt?=
+ =?us-ascii?Q?m1O+oVT42lywQmA775I93d+OJBuwB/nhs/ozxsPYud35FfdwoDPeRV0GDMIF?=
+ =?us-ascii?Q?j1LP6evP51N/J9zMy4SD79zfIB1VLloxSsGfEIi8b8t0Hm6G4XoEQBdJ4d6L?=
+ =?us-ascii?Q?lRo6jkX04ZwTluGDbXDf8Ldy0QLW85rLPzbxSMkuczXhN/Z87RyiSdBKlF3z?=
+ =?us-ascii?Q?H0GJu+aL54l12VTyG2JLHY8OXT2BLnjn932IxWadG+idXahFTBUZTJTdG6kN?=
+ =?us-ascii?Q?5OFmB098KGgYU5t+7XPUTWh4hJ5vlzfdDZAhbzhfHJoZgnkZWUl59rHxHxMH?=
+ =?us-ascii?Q?zfesbAQqvpjX0lABHeawTPREYO99VrLxuQyrV9X/h6ul09hNKhqsF5Jd1goJ?=
+ =?us-ascii?Q?D3yk9bOoFj1s5YbdkVzlJRUQTG2pdP0PhGNFgpDRdSAHDPC9WIgJ54Yp+nUC?=
+ =?us-ascii?Q?VblG3BpG0mgPpT+v51JtF/MQkC7WxRV6LC88qUmlre/5g9g3oHreIQ2wlsg3?=
+ =?us-ascii?Q?SuAbGphHpgiT8nHQmQ/zipW2XNNfpIjMeMxbCQWq6qKn++ZsjlHuNWhtD2mY?=
+ =?us-ascii?Q?6DO94k3OweSx7fhtKCyQmcyAUfBSyLu2LqTrRMWKQU2jizuXs5RuteyJjqny?=
+ =?us-ascii?Q?R6ADwLDNrrX8kTzKUrhTx1gCaX+49lIvfjVRlgwsurIe0Ho4v6vB5X+PK6J6?=
+ =?us-ascii?Q?vBRbcbMMvRaGYYl8MQzSs9WVHah3NUtDDtEAHF4sR/lj7vOwF4JC4d9OEUz/?=
+ =?us-ascii?Q?4viJwMw6maxzyPcenzWbSSPziMsCWhRjoPoUqqyXKEwmf4zEqXFw5EDiuCgs?=
+ =?us-ascii?Q?dnIcvYsttvz974OkhBHkkN2T0Ql+DV+OCUjlUTj4JJSoXDWMdoZkRbpZPmD8?=
+ =?us-ascii?Q?VKkk1qs0wNzXB+EKxhdFHMDrT/4q8+qiyNaBTFzEVfCB1JRrCFCUYJSHOLfK?=
+ =?us-ascii?Q?tzXaDpCCI5sW24d8maVw2toNF+O7VetzHKbSytMMLi8H55ujzp93pwE9K0P0?=
+ =?us-ascii?Q?5faqpFIqvN0/7WU2rBc=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1d36698-3bc8-4208-5a50-08dc20f19cb4
+X-MS-Exchange-CrossTenant-Network-Message-Id: d40ca076-0864-4214-e758-08dc2103fd66
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 17:42:06.9113
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 19:53:40.1273
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gUrwqVjrWrpbsfLGckFX4Bsg/cHUJtCKDMZleZCU7PbU/EGIB3XaFoud+I6QeeH7pCtQUjAt4MBaNDzdcaOJbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9632
+X-MS-Exchange-CrossTenant-UserPrincipalName: hPleUaiN5ZXHoh9E8funKKJmtQvWU2P6Cxa1OmmmfVBAG2NjTiFNiOnsYwSr7176O7q2XukJZ2MYoppvd8cJNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8128
 
-On Mon, Jan 29, 2024 at 04:49:21PM +0000, Conor Dooley wrote:
-> On Mon, Jan 29, 2024 at 10:19:24AM -0500, Frank Li wrote:
-> > On Tue, Jan 23, 2024 at 05:23:53PM -0500, Frank Li wrote:
-> > > On Tue, Jan 23, 2024 at 10:46:39PM +0100, Krzysztof Kozlowski wrote:
-> > > > On 23/01/2024 20:22, Frank Li wrote:
-> > > > > On Tue, Jan 23, 2024 at 06:42:27PM +0000, Conor Dooley wrote:
-> > > > >> On Tue, Jan 23, 2024 at 01:02:21PM -0500, Frank Li wrote:
-> > > > >>> On Tue, Jan 23, 2024 at 05:51:48PM +0000, Conor Dooley wrote:
-> > > > >>>> On Tue, Jan 23, 2024 at 12:49:27PM -0500, Frank Li wrote:
-> > > > >>>>> On Tue, Jan 23, 2024 at 05:27:13PM +0000, Conor Dooley wrote:
-> > > > >>>>>> On Tue, Jan 23, 2024 at 12:02:05PM -0500, Frank Li wrote:
-> > > > >>>>>>> Add device tree binding allow platform overwrite default value of *REQIN in
-> > > > >>>>>>> GSBUSCFG0.
-> > > > >>>>>>
-> > > > >>>>>> Why might a platform actually want to do this? Why does this need to be
-> > > > >>>>>> set at the board level and being aware of which SoC is in use is not
-> > > > >>>>>> sufficient for the driver to set the correct values?
-> > > > >>>>>
-> > > > >>>>> In snps,dwc3.yaml, there are already similary proptery, such as
-> > > > >>>>> snps,incr-burst-type-adjustment. Use this method can keep whole dwc3 usb
-> > > > >>>>> driver keep consistent. And not all platform try enable hardware
-> > > > >>>>> dma_cohenrence. It is configable for difference platform.
-> > > > >>>>
-> > > > >>>> When you say "platform", what do you mean? I understand that term to
-> > > > >>>> mean a combination of board, soc and firmware.
-> > > > >>>
-> > > > >>> In my company's environment, "platform" is "board". I will use "board" in
-> > > > >>> future. Is it big difference here?
-> > > > >>
-> > > > >> Nah, that's close enough that it makes no difference here.
-> > > > >>
-> > > > >> I'd still like an explanation for why a platform would need to actually
-> > > > >> set these properties though, and why information about coherency cannot
-> > > > >> be determined from whether or not the boss the usb controller is on is
-> > > > >> communicated to be dma coherent via the existing devicetree properties
-> > > > >> for that purpose.
-> > > > > 
-> > > > > Actually, I am not very clear about reason. I guest maybe treat off power
-> > > > > consumption and performance.
-> > > > > 
-> > > > > What's your judgement about proptery, which should be in dts. Such as
-> > > > > reg, clk, reset, dma and irq, which is tighted with SOC. It is the fixed
-> > > > > value for every SOC. The board dts never change these.
-> > > > 
-> > > > Then it can be deduced from the compatible and there is no need for new
-> > > > properties.
-> > > 
-> > > Okay, I think "*reqinfo" match this. When new Soc(using compatible dwc usb
-> > > controller) appear regardless dma-cohorence or not, connect by AXI3 or
-> > > AXI4, needn't add new propterties. 
-> > 
-> > Anyone have objection? I will prepare v2 to fix rob's bot error.
-> 
-> I'm not sure what you want me to object to/not object to.
-> Your last message said "needn't add new propterties", seemingly in
-> agreement with Krzysztoff saying that it can be deduced from the
-> compatible. That seems like a good way forward for me.
+This  patch introduces support for I3C target mode, which is referenced
+with a PCIe Endpoint system. It also establishes a configuration framework
+(configfs) for the I3C target controller driver and the I3C target function
+driver
 
-Okay, let me clear it again. dwc usb is quite common IP. The below is
-what reason why need "*reginfo* instead of using compatible string.
+Typic usage as
 
-1. *reginfo* property is decscript hardware behevior, which will be changed
-at difference SOC.
-2. it may change at board level according to if enable dma coherence.
-3. dwc core part is quite common, all SOC using common "snps, dwc3" as
-core-part, all soc specific "nxp, dwc3 *", "qcom, dwc3*" is used for glue
-logic part.
-4. using *reginfo* can reduce add more strange compatible string such as
-"nxp, dwc3-core" ...
-5. *reginfo* property likes "reg", "clk", and align what Kryzystoff said.
-"reg", "clk" is fixed for specfic SOC. These can help reduce "compatible"
-string number. "reginfo" do the same work as "reg", "clk" ..
+The user can configure the i3c-target-tty device using configfs entry. In
+order to change the vendorid, the following commands can be used
 
-Frank
+        # echo 0x011b > functions/tty/func1/vendor_id
+        # echo 0x1000 > functions/tty/func1/part_id
+        # echo 0x6 > functions/tty/t/bcr
 
+Binding i3c-target-tty Device to target Controller
+------------------------------------------------
 
-> 
-> Thanks,
-> Conor.
+In order for the target function device to be useful, it has to be bound to
+a I3C target controller driver. Use the configfs to bind the function
+device to one of the controller driver present in the system::
 
+        # ln -s functions/pci_epf_test/func1 controllers/44330000.i3c-target/
+
+Host side:
+        cat /dev/ttyI3C0
+Taret side:
+        echo abc >/dev/ttyI3C0
+
+Chagne from v2 to v3
+- using 'mode' distingiush master and target.
+- move svc-i3c-target.c to under master,
+- built together with svc-i3c-master.c
+
+Change from v1 to v2
+- change "slave" to "target"
+- include master side tty patch
+- fixed dtbcheck problem
+- fixed kerne-doc check warning
+
+Some review comment may be lost since it is quite long time since v1. Now
+master side dependent patches already in linux-next. So sent target side
+patches with tty support again.
+
+No sure why an additional "\r\n" appended.
+
+Frank Li (8):
+  i3c: add target mode support
+  dt-bindings: i3c: svc: add proptery mode
+  Documentation: i3c: Add I3C target mode controller and function
+  i3c: svc: Add svc-i3c-main.c and svc-i3c.h
+  i3c: target: add svc target controller support
+  i3c: target: func: add tty driver
+  i3c: add API i3c_dev_gettstatus_format1() to get target device status
+  tty: i3c: add TTY over I3C master support
+
+ .../bindings/i3c/silvaco,i3c-master.yaml      |  11 +-
+ Documentation/driver-api/i3c/index.rst        |   1 +
+ .../driver-api/i3c/target/i3c-target-cfs.rst  | 109 +++
+ .../driver-api/i3c/target/i3c-target.rst      | 189 +++++
+ .../driver-api/i3c/target/i3c-tty-howto.rst   | 109 +++
+ Documentation/driver-api/i3c/target/index.rst |  13 +
+ drivers/i3c/Kconfig                           |  31 +-
+ drivers/i3c/Makefile                          |   3 +
+ drivers/i3c/device.c                          |  24 +
+ drivers/i3c/func/Kconfig                      |   9 +
+ drivers/i3c/func/Makefile                     |   3 +
+ drivers/i3c/func/tty.c                        | 474 +++++++++++
+ drivers/i3c/i3c-cfs.c                         | 389 +++++++++
+ drivers/i3c/internals.h                       |   1 +
+ drivers/i3c/master.c                          |  26 +
+ drivers/i3c/master/Makefile                   |   3 +-
+ drivers/i3c/master/svc-i3c-main.c             |  80 ++
+ drivers/i3c/master/svc-i3c-master.c           |  34 +-
+ drivers/i3c/master/svc-i3c-target.c           | 776 ++++++++++++++++++
+ drivers/i3c/master/svc-i3c.h                  |  15 +
+ drivers/i3c/target.c                          | 453 ++++++++++
+ drivers/tty/Kconfig                           |  13 +
+ drivers/tty/Makefile                          |   1 +
+ drivers/tty/i3c_tty.c                         | 427 ++++++++++
+ include/linux/i3c/device.h                    |   1 +
+ include/linux/i3c/target.h                    | 528 ++++++++++++
+ 26 files changed, 3692 insertions(+), 31 deletions(-)
+ create mode 100644 Documentation/driver-api/i3c/target/i3c-target-cfs.rst
+ create mode 100644 Documentation/driver-api/i3c/target/i3c-target.rst
+ create mode 100644 Documentation/driver-api/i3c/target/i3c-tty-howto.rst
+ create mode 100644 Documentation/driver-api/i3c/target/index.rst
+ create mode 100644 drivers/i3c/func/Kconfig
+ create mode 100644 drivers/i3c/func/Makefile
+ create mode 100644 drivers/i3c/func/tty.c
+ create mode 100644 drivers/i3c/i3c-cfs.c
+ create mode 100644 drivers/i3c/master/svc-i3c-main.c
+ create mode 100644 drivers/i3c/master/svc-i3c-target.c
+ create mode 100644 drivers/i3c/master/svc-i3c.h
+ create mode 100644 drivers/i3c/target.c
+ create mode 100644 drivers/tty/i3c_tty.c
+ create mode 100644 include/linux/i3c/target.h
+
+-- 
+2.34.1
 
