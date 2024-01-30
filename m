@@ -1,58 +1,58 @@
 Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2169E52F6D
-	for <imx@lists.linux.dev>; Tue, 30 Jan 2024 07:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD185645A
+	for <imx@lists.linux.dev>; Tue, 30 Jan 2024 08:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706600435; cv=none; b=nPM9KjPndt5RcOXIKzU+ob7DVCC89M54qM7fbvc0WJOWK/LF+lINHXuv6A7c5UbgAGpIIEeCyN8ctAwNjzYFV3YOs6t2L6qsKGYoMtBCCjQCeEfsGAi3KpOJZzpPUPVZYdQVq/JjXJ6CRm/f0vhX8EYNJkuhhzo3uv2IWfaVCdw=
+	t=1706601837; cv=none; b=rbtCxUHxcHQ6+DPM2ydrJdUkfuNUFTosCsUYJqjIZyY8+z4vGSMIgAjH87V2kcK3DDGEcmI3wSDvD0aMZA3OxoI9dt0ZCiL2c/ULnJV37UMJ3sp45G+63pP1vvcTiux9shRm9sqntSOG2s+l78rRZKtCqybnUEzYJWtnFkdCIaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706600435; c=relaxed/simple;
-	bh=X8V9pvpV0JNRuDhoPRdTK4TGozcDMk3G0rZ4Q7XMqic=;
+	s=arc-20240116; t=1706601837; c=relaxed/simple;
+	bh=AXEnRn6uuC0ylZxXmV079bKsOQui39FdQnUlVEW1+iE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lmasmq4KrgcJomNxs+klnouOuszwIqCtIVCjKXt0sFdp1AyVHwPbwkSXsfWTBlwbkkRW5Axp/AWAKBlV870oXfMrqlh81yCJ+BRwscFc1PUZuKtR32IciKoy+GBCkb5d5eVdZqxE22kceDay047yud/XPDsEceud1WWhnIV1I88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KKxGjSIH; arc=none smtp.client-ip=209.85.218.41
+	 In-Reply-To:Content-Type; b=D8+QDzG3IGkiaNUhBqW2UwqswS2Y4yg1cxCoqNzn/lDz4eVmufozEbCpqvOdpOu6QSC0n0SczNFq9nZsnf6xCOYNgVr0y4Bft5yqHon6jP0sVayLV2DjfhMpTwSSeoV5I31D8dlAeNQRPBJEpQKXyzGYBH2BLq4S3A0lwNFxLHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ALeG1pn5; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KKxGjSIH"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a2d7e2e7fe0so672892266b.1
-        for <imx@lists.linux.dev>; Mon, 29 Jan 2024 23:40:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ALeG1pn5"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a3566c0309fso281985166b.1
+        for <imx@lists.linux.dev>; Tue, 30 Jan 2024 00:03:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706600431; x=1707205231; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1706601833; x=1707206633; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=uPe60IzTNRhQ8xdKXhrI1YkRrC86QmovGAq/H+j7848=;
-        b=KKxGjSIH8DQ7H2j/Ijk7R4wxnyoKBjRP118nGQYm/xU7u3x3PzLBGTzK09tC1RHuTP
-         NCDzbaNiHTAhaRoDw4S1oJC4/FutxfFS7QRqIysyzY5zGK6YwGjenj7Ot6LGLwQjQ3Me
-         TYLHdEMEQe5eZkefZi8QpjMEQLWndBFrVEatimnTay1S0yZrs9uPqvQzLpAcs8MEzrAv
-         DaRzw5URYHVYcy09MidHtdqOprkzWKj1speZZELiTF2DuAWKel7V9f7/lWk2cyElS8sN
-         VnHM2AczxLTyqOlaUaZQc1khYVWNV/nazXZSE6+fdrHYIEw9FQ+nwXTT14ujP+tZyysT
-         AQnA==
+        bh=cjBz2sDHD9qmDzJiGaVXVB9yXjr7XeyDRf+P0XXT9D0=;
+        b=ALeG1pn5uC2uI0wx6zGXaPqlVBvyZx0cmuAaF5yP77T8qk0jlXr3Jx7qPS2SNqP9dy
+         CMI5FGMkQz7WHktyGd0xTj1n58pOfEJVcMRbOGhYC+/D+cNpZdHIP04Dgb7T8QKv9TLr
+         lpNIeSxwH9DLzQ5gie6egInsimYZ5D5wOMjMeEvLI3KnmSacsXor1/0f6YJppbyJflGe
+         62stPxzeuh8oTanNR5qOvA/ZB0adZ46rR0Jj1E1kTqkD8ZuPCopiGCyMlLNEb2VFVDVE
+         WopmKrzlp2HqVrmGsv5oGDVp3yK8s9yKiTWDrFqtT2waj626bXqOtI9z7QKZUY3lM814
+         qP6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706600431; x=1707205231;
+        d=1e100.net; s=20230601; t=1706601833; x=1707206633;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uPe60IzTNRhQ8xdKXhrI1YkRrC86QmovGAq/H+j7848=;
-        b=wyg3Wj9C0F2f7BsUz8r2eFEJ8pPDkdDazeA10Ubcr01CKzhVlbpQTt+QNdvKJmzhPv
-         oqQCyuPTIdcceA1FX/xgVCZdXbKEsOvuL043eG3YDiI56PveMiPcVE7RtmF+PxlRYcvX
-         i+jSReuqPXu8wF1fOWHXza0xoLiD9Y7+eQrY9RDJ/Qjxguhz9fT06v5hhaiP0awKBezg
-         ONdxnwFVhCarRTYDeV9/zEijBNiK7pC/xr3AiiZFr6i8Tc0RegvXGUgLeS3JMBE0dk88
-         wZ+GS6HCpUh1sG9ohm9pnj4B41wKp883BaI0cH2/sT+PV4N6aD4nuh4iZIJu8VJsoQKQ
-         eYyg==
-X-Gm-Message-State: AOJu0YxDrMSXmRoD3CEgRxxJJ58T47Db6pwGgsVzTlkwJhiQTE/3xklQ
-	vuUskorBNZt2WfAu7Yu/r8y2U1vOSNqc5TJZlW1EAhA+6GtTgqbI6EZTAr6Li9g=
-X-Google-Smtp-Source: AGHT+IFOW1yMVhj72oFmD37Hzaqe45ko6oyFddynA0fudFTsS0/WukBC5Pbd5ko3gKlDIwPzaYErdA==
-X-Received: by 2002:a17:906:d110:b0:a35:991e:5085 with SMTP id b16-20020a170906d11000b00a35991e5085mr737177ejz.30.1706600431327;
-        Mon, 29 Jan 2024 23:40:31 -0800 (PST)
+        bh=cjBz2sDHD9qmDzJiGaVXVB9yXjr7XeyDRf+P0XXT9D0=;
+        b=cs7u+wYc8PUZ81LDCBtU0sFyQ335KNp59vK+Oj/4IaaOH1roMcYxawHnQWczk845UY
+         9+UZVKcqdFQ/K4KP9Sho2/irYkG/Rp/ly3u6khqRz67cHLxGdpx1ur7Uif2cvz/XShum
+         D3vBP1GJoERF6hxDb/LB+bxD/WY3W42EqoJbHySiZokHKaxXgLkK0oH0/Ytv3HO79Kni
+         V1CC/v4+J17gZZcqsvP3Zs2O0C/zcZehFP+qrBIiRiY87+hc8hsjGtFr+JZ5Fp3nIH9C
+         h3Syr1TKXh5MmGQd4WEC6NDT6CkmVadmjqozmIPM/mikRgg2v6b4QxKL9A3Fd+XTETR1
+         06EA==
+X-Gm-Message-State: AOJu0Yw08c//q2z6EFnpXq6yZc0BpKkpeLUauN6TtM2anBtoTmJZo0Ot
+	Nlgq4M1NOnh14pkr4f/qdscaRWh72yEk//NqVUHEhMtN394SfMvFmcPJgOZemqg=
+X-Google-Smtp-Source: AGHT+IHLHe/NBesm3AFRLUXuR10/PosXK7SnfYv0WqKDIp7i9AkVZ4aZpvPhaqzFNFX3CkCiaFm1cg==
+X-Received: by 2002:a17:906:3642:b0:a31:2119:90d7 with SMTP id r2-20020a170906364200b00a31211990d7mr6555133ejb.38.1706601832667;
+        Tue, 30 Jan 2024 00:03:52 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id sf5-20020a1709078a8500b00a353bfdd411sm3690334ejc.59.2024.01.29.23.40.29
+        by smtp.gmail.com with ESMTPSA id j9-20020a170906254900b00a311685890csm4825575ejb.22.2024.01.30.00.03.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 23:40:30 -0800 (PST)
-Message-ID: <f3811c1f-eff2-4c7b-8cea-6d3115525235@linaro.org>
-Date: Tue, 30 Jan 2024 08:40:29 +0100
+        Tue, 30 Jan 2024 00:03:51 -0800 (PST)
+Message-ID: <81dab1b6-cf40-4c9a-a806-48aafc8a72ea@linaro.org>
+Date: Tue, 30 Jan 2024 09:03:50 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,26 +60,23 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: usb: dwc3: Add system bus request info
+Subject: Re: [PATCH 2/3] arm64: dts: imx8dxl-evk: add i2c3 and its children
+ nodes
 Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>, Conor Dooley <conor@kernel.org>
-Cc: thinh.nguyen@synopsys.com, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, balbi@kernel.org,
- devicetree@vger.kernel.org, gregkh@linuxfoundation.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- mark.rutland@arm.com, mathias.nyman@intel.com, pku.leo@gmail.com,
- sergei.shtylyov@cogentembedded.com
-References: <20240123-poking-geography-33be2b5ae578@spud>
- <Za/8J8MDJaZEPEKO@lizhi-Precision-Tower-5810>
- <20240123-anew-lilly-0d645bdbfb30@spud>
- <Za//LX9U6QG5A5NW@lizhi-Precision-Tower-5810>
- <20240123-nanometer-atlantic-6465b270043a@spud>
- <ZbAR/NQvjUnf2At+@lizhi-Precision-Tower-5810>
- <46781012-2678-4f6c-9aee-b020cabcbb28@linaro.org>
- <ZbA8ea9Ex+hMdDDZ@lizhi-Precision-Tower-5810>
- <ZbfB/KT+fzO/F2e5@lizhi-Precision-Tower-5810>
- <20240129-encode-catchable-f5712d561a47@spud>
- <ZbfjZoHiH7BsKyzl@lizhi-Precision-Tower-5810>
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240129221458.250492-1-Frank.Li@nxp.com>
+ <20240129221458.250492-2-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -125,98 +122,54 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZbfjZoHiH7BsKyzl@lizhi-Precision-Tower-5810>
+In-Reply-To: <20240129221458.250492-2-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 29/01/2024 18:41, Frank Li wrote:
-> On Mon, Jan 29, 2024 at 04:49:21PM +0000, Conor Dooley wrote:
->> On Mon, Jan 29, 2024 at 10:19:24AM -0500, Frank Li wrote:
->>> On Tue, Jan 23, 2024 at 05:23:53PM -0500, Frank Li wrote:
->>>> On Tue, Jan 23, 2024 at 10:46:39PM +0100, Krzysztof Kozlowski wrote:
->>>>> On 23/01/2024 20:22, Frank Li wrote:
->>>>>> On Tue, Jan 23, 2024 at 06:42:27PM +0000, Conor Dooley wrote:
->>>>>>> On Tue, Jan 23, 2024 at 01:02:21PM -0500, Frank Li wrote:
->>>>>>>> On Tue, Jan 23, 2024 at 05:51:48PM +0000, Conor Dooley wrote:
->>>>>>>>> On Tue, Jan 23, 2024 at 12:49:27PM -0500, Frank Li wrote:
->>>>>>>>>> On Tue, Jan 23, 2024 at 05:27:13PM +0000, Conor Dooley wrote:
->>>>>>>>>>> On Tue, Jan 23, 2024 at 12:02:05PM -0500, Frank Li wrote:
->>>>>>>>>>>> Add device tree binding allow platform overwrite default value of *REQIN in
->>>>>>>>>>>> GSBUSCFG0.
->>>>>>>>>>>
->>>>>>>>>>> Why might a platform actually want to do this? Why does this need to be
->>>>>>>>>>> set at the board level and being aware of which SoC is in use is not
->>>>>>>>>>> sufficient for the driver to set the correct values?
->>>>>>>>>>
->>>>>>>>>> In snps,dwc3.yaml, there are already similary proptery, such as
->>>>>>>>>> snps,incr-burst-type-adjustment. Use this method can keep whole dwc3 usb
->>>>>>>>>> driver keep consistent. And not all platform try enable hardware
->>>>>>>>>> dma_cohenrence. It is configable for difference platform.
->>>>>>>>>
->>>>>>>>> When you say "platform", what do you mean? I understand that term to
->>>>>>>>> mean a combination of board, soc and firmware.
->>>>>>>>
->>>>>>>> In my company's environment, "platform" is "board". I will use "board" in
->>>>>>>> future. Is it big difference here?
->>>>>>>
->>>>>>> Nah, that's close enough that it makes no difference here.
->>>>>>>
->>>>>>> I'd still like an explanation for why a platform would need to actually
->>>>>>> set these properties though, and why information about coherency cannot
->>>>>>> be determined from whether or not the boss the usb controller is on is
->>>>>>> communicated to be dma coherent via the existing devicetree properties
->>>>>>> for that purpose.
->>>>>>
->>>>>> Actually, I am not very clear about reason. I guest maybe treat off power
->>>>>> consumption and performance.
->>>>>>
->>>>>> What's your judgement about proptery, which should be in dts. Such as
->>>>>> reg, clk, reset, dma and irq, which is tighted with SOC. It is the fixed
->>>>>> value for every SOC. The board dts never change these.
->>>>>
->>>>> Then it can be deduced from the compatible and there is no need for new
->>>>> properties.
->>>>
->>>> Okay, I think "*reqinfo" match this. When new Soc(using compatible dwc usb
->>>> controller) appear regardless dma-cohorence or not, connect by AXI3 or
->>>> AXI4, needn't add new propterties. 
->>>
->>> Anyone have objection? I will prepare v2 to fix rob's bot error.
->>
->> I'm not sure what you want me to object to/not object to.
->> Your last message said "needn't add new propterties", seemingly in
->> agreement with Krzysztoff saying that it can be deduced from the
->> compatible. That seems like a good way forward for me.
+On 29/01/2024 23:14, Frank Li wrote:
+> Add i2c3 bus node. Add i2c gpio expandor pca6416 and i2c mux pca9548.
 > 
-> Okay, let me clear it again. dwc usb is quite common IP. The below is
-> what reason why need "*reginfo* instead of using compatible string.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
 > 
-> 1. *reginfo* property is decscript hardware behevior, which will be changed
-> at difference SOC.
-> 2. it may change at board level according to if enable dma coherence.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> index b972658efb176..d313cf1dd79d5 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> @@ -261,6 +261,61 @@ i2c@6 {
+>  	};
+>  };
+>  
+> +&i2c3 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c3>;
+> +	status = "okay";
+> +
+> +	pca6416_3: gpio@20 {
+> +		compatible = "ti,tca6416";
+> +		reg = <0x20>;
+> +		gpio-controller;
+> +		#gpio-cells = <2>;
+> +		interrupt-parent = <&lsio_gpio2>;
+> +		interrupts = <5 IRQ_TYPE_EDGE_RISING>;
+> +	};
+> +
+> +	pca9548_2: i2c-mux@70 {
+> +		compatible = "nxp,pca9548";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		reg = <0x70>;
 
-dma coherence is not a board property. Anyway, you said it will never
-change in the board.
+reg is always the second property.
 
-> 3. dwc core part is quite common, all SOC using common "snps, dwc3" as
-> core-part, all soc specific "nxp, dwc3 *", "qcom, dwc3*" is used for glue
-> logic part.
+https://www.kernel.org/doc/html/latest/devicetree/bindings/dts-coding-style.html#order-of-properties-in-device-node
 
-And all should be having dedicated compatibles.
 
-> 4. using *reginfo* can reduce add more strange compatible string such as
-> "nxp, dwc3-core" ...
-> 5. *reginfo* property likes "reg", "clk", and align what Kryzystoff said.
-> "reg", "clk" is fixed for specfic SOC. These can help reduce "compatible"
-> string number. "reginfo" do the same work as "reg", "clk" ..
-
-So again, reginfo is fixed for specific SoC? So it can be deduced from
-compatible.
-
-I don't know what to say more here... so let's be clear that you
-understood me:
-
-NAK
 
 Best regards,
 Krzysztof
