@@ -1,64 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70B91E4A1;
-	Tue, 30 Jan 2024 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E9981AD5;
+	Tue, 30 Jan 2024 18:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706633446; cv=none; b=j8cgnCAsu95yOwQ3+1mEbDPrISXCxPXs+fnc0bMQDi2Gu9yU8vp7LrHj8VMqWhDTmXqhnFbe/1PtKiXVYo9afCR8GXgW7gxzZ/z/8ozu+P97H+Ie54HXpcDirte8DJXZzqYTmYMf9/MWFeVQxGtVZ3NnUwlDrkr0kv2VZF+94s8=
+	t=1706639310; cv=none; b=LbG+hMmyzzdAJt2LKBV+He4uNU3QynVDD7F5t1qHDTxnC8GrNTZoJMZ2vBKHrXor4TuQzL7ivQPc9I57jsaf2nMMsHqZkYIuiB8Dw2Vct7TlI5o906iXiONRipmPT3JT3fqTJLqQqecTls7xafWqJ59UQGjPLPzWBMulqv/gWoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706633446; c=relaxed/simple;
-	bh=KCkxiDMO++TE0CToP0JnZm8TViWY/57apCRph4GiQNw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=s+aryCF816q4alQk9J8lkk3ravBnH0yQXyRnGUBmCtITDScFls/TDM+LxH4lsN/kJ71toOWCc6Y3JerpCHyHLQ1K81u4WXwI6u2uFOjrfvFZsfKQmHUwk1BA0jNWz4MHEqmAQQrUx38v3k1YuzewjrNN2DHcYLj+wEy1eCoaHcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHXFp/p9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706639310; c=relaxed/simple;
+	bh=422yXU7d3Zx33jspR2LuYeo1DwySHZURHM0VRf+DRa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NUeneSML1yaTcytRcsIRbkd/eNJRxujgY6cVOEEICp7ZkmXHu6cT5I1wPWATwWQFu9yuyuTXUl3JFrZmtG9bY3wnOCLaAr19Ag3sOjvEcKAqe61D+kud7F/W+tvjNUyrp8qKvnMYhihD/keDzbgR50TTP9h5Egj/Quc39GtML8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9lFyD3o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHXFp/p9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927C1C433C7;
-	Tue, 30 Jan 2024 16:50:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9lFyD3o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F712C433C7;
+	Tue, 30 Jan 2024 18:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706633445;
-	bh=KCkxiDMO++TE0CToP0JnZm8TViWY/57apCRph4GiQNw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=XHXFp/p9TCZxrMhRNwZyiSMFBlKJAUMdJY/cWsRNtg2Td7rqMJbdM302/eKOMMQtd
-	 hAqAOFJXS0AFPHXMGdPjh/UhG7Kzfw3LhxYAiiqrDeEcwlNTPnQ9VWTqF6MNQnsrNu
-	 UI4eFQ7HO2YfMpV8DaH7j9B1Ru5/sMnX4ALtyCCaGDnbSWPAd8epd4JWMRK8M9S1nD
-	 yFX5NUS0Pj//jJk38MD8clfWRObQIxzOLeiVi9GyUkTc8L0+ffYA5BWKJ8F7k7tx6b
-	 /lPyrX3umWsrGDJQVihrY7rjFlF8Lmfqk5ytaI4vJ33uTSDWPs0f18DqsmQUNPWtSG
-	 vZiSEYEs45wtQ==
-From: Vinod Koul <vkoul@kernel.org>
-To: Barry Song <Baohua.Song@csr.com>, dmaengine@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20240123172842.3764529-1-Frank.Li@nxp.com>
-References: <20240123172842.3764529-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] dmaengine: fix is_slave_direction() return false
- when DMA_DEV_TO_DEV
-Message-Id: <170663344320.657338.6849422221928151453.b4-ty@kernel.org>
-Date: Tue, 30 Jan 2024 22:20:43 +0530
+	s=k20201202; t=1706639310;
+	bh=422yXU7d3Zx33jspR2LuYeo1DwySHZURHM0VRf+DRa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u9lFyD3ooZqaMx+b4i2ZPoDYhF30yE+/ALvSe24+tvUan8r/9lR3p+xDu0wlvcrw2
+	 Wa67DZZwa6j47D26r/LWjWxapkB0rgGpU5NAxaAT9XRoyh/RS7ZLnqlnWlngFceuqh
+	 gENljd/TdUuSezTYbTY+ekn/KY3FE6kA1cPDfYlcFjQQ4vPoW9E+e4bLbh6Yp7GrHc
+	 fV6F0tnB0rhSrF46/lnMYKZVQRRR4z4WymIzhPV+hMblLK89LbhVXLYvuyn9WQ//DV
+	 sw46U9cgLV/xJ4ukfXlI4+MpFkqvbSVPaPz60qZsA6+joYRoEMnceHwdbj2RR4UVdb
+	 9suVmd05pT9sA==
+Date: Tue, 30 Jan 2024 18:28:25 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: thinh.nguyen@synopsys.com, balbi@kernel.org, devicetree@vger.kernel.org,
+	gregkh@linuxfoundation.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	mark.rutland@arm.com, mathias.nyman@intel.com, pku.leo@gmail.com,
+	ran.wang_1@nxp.com, robh+dt@kernel.org,
+	sergei.shtylyov@cogentembedded.com
+Subject: Re: [PATCH v4 2/3] dt-bindings: usb: dwc3: Add
+ snps,host-vbus-glitches-quirk avoid vbus glitch
+Message-ID: <20240130-eligible-barrette-5b2258e150f5@spud>
+References: <20240124152525.3910311-1-Frank.Li@nxp.com>
+ <20240124152525.3910311-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ougxCNZc1E/5Y4RR"
+Content-Disposition: inline
+In-Reply-To: <20240124152525.3910311-3-Frank.Li@nxp.com>
 
 
-On Tue, 23 Jan 2024 12:28:41 -0500, Frank Li wrote:
-> is_slave_direction() should return true when direction is DMA_DEV_TO_DEV.
-> 
-> 
+--ougxCNZc1E/5Y4RR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+Hey,
 
-[1/1] dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
-      commit: a22fe1d6dec7e98535b97249fdc95c2be79120bb
+This version seems to be the lastest (v4) for this binding, but went out
+prior to discussion actually finishing on the v1!! of this patch, even
+ignoring Rob's comment today.
+Please wait for conversations to resolve before sending new versions.
+I, at least, do not get paid for what I do here, so I often need well
+more than a day before I can get around to clearing my review queue.
+On Wed, Jan 24, 2024 at 10:25:24AM -0500, Frank Li wrote:
 
-Best regards,
--- 
-~Vinod
+> From: Ran Wang <ran.wang_1@nxp.com>
+>=20
+> When DWC3 is set to host mode by programming register DWC3_GCTL, VBUS
+> (or its control signal) will turn on immediately on related Root Hub
+> ports. Then the VBUS will be de-asserted for a little while during xhci
+> reset (conducted by xhci driver) for a little while and back to normal.
+>=20
+> This VBUS glitch might cause some USB devices emuration fail if kernel
+> boot with them connected. One SW workaround which can fix this is to
+> program all PORTSC[PP] to 0 to turn off VBUS immediately after setting
+> host mode in DWC3 driver(per signal measurement result, it will be too
+> late to do it in xhci-plat.c or xhci.c).
+>=20
+> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+> Reviewed-by: Peter Chen <peter.chen@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
+Where is your changelog?
 
+>  Documentation/devicetree/bindings/usb/snps,dwc3.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml b/Docum=
+entation/devicetree/bindings/usb/snps,dwc3.yaml
+> index 203a1eb66691f..8f5d250070c78 100644
+> --- a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+> +++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+> @@ -273,6 +273,13 @@ properties:
+>        with an external supply.
+>      type: boolean
+> =20
+> +  snps,host-vbus-glitches-quirk:
+
+I specifically recall saying no to adding "-quirk" here, but that
+might've been after this patch was sent.
+
+> +    description:
+> +      When set, power off all Root Hub ports immediately after
+> +      setting host mode to avoid vbus (negative) glitch happen in later
+> +      xhci reset. And the vbus will back to 5V automatically when reset =
+done.
+> +    type: boolean
+
+Rob commented today on the v1 conversation:
+https://lore.kernel.org/all/20240130181322.GA2079185-robh@kernel.org/
+
+Please respond (there) to his comment.
+
+Thanks,
+Conor.
+
+>    snps,is-utmi-l1-suspend:
+>      description:
+>        True when DWC3 asserts output signal utmi_l1_suspend_n, false when
+> --=20
+> 2.34.1
+>=20
+
+--ougxCNZc1E/5Y4RR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbk/yAAKCRB4tDGHoIJi
+0pt+AQDsmO50jZctRQ5aLsZ+yZXzF35f1dAw2pYzWZrQbVmSrQEA+njvKcH8sqh0
+goQW0F0wsLP4GIBXvfKmqvu2YaSz0Ac=
+=Xqh1
+-----END PGP SIGNATURE-----
+
+--ougxCNZc1E/5Y4RR--
