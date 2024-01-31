@@ -1,171 +1,130 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2078.outbound.protection.outlook.com [40.107.13.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE6B12AAFE
-	for <imx@lists.linux.dev>; Wed, 31 Jan 2024 15:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706715234; cv=fail; b=oyGH14m+4ZqjoJrQ1+wVrXTNwxGdlUC9i38UElhBRhggBWjzUCLBxQm9rwjj8DvR0vOIH++jYYl/52/JAaDVinH9v35o5rVGq8Jz0UKDT16iFiaP/nV+J6DvAoIGKodccS4xbpsASe9B6XwZFPSl2twcRin+mQInyblL4ftWXdY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706715234; c=relaxed/simple;
-	bh=WAUd4tFS2O8fSB7vNHelt/r3NhbaaLjhCyQfzbrCvVs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PogIDuAZqTniTG0+YNUG945I2zwjGM4jtLD4MqRls1MVwQiPUaMzHfqEWOeTbyUx+7ekcCETrJLKBrm6FMBFzru2WfF1dz25f7qj16nFRLuogFO4hOrM0wzyZRmSMhyeLuA+Rl2lzqtNbvFkCf9b27XQ1CxDmYYH7GMJQoi2n1c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cFbJC2Cy; arc=fail smtp.client-ip=40.107.13.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9B06EB6E;
+	Wed, 31 Jan 2024 15:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706715471; cv=none; b=NwrX/Jy4M6QcHJUFF0eZBTjTrAlsxGoW0HedOn4/PztX9m/jax40HhZxVhP+3j7CjhkxnqPiyCvWq4or4tFjsJ+GWc04XAC2ZW29rwpAPyWFBFYC+u3JBXdR+OCS4A7np6mBEpM29K3zSR1c/MaNZpBNsTGX3dwmCdBdQTfMTRA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706715471; c=relaxed/simple;
+	bh=NLu5RhQDHjuoWdQ7ATBAXWr7+B9giVQ1tClFHkObJS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=LnehuG5u2ODZPEcbN5Cjf0R8qCaeM8qD8C0vHlaQCMnWOqvICwo4zLmLppH0uj5x1oa+T5lj/ON97Ks4gxLZK7cFTRTZREYok9ij+BGkcG0Xi5wMimunOdBlL9VTiNZnZ1kjAVFHcSjiyH9x5G06ly9MSe1T5T+3Ym+YuZOLbDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRxtWjsQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cFbJC2Cy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Is6ibetbbCzsjMj4V2jFeF0dHdjpaUU/fK9BFAFrUQdt52GEZ7Ub/OOfus2xp5CCyfldscZN1xtjcQqGLvB9OK1C4IOOlUrGR+KP0uHYpTL9AXVpN8I8DRP2AKVEZIJ6MjOaCIsivNBFVvkYK5Cq1EhlZQrtpx6M3CT2ZZ7E2Pqf9SzIPF90OXf4typKgrRtEsd4M7IeHdKJ6xiH0nlYp+dFCKeY02ghi41aNYMKpi6I1AIclIikPFo0trsz2zhM0YDs+PSH3SoLiJS5XvMHCTI2tWWuk/W5BmWfMhGu7zIOhVAU4pk89V20UyOYQsj0SJiO7BlaPhJKe4iItBNTaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k+U1Ti+lC9m3FBSuaYrvvjx7lzWX2OlmWyhqzKOBPS8=;
- b=Rb1a062NF58MNdPR1BRkqGcVs53XAozZXViSBRczk97m+sdaAuvCPHt5A6yqOE9aWio8SXQfW+eJF2n4pwxGuFwivdlnBkUN4FgowyIB2eY3WuuXX3yFR38BU+IIk8DONtt2p838lapEeRTY/BIFZEn5vT7rVkffpboiHLQYypFhCvLVyK0E6Togcye/VxBHVG76CnjDSBnEPDnmsJFN5HLo1BJ96E9403IbixMreF7DcjzcttTheq/fjmGPV7Zjqpd3LPbf0SLC+DH/wKVPfPeyDqB5ReFeWHtrWT38RH0hgoC/zcjLuXY46Z4Kuvl9UzfbZ7jgCQRnAo53kw9Y7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k+U1Ti+lC9m3FBSuaYrvvjx7lzWX2OlmWyhqzKOBPS8=;
- b=cFbJC2Cy672em/zWwtMl2mvh1ZUEIgebfqRPozOahIqqg/65IjhDku6GWj0W8+6me+lThNbV3Sxlsi8K9jE2Je/j0b9BAsVV26ssznoBKvY3Kww/XndnGJbnop+zPpIIRFVBQ3FtFkwAUiScGU7NkucKBbxDgms7gLqF6WgP+ds=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8573.eurprd04.prod.outlook.com (2603:10a6:102:214::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.23; Wed, 31 Jan
- 2024 15:33:48 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7228.029; Wed, 31 Jan 2024
- 15:33:48 +0000
-Date: Wed, 31 Jan 2024 10:33:42 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: vkoul@kernel.org
-Cc: devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, krzysztof.kozlowski+dt@linaro.org,
-	linux-kernel@vger.kernel.org, peng.fan@nxp.com, robh+dt@kernel.org,
-	shenwei.wang@nxp.com
-Subject: Re: [PATCH v4 0/6] dmaengine: fsl-edma: integrate TCD64 support for
- 64bit physical address
-Message-ID: <ZbpoVq/JALpmGv4J@lizhi-Precision-Tower-5810>
-References: <20231221153528.1588049-1-Frank.Li@nxp.com>
- <Za6d/lSARdxpqU4e@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Za6d/lSARdxpqU4e@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: BYAPR06CA0039.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QRxtWjsQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C4CC43390;
+	Wed, 31 Jan 2024 15:37:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706715470;
+	bh=NLu5RhQDHjuoWdQ7ATBAXWr7+B9giVQ1tClFHkObJS0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=QRxtWjsQrKxV8wn5tiT+hyR8fxLyWD56t7JdxX0F25qs+QkwbsbymnPS2kODrM8K5
+	 WSbdltD1Uif8EYPgP30Jjni+6Q2o2NqrGKVusaatjPdUKkP7xTp8OoEjWNclp3yrHZ
+	 d3gCwHPJ2YLqrdqnoSpF7xj+jG/jhTbxW+HHsUP+f/rwBFXHIUnAoU9Y+Pd7o/ili/
+	 JFGJ6aquyLJqn0G+hKtF5puvFv3G+yxsGedrslEyMpmUiC4DJA870gZZ9X5zLJP5ce
+	 jEu894erBsFm4lpoQCci0m0O7CXt1DVx+qkDuyGHiF4L/QCEaB925IhgLkgDKAHUuN
+	 ikQZD5arf86cw==
+Date: Wed, 31 Jan 2024 09:37:48 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Serge Semin <fancer.lancer@gmail.com>
+Subject: Re: [PATCH 1/6] PCI: Add INTx Mechanism Messages macros
+Message-ID: <20240131153748.GA586693@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8573:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6f5c0d9-f933-4364-a208-08dc227204c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	nv9eG6UqyIXJ2928m46tz5XOY+wopkAtvRNYL1PDWLsKlRLFy0fz89Rxey6JehNGDSj/n9g/kGcVbiqKHHMlQ3DwKnetgNFy9EO31MuYaiHYjz6K+wwhY3LseqL4r4MDRRU5qxjTOsxCRI/csRIexJ3aj0wKL0QfvB1B8Dm9+5brwKBLDRW6i/1OavCbN4e0kcead/dQZpE1lLQcsqRDs0Qio5zghxi+8p7MCIJUvrgT/1unD8Iw6gZFn+cXoafXmZ1OccQ/rkBdrmLT9xzabqAi2Ah9nXo6tGHVSDVPr0M0CsLgDFXTTDo1sxb3Q3PGQqLS673U/8EeF92VQZevevGvYONUDEidDXVZ60hQp/jJYjlxkr2AJLCVQkyRjmboIIZm+uEGyYXSZq1zPX9dBZYsZ3tIqljByI/jJOdnUKIad7MuDtcdeIgQwX2NEtOzUQ+Tzx8nh8dJ4ZibLHi9Z+i70YHgIrUH2YRMlHXr9J1He9wWTCDblfUwHC2NYiWY75XJuR1NaWBUiwBP3F56RffvXfLIr4E2fkcdpU6RYiT7wV11tWk34X7jLw+KxJIZAa4S+FqJVMd1AqhDHNQZPY5iX3EbKVjKyt6YNxRfZlQhqy1y1m/p2aOJ6Sactxz3/aZJ/zXSqkmAmEPT22w0wIOhMFcreLtYqn6AlISBM8o=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(346002)(376002)(396003)(136003)(39860400002)(230173577357003)(230273577357003)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(33716001)(26005)(41300700001)(478600001)(38350700005)(6916009)(316002)(66556008)(66476007)(6666004)(6486002)(6512007)(52116002)(6506007)(9686003)(83380400001)(38100700002)(66946007)(5660300002)(2906002)(8936002)(86362001)(4326008)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BmAJiqnEOnflTEqHDWfY85rYj2jlc8YiKpinRyvXu6bpnQljXWML0q+2Tvs1?=
- =?us-ascii?Q?iQ2PbFGUirfbkJEyyxzPHRo9L2CCbE1i9p4qDOsnhgBRMptpwr8MnuSAM1/K?=
- =?us-ascii?Q?C8p0ON8cfvCNYY6hgX1b5eVrzIX1c7klniP+bkmvnZWw4nW2ViOFx71d0KUh?=
- =?us-ascii?Q?i/9xWIi12VphiF1Gw7SHGD/qWgStE1sK25q7xCv3POTlT5fLvKx990MiEi1x?=
- =?us-ascii?Q?qDZblgBuYXIbW/kzoHokR8yOU2hNiVh1J9ZhtOmCcQLTWqYpSz7gPyma+RNf?=
- =?us-ascii?Q?20eiY+jU58/HV4FQ/8QpiF3tapPPlWiGfdY3vM5XvgQePBvmKvxK+7vEJRws?=
- =?us-ascii?Q?onSUGPc/V/Bc+eyY2kIRj8XfSnB3EqPgCQQeV23z+QfM/Ulx2FJ5nj7MKRsX?=
- =?us-ascii?Q?8Zq26/QNIeJJrrmHMA8CZ2D2dqBQOj5jraJsJnJZ1nB27MIFFlFz6dR6Yggb?=
- =?us-ascii?Q?AJ0txp7iXMfoWaQCtaQvEGIrCal2xd434WVJQCqc/YGl/dEHabmIOHX/CMBC?=
- =?us-ascii?Q?y1zPxT3qVaINRSgsrP2Y/RHu2aEwCV3pwxK/veGu4FFR+vAcP9rFxs+sZd04?=
- =?us-ascii?Q?2UBJDL480bdRtfuob4y7GMM8Mg/tR28gljWCW+nNR3iMEm1vkAOoHhIMBrLU?=
- =?us-ascii?Q?278QI73JfKTyetynpr8CVo915SjxPJTqta/dB1xztFAMOKs9eyllFwNcdbIg?=
- =?us-ascii?Q?HtsBrUkJ76dtk55v944PVzlFS2yJERQv58X5qADka/rj3xLpiRPMfVsYTfbR?=
- =?us-ascii?Q?59p3qX1qVgcyWCkowfbZf3TvEgjA1ZlfjMudqwBXQLXmuvI4kXqRnbt80lLz?=
- =?us-ascii?Q?d1G9KKrGaat71037BjyzEvlEqZV51BYPdDm0tiB5LiLbe3BATidugojTa/hQ?=
- =?us-ascii?Q?B+BVbxVtqmVW/1BF4AobwDSesdoyqXSPpmQIB91Qh8OmebOGIDjxEG2Sh7mi?=
- =?us-ascii?Q?M8zS8TDxSAxk3r8n/ilQXVq9A0XgtYmmTwDe3Tybi69YgMINDGXlIVYQhfXf?=
- =?us-ascii?Q?i+9iz3vi5mAdSWiPfbbSzz3MXRs28Xq5WpC4N6erJlYe+cn/1S0XuUVB6eW9?=
- =?us-ascii?Q?UPIs5o5ZDxJd1jhoV5CxByoWYF4qyH4o7c7kQZxmluo6wRfbG7UFD+bBZ47j?=
- =?us-ascii?Q?3lAXeFoiN8xcfaMlyvmpdBWIS6RPC+3+43OVi3HuotDH7TE+bEydmEDrNqRJ?=
- =?us-ascii?Q?xR7UXfBXTb2osYLT8fmHF7EQVP5S8q2rO8NpPLGsot8mTGuvmxK+CUAN7LeF?=
- =?us-ascii?Q?ZWqnAOD9Ch1ii1pbm5i9i6R9mhb5p5Wl/c82m3l4UhI3QPKHUucjfmsFr6pG?=
- =?us-ascii?Q?pPPXJ8sGHYwKn5svOxFqfQfEYzhoJPYRSF2nYNmabk/K8aWA71gIPlPKkQac?=
- =?us-ascii?Q?BZlnoY1VWr89TpcYCnG8M51fIWXflo92qrtEtIL+MV6opSZr/sBghmXdq54L?=
- =?us-ascii?Q?ODaW/SMgR3Cn9XzXAqh8OaaHJ9nIwjbE4RZ9VsNVz/6B/7C0TqqXu4Ilr6AR?=
- =?us-ascii?Q?E8HuljHrtkUOidfmsUNCDTdEIRR8mbWMEhAGdR7Ys+jqEBznpUzKYZAHBa43?=
- =?us-ascii?Q?1kp54ZkhxDGFnEikJi12w+MksMCIdmkNhQxL2UWz?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6f5c0d9-f933-4364-a208-08dc227204c7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 15:33:48.3750
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YC5M9tKje33CZE0NcxACrFLCyRCAeX/XRGLOTf8EMfJmqkmJOmNsHnnmQ0O1nwdqJ6cLHIsJB/VmKOHx+MxpQQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8573
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240130-pme_msg-v1-1-d52b0add5c7c@nxp.com>
 
-On Mon, Jan 22, 2024 at 11:55:26AM -0500, Frank Li wrote:
-> On Thu, Dec 21, 2023 at 10:35:22AM -0500, Frank Li wrote:
-> > Change from v3 to v4.	
-> > Fixed tcd64 type as fsl_edma_hw_tcd64
-> > 
-> > Change from v2 to v3:
-> >  - fix sparse build warning
-> > 
-> > Change from v1 to v2:
-> > - fixed mcf-edma-main.c build error.
-> > - fixed readq build error. readq actually is not atomic read in imx95.
-> > So split to two ioread32\iowrite32.
-> >   It needs read at least twice to avoid lower 32 bit part wrap during read
-> > up 32bit part.
-> > 
-> > first 2 patch is prepare, No function change.
-> > 3rd patch is dt-bind doc
-> > 4rd patch is actuall support TCD64
+On Tue, Jan 30, 2024 at 07:45:26PM -0500, Frank Li wrote:
+> From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 > 
-> @vnod:
+> Add "Message Routing" and "INTx Mechanism Messages" macros to enable
+> a PCIe driver to send messages for INTx Interrupt Signaling.
 > 
-> 	Could you please check these patches? I still have more patches,
-> which depended on this.
-> 	eDMA is used for cross whole i.MX chips.
-> 		
-> Frank
+> The "Message Routing" is from Table 2-17, and the "INTx Mechanism
+> Messages" is from Table 2-18 on the PCI Express Base Specification,
+> Rev. 4.0 Version 1.0.
 
-@Vinod:
-	Ping?
+Please cite a newer spec revision, e.g., PCIe r6.0 or r6.1.
 
-Frank
+Also, please cite section numbers instead of table numbers because the
+table numbers are hard to find (you can't navigate to them from
+"Contents") and they change a lot between spec revisions.  "INTx
+Mechanism Messages" is Table 2-21 in r6.0, but it's in sec 2.2.8.1 in
+both r4.0 and r6.0.
 
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+With these updates:
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+> ---
+>  drivers/pci/pci.h | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
 > 
-> > 
-> > Frank Li (6):
-> >   dmaengine: fsl-edma: involve help macro fsl_edma_set(get)_tcd()
-> >   dmaengine: fsl-edma: fix spare build warning
-> >   dmaengine: fsl-edma: add address for channel mux register in
-> >     fsl_edma_chan
-> >   dmaengine: mcf-edma: utilize edma_write_tcdreg() macro for TCD Access
-> >   dt-bindings: fsl-dma: fsl-edma: add fsl,imx95-edma5 compatible string
-> >   dmaengine: fsl-edma: integrate TCD64 support for i.MX95
-> > 
-> >  .../devicetree/bindings/dma/fsl,edma.yaml     |   2 +
-> >  drivers/dma/fsl-edma-common.c                 | 101 ++++++-----
-> >  drivers/dma/fsl-edma-common.h                 | 161 ++++++++++++++++--
-> >  drivers/dma/fsl-edma-main.c                   |  19 ++-
-> >  drivers/dma/mcf-edma-main.c                   |   2 +-
-> >  5 files changed, 223 insertions(+), 62 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 2336a8d1edab2..fe42f5d10b010 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -22,6 +22,24 @@
+>   */
+>  #define PCIE_PME_TO_L2_TIMEOUT_US	10000
+>  
+> +/* Message Routing (r[2:0]) */
+
+Add citation to the comment: "PCIe r6.0, sec 2.2.8"
+
+> +#define PCI_MSG_TYPE_R_RC	0
+
+I think I would prefix all these with "PCIE" instead of "PCI", since
+they are specific to PCIe and we already use "PCIE" for some of the
+PCIe-specific timeouts.
+
+> +#define PCI_MSG_TYPE_R_ADDR	1
+> +#define PCI_MSG_TYPE_R_ID	2
+> +#define PCI_MSG_TYPE_R_BC	3
+> +#define PCI_MSG_TYPE_R_LOCAL	4
+> +#define PCI_MSG_TYPE_R_GATHER	5
+> +
+> +/* INTx Mechanism Messages */
+
+Add "PCIe r6.0, sec 2.2.8.1"
+
+> +#define PCI_MSG_CODE_ASSERT_INTA	0x20
+> +#define PCI_MSG_CODE_ASSERT_INTB	0x21
+> +#define PCI_MSG_CODE_ASSERT_INTC	0x22
+> +#define PCI_MSG_CODE_ASSERT_INTD	0x23
+> +#define PCI_MSG_CODE_DEASSERT_INTA	0x24
+> +#define PCI_MSG_CODE_DEASSERT_INTB	0x25
+> +#define PCI_MSG_CODE_DEASSERT_INTC	0x26
+> +#define PCI_MSG_CODE_DEASSERT_INTD	0x27
+> +
+>  extern const unsigned char pcie_link_speed[];
+>  extern bool pci_early_dump;
+>  
+> 
+> -- 
+> 2.34.1
+> 
