@@ -1,97 +1,70 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2078.outbound.protection.outlook.com [40.107.6.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D8867E98
-	for <imx@lists.linux.dev>; Wed, 31 Jan 2024 09:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA65B12A143
+	for <imx@lists.linux.dev>; Wed, 31 Jan 2024 15:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706694391; cv=fail; b=GhOHuJnxAnwneWcQAdBkSajR08ZnxeyhVBw4QPMXxdE75Jos7My5Zibefu226rVZOpJelClSLdpEjqluCU+jWGilnpSuM4ifMokjpaiIyuyuzW2oBB3hZiPPqfTh3O4u6IQLMxlOkmXEy9qERfdAwNqCvSh1qZI2+MvzgNQgTNs=
+	t=1706714827; cv=fail; b=HPufnFhREKgMmQaZVvkl7x/aqtr3K5dz6rxWjvykZfmIdsJvn1Etbdh8kI0uykvEUEoupbrSmLPYIyaTslRu7aizTgiPtDVcKl1HzvUrC+WeTsfE5xlpRAJZo0s+ZGzVkd1kCKO/usZjZEe6jhzADJPAuTSf8SFOXnYWqTlz2Pw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706694391; c=relaxed/simple;
-	bh=lFd7V3AdRUPewQ1wxcD63/8LX7/aE5cMvawMepiQZWw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=flHTprcbxwODba8R8m3RrZWlC+ESEiUrsU45ME4wJVWpra46SQWEyJdbBA8OmN/GHAFgSX+dER8ND5DY4HT7JRiHbJam5dHjgC6e6mEDqH9obAEC9SsAAQMesF+R0k4d+jirHfR9yauJsFCRBq/sogDHWWUaEvPoFAZBzgmuhM0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=a1QgxdLz; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=kJ+wMncq; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1706714827; c=relaxed/simple;
+	bh=+J7/lPHFZPesROCONPBlEwpsjlXsL/JuKdsWGxAInXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Qit/kihA6XzW8jcFRsDOLPIxYj5wJb1YWGEueQ8zcz73mCAdiqEcZ2yGJRHWpmTIKe5vL9nJeDRZfOGOC4+HMk82vZJ1SHuQU9zN2EiymL7W+cYoaaiKtnmTugyuilydWcbokyY45KbdECuDfyMhtHuAszoc7Ga7MMdL9dHnJac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=HM6u+uGR; arc=fail smtp.client-ip=40.107.6.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="a1QgxdLz";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="kJ+wMncq"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40V9iYFj024630;
-	Wed, 31 Jan 2024 09:46:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=oIHn34vEfCRNh74rn02cw4PboQ+xhTVpQDdVuFtw11M=;
- b=a1QgxdLzRGAvA5+1VX8l3zemZR/OAAXcpyfZ/g9yisdxiMzul+ihQ8usj7PjF5Uq1NzU
- j7IdZKPOK6cUbVPPFqyIlGFMjZ1NLLfVxjR+iiJsUigX42fT8PxEwLPpnHT7Troskq2M
- HIBA4//P+OuviVMLVqqptzxZ6o9fZfKWvRAs6jOTwxPdeopgL0NvxMWBOMPWXER4H65E
- UG4h7WI1u8WyCTFJpNzYyqZh5Vas8Tem+LfTcUzRjgNW5XIaI46ruadWYXGHt+RNnvCp
- uQY2VBSe72BsoM8y3JXYnitcRBcrRKsnD1HVTaAV0LehfOAZSzxbHswAumfEwVAlFEKP 0g== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvsqb1bf5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 31 Jan 2024 09:46:14 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40V8ifO3014737;
-	Wed, 31 Jan 2024 09:46:13 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr9ethx7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 31 Jan 2024 09:46:13 +0000
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="HM6u+uGR"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XSoLw0hZ3n1U27NPYVtWq+zC6S6OmycXrjK2KU8UU6vfvlAfRliSfGLDO2nqJmBLYLQCpU2Q5ZGKBA8xe30JDinWkQr6go1abgW7LbmjafUFhgapGMgTR02oNieXZfbKhmlvEm8V5B+fXh0lu/hnJuK+jrn3nlDAYXTXmIeDbPHWuxnDD7VWySq3y4hYDpR3gXsoEZY4zrRSs9XprVaHGLrTcif0AHfJTUB2vMomdcc+O7WCv9SJm7erqFzDEYfvi7dTmsqDfnsaRVHn4RTqMaRL+OL84kutBOsMvVSW0zgq5cLtlnhXM/mR7QW9wyOZpqr3UUwQvaztRLYwLZvgrw==
+ b=Xcl3EmdNRWw1wB6kanzAuxYwePLp2RRA0u47SJVtSzbzPHMNGzkRCjNYVAVgxPpD6ifmm4W8uz/EexqtqEWjwiMKEIRqXYVlVrnt7q67iFOhH+Y6MNTXT7AVW+teyRvSZvQPfHtch/6eJ+R9M7VPBAeyCYumERE1jJ08NECQ+AcUP8rJPN2wAWczFGcDUTTVBj+mX2zCMsHEsnZaKIG7zjcvL0QW3BAilWOS0gWPFIdeV8G2Fss6nOZkrU+hUK9tNRi9VELeE30fvhfu3/3a6awMb3NyaQFwI1o2BDKllFT1sUDI6L0PGdRFVBQ5mCHSCCUXs5xqmcYCdorI6gLopg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oIHn34vEfCRNh74rn02cw4PboQ+xhTVpQDdVuFtw11M=;
- b=F47FZK7S3TCGCUrP7YN5wmb3/JnIRoPcSYV2nk1flpZqh83de384SLdU90t9pDlohT6R5TU3I3WLh1eiNzeXg0SSYeSOwVBiAkYZqQ545vjVe9zIQwHdrh56Z1Djs0WffCmnOANwky8K6TNNKEdhXAL5LN/BR0F9xk8PakOD0T1i7mBmQy5OUXw9pnDPjxC9BQLkXTKc/EV7FCh5magpAfQ9WbBUiAVHCT8EgfmcZQuMYyrq+GqIjTeqADAnfx+p9PijgvGtrOxTFRhUjjJuJOVj4G8UpnQ/KRjNTFkFh4Z6qpSI+6QyYbPafGZ4OGUSNJf1mN0l8FCXmBf0AzzMsA==
+ bh=0UI3e6P8WvDh/Mm9VPSo8TRSoF6pP+LL/t5BOzjZVOU=;
+ b=WNUz20eBvvskdiCFfcPS52h5snVuVxwQGXtAScCMN39JSy0SM5ERhZI5ZPQ3a9l4NvlGF19Jb1srlJDWH6WA72B2zBn3Mxxyu1QhGOdgCZ7E4oQeooSnuHafEUC91HmiLZmmFC1qr8sRhqQzGb5Hx6d9gOUrjisMWqhXuOEUys7qcqwWV/WWXjldRmXE+ODT/NQIgnzSkdK43K/WVYr6Fgy4pQiJHO0mUaJeHT8EegLswz8BD0kJupAGcONG/mPQo4rvAbt1SqxSKFbmYylZagqLxIFeQQuNg0bN+xthkDLd7G2k5UCTnZDMZJSGfLaCdA/0MK/cMYditsdNLvjkYQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oIHn34vEfCRNh74rn02cw4PboQ+xhTVpQDdVuFtw11M=;
- b=kJ+wMncqQ7vTJpT9PXohgbd7j1Dex+mb3DQF6KmeQd/VkKziEzDOvmNaCGVkByNM40KwblnxI6cAVkTdLDXxj6qyRPKsn3idlBSBP4UhhroZjRmQJjWe3jz5TH203zDo76ZpRtXebqmYQaKzW7Lbz++DChshUPDjNw4ymYtOqtc=
-Received: from DM6PR10MB4313.namprd10.prod.outlook.com (2603:10b6:5:212::20)
- by SA1PR10MB6566.namprd10.prod.outlook.com (2603:10b6:806:2bf::6) with
+ bh=0UI3e6P8WvDh/Mm9VPSo8TRSoF6pP+LL/t5BOzjZVOU=;
+ b=HM6u+uGRjcdBP7TnPGzrCyw127RcrGS7FfLFhVaJHsczCcGc0KEpEDKp4FqO+G/VhLNPCmNqLVTb1Vu/8nwp4BNIPzoeP+QaAbEsQVDWW5zjNUVcaEwjDwP+Bi5f8qIrMAa2yLqLcOlbz/otBseSZB9nUqugk0ADNpuRmijM9z8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBBPR04MB7657.eurprd04.prod.outlook.com (2603:10a6:10:1f5::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.32; Wed, 31 Jan
- 2024 09:46:10 +0000
-Received: from DM6PR10MB4313.namprd10.prod.outlook.com
- ([fe80::f11:7303:66e7:286c]) by DM6PR10MB4313.namprd10.prod.outlook.com
- ([fe80::f11:7303:66e7:286c%5]) with mapi id 15.20.7249.024; Wed, 31 Jan 2024
- 09:46:10 +0000
-Message-ID: <dd69cee0-ac14-4e20-9255-367240b1dbc8@oracle.com>
-Date: Wed, 31 Jan 2024 09:46:04 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] perf vendor events arm64:: Add i.MX95 DDR
- Performane Monitor metrics
-To: Xu Yang <xu.yang_2@nxp.com>, Frank.li@nxp.com, will@kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, jolsa@kernel.org, namhyung@kernel.org,
-        irogers@google.com
-Cc: linux-imx@nxp.com, mike.leach@linaro.org, leo.yan@linaro.org,
-        peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        imx@lists.linux.dev
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22; Wed, 31 Jan
+ 2024 15:27:01 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7228.029; Wed, 31 Jan 2024
+ 15:27:01 +0000
+Date: Wed, 31 Jan 2024 10:26:50 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: will@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, john.g.garry@oracle.com, jolsa@kernel.org,
+	namhyung@kernel.org, irogers@google.com, linux-imx@nxp.com,
+	mike.leach@linaro.org, leo.yan@linaro.org, peterz@infradead.org,
+	mingo@redhat.com, acme@kernel.org,
+	alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v4 2/6] perf: imx_perf: refactor driver for imx93
+Message-ID: <ZbpmuuZM+4JTmtqO@lizhi-Precision-Tower-5810>
 References: <20240131055811.3035741-1-xu.yang_2@nxp.com>
- <20240131055811.3035741-6-xu.yang_2@nxp.com>
-Content-Language: en-US
-From: John Garry <john.g.garry@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <20240131055811.3035741-6-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0601.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:295::21) To DM6PR10MB4313.namprd10.prod.outlook.com
- (2603:10b6:5:212::20)
+ <20240131055811.3035741-2-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131055811.3035741-2-xu.yang_2@nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0061.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -99,84 +72,312 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR10MB4313:EE_|SA1PR10MB6566:EE_
-X-MS-Office365-Filtering-Correlation-Id: e389514c-7a09-4267-f2fe-08dc2241744c
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7657:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51172c86-e9b8-412e-810a-08dc22711202
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	CsN139oEuGVT1xVJbxLlEJ2kCD2stu6pY6U4GWlXTke7NHsxDDqMRorHTiqfbQaJRgbUUmkLc978f15nDPctRO3nXIh1zapmiILPwTIFeNnxpOAzelvFGlEAcWOnzJXPCSnNvUb8Ui9UzOEsibjFSjiqOxwydBBby0S1sN1tzUTJLEcevk3sh3MqQ1zI9UaZjLNlfsjjH05J9Fz2Jb4pmcqe3HC7IxbWaThcBwheRC9OFOj60ap9oDOIFGRh5QqNwpLIbDxrDu2HIuyWeWUK9DB0EtQHkCAfdfq/wDGIv3APDQ30TJcUldu06mA+IlEd9ta0bgBhlyTdSZPCLThczaqSx4ZagmNQ16UhU4ogPgD4L515AanErca/MnD81DBTyi8JLhN/OJuJoDGQFdr9AtckGBaHzMwrt/4GYU2QsPIlE8u/qpMj46XIIcFu6brLHyIzVFQtuGD1GFmp1nP7+AMboGCZJQrD8dheIfg9Z1PO8xQ2LRas0nno4jvE7tMWNuzc7czXbx+dken98Hc/qt6oZuCOQY9dloZ4MqyoIG+021z1jvow02rif702yOobeHrqZI1igrgV6TdFdxvCOgjwaQwvALBZCwx7NpiVxXbNi+wGij7tJe7TVyILdOE9XnLpliYLD0GqPKCgqFJxGqGpTYIDLGxZc0tkMfwJB9A=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB4313.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(136003)(396003)(366004)(376002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(31686004)(41300700001)(921011)(36756003)(558084003)(31696002)(86362001)(6512007)(26005)(38100700002)(2616005)(6506007)(6486002)(36916002)(53546011)(478600001)(2906002)(316002)(6666004)(66946007)(66556008)(66476007)(4326008)(8936002)(8676002)(7416002)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info:
+	zOsD2Wt5k7KShwzhb9+44Lra5kTBap1X+pGMV7D6P77SFPyXThMz+7b4CuZyXiROFbwLSujSaS3c362bWoWYX8yNBKgxPEBFKDZvIYdGYAMSIldbiEZxHNrxwNQfqtKXZ9Be3+6hMd9zOB2nNdFz8PcQe87LoTn2phKl9j1SwfumK8KIlx26aHrfqL9MdQ9HeORfNFNsRnNfcAUD0mHTZrqhJi4Sxy2OahzB+Bdpg+5YxXhfRr61OgIoZtG7cLT6y/p0wBcqJtaFPaHBtQVJTOpRUKtFCIYLbbf84JHvZ5d/VakvrPHE0BjF7K9eVaHr8T0XTy+FEDfsTGkXGY79P5LaLzy9qyjYoXHtZiRg1VkKGTgLxhj8xKlsXxeoV+sEz8FPo9538k+TRd+C3mnnyhrrxEKikmmONMVbOsm8LkgFXi+/2QDch4xxgs0uE8iU2m6Ush8hCbY2M9RB+652SKm8d+2Aas90t5Eaae36vvf1NSC6y5bDGl+ISWP1s+/QgRVK4wcY6YV1Nz/v/OWZogj1PDKpIoGtwYRErWBCm+/hLK+/f053qzPeqwNjbHXQMV12dq9O/6qh2V/SIf4e3lovumLea231evhip0eIvXsbmvhQKP6DPSfaCv7Lrxk5pfyhq55DsC2zQuJgalYXlw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(39860400002)(366004)(136003)(396003)(346002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(41300700001)(66946007)(4326008)(8676002)(6862004)(8936002)(2906002)(7416002)(5660300002)(86362001)(66476007)(6636002)(316002)(38350700005)(66556008)(6486002)(38100700002)(52116002)(6506007)(6512007)(9686003)(478600001)(6666004)(83380400001)(26005)(33716001)(67856001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?VjM0c25MbG1hVWdLaHFFMkZrUml1OWYrK3dMQXpqWmlDeE5DeEJ3Wlh6bGwy?=
- =?utf-8?B?ZG1yUWJETUFlaWNCaS9wajROQ3RQQnNFQUFQbkVmZmU1UXg4eUd6ZTRNbThi?=
- =?utf-8?B?TnJBSG9OMTUvQWlwemhnYTBlaTNMbjUwRWVpLzlsaXZIWXM3dCtaTUE1OEp4?=
- =?utf-8?B?SUFIcWN0U2d2a29oVXRROCt2RHVhY0xGUGh0VCtJWno4V3FqRlM1bnhGQk9Y?=
- =?utf-8?B?cW5HL2xoMEt4TG16d1kzQU1HTG9MOVNhTmdTbmNPY3k1aUZRU1Y1VlVvT2p3?=
- =?utf-8?B?UVVlb0ZoazE3L0dGWVVJVi80eXdBYmhIeExyYXNiTk5yMktJL2l1VmNkRVFC?=
- =?utf-8?B?ZXd2NUpQTVA5NWJGMERkME1sczAyZzRhZEp4WWtsTnBRa3I2eUMxQkxHMXFN?=
- =?utf-8?B?clRQOEU4blJIVmJYVFBiU25KK2Zya2ZVVVBFZXlCZHQ1RXBZTXEycnBxZ0lT?=
- =?utf-8?B?RnNJS0R3YWhoanB4bUt3RkdQYUNGcHpadnJ3Z2V6Wk9LUFM4dnRQTFBYOFZz?=
- =?utf-8?B?aDJ5QUg0SURBajFSdXlPT0VmOTI1YWlyYVlHUUowZ256NUN0ekM5U055ZmtY?=
- =?utf-8?B?ZU1BZDlpUmhSSjg2VVgzS0lhTkZma2c2RnBjbkt6YVpjc1pmeTBNZE5hMGxw?=
- =?utf-8?B?OGlPdk9tUmNLSkEzSkpqNnNrM29veisrTUFubWRMTXA0QURaeDFNOGg0WTFn?=
- =?utf-8?B?K0ZzTjJlTW5Gd2hnRVdCUG9QZHZIQlRjVThtVHBMVlpDSkhaa1RBWWVjVFR6?=
- =?utf-8?B?TEE1bVhXQlludjd3ajlQQjM1UFdaaWQyeGxJSkZualRDOTVxY1B2TkozTjMv?=
- =?utf-8?B?QlVSY0ZnS1BpZzFqdG03QVlZRHV5c2pOOC9CSitRNDJFbnZOS2VuZXJwdDJh?=
- =?utf-8?B?eXJHTUlKWVoyaG1MQTYyV3EwK0ZsV3AxN3BZdW9pTFgyWlozTnpTcXhVc0ta?=
- =?utf-8?B?b3lubFpaREFUWmhCNVNxa0c0NFFsTzVGZWJ5OGlLOXhTekZDYUJBcmpWODFk?=
- =?utf-8?B?b3NyR3BUVnZhZWdFVFNzRmJBOG5OaTVXQ3gvcFNwKzBmK25QcDZtS1FxcUlP?=
- =?utf-8?B?K2I2QUJ5L0ZFVElrTzZ4allPMkdXSG9yNURLek5ienl6UWJUNGxYRXloZ3I5?=
- =?utf-8?B?aFFraEE0RFNBRFF3c25CUHFId3MycHVua0IwRlJxSWhSSjZWM3FraVBZSXFY?=
- =?utf-8?B?RUpINFpMYW1Nei9wWFlTVVd5SzhYZVl3TXlJem5RaUxqYTBKS1c0ay8rSmo5?=
- =?utf-8?B?UkxTUTFRSkpFZnNmTTBNRm9nZGljMmxINE5pdmVRYkhuYzZIaEJCTllMdVlj?=
- =?utf-8?B?VHhiU0Q0T1ZEZmJjMnIrdmV2R29QdTJTbUJWU0FRMW1hcXpmcHZSVFA2RXlW?=
- =?utf-8?B?cVBGV1V0cHZQUDdaSThib0s5Q3dldS9LVGNsNS9KOVVLbVpyVHhMRE44ZlFv?=
- =?utf-8?B?MU1oNW1mQ3hTUm44bVF5T3VrWHZwYjJ0aldWRk9WS1ljOEN0TW16MWtpM0d0?=
- =?utf-8?B?akhJVmp0Q0EyTEVnR2laNlZwTXRyWmlZUGhkbmRWWkMwSTNFM3lQakVtMzBG?=
- =?utf-8?B?OVBmMURRa1pqcWxNejJxdVNkdXRyc0YwdUttc1Q3V2x2bEJIdVl1WjFaL2lH?=
- =?utf-8?B?TEJoWFRrVXFwajRUc1pDOThjREQ3K3kydktOVWJMckY2VTk0c0oxbzNUcUI1?=
- =?utf-8?B?T2FTcktCU0YyT0pXU01qTjVRZzRHdE5KbkZFNktuMXhOWE9YYVcxUGkwWEw1?=
- =?utf-8?B?cDN3c3pXeGJOaW9oTExrYTRsL1gvTmpnU0JVaDRKL3NuVmhHL0x0ZnRJYUND?=
- =?utf-8?B?NmVQNWdHTXpuT0JodEtEKzFFanFXRDhkakREblVQNVFVbk1FQ0ZzTTZvNXhE?=
- =?utf-8?B?V0NVMTF5UzA1TllWUUxLLzBEcHJ5OGtHK1BQVXRwaGxDSGovb0cyRkxYTnVl?=
- =?utf-8?B?YTFvSGRsM1I2aTFxQzdsVHI2bE1KN3k4S2xDSTh3VTNsTGp4NUVHNTV3c0Nq?=
- =?utf-8?B?NlpqQjRHdnVSTWNPTFdhVWNVdHgwWVdwQ0QyZW5oWXJrRWdPM0RBckxKSlU1?=
- =?utf-8?B?Wk1NRUs1ZlI5MWtOZUZhbGx1QXl6U25nYkNlVmlBWnZ4cFZ0SU4vcFJkdmM5?=
- =?utf-8?Q?sD84l8M7nW3Ysu+D8XFW+PKXt?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	W5m9aLm+2XT1f566Q3vbzyXf7uIdWAA0T6RhlGR2j2K/jgR1x+xnVAcx4c9y4RoNQxXRh6op1Fx/m1zu0NXvbVOq8JLNNTONqNLSu121h51JcWQOhoV4Zr5+AclNaMMX3oiKvZOAs3GnU6yMxUU9bdVXCyECayshq637oOPczEJcKIy092hGRACeAzRZkat4dxwdoJXKKJU2jXpgVFxtmHCe9/cEWsYW+qsOOSBmWc+VUBTkVIRsQMP3HzZ1xUfJj5RReaDqFtRf4lfH4WQ3VtPGMpIlcRQR+HqNo5FHCq6GYIF7lBr4ogS+n9jqw4x4nGPZ/GmmoXvHT9cMlM14mNH4D48kekw4jw/s9j0ldfs3/3yJx5kcm/DB0t7EhVnomr408wPO9d2cPy+q5ABtj5UaJRJKHPrxAJFKjnY15mvlwAQ9LL9jjqN5N4hEaACtxdziiCx3smV+Ie+w2YdN9wGQrR/Aa3Bu4JtQIByt/6niy485qYiuAnJI6BAErbPE0ooyPxdUZaV4TNzoWZtmNO0ml8+i8mhzn0aPoj8sALrgXQNcBVQxgODWewJXzm+xrLngTtLD3OrepPuq/HGa5rz0ea7EaiQaJ9y5qNdJ5ic=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e389514c-7a09-4267-f2fe-08dc2241744c
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4313.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?03tow0kDDCxj9RvP7kOssauhZUtvZSoVagOQ7X3PCfDjmwokm+cT0GfePRgs?=
+ =?us-ascii?Q?Sbuc5UBJEPchmtW7Yp536fvYsPP2b5yHrbQMebdozmD+QAfrV9heI5+tveHO?=
+ =?us-ascii?Q?Ak5FMkAzLjZhmt+vimET9obDvrybAvYxOcrglZbquwSKZjdNghafVn3uebeu?=
+ =?us-ascii?Q?F/tnVHIBWVDg7e7TSykslLmahVmDuFULFrrGg6XJjPUBbSOOVK3qix/LJLa7?=
+ =?us-ascii?Q?9ex1wUVKsfg7jUYa0ohMHURUER6rsstOyFRsTtjyFaPNAsXc+edKRqayhOUn?=
+ =?us-ascii?Q?3AqLgUmQtVY3nkUA33D8Y9SNSL0ml0ztsPMhYKGVLu9wt/3+8hNloarzYmpc?=
+ =?us-ascii?Q?6wuy2Avo7oeBkmNhIQKlzSRhOSZ7yqojkhWb05jkphXfizrgE+z7pFct0X9J?=
+ =?us-ascii?Q?OrZtVRn02M7oIY87xmSCPDNBi8y2pPnheLZobVqzYBVfkg3YhmNIRG6XoqSJ?=
+ =?us-ascii?Q?HW5kCbUGkJAuRX80p9eSs2t6rJ8LoVfycLzN20xGyEhHBnI2InnxgY/HxjMA?=
+ =?us-ascii?Q?iTInTcC/sy4yK+oP1gWolk4yEbXNiisBtNpbUW4vcuXCt78JVAL/vG/b3KuS?=
+ =?us-ascii?Q?TMT9Nk1hvCJaeqVwuSdhC17dxzGNfCPS4zBIer7ZC45ciV7lkW/RluIbh/GR?=
+ =?us-ascii?Q?jkjoyefQQNmhBaBtVdVXaQrlAV1HPP6Ik16Fxyp3KP6kGv1+oTEJtDTg3qW3?=
+ =?us-ascii?Q?VewBHE8vv48/HR2i4LNMy+vY2+VClYF0s713wUI3qCRAdgSEp6dunvFimA7X?=
+ =?us-ascii?Q?tR/ny4SBuhVTdHxo6F6FXCzr4Cg/9yKZ4flUc6bKPk8Yzx/WD9ra2jcxwlTi?=
+ =?us-ascii?Q?3/5JN0dUrnxgkHWva4rTRRr/yoh2ghnHXXbbB3XTBN18bqhux4PyWWxum4Ap?=
+ =?us-ascii?Q?qfTWRjaG2+cydXl8go1Tf7w0CG3bVqaPesOo/Sn6I8qllBvxr22htZSPnU8q?=
+ =?us-ascii?Q?LNYQ961jGvhuGvVpyJ0X3jy1R565n9Efag260Sz/xNslaDa4Ery1XZC27EnK?=
+ =?us-ascii?Q?pSHNqm+eXESSj5y0/bsnejoDQ6zyQzD4RqQYA/aIYonnKlvhK8MVoaLjYJn/?=
+ =?us-ascii?Q?pgOr95mmrBrZXDGWabHRvaSowwhLzZa4Yp7FpztoRZIw1LKztJIO1UylOyOR?=
+ =?us-ascii?Q?wYrwB9l8F/tZuW5fOfK80OZmBse39kzvDPdk+kvyhc+dA+9itukp+PWcfen+?=
+ =?us-ascii?Q?vwSbeVVnh4cTpNASOQvsR803VtMFjjPCKOyMRJPUazWT42Cd1mS0T8XU6K23?=
+ =?us-ascii?Q?rSYmy/CLSWW7fNWy3WTQ/C1H2jkHSNgwYqFCMQ0qszkMZYyhGGwb5Mb1EpJb?=
+ =?us-ascii?Q?aknN277holj9EYOqYD5eXbsXOMKJI9AxB2YQUqJSrSAnPpmu8pfTejvpZtRr?=
+ =?us-ascii?Q?RI6G25Af94QtEagMkyFGYhK5wcfLWYWK2u/VPaesKBbglpgkV+jxN6KkTToc?=
+ =?us-ascii?Q?Gak+/vV1bLVUF/kDcHNA63enBqnIezY+w12gAE2dBAtETh0vllYRq0cwKsXG?=
+ =?us-ascii?Q?jFBk3RJOFg9lN1rvDo1pTHESfW9s3UhA2A5Op4SMNcLk6gH6Yd1PnHaQdby4?=
+ =?us-ascii?Q?em3uVzu3u27vQekotphHEuNch1MtUbi5X6gqJ5Sz?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51172c86-e9b8-412e-810a-08dc22711202
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 09:46:10.6455
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 15:27:01.1498
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5OaLQklqwzEiQGHMNyJ2p56wkhD75IdgDUrrqWKPp1SUZo6Q2HcXr2XpjqRjb4Vz0/PFGUdf0VC0TYgULnqUsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6566
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-31_03,2024-01-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401310074
-X-Proofpoint-GUID: k6B91oDZaDM3bf31F21kmFA5H6DUgwOi
-X-Proofpoint-ORIG-GUID: k6B91oDZaDM3bf31F21kmFA5H6DUgwOi
+X-MS-Exchange-CrossTenant-UserPrincipalName: tbLq2mypafMic/QY8MGDnUa7+dA0S3xNyhtg9z8Yv8+bM8n5p7e6n7SsqdW9OIqkYDBiO7UnDDdIM+MTPWUjEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7657
 
-On 31/01/2024 05:58, Xu Yang wrote:
-> Add JSON metrics for i.MX95 DDR Performane Monitor.
+On Wed, Jan 31, 2024 at 01:58:07PM +0800, Xu Yang wrote:
+> This driver is initinally used to support imx93 Soc and now it's time to
+> add support for imx95 Soc. However, some macro definitions and events are
+> different on these two Socs. For preparing imx95 supports, this will
+> refactor driver for imx93.
 > 
-> Reviewed-by: Ian Rogers<irogers@google.com>
-> Reviewed-by: Frank Li<Frank.Li@nxp.com>
-> Signed-off-by: Xu Yang<xu.yang_2@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
 > 
 > ---
-
-Reviewed-by: John Garry <john.g.garry@oracle.com>
+> Changes in v4:
+>  - new patch
+> ---
+>  drivers/perf/fsl_imx9_ddr_perf.c | 121 ++++++++++++++++++++++---------
+>  1 file changed, 87 insertions(+), 34 deletions(-)
+> 
+> diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
+> index 9685645bfe04..b1a58e9e1617 100644
+> --- a/drivers/perf/fsl_imx9_ddr_perf.c
+> +++ b/drivers/perf/fsl_imx9_ddr_perf.c
+> @@ -11,14 +11,14 @@
+>  #include <linux/perf_event.h>
+>  
+>  /* Performance monitor configuration */
+> -#define PMCFG1  			0x00
+> -#define PMCFG1_RD_TRANS_FILT_EN 	BIT(31)
+> -#define PMCFG1_WR_TRANS_FILT_EN 	BIT(30)
+> -#define PMCFG1_RD_BT_FILT_EN 		BIT(29)
+> -#define PMCFG1_ID_MASK  		GENMASK(17, 0)
+> +#define PMCFG1				0x00
+> +#define MX93_PMCFG1_RD_TRANS_FILT_EN	BIT(31)
+> +#define MX93_PMCFG1_WR_TRANS_FILT_EN	BIT(30)
+> +#define MX93_PMCFG1_RD_BT_FILT_EN	BIT(29)
+> +#define MX93_PMCFG1_ID_MASK		GENMASK(17, 0)
+>  
+> -#define PMCFG2  			0x04
+> -#define PMCFG2_ID			GENMASK(17, 0)
+> +#define PMCFG2				0x04
+> +#define MX93_PMCFG2_ID			GENMASK(17, 0)
+>  
+>  /* Global control register affects all counters and takes priority over local control registers */
+>  #define PMGC0		0x40
+> @@ -51,6 +51,7 @@ static DEFINE_IDA(ddr_ida);
+>  
+>  struct imx_ddr_devtype_data {
+>  	const char *identifier;		/* system PMU identifier for userspace */
+> +	struct attribute **attrs;	/* AXI filter attributes */
+>  };
+>  
+>  struct ddr_pmu {
+> @@ -67,16 +68,6 @@ struct ddr_pmu {
+>  	int id;
+>  };
+>  
+> -static const struct imx_ddr_devtype_data imx93_devtype_data = {
+> -	.identifier = "imx93",
+> -};
+> -
+> -static const struct of_device_id imx_ddr_pmu_dt_ids[] = {
+> -	{.compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data},
+> -	{ /* sentinel */ }
+> -};
+> -MODULE_DEVICE_TABLE(of, imx_ddr_pmu_dt_ids);
+> -
+>  static ssize_t ddr_perf_identifier_show(struct device *dev,
+>  					struct device_attribute *attr,
+>  					char *page)
+> @@ -178,7 +169,6 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_ld_wiq_6, 70),
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_ld_wiq_7, 71),
+>  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_empty, 72),
+> -	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_trans_filt, 73),
+>  
+>  	/* counter3 specific events */
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_0, 64),
+> @@ -190,7 +180,6 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_6, 70),
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_7, 71),
+>  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_full, 72),
+> -	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_trans_filt, 73),
+>  
+>  	/* counter4 specific events */
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_0, 64),
+> @@ -202,7 +191,6 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_6, 70),
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_7, 71),
+>  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_ld_rdq2_rmw, 72),
+> -	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt, 73),
+>  
+>  	/* counter5 specific events */
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_0, 64),
+> @@ -242,6 +230,16 @@ static const struct attribute_group ddr_perf_events_attr_group = {
+>  	.attrs = ddr_perf_events_attrs,
+>  };
+>  
+> +static struct attribute *imx93_ddr_perf_events_attrs[] = {
+> +	/* counter2 specific events */
+> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_trans_filt, 73),
+> +	/* counter3 specific events */
+> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_trans_filt, 73),
+> +	/* counter4 specific events */
+> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt, 73),
+> +	NULL,
+> +};
+> +
+>  PMU_FORMAT_ATTR(event, "config:0-7");
+>  PMU_FORMAT_ATTR(counter, "config:8-15");
+>  PMU_FORMAT_ATTR(axi_id, "config1:0-17");
+> @@ -268,6 +266,22 @@ static const struct attribute_group *attr_groups[] = {
+>  	NULL,
+>  };
+>  
+> +static const struct imx_ddr_devtype_data imx93_devtype_data = {
+> +	.identifier = "imx93",
+> +	.attrs = imx93_ddr_perf_events_attrs,
+> +};
+> +
+> +static const struct of_device_id imx_ddr_pmu_dt_ids[] = {
+> +	{ .compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, imx_ddr_pmu_dt_ids);
+> +
+> +static inline bool is_imx93(struct ddr_pmu *pmu)
+> +{
+> +	return pmu->devtype_data == &imx93_devtype_data;
+> +}
+> +
+>  static void ddr_perf_clear_counter(struct ddr_pmu *pmu, int counter)
+>  {
+>  	if (counter == CYCLES_COUNTER) {
+> @@ -361,7 +375,7 @@ static void ddr_perf_counter_local_config(struct ddr_pmu *pmu, int config,
+>  	}
+>  }
+>  
+> -static void ddr_perf_monitor_config(struct ddr_pmu *pmu, int cfg, int cfg1, int cfg2)
+> +static void imx93_ddr_perf_monitor_config(struct ddr_pmu *pmu, int cfg, int cfg1, int cfg2)
+>  {
+>  	u32 pmcfg1, pmcfg2;
+>  	int event, counter;
+> @@ -372,27 +386,27 @@ static void ddr_perf_monitor_config(struct ddr_pmu *pmu, int cfg, int cfg1, int
+>  	pmcfg1 = readl_relaxed(pmu->base + PMCFG1);
+>  
+>  	if (counter == 2 && event == 73)
+> -		pmcfg1 |= PMCFG1_RD_TRANS_FILT_EN;
+> +		pmcfg1 |= MX93_PMCFG1_RD_TRANS_FILT_EN;
+>  	else if (counter == 2 && event != 73)
+> -		pmcfg1 &= ~PMCFG1_RD_TRANS_FILT_EN;
+> +		pmcfg1 &= ~MX93_PMCFG1_RD_TRANS_FILT_EN;
+>  
+>  	if (counter == 3 && event == 73)
+> -		pmcfg1 |= PMCFG1_WR_TRANS_FILT_EN;
+> +		pmcfg1 |= MX93_PMCFG1_WR_TRANS_FILT_EN;
+>  	else if (counter == 3 && event != 73)
+> -		pmcfg1 &= ~PMCFG1_WR_TRANS_FILT_EN;
+> +		pmcfg1 &= ~MX93_PMCFG1_WR_TRANS_FILT_EN;
+>  
+>  	if (counter == 4 && event == 73)
+> -		pmcfg1 |= PMCFG1_RD_BT_FILT_EN;
+> +		pmcfg1 |= MX93_PMCFG1_RD_BT_FILT_EN;
+>  	else if (counter == 4 && event != 73)
+> -		pmcfg1 &= ~PMCFG1_RD_BT_FILT_EN;
+> +		pmcfg1 &= ~MX93_PMCFG1_RD_BT_FILT_EN;
+>  
+> -	pmcfg1 &= ~FIELD_PREP(PMCFG1_ID_MASK, 0x3FFFF);
+> -	pmcfg1 |= FIELD_PREP(PMCFG1_ID_MASK, cfg2);
+> +	pmcfg1 &= ~FIELD_PREP(MX93_PMCFG1_ID_MASK, 0x3FFFF);
+> +	pmcfg1 |= FIELD_PREP(MX93_PMCFG1_ID_MASK, cfg2);
+>  	writel(pmcfg1, pmu->base + PMCFG1);
+>  
+>  	pmcfg2 = readl_relaxed(pmu->base + PMCFG2);
+> -	pmcfg2 &= ~FIELD_PREP(PMCFG2_ID, 0x3FFFF);
+> -	pmcfg2 |= FIELD_PREP(PMCFG2_ID, cfg1);
+> +	pmcfg2 &= ~FIELD_PREP(MX93_PMCFG2_ID, 0x3FFFF);
+> +	pmcfg2 |= FIELD_PREP(MX93_PMCFG2_ID, cfg1);
+>  	writel(pmcfg2, pmu->base + PMCFG2);
+>  }
+>  
+> @@ -476,12 +490,12 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+>  	hwc->idx = counter;
+>  	hwc->state |= PERF_HES_STOPPED;
+>  
+> +	/* read trans, write trans, read beat */
+> +	imx93_ddr_perf_monitor_config(pmu, cfg, cfg1, cfg2);
+> +
+>  	if (flags & PERF_EF_START)
+>  		ddr_perf_event_start(event, flags);
+>  
+> -	/* read trans, write trans, read beat */
+> -	ddr_perf_monitor_config(pmu, cfg, cfg1, cfg2);
+> -
+>  	return 0;
+>  }
+>  
+> @@ -596,6 +610,39 @@ static int ddr_perf_offline_cpu(unsigned int cpu, struct hlist_node *node)
+>  	return 0;
+>  }
+>  
+> +static int ddr_perf_add_events(struct ddr_pmu *pmu)
+> +{
+> +	int i, ret;
+> +	struct attribute **attrs = pmu->devtype_data->attrs;
+> +	struct device *pmu_dev = pmu->pmu.dev;
+> +
+> +	if (!attrs)
+> +		return 0;
+> +
+> +	for (i = 0; attrs[i]; i++) {
+> +		ret = sysfs_add_file_to_group(&pmu_dev->kobj, attrs[i], "events");
+> +		if (ret) {
+> +			dev_warn(pmu->dev, "i.MX9 DDR Perf add events failed (%d)\n", ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void ddr_perf_remove_events(struct ddr_pmu *pmu)
+> +{
+> +	int i;
+> +	struct attribute **attrs = pmu->devtype_data->attrs;
+> +	struct device *pmu_dev = pmu->pmu.dev;
+> +
+> +	if (!attrs)
+> +		return;
+> +
+> +	for (i = 0; attrs[i]; i++)
+> +		sysfs_remove_file_from_group(&pmu_dev->kobj, attrs[i], "events");
+> +}
+> +
+>  static int ddr_perf_probe(struct platform_device *pdev)
+>  {
+>  	struct ddr_pmu *pmu;
+> @@ -666,6 +713,10 @@ static int ddr_perf_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto ddr_perf_err;
+>  
+> +	ret = ddr_perf_add_events(pmu);
+> +	if (ret)
+> +		dev_warn(&pdev->dev, "i.MX9 DDR Perf filter events are missing\n");
+> +
+>  	return 0;
+>  
+>  ddr_perf_err:
+> @@ -683,6 +734,8 @@ static int ddr_perf_remove(struct platform_device *pdev)
+>  {
+>  	struct ddr_pmu *pmu = platform_get_drvdata(pdev);
+>  
+> +	ddr_perf_remove_events(pmu);
+> +
+>  	cpuhp_state_remove_instance_nocalls(pmu->cpuhp_state, &pmu->node);
+>  	cpuhp_remove_multi_state(pmu->cpuhp_state);
+>  
+> -- 
+> 2.34.1
+> 
