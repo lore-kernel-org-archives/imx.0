@@ -1,86 +1,254 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2086.outbound.protection.outlook.com [40.107.20.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852DB63064;
-	Thu,  1 Feb 2024 18:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706810631; cv=none; b=OPgKzjMEACtJ8Ao8+DYXZrZGr2M2JQrYvg1WDvnPAPQ+LgCDi2R9X9Ii9jzuMiY1wFhwIfh2Ts51fJXWKbpGAEomDk0SHBdy5gDFcsLB/o2KPCWbnnRCOsspLWUfe3YrrPtRP4CtqrWd9+5ULLm5lH4mni5HWmEBCuAKesvV03Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706810631; c=relaxed/simple;
-	bh=cimPZd7g/IjUV38GuJgS7vN9RrjhC7JdmJnDdWIPGdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=HryBn3AdJd1YptBz+r0KTktZDsBgKM+F/fZ2llkZ51wTSGzL0eMEGIx9ddW33bQmyFonqLv83lAz9O7gP3Unm5RRqBRHhXsUk3Na2le9ItFnip7cSYqoaSN3lelsLdSZZ8+yFoiXOmPhg1X4VJkUgWvE3YXGJEfV6yyMx2F3f2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsOVeeci; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7143884FC7
+	for <imx@lists.linux.dev>; Thu,  1 Feb 2024 19:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706816089; cv=fail; b=LZ4fdPIBDEdB/fasdlm03OW/eDiYv/bSZutsV4mQGlxcMkGwA+hMQtbUPhDR7hfcRR8B0SZ+S2PI6LnNsVb492zByaOpnyybo1vtmfhwCAK3jJ0Fa5LeqYvjVxEfbbURMvl0anQyJx8SH30ttvRGdBj/Pz0BZUWEM1t4yhxqXmI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706816089; c=relaxed/simple;
+	bh=xnRIoJ6AiZS10gWuN67w/G+gNgc9zxTSQEKl1D69blg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=R5eVxYG6pEuAWi3yhe/YsAgmMbTMAd9nwxLozgSCdbJ692tgdlNgHle0iMph5boPEZunPcZq9Tmtt3pMF4Q4JdBFPmu4qGcMy2PfN+DdJwvJErkV9cs3PJncnpDt9qEZTF9CKa29XWJ3xvgYM5I8B0LYB0kTCHfjuNjjOGJLgts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=EKTok//Z; arc=fail smtp.client-ip=40.107.20.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsOVeeci"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8A9C43399;
-	Thu,  1 Feb 2024 18:03:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706810631;
-	bh=cimPZd7g/IjUV38GuJgS7vN9RrjhC7JdmJnDdWIPGdE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=gsOVeeci6sC1lNCliVkreUO4TPedFwk18sO7t/T30vKvNS0Zg7rD2DbeTjIwtEVPt
-	 ikUVM3JJbX4F17FNnTGYPUB3ViQdC9YApUsK5+e+lKUP2RdM38uSTgrSp9rs3VvAzU
-	 +KNQZNlRIuMFGBv8rBmnif01Y+5ngR9l8kAkGSnujr8CginKDJIJC7OWqbCXsMfAu7
-	 b/oheiZR8unpNmR9Xxb14fDSDG2P02CaLT1y0LLv9I2wUkUguVLmZu3AJfgyb8YDMm
-	 S1p4BxjssXNhxUBFXg2ZgZEnV6Mgxn7xu7Jacxl55DECjrDlubhQ+Bjo0XxJ/LHH4r
-	 qZt8sHTzxm2xA==
-Date: Thu, 1 Feb 2024 12:03:49 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] PCI: dwc: Add common send PME_Turn_Off message
- method
-Message-ID: <20240201180349.GA640827@bhelgaas>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EKTok//Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oGJe13h0ZseK8CZz20jJLRUIi05chbDtXp5KzHBJzRylgPZgXz7HlkeybRG7tZ2QAVbabTHDMHVc0b/Uf3mZjX+AcGRQ5dwb4usjuYWOB0xtsiRxLbUOiB64ETuTfJuDEp7S2Bua2O6QzS5RLq0DSGV2MY0ytwkmFErSiN6XMWe0HPCvwHPSsvn0xGBEGLZbF+XyDF3VX6nTrVOVlz73a+PAZDYPmpGJwemVROJWvw0/o1QlcOaq8WisY7xp+pE5JmCh1lEg2YAUMvohWpB7T+Wro6InUvcS5j1EmZiYlCO14wsXFdIUdQgvn8pCE2ZIlrpqJQ9XrPpKM/cdAMo43w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nWebouwHUeRue3naTcBsbGG+L+tUDNNpwmttNC1hFEs=;
+ b=Qul5H7CgzEOJc0dRxcH60FVIyULsVUDYu1STMlYCR/vNnaeJfKfFfqxKKQn3nUzc58Vzx7FNiYoVSy/Vcf01C/OPZuUnfKNom0lOPNFL4sD8QDeBUAIpAPGVkFRq9gwDI4WbDLB1VP9ClMyUEyH53+ZYsInkNpBWGa8Q6Ni5vf9roE7AdBC3jAbzFmJahCF+bW1U5H4KVhKZ/94JhdBUotxcGYGCjHva0BVWNoxvZeI3Q3Se+loAataHOaFrNP1r/+7fnmXvXDNsBe3C2Ci2MXWWSQJ4SmXN11OuN8gieA1e3LPgwXr1J45UOHNEXeJkwe0dzR6R33IgAppHSxDRbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nWebouwHUeRue3naTcBsbGG+L+tUDNNpwmttNC1hFEs=;
+ b=EKTok//ZOA5sBfijJmRXTq/Tzwo8xXVkt+ELF5AYtHKZiFUm7YeMwLbEFOBCQ/m0OwwZm2XOZtjFpKQ70P4biyZfIyQksx275ghcjVcsqtuhtMedXDDaqYCTAQEJjNv5KCdP+xLCGu7Ybd1QMj0kZZrPcwwz60qAzDUxsOhhnMw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM8PR04MB7748.eurprd04.prod.outlook.com (2603:10a6:20b:243::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.30; Thu, 1 Feb
+ 2024 19:34:44 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7228.029; Thu, 1 Feb 2024
+ 19:34:44 +0000
+Date: Thu, 1 Feb 2024 14:34:34 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: lpieralisi@kernel.org
+Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+	festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
+	kw@linux.com, l.stach@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org
+Subject: Re: [PATCH v9 00/16] PCI: imx6: Clean up and add imx95 pci support
+Message-ID: <ZbvySvCoeNbBxYjW@lizhi-Precision-Tower-5810>
+References: <20240119171122.3057511-1-Frank.Li@nxp.com>
+ <ZbJ+tFPn3aOYHCwf@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZbJ+tFPn3aOYHCwf@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: BY5PR17CA0058.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240201-pme_msg-v2-6-6767052fe6a4@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7748:EE_
+X-MS-Office365-Filtering-Correlation-Id: f20d67b7-d0cd-47f2-47cb-08dc235cd7a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	1WPaoQR5Y8GTG+3FB2NdrYHTSTuJYnR74DWBth3GDVtk+6+D3W+VKdP3dkKuew9BkegnY8xTzfFXl3iY1p2GKpgY5cwvlh79auoAYbQexX4h0J60Z+JPGk8dwzTSZwhurd/s4Y4L+vt5Du0r1+ybxynsAyxh4PrNwGaw7xGJ+kAoknOTc9YzaPza8ehJMB+BfD4YgEbStjsHHIdVr6Jt/3DjrAOd6UIXTxFsE5T8gH0uhp0Yo5RL1o470PNz/X8euXAnVlyST8v2YPDpcB79g357jladdtYl0yDZQxQTO1Hd5VyzZLYE2ILhw2LqO2olwLcBpkAXTW0aoI4dfXhThXfzWonG58RdyvONDzHe2W2dSMgJKon8FiSPFmzkCqfPMsGzRjfioTkKf66psjbf3hw8uP/kwU1acCQ7fmRCr7VOnMUt5uwPuo4D4x8L1ct6PhLgVobeBo7tkgPT2c/+dUTRj+JVEERaopcNNKGMPf8X+DOZucOzmG+/X8jD6Pygy0Qe5Amlw8SqtTqxPHgiadLSO2vZNablLfC+D+3F96fMCr1ggghxPZCZJDjxI8g5oJpap8KCZPpcf68qG3NbC7rWHmqgSqskR9gautYhGqwrFkLQiYA2e6ufhf5XPzAI
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(346002)(366004)(136003)(396003)(39860400002)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(83380400001)(6512007)(9686003)(33716001)(26005)(38100700002)(5660300002)(4326008)(8676002)(8936002)(7416002)(2906002)(478600001)(6486002)(6506007)(52116002)(6666004)(66476007)(66556008)(66946007)(6916009)(316002)(38350700005)(41300700001)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Mtu1h8UfM8moQ0VznFEr2luoPGF7ewG4/3iXH10q/ol2YrxlY+OyZtovflzW?=
+ =?us-ascii?Q?ozn6hdBovtLk9odqoRub9gU12NK2IvWXb8XRRH9MXqSfbbdZSHX3FbPLemEP?=
+ =?us-ascii?Q?f5DbCDCx228MZeA7JChLu9Z0m7p/9oUb2O0OffMKMKFsDzEvzca/hn6QjXG9?=
+ =?us-ascii?Q?UIIll23saton3a5SNLLT9EiHjteQhTMDZuVNjvRaadx51ieMXlYSASlCMSkf?=
+ =?us-ascii?Q?JbZdoK8GdZqOyw3/e2XQNwtAZPHVawHP824PKyxUjbZcXgeTBqNTkXBBF2t9?=
+ =?us-ascii?Q?TQqRJXqBFnbPme6sMygNAqpZhBljCuMQ6t6f8fTWaRmsqOdYt3HGbB9FE48K?=
+ =?us-ascii?Q?zfPumSvNbF9uQavVnyD3lGVDsdAh7xZAX1h84qStdMAJBM/BQdrJM92YR2x2?=
+ =?us-ascii?Q?pZEpkLqgV2IzFLiw2n6ijAAFV6/NntnSgOwjLv1iKSN4U4SQDo2oYlxIc7/B?=
+ =?us-ascii?Q?y2oJhcKuwKW2D97oIQUJ7ihz1WbqU85/aZNEe90cedN4kyPph1bgRR7l5nR7?=
+ =?us-ascii?Q?Dp/LxEij+4wbZbSGOduuOZb6mhCFG/faJ9qd3bxFNgot+f8RE7kpwhhjCBdU?=
+ =?us-ascii?Q?BX0onx9bEcJ0p/6Tq1FFDE6iXdPLbrAdt2RDrG1q/EeCAEbENdMcHy9iLAnj?=
+ =?us-ascii?Q?Bkiw8iQPqYhGPxi/wUWKxqH1tiwFfhlEsL/dXELiDzrlDV6xXp66sgqQDfp/?=
+ =?us-ascii?Q?fna3CAonHFU0l0/WQIy8EWc1t6UT3PjLIzxLOzoyBC2G6ydBeTGaIwsK2zHu?=
+ =?us-ascii?Q?NgYPfOlMd30gRCBFO3lRe3sE+wl60fYFFC3Wt0MBNxf+zAodzSWUMhjzEaSb?=
+ =?us-ascii?Q?wLKQ/4lWGcId8GzrNjAg78wHfQBBbmWdcJwRqab0dKCAjf3sDdxp3Be83CEF?=
+ =?us-ascii?Q?ujhANpR+tBYcJ75ISMm5Tk73x9U/hmDONgMahquRrUxN+GeQWqGfGlIDmqgh?=
+ =?us-ascii?Q?1exnV6Oh1a9wroNG5rPX8shgdSxHr273irudIsQa4ay89m8LCV75w08F87WO?=
+ =?us-ascii?Q?LuVoHi6/4aODyNH3YT5nhUHIltyLyAXzIKbl8muTaR68dJxVgmn0aFLyqXD9?=
+ =?us-ascii?Q?VFt2TCdSJEGNOYWnPw0+s8fjZEK4Qlo4olbAy41ffGDLXZU+A4kGd9QOJvIg?=
+ =?us-ascii?Q?QRO8QSBzpexUdS38OGUFLpWHQR8/Lo/JMyX3CJrIVvKPcCH/IPJCagZaiQmE?=
+ =?us-ascii?Q?YZEFX2R0Yama+1eV5OOf8LFR8UpPck76ZA1EofPOMFo1qWW2kZhT8cWRqkXF?=
+ =?us-ascii?Q?dNNxZqHFHwkfjV2dSispukDhu5NkXuWqelt5rguprR2brVMrWUWwOM9fbrHk?=
+ =?us-ascii?Q?EOMbq37vnvvlavjypHVSQ5dXV+a99VOa3sJPLyq3MmqmoymTTYOnEQnezAvl?=
+ =?us-ascii?Q?db7Gvw1kRulGAeDsDvRct5hVEGt1DZBdKXpB+Toeb/X9E0THPDC9CSd5Lwdv?=
+ =?us-ascii?Q?09IYP1fhQDTcLXRXy/rZABBJRjyzgK9Vnhz5f3UjAaNJis/pcz7KFuGlPtN0?=
+ =?us-ascii?Q?5oKTcVCfKBucVi1BD0Rp+TeYq0GmbaI4jh8P5APr1Z0DFmS5BfM/KxxNdl01?=
+ =?us-ascii?Q?2TPd9+QHUiwZnFSqkso=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f20d67b7-d0cd-47f2-47cb-08dc235cd7a4
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 19:34:44.3413
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PeMTILa/WjMGeC98K+Ho+qPc63lpArOYQNIkdtLaVRX0ftcFhB9OsGpCKobA0nhk/Cs5tMZG9/eiKsy9Kf1U2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7748
 
-On Thu, Feb 01, 2024 at 11:13:30AM -0500, Frank Li wrote:
-> Set outbound ATU map memory write to send PCI message. So one MMIO write
-> can trigger a PCI message, such as PME_Turn_Off.
+On Thu, Jan 25, 2024 at 10:31:00AM -0500, Frank Li wrote:
+> On Fri, Jan 19, 2024 at 12:11:06PM -0500, Frank Li wrote:
+> > first 6 patches use drvdata: flags to simplify some switch-case code.
+> > Improve maintaince and easy to read code.
 > 
-> Add common dw_pcie_send_pme_turn_off_by_atu() function.
-> ...
+> @lpieralisi:
+> 
+> 	Could you please pick up these patches? All already reviewed by
+> Mani. dt-binding part acked by rob/krzysztof. Add it only impact freecale
+> imx platform.
+> 
+> Frank
 
-> -	if (!pci->pp.ops->pme_turn_off)
-> -		return 0;
-> +	if (pci->pp.ops->pme_turn_off)
-> +		pci->pp.ops->pme_turn_off(&pci->pp);
-> +	else
-> +		ret = dw_pcie_send_pme_turn_off_by_atu(pci);
+@lpieralisi@kernel.org
 
-I think it's nice if function names match the function pointer names.
+Ping!
 
-E.g., we currently already have:
+Frank
 
-  .pme_turn_off = ls_pcie_send_turnoff_msg,
-  .pme_turn_off = ls1021a_pcie_send_turnoff_msg,
-  .pme_turn_off = ls1043a_pcie_send_turnoff_msg,
-
-which is slightly annoying because it's always useful to compare
-implementations, but "git grep pme_turn_off" doesn't find the actual
-functions, so I wish these were named "ls_pcie_pme_turn_off()", etc.
-
-You don't have to fix those existing layerscape ones now, but I think
-the same applies to dw_pcie_send_pme_turn_off_by_atu(): it would be
-nice if it were named something like "dw_pcie_pme_turn_off()" so
-grep/cscope would find it easily.
-
-Bjorn
+> 
+> > 
+> > Then add imx95 basic pci host function.
+> > 
+> > follow two patch do endpoint code clean up.
+> > Then add imx95 basic endpont function.
+> > 
+> > Compared with v2, added EP function support and some fixes,  please change
+> > notes at each patches.
+> > 
+> > dt-binding pass pcie node:
+> > 
+> > pcie0: pcie@4c300000 {
+> >                         compatible = "fsl,imx95-pcie";
+> >                         reg = <0 0x4c300000 0 0x40000>,
+> >                                 <0 0x4c360000 0 0x10000>,
+> >                                 <0 0x4c340000 0 0x20000>,
+> >                                 <0 0x60100000 0 0xfe00000>;
+> >                         reg-names = "dbi", "atu", "app", "config";
+> >                         #address-cells = <3>;
+> >                         #size-cells = <2>;
+> >                         device_type = "pci";
+> >                         linux,pci-domain = <0>;
+> >                         bus-range = <0x00 0xff>;
+> >                         ranges = <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
+> >                                  <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
+> >                         num-lanes = <1>;
+> >                         num-viewport = <8>;
+> >                         interrupts = <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+> >                         interrupt-names = "msi";
+> >                         #interrupt-cells = <1>;
+> >                         interrupt-map-mask = <0 0 0 0x7>;
+> >                         interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
+> >                                         <0 0 0 2 &gic 0 0 GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
+> >                                         <0 0 0 3 &gic 0 0 GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
+> >                                         <0 0 0 4 &gic 0 0 GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>;
+> >                         fsl,max-link-speed = <3>;
+> >                         clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> >                                  <&scmi_clk IMX95_CLK_HSIOPLL>,
+> >                                  <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> >                                  <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> >                         clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+> >                         assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> >                                          <&scmi_clk IMX95_CLK_HSIOPLL>,
+> >                                          <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> >                         assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+> >                         assigned-clock-parents = <0>, <0>,
+> >                                                  <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+> >                         power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> >                         /* 0x30~0x37 stream id for pci0 */
+> >                         /*
+> >                          * iommu-map = <0x000 &apps_smmu 0x30 0x1>,
+> >                          * <0x100 &apps_smmu 0x31 0x1>;
+> >                          */
+> >                         status = "disabled";
+> >                 };
+> > 
+> > pcie1: pcie-ep@4c380000 {
+> >                         compatible = "fsl,imx95-pcie-ep";
+> >                         reg = <0 0x4c380000 0 0x20000>,
+> >                               <0 0x4c3e0000 0 0x1000>,
+> >                               <0 0x4c3a0000 0 0x1000>,
+> >                               <0 0x4c3c0000 0 0x10000>,
+> >                               <0 0x4c3f0000 0 0x10000>,
+> >                               <0xa 0 1 0>;
+> >                         reg-names = "dbi", "atu", "dbi2", "app", "dma", "addr_space";
+> >                         interrupts = <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>;
+> >                         interrupt-names = "dma";
+> >                         fsl,max-link-speed = <3>;
+> >                         clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> >                                  <&scmi_clk IMX95_CLK_HSIOPLL>,
+> >                                  <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> >                                  <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> >                         clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+> >                         assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> >                                          <&scmi_clk IMX95_CLK_HSIOPLL>,
+> >                                          <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> >                         assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
+> >                         assigned-clock-parents = <0>, <0>,
+> >                                                  <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+> >                         power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> >                         status = "disabled";
+> >                 };
+> > 
+> > Frank Li (15):
+> >   PCI: imx6: Simplify clock handling by using clk_bulk*() function
+> >   PCI: imx6: Simplify phy handling by using IMX6_PCIE_FLAG_HAS_PHYDRV
+> >   PCI: imx6: Simplify reset handling by using by using
+> >     *_FLAG_HAS_*_RESET
+> >   dt-bindings: imx6q-pcie: Add linux,pci-domain as required for iMX8MQ
+> >   PCI: imx6: Using "linux,pci-domain" as slot ID
+> >   PCI: imx6: Simplify ltssm_enable() by using ltssm_off and ltssm_mask
+> >   PCI: imx6: Simplify configure_type() by using mode_off and mode_mask
+> >   PCI: imx6: Simplify switch-case logic by involve init_phy callback
+> >   dt-bindings: imx6q-pcie: Clean up irrationality clocks check
+> >   dt-bindings: imx6q-pcie: Restruct reg and reg-name
+> >   PCI: imx6: Add iMX95 PCIe Root Complex support
+> >   PCI: imx6: Clean up get addr_space code
+> >   PCI: imx6: Add epc_features in imx6_pcie_drvdata
+> >   dt-bindings: imx6q-pcie: Add iMX95 pcie endpoint compatible string
+> >   PCI: imx6: Add iMX95 Endpoint (EP) support
+> > 
+> > Richard Zhu (1):
+> >   dt-bindings: imx6q-pcie: Add imx95 pcie compatible string
+> > 
+> >  .../bindings/pci/fsl,imx6q-pcie-common.yaml   |  28 +-
+> >  .../bindings/pci/fsl,imx6q-pcie-ep.yaml       |  57 +-
+> >  .../bindings/pci/fsl,imx6q-pcie.yaml          |  49 +-
+> >  drivers/pci/controller/dwc/pci-imx6.c         | 640 ++++++++++--------
+> >  4 files changed, 462 insertions(+), 312 deletions(-)
+> > 
+> > -- 
+> > 2.34.1
+> > 
