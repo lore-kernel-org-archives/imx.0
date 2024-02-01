@@ -1,72 +1,77 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2055.outbound.protection.outlook.com [40.107.15.55])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2069.outbound.protection.outlook.com [40.107.104.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B223A8EC
-	for <imx@lists.linux.dev>; Thu,  1 Feb 2024 04:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F733779F7
+	for <imx@lists.linux.dev>; Thu,  1 Feb 2024 16:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706761113; cv=fail; b=oD1Zg0noY5F0o7JsyRq3NL35KH/TfvPA0OShnhUMqY7EM+/QUFc1W/X4xrhviCcwheQV4UZJzYuFnas5yMqb4qR8DWRtHlGER12ubkGWXYHArEyFqPgOQP8orZ6tKgiCMaSYMM70NsN3ZHj+Y6CezGFVJ/0ZbBKyn9B5rYkquc8=
+	t=1706804029; cv=fail; b=uxp5Wkcu8ZruOFm4Hohsb2fhJiFZcEABwrdXIquoinPG1sC+wQo61g/6ikDoE0Lbl8+ARKEHSBe91pjC/a1CycNciEZMgXVsqs1/z7QarrvTxsmlxO9oYX3HoPV3TDV9OI1/CNQuQQLDFjjUDN3XDygV8n6grZs+zmjVcuHKqBc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706761113; c=relaxed/simple;
-	bh=xwjAiWvcrCMyjuZbUNEqMQBx2aeFsAQgX7b7v0HNnHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BeYN61NYcL+D9wlAWhh6PMMZjJ3E6GVGeERPtslHd3T/OAkQuCsDC7e46ieUsbU38S57z3TNlvRKSVw9WGzH7FV3eAq0zdVq3USb2ZFs3tXgNAHllJA4Rg+BUJQRFaBsAddP59C4OAZjweT3uTGXEd8YcvSMAIZyIUliOQ/Wc48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=KBP7Gefr; arc=fail smtp.client-ip=40.107.15.55
+	s=arc-20240116; t=1706804029; c=relaxed/simple;
+	bh=l26KsReRhgM2C7kbGDUQzugdouvzriphT23lNWx0xPI=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=FNAPC5TqeszrDJ96tWepYgZ3BV63DsAfSuwBJUKvMbpl6stlquXVc9kT/lRBnKLKf44SCImV9z07zIaK/4w+FT+wZcA13M52VkR8vd8WWdtdBISILU3J50KIB185ZANyjdRvPNC27uG1IISi5RW75xU9nqZXD1mkJmAilIJs5Ms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=V3NPFSZI; arc=fail smtp.client-ip=40.107.104.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KBP7Gefr"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="V3NPFSZI"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h3yjf+oCowwbAjD0EOkHZThUhPk2C/ZXGw5XbF6EdYvzAtYBKmQmPhJLzEY4+KHJ/nQwdy0BQeaUxBlnvGStPwFXVCv6rng3EToXbeJCWOyH8XXQ0KwjbQnAe2cp+hPa/cW81cDSyf2bKTSU0OJa7BZ4L0T3rzEwa7Sz0Q388wMhU0n6cO+tFHsDyhliIIj/yicPRoP9VsXN1X0tq7ydFuZXNUHEFszUAZMRzmpmcq4akG+/M/Kf8reeCgQl/5G7SbKbHHt3PPSpZadHBKgLS40bPiztR+Y600dcKdpdlUpJOtzWjBshCMl16FrswLZ+gOjJtHjHhe8yYPoJRI55qA==
+ b=CSD+eekJYQAdU2xpd9Kvcpgev9Kmku3aNsCHqtK6jaNt+pmTLn4nYouAcRJLwsmCVvSaSqOPb5J/TOrcPVaTXeHGVmPfiW8S0tyCY3K6//kM2Ab7PhiOIckdzDj9tdO2z1lWEK79yMSy68Qsyu94gNz1Y+fCaynHdpGK5CmDK/5KIoulttpiVXi1XhQ72nLbGT4G+stvhfn/aFOpwQnt/0Y7ndfPoMHrVA7Y8/HM7QSy8Z6o/JmWYmi73VKCYzaueuB3ZdCv9Q95p000VUKBxgdrFPG1VDPXGZ0nr35S/eW0ppsVsoX40bQt9NO7jASZwDlQoZs/AifcXdP/0kj1Iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ljzjxqwpA+jHjkQAaszeiF6LrGKCR0w7lwApPozWuWY=;
- b=DzcXVTNxnCZWVb/+jk6QFyVkTcaUdKEeIhWXOtCgVNIgwxlNsmdj1iBQ9zY9A797JUf+BIFpeXkBYX4HIAJAG0NI7R/tOuFHWgokK00Gi+FnAzmtWFnZYDvcMdtYRRmeTZQVMuJkvvidEty2ZE8UuVBQCbaWFeBv/vMLMz3InBG1EzEbadbcEoUMK5C5cf9VATKdUYpphY0jsRrSh40BdhloVjbQflXLiX9nnyZoVjflHdiZ2tn1/paYPYrVAyZP44PGM4ffzAQvhMJ41aE9h4HUTbTgWThtKwXZalyFD3jdabkTTcUaLPE18CNQS54Gg50Sy0UPjoRMXJ+ufH2o5Q==
+ bh=tekF0dzNY3P4bRczl6CIJryxj96n+dq2Y/qjnOHeBqM=;
+ b=hEKSPXX+V6spxBAAtTxsSoJwRBFIJ1ZZKzqf0j3D1LV7RwewMFDAkOxsOl+wB9DGnYpKv9G79PP3yLF79t8Rm/UVa2FC8a4j7vfzeQWq0jxqN0dQVqjWwQ5PqOZBC3xfEC4iBVLstBtthODeVMAKf5WSkHzlPa3BpSb5BKzGFOU6H6JHPuu5vlaKESrAPOGKfiEPpi/wtKClICHvLDRmmW3MRLAgvJtr+xJz4H04tmiPohL/VYsQXhm3DMhpiQNCAbTptJabpXq6xzoLaydnSk6u2Q7uKy3ItWQlL3Jz7vroXOKc1ekKbekJusYlw2ygRWXL+Yg3loZongG7eL+Tww==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ljzjxqwpA+jHjkQAaszeiF6LrGKCR0w7lwApPozWuWY=;
- b=KBP7GefrX98WBF8xrrDR/9AXk0aXXym6TmRrisQna8REQ01FUN8lVj0FrNpTcJZpieSn6WuWRlagxzQ5AowtXPMDGx7eSmQnYzmBxduEc2PMmLF2In+vkKa8Be6RPVMfEceasLu0Vuh1zeHQ6pwYf0BoMrcbQq80YOVHofAK2GY=
+ bh=tekF0dzNY3P4bRczl6CIJryxj96n+dq2Y/qjnOHeBqM=;
+ b=V3NPFSZI8XAdThDTFJz5GkLwqnrh8N9058guccXSz1ohEeGZbpykIP/KERzhj9nrdYqRON2S5CB74NkXJbje12oqp4tfJQD98c3ZxYFRhxAihTLlwl76X8cKNmECgx1C9tixQGSXarbC2bPOowcCRbAz/mwe53t2bdFGM5hujL0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB6895.eurprd04.prod.outlook.com (2603:10a6:803:13b::7) with
+ by AS8PR04MB9110.eurprd04.prod.outlook.com (2603:10a6:20b:449::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.26; Thu, 1 Feb
- 2024 04:18:27 +0000
+ 2024 16:13:44 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7228.029; Thu, 1 Feb 2024
- 04:18:27 +0000
-Date: Wed, 31 Jan 2024 23:18:18 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>
-Subject: Re: [PATCH 3/6] PCI: dwc: Add outbound MSG TLPs support
-Message-ID: <Zbsbig9CFevHFBPI@lizhi-Precision-Tower-5810>
-References: <20240130-pme_msg-v1-0-d52b0add5c7c@nxp.com>
- <20240130-pme_msg-v1-3-d52b0add5c7c@nxp.com>
- <TYCPR01MB86137941900C38F89EC2F321D8432@TYCPR01MB8613.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYCPR01MB86137941900C38F89EC2F321D8432@TYCPR01MB8613.jpnprd01.prod.outlook.com>
-X-ClientProxiedBy: BYAPR07CA0042.namprd07.prod.outlook.com
- (2603:10b6:a03:60::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 16:13:44 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 0/6] PCI: dwc: Add common pme_turn_off message by using
+ outbound iATU
+Date: Thu, 01 Feb 2024 11:13:24 -0500
+Message-Id: <20240201-pme_msg-v2-0-6767052fe6a4@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACTDu2UC/2XMywrCMBCF4VcpszaSRKvRle8hRWpmbGeRC4mES
+ sm7G7t1+R8O3wqZElOGa7dCosKZg2+hdx3YefQTCcbWoKU+SnWQIjp6uDwJRI1GEV2MOUF7x0Q
+ vXjbpPrSeOb9D+mxwUb/13yhKSIG9fsoRsbdne/NL3NvgYKi1fgEuLbwOnAAAAA==
+To: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Serge Semin <fancer.lancer@gmail.com>
+X-Mailer: b4 0.13-dev-c87ef
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706804020; l=2913;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=l26KsReRhgM2C7kbGDUQzugdouvzriphT23lNWx0xPI=;
+ b=ohoHABmi4M2ZpD5Bx77/xDFSKdFNecTnzxlNYQ6yVBEgZHXv1TQ9fsWml0Yfvk/bK0U5VWbE6
+ 3cLMtKuP6l4CTLWiH/hKJtsJuvQHRA70HLS/b/vPDcft170OD17MAw1
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BYAPR05CA0065.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::42) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,142 +80,120 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6895:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a8e0300-c84b-4ae1-33c8-08dc22dcd699
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB9110:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f6156ca-e81c-43e0-a21b-08dc2340c34e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	A/NkdJzv1H5NqUIroq1JHERAtXWkn3viVkIt3wPzNil5LxRFUGnGQijErLGN3e7cKhhzwiG216F70GYYt+QBuV8Zs5Drm8Q2/WKShAvwziNetVf6lJqGU/axji+K6BSVI42oe0ILdvRVrsJlL7L+d344T3CfG6jMxiHmEMWbuiKZVEx3kjVIpB10hidr5NNL22DtVNmJBoDIaUTfYAtc/HXZahsrSct0I2ExE7p1GL7TlnoI/s6s6dhZInXOG42bKalBhH892mFqA8A0+WtaiLCSBMYG7vj4Qi7ZcYwN18CDvftM/lAZd/W/Xr5rO0H5/Stuwd1O/3waFt8fC4H8Os58l739xZKatpG4xR8nS2QlrwRhRa5V/QVncW5oClC+DYBSmRl3ujWgR075QV2E8MKI3meJmT3j9xksld50kEQYvF3yqBfd8jb+ic9dTOCTWt05Pbyb60tYY8S17AFmrCBNatyn30unWjGCMryRD+W5mDKkPkMOSRA8x5ZFWw/TL7MX+Fn68gIUOfrBG+OtwWVT52Ve97IQyHt0VZOSxGrwLcB4/g1DkMtXwpVEgpbHWzL5bpBtZyGGJjss6BkauWRsyosBC2R1djmA2olFuXK2E5/PA2DYehiNt9gUX0Pc
+	5gUR0BrnfJB13vHeUZF8EGmNdiLZJisjZiwQ2mDRvTcW4VRTpMd8IoNd7Xk5O5Hc3dxWgV5SQK67JY0lbtr1G++n6ZXFhJFAFeBQtRBq4Xm011vkditnhBHf8dZdX1yoHEyD4LUbm/UPocXMJB/GKrIuC38ztx5DMSmlLMEJ4lQTV69zAc6hu6JCCc9G/d3qZkZ4d25p/U5S4ADci09hDfVIRbQLpUm4YyePHruIG4wpFTgPeXi42t3WKJ9iAt3kiKZQ/IJRrCZxx9eQ3ueA3IbVFgh5d40JTI34vKyU0OtsK9ht9h35NA0aWn+vU9crhy381uzeidBBc8Ao/wO7w4t/AwpL6DtyqzvATfRCAK164z+UVQj96J9w/x1O+kcBW3QXwBnd9UlN1K3EMSL3DzrRt3xC9Ntdh8+Uup6nyPuLp/HrIBhtdnz/Gvi1sh8DuUAaxD0ZAboTcZkqvOfnR5qCHL0yjP0GL/Uxjodx8zJ/V2Act6IrwT0WZV55GbD7F6agdD6Mk6ywE7oRNy4LfA2vXKl6s9c+7Q28MLwEPh0DnaXVhbp4tAjIuiIwgO53g62jsYc0TI5e2oOb0DP2pJ45h14glheupI8uEm1Vb27Za/gy4f7FT9XQEFpmIW67
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(346002)(39860400002)(136003)(396003)(366004)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(83380400001)(41300700001)(33716001)(6512007)(26005)(38100700002)(9686003)(5660300002)(8676002)(4326008)(8936002)(7416002)(478600001)(2906002)(6506007)(52116002)(6666004)(66946007)(66476007)(66556008)(54906003)(6916009)(316002)(6486002)(38350700005)(86362001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(376002)(136003)(396003)(366004)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(15650500001)(2906002)(7416002)(5660300002)(41300700001)(6486002)(36756003)(966005)(86362001)(38100700002)(478600001)(38350700005)(52116002)(83380400001)(6512007)(2616005)(6506007)(26005)(6666004)(8676002)(8936002)(4326008)(921011)(316002)(66556008)(66476007)(110136005)(66946007)(54906003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Gh9dmGMu0Z3rhhQKNx0k0i8qvEWLQyf0vi5j2gx8tkFCxdt4CzYgaii6FoZb?=
- =?us-ascii?Q?28hP8ZpokiOdUi+bvuCjvyaaDzXXDasm5Gs1jheZg0SJXrTMvubF1MzMpz+3?=
- =?us-ascii?Q?3GEAOj1oX7h99oXLY3YwZ4/8Ehoh5amVujRJDn6QOSf4Q7I2Tz0q/b9cKoE2?=
- =?us-ascii?Q?mhkps85FwNYIOzA3D4f16Fdejvpk8/QnhpGfUGrFlSwoaItEqC/v7sOJNDeY?=
- =?us-ascii?Q?V9C11NwbpwU5ODPxPomih+KSA0SBPo5EOpr1E5rxd7y9mUYR8S8M+UC+LjO5?=
- =?us-ascii?Q?4LiNZucsqJrenBGM3vEpLRf7u5AZw6hHMonA0L3eNQqGAxS44HBaDsEJDORS?=
- =?us-ascii?Q?NxqNzhCsIYVfLwDVIF/fI0JYOvHkXBbBskdEFvEzY13/g4+lk7bqR868IxEX?=
- =?us-ascii?Q?659mHHA5INK8s6NJmd/ffk4lxcVdXrCGAvMOoLzFVPHabYKm2w5O40ikvlFx?=
- =?us-ascii?Q?WuDcVqBkMrpXpYUmlaEOZyAepkQ2Z9KAPj6XGid5Tg9REPy/ZMLZ5rt3sa4u?=
- =?us-ascii?Q?bQ5ET/i1DbNVbdp6zGxbYmAjlIm8RpSGs/SKHEdvIEX5mkhUgRFG133ff3ab?=
- =?us-ascii?Q?65XpIwvwYb6GnelfYznd+dWz6xJgHrlU6NyyAza5vQOhhaNMMaAMMi2jCQJQ?=
- =?us-ascii?Q?NENtuwYb/NM5J7pHyEEflDRgYdPjxhEnrH3HZ9v8K0YP9n9jTYTy+v5bpnDI?=
- =?us-ascii?Q?ONa75uhGLpd6sQXOI1gjBeZ69Bek43/Su7h8say1xrjNrtbfwmPsptA5pThd?=
- =?us-ascii?Q?RY1CPKyw+G647lnIdNDfDxawq6Yt43lIgrSVI4vjUnl1agL5tfqFMNU+yheb?=
- =?us-ascii?Q?+sPbb7vNs9EYTWP0xgMUrRJ1uXfxryyZ0VOcdjFqxONnIwuGmtQaBMNpQ1j9?=
- =?us-ascii?Q?o4NdUOdQxp1DXHIwYS/wz8osM15b2d9B7c23gcqerRsv4jdtqt+tIH1B2jqb?=
- =?us-ascii?Q?Nid/ehh90HtO0KrlaLFMQyGU5gtv7FncoZJ/PJ+wbHJ0PmzMN8H0l/TStV65?=
- =?us-ascii?Q?+q7LBQ+WuUyHtincStjuPn5pusN/GpZCAfL6FOVcIJhzzZjEFYBL8HlN1mor?=
- =?us-ascii?Q?LyeK4TNPKfU6e2alEOOwR89sVEYnyQdz1mzuv7K+G535oMgjj6WljjY0E5Zu?=
- =?us-ascii?Q?Y0xVeV+prHRl6DlM6ruj+4Cb14DJP2qRIy3Nbh+OhbQV0y1hf0hbDJOiIWR+?=
- =?us-ascii?Q?nBDWDkGmIXAz35UZ2a4A39/GbWeymTS2kZoiflLtfxZCSeG1KoOQgHSiQfOR?=
- =?us-ascii?Q?vfrMiscI5Vt9Z+CR/Ujv40IMNdmnrsvDANTQaSF5T2LumhwZIuvgIc5HhsZ2?=
- =?us-ascii?Q?0G23m+K99v4BSxq4MYLOOr6+8kmWT2HtDJ+lTbKGk1BDIRim3GVXQtIcX5pz?=
- =?us-ascii?Q?Ah6SvjCWPr/rH2pkAJrs9/SqWKySTHJbyJcd8QsejKPjjxIoxVFQaYeM6KMK?=
- =?us-ascii?Q?uwwognjXHERxaVCGyt0qIRMAZoce3Rzo1wz3Z4tjSsBRNcvNHxvMGdq5PbZg?=
- =?us-ascii?Q?zlONuuwwBOU8srLRazwAmgFLUk65/R6mfY3zlMC/K0FfDYWWBO9Daz4ckn+/?=
- =?us-ascii?Q?hNam5y3El14IdQFsmdY=3D?=
+	=?utf-8?B?NGNmNzhldERYbXdHVHNmQjFVb0dYZWl1cE8yeXlrRVBkRHp0SFVqSG9lbFBq?=
+ =?utf-8?B?QTFzakY0YzRFTTNrVWRZa1ErSG1rRUNHS3pRNUh2OWRSQzhsa0VSQ0d3VmNi?=
+ =?utf-8?B?bkwvWWE2Nk50M0JzdkgzN0JtUUNtVnZ2aGQxQWNWcVVqYWxIZDlMempuVno5?=
+ =?utf-8?B?dzhLSHBiNVFDeDZxbStCUm8xWGdBb2FabmhsYjJjRW40Znd6dHA5Z1Q0eUZW?=
+ =?utf-8?B?OW9xYXAwOXRzN1REYmtNRlpzdENyZXl0WjEwdk1DemVHRk5WQk1MQ2I0OG0w?=
+ =?utf-8?B?eDZzV1V1RFF1Q3dWTC8wVEY3Y01zdHYrWSt4WHZCakR0Z3NIY0tjZ3NjWWlH?=
+ =?utf-8?B?c0duOG5Wek1pWC9TS2NDTDdDakRpSkxoR2xIeFp3S1BhVmQ1TWVtTmZVSEJu?=
+ =?utf-8?B?OWFES0RmdGJ4aVRYR05XR1pnMUdPR0FYaG1BT25wNTlVdGNJQkVxcE82TldL?=
+ =?utf-8?B?Lzdybm50MFFWd0FYellhbEZuUzJUZGFZc0x2Z0ZlQVN2UkZJNmYyVWUySTFG?=
+ =?utf-8?B?U0YwNllhTTRXemFuNjdWd2FlTy9pN1M0UXNIS3huNDAvRk1KeWpMbjJ4SlQy?=
+ =?utf-8?B?aUNFM2taZE9KdXFheU1JVVZOMm5Oellia0FyckR1K3RMU084TjdoSFVpL0NJ?=
+ =?utf-8?B?V2JrTWJKZ2NpWWs5M0V0WEIwUmR3UFpTc211TW5DTTFBaVgwaFJwY2RVd1M5?=
+ =?utf-8?B?bGp6THhHMmR2Tzl3NVNLV2tERklGUllLWldONmFTTytVZGpad3FmNW5QYjdK?=
+ =?utf-8?B?MXZoVlZ0SlloZmNJaHlwOUpLZmdtazVTdGN4MG81bXhRakRLTzVUc0Z0SHIr?=
+ =?utf-8?B?ZHBsdlE1czlUM3NBaVlSM3hXeHQwc1lHNFErV1hSTnc0OXF6MGZUcDhwOFhH?=
+ =?utf-8?B?M1ZVTE5GQlVVejZFVGtscWdUcU5maWlrS05OSG1EL3JqNUIvSGdHTms2bUdP?=
+ =?utf-8?B?TEl2bXQvNkNJSTZiVkZGWllTbW1qS0lMdWZ6VWtkYXNySGZXcWU1UzkwSE81?=
+ =?utf-8?B?UlBMRC92bHZiSllsUXdQbHd3Ny9pTGw1ZGFPNEpvSVZxVnIvcUFNRjdaTjJu?=
+ =?utf-8?B?Z0M4VTI5SFA3SGZJcmM5V2VwaGQ1QXlQZGZ2Zm9oVTZJUkpxNW5xQ211VzlD?=
+ =?utf-8?B?SVZSdzN1WURXUWg1REdsOURYeHBoMlU4L0FaSkozSjJpVWY2eEtiaG04ZVRU?=
+ =?utf-8?B?RlJhcFBYWXhEM1JmRU95Mm9iYmluajhaKzBKQW5ZRGRaRmFQZy83azFuQkRu?=
+ =?utf-8?B?UGwyVms4QkFpZndHNEgrbDRnWGttblU4RTdvbEVMZW8wVlNYeGhGRC9YUkV2?=
+ =?utf-8?B?R0lOcytPdjNXdzRzMzBFV0hNSElOUENxUTMwbEE3VFRvenNUZHMxdkVsejRh?=
+ =?utf-8?B?alJqVURGVHpBajk2YWFPNzF0TXYwWGFlNUZVcDBGUmdWbU5Lbmhxai9zSko3?=
+ =?utf-8?B?ZWVQcFowTDVPeHVBQVZUREd4VHg3U0dmdjZTRklMMmdWZ3dQWUJGNGpoRVZw?=
+ =?utf-8?B?UlovRjhKbWE2eUEzTXNVTnVRWkhlS1NQOVNseWFDZk5ta0k3VlB1THdNN0lG?=
+ =?utf-8?B?NnhFRVYramdkeVdFcXQ4bmxQckx3aWUzNFdIcXlpa3JXUVpxYkZIeUtvMFpZ?=
+ =?utf-8?B?ZGJnZm5tVjlOVGJUVldxTnFieGsvWDRxV3kvYVMxQWxRQmp2NkZyaFJKdVJW?=
+ =?utf-8?B?bDlyellTVlpKZC92Yjg4bjk2SjdPOFZDN1BYRXRWUmFxaENRV2N6eWRIc0sy?=
+ =?utf-8?B?QnMyVms0VW4wSFFhK21QRFdRUTFyS1RzSW16Q1BxMVBvamxwMUFaTkF4VzVU?=
+ =?utf-8?B?Q3FDQ0UvVG8vREtrT00rRTllWDN3TXVNUzFIb3dzMzJ0SEpJVGR0R0NuUlVs?=
+ =?utf-8?B?WkhmVFlkcGJqWkNJRzNKdVVhVmljR2ljaXpRVllFSEZDOEsyQW8raHFQZmtl?=
+ =?utf-8?B?TGVpUTBQQkdsYms0cmttUjRUTE5tSnpyL1JXTTdUaUluZ1ROdUNoM0tObHRZ?=
+ =?utf-8?B?cFpmTzVMVXFpWCtYRDV3ZCtFVlJLNEF4RzJuVlpZT08rN0I2RWVQSGhMaEFB?=
+ =?utf-8?B?L3VmSHdjWUVFTFkzSnNTazYzbjR5Um9WekYwMzE2OUVTLzR5ZHdrN2dWcm5T?=
+ =?utf-8?Q?5kw0=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a8e0300-c84b-4ae1-33c8-08dc22dcd699
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f6156ca-e81c-43e0-a21b-08dc2340c34e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 04:18:26.9741
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 16:13:44.2763
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4pXaIMBRl7TGjuWaW+i+Z3buNAUY3MiJEfihIxbWzNCBgetjCbyPkdE75LfMRgEiASd6KdVYqC1D7r07Ty6Y1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6895
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5BdipdeTyCQIBwxIaOA5EGm/DNtf7i1kL5m+g8027jg4NuzpMYVWvYV2+pKlmJCp1UmxZv/PogASqIC4C9/4KQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9110
 
-On Thu, Feb 01, 2024 at 03:07:24AM +0000, Yoshihiro Shimoda wrote:
-> Hi Frank,
-> 
-> > From: Frank Li, Sent: Wednesday, January 31, 2024 9:45 AM
-> > 
-> > From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> > 
-> > Add "code" and "routing" into struct dw_pcie_ob_atu_cfg for triggering
-> > INTx IRQs by iATU in the PCIe endpoint mode in near the future.
-> > PCIE_ATU_INHIBIT_PAYLOAD is set to issue TLP type of Msg instead of
-> > MsgD. So, this implementation supports the data-less messages only
-> > for now.
-> > 
-> > Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> > Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-> Perhaps, your Signed-off-by is needed here?
+Involve an new and common mathod to send pme_turn_off() message. Previously
+pme_turn_off() implement by platform related special register to trigge    
+it.                                                                        
+                                                                           
+But Yoshihiro give good idea by using iATU to send out message. Previously 
+Yoshihiro provide patches to raise INTx message by dummy write to outbound 
+iATU.                                                                      
+                                                                           
+Use similar mathod to send out pme_turn_off message.                       
+                                                                           
+Previous two patches is picked from Yoshihiro' big patch serialise.        
+ PCI: dwc: Change arguments of dw_pcie_prog_outbound_atu()                 
+ PCI: Add INTx Mechanism Messages macros                                   
+                                                                           
+PCI: Add PME_TURN_OFF message macro                                        
+dt-bindings: PCI: dwc: Add 'msg" register region, Add "msg" region to use  
+to map PCI msg.                                                            
+                                                                           
+PCI: dwc: Add common pme_turn_off message method                           
+Using common pme_turn_off() message if platform have not define their.
 
-Yes, I will add at next version.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+  - Add my sign off at PCI: dwc: Add outbound MSG TLPs support
+  - Add Bjorn review tag at  Add INTx Mechanism Messages macros
+  - using PME_Turn_Off match PCIe spec
+  - ref to pcie spec v6.1
+  - using section number.
 
-Frank
-> 
-> Best regards,
-> Yoshihiro Shimoda
-> 
-> > ---
-> >  drivers/pci/controller/dwc/pcie-designware.c | 9 +++++++--
-> >  drivers/pci/controller/dwc/pcie-designware.h | 4 ++++
-> >  2 files changed, 11 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-> > index df2575ec5f44c..ba909fade9db1 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware.c
-> > +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> > @@ -499,7 +499,7 @@ int dw_pcie_prog_outbound_atu(struct dw_pcie *pci,
-> >  	dw_pcie_writel_atu_ob(pci, atu->index, PCIE_ATU_UPPER_TARGET,
-> >  			      upper_32_bits(atu->pci_addr));
-> > 
-> > -	val = atu->type | PCIE_ATU_FUNC_NUM(atu->func_no);
-> > +	val = atu->type | atu->routing | PCIE_ATU_FUNC_NUM(atu->func_no);
-> >  	if (upper_32_bits(limit_addr) > upper_32_bits(cpu_addr) &&
-> >  	    dw_pcie_ver_is_ge(pci, 460A))
-> >  		val |= PCIE_ATU_INCREASE_REGION_SIZE;
-> > @@ -507,7 +507,12 @@ int dw_pcie_prog_outbound_atu(struct dw_pcie *pci,
-> >  		val = dw_pcie_enable_ecrc(val);
-> >  	dw_pcie_writel_atu_ob(pci, atu->index, PCIE_ATU_REGION_CTRL1, val);
-> > 
-> > -	dw_pcie_writel_atu_ob(pci, atu->index, PCIE_ATU_REGION_CTRL2, PCIE_ATU_ENABLE);
-> > +	val = PCIE_ATU_ENABLE;
-> > +	if (atu->type == PCIE_ATU_TYPE_MSG) {
-> > +		/* The data-less messages only for now */
-> > +		val |= PCIE_ATU_INHIBIT_PAYLOAD | atu->code;
-> > +	}
-> > +	dw_pcie_writel_atu_ob(pci, atu->index, PCIE_ATU_REGION_CTRL2, val);
-> > 
-> >  	/*
-> >  	 * Make sure ATU enable takes effect before any subsequent config
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> > index d21db82e586d5..703b50bc5e0f1 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > @@ -148,11 +148,13 @@
-> >  #define PCIE_ATU_TYPE_IO		0x2
-> >  #define PCIE_ATU_TYPE_CFG0		0x4
-> >  #define PCIE_ATU_TYPE_CFG1		0x5
-> > +#define PCIE_ATU_TYPE_MSG		0x10
-> >  #define PCIE_ATU_TD			BIT(8)
-> >  #define PCIE_ATU_FUNC_NUM(pf)           ((pf) << 20)
-> >  #define PCIE_ATU_REGION_CTRL2		0x004
-> >  #define PCIE_ATU_ENABLE			BIT(31)
-> >  #define PCIE_ATU_BAR_MODE_ENABLE	BIT(30)
-> > +#define PCIE_ATU_INHIBIT_PAYLOAD	BIT(22)
-> >  #define PCIE_ATU_FUNC_NUM_MATCH_EN      BIT(19)
-> >  #define PCIE_ATU_LOWER_BASE		0x008
-> >  #define PCIE_ATU_UPPER_BASE		0x00C
-> > @@ -303,6 +305,8 @@ struct dw_pcie_ob_atu_cfg {
-> >  	int index;
-> >  	int type;
-> >  	u8 func_no;
-> > +	u8 code;
-> > +	u8 routing;
-> >  	u64 cpu_addr;
-> >  	u64 pci_addr;
-> >  	u64 size;
-> > 
-> > --
-> > 2.34.1
-> 
+- Link to v1: https://lore.kernel.org/r/20240130-pme_msg-v1-0-d52b0add5c7c@nxp.com
+
+---
+Frank Li (3):
+      PCI: Add PME_TURN_OFF message macro
+      dt-bindings: PCI: dwc: Add 'msg" register region
+      PCI: dwc: Add common send PME_Turn_Off message method
+
+Yoshihiro Shimoda (3):
+      PCI: Add INTx Mechanism Messages macros
+      PCI: dwc: Consolidate args of dw_pcie_prog_outbound_atu() into a structure
+      PCI: dwc: Add outbound MSG TLPs support
+
+ .../devicetree/bindings/pci/snps,dw-pcie.yaml      |   4 +
+ drivers/pci/controller/dwc/pcie-designware-ep.c    |  21 +++--
+ drivers/pci/controller/dwc/pcie-designware-host.c  | 103 +++++++++++++++++----
+ drivers/pci/controller/dwc/pcie-designware.c       |  62 ++++++-------
+ drivers/pci/controller/dwc/pcie-designware.h       |  22 ++++-
+ drivers/pci/pci.h                                  |  20 ++++
+ 6 files changed, 168 insertions(+), 64 deletions(-)
+---
+base-commit: e08fc59eee9991afa467d406d684d46d543299a9
+change-id: 20240130-pme_msg-dd2d81ee9886
+
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
+
