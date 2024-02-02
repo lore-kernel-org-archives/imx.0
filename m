@@ -1,93 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08D483A0C;
-	Fri,  2 Feb 2024 18:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E0E15E5BC;
+	Fri,  2 Feb 2024 19:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706900012; cv=none; b=gKuL/QY5vkWpAixYzx2HnYOCU5v5GKCmHbW0paXAv1Bil8EBaHABmUVbB1r0isS0fu8ffVTZhKSOeZAMgVeHSpgWzZO0ixeiAVr9ghtMGTh9HCCqq6yqYJhl6qZWpE16LrIIvcSeHLkiiqVTEWOPQylQiKJlb0Zonl2za0FFpWY=
+	t=1706900714; cv=none; b=WWcyWtxf/6edcyGwURs2akDCVblxf6fJ1OcU3eYkiPXHqgFzdTd1N2yOMh1nUioKN1XFAtYFiW6NjIBrohN4Nil4yris79/cPouYXu8FusSOeRYtKHs+U8QJZBRYH6SGePNo+qiosW+4ncHse6xNZeI1iVhHT2MkrWXaaRZdrls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706900012; c=relaxed/simple;
-	bh=BfPWVLXVjqnU3vmc0U9hEmE5mio5hV7S7WnYSfm85Rc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VSFd0JxNrN7BLan8/QFA7H5RQxRBr3J50ibtvzM45IY071YrU+VKwKeNuHD+RyD+3ZdWGtl45cnjHWApfuGTDzYmbA1V6QQPtGGsfbIkA4cVQN0jNUgu7l4j3E6wnZjyWPD3TWnZBxLMluXgusEnLurvOxO7Oq32w+414vbXIvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxF3wj8I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706900714; c=relaxed/simple;
+	bh=PbcZ6/Uc6nEWpeypOwRFRtOhlGrseI91iIhICRGZBak=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jJR0Y+5z+2jKXv8LfhUSYK/J0/y64Xq6BhPjbuN4tof1E6uO9YilyhZhBucfhmLo2l1qajqTAKuADLx5HGrrEdBGQ27rNIOuby0uc34IZVlfCfRlkssMntdGBuf0fyzmTQbPXNIKpWGNpZfGjNcMZ4zdW0/zKFV1mTECuQ3F53g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRMhjrr6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxF3wj8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FF8C433F1;
-	Fri,  2 Feb 2024 18:53:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRMhjrr6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54A4C433F1;
+	Fri,  2 Feb 2024 19:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706900011;
-	bh=BfPWVLXVjqnU3vmc0U9hEmE5mio5hV7S7WnYSfm85Rc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AxF3wj8I2VxPoq8egSbA5R0YteSmSNgyQVUNHdbT2JAAEHtxLynsEzCHnJUjzV9UN
-	 FN6LOFbvl84FcQ69c0N4TaRgEMuxF/iEC7x76G5G3vAS5Nat7z9f/qi07x6VqVrio/
-	 wxilcN3kCwrlPQNUI21rirBkMMxpTUx2WyZ+wUESqWHEU1NKrf00Z66OA41SUSQxx7
-	 OPQ4sMFzMT80Aj/Y+Xrt7g2Uk2Yo7BKe+PFvqiAve8zuM/Igaka5F3uF9Iia5Z3cd0
-	 rDMkw4UJ6kHvbjAfT/tBHU7qOdqbx33zxFwyQC1vZz8IhTqXQMXK81pSH0crRkVjTL
-	 0TL/s5Z5AlQCQ==
-Date: Fri, 2 Feb 2024 19:53:24 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
-	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
-	helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
-	krzysztof.kozlowski@linaro.org, kw@linux.com,
-	l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
-	shawnguo@kernel.org
-Subject: Re: [PATCH v9 05/16] PCI: imx6: Using "linux,pci-domain" as slot ID
-Message-ID: <Zb06JL5X8EiHEyFD@lpieralisi>
-References: <20240119171122.3057511-1-Frank.Li@nxp.com>
- <20240119171122.3057511-6-Frank.Li@nxp.com>
- <ZbzcOarorCS1MPRc@lpieralisi>
- <ZbztZkNQ+wydticD@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1706900713;
+	bh=PbcZ6/Uc6nEWpeypOwRFRtOhlGrseI91iIhICRGZBak=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mRMhjrr6RV1qjDeZR87YJLcjcavrxpWwnfciJGxNbphzpqEBEavTsIE2QBYvax3os
+	 SmnPa3J35rc6mLeAHQN6BWSaJWj/Wfi9O9sona9JIZCXIkLhz53oGEdUTxjyNL3AjM
+	 hpgM3OMpgaVHazqEn+8Ce8hg/BmQniFXHAA3Tgambv61pO9rzcITnIjiiW+auyypCA
+	 OTDO1SEB+mia/A8rC1AwhOXvsBFXJeldtzQrxVA7+5PJ0h6/7IiiKwZOChosOsc44k
+	 mvXdDkoM/OBfXFc1W/ZK7l8cQKXrMlzjFvJgG1JmbAwEP4MBq7R4Dna0vmErgFyPyz
+	 /hF+mTF+B0v8g==
+Date: Fri, 2 Feb 2024 11:05:11 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Wei
+ Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+ <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 0/4] Add 8qm SMMU information
+Message-ID: <20240202110511.135d26b7@kernel.org>
+In-Reply-To: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
+References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZbztZkNQ+wydticD@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 02, 2024 at 08:25:58AM -0500, Frank Li wrote:
-> On Fri, Feb 02, 2024 at 01:12:41PM +0100, Lorenzo Pieralisi wrote:
-> > "PCI: imx6: Use "linux,pci-domain" as slot ID"
-> > 
-> > On Fri, Jan 19, 2024 at 12:11:11PM -0500, Frank Li wrote:
-> > > Avoid use get slot id by compared with register physical address. If there
-> > > are more than 2 slots, compared logic will become complex.
-> > > 
-> > > "linux,pci-domain" already exist at dts since commit:
-> > > 	commit (c0b70f05c87f3b arm64: dts: imx8mq: use_dt_domains for pci node).
-> > > 
-> > > So it is safe to remove compare basic address code:
-> > > 	...
-> > > 	if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> > > 		imx6_pcie->controller_id = 1;
-> > 
-> > No it is not unless you magically update all firmware out
-> > there in the field.
+On Thu, 01 Feb 2024 15:22:40 -0500 Frank Li wrote:
+>       dt-bindings: mmc: fsl-imx-esdhc: add iommus property
+>       dt-bindings: net: fec: add iommus property
+>       arm64: dts: imx8qm: add smmu node
+>       arm64: dts: imx8qm: add smmu stream id information
 > 
-> commit c0b70f05c87f3b09b391027c6f056d0facf331ef
-> Author:     Peng Fan <peng.fan@nxp.com>
-> AuthorDate: Fri Jan 15 11:26:57 2021 +0800
-> Commit:     Shawn Guo <shawnguo@kernel.org>
-> CommitDate: Fri Jan 29 14:46:28 2021 +0800
-> 
-> I am not sure if it is neccesary to compatible with 2 years ago's dts.
-> I think it may not boot at all with using 2 year agao dtb file directly.
-> 
-> Do you have other comments? I can remove it from this big patch series,
+>  .../devicetree/bindings/mmc/fsl-imx-esdhc.yaml     |  3 ++
+>  Documentation/devicetree/bindings/net/fsl,fec.yaml |  3 ++
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi  |  6 ++++
+>  arch/arm64/boot/dts/freescale/imx8qm.dtsi          | 41 ++++++++++++++++++++++
 
-I will have a look at the full series first we can decide whether
-to drop it later.
-
-I am travelling so I am not sure I can review it before February
-12th, FYI.
-
-Lorenzo
+Any preference on whether all these go via a platform tree,
+or should we pick up the net patch to netdev? I guess taking
+the DTB via netdev would be the usual way to handle this?
