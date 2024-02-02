@@ -1,116 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19AF1386C0;
-	Fri,  2 Feb 2024 11:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722DF13E233;
+	Fri,  2 Feb 2024 12:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706874129; cv=none; b=BvPCuASpF1vAH88+FzPZe53mp4xLKd1LgE8GCgwCpvJlBTA6V/zTGzUbMv76/3Z/yDCq5aagXyFIMjK9meTVakFWaaL7R4V4GnRjR0BzIM0Q1sv79CrNSzh7edadMiZd+UMqmtZn32NXlN0bqMAWXF22D/vt+sNNhMnGJ30RSdQ=
+	t=1706875969; cv=none; b=pKuV1Js+XwokNojqzbr2pjARVDjjedPZCnpWgnU/2RQX5KNiMxQN+cjcrq9cQg/baDElNbMOUCPw1g8NwABW+HGNid2/XnISlKiTZCfLiArioKmyrT0T9ckl1dYNwWNUitKjcddMdTuayPow2GVNg8gCO/OfXorkp4rBbda0nFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706874129; c=relaxed/simple;
-	bh=ipIq/9Sdl32FU9KpYVyKP01VDNrIW6SGHhtprIgqsEo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ibc7D2uZl7aHpfXNilmk4CFmf6UAued77mb1mAYemKb7YisJ2DLwyPV0cEB4+JrHRfzQeIdag/8muTEJ9QtlC56o2WVUEJ9/+CY4BpyE1EhMQKfWsdwSLtEzZ0j6n28DGVog2WCKoA0cidtp9JTbaAI0umE34AH6kI4JXqu5u7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctT7EKOE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706875969; c=relaxed/simple;
+	bh=oBl1UUByToZvedSOfHD5+3blOO9P8Zfy2wDweeCcE6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ol9rx5vs6oCNiquJwonapivsbCQVaZKemGhkqnpzzpjGHS9cj1H0FwkWT6LkAvkvZFxfahdaXsrYVmgej6fmBDe/YDMavPDVdYQOo72Z8yx+9Qi8Abts0lFo3JkJyVDxyNSS5S1TXE+QWxEsLpivsihbCLFEsnrqXxRFLvZ1v20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zg2XxAik; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctT7EKOE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D43C433F1;
-	Fri,  2 Feb 2024 11:42:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zg2XxAik"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39283C433C7;
+	Fri,  2 Feb 2024 12:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706874128;
-	bh=ipIq/9Sdl32FU9KpYVyKP01VDNrIW6SGHhtprIgqsEo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ctT7EKOEMg1nl41CFM5Gc2kOvf3qcxf6XtlItksRthxndXzOEQRmmReHCbajuKM4N
-	 F1aA5YTXeU7zB1XdJZRqr1LoyFlVpPHSXA11q6QWG3RXKLGCJI+xQnJTbPjYPlY9fk
-	 dOgfNqpW+iPgY702CwmOIaPUjXwh2g+eyRABYHaAIhSvIh/oAyJsHnMUutJ5IDS7Fh
-	 O7DuMLdDphvWlFLMOkc7LxvUnUegk/SlzKrDB2RoxQRXUj7chmKh5RoRvost7Us0M9
-	 caewRdsz6uhfoMEsribDI2iO3MjsmeG6R9JweIY6OgAcC63aLkDPsfytHr5BSAUtha
-	 lNKPMVMwiwmzg==
-Message-ID: <b81a5ec5-4f71-4926-bd0e-0300477b721b@kernel.org>
-Date: Fri, 2 Feb 2024 13:42:05 +0200
+	s=k20201202; t=1706875969;
+	bh=oBl1UUByToZvedSOfHD5+3blOO9P8Zfy2wDweeCcE6w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zg2XxAikieEuRmr7UqhoU1xvBkC/IXu5I2XpZhA8Otveb340BCQGdiQgakxTCMgGV
+	 V/PIYfoGCGjbVHi9S1mUT2HKfdOBjl3YhRI5f80Pe2J60bglkmBq7EKtEmC+0wylUH
+	 z4HeMwCUSjcrgmyXPRXTc+ac0Nyf00X4+cfAtlO2eycDw4+WYA7XLjsRc2wPdF+11B
+	 I8JWkACTO/PBLi4aVdQOuX3XVXcLVy1w/p4anoB7CSwh8GmeMH9Jb1NOvFTb+qAtvO
+	 F/yg8sXh7DohmRYv5B1YmCvB/ot/7A4O+CNmszvIjkRCkK/KRaU3AWICvmWxR4t1kY
+	 mbFViCGKqql6g==
+Date: Fri, 2 Feb 2024 13:12:41 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
+	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+	helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
+	krzysztof.kozlowski@linaro.org, kw@linux.com,
+	l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: Re: [PATCH v9 05/16] PCI: imx6: Using "linux,pci-domain" as slot ID
+Message-ID: <ZbzcOarorCS1MPRc@lpieralisi>
+References: <20240119171122.3057511-1-Frank.Li@nxp.com>
+ <20240119171122.3057511-6-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] usb: cdns3: fix memory double free when handle zero
- package
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
- Pawel Laszczak <pawell@cadence.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Felipe Balbi <felipe.balbi@linux.intel.com>,
- "open list:CADENCE USB3 DRD IP DRIVER" <linux-usb@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240202051829.623273-1-Frank.Li@nxp.com>
- <20240202051829.623273-2-Frank.Li@nxp.com>
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20240202051829.623273-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240119171122.3057511-6-Frank.Li@nxp.com>
 
-Hello Frank,
+"PCI: imx6: Use "linux,pci-domain" as slot ID"
 
-On 02/02/2024 07:18, Frank Li wrote:
-> 829  if (request->complete) {
-> 830          spin_unlock(&priv_dev->lock);
-> 831          usb_gadget_giveback_request(&priv_ep->endpoint,
-> 832                                    request);
-> 833          spin_lock(&priv_dev->lock);
-> 834  }
-> 835
-> 836  if (request->buf == priv_dev->zlp_buf)
-> 837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
+On Fri, Jan 19, 2024 at 12:11:11PM -0500, Frank Li wrote:
+> Avoid use get slot id by compared with register physical address. If there
+> are more than 2 slots, compared logic will become complex.
 > 
-> Driver append an additional zero package request when queue a package,
-> which length mod max package size is 0. When transfer complete, run to
-> line 831, usb_gadget_giveback_request() will free this requestion. 836
-> condition is true, so cdns3_gadget_ep_free_request() free this request
-> again.
+> "linux,pci-domain" already exist at dts since commit:
+> 	commit (c0b70f05c87f3b arm64: dts: imx8mq: use_dt_domains for pci node).
+> 
+> So it is safe to remove compare basic address code:
+> 	...
+> 	if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+> 		imx6_pcie->controller_id = 1;
 
-Please replace "package" with "packet" in subject and description.
+No it is not unless you magically update all firmware out
+there in the field.
 
+> 	...
 > 
-> Log:
-> 
-> [ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-> [ 1920.140696][  T150]
-> [ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
-> [ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-> [ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
-> 
-> Add check at line 829, skip call usb_gadget_giveback_request() if it is
-> additional zero length package request. Needn't call
-> usb_gadget_giveback_request() because it is allocated in this driver.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/usb/cdns3/cdns3-gadget.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-> index d6723d31fc6e2..fd1beb10bba72 100644
-> --- a/drivers/usb/cdns3/cdns3-gadget.c
-> +++ b/drivers/usb/cdns3/cdns3-gadget.c
-> @@ -828,7 +828,11 @@ void cdns3_gadget_giveback(struct cdns3_endpoint *priv_ep,
->  			return;
+> Notes:
+>     Change from v7 to v8
+>     - fixed comments
+>     - Added Manivannan Sadhasivam's review tag
+>     Change from v5 to v7
+>     - none
+>     Change from v3 to v4
+>     - remove compare basic address logic
+>     Change from v2 to v3
+>     - none
+>     Change from v1 to v2
+>     - fix of_get_pci_domain_nr return value check logic
+> 
+>  drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index eda6bc6ef80ee..773411d20329f 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -33,6 +33,7 @@
+>  #include <linux/pm_domain.h>
+>  #include <linux/pm_runtime.h>
+>  
+> +#include "../../pci.h"
+>  #include "pcie-designware.h"
+>  
+>  #define IMX8MQ_GPR_PCIE_REF_USE_PAD		BIT(9)
+> @@ -40,7 +41,6 @@
+>  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
+>  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+>  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
+> -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
+>  
+>  #define to_imx6_pcie(x)	dev_get_drvdata((x)->dev)
+>  
+> @@ -1279,13 +1279,17 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  					     "Failed to get PCIEPHY reset control\n");
 >  	}
 >  
-> -	if (request->complete) {
+> -	switch (imx6_pcie->drvdata->variant) {
+> -	case IMX7D:
+> -		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+> -			imx6_pcie->controller_id = 1;
+> -	default:
+> -		break;
+> -	}
+> +	/* Using linux,pci-domain as PCI slot id */
+> +	imx6_pcie->controller_id = of_get_pci_domain_nr(node);
 > +	/*
-> +	 * zlp request is appended by driver, needn't call usb_gadget_giveback_request() to notify
-> +	 * gadget composite driver.
+> +	 * If there are no "linux,pci-domain" property specified in DT, then assume only one
+> +	 * controller is available.
 > +	 */
-> +	if (request->complete && request->buf != priv_dev->zlp_buf) {
->  		spin_unlock(&priv_dev->lock);
->  		usb_gadget_giveback_request(&priv_ep->endpoint,
->  					    request);
+> +	if (imx6_pcie->controller_id == -EINVAL)
+> +		imx6_pcie->controller_id = 0;
 
--- 
-cheers,
--roger
+See above, this breaks compatibility with old DTs (and -EINVAL is not
+the only error code you should handle).
+
+Lorenzo
+
+> +	else if (imx6_pcie->controller_id < 0)
+> +		return dev_err_probe(dev, imx6_pcie->controller_id,
+> +				     "linux,pci-domain have wrong value\n");
+>  
+>  	/* Grab turnoff reset */
+>  	imx6_pcie->turnoff_reset = devm_reset_control_get_optional_exclusive(dev, "turnoff");
+> -- 
+> 2.34.1
+> 
