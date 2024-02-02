@@ -1,160 +1,226 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2069.outbound.protection.outlook.com [40.107.105.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D174A12C7F1;
-	Fri,  2 Feb 2024 22:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706914279; cv=none; b=Ja69yV/GXAU3uzNj+kf+pk+jwWLAfFmGRT43yt3M/cmjknzDYfbuuAcDja6VOsm2K9Z/wAiBisApwM4WbhVMhhOHIykcDWzvZah6dlhRudQuQb+OpUre7EXnVSsHPYAXXukHFgHLJjzpLlJnHRKtQqjwyB+h17CrBoBUtwPC9yY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706914279; c=relaxed/simple;
-	bh=qyAXgTBLLnh8SxD11iUAbf5QXHShn7TzaQqXX7GyvVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=izw5GMxI4qHAz9/qH8sKUyc6FgxjQ1NhSnn0Sy9dQv+pHPakgCnol1Pl+8yG/efdygD+QCyfEK7JYX2ZsV5UdqZILtHK+h2giGR9p2rqDXT5XULb8yHsvoyuz+E9X7TIWUSXQirpU0BdfRRAFaCrvfjkfaymeXyAKEicoGbRTQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=su95Moq8; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54F212C7F0
+	for <imx@lists.linux.dev>; Fri,  2 Feb 2024 23:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706915389; cv=fail; b=FMudPyJqn/IjvpKQuHdFVe6gTg724K+qbKOl7f2FQ5FBXLAstHVC63U+eOy/nnZkdTCziXWlJ9Wk25Zaxnvged6vcSQ1HFEjhpNJYd/FEX9MqDooywUgClHsUrfnUWOL/6eHZd0zSuEpH5slj3lSMDaliQxZRoU62959T7xsYVI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706915389; c=relaxed/simple;
+	bh=lpo5yoDxEjAMAATeuR+ObkAv5g4Z/DAVD2hkbmgALyw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iILrQsdRhDImfUBEsUhP0Kgw1uUF6M7LgJ3MMA/E717bX5YixOxC47f5mrMrC0DxqbFNnB0pkJcj/cFBhb33kg0VVol1X6eBXPN8KsIZSen362uyA7Up4uXPQ4zXTgZ2wrNmmLNBYXHYfyRLciRmtf0fvQPjjVSmQgJw5sXmzGE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=XhTErwsY; arc=fail smtp.client-ip=40.107.105.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="su95Moq8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286A6C43390;
-	Fri,  2 Feb 2024 22:51:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706914278;
-	bh=qyAXgTBLLnh8SxD11iUAbf5QXHShn7TzaQqXX7GyvVU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=su95Moq88Nxy71XnTsLYPUhqiJNf7+84hTe2WOhFiR/k43Bz3yuNIyS0Emk0N+SxK
-	 kfN3BgtafQxLef9wu0PDcnYnKyemL5IwEd40YuxbCMdOZqry7M9o++6WdqrmK6SAiu
-	 wMr8enCyRbRG/R6QDVLtswIRVSHsiFP32V7+3rX6BlekOXDlSBCxvw5TFMOyZp2vKi
-	 AgxOIIurWCjKnZcYYQzBFyI5/64jy/bNw1CFzvkMY/gBRSzg+iSTA1F28muCmzkoBQ
-	 200pSm+umS39YPymHDGC4V+D4Qk/wua+6ieG9b6oNPq55uHUiRn+dbf+4lWkawEWxZ
-	 iKAhbDKVxmOsw==
-Date: Fri, 2 Feb 2024 16:51:16 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>, Rob Herring <robh+dt@kernel.org>
-Cc: manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
-	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
-	hongxing.zhu@nxp.com, imx@lists.linux.dev, kernel@pengutronix.de,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	kw@linux.com, l.stach@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH v9 05/16] PCI: imx6: Using "linux,pci-domain" as slot ID
-Message-ID: <20240202225116.GA732628@bhelgaas>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="XhTErwsY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ci1CkSiZdn6/ONSYeiJg1Qu30MC6vLgMLE1CLgsrtdyBY+6AIx+o8E99GJH5HO4mAbhvZ6HFSn8O19ZdxYqdoHcjfEsaFOIpCCrxpGlMwZ8X5IvUtIWm/N17tFO2holabYGGIg59L/WlgpraBuUIr75yA4EChQEUjKTWYSRwdd+RPzVUul1KiXXPfP0UIGyhxfYlVlFPJZYJ//CGzGUl2mAnW1IeOiN5+6IKd/h7lYlghxNbIjt9JCyKq4VECGjeSbZdxocLOy+VHA3fsREJr3SmJSisZ12fclHHg8dBgiCeVUbGsdL3KyohYP2dcqPg49FRFucuFSJg22/gozFLBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=byDnXsXx+ABdHA0brvZRkAWtWoHaTwoTe+9Xa1hY668=;
+ b=dbzhQz46SAMvtlv8EiIRJeCM3g2goo7g8rhTe1nHIQxO1UMJFa9qtuMm98RnEG01lzfnjEmWW4S094gbEi/FxFObsSGiAnpjY3m3YlcByQMioJj0yr2WvPePfOFlmebicfYDugavvUR1aTTdxa0Bh4xNl+Jhac6ZH+QoU+JYBbGJNet/OUkPvORiJmEQlbusbYS4Zut9Za3Vk1lGVCKWYjwtVpYH0FGnWkfzElWKK6c8ru8rTmcH5dUuYO+G6U0sWtxIDdJU56hnEVVetqyy3NvZk06dx9z16xDOMVjgBnExAVssZhtNevt79vKtMu8np3CQRxkuRDZs99l3hxrM/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=byDnXsXx+ABdHA0brvZRkAWtWoHaTwoTe+9Xa1hY668=;
+ b=XhTErwsYryB7L7uHHUjlmlxEd4GermKrjUONuRts0CaDCzq2A9mukE8XGGEiDRsNl0SJO7GF+Z3w0S5a18VcOxReWOfAO7RGbhnGlpD4lA57gmAc7DEEN6cbg02TQXWstBvWeI14OE7mb9IBsUUpitxD6DIFk/UVY0KgtgtV9pM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS5PR04MB9997.eurprd04.prod.outlook.com (2603:10a6:20b:67c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.26; Fri, 2 Feb
+ 2024 23:09:43 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7249.027; Fri, 2 Feb 2024
+ 23:09:43 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: frank.li@nxp.com
+Cc: alexandre.belloni@bootlin.com,
+	conor.culhane@silvaco.com,
+	devicetree@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	ilpo.jarvinen@linux.intel.com,
+	imx@lists.linux.dev,
+	jirislaby@kernel.org,
+	joe@perches.com,
+	krzysztof.kozlowski+dt@linaro.org,
+	krzysztof.kozlowski@linaro.org,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	robh@kernel.org,
+	zbigniew.lukwinski@linux.intel.com
+Subject: [PATCH v6 0/8] I3C target mode support
+Date: Fri,  2 Feb 2024 18:09:17 -0500
+Message-Id: <20240202230925.1000659-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR08CA0030.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::43) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zb1rD4WK5D0ckKos@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9997:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb06fc0f-3d3c-4527-35b3-08dc24440a85
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	waJv7ypB2BvpRoQXCOLL1t6lc1z03UQK6pHJ+IV8HlOYyhj75BOsHGs8jmwXcN5QIvypTXg7C1eij/fCA9hlAnM+Q4KoLNUx786J4u+KL1Du7dle5MpBTa6/CTCCGtoYrV5I27eEjWDQsKu/D27WiujDXVi56jqew3pbJnEPjQ9iQNmy9iSigANnIbjuKgScE2xuAwJUJoHLdxy87xYNcNcDHFm7dqyzk6UycVnRHYCoJXm4ieYbbZp74UinGCUPjwQir3fEzFnQqwGkydpz/1h8fXBibMjqbmI33jdDyc1DxXCF6klZ0g/FaXf11ych5vkXSquCJIvz1Bu1WUR+aUXiqiKp+FLJcNigS92y1wj+rQ9O52VZT3oWH9DVg95diWstX60svmVfVucgLV98v9V2/iF3PqRFN3CeG0cpr8GrwZ2jPGc7XDSWU2dFecGRqEjuUxzKJD6dmGHhls7G9KKpl2m3AjU+YXgs01wS0bmgluZ6JKtEZ6W5xYiTepoQC8Pce+aqkhYkofzyc/Ht1p0HkdHSU8eY/rvCRuWigJGryr1EYqHaFpFJeB/8C/C1a7Bk4Bwl8xplOA78i758m+OS2rIu4rJ7PLiLLMPf2u6mNmOiszwU1d2TZFCAC6tz
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(136003)(346002)(376002)(230922051799003)(230273577357003)(1800799012)(451199024)(64100799003)(186009)(2616005)(1076003)(41300700001)(26005)(38350700005)(52116002)(7416002)(6512007)(316002)(36756003)(37006003)(6506007)(83380400001)(6666004)(478600001)(66556008)(38100700002)(66476007)(4326008)(6486002)(2906002)(86362001)(66946007)(8936002)(8676002)(34206002)(5660300002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9hQumafEq0tIQ50AZ1zOsgLvyfHrpCm3imAV3WyiyMjxIBNaBpso3w1T5xkI?=
+ =?us-ascii?Q?RaOjQxZcdDwOClaqOx3J4sj/9nQBGgx0hfiCp2CQg9BwuaFsvCfh8fzyFxrc?=
+ =?us-ascii?Q?TCWNb2Ae4zNyZJpkdbVVnHVV5Ri3M6q6Dxx5X40GhWD1MankdBpXdnXWi9/y?=
+ =?us-ascii?Q?TgBg/XbryBlPJYJdRd0I6EZwHRNEMxsrCc6bDGX89zZUQ3lqEzpIChVnn+9k?=
+ =?us-ascii?Q?3z7RxdMbLAAu+xWexD0S16zFWwsc1O7vU3wAjzhAwt3YfFlVfOYTMJ1QHQJ9?=
+ =?us-ascii?Q?oaL7TrqSzuriDEswDkQsHuhKeM0KlPdsY6kwi4GwRxDA3YWw6080wmFSsSai?=
+ =?us-ascii?Q?dditZOqWop8wKaWXFaU3olvgcuQKu/bc0ZTw48rOm0Ajfd73MRlOvmfMXiK3?=
+ =?us-ascii?Q?PaYxQVjUyBUjD6ktIKMSsDB82tSMBS50Ar+JytwkwewgA1ABGslaQ/cHqTMk?=
+ =?us-ascii?Q?PQpZA4FVjX9tpt28ms5lH1Qa6CHJaWDoirtmKzajH29GIA5mTDtdm50AY0Xa?=
+ =?us-ascii?Q?Z4XK2KdICBsQEJEC2ILyU3UNUT3rMR4TOaDyaUuYdWCQkrQWPgmhPGL7YhoY?=
+ =?us-ascii?Q?ox8c5aDyh7OVi+UlgCjLIgbIA0YbELwA7+cCL96eHyAIqBmD9Cr23IEN95Bb?=
+ =?us-ascii?Q?6kxPElXL5ex210V2jsAnPAtdzUhsdgkojZcERtLWPPgSRjEhIEyfcB+zUql/?=
+ =?us-ascii?Q?9cC1Q0cAGXq2WQSbPP/8bKhh7J6nGUYVhDVDLX9bx0YENo222DaqdKYAEEru?=
+ =?us-ascii?Q?uF9ZXXsc8HsvWY5oGmwbeAvxsXLSSPuqNVYphXK4bid+pBrrL02ArUJvzI30?=
+ =?us-ascii?Q?Qyw2BVuKN6X+Rg9U6YIG+L66unVovh645zI8vIOYAnnHy9dDu26I/fYGtrbr?=
+ =?us-ascii?Q?C4kgXKHpy0XnFOosoaNcK7/K4ImWxWMvu+uibY6RRnHDCqPDaDrDWFe53/pK?=
+ =?us-ascii?Q?X5CnBWduovXzexY80D+Li8xRtq70zlj5D865JZ8ptdWMhXziARe7OHt8Emyk?=
+ =?us-ascii?Q?F5+StrVXryV4aJA22omaEpxMsyd1whM4fucbAgyB1ePdGg44QaC5c5gf+Kav?=
+ =?us-ascii?Q?X0cJpD3lWpdNGRBUi2h36ojbc1VZLe0vvN4o+2C7a3luy1My/LOdWidzIDRI?=
+ =?us-ascii?Q?DjPS4w4dAfstTFcQqEvNtgcK+VQsawLW1lgg53ZKvMVOJjAqKY0/LLcGiNSF?=
+ =?us-ascii?Q?Kz6ZJ8iowRfb15RVCsOFjDQfy/4lbQ2tniBrfpcKChXjO6zQr3L81gjQoZXk?=
+ =?us-ascii?Q?D8B3zZpBLuqBIspqFgV3VXct6rwSyPLpg6kS4weKZojpR5Y614xcliPc+Z9z?=
+ =?us-ascii?Q?g8meh+M6fxjWJQnizgsIJPXoH1lLrkMUFDXNtlCiUkHarLHlIXOKJU7jQrUw?=
+ =?us-ascii?Q?NvlhssgmUTAvrPo8kqiIIu8vT4d/CcFKQJSZxKi7rIn0Q9hILQoHs7rd9Uyl?=
+ =?us-ascii?Q?VIYlh8jFe91sYA4rJysYFn+5GGtwP41gLAoce/cAh0l2fPutIaLoXqUfS5MY?=
+ =?us-ascii?Q?qfeNzJ+Z75PECrGatBjzedBZD1kDM1wzthogCz0M07HG/PSpJFzH5zOj+8SM?=
+ =?us-ascii?Q?d9oru1Uh/wnAfK7P8t7LFgu7wOMv7tzjNT2XRzQT?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb06fc0f-3d3c-4527-35b3-08dc24440a85
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2024 23:09:43.3860
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nyMip/sdnqp4kG12Cp4GuxWAPtPHAiGkcCJDGcAvPQqSg2kwdZW7G1lAG+lJPchsOVKkI1STSNM7NIHtIOzfJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9997
 
-[Rob to to: line]
+This  patch introduces support for I3C target mode, which is referenced
+with a PCIe Endpoint system. It also establishes a configuration framework
+(configfs) for the I3C target controller driver and the I3C target function
+driver
 
-On Fri, Feb 02, 2024 at 05:22:07PM -0500, Frank Li wrote:
-> On Fri, Feb 02, 2024 at 03:54:31PM -0600, Bjorn Helgaas wrote:
-> > On Fri, Jan 19, 2024 at 12:11:11PM -0500, Frank Li wrote:
-> > > Avoid use get slot id by compared with register physical address. If there
-> > > are more than 2 slots, compared logic will become complex.
-> > > 
-> > > "linux,pci-domain" already exist at dts since commit:
-> > > 	commit (c0b70f05c87f3b arm64: dts: imx8mq: use_dt_domains for pci node).
-> > > 
-> > > So it is safe to remove compare basic address code:
-> > > 	...
-> > > 	if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> > > 		imx6_pcie->controller_id = 1;
-> > > 	...
-> > 
-> > I have no idea what this is telling me.  I guess you don't want to use
-> > IMX8MQ_PCIE2_BASE_ADDR to decide something?  That much sounds good:
-> > the *address* of some MMIO space doesn't tell us anything about the
-> > function of that space.
-> 
-> You are right. If there are more than two controller. The check logic
-> will be extremely complex.
-> 
-> There are some discussin at below thread about linux,pci-domain
-> https://lore.kernel.org/imx/20231206165953.GA717921@bhelgaas/
+Typic usage as
 
-My response here was too low level, just about trivial syntactic and
-style issues.  I should have seen the larger issue at the time; sorry
-about that.
+The user can configure the i3c-target-tty device using configfs entry. In
+order to change the vendorid, the following commands can be used
 
-> https://lore.kernel.org/imx/20231217175158.GF6748@thinkpad/
+        # echo 0x011b > functions/tty/func1/vendor_id
+        # echo 0x1000 > functions/tty/func1/part_id
+        # echo 0x6 > functions/tty/t/bcr
 
-That's a good response from Mani, but again not relevant to my point.
+Binding i3c-target-tty Device to target Controller
+------------------------------------------------
 
-My point here is that "compatible" should tell the driver how to
-operate the device, i.e., the driver knows what registers are present
-and how they work.
+In order for the target function device to be useful, it has to be bound to
+a I3C target controller driver. Use the configfs to bind the function
+device to one of the controller driver present in the system::
 
-If you have two variant devices that both implement a register that
-can be used to distinguish them, a single "compatible" string might be
-enough because the driver can use that register to tell the
-difference.
+        # ln -s functions/pci_epf_test/func1 controllers/44330000.i3c-target/
 
-If the driver can't tell the difference by looking at the hardware
-itself, I think you need a separate "compatible" string for it.  Of
-course I'm far from a DT expert, so please correct this if necessary,
-Rob, et al.
+Host side:
+        cat /dev/ttyI3C0
+Taret side:
+        echo abc >/dev/ttyI3C0
 
-> > I expect the "compatible" string to tell the driver what the
-> > programming model of the device is.
-> > 
-> > > +	/* Using linux,pci-domain as PCI slot id */
-> > > +	imx6_pcie->controller_id = of_get_pci_domain_nr(node);
-> > > +	/*
-> > > +	 * If there are no "linux,pci-domain" property specified in DT, then assume only one
-> > > +	 * controller is available.
-> > > +	 */
-> > > +	if (imx6_pcie->controller_id == -EINVAL)
-> > > +		imx6_pcie->controller_id = 0;
-> > > +	else if (imx6_pcie->controller_id < 0)
-> > > +		return dev_err_probe(dev, imx6_pcie->controller_id,
-> > > +				     "linux,pci-domain have wrong value\n");
-> > 
-> > Maybe I'm missing something here.  It looks like this driver uses
-> > controller_id to distinguish between hardware variants or maybe
-> > between two Root Ports (slots?) in the same SoC?
-> 
-> Yes!
-> 
-> >   imx6_pcie_grp_offset
-> >     return imx6_pcie->controller_id == 1 ? IOMUXC_GPR16 : IOMUXC_GPR14;
-> > 
-> >   imx6_pcie_configure_type
-> >     id = imx6_pcie->controller_id
-> >     if (!drvdata->mode_mask[id])         # <-- looks unsafe
-> 
-> I can add safe check here.
-> 
-> >       id = 0;
-> >     regmap_update_bits(drvdata->mode_off[id], ...)
-> > 
-> > (This "mode_mask[id]" looks like it will reference garbage if the DT
-> > supplies "linux,pci-domain = <2>".  A bogus DT shouldn't be able to
-> > cause a driver to misbehave like that.)
-> 
-> Suppose I can use dt-bind doc to force to 0,1 and safe check here.
+Chagne from v2 to v3
+- using 'mode' distingiush master and target.
+- move svc-i3c-target.c to under master,
+- built together with svc-i3c-master.c
 
-Nope.  The driver must protect itself from garbage in the DT.
+Change from v1 to v2
+- change "slave" to "target"
+- include master side tty patch
+- fixed dtbcheck problem
+- fixed kerne-doc check warning
 
-> > That doesn't seem related to "linux,pci-domain" at all.
-> 
-> I added comments about
-> /* Using linux,pci-domain as PCI slot id */
+Some review comment may be lost since it is quite long time since v1. Now
+master side dependent patches already in linux-next. So sent target side
+patches with tty support again.
 
-That doesn't make it related :)
+No sure why an additional "\r\n" appended.
 
-> We may add new property about controller-id, but there already have common
-> one "linux,pci-domain", which value in upstreamed dts exactly match our
-> expection, I also found other platform use it as slot id in kernel tree.
-> 
-> Any way, we can continue discuss the better solution here. But I hope
-> it was not block whole 16 patches. we can skip this one firstly.
-> 
-> I still have more than 10 clean up patches my local tree.
-> 
-> > 
-> > Bjorn
+Frank Li (8):
+  i3c: add target mode support
+  dt-bindings: i3c: svc: add proptery mode
+  Documentation: i3c: Add I3C target mode controller and function
+  i3c: svc: Add svc-i3c-main.c and svc-i3c.h
+  i3c: target: add svc target controller support
+  i3c: target: func: add tty driver
+  i3c: add API i3c_dev_gettstatus_format1() to get target device status
+  tty: i3c: add TTY over I3C master support
+
+ .../bindings/i3c/silvaco,i3c-master.yaml      |  11 +-
+ Documentation/driver-api/i3c/index.rst        |   1 +
+ .../driver-api/i3c/target/i3c-target-cfs.rst  | 109 +++
+ .../driver-api/i3c/target/i3c-target.rst      | 189 +++++
+ .../driver-api/i3c/target/i3c-tty-howto.rst   | 109 +++
+ Documentation/driver-api/i3c/target/index.rst |  13 +
+ drivers/i3c/Kconfig                           |  31 +-
+ drivers/i3c/Makefile                          |   3 +
+ drivers/i3c/device.c                          |  24 +
+ drivers/i3c/func/Kconfig                      |   9 +
+ drivers/i3c/func/Makefile                     |   3 +
+ drivers/i3c/func/tty.c                        | 474 +++++++++++
+ drivers/i3c/i3c-cfs.c                         | 389 +++++++++
+ drivers/i3c/internals.h                       |   1 +
+ drivers/i3c/master.c                          |  26 +
+ drivers/i3c/master/Makefile                   |   3 +-
+ drivers/i3c/master/svc-i3c-main.c             |  80 ++
+ drivers/i3c/master/svc-i3c-master.c           |  34 +-
+ drivers/i3c/master/svc-i3c-target.c           | 776 ++++++++++++++++++
+ drivers/i3c/master/svc-i3c.h                  |  15 +
+ drivers/i3c/target.c                          | 453 ++++++++++
+ drivers/tty/Kconfig                           |  13 +
+ drivers/tty/Makefile                          |   1 +
+ drivers/tty/i3c_tty.c                         | 427 ++++++++++
+ include/linux/i3c/device.h                    |   1 +
+ include/linux/i3c/target.h                    | 548 +++++++++++++
+ 26 files changed, 3712 insertions(+), 31 deletions(-)
+ create mode 100644 Documentation/driver-api/i3c/target/i3c-target-cfs.rst
+ create mode 100644 Documentation/driver-api/i3c/target/i3c-target.rst
+ create mode 100644 Documentation/driver-api/i3c/target/i3c-tty-howto.rst
+ create mode 100644 Documentation/driver-api/i3c/target/index.rst
+ create mode 100644 drivers/i3c/func/Kconfig
+ create mode 100644 drivers/i3c/func/Makefile
+ create mode 100644 drivers/i3c/func/tty.c
+ create mode 100644 drivers/i3c/i3c-cfs.c
+ create mode 100644 drivers/i3c/master/svc-i3c-main.c
+ create mode 100644 drivers/i3c/master/svc-i3c-target.c
+ create mode 100644 drivers/i3c/master/svc-i3c.h
+ create mode 100644 drivers/i3c/target.c
+ create mode 100644 drivers/tty/i3c_tty.c
+ create mode 100644 include/linux/i3c/target.h
+
+-- 
+2.34.1
+
