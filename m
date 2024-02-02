@@ -1,63 +1,45 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBFD8062B;
-	Fri,  2 Feb 2024 21:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2D58061F;
+	Fri,  2 Feb 2024 21:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706908752; cv=none; b=nFAhbTaUrcP3iY3Ek6P/5npNC6d75PcrnsW57BZPZkDY1n8ktlUQa010dr8HsEhi+AEb0N1gVWLLxY9qa3WCjq3Em/dWgd6puhzTbNaUyhIqQ3ti6b7yYi2/z6bjpcdyJgpo1sEcc2PxcBkuCZS5TH+xMbQer9fXq6gF9cmjFOA=
+	t=1706910874; cv=none; b=bKk266JYJcoJxTm7pGc5qmQi5A1TnrWn/5/5ZQaip2WL+VahS5u0TQBVTniufXOpt2LXyFBwrgvIJnJwS2DwDgoWr9jhorLlbNUew7yyk1iITpIOm6/AVROhdKcebWmaAVrvw6Je2Al9Vzsnsxu6vJXYFG1XlNHQu/FhosXBP1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706908752; c=relaxed/simple;
-	bh=5ksOdQd8ghM9qXKkEiudkWeCW/Mz361KuBeBg2gzM/4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b9P8XMFVK/LhUBMbqRThuc93AHm1GSLlEGt24sQz4T+7icI+KBJG3f2NpMmXj+EdL2PKZOMQwlYAy4kiIV/xWwZXTSyR527amOZIa4Y9EQeYc0/J+ZjVELw0ln6Sa6riGpnWH9IykjX2rPOTZ+OBsrPds7AbsObGsT7eg3Oo6c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNqU9s23; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1706910874; c=relaxed/simple;
+	bh=g2E+c2yAPlr4mynw8XRrEWwtZ0cuRU9sb/1VLjj4d+A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IKdNyXOUvfs9dcG9KL9NzF1C9/fEr41UyaEp2EKRHi/yverhuh7MDqPUtBXFYQlFwg/BzhIIQOoZmDVy4gZjLqSCuSMbBriMSatR4H7cG5H1tBFS9ad5yrxpwMPEJL3ooJZp5K6bg8y69DMEsnYDSt3AZlY3CjE63hN8tH6J8TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NS8zPrba; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNqU9s23"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706908751; x=1738444751;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5ksOdQd8ghM9qXKkEiudkWeCW/Mz361KuBeBg2gzM/4=;
-  b=nNqU9s23ItmdisKaKf6tshjaRnar2k4cqBurHtmJM/PRlsi9PVTpPCy8
-   R4SbTCGeVIvDKX+cC98Kkq5eBE/8Q3dHM1vlWIUGoLAT4ToES0HLvkzLt
-   nQkn3Ymt+qsA62Ar9ieVsFUp8hu7P/G8/nvdBeV94MUcxlGdLQ0GdkwTU
-   cbZgcVxhE9cielIJcmpVB6m2L5SSOC8TCMb8KcBQAAUzu5RnUdsNUPFxs
-   D2LCCsYMb+VfchzPpZMCiHA/dUueB5vvOjOSFc8vbM4rkXNeemTu1J6UM
-   YsCUVhJbrdxGUfMiBKwUJfjJaJ4xnjjnURwZspvH4rLvvIML09pSbpRr5
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="148406"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="148406"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 13:19:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="932581866"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="932581866"
-Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 02 Feb 2024 13:19:05 -0800
-Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rW0wB-0004H0-1Q;
-	Fri, 02 Feb 2024 21:19:03 +0000
-Date: Sat, 3 Feb 2024 05:18:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, ilpo.jarvinen@linux.intel.com
-Cc: oe-kbuild-all@lists.linux.dev, Frank.Li@nxp.com,
-	alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
-	devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
-	imx@lists.linux.dev, jirislaby@kernel.org, joe@perches.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NS8zPrba"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E936C433C7;
+	Fri,  2 Feb 2024 21:54:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706910873;
+	bh=g2E+c2yAPlr4mynw8XRrEWwtZ0cuRU9sb/1VLjj4d+A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=NS8zPrbawxvDfY0Eh7Q6yuZ1sIPxS165/J7/2Y7tKanOBPLD+4dB3IXc8L5YVGy80
+	 bSWHpRgxY9QHX90pQtSVPTYdQ/RF+IJfmh4C9vwg31doe1ucpeQzgA1E6HsCWaqTHZ
+	 WCHB5KJ5V0wkgI2ydWwMccY0UpKEymbcFn/iIF/oxzC7FMfuTNMEXPOkifc6HJT1KX
+	 AjBVnvpt9LpUJv70WYr8CkRldTO5/oVEKraxwJZLD566+Vag7nYVd32hSm516qWbzq
+	 RYeFz6sshI5fm5CjbRRLRy0SymKXAinGlASjWBOzggBE/yLhBhaEvy48n0tB++7L6V
+	 ClG0C1+ZWvgsA==
+Date: Fri, 2 Feb 2024 15:54:31 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
+	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+	hongxing.zhu@nxp.com, imx@lists.linux.dev, kernel@pengutronix.de,
 	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
-	robh@kernel.org, zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH v5 1/8] i3c: add target mode support
-Message-ID: <202402030437.GdGCrKeK-lkp@intel.com>
-References: <20240129195321.229867-2-Frank.Li@nxp.com>
+	kw@linux.com, l.stach@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: Re: [PATCH v9 05/16] PCI: imx6: Using "linux,pci-domain" as slot ID
+Message-ID: <20240202215431.GA728556@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,46 +48,58 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240129195321.229867-2-Frank.Li@nxp.com>
+In-Reply-To: <20240119171122.3057511-6-Frank.Li@nxp.com>
 
-Hi Frank,
+On Fri, Jan 19, 2024 at 12:11:11PM -0500, Frank Li wrote:
+> Avoid use get slot id by compared with register physical address. If there
+> are more than 2 slots, compared logic will become complex.
+> 
+> "linux,pci-domain" already exist at dts since commit:
+> 	commit (c0b70f05c87f3b arm64: dts: imx8mq: use_dt_domains for pci node).
+> 
+> So it is safe to remove compare basic address code:
+> 	...
+> 	if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+> 		imx6_pcie->controller_id = 1;
+> 	...
 
-kernel test robot noticed the following build errors:
+I have no idea what this is telling me.  I guess you don't want to use
+IMX8MQ_PCIE2_BASE_ADDR to decide something?  That much sounds good:
+the *address* of some MMIO space doesn't tell us anything about the
+function of that space.
 
-[auto build test ERROR on tty/tty-testing]
-[also build test ERROR on tty/tty-next tty/tty-linus robh/for-next linus/master v6.8-rc2 next-20240202]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I expect the "compatible" string to tell the driver what the
+programming model of the device is.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-mode-support/20240130-035826
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20240129195321.229867-2-Frank.Li%40nxp.com
-patch subject: [PATCH v5 1/8] i3c: add target mode support
-config: sh-randconfig-r122-20240202 (https://download.01.org/0day-ci/archive/20240203/202402030437.GdGCrKeK-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240203/202402030437.GdGCrKeK-lkp@intel.com/reproduce)
+> +	/* Using linux,pci-domain as PCI slot id */
+> +	imx6_pcie->controller_id = of_get_pci_domain_nr(node);
+> +	/*
+> +	 * If there are no "linux,pci-domain" property specified in DT, then assume only one
+> +	 * controller is available.
+> +	 */
+> +	if (imx6_pcie->controller_id == -EINVAL)
+> +		imx6_pcie->controller_id = 0;
+> +	else if (imx6_pcie->controller_id < 0)
+> +		return dev_err_probe(dev, imx6_pcie->controller_id,
+> +				     "linux,pci-domain have wrong value\n");
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402030437.GdGCrKeK-lkp@intel.com/
+Maybe I'm missing something here.  It looks like this driver uses
+controller_id to distinguish between hardware variants or maybe
+between two Root Ports (slots?) in the same SoC?
 
-All errors (new ones prefixed by >>):
+  imx6_pcie_grp_offset
+    return imx6_pcie->controller_id == 1 ? IOMUXC_GPR16 : IOMUXC_GPR14;
 
-   sh4-linux-ld: drivers/i3c/target.o: in function `i3c_target_ctrl_destroy':
->> target.c:(.text+0x264): undefined reference to `i3c_target_cfs_remove_ctrl_group'
-   sh4-linux-ld: drivers/i3c/target.o: in function `__i3c_target_func_register_driver':
->> target.c:(.text+0x4bc): undefined reference to `i3c_target_cfs_add_func_group'
-   sh4-linux-ld: drivers/i3c/target.o: in function `__i3c_target_ctrl_create':
->> target.c:(.text+0x778): undefined reference to `i3c_target_cfs_add_ctrl_group'
-   sh4-linux-ld: drivers/i3c/target.o: in function `devm_i3c_target_ctrl_release':
-   target.c:(.text+0x7b8): undefined reference to `i3c_target_cfs_remove_ctrl_group'
-   sh4-linux-ld: drivers/media/i2c/tc358746.o: in function `tc358746_probe':
-   tc358746.c:(.text+0x17c4): undefined reference to `devm_clk_hw_register'
-   sh4-linux-ld: tc358746.c:(.text+0x17c8): undefined reference to `devm_of_clk_add_hw_provider'
-   sh4-linux-ld: tc358746.c:(.text+0x17cc): undefined reference to `of_clk_hw_simple_get'
+  imx6_pcie_configure_type
+    id = imx6_pcie->controller_id
+    if (!drvdata->mode_mask[id])         # <-- looks unsafe
+      id = 0;
+    regmap_update_bits(drvdata->mode_off[id], ...)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+(This "mode_mask[id]" looks like it will reference garbage if the DT
+supplies "linux,pci-domain = <2>".  A bogus DT shouldn't be able to
+cause a driver to misbehave like that.)
+
+That doesn't seem related to "linux,pci-domain" at all.
+
+Bjorn
