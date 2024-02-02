@@ -1,59 +1,33 @@
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37E4199A2
-	for <imx@lists.linux.dev>; Fri,  2 Feb 2024 08:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D41140769;
+	Fri,  2 Feb 2024 11:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706862228; cv=none; b=Cnpfv3p04fwvB9ImoMofZHB8hmQwpCqpmjoCBUQa0Holcx9UfSXgS8pWJcUmfNtW70pSgxiJYL8K/4Pn7TYY1lf7P6duFRo2ObSwDF2kwPB9/8EFn2nmsomdYow8DSasyKzlirzT876lnpJ598L85MQ6GIMjUn3dpH53qdSJE9g=
+	t=1706874026; cv=none; b=FbsTF/Lvdmh3RMXDMpqKN+C69FXd4NBbDQWRPGDH/dXSUM/lLcpByPG+yTUIh7bGel55WurDfE7aTmxRrr1FNnYwcuIRzil5se6BadGSsAv3DYZ/vm/fP9/ZmTrqJkWDLBR8P1aRD/Ib287P+Avg11PsEgDlzcie1x7/wFJDni0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706862228; c=relaxed/simple;
-	bh=Db8Srec2DP/U7ml0e4GE9L2z+58R0B70UoeQGUaihyQ=;
+	s=arc-20240116; t=1706874026; c=relaxed/simple;
+	bh=8JqVgkJFyiuPzxngr0+F8q8UGQLgmwcIfIm9DasUXwc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dAyZHa+ASEtbhhhrWEcHntsvaF0Eq8+MU9wvx6RhWkQSAKGgGKTYQzI6QhCsyY+R0drEVfPFK2JP3gAlUe3brQv84/sB0tBzItvZM3YyMgWBbEL7DLBLf+h3HS8e6YEHxhOpPFaNYyI9M6EGG334PVO2dSa+cwJrIpqpXqOHlD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aO8kEh0q; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=TRwC7H250yKOGtlUUhpGDsC6XMQ7dhMBH8/MdI7qBJcfolI6/EZwGpTe7tfMzLOZpsf/4yMYURkU+IuB/ypTP0NsT3v7bQHJ28XRB+2XsUWBa5lKs633MbKapGdIOsVM7GMC9AWr4IvIfTwKa4qWTM8p5Zh4uTaUShDwjy4VhuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjxOvoF3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aO8kEh0q"
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3bba0ac2e88so1689570b6e.0
-        for <imx@lists.linux.dev>; Fri, 02 Feb 2024 00:23:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706862225; x=1707467025; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ER65IywYIvJHyQc+F+Ka9tigNEb329nFaYD/j937Uu0=;
-        b=aO8kEh0qZ+qhB8VQ7JMl3G3fCE/CqKKRgM7Hpy/P1U98/hAbazBqw0MNb9j2iujPgH
-         5bnDswIAmIt4n93isvlq+bRvtWm6sjIU4M+nEKrgcjlAjwprabkTFDrlU5Vqp47yAx1J
-         GgQtjhZR8ZjXbi+41BHXIT+iI3frDm1wgQbhCmoU0Ib5gnekVHAuUeFr6y3grLI+55l3
-         BA8eb0sgTw4nCrIL6kNT4lJWfNovfqbKFtzlbkj4EJmiUXQWbuBbl8trlP66luyB/9C0
-         5nanCZdg1qVf1QNuoYFdUHp3KtKNrhNAMjBs0WqT5TuzzfYjJpuzLm6A75XOFBKsQbrL
-         BrdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706862225; x=1707467025;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ER65IywYIvJHyQc+F+Ka9tigNEb329nFaYD/j937Uu0=;
-        b=QhQVrSoVf700vZjxnMQA5kjiqRZ9eeZ2Z212fmegxZNcGLmszn1/Ke3QqEKKeSEDIx
-         k4Mn24KkvCqmL5koX2zy59rorNOgIKi8eJUEWmbOEDq5PX9glLrWiz8Rl2NiOnBn8NIC
-         hmrNhtZizeztENWoURNVGgoB1XyK325zH8u+7aATrQS7dRyTKaIudA8U2dLO07bn4sZZ
-         zJRZjSiP/wOlWZBOzNTaBMDR8NYOitQ/Ol7sgahwypSaqM4/vfsKC7bc3kSH1zJCRDD+
-         59DxGyZPmTRCBlBP5uZyLqxBnYPOldeN8NAj1cHFRLwli3oKcvIxpRldH04Bmeofi0bJ
-         Dx/g==
-X-Gm-Message-State: AOJu0Yxrwr/sFTvSOFKn6vNrLWUQfHLbYfFmfbWNFX5BvT+ryd5kGVhK
-	WZCOqi6ZWsYqZBgVcI0pvT4i0eQoUi5FaHW+fu/wEQGhli8XLOZmkkmQjC8Rhmw=
-X-Google-Smtp-Source: AGHT+IFJGxTg6JrHTx3B7BDK4GcZtd9mnvOvvoh8akd5QM7tPUvJi7pZXd8QSRYnBmeHqvBqooTYEA==
-X-Received: by 2002:a05:6808:189b:b0:3bc:d58:cb2e with SMTP id bi27-20020a056808189b00b003bc0d58cb2emr716422oib.18.1706862224997;
-        Fri, 02 Feb 2024 00:23:44 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWWmD4J6+lyuEkj0J6GL4c64ioWbrU/BNvlYbfr8y8ogiy+WUxWyUXn03wxWRL+NqD3wq4iHLa/RVp4fjj/ZlgJ1uN2//++fem8qr1L28IWgCSVDkZzdUS/hdsReB3lEB4JYcS/unqU/HENkY2bR3oP+M5hgxSV4YM+y4KI7nRkWLJyHuS5ZloGBMBVOM3gjq9uzdXSlfxVkHePDC7PcNLIjQ5iVLZFNYmYaTxs31kKnEovdl+sVbOj4gkI8RbuTfDS6Jew1vLe4CxkAiu5Ghkc2HgUq2CxtAMv94hjjv5cW1uCjKe3DAkwRhi+khtMaBDNVzIXFUQtPsTHC/LpyGIYkAejmluen5y2ZlUmgy5GMYBvO4OvEcUo+nWopv/yRp4bUTybJG3+2hpZG6Ec+JcFYfzb37v0rkMmzAmwZhaaqGjTDGPCPa1pfEMRqWoxa2ACAKOmY6bAj6oLG/dAycvLwt6SvTcR7X8le4rO6pwqONGqH1GGDBokUDT78eKfDyEQwOovuC1upPgj91Xt0VN6p6g8AjHSM+ooWeIH/8NBRfcn15JTEoiU3ZYGjIrnFBuocJIiETpHbhgDhmuswib0s2/8LT4SsoIEUW1ztXUqKp4W2H/idL/XyMYCPHQ0eog9AqXC2dTxThg2hlOvL8YideS459JpNxU2e91RNs/KNRNmP8yZrYEsVm1/z1RRiYhiVWWvh7eu
-Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id f13-20020a4ace8d000000b0059c844e9045sm297997oos.36.2024.02.02.00.23.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Feb 2024 00:23:44 -0800 (PST)
-Message-ID: <49dbd0a2-a4b9-4c05-bb10-44f267672374@linaro.org>
-Date: Fri, 2 Feb 2024 09:23:37 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjxOvoF3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF5EC433C7;
+	Fri,  2 Feb 2024 11:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706874025;
+	bh=8JqVgkJFyiuPzxngr0+F8q8UGQLgmwcIfIm9DasUXwc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sjxOvoF3CxGDML8QhhEhcqRhfK6cH1G0R3g81tUKNWbYYePHScd1HiNoYZoYBbxH2
+	 Uc6NqJI3a7pZmT6MbPTZknSFMDdZvg8b50dZz7FhzVSE+oDIOP+6bPEUOEWouEY0SN
+	 Ckg1mnczXOLLX9sAUB6BrRT7vc9nBnWFemHm5MVYjNb/PqTkn8psbiNo+XcL2FwWwP
+	 EFG446jUd02H6msoQxoFdO48i/oBxJ4Bo8URpkoEsNXvZ3heaU9RgQfRc3mGADednh
+	 rL+csXY+axieyD/vNdIJCabLC8hGEsv8SLdja3TwUQD/94r1na/1e8tnFQHqrVtIhF
+	 WjjCOd7EB9d7A==
+Message-ID: <9530e4c2-1da9-43a0-b40d-f877aad61319@kernel.org>
+Date: Fri, 2 Feb 2024 13:40:21 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,81 +35,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] dt-bindings: net: fec: add iommus property
+Subject: Re: [PATCH 1/2] usb: cdns3: fixed memory use after free at
+ cdns3_gadget_ep_disable()
 Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
- Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, imx@lists.linux.dev
-References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
- <20240201-8qm_smmu-v2-2-3d12a80201a3@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240201-8qm_smmu-v2-2-3d12a80201a3@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
+ Pawel Laszczak <pawell@cadence.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Felipe Balbi <felipe.balbi@linux.intel.com>,
+ "open list:CADENCE USB3 DRD IP DRIVER" <linux-usb@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240202051829.623273-1-Frank.Li@nxp.com>
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20240202051829.623273-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 01/02/2024 21:22, Frank Li wrote:
-> iMX8QM have iommu. Add proerty 'iommus'.
+
+
+On 02/02/2024 07:18, Frank Li wrote:
+>   ...
+>   cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
+>   list_del_init(&priv_req->list);
+>   ...
 > 
+> 'priv_req' actually free at cdns3_gadget_ep_free_request(). But
+> list_del_init() use priv_req->list after it.
+> 
+> [ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
+> [ 1542.642868][  T534]
+> [ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
+> [ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
+> [ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
+> [ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
+> [ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
+> [ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
+> [ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
+> 
+> Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
+> problem.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
