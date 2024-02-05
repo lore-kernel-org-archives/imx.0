@@ -1,151 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746D51CA9B;
-	Mon,  5 Feb 2024 13:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8747F67
+	for <imx@lists.linux.dev>; Mon,  5 Feb 2024 17:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707138936; cv=none; b=tGHGmMG/nCJdikc7Txnw4dJ5qM5OM0ip8Mmf61Yc/2S3lb4maeMmmwY0T+TwPtSQvNUlKmpm/+Zokkv7xcJzSckq0Q6/AKonUv0l7QAN3ZRBhS26A3KDxVR2hu+eu4kxbd+LE+7jOMc2VnpoUA2EPbWtZXPjEseBuEMGSjW/RJ0=
+	t=1707154166; cv=none; b=LKl5hQoyHekaDOmr302cDvXoQKVR1vQmEfqrhKTfZAtVvYUig7EqWz2eGs2rbdCvduBAkiBTMQG9FQpoSfvaUCIkxbNMQmq21uFhhZFvdiAlsIliP+75vxM5eN2sGuip6acCEi++/BAbhQehU8EnsHKm+5gki/Qly5jGuRSyaAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707138936; c=relaxed/simple;
-	bh=jxi9hBIW/u/xN1/3l39jSDwYER6jWurCP3CAR9bpTUM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cB2NIpPTR/oVqm0FgNFj/U4VUpbeD049UFy3qCLDrY92EzvHgsUlwnkH2LriHeLMBVyM4gZa711fqCSBWM8L1I99pDb1nyW+xco++NjITTJpqr6xrjZKjSyiuunROtU1UDtkoEd0skZ3NFNLHmPhcH5TEQv/40VVsRF4tH4tKOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhFy3H6U; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1707154166; c=relaxed/simple;
+	bh=O4lFQwozpj8qAdWZazPZDdbBDVBBZtmrxmGiue5/8bI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J4KX3WzWx04NfloyEWATVwRe8Y4BZdVx36NnJzSLNpkxaTBVfrdu+jjVPAZpazDZBnadDTQcJR0crUjjCO8lXjYlXEngjlpDrDY9msZj8gQy9C/YcHTcsJMExZxpk/9KqMvxVb6lxV9ev+l/3G9QFMn9II7l10L9vz+YiVh3AG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nn0Lp7yF; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhFy3H6U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707138935; x=1738674935;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jxi9hBIW/u/xN1/3l39jSDwYER6jWurCP3CAR9bpTUM=;
-  b=PhFy3H6U0Zt5UmfhWaAy21wVepJAJrAs0D/uK9pTvyz9cBW12VGn/hdL
-   L2Q6R7w3coxHPmrtxL+g3713OOMPFY+PR/IhAyQEnIW9Ozl1MZ5d4x0Q3
-   VOasJehQZOeLRArGn5L3XGyUGsADuEJSq1XxnKhC2YRYQRDuy874jHETv
-   0YEnl4KqBhhstN1ST4FqSlWrJWeqyIZGFjImvhpiSrcu9U5RjDBTRPlmD
-   /gAICEyIgsQ89cNc9vYZv81uwMJgrvJ5NCCJPk5BKJmBrN6mnQvri3VOY
-   3dSfn1i+KP8fjFLcSLZjgpZ7YYjtY5+VJGn3I0pGU34e5olF5DQfbvRG5
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="11105843"
-X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="11105843"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:15:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="1014816"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 05 Feb 2024 05:15:29 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rWyoo-0000Xk-32;
-	Mon, 05 Feb 2024 13:15:26 +0000
-Date: Mon, 5 Feb 2024 21:14:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: oe-kbuild-all@lists.linux.dev, alexandre.belloni@bootlin.com,
-	conor.culhane@silvaco.com, devicetree@vger.kernel.org,
-	gregkh@linuxfoundation.org, ilpo.jarvinen@linux.intel.com,
-	imx@lists.linux.dev, jirislaby@kernel.org, joe@perches.com,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
-	robh@kernel.org, zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH v6 8/8] tty: i3c: add TTY over I3C master support
-Message-ID: <202402052026.UNrmrB2M-lkp@intel.com>
-References: <20240202230925.1000659-9-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nn0Lp7yF"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-60460399a33so10580497b3.1
+        for <imx@lists.linux.dev>; Mon, 05 Feb 2024 09:29:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707154164; x=1707758964; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ki2OMFRAxrlw+OBGxKHQKH7ycmBBVTQveh0bKzrpyb4=;
+        b=nn0Lp7yFG8rNcbBUAkunULDdyfeuBjNWWlMhe/H8nZ8Y/nfRHnFqzdae6pYkZEcKrN
+         Vpsw9dUbjeEBT9f4JeYdWCXT3XwssavaVjJzCWTMTyMYOd07Cw7yYSzpYcioZyiCPCx4
+         eGGhtdXyUUS5qdCXcIA9C4KQtPxmeP4rgcoGtUTyyV8uIPCz8ksEsM8Noq0CCTsaAUID
+         7ruJTf81noXpbZfXbQ73R0lxWAhXC9qISvXxcPQmYuzzAsqMxLgw3DORIr0nUwlPchwS
+         Ebe427Jw0VyeVCKrJR/Vfq51dZ2XgnjOG0md7R44s3ztulOOclE2w3ZNQBhYOewyPKaS
+         qOYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707154164; x=1707758964;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ki2OMFRAxrlw+OBGxKHQKH7ycmBBVTQveh0bKzrpyb4=;
+        b=bP9mHZt+nFkhdrUtUge+qViZpuBlnqvlTFAXFuyX/isZhO1eeL/AZQykBBoxF+EbHK
+         akjzEv/cRPvvc5+Go9G+sBXM/wzDbZOs2r7HULnU0hw9zjDMAfre/qmqoj1teKQTxQw7
+         bInUrL0UdsRJmEI+NGqaLHvfRIfWsGhjnBC35wh15xnX+dfdBSeCwtynPzEh8jqJc4FR
+         Q8T3wxW9sCIwl3kFWUicStgqu3UM5tkaUNiNQi9d44DJa0+DTFZUwSkHACf71E9o8X2O
+         ucrG6usHRyHv4m4sKGl0EFTweCdBlsH3kBodBfnP6ekuHL36zQ1Tgjfo1ZEh9ydHhCjG
+         KJ0g==
+X-Gm-Message-State: AOJu0YxhABlOaVD/FjqvTQ+X5oU9FQ2vwWThMh6vtc4k/tqy+CMd65jz
+	/s+6qe3RODUCJm5gh/TiNwfnn6vGUfklxCugg4NNwRMbeL4dd0jKmJRkAjKddsYwcg0Hereumca
+	xKUCRhtL1QYnTAELGD/P/Q7R12NbtL2yiIiroDg==
+X-Google-Smtp-Source: AGHT+IHJ0bSwgVgKi9CF80Bt1Cco6PZ9KNY0zznjDRrM1zGPsHC4Y3lV/AsXifZpn4hO8tJQZqwqC2/GIdcA4wM2N6Q=
+X-Received: by 2002:a0d:dbc5:0:b0:602:cf62:6590 with SMTP id
+ d188-20020a0ddbc5000000b00602cf626590mr151874ywe.34.1707154163772; Mon, 05
+ Feb 2024 09:29:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240202230925.1000659-9-Frank.Li@nxp.com>
+References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com> <20240201-8qm_smmu-v2-1-3d12a80201a3@nxp.com>
+In-Reply-To: <20240201-8qm_smmu-v2-1-3d12a80201a3@nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 5 Feb 2024 18:28:47 +0100
+Message-ID: <CAPDyKFqyQxo+SSYb_+Nf3zcPcmhzCJSp69gJ15qexbuD_mJ=Yg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: mmc: fsl-imx-esdhc: add iommus property
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	NXP Linux Team <linux-imx@nxp.com>, Wei Fang <wei.fang@nxp.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-mmc@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Frank,
+On Thu, 1 Feb 2024 at 21:23, Frank Li <Frank.Li@nxp.com> wrote:
+>
+> iMX95 and iMX8QM have smmu. Add property "iommus".
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-kernel test robot noticed the following build warnings:
+Applied for next, thanks!
 
-[auto build test WARNING on tty/tty-testing]
-[also build test WARNING on tty/tty-next tty/tty-linus robh/for-next linus/master v6.8-rc3 next-20240205]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Kind regards
+Uffe
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-mode-support/20240203-071519
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20240202230925.1000659-9-Frank.Li%40nxp.com
-patch subject: [PATCH v6 8/8] tty: i3c: add TTY over I3C master support
-config: powerpc-randconfig-r071-20240205 (https://download.01.org/0day-ci/archive/20240205/202402052026.UNrmrB2M-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 13.2.0
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402052026.UNrmrB2M-lkp@intel.com/
-
-smatch warnings:
-drivers/tty/i3c_tty.c:237 tty_i3c_rxwork() error: uninitialized symbol 'status'.
-
-vim +/status +237 drivers/tty/i3c_tty.c
-
-   191	
-   192	static void tty_i3c_rxwork(struct work_struct *work)
-   193	{
-   194		struct ttyi3c_port *sport = container_of(work, struct ttyi3c_port, rxwork);
-   195		struct i3c_priv_xfer xfers;
-   196		u32 retry = I3C_TTY_RETRY;
-   197		u16 status;
-   198		int ret;
-   199	
-   200		memset(&xfers, 0, sizeof(xfers));
-   201		xfers.data.in = sport->rx_buff;
-   202		xfers.len = I3C_TTY_TRANS_SIZE;
-   203		xfers.rnw = 1;
-   204	
-   205		do {
-   206			if (test_bit(I3C_TTY_RX_STOP, &sport->status))
-   207				break;
-   208	
-   209			i3c_device_do_priv_xfers(sport->i3cdev, &xfers, 1);
-   210	
-   211			if (xfers.actual_len) {
-   212				ret = tty_insert_flip_string(&sport->port, sport->rx_buff,
-   213							     xfers.actual_len);
-   214				if (ret < xfers.actual_len)
-   215					sport->buf_overrun++;
-   216	
-   217				retry = I3C_TTY_RETRY;
-   218				continue;
-   219			}
-   220	
-   221			status = I3C_TTY_TARGET_RX_READY;
-   222			i3c_device_getstatus_format1(sport->i3cdev, &status);
-   223			/*
-   224			 * Target side needs some time to fill data into fifo. Target side may not
-   225			 * have hardware update status in real time. Software update status always
-   226			 * needs some delays.
-   227			 *
-   228			 * Generally, target side have circular buffer in memory, it will be moved
-   229			 * into FIFO by CPU or DMA. 'status' just show if circular buffer empty. But
-   230			 * there are gap, especially CPU have not response irq to fill FIFO in time.
-   231			 * So xfers.actual will be zero, wait for little time to avoid flood
-   232			 * transfer in i3c bus.
-   233			 */
-   234			usleep_range(I3C_TTY_YIELD_US, 10 * I3C_TTY_YIELD_US);
-   235			retry--;
-   236	
- > 237		} while (retry && (status & I3C_TTY_TARGET_RX_READY));
-   238	
-   239		tty_flip_buffer_push(&sport->port);
-   240	}
-   241	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> index 82eb7a24c8578..0d8ed9d055ffe 100644
+> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
+> @@ -162,6 +162,9 @@ properties:
+>        - const: ahb
+>        - const: per
+>
+> +  iommus:
+> +    maxItems: 1
+> +
+>    power-domains:
+>      maxItems: 1
+>
+>
+> --
+> 2.34.1
+>
