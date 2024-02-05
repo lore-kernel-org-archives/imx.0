@@ -1,86 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A51417591;
-	Mon,  5 Feb 2024 10:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746D51CA9B;
+	Mon,  5 Feb 2024 13:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707127290; cv=none; b=X/nwpfkE2XJHNLHf236nMoJdzm1z8wk1KCv9+v1DgSFuoK+KWxboRzfmU7uk83ELSP67IVZx2UWSWKgxR7EenbsUQRRO7TPOfX6iuk9y6gqav85ANdKIeyb7Zmh9QTEMwDzysnKYwm1rfAIAGjZD+qBYLQ3apeZthxqbBAFx8aY=
+	t=1707138936; cv=none; b=tGHGmMG/nCJdikc7Txnw4dJ5qM5OM0ip8Mmf61Yc/2S3lb4maeMmmwY0T+TwPtSQvNUlKmpm/+Zokkv7xcJzSckq0Q6/AKonUv0l7QAN3ZRBhS26A3KDxVR2hu+eu4kxbd+LE+7jOMc2VnpoUA2EPbWtZXPjEseBuEMGSjW/RJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707127290; c=relaxed/simple;
-	bh=eJRA+3ncVCN99vSdsXxNf3NPv3pDH15qHWZrw59/uno=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WE0SKseD1EVIxukdGNXPRRwLOcTEHWptSxunrG4ypykOI5/BToCJ7s3PBseFDTd9/gp6TkWDaCHxUU+HjfeTqsyYpS3TQ+dD7lBkjMqvCtPXKE8t0keaVcd347leHCbaEevn7xE7RhLIUtNtny+3OI2GvQQl5H68AS1tNBSRpAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtZXS3I4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1707138936; c=relaxed/simple;
+	bh=jxi9hBIW/u/xN1/3l39jSDwYER6jWurCP3CAR9bpTUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cB2NIpPTR/oVqm0FgNFj/U4VUpbeD049UFy3qCLDrY92EzvHgsUlwnkH2LriHeLMBVyM4gZa711fqCSBWM8L1I99pDb1nyW+xco++NjITTJpqr6xrjZKjSyiuunROtU1UDtkoEd0skZ3NFNLHmPhcH5TEQv/40VVsRF4tH4tKOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhFy3H6U; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtZXS3I4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2BDC433F1;
-	Mon,  5 Feb 2024 10:01:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707127289;
-	bh=eJRA+3ncVCN99vSdsXxNf3NPv3pDH15qHWZrw59/uno=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jtZXS3I4ULM2OVUHLxQdXQvf1+WVJZW4OnH7bKzkSA2l2WYZlz66Wu0Si62vKLQdk
-	 eeyCxh1qJG6ZfU5Y/d/aXi/Ffw8IVloTn2dZxc5ufgQTcw0oHT2nlhs59wEdxkNPr8
-	 58ZCwlnHyzjlVgL28zLV1pJNunpjSbkxbbe6EUVObTRpPsU9fJ3VWf0wpT+cQsqoo4
-	 ANmi18kNyPNsFP4sE4HdfiXMpQbXxx/9y1GffI2ZhPlA0GeLJPuLp8tBPRmwFHlq3T
-	 Rrf75M9xUZtpGWHuYgmOgytCFPzPXhDPk4yxdyjBKgORRNTG1qSEWEC8+jbwJdw3Mo
-	 6SyVUTrJIovIA==
-Message-ID: <72efe6e1-88e0-4b22-b7b2-00dc6903aef0@kernel.org>
-Date: Mon, 5 Feb 2024 12:01:25 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhFy3H6U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707138935; x=1738674935;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jxi9hBIW/u/xN1/3l39jSDwYER6jWurCP3CAR9bpTUM=;
+  b=PhFy3H6U0Zt5UmfhWaAy21wVepJAJrAs0D/uK9pTvyz9cBW12VGn/hdL
+   L2Q6R7w3coxHPmrtxL+g3713OOMPFY+PR/IhAyQEnIW9Ozl1MZ5d4x0Q3
+   VOasJehQZOeLRArGn5L3XGyUGsADuEJSq1XxnKhC2YRYQRDuy874jHETv
+   0YEnl4KqBhhstN1ST4FqSlWrJWeqyIZGFjImvhpiSrcu9U5RjDBTRPlmD
+   /gAICEyIgsQ89cNc9vYZv81uwMJgrvJ5NCCJPk5BKJmBrN6mnQvri3VOY
+   3dSfn1i+KP8fjFLcSLZjgpZ7YYjtY5+VJGn3I0pGU34e5olF5DQfbvRG5
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="11105843"
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="11105843"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:15:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="1014816"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 05 Feb 2024 05:15:29 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rWyoo-0000Xk-32;
+	Mon, 05 Feb 2024 13:15:26 +0000
+Date: Mon, 5 Feb 2024 21:14:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, alexandre.belloni@bootlin.com,
+	conor.culhane@silvaco.com, devicetree@vger.kernel.org,
+	gregkh@linuxfoundation.org, ilpo.jarvinen@linux.intel.com,
+	imx@lists.linux.dev, jirislaby@kernel.org, joe@perches.com,
+	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, miquel.raynal@bootlin.com,
+	robh@kernel.org, zbigniew.lukwinski@linux.intel.com
+Subject: Re: [PATCH v6 8/8] tty: i3c: add TTY over I3C master support
+Message-ID: <202402052026.UNrmrB2M-lkp@intel.com>
+References: <20240202230925.1000659-9-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] usb: cdns3: fix memory double free when handle
- zero packet
-Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>
-Cc: felipe.balbi@linux.intel.com, gregkh@linuxfoundation.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, pawell@cadence.com, peter.chen@kernel.org
-References: <20240202154217.661867-1-Frank.Li@nxp.com>
- <20240202154217.661867-2-Frank.Li@nxp.com>
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20240202154217.661867-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240202230925.1000659-9-Frank.Li@nxp.com>
 
+Hi Frank,
 
+kernel test robot noticed the following build warnings:
 
-On 02/02/2024 17:42, Frank Li wrote:
-> 829  if (request->complete) {
-> 830          spin_unlock(&priv_dev->lock);
-> 831          usb_gadget_giveback_request(&priv_ep->endpoint,
-> 832                                    request);
-> 833          spin_lock(&priv_dev->lock);
-> 834  }
-> 835
-> 836  if (request->buf == priv_dev->zlp_buf)
-> 837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
-> 
-> Driver append an additional zero packet request when queue a packet, which
-> length mod max packet size is 0. When transfer complete, run to line 831,
-> usb_gadget_giveback_request() will free this requestion. 836 condition is
-> true, so cdns3_gadget_ep_free_request() free this request again.
-> 
-> Log:
-> 
-> [ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-> [ 1920.140696][  T150]
-> [ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
-> [ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-> [ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
-> 
-> Add check at line 829, skip call usb_gadget_giveback_request() if it is
-> additional zero length packet request. Needn't call
-> usb_gadget_giveback_request() because it is allocated in this driver.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+[auto build test WARNING on tty/tty-testing]
+[also build test WARNING on tty/tty-next tty/tty-linus robh/for-next linus/master v6.8-rc3 next-20240205]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/i3c-add-target-mode-support/20240203-071519
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
+patch link:    https://lore.kernel.org/r/20240202230925.1000659-9-Frank.Li%40nxp.com
+patch subject: [PATCH v6 8/8] tty: i3c: add TTY over I3C master support
+config: powerpc-randconfig-r071-20240205 (https://download.01.org/0day-ci/archive/20240205/202402052026.UNrmrB2M-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 13.2.0
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402052026.UNrmrB2M-lkp@intel.com/
+
+smatch warnings:
+drivers/tty/i3c_tty.c:237 tty_i3c_rxwork() error: uninitialized symbol 'status'.
+
+vim +/status +237 drivers/tty/i3c_tty.c
+
+   191	
+   192	static void tty_i3c_rxwork(struct work_struct *work)
+   193	{
+   194		struct ttyi3c_port *sport = container_of(work, struct ttyi3c_port, rxwork);
+   195		struct i3c_priv_xfer xfers;
+   196		u32 retry = I3C_TTY_RETRY;
+   197		u16 status;
+   198		int ret;
+   199	
+   200		memset(&xfers, 0, sizeof(xfers));
+   201		xfers.data.in = sport->rx_buff;
+   202		xfers.len = I3C_TTY_TRANS_SIZE;
+   203		xfers.rnw = 1;
+   204	
+   205		do {
+   206			if (test_bit(I3C_TTY_RX_STOP, &sport->status))
+   207				break;
+   208	
+   209			i3c_device_do_priv_xfers(sport->i3cdev, &xfers, 1);
+   210	
+   211			if (xfers.actual_len) {
+   212				ret = tty_insert_flip_string(&sport->port, sport->rx_buff,
+   213							     xfers.actual_len);
+   214				if (ret < xfers.actual_len)
+   215					sport->buf_overrun++;
+   216	
+   217				retry = I3C_TTY_RETRY;
+   218				continue;
+   219			}
+   220	
+   221			status = I3C_TTY_TARGET_RX_READY;
+   222			i3c_device_getstatus_format1(sport->i3cdev, &status);
+   223			/*
+   224			 * Target side needs some time to fill data into fifo. Target side may not
+   225			 * have hardware update status in real time. Software update status always
+   226			 * needs some delays.
+   227			 *
+   228			 * Generally, target side have circular buffer in memory, it will be moved
+   229			 * into FIFO by CPU or DMA. 'status' just show if circular buffer empty. But
+   230			 * there are gap, especially CPU have not response irq to fill FIFO in time.
+   231			 * So xfers.actual will be zero, wait for little time to avoid flood
+   232			 * transfer in i3c bus.
+   233			 */
+   234			usleep_range(I3C_TTY_YIELD_US, 10 * I3C_TTY_YIELD_US);
+   235			retry--;
+   236	
+ > 237		} while (retry && (status & I3C_TTY_TARGET_RX_READY));
+   238	
+   239		tty_flip_buffer_push(&sport->port);
+   240	}
+   241	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
