@@ -1,29 +1,29 @@
 Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45B753387
-	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 10:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD3C5B1EA
+	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 10:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707216788; cv=none; b=DuxGz8mQvkeTzOA8CadKpaGunJXWfJSyzHXiSAP3hukl/c3PbCMw+J0UqZ3QhQQr7MKKvTPloMBGo4PJcjH2hshMXe6FDE09e+K81proe3uDGFLe2LAsX/vBBM8mS+86036ImtLYMzhp9kYYNDosZQlhTV7HREBa+xgfoK8t/Zc=
+	t=1707216845; cv=none; b=Kpm8ettQUCZcIqlOOGB9BNe6q4gLTi7zTWAGZoCy+q+c4AhO2gsLT1bSIapDo8fnSqEWWOLiDZo8Kv8A82tupP00/nrw0aWTjXc40q0kaj8mwtIThdVBS0EeZB/u+a0WVZ+6O/hpIddq/mceYhaiKXIC5lXJcPLNtj0augumXiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707216788; c=relaxed/simple;
-	bh=ssdQYVrN+ea7U0JV9joyXgpHVLYjczVefB/FHwG15Zw=;
+	s=arc-20240116; t=1707216845; c=relaxed/simple;
+	bh=eq1o09ppvptz86ZQlz8Uakg295wPUJONuJsBuVt+BZA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cDFzfxPYK+gyZfYd3cDo/YhEgfZHW3CzAPNqyIU9EKSCrH/GVo3Xkj8LfuPblPY5VEVBXrUDSAmMJtFqJ6BPwuYN347KfnRG9X/jLyxzfsJLcPVc7NKNR/EB7LAuRqwEaes2gXPOSyeWcLJdmFbBpocD4nmN9p3D+AHNm3BRmQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Kgjqw0ax; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=rxG7uNP1MRcauhRQSOQFopC/RevTxQtPigpLNMMINXtDYkIJL0sv1EtjG+JmnxEx44irG//Kb8z9C4yVxuOvnh3KdIBiMbtcC3F5914Iuwd1cEV2QZtKvLag83dzGR5LwPZKskwjE+DxnZicF2taITW8qEZO4EG1F+jPa5Mi2Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=LyN7n7NE; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Kgjqw0ax"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="LyN7n7NE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=8wKomoYeRvkZwd2NriASbbJ3Tx/X28kZxV4Y/FSbGwU=;
-	b=Kgjqw0axpcfuMKTen7bWBnWe9PmG8H5KLry9AeWMpNkfZW6VpJXqxD1nVr5ceP
-	XJoZnQkWucdYi/I4Mao4okY+LjfCG8UfYxIhrKnpDohAOVkOuPZabAEDSBqZ9OVt
-	UmO0TsSCNqYxJL+wTrjbRBdvWgvnqSY1HBpQ+bskUPjfA=
+	Content-Type; bh=V3wgQJBc9TAh3reLgQ6RIEOzbkagE4Tp6ZGLh43fz6U=;
+	b=LyN7n7NEMMssqA+dRI0WEKk4zAzHsgr8PLcQy3uS/K76QVnVfYge7BPUlbnrDa
+	0sQJ1HAotgOXWtQYqorabPdbgwMmA0cjkqHvmI7CRgfkKb2Zz3o6avojh/75j6PM
+	wvt7FjwRHoZSTSeY4fhsxe0fTRDKV4cfZMOa3naxxWlMk=
 Received: from dragon (unknown [183.213.196.254])
-	by smtp2 (Coremail) with SMTP id C1UQrAD3fxxeD8Jl3WICAw--.65526S3;
-	Tue, 06 Feb 2024 18:52:15 +0800 (CST)
-Date: Tue, 6 Feb 2024 18:52:14 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrADnbwmWD8Jln2UCAw--.35794S3;
+	Tue, 06 Feb 2024 18:53:12 +0800 (CST)
+Date: Tue, 6 Feb 2024 18:53:10 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh+dt@kernel.org>,
@@ -41,10 +41,10 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh+dt@kernel.org>,
 	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 3/4] arm64: dts: imx8qm: add smmu node
-Message-ID: <ZcIPXiiyM6080TgD@dragon>
+Subject: Re: [PATCH v2 4/4] arm64: dts: imx8qm: add smmu stream id information
+Message-ID: <ZcIPlp7BUxuo/ZeM@dragon>
 References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
- <20240201-8qm_smmu-v2-3-3d12a80201a3@nxp.com>
+ <20240201-8qm_smmu-v2-4-3d12a80201a3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,16 +53,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240201-8qm_smmu-v2-3-3d12a80201a3@nxp.com>
-X-CM-TRANSID:C1UQrAD3fxxeD8Jl3WICAw--.65526S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVdb1UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwB8ZVnxccISZwAAs4
+In-Reply-To: <20240201-8qm_smmu-v2-4-3d12a80201a3@nxp.com>
+X-CM-TRANSID:C1UQrADnbwmWD8Jln2UCAw--.35794S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWrKryfGFWfZw1rWw4fCrW5GFg_yoW8JF17pa
+	s5Cr43tr4fWr17AryDXa4vkFZ8GanxuF4qgr17u3y8trnagFyYg3Z0gF1FkrWkWw4rW3yf
+	J3Z5Jr13Z3WDZr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jajgxUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDhh8ZVszYTEy1gAAsT
 
-On Thu, Feb 01, 2024 at 03:22:43PM -0500, Frank Li wrote:
-> Add smmu node for imx8qm.
+On Thu, Feb 01, 2024 at 03:22:44PM -0500, Frank Li wrote:
+> Add smmu stream id information for fec and esdhc.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> index ec1639174e2e5..3cbc861400b43 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> @@ -6,20 +6,26 @@
+>  
+>  &fec1 {
+>  	compatible = "fsl,imx8qm-fec", "fsl,imx6sx-fec";
+> +	iommus = <&smmu 0x12 0x7f80>;
+>  };
+>  
+>  &fec2 {
+>  	compatible = "fsl,imx8qm-fec", "fsl,imx6sx-fec";
+> +	iommus = <&smmu 0x12 0x7f80>;
+>  };
+>  
+>  &usdhc1 {
+>  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
+> +	iommus = <&smmu 0x11 0x7f80>;
+>  };
+>  
+>  &usdhc2 {
+>  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
+> +	iommus = <&smmu 0x11 0x7f80>;
+>  };
+>  
+>  &usdhc3 {
+>  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
+> +	iommus = <&smmu 0x11 0x7f80>;
+>  };
+> +
 
-Applied, thanks!
+Dropped this whitespace and applied.
+
+Shawn
+
+> 
+> -- 
+> 2.34.1
+> 
 
