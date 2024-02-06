@@ -1,70 +1,69 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2067.outbound.protection.outlook.com [40.107.6.67])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2075.outbound.protection.outlook.com [40.107.22.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7115C133432
-	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 15:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4810132C0C
+	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 15:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.75
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707232991; cv=fail; b=afvTR+elrcGP/Y7EYzxtJGI73hfWTJ4Q9cs5qPwAo2h0ZN/dWr1G5mRFVcHzp4JdLH/N+vZaqugGj1cmvjfsgSc/rgLkCpN3/KNtMDYNTWwPlv5MInm8IlZSM6Ce+q6NkOtbREn4s5H6gcwOrUCRBADKP0pXkLrvEY/ERhPb8QM=
+	t=1707233096; cv=fail; b=HZmEl3eds6ZM/WuUWCevHEwRGuekJHorWT6rwwsAr5O386cQ65Iec+0YefsUE3rQWyL0tkfovzcDmgdE/mivft4FiOOa0IC+ba4hUhTLXnxxURhOpDFBfwHItLw7PriyjjTOIplFiB6LeOjpWlziUynKRbCocbmUz0ujMU5iQxw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707232991; c=relaxed/simple;
-	bh=hMs6kAzw5hj6SXE6Q3kiQR4Id6NLuiYaMuMUx1C59Zs=;
+	s=arc-20240116; t=1707233096; c=relaxed/simple;
+	bh=AlZ2B3rvnUlx/NaBv+214fBKg/Pp3HnBK7NCUHC0in4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=t7aGQ0dMPwJ32ZrzLhz/Jp+v6Gw1sSmJwg7sCGzfP0h3cytZD/7+kpFrhmahtaoEki2EasFoFxH97PBTRKrlOfG1DBuaLyu0zzLAMGDXm1EUQAKHM2j8BxTilQQIOwxd2ddGLj4rsH/rK2iP60ejqNFqcG0E87i5sbJQJFUTZYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TQ9uC3nL reason="signature verification failed"; arc=fail smtp.client-ip=40.107.6.67
+	 Content-Disposition:In-Reply-To:MIME-Version; b=atAV+Ku7X0s22JPCCHXISGfFmqpfm8pVR5+6Fxn9to7b1bfWXz1N98VaQItsEKqOiju+go4HT/lEy1AE1KWwIK7AgfbaUZqWtMR8Tin2nVIFRi4OZwNSDZ+fkFiGWuNPZNJrmEN7+C/x/2yI45sELGtsUOb52RGuw3mtBfpgquM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=hrB9zkto; arc=fail smtp.client-ip=40.107.22.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TQ9uC3nL"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="hrB9zkto"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KlJqNhoUPxnTA3L+dn9WEKfGnpsTT7rAiezeG4zc7XUOmcvol5jxFi0cJfOWaCC10MYwFYF/TpjGiMDcV62kqx//4hos1Tu6vzu1geNTMuro209EpiMAn2VqTGBWqzGAeqkyswFykaF+6l0cZailn/ZM7IYUnjR1cPQ7SprdAXE7IWLlgjfJ8Mi+tLyLjP5Hcxl8SSX4RJffN8InbOYHN1QXxqLhqkSXmJENKJLHdwY72nUll2DH89+/NuzjGWyieVyhUwVYwXXhMA2m/eVG0ZiACr7LPNPUkK52LLJK6lP4zrziqFlhtEc97+TijHqpG6sfjvE1RsiivoJP9qlmLQ==
+ b=K9FSly8gBVlogkdJ5nw+fSVt5KU/bM9PY+3n7JIZX3M+Vjii3INDY7P7mad6aiug73Cj5Bzjd9iXOGfoiCKnAqsyp9WO1lwxWI83EqLE2lKHQnWRvoCrhVhPM4H0HtrKpJS4yobaCC6D7yuTLxteIpRAydmlWEKC5ICpU6t1KSq974E+yyXGmL0XBFyfKArTa/emrYovnPAtHNuX7xYHFUstMZHmpVodzmLmC62y4uIU2ri/JvOMyIdlui5oVaNLjn0A0KvAYy9ziso2EX30O9sqwOuScHg89GzgyPl5SQAUzvrWgn6boC32O4DfXFOkiFGDAllceMZ3zo50c/XZfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8gUZZxx38fB6OkPHG7WJuIb31fjqYEyeKW3RnVc72Gg=;
- b=GN1YwLxy0iYwAzhEzmTJftFFo8I0lDxtBu7vF9IPw8I3GUuBsa0u6fIJjMxuDHy0NZ5maPX05yi1t6CKfqA2/KP2Q5ufkK2M+uDjesdodUsdQVwHR2noDwtZBwcGLoe8YG4inC4PC6tXoLa+4qA2khS639ixBHw2tvRLTjOKPcxg+/UkTyOSb06wkz2re5bIBZgOeu8N3HIvMuXSkJp2Xpf8MS9DgL0IRUosiArOlvxSATVzwAt4ptyUS0NSRpXBlAiqedWRS30chxnMVme2VSzpgu/c3CM7X/jlmXv2IR+kNewtFJeVxvvVsUTf++a0aNdoNYE0wv11hCj3viSzsw==
+ bh=ciuZcoSot9LCQ2spSferKHawCRT+VfikCn8NrHdlbxI=;
+ b=Jeg8EF50DwfG8SP7CIiGYjQb293I5n6UkikAzU74jBiWnms7nOMU1b6SoEsW+ZklxumpDK8eszACRFASCtsYssoG0AekmoyNUuhPUDLOqH7qbkurv/ZtnfonUTe8wcQ64Iu/wi9WyYjcFpat1j5r4N3vNaeAg5T9qNumDHRrRVhkrjaqDAHfj0CO1B1KLIN+jWOyzx5m1iKpv93ryjz43nZJOczrxpx3BAcsQd8AGgbbztE089OQPH5cUE2ueGy2aPEeooYKpsZpaxbtHvqTKJv+MKpnIKoB30QqnXhM7XFH9Q7BLwGokbQnS4ddaDqF601s5Rh2rCZ5u/S6qmuNMQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8gUZZxx38fB6OkPHG7WJuIb31fjqYEyeKW3RnVc72Gg=;
- b=TQ9uC3nLqS3r0b01gPf6wkEL2Rz1O1WcmjRgixvlaXhsZ2hsNZBGksp8M1UQlyqPAWPcg9CaYzsqaO/Dv9Od76leMKVVuexIbQNQdb/5wupo0WkzP7mAbEILT4boXLH9FvGyW22JEfOoGeVMuztI/AmivQ1Xpi5qEzSjknVIXQE=
+ bh=ciuZcoSot9LCQ2spSferKHawCRT+VfikCn8NrHdlbxI=;
+ b=hrB9zktoI8PcXiXYWvQyLOmuxCK04r5LaWw2qt4lwBpZLLPntV0hGlfkSv6MkyMUpSRFn/jqy3Sr86517CA/eTU/L67QcTKkrkn3HV+vWNL33n0bKYs0deKRvfI8FJfG4cmXuni4+5A+iP7IRRV9gHdc+kK3bMCDjxMp8SyVOME=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8882.eurprd04.prod.outlook.com (2603:10a6:20b:42d::24) with
+ by PA4PR04MB9439.eurprd04.prod.outlook.com (2603:10a6:102:2ab::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Tue, 6 Feb
- 2024 15:23:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.34; Tue, 6 Feb
+ 2024 15:24:50 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7249.032; Tue, 6 Feb 2024
- 15:23:06 +0000
-Date: Tue, 6 Feb 2024 10:22:58 -0500
+ 15:24:50 +0000
+Date: Tue, 6 Feb 2024 10:24:42 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
-	devicetree@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	imx@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
-	joe@perches.com, krzysztof.kozlowski+dt@linaro.org,
-	krzysztof.kozlowski@linaro.org, linux-i3c@lists.infradead.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-serial <linux-serial@vger.kernel.org>,
-	miquel.raynal@bootlin.com, robh@kernel.org,
-	zbigniew.lukwinski@linux.intel.com
-Subject: Re: [PATCH v7 6/8] i3c: target: func: add tty driver
-Message-ID: <ZcJO0u8rKgrIH4k8@lizhi-Precision-Tower-5810>
-References: <20240205233326.552576-1-Frank.Li@nxp.com>
- <20240205233326.552576-7-Frank.Li@nxp.com>
- <9b5bb389-4238-0a32-5e16-3c62ea6c00e7@linux.intel.com>
-Content-Type: text/plain; charset=iso-8859-1
+To: Shawn Guo <shawnguo2@yeah.net>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] arm64: dts: imx8dxl update edma0 information
+Message-ID: <ZcJPOldJBIo3E7RK@lizhi-Precision-Tower-5810>
+References: <20240129201633.234255-1-Frank.Li@nxp.com>
+ <20240129201633.234255-2-Frank.Li@nxp.com>
+ <ZcIMJWKBrPW4Y5R8@dragon>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9b5bb389-4238-0a32-5e16-3c62ea6c00e7@linux.intel.com>
-X-ClientProxiedBy: SJ0PR03CA0059.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <ZcIMJWKBrPW4Y5R8@dragon>
+X-ClientProxiedBy: BYAPR11CA0039.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,178 +72,177 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 884cfaad-1066-44d7-abfa-08dc272784e9
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB9439:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff027dcc-55ae-480e-c088-08dc2727c25b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	T7Zbt+NFSYapiuFHtEytalNkj/r3AVS1f57KnVRvKip4Ba0354DKjDBCD7Gj3LJGKWM6cnJzQpWDIg3Yxj2OwCnVbfuKlcUO9frhthRSaoiHzQjZDO28faZTq6gT2K5xu8s7zYR30dRN/zCuu+l2mk+n/IX5lXCtlu3AXlFKDdh2iErwCIrNglHFx0Bo1h43cg5li1wquE5Aat2sb6pBWaq3Olh63gKSDwzFFlOxGx4fX3rR0/ckV6CzIppCDuAubac8nIdnK7nifFPVGFinrC1fT2aZH7Ny0FDRQ9Ddi0ZA67deQXqTLGld+ebghFVjPvjRxrLK6b82ZfTI5LpX/ua2eZ9UAawFHkQmW9QO5xDaaRVDFqgal6Qj7ge3CIW5qL6lqjBNhdMhnxen9WOoYFNzPgKzSwnsO0mxD6Lj2zFZ7omfCcICe+LSLIHGBbwBK6aPbiBk4pd/4MCXga50KiSDr8eLervSTTZyDHc7YbN/jlXSjz+Wz/3ZUi79t5i+1zaqjfLzbpk+dRBNck8gmsWRkeJY1o0j94JXZ3JIwzf9NlfHwaX6WFLo4jxruXk/a4rQ8ObFNypQxYSJaYC9AKB6Rj0ul6avhqpBntXizbokOp0NpYpdwZ/RlG1OYiz4
+	dquqzfmf4UkoZFoF8OcdyxFg4/d7OnQnwwr9UVBT3CLTzcYVkMj4d3C2WSqCFNIPtRi+H1UiFr7DIssGtYEADlMxqyHYwWtu/e/nPIIROT3DLskJDuRl6M0m0+Qkf4P2fW3FF7ohzD9oEyEPIG4OGBcqcGVea5u975GXuiL1pGGjEXHuNi9a1Xctj36y4uZ8+900+LQDPzkKKJBSWiNE0NZ8Z9yA/OIY4NxMn6EtqvVT8ykJ0EjvlAo6RdyCOKYA0qzRmkeezBeHIZWmIUS+2bQarKy2eXk5IsUU1x1nP2JbshiMKTTpJgcw8mZNm+pl6hDsAufSGXr1vqU/pYSc4fFrCeFWuvjf4/N8E23RfFgMk39rXSk0A9x/rcvrk5RRpERJnrnUttV0aT/3HBoKGcYWYFPy29HnT7oTDj4posjsv2hxtTwnY0hPWGj9xQhj0+IG46YI9i6GiyipqiUORXRB5Cm/2381S/Wsk/w9Bz/mtYVjd11aQeZb7a+mC3ZBlA1agI59ahExmc/tvLh8EmtD8an51C3JRKYZcbj1+ESDFMxIKJq7V9TIpA8sNPf8CMxnQeik/eZHEuHpfJhlgmP5URUdytzLBrAlMHn2F1YzEq0q0frkVFowbhq28QlE
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(396003)(39860400002)(346002)(366004)(376002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(33716001)(41300700001)(86362001)(66574015)(8936002)(8676002)(4326008)(7416002)(5660300002)(6486002)(6512007)(52116002)(6666004)(6506007)(478600001)(9686003)(38350700005)(26005)(66556008)(66476007)(54906003)(6916009)(316002)(66946007)(2906002)(83380400001)(38100700002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(376002)(39860400002)(396003)(366004)(346002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(33716001)(38350700005)(41300700001)(6486002)(26005)(6512007)(52116002)(66476007)(54906003)(6666004)(316002)(6506007)(9686003)(83380400001)(478600001)(6916009)(66556008)(66946007)(5660300002)(7416002)(8936002)(15650500001)(8676002)(4326008)(2906002)(38100700002)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?UfXdN5IgbIHYjHGFrHxTAjTZK/ics5mdUtfmdNiMkDs561BWuNXhXtuoFF?=
- =?iso-8859-1?Q?7Py/2GsdKFnIbXC7QW0UF9YJmhwBTzdQwWOms3lVrVuoufDhmsa3zT3/+k?=
- =?iso-8859-1?Q?whMZJAxc4KtmZcXgokZw5vuQKWmE7jKSTvsbG20MJnpSLvhg1lvIDtKGul?=
- =?iso-8859-1?Q?emSr/7v74NJOUL6qpgoOes7qq70+h5KQaeD1fPSC9tCstwIsAYwZ5H5FC6?=
- =?iso-8859-1?Q?eZBuJu/rJUt1Q0UfYVDgpcVcexKq5e5NmcrbvpKyBdwMS2i7xxaRuQPWPh?=
- =?iso-8859-1?Q?Ph4F4kB6hF7YmTB5vJTFd5g2B4o/dDS8P9D9SK63+GS+6jE18tVnojSKvZ?=
- =?iso-8859-1?Q?rCBkpxhZ5qbwxkt13CoiJFTkpL9DjnKrC/cKzjoxRIj0XHAoJc7zpl0mA0?=
- =?iso-8859-1?Q?Wr4VTwvQsH908uI+xbODAQ+oi1fT1w545COopJyHulUH/YbS/dvH7WfJTq?=
- =?iso-8859-1?Q?ocbleyuE7SIrYbRCMZlEoDyLE1aEAJxUmLX5vAsHxcJX7JD3KXPKS+XQb8?=
- =?iso-8859-1?Q?LvxA9UgqKsFw3Jz4vZWkSSqpCqGlA0vivilWctp85THkLpF/zTE0SGeKZ3?=
- =?iso-8859-1?Q?COkaDk8fu9CeKBEAD0zi2YqaRC91rRlkL05gw98sd0h8MjWovVjR6rB7Wx?=
- =?iso-8859-1?Q?WBMTPtQo93D/poASucllwdTT5n6UfrzKbFSfw3LLi5U6y7PytTnSXQVp/E?=
- =?iso-8859-1?Q?a1sXPjDcDvoo+llD+5AxN6Axb8CMEFu2hj6gv0DnkMdJj9Gk7gCEQX4umZ?=
- =?iso-8859-1?Q?2Jh/03XZtc/+1Z0TVyR8/dFKoHNA/roJab26Spw0DVkiDqSeHM4BKNVFfw?=
- =?iso-8859-1?Q?Ub6Qv4DpH6E5MANnFz8LX7ZLjahlu/jZBg23H96mqZypCqDYymS5iaW/V4?=
- =?iso-8859-1?Q?wwAV90Xnd3AaOXhEp0NZ+mDcOQB79VpoznmZs0YXtqpsPD7MYqUozKKRBC?=
- =?iso-8859-1?Q?hs0PbiwI5p0m0nT4KjdXK2WvSlpNmMx63n6zVwl5tCjXtVz1+LpeGpu2QR?=
- =?iso-8859-1?Q?o0L67bVpdtP+jDXWVyDWOS19R3RYHtNZJa1klUGJkSRMZd9+kDdwTv9Sp3?=
- =?iso-8859-1?Q?+r+Q5Hq6gbkTL+komr3IgR1WfoOS3BmwULJW+Fbc+5TJmGW5gdY2BMghdk?=
- =?iso-8859-1?Q?P3xoraGZ5ifk9sxnJvWaOrVmf+TyyCFQQSZnxPaQXuJ2CNQZYSpm202e6E?=
- =?iso-8859-1?Q?RG7QmjTW+Ux+m1iJEhBr+QOtkLAgMkNvvU7/F3FStxI7b2huPrR8qp2Wlb?=
- =?iso-8859-1?Q?XnsDu1R/QQjX9pV+kHn7IunyxZKvDyurY66sYBJzXZak5vj/xfoPKU4X0z?=
- =?iso-8859-1?Q?btGV+ciu+Lz34h65nfV3RVBXm/rlmHcz80bdWEdNVXttpiKw0uAWfq27u+?=
- =?iso-8859-1?Q?HGTvaUxIGPreJLj7bjb6hgjvC6bWeQBS0WY/Mzf+WTZ2RH6lbDhir9YJbq?=
- =?iso-8859-1?Q?FKbZoMwWSp2EothIRyb4+KuS0L1vR4bkxVyHjj05rV+znlLmA42/KlDEAG?=
- =?iso-8859-1?Q?DgmvnoC52qNCmVo+X44ZtLPJcb35NPj1C9SOiWsuzkHafRL/32iHGF6LoN?=
- =?iso-8859-1?Q?yKZWIJPmzobrVORIfYYP9n99bEdoaBXVC2EQVkegTlwFT6KmW+iivRIods?=
- =?iso-8859-1?Q?g0EG4Bazy5jUFlXnjK07a1GrFaPtCWG14Q?=
+	=?us-ascii?Q?k6O9aqvuZscFd9itcNjJjCQYP2mNRIDa+b284s+SlTPBdSQSQP64tZmQpsew?=
+ =?us-ascii?Q?/JiArq1Tc3WAxv9vUctzWaxcYqVubsywmNDvo9nxv8NcMBlMXWvv3Ls/vfzM?=
+ =?us-ascii?Q?s40DoYSdw086pe5/Otm9zAX5rs5NFu0CkSzr2jnSCYh+sf1lcG1KVzg5ijou?=
+ =?us-ascii?Q?nDGzsME7Jvk/6si5qDkMWf1ZQxe/38KL+YKdq/JQdIiUPNzaB7fqoy9yxQM8?=
+ =?us-ascii?Q?uxzTJLNtSzPK3tmSXiAa/jllm2H+cS/Z17+f/OtQHJ74L4NQ27mw8ATcUTug?=
+ =?us-ascii?Q?5B8uLrGN1Ib/DvIB35hM3bP7WgN576vwdSyL4h9G63PsxYhkGAPOKEJ3flKm?=
+ =?us-ascii?Q?qmgVY0F4yDGaDnAEdJzgMyzFTMK1l9bd64hluVmML1T14HKlpYwzHIAYTLnc?=
+ =?us-ascii?Q?hSQXSh5Dz7N5YYUXgEDz/p2y2MIOUr8sUYapGEl4sWMvhKGPa4IP+DJ5okd/?=
+ =?us-ascii?Q?wWCJcEWLAfLcc7Mhcz9hplVCo+4qKe8vra21CkigEC9u+dvwgNT0Mi75XvMW?=
+ =?us-ascii?Q?i+X+xLikMkE4kQjwe92TMVQH8viYYB5CWupR6CMfq6wmA8i9kxaN4zQ7VlIW?=
+ =?us-ascii?Q?ISRfqtxdnuaA6XLpYtsr+Kwim7/L8fO4DKGujYf7HAdE4AzDKP66906wvEUF?=
+ =?us-ascii?Q?6DcymvAbL1dAmqy+0a5O6DvXGfuVQRgutKykLjppoc3wIZKjZmDaHH3eqbU+?=
+ =?us-ascii?Q?R9YNZJ086q1M6Ljy8U/zCPHH6l1hHqX4FhjOUDrWbcOwoEGbUOr6KNRiAT6f?=
+ =?us-ascii?Q?Mylj7lXAvorFytf4VX2Bf+jNAI3lOhGf2jmgIqOO2JvSkZXJiCGe6mW3nyEU?=
+ =?us-ascii?Q?24o5zqsmpXp4DeUofLovTmJTIc9hmnHJsRp0SXmFXEpIFRZWuctszZx5Spw9?=
+ =?us-ascii?Q?zN6rjlhmMtWYATFW4snE2qhhFgEWZ2OW5dVXETEqEuPC7G3iqMBPbYmwbvKM?=
+ =?us-ascii?Q?HNZkqSgxftYgiw6Rm3qpdSMdsv/f2cc+s9XZMAvPfLCxxX4/sRppwya59Goj?=
+ =?us-ascii?Q?KuXZBk15FdhbEdtBSeHsvntB5nQhG/6s6HBQesBW7e1W+lrhomKg7gNISzH5?=
+ =?us-ascii?Q?XTujplWSVhgdakxlUY6fbVSJfg8ig92bUMVZj4htEUJ0LWDiSqWTsvL+5Swl?=
+ =?us-ascii?Q?0Xloot5okOX2XF4YuL0FqAipsEsztMSw1kFBltQe8ZaKg5d8DTm//iJbG7sx?=
+ =?us-ascii?Q?6cV2n2sggeOOllGjBQmFKZtdaXB+fUDbqIRly+9fbWFvFpNf1o1qPJR0ivCM?=
+ =?us-ascii?Q?XCDlg5wZFPAVBXtVb7hIujlGmP2r4db/yPvjbiusIVbrudVTXqUbhCtcmsjE?=
+ =?us-ascii?Q?MOc61l5LTfsY7P1DHQ9NRYIOjsCo8YkF6ufgg6VxvAsWL1HI1epjHIn2b2ZI?=
+ =?us-ascii?Q?PVc5svQrzSfPxpr8axZ+h0Mf+xCqqeFDDgB4kaLgpAoaJ+QWp9VL3WSjO3T7?=
+ =?us-ascii?Q?fWJf9xf4+p12Gq5tnvenwGhR4v+KvaQpTHE90Wxcx8Ks62DxAKlWSZT3sCRC?=
+ =?us-ascii?Q?X2D+n++zvT2dv/n4zz/tAiT+ZU1N8ft3JZts5VbKhx5SFm/ew7aXaCOyJbFT?=
+ =?us-ascii?Q?RXLyh1FodfzWH5yWF0o0JPKHVBR/8eeFV7VY04J7?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 884cfaad-1066-44d7-abfa-08dc272784e9
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff027dcc-55ae-480e-c088-08dc2727c25b
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2024 15:23:06.8389
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2024 15:24:49.9475
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7NJpFkVIWPU6OndC7OYzLjQVmSj56ZHRqG3wxM4scO15JWk7VxnVwW3h2GYjOr4aB6T14/YAXnzSE3kSs/4BKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8882
+X-MS-Exchange-CrossTenant-UserPrincipalName: L2oIxTqHQaBPJuOkN559qlPhTR7k/ARHP0pNDQjY9XgNvD4P2R5xXIXpwL9eoG+/fk5GanXEGW22z4rob5GG6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9439
 
-On Tue, Feb 06, 2024 at 01:54:42PM +0200, Ilpo Järvinen wrote:
-> On Mon, 5 Feb 2024, Frank Li wrote:
-> 
-> > Add tty over I3C target function driver.
+On Tue, Feb 06, 2024 at 06:38:29PM +0800, Shawn Guo wrote:
+> On Mon, Jan 29, 2024 at 03:16:32PM -0500, Frank Li wrote:
+> > edma0 of iMX8DXL is difference with other imx8 chips. Update register's
+> > size, channel number and power-domain.
+> > Update i2c[0-3] channel number information.
 > > 
 > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > > ---
+> >  .../boot/dts/freescale/imx8dxl-ss-adma.dtsi   | 65 +++++++++++++++++++
+> >  1 file changed, 65 insertions(+)
 > > 
-> > Notes:
-> >     Change from v4 to v5
-> >     - remove void*
-> >     - include bitfield.h
-> >     - remove extra ()
-> >     - oneline for struct ttyi3c_port *sport
-> > 
-> >  drivers/i3c/Kconfig       |   3 +
-> >  drivers/i3c/Makefile      |   1 +
-> >  drivers/i3c/func/Kconfig  |   9 +
-> >  drivers/i3c/func/Makefile |   3 +
-> >  drivers/i3c/func/tty.c    | 474 ++++++++++++++++++++++++++++++++++++++
-> >  5 files changed, 490 insertions(+)
-> >  create mode 100644 drivers/i3c/func/Kconfig
-> >  create mode 100644 drivers/i3c/func/Makefile
-> >  create mode 100644 drivers/i3c/func/tty.c
-> > 
-> > diff --git a/drivers/i3c/Kconfig b/drivers/i3c/Kconfig
-> > index d59a7eb83d13a..fca808cda87b3 100644
-> > --- a/drivers/i3c/Kconfig
-> > +++ b/drivers/i3c/Kconfig
-> > @@ -48,3 +48,6 @@ config I3C_TARGET_CONFIGFS
-> >  	  the target function and used to bind the function with a target
-> >  	  controller.
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+> > index 0a477f6318f15..f8fca86babda7 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+> > @@ -15,6 +15,63 @@ &adc0 {
+> >  	interrupts = <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
+> >  };
 > >  
-> > +if I3C_TARGET
-> > +source "drivers/i3c/func/Kconfig"
-> > +endif # I3C_TARGET
-> > diff --git a/drivers/i3c/Makefile b/drivers/i3c/Makefile
-> > index c275aeae8970c..11f026d6876fe 100644
-> > --- a/drivers/i3c/Makefile
-> > +++ b/drivers/i3c/Makefile
-> > @@ -4,3 +4,4 @@ obj-$(CONFIG_I3C)		+= i3c.o
-> >  obj-$(CONFIG_I3C_TARGET)                += target.o
-> >  obj-$(CONFIG_I3C_TARGET_CONFIGFS)       += i3c-cfs.o
-> >  obj-$(CONFIG_I3C)		+= master/
-> > +obj-$(CONFIG_I3C_TARGET)	+= func/
-> > diff --git a/drivers/i3c/func/Kconfig b/drivers/i3c/func/Kconfig
-> > new file mode 100644
-> > index 0000000000000..7115129eb7d5a
-> > --- /dev/null
-> > +++ b/drivers/i3c/func/Kconfig
-> > @@ -0,0 +1,9 @@
-> > +# SPDX-License-Identifier: GPL-2.0
+> > +&edma0 {
+> > +	reg = <0x591f0000 0x1a0000>;
+> > +	#dma-cells = <3>;
+> > +	dma-channels = <25>;
+> > +	dma-channel-mask = <0x1c0cc0>;
+> > +	interrupts = <GIC_SPI 262 IRQ_TYPE_LEVEL_HIGH>, /* asrc 0 */
+> > +		<GIC_SPI 263 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 267 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>, /* spdif0 */
+> > +		<GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>, /* sai0 */
+> > +		<GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>, /* sai1 */
+> > +		<GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 193 IRQ_TYPE_LEVEL_HIGH>, /* sai2 */
+> > +		<GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>, /* sai3 */
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> > +		<GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>, /* gpt0 */
+> > +		<GIC_SPI 269 IRQ_TYPE_LEVEL_HIGH>, /* gpt1 */
+> > +		<GIC_SPI 270 IRQ_TYPE_LEVEL_HIGH>, /* gpt2 */
+> > +		<GIC_SPI 271 IRQ_TYPE_LEVEL_HIGH>; /* gpt3 */
+> > +	power-domains = <&pd IMX_SC_R_DMA_0_CH0>,
+> > +			<&pd IMX_SC_R_DMA_0_CH1>,
+> > +			<&pd IMX_SC_R_DMA_0_CH2>,
+> > +			<&pd IMX_SC_R_DMA_0_CH3>,
+> > +			<&pd IMX_SC_R_DMA_0_CH4>,
+> > +			<&pd IMX_SC_R_DMA_0_CH5>,
+> > +			<&pd IMX_SC_R_DMA_0_CH6>,
+> > +			<&pd IMX_SC_R_DMA_0_CH7>,
+> > +			<&pd IMX_SC_R_DMA_0_CH8>,
+> > +			<&pd IMX_SC_R_DMA_0_CH9>,
+> > +			<&pd IMX_SC_R_DMA_0_CH10>,
+> > +			<&pd IMX_SC_R_DMA_0_CH11>,
+> > +			<&pd IMX_SC_R_DMA_0_CH12>,
+> > +			<&pd IMX_SC_R_DMA_0_CH13>,
+> > +			<&pd IMX_SC_R_DMA_0_CH14>,
+> > +			<&pd IMX_SC_R_DMA_0_CH15>,
+> > +			<&pd IMX_SC_R_DMA_0_CH16>,
+> > +			<&pd IMX_SC_R_DMA_0_CH17>,
+> > +			<&pd IMX_SC_R_DMA_0_CH18>,
+> > +			<&pd IMX_SC_R_DMA_0_CH19>,
+> > +			<&pd IMX_SC_R_DMA_0_CH20>,
+> > +			<&pd IMX_SC_R_DMA_0_CH21>,
+> > +			<&pd IMX_SC_R_DMA_0_CH22>,
+> > +			<&pd IMX_SC_R_DMA_0_CH23>,
+> > +			<&pd IMX_SC_R_DMA_0_CH24>;
+> > +};
 > > +
-> > +config I3C_TARGET_FUNC_TTY
-> > +	tristate "I3C target tty driver"
-> > +	depends on I3C_TARGET
-> > +	help
-> > +	  I3C Target TTY Function Driver.
-> > +
-> > +	  General TTY over I3C target controller function drivers.
-> > diff --git a/drivers/i3c/func/Makefile b/drivers/i3c/func/Makefile
-> > new file mode 100644
-> > index 0000000000000..16b3b9301496b
-> > --- /dev/null
-> > +++ b/drivers/i3c/func/Makefile
-> > @@ -0,0 +1,3 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +obj-$(CONFIG_I3C_TARGET_FUNC_TTY)              += tty.o
-> > diff --git a/drivers/i3c/func/tty.c b/drivers/i3c/func/tty.c
-> > new file mode 100644
-> > index 0000000000000..50673bfb6a003
-> > --- /dev/null
-> > +++ b/drivers/i3c/func/tty.c
-> > @@ -0,0 +1,474 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Copyright (C) 2023 NXP
-> > + * Author: Frank Li <Frank.Li@nxp.com>
-> > + */
-> > +
-> > +#include <linux/bitfield.h>
-> > +#include <linux/iopoll.h>
-> > +#include <linux/i3c/target.h>
-> > +#include <linux/serial_core.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/tty_flip.h>
-> > +
-> > +static DEFINE_IDR(i3c_tty_minors);
-> > +
-> > +static struct tty_driver *i3c_tty_driver;
-> > +
-> > +#define I3C_TTY_MINORS		8
-> > +
-> > +#define I3C_TX_NOEMPTY		BIT(0)
-> > +#define I3C_TTY_TRANS_SIZE	16
-> > +#define I3C_TTY_IBI_TX		BIT(0)
+> >  &edma2 {
+> >  	interrupts = <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>,
+> >  		     <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
+> > @@ -48,21 +105,29 @@ &edma3 {
+> >  &i2c0 {
+> >  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+> >  	interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+> > +	dma-names = "tx","rx";
+> > +	dmas = <&edma3 1 0 0>, <&edma3 0 0 FSL_EDMA_RX>;
+> >  };
+> >  
+> >  &i2c1 {
+> >  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+> >  	interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_HIGH>;
+> > +	dma-names = "tx","rx";
+> > +	dmas = <&edma3 3 0 0>, <&edma3 2 0 FSL_EDMA_RX>;
 > 
-> This is #include <linux/bits.h>
-> 
-> ...which will include <vdso/bits.h> that contains the actual definition.
-> 
-> #include <bitfield.h> is for FIELD_GET/PREP(), etc.
-> 
-> > +struct ttyi3c_port {
-> > +	struct tty_port port;
-> > +	int minor;
-> > +	struct i3c_target_func *i3cdev;
-> > +	struct completion txcomplete;
-> > +	spinlock_t xlock;
-> > +	void *buffer;
-> > +	struct work_struct work;
-> 
-> This file seems to also lack some includes. Please go through your 
-> #include in the series and add those you use.
+> No FSL_EDMA_TX for "tx"?
 
-Do you have tools to check?  It is easy to missed some header files.
+Yes, only defined FSL_EDMA_RX. It is bitmask. If no FSL_EDMA_RX, means
+TX channel.
 
 Frank
 
 > 
-> -- 
->  i.
+> Shawn
+> 
+> >  };
+> >  
+> >  &i2c2 {
+> >  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+> >  	interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>;
+> > +	dma-names = "tx","rx";
+> > +	dmas = <&edma3 5 0 0>, <&edma3 4 0 FSL_EDMA_RX>;
+> >  };
+> >  
+> >  &i2c3 {
+> >  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+> >  	interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
+> > +	dma-names = "tx","rx";
+> > +	dmas = <&edma3 7 0 0>, <&edma3 6 0 FSL_EDMA_RX>;
+> >  };
+> >  
+> >  &lpuart0 {
+> > -- 
+> > 2.34.1
+> > 
 > 
