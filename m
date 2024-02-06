@@ -1,69 +1,45 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585D88004B
-	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 06:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9330C3D54A
+	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 10:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707200199; cv=none; b=cy+fj/nU3PrnHIshEUlSWVjmCg0prACCLYQqK+r59XcpzvgOzrxiqFlri33bUszSVTNhLcIo/5+v4q7hFKf+wU+v7Yt3mU5HLnglxp/RIUWFJCq9/WznV4X/LX9cgpIMKhnlHWPu5ACU4Iik6uCHe/1LR8a1a3OTt9dlv3Vp+6w=
+	t=1707215929; cv=none; b=HQEqIovs2CD1rigswoqPWIZ0Ht0JQJ0ypf1QC8CyI6mjho9roFi9TdV97+Sf8NUpnlR8qBebvtEx88sjgB3Q/iruq/OocYnfJHKmxFjVKtcoLGbh+oKLjSv5pV405V3LMLqQ+mVqeSMjhJiAnsAIC8MTOtVXVGXqj9CvbgqgfrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707200199; c=relaxed/simple;
-	bh=B3tLwb+Ce8mAkLq890UoJ9rPxK/p2G3d9nBQVdJ+m6Q=;
+	s=arc-20240116; t=1707215929; c=relaxed/simple;
+	bh=jIDetKdqCHcAy2PHqpROZugyHayLlJ1AtCGMh46V4os=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJLCHcPlNmCVmAYSTjSOrbck+aibl6dC7qhYmIPNQeJJDKskRP0FaBzwThw+vucaRlofsN2cuQFlcLsihLdYKYniMB6nG9wCt+osjF5Kx88P1WV3pMdR6aFGiS/1Ck3Kw67p13lIIvXhB/SjIKUihL+STuN439vZKpCwa5enxvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rw2DgD1r; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=gh6IGEMol9BQqUu3knNOWgXBLMinnvha/bpqAKnSXRQoN3t8E4f+e2Wwj3U6sfFeIlvEQBceQYbCGYwbAfXx44gi12l7yz3+9ujwqne0N4ZtcoGD0AlVydp2OmuFHkZh1iu3LSguT0tTW34XnF0tM2SqCr9c0RjQa8SODE3Ya4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TVbV6ANW; arc=none smtp.client-ip=123.58.177.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rw2DgD1r"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6e02fa257eeso183585b3a.0
-        for <imx@lists.linux.dev>; Mon, 05 Feb 2024 22:16:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707200197; x=1707804997; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zUK9QqVsVGjBDisUANUUn0yteaZaAoyKpXGmI2G8lZA=;
-        b=Rw2DgD1rjV5zXLKG2lEIYvwI2X52SEwa7X9cXcLXD9SpGynps76H8cYdFEBOZnH54h
-         GNjUQ4Dyyod8zTA8RmgB1moY2Vq9dE8lMMkEqS++Op9F7Vm+xYpIKtVra6JlVTYSL8x7
-         4FQNQ/LUi9wsIK2I7+6DRXtEv0xyfIE510ZfROd8PJNMzq8DN2KvqwiBq26ky7qeD0Qo
-         Bzuo3jbwXD/hE7R6BukxjgtodTJKCRxd56suEKH/zJ4t9m2Ou5XzDXdLrCnaTmH5Zauz
-         CxATyuQ3XwalT9SxgnAnFTyghEizRmwFzL+6HRb1CDhOb4rJee0mj9htZ0fz3flxyHBu
-         A+6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707200197; x=1707804997;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zUK9QqVsVGjBDisUANUUn0yteaZaAoyKpXGmI2G8lZA=;
-        b=NcL9V5TwxgVG9P/PM4x0LfEpCAQqo30yry1PmmJQgKXB/WhYY4miYKCoWKUZpD13hK
-         S9xUsyiI9/cOIGMGLdGfQo5xNc0yUIuKYIBLw+I3QqK1b8Dx11n6Bt8TTOWfSV27za8S
-         pn3hh77HG3Rt9ebrClGWgqk/lq8kmC8eRxhFfgtQZYQaPVQzzgsGnfYWOYh6dCwDm0v1
-         vZVCsVQnFqC3v1Deb4yhwZucDvekf6lDX/AQx3FQdHO6WSXFrVzALNOs0aZ7X91Ylp7T
-         cLvfzkxPaB2/I/rkpAn8WBUSbgVnVrb/fly0YCJwNrqbmh5l6QWIuQo0w2R3ghCsFt2l
-         moAg==
-X-Gm-Message-State: AOJu0YwLFc/ySW1tdNDoN+o0LwDEbJLHSpkcjYfZam2SqHrHbK405GY6
-	UKhmrCoZaCe9MOMDqhCG6Cc1UBSIEkgxNp89mi4Lz7DJ7RMcOrJ6
-X-Google-Smtp-Source: AGHT+IHnVWUiw6+w1n7GssxxDbLPpR4C9DVDKR6aPhknSImz5koyqXPRbRtw5rrShoprP+NpphRKdA==
-X-Received: by 2002:a05:6a00:1a93:b0:6e0:5cb7:168c with SMTP id e19-20020a056a001a9300b006e05cb7168cmr419732pfv.17.1707200197487;
-        Mon, 05 Feb 2024 22:16:37 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUmGMaaJ+Hp4uWP5KtYN2l2pRRmqlXSfMGqEuOQEOvPyoIR8hKY8wilBjedRnF2IwOWstLa7J1MaXBl7VStNvswVoiEpQM6hez5OXezRA9Rc1HCCSH5nFDvIZGJwpEuPQGV0X+/eJuf26Zyk3Z9344Hf4gAMK2Q/it72zMGBb1FzsPbJZQtPuyiXGgoQUQwxeB37/rPUtLKecFWcagH2CxNWzbKD7+bsHdGjitgyx3wafBbz19SlYD7MExRwaNMuMr5isMLf2Cgv0nuShLkDX6qtv8Hz2r+TDbT5+CFU3g1Mnr9bboXSBWK7w5UqV2rqg0jHpHbs+Chg3wgXbLS+Lx0WgS8
-Received: from dragon (144.34.186.27.16clouds.com. [144.34.186.27])
-        by smtp.gmail.com with ESMTPSA id du17-20020a056a002b5100b006e047a34834sm950990pfb.182.2024.02.05.22.16.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 22:16:36 -0800 (PST)
-Date: Tue, 6 Feb 2024 14:16:26 +0800
-From: Shawn Guo <shawn.gsc@gmail.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TVbV6ANW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=rMy70T7bGq+86zodkiE5SnCSlDJcdq4HaQVB8APMukQ=;
+	b=TVbV6ANWNZ3RER6wPjOEzpUZ/iX8Lucs4azd6YiPVzSuGCjCyatDNwMXh9WZsz
+	6zqtFyzqR02KMp36N+dRLg1KkHq5jnRw4rBBWzlrywi8i+YNhOxw01eDtpayztth
+	vr16iVDFiF+XElF5KitojBEGEX3K1VpSF/A4XD66vfXQY=
+Received: from dragon (unknown [183.213.196.254])
+	by smtp2 (Coremail) with SMTP id C1UQrADn7wgmDMJlAEACAw--.34613S3;
+	Tue, 06 Feb 2024 18:38:31 +0800 (CST)
+Date: Tue, 6 Feb 2024 18:38:29 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-	Rob Herring <robh+dt@kernel.org>,
+Cc: Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/4] arm64: dts: ls1012a: correct the size of dcfg block
-Message-ID: <ZcHOuo7iTQBlHC/2@dragon>
-References: <20240119201035.3124007-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 2/2] arm64: dts: imx8dxl update edma0 information
+Message-ID: <ZcIMJWKBrPW4Y5R8@dragon>
+References: <20240129201633.234255-1-Frank.Li@nxp.com>
+ <20240129201633.234255-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,15 +48,128 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240119201035.3124007-1-Frank.Li@nxp.com>
+In-Reply-To: <20240129201633.234255-2-Frank.Li@nxp.com>
+X-CM-TRANSID:C1UQrADn7wgmDMJlAEACAw--.34613S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFyrXr48CF4UZr4UJw43ZFb_yoWrXr43p3
+	4UCF4DX3sag3W2v3Waga1xAryfGrn2kr4Ygr90k3y8JF92gFyIvF47Kr1vkF13Gr48XFy5
+	XFsrCry8A3W3XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jz4E_UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwd8ZVnxccILPgACs9
 
-On Fri, Jan 19, 2024 at 03:10:32PM -0500, Frank Li wrote:
-> From: Li Yang <leoyang.li@nxp.com>
+On Mon, Jan 29, 2024 at 03:16:32PM -0500, Frank Li wrote:
+> edma0 of iMX8DXL is difference with other imx8 chips. Update register's
+> size, channel number and power-domain.
+> Update i2c[0-3] channel number information.
 > 
-> Correct the size of dcfg block to 4k.
-> 
-> Signed-off-by: Zhang Ying-22455 <ying.zhang22455@nxp.com>
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx8dxl-ss-adma.dtsi   | 65 +++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+> index 0a477f6318f15..f8fca86babda7 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi
+> @@ -15,6 +15,63 @@ &adc0 {
+>  	interrupts = <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
+>  };
+>  
+> +&edma0 {
+> +	reg = <0x591f0000 0x1a0000>;
+> +	#dma-cells = <3>;
+> +	dma-channels = <25>;
+> +	dma-channel-mask = <0x1c0cc0>;
+> +	interrupts = <GIC_SPI 262 IRQ_TYPE_LEVEL_HIGH>, /* asrc 0 */
+> +		<GIC_SPI 263 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 267 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>, /* spdif0 */
+> +		<GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>, /* sai0 */
+> +		<GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>, /* sai1 */
+> +		<GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 193 IRQ_TYPE_LEVEL_HIGH>, /* sai2 */
+> +		<GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>, /* sai3 */
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 0   IRQ_TYPE_LEVEL_HIGH>,
+> +		<GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>, /* gpt0 */
+> +		<GIC_SPI 269 IRQ_TYPE_LEVEL_HIGH>, /* gpt1 */
+> +		<GIC_SPI 270 IRQ_TYPE_LEVEL_HIGH>, /* gpt2 */
+> +		<GIC_SPI 271 IRQ_TYPE_LEVEL_HIGH>; /* gpt3 */
+> +	power-domains = <&pd IMX_SC_R_DMA_0_CH0>,
+> +			<&pd IMX_SC_R_DMA_0_CH1>,
+> +			<&pd IMX_SC_R_DMA_0_CH2>,
+> +			<&pd IMX_SC_R_DMA_0_CH3>,
+> +			<&pd IMX_SC_R_DMA_0_CH4>,
+> +			<&pd IMX_SC_R_DMA_0_CH5>,
+> +			<&pd IMX_SC_R_DMA_0_CH6>,
+> +			<&pd IMX_SC_R_DMA_0_CH7>,
+> +			<&pd IMX_SC_R_DMA_0_CH8>,
+> +			<&pd IMX_SC_R_DMA_0_CH9>,
+> +			<&pd IMX_SC_R_DMA_0_CH10>,
+> +			<&pd IMX_SC_R_DMA_0_CH11>,
+> +			<&pd IMX_SC_R_DMA_0_CH12>,
+> +			<&pd IMX_SC_R_DMA_0_CH13>,
+> +			<&pd IMX_SC_R_DMA_0_CH14>,
+> +			<&pd IMX_SC_R_DMA_0_CH15>,
+> +			<&pd IMX_SC_R_DMA_0_CH16>,
+> +			<&pd IMX_SC_R_DMA_0_CH17>,
+> +			<&pd IMX_SC_R_DMA_0_CH18>,
+> +			<&pd IMX_SC_R_DMA_0_CH19>,
+> +			<&pd IMX_SC_R_DMA_0_CH20>,
+> +			<&pd IMX_SC_R_DMA_0_CH21>,
+> +			<&pd IMX_SC_R_DMA_0_CH22>,
+> +			<&pd IMX_SC_R_DMA_0_CH23>,
+> +			<&pd IMX_SC_R_DMA_0_CH24>;
+> +};
+> +
+>  &edma2 {
+>  	interrupts = <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>,
+>  		     <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
+> @@ -48,21 +105,29 @@ &edma3 {
+>  &i2c0 {
+>  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+>  	interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+> +	dma-names = "tx","rx";
+> +	dmas = <&edma3 1 0 0>, <&edma3 0 0 FSL_EDMA_RX>;
+>  };
+>  
+>  &i2c1 {
+>  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+>  	interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_HIGH>;
+> +	dma-names = "tx","rx";
+> +	dmas = <&edma3 3 0 0>, <&edma3 2 0 FSL_EDMA_RX>;
 
-Applied all, thanks!
+No FSL_EDMA_TX for "tx"?
+
+Shawn
+
+>  };
+>  
+>  &i2c2 {
+>  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+>  	interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>;
+> +	dma-names = "tx","rx";
+> +	dmas = <&edma3 5 0 0>, <&edma3 4 0 FSL_EDMA_RX>;
+>  };
+>  
+>  &i2c3 {
+>  	compatible = "fsl,imx8dxl-lpi2c", "fsl,imx7ulp-lpi2c";
+>  	interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
+> +	dma-names = "tx","rx";
+> +	dmas = <&edma3 7 0 0>, <&edma3 6 0 FSL_EDMA_RX>;
+>  };
+>  
+>  &lpuart0 {
+> -- 
+> 2.34.1
+> 
+
