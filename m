@@ -1,45 +1,50 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5895F487AB
-	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 10:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF1D1EB24
+	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 10:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707216381; cv=none; b=Pj7Hy2ltbbwlJXqEu0s8RZ1rty4nvnTRDzpCT7YD7i9h8zs8THYx+WveP7z6vS7+2zQ/RMWynGRwuFVluG/JxqcA2Vuu/yqJng4j00UO1T8w53gwfoDcBtjUXT26pnos5tJO6Z4lC/XPs9S7ViE06H/COhBqBgieEOtVU1Ud+lc=
+	t=1707216708; cv=none; b=YXJJxrrpxQYOBr0dacLhMDBRp0WwNUZt3tyLCyNmZARWwoUjAjUvl/w99p8NLFyQPXmx1wyp8/sHooswqp8B23/Jl7UN2iwXTyBCkCImuFIMbU/BgCDgh95fQ58WyoPDWp72/kTlvZ+lGlrthZGLX/YOzzzBc2NP+yyLMhrAnAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707216381; c=relaxed/simple;
-	bh=d+oLW2HRq2Jlm4/vbLTLrkdBUeoGpsDVMVFmfsl3Cyc=;
+	s=arc-20240116; t=1707216708; c=relaxed/simple;
+	bh=CnNyJAVVaeaFUmGNhrIfwMWD9WAzXcrMYWAxBqjZww0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cDGPzEbcH2LWs+eDiyiPYQBNHNDsVLc/Doxjny10GULRuIRVbBqBM47EZpk/k0qvfcFkhMPGPyonr+e/Ew3aow/JWPnTM2uvn1iVMHkfZR7qCN/xGQeJjqAV+TOBKApJCKLeLSD0u0rjiMF176LAL7+zaRkPm34SqhXveatVRGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k9AYslhg; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=qNBiRt5XKgDYCeh/n/1cooxy4pJywbzbRcgkjDG9zQ6nvTKalCmniLknVc01d2psLFonuIYcsmLGlSWw+BxY89pJJfx/1cYiDNMrHjckMlaCINSFtzyu/LUz8CUjtmbuUg7mZU0Y8ApAKthQSzGIczSak+cdRROFxpeQQ5n3HK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=X8OVrjJk; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k9AYslhg"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="X8OVrjJk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=upVIgeeDvCGMQGNmqWW5A7mPp1moe3Q63ckC7AaU3Hs=;
-	b=k9AYslhgZacAHbADer8Ynlf1o5/o5g+PUMt0499fCj+kOU/edMj7qdlgrPmVmm
-	ZC29zRdQ26MjR2NXcw5OTvlJMN1ZpHFs56KUVPuGQZWSenWF83sCcmsWJna6SPLZ
-	0oKhUrSCaCTx5mZdk+b8RseqmbYF7w25/5g7rhe6t395g=
+	Content-Type; bh=MHHejNAVONdEtgJmkJVwsH6HrCDumM8nH7LqCCxZ7eQ=;
+	b=X8OVrjJkddRgwxnjpFow6Anb58NYAgdX7yMrfngAqPnrWELTlxsh4PPfG9i4ac
+	P4kipXRuSHqCCS7KtxXDUlgLTwxXsHUGo8DRyy3RTB2H9ZtN55OHLIACL+PsUr5r
+	V+axX6J9Q18nJTDhy3a27Lqzra8qm3Il2JP/cLEYpH0pg=
 Received: from dragon (unknown [183.213.196.254])
-	by smtp1 (Coremail) with SMTP id ClUQrAB33xPgDcJlwZr+Ag--.16143S3;
-	Tue, 06 Feb 2024 18:45:53 +0800 (CST)
-Date: Tue, 6 Feb 2024 18:45:52 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAAHBucLD8Jlqaz+Ag--.16066S3;
+	Tue, 06 Feb 2024 18:50:52 +0800 (CST)
+Date: Tue, 6 Feb 2024 18:50:51 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh+dt@kernel.org>,
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/3] arm64: dts: imx8dxl: update flexcan[1-3]
- interrupt number
-Message-ID: <ZcIN4EWS+t3hR9Xq@dragon>
-References: <20240130152547.272125-1-Frank.Li@nxp.com>
+	NXP Linux Team <linux-imx@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 0/4] Add 8qm SMMU information
+Message-ID: <ZcIPCxgO3Gxc/aXh@dragon>
+References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
+ <20240202110511.135d26b7@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,16 +53,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240130152547.272125-1-Frank.Li@nxp.com>
-X-CM-TRANSID:ClUQrAB33xPgDcJlwZr+Ag--.16143S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVy8BUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFQJ8ZV6Nm3UVkQAAs3
+In-Reply-To: <20240202110511.135d26b7@kernel.org>
+X-CM-TRANSID:ClUQrAAHBucLD8Jlqaz+Ag--.16066S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKw45uw4kJFyrWFW7ur47twb_yoWfGrbEqr
+	18uFWkGw4kJFnrJayFyrsrG345GrWqkr18WanxXanrA343AF1UtFWkXws5uF18Jr4fCFWD
+	Ar9Ygrs29r13KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8_MaUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDgx8ZVszYTExnwAAsN
 
-On Tue, Jan 30, 2024 at 10:25:45AM -0500, Frank Li wrote:
-> Update interrupt number of flexcan[1-3].
+On Fri, Feb 02, 2024 at 11:05:11AM -0800, Jakub Kicinski wrote:
+> On Thu, 01 Feb 2024 15:22:40 -0500 Frank Li wrote:
+> >       dt-bindings: mmc: fsl-imx-esdhc: add iommus property
+> >       dt-bindings: net: fec: add iommus property
+> >       arm64: dts: imx8qm: add smmu node
+> >       arm64: dts: imx8qm: add smmu stream id information
+> > 
+> >  .../devicetree/bindings/mmc/fsl-imx-esdhc.yaml     |  3 ++
+> >  Documentation/devicetree/bindings/net/fsl,fec.yaml |  3 ++
+> >  arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi  |  6 ++++
+> >  arch/arm64/boot/dts/freescale/imx8qm.dtsi          | 41 ++++++++++++++++++++++
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Any preference on whether all these go via a platform tree,
+> or should we pick up the net patch to netdev? I guess taking
+> the DTB via netdev would be the usual way to handle this?
 
-Applied all, thanks!
+No, it's not.  Taking DTS changes through arch/platform tree is the
+usual way.
+
+Shawn
 
