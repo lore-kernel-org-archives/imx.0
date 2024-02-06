@@ -1,112 +1,182 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD3C5B1EA
-	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 10:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB4E13699F
+	for <imx@lists.linux.dev>; Tue,  6 Feb 2024 11:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707216845; cv=none; b=Kpm8ettQUCZcIqlOOGB9BNe6q4gLTi7zTWAGZoCy+q+c4AhO2gsLT1bSIapDo8fnSqEWWOLiDZo8Kv8A82tupP00/nrw0aWTjXc40q0kaj8mwtIThdVBS0EeZB/u+a0WVZ+6O/hpIddq/mceYhaiKXIC5lXJcPLNtj0augumXiM=
+	t=1707220495; cv=none; b=HCWXRC/yiMsVm1HK5Rbydo/ppL7dQTt4cEoWf8Sel8LPsa0avNyRDwfas4Vv0hFfrYHhBfe1c4W+KbI4dYYfOQ1n2eTt2iXM6Qa10M8JY4MvrXK/n75M+v8Fs/fhHnjmaWQXKjadeH76UGSEmPWQQtj2epwiOJEYARovdcrNVNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707216845; c=relaxed/simple;
-	bh=eq1o09ppvptz86ZQlz8Uakg295wPUJONuJsBuVt+BZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rxG7uNP1MRcauhRQSOQFopC/RevTxQtPigpLNMMINXtDYkIJL0sv1EtjG+JmnxEx44irG//Kb8z9C4yVxuOvnh3KdIBiMbtcC3F5914Iuwd1cEV2QZtKvLag83dzGR5LwPZKskwjE+DxnZicF2taITW8qEZO4EG1F+jPa5Mi2Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=LyN7n7NE; arc=none smtp.client-ip=123.58.177.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1707220495; c=relaxed/simple;
+	bh=huQERr2I8KInHIO2lB1YDA3403COnVXjH7Omud6kihM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=B5kNKmUmsnV30Ez5dmb5ybRq/DkO73HRaZtvzyp5BjQ7k7c1yMOu7YCun31AqtAHbZD0493A5hcb3UPe+rEBAv+JGZ+utE7aAiZ/JeEJMIWJanG94m5UtQtM0dUUpNQxFpSHBchxZxAShR1Cg9nFn2uIn1gaT2iPPhE3olcwbyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FqU8FHfx; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="LyN7n7NE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=V3wgQJBc9TAh3reLgQ6RIEOzbkagE4Tp6ZGLh43fz6U=;
-	b=LyN7n7NEMMssqA+dRI0WEKk4zAzHsgr8PLcQy3uS/K76QVnVfYge7BPUlbnrDa
-	0sQJ1HAotgOXWtQYqorabPdbgwMmA0cjkqHvmI7CRgfkKb2Zz3o6avojh/75j6PM
-	wvt7FjwRHoZSTSeY4fhsxe0fTRDKV4cfZMOa3naxxWlMk=
-Received: from dragon (unknown [183.213.196.254])
-	by smtp2 (Coremail) with SMTP id C1UQrADnbwmWD8Jln2UCAw--.35794S3;
-	Tue, 06 Feb 2024 18:53:12 +0800 (CST)
-Date: Tue, 6 Feb 2024 18:53:10 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FqU8FHfx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707220493; x=1738756493;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=huQERr2I8KInHIO2lB1YDA3403COnVXjH7Omud6kihM=;
+  b=FqU8FHfxbcXyV/7ox7zjUz/nX1jIRPL9LCxaCiz+PLYLZ95YOhPXMBPg
+   h58xbu8KNzJYMo1DQfPzkzBD8+LIeni5ZaJzzs/WAaAidU/4UfeEKAAR+
+   7LYQmrWTiic715HJt2ShjALc4O5xKWoaXvEYJQt+lnny8rRdq4poXZY3O
+   wZ7/2l/zzQLgnGHGjRxg1J0lmvZpK/ZxIjFWClHmJ281ywdbSf2ZbLRdD
+   MtelgbJJVX4YueCE0iD9qp5Jr4HbEinAWoW2gj1TCWKKE1qsUp6krOIjE
+   ANtlDe51As1UtOwkDJnbCQjR0NrfWPUmLQa6RNEUUK/tQBjNJUWmvf1j0
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4540215"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="4540215"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 03:54:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="5599711"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.36.139])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 03:54:48 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 6 Feb 2024 13:54:42 +0200 (EET)
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 4/4] arm64: dts: imx8qm: add smmu stream id information
-Message-ID: <ZcIPlp7BUxuo/ZeM@dragon>
-References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
- <20240201-8qm_smmu-v2-4-3d12a80201a3@nxp.com>
+cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com, 
+    devicetree@vger.kernel.org, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, imx@lists.linux.dev, 
+    Jiri Slaby <jirislaby@kernel.org>, joe@perches.com, 
+    krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org, 
+    linux-i3c@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, miquel.raynal@bootlin.com, 
+    robh@kernel.org, zbigniew.lukwinski@linux.intel.com
+Subject: Re: [PATCH v7 6/8] i3c: target: func: add tty driver
+In-Reply-To: <20240205233326.552576-7-Frank.Li@nxp.com>
+Message-ID: <9b5bb389-4238-0a32-5e16-3c62ea6c00e7@linux.intel.com>
+References: <20240205233326.552576-1-Frank.Li@nxp.com> <20240205233326.552576-7-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240201-8qm_smmu-v2-4-3d12a80201a3@nxp.com>
-X-CM-TRANSID:C1UQrADnbwmWD8Jln2UCAw--.35794S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWrKryfGFWfZw1rWw4fCrW5GFg_yoW8JF17pa
-	s5Cr43tr4fWr17AryDXa4vkFZ8GanxuF4qgr17u3y8trnagFyYg3Z0gF1FkrWkWw4rW3yf
-	J3Z5Jr13Z3WDZr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jajgxUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDhh8ZVszYTEy1gAAsT
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Feb 01, 2024 at 03:22:44PM -0500, Frank Li wrote:
-> Add smmu stream id information for fec and esdhc.
+On Mon, 5 Feb 2024, Frank Li wrote:
+
+> Add tty over I3C target function driver.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 6 ++++++
->  1 file changed, 6 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
-> index ec1639174e2e5..3cbc861400b43 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
-> @@ -6,20 +6,26 @@
+> Notes:
+>     Change from v4 to v5
+>     - remove void*
+>     - include bitfield.h
+>     - remove extra ()
+>     - oneline for struct ttyi3c_port *sport
+> 
+>  drivers/i3c/Kconfig       |   3 +
+>  drivers/i3c/Makefile      |   1 +
+>  drivers/i3c/func/Kconfig  |   9 +
+>  drivers/i3c/func/Makefile |   3 +
+>  drivers/i3c/func/tty.c    | 474 ++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 490 insertions(+)
+>  create mode 100644 drivers/i3c/func/Kconfig
+>  create mode 100644 drivers/i3c/func/Makefile
+>  create mode 100644 drivers/i3c/func/tty.c
+> 
+> diff --git a/drivers/i3c/Kconfig b/drivers/i3c/Kconfig
+> index d59a7eb83d13a..fca808cda87b3 100644
+> --- a/drivers/i3c/Kconfig
+> +++ b/drivers/i3c/Kconfig
+> @@ -48,3 +48,6 @@ config I3C_TARGET_CONFIGFS
+>  	  the target function and used to bind the function with a target
+>  	  controller.
 >  
->  &fec1 {
->  	compatible = "fsl,imx8qm-fec", "fsl,imx6sx-fec";
-> +	iommus = <&smmu 0x12 0x7f80>;
->  };
->  
->  &fec2 {
->  	compatible = "fsl,imx8qm-fec", "fsl,imx6sx-fec";
-> +	iommus = <&smmu 0x12 0x7f80>;
->  };
->  
->  &usdhc1 {
->  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
-> +	iommus = <&smmu 0x11 0x7f80>;
->  };
->  
->  &usdhc2 {
->  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
-> +	iommus = <&smmu 0x11 0x7f80>;
->  };
->  
->  &usdhc3 {
->  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
-> +	iommus = <&smmu 0x11 0x7f80>;
->  };
+> +if I3C_TARGET
+> +source "drivers/i3c/func/Kconfig"
+> +endif # I3C_TARGET
+> diff --git a/drivers/i3c/Makefile b/drivers/i3c/Makefile
+> index c275aeae8970c..11f026d6876fe 100644
+> --- a/drivers/i3c/Makefile
+> +++ b/drivers/i3c/Makefile
+> @@ -4,3 +4,4 @@ obj-$(CONFIG_I3C)		+= i3c.o
+>  obj-$(CONFIG_I3C_TARGET)                += target.o
+>  obj-$(CONFIG_I3C_TARGET_CONFIGFS)       += i3c-cfs.o
+>  obj-$(CONFIG_I3C)		+= master/
+> +obj-$(CONFIG_I3C_TARGET)	+= func/
+> diff --git a/drivers/i3c/func/Kconfig b/drivers/i3c/func/Kconfig
+> new file mode 100644
+> index 0000000000000..7115129eb7d5a
+> --- /dev/null
+> +++ b/drivers/i3c/func/Kconfig
+> @@ -0,0 +1,9 @@
+> +# SPDX-License-Identifier: GPL-2.0
 > +
+> +config I3C_TARGET_FUNC_TTY
+> +	tristate "I3C target tty driver"
+> +	depends on I3C_TARGET
+> +	help
+> +	  I3C Target TTY Function Driver.
+> +
+> +	  General TTY over I3C target controller function drivers.
+> diff --git a/drivers/i3c/func/Makefile b/drivers/i3c/func/Makefile
+> new file mode 100644
+> index 0000000000000..16b3b9301496b
+> --- /dev/null
+> +++ b/drivers/i3c/func/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +obj-$(CONFIG_I3C_TARGET_FUNC_TTY)              += tty.o
+> diff --git a/drivers/i3c/func/tty.c b/drivers/i3c/func/tty.c
+> new file mode 100644
+> index 0000000000000..50673bfb6a003
+> --- /dev/null
+> +++ b/drivers/i3c/func/tty.c
+> @@ -0,0 +1,474 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023 NXP
+> + * Author: Frank Li <Frank.Li@nxp.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/i3c/target.h>
+> +#include <linux/serial_core.h>
+> +#include <linux/slab.h>
+> +#include <linux/tty_flip.h>
+> +
+> +static DEFINE_IDR(i3c_tty_minors);
+> +
+> +static struct tty_driver *i3c_tty_driver;
+> +
+> +#define I3C_TTY_MINORS		8
+> +
+> +#define I3C_TX_NOEMPTY		BIT(0)
+> +#define I3C_TTY_TRANS_SIZE	16
+> +#define I3C_TTY_IBI_TX		BIT(0)
 
-Dropped this whitespace and applied.
+This is #include <linux/bits.h>
 
-Shawn
+...which will include <vdso/bits.h> that contains the actual definition.
 
-> 
-> -- 
-> 2.34.1
-> 
+#include <bitfield.h> is for FIELD_GET/PREP(), etc.
+
+> +struct ttyi3c_port {
+> +	struct tty_port port;
+> +	int minor;
+> +	struct i3c_target_func *i3cdev;
+> +	struct completion txcomplete;
+> +	spinlock_t xlock;
+> +	void *buffer;
+> +	struct work_struct work;
+
+This file seems to also lack some includes. Please go through your 
+#include in the series and add those you use.
+
+-- 
+ i.
 
