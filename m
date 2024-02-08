@@ -1,47 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC044C3BB;
-	Thu,  8 Feb 2024 21:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670AE4EB2B;
+	Thu,  8 Feb 2024 21:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707426675; cv=none; b=sZsXGqZZ8CVGMHaF96Rjic1F8maF039WSWYCT21QKkmUgyI2hJtEV/Jk8KabZ6pWrvByiLUlEYGLk53tLY+Q7KGaRTSqyWIDkxPsGleVYQKMbSsIM1e/HDx8//M/LJI0cn/xGYRyzssWKxpyGr7sAL95K7etV2dtP9RHr7bRpGA=
+	t=1707427213; cv=none; b=dmeIXo94Lrz8gNUyVyPBP4ndmo/HYgFr7IlCVq9jJDGIbbUqz2qIzTjvIC0yIzxzstOAv4bbN017QyYZjmMKa9o7xRg4yjyU49ICBG15K1EJkoKksveURVyhQKiDmDE1Hi7C6WHaFA2ZU4ER4wkEjJFapd9mpq53BtKY1CQ2SDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707426675; c=relaxed/simple;
-	bh=PZdyD0LrD0K6VeVxtDSN2q5d00foFVJLTK20usF3L9U=;
+	s=arc-20240116; t=1707427213; c=relaxed/simple;
+	bh=0wWe0YAzwZgyv/3+8weFv30HET9B4Cd2WgTwkK3SakI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDzjT1jQM7qpUZxq0gMNcSSAl6vrL5gmRxOEScGFC24WNNPsu6MIzXDBwtg4ieDsVCASI0pnccoA35dv79AlFz4BIdzaby+C8CSH+N2+cuQgnP/QkzlS6089gKdWOvv5QBJBfUpddjeMcyfOYQ9+lDsu8QkoL4bW3ROw8XAklIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vEEWJJq3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=suo2fmeQpgJlpx20hQsTNcZN0CB/cF1IIqYuxmpkX0Fa9MN3yHH22k6AVB7fogcKYP86ggg+SR3hohAAmZFAl6XBK1LS5gQjzpHufiM+256Od4Tn2cCAnvc3eCvWG8Lwun/s3IrskzDJmsCKGktxqMcGksZrOvLQL/PvrHTsrHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnjmVS27; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vEEWJJq3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E413C433C7;
-	Thu,  8 Feb 2024 21:11:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnjmVS27"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC03BC433F1;
+	Thu,  8 Feb 2024 21:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707426674;
-	bh=PZdyD0LrD0K6VeVxtDSN2q5d00foFVJLTK20usF3L9U=;
+	s=k20201202; t=1707427212;
+	bh=0wWe0YAzwZgyv/3+8weFv30HET9B4Cd2WgTwkK3SakI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vEEWJJq3cCGErkhfWDg9g5V4hijQYdVUcVmasjPgUwwsY7Sb1jLzWvYi7LSU7MgCT
-	 boQspHdmz4h6dd1VPyUnnWIlUj/SV9rsc0S5xtLVXLb3orhYEtV3r6CSsBozSnHE+K
-	 m/RJZFXvjextXsEmH1/+Kjdy8J4EJDMXzS8h5Ave7khd3S4XH3e+Cz56PoK/vvPhGE
-	 /vJmTEWkskNFuWe1hNruP8CxYq6O/mzclMa4vm3TdqOm1UWw6WkRdSN4dZAkqbY7+v
-	 eqqBsX/R7uwA2pHK/6x4qpgCy0wXuLmh0YDQZVXYC241JDj6GEdCl3y2ac6YhVl3WO
-	 hiK7Fh21Swlgw==
-Date: Thu, 8 Feb 2024 21:11:10 +0000
+	b=XnjmVS27glab5wa0li66EW96HAkQDCAhBiyH29TYFhy29nAcK/5BhDaJFbWoaCjhj
+	 uVw4X2CYYZCDBRVmHl0T9Z/2qfBm5ZWrtfZqDdQsNbPl9vghfAwICGDMLvvn6tWjVz
+	 D/HPwODfh8kD2e359ph+RiDuXWZEXJ4tSJSBTXYYIQ1CrVAH3CUV/GYAUFbGUrsXwb
+	 awQOO4R442XqoSaI8D5kiwo7XoP1r7aPL2hZ/7p4fqEjSwwbOIsMo8QKVxFz6+fSEa
+	 7l35MmM1yClqLti6/QPyeV4fLNCKYhDEfEf4AAVicgm9EelSRA/UEfN164aNIenyZr
+	 ly4JxZeLc07EA==
+Date: Thu, 8 Feb 2024 21:20:08 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.li@nxp.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Felipe Balbi <balbi@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 0/2] usb: dwc3: drop 'quirk' suffix at
- snps,host-vbus-glitches-quirk
-Message-ID: <20240208-unquote-palace-83edc6220acd@spud>
-References: <20240207-vbus-glitch-v1-0-7be87099461d@nxp.com>
- <20240207-settling-drone-90e6f10a3476@spud>
- <ZcQAqVViPHcbgn52@lizhi-Precision-Tower-5810>
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: pci: layerscape-pci: Convert to yaml
+ file
+Message-ID: <20240208-outing-nature-74b6fab0cdea@spud>
+References: <20240207062403.304367-1-Frank.Li@nxp.com>
+ <20240207-yoga-mobility-90a728f6342c@spud>
+ <ZcPCn8q7viB/qcOH@lizhi-Precision-Tower-5810>
+ <20240208-jarring-frolic-8d4c9b409127@spud>
+ <ZcUs16+Z+I4m4q00@lizhi-Precision-Tower-5810>
+ <20240208-revoke-doorman-5ba34f39c743@spud>
+ <ZcU3ohEg5Z1ky+/W@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,60 +55,75 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gFGNovl6LzTY5g9n"
+	protocol="application/pgp-signature"; boundary="BkMhcd+HVPXZrhES"
 Content-Disposition: inline
-In-Reply-To: <ZcQAqVViPHcbgn52@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZcU3ohEg5Z1ky+/W@lizhi-Precision-Tower-5810>
 
 
---gFGNovl6LzTY5g9n
+--BkMhcd+HVPXZrhES
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 07, 2024 at 05:14:01PM -0500, Frank Li wrote:
-> On Wed, Feb 07, 2024 at 10:05:23PM +0000, Conor Dooley wrote:
-> > On Wed, Feb 07, 2024 at 05:00:17PM -0500, Frank Li wrote:
-> > > Since dt maintainer give comments at old thread
-> > > https://lore.kernel.org/linux-usb/20240119213130.3147517-1-Frank.Li@n=
-xp.com/
+On Thu, Feb 08, 2024 at 03:20:50PM -0500, Frank Li wrote:
+
+> > > > > > > +  reg:
+> > > > > > > +    maxItems: 2
+> > > > > > > +
+> > > > > > > +  reg-names:
+> > > > > > > +    items:
+> > > > > > > +      - const: regs
+> > > > > > > +      - const: addr_space
+> > > > > >=20
+> > > > > > The example uses "regs" and "config". Where did addr_space come=
+ from?
+> > > > >=20
+> > > > > Example just show pcie-host part. Not show pcie-ep part.
+> > > > > pcie-ep part need 'addr_space'.
+> > > >=20
+> > > > Okay. Again, please mention where this is coming from.
 > > >=20
-> > > The patch v4 already merged.
-> > > https://lore.kernel.org/linux-usb/20240124152525.3910311-1-Frank.Li@n=
-xp.com/
+> > > Ideally it comes from snsp,dwc-pcie-ep.yaml. but it is use 'dbi' inst=
+ead
+> > > of 'regs'. It needs extra effort to make driver code algin common
+> > > snps,dwc-pcie-ep.yaml, and update exist all dts files.
 > > >=20
-> > > So submit new patch to rename snps,host-vbus-glitches-quirk to
-> > > snps,host-vbus-glitches to align dt maintainer's comments.
+> > > I think it will be deleted soon.=20
 > >=20
-> > I thought the last comment left on the v1 was Thinh agreeing that a
-> > DT property was not needed here and we should be able to apply this
-> > conditionally?
+> > What I am looking for here is you to explain in the commit message that
+> > the endpoint driver in linux and the dts have always used "addr_space".
+> > Checking that there's not a u-boot or *bsd that uses "config" would also
+> > be very helpful.
 >=20
-> I don't think so. This is workaround. We can use this track which chip
-> actually need this. If some year later, such chips already end of life.
-> We have chance to clear up these code. Otherwise, it will keep there for
-> ever.
+> I confused. Actually this two part PCIE-RC and PCIE-EP.
+> PCIE-RC using 'config'
+> PCIE-EP using 'addr_spcae'
 
-> And I am not sure that the side effect for other chips. Workaround should
-> be applied as less as possible.
+Yeah, I get this. The text binding makes it seem like "config" should be
+used for both RC and EP, so I am just asking you to check that there are
+no drivers in other kernels or bootloaders that use "config" for EP
+mode.
 
-I'd rather do it unconditionally if we can, but if you and Thinh think
-that we cannot do it unconditionally then sure, keep the property.
+> I check old txt file, which have not mention it. I can remove it.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+if you drop "addr_space", you'll need to update the endpoint driver so
+that it supports both "addr_space" and "config". If there are no
+endpoint drivers using "config" in other operating systems, and all the
+dts files use "addr_space", documenting "reg" and "addr_space" for
+endpoint mode seems fair to me.
 
-Cheers,
+Thanks,
 Conor.
 
-
---gFGNovl6LzTY5g9n
+--BkMhcd+HVPXZrhES
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcVDbgAKCRB4tDGHoIJi
-0qt3AP93pO+2o/E4e4mcw2crSVI1VWZ9ULKk/LodlffmniEtPwEA6vo7NqUFkIhi
-lbZpkWDt3zzzU2XFUuwB0mOT3A8z2A4=
-=xRuh
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcVFiAAKCRB4tDGHoIJi
+0ncZAP426ohLG4dEVQblOtRj+sLza17dCRAZyQZGHBrzsJo9nAD+PL9tt9coV6Vx
+iDk3vgPZfq9rP5eThu72FRj53o6qtg0=
+=NA3v
 -----END PGP SIGNATURE-----
 
---gFGNovl6LzTY5g9n--
+--BkMhcd+HVPXZrhES--
