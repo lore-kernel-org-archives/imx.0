@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED68D149DF8;
-	Thu,  8 Feb 2024 21:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC044C3BB;
+	Thu,  8 Feb 2024 21:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707426163; cv=none; b=PyHDmeuqRxIYx2YR8jIpGnZtsqA0Ax7zNdml1LM2n/xs3PCNWUpmftw1S1JruptprmwxQEmxPB2cA0sLrdsXyysL6UprhV0DLsSFB3sT98ujJzCfkJmrZ/PBAjIZqrcg+F6GiCYBJGnUIiSGIt7ucOjGmkEtcyuixr83FA30G4M=
+	t=1707426675; cv=none; b=sZsXGqZZ8CVGMHaF96Rjic1F8maF039WSWYCT21QKkmUgyI2hJtEV/Jk8KabZ6pWrvByiLUlEYGLk53tLY+Q7KGaRTSqyWIDkxPsGleVYQKMbSsIM1e/HDx8//M/LJI0cn/xGYRyzssWKxpyGr7sAL95K7etV2dtP9RHr7bRpGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707426163; c=relaxed/simple;
-	bh=9o+cviq5kEoHDzHUTgK5/QBBVE/KPaRbFcYqh1I4jLM=;
+	s=arc-20240116; t=1707426675; c=relaxed/simple;
+	bh=PZdyD0LrD0K6VeVxtDSN2q5d00foFVJLTK20usF3L9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S3K5D8xAlNgRm/dLjrsaBYyC3Sr5QSD6kzJ6oYYPqL9w8GcNXch4tVrwhtX6MQf6MYDi4MV7j5Xiqn33kfp4R4aNIvCFyJDjJ85nuLe9jhyAt4QYvIZFdHpC/4MRIzqqtFXtQrol5M8MWgEyP32ujNOK8/mhBsnjBAtlZUJl9Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWLEbdJl; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=oDzjT1jQM7qpUZxq0gMNcSSAl6vrL5gmRxOEScGFC24WNNPsu6MIzXDBwtg4ieDsVCASI0pnccoA35dv79AlFz4BIdzaby+C8CSH+N2+cuQgnP/QkzlS6089gKdWOvv5QBJBfUpddjeMcyfOYQ9+lDsu8QkoL4bW3ROw8XAklIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vEEWJJq3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWLEbdJl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40310C433C7;
-	Thu,  8 Feb 2024 21:02:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vEEWJJq3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E413C433C7;
+	Thu,  8 Feb 2024 21:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707426162;
-	bh=9o+cviq5kEoHDzHUTgK5/QBBVE/KPaRbFcYqh1I4jLM=;
+	s=k20201202; t=1707426674;
+	bh=PZdyD0LrD0K6VeVxtDSN2q5d00foFVJLTK20usF3L9U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gWLEbdJlYl/ZYqS0IDroMY0q3MKyhayNdE3lxjCV8DseZVr0HAsMYVgBIPZthF6Ni
-	 cG/kZeF5dWlyRKgqKZx6Je1i1hcYG9HM3k+P+qqNipRim4O9xo9wNbEVLr9k22Kr/m
-	 N+lrEYH6s1yHBLpEryXvwY6+6yFYdjP6dlBS0btEgPDSjAyi8GdGwqc2X1Er4S4sp0
-	 Qb6IGt2czmBZPofBcQ/nigwIEGHl6QEvZGdkuHfj1QWjM00H/4Bqk/NnlVBx5Nx2TD
-	 1JQJgvR1Od4cUoha3xUzYs2A/s90HvVLmmfSxenzeB/4maAo2LjoDWKALPUocwje4o
-	 m5H6LmzdLQaAQ==
-Date: Thu, 8 Feb 2024 21:02:37 +0000
+	b=vEEWJJq3cCGErkhfWDg9g5V4hijQYdVUcVmasjPgUwwsY7Sb1jLzWvYi7LSU7MgCT
+	 boQspHdmz4h6dd1VPyUnnWIlUj/SV9rsc0S5xtLVXLb3orhYEtV3r6CSsBozSnHE+K
+	 m/RJZFXvjextXsEmH1/+Kjdy8J4EJDMXzS8h5Ave7khd3S4XH3e+Cz56PoK/vvPhGE
+	 /vJmTEWkskNFuWe1hNruP8CxYq6O/mzclMa4vm3TdqOm1UWw6WkRdSN4dZAkqbY7+v
+	 eqqBsX/R7uwA2pHK/6x4qpgCy0wXuLmh0YDQZVXYC241JDj6GEdCl3y2ac6YhVl3WO
+	 hiK7Fh21Swlgw==
+Date: Thu, 8 Feb 2024 21:11:10 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: pci: layerscape-pci: Convert to yaml
- file
-Message-ID: <20240208-moisten-jaws-35a4935dca44@spud>
-References: <20240207231550.2663689-1-Frank.Li@nxp.com>
- <20240208-subfloor-polka-96bbbbc27fb0@spud>
- <ZcUyqaxf52GivQnd@lizhi-Precision-Tower-5810>
+	Conor Dooley <conor+dt@kernel.org>, Felipe Balbi <balbi@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 0/2] usb: dwc3: drop 'quirk' suffix at
+ snps,host-vbus-glitches-quirk
+Message-ID: <20240208-unquote-palace-83edc6220acd@spud>
+References: <20240207-vbus-glitch-v1-0-7be87099461d@nxp.com>
+ <20240207-settling-drone-90e6f10a3476@spud>
+ <ZcQAqVViPHcbgn52@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,60 +49,60 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WmaGg2xNACeUW1/d"
+	protocol="application/pgp-signature"; boundary="gFGNovl6LzTY5g9n"
 Content-Disposition: inline
-In-Reply-To: <ZcUyqaxf52GivQnd@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZcQAqVViPHcbgn52@lizhi-Precision-Tower-5810>
 
 
---WmaGg2xNACeUW1/d
+--gFGNovl6LzTY5g9n
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 08, 2024 at 02:59:37PM -0500, Frank Li wrote:
-> On Thu, Feb 08, 2024 at 07:26:15PM +0000, Conor Dooley wrote:
-> > On Wed, Feb 07, 2024 at 06:15:49PM -0500, Frank Li wrote:
-> > > Convert layerscape pcie bind document to yaml file.
+On Wed, Feb 07, 2024 at 05:14:01PM -0500, Frank Li wrote:
+> On Wed, Feb 07, 2024 at 10:05:23PM +0000, Conor Dooley wrote:
+> > On Wed, Feb 07, 2024 at 05:00:17PM -0500, Frank Li wrote:
+> > > Since dt maintainer give comments at old thread
+> > > https://lore.kernel.org/linux-usb/20240119213130.3147517-1-Frank.Li@n=
+xp.com/
 > > >=20
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > The patch v4 already merged.
+> > > https://lore.kernel.org/linux-usb/20240124152525.3910311-1-Frank.Li@n=
+xp.com/
+> > >=20
+> > > So submit new patch to rename snps,host-vbus-glitches-quirk to
+> > > snps,host-vbus-glitches to align dt maintainer's comments.
 > >=20
-> > Please don't send new versions before giving people a chance to finish
-> > the discussion on the existing ones. This is not the first time in the
-> > last few days I am asking you this. Nobody pays me to review DT
-> > bindings, so you'll have to accept that I will take some time to reply.
+> > I thought the last comment left on the v1 was Thinh agreeing that a
+> > DT property was not needed here and we should be able to apply this
+> > conditionally?
 >=20
-> Usb-glitch patch
-> v1, I sent at Jan 19.=20
-> v2, I sent at Jan 21.
-> v4, at Jan 24.=20
+> I don't think so. This is workaround. We can use this track which chip
+> actually need this. If some year later, such chips already end of life.
+> We have chance to clear up these code. Otherwise, it will keep there for
+> ever.
 
-Actually, I think I need to apologise. My first reply to you on v1 came
-after you send the v4, so you didn't send new versions in that case
-during a conversation - but sending 4 versions in 5 days is just going
-to lead to people reviewing the old versions of a series. Please just
-take a little more time between versions :)
+> And I am not sure that the side effect for other chips. Workaround should
+> be applied as less as possible.
 
-> Generally, I send patch quick because I accepted their suggestion. It will
-> be clear base on the new version. There are not big dissension need be
-> discussed.=20
->=20
-> About this one, I think first one have bigger problem because just convert
-> txt to yaml file. Base on this version will be easy to discuss futher.
+I'd rather do it unconditionally if we can, but if you and Thinh think
+that we cannot do it unconditionally then sure, keep the property.
 
-> The samething for me, nobody pays me to work this patch, which is my extra
-> work.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks for spending your free time working on binding conversions :)
+Cheers,
+Conor.
 
---WmaGg2xNACeUW1/d
+
+--gFGNovl6LzTY5g9n
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcVBbQAKCRB4tDGHoIJi
-0un1AP9TsH6E9Z5p9TZzobwdGratw7ep4NgGW8SdqVgfGcKhzwD/VoMWX8J7YO+m
-oh7+i17+eYHwZ6LfCUlirk576gpNTQ4=
-=5N4M
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcVDbgAKCRB4tDGHoIJi
+0qt3AP93pO+2o/E4e4mcw2crSVI1VWZ9ULKk/LodlffmniEtPwEA6vo7NqUFkIhi
+lbZpkWDt3zzzU2XFUuwB0mOT3A8z2A4=
+=xRuh
 -----END PGP SIGNATURE-----
 
---WmaGg2xNACeUW1/d--
+--gFGNovl6LzTY5g9n--
