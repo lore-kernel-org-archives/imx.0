@@ -1,229 +1,245 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E84C657D0
-	for <imx@lists.linux.dev>; Fri,  9 Feb 2024 07:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E6969944
+	for <imx@lists.linux.dev>; Fri,  9 Feb 2024 09:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707463908; cv=none; b=egC9a5bskTpXnVtejf5ZcWN7KyaL7D5zlfsGZWywBmgJerCRfhWmOw5w0PqNb8QmQlQ/aloJdsUhqJr2bj6IwNEAgccgDX+GGqGXVYgAoT6Gs60vE1qUYJTOpm6Ydu40OfTC8Mo0VKDYl4sHDfxrtYK9fS+wg6sC8Iwd6Jtrexk=
+	t=1707472380; cv=none; b=TPa6EvABybpzsIvs3f2XVbnpLycDunP6YHWfp3tSHjYci7/WaLu44miIm6X555v7BiaauQb2Xiv3ocAjTQ2/bQvrbBnUYYRKxX5bBkbvgPcgXwzat+ZIWUcJpe7KgbwsnV2yXwFr6XvRG42gQJQv0E+k9ZgzOieTXkELVUBfxZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707463908; c=relaxed/simple;
-	bh=xFmNZJS37ahgZTb4n847UyVexynqHYAijXk03hvaqSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C0z9qTp/8Du3NDnrJ+9nxpQxPCn/P48MtSueCZwp5XM1Fw2bQAXj60omLz+6l5UeSliEZ6VYy4sQpMCcMD5eQivEEvM92cdWS63KaX9m/s0ZJfxqce1X05gJdeBw/vaGuPvDuQWnqrC1rpzbT/FtUve+Wke5E/poJ078ZI4Hd9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LxAyhYxs; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1707472380; c=relaxed/simple;
+	bh=iVzoL3o7JUS146pZQBt+eZtE43hCFkiCYA9D9Tpn9lc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hHO5KDBJfSRwgSlNQcAkeLh+iydUIUH/MTak3hZ+1sH4CfmmuxvvXAMEKqJRIzQteZKYLpV5IwchjQK1ZAR7HLY290MCzT/IUbP8vsBkiiRErD9f2KXSSbs2VOi1g15P9SFS8+vqO94sWeVgTB4FPpDqNvxizGYohQ3blgN+tCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UJJCD2gT; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LxAyhYxs"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-41060e5b664so3579785e9.1
-        for <imx@lists.linux.dev>; Thu, 08 Feb 2024 23:31:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJJCD2gT"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5112bd13a4fso2011708e87.0
+        for <imx@lists.linux.dev>; Fri, 09 Feb 2024 01:52:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707463905; x=1708068705; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=czGphICzS+JvFtvh9UqhTVKfL9+aki9x9lhTNwlN9yA=;
-        b=LxAyhYxsHCu23AvsQTwDVHZYMinvpvLRnfcOqyU61RrQWqUnnuSD+hDxDYxPZMPjno
-         QYVOLSUL6RP6V2QyGzeN1hHS+WpLVNlqHhab7jAGPr9cMi+xlp25b3Crmr+LQL3shbHM
-         h9531mDDkedZeasa+95xE1jWM9Pw3fDtY3rmrAKZ/ZO9cBLGHz0ty+ekf8MwU6eoOKLY
-         j2EhhcSs5KKdykzjkvPssdBIVaa6al2zj0cLW4B/U7YcEHCQ6l/nQgqIsZbsO5OKuOX/
-         Y3zPQLiYQMhkHHBLKhfZ/2mjNjG6kl0Kpk2c0yInFLc3BVb3aWWPrx4OWj01KWwkXJH1
-         JERg==
+        d=gmail.com; s=20230601; t=1707472376; x=1708077176; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eiV2K5pZJw71dGzNyLKMSPjJLxHQRGdnK/KkiTE5WaY=;
+        b=UJJCD2gTBJ6CPr9MggZ9OcToHu7t85ckd6AoZAHdqkqgvNdt00KFBN3/O+V34HYSRk
+         VRwjY0t5Mf9RFDZY7XJvuIWq/0esCU+I3ylZWrs19V3ug+1mOCFbS3xA4d1XQMvoe7mO
+         DQgfH1dHCJj5wzaMrviZEhbZe0dz1tEn3pmr5LG2wXqVP3gKnBcM90uM7l4JiJyH64SI
+         KSi8t2mYnXyCpjo0hm+f5cdeKBFgkjA8J7/WajcSoXhp7N4HMYpuCJWVtVcH1668AWhE
+         xXPHR3SD3Shn4EfjrxB6dh87Z7PyTA00pq19zh/AuYUpketMmtnJNGvQw58GDQK6PBv/
+         ZFyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707463905; x=1708068705;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1707472376; x=1708077176;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=czGphICzS+JvFtvh9UqhTVKfL9+aki9x9lhTNwlN9yA=;
-        b=LjCwa5/BsA5QM+OD/3nCFwCuccZLzoE0ozyFImo53L6RnqfO+L34HkLNJxk9Uv2v9j
-         FcGA0acJ9lp7MFvbKEdi/DLFABcuwfksZOZL0WG373Xr1yDc6kTblA5BhwbDG39xFJOh
-         LqnlVSGOHMvZJPAxtMJEwJ2PdBCfE7xVo8XWdVt2Zv+n7CLea64JBNa7RZOjTnNlXYBN
-         zFOwAwD3fDkJKL3knpozpSbBEHyLeQ8pZBBidZZ1ZEk2/xtm55NPPTAsJWDH7EC9MPEX
-         j/t9r0XUabh+5NmKpjw4Jh5lUI2I/hJkcUi43ymhizj5pFmQaUL50kr12as69Y1j4x7W
-         zd4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVReSZLGO/POhTGX4Xy/KlDqO6mLrk3j4j3PBLzJPfJgHBPNCaRJ9lOG4RGiu7+qca5OWWgoi4PBlv5+WEIcCMkSAg5
-X-Gm-Message-State: AOJu0YysaxIc9IwhBdGsXM9ldvXf6WdpIzK/7kyYIAihe7ldRmNO/K17
-	T0keu1VwyP4EVsCBSE5TVOmkCPtHUa+aoj+lPzbionGkZYeMKiHNV0CUwPaRgjs=
-X-Google-Smtp-Source: AGHT+IF21UJMU+NhR40BDtgwZB2n++F2lik57iCGic0Zp+dyoR82suy8CBdyf5CO29MzoJwnGZq1JA==
-X-Received: by 2002:a05:600c:3ac9:b0:40e:fbb3:f67c with SMTP id d9-20020a05600c3ac900b0040efbb3f67cmr506540wms.38.1707463904746;
-        Thu, 08 Feb 2024 23:31:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXoBgw94rOUHYSUFCtX3RXxcYDkM2MLAIzu1+et4Zr0eIQRwlqrzUpLl0+ZcoWHIEJJjOa0EfgLKFZZdMeVb02GCQhSh98ADzA2MF+Wy5IQ16yXQNOwo/YnmiJCbDB3j3AHuSmn/hg53wYwU1Lym6joVm0JDK3oRO4T0qELvIf9vkegm1nFE83q/Z4spBSpLhnS/qpS+t5j/lHRU0ejsDd/0X3Guj/U9jcPuq0sy5OtzFzRR2mLT7lpTvelifSlCwC7pIMHk1TLX+Oj01DQKqSUJPUvQPLnvvt67sABkXQGaXJLpTaF5LcltoOnQno32ad3xIPcA91exP/P7JYSf6Gn7GgZK9q9jOpa9iClJr+Vd7KKYM2/DA5ISAzVXwpZvqoQ2mfUlQ7NR/7XhS0cCcXK6YQa86nb4w/fM5GNZpnLYHdw2bgitwiDDiGw2zBkQVbIYNU7cQlGSMKavY7zSjulMSn0b5o6ObKN2fiv1u/XUPRClg1+PUXK+CpDSnld
-Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id f7-20020a05600c154700b0041039d20454sm1664309wmg.41.2024.02.08.23.31.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 23:31:44 -0800 (PST)
-Message-ID: <973a15f2-4841-43ee-899b-d6f8ac57dde2@linaro.org>
-Date: Fri, 9 Feb 2024 08:31:42 +0100
+        bh=eiV2K5pZJw71dGzNyLKMSPjJLxHQRGdnK/KkiTE5WaY=;
+        b=O00NwJGjTfcGDN5QA61PD/Y8IKi9jff0pzH6giD38c7VskPZd2yFBcv4jTlVfw9A1y
+         cz9Cmrgo6E61i6GPmZb9BWKJl6oSeJibHJ/uWtj/hxnWRjoVbg9uz872sFlFUNLDz1IG
+         ImOz0VbZbSJChDCzaUhDdlaYG7hfES1hmLLJR8oBCabVg8w14w/0NemiPh7Jxplj3hMc
+         NkiS59+Hq04LFHcW0PEJt8OGs3X//uTJBbZh6yCt3uFwubOS7QXU+GS0jTnjYovRPefy
+         LMQ17HjMm7hp0GjFPPPbEhKrOqJ1guG32nZdCVCsqdh4o+UaEgoNWpz0cWjVD5Se1dGQ
+         jjZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTM84rKa+CjO0IQ9KRfstcEiGm5plKsI1FSprV/VQJD/N+4HE/PSXYlkGVsTfLMNC4XUmHtyyvagYppKFmXSoLLodA
+X-Gm-Message-State: AOJu0YxgUB3dntF35RA1KI8do0VgCKkjHNIgFjzXEXYTo+l2ZS2eObFp
+	72bKkJBV3E+cqwjwUQolRkFWRCrNyLdC5Rr9SK5f5aZ1dziNLXXl
+X-Google-Smtp-Source: AGHT+IHkRzAfsj6AV5nFtVc0uRgnhec7BneScP04Ft7o+QBqpDeEz/4O/PlmlO1S7CmcKMtPYmhr2w==
+X-Received: by 2002:ac2:5611:0:b0:511:3bce:9157 with SMTP id v17-20020ac25611000000b005113bce9157mr211091lfd.9.1707472376208;
+        Fri, 09 Feb 2024 01:52:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX4Nlogw9/inrehVzw1A/MaI06NEnGBb2Wd+Ej1VNkQrwDQRJkb8zsZaHSsNJdSa8t2W5F54hkpFTcu9nSQhbEuSPWrQZrj7zYM0O8HeB7ZuwOLpHKG8rRr4a8bZpzio4QDjoF5FTNtaoP86eTNMcXCLJc/UMwhb9QtpgXgBRhI8DcHZKNY+z0H2OIu1YuWCvn9PRSIZsJw4PKuAbcLvqHBzXOoOOx/yjnxOxJkm6fvQ7D+1QOnm7quvabMZoK0QGKEA+BkOQHf++ld6Clb/f+tDJyq3Uey3uqVytSMj4ryOmXP+mDFmJnlxsVV8qSRB2FQHSYQO26F6YeRIpdQHKLDOi4wRVqqhc0MJWkRgh1bRCY2B/CILpe+6KYx1aw/3pVvGCAidwUry1IKmJzAdna5ovfx8ThVhrHPE/cOXgi3DW7lyjjXPEpEr0sWQRkasJ07Se4B/+1jHoOZr1o=
+Received: from mobilestation ([178.176.56.174])
+        by smtp.gmail.com with ESMTPSA id q28-20020ac246fc000000b0051134f1cf5fsm237130lfo.271.2024.02.09.01.52.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Feb 2024 01:52:55 -0800 (PST)
+Date: Fri, 9 Feb 2024 12:52:52 +0300
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Frank Li <Frank.li@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>, 
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 5/6] dt-bindings: PCI: dwc: Add 'msg' register region
+Message-ID: <gl7zmzkezr6k4txrrgqyikspfah3vmgwwz2e3j5kwb2iarpkxv@3ofwrhtxl2sz>
+References: <20240202-pme_msg-v3-0-ff2af57a02ad@nxp.com>
+ <20240202-pme_msg-v3-5-ff2af57a02ad@nxp.com>
+ <eg7wrjp5ebz43g37fvebr44nwkoh4rptbtyu76nalbmgbbnqke@4zugpgwesyqd>
+ <20240205183048.GA3818249-robh@kernel.org>
+ <ZcEzYdZKotBJlR5i@lizhi-Precision-Tower-5810>
+ <ZcK2/tmLG9O7CBEH@lizhi-Precision-Tower-5810>
+ <luk5hswq4wnk5p7axml73qih35hio3y3pfnklctbn6rwres62s@mumnvygjh5ch>
+ <ZcOpehO3rzCfAwXf@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: usb: dwc3: Add system bus request info
-To: Frank Li <Frank.li@nxp.com>
-Cc: Conor Dooley <conor@kernel.org>, thinh.nguyen@synopsys.com,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- balbi@kernel.org, devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, mark.rutland@arm.com, mathias.nyman@intel.com,
- pku.leo@gmail.com, sergei.shtylyov@cogentembedded.com
-References: <20240123-nanometer-atlantic-6465b270043a@spud>
- <ZbAR/NQvjUnf2At+@lizhi-Precision-Tower-5810>
- <46781012-2678-4f6c-9aee-b020cabcbb28@linaro.org>
- <ZbA8ea9Ex+hMdDDZ@lizhi-Precision-Tower-5810>
- <ZbfB/KT+fzO/F2e5@lizhi-Precision-Tower-5810>
- <20240129-encode-catchable-f5712d561a47@spud>
- <ZbfjZoHiH7BsKyzl@lizhi-Precision-Tower-5810>
- <f3811c1f-eff2-4c7b-8cea-6d3115525235@linaro.org>
- <ZbkTvu0Q85zyieXr@lizhi-Precision-Tower-5810>
- <0be231a2-0c3d-4f18-8de2-3e4f1fe1cd29@linaro.org>
- <ZcVFlRug4ATBcH9R@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZcVFlRug4ATBcH9R@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZcOpehO3rzCfAwXf@lizhi-Precision-Tower-5810>
 
-On 08/02/2024 22:20, Frank Li wrote:
-> On Tue, Jan 30, 2024 at 05:10:54PM +0100, Krzysztof Kozlowski wrote:
->> On 30/01/2024 16:20, Frank Li wrote:
->>> On Tue, Jan 30, 2024 at 08:40:29AM +0100, Krzysztof Kozlowski wrote:
->>>> On 29/01/2024 18:41, Frank Li wrote:
->>>>> On Mon, Jan 29, 2024 at 04:49:21PM +0000, Conor Dooley wrote:
->>>>>> On Mon, Jan 29, 2024 at 10:19:24AM -0500, Frank Li wrote:
->>>>>>> On Tue, Jan 23, 2024 at 05:23:53PM -0500, Frank Li wrote:
->>>>>>>> On Tue, Jan 23, 2024 at 10:46:39PM +0100, Krzysztof Kozlowski wrote:
->>>>>>>>> On 23/01/2024 20:22, Frank Li wrote:
->>>>>>>>>> On Tue, Jan 23, 2024 at 06:42:27PM +0000, Conor Dooley wrote:
->>>>>>>>>>> On Tue, Jan 23, 2024 at 01:02:21PM -0500, Frank Li wrote:
->>>>>>>>>>>> On Tue, Jan 23, 2024 at 05:51:48PM +0000, Conor Dooley wrote:
->>>>>>>>>>>>> On Tue, Jan 23, 2024 at 12:49:27PM -0500, Frank Li wrote:
->>>>>>>>>>>>>> On Tue, Jan 23, 2024 at 05:27:13PM +0000, Conor Dooley wrote:
->>>>>>>>>>>>>>> On Tue, Jan 23, 2024 at 12:02:05PM -0500, Frank Li wrote:
->>>>>>>>>>>>>>>> Add device tree binding allow platform overwrite default value of *REQIN in
->>>>>>>>>>>>>>>> GSBUSCFG0.
->>>>>>>>>>>>>>>
->>>>>>>>>>>>>>> Why might a platform actually want to do this? Why does this need to be
->>>>>>>>>>>>>>> set at the board level and being aware of which SoC is in use is not
->>>>>>>>>>>>>>> sufficient for the driver to set the correct values?
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> In snps,dwc3.yaml, there are already similary proptery, such as
->>>>>>>>>>>>>> snps,incr-burst-type-adjustment. Use this method can keep whole dwc3 usb
->>>>>>>>>>>>>> driver keep consistent. And not all platform try enable hardware
->>>>>>>>>>>>>> dma_cohenrence. It is configable for difference platform.
->>>>>>>>>>>>>
->>>>>>>>>>>>> When you say "platform", what do you mean? I understand that term to
->>>>>>>>>>>>> mean a combination of board, soc and firmware.
->>>>>>>>>>>>
->>>>>>>>>>>> In my company's environment, "platform" is "board". I will use "board" in
->>>>>>>>>>>> future. Is it big difference here?
->>>>>>>>>>>
->>>>>>>>>>> Nah, that's close enough that it makes no difference here.
->>>>>>>>>>>
->>>>>>>>>>> I'd still like an explanation for why a platform would need to actually
->>>>>>>>>>> set these properties though, and why information about coherency cannot
->>>>>>>>>>> be determined from whether or not the boss the usb controller is on is
->>>>>>>>>>> communicated to be dma coherent via the existing devicetree properties
->>>>>>>>>>> for that purpose.
->>>>>>>>>>
->>>>>>>>>> Actually, I am not very clear about reason. I guest maybe treat off power
->>>>>>>>>> consumption and performance.
->>>>>>>>>>
->>>>>>>>>> What's your judgement about proptery, which should be in dts. Such as
->>>>>>>>>> reg, clk, reset, dma and irq, which is tighted with SOC. It is the fixed
->>>>>>>>>> value for every SOC. The board dts never change these.
->>>>>>>>>
->>>>>>>>> Then it can be deduced from the compatible and there is no need for new
->>>>>>>>> properties.
->>>>>>>>
->>>>>>>> Okay, I think "*reqinfo" match this. When new Soc(using compatible dwc usb
->>>>>>>> controller) appear regardless dma-cohorence or not, connect by AXI3 or
->>>>>>>> AXI4, needn't add new propterties. 
->>>>>>>
->>>>>>> Anyone have objection? I will prepare v2 to fix rob's bot error.
->>>>>>
->>>>>> I'm not sure what you want me to object to/not object to.
->>>>>> Your last message said "needn't add new propterties", seemingly in
->>>>>> agreement with Krzysztoff saying that it can be deduced from the
->>>>>> compatible. That seems like a good way forward for me.
->>>>>
->>>>> Okay, let me clear it again. dwc usb is quite common IP. The below is
->>>>> what reason why need "*reginfo* instead of using compatible string.
->>>>>
->>>>> 1. *reginfo* property is decscript hardware behevior, which will be changed
->>>>> at difference SOC.
->>>>> 2. it may change at board level according to if enable dma coherence.
->>>>
->>>> dma coherence is not a board property. Anyway, you said it will never
->>>> change in the board.
->>>
->>> Sorry, let's correct what my previous said. There are two kinds bus in
->>> system, one is dma_coherence, the other is none dma_coherence. There are
->>> some dwc usb core ip, which is the exact the same. Some connect to
->>> dma_coherence bus, some connect to non-dma_coherence bus.
->>>
->>> So dma_coherence will be varible for this case. we need set *reginfo* for
->>> dwc usb core, which connnect to dma_coherence bus.  not set "reginfo* for
->>> the dwc usb core, which connect to none dma_coherence bus.
->>
->> OK, that makes sense. Please provide link to upstream DTS
->> (mainline/next/lore link/other upstream projects) showing this.
+On Wed, Feb 07, 2024 at 11:02:02AM -0500, Frank Li wrote:
+> On Wed, Feb 07, 2024 at 03:37:30PM +0300, Serge Semin wrote:
+> > On Tue, Feb 06, 2024 at 05:47:26PM -0500, Frank Li wrote:
+> > > On Mon, Feb 05, 2024 at 02:13:37PM -0500, Frank Li wrote:
+> > > > On Mon, Feb 05, 2024 at 06:30:48PM +0000, Rob Herring wrote:
+> > > > > On Sat, Feb 03, 2024 at 01:44:31AM +0300, Serge Semin wrote:
+> > > > > > On Fri, Feb 02, 2024 at 10:11:27AM -0500, Frank Li wrote:
+> > > > > > > Add an outbound iATU-capable memory-region which will be used to send PCIe
+> > > > > > > message (such as PME_Turn_Off) to peripheral. So all platforms can use
+> > > > > > > common method to send out PME_Turn_Off message by using one outbound iATU.
+> > > > > > > 
+> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > ---
+> > > > > > >  Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml | 4 ++++
+> > > > > > >  1 file changed, 4 insertions(+)
+> > > > > > > 
+> > > > > > > diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
+> > > > > > > index 022055edbf9e6..25a5420a9ce1e 100644
+> > > > > > > --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
+> > > > > > > +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
+> > > > > > > @@ -101,6 +101,10 @@ properties:
+> > > > > > 
+> > > > > > >              Outbound iATU-capable memory-region which will be used to access
+> > > > > > >              the peripheral PCIe devices configuration space.
+> > > > > > >            const: config
+> > > > > > > +        - description:
+> > > > > > > +            Outbound iATU-capable memory-region which will be used to send
+> > > > > > > +            PCIe message (such as PME_Turn_Off) to peripheral.
+> > > > > > > +          const: msg
+> > > > > > 
+> > > > > > Note there is a good chance Rob won't like this change. AFAIR he
+> > > > > > already expressed a concern regarding having the "config" reg-name
+> > > > > > describing a memory space within the outbound iATU memory which is
+> > > > > > normally defined by the "ranges" property. Adding a new reg-entry with
+> > > > > > similar semantics I guess won't receive warm welcome.
+> > > > > 
+> > > > > I do think it is a bit questionable. Ideally, the driver could 
+> > > > > just configure this on its own. However, since we don't describe all of 
+> > > > > the CPU address space (that's input to the iATU) already, that's not 
+> > > > > going to be possible. I suppose we could fix that, but then config space 
+> > > > > would have to be handled differently too.
+> > > > 
+> > > > Sorry, I have not understand what your means. Do you means, you want
+> > > > a "cpu-space", for example, 0x8000000 - 0x9000000 for all ATU. 
+> > > > 
+> > > > Then allocated some space to 'config', 'io', 'memory' and this 'msg'.
+> > > 
+> > > @rob:
+> > > 
+> > >     So far, I think "msg" is feasilbe solution. Or give me some little
+> > > detail direction?
+> > 
+> > Found the Rob' note about the iATU-space chunks utilized in the reg
+> > property:
+> > https://lore.kernel.org/linux-pci/CAL_JsqLp7QVgxrAZkW=z38iB7SV5VeWH1O6s+DVCm9p338Czdw@mail.gmail.com/
+> > 
+> > So basically Rob meant back then that
+> > either originally we should have defined a new reg-name like "atu-out"
+> > with the entire outbound iATU CPU-space specified and unpin the
+> > regions like "config"/"ecam"/"msg"/etc from there in the driver
+> > or, well, stick to the chunking further. The later path was chosen
+> > after the patch with the "ecam" reg-name was accepted (see the link
+> > above).
+> > 
+> > Really ECAM/config space access, custom TLP messages, legacy interrupt
+> > TLPs, etc are all application-specific features. Each of them is
+> > implemented based on a bit specific but basically the same outbound
+> > iATU engine setup. Thus from the "DT is a hardware description" point
+> > of view it would have been enough to describe the entire outbound iATU
+> > CPU address space and then let the software do the space
+> > reconfiguration in runtime based on it' application needs.
 > 
-> Look like I still have not found the real case yet. But I think it is
-> existed (maybe not upstream yet). Can I forward using this method?
+> There are "addr_space" in EP mode, which useful map out outbound iatu
+> region. We can reuse this name.
+> 
+> To keep compatiblity, cut hole from 'config' and 'ranges'. If there are
+> not 'config', we can alloc a 1M(default) from top for 'config', then, 4K
+> (default) for msg, 64K( for IO if not IO region in 'ranges'), left is
+> mem region. We can config each region size by module parameter or drvdata.
+> 
+> So we can deprecate 'config', even 'ranges'
 
-No, because downstream code does things wrong and does not follow basic
-principles...
+Not sure I fully understand what you mean. In anyway the "config" reg
+name is highly utilized by the DW PCIe IP-core instances. We can't
+deprecate it that easily. At least the backwards compatibility must be
+preserved. Moreover "addr_space" is also just a single value reg which
+won't solve a problem with the disjoint DW PCIe outbound iATU memory
+regions.
 
+The "ranges" property is a part of the DT specification.  The
+PCI-specific way of the property-based mapping is de-facto a standard
+too. So this can't be deprecated.
 
-Best regards,
-Krzysztof
+> 
+> > 
+> > * Rob, correct me if am wrong.
+> > 
+> > On the other hand it's possible to have more than one disjoint CPU
+> > address region handled by the outbound iATU (especially if there is no
+> > AXI-bridge enabled, see XALI - application transmit client interfaces
+> > in HW manual). Thus having a single reg-property might get to be
+> > inapplicable in some cases. Thinking about that got me to an idea.
+> > What about just extending the PCIe "ranges" property flags
+> > (IORESOURCE_TYPE_BITS) with the new ones in this case indicating the
+> > TLP Msg mapping? Thus we can avoid creating app-specific reg-names and
+> > use the flag to define a custom memory range for the TLP messages
+> > generation. At some point it can be also utilized for the config-space
+> > mapping. What do you think?
+> 
 
+> IORESOURCE_TYPE_BITS is 1f, Only 5bit. If extend IORESOURCE_TYPE_BITS, 
+> all IORESOURCE_* bit need move. And it is actual MEMORY regain. 
+
+No. The lowest four bits aren't flags but the actual value. They are
+retrieved from the PCI-specific memory ranges mapping:
+https://elinux.org/Device_Tree_Usage#PCI_Address_Translation
+https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_64.c#L141
+https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_32.c#L78
+Currently only first four out of _sixteen_ values have been defined so
+far. So we can freely use some of the free values for custom TLPs,
+etc. Note the config-space is already defined by the ranges property
+having the 0x0 space code (see the first link above), but it isn't
+currently supported by the PCI subsystem. So at least that option can
+be considered as a ready-to-implement replacement for the "config"
+reg-name.
+
+> 
+> Or we can use IORESOURCE_BITS (0xff)
+> 
+> /* PCI ROM control bits (IORESOURCE_BITS) */
+> #define IORESOURCE_ROM_ENABLE		(1<<0)	/* ROM is enabled, same as PCI_ROM_ADDRESS_ENABLE */
+> #define IORESOURCE_ROM_SHADOW		(1<<1)	/* Use RAM image, not ROM BAR */
+> 
+> /* PCI control bits.  Shares IORESOURCE_BITS with above PCI ROM.  */
+> #define IORESOURCE_PCI_FIXED		(1<<4)	/* Do not move resource */
+> #define IORESOURCE_PCI_EA_BEI		(1<<5)	/* BAR Equivalent Indicator */
+> 
+> we can add
+> 
+> IORESOURCE_PRIV_WINDOWS			(1<<6)
+> 
+> I think previous method was more extendable. How do you think?
+
+IMO extending the PCIe "ranges" property semantics looks more
+promising, more flexible and more portable across various PCIe
+controllers. But the most importantly is what Rob and Bjorn think
+about that, not me.
+
+-Serge(y)
+
+> 
+> > 
+> > -Serge(y)
+> > 
+> > > 
+> > > Frank
+> > > 
+> > > > 
+> > > > Frank
+> > > > 
+> > > > > 
+> > > > > Rob
