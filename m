@@ -1,219 +1,229 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2070.outbound.protection.outlook.com [40.107.7.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4445A36E
-	for <imx@lists.linux.dev>; Fri,  9 Feb 2024 01:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707440703; cv=fail; b=Vvrd6W4YOpRF34X6jESm6JJyFAHw+t23QIMnZ/ISPOS9243NCbk/dpuGZI35lX18VrMdEYUZ9y2umo4BPEst2lPEXlvXtX+mTARm2QXT9FFXpFznc1yfiuNpitq6a25HNbtVOEJc/b3vebrHkBjVOUfUIIbj1lggI9HcJn2K9Hk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707440703; c=relaxed/simple;
-	bh=dRfOZuqRUtFaArT6hOmglas/LsidRqw/YQI6KbBnLt8=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bbO+6c0caopcnDRk3urI7OYT3AEBxlnGjzgwW5ulhR4LxZO8YSkaWsBtVVjeYPitGU9U8dQnRbGE2fiRn4e9rvHJ8vsLfLRnOVqaNAq+N1mJQ8685bITbvsVMwV5Qxsc1/dCpMZGOVXDsufLXwc4HhgEjQW3upMZLeKaxVywUGo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Z1wBiHvc; arc=fail smtp.client-ip=40.107.7.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E84C657D0
+	for <imx@lists.linux.dev>; Fri,  9 Feb 2024 07:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707463908; cv=none; b=egC9a5bskTpXnVtejf5ZcWN7KyaL7D5zlfsGZWywBmgJerCRfhWmOw5w0PqNb8QmQlQ/aloJdsUhqJr2bj6IwNEAgccgDX+GGqGXVYgAoT6Gs60vE1qUYJTOpm6Ydu40OfTC8Mo0VKDYl4sHDfxrtYK9fS+wg6sC8Iwd6Jtrexk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707463908; c=relaxed/simple;
+	bh=xFmNZJS37ahgZTb4n847UyVexynqHYAijXk03hvaqSk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C0z9qTp/8Du3NDnrJ+9nxpQxPCn/P48MtSueCZwp5XM1Fw2bQAXj60omLz+6l5UeSliEZ6VYy4sQpMCcMD5eQivEEvM92cdWS63KaX9m/s0ZJfxqce1X05gJdeBw/vaGuPvDuQWnqrC1rpzbT/FtUve+Wke5E/poJ078ZI4Hd9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LxAyhYxs; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Z1wBiHvc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fvj9CGkRDAbb3xNMA2h8FiP2B/1xQ3UFrmAlDAGC42AAb1riQM8pNeJh/20ZL1Z2N/5pfwPBcr5soH6gN4X5mmibdjWa7+o2epqqIGebjXjafLPmTU/mchxVx0p48YnOKV7QICYuBtcGg3F43GLaASGqQNVu04YkHAQ5NLVEIFKtLcdlzKimkE7U9RVOsgxb6g9lHehI4k9XtkwPXEV2EFrKsndqXmw2lJAsO8SJfRsjRAwcfv0nF+4h+2eU8qBO1Xpi98ynDnfHQSFuA448aDGcJwsgrHvES/3InSOBiadCT5f/R5YPLqpcz28NdSdUJ53HYZyuip4gASDVD7VLvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XUees2+CYuNSMnVFfpburGEEfa/Pi0zJJBFblNMWZYQ=;
- b=oRxvDrHoLxbB4/z8j/jCVvfG/ijXY7gZj3MQQJzXS2wum/unV2VD4ATvYgcA3SQpjp4V0wZUHcbwpNZKeusIdCHR9no63yitnrbWWn1AubHCl+F/dCsE9Fa60SN8Ft14uibXvOJDpWHKmcM8c1THYP0rHpQGjuwgerwQs3XfK7Rp09hLLNwx6enfdN/llVUZ2BvUPchoqFV8KrUPxuY0BCu3wiERxjTHB2v5rUWX3iKQaTaIYV3mM3lK4XuwoBRFh78+rp/bmSwFe2KiNF/tcsPIUKWDVtULKJUQy37Mq/acbBo3ykADNkcZlT9grSNVZDjRdiJnC4zgVocJoo8M+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XUees2+CYuNSMnVFfpburGEEfa/Pi0zJJBFblNMWZYQ=;
- b=Z1wBiHvcwsLD16rSokdQ9PSKwkJYpjkqAklfF8LicRoCczWUbfu3OifJZESYW4taBMpXDC5cM7fqNcs3+GTpso332nYYmpyNeDwMiS+uI2EfEC2oEc/cxhw7QYn+uEUnWtdi9xL3mKGjUbtrZLHfPaXBZVNHL5WNWO/YUKO1qHc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB9764.eurprd04.prod.outlook.com (2603:10a6:800:1d2::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.43; Fri, 9 Feb
- 2024 01:04:56 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7270.025; Fri, 9 Feb 2024
- 01:04:56 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>,
-	imx@lists.linux.dev (open list:FREESCALE eDMA DRIVER),
-	dmaengine@vger.kernel.org (open list:FREESCALE eDMA DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 2/2] dmaengine: fsl-edma: use _Generic to handle difference type
-Date: Thu,  8 Feb 2024 20:04:23 -0500
-Message-Id: <20240209010425.2001891-2-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240209010425.2001891-1-Frank.Li@nxp.com>
-References: <20240209010425.2001891-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA9PR13CA0148.namprd13.prod.outlook.com
- (2603:10b6:806:27::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LxAyhYxs"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-41060e5b664so3579785e9.1
+        for <imx@lists.linux.dev>; Thu, 08 Feb 2024 23:31:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707463905; x=1708068705; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=czGphICzS+JvFtvh9UqhTVKfL9+aki9x9lhTNwlN9yA=;
+        b=LxAyhYxsHCu23AvsQTwDVHZYMinvpvLRnfcOqyU61RrQWqUnnuSD+hDxDYxPZMPjno
+         QYVOLSUL6RP6V2QyGzeN1hHS+WpLVNlqHhab7jAGPr9cMi+xlp25b3Crmr+LQL3shbHM
+         h9531mDDkedZeasa+95xE1jWM9Pw3fDtY3rmrAKZ/ZO9cBLGHz0ty+ekf8MwU6eoOKLY
+         j2EhhcSs5KKdykzjkvPssdBIVaa6al2zj0cLW4B/U7YcEHCQ6l/nQgqIsZbsO5OKuOX/
+         Y3zPQLiYQMhkHHBLKhfZ/2mjNjG6kl0Kpk2c0yInFLc3BVb3aWWPrx4OWj01KWwkXJH1
+         JERg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707463905; x=1708068705;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=czGphICzS+JvFtvh9UqhTVKfL9+aki9x9lhTNwlN9yA=;
+        b=LjCwa5/BsA5QM+OD/3nCFwCuccZLzoE0ozyFImo53L6RnqfO+L34HkLNJxk9Uv2v9j
+         FcGA0acJ9lp7MFvbKEdi/DLFABcuwfksZOZL0WG373Xr1yDc6kTblA5BhwbDG39xFJOh
+         LqnlVSGOHMvZJPAxtMJEwJ2PdBCfE7xVo8XWdVt2Zv+n7CLea64JBNa7RZOjTnNlXYBN
+         zFOwAwD3fDkJKL3knpozpSbBEHyLeQ8pZBBidZZ1ZEk2/xtm55NPPTAsJWDH7EC9MPEX
+         j/t9r0XUabh+5NmKpjw4Jh5lUI2I/hJkcUi43ymhizj5pFmQaUL50kr12as69Y1j4x7W
+         zd4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVReSZLGO/POhTGX4Xy/KlDqO6mLrk3j4j3PBLzJPfJgHBPNCaRJ9lOG4RGiu7+qca5OWWgoi4PBlv5+WEIcCMkSAg5
+X-Gm-Message-State: AOJu0YysaxIc9IwhBdGsXM9ldvXf6WdpIzK/7kyYIAihe7ldRmNO/K17
+	T0keu1VwyP4EVsCBSE5TVOmkCPtHUa+aoj+lPzbionGkZYeMKiHNV0CUwPaRgjs=
+X-Google-Smtp-Source: AGHT+IF21UJMU+NhR40BDtgwZB2n++F2lik57iCGic0Zp+dyoR82suy8CBdyf5CO29MzoJwnGZq1JA==
+X-Received: by 2002:a05:600c:3ac9:b0:40e:fbb3:f67c with SMTP id d9-20020a05600c3ac900b0040efbb3f67cmr506540wms.38.1707463904746;
+        Thu, 08 Feb 2024 23:31:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXoBgw94rOUHYSUFCtX3RXxcYDkM2MLAIzu1+et4Zr0eIQRwlqrzUpLl0+ZcoWHIEJJjOa0EfgLKFZZdMeVb02GCQhSh98ADzA2MF+Wy5IQ16yXQNOwo/YnmiJCbDB3j3AHuSmn/hg53wYwU1Lym6joVm0JDK3oRO4T0qELvIf9vkegm1nFE83q/Z4spBSpLhnS/qpS+t5j/lHRU0ejsDd/0X3Guj/U9jcPuq0sy5OtzFzRR2mLT7lpTvelifSlCwC7pIMHk1TLX+Oj01DQKqSUJPUvQPLnvvt67sABkXQGaXJLpTaF5LcltoOnQno32ad3xIPcA91exP/P7JYSf6Gn7GgZK9q9jOpa9iClJr+Vd7KKYM2/DA5ISAzVXwpZvqoQ2mfUlQ7NR/7XhS0cCcXK6YQa86nb4w/fM5GNZpnLYHdw2bgitwiDDiGw2zBkQVbIYNU7cQlGSMKavY7zSjulMSn0b5o6ObKN2fiv1u/XUPRClg1+PUXK+CpDSnld
+Received: from [192.168.1.20] ([178.197.222.62])
+        by smtp.gmail.com with ESMTPSA id f7-20020a05600c154700b0041039d20454sm1664309wmg.41.2024.02.08.23.31.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Feb 2024 23:31:44 -0800 (PST)
+Message-ID: <973a15f2-4841-43ee-899b-d6f8ac57dde2@linaro.org>
+Date: Fri, 9 Feb 2024 08:31:42 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9764:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad5c4360-eff5-42de-217b-08dc290b217a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	KoQN9Y8MB2e2G2GMRMEij+W1u6gjT4qhG44RZ9PVbWih8eyG6Q6nWWIm5t3vhXmes2Xwbxq0szJlASSZs+rCDX1UuhRxD/E0QBIrIhj8XHGq5EdAY4bGXWecGqMztHpcVFy7riZOZHemm90tz1JQy+PZFhfY99vqBPG3VuSULW2ZXa47KeAucl6w9Ue1f6F+s9Gr4IR5VvLg6aDYoMZsYxZ4oavNU5v1Wqji0Fdgf2toXGlijUmDbbSb8hoqhqYaXT0qAVkEyl6heYK8bCv43bJBDXGukLLidf2jR9QC5DWw6FVtFO9S2vQ8gPnXv4x2smGcyCGqxdvM9hI1zBPA6fSO7ABc8ldRH1vY8FB7glFq6Z5ehEQRuFvRTyldC98wlKpxo5CrP1BxpaIIyn2OrXIg0nQvZ8ToW766MatsmfFXwBKFNj8T2qf7ie6JndMAobRhuGdUoERsJyINGd0W0nIerrBjMNtYFpE0e0hsR2BfX+lbpu2alb/PIfAZFXxW3oDMBI5qn1ibcIpKlZDDpD2kQgEX7UIGYPo4m9iT77LOgDz3w+sUhZprnOfBX0T9mPAi+U8bQ3a4VwUusM8qysCRcB85flhqD353r01xh9r6rXpMex5ntS7PuypZkjpd
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(39860400002)(396003)(376002)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(2906002)(8676002)(8936002)(5660300002)(83380400001)(2616005)(26005)(38100700002)(1076003)(36756003)(86362001)(38350700005)(66946007)(66476007)(66556008)(316002)(6666004)(52116002)(6506007)(6512007)(6486002)(478600001)(41300700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uSEaH78ZxhL58gMIuUhY5Bdqx5sBXhaLkybXflR+Oy4O+G1qA7YOR6DFqXfw?=
- =?us-ascii?Q?HQifxrq6AjLxfEZVdZ36WZfcObid2ewI4NwA+lKftONRk/IrRatmbUp/r7AG?=
- =?us-ascii?Q?3A0p1UA7ljFwcdPfPYyg7KmIDW3t4/du+cgZJPirJiX0I0IYlUwXHuGAROIV?=
- =?us-ascii?Q?cYHv6dfJY64O2+TMBi4tH62aLJOfWdGmRZCbI/hGeJ8wFlTtFqeRKB+60E4o?=
- =?us-ascii?Q?7ec/OO+YvxpX72N1Pokh6a3uAQ9aAMofjHFyehLWf3fn75guI+TxqZyGAc7A?=
- =?us-ascii?Q?tqET43QFYEyd1+aApZWE+06FPEtkkPNQ8DQLxgfQvHvEuyjjiCD4K/fDZK7i?=
- =?us-ascii?Q?OriPPX2kXlInZ37jb4J35CpMoi8b/gQxFq63LOdczTcH8oY6sIIsS5oHuAeN?=
- =?us-ascii?Q?l4Z1mhDUfqcrCF05QEsPxAD6jvraEvUWsv6B9QtAn7e8K+0i1Tathv5H/OvE?=
- =?us-ascii?Q?KNSPQbMtZCggtBMrUwE4+JnsNlPJiCifxrJlEQHASzfNP05rjEcAosAp/bYb?=
- =?us-ascii?Q?tTFshJkumxtjCO44YGykBNQzdNk/i/59ERBS9Tezv8LZiaId0YOTBUrtlgkZ?=
- =?us-ascii?Q?frpO/l7TVSd/IB6OZuEr6dCUbmug6EYka0YYcVimzAx9uXSSrmgvXkNbIddp?=
- =?us-ascii?Q?ML+RucjQAbBxW6h/o5FvX4qOn9JN81jGkbnUhzRUjwRpVOqbSWBPejd2VcGL?=
- =?us-ascii?Q?R6pdTJEU0fkMGbRePmxpHNqznlfdZR4PyrL5hwAXHfmyqAIY+q5g7aBh48n8?=
- =?us-ascii?Q?rYW+CFzj1xSKdtVHHBRmcvgcIXjsLnDm0hnLBH4iAXuhHBKdmLKjIoCHyCsq?=
- =?us-ascii?Q?GSb0ppfEoPdmvvesGW8z1zCPEg/3VuEjn1FBHOG57wvfdMwFtz3zpLnX1gGw?=
- =?us-ascii?Q?XB5EANVf1ZhHzmwvrm3TA3w/sUTHF41DNxm2h+yY8oxf22MANDFhH7vVpvrJ?=
- =?us-ascii?Q?dIn061PQudjbmnTGSyWJW7M2CwvVA3bJIloI9qVigTOysb5VjRCFxVK1hU8H?=
- =?us-ascii?Q?U5nLZ2WU6IRuLvnVxc3RIJ8t39B+shqhVN+dyV6EfWo6HyclU/eSeM5APZ6F?=
- =?us-ascii?Q?u+/3KRQEErE3qX2eyOrOw8ZhPqtR6rKAqRNcNf+cZnO+z9tFf+l9yTinya96?=
- =?us-ascii?Q?mXKdaSkhyt27DNvqIN+fOLS3k68VQM/ZTtce9Kl65NjtVUIPK9hLyGbpA7fz?=
- =?us-ascii?Q?Penuyi5oqt3JFzpUWhGNbWCWXFOQXdtf1ZtRFNACFBqe2QH9t0jOi1jWLGOm?=
- =?us-ascii?Q?k1NZG3QB1l80oJFDaVkRw6mF8U2z3hSwMVqG3xo9joW+JdE49sWpTKECnSY/?=
- =?us-ascii?Q?8Fzbb3wFAUY6+o4sOdEBRBcc4MknO1qOAP/CQ2HT2U0XmQ+cf3568c3Ot27/?=
- =?us-ascii?Q?vcJWx3DxncCiLm0rOL6FfzMM2dZZno7Ood5qrMRYooKADIMZ8R8LhFK24M7u?=
- =?us-ascii?Q?yZMFFgLBh/OxREdqpqKP0gMpvIVXP8MeVapxph/OylfsZ23z2E16ZhUwv2on?=
- =?us-ascii?Q?sjDcyWTKN7t1HNgoswJLw1lovc9wVEqrPipJgE7l28NDvhgfsdIcddtxVW3g?=
- =?us-ascii?Q?ZxlPhLDqoFh8Ecra3CQAb04Ir4RTd2IEk9EC20eg?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad5c4360-eff5-42de-217b-08dc290b217a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2024 01:04:56.4240
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JUlFVrWy2PYa7M78ZL3vhTCAIOdpZwNj0XbxypjylgQPatf/F2hqVGRwz5XokRxu8tUQ4KDKxd5j2vmZfVsgXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9764
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: usb: dwc3: Add system bus request info
+To: Frank Li <Frank.li@nxp.com>
+Cc: Conor Dooley <conor@kernel.org>, thinh.nguyen@synopsys.com,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ balbi@kernel.org, devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mark.rutland@arm.com, mathias.nyman@intel.com,
+ pku.leo@gmail.com, sergei.shtylyov@cogentembedded.com
+References: <20240123-nanometer-atlantic-6465b270043a@spud>
+ <ZbAR/NQvjUnf2At+@lizhi-Precision-Tower-5810>
+ <46781012-2678-4f6c-9aee-b020cabcbb28@linaro.org>
+ <ZbA8ea9Ex+hMdDDZ@lizhi-Precision-Tower-5810>
+ <ZbfB/KT+fzO/F2e5@lizhi-Precision-Tower-5810>
+ <20240129-encode-catchable-f5712d561a47@spud>
+ <ZbfjZoHiH7BsKyzl@lizhi-Precision-Tower-5810>
+ <f3811c1f-eff2-4c7b-8cea-6d3115525235@linaro.org>
+ <ZbkTvu0Q85zyieXr@lizhi-Precision-Tower-5810>
+ <0be231a2-0c3d-4f18-8de2-3e4f1fe1cd29@linaro.org>
+ <ZcVFlRug4ATBcH9R@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <ZcVFlRug4ATBcH9R@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Introduce the use of C11 standard _Generic in the fsl-edma driver for
-handling different TCD field types. Improve code clarity and help
-compiler optimization.
+On 08/02/2024 22:20, Frank Li wrote:
+> On Tue, Jan 30, 2024 at 05:10:54PM +0100, Krzysztof Kozlowski wrote:
+>> On 30/01/2024 16:20, Frank Li wrote:
+>>> On Tue, Jan 30, 2024 at 08:40:29AM +0100, Krzysztof Kozlowski wrote:
+>>>> On 29/01/2024 18:41, Frank Li wrote:
+>>>>> On Mon, Jan 29, 2024 at 04:49:21PM +0000, Conor Dooley wrote:
+>>>>>> On Mon, Jan 29, 2024 at 10:19:24AM -0500, Frank Li wrote:
+>>>>>>> On Tue, Jan 23, 2024 at 05:23:53PM -0500, Frank Li wrote:
+>>>>>>>> On Tue, Jan 23, 2024 at 10:46:39PM +0100, Krzysztof Kozlowski wrote:
+>>>>>>>>> On 23/01/2024 20:22, Frank Li wrote:
+>>>>>>>>>> On Tue, Jan 23, 2024 at 06:42:27PM +0000, Conor Dooley wrote:
+>>>>>>>>>>> On Tue, Jan 23, 2024 at 01:02:21PM -0500, Frank Li wrote:
+>>>>>>>>>>>> On Tue, Jan 23, 2024 at 05:51:48PM +0000, Conor Dooley wrote:
+>>>>>>>>>>>>> On Tue, Jan 23, 2024 at 12:49:27PM -0500, Frank Li wrote:
+>>>>>>>>>>>>>> On Tue, Jan 23, 2024 at 05:27:13PM +0000, Conor Dooley wrote:
+>>>>>>>>>>>>>>> On Tue, Jan 23, 2024 at 12:02:05PM -0500, Frank Li wrote:
+>>>>>>>>>>>>>>>> Add device tree binding allow platform overwrite default value of *REQIN in
+>>>>>>>>>>>>>>>> GSBUSCFG0.
+>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>> Why might a platform actually want to do this? Why does this need to be
+>>>>>>>>>>>>>>> set at the board level and being aware of which SoC is in use is not
+>>>>>>>>>>>>>>> sufficient for the driver to set the correct values?
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> In snps,dwc3.yaml, there are already similary proptery, such as
+>>>>>>>>>>>>>> snps,incr-burst-type-adjustment. Use this method can keep whole dwc3 usb
+>>>>>>>>>>>>>> driver keep consistent. And not all platform try enable hardware
+>>>>>>>>>>>>>> dma_cohenrence. It is configable for difference platform.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> When you say "platform", what do you mean? I understand that term to
+>>>>>>>>>>>>> mean a combination of board, soc and firmware.
+>>>>>>>>>>>>
+>>>>>>>>>>>> In my company's environment, "platform" is "board". I will use "board" in
+>>>>>>>>>>>> future. Is it big difference here?
+>>>>>>>>>>>
+>>>>>>>>>>> Nah, that's close enough that it makes no difference here.
+>>>>>>>>>>>
+>>>>>>>>>>> I'd still like an explanation for why a platform would need to actually
+>>>>>>>>>>> set these properties though, and why information about coherency cannot
+>>>>>>>>>>> be determined from whether or not the boss the usb controller is on is
+>>>>>>>>>>> communicated to be dma coherent via the existing devicetree properties
+>>>>>>>>>>> for that purpose.
+>>>>>>>>>>
+>>>>>>>>>> Actually, I am not very clear about reason. I guest maybe treat off power
+>>>>>>>>>> consumption and performance.
+>>>>>>>>>>
+>>>>>>>>>> What's your judgement about proptery, which should be in dts. Such as
+>>>>>>>>>> reg, clk, reset, dma and irq, which is tighted with SOC. It is the fixed
+>>>>>>>>>> value for every SOC. The board dts never change these.
+>>>>>>>>>
+>>>>>>>>> Then it can be deduced from the compatible and there is no need for new
+>>>>>>>>> properties.
+>>>>>>>>
+>>>>>>>> Okay, I think "*reqinfo" match this. When new Soc(using compatible dwc usb
+>>>>>>>> controller) appear regardless dma-cohorence or not, connect by AXI3 or
+>>>>>>>> AXI4, needn't add new propterties. 
+>>>>>>>
+>>>>>>> Anyone have objection? I will prepare v2 to fix rob's bot error.
+>>>>>>
+>>>>>> I'm not sure what you want me to object to/not object to.
+>>>>>> Your last message said "needn't add new propterties", seemingly in
+>>>>>> agreement with Krzysztoff saying that it can be deduced from the
+>>>>>> compatible. That seems like a good way forward for me.
+>>>>>
+>>>>> Okay, let me clear it again. dwc usb is quite common IP. The below is
+>>>>> what reason why need "*reginfo* instead of using compatible string.
+>>>>>
+>>>>> 1. *reginfo* property is decscript hardware behevior, which will be changed
+>>>>> at difference SOC.
+>>>>> 2. it may change at board level according to if enable dma coherence.
+>>>>
+>>>> dma coherence is not a board property. Anyway, you said it will never
+>>>> change in the board.
+>>>
+>>> Sorry, let's correct what my previous said. There are two kinds bus in
+>>> system, one is dma_coherence, the other is none dma_coherence. There are
+>>> some dwc usb core ip, which is the exact the same. Some connect to
+>>> dma_coherence bus, some connect to non-dma_coherence bus.
+>>>
+>>> So dma_coherence will be varible for this case. we need set *reginfo* for
+>>> dwc usb core, which connnect to dma_coherence bus.  not set "reginfo* for
+>>> the dwc usb core, which connect to none dma_coherence bus.
+>>
+>> OK, that makes sense. Please provide link to upstream DTS
+>> (mainline/next/lore link/other upstream projects) showing this.
+> 
+> Look like I still have not found the real case yet. But I think it is
+> existed (maybe not upstream yet). Can I forward using this method?
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/dma/fsl-edma-common.h | 59 +++++++++++++----------------------
- 1 file changed, 21 insertions(+), 38 deletions(-)
+No, because downstream code does things wrong and does not follow basic
+principles...
 
-diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
-index 365affd5b0764..fabd2d73a7c22 100644
---- a/drivers/dma/fsl-edma-common.h
-+++ b/drivers/dma/fsl-edma-common.h
-@@ -255,12 +255,11 @@ static inline u32 fsl_edma_drvflags(struct fsl_edma_chan *fsl_chan)
- }
- 
- #define edma_read_tcdreg_c(chan, _tcd,  __name)				\
--(sizeof((_tcd)->__name) == sizeof(u64) ?				\
--	edma_readq(chan->edma, &(_tcd)->__name) :			\
--		((sizeof((_tcd)->__name) == sizeof(u32)) ?		\
--			edma_readl(chan->edma, &(_tcd)->__name) :	\
--			edma_readw(chan->edma, &(_tcd)->__name)		\
--		))
-+_Generic(((_tcd)->__name),						\
-+	__le64 : edma_readq(chan->edma, &(_tcd)->__name),		\
-+	__le32 : edma_readl(chan->edma, &(_tcd)->__name),		\
-+	__le16 : edma_readw(chan->edma, &(_tcd)->__name)		\
-+	)
- 
- #define edma_read_tcdreg(chan, __name)								\
- ((fsl_edma_drvflags(chan) & FSL_EDMA_DRV_TCD64) ?						\
-@@ -269,22 +268,12 @@ static inline u32 fsl_edma_drvflags(struct fsl_edma_chan *fsl_chan)
- )
- 
- #define edma_write_tcdreg_c(chan, _tcd, _val, __name)				\
--do {										\
--	switch (sizeof(_tcd->__name)) {						\
--	case sizeof(u64):							\
--		edma_writeq(chan->edma, (u64 __force)_val, &_tcd->__name);	\
--		break;								\
--	case sizeof(u32):							\
--		edma_writel(chan->edma, (u32 __force)_val, &_tcd->__name);	\
--		break;								\
--	case sizeof(u16):							\
--		edma_writew(chan->edma, (u16 __force)_val, &_tcd->__name);	\
--		break;								\
--	case sizeof(u8):							\
--		edma_writeb(chan->edma, (u8 __force)_val, &_tcd->__name);	\
--		break;								\
--	}									\
--} while (0)
-+_Generic((_tcd->__name),							\
-+	__le64 : edma_writeq(chan->edma, _val, &_tcd->__name),			\
-+	__le32 : edma_writel(chan->edma, _val, &_tcd->__name),			\
-+	__le16 : edma_writew(chan->edma, _val, &_tcd->__name),			\
-+	u8 : edma_writeb(chan->edma, _val, &_tcd->__name)			\
-+	)
- 
- #define edma_write_tcdreg(chan, val, __name)							   \
- do {												   \
-@@ -325,9 +314,11 @@ do {	\
- 						 (((struct fsl_edma_hw_tcd *)_tcd)->_field))
- 
- #define fsl_edma_le_to_cpu(x)						\
--(sizeof(x) == sizeof(u64) ? le64_to_cpu((__force __le64)(x)) :		\
--	(sizeof(x) == sizeof(u32) ? le32_to_cpu((__force __le32)(x)) :	\
--				    le16_to_cpu((__force __le16)(x))))
-+_Generic((x),								\
-+	__le64 : le64_to_cpu((x)),					\
-+	__le32 : le32_to_cpu((x)),					\
-+	__le16 : le16_to_cpu((x))					\
-+)
- 
- #define fsl_edma_get_tcd_to_cpu(_chan, _tcd, _field)				\
- (fsl_edma_drvflags(_chan) & FSL_EDMA_DRV_TCD64 ?				\
-@@ -335,19 +326,11 @@ do {	\
- 	fsl_edma_le_to_cpu(((struct fsl_edma_hw_tcd *)_tcd)->_field))
- 
- #define fsl_edma_set_tcd_to_le_c(_tcd, _val, _field)					\
--do {											\
--	switch (sizeof((_tcd)->_field)) {						\
--	case sizeof(u64):								\
--		*(__force __le64 *)(&((_tcd)->_field)) = cpu_to_le64(_val);		\
--		break;									\
--	case sizeof(u32):								\
--		*(__force __le32 *)(&((_tcd)->_field)) = cpu_to_le32(_val);		\
--		break;									\
--	case sizeof(u16):								\
--		*(__force __le16 *)(&((_tcd)->_field)) = cpu_to_le16(_val);		\
--		break;									\
--	}										\
--} while (0)
-+_Generic(((_tcd)->_field),								\
-+	u64 : (_tcd)->_field = cpu_to_le64(_val),					\
-+	u32 : (_tcd)->_field = cpu_to_le32(_val),					\
-+	u16 : (_tcd)->_field = cpu_to_le16(_val)					\
-+)
- 
- #define fsl_edma_set_tcd_to_le(_chan, _tcd, _val, _field)	\
- do {								\
--- 
-2.34.1
+
+Best regards,
+Krzysztof
 
