@@ -1,347 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2044.outbound.protection.outlook.com [40.107.8.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD955F856;
-	Tue, 13 Feb 2024 16:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707841218; cv=none; b=WHA9qVPuS4pG/LHgOvjNaKB1MzQ9ndVPtxGI3u4v0WrFZ/fEBB8o1L3icKY5IKvUM2fr6iu85Ybw4OQnKhYQPB0/gGSyG+svoCBqWJl7i5j2BxuGl2AqTR7qdHPw7ixuIjqqYTcGhS96Nd6Pii/bj75ZNLdH5UOcJZfv0z1RSMo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707841218; c=relaxed/simple;
-	bh=c8A66FpezMmJ/dIlhwWg0VG1aAG6UpKigFfPKlDGS6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CkOt9oht4fqU9l33O0RrPihnPQjp0ryUvgtB2RS5q/zx5eHbQax86x2dwteejM6Tk/vu9KTTocsRsqnvg1mkm13IQVWzlI2q6JdqzgYG8XaJUnQD6G0bniWGffZRnMhI+JffXha7wbhju4DZLvdX156dm6clv+mm0AmK3Phfi0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFcgPe9m; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E1060872
+	for <imx@lists.linux.dev>; Tue, 13 Feb 2024 21:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707861077; cv=fail; b=rSFqNH/Yf86ebz8Qa8QWOF4xWVtsnPynhcUj0WWQ2qQA57U8aBHx5z1SIX/GPYBSp5lcNT9lU4PZWDDm+dKEN0h2XdQvp4xgmnBI49yJWTNYVm+tDsFOVuzgh3ZZo4iFpz6WpnvA9OfzQ+q1Buat564XJ3I0trdV23JaDnIctwc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707861077; c=relaxed/simple;
+	bh=AyyJMp2+Qcrn3pGor6mbyj9sliBRvWPHI5MD/RL7Wdc=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=G5OWnfUPpiWNX6DI7th7nFLBpi1z8Hv8tVSxS8gRd07yLmKz7ju64VJB8r+AXnkc/J8GYIvvHIJqVa0/lwYmOuEMbjdcOyxa7PBN4gWpQXa14hA1OwIto86uD4H9+PDnhuhPtykJ0TnLp2f+4t86aqfdaASyWK7lbqVTF2y1tBw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=mTcM80r4; arc=fail smtp.client-ip=40.107.8.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFcgPe9m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6006C433C7;
-	Tue, 13 Feb 2024 16:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707841218;
-	bh=c8A66FpezMmJ/dIlhwWg0VG1aAG6UpKigFfPKlDGS6c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rFcgPe9mFGBX700RPmtjmMA1SehN74aLXr+Jtdc0Q4E1QQPPDPbHtLsxQF0M1bHeP
-	 NIIUkf3LedjxF9gYWsPtxR4aX8AWINgXApg20e0kBx9qxEUtb7aZog23dZS7Brg8+r
-	 Q3h9QluUOCW0yfJHUxgW/3uclWCGW6/7l9Gr3q3QbgvUyK++GSpwS+RPbaqPsHjhVi
-	 b/V641B9fr/YGGL+2g/HAHAblvzIdGJzfmkwPU0Wk5ozeCTkT9zne8bBfDMbT6EsDJ
-	 S1IvnxigBIOBc8ue8AgVkcKLZyS1YOCYPiSU+D/PLsqJgli7paA2deUIWxpdrhZaQB
-	 d+ej/vwZpve1g==
-Date: Tue, 13 Feb 2024 17:20:10 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	kw@linux.com, l.stach@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH v10 01/14] PCI: imx6: Simplify clock handling by using
- clk_bulk*() function
-Message-ID: <ZcuWuntrvlkvOVrZ@lpieralisi>
-References: <20240205173335.1120469-1-Frank.Li@nxp.com>
- <20240205173335.1120469-2-Frank.Li@nxp.com>
- <ZcuLSkvPuyMXsQeD@lpieralisi>
- <ZcuRiQ0brp2SfmNU@lizhi-Precision-Tower-5810>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="mTcM80r4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=J+suZKBuryl87zsHs4XZPNtCD9MV74NqrTGBVfQo18r6rH/SjtN7TLu5IzDqa1HGfrHaA6ssj7uVQBbod/3a+4MrFSBvPW/u8oLyzbp2HXNDKC6MkwfNc2YQ4LLZyVMgAdY7/EH83pjwQV8lePdGBI0WrDq39jSVRgMt3rmN0fGoXxRdWJ1PjRxgnkqfaVf03Pp/LU3X2Oieqc+JfNiEJpsNGXuJQ3GMKEqOYG1oNMTAf6/WqM7gLxSK89NL1jsATtnp364fEkm3WDeSEptY9EgsDthdO9dzWu8eOhrfL6R8WXyevYmhip05Vv0QLymlloUuOGD6g7hMxtfS+EAyjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aLY0mjxBohsr00gjCctd9l2dOKJPBvUHKCM47QaKh5Q=;
+ b=TrJ1U5XPIxuOFXILj4RE7p7y1KNWRiDGTDlrCSU1jO1URhFuzJqAv37Hu+hvFTbaFNrZS62y7Rop2IERPklgRiaCHnmG+4Om4Bm78JCHkfd9+pI6DDRIzzMS/flBWe1jEzw11qw7hAglOjOsXG1VxaIXS46kFXicNOGcBGPbMR1IwkSaBw0UsB8N64fpd4QS8/r3qlcktcDU2KcZf3xoCAmAx2CXu0+Ds6zKIf1RmwZaOgyeK/S4VjjxdcdE4fjVYqkuXiuwB9Gwoo+OnQYbAeDt8gSXLdQd3ioRK76Dg7ZyCodOXQyDnwl4C0VA/65tTRh2MrMXqPKDnAQVY0irDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aLY0mjxBohsr00gjCctd9l2dOKJPBvUHKCM47QaKh5Q=;
+ b=mTcM80r4/RAilCUTHbfq6uDNgaq3dnSz0LvxWsGRwIVxVAvfSIx6Q1W1qG4lh5z8tV4gykuAreEp49003R/VxbinIUJhwGbbW9KvNxLhmrhN2iZsTTR4fceV01E/DxfuSdSbj6fTcg1/abXC1tSk+FgHY2cffBr8fUS/GprCq28=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU2PR04MB8837.eurprd04.prod.outlook.com (2603:10a6:10:2e0::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.44; Tue, 13 Feb
+ 2024 21:51:11 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7270.025; Tue, 13 Feb 2024
+ 21:51:11 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 0/5] PCI: dwc: Add common pme_turn_off message by using
+ outbound iATU
+Date: Tue, 13 Feb 2024 16:50:21 -0500
+Message-Id: <20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB3ky2UC/2XMTQ7CIBCG4asY1mJgWqC68h7GGIShZdGfgCE1T
+ e8u7QaNy28yz7uQiMFjJJfDQgImH/045FEfD8R0emiReps3AQY14xWjU4+PPrbUWrANRzw3jST
+ 5ewro/LyXbve8Ox9fY3jv4cS3638jccqoFfBk2lphlLkO83QyY0+2QoKigPGiICuppGICHEpd/
+ 6rqW0FRVVbOgXZCaQbaFrWu6wd+bEGhCAEAAA==
+To: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Serge Semin <fancer.lancer@gmail.com>
+X-Mailer: b4 0.13-dev-c87ef
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1707861066; l=3521;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=AyyJMp2+Qcrn3pGor6mbyj9sliBRvWPHI5MD/RL7Wdc=;
+ b=iZ8VyJbTRi46TWI9JpwSDS13CF2/LN7wY2j044YmJEIesdYvgGmQxb9t8dE41Sp7G+YyboF32
+ p2fcGtHko+nCyfuPthOQajfvx+waNf/01aKWm4/LT3LzCW8mmzZGc6k
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR13CA0211.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c1::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZcuRiQ0brp2SfmNU@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8837:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77502cbf-c3dd-4119-c22c-08dc2cdde444
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	BNuMlZsL9ma0jZouMmn+Ijp4QgPm5GiCY51jX7lIG6X+m+WEh0WuV8yKGhNIB15rdr/Bceky0/IHgqWVh6FnIvheZm21bU1LUy7/4YuiY28k0bTZixvl1+Z0EC0kxP3F2R68bm2+1y0b9xDv3E0YQWcT6Qg4TWOJXPx16/KYhfY6IEGSJ3PZs3cHHycHPxobTLpSWf+U97Bb4a2BnxNphT/+Ask13H6EcNJpcQR046ckCfnW35bt3OzITyzkQeN/sZJ6XwBRUl8yqmtr5ny+vJLGX5fjwSi0WO7IwSzY1O5kmDl5mXrUEcYYxFIHPhNK8wRwYsMNpUQxSKl2RUoaxXtS/Stnft6OG7l9OLpd76hx0hoHB0q9yKuA+G0d6cjMoF7v2AWiyV6OsQrMnxeNOIZuHJP6OI7KUXbPTHHJXIlSAVa27BoMuxJFN+QU2UoC1wtK3RW/elcKrStGWhSg/6K4hz2S1TKwU78fQe2RNZuk7heuGHkC54U9X7hcxL1dv8YsYH6o6Yf6dEL9D2Zq/rwt/8W7emBybpUNErXjBmB5qENVQKGpo9ozoK9EveLRhLBDcDDcT+HOsGqFunUdExKUmNzOubgGaaE2Zu6lmPeJFP9ffWNmMZpokGwbjqF/
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(346002)(396003)(136003)(366004)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(83380400001)(2616005)(6486002)(478600001)(966005)(6512007)(6506007)(52116002)(7416002)(26005)(316002)(54906003)(110136005)(66946007)(6666004)(66556008)(66476007)(8676002)(4326008)(38350700005)(8936002)(5660300002)(15650500001)(2906002)(36756003)(921011)(86362001)(38100700002)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aFVFcDdrU1BvSzVaaEVqT2ZvcFcwczVHUlJPUHRHZVZNVEVQeW1XMWRwZzNN?=
+ =?utf-8?B?MjdUZE4vdXVjWXVjaitrMVY5YWF4bzdBYTFOTjIxRmN3NGQrUFMvSG5XWFZl?=
+ =?utf-8?B?MkxFOFNFRzJuTHM0ZVZFVkRPK2lGUE5JK0VMMGwrcjZTbUNnSWg5b1dUcThQ?=
+ =?utf-8?B?NFVPYWhkSW5rZWxGalhWYzFDQlZtc3lTR05nR3c5M1pvdnNmY3dBckRBZGRB?=
+ =?utf-8?B?VUI3WDB4a25ySWc2M0RyQm1lOXhZdkoycGtNNWRSSU1OL1FycFBDTHlPV2J4?=
+ =?utf-8?B?K0lvTUZtK3FyaTloOE02eUg4UVl3ZFNmTGVxZ2syNVVWRldiNEU5Q1pndS9Y?=
+ =?utf-8?B?dmJOWlZWdEhySEIybXhZRklIU2dKdzdNYUxlVmt2NlFNQWlKMnBuUGdkWXVH?=
+ =?utf-8?B?OThhQXI2K2k4cExDek1TbGhjdjBKUDAzN1lmSG5HSjFNalFrVXlEbTFiK1Zs?=
+ =?utf-8?B?VTJ2SWE4Y2dUSHF4ZkU3UGJMVWtTbzJxcytvcmtkeHd1dnFVYkl1UXVzdzZt?=
+ =?utf-8?B?UUZKdVZtZUQyQ3ZsSEFQbVJRMVJBSFNUYUhCY3dXUERKcXkyenVzaVpmbDJp?=
+ =?utf-8?B?aHhiYkM4K1pDdlBCT0dwdlVWRzdDM3pwN1grZTBVZnBjRFMvZ2dlRk9OQzA4?=
+ =?utf-8?B?S1Qxc2ZFc3dtbHdWT0ZXNXNXQWU3RUExWFFyN1kvRXluY2VleWM4cDF0T01N?=
+ =?utf-8?B?Z3RNWEhXTXJOcVBvbkFHa3FFWEF4M1lHcTdOdGU0eTJUdUZoUnQ5dlRvUnFu?=
+ =?utf-8?B?VFNSdFhSOU5rT2R6SzM1cExXZkRncnM2d1dtUkFCbmI5aHhMV0IzZjNwbit5?=
+ =?utf-8?B?MkhRQmo2TkcyUkNmNHp1NGQ1dzF0TXYxSDJ3dE5zZ3NGVXg4WHFQSjZsSTR4?=
+ =?utf-8?B?Slk0UW1xNUNReHVreDFCYzM1REVhb3ZwemJGOHNzMkJ5UlloUkQxVXFrbWdD?=
+ =?utf-8?B?THRkMTQ1eFhlZHcvaTRTTDQzMnYvaXVGSFNpY0JXNlhJeHdDNUt0NlVpb1ZG?=
+ =?utf-8?B?YlJYdjI4TmU3WDZEREhGeU5sVFlzei8rbkMrOUpZZzRiaUtkRlZ3blpWbElh?=
+ =?utf-8?B?dmJBQndGR0ZETlU2dEl0UEx6QXZkYURHNXRWcVE0bGRjSHZ4MENVSi8ya2RP?=
+ =?utf-8?B?Nk5BejFWeHRuUkg1MXNxS1lVTkRWS3JEQ1kwNmZ0cEIxS3JUNGk5VjEvTVdZ?=
+ =?utf-8?B?VVV1VngxVXFqUmVOdFVKby9OekVUYmpoR254enBhSVdKSHlYZnlaNjZBWmc2?=
+ =?utf-8?B?bHBNeDhzaDZaZk9QOXhpNDFuRlV3cVByWklhNysyUTArWkhLUDNaaGJxVG5Z?=
+ =?utf-8?B?aC9MRjY1MnFBeWNrejFmRjRrVVhVeElJVER1OWVzSHdnY2s3NDloN1FYUGF0?=
+ =?utf-8?B?WXBHNVdkQWwxWDBvVnE0bklVdG9BWGZrVzBBOHYrZ3hrMnhhSVVYcDRiRDVR?=
+ =?utf-8?B?SmtLb0lkOEY5bWtuU050VHlrQm14Ukx6YXBMV1R2MXZ1VjE1ZXk2aE5PdlhV?=
+ =?utf-8?B?OGRveWk1dUd0SENNK08xZGVvODlKQUdEM3NDYXk4V3RBU2dtOVlxcHZwVDRP?=
+ =?utf-8?B?cmVsbUgvNTZQYjdTeS80b2VlZlpkVFhKQWFVZ1ZrSXBybUgzeFVmb3BmbXZJ?=
+ =?utf-8?B?Y2YzS2RyS0VPdW9kUG9tS205MENEeWc5V04vQ2VjV0R6Nlc1SWpVZHBzd2J2?=
+ =?utf-8?B?Mkp2dmNWT1ZkTFM4NnE4dEtkYWtnZ2gxdlZiblVleVk5UzIybndXWXY1WnA0?=
+ =?utf-8?B?OURnazBoeU13Y3RzbEZveFhOcVN5Z2laMXFkWXRQOFd6K3RMbTFPU0lNTHhl?=
+ =?utf-8?B?N2JGb01mVDRKdjNuYTdzaGhPd0lKckN0OG5rT1ZCVlM3QnE3eGI1SzZsd2p1?=
+ =?utf-8?B?LzBDb1N3QlFmTkVITE5vTzRuaHZKUWx0OGlBYXpaaGFuUXNZdDRVeUFERzlF?=
+ =?utf-8?B?cStmU1d6NXFoams1T1RGNnlwcEEvRHB5aEZWcXRrcHFaaWJ3TUZjdXoweHZm?=
+ =?utf-8?B?QTY1T0Q4eTB6dFIyTndxdG56RVNvTnlDVWdrRHdHSXRXMTBSVmJLcFc3ZkJs?=
+ =?utf-8?B?RTdIOGlKTlFqb010Y3lDaGpodHRoaEMwWTlleGlwbEpHQXJsS0dWWS9JY1J5?=
+ =?utf-8?Q?wpaJ36kLiP/xD1ST5u2d0UaUP?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77502cbf-c3dd-4119-c22c-08dc2cdde444
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 21:51:10.9900
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3O839UJa/5Fml9DHV6qojzQeWlMfcrrid91c1iNmHn3MbHfnBSRJyxWReoQZrHtbyLBQeTA6VaoiVzfJJr+v+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8837
 
-On Tue, Feb 13, 2024 at 10:58:01AM -0500, Frank Li wrote:
-> On Tue, Feb 13, 2024 at 04:31:22PM +0100, Lorenzo Pieralisi wrote:
-> > On Mon, Feb 05, 2024 at 12:33:22PM -0500, Frank Li wrote:
-> > > Refector the clock handling logic. Add 'clk_names' define in drvdata. Use
-> > > clk_bulk*() api simplify the code.
-> > > 
-> > > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > 
-> > > Notes:
-> > >     Change from v9 to v10
-> > >     - fixed missed delete a case, which need failthrough to next one.
-> > >     Change from v8 to v9
-> > >     - change clks names
-> > >     - Add Manivannan's review tag
-> > >     
-> > >     Change from v7 to v8
-> > >     - update comment message
-> > >     - using ARRAY_SIZE to count clk_names.
-> > >     Change from v6 to v7
-> > >     - none
-> > >     Change from v4 to v5
-> > >     - update commit message
-> > >     - direct using clk name list, instead of macro
-> > >     - still keep caculate clk list count because sizeof return pre allocated
-> > >     array size.
-> > >     
-> > >     Change from v3 to v4
-> > >     - using clk_bulk_*() API
-> > >     Change from v1 to v3
-> > >     - none
-> > >     
-> > >     Change from v4 to v5
-> > >     - update commit message
-> > >     - direct using clk name list, instead of macro
-> > >     - still keep caculate clk list count because sizeof return pre allocated
-> > >     array size.
-> > >     
-> > >     Change from v3 to v4
-> > >     - using clk_bulk_*() API
-> > >     Change from v1 to v3
-> > >     - none
-> > >     
-> > >     Change from v8 to v9
-> > >     - change clks names
-> > >     - Add Manivannan's review tag
-> > >     
-> > >     Change from v7 to v8
-> > >     - update comment message
-> > >     - using ARRAY_SIZE to count clk_names.
-> > >     Change from v6 to v7
-> > >     - none
-> > >     Change from v4 to v5
-> > >     - update commit message
-> > >     - direct using clk name list, instead of macro
-> > >     - still keep caculate clk list count because sizeof return pre allocated
-> > >     array size.
-> > >     
-> > >     Change from v3 to v4
-> > >     - using clk_bulk_*() API
-> > >     Change from v1 to v3
-> > >     - none
-> > >     
-> > >     Change from v4 to v5
-> > >     - update commit message
-> > >     - direct using clk name list, instead of macro
-> > >     - still keep caculate clk list count because sizeof return pre allocated
-> > >     array size.
-> > >     
-> > >     Change from v3 to v4
-> > >     - using clk_bulk_*() API
-> > >     Change from v1 to v3
-> > >     - none
-> > > 
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 138 ++++++++++----------------
-> > >  1 file changed, 50 insertions(+), 88 deletions(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 74703362aeec7..82854e94c5621 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -61,12 +61,16 @@ enum imx6_pcie_variants {
-> > >  #define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
-> > >  #define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
-> > >  
-> > > +#define IMX6_PCIE_MAX_CLKS       6
-> > > +
-> > >  struct imx6_pcie_drvdata {
-> > >  	enum imx6_pcie_variants variant;
-> > >  	enum dw_pcie_device_mode mode;
-> > >  	u32 flags;
-> > >  	int dbi_length;
-> > >  	const char *gpr;
-> > > +	const char * const *clk_names;
-> > > +	const u32 clks_cnt;
-> > >  };
-> > >  
-> > >  struct imx6_pcie {
-> > > @@ -74,11 +78,7 @@ struct imx6_pcie {
-> > >  	int			reset_gpio;
-> > >  	bool			gpio_active_high;
-> > >  	bool			link_is_up;
-> > > -	struct clk		*pcie_bus;
-> > > -	struct clk		*pcie_phy;
-> > > -	struct clk		*pcie_inbound_axi;
-> > > -	struct clk		*pcie;
-> > > -	struct clk		*pcie_aux;
-> > > +	struct clk_bulk_data	clks[IMX6_PCIE_MAX_CLKS];
-> > 
-> > Why can't you allocate this dynamically ?
-> 
-> Engineer choose. clk_bulk_data is small data struct, two pointers (16byte
-> in 64bit system). clks in imx is 3-4, Over half already used(compared 6).
-> waste case only wast 48byte.
->  
-> Dynamically allocate can't save much memory, there are some extra manage
-> meta data for dynamical memory, which may bigger than 48byte.
-> 
-> Frank
-> 
-> > 
-> > >  	struct regmap		*iomuxc_gpr;
-> > >  	u16			msi_ctrl;
-> > >  	u32			controller_id;
-> > > @@ -407,13 +407,18 @@ static void imx7d_pcie_wait_for_phy_pll_lock(struct imx6_pcie *imx6_pcie)
-> > >  
-> > >  static int imx6_setup_phy_mpll(struct imx6_pcie *imx6_pcie)
-> > >  {
-> > > -	unsigned long phy_rate = clk_get_rate(imx6_pcie->pcie_phy);
-> > > +	unsigned long phy_rate = 0;
-> > >  	int mult, div;
-> > >  	u16 val;
-> > > +	int i;
-> > >  
-> > >  	if (!(imx6_pcie->drvdata->flags & IMX6_PCIE_FLAG_IMX6_PHY))
-> > >  		return 0;
-> > >  
-> > > +	for (i = 0; i < imx6_pcie->drvdata->clks_cnt; i++)
-> > > +		if (strncmp(imx6_pcie->clks[i].id, "pcie_phy", 8) == 0)
-> > > +			phy_rate = clk_get_rate(imx6_pcie->clks[i].clk);
-> > > +
-> > >  	switch (phy_rate) {
-> > >  	case 125000000:
-> > >  		/*
-> > > @@ -550,19 +555,11 @@ static int imx6_pcie_attach_pd(struct device *dev)
-> > >  
-> > >  static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
-> > >  {
-> > > -	struct dw_pcie *pci = imx6_pcie->pci;
-> > > -	struct device *dev = pci->dev;
-> > >  	unsigned int offset;
-> > >  	int ret = 0;
-> > >  
-> > >  	switch (imx6_pcie->drvdata->variant) {
-> > >  	case IMX6SX:
-> > > -		ret = clk_prepare_enable(imx6_pcie->pcie_inbound_axi);
-> > > -		if (ret) {
-> > > -			dev_err(dev, "unable to enable pcie_axi clock\n");
-> > > -			break;
-> > > -		}
-> > > -
-> > >  		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-> > >  				   IMX6SX_GPR12_PCIE_TEST_POWERDOWN, 0);
-> > >  		break;
-> > > @@ -589,12 +586,6 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
-> > >  	case IMX8MQ_EP:
-> > >  	case IMX8MP:
-> > >  	case IMX8MP_EP:
-> > > -		ret = clk_prepare_enable(imx6_pcie->pcie_aux);
-> > > -		if (ret) {
-> > > -			dev_err(dev, "unable to enable pcie_aux clock\n");
-> > > -			break;
-> > > -		}
-> > > -
-> > >  		offset = imx6_pcie_grp_offset(imx6_pcie);
-> > >  		/*
-> > >  		 * Set the over ride low and enabled
-> > > @@ -615,9 +606,6 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
-> > >  static void imx6_pcie_disable_ref_clk(struct imx6_pcie *imx6_pcie)
-> > >  {
-> > >  	switch (imx6_pcie->drvdata->variant) {
-> > > -	case IMX6SX:
-> > > -		clk_disable_unprepare(imx6_pcie->pcie_inbound_axi);
-> > > -		break;
-> > >  	case IMX6QP:
-> > >  	case IMX6Q:
-> > >  		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> > > @@ -631,14 +619,6 @@ static void imx6_pcie_disable_ref_clk(struct imx6_pcie *imx6_pcie)
-> > >  				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
-> > >  				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
-> > >  		break;
-> > > -	case IMX8MM:
-> > > -	case IMX8MM_EP:
-> > > -	case IMX8MQ:
-> > > -	case IMX8MQ_EP:
-> > > -	case IMX8MP:
-> > > -	case IMX8MP_EP:
-> > > -		clk_disable_unprepare(imx6_pcie->pcie_aux);
-> > > -		break;
-> > >  	default:
-> > >  		break;
-> > >  	}
-> > > @@ -650,23 +630,9 @@ static int imx6_pcie_clk_enable(struct imx6_pcie *imx6_pcie)
-> > >  	struct device *dev = pci->dev;
-> > >  	int ret;
-> > >  
-> > > -	ret = clk_prepare_enable(imx6_pcie->pcie_phy);
-> > > -	if (ret) {
-> > > -		dev_err(dev, "unable to enable pcie_phy clock\n");
-> > > +	ret = clk_bulk_prepare_enable(imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
-> > > +	if (ret)
-> > >  		return ret;
-> > > -	}
-> > > -
-> > > -	ret = clk_prepare_enable(imx6_pcie->pcie_bus);
-> > > -	if (ret) {
-> > > -		dev_err(dev, "unable to enable pcie_bus clock\n");
-> > > -		goto err_pcie_bus;
-> > > -	}
-> > > -
-> > > -	ret = clk_prepare_enable(imx6_pcie->pcie);
-> > > -	if (ret) {
-> > > -		dev_err(dev, "unable to enable pcie clock\n");
-> > > -		goto err_pcie;
-> > > -	}
-> > >  
-> > >  	ret = imx6_pcie_enable_ref_clk(imx6_pcie);
-> > >  	if (ret) {
-> > > @@ -679,11 +645,7 @@ static int imx6_pcie_clk_enable(struct imx6_pcie *imx6_pcie)
-> > >  	return 0;
-> > >  
-> > >  err_ref_clk:
-> > > -	clk_disable_unprepare(imx6_pcie->pcie);
-> > > -err_pcie:
-> > > -	clk_disable_unprepare(imx6_pcie->pcie_bus);
-> > > -err_pcie_bus:
-> > > -	clk_disable_unprepare(imx6_pcie->pcie_phy);
-> > > +	clk_bulk_disable_unprepare(imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
-> > >  
-> > >  	return ret;
-> > >  }
-> > > @@ -691,9 +653,7 @@ static int imx6_pcie_clk_enable(struct imx6_pcie *imx6_pcie)
-> > >  static void imx6_pcie_clk_disable(struct imx6_pcie *imx6_pcie)
-> > >  {
-> > >  	imx6_pcie_disable_ref_clk(imx6_pcie);
-> > > -	clk_disable_unprepare(imx6_pcie->pcie);
-> > > -	clk_disable_unprepare(imx6_pcie->pcie_bus);
-> > > -	clk_disable_unprepare(imx6_pcie->pcie_phy);
-> > > +	clk_bulk_disable_unprepare(imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
-> > >  }
-> > >  
-> > >  static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
-> > > @@ -1252,6 +1212,7 @@ static int imx6_pcie_probe(struct platform_device *pdev)
-> > >  	struct device_node *node = dev->of_node;
-> > >  	int ret;
-> > >  	u16 val;
-> > > +	int i;
-> > >  
-> > >  	imx6_pcie = devm_kzalloc(dev, sizeof(*imx6_pcie), GFP_KERNEL);
-> > >  	if (!imx6_pcie)
-> > > @@ -1305,32 +1266,20 @@ static int imx6_pcie_probe(struct platform_device *pdev)
-> > >  		return imx6_pcie->reset_gpio;
-> > >  	}
-> > >  
-> > > -	/* Fetch clocks */
-> > > -	imx6_pcie->pcie_bus = devm_clk_get(dev, "pcie_bus");
-> > > -	if (IS_ERR(imx6_pcie->pcie_bus))
-> > > -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_bus),
-> > > -				     "pcie_bus clock source missing or invalid\n");
-> > > +	if (imx6_pcie->drvdata->clks_cnt >= IMX6_PCIE_MAX_CLKS)
-> > > +		return dev_err_probe(dev, -ENOMEM, "clks_cnt is too big\n");
-> > 
-> > Same question as above, this should not fail if the clks array is
-> > dynamically allocated according to imx6_pcie->drvdata->clks_cnt.
-> 
-> Devm_kzalloc also may return NULL. Still need check. This safe check only
-> meanful when add new platform. imx6_pcie->drvdata->clks_cnt is static data.
-> 
-> It should never failure at running time. But, devm_kzalloc may failure
-> at run time.
-> 
-> It is not big deal. It's most likely personal tast. For small static data,
-> I perfer use static memory.
+Involve an new and common mathod to send pme_turn_off() message. Previously
+pme_turn_off() implement by platform related special register to trigge    
+it.                                                                        
+                                                                           
+But Yoshihiro give good idea by using iATU to send out message. Previously 
+Yoshihiro provide patches to raise INTx message by dummy write to outbound 
+iATU.                                                                      
+                                                                           
+Use similar mathod to send out pme_turn_off message.                       
+                                                                           
+Previous two patches is picked from Yoshihiro' big patch serialise.        
+ PCI: dwc: Change arguments of dw_pcie_prog_outbound_atu()                 
+ PCI: Add INTx Mechanism Messages macros                                   
+                                                                           
+PCI: Add PME_TURN_OFF message macro                                        
+dt-bindings: PCI: dwc: Add 'msg" register region, Add "msg" region to use  
+to map PCI msg.                                                            
+                                                                           
+PCI: dwc: Add common pme_turn_off message method                           
+Using common pme_turn_off() message if platform have not define their.
 
-It is fine to keep the static data (but meanful, tast and perfer aren't
-English words, a spell checker would fix them, if I may suggest).
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v4:
+- Remove dt-binding patch. Needn't change any dts file and binding doc.
+  Reserve a region at end of first IORESOURCE_MEM window by call
+  request_resource(). So PCIe stack will not use this reserve region to any
+PCIe devices.
+  I tested it by reserve at begin of IORESOURCE_MEM window. PCIe stack
+will skip it as expection.
 
-Thanks,
-Lorenzo
+  Fixed a issue, forget set iATU index when sent PME_turn_off.
+
+- Link to v3: https://lore.kernel.org/r/20240202-pme_msg-v3-0-ff2af57a02ad@nxp.com
+
+Changes in v3:
+- fix 'MSG"
+- Add pcie spec ref in head file
+- using function name dw_pci_pme_turn_off()
+- Using PCIE_ prefix macro
+- Link to v2: https://lore.kernel.org/r/20240201-pme_msg-v2-0-6767052fe6a4@nxp.com
+
+Changes in v2:
+  - Add my sign off at PCI: dwc: Add outbound MSG TLPs support
+  - Add Bjorn review tag at  Add INTx Mechanism Messages macros
+  - using PME_Turn_Off match PCIe spec
+  - ref to pcie spec v6.1
+  - using section number.
+
+- Link to v1: https://lore.kernel.org/r/20240130-pme_msg-v1-0-d52b0add5c7c@nxp.com
+
+---
+Frank Li (2):
+      PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
+      PCI: dwc: Add common send PME_Turn_Off message method
+
+Yoshihiro Shimoda (3):
+      PCI: Add INTx Mechanism Messages macros
+      PCI: dwc: Consolidate args of dw_pcie_prog_outbound_atu() into a structure
+      PCI: dwc: Add outbound MSG TLPs support
+
+ drivers/pci/controller/dwc/pcie-designware-ep.c   |  21 ++--
+ drivers/pci/controller/dwc/pcie-designware-host.c | 145 +++++++++++++++++++---
+ drivers/pci/controller/dwc/pcie-designware.c      |  54 ++++----
+ drivers/pci/controller/dwc/pcie-designware.h      |  21 +++-
+ drivers/pci/pci.h                                 |  20 +++
+ 5 files changed, 197 insertions(+), 64 deletions(-)
+---
+base-commit: e08fc59eee9991afa467d406d684d46d543299a9
+change-id: 20240130-pme_msg-dd2d81ee9886
+
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
+
