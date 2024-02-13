@@ -1,473 +1,300 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2048.outbound.protection.outlook.com [40.107.8.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3684A5DF25;
-	Tue, 13 Feb 2024 15:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707838290; cv=none; b=MgbFvSrsaENZI1QVBKPxTgB3vGJ5kQi8Gb+FFfXEL34mGmCLCbJvfaZ9FAui7VyKkZkhe63PZvKJtj4kQE6nHjb1+eZ5ydoYqlrSGQ5ryFjRxaP6AphyEJu+ehIjZzsC9w922rce/lvp1a7fRtEv/JuFZpmp2uEYK1oPTk3Y7G0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707838290; c=relaxed/simple;
-	bh=HYasL8XbF+5vHoVzjtw/IPlU2Sq1D4BVs9+mL4vWqy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OyRmNua6EkYBKHVoMwXdXwvkwutZkyAn+drDvbyM9f0uSS1zicD/sPGj2rsY3zbnV45vwccf42HipCnvQe3Yweu2LrC3sW0V5lc9ryutA6kp5K3OKjQjfNPMVc22HJJ/ZZNbxNxZ1DkUHVGdMHaFWiP3HyCFsMo4+IdYaVRwLzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIh/4hZE; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0924F5FBB1
+	for <imx@lists.linux.dev>; Tue, 13 Feb 2024 15:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707838567; cv=fail; b=sL8zTY9OARJ6brvMKK9NetqWl4dLgfvxkWnk1pdfbLBd/F6ZiHlRzATqVWmC1y80TWkWtiE/mkgHDwpRWUvzIJIpkdcg4u6TSPogrV7Xd8sEnUHuPeDj3WMbAkAcIYHujTQsvTJmIKCrOBa3FceiaYB9NpXSu65simb44uSD3Rw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707838567; c=relaxed/simple;
+	bh=6gny98f7Wz5/s3AQuRIL5T4KEi66ePdJSubrZi8w71c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eXhoeflwstYlfH2A9S/Ynd7Q3iQ6Ck6Njfea4tXWWOI7qd2gcmHlqejxlOLHZwcDE0fUADcFQVn1aeqUChaAwAL6+4q1VOl7qGVf1YFHP8L5FxyT1kKLNbihO0n5Qaa41Ql3BHhr1qZBZKtKD8h1Y7Ul5x041sDcPYmrLfLHVVI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=gWqOaw/T; arc=fail smtp.client-ip=40.107.8.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIh/4hZE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB7EC433F1;
-	Tue, 13 Feb 2024 15:31:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707838290;
-	bh=HYasL8XbF+5vHoVzjtw/IPlU2Sq1D4BVs9+mL4vWqy0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TIh/4hZEdoNNPJ0Opikly7lJce7d2W5cgdgQwNpiHjKvxOtpE8vmxqnN0rntJZyoS
-	 xM5b0HE/Tk+mPc7hrrU1bAbqpPgsNtEvnf0kLH1bxzWFbYBwhBMtYB7NPNhSdc/tFg
-	 SLpoL6p2Rv0NEVFQStYUG1KhlPISnTovoC5tec5qjOXxJBmkbHY+eLkmYVhgxUPust
-	 FUX74wAG83VDGiit5ueN9TMMsQS7uKoAafcr7C/ZtUISeia4nOpskiC1sDbksQoCeQ
-	 xXXJ3LIamyt29axhUkIrer2x/iRIuWwOlfCyEqNRO3bNGOmDuUziiptjo4KBaQajW+
-	 XU2uMfquj8Khw==
-Date: Tue, 13 Feb 2024 16:31:22 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: bhelgaas@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	festevam@gmail.com, helgaas@kernel.org, hongxing.zhu@nxp.com,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-	kw@linux.com, l.stach@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH v10 01/14] PCI: imx6: Simplify clock handling by using
- clk_bulk*() function
-Message-ID: <ZcuLSkvPuyMXsQeD@lpieralisi>
-References: <20240205173335.1120469-1-Frank.Li@nxp.com>
- <20240205173335.1120469-2-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="gWqOaw/T"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QthSRBtmTSrxRN3v+sokUBWfaH1KvYg3QjzpthaxAZEMsXOB5f0uLr2Fhcxu7tAP+Nc3uiWfQYqK5CLNq44CZ0mEWg62pwm5nAy8C0OE35xu2CMIo698NCDW/jUVkPt1cefJNfCUK0hLxQY2JikNP/7kmiMCbBq1fMFB7HhFPIn7Mjcj+xhXWOcgErBkTcHD2gR8LprEuR45YWmD+iVrqSy0nyUQRQmDho1KN0kFL5DEepInYLth2ugn34e3++w2zBJbF1BavQ7PLsQeW/f4oP5KuyNxeQ5Urb83Qlss3NQfWWzCUl99e3lAtFUqY+ElZhtKbdRRHYXycWP1hxB0DQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QaZ1+hj7oqQ9obntIbpdXoKxbhjUHV5mWtc16PdSdSg=;
+ b=Ov+JdxiLp7h6yBuZD8Z2kN3RPwBe1iQFWSTt9HosyraO9fDFCelRdJ7Nt1F1naDd0PMCjRzJ9m4B7IM9CDfufXn1jI6TRfqzZQp82ppFb6wajYUltmUY75c/QmPvUiCHTv2ER3zAKPOvhiYycJyydwuXqR7tYw27PaML1oo7UjUgfajjZL/Rg6Euw7ql6IkPQhkxV054BdEgs3ZTDyWUELhKDLIAlpvstCrwGomqSWBMZZw1qN75lroYB0GFxNui0gQH+oQshB/yPmExZrx8NhYoVo+nbP0DoDVq4/FzDa6rkRG4ABP63Z0f+Uasl5xlK/PVYR1fXUasX8lKnjDXhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QaZ1+hj7oqQ9obntIbpdXoKxbhjUHV5mWtc16PdSdSg=;
+ b=gWqOaw/T4aa9G4GujhBfAUA99kdL5NOvltoX6ogYM21HbsMjfGsjdDz1MJy1iobHpJ8/0/WeKq1vJAkG/pwIhrjSw70L2fhnPMMck8nEk7dUxJBtE2WWjHbxw72ptCVHXx/cUVJ2I+AaWYAe2yWUUq+sBO2qrBGv80MPdtgzCsg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GVXPR04MB10024.eurprd04.prod.outlook.com (2603:10a6:150:117::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.38; Tue, 13 Feb
+ 2024 15:35:58 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7270.025; Tue, 13 Feb 2024
+ 15:35:58 +0000
+Date: Tue, 13 Feb 2024 10:35:50 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
+	conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+	helgaas@kernel.org, hongxing.zhu@nxp.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, krzysztof.kozlowski+dt@linaro.org,
+	krzysztof.kozlowski@linaro.org, kw@linux.com,
+	l.stach@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org, hch@lst.de
+Subject: Re: [PATCH v9 16/16] PCI: imx6: Add iMX95 Endpoint (EP) support
+Message-ID: <ZcuMVv931r97iWm/@lizhi-Precision-Tower-5810>
+References: <20240119171122.3057511-1-Frank.Li@nxp.com>
+ <20240119171122.3057511-17-Frank.Li@nxp.com>
+ <ZctGs2d9ccnmYysL@lpieralisi>
+ <f1b8c49b-0d13-4a3e-9696-75a370ac0e59@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f1b8c49b-0d13-4a3e-9696-75a370ac0e59@arm.com>
+X-ClientProxiedBy: SJ0PR13CA0130.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240205173335.1120469-2-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10024:EE_
+X-MS-Office365-Filtering-Correlation-Id: b810f487-d8e6-4fa6-ca79-08dc2ca979cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	BqqT8zcAWaw23qqLZC4i98b6HHQyCq0Eh/CO1Nv2Fvu4MqRpnnbxEcjAB9Gf06SE+9pU3Q1jsRMgoXA9uiWLTdpKNFSYEIf01H1jX/LAnZ5cIi05M0efQHvkxSWv15BGq02fnBmJzxcVKMp5qnvkiTJlLXJVyzHz+0uwu4hMUrWIQhGtfQx17Jmgue0ZD16aOxdhQYpVDKv02k5GRKdyyoRdLN9dCt4CPZkCVDEY2LLsAAmWOJNNQyLd7BCPZSlrpBNDoskFBAkBn8Z7wN3GAHXcb3LsfElTgsivVBchYjHORPqc2yJUtIPTeXmVCl3LNtGAbmDNWcq5BFILIxN05JJC6Tr/NtirRZUtPHfCF4RXEv6MXeOoxvlwJcKu7mgRplX4u4dv2drzqc2v7onF5ozj/nrM1BntLLi6UiAn3YsiVviAHsiAm/y3PchEE9H9OvN6kQjP4Z0/Sc28UAr8trx8WMUnpAAEdrdwHDkXP2dKZ0Mkk0mehniSidZ8kCghYw7y7Ifuxv5gG6ONLkyImJTxffy7Ngn6++RpmyUucQk6LmqUvvySmOCEsEihtOCfWu5VsxVWhJVaG3or9g3RyaIIX8qGnvR6TAG9F0bjygEG2PbUbPAykRiARcVrGwqw
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(376002)(366004)(346002)(396003)(136003)(39860400002)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(66476007)(66556008)(8676002)(7416002)(8936002)(5660300002)(6916009)(66946007)(66899024)(4326008)(2906002)(38100700002)(86362001)(38350700005)(478600001)(83380400001)(6506007)(6666004)(9686003)(6512007)(6486002)(52116002)(53546011)(316002)(41300700001)(26005)(33716001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?i8t9z6V3QttskNMYOBtievuD5uY3s8dDZm8UMygnzYzOcfCOcIMe2z4LVQPi?=
+ =?us-ascii?Q?YSQNfPkguy/7vSf0jLod03YSUgdBXeg6AvHh9JlGBJV/dOt01RsFyPhGfSTX?=
+ =?us-ascii?Q?Z50Nh1ez1jT0ZPC0IlHifGHjYzll+5L5qURTxf+JWdar/D7I13/t00CrQqgx?=
+ =?us-ascii?Q?kFXGZYbFUwUep7syb09u8jgCYk26MoiGRtUoI828+gMQqi6IRBft3Gj2YY52?=
+ =?us-ascii?Q?NFkxOz0GGu4P7JK28USW848PIB3k46Jzl1PpX74rWjAAbdKTNYK5qJOUOJp+?=
+ =?us-ascii?Q?NaSLNJ4JhB/2HUhsVKf7rbauo61X3tHcwZ9rgQP5Va3UIQ1n+O6CN9gUwu3W?=
+ =?us-ascii?Q?4DrzoQsMIT5pfWmhUQnthuTzOMH0INsLI3ywFhbtCX1DEN51RKURiTMhPi2Z?=
+ =?us-ascii?Q?nPh0G1W67X5Tr3duZT4BmIA5Jttpl6oIgS/+2N/dGompQ1QsDX4sKnaLHKAe?=
+ =?us-ascii?Q?kzewP4DY/I/KVWARlhilboDlwpWDrrkCKRy28lllraw1DBP6ik781CJNMBez?=
+ =?us-ascii?Q?6TcAPdbLpfkFWgbojMG4eHZG9tqlmgmTTscGu1DwKQgUHJYTbEqeLZPxgJzz?=
+ =?us-ascii?Q?VQlhzdM5JDrm+ilsaU2kEVBbQrKDDBp3kY2Aff2LPhiKWzx64F4gjPaCJ4tG?=
+ =?us-ascii?Q?G/BFyivSrZ5CWsAvHqs6TQdrjqBDCwefryAuXahO6E95PSLOUGTvT7u2Vcga?=
+ =?us-ascii?Q?QZaDhrEr3EQyYKzr6op2icH2A5KOrH6ZGeZsaT7QrWzpM0uLnd+V/JqiQ8b3?=
+ =?us-ascii?Q?8xZo86rNUEhMclmj863AjIwbbA8jLU1tgHnvwHRw2ILerf41BHH+MCRmtwuE?=
+ =?us-ascii?Q?nDiqyuD45WZ7tskOKoRq3z6b44R3a0to7R+QsbnnpDj+uPVUu+ohrJQOOaB9?=
+ =?us-ascii?Q?JRmeZqvedYh/zdTGLkUz/+REYtGXqyVdvXRWKgmWDNgGWlAnRawV5E/w7KS+?=
+ =?us-ascii?Q?rb9rLHvTz2JcilGSoswda4Cy2M4nSC78mufrc3g6i6i56B3qGt9D2sCeCXcE?=
+ =?us-ascii?Q?P9FlHF4+pSJzztgjVqYmsj89nrX50zEO1h4reXVZftvkug+ZO6nxHyGvDJX1?=
+ =?us-ascii?Q?SzRagpQ1Q84hfsE0ipHGyHLYTSxfTQOBjPz7TbugqJNPNhXj3Dt3cPsYuStu?=
+ =?us-ascii?Q?jXJd2DT00B48Yx7S/6xpd499BW6vTwqMQnux7cm0QSVnQ5Dt1EwqHH9K4kVD?=
+ =?us-ascii?Q?dApoVB4sDAQWrg10r5m0tA+9GcdhJwFDILcrNqejR3KMo1g8O/x6OK4NjvFW?=
+ =?us-ascii?Q?Od5ABaKeLV1/P/K1LxUjtgazxuCYYO5OuMgqD8r70Bll52IwAZdJvrcRPVUh?=
+ =?us-ascii?Q?kq4YA+2PM8Fete6+qckKdyOBlckw4RX0hdPCNhkef8DDRaW4iyaqRve/Ye8M?=
+ =?us-ascii?Q?QAFX8r/Wb11IBkp5InvTG3s2aSMl0oa2fwooJgGpcrXoUVB80GxG8n+Ob5YS?=
+ =?us-ascii?Q?CouckmUxXJ8yBXQFU7lu/yPsTbIJTHX+N9bo9OOHSZVsCIAgC9mWgPYVWFYt?=
+ =?us-ascii?Q?OLDM6PaiOSckj/xM74fKWb4zjWzbegoX7CNTAyuSYAefKl4be5/hamiSDldm?=
+ =?us-ascii?Q?6Wb6gO0OxEUeE+ua/qKUZ2pK2bY3OasooNQ3AgUa?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b810f487-d8e6-4fa6-ca79-08dc2ca979cb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 15:35:58.5907
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 152D351Z7U3OFTFIrd6RFa5ORqCRzdiMocaDDUdYXFxAoHtYggDrdpDybPeUy/yEo5ar42z5OQgpIa9oDTgY8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10024
 
-On Mon, Feb 05, 2024 at 12:33:22PM -0500, Frank Li wrote:
-> Refector the clock handling logic. Add 'clk_names' define in drvdata. Use
-> clk_bulk*() api simplify the code.
+On Tue, Feb 13, 2024 at 01:23:45PM +0000, Robin Murphy wrote:
+> On 13/02/2024 10:38 am, Lorenzo Pieralisi wrote:
+> > [+Christoph, Robin - just checking with you if the DMA mask handling is
+> > what you expect from drivers, don't want to merge code that breaks your
+> > expectations]
 > 
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     Change from v9 to v10
->     - fixed missed delete a case, which need failthrough to next one.
->     Change from v8 to v9
->     - change clks names
->     - Add Manivannan's review tag
->     
->     Change from v7 to v8
->     - update comment message
->     - using ARRAY_SIZE to count clk_names.
->     Change from v6 to v7
->     - none
->     Change from v4 to v5
->     - update commit message
->     - direct using clk name list, instead of macro
->     - still keep caculate clk list count because sizeof return pre allocated
->     array size.
->     
->     Change from v3 to v4
->     - using clk_bulk_*() API
->     Change from v1 to v3
->     - none
->     
->     Change from v4 to v5
->     - update commit message
->     - direct using clk name list, instead of macro
->     - still keep caculate clk list count because sizeof return pre allocated
->     array size.
->     
->     Change from v3 to v4
->     - using clk_bulk_*() API
->     Change from v1 to v3
->     - none
->     
->     Change from v8 to v9
->     - change clks names
->     - Add Manivannan's review tag
->     
->     Change from v7 to v8
->     - update comment message
->     - using ARRAY_SIZE to count clk_names.
->     Change from v6 to v7
->     - none
->     Change from v4 to v5
->     - update commit message
->     - direct using clk name list, instead of macro
->     - still keep caculate clk list count because sizeof return pre allocated
->     array size.
->     
->     Change from v3 to v4
->     - using clk_bulk_*() API
->     Change from v1 to v3
->     - none
->     
->     Change from v4 to v5
->     - update commit message
->     - direct using clk name list, instead of macro
->     - still keep caculate clk list count because sizeof return pre allocated
->     array size.
->     
->     Change from v3 to v4
->     - using clk_bulk_*() API
->     Change from v1 to v3
->     - none
-> 
->  drivers/pci/controller/dwc/pci-imx6.c | 138 ++++++++++----------------
->  1 file changed, 50 insertions(+), 88 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 74703362aeec7..82854e94c5621 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -61,12 +61,16 @@ enum imx6_pcie_variants {
->  #define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
->  #define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
->  
-> +#define IMX6_PCIE_MAX_CLKS       6
-> +
->  struct imx6_pcie_drvdata {
->  	enum imx6_pcie_variants variant;
->  	enum dw_pcie_device_mode mode;
->  	u32 flags;
->  	int dbi_length;
->  	const char *gpr;
-> +	const char * const *clk_names;
-> +	const u32 clks_cnt;
->  };
->  
->  struct imx6_pcie {
-> @@ -74,11 +78,7 @@ struct imx6_pcie {
->  	int			reset_gpio;
->  	bool			gpio_active_high;
->  	bool			link_is_up;
-> -	struct clk		*pcie_bus;
-> -	struct clk		*pcie_phy;
-> -	struct clk		*pcie_inbound_axi;
-> -	struct clk		*pcie;
-> -	struct clk		*pcie_aux;
-> +	struct clk_bulk_data	clks[IMX6_PCIE_MAX_CLKS];
+> I don't really understand how all the endpoint stuff fits together, but my
+> hunch would be that setting the DMA masks in imx6_add_pcie_ep() might be
+> more sensible, unless perhaps there's an implied intent to account for eDMA
 
-Why can't you allocate this dynamically ?
+pci_epc_mem_alloc_addr() ioremap PCIe EP side outbound memory. Without it
+it will be mapped to lower 4G space / SWIOTLB. Generally, outbound is quite
+big in some chips, such imx95, (4GB). So it need set dmamask to make sure
+it can be mapped to > 4G space.
 
->  	struct regmap		*iomuxc_gpr;
->  	u16			msi_ctrl;
->  	u32			controller_id;
-> @@ -407,13 +407,18 @@ static void imx7d_pcie_wait_for_phy_pll_lock(struct imx6_pcie *imx6_pcie)
->  
->  static int imx6_setup_phy_mpll(struct imx6_pcie *imx6_pcie)
->  {
-> -	unsigned long phy_rate = clk_get_rate(imx6_pcie->pcie_phy);
-> +	unsigned long phy_rate = 0;
->  	int mult, div;
->  	u16 val;
-> +	int i;
->  
->  	if (!(imx6_pcie->drvdata->flags & IMX6_PCIE_FLAG_IMX6_PHY))
->  		return 0;
->  
-> +	for (i = 0; i < imx6_pcie->drvdata->clks_cnt; i++)
-> +		if (strncmp(imx6_pcie->clks[i].id, "pcie_phy", 8) == 0)
-> +			phy_rate = clk_get_rate(imx6_pcie->clks[i].clk);
-> +
->  	switch (phy_rate) {
->  	case 125000000:
->  		/*
-> @@ -550,19 +555,11 @@ static int imx6_pcie_attach_pd(struct device *dev)
->  
->  static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
->  {
-> -	struct dw_pcie *pci = imx6_pcie->pci;
-> -	struct device *dev = pci->dev;
->  	unsigned int offset;
->  	int ret = 0;
->  
->  	switch (imx6_pcie->drvdata->variant) {
->  	case IMX6SX:
-> -		ret = clk_prepare_enable(imx6_pcie->pcie_inbound_axi);
-> -		if (ret) {
-> -			dev_err(dev, "unable to enable pcie_axi clock\n");
-> -			break;
-> -		}
-> -
->  		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
->  				   IMX6SX_GPR12_PCIE_TEST_POWERDOWN, 0);
->  		break;
-> @@ -589,12 +586,6 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
->  	case IMX8MQ_EP:
->  	case IMX8MP:
->  	case IMX8MP_EP:
-> -		ret = clk_prepare_enable(imx6_pcie->pcie_aux);
-> -		if (ret) {
-> -			dev_err(dev, "unable to enable pcie_aux clock\n");
-> -			break;
-> -		}
-> -
->  		offset = imx6_pcie_grp_offset(imx6_pcie);
->  		/*
->  		 * Set the over ride low and enabled
-> @@ -615,9 +606,6 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
->  static void imx6_pcie_disable_ref_clk(struct imx6_pcie *imx6_pcie)
->  {
->  	switch (imx6_pcie->drvdata->variant) {
-> -	case IMX6SX:
-> -		clk_disable_unprepare(imx6_pcie->pcie_inbound_axi);
-> -		break;
->  	case IMX6QP:
->  	case IMX6Q:
->  		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> @@ -631,14 +619,6 @@ static void imx6_pcie_disable_ref_clk(struct imx6_pcie *imx6_pcie)
->  				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
->  				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
->  		break;
-> -	case IMX8MM:
-> -	case IMX8MM_EP:
-> -	case IMX8MQ:
-> -	case IMX8MQ_EP:
-> -	case IMX8MP:
-> -	case IMX8MP_EP:
-> -		clk_disable_unprepare(imx6_pcie->pcie_aux);
-> -		break;
->  	default:
->  		break;
->  	}
-> @@ -650,23 +630,9 @@ static int imx6_pcie_clk_enable(struct imx6_pcie *imx6_pcie)
->  	struct device *dev = pci->dev;
->  	int ret;
->  
-> -	ret = clk_prepare_enable(imx6_pcie->pcie_phy);
-> -	if (ret) {
-> -		dev_err(dev, "unable to enable pcie_phy clock\n");
-> +	ret = clk_bulk_prepare_enable(imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
-> +	if (ret)
->  		return ret;
-> -	}
-> -
-> -	ret = clk_prepare_enable(imx6_pcie->pcie_bus);
-> -	if (ret) {
-> -		dev_err(dev, "unable to enable pcie_bus clock\n");
-> -		goto err_pcie_bus;
-> -	}
-> -
-> -	ret = clk_prepare_enable(imx6_pcie->pcie);
-> -	if (ret) {
-> -		dev_err(dev, "unable to enable pcie clock\n");
-> -		goto err_pcie;
-> -	}
->  
->  	ret = imx6_pcie_enable_ref_clk(imx6_pcie);
->  	if (ret) {
-> @@ -679,11 +645,7 @@ static int imx6_pcie_clk_enable(struct imx6_pcie *imx6_pcie)
->  	return 0;
->  
->  err_ref_clk:
-> -	clk_disable_unprepare(imx6_pcie->pcie);
-> -err_pcie:
-> -	clk_disable_unprepare(imx6_pcie->pcie_bus);
-> -err_pcie_bus:
-> -	clk_disable_unprepare(imx6_pcie->pcie_phy);
-> +	clk_bulk_disable_unprepare(imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
->  
->  	return ret;
->  }
-> @@ -691,9 +653,7 @@ static int imx6_pcie_clk_enable(struct imx6_pcie *imx6_pcie)
->  static void imx6_pcie_clk_disable(struct imx6_pcie *imx6_pcie)
->  {
->  	imx6_pcie_disable_ref_clk(imx6_pcie);
-> -	clk_disable_unprepare(imx6_pcie->pcie);
-> -	clk_disable_unprepare(imx6_pcie->pcie_bus);
-> -	clk_disable_unprepare(imx6_pcie->pcie_phy);
-> +	clk_bulk_disable_unprepare(imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
->  }
->  
->  static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
-> @@ -1252,6 +1212,7 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  	struct device_node *node = dev->of_node;
->  	int ret;
->  	u16 val;
-> +	int i;
->  
->  	imx6_pcie = devm_kzalloc(dev, sizeof(*imx6_pcie), GFP_KERNEL);
->  	if (!imx6_pcie)
-> @@ -1305,32 +1266,20 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  		return imx6_pcie->reset_gpio;
->  	}
->  
-> -	/* Fetch clocks */
-> -	imx6_pcie->pcie_bus = devm_clk_get(dev, "pcie_bus");
-> -	if (IS_ERR(imx6_pcie->pcie_bus))
-> -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_bus),
-> -				     "pcie_bus clock source missing or invalid\n");
-> +	if (imx6_pcie->drvdata->clks_cnt >= IMX6_PCIE_MAX_CLKS)
-> +		return dev_err_probe(dev, -ENOMEM, "clks_cnt is too big\n");
+> channels in root complex mode as well (and so assuming that eDMA and
+> endpoint mode play nicely together sharing the same platform device) - as
 
-Same question as above, this should not fail if the clks array is
-dynamically allocated according to imx6_pcie->drvdata->clks_cnt.
+There are eDMA in host side, but still not find a usecase yet. So it is not
+enabled yet. I just need add flags IMX6_PCIE_FLAG_SUPPORT_64BIT in imx95
+host if needs.
 
-Lorenzo
+Anyways, if you like, I can move it into imx6_add_pcie_ep() at next
+version.
 
->  
-> -	imx6_pcie->pcie = devm_clk_get(dev, "pcie");
-> -	if (IS_ERR(imx6_pcie->pcie))
-> -		return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie),
-> -				     "pcie clock source missing or invalid\n");
-> +	for (i = 0; i < imx6_pcie->drvdata->clks_cnt; i++)
-> +		imx6_pcie->clks[i].id = imx6_pcie->drvdata->clk_names[i];
-> +
-> +	/* Fetch clocks */
-> +	ret = devm_clk_bulk_get(dev, imx6_pcie->drvdata->clks_cnt, imx6_pcie->clks);
-> +	if (ret)
-> +		return ret;
->  
->  	switch (imx6_pcie->drvdata->variant) {
-> -	case IMX6SX:
-> -		imx6_pcie->pcie_inbound_axi = devm_clk_get(dev,
-> -							   "pcie_inbound_axi");
-> -		if (IS_ERR(imx6_pcie->pcie_inbound_axi))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_inbound_axi),
-> -					     "pcie_inbound_axi clock missing or invalid\n");
-> -		break;
->  	case IMX8MQ:
->  	case IMX8MQ_EP:
-> -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
-> -		if (IS_ERR(imx6_pcie->pcie_aux))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
-> -					     "pcie_aux clock source missing or invalid\n");
-> -		fallthrough;
->  	case IMX7D:
->  		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
->  			imx6_pcie->controller_id = 1;
-> @@ -1353,10 +1302,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  	case IMX8MM_EP:
->  	case IMX8MP:
->  	case IMX8MP_EP:
-> -		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
-> -		if (IS_ERR(imx6_pcie->pcie_aux))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
-> -					     "pcie_aux clock source missing or invalid\n");
->  		imx6_pcie->apps_reset = devm_reset_control_get_exclusive(dev,
->  									 "apps");
->  		if (IS_ERR(imx6_pcie->apps_reset))
-> @@ -1372,14 +1317,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  	default:
->  		break;
->  	}
-> -	/* Don't fetch the pcie_phy clock, if it has abstract PHY driver */
-> -	if (imx6_pcie->phy == NULL) {
-> -		imx6_pcie->pcie_phy = devm_clk_get(dev, "pcie_phy");
-> -		if (IS_ERR(imx6_pcie->pcie_phy))
-> -			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_phy),
-> -					     "pcie_phy clock source missing or invalid\n");
-> -	}
-> -
->  
->  	/* Grab turnoff reset */
->  	imx6_pcie->turnoff_reset = devm_reset_control_get_optional_exclusive(dev, "turnoff");
-> @@ -1470,6 +1407,11 @@ static void imx6_pcie_shutdown(struct platform_device *pdev)
->  	imx6_pcie_assert_core_reset(imx6_pcie);
->  }
->  
-> +static const char * const imx6q_clks[] = {"pcie_bus", "pcie", "pcie_phy"};
-> +static const char * const imx8mm_clks[] = {"pcie_bus", "pcie", "pcie_aux"};
-> +static const char * const imx8mq_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"};
-> +static const char * const imx6sx_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"};
-> +
->  static const struct imx6_pcie_drvdata drvdata[] = {
->  	[IMX6Q] = {
->  		.variant = IMX6Q,
-> @@ -1477,6 +1419,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE,
->  		.dbi_length = 0x200,
->  		.gpr = "fsl,imx6q-iomuxc-gpr",
-> +		.clk_names = imx6q_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx6q_clks),
->  	},
->  	[IMX6SX] = {
->  		.variant = IMX6SX,
-> @@ -1484,6 +1428,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  			 IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE |
->  			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.gpr = "fsl,imx6q-iomuxc-gpr",
-> +		.clk_names = imx6sx_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx6sx_clks),
->  	},
->  	[IMX6QP] = {
->  		.variant = IMX6QP,
-> @@ -1492,40 +1438,56 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  			 IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.dbi_length = 0x200,
->  		.gpr = "fsl,imx6q-iomuxc-gpr",
-> +		.clk_names = imx6q_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx6q_clks),
->  	},
->  	[IMX7D] = {
->  		.variant = IMX7D,
->  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.gpr = "fsl,imx7d-iomuxc-gpr",
-> +		.clk_names = imx6q_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx6q_clks),
->  	},
->  	[IMX8MQ] = {
->  		.variant = IMX8MQ,
->  		.gpr = "fsl,imx8mq-iomuxc-gpr",
-> +		.clk_names = imx8mq_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
->  	},
->  	[IMX8MM] = {
->  		.variant = IMX8MM,
->  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.gpr = "fsl,imx8mm-iomuxc-gpr",
-> +		.clk_names = imx8mm_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx8mm_clks),
->  	},
->  	[IMX8MP] = {
->  		.variant = IMX8MP,
->  		.flags = IMX6_PCIE_FLAG_SUPPORTS_SUSPEND,
->  		.gpr = "fsl,imx8mp-iomuxc-gpr",
-> +		.clk_names = imx8mm_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx8mm_clks),
->  	},
->  	[IMX8MQ_EP] = {
->  		.variant = IMX8MQ_EP,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mq-iomuxc-gpr",
-> +		.clk_names = imx8mq_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
->  	},
->  	[IMX8MM_EP] = {
->  		.variant = IMX8MM_EP,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mm-iomuxc-gpr",
-> +		.clk_names = imx8mm_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx8mm_clks),
->  	},
->  	[IMX8MP_EP] = {
->  		.variant = IMX8MP_EP,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mp-iomuxc-gpr",
-> +		.clk_names = imx8mm_clks,
-> +		.clks_cnt = ARRAY_SIZE(imx8mm_clks),
->  	},
->  };
->  
-> -- 
-> 2.34.1
+Frank
+
+> we've discussed before across various threads, setting DMA masks for a host
+> bridge itself doesn't really make sense (and hence it leaves the gap where
+> we can get away with co-opting them for the MSI address hack); it's any
+> additional DMA-initiating functionality within a root complex which should
+> own that responsibility.
 > 
+> FWIW it looks like the equivalent change for Layerscape *is* specific to
+> endpoint mode, but I don't know how relevant that is to i.MX given that
+> they're unrelated hardware configurations.
+
+Previous i.MX PCI outbound space < 4G space. And only have 32bit address
+access in system bus. So needn't set DMA mask. i.MX95 change it and PCIe
+part is inheriate from layerscape.
+
+Frank
 > 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> Thanks,
+> Robin.
+> 
+> > On Fri, Jan 19, 2024 at 12:11:22PM -0500, Frank Li wrote:
+> > > Add iMX95 EP support and add 64bit address support. Internal bus bridge for
+> > > PCI support 64bit dma address in iMX95. Hence, call
+> > > dma_set_mask_and_coherent() to set 64 bit DMA mask.
+> > > 
+> > > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > 
+> > > Notes:
+> > >      Change from v8 to v9
+> > >      - update fixme comments
+> > >      - update BAR1 comments
+> > >      - Add mani's review tag
+> > >      Change from v7 to v8
+> > >      - Update commit message
+> > >      - Using Fixme
+> > >      - Update clks_cnts by ARRAY_SIZE
+> > >      Change from v4 to v7
+> > >      - none
+> > >      Change from v3 to v4
+> > >      - change align to 4k for imx95
+> > >      Change from v1 to v3
+> > >      - new patches at v3
+> > > 
+> > >   drivers/pci/controller/dwc/pci-imx6.c | 47 +++++++++++++++++++++++++++
+> > >   1 file changed, 47 insertions(+)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > > index bbaa45c08323b..7889318f6555a 100644
+> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > @@ -75,6 +75,7 @@ enum imx6_pcie_variants {
+> > >   	IMX8MQ_EP,
+> > >   	IMX8MM_EP,
+> > >   	IMX8MP_EP,
+> > > +	IMX95_EP,
+> > >   };
+> > >   #define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
+> > > @@ -84,6 +85,7 @@ enum imx6_pcie_variants {
+> > >   #define IMX6_PCIE_FLAG_HAS_APP_RESET		BIT(4)
+> > >   #define IMX6_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> > >   #define IMX6_PCIE_FLAG_HAS_SERDES		BIT(6)
+> > > +#define IMX6_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+> > >   #define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
+> > > @@ -616,6 +618,7 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+> > >   		break;
+> > >   	case IMX7D:
+> > >   	case IMX95:
+> > > +	case IMX95_EP:
+> > >   		break;
+> > >   	case IMX8MM:
+> > >   	case IMX8MM_EP:
+> > > @@ -1050,6 +1053,23 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
+> > >   	.align = SZ_64K,
+> > >   };
+> > > +/*
+> > > + * BAR#	| Default BAR enable	| Default BAR Type	| Default BAR Size	| BAR Sizing Scheme
+> > > + * ================================================================================================
+> > > + * BAR0	| Enable		| 64-bit		| 1 MB			| Programmable Size
+> > > + * BAR1	| Disable		| 32-bit		| 64 KB			| Fixed Size
+> > > + *        BAR1 should be disabled if BAR0 is 64bit.
+> > > + * BAR2	| Enable		| 32-bit		| 1 MB			| Programmable Size
+> > > + * BAR3	| Enable		| 32-bit		| 64 KB			| Programmable Size
+> > > + * BAR4	| Enable		| 32-bit		| 1M			| Programmable Size
+> > > + * BAR5	| Enable		| 32-bit		| 64 KB			| Programmable Size
+> > > + */
+> > > +static const struct pci_epc_features imx95_pcie_epc_features = {
+> > > +	.msi_capable = true,
+> > > +	.bar_fixed_size[1] = SZ_64K,
+> > > +	.align = SZ_4K,
+> > > +};
+> > > +
+> > >   static const struct pci_epc_features*
+> > >   imx6_pcie_ep_get_features(struct dw_pcie_ep *ep)
+> > >   {
+> > > @@ -1092,6 +1112,15 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
+> > >   	pci->dbi_base2 = pci->dbi_base + pcie_dbi2_offset;
+> > > +	/*
+> > > +	 * FIXME: Ideally, dbi2 base address should come from DT. But since only IMX95 is defining
+> > > +	 * "dbi2" in DT, "dbi_base2" is set to NULL here for that platform alone so that the DWC
+> > > +	 * core code can fetch that from DT. But once all platform DTs were fixed, this and the
+> > > +	 * above "dbi_base2" setting should be removed.
+> > > +	 */
+> > > +	if (imx6_pcie->drvdata->variant == IMX95_EP)
+> > > +		pci->dbi_base2 = NULL;
+> > > +
+> > >   	ret = dw_pcie_ep_init(ep);
+> > >   	if (ret) {
+> > >   		dev_err(dev, "failed to initialize endpoint\n");
+> > > @@ -1345,6 +1374,9 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+> > >   					     "unable to find iomuxc registers\n");
+> > >   	}
+> > > +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_SUPPORT_64BIT))
+> > > +		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+> > > +
+> > >   	/* Grab PCIe PHY Tx Settings */
+> > >   	if (of_property_read_u32(node, "fsl,tx-deemph-gen1",
+> > >   				 &imx6_pcie->tx_deemph_gen1))
+> > > @@ -1563,6 +1595,20 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+> > >   		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+> > >   		.epc_features = &imx8m_pcie_epc_features,
+> > >   	},
+> > > +	[IMX95_EP] = {
+> > > +		.variant = IMX95_EP,
+> > > +		.flags = IMX6_PCIE_FLAG_HAS_SERDES |
+> > > +			 IMX6_PCIE_FLAG_SUPPORT_64BIT,
+> > > +		.clk_names = imx8mq_clks,
+> > > +		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
+> > > +		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+> > > +		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
+> > > +		.mode_off[0]  = IMX95_PE0_GEN_CTRL_1,
+> > > +		.mode_mask[0] = IMX95_PCIE_DEVICE_TYPE,
+> > > +		.init_phy = imx95_pcie_init_phy,
+> > > +		.epc_features = &imx95_pcie_epc_features,
+> > > +		.mode = DW_PCIE_EP_TYPE,
+> > > +	},
+> > >   };
+> > >   static const struct of_device_id imx6_pcie_of_match[] = {
+> > > @@ -1577,6 +1623,7 @@ static const struct of_device_id imx6_pcie_of_match[] = {
+> > >   	{ .compatible = "fsl,imx8mq-pcie-ep", .data = &drvdata[IMX8MQ_EP], },
+> > >   	{ .compatible = "fsl,imx8mm-pcie-ep", .data = &drvdata[IMX8MM_EP], },
+> > >   	{ .compatible = "fsl,imx8mp-pcie-ep", .data = &drvdata[IMX8MP_EP], },
+> > > +	{ .compatible = "fsl,imx95-pcie-ep", .data = &drvdata[IMX95_EP], },
+> > >   	{},
+> > >   };
+> > > -- 
+> > > 2.34.1
+> > > 
