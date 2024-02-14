@@ -1,256 +1,555 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2046.outbound.protection.outlook.com [40.107.21.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D35A10A2A
-	for <imx@lists.linux.dev>; Wed, 14 Feb 2024 06:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707891261; cv=none; b=XDGNhCNsc3OnyhaLD9AvIBp+EcaP0fj7bxYQRUKlT+5AFFZpHo7K88SClX5MWvfMlCKyD9301iTRessJljiG/MsTU7B0WE6LilttIHvMA3NpvY/wl4URdTd3kiNTagd99N3txhvqJuFIyYIT9KALRCh/HydEKnasZ3403CDOSBA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707891261; c=relaxed/simple;
-	bh=wzr+kLlknr1luythVXCJluevwdFGrIq8/RzBWxobG6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qts/m88xsaSYnB/OW+o/DEEjk2SzeohF+9OO4156WPgbE64BmT6/j5918TKd1xZ4k+sVrQgVk88NLFKEF3jXO+e0/9g2hF0buxAnsFeG2isIinDVV5S8+BVEotty0T6ss+i/Rndcxl8jWeQbkZMuaqaID1XFw4It0mUYqdUEaGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GlgqRBxH; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161F913A86A
+	for <imx@lists.linux.dev>; Wed, 14 Feb 2024 19:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707939730; cv=fail; b=eGltoGNvGC//pngAYQNktpcLqQq7JhKdKIBRI7epYvW0oskxNSZ+QVoZEp7rLbQA8KpzWbUEmKzNTfdpQZRE0EYjAcZVkKPLR4dWf/pMnkIOt1IaTOilxup+PdNzDBClB7VZ10E4ooCUoi0TflocrrRB7Xm8SauI8fag2Abd3mw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707939730; c=relaxed/simple;
+	bh=G5l1kafhruJxa/Ru0779olZyba24iCNlg5JbiA1gkIY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=eFTKRGmMXKPmjVEGaW8p0D7aB4ZNnZA08LdtCCH4QtpoapnnCb6H//3eeztW2dzqfEIRVpp9C9yeD91398M4AYl6VT+duGuTX/6pOASKvDqZ5I0KO9YjzXygdf2KO7pC00qM9yEzVvaQ9qukpBYmMOgMLRfK9QnFoIP+zuoQhk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=J01s545p; arc=fail smtp.client-ip=40.107.21.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GlgqRBxH"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e10f2d23d8so69015b3a.1
-        for <imx@lists.linux.dev>; Tue, 13 Feb 2024 22:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707891258; x=1708496058; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rEAtaGDufDWhtM/apq9lA9fVfmRBlWSvuuyTiSpPBN8=;
-        b=GlgqRBxH4EowOGefMfBxIkrydi+4zuiX5BwfFeZ3wzl4QO9u2jp/J0JfEblhJ1IoeO
-         81QcD4sNFGhBY792UcNoz/br7EFOnV5y4Ds4+JhxtFIGh1fkFTuNdAgW7znaI3CW76PD
-         ky+yoO4X4deHIqnYj0hJ2OeH6hx3mEDuZaP2fSlCdT0BScvOU1e3KlOhC7CEqd+lmV90
-         FpLUjnzDvWozMOulQD32LIVJA/oMcTRhMIN9mdrSLpHIZLCeAwN3nnLvYOqW5nHmNbLu
-         xhUwmrmbxyjCsQTqp69+MsLz2CcSl2HKr52AocSqIg02KHIxpNK692r/vNCaNXjNAF+I
-         BzzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707891258; x=1708496058;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rEAtaGDufDWhtM/apq9lA9fVfmRBlWSvuuyTiSpPBN8=;
-        b=XfsuN/Xgdn/9aU52ZQYRPKkV3vfAeCH1GAtHhetdu1ph6Ahba9j6DRVCU512KW0+gk
-         EA7A+ZVRjmDCjZWK4ERAciyMUETmGQGSRzYA8SSSFD0xUd5jA3XIBon0j82MAdSiNnbm
-         NWvf1PhomWGxf0FEXiXQ2v35PyutYw+xu/ffKShU2SaVCNqR6oyLrgxc9TkukaCGdtDb
-         DeU1jRnvOcyqu7hrXc9lmc96D4x100CW8DaXfkuuCxBNKV3k7V6ue3OVemy5oOaMjvIr
-         7CPd9p7DT1eQzcadAlLBfJCoZAH9yf8bYfFRgblff1v2O0GUgx0kyrjmZQQIffDtRjEw
-         tsEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWupIlABUG7GKGK07m5Ckwg1sWQaeJoBFsNBsfjvMu0SusdWJ6Y22zZmCexpNDvNChcY8IP1VL9ANtF92xMqHaoDSdu
-X-Gm-Message-State: AOJu0Yy/OLR9Sld/XGUu6qUtiDDh/vTBKzRB3pa9CKytChXu40MDFh75
-	8P6s1/5IQqj0Xmbe4Jb+JU8A1tlTKdind+XM0qBiDOqxFbs0jXdqzu0QfdEmFQ==
-X-Google-Smtp-Source: AGHT+IHH8BKMmvWEAPzi0hPOk/HvNEBJyCiOUf4JLgbW6hCkwVsGkA/J5ewFI76o82rIsRzpH229/A==
-X-Received: by 2002:a05:6a00:4588:b0:6e0:4e85:54f0 with SMTP id it8-20020a056a00458800b006e04e8554f0mr1429326pfb.28.1707891258180;
-        Tue, 13 Feb 2024 22:14:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWVw7tJYklSfjZdOK6xrlMPX/1pq0rFvKiLd5xqumFKql4taN9YfYfNDhokaiWsduAa/gKNFasJjotO82HBEWszENDUapy3J7KUH26QCAdtyrzwCV4itAMMLDHRu1FkYxYrN8RuUeRxCy5ENCKBaLFuoT6IRO46KlcObp1M8rhY9/2XgZ6qGIXhbLscBbzQrRN4qOFUVSEJuJ/JumDqLECGBuMrds4DjIJrjXfiDP3sI1B0OE8GW6V02kjaUh9P0M9ylsT9jkBfETYVcfsWuh0RwHhXNf3UsyGgsni+SnG4D7hlJjMgAMh3HBkHiZVFz53cTqfJ1IDezavyOkYqwPuTTFNwFUUtfSS5o2y8mdNeh4t3cDrsNflJEk9QBObslHK6u5k6ZMt3QZSjGd78SRWsn5B0BFdOqvnYq5k2FlTsP2GV98ZC74GqYYIwU2sIWq0=
-Received: from thinkpad ([103.28.246.149])
-        by smtp.gmail.com with ESMTPSA id ko19-20020a056a00461300b006ddc75edd55sm8314448pfb.152.2024.02.13.22.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Feb 2024 22:14:17 -0800 (PST)
-Date: Wed, 14 Feb 2024 11:44:12 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Serge Semin <fancer.lancer@gmail.com>
-Cc: Frank Li <Frank.li@nxp.com>, Rob Herring <robh@kernel.org>,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="J01s545p"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BefvZvdLIWPC4uIPl/LPqikVA7zaVRyQoOThqFBUPAn/R8nEwOtn9QWhlDW2dLJnqpuh9R2tBPZK4cUiPIaamSG4u9tnutxkv6jy41ySoxlGm7Hqxo2ltsyAL9VWUWlAB6fe5js8Ve0Xcy2OOrslGuEB2dW3Y8tSS3Zhd+0WOIaEfN8oA1pfh62s9jMkXXT24F7jA4OSmHyKSepSck7jOFo4ZYPpZlFiy/ZX6jXNpDVh3bu74oec9hzjDhyzYdR+FvG+zUZgVimF6zA2wCEnfHDMgogeRgnzo1whFoWeZHJkgO5sxgekzJ8gXjPh+GYO/fvHbvXEnmeDSfDkaBJDDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=55gGF25QRNINrbw1aboCxazy2dX2ubyeeV7kyAAsOPA=;
+ b=EMIvPvjUwlMMs4vrAoW8MI9kRbtFwVj8VUBOOB1vXM5oveK7V6fcLlqlnBmcJF6jjbZzeC8qYcGUQ80ZT9gfOUlzkMlYuGbT+6s0TvzyIfOmT+tsnpSZ8Bm7G+qs12gfxy3T+z/kStpcHr+9lJv8d0+tI7c4AXyvtz5Rbh8QUVwYKXDOdM8odDJ3wYD5cEt3bTJ6W/bTYMa2bpkpH4jKf38It8kaFG6rEIv+ZeAq7JaIqxqOj2QUBwqHMtxqsbiZwRBn/ODOHvpCLLug4RqeYZHDay38vWS20hcFMA6MIrwpIihAhsqGIqy1OIZ8+KnN4KrBPoGzog1hxyHtvXYF4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=55gGF25QRNINrbw1aboCxazy2dX2ubyeeV7kyAAsOPA=;
+ b=J01s545p7zJxLqtGhtqJrbvBaKbXmPElRXQlYA+TkniLZswWNf0uUd8IQleOmKYza22eWMVcs6drF/95JevJ63et+EjhUs6pdRnuj9a1xxiKNrQLE/ImvSLvaP1QyCOcrWNr1F5n1hAAc+0PNTeDIcHHuSmMEMNLb9c3ZLPevRY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DB9PR04MB9258.eurprd04.prod.outlook.com (2603:10a6:10:372::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26; Wed, 14 Feb
+ 2024 19:42:03 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7292.027; Wed, 14 Feb 2024
+ 19:42:02 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] dt-bindings: PCI: dwc: Add 'msg' register region
-Message-ID: <20240214061412.GB4618@thinkpad>
-References: <20240202-pme_msg-v3-0-ff2af57a02ad@nxp.com>
- <20240202-pme_msg-v3-5-ff2af57a02ad@nxp.com>
- <eg7wrjp5ebz43g37fvebr44nwkoh4rptbtyu76nalbmgbbnqke@4zugpgwesyqd>
- <20240205183048.GA3818249-robh@kernel.org>
- <ZcEzYdZKotBJlR5i@lizhi-Precision-Tower-5810>
- <ZcK2/tmLG9O7CBEH@lizhi-Precision-Tower-5810>
- <luk5hswq4wnk5p7axml73qih35hio3y3pfnklctbn6rwres62s@mumnvygjh5ch>
- <ZcOpehO3rzCfAwXf@lizhi-Precision-Tower-5810>
- <gl7zmzkezr6k4txrrgqyikspfah3vmgwwz2e3j5kwb2iarpkxv@3ofwrhtxl2sz>
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-pci@vger.kernel.org (open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 1/1] dt-bindings: pci: layerscape-pci: Convert to yaml format
+Date: Wed, 14 Feb 2024 14:41:44 -0500
+Message-Id: <20240214194145.2669744-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0039.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <gl7zmzkezr6k4txrrgqyikspfah3vmgwwz2e3j5kwb2iarpkxv@3ofwrhtxl2sz>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB9258:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2b91168-a372-4d1f-db99-08dc2d95042e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	T7wWVw/JvQozLD4AN1i/32nJNrFhdDjcZa7g7zEaINTx3ccPl+kpo/Uo9TcT6wCbbrJ52KVrScIsS57wrrBGym5RCebx6lSb+qM8bXUj1/X0Csp4VltkV2b/geSDD2g6MXlfUYBlpx4ycQMLcbZ9MswH5jBMNLM2K/KdG/CghgH3i3TXgGm/SXm6CFoTyFlKFVb86hwILMkXf/lYSmoRbEKpHK+0AjPpRDOQR8HCy989sAYt9iAF++6rb2T4t3Hrc7miHD/SjDALVFwYNiwu3YwIkoakIxTRN6w76em5U3CrzUqbSCq6/+MJ9Y4megevb4BPcrBrYpqad+/1zb3RbAWBtCf2cPS0WkJkM7rwJ4BpzWEtPS8ItbY5FE3slegUiwAo1vePwYqs1rkh3bLJWA5t/KKjBVXvpSWp3sY7enD4sFFHc3lzcgjxKGCmpiYyU7dUnaR6GNUi4dcMM/EyS29P35aiqok0trmQQ5OeX0QSR+JzIRg+sHa+lQ7QpSTh8+V/7cE9D8bTAlJ+ODFvv9Y49ih16VLrBuQyoGuEvMvPFweA4j1IiwtOg2RCsTkH1GG7YlwkbAU4fu2DmEG09sfArxSuRz08csc9Uygg4hY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(366004)(39860400002)(376002)(346002)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(6512007)(478600001)(6506007)(6486002)(966005)(41300700001)(2616005)(52116002)(5660300002)(30864003)(2906002)(8936002)(4326008)(8676002)(7416002)(66556008)(66946007)(66476007)(110136005)(38350700005)(6666004)(316002)(26005)(1076003)(83380400001)(36756003)(86362001)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xkp5mPxUPWrh+RFeDKhBo46rKRi46fV7USpsZ7zxhYxp4U6D+zjtLa2H1shl?=
+ =?us-ascii?Q?wHCECjWF0ycJsbhfs6V5m3k3/7jYNqxCp0BxekqOGc/oTi+u+bd4lzx4mYGV?=
+ =?us-ascii?Q?fAcaSXdmpfo/OWbWepkOFRP2La7YmbpvN9z0RfOBTLsm/8GRM55nfXZhnSfh?=
+ =?us-ascii?Q?mILlKXl85yMPXn41VEfmoPpzThnm8/grXIOHsM2dzvzcE7Y/RWBN9PBOdJiH?=
+ =?us-ascii?Q?iPscyyfskg5wVxNhH3eyyFKMY1BwLBHxPTeLrbhbGwtzFSZiUjoBRrnxl4MI?=
+ =?us-ascii?Q?P43YbCPZV9YbxQdlk4WZDQ3dRyH5BbiajUlK/SEG3A5jhXEsv7SkH42UF+SZ?=
+ =?us-ascii?Q?GuWkthaIQepcieqMg4Z+ZT34q30om476ebMPkeAZV44Sx9wd+rHlv/HZlb/T?=
+ =?us-ascii?Q?yiyjz1Uhd2hxuwT3DUCya47iGJOzs0iTjaLCsvnJ9RG6BRSf37nTtyx0pAP6?=
+ =?us-ascii?Q?sE3gHWLPY8waikat6COMAANxHvLPRo787SswL8r3nHQT3jM3hmjZtx/oKAoS?=
+ =?us-ascii?Q?lCIa0WssNljwp9Bu/3nFFv36HsumK4DBhZYwH4HhEXd7vr39L7pgcOjz24fG?=
+ =?us-ascii?Q?wlbOWk4ACzUr9xihCDpjY7UyRFVRH/SqyYfXtX6JTQQrXQJVtEQqJgTDjYDa?=
+ =?us-ascii?Q?RpskdLJM+KU1NIisbC2830TKRUXw5tOoMBE+OU/rN8OXW8MCzVly4iv8SUKO?=
+ =?us-ascii?Q?jEJ5rqhTbsRBv4Au10rwI988CuGQ7DL/Be/ecfPOPCoL9tSr2MWwYSpB5z8K?=
+ =?us-ascii?Q?4uEuc4XdQQmv570T5n5ydXfiSljYVvgzeZ7UhCNuYDwtBrBFhVEdZG2fdJKf?=
+ =?us-ascii?Q?2n8tAiHQBxwRPqeR1ud+GvJLoG6rRlXHBPY1S69zyWwUGLaE7PoUoKsbvn8A?=
+ =?us-ascii?Q?mfxwn5JhEM5EggwI+xOKuvk1LHqgpuwGSdQm1ZP/RHeG/5hVAVUHPjallLhR?=
+ =?us-ascii?Q?2jg7zhcbThZ1hobeodc2l5JXkwUTQ8nB1SzolepJI8B0tYkesXaIsMUzJq7B?=
+ =?us-ascii?Q?kpoO7/xHJB/Eta9AMSLjdhI/RIFytO+co2LDYZNPRU98zBRDQQhIgFpzgBpM?=
+ =?us-ascii?Q?eaOIuuYpyr6JOSPCOaR8zgaX4G5YchJv1E56qhczDQSyrDctwXNbZrQl6Rcf?=
+ =?us-ascii?Q?xKnz4aFON7fZRWzUrM2hTm1wgRm8LsDMI1HmgV8Xp3szHZhRm1DbQUJQz6jU?=
+ =?us-ascii?Q?qy2T11iYbxOrrUJ+vXPNMleuc7J8MMyNDkym2yk1j7vVbSvhaXSduqQ+7K5y?=
+ =?us-ascii?Q?LpLGzl+kil3haz+OG71bGjLpV8Ms55zEGzTu/efbZJ0JffFVo0Y5QaT+etyX?=
+ =?us-ascii?Q?gv3xDNbI8FEit8+zOjpmD54k3YgOSm7h+6BWl9ExCNGvOpvzG1aOsTdSNK0t?=
+ =?us-ascii?Q?XRttBIBlFNgJQogpaTJjzVvzkgZ+HlT1LlVRjdoV8dmMqZRTs8ZqEL4qNJfc?=
+ =?us-ascii?Q?UJgOjmKUmBIsbE+fuqHcMUaYmef6X8jDZ1GjWU251LzMekqtq1RgOie2proU?=
+ =?us-ascii?Q?8/2+P2p0ksASo8mCdlhEloZFEPF6kWBgGA8VwJ988CmE8yMRgObcNAHU6KhD?=
+ =?us-ascii?Q?jHH3AKfdN1xpAujbOVyuVja3Vr8W/Sz9m5qdpupW?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2b91168-a372-4d1f-db99-08dc2d95042e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 19:42:02.5171
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7CnBO3D+gdl+2CpQNy/GXJGx25cMf+8rTd6e2ahwrQbOPuFhzRsTzVo+wCptB61u2XRpq3PaebwbFP5IJypmPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9258
 
-On Fri, Feb 09, 2024 at 12:52:52PM +0300, Serge Semin wrote:
-> On Wed, Feb 07, 2024 at 11:02:02AM -0500, Frank Li wrote:
-> > On Wed, Feb 07, 2024 at 03:37:30PM +0300, Serge Semin wrote:
-> > > On Tue, Feb 06, 2024 at 05:47:26PM -0500, Frank Li wrote:
-> > > > On Mon, Feb 05, 2024 at 02:13:37PM -0500, Frank Li wrote:
-> > > > > On Mon, Feb 05, 2024 at 06:30:48PM +0000, Rob Herring wrote:
-> > > > > > On Sat, Feb 03, 2024 at 01:44:31AM +0300, Serge Semin wrote:
-> > > > > > > On Fri, Feb 02, 2024 at 10:11:27AM -0500, Frank Li wrote:
-> > > > > > > > Add an outbound iATU-capable memory-region which will be used to send PCIe
-> > > > > > > > message (such as PME_Turn_Off) to peripheral. So all platforms can use
-> > > > > > > > common method to send out PME_Turn_Off message by using one outbound iATU.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > > ---
-> > > > > > > >  Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml | 4 ++++
-> > > > > > > >  1 file changed, 4 insertions(+)
-> > > > > > > > 
-> > > > > > > > diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-> > > > > > > > index 022055edbf9e6..25a5420a9ce1e 100644
-> > > > > > > > --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-> > > > > > > > +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-> > > > > > > > @@ -101,6 +101,10 @@ properties:
-> > > > > > > 
-> > > > > > > >              Outbound iATU-capable memory-region which will be used to access
-> > > > > > > >              the peripheral PCIe devices configuration space.
-> > > > > > > >            const: config
-> > > > > > > > +        - description:
-> > > > > > > > +            Outbound iATU-capable memory-region which will be used to send
-> > > > > > > > +            PCIe message (such as PME_Turn_Off) to peripheral.
-> > > > > > > > +          const: msg
-> > > > > > > 
-> > > > > > > Note there is a good chance Rob won't like this change. AFAIR he
-> > > > > > > already expressed a concern regarding having the "config" reg-name
-> > > > > > > describing a memory space within the outbound iATU memory which is
-> > > > > > > normally defined by the "ranges" property. Adding a new reg-entry with
-> > > > > > > similar semantics I guess won't receive warm welcome.
-> > > > > > 
-> > > > > > I do think it is a bit questionable. Ideally, the driver could 
-> > > > > > just configure this on its own. However, since we don't describe all of 
-> > > > > > the CPU address space (that's input to the iATU) already, that's not 
-> > > > > > going to be possible. I suppose we could fix that, but then config space 
-> > > > > > would have to be handled differently too.
-> > > > > 
-> > > > > Sorry, I have not understand what your means. Do you means, you want
-> > > > > a "cpu-space", for example, 0x8000000 - 0x9000000 for all ATU. 
-> > > > > 
-> > > > > Then allocated some space to 'config', 'io', 'memory' and this 'msg'.
-> > > > 
-> > > > @rob:
-> > > > 
-> > > >     So far, I think "msg" is feasilbe solution. Or give me some little
-> > > > detail direction?
-> > > 
-> > > Found the Rob' note about the iATU-space chunks utilized in the reg
-> > > property:
-> > > https://lore.kernel.org/linux-pci/CAL_JsqLp7QVgxrAZkW=z38iB7SV5VeWH1O6s+DVCm9p338Czdw@mail.gmail.com/
-> > > 
-> > > So basically Rob meant back then that
-> > > either originally we should have defined a new reg-name like "atu-out"
-> > > with the entire outbound iATU CPU-space specified and unpin the
-> > > regions like "config"/"ecam"/"msg"/etc from there in the driver
-> > > or, well, stick to the chunking further. The later path was chosen
-> > > after the patch with the "ecam" reg-name was accepted (see the link
-> > > above).
-> > > 
-> > > Really ECAM/config space access, custom TLP messages, legacy interrupt
-> > > TLPs, etc are all application-specific features. Each of them is
-> > > implemented based on a bit specific but basically the same outbound
-> > > iATU engine setup. Thus from the "DT is a hardware description" point
-> > > of view it would have been enough to describe the entire outbound iATU
-> > > CPU address space and then let the software do the space
-> > > reconfiguration in runtime based on it' application needs.
-> > 
-> > There are "addr_space" in EP mode, which useful map out outbound iatu
-> > region. We can reuse this name.
-> > 
-> > To keep compatiblity, cut hole from 'config' and 'ranges'. If there are
-> > not 'config', we can alloc a 1M(default) from top for 'config', then, 4K
-> > (default) for msg, 64K( for IO if not IO region in 'ranges'), left is
-> > mem region. We can config each region size by module parameter or drvdata.
-> > 
-> > So we can deprecate 'config', even 'ranges'
-> 
-> Not sure I fully understand what you mean. In anyway the "config" reg
-> name is highly utilized by the DW PCIe IP-core instances. We can't
-> deprecate it that easily. At least the backwards compatibility must be
-> preserved. Moreover "addr_space" is also just a single value reg which
-> won't solve a problem with the disjoint DW PCIe outbound iATU memory
-> regions.
-> 
-> The "ranges" property is a part of the DT specification.  The
-> PCI-specific way of the property-based mapping is de-facto a standard
-> too. So this can't be deprecated.
-> 
-> > 
-> > > 
-> > > * Rob, correct me if am wrong.
-> > > 
-> > > On the other hand it's possible to have more than one disjoint CPU
-> > > address region handled by the outbound iATU (especially if there is no
-> > > AXI-bridge enabled, see XALI - application transmit client interfaces
-> > > in HW manual). Thus having a single reg-property might get to be
-> > > inapplicable in some cases. Thinking about that got me to an idea.
-> > > What about just extending the PCIe "ranges" property flags
-> > > (IORESOURCE_TYPE_BITS) with the new ones in this case indicating the
-> > > TLP Msg mapping? Thus we can avoid creating app-specific reg-names and
-> > > use the flag to define a custom memory range for the TLP messages
-> > > generation. At some point it can be also utilized for the config-space
-> > > mapping. What do you think?
-> > 
-> 
-> > IORESOURCE_TYPE_BITS is 1f, Only 5bit. If extend IORESOURCE_TYPE_BITS, 
-> > all IORESOURCE_* bit need move. And it is actual MEMORY regain. 
-> 
-> No. The lowest four bits aren't flags but the actual value. They are
-> retrieved from the PCI-specific memory ranges mapping:
-> https://elinux.org/Device_Tree_Usage#PCI_Address_Translation
-> https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_64.c#L141
-> https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_32.c#L78
-> Currently only first four out of _sixteen_ values have been defined so
-> far. So we can freely use some of the free values for custom TLPs,
-> etc. Note the config-space is already defined by the ranges property
-> having the 0x0 space code (see the first link above), but it isn't
-> currently supported by the PCI subsystem. So at least that option can
-> be considered as a ready-to-implement replacement for the "config"
-> reg-name.
-> 
+Convert the layerscape-pci PCIe binding document to yaml format.
 
-Agree. But still, the driver has to support both options: "config" reg name and
-"ranges", since ammending the binding would be an ABI break.
+Additionally, changes for the layerscape-pci endpoint part:
+- Add interrupt name 'pme' restriction for fsl,ls1028a-pcie-ep,
+fsl,ls1046a-pcie-ep, and fsl,ls1088a-pcie-ep.
+- Add register name restrictions: 'reg' and 'addr_space'. 'addr_space' is
+required by snps,dw-pcie-ep.
+- Add an example.
 
-> > 
-> > Or we can use IORESOURCE_BITS (0xff)
-> > 
-> > /* PCI ROM control bits (IORESOURCE_BITS) */
-> > #define IORESOURCE_ROM_ENABLE		(1<<0)	/* ROM is enabled, same as PCI_ROM_ADDRESS_ENABLE */
-> > #define IORESOURCE_ROM_SHADOW		(1<<1)	/* Use RAM image, not ROM BAR */
-> > 
-> > /* PCI control bits.  Shares IORESOURCE_BITS with above PCI ROM.  */
-> > #define IORESOURCE_PCI_FIXED		(1<<4)	/* Do not move resource */
-> > #define IORESOURCE_PCI_EA_BEI		(1<<5)	/* BAR Equivalent Indicator */
-> > 
-> > we can add
-> > 
-> > IORESOURCE_PRIV_WINDOWS			(1<<6)
-> > 
-> > I think previous method was more extendable. How do you think?
-> 
-> IMO extending the PCIe "ranges" property semantics looks more
-> promising, more flexible and more portable across various PCIe
-> controllers. But the most importantly is what Rob and Bjorn think
-> about that, not me.
-> 
+Changes for the layerscape-pci root complex part:
+- Add required property: 'reg-names', "#address-cells", "#size-cells",
+'device_type', 'bus-range', 'ranges', "#interrupt-cells",
+'interrupt-map-mask' and 'interrupt-map'.
+- Interrupt-names requirement split to each compatible string.
+- Add register name restrictions: 'reg' and 'config'. 'config' is required
+by snps,dw-pcie.
 
-IMO, using the "ranges" property to allocate arbitrary memory region should be
-the way forward, since it has almost all the info needed by the drivers to
-allocate the memory regions.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
 
-But for the sake of DT backwards compatiblity, we have to keep supporting the
-existing reg entries (addr_space, et al.), because "ranges" is not a required
-property for EP controllers.
+Notes:
+    There are log discuss at v1. If I missed something, let me know.
+    
+    Change from v2 to v3
+    - update commit message, show change compare txt file
+    - add failback compatible fsl,ls-pcie-ep.
+    - add commit message about 'addr_space' and 'config'.
+    
+    Change from v1 to v2
+    - remove '|-'
+    - dma-coherent: true
+    - add interrupts and interrupt-names at before Allof
+    - remove ref to snps,pcie*.yaml, some reg-names are not aligned with in
+    drivers
+    - Add an example for pcie-ep
 
-- Mani
+ .../bindings/pci/fsl,layerscape-pcie-ep.yaml  | 110 +++++++++++
+ .../bindings/pci/fsl,layerscape-pcie.yaml     | 182 ++++++++++++++++++
+ .../bindings/pci/layerscape-pci.txt           |  79 --------
+ 3 files changed, 292 insertions(+), 79 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+ create mode 100644 Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+ delete mode 100644 Documentation/devicetree/bindings/pci/layerscape-pci.txt
 
+diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+new file mode 100644
+index 0000000000000..b384a0b2fe22e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+@@ -0,0 +1,110 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pci/fsl,layerscape-pcie-ep.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Layerscape PCIe Endpoint(EP) controller
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  This PCIe EP controller is based on the Synopsys DesignWare PCIe IP.
++
++  This controller derives its clocks from the Reset Configuration Word (RCW)
++  which is used to describe the PLL settings at the time of chip-reset.
++
++  Also as per the available Reference Manuals, there is no specific 'version'
++  register available in the Freescale PCIe controller register set,
++  which can allow determining the underlying DesignWare PCIe controller version
++  information.
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - fsl,ls2088a-pcie-ep
++          - fsl,ls1088a-pcie-ep
++          - fsl,ls1046a-pcie-ep
++          - fsl,ls1028a-pcie-ep
++          - fsl,lx2160ar2-pcie-ep
++      - const: fsl,ls-pcie-ep
++
++  reg:
++    maxItems: 2
++
++  reg-names:
++    items:
++      - const: regs
++      - const: addr_space
++
++  fsl,pcie-scfg:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: A phandle to the SCFG device node. The second entry is the
++      physical PCIe controller index starting from '0'. This is used to get
++      SCFG PEXN registers.
++
++  big-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: If the PEX_LUT and PF register block is in big-endian, specify
++      this property.
++
++  dma-coherent: true
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 2
++    oneOf:
++      - anyOf:
++          - const: pme
++          - const: aer
++      - const: intr
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - interrupt-names
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,ls1028a-pcie-ep
++            - fsl,ls1046a-pcie-ep
++            - fsl,ls1088a-pcie-ep
++    then:
++      properties:
++        interrupt-names:
++          items:
++            - const: pme
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    soc {
++      #address-cells = <2>;
++      #size-cells = <2>;
++
++      pcie_ep1: pcie-ep@3400000 {
++        compatible = "fsl,ls1028a-pcie-ep", "fsl,ls-pcie-ep";
++        reg = <0x00 0x03400000 0x0 0x00100000
++              0x80 0x00000000 0x8 0x00000000>;
++        reg-names = "regs", "addr_space";
++        interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* PME interrupt */
++        interrupt-names = "pme";
++        num-ib-windows = <6>;
++        num-ob-windows = <8>;
++        status = "disabled";
++      };
++    };
++...
+diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+new file mode 100644
+index 0000000000000..988929729580a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+@@ -0,0 +1,182 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pci/fsl,layerscape-pcie.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Layerscape PCIe Root Complex(RC) controller
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  This PCIe RC controller is based on the Synopsys DesignWare PCIe IP
++
++  This controller derives its clocks from the Reset Configuration Word (RCW)
++  which is used to describe the PLL settings at the time of chip-reset.
++
++  Also as per the available Reference Manuals, there is no specific 'version'
++  register available in the Freescale PCIe controller register set,
++  which can allow determining the underlying DesignWare PCIe controller version
++  information.
++
++properties:
++  compatible:
++    enum:
++      - fsl,ls1021a-pcie
++      - fsl,ls2080a-pcie
++      - fsl,ls2085a-pcie
++      - fsl,ls2088a-pcie
++      - fsl,ls1088a-pcie
++      - fsl,ls1046a-pcie
++      - fsl,ls1043a-pcie
++      - fsl,ls1012a-pcie
++      - fsl,ls1028a-pcie
++      - fsl,lx2160a-pcie
++
++  reg:
++    maxItems: 2
++
++  reg-names:
++    items:
++      - const: regs
++      - const: config
++
++  fsl,pcie-scfg:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: A phandle to the SCFG device node. The second entry is the
++      physical PCIe controller index starting from '0'. This is used to get
++      SCFG PEXN registers.
++
++  big-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: If the PEX_LUT and PF register block is in big-endian, specify
++      this property.
++
++  dma-coherent: true
++
++  msi-parent: true
++
++  iommu-map: true
++
++  interrupts:
++    minItems: 1
++    maxItems: 3
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 3
++
++required:
++  - compatible
++  - reg
++  - reg-names
++  - "#address-cells"
++  - "#size-cells"
++  - device_type
++  - bus-range
++  - ranges
++  - interrupts
++  - interrupt-names
++  - "#interrupt-cells"
++  - interrupt-map-mask
++  - interrupt-map
++
++allOf:
++  - $ref: /schemas/pci/pci-bus.yaml#
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,lx2160a-pcie
++    then:
++      properties:
++        interrupts:
++          maxItems: 2
++        interrupt-names:
++          items:
++            - const: pme
++            - const: aer
++            - const: intr
++
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,ls1028a-pcie
++            - fsl,ls1046a-pcie
++            - fsl,ls1043a-pcie
++            - fsl,ls1012a-pcie
++    then:
++      properties:
++        interrupts:
++          maxItems: 2
++        interrupt-names:
++          items:
++            - const: pme
++            - const: aer
++
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,ls2080a-pcie
++            - fsl,ls2085a-pcie
++            - fsl,ls2088a-pcie
++            - fsl,ls1021a-pcie
++    then:
++      properties:
++        interrupts:
++          maxItems: 1
++        interrupt-names:
++          items:
++            - const: intr
++
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,ls1088a-pcie
++    then:
++      properties:
++        interrupts:
++          maxItems: 1
++        interrupt-names:
++          items:
++            - const: aer
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    soc {
++      #address-cells = <2>;
++      #size-cells = <2>;
++
++      pcie@3400000 {
++        compatible = "fsl,ls1088a-pcie";
++        reg = <0x00 0x03400000 0x0 0x00100000>, /* controller registers */
++            <0x20 0x00000000 0x0 0x00002000>; /* configuration space */
++        reg-names = "regs", "config";
++        interrupts = <0 108 IRQ_TYPE_LEVEL_HIGH>; /* aer interrupt */
++        interrupt-names = "aer";
++        #address-cells = <3>;
++        #size-cells = <2>;
++        dma-coherent;
++        device_type = "pci";
++        bus-range = <0x0 0xff>;
++        ranges = <0x81000000 0x0 0x00000000 0x20 0x00010000 0x0 0x00010000   /* downstream I/O */
++                 0x82000000 0x0 0x40000000 0x20 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
++        msi-parent = <&its>;
++        #interrupt-cells = <1>;
++        interrupt-map-mask = <0 0 0 7>;
++        interrupt-map = <0000 0 0 1 &gic 0 0 0 109 IRQ_TYPE_LEVEL_HIGH>,
++                        <0000 0 0 2 &gic 0 0 0 110 IRQ_TYPE_LEVEL_HIGH>,
++                        <0000 0 0 3 &gic 0 0 0 111 IRQ_TYPE_LEVEL_HIGH>,
++                        <0000 0 0 4 &gic 0 0 0 112 IRQ_TYPE_LEVEL_HIGH>;
++        iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
++      };
++    };
++...
+diff --git a/Documentation/devicetree/bindings/pci/layerscape-pci.txt b/Documentation/devicetree/bindings/pci/layerscape-pci.txt
+deleted file mode 100644
+index ee8a4791a78b4..0000000000000
+--- a/Documentation/devicetree/bindings/pci/layerscape-pci.txt
++++ /dev/null
+@@ -1,79 +0,0 @@
+-Freescale Layerscape PCIe controller
+-
+-This PCIe host controller is based on the Synopsys DesignWare PCIe IP
+-and thus inherits all the common properties defined in snps,dw-pcie.yaml.
+-
+-This controller derives its clocks from the Reset Configuration Word (RCW)
+-which is used to describe the PLL settings at the time of chip-reset.
+-
+-Also as per the available Reference Manuals, there is no specific 'version'
+-register available in the Freescale PCIe controller register set,
+-which can allow determining the underlying DesignWare PCIe controller version
+-information.
+-
+-Required properties:
+-- compatible: should contain the platform identifier such as:
+-  RC mode:
+-        "fsl,ls1021a-pcie"
+-        "fsl,ls2080a-pcie", "fsl,ls2085a-pcie"
+-        "fsl,ls2088a-pcie"
+-        "fsl,ls1088a-pcie"
+-        "fsl,ls1046a-pcie"
+-        "fsl,ls1043a-pcie"
+-        "fsl,ls1012a-pcie"
+-        "fsl,ls1028a-pcie"
+-  EP mode:
+-	"fsl,ls1028a-pcie-ep", "fsl,ls-pcie-ep"
+-	"fsl,ls1046a-pcie-ep", "fsl,ls-pcie-ep"
+-	"fsl,ls1088a-pcie-ep", "fsl,ls-pcie-ep"
+-	"fsl,ls2088a-pcie-ep", "fsl,ls-pcie-ep"
+-	"fsl,lx2160ar2-pcie-ep", "fsl,ls-pcie-ep"
+-- reg: base addresses and lengths of the PCIe controller register blocks.
+-- interrupts: A list of interrupt outputs of the controller. Must contain an
+-  entry for each entry in the interrupt-names property.
+-- interrupt-names: It could include the following entries:
+-  "aer": Used for interrupt line which reports AER events when
+-	 non MSI/MSI-X/INTx mode is used
+-  "pme": Used for interrupt line which reports PME events when
+-	 non MSI/MSI-X/INTx mode is used
+-  "intr": Used for SoCs(like ls2080a, lx2160a, ls2080a, ls2088a, ls1088a)
+-	  which has a single interrupt line for miscellaneous controller
+-	  events(could include AER and PME events).
+-- fsl,pcie-scfg: Must include two entries.
+-  The first entry must be a link to the SCFG device node
+-  The second entry is the physical PCIe controller index starting from '0'.
+-  This is used to get SCFG PEXN registers
+-- dma-coherent: Indicates that the hardware IP block can ensure the coherency
+-  of the data transferred from/to the IP block. This can avoid the software
+-  cache flush/invalid actions, and improve the performance significantly.
+-
+-Optional properties:
+-- big-endian: If the PEX_LUT and PF register block is in big-endian, specify
+-  this property.
+-
+-Example:
+-
+-        pcie@3400000 {
+-                compatible = "fsl,ls1088a-pcie";
+-                reg = <0x00 0x03400000 0x0 0x00100000>, /* controller registers */
+-                      <0x20 0x00000000 0x0 0x00002000>; /* configuration space */
+-                reg-names = "regs", "config";
+-                interrupts = <0 108 IRQ_TYPE_LEVEL_HIGH>; /* aer interrupt */
+-                interrupt-names = "aer";
+-                #address-cells = <3>;
+-                #size-cells = <2>;
+-                device_type = "pci";
+-                dma-coherent;
+-                num-viewport = <256>;
+-                bus-range = <0x0 0xff>;
+-                ranges = <0x81000000 0x0 0x00000000 0x20 0x00010000 0x0 0x00010000   /* downstream I/O */
+-                          0x82000000 0x0 0x40000000 0x20 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+-                msi-parent = <&its>;
+-                #interrupt-cells = <1>;
+-                interrupt-map-mask = <0 0 0 7>;
+-                interrupt-map = <0000 0 0 1 &gic 0 0 0 109 IRQ_TYPE_LEVEL_HIGH>,
+-                                <0000 0 0 2 &gic 0 0 0 110 IRQ_TYPE_LEVEL_HIGH>,
+-                                <0000 0 0 3 &gic 0 0 0 111 IRQ_TYPE_LEVEL_HIGH>,
+-                                <0000 0 0 4 &gic 0 0 0 112 IRQ_TYPE_LEVEL_HIGH>;
+-                iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+-        };
 -- 
-மணிவண்ணன் சதாசிவம்
+2.34.1
+
