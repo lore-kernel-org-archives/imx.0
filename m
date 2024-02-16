@@ -1,143 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6D54F92;
-	Fri, 16 Feb 2024 12:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBE51292D0;
+	Fri, 16 Feb 2024 12:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708086814; cv=none; b=LwCyZwmKOqUhOcKCunSU5YDzGYkYPr27gbHudcU44qmF2GdbOZhzeZYZ/19iiwm1jgHXpL1OTTPmRdRoMi9uKvxJbQpc93v0ETJ55hTxKBDVtwUVgFMFw44NC1S7b6iO1re3l5F3CRli6R3VVf9KoP7+961JigLsqgMMhnXH2eo=
+	t=1708086894; cv=none; b=ETohflCwY41hMZABkAEsIIeqv72gTqa+aCPSwD9xB7sbVfpLPYPyre8VcS43sLnaX2wxCXDrSiZiIqR9WvYbtq5B/9u6p0jrc5lfF+RHOb8MHZL4wSymmciCBdnUSu5eb/3h0YhLbC8IXIsi+crSCuIbcrES1+8VYSS2o4rWJVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708086814; c=relaxed/simple;
-	bh=dPfIXbK2bl5QXTBDm0NRlLIuHvXs2+FUzY8LfdPcXc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ccPfZHTfWyN/hJ6rQWIM8PMdJtePJrWum9nqZfB2NabZLY5/Q4UfP8ZoVpxMINxKT1f5P0Q/YV8dSebq2NDZL76Rw+RjSWiTVK2LpSpzOAqbAHk1bnRJmuXIE0QP6bTX0lcBWXr2GUS4NGRsOB3RHpSSd846Id1EmG2IMt+kYvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAqFH557; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708086894; c=relaxed/simple;
+	bh=84+avuu+fRMIcuxjHdSmoCFBpNYOfQji7oeZS1P70Eg=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Jpcqobn2cZCwUVeH9FtR3A9gwToD79w85IUkSa7/jDeXTVB4C2tP60tx7O4335XP5i/A4md0jvpUN8/Y0EvNF3oqenWIRTUOEZG7bj8Gu/H/SVrcBfezav1Sr62W5E5CqBG0TvYBLKnc9OqV8RvRglCwgdluBhmz6RGU2af2zLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFNps+VE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAqFH557"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A37C433F1;
-	Fri, 16 Feb 2024 12:33:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFNps+VE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB3BC43390;
+	Fri, 16 Feb 2024 12:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708086813;
-	bh=dPfIXbK2bl5QXTBDm0NRlLIuHvXs2+FUzY8LfdPcXc4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hAqFH557sFNRc6FHmSaChE4gQQDNMmeEz4tc8OJOdWSfaZp/4Ix7IMDPMM668/wSG
-	 PZqP96ZiQf6bV69FoGpYyVzgEZLzlmnBjkUH5+i8niar8EVy8vu/xNKEEtUvjyq+vm
-	 PNA4ufr8zQmWGtc3jg5LfpRK4Ua815sXj5vrw5RqZ0GKMrqeJzT6m546ygzMGfvi8o
-	 PAfyukeJV4JuJZeOhNeiS2EByoB94yrwn7RBQ6gRk0L45INp6el+0hWfnZrArEGFFx
-	 IUn3yhCvteqFUYYEO4yNYwi0+XQLTXhisjNHZnvdIbdECUxrqOgCGFoseq7mkulsY+
-	 zUz31kQo5DyaQ==
-Date: Fri, 16 Feb 2024 18:03:29 +0530
+	s=k20201202; t=1708086893;
+	bh=84+avuu+fRMIcuxjHdSmoCFBpNYOfQji7oeZS1P70Eg=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=EFNps+VE5v4ktvGSguZn/YLkAOyz6mAOG3xR01t70lNtXw2P6faE5fHeX0DYu6DAg
+	 iv3RBLsj/b3nW5j4MtWh7G3CD33jzNf6FjBYMTJZnjoTksEfVwn8pS2aFwErlDHXJ0
+	 Z5/05bNuC5uLLe81Kgfy0exRy1fcMO2Rc3O11TOE5fjHitEosq4Q+OGI89Ot8wkwIN
+	 YV8yqCssLJtm/rB8rv3vMht8hESiWFNSYBhZbuKXX1JzUkhLW+3dvNdQ18A0QfpgqO
+	 ZD5sEUMkPTg37Kz44EGlqM/m3aDgLmPyoy+bTZqvn+9uBkQHTCNzwKYmngg6YW10eu
+	 EGl1uKpnU9j0Q==
 From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dmaengine: fsl-qdma: add __iomem and struct in union
- to fix sparse warning
-Message-ID: <Zc9WGbgscNeqmuvk@matsya>
-References: <20240209210837.304873-1-Frank.Li@nxp.com>
+To: Joy Zou <joy.zou@nxp.com>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20240207194733.2112870-1-Frank.Li@nxp.com>
+References: <20240207194733.2112870-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dmaengine: fsl-edma: correct max_segment_size
+ setting
+Message-Id: <170808689144.369567.8654351635732648675.b4-ty@kernel.org>
+Date: Fri, 16 Feb 2024 18:04:51 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240209210837.304873-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 
-On 09-02-24, 16:08, Frank Li wrote:
-> Fix below sparse warnings.
+
+On Wed, 07 Feb 2024 14:47:32 -0500, Frank Li wrote:
+> Correcting the previous setting of 0x3fff to the actual value of 0x7fff.
 > 
-> drivers/dma/fsl-qdma.c:645:50: sparse: warning: incorrect type in argument 2 (different address spaces)
-> drivers/dma/fsl-qdma.c:645:50: sparse:    expected void [noderef] __iomem *addr
-> drivers/dma/fsl-qdma.c:645:50: sparse:    got void
+> Introduced new macro 'EDMA_TCD_ITER_MASK' for improved code clarity and
+> utilization of FIELD_GET to obtain the accurate maximum value.
 > 
-> drivers/dma/fsl-qdma.c:387:15: sparse: sparse: restricted __le32 degrades to integer
-> drivers/dma/fsl-qdma.c:390:19: sparse:     expected restricted __le64 [usertype] data
-> drivers/dma/fsl-qdma.c:392:13: sparse:     expected unsigned int [assigned] [usertype] cmd
-
-Please document why you are adding the annotations
-
-Also I see this after the patch:
-
-dmaengine/drivers/dma/fsl-edma-main.c:56:16: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-main.c:60:9: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:76:15: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:93:9: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:100:22: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:101:25: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:104:15: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:106:9: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:131:19: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:137:17: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:140:9: warning: cast removes address space '__iomem' of expression
-  CC [M]  drivers/dma/idma64.o
-dmaengine/drivers/dma/fsl-edma-common.c:473:17: warning: cast removes address space '__iomem' of expression
-dmaengine/drivers/dma/fsl-edma-common.c:473:17: warning: cast removes address space '__iomem' of expression
-
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202402081929.mggOTHaZ-lkp@intel.com/
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/dma/fsl-qdma.c | 21 ++++++++++-----------
->  1 file changed, 10 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-> index 1e3bf6f30f784..5005e138fc239 100644
-> --- a/drivers/dma/fsl-qdma.c
-> +++ b/drivers/dma/fsl-qdma.c
-> @@ -161,6 +161,10 @@ struct fsl_qdma_format {
->  			u8 __reserved1[2];
->  			u8 cfg8b_w1;
->  		} __packed;
-> +		struct {
-> +			__le32 __reserved2;
-> +			__le32 cmd;
-> +		} __packed;
->  		__le64 data;
->  	};
->  } __packed;
-> @@ -355,7 +359,6 @@ static void fsl_qdma_free_chan_resources(struct dma_chan *chan)
->  static void fsl_qdma_comp_fill_memcpy(struct fsl_qdma_comp *fsl_comp,
->  				      dma_addr_t dst, dma_addr_t src, u32 len)
->  {
-> -	u32 cmd;
->  	struct fsl_qdma_format *sdf, *ddf;
->  	struct fsl_qdma_format *ccdf, *csgf_desc, *csgf_src, *csgf_dest;
->  
-> @@ -384,15 +387,11 @@ static void fsl_qdma_comp_fill_memcpy(struct fsl_qdma_comp *fsl_comp,
->  	/* This entry is the last entry. */
->  	qdma_csgf_set_f(csgf_dest, len);
->  	/* Descriptor Buffer */
-> -	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
-> -			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-> -			  FSL_QDMA_CMD_PF;
-> -	sdf->data = QDMA_SDDF_CMD(cmd);
-> -
-> -	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
-> -			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
-> -	cmd |= cpu_to_le32(FSL_QDMA_CMD_LWC << FSL_QDMA_CMD_LWC_OFFSET);
-> -	ddf->data = QDMA_SDDF_CMD(cmd);
-> +	sdf->cmd = cpu_to_le32((FSL_QDMA_CMD_RWTTYPE << FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-> +			       FSL_QDMA_CMD_PF);
-> +
-> +	ddf->cmd = cpu_to_le32((FSL_QDMA_CMD_RWTTYPE << FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-> +			       (FSL_QDMA_CMD_LWC << FSL_QDMA_CMD_LWC_OFFSET));
->  }
->  
->  /*
-> @@ -626,7 +625,7 @@ static int fsl_qdma_halt(struct fsl_qdma_engine *fsl_qdma)
->  
->  static int
->  fsl_qdma_queue_transfer_complete(struct fsl_qdma_engine *fsl_qdma,
-> -				 void *block,
-> +				 __iomem void *block,
->  				 int id)
->  {
->  	bool duplicate;
-> -- 
-> 2.34.1
 
+Applied, thanks!
+
+[1/1] dmaengine: fsl-edma: correct max_segment_size setting
+      commit: a79f949a5ce1d45329d63742c2a995f2b47f9852
+
+Best regards,
 -- 
 ~Vinod
+
+
