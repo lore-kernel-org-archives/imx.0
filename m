@@ -1,195 +1,229 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2041.outbound.protection.outlook.com [40.107.249.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6B5151CE1
-	for <imx@lists.linux.dev>; Tue, 20 Feb 2024 21:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464265; cv=fail; b=PqSifUuHLHensOAElrUMHIbaVJI59cgosKI8jE1Lgv044Vnp70nbuZdNnNgOMYmY2qBWJKjtZBbCJj4MnqfkBeKzBHQOGxiv/FQeopL07pbtKcvta52VV6/yEUg+YvewNmRWlWwRq32i7jVLlo7jcO1v/Vybqvq2RxVewS1qfNY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464265; c=relaxed/simple;
-	bh=Bre9pGj6rBEHL0ym9Ay/IinDxUXtrFLCTJSDDiUHCWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Dn9eclQvcCiosH6vpfpQpKrRgibuJH7rw3+LMX7oM4ikPFNKhq9Pf+BnLP2l4W0ynt+wB3AAoRBXBeyOk0gM5vXBgWMZ21NrYPZEvOLpb3LA04dDWiNL49bV/mURXSw13D+DefR5RL4MFFMcgU1NQO6zECZ+hzgupSJq7BvsLOo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ndRR7z08; arc=fail smtp.client-ip=40.107.249.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B273F1EB45;
+	Wed, 21 Feb 2024 10:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708512169; cv=none; b=Ay4zEJyh9L08f7LD8/Z3w1Wql9ZiZYUcRyZ8dXlhuHfR5n5hS/WBe4fE3zScJwbHdsBEhnU8vm15N6UNKYvarwshJkHNT/g6wjt/5QOf236R83FtGBbhmqTdHhYbcV+cX5DesvmIEi+153ENhxF18wZzb2tV9deL9Dj91aDRfNA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708512169; c=relaxed/simple;
+	bh=KLZBJdcF9biH0WRi4jGDqDVkVcZbbFEdykM15vAw0ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W8ed18Y46SzOOie5YhxwvYj3j7TSd94XZFCRYd90LtT29zIiU/jJutJIZDj0EryRecvU3911HwPra8F2qBIcOZ4shr3LoRB2qoFbz3DLGjequTuYjj1f+T7qVBkVNRijPlTSzCAeBs4k0teuFb+UQhtEI4r3aMiltrMLTZ72opA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTtTTzAk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ndRR7z08"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=f2Q+cy6Z+sVLCziw0PhD6FXrxLAYmEao1ba+Aj21IzdoxeYcUMrfSa1ygNkRvbRzkhuLqxcgXkiABfaa4GFQ46XtK/NjbZbRBSFARCTrhNE0SY59g1b3pahHC2dF/w26YaM4F2iCAZNH+XWw+D9LnCTHQpPreVKBD1cPhSJ5DpUAl2gFu7XyypmDYa4rcfGVXx8dRuHkoJaRUW5pVQOej0PvWYshxyQyeOxL8KoE5KLInynIO12RWqNPHOO2Ha1Ls0cuChD07mkRSreqjFe1aJgXdDJBmoCzlGEM3YOTq7ExpxD7b5yn/RdOM4RwJbvzuvPEhHnvGfh/P4s1C76K6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LFUGFBgUbAZZ5G/lCxF5ssr73xy+CGQOvkhDdGTd0qI=;
- b=ZHEJde/tPSlabiomS3qkRfp3QvtgcdQyMk7U+gfNogxWh4JdIovZmKAaEU9tCWqTfMcEMT4NZH1hpt+NuOMtTtysbxe3CptD4ndADWxi57imcAv3vwxtkV68OTraAohEc2EO0LJjCEh9/dzs7IUYHW6Sg5wCCq38AwrX3wHnE8zmp75T9OfaneS7k4RVk12MaSgab1PtrOhrBXkjZYhCoCQLCgrwoVcMqGbL1csQ1GUpVb1EQ3+e1fmJ90Kt1HSnw6ptTSMASGZppg1hnMFkRA+YQt8ma9Rly78XgZRwWUbLYs7Tk0KjGQb4apI+VshgbZ1CM70pFnW6L756oaZxAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LFUGFBgUbAZZ5G/lCxF5ssr73xy+CGQOvkhDdGTd0qI=;
- b=ndRR7z08PoRatTq5o6vZOqtLbFhcifMtRkz/z1qbAR3G5MK13Q0e890eQpGkKMzcZCr++bxvlM2FWKfdRZAzV7W85Szt04NnWXnTBnFcrj7UpLCNJzqWp90yAXQgSVqFxXGg271NNU2ABWbq5O9VNWRSk7mAo6i7UbsrRw3vUyw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7786.eurprd04.prod.outlook.com (2603:10a6:10:1e8::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.38; Tue, 20 Feb
- 2024 21:24:19 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::c8b4:5648:8948:e85c%3]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
- 21:24:19 +0000
-Date: Tue, 20 Feb 2024 16:24:09 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	bhelgaas@google.com, conor+dt@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTtTTzAk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF08C433F1;
+	Wed, 21 Feb 2024 10:42:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708512169;
+	bh=KLZBJdcF9biH0WRi4jGDqDVkVcZbbFEdykM15vAw0ow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LTtTTzAkMSa2q/Vc+OjCcXFqE4L9WJz2bThCwT+fk21o1v4vf/B+1KFplaev8LRe1
+	 WdvUndqCrQx0Rty+xNQqFrvyF2xaQbNlFFxt/qFrZ1cVbjWxeRjYEFr6AImKmvWEU4
+	 VH4K8pxz+PZEf0NS4+cJl2L8u7mDdxl0lmaA9VlHaiYKljjn1vYUNivQWYlPEPownn
+	 Et71oiAKwrTMOUiJenHE9eKzaHulfju5ROFMpNPANNPCgg4xSUKn1VHefeiI9tSYuB
+	 ilMNM7+6mQ4RMQeNmO8Uojg5XJiJ6jB9t9Nwpg8DJwtCRT1pdPYUmXIfndT0aXS116
+	 cajVx8qP+banA==
+Date: Wed, 21 Feb 2024 11:42:41 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: bhelgaas@google.com, cassel@kernel.org, conor+dt@kernel.org,
 	devicetree@vger.kernel.org, festevam@gmail.com, helgaas@kernel.org,
 	hongxing.zhu@nxp.com, imx@lists.linux.dev, kernel@pengutronix.de,
 	krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
 	kw@linux.com, l.stach@pengutronix.de,
 	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH v10 00/14] PCI: imx6: Clean up and add imx95 pci support
-Message-ID: <ZdUYeYI4UJ4ApV2X@lizhi-Precision-Tower-5810>
-References: <20240205173335.1120469-1-Frank.Li@nxp.com>
- <ZdNvsdao8jbB/52L@lizhi-Precision-Tower-5810>
- <20240219161208.GE3281@thinkpad>
- <ZdN/OyNpw0Xa7qXG@lizhi-Precision-Tower-5810>
- <ZdR2FRQ9Fe8hhK9I@x1-carbon>
- <ZdR6EUOv6hzLEmUa@lpieralisi>
- <ZdTRiB9JdQSvBwKn@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZdTRiB9JdQSvBwKn@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SJ0PR05CA0128.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	s.hauer@pengutronix.de, shawnguo@kernel.org
+Subject: Re: [PATCH v11 10/14] PCI: imx6: Add iMX95 PCIe Root Complex support
+Message-ID: <ZdXTof/fSOuBw4MW@lpieralisi>
+References: <20240220161924.3871774-1-Frank.Li@nxp.com>
+ <20240220161924.3871774-11-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7786:EE_
-X-MS-Office365-Filtering-Correlation-Id: 511637ae-8672-4c3a-219b-08dc325a4c7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	PaFcohLzCjvuZLuDwDdsloF3XiYuevKf2by7Guk/I+zG2ShDJ4lXOhiB8FQJ7gkyhBJdzG6GA03NAfZbW6HtzoA6lcaKWc9hIFQTxybgodt6kICPO4dWz4rtmiyiBv4TR4yRZhJWyK2802UBZKFT0glzpxDv93S/6VjPa7Vhd7XPuyV5BU6sHXU9RTxT0Elnqbt2Bze4txHw3XcatuGBmQeQRjnGjpPR9l6SudsT7cBkOJG4592QDnmDXXdCcg8Lu49y8LlM55dLuTypTevloQYf0ECaug3x6raRcJvy+Kee7Cv5HNLG+0c9YpilFFAnSjDNgU8HKmUHN9KWlM6EiF81JQxvCfA5XFgbf2IOpwcpgpLwteEhMXZcWBiWiH/y3ZZeM1IlluyZ865f+is0iGo2NMpxoHNL9ioUfM1JN+kYrX91M55ZMHQ0vch3eyWYBqpGruaqOq02TvDGc8uAEZFUjAJyxPQQb/cyOIcYG29jk9KXgjOIvAZX1RVDwZo0HAYoDSNsJ06UfXYXLcXIhinOl9vQ61EyiIYBKXAV0Y5KcM390WHvZq02NEYVQZ+xrH4L953qvrRO4NH7j0fUi9yg72T8o5XfudSgnoeI1Lc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Rrm2Tf/2QPqEptH14xNJMS/QxM081qUFRtkzg07dHuHW2LOpjZrnO0tbRWd6?=
- =?us-ascii?Q?6FzB49/U3ELHIV/UMtTZEQbJjuFnV8TxigUbtqV/km4rhMg6fX6dGFrhBBJ4?=
- =?us-ascii?Q?xBKCDwK0yLEqjYyyDOqHJQq14YmNykoSTtn/VJyM31mWaaTYffHkahtbw54L?=
- =?us-ascii?Q?/PgywBsO3IOwygoycumz5IpqCCJSQFCVFbGt+8B/TqjgSAXnI/bbfx8/VrB6?=
- =?us-ascii?Q?7tzM/id8NcWYXW0TzH90bLCb8D5OGXo+JuCLChWdMQ3b41oiWYAH0zWKW4kT?=
- =?us-ascii?Q?j4AbCysvd8ohpSZzlcWQ072bkbdXa0UAT/lary7RGVsL7KZGNU4iBxwtWUun?=
- =?us-ascii?Q?qDJUAHZiyo8rDbgfTPxQe/Go9ArY6TdE+A3jKth24AKoYTUjWHdgyfiTHwEl?=
- =?us-ascii?Q?npr7a3jzQ/0enkYQQvStiuzm/afTUxdiJpdNgNbuc3GrPzyUCAzhL6dKU+15?=
- =?us-ascii?Q?E8m2hTs+YVzs4j/qYIap8Hjy9mXPWiJtsCR9QY+YxtIkb9cM/ARkGIDHJepW?=
- =?us-ascii?Q?0kHHVmke+Y+Jaqh1VBC30gZUrPb1QzstZ+Ssc8cvWcNIqGSF5/lKlrVVLCAX?=
- =?us-ascii?Q?foyO5/fEz9jQUiHQM7AajgqglW1sTnfOeWvrqQUTC3OOd13+jIJJz1rgai5W?=
- =?us-ascii?Q?nB2oMV8X1ECA8o7rxUxFjdNnMJgWn0w6sV9w+EG+U0pmeSRY7h8LFrRsCP+S?=
- =?us-ascii?Q?FmHL/EIm1acRHt1+K3D6GKO7yyzQEYI/eURVonQ7v5l1NC/j5tQFYl1tBqWF?=
- =?us-ascii?Q?PQKEqGRLemeb2ikcIsNzXdMfHS8eDOIxJBbGH5K/snDN+JMNOQRIugcGEcNt?=
- =?us-ascii?Q?yNv/M3xOWd4SLt9Aqw1dGiybIaHubIqIITFWb+hbPnMHzRy7G+DiOvoDzo4y?=
- =?us-ascii?Q?1+L4hoQG1RI4eNin31SrWZqBLPhKrQVLxizyAFYRvHtFAX08ihSmI1r49N0O?=
- =?us-ascii?Q?BL0+Nj6FmU/arTLpEPfFq7gsXbcCX/Iu1sYekhJNp6dbkitubYwQ34NKUfz9?=
- =?us-ascii?Q?hERfhc1C0Z8frLXGxhMSBThS0lXrcdPv5xW/HYv6AE/Pr9Xz0nu6Khf8nE0e?=
- =?us-ascii?Q?Od8AFBYstujXNmu2QGKi+cAegx7c5h4HRVrC6ZUlFRS5SCdwsECE+A/ijPOL?=
- =?us-ascii?Q?8v9x0fku5++y63FFtpFO1ueM1H5rcFlCyWuJqPNq4NitTc6xtqB5acdkb0bV?=
- =?us-ascii?Q?h79XlasBNJed6TKyM/oAdHOAsrULNWxDJm67XDEKzu4GuMELryGgwZa6Wtfh?=
- =?us-ascii?Q?8/H7oiU/jWeTpMeGyqsyzIEMmiJlxsVnZ5/eCNxxH2ROJ9qQn6y2cXgViR+2?=
- =?us-ascii?Q?trela0sWvmHq5zLxqcWLCq/vwiJOXkJC81t/bSzVxEmo/jm70aZ+t9R5joIR?=
- =?us-ascii?Q?hEh13OG/iK8OunK0voyxQbdKBqroiNQFxYazClALmPpt5hefC61PJC8oQqi9?=
- =?us-ascii?Q?TzxKy1lT4He6OAn8HBeYLS4nvuYxUQEqeUCykbjqBjlY74KVk8AgUM6e2Nbm?=
- =?us-ascii?Q?r//ErMtjsLSr697tg3Hr5Pf9T9VTmPdLLbhfW9K+7/3uL7zQsJT9XHuwV8T6?=
- =?us-ascii?Q?ohD0ZKvcAVNzCKsb2ISvv3pbWR9aWs4Wg6XjnrNF?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 511637ae-8672-4c3a-219b-08dc325a4c7b
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 21:24:19.2925
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +/5TQWZIi/f8X2A+JVPWh5yFYNYj1ia+EHGe5uuzyF+CAdWzFowlDWQb4lP7/XI3BSiricaiBzWisxaJHGmMLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7786
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220161924.3871774-11-Frank.Li@nxp.com>
 
-On Tue, Feb 20, 2024 at 11:21:28AM -0500, Frank Li wrote:
-> On Tue, Feb 20, 2024 at 11:08:17AM +0100, Lorenzo Pieralisi wrote:
-> > On Tue, Feb 20, 2024 at 10:51:17AM +0100, Niklas Cassel wrote:
-> > > On Mon, Feb 19, 2024 at 11:18:03AM -0500, Frank Li wrote:
-> > > > On Mon, Feb 19, 2024 at 09:42:08PM +0530, Manivannan Sadhasivam wrote:
-> > > > > On Mon, Feb 19, 2024 at 10:11:45AM -0500, Frank Li wrote:
-> > > > > > On Mon, Feb 05, 2024 at 12:33:21PM -0500, Frank Li wrote:
-> > > > > > > first 6 patches use drvdata: flags to simplify some switch-case code.
-> > > > > > > Improve maintaince and easy to read code.
-> > > > > > > 
-> > > > > > 
-> > > > > > @Lorenzo Pieralisi:
-> > > > > > 
-> > > > > > 	Do you have chance to look other patches?
-> > > > > > 	Mani's apply EP side change. 
-> > > > > 
-> > > > > Even though the controller is for the endpoint, it is still a controller
-> > > > > driver. So all the patches should go through Lorenzo.
-> > > > > 
-> > > > > I only merge patches under drivers/pci/endpoint. Hope this clarifies.
-> > > > 
-> > > > Sorry. It confused everyone. My means was that Mani applied Niklas Cassel's
-> > > > patches, which cause my 14th patch build failure.
-> > > 
-> > > Hello Frank,
-> > > 
-> > > Patch 14, which adds this:
-> > > 
-> > > +static const struct pci_epc_features imx95_pcie_epc_features = {
-> > > +       .msi_capable = true,
-> > > +       .bar_fixed_size[1] = SZ_64K,
-> > > +       .align = SZ_4K,
-> > > +};
-> > > 
-> > > 
-> > > Should, after rebasing on Mani's pci/endpoint branch, instead look like this:
-> > > 
-> > > +static const struct pci_epc_features imx95_pcie_epc_features = {
-> > > +       .msi_capable = true,
-> > > +       .bar[BAR_1] = { .type = BAR_FIXED, .fixed_size = SZ_64K, },
-> > > +       .align = SZ_4K,
-> > > +};
-> > > 
-> > > 
-> > > > 
-> > > > I asked if I need update my 14th patch or applied 1-13 only. 
-> > > 
-> > > I see, you want the maintainers to apply 1-13, and simply drop patch 14
-> > > instead of you sending out a rebased series.
-> > > 
-> > > I assume that the maintainers will be fine with your suggested approach.
-> > 
-> > If patch 14 has no dependencies on 1-13 yes; if it does we need to
-> > coordinate the merge between branches in the PCI tree.
+On Tue, Feb 20, 2024 at 11:19:20AM -0500, Frank Li wrote:
+> Add iMX95 PCIe Root Complex support.
 > 
-> Keep it easy. I rebase to linux-pci/endpoint and v11 patch sent out.
-> https://lore.kernel.org/imx/20240220161924.3871774-1-Frank.Li@nxp.com/T/#t
-
-Bjorn just merge endpoint to next. v11 will work with linux-pci/next.
-
-Frank
-
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 > 
-> Frank
+> Notes:
+>     Change from v8 to v9
+>     - Add mani's review tag
+>     
+>     Change from v7 to v8
+>     - Update commit subject
+>     - add const from regmap
+>     - remove unnessary logic in imx6_pcie_deassert_core_reset()
+>     
+>     Change from v4 to v7
+>     - none
+>     Change from v1 to v3
+>     - none
 > 
-> > 
-> > Lorenzo
+>  drivers/pci/controller/dwc/pci-imx6.c | 82 +++++++++++++++++++++++++--
+>  1 file changed, 77 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 71ce6b7ac1de0..582ba00d628a1 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -42,6 +42,25 @@
+>  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
+>  #define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
+>  
+> +#define IMX95_PCIE_PHY_GEN_CTRL			0x0
+> +#define IMX95_PCIE_REF_USE_PAD			BIT(17)
+> +
+> +#define IMX95_PCIE_PHY_MPLLA_CTRL		0x10
+> +#define IMX95_PCIE_PHY_MPLL_STATE		BIT(30)
+
+These two defines are unused, I will remove them.
+
+> +#define IMX95_PCIE_SS_RW_REG_0			0xf0
+> +#define IMX95_PCIE_REF_CLKEN			BIT(23)
+> +#define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
+> +
+> +#define IMX95_PE0_GEN_CTRL_1			0x1050
+> +#define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
+> +
+> +#define IMX95_PE0_GEN_CTRL_3			0x1058
+> +#define IMX95_PCIE_LTSSM_EN			BIT(0)
+> +
+> +#define IMX95_PE0_PM_STS			0x1064
+> +#define IMX95_PCIE_PM_LINKST_IN_L2		BIT(14)
+
+These two defines are unused. I will remove them.
+
+> +
+>  #define to_imx6_pcie(x)	dev_get_drvdata((x)->dev)
+>  
+>  enum imx6_pcie_variants {
+> @@ -52,6 +71,7 @@ enum imx6_pcie_variants {
+>  	IMX8MQ,
+>  	IMX8MM,
+>  	IMX8MP,
+> +	IMX95,
+>  	IMX8MQ_EP,
+>  	IMX8MM_EP,
+>  	IMX8MP_EP,
+> @@ -63,6 +83,7 @@ enum imx6_pcie_variants {
+>  #define IMX6_PCIE_FLAG_HAS_PHYDRV			BIT(3)
+>  #define IMX6_PCIE_FLAG_HAS_APP_RESET		BIT(4)
+>  #define IMX6_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> +#define IMX6_PCIE_FLAG_HAS_SERDES		BIT(6)
+>  
+>  #define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
+>  
+> @@ -179,6 +200,24 @@ static unsigned int imx6_pcie_grp_offset(const struct imx6_pcie *imx6_pcie)
+>  	return imx6_pcie->controller_id == 1 ? IOMUXC_GPR16 : IOMUXC_GPR14;
+>  }
+>  
+> +static int imx95_pcie_init_phy(struct imx6_pcie *imx6_pcie)
+> +{
+> +	regmap_update_bits(imx6_pcie->iomuxc_gpr,
+> +			IMX95_PCIE_SS_RW_REG_0,
+> +			IMX95_PCIE_PHY_CR_PARA_SEL,
+> +			IMX95_PCIE_PHY_CR_PARA_SEL);
+> +
+> +	regmap_update_bits(imx6_pcie->iomuxc_gpr,
+> +			   IMX95_PCIE_PHY_GEN_CTRL,
+> +			   IMX95_PCIE_REF_USE_PAD, 0);
+> +	regmap_update_bits(imx6_pcie->iomuxc_gpr,
+> +			   IMX95_PCIE_SS_RW_REG_0,
+> +			   IMX95_PCIE_REF_CLKEN,
+> +			   IMX95_PCIE_REF_CLKEN);
+> +
+> +	return 0;
+> +}
+> +
+>  static void imx6_pcie_configure_type(struct imx6_pcie *imx6_pcie)
+>  {
+>  	const struct imx6_pcie_drvdata *drvdata = imx6_pcie->drvdata;
+> @@ -575,6 +614,7 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
+>  				   IMX6Q_GPR1_PCIE_REF_CLK_EN, 1 << 16);
+>  		break;
+>  	case IMX7D:
+> +	case IMX95:
+>  		break;
+>  	case IMX8MM:
+>  	case IMX8MM_EP:
+> @@ -1279,12 +1319,32 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  		return PTR_ERR(imx6_pcie->turnoff_reset);
+>  	}
+>  
+> +	if (imx6_pcie->drvdata->gpr) {
+>  	/* Grab GPR config register range */
+> -	imx6_pcie->iomuxc_gpr =
+> -		 syscon_regmap_lookup_by_compatible(imx6_pcie->drvdata->gpr);
+> -	if (IS_ERR(imx6_pcie->iomuxc_gpr)) {
+> -		dev_err(dev, "unable to find iomuxc registers\n");
+> -		return PTR_ERR(imx6_pcie->iomuxc_gpr);
+> +		imx6_pcie->iomuxc_gpr =
+> +			 syscon_regmap_lookup_by_compatible(imx6_pcie->drvdata->gpr);
+> +		if (IS_ERR(imx6_pcie->iomuxc_gpr))
+> +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->iomuxc_gpr),
+> +					     "unable to find iomuxc registers\n");
+> +	}
+> +
+> +	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_HAS_SERDES)) {
+> +		void __iomem *off = devm_platform_ioremap_resource_byname(pdev, "app");
+> +
+> +		if (IS_ERR(off))
+> +			return dev_err_probe(dev, PTR_ERR(off),
+> +					     "unable to find serdes registers\n");
+> +
+> +		static const struct regmap_config regmap_config = {
+> +			.reg_bits = 32,
+> +			.val_bits = 32,
+> +			.reg_stride = 4,
+> +		};
+> +
+> +		imx6_pcie->iomuxc_gpr = devm_regmap_init_mmio(dev, off, &regmap_config);
+> +		if (IS_ERR(imx6_pcie->iomuxc_gpr))
+> +			return dev_err_probe(dev, PTR_ERR(imx6_pcie->iomuxc_gpr),
+> +					     "unable to find iomuxc registers\n");
+>  	}
+>  
+>  	/* Grab PCIe PHY Tx Settings */
+> @@ -1457,6 +1517,17 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  		.mode_off[0] = IOMUXC_GPR12,
+>  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  	},
+> +	[IMX95] = {
+> +		.variant = IMX95,
+> +		.flags = IMX6_PCIE_FLAG_HAS_SERDES,
+> +		.clk_names = imx8mq_clks,
+> +		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
+> +		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+> +		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
+> +		.mode_off[0]  = IMX95_PE0_GEN_CTRL_1,
+> +		.mode_mask[0] = IMX95_PCIE_DEVICE_TYPE,
+> +		.init_phy = imx95_pcie_init_phy,
+> +	},
+>  	[IMX8MQ_EP] = {
+>  		.variant = IMX8MQ_EP,
+>  		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
+> @@ -1501,6 +1572,7 @@ static const struct of_device_id imx6_pcie_of_match[] = {
+>  	{ .compatible = "fsl,imx8mq-pcie", .data = &drvdata[IMX8MQ], },
+>  	{ .compatible = "fsl,imx8mm-pcie", .data = &drvdata[IMX8MM], },
+>  	{ .compatible = "fsl,imx8mp-pcie", .data = &drvdata[IMX8MP], },
+> +	{ .compatible = "fsl,imx95-pcie", .data = &drvdata[IMX95], },
+>  	{ .compatible = "fsl,imx8mq-pcie-ep", .data = &drvdata[IMX8MQ_EP], },
+>  	{ .compatible = "fsl,imx8mm-pcie-ep", .data = &drvdata[IMX8MM_EP], },
+>  	{ .compatible = "fsl,imx8mp-pcie-ep", .data = &drvdata[IMX8MP_EP], },
+> -- 
+> 2.34.1
+> 
