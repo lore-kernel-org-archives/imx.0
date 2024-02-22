@@ -1,144 +1,113 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2048.outbound.protection.outlook.com [40.107.22.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E1845C10
-	for <imx@lists.linux.dev>; Wed, 21 Feb 2024 22:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708553734; cv=fail; b=iwOmq0zg6TV7txVp8c9r0M4X1D4tGxtnqvmyTuHkY5CvYkmHuV5AnmxDkP6QCN/2JvW0e7fxPhWPVB3lAN042ngIsOUF5UMiDPJ1OIHDr5CY7zocOw4L9l55hqICscSqsYV4h8JoMnpuOemJ3EuOmQ4EbGXNTZ2UVVWety0eP54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708553734; c=relaxed/simple;
-	bh=rTcJPfGNgLi4woPPelCmZ9Fcf0eBGIYvGfJi4i5DxME=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MxZ3NOOXIShLB9sN27IKRgb6u4E3SBVNcxxpl2HXRu3viyU7Ict0ru7Vn2hOhXE4MLXrLt3yHxhR6EcsRYKOEHVtf9pDnGNdAdL4KOS9cJfKuU5F5h4TgdZXxMGJwb1zV4JaBMUiXUkdzAtsIyPV5OqBdl3H1eIRAr66YplQHQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=sEQRinXi; arc=fail smtp.client-ip=40.107.22.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FEF4776E;
+	Thu, 22 Feb 2024 12:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708604327; cv=none; b=EDLg7nzsaGHbxviNts+58FUsr1uuuOirDrYkpL+tR5bxoikSPwZz0zXRvZmj63S4YT1ncOEMTCsNY23MALyC92b+7dLCRBdU8HhHPcfcXUe0DFugKvZK956PuZaMmin5uMofEY39Cwbx/F+BJP+SqR9CEYrj/cDDiqIUXSIkTkA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708604327; c=relaxed/simple;
+	bh=lXEIG8Yh0DgsjWjqS6TtqjvsNB92LqQdH9NNSBnF+H0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Blx2Kjzs0a8OCyYUGrHjl7dQhO41J+drkFg6bJCMbcWUDRIdLfPyUJtYJ3Au1IuP3MorOqAcaE6fetjEkSKyEzIQfQoWfFjTlXmoN9L0+tKUiXIPpix0XwYM3IOOEQM7AlqNjw6U8xOuKf1xi+Mx1oeY3YWPf9sxgMr835N95Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxynINXW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="sEQRinXi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SNZc4KXFstf+T9pDwrrHLNyk8ZitYh3y5yBmHf8F2t1/H45KxzqJouKUQaZ1Tb183ffHIESMdHM/IgiLDXBmfKcUPhW+fLugpl3wxUBZA6MUzkFk4jAU+29//NCpgZelqCEmD5WjvDGchfSt8aDnLzGBvfxxuHvy5WzwEnpEXGX9lqtKb0Uf+qgZtz/QF/FdhTfu4/2He4lwiw4uCsVllvdXicqwIrX1JuC+awDhas1UDzO6Qb7DS4wnu3xOAci5e+BnwJ3uJzGXo1pBXCtGCffDljwupkRM6FQpnur18Wd89LVml4DC3YGNdz9OBACjNh5aiHlY32BLWIG2+Wmcyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TYjfspc+aXbCX0iUA3GKMGrEXak94P53eMq/pDZX/GM=;
- b=FGcXK6j6KBzlm7+WdSTxBJ5FK/cqyAG1SpOfI039kY4VzLFmxCgmfbgnhtFWV8SgJj7zIuX48KHkHOy76O095LHQK6ETdPNcCXbcwT1VFW/9Tl90PD+rhtwcSsYbcAtvhD7jaK1apMnwz+qSbVesDL+v9PfN0IXQ0JGQPE50xPPjZ252bx42yh0H8GreOTzZElmgAzx01RkienLYRXnUjqnxdd/bw619JtI45dEqQp4l4qUpqvFRWnvf3fw/0RuRt6okVb0NuqDJU8ZZIc4zOqipAHoGZWbAbEsLtFdxt/6SLsXiaR4rCevl4+LfcCwJJavSmtoxy4KHeZ1n+2Cp8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TYjfspc+aXbCX0iUA3GKMGrEXak94P53eMq/pDZX/GM=;
- b=sEQRinXiKSelrSvQaLoJgL1ArkEIYFTsCfPgxqsncjARbky5qZCKYH5Q0jKeoKv2fK5U4JCwg5zVwY7TfeM92zZyTFqL+gF7WTyQCRg4mN5+mKxvzEuft1auPAKPTDzl8jedUApede9f4pds33/tCfmZQmkGnjhJ+6Yr0euXUHo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8867.eurprd04.prod.outlook.com (2603:10a6:20b:42e::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.31; Wed, 21 Feb
- 2024 22:15:29 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.018; Wed, 21 Feb 2024
- 22:15:29 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] ARM: dts: ls1021a: Enable usb3-lpm-capable for usb3 node
-Date: Wed, 21 Feb 2024 17:15:09 -0500
-Message-Id: <20240221221510.3762096-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0P220CA0027.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxynINXW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDA3C433C7;
+	Thu, 22 Feb 2024 12:18:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708604327;
+	bh=lXEIG8Yh0DgsjWjqS6TtqjvsNB92LqQdH9NNSBnF+H0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qxynINXWm88A4QHPt46s7Sap1xtFkJICI62sepLQMB5exKnWDLhsI3Mjc+tr+D7TV
+	 5SBcizXDvqkcdnYuyhilXvjJ6LLXFyz896yZnfT6UUstgFDPL1xRHvyYwRUIlpuYXn
+	 u12EPPruDXaCRei662gS2j1++JDz2qSRKj4TIspDUjOQd/2gyWy2ILDDsAvIDr8iLq
+	 bxx1C/eqiKDse3dCLMh3O3wwTJRZLO8VyT3y3GYcZd2324S1Jtut7FMCQS1EF5X+0P
+	 t/5iWs9lSDKNL7tK33NUOEdUAvSmqYHgA27gsSOZCdu3W0RIo9IshLQj2X90A/LUCQ
+	 4RaQ76tY7Luog==
+Date: Thu, 22 Feb 2024 12:18:38 +0000
+From: Will Deacon <will@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank.li@nxp.com, mark.rutland@arm.com, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, john.g.garry@oracle.com, jolsa@kernel.org,
+	namhyung@kernel.org, irogers@google.com, linux-imx@nxp.com,
+	mike.leach@linaro.org, leo.yan@linaro.org, peterz@infradead.org,
+	mingo@redhat.com, acme@kernel.org,
+	alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v4 2/6] perf: imx_perf: refactor driver for imx93
+Message-ID: <20240222121838.GA8308@willie-the-truck>
+References: <20240131055811.3035741-1-xu.yang_2@nxp.com>
+ <20240131055811.3035741-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8867:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bac5110-2f54-422a-33d1-08dc332a9cc2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	HKs8Q6gOyW+epDF7gMgI4mGptV60p9ZMxxqVCUdEh835uIne0K0R3F3ZzD0yzMzM+8x93BpciqAQrnCvOg/VveQq79jLcF1j6Gf6i/UuifSy6ilER54ayywNVbdBeQIwHIHmGv3FURvN5k3uuYsvsuxj+pWZ6O7MjV+i1Sangj2XDzGzQ3R2QZLdkk1yCKnF1D8emOgfmCmTe+5KvDEFCYYsEa+5OxjqLzrC1ok//w2/gPVVeCGx3AMYsfwYH6Gc2gVB5jgsjTkpO7mbdNNIcZT/5MGtDFK0z6qCmlTbZx1SyHwv05xSZ4fu8v3ZoGX5dp8uQpp1W0K7xlkTPyV0bjF35xHAx8v4brYBQPCHO7I2yaAmsh2ug3VMmyX15T8UDg3DiQLFBOdtDn8c99urpu8P9k/yHX4ZzyahS0rJsiXQ64dNpMObF7qxZ2EInTw6h75X6Ptn2WAlh53tRPTY/e8FHimIzMKJLHvj+TtFCRq+GmWWbJ9YfBCMklObYnLzPUnS/dVgZia4uq9Ax/BWEO0lmN7NlSjD/aSsCykl7cuGkD46WtfAYAlZqvcyS+waIh+3Ak/r8NX+WWitCc7Lvb+WeMMug+7fy1B57B248wcJbRLAeiso5MYoL2PmwQ3A
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?21k2t8pHrjhtxWI+2Q4K3Fw6kXcBsy2/r6Q3HqjXbuDPPR0nFle/2/yWz++u?=
- =?us-ascii?Q?SotYfV9ameSBIj62zKdLdWT7BNIPvFTWv3HWRXDZRbRvvt6Y5pAcWXu7fnp8?=
- =?us-ascii?Q?NBO1058lGQclgK5POpFuLJeoog+hfwvDZBWkgjEJMfc9LxJXPejF0dgmsiku?=
- =?us-ascii?Q?BJ2x/r8g+HnM1N8gpb6Ht7/iU1UuT3thfux10otraPG/dgKONJG782tkkh3m?=
- =?us-ascii?Q?uJnNvq9sJD6v88P/qruwvULDVD0tA2QjBKAjgIoMU5RuQm4eOxDbLtstVfnO?=
- =?us-ascii?Q?0GlzcLTCBdED2GbfxjA0n12edSnI2sECEVcaxNdgTp4TZ+1eXjD46iTZdzn8?=
- =?us-ascii?Q?LuzOT9EFOEc9D4k+jUq4m1pKi397XtaKRFARoZUT8/e3QCxYK9/g7obkZE9F?=
- =?us-ascii?Q?3a/go+lSsxV2uMWiVMh5pN9wYvwLQYy4t9jqi0N2NezBpfE3MNMPEc7EeV3t?=
- =?us-ascii?Q?HPsnXgh9Yd4CIHt1PDK3hTKf6C4X/hvBeRE0x6rR0ohHiLv5/RrhT4/OLvth?=
- =?us-ascii?Q?8d6wZW0+84LAPGLQ2M80cEP887Bj0OkDjFP19rp7jPkY2/W0DhLI4M0iEM5k?=
- =?us-ascii?Q?BnMIFAX1JMW21Y4Mp69OdIsHzIYkgVD4xNFPiN/1uOgl4oyCaIrCBVcf3hoL?=
- =?us-ascii?Q?sXtkT64RhphyPhT2sAWS5hIIWkHbJvOqnFMxXNoD3lxt3lYhup52YmS7uyFc?=
- =?us-ascii?Q?d2LyYBDTVDUS3gqG8aRNJFRCUIL7LpYcgK7DR6NLPhYf7ZurAavMsVZknBpZ?=
- =?us-ascii?Q?m/+e+a6EQCF7+8gZfKkGxT9uxDB2ZFpQn4tKc5z3Aeni9Nifo3W+djrdj3kE?=
- =?us-ascii?Q?abxoKgWMCJjFAU9/Y8/3K51Aq+GrJMKzv/TEfgBhIQH8ra2RL/A2VXSxumiI?=
- =?us-ascii?Q?3jfIUlu0XueR1sJ8RAxEvE3UJ+BC5jkuIbP+qzlTesWH/F80DM1HIPPvb0Ds?=
- =?us-ascii?Q?rEa0K0VpDsuzk7DhSjPSK3RDCueDRkJv2en+CT5XDWqQEkWGIUTz3hpL9vIc?=
- =?us-ascii?Q?QEbyzfJ5d4Wf310mbgkTuABWfuvY0KCi4/hgGhyyhtVF454JsEcEQGMGS4xM?=
- =?us-ascii?Q?+saqE9qEr3BZDJ+2ey5uUC4hgX+/X28+PiTPYSrkoToRVzjXnsa0D7HBF1Nn?=
- =?us-ascii?Q?kPIC+tq+XpEPh3HTyIS7cR7zxaKzr3ZV7myVSSh1xc3HniZOj0mDEbulPhGg?=
- =?us-ascii?Q?fjvEZA0l6MkpvcmmES8UOI4x4hs1bA0fjlAviGLwhYRg8OAPRMubKGDJgHo7?=
- =?us-ascii?Q?xKkj4n3FqocZFPzBjp4Y9FNn2vdoBeDmGC9EScvHD6ybx9y67VRqC3t2iGig?=
- =?us-ascii?Q?3FoYmeSS9qe1RMKtprf1D4ju/SvtNRLVwdBiJ9ax/gJ9YRakg28LNqiu7knI?=
- =?us-ascii?Q?QbbuRM4vaVnruaBBZMs2ACnuL6NrvcjC4KLr51kPI00kdeegTpsois7at9ZE?=
- =?us-ascii?Q?cSv/t+OMiaVEYNELD/GrPvjf3Cxrc9884x1ZQgGzFU8DkPB9L4VOxycK2TcR?=
- =?us-ascii?Q?6eYtIysXiW4wkVE1EEA0egWFERBzCpcFmmpMTPrXjTlRrjc+j4JmxBZM3f4q?=
- =?us-ascii?Q?75DnknF/cjuyhJV4y2vz/7U8+jPeKqJMuh7xJ1Jx?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bac5110-2f54-422a-33d1-08dc332a9cc2
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 22:15:29.4177
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NFm8cIs1rm67EFqcpoEf6WnufaSYSSqpOnzDcYYuAa2ISac1CvmNRbIQarrH0C4z/c8VRNtS4dgD/eteMHICpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8867
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131055811.3035741-2-xu.yang_2@nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-From: Li Yang <leoyang.li@nxp.com>
+On Wed, Jan 31, 2024 at 01:58:07PM +0800, Xu Yang wrote:
+> This driver is initinally used to support imx93 Soc and now it's time to
+> add support for imx95 Soc. However, some macro definitions and events are
+> different on these two Socs. For preparing imx95 supports, this will
+> refactor driver for imx93.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> ---
+> Changes in v4:
+>  - new patch
+> ---
+>  drivers/perf/fsl_imx9_ddr_perf.c | 121 ++++++++++++++++++++++---------
+>  1 file changed, 87 insertions(+), 34 deletions(-)
 
-Enable USB3 HW LPM feature.
+[...]
 
-Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm/boot/dts/nxp/ls/ls1021a.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+> @@ -476,12 +490,12 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+>  	hwc->idx = counter;
+>  	hwc->state |= PERF_HES_STOPPED;
+>  
+> +	/* read trans, write trans, read beat */
+> +	imx93_ddr_perf_monitor_config(pmu, cfg, cfg1, cfg2);
+> +
+>  	if (flags & PERF_EF_START)
+>  		ddr_perf_event_start(event, flags);
+>  
+> -	/* read trans, write trans, read beat */
+> -	ddr_perf_monitor_config(pmu, cfg, cfg1, cfg2);
+> -
+>  	return 0;
 
-diff --git a/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi b/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi
-index 95e2057d9213c..e86998ca77d6e 100644
---- a/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi
-+++ b/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi
-@@ -808,6 +808,7 @@ usb3: usb@3100000 {
- 			dr_mode = "host";
- 			snps,quirk-frame-length-adjustment = <0x20>;
- 			snps,dis_rxdet_inp3_quirk;
-+			usb3-lpm-capable;
- 			snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
- 			snps,host-vbus-glitches;
- 		};
--- 
-2.34.1
+This change looks like more than just refactoring and should probably be a
+separate patch. Is it a bug fix for the existing code?
 
+> +static int ddr_perf_add_events(struct ddr_pmu *pmu)
+> +{
+> +	int i, ret;
+> +	struct attribute **attrs = pmu->devtype_data->attrs;
+> +	struct device *pmu_dev = pmu->pmu.dev;
+> +
+> +	if (!attrs)
+> +		return 0;
+> +
+> +	for (i = 0; attrs[i]; i++) {
+> +		ret = sysfs_add_file_to_group(&pmu_dev->kobj, attrs[i], "events");
+> +		if (ret) {
+> +			dev_warn(pmu->dev, "i.MX9 DDR Perf add events failed (%d)\n", ret);
+> +			return ret;
+
+Can you use the '.is_visible' callback in 'struct attribute_group' to avoid
+having to manipulate sysfs directly like this? For example, create separate
+groups for the imx93 and imx95-specific events and only make them visible
+if we're on the appropriate hardware.
+
+Will
