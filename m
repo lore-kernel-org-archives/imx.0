@@ -1,70 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42678B65F;
-	Fri, 23 Feb 2024 02:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C533712B6A
+	for <imx@lists.linux.dev>; Fri, 23 Feb 2024 06:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708655208; cv=none; b=U+mooghm/tZcHQtT7TjuFYOWaux94rTycIEogW9FwHfcdWWx4RVIB3L5ywmqAyPNwEPL6BZwxogP9oFNqM+jWwQljAfzMlphtgV6g7LDZHQm4L1nZYGGHXqZEJeU8zTvXzXxAS/5QUYGH1gT5osC9BEXbtVlr4DyQD4CFC+hI1k=
+	t=1708670388; cv=none; b=TC5gkrhIqd+Qw54/D+O2a6RJYINUgA2phdZGF/xK8vVF56bFBeplP+2gpr1c0y+XPupH5Yg6GoI5FKoU1xIBroFKh89umq3HqRHwNXsHiN4cEKB5P5yTIOuCnN5Qbh8iDcKopk1LhLHDJdJ4zhdYo4MFsaPyLZML+3ZbNWLTs74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708655208; c=relaxed/simple;
-	bh=FfB3YRREbFuYqSFz36Fp0dGvfYiKsiNrIfqiet9iU+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rxoPExRQRBU4LnDaSITkgsOlYMqxPN1gimmhOQbTYurCeFMudAf9p28mywc9axfQa4FIxXrRVWZ53e/YeIoN1EbkxJPiUR8CB6FDF8HFF09eWvIsXXsAxJ6ApBkZtfEd5nBRrBBXm5M9vY3LqIpqpOMqwyidwq3LFGUPUUlHNW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3RQ5BCe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708670388; c=relaxed/simple;
+	bh=KwiHJFK1Mbbz+BN9chz3t+DZpnNLTM0nxRYWqa83UmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LgMLf6MsrVhaQkQCVB8hy8dpaiR2IxV9thyxe1IAoNHG3wmQ/IzPUUoVJOv9uL1Anz/t5DWBBYZw3SiaaBO0odFqvmkQc2MuesEeH5c7QUMbklXC8zCVFrdJXhTspI3WVBlaBFb819th5ayIlcTRuEF1RNBPagsFlUPyDyWGnL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=dz8WNJUa; arc=none smtp.client-ip=123.58.177.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3RQ5BCe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C065C433C7;
-	Fri, 23 Feb 2024 02:26:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708655207;
-	bh=FfB3YRREbFuYqSFz36Fp0dGvfYiKsiNrIfqiet9iU+U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p3RQ5BCe5Ho1ikWdoNCRqn19P3mVWBp7VBT0sPAzzXjjjUgXJsEnKLcGFN6jz1pAI
-	 +eVKg1hpxo8px6qEyx5jYH9qGQw83FxJeeL8WCVqVabWr1v30n/1hQZ1AAvy8vmo6W
-	 BZKkrm4GxoWxg18xongmk9Q7wVB1ivBnrjdSZ8lkkwbMTbZd0YyFCuUa6HzRYM1TSY
-	 FCAW5AjE+9M2KQTbHuUCw+RW3OfoIKINhTGdiRHFLIgz2Dd1sd6VpeSp7WXelzmzi/
-	 8gRnO5Xs7EpBkMtVS1w+sYcTBSjqoHh7TF9qGE3fBFA+U6hBOWJHPUozkid9mCzKA8
-	 Aeqx8QwggE/Uw==
-Date: Thu, 22 Feb 2024 18:26:45 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: Frank Li <Frank.Li@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>, Rob
- Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Wei Fang
- <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
- <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 0/4] Add 8qm SMMU information
-Message-ID: <20240222182645.16f0d3bf@kernel.org>
-In-Reply-To: <Zdf96y7q4298dkmG@dragon>
-References: <20240201-8qm_smmu-v2-0-3d12a80201a3@nxp.com>
-	<20240202110511.135d26b7@kernel.org>
-	<ZcIPCxgO3Gxc/aXh@dragon>
-	<20240206074151.577d33f1@kernel.org>
-	<Zdf96y7q4298dkmG@dragon>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="dz8WNJUa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=3msUX7Yu53rsu6BH2sOQ1nOJPUof7djniYPIovDSxFY=;
+	b=dz8WNJUap54FKFNVZQJNaBjLRXwwEMwFnJ92OQhXTXMjKIoH0DIL+kaNdNV1od
+	nKz3jrr+5wWM8ELe8235jCBVpzYz0/L6JH9iH+Y6BJavAiW3gcK/ySGPeH01qmb7
+	OLAZvGJmc5yUmf3+yPsOwphCTP0bvcpLmLsDoHW0ZEOSQ=
+Received: from dragon (unknown [183.213.196.200])
+	by smtp2 (Coremail) with SMTP id C1UQrABHLYeRPdhleU4wBA--.7112S3;
+	Fri, 23 Feb 2024 14:39:15 +0800 (CST)
+Date: Fri, 23 Feb 2024 14:39:13 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] arm64: dts: imx8qm: add i2c4 and i2c4_lpcg node
+Message-ID: <Zdg9kT35cKT+sVra@dragon>
+References: <20240206225904.3565362-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240206225904.3565362-1-Frank.Li@nxp.com>
+X-CM-TRANSID:C1UQrABHLYeRPdhleU4wBA--.7112S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIxpnUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBONZV6Nni+uTQAAsi
 
-On Fri, 23 Feb 2024 10:07:39 +0800 Shawn Guo wrote:
-> On Tue, Feb 06, 2024 at 07:41:51AM -0800, Jakub Kicinski wrote:
-> > I said DTB.  
+On Tue, Feb 06, 2024 at 05:59:03PM -0500, Frank Li wrote:
+> Add i2c4 and i2c4_lpcg node for imx8qm.
 > 
-> If the DTB here means Device Tree Blob which is generated by DTC (Device
-> Tree Compiler) taking DTS (Device Tree Source) as input, it's a build
-> result and so neither of us could take.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-I see, thanks for the explainer, I was referring to DeviceTree/Bindings.
-I'll say binding next time.
+Applied both, thanks!
+
