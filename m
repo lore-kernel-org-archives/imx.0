@@ -1,65 +1,72 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175B81401D
-	for <imx@lists.linux.dev>; Fri, 23 Feb 2024 06:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F487B3FF;
+	Fri, 23 Feb 2024 12:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708671141; cv=none; b=JuTE7o+/fyzzK9fu/WeWlPlOG4ZMqmoNa9YWoslWV59B3P7r4fb8IPnbsQLhH6BNFwJqgS4ysrYW0YWwCoMuAQUpKReJzYp2ZV1Os2+DWS0hpAS3z9nAnh5vowVJeBGedqmiJYGKqaoczeUg37x54K6JJhhwKDuhm/xoHZwKDWk=
+	t=1708690101; cv=none; b=dNWrTXr32BRELexUtXe/7BjMUbi3vtLACoJNA6NwTY/Vz0Yp37JB7QvF/y5RfN9//VGde6JdNwxhdjZFGT2wwwLa91/TjXAWRiSiiet0RaxI1CCFn44PUv+psVnope9r5sTZUilWUH/PuW3mkaYCGzV1qBTwB0siMBkY0hul0XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708671141; c=relaxed/simple;
-	bh=Nr5mBUrhlZi8frmFhmwVoOHy5yqzyTmbNfWtgDuSmYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M8SE4tn1NYDaxsQOrjWfrluUG0jj+WxYgSapFhyrbsP1EmTyxGfCs6IhoZ0gUFGwgku5r1W0r0Gxu+Qp7g2pXqO8ZzEBVaD2PTf/iQOH3hTAd4Ja3bgoLlYtncgMVYk/GDskETVL5HqZfV8VLKh7ZHD2d+tZTxPropZQXuNynQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=cN9nEoY+; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1708690101; c=relaxed/simple;
+	bh=6N8Ld7WGmg8vZ3ZIlQzFA50i0hSgpatFocdagRDrzB4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sRLXP1seaXjApBuI49P79Czu9cskhWBqR2cJRTC++SxyiH+qvllA+Hr5193lYA+uPlmsqsyGQ4WORyIMdNtvCZA5x7kXoWPFr/c2HzXjKRe5l/RcPSOC8qmxcVO6l8Z8yDXl2My8IEkPiex8E84+96n69p6djdVcmDozuFaPy3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBw2jB/u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="cN9nEoY+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=5/CIVx4nox7rRerqYVV+Dr3YOIRCBNThgrU8TFxsrAc=;
-	b=cN9nEoY+i540gES0/H1DMGqL+w3eiRitW6Ny/sa8n2mSnPLdB0O+T1jwSUT2Ox
-	6Cv+7ZTSPYkbanh6v+iS807mWKDu7NBMF7rgFicu3+1C8o7gFtpqO/aFwERaRTYx
-	hnb8/3ljOQnSMYiXiBRBVqWj5o7oQT2+cITwUjdiFC3m4=
-Received: from dragon (unknown [183.213.196.200])
-	by smtp1 (Coremail) with SMTP id ClUQrAD39ueMQNhlhKYwBA--.5198S3;
-	Fri, 23 Feb 2024 14:51:57 +0800 (CST)
-Date: Fri, 23 Feb 2024 14:51:55 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Fix DTS for full PL011 UART
-Message-ID: <ZdhAiy3m/ytfEc1j@dragon>
-References: <20240206231521.3600089-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBw2jB/u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C185FC433F1;
+	Fri, 23 Feb 2024 12:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708690101;
+	bh=6N8Ld7WGmg8vZ3ZIlQzFA50i0hSgpatFocdagRDrzB4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=KBw2jB/u3ET3MtQr5fCPVMdC1IjXmuhrc1qzladUdd5pOXUYj3aeiqnv/7NWmpF9M
+	 Hoj+FcKZ+8/nDUSUlz+KwSDg0Yjcb1IA8UH1uTjv57UgKgrrbARFUFB5OJUC8PRjPf
+	 dKOtFwk2ivB/+n+WqifbQPcDLgxTHKr1mAI3NRle1WKSsF3xGss7CNEzh/2V77jnMk
+	 rnsQw9zifYZ301UzyH+E1F+/cbIQxWDWQymzOfnYud6eCnRcGama13T/u6wF6/MH9T
+	 GfTimCQfcFrbh4ZLs9gyT6yVQRjyHk9P7MIhMgHAql24unBBmcKmVuLBMtoBtUrn3Z
+	 mwwtcsF95c6yw==
+From: Vinod Koul <vkoul@kernel.org>
+To: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240209210837.304873-1-Frank.Li@nxp.com>
+References: <20240209210837.304873-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dmaengine: fsl-qdma: add __iomem and struct in
+ union to fix sparse warning
+Message-Id: <170869009943.529426.11568585221856957944.b4-ty@kernel.org>
+Date: Fri, 23 Feb 2024 17:38:19 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240206231521.3600089-1-Frank.Li@nxp.com>
-X-CM-TRANSID:ClUQrAD39ueMQNhlhKYwBA--.5198S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsmFCUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDg2NZVszYVzb6gAAsP
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 
-On Tue, Feb 06, 2024 at 06:15:21PM -0500, Frank Li wrote:
-> From: Heinz Wrobel <Heinz.Wrobel@nxp.com>
+
+On Fri, 09 Feb 2024 16:08:37 -0500, Frank Li wrote:
+> Fix below sparse warnings.
 > 
-> The prior configuration was an SBSA UART that can't be configured or
-> modified, or even enabled if it isn't the boot console. With properly
-> defined clocks, the PL011 configuration can be used.
+> drivers/dma/fsl-qdma.c:645:50: sparse: warning: incorrect type in argument 2 (different address spaces)
+> drivers/dma/fsl-qdma.c:645:50: sparse:    expected void [noderef] __iomem *addr
+> drivers/dma/fsl-qdma.c:645:50: sparse:    got void
 > 
-> Signed-off-by: Heinz Wrobel <Heinz.Wrobel@nxp.com>
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> drivers/dma/fsl-qdma.c:387:15: sparse: sparse: restricted __le32 degrades to integer
+> drivers/dma/fsl-qdma.c:390:19: sparse:     expected restricted __le64 [usertype] data
+> drivers/dma/fsl-qdma.c:392:13: sparse:     expected unsigned int [assigned] [usertype] cmd
+> 
+> [...]
 
 Applied, thanks!
+
+[1/1] dmaengine: fsl-qdma: add __iomem and struct in union to fix sparse warning
+      commit: 1878840a0328dac1c85d29fee31456ec26fcc01c
+
+Best regards,
+-- 
+~Vinod
+
 
