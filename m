@@ -1,75 +1,207 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9B3130E3E;
-	Mon, 26 Feb 2024 21:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE69E12F593;
+	Mon, 26 Feb 2024 21:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708981724; cv=none; b=aQ8w4Lqeex3D8HFsix6rle25cInVLNj7J/t5G07VnFIHxQaYpdjPU+pV3IU4EbUaXY/DV/lPxqT1x7UltasFJBEtTJewe6xJO/QZW49O8lm/NGoedkNlawQNt9lG0bggzziU1Yye7y0jiMUTMaIvuit4l41ytUKjPawZ4fzSiHU=
+	t=1708982865; cv=none; b=F2A13jDYpLNu0+GLTbfJ/JnwVhF3BAJAQsUWTwwRtli5/XNRHQ7AhRJVMfepNIn38pklIUzSN8XsH4K7vxID0zGaX6ZHvaF4+ZnGdJ5icRILHsaLOs3sXmnX/CIVnjEiMiXgZ2EOg/iX87g128BHp+Q/Sgw9WHTufbA+dSFUeaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708981724; c=relaxed/simple;
-	bh=oXPrqjv4D7Q7fzj84Tav7jY1Yd0hQh/KK5Bn9pmwA3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Ao6ZodoQh3XEgccmDOnijI8NfDrLheCHyE3D9PNeQUu6y2L4rDpmBmRyA+GkE0q2lIVK8kdi+IsMjg/6U+d9zykmG2NJpDyhfsqRwv6+3IMv9r11Bb9b7q3qjCar/2mKwkrCcYDgzcm3+uVZOHKPM1lHLFydef8ibUM3jUOlNQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6XZ/b2x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708982865; c=relaxed/simple;
+	bh=W7KyzBkyJPOjERPAmGBasbk62LFaM6Pz/kkeIkNL5bU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=omypmVw2heKmMMgk2D014SaUL6z6CROYG/uU8wiM7OfBwVIGIfmOXyfZNvPOMTDDdz1IG6isJ/eKGdwWyqVSXOtZwnb1E3SJLZV9gveikACgsM4fC4bkHmdsm/c4THHfjcMRyTyD0t6RnxQvyGFQmo1I0Cb7Tu0yZaa0NxwEX1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdxR78Sr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6XZ/b2x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF85FC433F1;
-	Mon, 26 Feb 2024 21:08:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdxR78Sr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32931C43399;
+	Mon, 26 Feb 2024 21:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708981724;
-	bh=oXPrqjv4D7Q7fzj84Tav7jY1Yd0hQh/KK5Bn9pmwA3c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=L6XZ/b2xLv4h3tNDaRBIHoHAY0dEKbK1gPmdQ67XRubTqwQQ91AyFsG5xo0sgIDCm
-	 1I/hzJbgVdHNyiwU3Q8cPSKOHijDkJ+g3arbjfCjPFJvQnoB8ZBYVf77QGsR3OKrUS
-	 M36fVbofEV+ihQ/w7giRLTPWOWQ/b5DnQhDCAJqYSnvLJMutXrqyPo7n6JvS7tfbBd
-	 uaBInLbxpK77fOy4tCGH0GmvZ/zy1FCp+G8z2wCQtgHSjgmxFCJ/7CZAb9YXWKghTo
-	 t949QwvKTOjs+IDkmJaagkZx9+9Eizq49D2i9t0fvUkd49K9iWojgfjPEYCyKczi8N
-	 rP53J5/ARQG1A==
-Date: Mon, 26 Feb 2024 15:08:42 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor@kernel.org, bhelgaas@google.com, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org, robh@kernel.org
-Subject: Re: [PATCH 1/1] dt-bindings: pci: layerscape-pci: Convert to yaml
- format
-Message-ID: <20240226210842.GA211190@bhelgaas>
+	s=k20201202; t=1708982865;
+	bh=W7KyzBkyJPOjERPAmGBasbk62LFaM6Pz/kkeIkNL5bU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FdxR78SrpAa0TFYd0AyYylwTnUDbADZhRGR82OivyPEdJBsBV3Ckquq7C15t+838f
+	 DF/MxqCs3zaCE9lDrMSzMu67+D2GaEoEjYUQhz8V1fNM8WuQbmT7UKL/8uXqFUTeKH
+	 qKeUr/8V6Fs22XLrWcK5CLXa7gSQeWqYT+TwDvAnfqbl2iktywxEm01AY41b7eI1pb
+	 0bCTHa8KdwqXHGLV/dwegg5YWhN8dNw2COcPk0rYJgfhoQl0iKkAIF+BOCIJul9l/Y
+	 2dN32yJJPTihGOGV+wuIvAkJ1rEkUNSSB1IgEQmh0hjKUZ7KJKcKB8YpY0sMfRDjZG
+	 JgMs2Vf6x4ZYg==
+Received: by mercury (Postfix, from userid 1000)
+	id B339C1060DFB; Mon, 26 Feb 2024 22:27:41 +0100 (CET)
+From: Sebastian Reichel <sre@kernel.org>
+To: Sebastian Reichel <sre@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v5 3/6] dt-bindings: soc: imx: fsl,imx-anatop: add binding
+Date: Mon, 26 Feb 2024 22:26:25 +0100
+Message-ID: <20240226212740.2019837-4-sre@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240226212740.2019837-1-sre@kernel.org>
+References: <20240226212740.2019837-1-sre@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240226195711.270153-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 26, 2024 at 02:57:11PM -0500, Frank Li wrote:
-> Convert the layerscape-pci PCIe binding document to yaml format.
-> 
-> Additionally, changes for the layerscape-pci endpoint part:
-> - Add interrupt name 'pme' restriction for fsl,ls1028a-pcie-ep,
-> fsl,ls1046a-pcie-ep, and fsl,ls1088a-pcie-ep.
-> - Add register name restrictions: 'reg' and 'addr_space'. 'addr_space' is
-> required by snps,dw-pcie-ep.
-> - Add an example.
+Add missing binding for i.MX anatop syscon.
 
-Not for me to say since this would go via some other tree, but in
-general, I would prefer to see this as two or three patches:
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sebastian Reichel <sre@kernel.org>
+---
+ .../bindings/soc/imx/fsl,imx-anatop.yaml      | 128 ++++++++++++++++++
+ 1 file changed, 128 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
 
-  1) Strict conversion to yaml with no additional changes
-  2) Add new layerscape-ep stuff
-  3) Add new layerscape root complex stuff
+diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
+new file mode 100644
+index 000000000000..5a59e3470510
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx-anatop.yaml
+@@ -0,0 +1,128 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/soc/imx/fsl,imx-anatop.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ANATOP register
++
++maintainers:
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - fsl,imx6sl-anatop
++              - fsl,imx6sll-anatop
++              - fsl,imx6sx-anatop
++              - fsl,imx6ul-anatop
++              - fsl,imx7d-anatop
++          - const: fsl,imx6q-anatop
++          - const: syscon
++          - const: simple-mfd
++      - items:
++          - const: fsl,imx6q-anatop
++          - const: syscon
++          - const: simple-mfd
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    items:
++      - description: Temperature sensor event
++      - description: Brown-out event on either of the support regulators
++      - description: Brown-out event on either the core, gpu or soc regulators
++
++  tempmon:
++    type: object
++    unevaluatedProperties: false
++    $ref: /schemas/thermal/imx-thermal.yaml
++
++patternProperties:
++  "regulator-((3p0)|(vddcore)|(vddsoc))$":
++    type: object
++    unevaluatedProperties: false
++    $ref: /schemas/regulator/anatop-regulator.yaml
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx6ul-clock.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    anatop: anatop@20c8000 {
++        compatible = "fsl,imx6ul-anatop", "fsl,imx6q-anatop",
++                     "syscon", "simple-mfd";
++        reg = <0x020c8000 0x1000>;
++        interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 127 IRQ_TYPE_LEVEL_HIGH>;
++
++        reg_3p0: regulator-3p0 {
++            compatible = "fsl,anatop-regulator";
++            regulator-name = "vdd3p0";
++            regulator-min-microvolt = <2625000>;
++            regulator-max-microvolt = <3400000>;
++            anatop-reg-offset = <0x120>;
++            anatop-vol-bit-shift = <8>;
++            anatop-vol-bit-width = <5>;
++            anatop-min-bit-val = <0>;
++            anatop-min-voltage = <2625000>;
++            anatop-max-voltage = <3400000>;
++            anatop-enable-bit = <0>;
++        };
++
++        reg_arm: regulator-vddcore {
++            compatible = "fsl,anatop-regulator";
++            regulator-name = "cpu";
++            regulator-min-microvolt = <725000>;
++            regulator-max-microvolt = <1450000>;
++            regulator-always-on;
++            anatop-reg-offset = <0x140>;
++            anatop-vol-bit-shift = <0>;
++            anatop-vol-bit-width = <5>;
++            anatop-delay-reg-offset = <0x170>;
++            anatop-delay-bit-shift = <24>;
++            anatop-delay-bit-width = <2>;
++            anatop-min-bit-val = <1>;
++            anatop-min-voltage = <725000>;
++            anatop-max-voltage = <1450000>;
++        };
++
++        reg_soc: regulator-vddsoc {
++            compatible = "fsl,anatop-regulator";
++            regulator-name = "vddsoc";
++            regulator-min-microvolt = <725000>;
++            regulator-max-microvolt = <1450000>;
++            regulator-always-on;
++            anatop-reg-offset = <0x140>;
++            anatop-vol-bit-shift = <18>;
++            anatop-vol-bit-width = <5>;
++            anatop-delay-reg-offset = <0x170>;
++            anatop-delay-bit-shift = <28>;
++            anatop-delay-bit-width = <2>;
++            anatop-min-bit-val = <1>;
++            anatop-min-voltage = <725000>;
++            anatop-max-voltage = <1450000>;
++        };
++
++        tempmon: tempmon {
++            compatible = "fsl,imx6ul-tempmon", "fsl,imx6sx-tempmon";
++            interrupt-parent = <&gpc>;
++            interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
++            fsl,tempmon = <&anatop>;
++            nvmem-cells = <&tempmon_calib>, <&tempmon_temp_grade>;
++            nvmem-cell-names = "calib", "temp_grade";
++            clocks = <&clks IMX6UL_CLK_PLL3_USB_OTG>;
++            #thermal-sensor-cells = <0>;
++        };
++    };
+-- 
+2.43.0
 
-That makes it easier to see what is actually being added.
-
-> Changes for the layerscape-pci root complex part:
-> - Add required property: 'reg-names', "#address-cells", "#size-cells",
-> 'device_type', 'bus-range', 'ranges', "#interrupt-cells",
-> 'interrupt-map-mask' and 'interrupt-map'.
-> - Interrupt-names requirement split to each compatible string.
-> - Add register name restrictions: 'reg' and 'config'. 'config' is required
-> by snps,dw-pcie.
