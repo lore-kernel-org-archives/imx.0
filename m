@@ -1,346 +1,153 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2041.outbound.protection.outlook.com [40.107.7.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B46D13540C
-	for <imx@lists.linux.dev>; Mon, 26 Feb 2024 22:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708987424; cv=fail; b=luteI8i+JMoia+QQj6TgE8T7aI5TKFe3AkeShw8JrJWr5yrbDq35mFj6Cwhp9FcmTuK7B0LUpXidkhTk1gkTJ4sF9jaYW1gUj+cKiL/9AyRKWWLOousTXkk2xxgCrVpEE5u4keQLPyY/2QFT+qIaM8BhOHIVwLT8QxLWnfq6hR4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708987424; c=relaxed/simple;
-	bh=deYARtl2lE5NIICYKVYdvZvlfvRG/uIYYrWCTs/s2P8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=osJtfNWCGtPkI66kngJ8XCCjvuzNTPz0TT1rQQuBn0rbxCSWv1fUli6auLdQVFmWEgYohz0JDbcgfE8CqLrKlMqboSeb3pyi8z03tSfaUzl03RC+2BdTJuulPEsIV897jeZq1YDL50upmZ20pjg/lsFFQUdUr7A3EZD1SVa6i8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=pB0zWoJT; arc=fail smtp.client-ip=40.107.7.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B109135A5C
+	for <imx@lists.linux.dev>; Mon, 26 Feb 2024 23:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708991145; cv=none; b=NErVSu08+we7FDf2KYk328F0q8oYQtF2Hx74clMf7r3fmKjLOPx+0+Az2siDLKFedQjPV/GtOjTzwojb48S8f9ge4nmwdkmfveghcgCOUzyoxiN6V/F9RxVUUb/2FixAD54t1wqoE/nroSBiyWq5Pp6vCV+WC6TvQ99i8keYmvE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708991145; c=relaxed/simple;
+	bh=TtompIHgbeY/OA3WXAshQm3+E9k8UAMGdrcANzV0VD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LeNRka4+D/pisGjpIn50ajGLPOpZasPIRtnZQRNsOJ97s6XAcwDZAAZ/LaqwGdQZqOq5nVykmzlsiRXc7ueLeSigYTSQMigsVnchW9jglWFuyNexPWPeTCvUSyll8GSe1/bl1L/NpapQe3cqossLL1JKA/76KKcsFoiQNukYir4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bnTtZ/lQ; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="pB0zWoJT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BdOfRNZJeLSyCnA7ofTGdlGmUpDfjKKOr9b5n/Ml36x18blZIocjmslgYyfhbOEBebvMby7jtNx8wgPD9xxjrHjXlmDJV6Xoo5n9kC6wWYb3kr+Qa54mW+v6Vaf7bL16v2ggfgpKTD5YJVqr6pGFAYkZ1JXiJXzvXwdLjRP6XgH3PA6Drcq3eoCV3S5TSnxelyazMJQEKsJw7pDL6l/ySj2qd3fbaOyEnofcohyC9+VcXnRwAUnG3iviW8erdOkCd1WkzkISzb3VVq4K3pV4SNtunaC0/JfaV3qpfUQ6F3MvMO5DLlXognH6g7qndE/lPkZDFEMRfkPuUcC7//oBlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IguNcd9cBakN5IvXfCy4kTOqo5PQmEY0JF6qDxepBCU=;
- b=VEIJIY2zhOvvDPosxxaR24WLlO5hgAsEvjDvxvSx/+6uFhLhSL9h3OJeOk6ohONaMGfc7bGiKti1qHVJ6faeyCzXlQKwP8V8vo9fyLPjrg+wvnxFsJOX0tGCgsr/YIvrdzZpgwN16hKPD/uV06dj9P0ng8HE8xCljvyTdhl25YLU6Y3FwmjP4ZFqUnDwFB11nK3tSBGn1Rbr3ap1wme+IH1ugK+KPDz/XRUFJjiQQJoPmlPtOvcQtazCFCPQFtoEWpFdDiWtrQ/ZfI6s4OAjO37r91kVG0TwmhnV0Ct4sH1j44/FvUnSfp7hdKe63Bp7pQhgu0BoJUl1YXocuS6muQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IguNcd9cBakN5IvXfCy4kTOqo5PQmEY0JF6qDxepBCU=;
- b=pB0zWoJT/5iBP9Oy94ltyPuyyqJ6ARhmCq7xOgAls8S8DwVnqTeNEgFxY73TeDvr3+KuHUXhu+t676nW6gBPzkvQ8uaI9sfN3SrjAhyobys+4Su8WCDqvWzD41TXPyqVJetB73OwCV5hbUvKtRjlHADG/GbFqdCaTcYy4hbeVDg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA2PR04MB10124.eurprd04.prod.outlook.com (2603:10a6:102:407::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.36; Mon, 26 Feb
- 2024 22:43:38 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.032; Mon, 26 Feb 2024
- 22:43:37 +0000
-Date: Mon, 26 Feb 2024 17:43:29 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Serge Semin <fancer.lancer@gmail.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bnTtZ/lQ"
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-7bb5fda069bso216422239f.0
+        for <imx@lists.linux.dev>; Mon, 26 Feb 2024 15:45:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708991137; x=1709595937; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YWIbvre+rElW1Hi4Tns90pWqujeQfsqDKyIvXn+Wd7Y=;
+        b=bnTtZ/lQb1K9azxzAh0VZbAcp+VvYuT2jPMQVLxfrYkoe0rERLiBtTxdy4Qefdo053
+         jcVvwdNXE5XURfUsvVW3HF2x16Sp5lMRKi8dNp6YT6IilKh3strh819J5ZPT73SSlMqq
+         uc5vP4brBSIlh2O5EBKHEpoMiqspGD9+uz3Ksh4KALXvl8AlFybtSnrBg+okaPLqAI1T
+         ZmaBzg9nPqd8Mc6rgvQ1+LbzTt3TdAyv8rNoDM3XWcnNd97zVi3UCjRzuiB4YvuQZUdW
+         5wHQxNISCTiWS0oxpl4zGTXqwQpx+FoWXUyrYameKX6hQuuVb7hsaivGerF61kAn8U84
+         gr9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708991137; x=1709595937;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YWIbvre+rElW1Hi4Tns90pWqujeQfsqDKyIvXn+Wd7Y=;
+        b=EBu1r7lX9StZpJq6G+qilcXhVZQongOO2emlkuvkz6XszTPE2l+ecaXKV1HZ7OPSvy
+         MX2jZgPf6mVu1YVOhmqz0TMYpDxBjluSLFu4SpUOikcCCrMX09EynVHqSo36bW3shNlv
+         iqUbTf1uQ7SFQXXmSOiUtiMXbr7MzeF9b5oRmRGbgvUhVqO+VevaQfQ9CgUI6kBgUd5b
+         +SVMsfUJAHJLZ7il5xIIsYoN2FM35J2uvXQqmcdrKuYc/1ob2TqZrc/m0YcdhhBnNIEA
+         B0WTbAVHKAwJEB26LoHXPQHRfLHT3wH7Cp1XPatQ7azTos5Ia0BIQ3QDRo+gDDUL5vM8
+         gZeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEJs/TdtBk4wOUkK5qLfMKovgjGxTfbQHdFMI2xjQKwIhkKhFPjFdB5mox+LUCkuPfkXh9UUtpTFperrRQ00HDOgAk
+X-Gm-Message-State: AOJu0Yz5o9LmZKiQldCK8UKs4z4JHBpAixzo359quoXIXA00EgpCmCvO
+	TUhYNWVzAaiaQy7an3zQMFc6Wg1XQTYHlewl/G6D/COwolNdLunz8X+WD3zkWER+PQ==
+X-Google-Smtp-Source: AGHT+IEFd1YNIU2pFTFYWayiyy5owHCUX8d2oFahEMWR2wOBYQt4gvySx+O01SGAjDhoU7jBjgwbnA==
+X-Received: by 2002:a05:6602:1d01:b0:7c7:da5e:3a61 with SMTP id hh1-20020a0566021d0100b007c7da5e3a61mr2215880iob.9.1708991136677;
+        Mon, 26 Feb 2024 15:45:36 -0800 (PST)
+Received: from aford-System-Version.lan ([2601:447:d002:5be:9c95:d061:819a:2ab2])
+        by smtp.gmail.com with ESMTPSA id c25-20020a023319000000b004741cf1e95esm1545317jae.11.2024.02.26.15.45.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 15:45:36 -0800 (PST)
+From: Adam Ford <aford173@gmail.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-phy@lists.infradead.org
+Cc: aford@beaconembedded.com,
+	Adam Ford <aford173@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] PCI: dwc: Add common send PME_Turn_Off message
- method
-Message-ID: <Zd0UERil+A2LgSot@lizhi-Precision-Tower-5810>
-References: <20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com>
- <20240213-pme_msg-v4-5-e2acd4d7a292@nxp.com>
- <erja6zkhstoaverqtadnqj3nsyluh3sealibpujqmea4pndiuv@icihj7cby2l7>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <erja6zkhstoaverqtadnqj3nsyluh3sealibpujqmea4pndiuv@icihj7cby2l7>
-X-ClientProxiedBy: SJ0PR03CA0247.namprd03.prod.outlook.com
- (2603:10b6:a03:3a0::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V6 0/6] soc: imx8mp: Finish support for HDMI
+Date: Mon, 26 Feb 2024 17:45:11 -0600
+Message-ID: <20240226234532.80114-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA2PR04MB10124:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70e87c9a-2aa6-46b9-d40b-08dc371c5f26
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	0XEiqFWgwWoYNghG7zXt3MwHNe/Pwgp00L2sUSO1aIY0sLnCzu2gX7zYdBaQGckPejsfa1v29t03E1heDOBcTIqohDNmooeeJo58FLVVTlXZbbIi+ZqeWJQzJ9L7qQ+5fg9S7SZVJVVImNtbXbnkvvZUoEEYG3ycBmgscdJ3a8L9Ki1zJzJpLMpBCda6HV/DEvAZczM4zPG3MPxZZUtYTKGVCRAqW/RkBVdORwkidFkswyvlsd0c4cIl/LDc1/JSE6JWIFVGohS84xmJuKmHY4knoIwLPMyr76RibiBU0i7XAeQ+oPdRz7s0Y07vfdteUMDFaQNLJLZOIcfXzCj5lPptzJR/n9qTl+9XPHNZZbkIgliACnl491w2StgtWrE9aBJuTmiv4XhRpA+iZh36MDaXP5szOLfFIa+k7qg5Xjlg4DYLIWlcqlC0WqT0Iygj/Ukhs9+OisR+mEP6aOGzTidl/ijTn5J6C0ZjcSY39FjqR0Z7jW3zTbC2LHf8cEyEPcKZThfp533+sIOtAiNAgG2YiDainlCRpKN8WGZmpBF5RBUJTISBALmyI7iyVEjgHTEIF/s8dhCCTiYM4K9aU49ly5PWEaI4le+5hjgblq0BAWHxGAvzxEt9ZkZNdLagSvqVXjv8iXq52nUAlZVvLgi6fy7d42/COTv/sOfxrn1KG7KexZ/IVwYXkAZUyMT/dJ+AHXN/CE+oUNwehRffaQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CjujWD17mDT3va+RpvOmPP+M0O8KqbVwJNQKJSvE9VcW8A75yXSjUSRCCTHI?=
- =?us-ascii?Q?MtzMJWO8SXrPtdUGTm6iRXTx3WD6XPWEvygU0zmniw6XAiDqU5mlZk48DBKu?=
- =?us-ascii?Q?6P2ib2lIMdhLHV5O88YnpkkVRTs0c4L0aDrE8K4KIZnfRji1fySrQzjlvEPh?=
- =?us-ascii?Q?ShlEb4rQSB1oQt7wZNnJ17BtdbC4i4kfweZnehGlMMqv6Kjfs7v9benmKZVO?=
- =?us-ascii?Q?S7+pby7Lavtv8q+fH1HUjzhpaB8mBqh/RMBmTTieY4mWOsLFuSK1grAKqY2Y?=
- =?us-ascii?Q?WxRCCjcmfcBlTRRVinVrS/PjwkrWowsCQe6clPK1rsJdUUUbpPA8U9qN1jSU?=
- =?us-ascii?Q?JkVr1OECDA91sGZRO/XnkOKOlGqHfkFi5mx4onbkwzbYGkDBDL/s3h1FE95x?=
- =?us-ascii?Q?KZZBnSV/Cg+l9rd6Dqcvhzz2Gl5NTthFXdQ89wDtkDmLS1bHiBnAqWkNo0DF?=
- =?us-ascii?Q?nha0Rt1lGZC95Tnz28loZ4kclU/mqAFcJwmB94/eBjbfqS+OQtHLtoHu5o58?=
- =?us-ascii?Q?2NUj8NaV87yBzUeYjPikuWV7eiNFJtdr1cE5TVS/WaaLHs4TaM25IH6fNYSD?=
- =?us-ascii?Q?nq34XmGi02s29zr0GzGIqszcimx+Sq4/lQYeeKRldir7E7Zz6qwZB5Q5qz6L?=
- =?us-ascii?Q?iH68yNNw2zESK9+9NI55ERj+LSW5Um1vOskQCLMwYQnSGE+nn+rgCoGGsSRt?=
- =?us-ascii?Q?LsmKRqv6blA2pO9Z0nASH0S9e0ls37JW3dvmaUbNZIo1cohQeMSnO4xk3epX?=
- =?us-ascii?Q?bI4AT2Hq4oCfKpSAGMAQQipAuVUnUX9r/xZ6dYfT3FV2Rx+iDM5RcSf/xo5R?=
- =?us-ascii?Q?2exmXXuvmSxMv9SxKGso6nJDHc8Pa0Zde9k+weOxOBsiG/S/6QXRSlZfXOBh?=
- =?us-ascii?Q?rg+6zCOlaoJor6v2ckFh7ezkMQY+95WMHSvTY6qlN4vXGqtlsZjSrvztK9aE?=
- =?us-ascii?Q?2wsN9GoS5sevSYWzJUo2ZcUDxeJUOuDvoto5S6GhwCIkrubKaOyUs9+kr4e2?=
- =?us-ascii?Q?+1OtZde3TwZZ5EFdzqTgyO+sJiF58cBEUD3+ISGPiahJEPFEI484wmujHfBz?=
- =?us-ascii?Q?DrPVtB5snR602/f1LAyXoZQocdTATRZp6aurK4NSPm+RJN1D6ODN7pRFAGG6?=
- =?us-ascii?Q?s1jWCYxwfedTs1NcK3/Am4DrD1UpcUqcBPoeJMpDkTAfCZdDqD+es3aRPoXP?=
- =?us-ascii?Q?fTJzoPCxiM7ABJKYMesBq020Uq7RSt4L7k9gT/I4D4YJ6K4DiGn5cPHdz9lC?=
- =?us-ascii?Q?CToCCGweLqRlROylU0ONLyvZexKurum7lPtRroUXpC3+QIsY/AsP/LtPx6H7?=
- =?us-ascii?Q?0lJLrmesqJTLVx4tOVFrcnfx+1tE4zOAV5ExcakOeadmjE1vRXIuQEdkTNNG?=
- =?us-ascii?Q?x6HMW0Hias9Tmy8EHqHi14Sx+HHCGEkicp90Kqme9Xpdj2jTiRDuC1GW6rZT?=
- =?us-ascii?Q?5ad+vbjeLgOmjztZRQjGqwbspi99AeFGldFxKqgzkZQh38kwO25ZzDqr+r79?=
- =?us-ascii?Q?IhpWPz6cjOygRsAtqNLVWBx2A5RNFXhBg/k8f++i4j1CNmJgm9ArkKaOXeGh?=
- =?us-ascii?Q?/vJxZvagbhVeqGqO64Q=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70e87c9a-2aa6-46b9-d40b-08dc371c5f26
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 22:43:37.6077
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /i8rLgmnWXwf2nfkX7wjrw/iCT2gGMNnw4fDAR+fMmVsixCnG0vpHz/RBmku6PeEP2ZCKb0LFhvPAWPltd7jxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10124
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 27, 2024 at 12:52:45AM +0300, Serge Semin wrote:
-> On Tue, Feb 13, 2024 at 04:50:26PM -0500, Frank Li wrote:
-> > Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
-> > window. This space's size is 'region_align'.
-> > 
-> > Set outbound ATU map memory write to send PCI message. So one MMIO write
-> > can trigger a PCI message, such as PME_Turn_Off.
-> > 
-> > Add common dwc_pme_turn_off() function.
-> > 
-> > Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
-> > dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
-> > exist.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/pci/controller/dwc/pcie-designware-host.c | 93 ++++++++++++++++++++++-
-> >  drivers/pci/controller/dwc/pcie-designware.h      |  2 +
-> >  2 files changed, 91 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > index 267687ab33cbc..5e83756492462 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
-> >  	return 0;
-> >  }
-> >  
-> > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
-> > +{
-> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > +	struct resource_entry *win;
-> > +	struct resource *res;
-> > +
-> > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-> > +	if (win) {
-> > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
-> > +		if (!res)
-> > +			return;
-> > +
-> > +		/* Reserve last region_align block as message TLP space */
-> > +		res->start = win->res->end - pci->region_align + 1;
-> > +		res->end = win->res->end;
-> > +		res->name = "msg";
-> > +		res->flags = win->res->flags | IORESOURCE_BUSY;
-> > +
-> > +		if (!request_resource(win->res, res))
-> > +			pp->msg_res = res;
-> > +		else
-> > +			devm_kfree(pci->dev, res);
-> > +	}
-> > +}
-> > +
-> >  int dw_pcie_host_init(struct dw_pcie_rp *pp)
-> >  {
-> >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > @@ -479,6 +504,9 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
-> >  
-> >  	dw_pcie_iatu_detect(pci);
-> >  
-> 
-> > +	/* Need call after dw_pcie_iatu_detect() before dw_pcie_setup_rc() */
-> > +	dw_pcie_host_request_msg_tlp_res(pp);
-> 
-> This may cause regressions for instance if the outbound memory window
-> is small and is fully dedicated for some device like VGA/GPU/etc.
 
-There are host memory map windows, which are quite big. It will be too
-small if only because one page size windows less.
+Adam Ford <aford173@gmail.com>
+Sat, Feb 17, 10:16 PM (9 days ago)
+to linux-arm-kernel, linux-phy, aford, me, Vinod, Kishon, Rob, Krzysztof, Conor, Shawn, Sascha, Pengutronix, Fabio, NXP, Catalin, Will, Lucas, devicetree, linux-kernel
 
-Look like it is impossible to dedicated to one device, all pcie devices
-(VGA/GPU) should go through standard pcie probe flow, the bar will be
-allocated from bridge windows space.
+The i.MX8M Plus has an HDMI controller, which depends on several
+other systems.  The Parallel Video Interface (PVI) and the
+HDMI-TX are already in the Linux-Next staging area 20240209, but
+the HDMI PHY driver and several device trees updates are still needed.
 
-> 
-> Why not to use a new ranges-based mapping as we discussed earlier:
-> https://lore.kernel.org/linux-pci/20240214061412.GB4618@thinkpad/
-> ?
+This series is adapted from multiple series from Lucas Stach with
+edits and suggestions from feedback from various attemps, but it
+since it's difficult to use and test them independently,
+I merged them into on unified series.  The version history is a
+bit ambiguous since different components were submitted at different
+times and had different amount of attempts.
 
-If driver can auto alloc from known range, why need static defined in dts
-files.
+The previous attempt I did used the wrong starting point for the PHY,
+so this update includes a newer starting point with tags from that version
+and fixes from various people's feedback.  I hope I caught them all, but
+I apologize if I missed something. Any tags from the previous attempt I
+made were intentionally dropped, because of the significant change,
+but I kept tags from the newer version I grabbed from patchwork.
 
-static alloc can't resolve small outbound memory windows problem. It may
-disable this feature. 
+Because several items from the last attempt were merged, this
+series is only focussed on adding the HDMI PHY driver, and enabling
+the power domain, irqsteer interrupt controller, and HDMI pipeline
+in the device tree. The version numbers are a bit strange since
+these all got pulled from various attempts with different versions,
+but I wanted to push them together as a series to complete the pending
+work.
 
-> 
-> I know it might be troublesome but still it would be much better
-> and more portable across various platforms.
-> 
-> Bjorn, Lorenzo, Krzysztofm Rob could you please follow the link above
-> and give your opinion about the solution suggested there?
-> 
-> -Serge(y)
-> 
-> > +
-> >  	ret = dw_pcie_edma_detect(pci);
-> >  	if (ret)
-> >  		goto err_free_msi;
-> > @@ -536,6 +564,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
-> >  
-> >  	dw_pcie_edma_remove(pci);
-> >  
-> > +	if (pp->msg_res) {
-> > +		release_resource(pp->msg_res);
-> > +		devm_kfree(pci->dev, pp->msg_res);
-> > +	}
-> > +
-> >  	if (pp->has_msi_ctrl)
-> >  		dw_pcie_free_msi(pp);
-> >  
-> > @@ -697,6 +730,10 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-> >  		atu.pci_addr = entry->res->start - entry->offset;
-> >  		atu.size = resource_size(entry->res);
-> >  
-> > +		/* MSG TLB window resource reserve at one of end of IORESOURCE_MEM resource */
-> > +		if (pp->msg_res && pp->msg_res->parent == entry->res)
-> > +			atu.size -= resource_size(pp->msg_res);
-> > +
-> >  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
-> >  		if (ret) {
-> >  			dev_err(pci->dev, "Failed to set MEM range %pr\n",
-> > @@ -728,6 +765,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-> >  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
-> >  			 pci->num_ob_windows);
-> >  
-> > +	pp->msg_atu_index = i;
-> > +
-> >  	i = 0;
-> >  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
-> >  		if (resource_type(entry->res) != IORESOURCE_MEM)
-> > @@ -833,11 +872,54 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
-> >  }
-> >  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
-> >  
-> > +/* Using message outbound ATU to send out PME_Turn_Off message for dwc PCIe controller */
-> > +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
-> > +{
-> > +	struct dw_pcie_ob_atu_cfg atu = { 0 };
-> > +	void __iomem *m;
-> > +	int ret;
-> > +
-> > +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
-> > +		return -EINVAL;
-> > +
-> > +	if (!pci->pp.msg_res)
-> > +		return -EINVAL;
-> > +
-> > +	atu.code = PCIE_MSG_CODE_PME_TURN_OFF;
-> > +	atu.routing = PCIE_MSG_TYPE_R_BC;
-> > +	atu.type = PCIE_ATU_TYPE_MSG;
-> > +	atu.size = resource_size(pci->pp.msg_res);
-> > +	atu.index = pci->pp.msg_atu_index;
-> > +
-> > +	if (!atu.size) {
-> > +		dev_dbg(pci->dev,
-> > +			"atu memory map windows is zero, please check 'msg' reg in dts\n");
-> > +		return -ENOMEM;
-> > +	}
-> > +
-> > +	atu.cpu_addr = pci->pp.msg_res->start;
-> > +
-> > +	ret = dw_pcie_prog_outbound_atu(pci, &atu);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	m = ioremap(atu.cpu_addr, pci->region_align);
-> > +	if (!m)
-> > +		return -ENOMEM;
-> > +
-> > +	/* A dummy write is converted to a Msg TLP */
-> > +	writel(0, m);
-> > +
-> > +	iounmap(m);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> >  {
-> >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> >  	u32 val;
-> > -	int ret;
-> > +	int ret = 0;
-> >  
-> >  	/*
-> >  	 * If L1SS is supported, then do not put the link into L2 as some
-> > @@ -849,10 +931,13 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> >  	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
-> >  		return 0;
-> >  
-> > -	if (!pci->pp.ops->pme_turn_off)
-> > -		return 0;
-> > +	if (pci->pp.ops->pme_turn_off)
-> > +		pci->pp.ops->pme_turn_off(&pci->pp);
-> > +	else
-> > +		ret = dw_pcie_pme_turn_off(pci);
-> >  
-> > -	pci->pp.ops->pme_turn_off(&pci->pp);
-> > +	if (ret)
-> > +		return ret;
-> >  
-> >  	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> >  				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> > index 703b50bc5e0f1..9e6076aa4c850 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > @@ -341,6 +341,8 @@ struct dw_pcie_rp {
-> >  	struct pci_host_bridge  *bridge;
-> >  	raw_spinlock_t		lock;
-> >  	DECLARE_BITMAP(msi_irq_in_use, MAX_MSI_IRQS);
-> > +	int			msg_atu_index;
-> > +	struct resource		*msg_res;
-> >  };
-> >  
-> >  struct dw_pcie_ep_ops {
-> > 
-> > -- 
-> > 2.34.1
-> > 
-> > 
+This series restarted at V4 based on the version of the PHY driver and
+the other drivers and power-domain changes have been applied already.
+
+V6:  Make the PHY driver depend on COMMON_CLK to fix build errors
+     Make LCDIF3 disabled by default since it depends on hardware.
+
+V5 primarily updates feedback from the PHY driver itself, but a small
+   adjustment was made to the register size in the device tree.
+Adam Ford (1):
+  arm64: defconfig: Enable DRM_IMX8MP_DW_HDMI_BRIDGE as module
+  
+  
+
+Adam Ford (1):
+  arm64: defconfig: Enable DRM_IMX8MP_DW_HDMI_BRIDGE as module
+
+Lucas Stach (5):
+  dt-bindings: phy: add binding for the i.MX8MP HDMI PHY
+  phy: freescale: add Samsung HDMI PHY
+  arm64: dts: imx8mp: add HDMI power-domains
+  arm64: dts: imx8mp: add HDMI irqsteer
+  arm64: dts: imx8mp: add HDMI display pipeline
+
+ .../bindings/phy/fsl,imx8mp-hdmi-phy.yaml     |  62 ++
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     | 146 ++++
+ arch/arm64/configs/defconfig                  |   1 +
+ drivers/phy/freescale/Kconfig                 |   6 +
+ drivers/phy/freescale/Makefile                |   1 +
+ drivers/phy/freescale/phy-fsl-samsung-hdmi.c  | 720 ++++++++++++++++++
+ 6 files changed, 936 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/phy/fsl,imx8mp-hdmi-phy.yaml
+ create mode 100644 drivers/phy/freescale/phy-fsl-samsung-hdmi.c
+
+-- 
+2.43.0
+
