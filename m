@@ -1,27 +1,27 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C281B7E1
-	for <imx@lists.linux.dev>; Mon, 26 Feb 2024 03:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB641B7E2
+	for <imx@lists.linux.dev>; Mon, 26 Feb 2024 03:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708918981; cv=none; b=CNt6lQrvayifVK3Ce+e/DAHfzztQ0TWZjZKd2pB/CVwDe9lUfPQjAEo2+eCQMExEvxaSJW5nG94vu84n1+WKFmi5fQNdwPMTpdRimX3Qy6+pP4mKq76wF5jM2UYGTRJCMregqB80i54Wfone5jkLlT1lmPdSAdkZNanHfPYglW4=
+	t=1708918982; cv=none; b=gBY2Tt75NFpS1Hk2MnzPd9BMhv6MASRJdabwG3eXSY3uCUcBxDX7NrUIuL+6Gwoge5Vo8HxN9giUKGraptgB+Rm8iU1o1gjox0hPjFtYW5N2jtdFBQu1W8ZGziRm8Cr+0XV5D2ZDndAK03em5Aev7lF03DIsT6Dlh2IrC6Hh/3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708918981; c=relaxed/simple;
-	bh=9EKzz7T7V456t5dY+Nm739BdNO9gLl1iOHX0hbJirnk=;
+	s=arc-20240116; t=1708918982; c=relaxed/simple;
+	bh=4hERVO8WQzkAFDpdtPoiKnAwhqZWJEeG+rg8joCqOMo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VGobVvPT+PG6SCMV/0a6ZJfszNdY110+jZtCiTsShuO5nyG1k3RCz9EUHv1/mxpN8gKvvJz8yQPWhJcOTLHrC3csHequMouO9hxrJljvrVHnP1yCH26Ui22PNnc6cWL6h/kEUJFE4CS5CH1mJ/ENnZ2wW57pDxFMOaCnqLsmuh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lyZfPst5; arc=none smtp.client-ip=123.58.177.131
+	 MIME-Version; b=C0Ozac5P/dG4RsyGUVresHz8/BGV0zTD4dKmgPWQ0Z3ziTCQKH7vHva/LcldG9jnDlAFnJJLdBRL3ohXJBuZ9vUCB3AXhRFYN0bA1izZeoPgWHlvVEUpQZEPkJS3WQI/8y4d8l8GXZ8eF0l1pl2htXlK8Vk25TxlAULH4x2vGTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Py64c8fi; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lyZfPst5"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Py64c8fi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=znav7
-	z5Pz9k7TXnIDi7pxyWtYj0admOeRx1PN1ls78k=; b=lyZfPst5thvAC2+cfQd1b
-	BsHGmCHOYeSfEw8aynENDWk6wztO7YJ2n2xM+hPomQktTiaKW85hYVMpfMEeLaIt
-	ABlE0YrD+1Ka9e6bJYh+8PR2NndAI1UKijBdc/YW5rd08YfFr+wnYrLiJLiWyX7K
-	RoJCbYOWabTTeA4auL06Wo=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=WCVo5
+	MuHl/wvlVWvwzWYEKtaMEK03ZJXtafReRrrmC0=; b=Py64c8fixS5Yq8WYIsJNQ
+	g3Kb/Ox954oGeJSj3XIlNMzply37EVWxBrpUDYHNyYVMSgirwa4kpiwqlUTArxys
+	BVB22cAKVNuZ2l9sp/OnMK6SQUFROlQsOArzABMMGBOWhFWglgOmMTrfHksSNPyV
+	ZCZAOrR+EwkFi8MHubypB4=
 Received: from localhost.localdomain (unknown [183.213.196.200])
-	by smtp1 (Coremail) with SMTP id ClUQrACHSyCmCNxlT1hhBA--.22032S3;
+	by smtp1 (Coremail) with SMTP id ClUQrACHSyCmCNxlT1hhBA--.22032S6;
 	Mon, 26 Feb 2024 11:42:32 +0800 (CST)
 From: Shawn Guo <shawnguo2@yeah.net>
 To: soc@kernel.org,
@@ -33,9 +33,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	kernel@pengutronix.de,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 2/5] i.MX dt-bindings for 6.9
-Date: Mon, 26 Feb 2024 11:41:43 +0800
-Message-Id: <20240226034147.233993-2-shawnguo2@yeah.net>
+Subject: [GIT PULL 5/5] i.MX defconfig for 6.9
+Date: Mon, 26 Feb 2024 11:41:46 +0800
+Message-Id: <20240226034147.233993-5-shawnguo2@yeah.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226034147.233993-1-shawnguo2@yeah.net>
 References: <20240226034147.233993-1-shawnguo2@yeah.net>
@@ -46,12 +46,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ClUQrACHSyCmCNxlT1hhBA--.22032S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur1DCFWkGr1xtFW8Xw1DWrg_yoW8WFW8pF
-	sxGF93GryvqFy7JwnxZ3WDCr4rXr1UAF17JFZxJr10y3W5Ar1jqr1rKwn5ur9rJry7Wr4a
-	yF18Cr1vk3WUXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jlq2NUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGAiQZV6Nnjbw4QABsO
+X-CM-TRANSID:ClUQrACHSyCmCNxlT1hhBA--.22032S6
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZryrKry8Ww4rur43uw1fXrb_yoWkuwb_AF
+	y7G3WDWrWUurWxG3Wa93WfJrWUK3WxJ34UJr1UtrZxWw42qr1UJ3y8XFWrWr18X3W5Gr9F
+	yrWDA3WDAr4jkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU09ID5UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQiQZVsVCUT1-QAAsz
 
 From: Shawn Guo <shawnguo@kernel.org>
 
@@ -61,44 +61,31 @@ The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-bindings-6.9
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-defconfig-6.9
 
-for you to fetch changes up to 65524e1453109c2f94b361274154154fa2120c85:
+for you to fetch changes up to f1a9ff95971a879572f56bbc8b1e1ca0b1a812b8:
 
-  dt-bindings: arm: add UNI-T UTi260B (2024-02-25 21:57:10 +0800)
+  arm64: defconfig: enable i.MX8MP ldb bridge (2024-02-06 18:34:58 +0800)
 
 ----------------------------------------------------------------
-i.MX dt-bindings for 6.9:
+i.MX defconfig for 6.9:
 
-- New compatibles for boards: TQMa8Xx, Sielaff i.MX6 Solo, Toradex Apalis
-  imx6q-eval-v1.2, VAR-SOM-MX93, phyBOARD-Segin-i.MX93, UNI-T UTi260B.
-- Add vendor prefix for UNI-T.
+- Enable VF610 GPIO driver for both arm64 and i.MX ARM defconfig.
+- Enable i.MX8MP LDB bridge and i.MX8QXP support drivers in arm64
+  defconfig.
 
 ----------------------------------------------------------------
 Alexander Stein (1):
-      dt-bindings: arm: add TQMa8Xx boards
+      arm64: defconfig: Enable i.MX8QXP device drivers
 
-Frieder Schrempf (1):
-      dt-bindings: arm: fsl: Add Sielaff i.MX6 Solo board
+Martin Kaiser (2):
+      ARM: imx_v6_v7_defconfig: enable the vf610 gpio driver
+      arm64: defconfig: enable the vf610 gpio driver
 
-Hiago De Franco (1):
-      dt-bindings: arm: fsl: Add toradex,apalis_imx6q-eval-v1.2 board
+Yannic Moog (1):
+      arm64: defconfig: enable i.MX8MP ldb bridge
 
-Hugo Villeneuve (1):
-      dt-bindings: arm: fsl: remove redundant company name
-
-Joao Paulo Goncalves (1):
-      dt-bindings: arm: fsl: add imx8qm apalis eval v1.2 carrier board
-
-Mathieu Othacehe (2):
-      dt-bindings: arm: fsl: Add VAR-SOM-MX93 with Symphony
-      dt-bindings: arm: fsl: Add phyBOARD-Segin-i.MX93
-
-Sebastian Reichel (2):
-      dt-bindings: vendor-prefixes: add UNI-T
-      dt-bindings: arm: add UNI-T UTi260B
-
- Documentation/devicetree/bindings/arm/fsl.yaml     | 41 +++++++++++++++++++---
- .../devicetree/bindings/vendor-prefixes.yaml       |  2 ++
- 2 files changed, 39 insertions(+), 4 deletions(-)
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ arch/arm64/configs/defconfig         | 8 ++++++++
+ 2 files changed, 9 insertions(+)
 
