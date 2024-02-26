@@ -1,658 +1,282 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DB4132C3F;
-	Mon, 26 Feb 2024 21:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8A7131727
+	for <imx@lists.linux.dev>; Mon, 26 Feb 2024 21:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708982869; cv=none; b=u5ESeVMTGHe+eHiczXJh1H/US0fC2yVRGug/WcB+3HISFjGbtdHkOW9ZDG8R3ZIJZeF7+NL3pDN7CQ9GUuwe4/bXWhB2SdVkENZ3LsXBwqudvomgCxbXYjtuiB+8E121prGxEdP9crW8cCY+TWewFiKzeVwAP/wPQeu5C/474NA=
+	t=1708984371; cv=none; b=bKsnS2mz9nlOJ34CCirSjGbGkLnKqtvjjVfOVAs6fU5zFvGbQSzL25yT0BcJkn72wkg+G5ivemhLgeI7tLmq9L8662xbTdh+7wUP4WazQbGiQGgU8YWk+FHfNFQqkh1ctxGkovKx9drDnZYjtn/ecsEAKHh13WN44a/dbwU81XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708982869; c=relaxed/simple;
-	bh=2KHCtOrgY/jKLyAGP/oJjHAZhsRKGeua1FB02EHkCKQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrMS1DPGx+A13426+ToM5muWENM8jOHRAg9F6OeOyT6Gy8KNaPHtT3nwMuMCMPQQ1rYE8lj4PgQ11QgOLiW32Dz6sQqkQ4P+j5Ogt9tCn/c76VRWSJlQOgjCPcZ2lCV+z+t7PcVGs/1knTnskIBRTDOR5ue5QX2KYAdNSk1o1KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uu0zNFZR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708984371; c=relaxed/simple;
+	bh=kMcKvQgcOv3zmTeZZTqAzHlv1e0lJsfANTHFQFfu6iw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RE8gOX9PfgCSNTyHFZ0G2JTYNus97N1NkHibLg9fHH4dTyEcj+fJuzQxf6/xRv6eEOEf3GECQ2ZIFhFz9cZl6FFSWFR3pZ8qTfc+mU4nZ8tUEzfo1cCieq7dM0CH/DzeE4rMYr+y+SYF6mZOcnpVwaV4iM0KDMqmmWUPvEkRudQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqoPhKHh; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uu0zNFZR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FC2C433F1;
-	Mon, 26 Feb 2024 21:27:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708982869;
-	bh=2KHCtOrgY/jKLyAGP/oJjHAZhsRKGeua1FB02EHkCKQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uu0zNFZRFaWrrhWHc9EDay50RIaoX0B6ffFtUFTN4lXI/lcTusUBcxgHgoHzBvChJ
-	 yhnbSzI+fNXZtObv7akvgtOoNhw4TXFoxWsTjDHMTEoZrE4uy+iOUtYBrllKrHTx8B
-	 pw587F/UkJ6j4j6HXnqYfCHK2b1MK81zKkvY8I+SDr81baymk6G2wiMmGP8VB6Oaii
-	 kwt/B1KQM2UrHV0MMMBEdR/305Eyw5ML8nQcYOsqY6g//wwP4GgxgvpTpe8dNUIiWK
-	 ueaeg0m5J/P73wYVgoJUQnZwBgFuIKiioaXeY19KtkJpXvtwLL/yo7r/vyi+Lj+MLb
-	 RRFWqsBC0JOvQ==
-Received: by mercury (Postfix, from userid 1000)
-	id C5C281060E8C; Mon, 26 Feb 2024 22:27:41 +0100 (CET)
-From: Sebastian Reichel <sre@kernel.org>
-To: Sebastian Reichel <sre@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH v5 6/6] ARM: dts: imx: Add UNI-T UTi260B thermal camera board
-Date: Mon, 26 Feb 2024 22:26:28 +0100
-Message-ID: <20240226212740.2019837-7-sre@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240226212740.2019837-1-sre@kernel.org>
-References: <20240226212740.2019837-1-sre@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqoPhKHh"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d24a727f78so50890121fa.0
+        for <imx@lists.linux.dev>; Mon, 26 Feb 2024 13:52:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708984368; x=1709589168; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xBACtx8hWLitaNfrtlYHByuhxgRV4+odBzJnxDpk1C0=;
+        b=KqoPhKHhoxeKLrYcOtyw/6LCd2k0BxnC7MWjESS+Y7QOfS1hHLLGcJ/9AW45NLSnj+
+         X4EIQ50ICeFPh78LqK4kKBUWwd7xcAfm+0aYri541ip0Qb0qmO/iHZ8PEWVUNaHFlBlB
+         ccjXAZvaU/MvyexfTuJerSG8rZGQL7VYqHGIELkbbxtIaPTRmznFA0P1is8IPGRvgWb+
+         plHf+8+np8MOADjWt4zYzf1ZyF2uS0GiY6zGBENVTyFIlhUE9xmXWB91i7s0PwXAtQgh
+         KlW/dUf6gGrh+/JCdJY3YmRFWsgfhRYOswcMKZxTcqLtZ8lWm04ye4Rs6ztcKNwr3ruP
+         v2VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708984368; x=1709589168;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xBACtx8hWLitaNfrtlYHByuhxgRV4+odBzJnxDpk1C0=;
+        b=ObA54u51Zcr++ZZWxMzksr6q1HC/T4kjsGI0o2Z+8f+q6oz2R8uhihZZwB56KmMAW4
+         g9fx7hn+mFDGjPLNFNVimOEWdh5h1vPnEuH9ArMKQsmbd6MlsTUrButdYMHMrOhUWI0Z
+         Ts4Bh7Y0QTY11P4tzxMwsFOAqgNt7YUBMdkcZOy8ouT2+hYYz1FX6D59xUhSxeIMFP5N
+         qIUNHp55G681MIgvKGuYlIZehKFC+E8IE2B1bRZg0gUAz0QousWtPYIAerDoUuKDLDgC
+         +Mpcmz7BHB0Gml0lUfPzqjkj43Rth6h+cDg15JUO75KiGJcsBGzsA36M4NKzOH34ZyND
+         dQIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXouOVBqyW4EOCt+ggxObapJJc5BdSSyW8x8Qm2qPZ5DPAX0RSqiJnDGBR/+f7XHbORkYi0kttmPjUIPsImk7j8p730
+X-Gm-Message-State: AOJu0Yzu4ynHyX5PKTrFt12KitJvmVEx0gjk0Jz402kJHwhp1vgznFcy
+	hG4mKBEMInW7fjSuprmgjY4kJut4UQXPNgPwIdMPfoABAfGFOy1J
+X-Google-Smtp-Source: AGHT+IEMB6cCCUwJTrXpZH8p+ae5BoKO7HkdcAzBFmwHWu/lX/D0ygkm806WRrGEN2tWAudXtlwc0g==
+X-Received: by 2002:a05:6512:3a84:b0:512:f31c:f0c0 with SMTP id q4-20020a0565123a8400b00512f31cf0c0mr5529422lfu.37.1708984367689;
+        Mon, 26 Feb 2024 13:52:47 -0800 (PST)
+Received: from mobilestation ([95.79.226.168])
+        by smtp.gmail.com with ESMTPSA id s8-20020ac25fe8000000b00512f214f3f0sm966783lfg.163.2024.02.26.13.52.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 13:52:47 -0800 (PST)
+Date: Tue, 27 Feb 2024 00:52:45 +0300
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>, 
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] PCI: dwc: Add common send PME_Turn_Off message
+ method
+Message-ID: <erja6zkhstoaverqtadnqj3nsyluh3sealibpujqmea4pndiuv@icihj7cby2l7>
+References: <20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com>
+ <20240213-pme_msg-v4-5-e2acd4d7a292@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240213-pme_msg-v4-5-e2acd4d7a292@nxp.com>
 
-Add DT for the UNI-T UTi260B handheld thermal camera.
+On Tue, Feb 13, 2024 at 04:50:26PM -0500, Frank Li wrote:
+> Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
+> window. This space's size is 'region_align'.
+> 
+> Set outbound ATU map memory write to send PCI message. So one MMIO write
+> can trigger a PCI message, such as PME_Turn_Off.
+> 
+> Add common dwc_pme_turn_off() function.
+> 
+> Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
+> dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
+> exist.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 93 ++++++++++++++++++++++-
+>  drivers/pci/controller/dwc/pcie-designware.h      |  2 +
+>  2 files changed, 91 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 267687ab33cbc..5e83756492462 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  
+> +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct resource_entry *win;
+> +	struct resource *res;
+> +
+> +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> +	if (win) {
+> +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> +		if (!res)
+> +			return;
+> +
+> +		/* Reserve last region_align block as message TLP space */
+> +		res->start = win->res->end - pci->region_align + 1;
+> +		res->end = win->res->end;
+> +		res->name = "msg";
+> +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> +
+> +		if (!request_resource(win->res, res))
+> +			pp->msg_res = res;
+> +		else
+> +			devm_kfree(pci->dev, res);
+> +	}
+> +}
+> +
+>  int dw_pcie_host_init(struct dw_pcie_rp *pp)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> @@ -479,6 +504,9 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+>  
+>  	dw_pcie_iatu_detect(pci);
+>  
 
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Signed-off-by: Sebastian Reichel <sre@kernel.org>
----
- arch/arm/boot/dts/nxp/imx/Makefile            |   1 +
- arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts | 566 ++++++++++++++++++
- 2 files changed, 567 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts
+> +	/* Need call after dw_pcie_iatu_detect() before dw_pcie_setup_rc() */
+> +	dw_pcie_host_request_msg_tlp_res(pp);
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index a724d1a7a9a0..47350cf3ddeb 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -349,6 +349,7 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ull-tarragon-slavext.dtb \
- 	imx6ull-tqma6ull2-mba6ulx.dtb \
- 	imx6ull-tqma6ull2l-mba6ulx.dtb \
-+	imx6ull-uti260b.dtb \
- 	imx6ulz-14x14-evk.dtb \
- 	imx6ulz-bsh-smm-m2.dtb
- dtb-$(CONFIG_SOC_IMX7D) += \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts
-new file mode 100644
-index 000000000000..e4576d509a5b
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts
-@@ -0,0 +1,566 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+// Copyright (C) 2022-2024 Sebastian Reichel <sre@kernel.org>
-+
-+/dts-v1/;
-+#include "imx6ull.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/clock/imx6ul-clock.h>
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	model = "UNI-T UTi260B Thermal Camera";
-+	compatible = "uni-t,uti260b", "fsl,imx6ull";
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	memory@80000000 {
-+		device_type = "memory";
-+		reg = <0x80000000 0x20000000>;
-+	};
-+
-+	panel_backlight: backlight {
-+		compatible = "pwm-backlight";
-+		brightness-levels = <0 4 8 16 32 64 128 255>;
-+		default-brightness-level = <6>;
-+		enable-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_backlight_enable>;
-+		power-supply = <&reg_vsd>;
-+		pwms = <&pwm1 0 50000 0>;
-+	};
-+
-+	battery: battery {
-+		compatible = "simple-battery";
-+		/* generic 26650 battery */
-+		device-chemistry = "lithium-ion";
-+		charge-full-design-microamp-hours = <5000000>;
-+		voltage-max-design-microvolt = <4200000>;
-+		voltage-min-design-microvolt = <3300000>;
-+	};
-+
-+	tp5000: charger {
-+		compatible = "gpio-charger";
-+		charger-type = "usb-sdp";
-+		gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_charger_stat1>;
-+	};
-+
-+	fuel-gauge {
-+		compatible = "adc-battery";
-+		charged-gpios = <&gpio1 2 GPIO_ACTIVE_LOW>;
-+		io-channel-names = "voltage";
-+		io-channels = <&adc1 7>;
-+		monitored-battery = <&battery>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_charger_stat2>;
-+		power-supplies = <&tp5000>;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_gpio_keys>;
-+		autorepeat;
-+
-+		up-key {
-+			label = "Up";
-+			gpios = <&gpio2 11 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_UP>;
-+		};
-+
-+		down-key {
-+			label = "Down";
-+			gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_DOWN>;
-+		};
-+
-+		left-key {
-+			label = "Left";
-+			gpios = <&gpio2 13 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_LEFT>;
-+		};
-+
-+		right-key {
-+			label = "Right";
-+			gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_RIGHT>;
-+		};
-+
-+		ok-key {
-+			label = "Ok";
-+			gpios = <&gpio2 9 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_ENTER>;
-+		};
-+
-+		return-key {
-+			label = "Return";
-+			gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_ESC>;
-+		};
-+
-+		play-key {
-+			label = "Media";
-+			gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_MEDIA>;
-+		};
-+
-+		trigger-key {
-+			label = "Trigger";
-+			gpios = <&gpio2 14 GPIO_ACTIVE_LOW>;
-+			linux,code = <BTN_TRIGGER>;
-+		};
-+
-+		power-key {
-+			label = "Power";
-+			gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_POWER>;
-+		};
-+
-+		light-key {
-+			label = "Light";
-+			gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_LIGHTS_TOGGLE>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_led_ctrl>;
-+
-+		led {
-+			color = <LED_COLOR_ID_WHITE>;
-+			function = LED_FUNCTION_FLASH;
-+			gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	poweroff {
-+		compatible = "gpio-poweroff";
-+		gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_poweroff>;
-+	};
-+
-+	reg_vref: regulator-vref-4v2 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VREF_4V2";
-+		regulator-min-microvolt = <4200000>;
-+		regulator-max-microvolt = <4200000>;
-+	};
-+
-+	reg_vsd: regulator-vsd {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VSD_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+};
-+
-+&adc1 {
-+	#io-channel-cells = <1>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_adc>;
-+	vref-supply = <&reg_vref>;
-+	status = "okay";
-+};
-+
-+&csi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_csi>;
-+	status = "okay";
-+
-+	port {
-+		parallel_from_gc0308: endpoint {
-+			remote-endpoint = <&gc0308_to_parallel>;
-+		};
-+	};
-+};
-+
-+&ecspi3 {
-+	cs-gpios = <&gpio1 20 GPIO_ACTIVE_LOW>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_spi3>;
-+	status = "okay";
-+
-+	panel@0 {
-+		compatible = "inanbo,t28cp45tn89-v17";
-+		reg = <0>;
-+		backlight = <&panel_backlight>;
-+		power-supply = <&reg_vsd>;
-+		spi-cpha;
-+		spi-cpol;
-+		spi-max-frequency = <1000000>;
-+		spi-rx-bus-width = <0>;
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&display_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&gpio1 {
-+	ir-reset-hog {
-+		gpio-hog;
-+		gpios = <3 GPIO_ACTIVE_LOW>;
-+		line-name = "ir-reset-gpio";
-+		output-low;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_ir_reset>;
-+	};
-+};
-+
-+&gpio2 {
-+	/* configuring this to output-high results in poweroff */
-+	power-en-hog {
-+		gpio-hog;
-+		gpios = <6 GPIO_ACTIVE_HIGH>;
-+		line-name = "power-en-gpio";
-+		output-low;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_poweroff2>;
-+	};
-+};
-+
-+&i2c1 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_i2c1>;
-+	status = "okay";
-+
-+	camera@21 {
-+		compatible = "galaxycore,gc0308";
-+		reg = <0x21>;
-+		clocks = <&clks IMX6UL_CLK_CSI>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mux_gc0308>;
-+		powerdown-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
-+		vdd28-supply = <&reg_vsd>;
-+
-+		port {
-+			gc0308_to_parallel: endpoint {
-+				remote-endpoint = <&parallel_from_gc0308>;
-+				bus-width = <8>;
-+				data-shift = <2>; /* lines 9:2 are used */
-+				hsync-active = <1>; /* active high */
-+				vsync-active = <1>; /* active high */
-+				data-active = <1>; /* active high */
-+				pclk-sample = <1>; /* sample on rising edge */
-+			};
-+		};
-+	};
-+};
-+
-+&i2c2 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_i2c2>;
-+	status = "okay";
-+
-+	rtc@51 {
-+		compatible = "nxp,pcf8563";
-+		reg = <0x51>;
-+	};
-+};
-+
-+&lcdif {
-+	assigned-clocks = <&clks IMX6UL_CLK_LCDIF_PRE_SEL>;
-+	assigned-clock-parents = <&clks IMX6UL_CLK_PLL5_VIDEO_DIV>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_lcd_data>, <&mux_lcd_ctrl>;
-+	status = "okay";
-+
-+	port {
-+		display_out: endpoint {
-+			remote-endpoint = <&panel_in>;
-+		};
-+	};
-+};
-+
-+&pwm1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_pwm>;
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_uart>;
-+	status = "okay";
-+};
-+
-+&usbotg1 {
-+	/* USB-C connector */
-+	disable-over-current;
-+	dr_mode = "otg";
-+	status = "okay";
-+};
-+
-+&usbotg2 {
-+	/* thermal sensor */
-+	disable-over-current;
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+&usbphy1 {
-+	fsl,tx-d-cal = <106>;
-+};
-+
-+&usbphy2 {
-+	fsl,tx-d-cal = <106>;
-+};
-+
-+&usdhc1 {
-+	/* MicroSD */
-+	cd-gpios = <&gpio1 19 GPIO_ACTIVE_LOW>;
-+	keep-power-in-suspend;
-+	no-1-8-v;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&mux_sdhc1>, <&mux_sdhc1_cd>;
-+	pinctrl-1 = <&mux_sdhc1_100mhz>, <&mux_sdhc1_cd>;
-+	pinctrl-2 = <&mux_sdhc1_200mhz>, <&mux_sdhc1_cd>;
-+	wakeup-source;
-+	vmmc-supply = <&reg_vsd>;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	/* eMMC */
-+	keep-power-in-suspend;
-+	no-1-8-v;
-+	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_sdhc2>;
-+	wakeup-source;
-+	status = "okay";
-+};
-+
-+&wdog1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mux_wdog>;
-+};
-+
-+&iomuxc {
-+	mux_adc: adcgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO07__GPIO1_IO07		0xb0
-+		>;
-+	};
-+
-+	mux_backlight_enable: blenablegrp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO09__GPIO1_IO09		0x3008
-+		>;
-+	};
-+
-+	mux_charger_stat1: charger1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01		0x3008
-+		>;
-+	};
-+
-+	mux_charger_stat2: charger2grp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02		0x3008
-+		>;
-+	};
-+
-+	mux_csi: csi1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_CSI_PIXCLK__CSI_PIXCLK		0x1b088
-+			MX6UL_PAD_CSI_VSYNC__CSI_VSYNC			0x1b088
-+			MX6UL_PAD_CSI_HSYNC__CSI_HSYNC			0x1b088
-+			MX6UL_PAD_CSI_DATA00__CSI_DATA02		0x1b088
-+			MX6UL_PAD_CSI_DATA01__CSI_DATA03		0x1b088
-+			MX6UL_PAD_CSI_DATA02__CSI_DATA04		0x1b088
-+			MX6UL_PAD_CSI_DATA03__CSI_DATA05		0x1b088
-+			MX6UL_PAD_CSI_DATA04__CSI_DATA06		0x1b088
-+			MX6UL_PAD_CSI_DATA05__CSI_DATA07		0x1b088
-+			MX6UL_PAD_CSI_DATA06__CSI_DATA08		0x1b088
-+			MX6UL_PAD_CSI_DATA07__CSI_DATA09		0x1b088
-+		>;
-+	};
-+
-+	mux_gc0308: gc0308grp {
-+		fsl,pins = <
-+			MX6UL_PAD_CSI_MCLK__CSI_MCLK			0x1e038
-+			MX6UL_PAD_GPIO1_IO05__GPIO1_IO05		0x1b088
-+			MX6UL_PAD_GPIO1_IO06__GPIO1_IO06		0x1b088
-+		>;
-+	};
-+
-+	mux_gpio_keys: gpiokeygrp {
-+		fsl,pins = <
-+			MX6UL_PAD_ENET2_TX_DATA0__GPIO2_IO11		0x3008
-+			MX6UL_PAD_ENET2_TX_DATA1__GPIO2_IO12		0x3008
-+			MX6UL_PAD_ENET2_TX_EN__GPIO2_IO13		0x3008
-+			MX6UL_PAD_ENET2_RX_EN__GPIO2_IO10		0x3008
-+			MX6UL_PAD_ENET2_RX_DATA1__GPIO2_IO09		0x3008
-+			MX6UL_PAD_ENET2_RX_ER__GPIO2_IO15		0x3008
-+			MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08		0x3008
-+			MX6UL_PAD_ENET2_TX_CLK__GPIO2_IO14		0x3008
-+			MX6UL_PAD_ENET1_TX_DATA0__GPIO2_IO03		0x3008
-+			MX6UL_PAD_ENET1_RX_DATA1__GPIO2_IO01		0x3008
-+		>;
-+	};
-+
-+	mux_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART4_TX_DATA__I2C1_SCL		0x4001b8b0
-+			MX6UL_PAD_UART4_RX_DATA__I2C1_SDA		0x4001b8b0
-+		>;
-+	};
-+
-+	mux_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART5_TX_DATA__I2C2_SCL		0x4001f8a8
-+			MX6UL_PAD_UART5_RX_DATA__I2C2_SDA		0x4001f8a8
-+		>;
-+	};
-+
-+	mux_ir_reset: irresetgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03		0x3008
-+		>;
-+	};
-+
-+	mux_lcd_ctrl: lcdifctrlgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_LCD_CLK__LCDIF_CLK			0x79
-+			MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE		0x79
-+			MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC		0x79
-+			MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC		0x79
-+		>;
-+	};
-+
-+	mux_lcd_data: lcdifdatgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_LCD_DATA00__LCDIF_DATA00		0x79
-+			MX6UL_PAD_LCD_DATA01__LCDIF_DATA01		0x79
-+			MX6UL_PAD_LCD_DATA02__LCDIF_DATA02		0x79
-+			MX6UL_PAD_LCD_DATA03__LCDIF_DATA03		0x79
-+			MX6UL_PAD_LCD_DATA04__LCDIF_DATA04		0x79
-+			MX6UL_PAD_LCD_DATA05__LCDIF_DATA05		0x79
-+			MX6UL_PAD_LCD_DATA06__LCDIF_DATA06		0x79
-+			MX6UL_PAD_LCD_DATA07__LCDIF_DATA07		0x79
-+			MX6UL_PAD_LCD_DATA08__LCDIF_DATA08		0x79
-+			MX6UL_PAD_LCD_DATA09__LCDIF_DATA09		0x79
-+			MX6UL_PAD_LCD_DATA10__LCDIF_DATA10		0x79
-+			MX6UL_PAD_LCD_DATA11__LCDIF_DATA11		0x79
-+			MX6UL_PAD_LCD_DATA12__LCDIF_DATA12		0x79
-+			MX6UL_PAD_LCD_DATA13__LCDIF_DATA13		0x79
-+			MX6UL_PAD_LCD_DATA14__LCDIF_DATA14		0x79
-+			MX6UL_PAD_LCD_DATA15__LCDIF_DATA15		0x79
-+			MX6UL_PAD_LCD_DATA16__LCDIF_DATA16		0x79
-+			MX6UL_PAD_LCD_DATA17__LCDIF_DATA17		0x79
-+		>;
-+	};
-+
-+	mux_led_ctrl: ledctrlgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_ENET1_RX_EN__GPIO2_IO02		0x3008
-+		>;
-+	};
-+
-+	mux_poweroff: poweroffgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_ENET1_TX_DATA1__GPIO2_IO04		0x3008
-+		>;
-+	};
-+
-+	mux_poweroff2: poweroff2grp {
-+		fsl,pins = <
-+			MX6UL_PAD_ENET1_TX_CLK__GPIO2_IO06		0x3008
-+		>;
-+	};
-+
-+	mux_pwm: pwm1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO08__PWM1_OUT			0x110b0
-+		>;
-+	};
-+
-+	mux_sdhc1: sdhc1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD			0x17059
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK			0x10071
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0		0x17059
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1		0x17059
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2		0x17059
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3		0x17059
-+		>;
-+	};
-+
-+	mux_sdhc1_100mhz: sdhc1-100mhz-grp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD			0x170b9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK			0x170b9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0		0x170b9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1		0x170b9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2		0x170b9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3		0x170b9
-+		>;
-+	};
-+
-+	mux_sdhc1_200mhz: sdhc1-200mhz-grp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD			0x170f9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK			0x170f9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0		0x170f9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1		0x170f9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2		0x170f9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3		0x170f9
-+		>;
-+	};
-+
-+	mux_sdhc1_cd: sdhc1-cd-grp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19		0x17059
-+		>;
-+	};
-+
-+	mux_sdhc2: sdhc2grp {
-+		fsl,pins = <
-+			MX6UL_PAD_NAND_RE_B__USDHC2_CLK			0x10069
-+			MX6UL_PAD_NAND_WE_B__USDHC2_CMD			0x17059
-+			MX6UL_PAD_NAND_DATA00__USDHC2_DATA0		0x17059
-+			MX6UL_PAD_NAND_DATA01__USDHC2_DATA1		0x17059
-+			MX6UL_PAD_NAND_DATA02__USDHC2_DATA2		0x17059
-+			MX6UL_PAD_NAND_DATA03__USDHC2_DATA3		0x17059
-+			MX6UL_PAD_NAND_DATA04__USDHC2_DATA4		0x17059
-+			MX6UL_PAD_NAND_DATA05__USDHC2_DATA5		0x17059
-+			MX6UL_PAD_NAND_DATA06__USDHC2_DATA6		0x17059
-+			MX6UL_PAD_NAND_DATA07__USDHC2_DATA7		0x17059
-+		>;
-+	};
-+
-+	mux_spi3: ecspi3grp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART2_CTS_B__ECSPI3_MOSI		0x100b1
-+			MX6UL_PAD_UART2_RX_DATA__ECSPI3_SCLK		0x100b1
-+			MX6UL_PAD_UART2_TX_DATA__GPIO1_IO20		0x3008
-+		>;
-+	};
-+
-+	mux_uart: uartgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX		0x1b0b1
-+			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX		0x1b0b1
-+		>;
-+	};
-+
-+	mux_wdog: wdoggrp {
-+		fsl,pins = <
-+			MX6UL_PAD_LCD_RESET__WDOG1_WDOG_ANY		0x30b0
-+		>;
-+	};
-+};
--- 
-2.43.0
+This may cause regressions for instance if the outbound memory window
+is small and is fully dedicated for some device like VGA/GPU/etc.
 
+Why not to use a new ranges-based mapping as we discussed earlier:
+https://lore.kernel.org/linux-pci/20240214061412.GB4618@thinkpad/
+?
+
+I know it might be troublesome but still it would be much better
+and more portable across various platforms.
+
+Bjorn, Lorenzo, Krzysztofm Rob could you please follow the link above
+and give your opinion about the solution suggested there?
+
+-Serge(y)
+
+> +
+>  	ret = dw_pcie_edma_detect(pci);
+>  	if (ret)
+>  		goto err_free_msi;
+> @@ -536,6 +564,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
+>  
+>  	dw_pcie_edma_remove(pci);
+>  
+> +	if (pp->msg_res) {
+> +		release_resource(pp->msg_res);
+> +		devm_kfree(pci->dev, pp->msg_res);
+> +	}
+> +
+>  	if (pp->has_msi_ctrl)
+>  		dw_pcie_free_msi(pp);
+>  
+> @@ -697,6 +730,10 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  		atu.pci_addr = entry->res->start - entry->offset;
+>  		atu.size = resource_size(entry->res);
+>  
+> +		/* MSG TLB window resource reserve at one of end of IORESOURCE_MEM resource */
+> +		if (pp->msg_res && pp->msg_res->parent == entry->res)
+> +			atu.size -= resource_size(pp->msg_res);
+> +
+>  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
+>  		if (ret) {
+>  			dev_err(pci->dev, "Failed to set MEM range %pr\n",
+> @@ -728,6 +765,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+>  			 pci->num_ob_windows);
+>  
+> +	pp->msg_atu_index = i;
+> +
+>  	i = 0;
+>  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+>  		if (resource_type(entry->res) != IORESOURCE_MEM)
+> @@ -833,11 +872,54 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+>  
+> +/* Using message outbound ATU to send out PME_Turn_Off message for dwc PCIe controller */
+> +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+> +{
+> +	struct dw_pcie_ob_atu_cfg atu = { 0 };
+> +	void __iomem *m;
+> +	int ret;
+> +
+> +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
+> +		return -EINVAL;
+> +
+> +	if (!pci->pp.msg_res)
+> +		return -EINVAL;
+> +
+> +	atu.code = PCIE_MSG_CODE_PME_TURN_OFF;
+> +	atu.routing = PCIE_MSG_TYPE_R_BC;
+> +	atu.type = PCIE_ATU_TYPE_MSG;
+> +	atu.size = resource_size(pci->pp.msg_res);
+> +	atu.index = pci->pp.msg_atu_index;
+> +
+> +	if (!atu.size) {
+> +		dev_dbg(pci->dev,
+> +			"atu memory map windows is zero, please check 'msg' reg in dts\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	atu.cpu_addr = pci->pp.msg_res->start;
+> +
+> +	ret = dw_pcie_prog_outbound_atu(pci, &atu);
+> +	if (ret)
+> +		return ret;
+> +
+> +	m = ioremap(atu.cpu_addr, pci->region_align);
+> +	if (!m)
+> +		return -ENOMEM;
+> +
+> +	/* A dummy write is converted to a Msg TLP */
+> +	writel(0, m);
+> +
+> +	iounmap(m);
+> +
+> +	return 0;
+> +}
+> +
+>  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  {
+>  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>  	u32 val;
+> -	int ret;
+> +	int ret = 0;
+>  
+>  	/*
+>  	 * If L1SS is supported, then do not put the link into L2 as some
+> @@ -849,10 +931,13 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+>  		return 0;
+>  
+> -	if (!pci->pp.ops->pme_turn_off)
+> -		return 0;
+> +	if (pci->pp.ops->pme_turn_off)
+> +		pci->pp.ops->pme_turn_off(&pci->pp);
+> +	else
+> +		ret = dw_pcie_pme_turn_off(pci);
+>  
+> -	pci->pp.ops->pme_turn_off(&pci->pp);
+> +	if (ret)
+> +		return ret;
+>  
+>  	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+>  				PCIE_PME_TO_L2_TIMEOUT_US/10,
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 703b50bc5e0f1..9e6076aa4c850 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -341,6 +341,8 @@ struct dw_pcie_rp {
+>  	struct pci_host_bridge  *bridge;
+>  	raw_spinlock_t		lock;
+>  	DECLARE_BITMAP(msi_irq_in_use, MAX_MSI_IRQS);
+> +	int			msg_atu_index;
+> +	struct resource		*msg_res;
+>  };
+>  
+>  struct dw_pcie_ep_ops {
+> 
+> -- 
+> 2.34.1
+> 
+> 
