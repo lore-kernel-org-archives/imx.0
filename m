@@ -1,89 +1,75 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F1E1AACD
-	for <imx@lists.linux.dev>; Mon, 26 Feb 2024 20:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9B3130E3E;
+	Mon, 26 Feb 2024 21:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708979910; cv=none; b=eh4KCDcb+t030luc2wE0AZALZKX8uHdJteNoyL5FmYLKKVL8p3bHfdb0JnWGlks+X23ZGRoEZiDz8wQTin+s+lQls5dBlBfmfuO8bqwN+LRLRPrGOpdmf3b7sXVQstFmU5bRHLh08ceHZPsvVVycLAfvjmoQ21z98qI6BmhImzw=
+	t=1708981724; cv=none; b=aQ8w4Lqeex3D8HFsix6rle25cInVLNj7J/t5G07VnFIHxQaYpdjPU+pV3IU4EbUaXY/DV/lPxqT1x7UltasFJBEtTJewe6xJO/QZW49O8lm/NGoedkNlawQNt9lG0bggzziU1Yye7y0jiMUTMaIvuit4l41ytUKjPawZ4fzSiHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708979910; c=relaxed/simple;
-	bh=HsejdDvqC73ldVFNrH/9/DZMlTWUElyHEKA91R848fc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aWa28q2Ii9AO359nBeeSEFgwggxSTw5ETrMzYA6tMC9NQhNbNjY4YRNCZrdEQoYTWKZH5d3/Eq0g4mXrVUZRR298yF/gTFYAh9MozsRfY4pwCOzc3oSNrabjVGNvrF4zEMQVo4g8tOvET4rCGCdxluh7HK5baBxhoi8C5LMnIJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tx8vgAvj; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1708981724; c=relaxed/simple;
+	bh=oXPrqjv4D7Q7fzj84Tav7jY1Yd0hQh/KK5Bn9pmwA3c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Ao6ZodoQh3XEgccmDOnijI8NfDrLheCHyE3D9PNeQUu6y2L4rDpmBmRyA+GkE0q2lIVK8kdi+IsMjg/6U+d9zykmG2NJpDyhfsqRwv6+3IMv9r11Bb9b7q3qjCar/2mKwkrCcYDgzcm3+uVZOHKPM1lHLFydef8ibUM3jUOlNQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6XZ/b2x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tx8vgAvj"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1dc8662581dso1357205ad.1
-        for <imx@lists.linux.dev>; Mon, 26 Feb 2024 12:38:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708979908; x=1709584708; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0scXHFBtzVvkjRXYq6gEBt9Z90URlSPbBo1jvpXeT4Q=;
-        b=Tx8vgAvjuNSJKxY3JchzoMdoQ6Z0pjdNBgGSslZko+WmV08hwfwXztLCuOdMOVD4cR
-         HV4nq7FPe3TPdHfdhhvVnDdvylXGa5EiX/wkBjmNaQnxSdbJkZbuxbmzAsS+iUZiKZHI
-         7lIvAvssHWZdY2dmEvEWe7ERkU4I9x+wUkLFFQbr1CdsxVTC6JVP8vb1Ms3TN6ReoSCb
-         tH94ylUDkneKyhGIOC2z9Xksp4VjqY2M/VQi6rzH9bCqF0r/umn5IM1B+YDKgscqRluc
-         0Dbl/fvkCTu5B6EBGeadkaVMRC8Htb6McGjaaP8MHBi8JZOkIfDybYOWzdbQBu88exCF
-         vfFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708979908; x=1709584708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0scXHFBtzVvkjRXYq6gEBt9Z90URlSPbBo1jvpXeT4Q=;
-        b=lDqwVJJEJYhzRXb4gqppILcInjj45F8VK62iIvYLenp59sMfNxTd6Alpgi0SDGFZF5
-         F3v51bsyiDQQli2C/em2QBKnaIuwFccOpiWV3ovZ7cdcRSC9iq4dUH5hXO6Z+BPAGJRv
-         eeo9kOZsLDKLqC9enEM1OXRxTsa0seBUWrahegs2j5p4FjUvRMe5K2giHvagukDjWblO
-         P8Hd0NuD0aJSfAZn9/jziig5AvdZ7eKCrdDPzbe2yy42Xs/F8cbuPkYNhcsLIkPx0twh
-         ufKDKRepDs+DNWPTZCK2Xb/GYwG60JsTL8QH4SED98pwlSWLhIjATYwdNl73ekRmXxwI
-         /sYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ3jy0nNlk1+OecImAbNaQ0nMTZlFZ/qNeigqepU4KiSbTeva+PvG3tSx13OERrg5PafEFTHOPf6A1OrszY/JRzf3B
-X-Gm-Message-State: AOJu0YyPJN81YYf3geR6PNmrDijtgqUGEApDF6k1JjFVwv6+aJeGIBbw
-	aoFXMl18vP2IjsOntntjwEvgd8WP9k+WaxCFFjP+/RLkH3yfSkj8iMk9Koqi/n1Oa40+HW1yZ33
-	EVcV+gGqTauSqVciOpDyx1MDbpQY=
-X-Google-Smtp-Source: AGHT+IG/6g2Uunj3KJXa+FfivRmJy6KPW89uXNNLxqYlIofCsJ/0C9Rj5gg9hWMoFnHZFtzVNsWawNA10uncefclPMM=
-X-Received: by 2002:a17:902:eb4c:b0:1dc:3c:fb67 with SMTP id
- i12-20020a170902eb4c00b001dc003cfb67mr8978730pli.5.1708979908509; Mon, 26 Feb
- 2024 12:38:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6XZ/b2x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF85FC433F1;
+	Mon, 26 Feb 2024 21:08:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708981724;
+	bh=oXPrqjv4D7Q7fzj84Tav7jY1Yd0hQh/KK5Bn9pmwA3c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=L6XZ/b2xLv4h3tNDaRBIHoHAY0dEKbK1gPmdQ67XRubTqwQQ91AyFsG5xo0sgIDCm
+	 1I/hzJbgVdHNyiwU3Q8cPSKOHijDkJ+g3arbjfCjPFJvQnoB8ZBYVf77QGsR3OKrUS
+	 M36fVbofEV+ihQ/w7giRLTPWOWQ/b5DnQhDCAJqYSnvLJMutXrqyPo7n6JvS7tfbBd
+	 uaBInLbxpK77fOy4tCGH0GmvZ/zy1FCp+G8z2wCQtgHSjgmxFCJ/7CZAb9YXWKghTo
+	 t949QwvKTOjs+IDkmJaagkZx9+9Eizq49D2i9t0fvUkd49K9iWojgfjPEYCyKczi8N
+	 rP53J5/ARQG1A==
+Date: Mon, 26 Feb 2024 15:08:42 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor@kernel.org, bhelgaas@google.com, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org
+Subject: Re: [PATCH 1/1] dt-bindings: pci: layerscape-pci: Convert to yaml
+ format
+Message-ID: <20240226210842.GA211190@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240226203358.275986-1-Frank.Li@nxp.com> <20240226203358.275986-3-Frank.Li@nxp.com>
-In-Reply-To: <20240226203358.275986-3-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 26 Feb 2024 17:38:16 -0300
-Message-ID: <CAOMZO5CoucMLo2T7z25EpBeakmKt38jis-_OC1-_C1vGtXEwWw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] arm64: dts: imx8qm-mek: add flexspi0 support
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226195711.270153-1-Frank.Li@nxp.com>
 
-On Mon, Feb 26, 2024 at 5:34=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+On Mon, Feb 26, 2024 at 02:57:11PM -0500, Frank Li wrote:
+> Convert the layerscape-pci PCIe binding document to yaml format.
+> 
+> Additionally, changes for the layerscape-pci endpoint part:
+> - Add interrupt name 'pme' restriction for fsl,ls1028a-pcie-ep,
+> fsl,ls1046a-pcie-ep, and fsl,ls1088a-pcie-ep.
+> - Add register name restrictions: 'reg' and 'addr_space'. 'addr_space' is
+> required by snps,dw-pcie-ep.
+> - Add an example.
 
-> +&flexspi0 {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&pinctrl_flexspi0>;
-> +       nxp,fspi-dll-slvdly =3D <4>;
-> +       status =3D "okay";
-> +
-> +       flash0: mt35xu512aba@0 {
+Not for me to say since this would go via some other tree, but in
+general, I would prefer to see this as two or three patches:
 
-Node names should be generic.
+  1) Strict conversion to yaml with no additional changes
+  2) Add new layerscape-ep stuff
+  3) Add new layerscape root complex stuff
 
-Please run dt-schema checks. Otherwise, you will introduce more warnings.
+That makes it easier to see what is actually being added.
+
+> Changes for the layerscape-pci root complex part:
+> - Add required property: 'reg-names', "#address-cells", "#size-cells",
+> 'device_type', 'bus-range', 'ranges', "#interrupt-cells",
+> 'interrupt-map-mask' and 'interrupt-map'.
+> - Interrupt-names requirement split to each compatible string.
+> - Add register name restrictions: 'reg' and 'config'. 'config' is required
+> by snps,dw-pcie.
