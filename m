@@ -1,123 +1,65 @@
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822E81586FF
-	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 22:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892CF14E2C6;
+	Tue, 27 Feb 2024 22:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709071514; cv=none; b=N6eKfIr1aDrAsx+0JJdYbMpX2iPE9kctvHjehZNJKgAgTuQO6ks2ysqdTla9vJudcW9vWZa0y+dr0lt5+rjQAEBBWjvmF1299lg54rCsgnvSp19nFjfpWfGxyiKLq2OQh8oobtVNS19gsBq7iY/R+rpwCtgZb0Gpa5luh908p5w=
+	t=1709072745; cv=none; b=vGJBo5OIqgqitRAzSuNyhUjEscHrQ/DS19CFLndMM0aKcdeaT4dhWJC5wnFCXOHssRKnl4+QJfk/DO8mXBG1BwfrL2NHoxnnFi15lc7UezZKc8DFT0dCqd3GozvE7zBNup2z53B4ETg17ycEavwgU2Y6S2Xu4hD3xYVqFQ+OU+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709071514; c=relaxed/simple;
-	bh=Daep0Slfrtw0Ds07RH4d7jSApXPXFCQGE2TgTpYU9Xo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9NOsvRBuNvhfsTn+MJgeKUYM9soC8DfuN85H+TNYtQUZWlf9aVOZody9uwD5nX8O6vxPdsfTFypolsJZS/CgQK7kLNykok1H1epdncAmKx8T4MEW2COFppAs/yC+VTlQZcGXSMTmwa7oJKzMokemEu70z+6rGeZTpGsdqvxFjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPOK/tQO; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1709072745; c=relaxed/simple;
+	bh=cU0N8EL3WP2/OTKGm2lv5gr1b7Yfr2gWywwErVAJ6kU=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=ZgnJjIZaAPpd/ME2ZedDLmnnxvVjT4o5qlHgTfnfmiRP9Cp1WZcTiZXbRqtgENlTTLCKwJ5MBO9IeOxLGWsMBHGgWfdJ2lcHNkmPGNzKWLVVpUnJvu7ttqExln1kLSSDzMoy1rBeC96scVp/o0HalAJm1I/q4lJGjbjn7SWR0ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxQXMH+z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPOK/tQO"
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3bbc649c275so2438354b6e.0
-        for <imx@lists.linux.dev>; Tue, 27 Feb 2024 14:05:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709071512; x=1709676312; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pg+umx5FUIJdMs3diOaBF+zl4OepmD7HnZ+prHeGKsA=;
-        b=NPOK/tQO8Jq1EfnIHQJtE8LY40RuASN7pCQS8r+HxXqARnV/4UU5fTqVFrBbz0X+7Z
-         ipNd7VJ2Kc4FcxoahHht307jD86CHu0y1DlAXDnEinkk71T58CzUqeZl+f+8RDTIS2o3
-         ZXijfOI/XX81hPzr8pk+yHi/j+yo+jcAgj26vlcSt3S94xY8q3g1mCtjRQU/0YAI4/1W
-         KDlPwGKIH6o+8FuauuzJ6xVhksRSSX+wqOYkgJK9JaSrurOEo0CYP1+ovvCSQc4/AM3C
-         dAtuWdgHPUKmNp4EnqFGKIOQizBPKCvnoaaa9XDUQsR7Wxw4zpAKBPY1IE/OjXx+qHiv
-         Jf/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709071512; x=1709676312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pg+umx5FUIJdMs3diOaBF+zl4OepmD7HnZ+prHeGKsA=;
-        b=RxPnY2pnlNr8E4Vcl9xtA8zFUtdLwFe3N+K06SsvycgfxeZKKPdzD2xW1w/L7vY0Ts
-         6xn0u8HRsgpS5FXW1+UhpRRJPA0q8xWOsmei2esMz3inBRCJ+LIY2LxQj8Ale7gi1ahZ
-         5M+Jf7JAZBLU/bbuKGETzSz0Zy3yMruLV+sk02DIVrbb70eXwugp3RCTFePAJAnlDlN1
-         2Ljm6uOKiTomt4HH2kHQw5kN6MBa1Jw7eGQxxpMGdDRmiJVhrJoN/SM97F4q8raDfbib
-         q7wfZ3x4rfyaHq/phgKKQJL2kSlGLsa+r2iHTSXMdujXzZAa+y4ZfPqyOERtH8y+TzcJ
-         v4LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVEjsj+LU3HKKUswXfNtrXjg+LdjfAQfBoIBgDp8hD3L2b1i85GU1EFSl4Yag26GgJsElqBTCMaKNC8bCUlXxJIaAt
-X-Gm-Message-State: AOJu0YwmRzREYI8kwkJKOnmWc96sc6BD18JQVoZxyk10hVqLTRBYmvL4
-	07Vul6E/a6yex19V8yWrPt0DuRvlqPWvgY5ql76rZx4D/kGPJdlf
-X-Google-Smtp-Source: AGHT+IEmWreknrcyf09k6m1PvVcfqFMnpM75hkf6hTSSVFVvDaq/6FD0SFqz9UMfV4yL5nvUNAshIA==
-X-Received: by 2002:a05:6358:9496:b0:17b:57c9:dddc with SMTP id i22-20020a056358949600b0017b57c9dddcmr8981848rwb.5.1709071512522;
-        Tue, 27 Feb 2024 14:05:12 -0800 (PST)
-Received: from aford-System-Version.lan ([2601:447:d002:5be:9ee3:b2ab:6ca:180d])
-        by smtp.gmail.com with ESMTPSA id c12-20020a0ce14c000000b0068fc55bcf6asm4569556qvl.119.2024.02.27.14.05.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 14:05:12 -0800 (PST)
-From: Adam Ford <aford173@gmail.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-phy@lists.infradead.org
-Cc: aford@beaconembedded.com,
-	Adam Ford <aford173@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V7 6/6] arm64: defconfig: Enable DRM_IMX8MP_DW_HDMI_BRIDGE as module
-Date: Tue, 27 Feb 2024 16:04:40 -0600
-Message-ID: <20240227220444.77566-7-aford173@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240227220444.77566-1-aford173@gmail.com>
-References: <20240227220444.77566-1-aford173@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxQXMH+z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED44BC43390;
+	Tue, 27 Feb 2024 22:25:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709072745;
+	bh=cU0N8EL3WP2/OTKGm2lv5gr1b7Yfr2gWywwErVAJ6kU=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=YxQXMH+zIfWKfEYNyjzcJ4PNSrMKJ808/OekqlxvfSzM5qTs2vGOmKUEUvQZrTxGA
+	 AGqbiElpvLjrvR6hmThwRUCNNnEC0NpWuo10z0KuKiFmeBTBacryQwRAn1xQSXI+DT
+	 2NTZxraitBnfrMBBflb465pHIUFbjFyR25imlOgHgjsb3bY8csICuy+vrxSMUdO/7A
+	 Y9PQbsW8VN6tuHfGLtpTQTBJkSzRkIsxHr5xKlh4cNpXGeec/elEZV16eNc2a0On6c
+	 XGM3CvdL+8V3owUrSv7ATMJWuin5aBnO1DsxjCPBK28PlPsqElpTKQd1HFnhFL9taL
+	 umo9O+SE0hDiw==
+Message-ID: <0d784de32455c026ecc0c4ec1e844667.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240227110416.259133-1-abel.vesa@linaro.org>
+References: <20240227110416.259133-1-abel.vesa@linaro.org>
+Subject: Re: [GIT PULL] clk: imx: Updates for v6.9
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>, linux-clk@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Abel Vesa <abel.vesa@linaro.org>, Mike Turquette <mturquette@baylibre.com>
+Date: Tue, 27 Feb 2024 14:25:42 -0800
+User-Agent: alot/0.10
 
-The i.MX8M Plus has support for an HDMI transmitter.  The
-video is genereated by lcdif3, routed to the hdmi parallel
-video interface, then fed to a DW HDMI bridge to support
-up to 4K video output.
+Quoting Abel Vesa (2024-02-27 03:04:16)
+> The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd3=
+3d:
+>=20
+>   Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
+>=20
+> are available in the Git repository at:
+>=20
+>   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/=
+clk-imx-6.9
+>=20
+> for you to fetch changes up to 13269dc6c70444528f0093585e3559cd2f38850a:
+>=20
+>   clk: imx: imx8mp: Fix SAI_MCLK_SEL definition (2024-02-26 11:05:58 +020=
+0)
+>=20
+> ----------------------------------------------------------------
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
-V7:  No Change
-
-V6:  No Change
-
-V5:  Added Review and tested-by from Luca
-     No functional change since V1
----
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 34681284043f..ee644d27652b 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -887,6 +887,7 @@ CONFIG_DRM_ANALOGIX_ANX7625=m
- CONFIG_DRM_I2C_ADV7511=m
- CONFIG_DRM_I2C_ADV7511_AUDIO=y
- CONFIG_DRM_CDNS_MHDP8546=m
-+CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE=m
- CONFIG_DRM_DW_HDMI_AHB_AUDIO=m
- CONFIG_DRM_DW_HDMI_CEC=m
- CONFIG_DRM_IMX_DCSS=m
--- 
-2.43.0
-
+Thanks. Pulled into clk-next
