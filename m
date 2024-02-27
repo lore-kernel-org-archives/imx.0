@@ -1,263 +1,170 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2058.outbound.protection.outlook.com [40.107.22.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7A313AA55
-	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 13:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041933; cv=none; b=dryNSqS9KudIqRFB2tr5fdA/BPJaKNafWSNXGhCwsFcZXkm/H0sTBJV5Za6W5hJl9Rj60Fg72uzpUuAImC3cID7wBC1UEwLNz3e/EJb830vVRm74ngY1TAbzN4Zs+pBuBCqeyAUtHihNBTshYBQDWkqqU69dq+jdNcJ4GnDIiCo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041933; c=relaxed/simple;
-	bh=8uZ65RdBRrZVQLt3Jfa2DywrGVNgAqJJKx5brrMyuuU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IjPZTeJPKZ6qV2fMc2YGHbeBCuKiJOAJCSnLuLZyYf3MB/dA5iZK23gHvjFb2N+I01gWaY7xSqioRpvYnaxGL5It7/cjFRMSCsEWpVzB3ja3Lc/G8HjUdmdBj0NUfJtDnr71w+Uq1WLUUUnoxBbL3GXj6HN7AdZoTDaSHYnp6gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2ywKVnX; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768934E1C8
+	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 17:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709054537; cv=fail; b=tScp6IaWohMPkU3c2PuwYPp+92KOEy1NVFhBrawBl5NJO3Z+gogomlZTrHN4J4IkmxxqdVGLRe5gXLmq/Yaks0i3LR19DU3prxlxg9SPM+VYLd0BtMUrpWa1YAxG/9iyyyOeXdb5vvkAhpD0xmJHjomsTnBQ1kzLeuJwoLxiL9Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709054537; c=relaxed/simple;
+	bh=UbmeASDkchIfwpXnKDa/WdgXq05VIW6kmkTfv1yNSyY=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=L2pwEUaPYL9B/heiJQwGLTmjXgCy9Y+4kFMxHRHvLGIUo+DlPf7ojxvF9OaFp4yhzMzYUlwZeDEbWTuIAotVtp90tkE4afv4bwsRw9LYinw7Zbo3AQyeKPYHlxtCeIfyrTqVnifGPT7g+G5GfnvVHKsikHKLLU5U02tE4r1gIdk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=EIICawDe; arc=fail smtp.client-ip=40.107.22.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2ywKVnX"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso3650196a12.3
-        for <imx@lists.linux.dev>; Tue, 27 Feb 2024 05:52:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709041930; x=1709646730; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mIVyIgwTLXzwUXutxuVhEBa2JRV+KMFUyJvpPIJLlDo=;
-        b=T2ywKVnXvstFAPS5pQzECHHKGZZ2xnbeWW6Byn1Zna8Qf/mDm0/axmpeBoFWeg5ioJ
-         heN6dSA4/+tKm1IkQH7LcQ9aROGi7tgJdD2ipnGdQuDQ1ZQj0O035N5uFU9Mp4VBR0xm
-         fNTX0rMIFuNclCetZRmE+JR7wLNs0YRcsLl51TyJ+LIldEd6dMap7kMsxFgcI+5HMlbZ
-         Egb2KgQpKfPOTEsMyQ3V12+UsLOnRTdjr6o7inbNb5UgfAEEtRqQTGQLU1OZOZ/qrRWI
-         WwlGpYR/D6SBPSWcdXFx4tINm7pl/QzHAIJ+bjA2CB234TI8BFLa1Lzs7yP9Sgu5yd2x
-         gj5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709041930; x=1709646730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mIVyIgwTLXzwUXutxuVhEBa2JRV+KMFUyJvpPIJLlDo=;
-        b=oVqItOApT4jY5QCaAMTJ8xtJNmikI7VtA1tzHvA6LZRtA2TSi31o9JGpaG8ICbpHSu
-         EXdGdFnmZYjjitRiOubJLjSkFRgPoEMjJD2B4kPd3X1j0ttGfgVQwS5gIloKxXOuFkhA
-         k9TZVKfUDRHknA7WgICdbLkeGdJISF81Sl+BfcrRxyk9M0yV//eepVPDny3+PYP5HNM6
-         7w5nxvo6J15xdrXT5dR76DJY0MaIxICfDr5R1zshOXgefurGldOtacaTtVe6e6KHwQWh
-         c6l3i2uwx4TqU5VHSEe1bjyWZzbyvca+YEJ+fxYK0EzngNVSUsmQ3Xu+BM1wdBI/kXnY
-         z/TQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWohHZPB7nmC/QcMCYbzsF0krarJGBZJEfjA3AXfJ0Ht4WMfJEBC7TRRM5rit4SgWF0XWIvCqt1rQFBsd7tPUOK7VXE
-X-Gm-Message-State: AOJu0YztpTSzNPFDhachgv7sHJoPDmOt63f6PSfXDblKK+q/IH5nkPKA
-	E4XPVRl4AArR3CWPUWnVJV9LCE/zlkBLoFbPLgXSh81+7NIUWu9fK+b/gZpGB83Qq8dPqT8PMHr
-	pkD+R6hb/F+YR5s8//lHaXWC6tFQ=
-X-Google-Smtp-Source: AGHT+IGDbPuViPnz5x8Or5gGEDuBn9xS6cKSAFV4NoAIctp6lQe6NM7m54HwbtmTcMeIm3lqzbT8HflIHThgZMUE2gs=
-X-Received: by 2002:a17:902:db0e:b0:1dc:b77e:1973 with SMTP id
- m14-20020a170902db0e00b001dcb77e1973mr2408566plx.53.1709041930195; Tue, 27
- Feb 2024 05:52:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EIICawDe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C5ko8FGKIYllZL2KiAmxTMukRJPJF1rKS/NY08QwheY3LToHE8L7Gud/e9p0KsBFq65rUk6psQLFcJByxqpiWokoeXIKzhPAdSw2gm99USmn6JSHR3+KCKoRQK70Wa1L/xrEJ9Moe5kF2Qmk8msMH6MGwuPtFBQQPpYoCI6TuFh9FOPoVMQgOTKme5p7A1uMx41cT0rs2tzCVflsqw9qbUR+XMzZxsdKJh3kX6DKXxGx3ez6s2OYpSDZd32yknHLnVaLijJKF7T1q6wpNohzwanv2+hIPZxW37XHpKXiRKlTYTO5Jkf7I1ekD0JFSJ4qjAbadqtP8TWIdHqF7SpydA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eAVzKQRBUzxXdyuxXMILtOp/Cc78HxdcM3EzeWRHNo8=;
+ b=TW7m+h3Rw//AoKNtvX5aZ9z8KA+OLrYHZm8+HvhDdMfqnwbVnfL5oKerRaceoTL7qlcqfbe8/+jp0yI7CBDxcoLA3IxhnGCcbjV1SiWTtVJoJ9OEiIgnCaYcQM7PcyigB5jeHG6Tlh+Ms4emgrhw9A0H3r/wOWS+s3pAv8Z2mHBRtbs+/u7bz1GcPSestIf8t5oiFT7ZxzKYOzSBIMuhUiT9YZF2iTQHpmegM5q35V5zTvf9GxNRVDAF5yBERZ1IynatkezlR1WGmwXNWAFdAsABNrMk3m/drjRHRp7DeFtfTFepMXEBwl9uSIgl9NCPLbCAkcmKJo0GDM94IU/O4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eAVzKQRBUzxXdyuxXMILtOp/Cc78HxdcM3EzeWRHNo8=;
+ b=EIICawDelrmBUGCR9+RKi8PjR0QtgSbeYSKbX6U3aIr6+avxeqv2+KGcRO6FnOsXxq3M1lrah2gLw5PQOGUTUlLc4sA2T/uFZL9RNX5aDu8iyoxFYc//uSX/whJAKMa+2ri01LCiN//o61hCzOnijUk7sySMI9fJ0UxCxQIvyYU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS5PR04MB9754.eurprd04.prod.outlook.com (2603:10a6:20b:654::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.27; Tue, 27 Feb
+ 2024 17:22:12 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Tue, 27 Feb 2024
+ 17:22:11 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/5] dmaengine: fsl-edma: add 8ulp support
+Date: Tue, 27 Feb 2024 12:21:52 -0500
+Message-Id: <20240227-8ulp_edma-v1-0-7fcfe1e265c2@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADAa3mUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDIyNzXYvSnIL41JTcRF1Do9RUIzMTixRzkyQloPqCotS0zAqwWdGxtbU
+ AR/Ai81sAAAA=
+To: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>, Joy Zou <joy.zou@nxp.com>
+X-Mailer: b4 0.13-dev-c87ef
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709054529; l=1492;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=UbmeASDkchIfwpXnKDa/WdgXq05VIW6kmkTfv1yNSyY=;
+ b=fAFNAPsiLcHhGjKoX9cWDAs5ibDlGQV6RWm7LS9ECzWJhrs3idY4F2K/9B0iRXJbK74Av/r/d
+ DVghgm2vGc3D7rtE6+wXJYtvAU37p0Z8QeDVJO8N0/83r1dvWLJH5gT
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR13CA0059.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240226234532.80114-1-aford173@gmail.com> <20240226234532.80114-6-aford173@gmail.com>
- <20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
-In-Reply-To: <20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
-From: Adam Ford <aford173@gmail.com>
-Date: Tue, 27 Feb 2024 07:51:58 -0600
-Message-ID: <CAHCN7xKnEvrfYMZau95e7aknTkdqrQLfgWZTfb6mS3Yt5BT6+Q@mail.gmail.com>
-Subject: Re: [PATCH V6 5/6] arm64: dts: imx8mp: add HDMI display pipeline
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
-	Marek Vasut <marex@denx.de>, Kishon Vijay Abraham I <kishon@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, imx@lists.linux.dev, 
-	Sascha Hauer <s.hauer@pengutronix.de>, aford@beaconembedded.com, 
-	linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, devicetree@vger.kernel.org, 
-	Lucas Stach <l.stach@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9754:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57e8eee1-d929-4cac-68f2-08dc37b8a262
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	7BKfbm2cPz18tHJ6THdMXr2+ePUaICImcYkIJQImC0DGbEuHV1MIG68sKo/E6nIy1CDddUFPyhtjpETTbV1RSTpx3enEdLaaGqxbY5xShUQuX8JwgcVqX8a8pLj/dEZx7sAkQqrKPq2NYGVucfaZMu9Gn7SZgzxUewrxQsFpXVFU6RIReUGlIOIA8c2+WZaF6+7irJqmL5vBVaigst6SHTujepgMzJwC3Rc4avU4CuE1mOA+MHO8SinfTDUjL+++GhpoObR6wv3Kz6c76j8ogFxNRThO7e97KLSNhTzsjSFIwW3tkA3NLH6u/Oup051R8BmmL2u2FrvmOWOOra6+4pjyVkaOwbtIDWKK0C8RWWFoakruqJ4Si11O2JO9R63oB3U9qCvaX2b4tcC2d/Gd27mUv+5Vtp2kjmcODu6uEP1pDk5KMoFynkhZi/+e7GwPh9ErWAaIFim3POmZuOxTOyRbSL34bz2cdDdUiL0gjXpgIsshUft/3PPY7/e/g9vtb6yX0TlzQof/uTn+jAbMyZuDfuw897XSf36fnRwEs9O+BcldzNITJDSYBjGCDD7R6anHvyGa/ifQDjjeaToud3w7xcfslMzggCgVTPBUxZcGNAzduaD72Rg49kDQCnaF/WXZylLfzO2k4y2/zDT8nkiT2vlkYkaAUfuAqg+tPFjHLY2yFwWIcagAZ0ygvlYC7eFGnpgral/I8F4+DJ8Kom1wwTbHIShdt6AiUrMR9UY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SHlHTXlsTDdvR3RyUXpONmR5ZmdvUmpjMGJzMVVaQlFMVnBzL09mUjFlWWEy?=
+ =?utf-8?B?bklRYTdwQ3F4WDZoL3JRays0eVk3VmNjcUYwQkVHSFZVZUVJeHNpN2I0UkNS?=
+ =?utf-8?B?TVNaOG9sVkd3d2FYRS9maFEyZEVPcHIvOGNNd3g5b3lpTVF2YXJxNEM1dE1x?=
+ =?utf-8?B?bGlOWmtsd2Q0K1JJNHUrUmc0RjFlQkhnV3Y1VytFZEVEWVh2eVdxYm1yYk1i?=
+ =?utf-8?B?SENWWURZb3l1QW9rR0k0bVpFYzJCZW1DNjJwWDQybjdVNjdDRTFjdTgybUUy?=
+ =?utf-8?B?WERhaWU0ODhNUi9ZaTduREQ1eDczWFVlZjFYUmZIK1BaMzB5OU5PV1ZCWjRS?=
+ =?utf-8?B?dFRHQTVYVnFMZGZLaDVTcWRXdElxRDJlQXVnUmhtTUV5K1ZTbkxUeG9wc1ND?=
+ =?utf-8?B?cDZHVWxyeFBzT1BHK3RuanlRYmJyVWZSVE0vbk1PY25lUS83UkRzTWhScFVS?=
+ =?utf-8?B?NThaWExzVnZvd3c0eCtqYTgzT2lsNkdPdmNIeHV6WUdWa21VK1ZXa3E4TTV2?=
+ =?utf-8?B?YkZYQ3FsVHJ0bWFqZFVsR3dyZ3JhSGJSbkRaMEcwMmFqejI3OXIwdGVSNnpn?=
+ =?utf-8?B?N09QQk1KQzZSNm92WUNLcXZKb3FPaDhhOXN2ZW9DUjZRdDRweWppNllNeWVS?=
+ =?utf-8?B?N3QwQnBBdDM3N0g5STh6Wm9JWXpHYmYrRTZ3K3ZyZU40eE40VWswTDR0M2Nw?=
+ =?utf-8?B?cHR6ZXlCV0paaFgzQVZFUUVYZWt0aFFkTGQwSVJ0WFNjd3l4cG9VMmRic1lE?=
+ =?utf-8?B?LytKWlJKOFJYREZ4TjY4d2FIdmxMbFluRnluTWp6YUZtNEZkbzJhQjVpemwr?=
+ =?utf-8?B?VW1WMFBSV1VNSHhKbS9FTnpBUStzSW43TlFpc08xN3NTbnNkUTlSSTJpejdK?=
+ =?utf-8?B?aGNML1h3M2U5cVI5RjlxM0tyeU41L2hRT2hjWGhzb1ZvakhxSkRiWFRQeWRI?=
+ =?utf-8?B?NFllaFpXelZjVm02VWZ1cjNkSWl0U2JIRW9LckVRSVUyVGVQeFE0QzVuQmlE?=
+ =?utf-8?B?QnZzRllpbnhBdEtLS1RyVDFrOTZlZzBiT1BDdnFkMjE1SDZjTHYzS1J4eUpM?=
+ =?utf-8?B?blBTaEFWTW93MkdyYzRCcWdlS0lnZTJyRjhacmpudWdsQVV6UzRnVEx5WTdj?=
+ =?utf-8?B?V3Y0cDIzZUVrQXdnd1BwdjFGczQ0cjIwY0UvTG12Q0FuUXhwS3RvUDhyYjYx?=
+ =?utf-8?B?d1RyVnJMUFhYbC84MGUvNVJPL2FVTTJoVVlGalQ2VFVaay9IaGRKS2RhSSts?=
+ =?utf-8?B?UlJ3Y3dtYVErVmdtSklYNHFxUzRXc2ZLZzBQUENBMUVneTYxZ1VBc2lIZUxI?=
+ =?utf-8?B?S0dlYkNDOGRPM3JaOWlsWmNuUEhZQ0RrRzcrb09sOW5vSER3citIWi9Ocnlx?=
+ =?utf-8?B?UktKRjZ6RlVFSXFySHNpUVRic2U4MkVUOXRmOXF4ckpXTlVxRytrYXhIQTkr?=
+ =?utf-8?B?dnRaZ3lqc2NvZWY2bUhXcm5ucWFnTzFIM1pyOHV2NmpFRldkYi9zNEhPbTFy?=
+ =?utf-8?B?ZmpyUEV1UVJKN00wbWI0QjF2YUZqckNpS05FamNsUnZlcWhSS0NuVCsrRXpo?=
+ =?utf-8?B?VDVzdnZiSUpkdGljdkdsNDV0U0UwOUhjMmcyeDYzdXhtSW1XM00xZk9MZWhJ?=
+ =?utf-8?B?ZEhkY29qZVNSRDVvQkhsL0JneW1vUE1UUm5zNjFoQTRwVWw0Q2hYQmx3TWEy?=
+ =?utf-8?B?cnh5VmdINFgweVRhVzRLamtTdXpwUHFkS055bkVyMy9DeHVRVDVqVElxWERY?=
+ =?utf-8?B?ZXlwdkpMRG43MTlyN0YvSDVIQVdmYUZOeWJHeDF1dWgzbU1mNXExWmcvc2xl?=
+ =?utf-8?B?VXY2aGYwTVF6UmxIekk4V0x5bEpJcFpWR2lNOHZ5c0hOelk0WjFCM3JuWmVt?=
+ =?utf-8?B?d1p6K2Z5eUxGQWhYS3RRUEVDOHFXdngwVkVYVzZMa1VzbHd6eWppelAxNmQ5?=
+ =?utf-8?B?K1IwaXc0Y3JUUWF1QVZmZ2N5WVlxOS9UaE1uVHhuR2FLWG8zcU1saWJhZ01I?=
+ =?utf-8?B?QXc3Um1rRzREMTZXUitkeGlXOTF5UjEycmdPTjd0YmljNmVTeFJSTWhqbmpq?=
+ =?utf-8?B?bVB2am5vU1FLZTJkNTZ0cGRGMmdUbUI0U0RmK0NLZWNhME9kRUxGaEF1VGU4?=
+ =?utf-8?Q?X3Vo=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57e8eee1-d929-4cac-68f2-08dc37b8a262
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2024 17:22:11.9014
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 06N5PFCB8Ms7TJIKG/f83CGJmeDRTR658JlEYLtmYQUXyYQdfaL3d4QlRKeyJcpqpRmopmquNgwlDDDhDF8HLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9754
 
-On Tue, Feb 27, 2024 at 2:33=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
-de> wrote:
->
-> Hi Adam,
->
-> thanks a lot for pushing this topic.
->
-> On 24-02-26, Adam Ford wrote:
-> > From: Lucas Stach <l.stach@pengutronix.de>
-> >
-> > This adds the DT nodes for all the peripherals that make up the
-> > HDMI display pipeline.
-> >
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > Tested-by: Marek Vasut <marex@denx.de>
-> > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > ---
-> > V6:  Make LCDIF3 disabled by default
-> >
-> > V5:  No change
-> >
-> > V3:  Re-ordered the HDMI parts to properly come after irqstree_hdmi
-> >      inside AIPS4.  Change size of LCDIF3 and PVI to match TRM sizes
-> >      of 4KB.
-> >
-> > V2:  I took this from Lucas' original submission with the following:
-> >      Removed extra clock from HDMI-TX since it is now part of the
-> >      power domain
-> >      Added interrupt-parent to PVI
-> >      Changed the name of the HDMI tranmitter to fsl,imx8mp-hdmi-tx
-> >      Added ports to HDMI-tx
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 95 +++++++++++++++++++++++
-> >  1 file changed, 95 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boo=
-t/dts/freescale/imx8mp.dtsi
-> > index 18bfa7d9aa7f..637b0265b0f1 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -1940,6 +1940,101 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
-> >                               clock-names =3D "ipg";
-> >                               power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
-HDMIBLK_PD_IRQSTEER>;
-> >                       };
-> > +
-> > +                     hdmi_pvi: display-bridge@32fc4000 {
-> > +                             compatible =3D "fsl,imx8mp-hdmi-pvi";
-> > +                             reg =3D <0x32fc4000 0x1000>;
-> > +                             interrupt-parent =3D <&irqsteer_hdmi>;
-> > +                             interrupts =3D <12>;
-> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
-HDMIBLK_PD_PVI>;
->
-> this node should be 'status =3D "disabled";' as reported by Luca else thi=
-s
-> node will EPROBE_DEFER. With that beeing fixed you can add my:
+Do some small clean up.                                                    
 
-sorry I missed that one...and I though I was done...sigh.  I hope it's
-not too late to get this into the next release.
->
-> Tested-by: Marco Felsch <m.felsch@pengutronix.de>
->
+0c562876972ee dmaengine: fsl-edma: remove 'slave_id' from fsl_edma_chan    
+d9b66cb5fdf62 dmaengine: fsl-edma: add safety check for 'srcid'            
+aae21b7528311 dmaengine: fsl-edma: clean up chclk and FSL_EDMA_DRV_HAS_CHCLK
 
-I'll push a V7 tonight and add your tested-by.  Thanks for testing.
+Update binding doc.                                                        
+23a1d1a6609fa dt-bindings: fsl-dma: fsl-edma: add fsl,imx8ulp-edma compatible string
 
-adam
+Add 8ulp support.                                                          
+dmaengine: fsl-edma: add i.MX8ULP edma support
 
-> Regards,
->   Marco
->
-> > +
-> > +                             ports {
-> > +                                     #address-cells =3D <1>;
-> > +                                     #size-cells =3D <0>;
-> > +
-> > +                                     port@0 {
-> > +                                             reg =3D <0>;
-> > +                                             pvi_from_lcdif3: endpoint=
- {
-> > +                                                     remote-endpoint =
-=3D <&lcdif3_to_pvi>;
-> > +                                             };
-> > +                                     };
-> > +
-> > +                                     port@1 {
-> > +                                             reg =3D <1>;
-> > +                                             pvi_to_hdmi_tx: endpoint =
-{
-> > +                                                     remote-endpoint =
-=3D <&hdmi_tx_from_pvi>;
-> > +                                             };
-> > +                                     };
-> > +                             };
-> > +                     };
-> > +
-> > +                     lcdif3: display-controller@32fc6000 {
-> > +                             compatible =3D "fsl,imx8mp-lcdif";
-> > +                             reg =3D <0x32fc6000 0x1000>;
-> > +                             interrupt-parent =3D <&irqsteer_hdmi>;
-> > +                             interrupts =3D <8>;
-> > +                             clocks =3D <&hdmi_tx_phy>,
-> > +                                      <&clk IMX8MP_CLK_HDMI_APB>,
-> > +                                      <&clk IMX8MP_CLK_HDMI_ROOT>;
-> > +                             clock-names =3D "pix", "axi", "disp_axi";
-> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
-HDMIBLK_PD_LCDIF>;
-> > +                             status =3D "disabled";
-> > +
-> > +                             port {
-> > +                                     lcdif3_to_pvi: endpoint {
-> > +                                             remote-endpoint =3D <&pvi=
-_from_lcdif3>;
-> > +                                     };
-> > +                             };
-> > +                     };
-> > +
-> > +                     hdmi_tx: hdmi@32fd8000 {
-> > +                             compatible =3D "fsl,imx8mp-hdmi-tx";
-> > +                             reg =3D <0x32fd8000 0x7eff>;
-> > +                             interrupt-parent =3D <&irqsteer_hdmi>;
-> > +                             interrupts =3D <0>;
-> > +                             clocks =3D <&clk IMX8MP_CLK_HDMI_APB>,
-> > +                                      <&clk IMX8MP_CLK_HDMI_REF_266M>,
-> > +                                      <&clk IMX8MP_CLK_32K>,
-> > +                                      <&hdmi_tx_phy>;
-> > +                             clock-names =3D "iahb", "isfr", "cec", "p=
-ix";
-> > +                             assigned-clocks =3D <&clk IMX8MP_CLK_HDMI=
-_REF_266M>;
-> > +                             assigned-clock-parents =3D <&clk IMX8MP_S=
-YS_PLL1_266M>;
-> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
-HDMIBLK_PD_HDMI_TX>;
-> > +                             reg-io-width =3D <1>;
-> > +                             status =3D "disabled";
-> > +
-> > +                             ports {
-> > +                                     #address-cells =3D <1>;
-> > +                                     #size-cells =3D <0>;
-> > +
-> > +                                     port@0 {
-> > +                                             reg =3D <0>;
-> > +
-> > +                                             hdmi_tx_from_pvi: endpoin=
-t {
-> > +                                                     remote-endpoint =
-=3D <&pvi_to_hdmi_tx>;
-> > +                                             };
-> > +                                     };
-> > +
-> > +                                     port@1 {
-> > +                                             reg =3D <1>;
-> > +                                             /* Point endpoint to the =
-HDMI connector */
-> > +                                     };
-> > +                             };
-> > +                     };
-> > +
-> > +                     hdmi_tx_phy: phy@32fdff00 {
-> > +                             compatible =3D "fsl,imx8mp-hdmi-phy";
-> > +                             reg =3D <0x32fdff00 0x100>;
-> > +                             clocks =3D <&clk IMX8MP_CLK_HDMI_APB>,
-> > +                                      <&clk IMX8MP_CLK_HDMI_24M>;
-> > +                             clock-names =3D "apb", "ref";
-> > +                             assigned-clocks =3D <&clk IMX8MP_CLK_HDMI=
-_24M>;
-> > +                             assigned-clock-parents =3D <&clk IMX8MP_C=
-LK_24M>;
-> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
-HDMIBLK_PD_HDMI_TX_PHY>;
-> > +                             #clock-cells =3D <0>;
-> > +                             #phy-cells =3D <0>;
-> > +                             status =3D "disabled";
-> > +                     };
-> >               };
-> >
-> >               pcie: pcie@33800000 {
-> > --
-> > 2.43.0
-> >
-> >
-> >
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (3):
+      dmaengine: fsl-edma: remove 'slave_id' from fsl_edma_chan
+      dmaengine: fsl-edma: add safety check for 'srcid'
+      dmaengine: fsl-edma: clean up chclk and FSL_EDMA_DRV_HAS_CHCLK
+
+Joy Zou (2):
+      dt-bindings: fsl-dma: fsl-edma: add fsl,imx8ulp-edma compatible string
+      dmaengine: fsl-edma: add i.MX8ULP edma support
+
+ .../devicetree/bindings/dma/fsl,edma.yaml          | 24 ++++++++++-
+ drivers/dma/fsl-edma-common.c                      |  6 +++
+ drivers/dma/fsl-edma-common.h                      |  2 -
+ drivers/dma/fsl-edma-main.c                        | 47 ++++++++++++++++------
+ 4 files changed, 62 insertions(+), 17 deletions(-)
+---
+base-commit: 2d5c7b7eb345249cb34d42cbc2b97b4c57ea944e
+change-id: 20240227-8ulp_edma-12ee2648d74b
+
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
+
