@@ -1,151 +1,219 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C679754BCB
-	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 07:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A547B3D3
+	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 08:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709019741; cv=none; b=S8U9VGrEm+w0sYBIpbF4LF89mn//A6FuCi/g0HD4m/py1UrncTdl8ffd4I4dzUjtgoZj9hBlWlUO1/ZrCO2DKij8nza7q4RIJTqZgUNvLOg0m/BmwIV62vd10zbPjzLXgPJF5atIC/z/0kvYZNF+bxnnx7juV+g6njJLilaTbIs=
+	t=1709022794; cv=none; b=DYb54kbd7tkD01FbfxOTqM0mMhU3zPIAiEICdv5xldMf2tobyku+KXaUiEIB1jHX+bztepLVRDorggkeh3anly73aopmn6YFewrnm15tKW/zHGz/LW87y3bXeqU91DyaKVbLtlf0voBCGcrOZUP4To/88Vl00icvy8wyhmc43Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709019741; c=relaxed/simple;
-	bh=HCCpPHfruMmNeDtopT91uaAx5seHuRXfQsl6Lt75Otw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MdDzo1dxltsPh/P7pnl23madvsoPMU2TWQ16bn9RvP9wXHg5Wsey65UZuSftAdAC0UCePbDkl+r5CZ612Hqn7VZAZuP7kG0fd5yYpCfD1cQtzS7q9jggcOwQ4j84rwpxzOoTA35e+rL0Z0eu8ENVdi2tyrqzeMgJMcxFLKJVnqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=qSbAZTdu; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="qSbAZTdu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1709019738; x=1740555738;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=r7JmSYlxsh14XOEmR0NelO63VSvY9OUGMgbj0LvjGzc=;
-  b=qSbAZTdupncGrlP7Z2kl2rr5zpC7wnPbIGNadsdCX6WQflZjtTKtWsGK
-   +EoUM2f4jInTxOhkqIpQr3r6QDnjL2fJUrehToEAMcEiF7mp9gf0RpKTJ
-   3FmyAe2xi29C7tSYcZEH3M54KvueipPjH4ema8phmTvOQXN7csdXLyk4D
-   9vOEFU5XvnCmRd71Vr0R+rX+O3L3bVyDQmM+2Nru2X4CnJQQtwqPqL/mi
-   G1JyacwbI0evswrgIlxUjCgABsaqOpGZLj3NES93VeVQA3z4DhIg9a1hx
-   BXnWtsDKT2vBs6QyQw3kinTGseQakaCQRiBIUZhMr/WVPa5bE/yOExu8l
-   w==;
-X-IronPort-AV: E=Sophos;i="6.06,187,1705359600"; 
-   d="scan'208";a="35608425"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 27 Feb 2024 08:42:15 +0100
-Received: from steina-w.localnet (steina-w.tq-net.de [10.123.53.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 28495280075;
-	Tue, 27 Feb 2024 08:42:15 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 3/3] arm64: dts: imx8qm-mek: add flexspi0 support
-Date: Tue, 27 Feb 2024 08:42:15 +0100
-Message-ID: <12393206.O9o76ZdvQC@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240226203358.275986-3-Frank.Li@nxp.com>
-References: <20240226203358.275986-1-Frank.Li@nxp.com> <20240226203358.275986-3-Frank.Li@nxp.com>
+	s=arc-20240116; t=1709022794; c=relaxed/simple;
+	bh=rW7fAbIhtIRH6uFf53KwWwv4BvDxmE1+BtDpctFXvJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V/pwnYRf60EmUgqxEvU8QV3xMPgs69nLoP03xhPj0nYZT9Z1IOL9qw1hg38HP89rHBE+kLaX50EZFYu2Nck6mdBkanRFgr2BzYW2Jh7doHRPi2n37DtVafZVBI3Yjq9e5xTpAXhu9imRr18lGzKODULU4ocG5F3U06lrudqr/jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1resta-0001UR-RL; Tue, 27 Feb 2024 09:33:02 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1restZ-0039fx-Ie; Tue, 27 Feb 2024 09:33:01 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1restZ-00AXPK-1V;
+	Tue, 27 Feb 2024 09:33:01 +0100
+Date: Tue, 27 Feb 2024 09:33:01 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	Marek Vasut <marex@denx.de>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+	imx@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
+	aford@beaconembedded.com, linux-kernel@vger.kernel.org,
+	Vinod Koul <vkoul@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	devicetree@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH V6 5/6] arm64: dts: imx8mp: add HDMI display pipeline
+Message-ID: <20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
+References: <20240226234532.80114-1-aford173@gmail.com>
+ <20240226234532.80114-6-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226234532.80114-6-aford173@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi,
+Hi Adam,
 
-Am Montag, 26. Februar 2024, 21:33:57 CET schrieb Frank Li:
-> Add flexspi0 support for imx8qm-mek board.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+thanks a lot for pushing this topic.
+
+On 24-02-26, Adam Ford wrote:
+> From: Lucas Stach <l.stach@pengutronix.de>
+> 
+> This adds the DT nodes for all the peripherals that make up the
+> HDMI display pipeline.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Tested-by: Marek Vasut <marex@denx.de>
+> Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 38 ++++++++++++++++++++
->  1 file changed, 38 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/bo=
-ot/dts/freescale/imx8qm-mek.dts
-> index 800dcb67642b1..7077e394e855b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> @@ -101,6 +101,23 @@ spidev0: spi@0 {
->  	};
->  };
-> =20
-> +&flexspi0 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_flexspi0>;
-> +	nxp,fspi-dll-slvdly =3D <4>;
-> +	status =3D "okay";
+> V6:  Make LCDIF3 disabled by default
+> 
+> V5:  No change
+> 
+> V3:  Re-ordered the HDMI parts to properly come after irqstree_hdmi
+>      inside AIPS4.  Change size of LCDIF3 and PVI to match TRM sizes
+>      of 4KB.
+> 
+> V2:  I took this from Lucas' original submission with the following:
+>      Removed extra clock from HDMI-TX since it is now part of the
+>      power domain
+>      Added interrupt-parent to PVI
+>      Changed the name of the HDMI tranmitter to fsl,imx8mp-hdmi-tx
+>      Added ports to HDMI-tx
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 95 +++++++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> index 18bfa7d9aa7f..637b0265b0f1 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1940,6 +1940,101 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
+>  				clock-names = "ipg";
+>  				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_IRQSTEER>;
+>  			};
 > +
-> +	flash0: mt35xu512aba@0 {
-> +		reg =3D <0>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
+> +			hdmi_pvi: display-bridge@32fc4000 {
+> +				compatible = "fsl,imx8mp-hdmi-pvi";
+> +				reg = <0x32fc4000 0x1000>;
+> +				interrupt-parent = <&irqsteer_hdmi>;
+> +				interrupts = <12>;
+> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PVI>;
 
-Using '#address-cells' and '#size-cells' in mtd (and thus spi-nor )
-is deprecated, please refer to Documentation/devicetree/bindings/mtd/mtd.ya=
-ml.
+this node should be 'status = "disabled";' as reported by Luca else this
+node will EPROBE_DEFER. With that beeing fixed you can add my:
 
-You need to add a partitions subnode instead:
-> partitions {
-> 	compatible =3D "fixed-partitions";
-> 	#address-cells =3D <1>;
-> 	#size-cells =3D <1>;
-> };
+Tested-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Best regards,
-Alexander
+Regards,
+  Marco
 
-> +		compatible =3D "jedec,spi-nor";
-> +		spi-max-frequency =3D <133000000>;
-> +		spi-tx-bus-width =3D <8>;
-> +		spi-rx-bus-width =3D <8>;
-> +	};
-> +};
 > +
->  &fec1 {
->  	pinctrl-names =3D "default";
->  	pinctrl-0 =3D <&pinctrl_fec1>;
-> @@ -199,6 +216,27 @@ IMX8QM_SPI2_CS0_LSIO_GPIO3_IO10		0x21
->  		>;
->  	};
-> =20
-> +	pinctrl_flexspi0: flexspi0grp {
-> +		fsl,pins =3D <
-> +			IMX8QM_QSPI0A_DATA0_LSIO_QSPI0A_DATA0     0x06000021
-> +			IMX8QM_QSPI0A_DATA1_LSIO_QSPI0A_DATA1     0x06000021
-> +			IMX8QM_QSPI0A_DATA2_LSIO_QSPI0A_DATA2     0x06000021
-> +			IMX8QM_QSPI0A_DATA3_LSIO_QSPI0A_DATA3     0x06000021
-> +			IMX8QM_QSPI0A_DQS_LSIO_QSPI0A_DQS         0x06000021
-> +			IMX8QM_QSPI0A_SS0_B_LSIO_QSPI0A_SS0_B     0x06000021
-> +			IMX8QM_QSPI0A_SS1_B_LSIO_QSPI0A_SS1_B     0x06000021
-> +			IMX8QM_QSPI0A_SCLK_LSIO_QSPI0A_SCLK       0x06000021
-> +			IMX8QM_QSPI0B_SCLK_LSIO_QSPI0B_SCLK       0x06000021
-> +			IMX8QM_QSPI0B_DATA0_LSIO_QSPI0B_DATA0     0x06000021
-> +			IMX8QM_QSPI0B_DATA1_LSIO_QSPI0B_DATA1     0x06000021
-> +			IMX8QM_QSPI0B_DATA2_LSIO_QSPI0B_DATA2     0x06000021
-> +			IMX8QM_QSPI0B_DATA3_LSIO_QSPI0B_DATA3     0x06000021
-> +			IMX8QM_QSPI0B_DQS_LSIO_QSPI0B_DQS         0x06000021
-> +			IMX8QM_QSPI0B_SS0_B_LSIO_QSPI0B_SS0_B     0x06000021
-> +			IMX8QM_QSPI0B_SS1_B_LSIO_QSPI0B_SS1_B     0x06000021
-> +		>;
-> +	};
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
 > +
->  	pinctrl_lpuart0: lpuart0grp {
->  		fsl,pins =3D <
->  			IMX8QM_UART0_RX_DMA_UART0_RX				0x06000020
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+> +					port@0 {
+> +						reg = <0>;
+> +						pvi_from_lcdif3: endpoint {
+> +							remote-endpoint = <&lcdif3_to_pvi>;
+> +						};
+> +					};
+> +
+> +					port@1 {
+> +						reg = <1>;
+> +						pvi_to_hdmi_tx: endpoint {
+> +							remote-endpoint = <&hdmi_tx_from_pvi>;
+> +						};
+> +					};
+> +				};
+> +			};
+> +
+> +			lcdif3: display-controller@32fc6000 {
+> +				compatible = "fsl,imx8mp-lcdif";
+> +				reg = <0x32fc6000 0x1000>;
+> +				interrupt-parent = <&irqsteer_hdmi>;
+> +				interrupts = <8>;
+> +				clocks = <&hdmi_tx_phy>,
+> +					 <&clk IMX8MP_CLK_HDMI_APB>,
+> +					 <&clk IMX8MP_CLK_HDMI_ROOT>;
+> +				clock-names = "pix", "axi", "disp_axi";
+> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_LCDIF>;
+> +				status = "disabled";
+> +
+> +				port {
+> +					lcdif3_to_pvi: endpoint {
+> +						remote-endpoint = <&pvi_from_lcdif3>;
+> +					};
+> +				};
+> +			};
+> +
+> +			hdmi_tx: hdmi@32fd8000 {
+> +				compatible = "fsl,imx8mp-hdmi-tx";
+> +				reg = <0x32fd8000 0x7eff>;
+> +				interrupt-parent = <&irqsteer_hdmi>;
+> +				interrupts = <0>;
+> +				clocks = <&clk IMX8MP_CLK_HDMI_APB>,
+> +					 <&clk IMX8MP_CLK_HDMI_REF_266M>,
+> +					 <&clk IMX8MP_CLK_32K>,
+> +					 <&hdmi_tx_phy>;
+> +				clock-names = "iahb", "isfr", "cec", "pix";
+> +				assigned-clocks = <&clk IMX8MP_CLK_HDMI_REF_266M>;
+> +				assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_266M>;
+> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_HDMI_TX>;
+> +				reg-io-width = <1>;
+> +				status = "disabled";
+> +
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
+> +
+> +					port@0 {
+> +						reg = <0>;
+> +
+> +						hdmi_tx_from_pvi: endpoint {
+> +							remote-endpoint = <&pvi_to_hdmi_tx>;
+> +						};
+> +					};
+> +
+> +					port@1 {
+> +						reg = <1>;
+> +						/* Point endpoint to the HDMI connector */
+> +					};
+> +				};
+> +			};
+> +
+> +			hdmi_tx_phy: phy@32fdff00 {
+> +				compatible = "fsl,imx8mp-hdmi-phy";
+> +				reg = <0x32fdff00 0x100>;
+> +				clocks = <&clk IMX8MP_CLK_HDMI_APB>,
+> +					 <&clk IMX8MP_CLK_HDMI_24M>;
+> +				clock-names = "apb", "ref";
+> +				assigned-clocks = <&clk IMX8MP_CLK_HDMI_24M>;
+> +				assigned-clock-parents = <&clk IMX8MP_CLK_24M>;
+> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_HDMI_TX_PHY>;
+> +				#clock-cells = <0>;
+> +				#phy-cells = <0>;
+> +				status = "disabled";
+> +			};
+>  		};
+>  
+>  		pcie: pcie@33800000 {
+> -- 
+> 2.43.0
+> 
+> 
+> 
