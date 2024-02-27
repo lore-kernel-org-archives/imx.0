@@ -1,146 +1,173 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2073.outbound.protection.outlook.com [40.107.21.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E1A1487EF
-	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 17:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709054636; cv=none; b=EHTiF7DcPJIh2HoGK/T5g/u41f083eE0Pw8btTm4qlhhoYJ0pbWv73ytvJoBeXrRak15mKOOOBHLHOxyTdsd+iesHRYVyooCEe2SZQ+QJwExvwLorswJGZfEUGtr7zRjhZiBkYjVKGCdbejXbudsyCmaegFj9c/VCxo2xQC8pjQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709054636; c=relaxed/simple;
-	bh=JKaLeWJMv2PiLodxVF66I8/DgXnvXTCAEkmR/iAlsMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HqacGQxzulPdT7WeWGX/pbnA6/qIPI+QkWkumcD46hsytvegEKtTcxxianzF3Lf4egvV2Qh4aVxG+Oh37mxWn8s+q/Ss6yRd0hVEaEucjuWl9EijiD7vXLHIr8AsOQnHRSLfL4vjv9t4+HvUNmGel413hhDPM5F7LfJH5gjIz+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XJOxg1si; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA4D51C50
+	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 19:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709062273; cv=fail; b=e2MVUGROoKvRBV/nMKbeW25VM9iqP12yOpGkYUARoj222+Em3SX4d5IJoqzISI0igCwL44qqexsVMo4lrQfYg+ypr4qspzPgbEOHGhZEceTDvDlxdx5oRQpakGqlhLZVXZZAOf4c2uzdCQ/2BF77101EgmI1y0GlSqndZoLkYEU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709062273; c=relaxed/simple;
+	bh=pee93SEQ2pTVDJ7d0+UvoKsgkeGlqMVC0dwB/mQKbhA=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=oRDBX/uGqal/EdSStfBLnawx8f8B3CjPJWFEEBWWKZkj3qPay+DXf4FZurEl9gVyVsz8o9dEBPhO8pB1HwIVDAExZEGl0MXpo3uEJkmf/M/2XfpZ8fhxK1lhUEQmBXUVs4xWRzcWkpZEqk6gGZancrIoF+4g1fg1NE+uT+BnHVE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZES9GKT6; arc=fail smtp.client-ip=40.107.21.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XJOxg1si"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B123D60003;
-	Tue, 27 Feb 2024 17:23:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709054631;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sl3yY0W8c5HJd45w2Vd535hfLRJOaX7Ck1Cj7Bauwxc=;
-	b=XJOxg1siDRaJgIfy64860PCWq4wFV5cuCinGiDdOwRKiX6ANk4dFMOr6WfOJNhFT5AGfE9
-	VMTvHBOM6oJR+7rYkkhDC6WHj3ZtnfRiN6kJqubVDYic5KDv2689jr8KNswAaPYxbxcRdd
-	asKmhwLumJQj2RdBlxr5Qpo9RcIec+VDhW4WKUbLm0Y81D3FYRO9+jtyH6ugJI1hoo71Ag
-	5zK2I1mZ7fcsPo2eka09VbAOmflI8GtvuX9hR+5MhmbaNS5NnDd2g+LkJq58p33//0SSrW
-	3INvr9x8HcV6KbqqEMfe/JkiZo7d4Jd7FpFiCxvjC09wD5ezQiDNaQzySvVrPw==
-Date: Tue, 27 Feb 2024 18:23:46 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Adam Ford <aford173@gmail.com>
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, Marek
- Vasut <marex@denx.de>, Kishon Vijay Abraham I <kishon@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Will Deacon
- <will@kernel.org>, Rob Herring <robh@kernel.org>, imx@lists.linux.dev,
- Sascha Hauer <s.hauer@pengutronix.de>, aford@beaconembedded.com,
- linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Shawn Guo <shawnguo@kernel.org>,
- devicetree@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH V6 5/6] arm64: dts: imx8mp: add HDMI display pipeline
-Message-ID: <20240227182346.6e67cc88@booty>
-In-Reply-To: <CAHCN7xKnEvrfYMZau95e7aknTkdqrQLfgWZTfb6mS3Yt5BT6+Q@mail.gmail.com>
-References: <20240226234532.80114-1-aford173@gmail.com>
-	<20240226234532.80114-6-aford173@gmail.com>
-	<20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
-	<CAHCN7xKnEvrfYMZau95e7aknTkdqrQLfgWZTfb6mS3Yt5BT6+Q@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZES9GKT6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Qvk3B0lsOXJIjEJRbs+FXiLXvrM2oSZaVEGtTNJX2O4iCxnSDZKMGwR2kZTJ3zTNTnGuZq9GIKWOrKf/Hr7TOEnQcVJxjjnsPGmf8K+2xhex4iPCECAE1ra2nBH0+FLrCt+ncJkmDvZUU56XeRIxVOsO+36S1md7diZVHKG2MFs5+bNchCQsNUgcS2Mwd4N6UgVN36Fxx1/yT5d6VYVbQ8A1o39HcMGyjtNsb/9j9Quht+SaTT9b9C4Fiori/81m/4Vuc+XiPrt+Y3gEQ8h7Z4SYuj6EMebMhwTSLeLe2B19m3UQ+IdEIF+wtcZ/EkK5BzdYbyI96DHO5SMP3/Iq4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q8EojhKQxOO3uSAfk8DLIUue1+Ijb5U94mPX+PI8oCI=;
+ b=jO6M7/Xv+tuwCJnqvRCoiUv03oID6D6iWW2RrUGDKK8h+j9JV5F5aoBjixn2HVyPsPsDkn4wkRFZjA+rdkdISKXo7CNAvn4gt2vWkW0xuQPKqSg12vF51vPm8j4bW4ffbavcsdBdq0mZfAEPtCLsI/HnUIAKxPec+i/dLMxMzZOmCc9x67N3J3BbiPV3ff1+eYVhlviF6LjSRWZsYaPwslZIsLbw0CR7jb4pPzLm/riWSm100zn0Wu8Ng20nByorlu5NuO/PMTeSPTzjf0KC22Pnu3ahfuxGEKjRTpAmq9RQKAlhLtn9Kce51Cl4Rb95mwDki34OxYXEf+4I4/WXYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q8EojhKQxOO3uSAfk8DLIUue1+Ijb5U94mPX+PI8oCI=;
+ b=ZES9GKT61zvLHZSxFbUSHCA+7ShNI40jMuXVWfMyKVcoeqGlJPf/a8scbVkacZImCAxMVNQaHLPIJ8EApCjRW688BawuSiy6ENZtdbHnPkPuLKsdoqnKzMThE3qkTBzrVgoXsztGVEn+lXrEi6hfhBt3SYeFjbxl4ufs6ECOLbs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA1PR04MB10283.eurprd04.prod.outlook.com (2603:10a6:102:463::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Tue, 27 Feb
+ 2024 19:31:08 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Tue, 27 Feb 2024
+ 19:31:08 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2 1/3] arm64: dts: imx8qm-mek: add adc0 support
+Date: Tue, 27 Feb 2024 14:30:46 -0500
+Message-Id: <20240227193049.457426-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR06CA0056.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10283:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0053feab-4537-4668-c623-08dc37caa5b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	PSJxXNtFlB4afDsjuEC/DPEkxhmlNf5wHReaPBmmU68p2aO3Fgw8tXgLsoIEv7S8fcW/1zoZv0PKvvZp8QXCOpuRMcHLbAMsok3Rxu4vlv9kkSygANYyUatmAuliDi/dslHfKcQP+Z8klNhTqyEmo6HbECQHWPrL7JWkGI3FF5eGYh9tmh5L9Ooxpk/a+/tQJB2koWp7VyOuS2m41MBs5r81T01ZUnR0c77Pr3LT5VpMufMzitVNB/cklI8utxyQwG5BwNuesauapvkzZdDXuSjc9LPuC+UwAzehIkQ2g/x5WRPjZ94FPQTzIs9Oll06pWE5ih3aSL9Csfm9WIqF6T9HX7vR8FlMxJyD5ZSXhR97UesW987SiH0j1T4RihA+6c3hDNcyADXFtwVWwiZYlkrVJ2AzfWEDzLy8s90tOCEhzphNj15SrYmoXOd4SusRB/YFqFZTLQfJ8JWrO3o1oN9xaoqtj5cXO8hvZzX7SMEaUH09Uj9DXB2i3+m5GBjiwN1OW/W2eHJQk6+XS501Oz/90HE1Ry7AxmHqzbm+qwWeEWZcGYlt6pGSfHIfFdMEq6K1JPWkIIq0ks7ZUb3bvyVMXbZzGE4vbsCp+gXjmomqlDFjJXihSbAfBLnRXRZqVGSJKwJSlTB1ZtZaqYrkG95RpLg0fj5YBofG7nr/XKrmgVFPZ1g8IbkpD093R/I/H1nehN/JBBN+KBXAVNJhbpKjYmQQLUVFV7ZpRNow8b8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(921011)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?k3wdduClp1qyk0VLZivgnFYulcOqmcfAYXXZZjf3gaB+sNBFPtcBEl8UYhbw?=
+ =?us-ascii?Q?Zxsiq2sgI+Hc7x/NFMfj2NbyKD/0hfWpyd6Hy1G656tXdWyt44LB8/f+O5N3?=
+ =?us-ascii?Q?PcYhcJxlLPaYp0NGYeyhMUSYosQOIfHIOu7rcyl2RafCESp9ZfJSXtTWwD/x?=
+ =?us-ascii?Q?f0eXd3QTDYkm3m0jUxYqg9MvhJtJR2MHg9s2wd/kwmke76dk3FguFkjg/dqs?=
+ =?us-ascii?Q?b3axwpYBUd1MZuAA982/3aaGLrhjhqjWiivSUCne+tmZB1ImAE/+d2AW6vBQ?=
+ =?us-ascii?Q?jqM+gjNuq/rHPxbVn9D+af+TNohU9wf0MfcCHTaVIGA4j/5JYw5JEozWz4QE?=
+ =?us-ascii?Q?2VoVVQOTF+N4yaZ4UpT8loOLEGgleqWp04hPplIJYZ7f5TspkZSLNA2PDsT9?=
+ =?us-ascii?Q?kV7ZoJXZqPqaJd1yoMqV0a68ylegHTJNgsT3xeyyxLxoaB4VuKpGqyY408Ht?=
+ =?us-ascii?Q?u4CvjabUtiw2jZdojzelBXd/Sp2cVTLy7RSdUrKs0ug7bGz7v/62VhaZdcb5?=
+ =?us-ascii?Q?XiAszWeP6xElMUkbxe6uFqG6s8At3Lnu/bVXdZXhfgiSKv5zPyJPZ4CtXIgv?=
+ =?us-ascii?Q?AkUmkMjb99BWrggrt3YTuWibiTVLKcQ+A+gvPmOBrD6UUZnxv3zdRB3j8Glu?=
+ =?us-ascii?Q?yBCdjsNOvokgSKibEcn9RllM31G7eFho/wquWP40zSLwTYrwgHhTfIbrewLC?=
+ =?us-ascii?Q?Dwy7+UGFY8+U4ImZUAOMABO3QnHqwI8T5RfKuvVAvk72FAv5IIDPoyEcIPsF?=
+ =?us-ascii?Q?lRQnk1ZN23RXOHb9Ba9EJDVibCg2hoQrmLwHHEnD9Oiw4RS5HvVqK6KMYsHc?=
+ =?us-ascii?Q?wt5MyzyFV36KvSv5U8ByFgSlG8iPTVtjtcfrf8E+/wOr6EXgXEZa0n3cWgKY?=
+ =?us-ascii?Q?t0nYKn69zlxqp+oubyYw6ahfrsPBfXjXeVRKPOk2mk9+TeBURP7lHeRP/LJ6?=
+ =?us-ascii?Q?HHTmm58aOj74jWopW8vslNPpOYoY46V0Jpr2gq9Npkkp0F3SpADOYXFc/2nP?=
+ =?us-ascii?Q?l0ggmoCq/YmdF/5ML8qifcD0Zs0Ru+ZQnN2gp6vInMQn1mcUYsrHn+dWrxMU?=
+ =?us-ascii?Q?sDN4DX1hmgDXzRGVeZ+j9bDA6lpYYGiexSQ2Iqk60Up/AYILM/brYwCcm2mB?=
+ =?us-ascii?Q?dNL/e9F5WhZWMDt6902UrC7nGM6Xxu9LQOYMxGoIsyVs5ZUN9LQKV+/QBg/W?=
+ =?us-ascii?Q?TnYzxhTRs06xu1OXMUBd2IgyqIVj9sD12swrl6luzXlsrNP3JAWCRvMyaGis?=
+ =?us-ascii?Q?T/3b3wXaVC8QaeIKPOgk9UI+Rde8bFC+V/B6JBZo717/QCvoQCICBCAlpfcL?=
+ =?us-ascii?Q?pI5BB1lZbIRGW+r0mPg7rKwcEJrfR0Lj1NLjSmz6PWIJ41PFUAoa71BchWGm?=
+ =?us-ascii?Q?WwNyChIvmsfcX+0RNS1JrP+OUrsH1mdThejM5SB2Ee/XkiPgVR9zMgKWeVWT?=
+ =?us-ascii?Q?Yg3EauT4eZe5n06dTNkqfwYEfNqTRk/F+KYoPmo7/gi9vhgVDo5WzoakYRts?=
+ =?us-ascii?Q?TlYLX3NeXA6psAce0xXNib3nOYJuFBYjQq4eQajTe51mDdoWS1gQG0b97MxF?=
+ =?us-ascii?Q?Ys5hU5qG2nZV63n1REJyebb5A10ew6vIYhaPn5U0?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0053feab-4537-4668-c623-08dc37caa5b2
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2024 19:31:08.5574
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ksb3LTjb6mmTKddBz4S9TFlYBqDEYT9z1FK/l5jVjpvdXWPEkDl394Z7IlVfKOUz6SpdYxBSw8CnK9/Ec3IPLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10283
 
-On Tue, 27 Feb 2024 07:51:58 -0600
-Adam Ford <aford173@gmail.com> wrote:
+Add adc0 for imx8qm-mek board.
 
-> On Tue, Feb 27, 2024 at 2:33=E2=80=AFAM Marco Felsch <m.felsch@pengutroni=
-x.de> wrote:
-> >
-> > Hi Adam,
-> >
-> > thanks a lot for pushing this topic.
-> >
-> > On 24-02-26, Adam Ford wrote: =20
-> > > From: Lucas Stach <l.stach@pengutronix.de>
-> > >
-> > > This adds the DT nodes for all the peripherals that make up the
-> > > HDMI display pipeline.
-> > >
-> > > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > > Tested-by: Marek Vasut <marex@denx.de>
-> > > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > > ---
-> > > V6:  Make LCDIF3 disabled by default
-> > >
-> > > V5:  No change
-> > >
-> > > V3:  Re-ordered the HDMI parts to properly come after irqstree_hdmi
-> > >      inside AIPS4.  Change size of LCDIF3 and PVI to match TRM sizes
-> > >      of 4KB.
-> > >
-> > > V2:  I took this from Lucas' original submission with the following:
-> > >      Removed extra clock from HDMI-TX since it is now part of the
-> > >      power domain
-> > >      Added interrupt-parent to PVI
-> > >      Changed the name of the HDMI tranmitter to fsl,imx8mp-hdmi-tx
-> > >      Added ports to HDMI-tx
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 95 +++++++++++++++++++++=
-++
-> > >  1 file changed, 95 insertions(+)
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
-oot/dts/freescale/imx8mp.dtsi
-> > > index 18bfa7d9aa7f..637b0265b0f1 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > @@ -1940,6 +1940,101 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
-> > >                               clock-names =3D "ipg";
-> > >                               power-domains =3D <&hdmi_blk_ctrl IMX8M=
-P_HDMIBLK_PD_IRQSTEER>;
-> > >                       };
-> > > +
-> > > +                     hdmi_pvi: display-bridge@32fc4000 {
-> > > +                             compatible =3D "fsl,imx8mp-hdmi-pvi";
-> > > +                             reg =3D <0x32fc4000 0x1000>;
-> > > +                             interrupt-parent =3D <&irqsteer_hdmi>;
-> > > +                             interrupts =3D <12>;
-> > > +                             power-domains =3D <&hdmi_blk_ctrl IMX8M=
-P_HDMIBLK_PD_PVI>; =20
-> >
-> > this node should be 'status =3D "disabled";' as reported by Luca else t=
-his
-> > node will EPROBE_DEFER. With that beeing fixed you can add my: =20
->=20
-> sorry I missed that one...and I though I was done...sigh.  I hope it's
-> not too late to get this into the next release.
-> >
-> > Tested-by: Marco Felsch <m.felsch@pengutronix.de>
-> > =20
->=20
-> I'll push a V7 tonight and add your tested-by.  Thanks for testing.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
 
-And with that fixed you can add to v7:
+Notes:
+    Change from v1 to v2
+    - none
 
- Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-Luca
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index 77ac0efdfaada..0c4972724b041 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -39,6 +39,20 @@ reg_usdhc2_vmmc: usdhc2-vmmc {
+ 		gpio = <&lsio_gpio4 19 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 	};
++
++	reg_vref_1v8: regulator-adc-vref {
++		compatible = "regulator-fixed";
++		regulator-name = "vref_1v8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
++};
++
++&adc0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_adc0>;
++	vref-supply = <&reg_vref_1v8>;
++	status = "okay";
+ };
+ 
+ &i2c1 {
+@@ -130,6 +144,12 @@ IMX8QM_GPT0_CAPTURE_LSIO_GPIO0_IO15	0xc600004c
+ 		>;
+ 	};
+ 
++	pinctrl_adc0: adc0grp {
++		fsl,pins = <
++			IMX8QM_ADC_IN0_DMA_ADC0_IN0				0xc0000060
++		>;
++	};
++
+ 	pinctrl_fec1: fec1grp {
+ 		fsl,pins = <
+ 			IMX8QM_ENET0_MDC_CONN_ENET0_MDC				0x06000020
+-- 
+2.34.1
 
---=20
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
