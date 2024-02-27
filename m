@@ -1,219 +1,102 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A547B3D3
-	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 08:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8B8130ADF
+	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 11:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709022794; cv=none; b=DYb54kbd7tkD01FbfxOTqM0mMhU3zPIAiEICdv5xldMf2tobyku+KXaUiEIB1jHX+bztepLVRDorggkeh3anly73aopmn6YFewrnm15tKW/zHGz/LW87y3bXeqU91DyaKVbLtlf0voBCGcrOZUP4To/88Vl00icvy8wyhmc43Zo=
+	t=1709031934; cv=none; b=hZ1g0MKmR33MMpckW1oWESvG4cXDuk+Vwxt0GxaweOm3on3+pULJZLonYGhXAUUKMD/eLk7+UqvwnEJ7zb7tkNp2AyMU4KKI4VekjjfYaJPdB0eAbGv4ESZ4E8QJV9dCDraxRQ5EE+sHxw2FugAtKPyDYi4u05O1ZEaA++xaFUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709022794; c=relaxed/simple;
-	bh=rW7fAbIhtIRH6uFf53KwWwv4BvDxmE1+BtDpctFXvJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V/pwnYRf60EmUgqxEvU8QV3xMPgs69nLoP03xhPj0nYZT9Z1IOL9qw1hg38HP89rHBE+kLaX50EZFYu2Nck6mdBkanRFgr2BzYW2Jh7doHRPi2n37DtVafZVBI3Yjq9e5xTpAXhu9imRr18lGzKODULU4ocG5F3U06lrudqr/jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1resta-0001UR-RL; Tue, 27 Feb 2024 09:33:02 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1restZ-0039fx-Ie; Tue, 27 Feb 2024 09:33:01 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1restZ-00AXPK-1V;
-	Tue, 27 Feb 2024 09:33:01 +0100
-Date: Tue, 27 Feb 2024 09:33:01 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
-	Marek Vasut <marex@denx.de>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
-	imx@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
-	aford@beaconembedded.com, linux-kernel@vger.kernel.org,
-	Vinod Koul <vkoul@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	devicetree@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH V6 5/6] arm64: dts: imx8mp: add HDMI display pipeline
-Message-ID: <20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
-References: <20240226234532.80114-1-aford173@gmail.com>
- <20240226234532.80114-6-aford173@gmail.com>
+	s=arc-20240116; t=1709031934; c=relaxed/simple;
+	bh=0RYBig305OHqvLLkrKNyAb2MuH/1VgLPeQ2Uv68/Eoc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dSzNMeSvoFEOhKcL8HLALnVElb4LoV/vgdyvLqbn4JWvK4bZgpaty1f8jyMi0Y26PfPII9PmqP64YeV9YJgDYa+OjiryP7grpCmN5hcRC07K33HOKm6eRkoOQxNWJANmE8+Q2ToH/mOh1L1j0mm1gFwam+NcW/Pm8ss4L+dCmeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uax6S+ER; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uax6S+ER"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a4396b785b8so124371466b.3
+        for <imx@lists.linux.dev>; Tue, 27 Feb 2024 03:05:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709031929; x=1709636729; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JK61QB9o1xWii2ErgvXw3zRrKGKsozSxgEdvjx0laIw=;
+        b=uax6S+ERcu8eZPCVkKAZJhmS4HJ9oUgvPiwJ4DnvQ0ysnYcy6zpR97lTPJVI/D0GPU
+         kIcsRyTP+WDtFwnFomC5t4U95a9GVVEDmW2vLaiU1HG5his506U8u/UhhoDSBRYbaawF
+         hSACSsXzGyGaHX++Ia0kAC7dCPd2fJ4gzyWXZ38bikrBZPyDzRt5elyl+h0iojmugVuh
+         WofWwnS1DF0lfSCe68IG+APbi0TO05n1qHYB17yzOXV00idm6VB1mhQm7v9GR0u9EUDk
+         ZCjkFvb3FpMRsufcSJnYmSDVyb/NXmytsCclpTyZ120ie6Ull92AXROS71qziLtklbNg
+         +mTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709031929; x=1709636729;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JK61QB9o1xWii2ErgvXw3zRrKGKsozSxgEdvjx0laIw=;
+        b=xLO6a5Lnylo2xgIidFrDKr8KNgsU7U8qVu85csCx1ds80++ia1foCGfcexwIRkkpt7
+         JxdUpIemvPnqCe2+CSYVpE0RsKyWw/jrEJM0GkrBW6yrnm2G/9FzlrFPywXccz5LIuR0
+         a2Ei4ibmX2k9BW73+kJAUYvCCVVPxKP8j1sWxhVQBySeCZ0HFR546Gb044wC/rvBNVw+
+         wAJO3Eax0S2l1uxJlNiKEb8m4rYduhXiVJQBaeOdT8iqRt55e4S2ajGA2l6lhLChCcQx
+         WoHsd1k7cSVwpYmw6ptfNN43po5FHy2GK6JJeCgaue0/j7CEptG3ylbl7bMHEyi5JPin
+         WxuA==
+X-Gm-Message-State: AOJu0YzQ9HSzCAzO/dGwFtPiZvvyOODRiUqXlxV76f8NGJSBRcNP+M4j
+	vtb7KjVQtkFnJft8XDVCOtLatpdgGxHEVfPT+ryD6cvKk9HjVApH18c4VD1yXoc=
+X-Google-Smtp-Source: AGHT+IFkYbx8S7y1b8p7Kwr6a013ebLwdNvpHNqD9tmb0yy8Mo7cYn4LsFkmA1ywlo+7gQwmHMxqqw==
+X-Received: by 2002:a17:906:1808:b0:a3f:56da:5a40 with SMTP id v8-20020a170906180800b00a3f56da5a40mr6701159eje.23.1709031929608;
+        Tue, 27 Feb 2024 03:05:29 -0800 (PST)
+Received: from hackbox.lan ([188.24.162.93])
+        by smtp.gmail.com with ESMTPSA id rs15-20020a170907036f00b00a3ed811cff9sm643504ejb.154.2024.02.27.03.05.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 03:05:29 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Mike Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-clk@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] clk: imx: Updates for v6.9
+Date: Tue, 27 Feb 2024 13:04:16 +0200
+Message-Id: <20240227110416.259133-1-abel.vesa@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240226234532.80114-6-aford173@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-Hi Adam,
+The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
 
-thanks a lot for pushing this topic.
+  Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
 
-On 24-02-26, Adam Ford wrote:
-> From: Lucas Stach <l.stach@pengutronix.de>
-> 
-> This adds the DT nodes for all the peripherals that make up the
-> HDMI display pipeline.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> Tested-by: Marek Vasut <marex@denx.de>
-> Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
-> V6:  Make LCDIF3 disabled by default
-> 
-> V5:  No change
-> 
-> V3:  Re-ordered the HDMI parts to properly come after irqstree_hdmi
->      inside AIPS4.  Change size of LCDIF3 and PVI to match TRM sizes
->      of 4KB.
-> 
-> V2:  I took this from Lucas' original submission with the following:
->      Removed extra clock from HDMI-TX since it is now part of the
->      power domain
->      Added interrupt-parent to PVI
->      Changed the name of the HDMI tranmitter to fsl,imx8mp-hdmi-tx
->      Added ports to HDMI-tx
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 95 +++++++++++++++++++++++
->  1 file changed, 95 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> index 18bfa7d9aa7f..637b0265b0f1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1940,6 +1940,101 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
->  				clock-names = "ipg";
->  				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_IRQSTEER>;
->  			};
-> +
-> +			hdmi_pvi: display-bridge@32fc4000 {
-> +				compatible = "fsl,imx8mp-hdmi-pvi";
-> +				reg = <0x32fc4000 0x1000>;
-> +				interrupt-parent = <&irqsteer_hdmi>;
-> +				interrupts = <12>;
-> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PVI>;
+are available in the Git repository at:
 
-this node should be 'status = "disabled";' as reported by Luca else this
-node will EPROBE_DEFER. With that beeing fixed you can add my:
+  git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/clk-imx-6.9
 
-Tested-by: Marco Felsch <m.felsch@pengutronix.de>
+for you to fetch changes up to 13269dc6c70444528f0093585e3559cd2f38850a:
 
-Regards,
-  Marco
+  clk: imx: imx8mp: Fix SAI_MCLK_SEL definition (2024-02-26 11:05:58 +0200)
 
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +						pvi_from_lcdif3: endpoint {
-> +							remote-endpoint = <&lcdif3_to_pvi>;
-> +						};
-> +					};
-> +
-> +					port@1 {
-> +						reg = <1>;
-> +						pvi_to_hdmi_tx: endpoint {
-> +							remote-endpoint = <&hdmi_tx_from_pvi>;
-> +						};
-> +					};
-> +				};
-> +			};
-> +
-> +			lcdif3: display-controller@32fc6000 {
-> +				compatible = "fsl,imx8mp-lcdif";
-> +				reg = <0x32fc6000 0x1000>;
-> +				interrupt-parent = <&irqsteer_hdmi>;
-> +				interrupts = <8>;
-> +				clocks = <&hdmi_tx_phy>,
-> +					 <&clk IMX8MP_CLK_HDMI_APB>,
-> +					 <&clk IMX8MP_CLK_HDMI_ROOT>;
-> +				clock-names = "pix", "axi", "disp_axi";
-> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_LCDIF>;
-> +				status = "disabled";
-> +
-> +				port {
-> +					lcdif3_to_pvi: endpoint {
-> +						remote-endpoint = <&pvi_from_lcdif3>;
-> +					};
-> +				};
-> +			};
-> +
-> +			hdmi_tx: hdmi@32fd8000 {
-> +				compatible = "fsl,imx8mp-hdmi-tx";
-> +				reg = <0x32fd8000 0x7eff>;
-> +				interrupt-parent = <&irqsteer_hdmi>;
-> +				interrupts = <0>;
-> +				clocks = <&clk IMX8MP_CLK_HDMI_APB>,
-> +					 <&clk IMX8MP_CLK_HDMI_REF_266M>,
-> +					 <&clk IMX8MP_CLK_32K>,
-> +					 <&hdmi_tx_phy>;
-> +				clock-names = "iahb", "isfr", "cec", "pix";
-> +				assigned-clocks = <&clk IMX8MP_CLK_HDMI_REF_266M>;
-> +				assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_266M>;
-> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_HDMI_TX>;
-> +				reg-io-width = <1>;
-> +				status = "disabled";
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +
-> +						hdmi_tx_from_pvi: endpoint {
-> +							remote-endpoint = <&pvi_to_hdmi_tx>;
-> +						};
-> +					};
-> +
-> +					port@1 {
-> +						reg = <1>;
-> +						/* Point endpoint to the HDMI connector */
-> +					};
-> +				};
-> +			};
-> +
-> +			hdmi_tx_phy: phy@32fdff00 {
-> +				compatible = "fsl,imx8mp-hdmi-phy";
-> +				reg = <0x32fdff00 0x100>;
-> +				clocks = <&clk IMX8MP_CLK_HDMI_APB>,
-> +					 <&clk IMX8MP_CLK_HDMI_24M>;
-> +				clock-names = "apb", "ref";
-> +				assigned-clocks = <&clk IMX8MP_CLK_HDMI_24M>;
-> +				assigned-clock-parents = <&clk IMX8MP_CLK_24M>;
-> +				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_HDMI_TX_PHY>;
-> +				#clock-cells = <0>;
-> +				#phy-cells = <0>;
-> +				status = "disabled";
-> +			};
->  		};
->  
->  		pcie: pcie@33800000 {
-> -- 
-> 2.43.0
-> 
-> 
-> 
+----------------------------------------------------------------
+i.MX clocks changes for 6.9
+
+- Minor clean-ups and error handling improvements in both composite-8m
+  and SCU clock drivers
+- Fix for SAI_MCLK_SEL definition for i.MX8MP
+
+----------------------------------------------------------------
+Markus Elfring (3):
+      clk: imx: composite-8m: Less function calls in __imx8m_clk_hw_composite() after error detection
+      clk: imx: composite-8m: Delete two unnecessary initialisations in __imx8m_clk_hw_composite()
+      clk: imx: scu: Use common error handling code in imx_clk_scu_alloc_dev()
+
+Shengjiu Wang (1):
+      clk: imx: imx8mp: Fix SAI_MCLK_SEL definition
+
+ drivers/clk/imx/clk-composite-8m.c    | 16 +++++++++-------
+ drivers/clk/imx/clk-imx8mp-audiomix.c | 11 ++++++++---
+ drivers/clk/imx/clk-scu.c             | 22 ++++++++++------------
+ 3 files changed, 27 insertions(+), 22 deletions(-)
