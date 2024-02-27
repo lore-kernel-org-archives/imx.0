@@ -1,93 +1,263 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CAF14532D;
-	Tue, 27 Feb 2024 13:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7A313AA55
+	for <imx@lists.linux.dev>; Tue, 27 Feb 2024 13:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041500; cv=none; b=hcsnOTSlvWYVGm/bWb/v2jpcGyaZoO0uQfbCvTofWmUH+dLwK2OiEHi7mLoSNSrVbBz9V015n5KvrjDkc6QoK5+CSCSJkyyuIVVOAuu6g3R25iYwJ49yilG+2s7JjWgBbzF2I+kqT8pwjNF0/mkpWhTNj4DrdhQn2gNrErsM3QQ=
+	t=1709041933; cv=none; b=dryNSqS9KudIqRFB2tr5fdA/BPJaKNafWSNXGhCwsFcZXkm/H0sTBJV5Za6W5hJl9Rj60Fg72uzpUuAImC3cID7wBC1UEwLNz3e/EJb830vVRm74ngY1TAbzN4Zs+pBuBCqeyAUtHihNBTshYBQDWkqqU69dq+jdNcJ4GnDIiCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041500; c=relaxed/simple;
-	bh=ivQtRnQnwE8q1Hvdyp6+ecq3htSCZ8MTLUruMfvV5Is=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=Alnb78RgjjxHLfWRj0Rq2uSdZOOsx2p7g7dDLQwn38yVCeveQ/06Ixfl3vQTLEDBwO7lCs0fTG2/vdMMVpdCUO9mKe6gHDNh+iuGZQUtzsrCFut/J1hhZTUnB9b7yF5ln1PRTQVFdrnB75JB//relHM/ny+jHLWWzEG54/rtB6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qo5xc8md; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709041933; c=relaxed/simple;
+	bh=8uZ65RdBRrZVQLt3Jfa2DywrGVNgAqJJKx5brrMyuuU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IjPZTeJPKZ6qV2fMc2YGHbeBCuKiJOAJCSnLuLZyYf3MB/dA5iZK23gHvjFb2N+I01gWaY7xSqioRpvYnaxGL5It7/cjFRMSCsEWpVzB3ja3Lc/G8HjUdmdBj0NUfJtDnr71w+Uq1WLUUUnoxBbL3GXj6HN7AdZoTDaSHYnp6gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2ywKVnX; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qo5xc8md"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B92C433C7;
-	Tue, 27 Feb 2024 13:44:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709041500;
-	bh=ivQtRnQnwE8q1Hvdyp6+ecq3htSCZ8MTLUruMfvV5Is=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=qo5xc8mditP8KRO+O7n4jnJNB0gmxbnGJp4V0fAuVp/ihyEeOgdJaW/DPt5IFRwaL
-	 nrSk353JLNwEi/d6xeVX0LUZR22/RBEPw4ybhiGk8SmHSRdom/1SH3P7WZ91+Ul1wo
-	 +I7zPglMleQ8nqVhcpv8jT8XYOJVb8HJPMItmH4JLd+ilebayUYhjfQa3dqkCyDzgp
-	 VjZlNEKtFbAG8U4yiAY3mpI0ZA4BraOA7tgWYXbtgjoCtYVtHiXHtmht4x0ec29TX+
-	 nv0TTbe4g64khsiLEXkNB70wGhMJyjvRSkIDrF15ugS6/6qPpMEVECqFo8f8/Lbm1b
-	 OZYUBJSZZJD4Q==
-Date: Tue, 27 Feb 2024 07:44:58 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2ywKVnX"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso3650196a12.3
+        for <imx@lists.linux.dev>; Tue, 27 Feb 2024 05:52:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709041930; x=1709646730; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mIVyIgwTLXzwUXutxuVhEBa2JRV+KMFUyJvpPIJLlDo=;
+        b=T2ywKVnXvstFAPS5pQzECHHKGZZ2xnbeWW6Byn1Zna8Qf/mDm0/axmpeBoFWeg5ioJ
+         heN6dSA4/+tKm1IkQH7LcQ9aROGi7tgJdD2ipnGdQuDQ1ZQj0O035N5uFU9Mp4VBR0xm
+         fNTX0rMIFuNclCetZRmE+JR7wLNs0YRcsLl51TyJ+LIldEd6dMap7kMsxFgcI+5HMlbZ
+         Egb2KgQpKfPOTEsMyQ3V12+UsLOnRTdjr6o7inbNb5UgfAEEtRqQTGQLU1OZOZ/qrRWI
+         WwlGpYR/D6SBPSWcdXFx4tINm7pl/QzHAIJ+bjA2CB234TI8BFLa1Lzs7yP9Sgu5yd2x
+         gj5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709041930; x=1709646730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mIVyIgwTLXzwUXutxuVhEBa2JRV+KMFUyJvpPIJLlDo=;
+        b=oVqItOApT4jY5QCaAMTJ8xtJNmikI7VtA1tzHvA6LZRtA2TSi31o9JGpaG8ICbpHSu
+         EXdGdFnmZYjjitRiOubJLjSkFRgPoEMjJD2B4kPd3X1j0ttGfgVQwS5gIloKxXOuFkhA
+         k9TZVKfUDRHknA7WgICdbLkeGdJISF81Sl+BfcrRxyk9M0yV//eepVPDny3+PYP5HNM6
+         7w5nxvo6J15xdrXT5dR76DJY0MaIxICfDr5R1zshOXgefurGldOtacaTtVe6e6KHwQWh
+         c6l3i2uwx4TqU5VHSEe1bjyWZzbyvca+YEJ+fxYK0EzngNVSUsmQ3Xu+BM1wdBI/kXnY
+         z/TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWohHZPB7nmC/QcMCYbzsF0krarJGBZJEfjA3AXfJ0Ht4WMfJEBC7TRRM5rit4SgWF0XWIvCqt1rQFBsd7tPUOK7VXE
+X-Gm-Message-State: AOJu0YztpTSzNPFDhachgv7sHJoPDmOt63f6PSfXDblKK+q/IH5nkPKA
+	E4XPVRl4AArR3CWPUWnVJV9LCE/zlkBLoFbPLgXSh81+7NIUWu9fK+b/gZpGB83Qq8dPqT8PMHr
+	pkD+R6hb/F+YR5s8//lHaXWC6tFQ=
+X-Google-Smtp-Source: AGHT+IGDbPuViPnz5x8Or5gGEDuBn9xS6cKSAFV4NoAIctp6lQe6NM7m54HwbtmTcMeIm3lqzbT8HflIHThgZMUE2gs=
+X-Received: by 2002:a17:902:db0e:b0:1dc:b77e:1973 with SMTP id
+ m14-20020a170902db0e00b001dcb77e1973mr2408566plx.53.1709041930195; Tue, 27
+ Feb 2024 05:52:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
- imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240226203358.275986-1-Frank.Li@nxp.com>
-References: <20240226203358.275986-1-Frank.Li@nxp.com>
-Message-Id: <170904127295.3703756.16287428647628202898.robh@kernel.org>
-Subject: Re: [PATCH 1/3] arm64: dts: imx8qm-mek: add adc0 support
+References: <20240226234532.80114-1-aford173@gmail.com> <20240226234532.80114-6-aford173@gmail.com>
+ <20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
+In-Reply-To: <20240227083301.4saxxuv4n6aoqnl6@pengutronix.de>
+From: Adam Ford <aford173@gmail.com>
+Date: Tue, 27 Feb 2024 07:51:58 -0600
+Message-ID: <CAHCN7xKnEvrfYMZau95e7aknTkdqrQLfgWZTfb6mS3Yt5BT6+Q@mail.gmail.com>
+Subject: Re: [PATCH V6 5/6] arm64: dts: imx8mp: add HDMI display pipeline
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
+	Marek Vasut <marex@denx.de>, Kishon Vijay Abraham I <kishon@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, imx@lists.linux.dev, 
+	Sascha Hauer <s.hauer@pengutronix.de>, aford@beaconembedded.com, 
+	linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, devicetree@vger.kernel.org, 
+	Lucas Stach <l.stach@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 27, 2024 at 2:33=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
+de> wrote:
+>
+> Hi Adam,
+>
+> thanks a lot for pushing this topic.
+>
+> On 24-02-26, Adam Ford wrote:
+> > From: Lucas Stach <l.stach@pengutronix.de>
+> >
+> > This adds the DT nodes for all the peripherals that make up the
+> > HDMI display pipeline.
+> >
+> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> > Signed-off-by: Adam Ford <aford173@gmail.com>
+> > Tested-by: Marek Vasut <marex@denx.de>
+> > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> > ---
+> > V6:  Make LCDIF3 disabled by default
+> >
+> > V5:  No change
+> >
+> > V3:  Re-ordered the HDMI parts to properly come after irqstree_hdmi
+> >      inside AIPS4.  Change size of LCDIF3 and PVI to match TRM sizes
+> >      of 4KB.
+> >
+> > V2:  I took this from Lucas' original submission with the following:
+> >      Removed extra clock from HDMI-TX since it is now part of the
+> >      power domain
+> >      Added interrupt-parent to PVI
+> >      Changed the name of the HDMI tranmitter to fsl,imx8mp-hdmi-tx
+> >      Added ports to HDMI-tx
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 95 +++++++++++++++++++++++
+> >  1 file changed, 95 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boo=
+t/dts/freescale/imx8mp.dtsi
+> > index 18bfa7d9aa7f..637b0265b0f1 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -1940,6 +1940,101 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
+> >                               clock-names =3D "ipg";
+> >                               power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
+HDMIBLK_PD_IRQSTEER>;
+> >                       };
+> > +
+> > +                     hdmi_pvi: display-bridge@32fc4000 {
+> > +                             compatible =3D "fsl,imx8mp-hdmi-pvi";
+> > +                             reg =3D <0x32fc4000 0x1000>;
+> > +                             interrupt-parent =3D <&irqsteer_hdmi>;
+> > +                             interrupts =3D <12>;
+> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
+HDMIBLK_PD_PVI>;
+>
+> this node should be 'status =3D "disabled";' as reported by Luca else thi=
+s
+> node will EPROBE_DEFER. With that beeing fixed you can add my:
 
-On Mon, 26 Feb 2024 15:33:55 -0500, Frank Li wrote:
-> Add adc0 for imx8qm-mek board.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
+sorry I missed that one...and I though I was done...sigh.  I hope it's
+not too late to get this into the next release.
+>
+> Tested-by: Marco Felsch <m.felsch@pengutronix.de>
+>
 
+I'll push a V7 tonight and add your tested-by.  Thanks for testing.
 
-My bot found new DT warnings on the .dts files added or changed in this
-series.
+adam
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx8qm-mek.dtb' for 20240226203358.275986-1-Frank.Li@nxp.com:
-
-arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: system-controller: pinctrl: 'lpspi2cs' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/firmware/fsl,scu.yaml#
-arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: pinctrl: 'lpspi2cs' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,scu-pinctrl.yaml#
-arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: spi@5a020000: Unevaluated properties are not allowed ('fsl,spi-num-chipselects' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/spi-fsl-lpspi.yaml#
-arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: spi@5d120000: Unevaluated properties are not allowed ('nxp,fspi-dll-slvdly' was unexpected)
-	from schema $id: http://devicetree.org/schemas/spi/spi-nxp-fspi.yaml#
-arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: mt35xu512aba@0: $nodename:0: 'mt35xu512aba@0' does not match '^(flash|.*sram|nand)(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mtd/jedec,spi-nor.yaml#
-arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: mt35xu512aba@0: Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mtd/jedec,spi-nor.yaml#
-
-
-
-
-
+> Regards,
+>   Marco
+>
+> > +
+> > +                             ports {
+> > +                                     #address-cells =3D <1>;
+> > +                                     #size-cells =3D <0>;
+> > +
+> > +                                     port@0 {
+> > +                                             reg =3D <0>;
+> > +                                             pvi_from_lcdif3: endpoint=
+ {
+> > +                                                     remote-endpoint =
+=3D <&lcdif3_to_pvi>;
+> > +                                             };
+> > +                                     };
+> > +
+> > +                                     port@1 {
+> > +                                             reg =3D <1>;
+> > +                                             pvi_to_hdmi_tx: endpoint =
+{
+> > +                                                     remote-endpoint =
+=3D <&hdmi_tx_from_pvi>;
+> > +                                             };
+> > +                                     };
+> > +                             };
+> > +                     };
+> > +
+> > +                     lcdif3: display-controller@32fc6000 {
+> > +                             compatible =3D "fsl,imx8mp-lcdif";
+> > +                             reg =3D <0x32fc6000 0x1000>;
+> > +                             interrupt-parent =3D <&irqsteer_hdmi>;
+> > +                             interrupts =3D <8>;
+> > +                             clocks =3D <&hdmi_tx_phy>,
+> > +                                      <&clk IMX8MP_CLK_HDMI_APB>,
+> > +                                      <&clk IMX8MP_CLK_HDMI_ROOT>;
+> > +                             clock-names =3D "pix", "axi", "disp_axi";
+> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
+HDMIBLK_PD_LCDIF>;
+> > +                             status =3D "disabled";
+> > +
+> > +                             port {
+> > +                                     lcdif3_to_pvi: endpoint {
+> > +                                             remote-endpoint =3D <&pvi=
+_from_lcdif3>;
+> > +                                     };
+> > +                             };
+> > +                     };
+> > +
+> > +                     hdmi_tx: hdmi@32fd8000 {
+> > +                             compatible =3D "fsl,imx8mp-hdmi-tx";
+> > +                             reg =3D <0x32fd8000 0x7eff>;
+> > +                             interrupt-parent =3D <&irqsteer_hdmi>;
+> > +                             interrupts =3D <0>;
+> > +                             clocks =3D <&clk IMX8MP_CLK_HDMI_APB>,
+> > +                                      <&clk IMX8MP_CLK_HDMI_REF_266M>,
+> > +                                      <&clk IMX8MP_CLK_32K>,
+> > +                                      <&hdmi_tx_phy>;
+> > +                             clock-names =3D "iahb", "isfr", "cec", "p=
+ix";
+> > +                             assigned-clocks =3D <&clk IMX8MP_CLK_HDMI=
+_REF_266M>;
+> > +                             assigned-clock-parents =3D <&clk IMX8MP_S=
+YS_PLL1_266M>;
+> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
+HDMIBLK_PD_HDMI_TX>;
+> > +                             reg-io-width =3D <1>;
+> > +                             status =3D "disabled";
+> > +
+> > +                             ports {
+> > +                                     #address-cells =3D <1>;
+> > +                                     #size-cells =3D <0>;
+> > +
+> > +                                     port@0 {
+> > +                                             reg =3D <0>;
+> > +
+> > +                                             hdmi_tx_from_pvi: endpoin=
+t {
+> > +                                                     remote-endpoint =
+=3D <&pvi_to_hdmi_tx>;
+> > +                                             };
+> > +                                     };
+> > +
+> > +                                     port@1 {
+> > +                                             reg =3D <1>;
+> > +                                             /* Point endpoint to the =
+HDMI connector */
+> > +                                     };
+> > +                             };
+> > +                     };
+> > +
+> > +                     hdmi_tx_phy: phy@32fdff00 {
+> > +                             compatible =3D "fsl,imx8mp-hdmi-phy";
+> > +                             reg =3D <0x32fdff00 0x100>;
+> > +                             clocks =3D <&clk IMX8MP_CLK_HDMI_APB>,
+> > +                                      <&clk IMX8MP_CLK_HDMI_24M>;
+> > +                             clock-names =3D "apb", "ref";
+> > +                             assigned-clocks =3D <&clk IMX8MP_CLK_HDMI=
+_24M>;
+> > +                             assigned-clock-parents =3D <&clk IMX8MP_C=
+LK_24M>;
+> > +                             power-domains =3D <&hdmi_blk_ctrl IMX8MP_=
+HDMIBLK_PD_HDMI_TX_PHY>;
+> > +                             #clock-cells =3D <0>;
+> > +                             #phy-cells =3D <0>;
+> > +                             status =3D "disabled";
+> > +                     };
+> >               };
+> >
+> >               pcie: pcie@33800000 {
+> > --
+> > 2.43.0
+> >
+> >
+> >
