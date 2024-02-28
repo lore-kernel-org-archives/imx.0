@@ -1,75 +1,62 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2073.outbound.protection.outlook.com [40.107.13.73])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2077.outbound.protection.outlook.com [40.107.13.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB297440A
-	for <imx@lists.linux.dev>; Wed, 28 Feb 2024 19:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE1971ECE
+	for <imx@lists.linux.dev>; Wed, 28 Feb 2024 19:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709147695; cv=fail; b=WvltT9upb67gI8w2mpslleMVIl52vk2NkWVSIEdPYmPzOq/xvvmS+w6r8iXrvUPbH0B8Z2ctUUpynlfA0tgHpMU/bSFwjmEs7nUM+vO1+nMsB+DR3FgTo4p9AU1ovG7RflMvgNOCczpzV8+EbrHIlHpYJBW0/Xa6OxLZ4j30W+c=
+	t=1709147855; cv=fail; b=pLf6YPCiY4ZRLeGr+32J0GVWefZPtZEMJBR2Sv8hn2lMpVrnkwAQylN9StZpjp6tL4bYLx1OvTR2SG+8Rgc0fTtGLF584z/9lKA1sfdv5kImSgEz2WAQtFotSOgzx7SFVPNip4jPMjGHG0zG4Z9965FBaF+FxD/F3ZF736eqALo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709147695; c=relaxed/simple;
-	bh=scx2tJGGMPCuV31oHuIscaL9iO3JoVAe7DIQfQq/hnM=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Sh1mxWO32xvbpmF5Nlk5RBTKlggQOYJicyshsJwACBMLQhnFZMId0LQ71A8DF1naisnOYWOh1OwKUT+FM2WEqpMP8omDAQ/+59lJ2qXrj8hSOSiRqH4OuWvH55CO6uUv1HOn04GyGeDIPgPyaVcTOM8wNgePpz+eBGZNEbMP8OA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ETxHnBV3; arc=fail smtp.client-ip=40.107.13.73
+	s=arc-20240116; t=1709147855; c=relaxed/simple;
+	bh=lkP7qia0nfbe8wj/WqGQQprK2DA+sNk7UUKg6SOfTt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QWPvFdexGD6ItYRDCWave88/eCxtRLux+MMWugEY0sMMtEqa0VF+moPsMqP7toGTcCzjLgGJXoTt/JCslwtsC6R9kAmrSBXQkROJwr/soMUwWmuoDstLcIg6+oN/D5UnzT6GnVlbfizMBf8siJIc9GygpGVE5w9nzZoPfUULmF8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=p92BeJhC; arc=fail smtp.client-ip=40.107.13.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ETxHnBV3"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="p92BeJhC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KmcyLLVikJdftgdSnKVaY70CtGA8GAiMIzsB6zeyFAGjvjd/8b1lxeSydBLxyP9eS1/Tx/pVhJLZqJ8WTc9MzIXh5vD56hsIfcTOS6YQvbmak473OTFsqaH5fiSqzKxl5CvOt2nw2xIk8pL4EXzEnZ4Qh4StDOfSMFTSu6jaWMfnnAKMzXevk3reKmsz/0dndwWH+gcQqwxNOR33bNoZMKO83lodsIPOjlZm5V0tO+vJc6RCwRuSYf2KUxrfgT5IpVVeVMFOTT2xDQH1pI8Y69usXSuse7RYysBo6rraGTYtQtPGjP8DZGnIstKYmH65zS/MKkyVX/s739MLms6BGg==
+ b=XVUTD6WwlbeH7uVB74AI88t5ER6idgETM28CzKbjKeMDV9ljNmwbciOIqSBy8pVdUqeK4Uekj3XBVJLJt8J5HNwz+UbjIjMeUt+hpSPTdXMhcCOEgpA55x6JEmUF/XBit6rIcGLCXD0KyhLWkSf19Znrd+t1RVPEdHq42iHbifueC6GzGsngc6yaUx+tBwQGAvImwg5ewjLRKkz3j7NfchKyqEHoXwxqm+CIC0Qb8Mp9w/j0cHB3eSAlUoJPZ4EKir1PZ4+hq9KJr3coiuo35P4MKpyA6ozcg2d9v1yzSBnO+nYtgrvNMF+RXoccFQIwwY6CQg4Zu8/Syrn8bnm3rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/PZ5N9gHK+DW2QnqzPlUHbIbh+Ah3oD1V2TcxCSFXQE=;
- b=mc80zldJTs7FvoqOXCwLWZyv0ww0T7ZkqxQHoMVr/2wTJcnuHjfU+Ij+NZF5hpdSYTtHUOx2eD5f63VSe0T4+kTRWjQwMYuM6uE9ILcaY48TtFDuA6JVf5N5uhOwWLrQ08M81YRqu16PJMpNyQ3C2HOf81w79nl0ALzsj6/w+HXfcdvbh8OQoO1L7YUiJlYgv2vEbd0L5Jog7VqKLDlcQ7DCCyxAobyLDbAwVVeXuOLegSTVdn1xY9JDPzPZXnPeAa8P2tZMazJSqd8fc2GMpwu9U/AUDb1eDJHeCF9Jgnx1jckj+DlCqQxIAV6AFV4E7IjOwEYqC4fXFGJE/lHnVA==
+ bh=b94aws+kxhFrj/P95ap7TccXYEM6hOfICE6w1SnnVTk=;
+ b=hu7vCrSxhhvbmI148ttq2BEHR5FZoIyjz8omXDHTgGkNTNRNYmqmD32qcjWj5t413g3IYTwkDJKIc7EswEW+veBLEJfyvL1sLSxY0+bFrTmxUR5dgRviT2Ps26SxWunNUXEmmgmQnY6HPCh7II5CLT5fv4mD0MoBXmdEOrXESjIhYNMfbKX1jTqeZl6uiMzwS71rzC/XiUokPP0Z2szOfBfElq0okigPCkOrJwgKdz0AiGLRcL8u4LS/MDAD1VBdhj7N+HcjaPPLyVp2yNU3+84fL7LiisvsGY4ad7CBjqHy8mpXzdfrNSFkUagKLCBkkZS0fTSD92jsVagiigETuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/PZ5N9gHK+DW2QnqzPlUHbIbh+Ah3oD1V2TcxCSFXQE=;
- b=ETxHnBV3W52mH8X6RW+d9ylK49SJ8xf0wukiw8uNF2EP2GsoJzN3pBjHb+35IX7i37DmnAF4ew882IuNpYSLZcOj+SkpEg3pASPmWQwBdI0qbguEIhoY2cr+01ZKfcpjJ/pyrLTGAiCEcfdBw5PBTJ9MxydK7FRSzLXq6eeum4I=
+ bh=b94aws+kxhFrj/P95ap7TccXYEM6hOfICE6w1SnnVTk=;
+ b=p92BeJhCz5nX+mzbfuCN/6mnaUPxMz9/+Thneuq+G74ii+u1QGnXy5j+YQTwPJ4IBEHETabYs6+uaKk76iOlwZqeCtbFERsFYttA3aaxCNDP5814XO3IfhYAFseHcUpe81mxFiseARdk3VqTf5VL6Ascgltj04cvuGMC1nafwDo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by DU2PR04MB8887.eurprd04.prod.outlook.com (2603:10a6:10:2e2::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.36; Wed, 28 Feb
- 2024 19:14:45 +0000
+ 2024 19:17:30 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Wed, 28 Feb 2024
- 19:14:45 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 28 Feb 2024 14:14:16 -0500
-Subject: [PATCH v3 4/4] arm64: dts: imx8qxp: add asrc[0,1], esai0,
- spdif[0,1] and sai[4,5]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240228-asrc_8qxp-v3-4-d4d5935fd3aa@nxp.com>
-References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
-In-Reply-To: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-c87ef
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709147666; l=10528;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=scx2tJGGMPCuV31oHuIscaL9iO3JoVAe7DIQfQq/hnM=;
- b=sHU+x1Vg5EFj8r6rels9h2fP8VCNCl0RVCmAWWhe15WTPYGuZcRWtjQzzMwsoQHcm467UFzDC
- iSEc7thAUecDro5J+Io7rZbQeD3wnRlHoTAXGcAuFoiQ+n4PcoT1ZXm
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR03CA0299.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 19:17:30 +0000
+Date: Wed, 28 Feb 2024 14:17:22 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: abelvesa@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev, linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH] clk: imx: lpcg-scu: SW workaround for errata (e10858)
+Message-ID: <Zd+GwrE5IvDgZX/c@lizhi-Precision-Tower-5810>
+References: <20240228082649.1633083-1-peng.fan@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228082649.1633083-1-peng.fan@oss.nxp.com>
+X-ClientProxiedBy: BY3PR05CA0052.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::27) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -79,393 +66,155 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8887:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9dd53318-9b33-4dc8-2a9c-08dc38918656
+X-MS-Office365-Filtering-Correlation-Id: e0026e75-55f9-4fa8-a103-08dc3891e8c7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	UqpV8YPrWWehn1Fsaa3j1Yft2i7p6jSwMoLxxbpA6y5ToHdb5W6ZKqggu1Nzyrghwa8H13lanKfjXk/v1Qjr9vCPmPR9LR0v4v8fAuQeX2I6WPILyHJAw03Xegb/3f8S0d1kuUBYY//gLhCzZIFwihzeboHubsVF5IDjfBHod1KyCCfEs3ymBix00aF2ODfBJ5pKlirW22S+4TLJwrdnjzK1hr+BAqvOj2Pxu7+rqifmolWHBgQS0d9BGZ3AWM6LldezieOqi3sMpgFMWiZqIp4crfCfv8V3WBWgK+AzTIjlwr3Q/zpNz3gn/3U8bpKno6n/dcO85csuqoQ45TatdbAY+G2zUtPEan7psYb13CyVFVFayC1TajpxobZjiO/YsjSv5e5YdJcoc5+Px5B8NCsSBS6haGoZdbqy8ibFOp4xC5XAXxCJZmYhsx4hbIto9GfEXQGQ31qqLj9SmByhjjlaQDKGawgfjKrd0CwIkElxcmuJBoX/JViMIY5WFcA6k+oZ+JrSYk2sL9IiyvHZkKjuT6LL3Gjr7TP336sbvXtsGnVu8C9gpqjbgopkWF4kYWkdduFINmufRjWlmnAjAAumkdhS0KjO12h0iZ8N6+dEE963QNA/zcUgUxpYrSD5C2Hu1JT/JyEtZQppCkAT4qbP5N465QwhDeaH5JW+91z/6Y8JYny8du4OoncBfCTEgtEoulluxAUgEmuNf0qa6bW68+uCsVSi6zL7pBx8geY=
+	2+vAESItKLiZwe8I22a0G7Qxcy6/mu6h6KO4iGS162M1cI3BaSXUOY8JZo25ojzxyAydLQipNrfLTgvquOGLsLdZTSUg4IYpCz/zRKqy2X/ENRq0qypPqDWGdxZMv4vF24KggaNUrDSsoFSSh5rZCZd4rUe9eJrPoLOKxsKnVc4fEsXY0XKyeOM1Gtk5ldUE4M6EdJdaYDAetZbGgAB49P/Nap2Jzmux5qzymIW9YN4V1It8jhzsXiI5eKDlQcqyW/bMz+heN/obnkYCM1OayrBQ4UJsvZ9Yem1xxQJrMbjqsC4yTq+WRtrIZsYS3FdfW8iefQx/QyXNZdRVNvq+NLkRUYkcgHf+O5E9MfotQu6T6eEbAQiunYc/ySdk3SOheyj6jVIok2UXNAcJqMlmDv2EVdmhyc5zrHUmvVK048hrZ/3RpoOdguA9fFb8CbQwgaueMc2qn08MHrj6wuOJ39Jedc1btVhVofSDaRpm3XR3HhPOSGACB3zWgVvbUsRmb6jWkiV7NwfQjCPaUJs6LfhhOc9vYkTjH5gN0/KdmwqGgb5s4zDxeT5A3oZ1DKHZuPN+rAnBW3IkuXhnjW6cgNB5r7k259CTd0HhgKL6wvbcTDSuOfmGGikkjCG1P246i016PnXAT1aH+MCKDLIKOyXA4/TEE+pQzeViFUpnf7s+9oe+BoemHafd3zz1goUEn7/TRxT+P7dFnGJVf8SgOK46TuDN5TGshG8PClYPBIk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005)(921011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Ym5ob2VRbWxkMURZNFdnOXAvKy9KbVAxYm5WQnRCeFB6Y05rOGI3U0laSTBB?=
- =?utf-8?B?WEVESUtRY1FEeWRlVkdlTzJ3MTRzYXlmcW5PeGpwUWlFOFdGSVIrQzJGS1Ri?=
- =?utf-8?B?V0FpWGpWOVZXajNWeDkxU0x4RHBGWEJhM0F1M253azB4TFBqbFhudzhzUnZX?=
- =?utf-8?B?aW45dk5MNWtpdXcybXkzWEVPeitwTzZuQ012eTd4QmlyaUhTRzFqZ2xFWmFx?=
- =?utf-8?B?OGJtV0lMVk9oNGlTSXdHRzUwL1Y3SlladmdkeFE2SkZKUDJ3RzdmOGpERVVF?=
- =?utf-8?B?OVh0ckRrYjBwdS9XbE43VXQ0Sk9vYTlBdm8vNitPV2lHWkVvV2YyQlZmWXRk?=
- =?utf-8?B?emlBT2ZNSnpWWEFUSkk4Y0YvaTF4dzkrZ2d1dVJDVkxRSjZEbG5ObXpDTmtj?=
- =?utf-8?B?SVVtei9GelRhQjFZUk1LeUhHdDRrQTZhZHpSQS9LN3B1ZmxTdnJzSEY4MmVN?=
- =?utf-8?B?VDJUZ05lVUVHeHdtWVA3c1VuWUMrdlpTUzF2STRIWmVYUVFSK1JjUTNCTnFk?=
- =?utf-8?B?T3pKZVZHdDZkU0lTR0RWdEpDcHovWHB6alVvQ29DTkljd2NvMFJPZjc5cG9w?=
- =?utf-8?B?WEViYmZNY3hqYS9BckhDTTczNWhqM3V6aFhKb0dUcTFnY0MzbkxNMngzTjBD?=
- =?utf-8?B?NE1PSE8vNVJqYzc3UkdFc3JLNW82YkdDRXYrTUdUV0J1OTN6WnkyTXlFbFV6?=
- =?utf-8?B?SkRVMVZRS3J1UVo1QzBNVVc4bjVKOG95Vk9SZ2g2OTdpTlJsWXJGVkptUDkw?=
- =?utf-8?B?Q0p6ckFPRXdMQ2drMHdDRnBQSGFjV3RXYzMvb0xuVnVwRklxVUx4c2xnbS8z?=
- =?utf-8?B?THlMbVF1UDR1a2psMlBDWFpoQ2p2NDBTMXBhZVNaendYaCtTckZsTFAwdDZW?=
- =?utf-8?B?dElRTkRWVXBtTzlrR3FXYnQ1UFFSQ2pzSmpPWW5xejJ3UzFMcjdDR3NDSTFk?=
- =?utf-8?B?b09aR0VHenF0N2pRWVRhcXdKVm1xVDg3TElKOUw2YVdTQnpRT2d0dTl0dFlo?=
- =?utf-8?B?S2pweXBEYUx4Q2dEejZ2dnkxR2wwOWVDRXRMMExYa3dydEFjbElVZXhQVllM?=
- =?utf-8?B?ai8yYlNydkMrVW1NdjJxVDRaRlhpa0tvN0R6NThraUFPQk5qdDF2amJBM2NG?=
- =?utf-8?B?c1NDbXdWN1BVaWlMZzdxT0VQbUEvL3BMcUx0MWNRSVo0dWlmZzkvK0NEYmJV?=
- =?utf-8?B?YjRRTXMyOHdVbnpGOFVyTTN2cXNWYkhJMXJQVDV3Zit4OEYvSVN3VEZ3Wkpq?=
- =?utf-8?B?S1YrZktLbU5aRmk3NzhKdFVsUkV4d2ZPMjhJRkFralRkMEkvdzBOanpFcC8v?=
- =?utf-8?B?Wlh4Ym5KZTViMUpEYWMxaVFxcFJvR3VHQTlqd0NsY0FsTmkrUVAybXJoeTFP?=
- =?utf-8?B?cGJjd2lzUmpQT0VjcWVxU25uTGNieE05Ni81U1JEd29Xa3RiMDlHMm91NzV0?=
- =?utf-8?B?WWgxaVJrWDF4OXFXOTBsaCtwdHJlR2xTQ09qWWNQd2R6OThGZTUzdGJsSkF1?=
- =?utf-8?B?ay8wUmJ4eWFFd1lpbVFQR3FiNFYyS0NOT3FGeHNYNTBYalBTNmo0cmhlNlE1?=
- =?utf-8?B?Tjhhai8yMDhGcVBycTRiL2J4MDZMQ2Mzd1hyRFkwa1htdTVHT0hGb2lia1Rl?=
- =?utf-8?B?Yjc3TC9JOERZYkZaTktqRzhDM0xSSG5wcmRTOFpsandrT1dOMWxFUDlnN0JN?=
- =?utf-8?B?RGtOWVRkTHJFTXpJdGlvMVppd2NEdmVaekltbFdyVEtZZmxOS21ZajB2ekR3?=
- =?utf-8?B?Mkt3N1gxb1FKTXgrZEtLRnRpZ2JSb2Qrbm5IT0FERWRvRktzOWQ2bVpjZHo1?=
- =?utf-8?B?ZFhDZlRCY1AvOCt6YW1LZ1BaZUV6dnFnYVozRHFsU0dvNTRlS3Jja1BNUFp3?=
- =?utf-8?B?RWFrdWRRSDhGRGt0RTJPRXFnMHA4K2dEdmRlZEtKQ0hZNzdXaGo1SytwN2x0?=
- =?utf-8?B?M01vcm9tNGxsS3Rsb3R0REFTd1VRQ2hxMVI0OGhUSUNDRkpNcGhzVlZPRzgv?=
- =?utf-8?B?UExhK0drRXp6THhCU2VCMUFld2syeXdUaXhoMkwzcGtkYVVtK1duQ1dwUU9K?=
- =?utf-8?B?NEkzZWxhcVkwL1FQZ2lqa3BWS3dHT3hqRTYxbmkyRlhGaFRSczNxTTYySjBE?=
- =?utf-8?Q?6bqt/0FOWRXNNen+dWlO/QM0l?=
+	=?us-ascii?Q?G2buH+sd++cGLTkeIt1K+/iG6A7NfAliMegaQ/E5nlk1PIX4+I9+W5F8IbLu?=
+ =?us-ascii?Q?iMD1gxPY0EHfMCxw3K96DuEbexpQ0C1aT0l3cRPXDSI7VoIB7gF6j7sy4sSQ?=
+ =?us-ascii?Q?kCnpZloTvdg8T/o4QPen2xoHpVYayVG3k99mQskWL5m17Bzfk4TTSZZQwFcm?=
+ =?us-ascii?Q?iUjxpJzHUdqBNTcdAucmOhAVAkFvGSpw1qelEzUUOXvytvlhkvQ5H3P/cRfS?=
+ =?us-ascii?Q?8JxU7CRrhzIx+jBgHw+gxqeORbJ4NKdNslMOBNXhk2ObjXybJPkGn+KSmU8o?=
+ =?us-ascii?Q?1Y3TGAyC/3zEq320WFY0A7GoGopCEdEhF4GDqrby4zmxMdTQMH3DZgcwH11d?=
+ =?us-ascii?Q?f+sQL9QkIVeNeghVkPDAtRbzGDb0Hct1GQd8LZkV6Yq7Fc5ZVRufjnGqtRVp?=
+ =?us-ascii?Q?UviD0+ZtBq33qZLlSAYCto4fCaLJpZudqqjQQjjDsb64xDte4RBn7tBeZ6AI?=
+ =?us-ascii?Q?H0IRgsUimAUY8yqWBSvV/SzqOui7nA46EQ4EXCGH2VwOL0KB+kQGuSaeDfOg?=
+ =?us-ascii?Q?RtmP+McQlDO7ak1Ql+sDRkRBjw/3cBvWMPSOBQ2dnPvqKEbxHVjgcPIfs3DF?=
+ =?us-ascii?Q?tyyWKWYhhF2yaQdElaXxQipejmGeVtUUtomjGCUa4GDnjflnzpR3b6C3qhvk?=
+ =?us-ascii?Q?JcJEvp1ne4envXH1hFvuLs7SUdsunk4IG7vS0h+//69Y1rECYWqhKY+9E2eJ?=
+ =?us-ascii?Q?1+T52t9oviM0HHks4rtK3XB9byaO4/aA3pJqzvHT+W2lunKHUw1ymkYt7YX/?=
+ =?us-ascii?Q?POg2iYCZLjgo05er7kM4IBJiKKw4RiuvuNAVUSKaBhWChsqZGn1otBesfIQU?=
+ =?us-ascii?Q?t8T2RHLmkGSrS01ueVGTO2ZrhlXzmIoUk86kSEOJUGT/Wi3g2WubLA1hu8ba?=
+ =?us-ascii?Q?tZFg+gLwyAmDFNJk370A06KNIA13wNFMeDtQiwC/DMeq6jqsHx219vIaq6nU?=
+ =?us-ascii?Q?34OsBTLOfB1rNNP/rrIuhpFrsOGrjCPOklb0pj0J1PZLf3I+s63wmmg2tL6N?=
+ =?us-ascii?Q?jnGXZmssf/CQUp40Bvl3qRlbqaug35mvGplCNcYqTgUaIQxP2qygAQC9trXB?=
+ =?us-ascii?Q?maTAu9mK4Lv8Wb8pGAFiEgr89QgZlPU6QzYvULswQGNe7+tGjO7NE9VNVHS0?=
+ =?us-ascii?Q?O1kDhSBkcCGtvb88ORFS8hYCVHsyGlvcVSVdOpJOKg9vi1ZF3RPg26OvMYe3?=
+ =?us-ascii?Q?9u5zPprrPWscVNAN0MFDuWhvthdpdtyjs8nTjP5RUDpTPQucWgRaZe2YmvNj?=
+ =?us-ascii?Q?OPCN6/Ga1+o4k58XgHrFPa/s8+cYCcXyODkj7WomNwp4oGiaeW6tEKEH6HAK?=
+ =?us-ascii?Q?1/CJNUJv6/uk1LZPrWDyc6U7X9bVNwr/7/S45d4TYzfNtY522g17FEbvs2vM?=
+ =?us-ascii?Q?k9vzV7Ki8NLFExhIvfaWKpOQZQAk1AlOMt+5Mi+oWSVZxs6IE79FFsgAQuUg?=
+ =?us-ascii?Q?oLboHIy06QZuiAdir48Ydy4JMaGtGtdfwOE8PB0dLMUgEQOXmEo+nUN2QCEk?=
+ =?us-ascii?Q?K//gdqWXB1cqE7PEYt7aKzlZ5Y397FhTkfEneMjC9dC5wHSpcOv1vtvHQn0H?=
+ =?us-ascii?Q?Ex0L2BzifE++BNhj1alnmDHF/bakQd/SZlSryEN0?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9dd53318-9b33-4dc8-2a9c-08dc38918656
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0026e75-55f9-4fa8-a103-08dc3891e8c7
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 19:14:45.5890
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 19:17:30.7594
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FumNqSaGQr4ynfRbuZqgb1yEeQA7KwwoRwJVHejAXKjVfKRWu1wxw/P0BJkm4rUDwiXTO7j7UDVUComjMKU+Rw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7KqB09uDoqJnCB209HPKhW1LqKD5y6EGrqYoHxyMpSZ+3pm0mlV3V+J3INvAMiDsLS6PKqZslio/uiIuDu/dBA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8887
 
-Add asrc[0,1], esai0, spdif[0,1], sai[4,5] and related lpcg node for
-imx8 audio subsystem.
+On Wed, Feb 28, 2024 at 04:26:49PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> Back-to-back LPCG writes can be ignored by the LPCG register due to
+> a HW bug. The writes need to be separated by at least 4 cycles of
+> the gated clock.
+> 
+> The workaround is implemented as follows:
+> 1. For clocks running greater than or equal to 24MHz, a read
+> followed by the write will provide sufficient delay.
+> 2. For clocks running below 24MHz, add a delay of 4 clock cylces
+> after the write to the LPCG register.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi | 304 +++++++++++++++++++++++
- 1 file changed, 304 insertions(+)
+Fixes tag? 
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-index 07afeb78ed564..78305559f15c9 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-@@ -6,6 +6,7 @@
+Frank
  
- #include <dt-bindings/clock/imx8-clock.h>
- #include <dt-bindings/clock/imx8-lpcg.h>
-+#include <dt-bindings/dma/fsl-edma.h>
- #include <dt-bindings/firmware/imx/rsrc.h>
- 
- audio_ipg_clk: clock-audio-ipg {
-@@ -481,4 +482,307 @@ acm: acm@59e00000 {
- 			      "sai3_rx_bclk",
- 			      "sai4_rx_bclk";
- 	};
-+
-+	asrc0: asrc@59000000 {
-+		compatible = "fsl,imx8qm-asrc";
-+		reg = <0x59000000 0x10000>;
-+		interrupts = <GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&asrc0_lpcg 0>,
-+			 <&asrc0_lpcg 0>,
-+			 <&aud_pll_div0_lpcg 0>,
-+			 <&aud_pll_div1_lpcg 0>,
-+			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
-+			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>;
-+		clock-names = "mem", "ipg",
-+			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
-+			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
-+			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
-+			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
-+			      "spba";
-+		dmas = <&edma0 0 0 0>,
-+		       <&edma0 1 0 0>,
-+		       <&edma0 2 0 0>,
-+		       <&edma0 3 0 FSL_EDMA_RX>,
-+		       <&edma0 4 0 FSL_EDMA_RX>,
-+		       <&edma0 5 0 FSL_EDMA_RX>;
-+		/* tx* is output channel of asrc, it is rx channel for eDMA */
-+		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
-+		fsl,asrc-rate  = <8000>;
-+		fsl,asrc-width = <16>;
-+		fsl,asrc-clk-map = <0>;
-+		power-domains = <&pd IMX_SC_R_ASRC_0>;
-+		status = "disabled";
-+	};
-+
-+	esai0: esai@59010000 {
-+		compatible = "fsl,imx8qm-esai", "fsl,imx6ull-esai";
-+		reg = <0x59010000 0x10000>;
-+		interrupts = <GIC_SPI 409 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&esai0_lpcg 1>, <&esai0_lpcg 0>, <&esai0_lpcg 1>, <&clk_dummy>;
-+		clock-names = "core", "extal", "fsys", "spba";
-+		dmas = <&edma0 6 0 FSL_EDMA_RX>, <&edma0 7 0 0>;
-+		dma-names = "rx", "tx";
-+		power-domains = <&pd IMX_SC_R_ESAI_0>;
-+		status = "disabled";
-+	};
-+
-+	spdif0: spdif@59020000 {
-+		compatible = "fsl,imx8qm-spdif";
-+		reg = <0x59020000 0x10000>;
-+		interrupts =  <GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>, /* rx */
-+			      <GIC_SPI 458 IRQ_TYPE_LEVEL_HIGH>; /* tx */
-+		clocks = <&spdif0_lpcg 1>,	/* core */
-+			 <&clk_dummy>,		/* rxtx0 */
-+			 <&spdif0_lpcg 0>,	/* rxtx1 */
-+			 <&clk_dummy>,		/* rxtx2 */
-+			 <&clk_dummy>,		/* rxtx3 */
-+			 <&clk_dummy>,		/* rxtx4 */
-+			 <&audio_ipg_clk>,	/* rxtx5 */
-+			 <&clk_dummy>,		/* rxtx6 */
-+			 <&clk_dummy>,		/* rxtx7 */
-+			 <&clk_dummy>;		/* spba */
-+		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
-+			      "rxtx5", "rxtx6", "rxtx7", "spba";
-+		dmas = <&edma0 8 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
-+		       <&edma0 9 0 FSL_EDMA_MULTI_FIFO>;
-+		dma-names = "rx", "tx";
-+		power-domains = <&pd IMX_SC_R_SPDIF_0>;
-+		status = "disabled";
-+	};
-+
-+	spdif1: spdif@59030000 {
-+		compatible = "fsl,imx8qm-spdif";
-+		reg = <0x59030000 0x10000>;
-+		interrupts =  <GIC_SPI 460 IRQ_TYPE_LEVEL_HIGH>, /* rx */
-+			      <GIC_SPI 462 IRQ_TYPE_LEVEL_HIGH>; /* tx */
-+		clocks = <&spdif1_lpcg 1>,	/* core */
-+			 <&clk_dummy>,		/* rxtx0 */
-+			 <&spdif1_lpcg 0>,	/* rxtx1 */
-+			 <&clk_dummy>,		/* rxtx2 */
-+			 <&clk_dummy>,		/* rxtx3 */
-+			 <&clk_dummy>,		/* rxtx4 */
-+			 <&audio_ipg_clk>,	/* rxtx5 */
-+			 <&clk_dummy>,		/* rxtx6 */
-+			 <&clk_dummy>,		/* rxtx7 */
-+			 <&clk_dummy>;		/* spba */
-+		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
-+			      "rxtx5", "rxtx6", "rxtx7", "spba";
-+		dmas = <&edma0 10 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
-+		       <&edma0 11 0 FSL_EDMA_MULTI_FIFO>;
-+		dma-names = "rx", "tx";
-+		power-domains = <&pd IMX_SC_R_SPDIF_1>;
-+		status = "disabled";
-+	};
-+
-+	asrc1: asrc@59800000 {
-+		compatible = "fsl,imx8qm-asrc";
-+		reg = <0x59800000 0x10000>;
-+		interrupts = <GIC_SPI 380 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&asrc1_lpcg 0>,
-+			 <&asrc1_lpcg 0>,
-+			 <&aud_pll_div0_lpcg 0>,
-+			 <&aud_pll_div1_lpcg 0>,
-+			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
-+			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>;
-+		clock-names = "mem", "ipg",
-+			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
-+			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
-+			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
-+			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
-+			      "spba";
-+		dmas = <&edma1 0 0 0>,
-+		       <&edma1 1 0 0>,
-+		       <&edma1 2 0 0>,
-+		       <&edma1 3 0 FSL_EDMA_RX>,
-+		       <&edma1 4 0 FSL_EDMA_RX>,
-+		       <&edma1 5 0 FSL_EDMA_RX>;
-+		/* tx* is output channel of asrc, it is rx channel for eDMA */
-+		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
-+		fsl,asrc-rate  = <8000>;
-+		fsl,asrc-width = <16>;
-+		fsl,asrc-clk-map = <1>;
-+		power-domains = <&pd IMX_SC_R_ASRC_1>;
-+		status = "disabled";
-+	};
-+
-+	sai4: sai@59820000 {
-+		compatible = "fsl,imx8qm-sai";
-+		reg = <0x59820000 0x10000>;
-+		interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&sai4_lpcg 1>,
-+			 <&clk_dummy>,
-+			 <&sai4_lpcg 0>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>;
-+		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-+		dmas = <&edma1 8 0 FSL_EDMA_RX>, <&edma1 9 0 0>;
-+		dma-names = "rx", "tx";
-+		power-domains = <&pd IMX_SC_R_SAI_4>;
-+		status = "disabled";
-+	};
-+
-+	sai5: sai@59830000 {
-+		compatible = "fsl,imx8qm-sai";
-+		reg = <0x59830000 0x10000>;
-+		interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&sai5_lpcg 1>,
-+			 <&clk_dummy>,
-+			 <&sai5_lpcg 0>,
-+			 <&clk_dummy>,
-+			 <&clk_dummy>;
-+		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-+		dmas = <&edma1 10 0 0>;
-+		dma-names = "tx";
-+		power-domains = <&pd IMX_SC_R_SAI_5>;
-+		status = "disabled";
-+	};
-+
-+	amix: amix@59840000 {
-+		compatible = "fsl,imx8qm-audmix";
-+		reg = <0x59840000 0x10000>;
-+		clocks = <&amix_lpcg 0>;
-+		clock-names = "ipg";
-+		power-domains = <&pd IMX_SC_R_AMIX>;
-+		dais = <&sai4>, <&sai5>;
-+		status = "disabled";
-+	};
-+
-+	mqs: mqs@59850000 {
-+		compatible = "fsl,imx8qm-mqs";
-+		reg = <0x59850000 0x10000>;
-+		clocks = <&mqs0_lpcg 0>,
-+			<&mqs0_lpcg 1>;
-+		clock-names = "mclk", "core";
-+		power-domains = <&pd IMX_SC_R_MQS_0>;
-+		status = "disabled";
-+	};
-+
-+	asrc0_lpcg: clock-controller@59400000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59400000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_4>;
-+		clock-output-names = "asrc0_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_ASRC_0>;
-+	};
-+
-+	esai0_lpcg: clock-controller@59410000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59410000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&acm IMX_ADMA_ACM_ESAI0_MCLK_SEL>,
-+			 <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-+		clock-output-names = "esai0_lpcg_extal_clk",
-+				     "esai0_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_ESAI_0>;
-+	};
-+
-+	spdif0_lpcg: clock-controller@59420000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59420000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&acm IMX_ADMA_ACM_SPDIF0_TX_CLK_SEL>,
-+			 <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-+		clock-output-names = "spdif0_lpcg_tx_clk",
-+				     "spdif0_lpcg_gclkw";
-+		power-domains = <&pd IMX_SC_R_SPDIF_0>;
-+	};
-+
-+	spdif1_lpcg: clock-controller@59430000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59430000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&acm IMX_ADMA_ACM_SPDIF1_TX_CLK_SEL>,
-+			 <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-+		clock-output-names = "spdif1_lpcg_tx_clk",
-+				     "spdif1_lpcg_gclkw";
-+		power-domains = <&pd IMX_SC_R_SPDIF_1>;
-+		status = "disabled";
-+	};
-+
-+	asrc1_lpcg: clock-controller@59c00000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59c00000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_4>;
-+		clock-output-names = "asrc1_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_ASRC_1>;
-+	};
-+
-+	sai4_lpcg: clock-controller@59c20000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59c20000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&acm IMX_ADMA_ACM_SAI4_MCLK_SEL>,
-+			 <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-+		clock-output-names = "sai4_lpcg_mclk",
-+				     "sai4_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_SAI_4>;
-+	};
-+
-+	sai5_lpcg: clock-controller@59c30000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59c30000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-+			 <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-+		clock-output-names = "sai5_lpcg_mclk",
-+				     "sai5_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_SAI_5>;
-+	};
-+
-+	amix_lpcg: clock-controller@59c40000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59c40000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>;
-+		clock-output-names = "amix_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_AMIX>;
-+	};
-+
-+	mqs0_lpcg: clock-controller@59c50000 {
-+		compatible = "fsl,imx8qxp-lpcg";
-+		reg = <0x59c50000 0x10000>;
-+		#clock-cells = <1>;
-+		clocks = <&acm IMX_ADMA_ACM_MQS_TX_CLK_SEL>,
-+			 <&audio_ipg_clk>;
-+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-+		clock-output-names = "mqs0_lpcg_mclk",
-+				     "mqs0_lpcg_ipg_clk";
-+		power-domains = <&pd IMX_SC_R_MQS_0>;
-+	};
- };
-
--- 
-2.34.1
-
+> 
+>  This is to upstream a downstream patch that goes through many releases
+>  in several years. It maybe hard to trigger, but to address potential
+>  issues, let's add this workaround.
+> 
+>  drivers/clk/imx/clk-lpcg-scu.c | 33 ++++++++++++++++++++++++++++++---
+>  1 file changed, 30 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/clk/imx/clk-lpcg-scu.c b/drivers/clk/imx/clk-lpcg-scu.c
+> index dd5abd09f3e2..b30d0f8b5bca 100644
+> --- a/drivers/clk/imx/clk-lpcg-scu.c
+> +++ b/drivers/clk/imx/clk-lpcg-scu.c
+> @@ -6,6 +6,7 @@
+>  
+>  #include <linux/bits.h>
+>  #include <linux/clk-provider.h>
+> +#include <linux/delay.h>
+>  #include <linux/err.h>
+>  #include <linux/io.h>
+>  #include <linux/slab.h>
+> @@ -41,6 +42,31 @@ struct clk_lpcg_scu {
+>  
+>  #define to_clk_lpcg_scu(_hw) container_of(_hw, struct clk_lpcg_scu, hw)
+>  
+> +/* e10858 -LPCG clock gating register synchronization errata */
+> +static void do_lpcg_workaround(u32 rate, void __iomem *reg, u32 val)
+> +{
+> +	writel(val, reg);
+> +
+> +	if (rate >= 24000000 || rate == 0) {
+> +		u32 reg1;
+> +
+> +		/*
+> +		 * The time taken to access the LPCG registers from the AP core
+> +		 * through the interconnect is longer than the minimum delay
+> +		 * of 4 clock cycles required by the errata.
+> +		 * Adding a readl will provide sufficient delay to prevent
+> +		 * back-to-back writes.
+> +		 */
+> +		reg1 = readl(reg);
+> +	} else {
+> +		/*
+> +		 * For clocks running below 24MHz, wait a minimum of
+> +		 * 4 clock cycles.
+> +		 */
+> +		ndelay(4 * (DIV_ROUND_UP(1000000000, rate)));
+> +	}
+> +}
+> +
+>  static int clk_lpcg_scu_enable(struct clk_hw *hw)
+>  {
+>  	struct clk_lpcg_scu *clk = to_clk_lpcg_scu(hw);
+> @@ -57,7 +83,8 @@ static int clk_lpcg_scu_enable(struct clk_hw *hw)
+>  		val |= CLK_GATE_SCU_LPCG_HW_SEL;
+>  
+>  	reg |= val << clk->bit_idx;
+> -	writel(reg, clk->reg);
+> +
+> +	do_lpcg_workaround(clk_hw_get_rate(hw), clk->reg, reg);
+>  
+>  	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
+>  
+> @@ -74,7 +101,7 @@ static void clk_lpcg_scu_disable(struct clk_hw *hw)
+>  
+>  	reg = readl_relaxed(clk->reg);
+>  	reg &= ~(CLK_GATE_SCU_LPCG_MASK << clk->bit_idx);
+> -	writel(reg, clk->reg);
+> +	do_lpcg_workaround(clk_hw_get_rate(hw), clk->reg, reg);
+>  
+>  	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
+>  }
+> @@ -151,7 +178,7 @@ static int __maybe_unused imx_clk_lpcg_scu_resume(struct device *dev)
+>  	 */
+>  
+>  	writel(clk->state, clk->reg);
+> -	writel(clk->state, clk->reg);
+> +	do_lpcg_workaround(0, clk->reg, clk->state);
+>  	dev_dbg(dev, "restore lpcg state 0x%x\n", clk->state);
+>  
+>  	return 0;
+> -- 
+> 2.37.1
+> 
