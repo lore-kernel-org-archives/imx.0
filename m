@@ -1,95 +1,171 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2070.outbound.protection.outlook.com [40.107.8.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F856EEE4
-	for <imx@lists.linux.dev>; Wed, 28 Feb 2024 16:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709137987; cv=none; b=mljJilQYVpmLRLJ7SRKAFGvujSVqlfdXnr46FqaNOYblSwrnS8hBgRIbX5z+drSO/qwj0nVQW3KtpabjTkqV/m7ZZvN7y679KDfKj6zX8OOppVtIGTbfx5CMfDwBlfOd/qcv+TIJ8E7oGWert7PBLTarU34sRkInpIdD4FVcMGE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709137987; c=relaxed/simple;
-	bh=WpEvuwbQqpreIe52/sd2Mcz0JuvJUxbOEsWvJ1YBNo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OOB+woDeHrkxCy8ZO2FuEKikiQQ1jJbMz3Tngie80/Lnqj7UPlwK0peSXe+gzcFDWonmDcMzyfVRmNvMp678kfCu0W4fKXZ7tW+B5NDYaCAKmBpUJPIqR0zHOr3EsG3jSKWImvvXi5G8Q9JIo1xP592+s+ziQ5/cDzeDXWrCsEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JEq8YU5Z; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EA540870
+	for <imx@lists.linux.dev>; Wed, 28 Feb 2024 19:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709147022; cv=fail; b=cN7DjwqHyo/irTQnvOit3cWjmnxpHFWCIEubF5GCCj828USkd6tHe4oGWkwuQBhlQz3pUA5vOoyegE6eH+2zx8+mXYwO+JKQaTENB9sRxLRY81xFpc1asj59jQrAwTtAGmmBI5XSeCjNB7rWNRHkH6Mwv39qbwavrUM5B8M/fbc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709147022; c=relaxed/simple;
+	bh=1mSQ0qSdbafYDA/kluh9wXcAQuKk/Re/NOPUG4jpsmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=gsYLsVqlcYweBNzUQORP5i1RR5DnK3FENO9QlSndqyxluwt0ualCI1KBben/VfrsCzA043zE0Yxr4AlRj48DDlE+YKrNCeY/75ZX/nyFEhkFbtecOl3CaDfxjdLO1GsHZUJfwHDKJk58ToGINftFa8Xp/7bkb8yB8Z+2wcBZVYc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=dhro6FdH; arc=fail smtp.client-ip=40.107.8.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JEq8YU5Z"
-Received: from pendragon.ideasonboard.com (89-27-53-110.bb.dnainternet.fi [89.27.53.110])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0E5196B3;
-	Wed, 28 Feb 2024 17:32:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1709137970;
-	bh=WpEvuwbQqpreIe52/sd2Mcz0JuvJUxbOEsWvJ1YBNo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JEq8YU5ZK2sTFXcAhT5IyohlO9Wh3ZxTIe0h6vv3Y2ZOvuKOyjpE5VsZFfo7l61Gt
-	 hhC7uVAA4PKglQqALuCgxG8cVTst1iNOljRBqMHbKxeRCY5r8VZS+hY8YI8i0UHyiB
-	 wKblZF2HKE7RJLmyE7jA3Nr4oeTxHvyU7X2xo45U=
-Date: Wed, 28 Feb 2024 18:33:04 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Adam Ford <aford173@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
-	aford@beaconembedded.com, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: imx8mp-beacon-kit: Enable HDMI bridge HPD
-Message-ID: <20240228163304.GI9863@pendragon.ideasonboard.com>
-References: <20240228113737.43434-1-aford173@gmail.com>
- <20240228113737.43434-2-aford173@gmail.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="dhro6FdH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S8aPCZQEdSfk6Qkbnb6/t5H/ufbfPm4RnmrXMm0u+VFD/oKFjFCnuSNpcT26elnQsvNR09i4Ne80ywOl5QuTyFSshL90MQlDmaRnlsxHyNanupL9iWrchBm5yeP+oCbLv2ujOldcUK03SslfgJkdCKF1TuiPonIiI1275Y2z1qKutNViyxAPda1C48/LnOlD3wcHpqFZPtxmKoH6lKKFhWiiHL8rr5rloSptQF+glQLzVvV9heVOLVTg2U6O4rEnUUCThKOt6kq5Plfjdd9WjzuAakiyOs78ObkHMA/sLahN/RerZ4m7OGMQwF22i885w45MKvewp/Ym3DcT7ffIBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BkdlxnsqUOt42fCfOoakK4R+X04CpK2e17EWNipAHkw=;
+ b=XGJbI0FzCkt2pNbyutEVVhm8ebqXX9bgx24aX9M6CKSYW3CEmv7+1+N/4t4fIzzCX7Y68XdKWHe9Xi/i2UYM6Pq8KK+sj+30RQB/oKHJicsBmOE58kT41L+xQ5WXhj9+POWpicWOa5QYUgkDHNg+GSwgclcWrNe68cG4o2+FPIp4p4cGT1STO63xWvRZo2gUwcoxkl1oYfwZh/8djJqrEr7C7AUjOmJ5GyNAtNW3jDkhfPxKzG0zV42C4mnoKUY2/Qj4qP+3ER5lYn7Ey3gpqI6wenD7FEWXeGn7+rrpNvbSkbMy1eu1eCQBR0Vqv2CPWLExYudgBWvXM7s2yQ3u/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BkdlxnsqUOt42fCfOoakK4R+X04CpK2e17EWNipAHkw=;
+ b=dhro6FdHlPuBPiRXJN7jwCURlA0wrj8kgxbeAVDWErDwmlXFcr5P88HsCCB/vRXHiz51JbT57itKyQ7GLYlQ0sVZEEemjEM+h1mdpTblIdU7l/KKw3fzSh8tHlDH/CnbNmvfyDwRKclLCGF81Ug99K41YjsneHdD0M0S1TG15sA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8370.eurprd04.prod.outlook.com (2603:10a6:20b:3b1::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Wed, 28 Feb
+ 2024 19:03:37 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Wed, 28 Feb 2024
+ 19:03:37 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: helgaas@kernel.org
+Cc: Frank.Li@nxp.com,
+	bhelgaas@google.com,
+	conor+dt@kernel.org,
+	conor@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org,
+	kw@linux.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	robh@kernel.org
+Subject: [PATCH v5 0/5] dt-bindings: pci: layerscape-pci: Convert to yaml format
+Date: Wed, 28 Feb 2024 14:03:16 -0500
+Message-Id: <20240228190321.580846-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0165.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240228113737.43434-2-aford173@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8370:EE_
+X-MS-Office365-Filtering-Correlation-Id: 61284c6f-890f-4c28-50c5-08dc388ff83d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	X///cYIqUVvMZtfVN47dqIJDXKZyEBShLmIPMV2m/f/2IBeXqBtnmn9hOrgfrX1efarIhnYBdy+/68uLRk5co0ftsgnsC50Ld1gUloXzxJVhfCZE4HL1Qq3kZY8T84ToKb5bPD2pAN93VXfELwSYjLwQ7TWfBiEjoQ83qOXIW8EInZJIbXnMT2SKgrJz1i5xrvXg3x2GNckltNnL9bMRLs7I6CmMrPnf7yUSR3R6ivvPAoq3VqLALgH1IM0KqRE8Mk5TnhxR32Zy/ZP7Ym2VGcYfSssy4SpV2Ov2t9jpYynIIwx+9b2X3t3xnX33mAdd9dk0w2w+HSqPvyLc5LxHBbHll5+sNxhUh7ob1kJlJHE9WqEQkPDjtntKDNL5QlrWdpUVvaqJQ0leo1hJe9VGMuIt8Cd2PbuPap8nt+txlO6/o6PFSerXqYOkZrzNBqiLbFsldDeqzBR2roYafU3GEC33zOsJn96qvaVvlbT3uBbIMIbFhoMUP0v585qY4l00WRkjY8C9td7YqEIReZbLReFDVO+4mhrPlrvCnIP/bVHVrbQbuGoVcP5dd8SS/SKQTAT4AiewzS2ewmrL3tn61oKEP2ELQ6CXfj8rsMpcAiwrkNqgwy/WOKJ2eGjlALxCaA3NoGjqqoBwrrgqRj9LtOOZ1xFL7d8a3fjJYcShBtBMIfaQQFr1u9yFQlgZLRyng9mLKqH3p8Nxha0O6xXGHS3bygVq9AXJaaLfjp+WG/U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Hf2Nlla4aKr0qaQ4mVq65AYW53cBQYjHNuRbQVf5DzJam3sEPyXMjbyOdfqo?=
+ =?us-ascii?Q?N0Qgx52ASJP4EYN8WRFdRocsbz1kC/KlQlFqodHDshzrD7LWdG0F4WusTgzO?=
+ =?us-ascii?Q?MGlj5ajm/hXg39CSknXJ1KXvxb7ic1jQQYpbFgAgNJUqBVOd7Bh7PcQZhs/B?=
+ =?us-ascii?Q?V3YcefdGYyeniXRN9ZWrbO/CMiBpmbqqlnFeBiGGG+WR8BcHnxaVr3u/eQuk?=
+ =?us-ascii?Q?3mWrvkNgA4XcnQFOi4H8W2mzbJWhhWZEQd16+1lHxmPkZR26Imw0sFgDmq92?=
+ =?us-ascii?Q?N0SWPAlhYOAGoi5knslYBNuziO5lxVA6/+QxCkSmk4Ye/2Pzlnm8oXcz6ebc?=
+ =?us-ascii?Q?jff/c+ZQ33eHOHFuT/qdUBa8cJjuAgIZDvLlgyaSUHlgT6RuXNhlB5ajrLEY?=
+ =?us-ascii?Q?cQuCrfvcLdak6pAv44YxKgeHyXdXL8JSqz//DIqnWvD4ZiZWO6432Nwffutw?=
+ =?us-ascii?Q?1llzAY5LxKivodoP40U3Ul6Ik+1A/NxOzDYaJAb2uvM0GZsohM59a9ZFUoLS?=
+ =?us-ascii?Q?reb/mVgVDUTzdPcZCYW9ve0FjaPPLAaX4fa3UJIYAZshto5Pf7zMDlyQd38+?=
+ =?us-ascii?Q?WBhv0Q+GqKUUP4iebSwW8ly8q0A3RwZeGl8WTdlkBGG8BtSVDZTvJ4FA/K8E?=
+ =?us-ascii?Q?qK24NPYoA3XbBOBM3PEA7hoa1jp27NkHG+inSNNOCklRQ1ItJn/JgQv4rR5u?=
+ =?us-ascii?Q?VXEouv88vKP3os4r6Ld+P/9AqQipVi9J73+19ya93wT9Jx5/aE4S67P1ChUo?=
+ =?us-ascii?Q?wv0ALoBs7pv0xqpJKWIL8XufxejBxZpnyv5arKuikTbiYdIcrDacByZLNvRc?=
+ =?us-ascii?Q?/Kt85D+Lb8BDhN49xfnuKLDXE4Rcdn/I2Dvw5146oHr6H8LL7Dzuh2F9a60y?=
+ =?us-ascii?Q?IbA043afRgQaLymIEkEPhGZQGKpISf3Ji1t7cyfhUZCZ7KT9+apXE3uS8Z/t?=
+ =?us-ascii?Q?fbzLdOAoXi5BUaW1Ct4KfSE4Dj2lTAehbAiwMrTyLrDKeeBb5E6veEKyy36x?=
+ =?us-ascii?Q?7vlVhrkOEiU8A5EsdsIA9X0nvCPTv4pncBc2XmHis1fxmbYkCY4y0L+wN9F+?=
+ =?us-ascii?Q?C5W/13kbgay97Y8A4yrOyxmP3BZzP3gWaXi3Fk0r06U7YxQoVX1BmIiM1JaP?=
+ =?us-ascii?Q?K2eiAAuDwvcRSwVh8bue4pdyhFcOnqh2pT7Qtbiu+L9i8/cfMnMHESIovwm9?=
+ =?us-ascii?Q?PhAHNawj9hBBcwhxZDmrM4erYzjN+VcnntzdQbJMvm+f7S6R4dFmqWNyX/kV?=
+ =?us-ascii?Q?vDrptyS/ruOlg6wJ8oqFc/ToRS3aaQbwAlGVL6tz7an6TJK9adVJSTD/vBaD?=
+ =?us-ascii?Q?kh7FQrJObNO8HKHlP4hW2SI6Gfg3jhkLU+bYMzG/e4/k7ONHyOvi5cGIDSu2?=
+ =?us-ascii?Q?iTcAiHGHIgMLEMPydDsjLvafvvWq/lNOhbR22GoJCNg2awEskLkRlfvxldz+?=
+ =?us-ascii?Q?WHyPG1ruNDWafqV/mXBhSPKSL3N/JBeppzf0jA1GLCX+Q8Khjl52sekjFcMa?=
+ =?us-ascii?Q?Nh5/IecvJCAwhya3JCak1rWYWHfJsoNfXvIpeDZEfgQGc8PkCvXl4TYkyCdU?=
+ =?us-ascii?Q?NlbGbnWHpabJm2ZdcFo=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61284c6f-890f-4c28-50c5-08dc388ff83d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 19:03:37.7646
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /fM4kvXAsKPtOTQvLz7Yn5eOv14QFedXfBMlvTUfm2RnPvyRBouD9OKxcL8dLPazX+Jaj7ifaHRStuulFDDr6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8370
 
-Hi Adam,
+Change from
+    Change from v4 to v5
+    - split 5 patch.
+    - create one base patch, which the same as original txt.
+    - two patch fix for RC.
+    - two patch fix for EP.
 
-Thank you for the patch.
+    Change from v3 to v4
+    - remove ep label
+    - remove status="disabled"
+    - remove deprecated property
+    - fixed irq max-numbers
+    - because dts still use "reg" instead "dbi", to avoid dtb check warning,
+    not referernece to snps,dwc-pcie yet.
 
-On Wed, Feb 28, 2024 at 05:37:36AM -0600, Adam Ford wrote:
-> The DSI to HDMI bridge supports hot-plut-detect, but the
-> driver didn't previously support a shared IRQ GPIO.  With
-> the driver updated, the interrupt can be added to the bridge.
+    Change from v2 to v3
+    - update commit message, show change compare txt file
+    - add failback compatible fsl,ls-pcie-ep.
+    - add commit message about 'addr_space' and 'config'.
 
-You can reflow the commit message to 72 columns.
+    Change from v1 to v2
+    - remove '|-'
+    - dma-coherent: true
+    - add interrupts and interrupt-names at before Allof
+    - remove ref to snps,pcie*.yaml, some reg-names are not aligned with in
+    drivers
+    - Add an example for pcie-ep
 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+Frank Li (5):
+  dt-bindings: pci: layerscape-pci: Convert to yaml format
+  dt-bindings: pci: layerscape-pci: Add snps,dw-pcie.yaml reference
+  dt-bindings: pci: layerscape-pci: Remove 'fsl,pcie-scfg' and
+    'dma-coherence' from required
+  dt-bindings: pci: layerscape-pci-ep: Add snps,dw-pcie-ep.yaml
+    reference
+  dt-bindings: pci: layerscape-pci-ep: Remove 'fsl,pcie-scfg' and
+    'dma-coherence' from required
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> index 8de4dd268908..d854c94ec997 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> @@ -405,6 +405,8 @@ adv_bridge: hdmi@3d {
->  		compatible = "adi,adv7535";
->  		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
->  		reg-names = "main", "cec", "edid", "packet";
-> +		interrupt-parent = <&gpio4>;
-> +		interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
->  		adi,dsi-lanes = <4>;
->  		#sound-dai-cells = <0>;
->  
+ .../bindings/pci/fsl,layerscape-pcie-ep.yaml  |  91 +++++++++
+ .../bindings/pci/fsl,layerscape-pcie.yaml     | 173 ++++++++++++++++++
+ .../bindings/pci/layerscape-pci.txt           |  79 --------
+ 3 files changed, 264 insertions(+), 79 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+ create mode 100644 Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+ delete mode 100644 Documentation/devicetree/bindings/pci/layerscape-pci.txt
 
 -- 
-Regards,
+2.34.1
 
-Laurent Pinchart
