@@ -1,211 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2070.outbound.protection.outlook.com [40.107.104.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1732E3E1;
-	Thu, 29 Feb 2024 19:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709233742; cv=none; b=B/JzRMOvKhMLxGzeuEJSbT1UPigzf9+/9U3OXWnKM0ZnEpapFJdaXslG8HqEtF/Y79CO75q8FbFwZOzbLn77L+XKnTU4N2TGVy84QjZsSQxjdDMUFt+qglOdiF660fyxIirfIypZ/jrEGp4CqjTQ1uvV+0bl/5nphSBMq2IWpss=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709233742; c=relaxed/simple;
-	bh=0U1r3Qu+GxSx2ucDrDnXmdR2XAz3quO+6oo/ITF3EOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sH3SrR22XsBklUwUSYIiRLIgZ2Iq7kOsljq+25zlYev7NYAMeJVNU7gX2+rZw7qvB6PIRXppXKRQ9GfkLwT04o9MFYJw/sEbtk/f8JbLM4m7ABW3NxYF9rbch0P3nghSFa7vWkTpTs8O2XSub8RvaANUGdxROSFgqvjIH/VG2Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RTmY1EoH; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B4B405F9
+	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 19:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709235093; cv=fail; b=c/kMq3+zoU7xXjQL3ZtpjmgHULtUK6MgvHllrDlPj3WJBhEEGhrCebLWA4lLCnyXdC8Zo/GZRJC4KZnF181z//j1qE8nXj20IgpQKTy9Cuot1Q6j3eji0uqcJMhHAnUfJ8LIvoYdOpN4s4NvkBN8elRNgi7HWYv28dMmysjpW7U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709235093; c=relaxed/simple;
+	bh=unft92S/teXYeKyuPx/c1HZAg0Mo5Odg0twQGOVyqYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=W3V3BFGI3wLd12LE5mSNytDRo+TClw5WxJ6fefB63pj5lB++H7ZdDuwPqN08mgfrd5LnL8p6aKA8ZyzhuFcxPXiGWFGpkm9bcgiwNEmaj7jDkdwO9Aan2LsCUyN2l9l3eUXeRqMLwaT+On0zNiDlAzrITbq/0uVtOg6UiKqmQZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZKPfge5i; arc=fail smtp.client-ip=40.107.104.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RTmY1EoH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709233738; x=1740769738;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0U1r3Qu+GxSx2ucDrDnXmdR2XAz3quO+6oo/ITF3EOU=;
-  b=RTmY1EoHIXGcZEyemeVu5jENfLBJEWzi3hxqDfqqttadUATgsSgVKNgZ
-   Nd3x2U5STOxzZUNIvfOsusvi06gJalrfPIliMXkVKemYiFPmY/f//+5u9
-   gHl8y4cv2jvEzIbWhHQl5aPThxMy4WJn6CJzLtK+cUUY0Txtkf23Vnu1c
-   ES18gkd9mezPZNcO9RV1/upKjSH/5C5nUAqEzyPsRju1oW3QubqdUnVXs
-   +U3SZntvhVpB6Jk8AQd8YrcmFFP6Ho+unUep8ZiczhMXqNjN49LtD+TBK
-   Hl3FrAd5e2xgJ5BdMNphH2bKuWoKUMW2pzpO0hc2Pg5KZVmqfvqzfx9fM
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="14304519"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="14304519"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 11:08:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="12587396"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 29 Feb 2024 11:08:52 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rfllx-000DDf-1u;
-	Thu, 29 Feb 2024 19:08:49 +0000
-Date: Fri, 1 Mar 2024 03:08:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZKPfge5i"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YYrRPZjPxPvOW/gd0GMJaKefaPS99vzd6y4xYBYYPUbhyupnvJiPi/xJQB4Khj/FoOSI0fhMJvQ33pixFHEinA3XP8nrG3Ob6hX2V/S6oob3sk0VU5YqSAg9IuKziq7pA8a6Q0WjyF9CFEwFUD3FbjVfzbkv0MupwfKI4kGFT1rsp/0YATBbpVkuvd2wX6F3rJikn2/mzDtu2fw94N11hEa6xP6sg52vv4/2oyOrLFXWtvwyMnTX3e2dw7wiArHEU3SVoBa9BzduzS2Wikg1UtcbZm4peCj/sCew0todOmYDvHL8KsfEkMvSuz4JAcFNgUDzpRV2X4P0IEiMoytm/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7gipB4G7Z7MYMfdMPjjMt6+uhV69KF+YVKh/jDMOrSg=;
+ b=OUXUfbjxYvSriM3bcarla2BUgNE++rn7YwEI94QfvipeFDihq2GGDoHXmr1RlDWlncocnQct8UKpKIkg/SyRlh0tXW+APxv7UPO5N7NXj5ueZye5RatNlbUqeAHrueT3bmcjaLRrblLL9hPiGTALyoFGIDnCAPl7xo1prjndMYURrnJYulh/DZxbtt2Xmg6ePjAZvdDsTEqzL+f/MA38MGqHMDtMwqiUW5rb8CfQEd7Lyd8C14FIdjCzfoBHZAAcaR4Tacx32co7FA/B0MAC1r5gebB+x0uqM89iWjo7A002VlJo8DOWbLBWW57bJW7PjV0bnEiXxMvipp1c0KDKRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7gipB4G7Z7MYMfdMPjjMt6+uhV69KF+YVKh/jDMOrSg=;
+ b=ZKPfge5iBuyu6P1UMhAe9I0kOE2Bb431CvC3mbQbEpf5NvN9Oh7p9nspoFGk4/dDsKmcyQk/DC/WvUssntWH0zpNVOTBlY/6ijVLoVKSpb0ls7EZzSJTEjRAB+WMJImsOQFhuf7/WnfPm4/QB7fT+LB+1y9MsUEpe5gpQXGTYvI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB10194.eurprd04.prod.outlook.com (2603:10a6:150:1ac::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.41; Thu, 29 Feb
+ 2024 19:31:29 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Thu, 29 Feb 2024
+ 19:31:29 +0000
+Date: Thu, 29 Feb 2024 14:31:20 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/5] dmaengine: fsl-edma: remove 'slave_id' from
- fsl_edma_chan
-Message-ID: <202403010227.FvhhLScs-lkp@intel.com>
-References: <20240227-8ulp_edma-v1-1-7fcfe1e265c2@nxp.com>
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] ASoC: dt-bindings: fsl-sai: allow only one
+ dma-names
+Message-ID: <ZeDbiLR8vLtVfgGX@lizhi-Precision-Tower-5810>
+References: <20240227-asrc_8qxp-v2-0-521bcc7eb1c0@nxp.com>
+ <20240227-asrc_8qxp-v2-3-521bcc7eb1c0@nxp.com>
+ <20240229-husband-penalty-8c1ab0f57f55@spud>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229-husband-penalty-8c1ab0f57f55@spud>
+X-ClientProxiedBy: SJ0PR03CA0079.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227-8ulp_edma-v1-1-7fcfe1e265c2@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10194:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85c7c9c7-a044-49ec-67cc-08dc395d06de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	iS3L7BDOzRKEtwXvHg2TzKWPV4vj13cW56+3YBUcbEJIEAYVRdqbWqTtMEUJsr0LozOEsimxVkzeSLelXRQxxThSYz6oMmlw7HcrPuIn5Z6h8GdCw3jh1m90bXon4k7EsxQXC5uOtMWilvu88mEFpbySOueXY3W2U0/wb78xSbAlbW8sgZzXYpe/PS00w7Jp70Qki69E7t1D/4gXVgD5jdvnV/m8GsYstDXcf+p5KU827Met+/80CUfkauJ3kCW56o1hnT9tQnIgDUFfK4qLjsr0t12ZfUY7Lb2geVa9zJcKZOb0ZlSLEBROc/Egro1uhtKn05pW+xPIBvCaNc+5QINHVFFgvVEzf0aWxTT72XM/CGrPC9o9FV56ix9CojVNVg6/eBFQo0OaojmRcwa1Zvh2ZoWu6t6eWxB9tlj7ngST9DeSTIC2ms11jR8I1UVm5AAmsxPHZYUkA8Ii5y1exPyOJrCCkSE5CIPcoQ2Bf4OhwZqpIN0ZAJIuBv16CWGJA3XfMqoYPaIFX41iSWHeU7aWLULSFUDhFK/XMl8n7+KEv040KzqbnjyX/+BgpTD3Xhz1LfjVL9RGjSPXLABtcSc1olWOdU/k9kUcyzAALbcpkNscEcMjTGhHGNGzdf1wL1h5RDvJauk3J2ROIC4KBhndupnRXvGC33CKei/xj0t+LtAwsY7EFVwiSJlAprEE5JW+GHKx+Td0caeZOZ0J1es/yRZZRQcfTlxiEq94BbA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yO4X9BN4xtCWc/gngle1kskE5Wq0R7CfCmwpiAtm0emMeSCA1BB/eE7BLubl?=
+ =?us-ascii?Q?XlcNDv7hWWb8nwVXTzs2GQ+Ll90pzQUnAusInWLdUaQuewmwaoBJkkgGa9dG?=
+ =?us-ascii?Q?E9pbk1/sm6w5ZSEGkEUo0RukxpVR3OcFFQE/t8eM9cClBuZevxTqKB4IP10t?=
+ =?us-ascii?Q?16mHHblMAqNYqz2UJYquFXc+DUKI0JBT3+XpcRt/XiDj88/TEopyhKrHtCx+?=
+ =?us-ascii?Q?34ZF833oR2x3kDyuc6pOuWEblBPTuIojS1EREwGlKYrGZXlFby+vG/14xZYg?=
+ =?us-ascii?Q?CYAGlri9iSbhViKNe0KB2rmB5CCTlncbJGCEMwjge77v1q159Ql+bQE3TScx?=
+ =?us-ascii?Q?QPZWH8ymIv7o3GskUhVICNVrCrnioeDY3TzX5aCelIztmZ9O7NEdpofztL67?=
+ =?us-ascii?Q?JzVcXB5/5IKgNykILu5HGDRpa8ABlD5Bx/URjZOP8BbaLYzAvhgBLECglD9Q?=
+ =?us-ascii?Q?QGCQuYLY/uqi2Vdb3BKytFe9C7he56m/6XF9Hht5/u8ImdvfpxmSdc2K/Ja+?=
+ =?us-ascii?Q?tiH8pVYBYOmJgpZGSfi469oVrUz9ODKYXL2CJ052KWDk3Lijd8uk1U2ts/+y?=
+ =?us-ascii?Q?YkoaTDt4iCak0SY6InWMxdhjz1+0LuUw2uTGELri0rRiHrNgDnOjUH5n3bSB?=
+ =?us-ascii?Q?SsW13JHvqvwNrMJC7Nm7TWbmXlcJrZ9q6EZZpDTthQcwpK1uvb+d7mzTKbmj?=
+ =?us-ascii?Q?bG748EKFFWzq+gBaNIOyw2GtVxcUwMzx3yUABfL32A4bgOnxhw3Al2kBbewL?=
+ =?us-ascii?Q?RjLS4VYumIUSE+cMI1KrgOdmVgPdyYTtD7SWL5jZ/sB8GemTSR19mHU84vjw?=
+ =?us-ascii?Q?T8x6smJ9Zfwxs4RUQ1IdxJ+7rFRcXb7NwV6JSqcwMVGAeHGAzsu8eXGsOyd8?=
+ =?us-ascii?Q?u/7WJbLBFEnSevnKVxp7Y/Moib8kG4aLvvEXsqN88mIVdpuJXPc7kobvGg/M?=
+ =?us-ascii?Q?gjEREzZHvaOeu1IeBqQeCBtzZO8Npsq9xv4c3sEI6bl/XzeYcrGhI2jDeVMC?=
+ =?us-ascii?Q?jTYo3rZHZyiYpBV5T35x3gNVgxO5JPlqW2qYXviwCfvHOXQp5iiDkOHVeUoj?=
+ =?us-ascii?Q?+2MD5VnKn8VHQ0jyTSGohx0M8TgVCSnwOqqSCBIkfqm+/98qEytz9+o7gCOy?=
+ =?us-ascii?Q?A09rWd+C1b9ISm+gbxmsYOyOT0lFbmanxlWQAiYkk1PdtUOTRvBk4lbqwC0Z?=
+ =?us-ascii?Q?keNGkoIvBWJvyLGNuIDKyegHzkSTFSSsaOhnn6bKL0FdVlJDo1EI8ZSvOMDz?=
+ =?us-ascii?Q?qz6lq6QbLQ8LfcfFcu0ceC+DqNt57i5SoSdHNAXX8bIXwPcfhw4/DXaGJa7i?=
+ =?us-ascii?Q?HFfbommbQfZ292ggjxl82n/Ax9TMM/Nd/EinGrX9jrtBBlvH5N1bu2oN0qws?=
+ =?us-ascii?Q?A0MwdsNqxPrI+XsvnGaUmXjrq2TdtRr8+TGHTbB1mYvN5ghpkIh6gDtckXBG?=
+ =?us-ascii?Q?XZd+BqM29MuU+F95S8utey2GwzLoHLwFta1n6hbBMMRkbihk06NBXyS60+xh?=
+ =?us-ascii?Q?JKNdrVP1Nh5rn1CHT+84XTSW5KogwYYqbQEWje9sfpZH6pfSxjT7Iq+03wKz?=
+ =?us-ascii?Q?qLxSCJ5sqqkjKD7VKM6d6rrRUyIvZsICEgT394HD?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85c7c9c7-a044-49ec-67cc-08dc395d06de
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 19:31:29.0641
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /w43dZGDtjx3van6ys9xXqj4Tn7xdnVIzrQjfR1YYap7ZoZ7ZYMXX7dtlSPT7lwu8zByUwolhiX0zrfiPZyy4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10194
 
-Hi Frank,
+On Thu, Feb 29, 2024 at 06:55:58PM +0000, Conor Dooley wrote:
+> On Tue, Feb 27, 2024 at 03:54:11PM -0500, Frank Li wrote:
+> > Some sai only connect one direction. So allow only "rx" or "tx" for
+> > dma-names.
+> 
+> Which sai? Can you restrict this per compatible please, so that someone
+> cannot add 2 dmas for ones where only the tx is supported.
 
-kernel test robot noticed the following build errors:
+SAI is exact the same. Only external connect one dma channel.
 
-[auto build test ERROR on 2d5c7b7eb345249cb34d42cbc2b97b4c57ea944e]
+> 
+> |  dmas:
+> |    minItems: 1
+> |    items:
+> |      - description: DMA controller phandle and request line for RX
+> |      - description: DMA controller phandle and request line for TX
+> 
+> The binding already allows only one, but it documents that the first dma
+> is always the RX dma, and that doesn't change with this patch..
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-fsl-edma-remove-slave_id-from-fsl_edma_chan/20240228-012842
-base:   2d5c7b7eb345249cb34d42cbc2b97b4c57ea944e
-patch link:    https://lore.kernel.org/r/20240227-8ulp_edma-v1-1-7fcfe1e265c2%40nxp.com
-patch subject: [PATCH 1/5] dmaengine: fsl-edma: remove 'slave_id' from fsl_edma_chan
-config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20240301/202403010227.FvhhLScs-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240301/202403010227.FvhhLScs-lkp@intel.com/reproduce)
+Does below logic work? 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403010227.FvhhLScs-lkp@intel.com/
+anyOf
+  - enum
+      - description: ---rx
+      - description: ---tx
 
-All errors (new ones prefixed by >>):
+> 
+> Cheers,
+> Conor.
+> 
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > index 2456d958adeef..0302752d58a2b 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > @@ -86,10 +86,14 @@ properties:
+> >        - description: DMA controller phandle and request line for TX
+> >  
+> >    dma-names:
+> > -    minItems: 1
+> > -    items:
+> > -      - const: rx
+> > -      - const: tx
+> > +    oneOf:
+> > +      - items:
+> > +          - const: rx
+> > +          - const: tx
+> > +      - items:
+> > +          - enum:
+> > +              - rx
+> > +              - tx
+> >  
+> >    interrupts:
+> >      items:
+> > 
+> > -- 
+> > 2.34.1
+> > 
 
-   drivers/dma/mcf-edma-main.c: In function 'mcf_edma_probe':
->> drivers/dma/mcf-edma-main.c:198:25: error: 'struct fsl_edma_chan' has no member named 'slave_id'
-     198 |                 mcf_chan->slave_id = i;
-         |                         ^~
-   drivers/dma/mcf-edma-main.c: In function 'mcf_edma_filter_fn':
-   drivers/dma/mcf-edma-main.c:280:33: error: 'struct fsl_edma_chan' has no member named 'slave_id'
-     280 |                 return (mcf_chan->slave_id == (uintptr_t)param);
-         |                                 ^~
 
-
-vim +198 drivers/dma/mcf-edma-main.c
-
-af802728e4ab07 drivers/dma/mcf-edma.c      Robin Gong         2019-06-25  152  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  153  static int mcf_edma_probe(struct platform_device *pdev)
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  154  {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  155  	struct mcf_edma_platform_data *pdata;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  156  	struct fsl_edma_engine *mcf_edma;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  157  	struct edma_regs *regs;
-923b138388928a drivers/dma/mcf-edma.c      Christophe JAILLET 2023-05-06  158  	int ret, i, chans;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  159  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  160  	pdata = dev_get_platdata(&pdev->dev);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  161  	if (!pdata) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  162  		dev_err(&pdev->dev, "no platform data supplied\n");
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  163  		return -EINVAL;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  164  	}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  165  
-0a46781c89dece drivers/dma/mcf-edma.c      Christophe JAILLET 2023-07-12  166  	if (!pdata->dma_channels) {
-0a46781c89dece drivers/dma/mcf-edma.c      Christophe JAILLET 2023-07-12  167  		dev_info(&pdev->dev, "setting default channel number to 64");
-0a46781c89dece drivers/dma/mcf-edma.c      Christophe JAILLET 2023-07-12  168  		chans = 64;
-0a46781c89dece drivers/dma/mcf-edma.c      Christophe JAILLET 2023-07-12  169  	} else {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  170  		chans = pdata->dma_channels;
-0a46781c89dece drivers/dma/mcf-edma.c      Christophe JAILLET 2023-07-12  171  	}
-0a46781c89dece drivers/dma/mcf-edma.c      Christophe JAILLET 2023-07-12  172  
-923b138388928a drivers/dma/mcf-edma.c      Christophe JAILLET 2023-05-06  173  	mcf_edma = devm_kzalloc(&pdev->dev, struct_size(mcf_edma, chans, chans),
-923b138388928a drivers/dma/mcf-edma.c      Christophe JAILLET 2023-05-06  174  				GFP_KERNEL);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  175  	if (!mcf_edma)
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  176  		return -ENOMEM;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  177  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  178  	mcf_edma->n_chans = chans;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  179  
-af802728e4ab07 drivers/dma/mcf-edma.c      Robin Gong         2019-06-25  180  	/* Set up drvdata for ColdFire edma */
-af802728e4ab07 drivers/dma/mcf-edma.c      Robin Gong         2019-06-25  181  	mcf_edma->drvdata = &mcf_data;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  182  	mcf_edma->big_endian = 1;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  183  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  184  	mutex_init(&mcf_edma->fsl_edma_mutex);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  185  
-4b23603a251d24 drivers/dma/mcf-edma.c      Tudor Ambarus      2022-11-10  186  	mcf_edma->membase = devm_platform_ioremap_resource(pdev, 0);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  187  	if (IS_ERR(mcf_edma->membase))
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  188  		return PTR_ERR(mcf_edma->membase);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  189  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  190  	fsl_edma_setup_regs(mcf_edma);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  191  	regs = &mcf_edma->regs;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  192  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  193  	INIT_LIST_HEAD(&mcf_edma->dma_dev.channels);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  194  	for (i = 0; i < mcf_edma->n_chans; i++) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  195  		struct fsl_edma_chan *mcf_chan = &mcf_edma->chans[i];
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  196  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  197  		mcf_chan->edma = mcf_edma;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19 @198  		mcf_chan->slave_id = i;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  199  		mcf_chan->idle = true;
-0fa89f972da607 drivers/dma/mcf-edma.c      Laurentiu Tudor    2019-01-18  200  		mcf_chan->dma_dir = DMA_NONE;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  201  		mcf_chan->vchan.desc_free = fsl_edma_free_desc;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  202  		vchan_init(&mcf_chan->vchan, &mcf_edma->dma_dev);
-7536f8b371adcc drivers/dma/mcf-edma-main.c Frank Li           2023-08-21  203  		mcf_chan->tcd = mcf_edma->membase + EDMA_TCD
-7536f8b371adcc drivers/dma/mcf-edma-main.c Frank Li           2023-08-21  204  				+ i * sizeof(struct fsl_edma_hw_tcd);
-b51dd7c8aac292 drivers/dma/mcf-edma-main.c Frank Li           2023-12-21  205  		edma_write_tcdreg(mcf_chan, cpu_to_le32(0), csr);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  206  	}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  207  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  208  	iowrite32(~0, regs->inth);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  209  	iowrite32(~0, regs->intl);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  210  
-af802728e4ab07 drivers/dma/mcf-edma.c      Robin Gong         2019-06-25  211  	ret = mcf_edma->drvdata->setup_irq(pdev, mcf_edma);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  212  	if (ret)
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  213  		return ret;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  214  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  215  	dma_cap_set(DMA_PRIVATE, mcf_edma->dma_dev.cap_mask);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  216  	dma_cap_set(DMA_SLAVE, mcf_edma->dma_dev.cap_mask);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  217  	dma_cap_set(DMA_CYCLIC, mcf_edma->dma_dev.cap_mask);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  218  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  219  	mcf_edma->dma_dev.dev = &pdev->dev;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  220  	mcf_edma->dma_dev.device_alloc_chan_resources =
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  221  			fsl_edma_alloc_chan_resources;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  222  	mcf_edma->dma_dev.device_free_chan_resources =
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  223  			fsl_edma_free_chan_resources;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  224  	mcf_edma->dma_dev.device_config = fsl_edma_slave_config;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  225  	mcf_edma->dma_dev.device_prep_dma_cyclic =
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  226  			fsl_edma_prep_dma_cyclic;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  227  	mcf_edma->dma_dev.device_prep_slave_sg = fsl_edma_prep_slave_sg;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  228  	mcf_edma->dma_dev.device_tx_status = fsl_edma_tx_status;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  229  	mcf_edma->dma_dev.device_pause = fsl_edma_pause;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  230  	mcf_edma->dma_dev.device_resume = fsl_edma_resume;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  231  	mcf_edma->dma_dev.device_terminate_all = fsl_edma_terminate_all;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  232  	mcf_edma->dma_dev.device_issue_pending = fsl_edma_issue_pending;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  233  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  234  	mcf_edma->dma_dev.src_addr_widths = FSL_EDMA_BUSWIDTHS;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  235  	mcf_edma->dma_dev.dst_addr_widths = FSL_EDMA_BUSWIDTHS;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  236  	mcf_edma->dma_dev.directions =
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  237  			BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  238  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  239  	mcf_edma->dma_dev.filter.fn = mcf_edma_filter_fn;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  240  	mcf_edma->dma_dev.filter.map = pdata->slave_map;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  241  	mcf_edma->dma_dev.filter.mapcnt = pdata->slavecnt;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  242  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  243  	platform_set_drvdata(pdev, mcf_edma);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  244  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  245  	ret = dma_async_device_register(&mcf_edma->dma_dev);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  246  	if (ret) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  247  		dev_err(&pdev->dev,
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  248  			"Can't register Freescale eDMA engine. (%d)\n", ret);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  249  		return ret;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  250  	}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  251  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  252  	/* Enable round robin arbitration */
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  253  	iowrite32(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  254  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  255  	return 0;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  256  }
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello  2018-08-19  257  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
