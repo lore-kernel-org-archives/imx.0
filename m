@@ -1,59 +1,59 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E016168E
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B816B6215E
+	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709199896; cv=none; b=gI9VIh1aQrpq/Qi3ATf+BIaId/jcGcNPk2bKAgGwD/+qF3AM2kBCTKTcQLhC1ABQyTduopTcTQ7MiS6XPDZWJiRg5Uq6aPsUuTnDf873ciH3P7EUc4Y5cOC5/W9XoGkXnAQLoCIQS5gd7Mk4gFA32QoCl0erY9YYk3l5BApk5TU=
+	t=1709200016; cv=none; b=PzNfEwTlUeDBn/Gu6ddvkr6WcOMGbNCbydjZTeOfE13kTH+ytQGdbjxgXgPv0axDsYhOTsoMSxOPFk5zD9bsHMw8JnDU0a9bz005svnSxeDKfAPX4U0B8llZ1Xji1zbU4CBk6xQ2wJdz6quOKVy82+/2oPaFd09eLPu3YhOuXEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709199896; c=relaxed/simple;
-	bh=EZVqqt0UqTzqDRi0smq5nKxXxfGTiBGsCpugNDhVifU=;
+	s=arc-20240116; t=1709200016; c=relaxed/simple;
+	bh=4zH9C/dh4VdmSyxV/m5XlzDwF4IzkWrKleVHIhuzXWQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t7kEsEEu5/IPxsiKH+CSEa7WNNIoqhPBxttIWPp9EdIRoDt9V4U+5b/Rrgo813YBzQVWJQOmB1w8Y/jPFtQ6D/MpJ0VmWSrWezHokjAasxKuYGGgGApFu0717qQh3YEkvK84eM1lt5r99ujiB/M9pIyah11WESbHIZisYHhAfLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XZKdPpFK; arc=none smtp.client-ip=209.85.208.42
+	 In-Reply-To:Content-Type; b=oRp40RdHUe0+m2EDW/xq5WQoXEAIA8umi/38FksOoNmHP7SCpV5HBfYCZBGUHEdFqsFzu9lguOD8d+gcdTzoPB8AYKyHrZe+y9p2KKxu3fyVssX/BrpQ4QYH547L/KJNyrY54mzy3L2f7+iJTSwc35GtYooA/Na7CPQzxv93nCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pEYJO8Rd; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XZKdPpFK"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-565c6cf4819so2999737a12.1
-        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:44:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pEYJO8Rd"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5649c25369aso1015026a12.2
+        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:46:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709199892; x=1709804692; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1709200013; x=1709804813; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=eZ+itJdAzrTo94ch23AZ1A/oYM7pCYfrgxj/anzUqCs=;
-        b=XZKdPpFKcRvI9rjgT6XBclUfEjveJww8PtaunP28lLYXUFLEFShYtGGvwATb5CdDAq
-         SlU8jfLZNv+Tu42FGRb1MvOIogbYon2VLMCBU8VlLMUwWBHmTwgcDsRn1wnCiotkB0GV
-         AOnlExUsgJzaW8e0DMQIC5Aj/ehTdEVgz0bK5ZFPdAxAq7Uxa/YNkMMFP/BgH94pddVd
-         zrntNhrmvoQwtVoKGVC/CNqqejFKF8bx+aOqTzOwxZ4JZrba4h0wNlzqpAnx1C5DI4kJ
-         RDcvun7FM78oaszYhmAk/464IVvcp/XZITgN69WHny9y2iWOHl5YLNi8b4aYIHWrWGWD
-         lHuQ==
+        bh=9+hYCX3torNsXyaqwug19LZ2jZs7RJKtMjbl9CWfQq8=;
+        b=pEYJO8Rd1yJjIMvuuoAg48wdhb7ZFu1vmnv3gJT2IEQIf3uu/TGm7/Tv4kTFG3nexy
+         Rqax7C9FViTJrr+RGrQag9hUf85FykXnV1cnrnl4TCbALH7ktbE3xl4BXTTSXG+CVUWx
+         MkPLVCJw75y+suaubF++g/cslchask14tfznu5SU2iZMKziIA/tjmxRR6PMbrO/ORbtU
+         UD6rrOg1AlwJB1mREOcTkwiPVSHO8Byhv8rGXtvtU9dot0QCi0l+XjWOj6JRJhUpvG9X
+         78yu1V2XJHyPXOoo0ofss/AATuLheVtMMEKfxr3wuTZP/tuQrO3E+MrJ3AUBp3/R+992
+         E/eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709199892; x=1709804692;
+        d=1e100.net; s=20230601; t=1709200013; x=1709804813;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eZ+itJdAzrTo94ch23AZ1A/oYM7pCYfrgxj/anzUqCs=;
-        b=iOR9Oxo5CrMXOt3Ws3bF0B7DwW9z5mFDV7vFFX97QDM6ZxVf29NxFwAlnV1Ej1d49m
-         VVO8LQz7CeNrAwO+e6OU9ClwpIbt4bp9aXMtqFSfXnSaD7Cz938sHonDqJlkkJfLkdU9
-         u0yjTCfJheK/5mAVLw+AgDFcsSXRp3yXKxr4ytaxDoxZyKCx4nA2SQpTPzdzOC5Vl7Yz
-         OL7HkvWFTYiXkM7T9CAm1CouTr5LiyfyYXq4/40CmTZ1FqWfEAfxkztcJkFApFnOvp1y
-         4MaVyaZJI2zdRSXitukDL/reJneyoAXbk/XxbZV9g7+CPtUvI4AW4RlrJIIvz64WeaLZ
-         Axvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGgOoizSA1KuhIdeRRcSNy8xZknJ2BAY1WhPYB4zHfBrNMOJfSExvSyHCZJOS0XkPwgY0NMmvame0DhyHqf6wfaR/w
-X-Gm-Message-State: AOJu0YyubR5BYb8lX3gevGVDMtHa7qMMYFdAYeZk+tGhAeHOUD+404Pj
-	QwRdiuo/Vy2Sb/tm3moWhKsu9LFuive5/suqptW+EXCHYmHvWHc6tSjSGLlZLmw=
-X-Google-Smtp-Source: AGHT+IGM1Q/68kQTFg/oUlseVpGX5woIKvpJzrmhly6aWU404VVWx3CkT/1eiwnuTX2AaZhFcwpX+Q==
-X-Received: by 2002:a05:6402:22c3:b0:566:b1d6:d4c8 with SMTP id dm3-20020a05640222c300b00566b1d6d4c8mr94876edb.16.1709199892825;
-        Thu, 29 Feb 2024 01:44:52 -0800 (PST)
+        bh=9+hYCX3torNsXyaqwug19LZ2jZs7RJKtMjbl9CWfQq8=;
+        b=wllEMGV05gvi8STP8MNdcLU7kD14OGupfFAFsgLagtpz9Pmx2zH2A6MBodS0qzbQV/
+         MunGL9vY+oCBsgn3gGBmzRz1qDMEi2/pGwnuzD6+tHExQBTlWorljqhI7m/Phpca+MLM
+         wkyVOL+cXL/CJdz6NIh/KlIQop74zd1YfBqJ9C9rxmAZ6dhreQW4Rw9SKPYy7WSeaeQ0
+         DLN3IekP+ii9iDkK5oWmYQNd/GmBNfWQXL7ovRSHZaFzwziVi7Ec2njM5znra5Q6pwvs
+         9wPJT/hwAo+UG5ealwBYTjHUuQ4hfCtF2tDW1kSN0MZeobngiJtNIAQD+Vyx44FRciw4
+         dvQw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5clEwpdffL6Fnot+uVqfsvyYjc+ppnEpVwxFbpwjW/NnBljFsavjwhPuhkzdgHV91zJ7OAaVFlp1F+Gq9z1f9cK41
+X-Gm-Message-State: AOJu0YzppqcMdBR3WuL9cZzyUD6XFJk9lJZ6BA0zPRb113MG2I/IsLxx
+	+YFD7vFassiFfqoc8cvXuDmxFlQXYgAXs4e82VT8HCF+Wq6RkxZSICzijZYMic4=
+X-Google-Smtp-Source: AGHT+IHGJ0GTnOsuEWYL2EDugHnlHOvlmuCMytlM2mHCsu87oEHGMBnsAVzam8apsk9mo1zAfDi+bg==
+X-Received: by 2002:a50:8d8d:0:b0:564:7bff:8472 with SMTP id r13-20020a508d8d000000b005647bff8472mr1193367edh.2.1709200013161;
+        Thu, 29 Feb 2024 01:46:53 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id c8-20020aa7d608000000b0056470bf320asm450487edr.43.2024.02.29.01.44.42
+        by smtp.gmail.com with ESMTPSA id ef9-20020a05640228c900b0056624b47971sm442445edb.97.2024.02.29.01.46.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 01:44:52 -0800 (PST)
-Message-ID: <3460ecc8-d7d7-4d1c-ad0c-b32efc3b9049@linaro.org>
-Date: Thu, 29 Feb 2024 10:44:42 +0100
+        Thu, 29 Feb 2024 01:46:52 -0800 (PST)
+Message-ID: <1251bf21-c65e-4749-ad14-78ddf5cae7ab@linaro.org>
+Date: Thu, 29 Feb 2024 10:46:38 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,8 +61,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
- interrupt numbers
+Subject: Re: [PATCH v3 3/4] ASoC: dt-bindings: fsl-sai: allow only one
+ dma-names
 Content-Language: en-US
 To: Frank Li <Frank.Li@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
  Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -75,7 +75,7 @@ Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
- <20240228-asrc_8qxp-v3-2-d4d5935fd3aa@nxp.com>
+ <20240228-asrc_8qxp-v3-3-d4d5935fd3aa@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -121,59 +121,24 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240228-asrc_8qxp-v3-2-d4d5935fd3aa@nxp.com>
+In-Reply-To: <20240228-asrc_8qxp-v3-3-d4d5935fd3aa@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 28/02/2024 20:14, Frank Li wrote:
-> fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
-> have 1 interrupt.
-> 
-> Increase max interrupt number to 2 and add restriction for platforms except
-> i.MX8QXP and i.MX8QM.
+> Some sai only connect one direction. So allow only "rx" or "tx" for
+> dma-names.
+
+"one direction" was already allowed. Explain really what is the
+different, e.g. you expect only TX?
+
+This applies to all your recent patches - they all have insufficient
+explanation. Often they explain what you are doing, but not why.
+
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/sound/fsl,spdif.yaml         | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> index 82430f1d5e5a2..785f7997eea82 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> @@ -31,7 +31,8 @@ properties:
->      maxItems: 1
->  
->    interrupts:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 2
->  
->    dmas:
->      items:
-> @@ -100,6 +101,23 @@ required:
->  
->  additionalProperties: false
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - fsl,imx35-spdif
-> +            - fsl,vf610-spdif
-> +            - fsl,imx6sx-spdif
-> +            - fsl,imx8mq-spdif
-> +            - fsl,imx8mm-spdif
-> +            - fsl,imx8mn-spdif
-> +            - fsl,imx8ulp-spdif
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          maxItems: 1
 
-else:
-minItems: 2
+
 
 
 Best regards,
