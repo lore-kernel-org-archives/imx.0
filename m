@@ -1,59 +1,58 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B816B6215E
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482BC627F8
+	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709200016; cv=none; b=PzNfEwTlUeDBn/Gu6ddvkr6WcOMGbNCbydjZTeOfE13kTH+ytQGdbjxgXgPv0axDsYhOTsoMSxOPFk5zD9bsHMw8JnDU0a9bz005svnSxeDKfAPX4U0B8llZ1Xji1zbU4CBk6xQ2wJdz6quOKVy82+/2oPaFd09eLPu3YhOuXEw=
+	t=1709200198; cv=none; b=KA7olfZ7Iu1FEuI6Kr9u5cyyWiSKBWGz4Q5XW/5qo2Bi1Wug4vRzijlXrsDNAxfiGQr9Ur66/uEnuIYYetRQcR20LZZCeLbBY+wo6pLXkXMl4lW8bdV1aWwah0hZTfzoAHoDWZax2fX6qv+OXH1+WiHWOssOiGpWDysrVra0noM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709200016; c=relaxed/simple;
-	bh=4zH9C/dh4VdmSyxV/m5XlzDwF4IzkWrKleVHIhuzXWQ=;
+	s=arc-20240116; t=1709200198; c=relaxed/simple;
+	bh=YQc04LTlvo4O236/tf50vYFPrMePz6Wmbdw/Sbqdtfk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oRp40RdHUe0+m2EDW/xq5WQoXEAIA8umi/38FksOoNmHP7SCpV5HBfYCZBGUHEdFqsFzu9lguOD8d+gcdTzoPB8AYKyHrZe+y9p2KKxu3fyVssX/BrpQ4QYH547L/KJNyrY54mzy3L2f7+iJTSwc35GtYooA/Na7CPQzxv93nCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pEYJO8Rd; arc=none smtp.client-ip=209.85.208.47
+	 In-Reply-To:Content-Type; b=hCXVYlfTYbJ8lsXKkijfejVRpOxNmCRLLXMIncid0F4Ya6lD0ck5TIArnMe6Pp2yepgbw4keG4mh5oim2wP5kvPM8itMtTfiz/GnYrAYky5qkt+J61vyc6azHgR9lYi4kDkN63aTXbo69gN/WQaH3cMWUwyU2GxZkQcVlQ32n9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WB9keQWU; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pEYJO8Rd"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5649c25369aso1015026a12.2
-        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:46:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WB9keQWU"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d269dc3575so6511511fa.1
+        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:49:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709200013; x=1709804813; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1709200195; x=1709804995; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9+hYCX3torNsXyaqwug19LZ2jZs7RJKtMjbl9CWfQq8=;
-        b=pEYJO8Rd1yJjIMvuuoAg48wdhb7ZFu1vmnv3gJT2IEQIf3uu/TGm7/Tv4kTFG3nexy
-         Rqax7C9FViTJrr+RGrQag9hUf85FykXnV1cnrnl4TCbALH7ktbE3xl4BXTTSXG+CVUWx
-         MkPLVCJw75y+suaubF++g/cslchask14tfznu5SU2iZMKziIA/tjmxRR6PMbrO/ORbtU
-         UD6rrOg1AlwJB1mREOcTkwiPVSHO8Byhv8rGXtvtU9dot0QCi0l+XjWOj6JRJhUpvG9X
-         78yu1V2XJHyPXOoo0ofss/AATuLheVtMMEKfxr3wuTZP/tuQrO3E+MrJ3AUBp3/R+992
-         E/eA==
+        bh=pi5jl9cezcdpxbE9WQjb4AV/3qiJLkvEpnKJOdWQrpk=;
+        b=WB9keQWUhJCNCI/2SetV4VucFLbOexD3+EJHr72XjIvtdR3ubxXk35V51qLh5mYjE0
+         62TvLc/C0AvSD8Z4Dkw0Ns6+cgpHxI8bP6LoNnuZLJIu16Kay0bIOZI1w9zDRNFKRReF
+         jNM/tv5/EQJZi+LIBqqMoQlwYXMIXr0Xwk77smm8Xbk2M0+tHvHz/6fmYEI3LSUltxKs
+         h0RWjm5Cw/S7GrWg9fGod+CKLGluLFVSyVIc9ipNE7c2LYv0hERkYognIM4nWSwQFzA7
+         GCTBeOB9u1y61mgQpm2wRSuOJkwlHNw/09W4jmVcJpDrjO5BzMC9Nf9fq3VXK24KAw/i
+         VSrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709200013; x=1709804813;
+        d=1e100.net; s=20230601; t=1709200195; x=1709804995;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9+hYCX3torNsXyaqwug19LZ2jZs7RJKtMjbl9CWfQq8=;
-        b=wllEMGV05gvi8STP8MNdcLU7kD14OGupfFAFsgLagtpz9Pmx2zH2A6MBodS0qzbQV/
-         MunGL9vY+oCBsgn3gGBmzRz1qDMEi2/pGwnuzD6+tHExQBTlWorljqhI7m/Phpca+MLM
-         wkyVOL+cXL/CJdz6NIh/KlIQop74zd1YfBqJ9C9rxmAZ6dhreQW4Rw9SKPYy7WSeaeQ0
-         DLN3IekP+ii9iDkK5oWmYQNd/GmBNfWQXL7ovRSHZaFzwziVi7Ec2njM5znra5Q6pwvs
-         9wPJT/hwAo+UG5ealwBYTjHUuQ4hfCtF2tDW1kSN0MZeobngiJtNIAQD+Vyx44FRciw4
-         dvQw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5clEwpdffL6Fnot+uVqfsvyYjc+ppnEpVwxFbpwjW/NnBljFsavjwhPuhkzdgHV91zJ7OAaVFlp1F+Gq9z1f9cK41
-X-Gm-Message-State: AOJu0YzppqcMdBR3WuL9cZzyUD6XFJk9lJZ6BA0zPRb113MG2I/IsLxx
-	+YFD7vFassiFfqoc8cvXuDmxFlQXYgAXs4e82VT8HCF+Wq6RkxZSICzijZYMic4=
-X-Google-Smtp-Source: AGHT+IHGJ0GTnOsuEWYL2EDugHnlHOvlmuCMytlM2mHCsu87oEHGMBnsAVzam8apsk9mo1zAfDi+bg==
-X-Received: by 2002:a50:8d8d:0:b0:564:7bff:8472 with SMTP id r13-20020a508d8d000000b005647bff8472mr1193367edh.2.1709200013161;
-        Thu, 29 Feb 2024 01:46:53 -0800 (PST)
+        bh=pi5jl9cezcdpxbE9WQjb4AV/3qiJLkvEpnKJOdWQrpk=;
+        b=roXMlIqHlW9zTFPwUbZhqZLYzsobaXpQhqRas6VGZmamJhecTqJN2TR2yAlarB2sjK
+         p10y2TdjDJqDBknQ93eVGeOqOxrexq2Xw9JCLaQm9OsopbjjDeuvlZpZK58P162LfgXC
+         wQsmSPimTFfFyVyDtcMI/K9UWVLR3pX6CLMIUiLokHTD1+lyIEdTKTJPqYsGCDjIj/KB
+         JmFm4+7LXdxfFUpzQ1bDvaTVJvGRX2VI4tx0AHqQcpoWvU4ANZjQ4yNl6R3SXqwQ8YPn
+         55pt37ENLtANjLLSvL3mXz0JpDSsTrikcHAziJ20TVXholZZ6Z4etiV6T719TpsyizjX
+         i8SQ==
+X-Gm-Message-State: AOJu0YyB8o0xl27jWqsF+FUJ2kMJhO6s7WvxbsVeSaaapkDwqRpMbGgz
+	tQwoT03oZDcFkQDEbbr2Eo9IS5zgor619DoXI3QooUg556glooPzS6EJgEnkl1s=
+X-Google-Smtp-Source: AGHT+IFH7O/J1Sqs6CDrHXaVDDFk3dxqW3VNmYolyu+a04hSURH26GxNtx6lpxRy+855Y1fMve8jPg==
+X-Received: by 2002:a05:651c:8a:b0:2d2:47c7:65a with SMTP id 10-20020a05651c008a00b002d247c7065amr521491ljq.20.1709200195564;
+        Thu, 29 Feb 2024 01:49:55 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id ef9-20020a05640228c900b0056624b47971sm442445edb.97.2024.02.29.01.46.42
+        by smtp.gmail.com with ESMTPSA id x18-20020a2e9dd2000000b002d11d0e37b5sm159862ljj.130.2024.02.29.01.49.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 01:46:52 -0800 (PST)
-Message-ID: <1251bf21-c65e-4749-ad14-78ddf5cae7ab@linaro.org>
-Date: Thu, 29 Feb 2024 10:46:38 +0100
+        Thu, 29 Feb 2024 01:49:55 -0800 (PST)
+Message-ID: <bb3b61b6-4f39-4123-be50-0e2c8f07eb99@linaro.org>
+Date: Thu, 29 Feb 2024 10:49:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,21 +60,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] ASoC: dt-bindings: fsl-sai: allow only one
- dma-names
+Subject: Re: [PATCH 4/5] dt-bindings: fsl-dma: fsl-edma: add fsl,imx8ulp-edma
+ compatible string
 Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+ Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
- <20240228-asrc_8qxp-v3-3-d4d5935fd3aa@nxp.com>
+ Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ Joy Zou <joy.zou@nxp.com>
+References: <20240227-8ulp_edma-v1-0-7fcfe1e265c2@nxp.com>
+ <20240227-8ulp_edma-v1-4-7fcfe1e265c2@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -121,25 +117,33 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240228-asrc_8qxp-v3-3-d4d5935fd3aa@nxp.com>
+In-Reply-To: <20240227-8ulp_edma-v1-4-7fcfe1e265c2@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/02/2024 20:14, Frank Li wrote:
-> Some sai only connect one direction. So allow only "rx" or "tx" for
-> dma-names.
+On 27/02/2024 18:21, Frank Li wrote:
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8ulp-edma
+> +    then:
+> +      properties:
+> +        clock:
+> +          maxItems: 33
+> +        clock-names:
+> +          items:
+> +            - const: dma
+> +            - pattern: "^CH[0-31]-clk$"
+> +        interrupt-names: false
+> +        interrupts:
+> +          maxItems: 32
+> +        "#dma-cells":
+> +          const: 3
 
-"one direction" was already allowed. Explain really what is the
-different, e.g. you expect only TX?
-
-This applies to all your recent patches - they all have insufficient
-explanation. Often they explain what you are doing, but not why.
-
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-
-
+Why suddenly fsl,vf610-edma can have from 2 to 33 clocks? Constrain
+properly the variants.
 
 Best regards,
 Krzysztof
