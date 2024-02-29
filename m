@@ -1,155 +1,294 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2056.outbound.protection.outlook.com [40.107.6.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2833B67A1B
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 10:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709202630; cv=fail; b=u6YCmkhLWPVmqW8bqsG9ajzYE8OUySd/B5fWUqH+Ev9/GXa0sQx9RufgbIXm5pycf/HR9Y9W86a/JE4OrDwbI66lAi9AVmbRAR4hBlIMnacAu7+pzKZNB96i0Zx1M+aNS3kgCBb5yZ2FnVBjAwW8r3fndOBILrf33laiYwLLA1w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709202630; c=relaxed/simple;
-	bh=k88Ue6TeyheEKxlu53GHnX4Bz5XEViz0Va/+xqoo57U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=eY5kib+BufsihPoD9tT9ZbUyTBAAGrZ+kGJcc/xLcj+NGGgHmGpD78UOAmFZ0huSP1a8qxC8nW3mDbVJOzKY4yIwdNjAEL5oBuhpr7eDqekDg4yn/g5gqXAduCFEN6LFDL1K+gmCCUOKMBgCtl3CWd4TM8UP6qybgGus2sS8HXY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=pMVAd7yB; arc=fail smtp.client-ip=40.107.6.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74DB7B3E9
+	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 11:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709206002; cv=none; b=CpAPDnxD4+XQA967OM4iPV1Ftc/vLo+OuCIXcp6VhZnWq5cmXUVVejjwfGR0OhVcc0zSojbJpsLX7+ysau0d7Ui02XGjjm+y0Lq0jIyLgCMmbC071a7SmwJQxLLL42jrOOmeYtboY1pCSu/5CV0SVUl7NTGXpAM+MMliFypXV18=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709206002; c=relaxed/simple;
+	bh=8GE9YiCWVCn+Z2uA67VptPkoHhkfgiVp0YBQ3DFDysk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nlijp3KbGLk81hAHTSHILMfQYYUhmkyGYF4KE0oPBGN0z4qyvSG09rxWgEllaehFNp8XJLJ0g/4SBF7A4QB3Tz/H5ONGkel4kKN3jh3WImlMW3RWvS61PbN7209CRW5WNPKjpQAw/SkZVMRCt6slFTqLJaaONn2vU2J/p28hlN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KbluZ9g5; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="pMVAd7yB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Aj/RdzpZgnXLH79sQDpkMG4AczfhAV5XqHRX0zdr9fAHo7C2jyqvmaepxPSpu5A05NjkxLpQft1ySBB+jEM4qBuWIqISnJQciE3nFPRFNUhtVKap26+q5TooW8hvMeslCWoBUmw5ld6t23asxeEd751a2Sd8SdUhlU2Bif082J7DCrd+4svgpC1ac6lEtcc19dkPJGVfRg3hg47EDFZIAFgeVbGKuAjJfaRQpGgCyPSnAQOzqDs4nJAsfeEGPSA4mMd2rEegAWxvpA+dtzH7O9LcBVEwVIuvxaoMtSV24Po77DkMKL7q/89gSnpbih+zhKnQOvzis15CNFXUbbS+tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k88Ue6TeyheEKxlu53GHnX4Bz5XEViz0Va/+xqoo57U=;
- b=SQ8RndkAZNLdrs+4vI/SYAInoBDwRTjMO1ynR8AGInKHz51rm+nYNUE+dM3X8u/Jey8HWFF7aMDx5xrQcDahKBk5tOznHcNbtrhiKOJnA71SPdAUllPc9cra5YQhKYJYQZXYSX0ogRecErLmF51SJRw9oaPnjeCzbhPnBatEGd6Y3Kl4Hl0Eo19yP3DOqN93SkWr1b6Gw4wM0nTmfYrMQFeSnGgpLQ8pvxrlgBfcSVbJ7iOKuc3keFj/SrMq+pc5P0uxKJ0/bWEkuhkViI6DiO3/ynfuvshJouPkK/CArqRWbKOOZBsB1CMmbTa2+D1C/pcIR/5u9cge94rJMcg9Zw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k88Ue6TeyheEKxlu53GHnX4Bz5XEViz0Va/+xqoo57U=;
- b=pMVAd7yBTUdqqHaxgnAaKy9HiJJymZCX5pewMbTR8qp7tGgh45YE3YF5CPNGbdXf9naWzw730jZ6q8YfB1fLzrl0jR8xt17PWYrUhqcPag6B5nFdlD205+33PAvBmPRo1cSaU78LPksYxsxDXaHQQzNNB3lkg6PYYr3iakIkNXM=
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AS4PR04MB9361.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Thu, 29 Feb
- 2024 10:30:25 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::d45f:4483:c11:68b0]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::d45f:4483:c11:68b0%7]) with mapi id 15.20.7316.039; Thu, 29 Feb 2024
- 10:30:25 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Will Deacon <will@kernel.org>
-CC: Frank Li <frank.li@nxp.com>, "mark.rutland@arm.com"
-	<mark.rutland@arm.com>, "robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "john.g.garry@oracle.com" <john.g.garry@oracle.com>,
-	"jolsa@kernel.org" <jolsa@kernel.org>, "namhyung@kernel.org"
-	<namhyung@kernel.org>, "irogers@google.com" <irogers@google.com>,
-	dl-linux-imx <linux-imx@nxp.com>, "mike.leach@linaro.org"
-	<mike.leach@linaro.org>, "leo.yan@linaro.org" <leo.yan@linaro.org>,
-	"peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com"
-	<mingo@redhat.com>, "acme@kernel.org" <acme@kernel.org>,
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
-	"adrian.hunter@intel.com" <adrian.hunter@intel.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-perf-users@vger.kernel.org"
-	<linux-perf-users@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH v4 6/6] perf vendor events arm64:: Add i.MX95
- DDR Performane Monitor metrics
-Thread-Topic: [EXT] Re: [PATCH v4 6/6] perf vendor events arm64:: Add i.MX95
- DDR Performane Monitor metrics
-Thread-Index: AQHaVAmpfH+wU+TeN02q4eZ9P4uLMrEWbGKAgArf/wA=
-Date: Thu, 29 Feb 2024 10:30:25 +0000
-Message-ID:
- <DU2PR04MB882237E2A26F535348F5090F8C5F2@DU2PR04MB8822.eurprd04.prod.outlook.com>
-References: <20240131055811.3035741-1-xu.yang_2@nxp.com>
- <20240131055811.3035741-6-xu.yang_2@nxp.com>
- <20240222122533.GE8308@willie-the-truck>
-In-Reply-To: <20240222122533.GE8308@willie-the-truck>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU2PR04MB8822:EE_|AS4PR04MB9361:EE_
-x-ms-office365-filtering-correlation-id: fcf7c31a-5477-414e-1802-08dc39117151
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- JsH8uvxLLwQODPwcdlXvsnV+/rR5u4u31Ai0mnO6Oomv4QKQTdLUCXa/ahc8RKJQ3iJC1HJmdHxBrwLhYKq9Fp82n4/FAZTw7OSor5g5irqLvyugOpq2P1uhGHyOXds0CLQBCEeJTixzVrwHkX19k16kkasfygWB5Gjr2DE5I3Bm2G9ilxxYhI0nnqOZLUUpdAOa9jGDMGELZT+Wl3EEJwp8r5LnWEiW7B178VG+daceCyCR3N1hTifyzpO2wBbCEd/01PlAlp4G09uIWbOtzExQeBtUSmm5zmLez0dqWZumV8Pl3zRY11AxkY18G6fypQthPk3QXJfP07Dld7v/kjtVVO0w4BJCG8Qx/9s7YRJi4p0tWEYoQ7xFRzIVOV2mPZ/UmZxerLgpNi4EzbPZY+BCwamU9NeguS/QYgBTTHfn7i8RfsT4589jEOVQlzHDo7BsKfAsynqhIdvoxVB8YE3aI43e3B/Xz1m8ZL4+GBxQE27VlON7oCLfT/pGBkhmABa0ksZYMznuPGU+8/Zt4bzGdOSVzVvvGXYM5YeIYh2HP0Bw4uyfC1flaOeg4d6Q1oHwjEJ2dzfROde2/erFAiboEj3r207fRW5HE+YuZXulTpE68nzxf8xzLdm+0JD4bdTEkHMrdT4z1h3mFMfzTTRUqYIsfiMDXfD5uzY2lRj89P3sjYwJlV2d5EyEwAbo0f9jWSqgu0SFnMLu7go32lluuQIA1Fc0TD/WteWEoa4=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?SIASYxbS4jSeV526RYgbeDNq+pSDpxzhE3K3TAOatYeqPiPJMPQDLRUFPeSh?=
- =?us-ascii?Q?6NqXveW7W2caIXqXD53zUriJ0Rlsjw6Ug4gLmNJOlPWlUhWLqeBLyT8Ym9Gs?=
- =?us-ascii?Q?nY8sZ/iuQXUjd0CfxaMbNPFIUAOpKgwqFTR2gI7ay67HzBkx7m5sCHPBz9Qx?=
- =?us-ascii?Q?7Ifi/mMTUGGhWwAtcgKfcDB+oDJ4KE6oyPzH0LewX0gxgZxb98j0u8yyWV5I?=
- =?us-ascii?Q?T/sAWZ3xtj+mfQy6YOv4ehFPr2cQKR9UjGMPorwh+SgdrhOCsxmYeClxBeIg?=
- =?us-ascii?Q?R4Mn/TPSEX3eu1uMB7gxIxebXHnsVr7JCRYYdW37wcJdsjfFCbqzOny9yGY4?=
- =?us-ascii?Q?CWvN2dfrb6mbx5MOTGWJLeri4qOxxgJBVeGpwmUT8azb+2zcQXICDqTRHamS?=
- =?us-ascii?Q?D/SkWtoXMXwpC3o2H3IAKRM6M6soj4EsZiYFq2zYzrrYf4igomaqQkRkdywk?=
- =?us-ascii?Q?iHt8LqTa5rUvdrzDlBacnF0cpHKc3cgydd+ILO4emiq5IQONIoEvTedEpLWO?=
- =?us-ascii?Q?uy98whPQmegAAMXa/Szxp9b8USZqBY0FGC/HnTzv4mWAMzxOdjE51o1HU/79?=
- =?us-ascii?Q?8RPSo0aLOFuKZTJy6BnmzAFqkOHNoEfhZMcms7gm2+M2wgEWs/NAJU+94xSm?=
- =?us-ascii?Q?dIfVki7NqsfMwPocaspJ3bRk8H+C+SXb5bTLq4rJJZV530JqaNXBn4YGZpwU?=
- =?us-ascii?Q?oRRZbC6kthgRTjIBty9A/jTHZ6sJGH/GwKeDyYwB777UR1sHZUYx/YcnBoaz?=
- =?us-ascii?Q?RSM3UsQWyV+3IyZjzOTtdTOiFNO2uwR9nmF4OtvBSbVUXfy25YsSw/SfblJE?=
- =?us-ascii?Q?tzj4EKL6yLwz5HJmd5GoK4rDrKL0Bq7VyYG0pyk3W6Ty/hG/kp3lk6fm4dYk?=
- =?us-ascii?Q?WfVGFDOUhRsalT5xvia7r7ByASDRrdKrJEg/CwWrz5h0WZmC/VeVqr5Jqlkq?=
- =?us-ascii?Q?OIUVNaQhwzZDy90lt7aPCd5mNSfD3yYHXgh5b1/wiZxYkZyvMZdMzIDWUlGO?=
- =?us-ascii?Q?NCvcfbtnt73C1+hyGmpKt1QChWEgtqw93SoLobjgj0P1/MvXs54EDbhZDVQo?=
- =?us-ascii?Q?kD5eRYbdr0X0J2G2ILpPv72CstJUr7z+ZazAsqI8b4BWpDzdZGgjBvGCNHJT?=
- =?us-ascii?Q?mZSuDGcp9YQK3x7vhEDM26ulamFrl+W3xoOuw1uLIBurIAUX02Tbqhv5nXe2?=
- =?us-ascii?Q?wfHc3QzHodCu+/Nb2QechmDq+suFm802X5CJv0a8volLWY5DHqo+WJd5lYCT?=
- =?us-ascii?Q?dSF5fsY73xWchzzbJhSzGAKBpz76SZ4uRrm4DDDXdH0FORch7UNabpxXPWuy?=
- =?us-ascii?Q?p7y+D54YeLTfZarybhZi7Fp2TxBVe+Xx3M/Nv/JdogguiLC8ApItsF1avkXh?=
- =?us-ascii?Q?EPF5I2bzPtNuVvmuecqjlFkgN2A/ab3EkuPCme3ydlZzsa0EmxDyuPhWAvaf?=
- =?us-ascii?Q?I5U08GNekRN01oykbfby85hpD6V+j6sRqTdZPDkyPKJ9fGJRc3qtsfWtWbHA?=
- =?us-ascii?Q?C2+dYpVYkq+f2mQ44UbnTrLolLQ6itHO6H1nR2vZNzV6sv8AJ429kpN90U1t?=
- =?us-ascii?Q?DmfPO9f4w71YmtmQvCY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KbluZ9g5"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-513235b5975so966791e87.2
+        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 03:26:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709205998; x=1709810798; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0u4KG96Vv6kH8FwonYoTSkj5xpJhiaViuSAQeLv/Hv8=;
+        b=KbluZ9g5A7BoM1JX6VqUaDMDEsxjEDWLH0uVlvyJMkbSO6cfmPn/fymW4mPMMQiYst
+         HGRaFEvj47K9SJ7xqepOMjR2sgAIUv4WWaIxivg6wmmruoNBjlgbSu/ZfvF0CNjR8tUP
+         PIaEYc6mEQMGR9eSElsPx6E3eFIueT1Pu6ldScGUJ9zmYwLmK2XOjnf9BC2CgXw8rX8h
+         nyK7dQsPRCmTUhYAxiiKgKp/50eNc+LeB8khcvzA2UXyoq6VxJXx9z9GNCNKcXRMKc9s
+         jigas1QTnfgkcOfQP5HMIHTZqgQIVOOeWUPmrCCI3s2uXpk9cR2nw0vRivlRPlYf4seC
+         V/TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709205998; x=1709810798;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0u4KG96Vv6kH8FwonYoTSkj5xpJhiaViuSAQeLv/Hv8=;
+        b=ZW1JN8QAOvg/pyh96lD5eaX8CvwmLDA5oKGfd/LDd8xVslVmDkUM4XQYxPq7LXS/S6
+         2flsBTgbou1IBACh15if1Hjpx/ia0Hb86YJ6OQsISZG/TkC8H6F5K9S/wT4cfby1S3Fz
+         i8161Ja4VzsXTUm9cpnW5PXwSyX+KMFItLAIh22QKpaEEMjqMHg8nthm6/iVt/CWD/6J
+         TdW+WpMrkAZQeOgDyre0Zf1T+WHv17OIlM4J2aOzc+hf25yCUYhE8U5HBRpUvFeLPDdk
+         9DM2GU88gX7k0h5cqXb0Li7NDaH9z5xhYQTuAxLDyKFDg8Bs5zE/hka9+vedPI0vYznf
+         WgnA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6htx+VnV6sw8hwCr82fDCsZKZObRklayPRCf2T74C1ADtQJNid+oxMHiPoUud+MOVVH4PX/ZO5ILZRk+kl6rjqT2U
+X-Gm-Message-State: AOJu0YxTAeacZrpsotee2yJ5pULHOg95FXFi+QMC3xaeHqmtMhjSQjNa
+	wiyRUj/AbXUHRcKwMbjLmCoK4id7cIAKeM2eco7eVp8C+VQinuUTMehXoW2Z
+X-Google-Smtp-Source: AGHT+IEc2JYA9lvUpGxzdW4sg7PnFtIs7ULODnPTgbzYmIIg+IOvQ28wOPeizarX7fjWemlFuTC3vQ==
+X-Received: by 2002:ac2:5187:0:b0:512:abe6:2905 with SMTP id u7-20020ac25187000000b00512abe62905mr1180976lfi.50.1709205997536;
+        Thu, 29 Feb 2024 03:26:37 -0800 (PST)
+Received: from mobilestation ([178.176.56.174])
+        by smtp.gmail.com with ESMTPSA id b25-20020a196459000000b00512b2ea0472sm220700lfj.32.2024.02.29.03.26.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 03:26:37 -0800 (PST)
+Date: Thu, 29 Feb 2024 14:26:34 +0300
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Rob Herring <robh@kernel.org>, Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 5/6] dt-bindings: PCI: dwc: Add 'msg' register region
+Message-ID: <fvre5zsj3a2dkvctbamuisomlq2lav7mqmugq2oasx7hibelsm@czz4ypnrqboj>
+References: <20240205183048.GA3818249-robh@kernel.org>
+ <ZcEzYdZKotBJlR5i@lizhi-Precision-Tower-5810>
+ <ZcK2/tmLG9O7CBEH@lizhi-Precision-Tower-5810>
+ <luk5hswq4wnk5p7axml73qih35hio3y3pfnklctbn6rwres62s@mumnvygjh5ch>
+ <ZcOpehO3rzCfAwXf@lizhi-Precision-Tower-5810>
+ <gl7zmzkezr6k4txrrgqyikspfah3vmgwwz2e3j5kwb2iarpkxv@3ofwrhtxl2sz>
+ <20240214061412.GB4618@thinkpad>
+ <20240228160346.GA4069607-robh@kernel.org>
+ <Zd9eDgxx5BiFWYD8@lizhi-Precision-Tower-5810>
+ <CAL_Jsq+tfDHM7T1xVm5dcn62A8Sd3GTtDRmxVUQpYtJtGg=pKA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcf7c31a-5477-414e-1802-08dc39117151
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Feb 2024 10:30:25.7529
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WahJIwrTHT/tAdsOH0QzDjCid0Me/j8xma+neQKmknH31ICtXMQ8b7bGpmE8ymPHdmMqb4BOtSkbm2kRGOA6uA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9361
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_Jsq+tfDHM7T1xVm5dcn62A8Sd3GTtDRmxVUQpYtJtGg=pKA@mail.gmail.com>
 
+On Wed, Feb 28, 2024 at 06:39:36PM -0600, Rob Herring wrote:
+> On Wed, Feb 28, 2024 at 10:23 AM Frank Li <Frank.li@nxp.com> wrote:
+> >
+> > On Wed, Feb 28, 2024 at 10:03:46AM -0600, Rob Herring wrote:
+> > > On Wed, Feb 14, 2024 at 11:44:12AM +0530, Manivannan Sadhasivam wrote:
+> > > > On Fri, Feb 09, 2024 at 12:52:52PM +0300, Serge Semin wrote:
+> > > > > On Wed, Feb 07, 2024 at 11:02:02AM -0500, Frank Li wrote:
+> > > > > > On Wed, Feb 07, 2024 at 03:37:30PM +0300, Serge Semin wrote:
+> > > > > > > On Tue, Feb 06, 2024 at 05:47:26PM -0500, Frank Li wrote:
+> > > > > > > > On Mon, Feb 05, 2024 at 02:13:37PM -0500, Frank Li wrote:
+> > > > > > > > > On Mon, Feb 05, 2024 at 06:30:48PM +0000, Rob Herring wrote:
+> > > > > > > > > > On Sat, Feb 03, 2024 at 01:44:31AM +0300, Serge Semin wrote:
+> > > > > > > > > > > On Fri, Feb 02, 2024 at 10:11:27AM -0500, Frank Li wrote:
+> > > > > > > > > > > > Add an outbound iATU-capable memory-region which will be used to send PCIe
+> > > > > > > > > > > > message (such as PME_Turn_Off) to peripheral. So all platforms can use
+> > > > > > > > > > > > common method to send out PME_Turn_Off message by using one outbound iATU.
+> > > > > > > > > > > >
+> > > > > > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > > > > > > ---
+> > > > > > > > > > > >  Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml | 4 ++++
+> > > > > > > > > > > >  1 file changed, 4 insertions(+)
+> > > > > > > > > > > >
+> > > > > > > > > > > > diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
+> > > > > > > > > > > > index 022055edbf9e6..25a5420a9ce1e 100644
+> > > > > > > > > > > > --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
+> > > > > > > > > > > > +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
+> > > > > > > > > > > > @@ -101,6 +101,10 @@ properties:
+> > > > > > > > > > >
+> > > > > > > > > > > >              Outbound iATU-capable memory-region which will be used to access
+> > > > > > > > > > > >              the peripheral PCIe devices configuration space.
+> > > > > > > > > > > >            const: config
+> > > > > > > > > > > > +        - description:
+> > > > > > > > > > > > +            Outbound iATU-capable memory-region which will be used to send
+> > > > > > > > > > > > +            PCIe message (such as PME_Turn_Off) to peripheral.
+> > > > > > > > > > > > +          const: msg
+> > > > > > > > > > >
+> > > > > > > > > > > Note there is a good chance Rob won't like this change. AFAIR he
+> > > > > > > > > > > already expressed a concern regarding having the "config" reg-name
+> > > > > > > > > > > describing a memory space within the outbound iATU memory which is
+> > > > > > > > > > > normally defined by the "ranges" property. Adding a new reg-entry with
+> > > > > > > > > > > similar semantics I guess won't receive warm welcome.
+> > > > > > > > > >
+> > > > > > > > > > I do think it is a bit questionable. Ideally, the driver could
+> > > > > > > > > > just configure this on its own. However, since we don't describe all of
+> > > > > > > > > > the CPU address space (that's input to the iATU) already, that's not
+> > > > > > > > > > going to be possible. I suppose we could fix that, but then config space
+> > > > > > > > > > would have to be handled differently too.
+> > > > > > > > >
+> > > > > > > > > Sorry, I have not understand what your means. Do you means, you want
+> > > > > > > > > a "cpu-space", for example, 0x8000000 - 0x9000000 for all ATU.
+> > > > > > > > >
+> > > > > > > > > Then allocated some space to 'config', 'io', 'memory' and this 'msg'.
+> > > > > > > >
+> > > > > > > > @rob:
+> > > > > > > >
+> > > > > > > >     So far, I think "msg" is feasilbe solution. Or give me some little
+> > > > > > > > detail direction?
+> > > > > > >
+> > > > > > > Found the Rob' note about the iATU-space chunks utilized in the reg
+> > > > > > > property:
+> > > > > > > https://lore.kernel.org/linux-pci/CAL_JsqLp7QVgxrAZkW=z38iB7SV5VeWH1O6s+DVCm9p338Czdw@mail.gmail.com/
+> > > > > > >
+> > > > > > > So basically Rob meant back then that
+> > > > > > > either originally we should have defined a new reg-name like "atu-out"
+> > > > > > > with the entire outbound iATU CPU-space specified and unpin the
+> > > > > > > regions like "config"/"ecam"/"msg"/etc from there in the driver
+> > > > > > > or, well, stick to the chunking further. The later path was chosen
+> > > > > > > after the patch with the "ecam" reg-name was accepted (see the link
+> > > > > > > above).
+> > > > > > >
+> > > > > > > Really ECAM/config space access, custom TLP messages, legacy interrupt
+> > > > > > > TLPs, etc are all application-specific features. Each of them is
+> > > > > > > implemented based on a bit specific but basically the same outbound
+> > > > > > > iATU engine setup. Thus from the "DT is a hardware description" point
+> > > > > > > of view it would have been enough to describe the entire outbound iATU
+> > > > > > > CPU address space and then let the software do the space
+> > > > > > > reconfiguration in runtime based on it' application needs.
+> > > > > >
+> > > > > > There are "addr_space" in EP mode, which useful map out outbound iatu
+> > > > > > region. We can reuse this name.
+> > > > > >
+> > > > > > To keep compatiblity, cut hole from 'config' and 'ranges'. If there are
+> > > > > > not 'config', we can alloc a 1M(default) from top for 'config', then, 4K
+> > > > > > (default) for msg, 64K( for IO if not IO region in 'ranges'), left is
+> > > > > > mem region. We can config each region size by module parameter or drvdata.
+> > > > > >
+> > > > > > So we can deprecate 'config', even 'ranges'
+> > > > >
+> > > > > Not sure I fully understand what you mean. In anyway the "config" reg
+> > > > > name is highly utilized by the DW PCIe IP-core instances. We can't
+> > > > > deprecate it that easily. At least the backwards compatibility must be
+> > > > > preserved. Moreover "addr_space" is also just a single value reg which
+> > > > > won't solve a problem with the disjoint DW PCIe outbound iATU memory
+> > > > > regions.
+> > > > >
+> > > > > The "ranges" property is a part of the DT specification.  The
+> > > > > PCI-specific way of the property-based mapping is de-facto a standard
+> > > > > too. So this can't be deprecated.
+> > > > >
+> > > > > >
+> > > > > > >
+> > > > > > > * Rob, correct me if am wrong.
+> > > > > > >
+> > > > > > > On the other hand it's possible to have more than one disjoint CPU
+> > > > > > > address region handled by the outbound iATU (especially if there is no
+> > > > > > > AXI-bridge enabled, see XALI - application transmit client interfaces
+> > > > > > > in HW manual). Thus having a single reg-property might get to be
+> > > > > > > inapplicable in some cases. Thinking about that got me to an idea.
+> > > > > > > What about just extending the PCIe "ranges" property flags
+> > > > > > > (IORESOURCE_TYPE_BITS) with the new ones in this case indicating the
+> > > > > > > TLP Msg mapping? Thus we can avoid creating app-specific reg-names and
+> > > > > > > use the flag to define a custom memory range for the TLP messages
+> > > > > > > generation. At some point it can be also utilized for the config-space
+> > > > > > > mapping. What do you think?
+> > > > > >
+> > > > >
+> > > > > > IORESOURCE_TYPE_BITS is 1f, Only 5bit. If extend IORESOURCE_TYPE_BITS,
+> > > > > > all IORESOURCE_* bit need move. And it is actual MEMORY regain.
+> > > > >
+> > > > > No. The lowest four bits aren't flags but the actual value. They are
+> > > > > retrieved from the PCI-specific memory ranges mapping:
+> > > > > https://elinux.org/Device_Tree_Usage#PCI_Address_Translation
+> > > > > https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_64.c#L141
+> > > > > https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_32.c#L78
+> > > > > Currently only first four out of _sixteen_ values have been defined so
+> > > > > far. So we can freely use some of the free values for custom TLPs,
+> > > > > etc. Note the config-space is already defined by the ranges property
+> > > > > having the 0x0 space code (see the first link above), but it isn't
+> > > > > currently supported by the PCI subsystem. So at least that option can
+> > > > > be considered as a ready-to-implement replacement for the "config"
+> > > > > reg-name.
+> > > > >
+> > > >
+> > > > Agree. But still, the driver has to support both options: "config" reg name and
+> > > > "ranges", since ammending the binding would be an ABI break.
+> > > >
+> > > > > >
+> > > > > > Or we can use IORESOURCE_BITS (0xff)
+> > > > > >
+> > > > > > /* PCI ROM control bits (IORESOURCE_BITS) */
+> > > > > > #define IORESOURCE_ROM_ENABLE           (1<<0)  /* ROM is enabled, same as PCI_ROM_ADDRESS_ENABLE */
+> > > > > > #define IORESOURCE_ROM_SHADOW           (1<<1)  /* Use RAM image, not ROM BAR */
+> > > > > >
+> > > > > > /* PCI control bits.  Shares IORESOURCE_BITS with above PCI ROM.  */
+> > > > > > #define IORESOURCE_PCI_FIXED            (1<<4)  /* Do not move resource */
+> > > > > > #define IORESOURCE_PCI_EA_BEI           (1<<5)  /* BAR Equivalent Indicator */
+> > > > > >
+> > > > > > we can add
+> > > > > >
+> > > > > > IORESOURCE_PRIV_WINDOWS                 (1<<6)
+> > > > > >
+> > > > > > I think previous method was more extendable. How do you think?
+> > > > >
+> > > > > IMO extending the PCIe "ranges" property semantics looks more
+> > > > > promising, more flexible and more portable across various PCIe
+> > > > > controllers. But the most importantly is what Rob and Bjorn think
+> > > > > about that, not me.
+> > > > >
+> > > >
+> > > > IMO, using the "ranges" property to allocate arbitrary memory region should be
+> > > > the way forward, since it has almost all the info needed by the drivers to
+> > > > allocate the memory regions.
+> > > >
+> > > > But for the sake of DT backwards compatiblity, we have to keep supporting the
+> > > > existing reg entries (addr_space, et al.), because "ranges" is not a required
+> > > > property for EP controllers.
+> > >
+> > > I don't know that its worth the effort to carry both. Maybe if it is
+> > > useful on more than just DW host.
+> > >
+> > > I believe we had config space in ranges at some point on some
+> > > binding and moved away from that. I forget the reasoning.
+> >
+> > I can alloc a 64k windows from IORESOURCE_MEM windows to do 'msg' windows
+> > in dwc host driver in v4.
+> >
+> > But I think it is wonthful to discuss if we can extend of_map bits, add
+> > more type beside CONFIG/IO/MEM/MEM64.
+> >
+> > https://elinux.org/Device_Tree_Usage#PCI_Address_Translation
+> >
+> > phys.hi cell: npt000ss bbbbbbbb dddddfff rrrrrrrr
+> >
 
->=20
-> On Wed, Jan 31, 2024 at 01:58:11PM +0800, Xu Yang wrote:
-> > Add JSON metrics for i.MX95 DDR Performane Monitor.
->=20
-> (nit: "Performane" =3D> "Performance" here and in the subject)
+> > There are '000' before 'ss'.  If we use it as dwc private resource.
 
-Okay.
+Frank, why do you mis-inform about the idea? The point was to use the
+ranges property for:
+1. PCIe Config-space mapping.
+2. PCIe TLP messages region.
+There is _nothing_ DWC-specific in the original suggestion. Case 1 has
+already implicitly defined by the DT standard, see the link above (but
+for some reason hasn't been implemented in the PCIe subsystem). Case 2
+hasn't been determined, but could be seeing there are three unused
+bits in the ss-code of the phys.hi cell. All of that can be used by
+_any_ PCIe RC/EP device.
 
-Thanks,
-Xu Yang
+> 
+> DWC (or any host controller) specific things? No!
 
->=20
-> Will
+Rob, could you please dive deeper in this thread? The idea is to use
+the "ranges" property for the "config" (PCIe config space) and the
+custom PCIe TLP messages regions.
+
+-Serge(y)
+
+> 
+> Rob
