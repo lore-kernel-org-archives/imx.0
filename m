@@ -1,58 +1,59 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482BC627F8
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:49:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F0962158
+	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709200198; cv=none; b=KA7olfZ7Iu1FEuI6Kr9u5cyyWiSKBWGz4Q5XW/5qo2Bi1Wug4vRzijlXrsDNAxfiGQr9Ur66/uEnuIYYetRQcR20LZZCeLbBY+wo6pLXkXMl4lW8bdV1aWwah0hZTfzoAHoDWZax2fX6qv+OXH1+WiHWOssOiGpWDysrVra0noM=
+	t=1709200250; cv=none; b=MbSjbmICQ+70oDpsJmblmpveKzcmRYmp9aa7JVLrLNOp4eFawzuUMJQZeY1GAKRl0bTJTnUkjB3D314pH+hibseeqKtQqk5isUdBKO3mBxZIn1RxfPfbvmwr/T/djPxOosl0MvI4DH1oOOZ7CGX85AwC4Sq5gJ7G8c+kldq83JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709200198; c=relaxed/simple;
-	bh=YQc04LTlvo4O236/tf50vYFPrMePz6Wmbdw/Sbqdtfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hCXVYlfTYbJ8lsXKkijfejVRpOxNmCRLLXMIncid0F4Ya6lD0ck5TIArnMe6Pp2yepgbw4keG4mh5oim2wP5kvPM8itMtTfiz/GnYrAYky5qkt+J61vyc6azHgR9lYi4kDkN63aTXbo69gN/WQaH3cMWUwyU2GxZkQcVlQ32n9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WB9keQWU; arc=none smtp.client-ip=209.85.208.174
+	s=arc-20240116; t=1709200250; c=relaxed/simple;
+	bh=ZLYKSYZ1kJqcEltCRr0rrWAJVn/FybxoTygQioDYNMk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XyoDo6Hq8iC/R5ubALW+9tpJqhA8y1MlWH9DSZsnX8zt0VBqJw4IxgvL8GT3xiBrvfMg9phydZh0d2As4J00zCuurrHHYVdSITNh4o5CJIP+3Elo2u4j6HNZhx/Cg7wqiNu+9FwSt609Qri07LPjGRCgVljj2pxgO6MyTHAbUr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a3RkMpVT; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WB9keQWU"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d269dc3575so6511511fa.1
-        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:49:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a3RkMpVT"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d21a68dd3bso8202251fa.1
+        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:50:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709200195; x=1709804995; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pi5jl9cezcdpxbE9WQjb4AV/3qiJLkvEpnKJOdWQrpk=;
-        b=WB9keQWUhJCNCI/2SetV4VucFLbOexD3+EJHr72XjIvtdR3ubxXk35V51qLh5mYjE0
-         62TvLc/C0AvSD8Z4Dkw0Ns6+cgpHxI8bP6LoNnuZLJIu16Kay0bIOZI1w9zDRNFKRReF
-         jNM/tv5/EQJZi+LIBqqMoQlwYXMIXr0Xwk77smm8Xbk2M0+tHvHz/6fmYEI3LSUltxKs
-         h0RWjm5Cw/S7GrWg9fGod+CKLGluLFVSyVIc9ipNE7c2LYv0hERkYognIM4nWSwQFzA7
-         GCTBeOB9u1y61mgQpm2wRSuOJkwlHNw/09W4jmVcJpDrjO5BzMC9Nf9fq3VXK24KAw/i
-         VSrQ==
+        d=linaro.org; s=google; t=1709200247; x=1709805047; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=AIUhkXCTPpnQEOPCzj4c9i5kQdgIyIpQC3UDbaTUK7I=;
+        b=a3RkMpVTVjdxSdp6mrZDKYglymYhkesWBmKOA9G+WqhSFefDQv9uFnLkbjwY9yvFEg
+         a0Es0DFzf/7QHHfR8eUgYL8SpLXWJGohcWwqNYdKFIcnCj0ib4Kta5mi/eJjj/TLXA/c
+         Wah1uD3Bx8Sq8/w9OW1kvEc9hx/D8P6/zN9k2BEvjnrqUCdkvnE7gibjZYoSeNBrj5J5
+         myWHs6jOVdz4ACVQ7pPgQvc7y8P44mdkYkMTWqE0hYiwr6wRX+hZ9SQXMs8YKDYWmRdP
+         yOFXdA8ADGFCG3Ypj3yoBKNXYIwBF2jECcm5vxywrqWj1I/fmWfdmpK7C7cnfXr3niAP
+         Q1SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709200195; x=1709804995;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pi5jl9cezcdpxbE9WQjb4AV/3qiJLkvEpnKJOdWQrpk=;
-        b=roXMlIqHlW9zTFPwUbZhqZLYzsobaXpQhqRas6VGZmamJhecTqJN2TR2yAlarB2sjK
-         p10y2TdjDJqDBknQ93eVGeOqOxrexq2Xw9JCLaQm9OsopbjjDeuvlZpZK58P162LfgXC
-         wQsmSPimTFfFyVyDtcMI/K9UWVLR3pX6CLMIUiLokHTD1+lyIEdTKTJPqYsGCDjIj/KB
-         JmFm4+7LXdxfFUpzQ1bDvaTVJvGRX2VI4tx0AHqQcpoWvU4ANZjQ4yNl6R3SXqwQ8YPn
-         55pt37ENLtANjLLSvL3mXz0JpDSsTrikcHAziJ20TVXholZZ6Z4etiV6T719TpsyizjX
-         i8SQ==
-X-Gm-Message-State: AOJu0YyB8o0xl27jWqsF+FUJ2kMJhO6s7WvxbsVeSaaapkDwqRpMbGgz
-	tQwoT03oZDcFkQDEbbr2Eo9IS5zgor619DoXI3QooUg556glooPzS6EJgEnkl1s=
-X-Google-Smtp-Source: AGHT+IFH7O/J1Sqs6CDrHXaVDDFk3dxqW3VNmYolyu+a04hSURH26GxNtx6lpxRy+855Y1fMve8jPg==
-X-Received: by 2002:a05:651c:8a:b0:2d2:47c7:65a with SMTP id 10-20020a05651c008a00b002d247c7065amr521491ljq.20.1709200195564;
-        Thu, 29 Feb 2024 01:49:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709200247; x=1709805047;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AIUhkXCTPpnQEOPCzj4c9i5kQdgIyIpQC3UDbaTUK7I=;
+        b=xVlFLZi88ABeOXqR6SEIVoKkn/Sc1Ro+xKS6tHN60nsC5xEXz7d1K0dArZbU6UyyR9
+         H1gBzVOkMhuT0MZmXpaJy0WqB7N/gw+muv2ZHVAjnlT9WMpbTwC4+mlGTNStEmTMmkfO
+         8zbXjcCpafXfEBKK7grKF55fLn07qfpOWjOzE0pmyB+LCRUlGYuF+fk01zWOZ3FG9YNY
+         1IUM1h4YOIK7OjwixyH6uBfgW05t2sMJen5vcv8MHc3bsKDKiPnot8sz7sFAzArLCALJ
+         GmVJ10Jde9byAyL196f1XlCv9pVxSZWi1ZM/MaJQ8AheMWzYKiL5Mc57X38EnRllKwG7
+         0Ffg==
+X-Gm-Message-State: AOJu0YwmgmVBQIKOVuqk/TYhaJNkua8W1nlHX7QVvXXo0bXkI9cDFT1y
+	Bu/aQP6+WayvcvBqwuCVqxpswxpQ4WjnJBXiaKasDCJrAthmGaRFXxBCPb0hGkU=
+X-Google-Smtp-Source: AGHT+IHvh3itER27jPG9fApHuFSp7b//RYpouW6I4ApoDPBLpaa8ZbJuzoz7nJ3Ps5hDMsqrrV8S8g==
+X-Received: by 2002:a05:651c:c1:b0:2d2:c98b:fe6e with SMTP id 1-20020a05651c00c100b002d2c98bfe6emr1108648ljr.33.1709200247115;
+        Thu, 29 Feb 2024 01:50:47 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id x18-20020a2e9dd2000000b002d11d0e37b5sm159862ljj.130.2024.02.29.01.49.48
+        by smtp.gmail.com with ESMTPSA id x18-20020a2e9dd2000000b002d11d0e37b5sm159862ljj.130.2024.02.29.01.50.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 01:49:55 -0800 (PST)
-Message-ID: <bb3b61b6-4f39-4123-be50-0e2c8f07eb99@linaro.org>
-Date: Thu, 29 Feb 2024 10:49:43 +0100
+        Thu, 29 Feb 2024 01:50:46 -0800 (PST)
+Message-ID: <680cee5f-57c2-4056-8150-e1bfbac2619d@linaro.org>
+Date: Thu, 29 Feb 2024 10:50:39 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,19 +61,21 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] dt-bindings: fsl-dma: fsl-edma: add fsl,imx8ulp-edma
- compatible string
+Subject: Re: [PATCH 1/1] dt-bindings: interrupt-controller: fsl,intmux: add
+ power-domains
 Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
  Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- Joy Zou <joy.zou@nxp.com>
-References: <20240227-8ulp_edma-v1-0-7fcfe1e265c2@nxp.com>
- <20240227-8ulp_edma-v1-4-7fcfe1e265c2@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Linux Team <linux-imx@nxp.com>,
+ "open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240228213808.632603-1-Frank.Li@nxp.com>
+ <7c167fac-46c0-4d7f-b56f-ff1922736aa5@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -117,33 +120,33 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240227-8ulp_edma-v1-4-7fcfe1e265c2@nxp.com>
+In-Reply-To: <7c167fac-46c0-4d7f-b56f-ff1922736aa5@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 27/02/2024 18:21, Frank Li wrote:
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: fsl,imx8ulp-edma
-> +    then:
-> +      properties:
-> +        clock:
-> +          maxItems: 33
-> +        clock-names:
-> +          items:
-> +            - const: dma
-> +            - pattern: "^CH[0-31]-clk$"
-> +        interrupt-names: false
-> +        interrupts:
-> +          maxItems: 32
-> +        "#dma-cells":
-> +          const: 3
+On 29/02/2024 09:33, Krzysztof Kozlowski wrote:
+> On 28/02/2024 22:38, Frank Li wrote:
+>> Allow power-domains property for fsl,intmux node.
+>>
+>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>> ---
+>>  .../devicetree/bindings/interrupt-controller/fsl,intmux.yaml    | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,intmux.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,intmux.yaml
+>> index 985bfa4f6fda1..d73d9a6c50a69 100644
+>> --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,intmux.yaml
+>> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,intmux.yaml
+>> @@ -37,6 +37,8 @@ properties:
+>>    clock-names:
+>>      const: ipg
+>>  
+>> +  power-domains: true
+> 
+> You need maxItems
+> 
 
-Why suddenly fsl,vf610-edma can have from 2 to 33 clocks? Constrain
-properly the variants.
+And explain why. Most of your commits lack that basic information.
 
 Best regards,
 Krzysztof
