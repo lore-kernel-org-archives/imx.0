@@ -1,44 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E9B160648;
-	Thu, 29 Feb 2024 18:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37C9160629;
+	Thu, 29 Feb 2024 18:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709230604; cv=none; b=PF2R9DcFxiXe289hewIjPrgT7SETZr8wJNxAfMgN+EVa2FB/iEPL3RfKaYVu9sk07A79JgOKI52gcXZ+Wg+lEl1bh8HBNRoY5rljLECZCtppxahMbSEFxx5JAvhCheanvGmbXep1vNt+as6Kxztghgc2K5l5RUUxQIF8VOzEBT8=
+	t=1709232775; cv=none; b=qVygKN7CsMc3LffdHMbCajNS+VF+3Yk6bP7cEALFUvFPwi+LDrzo2Ljty2BoZ655eqfH4CrFa3wIGt47GlryIGuYwRlXUuseDhzXFdNN0TNkXD3BHZSn9HKR8vqVk9I1ZU1+ZUWuRf81bFSDEqOZt41SAQWlh9AcdwgKIvJs0Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709230604; c=relaxed/simple;
-	bh=3CbSXxuONRZ0lG9ZqV/7qAp0SdzOirXNAMLNdA3lpGY=;
+	s=arc-20240116; t=1709232775; c=relaxed/simple;
+	bh=iOuQ3NLogT9DUhHCagui9Zsqnob82CO/bZ+hAddHmV0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5dJ1/VolaZflqca+TiVUeEk4OdHulaYxdpNvhd1AuQqDnnWYM/ogX7jtAEWjuymvc0MZ22LurEOeHRJMghjfocS9j8qzv5uSDVhIihUssatEBuJUdMZFjlyyyor90GdI++YSe48+omUVUtnlksLKBqrRcJEb/aYx/1jK1nD3Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+5mCg7w; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tRRLZd/dLseTsHnQ7wigPL2SMqru42lhZXVrrE3V2A75GHzHMVrZBfpxLhmD6UW3KICDdK/cFDxd+BtD9RhBfB6p6q6JLZoJNAZyr010w/rRgMdT5AK9nPHEt9L9lb5NSbwqDqrYBCg6jLHM8Mwavycohn2W3yumlw7/V1PmN5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNvuM8+I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+5mCg7w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B116C433F1;
-	Thu, 29 Feb 2024 18:16:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNvuM8+I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59734C433F1;
+	Thu, 29 Feb 2024 18:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709230604;
-	bh=3CbSXxuONRZ0lG9ZqV/7qAp0SdzOirXNAMLNdA3lpGY=;
+	s=k20201202; t=1709232775;
+	bh=iOuQ3NLogT9DUhHCagui9Zsqnob82CO/bZ+hAddHmV0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m+5mCg7w63r7Z5MFOKERYRB7WPa7MXWJ72o5e+WXXyPAuANuGl/DHcU4BjOeJqEFT
-	 8iX7/DIfW8qsldkc4ZC4VMrTbv/troUkZO3qae4Z/yu7zhwgRzSlrmPuYswtxFGDGv
-	 Ixcdjub4uFUPtvgkjFrjCU6HsP5u9kA8eaVJPpr3h0M4GDTq1ffijdek5YG5JgBkNo
-	 fQs7N1NjawmnnJvv7YThPna82xkHQ789SX7AGhwzMJ9qwXufFkxG9pR99/WlWZJWzM
-	 K7qKC9aS0d7oCO6mzW+XA3U2qjTqaL+mwk/c7SQllHjJNKGVPmjVkXwSAllFi1jhUF
-	 UlNG+JOc46xtA==
-Date: Thu, 29 Feb 2024 18:16:39 +0000
+	b=tNvuM8+IbumeEEu2/usJApVNDKku+NSX689Gbx5KT0ldIbrE7CdXg/5HCMy5SuED1
+	 gZQA+8iFyuieDIj9HkM5Eqn/5LxosMa6yq2udvAWMmZHx7yWofHDHav8SFCEpVg10i
+	 UPCzzxrBweoU5EPTG02X9+2x06wXfDr+AEYjLgGRCnHIpeqqKhQ8YqBYORtKQ0zzz6
+	 WPke1aaNXmL9m2V5Q6Ado9e7F2dy3Ekarze0bKm6dmJ+YIJ63Je46maRWJPHLBv6ym
+	 fyBV3GLBn0q8HN1Y1SdHHMQsNVtzLEWeJSA6NZPTBkScrswa/doyBRJdGX3nxAD3Cn
+	 LkrU62uN9FgZw==
+Date: Thu, 29 Feb 2024 18:52:50 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: helgaas@kernel.org, bhelgaas@google.com, conor+dt@kernel.org,
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org, robh@kernel.org
-Subject: Re: [PATCH v5 5/5] dt-bindings: pci: layerscape-pci-ep: Remove
- 'fsl,pcie-scfg' and 'dma-coherence' from required
-Message-ID: <20240229-putdown-gyration-6aaa6d156547@spud>
-References: <20240228190321.580846-1-Frank.Li@nxp.com>
- <20240228190321.580846-6-Frank.Li@nxp.com>
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
+ power-domains requirement
+Message-ID: <20240229-gladly-morse-28a3a06e8845@spud>
+References: <20240227-asrc_8qxp-v2-0-521bcc7eb1c0@nxp.com>
+ <20240227-asrc_8qxp-v2-1-521bcc7eb1c0@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,62 +51,78 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="i/bXdY1OaIYJCArs"
+	protocol="application/pgp-signature"; boundary="xrZyC8VUYzqklLdV"
 Content-Disposition: inline
-In-Reply-To: <20240228190321.580846-6-Frank.Li@nxp.com>
+In-Reply-To: <20240227-asrc_8qxp-v2-1-521bcc7eb1c0@nxp.com>
 
 
---i/bXdY1OaIYJCArs
+--xrZyC8VUYzqklLdV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 28, 2024 at 02:03:21PM -0500, Frank Li wrote:
-> Remove 'fsl,pcie-scfg' and 'dma-coherence' properties from required becau=
-se
-> not all chips is dma coherenced and have supplement configuration unit
-> (scfg).
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Tue, Feb 27, 2024 at 03:54:09PM -0500, Frank Li wrote:
+> Add power-domains property for asrc and spdif.
 
-I'd squash this with 3/5 and move both of them before the addition of
-the reference to the main snps stuff. That way you'll not get
-dt_binding_check complaints on multiple patches.
+Is this valid for all compatibles documented in these bindings?
+Also, your $subject says "requirement", but you do not mark these as
+required. Why not?
 
 Cheers,
 Conor.
 
-> ---
->  .../devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml         | 2 --
->  1 file changed, 2 deletions(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep=
-=2Eyaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> index e75b8853dca8c..07965683beece 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> @@ -67,8 +67,6 @@ required:
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml | 3 +++
+>  Documentation/devicetree/bindings/sound/fsl,spdif.yaml    | 3 +++
+>  2 files changed, 6 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml b/=
+Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
+> index bfef2fcb75b14..98616507e3c10 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
+> @@ -74,6 +74,9 @@ properties:
+>        - const: asrck_f
+>        - const: spba
+> =20
+> +  power-domains:
+> +    maxItems: 1
+> +
+>    fsl,asrc-rate:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>      description: The mutual sample rate used by DPCM Back Ends
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Doc=
+umentation/devicetree/bindings/sound/fsl,spdif.yaml
+> index 1d64e8337aa4b..82430f1d5e5a2 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> @@ -86,6 +86,9 @@ properties:
+>        registers. Set this flag for HCDs with big endian descriptors and =
+big
+>        endian registers.
+> =20
+> +  power-domains:
+> +    maxItems: 1
+> +
+>  required:
 >    - compatible
 >    - reg
->    - interrupt-names
-> -  - fsl,pcie-scfg
-> -  - dma-coherence
-> =20
->  allOf:
->    - $ref: /schemas/pci/snps,dw-pcie-ep.yaml#
+>=20
 > --=20
 > 2.34.1
 >=20
 
---i/bXdY1OaIYJCArs
+--xrZyC8VUYzqklLdV
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeDKBwAKCRB4tDGHoIJi
-0gE3AP4uvIutdJbc+UtQUdw8Ctv+/W7dwfFJ2yR2E9RtaHN1SgEAx9+lhU1T/ZFP
-HrV6OMDlJTF/of4ImXSZsFXNN873cA0=
-=RyZI
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeDSgQAKCRB4tDGHoIJi
+0nEKAQC75ySPnVkmXzXAPanKzHsx8/8kj8yWlRUKAoJEv1oycwEAmDYO/yWZJvnA
+5yDq517lBIAwBlPF//RY2lokX/YdJQQ=
+=xvu+
 -----END PGP SIGNATURE-----
 
---i/bXdY1OaIYJCArs--
+--xrZyC8VUYzqklLdV--
