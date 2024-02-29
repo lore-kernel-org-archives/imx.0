@@ -1,59 +1,59 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576B250263
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 08:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F553612F3
+	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 09:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709195695; cv=none; b=E9nGIetTlK3TRKtSU91BFWL9DCPWxFSiT8KIit1eKDmnx6R+bqLhwlIgSR2lTRi+/7kmamNhgUFN+rRh1e8a4ovnIxJYfXlM3oTbr3WHoV2jlX/h6JMZp5Jri8KIgwCmKudBl6IluPL9dKiprn8BYCMjx5312Ch7+nT9t/OuXIw=
+	t=1709199874; cv=none; b=hnpsquzOsbnjkUpkX2lUBv4JfwYwdXMiKhDFOV2ob1QmnYCEhn/PHNf2PKdPQ0DV723Mp95lLl25Z0fHt9NRoaKkBWujZKTh/YXK15ufKO6Hi6hWzvyDgKClIghRWdNEf2GKvZ2igXbd7niXEMIgjldz4vY2xU+oXHGPnDzEodk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709195695; c=relaxed/simple;
-	bh=+HmrAoVlbn0/eK7ZWpGHWzAHFkQKVrJu92TuaGFS20I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=NuMbEigoqi7Bs9bxnSL3PniBh80IfAyXlob4jMoKNyyvlveeg8GZtowKVv2Ww/CDJtxogbVnhK2IqwvS29LvSlO7o37KVmN6N0wY6YmuRS4Pu+2UE2KpTSEto0X/LbVEvrXnEy5sE/2M3eksWouSP0yD6Vfh3owSR5rq2HlBQTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DcCJ+p5r; arc=none smtp.client-ip=209.85.128.180
+	s=arc-20240116; t=1709199874; c=relaxed/simple;
+	bh=uOtUXhB9RAOZQ8qIK2/ituox21dwR36L/CQQGfkR3ok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lwISVJPT2eQ0LQZqEF7VgcoYc3LEiWjP/DTnvVYJmA5pJOG/UxzIBXfsA/IXNP18FWC2/Yve7GCkSNd08vEW8u84ozqllGUiduSy1faQLroDzImrNvbcrAMKm+SExmEL+sl6/oOzrUxhEIgB8LNfY8R3i0WvE03qSMsCjfaAufM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gKgsCqZa; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DcCJ+p5r"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-60943ad307fso6213277b3.1
-        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 00:34:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gKgsCqZa"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56657bcd555so903850a12.3
+        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 01:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709195693; x=1709800493; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1709199871; x=1709804671; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=60LOvNZ2Ndtzh9xFqMCqDsoxJoOF8eAu+PCSMMNPn8E=;
-        b=DcCJ+p5rpqkoYtic7eb1VRks33SOKcyTIaQKSMiuFTVywbC5iB2GBFSmiUtqEWH2GU
-         U4h1r9YMYtf8BljL8zTClSzNUJJXXoBdX682p1e+3hSIlNXsMVm3caNgKPS7L8Y1uyu/
-         iEeVKVpM8Z3/THeNXZkUE933sW7rNLMIaF7LdXkfCFCuPi7PKxEu+LVY+CAyy6pgPYUZ
-         aRLyKQYIw9SNCRPJZLSOY9nFzfOB0oTdBIPNfrCbGikiimvYI8cZmFxEGQhs7LUbcdUG
-         0643XHDSWqEa+advswqr7BqAr8S8vdo8G3+MmDmf3veVNF6tSRVNFUE574DMozLgBAob
-         h+JA==
+        bh=uOtUXhB9RAOZQ8qIK2/ituox21dwR36L/CQQGfkR3ok=;
+        b=gKgsCqZaPBjICemGq+NKFa2KABAXVmWHuVbpv0ijlDUtXvNGyKeFvOysDm8bjrrq0B
+         BIdwym0xab6oGwOQRXe1rfmBjOIsHA8tVZBsjHkvSlJX44UOHj+BJDGA5A1nkXBskOSh
+         +XQ9c0hx5gwyYftu5H5tBqoFs1AN0DnsWORQ7wqUJwuVMCH5S6WQSSacx3NpT2BXN6eZ
+         c96YVMWHsnNkNlCE+cIfmIk4tr2iuoztpkfjZdleSCStZclHqrOTgI8IaoXdAJQMZ6ZD
+         lknFsIcclUDVRkhqgIcDAm/HzyZRyUjxFZ/nAixpphSfIxbs71u/I1fFxqvoFoG9pjsH
+         5KwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709195693; x=1709800493;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1709199871; x=1709804671;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=60LOvNZ2Ndtzh9xFqMCqDsoxJoOF8eAu+PCSMMNPn8E=;
-        b=gsSiKfRHaixVQz9iR+1vWxoj8hEdX2LGtkaD5m73bLl4qWQv5j9C1r6hkTVFUf0tu/
-         mUd+g0NSqB/hpokJc3PrAWLlJIXb82hRROoyn4EL1zjI6dEp59fYcXjiykLgrWhOnETr
-         oVgVoPJiLmnQPgjXVWxpIsK15hZ1RV0kuG8H9kBmsibzm1QzmO6jG7oOUElDqqEDJw2g
-         eOlSRRVyLjD3s1ymgseKbHkecTLSz8UegX5V2XRFbckFjCrEAapz3vQA1F6xQcfY5ITX
-         K8aSnAIy925LFJyw5HitU2D6GXQuZ0AjR11Oa/BwSkwwVO1S4VyOPyJSkVKyWJwN4f3O
-         k4Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1hKpNBPN5MMb2pSk6A3cXAsCUWKATElbOkT5ee2N0vza9H16QiYUZTGbFB9NK2CPYqiyNlAJ1inSgJDGAvmd0eQAk
-X-Gm-Message-State: AOJu0YzzKq0Ri6V6bi26gEPJURibkpxGN63GoelkPrPgS8kPsVrUG6PA
-	+WpRh2WsA09reQGwjYOD1M/EbDsBWNLbvY/Z/NDSv/T2au6p3BukaGh0mes58j8=
-X-Google-Smtp-Source: AGHT+IGfiOk90QwtL7zPVCOC2SOcqn54y3lu/ppu4KA9GzrUHTMGHfQ4kvyO0o6As3sFw3eALjOLuQ==
-X-Received: by 2002:a0d:de06:0:b0:609:647f:5750 with SMTP id h6-20020a0dde06000000b00609647f5750mr1374630ywe.50.1709195693527;
-        Thu, 29 Feb 2024 00:34:53 -0800 (PST)
+        bh=uOtUXhB9RAOZQ8qIK2/ituox21dwR36L/CQQGfkR3ok=;
+        b=FLvbIjgtJhQykpKgg+W7+hsG+bN7Jq0RfesbzMf2qLcTF6e07VTGNVlPKbfnXH4eOQ
+         K2kLiu2fOSqPN6MHDidh5ViMZSGx5Ia0wkzVYLcnZJZWR5OQpjX+PFOhVZTz1oktOHZ0
+         0XgGDcN3oLUhQzd1WGC5UsMw3AhAtr6rNtGP6B/uHxSMDIAJAGGVFfH2pIFDCMnlIkgy
+         kdRXmDDqC9TduPMW9VXdv5p0wPSj0bTW5h8f/9p+dp9eBKT+szdbqsnBsVHsIR4vPLbn
+         LD2AxVXhllkbFErvRabfagL0jVvRR3mwjXswTGBnGprwKdnn73VfuygrXpojyR6mCp3A
+         gFFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxsnd0oEd7b0/FcNCXNEJvaNTuuEuMvOnh8XxaHK6XQnRnQfZGhN2NwymU2i57br3hSdJGN7RykURxaJhl/gBwjnwQ
+X-Gm-Message-State: AOJu0Yx8B4u7/lTszghfHHuptuSGE1Fp8M/wiuQfQ/q2Y6bYGDO2zUL6
+	huKqWb6dPOPm21prHkGLjp6Ydc2qGjmgauKAUOjWFfU897sulFuJTQx4AAIAiKY=
+X-Google-Smtp-Source: AGHT+IEhNskR0N5K3Vda4q/ovRs2vbWZZ5oLEJL9AybO+hCxJbOk0Wr4S2nkSAQP8ldvBIFVu9tqcg==
+X-Received: by 2002:a05:6402:5243:b0:566:a4ca:2a3b with SMTP id t3-20020a056402524300b00566a4ca2a3bmr722637edd.15.1709199871062;
+        Thu, 29 Feb 2024 01:44:31 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id i68-20020a0ddf47000000b0060969b6e74asm248178ywe.123.2024.02.29.00.34.50
+        by smtp.gmail.com with ESMTPSA id c8-20020aa7d608000000b0056470bf320asm450487edr.43.2024.02.29.01.44.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 00:34:52 -0800 (PST)
-Message-ID: <e42fb231-af1d-4e86-b875-685f30f0894e@linaro.org>
-Date: Thu, 29 Feb 2024 09:34:50 +0100
+        Thu, 29 Feb 2024 01:44:30 -0800 (PST)
+Message-ID: <f8ce39e9-7f06-49e7-92fa-785bd1cd2d1e@linaro.org>
+Date: Thu, 29 Feb 2024 10:44:20 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,18 +61,21 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: dma: fsl-edma: remove 'clocks' from
- required
+Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
+ power-domains requirement
 Content-Language: en-US
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
- Rob Herring <robh@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- "open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>,
- "open list:FREESCALE eDMA DRIVER" <dmaengine@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-References: <20240228212627.629608-1-Frank.Li@nxp.com>
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
+ <20240228-asrc_8qxp-v3-1-d4d5935fd3aa@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -118,18 +121,17 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240228212627.629608-1-Frank.Li@nxp.com>
+In-Reply-To: <20240228-asrc_8qxp-v3-1-d4d5935fd3aa@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/02/2024 22:26, Frank Li wrote:
-> fsl,imx8qm-adma and fsl,imx8qm-edma don't require 'clocks'. Remove it from
-> required and add 'if' block for other compatible string to keep the same
-> restrictions.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On 28/02/2024 20:14, Frank Li wrote:
+> Add power-domains property for asrc and spdif.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Why?
+
+You keep adding this all over the tree without explanations. Why
+suddenly old hardware became part of power domain?
 
 Best regards,
 Krzysztof
