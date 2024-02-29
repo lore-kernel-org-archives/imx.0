@@ -1,177 +1,158 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2042.outbound.protection.outlook.com [40.107.241.42])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B26E75802
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 17:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709228623; cv=fail; b=D4D7dvTMdEng5QO2Tj7pEvaFfu7oQ7XP09I+WsQO5E0oNQ75RrwBBmp8zobzVAXLOG0mJE8DYD7Fk4KEat9UnxvcEsKxEDJtJQf+1W2znL3GSuSRDXa2oya1Q58kqmimAZBhvpsiFCALQwxfhJNxEmDW2zrpFiA9h/sUUlQYNs0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709228623; c=relaxed/simple;
-	bh=maP21Ezm2/XfJ/tFu8fPZQk+xZexIjHWbTOIgxkzSO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KfaPkdW+WJqdDmt1sR8UPQFP731DOcvYb6pQVU/BrHfQcyw63pDobzspXa9PbRzy7iYVmlMfXRanqrgqfIROawB15i7jtQPeY1W8Sb9Qon0e1LF4GSQMwx65T1gA9/2ZyzaeNMXF2nGfWrE/lLEMUVe1jjWiFwmt9uo10FrPHW8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=SsiFGOR2; arc=fail smtp.client-ip=40.107.241.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AC9757E4;
+	Thu, 29 Feb 2024 17:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709229210; cv=none; b=VBV5gkgpiQlzFCN2q6CDrgdJYZSrZu/LB/QccBpIq/p3Y5WGTLANpmp4yxzTlfObP7YlQ6xxKgaYbK0F1iuWrvUxM5J1bu7UhPHn5aYwWRDuXDHpSf8ee0M+9+fvunZo8rEtrL9aFWL6H9AbfVbfbwhGGv1//8qu/NmpbeQvREg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709229210; c=relaxed/simple;
+	bh=IZ8tXHi4D6VeM3kc0kx68z1bYQSTMxGuNMx6zsNFNB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e5rSWcfQ7A+IXIF83BgAc5WBTDgnGFGB/3oNxDIfHTLaMYTwjh3NrcsUpTHNthtVCi600rDPuj2Hk8z+/p5dPGY39T6DlBxbrmdN+k3axxlO8g0VPliXO8APaCtIvOHm98BOmFFtLHTmnZW5u+/5//wvlTtFllLL5pWn+rlqR+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DYGYvzwN; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="SsiFGOR2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ab70ZCfOGeM2nb7hcN19ib/ZBUUBPpH1bJzQWRgTfLOPb77KZ4oZvUr+vhW/2teXGq8N8NRETUI5qbC0gro1I7mD3JGcmIlErvTDpchW0oYgSpXwbx/TnGt2sTCJLCZWJ6vJELEIteHwTMIQ59tOADqRgDxVReq1JvDjCt5Xml4F5AW6xMBx1wjr3SEJ/u8b+XiXlSeFy7EzaqGOjDroQwFuUS0T5/KLZqETTkKWsrWpqQ4qzABlM1umYxv+w8njUx82YRXtHiLAuGm/0ZoUKAQtzF8xdo/enoveEpv/vJ34ZsvmxjFXIKzCY0oMc5Bzf+/Kt9pbqFKXoD/upfBWBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pT/UC6dPamG5FpUFBEUauSWjzphMO9Y9Q1gJeC2YDmc=;
- b=POz4E5PBptNRd/4x6jVAF+8xY/BcQBgL+ifrrSFKmfdDiYBLqpljbUshppdkY4ka907f8rpoZ/qD6BkB07aCJ7ueVHmc2/rOBtwn0JRB14/J3bVHCiaRTffpkUVd0BQEkUdFC2yysuz3kxm4SgsUJ0IIrnx556L03tql9nlACjJU0BhoCBZuIelSoS+p2d+cC0lCBb5jsoJDX9UzL+88RHH8uqy8mEDFV0AFrNo6/YRD6pwdieregcKg2T2f9T3TRAmAhQ+V8peEgsncNBNkb9c+cQxdtniNfNIKVe151hbXAKeWoXf/jijFZ7DHYbLKaYkt0LPIGJswfLpxUQotWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pT/UC6dPamG5FpUFBEUauSWjzphMO9Y9Q1gJeC2YDmc=;
- b=SsiFGOR2ueCKqilWCErz/Ymnnw/B0rDOnX8tjbfZQNLqVQdXl4NvCf59CFluDZ9BCmx4Ef2Tj8Q772DCQFsuyO5qRjUh1iF8J8ZHgVuA+GIeMDlb0S9E7A9uYl9wn6dmZFnxgDqXf96mgx30H57qWOjuKw/e1jutWY3Z956jy6w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS1PR04MB9431.eurprd04.prod.outlook.com (2603:10a6:20b:4d9::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Thu, 29 Feb
- 2024 17:43:37 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Thu, 29 Feb 2024
- 17:43:37 +0000
-Date: Thu, 29 Feb 2024 12:43:29 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: imx@lists.linux.dev, conor@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
-	linux-kernel@vger.kernel.org, conor+dt@kernel.org,
-	linux-pci@vger.kernel.org, lpieralisi@kernel.org,
-	helgaas@kernel.org, bhelgaas@google.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 1/5] dt-bindings: pci: layerscape-pci: Convert to yaml
- format
-Message-ID: <ZeDCQezI2zj8bWBP@lizhi-Precision-Tower-5810>
-References: <20240228190321.580846-1-Frank.Li@nxp.com>
- <20240228190321.580846-2-Frank.Li@nxp.com>
- <170915420970.759733.12998246565079147606.robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <170915420970.759733.12998246565079147606.robh@kernel.org>
-X-ClientProxiedBy: BYAPR21CA0024.namprd21.prod.outlook.com
- (2603:10b6:a03:114::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DYGYvzwN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709229209; x=1740765209;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IZ8tXHi4D6VeM3kc0kx68z1bYQSTMxGuNMx6zsNFNB0=;
+  b=DYGYvzwNfmxpq7ObKabx3RVT+vH5D36T5LzWrArpkzqj2/KUc4irIBPj
+   cGq202ta97rlS3PMXi9aoHB84NMrRe18my66Ff+UQYf4pDbS+uwPyk6f/
+   8m2kIQAYccR22eHSD4YSxm4H6tO8N1clT/4Zptzt7BcpZe8vX9nIJHCBt
+   5xeTpcFQr8F/IyEL+e0LTVNFlrUK3R4GQBYgtcnc5hrtLtO2jCgPAxdmY
+   OPbSU2j/m2om5QW0owi2It8+w2PeozaJp1BPQacj2FSGTcLg8MlQW37nX
+   bfg6NN15QGUKCTMHFNkFDKGtu4FJeaudn6n2UMGI3pRZB/YH/4VM4D6wR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="21177113"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="21177113"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 09:53:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="12511155"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 29 Feb 2024 09:53:23 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rfkav-000DAD-0q;
+	Thu, 29 Feb 2024 17:53:21 +0000
+Date: Fri, 1 Mar 2024 01:52:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 2/2] clk: imx: add i.MX95 BLK CTL clk driver
+Message-ID: <202403010142.5gu9hKpX-lkp@intel.com>
+References: <20240228-imx95-blk-ctl-v1-2-9b5ae3c14d83@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1fead627-d32d-4e24-d0c5-08dc394df596
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	5W31R0xHCcCptFQDI8Im/it0Zc5OIUjj8SVZNxNsqF1u7Nc/sKOLw6nyrNYXn9KdVPUWkII6p/2zA1sw2/gx6iJU5VvhMK7b0s48TpEkYhtgpSu+1ra/yX+VX0sFwB2BUbkBiQO0WJWMNIE/yMl3csiyAy9IljPKChjKuYWToyvO0apXyBJA7/2LI5pdTfyG1bofB49ozIm1t6w4bVvMTCUDfafME9RGIFuOMMIGJ77eeuqITRhMeo/DyAPgeJqpwxM69R3U+TTqmVn59dFDEFHnnI+JTnA8gGbX9kkeoMPj5uEj3UZY6QUuMs0BMZMyQWQSt8rNOWLCh1NQ0gBf9w9ExfQ73RV/QodKdKAHo9dbtFCRQPQviz9W7Ic2SqA4ARDch8SThIHy3sZz8pePdwf7ktpKj7zXfpuYjFGCVSdQ51oCV46iMS2cfSg0GP7LBgL21aaqWMYGTW/3FMJNXFr8rWvkI6/0PabcGI11iW36/PQ0ASunewQxh7wsp4y5FoZDp3N4OcDUgh4PHJAyw8gjEiZ8H+GChAi4JKIw4nU1byG5Avt87F6cr+ZcpBhu02DP9aU5b1hwBFIzf+yRk4nSUeJQQP0UKqEI8AdFXXtUql71whwPmA4APHX3pXEKbBG+6XGMBWKZ8aOusqWBXeZbby4c4xAY12/igevSEsk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/u4Ledh7U+0H7dVOhMuY/waTD9OFUKOgLgbTVYXsAv2FE2nD1hiEVvB4dBfG?=
- =?us-ascii?Q?N3Edtx7BkUiuHlBfvfN0i0YfP+GF3e+cJx9oPbOaCaRbVGJ7qEXy8R0ldytg?=
- =?us-ascii?Q?L4iLmuZ3TBZ79tmw01fW6Aka2TBb/ls4VAD2T3ANIi6w0ZsquWz7orOcQMon?=
- =?us-ascii?Q?qu7GYuxFji2CFA1eG1cWqfm6ASH9SA23MSE7dc9cAf0Xe1tGPJ/+eMoMQTyI?=
- =?us-ascii?Q?ZW4AWIMeH12IApRFQ5t7PZ9Yl+qZJaExEOBHuWVu6EUnINw49uQ58PXxVlxI?=
- =?us-ascii?Q?7ZNhuWR0ZM4c6fij/KhOcFZynNqjfR5WfWUOgqLCbWATh8OTawns5a3ag5Nn?=
- =?us-ascii?Q?PBVVL+6UvTW/EBruyabmydFFh2H1dmPLptV6MWEiCU/FkdA6aMxn3NkSGBzY?=
- =?us-ascii?Q?UJr1X6kzG9U/5H3bnG32XQlt7cBpU+AH+qNfSQAFIWq18OZSQ2Xjh5AobDPc?=
- =?us-ascii?Q?VL9tks/RPHJjF+tBkxjHVwIn8onYpS6Vmfm8GCyHML3JtpbTB1tF1y2BMIqw?=
- =?us-ascii?Q?ImWC7pflmCD9iS0t83ks8H9ZFhowlKuDgoG/EuVlnUZ7cFJwxsIKNavjse0d?=
- =?us-ascii?Q?Lq2TmQIvRGrYfWCy3MMkIm8KJBQq1aW5a1AMLXH85Jn/TmlcirfUIG/bdkJR?=
- =?us-ascii?Q?q7xvJvtRhCJ8IvdDy/YNATONRmUYXMhLBY7VbXq09GhT82s8gofHszJu1nTd?=
- =?us-ascii?Q?/B7nGO5fNsXJs4ZBG/0feXWipehTGlTeenyNOCtcVP+RBEbkSuuIhPXF1AO4?=
- =?us-ascii?Q?zrLfIPSfYl+1fQnZSz0qCd6mODm97tpA6Fx3hWf6H/56n1c8dQuyN163xKv5?=
- =?us-ascii?Q?jEBoFmUTjAZuxX20GEJYxnzJQ9C5QVbbkS8TczB7Me0++cG5wIHLD+WneFmG?=
- =?us-ascii?Q?Qz9NZ56Q1H0fZ3D9Vu1cwFInPDXAWg7joMPlYGrE8EV/neU4IDqYrGBHHiC9?=
- =?us-ascii?Q?sp8j9qXELggm4xAcEqrWgIghJH9t3QL4LdaTFcdolWqyKWsK1tC1PBeWmIlA?=
- =?us-ascii?Q?tAZQeEHuh1nsdvNDdgpN9NG40s5bKX5hLUUehP3EHVCCH5KHY+uExRzDBHNb?=
- =?us-ascii?Q?ltol2xaIbImR1CH1E6KewQ6pmWTWVPKEl05KcZ9MSinS4YGoh1m5vMxQ9FX/?=
- =?us-ascii?Q?Ppe8p2+3azXVo/fELnSbz+AbyFXvL6WGpX1D0fRGejbBLUQdeXyxksFFO/7d?=
- =?us-ascii?Q?uZVvTo238WFqIiiu0sOgkCMEi69SWyRteHoRUudePpQa98W0OQvyDSd8G5Kf?=
- =?us-ascii?Q?Aa2OWxTLBfrMTlKLfr/7QdPWCdmBKlNBeW64zvZ9aTUR4OmVcY90Tp2ViBQr?=
- =?us-ascii?Q?QeEqPlwi1xk/hxCVLYnH7FtNM7Rrs3YCXuWOIvxmF7lmAEqoTxjDlHyPUd3t?=
- =?us-ascii?Q?y8mAH+7B38FdUG03K+XSJNdSqj7p/YOYosh5TlKu742zZiFnboCXD2mh2C3f?=
- =?us-ascii?Q?bVgHk/xJGnTO++EnjM9lH9v44LotHM9mvt6CHg3eWRoaPqnqoSS6mQCHsxiY?=
- =?us-ascii?Q?Zva99E5p4LRH/d2j4Wt8jZXEbjC7TP3Yi5r+L/oeMQ9IDs4gyNIhXhje4nL2?=
- =?us-ascii?Q?ArY5J8+5GWaxa9cufJ8=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1fead627-d32d-4e24-d0c5-08dc394df596
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 17:43:37.7877
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3JbJg255O4DxxkfBwhICIY80OUXOLJF9+1DUkByDyvuVBJqMtZunSWRfF7clED9s6ZcyvIUl2cPnmuXhrxXd6Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9431
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228-imx95-blk-ctl-v1-2-9b5ae3c14d83@nxp.com>
 
-On Wed, Feb 28, 2024 at 03:03:31PM -0600, Rob Herring wrote:
-> 
-> On Wed, 28 Feb 2024 14:03:17 -0500, Frank Li wrote:
-> > Split layerscape-pci.txt into two yaml files: fsl,layerscape-pcie-ep.yaml
-> > and fsl,layerscape-pcie.yaml.
-> > yaml files contain the same content as the original txt file.
-> > 
-> > The subsequent commit will fix DTB_CHECK failure.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../bindings/pci/fsl,layerscape-pcie-ep.yaml  |  89 +++++++++++++
-> >  .../bindings/pci/fsl,layerscape-pcie.yaml     | 123 ++++++++++++++++++
-> >  .../bindings/pci/layerscape-pci.txt           |  79 -----------
-> >  3 files changed, 212 insertions(+), 79 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> >  create mode 100644 Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
-> >  delete mode 100644 Documentation/devicetree/bindings/pci/layerscape-pci.txt
-> > 
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Hi Peng,
 
-Please omit these errors. Bjorn require create a identical version as
-old txt file.
+kernel test robot noticed the following build errors:
 
-Origial txt will cause DTB_CHECK error. The problem will be fixed at next
-patches.
+[auto build test ERROR on 22ba90670a51a18c6b36d285fddf92b9887c0bc3]
 
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.example.dtb: pcie@3400000: Unevaluated properties are not allowed ('#address-cells', '#interrupt-cells', '#size-cells', 'bus-range', 'device_type', 'interrupt-map', 'interrupt-map-mask', 'iommu-map', 'msi-parent', 'ranges', 'reg-names' were unexpected)
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,layerscape-pcie.yaml#
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.example.dtb: pcie@3400000: 'fsl,pcie-scfg' is a required property
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,layerscape-pcie.yaml#
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.example.dtb: pcie@3400000: 'dma-coherence' is a required property
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,layerscape-pcie.yaml#
-> 
-> doc reference errors (make refcheckdocs):
-> 
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240228190321.580846-2-Frank.Li@nxp.com
-> 
-> The base for the series is generally the latest rc1. A different dependency
-> should be noted in *this* patch.
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your schema.
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/dt-bindindgs-clock-support-NXP-i-MX95-BLK-CTL-module/20240228-122408
+base:   22ba90670a51a18c6b36d285fddf92b9887c0bc3
+patch link:    https://lore.kernel.org/r/20240228-imx95-blk-ctl-v1-2-9b5ae3c14d83%40nxp.com
+patch subject: [PATCH 2/2] clk: imx: add i.MX95 BLK CTL clk driver
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20240301/202403010142.5gu9hKpX-lkp@intel.com/config)
+compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 325f51237252e6dab8e4e1ea1fa7acbb4faee1cd)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240301/202403010142.5gu9hKpX-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403010142.5gu9hKpX-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/clk/imx/clk-imx95-blk-ctl.c:13:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     547 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/clk/imx/clk-imx95-blk-ctl.c:13:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/clk/imx/clk-imx95-blk-ctl.c:13:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     584 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+>> drivers/clk/imx/clk-imx95-blk-ctl.c:425:25: error: use of undeclared identifier 'imx95_blk_ctl_match'; did you mean 'imx95_bc_of_match'?
+     425 | MODULE_DEVICE_TABLE(of, imx95_blk_ctl_match);
+         |                         ^~~~~~~~~~~~~~~~~~~
+         |                         imx95_bc_of_match
+   include/linux/module.h:244:15: note: expanded from macro 'MODULE_DEVICE_TABLE'
+     244 | extern typeof(name) __mod_##type##__##name##_device_table               \
+         |               ^
+   drivers/clk/imx/clk-imx95-blk-ctl.c:416:34: note: 'imx95_bc_of_match' declared here
+     416 | static const struct of_device_id imx95_bc_of_match[] = {
+         |                                  ^
+   6 warnings and 1 error generated.
+
+
+vim +425 drivers/clk/imx/clk-imx95-blk-ctl.c
+
+   415	
+   416	static const struct of_device_id imx95_bc_of_match[] = {
+   417		{ .compatible = "nxp,imx95-cameramix-csr", .data = &camblk_dev_data },
+   418		{ .compatible = "nxp,imx95-display-master-csr", },
+   419		{ .compatible = "nxp,imx95-dispmix-lvds-csr", .data = &lvds_csr_dev_data },
+   420		{ .compatible = "nxp,imx95-dispmix-csr", .data = &dispmix_csr_dev_data },
+   421		{ .compatible = "nxp,imx95-netcmix-blk-ctrl", },
+   422		{ .compatible = "nxp,imx95-vpumix-csr", .data = &vpublk_dev_data },
+   423		{ /* Sentinel */ },
+   424	};
+ > 425	MODULE_DEVICE_TABLE(of, imx95_blk_ctl_match);
+   426	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
