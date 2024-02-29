@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37C9160629;
-	Thu, 29 Feb 2024 18:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BE3134421;
+	Thu, 29 Feb 2024 18:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709232775; cv=none; b=qVygKN7CsMc3LffdHMbCajNS+VF+3Yk6bP7cEALFUvFPwi+LDrzo2Ljty2BoZ655eqfH4CrFa3wIGt47GlryIGuYwRlXUuseDhzXFdNN0TNkXD3BHZSn9HKR8vqVk9I1ZU1+ZUWuRf81bFSDEqOZt41SAQWlh9AcdwgKIvJs0Jo=
+	t=1709232964; cv=none; b=cozeoh/X00Ekn5IXmHAZ59P1joF53lXdNPrQIxsogtoznLCTHSDxlVRi1LI0CNw+iman/pfkkTt4WxoL3XTxYsnRrpCkeMj6fy7ZzdJy8PnNvkSw1rCLOgDd/57jVQ+W+kv9dSvThAsM/PqTy1CrK+x4xImUO1tvv0O0nis3N7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709232775; c=relaxed/simple;
-	bh=iOuQ3NLogT9DUhHCagui9Zsqnob82CO/bZ+hAddHmV0=;
+	s=arc-20240116; t=1709232964; c=relaxed/simple;
+	bh=9jNWT5JzMeZ3ugm8mZo56duN3alCtt+0bTyYBz7W+gs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tRRLZd/dLseTsHnQ7wigPL2SMqru42lhZXVrrE3V2A75GHzHMVrZBfpxLhmD6UW3KICDdK/cFDxd+BtD9RhBfB6p6q6JLZoJNAZyr010w/rRgMdT5AK9nPHEt9L9lb5NSbwqDqrYBCg6jLHM8Mwavycohn2W3yumlw7/V1PmN5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNvuM8+I; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FwpWA8txUHzk2cID98WS4+lTyRhuTG5U7pw8Cibtv6nicBpwW0dctDye13adqIrgPu8Ga/C0fJp/y6FaYs4oL/1uMMdxXos6ICMkwpqoFLm/MLkeWMX0Bg76gmZihqGfR9VvtEHEH3IHnIM/6CnFpjGGZqQBVcmB9o21ut2jn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaWt+oH+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNvuM8+I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59734C433F1;
-	Thu, 29 Feb 2024 18:52:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaWt+oH+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EF0C433F1;
+	Thu, 29 Feb 2024 18:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709232775;
-	bh=iOuQ3NLogT9DUhHCagui9Zsqnob82CO/bZ+hAddHmV0=;
+	s=k20201202; t=1709232963;
+	bh=9jNWT5JzMeZ3ugm8mZo56duN3alCtt+0bTyYBz7W+gs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tNvuM8+IbumeEEu2/usJApVNDKku+NSX689Gbx5KT0ldIbrE7CdXg/5HCMy5SuED1
-	 gZQA+8iFyuieDIj9HkM5Eqn/5LxosMa6yq2udvAWMmZHx7yWofHDHav8SFCEpVg10i
-	 UPCzzxrBweoU5EPTG02X9+2x06wXfDr+AEYjLgGRCnHIpeqqKhQ8YqBYORtKQ0zzz6
-	 WPke1aaNXmL9m2V5Q6Ado9e7F2dy3Ekarze0bKm6dmJ+YIJ63Je46maRWJPHLBv6ym
-	 fyBV3GLBn0q8HN1Y1SdHHMQsNVtzLEWeJSA6NZPTBkScrswa/doyBRJdGX3nxAD3Cn
-	 LkrU62uN9FgZw==
-Date: Thu, 29 Feb 2024 18:52:50 +0000
+	b=BaWt+oH+BlPkjG4/vxoRjseD+V5SRhv6MvPWyCWxXIwNEUMJV8JlIU5bQLpkeQUr5
+	 j6lRZlGu3C5vH9Y1yrVak/3zGy0rmqm1o5Vg5FF7ep8DP2JffJN4NovDrUICo7TPRr
+	 /GiwmHcb7C3HiX5FPcXfmKYCxH8j33MIlmyXNzPNOA36FnwYTnzjy0B3I1qC075+ns
+	 /1x49UqQ+xZ8l4TJHiT2FvNWm7QsHW9g3aCpnDc2MK2j4eMgwhQEVyW0FpXUxY8KDE
+	 cHEe5cEJiUvZfdr0fC+9pidEwQ27r9EdeoxDKs9JczPosv8Vc/4p8re6MrK3RZK3ul
+	 yDU49MneUqnkw==
+Date: Thu, 29 Feb 2024 18:55:58 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
@@ -39,11 +39,11 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
- power-domains requirement
-Message-ID: <20240229-gladly-morse-28a3a06e8845@spud>
+Subject: Re: [PATCH v2 3/4] ASoC: dt-bindings: fsl-sai: allow only one
+ dma-names
+Message-ID: <20240229-husband-penalty-8c1ab0f57f55@spud>
 References: <20240227-asrc_8qxp-v2-0-521bcc7eb1c0@nxp.com>
- <20240227-asrc_8qxp-v2-1-521bcc7eb1c0@nxp.com>
+ <20240227-asrc_8qxp-v2-3-521bcc7eb1c0@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,22 +51,31 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xrZyC8VUYzqklLdV"
+	protocol="application/pgp-signature"; boundary="srZ/zPvQLoPFy/vJ"
 Content-Disposition: inline
-In-Reply-To: <20240227-asrc_8qxp-v2-1-521bcc7eb1c0@nxp.com>
+In-Reply-To: <20240227-asrc_8qxp-v2-3-521bcc7eb1c0@nxp.com>
 
 
---xrZyC8VUYzqklLdV
+--srZ/zPvQLoPFy/vJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 27, 2024 at 03:54:09PM -0500, Frank Li wrote:
-> Add power-domains property for asrc and spdif.
+On Tue, Feb 27, 2024 at 03:54:11PM -0500, Frank Li wrote:
+> Some sai only connect one direction. So allow only "rx" or "tx" for
+> dma-names.
 
-Is this valid for all compatibles documented in these bindings?
-Also, your $subject says "requirement", but you do not mark these as
-required. Why not?
+Which sai? Can you restrict this per compatible please, so that someone
+cannot add 2 dmas for ones where only the tx is supported.
+
+|  dmas:
+|    minItems: 1
+|    items:
+|      - description: DMA controller phandle and request line for RX
+|      - description: DMA controller phandle and request line for TX
+
+The binding already allows only one, but it documents that the first dma
+is always the RX dma, and that doesn't change with this patch..
 
 Cheers,
 Conor.
@@ -74,55 +83,47 @@ Conor.
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml | 3 +++
->  Documentation/devicetree/bindings/sound/fsl,spdif.yaml    | 3 +++
->  2 files changed, 6 insertions(+)
+>  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml b/=
-Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> index bfef2fcb75b14..98616507e3c10 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
-> @@ -74,6 +74,9 @@ properties:
->        - const: asrck_f
->        - const: spba
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Docum=
+entation/devicetree/bindings/sound/fsl,sai.yaml
+> index 2456d958adeef..0302752d58a2b 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> @@ -86,10 +86,14 @@ properties:
+>        - description: DMA controller phandle and request line for TX
 > =20
-> +  power-domains:
-> +    maxItems: 1
-> +
->    fsl,asrc-rate:
->      $ref: /schemas/types.yaml#/definitions/uint32
->      description: The mutual sample rate used by DPCM Back Ends
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Doc=
-umentation/devicetree/bindings/sound/fsl,spdif.yaml
-> index 1d64e8337aa4b..82430f1d5e5a2 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> @@ -86,6 +86,9 @@ properties:
->        registers. Set this flag for HCDs with big endian descriptors and =
-big
->        endian registers.
+>    dma-names:
+> -    minItems: 1
+> -    items:
+> -      - const: rx
+> -      - const: tx
+> +    oneOf:
+> +      - items:
+> +          - const: rx
+> +          - const: tx
+> +      - items:
+> +          - enum:
+> +              - rx
+> +              - tx
 > =20
-> +  power-domains:
-> +    maxItems: 1
-> +
->  required:
->    - compatible
->    - reg
+>    interrupts:
+>      items:
 >=20
 > --=20
 > 2.34.1
 >=20
 
---xrZyC8VUYzqklLdV
+--srZ/zPvQLoPFy/vJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeDSgQAKCRB4tDGHoIJi
-0nEKAQC75ySPnVkmXzXAPanKzHsx8/8kj8yWlRUKAoJEv1oycwEAmDYO/yWZJvnA
-5yDq517lBIAwBlPF//RY2lokX/YdJQQ=
-=xvu+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeDTPgAKCRB4tDGHoIJi
+0k4rAQCajuVtW1Lf1g+IHmnbW8Nz9UPj32iFkM/X0vR0/ehEEwD+K1Vs9TW7Xi0M
+0xWWhKgTKjbUXNU8JBLMD9PrjjBHOw0=
+=0DAk
 -----END PGP SIGNATURE-----
 
---xrZyC8VUYzqklLdV--
+--srZ/zPvQLoPFy/vJ--
