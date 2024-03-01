@@ -1,146 +1,255 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F2D69E18
-	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 08:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BB86A340
+	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 08:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709282982; cv=none; b=sa4A454nOBizvrx/aN+kMDw9AB+5Asx4QTSzkoe7j0Y664imKOC7pFKLpeUL36E9XH4z/uev3QNa4iuk0IYHPNz8SU4PbZLy+758O6j2YourZqOT5TWBvLogU3Zc+rf3P8Qwmlu45f8sK0UOq1oMzyh1Gxc2cuSM7Jh2Kl553cU=
+	t=1709283513; cv=none; b=CR3m918qY3kZDt+Xze013Der9bzMbidfT6fZV5elzHvVJuTZPT92BmBHSdzvOAAWKAc3lSogA81CPcRYxF9IFywNWtHs/4cK2NosZ5edUfUvWchC3/9goDXEQjOpc5vW023jy3mhI3KpuzmGAudoGXGru6vNGcU/jI5HzOdpwJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709282982; c=relaxed/simple;
-	bh=jN3VkU6TTj0itUtfWez0NxgdQx4sHDHdXqBKKHVWAkY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DCZkoJuKKOVpDfwKkOe3AZqs7XHrk7sZbyXmg9GCthTVYUrhEPXxE6jqQL6CG3lLkEeawDGvwZ9QE0JLqRe7/jvX5ew8Wh4Q267S+BtYBJ2wPFgVQGdGR8ALPXarK8pWBbBxNpFy6BN6foQDOQjv+88Kc6AVoymodplKoK6+nJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KCk7vCFe; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KCk7vCFe"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a34c5ca2537so296911866b.0
-        for <imx@lists.linux.dev>; Fri, 01 Mar 2024 00:49:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709282979; x=1709887779; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NygG+zgVE75okJaCIKi9Z46sh0xdDb3WRJLYh6SeQuE=;
-        b=KCk7vCFeUMN3FbWlBuJThnjHoZqBjHnFsSr8NsKgsaclSBi0Lt7Y4qENtcbdNYESW+
-         P/01mr7/n+18ZThDnwo8Qd9vNUiyWi75G4FkRLRyLutuIlTbk447Iv7mWwrz6F05ch6V
-         4ymqN+G87mlHK/eqy6+l7RRmk38+hmUvamJrIcmJolpAP/RSj7OUep8YI3i23YLbFAIH
-         adqPkDnNY+AZk2GtjmJbpaDt6/PeZA0+rZ0zuNMjrLg5xUu7C/nz67De6GHAwpnja+vj
-         fZS8i4dRJmLiIY/2RuLwzhTr0ll+Q2gOtq/YUwvMU1lIPFnWlic0HoBGw71wxvxyvNny
-         PevQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709282979; x=1709887779;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NygG+zgVE75okJaCIKi9Z46sh0xdDb3WRJLYh6SeQuE=;
-        b=nWzcXrBs1Ue6n1HWpcdDzCvJCEbGYwndZuNc9BficAfcPPb/OFQPxaP7DZzQ9L8KpT
-         tTYssG3/WGeDYHTzx0OIXSjam2u/I+SNT9vUatOzZ3VisML1ELHkAI/BKxOizUruK4cS
-         zLcob2otugQMPQSXtDgWiO9Z2LtBcOB/hxLEmi3vA6Up4JU3QnA0RVUG0U/0znfl3mxL
-         nEHX7UWzXTbg3DYk/6MV/ZzdRrRUnuzN+FlbdaRYQgtZs4skfY1zRpB4L1wdnPrNQv4p
-         R19TOzvVnZbBWceRVKJL+66lBj5ptqORYxZKtF9wfBjyNKLHPRjNufdLqC+jFBh00jRl
-         /CvA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2bgr+wiunwMy9Q16Zc/ioXudrNyrO+TznawY+VzwDDPIefcjfd8W6mnf2n3rVrmywF+zqwaEe7YG1jM7cLZ7UoVaL
-X-Gm-Message-State: AOJu0YwArn+3aIrq+3lLiRIZHLoGuf+QsxpXmfiXArKl/oSCY0GSuMnm
-	5Yry/HDXH9b1rIQRpDDRO26g1p4OpYl3jR1NteB12BFcb2CN2hKyYgPHUnowIJI=
-X-Google-Smtp-Source: AGHT+IHhVoesLGysr23SUpYTmXJ9xUF3CoWngGj/ChhbIYLGPW3SiC8g4fo+Psl+4rrcc+Gw60jnQg==
-X-Received: by 2002:a17:906:685a:b0:a44:5515:3b57 with SMTP id a26-20020a170906685a00b00a4455153b57mr715504ejs.4.1709282979470;
-        Fri, 01 Mar 2024 00:49:39 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id ps7-20020a170906bf4700b00a3e53eb1dcasm1492497ejb.107.2024.03.01.00.49.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Mar 2024 00:49:38 -0800 (PST)
-Message-ID: <0ff97f06-717d-4cd2-8a52-b1838fceed5a@linaro.org>
-Date: Fri, 1 Mar 2024 09:49:37 +0100
+	s=arc-20240116; t=1709283513; c=relaxed/simple;
+	bh=Y2ooKxwu0DvEAlAO3yUTV8/LjvCmLJjEEzzi6omP6EE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W79WMHMnGphBDZoAvOdLVHLm0PW2W5cSVpYsEkcuQ37v4moKTheAXymmt0H19gT/46zdhherzGWq0Wh1vDmFrShowXxDVin2XdVN10Q7OTkpyay9X4MG3n2Jq1eSdZ3Uh7f8W8rnEFv+d503H7U13m7PnAokQUwlfqrXZdOK0qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rfyif-0003jY-UI; Fri, 01 Mar 2024 09:58:17 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rfyie-003kKQ-Tg; Fri, 01 Mar 2024 09:58:16 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rfyie-00F28a-2f;
+	Fri, 01 Mar 2024 09:58:16 +0100
+Date: Fri, 1 Mar 2024 09:58:16 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+	aford@beaconembedded.com, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH 2/2] arm64: dts: imx8mp-beacon: Enable LVDS-1
+Message-ID: <20240301085816.bam4ph43w7tikhea@pengutronix.de>
+References: <20240229233556.116944-1-aford173@gmail.com>
+ <20240229233556.116944-2-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] media: dt-bindings: i2c: use absolute path to
- other schema
-Content-Language: en-US
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Sebastian Reichel <sre@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Alain Volmat <alain.volmat@foss.st.com>,
- Ricardo Ribalda <ribalda@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Michael Riesch <michael.riesch@wolfvision.net>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20240301084009.3030753-1-alexander.stein@ew.tq-group.com>
- <20240301084009.3030753-2-alexander.stein@ew.tq-group.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240301084009.3030753-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229233556.116944-2-aford173@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 01/03/2024 09:40, Alexander Stein wrote:
-> Absolute path to other DT schema is preferred over relative one.
+Hi Adam,
+
+On 24-02-29, Adam Ford wrote:
+> Beacon has an LVDS display that can connect to one of the
+> LVDS ports on the baseboard.  The display requires a 30MHz
+> clock to display properly, and the LDB needs to run at 7x that.
+> With the audio CODEC now moved to the AUDIO_PLL1, the AUDIO_PLL2
+> is now available to source the LDB at 210MHz and the DISP_PIX2.
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Changes in v3:
-> * Squashed patches 2-5 from v2 into a single one
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 > 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+> index 1f827ef38e36..731ee2667060 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+> @@ -19,6 +19,26 @@ aliases {
+>  		ethernet1 = &fec;
+>  	};
+>  
+> +	backlight: backlight {
+> +		compatible = "pwm-backlight";
+> +		pwms = <&pwm2 0 100000 0>;
+> +		power-supply = <&reg_lcd1_reset>;
+> +		status = "okay";
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+status is not required here.
 
-Best regards,
-Krzysztof
+> +
+> +		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+> +				     10 11 12 13 14 15 16 17 18 19
+> +				     20 21 22 23 24 25 26 27 28 29
+> +				     30 31 32 33 34 35 36 37 38 39
+> +				     40 41 42 43 44 45 46 47 48 49
+> +				     50 51 52 53 54 55 56 57 58 59
+> +				     60 61 62 63 64 65 66 67 68 69
+> +				     70 71 72 73 74 75 76 77 78 79
+> +				     80 81 82 83 84 85 86 87 88 89
+> +				     90 91 92 93 94 95 96 97 98 99
+> +				    100>;
 
+Are you aware of: 'num-interpolated-steps' to avoid such arrays?
+
+> +		default-brightness-level = <80>;
+> +	};
+> +
+>  	chosen {
+>  		stdout-path = &uart2;
+>  	};
+> @@ -135,6 +155,38 @@ led-3 {
+>  		};
+>  	};
+>  
+> +	lvds-1 {
+> +		compatible = "panel-lvds";
+> +		power-supply = <&reg_lcd1>;
+> +		width-mm = <223>;
+> +		height-mm = <125>;
+> +		backlight = <&backlight>;
+> +		data-mapping = "vesa-24";
+> +
+> +		panel-timing {
+> +			/* 800x480@60Hz */
+> +			clock-frequency = <30000000>;
+> +			hactive = <800>;
+> +			vactive = <480>;
+> +			hsync-len = <48>;
+> +			hfront-porch = <40>;
+> +			hback-porch = <40>;
+> +			vfront-porch = <13>;
+> +			vback-porch = <29>;
+> +			vsync-len = <1>;
+> +			hsync-active = <1>;
+> +			vsync-active = <3>;
+> +			de-active = <1>;
+> +			pixelclk-active = <0>;
+> +		};
+
+I would like to have a proper panel-simple.c entry but that's just my
+POV of adding panels.
+
+> +
+> +		port {
+> +			panel1_in: endpoint {
+> +				remote-endpoint = <&ldb_lvds_ch1>;
+> +			};
+> +		};
+> +	};
+> +
+>  	reg_audio: regulator-wm8962 {
+>  		compatible = "regulator-fixed";
+>  		regulator-name = "3v3_aud";
+> @@ -144,6 +196,25 @@ reg_audio: regulator-wm8962 {
+>  		enable-active-high;
+>  	};
+>  
+> +	reg_lcd1_reset: regulator-lcd1-reset {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "LVDS-1 reset";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpio = <&pca6416_3 13 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		vin-supply = <&reg_lcd1>;
+> +	};
+
+This reset "regulator" seems more like a workaround, why don't you use
+the reset-gpios property from "panel-lvds"?
+
+Regards,
+  Marco
+
+> +
+> +	reg_lcd1: regulator-lcd1 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "lvds-1 power";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpio = <&pca6416_3 14 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+>  	reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		compatible = "regulator-fixed";
+>  		regulator-name = "VSD_3V3";
+> @@ -457,6 +528,38 @@ &lcdif1 {
+>  	status = "okay";
+>  };
+>  
+> +&lcdif2 {
+> +	status = "okay";
+> +};
+> +
+> +&lvds_bridge {
+> +	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>, <&clk IMX8MP_AUDIO_PLL2_OUT>;
+> +	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
+> +	assigned-clock-rates = <210000000>, <210000000>;
+> +	status = "okay";
+> +
+> +	ports {
+> +		port@2 {
+> +			ldb_lvds_ch1: endpoint {
+> +				remote-endpoint = <&panel1_in>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&media_blk_ctrl {
+> +	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
+> +			  <&clk IMX8MP_CLK_MEDIA_APB>,
+> +			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
+> +			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+> +			  <&clk IMX8MP_VIDEO_PLL1>;
+> +	assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+> +				 <&clk IMX8MP_SYS_PLL1_800M>,
+> +				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> +				 <&clk IMX8MP_AUDIO_PLL2_OUT>;
+> +	assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <1039500000>;
+> +};
+> +
+>  &micfil {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_pdm>;
+> @@ -496,6 +599,12 @@ &pcie_phy {
+>  	status = "okay";
+>  };
+>  
+> +&pwm2 {
+> +	status = "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm2>;
+> +};
+> +
+>  &sai3 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_sai3>;
+> @@ -596,6 +705,13 @@ &usdhc2 {
+>  };
+>  
+>  &iomuxc {
+> +
+> +	pinctrl_pwm2: pwm2grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_GPIO1_IO09__PWM2_OUT	0x116
+> +		>;
+> +	};
+> +
+>  	pinctrl_ecspi2: ecspi2grp {
+>  		fsl,pins = <
+>  			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK	0x82
+> -- 
+> 2.43.0
+> 
+> 
+> 
