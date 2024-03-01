@@ -1,60 +1,59 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB504642B
-	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 06:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F54C5FDC3
+	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 06:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709274616; cv=none; b=DqorMIC9dstQ2RiOJXGLpmTvpq51sGeg4nt/sV4MlJJk+aaMOnzx6r1K+vOjeobPAyo901K+k8eVOmO6N0mttK3Zh7omwl8vLkmoYuIg+u9G8Ziew/iVLABnEK5Bv8QSQLAtBfMvHIsC81bN0qkaVH8mK1wrApUzlE6oYVC8k2E=
+	t=1709274650; cv=none; b=h2SCdOAR7milLSTC5OEHcL4sG0fnALythxuTAL+GHGpkjqAHt6YSNmdWxyUs2rMXu5FrEMpZzcYX8TqJvf9mmsGyQE/XuhXA6zLZUyCt5gH8ZEQqhgimZ6k/JrFeKDT/TRdiefVJaQoaEMP/EHOBfq20N0uBGCy9xiuu1fpkgV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709274616; c=relaxed/simple;
-	bh=Pw5R/xUxIVSxEIGnaOD5i0zjl/Uoyyx8UfKZsVtWwa8=;
+	s=arc-20240116; t=1709274650; c=relaxed/simple;
+	bh=k5V8vWbKOVu5rrnBCKAXa/253TOmV4ruxxbPCrXY1KM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=POUQFlx730hMnrEgJnPZxUHrQT96ZhYcSlFhE0mlTtjxnO0vAdoLMd7paIU3qNIGvFa/8Wz25qlixTo/GOWM12GuYeqS3K1LBHr3Gp4tr/Uq6p8Dv9CUXBWIS74bzTZPzpo7ryjWW8YeLLQrwBN76fYb5pf1nfkjO1lLJk3jnTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NupLokls; arc=none smtp.client-ip=209.85.208.46
+	 In-Reply-To:Content-Type; b=G6SSvIdffA48q9evYb1Cz0f9nVzIoh2mX5j6NUtTcme4OuE3cEg0F9Mgc+602H4vJ+UA98DQbYygfOaQrCLzTYlzd6+SJTc53t58zPx66tMi6HZeNacYnpN+qHhX9yYjHVqxWuuQ/P/NObgUB+DfSAaoXEdWEv++4T6agzxJ02E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UcPg1+ai; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NupLokls"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5654f700705so2667654a12.1
-        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 22:30:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UcPg1+ai"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso2354557a12.3
+        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 22:30:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709274613; x=1709879413; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fwY9ACKKm8qi30veZfS0qkvqumV0RjEzlEgPUyTRXRo=;
-        b=NupLoklsazXHRqgSE95B0saC8yavixPVA8VseT9IULazbtdabtP+wLiUmh7I+ci9bd
-         aaRseQgxAZrm3kvVLhD7MuMSPzJDgNuwIekfJy29OTfZXOy3GWDFPB/dsLmRfvo+llxM
-         9uee3/9+FOJpXQCSyLYd8DcX2IPB8oBWQSJz2A+9zjlbnlvlw86uvIEMLKWBLei8Ixp7
-         pDDdIN3LfWrfLGofpwHgcdABKs25nt1IrPRC/Sxy7KugxfchnL1iQkK2Vhf08LTSYRHb
-         7ISAyz++8rf54NnqhUl88AV5NuIJA1YxsEY7oD4pjyFSh7klnah1ChOR/eYM1Oq7L2uZ
-         hsrg==
+        d=linaro.org; s=google; t=1709274647; x=1709879447; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aQcieXKF9GCrmMdAMMXGeMlTjz7NiZHPsZQNigcQEYE=;
+        b=UcPg1+aiG3+pcA58n4BC17RvNfo5j40mvrW9y2fBKPnHSJvq4di4YZrpX7nzgYFZWP
+         CSumR1vLk/Si5Hc3YO23PiuyBYkiKIvd0rrq+wkRtDHsE2JcYlOCB4BuIm6ssY1mqWnS
+         YtzZT9rrR12mpzK0hYyqGotg0DXXI7Vj46IzaX4i1J519TvFCnOViKtqCMOf7wWVwtaf
+         QMv279lgi7PccUsf7Cjw5c4GtGSFzPFMt3AyGisF15x4POGfSLyN0Ywe5HBswsu82Oi2
+         QJJWfCP0ZVoeJ7vKoG4trL8ReW4h8VoDJr1xMKykyFWaGbW3Pn/6E+zxvYbblzv6x5EW
+         RZcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709274613; x=1709879413;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fwY9ACKKm8qi30veZfS0qkvqumV0RjEzlEgPUyTRXRo=;
-        b=BlnkDOq/nrYRHz2FiuHs49fsRnNiEFt/x4q6N4vAOzAPlQJN9d74Up0FekFSd5c1vW
-         2OMUaY3CMYOdzADLSO1Oy7A4N+mWZAw6/TQM02v77UNhYlTKP0+E1fm2dsCHP89dRmdR
-         p18Ck4IIq6tFklbWAS4tGndTz2xwja3/OGpHqPtPEz75BhGZv7w2b37AHTE35CJiIJXM
-         rsxvw7KvBywXTBV3HTyKQvhTkjrqIFMyOiEUPwd+/22Ne7jTVqRZrJTzmp0IQ6CMfcyY
-         Js6XzkKfhny8jj3STq2ZTONfPCYWiTY+In7atKMhEsa1hO5/mc6kwBHCiNQh8bluR3dl
-         7cJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ4xpAlDvcKI2Pw5+XxtOomjMmxWCmpwQQp+HyD0UdeL1idGE5IpTUMaNLA+SQjkpY9q/ZTf7KTVsutWt6UfmOYq4X
-X-Gm-Message-State: AOJu0Yy7+miK6yZ440IWQSFJ+0g5MNUi75yxScYgp/JwDj12WxluurGt
-	2bh8VOKA8WpRMMLTgaNh9Z+RcXA4zHcLnriLGZks97eQi3/SuB6OYZtT53mHWQI=
-X-Google-Smtp-Source: AGHT+IGHFX42bQGWsbkjPqyISCraVjN20aqxnyRadr62r4gNkbCN6qHLZ1UneF25evjfflHTDI3p5Q==
-X-Received: by 2002:a05:6402:206a:b0:566:4459:17d4 with SMTP id bd10-20020a056402206a00b00566445917d4mr557984edb.36.1709274612879;
-        Thu, 29 Feb 2024 22:30:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709274647; x=1709879447;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aQcieXKF9GCrmMdAMMXGeMlTjz7NiZHPsZQNigcQEYE=;
+        b=qQK1z/OkDtNLGqyevMUabHiwBAHb96V7UpaZ3RJeiNpgi3cH3ToCmSOAC90ErHDVGY
+         KkBOBpq+Fm+ZiQoH+KhhDGQauvDudVics0whUn5exCY19/bJVlXYDj+01vTo38A8Sgyz
+         P/MMnURmc1onCnJqoM45+MFoFSKXq8Etg5XDcIijL4ZmS6XN+MJwP4kJ+FcEaJGdt2lR
+         /ECeWWVPDQEgSlqbtEUnkLX/ghf3XGi5rK8uLlzAFWXzF0hfSx+11o+kPTuNGvOYFSJM
+         Qwdd2sejTIh6cvb5NQGiy3Yo6P+7N6Oj2SRGh2d8v1RuwxBaY5Hhl2YZwKIaJprR8C7C
+         7ToQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+PwN+iFRz4/LPH9FzqjB+E8tU7rTTf0yLLXgSG0UXDTcRRxqzxIFcBKMTNoWrGJA4aG3iEFVKY4V125NJHgzYSE/P
+X-Gm-Message-State: AOJu0Ywlis8gEuLeQnz8gcmjq2OyWVaG9ugzTwA3szy++g1YrckJGzf4
+	zIUQcynnLQyRXzNwCYpJMt9hyfa+UBkWN47sv/33RrcAkitP0os1CbRCVkjDsZ4=
+X-Google-Smtp-Source: AGHT+IGSNoAmpYgNPAtqvUYUD4eCOtLsMfV3o/9sM6pyzlMN2Qlq4pj7F3rZftORbzbgCQ7xE0a3KQ==
+X-Received: by 2002:a05:6402:5245:b0:566:dede:1f82 with SMTP id t5-20020a056402524500b00566dede1f82mr116248edd.29.1709274647520;
+        Thu, 29 Feb 2024 22:30:47 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id o20-20020aa7c514000000b005663e9bd8c1sm1258757edq.38.2024.02.29.22.30.11
+        by smtp.gmail.com with ESMTPSA id o20-20020aa7c514000000b005663e9bd8c1sm1258757edq.38.2024.02.29.22.30.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 22:30:12 -0800 (PST)
-Message-ID: <0cc8a370-4497-40f5-9040-1584c0c777f9@linaro.org>
-Date: Fri, 1 Mar 2024 07:30:10 +0100
+        Thu, 29 Feb 2024 22:30:46 -0800 (PST)
+Message-ID: <a1861d70-80e2-4f42-b99a-f2b8c8efe042@linaro.org>
+Date: Fri, 1 Mar 2024 07:30:45 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,8 +61,9 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
- power-domains requirement
+Subject: Re: [PATCH v3 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
+ interrupt numbers
+Content-Language: en-US
 To: Frank Li <Frank.li@nxp.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Rob Herring <robh@kernel.org>,
@@ -76,10 +76,9 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
- <20240228-asrc_8qxp-v3-1-d4d5935fd3aa@nxp.com>
- <f8ce39e9-7f06-49e7-92fa-785bd1cd2d1e@linaro.org>
- <ZeFTDSuLEeYrsbKi@lizhi-Precision-Tower-5810>
-Content-Language: en-US
+ <20240228-asrc_8qxp-v3-2-d4d5935fd3aa@nxp.com>
+ <3460ecc8-d7d7-4d1c-ad0c-b32efc3b9049@linaro.org>
+ <ZeFTqM8o/eozl+MS@lizhi-Precision-Tower-5810>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -125,20 +124,65 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZeFTDSuLEeYrsbKi@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZeFTqM8o/eozl+MS@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 01/03/2024 05:01, Frank Li wrote:
-> On Thu, Feb 29, 2024 at 10:44:20AM +0100, Krzysztof Kozlowski wrote:
+On 01/03/2024 05:03, Frank Li wrote:
+> On Thu, Feb 29, 2024 at 10:44:42AM +0100, Krzysztof Kozlowski wrote:
 >> On 28/02/2024 20:14, Frank Li wrote:
->>> Add power-domains property for asrc and spdif.
+>>> fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
+>>> have 1 interrupt.
+>>>
+>>> Increase max interrupt number to 2 and add restriction for platforms except
+>>> i.MX8QXP and i.MX8QM.
+>>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>>  .../devicetree/bindings/sound/fsl,spdif.yaml         | 20 +++++++++++++++++++-
+>>>  1 file changed, 19 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+>>> index 82430f1d5e5a2..785f7997eea82 100644
+>>> --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+>>> +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+>>> @@ -31,7 +31,8 @@ properties:
+>>>      maxItems: 1
+>>>  
+>>>    interrupts:
+>>> -    maxItems: 1
+>>> +    minItems: 1
+>>> +    maxItems: 2
+>>>  
+>>>    dmas:
+>>>      items:
+>>> @@ -100,6 +101,23 @@ required:
+>>>  
+>>>  additionalProperties: false
+>>>  
+>>> +allOf:
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          enum:
+>>> +            - fsl,imx35-spdif
+>>> +            - fsl,vf610-spdif
+>>> +            - fsl,imx6sx-spdif
+>>> +            - fsl,imx8mq-spdif
+>>> +            - fsl,imx8mm-spdif
+>>> +            - fsl,imx8mn-spdif
+>>> +            - fsl,imx8ulp-spdif
+>>> +    then:
+>>> +      properties:
+>>> +        interrupts:
+>>> +          maxItems: 1
 >>
->> Why?
+>> else:
+>> minItems: 2
 > 
-> i.MX8QXP i.MX8DXL and i.MX8QM need it.
+> I think needn't 'else' here. Top have set to maxItems is 2. 
 
-Where is it explained in the commit msg? What about other devices/variants?
+So explain why one item is correct here.
 
 
 Best regards,
