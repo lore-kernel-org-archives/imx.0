@@ -1,255 +1,148 @@
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2079.outbound.protection.outlook.com [40.107.15.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B0C13C9F4
-	for <imx@lists.linux.dev>; Thu, 29 Feb 2024 23:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709249772; cv=none; b=WYNdCnxdytc/RXpCe0+20bqjiobyTgunMwRfAik3nE9S2Vmjkm8kf09CjgVUtuxZdvJY2Iup7X44LpRTd/0E3CvYuLBsbjS2C0Lkr/oY7FuTrvvPKYJnYSQpjIbIeZpyX1394OhitFUFY2v3qrj9Tpz5/eMOIR4p26Ze4nt4ezI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709249772; c=relaxed/simple;
-	bh=sbdwlifiN6TQX37CANALuKwRq4qcVl/xA8MlOkG3rE0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sM6AnScd/SHgyS8OxxOdPi5SAsS4NAw+HUafEvZdWwNif40EP+IoN9hcRZ/+B942yC9u4wRaB25It87JU7EdO8lVAzWGmLsNKAIUTKlxBW5nVQ58hSAPCUHCEFmw/+4DdQb4pz/fS/EnfPKUFpaf5Rjt9S2lqOUJHF4yOUVSgY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YrVsfNAK; arc=none smtp.client-ip=209.85.166.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00843FE54
+	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 04:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709265690; cv=fail; b=kf6C2k0aH9XKbybhysFYnYLlDU62wj6gnRVQsL1TISD80Y0f1vllAT5OnvjkT4Rs80uOeKf6q8ubaQ9omlvgnUIG56Ecrw1ebnfdijVs8LigslKk6MBj6eY0MmrX1rOrHzl0v0ceCx8KSgCJIHkl8MW2hVdGKWkho8ttg0LIM9A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709265690; c=relaxed/simple;
+	bh=ehBvNpcHAb9Snh3k6X50gkPyv/feHt0UEfqPSHuXCfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=B9e1UoNiNUT+Ueu8Ob16wfulPO8SCLLGI/GHvGHMLD6vtIDb1yHfOUu7sIpWTF9YrENVRkPf9MVRXhEmZN5VtwktMa0j7hsUbGaYQhzeIRX9CgQteNOSybNDBjqZE233bFLfW8/aSpOnNJ2JFSev+c9xAk2NHf05M26GmPCEznY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=m1bXZYZ1; arc=fail smtp.client-ip=40.107.15.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YrVsfNAK"
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-364f791a428so8014315ab.3
-        for <imx@lists.linux.dev>; Thu, 29 Feb 2024 15:36:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709249770; x=1709854570; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I0Ig8cWW0xOB22oHG7WVbhrtiV1AkK22ZMx8ROiAXXA=;
-        b=YrVsfNAKVhWXRFLg7fF77cn8RUKozRBwpRdaa2VQ4l/ISkr3XzBcJXAgjt69Ohy+At
-         3ZrbXdFxOgUp/c1EDOeRqouLUGlNJtAXba+wbp7O1EZzWSYXt7jYiUg1faYIn3jXXr/I
-         cc7J+jzLaLwUnlo7UG//4eaF9x6fE8Ai56z+HFQLHqh18g2vkWMq7vFAYEf6KzRVHMW+
-         LiYI6o05dd6s/PNtnhEw1ueVaCVsM1fyChuKcikM7/lAY6sVkNHZ0MtteLuLy2NLhjPs
-         sH72DGyp9DFgzMNh9+BOo7nvcxnkNmVPZfvAF/izMEwjnycmJ68ivcLvqdLKykpRywxz
-         43WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709249770; x=1709854570;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I0Ig8cWW0xOB22oHG7WVbhrtiV1AkK22ZMx8ROiAXXA=;
-        b=GqnNYU5ifzq07aQFyk+hfvr6OS3GSHxLSXGWDUT5IFR0OlukLm/XkPzwGT+1G5l+xQ
-         ZMUsSAELsFn5QufbGa0ooI0yh2c/oazoFBMG2T9fv3dFxKSf1Kv56pXoQIfH3MjDPQAR
-         kVY2kQ8dMMfI4yp4wTZbAGDDiqOvhJbj2/k3vJN4UT919X2cxz9H1oim1t88idRf6+Z9
-         E+SZ0eheGNobjLQ/RCltOh6ncHOcU23aJ5+eA3Eic4xafVQvNtnt9xISVO+mGQcTp36R
-         chEEs9skaWsSbAVygdzbBT3Hz0tOhzUeK3AEwX9SozcVx2d39Mfejguc9qYyJqKU73TT
-         QwOw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1nTlLnxT/eb7QLk7YKzqKuzLzJpc9Uorjg7ycU59AUaYCJ4Fs5kQGfGE3siaYcwFzljERstlzriz4DY3G3pJOQTdF
-X-Gm-Message-State: AOJu0Yz2UpEnocgUAI8B4RIyu+d5j3mPIDo9XeG6anDFMdS/WFV9Q2pP
-	IFnQ4zZY1Fmkw4y8JfxcWpIQ9u8QNzzgb9yi8SgzJzQb6pvBCsDT
-X-Google-Smtp-Source: AGHT+IGhaVKIJe0LnTK6LmXIG0SAEJYhhBGCSiIuC00weRqkOsIJvHsV9vMBU6VkGt/rYec7uNAayg==
-X-Received: by 2002:a05:6e02:1747:b0:365:3a69:1e1a with SMTP id y7-20020a056e02174700b003653a691e1amr236417ill.0.1709249769634;
-        Thu, 29 Feb 2024 15:36:09 -0800 (PST)
-Received: from aford-System-Version.lan ([2601:447:d002:5be:c0ab:242c:2712:ad44])
-        by smtp.gmail.com with ESMTPSA id j5-20020a056e020ee500b0036576880ffcsm584260ilk.85.2024.02.29.15.36.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 15:36:09 -0800 (PST)
-From: Adam Ford <aford173@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com,
-	Adam Ford <aford173@gmail.com>,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="m1bXZYZ1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=E3awuD3cPg2t1xX2SKil2nhQ2dQ9XDYagh3Mm+vpohAu4wIxJBk9qjmLzk6azetQqP+NXSlx4TE3wEV8xAajJ/PehcGI++0tWxdH9U63X55OxkHP1n56Pr95BbZwgqKK9Rvj6L/OtHP1yWO7JEqChuQSBgWU2PYIZPHIygE1padDYZhg7KCo28P620flDqnYOYOPVEu/+dTg91PESJvOIJutlZheJEr+r0gPLFoCOxtCm2z6X4JD8Me4D+oZVvR5KcPeAYx1LERBjtyyoHT6YxnSD8SqvxXpgdVYpDrvBzcgsjTnZ5aSMFcItBXq6M4SCUJG+dcvxLPZLkIClSwqRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nNoCP6R4xV3oectVVo/ZxNlN1+GolbnpV0xxtyLKoZo=;
+ b=lPlqKaciHj8AZr2EQX0oTWapmHez2MUyQ94aLj9dZFAHbivNUig/GBpm+tbhKzUJD80Fr47vBpq4I3BkszaNGttgLsuFaSGZqZjHIfQ4Rr2NqqSFplpZ6Pca7EkBI4S7FeR9uDOBa9BRGNfcU+EVd9W9CQRIr8ueJpsyNCSGlNo1nxmt1gusXw3Cb/gSBZWXgyOAeXoHUFjlyzA3dP2UN4QCGKZR+2+d7mXS4v/NXHVAstiL9K1QFeNyJemexPGMmGMuKbcJjrasDUEEA6yhcOSUyKU21/hEtomnL9UWa3UVyZ8sPZO+HjDdEfsDlh0gIWdUHJ7Fvh6G7ZDLB1ETWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nNoCP6R4xV3oectVVo/ZxNlN1+GolbnpV0xxtyLKoZo=;
+ b=m1bXZYZ1TQG76s0pdSmE7ej1lwwTR8zdRvDFa6VDO/cVBlvZZEJlfSZtqmnZhgDlzK9ByXr9xmJ+Tlen+brlMPEPEk2jlRt1g91ThTkW0FghtbaVRq8viZsavxbRS6lbUjmK9CcRazGYzTj7GE825ZOAmX51rwnngvXbpuZbG+w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA4PR04MB7967.eurprd04.prod.outlook.com (2603:10a6:102:b8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.37; Fri, 1 Mar
+ 2024 04:01:26 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.035; Fri, 1 Mar 2024
+ 04:01:26 +0000
+Date: Thu, 29 Feb 2024 23:01:17 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: imx8mp-beacon: Enable LVDS-1
-Date: Thu, 29 Feb 2024 17:35:55 -0600
-Message-ID: <20240229233556.116944-2-aford173@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229233556.116944-1-aford173@gmail.com>
-References: <20240229233556.116944-1-aford173@gmail.com>
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
+ power-domains requirement
+Message-ID: <ZeFTDSuLEeYrsbKi@lizhi-Precision-Tower-5810>
+References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
+ <20240228-asrc_8qxp-v3-1-d4d5935fd3aa@nxp.com>
+ <f8ce39e9-7f06-49e7-92fa-785bd1cd2d1e@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8ce39e9-7f06-49e7-92fa-785bd1cd2d1e@linaro.org>
+X-ClientProxiedBy: BYAPR11CA0100.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::41) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB7967:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf39a693-19a7-4acd-5fa1-08dc39a44423
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	/yDoACUeXqtvhq9aOG23Uln2mYZKoM2L+s6MHoB8a4zntEH7csijqXSYXXO7Y7T47hlVvpHx9ev5PgR354Bnh55YI/0W3uEonbgCzp3lCqTQuhacvQeJI+oyMXGQWDoLCWP2qEoIcyfRIzWmzV5CQ5QEcevAUDb8BQuXvqAVjMdgNe9AXhBkvw3hEA8GYmbfLxBlDl/FVdd858x8aLX/4bN3TGAmTPD+hcLEVd4AJ7UetE1v420UBfqqGSd2K6whmAtyR5Vs9qPY0IYVE73NHieXTUR3hj1nYeCb615CGL5yEIvg4gjuOZ1CSzNJlJeBpOAkTT3g3iBc7JAQoRvIb8+AbVGsHB7N1lMVeYqZuGqSkT+mLt9H6lKlwXZXYVICM/CVbqW22rNw6tqCCFptyninj7//8kaPtTPdJ1TF5JLFUVbbL8qwpt3XNrgO5NXw0aGDnoo1d28y8ZJpQ/Hd6sc0/tOUwLMPkTiI1dFvQtJqU+X/2/bGyuIqznnhavOcvnN3gMpco9r7p208ftGIw2CeMv59CNx6cl4aP0xLDQVxRC7fJI+UxDUVjg8s3Bnx3kKHUYx8SQtqPSbDTLBeSlcruE4Oolo6aeoktuDkSXlxeEmlblkqGyb6IAi9t5IYQaTDZukfPTwewjbU3EMd66ghqOFNlK8QoLlTB7jt5q9+Juu/HsAl0XhpfCOAEo/FaiFq2ygzMPfu995Ui8JA4PfN6k8CZiBjtfRMZ3+AtIk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NT87iSE9hD91En93ryjJXhUU7OBxfvQ5zRc/2CF5NgAjVOsGJvS66Gu/a8rd?=
+ =?us-ascii?Q?OTrqjT/ki47eQCVKDRIrS4eDZm4f4wj2hT/+aPjjbHzosy0ehaq/AW+se+Ug?=
+ =?us-ascii?Q?GsBTpciv0PIwB3jqx0LKbZ75eEvyKtNLtc/Qa6et4DAdhnrW8kZUCeKcmveH?=
+ =?us-ascii?Q?g50ThgR5FCUaWsrN6bRBSq0uTsHt0j01BQTKWuMIgQp3axd3GDVx9EohJbGH?=
+ =?us-ascii?Q?SJddFf+u7JMb5Dg/oSaye7MpEXV2nH+isEPh28fxElK5Gw/bvxMDuUpGAcFO?=
+ =?us-ascii?Q?yvnpMLQPeu9Uor96A8kovGxEsJkCfP8yGP6qwoJgMNhQF2aKSTQxO3d/zQqE?=
+ =?us-ascii?Q?Z3CNoa+taaa+9uoOiLl3wNGrxsb05MOSHcFTjwvnlLT32FLzktKDnHQUZOgv?=
+ =?us-ascii?Q?VjezcqiqwHmrmt91svrpiGkzzwxc+phhqFFGlqeLdW3Bg25B5Gaycu9Tn0lk?=
+ =?us-ascii?Q?v/uwlrE2D7Pam11BuOnyfR03KRLc4f17u2ivYUNqIiOUDXgH556EPdt8UFtL?=
+ =?us-ascii?Q?1A63qnwsCR2UN6NxBGrz7q/+zjRTQ6QivVivgDsFiCkmXxv9f2Pi8oA1ElEQ?=
+ =?us-ascii?Q?E9WubzzXua5MqngplmCY+sgwz0oRr9AmVB4a7xh7I+PDpIkVIJhx2+ZF+mYk?=
+ =?us-ascii?Q?U2XKXdXI5oIp1NmkvGerBhNfimi+Tsy7TKHd87u9ZWISQwOfPai+BiVSe3aD?=
+ =?us-ascii?Q?VzpxnIcI61WILv1Sc1G8cfiRXregUCyhJCl9oTHx1hkC30tNEH7jXd9k7g79?=
+ =?us-ascii?Q?4gSd/Av7NjD3rxK8kepjr+yqdAplgepn3v0BT1FF7xp/0CgvBUvpkKYOGJ/5?=
+ =?us-ascii?Q?I8N79KCjXV133rCeW8TJjloNQUR98j1K5a2JhFK7M+a5SZ9lXoNKX090fLrM?=
+ =?us-ascii?Q?dhrXYvVNZLtRjgUFhE0fazdHfSQxLzu3VuTzsMjzn9tcW/iVlB8zXZ5f+kTn?=
+ =?us-ascii?Q?OhyTV5pEU41W6RSqaIH+IXz1NRZvawdv11zkcKRlDmN3XQijVvDDr3NRSfGU?=
+ =?us-ascii?Q?kxP/GR7xFky78Avu4lr0qmdbpJza/pwa7nxNRJ0lArxM9QiLBNLEmHvl7Ue3?=
+ =?us-ascii?Q?I2AZeLgOP1/oyrIsTtnPWCNJ5BEF5phgYsOmNp1kRVarwkBwZ96xEkXQ2+pX?=
+ =?us-ascii?Q?J2QyI+A4BzqxfbzuglwSCPVITpQfgiFkJM/MKQjlZ2Ir/FwfMyi432Ngl5ZH?=
+ =?us-ascii?Q?I0lBEFPQGHi4elLKiBY+ahBvZJuL0dastipmXeXONeV1CMyz7PPn556Am4I1?=
+ =?us-ascii?Q?+2khJxNMWYfZpokXXY4pNpg+UMhxvZD/gkCfkmZqI3i+1y9eQQJy0TpzNCDU?=
+ =?us-ascii?Q?n3K8EBEQcSS7lZsDkHPLRfpBxps3GEE7gwGj53yolMovvzN7bNYDJaMT8ecz?=
+ =?us-ascii?Q?0eLj8upD7EIgWNJllsHs9rrO5A/NFIdgovBJK7UEQmS04vGial51wjKsAtPo?=
+ =?us-ascii?Q?FM9Rvt2U0HUJczQlL9j4+jgG4LJXUZz4/9sMsBrdMIZM43SJC0Fc5T/TDTtm?=
+ =?us-ascii?Q?gZhRUwJtuqUa1WvLG1FuAia8qrJh4ExJDhx+kNxQTeePSK4fodqHO6mMev9G?=
+ =?us-ascii?Q?sB2l97jxVG+POdR6KRg=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf39a693-19a7-4acd-5fa1-08dc39a44423
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2024 04:01:26.1568
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JD/GqnHQEMFpnyeqiWJmfixhUZppgbuManWLUkaRqEv911SQvjKFk3ztYB2SACVwWhm3J07RRnAM1ftawlvCzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7967
 
-Beacon has an LVDS display that can connect to one of the
-LVDS ports on the baseboard.  The display requires a 30MHz
-clock to display properly, and the LDB needs to run at 7x that.
-With the audio CODEC now moved to the AUDIO_PLL1, the AUDIO_PLL2
-is now available to source the LDB at 210MHz and the DISP_PIX2.
+On Thu, Feb 29, 2024 at 10:44:20AM +0100, Krzysztof Kozlowski wrote:
+> On 28/02/2024 20:14, Frank Li wrote:
+> > Add power-domains property for asrc and spdif.
+> 
+> Why?
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
+i.MX8QXP i.MX8DXL and i.MX8QM need it.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-index 1f827ef38e36..731ee2667060 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-@@ -19,6 +19,26 @@ aliases {
- 		ethernet1 = &fec;
- 	};
- 
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm2 0 100000 0>;
-+		power-supply = <&reg_lcd1_reset>;
-+		status = "okay";
-+
-+		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
-+				     10 11 12 13 14 15 16 17 18 19
-+				     20 21 22 23 24 25 26 27 28 29
-+				     30 31 32 33 34 35 36 37 38 39
-+				     40 41 42 43 44 45 46 47 48 49
-+				     50 51 52 53 54 55 56 57 58 59
-+				     60 61 62 63 64 65 66 67 68 69
-+				     70 71 72 73 74 75 76 77 78 79
-+				     80 81 82 83 84 85 86 87 88 89
-+				     90 91 92 93 94 95 96 97 98 99
-+				    100>;
-+		default-brightness-level = <80>;
-+	};
-+
- 	chosen {
- 		stdout-path = &uart2;
- 	};
-@@ -135,6 +155,38 @@ led-3 {
- 		};
- 	};
- 
-+	lvds-1 {
-+		compatible = "panel-lvds";
-+		power-supply = <&reg_lcd1>;
-+		width-mm = <223>;
-+		height-mm = <125>;
-+		backlight = <&backlight>;
-+		data-mapping = "vesa-24";
-+
-+		panel-timing {
-+			/* 800x480@60Hz */
-+			clock-frequency = <30000000>;
-+			hactive = <800>;
-+			vactive = <480>;
-+			hsync-len = <48>;
-+			hfront-porch = <40>;
-+			hback-porch = <40>;
-+			vfront-porch = <13>;
-+			vback-porch = <29>;
-+			vsync-len = <1>;
-+			hsync-active = <1>;
-+			vsync-active = <3>;
-+			de-active = <1>;
-+			pixelclk-active = <0>;
-+		};
-+
-+		port {
-+			panel1_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch1>;
-+			};
-+		};
-+	};
-+
- 	reg_audio: regulator-wm8962 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "3v3_aud";
-@@ -144,6 +196,25 @@ reg_audio: regulator-wm8962 {
- 		enable-active-high;
- 	};
- 
-+	reg_lcd1_reset: regulator-lcd1-reset {
-+		compatible = "regulator-fixed";
-+		regulator-name = "LVDS-1 reset";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&pca6416_3 13 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&reg_lcd1>;
-+	};
-+
-+	reg_lcd1: regulator-lcd1 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "lvds-1 power";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&pca6416_3 14 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
- 	reg_usdhc2_vmmc: regulator-usdhc2 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "VSD_3V3";
-@@ -457,6 +528,38 @@ &lcdif1 {
- 	status = "okay";
- };
- 
-+&lcdif2 {
-+	status = "okay";
-+};
-+
-+&lvds_bridge {
-+	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>, <&clk IMX8MP_AUDIO_PLL2_OUT>;
-+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
-+	assigned-clock-rates = <210000000>, <210000000>;
-+	status = "okay";
-+
-+	ports {
-+		port@2 {
-+			ldb_lvds_ch1: endpoint {
-+				remote-endpoint = <&panel1_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&media_blk_ctrl {
-+	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
-+			  <&clk IMX8MP_CLK_MEDIA_APB>,
-+			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
-+			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
-+			  <&clk IMX8MP_VIDEO_PLL1>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
-+				 <&clk IMX8MP_SYS_PLL1_800M>,
-+				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-+				 <&clk IMX8MP_AUDIO_PLL2_OUT>;
-+	assigned-clock-rates = <500000000>, <200000000>, <0>, <0>, <1039500000>;
-+};
-+
- &micfil {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pdm>;
-@@ -496,6 +599,12 @@ &pcie_phy {
- 	status = "okay";
- };
- 
-+&pwm2 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm2>;
-+};
-+
- &sai3 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_sai3>;
-@@ -596,6 +705,13 @@ &usdhc2 {
- };
- 
- &iomuxc {
-+
-+	pinctrl_pwm2: pwm2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO09__PWM2_OUT	0x116
-+		>;
-+	};
-+
- 	pinctrl_ecspi2: ecspi2grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK	0x82
--- 
-2.43.0
+> 
+> You keep adding this all over the tree without explanations. Why
+> suddenly old hardware became part of power domain?
 
+This part upstreamed earlier than dts part. Because dependency eDMAv3 have
+not upstreamed for the long time. I just upstreamed eDMAv3 support
+recently. So I can start upstream dts part. So I find binding doc missed it
+when do dtb_check.
+
+Frank
+
+> 
+> Best regards,
+> Krzysztof
+> 
