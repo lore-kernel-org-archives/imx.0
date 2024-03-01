@@ -1,141 +1,122 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2083.outbound.protection.outlook.com [40.107.6.83])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06ED5F557
-	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 08:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709281332; cv=fail; b=Dw7WmlhZM8Be+ABm3aSmqEXt3Fl3hyPRkj4zNWgvEBVSixrscjvATqc2N0fR3Ut857s1XvfzLutChTzfqGbDH1iEZ3ap3QfgkH6aWnwX7Zbw2lH7C15bjyqyewrAuDM3eZGsY3JaAYqsQZv99KcFz9OScnKX0zbQkMWw+xAa5DM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709281332; c=relaxed/simple;
-	bh=p//E2pAk2DX8OpnH5PPTvkUtNDx7EjmQAMzvelCQNAQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Tm/e1zdlLMa4C83cON0QukuNaYZFk8tukwkIic6ho0L/7+7gbzWKmCRLukOAwjuaDXpToyR5e9XDvTa19n2YnMOTB21Yu/Jv0ai5prfu3tFVD7vFcj86FCme+SEKNVHVHO5W8nh+UNLlHTzUHbVUEFIgmviSbre8LzdntlkQ8O0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=M3r49CYv; arc=fail smtp.client-ip=40.107.6.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066F26BB37
+	for <imx@lists.linux.dev>; Fri,  1 Mar 2024 08:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709282443; cv=none; b=W93uuXJDrvHcKIgLhmsGq/HQnTX2CeA/Mz8xCFaavoXGwXbVtd24r27LAi0IUtqtTE81OWB7DUtGNhm2M+sNlOsJvbEBg91TIPiyoDTYdngvhadIaGrP/Kq5sfM9B/gDVWaf1/cI/NBH4KoClOBP9k4/bl21A2jDXC9rmcfJ7PM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709282443; c=relaxed/simple;
+	bh=K63pbKLdAUYOWop/HtJ/eFv3uzmNlEmQ+U68PXHrgco=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jRqqJgljZCRwMBdqJPk0n8+yPY4Oifp35rsdwP0NGIVhi5BbgeEJ9iJFWaFa5hhxhIx1MxX4UpcSWhXa7kn7pAuhMUsBFJZLpMrW3I4aUmOqNFGfeRO9zO77m4LgKmsFZEsqull1J+UQK3jbFBz0uW/hUH26qOk21V3GXSn2eNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=I1gbJAfo; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MJxkvT+a reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="M3r49CYv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UoP0k7Ycrrc6ter34Xunz3Vnq/5ClRlTwZ/hniThT4OnOH4MriI3aTr4vSX0k29AnebtKJ8QSsu3E6+QTdkRwCNWUp1MimEezdL5YV977AMT0M8c40gqgrnydPvRJ5/mGKRx9BP+hHHripuHFQ6Wz5uwAx6/gzgfILAHaUY+7SzQnz2eNWoDvPRgVju41XwQC3QkLXm31QmW1rzgnwwn0rRjytwRJSs3ottGehlea6dhYD2I4fKhLOds0SG7n9DkpNJB4nBmu35cbZLOIrEX5QX6PLQb5Ab6oGrnUlQhVXWfZjyi6FaI/NQy8+qlkOgZFZOkyU9mf6NND+4IEsDC5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p//E2pAk2DX8OpnH5PPTvkUtNDx7EjmQAMzvelCQNAQ=;
- b=EOrdM6zhK1vZWTJKrr3ujy08fq8zU9t/Fsd+JfBpSM3ErStKaRHsMF0GO5GXOlb5lE/U3PUAsfhSoYv9QS1lyKGr+N9/kp53u1wgHxE0NhQDHSFHdiKsMGwAxWILEV6VhzwIPEo+FHP55iMr9ZNclw1rq/MhfkUbaMFKO8/8S9aTUP/iQTOo9Bj7xsu5puEMmBAHMv6VOskER4ewyx3wGAVJruloRXibqy3UfFavIeN+tseItqqOR+NcSvQjk1lUplEOpZXigpU7MBOWNwh/SBIMoX1gwV0aklUf0m6igEqUa6pno2ZfCWlOkqzB0soTgEywDaxreMoMZUjXH1GwzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p//E2pAk2DX8OpnH5PPTvkUtNDx7EjmQAMzvelCQNAQ=;
- b=M3r49CYvSmru8W+se0IHA5uZT0jtwovo50twEOycC0ktOcThagUze77Pxh6oEAoF4/4Hp4a14sNfy3byNTNjD8E8PeEeSFYihcKwB6r7AlvY0A5eh4VtSpXkMhxJVZ7MvPFvzBHmZi5lnYvBowK2K3Lt3Rn8jATw9VHX4zTpGDk=
-Received: from DU0PR04MB9299.eurprd04.prod.outlook.com (2603:10a6:10:356::7)
- by AS8PR04MB8722.eurprd04.prod.outlook.com (2603:10a6:20b:429::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.32; Fri, 1 Mar
- 2024 08:22:07 +0000
-Received: from DU0PR04MB9299.eurprd04.prod.outlook.com
- ([fe80::57dc:31d2:381a:df71]) by DU0PR04MB9299.eurprd04.prod.outlook.com
- ([fe80::57dc:31d2:381a:df71%4]) with mapi id 15.20.7339.031; Fri, 1 Mar 2024
- 08:22:07 +0000
-From: Aisheng Dong <aisheng.dong@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>, "andi.shyti@kernel.org"
-	<andi.shyti@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, Bough Chen <haibo.chen@nxp.com>,
-	dl-linux-imx <linux-imx@nxp.com>, "linux-i2c@vger.kernel.org"
-	<linux-i2c@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH] i2c: imx-lpi2c: add generic GPIO recovery for LPI2C
-Thread-Topic: [PATCH] i2c: imx-lpi2c: add generic GPIO recovery for LPI2C
-Thread-Index: AQHaaHhA3Q+ddE7o30Wcnju6NOftJrEihqVw
-Date: Fri, 1 Mar 2024 08:22:07 +0000
-Message-ID:
- <DU0PR04MB9299F31971DA6224F4C35D92805E2@DU0PR04MB9299.eurprd04.prod.outlook.com>
-References: <20240226055418.3314913-1-carlos.song@nxp.com>
-In-Reply-To: <20240226055418.3314913-1-carlos.song@nxp.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9299:EE_|AS8PR04MB8722:EE_
-x-ms-office365-filtering-correlation-id: 9c826b5b-9b86-413a-63c5-08dc39c8aef7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- cxR++tU1JkMIQQ6s0IWdV3vOflB1LWK3VAD/gs1jptP7q5DmKI6immbBoyPFYsWUvJgKR6TWpUGXFRGk3LswZBaHgyMJb2qpg0Gn9Skrdipc+MmXLP63U+NmmMCakNLzkFtEbJfBrvM8+X8kVtO0tnkDfHNlZWMjVuWFNhMpzLki9wLZfBc/oHVALiYO98pQs8hVF5KRd148psVaGcg7TSDhO0x+wNLuZYOwZaVFu8g18rPCmT2sJhcMNHIYfBwhBVE2ZpvXHi1yQF5ifDgbx0z45yfw0Xhar1syESKWX/dUKcb0ocdnEX8qbTc7G2LOg0fnKZrot8KbhnWMvdQSH6FRdvQ/d8ieNfA4exttoSAtZvG4H/T4S44wjdhKxzbHC+1FF6fUNiCE8O0GTXjkVcJUESaErQ4pjQuEY4lVya5VfWH8xDdG6CiL0yNqkggCIvzlSUIsylQFgbPhwoQfPhMpZ1TVVTtMbmp4l1W8enGCe/thsuDtte4l+2ODR8hwnqC2tlDw+oVLor7T8aSMKqkTsiycpDVG7SbICEf7edNdHhPStLrpDMGW9YDVQsyIVM+7Vt2nFebtOntRhvC1BR/m474UDGBmLEYP9YxexJGjADda+XfAEgPQyYihAEXgX081gX5iP3RTSOftqai5f3VTcoOc/MKc4EkM+2I/gKhLDG0Y2ZWdNUl5e7q441pt0T1cwfm91yHi0IyM7B/19DydbuE8gHWaS7fSYd1+4F8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9299.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?UmNDcXNKNVloeTRBV2Jxb2x0R0trOW04TURWTWEzWVZvdXFPZ0tYRDVlT3FS?=
- =?gb2312?B?ekIrT3k1MjBPNkZXSTFNbzRlQjFmVzRwQVRaNkVkeHhvZ3dscHhMUERLd1BK?=
- =?gb2312?B?ZlZwOEw3ZlRIWHhMNXRnWWZwaEYwQldqS3ZzcmMra3BSWExsRGtxWkhKT3NC?=
- =?gb2312?B?RjJxZERoTmh0R083UXByWG1xUkMvZGg4c3JqcVZPTFN4ZUZ6b0FTMVM5aVRD?=
- =?gb2312?B?a1kwL0VFc2hrbzRnOU1Ud3o4elNSblpoOExaWHRzS3ZPWm53OVVJbDIvZ0tq?=
- =?gb2312?B?S1VsMkp6cVBSbkp6MzZpQ3RkcFhUaXBOSEZTYXdVOGpuY0xFSk5GM0c3M2dL?=
- =?gb2312?B?aVVrWjcxNmZLZHpIRFNJZ0hjaWt4R3J5QWloSTA1ZjFPWUMwcGlGZjNNKzNX?=
- =?gb2312?B?ZmdSOG1VS1huNlBodUt3VTdTWmdEczY1bmNGTklIK2x6QjlkTmxHNWFGcFVM?=
- =?gb2312?B?SS9YdUdRWmNXMWZqMGxuTWVKcVNLdFhWUWsrOHhmWHZzY3JyRXlaSTExVFRk?=
- =?gb2312?B?THJRc3dCWlF2cXFESkR0MXU3a3I4bHRmZldxRFZaVFNQMTUyMkVkN213RkpX?=
- =?gb2312?B?dTl5aTBPMGlYQjdSOGNlWWdpOTdNOXNVQmFOWGRzK3VOa3JRMWlqMUpQaDJ3?=
- =?gb2312?B?K1RJaTBxeERjYThTdkp4bENXYURWNkZSOHhtSWRBdDUwbkl4WkM3WEhnUUZt?=
- =?gb2312?B?NDBLUGNrajM2QVB1SXhFdVJFUDI3VG53bFpYMDlWZEFnaFZlTWN1TlBtTW5S?=
- =?gb2312?B?U21vOVFaaEYwNlR2dU54Y3pJR0ErMVJ4aWVnUndkOXdrdTFzN1JMOXJ5M3pl?=
- =?gb2312?B?d3JoTnpEZ2xGYUNOT3Njb3VZQ0JSaXEzejdwMDJ6OWN0S3FCNmtURkU5Mm9V?=
- =?gb2312?B?d2xSZFVxSGRNZXZGdlBmeXZRQUU4RDNKMHJzbDlhR200S21JZDcrdWRYSDRk?=
- =?gb2312?B?L2FVeHFYUnE2NFVUWFFNRVBsb2VIaXhNb1paOVJaYytQK0JuMkxpck5ESTJP?=
- =?gb2312?B?bEt3bDliYlJQMkRTZEpCb05VUmNoWDRFTDFFU01jempXV0toYWRiL0MvcGpQ?=
- =?gb2312?B?Yll2QTU0TnBXcFg5aHUwY3NEOEh3Uzh1MHU4dTFHNjF6Nm9ROG5sam9lSkps?=
- =?gb2312?B?anZ3Q29lUHFpdEZWdVhJU29vTlJYZ3Iyamp6NjhPdEI4d0R2VG1yc2lnNWxN?=
- =?gb2312?B?bHJKbStiMDVxdmhRZnE0cGU5MnZVMUlZdjBXL0toczFhdm9GOStTcGlyRk1Q?=
- =?gb2312?B?akpjbjg3MldqYiswd1B3MHd4OTJrN2J1Y0J5N1J0Wnd2Z0hxZUgwNUxsUDJ0?=
- =?gb2312?B?RGNGSWwrTTdSMVB2WStkWEYraTJKQWQybVYrQytVbUNMN2pYNnMydlZRT1VW?=
- =?gb2312?B?OERxdTMxNjErYS9PMjZBa1dqL1J2VFFxbVBJMFVnSERnZG5oVkFsWjFhblFu?=
- =?gb2312?B?bXI0Q0hqbXVVNjdJMXVUeW4vcGtOaWFJTWRWd05nQTVPYUU4YnZiSjl1T1lx?=
- =?gb2312?B?WC8rUUg0bytPR0FmKzFmQ0pCME4xcVQzUXloRG8wZ3Y0MFRUTGZDcHFsd0xi?=
- =?gb2312?B?Qmg2dm13WUsyZGFzQktkV2NxN1lubmNKM2lmYXhWYzVkRjdSQ0ltbktqaXk4?=
- =?gb2312?B?Q0lrQlhQRXZMN0w5bGg3T0Yxa0pLU0ZoVjNHK1dndkJXUDVLNnYyZXZIa3pl?=
- =?gb2312?B?Vmx1MTV2cXdmVGZNVFhVN0Urdm55YWh4Njd5UlJqNDYyTCs4Lzh3ZXg5Q0hy?=
- =?gb2312?B?ak40U3FwYTY5TUZYcGJqS3hzODd2TmFrNHpxM3YzZElVNFpoQUhDdmQvbkVm?=
- =?gb2312?B?RGpFSWJya2RVMklOZ3hyeVNzTWlXTFFJaGRoL2tpS01wdDI5OU5Jb2ZwYlQx?=
- =?gb2312?B?V05GcHNUdzRna29HOHFJYkhzaVR0SjY4Z1FxNHNiU1pNQW91Rnd5a0NTZnJ5?=
- =?gb2312?B?VE9Rc0thSkJ2aFhtb2M1UFZkdnFuaTRHWFFZWVpQNU5HbkFRWUhFN3VRZFQw?=
- =?gb2312?B?VEFPeUZFZFBHOWg2SnUyeldGemxoS2tmWXJOZGs3R1R0L0wvMElUWnlhWU5L?=
- =?gb2312?B?SzRWcVhBM3RlMzhsdEhldmRLcXg2b2o3ZVJ5b1UzNHFKSFVJYjA5dUlTNTlk?=
- =?gb2312?Q?8uY/2AYAPr9th1Hv7FG3t6FAC?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="I1gbJAfo";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MJxkvT+a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1709282439; x=1740818439;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Lx7L1yeDQfLG89Mz94ToNu0CzTt1dUUrZHxQtg+EH88=;
+  b=I1gbJAfoUJdotmtBeK4sT6GIa3DgGK2MMBeZD4dSMagGGXyjBmpW1Toa
+   gVwABgKxQRHDBEN+zuH06A4nis3HcYYVglWGEYY2AwM1dS+heEk6B2dZ2
+   ZNb6ExnOKi/IIbpwZQzqIBN4Ncpwi6RlcBoz7omHxXZHT5lDsfasem+Vo
+   alm7dEw8xNlgIMkIgIYewwj6lB7jnHZPOEJf0mByTfxnPFJ2aAHnhjYus
+   DmZli74wVf9SOVvy7tz3zD4ImkU4cKAh7iSXQVCHvi2rWMrC5c5VIPqtN
+   M74hZLcCwhms0ViYV7iSoQPRnWg1f/+iavZoV2ClpWW8IsrsLnI/jwWT7
+   A==;
+X-IronPort-AV: E=Sophos;i="6.06,195,1705359600"; 
+   d="scan'208";a="35680479"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 01 Mar 2024 09:40:36 +0100
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 61003173639;
+	Fri,  1 Mar 2024 09:40:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1709282432; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=Lx7L1yeDQfLG89Mz94ToNu0CzTt1dUUrZHxQtg+EH88=;
+	b=MJxkvT+au9F5IKIzgwBJN2leQ1QuowHlrAJwinv9p/8a9Is+HEhBQT95ACJD+lowO6PEFd
+	zqta59lnUKdt7xgbzLTqEgBK9laV+tzEPgIPLVlmU8BHHSaXGZ9m1jEnHSIQL0BwAEWCYr
+	jStUATwWSghi+gZrqU5oKKohkuAwQkbem1plX19W9UH52k+FW7UnnQ2Cev6tmcRHsqMGDL
+	A1TQZkhGJ1No5nDrjTqGp43ZsBcbPNAxYeKdXeVgJfPCOCHh0nwL6oRmc9D5VMucYlQc2v
+	jflPoDtDMODF+RVicD5ce520XAdn6xEzPKOqodULfu74Xmk/jlV39UvTHV+UQA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Sebastian Reichel <sre@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Ricardo Ribalda <ribalda@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/2] media: dt-bindings: sony,imx290: Allow props from video-interface-devices
+Date: Fri,  1 Mar 2024 09:40:07 +0100
+Message-Id: <20240301084009.3030753-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9299.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c826b5b-9b86-413a-63c5-08dc39c8aef7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Mar 2024 08:22:07.1048
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VXluioMJ0bibZLJ0Q8TqvhERAhs4b+x3vr1sOPzwkTl2uNT9GCt5VIVB7/8+IhyZtxJYZ83ykaqRvVlnIxXKog==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8722
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-PiBGcm9tOiBDYXJsb3MgU29uZyA8Y2FybG9zLnNvbmdAbnhwLmNvbT4NCj4gU2VudDogMjAyNMTq
-MtTCMjbI1SAxMzo1NA0KPiANCj4gVGhpcyBhZGRzIGkyYyBidXMgcmVjb3ZlcnkgdG8gdGhlIGxw
-aTJjIGRyaXZlci4NCj4gDQo+IFVzZXMgdGhlIGdlbmVyaWMgcmVjb3ZlcnkgZnVuY3Rpb24gc2V0
-dGluZyB0aGUgU0NML1NEQSBwYWRzIGFzIEdQSU8gcGlucyBhbmQNCj4gc2VuZGluZyA5IGNsb2Nr
-cyB0byB0cnkgYW5kIHJlY292ZXIgdGhlIGJ1cy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IENhcmxv
-cyBTb25nIDxjYXJsb3Muc29uZ0BueHAuY29tPg0KPiBSZXZpZXdlZC1ieTogQ2xhcmsgV2FuZyA8
-eGlhb25pbmcud2FuZ0BueHAuY29tPg0KDQpSZXZpZXdlZC1ieTogRG9uZyBBaXNoZW5nIDxhaXNo
-ZW5nLmRvbmdAbnhwLmNvbT4NCg0KUmVnYXJkcw0KQWlzaGVuZw0K
+Allow properties from video-interface-devices. This aligns the bindings
+to sony,imx415.yaml. Changes inspired by commit e2e73ed46c395 ("media:
+dt-bindings: sony,imx415: Allow props from video-interface-devices")
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+Changes in v3:
+* Collected R-b & A-b
+
+ Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
+index a531badc16c98..bf05ca48601ab 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
+@@ -23,6 +23,9 @@ description: |-
+   is treated the same as this as it was the original compatible string.
+   imx290llr is the mono version of the sensor.
+ 
++allOf:
++  - $ref: /schemas/media/video-interface-devices.yaml#
++
+ properties:
+   compatible:
+     oneOf:
+@@ -101,7 +104,7 @@ required:
+   - vdddo-supply
+   - port
+ 
+-additionalProperties: false
++unevaluatedProperties: false
+ 
+ examples:
+   - |
+-- 
+2.34.1
+
