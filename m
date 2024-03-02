@@ -1,178 +1,181 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2060.outbound.protection.outlook.com [40.107.6.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C8A1EB44
-	for <imx@lists.linux.dev>; Sat,  2 Mar 2024 16:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709397786; cv=none; b=G7REGHNkBObyutH3SuMoZhENQRIbNVOLI2hqLdOpQMX54RExI0zGE2hWwLVJt3KI4HaSJ12hKOP+OipFgD0wZGaGGT9nYB+CIR1P6rRMzMvpyhzQkkjQzOgpaJOZzuXMDypC6vRLnU0TYJ8hRBTXLnVjcVCQfpxAKgpaIEXOynU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709397786; c=relaxed/simple;
-	bh=iY2uv6tQ8oAWtbCpRxATIB+TmZmeWRIJZ0VO7Gv8xIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YGxXsr+TJhi+n1w/Lay4LATHdecSUMK59sCSHpOgw9+KI9eMZ1yS1dldtxOcuElMwxGF58TPjhsDFU88S+5DTtBpOn3fXvhcmXreEt/wiKogw2jwcbGObXwWiAkxyT8ZerMgoS8YGJYdEZ/YGC4/IhNerzBUf2deib53uxuV74w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D4Re6JXn; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA402375F
+	for <imx@lists.linux.dev>; Sat,  2 Mar 2024 16:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709398054; cv=fail; b=pa/oqiO6tmI4ypdGutqV3/5k/6b8y+OHd7qgS0gBFTTQbKUHBdO9lINgawuOFQa9971jfsJxAgk+cXbAMJQUh9u3g9i3Cg4eOQinrkVA7M1k5VDF2hAR6sxTZn+1wUctwrPM72VxyRN6x5zJegEanKcf5l4cXd1nISDtjmXTt2o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709398054; c=relaxed/simple;
+	bh=YNqgsgdJaGIjc5HGvVaaIsctI2PDohhUrI1s8ZEfWEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lppMt0dcFchfZSj42R1mt0d7ptlq/kaW6bbKezWoVGLs3q8QWPGISTzNqGN+48AdAE6AFwtjPJm7xEntaYg9mYw4w220h5YUZQRncTdYGQlD+VwwQaROifWCqTvl3LQzL2xee5qf4it2mQ+Lz/0srUUl4C1K8BlNj6La9kbCOBk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=gRgoImfW; arc=fail smtp.client-ip=40.107.6.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D4Re6JXn"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-412cb6148dfso7367025e9.1
-        for <imx@lists.linux.dev>; Sat, 02 Mar 2024 08:43:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709397783; x=1710002583; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uYdZ5zGQ9fikWU+RdgNG0JWTvwrS/XBdL5T1cZ9o+tg=;
-        b=D4Re6JXn4op1yiBNEYsVMR8J5gIjRsVzQh8qJ1K8/6rrk1vUran7VNiG32hnowcgfo
-         Nsczs+q9/oS4epnkak34Xm5cd/K8CIljLKrvl9xKkjLmJ3yfOk6NQBwAAnrktzUyPd7W
-         eNTGyzuDOr/3BXpkayQgDLzy7rYt1/rb9DQLECUTGv8TMmmlnLQ6KXpre3ToYTxnlCxe
-         IeAEUeXZe7IucWdo0mCxPk8myZuTbld5X7eDIMsbH+ltHYkukVR0TRmbLfAMwj6wuYwY
-         rJMuTYzobAAhPeSRrgqtIotWCm2uxOXxdhs7/SAwIrr6Ok/kvWGRdMb6RnuOxTBlO0ZM
-         xcyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709397783; x=1710002583;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uYdZ5zGQ9fikWU+RdgNG0JWTvwrS/XBdL5T1cZ9o+tg=;
-        b=L05/cAJwXLuiB8+s+Nf7ihx6Lg8joIqo2krhVXk0gbxc1pmKLNwf91RRv+27ySTiyG
-         vTkuka71YRVKvXqHvJfDQ/yWcj01uv+WOwZ/QQnB/VOybvkhdv+FRIvqDhm8NBgCkC+Q
-         t+GetHgMdfuilPD1+q8/vnjRU8aYYTahtgq17XhDZhKLrTrK3DIbSttAmKN7z9SdaQSG
-         V6Gd9OFVeJn9DmloJLdUv/foxEsgjSm4wQVsTkREaD+rqzA7wMFwMZiZ5Lcz9xM6iJU5
-         3X+HhaylA3qz0eDs5wA9LmOPOBITAoZpruFUOp73rwc7UlaeV/LbGBT5xKvUDEPhjV0j
-         IJvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWuETQbPp7XdqB5noUJaKls51gh5VFbjuGud2oq584of2dBtwU1owIaTTi/xi0WQ/VTIrVH6nhUNSzG9uTwnjXhXbY3
-X-Gm-Message-State: AOJu0YzclaF3OuFsoZUjlIYhM+D640Bp34jfFKadzEkGE+wfO3OdW+F+
-	t/EvWK35r7gwL2Ysg7ohgiV3BPQXOsMglVZB2V3uJoDTOYzY81f44myTOAhZsfs=
-X-Google-Smtp-Source: AGHT+IEPqjVenlVlKA6dKUFh+8+c5WU6t57JINMGvqCa6BAEO/eWtZxvuuXTQWxOLmQ/WRgA0lfxUg==
-X-Received: by 2002:a05:600c:474d:b0:412:c1d4:da7d with SMTP id w13-20020a05600c474d00b00412c1d4da7dmr4397093wmo.33.1709397783200;
-        Sat, 02 Mar 2024 08:43:03 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id fa24-20020a05600c519800b00412cb60ac0esm4117575wmb.15.2024.03.02.08.43.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Mar 2024 08:43:02 -0800 (PST)
-Message-ID: <e1d0aafe-e54f-4331-8505-135b9a8f9bff@linaro.org>
-Date: Sat, 2 Mar 2024 17:43:01 +0100
-Precedence: bulk
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="gRgoImfW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eLH4Eww6RsTnTJseSxPxr/KeBMJyGqn09AC2kviQkgR2WxdpYVqpLCvJfpYs2wsOP2EdZPtZ1+Rx8egWibvhInqisnqAf42iL5tw6lCkwNILIe3t4NbVr0OCD8hcB9j/XnUC6NZKf83+APWBIpzq8gG59gvWzcxq4AnuD1Mopqrop9w9WfSQMV+8DKveadKacVb9KXPfYkZnKTViqZcffsF84SiBx+VfZxQWUeQxkqQB4VBCnW1irD241gCdBSK2OoszAX6ImU7UXRuyz3VnuSODwh7TzFfMgBwVCTyxDLVLrepg3LtbpV3obqaWz12P01TulwEzA5V5+bd5O3A8Bw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KgW/qoL6g24dEqlgq99jl3UBJgS7x6x4PL2921EJrH4=;
+ b=Ach62UIvEwqekVz7UhY5cAH5u64qa+ZtR1cuLeOaUYKVvTZp5vjRLBhH7CAOVWE5M2sai24XcAOY3aIk+lQLXMPwg0i+QVaB1VIIyf6Ibr078novnU3AQlhdxttwevbA5yaxBHOM12PlO4n77YAaPwimmoDYEdtjw4uHaSo4UYI5tND3oaj0I9leuA1NjFK3DDB5y/285r4vO+3MzNSkNj5ka7SF74PnvplT544w4s9n3dUXtcIhqYpe3LNl3zKDeMISYXlnyOztpQCuU4q7d9l0b+AL4X721rhWF2INCATpdLnCc0mseh3q8iRYCGTi4w3hyh7/cRDJGZXMIKgUHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KgW/qoL6g24dEqlgq99jl3UBJgS7x6x4PL2921EJrH4=;
+ b=gRgoImfWFPaoW5Ah4Ph6RXdjv8O2iSDEsF2IykGf1X8kGry6nFrW1F+zy2yIAucNksNYh/8RvgnDupQHScir22hSjqcSW5Ibp8Lqux7R2BomRyGd81a6XgvCtyrXKAg+HiRFJiC1P+YkaNDuvQ3gy3cfyjfwd5CkBxOIaFg2R2M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.37; Sat, 2 Mar
+ 2024 16:47:28 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7339.033; Sat, 2 Mar 2024
+ 16:47:28 +0000
+Date: Sat, 2 Mar 2024 11:47:23 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, imx@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
+	peng.fan@nxp.com, robh@kernel.org, vkoul@kernel.org
 Subject: Re: [PATCH v2 2/2] dt-bindings: dma: fsl-edma: allow 'power-domains'
  property
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- dmaengine@vger.kernel.org, imx@lists.linux.dev,
- krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
- peng.fan@nxp.com, robh@kernel.org, vkoul@kernel.org
+Message-ID: <ZeNYG1IUfniWkhcp@lizhi-Precision-Tower-5810>
 References: <20240301214536.958869-1-Frank.Li@nxp.com>
  <20240301214536.958869-2-Frank.Li@nxp.com>
  <885501b5-0364-48bd-bc1d-3bc486d1b4c6@linaro.org>
  <ZeNI1nG1dmbwOqbb@lizhi-Precision-Tower-5810>
  <31e62acf-d605-4786-80a1-df52c8490913@linaro.org>
  <ZeNWXxzFBzNj0gM1@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZeNWXxzFBzNj0gM1@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <e1d0aafe-e54f-4331-8505-135b9a8f9bff@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e1d0aafe-e54f-4331-8505-135b9a8f9bff@linaro.org>
+X-ClientProxiedBy: SA1P222CA0090.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:35e::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
+Precedence: bulk
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB9638:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b7cf3ba-162f-49e3-14de-08dc3ad87255
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	KAWa+1T4JY1vz5JfKVFXM4WvPH3Y4Qi+3t3LgmapdrmB3APF30Mb/RDB9fNkTzhjrYUNzX0y2hh6bkysZ6X1fY5TmeUSRp+bv6qDetIoPcV8jeXCsrEuPVWlTNJsAZt9ePodv3N1tLKP81Gsqx3to5iUYttqeqeIyWa3HvcKpvr27KSSM3xXO2RsBDUaFDYThBkcMfd1jUk4XGxf8SqFpoeC3kgifC1zkIQb82Y4sBdEoIwraYQE4UtUmvGhzf1EAxhXiBPwjKYzmR2QSyYwPDD5TgOEvQjAwR3L3WbPbCk8wrbsekf/dERlW0QlETOtzhTY/G1uvEgB4Zy810/T5gP5D3LCHRv/74tkU9fNU3pbBouP6LGBOKdN38sc3dQFPZ+EN0R4U9m2uEI0kVSKe9cufErl99F7BI1+/7T7ap1QEF0X5JCmA0+qaJCTfPBl7wv17kLEHOZUCOdkrt6VWp5LwoJlDdAnywXUSaKUoouojKlcrG5cX/SmVV0g3/Qzezp2GdXp46uFsAgztUk0KWufIFJOoDT2zrmi8FAqNrlFf3TyfTWUyKHZjIr6rZ+kb4i6PV8H9FbOp3HPfRcR622JCsKDNxxsdwioTX/yFlFFV8hOHnDcIA1Kqcy52ALGZy22E5V6j7mnGjmjqbugoYShFvCbvD2O0kE77fvIq/pAt9hwspEI0iQeFZgVGEFHqKLcz1n29VcyMthvAjPz9g==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fnwftEcSHsFCm+96hnmZ85eQ+jDoRgN+48xZ0ZAHhQTFjoYAGd5JvK8XPnTl?=
+ =?us-ascii?Q?kJyfZiELcjdyBwZLUX51DMkUzEmeJnfpl69WQRdZBo7BRxfh+BlE43XCDsoQ?=
+ =?us-ascii?Q?Qf5rDjqRVsv4JAw5Tt/T5kaOnfiWxxtSpEa7w1eeHq6ydxRbgA42Lb2mOebg?=
+ =?us-ascii?Q?NHkvsLKl+17qiz8ULVNx0p6/UfhzQ6PbgLuZZPXQy5xL6W2dV6iPbpyjUY7U?=
+ =?us-ascii?Q?8PRJw4X+W4PKsFyGr95W9FajMtBOrcXYjc7RU+HiTohzh54kxOSeThlXp0+o?=
+ =?us-ascii?Q?PrVCrYiuBNBil573bREEmVSEphZ96QQv5JCfJK4ksdYemDdYXRmdJ7Mx4o2A?=
+ =?us-ascii?Q?5mjJSp0eNrKIFE11/oR4AAtoDW2fSy5it75OL/CL3Kvf9kXKzczLhOUsIL45?=
+ =?us-ascii?Q?BV6+B8b5vpn1aY1HwAL9QKat1/ohdQxh2M7W3HGAIDBHcf4rRc24nDM6NEAR?=
+ =?us-ascii?Q?qGuNzj4Hhr+kWjFF3ToQRu4L1HFvfpFxK8l1F64smPbLnlzOCWwr+amZ/WJd?=
+ =?us-ascii?Q?SBfVOHQEp5apHt3HSG9kKALV+rONp3s3ObYHMjr7tyT5eiagyYZKxTCnlD4A?=
+ =?us-ascii?Q?vrLhD+e4vV1MAJHYmdBDaqqkCfK/x6n/I8G6GsfmGATXEHAdoUbwSBI0Ozsi?=
+ =?us-ascii?Q?wwv2uPUZi2a38bwgIGR4VBpjgbgxYDMpqDqqluKewZmA4OYlK/wby4zPFQRO?=
+ =?us-ascii?Q?7MWyi/WpAhEODdci5hNlJHW4V26iMv2jP8g+rAuVxMFKnayZtCEjnwkNkZze?=
+ =?us-ascii?Q?Vr+VgRfcaRLsB+FtNohFcb+FwNGUuoo0iE7M9Z7PdDMQjiNYDgz8ehpZHRmU?=
+ =?us-ascii?Q?nHusBS/H+m39V/5DMgSCEQCFTH1pu3GJpbwRad1x/S2sUmxiS8rbis323J0J?=
+ =?us-ascii?Q?BJo6JQ8LIwxQoxhy0WYAYJEP7CVq9CNEfKUXUAVAFA72DmeAAZ8nsc55/Sjc?=
+ =?us-ascii?Q?sywibICEcTbD78VK5FvZrJ5igIgRQU1nEa6FXrotbXdwmp1RcwYM89vd9VWz?=
+ =?us-ascii?Q?xOO/hz1fMFU8o7uWZQWIfMYUTiuI/DIOrbFb8Y9hUpLxO4afILlo2qpjdKL0?=
+ =?us-ascii?Q?yAgXxcr9Fiyy7AdW9P/qFRxe/Gz4+8XpoPHruN84IUPtGAHxpGivtFLrXK04?=
+ =?us-ascii?Q?eO12Bax0LZ16UEIQvYsh2J0Qh1gJIonanyjwDwi+8vZqx2I24OxYB315kd2G?=
+ =?us-ascii?Q?hEC7FKO6N5a5/ku6GaLZ5zx0QmTN3yyzswHgnrlyq89HMDSQRPkeRgOAm/7O?=
+ =?us-ascii?Q?TQBnFG0UcMga7j+nSqZQib+Fujgy7LZaL+nf1lY6LxvsZOd9oFApZPAPweID?=
+ =?us-ascii?Q?4vQhdkAbA9BZhgp6soTWs7Z1SVqnZiPaq7hQywANgQ0NpXJfDma4us+TdsAT?=
+ =?us-ascii?Q?W9vp+yvez9fLGxCFLxfAJn9dKJ87GEbNuXtEdHPABkDoi6ttGbhT5c2KatHF?=
+ =?us-ascii?Q?oxrnQYWHLsPoPYhaNwwHgm+lJsg1RapkijVEjUCGi+LT5qvt/PLG7uuvO9X7?=
+ =?us-ascii?Q?2TpdsP2Eq+czpP2FZljYpeqcnqWxixvjQdi4b8iO85KwUysa51883PQc9yLI?=
+ =?us-ascii?Q?SkIP9S7RkIrLcvgVoErqmgZ3HQ0LxNtums2jMNUi?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b7cf3ba-162f-49e3-14de-08dc3ad87255
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2024 16:47:28.6768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lkQGvqsrIpBy6CVSNd97MpHihEXNFdb1nHHzf36od2wX1uKfOJ+P4UwMw21Zxs1sOHSDIZLUIb3rLKmaYxk/mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9638
 
-On 02/03/2024 17:39, Frank Li wrote:
-> On Sat, Mar 02, 2024 at 05:20:42PM +0100, Krzysztof Kozlowski wrote:
->> On 02/03/2024 16:42, Frank Li wrote:
->>> On Sat, Mar 02, 2024 at 02:59:39PM +0100, Krzysztof Kozlowski wrote:
->>>> On 01/03/2024 22:45, Frank Li wrote:
->>>>> Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
->>>>> it.
->>>>>
->>>>> Fixed below DTB_CHECK warning:
->>>>>   dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
->>>>>
->>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>>> ---
->>>>>
->>>>> Notes:
->>>>>     Change from v1 to v2
->>>>>     - using maxitem: 64. Each channel have one power domain. Max 64 dmachannel.
->>>>>     - add power-domains to 'required' when compatible string is fsl,imx8qm-adma
->>>>>     or fsl,imx8qm-edma
->>>>>
->>>>>  .../devicetree/bindings/dma/fsl,edma.yaml         | 15 +++++++++++++++
->>>>>  1 file changed, 15 insertions(+)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>>> index cf0aa8e6b9ec3..76c1716b8b95c 100644
->>>>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>>> @@ -59,6 +59,10 @@ properties:
->>>>>      minItems: 1
->>>>>      maxItems: 2
->>>>>  
->>>>> +  power-domains:
->>>>> +    minItems: 1
->>>>> +    maxItems: 64
->>>>
->>>> Hm, this is odd. Blocks do not belong to almost infinite number of power
->>>> domains.
->>>
->>> Sorry, what's your means? 'power-domains' belong to 'properties'. 
->>> 'maxItems' belong to 'power-domains'.It is similar with 'clocks'. what's
->>> wrong? 
->>
->> That one device belong to 64 power domains. That's just random code...
+On Sat, Mar 02, 2024 at 05:43:01PM +0100, Krzysztof Kozlowski wrote:
+> On 02/03/2024 17:39, Frank Li wrote:
+> > On Sat, Mar 02, 2024 at 05:20:42PM +0100, Krzysztof Kozlowski wrote:
+> >> On 02/03/2024 16:42, Frank Li wrote:
+> >>> On Sat, Mar 02, 2024 at 02:59:39PM +0100, Krzysztof Kozlowski wrote:
+> >>>> On 01/03/2024 22:45, Frank Li wrote:
+> >>>>> Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
+> >>>>> it.
+> >>>>>
+> >>>>> Fixed below DTB_CHECK warning:
+> >>>>>   dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+> >>>>>
+> >>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> >>>>> ---
+> >>>>>
+> >>>>> Notes:
+> >>>>>     Change from v1 to v2
+> >>>>>     - using maxitem: 64. Each channel have one power domain. Max 64 dmachannel.
+> >>>>>     - add power-domains to 'required' when compatible string is fsl,imx8qm-adma
+> >>>>>     or fsl,imx8qm-edma
+> >>>>>
+> >>>>>  .../devicetree/bindings/dma/fsl,edma.yaml         | 15 +++++++++++++++
+> >>>>>  1 file changed, 15 insertions(+)
+> >>>>>
+> >>>>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> >>>>> index cf0aa8e6b9ec3..76c1716b8b95c 100644
+> >>>>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> >>>>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> >>>>> @@ -59,6 +59,10 @@ properties:
+> >>>>>      minItems: 1
+> >>>>>      maxItems: 2
+> >>>>>  
+> >>>>> +  power-domains:
+> >>>>> +    minItems: 1
+> >>>>> +    maxItems: 64
+> >>>>
+> >>>> Hm, this is odd. Blocks do not belong to almost infinite number of power
+> >>>> domains.
+> >>>
+> >>> Sorry, what's your means? 'power-domains' belong to 'properties'. 
+> >>> 'maxItems' belong to 'power-domains'.It is similar with 'clocks'. what's
+> >>> wrong? 
+> >>
+> >> That one device belong to 64 power domains. That's just random code...
+> > 
+> > Yes, each dma channel have one power domain. Total 64 dma channel. So
+> > there are 64 power-domains.
 > 
-> Yes, each dma channel have one power domain. Total 64 dma channel. So
-> there are 64 power-domains.
+> OK, then how about extending the example to be complete?
 
-OK, then how about extending the example to be complete?
+Let's add 8qxp example at next version.
 
-Best regards,
-Krzysztof
+Frank
 
+> 
+> Best regards,
+> Krzysztof
+> 
