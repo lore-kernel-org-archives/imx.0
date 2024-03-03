@@ -1,130 +1,189 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E4117FD;
-	Sun,  3 Mar 2024 01:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002A4AD27
+	for <imx@lists.linux.dev>; Sun,  3 Mar 2024 07:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709430191; cv=none; b=H2TiJfq3f0KNDA+o+R2NyTKZn3cVKSrNUeW5aAS/DQck1xbjXvJu8h+RsixWxVzJenJiiF3wbGgeQO3H+ZvjXGbUFJHmO/tQ/U0e7ze7QkBEHMnGbVamlDKDTP26fQIPSpoJqWODHpWaaq7UJDMMCV10xU5fjZ0B2IyYhhu9xnM=
+	t=1709452516; cv=none; b=FIAk1/D5JV4OnPcCD2BcvWQQHDB+Wom76GmjSvFrOz7QFbICaLfnl+41wb5jwu5wYcZibuSta6KmwRYwfywztyA6G3THT9KrbcaH9n0WiJhmUFF6GSdjLXPlrJjzFapDYa4w/5+ee60ZjxF5fIlWnUFZd0+WXw6VO4OUSXGbhJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709430191; c=relaxed/simple;
-	bh=bPtaNql4S+FrAHjRxxcQH2iuVQisNn3g9p6ODBEDHVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=shMfmVOktPAyWD5l+IqJddpHYg4Y4lXpo1DMWwmWvaXMuZGGlbwhvvdwgnZkjfwk1ROyxp0HrSbUquyj38h2jLu+5q4cDrLE0TT44NdG4S8zfGAT3LCKI2Vwg6JAogLuiKhtDx6tjInMn8Yro2Zidx6wYokAZvUzDm89I2sC/TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NN8ctIDa; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1709452516; c=relaxed/simple;
+	bh=oW0AjmAtjBrSwOTqpTjHMx8tQhpUyxf3kPzUkMxfoC0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lut9AzqrLUfamOvnYkZDB6BtRzTGzoet9OmrFrfaOjtq8HPwNWqR/VVohBEdvRuFZEerGu5o/QJhUo45BCelkbkf3Z5AE17JQHvgkzO9EUEtD3qegzkcMEa+Jip7ZPWiptHi3ISCVYcCOnBJX/3a4nwQLeqdxN9yQRQnueLmt0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CqJZw+uv; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NN8ctIDa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709430190; x=1740966190;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bPtaNql4S+FrAHjRxxcQH2iuVQisNn3g9p6ODBEDHVU=;
-  b=NN8ctIDaNi0LvPfqsxqd52+hM0rOJKU2lKZd50EWWf20VmU7DRIIXW9u
-   7pCju84EZxrTgKlNN4Sas6w4+pTVyh7yX6ZzHY6uColmmOq5sqJg015DW
-   NWgRolD3BwTDxcNbslHzeSYakE8I3YwWbQzE8KG6pHX8LerhtEauR56kq
-   lMjJusOXPPaDK6tmZMrzKP1etQfAJmQrK5KGVqJF4K3P4C30zJYOdnDAn
-   2yw6X8AWaQcdXbexAYPMhDQDpW7JA0Fo2WjBAAsZQA3ffRIAL7r1TQzHO
-   KGyGTVpncRJnSUP0OphahOXT512ccPpm4r6rychV+JjIzCje6Wceeg5Nl
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11001"; a="4114458"
-X-IronPort-AV: E=Sophos;i="6.06,200,1705392000"; 
-   d="scan'208";a="4114458"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2024 17:43:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,200,1705392000"; 
-   d="scan'208";a="8722174"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 02 Mar 2024 17:43:05 -0800
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rgasY-0000QO-20;
-	Sun, 03 Mar 2024 01:43:02 +0000
-Date: Sun, 3 Mar 2024 09:42:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] clk: imx: add i.MX95 BLK CTL clk driver
-Message-ID: <202403030856.IfA30QpA-lkp@intel.com>
-References: <20240228-imx95-blk-ctl-v1-2-9b5ae3c14d83@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CqJZw+uv"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-565a2c4cc1aso4993100a12.2
+        for <imx@lists.linux.dev>; Sat, 02 Mar 2024 23:55:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709452513; x=1710057313; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SQNFQBzA7HljQkmYb4b/pcadMolSbwCDgZaouB8ODCI=;
+        b=CqJZw+uvo5E5+3OGuOITfGSI11NDQU8X5+ZyxPMNy4L4NxPpLE12aesV92Yh4gKQ57
+         bw2tfB/2ZCFkb3Qu6p24xocR+f9fMqd/02FmJnlIZE1k3zyO6PWOMht9W3Ex2X6XucUC
+         BmattP4aCLRILz9byVEdO1u/9z4vu0COmjo++hnFj0OrC2GLrwRptIAaXa6hVb43bTg0
+         TUDS8BXw6HVQEDMjO9OpkAS0RnSe2Vm89/oSUuBTSqrmtS/NOrp+cn4V3M1IUiwBeBOs
+         yiQaIGD0SgEkl76YECG7T0TRc/4cLJnpYJZ+AIEhcfL4Z5bZ6xDwAVi9fFcEfKFsyhi4
+         paQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709452513; x=1710057313;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SQNFQBzA7HljQkmYb4b/pcadMolSbwCDgZaouB8ODCI=;
+        b=DACp5r+7hTSGbRg8aY2IUM9J+YoviCR6WwGFXdqDVmyuiEH56Qr6gsAxUQ3L+UC5Kl
+         iFl2sJY/MjZHGfK5t08zKEL/7JXAcDyUt6lchvFflScGwJm+gsjeNQDyUzHU+qx0u5bC
+         FmCd3fjCDdRourYIcc97XrEQCs1O++R+DF6Iq5CvQnz7tUr/ML2mBcUc2fo/qLoONwSz
+         lyWnMXMgkq4vFszElqNl/CpedxvcdS8vMRxQyPtq4x0VBazlJQo/TDv0yHoN8wqutc6G
+         4vLOMxdK/NO1euykBxmDcycRDDVPZeJJPah/a1cJa6BfPlsB2EjiLWmIJCPO1jjVn9YP
+         G3Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCWar5KS7NM6y7+sKj4NBSBtDbDUhw9pJVVv06jGSu/9lLB3YYHIXieUMYptUFqyXuYE3GfBa7K1jYsIl9+3J6vHx3k/
+X-Gm-Message-State: AOJu0Yzeil83b+kHXhbfn93phK7Zh9bCWnWQRtB5Jt820CcDJ/N45c14
+	U8KtTdxwedAxHnfUiJx9wgLNcqM5LtMNg1OFPcszVz/zp+0SMIHm7ayMb5HMEiH0Sr4jJDyY581
+	W
+X-Google-Smtp-Source: AGHT+IHEAqXQKJXxGsaNlMtq1WbKfpUdzg5MTjoIVtAUErcrScVKbviFS9z6h4/qaWFjiiEy9oErbg==
+X-Received: by 2002:aa7:ce0a:0:b0:567:285b:db1d with SMTP id d10-20020aa7ce0a000000b00567285bdb1dmr745453edv.42.1709452513283;
+        Sat, 02 Mar 2024 23:55:13 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id c28-20020a50d65c000000b00565a9c11987sm3410520edj.76.2024.03.02.23.55.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 Mar 2024 23:55:12 -0800 (PST)
+Message-ID: <32d4a6c9-1cc3-4e9a-81a6-744a33bc6bee@linaro.org>
+Date: Sun, 3 Mar 2024 08:55:10 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240228-imx95-blk-ctl-v1-2-9b5ae3c14d83@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] dt-bindings: dma: fsl-edma: allow 'power-domains'
+ property
+To: Frank Li <Frank.li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dmaengine@vger.kernel.org, imx@lists.linux.dev,
+ krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
+ peng.fan@nxp.com, robh@kernel.org, vkoul@kernel.org
+References: <20240301214536.958869-1-Frank.Li@nxp.com>
+ <20240301214536.958869-2-Frank.Li@nxp.com>
+ <885501b5-0364-48bd-bc1d-3bc486d1b4c6@linaro.org>
+ <ZeNI1nG1dmbwOqbb@lizhi-Precision-Tower-5810>
+ <31e62acf-d605-4786-80a1-df52c8490913@linaro.org>
+ <ZeNWXxzFBzNj0gM1@lizhi-Precision-Tower-5810>
+ <e1d0aafe-e54f-4331-8505-135b9a8f9bff@linaro.org>
+ <ZeNYG1IUfniWkhcp@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <ZeNYG1IUfniWkhcp@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Peng,
+On 02/03/2024 17:47, Frank Li wrote:
+> On Sat, Mar 02, 2024 at 05:43:01PM +0100, Krzysztof Kozlowski wrote:
+>> On 02/03/2024 17:39, Frank Li wrote:
+>>> On Sat, Mar 02, 2024 at 05:20:42PM +0100, Krzysztof Kozlowski wrote:
+>>>> On 02/03/2024 16:42, Frank Li wrote:
+>>>>> On Sat, Mar 02, 2024 at 02:59:39PM +0100, Krzysztof Kozlowski wrote:
+>>>>>> On 01/03/2024 22:45, Frank Li wrote:
+>>>>>>> Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
+>>>>>>> it.
+>>>>>>>
+>>>>>>> Fixed below DTB_CHECK warning:
+>>>>>>>   dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+>>>>>>>
+>>>>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>>>>>> ---
+>>>>>>>
+>>>>>>> Notes:
+>>>>>>>     Change from v1 to v2
+>>>>>>>     - using maxitem: 64. Each channel have one power domain. Max 64 dmachannel.
+>>>>>>>     - add power-domains to 'required' when compatible string is fsl,imx8qm-adma
+>>>>>>>     or fsl,imx8qm-edma
+>>>>>>>
+>>>>>>>  .../devicetree/bindings/dma/fsl,edma.yaml         | 15 +++++++++++++++
+>>>>>>>  1 file changed, 15 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+>>>>>>> index cf0aa8e6b9ec3..76c1716b8b95c 100644
+>>>>>>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+>>>>>>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+>>>>>>> @@ -59,6 +59,10 @@ properties:
+>>>>>>>      minItems: 1
+>>>>>>>      maxItems: 2
+>>>>>>>  
+>>>>>>> +  power-domains:
+>>>>>>> +    minItems: 1
+>>>>>>> +    maxItems: 64
+>>>>>>
+>>>>>> Hm, this is odd. Blocks do not belong to almost infinite number of power
+>>>>>> domains.
+>>>>>
+>>>>> Sorry, what's your means? 'power-domains' belong to 'properties'. 
+>>>>> 'maxItems' belong to 'power-domains'.It is similar with 'clocks'. what's
+>>>>> wrong? 
+>>>>
+>>>> That one device belong to 64 power domains. That's just random code...
+>>>
+>>> Yes, each dma channel have one power domain. Total 64 dma channel. So
+>>> there are 64 power-domains.
+>>
+>> OK, then how about extending the example to be complete?
+> 
+> Let's add 8qxp example at next version.
 
-kernel test robot noticed the following build errors:
+You have already enough of examples there and your change here claims
+they user power domains, so why this cannot be added to existing examples?
 
-[auto build test ERROR on 22ba90670a51a18c6b36d285fddf92b9887c0bc3]
+Best regards,
+Krzysztof
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/dt-bindindgs-clock-support-NXP-i-MX95-BLK-CTL-module/20240228-122408
-base:   22ba90670a51a18c6b36d285fddf92b9887c0bc3
-patch link:    https://lore.kernel.org/r/20240228-imx95-blk-ctl-v1-2-9b5ae3c14d83%40nxp.com
-patch subject: [PATCH 2/2] clk: imx: add i.MX95 BLK CTL clk driver
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20240303/202403030856.IfA30QpA-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240303/202403030856.IfA30QpA-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403030856.IfA30QpA-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/device/driver.h:21,
-                    from include/linux/device.h:32,
-                    from include/linux/pm_runtime.h:11,
-                    from drivers/clk/imx/clk-imx95-blk-ctl.c:9:
->> drivers/clk/imx/clk-imx95-blk-ctl.c:425:25: error: 'imx95_blk_ctl_match' undeclared here (not in a function); did you mean 'imx95_bc_of_match'?
-     425 | MODULE_DEVICE_TABLE(of, imx95_blk_ctl_match);
-         |                         ^~~~~~~~~~~~~~~~~~~
-   include/linux/module.h:244:15: note: in definition of macro 'MODULE_DEVICE_TABLE'
-     244 | extern typeof(name) __mod_##type##__##name##_device_table               \
-         |               ^~~~
->> include/linux/module.h:244:21: error: '__mod_of__imx95_blk_ctl_match_device_table' aliased to undefined symbol 'imx95_blk_ctl_match'
-     244 | extern typeof(name) __mod_##type##__##name##_device_table               \
-         |                     ^~~~~~
-   drivers/clk/imx/clk-imx95-blk-ctl.c:425:1: note: in expansion of macro 'MODULE_DEVICE_TABLE'
-     425 | MODULE_DEVICE_TABLE(of, imx95_blk_ctl_match);
-         | ^~~~~~~~~~~~~~~~~~~
-
-
-vim +425 drivers/clk/imx/clk-imx95-blk-ctl.c
-
-   415	
-   416	static const struct of_device_id imx95_bc_of_match[] = {
-   417		{ .compatible = "nxp,imx95-cameramix-csr", .data = &camblk_dev_data },
-   418		{ .compatible = "nxp,imx95-display-master-csr", },
-   419		{ .compatible = "nxp,imx95-dispmix-lvds-csr", .data = &lvds_csr_dev_data },
-   420		{ .compatible = "nxp,imx95-dispmix-csr", .data = &dispmix_csr_dev_data },
-   421		{ .compatible = "nxp,imx95-netcmix-blk-ctrl", },
-   422		{ .compatible = "nxp,imx95-vpumix-csr", .data = &vpublk_dev_data },
-   423		{ /* Sentinel */ },
-   424	};
- > 425	MODULE_DEVICE_TABLE(of, imx95_blk_ctl_match);
-   426	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
