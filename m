@@ -1,161 +1,164 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2050.outbound.protection.outlook.com [40.107.21.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D544E1B3
-	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 15:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709566791; cv=fail; b=r59HubJUTIh5fVh/fh3lQQnVy1z6t61SOkmpJmxR5DTAoOqiWpH+r5EyCkboS//mzGv8KABZXsICRzEk81GuBNPpIqAoiTsl/q/x2UTFqKvRb0w+4k5f83+OcWbdMUF/qjnwHsHxLGMmcJJvIzvlFlFgnhem0/HX8q9DEeJkdYA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709566791; c=relaxed/simple;
-	bh=3M3lYfzGMgEcTEnlPQaNwcyvGXRI1fT9ehuDMVvmplA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pKYaGzsJ+zch66CE5cLDD8Jl/HnssvRnEFCOaEI31VlfdaqcKasufSzqRKGITIcOSIkRlHh/N3wpWOOW0Yre0i9cpybuThRWkeJo5avHnNrPSUvtRxO1q1NSk+W7afMvt15BqoWAYsE/3vIdZmGGt6grif/g4k7q9MG2+1VzwR4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=JOj3IStA; arc=fail smtp.client-ip=40.107.21.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74411DDE9;
+	Mon,  4 Mar 2024 16:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709570665; cv=none; b=Coyc81wjbHkFBNUfqsbY0xgTyqfVRivo20fyVpsbCJhzAb0vpQSlTGD8B5j/t+5pkV8Uk5pnQWFbebAVfz/5CnPWGOJ47J2vyAkCy408S+NQsq6MtZewDBa2wwOPRDpkZZeHvJmLBTSwzPTbjgL4zymI22xyxycMJW2ZkO0XejQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709570665; c=relaxed/simple;
+	bh=WOnO9JPDwy/Qr4hBOGiy3niCuOWp/MDBx/XySwl/3GQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bVjfnyFJZ9kmzpc/rrBHbvpnhe8zBz1CZ4hdmnx2zRKz8Y2EZdEAXQSXmfojO1T+/soBjJRhXWv+95IADFirR/CtTka7J3EZglDiiRpilN7kYBCuHbtIQDOctrLRx+/pj1HLf41/PgY4C7Tqmqdxhxhj7s9JzjblyNhnR0BzNAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2QBJFWx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="JOj3IStA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LQjoK/mvK70GtnB6Ud3CSrSuzZTHLkwvGxUgxYDbSeLmMEo8ZUDGjCAVu+6+DHOD9/XplaVnexwTsJy8vgY8QLQs9LmlOVPZwmaRvkqlJgKb2p9kTOf0gkAMejM7KW5uOIrMAlkSbrFnYL6tzT/7WiWWPCeig1W/6vebJbEc+naqKS7C0KYrnCZnBMirOGjy3+uHVN8m6l6saVWEKTdWRLogXGKVDZbNF+86DA/I8r06iOwvK8lCjMTmcvPAStW+Las/Znk4WNwRRdw+SPbPKNZI/whEVtXfYEq9dzMjAhDSSY66ldlWAZrgQxm8AwRrdXodOEzxddXbfGcmrQ8f5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+lyjTYHyoTftkZdSSQCPgV5jjmYiMgEWHXa31ebmg0g=;
- b=TWKZWulzszcHgtpPDQ/eXsPbuQ4Y27L79lzcU6mIO3r+HFUr6TH3oJue1x3eGR6pMwAWxl+bXaBwXhF+kHM/wYk7afM4WmuQAWnbrDAQ8f4hDVrx/cQfi4Ok9KHvNPJo7P5u59lA9H5GvxMaL38hNrnyfXdDOG7B6304bWOOWoAXQy8dT1ElEDs2Co4IBZciTR+OnrqV1Sv8wbeHj+ICRhfsTHPc3lyYVaOeeTHGqH9MudEQzcXO/+Gd6dpw6xparruhdad8yBbzFrVO6IIGmSw+5qEEDf8fsb619MtllvNz0b17itVSboONTTh7lTmzk0K9zHH3lJdku/z55Lx1Lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+lyjTYHyoTftkZdSSQCPgV5jjmYiMgEWHXa31ebmg0g=;
- b=JOj3IStAMlEGcVeQNhQFjSgHmfR/S9lrd5GV/vcUAtp+SEuuFw83e8egk3PC/PYco+OI3137OGRMffPw/XAaxRH4qHlX69IEV3DuuQUIxNndupl6P8z+4QJBzK8DYLX2Jx/XVEeRRrdikPJzhNIm74oFzyojjdn5h6WWPu3vIu8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU2PR04MB8919.eurprd04.prod.outlook.com (2603:10a6:10:2e2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.33; Mon, 4 Mar
- 2024 15:39:46 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7339.033; Mon, 4 Mar 2024
- 15:39:46 +0000
-Date: Mon, 4 Mar 2024 10:39:37 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2QBJFWx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2201BC433C7;
+	Mon,  4 Mar 2024 16:44:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709570665;
+	bh=WOnO9JPDwy/Qr4hBOGiy3niCuOWp/MDBx/XySwl/3GQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j2QBJFWxCzebsWpK34GWwHgrIuHa2p0uD0mJy9OGDPrF/F2S5inbL2X1YgyV+nqBt
+	 hXlNyJIqMw2h7m69oFFnh/GiRj7jpsXRRU+2QhIOhQ/zfv3ptecIdyaiUxLcYGWFL8
+	 6b62WOwl3L8e9RX5Z6PsBoI9PkuUnWAu4JBmjay7ZEk6c4smNVY1UWXv16pRmD9wfc
+	 zDS1+KZPtKdUJhUocFa9Id5Ol9dGS211WwXB1yHoETngI5Yr1hmKtAOUXWhQrz1SZ0
+	 mE3RSGzvu/QKW5Naf54cDX3nlpUEVJFdgQIDdSqbSRH2a9fnZDDjceX/tmnuCf+8Ck
+	 CBDsOPhE7htHA==
+Date: Mon, 4 Mar 2024 10:44:23 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
- power-domains requirement
-Message-ID: <ZeXrOezAWy85IxJL@lizhi-Precision-Tower-5810>
-References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
- <20240228-asrc_8qxp-v3-1-d4d5935fd3aa@nxp.com>
- <f8ce39e9-7f06-49e7-92fa-785bd1cd2d1e@linaro.org>
- <ZeFTDSuLEeYrsbKi@lizhi-Precision-Tower-5810>
- <0cc8a370-4497-40f5-9040-1584c0c777f9@linaro.org>
- <ZeH3UhbStCTh04Ku@lizhi-Precision-Tower-5810>
- <7925ce69-0cc6-45cb-851e-75a9f19f883b@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7925ce69-0cc6-45cb-851e-75a9f19f883b@linaro.org>
-X-ClientProxiedBy: SJ0PR03CA0147.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Joy Zou <joy.zou@nxp.com>
+Subject: Re: [PATCH v2 4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma
+ compatible string
+Message-ID: <20240304164423.GA626742-robh@kernel.org>
+References: <20240229-8ulp_edma-v2-0-9d12f883c8f7@nxp.com>
+ <20240229-8ulp_edma-v2-4-9d12f883c8f7@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8919:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca4fd5ba-bedd-4b97-82dc-08dc3c61519a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	E7tssP6o9u/a9W2OYjWuOqWlCDC4hWTACCTZd4VtdqrJB6xufv94dmEz0l7+VXTjydvGI7+hc260k48qm0RXAvcngbxEva8tb/fTJwyBj7p6DIaluV7Y31V7RO9MkYIAmTAleriffVC0keu3UypA3y1jkaacKDdcfehM3wwPjaPN66ioIQbWQPhvEUzRrCs9u/8dt3VZl+iLq4GwCG1TlEc+qOsQ8kzG5Wm+LlcWFJ8IQySJbpnLCX2aPAC+eVJFMZiZw77Fcr+w/tm4bNvNdBTvueyJ4Bb7uuZk9NDmNeitYlvD7bEl4m939CMYukZIOnVZ0S3HPkAuXksoGw6f0NhxB+JEYQxlls6tOA6eF/FR6GX9NMYY4DNq+VbPRTwrupGE4hD7aNpP5pMefbJ8DVbdcILHV8I6JQIahWJaKGN+wESVfa/Ay40fRsPlHPGEMxzoEqV3QJBIq8FCxo08qweaW+KNu+x+4qI6u238doadoRNkKvjntUi39CC56YoVYK1F5Ga4vMFbfHchbgRCIFs/ImhsQumuizqrzcUEUZAMJBfTeqwij+W5m9EKv/fIxvL3ZULQNFhlJQWkrLzpYg3nACIqF+LQhBuQmoD7jrw9zD2vDjOaW87sW6TpvC9PR5Hp7KFzeDmdQ9PC+HOQ7t41niA5YmZ45zqFS7aQaJzngeaCYadyXnaRtd8qYRD6xdTiEsVr99P2tNkxMnVZQJ8tpoHlciUVa4X9MnLJYLs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YzoGjkUKLJj2aRoSg/7GCP41ryDnQa7W5wq1UbmT/6eAL9VI3ljeiI9Lj2N8?=
- =?us-ascii?Q?mbcP/cNmLGe0dda5QzVvAZO5gljKXPmhn+z653T8p/3jtunqkzTy81EKOPK3?=
- =?us-ascii?Q?/ECMwXct3+VG9A9mQM5Lr4vQCn2o0X05fheQuubxkSgXJ8cYVAfunDNW875N?=
- =?us-ascii?Q?9zKHmAJS2k889LQPoBLo6VQOyQHMhFHXb3H3sd9ZoMpe4lELzlgLbaqVP/e+?=
- =?us-ascii?Q?HpZQhyDFHqHq3fI2QFLa+3LHHwzsFgi9KBJq/mhPIBNJhpL6Qlpbrm3MGHkF?=
- =?us-ascii?Q?1qF/VnyPTvCpeenPfEBco6aaOTn0h+D+BaayKHEHp3y+003IzVXGohwY4H0I?=
- =?us-ascii?Q?l69y8zLjYtmXTsnig/tlnfTbDfDL3rj32F/58pDl7rff6DNpqwi0DuHbfWZm?=
- =?us-ascii?Q?CJce2vokXEw5XNMN/3+ZHs+Toz/4F7A+rj+IAdt0Klz+XEgi+dV45IafvZ1F?=
- =?us-ascii?Q?OSfHdmHATrxqIJM25IFipOH3AyzWj7A1xJK8n0ggFDiPdda9TwYmwnMjGZ1Z?=
- =?us-ascii?Q?V7BnMgh35y65Lsgz6EpiCjNZPghIBL01EBc/R6urP5RBTbDp98IW3KXLpVvq?=
- =?us-ascii?Q?Fn48QgJ9rxnRZdkBJtrrRjiJIgkJlEg0Tv7Hli6h9FzGUDpl/UZwlki4Vyuu?=
- =?us-ascii?Q?W+fKdfpOq6JML2cDtIy/qEREsV37xT1IgrsQbXb092IRzrZ3jV5rZSBDwnqB?=
- =?us-ascii?Q?pgO+4kYBYP50WeLgLKUQto76ZAU/hf+o7yMTfbk0jIwaZAXnY6gnW6B7r3SJ?=
- =?us-ascii?Q?v+9n45Vmahd2yeYsmJDxvKwIKUM0OTaXib9+sj/kq2TUEYJSjFtsgvM1xJbW?=
- =?us-ascii?Q?GbpEJEsjFmI3lLY8vbxyJS2GKaBvV541fKemSW6EbAtRRLIhqD3pQOoUJQ5L?=
- =?us-ascii?Q?6sI7JbU09Y7tbkqJbyRBVy5QT9T03hNk8lqv7jfnbf9mRuL56HD3dRclfqdO?=
- =?us-ascii?Q?ApbtWk0OBSdMzOL5ecRyURH9IUafdlM0QT1JdcewEw9J/FG7+fngWr4c65Gm?=
- =?us-ascii?Q?IYOYr/hhHtq5VLV4/IcwtY/BrBJ6siW+EGkV2DgOMCkFX1fe4UqROCHI0kvD?=
- =?us-ascii?Q?Y4kFl56/2rnbf9T+jilkYyt5388reFfjeb6tvh69CNQygNRQWB6d9xhXUpPi?=
- =?us-ascii?Q?oyn5nu6IE0CqTCLsd4SjKhYVgsWaZievV0IGgOh7aTXrcKCwoaz2VQicsD7M?=
- =?us-ascii?Q?SG77WBLWxXWvuPA3gwkDYqPvXhuN0dcJaMcjpcrI+WaI1ozH1x2aOS0mx+nt?=
- =?us-ascii?Q?a/VLswkfqenlPupI0h5L7lGIcEeo0uWMKNku8oR4teYMZDJZR3g+FFje00D+?=
- =?us-ascii?Q?7MYCQxYtqyE2V1MANyeQwPfCYXNENQi3awyQYLVQ9CFA1rma4ABBpEsXcoTt?=
- =?us-ascii?Q?QqhJTUFl76UavJaJcITI6Yv90n2fbNoFgu8HIexC6dI0m9KtCuGgNL49U7YX?=
- =?us-ascii?Q?bfpBsaRFGVy8uaKehfuLoyfClDQFl7JD2NG2V9THueBoPTa+wgFeTHWpPVv+?=
- =?us-ascii?Q?R9R4nxuX6G45m5zJd+aJuDg0Ocy3sDIssyddmihOU/mb7h7bhqtacwzQDrIG?=
- =?us-ascii?Q?pXHJXnRgLOHDp88hZ1D5Lkuh8O4K5kzAN63z+a/A?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca4fd5ba-bedd-4b97-82dc-08dc3c61519a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2024 15:39:45.9584
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5k9x7OIoI29Oo+mSMq04iaB+Ej9K/lqhLIRs0KKarORtuAgk+movQ80833kDOTyGqd8OCtPdmS45gBb7sQLgew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8919
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229-8ulp_edma-v2-4-9d12f883c8f7@nxp.com>
 
-On Mon, Mar 04, 2024 at 04:05:07PM +0100, Krzysztof Kozlowski wrote:
-> On 01/03/2024 16:42, Frank Li wrote:
-> > On Fri, Mar 01, 2024 at 07:30:10AM +0100, Krzysztof Kozlowski wrote:
-> >> On 01/03/2024 05:01, Frank Li wrote:
-> >>> On Thu, Feb 29, 2024 at 10:44:20AM +0100, Krzysztof Kozlowski wrote:
-> >>>> On 28/02/2024 20:14, Frank Li wrote:
-> >>>>> Add power-domains property for asrc and spdif.
-> >>>>
-> >>>> Why?
-> >>>
-> >>> i.MX8QXP i.MX8DXL and i.MX8QM need it.
-> >>
-> >> Where is it explained in the commit msg? What about other devices/variants?
-> > 
-> > I will add it. These patches are for imx8qxp\imx8dxl\imx8qm only. If other
-> > platform have problem, it should be fixed by new patch. 
+On Thu, Feb 29, 2024 at 03:58:10PM -0500, Frank Li wrote:
+> From: Joy Zou <joy.zou@nxp.com>
 > 
-> I would assume more responsible approach from NXP, not just "their
-> problem", but anyway that's not what the comment is. Why do you say all
-> the variants have power domains in one commit, but now in email says
-> that they might not have? All your patches are vague in this aspect.
+> Introduce the compatible string 'fsl,imx8ulp-edma' to enable support for
+> the i.MX8ULP's eDMA, alongside adjusting the clock numbering. The i.MX8ULP
+> eDMA architecture features one clock for each DMA channel and an additional
+> clock for the core controller. Given a maximum of 32 DMA channels, the
+> maximum clock number consequently increases to 33.
+> 
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/dma/fsl,edma.yaml          | 26 ++++++++++++++++++++--
+>  1 file changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> index aa51d278cb67b..55cce79c759f8 100644
+> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> @@ -23,6 +23,7 @@ properties:
+>            - fsl,imx7ulp-edma
+>            - fsl,imx8qm-adma
+>            - fsl,imx8qm-edma
+> +          - fsl,imx8ulp-edma
+>            - fsl,imx93-edma3
+>            - fsl,imx93-edma4
+>            - fsl,imx95-edma5
+> @@ -53,11 +54,11 @@ properties:
+>  
+>    clocks:
+>      minItems: 1
+> -    maxItems: 2
+> +    maxItems: 33
+>  
+>    clock-names:
+>      minItems: 1
+> -    maxItems: 2
+> +    maxItems: 33
+>  
+>    big-endian:
+>      description: |
+> @@ -108,6 +109,7 @@ allOf:
+>        properties:
+>          clocks:
+>            minItems: 2
+> +          maxItems: 2
+>          clock-names:
+>            items:
+>              - const: dmamux0
+> @@ -136,6 +138,7 @@ allOf:
+>        properties:
+>          clock:
+>            minItems: 2
+> +          maxItems: 2
+>          clock-names:
+>            items:
+>              - const: dma
+> @@ -151,6 +154,25 @@ allOf:
+>          dma-channels:
+>            const: 32
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8ulp-edma
+> +    then:
+> +      properties:
+> +        clock:
 
-I am not means "their problem". What's I said is one patch just fix one
-thing. If need additional fix,  I can create a new patches. I have not said
-all need power domains specifically. If there are some words that let me
-think all variant need power domain, please let me where, I can improve it.
+clocks
 
-Frank
-> 
-> Best regards,
-> Krzysztof
-> 
+> +          maxItems: 33
+
+That is already the max. I think you want 'minItems: 33' here.
+
+> +        clock-names:
+> +          items:
+> +            - const: dma
+> +            - pattern: "^CH[0-31]-clk$"
+
+'-clk' is redundant. [0-31] is not how you do a range of numbers with 
+regex. 
+
+This doesn't cover clocks 3-33. Not a great way to express in 
+json-schema, but this should do it:
+
+allOf:
+  - items:
+      - const: dma
+  - items:
+      oneOf:
+        - const: dma
+        - pattern: "^ch([0-9]|[1-2][0-9]|[3[01])$"
+
+That doesn't enforce the order of 'chN' entries though. Probably good 
+enough.
+
+
+> +        interrupt-names: false
+> +        interrupts:
+> +          maxItems: 32
+
+minItems
+
+> +        "#dma-cells":
+> +          const: 3
+
+Is what is in each cell defined somewhere? If not, you need a 
+description with those details.
+
+Rob
