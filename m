@@ -1,50 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5A03FE58;
-	Mon,  4 Mar 2024 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777E43FB02;
+	Mon,  4 Mar 2024 14:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709563159; cv=none; b=PwoBjaO0o4c2gZlT4tdO/0iCbiNitDqK/dbMCBL3PoC+JtoSRnu/VQeicDtq8oEMZLTJxLQzKEXDq8FfH5zGw7BYvtLDOftlc8MqabqH2b93m3YM9mB2uARdq+yI5C6F8YWjCFH1JbGjJv2YQZM/z5+6LG9GzQen/TOtLVDpDsQ=
+	t=1709564201; cv=none; b=IUE1ZHIs2+KfEpi1Dr0589KKdjyhQisceWqxvlv3Cajc8eoCqIHihjnk5GuZbtyxxdEAqDcONjikd6f/IX+/njVV1RHevnM6bY8e1syue4rDV7jHHBDJzXnBbN3bM35y1MnGHjDgR3HR7D/X1slUrFXwOXTs7HdQkfYZRXKB6S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709563159; c=relaxed/simple;
-	bh=jMLHce6fSNV1ibpvqXecN80o6gKL25oVTs9fW+eNgJc=;
+	s=arc-20240116; t=1709564201; c=relaxed/simple;
+	bh=N/D0uIgUoOHQbPkMuf10uhOf+id1XoY9SIa7oMOVSmY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R+hKH7pQLLklaoi+4B9wve6MO8KUA47/6GMVZu90mRqT03ELUAEZdJD6zLA8fPFIw5Z7yt4tR5x8hGzcVM+If4qv2/DB4cVoK9DMysyf/PAWk5B3GNdY1UqP3KntWGjGV9al92q8y34Ee0c93YeE3JQGXI6Y1KuuNOGMD2Lv1jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGZN+aUG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=flmm2xBEHfLl8fc+xPgWfoZgVWOQVjgIWPBl4jtS2oISAUGp2pvET0LJjOAKhfNKQSHUcM6aVlfYapLLlYdLy8tpNbYzYY2ddUvSJuAf2sY9wnYDWAZ5pbDQY/BUMOA9erf9dqMJFrnaW/9LyC5PYlFo5zKmIsTDWoMOqpBpgi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDnGKJt3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGZN+aUG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AFCC43394;
-	Mon,  4 Mar 2024 14:39:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDnGKJt3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7440C433F1;
+	Mon,  4 Mar 2024 14:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709563159;
-	bh=jMLHce6fSNV1ibpvqXecN80o6gKL25oVTs9fW+eNgJc=;
+	s=k20201202; t=1709564201;
+	bh=N/D0uIgUoOHQbPkMuf10uhOf+id1XoY9SIa7oMOVSmY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vGZN+aUGRCHUXtaClyfB0lW2zx8oz2EnMN+dEfj6++ZyYSSPq+FTcQGe47oCabaHn
-	 hygA37nDu5yUChLQS9ebQxaY9xeRyhxwKzTewrv7ZIR2lHPrJLQZohTwDPi7lZot4D
-	 LitPMpmhwwPXWmLEsDuhowiAnSHHcTmkT3gviCMR5NFWBKnrdHVMRFmpnc7zmZBPLD
-	 +GfgdyJa6DQltRPUVE6O0V0p8Y4Cp6UoF4dXx89qS8OuIHn5/uCHo6yTci+iBzcrpM
-	 P+HtDaM2cLgfXTu/82Bbm7HMPGBl+43c1PadJmvN73yy0z16/sulhotTpO4BMongqE
-	 oVCTYKNNJftgQ==
-Date: Mon, 4 Mar 2024 08:39:16 -0600
+	b=WDnGKJt3xItxvEa0PiLVh12+82cJgVgXwveOA+wnpP/PEZKamKXXshOplx+gs3WlF
+	 DXTCsYzfyYWjb2Rgope+1O1VMf8p0uYrekDXoxXQhJyhKG7yYtNTgUySEJYbLfTkW3
+	 IOiMLdJuo/L02ua0vafERU8mNq8Q/gc4gxWld7cPQclmiqSKGQyxQdfo/ysJGgAI9N
+	 qICBP06ZaYxf+YPshrIBxy9dOeFW/y8bWgoXlQhMtkRygtEJai6R4/N9MvUL0HJfdk
+	 qfGrJm3LiazTIiov9vb/UiJaZ8AIXGFhuYXE2marQamhb7tcN87bxSoYETAk1hsbAM
+	 jjlWOv3U5cEdQ==
+Date: Mon, 4 Mar 2024 08:56:38 -0600
 From: Rob Herring <robh@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+To: Frank Li <Frank.li@nxp.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 1/2] dt-bindindgs: clock: support NXP i.MX95 BLK CTL
- module
-Message-ID: <20240304143916.GA181628-robh@kernel.org>
-References: <20240228-imx95-blk-ctl-v3-0-40ceba01a211@nxp.com>
- <20240228-imx95-blk-ctl-v3-1-40ceba01a211@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
+ interrupt numbers
+Message-ID: <20240304145638.GA198680-robh@kernel.org>
+References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
+ <20240228-asrc_8qxp-v3-2-d4d5935fd3aa@nxp.com>
+ <3460ecc8-d7d7-4d1c-ad0c-b32efc3b9049@linaro.org>
+ <ZeFTqM8o/eozl+MS@lizhi-Precision-Tower-5810>
+ <a1861d70-80e2-4f42-b99a-f2b8c8efe042@linaro.org>
+ <ZeH2v9WJsX9sLvXb@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,98 +57,94 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240228-imx95-blk-ctl-v3-1-40ceba01a211@nxp.com>
+In-Reply-To: <ZeH2v9WJsX9sLvXb@lizhi-Precision-Tower-5810>
 
-On Wed, Feb 28, 2024 at 03:48:22PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Fri, Mar 01, 2024 at 10:39:43AM -0500, Frank Li wrote:
+> On Fri, Mar 01, 2024 at 07:30:45AM +0100, Krzysztof Kozlowski wrote:
+> > On 01/03/2024 05:03, Frank Li wrote:
+> > > On Thu, Feb 29, 2024 at 10:44:42AM +0100, Krzysztof Kozlowski wrote:
+> > >> On 28/02/2024 20:14, Frank Li wrote:
+> > >>> fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
+> > >>> have 1 interrupt.
+> > >>>
+> > >>> Increase max interrupt number to 2 and add restriction for platforms except
+> > >>> i.MX8QXP and i.MX8QM.
+> > >>>
+> > >>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > >>> ---
+> > >>>  .../devicetree/bindings/sound/fsl,spdif.yaml         | 20 +++++++++++++++++++-
+> > >>>  1 file changed, 19 insertions(+), 1 deletion(-)
+> > >>>
+> > >>> diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > >>> index 82430f1d5e5a2..785f7997eea82 100644
+> > >>> --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > >>> +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > >>> @@ -31,7 +31,8 @@ properties:
+> > >>>      maxItems: 1
+> > >>>  
+> > >>>    interrupts:
+> > >>> -    maxItems: 1
+> > >>> +    minItems: 1
+> > >>> +    maxItems: 2
+> > >>>  
+> > >>>    dmas:
+> > >>>      items:
+> > >>> @@ -100,6 +101,23 @@ required:
+> > >>>  
+> > >>>  additionalProperties: false
+> > >>>  
+> > >>> +allOf:
+> > >>> +  - if:
+> > >>> +      properties:
+> > >>> +        compatible:
+> > >>> +          enum:
+> > >>> +            - fsl,imx35-spdif
+> > >>> +            - fsl,vf610-spdif
+> > >>> +            - fsl,imx6sx-spdif
+> > >>> +            - fsl,imx8mq-spdif
+> > >>> +            - fsl,imx8mm-spdif
+> > >>> +            - fsl,imx8mn-spdif
+> > >>> +            - fsl,imx8ulp-spdif
+> > >>> +    then:
+> > >>> +      properties:
+> > >>> +        interrupts:
+> > >>> +          maxItems: 1
+> > >>
+> > >> else:
+> > >> minItems: 2
+> > > 
+> > > I think needn't 'else' here. Top have set to maxItems is 2. 
+> > 
+> > So explain why one item is correct here.
 > 
-> i.MX95 includes BLK CTL module in several MIXes, such as VPU_CSR in
-> VPUMIX, BLK_CTRL_NETCMIX in NETCMIX, CAMERA_CSR in CAMERAMIX and etc.
-> 
-> The BLK CTL module is used for various settings of a specific MIX, such
-> as clock, QoS and etc.
-> 
-> This patch is to add some BLK CTL modules that has clock features.
+> Top interrupt: maxItems: 2. That's means all compatible string (include
+> imx8qxp, and imx8qm) required interrrupt number less than 2.
 
-This sentence doesn't add anything you haven't already said.
+You said: "fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts"
 
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../devicetree/bindings/clock/imx95-blk-ctl.yaml   | 61 ++++++++++++++++++++++
->  include/dt-bindings/clock/nxp,imx95-clock.h        | 32 ++++++++++++
->  2 files changed, 93 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/imx95-blk-ctl.yaml
-> new file mode 100644
-> index 000000000000..c8974b927bee
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/imx95-blk-ctl.yaml
-> @@ -0,0 +1,61 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/imx95-blk-ctl.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP i.MX95 Block Control
-> +
-> +maintainers:
-> +  - Peng Fan <peng.fan@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - nxp,imx95-cameramix-csr
-> +          - nxp,imx95-display-master-csr
-> +          - nxp,imx95-dispmix-lvds-csr
-> +          - nxp,imx95-dispmix-csr
-> +          - nxp,imx95-netcmix-blk-ctrl
-> +          - nxp,imx95-vpumix-csr
-> +      - const: syscon
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  '#clock-cells':
-> +    const: 1
-> +    description:
-> +      The clock consumer should specify the desired clock by having the clock
-> +      ID in its "clocks" phandle cell. See
-> +      include/dt-bindings/clock/nxp,imx95-clock.h
-> +
-> +  mux-controller:
-> +    type: object
-> +    $ref: /schemas/mux/reg-mux.yaml
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#clock-cells'
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  # Clock Control Module node:
-> +  - |
-> +    #include <dt-bindings/clock/nxp,imx95-clock.h>
-> +
-> +    syscon@4c410000 {
+That means they have *exactly* 2 interrupts, not <= 2 interrupts. The 
+top level says you have 1 or 2. Somewhere you have to say it's always 2 
+interrupts which is what Krzysztof provided.
 
-clock-controller@...
+Or you need to explain why the 2nd interrupt is optional for 
+fsl,imx8qxp-spdif and fsl,imx8qm-spdif.
 
-As that is the main feature/function.
+Actually, I'd reverse the if/then to have shorter list:
 
-> +      compatible = "nxp,imx95-vpumix-csr", "syscon";
-> +      reg = <0x4c410000 0x10000>;
-> +      #clock-cells = <1>;
+if:
+  properties:
+    compatible:
+      enum:
+        - fsl,imx8qm-spdif
+        - fsl,imx8qxp-spdif
+then:
+  properties:
+    interrupts:
+      minItems: 2
+else:
+  properties:
+    interrupts:
+      maxItems: 1
 
-Please make the example as full as possible. For example, add 
-mux-controller node. Do some of the blocks not have mux ctrl?
+
+Rob
