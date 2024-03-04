@@ -1,15 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8391E20DE7
-	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 09:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C651C1B5B2
+	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 09:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709543201; cv=none; b=efqNZuurUUKaq4mg6mmbHjxRBtcPkfht/JPUugkq3sKhQJKj+wuarmJfX99I21u423G7awLBCSPdZK3lYQ5KKVtBi0+CQ1cu6a5KZwpZtxEivBa1aeXhb73X9luGixJ5LiRggZyd1b6fq7qG+w7HNuBB5Vzi26Kq9yLeuLAatFE=
+	t=1709543426; cv=none; b=OiOkBjyqguKseOMJYbDt2ypBevzSzXEZTJlhJnl3c+5Dskeqo6bGgihWcwC4fW0FJkfARlKuCoQ59AIQAir/ej5S4fdf4NfGf8r6pcwDZs9MxKJ9+gLZ8eG34h/XchfRVfYiqIp4/QeRSO3FMmYKG+eJ9HbukAFUIS0nWKS3gcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709543201; c=relaxed/simple;
-	bh=L2oQ/vpbvrsgqjGlIqLZic9br8aQK83599Mm2I4cAFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KA1zNnTJCaC6QvXcSLInaD54760PToDi4e29xLKo0It5dcQ7gLlxtfDraDgExQd5vt9qG0azgHQg3ia0hvT9nGu+XOc2S24BX1/XNOuSuQVyRMXyq5jDDZXKjkKKmlAZVh82uBoAGNp0NUaf4T7+/3zp6qavoB17v979kv2DjG8=
+	s=arc-20240116; t=1709543426; c=relaxed/simple;
+	bh=lcXeO+a9WrkMUrUIy22M2pZ4uTZS3MLLTRm/+F7o40w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UeJseCIHJDdUuzwa8hcEVHJJxTe0xE/6rZgEsTrYPhgZyU6G7vS9hZMRfEujvqURl9PiCdmh7+ul7lD92tbuqP7xMhHkWH9EFztAhEL8dHCjKGu7BeCv3upt6AFPbFPbtfMgJ9ilpgo396tMCMiBCjqwMVicqtrRgIQJ+GwhOuo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +17,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rh4Gz-0001Qd-8Y; Mon, 04 Mar 2024 10:06:13 +0100
+	id 1rh4Kp-0002N6-15; Mon, 04 Mar 2024 10:10:11 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rh4Gx-004Jh7-1g; Mon, 04 Mar 2024 10:06:11 +0100
+	id 1rh4Kn-004K0d-Mv; Mon, 04 Mar 2024 10:10:09 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rh4Gw-00GV5E-32;
-	Mon, 04 Mar 2024 10:06:10 +0100
+	id 1rh4Kn-00GVK0-1u;
+	Mon, 04 Mar 2024 10:10:09 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Lucas Stach <l.stach@pengutronix.de>,
 	Liu Ying <victor.liu@nxp.com>,
@@ -48,9 +48,9 @@ Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] drm/bridge: imx8mp-hdmi-pvi: Convert to platform remove callback returning void
-Date: Mon,  4 Mar 2024 10:05:56 +0100
-Message-ID: <20240304090555.716327-2-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH] drm/bridge: imx8mp-hdmi-tx: Convert to platform remove callback returning void
+Date: Mon,  4 Mar 2024 10:10:06 +0100
+Message-ID: <20240304091005.717012-2-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -59,7 +59,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2070; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=L2oQ/vpbvrsgqjGlIqLZic9br8aQK83599Mm2I4cAFg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl5Y7zxh4me8p/QL0pXjlngp8Ilt1Vl34Zua8R0 KoJtzczmWOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZeWO8wAKCRCPgPtYfRL+ Tjz0B/4iKOETufTEfhd0muGamZHg7vD989wvZKJBCgMzYmHQlYL6MbcOhbENWnQwXCU5017RoWm CxHk1XYnJ0PxBFxwU9NXM/Rz48U9TK01u9MedNFIJ/2mjfGG7hBd6VGdKDqUWUcTNpbsStU/6lV d+DFiQFDMANpyWIVEgSW7vJD5qZEgWMzakIa9pNLTfY6y6wBwgKbxQbUKBlgL617d5YeDVrcdQc PkxOzPMEilZNwk4qcfnFTxAg08SVkCaWPYBM8OkLi6JQc1wQ1FyDUW4fo74a80sX2f7nLwcHUHj PPUcIApX6mB7uv0Awyh1yJK2hiGne/1BvzKz9dqAdcWyZ62C
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2046; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=lcXeO+a9WrkMUrUIy22M2pZ4uTZS3MLLTRm/+F7o40w=; b=owGbwMvMwMXY3/A7olbonx/jabUkhtSn/e+EQxd62jnME1t4asukxctXTJ5yYGZJb5+H1G47v hAmxuD1nYzGLAyMXAyyYoos9o1rMq2q5CI71/67DDOIlQlkCgMXpwBMZKECB0OX07JZV7TkH/8I TdogqXvRqnWHVv/9KdWd6lMmXCjJV3VhOaYSfNvOWrDbrLHGrrK0ZeLvlGvci44Ynb7qcuT1/IS oV7GhTQd7GQ8ounvMfdny7aaH3LN9H78L+OUx2Im2djsrRjcIBuctX3ZOT67bYO3dnjgplcVCzL 43J/4wSZPt+/L2uFotu3qNafP/tMW6Xplf+JikzRvsrd9t/8mZ4Mya68ZSkt25I1Nh71MDVpOAl xbFbPfvF2zauNbxdf2BA/c/WaRNWvaFNbnx/PqTdlUG/HrCT89P3WgkMe+52puHL4p7UhPqJvFm rF7mXHROYuMrTtF6dtWNkxf8mRHVfnlKQ64Sy901z3W0AA==
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -89,39 +89,37 @@ note this driver is currently only available in next.
 Best regards
 Uwe
 
- drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 6 ++----
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c
-index f2a09c879e3d..073e64dc200c 100644
---- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c
-@@ -173,15 +173,13 @@ static int imx8mp_hdmi_pvi_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+index 89fc432ac611..13bc570c5473 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
++++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+@@ -104,13 +104,11 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
  	return 0;
  }
  
--static int imx8mp_hdmi_pvi_remove(struct platform_device *pdev)
-+static void imx8mp_hdmi_pvi_remove(struct platform_device *pdev)
+-static int imx8mp_dw_hdmi_remove(struct platform_device *pdev)
++static void imx8mp_dw_hdmi_remove(struct platform_device *pdev)
  {
- 	struct imx8mp_hdmi_pvi *pvi = platform_get_drvdata(pdev);
+ 	struct imx8mp_hdmi *hdmi = platform_get_drvdata(pdev);
  
- 	drm_bridge_remove(&pvi->bridge);
- 
- 	pm_runtime_disable(&pdev->dev);
+ 	dw_hdmi_remove(hdmi->dw_hdmi);
 -
 -	return 0;
  }
  
- static const struct of_device_id imx8mp_hdmi_pvi_match[] = {
-@@ -195,7 +193,7 @@ MODULE_DEVICE_TABLE(of, imx8mp_hdmi_pvi_match);
+ static int __maybe_unused imx8mp_dw_hdmi_pm_suspend(struct device *dev)
+@@ -140,7 +138,7 @@ MODULE_DEVICE_TABLE(of, imx8mp_dw_hdmi_of_table);
  
- static struct platform_driver imx8mp_hdmi_pvi_driver = {
- 	.probe	= imx8mp_hdmi_pvi_probe,
--	.remove	= imx8mp_hdmi_pvi_remove,
-+	.remove_new = imx8mp_hdmi_pvi_remove,
+ static struct platform_driver imx8mp_dw_hdmi_platform_driver = {
+ 	.probe		= imx8mp_dw_hdmi_probe,
+-	.remove		= imx8mp_dw_hdmi_remove,
++	.remove_new	= imx8mp_dw_hdmi_remove,
  	.driver		= {
- 		.name = "imx-hdmi-pvi",
- 		.of_match_table	= imx8mp_hdmi_pvi_match,
+ 		.name	= "imx8mp-dw-hdmi-tx",
+ 		.of_match_table = imx8mp_dw_hdmi_of_table,
 
 base-commit: 67908bf6954b7635d33760ff6dfc189fc26ccc89
 -- 
