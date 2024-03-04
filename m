@@ -1,60 +1,59 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678D5482C6
-	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 14:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A4840C15
+	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 15:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709564365; cv=none; b=mnN9IOE9xI0oMCn2FX7AgfyzmCnwt7MkkF4+UIKA5JxIv4L8s0Xi+2Ibu8P3q4wMcVY6UJiKMyB5RGPew3o3gDQt5qlGW8bAYCV50yUCau7st8MjfNJDhS+ZQ4v5CMmEhavRtRpwAHThYKKw72OZUiuWLzJlpK75ARPv/q2Sl2U=
+	t=1709564713; cv=none; b=Hfck7WB9S0vnLNrS0M5J3AYlzXpk6jUBGkUWKbAWmf6YgTSOe2dljuofQPKxzZMhPmIzMwnLf6MTOL1IHqJ4l20oSXbNXrjTK3cLLkCwW+4bG2yOg6ipvVYs0Qwr07Wv/4369crQ21ve/dCyN1k697NCJHmAkNa8XLq64Qe2k/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709564365; c=relaxed/simple;
-	bh=u/ek3q1kVCTn3VecuWgufz0Q/b4zPEcqhFv0YfTJRUo=;
+	s=arc-20240116; t=1709564713; c=relaxed/simple;
+	bh=aFzIYWpLx7ze1PbKKisSlGy++E+y8yDWrJ85BjnO9Ns=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V0DRkAIvsJJ8kqTRfTu8Bc3IL+Xjx5bRYERz/EnVQNscNl67Qfiicxnpl72UCmJuRKJl62QpQ04UtIHDl9b5r8fH4paJOkP+RFXbFIfpHhGUgHdPlAZqKQlcpputTt3XIP1IafbMfKYbHpHQzJytumqiKNb7cffL9OxyHAL2oiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iTPYt4Uz; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:Content-Type; b=O5HTPvZoxNklKKVEWYZYYqP6wK5t/8xK+VyUH8IMuYK0tLmQSteLaPyUyD+qk6fxgqdENaXcQpS5ETYkS65Pwk+1WrcXSwL+w5LRuTZfkd5i2bVqNDgpxSdRNZ10+1MKF5whQJTvquprH/JbleYP/DHCtIN4uEheO/sYESIn+o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N6rRu3Tw; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iTPYt4Uz"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a4515f8e13cso162599366b.3
-        for <imx@lists.linux.dev>; Mon, 04 Mar 2024 06:59:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N6rRu3Tw"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-564372fb762so6023946a12.0
+        for <imx@lists.linux.dev>; Mon, 04 Mar 2024 07:05:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709564362; x=1710169162; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=OQPhJYLB3T7gmWKqDA+4bZDbuiPVQDX4htvMvW6HunQ=;
-        b=iTPYt4UzWiMQ0RTiaQ3VhS8aOQDUIP75Mc/YYhuPgTQBY/hr5OAOjHhbraQxxGM9II
-         d6KwxwgnmMxLmOCfetRQ1tBU9GwP/28ZUKeyZ7Xw5RruWj32WkCB9z7L8PFnBg/tCITU
-         8A4iv7tFVFnHISqSC059Utk7pyY3os1SdjzNmlwUyW9A4Te3/X86DZkW87tenxXxpE2k
-         H7Ga4/lx0QIbiQ/4amwH7J0Bockabc+yy3pH2cYJm3psIjTapThTvkGi+UK71D+AH6Ty
-         bVZccn+7pFjpE2OhvkHTQqD6nfnEWwmR5qA9VwQ8gGEdwuoyU60UtaEAm4k8y4KwK33i
-         KJow==
+        d=linaro.org; s=google; t=1709564710; x=1710169510; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vZJI3H0dwvZmmdTH+7pLS2Jlnz/cwhWbuBa7wLEeu3Y=;
+        b=N6rRu3TwXmMjodidpEtevdYYcPvuN974UM7W6KTGm/bMkd5TKICSGm6RsKnaIoHN5n
+         x0YXWJl2mzQVLvbUrzsi96+YUHRh/daS9B5RUyH4iNlswg299K3Fw96vBXDzK2tGGMPT
+         AA2K4v8XKtjNuBaxf8vwu5BfOaf+6BihI8eK41Sb7pJdW3nIGaCMnAJ/ptHW+PshKz/q
+         6uS7KR2eNl1H2f+L2KyhdSCU0M+y2MWLUuNFuKk2hcZ3uwROfDjF7j55bkapOvaOplJg
+         nlDU9OAHDGQ6vYjpIjcXJZqtwATkb+EB+ljO/9Abj1viBzSho+haF0DBKZXrPAIjqxHg
+         4LPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709564362; x=1710169162;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OQPhJYLB3T7gmWKqDA+4bZDbuiPVQDX4htvMvW6HunQ=;
-        b=me0mpGuPATsssKWaAkp/7eWFzHwH1BTnH2qCabmxo2f3HrqGDFycrKp4k2W+9xz6PI
-         a7qRC/7NgOAFXi11PzKq8+VDeABXB0fz1t5u8cQ7Qq0DByk+qEbbGpXWwzeG/gBNn1Ec
-         hhTlc6LS+Uk2hQ4BnNgK2f0aURkRP47+8i/Da7wBPdCGZPmvlszaZfIU2+sUk3SMlMGe
-         poBcljZyRr8Q7GKGBljQcM41FZAHk4Ehg/O48uK+ns3qp2s+hOcGxSY3HvmaTkIdIyi7
-         MBnl0FcID0YRkcCPgKi3ABCJwsMmiklr66cp9itBE6XrQTGGZ/k4KLYBfkFnsumPrLVa
-         gyOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQtDw2BddmjA7gDIc0/1RJwdnf1nbwxz3YoM8N7+3uqegBCKvEBcpqvirZBddSjw8o3BhAz7g9imMs8Uh9ECth7Q5D
-X-Gm-Message-State: AOJu0YwFtobEvFpBUoWOCCYJ+C62U1jSz7X7GaRAu9sr+RGmB+TH9bCA
-	XnmX/IQfx+DO4I74UbeGfmgyDDNH/d7jvQMjIHyYEjtaa1E73Q1iT0nov5FfhNI=
-X-Google-Smtp-Source: AGHT+IFP8IQHricKVRaqhoT9wiys2VbWCFTGaiuyUVPnWAaGNxSqsQPsgjybd7rrcazoWXyaGQwA5A==
-X-Received: by 2002:a17:906:ca4a:b0:a3f:5c5c:33ac with SMTP id jx10-20020a170906ca4a00b00a3f5c5c33acmr7044835ejb.62.1709564361903;
-        Mon, 04 Mar 2024 06:59:21 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709564710; x=1710169510;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vZJI3H0dwvZmmdTH+7pLS2Jlnz/cwhWbuBa7wLEeu3Y=;
+        b=vUddGyXe5DQi++vM0SkC/RBTSPAKtSoXlscgC7T4BYy8VUqoJQoVCGkGzYo8kFC3Zf
+         pzMHB0vHVbrQYDtvxMJXvdcDW1n36gNQIeC8gjDlckNCK5WxWOPC8AkSSQBHahaJRp/G
+         PdvVy1i7lShZhEdjhacila50Trh8cgYtnuCOL5AnBs/WPsEjQzaw1rpx+Z+LuJjiUduZ
+         UwnnGfiafAM7AEqmAbYL/APtDdvWP+l53YHF4cWu8J6EOlkeSOTB1tmu/jIIvjewFNG5
+         kxMSbP2NPrfkxSuU1aYov5oY6mYqdpnJidXFVPLsLhsMp8T0It4v12ao7RoWXfZQBfeM
+         Xtsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPy1VKf0x7hzjAJqtlYcjOco+cjFJgeOhphlSmGk23bpMKGklZWxUk7DOHCfO+mOheNJnyXmY4x89HX61o92BGEdFw
+X-Gm-Message-State: AOJu0YwcijLXZDUcExuNq563W9yvxUOY92Ylr3pOAGi7axfvxYCak3SQ
+	6kNgEAkZ2JUoBZM++OQ+hcQ7CHOYkXEp4zM7UIVOnCzMgPNIrU/L4tG8Hf4AU+Y=
+X-Google-Smtp-Source: AGHT+IEnz6QZ+BBBdhwZU2aVBi7I3HTmP7+LI3oH8eZ8kUL+tXj1J3CQ8RXj0bs+vE+d6HYS34PFPA==
+X-Received: by 2002:a17:906:2346:b0:a44:f91c:a85 with SMTP id m6-20020a170906234600b00a44f91c0a85mr3249491eja.60.1709564710341;
+        Mon, 04 Mar 2024 07:05:10 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id y13-20020a17090629cd00b00a446c787c86sm4180511eje.213.2024.03.04.06.59.19
+        by smtp.gmail.com with ESMTPSA id wr8-20020a170907700800b00a4553c6d52csm1105065ejb.35.2024.03.04.07.05.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 06:59:21 -0800 (PST)
-Message-ID: <6c9e0570-fcce-4796-a943-5f0e65605b1a@linaro.org>
-Date: Mon, 4 Mar 2024 15:59:18 +0100
+        Mon, 04 Mar 2024 07:05:09 -0800 (PST)
+Message-ID: <7925ce69-0cc6-45cb-851e-75a9f19f883b@linaro.org>
+Date: Mon, 4 Mar 2024 16:05:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,23 +61,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindindgs: clock: support NXP i.MX95 BLK CTL
- module
-To: Rob Herring <robh@kernel.org>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add
+ power-domains requirement
+Content-Language: en-US
+To: Frank Li <Frank.li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Peng Fan <peng.fan@nxp.com>
-References: <20240228-imx95-blk-ctl-v3-0-40ceba01a211@nxp.com>
- <20240228-imx95-blk-ctl-v3-1-40ceba01a211@nxp.com>
- <20240304143916.GA181628-robh@kernel.org>
-Content-Language: en-US
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com>
+ <20240228-asrc_8qxp-v3-1-d4d5935fd3aa@nxp.com>
+ <f8ce39e9-7f06-49e7-92fa-785bd1cd2d1e@linaro.org>
+ <ZeFTDSuLEeYrsbKi@lizhi-Precision-Tower-5810>
+ <0cc8a370-4497-40f5-9040-1584c0c777f9@linaro.org>
+ <ZeH3UhbStCTh04Ku@lizhi-Precision-Tower-5810>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -124,24 +126,30 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240304143916.GA181628-robh@kernel.org>
+In-Reply-To: <ZeH3UhbStCTh04Ku@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/03/2024 15:39, Rob Herring wrote:
+On 01/03/2024 16:42, Frank Li wrote:
+> On Fri, Mar 01, 2024 at 07:30:10AM +0100, Krzysztof Kozlowski wrote:
+>> On 01/03/2024 05:01, Frank Li wrote:
+>>> On Thu, Feb 29, 2024 at 10:44:20AM +0100, Krzysztof Kozlowski wrote:
+>>>> On 28/02/2024 20:14, Frank Li wrote:
+>>>>> Add power-domains property for asrc and spdif.
+>>>>
+>>>> Why?
+>>>
+>>> i.MX8QXP i.MX8DXL and i.MX8QM need it.
+>>
+>> Where is it explained in the commit msg? What about other devices/variants?
 > 
-> As that is the main feature/function.
-> 
->> +      compatible = "nxp,imx95-vpumix-csr", "syscon";
->> +      reg = <0x4c410000 0x10000>;
->> +      #clock-cells = <1>;
-> 
-> Please make the example as full as possible. For example, add 
-> mux-controller node. Do some of the blocks not have mux ctrl?
+> I will add it. These patches are for imx8qxp\imx8dxl\imx8qm only. If other
+> platform have problem, it should be fixed by new patch. 
 
-I asked for this in v2...
-
-We can keep asking and asking...
+I would assume more responsible approach from NXP, not just "their
+problem", but anyway that's not what the comment is. Why do you say all
+the variants have power domains in one commit, but now in email says
+that they might not have? All your patches are vague in this aspect.
 
 Best regards,
 Krzysztof
