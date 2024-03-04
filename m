@@ -1,203 +1,202 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2049.outbound.protection.outlook.com [40.107.6.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E0512E72
-	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 07:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709537006; cv=none; b=UvIF2/ZSE4/CP/BDLiT+IWCmfA+LW/KNtNVatTBZBu1MARQhTyyVj3Rhbn6pw+7Zq8JEW7KXObI4gIvZ1/bC1hfaBAvEF18xlTblQVPFfQxaSBg60kqe8h/FDmFvTYFqVX7ZXUWtkPG3GMme4PzM+chfVISjDf9Tx9yTxTR0wMU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709537006; c=relaxed/simple;
-	bh=M03hxy49tZj3JEHn2dTWKxfoGsKeX4oy3shfwcKmMIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MpE7F+V/icroZa/HEL24WMdVlGxsGTf/p/LC4ZHWlDlj1W9qSEgqH3CGhRnR5UtOpxFPOHbnKeBekcD4h53C26O7Hz6Y/i/kvhjDO6wiiH3tKZUY0ySDaUMUHpt2VzUc2YhaWou0ghsGLvYMH3RlgdhnB+/g+XD7mggXt89OcMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B3mnzk79; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4C81642A
+	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 07:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709537514; cv=fail; b=lUQWLDr8ozr3Y3g8J14u8HYdrcWg2MPm/ZIthUHwAID+sMqRxh2zeBy/eogLJuA/nXE+wi4tLWg2jHHJmv6hSmbFciT4LTj/KgtNBdNiKnlATZyOoLhdMxpPHGXHx+cLQaje72yORtl86YMCDdyBAvxbTwOFtzfFYRRlEkyBfRk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709537514; c=relaxed/simple;
+	bh=GKmuv+kiqcGTTQUt31n4NAAA0E5BzXFZ3JnToX7aOUE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=deprPnp5u2Ngl0FkLJH49TVpUu/s+kxZOONin+WVckEAAwIjFnhbjWKTWXewX3ogyIHnRqlpk2QgZ2vDcHA4X4La5lDyrE3OAdyy5NyYg4b+SZ+pkznXw6oX0HASrcEeKnAxYFHjCLLsMb+g1QBVgMrfko5ZyzdiFGm1tcvkYuQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=hVYuiS1d; arc=fail smtp.client-ip=40.107.6.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B3mnzk79"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33d568fbf62so2111125f8f.3
-        for <imx@lists.linux.dev>; Sun, 03 Mar 2024 23:23:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709537003; x=1710141803; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zvv2RvqAKR32wfF6dMhJCec7pDLoBXFhK3YVJX0dABw=;
-        b=B3mnzk79KVMdnEp4QxVtzRB1uXIw00XugP1B6GyhuNS+yvooMgqsPA0j6Og7qlYtYM
-         JHGPDL7GtbOaG+w+gtktUbQ4n4UUi8Y8hccIeW+vWW5HuRIUWr+soI5X5r+8B10JGh9d
-         i9OD3FwYg1r9J7hXsfF1c/ZizUNv3d5d37Ct6c8Ar50WodxupA323+pupvqju9FM2B+F
-         qu3x/ORmg0aGuWTm7BxPjbM33nKthohh5vNKGgUwLIU+QS9TA8JOhGPkKno/0hZscwr6
-         EimM8+aKKbVzDG+cERBgzaDGOB4XMnFEyHttJHMxqtcluXYHGodxo1lsMiNiRqsvImDR
-         3a2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709537003; x=1710141803;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zvv2RvqAKR32wfF6dMhJCec7pDLoBXFhK3YVJX0dABw=;
-        b=My0H4uSILExTCJfxq5/1cbY3RyuBvVSqGuz9CoRz+VvVBk8XOgh16xCaSyp7bVniF9
-         7lkkWod2oP6E3pTVYGUb+cxp5PiU0H4SI8ojSPlAmGjVnJwwc0rdIe81DG5GaW120phq
-         DAh6jVQ2GDjfExtTbSyVJP87qLUsQLRPuhbXglv3Madtbppe2xJOTvry/LN5Ft85qCXZ
-         UbEmKdQD2ObD+gnw/6xjZBoWiurk4/zXZkASg/+uyuQwYm5ifzC7iM0l7GgaojWPAz8E
-         NpN4dVV2PPFghrhVpXk9SUnJutWM6nQihUXtBOfa5VtrH9NueanYfjrTYgCsNhB/pvBw
-         mY/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWUGpMNzQgZXjKfhnOBCBzVSrt74VQ1oB1LR9PxK+xVZ72VFg1iTYdPMiqwdWJLk/jF6BJs0tJ+axYrLHMm88cUKd/j
-X-Gm-Message-State: AOJu0YyCuaG3egj67sX1E85pG2WqQFGvBKu+lBIRRBt2DWMVN7Nngl7a
-	1f2M1z1Y90CsbV5dtA7MYskoElQPMOEa9N5zzgmClpHoWc2Z/ioOyar7ZVTGOVA=
-X-Google-Smtp-Source: AGHT+IE7ALsJqhDpVZxE7usDUH7HTanZGu45qUCRfZCLZQ3L36mu/z7mahNw7Pce9HumilUFcN9K2A==
-X-Received: by 2002:adf:e643:0:b0:33d:c5c7:4182 with SMTP id b3-20020adfe643000000b0033dc5c74182mr5737767wrn.7.1709537002828;
-        Sun, 03 Mar 2024 23:23:22 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id h8-20020a056000000800b0033d2ae84fafsm8098930wrx.52.2024.03.03.23.23.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Mar 2024 23:23:22 -0800 (PST)
-Message-ID: <9c1f74b9-468b-4243-a21e-fd18183aa4b1@linaro.org>
-Date: Mon, 4 Mar 2024 08:23:20 +0100
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="hVYuiS1d"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GF6Z54yzb6Rnlm2Wz/E4OYzhBgA0cgfNtubGdForIZpjtUkVX85pNmuSXYzOWE4T/4Gc1dUtwKibHyMkfTzSntXGHfcDY7WgUYiy0g/HRy0667P9dmrsgMufTarrxHcKCrjJumFubiqYG2+oyiTjr/sLQGIQq9OIYqt8nmDxbJagm4TTmX7vOWHLYQnck8M+JSllxDCik/Gmo/dLhPiVo0wn21rqj2uK88MML0NiG+4YxdS7dEbikmensglrvoohOaCNe6pgJmeRBz4DE8D395fh7iyzlk+0AoxmFgXgpaNSBLE+rpXnceG7QLKz61RCuOO+6zetiXj1kppRTRuefQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GKmuv+kiqcGTTQUt31n4NAAA0E5BzXFZ3JnToX7aOUE=;
+ b=FY24lDQYYMCJgqKGNGagnIzf9saCfE980qXTLGIf9Fg/yEtB9/JevRi1IhRVUuMBr7FxKcWzLFjmzAx0e9d+49/Q+jFJ0QiMCbSLd5okBNi8S/bb/x/iL43rSSCcjnuoKFzTEHDDGQJ5H5mWNyltWyjo4VvWStaCFX6cuBNiTvGe9oproxs43+Sf54wxc82wWmTdfj3CXIZoq0Ufsf0TP+FCmuWh3W0jk0kL6D6Th3JwwBCNthJaQ4xfBSE6cNi+6B2+E71MQD+2YKWrjccX4eJGu8bOYvhJmXrKXoA7JOmWkIt33NU2TLj9k0xLtUDfp+2ajSsK1YjmcKEUyw6jIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GKmuv+kiqcGTTQUt31n4NAAA0E5BzXFZ3JnToX7aOUE=;
+ b=hVYuiS1dccllPUUg9rS9JuctIE38ep1o+rmKYWjDNNC1y78db3UlxMLD13rroiVO9qjgkWwcPsKsM0cFL7vACDeopZ3YN/OSTznqrp8NiQDhltRHqbEoL2eE3vmPjJ82GBAKGWuwZ5PcAC0c9FmdHBQaHuGrP8VVS6v4JU1Y5x0=
+Received: from AS8PR04MB8404.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::7)
+ by AS5PR04MB9772.eurprd04.prod.outlook.com (2603:10a6:20b:677::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Mon, 4 Mar
+ 2024 07:31:49 +0000
+Received: from AS8PR04MB8404.eurprd04.prod.outlook.com
+ ([fe80::643f:faca:24da:e9aa]) by AS8PR04MB8404.eurprd04.prod.outlook.com
+ ([fe80::643f:faca:24da:e9aa%5]) with mapi id 15.20.7339.035; Mon, 4 Mar 2024
+ 07:31:49 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>,
+	"u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
+	"robh@kernel.org" <robh@kernel.org>, Shenwei Wang <shenwei.wang@nxp.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "jirislaby@kernel.org"
+	<jirislaby@kernel.org>, "robert.hodaszi@digi.com" <robert.hodaszi@digi.com>
+CC: "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Frank Li <frank.li@nxp.com>
+Subject: RE: [PATCH] tty: serial: fsl_lpuart: avoid idle preamble pending if
+ CTS is enabled
+Thread-Topic: [PATCH] tty: serial: fsl_lpuart: avoid idle preamble pending if
+ CTS is enabled
+Thread-Index: AQHabder1X9YMJ50WEuZehMzhpFcmLEnKz4AgAAEAoA=
+Date: Mon, 4 Mar 2024 07:31:49 +0000
+Message-ID:
+ <AS8PR04MB8404FEA637E51E3B258BC28C92232@AS8PR04MB8404.eurprd04.prod.outlook.com>
+References: <20240304020712.238637-1-sherry.sun@nxp.com>
+ <2e1b1eae2e9d3cedcd270e35cfcf8086b914b7ff.camel@siemens.com>
+In-Reply-To: <2e1b1eae2e9d3cedcd270e35cfcf8086b914b7ff.camel@siemens.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8404:EE_|AS5PR04MB9772:EE_
+x-ms-office365-filtering-correlation-id: aec94d66-af92-4eb8-3ac3-08dc3c1d2767
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 9NcfsptKh8PUNjLPReXzvEvjNRNKjN9SZxEbewMOsMzp9v1IG54kUFIq4pWZNi1ZITnx3qbm7sxiFFqhm4ssciUOuLh2BPKa7TnK5FwwlLYGQ1htQpHmu8tYnzSxKAXWXitSiFAna1LqrawhHBoDbayi6ZHYTQUnx3HShm8uZQCU9yKc2t0gohFpJemWhzmRxLUxeK/zC1AN0+5Jj4wglq9rKDDsBcJmVm5PJkJ2vsciMe6/y5Kmoe/Codv8/9PkTegtRWhvjTJ9gFj3VFMcArqR+047Teu8Svs69jqEgGTWp4DZsPiD65gkApLSEKpanGSZXtm0KhCyn+RDqIKofcDjWO2DgxG8/hOp5xDsUro21krAa9pwUeFls0znI/5Gr/VC5ZKB9+6wL6ZkThKnjofZrBkCQtxKl4Tm4Hazj9YoSYWbKpppNXP3MvdaXXco4wbtxbGJu9o58TCWusBfCcNh7n0DvnbnwC71N/M7CvF8gHtrgi8Ch8/O5raqn5gBi4nru5LXQ/3uu1PWmibuRGL/AAPZEmSfSAmjh6WOqzoowv/cJckKo2pcZ/oA4ulJR9m9ecPNrXxcfBEN6RXbn4KCv4mjyLYx+tWSb0VZkgvIrtT+4kJdOPBfeQ6LK/6TK2gWeBqK/Q81GR571/m66nYZPqU9mGyKxBVLFxa/z0pErhAJFAH8R0vYNQuXaYexYNqrmG3+4KrXOF7Uq0Gv4NuYQcpCVSzj+5s+0Vw6OCI=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8404.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(921011)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?Bwn1nhk3W1IwUVE9ARNqJEU/C/LFkjZgDQvQakVyap6kXO5L6rCJplUg7C?=
+ =?iso-8859-1?Q?f0FO94/CytaQrYUrnFl9kzQ9RfAQW67TJYww7OQaTYT/yWq1DLr8IkSDMe?=
+ =?iso-8859-1?Q?GP8rlSw4yAR2DTMsOJ4Dv4K64sF1A1GKRQkY5/vXji16j1pndf7AWjvTWP?=
+ =?iso-8859-1?Q?QEktQL/Kj+T0j5e12EajMIpNVrowl5nwwlPscyU6aunw5REupDREP0wDop?=
+ =?iso-8859-1?Q?X+B+VehkrEwG0ZDS8lwLexuspvAWI6vdLBERe1XUi9Hhh6SedjW4RKFfgh?=
+ =?iso-8859-1?Q?vz64bpLw5eH4Q95O2/eSlYDi5hu3mc9FgTqnx+hacg3g3iTvt61+OJDFUG?=
+ =?iso-8859-1?Q?Fzs+xyN1/h7GebYyWkK0C0sGdkAN37tGMjdLJ31R5Ykz5UgriC7WFOZBI3?=
+ =?iso-8859-1?Q?xFXKlYCgMJlloDAZK/80Pw3pQ/P8BNx6/QiLOkZeeEuUU8ObgllEnmwtsm?=
+ =?iso-8859-1?Q?P++WIFV88m2pJ1tYJf72ztMa7X2Mq9AGXfhkFBcjPa1k/8L7Pb9lFWgEqf?=
+ =?iso-8859-1?Q?CDzvznO/0nIEQvPoxlbPzZRn4FEepAJH2wmAXuyK9cBOlRiSJn+ST9fQep?=
+ =?iso-8859-1?Q?zz79FohrosIj38nNL78NCNxPutAsDsl6wyZcXcNfaFsaCvU7chO4L2YVam?=
+ =?iso-8859-1?Q?BoctOAY2J2QA0S+4e62iyvLPj5g2NMfHVDWWJ5E86t/zOfxofk2/wJC9h+?=
+ =?iso-8859-1?Q?XxA1WIyWPvwcCcYUTJXxEQ3eL6OC25soEgGDa/0eu/l6sFvUrVQs6e1bA5?=
+ =?iso-8859-1?Q?94F4aZwfkVbhH49yEdBDJ+u62L1/CEOYWsWoJ7LZAhpvuf5MZdd7ld7tGX?=
+ =?iso-8859-1?Q?pzHJfiWC1Y2DzmzMfSqZOHo9Ry3fys5IHFpgiYivycs6TbelPfxxboeh66?=
+ =?iso-8859-1?Q?osVNziW+zlSe0BS1SS3RnrMQ0L7ArwXzFHmK/EASMa28IBP3YPEczmfasn?=
+ =?iso-8859-1?Q?mEgG7xhUiRetmDfBc+MxBvtqP807oOWiqO7OTYU6IgMRJICyMPvcsd+QQ7?=
+ =?iso-8859-1?Q?QVvfsqJPmIckORk0DLwDqvBbADP2O+V8N4wDVyG1JJp7Tf5SZfr2DQ4kHy?=
+ =?iso-8859-1?Q?qTStS40mNpPBvh1stU3Q7b06Hd4U/UmmUaH9q/z7/J3zBTiCXOWttjcJmM?=
+ =?iso-8859-1?Q?77Zf7eHcBUUBo1vy3aJG4qGbnSlKIF7ssd3InZo4ANOOvNzsMB3bSiTUIZ?=
+ =?iso-8859-1?Q?46yD75m7/Z7vzzZIcqpOImDj9aGYqz3pAymK5O4mlDGfCaZ77ku8uh9T/l?=
+ =?iso-8859-1?Q?F9jUmVBO7VheO4S489clfW4ev2v2wrywLlWCdbiRkNGGZsKMvDv9OL8wnO?=
+ =?iso-8859-1?Q?bdDlwg3cKAD88sAhsYOuNLHZImV4grUFvmqOHYBSJrbYzC2jrvgUMivt8Z?=
+ =?iso-8859-1?Q?/A6GApRiMpvCSLfUI1O+kPND4eyyVozgJPp2TXsIvOCAXzeDbSsYu3dLZ7?=
+ =?iso-8859-1?Q?aFFBd+2KBCyvLXlDR56u0LnkDQNRp9TxNHiS27Q/GEieX5jUZcVw1m4rgH?=
+ =?iso-8859-1?Q?82RGu1rTXVAv/cwRTjU5YpNF7sDLZDMA5cbuxtUncW86nzaQgrxEezNxg/?=
+ =?iso-8859-1?Q?TLG7mKF9ZV2oVl3lKcj9/L5Hzdcyvj01kM7vIlQYl6GiA54hwA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] dt-bindings: dma: fsl-edma: allow 'power-domains'
- property
-To: Frank Li <Frank.li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- dmaengine@vger.kernel.org, imx@lists.linux.dev,
- krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
- peng.fan@nxp.com, robh@kernel.org, vkoul@kernel.org
-References: <20240301214536.958869-1-Frank.Li@nxp.com>
- <20240301214536.958869-2-Frank.Li@nxp.com>
- <885501b5-0364-48bd-bc1d-3bc486d1b4c6@linaro.org>
- <ZeNI1nG1dmbwOqbb@lizhi-Precision-Tower-5810>
- <31e62acf-d605-4786-80a1-df52c8490913@linaro.org>
- <ZeNWXxzFBzNj0gM1@lizhi-Precision-Tower-5810>
- <e1d0aafe-e54f-4331-8505-135b9a8f9bff@linaro.org>
- <ZeNYG1IUfniWkhcp@lizhi-Precision-Tower-5810>
- <32d4a6c9-1cc3-4e9a-81a6-744a33bc6bee@linaro.org>
- <ZeU/UQVPj/q4kD3p@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZeU/UQVPj/q4kD3p@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8404.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aec94d66-af92-4eb8-3ac3-08dc3c1d2767
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2024 07:31:49.2409
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UJ/nQ+0SE1IIu2+68K3jQG22Oss6wcL2NFCCouFnG29a0+n0PE5pvmETJw+UP0KFn5NAspFHJeMxJrhHe3LRug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9772
 
-On 04/03/2024 04:26, Frank Li wrote:
-> On Sun, Mar 03, 2024 at 08:55:10AM +0100, Krzysztof Kozlowski wrote:
->> On 02/03/2024 17:47, Frank Li wrote:
->>> On Sat, Mar 02, 2024 at 05:43:01PM +0100, Krzysztof Kozlowski wrote:
->>>> On 02/03/2024 17:39, Frank Li wrote:
->>>>> On Sat, Mar 02, 2024 at 05:20:42PM +0100, Krzysztof Kozlowski wrote:
->>>>>> On 02/03/2024 16:42, Frank Li wrote:
->>>>>>> On Sat, Mar 02, 2024 at 02:59:39PM +0100, Krzysztof Kozlowski wrote:
->>>>>>>> On 01/03/2024 22:45, Frank Li wrote:
->>>>>>>>> Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
->>>>>>>>> it.
->>>>>>>>>
->>>>>>>>> Fixed below DTB_CHECK warning:
->>>>>>>>>   dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
->>>>>>>>>
->>>>>>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>>>>>>> ---
->>>>>>>>>
->>>>>>>>> Notes:
->>>>>>>>>     Change from v1 to v2
->>>>>>>>>     - using maxitem: 64. Each channel have one power domain. Max 64 dmachannel.
->>>>>>>>>     - add power-domains to 'required' when compatible string is fsl,imx8qm-adma
->>>>>>>>>     or fsl,imx8qm-edma
->>>>>>>>>
->>>>>>>>>  .../devicetree/bindings/dma/fsl,edma.yaml         | 15 +++++++++++++++
->>>>>>>>>  1 file changed, 15 insertions(+)
->>>>>>>>>
->>>>>>>>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>>>>>>> index cf0aa8e6b9ec3..76c1716b8b95c 100644
->>>>>>>>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>>>>>>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>>>>>>> @@ -59,6 +59,10 @@ properties:
->>>>>>>>>      minItems: 1
->>>>>>>>>      maxItems: 2
->>>>>>>>>  
->>>>>>>>> +  power-domains:
->>>>>>>>> +    minItems: 1
->>>>>>>>> +    maxItems: 64
->>>>>>>>
->>>>>>>> Hm, this is odd. Blocks do not belong to almost infinite number of power
->>>>>>>> domains.
->>>>>>>
->>>>>>> Sorry, what's your means? 'power-domains' belong to 'properties'. 
->>>>>>> 'maxItems' belong to 'power-domains'.It is similar with 'clocks'. what's
->>>>>>> wrong? 
->>>>>>
->>>>>> That one device belong to 64 power domains. That's just random code...
->>>>>
->>>>> Yes, each dma channel have one power domain. Total 64 dma channel. So
->>>>> there are 64 power-domains.
->>>>
->>>> OK, then how about extending the example to be complete?
->>>
->>> Let's add 8qxp example at next version.
->>
->> You have already enough of examples there and your change here claims
->> they user power domains, so why this cannot be added to existing examples?
-> 
-> Only imx8qxp/8qm need power-domains now. The example in yaml is vf610, 7ulp
 
-Need? Hardware is either part of power domain or not. It's not dual-state.
 
-> and imx93. If add power-domains at existed example, it will mislead reader.
+> -----Original Message-----
+> From: Sverdlin, Alexander <alexander.sverdlin@siemens.com>
+> Sent: Monday, March 4, 2024 3:14 PM
+> To: u.kleine-koenig@pengutronix.de; Sherry Sun <sherry.sun@nxp.com>;
+> gregkh@linuxfoundation.org; ilpo.jarvinen@linux.intel.com;
+> robh@kernel.org; Shenwei Wang <shenwei.wang@nxp.com>;
+> tglx@linutronix.de; jirislaby@kernel.org; robert.hodaszi@digi.com
+> Cc: linux-serial@vger.kernel.org; imx@lists.linux.dev; linux-
+> kernel@vger.kernel.org; Frank Li <frank.li@nxp.com>
+> Subject: Re: [PATCH] tty: serial: fsl_lpuart: avoid idle preamble pending=
+ if CTS
+> is enabled
+>=20
+> Hi Sherry,
+>=20
+> thank you for the fix!
+>=20
+> On Mon, 2024-03-04 at 10:07 +0800, Sherry Sun wrote:
+> > If the remote uart device is not connected or not enabled after
+> > booting up, the CTS line is high by default. At this time, if we
+> > enable the flow control when opening the device(for example, using
+> > "stty -F /dev/ttyLP4 crtscts" command), there will be a pending idle
+> > preamble(first writing 0 and then writing 1 to UARTCTRL_TE will queue
+> > an idle preamble) that cannot be sent out, resulting in the uart port
+> > fail to close(waiting for TX empty), so the user space stty will have
+> > to wait for a long time or forever.
+> >
+> > This is an LPUART IP bug(idle preamble has higher priority than CTS),
+> > here add a workaround patch to enable TX CTS after enabling
+> > UARTCTRL_TE, so that the idle preamble does not get stuck due to CTS is
+> deasserted.
+> >
+> > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > ---
+> > =A0drivers/tty/serial/fsl_lpuart.c | 6 +++++-
+> > =A01 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/tty/serial/fsl_lpuart.c
+> > b/drivers/tty/serial/fsl_lpuart.c index 5ddf110aedbe..dce1b5851de0
+> > 100644
+> > --- a/drivers/tty/serial/fsl_lpuart.c
+> > +++ b/drivers/tty/serial/fsl_lpuart.c
+> > @@ -2345,8 +2345,12 @@ lpuart32_set_termios(struct uart_port *port,
+> > struct ktermios *termios,
+> >
+> > =A0=A0=A0=A0=A0=A0=A0=A0lpuart32_write(&sport->port, bd, UARTBAUD);
+> > =A0=A0=A0=A0=A0=A0=A0=A0lpuart32_serial_setbrg(sport, baud);
+> > -=A0=A0=A0=A0=A0=A0=A0lpuart32_write(&sport->port, modem, UARTMODIR);
+> > +=A0=A0=A0=A0=A0=A0=A0/* disable CTS before enabling UARTCTRL_TE to avo=
+id pending
+> > +idle preamble */
+> > +=A0=A0=A0=A0=A0=A0=A0lpuart32_write(&sport->port, modem & ~UARTMODIR_T=
+XCTSE,
+> > +UARTMODIR);
+> > =A0=A0=A0=A0=A0=A0=A0=A0lpuart32_write(&sport->port, ctrl, UARTCTRL);
+> > +=A0=A0=A0=A0=A0=A0=A0/* re-enable the CTS if needed */
+> > +=A0=A0=A0=A0=A0=A0=A0lpuart32_write(&sport->port, modem, UARTMODIR);
+> > +
+> > =A0=A0=A0=A0=A0=A0=A0=A0/* restore control register */
+>=20
+> The fix makes sense to me!
+> I see only one issue with above comment, which commit 380c966c093e7
+> already have put quite sub-optimal (after the actual write), but your com=
+mit
+> now shifts it even further making it completely dangling.
+> Should it be before last UARTCTRL write?
 
-Then please disallow the domains for other variants. You can convert
-imx93 to imx95 example, because it's no different than other one. There
-is little point in putting so many same examples in the binding. You are
-just duplicating DTS.
+Hi Alexander, good catch, I will move the "/* restore control register */" =
+message to the appropriate place in V2. Thanks!
 
-Best regards,
-Krzysztof
-
+Best Regards
+Sherry
