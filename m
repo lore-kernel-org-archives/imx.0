@@ -1,175 +1,170 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2080.outbound.protection.outlook.com [40.107.8.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D5667C52
-	for <imx@lists.linux.dev>; Sun,  3 Mar 2024 15:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709481160; cv=none; b=EFkmDohjkSaUpeB9aaXECT5uEbTSuNXV2zTYEegXrbqJCtsbkvqUYIXaQFYhRYa6iIEq4yEj4H121H69TTehO4MkV50Gu9Gat3uvodEzsTOqGJGbSSHbqxm1GUsuAmCbUo1xOAXOKZ25mKa8Htcw71uRvBWj9SEtXXVXDYLdt/0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709481160; c=relaxed/simple;
-	bh=heBYFeJDqEutK0Jap5MQNGri5HlpLGdN4xYRo+19dGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k9BSCO2mk6x7TVRdu7EU8HXXs9jVZFiS25Q3JF1LFFH6j1Okq+CusT8ZMPe4VnQ4ggx55umz14O1K9rFzjQUa9b4dAzer9gCGdBmBWiG5giljMFDK08uBJjqqBnsLMtaM+VALC5puDLlwN1HHfMVXeHHxS59S5BWA+lD2Uj+jDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=diqYF8Ik; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B747DEDF
+	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 02:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709517607; cv=fail; b=bxmwL++ogt+ovQT8F7NTMiFl2GnOnc0D8uYjn0OGlpr2rQM/2sDueWNj++c59dDZ0AREWCstBj874GPv833A8Wvkf70ymPftmpYGSUma1961pOK5MMPsNntQ84aj0ldZF0GLrvrAI0+MAbH4NdqYvwMKrkC0pj3UmWpoFriihnc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709517607; c=relaxed/simple;
+	bh=AHzr6an/u/3D8jN/H2BTmKZk+tPXSHnpSodxSaXz640=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TwC+RQHL/sjpTN9ZjH21itsBQsBbptTZJdzH/6nafSCbxeWtMSAzzll/9KfZqA+ai1UeLOhfNeoKHToRF4g6L8UalGNb75o/tFY0tCFOznZuPDlMCKyRWvXm1i/lYR5AtUhwN3rG/lTBQunIODg1ymo06168gWPK8EtFtDd+Kt8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=kj65FoHv; arc=fail smtp.client-ip=40.107.8.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="diqYF8Ik"
-Received: from pendragon.ideasonboard.com (89-27-53-110.bb.dnainternet.fi [89.27.53.110])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A4ADC9D5;
-	Sun,  3 Mar 2024 16:52:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1709481134;
-	bh=heBYFeJDqEutK0Jap5MQNGri5HlpLGdN4xYRo+19dGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=diqYF8IklThnS+NJvqfc17HqckXUJapqtKc2Si4LHvdeUcHCn1TG5ZWn2NTdLVR+A
-	 f8il9+HnVnlEg06BYQfaqAdaT6Z6esk0/yCkjJ/7qrC+vnFJOr07TGYwE+e2s908RL
-	 T6bmBRvlj/BsKECTNHkI5J/YN6kcGyYbGBL7g9D8=
-Date: Sun, 3 Mar 2024 17:52:31 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Adam Ford <aford173@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
-	aford@beaconembedded.com, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] drm/bridge: adv7511: Allow IRQ to share GPIO pins
-Message-ID: <20240303155231.GC11285@pendragon.ideasonboard.com>
-References: <20240228113737.43434-1-aford173@gmail.com>
- <20240228163153.GH9863@pendragon.ideasonboard.com>
- <CAHCN7xLGL5gMhd7Fo907gPScdD15KW==BHSorQMjbd-=k-E9OA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="kj65FoHv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Pv1SGhKw2TpCv62vEZtH7xyTcfhYK1Wacr2Kk1nRRvhLnzneK4wh6Ih64RuSCPT181h/VDK4JDWzvCzC1t2hP2kcVYDma191+lw2AndqLHDr3HtihnhB4515hBp+kgbJneBzZA75e/T5GeOxiL3lfmYKsYPWVbCr9X4+kKPwC2tDcjSpBjZR/WP6Pq4ZOKuOBBSrBxo89k4pPqMSLNZyrHaTCC+QgaHuncDL09GQrkaxJFxABJ5gbXQZM+6B9M4Hmffa23Edz7nZYFB2V0KPMhJymtEV1BcD326KwyALTgtH59VmauR78Zayh53/lWMRXKLdtpX8cDWsqOS6v5cwMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uBHquXc9OSoe7dBIVnlvVe4lm3iPG7yoZL5CfPxxCPs=;
+ b=SBgPEKXM+UEB3AlWsf+ywMaB3LwnR+2vOELxrkYSjWtGy9XhBGR3AIYxxAdSKARBRyWkGRx3UaNWZ/MvZCP65vpNECG3VJkz/M1W7fByjhBXeA5Ft60tL5csspjk++m+o+R2XbEKV/cfDk0wWU/TS/33O9LpNgo5o/owRbZ13Jch9BcY2zUWFeqQbA8Dt04NFjmwJ/W9ePCmwo4k2d3pMbD61yD6nagdlO5gNOxe4sBdX75sI+wXSJpIRGxP0e9Rgx1Hs4UfNNyOEO0glIYTA+0MJjzU0s6bUwB8zh4utqW+0rVepAYJYn+N7zdbAv4bYu8de/81rK3lO45j+kJrBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uBHquXc9OSoe7dBIVnlvVe4lm3iPG7yoZL5CfPxxCPs=;
+ b=kj65FoHvL451Eg+6YM9QpVDtxaookZJlEyLDC5iGs3wt1kMTlGlar7bgQvW/s1DKUbUa/GYKtKEwSp0QtUeZbxz/E5h3DCromovFeOorBI/UOHHXcH3plL34nAgkjRjS5xmIU7rmSM1WksYYqbSxcppFraI5nLzbbupcmW3KtxY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8404.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::7)
+ by DB8PR04MB6858.eurprd04.prod.outlook.com (2603:10a6:10:113::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Mon, 4 Mar
+ 2024 02:00:02 +0000
+Received: from AS8PR04MB8404.eurprd04.prod.outlook.com
+ ([fe80::643f:faca:24da:e9aa]) by AS8PR04MB8404.eurprd04.prod.outlook.com
+ ([fe80::643f:faca:24da:e9aa%5]) with mapi id 15.20.7339.035; Mon, 4 Mar 2024
+ 02:00:02 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	u.kleine-koenig@pengutronix.de,
+	ilpo.jarvinen@linux.intel.com,
+	shenwei.wang@nxp.com,
+	alexander.sverdlin@siemens.com,
+	robert.hodaszi@digi.com,
+	robh@kernel.org,
+	tglx@linutronix.de
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	frank.li@nxp.com
+Subject: [PATCH] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
+Date: Mon,  4 Mar 2024 10:07:12 +0800
+Message-Id: <20240304020712.238637-1-sherry.sun@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::12) To AS8PR04MB8404.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f8::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHCN7xLGL5gMhd7Fo907gPScdD15KW==BHSorQMjbd-=k-E9OA@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8404:EE_|DB8PR04MB6858:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96dbd8c9-8f96-4b92-1b52-08dc3beece05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	oZ0d6wUYkIxqDLNJNVl9Lmtsl6NxxUj0YHvPPFgNs/WhWAXHhhuoVeOI999V3s714KlJdrr3Dd14J/R1e3gR+aKY5zTHh1KSKtXPVb8YwN7vmoFRf1o3rSWoBYSsHZF8+0RAIf0zJxmgZwRJMof48FTlPZEIXz6aPGi8xas0S74IS3clbAtyd0KAh23ENHDfFbhj7G9WP6T0fU8WwL/n5uk1oiZLXHO4YHe00806shhwwWZhK6k5hfMoo2yFs4P/5tVQO9voIoAkD9809+BNcyX/iPxa0qh9qcK8rsraCoRM+b1YND95cE3AE+SNJa2WwSsibdNCb5Y5wJvjmIeUGk9bL4hcp9P2h/Vop60PQ4NDS80UZw80LeH2lcuqSuU8CpaAJ/iXbhJxdo7yl9toYqm7lHA9IkOt/bTYvQ85Mg28eZRTP6k8Y0LPekdLqTLUasrxxHOuk4Hc4ZWuqEH75VlpCcK6V430LeT0Zf1+e1ySpknhALK2LZKk7N8RknHnhxSnXQ2Va9F6oaNWbHpIGqCHTdtnCU1Wpq2C1vn/onBVI13PVlZeqa1e2hnYzEZuzADTNUXHezQgZBQEQ0DMXjQya+oHBM1Sqbp6Z/N8kh5JHNXZppld8+FXOp5iccr4a6ihtWqfs9SmxrpDq7Tz9RESCDnH7sBQ/3ROZV/ck4HLzQweO8fITZqfpJeMo3fC2FMLWj/nqoPkmLa/r0kRCeF/9uC/DUXIqc7VDG4cqHU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8404.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OW1oMjBXekpwanBkVHRNY3hUUGNRRjVnYjRYYitFZ2Rycm9ueDcvaTF6anE2?=
+ =?utf-8?B?TU9jcGVVYmQvdm9lVG9PditrNUs0OEJUSGdXOHNNMkhSVmprWTdsK21uUVI3?=
+ =?utf-8?B?Njg1V3o1bVVNKzBZSnRlVGlsWHhjbjZOaXRwSHRyOG16SjR6WUg2eGwxN1V3?=
+ =?utf-8?B?TVFXckxnZ09SeFUwY0IxU2FOQ1JlMWhBalRJTEhNRFVmMTdZam1kUHF5RGdh?=
+ =?utf-8?B?d0RjUUVqMWQxcXFiMG94WHNRVU9Relp2RzVzd1F4R0F1bkkzdGovWmNqVnJt?=
+ =?utf-8?B?Wjg3QmpWdFNKaTFvUUkrc25mSDArZ3pOdGNJYWUrRnYwQ0N5dmJtVk9OdFpF?=
+ =?utf-8?B?ZEMrSzNyZERrang0cTdOSkZLN0ZrQWJrU0g4SEgxSmNBZEFhUVBlWmo4Zll1?=
+ =?utf-8?B?TmJ6ZkQzTE5lWGpxQTF3elpjRUwwelNmV1FaMTAxYlAvTE9xSk5BT0ZMbGVy?=
+ =?utf-8?B?YTJqNlVRVmdwM2ZyWnVUb1NUQWl1ZXNDOFJxSGhEV3dBVG5iNlpodE1LQWlj?=
+ =?utf-8?B?TktIOVJpRE9wenFtTERuVDIwMGJMR29nbnRpOE9EVjlCZjRtQ0RnbXlOZDcr?=
+ =?utf-8?B?QnY3V29rOFArRmoyN1lQZGpoWGp4MGRzeFg4bHpRTkZHcHVMT3haMm9Id1Ew?=
+ =?utf-8?B?alNQcXVHVjJzdUcvV3VGdmhwbVBUSVBEZ0x2MjAxRG0ybjRiZHF5V1hFZ0dL?=
+ =?utf-8?B?YkFMQWFoYmJTUmRhN3l6MnMyUUNzY3gxdGNRZTBDUWJ1N1ZvVGovWkdlYTF2?=
+ =?utf-8?B?TU9uc2t3U2ZpWU4rQnN0TDAycVM2YzFCTUV5RGZ5WldTWUxqV0htUFFYRCtH?=
+ =?utf-8?B?Y3Z5cFlmWE12TzNud0k4ZWluRGZqbnhYZkM3aDRFN0xCRlUrb1h2bnhsR3g3?=
+ =?utf-8?B?OGpna1NDTERSREdpaHNiQmVPZ2llQUtnQjhoOGg4dHRIVVJ0Mm85K254dDlD?=
+ =?utf-8?B?MGcyeFZrTUpwTUhxamZ3UHlVL0ZKNmVlajhKaDFjMjd1c1ZKRTd1SWlmanMy?=
+ =?utf-8?B?UU5OZEJLbVpWTDNYUmFRSDM4OU9aVk9FZkM2RGs2eVB5TEJmS3piZ2dDWmkw?=
+ =?utf-8?B?K0tidmZpd2ZQaGhCOERxcU1TdHcvYVhoM1FVQXdxTkFlc2F6SXlEbEtONFV0?=
+ =?utf-8?B?ZHZITmt3eXVHMWFFblR4VUpURmF2bUJTM3NJV1pZalNiVnE2TGFsLzJQNk5U?=
+ =?utf-8?B?VEpYSDVHMzdjQ0VKczNkd2FvcVNEemY0RUh1bTQ3ZW1WNHZMOXh1Yk1mSUxX?=
+ =?utf-8?B?UzY1amZWZjlvclQxVE00MmNBNjhuRE1aNGpDclZudklkNFh0UmxyK1B0a25C?=
+ =?utf-8?B?dmtmdFV6a1Bxdk1iR1RiRmRTN3YvSCtoWGx1b2Zvc04vTm5PWXlmUXlFUFYx?=
+ =?utf-8?B?Tkl2RWg2Z0Y5UC9ZcmZPNmJZeU8walpURGcxMkg4ZmYxNDkyOWp5ZU1RVTNl?=
+ =?utf-8?B?WlI0RDljZmh6ODFwa2hza3Myam5RbTFVc2RWb1kxanVNa2J4UU51WVpDcFIx?=
+ =?utf-8?B?c094SjlqM28vZDVtbUFsanM4NVg1VDNkY1VTRWh4UDRYTHpFNHpvSXRWL094?=
+ =?utf-8?B?eWxmd0FWb1VMQzYybk5BbnVnV1RCWWV6ZE9ldG5EcEFtZW9mZ2FmNkU3VW94?=
+ =?utf-8?B?MnErOUM2c1ZKY2tPUm0xK25wWWZEcHFOMDhXd2E3c25QWTZKWUFpV2R5TERJ?=
+ =?utf-8?B?dURJNGRjZENpRWR5YVZBRXdyU25tZDFaWmd3dzUreEZPQldORmdaTVdnU1Iv?=
+ =?utf-8?B?RlFXN3dMVlNXeTBIK0FaVDZNNURjVEpWL3hnYU5BeHVISkdMZkJhSWtsbVZi?=
+ =?utf-8?B?d2VVc2J1Mmc5Z1ZVZGo5ZGtOTHU3dmtlbW9sVi8xZE5uY3ZSbEpwQk5Ca21T?=
+ =?utf-8?B?TXN4MTNGZFRmY3VUOGFIY2ErRlJTbzNTc3F0Z1FWckZSOUxNNGhOUnE1OUd6?=
+ =?utf-8?B?TkFQZkswWmRVcEtIUDJaTlhkS2RsNGx0SjRweUxmSStmWGZWSEJMSnV4MTdP?=
+ =?utf-8?B?MGNlWjAreFljTisyQVF0RTNkWkE3WlVBOE9PMzlITFB3OGZ4WUdHWEFMV1V2?=
+ =?utf-8?B?dVdxWmc5d2h2bjdTNW40OHk2cHVTb3FYVjh4MmxFYVExOG1XL1EyeVB4QWNS?=
+ =?utf-8?Q?j1t12nONHUszUs3zvMuVycgLs?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96dbd8c9-8f96-4b92-1b52-08dc3beece05
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8404.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2024 02:00:02.6159
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9yhY2eat4y64uNU4k68ksNeBN6QTWjuRYg+VkOdl5sX4kvilHjDh9Rv4UotKraqG2rhLr6psoqkZ+4gFDo4zCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6858
 
-On Sun, Mar 03, 2024 at 09:44:03AM -0600, Adam Ford wrote:
-> On Wed, Feb 28, 2024 at 10:31 AM Laurent Pinchart wrote:
-> > On Wed, Feb 28, 2024 at 05:37:35AM -0600, Adam Ford wrote:
-> > > The IRQ registration currently assumes that the GPIO is
-> > > dedicated to it, but that may not necessarily be the case.
-> > > If the board has another device sharing the IRQ, it won't be
-> > > registered and the hot-plug detect fails.  This is easily
-> > > fixed by add the IRQF_SHARED flag.
-> > >
-> > > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > >
-> > > diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> > > index b5518ff97165..21f08b2ae265 100644
-> > > --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> > > +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> > > @@ -1318,7 +1318,8 @@ static int adv7511_probe(struct i2c_client *i2c)
-> > >
-> > >               ret = devm_request_threaded_irq(dev, i2c->irq, NULL,
-> > >                                               adv7511_irq_handler,
-> > > -                                             IRQF_ONESHOT, dev_name(dev),
-> > > +                                             IRQF_ONESHOT | IRQF_SHARED,
-> > > +                                             dev_name(dev),
-> >
-> > This looks fine, but the IRQ handler doesn't.
-> 
-> Thanks for the review.
-> 
-> > static int adv7511_irq_process(struct adv7511 *adv7511, bool process_hpd)
-> > {
-> >         unsigned int irq0, irq1;
-> >         int ret;
-> >
-> >         ret = regmap_read(adv7511->regmap, ADV7511_REG_INT(0), &irq0);
-> >         if (ret < 0)
-> >                 return ret;
-> >
-> >         ret = regmap_read(adv7511->regmap, ADV7511_REG_INT(1), &irq1);
-> >         if (ret < 0)
-> >                 return ret;
-> 
-> If I did a check here and returned if there was no IRQ to handle,
-> would that be sufficient?
-> 
-> --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> @@ -477,6 +477,11 @@ static int adv7511_irq_process(struct adv7511
-> *adv7511, bool process_hpd)
->         if (ret < 0)
->                 return ret;
-> 
-> +       /* If there is no IRQ to handle, exit indicating no IRQ handled */
-> +       if (!(irq0 & (ADV7511_INT0_HPD | ADV7511_INT0_EDID_READY)) &&
-> +          !(irq1 & ADV7511_INT1_DDC_ERROR))
+If the remote uart device is not connected or not enabled after booting
+up, the CTS line is high by default. At this time, if we enable the flow
+control when opening the device(for example, using “stty -F /dev/ttyLP4
+crtscts” command), there will be a pending idle preamble(first writing 0
+and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
+cannot be sent out, resulting in the uart port fail to close(waiting for
+TX empty), so the user space stty will have to wait for a long time or
+forever.
 
-If these are the only interrupt sources that the driver enables, this is
-fine.
+This is an LPUART IP bug(idle preamble has higher priority than CTS),
+here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
+so that the idle preamble does not get stuck due to CTS is deasserted.
 
-> +               return -1;
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+---
+ drivers/tty/serial/fsl_lpuart.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Maybe a defined error code instead ?
-
-> +
->         regmap_write(adv7511->regmap, ADV7511_REG_INT(0), irq0);
->         regmap_write(adv7511->regmap, ADV7511_REG_INT(1), irq1);
-> 
-> With this, I would expect adv7511_irq_handler to return IRQ_NONE.  If
-> you're OK with that approach, I can do that.  If you want me to merge
-> adv7511_irq_handler, and adv7511_irq_process, I can do that too to
-> make the return codes a little more intuitive.
-> 
-> >
-> >         regmap_write(adv7511->regmap, ADV7511_REG_INT(0), irq0);
-> >         regmap_write(adv7511->regmap, ADV7511_REG_INT(1), irq1);
-> >
-> >         if (process_hpd && irq0 & ADV7511_INT0_HPD && adv7511->bridge.encoder)
-> >                 schedule_work(&adv7511->hpd_work);
-> >
-> >         if (irq0 & ADV7511_INT0_EDID_READY || irq1 & ADV7511_INT1_DDC_ERROR) {
-> >                 adv7511->edid_read = true;
-> >
-> >                 if (adv7511->i2c_main->irq)
-> >                         wake_up_all(&adv7511->wq);
-> >         }
-> >
-> > #ifdef CONFIG_DRM_I2C_ADV7511_CEC
-> >         adv7511_cec_irq_process(adv7511, irq1);
-> > #endif
-> >
-> >         return 0;
-> > }
-> >
-> > static irqreturn_t adv7511_irq_handler(int irq, void *devid)
-> > {
-> >         struct adv7511 *adv7511 = devid;
-> >         int ret;
-> >
-> >         ret = adv7511_irq_process(adv7511, true);
-> >         return ret < 0 ? IRQ_NONE : IRQ_HANDLED;
-> > }
-> >
-> > The function will return IRQ_HANDLED as long as the registers can be
-> > read, even if they don't report any interrupt.
-> >
-> > >                                               adv7511);
-> > >               if (ret)
-> > >                       goto err_unregister_audio;
-
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 5ddf110aedbe..dce1b5851de0 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -2345,8 +2345,12 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	lpuart32_write(&sport->port, bd, UARTBAUD);
+ 	lpuart32_serial_setbrg(sport, baud);
+-	lpuart32_write(&sport->port, modem, UARTMODIR);
++	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
++	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
+ 	lpuart32_write(&sport->port, ctrl, UARTCTRL);
++	/* re-enable the CTS if needed */
++	lpuart32_write(&sport->port, modem, UARTMODIR);
++
+ 	/* restore control register */
+ 
+ 	if ((ctrl & (UARTCTRL_PE | UARTCTRL_M)) == UARTCTRL_PE)
 -- 
-Regards,
+2.37.1
 
-Laurent Pinchart
