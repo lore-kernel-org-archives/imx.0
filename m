@@ -1,127 +1,207 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C651C1B5B2
-	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 09:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AF11B7F3
+	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 09:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709543426; cv=none; b=OiOkBjyqguKseOMJYbDt2ypBevzSzXEZTJlhJnl3c+5Dskeqo6bGgihWcwC4fW0FJkfARlKuCoQ59AIQAir/ej5S4fdf4NfGf8r6pcwDZs9MxKJ9+gLZ8eG34h/XchfRVfYiqIp4/QeRSO3FMmYKG+eJ9HbukAFUIS0nWKS3gcU=
+	t=1709543529; cv=none; b=nqNH6u1EU0LPwU/XWnrexHKOJ+DU5eE7iScm8y/FpGQKp41iqIQn8CemmJkJc4IxBuFjRir8gEvUZRR61vqR00dX1UeRkXcpzi4W/ei5tMbcHMXF75eKRMK8ZpfiAP3V8TJNDWDfb1sb7lGvmg5hxLngneWCoVl8O8fssyXPnfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709543426; c=relaxed/simple;
-	bh=lcXeO+a9WrkMUrUIy22M2pZ4uTZS3MLLTRm/+F7o40w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UeJseCIHJDdUuzwa8hcEVHJJxTe0xE/6rZgEsTrYPhgZyU6G7vS9hZMRfEujvqURl9PiCdmh7+ul7lD92tbuqP7xMhHkWH9EFztAhEL8dHCjKGu7BeCv3upt6AFPbFPbtfMgJ9ilpgo396tMCMiBCjqwMVicqtrRgIQJ+GwhOuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rh4Kp-0002N6-15; Mon, 04 Mar 2024 10:10:11 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rh4Kn-004K0d-Mv; Mon, 04 Mar 2024 10:10:09 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rh4Kn-00GVK0-1u;
-	Mon, 04 Mar 2024 10:10:09 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Lucas Stach <l.stach@pengutronix.de>,
-	Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] drm/bridge: imx8mp-hdmi-tx: Convert to platform remove callback returning void
-Date: Mon,  4 Mar 2024 10:10:06 +0100
-Message-ID: <20240304091005.717012-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1709543529; c=relaxed/simple;
+	bh=fC8sKkBs7GE4sHdOuIW0zqhWGl2e7aLtrNEvA/GFT88=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I/ief4Z6Tg7z/wMvogaYry+E/xwSABwloWUsJ3wpZn6XtZxGtUybO4clmgfk/mShwG2NVQppL+54FCJ9sDJl/jBEmpYLHEQ1RfvvgTLPQicOxXcLKio+5SDu2yrgNqe9nZelID3KnKEHuFR4AoKuJRIZzUraBBv9y2RcsX3MtUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZtaNkAYo; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZtaNkAYo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1709543525; x=1741079525;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nbX+hWAcORuUJGtFt2cByM1P4IXCj3Ob/hyO09aRE3k=;
+  b=ZtaNkAYo/Fj6+BnffXAeVTgkpOoCWpKnovaYzq104KHpjHr4A+sNHZIR
+   yEYLs/QoNyCOnE9/L+drGILrEBqdBHHjQB4iqC/bWLOmiJ3DAIa2E++Xe
+   5e6ZRE6TAKMfHEHW2ErJNSwaJWmHH+Fs+EK/mmq9t5XFVxtxZLYH+Cn66
+   NStWlfI9jpB8j8XoxmoTF+XB2iIk4BIXDjvV6StzU1mPkmLmMzRADz67O
+   TtLsEbBDpcnr6alN8f2R+6iw5JMEYY8PtkAInA3GE4RpehXL/RzIe/o9F
+   sHleNyg0j2VbY1Eg29iFwmEZu6QrZYk1VBnKfc9pDzVC0Y+j+DfkQ9xzu
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.06,203,1705359600"; 
+   d="scan'208";a="35711019"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 04 Mar 2024 10:11:56 +0100
+Received: from steina-w.localnet (steina-w.tq-net.de [10.123.53.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 68946280071;
+	Mon,  4 Mar 2024 10:11:56 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/4] arm64: dts: imx8: add cm40 subsystem dtsi
+Date: Mon, 04 Mar 2024 10:11:57 +0100
+Message-ID: <5761273.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240302-m4_lpuart-v2-1-89a5952043b6@nxp.com>
+References: <20240302-m4_lpuart-v2-0-89a5952043b6@nxp.com> <20240302-m4_lpuart-v2-1-89a5952043b6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2046; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=lcXeO+a9WrkMUrUIy22M2pZ4uTZS3MLLTRm/+F7o40w=; b=owGbwMvMwMXY3/A7olbonx/jabUkhtSn/e+EQxd62jnME1t4asukxctXTJ5yYGZJb5+H1G47v hAmxuD1nYzGLAyMXAyyYoos9o1rMq2q5CI71/67DDOIlQlkCgMXpwBMZKECB0OX07JZV7TkH/8I TdogqXvRqnWHVv/9KdWd6lMmXCjJV3VhOaYSfNvOWrDbrLHGrrK0ZeLvlGvci44Ynb7qcuT1/IS oV7GhTQd7GQ8ounvMfdny7aaH3LN9H78L+OUx2Im2djsrRjcIBuctX3ZOT67bYO3dnjgplcVCzL 43J/4wSZPt+/L2uFotu3qNafP/tMW6Xplf+JikzRvsrd9t/8mZ4Mya68ZSkt25I1Nh71MDVpOAl xbFbPfvF2zauNbxdf2BA/c/WaRNWvaFNbnx/PqTdlUG/HrCT89P3WgkMe+52puHL4p7UhPqJvFm rF7mXHROYuMrTtF6dtWNkxf8mRHVfnlKQ64Sy901z3W0AA==
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+Hi Frank,
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+thanks for the update.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Am Samstag, 2. M=E4rz 2024, 17:27:44 CET schrieb Frank Li:
+> From: Dong Aisheng <aisheng.dong@nxp.com>
+>=20
+> Add cm40 subsystem dtsi.
+>=20
+> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi | 67 +++++++++++++++++++=
+++++++
+>  arch/arm64/boot/dts/freescale/imx8dxl.dtsi      |  2 +
+>  arch/arm64/boot/dts/freescale/imx8qxp.dtsi      |  1 +
+>  3 files changed, 70 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi b/arch/arm64=
+/boot/dts/freescale/imx8-ss-cm40.dtsi
+> new file mode 100644
+> index 0000000000000..68043ab74e765
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi
+> @@ -0,0 +1,67 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2019 NXP
+> + *	Dong Aisheng <aisheng.dong@nxp.com>
+> + */
+> +
+> +#include <dt-bindings/firmware/imx/rsrc.h>
+> +
+> +cm40_ipg_clk: clock-cm40-ipg {
+> +	compatible =3D "fixed-clock";
+> +	#clock-cells =3D <0>;
+> +	clock-frequency =3D <132000000>;
+> +	clock-output-names =3D "cm40_ipg_clk";
+> +};
+> +
+> +cm40_subsys: bus@34000000 {
+> +	compatible =3D "simple-bus";
+> +	interrupt-parent =3D <&cm40_intmux>;
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
+I would have put that below ranges, but it might be just personal preferenc=
+e.
 
-note this driver is currently only available in next.
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <1>;
+> +	ranges =3D <0x34000000 0x0 0x34000000 0x4000000>;
+> +
+> +	cm40_i2c: i2c@37230000 {
+> +		compatible =3D "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
+> +		reg =3D <0x37230000 0x1000>;
+> +		interrupts =3D <9 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks =3D <&cm40_i2c_lpcg 0>,
+> +			 <&cm40_i2c_lpcg 1>;
+> +		clock-names =3D "per", "ipg";
+> +		assigned-clocks =3D <&clk IMX_SC_R_M4_0_I2C IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		power-domains =3D <&pd IMX_SC_R_M4_0_I2C>;
+> +		status =3D "disabled";
+> +	};
+> +
+> +	cm40_intmux: intmux@37400000 {
+> +		compatible =3D "fsl,imx-intmux";
+> +		reg =3D <0x37400000 0x1000>;
+> +		interrupts =3D <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+> +		interrupt-controller;
+> +		interrupt-parent =3D <&gic>;
 
-Best regards
-Uwe
+Please put this above interrupt property, you are mixing interrupt
+properties of the device itself with interrupt-controller properties.
 
- drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+With these things addressed:
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-index 89fc432ac611..13bc570c5473 100644
---- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-@@ -104,13 +104,11 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static int imx8mp_dw_hdmi_remove(struct platform_device *pdev)
-+static void imx8mp_dw_hdmi_remove(struct platform_device *pdev)
- {
- 	struct imx8mp_hdmi *hdmi = platform_get_drvdata(pdev);
- 
- 	dw_hdmi_remove(hdmi->dw_hdmi);
--
--	return 0;
- }
- 
- static int __maybe_unused imx8mp_dw_hdmi_pm_suspend(struct device *dev)
-@@ -140,7 +138,7 @@ MODULE_DEVICE_TABLE(of, imx8mp_dw_hdmi_of_table);
- 
- static struct platform_driver imx8mp_dw_hdmi_platform_driver = {
- 	.probe		= imx8mp_dw_hdmi_probe,
--	.remove		= imx8mp_dw_hdmi_remove,
-+	.remove_new	= imx8mp_dw_hdmi_remove,
- 	.driver		= {
- 		.name	= "imx8mp-dw-hdmi-tx",
- 		.of_match_table = imx8mp_dw_hdmi_of_table,
+> +		#interrupt-cells =3D <2>;
+> +		clocks =3D <&cm40_ipg_clk>;
+> +		clock-names =3D "ipg";
+> +		power-domains =3D <&pd IMX_SC_R_M4_0_INTMUX>;
+> +		status =3D "disabled";
+> +	};
+> +
+> +	cm40_i2c_lpcg: clock-controller@37630000 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x37630000 0x1000>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_M4_0_I2C IMX_SC_PM_CLK_PER>,
+> +			 <&cm40_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names =3D "cm40_lpcg_i2c_clk",
+> +				     "cm40_lpcg_i2c_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_M4_0_I2C>;
+> +	};
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi b/arch/arm64/boot=
+/dts/freescale/imx8dxl.dtsi
+> index a0674c5c55766..9d49c75a26222 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
+> @@ -5,6 +5,7 @@
+> =20
+>  #include <dt-bindings/clock/imx8-clock.h>
+>  #include <dt-bindings/dma/fsl-edma.h>
+> +#include <dt-bindings/clock/imx8-lpcg.h>
+>  #include <dt-bindings/firmware/imx/rsrc.h>
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/interrupt-controller/arm-gic.h>
+> @@ -231,6 +232,7 @@ xtal24m: clock-xtal24m {
+>  	};
+> =20
+>  	/* sorted in register address */
+> +	#include "imx8-ss-cm40.dtsi"
+>  	#include "imx8-ss-adma.dtsi"
+>  	#include "imx8-ss-conn.dtsi"
+>  	#include "imx8-ss-ddr.dtsi"
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot=
+/dts/freescale/imx8qxp.dtsi
+> index 10e16d84c0c3b..0313f295de2e9 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+> @@ -317,6 +317,7 @@ map0 {
+>  	/* sorted in register address */
+>  	#include "imx8-ss-img.dtsi"
+>  	#include "imx8-ss-vpu.dtsi"
+> +	#include "imx8-ss-cm40.dtsi"
+>  	#include "imx8-ss-gpu0.dtsi"
+>  	#include "imx8-ss-adma.dtsi"
+>  	#include "imx8-ss-conn.dtsi"
+>=20
+>=20
 
-base-commit: 67908bf6954b7635d33760ff6dfc189fc26ccc89
--- 
-2.43.0
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
