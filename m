@@ -1,53 +1,53 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AF11B7F3
-	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 09:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D35C1B967
+	for <imx@lists.linux.dev>; Mon,  4 Mar 2024 09:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709543529; cv=none; b=nqNH6u1EU0LPwU/XWnrexHKOJ+DU5eE7iScm8y/FpGQKp41iqIQn8CemmJkJc4IxBuFjRir8gEvUZRR61vqR00dX1UeRkXcpzi4W/ei5tMbcHMXF75eKRMK8ZpfiAP3V8TJNDWDfb1sb7lGvmg5hxLngneWCoVl8O8fssyXPnfg=
+	t=1709543532; cv=none; b=dh9D7caxW2hXCVncwQfgqm4ysxTFJmoX9a+E2sPfG5KTXcmq2u3NKExiRjMucWjoYoSNbaD2Qrv/oAZv0nPc61bO/l84KKoRGr5K54+bSqYcvZRKhhzV2ULS+/LdKBY4tTH6ywTpLL77KcHhZGdGddVd6c63G5ewkPc3NRU/R7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709543529; c=relaxed/simple;
-	bh=fC8sKkBs7GE4sHdOuIW0zqhWGl2e7aLtrNEvA/GFT88=;
+	s=arc-20240116; t=1709543532; c=relaxed/simple;
+	bh=SXQdHBzDn6lNhNR2jRKyU6m0hP/iQLlkGyx6cM7QnjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I/ief4Z6Tg7z/wMvogaYry+E/xwSABwloWUsJ3wpZn6XtZxGtUybO4clmgfk/mShwG2NVQppL+54FCJ9sDJl/jBEmpYLHEQ1RfvvgTLPQicOxXcLKio+5SDu2yrgNqe9nZelID3KnKEHuFR4AoKuJRIZzUraBBv9y2RcsX3MtUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZtaNkAYo; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=BWGI+F95cToY0/wG8nk5ECqXDwnpD2hpXanNHyNsvSLKyPtEHUZzx3p6Sc1EPZL9iBbymBHBcXoWMuqifog6HkMJaPGL80rFC6z/ADPREhtBEpYj7ojnkcOWSGOgo8ZDD0BV84gZwIjWP/kgoZXKwrP7ol6sgMWTNCshrQ7hmQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=NcyjqjiW; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZtaNkAYo"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="NcyjqjiW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1709543525; x=1741079525;
+  t=1709543530; x=1741079530;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nbX+hWAcORuUJGtFt2cByM1P4IXCj3Ob/hyO09aRE3k=;
-  b=ZtaNkAYo/Fj6+BnffXAeVTgkpOoCWpKnovaYzq104KHpjHr4A+sNHZIR
-   yEYLs/QoNyCOnE9/L+drGILrEBqdBHHjQB4iqC/bWLOmiJ3DAIa2E++Xe
-   5e6ZRE6TAKMfHEHW2ErJNSwaJWmHH+Fs+EK/mmq9t5XFVxtxZLYH+Cn66
-   NStWlfI9jpB8j8XoxmoTF+XB2iIk4BIXDjvV6StzU1mPkmLmMzRADz67O
-   TtLsEbBDpcnr6alN8f2R+6iw5JMEYY8PtkAInA3GE4RpehXL/RzIe/o9F
-   sHleNyg0j2VbY1Eg29iFwmEZu6QrZYk1VBnKfc9pDzVC0Y+j+DfkQ9xzu
+  bh=8o4rUALbnNNyVSdf0MmmAYmT6lll+Rib3jtEkEHDq+I=;
+  b=NcyjqjiWOnOIP4FbSmX6JZNsh5KvMeIjqmxzklRL2Yq2n24FmwdmYTq/
+   KH3Ex/2aFJQPznuS6t7trK2yVTuSE9bMZUfPi9Jrm7kSl1xYMIHXWHHaO
+   qELGhvApUfdsnQHWyontof8tWt1R1rKJfkST6Szz2qkhCfa4CQfKcw5s+
+   F8Yhtes51vOaeeg4j0Ma39kzLaezRTwy07dLB3F/cpXoe/97Uydnqk1bj
+   98lmXhAz0PpruWn3GK8SOxdd3vJmxxqJba9zjeShXWsPnXC1VpkU+UAC2
+   6Xcvu2xirb3hl18WBT+eW7vB+KO2+Tc1wV/ANpVwoUbQsrfXxLbEWRniZ
    Q==;
 X-IronPort-AV: E=Sophos;i="6.06,203,1705359600"; 
-   d="scan'208";a="35711019"
+   d="scan'208";a="35711027"
 Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 04 Mar 2024 10:11:56 +0100
+  by mx1.tq-group.com with ESMTP; 04 Mar 2024 10:12:03 +0100
 Received: from steina-w.localnet (steina-w.tq-net.de [10.123.53.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 68946280071;
-	Mon,  4 Mar 2024 10:11:56 +0100 (CET)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 322E7280071;
+	Mon,  4 Mar 2024 10:12:03 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/4] arm64: dts: imx8: add cm40 subsystem dtsi
-Date: Mon, 04 Mar 2024 10:11:57 +0100
-Message-ID: <5761273.DvuYhMxLoT@steina-w>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, Alice Guo <alice.guo@nxp.com>, Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 2/4] arm64: dts: imx8dxl: add lpuart device in cm40 subsystem
+Date: Mon, 04 Mar 2024 10:12:04 +0100
+Message-ID: <6024754.lOV4Wx5bFT@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20240302-m4_lpuart-v2-1-89a5952043b6@nxp.com>
-References: <20240302-m4_lpuart-v2-0-89a5952043b6@nxp.com> <20240302-m4_lpuart-v2-1-89a5952043b6@nxp.com>
+In-Reply-To: <20240302-m4_lpuart-v2-2-89a5952043b6@nxp.com>
+References: <20240302-m4_lpuart-v2-0-89a5952043b6@nxp.com> <20240302-m4_lpuart-v2-2-89a5952043b6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,139 +61,65 @@ Hi Frank,
 
 thanks for the update.
 
-Am Samstag, 2. M=E4rz 2024, 17:27:44 CET schrieb Frank Li:
-> From: Dong Aisheng <aisheng.dong@nxp.com>
+Am Samstag, 2. M=E4rz 2024, 17:27:45 CET schrieb Frank Li:
+> From: Alice Guo <alice.guo@nxp.com>
 >=20
-> Add cm40 subsystem dtsi.
+> Add lpuart device in cm40 subsystem.
 >=20
-> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+> Signed-off-by: Alice Guo <alice.guo@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
 > ---
->  arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi | 67 +++++++++++++++++++=
-++++++
->  arch/arm64/boot/dts/freescale/imx8dxl.dtsi      |  2 +
->  arch/arm64/boot/dts/freescale/imx8qxp.dtsi      |  1 +
->  3 files changed, 70 insertions(+)
+>  arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi | 24 +++++++++++++++++++=
++++++
+>  1 file changed, 24 insertions(+)
 >=20
 > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi b/arch/arm64=
 /boot/dts/freescale/imx8-ss-cm40.dtsi
-> new file mode 100644
-> index 0000000000000..68043ab74e765
-> --- /dev/null
+> index 68043ab74e765..b6af85b20ddd7 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi
 > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi
-> @@ -0,0 +1,67 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2019 NXP
-> + *	Dong Aisheng <aisheng.dong@nxp.com>
-> + */
-> +
-> +#include <dt-bindings/firmware/imx/rsrc.h>
-> +
-> +cm40_ipg_clk: clock-cm40-ipg {
-> +	compatible =3D "fixed-clock";
-> +	#clock-cells =3D <0>;
-> +	clock-frequency =3D <132000000>;
-> +	clock-output-names =3D "cm40_ipg_clk";
-> +};
-> +
-> +cm40_subsys: bus@34000000 {
-> +	compatible =3D "simple-bus";
-> +	interrupt-parent =3D <&cm40_intmux>;
-
-I would have put that below ranges, but it might be just personal preferenc=
-e.
-
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <1>;
-> +	ranges =3D <0x34000000 0x0 0x34000000 0x4000000>;
-> +
-> +	cm40_i2c: i2c@37230000 {
-> +		compatible =3D "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
-> +		reg =3D <0x37230000 0x1000>;
-> +		interrupts =3D <9 IRQ_TYPE_LEVEL_HIGH>;
-> +		clocks =3D <&cm40_i2c_lpcg 0>,
-> +			 <&cm40_i2c_lpcg 1>;
-> +		clock-names =3D "per", "ipg";
-> +		assigned-clocks =3D <&clk IMX_SC_R_M4_0_I2C IMX_SC_PM_CLK_PER>;
-> +		assigned-clock-rates =3D <24000000>;
-> +		power-domains =3D <&pd IMX_SC_R_M4_0_I2C>;
-> +		status =3D "disabled";
-> +	};
-> +
-> +	cm40_intmux: intmux@37400000 {
-> +		compatible =3D "fsl,imx-intmux";
-> +		reg =3D <0x37400000 0x1000>;
-> +		interrupts =3D <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
-> +			     <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-controller;
-> +		interrupt-parent =3D <&gic>;
-
-Please put this above interrupt property, you are mixing interrupt
-properties of the device itself with interrupt-controller properties.
-
-With these things addressed:
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-> +		#interrupt-cells =3D <2>;
-> +		clocks =3D <&cm40_ipg_clk>;
-> +		clock-names =3D "ipg";
-> +		power-domains =3D <&pd IMX_SC_R_M4_0_INTMUX>;
-> +		status =3D "disabled";
-> +	};
-> +
-> +	cm40_i2c_lpcg: clock-controller@37630000 {
-> +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x37630000 0x1000>;
-> +		#clock-cells =3D <1>;
-> +		clocks =3D <&clk IMX_SC_R_M4_0_I2C IMX_SC_PM_CLK_PER>,
-> +			 <&cm40_ipg_clk>;
-> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +		clock-output-names =3D "cm40_lpcg_i2c_clk",
-> +				     "cm40_lpcg_i2c_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_M4_0_I2C>;
-> +	};
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8dxl.dtsi
-> index a0674c5c55766..9d49c75a26222 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-> @@ -5,6 +5,7 @@
+> @@ -20,6 +20,18 @@ cm40_subsys: bus@34000000 {
+>  	#size-cells =3D <1>;
+>  	ranges =3D <0x34000000 0x0 0x34000000 0x4000000>;
 > =20
->  #include <dt-bindings/clock/imx8-clock.h>
->  #include <dt-bindings/dma/fsl-edma.h>
-> +#include <dt-bindings/clock/imx8-lpcg.h>
->  #include <dt-bindings/firmware/imx/rsrc.h>
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> @@ -231,6 +232,7 @@ xtal24m: clock-xtal24m {
+> +	cm40_lpuart: serial@37220000 {
+> +		compatible =3D "fsl,imx8qxp-lpuart";
+> +		reg =3D <0x37220000 0x1000>;
+> +		interrupts =3D <7 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks =3D <&cm40_uart_lpcg 1>, <&cm40_uart_lpcg 0>;
+> +		clock-names =3D "ipg", "baud";
+> +		assigned-clocks =3D <&clk IMX_SC_R_M4_0_UART IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		power-domains =3D <&pd IMX_SC_R_M4_0_UART>;
+> +		status =3D "disabled";
+> +	};
+> +
+>  	cm40_i2c: i2c@37230000 {
+>  		compatible =3D "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
+>  		reg =3D <0x37230000 0x1000>;
+> @@ -53,6 +65,18 @@ cm40_intmux: intmux@37400000 {
+>  		status =3D "disabled";
 >  	};
 > =20
->  	/* sorted in register address */
-> +	#include "imx8-ss-cm40.dtsi"
->  	#include "imx8-ss-adma.dtsi"
->  	#include "imx8-ss-conn.dtsi"
->  	#include "imx8-ss-ddr.dtsi"
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8qxp.dtsi
-> index 10e16d84c0c3b..0313f295de2e9 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> @@ -317,6 +317,7 @@ map0 {
->  	/* sorted in register address */
->  	#include "imx8-ss-img.dtsi"
->  	#include "imx8-ss-vpu.dtsi"
-> +	#include "imx8-ss-cm40.dtsi"
->  	#include "imx8-ss-gpu0.dtsi"
->  	#include "imx8-ss-adma.dtsi"
->  	#include "imx8-ss-conn.dtsi"
+> +	cm40_uart_lpcg: clock-controller@37620000 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x37620000 0x1000>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_M4_0_UART IMX_SC_PM_CLK_PER>,
+> +			 <&cm40_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_1>;
+> +		clock-output-names =3D "cm40_lpcg_uart_clk",
+> +				     "cm40_lpcg_uart_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_M4_0_UART>;
+> +	};
+> +
+>  	cm40_i2c_lpcg: clock-controller@37630000 {
+>  		compatible =3D "fsl,imx8qxp-lpcg";
+>  		reg =3D <0x37630000 0x1000>;
 >=20
 >=20
 
