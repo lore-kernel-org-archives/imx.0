@@ -1,142 +1,252 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E9726293;
-	Mon,  4 Mar 2024 18:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4480160265;
+	Mon,  4 Mar 2024 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709575815; cv=none; b=pxO+BCPOEFUo1tmWhSH8TrAntXCiRnbsjozUsPRI/+GKFn764N8qkfoajDB6N+tKwia+MBS2rq2UA0VI9WgpTiM2Ua2FsC8nx+uERKY7mDMdQ6fk05i/aJRrNLxcLCAcAuK6m7nOIdhKaa4DFBLCiSCoxz9fs08hKY4lfk0PZqo=
+	t=1709576281; cv=none; b=WHm6bU5Sx57yoWAnEaq/WiPGIKNP0mx7R8tlTRPr5wiRkHApPuOZsWLLnIhK03/EPZN40BwoDsQNJuHgEZ3iPivkUIUPq3YbKQluQwWQ87S5Muka02PBRi6/t61i1ZMOFykG5mf+F7Eykj+D+6A0diYQ+lR7+z0ytG+D2lwvf1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709575815; c=relaxed/simple;
-	bh=YJmIavFMR6say4T2gPlCdP0mAQxdfMHCADJvcoW5zqU=;
+	s=arc-20240116; t=1709576281; c=relaxed/simple;
+	bh=MhVj6rlBDtv//G52D2MyGutBUo2/1sAyxm3U50UUn30=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q0vihvZYE888dZiP69rPN5PfeOEhohM1b0CaIGy6SVs3T9xSdkbPpLvOgCWiN84nQAZNQA81Rw9FrDq3DmsmiBZKOtI2XoQiOTtC9Y6ASO/fUH7NEuyLC3W2zC+8zM/6jGNAF2jhzbqXE9/EaNP+MFmnKvZtdrThimHgbRlls6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpdtfwsL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dvgaD6iqmZNbEvsXzhEEkLB9IxDvQ7nE8c1YUMNOWLlR5t463NMpnr4Nqb2qKIGwEuR64fn5WJHfpfKG1yQgz4XoeNwfcg/sam435Xfuv/rf4wyu1DGFgjwbZjh3UeYVu62XR55geSxaaipDh9zV8/Ag8JAYjILeZkTLxieXuu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcUGxUTM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpdtfwsL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2576C433C7;
-	Mon,  4 Mar 2024 18:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcUGxUTM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2F3C433F1;
+	Mon,  4 Mar 2024 18:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709575814;
-	bh=YJmIavFMR6say4T2gPlCdP0mAQxdfMHCADJvcoW5zqU=;
+	s=k20201202; t=1709576281;
+	bh=MhVj6rlBDtv//G52D2MyGutBUo2/1sAyxm3U50UUn30=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lpdtfwsL+h7P/b/UfpLI59LGVNwrjGuTCEz0J4woBogOwVsfggwUqNoh7D7+/63V2
-	 jFu+B6IS60gR+oubc1ompfOWcqHLG7HS9fP1PgPwf1rkB7P0sfJIuD4Md8djdhLSud
-	 +i0W+3JawL/DkHwMLwq1Tsr2/5J3O+fGVS+6sKRkFODemceB3FpR8JjjBWyDmqdTeA
-	 5kDxgmy7OpGg/xxFgnE0eaATfw+Hpp+4KlWdXy/Uq7pm3qER92kzmuV+lNotBfNeNk
-	 ZzY0w9NV6RPgIj8Z9i43IWTBP4zz6Ea838Y1a/BLWNNKb2xXLG/M8rd/wBQoENu3au
-	 NfvzmlkKmtvQQ==
-Date: Mon, 4 Mar 2024 23:40:05 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	"open list:PCI DRIVER FOR SYNOPSYS DESIGNWARE" <linux-pci@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] PCI: dwc: Fix BAR0 wrong map to iATU6 after root
- complex reinit endpoint
-Message-ID: <20240304181005.GF31079@thinkpad>
-References: <20231219044844.1195294-1-Frank.Li@nxp.com>
- <ZYFrUWM7JXdv7rtb@x1-carbon>
- <ZYGmpaf18pJgM/qj@lizhi-Precision-Tower-5810>
- <ZYGq6RdCfdhXFF/9@x1-carbon>
- <20240304084841.GJ2647@thinkpad>
- <ZeX7KDuwLWxwb5Kw@lizhi-Precision-Tower-5810>
+	b=jcUGxUTMLrXoBlVWwpFwR2ePes5uBfgyy+Rb/TuNqh58LT77DJlq4X+AxNS+tn8Zh
+	 gwhQXT5Lree2PNi5NHpENFpCK9KVdJrN3IXTGJ0LDF3G/nH4WFNJ7x0uB2rPTj69uz
+	 xAcjEmYKnSuPqUVmBnb+q/l1wak3BTuxE4HkOHNJUcpmDizN2ezYC4VozhxnrfeNzR
+	 V79/t4BCUW9wq576a9jq8CYmlvrlDjyw81et1/iHY8aLLIjqL8V03OycFd5g2rAcMr
+	 X6aoJsIs1Iq+Pybu57C7GZA87n8VIzAciGeKsuk2Xs5f6SqUXET9HONdYkcI14657L
+	 7xGDHB4z+VfkA==
+Date: Mon, 4 Mar 2024 12:17:58 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor@kernel.org, bhelgaas@google.com, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, helgaas@kernel.org, imx@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org
+Subject: Re: [PATCH v6 2/3] dt-bindings: pci: layerscape-pci: Add
+ snps,dw-pcie.yaml reference
+Message-ID: <20240304181758.GA803086-robh@kernel.org>
+References: <20240301162741.765524-1-Frank.Li@nxp.com>
+ <20240301162741.765524-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZeX7KDuwLWxwb5Kw@lizhi-Precision-Tower-5810>
+In-Reply-To: <20240301162741.765524-3-Frank.Li@nxp.com>
 
-On Mon, Mar 04, 2024 at 11:47:36AM -0500, Frank Li wrote:
-> On Mon, Mar 04, 2024 at 02:18:41PM +0530, Manivannan Sadhasivam wrote:
-> > On Tue, Dec 19, 2023 at 02:38:34PM +0000, Niklas Cassel wrote:
-> > > On Tue, Dec 19, 2023 at 09:20:21AM -0500, Frank Li wrote:
-> > > > On Tue, Dec 19, 2023 at 10:07:14AM +0000, Niklas Cassel wrote:
-> > > > > On Mon, Dec 18, 2023 at 11:48:43PM -0500, Frank Li wrote:
-> > > > > > dw_pcie_ep_inbound_atu()
-> > > > > > {
-> > > > > > 	...
-> > > > > > 	if (!ep->bar_to_atu[bar])
-> > > > > > 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
-> > > > > > 	else
-> > > > > > 		free_win = ep->bar_to_atu[bar];
-> > > > > > 	...
-> > > > > > }
-> > > > > > 
-> > > > > > The atu index 0 is valid case for atu number. The find_first_zero_bit()
-> > > > > > will return 6 when second time call into this function if atu is 0. Suppose
-> > > > > > it should use branch 'free_win = ep->bar_to_atu[bar]'.
-> > > > > > 
-> > > > > > Change 'bar_to_atu' to s8. Initialize bar_to_atu as -1 to indicate it have
-> > > > > > not allocate atu to the bar.
-> > > > > > 
-> > > > > > Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-> > > > > > Close: https://lore.kernel.org/linux-pci/ZXt2A+Fusfz3luQV@x1-carbon/T/#u
-> > > > > > Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > ---
-> > > > > > 
-> > > > > > Notes:
-> > > > > >     @Niklas:
-> > > > > >     	I have not test your case. I should be equal to previous's fix in
-> > > > > >     mail list.
-> > > > > 
-> > > > > Hello Frank,
-> > > > > 
-> > > > > Thank you for sending a proper fix for this!
-> > > > > 
-> > > > > Personally, I slightly prefer your fix that saves the iatu index + 1, and
-> > > > > keeps 0 to mean unused. That way, you don't need the memset, and you don't
-> > > > > need to change the type to signed, but either way is fine by me, so:
-> > > > 
-> > > > index + 1 don't match hardware iATU index. It will be confused because
-> > > > other parts is 0 based.
-> > > > 
-> > > > So I choose "-1" as free iATU.
-> > > 
-> > > A s8 can hold a max value of 127.
-> > > CX_ATU_NUM_OUTBOUND_REGIONS seems to be 0-255.
-> > > 
-> > > Since the DWC code can be synthesized with 256 iATUs,
-> > > your code will not work on systems with 128 or more iATUs.
-> > > 
-> > > If we continue to use a u8, and offset the saved value by one,
-> > > we will at least be able to support 255-1 == 254 iATUs.
-> > > 
-> > 
-> > Agree. I cannot suggest a better alternative. So let's go with this. But please
-> > add a comment before bar_to_atu assignment to make it clear. Like,
-> > 
-> > 	/*
-> > 	 * Always increment free_win before assignment, since value 0 is used to
-> > 	 * identify unallocated mapping.
-> > 	 */
-> > 	ep->bar_to_atu[bar] = free_win + 1;
+On Fri, Mar 01, 2024 at 11:27:40AM -0500, Frank Li wrote:
+> Add snps,dw-pcie.yaml reference. Clean up all context that already exist in
+> snps,dw-pcie.yaml. Update interrupt-names requirement for difference
+> compatible string.
 > 
-> This patch already change to use "-1" as free. Only issue for this patch is
-> that use 's16' instead of 's8' becasue max ATU number is 255.
+> Set 'unevaluatedProperties' back to 'false'.
 > 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/pci/fsl,layerscape-pcie.yaml     | 104 +++++++++++++-----
+>  1 file changed, 78 insertions(+), 26 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+> index 3f2d058701d22..137cc17933a4b 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+> @@ -11,7 +11,6 @@ maintainers:
+>  
+>  description:
+>    This PCIe RC controller is based on the Synopsys DesignWare PCIe IP
+> -  and thus inherits all the common properties defined in snps,dw-pcie.yaml.
+>  
+>    This controller derives its clocks from the Reset Configuration Word (RCW)
+>    which is used to describe the PLL settings at the time of chip-reset.
+> @@ -36,31 +35,18 @@ properties:
+>        - fsl,lx2160a-pcie
+>  
+>    reg:
+> -    description: base addresses and lengths of the PCIe controller register blocks.
+> +    maxItems: 2
+> +
+> +  reg-names:
+> +    maxItems: 2
 
-Niklas's initial suggestion of keeping u8 for the array and 0 as the unallocated
-placeholder sounds good to me. Please use that instead.
+Need to define what the entries are. You change 'regs' to 'dbi' in the 
+example. Was that an error in the example or are you planning on 
+changing it in dts files? Besides the latter being an ABI change, I 
+don't think you want to change dts files for platforms which are pretty 
+stable.
 
-Even though iATU window index starts from 0, the comment I suggested will
-clarify what this bar_to_atu[] does.
+>    interrupts:
+> -    description: A list of interrupt outputs of the controller. Must contain an
+> -      entry for each entry in the interrupt-names property.
+> +    minItems: 1
+> +    maxItems: 3
+>  
+>    interrupt-names:
+>      minItems: 1
+>      maxItems: 3
+> -    description: It could include the following entries.
+> -    items:
+> -      oneOf:
+> -        - description:
+> -            Used for interrupt line which reports AER events when
+> -            non MSI/MSI-X/INTx mode is used.
+> -          const: aer
+> -        - description:
+> -            Used for interrupt line which reports PME events when
+> -            non MSI/MSI-X/INTx mode is used.
+> -          const: pme
+> -        - description:
+> -            Used for SoCs(like ls2080a, lx2160a, ls2080a, ls2088a, ls1088a)
+> -            which has a single interrupt line for miscellaneous controller
+> -            events(could include AER and PME events).
+> -          const: intr
+>  
+>    fsl,pcie-scfg:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> @@ -69,23 +55,88 @@ properties:
+>        The second entry is the physical PCIe controller index starting from '0'.
+>        This is used to get SCFG PEXN registers
+>  
+> -  dma-coherent:
+> -    description: Indicates that the hardware IP block can ensure the coherency
+> -      of the data transferred from/to the IP block. This can avoid the software
+> -      cache flush/invalid actions, and improve the performance significantly
+> +  dma-coherent: true
 
-- Mani
+No need to list.
 
--- 
-மணிவண்ணன் சதாசிவம்
+> +
+> +  msi-parent: true
+> +
+> +  iommu-map: true
+>  
+>    big-endian:
+>      $ref: /schemas/types.yaml#/definitions/flag
+>      description: If the PEX_LUT and PF register block is in big-endian, specify
+>        this property.
+>  
+> -unevaluatedProperties: true
+> +unevaluatedProperties: false
+>  
+>  required:
+>    - compatible
+>    - reg
+>    - interrupt-names
+>  
+> +allOf:
+> +  - $ref: /schemas/pci/pci-bus.yaml#
+
+That's already referenced in the common schema.
+
+> +  - $ref: /schemas/pci/snps,dw-pcie.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - fsl,lx2160a-pcie
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 3
+
+max is already 3.
+
+minItems: 3
+
+> +        interrupt-names:
+> +          items:
+> +            - const: pme
+> +            - const: aer
+> +            - const: intr
+
+I guess since you figured out the ordering here, you should keep them 
+despite what I said in the first patch.
+
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - fsl,ls1028a-pcie
+> +            - fsl,ls1046a-pcie
+> +            - fsl,ls1043a-pcie
+> +            - fsl,ls1012a-pcie
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 2
+
+minItems: 2
+maxItems: 2
+
+> +        interrupt-names:
+> +          items:
+> +            - const: pme
+> +            - const: aer
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - fsl,ls2080a-pcie
+> +            - fsl,ls2085a-pcie
+> +            - fsl,ls2088a-pcie
+> +            - fsl,ls1021a-pcie
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 1
+> +        interrupt-names:
+> +          items:
+> +            - const: intr
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - fsl,ls1088a-pcie
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 1
+> +        interrupt-names:
+> +          items:
+> +            - const: aer
+> +
+>  examples:
+>    - |
+>      #include <dt-bindings/interrupt-controller/arm-gic.h>
+> @@ -98,7 +149,7 @@ examples:
+>          compatible = "fsl,ls1088a-pcie";
+>          reg = <0x00 0x03400000 0x0 0x00100000>, /* controller registers */
+>              <0x20 0x00000000 0x0 0x00002000>; /* configuration space */
+> -        reg-names = "regs", "config";
+> +        reg-names = "dbi", "config";
+>          interrupts = <0 108 IRQ_TYPE_LEVEL_HIGH>; /* aer interrupt */
+>          interrupt-names = "aer";
+>          #address-cells = <3>;
+> @@ -116,6 +167,7 @@ examples:
+>                          <0000 0 0 3 &gic 0 0 0 111 IRQ_TYPE_LEVEL_HIGH>,
+>                          <0000 0 0 4 &gic 0 0 0 112 IRQ_TYPE_LEVEL_HIGH>;
+>          iommu-map = <0 &smmu 0 1>; /* Fixed-up by bootloader */
+> +        msi-map = <0 &its 0 1>; /* Fixed-up by bootloader */
+>        };
+>      };
+>  ...
+> -- 
+> 2.34.1
+> 
