@@ -1,194 +1,126 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8127E59F
-	for <imx@lists.linux.dev>; Tue,  5 Mar 2024 07:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAED7E564;
+	Tue,  5 Mar 2024 07:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709623836; cv=none; b=cTnP5Dv3kQXCJKhTy2i+d+fwm4DKw28I/zq4Y0ix7ddnLXZDBTtXb3wJ4bf3u2MkdMHsl152aJ61wqhqFQxPsklxvdzqcfSczlDEioqxkESbMOTddj2A64NIO0hvWvuMXWljikaqpN3r4qljY91ZOU3dDmSkVvQzDYxPHF28z/k=
+	t=1709624132; cv=none; b=Pp+KtOmFqrm4SJ6M5TouhWJMViABsjhoOJVEWjj+2u57OXyIcGS745PaokMdvSZB0Gln07Q/TjOffE4BJyWrbZvU7hHCpx9Tq/8BWqqNJ4A41ePeUg0zq12cn1FMlwDe1V7uoXw5QD0jdcGwTg4hiZlYHnl5dppgkasvbx8JF18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709623836; c=relaxed/simple;
-	bh=6DVkHf9aV/yId4Lmu6rejZkjFcnUgp8btzQ/SNMEhu8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=r+s+PzqgB5BGYyr6KCDN+xv5XP4tal0JkGg7QGEnsvIWLKipiQ1B4J3UrPADIg9++cS8CPWAkY2ouiTEgY5EErCW4rCn65wtTEy4iMm6e66S7Q/PlvVfyEQH69pSNu4cYOzZlZ0760ZD+ROEWywSAjlsEWLYLrvr5hJWyeCpyHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JTQDLCDt; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1709624132; c=relaxed/simple;
+	bh=9mE8JGFRmIiaAXwJrEkI8C/6vowaKjT3QgtdT5nxS10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=htC0wlel3fKDI8uuLuSJZUUsCpEfclc1HuO3X/0nI6K4++uzDTqv7sBOzszKXz1KpNc9KzgwEc16Lo88N+7iAKNRkvqyS9Sv7s3Rx0XFcn9rv/CNQVuP/Ex2BePLFj0XuZUbT2fexthC8kcVs0Fn28rKK/MgkjFV9/ir8ZypKqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFDziI/S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JTQDLCDt"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-564372fb762so6845984a12.0
-        for <imx@lists.linux.dev>; Mon, 04 Mar 2024 23:30:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709623832; x=1710228632; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4wPuXdt26uV3nWuiUz2nQdPuj/Zl3n+dEVTtr/ygvVI=;
-        b=JTQDLCDtWvKOaMYv4b89u9ZjQhRUCYwVEEu3NbMfYLV0DOKTytnaSmz0WhueOzEmCz
-         NjByFgRoCPa86WkYnrNkXPIfBI8OMNotWwtgEnjJe7WrPTbgeULpmtwSzUnT9DPNH5rR
-         408EFb5aPJvIaxkBqJXEXyl2WfoGhXI5u1TlQNdshkB2nFV6dxRKd5sWXAESfpdbXSCN
-         q3cPcWRruvSm35iTlkwPr7vLH4Flg+9CvU4lcliRPaLeznLhzrgH5B7kH6hPek/FXztl
-         MK/0ZsRwqs6jMG16T2mr5MP/Igv84c+u0UFQJUhnF1yN6C7vDEFfR8i89AgCyzx6zWQA
-         wKJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709623832; x=1710228632;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4wPuXdt26uV3nWuiUz2nQdPuj/Zl3n+dEVTtr/ygvVI=;
-        b=Ts34ZsXIkurC3EPwVe9d+7di9tf38S6ZZgpWgj/5Xlh0UkuGnGDBCCnuiWxNrJnHoY
-         1wUXrfMi+HkJFm9vZ5dRi/32zZw8KmnWFpI1Im5hxXIBrO2daH7ZCyLimCrUekKGAtHd
-         dkNAVGnLidQpS8uFOkrglZetV2IEEh9Gwrl5SI9OFCyp3He8k+6VtgQ0p1io91okeZ4x
-         3xKOCtp+lyLddujC3aH07iAD0W1qwUhc9g070wh+E/riZlYQiZraWT8YUiDM4I3vRuwe
-         HZmErvMt74vksbHgiXBEyIxWHYHyM6KgrYqkVsTiWhDJ8BErug8OMHJ6VqfyOeqAFTKq
-         4dUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOn3RinvFm1EMT8XA4hCpBnCSAeOk8yF8KS8K0WTdXnXQT070Rd5vkOgM6NmH89HPQl8Q4mMcfK+1BaIsRXbhRstIa
-X-Gm-Message-State: AOJu0Yy1DXyLDyNcLNndlNBfsN/0EF672Bxu3LPsgCZutnVh6hqybHGd
-	kZy/g3WfVWOe4XQPIdR0GpXWhiUSovk2gPud4LcYiK3hbTjEkd6MtcYyHp8olXc=
-X-Google-Smtp-Source: AGHT+IHiVogKZl3USP3i/JeeOeTjoVjdXnPeQNrUn2JsCxmrpiq71MOn1lYyswLgrH8QF/253iaF3g==
-X-Received: by 2002:aa7:cf06:0:b0:565:a562:9fc3 with SMTP id a6-20020aa7cf06000000b00565a5629fc3mr7041999edy.38.1709623832591;
-        Mon, 04 Mar 2024 23:30:32 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id g26-20020a056402321a00b0055fba4996d9sm5517875eda.71.2024.03.04.23.30.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 23:30:32 -0800 (PST)
-Message-ID: <714cc51c-0d54-4475-b4bf-96b59d499097@linaro.org>
-Date: Tue, 5 Mar 2024 08:30:30 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFDziI/S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CDAC433F1;
+	Tue,  5 Mar 2024 07:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709624132;
+	bh=9mE8JGFRmIiaAXwJrEkI8C/6vowaKjT3QgtdT5nxS10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BFDziI/SFGMNLoO162znoeRmfJIet1EyZZ0jpgaU7j8q27USEhFhaiAvUsrqIpfNA
+	 hzzdPWE2+S4AZbj9gb67MpaHvd3/n2VyaPlIGR9F+67muyX5ehwkneDNFUE3g1wUgL
+	 Hlm6gxPjqlDH6mzIsg1FGrtjk2Am8a9ofXDn9kdM=
+Date: Tue, 5 Mar 2024 07:35:28 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: jirislaby@kernel.org, u.kleine-koenig@pengutronix.de,
+	ilpo.jarvinen@linux.intel.com, shenwei.wang@nxp.com,
+	alexander.sverdlin@siemens.com, robert.hodaszi@digi.com,
+	robh@kernel.org, tglx@linutronix.de, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, frank.li@nxp.com
+Subject: Re: [PATCH V2] tty: serial: fsl_lpuart: avoid idle preamble pending
+ if CTS is enabled
+Message-ID: <2024030517-paging-voter-6054@gregkh>
+References: <20240305015706.1050769-1-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindindgs: clock: support NXP i.MX95 BLK CTL
- module
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
- "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240228-imx95-blk-ctl-v3-0-40ceba01a211@nxp.com>
- <20240228-imx95-blk-ctl-v3-1-40ceba01a211@nxp.com>
- <20240304143916.GA181628-robh@kernel.org>
- <DU0PR04MB941740A36E953A0E1AD690EC88222@DU0PR04MB9417.eurprd04.prod.outlook.com>
- <58cdfa7c-5483-4193-a5de-bb5fa72de637@linaro.org>
- <DU0PR04MB9417551618EB1C723EF3FA9088222@DU0PR04MB9417.eurprd04.prod.outlook.com>
- <4731e688-4d2e-4b94-9ed1-32cbc823079f@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <4731e688-4d2e-4b94-9ed1-32cbc823079f@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240305015706.1050769-1-sherry.sun@nxp.com>
 
-On 05/03/2024 08:29, Krzysztof Kozlowski wrote:
-> On 05/03/2024 08:18, Peng Fan wrote:
->>> Subject: Re: [PATCH v3 1/2] dt-bindindgs: clock: support NXP i.MX95 BLK CTL
->>> module
->>>
->>> On 05/03/2024 05:13, Peng Fan wrote:
->>>>>> +
->>>>>> +examples:
->>>>>> +  # Clock Control Module node:
->>>>>> +  - |
->>>>>> +    #include <dt-bindings/clock/nxp,imx95-clock.h>
->>>>>> +
->>>>>> +    syscon@4c410000 {
->>>>>
->>>>> clock-controller@...
->>>>
->>>> But this is a syscon, using clock-controller will trigger dt check
->>>> warning.
->>>
->>> Which warning?
->>
->> I just recalled that node with syscon in compatible string needs
->> has syscon as node, I maybe wrong.
+On Tue, Mar 05, 2024 at 09:57:06AM +0800, Sherry Sun wrote:
+> If the remote uart device is not connected or not enabled after booting
+> up, the CTS line is high by default. At this time, if we enable the flow
+> control when opening the device(for example, using “stty -F /dev/ttyLP4
+> crtscts” command), there will be a pending idle preamble(first writing 0
+> and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
+> cannot be sent out, resulting in the uart port fail to close(waiting for
+> TX empty), so the user space stty will have to wait for a long time or
+> forever.
 > 
-> Just paste the warning, so we can think about it.
+> This is an LPUART IP bug(idle preamble has higher priority than CTS),
+> here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
+> so that the idle preamble does not get stuck due to CTS is deasserted.
 > 
->>
->>>
->>>>>
->>>>> As that is the main feature/function.
->>>>>
->>>>>> +      compatible = "nxp,imx95-vpumix-csr", "syscon";
->>>>>> +      reg = <0x4c410000 0x10000>;
->>>>>> +      #clock-cells = <1>;
->>>>>
->>>>> Please make the example as full as possible. For example, add
->>>>> mux-controller node. Do some of the blocks not have mux ctrl?
->>>>
->>>> Yes. The blk ctrl is not just for clock, some registers has mux ctrl,
->>>> such as Pixel_link_sel.
->>>
->>> Then mux-controller should not be allowed for them.
->>
->> You mean I should not add mux-controller under the blk ctrl node?
+> Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
+> Changes in V2:
+> 1. Move the "restore control register" comment message to the appropriate place.
+> 2. Add Fixes tag.
+> ---
+>  drivers/tty/serial/fsl_lpuart.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> mux-controller is already there, isn't it? I am saying your binding is
-> not precise. Your binding implies that ALL OF THEM have mux controller.
-> You told me it is not true, so you have change the meaning of binding
-> and disallow the mux-controller for the cases it is not applicable.
+> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+> index 5ddf110aedbe..bbcbc91482af 100644
+> --- a/drivers/tty/serial/fsl_lpuart.c
+> +++ b/drivers/tty/serial/fsl_lpuart.c
+> @@ -2345,9 +2345,12 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+>  
+>  	lpuart32_write(&sport->port, bd, UARTBAUD);
+>  	lpuart32_serial_setbrg(sport, baud);
+> -	lpuart32_write(&sport->port, modem, UARTMODIR);
+> -	lpuart32_write(&sport->port, ctrl, UARTCTRL);
+> +	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
+> +	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
+>  	/* restore control register */
+> +	lpuart32_write(&sport->port, ctrl, UARTCTRL);
+> +	/* re-enable the CTS if needed */
+> +	lpuart32_write(&sport->port, modem, UARTMODIR);
+>  
+>  	if ((ctrl & (UARTCTRL_PE | UARTCTRL_M)) == UARTCTRL_PE)
+>  		sport->is_cs7 = true;
+> -- 
+> 2.37.1
+> 
 > 
 
-... or create separate binding/schema for the variants with mux-controller.
+Hi,
 
-Best regards,
-Krzysztof
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
