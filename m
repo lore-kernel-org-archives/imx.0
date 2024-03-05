@@ -1,55 +1,57 @@
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717426110
-	for <imx@lists.linux.dev>; Tue,  5 Mar 2024 00:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65E79C4
+	for <imx@lists.linux.dev>; Tue,  5 Mar 2024 00:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709599751; cv=none; b=VMdZotYxr6gJ1K/QNFjzRmBUP3X4mtysMjhl3RvpVhzdhYslnSJDSClzEOqbl37fs2Z0DnP926Nhretep/oTX+Os7jOnDitVnNmAD/7PBvm+9GhPwQitv/9yrqRuZ38pGb0ak4e8UNbvxgxJmshMOq72hMlTMPPWpeK/YTbk7Ro=
+	t=1709599753; cv=none; b=YMnuKUhl9BEVf6tF47+geNof6GcWpN2WckzMnR36cXj5eAR6ty9DSSTe1uG58u7+Iw7svJ/rruiM6cx5dnkbGsXHGPIm/qRfwGq9YxVRoFq0wb5oHfRUDQ1xy6NVEGi3Yqz8L7/9ceYP21uIUViEyT6Rq5Z3o/DuC893Cn2DKe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709599751; c=relaxed/simple;
-	bh=0PpSt6rvjbDQ3SybZDVtfCFRovmYHgovSpROWxh7dVw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D7GrrCInZXuzkRfhCd8oE+28yzqlQrTkW5O7Wwzt+H27clBowQg6SiigX+DIiXfP/go1vNAWDeoLkdxpt6riV5WKDpEJ9B0Cgid14LGCqMN4IkPRzYpbXBb+CyCSpRv3BitBXw1BZcZfRvtH3oPwxCSrX5VgzKrNuy98JINWK/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wx3hQ213; arc=none smtp.client-ip=209.85.166.43
+	s=arc-20240116; t=1709599753; c=relaxed/simple;
+	bh=Nyp5c8gmhPF5HW/cBtAcxcJXAGS/CFB5Nd6jStjHljI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AoDelb6RTn/uOvlq6zKyqLoxiYa0R3k3ch6LktqedAYq0yH/HiSjAk/WRIAhd7GjtNjCFBQWeajg+wQNkTVR7Elrh/XLcH/9EVQKpkArAjtABVY2wkRoY8SwZbYDKyJnGtbTLH2O48ClG0usc5XDCbmUFXDhXeFJM/uBYSKxw4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mI6szIzi; arc=none smtp.client-ip=209.85.166.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wx3hQ213"
-Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-7c8060a8489so225828139f.0
-        for <imx@lists.linux.dev>; Mon, 04 Mar 2024 16:49:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mI6szIzi"
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-36576b35951so651855ab.3
+        for <imx@lists.linux.dev>; Mon, 04 Mar 2024 16:49:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709599749; x=1710204549; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rbMkt4JH9fQU1k/SM3hjf0aOsa5Ez6LXN7/VqqW0kvc=;
-        b=Wx3hQ213qEGQyN8chZyuIvIdABkUATF3FHJ8nWbB1RrTIUiZvC1ZO/33VPLkcQ8FRj
-         WLMxIBiC5qEizjBSQayG+MtmBzQAv2mBS0Mx7VJdVrj9x4aRAR0im5+YOrYwjFiQIw6u
-         r8a0ytJfcv0+xM+win8iORn4MDO909CrPvg5TTVuLdy8AAQrINLJFTnZV9VFyMfgUell
-         yhzOAnHDycEIOrbg8R6RJ97F3DqRlMDjJuAJ1pJDjf5VRvRz/qCqK4cVDgGsjMecrISf
-         Jfymcb/TC8VLDYDdnpiP/z4DNllH2r6xXVcM1FOIFCYBKUUpAy22OdCA4g23Kv+ZI0r4
-         Z3Kg==
+        d=gmail.com; s=20230601; t=1709599751; x=1710204551; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y+BHVxrlI9al90zgfzMAMYGXo6UILvOU2ILHGRC0OBw=;
+        b=mI6szIziRdWaP97HdVoeKm2SjfHOzclG/xq0v2tNitShoIw/GR2KzguQz1NNzikTZJ
+         AV0g6155scd5p/rlmwjcm9pdiU+g9qovUhUFZg7c8Zdf74l20bUpm40sSADa359B2fNS
+         LUEE3i+jy97uxw4b0FClTktumW27Zcz3IEjLp/GQ8PGJ8t/8eFpT9iWMXridrGlnAVok
+         IQzq6AG88+WJitSOh1WYLXmpQPvDOzvkVNiX6rRhQacfEZ3hJ8dGJUYxrnl6Ux3s2fZc
+         hQRapw4ayj+ycAG3jHP2cQ8eORC56d9nrGsP+oFvwDObYxSwUOnlKEaITKi3Rj4cyOah
+         s91g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709599749; x=1710204549;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rbMkt4JH9fQU1k/SM3hjf0aOsa5Ez6LXN7/VqqW0kvc=;
-        b=q7ghFenHJQGgbOQa3mUEbN6FIAx48YZ8SKpbe/195xkLFFJ7zZXXIjMC+yaD/NszGa
-         Y6N1TVvzKzVqBxuREkyFlXa6fLiZ+1G4j4QlvXnlwPDNx2TEp/tlzV+ae0sOl+oE2Xl9
-         eQZYMB2V80PVM6mN+LJGmsU8Q59HV5a7s/EIJHl6vnlD+MMjQyO6szALMR4W6gWLs5ur
-         CJ1gHrSDB2kCGkqlOUqcdb6mtzxAb0U3OIIYRaTYqjEhX8kbrf72ow0MAOXOTiqRtVsU
-         0ayh4Iuo1/QK+WOQh94LgVNqbhQal4AIIb8BRG3HYM7Rx95st2Efmpc7B5l4FRzMNt9e
-         5uhw==
-X-Forwarded-Encrypted: i=1; AJvYcCVsMgYIhSibDWTxkc/1nt3ZHJQmOKWdoMYsWyRshQ5wZVAdfsuyyp56cp1DstyTRNHURnaZZFIPTdDLucn9w3GY0HiH
-X-Gm-Message-State: AOJu0Ywpjba3LyvhnpnhCsYMVzzEh0CQmKNV+TlWyuqg6VMccS6fk+Rm
-	6IsR5oiUEcIDHqb0kl/DDfqkH0CvFs6PWvZbDTKR1gGPX0+ZuRa0
-X-Google-Smtp-Source: AGHT+IEw6edKSWyLjziH3r6j5+b+3S3cO5883mFBAzNRhvz6MbZxITGLrOquyH+Wdhvdz/oFR1TNWg==
-X-Received: by 2002:a6b:d802:0:b0:7c8:55d8:7f12 with SMTP id y2-20020a6bd802000000b007c855d87f12mr4434882iob.10.1709599749414;
-        Mon, 04 Mar 2024 16:49:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709599751; x=1710204551;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y+BHVxrlI9al90zgfzMAMYGXo6UILvOU2ILHGRC0OBw=;
+        b=QmRQ/G6/e02/r4iu49D4ojmUhzAYvJulNLRPyz9cyf6rCWiSW0YGX23GEaMaowShdz
+         JU9flywOkLCl2kZoazM//YRfwUWjq2TwKJ30fLg2lMqblIYxBwZs/+2p2j7rLC7Fm7Jj
+         2m3EMw/Mgi2b2Uju3bZgU6f2cSftn//DjcRXkeX/U9yavWbzhg4xJnaQvAW7YaM8cENo
+         HBp1O6TbQxu3imWGb+DNAxCkG8cRonAQTYA9rEsXPbaRmPibtjaJpANNXwiNmSxSOXcJ
+         eC+e2a/kZnelOyvk8y5agksoMr6c5zfPF34Qrao378wXSfA0zOI3O7Giqk1eGnrWaRs5
+         5Opw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2PanKddjaS30eWGro76kjQ5q5Qx4kkbWTzS2HpDBeP9N0/Fc1rEbd5Rx5CKVoj/r6JP+yMV/T6Md9qTvQf83kL6q+
+X-Gm-Message-State: AOJu0Yw2aluoL5jTIWd4N1pg5ycB5sq6L9NuwWsyS9o0JX0gSPBTKrSV
+	XU3WQwgBlVbbIdN+YUTfFsNLziFMbA7Wc26mCzcLVuGBZySoXjXS
+X-Google-Smtp-Source: AGHT+IFcwi9gaoZxVBmlUA/f4yh+4E16WuLN4gryhMWjZuOM6lWeIU9uwmOYkkJrmY/3PWsDYKmleQ==
+X-Received: by 2002:a05:6e02:1c24:b0:365:1555:9fe1 with SMTP id m4-20020a056e021c2400b0036515559fe1mr15026004ilh.1.1709599751378;
+        Mon, 04 Mar 2024 16:49:11 -0800 (PST)
 Received: from aford-System-Version.lan ([2601:447:d002:5be:8c4f:ad40:e7e2:538])
-        by smtp.gmail.com with ESMTPSA id i20-20020a02cc54000000b00474d40f8381sm1931209jaq.122.2024.03.04.16.49.07
+        by smtp.gmail.com with ESMTPSA id i20-20020a02cc54000000b00474d40f8381sm1931209jaq.122.2024.03.04.16.49.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 16:49:08 -0800 (PST)
+        Mon, 04 Mar 2024 16:49:10 -0800 (PST)
 From: Adam Ford <aford173@gmail.com>
 To: dri-devel@lists.freedesktop.org
 Cc: aford@beaconembedded.com,
@@ -77,10 +79,12 @@ Cc: aford@beaconembedded.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V2 1/2] drm/bridge: adv7511: Allow IRQ to share GPIO pins
-Date: Mon,  4 Mar 2024 18:48:57 -0600
-Message-ID: <20240305004859.201085-1-aford173@gmail.com>
+Subject: [PATCH V2 2/2] arm64: dts: imx8mp-beacon-kit: Enable HDMI bridge HPD
+Date: Mon,  4 Mar 2024 18:48:58 -0600
+Message-ID: <20240305004859.201085-2-aford173@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240305004859.201085-1-aford173@gmail.com>
+References: <20240305004859.201085-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,49 +93,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The IRQ registration currently assumes that the GPIO is dedicated
-to it, but that may not necessarily be the case. If the board has
-another device sharing the GPIO, it won't be registered and the
-hot-plug detect fails to function.
-
-Currently, the handler reads two registers and blindly
-assumes one of them caused the interrupt and returns IRQ_HANDLED
-unless there is an error. In order to properly do this, the IRQ
-handler needs to check if it needs to handle the IRQ and return
-IRQ_NONE if there is nothing to handle.  With the check added
-and the return code properly indicating whether or not it there
-was an IRQ, the IRQF_SHARED can be set to share a GPIO IRQ.
+The DSI to HDMI bridge supports hot-plut-detect, but the
+driver didn't previously support a shared IRQ GPIO.  With
+the driver updated, the interrupt can be added to the bridge.
 
 Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
-V2:  Add check to see if there is IRQ data to handle
+V2:  No Change
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index b5518ff97165..f3b4616a8fb6 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -477,6 +477,11 @@ static int adv7511_irq_process(struct adv7511 *adv7511, bool process_hpd)
- 	if (ret < 0)
- 		return ret;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+index a08057410bde..fba8fd04398d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+@@ -304,6 +304,8 @@ adv_bridge: hdmi@3d {
+ 		compatible = "adi,adv7535";
+ 		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
+ 		reg-names = "main", "cec", "edid", "packet";
++		interrupt-parent = <&gpio4>;
++		interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+ 		adi,dsi-lanes = <4>;
+ 		#sound-dai-cells = <0>;
  
-+	/* If there is no IRQ to handle, exit indicating no IRQ data */
-+	if (!(irq0 & (ADV7511_INT0_HPD | ADV7511_INT0_EDID_READY)) &&
-+	    !(irq1 & ADV7511_INT1_DDC_ERROR))
-+		return -ENODATA;
-+
- 	regmap_write(adv7511->regmap, ADV7511_REG_INT(0), irq0);
- 	regmap_write(adv7511->regmap, ADV7511_REG_INT(1), irq1);
- 
-@@ -1318,7 +1323,8 @@ static int adv7511_probe(struct i2c_client *i2c)
- 
- 		ret = devm_request_threaded_irq(dev, i2c->irq, NULL,
- 						adv7511_irq_handler,
--						IRQF_ONESHOT, dev_name(dev),
-+						IRQF_ONESHOT | IRQF_SHARED,
-+						dev_name(dev),
- 						adv7511);
- 		if (ret)
- 			goto err_unregister_audio;
 -- 
 2.43.0
 
