@@ -1,40 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAED7E564;
-	Tue,  5 Mar 2024 07:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290CD7FBBE
+	for <imx@lists.linux.dev>; Tue,  5 Mar 2024 08:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709624132; cv=none; b=Pp+KtOmFqrm4SJ6M5TouhWJMViABsjhoOJVEWjj+2u57OXyIcGS745PaokMdvSZB0Gln07Q/TjOffE4BJyWrbZvU7hHCpx9Tq/8BWqqNJ4A41ePeUg0zq12cn1FMlwDe1V7uoXw5QD0jdcGwTg4hiZlYHnl5dppgkasvbx8JF18=
+	t=1709626699; cv=none; b=KreqF+HZY8HWBKHE4bZSJSNlTZq625+QJAuHssYko4a4uiXqlcEQPhk3amG8joaGQbA7E1Z6QjG0bEIJU7sf2QG0p81sgYp/Youc3nz7AfaVXOy7ohpvf9YwjKJYXNn5BoPiyp1VWEA7DKNkAi+ejyMAoIeZnfNhkTWEUOSsdPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709624132; c=relaxed/simple;
-	bh=9mE8JGFRmIiaAXwJrEkI8C/6vowaKjT3QgtdT5nxS10=;
+	s=arc-20240116; t=1709626699; c=relaxed/simple;
+	bh=aQlT/8nL6oz1JmEwS10Qg0k/nHJTXACjpqXGIT3caBU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=htC0wlel3fKDI8uuLuSJZUUsCpEfclc1HuO3X/0nI6K4++uzDTqv7sBOzszKXz1KpNc9KzgwEc16Lo88N+7iAKNRkvqyS9Sv7s3Rx0XFcn9rv/CNQVuP/Ex2BePLFj0XuZUbT2fexthC8kcVs0Fn28rKK/MgkjFV9/ir8ZypKqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFDziI/S; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bZ8cp5C1n0t8zFreinY9bQQyLeuQeHF30zRPsFekCsDSPPURj9lVE4T/KlxxAGxAhNuh31Ux72zCFnyDow6Za2ZXppn9DQwzw3KGfgXAhPK9d6GlPSAV+9usJLpCZPZgdQ5clzbp/luC32nCR9b5Sq7GC/Vc++SOsugrUZeyHaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Urje1p8L; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFDziI/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CDAC433F1;
-	Tue,  5 Mar 2024 07:35:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709624132;
-	bh=9mE8JGFRmIiaAXwJrEkI8C/6vowaKjT3QgtdT5nxS10=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Urje1p8L"
+Received: from pendragon.ideasonboard.com (89-27-53-110.bb.dnainternet.fi [89.27.53.110])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5A953CC8;
+	Tue,  5 Mar 2024 09:17:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1709626678;
+	bh=aQlT/8nL6oz1JmEwS10Qg0k/nHJTXACjpqXGIT3caBU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BFDziI/SFGMNLoO162znoeRmfJIet1EyZZ0jpgaU7j8q27USEhFhaiAvUsrqIpfNA
-	 hzzdPWE2+S4AZbj9gb67MpaHvd3/n2VyaPlIGR9F+67muyX5ehwkneDNFUE3g1wUgL
-	 Hlm6gxPjqlDH6mzIsg1FGrtjk2Am8a9ofXDn9kdM=
-Date: Tue, 5 Mar 2024 07:35:28 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: jirislaby@kernel.org, u.kleine-koenig@pengutronix.de,
-	ilpo.jarvinen@linux.intel.com, shenwei.wang@nxp.com,
-	alexander.sverdlin@siemens.com, robert.hodaszi@digi.com,
-	robh@kernel.org, tglx@linutronix.de, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, frank.li@nxp.com
-Subject: Re: [PATCH V2] tty: serial: fsl_lpuart: avoid idle preamble pending
- if CTS is enabled
-Message-ID: <2024030517-paging-voter-6054@gregkh>
-References: <20240305015706.1050769-1-sherry.sun@nxp.com>
+	b=Urje1p8LiZLNSbDKARBxr0QGiU3RlKppsKJF+hofYjbP14x2FaJ7Y8MvSLps3tpmR
+	 Nbznjt+clMtw1BdjRtNfYoaTCCLxilbA6GMu51xWpXbn9eQDd8VgLdTfPGfha4AYho
+	 r8O2g3CTQKa2BjNe+rKfuV9sS3EKLAb6DGGWuRdk=
+Date: Tue, 5 Mar 2024 10:18:16 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Adam Ford <aford173@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, aford@beaconembedded.com,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 1/2] drm/bridge: adv7511: Allow IRQ to share GPIO pins
+Message-ID: <20240305081816.GF12503@pendragon.ideasonboard.com>
+References: <20240305004859.201085-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,84 +57,61 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240305015706.1050769-1-sherry.sun@nxp.com>
+In-Reply-To: <20240305004859.201085-1-aford173@gmail.com>
 
-On Tue, Mar 05, 2024 at 09:57:06AM +0800, Sherry Sun wrote:
-> If the remote uart device is not connected or not enabled after booting
-> up, the CTS line is high by default. At this time, if we enable the flow
-> control when opening the device(for example, using “stty -F /dev/ttyLP4
-> crtscts” command), there will be a pending idle preamble(first writing 0
-> and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
-> cannot be sent out, resulting in the uart port fail to close(waiting for
-> TX empty), so the user space stty will have to wait for a long time or
-> forever.
+Hello Adam,
+
+Thank you for the patch.
+
+On Mon, Mar 04, 2024 at 06:48:57PM -0600, Adam Ford wrote:
+> The IRQ registration currently assumes that the GPIO is dedicated
+> to it, but that may not necessarily be the case. If the board has
+> another device sharing the GPIO, it won't be registered and the
+> hot-plug detect fails to function.
 > 
-> This is an LPUART IP bug(idle preamble has higher priority than CTS),
-> here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
-> so that the idle preamble does not get stuck due to CTS is deasserted.
+> Currently, the handler reads two registers and blindly
+> assumes one of them caused the interrupt and returns IRQ_HANDLED
+> unless there is an error. In order to properly do this, the IRQ
+> handler needs to check if it needs to handle the IRQ and return
+> IRQ_NONE if there is nothing to handle.  With the check added
+> and the return code properly indicating whether or not it there
+> was an IRQ, the IRQF_SHARED can be set to share a GPIO IRQ.
 > 
-> Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+
 > ---
-> Changes in V2:
-> 1. Move the "restore control register" comment message to the appropriate place.
-> 2. Add Fixes tag.
-> ---
->  drivers/tty/serial/fsl_lpuart.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+> V2:  Add check to see if there is IRQ data to handle
 > 
-> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-> index 5ddf110aedbe..bbcbc91482af 100644
-> --- a/drivers/tty/serial/fsl_lpuart.c
-> +++ b/drivers/tty/serial/fsl_lpuart.c
-> @@ -2345,9 +2345,12 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+> diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+> index b5518ff97165..f3b4616a8fb6 100644
+> --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+> +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+> @@ -477,6 +477,11 @@ static int adv7511_irq_process(struct adv7511 *adv7511, bool process_hpd)
+>  	if (ret < 0)
+>  		return ret;
 >  
->  	lpuart32_write(&sport->port, bd, UARTBAUD);
->  	lpuart32_serial_setbrg(sport, baud);
-> -	lpuart32_write(&sport->port, modem, UARTMODIR);
-> -	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-> +	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
-> +	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
->  	/* restore control register */
-> +	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-> +	/* re-enable the CTS if needed */
-> +	lpuart32_write(&sport->port, modem, UARTMODIR);
+> +	/* If there is no IRQ to handle, exit indicating no IRQ data */
+> +	if (!(irq0 & (ADV7511_INT0_HPD | ADV7511_INT0_EDID_READY)) &&
+> +	    !(irq1 & ADV7511_INT1_DDC_ERROR))
+> +		return -ENODATA;
+> +
+>  	regmap_write(adv7511->regmap, ADV7511_REG_INT(0), irq0);
+>  	regmap_write(adv7511->regmap, ADV7511_REG_INT(1), irq1);
 >  
->  	if ((ctrl & (UARTCTRL_PE | UARTCTRL_M)) == UARTCTRL_PE)
->  		sport->is_cs7 = true;
-> -- 
-> 2.37.1
-> 
-> 
+> @@ -1318,7 +1323,8 @@ static int adv7511_probe(struct i2c_client *i2c)
+>  
+>  		ret = devm_request_threaded_irq(dev, i2c->irq, NULL,
+>  						adv7511_irq_handler,
+> -						IRQF_ONESHOT, dev_name(dev),
+> +						IRQF_ONESHOT | IRQF_SHARED,
+> +						dev_name(dev),
+>  						adv7511);
+>  		if (ret)
+>  			goto err_unregister_audio;
 
-Hi,
+-- 
+Regards,
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+Laurent Pinchart
