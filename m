@@ -1,182 +1,177 @@
-Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD0751C2B
-	for <imx@lists.linux.dev>; Tue,  5 Mar 2024 09:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=216.71.153.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629568; cv=fail; b=ZL4o8mLPVEJyX+4eIV5p+sUkP6QlcffsUkzfLHBtPD4wqGnPeujNjrJzFw66Alzrlyumt3dgJlSYarx85VRbox5ShBdqkeNpl8iSpaoJrc1uHu+nE4wPG3wAI9rWlStrzvmd1tgS52fVpYj3yV54fagv31UxMnHWoT8ydnKjXYA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629568; c=relaxed/simple;
-	bh=XpOLsLt6q4iQ7fNBP87AVNIDlrn4o4gqxhEkQViEDQE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MZ2Dvfqfjd/WxGoZlagsY6qPwPhDeTeVmTOTGx/OWQe28+0kZ7eNkftH8cG3G+P3PXdxp5+7Qlw+xr5TbSHVsfH6tWYMVOBUcgR0elcMp4fHLi/7vFbhYxrtgHOcM/UMuACXofcVyj/DP7Ch8RFSeGI9dSqOqdH9x/YitFHZs+A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=kQTNtDDP; dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b=eM/R4vpW; arc=fail smtp.client-ip=216.71.153.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C020786AF8;
+	Tue,  5 Mar 2024 14:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709649441; cv=none; b=PMHx0I2P5Oure0BR8R3kxii82eokhbIzQf+1ZLDcyCtOv4aV6V+X1wsrZo9WQGG+3gAy16jKJFwT7uSL8l10bCUl7Lwf8CCvR/5yjwXh9Lesluvmvlfy5HnoMUTRvvGcKQOf38ShL1u6ixRBs/gE05EJef/uCaZlNNVJxIBHYsU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709649441; c=relaxed/simple;
+	bh=PFDRnUb1JFhpVTNgo/H8v1Eg/rAvjUdBBtspdiP1xLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SuPzNUfaTNC6d6+gcqvKEypjeuB/SQTUkK/bqSluD+jC9rkMaMlSJcjDl02b7GQCjVRV5VGSZ2rW6VfIfB5dXe46b4xkBSkfQYE9FCW2ZSi+j6F6d4djXsDT/YYEq/4L5CokqWoQ5zUNLixVnAtgUpLzzeaWIosUSP2BiKFG51M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ob0xAPCX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="kQTNtDDP";
-	dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b="eM/R4vpW"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1709629564; x=1741165564;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=XpOLsLt6q4iQ7fNBP87AVNIDlrn4o4gqxhEkQViEDQE=;
-  b=kQTNtDDPMcOqd6UgXuBEGoSX9XRezyg5/wtY4Rq18WlRsajkslWbz1C9
-   uA8nd6Y1EPFEObJ3DvVmNET8wNqTqP9vEtTRYkChREXxeggjJ5h4WmZZa
-   fkpq9/KHWvUeQ23+MI6P6pBfCmwWOQhttYrUiymmoJzxd6S7U8F9MTgmf
-   c1YaVfUio3mzM0npZVcbe1gF0U3kyuqoF5vSmBNt30ynecTpGBcKcuogo
-   H37Rlit51WisTQHxESsH6py1ZStWwpDuwHH0UwlH5pmypSN/ijY2pF5bt
-   H1Rl6wljsHw5w4Avc6yvSitAmVvv/xxG7lkBJuOXdxyN9JwvsJuHQOXBA
-   Q==;
-X-CSE-ConnectionGUID: fzyN7pzdSVCgDwN3CUkb1Q==
-X-CSE-MsgGUID: jeQfxnGiQq2CWluHvjDgvA==
-X-IronPort-AV: E=Sophos;i="6.06,205,1705334400"; 
-   d="scan'208";a="10678837"
-Received: from mail-sn1nam02lp2040.outbound.protection.outlook.com (HELO NAM02-SN1-obe.outbound.protection.outlook.com) ([104.47.57.40])
-  by ob1.hgst.iphmx.com with ESMTP; 05 Mar 2024 17:06:01 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ImRqGHCp15J01DK1i23YjrS9HGA0J8x91+zZTFr6fozmULoXr7kcTvaBflcR2PCPTPXh1hFqRs14qgReU1frkGBJyzewb+18oMQUtkZaizihUNpiaJHWVOTWwIoMRS/BjXVmUs1CxqSwxjDwLAlFL7FrK+8gyVhVm72UPjcih7Zt56J4IJs00dDAtYv0Rp4CJlHzd8iTiGHc9tDTvn734zbYfj/h15J2XtqdzpBPv65w7OMqVhPQbxdb4vwmzoXpfjHH+h3kDF/AJMvAQ8WBm3B33X45GBhttWiq01g3G1MEMAyaQHgsCaVWgZNSC6D1VsOEzenqv6RjNt9Z2oAVjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aXiyvmPS20EXCIWexOzh75hJTf2bD6vxFty8gpKqsKk=;
- b=EqVGK/yys/m0pU7KKd1kflnzRWdfrjexofJcYEp39plWU1bl6RVWq84I7Taopvysr+fDzfJsQCso6z6XN4wzjHWjO86o14bADgBAPb995f7EnSccfw4ddI8wIeOAGyUWfx0WP096JmuPSo35vLyGotxCA4R51GUOztEbeXhcOcqUZd44jWB9If+P7V83oZQOngBmuZDVDeZv01Tw0ym91EcF9ECCpwtH21d2byrb0QQecZZuxMB/+S5ZU+s74RKpyh422gzEZJWQ0v0CdfQVfSc9c2CSbNUH8zxifKRl9JypysAHBMKDRcNDl9h97NM71Kop3WFi6OdalmLrkGqjUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aXiyvmPS20EXCIWexOzh75hJTf2bD6vxFty8gpKqsKk=;
- b=eM/R4vpWNIcrolz/o4iWN2LpylLNLDIjd8mMm3RZEML0tI1wtdMJ9OK7aSPLtH9GLX6ZNgI2bQKL7lweoAFftliXPu14STHzJjzMtR6yHuSpFHTwfZN/W18XPqV6V1T6BRIx8cPZuDZS903YCOD+jmEPf09CCy4IC0KnLpd7ags=
-Received: from SJ0PR04MB8326.namprd04.prod.outlook.com (2603:10b6:a03:3db::16)
- by SA1PR04MB8468.namprd04.prod.outlook.com (2603:10b6:806:33d::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Tue, 5 Mar
- 2024 09:05:59 +0000
-Received: from SJ0PR04MB8326.namprd04.prod.outlook.com
- ([fe80::a115:b72e:ac9:d144]) by SJ0PR04MB8326.namprd04.prod.outlook.com
- ([fe80::a115:b72e:ac9:d144%7]) with mapi id 15.20.7339.035; Tue, 5 Mar 2024
- 09:05:59 +0000
-From: Niklas Cassel <Niklas.Cassel@wdc.com>
-To: Frank Li <Frank.Li@nxp.com>
-CC: "bhelgaas@google.com" <bhelgaas@google.com>,
-	"gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "jdmason@kudzu.us"
-	<jdmason@kudzu.us>, "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-	"kw@linux.com" <kw@linux.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>, "robh@kernel.org" <robh@kernel.org>
-Subject: Re: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
- interpreted as a free ATU slot
-Thread-Topic: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
- interpreted as a free ATU slot
-Thread-Index: AQHaboXQLML6t2DiAku/eXc/Po9wGLEo26AA
-Date: Tue, 5 Mar 2024 09:05:59 +0000
-Message-ID: <ZebgdpKt7x2hDivM@fedora>
-References: <20240304224616.1238966-1-Frank.Li@nxp.com>
-In-Reply-To: <20240304224616.1238966-1-Frank.Li@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wdc.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR04MB8326:EE_|SA1PR04MB8468:EE_
-x-ms-office365-filtering-correlation-id: f348b054-2e7b-4546-9558-08dc3cf37988
-wdcipoutbound: EOP-TRUE
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- de6y2QSLcxyIMvy92y8Frw1DAO8NJDnHU4yNUiN0inb4w3hQACDq2pgzMdLN5/SrXHjznds/c/LJaiHBX+AlEegxKPNESmHgIb3ZEu9BLVzF/dKiM9FfAZAOMNYoeBjo/LfMFu65HDUiL2Y2+D8h8FCeUiVEerCGHqvqWYrVhahobUMBq0l+NtW/VMsnZBRo/kmUj+tb3aF4LF5OSbKbgtAwtpFb5eiT0kfV3h1+ASXbQyPUE/7BPR2Zpk0PzrpZLbn/ZhDMSsqemQd34LLnKeKmZpz9YYgTId+Ev2aUelTzm5wZV0EjK4CC0dTlavjdyOvCkjUBLVQVeVtt8qrSSr367XhkgnU6q54hKV6MDZiohx9a7ukLKO6fVa497E9Yay7p12jNlIXOxcqVlHMyj57H4O3h5gkyQ+xrqY3yyLdrUirtv/DUJlIFIorYzs04Z9azLOLjoO6CXJF3Jub3b/Vj2I3Z2tHJrsEEAPoDbUxzy3GfnH/oN13nVwuxwuk2riFahqoUhXjKm1w8TXD+jgXibStPtmSFyh0dBZnKGBn+jTe5lwM8EkqudENLl/P5+KcbcRvJxskXrVTovP27T8szTkQLJbSE+kkiOvr+vUbgV/I30/xSKSSBHKn4yEd+ZlbWbAm15koQhAClAo7koXiePJAnSALv6bcfuW1Coks=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR04MB8326.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ew+vcVImqH9fByCLeW16mrCzToVWfAs5sPxuT6RjNLZ11R8Ac7OWerrbjxy+?=
- =?us-ascii?Q?OcZJxRCsCCAbWtjtdPdWtglxkNG4GoS3VLlEcd5eYfsQ81fBDawTZAsZlVol?=
- =?us-ascii?Q?8LvOAxWkVlvV2pOlCVrfaj73JCscGbj7HdXvzHqmr4WrmYbDUEUCXRdmZolJ?=
- =?us-ascii?Q?DyUP8+XNf5Jc7vFA0/0rnjT2CLR3v2SgZnzJe6KqMMTwKguJZEfhRFreXfNl?=
- =?us-ascii?Q?KsNRwDR3pck4cnRRtAvODcvjCr5tuOaxes66bBJsa0sRz2K6VBPees5/O7Po?=
- =?us-ascii?Q?SRvCGbwLx+3jTKtEqyVWUr+wBRiTiwxN3jylJskPiNlvFnlm8HABJ1vdN9JY?=
- =?us-ascii?Q?aoav2v1jKwsgQ0X6llFQS8qv6GU2Hb5HDbWDA2WGYba15a9kc/iuCaWbvJix?=
- =?us-ascii?Q?NwjjtPphQ1BiVnkitnCkmvLXquDhOPlHPIy8ceOo08o4Os24H0DkfEC3i+yr?=
- =?us-ascii?Q?rqbE+FYHEYY2DEQSRlNEzrHhNzHGC4HVYl/9pO/RQoKWxhiebU8pLuZMQwHL?=
- =?us-ascii?Q?Iei8/I8KQ4xbZaQ0OxH0wAOzGID726q4rwXM/Jki81GpjG2oVpQyepKtbXlr?=
- =?us-ascii?Q?OFPJHogl9coiLCJAISh1WppQp0KqOt4ertob9PhJwClwDWhVoxe085kKgz5L?=
- =?us-ascii?Q?C/oJik3QUnoD+NS+8mUqXBng++eoAl/Ga401Q/Ea8HwTOwk4r6hrLWrYK1nM?=
- =?us-ascii?Q?oTBSJbkQjbppQgzVFqWaBsDgRXtCbJjw5xWWby73+xhOd4AH08rz7GjHAq+h?=
- =?us-ascii?Q?y1wiHrNZ5WX1UJMtjn4PR3W42h1uCdzsmrRZK40+SXvs98+Q+gVbpCP+NURW?=
- =?us-ascii?Q?0PvCJ9pXhDM6h9tzIndym5oZkNcTCRQZ8LE7ZCJCwFB6uybHaGFRJL+YSk7n?=
- =?us-ascii?Q?8xD9FS7ciaIBOaVzCVdRuBkn9sV+sxmyf7X+vg8NOD17MR0SaJrBCQF6ZJ0T?=
- =?us-ascii?Q?fcSbymhb+hw3i4c9ragCCFRgTw9vzf4ge0U9PaxNJOqHBCPGtEWBCQ4R/OGV?=
- =?us-ascii?Q?FvehQNlDoFHwGQIrko3oculdQl2d/J2KoZHd6vTkJAgoSx0DRRs0iaCeJkTL?=
- =?us-ascii?Q?dZwlMorlpniv2v4Khlk1JUXsh9EdaZg9+o2zpGWewTQnxGXaXE41YUcxkXWl?=
- =?us-ascii?Q?B/GHk/OFuk6VkNDIIQjgy/JBEYDM2Odza+2wrH4jdFx6ar9e28DSNNqsadQC?=
- =?us-ascii?Q?Xk/n3zeUwXqp84ItLjFHxNjup6xBGrkqpRyF0Cm5J7Vs+VHlouTwmSMisobJ?=
- =?us-ascii?Q?Jjm7i5L8gqeyQx3cX8GycvWFWZPQIJYlYeZbVBL45yl76g9kQJTncESGMcHK?=
- =?us-ascii?Q?1/Or6OUMD5I7lIZrk4jx+WREl3LBCMoFOstbmwSwNloNxBQuvJcZCbbhxecl?=
- =?us-ascii?Q?awtHEHm2vvbhs3A1fnuUtWBi43Xd4cQvFWlDHa8939nP9CytZtTgfKMGJtDe?=
- =?us-ascii?Q?caOE62+BaLsEmkV9JXIM9UyyVxme+jRRYF7CfPGdklCItaF9iswlDdvzugPp?=
- =?us-ascii?Q?cZcsOJs5OzKyOKLanU3C6/EsyRkRXiVpYfT9brb1jv15lFGiSesX43zDQMeC?=
- =?us-ascii?Q?O989Sp9VArUQqBIr2V0/5+Djjxt9KT2VQvG/WkUEHpgWBV+gsUhj68mES5oE?=
- =?us-ascii?Q?4A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <BE3CC955A5F43A45BDA49CB7755821C8@namprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ob0xAPCX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257D0C433F1;
+	Tue,  5 Mar 2024 14:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709649441;
+	bh=PFDRnUb1JFhpVTNgo/H8v1Eg/rAvjUdBBtspdiP1xLo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ob0xAPCXLnUUvG6vKIvGCdR4QIkvh+6lVlInUZZELMJzX4TugqXHs37YyBlGLqW5u
+	 Fk83edGu2/KijwfNBfro6CowJf5oGyManQdZK28oysOXKanTgHEiEmX401SNeWBGhr
+	 pDemzy0oMPFA5+vvoY98BpTvXvGnGAGjQBbxGojMdHQ9c+q++Bm9WZLnLBAvAX0UW6
+	 Vv2HBfeO2R83LicOAvCsR5BFcA3ZyZR5VqrvHISwVMgS3v+14iixMzeET7L2ua1UdP
+	 9FDISNiQfWepv9aZz4Tjiqtw6qSQg4PH0A820UB2TF1pCD+MnEaTeE7lG/YcD1mLfE
+	 JIwZLdlxlUMhw==
+Date: Tue, 5 Mar 2024 08:37:19 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: conor@kernel.org, bhelgaas@google.com, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, helgaas@kernel.org, imx@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org, kw@linux.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org
+Subject: Re: [PATCH v6 3/3] dt-bindings: pci: layerscape-pci-ep: Add
+ snps,dw-pcie-ep.yaml reference
+Message-ID: <20240305143719.GA3310214-robh@kernel.org>
+References: <20240301162741.765524-1-Frank.Li@nxp.com>
+ <20240301162741.765524-4-Frank.Li@nxp.com>
+ <20240304182049.GA851904-robh@kernel.org>
+ <ZeYcOUAb7NWjTh9m@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	+hj82A5VwY8z1sJxXDv5GFroRZRcw2U+eNMF73G2Pb5UysfzHf+96rUpidD/u6YFFkcfSX76mppTMTrDD2H3f5d/folbEsYdLocM7KNAmYzHQp1LJBiGyIHqN+TjdgRcMWBYyjWLJjXSqoV8ggH6hnq8vjHDKvDpXZDKJqz06sBKdKhtH2su2rgKsfIBfmO1f6zPIuiuPtUIz0i+hrjVCA3rDWzLjMEIEEaoRiy5UsOmlqDjV12nbMejhwMrR+hbZe5isXPK22rs0+6e8FVkmJZ3dIRp1wcFpi5YnbTtEfWaZIA4fRPenaB4xJXBwKPBoBkU1k9SIfhCxQZ6Yc1z5cm2Nez+oCK2CMn3Jzfg/wjxeYTANpW86kQNkFJwX9VdIgVn5L5uFfANcrjmZ2NdNQHf19CrMk7uHzSTbrIRj9JWzQJNT1V6Io9Y7TpgWLhAL5SOouDO8BS4aX7iQK6zZ7jTDZPVk2qbPJynZKu55/HXTcLKwsT5tO/LN3iGq4wzXAysnDADIzduk+tqadYHEN+kLEJRrBrwXc2sT50kr/+kaYNwioQCNVBrpnKNj1vmP76beOBy/YfrKn6WblcfvPKs4EYaDTARovqFvqP4s3rsL7C54JIZvZ7bucRbE+ah
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR04MB8326.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f348b054-2e7b-4546-9558-08dc3cf37988
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2024 09:05:59.2925
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: K/KycHTtgrJmreLFtG2dCEJB+BTc+QOJjlakE+z5FYm4hWZw0+ArVw6kDvZ9OeeFi4ALiMOzn7slSxjCG9cejA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR04MB8468
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZeYcOUAb7NWjTh9m@lizhi-Precision-Tower-5810>
 
-On Mon, Mar 04, 2024 at 05:46:16PM -0500, Frank Li wrote:
-> dw_pcie_ep_inbound_atu()
-> {
-> 	...
-> 	if (!ep->bar_to_atu[bar])
-> 		free_win =3D find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows=
-);
-> 	else
-> 		free_win =3D ep->bar_to_atu[bar];
-> 	...
-> }
->=20
-> The atu index 0 is valid case for atu number. The find_first_zero_bit()
-> will return 6 when second time call into this function if atu is 0. Suppo=
-se
-> it should use branch 'free_win =3D ep->bar_to_atu[bar]'.
->=20
-> Change 'bar_to_atu' to free_win + 1. Initialize bar_to_atu as 0 to indica=
-te
-> it have not allocate atu to the bar.
->=20
-> Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-> Closes: https://lore.kernel.org/linux-pci/ZXt2A+Fusfz3luQV@x1-carbon/T/#u
-> Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update =
-inbound map address")
-> Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Mon, Mar 04, 2024 at 02:08:41PM -0500, Frank Li wrote:
+> On Mon, Mar 04, 2024 at 12:20:49PM -0600, Rob Herring wrote:
+> > On Fri, Mar 01, 2024 at 11:27:41AM -0500, Frank Li wrote:
+> > > Add snps,dw-pcie-ep.yaml.
+> > > 
+> > > Remove context that exist in snps,dw-pcie-ep.yaml.
+> > > 
+> > > Add an example for pcie-ep.
+> > > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  .../bindings/pci/fsl,layerscape-pcie-ep.yaml  | 54 ++++++++++---------
+> > >  1 file changed, 29 insertions(+), 25 deletions(-)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+> > > index cf517e4e46a33..07965683beece 100644
+> > > --- a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+> > > +++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
+> > > @@ -10,8 +10,7 @@ maintainers:
+> > >    - Frank Li <Frank.Li@nxp.com>
+> > >  
+> > >  description:
+> > > -  This PCIe RC controller is based on the Synopsys DesignWare PCIe IP
+> > > -  and thus inherits all the common properties defined in snps,dw-pcie.yaml.
+> > > +  This PCIe RC controller is based on the Synopsys DesignWare PCIe IP.
+> > >  
+> > >    This controller derives its clocks from the Reset Configuration Word (RCW)
+> > >    which is used to describe the PLL settings at the time of chip-reset.
+> > > @@ -35,31 +34,18 @@ properties:
+> > >        - const: fsl,ls-pcie-ep
+> > >  
+> > >    reg:
+> > > -    description: base addresses and lengths of the PCIe controller register blocks.
+> > > +    maxItems: 2
+> > > +
+> > > +  reg-names:
+> > > +    maxItems: 2
+> > >  
+> > >    interrupts:
+> > > -    description: A list of interrupt outputs of the controller. Must contain an
+> > > -      entry for each entry in the interrupt-names property.
+> > > +    minItems: 1
+> > > +    maxItems: 3
+> > >  
+> > >    interrupt-names:
+> > >      minItems: 1
+> > >      maxItems: 3
+> > > -    description: It could include the following entries.
+> > > -    items:
+> > > -      oneOf:
+> > > -        - description:
+> > > -            Used for interrupt line which reports AER events when
+> > > -            non MSI/MSI-X/INTx mode is used.
+> > > -          const: aer
+> > > -        - description:
+> > > -            Used for interrupt line which reports PME events when
+> > > -            non MSI/MSI-X/INTx mode is used.
+> > > -          const: pme
+> > > -        - description:
+> > > -            Used for SoCs(like ls2080a, lx2160a, ls2080a, ls2088a, ls1088a)
+> > > -            which has a single interrupt line for miscellaneous controller
+> > > -            events(could include AER and PME events).
+> > > -          const: intr
+> > >  
+> > >    fsl,pcie-scfg:
+> > >      $ref: /schemas/types.yaml#/definitions/phandle
+> > > @@ -68,10 +54,7 @@ properties:
+> > >        The second entry is the physical PCIe controller index starting from '0'.
+> > >        This is used to get SCFG PEXN registers
+> > >  
+> > > -  dma-coherent:
+> > > -    description: Indicates that the hardware IP block can ensure the coherency
+> > > -      of the data transferred from/to the IP block. This can avoid the software
+> > > -      cache flush/invalid actions, and improve the performance significantly
+> > > +  dma-coherent: true
+> > >  
+> > >    big-endian:
+> > >      $ref: /schemas/types.yaml#/definitions/flag
+> > > @@ -85,3 +68,24 @@ required:
+> > >    - reg
+> > >    - interrupt-names
+> > >  
+> > > +allOf:
+> > > +  - $ref: /schemas/pci/snps,dw-pcie-ep.yaml#
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > > +
+> > > +    soc {
+> > > +      #address-cells = <2>;
+> > > +      #size-cells = <2>;
+> > > +
+> > > +      pcie-ep@3400000 {
+> > > +        compatible = "fsl,ls1028a-pcie-ep", "fsl,ls-pcie-ep";
+> > > +        reg = <0x00 0x03400000 0x0 0x00100000
+> > > +              0x80 0x00000000 0x8 0x00000000>;
+> > > +        reg-names = "dbi", "addr_space";
+> > > +        interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>; /* PME interrupt */
+> > 
+> > PME or...
+> > 
+> > > +        interrupt-names = "app";
+> > 
+> > app? You seem to just be changing the names to make the example happy. 
+> > What do the dts files have? You need to make those pass.
+> 
+> It's on my plan.
+> 
+> First need change 'regs' to 'dbi'. 
+> 
+> https://lore.kernel.org/linux-pci/20240229194559.709182-1-Frank.Li@nxp.com/
+> 
+> After that, I can update all dts.
 
-Tested-by: Niklas Cassel <niklas.cassel@wdc.com>=
+No! 
+
+I'm saying you shouldn't be changing the dts files. That's an ABI 
+which you are likely breaking. You should adjust the binding so the dts 
+files pass. The exception is if you know the change is safe and not 
+going to break the ABI or the dts is just been wrong all along (e.g. 
+missing a compatible the OS doesn't rely on).
+
+Rob
