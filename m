@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8D15FDCC;
-	Wed,  6 Mar 2024 18:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4395412CDBC;
+	Wed,  6 Mar 2024 18:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709750719; cv=none; b=ZJ5647bJGByT+EmKAzMvYqReq4Q0od+OS6iDQR8mkh2ZNm5+skoGlzZmk1CT+VVXynEV0w08Fw2QHEPNQkQnQgXD2QooQKpv9OFN8lIfx0DfLiBRJe6VT7zWddoj6A1dET8ANGapEuKzQI4HuO9evT64XdWAk7V5Ffv4G0+Zkbs=
+	t=1709750860; cv=none; b=gssJEfon1usQ4Is4NVHreyHyXcT8G86Go3sDxYjsZXmOZhK+2v4V8FUXagEahi9RlQRl3666uX15gQIlXTbFodr3KqsU8cqH+riYzwV4XNC48ve1wHNPNMgnBfs3huvi/KwAeSeKOFHRutIQMRcH66pxvJK0WRu9d96My856Mfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709750719; c=relaxed/simple;
-	bh=7CP+A26tMm7Rg/McJFoxPIsRAv/dhgwhokRlKJJDh7A=;
+	s=arc-20240116; t=1709750860; c=relaxed/simple;
+	bh=uH5Kmmrd2ZBsTEsbwqs/vCHfrforb0VOsgmnEzRMKzs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2i+KjWodf8WPwfl0HHgbwBH3V6uUPXtmIZ2ymDv7cgBshZJU3wP910r9DpelcnO9L+cYFb2z3B8htgsmL9wlYzuv+lETi1h5YxDDwyHqdFK6V8/V6oO5SWzvREPo8Ta4+gcVVvZx/n0ApeKmb4LqCqstn90b6BjEX24LyoVNLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYwSno0V; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=NHj4gDOzJnx0HP0unOiFQDK80QRwj2EOR+lqYkE4NSk6d6q15cE3V5NGEvYsp82hSQ1EeAYW8s7kNO/U+L64sXGlHCABOHewwQ/ZBPOIRVA3BxAF09WZAbdJLuTvIr6UYfqR0P1Yzy17ivy5ES9fGX/MUOuaPLHWx38ndlH80kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgFkNQyx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYwSno0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD37C433F1;
-	Wed,  6 Mar 2024 18:45:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgFkNQyx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92708C433C7;
+	Wed,  6 Mar 2024 18:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709750718;
-	bh=7CP+A26tMm7Rg/McJFoxPIsRAv/dhgwhokRlKJJDh7A=;
+	s=k20201202; t=1709750859;
+	bh=uH5Kmmrd2ZBsTEsbwqs/vCHfrforb0VOsgmnEzRMKzs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WYwSno0VcyP2eJcPt9fDzb7A1sk+TV/0ju9H33p/7aSBi8RntoPqX68fZvNOHstAr
-	 XfImv0tjdAICPJNdwMKFMoIEN0GfdQPErxzOvyRrpBOYvR6JhN3fWlPqiSbv4OkxAe
-	 9c5dZ3dzsxHOfPQZmtgxqch3xwxrb/8pZZMztKjmM3Y1Xm94fe89qxFaQ6yZenKWIU
-	 1t9k3xhkOkg3YPCgZoUu+JwS6XPT4/CVcHB/r/72RbINrIOUne9+6obnjJSGKEd5rE
-	 OxGaA8FY75l+Mbd//X4M2xXFO1D4wbd+l4bBkl6iNdRhurtL5hSHwfKQf8IxbnJAcV
-	 9Tbqkyjk5V6bw==
-Date: Wed, 6 Mar 2024 18:45:13 +0000
+	b=FgFkNQyxK0pSoutjf+BBdRb6Xt75FDermKEwVYbByaRkvwH2Zrx2Vnhp8fOu3Wtrm
+	 LhL4BJ3KhCRLNzlxYVft/W4sAKejgNEtW1Xui0ECG7XvJenOB3WS475SBpFDgcRQa9
+	 Qq58Ymt1AvxmvsxC28udXo82n7n7/YrODjN56Ys05aaAiCA10jAeHjO1pirWmv3vvX
+	 NlQPr4nAn1h/+8PJVU5ceBDHk4hM0EMab7wCZ7dTDhDVgGawBJwjd8NojXq9300g12
+	 0ITja07klZcmjaNS8oLVR6qXRIybABP/7jwr3ehI+B6gTwlttigMR8D1zdvxnli2Pm
+	 lMnn8Ube/ZzAQ==
+Date: Wed, 6 Mar 2024 18:47:34 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
@@ -39,11 +39,11 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] ASoC: dt-bindings: fsl-sai: allow only one
- dma-names
-Message-ID: <20240306-pebble-grope-88fdaa95a87c@spud>
+Subject: Re: [PATCH v4 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
+ interrupt numbers
+Message-ID: <20240306-evergreen-foster-ccdabb6806e4@spud>
 References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
- <20240305-asrc_8qxp-v4-3-c61b98046591@nxp.com>
+ <20240305-asrc_8qxp-v4-2-c61b98046591@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,75 +51,40 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3EPdioiMTrMIrN3t"
+	protocol="application/pgp-signature"; boundary="aQb0iygPV1zknTJ9"
 Content-Disposition: inline
-In-Reply-To: <20240305-asrc_8qxp-v4-3-c61b98046591@nxp.com>
+In-Reply-To: <20240305-asrc_8qxp-v4-2-c61b98046591@nxp.com>
 
 
---3EPdioiMTrMIrN3t
+--aQb0iygPV1zknTJ9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 05, 2024 at 12:33:04PM -0500, Frank Li wrote:
-> Some sai only connect one direction dma (rx/tx) in SOC. For example:
-> imx8qxp sai5 only connect tx dma channel. So allow only one "rx" or "tx"
-> for dma-names.
+On Tue, Mar 05, 2024 at 12:33:03PM -0500, Frank Li wrote:
+> fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
+> have 1 interrupt.
 >=20
-> Remove description under dmas because no user use index to get dma channe=
-l.
-> All user use 'dma-names' to get correct dma channel. dma-names already in
-> 'required' list.
+> Increase max interrupt number to 2 and add restriction for platforms exce=
+pt
+> i.MX8QXP and i.MX8QM.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Docum=
-entation/devicetree/bindings/sound/fsl,sai.yaml
-> index 2456d958adeef..6f551c68d33db 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> @@ -81,15 +81,14 @@ properties:
-> =20
->    dmas:
->      minItems: 1
-> -    items:
-> -      - description: DMA controller phandle and request line for RX
-> -      - description: DMA controller phandle and request line for TX
-> +    maxItems: 2
-> =20
->    dma-names:
-> -    minItems: 1
-> -    items:
-> -      - const: rx
-> -      - const: tx
-> +    oneOf:
-> +      - items:
-> +          - const: rx
-> +          - const: tx
-> +      - enum: [ rx, tx ]
-
-I'm not entirely sure if this was Rob's suggestion, I got the impression
-he was suggesting that in the two items case we'd not care about the
-order. But while I think this is different to that suggestion it's also
-not wrong.
 
 Thanks,
 Conor.
 
---3EPdioiMTrMIrN3t
+--aQb0iygPV1zknTJ9
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZei5uQAKCRB4tDGHoIJi
-0oGVAQC0WUWgje4xSZZqPzRwX4PZpsGdXdHoL3D6DvpnrN9/GgD/UgvXhmOyhVOO
-woy4Ab0tIG63oNAMuHs9RTTQly9j3gI=
-=3qdj
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZei6RgAKCRB4tDGHoIJi
+0pBwAP9P/iOz/WJsDWRql3i55Z27q9gL867xW6ceF0t3tPnDxAD/dfd0C0xerdAw
+E/NBarjCE1F+Yct5lpuyMQJgoqt8nAc=
+=i5DV
 -----END PGP SIGNATURE-----
 
---3EPdioiMTrMIrN3t--
+--aQb0iygPV1zknTJ9--
