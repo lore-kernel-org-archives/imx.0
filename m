@@ -1,102 +1,191 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A02313BAC8;
-	Wed,  6 Mar 2024 20:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15BC175B6
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 20:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709756740; cv=none; b=iyXNnZZPo25izkj7UMfGdPPAk6UxLwezI8KjqLdCEMu1Vs9iqezt0wEN/z6tVBPqvVZzWthgIrPUnGYNEZf8vtNpPjJ71We+uBBconc3s1VN3PbaamoKdACDVZoya5XhwvtyVG2DXVR5a7h3BhnICANOJJoT1KGCDlyrbSeHSaM=
+	t=1709757639; cv=none; b=F8c+7fgCuE8qLFrY/e7WqWzNJnSKJ5197MZZqLx9f9lA5gMQk3RzdTK/wmGURVzMD7eQvaMgq2jhG28QFzHtwrvkuU1ROdc/DUOR6VLFy0hOgiG0rSykEh3R/dyhSUbjtSE5OTnlGZVV/WTuAtW5ktODdUu5WyR+TGfXuPK4Go0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709756740; c=relaxed/simple;
-	bh=3G3c4eXPS9WuTGpWw0GK2uRbPmxPUtPwC+akL1YrzdA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nPUumfUlGc30fZ6+rlyK0jrZU/bYTX24amLYo3UwAHQhWI5zu3eRwH9n1h+6qLP3FmIfC1YX806vBpPxRTbdxcB4HWWzSQXQCLDDAqBAGFG5arT7KRN7KZmYpnORjk/qSXMoi5CeWEe1VYiHYRbTjf1H52WpAvCU49/8GmxvPQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B10e6mjG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709757639; c=relaxed/simple;
+	bh=sswSikc9379ND8q2IbxyQfnO0n1h0QcZWhVJ5y3cvaU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hmCmm5ZPp05VsJ8IYQhXhyrwMvvKjkX0OA5SlztUfZ0+scG4vKNcxlNC4wivGDt0sPTElG2ufnb/EjeepICzekyqLm5LhvKxXIDR5u2iSNrNwceI525mCx0a6y6Lph4pYXKDvu/XVNxDTwg+hhtMXFdi7rp6mKBGQHBiXXNYuV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8/ws5qM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B10e6mjG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6238AC433F1;
-	Wed,  6 Mar 2024 20:25:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8/ws5qM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B8DC433C7
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 20:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709756739;
-	bh=3G3c4eXPS9WuTGpWw0GK2uRbPmxPUtPwC+akL1YrzdA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B10e6mjGQOs0efdBGCCO45+ftivoe096/l9+RgnPaVSs19tfRFuM4Mx+vrMOtjYC/
-	 a0e2u6JaXj5WPc0K4XpeJMjbDnzmVKXSGX1t1UisEg33lXxespSre1EQ1aVulYWApX
-	 b0Ppcl+0kc21h4mePud+g8dTNrI0DEAzPSmNvBGeHZcXYXxIUE/c1mg0ILv/a19y0I
-	 KET6P7xBsTFzEZMPU+Gef22JKbEavG/FXb5uP3N/S+IHKcl/zU3hE/ZqcS0k/IVgT8
-	 M++2I3T1x3F//Jft+dCPh6l+GMa8lzGyIPQ1Q00B+27uQne1cVnNwrLktO4YIUXqa5
-	 pi2mF3+WpGcRw==
-Date: Wed, 6 Mar 2024 14:25:37 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
- interrupt numbers
-Message-ID: <20240306202537.GA587561-robh@kernel.org>
-References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
- <20240305-asrc_8qxp-v4-2-c61b98046591@nxp.com>
+	s=k20201202; t=1709757638;
+	bh=sswSikc9379ND8q2IbxyQfnO0n1h0QcZWhVJ5y3cvaU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=T8/ws5qMT2ZeTSc51b1Eib/zZP0Bic95ObfOLhmnFI6WWEkBsyEl8vGvsLXcfyAKo
+	 eXOSRIunkpWWaW13DDe+UuAfMmdbbMhe3bXf355jRYlAu+9T2GL4TfXSQIB5H+MIts
+	 cY7T0qhxeeu88XgXRTGgW8DV8nvGQKu0/t1SoWJZenI1I5imZpyKQpurVBR6tTR/eq
+	 Aa2xSbiYR3EfIt1RPVDci+rUsIwoyuofq8zXyd5zv8kq16/cioamSKHrtUSzGaYBqT
+	 qISnREjX/vWwbF7CkvbsqrnJzQOfg0VptWhIBORmtijTeo9YqXhEdryLecBqroaD0e
+	 IjELyvAiHZOlQ==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d3f4fef377so912811fa.1
+        for <imx@lists.linux.dev>; Wed, 06 Mar 2024 12:40:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUmSG0XucQ8rWD5kI8WIvWX/nlwLTPNIOKDBIAfy0+tIhDWfwvNyffUtWbEMdAdzOYGhWSXPnrKJJzrGz7rtoDNKhwQ
+X-Gm-Message-State: AOJu0Yy/ssVCgY9FMLHRf7Yr3gRUMCMfBwHmXEcTUUgVLhkRM/U0C6Pb
+	qdzC7DbVkDo0/OLyUjmSzBCT4/yZWCFlvP3xOtfwZCGbgjclsZJSx/I/tCWEStLqICIitublBYH
+	vnanuLYPx0Q5s7uxKQ9mW1ezocw==
+X-Google-Smtp-Source: AGHT+IH8UTdel4s/VRNesdS4qceNJhsOkk+LDnUl/yDAojAV9TkPDtsy3/Q6DOzm2AeEjlXIQ6cPB2Jm2nQ7JJv7G7M=
+X-Received: by 2002:a2e:7c17:0:b0:2d2:ca54:707b with SMTP id
+ x23-20020a2e7c17000000b002d2ca54707bmr83492ljc.38.1709757636588; Wed, 06 Mar
+ 2024 12:40:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240305-asrc_8qxp-v4-2-c61b98046591@nxp.com>
+References: <20240229-8ulp_edma-v2-0-9d12f883c8f7@nxp.com> <20240229-8ulp_edma-v2-4-9d12f883c8f7@nxp.com>
+ <20240304164423.GA626742-robh@kernel.org> <ZeZZyTU8FWACW9aj@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZeZZyTU8FWACW9aj@lizhi-Precision-Tower-5810>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 6 Mar 2024 14:40:23 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKU=Qay75i1zaasaNHCV2jkseX94fzfe-4AwrV093NOLA@mail.gmail.com>
+Message-ID: <CAL_JsqKU=Qay75i1zaasaNHCV2jkseX94fzfe-4AwrV093NOLA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma
+ compatible string
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Peng Fan <peng.fan@nxp.com>, imx@lists.linux.dev, dmaengine@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	Joy Zou <joy.zou@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 05, 2024 at 12:33:03PM -0500, Frank Li wrote:
-> fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
-> have 1 interrupt.
-> 
-> Increase max interrupt number to 2 and add restriction for platforms except
-> i.MX8QXP and i.MX8QM.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/sound/fsl,spdif.yaml | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> index 56f8c0c8afdea..7f6590708e1ec 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> @@ -31,7 +31,8 @@ properties:
->      maxItems: 1
->  
->    interrupts:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 2
->  
->    dmas:
->      items:
-> @@ -101,6 +102,21 @@ required:
->  additionalProperties: false
->  
->  allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - fsl,imx8qm-spdif
-> +            - fsl,imx8qxp-spdif
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          minItems: 2
+On Mon, Mar 4, 2024 at 5:31=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Mon, Mar 04, 2024 at 10:44:23AM -0600, Rob Herring wrote:
+> > On Thu, Feb 29, 2024 at 03:58:10PM -0500, Frank Li wrote:
+> > > From: Joy Zou <joy.zou@nxp.com>
+> > >
+> > > Introduce the compatible string 'fsl,imx8ulp-edma' to enable support =
+for
+> > > the i.MX8ULP's eDMA, alongside adjusting the clock numbering. The i.M=
+X8ULP
+> > > eDMA architecture features one clock for each DMA channel and an addi=
+tional
+> > > clock for the core controller. Given a maximum of 32 DMA channels, th=
+e
+> > > maximum clock number consequently increases to 33.
+> > >
+> > > Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/dma/fsl,edma.yaml          | 26 ++++++++++++=
+++++++++--
+> > >  1 file changed, 24 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Do=
+cumentation/devicetree/bindings/dma/fsl,edma.yaml
+> > > index aa51d278cb67b..55cce79c759f8 100644
+> > > --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> > > +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> > > @@ -23,6 +23,7 @@ properties:
+> > >            - fsl,imx7ulp-edma
+> > >            - fsl,imx8qm-adma
+> > >            - fsl,imx8qm-edma
+> > > +          - fsl,imx8ulp-edma
+> > >            - fsl,imx93-edma3
+> > >            - fsl,imx93-edma4
+> > >            - fsl,imx95-edma5
+> > > @@ -53,11 +54,11 @@ properties:
+> > >
+> > >    clocks:
+> > >      minItems: 1
+> > > -    maxItems: 2
+> > > +    maxItems: 33
+> > >
+> > >    clock-names:
+> > >      minItems: 1
+> > > -    maxItems: 2
+> > > +    maxItems: 33
+> > >
+> > >    big-endian:
+> > >      description: |
+> > > @@ -108,6 +109,7 @@ allOf:
+> > >        properties:
+> > >          clocks:
+> > >            minItems: 2
+> > > +          maxItems: 2
+> > >          clock-names:
+> > >            items:
+> > >              - const: dmamux0
+> > > @@ -136,6 +138,7 @@ allOf:
+> > >        properties:
+> > >          clock:
+> > >            minItems: 2
+> > > +          maxItems: 2
+> > >          clock-names:
+> > >            items:
+> > >              - const: dma
+> > > @@ -151,6 +154,25 @@ allOf:
+> > >          dma-channels:
+> > >            const: 32
+> > >
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            const: fsl,imx8ulp-edma
+> > > +    then:
+> > > +      properties:
+> > > +        clock:
+> >
+> > clocks
+> >
+> > > +          maxItems: 33
+> >
+> > That is already the max. I think you want 'minItems: 33' here.
+> >
+> > > +        clock-names:
+> > > +          items:
+> > > +            - const: dma
+> > > +            - pattern: "^CH[0-31]-clk$"
+> >
+> > '-clk' is redundant. [0-31] is not how you do a range of numbers with
+> > regex.
+> >
+> > This doesn't cover clocks 3-33. Not a great way to express in
+> > json-schema, but this should do it:
+> >
+> > allOf:
+> >   - items:
+> >       - const: dma
+> >   - items:
+> >       oneOf:
+> >         - const: dma
+> >         - pattern: "^ch([0-9]|[1-2][0-9]|[3[01])$"
+>
+> I understand pattern is wrong. But I don't understand why need 'allOf'.
 
-Nowhere is it explained what the 2 interrupts are or what the order of 
-them is. Is the first interrupt the same as before, and there is a new 
-interrupt for something else? Or it's the same interrupts, but they've 
-just split up into 2?
+The first 'items' says the 1st entry must be 'dma'. (It might need a
+'maxItems: 33' too now that I look at it.) The 2nd 'items' says all
+entries must be either 'dma' or the CHn pattern.
+
+> 8ulp need clock 'dma" and "ch*". I think
+>
+> items:
+>     - const: dma
+>     - pattern: "^CH[0-31]-clk$"
+>
+> should be enough.
+
+If it was, then I would not have said anything. If you don't believe
+me see if this passes validation:
+
+clock-names =3D "dma", "CH0", "foobar";
+
+> If you means put on top allOf, other platform use clock name such as
+> 'dmamux0'.
+
+What? It's under an if/then schema.
 
 Rob
