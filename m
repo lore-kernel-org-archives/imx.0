@@ -1,72 +1,70 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2085.outbound.protection.outlook.com [40.107.241.85])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2082.outbound.protection.outlook.com [40.107.20.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AF680605
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 15:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11750134CFA
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 15:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709738376; cv=fail; b=BHiSdTVWt8MW8OJDTdRv/ooO/4WpcL1CXrrGWSYyhVoqTZ1bhhfq8NzgWnZL18JeyozajTVeMzmpHfWEM5mnLkUhnMtPjhAHGkSyzGVxkuMo5tjVj9yFBX9VZPcJfEscpXanOEb7ZlA8sev8+Y/kFc48nwHa8zYPxyCN7zjv3hI=
+	t=1709738623; cv=fail; b=OaM1gGYyBfeI9nDMc5csU7XyFeaPZaVsTnVWDU3qG+TvithzxXCTBE1ylEhkd2v5rfCP8AWG+/dAR37FKyHyH26itWqhGhuwUfUWJ6mwPx4htDI3699iUZbH6FkSljVW5C0UG96NfOsU5zRDf9ZfkdZyyFtfBIrt3ZbJv6R2MZo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709738376; c=relaxed/simple;
-	bh=BDh7cymQ80HV3BGLG7HjGzQj8q/uUUU4Mo7/mxXBl4Y=;
+	s=arc-20240116; t=1709738623; c=relaxed/simple;
+	bh=xjQzwWtGB2X1/mIXptK+sZXgJbcigaRYToZkZtJ2M1Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=r0UFvNAkvTZ0+/fMsuAiEas1soSBR4z9tztBkUoC+mpXVsg4sulwxSNZescmlUaa6AUN3UHPvmor7KbHU+5F5ovedHMi/tc55OjZ/5XSPEw/XnPZF01Xa50pZasKtlDQFGQiXjYfkRgZ+H9X/z3PLtQOgC1tZ2AWlyy0cYMVG6k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=bbj+2eN2 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.241.85
+	 Content-Disposition:In-Reply-To:MIME-Version; b=higY0ZEg/alArTeCLeqjcPXq0lRAsXjOlKjVWyQiERsX/GwjbIaaOnP274bSdU4ekizX8Ex1MdXbogOXXVcyQTvDqOwKHO1JuOnx1xQtdHdycCHCQ4OBd4jLCjUa0JTmOm5RPAhx2gQ6KP13Rs9SzT0ibHKtvpDx7caHJc+YIYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=PNKR/nVq reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="bbj+2eN2"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="PNKR/nVq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mUA5lRLaGR7ZkHGCLIGpfzJb93z9GzJpRkbuF//bu4Ib33+/p2vXpcgr+HM4znQ6me3y4F5ZWh76n/1MXpm5BTzN9/P2f2EjCt1ZBQZ7OJhPIaXpB5h6jOkMLysXghjy6icxWfL/9VQXulN/pl6oObOx4hT7l/QtX4CNsFvn0KsrP/KVMNHrq86v45QXCy2Ro+8SWMXaHk/Yi4LWg9ju44uKEsz0lhadqJt5SFt1mB7zvP4W5+HPZg7rbli3GYm23NuWPqX/eSoUhq+oLTrzrJ9xvWAVAGJCfbtpRqbVtoJwNRN80AeIqu65kCoTGoNbqNQ+2Dd81rS+VKotMfj0UQ==
+ b=R/lv7d7RZMiNLzfYbu8BQJaURVED+Why8r0QN6jxXiOGBI3XaO0wHa1hy8xNiJr4437tUtlXLRv9n6yBF2wlYjfQEn6OO3ydICXZhX0Umk0HhE9vMldDB41H2kMgkjrd7zznt83lFWGPmmkQh6P4r6dI3xN8xgNvTNyHF7BH7dZZ3psFxbGkimH3zvFKr4Zw7FpBsdZrsV9NOCzEYxBdfOIXl8kE8utvzSSulOpuMCXfdRazGnapsDdeLx/dqi3EgnDnLLnwbx1dM0BYGuO88ABdR83Q/r9ctp7HXWaRvSo4+KySMi9cTspOMi/l1THvZeCzDC4cmLycfhPXAcB2AA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=16MaFxYz0wUjxg2o0FHO3pRXFEPtXTGXEZrc6xfRpKY=;
- b=jaBorgau3waaZ3B7He01JocOtgYX0m5lhVD1credI5pZDKdxnrOceUmbGFfWADwhct6oE0UOo7oVfcjjT5lOq1Bv49WXfexsMm9ej0b6zsXpVZtE0lYHAqGJQpQJoV1cL1ANTW8TAO0bHL+n8vzJbetJ9/rgIKvIMcZU+dbMufdXytmL5HWb8QHHnegcgIGpw3S78OLGd/DEajVtuuE1V6QdpJL75dU1yXcOpgW0oIUKc+vrb/mtTnK5kSFwv67dBizequVitELsSaOLZ8u2QQpQd0RJ5vTMbG2WcEq09JjJ2HnRxN59dE3DSGYpJY1N8FkgbL4LSY4BERu8eToOcg==
+ bh=kHjN5hcDlUcOvSi3VrAaIId+NJHVzLm4lBBiLAZbTPs=;
+ b=Q6glCG3Fc/yptEGr2XeWgNRUlhCWcTCfHsCzF9jZwhcQvyl/pcAZKSfG3cKptEDVI0nGJ4DYqrkjXKaapP4twPQTHwUuJHoJqURBuFlWQ5tGbhYGj0sYQ7ZIhk8n181JZANbumJLQKq8ZL3xeAtzdGxCBZJvrT3t7IkGQNhBcDGMLVjSw5RYsWZKDZbMah71btR7MHUkR/eHXUPmeNhp1mkwAIKNBpUIE00xAVqrjp/K+aslyUSqwmPIseis0fcCCSveV1Gka1jkJ5dyu4DqcE9U3B8F7jcuo0IU+o6M96sOmH89Kbr9doGIPbf6uPZxvkIi6zEhKtMmZfvSLMbnYw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=16MaFxYz0wUjxg2o0FHO3pRXFEPtXTGXEZrc6xfRpKY=;
- b=bbj+2eN2sP36eP2TW2w+xb/QskF4+oF8Z47cnY8YTivPRzOWmpXnBDfyaZFJp4U1aXlstLu941rO1PEdXXQc786tqmbap/ugaWU+2+v8dBEKzj0FstBmpxvW2RatyoyH7uiDpoapErcHSB2jjq2tHUpHIXa0ZZlLZnGMl+mGAMY=
+ bh=kHjN5hcDlUcOvSi3VrAaIId+NJHVzLm4lBBiLAZbTPs=;
+ b=PNKR/nVqmFqygE06EnrqGH+U6IzkUy4Q+XD8rTAGdDA0KcIvduWSi4BLay8BspwmpFhPA3T3Jf0rLyM5YY83hwQpvvSqLUOHgxcOHvy6qkp4Co/5WI1NPYrsWGsICWYRkvEs4nzo++AX2PdikRlxPdHRYyERDTbslJYT8c6uTKo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB9836.eurprd04.prod.outlook.com (2603:10a6:800:1d9::9) with
+ by AS1PR04MB9238.eurprd04.prod.outlook.com (2603:10a6:20b:4c6::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Wed, 6 Mar
- 2024 15:19:30 +0000
+ 2024 15:23:37 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7339.035; Wed, 6 Mar 2024
- 15:19:29 +0000
-Date: Wed, 6 Mar 2024 10:19:18 -0500
+ 15:23:37 +0000
+Date: Wed, 6 Mar 2024 10:23:29 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/4] arm64: dts: imx8qxp: add asrc[0, 1], esai0,
- spdif[0, 1] and sai[4, 5]
-Message-ID: <ZeiJdoTqWd8h0Q5I@lizhi-Precision-Tower-5810>
-References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
- <20240305-asrc_8qxp-v4-4-c61b98046591@nxp.com>
- <2177674.irdbgypaU6@steina-w>
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Nicolin Chen <b42378@freescale.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Joy Zou <joy.zou@nxp.com>
+Subject: Re: [PATCH 1/4] dmaengine: imx-sdma: Support allocate memory from
+ internal SRAM (iram)
+Message-ID: <ZeiKcYdlQ4S1oWCW@lizhi-Precision-Tower-5810>
+References: <20240303-sdma_upstream-v1-0-869cd0165b09@nxp.com>
+ <20240303-sdma_upstream-v1-1-869cd0165b09@nxp.com>
+ <3280558.aeNJFYEL58@steina-w>
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2177674.irdbgypaU6@steina-w>
-X-ClientProxiedBy: BY5PR04CA0019.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <3280558.aeNJFYEL58@steina-w>
+X-ClientProxiedBy: SJ0PR03CA0198.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::23) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,415 +73,230 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9836:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13222624-1ccd-4136-2719-08dc3df0d106
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9238:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08d51758-b0d6-4a96-efc4-08dc3df1652b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	B1Qa5fErxSX4Gi1ikWjzcyOZc0BmRmBvuSSpO7mCe9UTH9NhobRiwjdwKpF8k64/FWdfOtW4TVf4mYW1LMlKnQvn5WvDphiWTcofRu8uPneyMRHG8xt9aECrg7QPRimKzljafx31NV3jRRyo2G8iojoeUZESPoJe08fwgxsB0HD7X3sSTIiEbDXjXTshk6b1CZwM4mzJKHjvmNgC63Xi9we0imNyAzQwGjFhBUi1kp+Jivujs5ShEFSQ9KA9++wZJyNZs9BCBSM3hVj9Y4YXXW0S73htyJsQuT7QYt5Mxy2oOkC4TliFAAwdFOcycde+a7eame8tms1M+eHz/W9PAXESm9o3aiNJxamqTNFnkZqlQb/HXZ59expjthUQFZpyVSJPHEou0WeEkiD11qPL9rt9SQM8c3f0UQjdV69LX02vpK+Cggjml95o5lm97JLxwE7+kiF0abq4oTLBcSHMKWp41dszgtpKHfzWFXQrk0kEFBxWy6dQI1UAiPvKNDMlrLm5RGxqk06vv8tJzGnJn+QobwQNqjI5up9XzvlEppUKCkhKTPzugJ7TO3DxQEoeT+eVwefSMikCnmKFnVMhSJ+dtU8eBteLTj/3eGmcC9UHxPBqeQUQBomHICAXHPTbOQ4KDgNf6ZpX3xjSr9FFGoh5wOlrQu01NY4OHF+vAgE=
+	GuuA80G5+oiNWIaiULdAAQXfunuDuhRkNRoCSf4TRTh8hvSQO/5lcU7OG8L2pJr3urHYmTS6i1WQ33VyLqvdK5a5I2Ar6L1SrUiiANvNDA85lczuhxCBNUgy9swIRw+Cg0q0H67zKJU9VU3JX4OAicgAOowlCmN0xWzFLBX5UVpbs+xZQN5RBv569B+gF5fqD0ENO9dcIkWXmXaPJ26m0Jh4p2qOcjpj6WsKMnfTp1EjAT6R5Mq500RP3X3zqE56N9vmRy3Htastj8DV2Bws3mUddkvZ+TdiBSgAlWY3a+N/PX9T+FtBPUVZh7U7FoP3QN3DVZLkeYZx97ieUdxGX2t00L2j2dnSbvyQfYjK8IAeSjHx1RK2anXItVnwQoheDmOjcqMBHK1J4hYR8Jj1JlS5a19JlaQS28RMZbZEfW9/jaZqkQ8VAlgxBBMbTjnnivWEiYUua+9Bdk2enMDfYeoG6H/kYhhpfrTFG82TQiH0bxWck2Tm6byuwrv3QymlocoSA4vcmsziWmvqQVShldxuzZ3hkHxef7RItzc+SZWXe08kNxj8cSLt7VC0ASSwyTM+kEIYyx9TieraDkyhCSZRyxx9+632Z/uY8PhJJavXBNR9At+trL2N68kT512zm4f9ME8aXkxi8ASRKI+LhyZrEd5BjzkAcYIMf2vc4ZI=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?SUsXpVpIXCToiRooe0Pqt5of1O0fj55GwknxPvkjyhYArdC69beBcGlfL8?=
- =?iso-8859-1?Q?nw8SuxqOi+bj2pT1F4nyP7IzSy5w5hj3VwJ/XSG2mNFJAdvbTB4T/WupAf?=
- =?iso-8859-1?Q?YDcD2rpQlU+EfFKcXlzB5rBt5kIsuB5yKrZ5ECqkRxvclzStAJnLC+yAcM?=
- =?iso-8859-1?Q?CC5P2tWhLbA7nYV0i1N51bU2FYMNJQRLL7CFaQIWxsij6/G5DYf02hw+U9?=
- =?iso-8859-1?Q?+tazWO63pkM/xGt9iahc6lAInARJTV6KcYRp81/xxYHvw+eFKR4sITQyPG?=
- =?iso-8859-1?Q?8UrV1twXCFP2TWZcJ6hMaxaqRjrIa9wbvtONSyPAkIuaFa9fPRlm9lfd+3?=
- =?iso-8859-1?Q?tCykrekppJwvii2OxJbdMzS9EXSAEnaLufdX0SCRqYDTe4cEYP7qjPbZQz?=
- =?iso-8859-1?Q?EcJ3AXZwTJC2lSkZyBRlZ/hClZaDJ3nKWdWD/gfRH6mByaX8j/DJbdlR26?=
- =?iso-8859-1?Q?lTUOyBsf1XJHqj9970yxgB2r+qTrWbIZ1tsQllvMVT8wtGNyi5OHwSW8Bn?=
- =?iso-8859-1?Q?xmHwpu6NVpahWQYy0XLGWbKOQ1yo8j+A1uU/jCKsQrrPlADgwfx7tG9Vsq?=
- =?iso-8859-1?Q?wfvaE4/HovO87L5gmRDqlVWvWLcLOmGwoBWWG2nuxxMlVoyH7wkmQeAzX4?=
- =?iso-8859-1?Q?1WC2TRtvkw/+NkeG3SkA5IsHKCDfighmIHlhUGok8FGs6y4OmENCry/Jd4?=
- =?iso-8859-1?Q?vaFr2u1gW5xwxMm/vgUw5PTxCIIImn9z4WXEQWDMjKN32w9Kn9AgqUZ6Iu?=
- =?iso-8859-1?Q?K/N4GJqtYgrTbXcM6GOZPPNipAdjAlKZ5F1za9NDag0LSEQxKewCujHC2m?=
- =?iso-8859-1?Q?MRFbkA1X49jAq+XbxArQZb8maE4w+B6o9fQgfZZbc0FjiTEv3C2LFFy3gk?=
- =?iso-8859-1?Q?jRY942s5Lk+1mtqYnNygCtTNIQaKMrR3jyaepCkCpOP+OgFUdr+S7P8NR9?=
- =?iso-8859-1?Q?roIhnWP16M5eNjEQjgyUCJ4YLVUSkcqMvIwqPVJRNdnHotPFVCupLwN0uM?=
- =?iso-8859-1?Q?fec7GBKXD9hROQd8TNNypX8VBh8qKvLV9FBuKiE5ZAQgl/tfVvaIdOGqIq?=
- =?iso-8859-1?Q?NAKoGsSWYqB4MU30Cl7wwWoh8HhhoNhXso8TGoXvQLKv7Uilp+cgERsEfA?=
- =?iso-8859-1?Q?cbLf72pCTaCnmJomqcd6H60rcpYXjDAAYdH4EBGX6iSUiXWPp4SvgeHHvE?=
- =?iso-8859-1?Q?qV6fGDSveilDt07zyzavt+kosMotACsHwmutEM+051s7vSL/XIbd+g5eJ9?=
- =?iso-8859-1?Q?HkXdpsAOjf98BYxp0bWMUABLH90Y/FKMo8e+KVrt7CLTzfQ1DhOaWUnqcZ?=
- =?iso-8859-1?Q?tOFYasufixUicI7eWKERym9qlimOFffUpaBb3PTA0hJ1PSqWA9AqllHfvW?=
- =?iso-8859-1?Q?xYhxyLFNcDk18FXzBOVbSCMQ5W9Wjh9wRow4esFEbqaydHfpjJQjyhHx9e?=
- =?iso-8859-1?Q?bER91f4JnBLfCm9klV3sHZzjD9gln/d26mi9j/AXAhJV3z19iE0+6huAmu?=
- =?iso-8859-1?Q?q3IgcqCH8i4MfxkGBjvXiEnqvvL3J6LFcJSdviSopFmHax53b5Gcz6LpAM?=
- =?iso-8859-1?Q?M8UPeHy/on++m2pRaNGOPUXEfpY/TTifbS65SRtLqcnUk0eeNk7kyCKDmt?=
- =?iso-8859-1?Q?PnOPG7eYHnTqQ=3D?=
+	=?iso-8859-1?Q?iWN1bIYBLF/sAHGHs1uwxxJobrPm5NzRj8sZ6lg82DZIYOKlqEs/WDn6uF?=
+ =?iso-8859-1?Q?AB4Upw5nlsZ3LsXG0lvH56SB8pP4NcvMxeN/mPcV7Bd3hPQai+6QV0EuGL?=
+ =?iso-8859-1?Q?uPKwalCepP1HMsVPCtBwHA+VOIacZtsycP63K9Unx/ethOZIWUbrzTUUHo?=
+ =?iso-8859-1?Q?gyJ56G0dvquswQvDTI4clQykZudYODDXX5Fcv9tlvYK6WIGD84AaWPQcTg?=
+ =?iso-8859-1?Q?4QjxVGiVtIDZVjxyYwPVvFI7TuMYQUb9egofkfYuZcvFPUELSwMWTMMwbu?=
+ =?iso-8859-1?Q?AygrbCUQKOTSKjlt7vLhVZolloF81XXSvU5YcuR6Guwyuz34w/LzV4oyjs?=
+ =?iso-8859-1?Q?MZbB2ISJUosNTBDf1wPE8HnXMAqKcLLTTsIWlSUl38raD7mayzRmd/5vlo?=
+ =?iso-8859-1?Q?ZXiF9iwlMGd7lndIQ5SuWmoeaNGtXU8rhEnTQfP4ystwXXcyp5VEGGYLdM?=
+ =?iso-8859-1?Q?41+3aScJnhfUwQmw2POzpiM/mF06Nllwfgseu48muadI8/0MUNbnpzYD3A?=
+ =?iso-8859-1?Q?yMQkhLqW8qzslrCrF3xw+7zBTLPXt4pXA2NSD3+EGk5625/yFsygREbUnS?=
+ =?iso-8859-1?Q?K05BouvSVMq5iFb1yAStLnYeLewc0STeCi5KR1DSRG3JmASzKVOl+rsHJz?=
+ =?iso-8859-1?Q?u0kCSRg7TOVeToJLYl4fuAj8w0xW40NHe1TYmDMebCUYGipGeJ6qdynd3i?=
+ =?iso-8859-1?Q?mkaz5u5NIi0/7rM1H+4Rx3Pt1eP/Tsxzm6Vs0D2HRTGpWVZdxGK6g8ouen?=
+ =?iso-8859-1?Q?Q7lzpiwKomnMyYhkOAf2OWKHOH3fLAqoU0oI/veTKUiSYKVtMgPx34X9t/?=
+ =?iso-8859-1?Q?ERlL6N4JsIVEzGVA6aKopnTsQ5X6EckMiV14lJDjc/5YlxsKAFN76Zsrzv?=
+ =?iso-8859-1?Q?b7B1GNX+ayOnMVHW3NAjF2q0IEf5xCXuRbV8ixAYMWQJWGieMi+r1cEs+E?=
+ =?iso-8859-1?Q?YEg2/ivzQdurM2YyW/dNsxmyyq1syPo6lQxvETipiAH5FmMz7nG1Wei722?=
+ =?iso-8859-1?Q?IdOWfMBZAUMcyWGwShH/wIw9RIohCm3lD8Bk4Igbf8l5Z8l06SGh5ArdIn?=
+ =?iso-8859-1?Q?mJiJyd1XjS1EQq3wW5Ug4ypN8ZgrP9YI8IIPcDCKX6pddABWRjw+sei28M?=
+ =?iso-8859-1?Q?qQ6BhM9mQ6knmtizDIEkS8SzN+1bmzGGz6Gq5gCV/7d5yvHiuFGS2wCx/T?=
+ =?iso-8859-1?Q?sT4qyYOAzKn603rBbY2WoyHMZO4Z75sWVw6dzxem+GlXfNsJIB8C6CJJnT?=
+ =?iso-8859-1?Q?OUpaESnLNVaYcGE77Akyoo7bBqk9Q042Wqsc5Eqde3mdMwEKaBdlEY0UAE?=
+ =?iso-8859-1?Q?K5RZLTlZ3FTF3r64bwVayFQGOK4mtVVGnwcJQnpgHcq82eN62s8YW9D2K9?=
+ =?iso-8859-1?Q?rfHXikba2BZO560clEvaBRJwCC0zNFLtdNaec8rWFocdnplXATdD/pUMiT?=
+ =?iso-8859-1?Q?k6/9S+JyZyBLAbVWjf+Nmb0Ln70ZUtSkcLz64dnTLAy0aOMbuztUsuUSRI?=
+ =?iso-8859-1?Q?YUGs6sQH2iv7JAsq4s4+H90fiZm5GEgmDIx9DN39DJzPmBYkcW8JQLSSIk?=
+ =?iso-8859-1?Q?Rx6R2HjkUZVHscmoVyh1dsZnE/EHcaglvfTkSZ2jd5S5RlrkXNhH4icY/f?=
+ =?iso-8859-1?Q?wP5m4TKasL8bvEgA2LrQmUq27n9Zl7Rs9r?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13222624-1ccd-4136-2719-08dc3df0d106
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08d51758-b0d6-4a96-efc4-08dc3df1652b
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 15:19:29.0098
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 15:23:37.4924
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DGOnbIo8esU7v8X7NO89bTIjyhm/dyjjdRdxI3oqV6C3YLTVWJJh4jIpf0p3w3e4ey85EupjxKAdf1lDO8FFpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9836
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7Cpx4jSdo/8mCrWsnfQasRUDHYyzFEehRUdLhefFkZ+3jcfpW+XGD0ZC1ACstsdpjDeDQjrc8aLgD5nbQUn8zQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9238
 
-On Wed, Mar 06, 2024 at 08:20:00AM +0100, Alexander Stein wrote:
+On Wed, Mar 06, 2024 at 10:55:00AM +0100, Alexander Stein wrote:
 > Hi Frank,
 > 
 > thanks for the patch.
 > 
-> Am Dienstag, 5. März 2024, 18:33:05 CET schrieb Frank Li:
-> > Add asrc[0,1], esai0, spdif[0,1], sai[4,5] and related lpcg node for
-> > imx8 audio subsystem.
+> Am Montag, 4. März 2024, 05:32:53 CET schrieb Frank Li:
+> > From: Nicolin Chen <b42378@freescale.com>
 > > 
+> > Allocate memory from SoC internal SRAM to reduce DDR access and keep DDR in
+> > lower power state (such as self-referesh) longer.
+> > 
+> > Check iram_pool before sdma_init() so that ccb/context could be allocated
+> > from iram because DDR maybe in self-referesh in lower power audio case
+> > while sdma still running.
+> > 
+> > Reviewed-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > Signed-off-by: Nicolin Chen <b42378@freescale.com>
+> > Signed-off-by: Joy Zou <joy.zou@nxp.com>
 > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > > ---
-> >  arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi | 304 +++++++++++++++++++++++
-> >  1 file changed, 304 insertions(+)
+> >  drivers/dma/imx-sdma.c | 53 +++++++++++++++++++++++++++++++++++++-------------
+> >  1 file changed, 40 insertions(+), 13 deletions(-)
 > > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> > index 07afeb78ed564..78305559f15c9 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> > @@ -6,6 +6,7 @@
+> > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+> > index 9b42f5e96b1e0..9a6d8f1e9ff63 100644
+> > --- a/drivers/dma/imx-sdma.c
+> > +++ b/drivers/dma/imx-sdma.c
+> > @@ -24,6 +24,7 @@
+> >  #include <linux/semaphore.h>
+> >  #include <linux/spinlock.h>
+> >  #include <linux/device.h>
+> > +#include <linux/genalloc.h>
+> >  #include <linux/dma-mapping.h>
+> >  #include <linux/firmware.h>
+> >  #include <linux/slab.h>
+> > @@ -516,6 +517,7 @@ struct sdma_engine {
+> >  	void __iomem			*regs;
+> >  	struct sdma_context_data	*context;
+> >  	dma_addr_t			context_phys;
+> > +	dma_addr_t			ccb_phys;
+> >  	struct dma_device		dma_device;
+> >  	struct clk			*clk_ipg;
+> >  	struct clk			*clk_ahb;
+> > @@ -531,6 +533,7 @@ struct sdma_engine {
+> >  	/* clock ratio for AHB:SDMA core. 1:1 is 1, 2:1 is 0*/
+> >  	bool				clk_ratio;
+> >  	bool                            fw_loaded;
+> > +	struct gen_pool			*iram_pool;
+> >  };
 > >  
-> >  #include <dt-bindings/clock/imx8-clock.h>
-> >  #include <dt-bindings/clock/imx8-lpcg.h>
-> > +#include <dt-bindings/dma/fsl-edma.h>
-> >  #include <dt-bindings/firmware/imx/rsrc.h>
+> >  static int sdma_config_write(struct dma_chan *chan,
+> > @@ -1358,8 +1361,14 @@ static int sdma_request_channel0(struct sdma_engine *sdma)
+> >  {
+> >  	int ret = -EBUSY;
 > >  
-> >  audio_ipg_clk: clock-audio-ipg {
-> > @@ -481,4 +482,307 @@ acm: acm@59e00000 {
-> >  			      "sai3_rx_bclk",
-> >  			      "sai4_rx_bclk";
-> >  	};
+> > -	sdma->bd0 = dma_alloc_coherent(sdma->dev, PAGE_SIZE, &sdma->bd0_phys,
+> > -				       GFP_NOWAIT);
+> > +	if (sdma->iram_pool)
+> > +		sdma->bd0 = gen_pool_dma_alloc(sdma->iram_pool,
+> > +					sizeof(struct sdma_buffer_descriptor),
+> > +					&sdma->bd0_phys);
+> > +	else
+> > +		sdma->bd0 = dma_alloc_coherent(sdma->dev,
+> > +					sizeof(struct sdma_buffer_descriptor),
+> > +					&sdma->bd0_phys, GFP_NOWAIT);
+> >  	if (!sdma->bd0) {
+> >  		ret = -ENOMEM;
+> >  		goto out;
+> > @@ -1379,10 +1388,14 @@ static int sdma_request_channel0(struct sdma_engine *sdma)
+> >  static int sdma_alloc_bd(struct sdma_desc *desc)
+> >  {
+> >  	u32 bd_size = desc->num_bd * sizeof(struct sdma_buffer_descriptor);
+> > +	struct sdma_engine *sdma = desc->sdmac->sdma;
+> >  	int ret = 0;
+> >  
+> > -	desc->bd = dma_alloc_coherent(desc->sdmac->sdma->dev, bd_size,
+> > -				      &desc->bd_phys, GFP_NOWAIT);
+> > +	if (sdma->iram_pool)
+> > +		desc->bd = gen_pool_dma_alloc(sdma->iram_pool, bd_size, &desc->bd_phys);
+> > +	else
+> > +		desc->bd = dma_alloc_coherent(sdma->dev, bd_size, &desc->bd_phys, GFP_NOWAIT);
 > > +
-> > +	asrc0: asrc@59000000 {
+> >  	if (!desc->bd) {
+> >  		ret = -ENOMEM;
+> >  		goto out;
+> > @@ -1394,9 +1407,12 @@ static int sdma_alloc_bd(struct sdma_desc *desc)
+> >  static void sdma_free_bd(struct sdma_desc *desc)
+> >  {
+> >  	u32 bd_size = desc->num_bd * sizeof(struct sdma_buffer_descriptor);
+> > +	struct sdma_engine *sdma = desc->sdmac->sdma;
+> >  
+> > -	dma_free_coherent(desc->sdmac->sdma->dev, bd_size, desc->bd,
+> > -			  desc->bd_phys);
+> > +	if (sdma->iram_pool)
+> > +		gen_pool_free(sdma->iram_pool, (unsigned long)desc->bd, bd_size);
+> > +	else
+> > +		dma_free_coherent(desc->sdmac->sdma->dev, bd_size, desc->bd, desc->bd_phys);
+> >  }
+> >  
+> >  static void sdma_desc_free(struct virt_dma_desc *vd)
+> > @@ -2066,8 +2082,8 @@ static int sdma_get_firmware(struct sdma_engine *sdma,
+> >  
+> >  static int sdma_init(struct sdma_engine *sdma)
+> >  {
+> > +	int ccbsize;
+> >  	int i, ret;
+> > -	dma_addr_t ccb_phys;
 > 
-> Please insert nodes sorted by address. ASRC0 is the very first node.
-> 
-> > +		compatible = "fsl,imx8qm-asrc";
-> > +		reg = <0x59000000 0x10000>;
-> > +		interrupts = <GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&asrc0_lpcg 0>,
-> > +			 <&asrc0_lpcg 0>,
-> > +			 <&aud_pll_div0_lpcg 0>,
-> > +			 <&aud_pll_div1_lpcg 0>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "mem", "ipg",
-> > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
-> > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
-> > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
-> > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
-> > +			      "spba";
-> > +		dmas = <&edma0 0 0 0>,
-> > +		       <&edma0 1 0 0>,
-> > +		       <&edma0 2 0 0>,
-> > +		       <&edma0 3 0 FSL_EDMA_RX>,
-> > +		       <&edma0 4 0 FSL_EDMA_RX>,
-> > +		       <&edma0 5 0 FSL_EDMA_RX>;
-> > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
-> > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
-> > +		fsl,asrc-rate  = <8000>;
-> > +		fsl,asrc-width = <16>;
-> > +		fsl,asrc-clk-map = <0>;
-> > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	esai0: esai@59010000 {
-> > +		compatible = "fsl,imx8qm-esai", "fsl,imx6ull-esai";
-> > +		reg = <0x59010000 0x10000>;
-> > +		interrupts = <GIC_SPI 409 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&esai0_lpcg 1>, <&esai0_lpcg 0>, <&esai0_lpcg 1>, <&clk_dummy>;
-> > +		clock-names = "core", "extal", "fsys", "spba";
-> > +		dmas = <&edma0 6 0 FSL_EDMA_RX>, <&edma0 7 0 0>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	spdif0: spdif@59020000 {
-> > +		compatible = "fsl,imx8qm-spdif";
-> > +		reg = <0x59020000 0x10000>;
-> > +		interrupts =  <GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>, /* rx */
-> > +			      <GIC_SPI 458 IRQ_TYPE_LEVEL_HIGH>; /* tx */
-> > +		clocks = <&spdif0_lpcg 1>,	/* core */
-> > +			 <&clk_dummy>,		/* rxtx0 */
-> > +			 <&spdif0_lpcg 0>,	/* rxtx1 */
-> > +			 <&clk_dummy>,		/* rxtx2 */
-> > +			 <&clk_dummy>,		/* rxtx3 */
-> > +			 <&clk_dummy>,		/* rxtx4 */
-> > +			 <&audio_ipg_clk>,	/* rxtx5 */
-> > +			 <&clk_dummy>,		/* rxtx6 */
-> > +			 <&clk_dummy>,		/* rxtx7 */
-> > +			 <&clk_dummy>;		/* spba */
-> > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
-> > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
-> > +		dmas = <&edma0 8 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
-> > +		       <&edma0 9 0 FSL_EDMA_MULTI_FIFO>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	spdif1: spdif@59030000 {
-> 
-> That's imx8qm only, no?
+> What is the motivation to put ccb_phys to struct sdma_engine? AFAICS
+> this is only used in sdma_init. Also the following patches of this series
+> are not using the struct member.
 
-I am not sure what means. why do you think it is imx8qm only? It is for
-imx8qm, imx8qxp, imx8dxl.
-
-Frank
+You are right. let me check other donwstream patches. If no one use it, it
+should be local variable.
 
 > 
-> > +		compatible = "fsl,imx8qm-spdif";
-> > +		reg = <0x59030000 0x10000>;
-> > +		interrupts =  <GIC_SPI 460 IRQ_TYPE_LEVEL_HIGH>, /* rx */
-> > +			      <GIC_SPI 462 IRQ_TYPE_LEVEL_HIGH>; /* tx */
-> > +		clocks = <&spdif1_lpcg 1>,	/* core */
-> > +			 <&clk_dummy>,		/* rxtx0 */
-> > +			 <&spdif1_lpcg 0>,	/* rxtx1 */
-> > +			 <&clk_dummy>,		/* rxtx2 */
-> > +			 <&clk_dummy>,		/* rxtx3 */
-> > +			 <&clk_dummy>,		/* rxtx4 */
-> > +			 <&audio_ipg_clk>,	/* rxtx5 */
-> > +			 <&clk_dummy>,		/* rxtx6 */
-> > +			 <&clk_dummy>,		/* rxtx7 */
-> > +			 <&clk_dummy>;		/* spba */
-> > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
-> > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
-> > +		dmas = <&edma0 10 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
-> > +		       <&edma0 11 0 FSL_EDMA_MULTI_FIFO>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	asrc1: asrc@59800000 {
-> 
-> Insert this between dsp and edma1, sorted by address.
-> 
-> > +		compatible = "fsl,imx8qm-asrc";
-> > +		reg = <0x59800000 0x10000>;
-> > +		interrupts = <GIC_SPI 380 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&asrc1_lpcg 0>,
-> > +			 <&asrc1_lpcg 0>,
-> > +			 <&aud_pll_div0_lpcg 0>,
-> > +			 <&aud_pll_div1_lpcg 0>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "mem", "ipg",
-> > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
-> > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
-> > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
-> > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
-> > +			      "spba";
-> > +		dmas = <&edma1 0 0 0>,
-> > +		       <&edma1 1 0 0>,
-> > +		       <&edma1 2 0 0>,
-> > +		       <&edma1 3 0 FSL_EDMA_RX>,
-> > +		       <&edma1 4 0 FSL_EDMA_RX>,
-> > +		       <&edma1 5 0 FSL_EDMA_RX>;
-> > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
-> > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
-> > +		fsl,asrc-rate  = <8000>;
-> > +		fsl,asrc-width = <16>;
-> > +		fsl,asrc-clk-map = <1>;
-> > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	sai4: sai@59820000 {
-> > +		compatible = "fsl,imx8qm-sai";
-> > +		reg = <0x59820000 0x10000>;
-> > +		interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&sai4_lpcg 1>,
-> > +			 <&clk_dummy>,
-> > +			 <&sai4_lpcg 0>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> > +		dmas = <&edma1 8 0 FSL_EDMA_RX>, <&edma1 9 0 0>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_SAI_4>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	sai5: sai@59830000 {
-> > +		compatible = "fsl,imx8qm-sai";
-> > +		reg = <0x59830000 0x10000>;
-> > +		interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&sai5_lpcg 1>,
-> > +			 <&clk_dummy>,
-> > +			 <&sai5_lpcg 0>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> > +		dmas = <&edma1 10 0 0>;
-> > +		dma-names = "tx";
-> > +		power-domains = <&pd IMX_SC_R_SAI_5>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	amix: amix@59840000 {
-> > +		compatible = "fsl,imx8qm-audmix";
-> > +		reg = <0x59840000 0x10000>;
-> > +		clocks = <&amix_lpcg 0>;
-> > +		clock-names = "ipg";
-> > +		power-domains = <&pd IMX_SC_R_AMIX>;
-> > +		dais = <&sai4>, <&sai5>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	mqs: mqs@59850000 {
-> > +		compatible = "fsl,imx8qm-mqs";
-> > +		reg = <0x59850000 0x10000>;
-> > +		clocks = <&mqs0_lpcg 0>,
-> > +			<&mqs0_lpcg 1>;
-> > +		clock-names = "mclk", "core";
-> > +		power-domains = <&pd IMX_SC_R_MQS_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	asrc0_lpcg: clock-controller@59400000 {
-> 
-> Please insert he lpcg nodes according to their address.
-> 
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59400000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "asrc0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
-> > +	};
-> > +
-> > +	esai0_lpcg: clock-controller@59410000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59410000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_ESAI0_MCLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "esai0_lpcg_extal_clk",
-> > +				     "esai0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
-> > +	};
-> > +
-> > +	spdif0_lpcg: clock-controller@59420000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59420000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SPDIF0_TX_CLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "spdif0_lpcg_tx_clk",
-> > +				     "spdif0_lpcg_gclkw";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
-> > +	};
-> > +
-> > +	spdif1_lpcg: clock-controller@59430000 {
-> 
-> That's imx8qm only as well, no?
-> 
-> Thanks and best regards,
+> Best regards,
 > Alexander
 > 
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59430000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SPDIF1_TX_CLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "spdif1_lpcg_tx_clk",
-> > +				     "spdif1_lpcg_gclkw";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
-> > +		status = "disabled";
-> > +	};
+> >  
+> >  	ret = clk_enable(sdma->clk_ipg);
+> >  	if (ret)
+> > @@ -2083,10 +2099,15 @@ static int sdma_init(struct sdma_engine *sdma)
+> >  	/* Be sure SDMA has not started yet */
+> >  	writel_relaxed(0, sdma->regs + SDMA_H_C0PTR);
+> >  
+> > -	sdma->channel_control = dma_alloc_coherent(sdma->dev,
+> > -			MAX_DMA_CHANNELS * sizeof(struct sdma_channel_control) +
+> > -			sizeof(struct sdma_context_data),
+> > -			&ccb_phys, GFP_KERNEL);
+> > +	ccbsize = MAX_DMA_CHANNELS * (sizeof(struct sdma_channel_control)
+> > +		  + sizeof(struct sdma_context_data));
 > > +
-> > +	asrc1_lpcg: clock-controller@59c00000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c00000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "asrc1_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
-> > +	};
+> > +	if (sdma->iram_pool)
+> > +		sdma->channel_control = gen_pool_dma_alloc(sdma->iram_pool,
+> > +							   ccbsize, &sdma->ccb_phys);
+> > +	else
+> > +		sdma->channel_control = dma_alloc_coherent(sdma->dev, ccbsize, &sdma->ccb_phys,
+> > +							   GFP_KERNEL);
+> >  
+> >  	if (!sdma->channel_control) {
+> >  		ret = -ENOMEM;
+> > @@ -2095,7 +2116,7 @@ static int sdma_init(struct sdma_engine *sdma)
+> >  
+> >  	sdma->context = (void *)sdma->channel_control +
+> >  		MAX_DMA_CHANNELS * sizeof(struct sdma_channel_control);
+> > -	sdma->context_phys = ccb_phys +
+> > +	sdma->context_phys = sdma->ccb_phys +
+> >  		MAX_DMA_CHANNELS * sizeof(struct sdma_channel_control);
+> >  
+> >  	/* disable all channels */
+> > @@ -2121,7 +2142,7 @@ static int sdma_init(struct sdma_engine *sdma)
+> >  	else
+> >  		writel_relaxed(0, sdma->regs + SDMA_H_CONFIG);
+> >  
+> > -	writel_relaxed(ccb_phys, sdma->regs + SDMA_H_C0PTR);
+> > +	writel_relaxed(sdma->ccb_phys, sdma->regs + SDMA_H_C0PTR);
+> >  
+> >  	/* Initializes channel's priorities */
+> >  	sdma_set_channel_priority(&sdma->channel[0], 7);
+> > @@ -2272,6 +2293,12 @@ static int sdma_probe(struct platform_device *pdev)
+> >  			vchan_init(&sdmac->vc, &sdma->dma_device);
+> >  	}
+> >  
+> > +	if (np) {
+> > +		sdma->iram_pool = of_gen_pool_get(np, "iram", 0);
+> > +		if (sdma->iram_pool)
+> > +			dev_info(&pdev->dev, "alloc bd from iram.\n");
+> > +	}
 > > +
-> > +	sai4_lpcg: clock-controller@59c20000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c20000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SAI4_MCLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "sai4_lpcg_mclk",
-> > +				     "sai4_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_SAI_4>;
-> > +	};
-> > +
-> > +	sai5_lpcg: clock-controller@59c30000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c30000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "sai5_lpcg_mclk",
-> > +				     "sai5_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_SAI_5>;
-> > +	};
-> > +
-> > +	amix_lpcg: clock-controller@59c40000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c40000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "amix_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_AMIX>;
-> > +	};
-> > +
-> > +	mqs0_lpcg: clock-controller@59c50000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c50000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_MQS_TX_CLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "mqs0_lpcg_mclk",
-> > +				     "mqs0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MQS_0>;
-> > +	};
-> >  };
+> >  	ret = sdma_init(sdma);
+> >  	if (ret)
+> >  		goto err_init;
 > > 
 > > 
 > 
