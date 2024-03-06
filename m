@@ -1,186 +1,148 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2139.outbound.protection.partner.outlook.cn [139.219.17.139])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2071.outbound.protection.outlook.com [40.107.21.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FD060882
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 16:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6DB13A875
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 17:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709742798; cv=fail; b=lmVlruc5xx96vTCxgHtPwtXE9IMlx5CzqOvCCEih/5NJ4lpqfdj4hsHADlBC0eUZDxbBbftR1V2lRPdHfgu2ELk4jv5le2bDddD8b9KFGtyDGPWxKk8ADQfYnNCHEVPIMNlvMr1A9zGr4fEB/hA9d4QW+T5FIFAdBsBU3NvFUVI=
+	t=1709745856; cv=fail; b=O97D9GaVdUlFeQGz3VB1IddsX1/qdOIgaFtvMAAp9b10AfFw5I2H1vkrZzmiJ82sIbapMBUXy0Is0e5ob/sRe5HYxh9E1v1FIPz2vTabIO7Qp37tnR6jdAkoVqoOF5dAM83bmGhZ1oNZ+xfAfsE0FRWKyip0L/91EPhHj/LJ2ZQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709742798; c=relaxed/simple;
-	bh=Pbbd3arx99p+198utPQbAl0S+4t633dgR+8Py/khP3o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GsDYCE6V5HZxGbXl5lnIG7vC7jdxBVMjiGThF3sPU+ysOxn8DqJ+3Caph/HAbJOfSGBzkV7j1BD5ikkTysgCCIz0SPHPsfIii8ZyZGejMcxhLfVWVvO3DX+yM3Vfq9vjI7lX1KsO6rPfUMi8vI9CBEiwgNh9++opvEgGRN2V6MA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+	s=arc-20240116; t=1709745856; c=relaxed/simple;
+	bh=RgngnF///VPJb0YSM1SFRzIFtD+7xEZBFxcwX7gxwPk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=iKdhowBpjOCwBMmLpAf4ZpgQlIwNA8GBLiIZDjgZh9c/gPAYe0UGQJtTJrCJoyD6KNhsAwqRSpNtgrT6y1OCHtW1ptioRqQqPpyMYT7IEs5aF5F7pXtiE0kcA34Q/E4Rh258ZjJc6Izn3koCCEitfMgAKXzfNdh/qFVBSyrRBA8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com; spf=fail smtp.mailfrom=leica-geosystems.com; dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b=nUYB3w69; arc=fail smtp.client-ip=40.107.21.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b="nUYB3w69"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iBrxq3991/7xKJidC0W0Tzxc7opVjWLEUa+chJW+tDNvl4xJG9Z5fUOKqzPfIaDmso3m8/qQnt6UMI87HZgfhO3wKyDcJKC4Bj0Ub+uu9ZsiV3BRIZw4aEIKHl+4PwzVtU3DhYq5znwIVluQlEdzoyuBmmXcMh4h1Y/bz15m0sjBX7azjLCfLBrStem1TfE+BghcZfmqsfQkMm+LIf5+jUQrSafeQqTV3PVrMp/dDgX2QQsoIuvwBpJs0hlK6pm5j+fhTj1G3ZPmfyWpl0+1oRBjgd5+8MzfnwoDhqEOJ/3Mfdd4JNKOcyUEjmCJwN+15esiHJHhzzjHc23ph8IfAw==
+ b=Liadl9pf1VCX3qSe75LM9i3OCU9l38yEt1QkWqukefu59305WYkJ2y9o2p+67wK6OGetde+UVQqM9+K+qpbm5vFmaVJr0KoaoCsfIhXol2oFvGwPF/+I+NqMJ3klkhwhXHKNvhoOaOR3jquf9nAHCMs2swO9h/oERpyRzB/XcT32R1h/6flTa0ohSHZ3+MzyCg2LEPBt/vV4oK8aRl1BlJ+CdxUjpg0kq1XoDn7ub5gacdEQDpVEfg6QkRUurcLPtQgXf2n/BmMwMvwfv4oTF9plC7+id4TQ5x+yLUrg/+P1kJ8ThRum29xASSFs+UrMvmclKFae/pfop9PEl+0kuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kfdv3AoU0LUfMpoQxN5RD2zAvb6XJFlnInq3BjyyWnE=;
- b=e6tvEa6FI0CRneLwSkDZMDh0GF3Js9xnO6H7VF88Wf67m1YK3mSxHiQoRVNRk0DkaUTfJAT3kfJ0fXdjQWZH6qRZMgQWsxJkHbgmVLrWr9KwtFl8MJdjx1O4CR7Oq/eOCM0V0lV5RiwlmrTut2cuM4mvaIRz/lC+bFbIFO0iJQeckGMt4EzvPsqc5DmvJmp3MjN8jyIvwBmj+jyrSEUJ5FK2PB7VAd07oY+ghEObfFJqUd5vE7baneEldXPO6OSeHjwBFgj3bOQNKqNXHb71XyWepw/k50dxbjC+Gl7a9UALLmqu3BFVyUJ+4kzkfD3hZEdJfmHoaQsiS+1MGIj4xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:20::14) by SH0PR01MB0571.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:8::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.53; Wed, 6 Mar
- 2024 16:01:17 +0000
-Received: from SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
- ([fe80::f6ed:1a18:3fbf:788]) by SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
- ([fe80::f6ed:1a18:3fbf:788%6]) with mapi id 15.20.7316.050; Wed, 6 Mar 2024
- 16:01:17 +0000
-From: Joshua Yeong <joshua.yeong@starfivetech.com>
-To: Frank Li <Frank.Li@nxp.com>
-CC: "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-	"conor.culhane@silvaco.com" <conor.culhane@silvaco.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "jirislaby@kernel.org"
-	<jirislaby@kernel.org>, "joe@perches.com" <joe@perches.com>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>, "robh@kernel.org"
-	<robh@kernel.org>, "zbigniew.lukwinski@linux.intel.com"
-	<zbigniew.lukwinski@linux.intel.com>
-Subject: RE: [PATCH v7 5/8] i3c: target: add svc target controller support
-Thread-Topic: [PATCH v7 5/8] i3c: target: add svc target controller support
-Thread-Index: AQHaWIvaQw3YyHT02UKJrOMhyC7OnbErDKXQ
-Date: Wed, 6 Mar 2024 16:01:17 +0000
-Message-ID:
- <SH0PR01MB08410A70ABB956DF9DD4DE25F921A@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
-References: <20240205233326.552576-1-Frank.Li@nxp.com>
- <20240205233326.552576-6-Frank.Li@nxp.com>
-In-Reply-To: <20240205233326.552576-6-Frank.Li@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SH0PR01MB0841:EE_|SH0PR01MB0571:EE_
-x-ms-office365-filtering-correlation-id: 3006193a-a604-486a-d8dc-08dc3df6a822
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- w5jH6AvrA5s6Xg2PxzM3MmJC8M1b5nh1HIPp1c9sFBuPW0/pOWsNneBQAnSE5hzHqy/ESpEvZr9t2AAZPNmnbs0zZpqMneQeO6XcidFSP4V4W5U2uKH/Fu7mFbugNm+QXUCgE6LCXVw9BsEEd7W4Valn9HJ4WR/G08RwI8f3eICfJ1JxpuyCAAsA9W+p+D88CyHujkv30/zgQuUY1k8QuWWMttISbIwGe4eFxoR2Mg99aCY0KQjbP92gtjIWN+61/EVFYyZuMpOa5erUXJV8g9ZQ4FLA7Uiscxc5mNwhRG7UT2P3YRkQ/AYcvwhj4ohPJIN6HWCUyBBpCcXKKwMCucSSbIjyoahoSKSdN8L8seQni9I6cuweLf2Ih0QArcHeNXABYGfM36aXH5GPq5bVrdF9zR9nY8KXLRK8W+PMO/MkjSRcKDqP+uGWfv5khk0Us17sk+XPcYji5IFymXHyVCXEdV7YKZPSqGK4IRwCp6lxdcG01tYPRo/SnRzJdzIBJPQ+tF/F7YkCCHvD2Doi52KOTSfM2jMzy1z79x3mHGSKf3HesLRKiqHiEiVfwigE2QyvS25D0YClrp+ZxThILx9aRSvsqTOWkprvSNrp2z+xTaZKlFEo4NQ2MwGKVm2k
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(41320700004)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?axLzjIVgz7yHQx2rECoVNZrSJhyiSRw7B03ZCrJiNoS3AtPceWUAaR96n5Mn?=
- =?us-ascii?Q?UuB3v4cmulEhrzXHQZbF7kd23w7XS5ZjCZ6lMLpC/d00Z6RjnFsEJxUmZejb?=
- =?us-ascii?Q?8U65fw4B4bjtPQGTjEmERlCrpnjyBIWP1T16nWgJVHkg0cm4QZw4edDNAnKd?=
- =?us-ascii?Q?EG3RhB+g4EV0Pz5GaW0m539eZRdsyK+2qZeQDZ1knpp6TMOA1z3LYA7AjzlN?=
- =?us-ascii?Q?hElGNBNXhMWv6q1pSndtOmskSj3rP/4+Jq/hRu6rtjGD6X7xxPXmTVXB34R8?=
- =?us-ascii?Q?M5RIsIX86PgoZsBuoCJCcU9YD56P3TBuA4tOlelYB9rXSocZGIHTBd4lk75E?=
- =?us-ascii?Q?J+PqH/w4T8qyB/Z5n2ne+Tcoqr+vEPjOZnYg+XOPblxKkqUsm97rICJFFbKt?=
- =?us-ascii?Q?94z1LxaxxYoaLw6dUixTK9B0TvTTIpcrMPq1CgcoUfNF1fpe3mkEspzMfW+e?=
- =?us-ascii?Q?JF8uEHC3RkrI/K9t0s3qBTlgnaarofhfkbAqBhhAefj+7jkPnBYpfU/6q8fU?=
- =?us-ascii?Q?JTtQyI1RawKTn0iWwj3vd6jX0UcbvwCjXM0E1XHll9fh+oriQ6qfT45VXe3c?=
- =?us-ascii?Q?jXwpwcUkbhfpyHqe5Ly7qpO0s+XZasa5LDL/UhkkxUYsDUPeIuux48jx7oGT?=
- =?us-ascii?Q?ZdpxlnEnWY+6GpeF5WQaLvp5fz5VNJV1uFGtXYLML9N1tS4wC5G1phebiRtQ?=
- =?us-ascii?Q?5eLvZ6B5YCoj2/EXeFK77ydxPWUFhYKgtOO4IBQ60I0XczybfiSi/pbMqd9R?=
- =?us-ascii?Q?ufofTTWWsJuT087/De+uxhjPusLUqirhwozNS4zIG0NADXQ8IiPB9VZX0NWM?=
- =?us-ascii?Q?EIYkckxCUsIU1Wbxe/ompPOuxKQ6mLcvcFxbIePgY/6PatyieP2yd8CSbCEG?=
- =?us-ascii?Q?UzinWM2d8n4WF0EUjtUF6C3uW4ukclOlsr2WeWIKYj1rO52ifmnVu2xOFegE?=
- =?us-ascii?Q?YuXgoi+P/ldoPTo4LR8zluvQCm070D2Xyd/vBf872MHNBkgspJbvDsXJEOEz?=
- =?us-ascii?Q?apsWRqYfIKs0JEYKAvOjxPXPBX+nC+P947wpDF/4v4guTK70rJV0s5EmlvHu?=
- =?us-ascii?Q?0bniXhJrbMZHS096luab/lvNQmPoisjKq+2ZxITlKQT0tXN9WPQ1iZXi3rOr?=
- =?us-ascii?Q?e4jWKmKYir6yf9a1Phcc5PaVBJcEtktUjlSSDnISOmVXbwBLwmvwk8uhK6UO?=
- =?us-ascii?Q?5VolAqSCTF3EbWQ4xKQ+qm45gGUsNeqv3oH32S3X9oXFbVMuUEjrS0v/uVc6?=
- =?us-ascii?Q?CHhztsxaCupD7NCKsnJ/7UlYoGCRuCWa7D/eIhPtoa+p9alJoLjE/fLH9XDz?=
- =?us-ascii?Q?Mt77mHHaT4nn9+pXP/p3DL0VdNleNCdaYtfnHk74rZDbGMnagGOEjR3Byro3?=
- =?us-ascii?Q?uartzmY6B+zftqcyYGLSbN7nTNERxKjllwD+aqZWfhz3wBi5Qox6csXKB6UW?=
- =?us-ascii?Q?G6latGXNAB3gNIHTbUKnbV1vIQ1EfcIgGhHNwARx3YxKJW6cWsf7l2IiTWId?=
- =?us-ascii?Q?4R20qBqdSm56WS6tO+jNG09HKM0MWstpR8MNJyQhJpt5HcVDguIu07OpMSu7?=
- =?us-ascii?Q?GtnWn+UFFVBHGmzKJx5FakqvrdUsyJ0Gf3vP3IxB+rILzyjCUH/XqliCBrIf?=
- =?us-ascii?Q?mg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ bh=1Sl16cHBNQAbXFgM02+tz761jWn2RvyeXV/YFlT1QP4=;
+ b=nT7mtss+MadhAYEmHw8PMLWUnPRjUzR8xLrTQ0IXaIR7XEc5NyIbVMU0xAURRAGClII1pPsxt7mxhNcIeS3Eys+dfaFITftluVNrZ5zDDT0Yaj3WpgVnu02ISyfPhbsRWAak2uKLl+qLoolVgBBHrS0mLWbIIUbiMbw+GpjCQwHVX7BU+p6toHJ8f+cuR8myNSPitr71Dp3KYSbihKscBuHKiXcVFflIWsdDD5REvK5w74fYTj1ZZIbpIAx6MWOKS0cIF0SigiFRDhcTa/LKLTxZX0m1/xR0LqCorxGXeMQa4vHoaPRYlbj1DNaqFHRHcmkBOCpJQsbf1GTiFn6gwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 193.8.40.94) smtp.rcpttodomain=lists.linux.dev
+ smtp.mailfrom=leica-geosystems.com; dmarc=temperror action=none
+ header.from=leica-geosystems.com; dkim=none (message not signed); arc=none
+ (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Sl16cHBNQAbXFgM02+tz761jWn2RvyeXV/YFlT1QP4=;
+ b=nUYB3w69Gke6HzaaUchh6znea0WAz2bq8xLihC6GoPNgVJhCnOvLybIyGcJAO6YV79wCnmTg5UuPpXlRcwau6quWyHHwlByPIG/fXmaBpkoEwgKYOSNhApD4GlSYvKviuLEB0UsY7xFu1BqmwV6FtnQAk8c50Qeq7nI4JIQ0FBE=
+Received: from AM6PR10CA0023.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:209:89::36)
+ by DBAPR06MB7143.eurprd06.prod.outlook.com (2603:10a6:10:1ae::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.21; Wed, 6 Mar
+ 2024 17:24:12 +0000
+Received: from AM1PEPF000252E0.eurprd07.prod.outlook.com
+ (2603:10a6:209:89:cafe::82) by AM6PR10CA0023.outlook.office365.com
+ (2603:10a6:209:89::36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24 via Frontend
+ Transport; Wed, 6 Mar 2024 17:24:11 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=temperror action=none header.from=leica-geosystems.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of leica-geosystems.com: DNS Timeout)
+Received: from hexagon.com (193.8.40.94) by
+ AM1PEPF000252E0.mail.protection.outlook.com (10.167.16.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7362.11 via Frontend Transport; Wed, 6 Mar 2024 17:24:11 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.60.34.116]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Wed, 6 Mar 2024 18:24:11 +0100
+From: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	xiaoning.wang@nxp.com,
+	linux-imx@nxp.com,
+	alexandre.torgue@foss.st.com,
+	joabreu@synopsys.com,
+	mcoquelin.stm32@gmail.com
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	bsp-development.geo@leica-geosystems.com,
+	m.felsch@pengutronix.de,
+	Catalin Popescu <catalin.popescu@leica-geosystems.com>
+Subject: [PATCH net-next 1/2] dt-bindings: net: dwmac-imx: add nxp,phy-wol
+Date: Wed,  6 Mar 2024 18:24:08 +0100
+Message-Id: <20240306172409.878928-1-catalin.popescu@leica-geosystems.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3006193a-a604-486a-d8dc-08dc3df6a822
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Mar 2024 16:01:17.1853
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 06 Mar 2024 17:24:11.0104 (UTC) FILETIME=[1A5B4E00:01DA6FEB]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252E0:EE_|DBAPR06MB7143:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: d7cedc59-d9dd-4076-e3dd-08dc3e023cf7
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	tPKRfS7E+nmM+L0eiY5UU+wSIBkTzrVUNujUUPSm6CR8gc0A8taiCAUy25KE/HaMMrRPL98HyDXXSeNqPxuJWc8iiPLfPDhvcHAYuNzLE1iwEUrxBaQjJwv9VgwaoCR8bEvavggOpFDRHZZNgMNUIcbmFhnDw8O+4HpS7ChzddmO7/1dSNcetADjq+mfnHAlgb2jrraEeE3ysX49y6/4JpebEBDHy4YnySV7xNVA3QHKkWpBf9+fcFDjIZqpb1co2nNS1xUiOzK27qsTCfWxUIpeLyRCUr9BzFL75TW/RRI6dxvsleU66hPlHjBdj/2FCylNvGoW/CzFixXRnsXRv7EcClhm7AoX7SdjotUPkXC6oTcHlW5TicbQcgd4P2hnbSHGWO9RuOUeSumGtGHsVO2muwp8v8chdIQlP5ZXu51fjQ/4Z6LkbF9Ke+gWGDQeQNSNiGudGtLkHoxPQcmfNkOzHDZIPzvMWOsM270NykZvSFC/q4j4EPznLDA5fNw+Yx1VvldFEgc1aCp7eYqhy+prcmlXuG8gSnqE5OlvKwA+FOZ3jMb47SEEnFIsHRz5g0Ah0sPT2gR6uLMeo2sAmsQcfQ5inQHSeloJ9zNtsS9whqcotUD7BJ9yG4yefZyCEipxNNo075/kwkJfmRtg3Beu57PcGUES33mO5yMlh5GYNZA3CxVMgDup814UtEbGw2nmrpOwiP2a8oB1wq3B4caH9qkW6eIDLlJXvk2lGuBhhXQw+ckgw10kQhPYac24UL4oythX88Ne3b6G4cXRPg==
+X-Forefront-Antispam-Report:
+	CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014)(921011);DIR:OUT;SFP:1101;
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 17:24:11.3190
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jaQX3N6ZatN2jQjb7BATAIVcmPLNhPCPV1hVfIPNQ/MwhPiH0PioyKCZ8ZqZuQ2FbjHwrt7y6DBsVG+jjdYDVFe3nCSucZ54S/i8BFYQaQQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SH0PR01MB0571
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7cedc59-d9dd-4076-e3dd-08dc3e023cf7
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252E0.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR06MB7143
 
-Hi Frank,
+Add support for PHY WOL capability to dwmac-imx MAC driver.
 
-> -----Original Message-----
-> From: linux-i3c <linux-i3c-bounces@lists.infradead.org> On Behalf Of Fran=
-k Li
-> Sent: Tuesday, February 6, 2024 7:33 AM
-> To: frank.li@nxp.com
-> Cc: alexandre.belloni@bootlin.com; conor.culhane@silvaco.com;
-> devicetree@vger.kernel.org; gregkh@linuxfoundation.org;
-> ilpo.jarvinen@linux.intel.com; imx@lists.linux.dev; jirislaby@kernel.org;
-> joe@perches.com; krzysztof.kozlowski+dt@linaro.org;
-> krzysztof.kozlowski@linaro.org; linux-i3c@lists.infradead.org; linux-
-> kernel@vger.kernel.org; linux-serial@vger.kernel.org;
-> miquel.raynal@bootlin.com; robh@kernel.org;
-> zbigniew.lukwinski@linux.intel.com
-> Subject: [PATCH v7 5/8] i3c: target: add svc target controller support
->=20
-> Add Silvaco I3C target controller support
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->=20
-> Notes:
->     Change from v2 to v3
->     - fix build warning
->=20
->  drivers/i3c/master/Makefile         |   2 +-
->  drivers/i3c/master/svc-i3c-main.c   |  35 +-
->  drivers/i3c/master/svc-i3c-target.c | 776
+Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+---
+ Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-I think putting target mode files under "master" might not make sense. We m=
-ight have to
-consider that we may have a "secondary master" mode. Some other ways of spl=
-itting
-or handling of target mode is needed here.
+diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
+index 4c01cae7c93a..6cf373772eb1 100644
+--- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
+@@ -71,6 +71,12 @@ properties:
+     description:
+       To select RMII reference clock from external.
+ 
++  nxp,phy-wol:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      If present, indicates that PHY supports WOL(Wake-On-LAN), and PHY WOL will be enabled.
++      Otherwise, MAC WOL is preferred.
++
+ required:
+   - compatible
+   - clocks
 
-...
+base-commit: 61996c073c9b070922ad3a36c981ca6ddbea19a5
+prerequisite-patch-id: 0000000000000000000000000000000000000000
+-- 
+2.34.1
 
-> +
-> +#define I3C_SCONFIG	0x4
-> +#define   I3C_SCONFIG_SLVENA_MASK	BIT(0)
-> +#define	  I3C_SCONFIG_OFFLINE_MASK	BIT(9)
-> +#define   I3C_SCONFIG_SADDR_MASK	GENMASK(31, 25)
-> +
-> +#define I3C_SSTATUS	0x8
-> +#define	  I3C_SSTATUS_STNOTSTOP_MASK	BIT(0)
-> +#define	  I3C_SSTATUS_STOP_MASK		BIT(10)
-> +#define	  I3C_SSTATUS_RX_PEND_MASK	BIT(11)
-> +#define   I3C_SSTATUS_TXNOTFULL_MASK	BIT(12)
-> +#define	  I3C_SSTATUS_DACHG_MASK	BIT(13)
-> +#define	  I3C_SSTATUS_EVDET_MASK	GENMASK(21, 20)
-> +#define	  I3C_SSTATUS_EVDET_ACKED	0x3
-> +#define	  I3C_SSTATUS_IBIDIS_MASK	BIT(24)
-> +#define	  I3C_SSTATUS_HJDIS_MASK	BIT(27)
-> +
-
-There is couple of space formatting here that requires to be fixed.
-
-Cheers,
-Joshua
