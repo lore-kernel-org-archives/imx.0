@@ -1,171 +1,96 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369D15F878
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 10:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CF9604CE
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 10:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709720273; cv=none; b=hFSrEFNIsCvPbtuIMbCsD6CzzEDeiXc1wfgV0foWA1Asfqvgofp6cUX32GjwzhG0qzgfHsBudAUNhkEFgOcZlnTrx4fsmhZIw2YDOZN+QK6ek+PC21OY6uaholERqFDaHgXAuU2TaRbaWQDercgOjk+6mV0ugmmuM/00OmWIBTU=
+	t=1709721558; cv=none; b=e7UE6Pcm+4h0g0y6Wy0dHC52zX4BvgrUXUv6454wdXJFOBV9hc3b7vnkw67q5dp9AXugVLDRfWgx9MDbg3rXI0W+bbyoTSAShE7bkD24T3p0xeaxY8qmjfC3TwZyvJFXty958ZNN6Zh++QlLbplGptDWYyXRBIioI/iO1AVSG2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709720273; c=relaxed/simple;
-	bh=DHS/nemJ4aUBiC6JY86wQETDj6124pEWt5O7iOY2W5k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u3rGG44h0dG7YWVT+ITAOIp9HfaLWKD5A3ZMwjs5ecv8sH+AYhOR9q+VueoPsjjVc/jlDadLdXqjzxR2RnjFppscfju12W5rwt4cr48rR4lBKzPUTo89I6mBQnO/Xwpx0oto/TFRoqxcex1pyu5tZcNjYXeJoz1j52mnFyt+sOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Rxx7UCOb; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=W/Rm+8ri reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Rxx7UCOb";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="W/Rm+8ri"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1709720271; x=1741256271;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BQHn5cMhACeKzP4WjQoGsW0iJFib1tQeq8/rY6dbVNs=;
-  b=Rxx7UCObU+r3W2vShLZVRS1PJyAI7OQCEzz1YCx+9X37UuVjI603nhPA
-   rbyIqr6UTAZKPH3EVnbqFwIQkxMGVixVVzYTE/Uc9v0iuMmJMj2rSjKyW
-   Hg+aKTnBa4GDt+nx2vtGbuRlE3zCjajEvwOWMw8ssj95RxHvsgAsf4ety
-   in/eN5CSpPqaDNEYysWDkbeKvYUH1jbJAdyWiuW4vYaQVRZWowhRZ23hP
-   YFSJEAKytTU/JhNZRfqA3zp94AH+Sx6g2U61OpBTd2tXPPZshOPnZIOOe
-   w5VlpAgy769dQety2hiD9qFVIm8ym2xgzPNp0SyW4uE7x4EGSWiz9AK56
-   A==;
-X-IronPort-AV: E=Sophos;i="6.06,208,1705359600"; 
-   d="scan'208";a="35760944"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 06 Mar 2024 11:17:50 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A03716FFD7;
-	Wed,  6 Mar 2024 11:17:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1709720266; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BQHn5cMhACeKzP4WjQoGsW0iJFib1tQeq8/rY6dbVNs=;
-	b=W/Rm+8ri6ogmIreodRdN33aw/V9mbNfIpdf7R2INzcis8fj/c7CNBmrc27Ue0Lko8Hvp+O
-	cupE9Qzu89YfXBFzcl18ET/vJ+OyQgnugeBPEbV1coQzEg1KdtHMAJZxrxqy/o0mph/f6W
-	brX00EfQXtjDEyMJZAXhpA8hG4VtNgvBEEGcsk0tqntYeUFcJFdHIy8tWh/CNLsKxDe3h+
-	cEKuJ1ZytdUggu0SMduiwnrOdIz02UewOcgcmtUqeoEPyE3W0Gkn2Gu0EcJ3dUk1cSRckQ
-	Eue+SH7F6u0W7a2eldCtBp9mn2yvlQoN1Bi5zFTZm/0XoDVF8nH5LmdC/9hbIA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
+	s=arc-20240116; t=1709721558; c=relaxed/simple;
+	bh=4MUt6hck423TY0l6udUqnD/992H0pcYWF5svV3RIgVc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pzpeAsRa6x+2lc7SVc32PKcBAGSMtHDG62/MURm06/BTSNTdpI6XPJtggiPPmZMbR0zSPO0DtfIBUMVfLiev82M4SliwpJnQixxYHmGMMVXkU4eXy7J77LJH8npn2hKEJHHGTJFMZhUrpznApaPH5vMXi9TwKBkI9oyQLZ3FDuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rhofz-0000m8-RA; Wed, 06 Mar 2024 11:39:07 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rhoft-004jAe-EL; Wed, 06 Mar 2024 11:39:01 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rhoft-000d3z-18;
+	Wed, 06 Mar 2024 11:39:01 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Sandor Yu <Sandor.yu@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
+	linux-clk@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: [PATCH v15 8/8] arm64: dts: imx8mq: tqma8mq-mba8mx: Enable HDMI support
-Date: Wed,  6 Mar 2024 11:16:25 +0100
-Message-Id: <20240306101625.795732-9-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
-References: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Hal Feng <hal.feng@starfivetech.com>
+Subject: [PATCH 0/3] clk: Convert to platform remove callback returning void
+Date: Wed,  6 Mar 2024 11:38:54 +0100
+Message-ID: <cover.1709721042.git.u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1270; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=4MUt6hck423TY0l6udUqnD/992H0pcYWF5svV3RIgVc=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl6Ee/UB5vLZLZqb6idMVZzQ2xweh/hor2HsxEl d2zjGiAG1eJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZehHvwAKCRCPgPtYfRL+ TqnxB/45kO9Pa/MpG9lWp7EANUDjjbEb9oTTR1il5N1FrrpfWZuF2a3A+LNTei2Mih7NsO1db0A coHQmYWb9RXR3uRieKS1hZCfC4V+GEWKSspjgDySOeHTyQH9DI5q80GQAVrZKzkuWz5EKDoyPKv XiUouECTLa5ajqtEpECnup2S9BlHS+VWxz5jfA1KiCu+hZjgRvyG4ry0AFeAu4O6/D5hUBUZiE2 1ctJLugId8vb7qYt1jUWWOVqGT6BwqylrvhWM0ABV1ct1ykkjzQLgLofVSVzyqypuukS+7Erpsz utO1ffE6QrstHs+dFue++kly9L79/NKLOkj7pke6Cs3k7CZS
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add HDMI connector and connect it to MHDP output. Enable peripherals
-for HDMI output.
+Hello,
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- .../dts/freescale/imx8mq-tqma8mq-mba8mx.dts   | 20 +++++++++++++++++++
- arch/arm64/boot/dts/freescale/mba8mx.dtsi     | 11 ++++++++++
- 2 files changed, 31 insertions(+)
+this series converts all platform drivers below drivers/clk that were
+introduced after my last clk converstion[1] to struct
+platform_driver::remove_new(). See commit 5c5a7680e67b ("platform:
+Provide a remove callback that returns no value") for an extended
+explanation and the eventual goal.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts
-index 0165f3a259853..406c8229097cb 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts
-@@ -53,6 +53,10 @@ &btn2 {
- 	gpios = <&gpio3 17 GPIO_ACTIVE_LOW>;
- };
- 
-+&dcss {
-+	status = "okay";
-+};
-+
- &gpio_leds {
- 	led3 {
- 		label = "led3";
-@@ -60,6 +64,14 @@ led3 {
- 	};
- };
- 
-+&hdmi_connector {
-+	port {
-+		hdmi_connector_in: endpoint {
-+			remote-endpoint = <&mhdp_out>;
-+		};
-+	};
-+};
-+
- &i2c1 {
- 	expander2: gpio@25 {
- 		compatible = "nxp,pca9555";
-@@ -91,6 +103,14 @@ &led2 {
- 	gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
- };
- 
-+&mhdp {
-+	status = "okay";
-+};
-+
-+&mhdp_out {
-+	remote-endpoint = <&hdmi_connector_in>;
-+};
-+
- /* PCIe slot on X36 */
- &pcie0 {
- 	reset-gpio = <&expander0 14 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-index 427467df42bfa..9fe262a41b398 100644
---- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-@@ -89,6 +89,17 @@ gpio_delays: gpio-delays {
- 		gpio-line-names = "LVDS_BRIDGE_EN_1V8";
- 	};
- 
-+	hdmi_connector: connector {
-+		compatible = "hdmi-connector";
-+		label = "X11";
-+		type = "a";
-+
-+		port {
-+			hdmi_connector_in: endpoint {
-+			};
-+		};
-+	};
-+
- 	panel: panel-lvds {
- 		/*
- 		 * Display is not fixed, so compatible has to be added from
+All conversations are trivial, because their .remove() callbacks
+returned zero unconditionally.
+
+There are no interdependencies between these patches, so they could be
+picked up individually. But I'd hope that they get picked up all
+together by the clk maintainers.
+
+Best regards
+Uwe
+
+[1] https://lore.kernel.org/linux-clk/20230312161512.2715500-1-u.kleine-koenig@pengutronix.de/
+
+Uwe Kleine-König (3):
+  clk: imx: imx8-acm: Convert to platform remove callback returning void
+  clk: starfive: jh7110-isp: Convert to platform remove callback returning void
+  clk: starfive: jh7110-vout: Convert to platform remove callback returning void
+
+ drivers/clk/imx/clk-imx8-acm.c                  | 6 ++----
+ drivers/clk/starfive/clk-starfive-jh7110-isp.c  | 6 ++----
+ drivers/clk/starfive/clk-starfive-jh7110-vout.c | 6 ++----
+ 3 files changed, 6 insertions(+), 12 deletions(-)
+
+base-commit: 11afac187274a6177a7ac82997f8691c0f469e41
 -- 
-2.34.1
+2.43.0
 
