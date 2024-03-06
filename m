@@ -1,139 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4080913F00A;
-	Wed,  6 Mar 2024 19:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F051C604A7;
+	Wed,  6 Mar 2024 20:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709754340; cv=none; b=P2C4CjvkAC/piWvIemx2Qb5qnybROSUIn4+rdrTwwzvG1hhTHux6o1flsKmixJqHcnX1pfoq5PQ8wrw+aAn2zrTKk4tcmYsBK78Cdo5dA9Uv1XxjQyDEfHpt1xutmG9AGQOipBv7veyggCrqjBjIv30dPQzgeVGCEiKWH3m51yk=
+	t=1709756294; cv=none; b=rGhAL82CWT9fVtdPvJ2L+1V8Jrx2yPoWxV+iR1cDk5ZO3WtgZQ5htZmiQ2OZe9THqkChgB+jp4kUxA8KbfmWvVJ89+21VjVDnD0/tXMyCE+0F8EhRH+h32+yRQfi4X49zb8TqCEwfRJO4cBVzYgX/1DACx6MiJQZgsLNhsGRbJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709754340; c=relaxed/simple;
-	bh=5G1J0BhLc6CdOxwigI/ctXSY559sZ3EGEXyuCpYSgf4=;
+	s=arc-20240116; t=1709756294; c=relaxed/simple;
+	bh=QQAsomWqP0GIhv84NJxEWiZ9psxibVcEKS3Lk0WJtKg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GAPKo8INt50ZGKglurPjWLo6ZfOP8pd4wszfalPDpOG1Wnraz48Dbz4qFIpj5AIhcENaJ83BW1Hxm5o9GhsXaoJZOjtdChAxMVRIK7cs5oih3633kPAlJvzgm2rYuRL79bGTj/bhx0CX6ZjPkdluTn6JZCkWRycaZ4DgIY5LFqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DEETAeIJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cAZ8K4q8A8lEXH1FMcUCrPmaENeDV0GZPagQRvAGBGpWBeHCBUMgs/Jn6BoQL6vwUQgtP4I6e59y+YUXUCdZYYNm6NsYtEtY6LX/dpmPYe7DRCy29jafs/dAtW7YHXxu9YGOouVZ1nHn5J7BcaINUHwDOFv1j8Gx7hV1MjDWzgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9QKaFXE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DEETAeIJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CC3C433C7;
-	Wed,  6 Mar 2024 19:45:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9QKaFXE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66074C433F1;
+	Wed,  6 Mar 2024 20:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709754340;
-	bh=5G1J0BhLc6CdOxwigI/ctXSY559sZ3EGEXyuCpYSgf4=;
+	s=k20201202; t=1709756293;
+	bh=QQAsomWqP0GIhv84NJxEWiZ9psxibVcEKS3Lk0WJtKg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DEETAeIJJSkUQUzPDySpQ9hhYT2x0WxKI6ArF+euMpwJjwUqo2ESLn0WA22TE5j7K
-	 R36pHhm1XakM0l0MMl8oJg+XQV/ZMguoi4lKGDzUDb3GGj3HVakhMYnTO3NC6iGvGr
-	 5Uua+soh+cdMV1VIPtwOX1TIf6lXef/7TWhr8/6D9qmif+9JMIEbZ2eZ5m+AprvbOc
-	 vCaQjDrZ8L+ZelJA9gr/DIso2OwLiSH1SoPWKvBWeX7FIqhM7uOaVUm2UxjAPQEDqq
-	 h7PxMikDG1u9yjzzjHrkOGmf47FsEmNCbxf3ItXW7YBIG87bp1fgOqUgFVzQBlFcBp
-	 rcG8N5FNlw1vw==
-Date: Wed, 6 Mar 2024 19:45:34 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+	b=o9QKaFXEst0r8LcL0Kv3JdAQpjAMnN46eqidAlBs5MLyWsQHgtFN3Vclnt1XhEir6
+	 X+kyEVIn63PLCqiVduy9MqnNEudVpb4aQvQJ89UMvNlZ8qoA++fTs6w8yYqOjJ0X5j
+	 EgOid3pcgDyen1s8XxGDgpDtaYQBPALflg9FiILCB3bzNX4OywjdaQjyxrWt6efwcw
+	 3KYlUXRM/a8ztH9MZ3j5IhpC63pN2ixjxw6IQCkK3k2FJ5nzqmelIxde9I58v7vySP
+	 DbDMl/aZdOSRfz5n5StYSh7a7bX7nDhqGGJbjq2F/ph/PZOK3V8najJSK4EnOCjNxN
+	 aeOXXo7v54okw==
+Date: Wed, 6 Mar 2024 14:18:11 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Conor Dooley <conor+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] ASoC: dt-bindings: fsl-sai: allow only one
- dma-names
-Message-ID: <20240306-petticoat-womb-a61cad7d788d@spud>
-References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
- <20240305-asrc_8qxp-v4-3-c61b98046591@nxp.com>
- <20240306-pebble-grope-88fdaa95a87c@spud>
- <ZejDQddMp17RD6Yk@lizhi-Precision-Tower-5810>
+	linux-kernel@vger.kernel.org, Linux Team <linux-imx@nxp.com>,
+	imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: interrupt-controller: fsl,intmux:
+ Include power-domains support
+Message-ID: <170975628978.586051.5157998037495552769.robh@kernel.org>
+References: <20240229200911.712572-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="trxU1T+09Y67XLwE"
-Content-Disposition: inline
-In-Reply-To: <ZejDQddMp17RD6Yk@lizhi-Precision-Tower-5810>
-
-
---trxU1T+09Y67XLwE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240229200911.712572-1-Frank.Li@nxp.com>
 
-On Wed, Mar 06, 2024 at 02:25:53PM -0500, Frank Li wrote:
-> On Wed, Mar 06, 2024 at 06:45:13PM +0000, Conor Dooley wrote:
-> > On Tue, Mar 05, 2024 at 12:33:04PM -0500, Frank Li wrote:
-> > > Some sai only connect one direction dma (rx/tx) in SOC. For example:
-> > > imx8qxp sai5 only connect tx dma channel. So allow only one "rx" or "=
-tx"
-> > > for dma-names.
-> > >=20
-> > > Remove description under dmas because no user use index to get dma ch=
-annel.
-> > > All user use 'dma-names' to get correct dma channel. dma-names alread=
-y in
-> > > 'required' list.
-> >=20
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> >=20
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 13 ++++++----=
----
-> > >  1 file changed, 6 insertions(+), 7 deletions(-)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/D=
-ocumentation/devicetree/bindings/sound/fsl,sai.yaml
-> > > index 2456d958adeef..6f551c68d33db 100644
-> > > --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> > > +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> > > @@ -81,15 +81,14 @@ properties:
-> > > =20
-> > >    dmas:
-> > >      minItems: 1
-> > > -    items:
-> > > -      - description: DMA controller phandle and request line for RX
-> > > -      - description: DMA controller phandle and request line for TX
-> > > +    maxItems: 2
-> > > =20
-> > >    dma-names:
-> > > -    minItems: 1
-> > > -    items:
-> > > -      - const: rx
-> > > -      - const: tx
-> > > +    oneOf:
-> > > +      - items:
-> > > +          - const: rx
-> > > +          - const: tx
-> > > +      - enum: [ rx, tx ]
-> >=20
-> > I'm not entirely sure if this was Rob's suggestion, I got the impression
-> > he was suggesting that in the two items case we'd not care about the
-> > order. But while I think this is different to that suggestion it's also
-> > not wrong.
->=20
-> I log this at cover-letter. b4 can't support write change log at every
-> patch yet. Rob's suggest was not work. dt-binding check complain too long
-> if there are two dma-names =3D "rx", "tx".=20
 
-Yeh, that is what happens if you just have
-dma-names:
-  enum: [ rx, tx ]
-since that only allows one entry. Take a look at st,stm32-uart.yaml
-instead, for example.
+On Thu, 29 Feb 2024 15:09:11 -0500, Frank Li wrote:
+> Enable the power-domains property for the fsl,intmux node. This addition
+> accommodates i.MX8QXP, i.MX8QM, and i.MX8DXL, which utilize the
+> power-domains property. Incorporating this eliminates DTB_CHECK errors in
+> relevant device tree source files.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> 
+> Notes:
+>     Change from v1 to v2
+>     - Add reason why add 'power-domains'
+>     - Use maxItem: 1
+> 
+>  .../devicetree/bindings/interrupt-controller/fsl,intmux.yaml   | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
 
---trxU1T+09Y67XLwE
-Content-Type: application/pgp-signature; name="signature.asc"
+Applied, thanks!
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZejH3gAKCRB4tDGHoIJi
-0o5ZAQC0bEJLk2rMmNg1h6oK0puBl8tnJqZX4qRtU8t6hz4KlAEAmuy73tHPP4vO
-iIc7yezGXRzST2Kg4QHm/imuO9iUSAs=
-=u4Ht
------END PGP SIGNATURE-----
-
---trxU1T+09Y67XLwE--
