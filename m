@@ -1,191 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2071.outbound.protection.outlook.com [40.107.6.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15BC175B6
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 20:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709757639; cv=none; b=F8c+7fgCuE8qLFrY/e7WqWzNJnSKJ5197MZZqLx9f9lA5gMQk3RzdTK/wmGURVzMD7eQvaMgq2jhG28QFzHtwrvkuU1ROdc/DUOR6VLFy0hOgiG0rSykEh3R/dyhSUbjtSE5OTnlGZVV/WTuAtW5ktODdUu5WyR+TGfXuPK4Go0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709757639; c=relaxed/simple;
-	bh=sswSikc9379ND8q2IbxyQfnO0n1h0QcZWhVJ5y3cvaU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hmCmm5ZPp05VsJ8IYQhXhyrwMvvKjkX0OA5SlztUfZ0+scG4vKNcxlNC4wivGDt0sPTElG2ufnb/EjeepICzekyqLm5LhvKxXIDR5u2iSNrNwceI525mCx0a6y6Lph4pYXKDvu/XVNxDTwg+hhtMXFdi7rp6mKBGQHBiXXNYuV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8/ws5qM; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF2463A1
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 20:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709758432; cv=fail; b=eppRhlIHSpiRqD2ttVS27zfOzav9SMdBSQg+VIWtXILQZc/RdkWwQCtxu2rNpBwgxLPemGgDrvW22Z6Ajgrv7FUYVIp6UXgtfSAcQPZS77VB9BbYqewgsE8JR180HZQWhqOp9NgzVrjCPywPdEYrKfwPkvQ2Qudnukxs/TSOT/c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709758432; c=relaxed/simple;
+	bh=oawDAlumw+sGpF2KsZMo1T7z+uucC7P1wYj0MYh2Np0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DFdsednV42CZmtlE1Fq4Uxxq6Z0ToNPcJ4LmmYHx2OEb7lZNHkxUtGkp7JPqvb9Dgt/dik6lhkM8ghDxbRkLvfqg0xgyMFk0/VcW6AvV9WWOLB8uRYoHgYtD1Z44TsFtiSgF6It/72NiXc09j2G2y5v9T3vdlrxIvXBKEutcQss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=pcUrQkrz; arc=fail smtp.client-ip=40.107.6.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8/ws5qM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B8DC433C7
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 20:40:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709757638;
-	bh=sswSikc9379ND8q2IbxyQfnO0n1h0QcZWhVJ5y3cvaU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=T8/ws5qMT2ZeTSc51b1Eib/zZP0Bic95ObfOLhmnFI6WWEkBsyEl8vGvsLXcfyAKo
-	 eXOSRIunkpWWaW13DDe+UuAfMmdbbMhe3bXf355jRYlAu+9T2GL4TfXSQIB5H+MIts
-	 cY7T0qhxeeu88XgXRTGgW8DV8nvGQKu0/t1SoWJZenI1I5imZpyKQpurVBR6tTR/eq
-	 Aa2xSbiYR3EfIt1RPVDci+rUsIwoyuofq8zXyd5zv8kq16/cioamSKHrtUSzGaYBqT
-	 qISnREjX/vWwbF7CkvbsqrnJzQOfg0VptWhIBORmtijTeo9YqXhEdryLecBqroaD0e
-	 IjELyvAiHZOlQ==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d3f4fef377so912811fa.1
-        for <imx@lists.linux.dev>; Wed, 06 Mar 2024 12:40:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUmSG0XucQ8rWD5kI8WIvWX/nlwLTPNIOKDBIAfy0+tIhDWfwvNyffUtWbEMdAdzOYGhWSXPnrKJJzrGz7rtoDNKhwQ
-X-Gm-Message-State: AOJu0Yy/ssVCgY9FMLHRf7Yr3gRUMCMfBwHmXEcTUUgVLhkRM/U0C6Pb
-	qdzC7DbVkDo0/OLyUjmSzBCT4/yZWCFlvP3xOtfwZCGbgjclsZJSx/I/tCWEStLqICIitublBYH
-	vnanuLYPx0Q5s7uxKQ9mW1ezocw==
-X-Google-Smtp-Source: AGHT+IH8UTdel4s/VRNesdS4qceNJhsOkk+LDnUl/yDAojAV9TkPDtsy3/Q6DOzm2AeEjlXIQ6cPB2Jm2nQ7JJv7G7M=
-X-Received: by 2002:a2e:7c17:0:b0:2d2:ca54:707b with SMTP id
- x23-20020a2e7c17000000b002d2ca54707bmr83492ljc.38.1709757636588; Wed, 06 Mar
- 2024 12:40:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="pcUrQkrz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GOCproecGbxWmV5drrtjxSlFD9Fy69OJjgTWO/VX86XUUrDcp6YJ33l8PDRKgp155yrHdTXRSLuJ+Y1oRa4jR1lO98JxQF4ZPfxhSQMo82icv7nXwHbbpdPvDUiRQ3GWvMsIv4PhbcGt4+oOxnDZQht4hd0vS6VoJ6CbG+L+m60ADhP+M0CviX8dQ3mgIqOOPvnUP1ikkSn5aRdHPFJV+AMXsGsDrkFAUkcO6OlKkaHUEo94kINOKvnEz0iK6jMWEYKrdTHe4cdG5ZjNs+HNOhpm9ElL+o+Oh+RUHDQeXJYMllM0s9xO9aA0kqHUoMofFzROQhuJmftXIdruE49O5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/M1HV8HxMbuB3l/xeNGwJQ3jw82L6iqZC4TjICGCMdQ=;
+ b=Hrxc4Phl14KA0VPTuI4rKsXiKByiO4lYCOTayaXhqtpRG62Lj3R/D31StOl/JVJviDqPmSdBpirukf1k0zRwPE4zvTzpiijDVyKGlqwn6s5WFis8MzbIuU8wWK4/SAHMx8QcKQWqFTo41ZCKV1TTVFvbR987A82Va5MugvjlHa66R3X0HXsW3jGBI3lpJrqUdX5hi/jqPt64crhfqcKrMSstb1ZyHrDz/uwdBu34ijheSmbyg7eb63kUKuC1t18Eo2ob8jLmlYHk8/CfgOW6M+1rrzjJRRCUDouPLw7Wi6P/uI8+UaG4HzCCJGfX6C2GAIbnDZ3d9ykoCDoKrxUH2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/M1HV8HxMbuB3l/xeNGwJQ3jw82L6iqZC4TjICGCMdQ=;
+ b=pcUrQkrzzC+6TiPtFaBda70r3YlxEuDLvIONmNilFd7FVEYwYRiSzBKK8kHR5BSWhUsNVH52HI9RsbtZu6csfhce3x3T1qd2IkBJOW9v9UDIoESs0kKyaFrYAJnGRaYamWKBRIYc204tGt4Qh8U3FJyEVYCdvSn0LPPv+46aFLg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8484.eurprd04.prod.outlook.com (2603:10a6:20b:34c::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Wed, 6 Mar
+ 2024 20:53:47 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7339.035; Wed, 6 Mar 2024
+ 20:53:47 +0000
+Date: Wed, 6 Mar 2024 15:53:39 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
+ interrupt numbers
+Message-ID: <ZejX0/FA/z4wa7cY@lizhi-Precision-Tower-5810>
+References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
+ <20240305-asrc_8qxp-v4-2-c61b98046591@nxp.com>
+ <20240306202537.GA587561-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240306202537.GA587561-robh@kernel.org>
+X-ClientProxiedBy: BY5PR17CA0004.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240229-8ulp_edma-v2-0-9d12f883c8f7@nxp.com> <20240229-8ulp_edma-v2-4-9d12f883c8f7@nxp.com>
- <20240304164423.GA626742-robh@kernel.org> <ZeZZyTU8FWACW9aj@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZeZZyTU8FWACW9aj@lizhi-Precision-Tower-5810>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 6 Mar 2024 14:40:23 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKU=Qay75i1zaasaNHCV2jkseX94fzfe-4AwrV093NOLA@mail.gmail.com>
-Message-ID: <CAL_JsqKU=Qay75i1zaasaNHCV2jkseX94fzfe-4AwrV093NOLA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma
- compatible string
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Peng Fan <peng.fan@nxp.com>, imx@lists.linux.dev, dmaengine@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	Joy Zou <joy.zou@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8484:EE_
+X-MS-Office365-Filtering-Correlation-Id: 125c0329-c2ba-4ff7-42e5-08dc3e1f84bd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	G4pC0h5G5Tyr6Hj42Ppkx7E2oe5iQtbaA7L99zhAlrruoyIOTj4b5j/6rFnn1SZO/7FZ8TVBE4UTHU4qV6rWeHRxhdfSpZrek+ymJRpo9PBHrfIAbZy/OAaYjfKWZm0KCNR8VVYA2ouKAtyAFJPVG852+O/8aMSjwP0xAedaK66+Rf1GNw6vp+v/7BBrU156T1rrBeojW0xNi3yju+r5CRkk6scYfcI4Eoneie2lU2itWo0ESZDaK+oLVMme6R8PGVbl0tVxM+5Q7iOnBY2o0anLVk2oqchuAi0pQ6ZeAlM7yfllYd1zTFqb+39fGdwFDE4yulR+NpF0vz2nM7VISY7feuwpj6N+6Y/MeDqY2TCoymQGelqlC1IIFqKHjrPAeSi9v7cZE1ynMBFABh4dXiXZ//TA2SwoF4Dt3sSuiJz+JS+gAfbjHqsft3i0zW39H9hiDfUhAMUYLS1TdopbtMoAOi6LD4vC4qqTCymS5nRPfOFhOwVYuoLsXRhg5XeOxRoEAnb5GWAs7zsTnZ/PuUk2HsvofX00lku7Kg9OmFUCoPA2jbWL1X2xoonBToaxvzJINJMDBVAXD8v1CPhfMQ6/5ahf3XeGTaYNkdKkDcLTe17E7O7fJDH4siPvu5UBu0siaFDsrHtlMoh3AhZs28I5EQ4poKWTXAio9Hs7PJJZHmfeuQrznSFa6/mPjyDHjT+dw765qSFRx+y1w/LF+YWrADdNFrQwv7rgUxS1GMg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1kAk748voL9fyaGloPaP/ZYwrkAD6VXrhq89Mm1Z043Kpm4bJ6aSoanr/Zsw?=
+ =?us-ascii?Q?xpF3WOivVp/8lSDZdB5cTcXJfPR3vit3aTJLdoCHs6CLjVjFJwYbwmZ8VV2g?=
+ =?us-ascii?Q?vYO5s2OOdHaGn5CtSGDaUktll3WtjmH6rMtKhhfmUkpzcEpk4w6VOcNhkpKt?=
+ =?us-ascii?Q?zd6sZ11gkVdYiNyYIt+7KkAn7MoZ4cfdp4xoJaBrmrCmgfsNgv7CvRlQiSPm?=
+ =?us-ascii?Q?59cKFH6Fh6iEId2PVSSUpaKd9TyRlr1xGhH9eOdDczB0HxmUfA8Y9agYqzeW?=
+ =?us-ascii?Q?Srvl7qIrD2o3IWUC7gDWfYQJ2fUisbwzT/OmON0rUlTil6mcpRuPvRGdV1vn?=
+ =?us-ascii?Q?KQtyGAKvp5YhED010VHOd1EJ+pexADnePOi20qlceaoH4CKkFglYyNOLPlFr?=
+ =?us-ascii?Q?dn4a0FwKu7DQq9w962CX0ls/1anKHfy4P4Fu+IQwXSxNirfeq2RwQWjaLUbV?=
+ =?us-ascii?Q?HSBNEQbw3YrwGR3M+qFlIVI3TEscCbrEHv3y//PjKXlh6ITvWB9o5H0bpNcv?=
+ =?us-ascii?Q?ZoTB5prlWbsQobN4qQAFHUnDB/SfBP6zlY833uAeiFi98SWhDz1Og+xc7VBR?=
+ =?us-ascii?Q?p0BRH9cEE+I+McghIQL2QzswNVBHJL1BO7O5c2xEz+PXm9qt8SuF0enwrorU?=
+ =?us-ascii?Q?UYtq9cQDhCnZ+7jBDALi03hPsOvswOmVHx1roR2eAQdjtZXunJZHepnaKETv?=
+ =?us-ascii?Q?ncMwagVkA8TIqHQjcN83Y4QaitfHwaGmYmtg2I9YGhFgQYnYVuLYSHSxl78G?=
+ =?us-ascii?Q?1lb9XoA1L6qiUwvy6qWSMZGfip1dax61y4SrVTdfc82Pifz/r5uk5oN4kT2s?=
+ =?us-ascii?Q?DJgL1dx2Zu8PVRSXSyRymcKfHGScVJZuoRZQfWkKNjfM3C6qNCN8eiW4vNp6?=
+ =?us-ascii?Q?uWSrFrU+GOFNhuvEnc83KvSLJJgo02aInTYqIQIRPfwM5ruTYRWs0I2ME6GX?=
+ =?us-ascii?Q?47ldqTNtJu6uLq1RD5GK44nH0JGVaZQqVomq+dYc1zHECHpN6Pp5+Q35Ckje?=
+ =?us-ascii?Q?H98Bm8VkroEU22fbhcJfHy0Y/Jejkdz+lY1mU3jbLWle5Ih4YMN23h/XACUL?=
+ =?us-ascii?Q?PvEpxNzruxzNYPQ4O7akOwAYyGjppxsq3EpPnT1Vdml9I8sN6f2ttQY9Rybm?=
+ =?us-ascii?Q?/+jLP9HEUZFGnofKQdcJnSH0juIfetirzm4nNDyjuME/xUfNb0s1UzbBcvJq?=
+ =?us-ascii?Q?rrdOB7lYfOJ5pPkzZUQgZGiRjMYWdQjabthN1p3bgfBzSRQaf0bW8R/zqytN?=
+ =?us-ascii?Q?1vRTfBOGh2VqaZ7QeEMOOGFsAQFJZOrew4nbQ8tF6E4X3dD4e0S+Dy1XJyTk?=
+ =?us-ascii?Q?V0kltmfKnfVc5+VtOCXV5n92WWdvH1V+J9AB7K4yjROqO80zXiExX9WfRnCy?=
+ =?us-ascii?Q?ILICtT5FjmqvA0944ftaxmRjih5yp5VHRrpAMi9N1OFrIKSYx+Iq3VlI6E2V?=
+ =?us-ascii?Q?hGQj6gj+QB8EbX67E4efbhRY9B86Q6UVzpb8T+Ro4UVprejcypZ0Q9PTjQzF?=
+ =?us-ascii?Q?ncRBqKc+ot+u5Lj/4npbxDfV5bbZXMlm1u42BFLZmBqqvN+/lGMiyxG8d3B2?=
+ =?us-ascii?Q?WeLrLUSvcvX2uxkLmCg=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 125c0329-c2ba-4ff7-42e5-08dc3e1f84bd
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 20:53:47.2448
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i8pBEh8GD/mlwKN7bekTOmBVknR49vL8iJzYocZ5j0/19R2CTbMH6Ac1/zyp4KrbKXzDAzlTDJpgpiEswo811A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8484
 
-On Mon, Mar 4, 2024 at 5:31=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Mon, Mar 04, 2024 at 10:44:23AM -0600, Rob Herring wrote:
-> > On Thu, Feb 29, 2024 at 03:58:10PM -0500, Frank Li wrote:
-> > > From: Joy Zou <joy.zou@nxp.com>
-> > >
-> > > Introduce the compatible string 'fsl,imx8ulp-edma' to enable support =
-for
-> > > the i.MX8ULP's eDMA, alongside adjusting the clock numbering. The i.M=
-X8ULP
-> > > eDMA architecture features one clock for each DMA channel and an addi=
-tional
-> > > clock for the core controller. Given a maximum of 32 DMA channels, th=
-e
-> > > maximum clock number consequently increases to 33.
-> > >
-> > > Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/dma/fsl,edma.yaml          | 26 ++++++++++++=
-++++++++--
-> > >  1 file changed, 24 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Do=
-cumentation/devicetree/bindings/dma/fsl,edma.yaml
-> > > index aa51d278cb67b..55cce79c759f8 100644
-> > > --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> > > +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-> > > @@ -23,6 +23,7 @@ properties:
-> > >            - fsl,imx7ulp-edma
-> > >            - fsl,imx8qm-adma
-> > >            - fsl,imx8qm-edma
-> > > +          - fsl,imx8ulp-edma
-> > >            - fsl,imx93-edma3
-> > >            - fsl,imx93-edma4
-> > >            - fsl,imx95-edma5
-> > > @@ -53,11 +54,11 @@ properties:
-> > >
-> > >    clocks:
-> > >      minItems: 1
-> > > -    maxItems: 2
-> > > +    maxItems: 33
-> > >
-> > >    clock-names:
-> > >      minItems: 1
-> > > -    maxItems: 2
-> > > +    maxItems: 33
-> > >
-> > >    big-endian:
-> > >      description: |
-> > > @@ -108,6 +109,7 @@ allOf:
-> > >        properties:
-> > >          clocks:
-> > >            minItems: 2
-> > > +          maxItems: 2
-> > >          clock-names:
-> > >            items:
-> > >              - const: dmamux0
-> > > @@ -136,6 +138,7 @@ allOf:
-> > >        properties:
-> > >          clock:
-> > >            minItems: 2
-> > > +          maxItems: 2
-> > >          clock-names:
-> > >            items:
-> > >              - const: dma
-> > > @@ -151,6 +154,25 @@ allOf:
-> > >          dma-channels:
-> > >            const: 32
-> > >
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            const: fsl,imx8ulp-edma
-> > > +    then:
-> > > +      properties:
-> > > +        clock:
-> >
-> > clocks
-> >
-> > > +          maxItems: 33
-> >
-> > That is already the max. I think you want 'minItems: 33' here.
-> >
-> > > +        clock-names:
-> > > +          items:
-> > > +            - const: dma
-> > > +            - pattern: "^CH[0-31]-clk$"
-> >
-> > '-clk' is redundant. [0-31] is not how you do a range of numbers with
-> > regex.
-> >
-> > This doesn't cover clocks 3-33. Not a great way to express in
-> > json-schema, but this should do it:
-> >
-> > allOf:
-> >   - items:
-> >       - const: dma
-> >   - items:
-> >       oneOf:
-> >         - const: dma
-> >         - pattern: "^ch([0-9]|[1-2][0-9]|[3[01])$"
->
-> I understand pattern is wrong. But I don't understand why need 'allOf'.
+On Wed, Mar 06, 2024 at 02:25:37PM -0600, Rob Herring wrote:
+> On Tue, Mar 05, 2024 at 12:33:03PM -0500, Frank Li wrote:
+> > fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
+> > have 1 interrupt.
+> > 
+> > Increase max interrupt number to 2 and add restriction for platforms except
+> > i.MX8QXP and i.MX8QM.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/sound/fsl,spdif.yaml | 18 +++++++++++++++++-
+> >  1 file changed, 17 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > index 56f8c0c8afdea..7f6590708e1ec 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > @@ -31,7 +31,8 @@ properties:
+> >      maxItems: 1
+> >  
+> >    interrupts:
+> > -    maxItems: 1
+> > +    minItems: 1
+> > +    maxItems: 2
+> >  
+> >    dmas:
+> >      items:
+> > @@ -101,6 +102,21 @@ required:
+> >  additionalProperties: false
+> >  
+> >  allOf:
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          enum:
+> > +            - fsl,imx8qm-spdif
+> > +            - fsl,imx8qxp-spdif
+> > +    then:
+> > +      properties:
+> > +        interrupts:
+> > +          minItems: 2
+> 
+> Nowhere is it explained what the 2 interrupts are or what the order of 
+> them is. Is the first interrupt the same as before, and there is a new 
+> interrupt for something else? Or it's the same interrupts, but they've 
+> just split up into 2?
 
-The first 'items' says the 1st entry must be 'dma'. (It might need a
-'maxItems: 33' too now that I look at it.) The 2nd 'items' says all
-entries must be either 'dma' or the CHn pattern.
+It is same one and split to tx and rx. Order doesn't matter. They uses one
+irq handle.
 
-> 8ulp need clock 'dma" and "ch*". I think
->
-> items:
->     - const: dma
->     - pattern: "^CH[0-31]-clk$"
->
-> should be enough.
+Frank
 
-If it was, then I would not have said anything. If you don't believe
-me see if this passes validation:
-
-clock-names =3D "dma", "CH0", "foobar";
-
-> If you means put on top allOf, other platform use clock name such as
-> 'dmamux0'.
-
-What? It's under an if/then schema.
-
-Rob
+> 
+> Rob
