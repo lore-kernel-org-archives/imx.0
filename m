@@ -1,502 +1,497 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2085.outbound.protection.outlook.com [40.107.241.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B1130AC6;
-	Wed,  6 Mar 2024 15:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709737927; cv=none; b=RzIb7K8o5UZyqsUcQCvWfvGrkXw2bF85qBXmi+DfqMP+ljstcnDayfL5asBHkHnu3sloptPMJBcVgLQ6WJizU9RZ3bHc2EBMf9HLj7vm/DiBXaosuq1quLqnvUKOHKEfvZSGxlCt09JU8gXItDUegTed/JVi82DF+qZNVn4nkGk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709737927; c=relaxed/simple;
-	bh=RkXvgfFkQeab6f37tUpRH2m7Hc4zq4G2QQFYL2agHN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mn1AzJQmwG8INH2I3GzkGdogDGXk6JNNKrD5pYgQTXW2WFFMLNOZfCs8yep9qpwP1cHZi8dZJF5dD9Se8bqpRiFB2lXs7ynZpqu7v+qDcaWoXYMwFndBOM++GoAv5+QP6H3WU1BShfFg0beevF0XlQnBsaGJIPewG84TeEVdi5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DD1IDXNm; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AF680605
+	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 15:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709738376; cv=fail; b=BHiSdTVWt8MW8OJDTdRv/ooO/4WpcL1CXrrGWSYyhVoqTZ1bhhfq8NzgWnZL18JeyozajTVeMzmpHfWEM5mnLkUhnMtPjhAHGkSyzGVxkuMo5tjVj9yFBX9VZPcJfEscpXanOEb7ZlA8sev8+Y/kFc48nwHa8zYPxyCN7zjv3hI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709738376; c=relaxed/simple;
+	bh=BDh7cymQ80HV3BGLG7HjGzQj8q/uUUU4Mo7/mxXBl4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=r0UFvNAkvTZ0+/fMsuAiEas1soSBR4z9tztBkUoC+mpXVsg4sulwxSNZescmlUaa6AUN3UHPvmor7KbHU+5F5ovedHMi/tc55OjZ/5XSPEw/XnPZF01Xa50pZasKtlDQFGQiXjYfkRgZ+H9X/z3PLtQOgC1tZ2AWlyy0cYMVG6k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=bbj+2eN2 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.241.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DD1IDXNm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D39BC433C7;
-	Wed,  6 Mar 2024 15:12:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709737927;
-	bh=RkXvgfFkQeab6f37tUpRH2m7Hc4zq4G2QQFYL2agHN4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DD1IDXNmd2Htv29SsgSyAU2hFP3h9kX8C2GCVtBUXQtN/aXH8PXn2lLuvXkHZ+Vgm
-	 i20lg50sutBkjRnMuWtuxpjmFeNe+ZZys5LS8C5YDqH+ZRrx+pGOXwuDwwsRbLYq7S
-	 9oTJmQHPvJNAY3HVBOtSf9+LL40f57ybK8qSOsEJ4R+Es7rNc8VW7vgQnMB5CoFzbW
-	 A+vCCYEIED6D5jhPbBnIqhi1m86tzqaINKuUi6M7SFMXZsCTwFGbuzRcxiWqyickpQ
-	 dZdsZQyd5B3EdrHSZlSpof+SIg6QQ58HkrDhQNe/iHIrkmQYYzk5vy+9rzMTdIlh8c
-	 2qiqyQ8nE9iMg==
-Date: Wed, 6 Mar 2024 16:12:04 +0100
-From: Maxime Ripard <mripard@kernel.org>
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="bbj+2eN2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mUA5lRLaGR7ZkHGCLIGpfzJb93z9GzJpRkbuF//bu4Ib33+/p2vXpcgr+HM4znQ6me3y4F5ZWh76n/1MXpm5BTzN9/P2f2EjCt1ZBQZ7OJhPIaXpB5h6jOkMLysXghjy6icxWfL/9VQXulN/pl6oObOx4hT7l/QtX4CNsFvn0KsrP/KVMNHrq86v45QXCy2Ro+8SWMXaHk/Yi4LWg9ju44uKEsz0lhadqJt5SFt1mB7zvP4W5+HPZg7rbli3GYm23NuWPqX/eSoUhq+oLTrzrJ9xvWAVAGJCfbtpRqbVtoJwNRN80AeIqu65kCoTGoNbqNQ+2Dd81rS+VKotMfj0UQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=16MaFxYz0wUjxg2o0FHO3pRXFEPtXTGXEZrc6xfRpKY=;
+ b=jaBorgau3waaZ3B7He01JocOtgYX0m5lhVD1credI5pZDKdxnrOceUmbGFfWADwhct6oE0UOo7oVfcjjT5lOq1Bv49WXfexsMm9ej0b6zsXpVZtE0lYHAqGJQpQJoV1cL1ANTW8TAO0bHL+n8vzJbetJ9/rgIKvIMcZU+dbMufdXytmL5HWb8QHHnegcgIGpw3S78OLGd/DEajVtuuE1V6QdpJL75dU1yXcOpgW0oIUKc+vrb/mtTnK5kSFwv67dBizequVitELsSaOLZ8u2QQpQd0RJ5vTMbG2WcEq09JjJ2HnRxN59dE3DSGYpJY1N8FkgbL4LSY4BERu8eToOcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=16MaFxYz0wUjxg2o0FHO3pRXFEPtXTGXEZrc6xfRpKY=;
+ b=bbj+2eN2sP36eP2TW2w+xb/QskF4+oF8Z47cnY8YTivPRzOWmpXnBDfyaZFJp4U1aXlstLu941rO1PEdXXQc786tqmbap/ugaWU+2+v8dBEKzj0FstBmpxvW2RatyoyH7uiDpoapErcHSB2jjq2tHUpHIXa0ZZlLZnGMl+mGAMY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI1PR04MB9836.eurprd04.prod.outlook.com (2603:10a6:800:1d9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Wed, 6 Mar
+ 2024 15:19:30 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7339.035; Wed, 6 Mar 2024
+ 15:19:29 +0000
+Date: Wed, 6 Mar 2024 10:19:18 -0500
+From: Frank Li <Frank.li@nxp.com>
 To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Sandor Yu <Sandor.yu@nxp.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject: Re: [PATCH v15 4/8] drm: bridge: Cadence: Add MHDP8501 DP/HDMI driver
-Message-ID: <20240306-mysterious-hoatzin-of-faith-49aec0@houat>
-References: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
- <20240306101625.795732-5-alexander.stein@ew.tq-group.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] arm64: dts: imx8qxp: add asrc[0, 1], esai0,
+ spdif[0, 1] and sai[4, 5]
+Message-ID: <ZeiJdoTqWd8h0Q5I@lizhi-Precision-Tower-5810>
+References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
+ <20240305-asrc_8qxp-v4-4-c61b98046591@nxp.com>
+ <2177674.irdbgypaU6@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2177674.irdbgypaU6@steina-w>
+X-ClientProxiedBy: BY5PR04CA0019.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lgqwn3iwtrpezttc"
-Content-Disposition: inline
-In-Reply-To: <20240306101625.795732-5-alexander.stein@ew.tq-group.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9836:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13222624-1ccd-4136-2719-08dc3df0d106
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	B1Qa5fErxSX4Gi1ikWjzcyOZc0BmRmBvuSSpO7mCe9UTH9NhobRiwjdwKpF8k64/FWdfOtW4TVf4mYW1LMlKnQvn5WvDphiWTcofRu8uPneyMRHG8xt9aECrg7QPRimKzljafx31NV3jRRyo2G8iojoeUZESPoJe08fwgxsB0HD7X3sSTIiEbDXjXTshk6b1CZwM4mzJKHjvmNgC63Xi9we0imNyAzQwGjFhBUi1kp+Jivujs5ShEFSQ9KA9++wZJyNZs9BCBSM3hVj9Y4YXXW0S73htyJsQuT7QYt5Mxy2oOkC4TliFAAwdFOcycde+a7eame8tms1M+eHz/W9PAXESm9o3aiNJxamqTNFnkZqlQb/HXZ59expjthUQFZpyVSJPHEou0WeEkiD11qPL9rt9SQM8c3f0UQjdV69LX02vpK+Cggjml95o5lm97JLxwE7+kiF0abq4oTLBcSHMKWp41dszgtpKHfzWFXQrk0kEFBxWy6dQI1UAiPvKNDMlrLm5RGxqk06vv8tJzGnJn+QobwQNqjI5up9XzvlEppUKCkhKTPzugJ7TO3DxQEoeT+eVwefSMikCnmKFnVMhSJ+dtU8eBteLTj/3eGmcC9UHxPBqeQUQBomHICAXHPTbOQ4KDgNf6ZpX3xjSr9FFGoh5wOlrQu01NY4OHF+vAgE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?SUsXpVpIXCToiRooe0Pqt5of1O0fj55GwknxPvkjyhYArdC69beBcGlfL8?=
+ =?iso-8859-1?Q?nw8SuxqOi+bj2pT1F4nyP7IzSy5w5hj3VwJ/XSG2mNFJAdvbTB4T/WupAf?=
+ =?iso-8859-1?Q?YDcD2rpQlU+EfFKcXlzB5rBt5kIsuB5yKrZ5ECqkRxvclzStAJnLC+yAcM?=
+ =?iso-8859-1?Q?CC5P2tWhLbA7nYV0i1N51bU2FYMNJQRLL7CFaQIWxsij6/G5DYf02hw+U9?=
+ =?iso-8859-1?Q?+tazWO63pkM/xGt9iahc6lAInARJTV6KcYRp81/xxYHvw+eFKR4sITQyPG?=
+ =?iso-8859-1?Q?8UrV1twXCFP2TWZcJ6hMaxaqRjrIa9wbvtONSyPAkIuaFa9fPRlm9lfd+3?=
+ =?iso-8859-1?Q?tCykrekppJwvii2OxJbdMzS9EXSAEnaLufdX0SCRqYDTe4cEYP7qjPbZQz?=
+ =?iso-8859-1?Q?EcJ3AXZwTJC2lSkZyBRlZ/hClZaDJ3nKWdWD/gfRH6mByaX8j/DJbdlR26?=
+ =?iso-8859-1?Q?lTUOyBsf1XJHqj9970yxgB2r+qTrWbIZ1tsQllvMVT8wtGNyi5OHwSW8Bn?=
+ =?iso-8859-1?Q?xmHwpu6NVpahWQYy0XLGWbKOQ1yo8j+A1uU/jCKsQrrPlADgwfx7tG9Vsq?=
+ =?iso-8859-1?Q?wfvaE4/HovO87L5gmRDqlVWvWLcLOmGwoBWWG2nuxxMlVoyH7wkmQeAzX4?=
+ =?iso-8859-1?Q?1WC2TRtvkw/+NkeG3SkA5IsHKCDfighmIHlhUGok8FGs6y4OmENCry/Jd4?=
+ =?iso-8859-1?Q?vaFr2u1gW5xwxMm/vgUw5PTxCIIImn9z4WXEQWDMjKN32w9Kn9AgqUZ6Iu?=
+ =?iso-8859-1?Q?K/N4GJqtYgrTbXcM6GOZPPNipAdjAlKZ5F1za9NDag0LSEQxKewCujHC2m?=
+ =?iso-8859-1?Q?MRFbkA1X49jAq+XbxArQZb8maE4w+B6o9fQgfZZbc0FjiTEv3C2LFFy3gk?=
+ =?iso-8859-1?Q?jRY942s5Lk+1mtqYnNygCtTNIQaKMrR3jyaepCkCpOP+OgFUdr+S7P8NR9?=
+ =?iso-8859-1?Q?roIhnWP16M5eNjEQjgyUCJ4YLVUSkcqMvIwqPVJRNdnHotPFVCupLwN0uM?=
+ =?iso-8859-1?Q?fec7GBKXD9hROQd8TNNypX8VBh8qKvLV9FBuKiE5ZAQgl/tfVvaIdOGqIq?=
+ =?iso-8859-1?Q?NAKoGsSWYqB4MU30Cl7wwWoh8HhhoNhXso8TGoXvQLKv7Uilp+cgERsEfA?=
+ =?iso-8859-1?Q?cbLf72pCTaCnmJomqcd6H60rcpYXjDAAYdH4EBGX6iSUiXWPp4SvgeHHvE?=
+ =?iso-8859-1?Q?qV6fGDSveilDt07zyzavt+kosMotACsHwmutEM+051s7vSL/XIbd+g5eJ9?=
+ =?iso-8859-1?Q?HkXdpsAOjf98BYxp0bWMUABLH90Y/FKMo8e+KVrt7CLTzfQ1DhOaWUnqcZ?=
+ =?iso-8859-1?Q?tOFYasufixUicI7eWKERym9qlimOFffUpaBb3PTA0hJ1PSqWA9AqllHfvW?=
+ =?iso-8859-1?Q?xYhxyLFNcDk18FXzBOVbSCMQ5W9Wjh9wRow4esFEbqaydHfpjJQjyhHx9e?=
+ =?iso-8859-1?Q?bER91f4JnBLfCm9klV3sHZzjD9gln/d26mi9j/AXAhJV3z19iE0+6huAmu?=
+ =?iso-8859-1?Q?q3IgcqCH8i4MfxkGBjvXiEnqvvL3J6LFcJSdviSopFmHax53b5Gcz6LpAM?=
+ =?iso-8859-1?Q?M8UPeHy/on++m2pRaNGOPUXEfpY/TTifbS65SRtLqcnUk0eeNk7kyCKDmt?=
+ =?iso-8859-1?Q?PnOPG7eYHnTqQ=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13222624-1ccd-4136-2719-08dc3df0d106
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 15:19:29.0098
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DGOnbIo8esU7v8X7NO89bTIjyhm/dyjjdRdxI3oqV6C3YLTVWJJh4jIpf0p3w3e4ey85EupjxKAdf1lDO8FFpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9836
 
+On Wed, Mar 06, 2024 at 08:20:00AM +0100, Alexander Stein wrote:
+> Hi Frank,
+> 
+> thanks for the patch.
+> 
+> Am Dienstag, 5. März 2024, 18:33:05 CET schrieb Frank Li:
+> > Add asrc[0,1], esai0, spdif[0,1], sai[4,5] and related lpcg node for
+> > imx8 audio subsystem.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi | 304 +++++++++++++++++++++++
+> >  1 file changed, 304 insertions(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> > index 07afeb78ed564..78305559f15c9 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> > @@ -6,6 +6,7 @@
+> >  
+> >  #include <dt-bindings/clock/imx8-clock.h>
+> >  #include <dt-bindings/clock/imx8-lpcg.h>
+> > +#include <dt-bindings/dma/fsl-edma.h>
+> >  #include <dt-bindings/firmware/imx/rsrc.h>
+> >  
+> >  audio_ipg_clk: clock-audio-ipg {
+> > @@ -481,4 +482,307 @@ acm: acm@59e00000 {
+> >  			      "sai3_rx_bclk",
+> >  			      "sai4_rx_bclk";
+> >  	};
+> > +
+> > +	asrc0: asrc@59000000 {
+> 
+> Please insert nodes sorted by address. ASRC0 is the very first node.
+> 
+> > +		compatible = "fsl,imx8qm-asrc";
+> > +		reg = <0x59000000 0x10000>;
+> > +		interrupts = <GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>;
+> > +		clocks = <&asrc0_lpcg 0>,
+> > +			 <&asrc0_lpcg 0>,
+> > +			 <&aud_pll_div0_lpcg 0>,
+> > +			 <&aud_pll_div1_lpcg 0>,
+> > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
+> > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>;
+> > +		clock-names = "mem", "ipg",
+> > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
+> > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
+> > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
+> > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
+> > +			      "spba";
+> > +		dmas = <&edma0 0 0 0>,
+> > +		       <&edma0 1 0 0>,
+> > +		       <&edma0 2 0 0>,
+> > +		       <&edma0 3 0 FSL_EDMA_RX>,
+> > +		       <&edma0 4 0 FSL_EDMA_RX>,
+> > +		       <&edma0 5 0 FSL_EDMA_RX>;
+> > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
+> > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
+> > +		fsl,asrc-rate  = <8000>;
+> > +		fsl,asrc-width = <16>;
+> > +		fsl,asrc-clk-map = <0>;
+> > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	esai0: esai@59010000 {
+> > +		compatible = "fsl,imx8qm-esai", "fsl,imx6ull-esai";
+> > +		reg = <0x59010000 0x10000>;
+> > +		interrupts = <GIC_SPI 409 IRQ_TYPE_LEVEL_HIGH>;
+> > +		clocks = <&esai0_lpcg 1>, <&esai0_lpcg 0>, <&esai0_lpcg 1>, <&clk_dummy>;
+> > +		clock-names = "core", "extal", "fsys", "spba";
+> > +		dmas = <&edma0 6 0 FSL_EDMA_RX>, <&edma0 7 0 0>;
+> > +		dma-names = "rx", "tx";
+> > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	spdif0: spdif@59020000 {
+> > +		compatible = "fsl,imx8qm-spdif";
+> > +		reg = <0x59020000 0x10000>;
+> > +		interrupts =  <GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>, /* rx */
+> > +			      <GIC_SPI 458 IRQ_TYPE_LEVEL_HIGH>; /* tx */
+> > +		clocks = <&spdif0_lpcg 1>,	/* core */
+> > +			 <&clk_dummy>,		/* rxtx0 */
+> > +			 <&spdif0_lpcg 0>,	/* rxtx1 */
+> > +			 <&clk_dummy>,		/* rxtx2 */
+> > +			 <&clk_dummy>,		/* rxtx3 */
+> > +			 <&clk_dummy>,		/* rxtx4 */
+> > +			 <&audio_ipg_clk>,	/* rxtx5 */
+> > +			 <&clk_dummy>,		/* rxtx6 */
+> > +			 <&clk_dummy>,		/* rxtx7 */
+> > +			 <&clk_dummy>;		/* spba */
+> > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
+> > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
+> > +		dmas = <&edma0 8 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
+> > +		       <&edma0 9 0 FSL_EDMA_MULTI_FIFO>;
+> > +		dma-names = "rx", "tx";
+> > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	spdif1: spdif@59030000 {
+> 
+> That's imx8qm only, no?
 
---lgqwn3iwtrpezttc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I am not sure what means. why do you think it is imx8qm only? It is for
+imx8qm, imx8qxp, imx8dxl.
 
-Hi,
+Frank
 
-On Wed, Mar 06, 2024 at 11:16:21AM +0100, Alexander Stein wrote:
-> +static int cdns_mhdp8501_read_hpd(struct cdns_mhdp8501_device *mhdp)
-> +{
-> +	u8 status;
-> +	int ret;
-> +
-> +	mutex_lock(&mhdp->mbox_mutex);
-> +
-> +	ret = cdns_mhdp_mailbox_send(&mhdp->base, MB_MODULE_ID_GENERAL,
-> +				     GENERAL_GET_HPD_STATE, 0, NULL);
-> +	if (ret)
-> +		goto err_get_hpd;
-> +
-> +	ret = cdns_mhdp_mailbox_recv_header(&mhdp->base, MB_MODULE_ID_GENERAL,
-> +					    GENERAL_GET_HPD_STATE,
-> +					    sizeof(status));
-> +	if (ret)
-> +		goto err_get_hpd;
-> +
-> +	ret = cdns_mhdp_mailbox_recv_data(&mhdp->base, &status, sizeof(status));
-> +	if (ret)
-> +		goto err_get_hpd;
-> +
-> +	mutex_unlock(&mhdp->mbox_mutex);
-> +
-> +	return status;
-> +
-> +err_get_hpd:
-> +	dev_err(mhdp->dev, "read hpd  failed: %d\n", ret);
-> +	mutex_unlock(&mhdp->mbox_mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +enum drm_connector_status cdns_mhdp8501_detect(struct cdns_mhdp8501_device *mhdp)
-> +{
-> +	u8 hpd = 0xf;
-> +
-> +	hpd = cdns_mhdp8501_read_hpd(mhdp);
-> +	if (hpd == 1)
-> +		return connector_status_connected;
-> +	else if (hpd == 0)
-> +		return connector_status_disconnected;
-> +
-> +	dev_warn(mhdp->dev, "Unknown cable status, hdp=%u\n", hpd);
-> +	return connector_status_unknown;
-> +}
-> +
-> +static void hotplug_work_func(struct work_struct *work)
-> +{
-> +	struct cdns_mhdp8501_device *mhdp = container_of(work,
-> +						     struct cdns_mhdp8501_device,
-> +						     hotplug_work.work);
-> +	enum drm_connector_status status = cdns_mhdp8501_detect(mhdp);
-> +
-> +	drm_bridge_hpd_notify(&mhdp->bridge, status);
-> +
-> +	if (status == connector_status_connected) {
-> +		/* Cable connected  */
-> +		DRM_INFO("HDMI/DP Cable Plug In\n");
-> +		enable_irq(mhdp->irq[IRQ_OUT]);
-> +	} else if (status == connector_status_disconnected) {
-> +		/* Cable Disconnected  */
-> +		DRM_INFO("HDMI/DP Cable Plug Out\n");
-> +		enable_irq(mhdp->irq[IRQ_IN]);
-> +	}
-> +}
-> +
-> +static irqreturn_t cdns_mhdp8501_irq_thread(int irq, void *data)
-> +{
-> +	struct cdns_mhdp8501_device *mhdp = data;
-> +
-> +	disable_irq_nosync(irq);
-> +
-> +	mod_delayed_work(system_wq, &mhdp->hotplug_work,
-> +			 msecs_to_jiffies(HOTPLUG_DEBOUNCE_MS));
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-AFAICT from the rest of the driver, you support HDMI modes with a
-character rate > 340Mchar/s, and thus you need to enable the scrambler.
-
-If you unplug/replug a monitor with the scrambler enabled though, and if
-there's no userspace component to react to the userspace event, the code
-you have here won't enable the scrambler again.
-
-You can test that by using modetest with a 4k@60Hz mode or something,
-and then disconnecting / reconnecting the monitor.
-
-We addressed it in vc4 in commit 6bed2ea3cb38 ("drm/vc4: hdmi: Reset
-link on hotplug").
-
-Arguably, the whole handling of the HDMI scrambling setup should be
-turned into a helper, and I wanted to extend the work I've been doing
-around the HDMI infra to support the scrambler setup once it landed.
-
-> +static int cdns_hdmi_mode_config(struct cdns_mhdp8501_device *mhdp,
-> +				 struct drm_display_mode *mode,
-> +				 struct video_info *video_info)
-> +{
-> +	int ret;
-> +	u32 val;
-> +	u32 vsync_lines = mode->vsync_end - mode->vsync_start;
-> +	u32 eof_lines = mode->vsync_start - mode->vdisplay;
-> +	u32 sof_lines = mode->vtotal - mode->vsync_end;
-> +	u32 hblank = mode->htotal - mode->hdisplay;
-> +	u32 hactive = mode->hdisplay;
-> +	u32 vblank = mode->vtotal - mode->vdisplay;
-> +	u32 vactive = mode->vdisplay;
-> +	u32 hfront = mode->hsync_start - mode->hdisplay;
-> +	u32 hback = mode->htotal - mode->hsync_end;
-> +	u32 vfront = eof_lines;
-> +	u32 hsync = hblank - hfront - hback;
-> +	u32 vsync = vsync_lines;
-> +	u32 vback = sof_lines;
-> +	u32 v_h_polarity = ((mode->flags & DRM_MODE_FLAG_NHSYNC) ? 0 : 1) +
-> +			((mode->flags & DRM_MODE_FLAG_NVSYNC) ? 0 : 2);
-> +
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, SCHEDULER_H_SIZE, (hactive << 16) + hblank);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, SCHEDULER_V_SIZE, (vactive << 16) + vblank);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_SIGNAL_FRONT_WIDTH, (vfront << 16) + hfront);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_SIGNAL_SYNC_WIDTH, (vsync << 16) + hsync);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_SIGNAL_BACK_WIDTH, (vback << 16) + hback);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, HSYNC2VSYNC_POL_CTRL, v_h_polarity);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Reset Data Enable */
-> +	cdns_mhdp_reg_read(&mhdp->base, HDTX_CONTROLLER, &val);
-> +	val &= ~F_DATA_EN(1);
-> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_CONTROLLER, val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set bpc */
-> +	val &= ~F_VIF_DATA_WIDTH(3);
-> +	switch (video_info->bpc) {
-> +	case 10:
-> +		val |= F_VIF_DATA_WIDTH(1);
-> +		break;
-> +	case 12:
-> +		val |= F_VIF_DATA_WIDTH(2);
-> +		break;
-> +	case 16:
-> +		val |= F_VIF_DATA_WIDTH(3);
-> +		break;
-> +	case 8:
-> +	default:
-> +		val |= F_VIF_DATA_WIDTH(0);
-> +		break;
-> +	}
-> +
-> +	/* select color encoding */
-> +	val &= ~F_HDMI_ENCODING(3);
-> +	switch (video_info->color_fmt) {
-> +	case DRM_COLOR_FORMAT_YCBCR444:
-> +		val |= F_HDMI_ENCODING(2);
-> +		break;
-> +	case DRM_COLOR_FORMAT_YCBCR422:
-> +		val |= F_HDMI_ENCODING(1);
-> +		break;
-> +	case DRM_COLOR_FORMAT_YCBCR420:
-> +		val |= F_HDMI_ENCODING(3);
-> +		break;
-> +	case DRM_COLOR_FORMAT_RGB444:
-> +	default:
-> +		val |= F_HDMI_ENCODING(0);
-> +		break;
-> +	}
-
-It looks like you're only using RGB444?
-
-> +static int cdns_hdmi_avi_info_set(struct cdns_mhdp8501_device *mhdp,
-> +				  struct drm_display_mode *mode)
-> +{
-> +	struct hdmi_avi_infoframe frame;
-> +	struct drm_connector_state *conn_state = mhdp->curr_conn->state;
-> +	struct drm_display_mode *adj_mode;
-> +	enum hdmi_quantization_range qr;
-> +	u8 buf[32];
-> +	int ret;
-> +
-> +	/* Initialise info frame from DRM mode */
-> +	drm_hdmi_avi_infoframe_from_display_mode(&frame, mhdp->curr_conn, mode);
-> +
-> +	frame.colorspace = cdns_hdmi_colorspace(mhdp->video_info.color_fmt);
-> +
-> +	drm_hdmi_avi_infoframe_colorimetry(&frame, conn_state);
-> +
-> +	adj_mode = &mhdp->bridge.encoder->crtc->state->adjusted_mode;
-> +
-> +	qr = drm_default_rgb_quant_range(adj_mode);
-> +
-> +	drm_hdmi_avi_infoframe_quant_range(&frame, mhdp->curr_conn,
-> +					   adj_mode, qr);
-> +
-> +	ret = hdmi_avi_infoframe_pack(&frame, buf + 1, sizeof(buf) - 1);
-> +	if (ret < 0) {
-> +		dev_err(mhdp->dev, "failed to pack AVI infoframe: %d\n", ret);
-> +		return -1;
-> +	}
-> +
-> +	buf[0] = 0;
-> +	cdns_hdmi_infoframe_set(mhdp, 0, sizeof(buf), buf, HDMI_INFOFRAME_TYPE_AVI);
-> +
-> +	return 0;
-> +}
-> +
-> +static void cdns_hdmi_vendor_info_set(struct cdns_mhdp8501_device *mhdp,
-> +				      struct drm_display_mode *mode)
-> +{
-> +	struct hdmi_vendor_infoframe frame;
-> +	u8 buf[32];
-> +	int ret;
-> +
-> +	/* Initialise vendor frame from DRM mode */
-> +	ret = drm_hdmi_vendor_infoframe_from_display_mode(&frame, mhdp->curr_conn, mode);
-> +	if (ret < 0) {
-> +		dev_info(mhdp->dev, "No vendor infoframe\n");
-> +		return;
-> +	}
-> +
-> +	ret = hdmi_vendor_infoframe_pack(&frame, buf + 1, sizeof(buf) - 1);
-> +	if (ret < 0) {
-> +		dev_warn(mhdp->dev, "Unable to pack vendor infoframe: %d\n", ret);
-> +		return;
-> +	}
-> +
-> +	buf[0] = 0;
-> +	cdns_hdmi_infoframe_set(mhdp, 3, sizeof(buf), buf, HDMI_INFOFRAME_TYPE_VENDOR);
-> +}
-> +
-> +static void cdns_hdmi_drm_info_set(struct cdns_mhdp8501_device *mhdp)
-> +{
-> +	struct drm_connector_state *conn_state;
-> +	struct hdmi_drm_infoframe frame;
-> +	u8 buf[32];
-> +	int ret;
-> +
-> +	conn_state = mhdp->curr_conn->state;
-> +
-> +	if (!conn_state->hdr_output_metadata)
-> +		return;
-> +
-> +	ret = drm_hdmi_infoframe_set_hdr_metadata(&frame, conn_state);
-> +	if (ret < 0) {
-> +		dev_dbg(mhdp->dev, "couldn't set HDR metadata in infoframe\n");
-> +		return;
-> +	}
-> +
-> +	ret = hdmi_drm_infoframe_pack(&frame, buf + 1, sizeof(buf) - 1);
-> +	if (ret < 0) {
-> +		dev_dbg(mhdp->dev, "couldn't pack HDR infoframe\n");
-> +		return;
-> +	}
-> +
-> +	buf[0] = 0;
-> +	cdns_hdmi_infoframe_set(mhdp, 3, sizeof(buf), buf, HDMI_INFOFRAME_TYPE_DRM);
-> +}
-
-This is another thing that was supposed to be handled by my current
-series here:
-https://lore.kernel.org/r/20240222-kms-hdmi-connector-state-v7-0-8f4af575fce2@kernel.org
-
-In particular, you're missing the SPD infoframes here.
-
-> +static void cdns_hdmi_mode_set(struct cdns_mhdp8501_device *mhdp)
-> +{
-
-You should use atomic_enable here
-
-> +	struct drm_display_mode *mode = &mhdp->mode;
-> +	union phy_configure_opts phy_cfg;
-> +	int ret;
-> +
-> +	/* video mode check */
-> +	if (mode->clock == 0 || mode->hdisplay == 0 || mode->vdisplay == 0)
-> +		return;
-> +
-> +	cdns_hdmi_lanes_config(mhdp);
-> +
-> +	phy_cfg.hdmi.pixel_clk_rate = mode->clock;
-> +	phy_cfg.hdmi.bpc = mhdp->video_info.bpc;
-> +	phy_cfg.hdmi.color_space = cdns_hdmi_colorspace(mhdp->video_info.color_fmt);
-> +
-> +	/* Mailbox protect for HDMI PHY access */
-> +	mutex_lock(&mhdp->mbox_mutex);
-> +	ret = phy_configure(mhdp->phy, &phy_cfg);
-> +	mutex_unlock(&mhdp->mbox_mutex);
-> +	if (ret) {
-> +		dev_err(mhdp->dev, "%s: phy_configure() failed: %d\n",
-> +			__func__, ret);
-> +		return;
-> +	}
-> +
-> +	cdns_hdmi_sink_config(mhdp);
-> +
-> +	ret = cdns_hdmi_ctrl_init(mhdp, mhdp->hdmi.hdmi_type);
-> +	if (ret < 0) {
-> +		dev_err(mhdp->dev, "%s, ret = %d\n", __func__, ret);
-> +		return;
-> +	}
-> +
-> +	/* Config GCP */
-> +	if (mhdp->video_info.bpc == 8)
-> +		cdns_hdmi_disable_gcp(mhdp);
-> +	else
-> +		cdns_hdmi_enable_gcp(mhdp);
-> +
-> +	ret = cdns_hdmi_avi_info_set(mhdp, mode);
-> +	if (ret < 0) {
-> +		dev_err(mhdp->dev, "%s ret = %d\n", __func__, ret);
-> +		return;
-> +	}
-> +
-> +	/* vendor info frame is enabled only for HDMI1.4 4K mode */
-> +	cdns_hdmi_vendor_info_set(mhdp, mode);
-> +
-> +	cdns_hdmi_drm_info_set(mhdp);
-> +
-> +	ret = cdns_hdmi_mode_config(mhdp, mode, &mhdp->video_info);
-> +	if (ret < 0) {
-> +		dev_err(mhdp->dev, "CDN_API_HDMITX_SetVic_blocking ret = %d\n", ret);
-> +		return;
-> +	}
-> +}
-> +
-> +static int cdns_hdmi_bridge_attach(struct drm_bridge *bridge,
-> +				   enum drm_bridge_attach_flags flags)
-> +{
-> +	struct cdns_mhdp8501_device *mhdp = bridge->driver_private;
-> +
-> +	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)) {
-> +		dev_err(mhdp->dev, "do not support creating a drm_connector\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static enum drm_mode_status
-> +cdns_hdmi_bridge_mode_valid(struct drm_bridge *bridge,
-> +			    const struct drm_display_info *info,
-> +			    const struct drm_display_mode *mode)
-> +{
-> +	struct cdns_mhdp8501_device *mhdp = bridge->driver_private;
-> +	enum drm_mode_status mode_status = MODE_OK;
-> +	union phy_configure_opts phy_cfg;
-> +	int ret;
-> +
-> +	/* We don't support double-clocked and Interlaced modes */
-> +	if (mode->flags & DRM_MODE_FLAG_DBLCLK ||
-> +	    mode->flags & DRM_MODE_FLAG_INTERLACE)
-> +		return MODE_BAD;
-> +
-> +	/* MAX support pixel clock rate 594MHz */
-> +	if (mode->clock > 594000)
-> +		return MODE_CLOCK_HIGH;
-> +
-> +	if (mode->hdisplay > 3840)
-> +		return MODE_BAD_HVALUE;
-> +
-> +	if (mode->vdisplay > 2160)
-> +		return MODE_BAD_VVALUE;
-> +
-> +	/* Check modes supported by PHY */
-> +	phy_cfg.hdmi.pixel_clk_rate = mode->clock;
-> +
-> +	/* Mailbox protect for HDMI PHY access */
-> +	mutex_lock(&mhdp->mbox_mutex);
-> +	ret = phy_validate(mhdp->phy, PHY_MODE_HDMI, 0, &phy_cfg);
-> +	mutex_unlock(&mhdp->mbox_mutex);
-> +	if (ret < 0)
-> +		return MODE_CLOCK_RANGE;
-> +
-> +	return mode_status;
-> +}
-
-mode_valid is only called when the userspace asks for the current modes
-available on a connector, but not when the userspace programs a mode.
-This is atomic_check's job, so you probably want to have a similar
-atomic_check here.
-
-> +static bool
-> +cdns_hdmi_bridge_mode_fixup(struct drm_bridge *bridge,
-> +			    const struct drm_display_mode *mode,
-> +			    struct drm_display_mode *adjusted_mode)
-> +{
-> +	struct cdns_mhdp8501_device *mhdp = bridge->driver_private;
-> +	struct video_info *video = &mhdp->video_info;
-> +
-> +	/* The only currently supported format */
-> +	video->bpc = 8;
-> +	video->color_fmt = DRM_COLOR_FORMAT_RGB444;
-> +
-> +	return true;
-> +}
-
-mode_fixup is deprecated. I guess you wanted to use reset here.
-Generally speaking, the bpc and color_format should be part of your
-state anyway.
-
-I know Dmitry was interested in plugging my HDMI series into the bridge
-infrastructure. It would benefit your driver quite a lot I think, so you
-probably want to sync up with him.
-
-Maxime
-
---lgqwn3iwtrpezttc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZeiHwwAKCRDj7w1vZxhR
-xfDQAP98OUYzPDbd7t89OCitGUkIbsDS/ABj8YL94liZuqy66wD/Sou5Qp414MHB
-mohzojfgJUYyXYSlQDYCjFwCjyOb0gs=
-=ee0H
------END PGP SIGNATURE-----
-
---lgqwn3iwtrpezttc--
+> 
+> > +		compatible = "fsl,imx8qm-spdif";
+> > +		reg = <0x59030000 0x10000>;
+> > +		interrupts =  <GIC_SPI 460 IRQ_TYPE_LEVEL_HIGH>, /* rx */
+> > +			      <GIC_SPI 462 IRQ_TYPE_LEVEL_HIGH>; /* tx */
+> > +		clocks = <&spdif1_lpcg 1>,	/* core */
+> > +			 <&clk_dummy>,		/* rxtx0 */
+> > +			 <&spdif1_lpcg 0>,	/* rxtx1 */
+> > +			 <&clk_dummy>,		/* rxtx2 */
+> > +			 <&clk_dummy>,		/* rxtx3 */
+> > +			 <&clk_dummy>,		/* rxtx4 */
+> > +			 <&audio_ipg_clk>,	/* rxtx5 */
+> > +			 <&clk_dummy>,		/* rxtx6 */
+> > +			 <&clk_dummy>,		/* rxtx7 */
+> > +			 <&clk_dummy>;		/* spba */
+> > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
+> > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
+> > +		dmas = <&edma0 10 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
+> > +		       <&edma0 11 0 FSL_EDMA_MULTI_FIFO>;
+> > +		dma-names = "rx", "tx";
+> > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	asrc1: asrc@59800000 {
+> 
+> Insert this between dsp and edma1, sorted by address.
+> 
+> > +		compatible = "fsl,imx8qm-asrc";
+> > +		reg = <0x59800000 0x10000>;
+> > +		interrupts = <GIC_SPI 380 IRQ_TYPE_LEVEL_HIGH>;
+> > +		clocks = <&asrc1_lpcg 0>,
+> > +			 <&asrc1_lpcg 0>,
+> > +			 <&aud_pll_div0_lpcg 0>,
+> > +			 <&aud_pll_div1_lpcg 0>,
+> > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
+> > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>;
+> > +		clock-names = "mem", "ipg",
+> > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
+> > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
+> > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
+> > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
+> > +			      "spba";
+> > +		dmas = <&edma1 0 0 0>,
+> > +		       <&edma1 1 0 0>,
+> > +		       <&edma1 2 0 0>,
+> > +		       <&edma1 3 0 FSL_EDMA_RX>,
+> > +		       <&edma1 4 0 FSL_EDMA_RX>,
+> > +		       <&edma1 5 0 FSL_EDMA_RX>;
+> > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
+> > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
+> > +		fsl,asrc-rate  = <8000>;
+> > +		fsl,asrc-width = <16>;
+> > +		fsl,asrc-clk-map = <1>;
+> > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	sai4: sai@59820000 {
+> > +		compatible = "fsl,imx8qm-sai";
+> > +		reg = <0x59820000 0x10000>;
+> > +		interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
+> > +		clocks = <&sai4_lpcg 1>,
+> > +			 <&clk_dummy>,
+> > +			 <&sai4_lpcg 0>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>;
+> > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
+> > +		dmas = <&edma1 8 0 FSL_EDMA_RX>, <&edma1 9 0 0>;
+> > +		dma-names = "rx", "tx";
+> > +		power-domains = <&pd IMX_SC_R_SAI_4>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	sai5: sai@59830000 {
+> > +		compatible = "fsl,imx8qm-sai";
+> > +		reg = <0x59830000 0x10000>;
+> > +		interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
+> > +		clocks = <&sai5_lpcg 1>,
+> > +			 <&clk_dummy>,
+> > +			 <&sai5_lpcg 0>,
+> > +			 <&clk_dummy>,
+> > +			 <&clk_dummy>;
+> > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
+> > +		dmas = <&edma1 10 0 0>;
+> > +		dma-names = "tx";
+> > +		power-domains = <&pd IMX_SC_R_SAI_5>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	amix: amix@59840000 {
+> > +		compatible = "fsl,imx8qm-audmix";
+> > +		reg = <0x59840000 0x10000>;
+> > +		clocks = <&amix_lpcg 0>;
+> > +		clock-names = "ipg";
+> > +		power-domains = <&pd IMX_SC_R_AMIX>;
+> > +		dais = <&sai4>, <&sai5>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	mqs: mqs@59850000 {
+> > +		compatible = "fsl,imx8qm-mqs";
+> > +		reg = <0x59850000 0x10000>;
+> > +		clocks = <&mqs0_lpcg 0>,
+> > +			<&mqs0_lpcg 1>;
+> > +		clock-names = "mclk", "core";
+> > +		power-domains = <&pd IMX_SC_R_MQS_0>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	asrc0_lpcg: clock-controller@59400000 {
+> 
+> Please insert he lpcg nodes according to their address.
+> 
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59400000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "asrc0_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
+> > +	};
+> > +
+> > +	esai0_lpcg: clock-controller@59410000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59410000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&acm IMX_ADMA_ACM_ESAI0_MCLK_SEL>,
+> > +			 <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "esai0_lpcg_extal_clk",
+> > +				     "esai0_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
+> > +	};
+> > +
+> > +	spdif0_lpcg: clock-controller@59420000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59420000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&acm IMX_ADMA_ACM_SPDIF0_TX_CLK_SEL>,
+> > +			 <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "spdif0_lpcg_tx_clk",
+> > +				     "spdif0_lpcg_gclkw";
+> > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
+> > +	};
+> > +
+> > +	spdif1_lpcg: clock-controller@59430000 {
+> 
+> That's imx8qm only as well, no?
+> 
+> Thanks and best regards,
+> Alexander
+> 
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59430000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&acm IMX_ADMA_ACM_SPDIF1_TX_CLK_SEL>,
+> > +			 <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "spdif1_lpcg_tx_clk",
+> > +				     "spdif1_lpcg_gclkw";
+> > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	asrc1_lpcg: clock-controller@59c00000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59c00000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "asrc1_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
+> > +	};
+> > +
+> > +	sai4_lpcg: clock-controller@59c20000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59c20000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&acm IMX_ADMA_ACM_SAI4_MCLK_SEL>,
+> > +			 <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "sai4_lpcg_mclk",
+> > +				     "sai4_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_SAI_4>;
+> > +	};
+> > +
+> > +	sai5_lpcg: clock-controller@59c30000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59c30000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > +			 <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "sai5_lpcg_mclk",
+> > +				     "sai5_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_SAI_5>;
+> > +	};
+> > +
+> > +	amix_lpcg: clock-controller@59c40000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59c40000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>;
+> > +		clock-output-names = "amix_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_AMIX>;
+> > +	};
+> > +
+> > +	mqs0_lpcg: clock-controller@59c50000 {
+> > +		compatible = "fsl,imx8qxp-lpcg";
+> > +		reg = <0x59c50000 0x10000>;
+> > +		#clock-cells = <1>;
+> > +		clocks = <&acm IMX_ADMA_ACM_MQS_TX_CLK_SEL>,
+> > +			 <&audio_ipg_clk>;
+> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > +		clock-output-names = "mqs0_lpcg_mclk",
+> > +				     "mqs0_lpcg_ipg_clk";
+> > +		power-domains = <&pd IMX_SC_R_MQS_0>;
+> > +	};
+> >  };
+> > 
+> > 
+> 
+> 
+> -- 
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+> 
+> 
