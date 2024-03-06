@@ -1,114 +1,136 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29CA605A2
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 10:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E7BA55;
+	Wed,  6 Mar 2024 14:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709721562; cv=none; b=cdWAJ+yLx4wS5Mx0SX3i4/OOjJBYef9brdf1grGs+rx5SYdJxB9ejCVV0uQUUSuxBW51GwZKw201MMY76C22kwk/KfTc0MCQ5EDzRqp9N4hl6JHd6v+sry+JLoM0LBRwm10fyB/ErSCfV5L2xURMLancXG9xqSCTD+rG7R5QsAI=
+	t=1709736496; cv=none; b=c2qtM+L8dYzUpTz0XlorgASIn8xRICymI6bhy+vJmIxfXDZxX+Szq8MU6DiZfvsj5DkkfZCjavITSKDqbPJg9ZczYH/kks6zjutR2NFulSGsDsFknT0wNEoqhpML7d4HmKqGEetdvptLKd0lJ3LK81HT3EhfBtO/kmCBH0rGq8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709721562; c=relaxed/simple;
-	bh=vIc6TdPhXd1kX/avPbpFDWQrNdFePTX5Ajo4Bc1oq64=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZE0PMkh07/pS5FqPOCfcmV2BFa7VLYadjsIWacujlZiHa+b+A3NJtexXE7zJYf/nBYh8b5emRsxXtnTKiw5M6W4SEC0OQy6I6Lssuhva+ddHklbBBdpAe9FO8TTaV31CjlRkCxPsMI1wLtXRRabzGtq1mpX+893if5IzRzeuk0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhofu-0000m9-9m; Wed, 06 Mar 2024 11:39:02 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhoft-004jAh-Ii; Wed, 06 Mar 2024 11:39:01 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhoft-000d42-1a;
-	Wed, 06 Mar 2024 11:39:01 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/3] clk: imx: imx8-acm: Convert to platform remove callback returning void
-Date: Wed,  6 Mar 2024 11:38:55 +0100
-Message-ID:  <ba373ce7341518216a4940e76ce61d759b912b3d.1709721042.git.u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1709721042.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1709721042.git.u.kleine-koenig@pengutronix.de>
+	s=arc-20240116; t=1709736496; c=relaxed/simple;
+	bh=LKxAHNk2aLDWzzV1w2tW3dpSb8kzakIi8zhJRlDYp30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dc4A9wbwOIPN7xqv/qyhmtXjuogTpZesVeVJ99UIrF5bckjuqWEblgwPvQjC75gnPAa6DzdESiULcmddNkC/zZ2/adklp371/yR/r0xRR7UJXN8tu5sdQC1n+VGk2DR4Neb8ZYf58ONnEFwRW0ojwub1C+N7FwmXqY11S3jyBBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXBlgeae; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXBlgeae"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FFAC433F1;
+	Wed,  6 Mar 2024 14:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709736495;
+	bh=LKxAHNk2aLDWzzV1w2tW3dpSb8kzakIi8zhJRlDYp30=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lXBlgeaeEd838cjSpXB5fqRMp0JDlOUS2RNQONh2ebnE3caajbq4gcz5fgrUUrSyU
+	 JDGeWAMG9Bd3x0Q0Zixif0b5VboyKVsI8uWeQeIvZPuadhN2GnG1MJasnaniRuvn/x
+	 A8RtYP6ecWpHi87rDDNV4VrS9FhOIwMilZU1k03FhdKOZ8eXDrbJ5AdHY5yCNPPldE
+	 hnxsilPlv7krDOXsoX6v5EEUo793kDnpUYR48kQKHhlrqJMcltGCEs5wkqN1KHlUnW
+	 6kw8Bsa/Ah24iuGlq+MLiZgTuYSE7GBNJ3pm6O0Th8G+8NfhuQFFsJ+5VZJxmLi0KX
+	 FslSnN+FajSng==
+Date: Wed, 6 Mar 2024 15:48:13 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Sandor Yu <Sandor.yu@nxp.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v15 2/8] phy: Add HDMI configuration options
+Message-ID: <20240306-inquisitive-funny-bull-017550@houat>
+References: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
+ <20240306101625.795732-3-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1805; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=vIc6TdPhXd1kX/avPbpFDWQrNdFePTX5Ajo4Bc1oq64=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl6EfAOvpBlrvFECH1JzFiP1N0VpY0xgRwInvbt Ky7mUAAf6CJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZehHwAAKCRCPgPtYfRL+ TvilB/9gBR815Rxi7A/nCY8oDjbfnbNuJ1Hbhr8cx9RgEV3Qeatz27NpWV2tdt16eDSM3zNz1/8 eXgoIm4WmUhLy5cKW9suL3QlFo7LBFsfbxEmcO1USVwadnEUxtjL45kng7KcvQKoelJm710VnMW NCXF1QUAIYK74Bj+EKGh3wWrXdX0i1kEKYCUKdKgYJKAKjdM4HmZMSMjJgpYqzSRUdUUL+7ylR2 5U13vuctxl50juoIb6HaGD9SfNGCzaIltGrM3NY0xzzW0aHvMGr4b8n1lgL5GqnHhTAzYfT8HTE WmhteIlvfeyffO3yugNZi0iuh8ApQwErO0/NygI3KoXncy7R
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wazjs4qrv6r7qq5x"
+Content-Disposition: inline
+In-Reply-To: <20240306101625.795732-3-alexander.stein@ew.tq-group.com>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+--wazjs4qrv6r7qq5x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Hi Alexander,
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/clk/imx/clk-imx8-acm.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+On Wed, Mar 06, 2024 at 11:16:19AM +0100, Alexander Stein wrote:
+> From: Sandor Yu <Sandor.yu@nxp.com>
+>=20
+> Allow HDMI PHYs to be configured through the generic
+> functions through a custom structure added to the generic union.
+>=20
+> The parameters added here are based on HDMI PHY
+> implementation practices.  The current set of parameters
+> should cover the potential users.
+>=20
+> Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Acked-by: Vinod Koul <vkoul@kernel.org>
+> ---
+>  include/linux/phy/phy-hdmi.h | 24 ++++++++++++++++++++++++
+>  include/linux/phy/phy.h      |  7 ++++++-
+>  2 files changed, 30 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/phy/phy-hdmi.h
+>=20
+> diff --git a/include/linux/phy/phy-hdmi.h b/include/linux/phy/phy-hdmi.h
+> new file mode 100644
+> index 0000000000000..b7de88e9090f0
+> --- /dev/null
+> +++ b/include/linux/phy/phy-hdmi.h
+> @@ -0,0 +1,24 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright 2022 NXP
+> + */
+> +
+> +#ifndef __PHY_HDMI_H_
+> +#define __PHY_HDMI_H_
+> +
+> +#include <linux/hdmi.h>
+> +/**
+> + * struct phy_configure_opts_hdmi - HDMI configuration set
+> + * @pixel_clk_rate: Pixel clock of video modes in KHz.
+> + * @bpc: Maximum bits per color channel.
+> + * @color_space: Colorspace in enum hdmi_colorspace.
+> + *
+> + * This structure is used to represent the configuration state of a HDMI=
+ phy.
+> + */
+> +struct phy_configure_opts_hdmi {
+> +	unsigned int pixel_clk_rate;
+> +	unsigned int bpc;
+> +	enum hdmi_colorspace color_space;
+> +};
 
-diff --git a/drivers/clk/imx/clk-imx8-acm.c b/drivers/clk/imx/clk-imx8-acm.c
-index f68877eef873..1bdb480cc96c 100644
---- a/drivers/clk/imx/clk-imx8-acm.c
-+++ b/drivers/clk/imx/clk-imx8-acm.c
-@@ -394,15 +394,13 @@ static int imx8_acm_clk_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int imx8_acm_clk_remove(struct platform_device *pdev)
-+static void imx8_acm_clk_remove(struct platform_device *pdev)
- {
- 	struct imx8_acm_priv *priv = dev_get_drvdata(&pdev->dev);
- 
- 	pm_runtime_disable(&pdev->dev);
- 
- 	clk_imx_acm_detach_pm_domains(&pdev->dev, &priv->dev_pm);
--
--	return 0;
- }
- 
- static const struct imx8_acm_soc_data imx8qm_acm_data = {
-@@ -470,7 +468,7 @@ static struct platform_driver imx8_acm_clk_driver = {
- 		.pm = &imx8_acm_pm_ops,
- 	},
- 	.probe = imx8_acm_clk_probe,
--	.remove = imx8_acm_clk_remove,
-+	.remove_new = imx8_acm_clk_remove,
- };
- module_platform_driver(imx8_acm_clk_driver);
- 
--- 
-2.43.0
+Does the PHY actually care about the pixel clock rate, color space and
+formats, or does it only care about the character rate?
 
+Also, how would you handle pixel doubling?
+
+Maxime
+
+--wazjs4qrv6r7qq5x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZeiCLAAKCRDj7w1vZxhR
+xSnUAP41rpokDnniw6MdmXTRycs0PMI6TgR/87jmxzdVFERWKgEA/uUZeHTkC2sD
+5V8zpf6ghz8P69W2+uKQN5GBGohZ5Ag=
+=ozbL
+-----END PGP SIGNATURE-----
+
+--wazjs4qrv6r7qq5x--
