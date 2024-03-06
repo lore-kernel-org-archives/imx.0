@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E7BA55;
-	Wed,  6 Mar 2024 14:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B1130AC6;
+	Wed,  6 Mar 2024 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709736496; cv=none; b=c2qtM+L8dYzUpTz0XlorgASIn8xRICymI6bhy+vJmIxfXDZxX+Szq8MU6DiZfvsj5DkkfZCjavITSKDqbPJg9ZczYH/kks6zjutR2NFulSGsDsFknT0wNEoqhpML7d4HmKqGEetdvptLKd0lJ3LK81HT3EhfBtO/kmCBH0rGq8U=
+	t=1709737927; cv=none; b=RzIb7K8o5UZyqsUcQCvWfvGrkXw2bF85qBXmi+DfqMP+ljstcnDayfL5asBHkHnu3sloptPMJBcVgLQ6WJizU9RZ3bHc2EBMf9HLj7vm/DiBXaosuq1quLqnvUKOHKEfvZSGxlCt09JU8gXItDUegTed/JVi82DF+qZNVn4nkGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709736496; c=relaxed/simple;
-	bh=LKxAHNk2aLDWzzV1w2tW3dpSb8kzakIi8zhJRlDYp30=;
+	s=arc-20240116; t=1709737927; c=relaxed/simple;
+	bh=RkXvgfFkQeab6f37tUpRH2m7Hc4zq4G2QQFYL2agHN4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dc4A9wbwOIPN7xqv/qyhmtXjuogTpZesVeVJ99UIrF5bckjuqWEblgwPvQjC75gnPAa6DzdESiULcmddNkC/zZ2/adklp371/yR/r0xRR7UJXN8tu5sdQC1n+VGk2DR4Neb8ZYf58ONnEFwRW0ojwub1C+N7FwmXqY11S3jyBBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXBlgeae; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mn1AzJQmwG8INH2I3GzkGdogDGXk6JNNKrD5pYgQTXW2WFFMLNOZfCs8yep9qpwP1cHZi8dZJF5dD9Se8bqpRiFB2lXs7ynZpqu7v+qDcaWoXYMwFndBOM++GoAv5+QP6H3WU1BShfFg0beevF0XlQnBsaGJIPewG84TeEVdi5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DD1IDXNm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXBlgeae"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FFAC433F1;
-	Wed,  6 Mar 2024 14:48:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DD1IDXNm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D39BC433C7;
+	Wed,  6 Mar 2024 15:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709736495;
-	bh=LKxAHNk2aLDWzzV1w2tW3dpSb8kzakIi8zhJRlDYp30=;
+	s=k20201202; t=1709737927;
+	bh=RkXvgfFkQeab6f37tUpRH2m7Hc4zq4G2QQFYL2agHN4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lXBlgeaeEd838cjSpXB5fqRMp0JDlOUS2RNQONh2ebnE3caajbq4gcz5fgrUUrSyU
-	 JDGeWAMG9Bd3x0Q0Zixif0b5VboyKVsI8uWeQeIvZPuadhN2GnG1MJasnaniRuvn/x
-	 A8RtYP6ecWpHi87rDDNV4VrS9FhOIwMilZU1k03FhdKOZ8eXDrbJ5AdHY5yCNPPldE
-	 hnxsilPlv7krDOXsoX6v5EEUo793kDnpUYR48kQKHhlrqJMcltGCEs5wkqN1KHlUnW
-	 6kw8Bsa/Ah24iuGlq+MLiZgTuYSE7GBNJ3pm6O0Th8G+8NfhuQFFsJ+5VZJxmLi0KX
-	 FslSnN+FajSng==
-Date: Wed, 6 Mar 2024 15:48:13 +0100
+	b=DD1IDXNmd2Htv29SsgSyAU2hFP3h9kX8C2GCVtBUXQtN/aXH8PXn2lLuvXkHZ+Vgm
+	 i20lg50sutBkjRnMuWtuxpjmFeNe+ZZys5LS8C5YDqH+ZRrx+pGOXwuDwwsRbLYq7S
+	 9oTJmQHPvJNAY3HVBOtSf9+LL40f57ybK8qSOsEJ4R+Es7rNc8VW7vgQnMB5CoFzbW
+	 A+vCCYEIED6D5jhPbBnIqhi1m86tzqaINKuUi6M7SFMXZsCTwFGbuzRcxiWqyickpQ
+	 dZdsZQyd5B3EdrHSZlSpof+SIg6QQ58HkrDhQNe/iHIrkmQYYzk5vy+9rzMTdIlh8c
+	 2qiqyQ8nE9iMg==
+Date: Wed, 6 Mar 2024 16:12:04 +0100
 From: Maxime Ripard <mripard@kernel.org>
 To: Alexander Stein <alexander.stein@ew.tq-group.com>
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -41,12 +41,11 @@ Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
 	Sandor Yu <Sandor.yu@nxp.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v15 2/8] phy: Add HDMI configuration options
-Message-ID: <20240306-inquisitive-funny-bull-017550@houat>
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject: Re: [PATCH v15 4/8] drm: bridge: Cadence: Add MHDP8501 DP/HDMI driver
+Message-ID: <20240306-mysterious-hoatzin-of-faith-49aec0@houat>
 References: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
- <20240306101625.795732-3-alexander.stein@ew.tq-group.com>
+ <20240306101625.795732-5-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,83 +53,450 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wazjs4qrv6r7qq5x"
+	protocol="application/pgp-signature"; boundary="lgqwn3iwtrpezttc"
 Content-Disposition: inline
-In-Reply-To: <20240306101625.795732-3-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20240306101625.795732-5-alexander.stein@ew.tq-group.com>
 
 
---wazjs4qrv6r7qq5x
+--lgqwn3iwtrpezttc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi Alexander,
+Hi,
 
-On Wed, Mar 06, 2024 at 11:16:19AM +0100, Alexander Stein wrote:
-> From: Sandor Yu <Sandor.yu@nxp.com>
->=20
-> Allow HDMI PHYs to be configured through the generic
-> functions through a custom structure added to the generic union.
->=20
-> The parameters added here are based on HDMI PHY
-> implementation practices.  The current set of parameters
-> should cover the potential users.
->=20
-> Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Acked-by: Vinod Koul <vkoul@kernel.org>
-> ---
->  include/linux/phy/phy-hdmi.h | 24 ++++++++++++++++++++++++
->  include/linux/phy/phy.h      |  7 ++++++-
->  2 files changed, 30 insertions(+), 1 deletion(-)
->  create mode 100644 include/linux/phy/phy-hdmi.h
->=20
-> diff --git a/include/linux/phy/phy-hdmi.h b/include/linux/phy/phy-hdmi.h
-> new file mode 100644
-> index 0000000000000..b7de88e9090f0
-> --- /dev/null
-> +++ b/include/linux/phy/phy-hdmi.h
-> @@ -0,0 +1,24 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright 2022 NXP
-> + */
+On Wed, Mar 06, 2024 at 11:16:21AM +0100, Alexander Stein wrote:
+> +static int cdns_mhdp8501_read_hpd(struct cdns_mhdp8501_device *mhdp)
+> +{
+> +	u8 status;
+> +	int ret;
 > +
-> +#ifndef __PHY_HDMI_H_
-> +#define __PHY_HDMI_H_
+> +	mutex_lock(&mhdp->mbox_mutex);
 > +
-> +#include <linux/hdmi.h>
-> +/**
-> + * struct phy_configure_opts_hdmi - HDMI configuration set
-> + * @pixel_clk_rate: Pixel clock of video modes in KHz.
-> + * @bpc: Maximum bits per color channel.
-> + * @color_space: Colorspace in enum hdmi_colorspace.
-> + *
-> + * This structure is used to represent the configuration state of a HDMI=
- phy.
-> + */
-> +struct phy_configure_opts_hdmi {
-> +	unsigned int pixel_clk_rate;
-> +	unsigned int bpc;
-> +	enum hdmi_colorspace color_space;
-> +};
+> +	ret = cdns_mhdp_mailbox_send(&mhdp->base, MB_MODULE_ID_GENERAL,
+> +				     GENERAL_GET_HPD_STATE, 0, NULL);
+> +	if (ret)
+> +		goto err_get_hpd;
+> +
+> +	ret = cdns_mhdp_mailbox_recv_header(&mhdp->base, MB_MODULE_ID_GENERAL,
+> +					    GENERAL_GET_HPD_STATE,
+> +					    sizeof(status));
+> +	if (ret)
+> +		goto err_get_hpd;
+> +
+> +	ret = cdns_mhdp_mailbox_recv_data(&mhdp->base, &status, sizeof(status));
+> +	if (ret)
+> +		goto err_get_hpd;
+> +
+> +	mutex_unlock(&mhdp->mbox_mutex);
+> +
+> +	return status;
+> +
+> +err_get_hpd:
+> +	dev_err(mhdp->dev, "read hpd  failed: %d\n", ret);
+> +	mutex_unlock(&mhdp->mbox_mutex);
+> +
+> +	return ret;
+> +}
+> +
+> +enum drm_connector_status cdns_mhdp8501_detect(struct cdns_mhdp8501_device *mhdp)
+> +{
+> +	u8 hpd = 0xf;
+> +
+> +	hpd = cdns_mhdp8501_read_hpd(mhdp);
+> +	if (hpd == 1)
+> +		return connector_status_connected;
+> +	else if (hpd == 0)
+> +		return connector_status_disconnected;
+> +
+> +	dev_warn(mhdp->dev, "Unknown cable status, hdp=%u\n", hpd);
+> +	return connector_status_unknown;
+> +}
+> +
+> +static void hotplug_work_func(struct work_struct *work)
+> +{
+> +	struct cdns_mhdp8501_device *mhdp = container_of(work,
+> +						     struct cdns_mhdp8501_device,
+> +						     hotplug_work.work);
+> +	enum drm_connector_status status = cdns_mhdp8501_detect(mhdp);
+> +
+> +	drm_bridge_hpd_notify(&mhdp->bridge, status);
+> +
+> +	if (status == connector_status_connected) {
+> +		/* Cable connected  */
+> +		DRM_INFO("HDMI/DP Cable Plug In\n");
+> +		enable_irq(mhdp->irq[IRQ_OUT]);
+> +	} else if (status == connector_status_disconnected) {
+> +		/* Cable Disconnected  */
+> +		DRM_INFO("HDMI/DP Cable Plug Out\n");
+> +		enable_irq(mhdp->irq[IRQ_IN]);
+> +	}
+> +}
+> +
+> +static irqreturn_t cdns_mhdp8501_irq_thread(int irq, void *data)
+> +{
+> +	struct cdns_mhdp8501_device *mhdp = data;
+> +
+> +	disable_irq_nosync(irq);
+> +
+> +	mod_delayed_work(system_wq, &mhdp->hotplug_work,
+> +			 msecs_to_jiffies(HOTPLUG_DEBOUNCE_MS));
+> +
+> +	return IRQ_HANDLED;
+> +}
 
-Does the PHY actually care about the pixel clock rate, color space and
-formats, or does it only care about the character rate?
+AFAICT from the rest of the driver, you support HDMI modes with a
+character rate > 340Mchar/s, and thus you need to enable the scrambler.
 
-Also, how would you handle pixel doubling?
+If you unplug/replug a monitor with the scrambler enabled though, and if
+there's no userspace component to react to the userspace event, the code
+you have here won't enable the scrambler again.
+
+You can test that by using modetest with a 4k@60Hz mode or something,
+and then disconnecting / reconnecting the monitor.
+
+We addressed it in vc4 in commit 6bed2ea3cb38 ("drm/vc4: hdmi: Reset
+link on hotplug").
+
+Arguably, the whole handling of the HDMI scrambling setup should be
+turned into a helper, and I wanted to extend the work I've been doing
+around the HDMI infra to support the scrambler setup once it landed.
+
+> +static int cdns_hdmi_mode_config(struct cdns_mhdp8501_device *mhdp,
+> +				 struct drm_display_mode *mode,
+> +				 struct video_info *video_info)
+> +{
+> +	int ret;
+> +	u32 val;
+> +	u32 vsync_lines = mode->vsync_end - mode->vsync_start;
+> +	u32 eof_lines = mode->vsync_start - mode->vdisplay;
+> +	u32 sof_lines = mode->vtotal - mode->vsync_end;
+> +	u32 hblank = mode->htotal - mode->hdisplay;
+> +	u32 hactive = mode->hdisplay;
+> +	u32 vblank = mode->vtotal - mode->vdisplay;
+> +	u32 vactive = mode->vdisplay;
+> +	u32 hfront = mode->hsync_start - mode->hdisplay;
+> +	u32 hback = mode->htotal - mode->hsync_end;
+> +	u32 vfront = eof_lines;
+> +	u32 hsync = hblank - hfront - hback;
+> +	u32 vsync = vsync_lines;
+> +	u32 vback = sof_lines;
+> +	u32 v_h_polarity = ((mode->flags & DRM_MODE_FLAG_NHSYNC) ? 0 : 1) +
+> +			((mode->flags & DRM_MODE_FLAG_NVSYNC) ? 0 : 2);
+> +
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, SCHEDULER_H_SIZE, (hactive << 16) + hblank);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, SCHEDULER_V_SIZE, (vactive << 16) + vblank);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_SIGNAL_FRONT_WIDTH, (vfront << 16) + hfront);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_SIGNAL_SYNC_WIDTH, (vsync << 16) + hsync);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_SIGNAL_BACK_WIDTH, (vback << 16) + hback);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, HSYNC2VSYNC_POL_CTRL, v_h_polarity);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Reset Data Enable */
+> +	cdns_mhdp_reg_read(&mhdp->base, HDTX_CONTROLLER, &val);
+> +	val &= ~F_DATA_EN(1);
+> +	ret = cdns_mhdp_reg_write(&mhdp->base, HDTX_CONTROLLER, val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Set bpc */
+> +	val &= ~F_VIF_DATA_WIDTH(3);
+> +	switch (video_info->bpc) {
+> +	case 10:
+> +		val |= F_VIF_DATA_WIDTH(1);
+> +		break;
+> +	case 12:
+> +		val |= F_VIF_DATA_WIDTH(2);
+> +		break;
+> +	case 16:
+> +		val |= F_VIF_DATA_WIDTH(3);
+> +		break;
+> +	case 8:
+> +	default:
+> +		val |= F_VIF_DATA_WIDTH(0);
+> +		break;
+> +	}
+> +
+> +	/* select color encoding */
+> +	val &= ~F_HDMI_ENCODING(3);
+> +	switch (video_info->color_fmt) {
+> +	case DRM_COLOR_FORMAT_YCBCR444:
+> +		val |= F_HDMI_ENCODING(2);
+> +		break;
+> +	case DRM_COLOR_FORMAT_YCBCR422:
+> +		val |= F_HDMI_ENCODING(1);
+> +		break;
+> +	case DRM_COLOR_FORMAT_YCBCR420:
+> +		val |= F_HDMI_ENCODING(3);
+> +		break;
+> +	case DRM_COLOR_FORMAT_RGB444:
+> +	default:
+> +		val |= F_HDMI_ENCODING(0);
+> +		break;
+> +	}
+
+It looks like you're only using RGB444?
+
+> +static int cdns_hdmi_avi_info_set(struct cdns_mhdp8501_device *mhdp,
+> +				  struct drm_display_mode *mode)
+> +{
+> +	struct hdmi_avi_infoframe frame;
+> +	struct drm_connector_state *conn_state = mhdp->curr_conn->state;
+> +	struct drm_display_mode *adj_mode;
+> +	enum hdmi_quantization_range qr;
+> +	u8 buf[32];
+> +	int ret;
+> +
+> +	/* Initialise info frame from DRM mode */
+> +	drm_hdmi_avi_infoframe_from_display_mode(&frame, mhdp->curr_conn, mode);
+> +
+> +	frame.colorspace = cdns_hdmi_colorspace(mhdp->video_info.color_fmt);
+> +
+> +	drm_hdmi_avi_infoframe_colorimetry(&frame, conn_state);
+> +
+> +	adj_mode = &mhdp->bridge.encoder->crtc->state->adjusted_mode;
+> +
+> +	qr = drm_default_rgb_quant_range(adj_mode);
+> +
+> +	drm_hdmi_avi_infoframe_quant_range(&frame, mhdp->curr_conn,
+> +					   adj_mode, qr);
+> +
+> +	ret = hdmi_avi_infoframe_pack(&frame, buf + 1, sizeof(buf) - 1);
+> +	if (ret < 0) {
+> +		dev_err(mhdp->dev, "failed to pack AVI infoframe: %d\n", ret);
+> +		return -1;
+> +	}
+> +
+> +	buf[0] = 0;
+> +	cdns_hdmi_infoframe_set(mhdp, 0, sizeof(buf), buf, HDMI_INFOFRAME_TYPE_AVI);
+> +
+> +	return 0;
+> +}
+> +
+> +static void cdns_hdmi_vendor_info_set(struct cdns_mhdp8501_device *mhdp,
+> +				      struct drm_display_mode *mode)
+> +{
+> +	struct hdmi_vendor_infoframe frame;
+> +	u8 buf[32];
+> +	int ret;
+> +
+> +	/* Initialise vendor frame from DRM mode */
+> +	ret = drm_hdmi_vendor_infoframe_from_display_mode(&frame, mhdp->curr_conn, mode);
+> +	if (ret < 0) {
+> +		dev_info(mhdp->dev, "No vendor infoframe\n");
+> +		return;
+> +	}
+> +
+> +	ret = hdmi_vendor_infoframe_pack(&frame, buf + 1, sizeof(buf) - 1);
+> +	if (ret < 0) {
+> +		dev_warn(mhdp->dev, "Unable to pack vendor infoframe: %d\n", ret);
+> +		return;
+> +	}
+> +
+> +	buf[0] = 0;
+> +	cdns_hdmi_infoframe_set(mhdp, 3, sizeof(buf), buf, HDMI_INFOFRAME_TYPE_VENDOR);
+> +}
+> +
+> +static void cdns_hdmi_drm_info_set(struct cdns_mhdp8501_device *mhdp)
+> +{
+> +	struct drm_connector_state *conn_state;
+> +	struct hdmi_drm_infoframe frame;
+> +	u8 buf[32];
+> +	int ret;
+> +
+> +	conn_state = mhdp->curr_conn->state;
+> +
+> +	if (!conn_state->hdr_output_metadata)
+> +		return;
+> +
+> +	ret = drm_hdmi_infoframe_set_hdr_metadata(&frame, conn_state);
+> +	if (ret < 0) {
+> +		dev_dbg(mhdp->dev, "couldn't set HDR metadata in infoframe\n");
+> +		return;
+> +	}
+> +
+> +	ret = hdmi_drm_infoframe_pack(&frame, buf + 1, sizeof(buf) - 1);
+> +	if (ret < 0) {
+> +		dev_dbg(mhdp->dev, "couldn't pack HDR infoframe\n");
+> +		return;
+> +	}
+> +
+> +	buf[0] = 0;
+> +	cdns_hdmi_infoframe_set(mhdp, 3, sizeof(buf), buf, HDMI_INFOFRAME_TYPE_DRM);
+> +}
+
+This is another thing that was supposed to be handled by my current
+series here:
+https://lore.kernel.org/r/20240222-kms-hdmi-connector-state-v7-0-8f4af575fce2@kernel.org
+
+In particular, you're missing the SPD infoframes here.
+
+> +static void cdns_hdmi_mode_set(struct cdns_mhdp8501_device *mhdp)
+> +{
+
+You should use atomic_enable here
+
+> +	struct drm_display_mode *mode = &mhdp->mode;
+> +	union phy_configure_opts phy_cfg;
+> +	int ret;
+> +
+> +	/* video mode check */
+> +	if (mode->clock == 0 || mode->hdisplay == 0 || mode->vdisplay == 0)
+> +		return;
+> +
+> +	cdns_hdmi_lanes_config(mhdp);
+> +
+> +	phy_cfg.hdmi.pixel_clk_rate = mode->clock;
+> +	phy_cfg.hdmi.bpc = mhdp->video_info.bpc;
+> +	phy_cfg.hdmi.color_space = cdns_hdmi_colorspace(mhdp->video_info.color_fmt);
+> +
+> +	/* Mailbox protect for HDMI PHY access */
+> +	mutex_lock(&mhdp->mbox_mutex);
+> +	ret = phy_configure(mhdp->phy, &phy_cfg);
+> +	mutex_unlock(&mhdp->mbox_mutex);
+> +	if (ret) {
+> +		dev_err(mhdp->dev, "%s: phy_configure() failed: %d\n",
+> +			__func__, ret);
+> +		return;
+> +	}
+> +
+> +	cdns_hdmi_sink_config(mhdp);
+> +
+> +	ret = cdns_hdmi_ctrl_init(mhdp, mhdp->hdmi.hdmi_type);
+> +	if (ret < 0) {
+> +		dev_err(mhdp->dev, "%s, ret = %d\n", __func__, ret);
+> +		return;
+> +	}
+> +
+> +	/* Config GCP */
+> +	if (mhdp->video_info.bpc == 8)
+> +		cdns_hdmi_disable_gcp(mhdp);
+> +	else
+> +		cdns_hdmi_enable_gcp(mhdp);
+> +
+> +	ret = cdns_hdmi_avi_info_set(mhdp, mode);
+> +	if (ret < 0) {
+> +		dev_err(mhdp->dev, "%s ret = %d\n", __func__, ret);
+> +		return;
+> +	}
+> +
+> +	/* vendor info frame is enabled only for HDMI1.4 4K mode */
+> +	cdns_hdmi_vendor_info_set(mhdp, mode);
+> +
+> +	cdns_hdmi_drm_info_set(mhdp);
+> +
+> +	ret = cdns_hdmi_mode_config(mhdp, mode, &mhdp->video_info);
+> +	if (ret < 0) {
+> +		dev_err(mhdp->dev, "CDN_API_HDMITX_SetVic_blocking ret = %d\n", ret);
+> +		return;
+> +	}
+> +}
+> +
+> +static int cdns_hdmi_bridge_attach(struct drm_bridge *bridge,
+> +				   enum drm_bridge_attach_flags flags)
+> +{
+> +	struct cdns_mhdp8501_device *mhdp = bridge->driver_private;
+> +
+> +	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)) {
+> +		dev_err(mhdp->dev, "do not support creating a drm_connector\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static enum drm_mode_status
+> +cdns_hdmi_bridge_mode_valid(struct drm_bridge *bridge,
+> +			    const struct drm_display_info *info,
+> +			    const struct drm_display_mode *mode)
+> +{
+> +	struct cdns_mhdp8501_device *mhdp = bridge->driver_private;
+> +	enum drm_mode_status mode_status = MODE_OK;
+> +	union phy_configure_opts phy_cfg;
+> +	int ret;
+> +
+> +	/* We don't support double-clocked and Interlaced modes */
+> +	if (mode->flags & DRM_MODE_FLAG_DBLCLK ||
+> +	    mode->flags & DRM_MODE_FLAG_INTERLACE)
+> +		return MODE_BAD;
+> +
+> +	/* MAX support pixel clock rate 594MHz */
+> +	if (mode->clock > 594000)
+> +		return MODE_CLOCK_HIGH;
+> +
+> +	if (mode->hdisplay > 3840)
+> +		return MODE_BAD_HVALUE;
+> +
+> +	if (mode->vdisplay > 2160)
+> +		return MODE_BAD_VVALUE;
+> +
+> +	/* Check modes supported by PHY */
+> +	phy_cfg.hdmi.pixel_clk_rate = mode->clock;
+> +
+> +	/* Mailbox protect for HDMI PHY access */
+> +	mutex_lock(&mhdp->mbox_mutex);
+> +	ret = phy_validate(mhdp->phy, PHY_MODE_HDMI, 0, &phy_cfg);
+> +	mutex_unlock(&mhdp->mbox_mutex);
+> +	if (ret < 0)
+> +		return MODE_CLOCK_RANGE;
+> +
+> +	return mode_status;
+> +}
+
+mode_valid is only called when the userspace asks for the current modes
+available on a connector, but not when the userspace programs a mode.
+This is atomic_check's job, so you probably want to have a similar
+atomic_check here.
+
+> +static bool
+> +cdns_hdmi_bridge_mode_fixup(struct drm_bridge *bridge,
+> +			    const struct drm_display_mode *mode,
+> +			    struct drm_display_mode *adjusted_mode)
+> +{
+> +	struct cdns_mhdp8501_device *mhdp = bridge->driver_private;
+> +	struct video_info *video = &mhdp->video_info;
+> +
+> +	/* The only currently supported format */
+> +	video->bpc = 8;
+> +	video->color_fmt = DRM_COLOR_FORMAT_RGB444;
+> +
+> +	return true;
+> +}
+
+mode_fixup is deprecated. I guess you wanted to use reset here.
+Generally speaking, the bpc and color_format should be part of your
+state anyway.
+
+I know Dmitry was interested in plugging my HDMI series into the bridge
+infrastructure. It would benefit your driver quite a lot I think, so you
+probably want to sync up with him.
 
 Maxime
 
---wazjs4qrv6r7qq5x
+--lgqwn3iwtrpezttc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZeiCLAAKCRDj7w1vZxhR
-xSnUAP41rpokDnniw6MdmXTRycs0PMI6TgR/87jmxzdVFERWKgEA/uUZeHTkC2sD
-5V8zpf6ghz8P69W2+uKQN5GBGohZ5Ag=
-=ozbL
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZeiHwwAKCRDj7w1vZxhR
+xfDQAP98OUYzPDbd7t89OCitGUkIbsDS/ABj8YL94liZuqy66wD/Sou5Qp414MHB
+mohzojfgJUYyXYSlQDYCjFwCjyOb0gs=
+=ee0H
 -----END PGP SIGNATURE-----
 
---wazjs4qrv6r7qq5x--
+--lgqwn3iwtrpezttc--
