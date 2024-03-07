@@ -1,76 +1,80 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2072.outbound.protection.outlook.com [40.107.104.72])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2065.outbound.protection.outlook.com [40.107.247.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6195667
-	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 02:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B66C5227
+	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 02:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709776973; cv=fail; b=qmOAx6sLSfovSDDO3jS344Tad7MiTEaUgUFB6VBEo8oCbLQivN4sfROwHaZ6WgtItlhko57skG1inA3nJBJSWJiar/WhCIovjSh8Kon4+RFcrqeT2Sl/HGDdQAg/fV9JYLvaKBaeurjQxDzC49NQQEEN6pz5ROR1vhvVPgjWyuY=
+	t=1709779683; cv=fail; b=mQkfmZg0XkVpdpZP5YAphiB/1lJhhR59mn6cQVgaCVF8TkGVWXeRzx8GANRCMghpganTo1w7Z3Fypp/UJueILNR6TXccZl/dxH3jETsvCBjUHx3xqpyuPIYrHJVBF1g3wLYGgkMSHk0/BvBMIeMi+61Os+zXH4nCn2FIuLe+yOY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709776973; c=relaxed/simple;
-	bh=0Lv4cqVseb2agZQNK4RJ4/65NMrdqPLEkDMQoTgMokI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Lec/zN9E3DHKpCYvzqz3j8Z3N8BCHXcpCsqh6YqU5tmVSVk3j7K2v4IF0+YHDoqdDNFlj5ZzB4VnsvYG18amfyeGeTmbgBspuSD8aN/TF4aaeFNLzD9d9dImeohLExF9MP/iGBaaOoLvZlJM+LVjSVeB9q3yuFEbvSYaYSMs+SI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Zp5JLGc6; arc=fail smtp.client-ip=40.107.104.72
+	s=arc-20240116; t=1709779683; c=relaxed/simple;
+	bh=Uo5KZxuovzy3QKVRZZGolyKjlWeSmNcZp1z1Jhu4CCo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UsmCy6J3+T8PI8YOSiJ8xVbUxXT3D5Eg8EbM0MtULmQCmuni9hUwkrRlidyeY0uQCS6IUM6wEpUO2aaINAtYjylJ/dnaP3qYtIeRG1kPmkCHGxdV28i1AEx+kgEKKB+g6O7gqJCzk8FKezh6W6pylCeDs2zaUpJ6rgh4i0CSN/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=skoWgE83; arc=fail smtp.client-ip=40.107.247.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Zp5JLGc6"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="skoWgE83"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BfPtyB99cyQsip59o+umPUv37XYKJBBH8b0zICs+5E/WBTKNe/o4dl4MzqNdms9Setb3xdPMTO4fHd8EQVWBkjHSF7BuwRXZJjabZHIoeFFFUFTTUPxqlM3U3AGcVBn/xgdmrEr5Z6tmDsviZl0xtOlTppACAsVdweWNYR6h7zZ386O2GGO2ztHElrum3MO0CteYisw7PvX53/A2+V5/VnT85Nsv8EE3vY+u6pBzwJHIimFVm0I2QLDhGDsBcEWaOel2cMmypAZuLrO9iaGQ0giUQhVZ9RU5kfjGt3XbtfEOqSKx02bcFEiY/G9Y6FWf1XxdAv9HuYwua7DCTh0Kig==
+ b=hq/Q1TUWg+Rt+mYpJw/g/c0zpPj1lPYXGkURkaLI9wzyCcljBf/icl6ZfLEDNrWkXuOx7xV328xuGv5s6881FvxD0wAbNLZGXkHuyD8g2DgmiSZuZikHfdy5TNXfyf8xS0WaDdGPmeXdyLtDzfjEGmqSkDyrO8Vsmqf1TBQNDDyphs/BSZtdYJ5Kjq9zAfiFSlei+fMEIr3MAh2C627qrZ7Lyq5lnK4/rXVoy+AHLJCZmjxCQt5WX+we52HexOybhrV6QxqKaRxT0aAIaxBxBjFdOfI6xltl4sTOQe+MXwOynuFV81xwZvtU17CCSSKmlJynD8dBXIK3y9PZYyEL3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cpisvue3+k7oVIuJ95+QhuYegcvbFo3NGGeRNhHULh4=;
- b=iyvErlz7mwlFKhnFXOer9lnzSOY5Bf3S5pPdcU7EQ2J1O5ZX9ywxVUi+09KLB4nyNkCifC4xO7sopO7JMvUxQ49tChlWrSe+ZF8PFggnerOY9pKTCH1DSLUdOPmNzO6smO2ngptSi9mRNRyz3/ajrKdniAGIc6lThQqLCpIXElSqfDIMnMWNhfH89YakVp51q4X93BXrNfswtsv1agfO2TGtYZEpeuZvm9N7Vx4znYo3UH9ponvU/Ju/PUTxYM7FgTtzTLyNK+D4xzV9lXBRT+jyk1OnIV4ujL/W9K9BpPFso4ZWVEHc/+DcSZ13fTDvgAupULLzQsLSb3Nu9iUYTQ==
+ bh=daADBYoLpyfi3gTVesUrgMfOc3sM9N5CfKz3mR+j+/g=;
+ b=Lqy+FVgfNHwTg4JioLhQO7ij6tp6qgw4mzgLIH25h7I4lgO2lYeC/sxvkCB5mBqzqXflnSKMZ0mAJRGy9mBRnlhxQTH6UuoaSrdeu4BpJpHtsG94SOeMIb2yAofRzDEOC9idFtVTQoWh3OHRXW1bpu6ssXwZcK5citehXQ8xe8JlaDPNuH0w7G5FjOwuSzr+BrZS1KbQphCV1p/9MWg9VnTMLlv2hPI83n6bZXBM+igMkKCDyWzLwubFEyeto/1l7vw1SJ87ggETTymjAVguBblbYImHQ6AZkb5gxJXODoPttp/3XAgsS0FPQxugI85VafDOV6mtxH90/E3zIri4zg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cpisvue3+k7oVIuJ95+QhuYegcvbFo3NGGeRNhHULh4=;
- b=Zp5JLGc6SCGkWPF2GNwQ25Fp0jFU/wLhFgbVNGkLrtxCMhjD6QVRDTOElkO5Kl1oqkosWv7/KfmUU0DPpLF0Co5SCyponibvWLaeXQvJRAG0zvjlEZut18cUlbvxfNvI7FdFpL5L2uy/68w5Bg/P0qEVZUsK/ccg1P5xwVM9kz8=
+ bh=daADBYoLpyfi3gTVesUrgMfOc3sM9N5CfKz3mR+j+/g=;
+ b=skoWgE83iN3xC58PV/DR83mlH6LOWVsDaCpU843zMV6/gF3uRdUhlQwVog7T/YJTMbnxhD3/9Bb2qwxdzqcb/Z+XHsWfRRaa8/hHkVZkTic6R6EWFE2+q1r2bYZeFG54WiNnHkOeeQxZJ+778mISb7P1NP+BHaZUcyrfRTjk8KE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20) with
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Thu, 7 Mar
- 2024 02:02:48 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::b731:e23b:56b0:6a68]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::b731:e23b:56b0:6a68%4]) with mapi id 15.20.7362.019; Thu, 7 Mar 2024
- 02:02:48 +0000
-Date: Wed, 6 Mar 2024 21:02:38 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] ASoC: dt-bindings: fsl-sai: allow only one
- dma-names
-Message-ID: <ZekgPg2nsLIQpvY/@lizhi-Precision-Tower-5810>
-References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
- <20240305-asrc_8qxp-v4-3-c61b98046591@nxp.com>
- <20240306-pebble-grope-88fdaa95a87c@spud>
- <ZejDQddMp17RD6Yk@lizhi-Precision-Tower-5810>
- <20240306205524.GB587561-robh@kernel.org>
- <Zejdz0BKwSlsio9S@lizhi-Precision-Tower-5810>
- <CAL_JsqJw5W7a9Pz9gRPuP717onHdSwRvwGJ=v+QDSe+4ORvTaA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.32; Thu, 7 Mar
+ 2024 02:47:58 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::d45f:4483:c11:68b0]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::d45f:4483:c11:68b0%7]) with mapi id 15.20.7339.035; Thu, 7 Mar 2024
+ 02:47:58 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Frank.li@nxp.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	john.g.garry@oracle.com,
+	jolsa@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com
+Cc: mike.leach@linaro.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	alexander.shishkin@linux.intel.com,
+	adrian.hunter@intel.com,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v5 1/7] dt-bindings: perf: fsl-imx-ddr: Add i.MX95 compatible
+Date: Thu,  7 Mar 2024 10:47:48 +0800
+Message-Id: <20240307024754.3469810-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqJw5W7a9Pz9gRPuP717onHdSwRvwGJ=v+QDSe+4ORvTaA@mail.gmail.com>
-X-ClientProxiedBy: BYAPR03CA0010.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::23) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0037.apcprd02.prod.outlook.com
+ (2603:1096:4:196::8) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,178 +82,88 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DB9PR04MB8461:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cf1d107-cd61-4d41-b4b4-08dc3e4aafda
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS4PR04MB9338:EE_
+X-MS-Office365-Filtering-Correlation-Id: c437633c-c45c-4d50-1037-08dc3e50ff2a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	VH21vXeX/upFnZjtpaq/20vXUBaFs9cnn1f89YQzBF/AFAn8npRuWavUklVDXthJLjkjoxznKGNqjfho+ohsS7h4S7ahtuOxU7wkVZ6rCOre8r/NeS1dwl50Z9kRNiSAaZ8V/0AxSloHJQUCFzZSJ3J75diRlj+DcSQcDHKJyLPk3ZhFwSxA8jBVjbUxrBmNXOW/eKTc1oQPIEEfWM/rPAu3cuAUS4ELnZ5yPStrwH2LlJV5469XI50+T39j7eHJT9UilyMx4v6XWSulnrpn0otLYpaOH0BjviLTn3BV3X/zuHW9SynzbuT2ZQEyu0LtF2LvfIjtBldMrJZCfNUayKMA2eEOza97isBpfuhmQ9hdh3RP5Zr6XKx6osmKgePMgU54CfgaLlyrs0hNYvssQ2nEihU4wktXESgkKe5OZ1jeSPSFDz8Sw18UeBrpChyElZnF/0tixnQCjWaCTJLwEtZON13/YVeJ+zFMN38RIJuziv2gYGkT+PME5KyGDiPbCgtYTthtVki6871p57Ir4zc8Sc9kyrZ0zomhYiZuP77TYd0DnMWWER4qu0rLbgzgs8Lytq3euEUf02padkQ3gJ2v1jcxPUfQVMij2L/lw2EkJQCfBX4NGFRF3PaltH0NfLucFpc9P+IS4pL2BXZCu184nKPKO6zEi1rt7L7jREpPzDEq2VD8++rUfMCWD9d5HYfbngb0x55kT28XuoONuw==
+	Q25fWkSa6utcxDVlW4oGMCvz+hYTCM5v4SvN6oVa9086kkeebztfIqsNzjHGcgA7zPs+olUjeXHvUCgsmZs4aUnmvsa6ldqUX5fcsKIPU6taOZV7JPMuDl/KLRuroZ+sDbTEbz6nJfkhTy0nm2L/FmEVHIxmPUDcCqM5Jgo2LjBi1tzccysM59DAX0ficfyBUuOuWbvqQeYdu/KR1Gt0Z0YBjM1VL5GTFRvaom1DD/kWV9M9ONqCov00oMthv7HMtmn3TDm0CJG8CbeiwAN0xNuGH7vaMYGAlKexISCT9JTcXb1tbFFlb6uRhdBIMnvaq4zx6CavsQLHb+7tUqQDIaaYnBP1mogyxC1oKorIRmp5C+Nnejz0VvHUBlm9rmMbdt3cja/nUFBm9IGo4kzBn25N+FvmeLKNx3peHkkZ2v9OLi78LXmFfPIOXy9w3fvAiGIYf9AOSxjpJLgWqTTxJ2tJ3Rgt0s8oh4GgiPWzZ/kXWuZmiTIiCXwGNVRcFaq7mJpIdwcrjhLubjTe6SPrMYtDHWnPDj2cfJu/BpkT+Q9EOdRfhA4VkSpoJ5pgGpDrKdk73eWdncYAmrHO9HTVzBdZ4bhZCf8WkWflNUiNGd4uIrFXlyLyCO0ke9G9BCctiFCC3BdF/eCfqs0aWcViQxhz2wJin9rqYl5SrzuVkFNhnm3x+UKA/iQWKkGLLvdGXsFJklUqS7uPQV3AdsWQWBeD4VGqU+DGNG+huzXhtw0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005)(921011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VFVHYTEzYVZHbERDcEdKZ1NOT2pEVDRPbGpGS0dmc0V5SWVHRlNPcWlFY1Yv?=
- =?utf-8?B?MHNxU25rTVpPTnRBMjM5YWNIVWNEanhka1BWcXRIODhoVjMxbWV0RktCYzNR?=
- =?utf-8?B?U011bU4wWGxZeVhhbllaRzZLWVBPcTl2d2J5bUp5clN4UEhwUzFOR0xKQ3JO?=
- =?utf-8?B?V0RzQXRKY21xSEtqQUFOV3lQM0xLSi8vMzdnaVM2WlhUcWZsN216cWl1SnBL?=
- =?utf-8?B?RXBBVHVjbEc4L3d6MjJHMmtzWVZKbmxDSEhHSEc4TFNreVVmWmJYQ3hiV1Rq?=
- =?utf-8?B?MkpJQXRsWHUzK2piRXgyVXYvcUtQUFFpck50VUlaQVQ4OVIvMUVLY3c5a0R2?=
- =?utf-8?B?YjFGTnVtMVR1Vzc0OWZORjFBRFlPbmR3VDlzd255OTBwbC9WOVBRK2k4M2E4?=
- =?utf-8?B?OWJsdGNkclhTN1lNb1dLc29Qd0FrK0ZhbUcxVW96UFIxMjlsOERTdUxKNlBB?=
- =?utf-8?B?OXRPL2NwMGY4SUV2RzQ0RTEyU2w4YURtUndTNlh1ZlVyekx0WUxMNWZUZWt5?=
- =?utf-8?B?Nmd2anVlbEhMWVlBNXV2cTFwSUlHR3hXazlELytuT2cvY09XaWs4TU0rVzds?=
- =?utf-8?B?YzQ3WFBRWk1QWThEVXJ5bXZzR1BURUtobk1wcDBjL2ZaYnFmN3cxbFBPL0I2?=
- =?utf-8?B?QTVMbHErYnJNdzVXTHBCZDNzY3R2V3FWZ2RWNDFiaDhlcG9xR09BbE1NNEdi?=
- =?utf-8?B?U3hxbHpQQ3g1eHNjUnEyVmlTZ3pyaEJuWlcrOU9reUphTzJINmtZY0x0dGli?=
- =?utf-8?B?YTFNVVVNUndaUG9UVlJVSXBrYTJNZW8zZVJyL3I4KzNRLzFVSG9obUxONGNH?=
- =?utf-8?B?cS8xWUwrZVUrK25NRW83L2tJUmR5ZXozLzRqS25TTHQ5djVLZEgvWk9sOExj?=
- =?utf-8?B?elptbEM3eTVkcW15N1hkVjU3VVNaU3VXbFhQZDUzQTBOTHZnenRIbDFPRW5v?=
- =?utf-8?B?YlR4YXhZQ0ZNWkVTVWRGVVhwbXYyUmFrT1dkT1JrV1lYcVgwREtVbzhHM3JT?=
- =?utf-8?B?N3NJQlhFWmZPc0FtaE9mR2Fsekp1TXV0V0g3ODNFNW94Q0VkZVgzR2tVd2ti?=
- =?utf-8?B?aUVuekpMaVhORHFYNjdHRERVRWVDT0dGTnUvNXBBT1BEdEFnVmFpUHcyUWo1?=
- =?utf-8?B?RUxtVkVGd3l0Tk4zVlVHRjJTOTFaS1JsQjBqbzBseVgzckp2TitWb3lmRS94?=
- =?utf-8?B?WTIreW04NzVIR1pXamZWTWxROCtIeVhwNWxuYkZjRFVZVDlNdjhGMUFQNG92?=
- =?utf-8?B?bHgzekV3UEx0Vnd2Ni9KODV1THVFSUhNQTdnTUFSSFRGZWZmTjE2OUJYMTJS?=
- =?utf-8?B?cnV3ek8xd1lpczliSGpLT05aZ1VKdnJLdVY2anNlMiszZzdLNVh5ZklzZkRQ?=
- =?utf-8?B?Sm4vSVlhWGgzUXlNdGVaenNUMWJUdk83bXlQWWJuZVpzREdsWUllNzV0a1Q4?=
- =?utf-8?B?RnhaZFVINHYwWjM3bHhzcU9ITEhtN3czNG4waUNxT1VZSnNGNkJnSXE5a2NL?=
- =?utf-8?B?NnBFUTZSQTZiV0kxb1FIeG42ZkFiaFdyM3VTRjJVazRKYmFHeDZvWlhsYnJp?=
- =?utf-8?B?YzR1aXBIRkNwdXdHM0RONGR1M1dDOGQrUk4rT3RLdStDVkd1M2xjbUxuYWNS?=
- =?utf-8?B?UVo2YXNIVFgyQlRnSnJrY3p2VXp6NnBuZndwZ0I4aENDdHlGSWZyc3dHUFNT?=
- =?utf-8?B?R3M5Tkxzbmp6ZFl6QkMwOXQ0OHh1TGkwQjF4bHdZeE9GeFNUeE5lUVFrcDky?=
- =?utf-8?B?bUNuRktFbjE5ZVFSRXduaEN5TllyWGZ0VVJ6WlpqdWpDNlQ0VDJWUGxQdFZO?=
- =?utf-8?B?dnl6VEJaUU1IOU5uSXVZM0NZcFVUZ1RtenRaT0wrVnBSYzVDWUxQMFlRZytX?=
- =?utf-8?B?ZGpGUzVPTUhmV05SMXBOZmhGb0FKcGdOenNNcS8zcUVNeC9GcUMwVitZTTA5?=
- =?utf-8?B?SjA3QWF6bnJGN0VqSkVvK3hjdkVPNUlNNlEzNGVocGcxeXI1T3crK1FNQ001?=
- =?utf-8?B?dWtUaEt6QUpJQU9xcFpZRUpjM1Jlc2ZtSnFEMVpFL1VPOWFXMU84OEh1dWJ4?=
- =?utf-8?B?eGYrSUFOcEdwZHcvTUtuRzN6aE4wcWVuU2VDdjNaa0cwQklzZFJIeWUxeTdm?=
- =?utf-8?Q?m/2U=3D?=
+	=?us-ascii?Q?yWbrcy5kz485BHk2cCIacccXb25YRlHqfT6Z6L8oYcm0GSR+U3crkjZpcluR?=
+ =?us-ascii?Q?3y8c7E/FRnRXjKd3mJh1tIBkH5GVQEpiqDXuvKdny19W2Qy5zwzIx++1Yx77?=
+ =?us-ascii?Q?C0vfYMeHowS5FhkZiJZ5lFHP5ddLZUjdLRYuS74lxa5xrGZwINeATbJQMoRX?=
+ =?us-ascii?Q?kCDCYA7+PbndI6lXgXoceObTL9pCNsgRaYGkVZTivHTlSOTh3GyT1juf19MJ?=
+ =?us-ascii?Q?oyMtNVKgj+3+ZEAQKZuevbH0lBFK0r0j3/qTkCEdTKfwknP0X61tS5yZ9bYU?=
+ =?us-ascii?Q?Twy7+sjKm9VtkfuKh8LlyaVSzPS2LHNH9U2nF5I6ScVs6uHJ17a+ms3E6jlc?=
+ =?us-ascii?Q?I0mvjmjmG6U+0oL3PuoGlo+JqmD4k2moONPnGy98lK2TW4pw9RC79mVpJNl1?=
+ =?us-ascii?Q?zGUf5bx3McX7FacyxQBTgBZwqP16WokQzla8R3Y9SzYMC1jgYHp07RJ6cxhq?=
+ =?us-ascii?Q?nCsXELjl9pG/X/o0Ugj1IIGeRFBpxsJBDrMlqNB5PSE0Abj6AhYoakTDjmcU?=
+ =?us-ascii?Q?wIoHqWGQ5Re6PGixmxrd6ifgmNBBqc6C08umaZIR8k0az+OKpdeB6NOhkD6Y?=
+ =?us-ascii?Q?Hk0KHKvAf21mbHLTddilgjLhRwe953J69lsgAnA1gca6qI5V30va7+FLmnIS?=
+ =?us-ascii?Q?FHItoagVSGtF1JEKdsuTLqJ6QHF/nzc9CTpMclnb5N/g4ynGw9U6iM7T+CJR?=
+ =?us-ascii?Q?G4UMWUtelt8wQqEGDEK2gvjetTF3pCO0IgqIf5lQZfymiYZhUyotQ6IPzF5c?=
+ =?us-ascii?Q?oR6FEuVc7M7d2IFauCX9CELSoJYn0qh9AIu+jiEN2SuqX/LCVaj1uCGJsV/g?=
+ =?us-ascii?Q?2s0BUaoLxLiMl3MYq3WMoLUf1ZngRvaVCjEXseHFSRZvQRRdXqqnC/DrLg4z?=
+ =?us-ascii?Q?NwhwootsiIFYQ/3axC4WAojuGBJzowM+jOB6IC5XtFVxiUfIvGEkcev/pz/x?=
+ =?us-ascii?Q?/mFZymgsjaYF6YY5Weti9h9QRWi62lGNCK2EcucIaHnZKwqBAa5zpu8uJtDM?=
+ =?us-ascii?Q?ILVntNc1eE7pi3Ua7AWeGwLGtmH2tm92M+ElZXHrcYfuJb7lHwXff+iNPwqQ?=
+ =?us-ascii?Q?mNqRMm42DeiX3SfGQluKhyjpDpdlLR3dJfT4CnBPmu6iAiOqVnXGMiYca8gC?=
+ =?us-ascii?Q?EbZvz7BFLq5QZnCpopIv+GeJsLc6ero9wGTmtIU9JvJXWu0O8nUuQgOeY6It?=
+ =?us-ascii?Q?UV/H7DJve3a6L/TwfmGG/CbAYcw4mif3I7zVGMXJPiuhJA6GSzepjaGF8r8m?=
+ =?us-ascii?Q?B8WBdZ+dM0NTM1i+myJ7OrAEspEkformXIqBcbUL74TLaDkPo33CdTOGarrl?=
+ =?us-ascii?Q?lznoWAMCd5C8HU+F1F2wOk7XpSt+YTD8LPUCPjyBGyT+ED01jM4up6fmgoep?=
+ =?us-ascii?Q?ozq3SBxG3BRrf64ybOdAeYoLMwL0L4YsmXQthn8cYJQi1HHzCJmu9Isj8HUV?=
+ =?us-ascii?Q?OlgC639LbfbJamoSqZAmrYxmTMJnaf6w4G+uq9mKrdLNaFomw4klw9pdcnj8?=
+ =?us-ascii?Q?s3HiCHPDLBoaJeGZIp29GW0uv7PplNmJwxhAgBi+rdnG69lWpaQfTn0cFgnq?=
+ =?us-ascii?Q?Q5pTjuiSPfnSbx32ZmJ7P0toIElGMzbE6AC+E6t2?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cf1d107-cd61-4d41-b4b4-08dc3e4aafda
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c437633c-c45c-4d50-1037-08dc3e50ff2a
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 02:02:48.0614
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 02:47:58.3280
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0dc8GQgsETCXxKSAsIBe0m587x+DWg+o95o1KMNBzcEcNgSur0kAWhvqFGU7K9y8DiO10KF7ojYXZOOvwHn49A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8461
+X-MS-Exchange-CrossTenant-UserPrincipalName: /HwAimhwdf1u7jzHvX0uXO8FFmDi82ujHhkYeJ7RcDIVLswyj0JVSUNCNujOR/aRb/bvUIdQhhTRZNeEffEXVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9338
 
-On Wed, Mar 06, 2024 at 04:58:22PM -0600, Rob Herring wrote:
-> On Wed, Mar 6, 2024 at 3:19 PM Frank Li <Frank.li@nxp.com> wrote:
-> >
-> > On Wed, Mar 06, 2024 at 02:55:24PM -0600, Rob Herring wrote:
-> > > On Wed, Mar 06, 2024 at 02:25:53PM -0500, Frank Li wrote:
-> > > > On Wed, Mar 06, 2024 at 06:45:13PM +0000, Conor Dooley wrote:
-> > > > > On Tue, Mar 05, 2024 at 12:33:04PM -0500, Frank Li wrote:
-> > > > > > Some sai only connect one direction dma (rx/tx) in SOC. For example:
-> > > > > > imx8qxp sai5 only connect tx dma channel. So allow only one "rx" or "tx"
-> > > > > > for dma-names.
-> > > > > >
-> > > > > > Remove description under dmas because no user use index to get dma channel.
-> > > > > > All user use 'dma-names' to get correct dma channel. dma-names already in
-> > > > > > 'required' list.
-> > > > >
-> > > > > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > > > >
-> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > ---
-> > > > > >  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 13 ++++++-------
-> > > > > >  1 file changed, 6 insertions(+), 7 deletions(-)
-> > > > > >
-> > > > > > diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> > > > > > index 2456d958adeef..6f551c68d33db 100644
-> > > > > > --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> > > > > > +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
-> > > > > > @@ -81,15 +81,14 @@ properties:
-> > > > > >
-> > > > > >    dmas:
-> > > > > >      minItems: 1
-> > > > > > -    items:
-> > > > > > -      - description: DMA controller phandle and request line for RX
-> > > > > > -      - description: DMA controller phandle and request line for TX
-> > > > > > +    maxItems: 2
-> > > > > >
-> > > > > >    dma-names:
-> > > > > > -    minItems: 1
-> > > > > > -    items:
-> > > > > > -      - const: rx
-> > > > > > -      - const: tx
-> > > > > > +    oneOf:
-> > > > > > +      - items:
-> > > > > > +          - const: rx
-> > > > > > +          - const: tx
-> > > > > > +      - enum: [ rx, tx ]
-> > > > >
-> > > > > I'm not entirely sure if this was Rob's suggestion, I got the impression
-> > > > > he was suggesting that in the two items case we'd not care about the
-> > > > > order. But while I think this is different to that suggestion it's also
-> > > > > not wrong.
-> > > >
-> > > > I log this at cover-letter. b4 can't support write change log at every
-> > > > patch yet.
-> > >
-> > > It never will (probably). That's because it doesn't need to. You can
-> > > just do it with git. When you edit the commit message, then after the
-> > > tags, Add '---' and put whatever you want after. That works as long as
-> > > the commit is applied from a patch as 'git am' will drop it.
-> >
-> > The key problem is that I don't want to lost notes when respin patches. It
-> > is easy to make mistake when I copy old serise change logs.
-> 
-> You don't. It is all saved in the commit. When you rebase for the next
-> version, you just add to the changes history.
-> 
-> > Previously I use git notes + git-rebase, it work fine. Notes can be kept
-> > when I do rebase and git commit --amend. But one thing is not good.
-> > git send-email --to-cmd=./script/get_maintainer.sh *.patch. It can't
-> > combine all patches's maitainer to a list. It looks like difference patch
-> > will be difference --to list.
-> >
-> > b4 can help some case. But can't keep git-notes information when rebase.
-> > It should be git bugs or feature missed.
-> 
-> git-notes always seemed clunky and to be extra work to me. Just having
-> the changelog in the commit msg is a lot easier.
-> 
-> > > > Rob's suggest was not work. dt-binding check complain too long
-> > > > if there are two dma-names = "rx", "tx".
-> > >
-> > > So I'm wrong or you didn't have it correct? No way to tell with your
-> > > explanation. Let me give you the exact schema:
-> > >
-> > > dma-names:
-> > >   minItems: 1
-> > >   items:
-> > >     - enum: [ rx, tx ]
-> > >     - const: tx
-> > >
-> > > This says we can have 1 or 2 entries. The first entry can be either rx
-> > > or tx. The 2nd entry must be tx. That's what you want. However, '"tx",
-> > > "tx"' is allowed with the above, but we enforce items to be unique
-> > > elsewhere. Or I thought we did, but we relaxed '.*-names$' at some
-> > > point. I'm going to fix that now.
-> >
-> > Conor find out my problem. The below code works. I missed maxItems.
-> >
-> >   dma-names:
-> >      minItems: 1
-> >      maxItems: 2
-> >      items
-> 
-> Missing ':'
-> 
-> >        enum: [ rx, tx ]
-> 
-> That is not my suggestion. This would be my 3rd choice after what I
-> proposed or what you had already. Please plug in exactly what I told
-> you and report back what doesn't work.
+i.MX95 has a DDR pmu. This will add a compatible for it.
 
-It also works. look likes conor's method is a little bit easy to be
-understood.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Frank
-> 
-> Rob
+---
+Changes in v2:
+ - no changes
+Changes in v3:
+ - let imx95 compatilbe with imx93
+Changes in v4:
+ - add Acked-by tag
+Changes in v5:
+ - no changes
+---
+ Documentation/devicetree/bindings/perf/fsl-imx-ddr.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/perf/fsl-imx-ddr.yaml b/Documentation/devicetree/bindings/perf/fsl-imx-ddr.yaml
+index 6c96a4204e5d..37e8b98f2cdc 100644
+--- a/Documentation/devicetree/bindings/perf/fsl-imx-ddr.yaml
++++ b/Documentation/devicetree/bindings/perf/fsl-imx-ddr.yaml
+@@ -30,6 +30,9 @@ properties:
+       - items:
+           - const: fsl,imx8dxl-ddr-pmu
+           - const: fsl,imx8-ddr-pmu
++      - items:
++          - const: fsl,imx95-ddr-pmu
++          - const: fsl,imx93-ddr-pmu
+ 
+   reg:
+     maxItems: 1
+-- 
+2.34.1
+
