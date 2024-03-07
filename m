@@ -1,68 +1,75 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2054.outbound.protection.outlook.com [40.107.20.54])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2064.outbound.protection.outlook.com [40.107.249.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916BA12FF86
-	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 17:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E551EEEA
+	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 17:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709831157; cv=fail; b=CciGFtfhQgT/zjmvRRuJ/a8k87Dc0MRyjdrbv+JEmJyAgz0SLLAgFIQJkpCtWv47L9YpXQnSDeL3UmRJNZH6wRk8iLyfwCOcht67DxM/pGXl1gMTmTtB3a4v94+3wiYWABWqL534xGPWrRUzYYWbP/4jDwqiEU+TBNSPHJr/jMM=
+	t=1709832794; cv=fail; b=rLvYbe/nao4OTg6hqamzf9KopKqOiDMr2rnI09NlbSgU2cPP6uLFS/nvralpqatuLKVBOffYj2pDFviWF3yb/3gIpmRexSwgo18Fa/RdPQbCGgIBQ5eupgWVm4lLlItKKOOyWideo+c9NjtpJEFV/Suqq0C/m3wOCWMgMRcoAl4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709831157; c=relaxed/simple;
-	bh=9ZG3cdshzjCjXANv4r+FRY2Pm3yTO6BWVJZucg2d6fs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TPGBNAnLKGGK12ftAARmyzIbkhjmrGJ92bPn7afN6ZgegZ7OecsxbBXaQA773sXAjmiPC3qDrcdvmTdv8fC4A5Z5lCkwEQV/8lBWVReskE7J8kMcEAsJyqImyknmRQulnB3TOnWA+TCRR4KQjB9JiRn7ANVNIX3YQ8shKR3QEac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=l0aUNogO; arc=fail smtp.client-ip=40.107.20.54
+	s=arc-20240116; t=1709832794; c=relaxed/simple;
+	bh=M8D6VP7v9cHTLZND3ljNIE8GMTXWrv8Xtwn1U6Prze0=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=kaG3Q3Dg0Clf48E7MKH0i1YTSiYG8uc1vKaVueuU+krgB2RtnCed7TUKB765GuPvOTc9/ZeHUkuhTfKEZbcQHhHO8Tbttn5FGm6d339SkgsvwkhvcMNwtuJ8AOt0DKaIoS8IAQDlJobolIgznFOS8AczSmhH7iO+ZzzI8j7Xzp0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=W/+lTlBz; arc=fail smtp.client-ip=40.107.249.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="l0aUNogO"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="W/+lTlBz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cN4aRfCm/6d1HrgdzrzHhyV/3SGWC8qINpinaFVKP9ARuiUDA19ohuBp4MXRlZRK/DHr16CbilX2Yy8loi5rTGhPl6SxK3vEqBjmLokZTEGvXPh2b/EICwikL3At8xgy4j622d/x4j2GRSonq47KjRLl09DvG9EZjGO1X9I8G6kYJJVMzqPUDx6YOmZst7GkMtx28TUe3WvBdMl0C0Zx7AbXKut6+12WfDgs52MXRWMUYZeFKm6I3A4+iRTvF9oVVvoBFCWMGxUwMndtPtoMYFEHZLBTY1JnuHx8BDLBFTifYtsMIKKuDNZP1hLBz5WKcK03YDD3Z1LBcSMiwI2Vig==
+ b=l1ge4+grC5GlRTl4MSfevlcEJGVxjNbdaYfYPBuM/UJN9csgZrrafBt7Po2cjiWRyh30Sm+ZhWxLyI9gFMH9cRnUlVp8AAz0gIwq3qhNkThqvoCuQ5AHhUdwtNX7GZilxc3WevM7Xincax7gLhEiOGcStAjlR/70pdjXz3JoKb5FTyzYRuhUyzqEZmdHhl/Igg3jLzH6ZYa6yzWT8AcVqWBbjBJMBGOfC4EY1uzyX6sHjLBlRXnIyg6qoFtxR/7SJLaY/ULxoyWVY8OQ26Wzt5uFonu1jZwFd70EfMH1wfIDRfAKTmOJhNwCTno7/+EVjarlHJKRRY1OLpkiX2ZKkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eKtZsdqQkw+16LZ3NR9eljDioYnIajoEZUwR1gUZx30=;
- b=oCCC6nlT6yBSO8RTL3CIAj37uf5pffZBFLfn7p47V+YFBqLwj7bakQwLpvZY544Y3SPahix0z+AhY0RnSpzXh+9tf9Bb6eHn25XR4C8jXguuFsNzIP7hjbm461im90ft11oi8N+r4SgIzNuHkEFt8ZW8VLPtcvJ85gT76w5/P1uUdhLYfE+FfF5QcVh9G8Y3pJz4Vv4qsLjRhjLLCmhl9Seqzef3wqyAUQFkE4Enj+lDK+G/qmBhvU8LmAkvGHIRXa19vGZdUdkfG3zIq9BC9ykN8gwprBQuAMYgX/VgP2G2YpmtwKAHw//4Cmj2wsUVnYWH9JwpGMrJ0Qxg39G1VA==
+ bh=b8MH23tEHI55dGijl5VmNOaeaG8rqAFNf1DvhvXzhlU=;
+ b=T5wrq2DUma7ofGnTGqZBPyPPYUU7/OkdqlOEEg37T2JA8YwpY/qmP0Cfx/B3b2Oy91kBUYNLR5KxPQqXl+LLIxDgWZHwHc/UHNdsl7eU/zfDS3iQv4gi4HQTMdXyOsqo8AF7h8FP7/r/IQNoZKhBSZQQFOg5C9R9zkuljIaBFRoGoFd62ERk2hEG2t3ZQ0NadWQ0IEZPWIoBbaX/02MY8/g5uCE3B1vuHm30lK47KsHK23sj716MsjaTLZ/tNmMajRJeMNOvX6WERjjM8lHlYnLIrhFp3Re4+wiEF3Vm+0qkCiQRWopROPjkUyXB5X1EuQC7PpVf80ddr4+1wjWlFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eKtZsdqQkw+16LZ3NR9eljDioYnIajoEZUwR1gUZx30=;
- b=l0aUNogOnnOVbNY7mnYUSndZfDc1FLsmrotpAPzNsccaZaBFyPIJEYvoSDpxR7xcxI7O3ivBiTn2WVYQfMIOH0QcyfF3zKChajJfJ1QdgFa35iAEregKHAhUr+bYleLjrrH/FLxACnHzhQ1toyC8tqGJEVRBzMPQsdt5NLdaX58=
+ bh=b8MH23tEHI55dGijl5VmNOaeaG8rqAFNf1DvhvXzhlU=;
+ b=W/+lTlBzS/AJh+8CGYKmKcZlqQPvb2K+D+bVq8ywmR2y1SgGs4Eelruu6QK/CadVzCU2wZAACT5yKM3+wA8nquJMpX5f+Omm3afAZ3aMLxxbb4l556vUN0IKpm62741fP/bLqrrD9iKcE3EnWW2nAbfWdym/ud8CKpGxHkW1MyI=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8658.eurprd04.prod.outlook.com (2603:10a6:20b:429::22) with
+ by AM8PR04MB7794.eurprd04.prod.outlook.com (2603:10a6:20b:247::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Thu, 7 Mar
- 2024 17:05:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Thu, 7 Mar
+ 2024 17:33:10 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
- 17:05:52 +0000
-Date: Thu, 7 Mar 2024 12:05:42 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: will@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, john.g.garry@oracle.com, jolsa@kernel.org,
-	namhyung@kernel.org, irogers@google.com, mike.leach@linaro.org,
-	peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-	alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v6 6/7] perf: imx_perf: add support for i.MX95 platform
-Message-ID: <Zenz5ufZ3DIgbAuM@lizhi-Precision-Tower-5810>
-References: <20240307095730.3792680-1-xu.yang_2@nxp.com>
- <20240307095730.3792680-6-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240307095730.3792680-6-xu.yang_2@nxp.com>
-X-ClientProxiedBy: BY5PR13CA0014.namprd13.prod.outlook.com
- (2603:10b6:a03:180::27) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 17:33:09 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 0/4] dmaengine: fsl-sdma: Some improvement for fsl-sdma
+Date: Thu, 07 Mar 2024 12:32:40 -0500
+Message-Id: <20240307-sdma_upstream-v2-0-e97305a43cf5@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADj66WUC/3XMQQ6DIBCF4auYWZdmxKqlq96jMQ3CUFkIBiyxM
+ dy91H2X/0vet0OkYCnCrdohULLReleCnypQk3QvYlaXBo78gg02LOpZPt9LXAPJmUlFo5HtKHr
+ TQ/ksgYzdDu8xlJ5sXH34HHyqf+s/KdUM2bUTSmPdtSOKu9uWs/IzDDnnL5ejVAKoAAAA
+To: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>
+Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ Frank Li <Frank.Li@nxp.com>, Nicolin Chen <b42378@freescale.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Joy Zou <joy.zou@nxp.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, Vipul Kumar <vipul_kumar@mentor.com>, 
+ Srikanth Krishnakar <Srikanth_Krishnakar@mentor.com>, 
+ Robin Gong <yibin.gong@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
+X-Mailer: b4 0.13-dev-c87ef
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709832785; l=1322;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=M8D6VP7v9cHTLZND3ljNIE8GMTXWrv8Xtwn1U6Prze0=;
+ b=09blFXmwEx6KRxrMBcArBZvTqdjCTomqGRRvi6I/gjSGj0g/5sx291fTmSDKCJogNh73VKhkP
+ JaDdVoTkvHkC95q/caEcE59QyivBk6++D06J1QdLoj9hlRgpNFJwMzh
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR13CA0065.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,275 +78,105 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8658:EE_
-X-MS-Office365-Filtering-Correlation-Id: fcb0b896-f3ef-453b-7d90-08dc3ec8d83e
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7794:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fc24e47-5067-4963-c671-08dc3ecca838
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	g5ZHWm6jnNG6YxVgYc9Z8YlL+gOrsWZMcn/suocT0XRKyerEowDF8p705nGScYeudvE2CzMYTJwwPmFFV+dVsrahd6tWWWSIUoif5XHkrX7TIiGi6AwyTKtKpYD5RtsGVZsJxUWAdQbJ/UN1atIJtMr/1fIQTO6MrqDmxHFZ65gifjgKTVTI1NOvVm+uyu+GjdNMTY+gBXHC+010uV1yx8p0grsE23zeNGEazXaBiwcjrwOTSUpp8YDPxaviXVrTcadoKog00stnPjfobMKNYkrr5B1ymmp0+C2l9SObG5z89pee5B35HM6XFpFOz5y1Xs8kK/ti8lUCX3qgCZ0YO/n4/XUFJOXtM5ZZmWo5CBlQSSdOlvmMFqtWFqY4E+rVue7RgDthfwNUmyEHkL5wD/xqH1J8HiyuSWGfF59crjn90H76VcxDTOsVHfScjW9cjOZrOm1NhK1LZQGZ3C8wUZXlt6Viw2TRg37jmk4aqnhfcG6KBalPB6YTvvoS220pg1BHBqApvOCBO/SbwrmUYPSmp5fpVE3y8rtWdpafFPzuxyqlYZBqzRF0NY3PvplhPVjPsNAQFO/aRwsJYdQCPjIkNkB/jyQL0BuhcB3h8mwtETgD2GTW4fb11Hm2iRiR5FxrB4otnReEIlP+HFIZdI+na2jhceIPFPB2vIkEgAmjbXcXsv0utzMCUgUnvuc3fHGRiJ9Ee1T3Xv7K34yGEg==
+	RCkSD8lnvPbHLpnDwv5STTSDAfqqkOwsV6+uc2VjsWN46Pzhec+Sobz0ZFwbiRnhMsIbV8+cYqoNBW251bDmitYXFM4KX3pOHAHkED+zVdhj+slmFEbJlC9owtPdxAmsIlIzacHdwF6wkzQg77ZOGqzzPreq7QfnXcOFGD3QsFXJf5mTceByFqQeyTF/k3Zxvuj+tk7p+axSHerZ/ma7X0wOi9OtJ6tibhmpTEyE8fEOx+HYnpcvczCGdC6D4oiF3U1beHhI75BFu+h4GGj7IRuiDHEdCQe6vI97SeycaLOwiFhWxk6ypJaP8h9fZaylnWNONmLx56rZfhwKK3QpN7lRJnGViqs6XH/LuVxEWQSXrelnMZgljvwWuGflPbpQeNwneJbbIhdbeuW6eV4m+cnUv1GI/GVcx3FLrHa2dXtzjc0yvh1fwyb5Qt+eLI5t/SoKMxXXAgi1uQAHwhrawdEu/6b8pTBF+cskROhYjA9COG+JeQQ77Waghtr122ZpIQRNDyxIPxzPPX/ZnULWZ1n6XnHwHdK7bjTcUk1Lj55gbJQgPCj6kbrulmk3tUO9fUDF7otxlB68Y8xch0nMnbbH4h2oF258roUeKcQ4zoe95x/n0Ksky4/yu8OBeB7Rz00yVH+LgVYo7x/pIIc5zgDi8WUWrV2WZchkgLW24uk=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9Dxyqpz3AjFlGNjKIQxc6PrC/AZ+S5f1gF921Lt4s1y9diOo01WPYEN5ztxZ?=
- =?us-ascii?Q?IvLBJn3aCAnRIJecZ2wK5x98BCNOc40JdJ1lzWF+EueRgtmOgLtXD1WFj1k+?=
- =?us-ascii?Q?9XbyAdzWeNdihN02AEawB5pqwPZvvKtjimLK5LjpPUfbpz9XaxU2zwEyafw0?=
- =?us-ascii?Q?+5UBNZa2crNzz2Im/PGemhdddMrgnQP7VWYC7Yl++w81IUDxED3TYrHM+gt/?=
- =?us-ascii?Q?Srqbpr4hO+1UNBHdD3iIX0yQiGfhqC4jFTErq+2KmTUx3eKqAl/WP3u/UMmZ?=
- =?us-ascii?Q?K0FhCYwLT0PRHsxXouiHzg8OpMaKtVJLQKmIMgICbpy2qaigQXa1JoAbLbE/?=
- =?us-ascii?Q?drK7xAbOV7+sWlsAzNZMV1oV0jzDkwtrFiDE7bZgyCA1j9PxtPw+4InWlGCP?=
- =?us-ascii?Q?JTOKafUAJ4WpAgMKWUtR/MJ0Qzl7UrqFTw6rgt7ZWWXZvI9CUQyZWx/+CrBY?=
- =?us-ascii?Q?Q4Ex0kZjCMKcd/7Or+xOeQHjGlv2phkLtM8E+y4AR/v+RlmSlVztEMpnpCwL?=
- =?us-ascii?Q?vT/J2GomMTXYMekrwtPfHxJSxqD5o47fSgUSk6cxvISShrBZv+eIw/Wm+2Fw?=
- =?us-ascii?Q?Iedmvq7sZDXmoN889ewyjF9tbz49ZmR0R8xlQrQ34WdGq8guGgI67px855Qs?=
- =?us-ascii?Q?owu5YqCfs9NBE/B3oj9zSQ0rEzX5otOlhxIfXD69NKGc3CfbyxYdKjfsuK5n?=
- =?us-ascii?Q?5HMVz0ivFtrzfcjbWdZ6zOaBSHdJo2azEYWZcA64fFiKCQHV4hBo+Jp9thFe?=
- =?us-ascii?Q?rGdRZzbk3ga9OelcXNdBfGISpwSCI1w1BJcwLF5aFIryr/Asr8u072GSZstc?=
- =?us-ascii?Q?gJvkfmvN/1VB2RNJYX0OxJ3dqM1UeGxoCso0L75ErLa1TL4UQFnK19ebe+oI?=
- =?us-ascii?Q?ZfosiSgFoT3E3sStLGqA4aCU0S3NUiWVb6lpL0pYr+Vb2qBKgO+Td/krVIJU?=
- =?us-ascii?Q?Pvr1UVkOxN7TShLYlvi/CZSejz6NslN+551HMs1ZyS0dIAmYaMyDNNGGOg/+?=
- =?us-ascii?Q?hx4+fr3ZaQQpBMSLelB9aU2ag5R4oVGZ9oEIn41Neuwxqk3DTXPlePnjXmBZ?=
- =?us-ascii?Q?clbbVgOWuH0IUyLUH/dlUeRdaLqM00Tf0jTH9+DlmAXtmunBxfOs1Uu7LS6y?=
- =?us-ascii?Q?svTX1Ha0/McFNYcXRK0e2VvRpa4zz1x+aHaS070fPTp8IeBDmRjTCXPRKgMr?=
- =?us-ascii?Q?QoDD1dkF37oOsRgdwanEinwelVZAbZbW0L4dP5PLBkBu7DRu7SIajJpHuTVB?=
- =?us-ascii?Q?rw1Tv8yy3N/Sv0EhF5HFlOwiDP5AFfYFr6iVCjURIyPpqy+Ik2giSRtgHPv+?=
- =?us-ascii?Q?mwPA55K+PpGqjS1vCmcCUPifWmhV1RTv93n40jEs33gSanC/Zc0NtAuYQmtb?=
- =?us-ascii?Q?ArKvLuGIBQ/GOpxuGRyxITXALRN9fx04kU4o0I3RihfCQRAPsD7KHu9/v41/?=
- =?us-ascii?Q?WbWx4UOQ/Q1fNqxEnffvjKDbkuGDG+tmiJWOsk9yJ8uQE6VzGlDODnkFIJLr?=
- =?us-ascii?Q?JEObs2nofAytQB4bWBcO/z7gRzNxuqrdZX9JCsUy3Ocj3Ap0YsUVSSSMsEQ+?=
- =?us-ascii?Q?eS3SLxSzxg+/2+UuZpAPVUa+vy4mWuWHy9F2spxT?=
+	=?utf-8?B?djJDSzh5TUJDdUptNUwxUWxabEx3d3FNYUMvZFlpaEMvM2d2MXVwTjVZanY3?=
+ =?utf-8?B?RUlGc0dkRGw3RmNHTzVycm1Wd3Jva0FGK3JVTjdRQ2RqMzh5YU1OaGluSmJI?=
+ =?utf-8?B?cWFNYzhvbnFyQWFPWWdvNVlpQWFhcytaR1lPd3RSbGxHOEpJeXFuUTlNejVS?=
+ =?utf-8?B?WGwwd3lQekpZL2hiMUVEYkQ0MHNFTi9aK3h2d1drUDRSazNadDVVTlJpaEVw?=
+ =?utf-8?B?ZTYycjZRWkZneVBQTEVSR29MVDZnNk1hNlhPRE5ML21XWEllWW9Fc25HL2Rv?=
+ =?utf-8?B?a1hNUzk5RW12R3ZJbGpzRmNhTExITERBYmFJVjY2L1NiTXMyNmhYWGdQVmpp?=
+ =?utf-8?B?ejMvNHRRU3Q2YkY2VnBzaEtmVlNCcklGNlNKTmlsWk42ZDNxaWV5c1dBQm5C?=
+ =?utf-8?B?WEFOWDh5R1ZnR0pKN2JpbTNtTkR2cmFRTi8wQnJKUXAwVGx2d250NzBTV3pR?=
+ =?utf-8?B?TG5FTTNxdUpqMWxRVURyR2hIYUxaRkxTdWlkM3IxdXZFblc5aHJ3ZFJFT1c5?=
+ =?utf-8?B?VjRsdkZwQlJ4eFJreXJrdjdRQm45cEJtRUc1b2paeFEwRm00QkU5eHgvWHZ2?=
+ =?utf-8?B?dkJobzdodERnSnc4a0YvTG9VWEx6azM5RmE0SWticTRaTHg3amVtVzM3SUxR?=
+ =?utf-8?B?c3hxZGxqR0ZhMStvU1RxQVdVbzErbUtEMVlOOVFiZ2EwWU1mZE9oNjVHVTd6?=
+ =?utf-8?B?d05IWE4vMFl3ZkM2eTZkdit3UDJBYjFqMStDaDg2NDRyYWNqZE11eExWczA3?=
+ =?utf-8?B?NmY2SDBPWkpXNFU2UDRhV1NoMENPVndNamN3c1BUcTlOUjVvN0RSQlJWV1Rn?=
+ =?utf-8?B?UVVVYVhwcmd0WjdzaTU1OVZkWFFMNE9jUEpVazJFM1pud0RpSUtRdjdmanN0?=
+ =?utf-8?B?QWVOcFdwQjBrLzRWWW5nTjJtd05rL2J2bUZUeC9UZnBOeEh6VUpsaDZkWml6?=
+ =?utf-8?B?TFU4L1BCa01nV05FL3pVM09WT2JFZUdDaTNCc0M2TzBMaWFpVVFGN3hPOGRT?=
+ =?utf-8?B?ekdXNlhqUDdNeUdmTWJkdWVKTm42QjRSMDB2OFN4bVdWV0p4MTh6djFDdmtC?=
+ =?utf-8?B?RmErdXA5ZDZoUVpFNFlhWkRzaC9QM0FJNUVsTlZuREttNVVGYS9WeEFPOTRO?=
+ =?utf-8?B?bnRScnk0OU1ncktwM01sMWVjUUdDZ1huRmJ2c0Rkenlub2tvc1YvU1lXNHgz?=
+ =?utf-8?B?NCtrc3RzdG1qbUY1RndiT2Z4S1ZEVXR1eVg1U3R5Q0dId0FmWDQwYkQrOG5l?=
+ =?utf-8?B?cnRBR0ptNitWYzNudVZoUUVaZEpiQ2lTNmZkZGk4bnhSMW1mTE15bS9mNmVR?=
+ =?utf-8?B?cTA5WUcyeWlrL0tHZW9JclFOMjg1bXlxMXZGWSt1T2hXNFFXeWlZeEN3ekhI?=
+ =?utf-8?B?Vm0ydGwvWWg5R21EbFI5WnRzZFVQYXFXdnl0MlZ2c0Z6M3NNcGVoTzhSSkpV?=
+ =?utf-8?B?Uk9xbGgySkcwV1BVc2tKMmxXQmxCUEQzK3BQZnRwNWI2VElpdHQvUFRHRm5q?=
+ =?utf-8?B?a0RCaGlKYVhPYm5HUXZuZytMYzhKK1FSZ3hxWDNNMHJsc05HcDBQZFNDSDBo?=
+ =?utf-8?B?R3h2L2Z0N1paZHVrOHlyOWZBNUk0UjdHNEdjd0Z3cFpkV1NsWnJOTjVJOXZI?=
+ =?utf-8?B?anp5UERxa21leG4rdE4xYVlnZW1KTElQVmZiRFN5U2ZIME9EUms3LzlRME90?=
+ =?utf-8?B?d0NZcllBcVBDaHJOUHJsYndQZ004dU1VZ0hDUEVXMFZuNHowOVVzWkVLWHBz?=
+ =?utf-8?B?eCtnUlRKQkpFS3BkVDI5UEhrd1JVQ2tTVGpGVmk1dUUzdmc4RTJmQTBpRTkz?=
+ =?utf-8?B?TVNFWGhFOVRSdUlPb3VhaERUODJTeUNUaW1mNm8yU2xSRDAraWhjM1RzYUFy?=
+ =?utf-8?B?R3ZXaE1TeEhkYkJIckFTOUJYQSsxb2ZMWHJuU0NWNEVweXJGSlJBNzV2YWVC?=
+ =?utf-8?B?NWJLZEVGL0E4UVJMSXZYenpIVlpXRE1GbExxdnl3Z0g1RTNjbjNpNEFQU052?=
+ =?utf-8?B?SmFteDhUVk1ZU0lpK1VveGNySzQveG16TUd1elk0OVFXTVRVT2VPS2ZwOHZH?=
+ =?utf-8?B?Ym9GaUp3U1gxN1Y4MG40WXFUeTZiK0RuTU0wVHlWRmd5bSsvd3FVbi9tcTZu?=
+ =?utf-8?Q?3URuhWfQqJxZyZd1QgO++0Zq2?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcb0b896-f3ef-453b-7d90-08dc3ec8d83e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fc24e47-5067-4963-c671-08dc3ecca838
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 17:05:52.3347
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 17:33:09.7692
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /+PDBUQEhAQNQUgAOMTxXX5IFROxNs+0kdsL19sEI8TsJ52LDTDtJho2BTWjZap/ZT1VWeNBvD/hC3afWubzLA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8658
+X-MS-Exchange-CrossTenant-UserPrincipalName: et76e6myCO67rQrDYFh1uFv8/FI8kV1D+Nidf7z0US3O4Q+khg0fK9TNC3fEaSbyKWyTD4xi2ke5xvCg2DlJMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7794
 
-On Thu, Mar 07, 2024 at 05:57:29PM +0800, Xu Yang wrote:
-> i.MX95 has a DDR PMU which is almostly same as i.MX93, it now supports
-> read beat and write beat filter capabilities. This will add support for
-> i.MX95 and enhance the driver to support specific filter handling for it.
-> 
-> Usage:
-> 
-> For read beat:
-> ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt2,axi_mask=ID_MASK,axi_id=ID/
-> ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt1,axi_mask=ID_MASK,axi_id=ID/
-> ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt0,axi_mask=ID_MASK,axi_id=ID/
-> eg: For edma2: perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt0,axi_mask=0x00f,axi_id=0x00c/
-> 
-> For write beat:
-> ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_wr_beat_filt,axi_mask=ID_MASK,axi_id=ID/
-> eg: For edma2: perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_wr_beat_filt,axi_mask=0x00f,axi_id=0x00c/
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> ---
-> Changes in v2:
->  - put soc spefific axi filter events to drvdata according
->    to franks suggestions.
->  - adjust pmcfg axi_id and axi_mask config
-> Changes in v3:
->  - no changes
-> Changes in v4:
->  - only contain imx95 parts
-> Changes in v5:
->  - improve imx95_ddr_perf_monitor_config()
->  - use write_relaxed to pair read_relaxed
-> Changes in v6:
->  - no changes
-> ---
->  drivers/perf/fsl_imx9_ddr_perf.c | 93 ++++++++++++++++++++++++++++++--
->  1 file changed, 90 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
-> index 52234b97d0cb..a91267e2f5d8 100644
-> --- a/drivers/perf/fsl_imx9_ddr_perf.c
-> +++ b/drivers/perf/fsl_imx9_ddr_perf.c
-> @@ -17,9 +17,19 @@
->  #define MX93_PMCFG1_RD_BT_FILT_EN	BIT(29)
->  #define MX93_PMCFG1_ID_MASK		GENMASK(17, 0)
->  
-> +#define MX95_PMCFG1_WR_BEAT_FILT_EN	BIT(31)
-> +#define MX95_PMCFG1_RD_BEAT_FILT_EN	BIT(30)
-> +
->  #define PMCFG2				0x04
->  #define MX93_PMCFG2_ID			GENMASK(17, 0)
->  
-> +#define PMCFG3				0x08
-> +#define PMCFG4				0x0C
-> +#define PMCFG5				0x10
-> +#define PMCFG6				0x14
-> +#define MX95_PMCFG_ID_MASK		GENMASK(9, 0)
-> +#define MX95_PMCFG_ID			GENMASK(25, 16)
-> +
->  /* Global control register affects all counters and takes priority over local control registers */
->  #define PMGC0		0x40
->  /* Global control register bits */
-> @@ -77,13 +87,23 @@ static const struct imx_ddr_devtype_data imx93_devtype_data = {
->  	.identifier = "imx93",
->  };
->  
-> +static const struct imx_ddr_devtype_data imx95_devtype_data = {
-> +	.identifier = "imx95",
-> +};
-> +
->  static inline bool is_imx93(struct ddr_pmu *pmu)
->  {
->  	return pmu->devtype_data == &imx93_devtype_data;
->  }
->  
-> +static inline bool is_imx95(struct ddr_pmu *pmu)
-> +{
-> +	return pmu->devtype_data == &imx95_devtype_data;
-> +}
-> +
->  static const struct of_device_id imx_ddr_pmu_dt_ids[] = {
-> -	{.compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data},
-> +	{ .compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data },
-> +	{ .compatible = "fsl,imx95-ddr-pmu", .data = &imx95_devtype_data },
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, imx_ddr_pmu_dt_ids);
-> @@ -192,6 +212,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_ld_wiq_7, ID(2, 71)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_empty, ID(2, 72)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_trans_filt, ID(2, 73)),	/* imx93 specific*/
-> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_beat_filt, ID(2, 73)),	/* imx95 specific*/
->  
->  	/* counter3 specific events */
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_0, ID(3, 64)),
-> @@ -204,6 +225,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_7, ID(3, 71)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_full, ID(3, 72)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_trans_filt, ID(3, 73)),	/* imx93 specific*/
-> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt2, ID(3, 73)),	/* imx95 specific*/
->  
->  	/* counter4 specific events */
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_0, ID(4, 64)),
-> @@ -216,6 +238,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_7, ID(4, 71)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_ld_rdq2_rmw, ID(4, 72)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt, ID(4, 73)),	/* imx93 specific*/
-> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt1, ID(4, 73)),	/* imx95 specific*/
->  
->  	/* counter5 specific events */
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_0, ID(5, 64)),
-> @@ -227,6 +250,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_6, ID(5, 70)),
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_7, ID(5, 71)),
->  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_ld_rdq1, ID(5, 72)),
-> +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt0, ID(5, 73)),	/* imx95 specific*/
->  
->  	/* counter6 specific events */
->  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_end_0, ID(6, 64)),
-> @@ -263,6 +287,13 @@ ddr_perf_events_attrs_is_visible(struct kobject *kobj,
->  		!is_imx93(ddr_pmu))
->  		return 0;
->  
-> +	if ((!strcmp(attr->name, "eddrtq_pm_wr_beat_filt") ||
-> +		!strcmp(attr->name, "eddrtq_pm_rd_beat_filt2") ||
-> +		!strcmp(attr->name, "eddrtq_pm_rd_beat_filt1") ||
-> +		!strcmp(attr->name, "eddrtq_pm_rd_beat_filt0")) &&
-> +		!is_imx95(ddr_pmu))
-> +		return 0;
-> +
->  	return attr->mode;
->  }
->  
-> @@ -434,6 +465,57 @@ static void imx93_ddr_perf_monitor_config(struct ddr_pmu *pmu, int event,
->  	writel_relaxed(pmcfg2, pmu->base + PMCFG2);
->  }
->  
-> +static void imx95_ddr_perf_monitor_config(struct ddr_pmu *pmu, int event,
-> +					  int counter, int axi_id, int axi_mask)
-> +{
-> +	u32 pmcfg1, pmcfg, offset = 0;
-> +
-> +	pmcfg1 = readl_relaxed(pmu->base + PMCFG1);
-> +
-> +	if (event == 73) {
-> +		switch (counter) {
-> +		case 2:
-> +			pmcfg1 |= MX95_PMCFG1_WR_BEAT_FILT_EN;
-> +			offset = PMCFG3;
-> +			break;
-> +		case 3:
-> +			pmcfg1 |= MX95_PMCFG1_RD_BEAT_FILT_EN;
-> +			offset = PMCFG4;
-> +			break;
-> +		case 4:
-> +			pmcfg1 |= MX95_PMCFG1_RD_BEAT_FILT_EN;
-> +			offset = PMCFG5;
-> +			break;
-> +		case 5:
-> +			pmcfg1 |= MX95_PMCFG1_RD_BEAT_FILT_EN;
-> +			offset = PMCFG6;
-> +			break;
-> +		}
-> +	} else {
-> +		switch (counter) {
-> +		case 2:
-> +			pmcfg1 &= ~MX95_PMCFG1_WR_BEAT_FILT_EN;
-> +			break;
-> +		case 3:
-> +		case 4:
-> +		case 5:
-> +			pmcfg1 &= ~MX95_PMCFG1_RD_BEAT_FILT_EN;
-> +			break;
-> +		}
-> +	}
+To: Vinod Koul <vkoul@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: NXP Linux Team <linux-imx@nxp.com>
+Cc: dmaengine@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: imx@lists.linux.dev
 
-Look like only if event = 73, FILTER need be set.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+- remove ccb_phy from struct sdma_engine
+- add i2c test platform and sdma script version informaiton at commit
+  message.
+- Link to v1: https://lore.kernel.org/r/20240303-sdma_upstream-v1-0-869cd0165b09@nxp.com
 
-How about
+---
+Joy Zou (1):
+      dmaengine: imx-sdma: Add multi fifo for DEV_TO_DEV
 
-	pmcfg1 &= ~(MX95_PMCFG1_WR_BEAT_FILT_EN | MX95_PMCFG1_RD_BEAT_FILT_EN);
-	if (event == 73)
-		switch()
-			...
+Nicolin Chen (1):
+      dmaengine: imx-sdma: Support allocate memory from internal SRAM (iram)
 
-So you need "else" branch.
+Robin Gong (1):
+      dmaengine: imx-sdma: Add i2c dma support
 
+Shengjiu Wang (1):
+      dmaengine: imx-sdma: Support 24bit/3bytes for sg mode
 
-> +
-> +	writel_relaxed(pmcfg1, pmu->base + PMCFG1);
-> +
-> +	if (offset) {
-> +		pmcfg = readl_relaxed(pmu->base + offset);
-> +		pmcfg &= ~(FIELD_PREP(MX95_PMCFG_ID_MASK, 0x3FF) |
-> +			   FIELD_PREP(MX95_PMCFG_ID, 0x3FF));
-> +		pmcfg |= (FIELD_PREP(MX95_PMCFG_ID_MASK, axi_mask) |
-> +			  FIELD_PREP(MX95_PMCFG_ID, axi_id));
-> +		writel_relaxed(pmcfg, pmu->base + offset);
-> +	}
-> +}
-> +
->  static void ddr_perf_event_update(struct perf_event *event)
->  {
->  	struct ddr_pmu *pmu = to_ddr_pmu(event->pmu);
-> @@ -543,8 +625,13 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
->  	hwc->idx = counter;
->  	hwc->state |= PERF_HES_STOPPED;
->  
-> -	/* read trans, write trans, read beat */
-> -	imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
-> +	if (is_imx93(pmu))
-> +		/* read trans, write trans, read beat */
-> +		imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
-> +
-> +	if (is_imx95(pmu))
-> +		/* write beat, read beat2, read beat1, read beat */
-> +		imx95_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
->  
->  	if (flags & PERF_EF_START)
->  		ddr_perf_event_start(event, flags);
-> -- 
-> 2.34.1
-> 
+ drivers/dma/imx-sdma.c      | 64 ++++++++++++++++++++++++++++++++++++++-------
+ include/linux/dma/imx-dma.h |  1 +
+ 2 files changed, 55 insertions(+), 10 deletions(-)
+---
+base-commit: af20f396b91f335f907422249285cc499fb4e0d8
+change-id: 20240303-sdma_upstream-acebfa5b97f7
+
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
+
