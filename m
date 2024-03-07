@@ -1,128 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2072.outbound.protection.outlook.com [40.107.104.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E672C1CA83
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 23:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709766074; cv=none; b=LhBPJbftAtB0uWdQCajRB2htzXrht++IMWxl12IbittmJfOna/Cb0pGpkAKaSoNG20dGDQdQM0yJlHoCtVZ4Qu7pO2fmR6A1zMrdxsALRAkRM/N5rdm3Qc1pSMJNhKNqKJ3iTZCO5lX94p3G9h8Tp8YKiAqudszk+KiRmklxC1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709766074; c=relaxed/simple;
-	bh=1foeIlAL02HQ/9fWETjo+VPeQRpGEBkjUsRFchJX7d4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uJd2x4W3HQsDvXjLG0imVAVjYziAn/LzFslHWTEfzTdmZIBtmVr/LsFoTu6EJV6wU07pp00jAHSPyuqMO8NXvxWxgG1sZPCzohCTPh17iQBOwEWEv53rRHHWzESS03lKq+wl3WvlH2v0GNro6Rxdp9CmWNPLi5dczxNAI/okEf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FzGykI5t; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6195667
+	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 02:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709776973; cv=fail; b=qmOAx6sLSfovSDDO3jS344Tad7MiTEaUgUFB6VBEo8oCbLQivN4sfROwHaZ6WgtItlhko57skG1inA3nJBJSWJiar/WhCIovjSh8Kon4+RFcrqeT2Sl/HGDdQAg/fV9JYLvaKBaeurjQxDzC49NQQEEN6pz5ROR1vhvVPgjWyuY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709776973; c=relaxed/simple;
+	bh=0Lv4cqVseb2agZQNK4RJ4/65NMrdqPLEkDMQoTgMokI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Lec/zN9E3DHKpCYvzqz3j8Z3N8BCHXcpCsqh6YqU5tmVSVk3j7K2v4IF0+YHDoqdDNFlj5ZzB4VnsvYG18amfyeGeTmbgBspuSD8aN/TF4aaeFNLzD9d9dImeohLExF9MP/iGBaaOoLvZlJM+LVjSVeB9q3yuFEbvSYaYSMs+SI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Zp5JLGc6; arc=fail smtp.client-ip=40.107.104.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FzGykI5t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5656EC43390
-	for <imx@lists.linux.dev>; Wed,  6 Mar 2024 23:01:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709766073;
-	bh=1foeIlAL02HQ/9fWETjo+VPeQRpGEBkjUsRFchJX7d4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FzGykI5t1KZcrcNh3uIkXsI4mhxdAVRhHvFVRqEEeCR8jYOZBf7sIsQYsEmuoj7Cp
-	 VJ6XN/kVz/j7ISNU6iJKQDCYUJmit3KyAdc//QwJiR2o5MN2ihF+ss0bY2FRwXOw8Y
-	 16xCLbhfe6SOMgclhR+g9ttqkRAacHzIx+G26l4lFwWlcxDagL7vq1NClMiqfMZrLF
-	 V3aL0pc75FJc0Fhi9frO5zcqRZAwskdM87VYHPQH+CUDT3xk8JSontUBbFSweZ3oS8
-	 JNJxUi6okj8ACN6TKTIWyhVqSRg7/4sSKO41qB7DO6R3zCyv4rLzMKCu0wHoRzla0L
-	 09TQtdiq5BF3Q==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-51331634948so1430962e87.0
-        for <imx@lists.linux.dev>; Wed, 06 Mar 2024 15:01:13 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXDENm2qkmYz+UkOPUTLHvjVy0I+gzCarD/MF8Zrp8wN5hjnAQYEDV/B5EhP++BPc4+WpQ665fXAOPvC3N/AanwwyZ0
-X-Gm-Message-State: AOJu0YxyTr/AwXfTrL7mbaRYxzb5vRqtZ9DWu4I9cmFId3zhDskIBAnt
-	fs52gCBy/i/DuO4sqscZu7pKeRqhi5Dlh/xMpi7KcLKqy3RJqY2oHltaWIFc2xGviDaU+Jgxkua
-	xZhg3DOHux6bDaGdGLQjz9Jy14g==
-X-Google-Smtp-Source: AGHT+IEe7ONAG3lrAgIWy+05ru/C7vwOPDlzVeORdLHPWUfWrnU47WOhZwb4SSMXu5BC5lZaDn1RllTR5GSnhrsxEUU=
-X-Received: by 2002:ac2:5a0b:0:b0:513:3b3e:c361 with SMTP id
- q11-20020ac25a0b000000b005133b3ec361mr70664lfn.2.1709766071504; Wed, 06 Mar
- 2024 15:01:11 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Zp5JLGc6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BfPtyB99cyQsip59o+umPUv37XYKJBBH8b0zICs+5E/WBTKNe/o4dl4MzqNdms9Setb3xdPMTO4fHd8EQVWBkjHSF7BuwRXZJjabZHIoeFFFUFTTUPxqlM3U3AGcVBn/xgdmrEr5Z6tmDsviZl0xtOlTppACAsVdweWNYR6h7zZ386O2GGO2ztHElrum3MO0CteYisw7PvX53/A2+V5/VnT85Nsv8EE3vY+u6pBzwJHIimFVm0I2QLDhGDsBcEWaOel2cMmypAZuLrO9iaGQ0giUQhVZ9RU5kfjGt3XbtfEOqSKx02bcFEiY/G9Y6FWf1XxdAv9HuYwua7DCTh0Kig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cpisvue3+k7oVIuJ95+QhuYegcvbFo3NGGeRNhHULh4=;
+ b=iyvErlz7mwlFKhnFXOer9lnzSOY5Bf3S5pPdcU7EQ2J1O5ZX9ywxVUi+09KLB4nyNkCifC4xO7sopO7JMvUxQ49tChlWrSe+ZF8PFggnerOY9pKTCH1DSLUdOPmNzO6smO2ngptSi9mRNRyz3/ajrKdniAGIc6lThQqLCpIXElSqfDIMnMWNhfH89YakVp51q4X93BXrNfswtsv1agfO2TGtYZEpeuZvm9N7Vx4znYo3UH9ponvU/Ju/PUTxYM7FgTtzTLyNK+D4xzV9lXBRT+jyk1OnIV4ujL/W9K9BpPFso4ZWVEHc/+DcSZ13fTDvgAupULLzQsLSb3Nu9iUYTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cpisvue3+k7oVIuJ95+QhuYegcvbFo3NGGeRNhHULh4=;
+ b=Zp5JLGc6SCGkWPF2GNwQ25Fp0jFU/wLhFgbVNGkLrtxCMhjD6QVRDTOElkO5Kl1oqkosWv7/KfmUU0DPpLF0Co5SCyponibvWLaeXQvJRAG0zvjlEZut18cUlbvxfNvI7FdFpL5L2uy/68w5Bg/P0qEVZUsK/ccg1P5xwVM9kz8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Thu, 7 Mar
+ 2024 02:02:48 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::b731:e23b:56b0:6a68]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::b731:e23b:56b0:6a68%4]) with mapi id 15.20.7362.019; Thu, 7 Mar 2024
+ 02:02:48 +0000
+Date: Wed, 6 Mar 2024 21:02:38 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/4] ASoC: dt-bindings: fsl-sai: allow only one
+ dma-names
+Message-ID: <ZekgPg2nsLIQpvY/@lizhi-Precision-Tower-5810>
+References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
+ <20240305-asrc_8qxp-v4-3-c61b98046591@nxp.com>
+ <20240306-pebble-grope-88fdaa95a87c@spud>
+ <ZejDQddMp17RD6Yk@lizhi-Precision-Tower-5810>
+ <20240306205524.GB587561-robh@kernel.org>
+ <Zejdz0BKwSlsio9S@lizhi-Precision-Tower-5810>
+ <CAL_JsqJw5W7a9Pz9gRPuP717onHdSwRvwGJ=v+QDSe+4ORvTaA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqJw5W7a9Pz9gRPuP717onHdSwRvwGJ=v+QDSe+4ORvTaA@mail.gmail.com>
+X-ClientProxiedBy: BYAPR03CA0010.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::23) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com> <20240305-asrc_8qxp-v4-2-c61b98046591@nxp.com>
- <20240306202537.GA587561-robh@kernel.org> <ZejX0/FA/z4wa7cY@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZejX0/FA/z4wa7cY@lizhi-Precision-Tower-5810>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 6 Mar 2024 17:00:59 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ6U2-EGeJgTuxBooEy=OEJ08wDNshWnfKooryAr6=QNg@mail.gmail.com>
-Message-ID: <CAL_JsqJ6U2-EGeJgTuxBooEy=OEJ08wDNshWnfKooryAr6=QNg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
- interrupt numbers
-To: Frank Li <Frank.li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DB9PR04MB8461:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cf1d107-cd61-4d41-b4b4-08dc3e4aafda
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	VH21vXeX/upFnZjtpaq/20vXUBaFs9cnn1f89YQzBF/AFAn8npRuWavUklVDXthJLjkjoxznKGNqjfho+ohsS7h4S7ahtuOxU7wkVZ6rCOre8r/NeS1dwl50Z9kRNiSAaZ8V/0AxSloHJQUCFzZSJ3J75diRlj+DcSQcDHKJyLPk3ZhFwSxA8jBVjbUxrBmNXOW/eKTc1oQPIEEfWM/rPAu3cuAUS4ELnZ5yPStrwH2LlJV5469XI50+T39j7eHJT9UilyMx4v6XWSulnrpn0otLYpaOH0BjviLTn3BV3X/zuHW9SynzbuT2ZQEyu0LtF2LvfIjtBldMrJZCfNUayKMA2eEOza97isBpfuhmQ9hdh3RP5Zr6XKx6osmKgePMgU54CfgaLlyrs0hNYvssQ2nEihU4wktXESgkKe5OZ1jeSPSFDz8Sw18UeBrpChyElZnF/0tixnQCjWaCTJLwEtZON13/YVeJ+zFMN38RIJuziv2gYGkT+PME5KyGDiPbCgtYTthtVki6871p57Ir4zc8Sc9kyrZ0zomhYiZuP77TYd0DnMWWER4qu0rLbgzgs8Lytq3euEUf02padkQ3gJ2v1jcxPUfQVMij2L/lw2EkJQCfBX4NGFRF3PaltH0NfLucFpc9P+IS4pL2BXZCu184nKPKO6zEi1rt7L7jREpPzDEq2VD8++rUfMCWD9d5HYfbngb0x55kT28XuoONuw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VFVHYTEzYVZHbERDcEdKZ1NOT2pEVDRPbGpGS0dmc0V5SWVHRlNPcWlFY1Yv?=
+ =?utf-8?B?MHNxU25rTVpPTnRBMjM5YWNIVWNEanhka1BWcXRIODhoVjMxbWV0RktCYzNR?=
+ =?utf-8?B?U011bU4wWGxZeVhhbllaRzZLWVBPcTl2d2J5bUp5clN4UEhwUzFOR0xKQ3JO?=
+ =?utf-8?B?V0RzQXRKY21xSEtqQUFOV3lQM0xLSi8vMzdnaVM2WlhUcWZsN216cWl1SnBL?=
+ =?utf-8?B?RXBBVHVjbEc4L3d6MjJHMmtzWVZKbmxDSEhHSEc4TFNreVVmWmJYQ3hiV1Rq?=
+ =?utf-8?B?MkpJQXRsWHUzK2piRXgyVXYvcUtQUFFpck50VUlaQVQ4OVIvMUVLY3c5a0R2?=
+ =?utf-8?B?YjFGTnVtMVR1Vzc0OWZORjFBRFlPbmR3VDlzd255OTBwbC9WOVBRK2k4M2E4?=
+ =?utf-8?B?OWJsdGNkclhTN1lNb1dLc29Qd0FrK0ZhbUcxVW96UFIxMjlsOERTdUxKNlBB?=
+ =?utf-8?B?OXRPL2NwMGY4SUV2RzQ0RTEyU2w4YURtUndTNlh1ZlVyekx0WUxMNWZUZWt5?=
+ =?utf-8?B?Nmd2anVlbEhMWVlBNXV2cTFwSUlHR3hXazlELytuT2cvY09XaWs4TU0rVzds?=
+ =?utf-8?B?YzQ3WFBRWk1QWThEVXJ5bXZzR1BURUtobk1wcDBjL2ZaYnFmN3cxbFBPL0I2?=
+ =?utf-8?B?QTVMbHErYnJNdzVXTHBCZDNzY3R2V3FWZ2RWNDFiaDhlcG9xR09BbE1NNEdi?=
+ =?utf-8?B?U3hxbHpQQ3g1eHNjUnEyVmlTZ3pyaEJuWlcrOU9reUphTzJINmtZY0x0dGli?=
+ =?utf-8?B?YTFNVVVNUndaUG9UVlJVSXBrYTJNZW8zZVJyL3I4KzNRLzFVSG9obUxONGNH?=
+ =?utf-8?B?cS8xWUwrZVUrK25NRW83L2tJUmR5ZXozLzRqS25TTHQ5djVLZEgvWk9sOExj?=
+ =?utf-8?B?elptbEM3eTVkcW15N1hkVjU3VVNaU3VXbFhQZDUzQTBOTHZnenRIbDFPRW5v?=
+ =?utf-8?B?YlR4YXhZQ0ZNWkVTVWRGVVhwbXYyUmFrT1dkT1JrV1lYcVgwREtVbzhHM3JT?=
+ =?utf-8?B?N3NJQlhFWmZPc0FtaE9mR2Fsekp1TXV0V0g3ODNFNW94Q0VkZVgzR2tVd2ti?=
+ =?utf-8?B?aUVuekpMaVhORHFYNjdHRERVRWVDT0dGTnUvNXBBT1BEdEFnVmFpUHcyUWo1?=
+ =?utf-8?B?RUxtVkVGd3l0Tk4zVlVHRjJTOTFaS1JsQjBqbzBseVgzckp2TitWb3lmRS94?=
+ =?utf-8?B?WTIreW04NzVIR1pXamZWTWxROCtIeVhwNWxuYkZjRFVZVDlNdjhGMUFQNG92?=
+ =?utf-8?B?bHgzekV3UEx0Vnd2Ni9KODV1THVFSUhNQTdnTUFSSFRGZWZmTjE2OUJYMTJS?=
+ =?utf-8?B?cnV3ek8xd1lpczliSGpLT05aZ1VKdnJLdVY2anNlMiszZzdLNVh5ZklzZkRQ?=
+ =?utf-8?B?Sm4vSVlhWGgzUXlNdGVaenNUMWJUdk83bXlQWWJuZVpzREdsWUllNzV0a1Q4?=
+ =?utf-8?B?RnhaZFVINHYwWjM3bHhzcU9ITEhtN3czNG4waUNxT1VZSnNGNkJnSXE5a2NL?=
+ =?utf-8?B?NnBFUTZSQTZiV0kxb1FIeG42ZkFiaFdyM3VTRjJVazRKYmFHeDZvWlhsYnJp?=
+ =?utf-8?B?YzR1aXBIRkNwdXdHM0RONGR1M1dDOGQrUk4rT3RLdStDVkd1M2xjbUxuYWNS?=
+ =?utf-8?B?UVo2YXNIVFgyQlRnSnJrY3p2VXp6NnBuZndwZ0I4aENDdHlGSWZyc3dHUFNT?=
+ =?utf-8?B?R3M5Tkxzbmp6ZFl6QkMwOXQ0OHh1TGkwQjF4bHdZeE9GeFNUeE5lUVFrcDky?=
+ =?utf-8?B?bUNuRktFbjE5ZVFSRXduaEN5TllyWGZ0VVJ6WlpqdWpDNlQ0VDJWUGxQdFZO?=
+ =?utf-8?B?dnl6VEJaUU1IOU5uSXVZM0NZcFVUZ1RtenRaT0wrVnBSYzVDWUxQMFlRZytX?=
+ =?utf-8?B?ZGpGUzVPTUhmV05SMXBOZmhGb0FKcGdOenNNcS8zcUVNeC9GcUMwVitZTTA5?=
+ =?utf-8?B?SjA3QWF6bnJGN0VqSkVvK3hjdkVPNUlNNlEzNGVocGcxeXI1T3crK1FNQ001?=
+ =?utf-8?B?dWtUaEt6QUpJQU9xcFpZRUpjM1Jlc2ZtSnFEMVpFL1VPOWFXMU84OEh1dWJ4?=
+ =?utf-8?B?eGYrSUFOcEdwZHcvTUtuRzN6aE4wcWVuU2VDdjNaa0cwQklzZFJIeWUxeTdm?=
+ =?utf-8?Q?m/2U=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cf1d107-cd61-4d41-b4b4-08dc3e4aafda
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 02:02:48.0614
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0dc8GQgsETCXxKSAsIBe0m587x+DWg+o95o1KMNBzcEcNgSur0kAWhvqFGU7K9y8DiO10KF7ojYXZOOvwHn49A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8461
 
-On Wed, Mar 6, 2024 at 2:53=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Wed, Mar 06, 2024 at 02:25:37PM -0600, Rob Herring wrote:
-> > On Tue, Mar 05, 2024 at 12:33:03PM -0500, Frank Li wrote:
-> > > fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platf=
-orms
-> > > have 1 interrupt.
-> > >
-> > > Increase max interrupt number to 2 and add restriction for platforms =
-except
-> > > i.MX8QXP and i.MX8QM.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/sound/fsl,spdif.yaml | 18 ++++++++=
-+++++++++-
-> > >  1 file changed, 17 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b=
-/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> > > index 56f8c0c8afdea..7f6590708e1ec 100644
-> > > --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> > > +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> > > @@ -31,7 +31,8 @@ properties:
-> > >      maxItems: 1
-> > >
-> > >    interrupts:
-> > > -    maxItems: 1
-> > > +    minItems: 1
-> > > +    maxItems: 2
-> > >
-> > >    dmas:
-> > >      items:
-> > > @@ -101,6 +102,21 @@ required:
-> > >  additionalProperties: false
-> > >
-> > >  allOf:
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          enum:
-> > > +            - fsl,imx8qm-spdif
-> > > +            - fsl,imx8qxp-spdif
-> > > +    then:
-> > > +      properties:
-> > > +        interrupts:
-> > > +          minItems: 2
+On Wed, Mar 06, 2024 at 04:58:22PM -0600, Rob Herring wrote:
+> On Wed, Mar 6, 2024 at 3:19 PM Frank Li <Frank.li@nxp.com> wrote:
 > >
-> > Nowhere is it explained what the 2 interrupts are or what the order of
-> > them is. Is the first interrupt the same as before, and there is a new
-> > interrupt for something else? Or it's the same interrupts, but they've
-> > just split up into 2?
->
-> It is same one and split to tx and rx. Order doesn't matter.
+> > On Wed, Mar 06, 2024 at 02:55:24PM -0600, Rob Herring wrote:
+> > > On Wed, Mar 06, 2024 at 02:25:53PM -0500, Frank Li wrote:
+> > > > On Wed, Mar 06, 2024 at 06:45:13PM +0000, Conor Dooley wrote:
+> > > > > On Tue, Mar 05, 2024 at 12:33:04PM -0500, Frank Li wrote:
+> > > > > > Some sai only connect one direction dma (rx/tx) in SOC. For example:
+> > > > > > imx8qxp sai5 only connect tx dma channel. So allow only one "rx" or "tx"
+> > > > > > for dma-names.
+> > > > > >
+> > > > > > Remove description under dmas because no user use index to get dma channel.
+> > > > > > All user use 'dma-names' to get correct dma channel. dma-names already in
+> > > > > > 'required' list.
+> > > > >
+> > > > > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > >
+> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > ---
+> > > > > >  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 13 ++++++-------
+> > > > > >  1 file changed, 6 insertions(+), 7 deletions(-)
+> > > > > >
+> > > > > > diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > > > > > index 2456d958adeef..6f551c68d33db 100644
+> > > > > > --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > > > > > +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > > > > > @@ -81,15 +81,14 @@ properties:
+> > > > > >
+> > > > > >    dmas:
+> > > > > >      minItems: 1
+> > > > > > -    items:
+> > > > > > -      - description: DMA controller phandle and request line for RX
+> > > > > > -      - description: DMA controller phandle and request line for TX
+> > > > > > +    maxItems: 2
+> > > > > >
+> > > > > >    dma-names:
+> > > > > > -    minItems: 1
+> > > > > > -    items:
+> > > > > > -      - const: rx
+> > > > > > -      - const: tx
+> > > > > > +    oneOf:
+> > > > > > +      - items:
+> > > > > > +          - const: rx
+> > > > > > +          - const: tx
+> > > > > > +      - enum: [ rx, tx ]
+> > > > >
+> > > > > I'm not entirely sure if this was Rob's suggestion, I got the impression
+> > > > > he was suggesting that in the two items case we'd not care about the
+> > > > > order. But while I think this is different to that suggestion it's also
+> > > > > not wrong.
+> > > >
+> > > > I log this at cover-letter. b4 can't support write change log at every
+> > > > patch yet.
+> > >
+> > > It never will (probably). That's because it doesn't need to. You can
+> > > just do it with git. When you edit the commit message, then after the
+> > > tags, Add '---' and put whatever you want after. That works as long as
+> > > the commit is applied from a patch as 'git am' will drop it.
+> >
+> > The key problem is that I don't want to lost notes when respin patches. It
+> > is easy to make mistake when I copy old serise change logs.
+> 
+> You don't. It is all saved in the commit. When you rebase for the next
+> version, you just add to the changes history.
+> 
+> > Previously I use git notes + git-rebase, it work fine. Notes can be kept
+> > when I do rebase and git commit --amend. But one thing is not good.
+> > git send-email --to-cmd=./script/get_maintainer.sh *.patch. It can't
+> > combine all patches's maitainer to a list. It looks like difference patch
+> > will be difference --to list.
+> >
+> > b4 can help some case. But can't keep git-notes information when rebase.
+> > It should be git bugs or feature missed.
+> 
+> git-notes always seemed clunky and to be extra work to me. Just having
+> the changelog in the commit msg is a lot easier.
+> 
+> > > > Rob's suggest was not work. dt-binding check complain too long
+> > > > if there are two dma-names = "rx", "tx".
+> > >
+> > > So I'm wrong or you didn't have it correct? No way to tell with your
+> > > explanation. Let me give you the exact schema:
+> > >
+> > > dma-names:
+> > >   minItems: 1
+> > >   items:
+> > >     - enum: [ rx, tx ]
+> > >     - const: tx
+> > >
+> > > This says we can have 1 or 2 entries. The first entry can be either rx
+> > > or tx. The 2nd entry must be tx. That's what you want. However, '"tx",
+> > > "tx"' is allowed with the above, but we enforce items to be unique
+> > > elsewhere. Or I thought we did, but we relaxed '.*-names$' at some
+> > > point. I'm going to fix that now.
+> >
+> > Conor find out my problem. The below code works. I missed maxItems.
+> >
+> >   dma-names:
+> >      minItems: 1
+> >      maxItems: 2
+> >      items
+> 
+> Missing ':'
+> 
+> >        enum: [ rx, tx ]
+> 
+> That is not my suggestion. This would be my 3rd choice after what I
+> proposed or what you had already. Please plug in exactly what I told
+> you and report back what doesn't work.
 
-Make that clear in the schema. Order does matter and you have to
-define the order in the schema.
+It also works. look likes conor's method is a little bit easy to be
+understood.
 
-> They uses one
-> irq handle.
-
-What does that mean?
-
-Rob
+Frank
+> 
+> Rob
