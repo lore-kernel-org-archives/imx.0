@@ -1,96 +1,74 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2063.outbound.protection.outlook.com [40.107.22.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB9612A154
-	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 13:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDBF12F593
+	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 16:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709816637; cv=fail; b=Y1ZTXHMXPwgaQFkgFz+5bNKIPWLvVHHLz/5IP0Okt+E9W/thOvRcY43jIAaQgqo3ibbUHIjRKPeDCWgQ4bzzZqXCRfX8AEI0WIIToLl1gwJ93/kgITjb1Sh5rnM5gUGEabj8DG9PDjW1cSpQSz4bQ0u4IiRcyZYmQVp6rAGDwt4=
+	t=1709828804; cv=fail; b=GkaYzZQn6EyFOG9CHMNfXyeukiyePRpNegfeErlavVo374wo5kEc394aokXUiSzna1taRV9G0c0bMNi7/F8vaah1Ww+iOtpLe2Kqqw/nzLi4HdT5PPuf05bSJcD8zWM/FLv+8VzDIjfwQETXyzO8YCUGDZim6SdPiG2NouRp/hk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709816637; c=relaxed/simple;
-	bh=9BDruaWuO0r7+PFYmNRNdjP1FFHyMlq3l/o3+CY9520=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XInP3PJPBC9kGftCx6PVE0Gobwy/0IFOpFxFbdW/HPGafahtqD9wW4NEKfuGfursT73f+m2c4yDs/nAp1P6aC/tOklcbo3O2OyhP32ckdRjvmxEC0uKbvvnZW9WT78u8OmQdmIaizyZ4bNUnV9B5S3DlJ82b9hqfpCD3OHL9FXA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=avzTPkCv; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=m8msBu8q; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1709828804; c=relaxed/simple;
+	bh=Kv/Ek7Gj10PjKGLPkuaHkR4yZYehSehqRzRhqRghW50=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=SAFpK46FZGjfK0rWtgKMD5XZ6y0YrGHUKFzUQX6mm8wzPOXEmD3TZs34ufAJwc+GNeo88r4ISl37pT8LP9nNddyrb4crtsMNLrmt673nAEtQy4rXuhbRvtX3LST6dSQYD30YC2ugln8Mp0v3JELfBRZXe6tWrUsPOdXOgIgb37s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=UNWAGU5O reason="signature verification failed"; arc=fail smtp.client-ip=40.107.22.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="avzTPkCv";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="m8msBu8q"
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4279n1LP019127;
-	Thu, 7 Mar 2024 13:02:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=Kp4NcfQDoTMlwlaO7gQW3cVCrZyjHtpy1/q+AopxSZ0=;
- b=avzTPkCvHrlgvD30IrHDrHg6R2u00JD8KYQZKGu8mSBLQPQGHlkaCbGQDy5ciItxalTo
- hH4vx1if5C+U2oT2N9uJCpXcWzjYlErDzS9K7sEfgGtNE/Csf1ewDiFbjNUa7+/DXw0d
- 9zWgw5O+cuIeYi7zaBz3Hji9QEP7FkQpuOqjwwehlkDegjpiaUGg8Y41QB/uPzW2gEJI
- BQi3Yv/rYu3n+R5tWsE9AIQBTCX2x4kR+m3RTDMaKVdUxcdGIaxZ61C5n9/LTMxCTJt5
- tgc6Qt3C5W39EuHv8VzmSFC/mvMR7t2i3kexKFW6eEifC4cWw58W3rSb6/xvrOc3BuHD RQ== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkv5dm2p3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 07 Mar 2024 13:02:25 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 427BVRLV031985;
-	Thu, 7 Mar 2024 13:02:22 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3wktjb68p1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 07 Mar 2024 13:02:22 +0000
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="UNWAGU5O"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WlToNqntDNB7iVpWidTjsMILatr4OFWlDdF0wg/s6fvjEvsvfaUaBrAbbmRTCxXd994hL+WAnyGW/8s+4DPjReBCxk93yJB4Q9uY7tGicSkfe7IbP0gGKiPV6XB28hyzJqcqVNMhfdG2jKE5nHGC8oJVuH/SdJt02CMRA2arCX3YsFxxnNku9yA+VkFsSLYdFZeS1QTbIVMFgJk1BAaVz19f0NwEfq/dvRgh/TLZNuEsHRj1ArExNfNtIB8Jcs5pXIBehSggNqiyclB+nq7aSpkaL7qdO+ybUyNW1CloBAg++NlY5Z0xX7bwht+db1JsXH0cyUFvi8n0prkzSig9+g==
+ b=FSHwz3iek3yWVSdy2H/BrXM4HfVEKlQivol0l1R+cKQ6L+f+iCpgb/IW55FLSj5t68VwyX5SKK8N8GYDmBk6pFr4AdJAQe8pO0pU2eB+RDI1SlZh2Ckx5X/7v5i1OiFivsW7hlLkdvT72bEyBpqyJbKneiLQmjZiqXTC1iJYnJZnirj51FSYKoOu6xpfJbqt8GgJlOxiJdQ3/CExsX2pgiENWMotjgcByfZZRkHl/dKHyoD1gH2QHptYq19seYO5LiRYHfLBB7tsa7HuF13tuaa7hL3OMR1EvfTxUMADlQr+b/zSblc0kqBTL+u9ZMi/rDo6gSPv7v2m7R7Hp+T8qg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kp4NcfQDoTMlwlaO7gQW3cVCrZyjHtpy1/q+AopxSZ0=;
- b=ksFfvTl8CIOLeHOagSvTqX+xQeSKdAAtcK9CnepdbsJYPS02H3zEqSS8MW5diE18eXDYoRMApM9xqDDwS0IRua3QtQh4X/j7ooj41nqg0R3GbdAXaMEplSO+opUgEg9kGEJiCX6PZeSoZPeqHcebrIwRQS7YwYweje/Lm4ygpdmrbJSevNoAMnZDtSuiaNtD05qcY1RPzio18odEmoylBKSlHrvj7FtC/LNSjaat+wHZRfzai5YsRTDRAk8vLEIUPb17uIww1Qygcn3JROi1kyiCJIna1QPJ9tCgZo3qXJat+xVraQFV7iBfWTCt6w2FmPidhtqsTm9XrVA9/q1SnA==
+ bh=P8e9MF3jWYJqKvHcU93bCQHgAP04vYKMokXOYjx6sbg=;
+ b=E6pBOdMM1gJ76P/blWE5kD5eNBG3uHbczmRHlzdxqmALYUIsqOXgaLq5WsZNplJIdhW9cacO6P9TZjKooJedkvOwlYXj7I12SB0bCcNh/H+RxlayXwUOVcRfPR7uTIcy5bRcrFh16IUmxzVi2uRGyuVXvvBjp0xLXHU9nF068mSCuLojHlQ7guIbTn+u9XhAmG++rL6RRf1hjGsbwzXsQclVU4W7UoNxo8/G37Eqj2eWHXMtlWYq15/RCZgU5qT5d/92Ph10dxkrMiw3MGJLz5xRNxygOgayAmBGaRtf690207lTF8NP8tGblQcpYloaMu7pF40UiupUiQecQJzEIA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kp4NcfQDoTMlwlaO7gQW3cVCrZyjHtpy1/q+AopxSZ0=;
- b=m8msBu8q70GRVbr9cZWxgKYUK16TzJQkd/aWLSWSXPlP9OWRT/ZiJa8NxV7elSIDYA2G7J03kNZa/i4yeoaVzbMU7kIW5cnfqYwkhAi3QRkabD9rgrE/hTyETa0uDXkhhEe82xJDDx7gu3gOdj9YURu7tg4Yq/qgcy+CqSBSfBU=
-Received: from DM6PR10MB4313.namprd10.prod.outlook.com (2603:10b6:5:212::20)
- by CH3PR10MB7495.namprd10.prod.outlook.com (2603:10b6:610:15f::7) with
+ bh=P8e9MF3jWYJqKvHcU93bCQHgAP04vYKMokXOYjx6sbg=;
+ b=UNWAGU5Oy1TjhZW1WftD/aU/RbJLt3YP3vJzluvX7H0DlTsUvIc/EUTD24hGvZRQaE0ZBqFSROWvujy9Nmcaml2Zv8+ocna2GfxJhx/KPAgZN7ZDKa5BSapAs59DELrcAIVvCOCJVzJQcz34n0jTlx1+1EdIhSB9avNbUSjsqtg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8881.eurprd04.prod.outlook.com (2603:10a6:20b:42c::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Thu, 7 Mar
- 2024 13:02:19 +0000
-Received: from DM6PR10MB4313.namprd10.prod.outlook.com
- ([fe80::ae68:7d51:133f:324]) by DM6PR10MB4313.namprd10.prod.outlook.com
- ([fe80::ae68:7d51:133f:324%4]) with mapi id 15.20.7362.019; Thu, 7 Mar 2024
- 13:02:19 +0000
-Message-ID: <85ffb1f4-75d9-4ac5-9be4-9f80b122679d@oracle.com>
-Date: Thu, 7 Mar 2024 13:02:12 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/7] perf vendor events arm64:: Add i.MX95 DDR
- Performance Monitor metrics
-To: Xu Yang <xu.yang_2@nxp.com>, Frank.li@nxp.com, will@kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, jolsa@kernel.org, namhyung@kernel.org,
-        irogers@google.com
-Cc: mike.leach@linaro.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        adrian.hunter@intel.com, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, imx@lists.linux.dev
-References: <20240307095730.3792680-1-xu.yang_2@nxp.com>
- <20240307095730.3792680-7-xu.yang_2@nxp.com>
-Content-Language: en-US
-From: John Garry <john.g.garry@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <20240307095730.3792680-7-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR01CA0110.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:168::15) To DM6PR10MB4313.namprd10.prod.outlook.com
- (2603:10b6:5:212::20)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Thu, 7 Mar
+ 2024 16:26:38 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
+ 16:26:38 +0000
+Date: Thu, 7 Mar 2024 11:26:29 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] arm64: dts: imx8qxp: add asrc[0, 1], esai0,
+ spdif[0, 1] and sai[4, 5]
+Message-ID: <Zenqtcg8HuGNN9L5@lizhi-Precision-Tower-5810>
+References: <20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com>
+ <2177674.irdbgypaU6@steina-w>
+ <ZeiJdoTqWd8h0Q5I@lizhi-Precision-Tower-5810>
+ <1961523.PYKUYFuaPT@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1961523.PYKUYFuaPT@steina-w>
+X-ClientProxiedBy: SJ0PR13CA0162.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -98,85 +76,447 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR10MB4313:EE_|CH3PR10MB7495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40442c00-3613-44e4-941f-08dc3ea6d1d1
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8881:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8df6b6a5-bc68-440b-afd5-08dc3ec35cec
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	bTZ7DwKZRkYrYUzBzZBZZuZzAkjuqihlOr0iO/eKztk3HWMWwHs2mE/KKcXdkoRwRnP/S5l25+iIs7AJKqdicTZbWIAwkZdf279z7Dn0rRarKfo6o9v9p3QU2yTvPJmgeupMPexrXjnS0yARvHBipKGm9Vn0i9Gm6/qBdOdQzKdPcleLP4GMZY3bTIzG77M9f6NvufXZkO8D7AW58BvhBj3UTYYCzbLUZOHJBmgUo0erC29lPs6RjTBlah0SiQw3KF7TYHDDQOHuq/tysNTPrvCdJ01T6sJqsa7HMZJc+fuLunOuFTOcDT16v6K9hXwj0unQqvS329jOmNbuef6vcLpz7iunc3yRunK8nC55I0v69jypQhT6Q5nNaw5tghPoiZ+FlINc+Zoc48j6YFqQCu3ZRuB22LxSlp58lWFJ0W5A4QsEHXdBZ6Kp2B8qKxFnARuldYUUuV7kX8TbzU4JFqisZRSy3s0A63RsOufH1/6vXDes5TKtTUvXgAI8UXulXSkTXr77L8BNmEMxfmAA+K7rC9R8Pl/lUAXndxg6zOmNYnpMLfOPsYox9rJGEjmlOVrEzkoNaPYxBVH7ibjDbh4T5UrHsHKrOjTUFUBy3AWjYkckOc4HEJTyRgChgOC8ybv3IknrVThX/f+pTk0DMA==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB4313.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(921011);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info:
+	BZQhZP6b4MPLat01vpeqV1c3SjOuqKyPqR8hOGjpJbgNE5EFwdRvX+M9VSxHsxnLsY5s5NW6sKCKqGVv8MDqpQndm+5IGpiMSQisHm62n16CZ8I4EcxtPS2YHXlRJufGKgzGUVPAK2y30sONdNsdDiey/cG6ZZsNwRTPHFLzB6A24bCwX8ptC8t8fvP4zMS/wgPB5FiS+Httfrr3eyGRKiWj7TySMmIbA5s9jJ52RFOHVuzwGJ9TBRhhb2flKdslyMrTk6YWZ03r2tIosT97we5Q4Em0oGnrBu0/2HhoXRC1HFNYJhwUrFlkIpSo4Mu9YyeCWasBOfCzNMDvaZSFBLdZa0lq4edNDkcEjtLJjSmSUmsW6HmcB/ioqwHMlVkT0Bzu3Vx7yQNpnPfZ31JFvVHJprxaVgWtOH2gZS1phkwy2zELqdUZbiP6BRcKEdG8W+RdFuNrgEQg8UF3NDgKir/njnCRL1+4KYXDwtZx39JFM2tbKxlmqVlRlZzqEFs0Wdzxae6OFysZdcvjX+hwveFB7mlaBwZ9UlEaL2g0ELtqiErOJdC7nP4L1AD1/o7XVmj2RsJZH+gyb8E4mH6/DVjTvZUW9FRnsNk1IrI4W9LCX3tP2bsKMrhVB2TiQ+yy+PLVOiAEgvH7TP6a0kenOkzxEB4FYBWS80ljJ9M5trM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?RUFpM29zU3NycTFtTzlrS2NGZStvblJWd3EvaDA2cTg0bndqR0lFK1N6cmY0?=
- =?utf-8?B?bml1V0dkSCtNcyt2UW5QUFBOT20xb2ZWdUY4WHJWekFIMVk1UDlqaWxBUWgv?=
- =?utf-8?B?RkRMZUhRZHBlTnhTVCs2VEJHWEowYXhSY2lFck11Ykxhd0ZtU1ViWk15UjUv?=
- =?utf-8?B?dEp5MFdmeURrMXlQR25LcGdwSE9rR1RYbXpXeXZTMWFScU04TmZialM5Wk9K?=
- =?utf-8?B?ZllJWmRpRy9oM05Gd0F0WU5vUjluUVFLbUxqdzJOMzRvMXhDVUV0WDJKQStP?=
- =?utf-8?B?VFRKTmtQalZqZmhreUw1aG9GQ3dHZmU1WXVmM0pRSUYyY25KbHIrc1Z3bVFx?=
- =?utf-8?B?bFNsR09qZHJuR0NOQkxqdURUbi9kWEhXNGNsTHZVTXUzOWVZNE9CQmpmaFBq?=
- =?utf-8?B?eGtFaDVWcGhWMzZGakI5cUh3TDNrZllYaVNSRllIMWNQK0c3a3E5YkhoMVJD?=
- =?utf-8?B?M0ZRYWpCck5kNE1WeE9uSEg5SjNLdTZjNFEzeXMxZ3FoTmgrQ0ZicjRBU09Y?=
- =?utf-8?B?TlczYVRSYlFmMm9kUVQ2eTJuWUI5aldsMEtBeWJ1L2huOHhNeVZHQVZKbE1I?=
- =?utf-8?B?UDRrSWh0M1lFQWhFNi9TU1dhVEhyU2dBY1V2V2JYZFlyazRnT1N1TndhWkJ4?=
- =?utf-8?B?T3NwdFNFcWF3dWNOcHdzMzVmOTZsRWVsSmdiYzd5N0FGenpUK25hNlFqdi9H?=
- =?utf-8?B?UHBwVWxnYmxQYU1sR1RHeWtPaVg0STVyQlRoMWpkVkZrTWJPMTlqd2hPNkdk?=
- =?utf-8?B?WkdFZE1SamllYnNvZU1rY2ZaanE1R1J1TUFlL3g2UlB6M2dBYzVuT1orNnJK?=
- =?utf-8?B?a1BzcGl5U0p2ckVyVlR5V29ackpDZkFIaGNEYUpXRXdhZE9pVVdqZkdPMVRu?=
- =?utf-8?B?clNRWjcrM0NOTGVUZFUzbTNvQlpKMTF3N2I2Q3Q5Nk5KRHZYakRRTTlFVENu?=
- =?utf-8?B?a1ZsTWtaUFBSM1BrVVhKT3RLeU51aGtXUG5ra051amRpL1Q0Z0gxUlNDNjhQ?=
- =?utf-8?B?NEE5YmxHMGVEUGV5VUh0VEhreDdOblNpZnB6OTNOYnFKaUp4YWJlUW5NM2dZ?=
- =?utf-8?B?UjdaR0gvVFdNS2RNOHp5cUtjZUIvbDJRczEzMURwNkJ2dVhMdi9LS2dFcVIv?=
- =?utf-8?B?SDVhbnRhcXhvS3BzVGgxd25FUW11alFoQ1lxd0R1SlRxQXIrdDIwMU84dHhB?=
- =?utf-8?B?N0tQOEZlTlRSVmZ5R2l2Y2ZHTXdPSUhCZDNvSm9McjZROFpLNTMrSWRHUC9I?=
- =?utf-8?B?N2hyaWVtUGFNU2dRMWlNWVQ5MDhmekRndUN0YytieEYybFBSOGk4aDc1TG0r?=
- =?utf-8?B?VGwxNEZSYVpqb01ZNitPNit3a1NHbmZCdzd5aDJzUUpzbXYxOWdxNlY1M3FC?=
- =?utf-8?B?eGJ6RzdiZmovWEpOR2pIMXUwRUQ2V3ZXTUdpNHEwaC9vZlFPVmVYeWpTYUFz?=
- =?utf-8?B?UkNac1VLaU9tWHZ2OEgrVWgxVkJBZEJPTU0wek9PUnUxL1VkTUFzUE5VR25k?=
- =?utf-8?B?amJTdmZWc3VFdlhwMFNpS3JTSk42RVB6NFZjbWk1aFpkVlRjY2xCYUd4WmNP?=
- =?utf-8?B?NEFaSEFDa0xEM042aHdQSW9LdjNQYU9UWWkrWmErcE1oODUzQmRiWjB1NHIy?=
- =?utf-8?B?UytoUEFkZTh4VldmQ2pGMnZ0STZBcFlsNEsxQ09PYUEyRzhEZ0w1U1dFK01y?=
- =?utf-8?B?azZ1Z0lxRWl1eFdnNG8zMFBpQlorQ2lXYWhteGF4SmJ2WTBsVTdtTHFoRnFJ?=
- =?utf-8?B?VG1jTlBjZmdRVDJGdk9CT282WjJiWXVKZkFtZHBXSWRRVlZKQkFNY1IrTzdp?=
- =?utf-8?B?ZCtHRC9iSnpaU3Q3bTVOTHl0OGZ1Y3dOVkRnM2ZQM2t1SWxTMDhQNk8yNWlj?=
- =?utf-8?B?L2YzSHdMUGp0SHVmbkpwajZqMzhRNHZYV3kyWFZqUXk2UUhYV0FRbXllbXRY?=
- =?utf-8?B?clZ2RUF2KzhHMHhsRWhWVzhxeDlOVDRBWWZaKzdBbGZZb0tDaUZtV0FaMmNl?=
- =?utf-8?B?NnRPZzhkRTVvR05Oa2Y3RWZOYTRyM245T3RsdFFYbWJYSU5FaHI5eXBsVG9R?=
- =?utf-8?B?NTZEWG9GcDRkNy9xTHB3QktRWnNDbEtvTVlNSFhiaEpTSm1RdW5XWnFaaFYr?=
- =?utf-8?B?NUlkcDVVYUk1MFd1ODZzS1MzM1hSVTZGODA1Nkw5aDBxd09YL3ZVQ29IeVh6?=
- =?utf-8?B?R2c9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	CqovrHxpQSL8jDC0cvMMFemPHCDLGIAmXxS/AB3R6L/cSOHYIPkrlwoSzq9FQvdRM8NtbNW/03Nd2XFIodVszg374dtGOqyFzLfqsgyO0wsR822bItVGdh8USf0O6jh8inxwVi9vVB0eCdZkGygTp82Vz4c9DVW7Gl9YKqQxtY1QpScPCrdR/iTqR9cw3qdV1dlxxguBFz8viTqyP171HcUVnoUmwKpOnZO/MrPdPRaJGiA4kMu6hsJumZ/41e1RNovjAf455gOKdL+GZgbTzoJjM0uIepLw62koqOHIquYCzVufIH1tKz1DqtA6FaGnweUHnfIRttDjDQoXtU5mevKh+MGn2GLXBIhlVhtg5ONjftRXW4jxEp7h0sYsdP1Cv+EWeaKWfaDKhm5QOfTj1YTgwmt6AZbvbTwEfAzf4VU/CCtCHjNU0T2cqXRC1oIi8T22g7GJwLxYfXhMVAdAJAQ19pYhhppWjVKaCh0h2kGsthSxflstmuvYRYRgZg8iwhwXfUmS8p3894bbr8DtS0XTFsvwJrjWjKWbMlflBL3+Fjn/xcQPelTmcjquhph25j+EcMiDSmysQ3N93prqLn0a9Fd1zyz/EkSxvy1tqEI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40442c00-3613-44e4-941f-08dc3ea6d1d1
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4313.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?9xzelrCkN4S8M86PEUHBAUV/+J7kFJiendwiNNypJ4Lt7HpZlepaID/NPw?=
+ =?iso-8859-1?Q?LLvKl7U6EKEzV+FUI5SEfb/KCNNf6nOOiaIM9lshrp/LKlHGc9zw5CyC+j?=
+ =?iso-8859-1?Q?6x+gCeBs5Tkdt+koOwwhYy0DzDM3IUbiV7+jHqbi9SE95S78TVuA9IjtX4?=
+ =?iso-8859-1?Q?UGlCZERyaFTJEU5mcjRkrjzQBxzzpgeC9e0sFlyd/b9Ah5LnqqX4WPvDJt?=
+ =?iso-8859-1?Q?3Xt0a3Uw4zguiRIlpnKyJ62s4WmaycJi+o7WiLFQSsg7LZHRLoZGwnzFJv?=
+ =?iso-8859-1?Q?89gwXeekB9aKwDrx5lo+caRVEtcLlBcjmeCrfhRbMoBvIIKEmef9k/ZigB?=
+ =?iso-8859-1?Q?8IhufLBgfZeve3jvlelpZgejYyWxSm1xtfrTAmBueqqbbyiMsND+nzWQq8?=
+ =?iso-8859-1?Q?BdcPHWwiZC+xjGaAEOjnQPv7OfbZqJyYC8zgtZt6FHeDpNBmhgwcmC8/5G?=
+ =?iso-8859-1?Q?BJrnmPtllkTah4OC2yWBZq9VXPFUwzDfxQWKmGLj5ZxxkAzxMOyUCFPQcG?=
+ =?iso-8859-1?Q?ok1VnKE/7nP//3JjroBJPxMv3LN0lSv8HWUPfkQ6sIN3ZoCn+M3d9zaxIu?=
+ =?iso-8859-1?Q?DO9dIdWvnRxCIdlxZcADlZ00rqonsok1Qx51vQbpl43SUysiKYNCujufU7?=
+ =?iso-8859-1?Q?NYF4UPNwsEyFX9cVnjmCHV0WSaHOA8eR93oGPOhVUHgseSxUOmAVVbNk1x?=
+ =?iso-8859-1?Q?+d3yC4zsTVNBwL7OB6w7dbjYWjW8Swp6nniOtHdt6euj17fQCnUWEiIpYh?=
+ =?iso-8859-1?Q?tnXAOwLg+ibkD3VeruYNgRhV01LaYGB8lhnB7zZSN6y+gPjsJq4JY3hsxo?=
+ =?iso-8859-1?Q?DecwSs3+EKs4qTCeS3iqvQfaV5TSNDPfwU6CcK0FHcG57CbRMQWq67GXPu?=
+ =?iso-8859-1?Q?cUa4c3g5K8R+BakA0z2U8pOWcAXZhexQGv3kC7FoEWWGHi1V5UDnOb1vKL?=
+ =?iso-8859-1?Q?4QxyYiYuLd32Yrr9Ov7wRZQfbMPBK1sukNuTsPl+2fCHEq85QgPNMCAG7U?=
+ =?iso-8859-1?Q?/bQ1eORsP8+xCsj6xxn5uDtVtbyZc2XnvpOwhuXlBcGfvYk08izZQv7dMI?=
+ =?iso-8859-1?Q?9oTw+3Q8Hg+a2rZgFwctFrx3l+YXKlpzf/zqoTY42dVwvjc1/UPYlVvwbN?=
+ =?iso-8859-1?Q?QfQ1oZGGcoaTH0xX5ynzLGNBns/vTtwuCi0MxYVSPNO7c/BydGsTg//Dmu?=
+ =?iso-8859-1?Q?PkzEAZ+iC8SzPWlNDj8nBhwz+J2VGdhSl/5rBt6+lhgA2tzAf5/i0XCjrU?=
+ =?iso-8859-1?Q?UJFiWfhaiuCOIq3ZfQxkFEXiVqp1nemqvN5GydlbcmVaAUKVaGb+mHEwbT?=
+ =?iso-8859-1?Q?usZ5DZblq5LC98e4g9hnWYwEmFmipnG92jUTr9R8LvfRqZZSJxpvYJD90f?=
+ =?iso-8859-1?Q?O7QmvQQ2BWx6lrsVXkqPCd25Jg0zJK06+LeDxsK1KZE1dzhU35e/5R5NjR?=
+ =?iso-8859-1?Q?O3BUJYOUwuYDEEgqz6WwS1xtVqbQ2AW7FoRBrQ4rgLWDbY0RwjdGnc4xjn?=
+ =?iso-8859-1?Q?fWIwvr1gdzNr5+VBrvG5hkz0VLDxrEnPTW17pItvaFTYxvFWYvvke0+IDC?=
+ =?iso-8859-1?Q?6VGZEi159A4M1INc6YUXzbRF34bqxnUOPmzr5H1Ty3CSlebOkLxbJ3wM04?=
+ =?iso-8859-1?Q?arDjpnInqz9dk=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8df6b6a5-bc68-440b-afd5-08dc3ec35cec
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 13:02:18.9699
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 16:26:37.9459
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uHktPmVa6cxVmo38Pt0ErnUgqIDwGprOI4q3h3NUENUu+Jpev9eZ/NIgUDRtka5rx/ctV1IsrEOujKI8tdQQ4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7495
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-07_08,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- spamscore=0 phishscore=0 mlxscore=0 malwarescore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403070087
-X-Proofpoint-GUID: n-6QZKdnaBOYuzKzpsmEyIQDMkjOlv4b
-X-Proofpoint-ORIG-GUID: n-6QZKdnaBOYuzKzpsmEyIQDMkjOlv4b
+X-MS-Exchange-CrossTenant-UserPrincipalName: TcUO8Ci8lPdVvVJLb9FAPkTSVnjQslEML+wWMz+DoV0RDtXNn0X8diisbnBi/BQVZw7fYsGThyeFuHAmFhJkkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8881
 
-On 07/03/2024 09:57, Xu Yang wrote:
-> Add JSON metrics for i.MX95 DDR Performance Monitor.
+On Thu, Mar 07, 2024 at 08:22:25AM +0100, Alexander Stein wrote:
+> Hi Frank,
 > 
-> Reviewed-by: Ian Rogers<irogers@google.com>
-> Reviewed-by: Frank Li<Frank.Li@nxp.com>
-> Signed-off-by: Xu Yang<xu.yang_2@nxp.com>
+> Am Mittwoch, 6. März 2024, 16:19:18 CET schrieb Frank Li:
+> > On Wed, Mar 06, 2024 at 08:20:00AM +0100, Alexander Stein wrote:
+> > > Hi Frank,
+> > > 
+> > > thanks for the patch.
+> > > 
+> > > Am Dienstag, 5. März 2024, 18:33:05 CET schrieb Frank Li:
+> > > > Add asrc[0,1], esai0, spdif[0,1], sai[4,5] and related lpcg node for
+> > > > imx8 audio subsystem.
+> > > > 
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > >  arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi | 304 +++++++++++++++++++++++
+> > > >  1 file changed, 304 insertions(+)
+> > > > 
+> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> > > > index 07afeb78ed564..78305559f15c9 100644
+> > > > --- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> > > > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> > > > @@ -6,6 +6,7 @@
+> > > >  
+> > > >  #include <dt-bindings/clock/imx8-clock.h>
+> > > >  #include <dt-bindings/clock/imx8-lpcg.h>
+> > > > +#include <dt-bindings/dma/fsl-edma.h>
+> > > >  #include <dt-bindings/firmware/imx/rsrc.h>
+> > > >  
+> > > >  audio_ipg_clk: clock-audio-ipg {
+> > > > @@ -481,4 +482,307 @@ acm: acm@59e00000 {
+> > > >  			      "sai3_rx_bclk",
+> > > >  			      "sai4_rx_bclk";
+> > > >  	};
+> > > > +
+> > > > +	asrc0: asrc@59000000 {
+> > > 
+> > > Please insert nodes sorted by address. ASRC0 is the very first node.
+> > > 
+> > > > +		compatible = "fsl,imx8qm-asrc";
+> > > > +		reg = <0x59000000 0x10000>;
+> > > > +		interrupts = <GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>;
+> > > > +		clocks = <&asrc0_lpcg 0>,
+> > > > +			 <&asrc0_lpcg 0>,
+> > > > +			 <&aud_pll_div0_lpcg 0>,
+> > > > +			 <&aud_pll_div1_lpcg 0>,
+> > > > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
+> > > > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>;
+> > > > +		clock-names = "mem", "ipg",
+> > > > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
+> > > > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
+> > > > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
+> > > > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
+> > > > +			      "spba";
+> > > > +		dmas = <&edma0 0 0 0>,
+> > > > +		       <&edma0 1 0 0>,
+> > > > +		       <&edma0 2 0 0>,
+> > > > +		       <&edma0 3 0 FSL_EDMA_RX>,
+> > > > +		       <&edma0 4 0 FSL_EDMA_RX>,
+> > > > +		       <&edma0 5 0 FSL_EDMA_RX>;
+> > > > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
+> > > > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
+> > > > +		fsl,asrc-rate  = <8000>;
+> > > > +		fsl,asrc-width = <16>;
+> > > > +		fsl,asrc-clk-map = <0>;
+> > > > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	esai0: esai@59010000 {
+> > > > +		compatible = "fsl,imx8qm-esai", "fsl,imx6ull-esai";
+> > > > +		reg = <0x59010000 0x10000>;
+> > > > +		interrupts = <GIC_SPI 409 IRQ_TYPE_LEVEL_HIGH>;
+> > > > +		clocks = <&esai0_lpcg 1>, <&esai0_lpcg 0>, <&esai0_lpcg 1>, <&clk_dummy>;
+> > > > +		clock-names = "core", "extal", "fsys", "spba";
+> > > > +		dmas = <&edma0 6 0 FSL_EDMA_RX>, <&edma0 7 0 0>;
+> > > > +		dma-names = "rx", "tx";
+> > > > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	spdif0: spdif@59020000 {
+> > > > +		compatible = "fsl,imx8qm-spdif";
+> > > > +		reg = <0x59020000 0x10000>;
+> > > > +		interrupts =  <GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>, /* rx */
+> > > > +			      <GIC_SPI 458 IRQ_TYPE_LEVEL_HIGH>; /* tx */
+> > > > +		clocks = <&spdif0_lpcg 1>,	/* core */
+> > > > +			 <&clk_dummy>,		/* rxtx0 */
+> > > > +			 <&spdif0_lpcg 0>,	/* rxtx1 */
+> > > > +			 <&clk_dummy>,		/* rxtx2 */
+> > > > +			 <&clk_dummy>,		/* rxtx3 */
+> > > > +			 <&clk_dummy>,		/* rxtx4 */
+> > > > +			 <&audio_ipg_clk>,	/* rxtx5 */
+> > > > +			 <&clk_dummy>,		/* rxtx6 */
+> > > > +			 <&clk_dummy>,		/* rxtx7 */
+> > > > +			 <&clk_dummy>;		/* spba */
+> > > > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
+> > > > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
+> > > > +		dmas = <&edma0 8 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
+> > > > +		       <&edma0 9 0 FSL_EDMA_MULTI_FIFO>;
+> > > > +		dma-names = "rx", "tx";
+> > > > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	spdif1: spdif@59030000 {
+> > > 
+> > > That's imx8qm only, no?
+> > 
+> > I am not sure what means. why do you think it is imx8qm only? It is for
+> > imx8qm, imx8qxp, imx8dxl.
+> 
+> According to Table- 2-6 (Audio DMA memory Map) in i.MX8X RM Rev. 0 05/2020,
+> the lasted one available on the webpage, address 0x59030000 is reserved.
+> I read that as there is no periphery available. This matches the feature list
+> in 1.1.2 Features, where "1x SPDIF" is stated.
+> 
+> So spdif1 is only for imx8qm (no idea about imx8dxl though) and should be
+> listed in a file called imx8qm-ss-audio.dtsi which is only included in
+> imx8qm.dtsi.
+> 
 
-FWIW, Please note that I gave a RB tag here:
-https://lore.kernel.org/linux-perf-users/dd69cee0-ac14-4e20-9255-367240b1dbc8@oracle.com/
+Thanks, I will do that.
 
+> Thanks and best regards
+> Alexander
+> 
+> > 
+> > Frank
+> > 
+> > > 
+> > > > +		compatible = "fsl,imx8qm-spdif";
+> > > > +		reg = <0x59030000 0x10000>;
+> > > > +		interrupts =  <GIC_SPI 460 IRQ_TYPE_LEVEL_HIGH>, /* rx */
+> > > > +			      <GIC_SPI 462 IRQ_TYPE_LEVEL_HIGH>; /* tx */
+> > > > +		clocks = <&spdif1_lpcg 1>,	/* core */
+> > > > +			 <&clk_dummy>,		/* rxtx0 */
+> > > > +			 <&spdif1_lpcg 0>,	/* rxtx1 */
+> > > > +			 <&clk_dummy>,		/* rxtx2 */
+> > > > +			 <&clk_dummy>,		/* rxtx3 */
+> > > > +			 <&clk_dummy>,		/* rxtx4 */
+> > > > +			 <&audio_ipg_clk>,	/* rxtx5 */
+> > > > +			 <&clk_dummy>,		/* rxtx6 */
+> > > > +			 <&clk_dummy>,		/* rxtx7 */
+> > > > +			 <&clk_dummy>;		/* spba */
+> > > > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
+> > > > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
+> > > > +		dmas = <&edma0 10 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
+> > > > +		       <&edma0 11 0 FSL_EDMA_MULTI_FIFO>;
+> > > > +		dma-names = "rx", "tx";
+> > > > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	asrc1: asrc@59800000 {
+> > > 
+> > > Insert this between dsp and edma1, sorted by address.
+> > > 
+> > > > +		compatible = "fsl,imx8qm-asrc";
+> > > > +		reg = <0x59800000 0x10000>;
+> > > > +		interrupts = <GIC_SPI 380 IRQ_TYPE_LEVEL_HIGH>;
+> > > > +		clocks = <&asrc1_lpcg 0>,
+> > > > +			 <&asrc1_lpcg 0>,
+> > > > +			 <&aud_pll_div0_lpcg 0>,
+> > > > +			 <&aud_pll_div1_lpcg 0>,
+> > > > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
+> > > > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>;
+> > > > +		clock-names = "mem", "ipg",
+> > > > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
+> > > > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
+> > > > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
+> > > > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
+> > > > +			      "spba";
+> > > > +		dmas = <&edma1 0 0 0>,
+> > > > +		       <&edma1 1 0 0>,
+> > > > +		       <&edma1 2 0 0>,
+> > > > +		       <&edma1 3 0 FSL_EDMA_RX>,
+> > > > +		       <&edma1 4 0 FSL_EDMA_RX>,
+> > > > +		       <&edma1 5 0 FSL_EDMA_RX>;
+> > > > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
+> > > > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
+> > > > +		fsl,asrc-rate  = <8000>;
+> > > > +		fsl,asrc-width = <16>;
+> > > > +		fsl,asrc-clk-map = <1>;
+> > > > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	sai4: sai@59820000 {
+> > > > +		compatible = "fsl,imx8qm-sai";
+> > > > +		reg = <0x59820000 0x10000>;
+> > > > +		interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
+> > > > +		clocks = <&sai4_lpcg 1>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&sai4_lpcg 0>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>;
+> > > > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
+> > > > +		dmas = <&edma1 8 0 FSL_EDMA_RX>, <&edma1 9 0 0>;
+> > > > +		dma-names = "rx", "tx";
+> > > > +		power-domains = <&pd IMX_SC_R_SAI_4>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	sai5: sai@59830000 {
+> > > > +		compatible = "fsl,imx8qm-sai";
+> > > > +		reg = <0x59830000 0x10000>;
+> > > > +		interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
+> > > > +		clocks = <&sai5_lpcg 1>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&sai5_lpcg 0>,
+> > > > +			 <&clk_dummy>,
+> > > > +			 <&clk_dummy>;
+> > > > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
+> > > > +		dmas = <&edma1 10 0 0>;
+> > > > +		dma-names = "tx";
+> > > > +		power-domains = <&pd IMX_SC_R_SAI_5>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	amix: amix@59840000 {
+> > > > +		compatible = "fsl,imx8qm-audmix";
+> > > > +		reg = <0x59840000 0x10000>;
+> > > > +		clocks = <&amix_lpcg 0>;
+> > > > +		clock-names = "ipg";
+> > > > +		power-domains = <&pd IMX_SC_R_AMIX>;
+> > > > +		dais = <&sai4>, <&sai5>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	mqs: mqs@59850000 {
+> > > > +		compatible = "fsl,imx8qm-mqs";
+> > > > +		reg = <0x59850000 0x10000>;
+> > > > +		clocks = <&mqs0_lpcg 0>,
+> > > > +			<&mqs0_lpcg 1>;
+> > > > +		clock-names = "mclk", "core";
+> > > > +		power-domains = <&pd IMX_SC_R_MQS_0>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	asrc0_lpcg: clock-controller@59400000 {
+> > > 
+> > > Please insert he lpcg nodes according to their address.
+> > > 
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59400000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "asrc0_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
+> > > > +	};
+> > > > +
+> > > > +	esai0_lpcg: clock-controller@59410000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59410000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&acm IMX_ADMA_ACM_ESAI0_MCLK_SEL>,
+> > > > +			 <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "esai0_lpcg_extal_clk",
+> > > > +				     "esai0_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
+> > > > +	};
+> > > > +
+> > > > +	spdif0_lpcg: clock-controller@59420000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59420000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&acm IMX_ADMA_ACM_SPDIF0_TX_CLK_SEL>,
+> > > > +			 <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "spdif0_lpcg_tx_clk",
+> > > > +				     "spdif0_lpcg_gclkw";
+> > > > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
+> > > > +	};
+> > > > +
+> > > > +	spdif1_lpcg: clock-controller@59430000 {
+> > > 
+> > > That's imx8qm only as well, no?
+> > > 
+> > > Thanks and best regards,
+> > > Alexander
+> > > 
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59430000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&acm IMX_ADMA_ACM_SPDIF1_TX_CLK_SEL>,
+> > > > +			 <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "spdif1_lpcg_tx_clk",
+> > > > +				     "spdif1_lpcg_gclkw";
+> > > > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
+> > > > +		status = "disabled";
+> > > > +	};
+> > > > +
+> > > > +	asrc1_lpcg: clock-controller@59c00000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59c00000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "asrc1_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
+> > > > +	};
+> > > > +
+> > > > +	sai4_lpcg: clock-controller@59c20000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59c20000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&acm IMX_ADMA_ACM_SAI4_MCLK_SEL>,
+> > > > +			 <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "sai4_lpcg_mclk",
+> > > > +				     "sai4_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_SAI_4>;
+> > > > +	};
+> > > > +
+> > > > +	sai5_lpcg: clock-controller@59c30000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59c30000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > > > +			 <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "sai5_lpcg_mclk",
+> > > > +				     "sai5_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_SAI_5>;
+> > > > +	};
+> > > > +
+> > > > +	amix_lpcg: clock-controller@59c40000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59c40000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>;
+> > > > +		clock-output-names = "amix_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_AMIX>;
+> > > > +	};
+> > > > +
+> > > > +	mqs0_lpcg: clock-controller@59c50000 {
+> > > > +		compatible = "fsl,imx8qxp-lpcg";
+> > > > +		reg = <0x59c50000 0x10000>;
+> > > > +		#clock-cells = <1>;
+> > > > +		clocks = <&acm IMX_ADMA_ACM_MQS_TX_CLK_SEL>,
+> > > > +			 <&audio_ipg_clk>;
+> > > > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> > > > +		clock-output-names = "mqs0_lpcg_mclk",
+> > > > +				     "mqs0_lpcg_ipg_clk";
+> > > > +		power-domains = <&pd IMX_SC_R_MQS_0>;
+> > > > +	};
+> > > >  };
+> > > > 
+> > > > 
+> > > 
+> > > 
+> > 
+> > 
+> 
+> 
+> -- 
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+> 
+> 
