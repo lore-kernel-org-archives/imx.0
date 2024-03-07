@@ -1,78 +1,69 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2064.outbound.protection.outlook.com [40.107.105.64])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2067.outbound.protection.outlook.com [40.107.21.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B16A130AD0
-	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 22:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0313B383B1
+	for <imx@lists.linux.dev>; Thu,  7 Mar 2024 22:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709850536; cv=fail; b=EA/zit+G/M9ew0ln4IMbbXqO+n5CLs37w6IXKlOs6cR6HjBYO9WHnMpsLqbyFx3gkPLYGZVhoh9Oh65FmanXpztGNevcepqKnnn96WQ/IkTG2mQ0uszGz6E74qR7q43eUHg9jM0EDrR6Ma7+/ANx35GM94qhYWux6zekTEjCJ1g=
+	t=1709851544; cv=fail; b=jma1qjuDfm4nRd+iRbeB+jVq+ZEhzOu/twbaO0OJ5HONvVCBUfF3isfDywVZKioPnGah5IRLzS+kj72Pq07dB2XIu6FXPC9NVEX4PTG1aD9b+Y0SxPdh6sINI/6HFeCHZ57Pf9weKQ+Tl1YPNoU1FXqBUEMr1z7itwzmRj5mbPE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709850536; c=relaxed/simple;
-	bh=1R4C9EhzA23PdxQUuEhwi+oTtV2VtixKsAPzPwTd2CY=;
+	s=arc-20240116; t=1709851544; c=relaxed/simple;
+	bh=0RWRVFTS+fFztZbypLhEVtQq9sNJ2JHAzI9nnTFs8z0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Hy1vKwFFH+qZHGTleNWYarGoCzX6ZRTBfpQ4SC9Aw8KRdt2+o6baeey5LwbUMSw/fvURzrX4apOcC34d+4bzZWZpr7JIejzPDWN1PIV44XSqVAbeR/YjUVP+TjD7PKAgmUqNSfm9iyI+XsdpMcG3DlZ01CK6ybKqmtiI0qyaDA0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=EZMXGtnh; arc=fail smtp.client-ip=40.107.105.64
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pvexqaRF+OPXzjKhYYPx+mQuHWRBJHVFgKsycNilPeduxxbUIpjS9lD9fN4mMFj2xqqdGuqHztir23JsGBRsqQDDu760f2a93G4YiZsyQ6irf14CHPJiT1MNur9UnB8PdtFZiPHjR23G4Pfuy8IdRxknCYPvM3AQq5uY0ZacI6g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=aum9Id3n; arc=fail smtp.client-ip=40.107.21.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EZMXGtnh"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="aum9Id3n"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BM4VuYJ3XYd+WMu5ddjDarOQveTzxKPWKb7LaUMDm/jBw9dfQPK/O7xD55EBRgTkQeVx0hIKA+izF5ApCpdrzMsRaxVO0SDdo5cZQPNtnYtVhtzEWuRVldvdvkonNU/h5K1rK+E2UhO8gzuGvhW896816H/3gfB5xqcNEJqq1Jjb+xk2Cm2FkzaJ7/psOOL7ynYJpiToCa4SeKVL1yDhgXvoFX62PQZ1HDa6SWa/giiE2eVsPyHqKYlcUs1CZuunGm5ePEY6c+1N0UD/pjpCo0DudOnSKprPx4gFXOnhQItvmT65Jk4EI7BVcVJb0ucmT1oeOyEIGXwr9KzSTYqU9w==
+ b=Isv5GiDlJU2zxp2rU7PhKAr36ngyDr88XobRV50IDF5VhinPjWbpAxYJauodaLsIJc2UCoVS3b6gHYU3X4SveRq5qmtF/E0alrET05rzk5sIe06yePeqnq376Nn2zGbkZs0aWnvLMqEL6IR7z9m4No4mLlo0Wo8PUWXU9j5uuLyExNqn/KjmLR8MijOl1b25rMh0r47eiDgVTvABgb8qqc5eGmYLme3CtthETZjTbZ/SJ9h0dwBHUuZUzD1enKRwuY/tJuj0KLRaiMpdI+gTqQoK2vJ4pZNGGPMoNaEfZNJ+mxjWl6KGNWMzyZUfe+U6yti8xu77JqeWjUZ4AmEV1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VwiFA36EvKzgAWM7NrtuW+K0sdh3ip5cZtTe5u2bwN4=;
- b=V135rqr2XjinHjHs485TO/UvDurWpcFd/aTec16qWFNodUYsn2ZoqORF3P6s01vzTq0/pVlNpskTiJbJxQmnNtkVdo26BAC7n0SzSTL/h9a4Mu+dpYIWaJD5+zvpLFNR6X1SWKFHTOUf1GP6Qubto6rA8cSipEyMivyJMynZDe4zG9/DMJNFkTimrInd2f8TwZh2bYLlM2vWFjw7ppOwa5IEKiwPjr2msBUZUyJQJyayNb/QhBunL+qig02cmGPNijmoXRKKjULRzaO2vtIG1UCijAULr2+z9U0jx8UCfRpWLMmMVNrijrdRaBFBMB4fZ7NYqHUWemo57XJmAjiRCg==
+ bh=hqElngzVsSqsp9pjFRQJLnUpld7fhwVWV9yJpotnY2w=;
+ b=ZSw7C4qwNPx1FgKB250+yWYNyleuiKVrjWqahSAO6AV+8HFnRYJhN6fz15P/WN5a7AcUhyQg26yLVGGeYJrXIsOwZOB+ZuYZt6H695qaomHp95OjS4b17mhQ/iM7DXH6xBBUpArkkEGxS1ikaCh/u8WfscZuxsqTR0eYZ9HFTEuKYOaM0IhXKrWepcZP6bNiOJJG5CYy+2xqP06Jk8ri3Om+ROhe0akTDExs/hRgvo95EDWXzXRoVcCoyYYWGAC0FkJmkDnFFgrNlZue0rt68Zxio/6IDee56ZuhG+8gHyrhy/Qn9+E+dTDlHwyKQw4HWTEQUnq01rYZHsLb7xvIDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VwiFA36EvKzgAWM7NrtuW+K0sdh3ip5cZtTe5u2bwN4=;
- b=EZMXGtnhRgQ6L0fxGmSNYwbMtIyfsYqVjwUAG4PsLavb7OtGU0Hpnm2Y1ekK4cr23nWg8l3L195cWneUvvklbd1d61jzkfARE0POYmESkC0/mBFmC6+1T3KU0F2x19M3sELnWpPgnAhGuZ94O0ErYCYaLjz9X9cSkT5A8rMNK0o=
+ bh=hqElngzVsSqsp9pjFRQJLnUpld7fhwVWV9yJpotnY2w=;
+ b=aum9Id3nOjmsWGOWr5aZP9xS1vvyP2bEqwJmN5sj11zghipJcCq7FoJwOkdZF8z3UVzkHcQGcqoKwRA96JApMBSnoCjARVk+xm4/djF1wUncDU2/Qj6+YB1L3qr7wffsMLcyaT8ji7tAKTQwGyN2ZNkAEcDSTLMv/yGxp0UF1N8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU0PR04MB9562.eurprd04.prod.outlook.com (2603:10a6:10:321::10) with
+ by DB8PR04MB6972.eurprd04.prod.outlook.com (2603:10a6:10:11c::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Thu, 7 Mar
- 2024 22:28:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Thu, 7 Mar
+ 2024 22:45:35 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
- 22:28:48 +0000
-Date: Thu, 7 Mar 2024 17:28:40 -0500
+ 22:45:35 +0000
+Date: Thu, 7 Mar 2024 17:45:26 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Serge Semin <fancer.lancer@gmail.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] dt-bindings: PCI: dwc: Add 'msg' register region
-Message-ID: <Zeo/mOvMjDkR5rq5@lizhi-Precision-Tower-5810>
-References: <luk5hswq4wnk5p7axml73qih35hio3y3pfnklctbn6rwres62s@mumnvygjh5ch>
- <ZcOpehO3rzCfAwXf@lizhi-Precision-Tower-5810>
- <gl7zmzkezr6k4txrrgqyikspfah3vmgwwz2e3j5kwb2iarpkxv@3ofwrhtxl2sz>
- <20240214061412.GB4618@thinkpad>
- <20240228160346.GA4069607-robh@kernel.org>
- <Zd9eDgxx5BiFWYD8@lizhi-Precision-Tower-5810>
- <CAL_Jsq+tfDHM7T1xVm5dcn62A8Sd3GTtDRmxVUQpYtJtGg=pKA@mail.gmail.com>
- <fvre5zsj3a2dkvctbamuisomlq2lav7mqmugq2oasx7hibelsm@czz4ypnrqboj>
- <20240301160816.GA2221899-robh@kernel.org>
- <3nu77xnuaq7pb7lmct76n37n7g5snwhcghgodqd5q6paihdxbp@4imk4w2qfrlx>
-Content-Type: text/plain; charset=utf-8
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: will@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, john.g.garry@oracle.com, jolsa@kernel.org,
+	namhyung@kernel.org, irogers@google.com, mike.leach@linaro.org,
+	peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+	alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v6 6/7] perf: imx_perf: add support for i.MX95 platform
+Message-ID: <ZepDhiqqjYea3Kld@lizhi-Precision-Tower-5810>
+References: <20240307095730.3792680-1-xu.yang_2@nxp.com>
+ <20240307095730.3792680-6-xu.yang_2@nxp.com>
+ <Zenz5ufZ3DIgbAuM@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3nu77xnuaq7pb7lmct76n37n7g5snwhcghgodqd5q6paihdxbp@4imk4w2qfrlx>
-X-ClientProxiedBy: BYAPR05CA0025.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::38) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <Zenz5ufZ3DIgbAuM@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SJ0PR05CA0071.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -81,390 +72,281 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9562:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab70d7c8-a3ad-4975-04a2-08dc3ef5f54d
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB8PR04MB6972:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77c1dd62-3180-4908-2b2d-08dc3ef84dbb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	iNm3iJmiOdiAZCCSBLtx62oyFFKY4rAirATN+H3Tj5Lbvephtl2IimE6ioyVF6RbOEzjReir9k/DFgZLVzYUd0tv7wcz5KyH9niu6ChCFYLTIUOscZEeH0y+bQkzZLNsj/jdZ9Rg21QsJkeww9LKe1SbekdawCkIiAMwTAJNlTFn0Fw4KKuJaDFS0MeZYXttiRXlUaDLVQzsZwr0wvRFNLhuFxLXxVRg/6+MVb0ETOm1N8dAk1RbOuYMgfjcZOnqvt8T+r/wfYdOj59uEgpmbvbvRkozx1CTc8D/VU3EIG4vq1LdFOjCngRmUGGuIp9wJZ2nnCW8YTueT1g0q8IFN90xWL5RX8btpZAzZU0TQYO0zydZGNJ1vz0KOKuOf3KgEAwApAj+BNtcBZA8S5h4KZ318OsQ3xVGT21TQaZcisnVXa2VUQmJDDuUwFOio4L1B8drFv7tmfyocNR2/sqHzK3A0ZS3gt7/y7useJvdCtLJTnv1nwqcmcUIs63tZ/U0SYsnK8nFOwazGy2VKn4TUkT1vRfVLtqoxF2LPUeebrHHGj3slD7XfUZg3fRRkNC4TGkaQQiz2aBhVazbTCG4GVQWuyzyi6oWKXS+gYCM0i1ELUczM3xGsO0/QXVJs2/d0jJQxcNcygnGbyJ8oP87iOMt4KZU973mqLftYpgyk1Q=
+	agfXyOb9z3goK4aKxxBNW8gkedjyE9QWixalxTeiGl8ys0JEx/1PRwcoMr8VCWMQitrs6fGdxVVNhriz2t56FLKUsKfC4eT/pqwjJLv+mD1FOPBHOJ4eSkBSvUgH/TiKaD2eWSNMLphyrTOBBdKxLTUZBqMuQTkGLhsjy/mfChnHThbKTAvWkURMDDmFBdvaF6hBp7LmKcmkvkYcGTj5/jqwDcX2LTaF/CA/HCsYFcHs/Lwg5pDqA/eZw3v8SwyoVhMC8YLCQhPFfRlW92mpNGT5FdgHHv4v3tfPCjZr41ardCF3WEVWEEVKBV+quCiunGr84Wng6/HpaGBZ1HQR1hahinbrn5UKB50js3w8q8B0bp1OKat2RIaf95VxcGVfJWLh89b2tUIgJ3dzbW6LapJSxtkJJkkGfcnYeH7uC/l9XGqazyRc5qEcbo5u60fZAg8olv1E8EFRZcIyGwoPm9KSBFh98k8VhBKTfNY30J0lRIBYrMmleZ4AO2IaKaFbhpgn86sbBig07oYQPmLWiAcsY6JLXLCyvS3p+QLO1vd61DBxpPp2siYNLclUzmCx1qo1zk7FHksUCDjEqAq68D0EI//05GSRSA2J9v9SfkLqIhcGYWZ3m5NqJnivAt3RReUtTCVYjGq5QSxagApboJk5CxZ+TjEQQDP94n+A6aBOsUGYhMzwfW7LmCDtJzF4SH8wxupQx1ogZpkVIic1Ww==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c25TUysrYVI2WnYvZ0d2LzVsZmlBa1QwMW1sRkl5ZGV5YlVrYXh5VnVaSGg0?=
- =?utf-8?B?R1EwQ24ycVpJRlh6NHRicjdQOHN4Z25rSkFpZGl1UFNRZFVVdFB6NjV1STJ0?=
- =?utf-8?B?QkRDQzhHaWt3eGxFWFRndldsTVlaYlc1SjhHYWNvVU5pdHQxdW9ORFVZeVhw?=
- =?utf-8?B?WVc2a1I1b2F1VEpYOFlxL3FFakoyQVVLTjQ3aEd3Um5oSStxMTduQUFZNlBZ?=
- =?utf-8?B?eWhIQUxOVVJRWkl3YUNJTVNnblJJQ2VUUGdzWUd2cFFNTWVGSEo1NzF0Tkdw?=
- =?utf-8?B?U3NGVVJGVUh1SVUxOVBBVWpYb2pQRU9UY0lseTl5OG1TWWF5RllPS2xuMVhT?=
- =?utf-8?B?T0FOdEMvY0JPcko0cWxrek1JdWdWU21NdHkyWjVkZjNQcGQ5c241N2lyb0hN?=
- =?utf-8?B?MXp1dk14bkRzNGxqRlB4K3B3dDB5TGpLblVsZXhCZzJIUnAzREdBdTBtb0xI?=
- =?utf-8?B?UHhUWDBWVDJ5RHplZWJHczRZbE5FOU1lT0pJalJQYUswQ0l6am9KWFpraU5E?=
- =?utf-8?B?eVBUc0hOT3BNWjJrZUozMGdqcUR1YTdYNGg0dTZmR2VTZUlscUZkSy9lQ0ZT?=
- =?utf-8?B?aXRuRnVxam9XL2dONzVXVDVzc1ROUHZvWG43WXAycGMrY1huL002Yjk1U1dq?=
- =?utf-8?B?cWNYYzdzTFFvc21IdFpIUkpLS1BVUCtnRXdjdThVL0hBS2V3dUNCY280QnBT?=
- =?utf-8?B?b0tzU3MzMjFhM282K1BzMXVqR1V4cldTL0hnQjZJeFpQbkRCYVhlaHR2T1ls?=
- =?utf-8?B?d2Q1VGUvMnBGNHVDUWw1Ny9YTkVKN3JsbFRQRlNFRjFYWHU4UmJxS01Ka203?=
- =?utf-8?B?YWMwVU5uMFdJK05aTU9OeGg4UzkrM2FUa094RWlSR1VZNzY2NXFNNGpTdDRR?=
- =?utf-8?B?UzRJUDRsUUw3T3lhZHN5Vy9FdmlWTnIwOXJ4VmFKSGZnTytQT1lTOFovYXpm?=
- =?utf-8?B?aXNUaUxHQlEwbENUUCtxUVFWMGt1MDFsNENjUTkrUmZ6Qm1wWDc5RkoxZllX?=
- =?utf-8?B?bnN1UGZVRnpsU0xlU1F3d2N0R214Rzg5TkxCdktiVzNaU2prZWxvdVJOYWJa?=
- =?utf-8?B?bk9uaThKaXZtVWVYZlcwOHk3dHRHcUw3QW5ibnVPVHUzUWJjSTJnb29NMzAx?=
- =?utf-8?B?NUIwdGUvdWpXYkNmb1B2cXhEZmdwMXRVdFV3RHBUZUdyclJrZlNXN29EaFBS?=
- =?utf-8?B?R0NZRGdlUE95aGk4UGFFbzhYUkdDWFdTQURSMm9KYzQ0YWl6YWNKUk56Rzd4?=
- =?utf-8?B?bXNmVXNXeGlnNTRZU3gxWlBZV3cvemhsMGpTL0RHQ1JQNlJnRUU0ZXRsL2Z6?=
- =?utf-8?B?SHpwQ0luZE5XeENYaHhySFhuaDhjVWdtdmtzMkZZWXBPb0dKSXYwUS9Tc0w4?=
- =?utf-8?B?VWZYTUJFcTN5QVZjdGYzRkppVmNQblorQmZZMWdpR1VEWXk5SDZVNUJvZmh6?=
- =?utf-8?B?OGtycHNwTXMvdEZhc0M5bWE3RFkvYUQxa1pKTC8yb0ZNV3p5WUZvY1lDSWdS?=
- =?utf-8?B?U2l1Y01PMEtPNEd5Q2FoSFJ2SnFveDlvVkpjeGZweWx6bVU1d2JaRkZSM3JN?=
- =?utf-8?B?cW5YdlkxdkVCbHJ1dHM1bGE1TERJWlR6b0Mrd0FJdGx3dmM5WEo2QjRRcW1v?=
- =?utf-8?B?TU1JNTBMdXYzczlYTHRhcStOSTh2Ymthci9mZzF6cjB4YkUzOHdRM29ueHZO?=
- =?utf-8?B?WGN5OUZuVURvMDBhNnNJdUloYTNPdmJsa0xKL0c3V3lMYUhqM0pkTmx2SzlW?=
- =?utf-8?B?eHdLL0F3RmVGT3BDdk5WSEZZdnpyMHduMU4wZGhzbnNyMnlwU3BVSGx4TVlI?=
- =?utf-8?B?S2tiOWQvQWZUTy9NMWJFZTJiTG9DN0doUTgxSDlmQjZLMlM0SjR5ak5sU0Ry?=
- =?utf-8?B?TUpTZUdUd1dCbHltNGxPVmc3SGtYTjBPbGNaV3ErVWxvcHhNdUZKSFg3TnY1?=
- =?utf-8?B?dkY4S2hkNFg0ZjhwR2cwR3E1UEpTdklnSklCV1pwNm1TNGU2N0h1b1p4SG5u?=
- =?utf-8?B?R1oxMG93ZUNhd1I5UEF4a1dkbnRmVlNCQWhRQjllTmhOTUl0Vk9tQWo0WWF2?=
- =?utf-8?B?SzFmcjYwRXZHczR1d2ZXMzN5aXllK1hBaFlPckZ6RktaQnhoNDgwcGFIRUNi?=
- =?utf-8?Q?kk5pyNZoBWgYwqEsJ0fo/vtNC?=
+	=?us-ascii?Q?muZITdkLaeaGEHjwGH4AQ2c4yvL0zk2z+16Ih3SV4oczlP2c09cODXXKSzOm?=
+ =?us-ascii?Q?ydf/mzQqXC12vzgA/VXXPRa2Qz1tmwMKSE5ZQD5Bmkfx922pv0eflOOpEXHQ?=
+ =?us-ascii?Q?vbLI+85JRwWdsdxqf0K56Xa1DNU7Beo2j/LnzSSjfd9U+x2UqKL5OA5XRode?=
+ =?us-ascii?Q?0bo06v9PU3xLJWWDZZUUCUcpkjRTdAlVELSENvPOTdKdNLkkqE93SZj8S1Vj?=
+ =?us-ascii?Q?V2cVOqRlKYsvYGEiGIqqhJxd9a+SynWUK7o26ZyEkiKtEOhOFQPOQHGUPUDA?=
+ =?us-ascii?Q?9FWbrhHB3P5+zaz8RrWof1GECqA1gjgL4y4qUOdl/2EKU9iRgkRiR4SUEHrl?=
+ =?us-ascii?Q?YjAV6dyaoHdehU4JdFvB3Juop7HSJk2gg49JM+u1tCtXga2cCxtft6gJFFEA?=
+ =?us-ascii?Q?S4+EbDQ1PjoCWRMMcu+LM3v5jAoLqYFBUvcfWQz8EzdV1SIO3b6Kdm83rOPq?=
+ =?us-ascii?Q?7M4Lxgu0oqvTwO/3OXp6Q3rLRynOL2RHn1j1hYmQq40qrYm1zK/18ftCILNb?=
+ =?us-ascii?Q?AMiT+MWWlbICjLCZG4B5dcMnDJ4EAhfsOzvQp5evGGviMaqHS2n1V+lNua4s?=
+ =?us-ascii?Q?tj88b+velfePaHDFqCHPrLCJHPbz7I8Tf7lmlTufXcz73XTkhu1walNV+PO2?=
+ =?us-ascii?Q?8T2WK41bej5aGzgqS4y8qdfOe5cwwIKWkI8L0PM2JhvW/JXTvbcRh3OwkWF3?=
+ =?us-ascii?Q?OoL6GdfG38ihDIeCtYCggcKyKFKRGbi8YueoDyZxd9lgAnnmbLw62WQrzMPu?=
+ =?us-ascii?Q?ihe4UExX1MlTNxIZKcLPa7rFIAGUqaBC+jcAkg/11huRp50PFm6rXM19EJWJ?=
+ =?us-ascii?Q?C4CHS5ro7JTzMSVx1zS0l9NzZvx/O/3ePQikTFM9+peJkaWw+Zr9MRNnll4L?=
+ =?us-ascii?Q?ZW8/44RuXqE28ux4ONAQQp8XTvCjtj13ve8au1LdbgknxB8YOrRu+h8FjOAd?=
+ =?us-ascii?Q?wz/QrlWBiP+qh7Ho0o7za0NVBjw/N+UnDgc5cVfnOqTt9JZK7JOpprBQJY8P?=
+ =?us-ascii?Q?v76MU1TuqeM/oZ0wl+aZElCvpjxpG4vHOo0zWynhQ+CVk0wR1atT14jSRu0B?=
+ =?us-ascii?Q?oG9LRUXKwGBPrt9mC8Jj0bhMDOdCgNPSxwm4XGo8GpcjY1i6INEF9+tKHxNc?=
+ =?us-ascii?Q?51D9ChnzbPYAiN0k5kJA8U7Nb5s2WPXgHd53Ze3d+ee4OqDxRrIk5Tife6Il?=
+ =?us-ascii?Q?7jAdNUBO+TeLBuHM31LW3PuanOmMV7LB8oyZkF1XwqQyIEDZO8VDaY9dV2jt?=
+ =?us-ascii?Q?BIZug2fOddmEVwLDPT8ay0+8jLrucv87BnyegHe+e3U6dH3wA3G7Qo2Hiq7M?=
+ =?us-ascii?Q?IjbNKm066iVNaUJSCSE+0JBziTuxGNGEuzJmOIn8oN5vrJgU8y02VIG6gmou?=
+ =?us-ascii?Q?kwBp9yWo/K0yGnaBXpb5LpH/e2MbELXhptTHvwAjq3aGkikg1fzFgRx6Ts3/?=
+ =?us-ascii?Q?ND+JQLdlqlIRA/vkxrBVfRoAuoJEIz9nAS/ZmkjwNZOqGh13fTNj6YPoRiAE?=
+ =?us-ascii?Q?EIE8U7Cl44XfV2ZaC8IElDB34xbHlCkEwSa2P8jFB2NJjd4BhYYAeo5JnQNH?=
+ =?us-ascii?Q?aL2cF8KonfFiUyY+/CvKuIZyMdToP34lk0fIQJO0?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab70d7c8-a3ad-4975-04a2-08dc3ef5f54d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77c1dd62-3180-4908-2b2d-08dc3ef84dbb
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 22:28:48.6105
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 22:45:35.7693
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6Q4fDw/XQAniHMCfz/4aXxSdrWzN2mJ2z5vbj4JTRyg9qh3TVxJMnvK/jd7d89nigNMFtQ238aDC33WAo8sLKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9562
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1xshmuOo0frI3xcSwTilOrrK2rYEKr1y18kkbHJG0XXdMkFSL201NElVgKprXZ7zM3m9r4JXNNgu3ALBg3WFqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6972
 
-On Mon, Mar 04, 2024 at 09:48:56PM +0300, Serge Semin wrote:
-> On Fri, Mar 01, 2024 at 10:08:16AM -0600, Rob Herring wrote:
-> > On Thu, Feb 29, 2024 at 02:26:34PM +0300, Serge Semin wrote:
-> > > On Wed, Feb 28, 2024 at 06:39:36PM -0600, Rob Herring wrote:
-> > > > On Wed, Feb 28, 2024 at 10:23 AM Frank Li <Frank.li@nxp.com> wrote:
-> > > > >
-> > > > > On Wed, Feb 28, 2024 at 10:03:46AM -0600, Rob Herring wrote:
-> > > > > > On Wed, Feb 14, 2024 at 11:44:12AM +0530, Manivannan Sadhasivam wrote:
-> > > > > > > On Fri, Feb 09, 2024 at 12:52:52PM +0300, Serge Semin wrote:
-> > > > > > > > On Wed, Feb 07, 2024 at 11:02:02AM -0500, Frank Li wrote:
-> > > > > > > > > On Wed, Feb 07, 2024 at 03:37:30PM +0300, Serge Semin wrote:
-> > > > > > > > > > On Tue, Feb 06, 2024 at 05:47:26PM -0500, Frank Li wrote:
-> > > > > > > > > > > On Mon, Feb 05, 2024 at 02:13:37PM -0500, Frank Li wrote:
-> > > > > > > > > > > > On Mon, Feb 05, 2024 at 06:30:48PM +0000, Rob Herring wrote:
-> > > > > > > > > > > > > On Sat, Feb 03, 2024 at 01:44:31AM +0300, Serge Semin wrote:
-> > > > > > > > > > > > > > On Fri, Feb 02, 2024 at 10:11:27AM -0500, Frank Li wrote:
-> > > > > > > > > > > > > > > Add an outbound iATU-capable memory-region which will be used to send PCIe
-> > > > > > > > > > > > > > > message (such as PME_Turn_Off) to peripheral. So all platforms can use
-> > > > > > > > > > > > > > > common method to send out PME_Turn_Off message by using one outbound iATU.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > > > > > > > > > ---
-> > > > > > > > > > > > > > >  Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml | 4 ++++
-> > > > > > > > > > > > > > >  1 file changed, 4 insertions(+)
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-> > > > > > > > > > > > > > > index 022055edbf9e6..25a5420a9ce1e 100644
-> > > > > > > > > > > > > > > --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-> > > > > > > > > > > > > > > +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-> > > > > > > > > > > > > > > @@ -101,6 +101,10 @@ properties:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > >              Outbound iATU-capable memory-region which will be used to access
-> > > > > > > > > > > > > > >              the peripheral PCIe devices configuration space.
-> > > > > > > > > > > > > > >            const: config
-> > > > > > > > > > > > > > > +        - description:
-> > > > > > > > > > > > > > > +            Outbound iATU-capable memory-region which will be used to send
-> > > > > > > > > > > > > > > +            PCIe message (such as PME_Turn_Off) to peripheral.
-> > > > > > > > > > > > > > > +          const: msg
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Note there is a good chance Rob won't like this change. AFAIR he
-> > > > > > > > > > > > > > already expressed a concern regarding having the "config" reg-name
-> > > > > > > > > > > > > > describing a memory space within the outbound iATU memory which is
-> > > > > > > > > > > > > > normally defined by the "ranges" property. Adding a new reg-entry with
-> > > > > > > > > > > > > > similar semantics I guess won't receive warm welcome.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > I do think it is a bit questionable. Ideally, the driver could
-> > > > > > > > > > > > > just configure this on its own. However, since we don't describe all of
-> > > > > > > > > > > > > the CPU address space (that's input to the iATU) already, that's not
-> > > > > > > > > > > > > going to be possible. I suppose we could fix that, but then config space
-> > > > > > > > > > > > > would have to be handled differently too.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Sorry, I have not understand what your means. Do you means, you want
-> > > > > > > > > > > > a "cpu-space", for example, 0x8000000 - 0x9000000 for all ATU.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Then allocated some space to 'config', 'io', 'memory' and this 'msg'.
-> > > > > > > > > > >
-> > > > > > > > > > > @rob:
-> > > > > > > > > > >
-> > > > > > > > > > >     So far, I think "msg" is feasilbe solution. Or give me some little
-> > > > > > > > > > > detail direction?
-> > > > > > > > > >
-> > > > > > > > > > Found the Rob' note about the iATU-space chunks utilized in the reg
-> > > > > > > > > > property:
-> > > > > > > > > > https://lore.kernel.org/linux-pci/CAL_JsqLp7QVgxrAZkW=z38iB7SV5VeWH1O6s+DVCm9p338Czdw@mail.gmail.com/
-> > > > > > > > > >
-> > > > > > > > > > So basically Rob meant back then that
-> > > > > > > > > > either originally we should have defined a new reg-name like "atu-out"
-> > > > > > > > > > with the entire outbound iATU CPU-space specified and unpin the
-> > > > > > > > > > regions like "config"/"ecam"/"msg"/etc from there in the driver
-> > > > > > > > > > or, well, stick to the chunking further. The later path was chosen
-> > > > > > > > > > after the patch with the "ecam" reg-name was accepted (see the link
-> > > > > > > > > > above).
-> > > > > > > > > >
-> > > > > > > > > > Really ECAM/config space access, custom TLP messages, legacy interrupt
-> > > > > > > > > > TLPs, etc are all application-specific features. Each of them is
-> > > > > > > > > > implemented based on a bit specific but basically the same outbound
-> > > > > > > > > > iATU engine setup. Thus from the "DT is a hardware description" point
-> > > > > > > > > > of view it would have been enough to describe the entire outbound iATU
-> > > > > > > > > > CPU address space and then let the software do the space
-> > > > > > > > > > reconfiguration in runtime based on it' application needs.
-> > > > > > > > >
-> > > > > > > > > There are "addr_space" in EP mode, which useful map out outbound iatu
-> > > > > > > > > region. We can reuse this name.
-> > > > > > > > >
-> > > > > > > > > To keep compatiblity, cut hole from 'config' and 'ranges'. If there are
-> > > > > > > > > not 'config', we can alloc a 1M(default) from top for 'config', then, 4K
-> > > > > > > > > (default) for msg, 64K( for IO if not IO region in 'ranges'), left is
-> > > > > > > > > mem region. We can config each region size by module parameter or drvdata.
-> > > > > > > > >
-> > > > > > > > > So we can deprecate 'config', even 'ranges'
-> > > > > > > >
-> > > > > > > > Not sure I fully understand what you mean. In anyway the "config" reg
-> > > > > > > > name is highly utilized by the DW PCIe IP-core instances. We can't
-> > > > > > > > deprecate it that easily. At least the backwards compatibility must be
-> > > > > > > > preserved. Moreover "addr_space" is also just a single value reg which
-> > > > > > > > won't solve a problem with the disjoint DW PCIe outbound iATU memory
-> > > > > > > > regions.
-> > > > > > > >
-> > > > > > > > The "ranges" property is a part of the DT specification.  The
-> > > > > > > > PCI-specific way of the property-based mapping is de-facto a standard
-> > > > > > > > too. So this can't be deprecated.
-> > > > > > > >
-> > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > * Rob, correct me if am wrong.
-> > > > > > > > > >
-> > > > > > > > > > On the other hand it's possible to have more than one disjoint CPU
-> > > > > > > > > > address region handled by the outbound iATU (especially if there is no
-> > > > > > > > > > AXI-bridge enabled, see XALI - application transmit client interfaces
-> > > > > > > > > > in HW manual). Thus having a single reg-property might get to be
-> > > > > > > > > > inapplicable in some cases. Thinking about that got me to an idea.
-> > > > > > > > > > What about just extending the PCIe "ranges" property flags
-> > > > > > > > > > (IORESOURCE_TYPE_BITS) with the new ones in this case indicating the
-> > > > > > > > > > TLP Msg mapping? Thus we can avoid creating app-specific reg-names and
-> > > > > > > > > > use the flag to define a custom memory range for the TLP messages
-> > > > > > > > > > generation. At some point it can be also utilized for the config-space
-> > > > > > > > > > mapping. What do you think?
-> > > > > > > > >
-> > > > > > > >
-> > > > > > > > > IORESOURCE_TYPE_BITS is 1f, Only 5bit. If extend IORESOURCE_TYPE_BITS,
-> > > > > > > > > all IORESOURCE_* bit need move. And it is actual MEMORY regain.
-> > > > > > > >
-> > > > > > > > No. The lowest four bits aren't flags but the actual value. They are
-> > > > > > > > retrieved from the PCI-specific memory ranges mapping:
-> > > > > > > > https://elinux.org/Device_Tree_Usage#PCI_Address_Translation
-> > > > > > > > https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_64.c#L141
-> > > > > > > > https://elixir.bootlin.com/linux/latest/source/arch/sparc/kernel/of_device_32.c#L78
-> > > > > > > > Currently only first four out of _sixteen_ values have been defined so
-> > > > > > > > far. So we can freely use some of the free values for custom TLPs,
-> > > > > > > > etc. Note the config-space is already defined by the ranges property
-> > > > > > > > having the 0x0 space code (see the first link above), but it isn't
-> > > > > > > > currently supported by the PCI subsystem. So at least that option can
-> > > > > > > > be considered as a ready-to-implement replacement for the "config"
-> > > > > > > > reg-name.
-> > > > > > > >
-> > > > > > >
-> > > > > > > Agree. But still, the driver has to support both options: "config" reg name and
-> > > > > > > "ranges", since ammending the binding would be an ABI break.
-> > > > > > >
-> > > > > > > > >
-> > > > > > > > > Or we can use IORESOURCE_BITS (0xff)
-> > > > > > > > >
-> > > > > > > > > /* PCI ROM control bits (IORESOURCE_BITS) */
-> > > > > > > > > #define IORESOURCE_ROM_ENABLE           (1<<0)  /* ROM is enabled, same as PCI_ROM_ADDRESS_ENABLE */
-> > > > > > > > > #define IORESOURCE_ROM_SHADOW           (1<<1)  /* Use RAM image, not ROM BAR */
-> > > > > > > > >
-> > > > > > > > > /* PCI control bits.  Shares IORESOURCE_BITS with above PCI ROM.  */
-> > > > > > > > > #define IORESOURCE_PCI_FIXED            (1<<4)  /* Do not move resource */
-> > > > > > > > > #define IORESOURCE_PCI_EA_BEI           (1<<5)  /* BAR Equivalent Indicator */
-> > > > > > > > >
-> > > > > > > > > we can add
-> > > > > > > > >
-> > > > > > > > > IORESOURCE_PRIV_WINDOWS                 (1<<6)
-> > > > > > > > >
-> > > > > > > > > I think previous method was more extendable. How do you think?
-> > > > > > > >
-> > > > > > > > IMO extending the PCIe "ranges" property semantics looks more
-> > > > > > > > promising, more flexible and more portable across various PCIe
-> > > > > > > > controllers. But the most importantly is what Rob and Bjorn think
-> > > > > > > > about that, not me.
-> > > > > > > >
-> > > > > > >
-> > > > > > > IMO, using the "ranges" property to allocate arbitrary memory region should be
-> > > > > > > the way forward, since it has almost all the info needed by the drivers to
-> > > > > > > allocate the memory regions.
-> > > > > > >
-> > > > > > > But for the sake of DT backwards compatiblity, we have to keep supporting the
-> > > > > > > existing reg entries (addr_space, et al.), because "ranges" is not a required
-> > > > > > > property for EP controllers.
-> > > > > >
-> > > > > > I don't know that its worth the effort to carry both. Maybe if it is
-> > > > > > useful on more than just DW host.
-> > > > > >
-> > > > > > I believe we had config space in ranges at some point on some
-> > > > > > binding and moved away from that. I forget the reasoning.
-> > > > >
-> > > > > I can alloc a 64k windows from IORESOURCE_MEM windows to do 'msg' windows
-> > > > > in dwc host driver in v4.
-> > > > >
-> > > > > But I think it is wonthful to discuss if we can extend of_map bits, add
-> > > > > more type beside CONFIG/IO/MEM/MEM64.
-> > > > >
-> > > > > https://elinux.org/Device_Tree_Usage#PCI_Address_Translation
-> > > > >
-> > > > > phys.hi cell: npt000ss bbbbbbbb dddddfff rrrrrrrr
-> > > > >
-> > > 
-> > > > > There are '000' before 'ss'.  If we use it as dwc private resource.
-> > > 
-> > > Frank, why do you mis-inform about the idea? The point was to use the
-> > > ranges property for:
-> > > 1. PCIe Config-space mapping.
-> > > 2. PCIe TLP messages region.
-> > > There is _nothing_ DWC-specific in the original suggestion. Case 1 has
-> > > already implicitly defined by the DT standard, see the link above (but
-> > > for some reason hasn't been implemented in the PCIe subsystem). Case 2
-> > > hasn't been determined, but could be seeing there are three unused
-> > > bits in the ss-code of the phys.hi cell. All of that can be used by
-> > > _any_ PCIe RC/EP device.
-> > > 
-> > > > 
-> > > > DWC (or any host controller) specific things? No!
-> > > 
-> > > Rob, could you please dive deeper in this thread? The idea is to use
-> > > the "ranges" property for the "config" (PCIe config space) and the
-> > > custom PCIe TLP messages regions.
+On Thu, Mar 07, 2024 at 12:05:42PM -0500, Frank Li wrote:
+> On Thu, Mar 07, 2024 at 05:57:29PM +0800, Xu Yang wrote:
+> > i.MX95 has a DDR PMU which is almostly same as i.MX93, it now supports
+> > read beat and write beat filter capabilities. This will add support for
+> > i.MX95 and enhance the driver to support specific filter handling for it.
 > > 
-> 
-> > I did in my prior response. Here, I was just making it clear that 
-> > something host controller specific is a non-starter as you did.
-> 
-> Not sure what exactly you meant by "host controller specific". Did you
-> mean a particular host-controller or all the host-controllers? I meant
-> that the "msg" range could be used by _any_ host-controller, but the
-> usage would be platform-specific indeed because the message-type depends on
-> the peripheral devices.
-> 
+> > Usage:
 > > 
-> > For config, we had some bindings that did this and we moved away from 
-> > it. I don't remember the details. Unless it's ECAM region, I don't think 
-> > using ranges makes any sense as how to use the region will still be host 
-> > specific.
-> 
-> Could you please elaborate why exactly the config-region would still
-> be host-specific? Strictly speaking the normal MEM or IO region is
-> also host-specific because what lays behind depends on the attached
-> device and the enumeration procedure. IMO the reason of not using the
-> 'ranges' for the config/ECAM space would be in opposite to what you
-> said.  Unlike the CPU-to-MEM/IO mapping the ECAM/config-space is a
-> pre-determined _linear_ space with in most of the case no need in
-> special space remapping (unless we would wish to map particular
-> peripheral device config-space). So normal "reg" is enough especially
-> seeing the config-space is a set of registers. (Please correct me if I
-> was wrong.)
-> 
+> > For read beat:
+> > ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt2,axi_mask=ID_MASK,axi_id=ID/
+> > ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt1,axi_mask=ID_MASK,axi_id=ID/
+> > ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt0,axi_mask=ID_MASK,axi_id=ID/
+> > eg: For edma2: perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_rd_beat_filt0,axi_mask=0x00f,axi_id=0x00c/
 > > 
-> > For TLP messages, do we have other hosts that could use ranges for them? 
+> > For write beat:
+> > ~# perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_wr_beat_filt,axi_mask=ID_MASK,axi_id=ID/
+> > eg: For edma2: perf stat -a -I 1000 -e imx9_ddr0/eddrtq_pm_wr_beat_filt,axi_mask=0x00f,axi_id=0x00c/
+> > 
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > 
+> > ---
+> > Changes in v2:
+> >  - put soc spefific axi filter events to drvdata according
+> >    to franks suggestions.
+> >  - adjust pmcfg axi_id and axi_mask config
+> > Changes in v3:
+> >  - no changes
+> > Changes in v4:
+> >  - only contain imx95 parts
+> > Changes in v5:
+> >  - improve imx95_ddr_perf_monitor_config()
+> >  - use write_relaxed to pair read_relaxed
+> > Changes in v6:
+> >  - no changes
+> > ---
+> >  drivers/perf/fsl_imx9_ddr_perf.c | 93 ++++++++++++++++++++++++++++++--
+> >  1 file changed, 90 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
+> > index 52234b97d0cb..a91267e2f5d8 100644
+> > --- a/drivers/perf/fsl_imx9_ddr_perf.c
+> > +++ b/drivers/perf/fsl_imx9_ddr_perf.c
+> > @@ -17,9 +17,19 @@
+> >  #define MX93_PMCFG1_RD_BT_FILT_EN	BIT(29)
+> >  #define MX93_PMCFG1_ID_MASK		GENMASK(17, 0)
+> >  
+> > +#define MX95_PMCFG1_WR_BEAT_FILT_EN	BIT(31)
+> > +#define MX95_PMCFG1_RD_BEAT_FILT_EN	BIT(30)
+> > +
+> >  #define PMCFG2				0x04
+> >  #define MX93_PMCFG2_ID			GENMASK(17, 0)
+> >  
+> > +#define PMCFG3				0x08
+> > +#define PMCFG4				0x0C
+> > +#define PMCFG5				0x10
+> > +#define PMCFG6				0x14
+> > +#define MX95_PMCFG_ID_MASK		GENMASK(9, 0)
+> > +#define MX95_PMCFG_ID			GENMASK(25, 16)
+> > +
+> >  /* Global control register affects all counters and takes priority over local control registers */
+> >  #define PMGC0		0x40
+> >  /* Global control register bits */
+> > @@ -77,13 +87,23 @@ static const struct imx_ddr_devtype_data imx93_devtype_data = {
+> >  	.identifier = "imx93",
+> >  };
+> >  
+> > +static const struct imx_ddr_devtype_data imx95_devtype_data = {
+> > +	.identifier = "imx95",
+> > +};
+> > +
+> >  static inline bool is_imx93(struct ddr_pmu *pmu)
+> >  {
+> >  	return pmu->devtype_data == &imx93_devtype_data;
+> >  }
+> >  
+> > +static inline bool is_imx95(struct ddr_pmu *pmu)
+> > +{
+> > +	return pmu->devtype_data == &imx95_devtype_data;
+> > +}
+> > +
+> >  static const struct of_device_id imx_ddr_pmu_dt_ids[] = {
+> > -	{.compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data},
+> > +	{ .compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data },
+> > +	{ .compatible = "fsl,imx95-ddr-pmu", .data = &imx95_devtype_data },
+> >  	{ /* sentinel */ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, imx_ddr_pmu_dt_ids);
+> > @@ -192,6 +212,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_ld_wiq_7, ID(2, 71)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_empty, ID(2, 72)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_trans_filt, ID(2, 73)),	/* imx93 specific*/
+> > +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_beat_filt, ID(2, 73)),	/* imx95 specific*/
+> >  
+> >  	/* counter3 specific events */
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_0, ID(3, 64)),
+> > @@ -204,6 +225,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_7, ID(3, 71)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_full, ID(3, 72)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_trans_filt, ID(3, 73)),	/* imx93 specific*/
+> > +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt2, ID(3, 73)),	/* imx95 specific*/
+> >  
+> >  	/* counter4 specific events */
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_0, ID(4, 64)),
+> > @@ -216,6 +238,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_7, ID(4, 71)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_ld_rdq2_rmw, ID(4, 72)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt, ID(4, 73)),	/* imx93 specific*/
+> > +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt1, ID(4, 73)),	/* imx95 specific*/
+> >  
+> >  	/* counter5 specific events */
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_0, ID(5, 64)),
+> > @@ -227,6 +250,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_6, ID(5, 70)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_7, ID(5, 71)),
+> >  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_ld_rdq1, ID(5, 72)),
+> > +	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt0, ID(5, 73)),	/* imx95 specific*/
+> >  
+> >  	/* counter6 specific events */
+> >  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_end_0, ID(6, 64)),
+> > @@ -263,6 +287,13 @@ ddr_perf_events_attrs_is_visible(struct kobject *kobj,
+> >  		!is_imx93(ddr_pmu))
+> >  		return 0;
+> >  
+> > +	if ((!strcmp(attr->name, "eddrtq_pm_wr_beat_filt") ||
+> > +		!strcmp(attr->name, "eddrtq_pm_rd_beat_filt2") ||
+> > +		!strcmp(attr->name, "eddrtq_pm_rd_beat_filt1") ||
+> > +		!strcmp(attr->name, "eddrtq_pm_rd_beat_filt0")) &&
+> > +		!is_imx95(ddr_pmu))
+> > +		return 0;
+> > +
+> >  	return attr->mode;
+> >  }
+> >  
+> > @@ -434,6 +465,57 @@ static void imx93_ddr_perf_monitor_config(struct ddr_pmu *pmu, int event,
+> >  	writel_relaxed(pmcfg2, pmu->base + PMCFG2);
+> >  }
+> >  
+> > +static void imx95_ddr_perf_monitor_config(struct ddr_pmu *pmu, int event,
+> > +					  int counter, int axi_id, int axi_mask)
+> > +{
+> > +	u32 pmcfg1, pmcfg, offset = 0;
+> > +
+> > +	pmcfg1 = readl_relaxed(pmu->base + PMCFG1);
+> > +
+> > +	if (event == 73) {
+> > +		switch (counter) {
+> > +		case 2:
+> > +			pmcfg1 |= MX95_PMCFG1_WR_BEAT_FILT_EN;
+> > +			offset = PMCFG3;
+> > +			break;
+> > +		case 3:
+> > +			pmcfg1 |= MX95_PMCFG1_RD_BEAT_FILT_EN;
+> > +			offset = PMCFG4;
+> > +			break;
+> > +		case 4:
+> > +			pmcfg1 |= MX95_PMCFG1_RD_BEAT_FILT_EN;
+> > +			offset = PMCFG5;
+> > +			break;
+> > +		case 5:
+> > +			pmcfg1 |= MX95_PMCFG1_RD_BEAT_FILT_EN;
+> > +			offset = PMCFG6;
+> > +			break;
+> > +		}
+> > +	} else {
+> > +		switch (counter) {
+> > +		case 2:
+> > +			pmcfg1 &= ~MX95_PMCFG1_WR_BEAT_FILT_EN;
+> > +			break;
+> > +		case 3:
+> > +		case 4:
+> > +		case 5:
+> > +			pmcfg1 &= ~MX95_PMCFG1_RD_BEAT_FILT_EN;
+> > +			break;
+> > +		}
+> > +	}
 > 
-> AFAICS the next controllers might also be able to generate the
-> messages via the outbound AT-memory:
-> Rockchip PCIe controller (see pcie-rockchip.h AXI_WRAPPER_* macros)
-> Cadence PCIe controller (see pcie-cadence.h CDNS_PCIE_AT_OB_REGION_DESC0_TYPE_* macros)
-> Mediatek PCIe Gen3 controller (see pcie-mediatek-gen3.c PCIE_ATR_TLP_TYPE() macro)
-> ...
-> although I am not absolutely sure.
+> Look like only if event = 73, FILTER need be set.
 > 
-> > Is there something in the PCIe spec that defines TLP as an address 
-> > space and what that address space looks like? IIRC, some hosts (Altera?) 
-> > just have a message sending interface and that includes config space 
-> > accesses.
+> How about
 > 
-> I already sited it in the message to Frank here:
-> https://lore.kernel.org/linux-pci/pprkba3ygxwv4lzieu5spqamcn2gzdcviv4kb2kzkzam4fbhit@6uqtmevzm5uj/
-> Here is an excerpt from there:
+> 	pmcfg1 &= ~(MX95_PMCFG1_WR_BEAT_FILT_EN | MX95_PMCFG1_RD_BEAT_FILT_EN);
+> 	if (event == 73)
+> 		switch()
+> 			...
 > 
-> < Note paragraph 2.1.1. of for instance the PCIe-4.0 spec:
-> < 
-> < 2.1.1  Address Spaces, Transaction Types, and Usage
-> < "Transactions form the basis for information transfer between a
-> < Requester and Completer. Four _address spaces_ are defined, and
-> < different Transaction types are defined, each with its own unique
-> < intended usage, as shown in Table 2-12."
-> < 
-> < Address Space     | Transaction Types    |  Basic Usage
-> < -------------------------------------------------------------------------
-> < Memory            | Read/Write           | Transfer data to/from a
-> <                   |                      | memory-mapped location
-> < I/O               | Read/Write           | Transfer data to/from an
-> <                   |                      | I/O-mapped location
-> < Configuration     | Read/Write           | Device Function config/setup
-> < _Message_         | Baseline (including  | From event signaling mechanism
-> <                   | Vendor–Defined)      | to general purpose messaging
-> < 
-> < So basically the PCIe-spec defines four _address spaces_. The
-> < _message_ space is one of them. Seeing the "ranges" DT-property is
-> < about the space-to-space mapping IMO there is nothing wrong with using
-> < it for the _message_ space mapping.
-> 
-> As you can see the MEM, IO, config and Message are defined as address
-> space. Looking at the message request description in the spec, there
-> can be various types of the messages. All of them are listed in "2.2.8
-> Message Request Rules". Some of them can be routed by _address_ or
-> _ID_ (BDF), but some of them can lack of any address/ID field. In
-> accordance with the "Table 2-17: Message Routing" footnote there is no
-> message requests defined at the moment with the Address-based routing.
-> In the meantime for the address-less messages there is no address
-> translation needs to be performed, thus having the ranges-based
-> mapping would be just pointless for them. But if we had a message
-> request defined with the address-based routing then it might have
-> required a mapping similar to the MEM and IO ones.
-> 
-> Anyway giving to all of that a second thought, I more-and-more getting
-> further away from my original idea of having the config and message
-> region mapped over the "ranges" property. There is no actual address
-> translation performed at least in the second cases. So using the "ranges"
-> property for it would be pointless indeed... ( But originally the idea
-> seemed very attractive seeing the PCIe-specific "ranges" property has
-> unused mapping type flags and permitted special address format...
-> 
-> 
-> Let's get back to the Frank work then. What would you suggest as a
-> good solution? There are two options at the moment:
-> 1. Define DWC-specific "msg" reg-name with a peace of the outbound
-> iATU space which would be used to generate the messages. (thus
-> implementing the same approach as being utilized for the config-space
-> mapping).
-> 2. Manually, in the driver, reserve a peace of the CPU-to-PCIe-MEM
-> "ranges" region and have it utilized for the message request TLPs
-> (implemented in this patch).
+> So you need "else" branch.
 
-link: https://lore.kernel.org/imx/20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com/
-
-> 
-> The later one seems less safe since the entire outbound iATU range
-> could be dedicated for some platform-specific means. So reserving
-> a peace of it will cause problems in those platforms.
-
-@Rob, @Bjorn
-
-Please help comments about options: 1 and 2
+Forget this one. My code have problem.
 
 Frank
 
 > 
-> -Serge(y)
 > 
+> > +
+> > +	writel_relaxed(pmcfg1, pmu->base + PMCFG1);
+> > +
+> > +	if (offset) {
+> > +		pmcfg = readl_relaxed(pmu->base + offset);
+> > +		pmcfg &= ~(FIELD_PREP(MX95_PMCFG_ID_MASK, 0x3FF) |
+> > +			   FIELD_PREP(MX95_PMCFG_ID, 0x3FF));
+> > +		pmcfg |= (FIELD_PREP(MX95_PMCFG_ID_MASK, axi_mask) |
+> > +			  FIELD_PREP(MX95_PMCFG_ID, axi_id));
+> > +		writel_relaxed(pmcfg, pmu->base + offset);
+> > +	}
+> > +}
+> > +
+> >  static void ddr_perf_event_update(struct perf_event *event)
+> >  {
+> >  	struct ddr_pmu *pmu = to_ddr_pmu(event->pmu);
+> > @@ -543,8 +625,13 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+> >  	hwc->idx = counter;
+> >  	hwc->state |= PERF_HES_STOPPED;
+> >  
+> > -	/* read trans, write trans, read beat */
+> > -	imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+> > +	if (is_imx93(pmu))
+> > +		/* read trans, write trans, read beat */
+> > +		imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+> > +
+> > +	if (is_imx95(pmu))
+> > +		/* write beat, read beat2, read beat1, read beat */
+> > +		imx95_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+> >  
+> >  	if (flags & PERF_EF_START)
+> >  		ddr_perf_event_start(event, flags);
+> > -- 
+> > 2.34.1
 > > 
-> > Rob
