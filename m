@@ -1,47 +1,47 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2061.outbound.protection.outlook.com [40.107.20.61])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2066.outbound.protection.outlook.com [40.107.20.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D259B5D
-	for <imx@lists.linux.dev>; Fri,  8 Mar 2024 19:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A0E5917C
+	for <imx@lists.linux.dev>; Fri,  8 Mar 2024 19:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709925108; cv=fail; b=WJoInTcCEl+L6+dcFXGonSYf+Qov9iqZASPxbssF51/RI3aAKvG04X7tUu5Xz1/audtJKEY5AoNxD8KV1jtM6Nn3+y4yr6FjHbTxqqkjZjf+LTPZliLsEpe/g/DJnPckbmEvCAPcMRDPxx4Zuy3Lutz9JsltlWgxQ4r6dhMWMok=
+	t=1709925993; cv=fail; b=L7ebx0vfm+43VzJ4XeGsjC9AiyJ8zPF0odevsxdO8i0x/Nj1whD3dScISZh4DPESsEssy2LEdNSm9+Q2NYtTTguf3e62vf8549zGJcBT4teCgPDmItzr2RmNKi32/lE4ZhgMoKbGTBtDqangPUsLZybq1yIwIE7zzZdXJOiNqOQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709925108; c=relaxed/simple;
-	bh=nbwIbRsHpjhVdgOu8mQxdHH5VpUoyegi2uGJz5NwBcw=;
+	s=arc-20240116; t=1709925993; c=relaxed/simple;
+	bh=7IAFTJkFjcYvMAXMo9SXxvmnbiihygdC+gqK92xFBW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=km0v351shnO34kJFdjmkX1WYgadC7ImJKNCVzE+JefDuLsh6vgsOdLwA2ti6YKkqolAHJHIAAJ41R8agy/E9ljjJYpvyXQ8HyOLul8qQu1G1ARFEdiy6pOU8Omhswr8sheP6VkruXxU8F9YiRkCKhDJw/eBB9P8xz/e6ywCYaSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=FeJ7rCBT; arc=fail smtp.client-ip=40.107.20.61
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qu1IsrgaQ3EK/ha3YFoLpUPiYRbtMNt6HqnjAOzXApCNZMA7OeIzswm+vtjJc/wIl0Fwr6X/rT3AYXBp9bzlKvyfcEmRT+AQ3CHMJ8qXRRHzZTDgdJ3KihIVvq9QkA3+BNvTUn7UyRvDTmggmOUCV3RlG502uXedpdc3xqQ4ccs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=HLDfPsLc; arc=fail smtp.client-ip=40.107.20.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="FeJ7rCBT"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="HLDfPsLc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ec0/ApShpKE1UO21NMWBqPip91My7YJv0F6QOmPabZe/jtmlt8lttov7+jSPwS8AHDhQHI2JgygSJiAcrfrw4vgqKKzlUTPwDSCFJ7OdU8vWTrMZpmpr1pBq5xe9/ETT4tIFCN28HjA4EVjlYkQ9vZle8vYa+1VBWRF8S6+ZQ7ESHqPv9jb06ACA3Grq5NdPELNs7tPwPoLm9w/QREOUqNq/WP7xIbPoEvaiMjSmWdSCFmRKVAHK8JLcWsv70Nx5VYDl73Yc/ElJQ2c239rn9x+S9y4+TBMSM9vMZs/qyucM4miq+MM6DoJHQyndOjnQBEHj5TA2gXLSsbLAtGwyMw==
+ b=Ru3UUUGCmJIfxUpnzLCGchm7b/K4elzwSH/fXP+rsF5Atm/dWcIWpJOmkBoDFXTJkSXhjjiQk5CX7LCdLALkRqWm+dYVSA8PKA5Qcs87jeVXr4oU6tnlFYcYAA1URJoCr/PacusEbEs0ZfP6zKtBdv7BBuenPlk8uxbC8m0hLXsiZ4JVNzQCTaQIuEHUSA4O4BNYbDEDJKBlBtlHlJmJpUzBz4LUURkDStyKRIbqxMpRk6uA83IBXZDFd7AK6ja9AZOOjIrJ9/du2TUadTHFjkL7Vlmxmu+yWKQGFqJS8XXkNgYf9z0XRAqh/OCH68Cm+16iun6yNxEmi9mgEBYW1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P/shYkFSPQCFmtRw8GMa2DZdUvaX3XK+N2FCFCD0FbI=;
- b=RJkQ6L1cF7w+uxYqYbYYn8JY5LWzNF6haZKPTbGXV2/X+l+AgsW3rRkJM1GhWOSu82a7gtd38zvfwYmCjDbD4BkJRwwaSHZEc45G0dWV83xr8aZOFDZuOfZWq10GpV8BXv6TXvCIYcANZwoqJ/Y4qGfFXSZD+sYp1l4NSvD6obbZlgwx9ecCFr91di/3O3yE2qTGOteIfG/z6v86fhNdFmoZys+29D5FpSILmwS2HMKs4tiS16zyEfTtcb8qpd6YgbDgiuSDMGMW/MMrKk618VTYpXbscgZ2axBLMVyE+3OKIV/dSvSCRZZztIq4y7g+YtYX5bOuHhy9G2MnTMoQPA==
+ bh=H3SQm+oio7QZ/H8IsFVXqh1PxaZ9rUG4cNrYAOw9C1I=;
+ b=OG55QVcjc+VGLXAuzEkI+gt2Nc4eKhNKyg12Od5QwrFFrO4J7dcjgoPpCi0WUeJ4FW01vp+W4VHOtz0Ay9cD+atcUeYAomu3LBEoyrULHBz4x+bfIDQYTWd7v/Jxv/8cnlFuDzZcjSKc0TF9Js3SEmy8I95zgkYUUW/3vUL4jiolRJvnCsC9gFZ/P7I9ZNsB2g8GCiUZl9AR7iECJ52WQMer6I6WEmZvjkdoCUUESKRT1qKq34y9/fCb6a4igZTXJdV56BGEnjkF10eHG+7BanivrihPi4Kc2C8u7KbmbCJS/c9P0pk+M9KV55RalN2ZOw7/Nv/wFxzo2kY4kyf6UA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P/shYkFSPQCFmtRw8GMa2DZdUvaX3XK+N2FCFCD0FbI=;
- b=FeJ7rCBT8gwelvoYbtZ75Vwoi6Yby1NETS/L5cUDVxe5PbbOlX3ZHeLMbdkqaQu1jY109Lr6NKs2mCGBQpsKiIyX4UvGsGKkapOwMhMN3IlCytPUfmcPw5qQxkkHpz8rz9dRg7xg62Nk6CsZGFVle8S4xcivvZ9STqX9xQHktnM=
+ bh=H3SQm+oio7QZ/H8IsFVXqh1PxaZ9rUG4cNrYAOw9C1I=;
+ b=HLDfPsLcB7XRM+AU1La35GQbUwtGe9yoRTNHLpVVbwhBCFy7ucEvvbVXNLP+ZGMzNZu5tdb1PWBOTa8DLP3f1V16xPcs3ug5Gmgi8q4u6JDYvxvM59+ugBPUvDRMuw03pPbWEWpnKHg3jbikvqjcID9xxX8kLn55XXDxoDngxAY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAWPR04MB9742.eurprd04.prod.outlook.com (2603:10a6:102:389::8) with
+ by AM8PR04MB7762.eurprd04.prod.outlook.com (2603:10a6:20b:241::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Fri, 8 Mar
- 2024 19:11:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.27; Fri, 8 Mar
+ 2024 19:26:29 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7362.024; Fri, 8 Mar 2024
- 19:11:42 +0000
-Date: Fri, 8 Mar 2024 14:11:34 -0500
+ 19:26:29 +0000
+Date: Fri, 8 Mar 2024 14:26:20 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Rob Herring <robh@kernel.org>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
@@ -56,16 +56,17 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Conor Dooley <conor.dooley@microchip.com>
 Subject: Re: [PATCH v6 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
  interrupt numbers
-Message-ID: <Zeti5mFUUh9UedAx@lizhi-Precision-Tower-5810>
+Message-ID: <ZetmXE4YooDYJgSM@lizhi-Precision-Tower-5810>
 References: <20240308-asrc_8qxp-v6-0-e08f6d030e09@nxp.com>
  <20240308-asrc_8qxp-v6-2-e08f6d030e09@nxp.com>
  <20240308181103.GA855753-robh@kernel.org>
  <ZetgiaZ1+wt5lCkB@lizhi-Precision-Tower-5810>
+ <Zeti5mFUUh9UedAx@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZetgiaZ1+wt5lCkB@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SJ0PR05CA0057.namprd05.prod.outlook.com
- (2603:10b6:a03:33f::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <Zeti5mFUUh9UedAx@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SJ0PR13CA0054.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,138 +75,155 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAWPR04MB9742:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bd0ae21-1d14-4818-86d1-08dc3fa3972a
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7762:EE_
+X-MS-Office365-Filtering-Correlation-Id: c099190a-456e-4825-e927-08dc3fa5a74b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	D6VVGZGdEUCQj3wAx84uL1x/BwDxFc2B+85Q80pC//A3rbrUf7Tyq3MelKvQi9OEUGRBvndaoUkkZIWxT9ntvMP/h5SKd7/vuOTxL8me42kjh3UpkWbybaPG+hWQTdywO8a139C5YpEoYcVXA/mah28GlZpTipB/jXGw2BSH55tyfVJsQQetm9+Mk+JRcj9AsgG161yRV22EN23MdWur+AJx0G8U0HGMucNcsi9l2d+IxIL9NcOpbMvyA5MmlGfNicqGk/sIAABSNuVKBKSwOn2ez1hjROgEaHE97RH0g4HqfT3Jw3zAEE5UqIaQCP4g7SyByG07V9G+U/brRv+0BiEjcM9OqedIbvAMcBGZewbJKnk1nhWvMKaPj2QDy4YvvzgPermtTPFoswMk7b17OvwHIXuyWSuRjE2qSC7Qb74lJjDLoefv0KH+7r+WkBLXpQ1rsDfPoVrLBGP7sVk2DJnpfQpuPs6e4jUpVmfU6y+/aynj5zO4jLn7fLHZgJcqqgouLlAFBTbLcPbgnGizfBYVTw+A1DiM34b6HFQx1f9GGH2BxrNXyT6yktVyXRsq6YwnVs44B7c6OP1ywbiKyBMtpXMCO48/oIHTkPUiLcxjOs+W0ge8lVBkuolJ+TNlVvW8rbrwruQgwGDaYbkVa/+5WFgvHo2FZbjMUV3PtdQ=
+	8TCwR4ysC58xB9EPGRZ2oIIYVGlSS+FkIjrhOu36Hb5qBLGaObPSzKGK8TFwM3DOB87zlvZ2mljkPcuCHrcWvpf2VLsuR8UOIv9Lwq68crcwoE4og5t/IB5Vwys+4jd0ZojLa2IJirRuqVQ0paQzzZQpIm+O2orFEsVxhZnYmU+y6DSsVcK90QsjGibeVxVRtx6KfvGenPk3XytamWsdulxYNW04Mmqe5fZTPacKtRze5QZEU8GW4jxs9nRH0XRSXv7zaaOqo0cSqH3GJe0ZszxjHKaEfQvr9YEzg8puryX6PIXpGjWQZRI/v9p1jWo/xfz+BWpx0H1FPaD10/PaG5EykPGIhdmHwpAiHhENMdbwvvXDXYrzIraDDN4m+0Zx1fVanM7bJIXgtVWDzrLeD+6xfOaNpZbn4THkUl8h/e0TuVbpJJaOLMlosdPTe0vW0iYDu+CYU4mwyZNH8ohIToMPCRgzyCVWraWjOhmAXFj3to1hXXGe7OssE9NHnmhkbu0F4ulZ557a3ZPy/wYtykn4jQGm6mn+9AnQa/CJNkaSbCtDzkaTuA4T8lPbNjqCU00nCXlvj/E0HZsxgI2bMTXPMno2gwQS5I0l6jc8YNlKqWhNnWHBtkTe3p+v+uywCF+DVv9M2nRyDpgYD1ixHpKznVXfGH4sjCI8LdYjPfY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(1800799015)(376005)(7416005)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(376005)(7416005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UPBRnFS1t0Um3plx8EEhjsWfsTOquEjRMFFFQiWIUwzArBc2HYtJxqF0vogf?=
- =?us-ascii?Q?gOg6UsuwKxoaV/xID/hxK+4qSbwRpHqYkQ8UjHHCv7dlQSWXFe6tF72uKvsV?=
- =?us-ascii?Q?j5NYrHkPUpcp2E6s2f71CBXQxRM8HschIOgo51ZNmhCau/bFmP7y+kaRpMvk?=
- =?us-ascii?Q?eC+2TZpDEuQNYXDJRiYUusm2n2k3KRRN3SpbcUXVkKYTE37ElULgw6+qXP1D?=
- =?us-ascii?Q?P53chY/QJsCbV7MmBqpYaFUm+wpU49vPJnkEZf2928OUov22Y6CF/3jAM7u+?=
- =?us-ascii?Q?L3l7H7sKO0j7FkCQgHDAg90wvhZSSN2WR2dsXEbc1YCIXSl4aUR5cL965/KQ?=
- =?us-ascii?Q?nrfFqy4jEbwTW5M6889wwjigl7GFzajct+xft6S1gIC/xgqQ/OBOwQPqHJZh?=
- =?us-ascii?Q?BYi+i3mfzdhxesLlj2v58NcxqFvDZjeqHVOKNkDxhQ2EZT4gN1PnoLWcp/M9?=
- =?us-ascii?Q?OubZhyu8ABJBw/F4ROoufFIM+lbSn1vXuVC1xrG/03uiwshaFzlsX56kal6v?=
- =?us-ascii?Q?YEWazlUFxkoChU6KBD6pV7P7CKz58QuRy4PuAPE77d8TY66l4ak/9HBCA/Uw?=
- =?us-ascii?Q?RL0xT379CNyqY0zHLEHTC1yay7dsDeKT8po2KwOGeXTpcKYL4M5URsXiDLLD?=
- =?us-ascii?Q?+n0jEa/wQVaJMPi1RQ9U/D9YYRzLJqcXV6sgd6iKp38COIn92xlzoFmD5kLk?=
- =?us-ascii?Q?1VLLRlFiIzHYg+xwO4gMIY0gnhlxLHr0eETMjGfpUwRwFTOwCKLu2vdk1GUD?=
- =?us-ascii?Q?dfoID/gLlJ3zYXoTgWDPQ67KKzs8riEQDt4exCpVHSMyVIIUgX5fociu8sg0?=
- =?us-ascii?Q?Siu+lTRTfNr9y2eceMzqvthqz+6Di+GQtB4CgzH9EMbgbMf6QTuzvU/Usp76?=
- =?us-ascii?Q?H6V3fTVeH19UOQ6YH3rZO3swVuEfRZnEuKPsrs+jAkKA0JGeXHZOuHStnMPJ?=
- =?us-ascii?Q?zoLdao0yKT/sGpTCp/p/rIpyqRNRDOTGwiHICRNuDk9Kp9DaTsGBs9dXDW+h?=
- =?us-ascii?Q?A8nsX7EzweRRrUsdfyuTAHqAmEPvPLmBFSp05e1QSDthT3+dWfBJU7GT6hCO?=
- =?us-ascii?Q?H32WF2dPBINPsbFBE7muCZK5yKnKX7nqZAxlEHOnY30Q/FIy8XXmB74xlaR3?=
- =?us-ascii?Q?nrCb8LdvZ8Jk5n7pwhbnYIYLUOpC1z9oWf3KhPxVNgRMZtejb36oTvbLorWE?=
- =?us-ascii?Q?DfVa2T0L2819zcxlU0LqIDliEsH/KVK9SPVCX87z1AyDBLwd552u72ra1QJ/?=
- =?us-ascii?Q?I8A0sOtmgD/A1XbPDStiFt0kUjvk4TxZEGVQ9UNnLm6M/L4Wf5MeM/uBdi42?=
- =?us-ascii?Q?O8ghTxERk5WUQztTBchlZfYl5fAo3x0vjvO9IV/fsyC6CQhPw5u37FW4WTF7?=
- =?us-ascii?Q?3SVJLHHgr2TRIFzS/IVYc2SLKYu0XycqdmwZv5y/yMXYN2GRKc+XDvwc7kjV?=
- =?us-ascii?Q?9+8w+qw7EVBb4w1ExEKaOB8yFPv3yz8328eXBqA02F1321f6BXjieQcq7IX1?=
- =?us-ascii?Q?5aYsTCERfKqYC0XCHKf4N+YEXLbnuSb2+958o37L2FPPvjJmKjSifok2YXv6?=
- =?us-ascii?Q?7KYA9W/iOqQ23NVYfI9DRQg0LOb7DQpFbTOiYxYg?=
+	=?us-ascii?Q?/oO7P4oOvNo5jqWDzSp14zBAqvs8tTHK5yhSH3fZSI++AADjkwNxC4hERDd8?=
+ =?us-ascii?Q?LdunAXnq1Y7O8DlZN0wFkGsnXl42s1a9W/dODMzkn6tMKkbRAINHL4m0b3GD?=
+ =?us-ascii?Q?h7fImrH/I453rtE3r9vzMSHzeGNzUltXC+d02ml+O8NcEltysQl+hKsZf/qY?=
+ =?us-ascii?Q?CKG+A/7Fc2bINvh1PeCajUfxbBp62tHfdJ/7luVEPfU8Xf52rioLqr46bllA?=
+ =?us-ascii?Q?Al0OV9Is+rfxZkFCN5Y3ecmxl41ulzVfXs9ASz0Oi9bkn8+IBzSN9TCgTcDB?=
+ =?us-ascii?Q?wDdp/odepj80tgKOWAshT0ZwQMbS8Wj930gdwO5NiBMueVGuS3z6G04lXGDD?=
+ =?us-ascii?Q?sTt8Rs9CSrC7xEWp0afkH0roeyDwcBLbP4MO5zENnbp05B09fmes8MMqBgcJ?=
+ =?us-ascii?Q?H7E0uDX6S9+J5GWHTX6lNcdcYwF1K0zMGVo/nMhqMSZtP6hzSVmddDlAT6/K?=
+ =?us-ascii?Q?JUfBdoL1E0ZpeGEkE9atCdFeLChNzicDKpsoH/6W8f1k30WeKvYwV2VvkdaI?=
+ =?us-ascii?Q?zmyKY68nnhFwT2latqYAIRjyN8criKU9u+jR7mopzp87lp4/Q+nXRp7g1i3j?=
+ =?us-ascii?Q?Rc781gQ8VUlqyGs1WQH+mAG18m1F4LFJ2SQlYxFyO22cwVGl50dE3S+yHF3X?=
+ =?us-ascii?Q?pmwBXRPJHdJ2agsEKjvL+5lNJ/4/FSFsp784aEnRrzCtHWIpG8wLHTcXto03?=
+ =?us-ascii?Q?fA0Mbn5WIf2hLx4PCjf8bs3/QXlieEHUtoeHfMhhwyBc5lUm2tds/7wozz2D?=
+ =?us-ascii?Q?jpaG9bPDh50dNCZuxNX00Q1uzmZf/SmNvW7Tdq/ATlfgugpTCPXlBS0wAgNW?=
+ =?us-ascii?Q?Gn9BhDilBzVb66YIWgqQLEjQstxk3GhnJ/ifdS9v7+zlq6RKqoBM4hX4Midd?=
+ =?us-ascii?Q?PlU//8R5XWjfNIM4OZ1wAxx9QRF65oxeqaUZIggwwBIQjexZ3wENUh2Gqrmx?=
+ =?us-ascii?Q?xD5TNpfSC/6II026CEshqI2nUXMo6jg41LJNbw8phcr2QhyLkKx1KsPZKek3?=
+ =?us-ascii?Q?yUbx/W1sSSFGhsLxZFDWz124XPovNBvrxkL9AhAnaVnm4OHj9GTx5fE5Z8iE?=
+ =?us-ascii?Q?gjhtEcLn/CYI83SpojROlVKjfkVA3pVwEsWPmdnfWeGhgk4fnTAu80SIx9XO?=
+ =?us-ascii?Q?BExOpx0+QufOmpvs+QXET2hMspEonEIIT3F9D7mworgW8xxs9hfuyuzObWD+?=
+ =?us-ascii?Q?Bioa5o1PTqeisn7hbQpFHshbOVid1FPtFvLjPdUICheaz27jG+EFILX9lcYC?=
+ =?us-ascii?Q?IpRROScs3H9kn4CSx4e9AUxTJUQ4qTkEh3xjcY/sbyG6bNsUyXif8mV0upvU?=
+ =?us-ascii?Q?8Vw9BJ4sGGJ2lQAJzfJhyBwgN+JN6axR6pVUDuv6jpLR2FQeCyPFHrnyjNHr?=
+ =?us-ascii?Q?K338sdoQhq+cF1XBWf1dwOoZIQYK0M/zlx/7dy9NBc1p3u7dvKhGTH62to9z?=
+ =?us-ascii?Q?UV/ljzchcI02TBKKA0wUts2U+QeUi4WcKk5+hv9XJRlxAalp4BCleAxKw0XL?=
+ =?us-ascii?Q?5SNxPq5N88aWLuyE3E/qINoxJMlY6ePDj4dJisOPfBS99BQL1MNea5gepVxb?=
+ =?us-ascii?Q?rkVQZtuRKh3d/3QcWJOr55LhR5pFxbzYri3tdQbk?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bd0ae21-1d14-4818-86d1-08dc3fa3972a
+X-MS-Exchange-CrossTenant-Network-Message-Id: c099190a-456e-4825-e927-08dc3fa5a74b
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 19:11:42.8984
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 19:26:28.9859
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J/kqAm5x0GhDArMYuhiMNlJHkrxsjnt9znsuyPddXDyQ7v8ooz2MEEqDBsjzEIA2ber1ykfn+YBlAMj2t+29Kg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9742
+X-MS-Exchange-CrossTenant-UserPrincipalName: g2oI9LNHmVrEco4r/vASVO30uQM61hZTPWVMwoiZ0WLJSJW3gYUi//vqu9d7gyoS33MTdgeuXg4/+iFsjgIAmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7762
 
-On Fri, Mar 08, 2024 at 02:01:29PM -0500, Frank Li wrote:
-> On Fri, Mar 08, 2024 at 12:11:03PM -0600, Rob Herring wrote:
-> > On Fri, Mar 08, 2024 at 10:30:51AM -0500, Frank Li wrote:
-> > > fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
-> > > have 1 interrupt.
+On Fri, Mar 08, 2024 at 02:11:34PM -0500, Frank Li wrote:
+> On Fri, Mar 08, 2024 at 02:01:29PM -0500, Frank Li wrote:
+> > On Fri, Mar 08, 2024 at 12:11:03PM -0600, Rob Herring wrote:
+> > > On Fri, Mar 08, 2024 at 10:30:51AM -0500, Frank Li wrote:
+> > > > fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
+> > > > have 1 interrupt.
+> > > > 
+> > > > Increase max interrupt number to 2 and add restriction for platforms except
+> > > > i.MX8QXP and i.MX8QM.
+> > > > 
+> > > > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > >  .../devicetree/bindings/sound/fsl,spdif.yaml        | 21 ++++++++++++++++++++-
+> > > >  1 file changed, 20 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > > > index 56f8c0c8afdea..a242f68f99f18 100644
+> > > > --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > > > +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
+> > > > @@ -31,7 +31,11 @@ properties:
+> > > >      maxItems: 1
+> > > >  
+> > > >    interrupts:
+> > > > -    maxItems: 1
+> > > > +    minItems: 1
+> > > > +    maxItems: 2
+> > > > +    items:
+> > > > +      - description: Combined or receive interrupt
+> > > > +      - description: Transmit interrupt
 > > > 
-> > > Increase max interrupt number to 2 and add restriction for platforms except
-> > > i.MX8QXP and i.MX8QM.
+> > > Test your patches please because this will have warnings. Or, you can 
+> > > put in *exactly* what I provided because this is not it.
 > > > 
-> > > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/sound/fsl,spdif.yaml        | 21 ++++++++++++++++++++-
-> > >  1 file changed, 20 insertions(+), 1 deletion(-)
+> > > If you continue to just toss crap at us at the rate you are, the DT 
+> > > maintainers will either just start ignoring your patches or require some 
+> > > trusted review by another NXP colleague first (offhand, not sure who 
+> > > that would be which is part of the problem).
+> > 
+> > Sorry, I run wrong command to check another dtb file. So have not catch
+> > this problem.
+> 
+> Strange when I run second time, spdif warning disappeared.
+> 
+> make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  CHECK_DTBS=y freescale/imx8dxl-evk.dtb
+>   DTC_CHK arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: /: fixedregulator@101: 'anyOf' conditional failed, one must be fixed:
+> 	'reg' is a required property
+> 	'ranges' is a required property
+> 	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: bus@34000000: clock-cm40-ipg: {'compatible': ['fixed-clock'], '#clock-cells': [[0]], 'clock-frequency': [[132000000]], 'clock-output-names': ['cm40_ipg_clk'], 'phandle': [[15]]} should not be valid under {'type': 'object'}
+> 	from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: intmux@37400000: 'power-domains' does not match any of the regexes: 'pinctrl-[0-9]+'
+> 	from schema $id: http://devicetree.org/schemas/interrupt-controller/fsl,intmux.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@591f0000: 'clocks' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@591f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@599f0000: 'clocks' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: serial@5a070000: Unevaluated properties are not allowed ('resets' was unexpected)
+> 	from schema $id: http://devicetree.org/schemas/serial/fsl-lpuart.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a1f0000: 'clocks' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a1f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a9f0000: 'clocks' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a9f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: bus@5b000000: clock-conn-bch: {'compatible': ['fixed-clock'], '#clock-cells': [[0]], 'clock-frequency': [[400000000]], 'clock-output-names': ['conn_bch_clk']} should not be valid under {'type': 'object'}
+> 	from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-apbh@5b810000: $nodename:0: 'dma-apbh@5b810000' does not match '^dma-controller(@.*)?$'
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
+> /home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-apbh@5b810000: 'clock-names', 'interrupt-names', 'power-domains' do not match any of the regexes: 'pinctrl-[0-9]+'
+> 	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
+> 
+
+I figured out what's happen. CHECK_DTB will check binding doc except
+example part. So I skip run dt_binding_check when I have not touch example
+part in dt-binding doc.
+
+The problem is
+step 1. run make CHECK_DTB=y freescale/imx8ulp-evk.dtb
+        Then I get some sai error, I found use wrong 8ulp-evk.dtb
+
+step 2. run make CHECK_DTBS=y freescale/imx8dxl-evk.dtb
+        Then tools not check dt_binding file again even there are warning.
+
+Do you have option let CHECK_DTBS to force check binding doc every time.
+
+Frank
+
+> 
+> 
+> > 
+> > Frank
+> > 
 > > > 
-> > > diff --git a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> > > index 56f8c0c8afdea..a242f68f99f18 100644
-> > > --- a/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> > > +++ b/Documentation/devicetree/bindings/sound/fsl,spdif.yaml
-> > > @@ -31,7 +31,11 @@ properties:
-> > >      maxItems: 1
-> > >  
-> > >    interrupts:
-> > > -    maxItems: 1
-> > > +    minItems: 1
-> > > +    maxItems: 2
-> > > +    items:
-> > > +      - description: Combined or receive interrupt
-> > > +      - description: Transmit interrupt
-> > 
-> > Test your patches please because this will have warnings. Or, you can 
-> > put in *exactly* what I provided because this is not it.
-> > 
-> > If you continue to just toss crap at us at the rate you are, the DT 
-> > maintainers will either just start ignoring your patches or require some 
-> > trusted review by another NXP colleague first (offhand, not sure who 
-> > that would be which is part of the problem).
-> 
-> Sorry, I run wrong command to check another dtb file. So have not catch
-> this problem.
-
-Strange when I run second time, spdif warning disappeared.
-
-make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  CHECK_DTBS=y freescale/imx8dxl-evk.dtb
-  DTC_CHK arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: /: fixedregulator@101: 'anyOf' conditional failed, one must be fixed:
-	'reg' is a required property
-	'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: bus@34000000: clock-cm40-ipg: {'compatible': ['fixed-clock'], '#clock-cells': [[0]], 'clock-frequency': [[132000000]], 'clock-output-names': ['cm40_ipg_clk'], 'phandle': [[15]]} should not be valid under {'type': 'object'}
-	from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: intmux@37400000: 'power-domains' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/interrupt-controller/fsl,intmux.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@591f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@591f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@599f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: serial@5a070000: Unevaluated properties are not allowed ('resets' was unexpected)
-	from schema $id: http://devicetree.org/schemas/serial/fsl-lpuart.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a1f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a1f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a9f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-controller@5a9f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: bus@5b000000: clock-conn-bch: {'compatible': ['fixed-clock'], '#clock-cells': [[0]], 'clock-frequency': [[400000000]], 'clock-output-names': ['conn_bch_clk']} should not be valid under {'type': 'object'}
-	from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-apbh@5b810000: $nodename:0: 'dma-apbh@5b810000' does not match '^dma-controller(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: dma-apbh@5b810000: 'clock-names', 'interrupt-names', 'power-domains' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
-
-
-
-> 
-> Frank
-> 
-> > 
-> > Rob
+> > > Rob
