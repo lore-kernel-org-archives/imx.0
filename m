@@ -1,61 +1,60 @@
 Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB38C3A1C9
-	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D73139855
+	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710156045; cv=none; b=KTQug2HXfkNnrd4ZjdGIE0sg2pkhu3BqkXhjRfhC+NO4iBSvhnRUfIMUP8bc8Bgqi1MekpgSo7xyY3XkGkt/OetHApimgYMel1Zu6/UOXJ05trs4q3e+jDk0AM9UiJFB94HE6ey25sey1bVsAt63lNHuHKF0ZjBIjZKzUayi2KQ=
+	t=1710156046; cv=none; b=WSJOSyJm+6fHqQa+jFuew0K6sppQn4uXpw6scA/DDRscTcRuN9l6UzQ079/xp7Ivyyzvj2AtAUh5TTFK+2ypSIjdGQIBNIsScTmQyBRlUikvv8u/8Lsv9Qg7vjqk0ac3kumR+4obqqVsFNkTmAVpJj+MC/+NMRElSe8/mH/sQUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710156045; c=relaxed/simple;
-	bh=otRF0WM2vzdwskj5zPMELQrxSXcHtXRqOyPOOstx8go=;
+	s=arc-20240116; t=1710156046; c=relaxed/simple;
+	bh=yY+O3A74gJfvweSEVBsGsRQtsdkU2oXgLZzLvkdvTv4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fAfoW1wSEjf65M9/rIbjBEaQ9Uvdz0PcH3YsUgpaYYw0nGu+M2WqyS/l3tnXBToTf6ZYl7K0XpEZk0Am4ny9kIUSq1Gar5QYWH7aYHvQa9ROgoGv7XkRf8dirapcyrrJP1Kz9I3YJYNHpNkuPfmj0R8lGqavw7kqwnAgNduu1LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Cz25+4DT; arc=none smtp.client-ip=209.85.208.172
+	 In-Reply-To:To:Cc; b=RWeuR3aFRWUPG7ygyrzdSYRUNUfXQO037eVJTnL/3pnMA/W/TzHjsMSybLAHJJfZ6rS2rlO6EueyZbic+jnVaYtOsAErUqXOHl8lGpcateAtXoJpjFK5g+2CHrnj5Jnts2LxrFbcUEJO1Ic0pKcqboth2uGDSS6Bum9vRo7bKgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L2S01CDU; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Cz25+4DT"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d27fef509eso68458991fa.3
-        for <imx@lists.linux.dev>; Mon, 11 Mar 2024 04:20:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L2S01CDU"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d21cdbc85bso66127891fa.2
+        for <imx@lists.linux.dev>; Mon, 11 Mar 2024 04:20:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710156042; x=1710760842; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1710156043; x=1710760843; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Y8Mz1SrrU5s0SvG5lNUUvBk8SH1QEwpuUJsxf2sSYp8=;
-        b=Cz25+4DTVGpCZQixARYnpJQ2qxiWJBmxikoU7yYdDcJjKV+ai8Y8hiv1git/5pXRJx
-         TuMqTsHh47ZiVw6WgOS9X/KAr9zTiNUHr0AGokASvrWYOLpDsHCiajfP1KT6dgb36pAn
-         UbNNNnLegiXeGhXEpS2vjPJsrlwZ/HFwEKC+cBjDZmnckqRQ2OEKziRsyv1v045RZWXU
-         ax5456O4qMW+fcdjz5PGmLPQxCzUbW2m2c0opfS6VSU48NQynYGSvbMzTOrB2lKoGW1i
-         x96p+KuvHhCQ/KLu3RJ+5JSNm2Rvbv6ijpc5E0iGfvx0unU9B+AY8vrDD2BdcqkaJvc9
-         q6Sg==
+        bh=Wz3UhJ4xYSdgm48WihXb5Ur775HB6HGFpy/cnlygSBk=;
+        b=L2S01CDUkgtOUGWPWzQN+7evL9eIZMleoPRA60OeaFZ+6xrRu2OdBdH6RcHwPym6d2
+         aLpdVUcnXJ92EM7Gu+c2NsUuQcv4q/AYi55WTBzPftcIU2mq8Fug13FkfTUeUjAoahwJ
+         9zpfd9zK8gb6xOEYRZTnKGe6YypGernn+n8y2WkDHRMsJ7DyX225/JvcUoufsUmdrtcS
+         v9Sxx3+nN0NIyz6TTaFgA88/QlSarIXX4erbwb+nGqA2pR8afl92umxXz4elWU8yxGtF
+         xfPE2C/xpr22ZwYMSmcIzmKHOmdegv1kJhIKShAyF6aKmPD51XuBHkFgT5oIHoAGg9Lq
+         Vy2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710156042; x=1710760842;
+        d=1e100.net; s=20230601; t=1710156043; x=1710760843;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y8Mz1SrrU5s0SvG5lNUUvBk8SH1QEwpuUJsxf2sSYp8=;
-        b=LSGkDauDv+lNZ9x08LCs6n6olY15cyFMuZB6gFZrmvuI3F08Fc8mKjQz6dWjABWlIq
-         VK8EILQ2PRUdmtzDyEWbDvh3nYBXBHqd5xPdP3RgGxouP4wCdWvK633ayT/jXKuPkmlx
-         uFBEAKutpdnMa0GFyvPWvElStVFBW8042Iw21ra+lhOrU+tWFT+sJPGKqmfJNb5xBUOh
-         7pbkPc6gNXL2rQJmTcvv3Ifj8mKjCgrwQeIc8quEWTPsHR4nsvWhdueykRxCyleqWqQD
-         x5vZMKRMDoyUlqJaW0R3a3i8dZaDkZ0YLt2hVbZMAdm5n8JGAzKd8S+KkCDaurCfF/ix
-         AYgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuYBT93Q2eH1RChP0IGAJjD5+Ec0FdX0cLpqj996b0vVX5nL7rZ6aYKhl2HWRK2mOo0r/hoO4HuvrxkaQTgmeb6UDW
-X-Gm-Message-State: AOJu0YyHZViNcnZvr32KXRa4qlBrWil1UffGKAF0m/sRe5a3vUIcX350
-	X4wxY3BhON37sG2iWTtdVbCZaqa3YNWLIMQNgouhi8JvLZdF48Xv1H+SyLATKWg=
-X-Google-Smtp-Source: AGHT+IGqAhe+1Se4Tmw4xu0A3Nkx9yGY4+FnsmQk4e2SdM2jX1oMyWDtYqtFTQ/d/Sc3k+n9g80tow==
-X-Received: by 2002:a2e:3306:0:b0:2d3:f352:3406 with SMTP id d6-20020a2e3306000000b002d3f3523406mr3846006ljc.46.1710156041996;
-        Mon, 11 Mar 2024 04:20:41 -0700 (PDT)
+        bh=Wz3UhJ4xYSdgm48WihXb5Ur775HB6HGFpy/cnlygSBk=;
+        b=scLTiWREUOotVaqqbjVSz7LNdIPetg8Rj0JYUo+GIVZdkDF0IWzeUmtRkclCZeWiKx
+         /C2+vShUWuhp1VnIuELfOaYt68WnHZx8hBIznD0evQRBW3epcCt/Nw54CI6l2pi94EFA
+         NmmEBYvrNl8aIce+q+HQrFbBXyy6VIokCqfYMEyF0PEiJabPbdjiNtpRZ3ifBJsOLw/v
+         TG4UP2jhVDwfum22jIybDVrmZcPd0FI3UXIStiy6Y60Ik6vRuOKQl1EOCxBrGBz+Zegz
+         b0sBDFtagZLQUJPqkjFkqEiggAyQN+gBx71mhoXw2x2JA2x0cx7RyrawyxY8DfE/dsUP
+         OJ8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ81EVlhOZlKo7vQjuYSkE/sGLg8VF2sZZ2PwvlUR+JrRgEKVvoyIUyTkQHI2zTrGBrpsdIVoAg3SdU7meCNJSbpoI
+X-Gm-Message-State: AOJu0YxGrj+YaeWDs6lsxj8IkV5EywBqkVHEHbcbeTv1KWXVZBEcU5Zx
+	qUL12gcCinOajbDUb4wEIeX0ut2KwQTbetOpMdOjh3aTA72MFn4RA6Qzt/jbHZU=
+X-Google-Smtp-Source: AGHT+IEcrnshK1w7qRhGX7J1qQFS8RoY/QO4JJhjPIx4w6CjPb4xuFxESOZluR6Yd9MQJXRSu/TXJg==
+X-Received: by 2002:a2e:8610:0:b0:2d4:251f:c151 with SMTP id a16-20020a2e8610000000b002d4251fc151mr3665506lji.46.1710156043032;
+        Mon, 11 Mar 2024 04:20:43 -0700 (PDT)
 Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id by10-20020a05651c1a0a00b002d2aa0b0d01sm1075200ljb.82.2024.03.11.04.20.41
+        by smtp.gmail.com with ESMTPSA id by10-20020a05651c1a0a00b002d2aa0b0d01sm1075200ljb.82.2024.03.11.04.20.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 04:20:41 -0700 (PDT)
+        Mon, 11 Mar 2024 04:20:42 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 11 Mar 2024 13:20:12 +0200
-Subject: [PATCH 04/12] drm/imx: parallel-display: drop edid override
- support
+Date: Mon, 11 Mar 2024 13:20:13 +0200
+Subject: [PATCH 05/12] drm/imx: ldb: drop custom EDID support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +63,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240311-drm-imx-cleanup-v1-4-e104f05caa51@linaro.org>
+Message-Id: <20240311-drm-imx-cleanup-v1-5-e104f05caa51@linaro.org>
 References: <20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org>
 In-Reply-To: <20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org>
 To: Philipp Zabel <p.zabel@pengutronix.de>, 
@@ -82,85 +81,98 @@ Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org,
  linux-arm-kernel@lists.infradead.org, 
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2276;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2635;
  i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=otRF0WM2vzdwskj5zPMELQrxSXcHtXRqOyPOOstx8go=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBl7ukDNBWN5PcXva2X3BynfIJxAxvscbxmupR6u
- Q+OGRG8YUWJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZe7pAwAKCRCLPIo+Aiko
- 1XJOB/4osTf+FfxlQ2fIHBLSA/xhZy3lpIvGKap6LB4bJ/znr81eejo3rbmP2tbHlcCb7m1jN69
- u0Uarv0On6KIWd+tfUJkhrVa/0L9s7ZKLd3qYdStycR4YOxJLrAZmjyzj2dqjWd05m5IlXNJpRS
- 95yIOp8ilWbKOzUp/n++/0QrfM6+ZfuTW76c9w1QolXh2IssHXKwKcWrWkpWsfC4QX5t+d3OIm6
- X1RFRKadRehNzHpmrp7zyFYtlBsHP/cgvEf6e/5a6RIZJAAtVN8PFOQdLOJ/WiqyXNE0ZIdQB7K
- R+YBQtQor6Cb68P6+ShVR3o7mkcMW0WiGg6Rgb7s5OS+1p29
+ bh=yY+O3A74gJfvweSEVBsGsRQtsdkU2oXgLZzLvkdvTv4=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBl7ukDC6SGkJoT7Ekr4PsAmo6dSoo+Gf1u0/3DJ
+ gwDjZoJ5MOJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZe7pAwAKCRCLPIo+Aiko
+ 1eKzCACTNs01xJGKPm5lsPlqv3CTCY8fSPtMKnuroBpExiZnViiBAeih4jx0cWvFr26CtQG5IrU
+ vyrmbCYeiaVx9uWqcEowRyXWnd/1/meuKQOtLzH4cpi5m9XG87ShQAIA9fJuAV01Fi14cE0WsaX
+ UTmqC85Yojt6AgOoBPLvrUc5Mbm2gGDYn/jEi0g7BqriqTuQUyrdm7+MP0ZjxZByGFX4/ZWPMOJ
+ 6P3N2KUmYFQ3wFe7faxji1b/pafP25ixxYdJLAZecg4sNjlTL1xL9uJKY5/D611m0rfnbVWdzCl
+ ycYVsgSfXOyYCEPyVWBWgA9ejuncjHd3kJFVaCnaZH98NizX
 X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-None of the in-kernel DT files ever used edid override with the
-fsl-imx-drm driver. In case the EDID needs to be specified manually, DRM
-core allows one to either override it via the debugfs or to load it via
-request_firmware by using DRM_LOAD_EDID_FIRMWARE. In all other cases
-EDID and/or modes are to be provided as a part of the panel driver.
-
-Drop support for the edid property.
+Bindings for the imx-ldb never allowed specifying the EDID in DT. None
+of the existing DT files use it. Drop it now in favour of using debugfs
+overrides or the drm.edid_firmware support.
 
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/gpu/drm/imx/ipuv3/parallel-display.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-index 70349739dd89..2d044ea1920a 100644
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -16,7 +16,6 @@
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
--#include <drm/drm_edid.h>
- #include <drm/drm_managed.h>
- #include <drm/drm_of.h>
- #include <drm/drm_panel.h>
-@@ -34,7 +33,6 @@ struct imx_parallel_display_encoder {
- 
- struct imx_parallel_display {
- 	struct device *dev;
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+index 71d70194fcbd..1924d8921c62 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+@@ -72,7 +72,6 @@ struct imx_ldb_channel {
+ 	struct device_node *child;
+ 	struct i2c_adapter *ddc;
+ 	int chno;
 -	void *edid;
- 	u32 bus_format;
- 	u32 bus_flags;
  	struct drm_display_mode mode;
-@@ -62,11 +60,6 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
+ 	int mode_valid;
+ 	u32 bus_format;
+@@ -142,13 +141,16 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
  	if (num_modes > 0)
  		return num_modes;
  
--	if (imxpd->edid) {
--		drm_connector_update_edid_property(connector, imxpd->edid);
--		num_modes = drm_add_edid_modes(connector, imxpd->edid);
--	}
--
- 	if (np) {
- 		struct drm_display_mode *mode = drm_mode_create(connector->dev);
- 		int ret;
-@@ -312,9 +305,7 @@ static int imx_pd_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
--	const u8 *edidp;
- 	struct imx_parallel_display *imxpd;
--	int edid_len;
- 	int ret;
- 	u32 bus_format = 0;
- 	const char *fmt;
-@@ -329,10 +320,6 @@ static int imx_pd_probe(struct platform_device *pdev)
- 	if (ret && ret != -ENODEV)
- 		return ret;
+-	if (!imx_ldb_ch->edid && imx_ldb_ch->ddc)
+-		imx_ldb_ch->edid = drm_get_edid(connector, imx_ldb_ch->ddc);
++	if (imx_ldb_ch->ddc) {
++		const struct drm_edid *edid = drm_edid_read_ddc(connector,
++								imx_ldb_ch->ddc);
  
--	edidp = of_get_property(np, "edid", &edid_len);
--	if (edidp)
--		imxpd->edid = devm_kmemdup(dev, edidp, edid_len, GFP_KERNEL);
+-	if (imx_ldb_ch->edid) {
+-		drm_connector_update_edid_property(connector,
+-							imx_ldb_ch->edid);
+-		num_modes = drm_add_edid_modes(connector, imx_ldb_ch->edid);
++		if (edid) {
++			drm_edid_connector_update(connector, edid);
++			drm_edid_free(edid);
++
++			return drm_edid_connector_add_modes(connector);
++		}
+ 	}
+ 
+ 	if (imx_ldb_ch->mode_valid) {
+@@ -553,7 +555,6 @@ static int imx_ldb_panel_ddc(struct device *dev,
+ 		struct imx_ldb_channel *channel, struct device_node *child)
+ {
+ 	struct device_node *ddc_node;
+-	const u8 *edidp;
+ 	int ret;
+ 
+ 	ddc_node = of_parse_phandle(child, "ddc-i2c-bus", 0);
+@@ -567,17 +568,10 @@ static int imx_ldb_panel_ddc(struct device *dev,
+ 	}
+ 
+ 	if (!channel->ddc) {
+-		int edid_len;
 -
- 	ret = of_property_read_string(np, "interface-pix-fmt", &fmt);
- 	if (!ret) {
- 		if (!strcmp(fmt, "rgb24"))
+ 		/* if no DDC available, fallback to hardcoded EDID */
+ 		dev_dbg(dev, "no ddc available\n");
+ 
+-		edidp = of_get_property(child, "edid", &edid_len);
+-		if (edidp) {
+-			channel->edid = kmemdup(edidp, edid_len, GFP_KERNEL);
+-			if (!channel->edid)
+-				return -ENOMEM;
+-		} else if (!channel->panel) {
++		if (!channel->panel) {
+ 			/* fallback to display-timings node */
+ 			ret = of_get_drm_display_mode(child,
+ 						      &channel->mode,
+@@ -744,7 +738,6 @@ static void imx_ldb_remove(struct platform_device *pdev)
+ 	for (i = 0; i < 2; i++) {
+ 		struct imx_ldb_channel *channel = &imx_ldb->channel[i];
+ 
+-		kfree(channel->edid);
+ 		i2c_put_adapter(channel->ddc);
+ 	}
+ 
 
 -- 
 2.39.2
