@@ -1,270 +1,285 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2085.outbound.protection.outlook.com [40.107.8.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2B63C460
-	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 11:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710156277; cv=fail; b=Dq1Lipo0IG/e9nviP4S/HooGp/cdFTvujuQU8h4yS5b/jVLdJrwJ36NHRrAZby0REvtCa5Jlr0LS6nPRH1THSbwP2h51/pG+m1KhxWa0YHM6koImEyYL/i7GUmOfL9lfLWVn90YVh+wuYrHU5aiADFmtbdWCv+8uqsH4I8KVKi8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710156277; c=relaxed/simple;
-	bh=Q2eLqGtbdtqnDMuL5jU5fgPfd756WXPUeGFWQy6iTCw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bWeMzU7GuGnrnyUgyXHMysM4SV8cbM4PB49KxK00JTPdhyUF/DniJZBVRIuBI8CQH6Mds3hcY2GLMJUogGq2lnzWDdIz9WDmu8kVC/nFIrOCmKQqe5c3VpPgMjmuxLLOs29R11UOQtYOMwN2IeJJOTxAafSxwnhLWxAkfEm/ajI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cZ+SNbAu; arc=fail smtp.client-ip=40.107.8.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870D63A1BE
+	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 11:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710156299; cv=none; b=qKZccILIheZFFfbCqtXv7gpwZYFOLo1T7bcM+cL/NEyxyKaLGEQUFjYIns6YqADK+qz6w4mFpk046OPGeFnKbDCywwsrpwQGeYiNJCTi+OL5NSzLMa6IgoIf3iiGsGejAP7ODgLBlHy+ujrFg5pzCBY8GY7rHg+2ExgsOuWXrNU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710156299; c=relaxed/simple;
+	bh=N9UtfBXWVg6XXA83MdMuDQOmpH9JbIBoGct16wva8Mw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wh4laRSP6PhKIRs/DFOAo28/f648W/upvmjtETrbutMFfGmx6cE7WsAZF+MhkOdfcGafVGsy4/n3MWfPZ2EwisiuA07mPpA8l2YurDVssPF/Y7RTd2IWxwDpGI8Heo7J20Im2aJK53XVMQTIEbSOSv8hfiKVYcVc16SZFEBGkJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HSJ+yN8J; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cZ+SNbAu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UTHDP4R3mM2rROHUadZlEoaEyG2gRmQipi0u+Id/WCuC7w8oTQBu3ymEkgPMg1eKYfdln+k/DTNI6TIIpvB4Cvs9H913c4bS+dMig4JlcEe8eXr1zoFJ9+ZN0Db1yEGXY3ghk3UkudrU4bjiBie0VrRrrrHBOJu6Cb37HM/+NO6ggkutwwlckqH4PGI3VbrYCQ90ZrAAJHIxEM1TkQ5CGoyRCQcr/oxLmOEbQHjkYE/ijpWTyLSPrlGf5av06ZG0kuOLYMYDL0jWk8MF5AVZFRXDjie7u8aOITtff9EcNV6cHpILemHlGPTb75f4uAD9Y75asz/bUXuIVDF31SP4+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LdLF19Jws4piMqTerCa0/qywk3QqGuWAVnD/OhUW/Es=;
- b=TzoTTn+KajDLC8muzuIplNUEIlG9sPDnmqcaDurLnc1MJuayhFAEmE98wlZ4OmlR7Y+LrY8qCNtz92bDDVUVHoArc6FQWRN9gqIjmAxglBWPZb2l1iB+cf9j032iztRdvdWVqpmickOg1Ti6b5iBuH6dAd3jbWYNuEqA0JRZDkO5tUgwch75V7qEEkBeZR4TRorPEcT9oSxWWN9q9AOmolP7GLcRnQd22jtiA3KOWxCQFX1XwWUQEXzGNNH1RkmZ3ocRoU7uq8+WkYlVqG6WZ3ao7hW5GdV19jPfeA/SJ+q3G/esnR233f/w4X1btSdK/HpSB9Isv/NtemCml4MXng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LdLF19Jws4piMqTerCa0/qywk3QqGuWAVnD/OhUW/Es=;
- b=cZ+SNbAub/cnV+B9aMX9TP99mKm0dxAM4jzZS4nt2c4XM27EoEecWby7ryDYp4NmZlLohHFvw5K1/cfgR2WpzMI3IuFRyvSVQmmlY7AigtwI2s+V9cpC1kE7TdDqwDsSA1IECJqevhRFp1GY8hDmDzypYWny4nZQXPiU+s2mr7M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9377.eurprd04.prod.outlook.com (2603:10a6:10:36b::13)
- by AS4PR04MB9507.eurprd04.prod.outlook.com (2603:10a6:20b:4ca::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
- 2024 11:24:29 +0000
-Received: from DB9PR04MB9377.eurprd04.prod.outlook.com
- ([fe80::b3d4:17c4:91b7:101d]) by DB9PR04MB9377.eurprd04.prod.outlook.com
- ([fe80::b3d4:17c4:91b7:101d%5]) with mapi id 15.20.7362.024; Mon, 11 Mar 2024
- 11:24:29 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: ping.bai@nxp.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 3/3] arm64: dts: imx93-11x11-evk: add pca9451a support
-Date: Mon, 11 Mar 2024 19:32:01 +0800
-Message-Id: <20240311113201.664252-4-joy.zou@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20240311113201.664252-1-joy.zou@nxp.com>
-References: <20240311113201.664252-1-joy.zou@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0025.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::12) To DB9PR04MB9377.eurprd04.prod.outlook.com
- (2603:10a6:10:36b::13)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HSJ+yN8J"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dc742543119so2527243276.0
+        for <imx@lists.linux.dev>; Mon, 11 Mar 2024 04:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710156296; x=1710761096; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=S0IsFe9y8t0EcHo4tcp8SMBDbuFs5ifF+Z+mZqRXXwk=;
+        b=HSJ+yN8JD1rRXw75J/KzKmO30DqBbNfrWlbdF2gDIcZsNhmGqo/Z7k3FoOwh4satuk
+         Qy7hZq7zqLjx5gEd22e3LRp/mrLhuNcUQECK09+No3PaacsU2TS2h0Mjow7LpXj4YUXz
+         iM6Fw/ooUSM2adZ1SW14kDt/s+m3etA4dbbwOWHksQ5nLLSlqGi0LQtXFTQ8io0bbWo4
+         xUk8+fZZDgxHEA23JPm2SFZf/KgtPivieG/V11QJP/Jcv/V4iZStYmzMHcycTKhDKv19
+         Y7vxoQr/ntqwfrVbzqEzxbmlld0jB7DFQROPJ6xO2TrFbYHIhiD6q1YEqkBacDuVp59V
+         74+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710156296; x=1710761096;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S0IsFe9y8t0EcHo4tcp8SMBDbuFs5ifF+Z+mZqRXXwk=;
+        b=KtA3iB4qVC4c4jMBb+Ypb8cUOj4wo4QRGEdIqN/iX2TS72+MNLk9kMcIGpCJSEVAIx
+         EH9Wn9razC82vjOF5h25a3DDlHQDM3nIYmqWnq8+IcSRFfhML4sJfGlfuL5dc0elHc1N
+         j4VihXAGmvY+rS3Jdxwki76gjOPvEZrRmZE0J9cLZQR/vcnEMUkeJTlGe41AH96th0ZA
+         BEozRTmoP7C0ykr/S/vB1e00ueYMZfRR9tiMQLID5BhJ8qitmvSStxSSWnb08n9SLVyC
+         TnbRgNogD/HUrNFJdXnsqRCa8JAXsT2IDYSRYNK4D6BuW81rln7DDA7Zf+jXFzZ10saa
+         hTWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXz+B4VSrCJtAYscNg163242wsxOS2rBURuxclaq8Y3WD+N+XovfZpHs2QSzzxvq+bWsubtpNl+1JHL2tfPvAib4VHX
+X-Gm-Message-State: AOJu0YwZAeekCao223JXHrunpElKxZp7GLre1kClVioJBW0AbsqXvx+i
+	UKrWhgyAtdBvG3E3be65Ikt/oY0VBBxcnXnFr8I0d1RuW5fuD+yxg3o408Jfaa01mIiTXBDwlUR
+	duytDOxleTMzjKGIZTeIld3qy4x6vHoBlygicbQ==
+X-Google-Smtp-Source: AGHT+IH6UM8A9Kfzf16Bc6glr4NWyGl0cEcRcD8zoWTvcHgtglC2mDiiwEZhjQ2RxH7iBK1Kah1MXY01ERDeTMOH6wE=
+X-Received: by 2002:a25:9907:0:b0:dc6:ff12:13d7 with SMTP id
+ z7-20020a259907000000b00dc6ff1213d7mr2732619ybn.60.1710156296453; Mon, 11 Mar
+ 2024 04:24:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9377:EE_|AS4PR04MB9507:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61ac28eb-854c-4706-53cd-08dc41bdd12c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	dwvyGBZCvoVN9jRT5tGBdErBKtvYKPiqtTiwWp86vdE7TngvZwKBtReADzXv701dQbYBSG+0cpT2UGtXsGi3sM86Tp2AekGvXVadB/tqCWKvPMliG/seOnlBzDbo4kowsonomjJe36jgm4jJhqt9YGt0wpw4IXB03cUDXuuCUIXrgcpDxva2DHWcq1VZdvkde06GwcMm7ZgtJxT2cPaej//k+sABCcoLsM+mO/QoK9g/qQ8ypPdISuqNEfNSwrKF9vQ5d1WJQ0+2UJ5vJhk6gTtiJCVX3UmzdhYWOE+husq3mSpw2t4TWt96GLKs4D5428zlDMC8ptvmdlQqeUtUbg2NKh6y8M3bmy8aFsCTMa3YwppfcH6HHOncS9xCaZpM+cxb8c+L7pt2sNePBtP8nGrQXBKxEAMWwNYBidHvW1+nPBodcpIAeDR/P+48yEXFcTjWWAZFZKrmYARLwpg8cwoFiEpF7iLFIcLMWrUl1PXYfa99tGEOl86EHMLSJfdHps95w3/5h0dEfLUEZECKOSCssnx84zMo99wfkjybSYR+E/5+ALruXKrEoRsMoCABCX+PGqWC0NQ116xTFVMuC1eRmXtMT49nKl/lA3A5wNdAEZ1hSmP49GApzlwnbUTff4aI/FNNTQtEvj2SBudPYlFML4Y9j0WQ1BS/YCk1CHwnagN5xveM/WgXmEX9WBMzkCvzWTCAqHnq6JuPB4rw3A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9377.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(1800799015)(7416005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qVLRDnLzch0oWj4YyiFn0+x/64K4rcj0UKTAjLlkQ/QD3kxUsulrCS62CrYX?=
- =?us-ascii?Q?2tkY3N554ZX7ANn3VroTYkQ+FYyTq5QXeyFc0j5WdClnSO1EnzxHKHp5YgXo?=
- =?us-ascii?Q?EaRV2NOit5wAJ9aebwTPYt9X9u3B+x9ZfZRXAvT+/ccWpX9sDUkjU2uDw3aL?=
- =?us-ascii?Q?b9ElRFyWzLNfIWUJauYn+xenJqQD2vQE/VFx/GsFKQejhVANATumWO+2Rh8o?=
- =?us-ascii?Q?HPzEOsG6TkA3gZdw+ce/o13eJrhHrn0mspXd8crdA5hqQi5k5jQurKHb4Fj2?=
- =?us-ascii?Q?eu4+4kUas7MRfMPijbb1Zh7SEYbfaHsBPTE7QmcYIxt1qLseNvk/j6+of1oH?=
- =?us-ascii?Q?sKK1x9S7kcTJ1wSfF59sCZZiYT8ysSBMH3c8P/CKmoD1yDTJn1mFKNPdNcU7?=
- =?us-ascii?Q?AnhBgBH+glR8qWHFrkPeE6ciw+NEgKbT0vEc10WanMTcdX+hpMsRp374io3h?=
- =?us-ascii?Q?4LPxJGQYCvQYaw5U8cHda9m6vsLW0YgVX19JGO4EAhb1wj9mV4J+um2TT3uJ?=
- =?us-ascii?Q?Pgr9EqOfu6oKrk7pB4ab7pVk2XFyfibnK35O8YaWWchPTq68ZRxt4WslXe+b?=
- =?us-ascii?Q?0ljjAbV3pqWq+X9A8VRkCvRMfrK2PFhBxKNAFl2vagduLBA99NpYhkRuugjZ?=
- =?us-ascii?Q?FAEeqjZUgASoOKivTYA82ALxEC7YmLTcAwC/5TsCzTtQQ7/kxCFu1StJKwjQ?=
- =?us-ascii?Q?Ym3VFXnKOmV/Ai3chr2w0DppNPCr7K4fAUDIt03ANJeSsEacB0sVW6DNJ0Nm?=
- =?us-ascii?Q?kdzdGGPUvuLjMlsvAe+4ezCe6f+I52ZJWq5+/6isJQry1wZT9ey7Qbt070E9?=
- =?us-ascii?Q?OKTpz772FyEQN7FWDq6ghRVKRH4Uw6gz4K7EkeVfuNLhWoWNWzTgn3sLhHd9?=
- =?us-ascii?Q?LZ8HSVUcSJ5wIN8EVFtHY+dnLugYZheXLYaFELW2fts6WxVkum85CbgisA1X?=
- =?us-ascii?Q?sjb6JHf7uCb3y2jU/zxW14nTrlpSlWdkYuwX9aVSOTo4/eeVQXUNqdrJXAMn?=
- =?us-ascii?Q?5sfxsjF14QKRK5K6wcFBc8947qVzaBCB/OIw/ny7S5w70EPBJymOmEVfM4GW?=
- =?us-ascii?Q?qz3Yu8Wnn53dDIUmJ83WI0ElaRxXh/r/w2SXIy3D792cicpbynB8wnZz+tFr?=
- =?us-ascii?Q?OLJp2RlM89cgqGz6dJpMAonyTyQqQ+Ea0TInUcEOM3IhBA5X2nBBVZ4j+IU0?=
- =?us-ascii?Q?Sfnnve5y8lTPOb8UMtDomKp4xIeYtPxBIJi7lElB5Xk57WUj6oPItGQ2XGfI?=
- =?us-ascii?Q?6YcmyYb2ZpDaYEgXtPbnqtCXTWu5rvXE3AZDBp9cCFQeNVklmPuuA7gpWsgj?=
- =?us-ascii?Q?W+HNsIbg+S2GcRthbd44FO1ngXmphr03Q8ZHkw8GRfZoqzAmanEbMfHum4KE?=
- =?us-ascii?Q?nxSP33MkVa17rlDRTTRO21ozq3Ug9g02Uea9l7yGq4hTgizHdKW1A3m4VfDd?=
- =?us-ascii?Q?JzbWhVbIkptyBs0DeidQICNDhoV2vhPj6B2S28i2c7YyyV23NhSdRTh1A9C+?=
- =?us-ascii?Q?DN0ay9Wjy10LbxYbflqTsXsH271Mi3J1FTuWLE3xfHmZmOzqY7e4MLCLoRi4?=
- =?us-ascii?Q?gMkeV5Ck0H1AY543JaBQ3NKea562B0l4XlBigQEw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61ac28eb-854c-4706-53cd-08dc41bdd12c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9377.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2024 11:24:29.5844
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9U9emIJS4AKF8Ot3b8tnLkgs/Z/bf8wfcY5Bllu3pGhPz3JRM6rIUYcmE8NdzS+U
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9507
+References: <20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org> <20240311-drm-imx-cleanup-v1-11-e104f05caa51@linaro.org>
+In-Reply-To: <20240311-drm-imx-cleanup-v1-11-e104f05caa51@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Mon, 11 Mar 2024 13:24:45 +0200
+Message-ID: <CAA8EJprf4RJageEa+-PTTR9WSFzkZfiQLnHqiEZG2uH79cqSBA@mail.gmail.com>
+Subject: Re: [PATCH 11/12] drm/imx: parallel-display: switch to
+ imx_legacy_bridge / drm_bridge_connector
+To: Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-Support pca9451a on imx93-11x11-evk.
+On Mon, 11 Mar 2024 at 13:20, Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
+>
+> Use the imx_legacy bridge driver instead of handlign display modes via
+> the connector node.
+>
+> All existing usecases already support attaching using
+> the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag, while the imx_legacy bridge
+> doesn't support creating connector at all. Switch to
+> drm_bridge_connector at the same time.
+>
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+>  drivers/gpu/drm/imx/ipuv3/parallel-display.c | 95 +++++-----------------------
+>  1 file changed, 17 insertions(+), 78 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+> index 9b60bfbd16e6..73a15259c93c 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+> +++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+> @@ -12,10 +12,9 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/videodev2.h>
+>
+> -#include <video/of_display_timing.h>
+> -
+>  #include <drm/drm_atomic_helper.h>
+>  #include <drm/drm_bridge.h>
+> +#include <drm/drm_bridge_connector.h>
+>  #include <drm/drm_managed.h>
+>  #include <drm/drm_of.h>
+>  #include <drm/drm_panel.h>
+> @@ -25,7 +24,6 @@
+>  #include "imx-drm.h"
+>
+>  struct imx_parallel_display_encoder {
+> -       struct drm_connector connector;
+>         struct drm_encoder encoder;
+>         struct drm_bridge bridge;
+>         struct imx_parallel_display *pd;
+> @@ -34,51 +32,14 @@ struct imx_parallel_display_encoder {
+>  struct imx_parallel_display {
+>         struct device *dev;
+>         u32 bus_format;
+> -       u32 bus_flags;
+> -       struct drm_display_mode mode;
+>         struct drm_bridge *next_bridge;
+>  };
+>
+> -static inline struct imx_parallel_display *con_to_imxpd(struct drm_connector *c)
+> -{
+> -       return container_of(c, struct imx_parallel_display_encoder, connector)->pd;
+> -}
+> -
+>  static inline struct imx_parallel_display *bridge_to_imxpd(struct drm_bridge *b)
+>  {
+>         return container_of(b, struct imx_parallel_display_encoder, bridge)->pd;
+>  }
+>
+> -static int imx_pd_connector_get_modes(struct drm_connector *connector)
+> -{
+> -       struct imx_parallel_display *imxpd = con_to_imxpd(connector);
+> -       struct device_node *np = imxpd->dev->of_node;
+> -       int num_modes;
+> -
+> -       if (np) {
+> -               struct drm_display_mode *mode = drm_mode_create(connector->dev);
+> -               int ret;
+> -
+> -               if (!mode)
+> -                       return -EINVAL;
+> -
+> -               ret = of_get_drm_display_mode(np, &imxpd->mode,
+> -                                             &imxpd->bus_flags,
+> -                                             OF_USE_NATIVE_MODE);
+> -               if (ret) {
+> -                       drm_mode_destroy(connector->dev, mode);
+> -                       return ret;
+> -               }
+> -
+> -               drm_mode_copy(mode, &imxpd->mode);
+> -               mode->type |= DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+> -               drm_mode_probed_add(connector, mode);
+> -               num_modes++;
+> -       }
+> -
+> -       return num_modes;
+> -}
+> -
+>  static const u32 imx_pd_bus_fmts[] = {
+>         MEDIA_BUS_FMT_RGB888_1X24,
+>         MEDIA_BUS_FMT_BGR888_1X24,
+> @@ -172,7 +133,6 @@ static int imx_pd_bridge_atomic_check(struct drm_bridge *bridge,
+>  {
+>         struct imx_crtc_state *imx_crtc_state = to_imx_crtc_state(crtc_state);
+>         struct drm_display_info *di = &conn_state->connector->display_info;
+> -       struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
+>         struct drm_bridge_state *next_bridge_state = NULL;
+>         struct drm_bridge *next_bridge;
+>         u32 bus_flags, bus_fmt;
+> @@ -184,10 +144,8 @@ static int imx_pd_bridge_atomic_check(struct drm_bridge *bridge,
+>
+>         if (next_bridge_state)
+>                 bus_flags = next_bridge_state->input_bus_cfg.flags;
+> -       else if (di->num_bus_formats)
+> -               bus_flags = di->bus_flags;
+>         else
+> -               bus_flags = imxpd->bus_flags;
+> +               bus_flags = di->bus_flags;
+>
+>         bus_fmt = bridge_state->input_bus_cfg.format;
+>         if (!imx_pd_format_supported(bus_fmt))
+> @@ -203,19 +161,16 @@ static int imx_pd_bridge_atomic_check(struct drm_bridge *bridge,
+>         return 0;
+>  }
+>
+> -static const struct drm_connector_funcs imx_pd_connector_funcs = {
+> -       .fill_modes = drm_helper_probe_single_connector_modes,
+> -       .destroy = imx_drm_connector_destroy,
+> -       .reset = drm_atomic_helper_connector_reset,
+> -       .atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
+> -       .atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
+> -};
+> +static int imx_pd_bridge_attach(struct drm_bridge *bridge,
+> +                               enum drm_bridge_attach_flags flags)
+> +{
+> +       struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
+>
+> -static const struct drm_connector_helper_funcs imx_pd_connector_helper_funcs = {
+> -       .get_modes = imx_pd_connector_get_modes,
+> -};
+> +       return drm_bridge_attach(bridge->encoder, imxpd->next_bridge, bridge, flags);
+> +}
+>
+>  static const struct drm_bridge_funcs imx_pd_bridge_funcs = {
+> +       .attach = imx_pd_bridge_attach,
+>         .atomic_reset = drm_atomic_helper_bridge_reset,
+>         .atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
+>         .atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
+> @@ -240,7 +195,6 @@ static int imx_pd_bind(struct device *dev, struct device *master, void *data)
+>                 return PTR_ERR(imxpd_encoder);
+>
+>         imxpd_encoder->pd = imxpd;
+> -       connector = &imxpd_encoder->connector;
+>         encoder = &imxpd_encoder->encoder;
+>         bridge = &imxpd_encoder->bridge;
+>
+> @@ -248,28 +202,14 @@ static int imx_pd_bind(struct device *dev, struct device *master, void *data)
+>         if (ret)
+>                 return ret;
+>
+> -       /* set the connector's dpms to OFF so that
+> -        * drm_helper_connector_dpms() won't return
+> -        * immediately since the current state is ON
+> -        * at this point.
+> -        */
+> -       connector->dpms = DRM_MODE_DPMS_OFF;
+> -
+>         bridge->funcs = &imx_pd_bridge_funcs;
+>         drm_bridge_attach(encoder, bridge, NULL, 0);
 
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
----
-Changes in v3:
-1. modify the voltages constraints according to the imx93 datasheet.
----
- .../boot/dts/freescale/imx93-11x11-evk.dts    | 112 ++++++++++++++++++
- 1 file changed, 112 insertions(+)
+This should have become DRM_BRIDGE_ATTACH_NO_CONNECTOR. I'll fix it
+for v2, if the overall series is thought to be acceptable.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-index 9921ea13ab48..1efaf1ca3504 100644
---- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-@@ -183,6 +183,105 @@ &wdog3 {
- 	status = "okay";
- };
- 
-+&lpi2c2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_lpi2c2>;
-+	pinctrl-1 = <&pinctrl_lpi2c2>;
-+	status = "okay";
-+
-+	pmic@25 {
-+		compatible = "nxp,pca9451a";
-+		reg = <0x25>;
-+		interrupt-parent = <&pcal6524>;
-+		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-+
-+		regulators {
-+			buck1: BUCK1 {
-+				regulator-name = "BUCK1";
-+				regulator-min-microvolt = <610000>;
-+				regulator-max-microvolt = <950000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+			};
-+
-+			buck2: BUCK2 {
-+				regulator-name = "BUCK2";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <670000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+			};
-+
-+			buck4: BUCK4{
-+				regulator-name = "BUCK4";
-+				regulator-min-microvolt = <1620000>;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck5: BUCK5{
-+				regulator-name = "BUCK5";
-+				regulator-min-microvolt = <1620000>;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck6: BUCK6 {
-+				regulator-name = "BUCK6";
-+				regulator-min-microvolt = <1060000>;
-+				regulator-max-microvolt = <1140000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo1: LDO1 {
-+				regulator-name = "LDO1";
-+				regulator-min-microvolt = <1620000>;
-+				regulator-max-microvolt = <1980000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo4: LDO4 {
-+				regulator-name = "LDO4";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <840000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo5: LDO5 {
-+				regulator-name = "LDO5";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+	};
-+
-+	pcal6524: gpio@22 {
-+		compatible = "nxp,pcal6524";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pcal6524>;
-+		reg = <0x22>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+
-+};
-+
- &iomuxc {
- 	pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
-@@ -239,6 +338,19 @@ MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B		0x31e
- 	};
- 
- 	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-+	pinctrl_lpi2c2: lpi2c2grp {
-+		fsl,pins = <
-+			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
-+			MX93_PAD_I2C2_SDA__LPI2C2_SDA			0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_pcal6524: pcal6524grp {
-+		fsl,pins = <
-+			MX93_PAD_CCM_CLKO2__GPIO3_IO27			0x31e
-+		>;
-+	};
-+
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = <
- 			MX93_PAD_SD1_CLK__USDHC1_CLK		0x15fe
+>
+> -       if (imxpd->next_bridge) {
+> -               ret = drm_bridge_attach(encoder, imxpd->next_bridge, bridge, 0);
+> -               if (ret < 0)
+> -                       return ret;
+> -       } else {
+> -               drm_connector_helper_add(connector,
+> -                                        &imx_pd_connector_helper_funcs);
+> -               drm_connector_init(drm, connector, &imx_pd_connector_funcs,
+> -                                  DRM_MODE_CONNECTOR_DPI);
+> -
+> -               drm_connector_attach_encoder(connector, encoder);
+> -       }
+> +       connector = drm_bridge_connector_init(drm, encoder);
+> +       if (IS_ERR(connector))
+> +               return PTR_ERR(connector);
+> +
+> +       drm_connector_attach_encoder(connector, encoder);
+>
+>         return 0;
+>  }
+> @@ -293,12 +233,11 @@ static int imx_pd_probe(struct platform_device *pdev)
+>
+>         /* port@1 is the output port */
+>         imxpd->next_bridge = devm_drm_of_get_bridge(dev, np, 1, 0);
+> +       if (imxpd->next_bridge == ERR_PTR(-ENODEV))
+> +               imxpd->next_bridge = devm_imx_drm_legacy_bridge(dev, np, DRM_MODE_CONNECTOR_DPI);
+>         if (IS_ERR(imxpd->next_bridge)) {
+>                 ret = PTR_ERR(imxpd->next_bridge);
+> -               if (ret != -ENODEV)
+> -                       return ret;
+> -
+> -               imxpd->next_bridge = NULL;
+> +               return ret;
+>         }
+>
+>         ret = of_property_read_string(np, "interface-pix-fmt", &fmt);
+>
+> --
+> 2.39.2
+>
+
+
 -- 
-2.37.1
-
+With best wishes
+Dmitry
