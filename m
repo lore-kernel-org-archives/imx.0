@@ -1,264 +1,368 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2089.outbound.protection.outlook.com [40.107.15.89])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C944125B2
-	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 08:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710147427; cv=fail; b=N1fHAc+jnBpn+Dk1EScTGvT+3DwWqLVdnCuqeNQqLG8hwn73B2o6fB1O8H1umx7Y5TntW4fNvO/cw1tALNkYqdSxvmuOaO4+YR2jH26Fduz8V/8/L77tIyEpZ7XDlMFXv+DG/C9xZBL8SF3zaRwuXnST8GEp29O/Z3V0mEUjeG4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710147427; c=relaxed/simple;
-	bh=11vFvnJrapUO7wB8ClPkBgnSJax146fBXmphjI7x7s8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=suXSX5kv1ofyVMpUAcswD2+7h/E6ZMUhoA5JitFerSDN/WR5OTv5HA0ftbr4SWo5+WdUG7Ka1BSOjx5f0C0sNkGPZVSIzduP3ylfUU/nDjj3TOMDsr8X8mTGyXCUMsTem/cVTFJDLQlJe+Ibx5hNlZJqU3HFcQtkNwYkFquwIQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=VaLMTYy4; arc=fail smtp.client-ip=40.107.15.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD0F13AC4
+	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 09:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710148224; cv=none; b=tkrPIYEeviQ5GCcGc5KjsfEhWnv9VFSAO0SkmjUkc+R9pR+Yw4fG5c0s0m/5xB28XfFQ/DKdlFqlpAcl1OrD7xmOiGYs5+RkIKVwJCLxj8hzzEAY/FqPj526mwZCKcqesZ7dIbe6Jsec5/WHaSvXWatzHJFezj3E4xzxl1aQgOo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710148224; c=relaxed/simple;
+	bh=SscYIF7vE+KO1fHQMXRIaw7eVNGaHMYtCtB+jMcDxYM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A0v5ZUifZEuI+Q+h6CRp/3CCH/NPU3Wml95a0lWpSvCXYpHUxcN9rplhxAAvDF5wbeAnYjHo26I4rdr9NecUogmLgBUQ7KBAxiybZ/OYPED9upqwkBAggRAyI+JrI0cdrQw9QSd23Bd0vDLELU5kiyTVaVg74AjAuoCuomGrsGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=TKzUSJ5g; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="VaLMTYy4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fDc+l1LlrQL1kTOm+SIo4GspVJp1hXvrDcnLVSXZ/H6Ht4KJ4KMakylvYuFHqhe2H9tN3hzdlONIYvX6vGXLVejl4mkJHsy0+LdB/L6ESt4A7jt5XbkfOq6vzUqGTfIKGbZArkrbyu54emWMqrWSK+HLuNiXru3Rpjo3xnkUsugPUpfsQ/sUScKuSK9OfHU9E2ANG0v5/4baSZae0bv+d4QGRW8d4VxPGALMubv0241ot1MCBv4wrY+d5wvliUELbunZngvnABJIzDsvsk1RXq21yrJakYh5p6KBUL1IgBGsDTsuXSCpFT+s+hfpmuo9Y40MjUSu7vmHGQ5jlVp0EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=11vFvnJrapUO7wB8ClPkBgnSJax146fBXmphjI7x7s8=;
- b=URbBLpoJ0+ODLKXjqK0xHTIRs/9DHLmD8E9V/EEn6Vuay4X42zcrVc8yFiIK3d7fgMWTl/POymVfik8rq8XJ0V9hKNoKc+e+gCqqGftj1xf1fO29RcDMYaqR1YWPVGpVN8HNRKipOLuv8cXpxEzkg5ttyVGbw2c5pzsl6kntZNMLghbcLaNkn2Sh0/Dwk8qOlBvMM725P1yk1D1x5NUfcW8eq7mFa01HAj0/ylHJ5p6rIRvqOv0pr+YcEqeBv7KEMt4IfW9vysIYJmS9LFU89DC6i+MMXpjstyukgFHVXpowvC9J04HBMC5F6oQe63Jm2By+j9ILQfTLdAeIz7+SDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=11vFvnJrapUO7wB8ClPkBgnSJax146fBXmphjI7x7s8=;
- b=VaLMTYy4GGAcGpA6YRX/UIG0J4mVc65Aunx190NGzgH3bh/8mmTB76NYtpCE30GfRZvpHb+G7DeYYfiiIluXeCljJgVsPeWfmrusR8j+YES8i4XoJmrclxCN79YMTrtRiZZ4dLvjAse2zxd3FS8AqX4mXn6+sjXgjw8g4jnfq/4=
-Received: from DB9PR04MB9377.eurprd04.prod.outlook.com (2603:10a6:10:36b::13)
- by AS8PR04MB8705.eurprd04.prod.outlook.com (2603:10a6:20b:428::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
- 2024 08:57:01 +0000
-Received: from DB9PR04MB9377.eurprd04.prod.outlook.com
- ([fe80::b3d4:17c4:91b7:101d]) by DB9PR04MB9377.eurprd04.prod.outlook.com
- ([fe80::b3d4:17c4:91b7:101d%5]) with mapi id 15.20.7362.024; Mon, 11 Mar 2024
- 08:57:01 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-CC: Jacky Bai <ping.bai@nxp.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-	"broonie@kernel.org" <broonie@kernel.org>, "robh+dt@kernel.org"
-	<robh+dt@kernel.org>, "krzysztof.kozlowski+dt@linaro.org"
-	<krzysztof.kozlowski+dt@linaro.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: RE: [EXT] Re: [PATCH v2 3/3] arm64: dts: imx93-11x11-evk: add
- pca9451a support
-Thread-Topic: [EXT] Re: [PATCH v2 3/3] arm64: dts: imx93-11x11-evk: add
- pca9451a support
-Thread-Index: AQHac4+/V612HNyNTUyEF9DciadzSbEyO4gAgAAA7lA=
-Date: Mon, 11 Mar 2024 08:57:01 +0000
-Message-ID:
- <DB9PR04MB9377D462E168D03012B3405FE1242@DB9PR04MB9377.eurprd04.prod.outlook.com>
-References: <20240311084758.377889-1-joy.zou@nxp.com>
- <20240311084758.377889-4-joy.zou@nxp.com>
- <20240311085138.aevfuhqrsl6g6xbx@pengutronix.de>
-In-Reply-To: <20240311085138.aevfuhqrsl6g6xbx@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR04MB9377:EE_|AS8PR04MB8705:EE_
-x-ms-office365-filtering-correlation-id: 08f3a3f1-ea7c-4c14-e133-08dc41a937a7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- yIySIBHndcgFYxEX9o6dsyxAnzvdA7LM7TPJ393livpnRYKx7+s5gKi9wKSgJweJvsY9uf0DAZV4ZGoe9EsyJZ2PUYNerl7KP0WnI6n/80AP7sZFmWT5iJ4yUdkDeLloGz0i/vihvttimC+n7GWfcXNxNcVdBHpRx3yoV3YDTigIx2ZV1tNr0mmrBklvwWLLo9SQhrL/seeiplMQ0416958CkQWyAS5rPEars7G2sNCWVo0T5yJTO5X4HiLoM8ogOnMu/gxrmUWlB4+bBDN+6QXVgRoykQTn38v61H/OWPHxaYEOsU6KZvu2haqVk0bnSGABS8nyhG0+x+fXIsiEqv/LaVcBYnkKOxwiTEjWxfn6lxpZ5ZVIBDrvNn/vmmDS80Tk7p8cgQwUMQ7qEjwxKEcHh/ywMQPr/npUt9bUhfnZKkzFMoSHm+0jspQq/zKLwyc09eOuYj9Mcxwt+iuFfn0bIu6Kzvrq7nEhm3yUDY1seL28tDaE4FKGlKtEhsXz1PDYqor5g82LV9n4ckmuGlSh9hxDwunas5ClCY0pH+88Zl2nkI7jWmGcB4QzbdfA1CI7NoRMbHoNxvFKJ6ViWSAe0n7WUFrRVWKfsSm67Owl+f9m6QiNcGehsMoN5BG9O12k9V/4b23PvwvpIkMVvgtliCdIoEKwRk1+Rt9oGmCQ4Hm773MJLkhMBRUYcWEa2Rz0Q1Cyzb+AHrEzPlarKA==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9377.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?NEFNZ1hDMTRpNzJDU29OUDN5WFVxRHFSYXVEVTRTMzIzSXVWSEVzbmE4QVVj?=
- =?gb2312?B?RG90dGhIRUhsb1NOVUhjck9xV2RtenAyU2twbERxZkN2dS9QMnFMb1RDUkhs?=
- =?gb2312?B?VUpqSVNGYi9vL2xhcCtwOHV1MVVtcEtXM1F2R3hGcnhWMkxHclNqVEZWa1Zz?=
- =?gb2312?B?NFFXb0lVVVZSRkU2VEZSNCtZSUg1MmhjRUJabHpsRFhWQjFCaHpia3N2M29E?=
- =?gb2312?B?c0ZFTGVKdXN4NHlsdWJjZDdQQnJSSjh0azh2YlpEMTkwM0NPbVJDNk1oU244?=
- =?gb2312?B?RDk3ZHFENVdGTHJlM3JhVHpvTElrMGxjVFlRYlZOTEpvTEVtM0craXRnWnFF?=
- =?gb2312?B?L0RrVksyMlRjOTdwYXppN21VaUdFOHN4WnUvbFBkdmF6UXdLR3FjZytxK2hu?=
- =?gb2312?B?SW81dkUreVZYeHg5MmJEWFN0VG12T0tlS284UDhhNVFxZ09FeXBFTzF3NDlR?=
- =?gb2312?B?QW5veDNqYjk0SlhIL0MrbkhHWGNFeHdPck8rTEVlMm9RdmhtQW1EamdMWFhi?=
- =?gb2312?B?aW1VeVJpK0hjanZVdjhLT3E3NFk4TmlFU2V4bXcyWVA0TkZGakt6eVdWRzF4?=
- =?gb2312?B?T0Y0Yjd6dmMvSmZHYU1oRlZXejV4UnJGSWdTZ0ttZnMwQTlIbEkzQkhEQXdF?=
- =?gb2312?B?VG5RTE04VHNYTEZUb2tSbW1wWXg2Zks5Z0ZtU2FNN0diMkswKzNINXR0bVFs?=
- =?gb2312?B?SUNFOWRKbUZNd1pWeHBRWkRvTlBqRjBwcDJDMWtBd3RjK0s1U0JDbkRmdFRo?=
- =?gb2312?B?cDNzZlRQWUFvN0N2ckFxTmV1M2lTL0hucDg3cFQ0ZkpiU3lHcGRnSndpYzFZ?=
- =?gb2312?B?VW92WFNpaUo3L2M5WkZVNlYxckJyZXdMQzhEMkg4T0hSTjczSE9USXFnYzRE?=
- =?gb2312?B?Sk9GNXZHM2ZjRCtaOXRxOWRaOXE0dEFTRUVtQTVWR2lxUzgveWp2cXdqK2dm?=
- =?gb2312?B?Zm8xdGhpSjVGSFpITmNBMXZpTU1zb3lWVnljSWorSG1yci9Dc1h1S0ZzaTJy?=
- =?gb2312?B?VWs0ZFM2ZVB4Z1dSOEdQZWcrM00zMVh4cmVLeDFRREROWWYxbGwvZHAyYW0r?=
- =?gb2312?B?QmhnSTNzeER5b1lVbDZtam5pVWNQbUQzemJCNUNtYUJ2M2ZKZkVOUzRsZFB6?=
- =?gb2312?B?T0RaNS9hT3BqRXdMcjBiWGt3b2EwQzdRVlBTRGdHUUdhSVN3OHE2eVdMTkwz?=
- =?gb2312?B?V0NrbGszMXpGNWIvUmdOa0dzZmVIVmkyaHV1SXVjSjRZVDdEdDZzYlMzK1pl?=
- =?gb2312?B?aVI1VGdTV1pHS2dxMkw5R0lZZEFtU1RHbTU4cFdsT29ZeFkyNjhCdlVOY0Ez?=
- =?gb2312?B?V3ZKYVNES3puLysyUS9xbEpOckdaUTRCNzRWdy9wcDdMNGppWE9SUEE4Tzhx?=
- =?gb2312?B?cU1MaXptYmFmTUlqQXo2VmZXbENFcFRydEJRUEd5U3dBL0NWMFkrNkV6WS91?=
- =?gb2312?B?K2tPVzk1ZVBXdDBZMk5FU1dWVDAvSzNveUloWFNUQ1A1SlFKU0h0QU9YSGlY?=
- =?gb2312?B?cXJFdWx5blF6eHNZeitlRFFkL2U3RUdNNFUzbE11RHJibGRlRC9jNzhIRk1S?=
- =?gb2312?B?Uld6Z2dKWEI3bUxoK0RmQmVOd0FlMEIvKzdSQ2RTMjRXT1I4akFtT2dOWCtD?=
- =?gb2312?B?dzB3WjdIa0ZXRGFMRUwwenVqMVRybHYxeUxRNmpUeTFnTFpncmdTZkp4RDBx?=
- =?gb2312?B?THRzZmpnOXdZVkF6ZWNhdzVKdFlZQ2hLTkpoajVzd29lbEI0Ni8xM1JMakJL?=
- =?gb2312?B?MkVMYW5MZ25Ya1FmMTk5aXFQd0FQaTIzR1Awc2dQQVZpY2s3L0Q3bTBma2Jj?=
- =?gb2312?B?Mzd3MFIvdld3NWdtbnpCV2ZDaGhoVDBkaW1XM1JYaS9Zd1MzSm1UNXlWTU9X?=
- =?gb2312?B?NlFIQm1wanpEdjJzRUVSdjB4NUZvTXNhajIzNlMrMlNnRmVhVHlkQW40UkJo?=
- =?gb2312?B?dkJNdTkxK2pnS2U1MzBxb3Z0aW9PeDd0akdTTnVPRWFBNDB6RjJBNkhaMTlC?=
- =?gb2312?B?UUZxN2lxTmt2Sy9SSWR5YkNLdHRtMmdZSkszanRKcmUyZnppMzNQUllXTDNM?=
- =?gb2312?B?LzdBbTRHY0xGTEd3b2thb1VWWXFaWjJ6bWxJN1ovZzZPSXhrR1JLWTVIOUdW?=
- =?gb2312?Q?b4/0=3D?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="TKzUSJ5g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1710148221; x=1741684221;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=uTDAPCzmuP745QYe+GL9SisGbnAWI4D5kd3ai+SNj1I=;
+  b=TKzUSJ5gH2v8G9ZlPNpAdnLSwFfqYdS2oB6DXan7fDmfiLODkHKrAoW5
+   Zdi3NTtX31iQczsv2agzMByveh41Xu4K/ogDiGYSHwQdFWvj9gcFeJuHO
+   MRhgg5c7Qao2v6+12Ce64dqwNrcmSOC7g4AgLaf8OwotwWuaymUI5V080
+   vZy9jJeIl3pghYimunWIGlx8EffDjXH/eThABJPdBlixmoX1+JAm8vJpX
+   DXxzYRKC0FYAifSZbdYLcEOJLHRNQ1V9WzNCk3G0LU2fRiulTs15k3Rxm
+   x98gvbRPV74q2vba7zhp2HeW0em6X1rSRRvcJ2ah6w+PHM6PwyEBLLHed
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.07,116,1708383600"; 
+   d="scan'208";a="35830094"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 11 Mar 2024 10:09:09 +0100
+Received: from steina-w.localnet (steina-w.tq-net.de [10.123.53.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 8BAE528007C;
+	Mon, 11 Mar 2024 10:09:08 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: ping.bai@nxp.com, lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, linux-arm-kernel@lists.infradead.org
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, Joy Zou <joy.zou@nxp.com>
+Subject: Re: [PATCH v2 2/3] regulator: pca9450: add pca9451a support
+Date: Mon, 11 Mar 2024 10:09:12 +0100
+Message-ID: <6027895.lOV4Wx5bFT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240311084758.377889-3-joy.zou@nxp.com>
+References: <20240311084758.377889-1-joy.zou@nxp.com> <20240311084758.377889-3-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9377.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08f3a3f1-ea7c-4c14-e133-08dc41a937a7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2024 08:57:01.8440
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NzsdOVoppinK9xY5dbNAwcov0TAhpc6P5ujNuLkABU4Z+p0FwDTbJsogmJW3rhPG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8705
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IE1hcmNvIEZlbHNjaCA8bS5m
-ZWxzY2hAcGVuZ3V0cm9uaXguZGU+DQo+IFNlbnQ6IDIwMjTE6jPUwjExyNUgMTY6NTINCj4gVG86
-IEpveSBab3UgPGpveS56b3VAbnhwLmNvbT4NCj4gQ2M6IEphY2t5IEJhaSA8cGluZy5iYWlAbnhw
-LmNvbT47IGxnaXJkd29vZEBnbWFpbC5jb207DQo+IGJyb29uaWVAa2VybmVsLm9yZzsgcm9iaCtk
-dEBrZXJuZWwub3JnOyBrcnp5c3p0b2Yua296bG93c2tpK2R0QGxpbmFyby5vcmc7DQo+IGNvbm9y
-K2R0QGtlcm5lbC5vcmc7IHNoYXduZ3VvQGtlcm5lbC5vcmc7IHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU7DQo+IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnOyBpbXhAbGlzdHMubGludXguZGV2OyBs
-aW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0KPiBkbC1saW51eC1pbXggPGxpbnV4LWlteEBu
-eHAuY29tPjsga2VybmVsQHBlbmd1dHJvbml4LmRlOw0KPiBmZXN0ZXZhbUBnbWFpbC5jb207IGxp
-bnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBbRVhUXSBSZTog
-W1BBVENIIHYyIDMvM10gYXJtNjQ6IGR0czogaW14OTMtMTF4MTEtZXZrOiBhZGQNCj4gcGNhOTQ1
-MWEgc3VwcG9ydA0KPiANCj4gQ2F1dGlvbjogVGhpcyBpcyBhbiBleHRlcm5hbCBlbWFpbC4gUGxl
-YXNlIHRha2UgY2FyZSB3aGVuIGNsaWNraW5nIGxpbmtzIG9yDQo+IG9wZW5pbmcgYXR0YWNobWVu
-dHMuIFdoZW4gaW4gZG91YnQsIHJlcG9ydCB0aGUgbWVzc2FnZSB1c2luZyB0aGUgJ1JlcG9ydA0K
-PiB0aGlzIGVtYWlsJyBidXR0b24NCj4gDQo+IA0KPiBIaSwNCj4gDQo+IE9uIDI0LTAzLTExLCBK
-b3kgWm91IHdyb3RlOg0KPiA+IFN1cHBvcnQgcGNhOTQ1MWEgb24gaW14OTMtMTF4MTEtZXZrLg0K
-PiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSm95IFpvdSA8am95LnpvdUBueHAuY29tPg0KPiA+IC0t
-LQ0KPiA+ICAuLi4vYm9vdC9kdHMvZnJlZXNjYWxlL2lteDkzLTExeDExLWV2ay5kdHMgICAgfCAx
-MTINCj4gKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxMTIgaW5zZXJ0
-aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
-YWxlL2lteDkzLTExeDExLWV2ay5kdHMNCj4gPiBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
-YWxlL2lteDkzLTExeDExLWV2ay5kdHMNCj4gPiBpbmRleCA5OTIxZWExM2FiNDguLjZjYjViN2Q3
-NDViZiAxMDA2NDQNCj4gPiAtLS0gYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg5
-My0xMXgxMS1ldmsuZHRzDQo+ID4gKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUv
-aW14OTMtMTF4MTEtZXZrLmR0cw0KPiA+IEBAIC0xODMsNiArMTgzLDEwNSBAQCAmd2RvZzMgew0K
-PiA+ICAgICAgIHN0YXR1cyA9ICJva2F5IjsNCj4gPiAgfTsNCj4gPg0KPiA+ICsmbHBpMmMyIHsN
-Cj4gPiArICAgICAjYWRkcmVzcy1jZWxscyA9IDwxPjsNCj4gPiArICAgICAjc2l6ZS1jZWxscyA9
-IDwwPjsNCj4gPiArICAgICBjbG9jay1mcmVxdWVuY3kgPSA8NDAwMDAwPjsNCj4gPiArICAgICBw
-aW5jdHJsLW5hbWVzID0gImRlZmF1bHQiLCAic2xlZXAiOw0KPiA+ICsgICAgIHBpbmN0cmwtMCA9
-IDwmcGluY3RybF9scGkyYzI+Ow0KPiA+ICsgICAgIHBpbmN0cmwtMSA9IDwmcGluY3RybF9scGky
-YzI+Ow0KPiA+ICsgICAgIHN0YXR1cyA9ICJva2F5IjsNCj4gPiArDQo+ID4gKyAgICAgcG1pY0Ay
-NSB7DQo+ID4gKyAgICAgICAgICAgICBjb21wYXRpYmxlID0gIm54cCxwY2E5NDUxYSI7DQo+ID4g
-KyAgICAgICAgICAgICByZWcgPSA8MHgyNT47DQo+ID4gKyAgICAgICAgICAgICBpbnRlcnJ1cHQt
-cGFyZW50ID0gPCZwY2FsNjUyND47DQo+ID4gKyAgICAgICAgICAgICBpbnRlcnJ1cHRzID0gPDEx
-IElSUV9UWVBFX0VER0VfRkFMTElORz47DQo+ID4gKw0KPiA+ICsgICAgICAgICAgICAgcmVndWxh
-dG9ycyB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGJ1Y2sxOiBCVUNLMSB7DQo+ID4gKyAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW5hbWUgPSAiQlVDSzEiOw0KPiA+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1taW4tbWljcm92b2x0ID0g
-PDY1MDAwMD47DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW1h
-eC1taWNyb3ZvbHQgPSA8MjIzNzUwMD47DQo+IA0KPiBDYW4geW91IHBsZWFzZSBjaGVjayB5b3Ug
-bGltaXRzIHdpdGggdGhlIEVFIGRlcGFydG1lbnQ/IFRoZSBjb25zdHJhaW50cyBpbiBhDQo+IERU
-UyBmaWxlIHNob3VsZCByZWZsZWN0IHRoZSBib2FyZCBjb25zdHJhaW50cyBhbmQgbm90IHRoZSBQ
-TUlDIGNvbnRyYWludHMuDQpPa2F5LCBJIHdpbGwgY2hlY2sgYW5kIG1vZGlmeSB0aGUgY29uc3Ry
-YWludHMuDQpUaGFuayB5b3UgdmVyeSBtdWNoIQ0KQlINCkpveSBab3UNCj4gDQo+IFJlZ2FyZHMs
-DQo+ICAgTWFyY28NCj4gDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxh
-dG9yLWJvb3Qtb247DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9y
-LWFsd2F5cy1vbjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3It
-cmFtcC1kZWxheSA9IDwzMTI1PjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgfTsNCj4gPiAr
-DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGJ1Y2syOiBCVUNLMiB7DQo+ID4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW5hbWUgPSAiQlVDSzIiOw0KPiA+ICsgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1taW4tbWljcm92b2x0ID0gPDYwMDAw
-MD47DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW1heC1taWNy
-b3ZvbHQgPSA8MjE4NzUwMD47DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVn
-dWxhdG9yLWJvb3Qtb247DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxh
-dG9yLWFsd2F5cy1vbjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0
-b3ItcmFtcC1kZWxheSA9IDwzMTI1PjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgfTsNCj4g
-PiArDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGJ1Y2s0OiBCVUNLNHsNCj4gPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItbmFtZSA9ICJCVUNLNCI7DQo+ID4gKyAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW1pbi1taWNyb3ZvbHQgPSA8NjAw
-MDAwPjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItbWF4LW1p
-Y3Jvdm9sdCA9IDwzNDAwMDAwPjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBy
-ZWd1bGF0b3ItYm9vdC1vbjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1
-bGF0b3ItYWx3YXlzLW9uOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICB9Ow0KPiA+ICsNCj4g
-PiArICAgICAgICAgICAgICAgICAgICAgYnVjazU6IEJVQ0s1ew0KPiA+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1uYW1lID0gIkJVQ0s1IjsNCj4gPiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw2MDAwMDA+Ow0K
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1tYXgtbWljcm92b2x0
-ID0gPDM0MDAwMDA+Ow0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRv
-ci1ib290LW9uOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1h
-bHdheXMtb247DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIH07DQo+ID4gKw0KPiA+ICsgICAg
-ICAgICAgICAgICAgICAgICBidWNrNjogQlVDSzYgew0KPiA+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHJlZ3VsYXRvci1uYW1lID0gIkJVQ0s2IjsNCj4gPiArICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICByZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw2MDAwMDA+Ow0KPiA+ICsg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1tYXgtbWljcm92b2x0ID0gPDM0
-MDAwMDA+Ow0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1ib290
-LW9uOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZ3VsYXRvci1hbHdheXMt
-b247DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIH07DQo+ID4gKw0KPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICBsZG8xOiBMRE8xIHsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICByZWd1bGF0b3ItbmFtZSA9ICJMRE8xIjsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICByZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDwxNjAwMDAwPjsNCj4gPiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwzMzAwMDAwPjsN
-Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItYm9vdC1vbjsNCj4g
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItYWx3YXlzLW9uOw0KPiA+
-ICsgICAgICAgICAgICAgICAgICAgICB9Ow0KPiA+ICsNCj4gPiArICAgICAgICAgICAgICAgICAg
-ICAgbGRvNDogTERPNCB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxh
-dG9yLW5hbWUgPSAiTERPNCI7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVn
-dWxhdG9yLW1pbi1taWNyb3ZvbHQgPSA8ODAwMDAwPjsNCj4gPiArICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICByZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwzMzAwMDAwPjsNCj4gPiArICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItYm9vdC1vbjsNCj4gPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICByZWd1bGF0b3ItYWx3YXlzLW9uOw0KPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICB9Ow0KPiA+ICsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgbGRvNTog
-TERPNSB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW5hbWUg
-PSAiTERPNSI7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLW1p
-bi1taWNyb3ZvbHQgPSA8MTgwMDAwMD47DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgcmVndWxhdG9yLW1heC1taWNyb3ZvbHQgPSA8MzMwMDAwMD47DQo+ID4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgcmVndWxhdG9yLWJvb3Qtb247DQo+ID4gKyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgcmVndWxhdG9yLWFsd2F5cy1vbjsNCj4gPiArICAgICAgICAgICAgICAg
-ICAgICAgfTsNCj4gPiArICAgICAgICAgICAgIH07DQo+ID4gKyAgICAgfTsNCj4gPiArDQo+ID4g
-KyAgICAgcGNhbDY1MjQ6IGdwaW9AMjIgew0KPiA+ICsgICAgICAgICAgICAgY29tcGF0aWJsZSA9
-ICJueHAscGNhbDY1MjQiOw0KPiA+ICsgICAgICAgICAgICAgcGluY3RybC1uYW1lcyA9ICJkZWZh
-dWx0IjsNCj4gPiArICAgICAgICAgICAgIHBpbmN0cmwtMCA9IDwmcGluY3RybF9wY2FsNjUyND47
-DQo+ID4gKyAgICAgICAgICAgICByZWcgPSA8MHgyMj47DQo+ID4gKyAgICAgICAgICAgICBncGlv
-LWNvbnRyb2xsZXI7DQo+ID4gKyAgICAgICAgICAgICAjZ3Bpby1jZWxscyA9IDwyPjsNCj4gPiAr
-ICAgICAgICAgICAgIGludGVycnVwdC1jb250cm9sbGVyOw0KPiA+ICsgICAgICAgICAgICAgI2lu
-dGVycnVwdC1jZWxscyA9IDwyPjsNCj4gPiArICAgICAgICAgICAgIGludGVycnVwdC1wYXJlbnQg
-PSA8JmdwaW8zPjsNCj4gPiArICAgICAgICAgICAgIGludGVycnVwdHMgPSA8MjcgSVJRX1RZUEVf
-TEVWRUxfTE9XPjsNCj4gPiArICAgICB9Ow0KPiA+ICsNCj4gPiArfTsNCj4gPiArDQo+ID4gICZp
-b211eGMgew0KPiA+ICAgICAgIHBpbmN0cmxfZXFvczogZXFvc2dycCB7DQo+ID4gICAgICAgICAg
-ICAgICBmc2wscGlucyA9IDwNCj4gPiBAQCAtMjM5LDYgKzMzOCwxOSBAQCBNWDkzX1BBRF9EQVBf
-VENMS19TV0NMS19fTFBVQVJUNV9DVFNfQg0KPiAweDMxZQ0KPiA+ICAgICAgIH07DQo+ID4NCj4g
-PiAgICAgICAvKiBuZWVkIHRvIGNvbmZpZyB0aGUgU0lPTiBmb3IgZGF0YSBhbmQgY21kIHBhZCwg
-cmVmZXIgdG8NCj4gPiBFUlIwNTIwMjEgKi8NCj4gPiArICAgICBwaW5jdHJsX2xwaTJjMjogbHBp
-MmMyZ3JwIHsNCj4gPiArICAgICAgICAgICAgIGZzbCxwaW5zID0gPA0KPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICBNWDkzX1BBRF9JMkMyX1NDTF9fTFBJMkMyX1NDTA0KPiAweDQwMDAwYjllDQo+
-ID4gKyAgICAgICAgICAgICAgICAgICAgIE1YOTNfUEFEX0kyQzJfU0RBX19MUEkyQzJfU0RBDQo+
-IDB4NDAwMDBiOWUNCj4gPiArICAgICAgICAgICAgID47DQo+ID4gKyAgICAgfTsNCj4gPiArDQo+
-ID4gKyAgICAgcGluY3RybF9wY2FsNjUyNDogcGNhbDY1MjRncnAgew0KPiA+ICsgICAgICAgICAg
-ICAgZnNsLHBpbnMgPSA8DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIE1YOTNfUEFEX0NDTV9D
-TEtPMl9fR1BJTzNfSU8yNw0KPiAweDMxZQ0KPiA+ICsgICAgICAgICAgICAgPjsNCj4gPiArICAg
-ICB9Ow0KPiA+ICsNCj4gPiAgICAgICBwaW5jdHJsX3VzZGhjMTogdXNkaGMxZ3JwIHsNCj4gPiAg
-ICAgICAgICAgICAgIGZzbCxwaW5zID0gPA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICBNWDkz
-X1BBRF9TRDFfQ0xLX19VU0RIQzFfQ0xLDQo+IDB4MTVmZQ0KPiA+IC0tDQo+ID4gMi4zNy4xDQo+
-ID4NCj4gPg0KPiA+DQo=
+Hi,
+
+thanks for the update.
+
+Am Montag, 11. M=E4rz 2024, 09:47:56 CET schrieb Joy Zou:
+> Adding support for pmic pca9451a.
+>=20
+> This patch support old and new pmic pca9451a. The new pmic trimed BUCK1.
+> The default value of Toff_Deb is used to distinguish the old and new pmic.
+
+This section doesn't apply anymore. Please remove it.
+
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+> Changes in v2:
+> 1. remove the old part support because the old part only is used for samp=
+le
+> and is diffcult to distinguish old and new part. so drop old part.
+> 2. remove the unnecessary marco definition in the file pca9450.h.
+> ---
+>  drivers/regulator/pca9450-regulator.c | 197 +++++++++++++++++++++++++-
+>  include/linux/regulator/pca9450.h     |   1 +
+>  2 files changed, 195 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pc=
+a9450-regulator.c
+> index 2ab365d2749f..50c324e275b5 100644
+> --- a/drivers/regulator/pca9450-regulator.c
+> +++ b/drivers/regulator/pca9450-regulator.c
+> @@ -103,7 +103,15 @@ static const struct regulator_ops pca9450_ldo_regula=
+tor_ops =3D {
+>   * 0.60 to 2.1875V (12.5mV step)
+>   */
+>  static const struct linear_range pca9450_dvs_buck_volts[] =3D {
+> -	REGULATOR_LINEAR_RANGE(600000,  0x00, 0x7F, 12500),
+> +	REGULATOR_LINEAR_RANGE(600000, 0x00, 0x7F, 12500),
+> +};
+
+That's an unrelated change.
+
+> +/*
+> + * BUCK1/3
+> + * 0.65 to 2.2375V (12.5mV step)
+> + */
+> +static const struct linear_range pca9451a_dvs_buck_volts[] =3D {
+> +	REGULATOR_LINEAR_RANGE(650000, 0x00, 0x7F, 12500),
+>  };
+> =20
+>  /*
+> @@ -662,6 +670,178 @@ static const struct pca9450_regulator_desc pca9450b=
+c_regulators[] =3D {
+>  	},
+>  };
+> =20
+> +static const struct pca9450_regulator_desc pca9451a_regulators[] =3D {
+> +	{
+> +		.desc =3D {
+> +			.name =3D "buck1",
+> +			.of_match =3D of_match_ptr("BUCK1"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_BUCK1,
+> +			.ops =3D &pca9450_dvs_buck_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_BUCK1_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9451a_dvs_buck_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9451a_dvs_buck_volts),
+> +			.vsel_reg =3D PCA9450_REG_BUCK1OUT_DVS0,
+> +			.vsel_mask =3D BUCK1OUT_DVS0_MASK,
+> +			.enable_reg =3D PCA9450_REG_BUCK1CTRL,
+> +			.enable_mask =3D BUCK1_ENMODE_MASK,
+> +			.enable_val =3D BUCK_ENMODE_ONREQ,
+> +			.ramp_mask =3D BUCK1_RAMP_MASK,
+> +			.ramp_delay_table =3D pca9450_dvs_buck_ramp_table,
+> +			.n_ramp_values =3D ARRAY_SIZE(pca9450_dvs_buck_ramp_table),
+> +			.owner =3D THIS_MODULE,
+> +			.of_parse_cb =3D pca9450_set_dvs_levels,
+> +		},
+> +		.dvs =3D {
+> +			.run_reg =3D PCA9450_REG_BUCK1OUT_DVS0,
+> +			.run_mask =3D BUCK1OUT_DVS0_MASK,
+> +			.standby_reg =3D PCA9450_REG_BUCK1OUT_DVS1,
+> +			.standby_mask =3D BUCK1OUT_DVS1_MASK,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "buck2",
+> +			.of_match =3D of_match_ptr("BUCK2"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_BUCK2,
+> +			.ops =3D &pca9450_dvs_buck_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_BUCK2_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_dvs_buck_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_dvs_buck_volts),
+> +			.vsel_reg =3D PCA9450_REG_BUCK2OUT_DVS0,
+> +			.vsel_mask =3D BUCK2OUT_DVS0_MASK,
+> +			.enable_reg =3D PCA9450_REG_BUCK2CTRL,
+> +			.enable_mask =3D BUCK2_ENMODE_MASK,
+> +			.enable_val =3D BUCK_ENMODE_ONREQ_STBYREQ,
+> +			.ramp_mask =3D BUCK2_RAMP_MASK,
+> +			.ramp_delay_table =3D pca9450_dvs_buck_ramp_table,
+> +			.n_ramp_values =3D ARRAY_SIZE(pca9450_dvs_buck_ramp_table),
+> +			.owner =3D THIS_MODULE,
+> +			.of_parse_cb =3D pca9450_set_dvs_levels,
+> +		},
+> +		.dvs =3D {
+> +			.run_reg =3D PCA9450_REG_BUCK2OUT_DVS0,
+> +			.run_mask =3D BUCK2OUT_DVS0_MASK,
+> +			.standby_reg =3D PCA9450_REG_BUCK2OUT_DVS1,
+> +			.standby_mask =3D BUCK2OUT_DVS1_MASK,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "buck4",
+> +			.of_match =3D of_match_ptr("BUCK4"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_BUCK4,
+> +			.ops =3D &pca9450_buck_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_BUCK4_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_buck_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_buck_volts),
+> +			.vsel_reg =3D PCA9450_REG_BUCK4OUT,
+> +			.vsel_mask =3D BUCK4OUT_MASK,
+> +			.enable_reg =3D PCA9450_REG_BUCK4CTRL,
+> +			.enable_mask =3D BUCK4_ENMODE_MASK,
+> +			.enable_val =3D BUCK_ENMODE_ONREQ,
+> +			.owner =3D THIS_MODULE,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "buck5",
+> +			.of_match =3D of_match_ptr("BUCK5"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_BUCK5,
+> +			.ops =3D &pca9450_buck_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_BUCK5_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_buck_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_buck_volts),
+> +			.vsel_reg =3D PCA9450_REG_BUCK5OUT,
+> +			.vsel_mask =3D BUCK5OUT_MASK,
+> +			.enable_reg =3D PCA9450_REG_BUCK5CTRL,
+> +			.enable_mask =3D BUCK5_ENMODE_MASK,
+> +			.enable_val =3D BUCK_ENMODE_ONREQ,
+> +			.owner =3D THIS_MODULE,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "buck6",
+> +			.of_match =3D of_match_ptr("BUCK6"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_BUCK6,
+> +			.ops =3D &pca9450_buck_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_BUCK6_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_buck_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_buck_volts),
+> +			.vsel_reg =3D PCA9450_REG_BUCK6OUT,
+> +			.vsel_mask =3D BUCK6OUT_MASK,
+> +			.enable_reg =3D PCA9450_REG_BUCK6CTRL,
+> +			.enable_mask =3D BUCK6_ENMODE_MASK,
+> +			.enable_val =3D BUCK_ENMODE_ONREQ,
+> +			.owner =3D THIS_MODULE,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "ldo1",
+> +			.of_match =3D of_match_ptr("LDO1"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_LDO1,
+> +			.ops =3D &pca9450_ldo_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_LDO1_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_ldo1_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_ldo1_volts),
+> +			.vsel_reg =3D PCA9450_REG_LDO1CTRL,
+> +			.vsel_mask =3D LDO1OUT_MASK,
+> +			.enable_reg =3D PCA9450_REG_LDO1CTRL,
+> +			.enable_mask =3D LDO1_EN_MASK,
+> +			.owner =3D THIS_MODULE,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "ldo4",
+> +			.of_match =3D of_match_ptr("LDO4"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_LDO4,
+> +			.ops =3D &pca9450_ldo_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_LDO4_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_ldo34_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_ldo34_volts),
+> +			.vsel_reg =3D PCA9450_REG_LDO4CTRL,
+> +			.vsel_mask =3D LDO4OUT_MASK,
+> +			.enable_reg =3D PCA9450_REG_LDO4CTRL,
+> +			.enable_mask =3D LDO4_EN_MASK,
+> +			.owner =3D THIS_MODULE,
+> +		},
+> +	},
+> +	{
+> +		.desc =3D {
+> +			.name =3D "ldo5",
+> +			.of_match =3D of_match_ptr("LDO5"),
+> +			.regulators_node =3D of_match_ptr("regulators"),
+> +			.id =3D PCA9450_LDO5,
+> +			.ops =3D &pca9450_ldo_regulator_ops,
+> +			.type =3D REGULATOR_VOLTAGE,
+> +			.n_voltages =3D PCA9450_LDO5_VOLTAGE_NUM,
+> +			.linear_ranges =3D pca9450_ldo5_volts,
+> +			.n_linear_ranges =3D ARRAY_SIZE(pca9450_ldo5_volts),
+> +			.vsel_reg =3D PCA9450_REG_LDO5CTRL_H,
+> +			.vsel_mask =3D LDO5HOUT_MASK,
+> +			.enable_reg =3D PCA9450_REG_LDO5CTRL_H,
+> +			.enable_mask =3D LDO5H_EN_MASK,
+> +			.owner =3D THIS_MODULE,
+> +		},
+> +	},
+> +};
+> +
+>  static irqreturn_t pca9450_irq_handler(int irq, void *data)
+>  {
+>  	struct pca9450 *pca9450 =3D data;
+> @@ -729,6 +909,10 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+>  		regulator_desc =3D pca9450bc_regulators;
+>  		pca9450->rcnt =3D ARRAY_SIZE(pca9450bc_regulators);
+>  		break;
+> +	case PCA9450_TYPE_PCA9451A:
+> +		regulator_desc =3D pca9451a_regulators;
+> +		pca9450->rcnt =3D ARRAY_SIZE(pca9451a_regulators);
+> +		break;
+>  	default:
+>  		dev_err(&i2c->dev, "Unknown device type");
+>  		return -EINVAL;
+> @@ -755,7 +939,8 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+> =20
+>  	/* Check your board and dts for match the right pmic */
+>  	if (((device_id >> 4) !=3D 0x1 && type =3D=3D PCA9450_TYPE_PCA9450A) ||
+> -	    ((device_id >> 4) !=3D 0x3 && type =3D=3D PCA9450_TYPE_PCA9450BC)) {
+> +	    ((device_id >> 4) !=3D 0x3 && type =3D=3D PCA9450_TYPE_PCA9450BC) ||
+> +	    ((device_id >> 4) !=3D 0x9 && type =3D=3D PCA9450_TYPE_PCA9451A)) {
+>  		dev_err(&i2c->dev, "Device id(%x) mismatched\n",
+>  			device_id >> 4);
+>  		return -EINVAL;
+> @@ -767,6 +952,7 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+>  		const struct pca9450_regulator_desc *r;
+> =20
+>  		r =3D &regulator_desc[i];
+> +
+
+Please don't add this empty line. Seems like a leftover from v1.
+
+Thanks and best regards,
+Alexander
+
+>  		desc =3D &r->desc;
+> =20
+>  		config.regmap =3D pca9450->regmap;
+> @@ -846,7 +1032,8 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+>  	}
+> =20
+>  	dev_info(&i2c->dev, "%s probed.\n",
+> -		type =3D=3D PCA9450_TYPE_PCA9450A ? "pca9450a" : "pca9450bc");
+> +		type =3D=3D PCA9450_TYPE_PCA9450A ? "pca9450a" :
+> +		(type =3D=3D PCA9450_TYPE_PCA9451A ? "pca9451a" : "pca9450bc"));
+> =20
+>  	return 0;
+>  }
+> @@ -864,6 +1051,10 @@ static const struct of_device_id pca9450_of_match[]=
+ =3D {
+>  		.compatible =3D "nxp,pca9450c",
+>  		.data =3D (void *)PCA9450_TYPE_PCA9450BC,
+>  	},
+> +	{
+> +		.compatible =3D "nxp,pca9451a",
+> +		.data =3D (void *)PCA9450_TYPE_PCA9451A,
+> +	},
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, pca9450_of_match);
+> diff --git a/include/linux/regulator/pca9450.h b/include/linux/regulator/=
+pca9450.h
+> index 505c908dbb81..243633c8dceb 100644
+> --- a/include/linux/regulator/pca9450.h
+> +++ b/include/linux/regulator/pca9450.h
+> @@ -9,6 +9,7 @@
+>  enum pca9450_chip_type {
+>  	PCA9450_TYPE_PCA9450A =3D 0,
+>  	PCA9450_TYPE_PCA9450BC,
+> +	PCA9450_TYPE_PCA9451A,
+>  	PCA9450_TYPE_AMOUNT,
+>  };
+> =20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
