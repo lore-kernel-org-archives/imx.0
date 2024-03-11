@@ -1,60 +1,60 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F57F39AFA
-	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 11:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505723A1BE
+	for <imx@lists.linux.dev>; Mon, 11 Mar 2024 11:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710156047; cv=none; b=uKZ34lphhBs7nuQjsq7sA6x0xremU7BuahckJ6kuyeg3psixj4FuP2DGPzZNbl05PvKIUQX3jS4GD42OC/Ol5QKjwVOaYslWX4vwlWUozDzN7w0OOtxVtpPu9owCu+kBqi7POGN+qyBEYA39Vc1c9nx9gOmw0tvDhHLsgTsFEqM=
+	t=1710156048; cv=none; b=l1uBuOqKPX44fkc16jWSyVAFLthDnUNKC5aHjDzyU0DCo2D/g/BIgp0nsOL6eeindywljiRsdU5IweLKZXBGe3TiN8XBJw6lwd0Q4KpfU4Bs8b9PZnXzhgGxAEwz9lpUgRqih+99BB4w4CdttXZ+R+2WdeJA5co6YN82ZmT0Yn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710156047; c=relaxed/simple;
-	bh=m11CFuEduJHyQCwHyCLs0Yco+X7++CQ3XEHXdiz1Oro=;
+	s=arc-20240116; t=1710156048; c=relaxed/simple;
+	bh=tuqhthD0wjId065PEfgLTntUyAjkA53+U+9j/aDpxnU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UFaxLyE5D7tqemh/NhlI4lpA1ESinDe8hMCKm2m90b2IFl3pZkWfa0lb2aPVaxO+zymYN1NK+OdlH0fotMDV7glqIavmvQ3xQ7DHQR3F9bD90+Jzxnony0PiioS1K2D/0WF4pFHAsHQRrMlypKRahVOZSNW+R0uUW/smaY5bXJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t2sa6HIg; arc=none smtp.client-ip=209.85.208.172
+	 In-Reply-To:To:Cc; b=r7xRqXF5/J17aG0U8jbbfHfOjE5BTVSsjVcLkrjSVjOlYV50om/XyfPpLdUQUbDUqBuph/ymq9FnwarN+Hprl1I4vWqIyTyU1Vi8UCyASpR1oTDyXNhQw9lrqWCYqYN+emscu27XaT8ersvoulqN0VRHh3sWjH71Kmv1mfS++tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QgfY6Oeq; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t2sa6HIg"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d3fb16f1a9so52678801fa.0
-        for <imx@lists.linux.dev>; Mon, 11 Mar 2024 04:20:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QgfY6Oeq"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d309a23d76so45160711fa.1
+        for <imx@lists.linux.dev>; Mon, 11 Mar 2024 04:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1710156044; x=1710760844; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hSjZJV2J4iFvn9E2c3TLDDuj0HnPcaUsZUNdMjQiU+w=;
-        b=t2sa6HIgmMm2ZMrTIJw1i0DV2ds5g0ts7WsN+pl47V7ES62lRbE/8vVvuLHiMnp3Wl
-         d+OdE+VazJji2dwiTzVlYsNMhbUn2z69exSBJZt7e5eZU393pXUgIPfZz75XWJT4+679
-         FDrsX3cCJ8OkfLq9N1htfiw4BI8CEOBUcoN1+yISLt53eohbmIbG155cRkaQWfAKHf+p
-         UX7GeOXq2pLacy0KqKEv3a4oxoDnPxgB04qFnmAwpqS3C+ZgS92FlXWQzblP+exdnRXm
-         Kjk2Po3FWNKAci8Tr8ZmWAEQCEc8WC1TUx5CbD/4KAj6EAgQEN1gpVMF1Ou9LKUuNGs9
-         NRRg==
+        bh=gQrqHaLGIND2BZg43nPVGmV36Lb8S+V9//5yRGyhuc4=;
+        b=QgfY6Oeq5/jaTspymCXzJRXVcKi19Qr+U5XkwyU61+9DZIdg5kW6wrcH6kmxdpN4xQ
+         Gut1L1hWLIlxIibTKQ+kMxqy7Hi+IbmX8M4x4XENU1REo1HmneyZEcTmZ9dP2rmFB05y
+         h95S+4+uTuP5P7tqXdBB4VonBx+zPXRTiWCG3lwSfg8iq1S5hAKRpv5CknJgYdwQJz1o
+         UvZR9kC2n+mgKLxfWrBUuwOxfiiG6KVfUWlomduuqEjA57fLBi2T2zeH8oFguQzu/m6o
+         RQ5YDVrgBMLQcV5DiGDJolwUhIvjJg7Xyjdf0C4nPscdHleN3hVqgvUHtjB1BCu4hzPL
+         npnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1710156044; x=1710760844;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hSjZJV2J4iFvn9E2c3TLDDuj0HnPcaUsZUNdMjQiU+w=;
-        b=dsQNqu8Ga2pyw+aSq+jjNStETEKD61ltnSsh6+7H/1NyNl07zZxguZunmVZw9XPhXQ
-         Nuysl8NkEjYOlbhCp3/+ETehbvRK+TqyiBvNvDZ1L7UaL2JErumajza8CxQS+Niy2kdc
-         TT1foiIW6qyAJRsDmKI50OEc2HUv+ZdADIVjZeUqutScAkU3UjIFJ/JiJ4sUICqQSNS9
-         KZ1fibh7MFatNBPiMck76bZZhLHTvFcJyGT/VG24zGKDXWSXkMKvgNyK/Tmgsd9Qk5wz
-         M1vP07EtOE5KRt7TZnJJJ2wG+neG7gvBiF1XjEN6ro92CssafE2JbTRyWXhfB3JSjBkD
-         NCLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXD5GsBL7qdaeW+jXnhm96WqtYE2SxYuCMcUh8+g+1dn7S9CMqLHuuuOC2gd/894/juR3u7bWhlpyAu2Nu3Oau55BKx
-X-Gm-Message-State: AOJu0YxOGfdHYz9REdIGqMLN3jm4bkbepM5GRa18DCv5mzwYIaT4X4Ie
-	tDEpSDbAg8gzCy2P2xvN/8l92M5sLI48qTWIm2wjWHGtCNILZUv1dLqScexZbSE=
-X-Google-Smtp-Source: AGHT+IGVBBPOzyokNgjue9WKbIEUBC9+ZEPyPANqxr2XeItpXiFyzfNywUSOajCNnI5OsBJpltZThw==
-X-Received: by 2002:a05:651c:10d4:b0:2d4:2839:96e7 with SMTP id l20-20020a05651c10d400b002d4283996e7mr2218502ljn.20.1710156043819;
-        Mon, 11 Mar 2024 04:20:43 -0700 (PDT)
+        bh=gQrqHaLGIND2BZg43nPVGmV36Lb8S+V9//5yRGyhuc4=;
+        b=usjWIPMgnZR8KCDJDwm3fz3ZwnLwCufNMUC+QMgwqPhqQUfa7cR+BR58jAQF1lTAuX
+         DJLpGJ/62dxjKDZ6Q8/7doVNiwO1x0i1N4Qw2dunRWyr/sD+nJPGRuxcmu67Jk7X5wkN
+         5TPsXhvwFjJOQdGpWPbLmqsMLGvWaumFUb5qC7hJ8dOYgRO/3kzDctdEUT658w6OMko/
+         61m6UQTd5ioNCzYugNxzCrs+6ozqIPkpCWMmYpzJdlK3wWpud2sXb4DkYFLm3GkfcY8X
+         9nNkOGYk3IU+nDGh4QsgJOa8Gq5MGyZ/QKX27cVWC01Ytb0G1FvfzdpV6bM9gtylQw3I
+         /lDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6J2uPXCIB8zAl4vbk5fpTOVZvZx/ut8boUhYOv2wA1WBsC6bqObeH/Z7S5RTk6bD1t9b7nTCbja5k/uwnnT2w8AEo
+X-Gm-Message-State: AOJu0YwkOR3IhAC9xufrkdbVLuy6BXaLw11wGKsi4ymRAvr9WOLu72zl
+	CfceMBFuSJp1sopu77gNvVrhSkqp5szZsNLlH/fdUuFEpVd6eD7IAOSINEQdoTw=
+X-Google-Smtp-Source: AGHT+IH6UahIcH0xokwgC7YJw7isfzx6l8sVfamAGKfOqjY8LOUzxiZzIWKs2Nzu6jrVlAhbY6hHJA==
+X-Received: by 2002:a2e:9c06:0:b0:2d2:31a8:cb1a with SMTP id s6-20020a2e9c06000000b002d231a8cb1amr1858765lji.13.1710156044598;
+        Mon, 11 Mar 2024 04:20:44 -0700 (PDT)
 Received: from umbar.lan ([192.130.178.91])
         by smtp.gmail.com with ESMTPSA id by10-20020a05651c1a0a00b002d2aa0b0d01sm1075200ljb.82.2024.03.11.04.20.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 04:20:43 -0700 (PDT)
+        Mon, 11 Mar 2024 04:20:44 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 11 Mar 2024 13:20:14 +0200
-Subject: [PATCH 06/12] drm/imx: ldb: drop custom DDC bus support
+Date: Mon, 11 Mar 2024 13:20:15 +0200
+Subject: [PATCH 07/12] drm/imx: ldb: switch to drm_panel_bridge
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240311-drm-imx-cleanup-v1-6-e104f05caa51@linaro.org>
+Message-Id: <20240311-drm-imx-cleanup-v1-7-e104f05caa51@linaro.org>
 References: <20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org>
 In-Reply-To: <20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org>
 To: Philipp Zabel <p.zabel@pengutronix.de>, 
@@ -81,149 +81,154 @@ Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org,
  linux-arm-kernel@lists.infradead.org, 
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3942;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4608;
  i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=m11CFuEduJHyQCwHyCLs0Yco+X7++CQ3XEHXdiz1Oro=;
- b=owGbwMvMwMXYbdNlx6SpcZXxtFoSQ+q7lyzZwW55NbIlAr7rdxgeZNY/9dh1/4JwdolFL7V/h
- 4b+77PsZDRmYWDkYpAVU2TxKWiZGrMpOezDjqn1MINYmUCmMHBxCsBEnnuz/2bVrK7gyG7Mncuq
- H1LIKPtxQZDpfUF14RK+hz+kDRKerLg2feeXWZwF/1+bvWHM5qnX0pYpNedy1Jl0cL9rvG/g/83
- 1miVHWRnc/181Syx8soApbnkp8xLNtm3SW4wZEpzf27nkNqvaTK1QvP5daI5/o9NV1pxbvxvVV2
- yfsTPslprKsXe39rSc3et5KjanUJKlWenjorqJZ+YIHL0as5vPK7j2oPPOA0XJHAv882KNtu0ql
- 39+ktnxxv/HZ6PNEmf1st3deWBWgkytXjfn4vubvfxDejR60v4IvNbWOdnh6LL8q+KPXSu+n2tx
- jfu8/ri8ytUPKcHlIX+yW01aNvw8u0jogWzWMhuRVYEhAA==
+ bh=tuqhthD0wjId065PEfgLTntUyAjkA53+U+9j/aDpxnU=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBl7ukEmhT2g9v70pVpRjRRLZO32HM8uH873G4o0
+ jbzBvbpyEaJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZe7pBAAKCRCLPIo+Aiko
+ 1TO3CACoX3ore58uBQubmaeZX8paIziCF9nJNUNQw1M6qI4YJt24XMx4KTE1rP1N0ERtW36OhF3
+ JSPEZKvuvF4Vad7qPhkOIWVvnfLdAlPnTBzXpq/i16Sck8cKpYiLrcyw1O+VaCYJV4ji2ZW+2Pm
+ UNfneiaArfU7I/wp/kCJuFGuesJH/CRIi9VYoOshitCjE29rsGcRHqJ/7o1xD0bgLYavkxqlELb
+ xnbA6U+X86xaFV5p7Rui1hs/qiUWrkEo9wAIBl/OWPQ8IbIds40CJaZ/+uGiBvfR1SJUVFUhkLp
+ 8EAuK7OnT8wCfWs3qqOtdU8v98W20yDUBiU5CLcly6Y8uTcu
 X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-None of the boards ever supported by the upstream kernel used the custom
-DDC bus support with the LDB connector. If a need arises to do so, one
-should use panel-simple and its DDC bus code. Drop ddc-i2c-bus support
-from the imx-ldb driver.
+Defer panel handling to drm_panel_bridge, unifying codepaths for the
+panel and bridge cases.
 
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 72 ++++++-------------------------------
- 1 file changed, 10 insertions(+), 62 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/Kconfig   |  2 ++
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 44 ++++++++++++-------------------------
+ 2 files changed, 16 insertions(+), 30 deletions(-)
 
+diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
+index bacf0655ebaf..4e41611c8532 100644
+--- a/drivers/gpu/drm/imx/ipuv3/Kconfig
++++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
+@@ -28,7 +28,9 @@ config DRM_IMX_LDB
+ 	tristate "Support for LVDS displays"
+ 	depends on DRM_IMX && MFD_SYSCON
+ 	depends on COMMON_CLK
++	depends on DRM_BRIDGE
+ 	select DRM_PANEL
++	select DRM_PANEL_BRIDGE
+ 	help
+ 	  Choose this to enable the internal LVDS Display Bridge (LDB)
+ 	  found on i.MX53 and i.MX6 processors.
 diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-index 1924d8921c62..380edc1c4507 100644
+index 380edc1c4507..74b41a507219 100644
 --- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
 +++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-@@ -70,7 +70,6 @@ struct imx_ldb_channel {
+@@ -28,7 +28,6 @@
+ #include <drm/drm_edid.h>
+ #include <drm/drm_managed.h>
+ #include <drm/drm_of.h>
+-#include <drm/drm_panel.h>
+ #include <drm/drm_print.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_simple_kms_helper.h>
+@@ -65,8 +64,6 @@ struct imx_ldb;
+ struct imx_ldb_channel {
+ 	struct imx_ldb *ldb;
+ 
+-	/* Defines what is connected to the ldb, only one at a time */
+-	struct drm_panel *panel;
  	struct drm_bridge *bridge;
  
  	struct device_node *child;
--	struct i2c_adapter *ddc;
- 	int chno;
- 	struct drm_display_mode mode;
- 	int mode_valid;
-@@ -141,18 +140,6 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
- 	if (num_modes > 0)
- 		return num_modes;
+@@ -136,10 +133,6 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
+ 	struct imx_ldb_channel *imx_ldb_ch = con_to_imx_ldb_ch(connector);
+ 	int num_modes;
  
--	if (imx_ldb_ch->ddc) {
--		const struct drm_edid *edid = drm_edid_read_ddc(connector,
--								imx_ldb_ch->ddc);
--
--		if (edid) {
--			drm_edid_connector_update(connector, edid);
--			drm_edid_free(edid);
--
--			return drm_edid_connector_add_modes(connector);
--		}
--	}
+-	num_modes = drm_panel_get_modes(imx_ldb_ch->panel, connector);
+-	if (num_modes > 0)
+-		return num_modes;
 -
  	if (imx_ldb_ch->mode_valid) {
  		struct drm_display_mode *mode;
  
-@@ -481,10 +468,9 @@ static int imx_ldb_register(struct drm_device *drm,
- 		 */
- 		drm_connector_helper_add(connector,
- 					 &imx_ldb_connector_helper_funcs);
--		drm_connector_init_with_ddc(drm, connector,
--					    &imx_ldb_connector_funcs,
--					    DRM_MODE_CONNECTOR_LVDS,
--					    imx_ldb_ch->ddc);
-+		drm_connector_init(drm, connector,
-+				   &imx_ldb_connector_funcs,
-+				   DRM_MODE_CONNECTOR_LVDS);
- 		drm_connector_attach_encoder(connector, encoder);
+@@ -194,8 +187,6 @@ static void imx_ldb_encoder_enable(struct drm_encoder *encoder)
+ 		return;
  	}
  
-@@ -551,39 +537,6 @@ static const struct of_device_id imx_ldb_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, imx_ldb_dt_ids);
+-	drm_panel_prepare(imx_ldb_ch->panel);
+-
+ 	if (dual) {
+ 		clk_set_parent(ldb->clk_sel[mux], ldb->clk[0]);
+ 		clk_set_parent(ldb->clk_sel[mux], ldb->clk[1]);
+@@ -234,8 +225,6 @@ static void imx_ldb_encoder_enable(struct drm_encoder *encoder)
+ 	}
  
--static int imx_ldb_panel_ddc(struct device *dev,
--		struct imx_ldb_channel *channel, struct device_node *child)
--{
--	struct device_node *ddc_node;
--	int ret;
+ 	regmap_write(ldb->regmap, IOMUXC_GPR2, ldb->ldb_ctrl);
 -
--	ddc_node = of_parse_phandle(child, "ddc-i2c-bus", 0);
--	if (ddc_node) {
--		channel->ddc = of_find_i2c_adapter_by_node(ddc_node);
--		of_node_put(ddc_node);
--		if (!channel->ddc) {
--			dev_warn(dev, "failed to get ddc i2c adapter\n");
--			return -EPROBE_DEFER;
--		}
--	}
--
--	if (!channel->ddc) {
--		/* if no DDC available, fallback to hardcoded EDID */
--		dev_dbg(dev, "no ddc available\n");
--
--		if (!channel->panel) {
--			/* fallback to display-timings node */
--			ret = of_get_drm_display_mode(child,
--						      &channel->mode,
--						      &channel->bus_flags,
--						      OF_USE_NATIVE_MODE);
--			if (!ret)
--				channel->mode_valid = 1;
--		}
--	}
--	return 0;
--}
--
- static int imx_ldb_bind(struct device *dev, struct device *master, void *data)
- {
- 	struct drm_device *drm = data;
-@@ -694,11 +647,15 @@ static int imx_ldb_probe(struct platform_device *pdev)
- 		if (ret && ret != -ENODEV)
- 			goto free_child;
+-	drm_panel_enable(imx_ldb_ch->panel);
+ }
  
--		/* panel ddc only if there is no bridge */
--		if (!channel->bridge) {
--			ret = imx_ldb_panel_ddc(dev, channel, child);
-+		if (!channel->bridge && !channel->panel) {
-+			ret = of_get_drm_display_mode(child,
-+						      &channel->mode,
-+						      &channel->bus_flags,
-+						      OF_USE_NATIVE_MODE);
- 			if (ret)
- 				goto free_child;
+ static void
+@@ -312,8 +301,6 @@ static void imx_ldb_encoder_disable(struct drm_encoder *encoder)
+ 	int dual = ldb->ldb_ctrl & LDB_SPLIT_MODE_EN;
+ 	int mux, ret;
+ 
+-	drm_panel_disable(imx_ldb_ch->panel);
+-
+ 	if (imx_ldb_ch == &ldb->channel[0] || dual)
+ 		ldb->ldb_ctrl &= ~LDB_CH0_MODE_EN_MASK;
+ 	if (imx_ldb_ch == &ldb->channel[1] || dual)
+@@ -347,8 +334,6 @@ static void imx_ldb_encoder_disable(struct drm_encoder *encoder)
+ 		dev_err(ldb->dev,
+ 			"unable to set di%d parent clock to original parent\n",
+ 			mux);
+-
+-	drm_panel_unprepare(imx_ldb_ch->panel);
+ }
+ 
+ static int imx_ldb_encoder_atomic_check(struct drm_encoder *encoder,
+@@ -641,13 +626,15 @@ static int imx_ldb_probe(struct platform_device *pdev)
+ 		 * The output port is port@4 with an external 4-port mux or
+ 		 * port@2 with the internal 2-port mux.
+ 		 */
+-		ret = drm_of_find_panel_or_bridge(child,
+-						  imx_ldb->lvds_mux ? 4 : 2, 0,
+-						  &channel->panel, &channel->bridge);
+-		if (ret && ret != -ENODEV)
+-			goto free_child;
++		channel->bridge = devm_drm_of_get_bridge(dev, child,
++						imx_ldb->lvds_mux ? 4 : 2, 0);
++		if (IS_ERR(channel->bridge)) {
++			ret = PTR_ERR(channel->bridge);
++			if (ret != -ENODEV)
++				goto free_child;
 +
-+			channel->mode_valid = 1;
++			channel->bridge = NULL;
+ 
+-		if (!channel->bridge && !channel->panel) {
+ 			ret = of_get_drm_display_mode(child,
+ 						      &channel->mode,
+ 						      &channel->bus_flags,
+@@ -659,15 +646,12 @@ static int imx_ldb_probe(struct platform_device *pdev)
  		}
  
  		bus_format = of_get_bus_format(dev, child);
-@@ -732,15 +689,6 @@ static int imx_ldb_probe(struct platform_device *pdev)
- 
- static void imx_ldb_remove(struct platform_device *pdev)
- {
--	struct imx_ldb *imx_ldb = platform_get_drvdata(pdev);
--	int i;
--
--	for (i = 0; i < 2; i++) {
--		struct imx_ldb_channel *channel = &imx_ldb->channel[i];
--
--		i2c_put_adapter(channel->ddc);
--	}
--
- 	component_del(&pdev->dev, &imx_ldb_ops);
- }
- 
+-		if (bus_format == -EINVAL) {
+-			/*
+-			 * If no bus format was specified in the device tree,
+-			 * we can still get it from the connected panel later.
+-			 */
+-			if (channel->panel && channel->panel->funcs &&
+-			    channel->panel->funcs->get_modes)
+-				bus_format = 0;
+-		}
++		/*
++		 * If no bus format was specified in the device tree,
++		 * we can still get it from the connected panel later.
++		 */
++		if (bus_format == -EINVAL && channel->bridge)
++			bus_format = 0;
+ 		if (bus_format < 0) {
+ 			dev_err(dev, "could not determine data mapping: %d\n",
+ 				bus_format);
 
 -- 
 2.39.2
