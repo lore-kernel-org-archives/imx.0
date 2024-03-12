@@ -1,204 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2040.outbound.protection.outlook.com [40.107.7.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3F643AAB;
-	Mon, 11 Mar 2024 21:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710193028; cv=none; b=gTDFuo2rL//aFoO5RCTtGe1CBpjCUyxqb22BEB9AflySXujNsvm3sm3H98ZkQRdzK76n+ifASOSIFbegdiFewKdkbEbnB6YYXNpEUKmwnm9BrGFRF8v8UAuMxI0PDuX/+YNwuoJFY0EP/DuMX9whRRJeSy6edstLVKxu9x9sr2I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710193028; c=relaxed/simple;
-	bh=zlhU1U9j2gqIlgHNCt0syz3JwXwlqVO6QdgqJNcgZ9I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RRhI1MGMDoFhJNSXcHb+WCJX0Xt6lL3vUeZqKQzXFx4/8fA7/Ci4VhziSxWn5v1RUlyDToTxk8BuEzDCb3EQspIzh33/9WuU4co6j2J9V6TYqD1t1td7QqEaj5UM7eMePP5nmrnAVSKxJrxBvcv9vWcn4zPRIugLx89gUiJFZtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9QabMf+; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E1F5CB5
+	for <imx@lists.linux.dev>; Tue, 12 Mar 2024 02:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710208959; cv=fail; b=WcR20TlwYMz3dI+oxpWCeywde9flSmjHrOZEvGcXDt5yd96E/TPCavdB1zfRPwUeghEQc2kRsU3e7mi0lbjWQJ4z8Nmj5v/U5JCQVzHvXZhskEL+7qd8mRILlLvfyWCJexRmfQO3CWE7/a/TzmkncONCnjNqAovx6dFOTBUzz48=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710208959; c=relaxed/simple;
+	bh=wIRRWCiz60dLIlOimCVurk4Lo/wqdhrtlE89S4OQv+Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=U103HuVN6bWKVxXY7hz1+mnFEu/LPDOqBgJX8+GFuxJo+WoAaTxM1bo6niAaO46U2qlr4zSsFLzxQlAq7J93VIfCZZZD/EeVQuhQX/EXq+JLKF9fOjBVRM22Q6ivGV1Esok7ypnR3aXi1Z8oVHa9SG1rAu7fRlpDZeDxk5nz6NM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TiMvZ23y; arc=fail smtp.client-ip=40.107.7.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9QabMf+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710193026; x=1741729026;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zlhU1U9j2gqIlgHNCt0syz3JwXwlqVO6QdgqJNcgZ9I=;
-  b=R9QabMf+diXE/l8YMbkRgyw7qqAP24+ga1/PnMMJL48DTsfk5qGvfj8X
-   jODbmCGkVLTadwpFPgrnprg6534Mfedv5NKI6LoXFIsmZmet9ssDh4JEp
-   WkMvernUYvXgXbNtM5QzBlz8x66+zQLEZRBY3zvl363damUX+W4v4mcMz
-   sDLUo2B80EC0KiOliak5+1uq0fOQs/Z0wi0cwnV6nAI1VX5oLlKjdooNH
-   EwD+frFprdT9J7Iq3sKpyS1TQK4MA7BLEMD5XObpuMn2PfgQmtLB6p7DH
-   hVq1QaZ1Sy1tpKZDjvwZWR8nVrUSzdHXt+JTVZAWZ+bfkKfJyTP2eg77F
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="8641364"
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
-   d="scan'208";a="8641364"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 14:37:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
-   d="scan'208";a="11375548"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 11 Mar 2024 14:37:01 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rjnKM-0009Tr-0Q;
-	Mon, 11 Mar 2024 21:36:58 +0000
-Date: Tue, 12 Mar 2024 05:36:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, Chris Healy <cphealy@gmail.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH 10/12] drm/imx: ldb: switch to imx_legacy_bridge /
- drm_bridge_connector
-Message-ID: <202403120545.CbwFr4SU-lkp@intel.com>
-References: <20240311-drm-imx-cleanup-v1-10-e104f05caa51@linaro.org>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TiMvZ23y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BvR7VPfYTsi012ALwSvh8wLNEj5joRyODzuhNfdy7nLl7KW5rp1S973IwV+0mFcSGzeIj/yCvtvkWjW9WAxWKui/wuiJEZB0NuZE/QrFWZgqNBoE9EXiX2T9bWQUZqdbldoqzQM6zat/udq1QRiqjUQ70iffXgiEaRBvsHMBiqf7DBGCOuttd++OQXRjNJSuHxSYOCKuJG/kskTH3Wq5yvh0fehOQSUkm/nava0q4itvGbTnHqvDxXgQ2cjcCTiFJ+VcyuuHPtcjHUCMKeJHnbEec+ZqMulnMXppzD7jfW7nA98XlHHMonHtRICRyC1EjJbXxENCRHy1iSqnaGPSGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wIRRWCiz60dLIlOimCVurk4Lo/wqdhrtlE89S4OQv+Q=;
+ b=Vh3nZZiZNxjy+5fX7Mc+jAVdRMDhDQx8Dtpw9kMGerUQEGepukbQRUc7+/zs3d5lXDGeXHa4jtpcMX/wKm4AGGaUo/q/oi3p+1GUpXp/UkukjOoJ3jEczacD+9XWQex3O1pxLyOE4oNDhQO5ehAevkwN3O2LAL3RpVibHzFJAYzI3x75WXKcu7+oNyniPOz4yyYKLPQmpY1g/X1a5GUuGNZZu3XxuZJx1ssBlvgj/SJpjgwSxEjchjPPn3cEZSRWefVuJ2JVSgycqLcDiipET22ER4Om0kwRX07jBEI+PQJ/KJh6odVavNgtWMZhj3qkkpsuy1RZEpEMDodxxPLnLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wIRRWCiz60dLIlOimCVurk4Lo/wqdhrtlE89S4OQv+Q=;
+ b=TiMvZ23yMeU5ukW1k+bH83PVW1v//Vb8x1Hss1sGJRMjFFZAJdgRU8bniosEWBjnXHOJEN9N/6NWb/mlzJFPyw03sWKRriT02aa7ap/FuH0eOI9uDU1dHY6XZDtiQqsHb1QIuM/9yGFChFCvFiz1KLuxTcHFJfcEVtF4LNuBbUo=
+Received: from DB9PR04MB9377.eurprd04.prod.outlook.com (2603:10a6:10:36b::13)
+ by VI1PR04MB6941.eurprd04.prod.outlook.com (2603:10a6:803:12e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Tue, 12 Mar
+ 2024 02:02:33 +0000
+Received: from DB9PR04MB9377.eurprd04.prod.outlook.com
+ ([fe80::b3d4:17c4:91b7:101d]) by DB9PR04MB9377.eurprd04.prod.outlook.com
+ ([fe80::b3d4:17c4:91b7:101d%5]) with mapi id 15.20.7362.024; Tue, 12 Mar 2024
+ 02:02:27 +0000
+From: Joy Zou <joy.zou@nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+CC: Jacky Bai <ping.bai@nxp.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+	"broonie@kernel.org" <broonie@kernel.org>, "robh+dt@kernel.org"
+	<robh+dt@kernel.org>, "krzysztof.kozlowski+dt@linaro.org"
+	<krzysztof.kozlowski+dt@linaro.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, dl-linux-imx <linux-imx@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [EXT] Re: [PATCH v3 3/3] arm64: dts: imx93-11x11-evk: add
+ pca9451a support
+Thread-Topic: [EXT] Re: [PATCH v3 3/3] arm64: dts: imx93-11x11-evk: add
+ pca9451a support
+Thread-Index: AQHac6auC+/zOyKfB0WUQXcyqrEuC7EyfCSAgADcr0A=
+Date: Tue, 12 Mar 2024 02:02:26 +0000
+Message-ID:
+ <DB9PR04MB9377E66EA24C364229E1AA92E12B2@DB9PR04MB9377.eurprd04.prod.outlook.com>
+References: <20240311113201.664252-1-joy.zou@nxp.com>
+ <20240311113201.664252-4-joy.zou@nxp.com>
+ <CAOMZO5A_5mUgEL6MvO=D1RS9aT-DFc8eGiF7VDCZqeSkYtGYcQ@mail.gmail.com>
+In-Reply-To:
+ <CAOMZO5A_5mUgEL6MvO=D1RS9aT-DFc8eGiF7VDCZqeSkYtGYcQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR04MB9377:EE_|VI1PR04MB6941:EE_
+x-ms-office365-filtering-correlation-id: 5b49616e-468f-4e5a-40d8-08dc4238777c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ l75jgRYQfg57M8vtNSYEH5lISl67GkQ8YQ7zDn1B79jhJ9ju4Yd1y/yHrkHi4sCPmwkIEjXMyITpjQxtZGsfzOAheUG1xWYC0QyM0e9EPDGdiIeQAkvZSVQpoRRjj1sBpIpP3vlzWKS6ckzpgJcYVUruFztqWXro9sZH9jDrkxHQjwhAMcLTN4T1sQfURIm40HZRwU6nWjORbCjVrNnuTphDMK1Ps6wH6KqoyofUcndTzNLXOTeTQ4EVz7JWcY1DSxdOtBqtL8GPxcWGxGutL0vfU8xe7X0gM59rviuUExZE/Ypt4SRqIl6qbhTPLilWZsV23vOdgVTHt4Xvynt1atR0ePJhFbCuNILGsIHN5ZO8TWPofj87tD/96Eg0iER+LNsRBi0SZxGblBZMl2KUGTl1ruaKUM2twZ5jnUhUd3p7YPK54m8L8f2PCm5dYTYa38HSO4QbbhVLbrBKxJ3wxa6RP7DX2JkOAFJF+pF5y3xGbw/To/+apmvHFKurq833Nz+q3nbEGjV9rc8jjb9I+DDSdDz/qSBHI0zIVmhw3+J2MkJ82VBBg0dy7LCEq6MfWEiZWu4r2fatgcsRoNCOrlHLGpC0872olyXQyN1QZOowpEz/x2Rmiwyf87lErvWDRi/L2gJzL3bvX5XUHTeFe8/HP2ZY3fiBRD2OtOq3VchhDry53ZaPMit+M/on7NK16vCAJMzLR4Eg7dj6PAODOA==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9377.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Q2gwQ3dGS0J2SlJZK1RldzJIUzNwV2ZhNHRLcm1YK2kyWXNrN1htM25KTlIr?=
+ =?utf-8?B?SUluYkxJc2NuZFcwNnNWbWhrRmZFdDJDL3dnZi9oWnZjenpTV2tsN2duTllj?=
+ =?utf-8?B?bnovRTFibkY4VmtBdllyV202SXhzYzk4YmtJcENmdlU0R0dxSkRZV3V2NUxZ?=
+ =?utf-8?B?a0dZUE9KT0dXL2xUUjQwb2ZFSlk0aHh2MFQvQVNCR0xyYnlrVzduUXZxdXNl?=
+ =?utf-8?B?M0FHTWVlSmQ5Y2VYZmpTZFF6VFhSQnd4TVJYSkdvdm9iR2poY1dXY2VnTnZB?=
+ =?utf-8?B?RUs4ejY0SnJnMGc2SGxMdkNnNW1KT0lRYlQ3aTlHOHUzTHdqN2ZFbGE3NU42?=
+ =?utf-8?B?Y3hHQ0NERXQ0emVVVUw4WXU0aXM4dERqTlRJbC81dUF3LytURUhNRy9WTkY3?=
+ =?utf-8?B?ZUM1azZlK2VncVdSb3JBMGg0Rm5QM1kyNFhMVGpWUTdUK2lPRksyUk1IenVF?=
+ =?utf-8?B?RzErc3RmMFFaSC9vekh6NnVoTXdyQnpiT1U2UndwdHVaYXViajNvSXBJYUlt?=
+ =?utf-8?B?Tm1reHVsSGx6dmxXbVcwdHVzSVR4bHoyaEdGeFNxZGtqL3F1cy9JZ0xzUkNZ?=
+ =?utf-8?B?VHRsVGpIZnpiWU1IR2Fjbkp3VlYzWW9yMmYvSFkzazFCNkhaL1VqTXpSQlZo?=
+ =?utf-8?B?c0xhQlQ4M2diZCs3Z3I1ajhtM1RaMFZGejFUL0paci9qcS9OVFlJVE52cGZZ?=
+ =?utf-8?B?cGh4VGRJQVVnQmFjV0VmMjQwTnV5VUdWZGVidFJDTzFQSWJybzUvaC9LRUw5?=
+ =?utf-8?B?YlJLZnZURkp1UWRrU1VBQnNDcmZjOStiNnRMcHZybTBCU21kZDgzd1Q0K0Jv?=
+ =?utf-8?B?L0ppTTREeFhPei9YSm85eXowVDljVGF3RCs4MnBkZGppblU4RVhSNkpTa0cr?=
+ =?utf-8?B?NGZ2YmZMUWpNczFTUkp0TnRKdm5oM1VXSzZybFVmd3FleDgvczFwTUJtVGs2?=
+ =?utf-8?B?d0RJRG1mMUdDcytmd0hDKytCeVNUb2FIbC84cTRsWEJFQytZcXBHak5oaURp?=
+ =?utf-8?B?akwzbzVMblNpTWdhckcwZ2xDV0RaTDlON0tLQmJHMzFWRThxVEgxTDh3Zi94?=
+ =?utf-8?B?dlcrczBNRzduV2U1UlF6K2l1NmdsWjBGNHJ4b1hSVWxVWHNJeWJvTnUvaU91?=
+ =?utf-8?B?VlAvUHNNV3E1K1VsaXB2ZkcycExJQzNQVWRWYlRWMlBlQzB6R3pzT1hHTGtv?=
+ =?utf-8?B?M0p3L0g5YmJuWk9IYXJhZVRNTUZTdkc5QmY4WEZtK3NReFJDdjg5YkZCZ2RW?=
+ =?utf-8?B?RUZ5c2dxTGcyeHplcXJHL0syQWFsUzU5MnpUWXA2SGNWUnVmUFdWbXMzZ0Y2?=
+ =?utf-8?B?VzRoMHJ3bFVIMXRja1hrZXlqYnpvZ25BV0NjYVE0YU85c1ZXamtHRUMyblF5?=
+ =?utf-8?B?ODhPb1kvVXR4T1BnODlkbWtidWMxRUJRY3dvZjQzTVg0bitHODdwOGYwUndV?=
+ =?utf-8?B?d1huSGxmbGxIenBsd0h5QmZzRFNjY2tCNnlTbzBOVU42enA1bURvY0dIUDN4?=
+ =?utf-8?B?NnVaR2wrblJyT25YUDh6WktWSFRWdzdFNmhBcG5hWVJVWWRJNjgrUitEZEpB?=
+ =?utf-8?B?bFl5Z3k3S1VXYVhDRTQ0UjZJL2x2azBJcWdBUENoTFg3ZlowTEFTNnJuOHJs?=
+ =?utf-8?B?dU10SmQ0TXdvQWlXM21tUEE2dXhrZFgxNnBHMkFHNjFZK0NLay9ndDFLS3FN?=
+ =?utf-8?B?Q09kVDMyTDFDd1JTQ3dLR2JhRnFkSGNFUHRiMlg5ZUI0L1B1VU56cUFHVEIz?=
+ =?utf-8?B?NHZxQnFzOEFieU9XbmJTRUJkTy9KNjNaQ0wwOVZzcnhMdWxST29yTkhtemZs?=
+ =?utf-8?B?ajJCMFVHNkNPMFRodGRyNDIvWm10OVhvcUFYRHRFU3IrVks4L2tmdDFPUXpy?=
+ =?utf-8?B?UE1zenpNYU9PLytVWmxqMlhGbWZTd1pVZHRhNGZwMVFJY3FyWSt5aEM0bDJJ?=
+ =?utf-8?B?MEF1K2dVYlZyY3huUnVkYjU3a1djcm5BMDB2ODVPelRyYjBnY29WS0RZVGk4?=
+ =?utf-8?B?NFUrbnFIbllVZ3h5VjR1QXhXQXZkWXBZVEMvUkZtdlNsRkRmM3RXUHltaHFI?=
+ =?utf-8?B?T0pDaXRXdzZBQ2lLV0psT0s0dU9CbjFMdWtrMnpHaG1pbWtOajBaZ3Z3akVy?=
+ =?utf-8?Q?ENmw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311-drm-imx-cleanup-v1-10-e104f05caa51@linaro.org>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9377.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b49616e-468f-4e5a-40d8-08dc4238777c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2024 02:02:26.9942
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9//uGRSREky3vJg44Gcdu5zuf37f5NPBqCyLWnIjvFTGC7w2ZXSF0xJVkti++o+O
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6941
 
-Hi Dmitry,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 1843e16d2df9d98427ef8045589571749d627cf7]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dmitry-Baryshkov/dt-bindings-display-fsl-imx-drm-drop-edid-property-support/20240311-192356
-base:   1843e16d2df9d98427ef8045589571749d627cf7
-patch link:    https://lore.kernel.org/r/20240311-drm-imx-cleanup-v1-10-e104f05caa51%40linaro.org
-patch subject: [PATCH 10/12] drm/imx: ldb: switch to imx_legacy_bridge / drm_bridge_connector
-config: sparc-allmodconfig (https://download.01.org/0day-ci/archive/20240312/202403120545.CbwFr4SU-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240312/202403120545.CbwFr4SU-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403120545.CbwFr4SU-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/maps/map_funcs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/spmi/hisi-spmi-controller.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/spmi/spmi-pmic-arb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_cif.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_aec.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_netx.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_pruss.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_mf624.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/pcmcia_rsrc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/yenta_socket.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/i82092.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwmon/corsair-cpro.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwmon/mr75203.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/vhost/vringh.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/greybus/greybus.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/greybus/gb-es2.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/rpmsg/rpmsg_char.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/ingenic-adc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/xilinx-ams.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/buffer/kfifo_buf.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-core.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-master-hub.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-master-aspeed.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-master-gpio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-master-ast-cf.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-scom.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/siox/siox-bus-gpio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/counter/ftm-quaddec.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/core/snd-pcm-dmaengine.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/core/sound_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/drivers/snd-pcmtest.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/pci/hda/snd-hda-cirrus-scodec-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/soc-topology-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/codecs/snd-soc-ab8500-codec.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/codecs/snd-soc-sigmadsp.o
-WARNING: modpost: sound/soc/codecs/snd-soc-tlv320adc3xxx: section mismatch in reference: adc3xxx_i2c_driver+0x10 (section: .data) -> adc3xxx_i2c_remove (section: .exit.text)
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/codecs/snd-soc-wm-adsp.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-dma.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-da7219.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-dmic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-i2s-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-max98927.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-max98357a.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-max98373.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-nau8825.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-probe.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-rt274.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-rt286.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-rt298.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-rt5514.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-rt5663.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-rt5682.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/intel/avs/boards/snd-soc-avs-ssm4567.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/mxs/snd-soc-mxs-pcm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/qcom/snd-soc-qcom-common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/qcom/snd-soc-qcom-sdw.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/qcom/qdsp6/snd-q6dsp-common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-intel-atom.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-acpi-intel-byt.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-acpi-intel-bdw.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-intel-hda-common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-intel-hda-mlink.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-intel-hda.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-tng.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-skl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-apl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-cnl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-icl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-tgl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-mtl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/intel/snd-sof-pci-intel-lnl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/imx/snd-sof-imx8.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/imx/snd-sof-imx8m.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/imx/snd-sof-imx8ulp.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/imx/imx-common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/mediatek/mtk-adsp-common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/mediatek/mt8195/snd-sof-mt8195.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/mediatek/mt8186/snd-sof-mt8186.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/snd-sof-utils.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/snd-sof-acpi.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/snd-sof-of.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/sof/snd-sof-pci.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/xilinx/snd-soc-xlnx-i2s.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/xilinx/snd-soc-xlnx-formatter-pcm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/ac97_bus.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/vfio-mdev/mtty.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/vfio-mdev/mdpy.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/vfio-mdev/mdpy-fb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/vfio-mdev/mbochs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/configfs/configfs_sample.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kfifo/bytestream-example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kfifo/dma-example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kfifo/inttype-example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kfifo/record-example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kobject/kobject-example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kobject/kset-example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kprobes/kprobe_example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kprobes/kretprobe_example.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in samples/kmemleak/kmemleak-test.o
->> ERROR: modpost: "devm_imx_drm_legacy_bridge" [drivers/gpu/drm/imx/ipuv3/imx-ldb.ko] undefined!
-ERROR: modpost: "__bswapdi2" [drivers/md/dm-vdo/dm-vdo.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEZhYmlvIEVzdGV2YW0gPGZl
+c3RldmFtQGdtYWlsLmNvbT4NCj4gU2VudDogMjAyNOW5tDPmnIgxMeaXpSAyMDo0NA0KPiBUbzog
+Sm95IFpvdSA8am95LnpvdUBueHAuY29tPg0KPiBDYzogSmFja3kgQmFpIDxwaW5nLmJhaUBueHAu
+Y29tPjsgbGdpcmR3b29kQGdtYWlsLmNvbTsNCj4gYnJvb25pZUBrZXJuZWwub3JnOyByb2JoK2R0
+QGtlcm5lbC5vcmc7IGtyenlzenRvZi5rb3psb3dza2krZHRAbGluYXJvLm9yZzsNCj4gY29ub3Ir
+ZHRAa2VybmVsLm9yZzsgc2hhd25ndW9Aa2VybmVsLm9yZzsgcy5oYXVlckBwZW5ndXRyb25peC5k
+ZTsNCj4ga2VybmVsQHBlbmd1dHJvbml4LmRlOyBkbC1saW51eC1pbXggPGxpbnV4LWlteEBueHAu
+Y29tPjsNCj4gZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFybS1rZXJuZWxAbGlz
+dHMuaW5mcmFkZWFkLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgaW14QGxp
+c3RzLmxpbnV4LmRldg0KPiBTdWJqZWN0OiBbRVhUXSBSZTogW1BBVENIIHYzIDMvM10gYXJtNjQ6
+IGR0czogaW14OTMtMTF4MTEtZXZrOiBhZGQNCj4gcGNhOTQ1MWEgc3VwcG9ydA0KPiANCj4gQ2F1
+dGlvbjogVGhpcyBpcyBhbiBleHRlcm5hbCBlbWFpbC4gUGxlYXNlIHRha2UgY2FyZSB3aGVuIGNs
+aWNraW5nIGxpbmtzIG9yDQo+IG9wZW5pbmcgYXR0YWNobWVudHMuIFdoZW4gaW4gZG91YnQsIHJl
+cG9ydCB0aGUgbWVzc2FnZSB1c2luZyB0aGUgJ1JlcG9ydA0KPiB0aGlzIGVtYWlsJyBidXR0b24N
+Cj4gDQo+IA0KPiBPbiBNb24sIE1hciAxMSwgMjAyNCBhdCA4OjI04oCvQU0gSm95IFpvdSA8am95
+LnpvdUBueHAuY29tPiB3cm90ZToNCj4gDQo+ID4gICAgICAgICAvKiBuZWVkIHRvIGNvbmZpZyB0
+aGUgU0lPTiBmb3IgZGF0YSBhbmQgY21kIHBhZCwgcmVmZXIgdG8NCj4gRVJSMDUyMDIxICovDQo+
+IA0KPiBQbGVhc2UgcmVtb3ZlIHRoaXMgY29tbWVudC4gVGhlIFNJT04gYml0IGlzIHNldCBmb3Ig
+STJDIHBpbnMuDQpUaGFua3MgRmFiaW8hDQpZZXMsIFRoaXMgY29tbWVudCBpcyBmb3IgdVNESEMg
+YnV0IG5vdCBpMmMuIEkgd2lsbCBhZGp1c3QgbXkgcGF0Y2ggZm9ybWF0Lg0KQlINCkpveSBab3UN
+Cj4gDQo+IEFsc28sIHRoaXMgZXJyYXR1bSBhZmZlY3RzIHVTREhDIGFjY29yZGluZyB0bzoNCj4g
+aHR0cHM6Ly9ldXIwMS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBz
+JTNBJTJGJTJGd3d3Lg0KPiBzcGluaWNzLm5ldCUyRmxpc3RzJTJGZGV2aWNldHJlZSUyRm1zZzY0
+MTg0Ni5odG1sJmRhdGE9MDUlN0MwMiU3Q2oNCj4gb3kuem91JTQwbnhwLmNvbSU3QzlmZGE1Zjlk
+OGJmYTQ0MTM5YzY5MDhkYzQxYzhlM2Y3JTdDNjg2ZWExZDNiDQo+IGMyYjRjNmZhOTJjZDk5YzVj
+MzAxNjM1JTdDMCU3QzAlN0M2Mzg0NTc1NzgyNzQxNzg3MzYlN0NVbmtuDQo+IG93biU3Q1RXRnBi
+R1pzYjNkOGV5SldJam9pTUM0d0xqQXdNREFpTENKUUlqb2lWMmx1TXpJaUxDSkJUaUk2SWsNCj4g
+MWhhV3dpTENKWFZDSTZNbjAlM0QlN0MwJTdDJTdDJTdDJnNkYXRhPVklMkZXSDYlMkZKTzBUN2xB
+DQo+IEdsTmdzekozR1JPTjFoWXZaSXgxQ0lpajUlMkJqS2pFJTNEJnJlc2VydmVkPTANCg==
