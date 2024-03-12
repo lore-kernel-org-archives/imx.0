@@ -1,121 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F4C78B4D
-	for <imx@lists.linux.dev>; Tue, 12 Mar 2024 10:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDF17B3F8;
+	Tue, 12 Mar 2024 14:33:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710239048; cv=none; b=EqgpUZ1vPvMtUZSQir7+/okwKkQT0e3mhPBASgUpTTd0MCp+/eKViqBPCulr7RzGq7UDnFE5FNzYU2Hsd/qJucikbnC+sKGsWXsJ288Bu7m4BT456JEceHN2SAEBk5XJaY8sbAExk6eiUBaXPXBxSO36z2l5Uls4zwBxdflCH9g=
+	t=1710253990; cv=none; b=AJ7bKibKKc5jNLxTZtVLk1uGfFyU3r1IXvBZJNcJwdbXg3e5N8eJCFXdW/4EtESKXDbO+cXK4BByKa8hZD05aRRVXPWHuD8ndpelZDu34rmxYoT0NuZ7oYc17xsyUTzeucy54invDdC2sMR3PYeiN/1BE+a8n5CNWJ7Ep1/oSNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710239048; c=relaxed/simple;
-	bh=L+emXpy4E1cPrVtT+/AhGt41NFT89QhDf4iYygXx3GU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fYRhPZNZIvKCBA/eCBu14E4jHQRQwV3wSB5HCLdcf1LfACpH/sWZHXIBnkj0knU0ZIPm2a/5IHRIY527PwuW+D5j9e3DekbYTE9/9KAWWIkOQkZbKsfnl64FZUZ2eFtp7ayA4ly2rnGuHVOGCdE05GcsoQV8tCZWoC2cFww+hkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZXrQ/mup; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1710253990; c=relaxed/simple;
+	bh=xwQfX7wE+SHR+sIXXoDl3Mmp3oo9zjH1npQEC15cvY0=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=IXDz50MoJWxqoAK3pXMn6uoX3ixPbx9EMrDX8b7kAmo+MG6rlOGdLgqknU7nolfR18CAQODVuW9XYOpV+numDKW+YbF8R93SAezVh5obbgUClzqjgbbaDnRHVBSN8ggu3Jbjod3z3yqrVqUGpVDrzgJBghWXqb8hlp5QBIEqO2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L5bljXPh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZXrQ/mup"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710239046; x=1741775046;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L+emXpy4E1cPrVtT+/AhGt41NFT89QhDf4iYygXx3GU=;
-  b=ZXrQ/mupWGzn9BV1TMH4jKKWGkA0KcycKXwTM2vU0vPysFSGS6s501YQ
-   yYvNufdHDDDWGfjpixUXwlTXJ+80+OS6xmvlrTgvTqcoZ4FWbOon8XSct
-   H2LE/nnLaR1w5gdUleC1abVPZw+czMcrlvTJ2NEaqeEsYIH6UIc5Y9J/R
-   Xek/uS52/Yvq1ScW+glhWK964gQGABiwjSqJxq9bUAqR+UPSxavxRX60R
-   62RyxksPgKVPkMs/XLu+REUr0cXpBIt+My40j0/ajr6jAh7l5VoiDO4Zj
-   GsGhHZ/eRm4sNSYvArc6SZIHMWmj2favqwqFoMVngYNh4qoRiwnzfs5Cy
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4795258"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="4795258"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 03:24:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051638"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="937051638"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 12 Mar 2024 03:24:01 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 Mar 2024 12:24:01 +0200
-Date: Tue, 12 Mar 2024 12:24:01 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, linux@roeck-us.net, rdbabiera@google.com,
-	badhri@google.com, frank.wang@rock-chips.com, kyletso@google.com,
-	zhipeng.wang_1@nxp.com, aisheng.dong@nxp.com, jun.li@nxp.com,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] usb: typec: tcpm: fix double-free issue in
- tcpm_port_unregister_pd()
-Message-ID: <ZfAtQVGLIDuBTY+e@kuha.fi.intel.com>
-References: <20240311065219.777037-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L5bljXPh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72BFC43394;
+	Tue, 12 Mar 2024 14:33:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710253990;
+	bh=xwQfX7wE+SHR+sIXXoDl3Mmp3oo9zjH1npQEC15cvY0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=L5bljXPhLLgoz2yi4sUU66Nv22zcwZd5RCqG/KQUBG8J0puP93ibPnsyJJxC5OjLc
+	 9IVaC6uRD5fhZIRiRJK6lIq6n+htvfQ4NsQmQlJlgrmYd3UwoT6JxCBWWua93ntZv0
+	 dETjdz0m/jB3ulH4Tn0J2RVQMxLdukCC8OFEut3LbWkDv9TVLiwE8b6Mt3jjIYfT+x
+	 TkSnXcwKaHavXTaJBYJXd7raC3x60AJ/dav8iltPXYW8noXyyCltb4RtiE7+Trrp57
+	 oc0ZsNOm52AgxsDEvI74ggUTOTBAq9bmVGhEW+f2O+B0+UoJ+AIZCAjmDxFzvnJxH0
+	 rvJckt1UOCp2w==
+Date: Tue, 12 Mar 2024 08:33:08 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311065219.777037-1-xu.yang_2@nxp.com>
+From: Rob Herring <robh@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: krzysztof.kozlowski+dt@linaro.org, linux-imx@nxp.com, 
+ shawnguo@kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, robh+dt@kernel.org, 
+ linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de, 
+ peter.chen@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+ jun.li@nxp.com, festevam@gmail.com, gregkh@linuxfoundation.org
+In-Reply-To: <20240312091703.1220649-1-xu.yang_2@nxp.com>
+References: <20240312091703.1220649-1-xu.yang_2@nxp.com>
+Message-Id: <171025376556.2190631.1099014276992034408.robh@kernel.org>
+Subject: Re: [PATCH v8 01/10] dt-bindings: usb: usbmisc-imx: add
+ fsl,imx8ulp-usbmisc compatible
 
-On Mon, Mar 11, 2024 at 02:52:19PM +0800, Xu Yang wrote:
-> When unregister pd capabilitie in tcpm, KASAN will capture below double
-> -free issue. The root cause is the same capabilitiy will be kfreed twice,
-> the first time is kfreed by pd_capabilities_release() and the second time
-> is explicitly kfreed by tcpm_port_unregister_pd().
+
+On Tue, 12 Mar 2024 17:16:54 +0800, Xu Yang wrote:
+> Add "fsl,imx8ulp-usbmisc" compatible.
 > 
-> [    3.988059] BUG: KASAN: double-free in tcpm_port_unregister_pd+0x1a4/0x3dc
-> [    3.995001] Free of addr ffff0008164d3000 by task kworker/u16:0/10
-> [    4.001206]
-> [    4.002712] CPU: 2 PID: 10 Comm: kworker/u16:0 Not tainted 6.8.0-rc5-next-20240220-05616-g52728c567a55 #53
-> [    4.012402] Hardware name: Freescale i.MX8QXP MEK (DT)
-> [    4.017569] Workqueue: events_unbound deferred_probe_work_func
-> [    4.023456] Call trace:
-> [    4.025920]  dump_backtrace+0x94/0xec
-> [    4.029629]  show_stack+0x18/0x24
-> [    4.032974]  dump_stack_lvl+0x78/0x90
-> [    4.036675]  print_report+0xfc/0x5c0
-> [    4.040289]  kasan_report_invalid_free+0xa0/0xc0
-> [    4.044937]  __kasan_slab_free+0x124/0x154
-> [    4.049072]  kfree+0xb4/0x1e8
-> [    4.052069]  tcpm_port_unregister_pd+0x1a4/0x3dc
-> [    4.056725]  tcpm_register_port+0x1dd0/0x2558
-> [    4.061121]  tcpci_register_port+0x420/0x71c
-> [    4.065430]  tcpci_probe+0x118/0x2e0
-> 
-> To fix the issue, this will remove kree() from tcpm_port_unregister_pd().
-> 
-> Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
-> cc: <stable@vger.kernel.org>
-> Suggested-by: Aisheng Dong <aisheng.dong@nxp.com>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 2 --
->  1 file changed, 2 deletions(-)
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 3d505614bff1..afbb0d832db2 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -6940,9 +6940,7 @@ static void tcpm_port_unregister_pd(struct tcpm_port *port)
->  	port->port_source_caps = NULL;
->  	for (i = 0; i < port->pd_count; i++) {
->  		usb_power_delivery_unregister_capabilities(port->pd_list[i]->sink_cap);
-> -		kfree(port->pd_list[i]->sink_cap);
->  		usb_power_delivery_unregister_capabilities(port->pd_list[i]->source_cap);
-> -		kfree(port->pd_list[i]->source_cap);
->  		devm_kfree(port->dev, port->pd_list[i]);
->  		port->pd_list[i] = NULL;
->  		usb_power_delivery_unregister(port->pds[i]);
-> -- 
-> 2.34.1
+> ---
+> Changes in v3:
+>  - new patch due to missed this little one
+> Changes in v4:
+>  - no changes
+> Changes in v5:
+>  - add Acked-by tag
+> Changes in v6:
+>  - no changes
+> Changes in v7:
+>  - no changes
+> Changes in v8:
+>  - no changes
+> ---
+>  Documentation/devicetree/bindings/usb/fsl,usbmisc.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
--- 
-heikki
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx8ulp-evk.dtb freescale/imx93-11x11-evk.dtb' for 20240312091703.1220649-1-xu.yang_2@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx93-11x11-evk.dtb: tcpc@50: compatible: ['nxp,ptn5110'] is too short
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+arch/arm64/boot/dts/freescale/imx93-11x11-evk.dtb: tcpc@51: compatible: ['nxp,ptn5110'] is too short
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+
+
+
+
+
