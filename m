@@ -1,164 +1,121 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2051.outbound.protection.outlook.com [40.107.7.51])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407AE7C09F
-	for <imx@lists.linux.dev>; Tue, 12 Mar 2024 09:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710235070; cv=fail; b=ZGyCHQpHAzLZICK59aRIxZPaevie2D+1G3xb5T9HvXuIa7+PLGNv93Dzta43andTIrjyFeITfZstlRQ5Gvi4pZLKXtjhJFtob/dSO61XbwN/92DCoq5p47FjVKImeCZmRmClUeED8aKNbxfuShFiZzawn39aafxmH5w3dAnYGeY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710235070; c=relaxed/simple;
-	bh=orHd5r4+ahRLMmtcIl0rWJg6cTW2Y7FhVLCdUFY7aLA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BglOs3b9gq+bP2oS6c1qeQah9SF7UxRHZk+t2lrFNDiKRgOfiTJ8gH0udN+obq89+OGAOZtcbTBuAf03JWgB6EKqCP0wIURrphugye1/rAlic0olB1FNL3POs/V6D+gl4L5K7nftXNXN5hE+eed5ISXB71f4kGj+6Pz0CPHc0RI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ufzll4oc; arc=fail smtp.client-ip=40.107.7.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F4C78B4D
+	for <imx@lists.linux.dev>; Tue, 12 Mar 2024 10:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710239048; cv=none; b=EqgpUZ1vPvMtUZSQir7+/okwKkQT0e3mhPBASgUpTTd0MCp+/eKViqBPCulr7RzGq7UDnFE5FNzYU2Hsd/qJucikbnC+sKGsWXsJ288Bu7m4BT456JEceHN2SAEBk5XJaY8sbAExk6eiUBaXPXBxSO36z2l5Uls4zwBxdflCH9g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710239048; c=relaxed/simple;
+	bh=L+emXpy4E1cPrVtT+/AhGt41NFT89QhDf4iYygXx3GU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fYRhPZNZIvKCBA/eCBu14E4jHQRQwV3wSB5HCLdcf1LfACpH/sWZHXIBnkj0knU0ZIPm2a/5IHRIY527PwuW+D5j9e3DekbYTE9/9KAWWIkOQkZbKsfnl64FZUZ2eFtp7ayA4ly2rnGuHVOGCdE05GcsoQV8tCZWoC2cFww+hkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZXrQ/mup; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ufzll4oc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OdF+3byj7gCebrltOyq67brj83mOJISsPWOzzWgwscewq6JBs8LHUVqOZaCy7LkS9AtPOMldYqdT9Dz6NsD8cjxopSe4KLW+a1baLnwVwTwh1goKeu8sfJpnfDjVAbQcWHW3AuiGUMSTa1EJ191mLe1zsv6uvp9j8oc2L07eHhQH/H2RH/oCVB9JuMl3fJ4qfJeKMpXR7LgxfNjdhmf+/zW1qAekA0Rf5wQpXefRDRwIxOdZTepOMNr68tY38mz1kprUfWom18fmdQnAYPyXU3lULTAeBvb8hmMrs4YUVkGFbB7HhrPenqyEYN7G6C+n0ZX5NcUd4cnaBRfOsJufZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mKv5jcpy5KV/AXQzkVREqyAhfz5Um2sBWFV9Pr0tDoY=;
- b=FdMjm4Gf+2xhrjxAnUkGmWeXK40ZLztf5EQiLUaoxC7hazcgCb9mDR97IlQYk3i3ZbWN6wMDd1fc2ngI54Mnt0hqvsrT3l4FeyJs8mJeG0UrntzC25JqPGvTHn8oiDfoB1pcPmgs15CdV/x8IUN7129yPh3PfmXQolWi3BQqvzwTw+1+tFftdagHxIClRIFNb4kAS1gaZAU3Ga0Z5/6rL55HlTqWb0E5c6cNeyRqYUjT5V47eDyS6S36Oj8KeppOI6U3EIuYH6PwLNl0CtQ7Q4Xw+F2EV0n+ZIZ2og794V/kWpiYGsn6HMOqtWiJdmxdpItoajf9D2fi6Hw7UfnaNw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mKv5jcpy5KV/AXQzkVREqyAhfz5Um2sBWFV9Pr0tDoY=;
- b=Ufzll4ocXwtQW7AkZQnh+GWqpsFh2NwQ/W7FP72yhCYaPhCtAJwrfa+L7Rolv1h35RxKJkAlV7CeSg0eogVFzTVG0BRiAUK1GI6XSPgF6wpCISm21maYcmrpCAmq29UcuoiOWW8I6S/1LXpNXg2Lv/SScEeyBc+ByFXIeODrvBc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DB9PR04MB9676.eurprd04.prod.outlook.com (2603:10a6:10:308::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.36; Tue, 12 Mar
- 2024 09:17:42 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::d45f:4483:c11:68b0]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::d45f:4483:c11:68b0%7]) with mapi id 15.20.7362.035; Tue, 12 Mar 2024
- 09:17:42 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: gregkh@linuxfoundation.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	shawnguo@kernel.org,
-	conor+dt@kernel.org
-Cc: s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	peter.chen@kernel.org,
-	xu.yang_2@nxp.com,
-	jun.li@nxp.com,
-	linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v8 10/10] usb: chipidea: ci_hdrc_imx: align usb wakeup clock name with dt-bindings
-Date: Tue, 12 Mar 2024 17:17:03 +0800
-Message-Id: <20240312091703.1220649-10-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240312091703.1220649-1-xu.yang_2@nxp.com>
-References: <20240312091703.1220649-1-xu.yang_2@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0026.apcprd02.prod.outlook.com
- (2603:1096:4:195::19) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZXrQ/mup"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710239046; x=1741775046;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=L+emXpy4E1cPrVtT+/AhGt41NFT89QhDf4iYygXx3GU=;
+  b=ZXrQ/mupWGzn9BV1TMH4jKKWGkA0KcycKXwTM2vU0vPysFSGS6s501YQ
+   yYvNufdHDDDWGfjpixUXwlTXJ+80+OS6xmvlrTgvTqcoZ4FWbOon8XSct
+   H2LE/nnLaR1w5gdUleC1abVPZw+czMcrlvTJ2NEaqeEsYIH6UIc5Y9J/R
+   Xek/uS52/Yvq1ScW+glhWK964gQGABiwjSqJxq9bUAqR+UPSxavxRX60R
+   62RyxksPgKVPkMs/XLu+REUr0cXpBIt+My40j0/ajr6jAh7l5VoiDO4Zj
+   GsGhHZ/eRm4sNSYvArc6SZIHMWmj2favqwqFoMVngYNh4qoRiwnzfs5Cy
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4795258"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="4795258"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 03:24:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051638"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="937051638"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 12 Mar 2024 03:24:01 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 Mar 2024 12:24:01 +0200
+Date: Tue, 12 Mar 2024 12:24:01 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, linux@roeck-us.net, rdbabiera@google.com,
+	badhri@google.com, frank.wang@rock-chips.com, kyletso@google.com,
+	zhipeng.wang_1@nxp.com, aisheng.dong@nxp.com, jun.li@nxp.com,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] usb: typec: tcpm: fix double-free issue in
+ tcpm_port_unregister_pd()
+Message-ID: <ZfAtQVGLIDuBTY+e@kuha.fi.intel.com>
+References: <20240311065219.777037-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DB9PR04MB9676:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d95c999-a7fc-47e4-2065-08dc42754561
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	A+gwXk0Hq69Ignejr6L61AIObWUVCO6LMv61NqgzBXRnWGk9JrhW9plWVEgVOCgrbv4FA9c94aIdMi3KefrIQX0Q+/3a8SzdwJQQzSFtKflVwjzkzOKyn2uazX0Ow5o+Aid9Zep/OPoAGNf755OHQ8qfII4w7OqnB/hOS6XjgUkFcCgNYf5Q+NcyZzxtf46W9/ULEIcVYwhwbEA4UubBDlQoFmxNwacTMB+cLlumqBn4aP2I3nxyBvKkYeV/8FdlMJ7Xh3F35BzavrGdlaH8JC+M6xiZxM80syZg+cQHQJSq0i/2pWoPeuGLwANKMvgbT/653WZNw6EqLSJUXEw2+5jdNXmhXXqBiq/rE1OK7fuRthk5m6ReruuIHkfB26HIzO0YQR6hJM9voIzG6FbdZdcD4c9s7AVmiU7fegHuKayf3PHM4a2RsMYIHwW5aLMokQCymswIE/rFiWL2bPpdkN+eqjoNd6sVvoRd8ftZ9dyUnBQAXaof/pJD7faLHesv0rcfdoF5VCVD18kLxpgY+ze1FIQbh1xpTNG4elmRA2NkbJRJzwxx09pe/5q8diLUxAPXjWSmuO4JI0Ltp7DqetItcPoArW6OkOQMznGWxcTPctS9uRo+/QoFHzlk/G/SnoWJddiccrZXBkirbJvl2VjrTFB8lk4fBbpcE1AtiCp5Ho2kAb5FEOVnqDy49UdFvABtnfO07hS/cGy9wtUu6rl2bcYZZn/ehWAyChZXDkQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(7416005)(376005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+1AkbKlBFKixPP8NNAipQdGRGyIkf5EdXKz1BPrEi5T760EphJdFKzDt6CVV?=
- =?us-ascii?Q?DbZo2jQqUTCcsNuIHXEc6I2/KKTESi4khidre5FgKCXxA/YeruN1wPsuIkRD?=
- =?us-ascii?Q?z0b3qdAfPFKEUNk3LdywLONPMXcMydn1nlN0AcRLp8S3AMxHXI1IkAJ7pz07?=
- =?us-ascii?Q?2RtoN8s1QU4AnlXgHkmPanveJVOOiK3t/MePL/+V2knYdlAURBEBnMnqncE7?=
- =?us-ascii?Q?3xqwaIk3MhO5sLDJSzIsa7Zqdq8pzj4AhqVLet9hxreDJEhQHHqvg08ygamq?=
- =?us-ascii?Q?0UyOtjRaAGUlHOmMARtlvYKq/cK89lCcJXzqYQtLenAuOf4sHUKoOAS4Ztx7?=
- =?us-ascii?Q?vFdrwJJUleL0tQdFbAbYRXN99p+77MDA4xmBnYSJcMbfbUK4dpaefwgmmFS9?=
- =?us-ascii?Q?ZwRYcsHthpH9qfJvz2mFkXSz4YsLaWjyZ5MUZ5uBe/HGBnwkX4Omjjo0leCS?=
- =?us-ascii?Q?OVrtzsv0sCwxcA1qcxnq5/zwFUZTJXLr9NeDRIOKfYfUDt1KWFh7Ouh2gJq9?=
- =?us-ascii?Q?9C+NXZzv3YcwhUphOTHw+vH+cxvD+xw9LGYNzOiY78o5g/bCsOxcdZxCb/PA?=
- =?us-ascii?Q?hN7ZmSZgiZaVpAYyPywpe9gEQ1cN8SDUrZPcSAX0UjgtfX0ZvpqTB6/v+4to?=
- =?us-ascii?Q?nnA9kqBqnskKJhc8ejjxsjBBmb7ah6O+bG4Vin+LnaPM0pFOTl38CT8TGj8H?=
- =?us-ascii?Q?KQrMSD29DzYcXY2dLtBx8nfyitiVrnGU6Wb4yELS288E+Kn3iG8x88KgcXMi?=
- =?us-ascii?Q?MqmeBQ62mvpo7OQC/WjsJIFxp8eFFRZ7RdrVy/x5VrDz/ol7/ahHM7fJSlcV?=
- =?us-ascii?Q?6fXF6R8WxjGxSkC2FUm4ml1AsA5HLCEaDHTekOOP/Q/cjtOcQXNKrGHDVrjO?=
- =?us-ascii?Q?qE8H+QF6FeF2VvcHo+uCbTaslI+a/ZpQ5yvxpBYqVeKm8gr6INaljMUCJHG6?=
- =?us-ascii?Q?XewEiAdhWcC5c3qu7f/dlFUqoQQ+/t/I6vdpM++KRldjLDkcw3wAyZLPmyOt?=
- =?us-ascii?Q?ToFZ1zqoKo214QrzSg5ms/qT83dhi9YYEULu5ZyC3+5MD5YSWa+65SUn5cld?=
- =?us-ascii?Q?GDzGRiHwibWogsydPj4LoXcZyMq+79mAIMp7KJ7gWP1q3Q4lIBD+1HFeAYtp?=
- =?us-ascii?Q?Z6CPVuQceLeaS+2yY/NDdcjIzaZdRLGH1BtlQsGN9eRtN1/X0fMoyqKWpi8D?=
- =?us-ascii?Q?danVjucEk/s9Mi7qgblqqcOVh3hm5WAOsqXWh8o5t5GTg1SbCWOUNBO+/Vij?=
- =?us-ascii?Q?fmnwsgsPQFFDmHo5ReWQjuyQPtBfYLbLoGuyr3FpMP0+Udr1m5fCaDMbNjyY?=
- =?us-ascii?Q?mzdc2t8sFoUR0VrxviH904DKDYo7mUq9GqCVKeZnA91s1jZ+rp364Bl8/7Yg?=
- =?us-ascii?Q?f249vr4WvU4AFnoqfVKXEhlOOaDNhtK06xBgQLwuoF9Tab4kdd+e9+Vf42ML?=
- =?us-ascii?Q?A/ZURG1EJXi0oEvd2f+IKZ7hoyc6Brfp98QJ6Nn9Atw34ljnBtgb6WrwCCiO?=
- =?us-ascii?Q?vWbJ0JMI/pny6owOOvJG27mS/zDANV1OxSAvTeRXXJFTzR4GEACcnMYatcN3?=
- =?us-ascii?Q?X/bH3acJBf8fVV2FTbuS+FCE5PHEWWk/T7ooPyCL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d95c999-a7fc-47e4-2065-08dc42754561
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 09:17:42.5117
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D9ujnD5Y/NO2V9DfYm6RgQLFF6i/PWH7Py6HxxTiyGn9dgqRy23j/nbHGh5vzMjrSrsc80BgBW9KVsP8SUxKbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9676
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311065219.777037-1-xu.yang_2@nxp.com>
 
-The dt-bindings is going to use "usb_wakeup" as wakup clock name. This will
-align the change with dt-bindings.
+On Mon, Mar 11, 2024 at 02:52:19PM +0800, Xu Yang wrote:
+> When unregister pd capabilitie in tcpm, KASAN will capture below double
+> -free issue. The root cause is the same capabilitiy will be kfreed twice,
+> the first time is kfreed by pd_capabilities_release() and the second time
+> is explicitly kfreed by tcpm_port_unregister_pd().
+> 
+> [    3.988059] BUG: KASAN: double-free in tcpm_port_unregister_pd+0x1a4/0x3dc
+> [    3.995001] Free of addr ffff0008164d3000 by task kworker/u16:0/10
+> [    4.001206]
+> [    4.002712] CPU: 2 PID: 10 Comm: kworker/u16:0 Not tainted 6.8.0-rc5-next-20240220-05616-g52728c567a55 #53
+> [    4.012402] Hardware name: Freescale i.MX8QXP MEK (DT)
+> [    4.017569] Workqueue: events_unbound deferred_probe_work_func
+> [    4.023456] Call trace:
+> [    4.025920]  dump_backtrace+0x94/0xec
+> [    4.029629]  show_stack+0x18/0x24
+> [    4.032974]  dump_stack_lvl+0x78/0x90
+> [    4.036675]  print_report+0xfc/0x5c0
+> [    4.040289]  kasan_report_invalid_free+0xa0/0xc0
+> [    4.044937]  __kasan_slab_free+0x124/0x154
+> [    4.049072]  kfree+0xb4/0x1e8
+> [    4.052069]  tcpm_port_unregister_pd+0x1a4/0x3dc
+> [    4.056725]  tcpm_register_port+0x1dd0/0x2558
+> [    4.061121]  tcpci_register_port+0x420/0x71c
+> [    4.065430]  tcpci_probe+0x118/0x2e0
+> 
+> To fix the issue, this will remove kree() from tcpm_port_unregister_pd().
+> 
+> Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
+> cc: <stable@vger.kernel.org>
+> Suggested-by: Aisheng Dong <aisheng.dong@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
----
-Changes in v5:
- - new patch
-Changes in v6:
- - add Acked-by tag
-Changes in v7:
- - no changes
-Changes in v8:
- - no changes
----
- drivers/usb/chipidea/ci_hdrc_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 3d505614bff1..afbb0d832db2 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -6940,9 +6940,7 @@ static void tcpm_port_unregister_pd(struct tcpm_port *port)
+>  	port->port_source_caps = NULL;
+>  	for (i = 0; i < port->pd_count; i++) {
+>  		usb_power_delivery_unregister_capabilities(port->pd_list[i]->sink_cap);
+> -		kfree(port->pd_list[i]->sink_cap);
+>  		usb_power_delivery_unregister_capabilities(port->pd_list[i]->source_cap);
+> -		kfree(port->pd_list[i]->source_cap);
+>  		devm_kfree(port->dev, port->pd_list[i]);
+>  		port->pd_list[i] = NULL;
+>  		usb_power_delivery_unregister(port->pds[i]);
+> -- 
+> 2.34.1
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index ae9a6a17ec6e..a17b6d619305 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -212,7 +212,7 @@ static int imx_get_clks(struct device *dev)
- 		/* Get wakeup clock. Not all of the platforms need to
- 		 * handle this clock. So make it optional.
- 		 */
--		data->clk_wakeup = devm_clk_get_optional(dev, "usb_wakeup_clk");
-+		data->clk_wakeup = devm_clk_get_optional(dev, "usb_wakeup");
- 		if (IS_ERR(data->clk_wakeup))
- 			ret = dev_err_probe(dev, PTR_ERR(data->clk_wakeup),
- 					"Failed to get wakeup clk\n");
 -- 
-2.34.1
-
+heikki
