@@ -1,80 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2064.outbound.protection.outlook.com [40.107.22.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902DF3FB28;
-	Wed, 13 Mar 2024 11:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710328150; cv=none; b=EQQvhpd8vxU08M43rU62MZMEcCWONhsH6hFgXgm4sPi99NMaWY6OBl0WfgWiIJVXwQv2e9pNDGCk46ACNOCsLw7dyzBGBCfdvx0wBH0nIWmo62ko441FoxtLjKNjcpHit33M6dnbxJf2aERvQV5Jte88Xsg2sCjBjuwsGLzCnnM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710328150; c=relaxed/simple;
-	bh=+7KhbQ0r4aTSlFz/9H9ebVTA5rD0wSrH9ITpUsZtlHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J8iWNqhkQgyAY44/FT48955Nhwj44Hdl38RoqQCCZaQvT6s7JJrgMGQYbuNUBajHYa6lJa9AkHr6x2/moZi3IYMaGNs+mWxfQLVTsOPkePSGScVC3E3RyesRKAIHeuBOyoROQq3X2t74Em92igY9YbQ8cNCGrKtJLcEqz2O+lqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/Ctlpie; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601B110F9
+	for <imx@lists.linux.dev>; Thu, 14 Mar 2024 02:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710383969; cv=fail; b=lBzlFGKkReqm1Lt2Yao/Z90x9/YbHQTYzMIE7vm+oWAmDCzmCTL/GHP5rC8WD2oG0WQWJgN8wfYXgHFCyAeyQC4fZgA4L5FPRjUUBSXKYEnRWxLV2AYK59j3P3Qan9PR9dBtHNvfrqdcIX227t5KRUsI5D2diyrcxCrdapOCUL8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710383969; c=relaxed/simple;
+	bh=7WIRNpVM7zjR8odoDx9pOMyyqv4MunbRLwMld90VtxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=IjuCHkX9Scj2YqQIl4TGdtwMnFuvubupHTK1jJVtDFkBiz8/4J9wBoUbanEmNia68VSPxcX/OBNR0wnKaZKrYwcluu9pvnIpKgpuvPKvUj8ZA1MWcbI9+D7uBHqc2RHPI8JfT18j0tQ8J9hQSslfGWL4D5BBgX8LPCFnfwzBmPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=AldDp34J; arc=fail smtp.client-ip=40.107.22.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/Ctlpie"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5F8C433C7;
-	Wed, 13 Mar 2024 11:09:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710328150;
-	bh=+7KhbQ0r4aTSlFz/9H9ebVTA5rD0wSrH9ITpUsZtlHY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N/CtlpieknVFQYr4x2MZ3ye177KlniREQXVlwK8NkYauHntJt+8KndE+A0q9c0oh1
-	 OiyApAA9yuQJU0b410kl3Mxp1LDyqdaE97Ba/iD4JzeB1y/309LtwffLJPFqDy4VhI
-	 6hHlAST9iBjsNn5+aO/SnGOFeBgCtR4j8kh62DzImjig9hmBJL1GRQAgrRlhxuNayU
-	 NoJ8oMUmRDtvPwSEg6rF1VI/ex1LrEKi6hNMZ6nu62jL015I/g80xOUcQ82H5As1kJ
-	 M6vG9juryrDQlkF8LevmX4oEVzatxs+gzKCW5RKfR0I5+52iitsQZgikBDyXx3nPGy
-	 L2/9UrwmAEH/A==
-Date: Wed, 13 Mar 2024 12:09:04 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: mani@kernel.org, kw@linux.com
-Cc: niklas.cassel@wdc.com, bhelgaas@google.com,
-	gustavo.pimentel@synopsys.com, imx@lists.linux.dev,
-	jdmason@kudzu.us, jingoohan1@gmail.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org, robh@kernel.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
- interpreted as a free ATU slot
-Message-ID: <ZfGJUDoGnFXKBoG0@ryzen>
-References: <20240304224616.1238966-1-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="AldDp34J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ro/sPoQidjNIESJuInLqNDScjpVETfk+sSx2yU6WVmmUnAm/LQivPU08oDdPhYXy77rqKozRE3DiozwZgDpQbAWURcTJwg6iHKrFz0slSLkXVS8vfNCFGGFCKAXD6qQoZyqLaX3rxzKar/JzitXRgnm7gDYuB7RGc+KI1HMIQhOeIsdQAtvT3PUBlqF75CohHOh4HD0DZdl/k2WA/ZrJqzciim3YCKniADW7IXZSYvmyhVAoQ4nrbrfoAoJYOBo03mO4BiI6GaWeEhaL+HowNWoBaf85+9/VWK5NMSN+daC0fvSIaCi2lwiczPCjQ5GjsjXwZ7gTFrQpS3dIbECu0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=64iAqNmlBU+Vnz+qzRcMFrEcgDa2NjRH9SpJQPfQ/sc=;
+ b=GeCnxSO65pCW9XO5Z2JDUHbtZzgbNP68cwIsRaL5D6XwyTf/EgCdUDHmDj34nYNVIXnYa0+r4JxUSlx3JG7a/wA3p9CeyiexMgVtwPm5KYqZI+hN+QID+GwxAyR0wRcTPFuBEAeFMIO6bY2ci5oiYwRNlAf5NTUHw/GKS7xaODTvhJDwMASgohx9L+79nPMDDHrl0eBgAdjtmnWlos/yRRkSc/OtqOBKw261CyrTzVEwp1e/pQzIDh4itOqGyw+rWOencj7FnFY7Olbuo+m/ZyVfs0eM6s7JSuCWQIXw3NX/+jbdR3znVBtbV9rQO5NgKQ/CBJoOVjSpwgpGPQEIgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=64iAqNmlBU+Vnz+qzRcMFrEcgDa2NjRH9SpJQPfQ/sc=;
+ b=AldDp34JKU2ah0VETNwL5dPb3OqeShPQsWinttlJGZzSpLWKD+BdEIm3Crem5RGI49Qwoyh2CvLaMo61FFqn6aGEn0dyB4r3IixR8RtL0veB+RYFYjvrjN6NO3zGcx6P3s0uoRfxNzsk+c6JSPPlPdMPGV147qt47MlptRqHLK8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB8143.eurprd04.prod.outlook.com (2603:10a6:102:1c4::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.21; Thu, 14 Mar
+ 2024 02:39:24 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7362.035; Thu, 14 Mar 2024
+ 02:39:24 +0000
+Date: Wed, 13 Mar 2024 22:39:15 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP Linux Team <linux-imx@nxp.com>, dmaengine@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Robin Gong <yibin.gong@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, Joy Zou <joy.zou@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v2 4/4] dmaengine: imx-sdma: Add i2c dma support
+Message-ID: <ZfJjUzWv2WOs/CFt@lizhi-Precision-Tower-5810>
+References: <20240307-sdma_upstream-v2-0-e97305a43cf5@nxp.com>
+ <20240307-sdma_upstream-v2-4-e97305a43cf5@nxp.com>
+ <CAOMZO5ARM2pS93jLjpYZRfLU-tohuDXUZxDrWFjvVBGtH2t_aQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOMZO5ARM2pS93jLjpYZRfLU-tohuDXUZxDrWFjvVBGtH2t_aQ@mail.gmail.com>
+X-ClientProxiedBy: BY3PR04CA0022.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::27) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240304224616.1238966-1-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8143:EE_
+X-MS-Office365-Filtering-Correlation-Id: 33f490d4-e653-4cf5-988d-08dc43cff602
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	b2VOLU7oXzii+4sqeoRGPZBb2Y4G9+dlGzpRESPNbSkwQfo/U/InhYWNQHHkp0Ov9yS+cMJV4wiwCO57wqyTeY3EJZ4h0Fc2pi8qG3CKiRzB6wb7B2EjvVO4LVqR6J1P4vt+Cg4DOfSPnMqe0W7x0iEwMOBGf/XzdBlMKzsSy3wddD9cu2FMsok4ypK8b4lp6jhAfosLHX9WRkeZj2FL9xMPhS9EekgMzAE4eVgKlJ/Lt5ghy6KNH7NeHc7Xlydzh0N457j8dLFtCtLFjXapzwxIVTzNOTlpAMwbutsQP35XBCKGBle7+lW8zkhPUhvu2SckhWj+XhfIDiXDtSPsJLDIh88hQe8IbDAo8IaiA6VOaq4GHHu7GvdGjlcqZKD1bDIFKSwEW0qxB0bv28RUOwQM7QtrFY3hjAr7Fse/8pMKPdfxGIliCPgx0h4uawiizYw2NPwUHYdWgQrVVP4/OpHr56a6kUyuSBKuWzoUCrin+TPATKL4MkLn8NqJU2aabUbJ78rxFIwGHVl63ezQ1Z12L+ctuvJ6FS8vnM74H+FanaqGjkgv6LRWK1QIhG1DAbMbPkQ24gsjAuXNEVFHogSpvJGqmxCf58ZggRAuEQwWPyGE5zW6UttNN7i1ZL20zEmy6ZAkYfW/AVY0yfquGPYGHzskdLr/ZSC+CrRihGI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VFhtV3J6QXJPMmVqZDZ5K3poTnd3Q0hrL2krUjNVMVpDaVN6OGhTcU5tSHpT?=
+ =?utf-8?B?c210K0tkeWRGa1BSdjZwRDBDcXhDcWUyWWtKNkNpc3lqTVcxL2w3LzlUTG1o?=
+ =?utf-8?B?ZTZvTFNnaytIYjYvYkZqVDZTUHFjajFtRFVjOVlGaWVOM1Y5VHBEK3A4ZzZK?=
+ =?utf-8?B?d1BEemhzSEs0SGxaaDdEU2xnVHlMaHhOMWJwSk9TZXQ5Tko1VkI0Vyt1OSt5?=
+ =?utf-8?B?cUxWM3BQNVkzYnFiZ203SnFiVnNFM1hxellqSU1qY0FTNlUyNGJQMDlVdm9J?=
+ =?utf-8?B?Y0owajBtQW9QMUk0ZzlnOHpHSnkwWWJvbzNlWjlRclBxMjVKTTE0OGxTZCtm?=
+ =?utf-8?B?U0NpQzU1UnFlMmljSmVZYnJmR2RHTjh0bk9kWVMvU1hsNnNIc1gwTExJZThB?=
+ =?utf-8?B?ajIwSmNWNHZNbFhWWEF5MXpMV0NsNmNWNXRDOVVEc2VIWUR3OEhSZDc4L2hO?=
+ =?utf-8?B?NS9MZXBvbCs2MEY2ckczcDlQOGJhYTlYTEhrSVM5cHl6UzF0ZmRFRjZ1YVZX?=
+ =?utf-8?B?VC92ZVRDUVRLanNSa0lJT01NbGt1M0VvUE1UTlJobmNDdEVEMWgyL21kWEhB?=
+ =?utf-8?B?TUg3clRqdE02Ni9xY3FPQytQRjhFZGhKRjcyR1VzaDRVUW9LaCtyTlEveVhW?=
+ =?utf-8?B?b2x4NG9pcDhwbXZ2NTNWQlBmV291aTRBR1IrOWQ5ditNOGh2VE1maGxtaEFI?=
+ =?utf-8?B?SWxUa1pHWUtZLzFldFdLcjRnREs1Y3ZydktrY2RQRVVEUHI4L2lqY0piaUhH?=
+ =?utf-8?B?U0duWFUwVkVKdC9zTU1LTm5RMXJBaUZQYVBJbzF5TjRrMDF6SUpjQVRsYkRu?=
+ =?utf-8?B?OEp5S2d0bXBOTXI2Yll0TUpSOUFhNXQ1OG1wSlc0WFcvc2p6bmRlUlBwandj?=
+ =?utf-8?B?RVhRWUlJeTFVVm84ais3RnFTalJVZFZaWDF5L0l0ajhPZkp1b3BPekE4aDk0?=
+ =?utf-8?B?UXpNb3pRelgyRzJuK2laM05kdXR5NHRxZlp4VklrVHkzM1JKY2dPSDFYTlNj?=
+ =?utf-8?B?djBVa2J5ckxBTG9wRlVKZHhDS0pXaWR2dHVWL0hEcUhYM3d2VkU1NVJCdGVE?=
+ =?utf-8?B?Q25RZ2JIZkc4cVRpRGUrdUJNZVhEOGQvbnU4U3V4TXlIYjR0STdTdmEyRXA2?=
+ =?utf-8?B?R3NQdGtEYmRGK2lXMGRoMVUyeXhReGlFeUhJOVorc2lZWCtucmdmMkdGeVlj?=
+ =?utf-8?B?UEZMVWpWUndGWUN6QXdOYmc1RmRvWGYwSENsdFBRYzFZQ1ppQ2JORGpYeXNz?=
+ =?utf-8?B?V3hRV3BDQXRQWld2aUlLTHBHeTZ1dmdpTDhpcHp0YjQvUk0xWmMxQ1lreHJ2?=
+ =?utf-8?B?VzNnbDkvTk94QzIycFdUMENCRGNOUng5ZCtwRUlJOVQ4dlFvdlhtdmF2eGJ0?=
+ =?utf-8?B?SVQxVGFyUTNXbm1NazE4QzBQR3NrSXpmUmI5cUpBaVRKY0dHc2VtY2hvU21S?=
+ =?utf-8?B?bzZaU2doNzRLZ0trN2xkM1EwMkFQQXFpK3lldkZOMkVoaUIzQ2JuTnFqaGlT?=
+ =?utf-8?B?SjErUndHMTRTSkFYWm0rQVh6czhQWWg1ekdJMDZLNlBnV1Zac1dhYmpGRzZN?=
+ =?utf-8?B?NmxOTUtiSmNMWmZOOWdvMFNXUnJjQXB5dDFrbVc3ejlRRm0xaWxyeURkeFFE?=
+ =?utf-8?B?UXJ4ckt4bTJRTVk4Ujl3eW0vbkRYU0w1S1EzeWJzSFZ2WUxGR0RPbjdtVDBt?=
+ =?utf-8?B?R3NMM296UDd3MXFlZGwyUnhzdkxBMHpoVmdZcW9uS2QyeFFGeWF3MTBEeVlv?=
+ =?utf-8?B?TVFjUkNjd0pyNzd6Vm5DTFJyQ2RkZ2pPb09xRzIrRS9ISC8rSG5IeUhGZE9I?=
+ =?utf-8?B?bm0vWThJTDBFa0JrckwxdnBJRllQaENaaERacEF0WXlFSVNZMVRkMCsyVFZU?=
+ =?utf-8?B?K1ZzcTRaWGFmVFFiaTNnVGxvNHlwTEE4dktZaFYwZ2dteDVrV2ltK3grQzN6?=
+ =?utf-8?B?bEtRRjNLMndCM1pBbEpWVWVqZ0VYb3BaNVZzYjZ2MVVOUFhPYjFmUkFndVk3?=
+ =?utf-8?B?ZTk3cExkTzdFaXJOMks0QUxJUzZESVZMcjM3QmZ3NWlBQW92Wk1lZENHTklq?=
+ =?utf-8?B?b202ckYwNTFndHB3bHlUWkR6ajRuaHpaVStXcVBPVlIxSHdoNFhEdnpUNG9D?=
+ =?utf-8?Q?I6+COHsKJ8tzQZLMehVBAbEC9?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33f490d4-e653-4cf5-988d-08dc43cff602
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2024 02:39:24.5513
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O3lsYi3diKurYxmToFj86neLupkGE4cukTN1Iqm7h5O5k2RbvvmziYeFbN4rAL00jjlS/pv88cfn5TJmxKf6DA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8143
 
-On Mon, Mar 04, 2024 at 05:46:16PM -0500, Frank Li wrote:
-> dw_pcie_ep_inbound_atu()
-> {
-> 	...
-> 	if (!ep->bar_to_atu[bar])
-> 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
-> 	else
-> 		free_win = ep->bar_to_atu[bar];
-> 	...
-> }
+On Wed, Mar 13, 2024 at 07:15:04AM -0300, Fabio Estevam wrote:
+> On Thu, Mar 7, 2024 at 2:33 PM Frank Li <Frank.Li@nxp.com> wrote:
+> >
+> > From: Robin Gong <yibin.gong@nxp.com>
+> >
+> > New sdma script (sdma-6q: v3.5, sdma-7d: v4.5) support i2c at imx8mp and
 > 
-> The atu index 0 is valid case for atu number. The find_first_zero_bit()
-> will return 6 when second time call into this function if atu is 0. Suppose
-> it should use branch 'free_win = ep->bar_to_atu[bar]'.
+> v3.5/ v4.5 is from 2019, so not "new".
+> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/imx/sdma/sdma-imx6q.bin?id=55edf5202154de59ee1c6a5b6b6ba6fa54571515
 > 
-> Change 'bar_to_atu' to free_win + 1. Initialize bar_to_atu as 0 to indicate
-> it have not allocate atu to the bar.
+> I think you meant  v3.6/v4.6 that Joy Zou has just submitted:
 > 
-> Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-> Closes: https://lore.kernel.org/linux-pci/ZXt2A+Fusfz3luQV@x1-carbon/T/#u
-> Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-> Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+> https://lore.kernel.org/linux-firmware/20240313071332.1784885-1-joy.zou@nxp.com/T/#u
 
-Any chance of this fix being picked up?
+Thank you point it out. Previous an internal git commit miss lead it. After
+confirm with joy zou, it should be v3.6/v4.6. Will update next version.
 
-
-Kind regards,
-Niklas
+Frank
