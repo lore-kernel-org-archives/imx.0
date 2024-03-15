@@ -1,101 +1,150 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876D244C77
-	for <imx@lists.linux.dev>; Fri, 15 Mar 2024 15:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0436026F;
+	Fri, 15 Mar 2024 16:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710517375; cv=none; b=AeajTbjL8DU5sSBm/3S1ZbdTQOFSphr4okNtPj64UXXuGwz+KonGQAbV+Q51lrwFJ8wEKWuIv9ROmGTHxNZvU6bXVsGvWR7hG797zEsn2bU6alzAjknOgE4GbkbrpzesalZbFs9KTQjNj5OzSdjMc4fLkaJaHbAm8vKW0Dh8B4k=
+	t=1710521664; cv=none; b=Nb+rbCmhyxYXnPoA9K94Hk2wXrps/VrgeLwKO0r5y+vfSvMMI12CPdI449p/ORTSr9SN38/TsWth0d39Oc+0rj/1klHWHfrEgPKQvD2dtLN1NNS4rPgXvOmnD7cIxbO6oUNi8ozhO/ApNnE/7HTPo6d+b1SdMLPSWWnWAn6QEPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710517375; c=relaxed/simple;
-	bh=fsyEjpuzw7b3BmMY75bgJU7kV32poCTX+CSZE8V0/E8=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=sL659Y9kStdkmGML5wS0vKlYdvUfq7PxEmLMV8jnpcPplrZmaE+AEFLdptawjSy0GU/rXe2rZSCFR+oAvKeo1347nTyVyNtGUDQ8hDCLloIs3RBWx8SrRgrn05kwpOxvjZVupvVKMPpCEStfZMVw2G6Vx4Bh7jxvaGW+uNTkjzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=rWoBVUUG; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1710521664; c=relaxed/simple;
+	bh=8hnOEeLZTKNopoewYVMGy8CGA1IX2Tb3FpvrD/17hVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CbYArAcWqsSRUeZmcSqOAc7XFvy78fMq6ZY0T2agcQVuqffuNVj8pDTOFwMIKfKC1Bxf5e8NJ2W5gS/AjdbN7/gjtrRl6/mhLzija030y6O9kwjIf8/tlPLa+WDpczIgDNOC8ww2hKBX3wUXuOnKJ207iVpbacUHvUEMpM2OKlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhZW/+od; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="rWoBVUUG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1710517366; x=1710776566;
-	bh=Ey8hbUiqjXiR3zJGD+LfivZVhBQolmYLR6mAIqJ1U14=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=rWoBVUUGL3hDfLbPM4hG54IA8djFM2hbgwjbHjdXlMczCs+tTCIu/VOdLwHCWoNcx
-	 WnOgpjmfHASbi28mCnLcbtWH5MADtbC/b9xpXI5j6p8unZsS4KfaxLCiWr4Q/Y7TWM
-	 GiqRjq490ntDHtIoixozXpqSkSc1YbxCnoaFhQI3rGdu+U9uTMXmnI25r6+E4PXYDW
-	 akN80JUnyroJJwsXkFAho8mds1HXhgqM7TKVBZY8Wk1FgGIcjjD/IKlbD7DTf3MY07
-	 5BgUUZmH3BLRi8NloCdp86ox6HmlFK+sYe7SU9gvGA4F8qSVN3hpFufTOatN58WG42
-	 qEFLlTQGvvsvA==
-Date: Fri, 15 Mar 2024 15:42:29 +0000
-To: jirislaby@kernel.org, gregkh@linuxfoundation.org
-From: Emil Kronborg <emil.kronborg@protonmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Emil Kronborg <emil.kronborg@protonmail.com>
-Subject: [PATCH] serial: mxs-auart: add spinlock around changing cts state
-Message-ID: <20240315154150.28391-1-emil.kronborg@protonmail.com>
-Feedback-ID: 20949900:user:proton
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhZW/+od"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3892FC433C7;
+	Fri, 15 Mar 2024 16:54:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710521664;
+	bh=8hnOEeLZTKNopoewYVMGy8CGA1IX2Tb3FpvrD/17hVE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YhZW/+odc2HllbJoa5yn9sj76E4iGyfuvtpWzbM/eXWcIDZZaaEsEvTBacf87xgk1
+	 735tuAKAjMCV+1N9lEkU5NV0jKF75HpnMqCxkBGZ0XiIhGXipkAmVdUo25Tzc7Di/F
+	 FGlnSh1oozXDN6frIICmD5nTZxKIu5+457fXMMtGDZmXI9269IFJsMYm5M/MSvACfB
+	 3cn2KeFoYxr4NXmjIohcUoazKSx7zr7vciyopFpJBv9aAGsorP4FVet5jBiNPB0dQ3
+	 fsOy7WINLSLugkOWqYxIJkTyXw6VRXQBW7Oa75GmfShpXsZKxWANCrlnCXGCi5sTIP
+	 TgNL1cDH7L62A==
+Date: Fri, 15 Mar 2024 10:54:22 -0600
+From: Rob Herring <robh@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v4 1/6] dt-bindindgs: clock: nxp: support i.MX95 VPU CSR
+ module
+Message-ID: <20240315165422.GA1472059-robh@kernel.org>
+References: <20240314-imx95-blk-ctl-v4-0-d23de23b6ff2@nxp.com>
+ <20240314-imx95-blk-ctl-v4-1-d23de23b6ff2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240314-imx95-blk-ctl-v4-1-d23de23b6ff2@nxp.com>
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+On Thu, Mar 14, 2024 at 09:25:10PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> The i.MX95 VPU_CSR contains control and status registers for VPU
+> status, pending transaction status, and clock gating controls.
+> 
+> This patch is to add clock features for VPU CSR.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  .../bindings/clock/nxp,imx95-vpu-csr.yaml          | 50 ++++++++++++++++++++++
+>  include/dt-bindings/clock/nxp,imx95-clock.h        | 14 ++++++
+>  2 files changed, 64 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-vpu-csr.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-vpu-csr.yaml
+> new file mode 100644
+> index 000000000000..4a1c6dcfe3f8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-vpu-csr.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/clock/nxp,imx95-vpu-csr.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX95 VPUMIX Block Control
+> +
+> +maintainers:
+> +  - Peng Fan <peng.fan@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: nxp,imx95-vpu-csr
+> +      - const: syscon
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  '#clock-cells':
+> +    const: 1
+> +    description:
+> +      The clock consumer should specify the desired clock by having the clock
+> +      ID in its "clocks" phandle cell. See
+> +      include/dt-bindings/clock/nxp,imx95-clock.h
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - '#clock-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    syscon@4c410000 {
+> +      compatible = "nxp,imx95-vpu-csr", "syscon";
+> +      reg = <0x4c410000 0x10000>;
+> +      #clock-cells = <1>;
+> +      clocks = <&scmi_clk 114>;
+> +      power-domains = <&scmi_devpd 21>;
+> +    };
+> +...
+> diff --git a/include/dt-bindings/clock/nxp,imx95-clock.h b/include/dt-bindings/clock/nxp,imx95-clock.h
+> new file mode 100644
+> index 000000000000..9d8f0a6d12d0
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/nxp,imx95-clock.h
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#ifndef __DT_BINDINGS_CLOCK_IMX95_H
+> +#define __DT_BINDINGS_CLOCK_IMX95_H
+> +
+> +#define IMX95_CLK_VPUBLK_WAVE			0
+> +#define IMX95_CLK_VPUBLK_JPEG_ENC		1
+> +#define IMX95_CLK_VPUBLK_JPEG_DEC		2
+> +#define IMX95_CLK_VPUBLK_END			3
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_co=
-re.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc w=
-lcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-0002=
-1-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    [   85.164243]  unwind_backtrace from show_stack+0x10/0x14
-    (...)
+If this number can change, then it is not ABI and doesn't go in this 
+header. With that dropped,
 
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
----
- drivers/tty/serial/mxs-auart.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.=
-c
-index 4749331fe618..1e8853eae504 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *p=
-ort,
-=20
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--=09u32 istat;
-+=09u32 istat, stat;
- =09struct mxs_auart_port *s =3D context;
- =09u32 mctrl_temp =3D s->mctrl_prev;
--=09u32 stat =3D mxs_read(s, REG_STAT);
-=20
-+=09uart_port_lock(&s->port);
-+
-+=09stat =3D mxs_read(s, REG_STAT);
- =09istat =3D mxs_read(s, REG_INTR);
-=20
- =09/* ack irq */
-@@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void=
- *context)
- =09=09istat &=3D ~AUART_INTR_TXIS;
- =09}
-=20
-+=09uart_port_unlock(&s->port);
-+
- =09return IRQ_HANDLED;
- }
-=20
---=20
-2.44.0
-
-
+Reviewed-by: Rob Herring <robh@kernel.org>
