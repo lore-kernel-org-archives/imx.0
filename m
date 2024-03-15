@@ -1,59 +1,59 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D03C17BC1
-	for <imx@lists.linux.dev>; Fri, 15 Mar 2024 20:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7645732A
+	for <imx@lists.linux.dev>; Fri, 15 Mar 2024 20:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710535684; cv=none; b=suvQj7bBnF6TYZZm9PH51d3X9aq1oq+/oyFyRmI7Lcpww+KQZQFAs/obmYgp62CYA1IiTzvNM1KW+LoItlmXE9nmw/BfqK/uR8LJO54fo1Lo8OrpzT76Uwy5Zoe40ShsMm9oWwny3F8vwfYPbd8eT+oSF/0t0KKdWbAnDNLcT6c=
+	t=1710535784; cv=none; b=JdAx923OD6U1Xzhb/geNWf5k0+5s3SSxhc8m53A3iBEwItmXJuGe3sEiWel1LAB+SbZdWU9kwb97d9PL/coyP3RZA57zuwaoT+unL9U2z96DFxYEh7SM7qOxnkibOHjpr+o+hfjgJY+29F+vZgbE1iV/nJSldHZBk/O0Zr3PhWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710535684; c=relaxed/simple;
-	bh=bnLNQp/2A/3d+Zl+u+gjN7LL9ZxliA6JhxylMFlTEmo=;
+	s=arc-20240116; t=1710535784; c=relaxed/simple;
+	bh=Rut/BAraKFn7EzjJl52R4XRiSgrwnmytZ5kfoG42EdU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mtbUcyiH8YMjKPV9WWCndDL4diVPye8o8d2yuxLyGwD7VkupGsW84mC8NB22rKVHDyHzN+j2M+E/Kv7gXURwsLO7wTfdK5Kc7eJkhrir7QmbkvPH6yPnz1S9eJxcLt0lSwxZOMIZ3o2zR7SmygWDMVhnZ7mS6MvBzQjC3bzi3LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hwdcDvFQ; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:Content-Type; b=AZKz7u0SGpc4RR/O7UbYbP6Xd7NIqjBE8L7A5KFScVjFeJ6MJbdO56d1bCn+nVmUr/Lq/0o6e1UC/h0pNNOCTZOybcjzY3vEC20VLSIRTmVxSpbycrHLlvJ/a5AoJrhwHuMuu/gbrTD6874w0+muJepEH4w4TCmlZiSMciJm3aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eG74CNhO; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hwdcDvFQ"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-414025406d7so5812185e9.2
-        for <imx@lists.linux.dev>; Fri, 15 Mar 2024 13:48:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eG74CNhO"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41400332550so11002875e9.1
+        for <imx@lists.linux.dev>; Fri, 15 Mar 2024 13:49:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710535680; x=1711140480; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1710535779; x=1711140579; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=w4NvgV/CSC+904+msOLgfpBWx/0mbV2VCj5TZRcU2mg=;
-        b=hwdcDvFQ4BT5+O2RnbyT08UL7EexNxsW5uAWSbFIbhbHcEJu8rvCbRlC89WqzJZO3p
-         3hVYkqBolF4it92XF5g3mnZKeCF0sm5XbRu9mG8+7WXBRDWllNehEIUVYO48NRjjrNNd
-         5NX+/PfxeRyuJPDrDVDmCBghcd3ui5F5cFSWt2GTy+vCpeAmMosqpD6iYrbYLgJWaAQL
-         5AGSqdfgg7JBrT6XEvbCsIzJpJixfqfOGo47qp9Ju0Yd53LV77HGj8jyb5/7u78gyYoX
-         2DU4AGHkZILl0LIpabXdyklu9Y/tc6ghdZtijGp/yq1+8p2Mpy0hvbkCXBnyNV7IoqRd
-         pbQA==
+        bh=evdMd0PT9+KX7ncy1Up7YwjVyPPKavdHQwvEaxViPvA=;
+        b=eG74CNhOwcX3rZUtaUHU4JkaaKHIv4KVqP6NZckIPoG7dQgIGnpJZvb/5BaR3oX7yj
+         IQ7eGGru+2cBHvZU6Q8b2A/9g9RcrprBU2BGSaX59Eb3iXS5j5pFKUUqXwsfIFYx4Pw4
+         ApUGM631BPBHeAzq1tZeDB81h40eHZ0qvU4A9B8CKYOqDz634VMZP8t4BHzJr9BkRLFv
+         4Om988xPgC72RhHUHCy9tvNSx7+2BpIT29WsqFuQ45n8Y1PScsP25myyI0Mi4k1qwu+U
+         /Cke9vnSJRgcJxwlqXFyaCGzlFk6keNydGNIuF1a4bZeYbB07Fx881HwxmSmOYi8vmO6
+         qLtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710535680; x=1711140480;
+        d=1e100.net; s=20230601; t=1710535779; x=1711140579;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w4NvgV/CSC+904+msOLgfpBWx/0mbV2VCj5TZRcU2mg=;
-        b=dlqu7XpXErgzm0+YUsrZXuKO1STabS+uweZQScEv1ZE1shBXUYvvCSLX8J3p2x+ok6
-         CJupRwAp6IS3Men4J10nGb7tpTwXDhDfiEqxT+pGaGCO292x9+AO6z/0Vrg3rYamhs8Q
-         xP1/SplEB/S4sTOxCsvP0ZW2/DbFX60ZOEN/Nf07aBBruRW960lMX6/5k85HV2Oj/WdC
-         fBrhN3BF9i83RTVvDgPqwZpGk2/eMqHaRXE3rpP5fFqdXfCd57eO7xDsGRY6mAE08+Ae
-         TtAkVe8pQgYiUbPYBH3+Yj223IpNIa2xPiUyFYUmnyG1Gv2Ic4XuIChwY68UT25ggV5r
-         cSpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhn6HneyJKtOKa87anj3WRLYAyRjoJ6eUWXTEFibUfC7sR8SKD/TMbWABthXL5mNQWpip2k9lzEbnwPMMcVDcOGevk
-X-Gm-Message-State: AOJu0YzkH0KUjmdqCMda9yofabwIssZmrzHyPCQJKlD1Xg500cWelbIy
-	paIt/DKbA/ZY9OA1Q8bGLMJBHHovK3vgRf+VPF0tEfVSnYx/jS9vi3OX4jqO8G4=
-X-Google-Smtp-Source: AGHT+IHaudt0n925u7j5cWjm5faGrXJkVr8MamYLArcOjHOC5R6h/rfCFuGnSsLpcuvgTvjKlrf/2Q==
-X-Received: by 2002:a05:600c:3ca8:b0:414:273:67d4 with SMTP id bg40-20020a05600c3ca800b00414027367d4mr1809453wmb.30.1710535679868;
-        Fri, 15 Mar 2024 13:47:59 -0700 (PDT)
+        bh=evdMd0PT9+KX7ncy1Up7YwjVyPPKavdHQwvEaxViPvA=;
+        b=wd0lmk3p91XPjvk134Q6osx4YUZ4ANG5n/3SjtnIqXqiA8smU5jylnNQ+4zVKwj8vm
+         6OUElqpiisG6NiKhwPFub8MrqCJs5kFfcQc4KGGq1gCFYNImHJJ6xGBCVAeVvo/qgmKm
+         dLRiJVspCvDWMlUeEDW9x1zoHUoD1uVAVH6bczzWlR4Cqspp8LYCOt/Ys63zcML3GcXf
+         VXmQ3f8QgUkBrvCRxnNXnmjGtAfdr+oyzNNaxYx7AGoqgz1cDaLx+KD6Yno8tzocM2F/
+         Fn/gZOh7iOw4aWA12aUgSuMr9KHB06pTyKM4rvs2Qu1jsm8Yn7zdJxZyUrNenlaXJ45O
+         2eug==
+X-Forwarded-Encrypted: i=1; AJvYcCX8IbqB35JV0HS7roiJT5q0aPzgyqqdYL726DfRP9m6J4XuIWqcWSfpz359Qx8P5pH91e1h7pkM7kn5+e1yWaoQ/EwB
+X-Gm-Message-State: AOJu0Yz2lPu2aCP+R4MytT3OsIt/85p0casnq/JaXrE2ki2MOEyMc+oO
+	BiMdw3adJPl+YwH+DvTOSr8h6EPrqBUD0Ng3jmSQfrKG5lzJBbfKNetpBnJTPKc=
+X-Google-Smtp-Source: AGHT+IHW/ZhLoW9dVsP03e/cfzAFm2l0UodLy8/jk0GAphAW9PjOYbi/mCIN40Y0gjbTVAhL7S0e+g==
+X-Received: by 2002:a05:600c:b59:b0:413:f1a4:d412 with SMTP id k25-20020a05600c0b5900b00413f1a4d412mr194865wmr.14.1710535779319;
+        Fri, 15 Mar 2024 13:49:39 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id h10-20020a05600c350a00b00412ee8e2f2asm10091282wmq.9.2024.03.15.13.47.58
+        by smtp.gmail.com with ESMTPSA id h10-20020a05600c350a00b00412ee8e2f2asm10091282wmq.9.2024.03.15.13.49.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Mar 2024 13:47:59 -0700 (PDT)
-Message-ID: <99b72931-0007-4ab5-87fb-9b4c3021c1c2@linaro.org>
-Date: Fri, 15 Mar 2024 21:47:57 +0100
+        Fri, 15 Mar 2024 13:49:38 -0700 (PDT)
+Message-ID: <b4fe2ffa-bd36-404a-9441-8781f0a81d26@linaro.org>
+Date: Fri, 15 Mar 2024 21:49:37 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,8 +61,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/6] dt-bindindgs: clock: nxp: support i.MX95 VPU CSR
- module
+Subject: Re: [PATCH v4 5/6] dt-bindindgs: clock: nxp: support i.MX95 Display
+ CSR module
 Content-Language: en-US
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Abel Vesa <abelvesa@kernel.org>,
  Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
@@ -76,7 +76,7 @@ Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
  devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
 References: <20240314-imx95-blk-ctl-v4-0-d23de23b6ff2@nxp.com>
- <20240314-imx95-blk-ctl-v4-1-d23de23b6ff2@nxp.com>
+ <20240314-imx95-blk-ctl-v4-5-d23de23b6ff2@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -122,40 +122,42 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240314-imx95-blk-ctl-v4-1-d23de23b6ff2@nxp.com>
+In-Reply-To: <20240314-imx95-blk-ctl-v4-5-d23de23b6ff2@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 14/03/2024 14:25, Peng Fan (OSS) wrote:
 > From: Peng Fan <peng.fan@nxp.com>
 > 
-> The i.MX95 VPU_CSR contains control and status registers for VPU
-> status, pending transaction status, and clock gating controls.
+> The DISPLAY_CSR provides control and status of the following:
+>  Clock selection for the Display Engines
+>  Pixel Interleaver mode selection
+>  Pixel Link enables
+>  QoS settings for the display controller
+>  ArCache and AwCache signals
+>  Display Engine plane association
 > 
-> This patch is to add clock features for VPU CSR.
-
-Fix the subject prefix. You mess with people's filters.
-
+> This patch is to add the clock features for this module
 > 
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  .../bindings/clock/nxp,imx95-vpu-csr.yaml          | 50 ++++++++++++++++++++++
->  include/dt-bindings/clock/nxp,imx95-clock.h        | 14 ++++++
->  2 files changed, 64 insertions(+)
+>  .../bindings/clock/nxp,imx95-display-csr.yaml      | 50 ++++++++++++++++++++++
+>  include/dt-bindings/clock/nxp,imx95-clock.h        |  4 ++
+>  2 files changed, 54 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-vpu-csr.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-vpu-csr.yaml
+> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-display-csr.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-display-csr.yaml
 > new file mode 100644
-> index 000000000000..4a1c6dcfe3f8
+> index 000000000000..9a5e21346b0d
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-vpu-csr.yaml
+> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-display-csr.yaml
 > @@ -0,0 +1,50 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/clock/nxp,imx95-vpu-csr.yaml#
+> +$id: http://devicetree.org/schemas/clock/nxp,imx95-display-csr.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: NXP i.MX95 VPUMIX Block Control
+> +title: NXP i.MX95 Display Block Control
 > +
 > +maintainers:
 > +  - Peng Fan <peng.fan@nxp.com>
@@ -163,50 +165,12 @@ Fix the subject prefix. You mess with people's filters.
 > +properties:
 > +  compatible:
 > +    items:
-> +      - const: nxp,imx95-vpu-csr
+> +      - const: nxp,imx95-display-csr
 > +      - const: syscon
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  '#clock-cells':
-> +    const: 1
-> +    description:
-> +      The clock consumer should specify the desired clock by having the clock
-> +      ID in its "clocks" phandle cell. See
-> +      include/dt-bindings/clock/nxp,imx95-clock.h
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#clock-cells'
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    syscon@4c410000 {
-> +      compatible = "nxp,imx95-vpu-csr", "syscon";
-> +      reg = <0x4c410000 0x10000>;
-> +      #clock-cells = <1>;
-> +      clocks = <&scmi_clk 114>;
-> +      power-domains = <&scmi_devpd 21>;
-> +    };
-> +...
-> diff --git a/include/dt-bindings/clock/nxp,imx95-clock.h b/include/dt-bindings/clock/nxp,imx95-clock.h
-> new file mode 100644
-> index 000000000000..9d8f0a6d12d0
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/nxp,imx95-clock.h
 
-If the header is only for clock IDs for this binding, then keep the same
-filename as binding filename.
+Why do you create five different bindings with almost the same contents?
+Do you plan to grow on them, like add more compatibles here? Otherwise
+all this could be in one binding.
 
 Best regards,
 Krzysztof
