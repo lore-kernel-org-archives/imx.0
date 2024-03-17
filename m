@@ -1,127 +1,109 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2D51CA81
-	for <imx@lists.linux.dev>; Sun, 17 Mar 2024 16:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5511CA87
+	for <imx@lists.linux.dev>; Sun, 17 Mar 2024 16:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710692545; cv=none; b=O9rgPiSYgs9CWaojSAldA1LsCWS3CQ2HyeyJcxjqeY4Cyy0uIh97Mv8sruzhY2ftLn4HbE5SiIjDtMNWdqHnWc0JHA7FbMQ3/B76R9+56SPR/66iJAVKIGixYvgMiX8ZmUltnRrgvzzElI82QgK9rNeF1/HCMKLOFvTCWRwf/lw=
+	t=1710694136; cv=none; b=pEAPvtZUtjWrQ/kYy1KoUPziDkwnP8HSynb1EKbnjbMnjRs5DtK/BslityC5aG/YdrU+BHEkntLl6rR+V0edRInA6xvQ+jARu/3JBQd7SbhU6YsmO0NSN7QtnaSX3ptu8rPivyIt3W36Y3TJ9v8/sEUkY8dPHfWHcGjWLoHB7ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710692545; c=relaxed/simple;
-	bh=X/phk1QlmzaJ/XY//OQoNTV/C4BNG3QtbNfn9CHQIuI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2dYz6sh6Nz1X6G598LKE0yiiSuVYQRbp8BCg/oZlK+5YVmGZQycWfPNoVtjBmQMnRe1we16xPwE/T9QRWr9QDilGLX2WNJVvd0zKFn1JUBgZyaCFaaY2aA3BHIVYJAHLWBs/561kLJRBpjeIJqETwB5ary2J4VKV9EsAn7S1KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rltH6-0007ME-4X; Sun, 17 Mar 2024 17:22:16 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rltH4-006ulO-3e; Sun, 17 Mar 2024 17:22:14 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rltH4-00417Q-03;
-	Sun, 17 Mar 2024 17:22:14 +0100
-Date: Sun, 17 Mar 2024 17:22:14 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	s=arc-20240116; t=1710694136; c=relaxed/simple;
+	bh=arTo6+clTqlDmnzOYq4qQMZ5VjQfEODt0dbBe/7XEnQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TQYYojif2bcLghZ1l+uCp9k8U2dbHZrzXA8zECzO0Aj4lTxfb+dyHPIkUHlgs6EgfbEQhDgannvQ7gDfdhOBSUKxp1/r/pG54LE5BaqD9+xER9MJ37x2LzOztITRonQs2d0ibcfHPABZYZfimg8cuq9QASG9p9cx3pP/bE+P+kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JxMgzQjv; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JxMgzQjv"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1530B63C;
+	Sun, 17 Mar 2024 17:48:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1710694107;
+	bh=arTo6+clTqlDmnzOYq4qQMZ5VjQfEODt0dbBe/7XEnQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JxMgzQjvgSzW/4IpBdivssIVVXFxjkvNBiiucYuTFtJ/liIfUa15+N1uthMHqqsnZ
+	 hJR6uqbwfZB+y0oQIuPQ/D1gMkJMVmM543XThx7NNZoxQR7cvVIHo9w/3nQU0T7whn
+	 WJHPQF8D+QB/eMl2DUAn1kLe8zEV/sHf7zENgyr4=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 1/1] ARM: dts: imx6ul: tqma6ul + mba6ulx: Fix pinctrl
- node names
-Message-ID: <20240317162214.ssspjf2xfpid32k6@pengutronix.de>
-References: <20240314150054.2957840-1-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org
+Subject: [PATCH v2 0/5] Add DT bindings and device tree for Compulab SB-UCM-iMX8MPLUS
+Date: Sun, 17 Mar 2024 18:48:45 +0200
+Message-ID: <20240317164850.32708-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240314150054.2957840-1-alexander.stein@ew.tq-group.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-Hi Alexander,
+Hello,
 
-just a minor, please see below.
+This small patch series is a drive-by addition of the Compulab
+SB-UCM-iMX8MPLUS to the Linux kernel device tree sources. While porting
+the device tree from the Compulab BSP kernel to mainline, I thought I
+could as well mainline it, along with related conversion of text DT
+bindings to YAML.
 
-On 24-03-14, Alexander Stein wrote:
-> imx6ul pinctrl nodes end with 'grp'. Fix node names.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi | 2 +-
->  arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi               | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-> index 57e647fc3237..f04c6f71f538 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-> @@ -202,7 +202,7 @@ MX6UL_PAD_UART2_RX_DATA__GPIO1_IO21	0x4001b8b0
->  		>;
->  	};
->  
-> -	pinctrl_pmic: pmic {
-> +	pinctrl_pmic: grp {
-			^
-			pmicgrp
+The SB-UCM-iMX8MPLUS is a carrier board designed as a reference to
+evaluate the Compulab UCM-iMX8MPLUS SoM. The SoM integrates the bare
+minimal peripherals (DRAM, eMMC, ethernet PHY, EEPROM and RTC), while
+the carrier board includes a much wider range of peripherals. I have
+only enabled support for the ones I am interested in, or, as a strech
+goal, the ones I could easily test.
 
+The first patch in the series adds compatible strings for the SoM and
+the board to the ARM FSL bindings. The next two patches then add DT
+sources for the SoM and the carrier board.
+
+I have split HDMI support out to patch 4/5, as it depends on patches
+that have not hit linux-next yet (see [1]). Depending on which series
+gets merged first, patch 4/5 can be left out for now.
+
+Finally, patch 5/5 adds an overlay for the display panel shipped with
+the Compulab evaluation kit.
+
+The series is based on a branch that contains a backport of the HDMI
+support series, as well miscellaneous patches I have submitted
+separately to convert text DT bindings to YAML. You can find the series
+applied on top of the base branch at [2]. With that base, the only DT
+validation warnings are due to preexisting issues in imx8mp.dtsi.
+
+[1] https://lore.kernel.org/all/20240227220444.77566-1-aford173@gmail.com/#t
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/pinchartl/linux.git/log/?h=nxp/v6.8/compulab
+
+Laurent Pinchart (5):
+  dt-bindings: arm: fsl: Add Compulab SB-UCM-iMX8MPLUS carrier board
+  arm64: dts: freescale: Add device tree for Compulab UCM-iMX8M-Plus
+  arm64: dts: freescale: Add device tree for Compulab SB-UCM-iMX8MPLUS
+  arm64: dts: freescale: imx8mp-sb-ucm: Add HDMI output support
+  arm64: dts: freescale: imx8mp-sb-ucm: Add DSI panel overlay
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   5 +
+ .../imx8mp-sb-ucm-panel-kd050hdfia020.dtso    |  81 +++++
+ .../boot/dts/freescale/imx8mp-sb-ucm.dts      | 337 ++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8mp-ucm.dtsi | 309 ++++++++++++++++
+ 5 files changed, 738 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-sb-ucm-panel-kd050hdfia020.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-sb-ucm.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-ucm.dtsi
+
+
+base-commit: 64d8ca69f2f1e659c60ba509a2e91d2c8c0a3a4c
+-- 
 Regards,
-  Marco
- 
->  		fsl,pins = <
->  			/* PMIC irq */
->  			MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x1b099
-> diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> index e78d0a7d8cd2..5258ef81e6c7 100644
-> --- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> @@ -505,7 +505,7 @@ MX6UL_PAD_CSI_HSYNC__UART6_DCE_CTS	0x1b0b1
->  		>;
->  	};
->  
-> -	pinctrl_uart6dte: uart6dte {
-> +	pinctrl_uart6dte: uart6dtegrp {
->  		fsl,pins = <
->  			MX6UL_PAD_CSI_PIXCLK__UART6_DTE_TX	0x1b0b1
->  			MX6UL_PAD_CSI_MCLK__UART6_DTE_RX	0x1b0b1
-> @@ -537,7 +537,7 @@ MX6UL_PAD_UART1_RTS_B__GPIO1_IO19	0x0001b099
->  		>;
->  	};
->  
-> -	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-> +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
->  		fsl,pins = <
->  			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
->  			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x000170b9
-> @@ -552,7 +552,7 @@ MX6UL_PAD_UART1_RTS_B__GPIO1_IO19	0x0001b099
->  		>;
->  	};
->  
-> -	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-> +	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
->  		fsl,pins = <
->  			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
->  			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x000170f9
-> -- 
-> 2.34.1
-> 
-> 
-> 
+
+Laurent Pinchart
+
