@@ -1,129 +1,130 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2053.outbound.protection.outlook.com [40.107.7.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E900E256A
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 18:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710786935; cv=fail; b=AKqcaSdARdxRAYN1WJvGJF321Uo1MMwvtgPjBYPLI7oEalqN41Pg8shIHLfEXKjSYasMtOGujqXMNNtvYSxGehNWyasrM4K6nygYWCi4fRjj22KVBM0N7LJkcx26pGxo77WRfBIX0xXrQDJ5SvpSXbCAaopq8lZwzB736os+eB4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710786935; c=relaxed/simple;
-	bh=RftI9wBshZyfaS+S8xw4e8Pq8EYvZqi0qiGD0U7EmF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=c9fZewctOLK1aZVU73VQKPfb9EVIYXXcKo90NYk573xGe82YqB2NkQluJlOVLvQbRzGpqeTue1buimcp56jBPMi8K2+qfPoi6dqo1aeo0T42rhWh3zkb7NIor7aqxZ3LgB9S6oJ6K1IUIkaseZHVU7IhXOJXm4sEDiKMtLbsr1M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=rBZCR0VH; arc=fail smtp.client-ip=40.107.7.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1455056460
+	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 18:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710787857; cv=none; b=MhMHFfpQIJDXsPOkxsxqhYDiuShfwegxRtCi4aNWRBiQdagHLG37Edp36STLwGIU/oBU5A1FveLO4/G3xG4dJMyBeVuQ2zU2fHfjjk/PQHudtqR9U5uU6ut0UjTciy8/LHCx1G1GzVmfn/swQtAq94KQXN7cRYlRAHKFMUUoBsM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710787857; c=relaxed/simple;
+	bh=ZZnUzHL1R+g203H/X3W0UckOlqmasHtjX78IG3duC1c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a7rwE1vXVdxWa/TvrtO/OBLtBYsZitcmZT76SHgiB89CyAFuSmWTFzxYvo5ULbSBKp3ufJnwo1Oe6CLYzk2VxD15zbEdMrTwbARFVnYeA8uvlp7tyUvSxZdT+HjFym6mQsedbFamA7dqHPGvEQ2aLWfnVyy/Wg5SOE7zE/ZpaII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RRKRPUay; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="rBZCR0VH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kviIcmb4JV//DM7L+dmpPgOtJzH/DccjjJlehIu/hFiAA865IawWPGKEvEO+YToetXzSxB5O+V77AKG8R3b+0QUUIVf62CVV/BSdroVHC0Q6JV8qUY0Nl+8lAfA751wyHUDFZVOhi8JUadR26tqHJk2LXAVj6mIBk9euXgM3GwiaxUcmXYLG6f5j0rkWIia1SUhak1UQ9ekT7rPMPyK/LJTXsnA5fwAIlyTBG0jh6K2Ku/q5j/zGQsz382ZsFnt+fdvd4o9dQBrn0UaabMM3FSwCuDswanrpb++QqDcl9jZgA1ZOCzP72oGMZxXs2GKgrsxT2xOqxGW+UnJneyDZ/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4lWXSTwhJ5x2xbXycnKDyz0lnMnJ2cOTiXh1/WEUMhg=;
- b=fJG0gwGPDJlZwy9X7YyHnSWFxb/qr5KjSgayMR6UtU+iabKhMZaqMRsLcTtDAiuhymaLXPr3JYetXHaxwP6rI/yazOZtwlNqKzscm3gUMxef9oB/+9T8I7coQD5yAAJ5UUeMlIVaw3gnZART7CpqZ+MAFQ/X9XEtwagSWdnpLAJRlPvL3ocQfAxvOIvYTuxsULcsR7PIOn65sJwOvILCeIISjLozHA1dKCjgkmHM3sDSXVhzAeVLuCvt9JQRUWEn7DgaE00xMoM0QHvqJ77Jy2cy0NURoo6HdoZ2d9+rnWPXDWif8S7cgLwBhxGNeJbReQeS8G+313imixEaTfanAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4lWXSTwhJ5x2xbXycnKDyz0lnMnJ2cOTiXh1/WEUMhg=;
- b=rBZCR0VHZnlVaqeZMvmALtSZih+Tps4CPgcBr5vL2tGXjQo1J/Qlq/FIVwwCOF1Nulao4JGDh/3yxX+yYdfsYm5SoBMHok/vimDpiup6eVJf2svimEeRjvRXhrInMVt3xby+PKnkvrwgvKypCDHf4WdOLE+mZpefcTw/22RREE8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8371.eurprd04.prod.outlook.com (2603:10a6:20b:3b2::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
- 2024 18:35:31 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
- 18:35:31 +0000
-Date: Mon, 18 Mar 2024 14:35:11 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Joy Zou <joy.zou@nxp.com>
-Cc: ping.bai@nxp.com, lgirdwood@gmail.com, broonie@kernel.org,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v5 3/3] arm64: dts: imx93-11x11-evk: add pca9451a support
-Message-ID: <ZfiJX0NZG5N587Ai@lizhi-Precision-Tower-5810>
-References: <20240318095633.4079027-1-joy.zou@nxp.com>
- <20240318095633.4079027-4-joy.zou@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240318095633.4079027-4-joy.zou@nxp.com>
-X-ClientProxiedBy: BY5PR17CA0027.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::40) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RRKRPUay"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a4675aaa2e8so548376966b.0
+        for <imx@lists.linux.dev>; Mon, 18 Mar 2024 11:50:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710787854; x=1711392654; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NYnTvRYJCDpikaVcJBg4LOB/aMy9Y5IcqwiMloUXvu4=;
+        b=RRKRPUayyuGuJjKzCxRtGD6FjEqoa6ETobpF/gpYGzbNtfgZtBbBw3EjWSnIwBCOe0
+         xauRWGxELQPQkI74nLzrvwxj7qOS1gDp5Ww+sShruA03tjMzSn/T+tR1MgnckkXChCdo
+         kxqhLxtXaHIPA2Lwr6KJjtsaZDiu+uiIfdU24QN5cNno3kaNN3i2+M1QHGy2Hh1eVg+G
+         0Qx/Q95KrOqu5Sr3zLEd/rH5jmxM4kEj1P3V6I3jGu5MfWe366FII9zsKMcwaR5vSF5Q
+         hHyGtAzDLnboh25JXBKA5jd4Cg6LJLnKum//JBOyJyQHbSrmTxNHBxg9SyjWe+seG1tt
+         mK+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710787854; x=1711392654;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NYnTvRYJCDpikaVcJBg4LOB/aMy9Y5IcqwiMloUXvu4=;
+        b=kd2iFXcqKIlOWTRaRagCDtmJQoNp3qB+Jb7cH0bdG8yZVZi2lyN6Chwg61mGPrHMuz
+         jtUhrLm4/tRHT8vB70p+netFmenBL1Hxn2trnfCzsLox0uLKOC5Vea4xbVPQC/km6PZL
+         MEF7EgzDMzA1YxdxaAoywgtyXcaY6LgbKxpKmRoB+Aat4Pch0e18AcDeHksSVAYdglcN
+         bRrB5tsCC4MSDizZWmrOHLQUJuzXjueghRpUYSuT5ngmCOAyjkG+/a9O2oZZjPy4Atph
+         kHJZcv8TyzWtThinlpSgmgfJUGiCgY9U0JBByY8WQupsMKpBv6S/lmbpqsealCKLESj8
+         pefw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5oOCUcBHksMJBb+YSx3nkqRaIf+Ox0wlpcX5G53ZBGBX1VQKpt1P0GCVKDnbYqedeZ0ffbsqIlNWA+hHJG/2BZVK6
+X-Gm-Message-State: AOJu0YzeRHwFX6tCcxNAPsDtn116IttSviwdPlLc3wLr+yjQGRXa7fJu
+	qR9cAVj/O3SPbUNNNdPg0bGxJNQ/cPujLICyzn8FXjWtKh93xpRTSzfgK7DCR78=
+X-Google-Smtp-Source: AGHT+IEgpn7lhcPgKF7K3fjaFNef1MdlCbVGRJYRoKe8iOu8Nlb0FYH17JMXL7Jdh+PzV8/Iff4o0A==
+X-Received: by 2002:a17:906:af8f:b0:a46:d850:4784 with SMTP id mj15-20020a170906af8f00b00a46d8504784mr132185ejb.33.1710787854207;
+        Mon, 18 Mar 2024 11:50:54 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id o19-20020a17090611d300b00a46bd891b5bsm1519414eja.225.2024.03.18.11.50.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Mar 2024 11:50:53 -0700 (PDT)
+Message-ID: <7f601f5e-98af-4a78-a3eb-04d814669973@linaro.org>
+Date: Mon, 18 Mar 2024 19:50:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8371:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bca2c12-f078-4f40-74f7-08dc477a3090
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	6dS2s7W/KviQClX7CjCkr3qxj8uWBgx1uFIq0vHcSZWo3qoTZmHhqFxRftO8Uh3ZepgtnBCCiXHb43M9o/czmtcDiBerEtvUMmZyWKm6vlsO3yzguJwjv4Y7i4yOYwmmrwss3sFCtF59uSIE1htEG0sE/ZHAR5ATg1xAgDzRvSxOuJrRiXBEA4E62F6afIieP+OxBWrPYiMEH+yuLLYgi6vURkjCMUdFNIgOgW+wqBr3s4il3yHWnBwx3gHd8ePnyHHv+7rU1eqkPdENWbgFuQYhIScINXKX4s/sGPCZITTC3yFsI75ZrXO8DoqX+Y16vHsR3pXUfprx6FulRMNG4GE31nYPYRiU6kZbznDhsriVRRCLgJYRoXFxJmt0v24+JVugG9JcFHeludsmiz1yp07bb4qIE1Me6lU1o4TNS4DGV0n0wMP6aBU7jbPXmjh3vyTDv6wG3uWnC0YcU2NgkoGRZzYZctZebVn6FFLT49SB3V8nPoQWEuwQXeT7WVRjYIGTrgresJWLet/AlMYhfZ+spQnD/UwokXULic/sYXxdBYzHvnvEqgh+SN1sll3pDffh7j15mt7F9jHloyDG3KHgMfOf9lfgKADyKh3ZabpAO+WVFyULFubgDef5Pk0QZIM42g9yElLyAY2gAomnnmosa2chF3ntgndaUDxn1zxU3tkoWWHM0KSaAog64icSnfzHelRu/4Qcb5ETzIvPww==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(52116005)(7416005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mk41X1bSCqyRUyXDF0E2HXuwGy8ZdIZm6B81vR1/5JZ2FYPmy/b0CfHkVDFS?=
- =?us-ascii?Q?GGGXqFJ/IgiZ4w5q4BEIxY6Dk2gNRsFY7lM6MC+0lhx/uDw7guVumSC+lEGd?=
- =?us-ascii?Q?wqbbRR01GIiIsJ0zfHXFptuaL9G8aiwu75iCjsq2EZ0ybQP8KvN57P0mwh7z?=
- =?us-ascii?Q?z/RnBS9dMAHQkzVhHgAEzHS41anNvmrctc2jUU8rokN70HpgjwyC+huOHg5u?=
- =?us-ascii?Q?U5AXGg/XI9s8Ybq7dZbQjmoIUAi/cDRNJwaonsw584vmXIBdKwzEImC7JxzJ?=
- =?us-ascii?Q?MnX1ky1YNcELtSgXFaoe70WtG4PDsFL5hMkKsJPmdEtDnkgoz612sJJWVOrB?=
- =?us-ascii?Q?oVthapJ9HtEcdRD15V5qq1lj6sBv4mVw3ugf/fbPJNvcZ9N2QMOvV0WB/F5K?=
- =?us-ascii?Q?fZKTzlCaFEyAHHdRcgv/dqyETcSCF0ObIxzmWX2To3f8NMusOwfwwwDH89BE?=
- =?us-ascii?Q?k+neolhIJyR3nr4amTbeyQ7sQQVALBLbE4wwuMGThURzmNa1ok1gEVRRAoE/?=
- =?us-ascii?Q?FXIpUTzxKt40F7iNuviA9X4nS4llak9W0OH8DOT9vEKo7vsA3Hvsyt9YVCKf?=
- =?us-ascii?Q?FSPJl8oAGUXs4pXd/65iJFF+G8W0mw4mrWfqpW3VjJf1gNsr2brf+Qay0xQS?=
- =?us-ascii?Q?xVFhkgVZnDqpscwx+BA3VKY9b6yypMaXkQK9KS2CLFfVp5j5VsWmwP9NjIDr?=
- =?us-ascii?Q?+F6UHFBnDMN2Scl9Q/ZXmLhPEOrhXAPB0T8GCja04ZkjpQHGv6EQY4e/T9I9?=
- =?us-ascii?Q?uCJX2T3U8oGDzeo8P51RUU+kb3/+bvaRnCSopPsfNvB3j+/PlqYQIHK/yNYr?=
- =?us-ascii?Q?RCklPKqnlG4GhaXGvDRCvMLtF6bi2eTZ4GCKLRnDmkmVBzJQyxOW7ZttOIJS?=
- =?us-ascii?Q?ogin29+dqC7PTvVlonIABC4jkfmhBRGMlympL8gw31CWVnx+GJAPrrNtJvr3?=
- =?us-ascii?Q?8fcqHVcgOls5BvuFNx9qURwx0prqfcB9z4SWH63BB0MEnzUid7v7wN5EfWpw?=
- =?us-ascii?Q?lFOL+kVMqVMPLJ2S1FQMoDOuzxnIkXNBVsKuwhVOJtU93mgnhAOGk9R8NVIU?=
- =?us-ascii?Q?RaYzJXRYTXOPMG22XWI8NGBA2af3w08Q7DG3omvZxLV1qRExotdGKL43ql1U?=
- =?us-ascii?Q?l/kdsqPb2BO9sF/cEosLc4OBVTeEo6ZXolaSGqtiPGGTO88xymUrCo3Kv7oZ?=
- =?us-ascii?Q?Ufdfa4qpFcWO9LV8pRXTBX5JI46qm7Fa6p9TFPFbnZcAZWwU81xpqZdi+aye?=
- =?us-ascii?Q?cUQpthk75afIqe04LoJBvM3ZHSy18akZ6VGO/FdxBXMg93hBPDpaFHzdkhZ9?=
- =?us-ascii?Q?zvSxt3v/YrOQ4SRx5WAChRzdSPda8VPrR3m9lYESOYDkH4jvoEpRz3zB2ssJ?=
- =?us-ascii?Q?nUISeBTajOOn4aAgrHydKQS6YCwPTxFFs42ja2dbONDGBMmPdbHl/yovZ0Nn?=
- =?us-ascii?Q?q2sgy25cx0CBvCxL9QahCBsyoHrJKnwic8Irz5e164OuklMnjRNssZGHd/lz?=
- =?us-ascii?Q?IzNUkc0c5NILYmsn0vnYSnsnKFSsFoccDjKWXi0+tJLB0nHlfreQ+RW2NkfO?=
- =?us-ascii?Q?J8BrWz0ftbn2GCVO3SWIs/uIRg8DpEoysM93AQFi?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bca2c12-f078-4f40-74f7-08dc477a3090
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 18:35:31.1145
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2oENnaTzr5U9oiBl0PRO32N1YibHMZn3c1qXAeKfO1uvmZ1WNmwc+mACoA4UHe9KR+2JOMgBkCyx+BULgxrXeA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8371
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/3] arm64: dts: imx93-11x11-evk: add pca9451a support
+Content-Language: en-US
+To: Joy Zou <joy.zou@nxp.com>, frank.li@nxp.com, ping.bai@nxp.com,
+ lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20240318095633.4079027-1-joy.zou@nxp.com>
+ <20240318095633.4079027-4-joy.zou@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240318095633.4079027-4-joy.zou@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 18, 2024 at 05:56:33PM +0800, Joy Zou wrote:
+On 18/03/2024 10:56, Joy Zou wrote:
 > Support pca9451a on imx93-11x11-evk.
 > 
 > Signed-off-by: Joy Zou <joy.zou@nxp.com>
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
 > ---
 > Changes in v5:
 > 1.adjust gpio@22 to the front of pmic@25.
@@ -159,113 +160,9 @@ Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > +		pinctrl-names = "default";
 > +		pinctrl-0 = <&pinctrl_pcal6524>;
 > +		reg = <0x22>;
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +		interrupt-controller;
-> +		#interrupt-cells = <2>;
-> +		interrupt-parent = <&gpio3>;
-> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-> +	};
-> +
-> +	pmic@25 {
-> +		compatible = "nxp,pca9451a";
-> +		reg = <0x25>;
-> +		interrupt-parent = <&pcal6524>;
-> +		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-> +
-> +		regulators {
-> +			buck1: BUCK1 {
-> +				regulator-name = "BUCK1";
-> +				regulator-min-microvolt = <610000>;
-> +				regulator-max-microvolt = <950000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +				regulator-ramp-delay = <3125>;
-> +			};
-> +
-> +			buck2: BUCK2 {
-> +				regulator-name = "BUCK2";
-> +				regulator-min-microvolt = <600000>;
-> +				regulator-max-microvolt = <670000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +				regulator-ramp-delay = <3125>;
-> +			};
-> +
-> +			buck4: BUCK4{
-> +				regulator-name = "BUCK4";
-> +				regulator-min-microvolt = <1620000>;
-> +				regulator-max-microvolt = <3400000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			buck5: BUCK5{
-> +				regulator-name = "BUCK5";
-> +				regulator-min-microvolt = <1620000>;
-> +				regulator-max-microvolt = <3400000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			buck6: BUCK6 {
-> +				regulator-name = "BUCK6";
-> +				regulator-min-microvolt = <1060000>;
-> +				regulator-max-microvolt = <1140000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			ldo1: LDO1 {
-> +				regulator-name = "LDO1";
-> +				regulator-min-microvolt = <1620000>;
-> +				regulator-max-microvolt = <1980000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			ldo4: LDO4 {
-> +				regulator-name = "LDO4";
-> +				regulator-min-microvolt = <800000>;
-> +				regulator-max-microvolt = <840000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +
-> +			ldo5: LDO5 {
-> +				regulator-name = "LDO5";
-> +				regulator-min-microvolt = <1800000>;
-> +				regulator-max-microvolt = <3300000>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +		};
-> +	};
-> +};
-> +
->  &iomuxc {
->  	pinctrl_eqos: eqosgrp {
->  		fsl,pins = <
-> @@ -238,6 +336,19 @@ MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B		0x31e
->  		>;
->  	};
->  
-> +	pinctrl_lpi2c2: lpi2c2grp {
-> +		fsl,pins = <
-> +			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
-> +			MX93_PAD_I2C2_SDA__LPI2C2_SDA			0x40000b9e
-> +		>;
-> +	};
-> +
-> +	pinctrl_pcal6524: pcal6524grp {
-> +		fsl,pins = <
-> +			MX93_PAD_CCM_CLKO2__GPIO3_IO27			0x31e
-> +		>;
-> +	};
-> +
->  	/* need to config the SION for data and cmd pad, refer to ERR052021 */
->  	pinctrl_usdhc1: usdhc1grp {
->  		fsl,pins = <
-> -- 
-> 2.37.1
-> 
+
+reg is the second property. Please do not introduce some other coding style.
+
+Best regards,
+Krzysztof
+
