@@ -1,229 +1,76 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2082.outbound.protection.outlook.com [40.107.13.82])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF7833CF1
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 12:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710765460; cv=fail; b=g3D5ryxiynHa2IbHqNT94b6K6cp9qysAtaKJtDwQu99C1qrcvRoPA8vHYSM/lyj2l2KH9F4dwptZyDZIM/gxgt0Y7AiF4RF1FXFMWpS3xsR7Q8nj/MgTTddS2MyFAGM6/CXiuferkOfK7c1w8GSuJloPSaqtv0gc/aEcO0m2O0k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710765460; c=relaxed/simple;
-	bh=sS2JyCte0NlvoBP1TAh8spRBWFIEL2N4/vCN8VREazk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QSZfGXJM9sNZTvaif5BVVo7LQAYQa7aukNWRoIOhLhpU8jK0KB174xMGo5X5TzUyFILBukADCihiTPfBGzeV3rixl2rN2teUz8xI2LIIZ9M2btqwtVI+zSJ6CuKppatkkgbLF1VSiYIT+7zn9ukjWyBI//mFhGQTDnZkJ2xbsKI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Sno1AvtY; arc=fail smtp.client-ip=40.107.13.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA22381B8;
+	Mon, 18 Mar 2024 12:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710766743; cv=none; b=KXs1hIzDoH9H/n1vqbOe3TqhSL3JWSCn0m6W+LW8nPDBqjJWQp0fnQlvc2h7RnZ8JKUgrPn8oOmqzs+SvydmA2H5y/hMepfjiryKOgXQh8LWVBZPYYC9zg3yFcUZg3McycR4H7YL/OLbC76oa/Fh6XzYYgTR61IVeA3kM7cXHrE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710766743; c=relaxed/simple;
+	bh=uj2riyiHOvWTN+mzs8Sp2CMAvOGhKFZrdiqq1Hd7P7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JKjqAwbQBnHRLUEgFpRIU3HIRJCBQsO/vG+wy86KNKcF4yIyjwMc1xDsbRSeZKSvb7VT631VyeCHLxFp/GXgiR9gQ7CsgybTh9q9NIxK1A/ePRKnXl232yAGoXsHMSlV2ntzOl3DW7ECsOMxNeIBaqNLd+eewbbAN6fuGl9C9Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=juzlhEif; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Sno1AvtY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H/xS7kqaOCH7/sFR6zzqmpL6t3fCvpBWtKcgFQPpZ8WFZCkWD0fokekTxZnqAkUHA9Nse7CZ0fiiHRzLZTHW0bhjc9XPSnLWLKmSsJR6JDlTjB0bYQe8LZlM+rR+gowNsSmJOTgq/P2aczyt/K3no7G+2eKVTDglGHCIdfuHt9lYmmrgoKzbKvvGJ+6RuCc2aN4by7sQ11DJaIirl4vTOqXUbgMLFsndDShe1nE3cs0S6hms2L+dv4QxmMFNxVL7sqOA9UW8ojdHhEnf3f41k7kqdRmvWDwKK69f+gOml/5raMqQFMLHyKAaPFdrD8hIAjMc1AoJochCl3tepgk1iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GND6LJZ89OV8bUrixez7KTnV6j2hbEEHD1Puk4R4vqY=;
- b=UnpvI/QH/ddoX4JE7LYS3pEYySeJnRS5/7efNM1imVzeEcEOwC35idWAkurvcAlsXsM5I3NxLs8GlXiYEZ+1+NHyyKftDCtH2R9SUGSsMySeumGgg47H2KOkjIoJ3AZJh+yY1vaxcdE51vu8ngKGhR5Rw1tDSvCX3YgPpLBRO+MATeQzxx9WtOx55bKdeVUc/WH+Rf2wcRTOMaOvmD1/F+37DT+T7His4fuX/vM8E6yjXqd/Ffdh6EdAJKZO2fmUA4ePz9UHFSs1OfnM9QD1Il7PJxsuTkOtjct8lP1pCY4e3lDpaswP8pfDc6/3q7dzrwdkBgOAjm0NYicMoe455Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GND6LJZ89OV8bUrixez7KTnV6j2hbEEHD1Puk4R4vqY=;
- b=Sno1AvtYnj35hs+qJBdKPFqYviWs1PDBLIBhh6nnPMmbxhQwzGTiHavrIbqO/CYPRkaN4q0+CPwPHy974HFD4km4nLwornDwPR5hRsdWWr+kRlxUI7B16flGMcnQa0ePywPdOpgRzjqdFA7rxFx4pBPFcagIwvr3aTMArgrqdaI=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by DBBPR04MB7788.eurprd04.prod.outlook.com (2603:10a6:10:1e4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
- 2024 12:37:35 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.017; Mon, 18 Mar 2024
- 12:37:35 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>, Abel Vesa <abelvesa@kernel.org>, Michael Turquette
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v4 5/6] dt-bindindgs: clock: nxp: support i.MX95 Display
- CSR module
-Thread-Topic: [PATCH v4 5/6] dt-bindindgs: clock: nxp: support i.MX95 Display
- CSR module
-Thread-Index: AQHadhIES73tdSfBuESVOYmVZaJAHrE5SHGAgAQrn+A=
-Date: Mon, 18 Mar 2024 12:37:34 +0000
-Message-ID:
- <DU0PR04MB94170C3364CF2F522C515D00882D2@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240314-imx95-blk-ctl-v4-0-d23de23b6ff2@nxp.com>
- <20240314-imx95-blk-ctl-v4-5-d23de23b6ff2@nxp.com>
- <b4fe2ffa-bd36-404a-9441-8781f0a81d26@linaro.org>
-In-Reply-To: <b4fe2ffa-bd36-404a-9441-8781f0a81d26@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|DBBPR04MB7788:EE_
-x-ms-office365-filtering-correlation-id: 2848fd8e-bf2d-4ae9-de39-08dc4748301e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- zh/L4ev7loPwwAMoRNHvvQ/YJfmodvrzRWZGIsleOhPaF9NnPB+DatCu13xvIltMNKfZYFrbdFLUXYL+nnZ/HC5E3DxYFOWGTWRP3y2anL7ZVpXO7MK+0Ie9eNTYQWAOQn6p/5KiFeIcEbGWw812+9AYM30JrgKisR/rMgbHMNQkd9FNHxeqyWauu6wlVyJ/PaVg4ovQsZvlzEln/DCuYfcPv2+ir+IoKjl387mCSTAXt4tU3y3Ec3DarcuXYKHtQ7eYjETco94pMoWRJvMdnqh7j7yEyNlD73RKWF7q15r3OGKYNEWfL9UNO7WsB++4Wf/xzbqFxiF7pSDOZbX5aiTgDsoL4sIpzCND0c6Xpn0hBxYHTp90gkxTuQJRXnbouNeOowu5N6FTrSChwIEssAOvdwzEcFDRxvzQMoV0h358srWG20qwr0ebHHZ/GSsHpXby1rL2NuSJy7iIytstikmoixGyBOa4MDCtKWouK7YdhfmhB5eOChZJk5TSIEXuXIsiljbvwWqpwwaIWxHt9VmKGOI886B7uItEUU6NTn5n28YIngS+Daxskg09v/K/Hs/1fmwQZqb+twenSYX5ka3kXVGIbJzgUfXqW6yhg9NRQ7nQdPFXBHWuNKk6rrPYwDVLGxdxX6Xyo27xpImMpFpwY29n9Ghtk/u+lavru7fVa5YX9EfHff9ylYgUKq0r/DBc4ZYuAMNqTQq+8sObux7Xgxg1fRF1/gFrbx5hwq0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007)(921011)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?E2TQCiJZ15VW88gU0W5QglO0d71X/UAJuINCAI7jMM/wN+Rg5h5L5ntw+RxY?=
- =?us-ascii?Q?WD2BcMwaC4mecbT0oWCW/Bs6kfewh6Qe5EI3fjzkcr7gzQy1ARIuX999reCG?=
- =?us-ascii?Q?BFyp2LtG3U6+fXmn6DBKh6yMyzY1wzF+h8TLZTLV6qC+H2Vpi1yjua5/sjeW?=
- =?us-ascii?Q?6GeczI1qPy1PoM4qQLgb3sA2fRMiUhYyEuttePce79Pec79q9Ep3ku9OyOTB?=
- =?us-ascii?Q?+QgeyOyuJt+3FcyZvi0bFl/P7ByXYG8hjQXYiqWXl4TsYza6LS4m7k0LCSpn?=
- =?us-ascii?Q?pJnOk4zcPEqJOzgPphtV7tqJGxKuWau1ARod1lWCFrnc553tm8vT/Ic5tJ0S?=
- =?us-ascii?Q?TsarTCnVS/BqQM3SBZhaj6YeFAIPxtgqO83sqr4ZR/Px6NzUfSsUufrMbwGH?=
- =?us-ascii?Q?wsAnUxjfKCMSKHXdPhCYEJIvKhnEyg9J+6S2tcrkInki5tnfHlaD/AvXZ8ws?=
- =?us-ascii?Q?rmLnh3wTRpTND7myPz7wlRlh+WNXTE3dKNpSm2MqaAEWgyTgM8GsZAunMOKX?=
- =?us-ascii?Q?Solfog1Ddt8bxHD/2KB7poeOhp8dZJ6TVZ9iWMyDIB5c+zJjT/vDAOm0WKnm?=
- =?us-ascii?Q?RlDYx9ar1LPYCHtYmNPtLZaWPAbbNJQ1Cqd9Fpta1ZY1F0Ff1BVTx4FQ/7qx?=
- =?us-ascii?Q?5f0mo5/MiTWlMXxaVQjlzzhs2Bt8x8Ar8hfMASjXUo/iUVvGFvkwUd9j6g5w?=
- =?us-ascii?Q?hf5Frvw4MaoqF2/kSF/dTA6LyYWCON9sfcj2gcOmXFnzGQiow/HaAtfJ1Z0A?=
- =?us-ascii?Q?rU4fhHyTTgxxvtsdznFaAUSyIV38y+n5raxZqFaD/HV3seB6GUpmyPO0zR+K?=
- =?us-ascii?Q?jgvhBvLBj1cPHIMCgD2b+xo+gvaiaSQdu0p4bvwmqrh4Gq+tndXEg2p7+lEJ?=
- =?us-ascii?Q?EzGIioazWRnQUllfSLw3tv7GAA0fHTirefpaYLnXN/Mlb2b2zJuMGwWwSCph?=
- =?us-ascii?Q?reSSmkI18PbpSvUnOzVb7WvCAywcTThSL0IwHSLs/FzfwQVflOkfbDarq8in?=
- =?us-ascii?Q?z7tfrNXlr34rdeAT2gUz6X1SivBRclf5DPG8KK7RE3pSpMCqewpkDMzvllw9?=
- =?us-ascii?Q?zEmlBZ5rzkz8DO5YO5mG+SirMJmLAR6YPQiA6hff/tDCdhHxDOt0yY6HO8Kr?=
- =?us-ascii?Q?bdEbvz9YBEyCfMnwXz7P0amYCQdkkmkts22rO7DjZpOJXcazionzlXdqNPqP?=
- =?us-ascii?Q?fUcMZnRblA86GqNgTYhyFR/K1EoGJKX/BLOkxxry6Wp5cdyfi770/XSjzTaM?=
- =?us-ascii?Q?sT8X/syKZw8gItVL3ITlg54Na5xR+z57Md7w+mYv4gPoJXKcTXAyaSSmAW+l?=
- =?us-ascii?Q?fVuoOJGqakiNdw1GMrKSrqaOzV3/g2aQcafETNtjMuMSv9+5LYQC7ri3RMMV?=
- =?us-ascii?Q?SRKxISU3pWzBXKqSp7dGBK1PA8yWgVxByqJYdoy7KQCOptooUKTnGvOyY7l4?=
- =?us-ascii?Q?nI8id3ns6C24OW7SufCFy8+vuiGbNe2yTim+I4QlI69HK5CcgJ6Yei8VDsJe?=
- =?us-ascii?Q?muwm/sFNguVJjy7iG1jizx5BwI7Gbo+IoVTnGnDTGLz4uP/t8MlHBW4HAEnP?=
- =?us-ascii?Q?LY1hJEnIjQcLzdpI3tY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="juzlhEif"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Hp9yMX9h2ueTcKW6d4TAYA6h9J7ajxbIROHaytm5A48=; b=juzlhEiflE8+UTbYnGbRjp29Hx
+	CiKP9pD88mK2R0iS2/KMzBwZqr9O9leLeAR7GEU3VcJeu53xWtG0CmxIKLlsGv5QpkvITw3tVVJws
+	hb4OI/NoMtWcOcMivz3S5oUfabWLIh/d0x1QMeseuYD2Na+DmPB3954pltOub6nZk3qI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rmCZs-00Abz9-PQ; Mon, 18 Mar 2024 13:58:56 +0100
+Date: Mon, 18 Mar 2024 13:58:56 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Johannes Zink <j.zink@pengutronix.de>
+Subject: Re: [PATCH v2 2/5] arm64: dts: freescale: Add device tree for
+ Compulab UCM-iMX8M-Plus
+Message-ID: <be18ffcf-3157-4f8c-9bb1-10d6520900f5@lunn.ch>
+References: <20240317164850.32708-1-laurent.pinchart@ideasonboard.com>
+ <20240317164850.32708-3-laurent.pinchart@ideasonboard.com>
+ <c5f5fd07-99e3-4a43-a92e-9e622932ea1b@lunn.ch>
+ <20240317185722.GA24220@pendragon.ideasonboard.com>
+ <7deaf04a-7433-4712-9fb8-1c89fc283346@lunn.ch>
+ <20240317235030.GB18202@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2848fd8e-bf2d-4ae9-de39-08dc4748301e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2024 12:37:34.9563
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3Z1XIZdgksxSIWngM6aYjgITufRJzHXaqp3g9/aJBsuOvdyLMpausxj3HTLivRbqG2Z7WhYAlQxm9s/3Uw9ctw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7788
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240317235030.GB18202@pendragon.ideasonboard.com>
 
-> Subject: Re: [PATCH v4 5/6] dt-bindindgs: clock: nxp: support i.MX95 Disp=
-lay
-> CSR module
->=20
-> On 14/03/2024 14:25, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > The DISPLAY_CSR provides control and status of the following:
-> >  Clock selection for the Display Engines  Pixel Interleaver mode
-> > selection  Pixel Link enables  QoS settings for the display controller
-> > ArCache and AwCache signals  Display Engine plane association
-> >
-> > This patch is to add the clock features for this module
-> >
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  .../bindings/clock/nxp,imx95-display-csr.yaml      | 50
-> ++++++++++++++++++++++
-> >  include/dt-bindings/clock/nxp,imx95-clock.h        |  4 ++
-> >  2 files changed, 54 insertions(+)
-> >
-> > diff --git
-> > a/Documentation/devicetree/bindings/clock/nxp,imx95-display-csr.yaml
-> > b/Documentation/devicetree/bindings/clock/nxp,imx95-display-csr.yaml
-> > new file mode 100644
-> > index 000000000000..9a5e21346b0d
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-display-csr.ya
-> > +++ ml
-> > @@ -0,0 +1,50 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
-> > +---
-> > +$id:
-> > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fdev=
-i
-> > +cetree.org%2Fschemas%2Fclock%2Fnxp%2Cimx95-display-
-> csr.yaml%23&data=3D0
-> >
-> +5%7C02%7Cpeng.fan%40nxp.com%7C479f8c47bd4d421a669708dc45316f1
-> 2%7C686e
-> >
-> +a1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638461325839625184%7
-> CUnknown%7
-> >
-> +CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haW
-> wiLCJX
-> >
-> +VCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DrntSlDs8ASXSb3L%2F9ZCzgW%2Bzo
-> v2LU9vcTD7
-> > +SvjE37Nw%3D&reserved=3D0
-> > +$schema:
-> > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fdev=
-i
-> > +cetree.org%2Fmeta-
-> schemas%2Fcore.yaml%23&data=3D05%7C02%7Cpeng.fan%40nx
-> >
-> +p.com%7C479f8c47bd4d421a669708dc45316f12%7C686ea1d3bc2b4c6fa9
-> 2cd99c5c
-> >
-> +301635%7C0%7C0%7C638461325839637072%7CUnknown%7CTWFpbGZs
-> b3d8eyJWIjoiM
-> >
-> +C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
-> C%7C%7
-> >
-> +C&sdata=3D%2BjYpR8p7IDjRzV39hJhtv8FozALx9HqqLhoFgwBJCm4%3D&reserv
-> ed=3D0
-> > +
-> > +title: NXP i.MX95 Display Block Control
-> > +
-> > +maintainers:
-> > +  - Peng Fan <peng.fan@nxp.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - const: nxp,imx95-display-csr
-> > +      - const: syscon
->=20
-> Why do you create five different bindings with almost the same contents?
-> Do you plan to grow on them, like add more compatibles here? Otherwise al=
-l
-> this could be in one binding.
+> I don't know if there are public errata about this issue. It is beyong
+> my areas of expertise. I've found a relatively recent e-mail on the
+> netdev mailing list that seems related ([1]), but there was no reply.
+> 
+> [1] https://lore.kernel.org/netdev/9c1c9408-88ac-4ade-b8ec-2ae5d8922cac@pengutronix.de/
 
-The blk ctrls are for different functions.
+Thanks for the link.
 
-We may expand the bindings to add more properties for the blk ctrls, but I
-am not sure as of now. I could merge them into one binding except
-the one with mux-controller if you prefer. Or leave them as is, still
-separate binding files.
+Has anybody tried setting STMMAC_FLAG_RX_CLK_RUNS_IN_LPI.
 
-Thanks,
-Peng.
+https://elixir.bootlin.com/linux/latest/source/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c#L816
 
->=20
-> Best regards,
-> Krzysztof
+The problem description makes it sound like the hardware does not like
+the clock being turned off. Setting this flag might fix that.
+
+	Andrew
 
