@@ -1,141 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2102.outbound.protection.outlook.com [40.107.247.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7FA57865
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 20:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710792493; cv=none; b=slMvWEXQliN922uB1HURvxTM5nnO3gedg/IQFgoQHv4GpBnbv3DmC4Etk6L+o19VN5zXlzOPbWB922QlWU0Sb6guMCP/02AI2W95XrKrdFl/iOwNupgaE2NjDYcOH/aBZTr2aola4W6JxYm4fGT9Bxa6d8y6u5ZrH0ORlopM8Fk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710792493; c=relaxed/simple;
-	bh=sMw7esYZrxxW1kATPTh6O4ptDRoE3Q+nZihwtYXZxlg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hc+yS9MIbrznDvidSW7VnXeUfA20kGG6aPO7BpJ02+WiSjkO18ecPzdtWuo68zH+Sk4BDhJhGJTdpXYu9Jto01vyHy2hHe/1oVSIGI5gNb403B54/7ohVd2OQwmU61ROKjxOk5Dp4pKJpFd3aPxuBy/obPnJRZFw9sshKjkxgFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SbroGQ2X; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEA154799
+	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 20:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.102
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710793118; cv=fail; b=IsZb5EHfT/rJAwEtioKgOfnEPmVxJ0G7blmcXJKvjCyU+5EDz8zGK+LgRp/7AFkmH9o3fEJ3hQo5fnwHIpmmXJ56XmgynAP32WShhZJk+JbVQzhGQVtayWJulbjEJJlil5xz6SgioEOZYcBb5m6jtnXbGc+8ALGf2pQxw2KCnlM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710793118; c=relaxed/simple;
+	bh=PDhxN0+8D7Hn5hzd8/k6AxuS7oil9i6KAnuwRQn2tRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gThCU88VooZLvja70gRnUvxzF21h/S17SwpgKb5/9MESGGlB+jpVvfbAevUn1VJdRD/nyT/7SnpuAth0tIPB1kstvL2UhZhjKIfWyGPQGer7sGcv9hDWBJg5LJz9mXpPp9c5wT1ykuIXshFuNoI8lfib+29eVezqyIK3JZZxelw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ibmcmI6O; arc=fail smtp.client-ip=40.107.247.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SbroGQ2X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710792492; x=1742328492;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=sMw7esYZrxxW1kATPTh6O4ptDRoE3Q+nZihwtYXZxlg=;
-  b=SbroGQ2XNShvl5bSrtml3YvjL/YYRaPmJ7THkGmk9iK0EvHOAzBzQM22
-   y+W4Sg/OUR6lcM8Gp2tPclo+vNZEJk9JJ16t9zxWW2AfyYy5p0PBdUcO2
-   Wp3Wbsg8uaPEXStUT5sQSYACRQjDWZgrb0Lc6swGHtZpHfgbipKZWkxOj
-   NHXeqourCBm7df+t5le2dw3FkGYRbY07kFqBJ+Td6DjMmbwJoy85Wo1PK
-   VmkwmkQtoZU9aELdPt7rip/ipe/7UFdFX4UEFTeaqOeMV2I5ZuWceFLM7
-   1GhbNu3L48zAauA5gObHlHVV04DmhDnt63Y0ngNCixywEFmRUFmKOATsj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="16354707"
-X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
-   d="scan'208";a="16354707"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 13:08:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="937060635"
-X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
-   d="scan'208";a="937060635"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 18 Mar 2024 13:08:07 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 68B82241; Mon, 18 Mar 2024 22:08:06 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
-Date: Mon, 18 Mar 2024 22:07:56 +0200
-Message-ID: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ibmcmI6O"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WcH9RozfjBdyN7LOzzreewR/R59TMl7eCFqKdKyrsaGRgh+4NrKbCfdkCEh47sRYubF4iSz8BKP1Ubd9zYXy2qlBdyT5IbymAAU33lGC6SN03WcQxejZMi7CgdM+kk6FiiIoVXQJ1I/rDj9UxQOD4zXntbDqOCN2X6ajdB45NqmPZ8FBF6UoVI3ZvURSYH2EqCRZ+f7jfvlYRIv646GGH55Jrtc5OufJ3ih+hIUtRp+5m6/f6EQLZ/byBOcR9I+VipCny5b+7gjZ6kNIHltVk4dzeO2bzdm2FUiy4ONsdKmZnywaDWrWwuaysPGMr8pF3vWZ2iz6eDjBXvFJegIjRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5EKcPSAEr4V2B56eLdLK8dEVeSv1I/A8zNt5q7In9CI=;
+ b=luGN99giCUcekw3OlA/OWlEVuQslbyps+MVn4rXNBRXsMPRSJI5QLGQrAkgxM66j6rNp+oMHqhVDPO8OO357LHFP96lZ2mxm5Ogr5P+cgctgsNumpAosi9FQWmzEEVKyFhl3wihJTTkj9Nu3dcjGs/V3FGTCx07qeSKLu0P29m3UNbhximfKfAkWsomgWo5eacOWg5jtHO0JCgzNpoJWvue3V+TcczTCinhFTMT0OC5+Uw1mTJAv+7ROauwJDm6kfnhbpZxJKFngYb/yABc0GHqsdne5txU+mxrzQ8dfjI6cjAgQg97oquGpNFFkTsN4qM9+Iiqyvw3HfxGVljFtrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5EKcPSAEr4V2B56eLdLK8dEVeSv1I/A8zNt5q7In9CI=;
+ b=ibmcmI6OomRsZ+S1xxk4XaYPfe1D4ML556gd1qz47r/8YScrBz27+uba86FO3fh3v6g2enK4PCgep3pYH8w6tKHOYB8uQ002VmT7tEn5m2t4RJDC3flbVPCQth/qRsCksL/ALHBHTVmQ71YO0MvpJBMWC9n8TDl7+rm6T5/np+Y=
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM7PR04MB7031.eurprd04.prod.outlook.com (2603:10a6:20b:116::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
+ 2024 20:18:34 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
+ 20:18:34 +0000
+Date: Mon, 18 Mar 2024 16:18:28 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Emil Kronborg <emil.kronborg@protonmail.com>
+Cc: jirislaby@kernel.org, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH] serial: mxs-auart: add spinlock around changing cts state
+Message-ID: <ZfihlNj1qMm1aJvI@lizhi-Precision-Tower-5810>
+References: <20240315154150.28391-1-emil.kronborg@protonmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240315154150.28391-1-emil.kronborg@protonmail.com>
+X-ClientProxiedBy: BYAPR02CA0029.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::42) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB7031:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	TzMDSM+8fxXx6dhOVCce2+rI6jGz/mf+SOcQoqo2s+OcBgvCD6xBpH81/kk4DzG/4fv/405FvWaptDfX/10Dlf+B4RKsv5nwaTmwZCIBFSs1CM9b4yhdd0kEEEGEcZvofoR9X62R/LRkaV+cq/sOnmzwUAP8Z9qsEW8FuwdLUHM0n9vKqPVw/Af+GS5W+0QGaO4rm6lBt0/7vAwUTUyH7hTeWkx8AACV6eAlp6PhhwdVZ6qvH1ykRy+AcYubehQ43g3hudeUDx2tx1o7YysCWiYv7ZiJQUpFr5UNf6HRsjIgStLfRg2DxwutY98bLKbKTIBUDj9bGeWL6D2drOrHR61xloV6t1Lorlr6mgtDiviDgFjJP55YVmrYA7xHlzgTLx9WS4Sz6WfYtK36cTrE9qkfM14TwwU55n01dpuNCtM/+cYTS+m52j/Xy1rA4jfc0tcFlER/D5+8D3QcpNhXzuHhroUmjDlFIhdxvZWUV2wQeJM7Csgz+0zdqD1K4KYLxaLmM+08LuJ3sPmAuVPkAEQ3325VE2Y4w4ZbJLXmY7in4wckR1/eC/Fc9E56PWzHiSfweeVv3DYCC5woGyqIgkSN/9z1OSBiqD6dXDgesjqCUyDuv6cT6vrpta6CDl2l/ExKloi/Lej1dWc7zFV5vrb6udEHt9FgvAAQ3fW9fc694Ce6znF0vOpgzRPvK249U7DGAgbt8UyLrcV9ZmtyzRRwk26QdM0PqVcOPCE3iNk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(52116005)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0t+l++Vsl1u04/CXJuOo6STgbfgsc/lQ0m3IGXv/hTW1HzsuH9G0N9ln4RI1?=
+ =?us-ascii?Q?pwKXLhxPIevhNaBy5VrjkTye1EYxeXyFQGMYtjtkNNBojGCa1zVFTt0VHL6Y?=
+ =?us-ascii?Q?ytFRbbszo7Nz7mtext9/OGyFNLSKFGH1L/o5jAqGkNuVtQjhrO3aPwXlq8Gz?=
+ =?us-ascii?Q?oBr5Q8MY5CYQVW9gR48AbQ9N/Timv9dGb17ckSB1HmxUe07YDLM4Mw3DWcH1?=
+ =?us-ascii?Q?Q5qAjCxDasRjFZxnveJCzzWT2xdk8RUyecIkCXTd9NII3MjLAj7aGrUtAr9m?=
+ =?us-ascii?Q?PJUF4IHROM0RHnpHrwO3AFygXQ0if+Zx6TMsD+shuhG/8ZfOWpefwfIIc84H?=
+ =?us-ascii?Q?j5v4OuhwUg+2p5uxrm2WSfEmY8VM/U4j4Wj45ImVznY94GASDeWzpE3VcxD9?=
+ =?us-ascii?Q?I3PiRwFFwKMtaZmDkFAXGxeYOJAInhUA0dwJ9kQ35eDr5y/cVRZF/1FIQcGf?=
+ =?us-ascii?Q?4pP0PXIbrIqXe1bSbGvxnqDoOZAOeYWOCIh1iIO/XX2ngQJQu8pTa5P0e9T6?=
+ =?us-ascii?Q?jkiycOF8FXuTnZfwk2Ff1LG2z7a39EIRkBqMmzyqXkjtRvef2FDpjp5rWRZB?=
+ =?us-ascii?Q?tJEvBGI26OrmPt7PgNZCOpj2v/o0nP62idof1DJjxjdfWjGXW9o+f7eUgoU/?=
+ =?us-ascii?Q?qdlrP2xFda+HxpgFtQ5EsPsW7DhQ4rBr0Aw+drykzOU1f90BCIHw6Uf51dUS?=
+ =?us-ascii?Q?6r59WanK1ZJlblfbH4n8dBCSMrSkqXc2KqRMFULF1iM3QkACJwkSuFPMP2Vn?=
+ =?us-ascii?Q?7gm8XrQf4nCp+OSsb5KUc+AlDgKcey/VP7p+LjdgUaC8sm7XeqFGsO8KJB2M?=
+ =?us-ascii?Q?fi7nMYlh77DW97rdxoYtu9OYn/bNxEzo5KDX4t63w6Ps+rJQUBNIEBER9M9H?=
+ =?us-ascii?Q?A3d0CzmDFl2O6nqx6IU4IiTnbnKtoykyg0DkhKPRYIZFhO5NDS2QA/oSeIhc?=
+ =?us-ascii?Q?gLUBh+ZdS7RsN2nM1up/0V8HSgAER3oIz2DtPPKSUrgOxQAR9sFIaaunArY8?=
+ =?us-ascii?Q?InHyq+SJFM16MN2GBOs+yJvJ9WP14zVPANHuV8AiZMk9p97+92cZXnQvStDl?=
+ =?us-ascii?Q?NhAp6MuNsTrOSH6Zlh4nT6h5K7aUTTeAvYVP4EHwawhTkt+VvY1XC5SbnvLO?=
+ =?us-ascii?Q?wN3zjYXhw0RSEIaQ7gg36Slypgvp86PZzHlg2T8iXknmDRRfciPPMDzgdI68?=
+ =?us-ascii?Q?2sasB/mwOz2xJBoP534Xo2OdTWmSPER/bhpr4vsP4cDR55qkjRy+DtvOXfgu?=
+ =?us-ascii?Q?pFGxnWukgU03IhRLERbKnPZnEiUpCq4PUQOxAWaIyTEjx4zVE7atVI+KvU/s?=
+ =?us-ascii?Q?0bjLSmkjiV4j1Q3FppdmrV7onyqacwTLLimgLGJtet5Xz9oyp1eeWsO3/c4s?=
+ =?us-ascii?Q?/vxE9umeT9/Z03gFSvXbdn+1+qDg3QykbTyBQ5w3EHX0K+E19I2venWBVPht?=
+ =?us-ascii?Q?xfoQcHzNZapJ8jzhQ2ZG1O7qtavMfrVfjqtWAguwxmSmCzPs45fzogYvtPVJ?=
+ =?us-ascii?Q?zg7YPCI5ytPeLu7YUu2K70pIWRJdIkeTyW0pmhpa2ER2fG3EM3zf8redPEiz?=
+ =?us-ascii?Q?Pii0f6JnYviDPNsxb8uQxN/s7cLpLsynZHYadXZG?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 565eaac0-a4df-4aeb-189c-08dc47889615
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 20:18:33.9867
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /T/D4wqt+3z/CZnI2Vz7wAkw7lOwl+NCAuE9sh081MXhU2b1XaULQ2HVy2e4/wOp4fYSIvYsQpvnTlIW+N1HIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7031
 
-This updates the driver to gpiod API, and removes yet another use of
-of_get_named_gpio().
+On Fri, Mar 15, 2024 at 03:42:29PM +0000, Emil Kronborg wrote:
+> The uart_handle_cts_change() function in serial_core expects the caller
+> to hold uport->lock. For example, I have seen the below kernel splat,
+> when the Bluetooth driver is loaded on an i.MX28 board.
+> 
+>     [   85.119255] ------------[ cut here ]------------
+>     [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: fixed compilation error
- sound/soc/fsl/imx-es8328.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Add:  mxs_auart_modem_status()
+      mxs_auart_irq_handle()
 
-diff --git a/sound/soc/fsl/imx-es8328.c b/sound/soc/fsl/imx-es8328.c
-index 6f0d031c1d5f..d67b8a149bff 100644
---- a/sound/soc/fsl/imx-es8328.c
-+++ b/sound/soc/fsl/imx-es8328.c
-@@ -3,7 +3,7 @@
- // Copyright 2012 Freescale Semiconductor, Inc.
- // Copyright 2012 Linaro Ltd.
- 
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_platform.h>
-@@ -23,7 +23,7 @@ struct imx_es8328_data {
- 	struct snd_soc_card card;
- 	char codec_dai_name[DAI_NAME_SIZE];
- 	char platform_name[DAI_NAME_SIZE];
--	int jack_gpio;
-+	struct gpio_desc *jack_gpiod;
- };
- 
- static struct snd_soc_jack_gpio headset_jack_gpios[] = {
-@@ -54,8 +54,8 @@ static int imx_es8328_dai_init(struct snd_soc_pcm_runtime *rtd)
- 					struct imx_es8328_data, card);
- 	int ret = 0;
- 
--	/* Headphone jack detection */
--	if (gpio_is_valid(data->jack_gpio)) {
-+	if (data->jack_gpiod) {
-+		/* Headphone jack detection */
- 		ret = snd_soc_card_jack_new_pins(rtd->card, "Headphone",
- 						 SND_JACK_HEADSET | SND_JACK_BTN_0,
- 						 &headset_jack,
-@@ -64,7 +64,7 @@ static int imx_es8328_dai_init(struct snd_soc_pcm_runtime *rtd)
- 		if (ret)
- 			return ret;
- 
--		headset_jack_gpios[0].gpio = data->jack_gpio;
-+		headset_jack_gpios[0].desc = data->jack_gpiod;
- 		ret = snd_soc_jack_add_gpios(&headset_jack,
- 					     ARRAY_SIZE(headset_jack_gpios),
- 					     headset_jack_gpios);
-@@ -174,7 +174,11 @@ static int imx_es8328_probe(struct platform_device *pdev)
- 
- 	data->dev = dev;
- 
--	data->jack_gpio = of_get_named_gpio(pdev->dev.of_node, "jack-gpio", 0);
-+	data->jack_gpiod = devm_gpiod_get_optional(dev, "jack", GPIOD_IN);
-+	if (IS_ERR(data->jack_gpiod)) {
-+		ret = PTR_ERR(data->jack_gpiod);
-+		goto put_device;
-+	}
- 
- 	/*
- 	 * CPU == Platform
--- 
-2.43.0.rc1.1.gbec44491f096
+May help understand why need add lock in mxs_auart_irq_handle().
+          
+>     [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
+>     [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
+>     [   85.151396] Hardware name: Freescale MXS (Device Tree)
+>     [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
+>     [   85.164243]  unwind_backtrace from show_stack+0x10/0x14
+>     (...)
+> 
+> Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
 
+Cc stable and add fix tag
+
+Frank
+
+> ---
+>  drivers/tty/serial/mxs-auart.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
+> index 4749331fe618..1e8853eae504 100644
+> --- a/drivers/tty/serial/mxs-auart.c
+> +++ b/drivers/tty/serial/mxs-auart.c
+> @@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *port,
+>  
+>  static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
+>  {
+> -	u32 istat;
+> +	u32 istat, stat;
+>  	struct mxs_auart_port *s = context;
+>  	u32 mctrl_temp = s->mctrl_prev;
+> -	u32 stat = mxs_read(s, REG_STAT);
+>  
+> +	uart_port_lock(&s->port);
+> +
+> +	stat = mxs_read(s, REG_STAT);
+>  	istat = mxs_read(s, REG_INTR);
+>  
+>  	/* ack irq */
+> @@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
+>  		istat &= ~AUART_INTR_TXIS;
+>  	}
+>  
+> +	uart_port_unlock(&s->port);
+> +
+>  	return IRQ_HANDLED;
+>  }
+>  
+> -- 
+> 2.44.0
+> 
+> 
