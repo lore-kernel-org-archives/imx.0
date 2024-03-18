@@ -1,170 +1,141 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2112.outbound.protection.outlook.com [40.107.21.112])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA7357874
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 20:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710792171; cv=fail; b=INpZF0s9zVqpavunQobGT7PYklc0PgNcnlSp5YTKl/Ux8lEfkE0QUsLB0XtoWZPhj+/a3fTLj3mwsHLJc1v3+yNFV1Hhpzd5GJPSsOxqQiybv9Do4ziD7iQv0cIC/ngHVUVXFBB9g7layWBCVTIAIFSl5YrNK7/ZY6ARvbAGJS0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710792171; c=relaxed/simple;
-	bh=JTojZFCK65KDJqbhTqasg1kl3O41gBUBv+kaprN9iww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Qeo89Q6kbQUj6705JTt8kSBVlLARTF3hvCQQkbE6My2Afc5mMc4Qx80a72sF8nDjaXr3Igl4RN6zC7X8ZtsAAsVN37Y1+HmK9f6rhTEFw00ihbJuWHYPIHS3CHLihg/iRBYWI4d2Un5kSwPxc5Fvof3WbB7WSNWnynwlaOZIHAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=UR4BTesF; arc=fail smtp.client-ip=40.107.21.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7FA57865
+	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 20:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710792493; cv=none; b=slMvWEXQliN922uB1HURvxTM5nnO3gedg/IQFgoQHv4GpBnbv3DmC4Etk6L+o19VN5zXlzOPbWB922QlWU0Sb6guMCP/02AI2W95XrKrdFl/iOwNupgaE2NjDYcOH/aBZTr2aola4W6JxYm4fGT9Bxa6d8y6u5ZrH0ORlopM8Fk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710792493; c=relaxed/simple;
+	bh=sMw7esYZrxxW1kATPTh6O4ptDRoE3Q+nZihwtYXZxlg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hc+yS9MIbrznDvidSW7VnXeUfA20kGG6aPO7BpJ02+WiSjkO18ecPzdtWuo68zH+Sk4BDhJhGJTdpXYu9Jto01vyHy2hHe/1oVSIGI5gNb403B54/7ohVd2OQwmU61ROKjxOk5Dp4pKJpFd3aPxuBy/obPnJRZFw9sshKjkxgFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SbroGQ2X; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="UR4BTesF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X/SsSkMD5ezqa9IjhBw+4ktXuhQEs7lIKplejQbZD2jaky5bjxQIQR3HHBfn0XSIU+JQioWtY9uWtNDcUGw+k7NFDNxapWhSMiBL5/87F4v+EBGk9MyJ+/9ndk5A2++WMMbcdj+pAO8Vl7xFZutjoGOMphUtkT4si+2hHMIMGVzMQPfHa5s7wdW2Me/V85LwWaYHeJ687Nb3se2hkdpOip7fu/MIZqq+lPmvadZRM+A863xv1gWWWWTR/AqIOLFqGGA2cuffLWRB3UhSw3WmdkTKecQSf4vTOE33r5sB2E6hLx6osryYdZx+0DpJ1JNjd+/IGWIK06d1ecVuMzanHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L6Dt2mWJHL534nYeNRMUGwAviyOijujLkez0rZUPmnU=;
- b=aIFbSdQA2h/H5JEEYUdxZ9q3xt2f3t1oM0G6hNydMzT4uORxolV/Jke3PGVL4BipreGKAl2vzodnS8vW2xcsRrSX+VYAl0THbdbY3WzYc5nVDwwhAx1lJQYrev9HybIjIsXZi0wenWseMK4/EgaXa0neKIhgVQAKSOFC7bzFjkAg7mNpyuIrks42Ib9tvZtaOvGVSbEHdnTQ6ZfCnQZ2qBjuBlb/d7f2gx2emHrwUIrT4GTf4LFd9+VhHnr4W8JWD9QqXu6rwchlQ0BsOwbl7e7zOpybb+9lwkEZxkWdaWWhII7odI8lXnrtMBG9PZBtrXmHM2LgKj+xHVwcIdIT9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L6Dt2mWJHL534nYeNRMUGwAviyOijujLkez0rZUPmnU=;
- b=UR4BTesFrP1GdrKevynfP8YICZbAXWiHyOFMji7POQIfI65HRNEiQLKgPjYvVFA+Mjc5SZBn5eFNmHqri0NmwKw+k1rXsHqrSwcfuWjcH4oBvmDmozBt07rsVqU9Dy8f39caAL0NIYq+9WB4PQX9MWhCLZ27GDtPbRqRaQRFX5M=
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU2PR04MB8790.eurprd04.prod.outlook.com (2603:10a6:10:2e1::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25; Mon, 18 Mar
- 2024 20:02:46 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
- 20:02:45 +0000
-Date: Mon, 18 Mar 2024 16:02:36 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Joy Zou <joy.zou@nxp.com>, ping.bai@nxp.com, lgirdwood@gmail.com,
-	broonie@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-imx@nxp.com, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v5 3/3] arm64: dts: imx93-11x11-evk: add pca9451a support
-Message-ID: <Zfid3D7JW5HGIZVc@lizhi-Precision-Tower-5810>
-References: <20240318095633.4079027-1-joy.zou@nxp.com>
- <20240318095633.4079027-4-joy.zou@nxp.com>
- <7f601f5e-98af-4a78-a3eb-04d814669973@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f601f5e-98af-4a78-a3eb-04d814669973@linaro.org>
-X-ClientProxiedBy: SJ0PR03CA0076.namprd03.prod.outlook.com
- (2603:10b6:a03:331::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SbroGQ2X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710792492; x=1742328492;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sMw7esYZrxxW1kATPTh6O4ptDRoE3Q+nZihwtYXZxlg=;
+  b=SbroGQ2XNShvl5bSrtml3YvjL/YYRaPmJ7THkGmk9iK0EvHOAzBzQM22
+   y+W4Sg/OUR6lcM8Gp2tPclo+vNZEJk9JJ16t9zxWW2AfyYy5p0PBdUcO2
+   Wp3Wbsg8uaPEXStUT5sQSYACRQjDWZgrb0Lc6swGHtZpHfgbipKZWkxOj
+   NHXeqourCBm7df+t5le2dw3FkGYRbY07kFqBJ+Td6DjMmbwJoy85Wo1PK
+   VmkwmkQtoZU9aELdPt7rip/ipe/7UFdFX4UEFTeaqOeMV2I5ZuWceFLM7
+   1GhbNu3L48zAauA5gObHlHVV04DmhDnt63Y0ngNCixywEFmRUFmKOATsj
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="16354707"
+X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
+   d="scan'208";a="16354707"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 13:08:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="937060635"
+X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
+   d="scan'208";a="937060635"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 18 Mar 2024 13:08:07 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 68B82241; Mon, 18 Mar 2024 22:08:06 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
+Date: Mon, 18 Mar 2024 22:07:56 +0200
+Message-ID: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8790:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	6nJ81cethsgohCUVjy68MD+oksYFyng8ZpT1sQODdpCQ80ZB0eyB+CVnsFymjl3Vf1vVPIR6FNO5hglX2XFH7mPP4d2geuU4HsRm9hR6nAo7XanI4c424vbj1aDITCsNIGYxAbVZnpXOZftPdGao8Z1T9qP7v5Nnib5deuez0vJQuGESY9IASFYAVxstaZHrZ6QcdwTp0q0/MJaugq41zvqwG+WTyvsc2EC1plN4MU2RbWk+OcKHlPUxtukb/k3uYSzv2lZQeyY1melKatGZD5XlTnEEUkmkOvUj09zzu974FGNapNTw84aYwBOYj4a6wHY6hT2MPEUoM7Gknpb5JWEpK1Kin6LIad+qRHWKBZGR+qKrGVZCmzRkLH1VUdFBrb4Q94jT8z/jiWDZYB9N0IBbgmY4T+fvHvuDDRf6vUbsTlZ/ny1P0bYQxxgWRrVqJTmnWWdCWi2folb6eEx5nQB6a8uWhvxDKprEKxZV8gIC1YxXk4HU8MWaGIHB5XRsD2eUy1wylNVt+uQGNy5vJoM6Lq2cc1+BGQYRZIMVTelNnw16Oz5WeMgE3BckBH475zYQNE/eUK2pr52B+3kWZe5nvSCCw0c4m6wc+jIDvx4Yi7aEY1yzSwYNkjV4WhYMF7ZlfB/5qcYIElt3WXN/MoPPO2mHLLzrG5GpQkg8Z520Kp/ZY52BAqXgEGVs/iCtofbVnfZMQhrxg5pLAalx0Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(7416005)(376005)(366007)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MX3VQIPFP9nE1WXWiVE+M6oZ+is7mYStT1JkZ9BBiNyndl+xSjMAlzTy5vi5?=
- =?us-ascii?Q?r/A0j1ovJ4CjUFuBKmg1crqJxhIGlUb4W4/fgX902GhPg6RlslFKjANNk1W6?=
- =?us-ascii?Q?0PNIBuAMQj1RhjK2FWDtD6whDt7RhtuzipZOud8WmNQkZHPFPVjUgNRIieM/?=
- =?us-ascii?Q?EGAqV1+wTA8u+ObI2PDPJqtTHRYLhIDaA8OtoIBF5NUcaQfXzsfDJ8Vwa5fE?=
- =?us-ascii?Q?Ww1kDiS7wjljskw2vM1AyD8JNd7BsY68pcdmTzSLJWjNF/ckDfyS+i7BBXmd?=
- =?us-ascii?Q?yz/cHw5fCHuy8b0YJ8LtYcn3B91NOoemcG/eNX+szFsdSeb4tXMrPtoryzRZ?=
- =?us-ascii?Q?qe2s7baivw4rDo8vxaZsgwJu0+qa3lvs1BMK4TlBdwcwomjFb/UJnAqwKqmp?=
- =?us-ascii?Q?mmMxdvpaP/Qm2YaoEID1gtYitJv28uju4nybn9p5YtuLJrbhi/kf1rsDuFYb?=
- =?us-ascii?Q?NIxu2c/S/HdEMeHrkx1m9ywCZ8E9fpfwczGxlrvR+0qGHPDFowhfQJ3a1xvd?=
- =?us-ascii?Q?Pkavauug7GYj/jkIasvfwrqKgcf//F/FSNcpl0k0BSSjsNRFwUWlA2gjrkM1?=
- =?us-ascii?Q?OdjXuKOoa5jgnlhgYPNwis9fkR8C0poDf6w28KXZOngyrg0Qdy23v+cRL361?=
- =?us-ascii?Q?eQsYJkA3qfvBZ3m1C6yy3ZowqV2rV1Lr4mMvkMpAl/i5NOq1xICfXVmr03mu?=
- =?us-ascii?Q?z0YDozv6q4+NBEG8swqX98mxYrAfvYzcmF9oHjkEB9dGG58QEKgbIk2T5/kG?=
- =?us-ascii?Q?eoZyQ9uOlCxlRCQ2+6ZRkozDCASLtw2pwO0+ID1ysm9lcc9gLFVr0W24xNiC?=
- =?us-ascii?Q?GEj+B7PvGRo4FWtuwfz1hFn/Xvl5YtfbaX2on54/4ljkKzoEpP+yNu8osnxJ?=
- =?us-ascii?Q?CsERaoUUSHg0Ew4+5ZZxrpBpEAcaV+WswMtWE0+mmayeccWmUbz3N1id5CY6?=
- =?us-ascii?Q?UPtf+SXGomGalF9fuuLuYuxzWY8Lr80g9aM4IqYAg71CA9UxMGAihSi+j25Z?=
- =?us-ascii?Q?/WRLFdhvKCfPZwulZjIyE0mXTG4F2w2H1q7p3x7gP7WfcNAmokc58o3GhQXF?=
- =?us-ascii?Q?J6znBNMMNA8tmCIJi/hACuyEfo/eg8YgGmSzmirGkvUP8rV1zqlt5mEq2nOE?=
- =?us-ascii?Q?UJQ/ZRhqeqj07Z7C/Gmu8WwPoYTTonuJTi+6pvv1Usq9LX1aGLIRRq56R3sx?=
- =?us-ascii?Q?ahbA5LUkJk6tFMHsfWb5/2YVJAJi00I42NpkgOzWBHXv20atyvMV7OLAfxex?=
- =?us-ascii?Q?CvH3jrzUXKE9hbCRH4uirsOpJq8mR9LLW54Gyp6RDHtcIKKOJ0eHQwRaGgnS?=
- =?us-ascii?Q?ApHL39cfbBdgay51WyHo0GHQrbx9FKBdYpjr7dn2DZqG1PIrTu0xDzW+tGGM?=
- =?us-ascii?Q?k+CyZ7szRUAZBBhIBtQ3KhgJefv9s26kIK35CIqCHOHNVB3iVpT18kqb2mEV?=
- =?us-ascii?Q?+waq3aoOTiovLr3dc+X/kXgeEY9mdnFldJ9LUe+WRwSTSgqpB6nq1PIChoRq?=
- =?us-ascii?Q?KmOs0C3ENi58A4dlXMWiiMT3IU6ciVGQ6GhQMLQbJwpFRHS/mbsYQiU1J4Xx?=
- =?us-ascii?Q?pla6k716m5MUJH8PFv06wkQwbxQt03CGy094IFLB?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94b4e32a-e396-4e47-0593-08dc478660f6
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 20:02:45.8554
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AR9220nBBlENoXlNgeZaFaRQrydHpRNbVNYZ0iJEE7M3VdZ7xUjO1uehCtdbyqNWZR9djcoIs/fZgkLcpaxqfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8790
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 18, 2024 at 07:50:51PM +0100, Krzysztof Kozlowski wrote:
-> On 18/03/2024 10:56, Joy Zou wrote:
-> > Support pca9451a on imx93-11x11-evk.
-> > 
-> > Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> > ---
-> > Changes in v5:
-> > 1.adjust gpio@22 to the front of pmic@25.
-> > 
-> > Changes in v4:
-> > 1. modify the comment for uSDHC but not i2c.
-> > 
-> > Changes in v3:
-> > 1. modify the voltages constraints according to the imx93 datasheet.
-> > ---
-> >  .../boot/dts/freescale/imx93-11x11-evk.dts    | 111 ++++++++++++++++++
-> >  1 file changed, 111 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-> > index 9921ea13ab48..478a134d4416 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-> > @@ -183,6 +183,104 @@ &wdog3 {
-> >  	status = "okay";
-> >  };
-> >  
-> > +&lpi2c2 {
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
-> > +	clock-frequency = <400000>;
-> > +	pinctrl-names = "default", "sleep";
-> > +	pinctrl-0 = <&pinctrl_lpi2c2>;
-> > +	pinctrl-1 = <&pinctrl_lpi2c2>;
-> > +	status = "okay";
-> > +
-> > +	pcal6524: gpio@22 {
-> > +		compatible = "nxp,pcal6524";
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_pcal6524>;
-> > +		reg = <0x22>;
-> 
-> reg is the second property. Please do not introduce some other coding style.
+This updates the driver to gpiod API, and removes yet another use of
+of_get_named_gpio().
 
-Yes, Do you know if there are any tools to check it? If no, which tools
-should be good to add such check. I may add it if have free time.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: fixed compilation error
+ sound/soc/fsl/imx-es8328.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Frank Li
+diff --git a/sound/soc/fsl/imx-es8328.c b/sound/soc/fsl/imx-es8328.c
+index 6f0d031c1d5f..d67b8a149bff 100644
+--- a/sound/soc/fsl/imx-es8328.c
++++ b/sound/soc/fsl/imx-es8328.c
+@@ -3,7 +3,7 @@
+ // Copyright 2012 Freescale Semiconductor, Inc.
+ // Copyright 2012 Linaro Ltd.
+ 
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+@@ -23,7 +23,7 @@ struct imx_es8328_data {
+ 	struct snd_soc_card card;
+ 	char codec_dai_name[DAI_NAME_SIZE];
+ 	char platform_name[DAI_NAME_SIZE];
+-	int jack_gpio;
++	struct gpio_desc *jack_gpiod;
+ };
+ 
+ static struct snd_soc_jack_gpio headset_jack_gpios[] = {
+@@ -54,8 +54,8 @@ static int imx_es8328_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 					struct imx_es8328_data, card);
+ 	int ret = 0;
+ 
+-	/* Headphone jack detection */
+-	if (gpio_is_valid(data->jack_gpio)) {
++	if (data->jack_gpiod) {
++		/* Headphone jack detection */
+ 		ret = snd_soc_card_jack_new_pins(rtd->card, "Headphone",
+ 						 SND_JACK_HEADSET | SND_JACK_BTN_0,
+ 						 &headset_jack,
+@@ -64,7 +64,7 @@ static int imx_es8328_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 		if (ret)
+ 			return ret;
+ 
+-		headset_jack_gpios[0].gpio = data->jack_gpio;
++		headset_jack_gpios[0].desc = data->jack_gpiod;
+ 		ret = snd_soc_jack_add_gpios(&headset_jack,
+ 					     ARRAY_SIZE(headset_jack_gpios),
+ 					     headset_jack_gpios);
+@@ -174,7 +174,11 @@ static int imx_es8328_probe(struct platform_device *pdev)
+ 
+ 	data->dev = dev;
+ 
+-	data->jack_gpio = of_get_named_gpio(pdev->dev.of_node, "jack-gpio", 0);
++	data->jack_gpiod = devm_gpiod_get_optional(dev, "jack", GPIOD_IN);
++	if (IS_ERR(data->jack_gpiod)) {
++		ret = PTR_ERR(data->jack_gpiod);
++		goto put_device;
++	}
+ 
+ 	/*
+ 	 * CPU == Platform
+-- 
+2.43.0.rc1.1.gbec44491f096
 
-> 
-> Best regards,
-> Krzysztof
-> 
