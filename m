@@ -1,193 +1,944 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2107.outbound.protection.outlook.com [40.107.21.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718565A4C7
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 20:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.107
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710794736; cv=fail; b=hsI3BVV6ZIOPeWqSPoedzG3xnuHRhJ/1ssPya5mKt1ySx/yctHVhkcIngsYlJhDAwoesT+fbdAOf0rhZuOwUBeNZ8ojmpbnZsOb8YzW0nQ7cyanEJ9bfTX7GhJwyttx/YcoC9t8iHk4ELHaeUsHBAFM6l/3IX79TcpaA95RLXaw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710794736; c=relaxed/simple;
-	bh=ljnlvogNa9wjnjqYA+qrmJGp+L08YvFN1+NqfGiLnuk=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=DBNGiOdJauTFe7+VpeXAdpb0UcboYPFsMLB5vH29r6h63H476Ax7nz87gZBOJlKWHuKudnRHH/xJB05prerGRiC8xHaOytX/Ws7TxlI6KX4QGOCDB5oSoKE4CGzMR7pcE+5o8HKnoihAhVR3iOwb8M05ggalrofO/z75L7X11BQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=FxFF3ojU; arc=fail smtp.client-ip=40.107.21.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77D59B45;
+	Mon, 18 Mar 2024 21:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710797181; cv=none; b=Qbt8zDd3LDKqJmqMUP0P8nVBqNDzcTgmpt9ZfzrtliE3NQKLiBBy71dX3mbXR/87BCiWRabGzh9v1FG/+ChHPf2NMJ0IxOY6Sx30dKwdsKiv5yQ7KnXLp0N6AV6mnT+NgDaT7mGItKCYfTKERJMKrvnLQdBx2It2T/gJp13+Zrw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710797181; c=relaxed/simple;
+	bh=wQf7oggxp7YSFV0yVBBY0q1aNecnNBr402/Qx96fMWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CFBYAmJoBJ0cq3P3TzUnCyWP+tG+oE6hZfSaBinPhhKt40yeH+EOJg5qDOf7C60E6YsyHv+/8ID39UODvtjuVllRg+aHyTcx27gNKJkzP2Dh6Ir0MSnpr0Z93Tibgbe4VAoaOxMFn0uFikp/FVG0yVVMkhUi2+3xLqIMcJ8VhzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=if9p+RYV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="FxFF3ojU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IQlsOfpAzB7jn3RUU7FYa2lbY8eD4z/ePU2BUtBCC39ONC3yFalY0WRWDL5+moQUWPZuyCY34UXwhZB9D5PtowYMsM3Dmk9cwokALcy1BMDP4Qlii+/nLv5VsrYRA/DQ/rxmGY5EhbDayM6HnAGHw1WyH8trmaWZJhhIPcd0wXJyE2JAyPhD21VGHiOphh/fkOUwSt2LyY7luqaqyJD9g6hE7ouVZwpK38BQleXlYtC07RhQXPeD3RP0MbUIkxk3y2igSWk7cFWWJB+bDuyf6ZWh84+NTqTGT0tMjRcDi2yZBJPEga6/Z03+wvVR9ww5caR8QjTGYW8gIeDrWOQ+Kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=waST1WDc7IwCRjnOr9xnT/UgX5vct1eYeHIekxCI1Ps=;
- b=DYe/H29FYk9vqrf4Oh8+mcH7J0LJR7d+64zzG7CSWkpC+cBT44h7FGjD2FCTVIiCu2ztLylTv+Tjd6eCqi0y7q0YlK++R+qEAYKJlDt3TDaHSmFPbkPBKkrE9E1PM+7cgChyJUI04mHNVwSEQAAM6VEtgaeQaQWvIRvKKF3enjvGSvJp13kZOFE++nCLc+Yih7UtGwmbF13MgxPgNPgLTxNoAWU8N4y5k34sxYnKiBmEY3GgFnAZ4daOShoDskltjUGJ9N1KbXnijomflRrGvoCxMYrYPGCW0RaOttZlZKD4csHfmgQqO2WW2IIooBUp9PMrgXabpy3A78Rid7DvMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=waST1WDc7IwCRjnOr9xnT/UgX5vct1eYeHIekxCI1Ps=;
- b=FxFF3ojUCbe3aENunLGDeOd9dX0GxUyuH1aMeme2h5a3iDvTI2zRo/QBP8KYIUtpXF0csq/jCEm96fbibLl7zQR/nm6gWo3+Pvsen/A6V5xLP3hPp/f37T8O+b1J6krDmgIr3LICaNOpN2WuvvUsu6HfP8TOCaDADxDqCFBjC4Y=
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8489.eurprd04.prod.outlook.com (2603:10a6:102:1dd::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
- 2024 20:45:31 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
- 20:45:31 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 18 Mar 2024 16:44:38 -0400
-Subject: [PATCH v3 5/5] dmaengine: imx-sdma: Add i2c dma support
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-sdma_upstream-v3-5-da37ddd44d49@nxp.com>
-References: <20240318-sdma_upstream-v3-0-da37ddd44d49@nxp.com>
-In-Reply-To: <20240318-sdma_upstream-v3-0-da37ddd44d49@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>
-Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, 
- Robin Gong <yibin.gong@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>
-X-Mailer: b4 0.13-dev-c87ef
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1710794703; l=1789;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=WnRMemTOoEpPrh74qdvslzZv7uH3a8I9p3b25CXOt2w=;
- b=r5sGLNOZz29yoq/nSBHpN/0L5T6UoRlY+t4u8x2vZGWexln3Kcg6PA8aaJJygTWqnRgqbDGK8
- B8KCE6i2FGWAIAnjlfTAXtxt1rHuiTOKxPbAY2mrb35DSmzHBgvqEAY
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0P220CA0005.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="if9p+RYV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F88DC433F1;
+	Mon, 18 Mar 2024 21:26:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710797181;
+	bh=wQf7oggxp7YSFV0yVBBY0q1aNecnNBr402/Qx96fMWQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=if9p+RYV3g3AScJH/s8XMcO4n9seRUiI49vyDKGTrlBBYc2gEuY/d/xmITjf6OQV0
+	 mx9N4tov+UbqPmSx+Mf77gw12/+oic4PrL4+bHFy/hCRnAqOdYlZ23ZtXaPuwO/7FP
+	 8CZUiDMkx7WO2+yoDzq9qhlBSH1xYE1CrWs3Vij4zyPTJW3WF9TOyTSG2xvOSGC5F+
+	 UyHa3loau8tu8XcZ+JK5kZsNkK6JxJa40fGCs0FpALnGG9HB9fiDybmYuWTAtdvskN
+	 gIlMAyzRUbUba/rkyxL39fVT4WmNrBLtJ+u78QqCNbrwCNTXPJxy+7CdxPJAenpAnp
+	 G2vBTymgXUsEg==
+Date: Mon, 18 Mar 2024 18:26:17 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, "will@kernel.org" <will@kernel.org>,
+	"mark.rutland@arm.com" <mark.rutland@arm.com>,
+	"robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"john.g.garry@oracle.com" <john.g.garry@oracle.com>,
+	"jolsa@kernel.org" <jolsa@kernel.org>,
+	"namhyung@kernel.org" <namhyung@kernel.org>,
+	"irogers@google.com" <irogers@google.com>,
+	"mike.leach@linaro.org" <mike.leach@linaro.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
+	"adrian.hunter@intel.com" <adrian.hunter@intel.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [EXT] Re: [PATCH v7 7/8] perf vendor events arm64:: Add i.MX95
+ DDR Performance Monitor metrics
+Message-ID: <ZfixebFnNViJc-4q@x1>
+References: <20240315095555.2628684-1-xu.yang_2@nxp.com>
+ <20240315095555.2628684-7-xu.yang_2@nxp.com>
+ <ZfSuw5KbopW0PiPp@x1>
+ <DU2PR04MB8822D36B2C8EDF0F36DA19AA8C2D2@DU2PR04MB8822.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8489:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	qcvl6hlV3g8SXpGha8JrdjJ1pKXiKiIzS9WDLb1LcZv9PqJ2jBO6A3xJ8x9AiNl8cXyBPm5vnN9ofxh6nHmUvyyPaoWKNL64cFudNeItK4pBT4uQV6Z+O5NAujYLevZhsQ0SXn4kPM9p2QjPrfDg8p1KorjG7XdceXKOSTHJM3nurGaK8pwtDUKn0JyFSNqfKP5Qul8D0HAr1+765d4aVjVZzkSCj1l+JkS/qTRIHN1SkIJpHPxG0lzTlVxfcDwoNpBRGisdcOcu9zzWwArrGJ/lgluqRK5S1espUsHdzBN1zh06pMVFDWwrkgvj6dRes2GL/cnl7I2mgD8h9vaCm5axR4XcIRGTyPI3VLgfFKl0Cj3l5+j2mHWspOQ5DcKom77EN2hotiP2ay6pGLLIZ/XkJ4LT9A/XY7eheW0gyl4736zeY9FCkD0TiE+Yff9pDtmP2iesi1MuPVTlpsIimp7JVCri+LTUSfitHbFzjK9k2EtL/xmxo8HaFmajrpuVWL3pvIuBHIEmvYdYRd93W4rtO7EHAQ6jwu8Iz0zwQrMBlfKraaFgjoVxJZMJh7AMngXzIA/ya63eqzKBFMZE55GycvyJdHBzAH0biHKtCI6luMlxmLUsqZUPRjg5Vd+zhLtb7kJHSKrjLmcMwSIJScxu6nI+pAFpCbQVPmET3ZmtDOvmyY3kY7J8GaHy0Wu5qK5zJj7+z5+QMia3bXrlhIkrIeWdNEUT+JI+tdZoiWg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(52116005)(1800799015)(38350700005)(921011);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QlNIUjkxamRVczc3cjVGdEhxMHVGNmFTVFY5Vk16aUUxK1FzSWFSbFppaDYw?=
- =?utf-8?B?aFV1OEFZekdUUHk4bkx2SlIwWTZkcVdUNW5JUEx4bWtWV2dEYk5ZT1U2aUZa?=
- =?utf-8?B?WFpkSFA4UGpvWVVJak1qREozUjEwUi9xdVpLcFVRREo4YWVHUnl4dkgxZVNy?=
- =?utf-8?B?ZC9uMVF4MTdOeU16R0QrT0lHdzd0UkgzY0lCWHpXTS9JcTN6WVVpbnZUcjJU?=
- =?utf-8?B?WUNXWkVUb1BBV1ZUclFLNjc2dlZicTJsZ3YvTHdMZ0hVY3BVK2VKRXgyWS9r?=
- =?utf-8?B?SFZTR2lLbHRrMStwTnhYVkRDQzJ4UnVJRGUzRTVNNS9KWk9xaXhMMjlpZWtV?=
- =?utf-8?B?YTZPK2dpRmYxSi9HRWEyRUtqY0ZjTzBJejhpeEg0UGhtK01zaXV3Nm5RSzZM?=
- =?utf-8?B?ckdPUUhXL2grMTBOb2tOM05tcUlycTJsWHY4VWVyckh2bmQ3MDloK0hjTWpY?=
- =?utf-8?B?TnlJU0xYRG9TK2R2S0Z4RHZJVTdPTmRRVFltNzFGOUdZMWQyTmVoaTFlbVBP?=
- =?utf-8?B?NzFtQWMvL2s5aFVMNDdRaDNZRjdrcmxHNHlBVzY5RVdkNG1yVlRoZnZnSHc3?=
- =?utf-8?B?VjZRTGhLVnZOL25RR0R6YjgvU1V0cnZ2dnpjQnFNRWlXb2tKQlAwa2lNcTFH?=
- =?utf-8?B?Yzh2dnBWN0hPQlVjd1ZJTS9Lb25tWVZ3Y29oeG1SdFBQZGFvalZ5c3Z4cTVa?=
- =?utf-8?B?OTRLa3Y5cTcyUEM5VXdDWFRYaEdlUm1qSFE3czVGSGVlTkpxcUhaeFF1NWNP?=
- =?utf-8?B?M0hJVkNXKzBFSVR1MzFtWm15Mkx6clA2ZWsvKzdsb1ErbW12aU1BMUVmeFU4?=
- =?utf-8?B?cU1hcXdKWlBlUDJIU2x2TXoybmloRytsNDF3bEN5WlN2YndGQmg1TjI4ai9Q?=
- =?utf-8?B?SG5sL3BISC9KdGtuUHBDYnJDckNuMFZIalRqNGZYMVoyRU0vYWxCRERySTBB?=
- =?utf-8?B?K25jZE5rR1dFS0dJMjkrN1pBWjh4ZjlGanFLNG91YWxLUkdxWEdBN0xOazhE?=
- =?utf-8?B?KzB3MDVOZm1RUzN5MEF3NFdnU3pBNWFmMjAxRC9kY3NmY3E4Zk4rU3Yvblly?=
- =?utf-8?B?aTFFVzlJZW93ZyszS2RuaFpDSlFWOThkRHY0VWkwUkNGTjNyWVVEVlZUdTBV?=
- =?utf-8?B?YXZLTnl6RFlGZ0VMbnBhMzhRQ2FURDRweWdtSlN2WXlUYVd2OUU0ck5ISHpB?=
- =?utf-8?B?M3c2K3RwcHVVQXJJekdMVCtsUGNKNXpsaG41OUNLTEFDakxidFZ5ZE1VTXRj?=
- =?utf-8?B?VjJyclBJWE8xZW4xaEVKMHJTZXIzSEJrNURIbnl4VnFJMTVwcjAzYVJMM08x?=
- =?utf-8?B?Y0J3VUlZdWs1TnlGSGxObmdQNlc1S080c0o5TlJValhBdzF6dmpwQ2xqVlNa?=
- =?utf-8?B?K0NaM2NjN2d6NmZnSDFsWktiNDFRYWQwS2VxdkRwZ3ZOMjJIZGs0bkRCQ1I5?=
- =?utf-8?B?ZHc2MUoxTGg5RzVwcTBQZmgrbUtzWXc0NlJheWV6Tng0RklsNzNtRFhhZDNY?=
- =?utf-8?B?NTFxRU1icGZvM2NycEtmb2RTV0tHVC9mMklVM2NONnFvUGRjZTNuRHpXNk1O?=
- =?utf-8?B?UjVWZTJtSWxqWmtLTlI3bGJ0WG1ZK2JuaTJudkJKclhRWERxOW43MEovbzNW?=
- =?utf-8?B?UElFUGh2WTN2ZEViWXh1VXZEZUJHM1p1ZzRvYlB2ZkFSZzdZUDZqYTZVcHo3?=
- =?utf-8?B?NEY3cmpWTnpodXFIeGlWc1BGNUhmZTdjOXFaQzR4bXh3Yyt6bTRGM1pva2FF?=
- =?utf-8?B?V1ZIcEJqajFUQnVkMnVodndmN3JTR2pyRjYzaUJmR1Q4QTExSnRiOHNJNFE5?=
- =?utf-8?B?VlhjMENaVVZ3d05qbG13aHd4aThlQUFiWFNIUlB1UytUc0w3dy9xak0yTUgy?=
- =?utf-8?B?Qy9XbjMxelhKNEJIb1F2enF2NzhPVWRwTDE5MXNSM3c1RmtZTmZZVC9ULy9p?=
- =?utf-8?B?c1JFeXNwMHdWdThTUklBMy9mdlJtNG9GSUVFbmxvcjV1VFp4M0VhbXB1RXNL?=
- =?utf-8?B?WUdLeDJQWkNvNVNVYkUrQVRIbmYvOUEwUFpoRVpabzZYelF2Y3UxaUFMRmFO?=
- =?utf-8?B?djlnV0tHT0xRZmtXVnQ1dFdvZmlXenoxWlkxdVpiUWdTcU5BRUlqeGxhZXd4?=
- =?utf-8?Q?QqoTwuuqcoNP4Jvq3IB3vvsJL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e98e84c2-82ab-4e34-1767-08dc478c5a3d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 20:45:31.5580
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SHgtE1822wiiv9kPU2XiNOTBBcrMbcZQ6WM99JHBq6zCdliBOhBJRF6mV7AHJXM3F5msjq/t7VoC/2Yd0s4I2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8489
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DU2PR04MB8822D36B2C8EDF0F36DA19AA8C2D2@DU2PR04MB8822.eurprd04.prod.outlook.com>
 
-From: Robin Gong <yibin.gong@nxp.com>
+On Mon, Mar 18, 2024 at 06:18:52AM +0000, Xu Yang wrote:
+> Hi Arnaldo,
+> 
+> > 
+> > On Fri, Mar 15, 2024 at 05:55:54PM +0800, Xu Yang wrote:
+> > > Add JSON metrics for i.MX95 DDR Performance Monitor.
+> > >
+> > > Reviewed-by: John Garry <john.g.garry@oracle.com>
+> > > Reviewed-by: Ian Rogers <irogers@google.com>
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > 
+> > I'm applying the tools/perf/ patches, that is 7/8 and 8/8, but I noticed
+> > that 8/8 has no Reviewed-by tags, is that really the case? If so, can we
+> > have them?
+> 
+> I found IMX93 metrics are still not added until v6, then I add patch 8/8 in v7.
+> So it's still waiting for review I think. Sorry for inconvenience.
 
-New sdma script (sdma-6q: v3.6, sdma-7d: v4.6) support i2c at imx8mp and
-imx6ull. So add I2C dma support.
+Ok, so lets wait a bit more for review.
 
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Acked-by: Clark Wang <xiaoning.wang@nxp.com>
-Reviewed-by: Joy Zou <joy.zou@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/dma/imx-sdma.c      | 7 +++++++
- include/linux/dma/imx-dma.h | 1 +
- 2 files changed, 8 insertions(+)
-
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 35fb69a84a8da..5bc4419fd45f3 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -247,6 +247,8 @@ struct sdma_script_start_addrs {
- 	s32 sai_2_mcu_addr;
- 	s32 uart_2_mcu_rom_addr;
- 	s32 uartsh_2_mcu_rom_addr;
-+	s32 i2c_2_mcu_addr;
-+	s32 mcu_2_i2c_addr;
- 	/* End of v3 array */
- 	s32 mcu_2_zqspi_addr;
- 	/* End of v4 array */
-@@ -1077,6 +1079,11 @@ static int sdma_get_pc(struct sdma_channel *sdmac,
- 		per_2_emi = sdma->script_addrs->sai_2_mcu_addr;
- 		emi_2_per = sdma->script_addrs->mcu_2_sai_addr;
- 		break;
-+	case IMX_DMATYPE_I2C:
-+		per_2_emi = sdma->script_addrs->i2c_2_mcu_addr;
-+		emi_2_per = sdma->script_addrs->mcu_2_i2c_addr;
-+		sdmac->is_ram_script = true;
-+		break;
- 	case IMX_DMATYPE_HDMI:
- 		emi_2_per = sdma->script_addrs->hdmi_dma_addr;
- 		sdmac->is_ram_script = true;
-diff --git a/include/linux/dma/imx-dma.h b/include/linux/dma/imx-dma.h
-index cfec5f946e237..76a8de9ae1517 100644
---- a/include/linux/dma/imx-dma.h
-+++ b/include/linux/dma/imx-dma.h
-@@ -41,6 +41,7 @@ enum sdma_peripheral_type {
- 	IMX_DMATYPE_SAI,	/* SAI */
- 	IMX_DMATYPE_MULTI_SAI,	/* MULTI FIFOs For Audio */
- 	IMX_DMATYPE_HDMI,       /* HDMI Audio */
-+	IMX_DMATYPE_I2C,	/* I2C */
- };
+- Arnaldo
  
- enum imx_dma_prio {
-
--- 
-2.34.1
-
+> Thanks,
+> Xu Yang
+> 
+> > 
+> > - Arnaldo
+> > 
+> > > ---
+> > > Changes in v2:
+> > >  - fix wrong AXI_MASK setting
+> > >  - remove unnecessary metrics
+> > >  - add bandwidth_usage, camera_all, disp_all metrics
+> > > Changes in v3:
+> > >  - no changes
+> > > Changes in v4:
+> > >  - add Reviewed-by tag
+> > > Changes in v5:
+> > >  - fix typo
+> > > Changes in v6:
+> > >  - remove "counter=X" from each metric
+> > > Changes in v7:
+> > >  - add RB tag
+> > > ---
+> > >  .../arch/arm64/freescale/imx95/sys/ddrc.json  |   9 +
+> > >  .../arm64/freescale/imx95/sys/metrics.json    | 778 ++++++++++++++++++
+> > >  tools/perf/pmu-events/jevents.py              |   1 +
+> > >  3 files changed, 788 insertions(+)
+> > >  create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/ddrc.json
+> > >  create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/metrics.json
+> > >
+> > > diff --git a/tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/ddrc.json b/tools/perf/pmu-
+> > events/arch/arm64/freescale/imx95/sys/ddrc.json
+> > > new file mode 100644
+> > > index 000000000000..4dc9d2968bdc
+> > > --- /dev/null
+> > > +++ b/tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/ddrc.json
+> > > @@ -0,0 +1,9 @@
+> > > +[
+> > > +   {
+> > > +           "BriefDescription": "ddr cycles event",
+> > > +           "EventCode": "0x00",
+> > > +           "EventName": "imx95_ddr.cycles",
+> > > +           "Unit": "imx9_ddr",
+> > > +           "Compat": "imx95"
+> > > +   }
+> > > +]
+> > > diff --git a/tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/metrics.json b/tools/perf/pmu-
+> > events/arch/arm64/freescale/imx95/sys/metrics.json
+> > > new file mode 100644
+> > > index 000000000000..a3ae787d448c
+> > > --- /dev/null
+> > > +++ b/tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/metrics.json
+> > > @@ -0,0 +1,778 @@
+> > > +[
+> > > +     {
+> > > +             "BriefDescription": "bandwidth usage for lpddr5 evk board",
+> > > +             "MetricName": "imx95_bandwidth_usage.lpddr5",
+> > > +             "MetricExpr": "(( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x000\\,axi_id\\=0x000@ +
+> > imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x000\\,axi_id\\=0x000@ ) * 32 / duration_time) / (6400 * 1000000 *
+> > 4)",
+> > > +             "ScaleUnit": "1e2%",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all masters read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x000\\,axi_id\\=0x000@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all masters write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x000\\,axi_id\\=0x000@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all a55 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3fc\\,axi_id\\=0x000@ +
+> > imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3fe\\,axi_id\\=0x004@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all a55 write to ddr (part1)",
+> > > +             "MetricName": "imx95_ddr_write.a55_all_1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3fc\\,axi_id\\=0x000@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all a55 write to ddr (part2)",
+> > > +             "MetricName": "imx95_ddr_write.a55_all_2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3fe\\,axi_id\\=0x004@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 0 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_0",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3ff\\,axi_id\\=0x000@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 0 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.a55_0",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3ff\\,axi_id\\=0x000@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x00f\\,axi_id\\=0x001@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.a55_1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x001@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x00f\\,axi_id\\=0x002@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.a55_2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x002@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 3 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x00f\\,axi_id\\=0x003@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 3 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.a55_3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x003@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 4 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_4",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x00f\\,axi_id\\=0x004@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 4 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.a55_4",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x004@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 5 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.a55_5",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x00f\\,axi_id\\=0x005@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of a55 core 5 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.a55_5",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x005@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of Cortex-A DSU L3 evicted/ACP transactions read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.cortexa_dsu_l3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x00f\\,axi_id\\=0x007@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of Cortex-A DSU L3 evicted/ACP transactions write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.cortexa_dsu_l3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x007@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of m33 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.m33",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x00f\\,axi_id\\=0x008@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of m33 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.m33",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x008@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of m7 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.m7",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x00f\\,axi_id\\=0x009@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of m7 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.m7",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x009@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of sentinel read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.sentinel",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x00f\\,axi_id\\=0x00a@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of sentinel write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.sentinel",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x00a@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of edma1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.edma1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x00f\\,axi_id\\=0x00b@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of edma1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.edma1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x00b@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of edma2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.edma2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x00f\\,axi_id\\=0x00c@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of edma2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.edma2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x00c@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of netc read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.netc",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x00f\\,axi_id\\=0x00d@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of netc write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.netc",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x00d@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of npu read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.npu",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x010@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of npu write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.npu",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x010@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of gpu read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.gpu",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x020@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of gpu write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.gpu",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x020@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usdhc1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.usdhc1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x0b0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usdhc1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.usdhc1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x0b0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usdhc2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.usdhc2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x0c0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usdhc2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.usdhc2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x0c0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usdhc3 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.usdhc3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x0d0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usdhc3 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.usdhc3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x0d0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of xspi read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.xspi",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x0f0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of xspi write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.xspi",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x0f0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.pcie1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x100@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.pcie1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x100@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.pcie2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x00f\\,axi_id\\=0x006@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.pcie2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x00f\\,axi_id\\=0x006@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie3 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.pcie3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x120@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie3 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.pcie3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x120@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie4 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.pcie4",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x130@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of pcie4 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.pcie4",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x130@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usb1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.usb1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x140@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usb1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.usb1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x140@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usb2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.usb2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x150@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of usb2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.usb2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x150@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of vpu codec primary bus read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.vpu_primy",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x180@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of vpu codec primary bus write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.vpu_primy",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x180@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of vpu codec secondary bus read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.vpu_secndy",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x190@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of vpu codec secondary bus write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.vpu_secndy",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x190@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of jpeg decoder read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.jpeg_dec",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x1a0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of jpeg decoder write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.jpeg_dec",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x1a0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of jpeg encoder read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.jpeg_dec",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x1b0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of jpeg encoder write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.jpeg_enc",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x1b0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all vpu submodules read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.vpu_all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x380\\,axi_id\\=0x180@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all vpu submodules write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.vpu_all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x380\\,axi_id\\=0x180@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of cortex m0+ read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.m0",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x200@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of cortex m0+ write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.m0",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x200@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of camera edma read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.camera_edma",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x210@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of camera edma write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.camera_edma",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x210@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi rd read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isi_rd",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x220@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi rd write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isi_rd",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x220@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi wr y read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isi_wr_y",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x230@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi wr y write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isi_wr_y",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x230@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi wr u read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isi_wr_u",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x240@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi wr u write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isi_wr_u",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x240@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi wr v read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isi_wr_v",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x250@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isi wr v write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isi_wr_v",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x250@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp input dma1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isp_in_dma1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x260@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp input dma1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isp_in_dma1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x260@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp input dma2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isp_in_dma2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x270@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp input dma2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isp_in_dma2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x270@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp output dma1 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isp_out_dma1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x280@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp output dma1 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isp_out_dma1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x280@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp output dma2 read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.isp_out_dma2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x290@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of isp output dma2 write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.isp_out_dma2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x290@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all camera submodules read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.camera_all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x380\\,axi_id\\=0x200@ +
+> > imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x280@ +
+> > imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_mask\\=0x3f0\\,axi_id\\=0x290@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all camera submodules write to ddr (part1)",
+> > > +             "MetricName": "imx95_ddr_write.camera_all_1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x380\\,axi_id\\=0x200@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all camera submodules write to ddr (part2)",
+> > > +             "MetricName": "imx95_ddr_write.camera_all_2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x280@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all camera submodules write to ddr (part3)",
+> > > +             "MetricName": "imx95_ddr_write.camera_all_3",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x290@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of display blitter store read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.disp_blit",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x3f0\\,axi_id\\=0x2a0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of display blitter write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.disp_blit",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x2a0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of display command sequencer read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.disp_cmd",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3f0\\,axi_id\\=0x2b0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of display command sequencer write to ddr",
+> > > +             "MetricName": "imx95_ddr_write.disp_cmd",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3f0\\,axi_id\\=0x2b0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all display submodules read from ddr",
+> > > +             "MetricName": "imx95_ddr_read.disp_all",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_mask\\=0x300\\,axi_id\\=0x300@ +
+> > imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_mask\\=0x3a0\\,axi_id\\=0x2a0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all display submodules write to ddr (part1)",
+> > > +             "MetricName": "imx95_ddr_write.disp_all_1",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x300\\,axi_id\\=0x300@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     },
+> > > +     {
+> > > +             "BriefDescription": "bytes of all display submodules write to ddr (part2)",
+> > > +             "MetricName": "imx95_ddr_write.disp_all_2",
+> > > +             "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_mask\\=0x3a0\\,axi_id\\=0x2a0@ ) * 32",
+> > > +             "ScaleUnit": "9.765625e-4KB",
+> > > +             "Unit": "imx9_ddr",
+> > > +             "Compat": "imx95"
+> > > +     }
+> > > +]
+> > > diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jevents.py
+> > > index 53ab050c8fa4..be4b541a0820 100755
+> > > --- a/tools/perf/pmu-events/jevents.py
+> > > +++ b/tools/perf/pmu-events/jevents.py
+> > > @@ -284,6 +284,7 @@ class JsonEvent:
+> > >            'hisi_sccl,hha': 'hisi_sccl,hha',
+> > >            'hisi_sccl,l3c': 'hisi_sccl,l3c',
+> > >            'imx8_ddr': 'imx8_ddr',
+> > > +          'imx9_ddr': 'imx9_ddr',
+> > >            'L3PMC': 'amd_l3',
+> > >            'DFPMC': 'amd_df',
+> > >            'UMCPMC': 'amd_umc',
+> > > --
+> > > 2.34.1
