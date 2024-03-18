@@ -1,148 +1,158 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2052.outbound.protection.outlook.com [40.107.13.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1212C19E
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 09:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710754531; cv=none; b=ZJugf0alcL3LSHZ1cYeHoZA2KDdMAiq3H4Q+lWEpdEcUSwA63vQCFDxbQZFLvFX1E3ZGbQnu/6NnIl4EJfte+5gbWF2/nhHFDGLuYPkD5ksqRqHFONN2rGIXd/OCa6VDPTQTBej16IoXq10avdbA/na4AMSjihQSHzMghqargLo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710754531; c=relaxed/simple;
-	bh=hHjo493pZgNAF6FPMoBG6TgRCysgj/KGj2NcRPg4Ego=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ErQii2py9K5ElAZHKSkxipHkHDuue6qK7ObMbWK0BdCPNL+R7nhLEzjh+1bSU0vQjrE69qUlU8ZVAaXQ8fawXXPBAP/pPi9v5jnYfHZ5d0y0Q+imqQ7WHQExKY+3cV31RDJhuqJlTsuwmlfxlCP5OPZyl+GBgnkJJUTGJne/2gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=g1OFT+2s; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=suwAP0up reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CF72C6AF
+	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 09:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710755324; cv=fail; b=r/D1ELJIZqb2iMDR1Jd/6mNA9Lb3aLRuGxqXITaQ+oN2yX+KKaz0q8IBY/mfve6cseNHj09uUqqrYl2/yuuMtebr47vcBrWmS50hNjDM5aXJKtqPv21BiMZVVbWf4+VIuB7siOJuX1crr5MtfUtfUCG3l2bQX1ZxtcF26catkMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710755324; c=relaxed/simple;
+	bh=uvz8Tn9wLJ+OIzukXTQFaExe9WpHb6/mo92/Rqi8PL0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=cGgp59igoTH8F8nPtu8zWVewdO5h3YNVlSRmGEpbKxMXtKLn7yzO1y4C6EY8fAHkNeXK6LlLoPnw72z/KOB92NdfVNe8qhrJh6S2w5NGqtlY8f+QxZUmZjmnCTqmwog6ePAtHiYEf57p+hrcS1nrAl0jFGsuIzBXts3PQYETqqE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=IUNv2e7k; arc=fail smtp.client-ip=40.107.13.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="g1OFT+2s";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="suwAP0up"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1710754528; x=1742290528;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=aN2IIFrVH4CYkyRywlFNeTp/faziqn7wqwrzQ+C8QGM=;
-  b=g1OFT+2sW/h8wvfrHJ468/9ItTftSliFzyzcLUNgPlHAaAIS1y0Ik2o4
-   eoA9/jGb/m8GVVn1+86YeMTXg7kHM02sFlr5tIsl6ZLyCSu6+TJOnJdXH
-   hWHvTjuRiyDKoO121okbzapRhuFFqtaDdXG6IlaqG9YbHa/NMvK9+94OI
-   CS8jYOsnjURbzIpb59q2j71sXEC2cngj9PyC2If7dRK7Osx73gKKo3mCv
-   pMMFgNO5MXRcFc7cvciqvC4ydsK/18ELo0nSpPA50LuaiSIiJWZHxoP/H
-   KCYzcwUp6nA8SSi+f/FPJEPxjn0I+s6Fj95+u6J0zNjoVXraEpKgvFgJm
-   w==;
-X-IronPort-AV: E=Sophos;i="6.07,134,1708383600"; 
-   d="scan'208";a="35955371"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 18 Mar 2024 10:35:19 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5615A16F79E;
-	Mon, 18 Mar 2024 10:35:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1710754515;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=aN2IIFrVH4CYkyRywlFNeTp/faziqn7wqwrzQ+C8QGM=;
-	b=suwAP0upO/OwYZOKTKJRn1XFOr8KgaW2+5BIGRdA7lHpFbPfP7O3pg//sFURYuH3YvbpNb
-	V3UD4zJt0pvyOGDvrMoB8jNUYwB9Mm9h0rQXRQmuJsS4CZWsAA3M3LMqYSAybgBUEbkdGU
-	FyqymaRgiz/mnz5THO/vebFSfEu5QqkK/EovIAYlvRqD9+TBevUY6xgcHZ0rSjHfG7SEnP
-	MgOJuIIzHnMcunN3Q6GSRhR3hVrwJV02eGFziClv6Dy8wBfZ0MMRzfphvMtcLaPTJTTIo+
-	UCB44mUguFtrM5IH5AUiGIVQ2Ac9ZLaYSNAc+OKv04nOCiMWkE3Wh3/9VW0N0g==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 1/1] ARM: dts: imx6ul: tqma6ul + mba6ulx: Fix pinctrl node names
-Date: Mon, 18 Mar 2024 10:35:18 +0100
-Message-ID: <2727312.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240317162214.ssspjf2xfpid32k6@pengutronix.de>
-References: <20240314150054.2957840-1-alexander.stein@ew.tq-group.com> <20240317162214.ssspjf2xfpid32k6@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="IUNv2e7k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IuC+A3FAot9MeAq51PJXywQud08C3k+GsDvKd7Vyeo3WjF3j/LRuFJ2+Z62QBD7k4131aOYj7w4eMzR0FzTzk+XYzb52SB9ld3vc+mE9OgVhtsoNOrvy6BDpVLunpl5KAs9pru/gkvoGcE5GvK7FRdyq2v5nqQbAT8WF5rCGf+6ERDnF7VLb1KVJpaRHNDs0fgV+Ad2bCEMH0v1tlgDN3gMguG2Fq/LPAObqOofNzt3FPjckUHOnpfZpnoA6cmIl8TFVn1NDPNMaJEXY4/thIQr9RN4c12wa8nnt146807LIdb76ynkTxGoXo6obo7eVa+dz8svKDLKbGcgZMM2Gcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sldrU3Vb9IJMnFl5q8BjB1Btb0n3uEHHyUSaqKK7qec=;
+ b=M/6TYrHppqEptlaiJnlTJcaH51+aGky5+SNeqnWjzKoohMDWl767EOi5908eseHGtw6Wd32JCC4MN7c47v+tKmKX9HoG4O1Phs4WzKsPEajpiRRBlboB//SZXhxuYm2DKE7N/EmP+2r1oKi1x1mVWR7wu2qkNEG8ulHUn+xSwrkzddp2e8fK8IDkT4WzcslyxHpP3q7bYg0QxOhfcYaSf8XV5CCQ5B7sNX05U+i3X7n0xLVH0ko6pFDvYwhglWRoJrLHD5cBoCEHjJfZSnGg6BVGjK+4lf+z+LVmol7hDFJzuoH185QJgzYEvftiru5g5FBFliMKtKro0Lfpk4iKcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sldrU3Vb9IJMnFl5q8BjB1Btb0n3uEHHyUSaqKK7qec=;
+ b=IUNv2e7kWXesIQRPJWMujWDf0pPw/aU9p/jf2FSPVNoS+kgoP+ZSANvkzrm/h/ZT6JXQEv3CbgnSKxBqTX/MfxbHdQyn+YNk7q6WCgmfjI/j5XC7ClqwYhHoJ8nDFuPXU/W0NLGG7++CgeEKMG4jsJc9a+pmW4V0+G0Nm33bdqw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
+ by AM9PR04MB8938.eurprd04.prod.outlook.com (2603:10a6:20b:409::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25; Mon, 18 Mar
+ 2024 09:48:39 +0000
+Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
+ ([fe80::688c:22a3:9638:9ded]) by PA4PR04MB9367.eurprd04.prod.outlook.com
+ ([fe80::688c:22a3:9638:9ded%5]) with mapi id 15.20.7386.023; Mon, 18 Mar 2024
+ 09:48:39 +0000
+From: Joy Zou <joy.zou@nxp.com>
+To: frank.li@nxp.com,
+	ping.bai@nxp.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v5 0/3] add pmic pca9451a support
+Date: Mon, 18 Mar 2024 17:56:30 +0800
+Message-Id: <20240318095633.4079027-1-joy.zou@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0016.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::20) To PA4PR04MB9367.eurprd04.prod.outlook.com
+ (2603:10a6:102:2aa::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9367:EE_|AM9PR04MB8938:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77975863-49a5-48ff-6852-08dc473096be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	usfufK/D0H72GmsBxpxsXafg52pCfcpJ/J1XmJwhNIVR03rP3bNtA5HzCrCmnqmPNiqHqALBaKak70sb+JTAPCjW23ZzF+scgJhO9HR4qoiw1a/uJZLmskeH0KsMYjla+AIxhwg2Eioa+fz/9uLMsEdJYLHgvJzQ3hVkbTjukf6Yo2UclsVoUuCpJGZ3/cubU6QN51IndhAv3uD9+8J9yyK+MMtTB6Qc40N3kn6vkTTfcXr2GHX5lUYxRPMRr1JUuhGrBPgLdWMf+0Uxz7L17G1JnFRKWcFdKxCVAhC5JiLtjT2VN2EX5SAFF28FEHvTq1M2r5ixm+d5OOmCSbKRczFTU0DVuMZIOrSL6z9/xB381Ob8wtaUkaTiyXmYh2FqE18LlIuIUzS+x0diOciuFCrYOWxX8g07Ccs7yJXglFwG2gAeAnlaiqLFUkDnWyCXz0WCf4+gOcBLtpXaIwIkT4+Gg+L+beaUbOomeSmipHHdsdc+Q8vEKKFMHKG7xXeh0VbeZFvtE5le8QuC1keSNb4PSnznv3551ZHLOC8rneUF+MNZDlSavNGhOrIARqcUe9719XvMaybJqQJ1pkR/akvYGZE1os4jLzCb7DB/Pxjsi7R8Nknbgn7SjzkTWI6M9TBwGfGOu0b8F7aiwDnchB/5lv4iFjzMnL3IdTKPLbWzZXyi4FE/kuE8iPph0YP+AdoiB7sl/FP8FfjTl62Ur494g6OSacJWrCJSS38yJ4A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(52116005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DTwf/La/E5xExAAahZzpE74ZfFPhAGLJjULA1mQvy0V6D+XwU6H6I2K2AbRc?=
+ =?us-ascii?Q?hNZtT6oiLC7CH9FTKG0DvlQM9nTTYLuKdXlqy+gHE46RluzkhZr9R0mIqk81?=
+ =?us-ascii?Q?JwL8Ef2pFZttetdiLDWEUW1OX1gYyMAZFfTuLotLw7Xx2fgEswh2pbozHOOf?=
+ =?us-ascii?Q?zLWYgMylZx1PWoKsldeQNerW3Gf97SSI8mFm6Y9TJ94iO8T9zIyFCNBn8EkH?=
+ =?us-ascii?Q?yWrezxYfWlbTwlWLZS20lAz/oFxspyq1JMA0KlU3OCwKZfhPP4e76Cj2GW5M?=
+ =?us-ascii?Q?hHGviX4AZEsKwHE4Z+TD35JdXWDvmqwsTvt9ncfa46UzYL94D8dUnJFMfNc1?=
+ =?us-ascii?Q?2BM2vrFepxyrDR+revKDI7Vp0lhiR0CWtu7DezS/byZBp+1Z5jBWwLKAMvdO?=
+ =?us-ascii?Q?yxOYQ9aRW31Dd07b6TS0VDdGO/dnIoh0S1KWt6y6RzGECkOQyKP2RwiNOpJv?=
+ =?us-ascii?Q?iyConTCQauS0R9VZeD/gGxfhB+OA62B0dK+1RrrzG7bo8DOwY0CZg0IB0Sm9?=
+ =?us-ascii?Q?146sG596K7Z03c0DuntqoJFFBTfbmW8P+gqbfMEW1Cd6luvXJh7dP+LXtCEJ?=
+ =?us-ascii?Q?3Rx7WbZ7Ch88cgKtaqBA9hayp80nn4WlNuy+6VDA2nDMwWixjm0nWlYtcBd2?=
+ =?us-ascii?Q?OMQxzggnMwzSiK6ttuu8xs0wJt8FcptZ6BZSSlC1tViSAjKWR6BsOK/AbbAl?=
+ =?us-ascii?Q?WVWe5gL2zfUbnpmnF1hUXrAlP3sGP2nT2fjt8b1LHK752ld9laob6BkPxAaA?=
+ =?us-ascii?Q?2kwwb5wF6bnuHVg87jYzYfK8HlPK4i24n6d6ASVAldZyRfegIf9B1jQqWcoD?=
+ =?us-ascii?Q?c4cR9pDuRuBXVVtBAXIFHNwURimxmCmJYX0KJMA0PzUXGwG8JNaICiwBHSz6?=
+ =?us-ascii?Q?zMkNSaD0l/RWk/SShf5Fzu7Zl0jvap4rP2FHa1+P6JZcFqW3fyw/yuYMSwj3?=
+ =?us-ascii?Q?ZG2HFJ3v4f9rkZPir0SnIJm77Jree7uGmaGOfWZcOLk945sPa9a6pny2dQrg?=
+ =?us-ascii?Q?yTPfS9WzixEg4JJyHSqCUCow7k5lESjGznK/+qdogeA2qK++2LfRh+lLhu0N?=
+ =?us-ascii?Q?Bj5VIwEjBFNNsB6w56a6NYtVqnBXRzGN084FwZIOG6ai0XbH5a/iU6Q8BJpG?=
+ =?us-ascii?Q?PWhOOF4Hyrv7ACfwOEMtukpgK1rE2+mco6YvDR4iagiqFsI2pjHv8e3M5gaa?=
+ =?us-ascii?Q?yhvIVBUUeuDzsA5yj5R8XsWQWm+yPSv25G2r6YaiCfJU1h0Kdr3vHaegQy2v?=
+ =?us-ascii?Q?VLdOsMWdAoqDU9ID5eQcBHiRCkC33fVvAg5aAr3LhgmP0qk40/o4hDDvjlAA?=
+ =?us-ascii?Q?Gk5W8q6BtJTicpVy86U3sYIbIzyN5LNO3KYcf9N1DTMyiqZ6hk0E6jyEGsu6?=
+ =?us-ascii?Q?O7LEOUxeyVIuoief5gT4zha5frVQ2dRBCyCrqP+metTJC81nQPdkEhWFgmyk?=
+ =?us-ascii?Q?IYtErKElOICemdywKVFUxOzxtfawqEr9gwQh1xMQdtD2eRiQUh1PclbbBLyu?=
+ =?us-ascii?Q?Gwp1EDr7aAT/tH4iFwykc57EPbnVdJNhqshELhnpYNZrUZ2aNZ8DLvn4J2Ha?=
+ =?us-ascii?Q?SZ1i2E0v7C44XO2MIFqc+u9e+k5LsSmwJGdvjyEU?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77975863-49a5-48ff-6852-08dc473096be
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 09:48:39.6517
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XmFwweoS4G0Rivc7mhaUsUHzsoHoVpErA4fU+Zvlayn/sEt6NDEvQ8RneAxq1Cei
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8938
 
-Hi Marco,
+The patchset supports pmic pca9451a.
+For the details, please check the patch commit log.
 
-Am Sonntag, 17. M=E4rz 2024, 17:22:14 CET schrieb Marco Felsch:
-> Hi Alexander,
->=20
-> just a minor, please see below.
->=20
-> On 24-03-14, Alexander Stein wrote:
-> > imx6ul pinctrl nodes end with 'grp'. Fix node names.
-> >=20
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi | 2 +-
-> >  arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi               | 6 +++---
-> >  2 files changed, 4 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi b/arc=
-h/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-> > index 57e647fc3237..f04c6f71f538 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-> > @@ -202,7 +202,7 @@ MX6UL_PAD_UART2_RX_DATA__GPIO1_IO21	0x4001b8b0
-> >  		>;
-> >  	};
-> > =20
-> > -	pinctrl_pmic: pmic {
-> > +	pinctrl_pmic: grp {
-> 			^
-> 			pmicgrp
+---
+Changes in v5:
+- adjust gpio@22 to the front of pmic@25.
 
-Nice catch. Will be fixed in v2. Thanks.
+Changes in v4:
+- modify the comment for uSDHC but not i2c.
 
-Best regards,
-Alexander
+Changes in v3:
+- modify the dts voltags constraints.
+- remove unnecessary changes in driver code.
+- modify commit message.
+- add tag for dt-bindings.
 
-> =20
-> >  		fsl,pins =3D <
-> >  			/* PMIC irq */
-> >  			MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x1b099
-> > diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts=
-/nxp/imx/mba6ulx.dtsi
-> > index e78d0a7d8cd2..5258ef81e6c7 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
-> > @@ -505,7 +505,7 @@ MX6UL_PAD_CSI_HSYNC__UART6_DCE_CTS	0x1b0b1
-> >  		>;
-> >  	};
-> > =20
-> > -	pinctrl_uart6dte: uart6dte {
-> > +	pinctrl_uart6dte: uart6dtegrp {
-> >  		fsl,pins =3D <
-> >  			MX6UL_PAD_CSI_PIXCLK__UART6_DTE_TX	0x1b0b1
-> >  			MX6UL_PAD_CSI_MCLK__UART6_DTE_RX	0x1b0b1
-> > @@ -537,7 +537,7 @@ MX6UL_PAD_UART1_RTS_B__GPIO1_IO19	0x0001b099
-> >  		>;
-> >  	};
-> > =20
-> > -	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-> > +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-> >  		fsl,pins =3D <
-> >  			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
-> >  			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x000170b9
-> > @@ -552,7 +552,7 @@ MX6UL_PAD_UART1_RTS_B__GPIO1_IO19	0x0001b099
-> >  		>;
-> >  	};
-> > =20
-> > -	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-> > +	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-> >  		fsl,pins =3D <
-> >  			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x00017069
-> >  			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x000170f9
->=20
+Changes in v2:
+- drop old part support.
 
+Joy Zou (3):
+  regulator: dt-bindings: pca9450: add pca9451a support
+  regulator: pca9450: add pca9451a support
+  arm64: dts: imx93-11x11-evk: add pca9451a support
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+ .../regulator/nxp,pca9450-regulator.yaml      |   1 +
+ .../boot/dts/freescale/imx93-11x11-evk.dts    | 111 ++++++++++
+ drivers/regulator/pca9450-regulator.c         | 194 +++++++++++++++++-
+ include/linux/regulator/pca9450.h             |   1 +
+ 4 files changed, 305 insertions(+), 2 deletions(-)
 
+-- 
+2.37.1
 
