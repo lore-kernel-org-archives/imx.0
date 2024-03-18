@@ -1,232 +1,140 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2120.outbound.protection.outlook.com [40.107.20.120])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D7056763
-	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 19:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.120
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710791883; cv=fail; b=Oj4dFj8OmVJAk/1jTNgR1SjM8W9axdDjvV8mJxa2ews6uecdTxhYQ8DbJ5K2N4IkP6SuokqPndw58PT/yp0ya3LaUwNo1X6+Q/6jURqdClerklfMLYBGde6hWZyAocwKBtDcMM1qh9le/nYAJuGXMK8QVFLAHOhnp7xMYIKUoCY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710791883; c=relaxed/simple;
-	bh=DXajepVRN0ssYVNpFw80MeW7n6vRGa2+Xg+aXfj0a6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=e5N2gegbKiIwvN9CJs8N4YDMPf3ndNE6ctmRkAC1Ikkr8zip1MeeOwQllE7I45QwSp7cAnux1/fJvL2JIKFAx/nlmd25JovyDljuAfM/AnMOiXecgwuf9ZR55aTJSIchp4SMY4Mpck03ZemWhd0vhrVjGXz125PWw4niDptFCPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=qqreoRis; arc=fail smtp.client-ip=40.107.20.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745FA57882
+	for <imx@lists.linux.dev>; Mon, 18 Mar 2024 19:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710791926; cv=none; b=hKTbdmmWM4p9PBr/5N4Rl3DDvqwIDyIkaz215SEa06neXFmLmSDq8xme9SxwC0P8SAMdh0osbWoPdvhPPgLgiRpTVn/j8OgHwUqldxGqfZpATZuEQvb/19ufNxHDfb/EPtjAl31jv0xmRmpOFltqWZwZqCHMrS3FLfi5VcCjWnc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710791926; c=relaxed/simple;
+	bh=BQx6VNvTlzK5oQIvrUO32TBVz9kFRTi0gekP4j1rY5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WEa+ZdomfYpGLE0HFSG2BaIsDhzXN1bWqVWvkjGq/JTRumLuIVJ1BcpdZ734ba3pyjybBGw8KF8K1DfIdA1EnYOgU4OMNmetyoItXV/CzVnK06NP9dwARmCliDYRjcEdNj0iKBGlxZveGSbidbPyaCSQs2nSqwR6fYva8qp2NUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JELimW9i; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="qqreoRis"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Cn394pOx/wD0AJElJsTV9t8rVi2LhRClIos26EGZGHJ0Gq2uDEyC6SEHmkey2VhPetjSrYYYmogpmGprOAvn+ugR/zHIrnsuQ4IT4ZiCSEkczM7f2jGBK9E/vScFS2bQR/lfWZzQVjCumOioQ8gfzyeZpboMln+VHViMLBpZiyYfnXVGWjKn5TN9ZbxyLyFHd5KyDCGOU1HjFpGzvTT835Jt/c6bT1BnpwpMEqrq1tlG05JclHutuAQmE2dUeqgyPhwE8/fUSj9hLF56I37HvoC+9sydNPuQXl96jCp/+ag0CviCJKiGs0ju6TcF7ylMyh8pcwvCC8OyMN4Ki/7vkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nPkMmm5KXGDKYGZ7GBIWYH7bNRztwon/Vx852+eL1+w=;
- b=HlHPkn536RcKeUxuQORhe8Jse4qcG6cv/Q67JTJ6bTsatxVIyUT4uKGJswvOFmlYWsuHGxgel5I4ZtTi9d1jb81G/ZCtbUv5c+fQSUDg/iAAjH/lQiR50QQsgOPU2Fx3ssCdp6gTJs7FD8p31W0qWBZl6qWpqtAgCQs6z2e8nKf/BpXrZ74HlZp3jKOf1x8wJOsya57mdGKDCBas81fkdxAfYWf3QTu8MZPig8yxrXW9tAs1jgNRNp6Jz6Lg87hwJuwuSu3Nn3O7F53Sd3vzEQMH8EgGBc8ryU05X0W1bkmo91ypeXTL+fnEZVtL8eK6z5wZB74Quz630LQ1fQvk7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nPkMmm5KXGDKYGZ7GBIWYH7bNRztwon/Vx852+eL1+w=;
- b=qqreoRisChzvvS4Z4ZH0E4xm+dVIUKFl8Pm+3AjzG0/AUSBJJaHHisMeX2ef6Q94jArblzrekAaNFksxKKeWDNfPaat15o7YQziNqRxmd1dCAWbeZXyM8zbQwfYKlwp0dfbC/NHM3TRS/vsoUoJRnr2oEvkzdmg9FrMZJ8LJEqc=
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8086.eurprd04.prod.outlook.com (2603:10a6:20b:3f6::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
- 2024 19:57:58 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
- 19:57:58 +0000
-Date: Mon, 18 Mar 2024 15:57:50 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Serge Semin <fancer.lancer@gmail.com>
-Subject: Re: [PATCH v4 0/5] PCI: dwc: Add common pme_turn_off message by
- using outbound iATU
-Message-ID: <ZficvkryqzdwJIEd@lizhi-Precision-Tower-5810>
-References: <20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com>
- <ZdNwxAi2KH/P07bi@lizhi-Precision-Tower-5810>
- <ZdzJMtgcaCPpJNNW@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZdzJMtgcaCPpJNNW@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: BY5PR17CA0060.namprd17.prod.outlook.com
- (2603:10b6:a03:167::37) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JELimW9i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710791925; x=1742327925;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BQx6VNvTlzK5oQIvrUO32TBVz9kFRTi0gekP4j1rY5I=;
+  b=JELimW9ic695Y73W0STnxjU3SGjMVDjcwY4yU5kh7jMpMTuEoRClNC8A
+   kiFr2F0e+cPIeIWYr6ooCx+NxMdCBHqE/4QJu+Kfh2jTRKix1a/zbThsu
+   fQuFyAnuaLIIE200s3KLproULhdpc+daOJbJHTjzqgvPB3pd2yu5UFnox
+   TrH2H+83s8srZLRZtaNCjWtbGSu4KGsFx8BJkaMkL08X1pryDJic9YekM
+   UB+tRlVu6ix3bJwLGq9avIwLGsVYTs4eStChmsxjp6bdpEyyLn2JrUQst
+   u9fQRE4QWZ5dpL4Y44kdC/yxhinGS//8wS48RGiTpNyb03P4tiA5swFgT
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="16776147"
+X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
+   d="scan'208";a="16776147"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 12:58:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="937060632"
+X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
+   d="scan'208";a="937060632"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 18 Mar 2024 12:58:39 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id C6F03815; Mon, 18 Mar 2024 21:58:38 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
+Date: Mon, 18 Mar 2024 21:58:37 +0200
+Message-ID: <20240318195837.180069-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8086:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	zsmNPBqhRLZGv6mpqdLKtRbppQIfU2g1FBHETYwkcEcRXeQAXheA720bNthPPiT1QCgN/Ksm1R5m0JxV3/326Ewx6t/V/JtYYKYoBHlFTSo2Zp78AK2g7dCJSuIDSs3Le2riNg8XF5rfWlMCM0V8xgMTXPjIYtFs/rvbdaZSd+hWRyP9DWT0b2S1H1DkD33K6dPMKJWiU4jrjB8O6XTKm6SvSY49wfVBs4dB5gdbX+7DgekhAriHefuvKHialJ3Ct2fIxDL6BhhRtcF9aqw6jUrwmILXRioMISg4JteoZken+ZdfQW1hpPHZMcmRrJx9npro8Cg98hcQIvK9Rqjbmz0gtDeFi+jARhPHApkAZ0PjfMm/NPfeRygWtpD45CwNtDzvLj6EeBrW85flyXPEY2nvhS2TU5AYirm5gzJ270N3WqLJz1Q302YJOUiRfGhZpWUN0VEFzTq/ZPgqIWtjrCnu92r/hfYvVmV5f0Ln4BMLJxKSCapGUSDZjaOxtwF1nLiufBDNM4uS02kwrNJtlvO0c8imA9mXgW8vvKcCm1NY3nW4i1I2nRBqYEHKiz5x5ti0Zcb3ZFWH47iCJq6vYfKNctG771hZ6P3YDAiq78DvODMLZvzr0FyAg5ocVPFLfwVOPUVnRzAAgeJCVAlU2q5MGO9UxHWI+Wq6Rks07Mc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(52116005)(1800799015)(376005)(921011)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FZh8AXNYjaCOkbOm3yk1i7IELJlCEpcnLBGWS18o25OVTPspeZKlpyxLsq1W?=
- =?us-ascii?Q?sPaD53pHNZDU5ifkbikwIMAG55cLUcA/Hm66da+BFO3mGrG8GFWyCyeTbzUg?=
- =?us-ascii?Q?IhRwzpXdPtayiYpBCUwdAn9ZNyqMq0VZlaZJW2YI1Qnm8GAxj1GqdrUIuJu6?=
- =?us-ascii?Q?L8HkEiNqQm7QcipqjAO0L6DtZsDklUWtA715bqXgoJUatMByjIhxA702Eyd+?=
- =?us-ascii?Q?kTJVCgRKwdAt5c0EspM3xwcBAmKFKtNZR+7yKAQp/difsleD43NKvHMHqnXJ?=
- =?us-ascii?Q?ebiO1Da9tK4Tx/LPnJNdijMI2ZXAAdsOftcbSOc1BvLFNdq4sbqXOFAFCDwJ?=
- =?us-ascii?Q?7/9Otap/sxYKfKNZED/Ebi/gS5b/FB/q1/8BDy7BFOg8YbBMZEdyq0vBpvuP?=
- =?us-ascii?Q?E2SXNjqbS6Z6tTTL1rF+gnVP1sd8+mFtE0m0I4u3+oQEm8b2//NvhQen5yem?=
- =?us-ascii?Q?75O4nTokZxKgn8gGRXGZ9HGJ24ZowsATMDOovgIqNTdvIjkw4E5Zy0id12XR?=
- =?us-ascii?Q?Th9U1kK8ABFCbLikEyHrCoLQp9leRv3fLb1NMPR3S6hXkHdSYH/A8365wq7j?=
- =?us-ascii?Q?z47dFRj+33QobzhkrEjrUCgHtvkEp38FUwt4hCKtOQ1GTLh/IyN/3iMmbCbQ?=
- =?us-ascii?Q?1+Y04u24u25VgXdUaAh+5UtoJ/alKk02LCJNd8MElVGP5wkWjQetnuFYrrXh?=
- =?us-ascii?Q?HhSl3YaGamoDyxI1qHx96UzgBTJVSMat722rQoqm2TUp60IoA5HWw+GorBJ9?=
- =?us-ascii?Q?7qduP/EfUquYyIa7hWUuuE9q+S7LxuT38+CCYHV+GdYe5FXJzyhuSyWt+yPs?=
- =?us-ascii?Q?R6I4h5SVsVzozkT0DxmdOgR21/8gMJiV7nmpGxUZfxILIRyQvw2CglEAqeFu?=
- =?us-ascii?Q?skWQPllSKuH0uq8UcfkS+BP6NMl1qHoAHOdrc1oi7DM2kqJwTryaW4LcMu1W?=
- =?us-ascii?Q?Pt2k4zVMex6/ry75xF9v5FoSBJ5pQbnNtZDOS9snIxN7Ti4yPf3T2chfyzfl?=
- =?us-ascii?Q?ZUw7Dlnt/i+Vf/cBarMjmn1XiUwDyAZyFidZm93ZTGllzU7cHWE6YehOsq+G?=
- =?us-ascii?Q?Es37ftAOBX0En7++p3n0u6IBmkMbcNEciEpdlwm30e1VmVKu/NMVnj9eCTlj?=
- =?us-ascii?Q?uT+wfu6YKSItGcZwcVAohbtYkKDjTRCeC9no1CBIw0cxITYbl0cAVzAL4/bE?=
- =?us-ascii?Q?vIWxJhuyRq5/R13RfgbQFmiuylxwZloFE5Fm4bK68wlM4Dxrfeg9Yzx1C+rO?=
- =?us-ascii?Q?QG5Ap3jibJZT06i32RbUJ/XB8LKnK1ZQXvIfsdGzdnpzC2Ya2unhdLe+H25A?=
- =?us-ascii?Q?uDq4m+R8HVPCBEaQw2IZ9cvL+WN2CWFckcYlAcx4ZIu8PB6NYdRiDRbtWTcY?=
- =?us-ascii?Q?e0Gu/v/7y3BAHuGrKyhYkRusLGyzm2gvMTs8Emuqb+dBlGpNAqRXNL+9B2Ko?=
- =?us-ascii?Q?6JjhMmLuPeAvRKRWIM4YHeh5Q6lQpBfiS46JxCBR9H4I9+EuU2DmKp33FEbC?=
- =?us-ascii?Q?rUHjGQ2VakNt3VeeuwldhqJw55cERsiNbzkkkERSkTroWYGlu+1Ycn1gJ4SD?=
- =?us-ascii?Q?yV7b2XY5eoJWV7yshYSr05FTlRAwHno7/CeGfwgK?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f52a7dc-721d-4a29-6924-08dc4785b581
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 19:57:58.5816
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rT2pnvqEBhNVAMmw+UywZ1PjFrJW0Nq5mwro8Jrh4UQYf6WHkua6Wyd10xT+h7xM35Yw4epvvzQUhqPafrHiIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8086
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 26, 2024 at 12:24:02PM -0500, Frank Li wrote:
-> On Mon, Feb 19, 2024 at 10:16:20AM -0500, Frank Li wrote:
-> > On Tue, Feb 13, 2024 at 04:50:21PM -0500, Frank Li wrote:
-> > > Involve an new and common mathod to send pme_turn_off() message. Previously
-> > > pme_turn_off() implement by platform related special register to trigge    
-> > > it.                                                                        
-> > 
-> > @mani:l
-> > 
-> > 	Do you have chance look this patches. Actually other patches
-> > already reviewed. Only missed
-> > 
-> > 	PCI: dwc: Add common send PME_Turn_Off message method
-> > 	PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
-> > 
-> > 	This patch will reduce customer's PME_Turn_off method. Many code
-> > can be cleaned after this.
-> 
-> @mani and @lpieralisi
-> 
-> 	Do you have chance to look these?
+This updates the driver to gpiod API, and removes yet another use of
+of_get_named_gpio().
 
-@mani, @lpieralisi and @Bjorn
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ sound/soc/fsl/imx-es8328.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Any comments? It will benefit for all dwc platform. If this method
-accepted, we can remove all customized PME send function at difference
-platform.
+diff --git a/sound/soc/fsl/imx-es8328.c b/sound/soc/fsl/imx-es8328.c
+index 6f0d031c1d5f..ad915c55cc35 100644
+--- a/sound/soc/fsl/imx-es8328.c
++++ b/sound/soc/fsl/imx-es8328.c
+@@ -3,7 +3,7 @@
+ // Copyright 2012 Freescale Semiconductor, Inc.
+ // Copyright 2012 Linaro Ltd.
+ 
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+@@ -23,7 +23,7 @@ struct imx_es8328_data {
+ 	struct snd_soc_card card;
+ 	char codec_dai_name[DAI_NAME_SIZE];
+ 	char platform_name[DAI_NAME_SIZE];
+-	int jack_gpio;
++	struct gpio_desc *jack_gpiod;
+ };
+ 
+ static struct snd_soc_jack_gpio headset_jack_gpios[] = {
+@@ -54,8 +54,8 @@ static int imx_es8328_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 					struct imx_es8328_data, card);
+ 	int ret = 0;
+ 
+-	/* Headphone jack detection */
+-	if (gpio_is_valid(data->jack_gpio)) {
++	if (data->jack_gpiod) {
++		/* Headphone jack detection */
+ 		ret = snd_soc_card_jack_new_pins(rtd->card, "Headphone",
+ 						 SND_JACK_HEADSET | SND_JACK_BTN_0,
+ 						 &headset_jack,
+@@ -64,7 +64,7 @@ static int imx_es8328_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 		if (ret)
+ 			return ret;
+ 
+-		headset_jack_gpios[0].gpio = data->jack_gpio;
++		headset_jack_gpios[0].desc = data->jack_gpiod;
+ 		ret = snd_soc_jack_add_gpios(&headset_jack,
+ 					     ARRAY_SIZE(headset_jack_gpios),
+ 					     headset_jack_gpios);
+@@ -174,7 +174,11 @@ static int imx_es8328_probe(struct platform_device *pdev)
+ 
+ 	data->dev = dev;
+ 
+-	data->jack_gpio = of_get_named_gpio(pdev->dev.of_node, "jack-gpio", 0);
++	data->jack_gpiod = devm_gpiod_get_optional(dev, "jack");
++	if (IS_ERR(data->jack_gpiod)) {
++		ret = PTR_ERR(data->jack_gpiod);
++		goto put_device;
++	}
+ 
+ 	/*
+ 	 * CPU == Platform
+-- 
+2.43.0.rc1.1.gbec44491f096
 
-Frank
-
-
-> 
-> Frank
-> 
-> > 
-> > Frank Li
-> > 
-> > >                                                                            
-> > > But Yoshihiro give good idea by using iATU to send out message. Previously 
-> > > Yoshihiro provide patches to raise INTx message by dummy write to outbound 
-> > > iATU.                                                                      
-> > >                                                                            
-> > > Use similar mathod to send out pme_turn_off message.                       
-> > >                                                                            
-> > > Previous two patches is picked from Yoshihiro' big patch serialise.        
-> > >  PCI: dwc: Change arguments of dw_pcie_prog_outbound_atu()                 
-> > >  PCI: Add INTx Mechanism Messages macros                                   
-> > >                                                                            
-> > > PCI: Add PME_TURN_OFF message macro                                        
-> > > dt-bindings: PCI: dwc: Add 'msg" register region, Add "msg" region to use  
-> > > to map PCI msg.                                                            
-> > >                                                                            
-> > > PCI: dwc: Add common pme_turn_off message method                           
-> > > Using common pme_turn_off() message if platform have not define their.
-> > > 
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > Changes in v4:
-> > > - Remove dt-binding patch. Needn't change any dts file and binding doc.
-> > >   Reserve a region at end of first IORESOURCE_MEM window by call
-> > >   request_resource(). So PCIe stack will not use this reserve region to any
-> > > PCIe devices.
-> > >   I tested it by reserve at begin of IORESOURCE_MEM window. PCIe stack
-> > > will skip it as expection.
-> > > 
-> > >   Fixed a issue, forget set iATU index when sent PME_turn_off.
-> > > 
-> > > - Link to v3: https://lore.kernel.org/r/20240202-pme_msg-v3-0-ff2af57a02ad@nxp.com
-> > > 
-> > > Changes in v3:
-> > > - fix 'MSG"
-> > > - Add pcie spec ref in head file
-> > > - using function name dw_pci_pme_turn_off()
-> > > - Using PCIE_ prefix macro
-> > > - Link to v2: https://lore.kernel.org/r/20240201-pme_msg-v2-0-6767052fe6a4@nxp.com
-> > > 
-> > > Changes in v2:
-> > >   - Add my sign off at PCI: dwc: Add outbound MSG TLPs support
-> > >   - Add Bjorn review tag at  Add INTx Mechanism Messages macros
-> > >   - using PME_Turn_Off match PCIe spec
-> > >   - ref to pcie spec v6.1
-> > >   - using section number.
-> > > 
-> > > - Link to v1: https://lore.kernel.org/r/20240130-pme_msg-v1-0-d52b0add5c7c@nxp.com
-> > > 
-> > > ---
-> > > Frank Li (2):
-> > >       PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
-> > >       PCI: dwc: Add common send PME_Turn_Off message method
-> > > 
-> > > Yoshihiro Shimoda (3):
-> > >       PCI: Add INTx Mechanism Messages macros
-> > >       PCI: dwc: Consolidate args of dw_pcie_prog_outbound_atu() into a structure
-> > >       PCI: dwc: Add outbound MSG TLPs support
-> > > 
-> > >  drivers/pci/controller/dwc/pcie-designware-ep.c   |  21 ++--
-> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 145 +++++++++++++++++++---
-> > >  drivers/pci/controller/dwc/pcie-designware.c      |  54 ++++----
-> > >  drivers/pci/controller/dwc/pcie-designware.h      |  21 +++-
-> > >  drivers/pci/pci.h                                 |  20 +++
-> > >  5 files changed, 197 insertions(+), 64 deletions(-)
-> > > ---
-> > > base-commit: e08fc59eee9991afa467d406d684d46d543299a9
-> > > change-id: 20240130-pme_msg-dd2d81ee9886
-> > > 
-> > > Best regards,
-> > > -- 
-> > > Frank Li <Frank.Li@nxp.com>
-> > > 
