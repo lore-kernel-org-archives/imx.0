@@ -1,182 +1,322 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2092.outbound.protection.outlook.com [40.107.13.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09A87BAE5
-	for <imx@lists.linux.dev>; Tue, 19 Mar 2024 03:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.92
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710818430; cv=fail; b=Oe9jok+HKw3Gf3/9t85ljGr92us/kCNHiu9pvkuODjfeHmJX/XJ6OBlHq8soNplzTe9L4NGrXJcM1XAZtYKFT8ErvaguDq+yC37wJG6c5YTGyyGd1ilivMsnNDM94eIoQQwV93I7pcGQ7zVaMl+Wa2DrnuX2axfBq7TskxTGtYM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710818430; c=relaxed/simple;
-	bh=+uMuNXxkvZUDysJib0ossJ1e0A8y/4aFH0S0qYwo5PQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mRyJEWfLCYZMZPl670SfzRJiEa8lZDnGz6uUa6Y6mEgzJLr+7ZJzj5x31GdKgG9kdMB89s7WYXtq35fFNraZL2chN0r7q1xofzXgXRcOah4M1MeZjYsDLQG3h68a4SVf7xRAFCeUgeb9Qz6LISk/eVn3fKXO2zx2l3UpC8m7/wk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=FbZSYoMJ; arc=fail smtp.client-ip=40.107.13.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8978C7C08C
+	for <imx@lists.linux.dev>; Tue, 19 Mar 2024 04:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710822328; cv=none; b=W50OIYbZiWKn3WuVYwWNeYCHv8m7PN58FdUnfQUJRSh2cVNK/O8C/YkHmXrwtwAx4HpSgeujynuFEMD66t9SQfoZpPtyQWLw2iisOKIAJy137SYb3GBiTnGHRk6Zc3qr9PHjIVSNdqpDJuqrzvAeEyZ2lFI7UWhJvfqqMS0I2kU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710822328; c=relaxed/simple;
+	bh=VN66wk4pd+pbC7x5g7MDH8Bc+xnl/oVvzoDN1k4m+1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fXvB25u0pigEOo4rPtaS1wq2dJPr0jP2VV2f3HD0ElcmjxENLNdXpAkeXA2skB1QjphMIapyEK5eg9envgZATo+jDH40bOoT5f1Om7/RTw5AXFS9AU6XoNyCuU7tSEyK+NWVXvVzn5jiEdh/jWp9ZMrl7ddD5sMVDrNIFY+oOvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jSmzP1ss; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="FbZSYoMJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZAVrQUr8b1Nsq5aNMXcwoeis9qT6CfWS8pNCJv/R79W5HjZH4HMpyOJ27csdlAgXccoZMOOZk3gwpmClXr6tyLcNE6/OxKgfqk8/7+WowRCAc67V5NRvMWtTKpMbihrmfROqNzUTfXcTDChKdkPLE1x+3ON1lJSAL6XbOwLIGctM3JOwXbPfXyvkgHfa2cvADNQHIhGIobYL+2LOSJQlLjRhe8fwTt7l3TvwGHjYRzddkJxsm0YRc6ACzNUZDQ8Qr/KbM4Aqp+04YbiQk1A8e2MLgZwYdbmF1M5ImhAIrrUO94OtmQUvU7eUVV2RXKstS/Gh/cVjrb1bxdl31rHhkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+uMuNXxkvZUDysJib0ossJ1e0A8y/4aFH0S0qYwo5PQ=;
- b=QyL/lwHLcbRYiNqAIOW0IlnnA/3QcRSwUXB4AK4tuzaxOUcmqfHAU0+rLRneS+C7ZkwKcc3HIuN5vRFqFjN4CI498nbDV+Y8fdWKukmpx7v1cUvgfYm8VHUT1XAjfQfqYb8iRGk5504eHEAqi44C2usa0yutXApc/2+XLEMaox/a8M6rccEpxGVLrUQlUlyjaUwczIJwsQfohmo7ON9bJ+b8zr22ZtB1a45P2vXQRLHmNIX/F0ywFNbJ+8C78DH7UUpncQxHjHD3gs1q5OzRAhcFltucyc5my3i4r0yOiONwNKwZMMXkTocG7lAuMR+Z0xT/ptu6S6GDxgpa+uDTDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+uMuNXxkvZUDysJib0ossJ1e0A8y/4aFH0S0qYwo5PQ=;
- b=FbZSYoMJwStjKhvP0UVv9mPh92x920B6jcJfnx+NzxUXKikEf+SI6a324wYdCp8q5V6Q82nGwdl2KmgNDUYJ0l6uccfxzh9quSlBuCWHlUBAjaT2hgnlU5K2+yNIUGbsUVcIjSOd49CdZo+z4qheigiehYS5JJD7i5urCOCiUYw=
-Received: from DB9PR04MB9377.eurprd04.prod.outlook.com (2603:10a6:10:36b::13)
- by AM9PR04MB8810.eurprd04.prod.outlook.com (2603:10a6:20b:409::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25; Tue, 19 Mar
- 2024 03:20:24 +0000
-Received: from DB9PR04MB9377.eurprd04.prod.outlook.com
- ([fe80::b3d4:17c4:91b7:101d]) by DB9PR04MB9377.eurprd04.prod.outlook.com
- ([fe80::b3d4:17c4:91b7:101d%5]) with mapi id 15.20.7386.025; Tue, 19 Mar 2024
- 03:20:24 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Frank Li
-	<frank.li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, "lgirdwood@gmail.com"
-	<lgirdwood@gmail.com>, "broonie@kernel.org" <broonie@kernel.org>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-CC: "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [EXT] Re: [PATCH v5 3/3] arm64: dts: imx93-11x11-evk: add
- pca9451a support
-Thread-Topic: [EXT] Re: [PATCH v5 3/3] arm64: dts: imx93-11x11-evk: add
- pca9451a support
-Thread-Index: AQHaeRl/wdW/K6byHEaK3s8IhdQw47E92DKAgACN5sA=
-Date: Tue, 19 Mar 2024 03:20:24 +0000
-Message-ID:
- <DB9PR04MB9377B0418D90EE2FCA3414A9E12C2@DB9PR04MB9377.eurprd04.prod.outlook.com>
-References: <20240318095633.4079027-1-joy.zou@nxp.com>
- <20240318095633.4079027-4-joy.zou@nxp.com>
- <7f601f5e-98af-4a78-a3eb-04d814669973@linaro.org>
-In-Reply-To: <7f601f5e-98af-4a78-a3eb-04d814669973@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR04MB9377:EE_|AM9PR04MB8810:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- qi0fxLjzpDvPRrioB9sC8DpJ5ykLxHIhRsa5t4sqYCU2n8M1+V5rMhOLHQr+ZiGkwriDLOb6B1mNB6qkayud/Idb8ZEyftbfjpDa0+LfiBGFqrUCExc2/A3a8mMF/6AF8pMmAmwqr5C66YIpdp+oq1Tawc2TIHxa/G4EDw8ZDImxme+J0NRVfupcZ29wkoWI/RY/0ACI9TO4Cl+JkrsLq/+CEWKokeJ5dipmUjfsM/enHgQCG/O7pFnfnOuGM6mJjxWMuZoHaTr1+GsRNaKC9evH+5SZFjB+bC1Q0BDIjXmXHQ5cijrd9nCceWbuKh+a368iLU8ly97XUQPg6ABNV6uo1Lig5AMgGo6tv4kZkGXRvVRu1iFFnzccuRRFS+lbC0bbjllNrr6K7uHpE74qUdbfzEQ9EQqjNBu42VwgJ3ECPOdkb7nX4LA2Gt29xF6flvJo9UDyv5ZxPE+rJLYJFeRci7p87PM1jppk9taY4DYrR7SkaehtXCWLLtjoevarYaf3by5R7Mti27IiXE/bXHv8LNp6E7zRNDs+6bIfi9hDVPR0TxtJGhHV4SDYx0Z8jWUVPUdoQ1viw84h1gLkp8GHWD/gbxeJrdQvR5JkVROYt/zk2M8nimeOPz0MR20d2ngnBQwZA09o0D5EBiK4hgsovNKDlBgtR/YuT6LwyHP+7Mcdah7NJHCskeEBQAWW6SRxQHAUn2vf6z1VjAHkUQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9377.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005)(7416005)(921011);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?N1NrR0FVa25aUEhhTTBmaENJSmJtUjhWaXVSc1hGZnZRWndnNHZNNW1VTlRx?=
- =?utf-8?B?bG8xaE1CRStFNCtCM3ZFRUFvWEFDVk1jNVl1TkU0VFF6QlhXVm13bVRRUU9T?=
- =?utf-8?B?Q1JpcTRVTXg3U0FTajc3MWtEbGxyMGtNV0F6RU84VzE4aFUySzlQNnhKWFBt?=
- =?utf-8?B?cE01MW00TmZKR3E0a1BNR2hwOXZldGlnWEdhTUQvem14Q1dGZ1NoZFI1ZGRj?=
- =?utf-8?B?TXpEeHZMUmRmTTNkOEdhODh0dHkxTGNBQ0pBM2pXWC9GK1g1UmZkUFVzTzl2?=
- =?utf-8?B?dWJGWGR1bkhZK0t4Tm01N2FFZjNtbFAraGV5Q0V3V0FpWkQ5ZkpuVEFkdGNv?=
- =?utf-8?B?RlJCQWhTREdsWTVOUTBRNGR6R1pLTnV4c1RDK05LUGZBZ0VpZyt5VjJ5Ykdv?=
- =?utf-8?B?cU03YjBVVGQyS0dlOW40WXdkejN5VC9CYWl6OFZ1OGxzMFJ0aWtaMFhyUmd3?=
- =?utf-8?B?enQyVlp2cnljZVJISmZzOE55bmlZbW12SWREVUFtZFZHRkhoRi82UnZoSzdB?=
- =?utf-8?B?eElQd1ozOGpZUFhZTjhveVFvK1NLZ0dRbHl2ZDYvN0toK3JkS0hSZk1JbVBI?=
- =?utf-8?B?RWtHRGloRzFQV2pDdGZrd1UzQVlGS0hSRlU1UHJYRlNzOXhDalhaYWszT2JL?=
- =?utf-8?B?L2d5SjBrQ1lYNU1XdytRbGhzY3NaYmN5V2ZWVUttQXFCR3lGNkxlWVA0UzE0?=
- =?utf-8?B?UWluVklLRFdrYTZHU0ZLcHY4N0NjOENSVEVJUUltZnVqbWdzVVpMZmFvRjc1?=
- =?utf-8?B?SUo5bTYreGpzOUEzMTE0THZ5UU5oa1BmRmRQRCtCZUFqczV5VEJBRHdEN1Jt?=
- =?utf-8?B?U0FvdXdpazRtRVRiSFhyTGxzWkZWOW0xQzA1dTM2TWdhbXM3b3BOYlAxYk1B?=
- =?utf-8?B?d1o1RUFDU3g4aVNmeEx4S0VHQWJrcmV4cGZ5MmhWQi96ZzY3RDRxbGV0SkFL?=
- =?utf-8?B?d3lzbENaazBDZzdSRGZueVoyK2IwSVJJdlhQTktPL2wrTkR6anhjTUtxb1N4?=
- =?utf-8?B?Wnd4UFdLRkQ0TVMzcDIxb1NTc2NZL1pNZmk2WnU4RGZVcEVVbXRsazlVQks5?=
- =?utf-8?B?MlgraUttSThWcWdvenhqV3lXUzMxRmd6ZnVPMkpKdU52WHhKV1c4Q1gxTUlK?=
- =?utf-8?B?VW45NjVSWWxoMTJIUHVYR2o5SUhzeEVrMDFIWmYwQ1lJV1VLeHlONy9paENt?=
- =?utf-8?B?UjhQamxFRFRBZFkrdU1oNC90VytmbWF4b2RNL09OeDZGODlSQTY4QUQ0V0Zl?=
- =?utf-8?B?V3RpTFJYVW1IRTBjaVQxZ2Jqb04rUnFmWW8ySjcyTG1JMkxWNHdrN1I1cGNC?=
- =?utf-8?B?K01iYlVWaVI5OUEzditpbDgvbkc3dW5Cb3o3ekdld2twVnpERUVETi95U0dS?=
- =?utf-8?B?Nk1yVWh2Rk5lcGJ0ZlBjZW9CREc5WkJsREJRcUNSYSsrR1JuU1lzbzY1ZHBw?=
- =?utf-8?B?UW1ZUy9kdjBNTlIzWG9BYUZGU2tYcStGQnV1MHBzVmpGYS9KY0UxV3MrOERY?=
- =?utf-8?B?Ymt2UmhLclBHaEN4dy9aYktieStBOWZVOXE1V0gwZVhxaW9oRUhXNjVNTzR6?=
- =?utf-8?B?L1puVmVoN3YrMkJlTit6S0ZjLzBkck8xTnBZUmpVdzlaWDEvSkdLVkhxaE9R?=
- =?utf-8?B?MFlITG5SS0dvSnBmN0Z4NmZXUkplbGN2TXF6b0h5YkpSbWNqOEcvb0tWdG93?=
- =?utf-8?B?Q1oyRWpUaksvQlVjaGozajY4Q1AwQ1VwVlhlVytnTENBaGVCMlZZQmxodTdE?=
- =?utf-8?B?ZWdhTGNsRTh3ZjR3dUc2azBJWEZyMFBVMkV6TmZSbVVhZXNoT3NlajdVZXlU?=
- =?utf-8?B?OFd3Y2Voc25wUEswdjdQSUptczVYdzlxZGY3WDFZejNNdkFsVDI5YTNLc3RM?=
- =?utf-8?B?SDE2MDNrT3gzekxmclNFbXB3UDkwSzVUZ1dpUDhCTUovVGRFaTRhSDMzT3kx?=
- =?utf-8?B?SVdMaTNxSUNiMm56THY5N2FJMmFsbWQ4enM1c3NwVnpMTy9xQXFpanc3Qklj?=
- =?utf-8?B?M0ZXdTk0TEk5Nm9DUXBieVRyU0FxZXgwWExETEJ2K3hiL1o0M0krNGcyTVps?=
- =?utf-8?B?c0hLYmdoQ1ZVUGJCVTE0d2N3dzNzaTFZMTMvV0wvcHRFRnNIR3pCaGFYc3Zz?=
- =?utf-8?Q?Vgzk=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jSmzP1ss"
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5a4a14c52fcso1067904eaf.1
+        for <imx@lists.linux.dev>; Mon, 18 Mar 2024 21:25:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710822325; x=1711427125; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DYSxwXFW2D08mopaFSybkujbNsqvikyUbk9X8WRnuB0=;
+        b=jSmzP1ss+87+Vg0y+hKO53gPRTt/KWi2NNWIn9t7XLfdCWDym7mKgWVMVTGvE9wqX3
+         srFPybHQCA40y4BhjY75T6rNX6LIAY/4AZop/nkCTaKgtVprNLRMXdLQZaIG7rcHulrP
+         1j/NxhcK07tLZZlsyk/fZt+tmjlyUHXdd6NJQa065dX80FVdCPz0zs77SV2+qZZEskCi
+         WSg5zv6LZiuAbcg17hV9QtX6cC8AUEdhfgGAaqjBk1QrEec3XGfOboYbwhcXfrETb/o2
+         /vOST2DkDQ+4DRqLc5us+8WDHBmkhsH9rcDWek+SPAkT8TzB5HgnRcIT5ZXwFBxRLge8
+         sLmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710822325; x=1711427125;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DYSxwXFW2D08mopaFSybkujbNsqvikyUbk9X8WRnuB0=;
+        b=ptQFm2OG6XeDeUxPP/MR1QhZN839/HQzz82ygKxo8QWNc1fWaomDNL5in+Tsf1mj+9
+         JJiGJflXBeCm05jSXopVwaKFpCZOfsL0L5qNpF5P+D4sq/Ie52Z/o8jqiElKmKpg1LYZ
+         xnVO7yw8QA1/btvKKVOyERpTmYEde8pbu85RBBOrZ259tU9fT4R8d63JuodR1JLXjeXD
+         hzFKXY8lt6ZOGIz0iLS6yNQ7JAFn+CIq129KniSoIiI9gV5SQNQ5lg06fh1WrK5rYo5B
+         QqV9haImlOphVQacjSNlxcEUXewIZLYTPSYDI7mUqqJnUqxJ8KON30fHzD513bO/mu8t
+         3mTA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfz+sum3cb9V67l4M6BcYXIJqbtJHFqRSUxIufFyliqaQUWPOqiKTl7trZcgAPF27UVh93K7Y2mz8ep44nhKkPqmI2
+X-Gm-Message-State: AOJu0YzbQW+2e3E1JIhK66VxgS5DBL588GDIwhYX67PkeuCbzoHEsGHC
+	OCI+p+HyGcytv3UjFs6xrJoeJezVB8E8rigQsurY2V7HpzxtGOnQ3XldWykkrA==
+X-Google-Smtp-Source: AGHT+IH/pO37rgSPaTlNhZttxco3gB1vIzcYxEvQOMB+Zx/OQop+kfGcfEZfksBnuYl+SkTSpUmqqQ==
+X-Received: by 2002:a05:6359:4c85:b0:17c:23c2:98e4 with SMTP id kk5-20020a0563594c8500b0017c23c298e4mr10136124rwc.3.1710822325286;
+        Mon, 18 Mar 2024 21:25:25 -0700 (PDT)
+Received: from thinkpad ([120.138.12.142])
+        by smtp.gmail.com with ESMTPSA id r68-20020a632b47000000b005e43cce33f8sm8062781pgr.88.2024.03.18.21.25.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Mar 2024 21:25:24 -0700 (PDT)
+Date: Tue, 19 Mar 2024 09:55:19 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Serge Semin <fancer.lancer@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] PCI: dwc: Add common send PME_Turn_Off message
+ method
+Message-ID: <20240319042519.GA52500@thinkpad>
+References: <20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com>
+ <20240213-pme_msg-v4-5-e2acd4d7a292@nxp.com>
+ <erja6zkhstoaverqtadnqj3nsyluh3sealibpujqmea4pndiuv@icihj7cby2l7>
+ <Zd0UERil+A2LgSot@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9377.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a847e62-002f-4d56-1898-08dc47c38434
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2024 03:20:24.1911
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lXTUpcwWOoaAS2QE0H1U+tTGLBPVX9vzHyHFav6BAdDeCJ7JDrJlUdeMWuMgX+XR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8810
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zd0UERil+A2LgSot@lizhi-Precision-Tower-5810>
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEtyenlzenRvZiBLb3psb3dz
-a2kgPGtyenlzenRvZi5rb3psb3dza2lAbGluYXJvLm9yZz4NCj4gU2VudDogMjAyNOW5tDPmnIgx
-OeaXpSAyOjUxDQo+IFRvOiBKb3kgWm91IDxqb3kuem91QG54cC5jb20+OyBGcmFuayBMaSA8ZnJh
-bmsubGlAbnhwLmNvbT47IEphY2t5IEJhaQ0KPiA8cGluZy5iYWlAbnhwLmNvbT47IGxnaXJkd29v
-ZEBnbWFpbC5jb207IGJyb29uaWVAa2VybmVsLm9yZzsNCj4gcm9iaCtkdEBrZXJuZWwub3JnOyBr
-cnp5c3p0b2Yua296bG93c2tpK2R0QGxpbmFyby5vcmc7DQo+IGNvbm9yK2R0QGtlcm5lbC5vcmc7
-IHNoYXduZ3VvQGtlcm5lbC5vcmc7IHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGUNCj4gQ2M6IGtlcm5l
-bEBwZW5ndXRyb25peC5kZTsgZmVzdGV2YW1AZ21haWwuY29tOyBkbC1saW51eC1pbXgNCj4gPGxp
-bnV4LWlteEBueHAuY29tPjsgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWFy
-bS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9y
-ZzsNCj4gaW14QGxpc3RzLmxpbnV4LmRldg0KPiBTdWJqZWN0OiBbRVhUXSBSZTogW1BBVENIIHY1
-IDMvM10gYXJtNjQ6IGR0czogaW14OTMtMTF4MTEtZXZrOiBhZGQNCj4gcGNhOTQ1MWEgc3VwcG9y
-dA0KPiANCj4gQ2F1dGlvbjogVGhpcyBpcyBhbiBleHRlcm5hbCBlbWFpbC4gUGxlYXNlIHRha2Ug
-Y2FyZSB3aGVuIGNsaWNraW5nIGxpbmtzIG9yDQo+IG9wZW5pbmcgYXR0YWNobWVudHMuIFdoZW4g
-aW4gZG91YnQsIHJlcG9ydCB0aGUgbWVzc2FnZSB1c2luZyB0aGUgJ1JlcG9ydA0KPiB0aGlzIGVt
-YWlsJyBidXR0b24NCj4gDQo+IA0KPiBPbiAxOC8wMy8yMDI0IDEwOjU2LCBKb3kgWm91IHdyb3Rl
-Og0KPiA+IFN1cHBvcnQgcGNhOTQ1MWEgb24gaW14OTMtMTF4MTEtZXZrLg0KPiA+DQo+ID4gU2ln
-bmVkLW9mZi1ieTogSm95IFpvdSA8am95LnpvdUBueHAuY29tPg0KPiA+IC0tLQ0KPiA+IENoYW5n
-ZXMgaW4gdjU6DQo+ID4gMS5hZGp1c3QgZ3Bpb0AyMiB0byB0aGUgZnJvbnQgb2YgcG1pY0AyNS4N
-Cj4gPg0KPiA+IENoYW5nZXMgaW4gdjQ6DQo+ID4gMS4gbW9kaWZ5IHRoZSBjb21tZW50IGZvciB1
-U0RIQyBidXQgbm90IGkyYy4NCj4gPg0KPiA+IENoYW5nZXMgaW4gdjM6DQo+ID4gMS4gbW9kaWZ5
-IHRoZSB2b2x0YWdlcyBjb25zdHJhaW50cyBhY2NvcmRpbmcgdG8gdGhlIGlteDkzIGRhdGFzaGVl
-dC4NCj4gPiAtLS0NCj4gPiAgLi4uL2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg5My0xMXgxMS1ldmsu
-ZHRzICAgIHwgMTExDQo+ICsrKysrKysrKysrKysrKysrKw0KPiA+ICAxIGZpbGUgY2hhbmdlZCwg
-MTExIGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3Qv
-ZHRzL2ZyZWVzY2FsZS9pbXg5My0xMXgxMS1ldmsuZHRzDQo+IGIvYXJjaC9hcm02NC9ib290L2R0
-cy9mcmVlc2NhbGUvaW14OTMtMTF4MTEtZXZrLmR0cw0KPiA+IGluZGV4IDk5MjFlYTEzYWI0OC4u
-NDc4YTEzNGQ0NDE2IDEwMDY0NA0KPiA+IC0tLSBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
-YWxlL2lteDkzLTExeDExLWV2ay5kdHMNCj4gPiArKysgYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2Zy
-ZWVzY2FsZS9pbXg5My0xMXgxMS1ldmsuZHRzDQo+ID4gQEAgLTE4Myw2ICsxODMsMTA0IEBAICZ3
-ZG9nMyB7DQo+ID4gICAgICAgc3RhdHVzID0gIm9rYXkiOw0KPiA+ICB9Ow0KPiA+DQo+ID4gKyZs
-cGkyYzIgew0KPiA+ICsgICAgICNhZGRyZXNzLWNlbGxzID0gPDE+Ow0KPiA+ICsgICAgICNzaXpl
-LWNlbGxzID0gPDA+Ow0KPiA+ICsgICAgIGNsb2NrLWZyZXF1ZW5jeSA9IDw0MDAwMDA+Ow0KPiA+
-ICsgICAgIHBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCIsICJzbGVlcCI7DQo+ID4gKyAgICAgcGlu
-Y3RybC0wID0gPCZwaW5jdHJsX2xwaTJjMj47DQo+ID4gKyAgICAgcGluY3RybC0xID0gPCZwaW5j
-dHJsX2xwaTJjMj47DQo+ID4gKyAgICAgc3RhdHVzID0gIm9rYXkiOw0KPiA+ICsNCj4gPiArICAg
-ICBwY2FsNjUyNDogZ3Bpb0AyMiB7DQo+ID4gKyAgICAgICAgICAgICBjb21wYXRpYmxlID0gIm54
-cCxwY2FsNjUyNCI7DQo+ID4gKyAgICAgICAgICAgICBwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQi
-Ow0KPiA+ICsgICAgICAgICAgICAgcGluY3RybC0wID0gPCZwaW5jdHJsX3BjYWw2NTI0PjsNCj4g
-PiArICAgICAgICAgICAgIHJlZyA9IDwweDIyPjsNCj4gDQo+IHJlZyBpcyB0aGUgc2Vjb25kIHBy
-b3BlcnR5LiBQbGVhc2UgZG8gbm90IGludHJvZHVjZSBzb21lIG90aGVyIGNvZGluZyBzdHlsZS4N
-Clllcywgd2lsbCBjaGFuZ2UgdGhlIHJlZyB0byB0aGUgc2Vjb25kIHByb3BlcnR5Lg0KVGhhbmtz
-IGZvciB5b3VyIGNvbW1lbnRzIQ0KDQpCUg0KSm95IFpvdQ0KPiANCj4gQmVzdCByZWdhcmRzLA0K
-PiBLcnp5c3p0b2YNCg0K
+On Mon, Feb 26, 2024 at 05:43:29PM -0500, Frank Li wrote:
+> On Tue, Feb 27, 2024 at 12:52:45AM +0300, Serge Semin wrote:
+> > On Tue, Feb 13, 2024 at 04:50:26PM -0500, Frank Li wrote:
+> > > Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
+> > > window. This space's size is 'region_align'.
+> > > 
+> > > Set outbound ATU map memory write to send PCI message. So one MMIO write
+> > > can trigger a PCI message, such as PME_Turn_Off.
+> > > 
+> > > Add common dwc_pme_turn_off() function.
+> > > 
+> > > Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
+> > > dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
+> > > exist.
+> > > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 93 ++++++++++++++++++++++-
+> > >  drivers/pci/controller/dwc/pcie-designware.h      |  2 +
+> > >  2 files changed, 91 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > index 267687ab33cbc..5e83756492462 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct resource_entry *win;
+> > > +	struct resource *res;
+> > > +
+> > > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> > > +	if (win) {
+> > > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> > > +		if (!res)
+> > > +			return;
+> > > +
+> > > +		/* Reserve last region_align block as message TLP space */
+> > > +		res->start = win->res->end - pci->region_align + 1;
+> > > +		res->end = win->res->end;
+> > > +		res->name = "msg";
+> > > +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> > > +
+> > > +		if (!request_resource(win->res, res))
+> > > +			pp->msg_res = res;
+> > > +		else
+> > > +			devm_kfree(pci->dev, res);
+> > > +	}
+> > > +}
+> > > +
+> > >  int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> > >  {
+> > >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > @@ -479,6 +504,9 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> > >  
+> > >  	dw_pcie_iatu_detect(pci);
+> > >  
+> > 
+> > > +	/* Need call after dw_pcie_iatu_detect() before dw_pcie_setup_rc() */
+> > > +	dw_pcie_host_request_msg_tlp_res(pp);
+> > 
+> > This may cause regressions for instance if the outbound memory window
+> > is small and is fully dedicated for some device like VGA/GPU/etc.
+> 
+> There are host memory map windows, which are quite big. It will be too
+> small if only because one page size windows less.
+> 
+> Look like it is impossible to dedicated to one device, all pcie devices
+> (VGA/GPU) should go through standard pcie probe flow, the bar will be
+> allocated from bridge windows space.
+> 
+
+No, Sergey's concern is still valid. You are allocating the memory for TLPs at
+the end of the existing MEM range. But there is a chance that it could cause
+memory hungry devices like GPU to run out of memory in an existing setup.
+
+That being said, I also do not want to hold off merging this series. So let's
+make this region opt-in for drivers making use of this feature. This way, if we
+migrate to a dedicated 'ranges' region in the future, we can remove the
+conditional check and base the check on the existence of the new region.
+
+- Mani
+
+> > 
+> > Why not to use a new ranges-based mapping as we discussed earlier:
+> > https://lore.kernel.org/linux-pci/20240214061412.GB4618@thinkpad/
+> > ?
+> 
+> If driver can auto alloc from known range, why need static defined in dts
+> files.
+> 
+> static alloc can't resolve small outbound memory windows problem. It may
+> disable this feature. 
+> 
+> > 
+> > I know it might be troublesome but still it would be much better
+> > and more portable across various platforms.
+> > 
+> > Bjorn, Lorenzo, Krzysztofm Rob could you please follow the link above
+> > and give your opinion about the solution suggested there?
+> > 
+> > -Serge(y)
+> > 
+> > > +
+> > >  	ret = dw_pcie_edma_detect(pci);
+> > >  	if (ret)
+> > >  		goto err_free_msi;
+> > > @@ -536,6 +564,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
+> > >  
+> > >  	dw_pcie_edma_remove(pci);
+> > >  
+> > > +	if (pp->msg_res) {
+> > > +		release_resource(pp->msg_res);
+> > > +		devm_kfree(pci->dev, pp->msg_res);
+> > > +	}
+> > > +
+> > >  	if (pp->has_msi_ctrl)
+> > >  		dw_pcie_free_msi(pp);
+> > >  
+> > > @@ -697,6 +730,10 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+> > >  		atu.pci_addr = entry->res->start - entry->offset;
+> > >  		atu.size = resource_size(entry->res);
+> > >  
+> > > +		/* MSG TLB window resource reserve at one of end of IORESOURCE_MEM resource */
+> > > +		if (pp->msg_res && pp->msg_res->parent == entry->res)
+> > > +			atu.size -= resource_size(pp->msg_res);
+> > > +
+> > >  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
+> > >  		if (ret) {
+> > >  			dev_err(pci->dev, "Failed to set MEM range %pr\n",
+> > > @@ -728,6 +765,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+> > >  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+> > >  			 pci->num_ob_windows);
+> > >  
+> > > +	pp->msg_atu_index = i;
+> > > +
+> > >  	i = 0;
+> > >  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+> > >  		if (resource_type(entry->res) != IORESOURCE_MEM)
+> > > @@ -833,11 +872,54 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+> > >  
+> > > +/* Using message outbound ATU to send out PME_Turn_Off message for dwc PCIe controller */
+> > > +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+> > > +{
+> > > +	struct dw_pcie_ob_atu_cfg atu = { 0 };
+> > > +	void __iomem *m;
+> > > +	int ret;
+> > > +
+> > > +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
+> > > +		return -EINVAL;
+> > > +
+> > > +	if (!pci->pp.msg_res)
+> > > +		return -EINVAL;
+> > > +
+> > > +	atu.code = PCIE_MSG_CODE_PME_TURN_OFF;
+> > > +	atu.routing = PCIE_MSG_TYPE_R_BC;
+> > > +	atu.type = PCIE_ATU_TYPE_MSG;
+> > > +	atu.size = resource_size(pci->pp.msg_res);
+> > > +	atu.index = pci->pp.msg_atu_index;
+> > > +
+> > > +	if (!atu.size) {
+> > > +		dev_dbg(pci->dev,
+> > > +			"atu memory map windows is zero, please check 'msg' reg in dts\n");
+> > > +		return -ENOMEM;
+> > > +	}
+> > > +
+> > > +	atu.cpu_addr = pci->pp.msg_res->start;
+> > > +
+> > > +	ret = dw_pcie_prog_outbound_atu(pci, &atu);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	m = ioremap(atu.cpu_addr, pci->region_align);
+> > > +	if (!m)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	/* A dummy write is converted to a Msg TLP */
+> > > +	writel(0, m);
+> > > +
+> > > +	iounmap(m);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> > >  {
+> > >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> > >  	u32 val;
+> > > -	int ret;
+> > > +	int ret = 0;
+> > >  
+> > >  	/*
+> > >  	 * If L1SS is supported, then do not put the link into L2 as some
+> > > @@ -849,10 +931,13 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> > >  	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> > >  		return 0;
+> > >  
+> > > -	if (!pci->pp.ops->pme_turn_off)
+> > > -		return 0;
+> > > +	if (pci->pp.ops->pme_turn_off)
+> > > +		pci->pp.ops->pme_turn_off(&pci->pp);
+> > > +	else
+> > > +		ret = dw_pcie_pme_turn_off(pci);
+> > >  
+> > > -	pci->pp.ops->pme_turn_off(&pci->pp);
+> > > +	if (ret)
+> > > +		return ret;
+> > >  
+> > >  	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> > >  				PCIE_PME_TO_L2_TIMEOUT_US/10,
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> > > index 703b50bc5e0f1..9e6076aa4c850 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> > > @@ -341,6 +341,8 @@ struct dw_pcie_rp {
+> > >  	struct pci_host_bridge  *bridge;
+> > >  	raw_spinlock_t		lock;
+> > >  	DECLARE_BITMAP(msi_irq_in_use, MAX_MSI_IRQS);
+> > > +	int			msg_atu_index;
+> > > +	struct resource		*msg_res;
+> > >  };
+> > >  
+> > >  struct dw_pcie_ep_ops {
+> > > 
+> > > -- 
+> > > 2.34.1
+> > > 
+> > > 
+
+-- 
+மணிவண்ணன் சதாசிவம்
