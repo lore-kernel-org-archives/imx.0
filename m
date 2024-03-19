@@ -1,62 +1,70 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2051.outbound.protection.outlook.com [40.107.20.51])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2084.outbound.protection.outlook.com [40.107.20.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827225A0F4
-	for <imx@lists.linux.dev>; Tue, 19 Mar 2024 18:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5911854775
+	for <imx@lists.linux.dev>; Tue, 19 Mar 2024 20:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710872556; cv=fail; b=qw98vpeJ+L27i/P8ldgyXyGX3NLujk4qWBda5BfRwDKyHWLG8fBOf168PrdVcDMdGuYaAJxma14FbJQs0d62yd648UBeYhHhQWdbks7wd4nfv4JPf8y0TZvje9P/L6MntGcoYEu9XWdfstwo+uBmusnEeRb/xFikDd5Qe6zueO0=
+	t=1710879146; cv=fail; b=u4lM29ahksGTUwcty792h6J7NMIUxOq/EA1hqktbyht3+Urcf7gGXx26CgH6lSja9VrJ4SOfNPl3KGf3v4bkl5+5M7WASxOzhE+LKoSvI0ffO63AOcOUBPVxHVT+5gkJqCkAoo2NC9nFwWbhqsj5zlEEBj7TYS3hmT1ZFz5WzVg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710872556; c=relaxed/simple;
-	bh=9SgVWfl+wFrLqMCsqx8EG0ARYDyFkNeIINdY6SJDmcs=;
+	s=arc-20240116; t=1710879146; c=relaxed/simple;
+	bh=2wHfEIl9YPecdOFEiJDprXiE/YjRG1DwWhs5+4wHtbs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=JrVD9SG/igu+zvmyW+fWGiQBhtSaNr0V5xxDhpLG4+yh2AT16xzUSIcX8UZzvHbemqRdrNeC8gv71xzkW7wPmd2dBg3cg1H5PnuzC0XUViXznrEfKhEQq3XSdY9UlFAB1Dr9+Q/pmGpBw3YgGvw8X0hqouHoFuA9loVyv/Uj3zY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=J3Z+THYP; arc=fail smtp.client-ip=40.107.20.51
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nLlFNhZqgLVT9xMm+/i2cz/bpxZFpBfKTngVYsoN1b8Wuwb3VSOm8+TPlNv2Rxz6YNnvlIiDeZQSORMEQIIzR+4OJ/jKcLwlrKSith0cvGNrrk9KYwpvHAFc3u6nNYJ6dG5WOqrZMLh9Wn45camgn1oB2PggMN781PkBw5CHyKE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=KW6RboEG; arc=fail smtp.client-ip=40.107.20.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="J3Z+THYP"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KW6RboEG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j+ktIztpPSlkONpWLgLrRnVolaiy5vK5mRKmR6o709cJxWGk1eRzXZib3jzfaqf3O7cqpQIunWHO67ruRe+oyP8LVpv5chLeHfG/FFCLqL46EzacU564AHoV8Gq+KtAQzoIk/HMUc6/Veazr/XzX2QWUFOX8I0gXiDBxYCTQS28s7RLwZqAwfMVAUqu33+A00Rn/ogEIbffSAAJV3+ap5duBfYhoPshOdMB/XC6132ggM/odpF+PF47j/k7sFnx4/SkWwxwUEPE+trj9WzmsAQrEBX9zPBQtc6AbC99II75nsMoGW1YFSQjlytq3WRbugKPeAlmgM7pG3KJ2M5YD9A==
+ b=E+Pa8uy1zP3En5RVUxOirPZFW7D5W7/7TmrBOCTJ+KhJa7MHbHpigzWqQDn77Y5xiGQPw3PL00XALh10VGY7xUFqoZUeRSXrBzGXbJVQcxW21s97uRLVl2+NDDX2V0Nu+a379hkypVMvsUp48QYGInu22r1+FsM8lqyQV2UeEW3GEbtygyOEa+C0mTF+uGCTHJI7v0lKNZumK8yq1u+JhE/OJiwVR5J++rlQAMZDTxYKaFvoO+InS0ONpaSpEWleO8PCMhvZf1n4ECTQZB45hk5MKT3GOFyX+0gwqeZPsg+3uNlGHp/sCNnO5rXwCmR90peDCH050Fy8B0kWkxaN6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1km9rIZtRyASOeH8ftipyFLEchTdPw8wbWnfZtMuccQ=;
- b=FpLGnubxRbptZ7kOPGbe0BtIVsB4l1QB5kmykDHeQUXkKJyifBf1aTYp04cvYiew+FHigSKDtAaAHE/Cyv331H/+d2A/8WN9w0+buTpcyV9lT8swAWzOMfdS5LjYvjheA5a4Ru0SaIITbtjuAUNJEHGb5t9VUYSfqIPkNZQHKd2UUvs2ZwWV1vl3XWnoWJwqlP4qxDCBUJJR+Fjziw14FmuCJkMA8D/IklllnQTE6Q5ErQ7mk9BVfgmQY8z/sc2n+1GFfe0DoyYNYiVyBJdIT2Bsfvo4PhrSsoPl9+yolFAbluqhZg261Zoxp3OVY63azT+ioLp9V35sWpGfgLtZGw==
+ bh=TpGyRlFoDQt4SCYYVlsimfBB14SIiX8l/jxFrBLLpnI=;
+ b=bYd7LhBIZDNBErJPIoUxj7BgT2vYmSEfenyfcFsyjhPx8hftrfQl4Zyy3iR8cLdpFg5Kpw2xSgrvzsTIpXePlzf0xBuNZtH7j9gvhrUREhOxVedaHeBZA3yZ7PWa/+1DDMcXE9v6RhRFCgvZKO764Th3YjwUFeTbiz8t3Xk5ATI6AmI3azVsuX7emVH9DZRqSrzygqZ92KkrEme892BXgRaraD6vKgXcGBPTfNT7xJ6XSWzpLUnHbiO+XdCpO47IGe1AbyEs/VjLoP9v28e05jYmFruYd/aMNIWucR8lR4mC7CJiRfTc9YeSrabJD/Hf8KnecAmJTRvOmHZaWGhncA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1km9rIZtRyASOeH8ftipyFLEchTdPw8wbWnfZtMuccQ=;
- b=J3Z+THYPoz/VLEMyXoQVIdTgxvIw+bhtzK3ZqZiKgRfTsM6KB0TNpbAerLz/v70kv/XSArtwGGU3eP+Bnge1fj7Om0BHnaU/CdQfVXDyoCmpYQO+sIp0V+2b3834CLxgMyH4dwYBQHcnlBK41fmJBn1RY1Wh0alejqU4sJS447o=
+ bh=TpGyRlFoDQt4SCYYVlsimfBB14SIiX8l/jxFrBLLpnI=;
+ b=KW6RboEGLAFcyZuXUmk/vUW1FX6dqWTeM6t5fdVt6PEbOqoGRNeDqv6JWHdb3Gw9BKym8/j6EmuUYYi6KKv1t9xxuLlWT/OhbeJ39Q1i/9dlzIJblhBCMR+wNG+Dlbqtik1tt4cxZdQDo7sVwPwLr4CF6uQRtSiC5h5usyGn+/s=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBAPR04MB7445.eurprd04.prod.outlook.com (2603:10a6:10:1a7::22) with
+ by AS8PR04MB7909.eurprd04.prod.outlook.com (2603:10a6:20b:2a2::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25; Tue, 19 Mar
- 2024 18:22:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27; Tue, 19 Mar
+ 2024 20:12:21 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Tue, 19 Mar 2024
- 18:22:31 +0000
-Date: Tue, 19 Mar 2024 14:22:24 -0400
+ 20:12:21 +0000
+Date: Tue, 19 Mar 2024 16:12:12 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Emil Kronborg <emil.kronborg@protonmail.com>
-Cc: jirislaby@kernel.org, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] serial: mxs-auart: add spinlock around changing cts
- state
-Message-ID: <ZfnX4IuKBRTuXV/j@lizhi-Precision-Tower-5810>
-References: <20240319180239.69765-1-emil.kronborg@protonmail.com>
-Content-Type: text/plain; charset=us-ascii
+To: Rob Herring <robh@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Joy Zou <joy.zou@nxp.com>
+Subject: Re: [PATCH v2 4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma
+ compatible string
+Message-ID: <ZfnxnGCK+L6UcLE7@lizhi-Precision-Tower-5810>
+References: <20240229-8ulp_edma-v2-0-9d12f883c8f7@nxp.com>
+ <20240229-8ulp_edma-v2-4-9d12f883c8f7@nxp.com>
+ <20240304164423.GA626742-robh@kernel.org>
+ <ZeZZyTU8FWACW9aj@lizhi-Precision-Tower-5810>
+ <CAL_JsqKU=Qay75i1zaasaNHCV2jkseX94fzfe-4AwrV093NOLA@mail.gmail.com>
+ <Ze5ustkOPNYpXubj@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240319180239.69765-1-emil.kronborg@protonmail.com>
-X-ClientProxiedBy: BY3PR10CA0012.namprd10.prod.outlook.com
- (2603:10b6:a03:255::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Ze5ustkOPNYpXubj@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SJ0PR03CA0017.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,122 +73,280 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBAPR04MB7445:EE_
-X-MS-Office365-Filtering-Correlation-Id: d848d424-242c-4156-df67-08dc48418ab1
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7909:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29971575-1b2d-4f1b-2720-08dc4850e240
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	mJFBKOEcnn260vx+LSpbpfBqxzavNuCh0SLvbIggL7w4Z40Cp4yXyPHBhupNfecD3VU+7B/ygITn9Zs+xRilCoadduXI5sgi3gSY70gsMTmMf87qvu07MEZ5c9DTtDdZWBMXoNCHm/oQVk3sISPn6M6Yk0JPNZ760d4j7VzYV0Y4HZhD1vym6W5ZGjeJ/BDKcv6IOuk7EblrYiVFy0hyEm+7eGCk2mkHCLEEFxO9M45HarL1JfKFXj+O30m/ik4ze5j+GLsyI6xzNytvW4H//IoHnnfBL/etG9DkJ40BGI6nuh89W++wMETcaPZvGpp38HX2PPgz+K5X8VSNP2dOips0mn6JjCo1aKe8pIK0Y0aj31zanDuthEWxQ3Ynkz9oiMNLdGezf24oho4XnQtr7azeaPGF/9MipaCIUp30r8/Cq8zE7asM9yt0JOepgneaalZEalDJCyBuOuzSGoSjU3DgPYzxnY31o+uCwCiGeMWl/biCjiSb3Aw/nbmdzHFnWPmjZjFhmmK+r4Dex5Q9wMcwW7bw5qbLDWWf1LHM7+xxfMYYVKaSGInXvwSIwKPEJxD9/tSm7gQi0Q5SVhYA2ujmhuT4OPOHxcph9ujJltSVgrXPkeXrkH2iCV8atnVS7vVitZJYKPNPm9AFG2dO4J5NdCsTinanENHCP+lKxrB9S+IcDbHHIbXu4KmzAr3Bm0GxKRn5zwo0GVteg2/3gh3UYuquaO4CrbXftxMd44M=
+	ZTYZs3/p3VuVeBXXsh1LmUpx0QsodQVDU6bxVYq8+PkoG1hlnrbVrpUpnTIPTk84+VPn4eEA9ldYikqwVBqYQU4urIhU5/KgBYg4ilUkn4DxCbHKzUTxgEqMvC5TB92GUBKm59POKZnYcWQnxyw5QmzmprUP1/9pneC+zpmVZWH2bPtwbqHFdkKfL2ARSu59hgjObcX0m8XAg7IKuWsgw52gNpCzqUYmO3YeDXxBmvqD7sgfnUCDXa9h8eLvQsyS2EtOQSHFdprJDrBcdwIB5qTU2liRMcCKFmqLq26JzMlKIFf13NDGVyqhvzakNVr/NkJbcp6U/8TQ4v98bmWea7V21uCRReTe0Pfw29yQ4+dDJTjuKfBD1YiDzxf4ERVBWt+Wi5r1C1+F/v4kw3/UrF7c+K+7xCQdX0rUHb/7W86rGPgrPvpg53gPc8SqO8nvTjWyzZbUi6ibWOpy6c6Xw5ztYSxyfCd6fcs/MJXQ08QwC5ZCPwiUmdTAGs5y8zMtTlvhFwl258R44mnr8ASlfiaRgOb6DB28fyGdRUx/0w0qf/YlvfHSjg86loFLoXLn2uuFbbNh6GAOTiwY0aQPI3EBC2Mw5j5DunIzGdnio5LVmuekUdWJJODFSBJbtd8O5CwmKTb74/BQWT12zPsvBAmWgU9wNZQodX7g2eVDHw6rDLV0iw0u7P1I4PlvR0RlSAR7y6MtpG5ppbMsCzfDOo8ll78dqYfiOxEnJ+nCjpY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Kw/WvFp60sEooQiANR8S+0tJ6zpTY/6YTxeBwjJmGzWUOqt9djxQHaCbsQ5Q?=
- =?us-ascii?Q?TFv6JHJkvTVjzXseV+UFS0AZ+yynwD8rtCRNIQc/fRBoRh/fcldxzENW0wRY?=
- =?us-ascii?Q?NQTUAe+8GkDYTEpmO4C/TJnb5mGOViSEUz+ZESuawFZGEi487l6CrI26wf0Z?=
- =?us-ascii?Q?r4BMwWu/4IUPi/3oEr9hK3BLIWx3rRZzMd4iuvEwBZv0etFBFUcpweWeLff/?=
- =?us-ascii?Q?vmM0A05cs34TRWtcRlaLZl2n3o2V5MvuWtOZ1NWQc3T59CoXnqtvW7sI85m2?=
- =?us-ascii?Q?VkB3lxzIMC6GfeuaxrCzQChM+cZJVXtZZ/a/YxNa2TufYX5ToGshHK+dHSnK?=
- =?us-ascii?Q?QhYAUSdy5LRrZxJP5LRzeSmTsD7Qc5ZzOwDQN1xY4ACV79w7/MCyqxnDe0wG?=
- =?us-ascii?Q?Jgi2EexphtzzIO3jIvc54R3U06NnABxK/cDtkEu9InaW0qT7/TIZVfDlOFep?=
- =?us-ascii?Q?hJm4pyMHpWcpONM6NOE4RHMGZTG2nTdVVIG4qsbKLxFz+9bfK7kFibx4URpP?=
- =?us-ascii?Q?2kgezn3n5KoCwaF3dCAMarMJivi9VHGGQT3AruWVAPco/h2Sg2tubw9GRqd3?=
- =?us-ascii?Q?Kr/OoerPH5ymffnl/Vn8exsCF6gmj9yDydu5svR4A3uL6RgFCwEpL2SRQJI+?=
- =?us-ascii?Q?lZqyC6nLiaj79Gll+1EdDVBKiNCI/8mio2VmRFZEhW6rX+CC0hE7IV2VP98q?=
- =?us-ascii?Q?7akaxWTwXfGddWqWOHMukVIOo41gVfMN67x5HAPzwWQI1136rJxrnx5hkh6z?=
- =?us-ascii?Q?zzTgf1DQol7gmHeK4wkkc1W8pp+ERRpRpzWCsclFvxqAyJ6V8pssSmPj1Vsy?=
- =?us-ascii?Q?BEFJUtb7pgLwfDrB7Aee41FcshxJvKcD4jT72+0mvHcnX38IMeH+Ba91gcvw?=
- =?us-ascii?Q?/CmJWD1TGxTL5KZN1Nf0b1gq2lot4DbXS2+YjOMe/T/aK1I61hEFJ4qPp3YL?=
- =?us-ascii?Q?LuGupuxJ3Grd/3B7TdpRelax6pevRt93Hfu5FqeF4j+21by0LU2100Re2bPi?=
- =?us-ascii?Q?1mRbLD2oEDp11ZbcyyAqmpq41sp8MC30jjKbwAdVvO6NdcYmS7dmQpivcWLp?=
- =?us-ascii?Q?rdEgVq0hHog+/X3jZJRkSSIvUq5RhmsggTn50QSkU2KIR2Pggih/KPVIz2Z2?=
- =?us-ascii?Q?RN9TCHJVw8K2EHSUWYglgxiJ2Fl1MIQFtx/QKFrLLGi/Qj74xz1VOrsbfDY9?=
- =?us-ascii?Q?NLGxMk2nyUvVu2AGLTKnPRiHCsNPKKr25fxHhP6ol3jZ88OR1yDzzgDdxe/K?=
- =?us-ascii?Q?C/OiySdXyqxeH9u3pH1gNWKsnoP92zXO5JkHIhmFvP49U6Ad62Y/K6uUDwum?=
- =?us-ascii?Q?2GTvnf/Fh6VdQ0pcb8crn8EpgomhjZn48V/fmXtoDwigY9AMsuxG04ylmph7?=
- =?us-ascii?Q?PCX7tyb4jo1Zr1lv5tYSf518OgPOQVBt0QAKp9F3f4Vr1oGdkzg1dM9d6Ni4?=
- =?us-ascii?Q?VMtW7NegE7z26XwazyL7x3qkecgo2UaTFgPF7gRTFKIduH5Ye+nTA7/WlqfH?=
- =?us-ascii?Q?74BORd98Ul1l+WC6EFjCRWsy2MrPloxMnjC5WTaBVUropPzk7mIYg83mrKxK?=
- =?us-ascii?Q?/i/Kf3HZ8zdr+haA3+P/DEFlNCl2zTtjOANLbqVn?=
+	=?utf-8?B?YkovRnM2b3lrOHpVM3MxMHVpK25pOUZya2x6a0kycEt4M0FZZ2puTDVFdEVn?=
+ =?utf-8?B?TVBSSmpiVVF4K2JqMC8vL2ZHUmE5ZUo5dWlEYTRxOWZZWGxhamgyVm1hUDlG?=
+ =?utf-8?B?ck50eERiODhkbHNjMHN5MlQxSDdVOTBZanhkeXN2YkRZWFJPcThzZzFHWUxu?=
+ =?utf-8?B?ZEFVNk9wOVBGTnVLQ092WUhxVDJiVjF6MGkxNEZTRmgzYjE2SVpQbHdsMTNs?=
+ =?utf-8?B?ZDFBaEFFU1I3MlZXWjRYa3o3eFNmU1hiWFZnWGZSc0FqOU5QTmpINHZGMC9C?=
+ =?utf-8?B?ZFpIWHBqcE5PdklPN2JseWZqRkEyeGtvN1NJajQvaGkreExMajBURytYRjgr?=
+ =?utf-8?B?SEVOajlJTzhWRGdJYU5lNXJYckxUbkZhdmYwSHZiUU9pQXV3WTVMQWplMmNl?=
+ =?utf-8?B?aTZoY3Y1aTRiTUhIaTNGYldPNW9iYmE3Y3pDQXE0UnQ3SmM1VGhKeEc4WXNU?=
+ =?utf-8?B?R0twVmd1djl0SWhFTVUzK3VrYy9NdzJTeTZjU2NGMXBIblhQTU4yelp6dUNJ?=
+ =?utf-8?B?T0ZwUXNjM0dMUFBUaU5jOSs2c1U3bjhTZURrdkNyR2NrNDdsdGZJdkVJUTd6?=
+ =?utf-8?B?TElRcWFNTTRQUjgrcENVRVVHa2Y4dzlvU2dFc2cwYUsvZTJpYW9LSWNPOWZ4?=
+ =?utf-8?B?SThSaW8zNGhpU0NHaWtSMDdNR3NGdFNTRVlyRXRhcHZYTklSVFk3L3M5dGZI?=
+ =?utf-8?B?UkVjUk1qRmIrcTRPRDI4OHZYd2QzZHhSMVROYWhpbmFQUmFvMWFISTB2a3ln?=
+ =?utf-8?B?Y1Nackl6ck9DMC90REVRK0ZTdDBTanpKaTFqL3U3b2dVZTF3d0tQK3U4cjFa?=
+ =?utf-8?B?dk5SOW1UMm9KeXZtNGtRejlFK29rdUFsOHRUY2ViMVlhTzVSTThmOHpvNmNL?=
+ =?utf-8?B?OVF2Z0hmeGpEM2F5UkQ2WGxwWUNWb1FuVXIrQ2lKMTg0OGUxV3QrMkJCbmcr?=
+ =?utf-8?B?TkZnUTE0aGZhVG52MEFlZVc0Z2dhbjREeU5iU2Y3SnBTd0RBWjdkRjFia1Q3?=
+ =?utf-8?B?MnBpOEVqNGVtbmZQVUhScS8vRUlrT2NTWlh0RVJGamdBdTh4VnkvazRGckx1?=
+ =?utf-8?B?UkdTSUJxWFFrNHpXU2lSZzlhVVFnZkRkeTBHejlwbFh5ZWplckxnWWtlcGVV?=
+ =?utf-8?B?Q3lYQXZpSEhOV2VRclhLRjN4ZEZQTnlDOEhWVWp4M1drMnlBU2ptU0FiYTF3?=
+ =?utf-8?B?elg1KzdIR0k5Y21LWUgzTjkvRy9vZjAwaGNlTThtbXFGQ1BnRENydmhmSUNj?=
+ =?utf-8?B?RURhSkNJRU5wMW5BMWs1blpXTXI2UDNJT01iR2x5OGl1b0VxZFdQTkg0WjB4?=
+ =?utf-8?B?b1B2ck84OFZZaHgvME4xZWpSNTF6M2RhKyszTml2YnowTWNMay9HNEliT291?=
+ =?utf-8?B?bjhHMWRZRXdmR211NVpGZlpBMnNrd0pjQkVFRmtiN1J0SWNnamdkRnE0bXor?=
+ =?utf-8?B?djJLeFZJNDFqVXhDRUN1QmFEd3FJcHhvdGpTRkFDcEJxaGlqZTZWZHZBYVE5?=
+ =?utf-8?B?enVpV0gvWUpvN3E4ems4dFlna29jSEJ3Yjg0K2dCSThXcEpjQk9NRkVoMHM2?=
+ =?utf-8?B?dXpRYXhKNkFMbTAxQ1NFenRQemE5TWNFOU0zZEdvR0dwcVRRSGZMUHVSQ1c3?=
+ =?utf-8?B?dWlaWHBiNU9GektpWWlSNFRTdllIbmNmUVlTeVlSSGxNVVB4UVJrbDRPeFc0?=
+ =?utf-8?B?YWplcWw3WmhnTkxNekwyNTB4VzIraTlGWEM2U3pLR3R0TTZqU3lUTXI0Mkc1?=
+ =?utf-8?B?elRCR1FOY1FVSzYzeHhJZUFZY2F2NCt6b3VVcDBRYnhCMDVMSzV3dUpBelNC?=
+ =?utf-8?B?R0FnMHFXd0hKZ2FsSDVqT0ZEdWNqL3pUc0RvdGFuYUZYMTNFWFJIY0xsVFYv?=
+ =?utf-8?B?LzlraWYvQlk4ZlhFdUZ0V1JPZ1JlU1NpTXNLaTQvSkFLb0MyY1hvVTgzRStE?=
+ =?utf-8?B?MERPaGM4MXlXdVJqRC85SThXNjE5RjZCSWxhTGRNeklTUjdidlE2OC9DT21Q?=
+ =?utf-8?B?S09SanRwY25JNDNzVTM0ejJGRTZ1SnZKd1dlRllNeEo2VFlub1JrOUNTUStu?=
+ =?utf-8?B?cWZTSUloOGFQRlQ2amxwVUw5d3BUaWw1NjNFcU1LdVEwRW8zWEdQSHdtcFRN?=
+ =?utf-8?Q?fICoUnnQbMCCbG+nU19B2U1J9?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d848d424-242c-4156-df67-08dc48418ab1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29971575-1b2d-4f1b-2720-08dc4850e240
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2024 18:22:31.9000
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2024 20:12:21.1702
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nbC2sIsawjqlPL/EeRzouDl+9Enlyf70dnmiw5cR6cGAWmb6XGI/faXnb+30jPrMhQndlIvkt5ZW/qRkA10d4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7445
+X-MS-Exchange-CrossTenant-UserPrincipalName: l99RqUk6uFeiz3Q9SCSRVaulXZNWprieUYbnBgFvqCkaxaXWtSNmx0i8JFbfcnZEBTH7yyucLLBqtG/lWp6B3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7909
 
-On Tue, Mar 19, 2024 at 06:02:47PM +0000, Emil Kronborg wrote:
-> The uart_handle_cts_change() function in serial_core expects the caller
-> to hold uport->lock. For example, I have seen the below kernel splat,
-> when the Bluetooth driver is loaded on an i.MX28 board.
+On Sun, Mar 10, 2024 at 10:38:42PM -0400, Frank Li wrote:
+> On Wed, Mar 06, 2024 at 02:40:23PM -0600, Rob Herring wrote:
+> > On Mon, Mar 4, 2024 at 5:31 PM Frank Li <Frank.li@nxp.com> wrote:
+> > >
+> > > On Mon, Mar 04, 2024 at 10:44:23AM -0600, Rob Herring wrote:
+> > > > On Thu, Feb 29, 2024 at 03:58:10PM -0500, Frank Li wrote:
+> > > > > From: Joy Zou <joy.zou@nxp.com>
+> > > > >
+> > > > > Introduce the compatible string 'fsl,imx8ulp-edma' to enable support for
+> > > > > the i.MX8ULP's eDMA, alongside adjusting the clock numbering. The i.MX8ULP
+> > > > > eDMA architecture features one clock for each DMA channel and an additional
+> > > > > clock for the core controller. Given a maximum of 32 DMA channels, the
+> > > > > maximum clock number consequently increases to 33.
+> > > > >
+> > > > > Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > >  .../devicetree/bindings/dma/fsl,edma.yaml          | 26 ++++++++++++++++++++--
+> > > > >  1 file changed, 24 insertions(+), 2 deletions(-)
+> > > > >
+> > > > > diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> > > > > index aa51d278cb67b..55cce79c759f8 100644
+> > > > > --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> > > > > +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+> > > > > @@ -23,6 +23,7 @@ properties:
+> > > > >            - fsl,imx7ulp-edma
+> > > > >            - fsl,imx8qm-adma
+> > > > >            - fsl,imx8qm-edma
+> > > > > +          - fsl,imx8ulp-edma
+> > > > >            - fsl,imx93-edma3
+> > > > >            - fsl,imx93-edma4
+> > > > >            - fsl,imx95-edma5
+> > > > > @@ -53,11 +54,11 @@ properties:
+> > > > >
+> > > > >    clocks:
+> > > > >      minItems: 1
+> > > > > -    maxItems: 2
+> > > > > +    maxItems: 33
+> > > > >
+> > > > >    clock-names:
+> > > > >      minItems: 1
+> > > > > -    maxItems: 2
+> > > > > +    maxItems: 33
+> > > > >
+> > > > >    big-endian:
+> > > > >      description: |
+> > > > > @@ -108,6 +109,7 @@ allOf:
+> > > > >        properties:
+> > > > >          clocks:
+> > > > >            minItems: 2
+> > > > > +          maxItems: 2
+> > > > >          clock-names:
+> > > > >            items:
+> > > > >              - const: dmamux0
+> > > > > @@ -136,6 +138,7 @@ allOf:
+> > > > >        properties:
+> > > > >          clock:
+> > > > >            minItems: 2
+> > > > > +          maxItems: 2
+> > > > >          clock-names:
+> > > > >            items:
+> > > > >              - const: dma
+> > > > > @@ -151,6 +154,25 @@ allOf:
+> > > > >          dma-channels:
+> > > > >            const: 32
+> > > > >
+> > > > > +  - if:
+> > > > > +      properties:
+> > > > > +        compatible:
+> > > > > +          contains:
+> > > > > +            const: fsl,imx8ulp-edma
+> > > > > +    then:
+> > > > > +      properties:
+> > > > > +        clock:
+> > > >
+> > > > clocks
+> > > >
+> > > > > +          maxItems: 33
+> > > >
+> > > > That is already the max. I think you want 'minItems: 33' here.
+> > > >
+> > > > > +        clock-names:
+> > > > > +          items:
+> > > > > +            - const: dma
+> > > > > +            - pattern: "^CH[0-31]-clk$"
+> > > >
+> > > > '-clk' is redundant. [0-31] is not how you do a range of numbers with
+> > > > regex.
+> > > >
+> > > > This doesn't cover clocks 3-33. Not a great way to express in
+> > > > json-schema, but this should do it:
+> > > >
+> > > > allOf:
+> > > >   - items:
+> > > >       - const: dma
+> > > >   - items:
+> > > >       oneOf:
+> > > >         - const: dma
+> > > >         - pattern: "^ch([0-9]|[1-2][0-9]|[3[01])$"
+> > >
+> > > I understand pattern is wrong. But I don't understand why need 'allOf'.
+> > 
+> > The first 'items' says the 1st entry must be 'dma'. (It might need a
+> > 'maxItems: 33' too now that I look at it.) The 2nd 'items' says all
+> > entries must be either 'dma' or the CHn pattern.
 > 
->     [   85.119255] ------------[ cut here ]------------
->     [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
->     [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
->     [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
->     [   85.151396] Hardware name: Freescale MXS (Device Tree)
->     [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
->     (...)
->     [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
->     [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
->     (...)
+> After dig into dt_scheme and json scheme, I start understand what your
+> means.
 > 
-> Cc: stable@vger.kernel.org # v6.1+
-> Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
-> Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
+> "clock-names": {                                   
+>     "minItems": 33,                                
+>     "allOf": [                                     
+>          {                                          
+>             "items": [                             
+>                  {                                  
+>                      "const": "dma"                 
+>                  }                                  
+>             ],                                     
+>             "maxItems": 33, 
+>             ^^^^^^^^
+>       Here need a maxItem 33 and make sure first item is "dma" and total
+> array is 33.                       
+> 
+>             "type": "array",                       
+>             "minItems": 1                          
+>          },                                         
+>          {                                          
+>             "items": {                             
+>             "oneOf": [                         
+>                  {                              
+>                       "const": "dma"             
+>                  },                             
+>                  {                              
+>                        "pattern": "^ch(0[0-9]|[1-2][0-9]|3[01])$"
+>                  }                              
+>                  ]                                  
+>             },                                     
+>             "type": "array"                        
+>          }                                          
+>     ]                                              
+> }
+> 
+> The yaml source is
+> 
+>           allOf:                                                           
+>             - items:                                                       
+>                 - const: dma                                               
+>               maxItems: 33                                                 
+>             - items:                                                       
+>                 oneOf:                                                     
+>                   - const: dma                                             
+>                   - pattern: "^ch(0[0-9]|[1-2][0-9]|3[01])$"
+> 
+> 
+> But unfortunately, 
+> 
+> dtschema/meta-schemas/items.yaml
+> 
+>     type: object                                                         
+>       properties:                                                          
+>         items:                                                             
+>           type: array                                                      
+>         additionalItems: false                                             
+>       required:                                                            
+>         - items                                                            
+>         - maxItems                                                         
+>     then:                                                                  
+>       description: '"maxItems" is not needed with an "items" list'         
+>       not:                                                                 
+>         required:                                                          
+>           - maxItem
+> 
+> 
+> dt_binding check will complain
+> 	'"maxItems" is not needed with an "items" list'
+> 
+> 
+> I am not sure how to go futher. Maybe below 'stupid' method is less impact.
+> 
+> items
+>   - const: dma
+>   - const: ch00
+>   ...
+>   - const: ch31
+> 	  
+> 
+> Frank
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+@rob:
 
-> ---
-> Changes in v2:
-> - Add more of the stack trace to show why the lock is necessary. Note
->   that i removed some unrelated noise for unwinding, showing and dumping
->   the stack trace.
-> - Add Fixes tag. Note that this commit do not fix 4d90bb147ef6 ("serial:
->   core: Document and assert lock requirements for irq helpers") as such,
->   but it was the closest commit I could find that makes sense.
-> - Cc stable. Commit b0af4bcb4946 ("serial: core: Provide port lock
->   wrappers") is a prerequisite. Therefore, v6.1+.
+       I can't found out a way to to handle this case. 
+dtschema/meta-schemas/items.yaml not allow 'maxItems' for 'items'.
+
+       Any suggestion?
+
+Frank
+
 > 
->  drivers/tty/serial/mxs-auart.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-> index 4749331fe618..1e8853eae504 100644
-> --- a/drivers/tty/serial/mxs-auart.c
-> +++ b/drivers/tty/serial/mxs-auart.c
-> @@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *port,
->  
->  static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
->  {
-> -	u32 istat;
-> +	u32 istat, stat;
->  	struct mxs_auart_port *s = context;
->  	u32 mctrl_temp = s->mctrl_prev;
-> -	u32 stat = mxs_read(s, REG_STAT);
->  
-> +	uart_port_lock(&s->port);
-> +
-> +	stat = mxs_read(s, REG_STAT);
->  	istat = mxs_read(s, REG_INTR);
->  
->  	/* ack irq */
-> @@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
->  		istat &= ~AUART_INTR_TXIS;
->  	}
->  
-> +	uart_port_unlock(&s->port);
-> +
->  	return IRQ_HANDLED;
->  }
->  
-> -- 
-> 2.44.0
-> 
-> 
+> > 
+> > > 8ulp need clock 'dma" and "ch*". I think
+> > >
+> > > items:
+> > >     - const: dma
+> > >     - pattern: "^CH[0-31]-clk$"
+> > >
+> > > should be enough.
+> > 
+> > If it was, then I would not have said anything. If you don't believe
+> > me see if this passes validation:
+> > 
+> > clock-names = "dma", "CH0", "foobar";
+> > 
+> > > If you means put on top allOf, other platform use clock name such as
+> > > 'dmamux0'.
+> > 
+> > What? It's under an if/then schema.
+> > 
+> > Rob
