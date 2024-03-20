@@ -1,49 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727893F9CF;
-	Wed, 20 Mar 2024 14:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5A24AEE0;
+	Wed, 20 Mar 2024 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710945486; cv=none; b=W80/lEs6rIxuen4YxychD41Hv5IT91UITfXj671Z2zckp9QWK7J0wfQr/0gqwKwGYAPxo/MPCLHycic5HeUzo5LbG8alWxagZEdtIQ8cmUUSyWv2HNX/hIg5Xddvqyw5NaATywhtn7HfFN7JGWmirRSQgArMHO32mSzQ9+DflYg=
+	t=1710947417; cv=none; b=E0gJopr/CnSr9pEZAQjkR78CEUD3VyNYpNDBcSK8mls7gIELvtCHnddIh0la6hN7SkIQfpqowHsTWq+LW7bRxEY+F91EIumJCAJQ7/3K4+/I4Yf0atc/3CTvAhDZ8Fgy6zsN8RpZo8wBfeBYpMm6tJT7HjWqZ9d4B7xDKgVU1fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710945486; c=relaxed/simple;
-	bh=x1Ftdzv3aUzGEjLyA02rR25sr8loAwqsHEClXsh3sws=;
+	s=arc-20240116; t=1710947417; c=relaxed/simple;
+	bh=4//2Ztgp/9bNI3pOdqFM6t+BddbS0siyo86ffWZ/Cis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hW+U4hetW9hYbEK+IrPItUuJY4mg0hho6Zr2w3b9hH5zP+I+LR8ObFY/Bd25s4KTU9t43ZcUcMRx+zcYnGeu5YERNl475eMaLCnGoWLPr691qZBDLSK/FOT+NbYQ2rKy5KVTdswUPS+73NbEMEUUdCx/s4KOdg3qlfa9AlASekA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ph5sdZPr; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CUZs85RvtRy0tUiEyY1+sN9fq6VMUMvvsrPNMX5YqCunhIMv/lrtuYDfcV1Nr9oc8ltvH/gdqWnsbdXjDpWkfmagti41gPQbLRyr9rhuVGBTzCVlDBxT2sH57627WJQOQo6NeJnS5tuorelm8JvKPkrlQA21BQXEM+o8eIWEU0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jy0nD9Hy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ph5sdZPr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8726C433F1;
-	Wed, 20 Mar 2024 14:38:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jy0nD9Hy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84FBC433F1;
+	Wed, 20 Mar 2024 15:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710945486;
-	bh=x1Ftdzv3aUzGEjLyA02rR25sr8loAwqsHEClXsh3sws=;
+	s=k20201202; t=1710947416;
+	bh=4//2Ztgp/9bNI3pOdqFM6t+BddbS0siyo86ffWZ/Cis=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ph5sdZPre/ADMcYJpljALajU8K0VuGWZAJ+mnP4iXVs2LeuQdhFXxCGnDHCitRiG+
-	 OoOOeXbjl/0GEA1FeUjn+L4oQkb9DlyxThIMYyj3EWjjBoustVzw52jypsA2w6w5WC
-	 rOBc9qw7k6OiU1EyOm9PuoOlly1Lw0mYeLjlXoR8gNKGGXn1aIqYOm8BgYXXAyFRWc
-	 wa0pYOc/dXBPz0qTMS2mgHucwAlgU7XR8D1yywiiDB++Oz/eDs5EGqscvApxQgxc6l
-	 snKkfOOZ2aLXjyrMp2Kx5hw3WPelWY/iYk+VPHb1l+NsCrQ+0jhkLh82zVudzhuFna
-	 tKrpAxp/NsjkA==
-Date: Wed, 20 Mar 2024 09:38:03 -0500
+	b=jy0nD9HyCZRmXwWFd3UlqqBhl2ZYER4gdgogPzhjSCx3G4XIkqsby7MNTLL8r77YB
+	 01HqIdFbL/wLst4bp5hJPLRhbCYcbH2gxlPbfwB3Hh48Ye6oKE5EJ5DHEMWVL1I6fp
+	 ggOv7O92qxJrZpwJUURgXxc0GAVMPpojWCr7Qbpk0yryJjZwZJTdsJbyAMy1icncEV
+	 mdnQ5oCo6utiYEBoI6sDRK+9pn5ioyYYdO/96Gvadb01Weyrji5E282FFX/A7uZ+ZN
+	 7gLUoYsOVbpDfYSTUQutk9FfhQL2PIxZMlxUd4mdGHqboa+gFbUqzhtgef5d0ASwLi
+	 zc3aYo37Z31nQ==
+Date: Wed, 20 Mar 2024 10:10:14 -0500
 From: Rob Herring <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev,
+	Mark Brown <broonie@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
-	linux-sound@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v7 2/4] ASoC: dt-bindings: fsl,imx-asrc: update max
- interrupt numbers
-Message-ID: <171094548267.1688735.6689735252604213826.robh@kernel.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v7 3/4] ASoC: dt-bindings: fsl-sai: allow only one
+ dma-names
+Message-ID: <171094741235.1737484.4683319555697657710.robh@kernel.org>
 References: <20240318-asrc_8qxp-v7-0-01ce5264a761@nxp.com>
- <20240318-asrc_8qxp-v7-2-01ce5264a761@nxp.com>
+ <20240318-asrc_8qxp-v7-3-01ce5264a761@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,20 +51,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240318-asrc_8qxp-v7-2-01ce5264a761@nxp.com>
+In-Reply-To: <20240318-asrc_8qxp-v7-3-01ce5264a761@nxp.com>
 
 
-On Mon, 18 Mar 2024 15:00:08 -0400, Frank Li wrote:
-> fsl,imx8qxp-spdif and fsl,imx8qm-spdif have 2 interrupts. Other platforms
-> have 1 interrupt.
+On Mon, 18 Mar 2024 15:00:09 -0400, Frank Li wrote:
+> Some sai only connect one direction dma (rx/tx) in SOC. For example:
+> imx8qxp sai5 only connect tx dma channel. So allow only one "rx" or "tx"
+> for dma-names.
 > 
-> Increase max interrupt number to 2 and add restriction for platforms except
-> i.MX8QXP and i.MX8QM.
+> Remove description under dmas because no user use index to get dma channel.
+> All user use 'dma-names' to get correct dma channel. dma-names already in
+> 'required' list.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/sound/fsl,spdif.yaml         | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>
