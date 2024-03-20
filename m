@@ -1,69 +1,66 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4B3BB3D
-	for <imx@lists.linux.dev>; Wed, 20 Mar 2024 10:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902223EA9B
+	for <imx@lists.linux.dev>; Wed, 20 Mar 2024 12:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710931234; cv=none; b=QL4ta8VDemk34b7Rw2anOKIZvSn8zQ1rTUllRaCCvcMcNROVAZ5ojju8Z8AUPT9nNq4I0Zi4FDyTc9AYdH7c0ZP5oxLUUCGpmNqYnI97sdshWQX+qpAuqJAfX5BBJbNQ6ArC0ErIFrfBtw7icl20JgShuhvM2mYmut8X/jwMegQ=
+	t=1710936339; cv=none; b=YthYJKemPhX1P6rIFvuh8AvWEqEmvPsZQCLsqxLKPG1b+h0P3pFKaliYIrwUccM6X78JyUSdIivP/cOpWTIlSv97FOfrKHl3ZaGJ6ya6oST5amixWqvisn5YbwrErVl8mMCfDiClzyJve3KR2zugrmBEN4+a2JZkUWAPdVa5Mm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710931234; c=relaxed/simple;
-	bh=R8fTGH9OWGPMs9dIN2Cm0WFP0y0lgeZLVmVYPrCVwSY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Je00emRN/RvLBv6wK1u3IR1N2iX92q5NwgaBq1DApDAwm4TXs92mlIc1os3onBadL2jI57YLBHxCZoCoipIELc+BcY2YurJR2gl+OUxjdvgldq++RUJ3sQAgnnzW2cRb6cqAau5KJsRW1I6cmzlTiGcVLjozNbN8ebAi2SrhsY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=QwZCousJ; arc=none smtp.client-ip=46.19.9.99
+	s=arc-20240116; t=1710936339; c=relaxed/simple;
+	bh=Bv0vnDFIE4l1ckdc9yIZADTw7OuOYa398zh7BG+c0nA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BJvhfK/UoADnIfMRw24i9YV1CKE/qBui+uY8cdmuipHatyemymmXFuOUBJUztuVmpZOa7MR2a3jOhdGV7aKoJzndO9dm9usWyPiM+ZBTnYjbKbUmG87Ln+nDBQ28Qn75KhRaZdsCAYtLAWRWyK6pVEqkwUmI5qAQTCEKaQt37ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=YBf9YfYa; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="QwZCousJ"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="YBf9YfYa"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=brVvifDkJB4+mWvFeTvzWiEvVdd6+g5oyJp8fuUKCZc=; b=QwZCousJRw5qU30TISjc8Lk19f
-	818/2S46S5WaeIs8rpvdGZZCe0/0kk8CyHKr5lDkyhlXUwnsAacbxuJElzuvN8bBDcCLI94ghTJWs
-	05A1VCZVddNtAqRMjoNAtdvOa4pG9xDeLelO3vm0sSx3dtlDwxXIt3nvmja81jk3VT04uWWmeBfT4
-	ANyB3I8cib3eKMmQm2rJtfTm43rwCJwzSpq1kKOwt4a+W4ypXpf6sLq3CN3/q/X6hLf+TdVZcay6s
-	Wgs8twucDjT+Qc4zWcIJTd8yNydrVEIjSMPRTYybRisNdAiCMQ7vzKCUckbDwuKwtLAwpKjt+FgbN
-	HaSygMWA==;
-Received: from [89.212.21.243] (port=57750 helo=localhost.localdomain)
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=V38z3dXzsoQdcHr/9aA6f+pJAC6EF/1U7YiXTRMIxXU=; b=YBf9YfYaD5mjsz6HfDj0lOx/CH
+	nXV3cytfORkWXz5TQdmOvMyeR4Vm97N+ozlYxZuCjIrJjMclEaUoW+dGMjBmVg+IVjEb8eOCgjPgH
+	D+F9RRP561uQOl41AdIbH1PkB/d9OqsU8kMznFzVnEDax/yDaAZJh5P1d8HIOxVVqBczvv0cQYNdM
+	hZNY1NIDJ6rxbu6LShFZbj8Z9ap47jRep0KpRjzduKJtdW2WIg/rEdsz9ZtnA5tmPkrtDcXMhLVoj
+	/+5gRhMa/oMz7DOSGzR4BGGWfkGG6VUQsWMpVDMNFJhUcHabSBVkkDk1o2zSsL4+xZasKDg/FRyAH
+	YmPCmdIQ==;
+Received: from [89.212.21.243] (port=54340 helo=[192.168.69.84])
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1rmsnx-005Tm8-1J;
-	Wed, 20 Mar 2024 11:04:17 +0100
-From: Andrej Picej <andrej.picej@norik.com>
-To: haibo.chen@nxp.com,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: jic23@kernel.org,
-	lars@metafoo.de,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add calibration properties
-Date: Wed, 20 Mar 2024 11:04:06 +0100
-Message-Id: <20240320100407.1639082-3-andrej.picej@norik.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240320100407.1639082-1-andrej.picej@norik.com>
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
+	id 1rmuhG-005rRw-0q;
+	Wed, 20 Mar 2024 13:05:30 +0100
+Message-ID: <e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
+Date: Wed, 20 Mar 2024 13:05:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Content-Language: en-GB
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, haibo.chen@nxp.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ upstream@lists.phytec.de
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+ <20240320100407.1639082-3-andrej.picej@norik.com>
+ <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+From: Andrej Picej <andrej.picej@norik.com>
+In-Reply-To: <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel.siel.si
 X-AntiAbuse: Original Domain - lists.linux.dev
@@ -75,39 +72,79 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Document calibration properties and how to set them.
+Hi Krzysztof,
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
----
- .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:
+> On 20/03/2024 11:04, Andrej Picej wrote:
+>> Document calibration properties and how to set them.
+> 
+> Bindings are before users.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-index dacc526dc695..64958be62a6a 100644
---- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-@@ -46,6 +46,21 @@ properties:
-   "#io-channel-cells":
-     const: 1
- 
-+  nxp,calib-avg-en:
-+    description:
-+      Enable or disable averaging of calibration time.
-+    enum: [ 0, 1 ]
-+
-+  nxp,calib-nr-samples:
-+    description:
-+      Selects the number of averaging samples to be used during calibration.
-+    enum: [ 16, 32, 128, 512 ]
-+
-+  nxp,calib-t-samples:
-+    description:
-+      Specifies the sample time of calibration conversions.
-+    enum: [ 8, 16, 22, 32 ]
-+
- required:
-   - compatible
-   - reg
--- 
-2.25.1
+will change patch order when I send a v2.
 
+> 
+> Please use subject prefixes matching the subsystem. You can get them for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching.
+> There is no file extension in prefixes.
+
+So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?
+
+> 
+>>
+>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>> ---
+>>   .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+>>   1 file changed, 15 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>> index dacc526dc695..64958be62a6a 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>> @@ -46,6 +46,21 @@ properties:
+>>     "#io-channel-cells":
+>>       const: 1
+>>   
+>> +  nxp,calib-avg-en:
+>> +    description:
+>> +      Enable or disable averaging of calibration time.
+>> +    enum: [ 0, 1 ]
+>> +
+>> +  nxp,calib-nr-samples:
+>> +    description:
+>> +      Selects the number of averaging samples to be used during calibration.
+>> +    enum: [ 16, 32, 128, 512 ]
+>> +
+>> +  nxp,calib-t-samples:
+>> +    description:
+>> +      Specifies the sample time of calibration conversions.
+>> +    enum: [ 8, 16, 22, 32 ]
+> 
+> No, use existing, generic properties. Open other bindings for this.
+
+You mean I should use generic properties for the ADC calibration 
+settings? Is there already something in place? Because as I understand 
+it, these calib-* values only effect the calibration process of the ADC.
+
+> 
+> Also, none of these were tested. I am not going to review such untested
+> code.
+> 
+> It does not look like you tested the bindings, at least after quick
+> look. Please run `make dt_binding_check` (see
+> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+> Maybe you need to update your dtschema and yamllint.
+
+You are right, I did not run the dt_binding_check, sorry for this, 
+forgot that this existed. I see now I have to add the:
+> $ref: /schemas/types.yaml#/definitions/uint32
+
+Will fix in v2.
+
+BR,
+Andrej
+
+> 
+> Best regards,
+> Krzysztof
+> 
