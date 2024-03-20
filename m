@@ -1,150 +1,123 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902223EA9B
-	for <imx@lists.linux.dev>; Wed, 20 Mar 2024 12:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C1C3B2BB
+	for <imx@lists.linux.dev>; Wed, 20 Mar 2024 12:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710936339; cv=none; b=YthYJKemPhX1P6rIFvuh8AvWEqEmvPsZQCLsqxLKPG1b+h0P3pFKaliYIrwUccM6X78JyUSdIivP/cOpWTIlSv97FOfrKHl3ZaGJ6ya6oST5amixWqvisn5YbwrErVl8mMCfDiClzyJve3KR2zugrmBEN4+a2JZkUWAPdVa5Mm4=
+	t=1710936950; cv=none; b=YwYlSz2nkRq5lIcan+EtJ85N4SsrPsx25qEuNHvLUp2X+Gwc97JS9HIpCxhA/DW0U3TvetsSfU8qhj7Tu6Y+6+br2lsPFuKpBXXi2m/ykhQK9G0UrvQ1uCxblozCZ2n9/nLiPaEda1Sidz+Krb21LOBTxw5V72XijMNpBfyjj5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710936339; c=relaxed/simple;
-	bh=Bv0vnDFIE4l1ckdc9yIZADTw7OuOYa398zh7BG+c0nA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BJvhfK/UoADnIfMRw24i9YV1CKE/qBui+uY8cdmuipHatyemymmXFuOUBJUztuVmpZOa7MR2a3jOhdGV7aKoJzndO9dm9usWyPiM+ZBTnYjbKbUmG87Ln+nDBQ28Qn75KhRaZdsCAYtLAWRWyK6pVEqkwUmI5qAQTCEKaQt37ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=YBf9YfYa; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1710936950; c=relaxed/simple;
+	bh=icCOddxJucyQGAwO1xY/XiG/Q3JgHVedjvn3506ChdU=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Uxl9zou07GgPRi0GCznUwuvPtJOHKQkJUu7MZu6TFvtQKM9YioWJYwm4veDcCwWzFBsLN47zxoyTkD92kDzttzClbyTbEuzYWMA4TZ08SwxLXlpLpdz/qjv9hwOwLn/8SS10F2UN709q4jcMwUKJxoq33MmfVVCBe85as0u5l5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=ceFRikTm; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="YBf9YfYa"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=V38z3dXzsoQdcHr/9aA6f+pJAC6EF/1U7YiXTRMIxXU=; b=YBf9YfYaD5mjsz6HfDj0lOx/CH
-	nXV3cytfORkWXz5TQdmOvMyeR4Vm97N+ozlYxZuCjIrJjMclEaUoW+dGMjBmVg+IVjEb8eOCgjPgH
-	D+F9RRP561uQOl41AdIbH1PkB/d9OqsU8kMznFzVnEDax/yDaAZJh5P1d8HIOxVVqBczvv0cQYNdM
-	hZNY1NIDJ6rxbu6LShFZbj8Z9ap47jRep0KpRjzduKJtdW2WIg/rEdsz9ZtnA5tmPkrtDcXMhLVoj
-	/+5gRhMa/oMz7DOSGzR4BGGWfkGG6VUQsWMpVDMNFJhUcHabSBVkkDk1o2zSsL4+xZasKDg/FRyAH
-	YmPCmdIQ==;
-Received: from [89.212.21.243] (port=54340 helo=[192.168.69.84])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1rmuhG-005rRw-0q;
-	Wed, 20 Mar 2024 13:05:30 +0100
-Message-ID: <e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
-Date: Wed, 20 Mar 2024 13:05:29 +0100
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="ceFRikTm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1710936946; x=1711196146;
+	bh=hrhEkdmz0bda6xif5V4a29xg5PpADmwyOkTCS+waL7s=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=ceFRikTm1IiNNVPOhnISV8qVpdelqJ33F15DUsJLpI3RJgisESC+j4UatluzI5o1H
+	 qu1I82s9WkMamYRmCENMdU08ypS8966hc3CMA84IyoEoToOPCSv4Pbn29tdj6fpmVC
+	 tXKpRkRFKQGi2W9oiG5bPSeSNf3VdVqDtTgx1loJiucbhEC22aqKYcAoWN+ohmigqW
+	 A0K9OZXrnYEO0oA5A2nL3UKjwT1PQzbNjN8j6JtxLMVjxtqahsyV2webvQQC2ZU9Cs
+	 2hSXssimo2RqG09dnVX/KLw+uNlRfaubijK3ipwMhkCbCUYdSFQWtorcGi10cK9AZ/
+	 7rp8OsheUX/cA==
+Date: Wed, 20 Mar 2024 12:15:36 +0000
+To: jirislaby@kernel.org, gregkh@linuxfoundation.org
+From: Emil Kronborg <emil.kronborg@protonmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Emil Kronborg <emil.kronborg@protonmail.com>, stable@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v3] serial: mxs-auart: add spinlock around changing cts state
+Message-ID: <20240320121530.11348-1-emil.kronborg@protonmail.com>
+Feedback-ID: 20949900:user:proton
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
- calibration properties
-Content-Language: en-GB
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, haibo.chen@nxp.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- upstream@lists.phytec.de
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
- <20240320100407.1639082-3-andrej.picej@norik.com>
- <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
-From: Andrej Picej <andrej.picej@norik.com>
-In-Reply-To: <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof,
+The uart_handle_cts_change() function in serial_core expects the caller
+to hold uport->lock. For example, I have seen the below kernel splat,
+when the Bluetooth driver is loaded on an i.MX28 board.
 
-On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:
-> On 20/03/2024 11:04, Andrej Picej wrote:
->> Document calibration properties and how to set them.
-> 
-> Bindings are before users.
+    [   85.119255] ------------[ cut here ]------------
+    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_co=
+re.c:3453 uart_handle_cts_change+0xb4/0xec
+    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc w=
+lcore_sdio configfs
+    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-0002=
+1-gd62a2f068f92 #1
+    [   85.151396] Hardware name: Freescale MXS (Device Tree)
+    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
+    (...)
+    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/=
+0x3f4
+    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x8=
+8/0x210
+    (...)
 
-will change patch order when I send a v2.
+Cc: stable@vger.kernel.org
+Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements f=
+or irq helpers")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
+---
+Changes in v3:
 
-> 
-> Please use subject prefixes matching the subsystem. You can get them for
-> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-> your patch is touching.
-> There is no file extension in prefixes.
+I misunderstood how additional instructions for the stable team work;
+sorry about that. Therefore, the only change in this version is the
+removal of the "Cc" tag, which no longer includes v6.1+ as a
+prerequisite. Additionally, I included Frank's Reviewed-by in the patch.
 
-So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?
+Since the Fixes commit has been included since v3.18, this patch should
+be backported to all currently maintained stable kernels. However, for
+backporting to v6.6 and earlier, either b0af4bcb4946 ("serial: core:
+Provide port lock wrappers") needs to be included, or those helpers must
+be open-coded, i.e. doing spin_lock(&s->port.lock); instead of
+uart_port_lock(&s->port);.
 
-> 
->>
->> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->> ---
->>   .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
->>   1 file changed, 15 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->> index dacc526dc695..64958be62a6a 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->> @@ -46,6 +46,21 @@ properties:
->>     "#io-channel-cells":
->>       const: 1
->>   
->> +  nxp,calib-avg-en:
->> +    description:
->> +      Enable or disable averaging of calibration time.
->> +    enum: [ 0, 1 ]
->> +
->> +  nxp,calib-nr-samples:
->> +    description:
->> +      Selects the number of averaging samples to be used during calibration.
->> +    enum: [ 16, 32, 128, 512 ]
->> +
->> +  nxp,calib-t-samples:
->> +    description:
->> +      Specifies the sample time of calibration conversions.
->> +    enum: [ 8, 16, 22, 32 ]
-> 
-> No, use existing, generic properties. Open other bindings for this.
+ drivers/tty/serial/mxs-auart.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-You mean I should use generic properties for the ADC calibration 
-settings? Is there already something in place? Because as I understand 
-it, these calib-* values only effect the calibration process of the ADC.
+diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.=
+c
+index 4749331fe618..1e8853eae504 100644
+--- a/drivers/tty/serial/mxs-auart.c
++++ b/drivers/tty/serial/mxs-auart.c
+@@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *p=
+ort,
+=20
+ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
+ {
+-=09u32 istat;
++=09u32 istat, stat;
+ =09struct mxs_auart_port *s =3D context;
+ =09u32 mctrl_temp =3D s->mctrl_prev;
+-=09u32 stat =3D mxs_read(s, REG_STAT);
+=20
++=09uart_port_lock(&s->port);
++
++=09stat =3D mxs_read(s, REG_STAT);
+ =09istat =3D mxs_read(s, REG_INTR);
+=20
+ =09/* ack irq */
+@@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void=
+ *context)
+ =09=09istat &=3D ~AUART_INTR_TXIS;
+ =09}
+=20
++=09uart_port_unlock(&s->port);
++
+ =09return IRQ_HANDLED;
+ }
+=20
+--=20
+2.44.0
 
-> 
-> Also, none of these were tested. I am not going to review such untested
-> code.
-> 
-> It does not look like you tested the bindings, at least after quick
-> look. Please run `make dt_binding_check` (see
-> Documentation/devicetree/bindings/writing-schema.rst for instructions).
-> Maybe you need to update your dtschema and yamllint.
 
-You are right, I did not run the dt_binding_check, sorry for this, 
-forgot that this existed. I see now I have to add the:
-> $ref: /schemas/types.yaml#/definitions/uint32
-
-Will fix in v2.
-
-BR,
-Andrej
-
-> 
-> Best regards,
-> Krzysztof
-> 
