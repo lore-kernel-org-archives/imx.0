@@ -1,64 +1,67 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2083.outbound.protection.outlook.com [40.107.15.83])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2067.outbound.protection.outlook.com [40.107.22.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D2686263
-	for <imx@lists.linux.dev>; Thu, 21 Mar 2024 15:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EFB12CD8C
+	for <imx@lists.linux.dev>; Thu, 21 Mar 2024 16:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711033475; cv=fail; b=ehcHNqDoNGVjSPoByj+YxXemysr7Tz2gwk3tEo2kY1ISos2hU0+XzyznXtQ2zHg8zTtiJCnpoIURVK1FiiAEKriXmy2hCj1G5nxyql5tGKlIPdLrG3pSzpLOXAZwla4tzlXK97Zsm6z5wvwiRZ5Q9Tmrilktnwgsitq+7Nwadpo=
+	t=1711038112; cv=fail; b=FR3RijTfB5yuTzLJVcHT2FaAXozO+K9vyjow0A8fUJJd3OpEJ4pZCp2P28BQvkAzsLZNXYAeqtCdXgaMq+x0fwig1hxKGh62zJEnISiiwzfadcY6L82yeV1xb4aDJWv4emkIOiUq6eOX9letiMQuH1bR4eKhXV0rxAYD+mrU0w0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711033475; c=relaxed/simple;
-	bh=1zLFM1PbEs4P2h2NyGL2hlusKCOxxaFjzdHJT/cglsc=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=YoA1Y5Nx9C+DMkT/4ORN9kIuMA+ddaU3QY978mFAq01H97VdIR8Rw3rusWljM2vPQFxtIvSC1Ha/SQsq18IUG7Q/1l03L4wpuXMJ64SDHPqySx3HjuouR5wjIOJWGOBK3PM9ws8oFCQMV5fTGnJQtZCFRln3ViNwM7UtaniUxNI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=fLaVV0ah; arc=fail smtp.client-ip=40.107.15.83
+	s=arc-20240116; t=1711038112; c=relaxed/simple;
+	bh=mTZ3CfE1IOB7vebwBgvXfb5P0IRa/Jj6Qh2FGXVwCYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ESfymo6wZ138V8lz8TJHWOE2WUSuwVvA3I1n3PfdDEG62aGsW7bRKxxAr8ywfUNt40B8QS9aRFV2ANYkiwkLJqZRiDNW1LqeMgTfYE7qOriNAWLF5KzXyrVl38jVuGeQsy/rqHlVSG9SvuhOM4mdIPigW3K3kOOb874GDjsoRYo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TNbg7/GQ; arc=fail smtp.client-ip=40.107.22.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="fLaVV0ah"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TNbg7/GQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G7/plrA34P9jLWJPiB2eMlxNElc+whmg9IpRVqIDFbvuq1NuRplbx9T40kfAW5ZG/wrTrfAAFqJjm0QDaVypZ/1XgIuIQ7t3kTSau8ckygoj8wb0f5AH9MmIb8GrihUkg5FHyiWIAymfQyCwihVxyHZE3zIwdjonAamIYTJF2mbhSvtart6Lr26zy8p7OCUlp1ajbPUunWOO3l05IhPHmj0DOP+PvWqkzf1VDF3PvNLsV/OGu5leSb9Akz+wZQDSI1xayAG951yAzAXGCTpqe8Zgr8rPyZZ1nn9Ci8BziqicglQmVGfjj9vPD4YZFHaCGPK9Nww6L5/yEKFJ9dgn9A==
+ b=cvrvbPS0m35b9nUwThVpOTWW/ZyF0nnTccfZltbJmLFrRIgGP3Y/UfkFA6G8hK17Url1teqbFOWYih+PKLGVftKORzDmZ5vcl6MWAoH3hW7SrOrJtsk7aRUSzy8sa0qzC8iLlRjkGqSvp9Qrl1KS50vjl8LoxOlDSaSbxAWTs6hdQQa2zHPVw/XOUVqv0grILmF6bK3tAzXGLySfB/CxuYuc7Sh2jAAmEJuLtNN8jEkQ/j7VOcngkJQR9A8UrK+cDv37uXvKE8nyzgi34OnfZfnsv8KXgRMWjWKReIW1hcci/0BeCWZdZZlEeB2Dq5xlUc/iCB7FlbvtR2sVJwE+Dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T8GIHj5Vj+nxFYFGoXsUi9GsA8NxysTkUy6qq+4cSL0=;
- b=ZP87Y68UpujJYY7IwoI5aZf7iKkmkiUmUwhCu+wQptYjgFyzPZA8jXI3x14ea3Y7bDYCrhSRZCWYey28bsyQgK2cu7UnmS10laUM8xu7PoHDcOoN8pQYBK0eCJgUCX22oXmPuMHL+yUCFcN46hHIylYP5viMtItdqlyijNXLAHceg+G/fYGVyNYHUB79g4cV1joEqEkYjWkcLSRLVoOgKHKCswb5DXIt4w290QxVswoAPvSHts1mSy8o3bTYPSUDmSbCq7ORuPtKkGIA9pFMC3zhMvALwP6s6OTATQC32kSCLUfQb3sRcoaMzHfFgEfP4gti4KiA1RGwxyrq5FNotQ==
+ bh=I11FkQrsKETG1XnosOsP4PYEkWF/VAkOGuMKVDda+lA=;
+ b=mf5Btkj3dvTxqHLvd5DsNlge5GPqu6Pnqj7vmsgT98v+CSA94ZvBZZ5+GDyOzUZflS0txK/50MB2BHK5NbC9vZWh8HKh7SNRVwlkHWdHCAJtEoAzlgwg/UCN4KP9QPDJpvLqy2RlzeWAsIodaEU1jYZxT2bsHLh1IxPDNr/lIdco2gaHCZJSqwCyig1V06J6l4Seir5NmVkuhCuyZmkoyhaRyOTKuCpM/cz+Wmm62Y0oaI/AlNXU59KoFXMSAhDlQ9JXcwFahCkUTEQ1wuOWaVbNO2lXeIePJq9ZockCxTs+0q8z+tkeW1DZMHNAAZZdpYDXzatKajOcWCI6d6LBtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T8GIHj5Vj+nxFYFGoXsUi9GsA8NxysTkUy6qq+4cSL0=;
- b=fLaVV0ahG6WG7QscwXEk89k6iQ0uyohWJ1xbAURX1rh+QS55VStGKyJV/uupX3bG00j/KvLjUluwav00PP9XQ6Kshzt54hzYjqinNmCyT3PnVtSvxA6BOs33BqDu4AbILW6iwUx4DTaCIH9fWLC0MxEsKWqguzww/KOiHTHHIfs=
+ bh=I11FkQrsKETG1XnosOsP4PYEkWF/VAkOGuMKVDda+lA=;
+ b=TNbg7/GQDqlJsTN7Swb7H27De/Wm6YN7rVXdLSD3+dFXcWhQDuhNKKlZ9fqjbQEb7hZNjXnSWHhcwMl/pgGYMnXxQcVUt/a5RHNzVPyfjVGYyxx+CzO078haB/NN7Uua11wrn8W9uLaXVncRgBfqdt5hL5kVqKbiGblre4avF5E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB9880.eurprd04.prod.outlook.com (2603:10a6:150:119::6) with
+ by AM9PR04MB9002.eurprd04.prod.outlook.com (2603:10a6:20b:409::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.30; Thu, 21 Mar
- 2024 15:04:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25; Thu, 21 Mar
+ 2024 16:21:47 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Thu, 21 Mar 2024
- 15:04:28 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] ASoC: dt-bindings: fsl-audmix: Convert fsl,audmix.txt to yaml
-Date: Thu, 21 Mar 2024 11:04:00 -0400
-Message-Id: <20240321150401.2464783-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0121.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 16:21:47 +0000
+Date: Thu, 21 Mar 2024 12:21:37 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: mani@kernel.org, kw@linux.com, niklas.cassel@wdc.com,
+	bhelgaas@google.com, gustavo.pimentel@synopsys.com,
+	imx@lists.linux.dev, jdmason@kudzu.us, jingoohan1@gmail.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org
+Subject: Re: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <ZfxekaNkAqldGKLD@lizhi-Precision-Tower-5810>
+References: <20240304224616.1238966-1-Frank.Li@nxp.com>
+ <ZfGJUDoGnFXKBoG0@ryzen>
+ <Zfqj-mvpG442eyt2@ryzen>
+ <Zfry1kaYgg2OBvQL@lizhi-Precision-Tower-5810>
+ <Zfvs-AHcuH2k9x7w@ryzen>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zfvs-AHcuH2k9x7w@ryzen>
+X-ClientProxiedBy: SJ0PR05CA0077.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,236 +70,111 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB9880:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d33b5fd-e864-4c13-4b2b-08dc49b83443
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB9002:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08943564-b13f-4db9-58f8-08dc49c300d0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	nO6m6rIV8OT7LbYjk/+wbsACLGUJU91r0nCzd8tssxLVxpfRYuQWexbcXK6aMr+9R7IqfckkeGjC3uYYFpuNB79vXWCgcDgO5YjGbcziPfDjYPss5dwzHDsFVJYstxW2gibAYhegXG8rgYcMjHj2gDTkVMCe5DqsrtncZbChlbjIvhcVzgRcgu6ryIn9G1ckYAbuEOHp453wiv+iM7koFcypKqfTw+/WgfTTAKwMrH1QuRRAQqD+tLnKwY8Sk45WQAKe8W2zIof/nJlJr1VJupgIhnhPkaUz0M3ZsWLl3CWVHrfhdRtRpBUIC87fVZmJnuv022Vg9SMj0s70dqAjmGvDKF2n/W6054VmUJxjDnklpucVxN6T5qSVAm2Z/nbFk4VWweaCmzasJf/eqDucfFWO6B10e0CUBvbjgr8mb9MEnoWyXN0dZqdlVlqKZlo3OFlKUWmmXJ4M0rOwKacPeAfPA8wtjjGlztiNXz2ngJmwnlRVXxcKNqs7rxr9w+liNHXc/UOW5r9/UXjm3usV0Y3X3NH0Oyaobi62eR1xOimE97ipYJYae9ksS/vIaVssNUR3ZFY/MAG5SPhVndC1FtNTEEmh7h1tXxGtqhWyKhX/Z9vYVU3WScLBXzy5ydHbgEKHK6AmpHiuxy012CF5+g/h66tMD2oJEfhOmExkjwk=
+	LYTMCjn4WHbRUXaNi5liIlC7SYaMBYzPlzUWuS+R+8HSt8ifG4YQ5Ge32LFqMgsStNff9BzV0Ao5X5GrlmmT3WW8I4q7NdWb4vLX9Fai+P4CBPvb0B25ZL76D9pszbvd4n3HbFWae2sx5n9IeBAzqsvFjGUspT6UK/WbQidqFutg3q2pHb3goup4Z/IGykQLvxSy/0Pfs4hQpVBuScq4AKBj9U8vRBNu3NGrlPdrgyIE+HycF71qJVEEyYfXy9Jx6m3IT8CxOlB1bXNHAXHzWC9owjAetVPsWPLtP1/piMZ0pqgYokJvYjg5skpUv95FBvpwKvjAYSLz7QTSJb1uvi9l3Ha5ZcGcax7Aa7HROgNaKzhOeyGXcX6+vfUv1BlpALBx+TfpEry0XrC7fGbxbeTG+a1CDYffOFiitD/HwdljuzmvEAqC/0RCH0PNNA93Jdm2WUM+RPIHJyywz7KIxcBDn2h00d5Ti2jlySBm56WHrTUORF3GHF8qwCPKOYk4OKWT0bW/0fe58rZVLsSwV/gx0eGgsNdHpiWmaOFGu5o+uUHPn3RJqKFJ7rnX2DiCCyh3dhFqUIH+0WA2wlVOD/oOjc/gFkmb4SJuM6sMb/O7fg8cV/ONNl30v8dfDu8xyEbEDaWyoGF4tGWgUyXXlKX+8suR+qUkxldGpMOnCgw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(1800799015)(7416005)(366007)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7y1NFH5UgGs+A4n9QgELBJAmOUEhodS3S00EVtSBwRsmkI2k02p7jt77aDa8?=
- =?us-ascii?Q?xcLVjesudrG7CPQMaVSGiQ9/GoxYd/euTZLmn+a2TAYmTioAlWqUrLtKKoiW?=
- =?us-ascii?Q?ZhzlXJrKRySPquWrireUGnTHQ3Vw6RsQmsGznCwsCREPNYRzlHL/RGxzgbMB?=
- =?us-ascii?Q?xO3W27xJLzioFecSEFAVWvz7mE24lYxW69qQCF24hUqPucghjzXrAgdct/n2?=
- =?us-ascii?Q?qK1TPU6r66raU5+Hh+p0uC/IL5QcLhZs1vtYb5xKxjJiU4ijkKrTgGCXkb+4?=
- =?us-ascii?Q?MBnuuLhYHxkajPEcRaLa0QgLY2vSDqntG0MSu1eTkEQDLktS3vRMfJeUc52Y?=
- =?us-ascii?Q?1dU3x3DVjVmXFZBPwXajXisp1tvLkDjLkKoNEMh/ohlr2DDWyltNjDekZu00?=
- =?us-ascii?Q?IMci40W8sNl7KoIagLjfzm4Nivcy3jfuDRr9SmW/XgoXqXoODDy11B67Q6d+?=
- =?us-ascii?Q?M565R4urM4Q9akO/JvL90u/30ISiwOwZVuf71FqhKn2bFI8LoncbrIdDaoyf?=
- =?us-ascii?Q?V/DkEK5KsyRN/17W4ovsSYPIbSgzq0H0RtwKUVWep7GYpgxInGSFOnCR1Gn5?=
- =?us-ascii?Q?DnYjdZu/DAlvxtlbnc7b7/HLv6Ip1jntjy0H7ZRIFZgwVOCoKH1PM/fQ2hDr?=
- =?us-ascii?Q?iU2EWuG9MRvDLAtNTZx81wO39mXgwfZOCMU1jjlytHw+VRwz7rMFMfHEySh3?=
- =?us-ascii?Q?oB0d8Pb/WmKDNrXDEli0QlrQqWlE5qJPAhTx5/Dbegjzmth41njY0eKraEB3?=
- =?us-ascii?Q?6my458g58eNOqaw8OQYcDdSf4enpz1Zph0O7jHxsQ/1nMoL2WVlZHVmHe4TL?=
- =?us-ascii?Q?bmNSR37CNvuk/pqHny+NyS+7Rw/FRDXDBTb/tJ2PaOhJI04bP1uHfJG/R3cq?=
- =?us-ascii?Q?9Zim22vpz913oWChkuaxhah2XnIhXnBiy3Q4rQ5J/aNmwPN8uVYl4aY8FdnV?=
- =?us-ascii?Q?Yj5cZWDGOg71cytrwSa+yRXyqfOjO2/zpjsNrbR9LajhzrXZ20dPMIdgGViy?=
- =?us-ascii?Q?9tyTqXk5iV3fw9dWsLWQwUmWKsUz1g46NTb8L2wNbDD0MAD6g9FhfPrhZZlF?=
- =?us-ascii?Q?ygugUJ9Grvn7KJiOB3rP+WAhdjyhjUCz3m9NZHjytKGrXoDF4VkBGr2glsL+?=
- =?us-ascii?Q?YxaidlTVMTKN1wEZYonMai+dMX8XTSdOSQseKsJ2lRnZctp7gEETvZ75HwoK?=
- =?us-ascii?Q?pxgs5MQUWtwlGh2y59uQZeY2rDjn6zqHmrgGd5KOwMa5/IyAXS9HUrLNMND8?=
- =?us-ascii?Q?GfxH+svuCcLKQv01SHQW7V/asBbz5Q6Ge44D80UFSzBNSsnAylb3UsMSJGTg?=
- =?us-ascii?Q?0Ade/oO7pp8uyV/hWgVkZXVblJxltfPfCmetfuEEWoxChub6IODyA/2yHIiI?=
- =?us-ascii?Q?Eq3vBYEox2fFa9bMWX/E9DhXtgEJm9k6BSiV0ctphdWBFtf/JaXJ1LgiwsQC?=
- =?us-ascii?Q?ttjdYlNp2cYCvQcH7/PjTl1wTi66rs4icqjlf2mWB+00tr8lGPxGpEL8CxeA?=
- =?us-ascii?Q?7ZS6Q3MWN28nnNgrNVsPj5GtL+bV78ijkBpmO6Ss1eRWLboJ1WZciu0hwfNp?=
- =?us-ascii?Q?ItG33LB9IEuwNcBqT8Z+5hannXah9wNOzKMunPdL?=
+	=?us-ascii?Q?3tnsfd1BuacF7yiLaEZvAp6S/HP5hvydgs/qpsf248JaphyAXAUQnAgEPnML?=
+ =?us-ascii?Q?6uExd8aeZwsXl6LbzqrHFcY5TgRTXxyDe21O6CWw/HQHAF8gx8X5opnWv71K?=
+ =?us-ascii?Q?6T4VvvF9SvYH9fexpD16gDv0UmNEksh9UUDfUOUb36WxkI+M7G2wBvmszP4l?=
+ =?us-ascii?Q?/euEfkIL/+5mxYlUP0LFkj97dxsuirU2cBOk6psTRN5DUReIQg5dXMfaqhmZ?=
+ =?us-ascii?Q?gq/dZc2F7nfDr/UMiY+qtX89LeoXlKMrCFbbh6GvxCirG52HR6khxdrAb2Ca?=
+ =?us-ascii?Q?ghYMKm3YBAFhwiF4dsetxeBZfQ4dnT+nLNchGbFwuyKO1qEQbshz8Ga2ds4B?=
+ =?us-ascii?Q?fI9KVZzHFIXKcRRYssOlToFuk/nc/DVPCZsFOzuHujqNvK/XdDAU7TNMYs98?=
+ =?us-ascii?Q?O3YaNkBZl0j9/ChEA+thPquWE8hy5IvZ6vt8/p4fg0TDYfd8TPl5DGkf9IZa?=
+ =?us-ascii?Q?xcUCn5b2+6ORvDcLafqQLibftGzVTy0uki9bmyO6RU91xyyrbOOJo+3Nrdkq?=
+ =?us-ascii?Q?b+HBNl0m8qkIOBQFubPRNNyGngBf0PCfSLIpJP3SOgHaYQcqJleWGpITdJ+N?=
+ =?us-ascii?Q?BMcdr/lau13hVzF4zNJEGbICfQY5KT6Iz/1Em3VHPfr57apJpkYUbbG1QYpH?=
+ =?us-ascii?Q?jU/GmpJdm9lbTvBOxmmUwAyTwzBsdIT58j2JgZmEzLHBjGXFHJ1nKjKHkQ1B?=
+ =?us-ascii?Q?LmZ3hnD65RznMnzz80DDRFf1XzRWEA27mcoas/YUDPzYv4GGbZbRsPiDnooN?=
+ =?us-ascii?Q?y3brT6Evxqh9QcjD8XZcZ87KfW0GZtZXoXiFWS7CgFTiS3jrxNUf4FLlZtIg?=
+ =?us-ascii?Q?Y17B+eHp8Wnzk4WOnzgwYYUMu9VSkPwITppTFUnDki4TkL+O4tLwwOhCOhdD?=
+ =?us-ascii?Q?KpJXo8fehMSe8RbYQA1fXsKfe3hg2dkpUMrTKnsBb6nLLry8r66/bl+ZX6dN?=
+ =?us-ascii?Q?8C5TpkeJJVozDuAV1VgKntkIqrHjoLaCVhGK4DgSMO9ZUkrAZU9nxj2b1Pw0?=
+ =?us-ascii?Q?mlapfMm0jYLbaIRLdWPlpPGD/0O0eRE1DsPFvu/FFhGM/SB8oi4W2ZnySvKs?=
+ =?us-ascii?Q?iKOfr/DVZMYkQdwlZKhtVqunDCIJQVtgJeuDz063RpymA+S5pAQpdfKWhFFs?=
+ =?us-ascii?Q?USsPW+eBK4s2c9TwpGtam3LkdqUWHwO+ehbf0FnJdH3SeobZbd7YoHP7e9LM?=
+ =?us-ascii?Q?4N9Wq9leMf1UuEtPXqnku9B1HBnuMGZLRIATWCGfbUnRnQHyhIpGTDyr6jX/?=
+ =?us-ascii?Q?K4owxV5A3lKABZRWfkiTEC7XQksMtPxMrxM/muzxZ/tqiuSs+reuSG+w5OKO?=
+ =?us-ascii?Q?7UfjGzIPRV52h+IcWNorQRt2VT3pPXhh7oYX8L646tJtqNmQHNkHBx8WBUOS?=
+ =?us-ascii?Q?Qby3lXgcSjmE4xSNG3DtSxDFPESe9K5dxHnxEhBPv5Stq5GzQj0uebukaMVY?=
+ =?us-ascii?Q?wKNV7V9BP7zYrRRDMN0brYlt7+0EVfW8myuxP78ZFMrg0D0mAtBW26VqMmK5?=
+ =?us-ascii?Q?6kpG0Ytu13Er71eC4a2xIEP+Brmn0Hd/D8T7bK7xT3Zw4D8MaKHrQgRwyyCW?=
+ =?us-ascii?Q?/6Y/2K2y1iqBzb7Ti+hBvE8n5P21aBFfy6DGOydj?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d33b5fd-e864-4c13-4b2b-08dc49b83443
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08943564-b13f-4db9-58f8-08dc49c300d0
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 15:04:28.1456
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 16:21:46.6333
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B/U/QDhmCOGfpd1QrApizzsGoEe5iEYGFrjzqIjjgKBa1Zu7fsisvq6Tqhf6f/BbUMESh9EwlFAkxOBjuNuETA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9880
+X-MS-Exchange-CrossTenant-UserPrincipalName: P/HqWz4MmFqU/byxx9L/2lxOoDuhFgSQ7Dbt2xqVTD4mPytWwoNK1f8wbrbI6cgknNjQFAf/uD74kMtgfc3y9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB9002
 
-Convert fsl,audmix.txt to yaml to let dtb check tools check audmix part.
+On Thu, Mar 21, 2024 at 09:16:56AM +0100, Niklas Cassel wrote:
+> On Wed, Mar 20, 2024 at 10:29:42AM -0400, Frank Li wrote:
+> > On Wed, Mar 20, 2024 at 09:53:14AM +0100, Niklas Cassel wrote:
+> > > On Wed, Mar 13, 2024 at 12:09:04PM +0100, Niklas Cassel wrote:
+> > > > On Mon, Mar 04, 2024 at 05:46:16PM -0500, Frank Li wrote:
+> > > > > dw_pcie_ep_inbound_atu()
+> > > > > {
+> > > > > 	...
+> > > > > 	if (!ep->bar_to_atu[bar])
+> > > > > 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+> > > > > 	else
+> > > > > 		free_win = ep->bar_to_atu[bar];
+> > > > > 	...
+> > > > > }
+> > > > > 
+> > > > > The atu index 0 is valid case for atu number. The find_first_zero_bit()
+> > > > > will return 6 when second time call into this function if atu is 0. Suppose
+> > > > > it should use branch 'free_win = ep->bar_to_atu[bar]'.
+> > > > > 
+> > > > > Change 'bar_to_atu' to free_win + 1. Initialize bar_to_atu as 0 to indicate
+> > > > > it have not allocate atu to the bar.
+> > > > > 
+> > > > > Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
+> > > > > Closes: https://lore.kernel.org/linux-pci/ZXt2A+Fusfz3luQV@x1-carbon/T/#u
+> > > > > Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
+> > > > > Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > 
+> > > > Any chance of this fix being picked up?
+> > > 
+> > > Gentle ping.
+> > 
+> > Now it is v6.9 merge windows. You'd better ping two weeks after linus
+> > create v6.9-rc1 tag.
+> 
+> I don't follow this logic.
+> Two weeks after v6.9-rc1 is v6.9-rc3.
+> Why wait that long to merge a fix?
+> 
+> The PCI pull request for v6.9-rc1 has already been merged.
+> 
+> Merging new features (to a submaintainer tree) might temporarily be put
+> on hold in relation to the merge window, but for fixes, it is quite
+> possible to both queue things (in a submaintainer tree), and to send
+> accumulated fixes to Linus during the merge window.
+> 
+> I did it myself just a few days ago, and Linus pulled it already:
+> https://lore.kernel.org/linux-ide/171087658094.21820.15365015832308818327.pr-tracker-bot@kernel.org/T/#t
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+I am not maintainer of PCI. It was just my observation for pci subsystem.
 
-Notes:
-    Change from v1 to v2
-    - Add | at descript
-    - Add phandle-array according to rob's feedback
-    
-    $ref: /schemas/types.yaml#/definitions/phandle-array
-    minItems: 2
-    items:
-     - description: the AUDMIX output
-       maxItems: 1
-     - description: serial audio input 1
-       maxItems: 1
-     - description: serial audio input 2
-       maxItems: 1
-    
-    dt_binding_check and DTB_CHECK passed.
-    
-    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,audmix.yaml
-      LINT    Documentation/devicetree/bindings
-      DTEX    Documentation/devicetree/bindings/sound/fsl,audmix.example.dts
-      CHKDT   Documentation/devicetree/bindings/processed-schema.json
-      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-      DTC_CHK Documentation/devicetree/bindings/sound/fsl,audmix.example.dtb
+Frank
 
- .../devicetree/bindings/sound/fsl,audmix.txt  | 50 -----------
- .../devicetree/bindings/sound/fsl,audmix.yaml | 83 +++++++++++++++++++
- 2 files changed, 83 insertions(+), 50 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/fsl,audmix.txt
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-
-diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.txt b/Documentation/devicetree/bindings/sound/fsl,audmix.txt
-deleted file mode 100644
-index 840b7e0d6a631..0000000000000
---- a/Documentation/devicetree/bindings/sound/fsl,audmix.txt
-+++ /dev/null
-@@ -1,50 +0,0 @@
--NXP Audio Mixer (AUDMIX).
--
--The Audio Mixer is a on-chip functional module that allows mixing of two
--audio streams into a single audio stream. Audio Mixer has two input serial
--audio interfaces. These are driven by two Synchronous Audio interface
--modules (SAI). Each input serial interface carries 8 audio channels in its
--frame in TDM manner. Mixer mixes audio samples of corresponding channels
--from two interfaces into a single sample. Before mixing, audio samples of
--two inputs can be attenuated based on configuration. The output of the
--Audio Mixer is also a serial audio interface. Like input interfaces it has
--the same TDM frame format. This output is used to drive the serial DAC TDM
--interface of audio codec and also sent to the external pins along with the
--receive path of normal audio SAI module for readback by the CPU.
--
--The output of Audio Mixer can be selected from any of the three streams
-- - serial audio input 1
-- - serial audio input 2
-- - mixed audio
--
--Mixing operation is independent of audio sample rate but the two audio
--input streams must have same audio sample rate with same number of channels
--in TDM frame to be eligible for mixing.
--
--Device driver required properties:
--=================================
--  - compatible		: Compatible list, contains "fsl,imx8qm-audmix"
--
--  - reg			: Offset and length of the register set for the device.
--
--  - clocks		: Must contain an entry for each entry in clock-names.
--
--  - clock-names		: Must include the "ipg" for register access.
--
--  - power-domains	: Must contain the phandle to AUDMIX power domain node
--
--  - dais		: Must contain a list of phandles to AUDMIX connected
--			  DAIs. The current implementation requires two phandles
--			  to SAI interfaces to be provided, the first SAI in the
--			  list being used to route the AUDMIX output.
--
--Device driver configuration example:
--======================================
--  audmix: audmix@59840000 {
--    compatible = "fsl,imx8qm-audmix";
--    reg = <0x0 0x59840000 0x0 0x10000>;
--    clocks = <&clk IMX8QXP_AUD_AUDMIX_IPG>;
--    clock-names = "ipg";
--    power-domains = <&pd_audmix>;
--    dais = <&sai4>, <&sai5>;
--  };
-diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-new file mode 100644
-index 0000000000000..9413b901cf778
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-@@ -0,0 +1,83 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,audmix.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP Audio Mixer (AUDMIX).
-+
-+maintainers:
-+  - Shengjiu Wang <shengjiu.wang@nxp.com>
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  The Audio Mixer is a on-chip functional module that allows mixing of two
-+  audio streams into a single audio stream. Audio Mixer has two input serial
-+  audio interfaces. These are driven by two Synchronous Audio interface
-+  modules (SAI). Each input serial interface carries 8 audio channels in its
-+  frame in TDM manner. Mixer mixes audio samples of corresponding channels
-+  from two interfaces into a single sample. Before mixing, audio samples of
-+  two inputs can be attenuated based on configuration. The output of the
-+  Audio Mixer is also a serial audio interface. Like input interfaces it has
-+  the same TDM frame format. This output is used to drive the serial DAC TDM
-+  interface of audio codec and also sent to the external pins along with the
-+  receive path of normal audio SAI module for readback by the CPU.
-+
-+  The output of Audio Mixer can be selected from any of the three streams
-+    - serial audio input 1
-+    - serial audio input 2
-+    - mixed audio
-+
-+  Mixing operation is independent of audio sample rate but the two audio
-+  input streams must have same audio sample rate with same number of channels
-+  in TDM frame to be eligible for mixing.
-+
-+properties:
-+  compatible:
-+    const: fsl,imx8qm-audmix
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: ipg
-+
-+  power-domains:
-+    maxItems: 1
-+
-+  dais:
-+    description: contain a list of phandles to AUDMIX connected DAIs.
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    minItems: 2
-+    items:
-+      - description: the AUDMIX output
-+        maxItems: 1
-+      - description: serial audio input 1
-+        maxItems: 1
-+      - description: serial audio input 2
-+        maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - power-domains
-+  - dais
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    audmix@59840000 {
-+      compatible = "fsl,imx8qm-audmix";
-+      reg = <0x59840000 0x10000>;
-+      clocks = <&amix_lpcg 0>;
-+      clock-names = "ipg";
-+      power-domains = <&pd_audmix>;
-+      dais = <&sai4>, <&sai5>;
-+    };
--- 
-2.34.1
-
+> 
+> 
+> Kind regards,
+> Niklas
