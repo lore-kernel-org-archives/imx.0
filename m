@@ -1,104 +1,347 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2061.outbound.protection.outlook.com [40.107.21.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B56482F6;
-	Fri, 22 Mar 2024 14:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711118084; cv=none; b=ouUnRAUropzWt8bEc+U/sU9pFxQ0Zqbg60lFv3fEYzIHHttps4zZV6HQG5lhIbmxjcDx7j/UxBzVxSZn1K/U62hAO2CLM8ms5sYYxUuTJGTWZFExS6JwuK0eluHCxnkwpHcq8yCu7zqkBPBB5bzJYWkVRnQZD8jD3qSH4+92CJQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711118084; c=relaxed/simple;
-	bh=hlZVhqXG5tZdnG9IkzH2tQNrjKC3YWqFEQJmVE1j798=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DCtLV4UeNgp4LgpMaOCE76CLWnVlmJoPrfrTbNLptRjTFnzhwDnpqNVl1kFCXb7neYS4hzxJr92Rq4M1rbYs/TQErtphVI4/gdq6SEmKRpwOBLtDd5qOehFbY8RxgzU6cWEy7mFRrMvNpPyCQYhD05q1ujc35bLvsGrfjZusfGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9YIH9mH; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B344D135
+	for <imx@lists.linux.dev>; Fri, 22 Mar 2024 14:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711119288; cv=fail; b=dAcqLQSdhuoP3xxUiDMECJ+cX5y4e7gMxWZWfWiigqmvBuhLEALlH97JVoXiUSs99UYGkE7Nke5L4NmGGZ7v3ZjxeXiTAV7dzBARyrAfweD9W1RUEHLeCocZ8SVXboQh5lF+oQLxIynZc/d0smwOrAI3hmA04P6YO1nNMuRqxFs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711119288; c=relaxed/simple;
+	bh=TeteK8cJBrCIYtjxDfAsLmYamC39DEuU5IbajGIOh/8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=OVjypVHJmg3/3cHmAtM7MFATwxVwnSvaLr+v96SyBV4+g5Kq5qH15nwLuUydpAvJ86T87aCA2u6IH+98LsyPhuiyfX8eCu1zwqijhfsElMqsn3JSloppwF8sBoGzhlOSk69exQ+FbOhQrUuvT8+82+jHdbkVS6Sg+D6woMbiknU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=si7V9sGH; arc=fail smtp.client-ip=40.107.21.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9YIH9mH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB7FC43390;
-	Fri, 22 Mar 2024 14:34:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711118083;
-	bh=hlZVhqXG5tZdnG9IkzH2tQNrjKC3YWqFEQJmVE1j798=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L9YIH9mHGzkuhZa5ZVgbm1uCmpXH/UdC5VoAAU2ZdmPoXXqtpJMpUbovXd3gDgO41
-	 CU2DUUw+SMa8RxrldgPU79Ss9iLOQN6UmBrNuMgrwYhLnrE/9pIW897R2ohFddMIXc
-	 fKAcsdytm6UayuPjZsV6voe6BUrX1bROQ4UC5NTMEIiFIp4Cdztw4DnZ0J1u/GaohG
-	 CdPO8YbPjtOS9u2k4iiFhrL81vXJ7YZxlQaIdf2NetJ3ZGrkO0LeJuDCMVwOrjUrRl
-	 LZee8y5F+DzlqtMhPwLn2YgOsuJFmKXvTh9GCAuztPZGuK4AA8IAS+C6YSkEmDZmew
-	 YKo4qspd4j+2A==
-Date: Fri, 22 Mar 2024 09:34:35 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org, Elie Morisse <syniurge@gmail.com>, 
-	Shyam Sundar S K <shyam-sundar.s-k@amd.com>, Andi Shyti <andi.shyti@kernel.org>, 
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Krzysztof Adamski <krzysztof.adamski@nokia.com>, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Jan Dabros <jsd@semihalf.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Jean-Marie Verdun <verdun@hpe.com>, 
-	Nick Hawkins <nick.hawkins@hpe.com>, Yicong Yang <yangyicong@hisilicon.com>, 
-	Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Khalil Blaiech <kblaiech@nvidia.com>, Asmaa Mnebhi <asmaa@nvidia.com>, 
-	Qii Wang <qii.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
-	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
-	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
-	Ajay Gupta <ajayg@nvidia.com>, Peter Korsgaard <peter@korsgaard.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Robert Richter <rric@kernel.org>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Vignesh R <vigneshr@ti.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Hector Martin <marcan@marcan.st>, 
-	Sven Peter <sven@svenpeter.dev>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
-	Vladimir Zapolskiy <vz@mleia.com>, Loic Poulain <loic.poulain@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, 
-	Alain Volmat <alain.volmat@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Laxman Dewangan <ldewangan@nvidia.com>, 
-	Dmitry Osipenko <digetx@gmail.com>, Conghui Chen <conghui.chen@intel.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michal Simek <michal.simek@amd.com>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-amlogic@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org, linux-omap@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, asahi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-tegra@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH 64/64] i2c: reword i2c_algorithm in drivers according to
- newest specification
-Message-ID: <zdgzj3oemsmlsqz2ctxb3ew6xkohiuew2e4djvxileiew66su5@3pjbsgqdbf3f>
-References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
- <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="si7V9sGH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kmup1HcDvUmnFnjE8oI+vSCSklGgON5989fLXZQvNQFlblBFp9GrhlLLmRFw9nKrH8Y+NbcEN4ewicD0FjTqApsj8olbHk4jZv5bGz6BZpDKK0deAzVYSsIaL/h3TXFhSc+W8qZpYXuAR71muXC1qEhPfu9FMgP0Q7jj0wOp4ei/p3IFHpVBrrxlrOHyjbNMyFQAy43u2uvNXcNlFimDyQHuKrDY+wawe2F7MkOwlZh5uyBtjRUsDMbmBlKrwWw8e5j93MU8E06jZoSWQK7duOwALlfsTTRXAiGxDQupTEPji+DglZpwBCsU66JApiybL7yplK5ZiDT/WqF9qQAAFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7SOiV6oiYz8yuAUYVvq69PyZ3PZMVA2Nmb3g0834yas=;
+ b=ogJJAIQkEHoo71Yw9Hr/pzxzROj9R9S22XE9RzdUFNo0KH6tJkQhhIN0xfk9EACOKDSM4uhTtD8I30ApMDvZrJzGCSsma9IxfKd+XJNa6Rpm7xHgbx1FACJ5hI4tsPJJYIrTXB98hjQYaefYed0/zc/qvwbby7f3T6xWN8sGffdbS9rmxUGQOkDAf+BxlAJ8V68POyNwa4clIjPhe2jqzppTpihi9059oxQdIPD1GzDeZzKCJ30uRQlz1viQOc0x4tMkw6+GaM+EGxhgDHrap8hHcucwF8TDVPe6Z1ag45J1fDxkGX5YcJ4iX+GRNg84JIs3y9BU4XlrsJ0nNho+kw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7SOiV6oiYz8yuAUYVvq69PyZ3PZMVA2Nmb3g0834yas=;
+ b=si7V9sGH3m8nXchNEUA8FNVFDK5jpGznowRA/lx5nRyqxUqPGO1D7PkhEhJwYRZsRQDaxaCop7tsekj8NQ8bkDmdy2L0BC9rCpUz6BOfXQQpCRA2JTOOqEA5L4vF7nwavIQpCJlsjE9FwWneBq1P6TgX7/QnFtponv22ClvO7xI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBAPR04MB7206.eurprd04.prod.outlook.com (2603:10a6:10:1a4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.23; Fri, 22 Mar
+ 2024 14:54:42 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Fri, 22 Mar 2024
+ 14:54:42 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v2 1/1] ASoC: dt-bindings: fsl-esai: Convert fsl,esai.txt to yaml
+Date: Fri, 22 Mar 2024 10:54:05 -0400
+Message-Id: <20240322145406.2613256-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0249.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a0::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBAPR04MB7206:EE_
+X-MS-Office365-Filtering-Correlation-Id: 240709be-4dc1-4177-4c82-08dc4a8001b1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	JhpKqMVVzqqVxHGYngmkp3Msg8Cb7Pas1NKlKtuu1pXJY2hEnESbcJgyy9GWzpL2xF1a0dOAncJTqW2UU6xfcIix9VNwAke3NF0p+FEYWgLPx7jG7iARsndBE0AAoiir16+NF+6IpuYJsrzk+54KFUc4D0o3TFqIjqBZyMZ0JrYi+uvH6W4WhgL3qZzACOF8z6QWur7taofBQHHfT7c8dLoR3mQC2y9KYoroDPskhhzZ/qFI767jJFYzx50mvRK7/gZDGCycH5P/JAHLNGjH0HpD3+eqe92olHqWbRAH0NZFHYd/t3OD+Roz0Fz8EhAV+Aq0OPVDXqRTj8IXD/+vagTfCz+Ae4X+UPE7Az/nG0Trin5FEArcfkwSqHoOFX4J/NUL7qHv+4dFQBd/kbjfxOY5SOJj0mEHt7SlOTrOkKMU+RzI/4KSUbWeDQfpQzjht2laAU+6PS5r7qyxS8EoKx8f/JlaeNaClcuI08m2XVKJXcOCH7MCGvqeW2SSGypYQ7+oGgGq3nMQCqhjSWyi1Ka94h+jsicojK5JOoEVscAMLmp8GmUO6D0AMTvurRMIoW/YldxQq7O3gBigqF1mH63iSpYrDITkZr1jXCvdFocW4N37bA9e0EZEagqI0bzTYMzi1xKgaucRD82wv9T2Kn6k96NRfUh2ddS9uUL1TVE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gdSu6UgqtvEWIIt86VOrpSQZ8Jz0Tkvqf8f7WPFz+haJ7JdyEFwQVmr0vVPr?=
+ =?us-ascii?Q?3N6olWD6jEUWOGvoM7USlyjFEt9P0OkOXYdHg1K8wkqIMNbQNMNNPYKF7SsO?=
+ =?us-ascii?Q?UY4ITyYn+8UklxvlhYkCfVzyvaW3f+gjJk181m4qw2Tbs50hkC6BnrccW7wa?=
+ =?us-ascii?Q?lPD3WFDvg4xIS5eZFYG8PD1ANz71916sdunQDiFxcUlv7lPWEwkdEwc/9uij?=
+ =?us-ascii?Q?G9AGRtA0dr8o8dOijMwlSFjqrILKiMre0lWaAhK7IpwPm+aalw6S3JRXSi8D?=
+ =?us-ascii?Q?RWFraIRnGNfIJInH9sAuNmnxKAbaQzewzycOAHbttkE5qVUtOSUGEtM1AT0r?=
+ =?us-ascii?Q?Fc0FbD4sWQpDeemDZ4QX+UlcSdpreIQzshjGrC8vx4CZh2Rzq1Xo3W8sdLUF?=
+ =?us-ascii?Q?wKUfzPMWPq6bZux67CInVtM5hTAmPBn0YiuPQ8IDWt3MRc74uCkonWs2OUmR?=
+ =?us-ascii?Q?K+PgYVa9H/sEF12lzenY7ZzLysPbwG1vX7mEd4T6JNH4CGRgvdQKaziEdNar?=
+ =?us-ascii?Q?MqEDNXw14afUR1P6XgsN1ApoC6dF6URNEFpfpl3NLF/sGyX/XaOQ/e/cnzoH?=
+ =?us-ascii?Q?VDStQsUAFMFwglvnNmtlpXRTWiAbQAgX34UlWA1+7YwNGJXcN+4RtHebEOK/?=
+ =?us-ascii?Q?Uymbn56N/dyoia2GVdkYdQErdVorm7HCUgnU8pOek5V1vZs4cJP6VTMaK7lH?=
+ =?us-ascii?Q?dnghgi4NPFPbsO55GE52JDnse45NuWcKSyj64dK+QCS/JgupSK3KO5vvINKL?=
+ =?us-ascii?Q?GbP6L8DF9Z3+uofn2c0rjtTMDaxKJgQiMwnSsKdYabdF4d+GL6KL+9g4gOJ3?=
+ =?us-ascii?Q?C6dFJwlPyvp780V5HPQdy7cD3F0wu1BTcy23dqCJX6yFWR7FbPKXkfRtyW8p?=
+ =?us-ascii?Q?NYQlHrgu1QxXqb6iDJc/5KAZQ+WiRt3Sh3uOwBcpD4Y5xKxEVfBKCwCxux56?=
+ =?us-ascii?Q?2TbYRvRdeBfY6aT37F/YPalqxcV3dpHYb5anQaP5KL6MD4Uznqttem6dHTuk?=
+ =?us-ascii?Q?DaWRJr7QjNwnuy1y8xtoOtDWTBdeVw/U2+/gpXkzYYSAYOzKMbEepxYgqLTV?=
+ =?us-ascii?Q?QEo3ULAodLQ29fFFY2uVk9p2tDAe9bUQXj9zS6+92VODUfBlkh927CHXnDvU?=
+ =?us-ascii?Q?8BfNbpaqjz3KuH9mbXVFrifrl0nIvjgSwl+7KG+JVYm9hGwtcp9B1XqSjFQb?=
+ =?us-ascii?Q?phw0ifX3BtBtpxUrMTOtdoYjFLP1UEoxR6iEX6rQZgQjDXamHPlPLYME8t0y?=
+ =?us-ascii?Q?wTwKmeGojs+RRhCwCQbV3ckoBMp7t0h7DrrimEtIDcQWvnVXcS5LmXj0vxx5?=
+ =?us-ascii?Q?l6I+tRmzFWT0Feu1Rx/F9T37Kk0E+lMGHxiByM2Z65z/Gw6CoBi+tmyiIoWG?=
+ =?us-ascii?Q?MMxRFTryfec/K1uUGUcADsF1KudnikGxEGBtjVCAlHulAGpxA5I3RsWjUzGi?=
+ =?us-ascii?Q?Yt1JY18/JWFJN604miKek0ofghJ2OBMOMtCUjGmBqXqaBaIdmVYVb/uaYRsA?=
+ =?us-ascii?Q?2tglk4hNxs5m973FzMwifBU6s9Wn6AhQa6yXl3oXoLIn+zpmk5QU/ELKsHwR?=
+ =?us-ascii?Q?JIv3J4W3EYRkAH/XQkl5KdW+3pOu7IFobNg5HtMB?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 240709be-4dc1-4177-4c82-08dc4a8001b1
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2024 14:54:42.6041
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GVaNkMDi2BUwAjjv9mek32CFIpEY9J8/5ZzOPOMGkuCptt80SgxJGDTxEYRVjBVFZxFosrcorClHVRi0f2LcQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7206
 
-On Fri, Mar 22, 2024 at 02:25:57PM +0100, Wolfram Sang wrote:
-> Match the wording in i2c_algorithm in I2C drivers wrt. the newest I2C
-> v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
-> appropriate terms. For some drivers, this means no more conversions are
-> needed. For the others more work needs to be done but this will be
-> performed incrementally along with API changes/improvements. All these
-> changes here are simple search/replace results.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Convert fsl,esai.txt to yaml. So DTB_CHECK tools can verify dts file about
+esai part.
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+clock-names 'spba' is optional according to description. So minItems of
+clocks and clock-names is 3.
 
-Regards,
-Bjorn
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+
+Notes:
+    Change from v1 to v2
+    - alphabetical order compatible string according to rob's suggestion
+    - clock description move under 'clock' according to kryszof's suggestion
+    - fix descritpion indent according to rob's suggestion
+    
+    Pass dt_binding check
+     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml
+      DTEX    Documentation/devicetree/bindings/sound/fsl,esai.example.dts
+      LINT    Documentation/devicetree/bindings
+      CHKDT   Documentation/devicetree/bindings/processed-schema.json
+      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+      DTC_CHK Documentation/devicetree/bindings/sound/fsl,esai.example.dtb
+
+ .../devicetree/bindings/sound/fsl,esai.txt    |  68 ----------
+ .../devicetree/bindings/sound/fsl,esai.yaml   | 116 ++++++++++++++++++
+ 2 files changed, 116 insertions(+), 68 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/sound/fsl,esai.txt
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,esai.yaml
+
+diff --git a/Documentation/devicetree/bindings/sound/fsl,esai.txt b/Documentation/devicetree/bindings/sound/fsl,esai.txt
+deleted file mode 100644
+index 90112ca1ff423..0000000000000
+--- a/Documentation/devicetree/bindings/sound/fsl,esai.txt
++++ /dev/null
+@@ -1,68 +0,0 @@
+-Freescale Enhanced Serial Audio Interface (ESAI) Controller
+-
+-The Enhanced Serial Audio Interface (ESAI) provides a full-duplex serial port
+-for serial communication with a variety of serial devices, including industry
+-standard codecs, Sony/Phillips Digital Interface (S/PDIF) transceivers, and
+-other DSPs. It has up to six transmitters and four receivers.
+-
+-Required properties:
+-
+-  - compatible		: Compatible list, should contain one of the following
+-			  compatibles:
+-			  "fsl,imx35-esai",
+-			  "fsl,vf610-esai",
+-			  "fsl,imx6ull-esai",
+-			  "fsl,imx8qm-esai",
+-
+-  - reg			: Offset and length of the register set for the device.
+-
+-  - interrupts		: Contains the spdif interrupt.
+-
+-  - dmas		: Generic dma devicetree binding as described in
+-			  Documentation/devicetree/bindings/dma/dma.txt.
+-
+-  - dma-names		: Two dmas have to be defined, "tx" and "rx".
+-
+-  - clocks		: Contains an entry for each entry in clock-names.
+-
+-  - clock-names		: Includes the following entries:
+-	"core"		  The core clock used to access registers
+-	"extal"		  The esai baud clock for esai controller used to
+-			  derive HCK, SCK and FS.
+-	"fsys"		  The system clock derived from ahb clock used to
+-			  derive HCK, SCK and FS.
+-	"spba"		  The spba clock is required when ESAI is placed as a
+-			  bus slave of the Shared Peripheral Bus and when two
+-			  or more bus masters (CPU, DMA or DSP) try to access
+-			  it. This property is optional depending on the SoC
+-			  design.
+-
+-  - fsl,fifo-depth	: The number of elements in the transmit and receive
+-			  FIFOs. This number is the maximum allowed value for
+-			  TFCR[TFWM] or RFCR[RFWM].
+-
+-  - fsl,esai-synchronous: This is a boolean property. If present, indicating
+-			  that ESAI would work in the synchronous mode, which
+-			  means all the settings for Receiving would be
+-			  duplicated from Transmission related registers.
+-
+-Optional properties:
+-
+-  - big-endian		: If this property is absent, the native endian mode
+-			  will be in use as default, or the big endian mode
+-			  will be in use for all the device registers.
+-
+-Example:
+-
+-esai: esai@2024000 {
+-	compatible = "fsl,imx35-esai";
+-	reg = <0x02024000 0x4000>;
+-	interrupts = <0 51 0x04>;
+-	clocks = <&clks 208>, <&clks 118>, <&clks 208>;
+-	clock-names = "core", "extal", "fsys";
+-	dmas = <&sdma 23 21 0>, <&sdma 24 21 0>;
+-	dma-names = "rx", "tx";
+-	fsl,fifo-depth = <128>;
+-	fsl,esai-synchronous;
+-	big-endian;
+-};
+diff --git a/Documentation/devicetree/bindings/sound/fsl,esai.yaml b/Documentation/devicetree/bindings/sound/fsl,esai.yaml
+new file mode 100644
+index 0000000000000..f167f1634d7e3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/fsl,esai.yaml
+@@ -0,0 +1,116 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/fsl,esai.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Enhanced Serial Audio Interface (ESAI) Controller
++
++maintainers:
++  - Shengjiu Wang <shengjiu.wang@nxp.com>
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  The Enhanced Serial Audio Interface (ESAI) provides a full-duplex serial port
++  for serial communication with a variety of serial devices, including industry
++  standard codecs, Sony/Phillips Digital Interface (S/PDIF) transceivers, and
++  other DSPs. It has up to six transmitters and four receivers.
++
++properties:
++  compatible:
++    enum:
++      - fsl,imx35-esai
++      - fsl,imx6ull-esai
++      - fsl,imx8qm-esai
++      - fsl,vf610-esai
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    minItems: 3
++    items:
++      - description:
++          The core clock used to access registers.
++      - description:
++          The esai baud clock for esai controller used to
++          derive HCK, SCK and FS.
++      - description:
++          The system clock derived from ahb clock used to
++          derive HCK, SCK and FS.
++      - description:
++          The spba clock is required when ESAI is placed as a
++          bus slave of the Shared Peripheral Bus and when two
++          or more bus masters (CPU, DMA or DSP) try to access
++          it. This property is optional depending on the SoC
++          design.
++
++  clock-names:
++    minItems: 3
++    items:
++      - const: core
++      - const: extal
++      - const: fsys
++      - const: spba
++
++  dmas:
++    minItems: 2
++    maxItems: 2
++
++  dma-names:
++    items:
++      - const: rx
++      - const: tx
++
++  fsl,fifo-depth:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      The number of elements in the transmit and receive
++      FIFOs. This number is the maximum allowed value for
++      TFCR[TFWM] or RFCR[RFWM].
++
++  fsl,esai-synchronous:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      This is a boolean property. If present, indicating
++      that ESAI would work in the synchronous mode, which
++      means all the settings for Receiving would be
++      duplicated from Transmission related registers.
++
++  big-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      If this property is absent, the native endian mode
++      will be in use as default, or the big endian mode
++      will be in use for all the device registers.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++  - dmas
++  - dma-names
++  - fsl,fifo-depth
++  - fsl,esai-synchronous
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    esai@2024000 {
++      compatible = "fsl,imx35-esai";
++      reg = <0x02024000 0x4000>;
++      interrupts = <0 51 0x04>;
++      clocks = <&clks 208>, <&clks 118>, <&clks 208>;
++      clock-names = "core", "extal", "fsys";
++      dmas = <&sdma 23 21 0>, <&sdma 24 21 0>;
++      dma-names = "rx", "tx";
++      fsl,fifo-depth = <128>;
++      fsl,esai-synchronous;
++      big-endian;
++    };
+-- 
+2.34.1
+
