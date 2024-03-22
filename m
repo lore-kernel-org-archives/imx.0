@@ -1,423 +1,349 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2057.outbound.protection.outlook.com [40.107.21.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1BF45BFC;
-	Fri, 22 Mar 2024 13:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711115883; cv=none; b=P2IMFvYXsAOWmZVLh1ZfkQL8bNu7mSd/oaUNFUdAp0HTlj2q7jD7b2zs8FBbuAXLZRXw0OwlNgcBKbfUg+4Hk9mC21ufkEZPnV66npiTTX/VrmvmuQPLKuOe1BRRUGQUwAULJeWXhWI+IQHEipbd5CsKSgH7sE5ierXRf4oG208=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711115883; c=relaxed/simple;
-	bh=5nLcUidKgB5r+f5iPuyJSAw+a/z19rQjH3i+N+5NLRQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PLJvfnIsbMENillpc9boM21MUumsTYXhWUWh5w0NS97B6ADWMggvBxS9jPNL1BkqxxadM2apiV07EEuV41ivDF4eu9VSvfEKxSBjHQYfcjmGxPBhi6IMfE4BxdFrXKZFLgQJwOXxHwaQWSIpbCy9cMCIgMn3dk3GMrCKcNWASAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPCXHgW1; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625FB487BE
+	for <imx@lists.linux.dev>; Fri, 22 Mar 2024 14:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711117941; cv=fail; b=QVJb29em338oZoS+pf9LTBQD28Y2nmdWGAHHJvBsdDQtICDPQk3SW9L0o9VFGdLFMNgamNmc0DpllRAAw2gv5ZoxhQr7tqruxHOfTlK6EDwEfz2UApjbpz7pfRiURFZPyN0J0hXiQU1ERxN9i/05YOKysb3g/ciTJQVcGW7cz/Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711117941; c=relaxed/simple;
+	bh=opDy75jK37ulwz8fHmzS57l5KaYwzAMAZX+nFaPI1Vw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=OqcNzFC7eNmj9EzcCe/pQ/IAZp2UItkKwFQQUJSo7adrUlFHbpAb/xptKYYUjUCAAOueC+N1UjEbg/ipxennXXVg9fdd1dtSAGPVtS4HzMUfui0PctBWRypkynQ30wklWHrHxlBYKMczjWwIZ1uVWJLcYl0BbpgtU+fQ9oCOtes=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=SsJU8c3n; arc=fail smtp.client-ip=40.107.21.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPCXHgW1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2916C433C7;
-	Fri, 22 Mar 2024 13:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711115882;
-	bh=5nLcUidKgB5r+f5iPuyJSAw+a/z19rQjH3i+N+5NLRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mPCXHgW1IBzKaRUZPDWCykrnbXv43wXL7J6eM7RgiJ7FOAg+unkiSiXgkoNDZCR0s
-	 1nWXtMW8Sgwlzry9/Vgn8jvX4HZ+fm3gYLfjXlKF5OA0BiTPZo9ik9Kw07HhYwnTUD
-	 czzmn0tBqc3otfzGUCqszU3mFmL5rzRrM+/cAcfipejrtLAtQ7rPsYepJGQawNlwOx
-	 s8B2+WkK7N+KpmDz9UYRKrqLP/vAJZLVzOdT2h1q2Vddh67n4V2yPMHvjF8GlpA5AY
-	 NDBsBzlgZSX5ShiwasgCNsp9Lasfue6Cn0bs6+XinuqqOUBXMqWIAhqybOzHMdeMYk
-	 WnpdAzFDKULyA==
-Date: Fri, 22 Mar 2024 08:58:00 -0500
-From: Rob Herring <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="SsJU8c3n"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KP5wG4KE1OWzWvDirhh9/NTCayuqQAhaVZnivaslMsJJIAKi+iCf8zq+uW4rca5ko1apHnp6tzGTlCWpnV2Bxs4aeBivHRqmdMLJ4gus8/YCisl07MjVv6xx5ir+/oSq55YP/xQVRUh+pV6iDAcPMJSavbhU8iLSFAHxz6nvP+whK+sl0/FLigxnGDemAYCkTVX6cbLXKVbN2ks4GwoH1z4hZz43HfSMUFVyNT50Te/acTFuE/FDHJ/vBj+FTxIl8KLcQp+IMvW1M8skB/Lv1ByslyHexOnKBgJ/zrfaXN6dg7Iw0nX/UsNKKMn3AzA2lBQOBcDBn1Bc82jX3UlPiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OGvsbUWaF+k2c8XF/m4cO3hKyh6BGLvG09XshZi4emE=;
+ b=mh8UIbQANvSR5To8q6mMay6avUqJrKgVl/zwviGuc0YnMrTnQzAAAIJSGL5TUD74YUtkLUbT+6XJ/C9UFuAJIqhb4vCh3jvGZCo673wcX7AEJXapAaP1wCHKZhX5f5OGBB5/TXUYZ26Bukf/xv9CXObCLsKYCqZi+aNV9FjOBFX28tb+Dqz2JrA5OyYIwDaSQgVNOKO1CHweRXeXLWqRFNhaGKjYlnoCgJQ1EWmypwIC3MCJE0FTdcVhHsssZMLVWU3s5uCOPYzTrQXozFefXzWpVRc/viQhiFgEbG/w79TXpRypkjOjNEINC9da0X2Blax6djsoREdNDvqvG42YFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OGvsbUWaF+k2c8XF/m4cO3hKyh6BGLvG09XshZi4emE=;
+ b=SsJU8c3nUYLCdUfbkwmsNzXtK3UD5dxHVUnHUkhE9rySsojS+TZaK/oPRW+aGBNd1G7CzwuZdzLiZ8ihX4g+N9j0L6gBBOlnxkTk68kb9NpvkL4absxS11YRLmMm2+TK0knpi1MCssXWoxT2Los2HK3K8jkWONjG+uWvaflv1TM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB8707.eurprd04.prod.outlook.com (2603:10a6:20b:42a::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.24; Fri, 22 Mar
+ 2024 14:32:15 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7386.025; Fri, 22 Mar 2024
+ 14:32:15 +0000
+Date: Fri, 22 Mar 2024 10:32:03 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: will@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
 	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl-asoc-card: convert to YAML
-Message-ID: <20240322135800.GA811908-robh@kernel.org>
-References: <1711102406-8399-1-git-send-email-shengjiu.wang@nxp.com>
- <1711102406-8399-2-git-send-email-shengjiu.wang@nxp.com>
+	festevam@gmail.com, john.g.garry@oracle.com, jolsa@kernel.org,
+	namhyung@kernel.org, irogers@google.com, mike.leach@linaro.org,
+	peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+	alexander.shishkin@linux.intel.com, adrian.hunter@intel.com,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v8 4/8] perf: imx_perf: refactor driver for imx93
+Message-ID: <Zf2WY6dwcZf43Wl3@lizhi-Precision-Tower-5810>
+References: <20240322063930.749126-1-xu.yang_2@nxp.com>
+ <20240322063930.749126-4-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322063930.749126-4-xu.yang_2@nxp.com>
+X-ClientProxiedBy: SJ2PR07CA0014.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1711102406-8399-2-git-send-email-shengjiu.wang@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65f6f7bb-74b8-4276-c660-08dc4a7cdeb9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	4XLb9juYaCIGticP0ttr802zwdGNgkD4WONZssxoaVZmaqTa38n/XSBUUuxPt3jc8zjJYSbkMV/B2lrdFIFb8pGWjR3hIO19FWfwGsSJYP5nRgAyEkfYleBhdYnHrpxsQfV77St0cDUVW4AMmHbx7hxO5Qmwfvj4fv1JxPhU6/F2JX+o+dv1GskAACwIhxxE8iEwChScYnOJ+0A7/VySjvPmpwDmiWJ3gd+prwiwDulgsHF0mx35p3c6ajqZJwB76ikwv2mphkxDTSmo42tVzDgC0w3wqBNvIIyzXC4vma1adiWwcIFZJMi/kKZWDoTwwx8bdQKrljMzKmRqb/wcP7vdYAK3vZ8PhryVbLr4N5vH4wb6FPnyLka152CBRIn5MG2XeyeacuFTpuaFlnDkAQwMYzi4nQsvAmo0IxQAw/oxaNjKYnEawbEBr5s/Gq8bbW9DrBjl7fkRs0KKfrA5GbCAju29ZWxaV4eQxL2GclSBegotAW2wjowzLDWNMR5Mnar/UfpG5Yaj/pVyIW4c4wyUz4lKaHCDab5Le2xpWrKCltQTofwCT6cNT4BDTw7pKd7T+XyjCG3DLJRU9OvQ8JGe0nnc4k9h1jWr7vo/TaKWAxC94yyAUxIXe70KowA4ZnDv5hEnSwp6QgYLdgVjgJOE/o+GiXbEuqjDBOFlQSKeYMgjeN1/3SQ6zFCAZ+zmZeKOJNjYAa7Dxoh+3eZcKw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(52116005)(376005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mfrRBvSpq9WQ5M+QHwL/kCvdTxYqdp0pIm0cjgXLJ7H9hV7S0DEx7ZvoAThD?=
+ =?us-ascii?Q?DEJGZwuxwY5773UvQOulOR54/LusxXpZ6MNrZ1u479cy3yRZalVecj2gzqvF?=
+ =?us-ascii?Q?MzqKYRwb7woTmu0kTW0lEFe6FlBjY7L3vrdkqVU79j+630qv2b/Oy6ZzWx1p?=
+ =?us-ascii?Q?dIeSnPHKLtqU+Hl4GynC74RwCebgYj/BkfXtsrBazFcRemMXCjnd2q7rxr52?=
+ =?us-ascii?Q?puCWv176/peEIY6elhwm9vA1474GsuHv0kYVepSi5MKSIcW6UOJYr6Y9ViCO?=
+ =?us-ascii?Q?Ri97C8/XB9HSu90/ODdd9MW3WfOrYCPRPDppSFMb0ntTiK8+NhA5lV5VmsEo?=
+ =?us-ascii?Q?PJWa4UDHJ1RABX6hN82+ER52yZzdhvVtBwWdbzEdTxYRx62X1DIO1+/J6PaP?=
+ =?us-ascii?Q?onf0yx7kZnbgLAXt7q/LILGbO3VtTJlCQ1W+fWKQ121DNi2FzvYpRLTpvsgC?=
+ =?us-ascii?Q?Q9UySWRY3RWEOY7zOjlhwhpz74etUSKdez6juxFwEnGIm+WRhw5Ht3iJlL2e?=
+ =?us-ascii?Q?X3klIvKxX2fbSwXmhIIKs36ZrRy0Co+wju7aYuFuwUnLTvg2IYTpEvAS4+dL?=
+ =?us-ascii?Q?9wxtlX+oim0TU9yiU5KelfHpJDRLVGt5JSA7qVKUGtv1Dqp7w5F9WplvyrDv?=
+ =?us-ascii?Q?aTXCq8452kTCpUg+cuixaHJ6suYWekYrufmvp2w58aXqWBZ/dsDRhVOxR9Vf?=
+ =?us-ascii?Q?Cypzlkzo6q49rKZ8OdbdyJXrs4e0yTBtoIKtHnel6wgpjBC9NpF9HYXo4ndT?=
+ =?us-ascii?Q?XSveerEuKcqa35n5VCgeBnZQSmgF0SbEvb//X5GFwADff+9pnx2w/bGxVFpj?=
+ =?us-ascii?Q?Qy71UVfxfd5Pd7z1ayUqFE8hFCBbzvVYe5t1bgHJpk//xdCieszPl66GXN8N?=
+ =?us-ascii?Q?y+khpH87paRQE+VobxFm+h3knGPhPpwomKbH4AEH6GvCNt9d1vBu+/q4cSdf?=
+ =?us-ascii?Q?qkNLEbfyQYbq34rWRktTY+x1PJdykI051dyl2+68YVkpoh5c6SyhFabcc6VX?=
+ =?us-ascii?Q?cVQBWZx06WP/ddaGE7QLLrEl+Wuol7ZzF09vrDBZhNyRE6Bug+AKmAu+VGdn?=
+ =?us-ascii?Q?zNDV+YcV5Q8xy+YAA0V+6Sp4v8riDOyY/uhXcNfxlLzmANfhd7lJOZqT0l1t?=
+ =?us-ascii?Q?EfRgHOWKvsw7BH06jK6Mav8DsBaUAviJceDkL+h1g7H1oxCs9HsjGhRIthve?=
+ =?us-ascii?Q?3KLmDAfTaCNZAf9Pr4dwnk94oAoZo3cKIsiB04G5Lkdd02wiKrzq1jGITCzs?=
+ =?us-ascii?Q?ox4S6Z/e1DfNquMQEKal86F3QUtEOYbWoCO9TOwn6bXlZ5WIeCVodg9P4UmC?=
+ =?us-ascii?Q?B48NlYNQYUPPn9sldHZ93rS0jj9sfKbA5v3WPTvlC6Clj5OnN2Z4yrlZ/HGq?=
+ =?us-ascii?Q?FIGi1iRmjhin0jGHQjlp9uD73u2t9guG84NRvtQiMXpID5hX/o2nbXh2WrlQ?=
+ =?us-ascii?Q?xmphMXabposQaD+6I+pTZoh8LrvZ5B0Ix4sSY8WxuC/jGTK497S24dx286uq?=
+ =?us-ascii?Q?IzUAik3AN8ICveiVtzRq+T7rmQqnQosrzfRb3Mt+SFBebrc1AA5UJWVduYdx?=
+ =?us-ascii?Q?gnUBt9EbFq6Bq17g0GMTAdGPoXVV95nsAHqXUZx/?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65f6f7bb-74b8-4276-c660-08dc4a7cdeb9
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2024 14:32:15.6003
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: McPtsA3tjEd1IyTxg/28iPMqjkhlyHNS3W396ICKjobmra4eBGR5A4QoSmMV3EtLEo66jwDY0emnqDP8/EWeYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8707
 
-On Fri, Mar 22, 2024 at 06:13:25PM +0800, Shengjiu Wang wrote:
-> Convert the fsl-asoc-card binding to YAML.
+On Fri, Mar 22, 2024 at 02:39:26PM +0800, Xu Yang wrote:
+> This driver is initinally used to support imx93 Soc and now it's time to
+> add support for imx95 Soc. However, some macro definitions and events are
+> different on these two Socs. For preparing imx95 supports, this will
+> refactor driver for imx93.
 > 
-> In order to pass the checking, add some used compatible
-> string from devicetree.
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
->  .../bindings/sound/fsl-asoc-card.txt          | 117 -----------
->  .../bindings/sound/fsl-asoc-card.yaml         | 196 ++++++++++++++++++
->  2 files changed, 196 insertions(+), 117 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> Changes in v4:
+>  - new patch
+> Changes in v5:
+>  - use is_visible to hide unwanted attributes as suggested by Will
+> Changes in v6:
+>  - improve imx93_ddr_perf_monitor_config()
+> Changes in v7:
+>  - improve imx93_ddr_perf_monitor_config() as suggested by Frank
+> Changes in v8:
+>  - adjust is_visable() as suggested by Frank
+> ---
+>  drivers/perf/fsl_imx9_ddr_perf.c | 106 ++++++++++++++++++++-----------
+>  1 file changed, 68 insertions(+), 38 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> deleted file mode 100644
-> index 4e8dbc5abfd1..000000000000
-> --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> +++ /dev/null
-> @@ -1,117 +0,0 @@
-> -Freescale Generic ASoC Sound Card with ASRC support
-> -
-> -The Freescale Generic ASoC Sound Card can be used, ideally, for all Freescale
-> -SoCs connecting with external CODECs.
-> -
-> -The idea of this generic sound card is a bit like ASoC Simple Card. However,
-> -for Freescale SoCs (especially those released in recent years), most of them
-> -have ASRC (Documentation/devicetree/bindings/sound/fsl,asrc.txt) inside. And
-> -this is a specific feature that might be painstakingly controlled and merged
-> -into the Simple Card.
-> -
-> -So having this generic sound card allows all Freescale SoC users to benefit
-> -from the simplification of a new card support and the capability of the wide
-> -sample rates support through ASRC.
-> -
-> -Note: The card is initially designed for those sound cards who use AC'97, I2S
-> -      and PCM DAI formats. However, it'll be also possible to support those non
-> -      AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI audio, as
-> -      long as the driver has been properly upgraded.
-> -
-> -
-> -The compatible list for this generic sound card currently:
-> - "fsl,imx-audio-ac97"
-> -
-> - "fsl,imx-audio-cs42888"
-> -
-> - "fsl,imx-audio-cs427x"
-> - (compatible with CS4271 and CS4272)
-> -
-> - "fsl,imx-audio-wm8962"
-> -
-> - "fsl,imx-audio-sgtl5000"
-> - (compatible with Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt)
-> -
-> - "fsl,imx-audio-wm8960"
-> -
-> - "fsl,imx-audio-mqs"
-> -
-> - "fsl,imx-audio-wm8524"
-> -
-> - "fsl,imx-audio-tlv320aic32x4"
-> -
-> - "fsl,imx-audio-tlv320aic31xx"
-> -
-> - "fsl,imx-audio-si476x"
-> -
-> - "fsl,imx-audio-wm8958"
-> -
-> - "fsl,imx-audio-nau8822"
-> -
-> -Required properties:
-> -
-> -  - compatible		: Contains one of entries in the compatible list.
-> -
-> -  - model		: The user-visible name of this sound complex
-> -
-> -  - audio-cpu		: The phandle of an CPU DAI controller
-> -
-> -  - audio-codec		: The phandle of an audio codec
-> -
-> -Optional properties:
-> -
-> -  - audio-asrc		: The phandle of ASRC. It can be absent if there's no
-> -			  need to add ASRC support via DPCM.
-> -
-> -  - audio-routing	: A list of the connections between audio components.
-> -			  Each entry is a pair of strings, the first being the
-> -			  connection's sink, the second being the connection's
-> -			  source. There're a few pre-designed board connectors:
-> -			   * Line Out Jack
-> -			   * Line In Jack
-> -			   * Headphone Jack
-> -			   * Mic Jack
-> -			   * Ext Spk
-> -			   * AMIC (stands for Analog Microphone Jack)
-> -			   * DMIC (stands for Digital Microphone Jack)
-> -
-> -			  Note: The "Mic Jack" and "AMIC" are redundant while
-> -			        coexisting in order to support the old bindings
-> -				of wm8962 and sgtl5000.
-> -
-> -  - hp-det-gpio		: The GPIO that detect headphones are plugged in
-> -  - mic-det-gpio	: The GPIO that detect microphones are plugged in
-> -  - bitclock-master	: Indicates dai-link bit clock master; for details see simple-card.yaml.
-> -  - frame-master	: Indicates dai-link frame master; for details see simple-card.yaml.
-> -  - dai-format		: audio format, for details see simple-card.yaml.
-> -  - frame-inversion	: dai-link uses frame clock inversion, for details see simple-card.yaml.
-> -  - bitclock-inversion	: dai-link uses bit clock inversion, for details see simple-card.yaml.
-> -  - mclk-id		: main clock id, specific for each card configuration.
-> -
-> -Optional unless SSI is selected as a CPU DAI:
-> -
-> -  - mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX)
-> -
-> -  - mux-ext-port	: The external port of the i.MX audio muxer
-> -
-> -Example:
-> -sound-cs42888 {
-> -	compatible = "fsl,imx-audio-cs42888";
-> -	model = "cs42888-audio";
-> -	audio-cpu = <&esai>;
-> -	audio-asrc = <&asrc>;
-> -	audio-codec = <&cs42888>;
-> -	audio-routing =
-> -		"Line Out Jack", "AOUT1L",
-> -		"Line Out Jack", "AOUT1R",
-> -		"Line Out Jack", "AOUT2L",
-> -		"Line Out Jack", "AOUT2R",
-> -		"Line Out Jack", "AOUT3L",
-> -		"Line Out Jack", "AOUT3R",
-> -		"Line Out Jack", "AOUT4L",
-> -		"Line Out Jack", "AOUT4R",
-> -		"AIN1L", "Line In Jack",
-> -		"AIN1R", "Line In Jack",
-> -		"AIN2L", "Line In Jack",
-> -		"AIN2R", "Line In Jack";
-> -};
-> diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> new file mode 100644
-> index 000000000000..48051655230d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> @@ -0,0 +1,196 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl-asoc-card.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
+> index b728719b494c..011377c01dea 100644
+> --- a/drivers/perf/fsl_imx9_ddr_perf.c
+> +++ b/drivers/perf/fsl_imx9_ddr_perf.c
+> @@ -11,14 +11,14 @@
+>  #include <linux/perf_event.h>
+>  
+>  /* Performance monitor configuration */
+> -#define PMCFG1  			0x00
+> -#define PMCFG1_RD_TRANS_FILT_EN 	BIT(31)
+> -#define PMCFG1_WR_TRANS_FILT_EN 	BIT(30)
+> -#define PMCFG1_RD_BT_FILT_EN 		BIT(29)
+> -#define PMCFG1_ID_MASK  		GENMASK(17, 0)
+> +#define PMCFG1				0x00
+> +#define MX93_PMCFG1_RD_TRANS_FILT_EN	BIT(31)
+> +#define MX93_PMCFG1_WR_TRANS_FILT_EN	BIT(30)
+> +#define MX93_PMCFG1_RD_BT_FILT_EN	BIT(29)
+> +#define MX93_PMCFG1_ID_MASK		GENMASK(17, 0)
+>  
+> -#define PMCFG2  			0x04
+> -#define PMCFG2_ID			GENMASK(17, 0)
+> +#define PMCFG2				0x04
+> +#define MX93_PMCFG2_ID			GENMASK(17, 0)
+>  
+>  /* Global control register affects all counters and takes priority over local control registers */
+>  #define PMGC0		0x40
+> @@ -76,6 +76,11 @@ static const struct imx_ddr_devtype_data imx93_devtype_data = {
+>  	.identifier = "imx93",
+>  };
+>  
+> +static inline bool is_imx93(struct ddr_pmu *pmu)
+> +{
+> +	return pmu->devtype_data == &imx93_devtype_data;
+> +}
 > +
-> +title: Freescale Generic ASoC Sound Card with ASRC support
+>  static const struct of_device_id imx_ddr_pmu_dt_ids[] = {
+>  	{.compatible = "fsl,imx93-ddr-pmu", .data = &imx93_devtype_data},
+>  	{ /* sentinel */ }
+> @@ -123,23 +128,36 @@ static const struct attribute_group ddr_perf_cpumask_attr_group = {
+>  	.attrs = ddr_perf_cpumask_attrs,
+>  };
+>  
+> +struct imx9_pmu_events_attr {
+> +	struct device_attribute attr;
+> +	u64 id;
+> +	const void *devtype_data;
+> +};
 > +
-> +description:
-> +  The Freescale Generic ASoC Sound Card can be used, ideally,
-> +  for all Freescale SoCs connecting with external CODECs.
+>  static ssize_t ddr_pmu_event_show(struct device *dev,
+>  				  struct device_attribute *attr, char *page)
+>  {
+> -	struct perf_pmu_events_attr *pmu_attr;
+> +	struct imx9_pmu_events_attr *pmu_attr;
+>  
+> -	pmu_attr = container_of(attr, struct perf_pmu_events_attr, attr);
+> +	pmu_attr = container_of(attr, struct imx9_pmu_events_attr, attr);
+>  	return sysfs_emit(page, "event=0x%02llx\n", pmu_attr->id);
+>  }
+>  
+>  #define ID(counter, id) ((counter << CONFIG_COUNTER_OFFSET) | id)
+>  
+> -#define IMX9_DDR_PMU_EVENT_ATTR(_name, _id)				\
+> -	(&((struct perf_pmu_events_attr[]) {				\
+> +#define DDR_PMU_EVENT_ATTR_COMM(_name, _id, _data)			\
+> +	(&((struct imx9_pmu_events_attr[]) {				\
+>  		{ .attr = __ATTR(_name, 0444, ddr_pmu_event_show, NULL),\
+> -		  .id = _id, }						\
+> +		  .id = _id,						\
+> +		  .devtype_data = _data, }				\
+>  	})[0].attr.attr)
+>  
+> +#define IMX9_DDR_PMU_EVENT_ATTR(_name, _id)				\
+> +	DDR_PMU_EVENT_ATTR_COMM(_name, _id, NULL)
 > +
-> +  The idea of this generic sound card is a bit like ASoC Simple Card.
-> +  However, for Freescale SoCs (especially those released in recent years),
-> +  most of them have ASRC
-> +  (Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml) inside. And
-> +  this is a specific feature that might be painstakingly controlled and
-> +  merged into the Simple Card.
+> +#define IMX93_DDR_PMU_EVENT_ATTR(_name, _id)				\
+> +	DDR_PMU_EVENT_ATTR_COMM(_name, _id, &imx93_devtype_data)
 > +
-> +  So having this generic sound card allows all Freescale SoC users to
-> +  benefit from the simplification of a new card support and the capability
-> +  of the wide sample rates support through ASRC.
+>  static struct attribute *ddr_perf_events_attrs[] = {
+>  	/* counter0 cycles event */
+>  	IMX9_DDR_PMU_EVENT_ATTR(cycles, 0),
+> @@ -185,7 +203,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_ld_wiq_6, ID(2, 70)),
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_ld_wiq_7, ID(2, 71)),
+>  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_empty, ID(2, 72)),
+> -	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_trans_filt, ID(2, 73)),
+> +	IMX93_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_trans_filt, ID(2, 73)),	/* imx93 specific*/
+>  
+>  	/* counter3 specific events */
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_0, ID(3, 64)),
+> @@ -197,7 +215,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_6, ID(3, 70)),
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_collision_7, ID(3, 71)),
+>  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_full, ID(3, 72)),
+> -	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_trans_filt, ID(3, 73)),
+> +	IMX93_DDR_PMU_EVENT_ATTR(eddrtq_pm_wr_trans_filt, ID(3, 73)),	/* imx93 specific*/
+>  
+>  	/* counter4 specific events */
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_0, ID(4, 64)),
+> @@ -209,7 +227,7 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_6, ID(4, 70)),
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_row_open_7, ID(4, 71)),
+>  	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pmon_ld_rdq2_rmw, ID(4, 72)),
+> -	IMX9_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt, ID(4, 73)),
+> +	IMX93_DDR_PMU_EVENT_ATTR(eddrtq_pm_rd_beat_filt, ID(4, 73)),	/* imx93 specific*/
+>  
+>  	/* counter5 specific events */
+>  	IMX9_DDR_PMU_EVENT_ATTR(ddrc_qx_valid_start_0, ID(5, 64)),
+> @@ -244,9 +262,29 @@ static struct attribute *ddr_perf_events_attrs[] = {
+>  	NULL,
+>  };
+>  
+> +static umode_t
+> +ddr_perf_events_attrs_is_visible(struct kobject *kobj,
+> +				       struct attribute *attr, int unused)
+> +{
+> +	struct pmu *pmu = dev_get_drvdata(kobj_to_dev(kobj));
+> +	struct ddr_pmu *ddr_pmu = to_ddr_pmu(pmu);
+> +	struct imx9_pmu_events_attr *eattr;
 > +
-> +  Note, The card is initially designed for those sound cards who use AC'97, I2S
-> +  and PCM DAI formats. However, it'll be also possible to support those non
-> +  AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI audio, as
-> +  long as the driver has been properly upgraded.
+> +	eattr = container_of(attr, typeof(*eattr), attr.attr);
 > +
-> +maintainers:
-> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> +	if (!eattr->devtype_data)
+> +		return attr->mode;
 > +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,imx-sgtl5000
-> +              - fsl,imx53-cpuvo-sgtl5000
-> +              - fsl,imx51-babbage-sgtl5000
-> +              - fsl,imx53-m53evk-sgtl5000
-> +              - fsl,imx53-qsb-sgtl5000
-> +              - fsl,imx53-voipac-sgtl5000
-> +              - fsl,imx6-armadeus-sgtl5000
-> +              - fsl,imx6-rex-sgtl5000
-> +              - fsl,imx6-sabreauto-cs42888
-> +              - fsl,imx6-wandboard-sgtl5000
-> +              - fsl,imx6dl-nit6xlite-sgtl5000
-> +              - fsl,imx6q-ba16-sgtl5000
-> +              - fsl,imx6q-nitrogen6_max-sgtl5000
-> +              - fsl,imx6q-nitrogen6_som2-sgtl5000
-> +              - fsl,imx6q-nitrogen6x-sgtl5000
-> +              - fsl,imx6q-sabrelite-sgtl5000
-> +              - fsl,imx6q-sabresd-wm8962
-> +              - fsl,imx6q-udoo-ac97
-> +              - fsl,imx6q-ventana-sgtl5000
-> +              - fsl,imx6sl-evk-wm8962
-> +              - fsl,imx6sx-sdb-mqs
-> +              - fsl,imx6sx-sdb-wm8962
-> +              - fsl,imx7d-evk-wm8960
-> +              - karo,tx53-audio-sgtl5000
-> +              - tq,imx53-mba53-sgtl5000
-
-None of these were documented before. It's fine to add all these in this 
-patch, but please state in the commit message what missing or incorrect 
-things you added in the schema.
-
-> +          - enum:
-> +              - fsl,imx-audio-ac97
-> +              - fsl,imx-audio-cs42888
-> +              - fsl,imx-audio-mqs
-> +              - fsl,imx-audio-sgtl5000
-> +              - fsl,imx-audio-wm8960
-> +              - fsl,imx-audio-wm8962
-> +      - items:
-> +          - enum:
-> +              - fsl,imx-audio-ac97
-> +              - fsl,imx-audio-cs42888
-> +              - fsl,imx-audio-cs427x
-> +              - fsl,imx-audio-mqs
-> +              - fsl,imx-audio-nau8822
-> +              - fsl,imx-audio-sgtl5000
-> +              - fsl,imx-audio-si476x
-> +              - fsl,imx-audio-tlv320aic31xx
-> +              - fsl,imx-audio-tlv320aic32x4
-> +              - fsl,imx-audio-wm8524
-> +              - fsl,imx-audio-wm8960
-> +              - fsl,imx-audio-wm8962
-> +              - fsl,imx-audio-wm8958
+> +	if (eattr->devtype_data != ddr_pmu->devtype_data)
+> +		return 0;
 > +
-> +  model:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: The user-visible name of this sound complex
+> +	return attr->mode;
+> +}
 > +
-> +  audio-asrc:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description:
-> +      The phandle of ASRC. It can be absent if there's no
-> +      need to add ASRC support via DPCM.
-> +
-> +  audio-codec:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of an audio codec
-> +
-> +  audio-cpu:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of an CPU DAI controller
-> +
-> +  audio-routing:
-> +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-> +    description:
-> +      A list of the connections between audio components. Each entry is a
-> +      pair of strings, the first being the connection's sink, the second
-> +      being the connection's source. There're a few pre-designed board
-> +      connectors.
-> +        * Line Out Jack
-> +        * Line In Jack
-> +        * Headphone Jack
-> +        * Mic Jack
-> +        * Ext Spk
-> +        * AMIC (stands for Analog Microphone Jack)
-> +        * DMIC (stands for Digital Microphone Jack)
-> +      Note, The "Mic Jack" and "AMIC" are redundant while coexisting in
-> +      order to support the old bindings of wm8962 and sgtl5000.
-
-Please list the strings out as schema:
-
-minItems: 2
-items:
-  enum:
-    - "Line Out Jack"
-    ...
-
-> +
-> +  hp-det-gpio:
-> +    maxItems: 1
-> +    description: The GPIO that detect headphones are plugged in
-
-       deprecated: true
-
-> +
-> +  hp-det-gpios:
-> +    maxItems: 1
-> +    description: The GPIO that detect headphones are plugged in
-> +
-> +  mic-det-gpio:
-> +    maxItems: 1
-> +    description: The GPIO that detect microphones are plugged in
-
-       deprecated: true
-
-> +
-> +  mic-det-gpios:
-> +    maxItems: 1
-> +    description: The GPIO that detect microphones are plugged in
-> +
-> +  bitclock-master:
-> +    description: Indicates dai-link bit clock master; for details see simple-card.yaml.
-
-Drop the prose reference and add:
-
-       $ref: simple-card.yaml#/definitions/bitclock-master
-
-Otherwise, bitclock-master could be anything. 
-
-And similar for the rest.
-
-> +
-> +  frame-master:
-> +    description: Indicates dai-link frame master; for details see simple-card.yaml.
-> +
-> +  dai-format:
-> +    description: audio format, for details see simple-card.yaml.
-> +
-> +  frame-inversion:
-> +    description: dai-link uses frame clock inversion, for details see simple-card.yaml.
-> +
-> +  bitclock-inversion:
-> +    description: dai-link uses bit clock inversion, for details see simple-card.yaml.
-> +
-> +  mclk-id:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: main clock id, specific for each card configuration.
-> +
-> +  mux-int-port:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [1, 2, 7]
-> +    description: The internal port of the i.MX audio muxer (AUDMUX)
-> +
-> +  mux-ext-port:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [3, 4, 5, 6]
-> +    description: The external port of the i.MX audio muxer
-> +
-> +  ssi-controller:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of an CPU DAI controller
-> +
-> +required:
-> +  - compatible
-> +  - model
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    sound-cs42888 {
-> +        compatible = "fsl,imx-audio-cs42888";
-> +        model = "cs42888-audio";
-> +        audio-cpu = <&esai>;
-> +        audio-asrc = <&asrc>;
-> +        audio-codec = <&cs42888>;
-> +        audio-routing =
-> +             "Line Out Jack", "AOUT1L",
-> +             "Line Out Jack", "AOUT1R",
-> +             "Line Out Jack", "AOUT2L",
-> +             "Line Out Jack", "AOUT2R",
-> +             "Line Out Jack", "AOUT3L",
-> +             "Line Out Jack", "AOUT3R",
-> +             "Line Out Jack", "AOUT4L",
-> +             "Line Out Jack", "AOUT4R",
-> +             "AIN1L", "Line In Jack",
-> +             "AIN1R", "Line In Jack",
-> +             "AIN2L", "Line In Jack",
-> +             "AIN2R", "Line In Jack";
-> +    };
+>  static const struct attribute_group ddr_perf_events_attr_group = {
+>  	.name = "events",
+>  	.attrs = ddr_perf_events_attrs,
+> +	.is_visible = ddr_perf_events_attrs_is_visible,
+>  };
+>  
+>  PMU_FORMAT_ATTR(event, "config:0-15");
+> @@ -368,36 +406,28 @@ static void ddr_perf_counter_local_config(struct ddr_pmu *pmu, int config,
+>  	}
+>  }
+>  
+> -static void ddr_perf_monitor_config(struct ddr_pmu *pmu, int event,
+> -				    int counter, int axi_id, int axi_mask)
+> +static void imx93_ddr_perf_monitor_config(struct ddr_pmu *pmu, int event,
+> +					  int counter, int axi_id, int axi_mask)
+>  {
+>  	u32 pmcfg1, pmcfg2;
+> +	u32 mask[] = {  MX93_PMCFG1_RD_TRANS_FILT_EN,
+> +			MX93_PMCFG1_WR_TRANS_FILT_EN,
+> +			MX93_PMCFG1_RD_BT_FILT_EN };
+>  
+>  	pmcfg1 = readl_relaxed(pmu->base + PMCFG1);
+>  
+> -	if (counter == 2 && event == 73)
+> -		pmcfg1 |= PMCFG1_RD_TRANS_FILT_EN;
+> -	else if (counter == 2 && event != 73)
+> -		pmcfg1 &= ~PMCFG1_RD_TRANS_FILT_EN;
+> -
+> -	if (counter == 3 && event == 73)
+> -		pmcfg1 |= PMCFG1_WR_TRANS_FILT_EN;
+> -	else if (counter == 3 && event != 73)
+> -		pmcfg1 &= ~PMCFG1_WR_TRANS_FILT_EN;
+> -
+> -	if (counter == 4 && event == 73)
+> -		pmcfg1 |= PMCFG1_RD_BT_FILT_EN;
+> -	else if (counter == 4 && event != 73)
+> -		pmcfg1 &= ~PMCFG1_RD_BT_FILT_EN;
+> +	if (counter >= 2 && counter <= 4)
+> +		pmcfg1 = event == 73 ? pmcfg1 | mask[counter - 2] :
+> +				pmcfg1 & ~mask[counter - 2];
+>  
+> -	pmcfg1 &= ~FIELD_PREP(PMCFG1_ID_MASK, 0x3FFFF);
+> -	pmcfg1 |= FIELD_PREP(PMCFG1_ID_MASK, axi_mask);
+> -	writel(pmcfg1, pmu->base + PMCFG1);
+> +	pmcfg1 &= ~FIELD_PREP(MX93_PMCFG1_ID_MASK, 0x3FFFF);
+> +	pmcfg1 |= FIELD_PREP(MX93_PMCFG1_ID_MASK, axi_mask);
+> +	writel_relaxed(pmcfg1, pmu->base + PMCFG1);
+>  
+>  	pmcfg2 = readl_relaxed(pmu->base + PMCFG2);
+> -	pmcfg2 &= ~FIELD_PREP(PMCFG2_ID, 0x3FFFF);
+> -	pmcfg2 |= FIELD_PREP(PMCFG2_ID, axi_id);
+> -	writel(pmcfg2, pmu->base + PMCFG2);
+> +	pmcfg2 &= ~FIELD_PREP(MX93_PMCFG2_ID, 0x3FFFF);
+> +	pmcfg2 |= FIELD_PREP(MX93_PMCFG2_ID, axi_id);
+> +	writel_relaxed(pmcfg2, pmu->base + PMCFG2);
+>  }
+>  
+>  static void ddr_perf_event_update(struct perf_event *event)
+> @@ -513,7 +543,7 @@ static int ddr_perf_event_add(struct perf_event *event, int flags)
+>  		ddr_perf_event_start(event, flags);
+>  
+>  	/* read trans, write trans, read beat */
+> -	ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+> +	imx93_ddr_perf_monitor_config(pmu, event_id, counter, cfg1, cfg2);
+>  
+>  	return 0;
+>  }
 > -- 
 > 2.34.1
 > 
