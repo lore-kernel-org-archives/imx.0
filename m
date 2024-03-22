@@ -1,203 +1,100 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2057.outbound.protection.outlook.com [40.107.7.57])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047E5171A6
-	for <imx@lists.linux.dev>; Fri, 22 Mar 2024 06:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711089606; cv=fail; b=fWpjPvi9EP3CNavUWz9rHrH2KjSkdsahc/3HV7TyCOXjQ4M4QPWVKS871EoRcGrSn6Mcfs/CPtfGSFZRJQV5yrXisjhpbfUXxm9/bR1MWjwRlm/TPu3V9GKgpnyLOgZS1uahSFhS5FzZbxB80zJvMdwgN4pQ0v5Z3+dWZGqNXt0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711089606; c=relaxed/simple;
-	bh=iq0aeOXRtYSj1S1qQsrH0OYGqDtpnssctSdsD1Uxh+8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fwpaWR5/XbWlFyg8Tq2y84pSRbkX84SEkA9tKj8mf1paPZcKnJYfAJ40DAi9j4uRSxthMP2w9cGhRS7GCWr41ypt91CFGGqF8GEe1Q+srhr/0dlrcF7e4NdGE6Jv62N3LalSRAyI5mMcG9nde7nxIxITr0bGT3yZM2xW8cSgCb4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=OTudlDjp; arc=fail smtp.client-ip=40.107.7.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C341DF67;
+	Fri, 22 Mar 2024 06:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711090101; cv=none; b=bh3lVdJQJxFlFa5elaoJc4KK6aET+lnhvONFPNACEEOZ1qNWZRs9L7rvWcM21FDEOhF2/PPEt5zDee6JtZFP/YkT88huQ9E/Xvq5Oq8apz7zubkldeBKnc0x5Uoi11fad67zEkW6Ox+X/V4foLaHShpE2UF7ZdUw12nvaIBBmN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711090101; c=relaxed/simple;
+	bh=MMToYGDlPx6M64cs/BtMBKCnEYYVKlgAvV4z9fQeu8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tlRZ+pI90alfhsHOcFl+WJaE3BX7KKAQWZ2QG1ZMpRlhD1xHonwvb4jc/VbS54l7xD6RQh+fhIAEYFytZbrEXqrRJZS3UhO0gGPPt7qeFpTg7SvC2Fs1DDivE1G1bwzGW4X0hhNv7adahJOXBHVVKb8SKHQKdwCdCKPb5rALeRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvYjq6KY; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="OTudlDjp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QwCmrBsRpNZwdotXEGzrqe0vw93K8TBXGGYuF/q3Qz3UW+xG7XbOhy6/tTkj9EjTAllw91TPDFlK1fNRwxUct8GsuJpX6UQ26P0p7lSs62SnnepM7VmF6gceVsN28VjyWSZrE3XZJL+hkCpovCiywRQGJ4D+2IlMVcGRZD5lj+8aU9KNqzXBA4BExfj0DoPfnzUFhU6O2QWNQh3QD9i3xnverJd2Sg+8jdKTyfPFMscF/eFcQ58QtbEH+Ingl92V1/uod32Vz9hR0WCQtBTtUNEqaXYrMGrzuCbUdplGur0tACquDr8Q05oDhIHQ00wi0J77K+eq2xvlXuWja7wxwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IViR90ZsEm7l1zdbOidolnyGedq1oAOZ99AzYJwXUkw=;
- b=USq8fBxPzCmMF3/4NZBe6yUa+H1OnXppA9I6uRjkTMR3XyVDi6xfao4q4lVprX3as57taxN/4+b0Zt7WKLl4eXwoqk+4W2ZfMBUb9U/WJgsnMsEraQjeyR5nSiyh1G+KlekCTE5XkyhJjM3NUgCtfMUgp82KXcHTJplwykBNNuUT0HVs4wzM7Qv3RW3NFBCHLLnOahyqDoQPJjhxGngSgPmmO1JXK/xmjzznAZKCENZcJVP/F8YdOf6GXbcMxsujTtnee1l9NvhaSZoa63GZHpxcHSQ0RiV+l99cR7gjV+hpbHOUxX5IQwC/0Z1KONz5vAAFblIk3JnHX7Ck3+sBNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IViR90ZsEm7l1zdbOidolnyGedq1oAOZ99AzYJwXUkw=;
- b=OTudlDjpCNkuIRoD2/9ngJXf/mF9oVD3K0Mh3i1/xuQySbbPFT5JWmKmlF+KzrImr+HyxXb7wqOBr0TPhQKcoqyuFV/1WkFtUHojjsOfYsNajD2U48D1TP/uvNdYs3RKvupRyG9nem1dWY0JqIWwWgTaJDuYwyE1zYgyHhkcgyY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
- by PAXPR04MB8928.eurprd04.prod.outlook.com (2603:10a6:102:20f::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.24; Fri, 22 Mar
- 2024 06:40:01 +0000
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::1b13:505:8d50:f4e3]) by PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::1b13:505:8d50:f4e3%4]) with mapi id 15.20.7386.023; Fri, 22 Mar 2024
- 06:40:01 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: frank.li@nxp.com,
-	will@kernel.org,
-	mark.rutland@arm.com,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	john.g.garry@oracle.com,
-	jolsa@kernel.org,
-	namhyung@kernel.org,
-	irogers@google.com
-Cc: mike.leach@linaro.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	alexander.shishkin@linux.intel.com,
-	adrian.hunter@intel.com,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v8 8/8] perf vendor events arm64:: Add i.MX93 DDR Performance Monitor metrics
-Date: Fri, 22 Mar 2024 14:39:30 +0800
-Message-Id: <20240322063930.749126-8-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240322063930.749126-1-xu.yang_2@nxp.com>
-References: <20240322063930.749126-1-xu.yang_2@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0121.apcprd02.prod.outlook.com
- (2603:1096:4:188::21) To PAXPR04MB8829.eurprd04.prod.outlook.com
- (2603:10a6:102:20c::17)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvYjq6KY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711090099; x=1742626099;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MMToYGDlPx6M64cs/BtMBKCnEYYVKlgAvV4z9fQeu8Q=;
+  b=lvYjq6KYMgq0JeyE9MVCMT28cMZDxJBIXOWm6LrYQX4GeJUwTL9CDrl/
+   CJp8fwI4iRTGfMwMvcUkh2TMpxibFZwjgu6gevLc8WypanU1nsKDmoHEF
+   JQ8NjztnMykm+CVcA4CMIiWTEtDLl/4hu/NKFL2BlYI5ZDWRAsMoY1L15
+   onE8QwOEvQCejW9i5vxUA6cg9tEmD8eLyJSkaWoekLYxgjV43tvh3gRwO
+   2Hi7JEFGtq9S5/B7C9KqVYm1dwZl+XsLlatjN9nLIWZxd/5UstorjSfMV
+   TgPBB9Q+alo8leAWrPYe9GHCEQAQLNOUVcs7u2zYbmdtyvp3QJJk0/KYF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5980683"
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="5980683"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 23:48:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="14834215"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 21 Mar 2024 23:48:14 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rnYhI-000K5n-0c;
+	Fri, 22 Mar 2024 06:48:12 +0000
+Date: Fri, 22 Mar 2024 14:47:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrej Picej <andrej.picej@norik.com>, haibo.chen@nxp.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jic23@kernel.org, lars@metafoo.de,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Message-ID: <202403221438.trdG8I0x-lkp@intel.com>
+References: <20240320100407.1639082-3-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|PAXPR04MB8928:EE_
-X-MS-Office365-Filtering-Correlation-Id: b747d162-ee17-4187-d8f9-08dc4a3ae647
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	BCNBeNq7/6598cCtLskV9mbLHxnqebLqtIqQRW/i69WWwNvW62phphawjKy7wQ5FgSJn7BAIn1sWbNydSsixW5pERUP/k/jmYXUosduHPlY0fM47ZS0IgXasLnbNNsQl8/XkMRnvutBk4vrY5l7rt3jm4z+59c5FLgcrJbFW6vqS9mxSPHcM+0pjxTs1YlPypR+R3YXM/u4iM1XCaX3/iNYFg83YKdHAi3TAhU5EwEMUvN2EEl2qMucqyjtwMXAxlbKV24+P4hfVTvc7iA0HuM0GsxeQnFcFV0t51DNL5Ib43+pUKZ7fEFeUeStgdzxsPxhhIkWWjhPc/yCpJKwiNpxJS0XURD8fkx77qM+A68gi1QNvhLQVcstkzk2um1ZnMe4CMk0sLl6QhfL8wHVDAqc+EM/XjKVaa4Owi4ojcoVr1sSy0ksK9kBwqOZ7Duy26mcKyO4gADjPOX+lmJmNyRpPVR6RQgQyhCiu6DNsu7CjZ0c+yU60mvsf2a/1581OfYVwqJ2js5ScXG0GpfrbqFsXAQf2hpiP+5wACGIfInleHgFy0IXmLKNCia5QA/qRNTlB660UMhhwdSQEach1fSWxlNeH+nUJ4no4wrmGMTtqYY7UVMv48AtTVV0Ef28MB3cD1WCOndSEvrtcvsQ/oLz9hCxVIcZ8EljgjVbt7RrBXrfcb0KZ4HCcJT/zUtYY9t6ESH2WUJoCSiA62O6A/f40oix+U7qqtzlCd83imUI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(52116005)(1800799015)(366007)(376005)(921011)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YORkAWrR4qpELRfRoQXorGgwnBaGg4aSGaaS7nUQKnexkmHw+EoZUuJX10Ce?=
- =?us-ascii?Q?BVWbLPfJlCSm88e+5p1oTSKwDyXzsGbv7E42yMSfsgtfoWo1aMPRqhNgM3/5?=
- =?us-ascii?Q?h+OFtKmHinVV4dhDKR2yCC8V9mW95etaibHdJphZdwf9nV7QAgujtMsAUCcn?=
- =?us-ascii?Q?Fvv4hSqi6V6pYknhKyy1zgOoGvxD7ATKN55iMHY+x+KAT18jKU2ZbTiumsSF?=
- =?us-ascii?Q?XBaMfWgvO6GUUTGw0a+d7znYY709dj3vfwf7Cmqz+5dCZferIzoZN/F33eQ1?=
- =?us-ascii?Q?/BvUJKkyF0dHnQMTByv51niJxd5erXDo19McoQqkLv/aharKqk5F2vvRFr1B?=
- =?us-ascii?Q?CyhZiIss+acLJC3rvo1TTNwEaP6Ue4IAWZ+zelZlzUl9BIi2z33RkcNWKLR1?=
- =?us-ascii?Q?Da6b6U9xJydH5gIl9cC/OoqmcSX0vVFchfIct5ET2xaDuQwJlEz2eP1l7rbf?=
- =?us-ascii?Q?+kjJGl1LlsczeNt2fgob3gYUguwNAU6oi2JMxXgJGVeq48gdS0nAOPWApxin?=
- =?us-ascii?Q?oUV0+Sp8zZsTE7DhgLrwU4nhFGtIn1+0LdZlIScWlWy0GrxQfehwI0AAQgPw?=
- =?us-ascii?Q?u6g6ELcee1cmAr9tK4o1wOODAeP5F4b0Wc+L07Hfpjpy7rfiJFghNUSHb7x7?=
- =?us-ascii?Q?AGs9u40IaK4vBHdjwZpSAd7WQvm3exZepwtF29/KqRfd2jPUT2NHJRO4xzGs?=
- =?us-ascii?Q?Oey5M7RhLHkUaffy/2uq1RRZTC8o8Th2jo1+s/mbc+lJyLzKTw9ZEteWvLbW?=
- =?us-ascii?Q?HlYCjuDUFZ9y4xtf3kuDRJ/LGFRtGNL4aayjdnEdnQsmfav8KN2+UkT6f1W4?=
- =?us-ascii?Q?wthF/2U3R8F7hxFk43UtAj7k8X/5wQdBtF2bdYJqwkk0/nOjeiO2t0XnOsOb?=
- =?us-ascii?Q?pWqlN/hj1qfqhl5mIJg2mhWXWFeZsNRTf6Mdwew2QK3jBbf6D/tG4bTghmaP?=
- =?us-ascii?Q?YPD09Q0aeDGKRgApr8i4znSMu6AWMrJ72qgXCnzXrn5cIK9OQHpm232fIc4b?=
- =?us-ascii?Q?veNudCrqSO+DVxBPYIYCxeN4QNZTalUSMKKTETDw+fXmuDSDSbhBZqK4yieZ?=
- =?us-ascii?Q?O587B/lg5BQfDubKqQNzERP8eqHUIruc2ipSC3ThJ3VuI9Fq8hHIuU2qKTl3?=
- =?us-ascii?Q?6bpNfzBdlX3tOdItSv9o2sGerGqiIRyfN3Ud1tc5wPAjfUjc+JqQ0lZmKEqY?=
- =?us-ascii?Q?M/REs0EmH2RhvTVf8FNY4ygTpC50s6Q8jH/TcuszY0YD9uhNdIQxzlnpnSEp?=
- =?us-ascii?Q?n5eWK/CLbDfVEh13m39qDVeWwzvI6ycycDTVczOF7jjNq+vWRK1pIYFg9UbK?=
- =?us-ascii?Q?Z3HW10sD/3s/fkQdJeuolCdO/XO5IL4mhI9LChd4SIHPra4nEthmlV5pDn5v?=
- =?us-ascii?Q?FdmGR1QBSSqre7EFAVxQ/wBuKyywWzF5YtRPAnTk4bWzEuMPW16uoOzlZzSM?=
- =?us-ascii?Q?TMG7X2vp39/7cQrOLQn1Sk+A4ZJK8HnpQAPd+6mld+aYuhLflcNx4QD0WwMm?=
- =?us-ascii?Q?vmzP2ktY2kcqCYdqceB47kmJvyBK8eGrX03c2SAtRRtugGEtdu9haNplALql?=
- =?us-ascii?Q?2oSyjDaAhQT99sKe4KTg5PIpjW+BjPqH080ku+kP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b747d162-ee17-4187-d8f9-08dc4a3ae647
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2024 06:40:01.3379
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Z2JxBFtWvzvjmu+196flzwQ/2IeVk0TPJ5TuGAefv4GPYPHmnG8liGQ6zWCuCnYrFDSGo5fMasxtX2RQ3tpSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8928
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240320100407.1639082-3-andrej.picej@norik.com>
 
-Add JSON metrics for i.MX93 DDR Performance Monitor.
+Hi Andrej,
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+kernel test robot noticed the following build warnings:
 
----
-Changes in v7:
- - new patch
-Changes in v8:
- - no changes
----
- .../arch/arm64/freescale/imx93/sys/ddrc.json  |  9 +++++++
- .../arm64/freescale/imx93/sys/metrics.json    | 26 +++++++++++++++++++
- 2 files changed, 35 insertions(+)
- create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/ddrc.json
- create mode 100644 tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/metrics.json
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.8 next-20240322]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/ddrc.json b/tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/ddrc.json
-new file mode 100644
-index 000000000000..eeeae4d49fce
---- /dev/null
-+++ b/tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/ddrc.json
-@@ -0,0 +1,9 @@
-+[
-+   {
-+           "BriefDescription": "ddr cycles event",
-+           "EventCode": "0x00",
-+           "EventName": "imx93_ddr.cycles",
-+           "Unit": "imx9_ddr",
-+           "Compat": "imx93"
-+   }
-+]
-diff --git a/tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/metrics.json b/tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/metrics.json
-new file mode 100644
-index 000000000000..4d2454ca1259
---- /dev/null
-+++ b/tools/perf/pmu-events/arch/arm64/freescale/imx93/sys/metrics.json
-@@ -0,0 +1,26 @@
-+[
-+   {
-+	    "BriefDescription": "bandwidth usage for lpddr4x evk board",
-+	    "MetricName": "imx93_bandwidth_usage.lpddr4x",
-+	    "MetricExpr": "(((( imx9_ddr0@ddrc_pm_0@ ) * 2 * 8 ) + (( imx9_ddr0@ddrc_pm_3@ + imx9_ddr0@ddrc_pm_5@ + imx9_ddr0@ddrc_pm_7@ + imx9_ddr0@ddrc_pm_9@ - imx9_ddr0@ddrc_pm_2@ - imx9_ddr0@ddrc_pm_4@ - imx9_ddr0@ddrc_pm_6@ - imx9_ddr0@ddrc_pm_8@ ) * 32 )) / duration_time) / (3733 * 1000000 * 2)",
-+	    "ScaleUnit": "1e2%",
-+	    "Unit": "imx9_ddr",
-+	    "Compat": "imx93"
-+   },
-+   {
-+	    "BriefDescription": "bytes all masters read from ddr",
-+	    "MetricName": "imx93_ddr_read.all",
-+	    "MetricExpr": "( imx9_ddr0@ddrc_pm_0@ ) * 2 * 8",
-+	    "ScaleUnit": "9.765625e-4KB",
-+	    "Unit": "imx9_ddr",
-+	    "Compat": "imx93"
-+   },
-+   {
-+	    "BriefDescription": "bytes all masters write to ddr",
-+	    "MetricName": "imx93_ddr_write.all",
-+	    "MetricExpr": "( imx9_ddr0@ddrc_pm_3@ + imx9_ddr0@ddrc_pm_5@ + imx9_ddr0@ddrc_pm_7@ + imx9_ddr0@ddrc_pm_9@ - imx9_ddr0@ddrc_pm_2@ - imx9_ddr0@ddrc_pm_4@ - imx9_ddr0@ddrc_pm_6@ - imx9_ddr0@ddrc_pm_8@ ) * 32",
-+	    "ScaleUnit": "9.765625e-4KB",
-+	    "Unit": "imx9_ddr",
-+	    "Compat": "imx93"
-+   }
-+]
+url:    https://github.com/intel-lab-lkp/linux/commits/Andrej-Picej/iio-adc-imx93-Make-calibration-properties-configurable/20240320-184314
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240320100407.1639082-3-andrej.picej%40norik.com
+patch subject: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add calibration properties
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20240322/202403221438.trdG8I0x-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403221438.trdG8I0x-lkp@intel.com/
+
+dtcheck warnings: (new ones prefixed by >>)
+   Documentation/devicetree/bindings/net/snps,dwmac.yaml: mac-mode: missing type definition
+>> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-avg-en: missing type definition
+>> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-nr-samples: missing type definition
+>> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-t-samples: missing type definition
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
