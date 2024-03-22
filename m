@@ -1,100 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C341DF67;
-	Fri, 22 Mar 2024 06:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92745B651
+	for <imx@lists.linux.dev>; Fri, 22 Mar 2024 07:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711090101; cv=none; b=bh3lVdJQJxFlFa5elaoJc4KK6aET+lnhvONFPNACEEOZ1qNWZRs9L7rvWcM21FDEOhF2/PPEt5zDee6JtZFP/YkT88huQ9E/Xvq5Oq8apz7zubkldeBKnc0x5Uoi11fad67zEkW6Ox+X/V4foLaHShpE2UF7ZdUw12nvaIBBmN8=
+	t=1711093152; cv=none; b=qFI7YUoYQZLDrkQ1r2k2BKpAu92IbtEuke8ZSkt7NLVUqbfZYoyBKwr+AkkFpGjre08S6T+Jq8HFK2WwcpOEHFAQh/0xL8GapQDtN13ZBWYFKmx5+PAJt9lf5hejH48iOhzH3T9vaDrDXAuB6sj8wpfWNrhBpVPpYjL+gI/vsDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711090101; c=relaxed/simple;
-	bh=MMToYGDlPx6M64cs/BtMBKCnEYYVKlgAvV4z9fQeu8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tlRZ+pI90alfhsHOcFl+WJaE3BX7KKAQWZ2QG1ZMpRlhD1xHonwvb4jc/VbS54l7xD6RQh+fhIAEYFytZbrEXqrRJZS3UhO0gGPPt7qeFpTg7SvC2Fs1DDivE1G1bwzGW4X0hhNv7adahJOXBHVVKb8SKHQKdwCdCKPb5rALeRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvYjq6KY; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711093152; c=relaxed/simple;
+	bh=74IY4W2ReJ+EBD6XqkKEfxqxu9pBcnlGD0ss0VXKhTw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TmmbR4pEli24EX0e6f2BPkerEpRyiPMup/4KGArPPNZhk6odxrI6147vWaf9OaHKkBT7eLk9QJjcG+QNBs8fKMfKnwYn4J/QocL5IWjeqOy/SNOsY1ELELukXH4vrkFB+EUhvQ0XxhaWPv5bNnatC/an9fcYNE2Nfj1biTrqbpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ntplgsJt; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvYjq6KY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711090099; x=1742626099;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MMToYGDlPx6M64cs/BtMBKCnEYYVKlgAvV4z9fQeu8Q=;
-  b=lvYjq6KYMgq0JeyE9MVCMT28cMZDxJBIXOWm6LrYQX4GeJUwTL9CDrl/
-   CJp8fwI4iRTGfMwMvcUkh2TMpxibFZwjgu6gevLc8WypanU1nsKDmoHEF
-   JQ8NjztnMykm+CVcA4CMIiWTEtDLl/4hu/NKFL2BlYI5ZDWRAsMoY1L15
-   onE8QwOEvQCejW9i5vxUA6cg9tEmD8eLyJSkaWoekLYxgjV43tvh3gRwO
-   2Hi7JEFGtq9S5/B7C9KqVYm1dwZl+XsLlatjN9nLIWZxd/5UstorjSfMV
-   TgPBB9Q+alo8leAWrPYe9GHCEQAQLNOUVcs7u2zYbmdtyvp3QJJk0/KYF
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5980683"
-X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
-   d="scan'208";a="5980683"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 23:48:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
-   d="scan'208";a="14834215"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 21 Mar 2024 23:48:14 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rnYhI-000K5n-0c;
-	Fri, 22 Mar 2024 06:48:12 +0000
-Date: Fri, 22 Mar 2024 14:47:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrej Picej <andrej.picej@norik.com>, haibo.chen@nxp.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, jic23@kernel.org, lars@metafoo.de,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, upstream@lists.phytec.de
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
- calibration properties
-Message-ID: <202403221438.trdG8I0x-lkp@intel.com>
-References: <20240320100407.1639082-3-andrej.picej@norik.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ntplgsJt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XmDDFMU/4E1etv5sIVB4WfwFGi7VCAGsEJBu9uRrii4=; b=ntplgsJtLpus/vc2992ovayXVr
+	xY1h7gl0F9U4X7qnD9MaEwn3gzMxCaBv+BE0Ew/TFtNB1JxSD60Mj9yDNW3SP9AMBEQMRneN367ff
+	F4gZ7pKaaPdB4xtX0OZ37aS5zwe8qbY4CH110T5xAOYHvLUKElqzQuAnXr7J9+5kuz3cEHSpmWnCj
+	AECN7w7n+GLIYFfRPhwS/AnY/E9DIWaMZDTiffyWnxvdprQbrv94BoZurPD+F7TRSLRtbDe0FXfbH
+	MDmq6ytMd+SaaPh8AeImdbmWqu28kvm3rORB01SIRvaRIf0sZ3nUJ8HloT0yxwX3Oa5BZHqOf47wX
+	OQB5UT7Q==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:55020 helo=[192.168.69.84])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1rnZUV-00EHuV-2e;
+	Fri, 22 Mar 2024 08:39:02 +0100
+Message-ID: <40e08a5e-e7e9-47c7-9102-24a2bbba67cf@norik.com>
+Date: Fri, 22 Mar 2024 08:39:01 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240320100407.1639082-3-andrej.picej@norik.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Content-Language: en-GB
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, haibo.chen@nxp.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ upstream@lists.phytec.de
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+ <20240320100407.1639082-3-andrej.picej@norik.com>
+ <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+ <e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
+ <7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
+From: Andrej Picej <andrej.picej@norik.com>
+In-Reply-To: <7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Andrej,
+On 20. 03. 24 13:15, Krzysztof Kozlowski wrote:
+> On 20/03/2024 13:05, Andrej Picej wrote:
+>> Hi Krzysztof,
+>>
+>> On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:
+>>> On 20/03/2024 11:04, Andrej Picej wrote:
+>>>> Document calibration properties and how to set them.
+>>>
+>>> Bindings are before users.
+>>
+>> will change patch order when I send a v2.
+>>
+>>>
+>>> Please use subject prefixes matching the subsystem. You can get them for
+>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+>>> your patch is touching.
+>>> There is no file extension in prefixes.
+>>
+>> So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?
+> 
+> Did you run the command I proposed? I don't see much of "/", but except
+> that looks good.
 
-kernel test robot noticed the following build warnings:
+Ok noted.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.8 next-20240322]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+>>
+>>>
+>>>>
+>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>>>> ---
+>>>>    .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+>>>>    1 file changed, 15 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>> index dacc526dc695..64958be62a6a 100644
+>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>> @@ -46,6 +46,21 @@ properties:
+>>>>      "#io-channel-cells":
+>>>>        const: 1
+>>>>    
+>>>> +  nxp,calib-avg-en:
+>>>> +    description:
+>>>> +      Enable or disable averaging of calibration time.
+>>>> +    enum: [ 0, 1 ]
+>>>> +
+>>>> +  nxp,calib-nr-samples:
+>>>> +    description:
+>>>> +      Selects the number of averaging samples to be used during calibration.
+>>>> +    enum: [ 16, 32, 128, 512 ]
+>>>> +
+>>>> +  nxp,calib-t-samples:
+>>>> +    description:
+>>>> +      Specifies the sample time of calibration conversions.
+>>>> +    enum: [ 8, 16, 22, 32 ]
+>>>
+>>> No, use existing, generic properties. Open other bindings for this.
+>>
+>> You mean I should use generic properties for the ADC calibration
+>> settings? Is there already something in place? Because as I understand
+>> it, these calib-* values only effect the calibration process of the ADC.
+> 
+> Please take a look at other devices and dtschema. We already have some
+> properties for this... but maybe they cannot be used?
+> 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrej-Picej/iio-adc-imx93-Make-calibration-properties-configurable/20240320-184314
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240320100407.1639082-3-andrej.picej%40norik.com
-patch subject: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add calibration properties
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240322/202403221438.trdG8I0x-lkp@intel.com/reproduce)
+I did look into other ADC devices, grep across iio/adc, adc bindings 
+folders and couldn't find anything closely related to what we are 
+looking for. Could you please point me to the properties that you think 
+should be used for this?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403221438.trdG8I0x-lkp@intel.com/
+Thank you.
+Andrej
 
-dtcheck warnings: (new ones prefixed by >>)
-   Documentation/devicetree/bindings/net/snps,dwmac.yaml: mac-mode: missing type definition
->> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-avg-en: missing type definition
->> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-nr-samples: missing type definition
->> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-t-samples: missing type definition
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> Best regards,
+> Krzysztof
+> 
