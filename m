@@ -1,509 +1,108 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACDC1388
-	for <imx@lists.linux.dev>; Sat, 23 Mar 2024 03:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFED7DDC5;
+	Sat, 23 Mar 2024 09:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711165337; cv=none; b=dZ1mF+H2ZFdJ8mB1aS0cl9VGmUPvTjaF5o5tAJvwNFQSOQIcYJq5qozStvxP0D2oRcjcsznZ/9kgIWka6RUyTDnzvtH4xucHnIFCChFZrOC8HxaDBPNrQ56Q8BowLq0BSIZcmNRxEohhF6qgdc5KBFkHVRZVPsUz0deY/4ofJ7A=
+	t=1711185637; cv=none; b=ncOmAjFw4nEPoF0J2y/49n7YILGtVM/GZBxJPRBw7iGx8Q3CF1vxx75esN0JU+6OiKH8slJCUM7G2sYETfMhHBbpRJ7CpCBwHVf9u+7Oyej1He8OBtFzL0YYOMFdz/B17Y3BzBgzDeYdlmG37+laJae/kelDEGxseod/p95RRAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711165337; c=relaxed/simple;
-	bh=W2onV23bFeIsjJmE5cH1B/pXfjquwmKl4gj1EcBV3UA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s7vz7utnUdWrbIWbLUANDEpMxXCe0gpzuPDo9tbCKX2Ga5kjhyk5jwPIYyJhfyl39diaYFkh+Cj5RA+YoLHq3ObGfC55/I8bxlU8DPjVJQlCEiHKUL9dg807I+y5BOzUw1QyiUc/mHKp8xJeoNLWBv2DMU2VT0hkXSqdg7hkUgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RaMIJfwm; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711185637; c=relaxed/simple;
+	bh=aGTQuZy7vZpxuhlc2uWM1FWO2cNVLUpXYHPr+30NYM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rh0DSAdSQVNBS1adbiZGMY4peRzHf0OTI1CLdrkJl+mE1QbOUeJ4y6uzhifAP3lPqxAJ+LIqYAI9lNkveAzkyTTykksIouPaF+eEm+Dp1DBn5jBle6zAmfSWwrlcPoHoim7asJCNSjOC4eFVZF68Wj1uh+JRYU+LavkF/Ophhpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmGkF125; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RaMIJfwm"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-366c49ee863so11559545ab.1
-        for <imx@lists.linux.dev>; Fri, 22 Mar 2024 20:42:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711165334; x=1711770134; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q7oGGDfGZl4k7YaoaPgaFIGDNWLjOcUwcUjURXF82RQ=;
-        b=RaMIJfwmGLeJmO9u7i5I9JV+AiPBCHKocoUopKn4h0iFBKPE/VV5jF+3WLcOAMGlZN
-         8HlSmaVVQfg9MznQd0SOSw9VrsWKidapd26ylb6m/IeRQ0uPPOnzF0oX2lExIb0kYFVs
-         EHZLFIYvRBBno6eqPNicZOcyWYMZv8xYeUNvXpbPgPEH7MAtUgDDbR1/AWcWcMEmKaWI
-         5Ls/5QoVegHZnbObXLw2fkJd79Bn3uxMH0RldSFphHkQgBNGF3BzGyNDl2s6PzwWpUdS
-         wCkxuuI0UyuO7cVDUu2GkLcj4lQ+YrmOzES6Weq7qMULmElUK8rxuuGKNp9TBnxQnccX
-         0UQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711165334; x=1711770134;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q7oGGDfGZl4k7YaoaPgaFIGDNWLjOcUwcUjURXF82RQ=;
-        b=KaVlNYqPvQURR65Ds6KLPLCOrg4Y9X8IG0T358UmWOMycDaNutDI8Af+2fg329IIYi
-         UjHf2VcAnnLZahv340rDyIFFWg793s+rM3KttQi+s3hd7unuY3U9j75bNAmGyJf55vum
-         RlyBwOHH/P8PVou/6brdF4CxYhF5+LTgJTjkUw8aBezEhZddyATTw2BG/TKAr08k0Ckn
-         tiTakAPZPYZzPCVViSo8i3q2MJiRFxoA0G/C+NRgcjsbmpjPr3IaT6OJ8MyaSXYeQarc
-         Bn8sm1AirubYsWOvPkcV3opIE6cAv9CI6Df0eHRYu8Hq5cp2ZQu9vXuBi5GYLq8UZVB0
-         GTmg==
-X-Forwarded-Encrypted: i=1; AJvYcCULQAlzokKAeLN8Jto+XEmK7LDWazqCM7ys5frjMpyWiVDxMu1rfdEKMKwCFVeh78n+d8Ma1CSdDtJCJAtpqw7vk4fn
-X-Gm-Message-State: AOJu0YxF1t6RjqsWtvTKGDTrbHvFE7c/RqN4tamxSPavsrj3gl13k1HV
-	mmpxDVIWvjGAQnnqmQFjp1iMKSunG32Ckx7TbgzDT7gYS6n5l8c6BuD3gvU/Nif8sC66g6u2oL9
-	4kjcaMR8hOJiV9QA45t9WScmPqKM=
-X-Google-Smtp-Source: AGHT+IFPTsqAezg9b2hZJLZPqOiIo94F8YICrIiqJ+1QPCJeyoVFkozj6N3t+PVNp2bRjIvmGRqf9x0c5uF+sXMZy2w=
-X-Received: by 2002:a92:cad0:0:b0:366:931c:2230 with SMTP id
- m16-20020a92cad0000000b00366931c2230mr1340893ilq.10.1711165334306; Fri, 22
- Mar 2024 20:42:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmGkF125"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51C0C433F1;
+	Sat, 23 Mar 2024 09:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711185636;
+	bh=aGTQuZy7vZpxuhlc2uWM1FWO2cNVLUpXYHPr+30NYM4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AmGkF125xegySFWAiHvPntmZ+07s8hZQPC/0IVIftdkxYeMJTqDHDoBaq087Sl4Ry
+	 qKx2QcAVw6S410SG7j4biAqt4/h5dTjc1vKUs5R8LJBjxtJSQyMNE1PxZTAhzLwpa+
+	 ZvDOHlqhfPGo+3K1JP9tq5K11rxRL31gNRIYe4fcfJjyAcpNQmozM0AzDwGqt7aAAm
+	 vL1bo7yWAyyXHWJXICav98Il7syCI5t9aEO0HLvfyTQ7cJVQX5WfpHiaD8JmvRG1Zm
+	 VmI4taBLphr2uo/nVmCk1uj3x3TE6/IYqaCXMkAcTk/3yvQe9KoaZIneVeSaGY4Thk
+	 hCCXd6I1k2Bcg==
+Date: Sat, 23 Mar 2024 10:20:32 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, asahi@lists.linux.dev, 
+	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-actions@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH 00/64] i2c: reword i2c_algorithm according to newest
+ specification
+Message-ID: <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
+References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1711102406-8399-1-git-send-email-shengjiu.wang@nxp.com>
- <1711102406-8399-2-git-send-email-shengjiu.wang@nxp.com> <20240322135800.GA811908-robh@kernel.org>
-In-Reply-To: <20240322135800.GA811908-robh@kernel.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sat, 23 Mar 2024 11:42:03 +0800
-Message-ID: <CAA+D8AOJ5QsrpKLutHHBhdFX6ry=rX-D=r-ftJt6z0JUwMgE6w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl-asoc-card: convert to YAML
-To: Rob Herring <robh@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
 
-On Fri, Mar 22, 2024 at 9:58=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Fri, Mar 22, 2024 at 06:13:25PM +0800, Shengjiu Wang wrote:
-> > Convert the fsl-asoc-card binding to YAML.
-> >
-> > In order to pass the checking, add some used compatible
-> > string from devicetree.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../bindings/sound/fsl-asoc-card.txt          | 117 -----------
-> >  .../bindings/sound/fsl-asoc-card.yaml         | 196 ++++++++++++++++++
-> >  2 files changed, 196 insertions(+), 117 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-ca=
-rd.txt
-> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-ca=
-rd.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt =
-b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> > deleted file mode 100644
-> > index 4e8dbc5abfd1..000000000000
-> > --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> > +++ /dev/null
-> > @@ -1,117 +0,0 @@
-> > -Freescale Generic ASoC Sound Card with ASRC support
-> > -
-> > -The Freescale Generic ASoC Sound Card can be used, ideally, for all Fr=
-eescale
-> > -SoCs connecting with external CODECs.
-> > -
-> > -The idea of this generic sound card is a bit like ASoC Simple Card. Ho=
-wever,
-> > -for Freescale SoCs (especially those released in recent years), most o=
-f them
-> > -have ASRC (Documentation/devicetree/bindings/sound/fsl,asrc.txt) insid=
-e. And
-> > -this is a specific feature that might be painstakingly controlled and =
-merged
-> > -into the Simple Card.
-> > -
-> > -So having this generic sound card allows all Freescale SoC users to be=
-nefit
-> > -from the simplification of a new card support and the capability of th=
-e wide
-> > -sample rates support through ASRC.
-> > -
-> > -Note: The card is initially designed for those sound cards who use AC'=
-97, I2S
-> > -      and PCM DAI formats. However, it'll be also possible to support =
-those non
-> > -      AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI au=
-dio, as
-> > -      long as the driver has been properly upgraded.
-> > -
-> > -
-> > -The compatible list for this generic sound card currently:
-> > - "fsl,imx-audio-ac97"
-> > -
-> > - "fsl,imx-audio-cs42888"
-> > -
-> > - "fsl,imx-audio-cs427x"
-> > - (compatible with CS4271 and CS4272)
-> > -
-> > - "fsl,imx-audio-wm8962"
-> > -
-> > - "fsl,imx-audio-sgtl5000"
-> > - (compatible with Documentation/devicetree/bindings/sound/imx-audio-sg=
-tl5000.txt)
-> > -
-> > - "fsl,imx-audio-wm8960"
-> > -
-> > - "fsl,imx-audio-mqs"
-> > -
-> > - "fsl,imx-audio-wm8524"
-> > -
-> > - "fsl,imx-audio-tlv320aic32x4"
-> > -
-> > - "fsl,imx-audio-tlv320aic31xx"
-> > -
-> > - "fsl,imx-audio-si476x"
-> > -
-> > - "fsl,imx-audio-wm8958"
-> > -
-> > - "fsl,imx-audio-nau8822"
-> > -
-> > -Required properties:
-> > -
-> > -  - compatible               : Contains one of entries in the compatib=
-le list.
-> > -
-> > -  - model            : The user-visible name of this sound complex
-> > -
-> > -  - audio-cpu                : The phandle of an CPU DAI controller
-> > -
-> > -  - audio-codec              : The phandle of an audio codec
-> > -
-> > -Optional properties:
-> > -
-> > -  - audio-asrc               : The phandle of ASRC. It can be absent i=
-f there's no
-> > -                       need to add ASRC support via DPCM.
-> > -
-> > -  - audio-routing    : A list of the connections between audio compone=
-nts.
-> > -                       Each entry is a pair of strings, the first bein=
-g the
-> > -                       connection's sink, the second being the connect=
-ion's
-> > -                       source. There're a few pre-designed board conne=
-ctors:
-> > -                        * Line Out Jack
-> > -                        * Line In Jack
-> > -                        * Headphone Jack
-> > -                        * Mic Jack
-> > -                        * Ext Spk
-> > -                        * AMIC (stands for Analog Microphone Jack)
-> > -                        * DMIC (stands for Digital Microphone Jack)
-> > -
-> > -                       Note: The "Mic Jack" and "AMIC" are redundant w=
-hile
-> > -                             coexisting in order to support the old bi=
-ndings
-> > -                             of wm8962 and sgtl5000.
-> > -
-> > -  - hp-det-gpio              : The GPIO that detect headphones are plu=
-gged in
-> > -  - mic-det-gpio     : The GPIO that detect microphones are plugged in
-> > -  - bitclock-master  : Indicates dai-link bit clock master; for detail=
-s see simple-card.yaml.
-> > -  - frame-master     : Indicates dai-link frame master; for details se=
-e simple-card.yaml.
-> > -  - dai-format               : audio format, for details see simple-ca=
-rd.yaml.
-> > -  - frame-inversion  : dai-link uses frame clock inversion, for detail=
-s see simple-card.yaml.
-> > -  - bitclock-inversion       : dai-link uses bit clock inversion, for =
-details see simple-card.yaml.
-> > -  - mclk-id          : main clock id, specific for each card configura=
-tion.
-> > -
-> > -Optional unless SSI is selected as a CPU DAI:
-> > -
-> > -  - mux-int-port     : The internal port of the i.MX audio muxer (AUDM=
-UX)
-> > -
-> > -  - mux-ext-port     : The external port of the i.MX audio muxer
-> > -
-> > -Example:
-> > -sound-cs42888 {
-> > -     compatible =3D "fsl,imx-audio-cs42888";
-> > -     model =3D "cs42888-audio";
-> > -     audio-cpu =3D <&esai>;
-> > -     audio-asrc =3D <&asrc>;
-> > -     audio-codec =3D <&cs42888>;
-> > -     audio-routing =3D
-> > -             "Line Out Jack", "AOUT1L",
-> > -             "Line Out Jack", "AOUT1R",
-> > -             "Line Out Jack", "AOUT2L",
-> > -             "Line Out Jack", "AOUT2R",
-> > -             "Line Out Jack", "AOUT3L",
-> > -             "Line Out Jack", "AOUT3R",
-> > -             "Line Out Jack", "AOUT4L",
-> > -             "Line Out Jack", "AOUT4R",
-> > -             "AIN1L", "Line In Jack",
-> > -             "AIN1R", "Line In Jack",
-> > -             "AIN2L", "Line In Jack",
-> > -             "AIN2R", "Line In Jack";
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml=
- b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> > new file mode 100644
-> > index 000000000000..48051655230d
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> > @@ -0,0 +1,196 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/sound/fsl-asoc-card.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Freescale Generic ASoC Sound Card with ASRC support
-> > +
-> > +description:
-> > +  The Freescale Generic ASoC Sound Card can be used, ideally,
-> > +  for all Freescale SoCs connecting with external CODECs.
-> > +
-> > +  The idea of this generic sound card is a bit like ASoC Simple Card.
-> > +  However, for Freescale SoCs (especially those released in recent yea=
-rs),
-> > +  most of them have ASRC
-> > +  (Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml) inside. =
-And
-> > +  this is a specific feature that might be painstakingly controlled an=
-d
-> > +  merged into the Simple Card.
-> > +
-> > +  So having this generic sound card allows all Freescale SoC users to
-> > +  benefit from the simplification of a new card support and the capabi=
-lity
-> > +  of the wide sample rates support through ASRC.
-> > +
-> > +  Note, The card is initially designed for those sound cards who use A=
-C'97, I2S
-> > +  and PCM DAI formats. However, it'll be also possible to support thos=
-e non
-> > +  AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI audio,=
- as
-> > +  long as the driver has been properly upgraded.
-> > +
-> > +maintainers:
-> > +  - Shengjiu Wang <shengjiu.wang@nxp.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - items:
-> > +          - enum:
-> > +              - fsl,imx-sgtl5000
-> > +              - fsl,imx53-cpuvo-sgtl5000
-> > +              - fsl,imx51-babbage-sgtl5000
-> > +              - fsl,imx53-m53evk-sgtl5000
-> > +              - fsl,imx53-qsb-sgtl5000
-> > +              - fsl,imx53-voipac-sgtl5000
-> > +              - fsl,imx6-armadeus-sgtl5000
-> > +              - fsl,imx6-rex-sgtl5000
-> > +              - fsl,imx6-sabreauto-cs42888
-> > +              - fsl,imx6-wandboard-sgtl5000
-> > +              - fsl,imx6dl-nit6xlite-sgtl5000
-> > +              - fsl,imx6q-ba16-sgtl5000
-> > +              - fsl,imx6q-nitrogen6_max-sgtl5000
-> > +              - fsl,imx6q-nitrogen6_som2-sgtl5000
-> > +              - fsl,imx6q-nitrogen6x-sgtl5000
-> > +              - fsl,imx6q-sabrelite-sgtl5000
-> > +              - fsl,imx6q-sabresd-wm8962
-> > +              - fsl,imx6q-udoo-ac97
-> > +              - fsl,imx6q-ventana-sgtl5000
-> > +              - fsl,imx6sl-evk-wm8962
-> > +              - fsl,imx6sx-sdb-mqs
-> > +              - fsl,imx6sx-sdb-wm8962
-> > +              - fsl,imx7d-evk-wm8960
-> > +              - karo,tx53-audio-sgtl5000
-> > +              - tq,imx53-mba53-sgtl5000
->
-> None of these were documented before. It's fine to add all these in this
-> patch, but please state in the commit message what missing or incorrect
-> things you added in the schema.
+Hi Wolfram,
 
-ok, will add info in the commit message.
+On Fri, Mar 22, 2024 at 02:24:53PM +0100, Wolfram Sang wrote:
+> Okay, we need to begin somewhere...
+> 
+> Start changing the wording of the I2C main header wrt. the newest I2C
+> v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
+> appropriate terms. This first step renames the members of struct
+> i2c_algorithm. Once all in-tree users are converted, the anonymous union
+> will go away again. All this work will also pave the way for finally
+> seperating the monolithic header into more fine-grained headers like
+> "i2c/clients.h" etc. So, this is not a simple renaming-excercise but
+> also a chance to update the I2C core to recent Linux standards.
 
->
-> > +          - enum:
-> > +              - fsl,imx-audio-ac97
-> > +              - fsl,imx-audio-cs42888
-> > +              - fsl,imx-audio-mqs
-> > +              - fsl,imx-audio-sgtl5000
-> > +              - fsl,imx-audio-wm8960
-> > +              - fsl,imx-audio-wm8962
-> > +      - items:
-> > +          - enum:
-> > +              - fsl,imx-audio-ac97
-> > +              - fsl,imx-audio-cs42888
-> > +              - fsl,imx-audio-cs427x
-> > +              - fsl,imx-audio-mqs
-> > +              - fsl,imx-audio-nau8822
-> > +              - fsl,imx-audio-sgtl5000
-> > +              - fsl,imx-audio-si476x
-> > +              - fsl,imx-audio-tlv320aic31xx
-> > +              - fsl,imx-audio-tlv320aic32x4
-> > +              - fsl,imx-audio-wm8524
-> > +              - fsl,imx-audio-wm8960
-> > +              - fsl,imx-audio-wm8962
-> > +              - fsl,imx-audio-wm8958
-> > +
-> > +  model:
-> > +    $ref: /schemas/types.yaml#/definitions/string
-> > +    description: The user-visible name of this sound complex
-> > +
-> > +  audio-asrc:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle
-> > +    description:
-> > +      The phandle of ASRC. It can be absent if there's no
-> > +      need to add ASRC support via DPCM.
-> > +
-> > +  audio-codec:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle
-> > +    description: The phandle of an audio codec
-> > +
-> > +  audio-cpu:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle
-> > +    description: The phandle of an CPU DAI controller
-> > +
-> > +  audio-routing:
-> > +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-> > +    description:
-> > +      A list of the connections between audio components. Each entry i=
-s a
-> > +      pair of strings, the first being the connection's sink, the seco=
-nd
-> > +      being the connection's source. There're a few pre-designed board
-> > +      connectors.
-> > +        * Line Out Jack
-> > +        * Line In Jack
-> > +        * Headphone Jack
-> > +        * Mic Jack
-> > +        * Ext Spk
-> > +        * AMIC (stands for Analog Microphone Jack)
-> > +        * DMIC (stands for Digital Microphone Jack)
-> > +      Note, The "Mic Jack" and "AMIC" are redundant while coexisting i=
-n
-> > +      order to support the old bindings of wm8962 and sgtl5000.
->
-> Please list the strings out as schema:
->
-> minItems: 2
-> items:
->   enum:
->     - "Line Out Jack"
->     ...
+yes, very good! It's clearly stated in all three documentations
+that Target replaces Slave and Controller replaces Master (i3c is
+at the 1.1.1 version).
 
-Can I not list them? Because this fsl-asoc-card is generic
-it supports several codecs, if list them, there will be a long list.
+> My motivation is to improve the I2C core API, in general. My motivation
+> is not to clean each and every driver. I think this is impossible
+> because register names based on official documentation will need to stay
+> as they are. But the Linux-internal names should be updated IMO.
 
->
-> > +
-> > +  hp-det-gpio:
-> > +    maxItems: 1
-> > +    description: The GPIO that detect headphones are plugged in
->
->        deprecated: true
+Also because some drivers have been written based on previous
+specifications where master/slave was used.
 
-ok, will add it.
+> That being said, I worked on 62 drivers in this series beyond plain
+> renames inside 'struct i2c_algorithm' because the fruits were so
+> low-hanging. Before this series, 112 files in the 'busses/' directory
+> contained 'master' and/or 'slave'. After the series, only 57. Why not?
+> 
+> Next step is updating the drivers outside the 'i2c'-folder regarding
+> 'struct i2c_algorithm' so we can remove the anonymous union ASAP. To be
+> able to work on this with minimal dependencies, I'd like to apply this
+> series between -rc1 and -rc2.
+> 
+> I hope this will work for you guys. The changes are really minimal. If
+> you are not comfortable with changes to your driver or need more time to
+> review, please NACK the patch and I will drop the patch and/or address
+> the issues separeately.
+> 
+> @Andi: are you okay with this approach? It means you'd need to merge
+> -rc2 into your for-next branch. Or rebase if all fails.
 
->
-> > +
-> > +  hp-det-gpios:
-> > +    maxItems: 1
-> > +    description: The GPIO that detect headphones are plugged in
-> > +
-> > +  mic-det-gpio:
-> > +    maxItems: 1
-> > +    description: The GPIO that detect microphones are plugged in
->
->        deprecated: true
->
-> > +
-> > +  mic-det-gpios:
-> > +    maxItems: 1
-> > +    description: The GPIO that detect microphones are plugged in
-> > +
-> > +  bitclock-master:
-> > +    description: Indicates dai-link bit clock master; for details see =
-simple-card.yaml.
->
-> Drop the prose reference and add:
->
->        $ref: simple-card.yaml#/definitions/bitclock-master
->
-> Otherwise, bitclock-master could be anything.
->
-> And similar for the rest.
+I think it's a good plan, I'll try to support you with it.
 
-ok, will change them.
+> Speaking of Andi, thanks a lot to him taking care of the controller
+> drivers these days. His work really gives me the freedom to work on I2C
+> core issues again.
 
-Best regards
-Shengjiu Wang
->
-> > +
-> > +  frame-master:
-> > +    description: Indicates dai-link frame master; for details see simp=
-le-card.yaml.
-> > +
-> > +  dai-format:
-> > +    description: audio format, for details see simple-card.yaml.
-> > +
-> > +  frame-inversion:
-> > +    description: dai-link uses frame clock inversion, for details see =
-simple-card.yaml.
-> > +
-> > +  bitclock-inversion:
-> > +    description: dai-link uses bit clock inversion, for details see si=
-mple-card.yaml.
-> > +
-> > +  mclk-id:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description: main clock id, specific for each card configuration.
-> > +
-> > +  mux-int-port:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    enum: [1, 2, 7]
-> > +    description: The internal port of the i.MX audio muxer (AUDMUX)
-> > +
-> > +  mux-ext-port:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    enum: [3, 4, 5, 6]
-> > +    description: The external port of the i.MX audio muxer
-> > +
-> > +  ssi-controller:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle
-> > +    description: The phandle of an CPU DAI controller
-> > +
-> > +required:
-> > +  - compatible
-> > +  - model
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    sound-cs42888 {
-> > +        compatible =3D "fsl,imx-audio-cs42888";
-> > +        model =3D "cs42888-audio";
-> > +        audio-cpu =3D <&esai>;
-> > +        audio-asrc =3D <&asrc>;
-> > +        audio-codec =3D <&cs42888>;
-> > +        audio-routing =3D
-> > +             "Line Out Jack", "AOUT1L",
-> > +             "Line Out Jack", "AOUT1R",
-> > +             "Line Out Jack", "AOUT2L",
-> > +             "Line Out Jack", "AOUT2R",
-> > +             "Line Out Jack", "AOUT3L",
-> > +             "Line Out Jack", "AOUT3R",
-> > +             "Line Out Jack", "AOUT4L",
-> > +             "Line Out Jack", "AOUT4R",
-> > +             "AIN1L", "Line In Jack",
-> > +             "AIN1R", "Line In Jack",
-> > +             "AIN2L", "Line In Jack",
-> > +             "AIN2R", "Line In Jack";
-> > +    };
-> > --
-> > 2.34.1
-> >
+Thank you, Wolfram!
+
+Andi
