@@ -1,136 +1,509 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB6479931;
-	Fri, 22 Mar 2024 19:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACDC1388
+	for <imx@lists.linux.dev>; Sat, 23 Mar 2024 03:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711135292; cv=none; b=MboID71zkYqm8agw98Fv0Iics8e9MFMl+x8ayYV73+Ay03rXngb546+vM3GKzvwWP75IXMUk6fAHJxtjrFh7opVMYchykEs7IM+b5VMnqQzHO1nyaVBUEbCOQy789CKfNtIliC9ryxZ4TAb2U32piBZHdNEakweZO/BdJXnDnVg=
+	t=1711165337; cv=none; b=dZ1mF+H2ZFdJ8mB1aS0cl9VGmUPvTjaF5o5tAJvwNFQSOQIcYJq5qozStvxP0D2oRcjcsznZ/9kgIWka6RUyTDnzvtH4xucHnIFCChFZrOC8HxaDBPNrQ56Q8BowLq0BSIZcmNRxEohhF6qgdc5KBFkHVRZVPsUz0deY/4ofJ7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711135292; c=relaxed/simple;
-	bh=8GHI0o7wqi9kjX1y8O2b7tkzv9Bz9lBCxkn7jE8Ae1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=HMBaCN5iy9bxRmLkKdjZByAOQI0xf/0KNg8OL8vmXsEu8/wlL4wytZiPtu0YZsRAe+SndihIFt4wX71T+VaPaONN95QsRbNb1rZJOongkGHbAzjkNDYpzGZvmzTLrfY1eYOxXpzI+Yf5HGMwCKOfLPF05ha8yNdy2P2CZeoP8L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kr2PNy6c; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711165337; c=relaxed/simple;
+	bh=W2onV23bFeIsjJmE5cH1B/pXfjquwmKl4gj1EcBV3UA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s7vz7utnUdWrbIWbLUANDEpMxXCe0gpzuPDo9tbCKX2Ga5kjhyk5jwPIYyJhfyl39diaYFkh+Cj5RA+YoLHq3ObGfC55/I8bxlU8DPjVJQlCEiHKUL9dg807I+y5BOzUw1QyiUc/mHKp8xJeoNLWBv2DMU2VT0hkXSqdg7hkUgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RaMIJfwm; arc=none smtp.client-ip=209.85.166.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kr2PNy6c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C82CC43390;
-	Fri, 22 Mar 2024 19:21:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711135292;
-	bh=8GHI0o7wqi9kjX1y8O2b7tkzv9Bz9lBCxkn7jE8Ae1A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=kr2PNy6cevo37THCTvYRS4j8RR3WxYeJbQPxc/b/04Kk7Hlci/rpk0114furSEml3
-	 1DypHJR8edT+SGLCcrFeL6CyzoXdk50Ln7aZIvsuBZ8mFMElt8IqHUnJ+bbdUuTZhk
-	 VRkzv8WuOQovxYxM3jMH+G8+CLTATAlIvysGlSWcnwL2ZY/vHJ7DpZsytlh5uQq7MH
-	 KnVUqUs8gimL8o35vHp3zcXdF3zG6buoBj/hrJbU92pXbMR9obub58UT3iXPRY6M3L
-	 eoAzqohI33/w9ajQLaLz7pbsrWVTsWmwVy993XytK6CEgbbE5gYfQprz3/MMuOd96F
-	 +sJfKST5IHiJQ==
-Date: Fri, 22 Mar 2024 14:21:30 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	niklas.cassel@wdc.com, bhelgaas@google.com,
-	gustavo.pimentel@synopsys.com, imx@lists.linux.dev,
-	jdmason@kudzu.us, jingoohan1@gmail.com, kw@linux.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org, robh@kernel.org
-Subject: Re: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
- interpreted as a free ATU slot
-Message-ID: <20240322192130.GA1367450@bhelgaas>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RaMIJfwm"
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-366c49ee863so11559545ab.1
+        for <imx@lists.linux.dev>; Fri, 22 Mar 2024 20:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711165334; x=1711770134; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q7oGGDfGZl4k7YaoaPgaFIGDNWLjOcUwcUjURXF82RQ=;
+        b=RaMIJfwmGLeJmO9u7i5I9JV+AiPBCHKocoUopKn4h0iFBKPE/VV5jF+3WLcOAMGlZN
+         8HlSmaVVQfg9MznQd0SOSw9VrsWKidapd26ylb6m/IeRQ0uPPOnzF0oX2lExIb0kYFVs
+         EHZLFIYvRBBno6eqPNicZOcyWYMZv8xYeUNvXpbPgPEH7MAtUgDDbR1/AWcWcMEmKaWI
+         5Ls/5QoVegHZnbObXLw2fkJd79Bn3uxMH0RldSFphHkQgBNGF3BzGyNDl2s6PzwWpUdS
+         wCkxuuI0UyuO7cVDUu2GkLcj4lQ+YrmOzES6Weq7qMULmElUK8rxuuGKNp9TBnxQnccX
+         0UQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711165334; x=1711770134;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q7oGGDfGZl4k7YaoaPgaFIGDNWLjOcUwcUjURXF82RQ=;
+        b=KaVlNYqPvQURR65Ds6KLPLCOrg4Y9X8IG0T358UmWOMycDaNutDI8Af+2fg329IIYi
+         UjHf2VcAnnLZahv340rDyIFFWg793s+rM3KttQi+s3hd7unuY3U9j75bNAmGyJf55vum
+         RlyBwOHH/P8PVou/6brdF4CxYhF5+LTgJTjkUw8aBezEhZddyATTw2BG/TKAr08k0Ckn
+         tiTakAPZPYZzPCVViSo8i3q2MJiRFxoA0G/C+NRgcjsbmpjPr3IaT6OJ8MyaSXYeQarc
+         Bn8sm1AirubYsWOvPkcV3opIE6cAv9CI6Df0eHRYu8Hq5cp2ZQu9vXuBi5GYLq8UZVB0
+         GTmg==
+X-Forwarded-Encrypted: i=1; AJvYcCULQAlzokKAeLN8Jto+XEmK7LDWazqCM7ys5frjMpyWiVDxMu1rfdEKMKwCFVeh78n+d8Ma1CSdDtJCJAtpqw7vk4fn
+X-Gm-Message-State: AOJu0YxF1t6RjqsWtvTKGDTrbHvFE7c/RqN4tamxSPavsrj3gl13k1HV
+	mmpxDVIWvjGAQnnqmQFjp1iMKSunG32Ckx7TbgzDT7gYS6n5l8c6BuD3gvU/Nif8sC66g6u2oL9
+	4kjcaMR8hOJiV9QA45t9WScmPqKM=
+X-Google-Smtp-Source: AGHT+IFPTsqAezg9b2hZJLZPqOiIo94F8YICrIiqJ+1QPCJeyoVFkozj6N3t+PVNp2bRjIvmGRqf9x0c5uF+sXMZy2w=
+X-Received: by 2002:a92:cad0:0:b0:366:931c:2230 with SMTP id
+ m16-20020a92cad0000000b00366931c2230mr1340893ilq.10.1711165334306; Fri, 22
+ Mar 2024 20:42:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zf0i1X5fg-E59NWx@ryzen>
+References: <1711102406-8399-1-git-send-email-shengjiu.wang@nxp.com>
+ <1711102406-8399-2-git-send-email-shengjiu.wang@nxp.com> <20240322135800.GA811908-robh@kernel.org>
+In-Reply-To: <20240322135800.GA811908-robh@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Sat, 23 Mar 2024 11:42:03 +0800
+Message-ID: <CAA+D8AOJ5QsrpKLutHHBhdFX6ry=rX-D=r-ftJt6z0JUwMgE6w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl-asoc-card: convert to YAML
+To: Rob Herring <robh@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 22, 2024 at 07:19:01AM +0100, Niklas Cassel wrote:
-> On Fri, Mar 22, 2024 at 10:56:23AM +0530, Manivannan Sadhasivam wrote:
-> > On Thu, Mar 21, 2024 at 01:07:32PM -0500, Bjorn Helgaas wrote:
-> > > On Thu, Mar 21, 2024 at 10:43:45PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Mon, Mar 04, 2024 at 05:46:16PM -0500, Frank Li wrote:
-> > > > > dw_pcie_ep_inbound_atu()
-> > > > > {
-> > > > > 	...
-> > > > > 	if (!ep->bar_to_atu[bar])
-> > > > > 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
-> > > > > 	else
-> > > > > 		free_win = ep->bar_to_atu[bar];
-> > > > > 	...
-> > > > > }
-> > > > > 
-> > > > > The atu index 0 is valid case for atu number. The find_first_zero_bit()
-> > > > > will return 6 when second time call into this function if atu is 0. Suppose
-> > > > > it should use branch 'free_win = ep->bar_to_atu[bar]'.
-> > > > > 
-> > > > > Change 'bar_to_atu' to free_win + 1. Initialize bar_to_atu as 0 to indicate
-> > > > > it have not allocate atu to the bar.
-> > > > 
-> > > > I'd rewrite the commit message as below:
-> > > > 
-> > > > "The mapping between PCI BAR and iATU inbound window are maintained in the
-> > > > dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for a
-> > > > BAR, dw_pcie_ep_inbound_atu() API will first check for the availability of the
-> > > > existing mapping in the array and if it is not found (i.e., value in the array
-> > > > indexed by the BAR is found to be 0), then it will allocate a new map value
-> > > > using find_first_zero_bit().
-> > > > 
-> > > > The issue here is, the existing logic failed to consider the fact that the map
-> > > > value '0' is a valid value for BAR0. Because, find_first_zero_bit() will return
-> > > > '0' as the map value for BAR0 (note that it returns the first zero bit
-> > > > position).
-> > > > 
-> > > > Due to this, when PERST# assert + deassert happens on the PERST# supported
-> > > > platforms, the inbound window allocation restarts from BAR0 and the existing
-> > > > logic to find the BAR mapping will return '6' for BAR0 instead of '0' due to the
-> > > > fact that it considers '0' as an invalid map value.
-> > > > 
-> > > > So fix this issue by always incrementing the map value before assigning to
-> > > > bar_to_atu[] array and then decrementing it while fetching. This will make sure
-> > > > that the map value '0' always represents the invalid mapping."
-> > > 
-> > > This translates C code to English in great detail, but still doesn't
-> > > tell me what's broken from a user's point of view, how urgent the fix
-> > > is, or how it should be handled.
-> > > 
-> > > DMA doesn't work because ATU setup is wrong?  Driver MMIO access to
-> > > the device doesn't work?  OS crashes?  How?  Incorrectly routed access
-> > > causes UR response?  Happens on every boot?  Only after a reboot or
-> > > controller reset?  What platforms are affected?  "PERST# supported
-> > > platforms" is not actionable without a lot of research or pre-existing
-> > > knowledge.  Should this be backported to -stable?
-> > 
-> > Severity is less for the bug fixed by this patch. We have 8 inbound iATU windows
-> > on almost all of the platforms and after PERST# assert + deassert, BAR0 uses map
-> > '6' instead of '0'.
-> > 
-> > This has no user visibility since the mapping will go fine and we have only 6
-> > BARs. So I'd not mark this as as critical fix that needs special attention.
-> 
-> So we will have 6 mappings configured, but only 5 BARs, so two mappings for
-> BAR0. The iATU looks at them in order, so index 0 will override index 6.
+On Fri, Mar 22, 2024 at 9:58=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Fri, Mar 22, 2024 at 06:13:25PM +0800, Shengjiu Wang wrote:
+> > Convert the fsl-asoc-card binding to YAML.
+> >
+> > In order to pass the checking, add some used compatible
+> > string from devicetree.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  .../bindings/sound/fsl-asoc-card.txt          | 117 -----------
+> >  .../bindings/sound/fsl-asoc-card.yaml         | 196 ++++++++++++++++++
+> >  2 files changed, 196 insertions(+), 117 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-ca=
+rd.txt
+> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-ca=
+rd.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt =
+b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
+> > deleted file mode 100644
+> > index 4e8dbc5abfd1..000000000000
+> > --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
+> > +++ /dev/null
+> > @@ -1,117 +0,0 @@
+> > -Freescale Generic ASoC Sound Card with ASRC support
+> > -
+> > -The Freescale Generic ASoC Sound Card can be used, ideally, for all Fr=
+eescale
+> > -SoCs connecting with external CODECs.
+> > -
+> > -The idea of this generic sound card is a bit like ASoC Simple Card. Ho=
+wever,
+> > -for Freescale SoCs (especially those released in recent years), most o=
+f them
+> > -have ASRC (Documentation/devicetree/bindings/sound/fsl,asrc.txt) insid=
+e. And
+> > -this is a specific feature that might be painstakingly controlled and =
+merged
+> > -into the Simple Card.
+> > -
+> > -So having this generic sound card allows all Freescale SoC users to be=
+nefit
+> > -from the simplification of a new card support and the capability of th=
+e wide
+> > -sample rates support through ASRC.
+> > -
+> > -Note: The card is initially designed for those sound cards who use AC'=
+97, I2S
+> > -      and PCM DAI formats. However, it'll be also possible to support =
+those non
+> > -      AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI au=
+dio, as
+> > -      long as the driver has been properly upgraded.
+> > -
+> > -
+> > -The compatible list for this generic sound card currently:
+> > - "fsl,imx-audio-ac97"
+> > -
+> > - "fsl,imx-audio-cs42888"
+> > -
+> > - "fsl,imx-audio-cs427x"
+> > - (compatible with CS4271 and CS4272)
+> > -
+> > - "fsl,imx-audio-wm8962"
+> > -
+> > - "fsl,imx-audio-sgtl5000"
+> > - (compatible with Documentation/devicetree/bindings/sound/imx-audio-sg=
+tl5000.txt)
+> > -
+> > - "fsl,imx-audio-wm8960"
+> > -
+> > - "fsl,imx-audio-mqs"
+> > -
+> > - "fsl,imx-audio-wm8524"
+> > -
+> > - "fsl,imx-audio-tlv320aic32x4"
+> > -
+> > - "fsl,imx-audio-tlv320aic31xx"
+> > -
+> > - "fsl,imx-audio-si476x"
+> > -
+> > - "fsl,imx-audio-wm8958"
+> > -
+> > - "fsl,imx-audio-nau8822"
+> > -
+> > -Required properties:
+> > -
+> > -  - compatible               : Contains one of entries in the compatib=
+le list.
+> > -
+> > -  - model            : The user-visible name of this sound complex
+> > -
+> > -  - audio-cpu                : The phandle of an CPU DAI controller
+> > -
+> > -  - audio-codec              : The phandle of an audio codec
+> > -
+> > -Optional properties:
+> > -
+> > -  - audio-asrc               : The phandle of ASRC. It can be absent i=
+f there's no
+> > -                       need to add ASRC support via DPCM.
+> > -
+> > -  - audio-routing    : A list of the connections between audio compone=
+nts.
+> > -                       Each entry is a pair of strings, the first bein=
+g the
+> > -                       connection's sink, the second being the connect=
+ion's
+> > -                       source. There're a few pre-designed board conne=
+ctors:
+> > -                        * Line Out Jack
+> > -                        * Line In Jack
+> > -                        * Headphone Jack
+> > -                        * Mic Jack
+> > -                        * Ext Spk
+> > -                        * AMIC (stands for Analog Microphone Jack)
+> > -                        * DMIC (stands for Digital Microphone Jack)
+> > -
+> > -                       Note: The "Mic Jack" and "AMIC" are redundant w=
+hile
+> > -                             coexisting in order to support the old bi=
+ndings
+> > -                             of wm8962 and sgtl5000.
+> > -
+> > -  - hp-det-gpio              : The GPIO that detect headphones are plu=
+gged in
+> > -  - mic-det-gpio     : The GPIO that detect microphones are plugged in
+> > -  - bitclock-master  : Indicates dai-link bit clock master; for detail=
+s see simple-card.yaml.
+> > -  - frame-master     : Indicates dai-link frame master; for details se=
+e simple-card.yaml.
+> > -  - dai-format               : audio format, for details see simple-ca=
+rd.yaml.
+> > -  - frame-inversion  : dai-link uses frame clock inversion, for detail=
+s see simple-card.yaml.
+> > -  - bitclock-inversion       : dai-link uses bit clock inversion, for =
+details see simple-card.yaml.
+> > -  - mclk-id          : main clock id, specific for each card configura=
+tion.
+> > -
+> > -Optional unless SSI is selected as a CPU DAI:
+> > -
+> > -  - mux-int-port     : The internal port of the i.MX audio muxer (AUDM=
+UX)
+> > -
+> > -  - mux-ext-port     : The external port of the i.MX audio muxer
+> > -
+> > -Example:
+> > -sound-cs42888 {
+> > -     compatible =3D "fsl,imx-audio-cs42888";
+> > -     model =3D "cs42888-audio";
+> > -     audio-cpu =3D <&esai>;
+> > -     audio-asrc =3D <&asrc>;
+> > -     audio-codec =3D <&cs42888>;
+> > -     audio-routing =3D
+> > -             "Line Out Jack", "AOUT1L",
+> > -             "Line Out Jack", "AOUT1R",
+> > -             "Line Out Jack", "AOUT2L",
+> > -             "Line Out Jack", "AOUT2R",
+> > -             "Line Out Jack", "AOUT3L",
+> > -             "Line Out Jack", "AOUT3R",
+> > -             "Line Out Jack", "AOUT4L",
+> > -             "Line Out Jack", "AOUT4R",
+> > -             "AIN1L", "Line In Jack",
+> > -             "AIN1R", "Line In Jack",
+> > -             "AIN2L", "Line In Jack",
+> > -             "AIN2R", "Line In Jack";
+> > -};
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml=
+ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> > new file mode 100644
+> > index 000000000000..48051655230d
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> > @@ -0,0 +1,196 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/sound/fsl-asoc-card.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Freescale Generic ASoC Sound Card with ASRC support
+> > +
+> > +description:
+> > +  The Freescale Generic ASoC Sound Card can be used, ideally,
+> > +  for all Freescale SoCs connecting with external CODECs.
+> > +
+> > +  The idea of this generic sound card is a bit like ASoC Simple Card.
+> > +  However, for Freescale SoCs (especially those released in recent yea=
+rs),
+> > +  most of them have ASRC
+> > +  (Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml) inside. =
+And
+> > +  this is a specific feature that might be painstakingly controlled an=
+d
+> > +  merged into the Simple Card.
+> > +
+> > +  So having this generic sound card allows all Freescale SoC users to
+> > +  benefit from the simplification of a new card support and the capabi=
+lity
+> > +  of the wide sample rates support through ASRC.
+> > +
+> > +  Note, The card is initially designed for those sound cards who use A=
+C'97, I2S
+> > +  and PCM DAI formats. However, it'll be also possible to support thos=
+e non
+> > +  AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI audio,=
+ as
+> > +  long as the driver has been properly upgraded.
+> > +
+> > +maintainers:
+> > +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,imx-sgtl5000
+> > +              - fsl,imx53-cpuvo-sgtl5000
+> > +              - fsl,imx51-babbage-sgtl5000
+> > +              - fsl,imx53-m53evk-sgtl5000
+> > +              - fsl,imx53-qsb-sgtl5000
+> > +              - fsl,imx53-voipac-sgtl5000
+> > +              - fsl,imx6-armadeus-sgtl5000
+> > +              - fsl,imx6-rex-sgtl5000
+> > +              - fsl,imx6-sabreauto-cs42888
+> > +              - fsl,imx6-wandboard-sgtl5000
+> > +              - fsl,imx6dl-nit6xlite-sgtl5000
+> > +              - fsl,imx6q-ba16-sgtl5000
+> > +              - fsl,imx6q-nitrogen6_max-sgtl5000
+> > +              - fsl,imx6q-nitrogen6_som2-sgtl5000
+> > +              - fsl,imx6q-nitrogen6x-sgtl5000
+> > +              - fsl,imx6q-sabrelite-sgtl5000
+> > +              - fsl,imx6q-sabresd-wm8962
+> > +              - fsl,imx6q-udoo-ac97
+> > +              - fsl,imx6q-ventana-sgtl5000
+> > +              - fsl,imx6sl-evk-wm8962
+> > +              - fsl,imx6sx-sdb-mqs
+> > +              - fsl,imx6sx-sdb-wm8962
+> > +              - fsl,imx7d-evk-wm8960
+> > +              - karo,tx53-audio-sgtl5000
+> > +              - tq,imx53-mba53-sgtl5000
+>
+> None of these were documented before. It's fine to add all these in this
+> patch, but please state in the commit message what missing or incorrect
+> things you added in the schema.
 
-Sounds like we dodge the bullet as long as the mappings for BAR 0 are
-identical, which doesn't feel like much comfort.
+ok, will add info in the commit message.
 
-> We are lucky that the endpoint subsystem does not clean up allocations properly
-> right now (you have an outstanding series which fixes this).
-> 
-> If the endpoint subsystem did clean up resources properly, we would DMA to the
-> area that was previously allocated for BAR0, instead of the new area for BAR0.
+>
+> > +          - enum:
+> > +              - fsl,imx-audio-ac97
+> > +              - fsl,imx-audio-cs42888
+> > +              - fsl,imx-audio-mqs
+> > +              - fsl,imx-audio-sgtl5000
+> > +              - fsl,imx-audio-wm8960
+> > +              - fsl,imx-audio-wm8962
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,imx-audio-ac97
+> > +              - fsl,imx-audio-cs42888
+> > +              - fsl,imx-audio-cs427x
+> > +              - fsl,imx-audio-mqs
+> > +              - fsl,imx-audio-nau8822
+> > +              - fsl,imx-audio-sgtl5000
+> > +              - fsl,imx-audio-si476x
+> > +              - fsl,imx-audio-tlv320aic31xx
+> > +              - fsl,imx-audio-tlv320aic32x4
+> > +              - fsl,imx-audio-wm8524
+> > +              - fsl,imx-audio-wm8960
+> > +              - fsl,imx-audio-wm8962
+> > +              - fsl,imx-audio-wm8958
+> > +
+> > +  model:
+> > +    $ref: /schemas/types.yaml#/definitions/string
+> > +    description: The user-visible name of this sound complex
+> > +
+> > +  audio-asrc:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description:
+> > +      The phandle of ASRC. It can be absent if there's no
+> > +      need to add ASRC support via DPCM.
+> > +
+> > +  audio-codec:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: The phandle of an audio codec
+> > +
+> > +  audio-cpu:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: The phandle of an CPU DAI controller
+> > +
+> > +  audio-routing:
+> > +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+> > +    description:
+> > +      A list of the connections between audio components. Each entry i=
+s a
+> > +      pair of strings, the first being the connection's sink, the seco=
+nd
+> > +      being the connection's source. There're a few pre-designed board
+> > +      connectors.
+> > +        * Line Out Jack
+> > +        * Line In Jack
+> > +        * Headphone Jack
+> > +        * Mic Jack
+> > +        * Ext Spk
+> > +        * AMIC (stands for Analog Microphone Jack)
+> > +        * DMIC (stands for Digital Microphone Jack)
+> > +      Note, The "Mic Jack" and "AMIC" are redundant while coexisting i=
+n
+> > +      order to support the old bindings of wm8962 and sgtl5000.
+>
+> Please list the strings out as schema:
+>
+> minItems: 2
+> items:
+>   enum:
+>     - "Line Out Jack"
+>     ...
 
-This is the right level of abstraction for the commit log -- sounds
-like there's some reset scenario where the pre-reset iATU windows are
-not cleared out and we reallocate iATU windows, and we end up using
-one of the stale windows instead of the new one, which could lead to
-DMA to the wrong area.  That incorrect DMA sounds like data corruption
-in the right circumstances.
+Can I not list them? Because this fsl-asoc-card is generic
+it supports several codecs, if list them, there will be a long list.
 
-Of course it can *also* include some detail about the mechanism of why
-that stale entry still exists and when it can be used.
+>
+> > +
+> > +  hp-det-gpio:
+> > +    maxItems: 1
+> > +    description: The GPIO that detect headphones are plugged in
+>
+>        deprecated: true
 
-Bjorn
+ok, will add it.
+
+>
+> > +
+> > +  hp-det-gpios:
+> > +    maxItems: 1
+> > +    description: The GPIO that detect headphones are plugged in
+> > +
+> > +  mic-det-gpio:
+> > +    maxItems: 1
+> > +    description: The GPIO that detect microphones are plugged in
+>
+>        deprecated: true
+>
+> > +
+> > +  mic-det-gpios:
+> > +    maxItems: 1
+> > +    description: The GPIO that detect microphones are plugged in
+> > +
+> > +  bitclock-master:
+> > +    description: Indicates dai-link bit clock master; for details see =
+simple-card.yaml.
+>
+> Drop the prose reference and add:
+>
+>        $ref: simple-card.yaml#/definitions/bitclock-master
+>
+> Otherwise, bitclock-master could be anything.
+>
+> And similar for the rest.
+
+ok, will change them.
+
+Best regards
+Shengjiu Wang
+>
+> > +
+> > +  frame-master:
+> > +    description: Indicates dai-link frame master; for details see simp=
+le-card.yaml.
+> > +
+> > +  dai-format:
+> > +    description: audio format, for details see simple-card.yaml.
+> > +
+> > +  frame-inversion:
+> > +    description: dai-link uses frame clock inversion, for details see =
+simple-card.yaml.
+> > +
+> > +  bitclock-inversion:
+> > +    description: dai-link uses bit clock inversion, for details see si=
+mple-card.yaml.
+> > +
+> > +  mclk-id:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: main clock id, specific for each card configuration.
+> > +
+> > +  mux-int-port:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [1, 2, 7]
+> > +    description: The internal port of the i.MX audio muxer (AUDMUX)
+> > +
+> > +  mux-ext-port:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [3, 4, 5, 6]
+> > +    description: The external port of the i.MX audio muxer
+> > +
+> > +  ssi-controller:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: The phandle of an CPU DAI controller
+> > +
+> > +required:
+> > +  - compatible
+> > +  - model
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    sound-cs42888 {
+> > +        compatible =3D "fsl,imx-audio-cs42888";
+> > +        model =3D "cs42888-audio";
+> > +        audio-cpu =3D <&esai>;
+> > +        audio-asrc =3D <&asrc>;
+> > +        audio-codec =3D <&cs42888>;
+> > +        audio-routing =3D
+> > +             "Line Out Jack", "AOUT1L",
+> > +             "Line Out Jack", "AOUT1R",
+> > +             "Line Out Jack", "AOUT2L",
+> > +             "Line Out Jack", "AOUT2R",
+> > +             "Line Out Jack", "AOUT3L",
+> > +             "Line Out Jack", "AOUT3R",
+> > +             "Line Out Jack", "AOUT4L",
+> > +             "Line Out Jack", "AOUT4R",
+> > +             "AIN1L", "Line In Jack",
+> > +             "AIN1R", "Line In Jack",
+> > +             "AIN2L", "Line In Jack",
+> > +             "AIN2R", "Line In Jack";
+> > +    };
+> > --
+> > 2.34.1
+> >
