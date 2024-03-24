@@ -1,632 +1,176 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2070.outbound.protection.outlook.com [40.107.8.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBEA17BAA
-	for <imx@lists.linux.dev>; Sun, 24 Mar 2024 07:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711266256; cv=fail; b=juEPYJ0ybpIeR9zSPxDUUVQPB5f5PJI6xumRsOow7HAI9jJhTyOxnjl49nYGJyvxyOMGgWfit/YzNlrvRL4UVT0S7DoMwELyOsRX4F/GIhgBWdf3OXVzY9uy6ZF4pffsmkbSG4q0Q7v5fYw/Fo3fCzonDIWa1DdACCxr6lLUf+4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711266256; c=relaxed/simple;
-	bh=/ONMWA5HwK7f2Lau5bEiPM0rZ6FI1rljIhuFBs9ogjY=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=bTxh5jP8TeTM1+lowHdACQkEppk3BfxPcXUrbDlmbKsRv4KV57/4Y74j5LlUU0yj/J2ZnH7Z/pATeaFlLJPk3dTczYFEEmOoVgfgK/JdQ44x5AoqCYDPAb498/tlWPtnAerP9O94cMwL4yz0sSNk19uEqYk4TQuVf8Z+DI5iBd8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=RV/Bh+hj; arc=fail smtp.client-ip=40.107.8.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD38E17BCA;
+	Sun, 24 Mar 2024 13:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711288482; cv=none; b=OeyAl4YW4L9NOrwF1kmnGff31NRnCt3gr5UBtFBnfllc/HtzgyK72dXYWcL6FZQRGBHWdQBJ2euYonQfVFd98nvQSZmeQ6n9IBs5vGr423lxWa0rfCO/sn9D4SdmUEkXkfGXcqmaDnT62N8lspgRQL5+6LXbBrV6ZJ/DFXyZue8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711288482; c=relaxed/simple;
+	bh=L3eiBM3uq6W9B54PHA6++0VN5SYP8Sh0IVo8b/FkvIE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hn5kGOcuMq9PSvQ60q+pysDqNiQ9lhPldRUac3RJT8H9S4hIOSgA7Pz6sWnqXmZpuaEIoStbHohcYCGsIj3lloS6pyDaUwuk1Zm1uTYGGpylBJGwniflLzkdg5iuUJKzwrPcVJFwEHLJIqJNoJe2rfBYTbPKY93tovagKXCwvlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfiiQY+T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="RV/Bh+hj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L1Ckw7Xqv2+qII/3Q3YDmKyDHeT8NOF2k9mvaUEx4jtX1QKxdckqafOnw4KYYAHQ7xw3EVeFEimxqHjfrTdtS/w4Jny8n0ZhjV5RzV+A1LLOm8MzebrRHtjNnvTMwnPkWA4/VTPrKx+rvu0VP8Jpr27PLhypAlLda5+t7n2yqDhTCzmmT3JFmdlSBXt+23P4EKqdSUsSaDwU6VYr970eXr3yx2B/liCYX0WdlPwvhVJotwNc8gAx0A7bxkgRahirHZs8S15Jy347OmO6ONYRkxmTd48LRYPUkaD+bqEoKRjnLqxrSolLuqPMSDjqkAtAltNLDiPnM72rShhi1YbemQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nSMzMeRyEuAdBLvPMQRnGts0Y+Aedb8psU6zwGhY10I=;
- b=Yv5PCV2uOARDiwkRFvc+xheK4EXKRWHf+cVogi9F7CXvM+U/Y6sLs1nNyLw3O6lhSLi9eFW78Dh3kU6X04BZwu9oRvaaaOF3yg9KpVDtnjTf+7SI/PSjDoArORucPIm2vG41IOS0Xd+zIl3SCnYuk32OkCzE97RRpJEh5FMDmS/jagkxBAveIPZAIpCHDYDRHDLZkDLFZiEBhVleq98BzE7hLUY83UqnOhWYKvaJxh1RGxEPe3eq9FpOBCgamYpB3cYRdYKySC1p8jMhqrwIOXNNNDQzT7jmsDokDfY3lJ4FSTN32k2hdAEg/4oLnU4xfH8To4pJEedCF8BswQT8ZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nSMzMeRyEuAdBLvPMQRnGts0Y+Aedb8psU6zwGhY10I=;
- b=RV/Bh+hjXSq7jjdd6Z+OswBUWC+bxVOvW0qBLnj786h/QzUknczddX+99GbmfcquJopH46AkH42No9+C44Ka0otFkqThvY2Ien7Qyse0ZElkMOH2ge8rpQHJZmViSVqrBaOSTmq6FJP9BbWFJqPwmarzHAyfuHA5Pf+a0VRWmHg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by PAXPR04MB8573.eurprd04.prod.outlook.com (2603:10a6:102:214::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Sun, 24 Mar
- 2024 07:44:11 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Sun, 24 Mar 2024
- 07:44:11 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Sun, 24 Mar 2024 15:52:03 +0800
-Subject: [PATCH v5 4/4] clk: imx: add i.MX95 BLK CTL clk driver
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240324-imx95-blk-ctl-v5-4-7a706174078a@nxp.com>
-References: <20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com>
-In-Reply-To: <20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711266729; l=13472;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=l4DlMaNZtr5nsDFzShy8D+H0Cb79cmMx/CoZVs4+aCg=;
- b=wAeVNu0Lnlb7BIheYg8vwO33sGCHCkBBf34IbLSeyYmGomVsz1d0WsIcvExgncM1wVZMDWqkc
- DRD8HpwpEZKCBWADhE7ngD1KZb6PB7/wfCs4mViAg6Ye5LzcL/fNZhD
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SG2PR03CA0110.apcprd03.prod.outlook.com
- (2603:1096:4:91::14) To DU0PR04MB9417.eurprd04.prod.outlook.com
- (2603:10a6:10:358::11)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfiiQY+T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4FAC433F1;
+	Sun, 24 Mar 2024 13:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711288481;
+	bh=L3eiBM3uq6W9B54PHA6++0VN5SYP8Sh0IVo8b/FkvIE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sfiiQY+TsD3FaX0kL3X/fKuSvqjPE3/1wMNAfjfC/BqoJ5/mloZ6YrOYfOBQF0rFc
+	 R4NNlmOifgOI3sXL13QlHJh+Pwg/nL4WwcJz3Lr2XfiAcWGEEwBfe896Z1OwcR0r2m
+	 VPaf2gSw75Fw5G7pjqm0g2DPh0Rgi6UmfGatEhnLbl11vVGbFLz5W+OTtHyevrdPjO
+	 YoRJImLD9Hh28Dt25hWC4VK0ZV6ZPplCuEwMQhEhORzmrx5dBqHNgIQcledk8BOmYu
+	 Nj0kphW0O1KKo5wthVGBrbH6iYZcPIXPe5Ne40U/31yGoNadxnaMgfWYzsAy4KYGWc
+	 4zxp3apamBadQ==
+Date: Sun, 24 Mar 2024 13:54:25 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ haibo.chen@nxp.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ lars@metafoo.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ upstream@lists.phytec.de
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Message-ID: <20240324135425.229622d6@jic23-huawei>
+In-Reply-To: <1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+	<20240320100407.1639082-3-andrej.picej@norik.com>
+	<38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+	<e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
+	<7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
+	<40e08a5e-e7e9-47c7-9102-24a2bbba67cf@norik.com>
+	<a1b173c0-5120-40f6-9708-cd810b4a2406@linaro.org>
+	<1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|PAXPR04MB8573:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3be63ba3-5698-4cde-89d5-08dc4bd631bc
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	MG74kizBpw8GKuQaCk4nxH8lzmLoKs/+e4JKROPGiSnk1Z1QLnxvkAEyzPb7tkUCQGG2Qjh93gP3WLEQMlJROm41PpJ4SuNjShBl4ipVJY3bmvjkNewoDaEF7Xw0TqG29U//IfcSid6zdX3EMPzirQiY/jDszp/dbruUv67eAlUPkwGf9W4wA6+vpB8HZEeDFUNCliYoSDcxw5qLRy/G7PkxhY4IFALTe3RW1HkppeaWzrWfxq3OXNXy8PaaYCmakEh5ozX3wAwtV/zBDWvYoJ3XuT8pTOMZHxtbwMP29E/dVXdsz5GetU11BbAVfU+KJyZXUZ9v3Qbt9TPZPFPsW7AGCTzpr4BrBt0yS4584maJE/nV43NBLv7S7ih2Bo6+fg3Kn4KTkS8TRifn/OdI5/RJsYCVO7yjcjQS2x/9eV032DXyDpDCdHhNHyFxBpQLceXBrQn8cexOwCvU79g9yKgYDpVHqGBzUZmyradC335Y5LDSIYXQ9gmbQZ2qgjFjSuLvEfBUIWNBwWFuuW/z0qZrtdwJWysMvZS2PuGf1mbNgQeIrBZnq9UPBQTU8TIWRh7MZOdhkgNnJFZv6JPt6Y8G6PseAlQYYUdxloh8MYAB6MSs0lIxWA4tWctT6FSwvWQ+jY5cUE3VaL/sIJU58eoCAgjWU0VWtHyZZNqqFykhbX6ULlsPoM5NXP/BSLIRKWAnyqlvPJ6F+HBYDqnJV9+E6g4/MVKL5Vpw0MlvOT0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015)(52116005)(366007)(921011)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YVFOVVhpU0s5VCthV1ViQi90bXBYUHRkemJyVGYrcE5hUUJnbGxSaTJDVmM1?=
- =?utf-8?B?YmZNMytVUUl5RjNIUERBNTFyK0t0anlTaTQvYUpPM2Jsa1l3dTJ5TFFPcVdl?=
- =?utf-8?B?QVZZd1ZNNG9VcHNnSitlS3RqSlVtaXA4Q09Sb0wyR2x6eWhJeS9vWjBvMmox?=
- =?utf-8?B?T3doOXJiMjlGL3RNdnAyZGx5ZXB4UWIyeDhtd3VHTFpUcEUzbElsZDl4ZUE4?=
- =?utf-8?B?TEJUR0lqY0orOExqRUtIMmVZZC82RlQzZ2dkYnRQRXpoV2gzSDdOdThHNG1u?=
- =?utf-8?B?ZVI3N1I5L2wxOFNTM21zcVlabEwzeHNBTGx6ZWtJWmVwT05jbnNxRVVpTkFu?=
- =?utf-8?B?NDYwWXhBNXQ3VDJqWW1rOWo3UkpUTVdXL09aUWdjMkFyV3gwRlJFYXRYbXg4?=
- =?utf-8?B?bGlYWTJKTFF1TVpuendCSk1rR0hwTVUwZUxUNUkwZjdWRVU5emRUdmUyVURZ?=
- =?utf-8?B?V3NQUSt6TmpNZklybG53SWVDMTlFTjVJOEJoaWFtMUhyalNkTm1yS1hIRXZy?=
- =?utf-8?B?Y2ZqVDF2cC9Vdkk4TVE4TkN2TjN5V21HUXNlaEsvdCtGekNLeHZzV0VzOVg1?=
- =?utf-8?B?d3M0VUs3ZTltb3YxcG5vMEQrVFg3Y2xWaEpXT0xTNHZRemtQbVRNcktOa2l1?=
- =?utf-8?B?eERLRndsWGhSM1IxRjBqZk1qL2swVE1PY1VnYk5FSlNnV3F6S1RXcG9QZ29B?=
- =?utf-8?B?emt6bkczVndsejFaUnVRNnI1ellOaXhkNjJyTEhLNkhxZ2JZZm4xdFNiOTVt?=
- =?utf-8?B?YWNvQ2dWRVF0Qlo0SzdJaml5NEpidHQ2TWJMQ1l1aGFkeUdra2tLYXFza3NB?=
- =?utf-8?B?RExwM1E4dHZnM0VwSS9RVTNKUk0reTBjbXBMQVBoWGgvaVFMWi9OcnE3RTJP?=
- =?utf-8?B?Tkxwa0pYWkRpWGw2Szg3a2RiOFF4eitCREswVWM4V0htZWxIdFV5TWRJd3RM?=
- =?utf-8?B?NExsaThiNFI1MER1UVBtdTdsa1JpbVhlTzgzTjhaUmJDWFh4WGF2RHVGcVhP?=
- =?utf-8?B?L2xPN2YvYXgrTzdaN0Jyckt3eCtiUmFQY0FiVFFCSU5jeXAvSEh3ZnJ6THVq?=
- =?utf-8?B?d2N1eWRCcmxGS2lQQUtCNGo4L1AySHVpNWoxNmI3bWUzN0VSWUNQL0dPSnk0?=
- =?utf-8?B?aDZZWE9rK3FLbFQ0V0dhVFVRbEk2cUYrMlNUdXd2RDh2blp3dXFqMUhEWits?=
- =?utf-8?B?Mk1aYWR1cFUzaDYxWmQ2azBiRjhPWU5mTkFmUXF0ZkthR2MreUo2YVgyb2FL?=
- =?utf-8?B?YTBydjlORFJWdFdOWE9yRWlIbytwRGVFWG9vWmlxdlc2L01zTlNjY2pVaG1H?=
- =?utf-8?B?dUxHV2V4R1pQVGJpRXZUVjNRcGtIdm8rdGgrcVh4TVFOekl5eHJObkZURTAv?=
- =?utf-8?B?aDhwQlB4U213NWFHeFUxMDg0TS9rcGIyK3F4eXJkaUt5K1RvUEw2dnFVcThw?=
- =?utf-8?B?Vi9kcXhXWUFCL1pCZElBdVFuOC80TFVVaWR5eEx4TjdPV1FweWs3Rjhmdmpa?=
- =?utf-8?B?Q1pVQmlWaEZhWWhxTDVOOXp3aHdhY3pTOVVla0lFcisxRDBveG1IRkhYYmF6?=
- =?utf-8?B?VXdJWDNRblgrbERscERnN1dQd0I2QmhnZTBVeHlrVE50RnFQeko4dm9wbzY3?=
- =?utf-8?B?bUlCeGpyOFluL1ZLUW40QmJIVjZzN0E2bm1oWk5ONFRKZlpSOTFaT1pCMFhh?=
- =?utf-8?B?WElQSlVFZS9aZjY5dVd6cWs2V0VvVlRLeWcyWGJyQWFwVEh6YnZBeWd0L2xU?=
- =?utf-8?B?SFR2c25ocnpQOUlJN2tObXRPY1lEdU4wNDZsOGxiN1hJS1BuQXJ3bUJ0cnJ1?=
- =?utf-8?B?N3dBWHhadCszWU1UZXpicmRDTFBNdHlhOG84MmQxc3JpK1NJUnpNQS9GTmpQ?=
- =?utf-8?B?SmMvSTluYlVtakhDZG1tYmg0RzRQUTNRek1PMmJBSVY0NzNhT24zTjJuYldq?=
- =?utf-8?B?M2pvZWZ3SzlLNmRhMU1GVHFJd3RHaWJyV3dwZk5tN1NqQ240SExjdmhEbmxK?=
- =?utf-8?B?S0VFc0JPdXcyc0p3L3QvZTFvTFhZN21nb3l2b3JEVytDYlVFempPOWNQd3lY?=
- =?utf-8?B?aWdGbGFPWEEwenYvR1piQWhUZ1NFV25kNm1IMng5d2lKdlhNSndja0Z0d2Zp?=
- =?utf-8?Q?v2ImxwRVfCqX4VNCFsRBOUQlb?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3be63ba3-5698-4cde-89d5-08dc4bd631bc
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2024 07:44:11.0207
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8n0DzLUIupEAnolOywkEeU1YWoj5B6FcfpFheG+X8ueWk96kgombGmfzUrczn3i9c5IfHGo5C1TK8rG8b35QiQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8573
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Peng Fan <peng.fan@nxp.com>
+On Fri, 22 Mar 2024 10:58:54 +0100
+Andrej Picej <andrej.picej@norik.com> wrote:
 
-i.MX95 has BLK CTL modules in various MIXes, the BLK CTL modules
-support clock features such as mux/gate/div. This patch
-is to add the clock feature of BLK CTL modules
+> On 22. 03. 24 09:14, Krzysztof Kozlowski wrote:
+> > On 22/03/2024 08:39, Andrej Picej wrote:  
+> >> On 20. 03. 24 13:15, Krzysztof Kozlowski wrote:  
+> >>> On 20/03/2024 13:05, Andrej Picej wrote:  
+> >>>> Hi Krzysztof,
+> >>>>
+> >>>> On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:  
+> >>>>> On 20/03/2024 11:04, Andrej Picej wrote:  
+> >>>>>> Document calibration properties and how to set them.  
+> >>>>>
+> >>>>> Bindings are before users.  
+> >>>>
+> >>>> will change patch order when I send a v2.
+> >>>>  
+> >>>>>
+> >>>>> Please use subject prefixes matching the subsystem. You can get them for
+> >>>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> >>>>> your patch is touching.
+> >>>>> There is no file extension in prefixes.  
+> >>>>
+> >>>> So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?  
+> >>>
+> >>> Did you run the command I proposed? I don't see much of "/", but except
+> >>> that looks good.  
+> >>
+> >> Ok noted.
+> >>  
+> >>>  
+> >>>>  
+> >>>>>  
+> >>>>>>
+> >>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> >>>>>> ---
+> >>>>>>     .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+> >>>>>>     1 file changed, 15 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>> index dacc526dc695..64958be62a6a 100644
+> >>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>> @@ -46,6 +46,21 @@ properties:
+> >>>>>>       "#io-channel-cells":
+> >>>>>>         const: 1
+> >>>>>>     
+> >>>>>> +  nxp,calib-avg-en:
+> >>>>>> +    description:
+> >>>>>> +      Enable or disable averaging of calibration time.
+> >>>>>> +    enum: [ 0, 1 ]
+> >>>>>> +
+> >>>>>> +  nxp,calib-nr-samples:
+> >>>>>> +    description:
+> >>>>>> +      Selects the number of averaging samples to be used during calibration.
+> >>>>>> +    enum: [ 16, 32, 128, 512 ]
+> >>>>>> +
+> >>>>>> +  nxp,calib-t-samples:
+> >>>>>> +    description:
+> >>>>>> +      Specifies the sample time of calibration conversions.
+> >>>>>> +    enum: [ 8, 16, 22, 32 ]  
+> >>>>>
+> >>>>> No, use existing, generic properties. Open other bindings for this.  
+> >>>>
+> >>>> You mean I should use generic properties for the ADC calibration
+> >>>> settings? Is there already something in place? Because as I understand
+> >>>> it, these calib-* values only effect the calibration process of the ADC.  
+> >>>
+> >>> Please take a look at other devices and dtschema. We already have some
+> >>> properties for this... but maybe they cannot be used?
+> >>>  
+> >>
+> >> I did look into other ADC devices, grep across iio/adc, adc bindings
+> >> folders and couldn't find anything closely related to what we are
+> >> looking for. Could you please point me to the properties that you think
+> >> should be used for this?  
+> > 
+> > Indeed, there are few device specific like qcom,avg-samples. We have
+> > though oversampling-ratio, settling-time-us and min-sample-time (which
+> > is not that good because does not use unit suffix).  
+> 
+> Ok, these are examples but I think I should not use them, since these 
+> are i.MX93 ADC specific settings, which are used for configuration of 
+> calibration process, and are not related to the standard conversion 
+> process during runtime. Calibration process is the first step that 
+> should be done after every power-on reset.
+> 
+> > 
+> > Then follow up questions:
+> >   - nxp,calib-avg-en: Why is it a board-level decision? I would assume
+> > this depends on user choice and what kind of input you have (which could
+> > be board dependent or could be runtime decision).  
+> 
+> Not really sure I get your question, so please elaborate if I missed the 
+> point.
+> This is a user choice, to enable or disable the averaging function in 
+> calibration, but this is a board-level decision, probably relates on 
+> external ADC regulators and input connections. The same options are used 
+> for every ADC channel and this can not be a runtime decision, since 
+> calibration is done before the ADC is even registered.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/clk/imx/Kconfig             |   7 +
- drivers/clk/imx/Makefile            |   1 +
- drivers/clk/imx/clk-imx95-blk-ctl.c | 438 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 446 insertions(+)
+I'll raise this question in reply to the cover letter or patch 1 where
+it is perhaps more appropriate, but I'd really like to know more about why
+these are useful at all. 
 
-diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
-index db3bca5f4ec9..6da0fba68225 100644
---- a/drivers/clk/imx/Kconfig
-+++ b/drivers/clk/imx/Kconfig
-@@ -114,6 +114,13 @@ config CLK_IMX93
- 	help
- 	    Build the driver for i.MX93 CCM Clock Driver
- 
-+config CLK_IMX95_BLK_CTL
-+	tristate "IMX95 Clock Driver for BLK CTL"
-+	depends on ARCH_MXC || COMPILE_TEST
-+	select MXC_CLK
-+	help
-+	    Build the clock driver for i.MX95 BLK CTL
-+
- config CLK_IMXRT1050
- 	tristate "IMXRT1050 CCM Clock Driver"
- 	depends on SOC_IMXRT || COMPILE_TEST
-diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
-index d4b8e10b1970..03f2b2a1ab63 100644
---- a/drivers/clk/imx/Makefile
-+++ b/drivers/clk/imx/Makefile
-@@ -31,6 +31,7 @@ obj-$(CONFIG_CLK_IMX8MP) += clk-imx8mp.o clk-imx8mp-audiomix.o
- obj-$(CONFIG_CLK_IMX8MQ) += clk-imx8mq.o
- 
- obj-$(CONFIG_CLK_IMX93) += clk-imx93.o
-+obj-$(CONFIG_CLK_IMX95_BLK_CTL) += clk-imx95-blk-ctl.o
- 
- obj-$(CONFIG_MXC_CLK_SCU) += clk-imx-scu.o clk-imx-lpcg-scu.o clk-imx-acm.o
- clk-imx-scu-$(CONFIG_CLK_IMX8QXP) += clk-scu.o clk-imx8qxp.o \
-diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-new file mode 100644
-index 000000000000..afda463e28b1
---- /dev/null
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -0,0 +1,438 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#include <dt-bindings/clock/nxp,imx95-clock.h>
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/debugfs.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/of_address.h>
-+#include <linux/of_device.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/types.h>
-+
-+enum {
-+	CLK_GATE,
-+	CLK_DIVIDER,
-+	CLK_MUX,
-+};
-+
-+struct imx95_blk_ctl {
-+	struct device *dev;
-+	spinlock_t lock;
-+	struct clk *clk_apb;
-+
-+	void __iomem *base;
-+	/* clock gate register */
-+	u32 clk_reg_restore;
-+};
-+
-+struct imx95_blk_ctl_clk_dev_data {
-+	const char *name;
-+	const char * const *parent_names;
-+	u32 num_parents;
-+	u32 reg;
-+	u32 bit_idx;
-+	u32 bit_width;
-+	u32 clk_type;
-+	u32 flags;
-+	u32 flags2;
-+	u32 type;
-+};
-+
-+struct imx95_blk_ctl_dev_data {
-+	const struct imx95_blk_ctl_clk_dev_data *clk_dev_data;
-+	u32 num_clks;
-+	bool rpm_enabled;
-+	u32 clk_reg_offset;
-+};
-+
-+static const struct imx95_blk_ctl_clk_dev_data vpublk_clk_dev_data[] = {
-+	[IMX95_CLK_VPUBLK_WAVE] = {
-+		.name = "vpublk_wave_vpu",
-+		.parent_names = (const char *[]){ "vpu", },
-+		.num_parents = 1,
-+		.reg = 8,
-+		.bit_idx = 0,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_VPUBLK_JPEG_ENC] = {
-+		.name = "vpublk_jpeg_enc",
-+		.parent_names = (const char *[]){ "vpujpeg", },
-+		.num_parents = 1,
-+		.reg = 8,
-+		.bit_idx = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_VPUBLK_JPEG_DEC] = {
-+		.name = "vpublk_jpeg_dec",
-+		.parent_names = (const char *[]){ "vpujpeg", },
-+		.num_parents = 1,
-+		.reg = 8,
-+		.bit_idx = 2,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	}
-+};
-+
-+static const struct imx95_blk_ctl_dev_data vpublk_dev_data = {
-+	.num_clks = IMX95_CLK_VPUBLK_END,
-+	.clk_dev_data = vpublk_clk_dev_data,
-+	.rpm_enabled = true,
-+	.clk_reg_offset = 8,
-+};
-+
-+static const struct imx95_blk_ctl_clk_dev_data camblk_clk_dev_data[] = {
-+	[IMX95_CLK_CAMBLK_CSI2_FOR0] = {
-+		.name = "camblk_csi2_for0",
-+		.parent_names = (const char *[]){ "camisi", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 0,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_CAMBLK_CSI2_FOR1] = {
-+		.name = "camblk_csi2_for1",
-+		.parent_names = (const char *[]){ "camisi", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_CAMBLK_ISP_AXI] = {
-+		.name = "camblk_isp_axi",
-+		.parent_names = (const char *[]){ "camaxi", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 4,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_CAMBLK_ISP_PIXEL] = {
-+		.name = "camblk_isp_pixel",
-+		.parent_names = (const char *[]){ "camisi", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 5,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_CAMBLK_ISP] = {
-+		.name = "camblk_isp",
-+		.parent_names = (const char *[]){ "camisi", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 6,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	}
-+};
-+
-+static const struct imx95_blk_ctl_dev_data camblk_dev_data = {
-+	.num_clks = IMX95_CLK_CAMBLK_END,
-+	.clk_dev_data = camblk_clk_dev_data,
-+	.clk_reg_offset = 0,
-+};
-+
-+static const struct imx95_blk_ctl_clk_dev_data lvds_clk_dev_data[] = {
-+	[IMX95_CLK_DISPMIX_LVDS_PHY_DIV] = {
-+		.name = "ldb_phy_div",
-+		.parent_names = (const char *[]){ "ldbpll", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 0,
-+		.bit_width = 1,
-+		.type = CLK_DIVIDER,
-+		.flags2 = CLK_DIVIDER_POWER_OF_TWO,
-+	},
-+	[IMX95_CLK_DISPMIX_LVDS_CH0_GATE] = {
-+		.name = "lvds_ch0_gate",
-+		.parent_names = (const char *[]){ "ldb_phy_div", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 1,
-+		.bit_width = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_DISPMIX_LVDS_CH1_GATE] = {
-+		.name = "lvds_ch1_gate",
-+		.parent_names = (const char *[]){ "ldb_phy_div", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 2,
-+		.bit_width = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_DISPMIX_PIX_DI0_GATE] = {
-+		.name = "lvds_di0_gate",
-+		.parent_names = (const char *[]){ "ldb_pll_div7", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 3,
-+		.bit_width = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+	[IMX95_CLK_DISPMIX_PIX_DI1_GATE] = {
-+		.name = "lvds_di1_gate",
-+		.parent_names = (const char *[]){ "ldb_pll_div7", },
-+		.num_parents = 1,
-+		.reg = 0,
-+		.bit_idx = 4,
-+		.bit_width = 1,
-+		.type = CLK_GATE,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.flags2 = CLK_GATE_SET_TO_DISABLE,
-+	},
-+};
-+
-+static const struct imx95_blk_ctl_dev_data lvds_csr_dev_data = {
-+	.num_clks = IMX95_CLK_DISPMIX_LVDS_CSR_END,
-+	.clk_dev_data = lvds_clk_dev_data,
-+	.clk_reg_offset = 0,
-+};
-+
-+static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
-+	[IMX95_CLK_DISPMIX_ENG0_SEL] = {
-+		.name = "disp_engine0_sel",
-+		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
-+		.num_parents = 4,
-+		.reg = 0,
-+		.bit_idx = 0,
-+		.bit_width = 2,
-+		.type = CLK_MUX,
-+		.flags = CLK_SET_RATE_NO_REPARENT | CLK_SET_RATE_PARENT,
-+	},
-+	[IMX95_CLK_DISPMIX_ENG1_SEL] = {
-+		.name = "disp_engine1_sel",
-+		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
-+		.num_parents = 4,
-+		.reg = 0,
-+		.bit_idx = 2,
-+		.bit_width = 2,
-+		.type = CLK_MUX,
-+		.flags = CLK_SET_RATE_NO_REPARENT | CLK_SET_RATE_PARENT,
-+	}
-+};
-+
-+static const struct imx95_blk_ctl_dev_data dispmix_csr_dev_data = {
-+	.num_clks = IMX95_CLK_DISPMIX_END,
-+	.clk_dev_data = dispmix_csr_clk_dev_data,
-+	.clk_reg_offset = 0,
-+};
-+
-+static int imx95_bc_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	const struct imx95_blk_ctl_dev_data *bc_data;
-+	struct imx95_blk_ctl *bc;
-+	struct clk_hw_onecell_data *clk_hw_data;
-+	struct clk_hw **hws;
-+	void __iomem *base;
-+	int i, ret;
-+
-+	bc = devm_kzalloc(dev, sizeof(*bc), GFP_KERNEL);
-+	if (!bc)
-+		return -ENOMEM;
-+	bc->dev = dev;
-+	dev_set_drvdata(&pdev->dev, bc);
-+
-+	spin_lock_init(&bc->lock);
-+
-+	base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	bc->base = base;
-+	bc->clk_apb = devm_clk_get(dev, NULL);
-+	if (IS_ERR(bc->clk_apb))
-+		return dev_err_probe(dev, PTR_ERR(bc->clk_apb), "failed to get APB clock\n");
-+
-+	ret = clk_prepare_enable(bc->clk_apb);
-+	if (ret) {
-+		dev_err(dev, "failed to enable apb clock: %d\n", ret);
-+		return ret;
-+	}
-+
-+	bc_data = of_device_get_match_data(dev);
-+	if (!bc_data)
-+		return devm_of_platform_populate(dev);
-+
-+	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws, bc_data->num_clks),
-+				   GFP_KERNEL);
-+	if (!clk_hw_data)
-+		return -ENOMEM;
-+
-+	if (bc_data->rpm_enabled)
-+		pm_runtime_enable(&pdev->dev);
-+
-+	clk_hw_data->num = bc_data->num_clks;
-+	hws = clk_hw_data->hws;
-+
-+	for (i = 0; i < bc_data->num_clks; i++) {
-+		const struct imx95_blk_ctl_clk_dev_data *data = &bc_data->clk_dev_data[i];
-+		void __iomem *reg = base + data->reg;
-+
-+		if (data->type == CLK_MUX) {
-+			hws[i] = clk_hw_register_mux(dev, data->name, data->parent_names,
-+						     data->num_parents, data->flags, reg,
-+						     data->bit_idx, data->bit_width,
-+						     data->flags2, &bc->lock);
-+		} else if (data->type == CLK_DIVIDER) {
-+			hws[i] = clk_hw_register_divider(dev, data->name, data->parent_names[0],
-+							 data->flags, reg, data->bit_idx,
-+							 data->bit_width, data->flags2, &bc->lock);
-+		} else {
-+			hws[i] = clk_hw_register_gate(dev, data->name, data->parent_names[0],
-+						      data->flags, reg, data->bit_idx,
-+						      data->flags2, &bc->lock);
-+		}
-+		if (IS_ERR(hws[i])) {
-+			ret = PTR_ERR(hws[i]);
-+			dev_err(dev, "failed to register: %s:%d\n", data->name, ret);
-+			goto cleanup;
-+		}
-+	}
-+
-+	ret = of_clk_add_hw_provider(dev->of_node, of_clk_hw_onecell_get, clk_hw_data);
-+	if (ret)
-+		goto cleanup;
-+
-+	ret = devm_of_platform_populate(dev);
-+	if (ret) {
-+		of_clk_del_provider(dev->of_node);
-+		goto cleanup;
-+	}
-+
-+	if (pm_runtime_enabled(bc->dev))
-+		clk_disable_unprepare(bc->clk_apb);
-+
-+	return 0;
-+
-+cleanup:
-+	for (i = 0; i < bc_data->num_clks; i++) {
-+		if (IS_ERR_OR_NULL(hws[i]))
-+			continue;
-+		clk_hw_unregister(hws[i]);
-+	}
-+
-+	if (bc_data->rpm_enabled)
-+		pm_runtime_disable(&pdev->dev);
-+
-+	return ret;
-+}
-+
-+#ifdef CONFIG_PM
-+static int imx95_bc_runtime_suspend(struct device *dev)
-+{
-+	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
-+
-+	clk_disable_unprepare(bc->clk_apb);
-+	return 0;
-+}
-+
-+static int imx95_bc_runtime_resume(struct device *dev)
-+{
-+	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
-+
-+	return clk_prepare_enable(bc->clk_apb);
-+}
-+#endif
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int imx95_bc_suspend(struct device *dev)
-+{
-+	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
-+	const struct imx95_blk_ctl_dev_data *bc_data;
-+	int ret;
-+
-+	bc_data = of_device_get_match_data(dev);
-+	if (!bc_data)
-+		return 0;
-+
-+	if (bc_data->rpm_enabled) {
-+		ret = pm_runtime_get_sync(bc->dev);
-+		if (ret < 0) {
-+			pm_runtime_put_noidle(bc->dev);
-+			return ret;
-+		}
-+	}
-+
-+	bc->clk_reg_restore = readl(bc->base + bc_data->clk_reg_offset);
-+
-+	return 0;
-+}
-+
-+static int imx95_bc_resume(struct device *dev)
-+{
-+	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
-+	const struct imx95_blk_ctl_dev_data *bc_data;
-+
-+	bc_data = of_device_get_match_data(dev);
-+	if (!bc_data)
-+		return 0;
-+
-+	writel(bc->clk_reg_restore, bc->base + bc_data->clk_reg_offset);
-+
-+	if (bc_data->rpm_enabled)
-+		pm_runtime_put(bc->dev);
-+
-+	return 0;
-+}
-+#endif
-+
-+static const struct dev_pm_ops imx95_bc_pm_ops = {
-+	SET_RUNTIME_PM_OPS(imx95_bc_runtime_suspend, imx95_bc_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(imx95_bc_suspend, imx95_bc_resume)
-+};
-+
-+static const struct of_device_id imx95_bc_of_match[] = {
-+	{ .compatible = "nxp,imx95-camera-csr", .data = &camblk_dev_data },
-+	{ .compatible = "nxp,imx95-display-master-csr", },
-+	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
-+	{ .compatible = "nxp,imx95-display-csr", .data = &dispmix_csr_dev_data },
-+	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
-+	{ /* Sentinel */ },
-+};
-+MODULE_DEVICE_TABLE(of, imx95_bc_of_match);
-+
-+static struct platform_driver imx95_bc_driver = {
-+	.probe = imx95_bc_probe,
-+	.driver = {
-+		.name = "imx95-blk-ctl",
-+		.of_match_table = of_match_ptr(imx95_bc_of_match),
-+		.pm = &imx95_bc_pm_ops,
-+	},
-+};
-+module_platform_driver(imx95_bc_driver);
-+
-+MODULE_DESCRIPTION("NXP i.MX95 blk ctl driver");
-+MODULE_AUTHOR("Peng Fan <peng.fan@nxp.com>");
-+MODULE_LICENSE("GPL");
-
--- 
-2.37.1
+> 
+> >   - nxp,calib-t-samples: what does it mean? Time is expressed in time
+> > units, but there is nothing about units in the property name.
+> >   
+> 
+> You are right, basically this is "time" in cycles of AD_CLK. I should at 
+> least add that to the property description.
+> 
+> Best regards,
+> Andrej Picej
 
