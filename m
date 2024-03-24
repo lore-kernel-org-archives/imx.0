@@ -1,176 +1,81 @@
 Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B343C29A0
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 15:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE14C128395;
+	Mon, 25 Mar 2024 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711379322; cv=none; b=GxSLe2EIkP2AWxLR4CsrQyF1kSPSE1OuLKhuXMFPv1IUDrp0RFSqgRkhghnIR4yNRmhzI9toxlbprF2nYTuxapoCKt7Fvun40JL0RHgqY20+T8ukbNrHclEi5jdg7rjcih7UZWFXdW6ZLr+eZbZ9cTitbhW7w+POYxftXw8+z24=
+	t=1711379322; cv=none; b=Rr1TsCyFCcHAzrcbfrjPuonuWTDiVV2ibtMqBZWKK4/1wFXPEUm/VU08mQe704VrRKiQFUgkdAZSHEKuYvLVfltLzGEN44nixFroCYQum6748WPrxQ5C4dDNH4H2kHTUeR+GmICAFYiZBQI/G7ErIxnMBoXxl85ljJYIkMJj2OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711379322; c=relaxed/simple;
-	bh=kfH21rtagPKM4TfPELk1Qq0RJYu90Ijc8DkZ+yFtfSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b/6Nx9H9HS2mpli3QD+XtP/gUSSTmBc8bM/G7b6H15NA8ZOmSqGWcnJcLSgO0P+8ahK/kev873+ZGsPynAqxBmpF6VofSMcyeX45TyBzrfhUsh8gcMhTWBdCzn1bohvt8sAt3YFPk+h4Jfznluv7QYqjpXsyuR9mF5gyIdXPiDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=0Y6YHIXs; arc=none smtp.client-ip=161.97.139.27
+	bh=4eUXmKM7SyiyHM/IxR2x3wjvf4JQ3Ytj0cbIwS+59Tc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TdJHqmPo5Vu+ddJfKWvSJy9BEIFwfw2hePl9snZBWAmQ1H17Oy/gxbjsSp+Pp7QG/cE4FevA1yOi/uy9TciYoo9ohdnyUz9/7yfKu5agVbKPchMxXWE8CcqpLi7nCQnbHbNMjG/9OHz5dNWRa+0+54tC6o0iibVG3fDHM7hW9+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=W9qFDpeK; arc=none smtp.client-ip=161.97.139.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="0Y6YHIXs"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="W9qFDpeK"
 Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
 	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <andreas@kemnade.info>)
-	id 1rolwE-003KEq-31
-	for imx@lists.linux.dev;
-	Mon, 25 Mar 2024 16:08:38 +0100
+	id 1rolwF-003KEw-0u;
+	Mon, 25 Mar 2024 16:08:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Jji4OJyGIzKYC/XHH+rTL1kxSqhQZplsoNkI3fzj1SU=; b=0Y6YHIXsMArdgKBkv6vlMic+Y2
-	qc6eIcHr14L1vFJW57KLqMUoGWvZqe6SgAF1wY/DjbHh/nunO9+2Y8f6JEMBGm4L4NPnOMzRHwjBs
-	0Pi7VS1YMyPANsH8IEmKVghyrej2hsdMKFKo3VDvgGXBxz3JxCfTeqgaqTVnvXOaPeZ6Hxkm3ESCT
-	YteLx/a6eePA8ebOq4TwuvT8WOWqZx3CVcOYR0Y6JM64+/R3v4An5VPhtBzaPbraqpktFl+TX24KG
-	WuOASttYcZQOtX4XTPoHEdvZPQJddkJ9hMsQjA7zitVuVoCjIWkT6oHK9K7cOdfchA7L6EUMIhYCf
-	qupxXYLg==;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=sWnFDfi1/XqxIpOEFodQssSrAAdigmg6P7HROJwwOI4=; b=W9qFDpeKt57pNsUuHdG4rbVqS/
+	Xia3MmBHHQ9FIzT5KmUnjwn/B0O9nIDIaZCGsj4hIPyfUSsSb+5ERzwkPjHcj878yfoHGjNbaQlax
+	3uOdBAhZvlLI+5VHhnzRRj/U0E5S4f14dWPCvqT0eUGLUlQpzC0oUQAydZSO4T4dEklNfwwbz6Rxw
+	MAFAm/FOITk5X+XjUD180WE89gr1z7WfBFA1/Rl2EZ3zScpmS4ggYM0kWru/P5HmEKq7JQZiYyTyl
+	L/zBTpSnspJeoFozbvR8k/i6FDIIMwisiJa9DBdl8MpXhfuIXsh2fA4CGqe6MHXe4xk/DkgZQ+c0c
+	V1yFjzXw==;
 Received: from p2003010777026a001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7702:6a00:1a3d:a2ff:febf:d33a] helo=aktux)
 	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <andreas@kemnade.info>)
-	id 1rojFI-000ZgA-JP; Mon, 25 Mar 2024 13:16:08 +0100
-Date: Mon, 25 Mar 2024 13:16:05 +0100
+	id 1roUCT-000Y9b-VS; Sun, 24 Mar 2024 21:12:13 +0100
+Received: from andi by aktux with local (Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1roUCS-000yR4-21;
+	Sun, 24 Mar 2024 21:12:12 +0100
 From: Andreas Kemnade <andreas@kemnade.info>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: lee@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
-Message-ID: <20240325131605.6607b778@aktux>
-In-Reply-To: <472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
-References: <20240324201210.232301-1-andreas@kemnade.info>
-	<20240324201210.232301-3-andreas@kemnade.info>
-	<472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+To: lee@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	mazziesaccount@gmail.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [RFC PATCH 0/2] mfd: rohm-bd71828: Add power off
+Date: Sun, 24 Mar 2024 21:12:08 +0100
+Message-Id: <20240324201210.232301-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 25 Mar 2024 13:31:15 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+Add power off functionality. Marked as RFC because of magic numbers
+without a good source and strange delays. The only information source is
+only a vendor kernel.
 
-> On 3/24/24 22:12, Andreas Kemnade wrote:
-> > Since the chip can power off the system, add the corresponding
-> > functionality.
-> > Based on https://github.com/kobolabs/Kobo-Reader/raw/master/hw/imx6sll-clara2e/kernel.tar.bz2
-> > No information source about the magic numbers found.  
-> 
-> Oh, interesting repository :) Thanks for linking to it! I didn't know 
-> someone had reworked this driver...
-> 
-which btw: contains this interesting snippet (output from fdtdump)
-  bd71828-i2c@4b {
-                    reg = <0x0000004b>;
-                    compatible = "rohm,bd71828";
-                    gpio_int = <0x00000008 0x00000013 0x00000001>;
-                    gpio_wdogb = <0x00000039 0x00000018 0x00000001>;
-                    #address-cells = <0x00000001>;
-                    #size-cells = <0x00000000>;
-                    pmic@4b {
-                        compatible = "rohm,bd71828";
-             	        regulators {
-                        	BUCK1 {
-                            		regulator-name = "buck1";
+Andreas Kemnade (2):
+  dt-bindings: mfd: Add ROHM BD71828 system-power-controller property
+  mfd: rohm-bd71828: Add power off functionality
 
+ .../bindings/mfd/rohm,bd71828-pmic.yaml       |  2 ++
+ drivers/mfd/rohm-bd71828.c                    | 31 ++++++++++++++++++-
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-and to make it work since basically no regulators are registered 
-instead just some regmap_write()s are done to configure something
-in probe(). It is a pitfall to think that the information below pmic@4b
-is used, especially since it is not that obvious in the source.
+-- 
+2.39.2
 
-> I have access to the data-sheets so I also have some pieces of 
-> information. I hope I can clarify part of the puzzle. Unfortunately I 
-> have no information about the magic delays. I guess I could try asking 
-> though.
-> 
-> Oh, it seems to me this handler is only working on BD71828, not on 
-> BD71815. So, it should be tied to the ROHM_CHIP_TYPE_BD71828.
-> 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >   drivers/mfd/rohm-bd71828.c | 31 ++++++++++++++++++++++++++++++-
-> >   1 file changed, 30 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/mfd/rohm-bd71828.c b/drivers/mfd/rohm-bd71828.c
-> > index 594718f7e8e1..5a55aa3620d0 100644
-> > --- a/drivers/mfd/rohm-bd71828.c
-> > +++ b/drivers/mfd/rohm-bd71828.c
-> > @@ -464,6 +464,24 @@ static int set_clk_mode(struct device *dev, struct regmap *regmap,
-> >   				  OUT32K_MODE_CMOS);
-> >   }
-> >   
-> > +static struct i2c_client *bd71828_dev;  
-> 
-> I'm not sure why to store pointer to the device and not a pointer to the 
-> regmap?
-> 
-> > +static void bd71828_power_off(void)
-> > +{
-> > +	i2c_smbus_write_byte_data(bd71828_dev, 0x03, 0xff);  
-> 
-> 0x03 is a "reset reason" - register. Spec I have states that the 
-> register should clear when a reset occurs - but it also says the bits 
-> are "write '1' to clear". So, for some reason(?), this clears the 
-> previous reset reason.
-
-well, so just check in bootloader what the reset reason is and check if
-there is anything odd.
-
-> I am unsure why i2c_smbus_write_byte_data() and 
-> not regmap()?
-> 
-regmap involves mutex_lock() and we are not allowed to sleep here.
-
-> > +	mdelay(500);
-> > +	i2c_smbus_write_byte_data(bd71828_dev, BD71828_REG_INT_DCIN2, 0x02);  
-> 
-> This clears the DCIN monitoring status bit from the IRQ status register. 
-> I don't understand the purpose though.
-> 
-so maybe something to prevent power on by just plugging a usb cable? Will
-experiment a bit with it.
-
-> > +	mdelay(500);
-> > +	while (true) {
-> > +		i2c_smbus_write_byte_data(bd71828_dev, BD71828_REG_PS_CTRL_1, 0x02);  
-> 
-> This write to PS_CTRL_1 initiates a state transition. 0x2 equals to HBNT 
-> state. Eg, in usual cases this should be a start of the power-off sequence.
-> 
-> > +		mdelay(500);
-> > +	}
-> > +}  
-> 
-> If you have the hardware to test this on, then it'd be great to see if 
-> clearing the reset reason and IRQ status could be dropped. I can't 
-> immediately think of a reason for those.
-> 
-I will to so. That will also remove the need for all those delays.
-
-> > +static void bd71828_remove_poweroff(void *data)
-> > +{
-> > +	bd71828_dev = NULL;  
-> 
-> This does not smell correct to me. Should we remove the 
-> bd71828_power_off() from the pm_power_off instead?
-> 
-oh, yes, that is not correct.
-
-Regards,
-Andreas
