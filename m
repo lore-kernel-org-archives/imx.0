@@ -1,184 +1,122 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F32812CDA6
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 14:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601235D732
+	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 15:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711377963; cv=none; b=JI4c9TywDx48ySgDqAdDNv8/z8FsOVN8Lc4Uu4I99lW1wbiOta4ZQuodSC7niYevH0JwlyJfvMRsN3eaba5K06jcUfljr9smfF1hSRk4Qmu3viRMeiQ+zSo1xUrPYEZajbQZugQPRw81qAF/l5Dch9ABNilYNzVqGuIcLKkH1sA=
+	t=1711379322; cv=none; b=EXh70+MGGvYklUjlrHWrLv3mFEAPq25cGrd1LlzKf6IPC4eODW8nktoaQ2mMp9ynO5GFJoyM/tAktvJYxubMPRlwWtakWX9CZnR/Mm2HnhQDN/zDFhlmPD9yssP45QMjlYKCCjZpUdcIIiQIfrgxqBXjZzF92B3FeUM594cRBLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711377963; c=relaxed/simple;
-	bh=mCTdO+HDMUf/fvJY1XT3NqXDR+XWD4WNc1uQhNVpl+w=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AlNCkGGVuQJf2/s6j7zF96qd7zuZA8UYbfRFE+vScXs6E+aIqt9sB7ClrEK8uLfqQC/hZWXBTtchzz+SNhxQJtETAmpMa4WX/tUjRe4pt5c8/nTdqZJCqD/4RpCrHie/XsBl8RDmdbiX94O3EebD83O7ss6yZXxriO4lnFRk9Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V3G1d3lVxz6K6JX;
-	Mon, 25 Mar 2024 22:45:09 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1DF1D140B39;
-	Mon, 25 Mar 2024 22:45:57 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 25 Mar
- 2024 14:45:56 +0000
-Date: Mon, 25 Mar 2024 14:45:55 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Primoz Fiser <primoz.fiser@norik.com>
-CC: Andrej Picej <andrej.picej@norik.com>, Jonathan Cameron
-	<jic23@kernel.org>, <devicetree@vger.kernel.org>, <conor+dt@kernel.org>,
-	<lars@metafoo.de>, <krzysztof.kozlowski+dt@linaro.org>,
-	<imx@lists.linux.dev>, <linux-iio@vger.kernel.org>, <festevam@gmail.com>,
-	<s.hauer@pengutronix.de>, <upstream@lists.phytec.de>,
-	<linux-kernel@vger.kernel.org>, <haibo.chen@nxp.com>,
-	<kernel@pengutronix.de>, <shawnguo@kernel.org>, <robh@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [Upstream] [PATCH 0/2] i.MX93 ADC calibration settings
-Message-ID: <20240325144555.00002d16@Huawei.com>
-In-Reply-To: <44ac8977-cf98-46a5-be15-1bec330c6a2e@norik.com>
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
-	<20240324135559.1640551d@jic23-huawei>
-	<3423ea96-859d-4c4b-a9a7-e0d9c3c00727@norik.com>
-	<44ac8977-cf98-46a5-be15-1bec330c6a2e@norik.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1711379322; c=relaxed/simple;
+	bh=l7Iq42t4OAqPVcaUphs8qOzZizq2Dfx1SufCIbfsbEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nqdIGrlQn9YGXUNMd7quLpGcj29OqH72ZpfwwyS3stMBhJmyJxdAPMvHp6HmSe32DCj+KAmIdhvFPTu+OXs7JFIhbmls6vWh6yoduyvkaYjWS1JvuwT5ZWqXSbf6/DMVr6Mh4W5uDfzyzo98qPn/NW3vkrRrn3dNbp5kyiWcgwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=zn/PDYW9; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="zn/PDYW9"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1rolwE-003KEi-1q
+	for imx@lists.linux.dev;
+	Mon, 25 Mar 2024 16:08:38 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=a9zvtfL5+zzdZaDVQ7s7ROa8rd+QCuJZiFyI2UwPWgI=; b=zn/PDYW9I2AYu+Ff5oOniCVSPe
+	7awjFoLWzNrlxAU4tlQglV0nOUv2RFpWqQIk+9JP6cojXfxPXQGBpJyk7iIba8wz9Jc3xuCfHSWtl
+	5tofDJqG2ZmLwxPO4wYNt8yYAAc+w15fv5s51sTRcQsqHF8n2T2RL11VuF8NDOXXTglwgihB1WU9Q
+	RDlHXSKEyUeZ8qAJN6z9s1iO9h7mMQ6Kq6iuhATVrq7GuxZpvDGoVV5MxhEVenSMbx04t3gXBOyaM
+	DEkSrwW2PgzHBLdSkx5EkuJgAtkDgHhQYiAQUYK/cxh7FpkfYb9cb3PQUMdha3NAObVHtHodkGrGU
+	KEEVSQWA==;
+Received: from p2003010777026a001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:107:7702:6a00:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1rokNR-000Zp7-4z; Mon, 25 Mar 2024 14:28:36 +0100
+Date: Mon, 25 Mar 2024 14:28:33 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: lee@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
+Message-ID: <20240325142833.538993c2@aktux>
+In-Reply-To: <81bf6604-9160-4bae-8da6-7034f8aa3f92@gmail.com>
+References: <20240324201210.232301-1-andreas@kemnade.info>
+	<20240324201210.232301-3-andreas@kemnade.info>
+	<472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
+	<20240325131605.6607b778@aktux>
+	<81bf6604-9160-4bae-8da6-7034f8aa3f92@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Mar 2024 09:55:23 +0100
-Primoz Fiser <primoz.fiser@norik.com> wrote:
+Hi Matti,
 
-> Hi Jonathan,
->=20
-> On 25. 03. 24 09:32, Andrej Picej wrote:
-> > Hi Jonathan,
-> >=20
-> > On 24. 03. 24 14:55, Jonathan Cameron wrote: =20
-> >> On Wed, 20 Mar 2024 11:04:04 +0100
-> >> Andrej Picej <andrej.picej@norik.com> wrote:
-> >> =20
-> >>> Hi all,
-> >>>
-> >>> we had some problems with failing ADC calibration on the i.MX93 board=
-s.
-> >>> Changing default calibration settings fixed this. The board where this
-> >>> patches are useful is not yet upstream but will be soon (hopefully). =
-=20
+On Mon, 25 Mar 2024 14:44:43 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+> Hi Andreas,
+> 
+> On 3/25/24 14:16, Andreas Kemnade wrote:
+> > On Mon, 25 Mar 2024 13:31:15 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> On 3/24/24 22:12, Andreas Kemnade wrote:  
+> >>> Since the chip can power off the system, add the corresponding
+> >>> functionality.
+> >>> Based on https://github.com/kobolabs/Kobo-Reader/raw/master/hw/imx6sll-clara2e/kernel.tar.bz2
+> >>> No information source about the magic numbers found.  
 > >>
-> >> Tell us more.=A0 My initial instinct is that this shouldn't be board
-> >> specific.
-> >> What's the trade off we are making here?=A0 Time vs precision of
-> >> calibration or
-> >> something else?=A0 If these are set to a level by default that doesn't=
- work
-> >> for our board, maybe we should just change them for all devices?
-> >> =20
->=20
-> The imx93_adc driver is quite new.
->=20
-> If you look at line #162, you will find a comment by the original author:
->=20
-> > 	/*
-> > 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
-> > 	 * can add the setting of these bit if need in future.
-> > 	 */ =20
->=20
-> URL:
-> https://github.com/torvalds/linux/blob/master/drivers/iio/adc/imx93_adc.c=
-#L162
->=20
-> So, for most use-cases the default setting should work, but why not make
-> them configurable?
->=20
-> So this patch-series just implement what was missing from the beginning
-> / was planned for later.
-Hi Primoz,
+> >> Oh, interesting repository :) Thanks for linking to it! I didn't know
+> >> someone had reworked this driver...
+> >>  
+> > which btw: contains this interesting snippet (output from fdtdump)
+> >    bd71828-i2c@4b {
+> >                      reg = <0x0000004b>;
+> >                      compatible = "rohm,bd71828";
+> >                      gpio_int = <0x00000008 0x00000013 0x00000001>;
+> >                      gpio_wdogb = <0x00000039 0x00000018 0x00000001>;
+> >                      #address-cells = <0x00000001>;
+> >                      #size-cells = <0x00000000>;
+> >                      pmic@4b {
+> >                          compatible = "rohm,bd71828";
+> >               	        regulators {
+> >                          	BUCK1 {
+> >                              		regulator-name = "buck1";
+> > 
+> > 
+> > and to make it work since basically no regulators are registered
+> > instead just some regmap_write()s are done to configure something
+> > in probe(). It is a pitfall to think that the information below pmic@4b
+> > is used, especially since it is not that obvious in the source.  
+> 
+> Just to ensure there will be no misunderstanding - I have not authored 
+> the modifications seen in "Kobo-Reader" repository. Upstream driver does 
+> register the regulators - and it does not use the oddly named gpio_int 
+> or the gpio_wdogb:
 
-I doubt anyone reviewed the comment closely enough to say if what it was
-suggesting was sensible or not, so the fact it was listed as a todo
-doesn't directly impact this discussion.
+yes, I know it is not from you and I know the general quality in those repos.
+But I feel not well pointing to those repositories without issuing the warning
+that regulator information in dtb is not an authoritative source for required
+regulator settings. Not that someone enables the smoke-generator
+functionality...
 
->=20
-> BR,
-> Primoz
->=20
->=20
-> >=20
-> > So we have two different boards with the same SoC. On one, the
-> > calibration works with the default values, on the second one the
-> > calibration fails, which makes the ADC unusable. What the ADC lines
-> > measure differ between the boards though. But the implementation is
-> > nothing out of the ordinary.
-> >=20
-> > We tried different things but the only thing that helped is to use
-> > different calibration properties. We tried deferring the probe and
-> > calibration until later boot and after boot, but it did not help.
-> >=20
-> > In the Reference Manual [1] (chapter 72.5.1) it is written:
-> >  =20
-> >> 4. Configure desired calibration settings (default values kept for
-> >> highest accuracy maximum time). =20
-> >=20
-> > So your assumption is correct, longer calibration time (more averaging
-> > samples) -> higher precision. The default values go for a high accuracy.
-> > And since we use a NRSMPL (Number of Averaging Samples) of 32 instead of
-> > default 512, we reduce the accuracy so the calibration values pass the
-> > internal defined limits.
+But lets not go too much offtopic.
 
-Ouch.  Let me try to dig into this. Is this effectively relaxing the
-constraints? I guess because a value that is perhaps always biased one way
-is considered within bounds if those acceptable bounds are wider because
-of lower precision?
-
-I was assuming it was the other way around and the device had fixed constra=
-int
-limits and you needed to take more samples due to higher noise. Seems the
-opposite is true here and that worries me.
-
-I'll definitely need input from NXP on this as a workaround and their
-strong support to consider it.
-
-> >=20
-> > I'm not sure that changing default values is the right solution here. We
-> > saw default values work with one of the boards. And since the NXP kept
-> > these values adjustable I think there is a reason behind it.
-
-I'd assume trade off between time and calibration precision, not the
-sort of use I think you are describing.
-
-> >=20
-> > Note: When I say one of the boards I mean one board form. So same board
-> > version, but different HW.
-
-Superficially I'm struggling to not see this as broken hardware that it
-is out of expected tolerances in some fashion.  Maybe I misunderstood
-the issue.
-
-Jonathan
-
-> >=20
-> > Best regards,
-> > Andrej
-> >=20
-> > [1] i.MX 93 Applications Processor Reference Manual, Rev. 4, 12/2023
-> > _______________________________________________
-> > upstream mailing list
-> > upstream@lists.phytec.de
-> > http://lists.phytec.de/cgi-bin/mailman/listinfo/upstream =20
->=20
->=20
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Regards,
+Andreas
 
