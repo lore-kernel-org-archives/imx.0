@@ -1,60 +1,59 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F00518E0E7
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 09:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6681C5AA4
+	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 11:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711360739; cv=none; b=CqtmBuHnpKUnEY98EBsc1KrDF/FbUDWSmtERzPLVAW0f8BLC52YmUTaEXhuEG0sc7HoLkvb2Juh24B4hdUN3fI/DteOPxdjIXhYgzAysfgrAcWEKK4WzAy74CCYAr+kBrI8J0pOLOopfdd46FAmcNugYnbgqhOfgQ4AcBWAJL74=
+	t=1711366281; cv=none; b=cX4eAHi2OorY4X+4t/NKDcoNct8X2iUs9z6gFgCO5fwvCn8U0A3Mzu8a2fgPVFDmlsgxqTiTSZ/wGzBbRRK3xxrh3wijIIParer6guYPy/GejYq6AuK14jfbhLmYQ6LFQ/d7uRexZH3Q6HtFAHuswgF6d/UxJjBHNP98bjb91P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711360739; c=relaxed/simple;
-	bh=0HodlRK92+uecruCh4htnK2LTN1iC+38uJY7KjoYeFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FibvF5ZBXnic2NXBUB2mzFaym7iBS/d0YX6oCqmcM3aKitlypaarLWcDKzZr7ToctK7cCzOQwoqt2DeToOwfFBfv/pNmVO7BHgUmkYpZrO/p85N7ZtisuqJAavmkUJxZ+/JCSCT54nUUFduMZ6+rOHEapVKMZlpzCaf/z/pJDas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l+lgDqdm; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1711366281; c=relaxed/simple;
+	bh=EyIlueejT0gK9GuEs5MdPNg8HDGXDVqmLnd5nxFpcZ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Ypqqy0jNaJp+tlKd2kL0uFEjfsxRMJr1+5V/QFvxpnk8qOIDk4liDIuhhjqmuluhH4RBeqRG0hcEx+YJrg6NnTqx9RCjH0bQ+vG2pI2wquJ6Hgf97Btl0Bq9UxmvOUgKiR9SHihKoT1Ln0Jd9Tcd1q3UsMzxDKxLwNaxWUO5Qvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F8KZlyed; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l+lgDqdm"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513d23be0b6so4900233e87.0
-        for <imx@lists.linux.dev>; Mon, 25 Mar 2024 02:58:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F8KZlyed"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-515a97846b5so1218350e87.2
+        for <imx@lists.linux.dev>; Mon, 25 Mar 2024 04:31:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711360735; x=1711965535; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qvul6s5HtP/ZlpqUVoqPGz55enL0nlUDBRgMBFp+K5w=;
-        b=l+lgDqdmhY1xoAL+/TiO0WTWb9stGXN7K5HuZrUaBojrYHxFHw2/3h+D5gjxcjWSS3
-         8cjT5CQnMSyyaoVRAbp1LKGCPpJazyghXpLL8CNEIRUYAbYJpasF97x0/Jfaq7fQHfrY
-         IJPhVV3dsjimYLChpwNjxs0l1Fo+fV0W36NAQ+jp9FtNO1UA4TKf97ZNmb0+02z6/PrJ
-         ZhK0ag9bd6noiHHQ34LZydcCF0OGuOFzO+J5R+YYGvqphNu5tXxeWSvQtj7OFc4HX+N5
-         VaFbQG/Bv0QvIFH4JW6fGG/P8klmtE1ddT1Lg2+H7ItPpTeIjBPkYFZh+qjHNN2rg8BB
-         C8uw==
+        d=gmail.com; s=20230601; t=1711366276; x=1711971076; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WJkBHyUsM1Ra6ur6SOchqQjxQFdX44EdA5Gc6F4wbhw=;
+        b=F8KZlyedlKjUsYhj4Q/vESYIp9pHZQhUtWDQkhJ8Vx3KNqZTv40pVcBLbA0R6D1wtl
+         ZZGq3mTKylnGM4itsgi2BQa5mGUjlNehN5vNMpaerOmUTfp688w8hVlBR9fPzKbHAkSr
+         ygzeKHWYg+icw23nhVvdThdXlOBRDUks6U4bGbdUXE7u3tth4+aSRpQbjC642qZLYx4C
+         e0PynP0Ext/s/eTrkzFM96RMJbCXRtUyHlhMKqfUcdrLrfrSPoTcwT+7/SQoq2B5XGz2
+         chEHRYUFW1davAN/UmT+Ma7/dkHqHNR7hHO60MRRcFJYuV0MQ3sjDJL8xBh+fEFyv2I6
+         F3KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711360735; x=1711965535;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qvul6s5HtP/ZlpqUVoqPGz55enL0nlUDBRgMBFp+K5w=;
-        b=XMcUqyJehy/pwiZMiAIe4Ckcr/muQZehxuNx5C5jJ2Yda51TzeS2SBH1jHaEuklK8l
-         DIEirZ6K4pLAAzXI6ZKJWmuuPz9y+ZZcdcCIVbfXMXrKsHXsz+cqOVfc05GnSou8V4Tx
-         N5pDJ8qoYEYCBuL8/Pw4Nf5eiVJLxCazx6JdO/KPSwS+BGNqy2E3ueLnqaMlg/45Pqtj
-         qijqHM8CLA5Xd7evEHrmhjU+nqZEj0pnDuSh33W80/NoDVF4vpZHm7lVg4XUMvjDbVdI
-         HwfabsR/0zQ5pYuwD/2o6EGs4gaUhKIrOjoGsBtCV3RmtPZGzKr1Z2CA+Hdg3krByGF+
-         E0yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV16yIFr9yrBiLkgHIGstxraBaQ6A+X+Zs5ItVrP17wmIASwGSaCF6/iT5PR3Wyy+4oAO+5w8gimRVVdojGdFdhBKq2
-X-Gm-Message-State: AOJu0Yz5079z3GPNI4dpAgukoMAy23UXCvqGWux2tz3vMemBrdEAdMSY
-	K25KFPwmx8erS7O7rBZbOaLIPC2yRQZcCpkf8BBhUSjTBfO1jKqAhIAenzgmPbE=
-X-Google-Smtp-Source: AGHT+IGzb3SBz6tSy5Lr7i7F/Sz3cD4j3aUG8XDPJWjEsVe9L0DAU0zPAgHOII3D8qom8JbnUMqTbw==
-X-Received: by 2002:a19:2d41:0:b0:513:cdde:18f9 with SMTP id t1-20020a192d41000000b00513cdde18f9mr4422360lft.54.1711360735218;
-        Mon, 25 Mar 2024 02:58:55 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id a25-20020ac25059000000b005132bf9f8dcsm1011799lfm.303.2024.03.25.02.58.52
+        d=1e100.net; s=20230601; t=1711366276; x=1711971076;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WJkBHyUsM1Ra6ur6SOchqQjxQFdX44EdA5Gc6F4wbhw=;
+        b=CjpkR6d38C52A0fGH0ak+RP8L1KWmF8HXGNeOivv4g8+SU2CIs35swZEcW+ExrmgAD
+         qEyPsDY5Zv9i10p/rEnmZCHqoT4PsGW/fJf7A/CBk2nEmuxZ0x5v9tLxt4X54kj1jXqz
+         EMQEhASuOtsCu3cx3Q4UL8jnHmRFT32QT0rGxKTwzXmRtuuZWpPTRPb4VLpIimMgaf7S
+         7LhatJ+0oQKQxTjHVwHZCpETPe63uFYQqyr/MCQqP2ga3bMZXJoUogDTimBozIvhr87Q
+         Vu7tz1ldcL1qdJNlSsMZ481IiEzVwZ1xTTU2I17SKgFHB290DJrgtvmPEw2q/VTbX8Pq
+         Yf2A==
+X-Forwarded-Encrypted: i=1; AJvYcCVsuZtz+RFg7HwpeyxxPwZqCx5kcVRXTiaFf/khXJqtQ2Q/BNIUi/AbjR6STVhL/IuCym3lo6c79SoUrpn6wJ2yhsKa
+X-Gm-Message-State: AOJu0Yyo8GzHJE/wLPr/SFgt+CKFEbEGgK6duMQchf4vq5RMdb/LPVht
+	3cn+iNwqJ8tOiC29kMjnq17PN8XXG7r9AnHZZOE79czU8fhtYW57
+X-Google-Smtp-Source: AGHT+IF2nqxUG0rM7Fo+wTv5ljPmgwCa+w71rkB3zM9tbCRqlpdyPxc1zfzOtVQRkUO55CzC5ywi3Q==
+X-Received: by 2002:a19:ca07:0:b0:512:fabd:8075 with SMTP id a7-20020a19ca07000000b00512fabd8075mr4079760lfg.48.1711366276190;
+        Mon, 25 Mar 2024 04:31:16 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:7426:df00::6? (drtxq0yyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:7426:df00::6])
+        by smtp.gmail.com with ESMTPSA id y5-20020a196405000000b00515a3293478sm955108lfb.104.2024.03.25.04.31.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 02:58:54 -0700 (PDT)
-Message-ID: <178594a2-cd5f-4608-aae6-7d68fd0817e0@linaro.org>
-Date: Mon, 25 Mar 2024 10:58:51 +0100
+        Mon, 25 Mar 2024 04:31:15 -0700 (PDT)
+Message-ID: <472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
+Date: Mon, 25 Mar 2024 13:31:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,183 +61,127 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
- calibration properties
-To: Andrej Picej <andrej.picej@norik.com>, haibo.chen@nxp.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- upstream@lists.phytec.de
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
- <20240320100407.1639082-3-andrej.picej@norik.com>
- <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
- <e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
- <7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
- <40e08a5e-e7e9-47c7-9102-24a2bbba67cf@norik.com>
- <a1b173c0-5120-40f6-9708-cd810b4a2406@linaro.org>
- <1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
+Content-Language: en-US, en-GB
+To: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20240324201210.232301-1-andreas@kemnade.info>
+ <20240324201210.232301-3-andreas@kemnade.info>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20240324201210.232301-3-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 22/03/2024 10:58, Andrej Picej wrote:
-> On 22. 03. 24 09:14, Krzysztof Kozlowski wrote:
->> On 22/03/2024 08:39, Andrej Picej wrote:
->>> On 20. 03. 24 13:15, Krzysztof Kozlowski wrote:
->>>> On 20/03/2024 13:05, Andrej Picej wrote:
->>>>> Hi Krzysztof,
->>>>>
->>>>> On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:
->>>>>> On 20/03/2024 11:04, Andrej Picej wrote:
->>>>>>> Document calibration properties and how to set them.
->>>>>>
->>>>>> Bindings are before users.
->>>>>
->>>>> will change patch order when I send a v2.
->>>>>
->>>>>>
->>>>>> Please use subject prefixes matching the subsystem. You can get them for
->>>>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->>>>>> your patch is touching.
->>>>>> There is no file extension in prefixes.
->>>>>
->>>>> So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?
->>>>
->>>> Did you run the command I proposed? I don't see much of "/", but except
->>>> that looks good.
->>>
->>> Ok noted.
->>>
->>>>
->>>>>
->>>>>>
->>>>>>>
->>>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>>>>>> ---
->>>>>>>     .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
->>>>>>>     1 file changed, 15 insertions(+)
->>>>>>>
->>>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> index dacc526dc695..64958be62a6a 100644
->>>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> @@ -46,6 +46,21 @@ properties:
->>>>>>>       "#io-channel-cells":
->>>>>>>         const: 1
->>>>>>>     
->>>>>>> +  nxp,calib-avg-en:
->>>>>>> +    description:
->>>>>>> +      Enable or disable averaging of calibration time.
->>>>>>> +    enum: [ 0, 1 ]
->>>>>>> +
->>>>>>> +  nxp,calib-nr-samples:
->>>>>>> +    description:
->>>>>>> +      Selects the number of averaging samples to be used during calibration.
->>>>>>> +    enum: [ 16, 32, 128, 512 ]
->>>>>>> +
->>>>>>> +  nxp,calib-t-samples:
->>>>>>> +    description:
->>>>>>> +      Specifies the sample time of calibration conversions.
->>>>>>> +    enum: [ 8, 16, 22, 32 ]
->>>>>>
->>>>>> No, use existing, generic properties. Open other bindings for this.
->>>>>
->>>>> You mean I should use generic properties for the ADC calibration
->>>>> settings? Is there already something in place? Because as I understand
->>>>> it, these calib-* values only effect the calibration process of the ADC.
->>>>
->>>> Please take a look at other devices and dtschema. We already have some
->>>> properties for this... but maybe they cannot be used?
->>>>
->>>
->>> I did look into other ADC devices, grep across iio/adc, adc bindings
->>> folders and couldn't find anything closely related to what we are
->>> looking for. Could you please point me to the properties that you think
->>> should be used for this?
->>
->> Indeed, there are few device specific like qcom,avg-samples. We have
->> though oversampling-ratio, settling-time-us and min-sample-time (which
->> is not that good because does not use unit suffix).
+On 3/24/24 22:12, Andreas Kemnade wrote:
+> Since the chip can power off the system, add the corresponding
+> functionality.
+> Based on https://github.com/kobolabs/Kobo-Reader/raw/master/hw/imx6sll-clara2e/kernel.tar.bz2
+> No information source about the magic numbers found.
+
+Oh, interesting repository :) Thanks for linking to it! I didn't know 
+someone had reworked this driver...
+
+I have access to the data-sheets so I also have some pieces of 
+information. I hope I can clarify part of the puzzle. Unfortunately I 
+have no information about the magic delays. I guess I could try asking 
+though.
+
+Oh, it seems to me this handler is only working on BD71828, not on 
+BD71815. So, it should be tied to the ROHM_CHIP_TYPE_BD71828.
+
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>   drivers/mfd/rohm-bd71828.c | 31 ++++++++++++++++++++++++++++++-
+>   1 file changed, 30 insertions(+), 1 deletion(-)
 > 
-> Ok, these are examples but I think I should not use them, since these 
-> are i.MX93 ADC specific settings, which are used for configuration of 
+> diff --git a/drivers/mfd/rohm-bd71828.c b/drivers/mfd/rohm-bd71828.c
+> index 594718f7e8e1..5a55aa3620d0 100644
+> --- a/drivers/mfd/rohm-bd71828.c
+> +++ b/drivers/mfd/rohm-bd71828.c
+> @@ -464,6 +464,24 @@ static int set_clk_mode(struct device *dev, struct regmap *regmap,
+>   				  OUT32K_MODE_CMOS);
+>   }
+>   
+> +static struct i2c_client *bd71828_dev;
 
+I'm not sure why to store pointer to the device and not a pointer to the 
+regmap?
 
-No vendor prefix, so they rather should be generic, not imx93
-specific... But this the binding for imx93, so I don't understand your
-statement.
+> +static void bd71828_power_off(void)
+> +{
+> +	i2c_smbus_write_byte_data(bd71828_dev, 0x03, 0xff);
 
-> calibration process, and are not related to the standard conversion 
-> process during runtime. Calibration process is the first step that 
-> should be done after every power-on reset.
-> 
->>
->> Then follow up questions:
->>   - nxp,calib-avg-en: Why is it a board-level decision? I would assume
->> this depends on user choice and what kind of input you have (which could
->> be board dependent or could be runtime decision).
-> 
-> Not really sure I get your question, so please elaborate if I missed the 
-> point.
-> This is a user choice, to enable or disable the averaging function in 
-> calibration, but this is a board-level decision, probably relates on 
-> external ADC regulators and input connections. The same options are used 
-> for every ADC channel and this can not be a runtime decision, since 
-> calibration is done before the ADC is even registered.
+0x03 is a "reset reason" - register. Spec I have states that the 
+register should clear when a reset occurs - but it also says the bits 
+are "write '1' to clear". So, for some reason(?), this clears the 
+previous reset reason. I am unsure why i2c_smbus_write_byte_data() and 
+not regmap()?
 
-You now mix how Linux driver behaves with hardware. Why you cannot
-recalibrate later, e.g. when something else is being connected to the
-exposed pins?
+> +	mdelay(500);
+> +	i2c_smbus_write_byte_data(bd71828_dev, BD71828_REG_INT_DCIN2, 0x02);
 
-Best regards,
-Krzysztof
+This clears the DCIN monitoring status bit from the IRQ status register. 
+I don't understand the purpose though.
+
+> +	mdelay(500);
+> +	while (true) {
+> +		i2c_smbus_write_byte_data(bd71828_dev, BD71828_REG_PS_CTRL_1, 0x02);
+
+This write to PS_CTRL_1 initiates a state transition. 0x2 equals to HBNT 
+state. Eg, in usual cases this should be a start of the power-off sequence.
+
+> +		mdelay(500);
+> +	}
+> +}
+
+If you have the hardware to test this on, then it'd be great to see if 
+clearing the reset reason and IRQ status could be dropped. I can't 
+immediately think of a reason for those.
+
+> +static void bd71828_remove_poweroff(void *data)
+> +{
+> +	bd71828_dev = NULL;
+
+This does not smell correct to me. Should we remove the 
+bd71828_power_off() from the pm_power_off instead?
+
+> +}
+> +
+>   static int bd71828_i2c_probe(struct i2c_client *i2c)
+>   {
+>   	struct regmap_irq_chip_data *irq_data;
+> @@ -542,7 +560,18 @@ static int bd71828_i2c_probe(struct i2c_client *i2c)
+>   	ret = devm_mfd_add_devices(&i2c->dev, PLATFORM_DEVID_AUTO, mfd, cells,
+>   				   NULL, 0, regmap_irq_get_domain(irq_data));
+>   	if (ret)
+> -		dev_err_probe(&i2c->dev, ret, "Failed to create subdevices\n");
+> +		return	dev_err_probe(&i2c->dev, ret, "Failed to create subdevices\n");
+> +
+> +	if (of_device_is_system_power_controller(i2c->dev.of_node)) {
+> +		if (!pm_power_off) {
+> +			bd71828_dev = i2c;
+> +			pm_power_off = bd71828_power_off;
+> +			ret = devm_add_action_or_reset(&i2c->dev,
+> +						       bd71828_remove_poweroff,
+> +						       NULL);
+> +		} else
+> +			dev_warn(&i2c->dev, "Poweroff callback already assigned\n");
+> +	}
+>   
+>   	return ret;
+>   }
+
+Thanks for doing the digging Andreas! I think supporting the power-off 
+for devices using this PMIC is nice!
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 
