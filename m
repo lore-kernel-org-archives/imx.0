@@ -1,106 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3963DABE6;
-	Mon, 25 Mar 2024 16:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BB61C692
+	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 17:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711385500; cv=none; b=Kq9QH+OFUGkfeu+5Gd3IqzokcHv59vZ55wSrGKU0Q1fp0V2C6j5bPxZ58z4bVNmVyLCBAZm/uRBAQoNYerHoKivBuNDVCBqIwYihebk9SPfHP1Gzxj1W5EYxVsluzeD8wWQtjEo6w+2hbsdPTY+7I7DyG/heLNFvjZmDim+g+Kw=
+	t=1711386413; cv=none; b=VbC4lJN4x8Nfk+dqZOH/Y44UBLCv8UeWJRtM6tTeF/hAZ6teFktTczVKeBWfHcYGx4ekSWiqBL3a5cNj41ubHOYLxYasFBtZ1UxI8r8MEssdMKPbQxJS6jPAgYIUY/xL73S15ivQGYkU2jYacn3HDlleRSZLP29S9aYbkBWUi8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711385500; c=relaxed/simple;
-	bh=Iu8KBH2J8gwOqs7CFvo2VClDZQn6xBSmERMdX7llFo8=;
+	s=arc-20240116; t=1711386413; c=relaxed/simple;
+	bh=MAe5uuROFbCiGuIhQXAD8TvICt0pICzM9nlR0AdeEI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GM2czId06c0OLTVA2RLWVhxNVin5C16vMr0+Mm+aTE1MV3n1kDKMIezXaOXe0naXvZJncsfXqcAVlGDnWAubajLLyCfSosHfrip+trja6bp7/HQpXKTp1KTIljc2TuxVRmuQCM6ZoD72UpHMGuSdWjJIJO+3a2rOnwFXN3sevho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+1Z1mz5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=MN1krODV1LfCHO+MTveplIDcWkE5xLRVwlagu7lf73GwPU4AAyGc3HlmqXa5f9Ut9MzNE4DGZwfTxU1sbHK5j3sbQc6uawFgS4BTFRCXIc3GXKHVHxxFBFwdt05ByJYzqkRdlGey9jhacYJ95MDVo0jziXTf5ESLHliHbifp8GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WbXuRjl9; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+1Z1mz5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C34C433F1;
-	Mon, 25 Mar 2024 16:51:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711385499;
-	bh=Iu8KBH2J8gwOqs7CFvo2VClDZQn6xBSmERMdX7llFo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L+1Z1mz5ihW5gtjTmBfXU5UZzmTBjUNp01p6oqQq/GUwWiPlxi93qpigozpyMTMdN
-	 Z/RYEiSHUpzkN8D3UW4ZwuFRlwHPXMqLDkSbDU+gJ8FFfyUQyxioYcVF/rCCAp1F85
-	 9I/JK9X/c3o4/4EiuImJaIPNd1yCZCXKY6+fMEtiPjGeClxpLuIw1JhpxpYvLY1RbO
-	 juXjB9bSH0cMkzqpqfIxk/37qFpNvpYVN5p778mv5OjQv4X90GMRNY9hXKnyODne4U
-	 6p3OccFTTYq5TUbKg3NrI0/vR+uMQ5k8domUKwN80L9w3S0FFsRJ06pI/L0LoIYN/d
-	 G3Hu2FiM65sFg==
-Date: Mon, 25 Mar 2024 16:51:34 +0000
-From: Lee Jones <lee@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
-Message-ID: <20240325165134.GP13211@google.com>
-References: <20240324201210.232301-1-andreas@kemnade.info>
- <20240324201210.232301-3-andreas@kemnade.info>
- <472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
- <20240325131605.6607b778@aktux>
- <81bf6604-9160-4bae-8da6-7034f8aa3f92@gmail.com>
- <20240325141032.GO13211@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WbXuRjl9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711386412; x=1742922412;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MAe5uuROFbCiGuIhQXAD8TvICt0pICzM9nlR0AdeEI4=;
+  b=WbXuRjl9ZbZiX1Xf9OqBDYQnCwDA2N92mDBfDXOFMo8EBsqxzkt869Db
+   gfoJ8HzNmfG/mFsUncIio7/yw/vM1Vb0033SjraY4LrjAUwq8Eb0t3V9j
+   wJOe1REoSvE/TXlr0H7KmlviWQmT8tFdC0INPCwBGuQ56HTqGv/JPlyvD
+   gewTXRdVL9CQjL1xHVr+GrX75zwcweiIBXLja5fM3Bddr6AYIq9DMShXq
+   8h3uuIDQ0HNcDiYxovNYJBUcV/MwH6zfhWeX1UV39Ktk0QD5m21FSHUA7
+   F2r6ttyFjK/lCSObSEnxqgHWfZ38OPMV1RFW8RaPK9YD0mb/naffn2rV0
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6266958"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="6266958"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 10:06:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="914849374"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="914849374"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 10:06:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ronmW-0000000G3ar-2wkT;
+	Mon, 25 Mar 2024 19:06:44 +0200
+Date: Mon, 25 Mar 2024 19:06:44 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v2 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
+Message-ID: <ZgGvJDEpMjaeZzpC@smile.fi.intel.com>
+References: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240325141032.GO13211@google.com>
+In-Reply-To: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, 25 Mar 2024, Lee Jones wrote:
+On Mon, Mar 18, 2024 at 10:07:56PM +0200, Andy Shevchenko wrote:
+> This updates the driver to gpiod API, and removes yet another use of
+> of_get_named_gpio().
 
-> On Mon, 25 Mar 2024, Matti Vaittinen wrote:
-> 
-> > Hi Andreas,
-> > 
-> > On 3/25/24 14:16, Andreas Kemnade wrote:
-> > > On Mon, 25 Mar 2024 13:31:15 +0200
-> > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> > > 
-> > > > On 3/24/24 22:12, Andreas Kemnade wrote:
-> > > > > Since the chip can power off the system, add the corresponding
-> > > > > functionality.
-> > > > > Based on https://github.com/kobolabs/Kobo-Reader/raw/master/hw/imx6sll-clara2e/kernel.tar.bz2
-> > > > > No information source about the magic numbers found.
-> > > > 
-> > > > Oh, interesting repository :) Thanks for linking to it! I didn't know
-> > > > someone had reworked this driver...
-> > > > 
-> > > which btw: contains this interesting snippet (output from fdtdump)
-> > >    bd71828-i2c@4b {
-> > >                      reg = <0x0000004b>;
-> > >                      compatible = "rohm,bd71828";
-> > >                      gpio_int = <0x00000008 0x00000013 0x00000001>;
-> > >                      gpio_wdogb = <0x00000039 0x00000018 0x00000001>;
-> > >                      #address-cells = <0x00000001>;
-> > >                      #size-cells = <0x00000000>;
-> > >                      pmic@4b {
-> > >                          compatible = "rohm,bd71828";
-> > >               	        regulators {
-> > >                          	BUCK1 {
-> > >                              		regulator-name = "buck1";
-> > > 
-> > > 
-> > > and to make it work since basically no regulators are registered
-> > > instead just some regmap_write()s are done to configure something
-> > > in probe(). It is a pitfall to think that the information below pmic@4b
-> > > is used, especially since it is not that obvious in the source.
-> 
-> Odd!  Not only did I not receive the original patch, I also did not
-> receive your response Andreas.  Spam is empty too.
-> 
-> LORE too: https://lore.kernel.org/all/?q=%22mfd:%20rohm-bd71828:%20Add%20power%20off%20functionality%22
-
-Super weird!  They just all came through.
-
-The LORE link above is now working too.
-
-I suspect an issue with kernel.org.
+This also needs a leftover removal. :-(
 
 -- 
-Lee Jones [李琼斯]
+With Best Regards,
+Andy Shevchenko
+
+
