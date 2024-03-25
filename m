@@ -1,60 +1,59 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C549143C57
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 12:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3955E3D71
+	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 12:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711368843; cv=none; b=fbRwMlu9btBNzU9ac2zyL1+YrIIhn7wxAy9JAGEvOmtKL+R4XFdw8Lbaxm8HRlHHNn7M6W75Kb5fsO7OyLUzQ6+hkRiqDkrTtdkLRtBAfJ+XKpoP184q9IjHZW6+DkGjMwEhFZRwW2s2HQ1ixB+HPZqQNJtb0Msu+Bnuki0YErY=
+	t=1711370688; cv=none; b=mDDkWpxdBDLlfpjuoJ3AgkSwncxIayUiJsG+dQ2T1W77l4g/wjte90CWHBigs4f2tAUi4GVJqVam8h2wlzxS6WRtqdS13JOKk2dgGjEmT95DMBtM+ll9fJXaoEVnQrkWL+pru2Xl7fA2vwaJWO+e6Iz/6qpERJiefuZKd3Qx5Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711368843; c=relaxed/simple;
-	bh=eRQ3v+Z2dJl689WWWXOrEz1LEJQ0MchAYxlZwKiJ58s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=TmD5Y6TU+Dc++O84xh/oPT7bfM8BIys1GGvDPyib9VsiZ9IAybfx6RaHawOdFJLoBxfAwBdm5gg8ohasSelTuvPDUIF/1oI7wQVCQvh4y0jI/+lFHhcxhxee6Ngsw5HOQaCrXMkgbLrONF1arWdWCXgHUpMhbIO+yiVMDVPmttU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kyQGGYNh; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1711370688; c=relaxed/simple;
+	bh=/0c5YATi0wBoNSQaUbscPwIqGzPt6PDUNsLJXqr3t4c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f5w3AAyvu/nkZfOfoynScS+b4P3TtxgmPURiPy5yer+p4D2G8u7exjROkudIETzBUMU95AJAqBrWqPe3I38pCWiMAcs5aDWC6zgquUcd7dL/rgX10hCudgnHULitZOK5btiEX5UVsp5nf41gwprh/dSGUgY36KZa/rnp+9xT8Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UmR4LJgN; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kyQGGYNh"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-56c1a520659so500514a12.1
-        for <imx@lists.linux.dev>; Mon, 25 Mar 2024 05:14:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UmR4LJgN"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d68cf90ec4so73363621fa.1
+        for <imx@lists.linux.dev>; Mon, 25 Mar 2024 05:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711368841; x=1711973641; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=RA6g6J0wJTClI1sZEipXj0B4EJrshZJX4OWiI+V0fAU=;
-        b=kyQGGYNhNIa1VrwnZoN8vZxzW7jxmNKqR8tjk72NDCy2gye9qRj4f/8mjS76msJ4ta
-         RdTjSE0gl6uueli60JaKIjwwtEFdMn7wH2dFoqkgNsHj9nQuVIqSqfG/dos9K9hEiFW9
-         C64VEtHDKixYXsn3GEwR/uLYbzeVQ1tFAK+5JVjDchCZZHCUM/0/yzBDoTsIT2/4M83V
-         UvbnhPzRRRV/HoxMtz/B8waDxoE+bQ5VEExMUyYpK/hZB7YGxm3WEWo1++//Qg/dhMGV
-         6BKvPLjgd9Z6TtMeU2Oy+is3xNcdBY8RFMRvkVNpQtT3i49C3J9VkkcgC+ypHuupowwL
-         fxrw==
+        d=gmail.com; s=20230601; t=1711370684; x=1711975484; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MzYr053l09e/3RIxhJmMgbVh55W1tuz1CI+cV74GXOw=;
+        b=UmR4LJgN1zfoPGCH9hoIp4T4A8SCudI3C75ccSlgEWgkBFAt7hvbgVYlqL7+9UZ4Ir
+         2fmIswwo6FK4gqXMpVFhtS5uLpbTDCJhetaeeRU6lkIzS2hJzpPW1tyQr74XTckJYZSk
+         TyNcgqIgJtQ0dv8SxhPy+WYoZPqQm5Jb+YE66sAWZxB8wzluqBhdE73R6JT6L4ABd1Su
+         slbMzTpcT8A4lgKWjQaFi5mqE9QmDcgb8aeINqmeWxVBmz+4AfMADWg4kaBPncdFAQ/c
+         PKvG685Kj7Ibe0dJgIgpCBB0HSLL0lcFS/Kw1b2MHqc2KdyOHAZvKUGC4LZ6pd87Pg0I
+         IZDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711368841; x=1711973641;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RA6g6J0wJTClI1sZEipXj0B4EJrshZJX4OWiI+V0fAU=;
-        b=JTJp24gTDbaNl1vYATlzhnP9Y/WKSD7WZu5wLdAzKbFiVdV5VoUZCebPhmDa73eM8z
-         OIj40Q4onF/s9gpI4eOPmAmhui7cBa3S2ADtvyqABbh5L51P3tlNGTK0hxAMVzJAIKB5
-         0JGoS3jurZgMRZ+CsZs5fXLfmtFu+RU5YKLrJwSCXYOXVMkp4A8RXNmdBVFmZBViaOTb
-         MQFUVyPBzoAoKZ1k3pKBcTIirK7xdja6lF0ek6t6089uhBeBK9WMZCJ+4LnFb2n2zJKO
-         KqI9kqk/l5nHiWOEZizjxsHZHktRp47w9LPWaSC92iarDM9N/IrDb2yZ0F4UP8bn5kY+
-         PTHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWs3e0Y8OzWJLtx7CgDJljBEmk69jCFFkAXf3c46Bco3MtkLYleyQr2drPryTCmAV72g+E/GiCTlR0y+DL7l9zi8ff7
-X-Gm-Message-State: AOJu0YzKWCzFZwnkMhy7eH4h4KO6gaAaCRo6Z8CF1/ldneZHYaJxLvra
-	bzy0YvsR6Fls94yDKPWni2oARxp3HZm/q6/G5I9M93bti9Lr90X1VCVbJSMGxCI=
-X-Google-Smtp-Source: AGHT+IFchACnEJgHIUbP7xrjQWuwWHyHHVNnMz/y8yK0SAFbhKe5x4R8I9WrdyzNQpEcFYqfpfc6YQ==
-X-Received: by 2002:a17:907:72c6:b0:a47:4ee6:9035 with SMTP id du6-20020a17090772c600b00a474ee69035mr3220764ejc.29.1711368840850;
-        Mon, 25 Mar 2024 05:14:00 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id hy8-20020a1709068a6800b00a46c0191306sm2983049ejc.213.2024.03.25.05.13.59
+        d=1e100.net; s=20230601; t=1711370684; x=1711975484;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MzYr053l09e/3RIxhJmMgbVh55W1tuz1CI+cV74GXOw=;
+        b=cPSbDts6C43r5JH7vY3LH3P1qquaEL5HOTyi57L/C7DZcfABMpuviPC1Te491azv/L
+         OwaU+fzkG9i9VziWafYzIZYVfdWKFfQbto+wN1firGcnh0CA8uLDTOS8/VTaNZJFhexd
+         UJGL2Sn1oG1noPzZyru6SfzlNxlFYs7j1N+N2MuU00gJ0SrVq4cKA/QN+2Oj1NgF73kZ
+         qDL9wpVm1iWFqllo0cLCWX4tKsHk9Zzv8EpxDG5+S5FlfPytn3L+uM8PNcCPQ753nr6F
+         xZbY5QJ0/zXKjTwrv3PzOapMS4FDsUALbTexbjd/NEWWpswQYcbpfndtjJEx1C/PYBy4
+         hOPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGccC7xP5f6m+S5RSSJyVN+te0rp2Kz1Yd6jQlpC/ASYpeHdVF8eQaNnoLDspM5+2u3vZIIpr8B66/zPLzvUnW8PYS
+X-Gm-Message-State: AOJu0YyFnu7CeElDIumAFwSINL9RZN0FmV1o69KbO9PGW2eV4KRh9Twp
+	zeBW1mq3Bd3ue+OiAUNuRBNz5DbYCSjnkVvhwl9/eCBE8ONpQFxp
+X-Google-Smtp-Source: AGHT+IEjQ+Bn0nPMrrVMKJnoSv6m7e+kPRqkDHwuPIBzpSeOd0b1YvwEsvE7hPPcpoIia4NzkR1SDQ==
+X-Received: by 2002:a05:651c:685:b0:2d3:e0ec:36c7 with SMTP id x5-20020a05651c068500b002d3e0ec36c7mr3886653ljb.43.1711370684178;
+        Mon, 25 Mar 2024 05:44:44 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:7426:df00::6? (drtxq0yyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:7426:df00::6])
+        by smtp.gmail.com with ESMTPSA id s4-20020a05651c200400b002d4678aee97sm1427032ljo.108.2024.03.25.05.44.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 05:14:00 -0700 (PDT)
-Message-ID: <cd22566e-c180-436e-8a35-bdcfdba599ad@linaro.org>
-Date: Mon, 25 Mar 2024 13:13:58 +0100
+        Mon, 25 Mar 2024 05:44:43 -0700 (PDT)
+Message-ID: <81bf6604-9160-4bae-8da6-7034f8aa3f92@gmail.com>
+Date: Mon, 25 Mar 2024 14:44:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,74 +61,152 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] dt-bindings: mfd: Add ROHM BD71828
- system-power-controller property
-To: Andreas Kemnade <andreas@kemnade.info>, lee@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- mazziesaccount@gmail.com, devicetree@vger.kernel.org,
+Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: lee@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev
 References: <20240324201210.232301-1-andreas@kemnade.info>
- <20240324201210.232301-2-andreas@kemnade.info>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240324201210.232301-2-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
+ <20240324201210.232301-3-andreas@kemnade.info>
+ <472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
+ <20240325131605.6607b778@aktux>
+Content-Language: en-US, en-GB
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20240325131605.6607b778@aktux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 24/03/2024 21:12, Andreas Kemnade wrote:
-> As the PMIC can power off the system, add the corresponding property.
+Hi Andreas,
+
+On 3/25/24 14:16, Andreas Kemnade wrote:
+> On Mon, 25 Mar 2024 13:31:15 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  Documentation/devicetree/bindings/mfd/rohm,bd71828-pmic.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>> On 3/24/24 22:12, Andreas Kemnade wrote:
+>>> Since the chip can power off the system, add the corresponding
+>>> functionality.
+>>> Based on https://github.com/kobolabs/Kobo-Reader/raw/master/hw/imx6sll-clara2e/kernel.tar.bz2
+>>> No information source about the magic numbers found.
+>>
+>> Oh, interesting repository :) Thanks for linking to it! I didn't know
+>> someone had reworked this driver...
+>>
+> which btw: contains this interesting snippet (output from fdtdump)
+>    bd71828-i2c@4b {
+>                      reg = <0x0000004b>;
+>                      compatible = "rohm,bd71828";
+>                      gpio_int = <0x00000008 0x00000013 0x00000001>;
+>                      gpio_wdogb = <0x00000039 0x00000018 0x00000001>;
+>                      #address-cells = <0x00000001>;
+>                      #size-cells = <0x00000000>;
+>                      pmic@4b {
+>                          compatible = "rohm,bd71828";
+>               	        regulators {
+>                          	BUCK1 {
+>                              		regulator-name = "buck1";
+> 
+> 
+> and to make it work since basically no regulators are registered
+> instead just some regmap_write()s are done to configure something
+> in probe(). It is a pitfall to think that the information below pmic@4b
+> is used, especially since it is not that obvious in the source.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Just to ensure there will be no misunderstanding - I have not authored 
+the modifications seen in "Kobo-Reader" repository. Upstream driver does 
+register the regulators - and it does not use the oddly named gpio_int 
+or the gpio_wdogb:
 
-Best regards,
-Krzysztof
+https://elixir.bootlin.com/linux/v6.9-rc1/source/drivers/regulator/bd71828-regulator.c#L750
+
+>> I have access to the data-sheets so I also have some pieces of
+>> information. I hope I can clarify part of the puzzle. Unfortunately I
+>> have no information about the magic delays. I guess I could try asking
+>> though.
+>>
+>> Oh, it seems to me this handler is only working on BD71828, not on
+>> BD71815. So, it should be tied to the ROHM_CHIP_TYPE_BD71828.
+>>
+>>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+>>> ---
+>>>    drivers/mfd/rohm-bd71828.c | 31 ++++++++++++++++++++++++++++++-
+>>>    1 file changed, 30 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/mfd/rohm-bd71828.c b/drivers/mfd/rohm-bd71828.c
+>>> index 594718f7e8e1..5a55aa3620d0 100644
+>>> --- a/drivers/mfd/rohm-bd71828.c
+>>> +++ b/drivers/mfd/rohm-bd71828.c
+>>> @@ -464,6 +464,24 @@ static int set_clk_mode(struct device *dev, struct regmap *regmap,
+>>>    				  OUT32K_MODE_CMOS);
+>>>    }
+>>>    
+>>> +static struct i2c_client *bd71828_dev;
+>>
+>> I'm not sure why to store pointer to the device and not a pointer to the
+>> regmap?
+>>
+>>> +static void bd71828_power_off(void)
+>>> +{
+>>> +	i2c_smbus_write_byte_data(bd71828_dev, 0x03, 0xff);
+>>
+>> 0x03 is a "reset reason" - register. Spec I have states that the
+>> register should clear when a reset occurs - but it also says the bits
+>> are "write '1' to clear". So, for some reason(?), this clears the
+>> previous reset reason.
+> 
+> well, so just check in bootloader what the reset reason is and check if
+> there is anything odd.
+
+I understand why bootloader would check this register - but I don't 
+understand why the driver would clear it as it should be cleared by 
+reset (unless I missread the spec).
+
+>> I am unsure why i2c_smbus_write_byte_data() and
+>> not regmap()?
+>>
+> regmap involves mutex_lock() and we are not allowed to sleep here.
+
+Right. It makes perfect sense now. Thanks! (Do you think it's worth a 
+comment?)
+
+>>> +	mdelay(500);
+>>> +	i2c_smbus_write_byte_data(bd71828_dev, BD71828_REG_INT_DCIN2, 0x02);
+>>
+>> This clears the DCIN monitoring status bit from the IRQ status register.
+>> I don't understand the purpose though.
+>>
+> so maybe something to prevent power on by just plugging a usb cable? Will
+> experiment a bit with it.
+
+I still think this is odd because, if I read it right, this is an IRQ 
+status and not a mask register. Well, wouldn't be a first undocumented 
+"feature" I see...
+
+>>> +	mdelay(500);
+>>> +	while (true) {
+>>> +		i2c_smbus_write_byte_data(bd71828_dev, BD71828_REG_PS_CTRL_1, 0x02);
+>>
+>> This write to PS_CTRL_1 initiates a state transition. 0x2 equals to HBNT
+>> state. Eg, in usual cases this should be a start of the power-off sequence.
+>>
+>>> +		mdelay(500);
+>>> +	}
+>>> +}
+>>
+>> If you have the hardware to test this on, then it'd be great to see if
+>> clearing the reset reason and IRQ status could be dropped. I can't
+>> immediately think of a reason for those.
+>>
+> I will to so. That will also remove the need for all those delays.
+
+Thanks :) Very much appreciated!
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 
