@@ -1,84 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BB61C692
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 17:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B5213777F;
+	Mon, 25 Mar 2024 17:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711386413; cv=none; b=VbC4lJN4x8Nfk+dqZOH/Y44UBLCv8UeWJRtM6tTeF/hAZ6teFktTczVKeBWfHcYGx4ekSWiqBL3a5cNj41ubHOYLxYasFBtZ1UxI8r8MEssdMKPbQxJS6jPAgYIUY/xL73S15ivQGYkU2jYacn3HDlleRSZLP29S9aYbkBWUi8I=
+	t=1711388658; cv=none; b=m/COSO/C416d1pRJC0aZesqlB13jBAPXIZ4SKTlnPeoOPHD43hrx6xvJXo7HQjXsm1BCr6GNWI2Bff//u1yFY+hioX50uhU/4/BPzRCyk/lnAWswoQ7rBiu6RaKkp00jVH8VAk/KDHVnrXwkYvRig8Pn50ohIhqN0nqcB0vsY30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711386413; c=relaxed/simple;
-	bh=MAe5uuROFbCiGuIhQXAD8TvICt0pICzM9nlR0AdeEI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MN1krODV1LfCHO+MTveplIDcWkE5xLRVwlagu7lf73GwPU4AAyGc3HlmqXa5f9Ut9MzNE4DGZwfTxU1sbHK5j3sbQc6uawFgS4BTFRCXIc3GXKHVHxxFBFwdt05ByJYzqkRdlGey9jhacYJ95MDVo0jziXTf5ESLHliHbifp8GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WbXuRjl9; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1711388658; c=relaxed/simple;
+	bh=qb0iwJLbOS+LnSN4h1wK8br8fS0Emdh+02cjuu/+jmQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=dwXUWSdFele+QiaVPGhsZutFhWGDJ09tXN/gCaztWTWd4DNUVE6Qp9Y/PQvLmnapDmwZtxlPvrkKOkSMu7R2oAqA6DPrnVZkJde3culSIwtiFdqG+hDa8NOb1/f0yYqJjUAfqElP5UT4hG4Fr503HEvgozEkePwMixIFbw6XMkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CM0olkc8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WbXuRjl9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711386412; x=1742922412;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MAe5uuROFbCiGuIhQXAD8TvICt0pICzM9nlR0AdeEI4=;
-  b=WbXuRjl9ZbZiX1Xf9OqBDYQnCwDA2N92mDBfDXOFMo8EBsqxzkt869Db
-   gfoJ8HzNmfG/mFsUncIio7/yw/vM1Vb0033SjraY4LrjAUwq8Eb0t3V9j
-   wJOe1REoSvE/TXlr0H7KmlviWQmT8tFdC0INPCwBGuQ56HTqGv/JPlyvD
-   gewTXRdVL9CQjL1xHVr+GrX75zwcweiIBXLja5fM3Bddr6AYIq9DMShXq
-   8h3uuIDQ0HNcDiYxovNYJBUcV/MwH6zfhWeX1UV39Ktk0QD5m21FSHUA7
-   F2r6ttyFjK/lCSObSEnxqgHWfZ38OPMV1RFW8RaPK9YD0mb/naffn2rV0
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6266958"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="6266958"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 10:06:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="914849374"
-X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="914849374"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 10:06:47 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ronmW-0000000G3ar-2wkT;
-	Mon, 25 Mar 2024 19:06:44 +0200
-Date: Mon, 25 Mar 2024 19:06:44 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
-Message-ID: <ZgGvJDEpMjaeZzpC@smile.fi.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CM0olkc8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF51C433F1;
+	Mon, 25 Mar 2024 17:44:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711388658;
+	bh=qb0iwJLbOS+LnSN4h1wK8br8fS0Emdh+02cjuu/+jmQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=CM0olkc8ABVp8KmSIRMh1EoZWuTErWkfpQ+hJU4vDTWnSETmZfbGeyRGVE4x9Nyxa
+	 27DwkyOdKYLCruQnOqbQHzR05Rp3BAE2hAyghZiJ8C137RVPkChKjQqD/PQV+L4ejY
+	 2reiR8/UxcV8rWkRIj9u0WCdGg5J1pte9EghB0pRGEYPKf2DtOoAsSQ5r4dGkgxqPZ
+	 eQTqsvSSW3FZK4OC3sMVhHKGAkLI2w3TT5ACE1yGocgfq9tUuug0T44ZD3bdxHFEZv
+	 f/WiEP9nvnZXMqXQbbBQSQZvSGXUeZyebHHHVztGIihBia+vYv1+x4Lhc0CHDh/WRj
+	 eV5x9HYl8IfSA==
+From: Mark Brown <broonie@kernel.org>
+To: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-sound@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+In-Reply-To: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
 References: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod
+ API
+Message-Id: <171138865464.327140.5568916833564730450.b4-ty@kernel.org>
+Date: Mon, 25 Mar 2024 17:44:14 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
-On Mon, Mar 18, 2024 at 10:07:56PM +0200, Andy Shevchenko wrote:
+On Mon, 18 Mar 2024 22:07:56 +0200, Andy Shevchenko wrote:
 > This updates the driver to gpiod API, and removes yet another use of
 > of_get_named_gpio().
+> 
+> 
 
-This also needs a leftover removal. :-(
+Applied to
 
--- 
-With Best Regards,
-Andy Shevchenko
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
+
+[1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
+      commit: 9855f05e553637f05494cf47a3154cbf9a5cfc67
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
