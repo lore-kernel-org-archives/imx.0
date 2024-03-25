@@ -1,223 +1,123 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mx2.mythic-beasts.com (mx2.mythic-beasts.com [46.235.227.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F97174BEB
-	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A110D74BEB
+	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711437259; cv=none; b=FIhc5D8CMRQEp4u9fkhnOTcJMBHABrYeS5OsTbIdODz7twXeqcgw3nopgZ8Vfp5l/tf60yxyouotWI/3pnptZ9T62wm8CtVrRNpOJaEEm0ZTaFFgJWMLqjWQwKRry9HEadwNFHW1pd19zGZT+55DpH3SUYpDVJLdUIqMKKgbvGI=
+	t=1711437848; cv=none; b=k23uQPF0Vn6sYqHCJrd69RDN/lN9nGY6OGNsV/mukrcHM5A4mm67aElqCtw24UUNd3PO+HMBJJ2ftMbvbvc+ECsO1UIDahOgKjzgrJhU9OFAefD50ecyoyK90OWq/t+ko5tIqEA+a31z+A/ZEg5WtJW9qH353kZDBZQMcAlEUM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711437259; c=relaxed/simple;
-	bh=R/PF6zodIjJNrkWgq/pzQEcDa7T/S8aNQeuBGFJxGLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fjfW1b9f722Wng6AlAFWQmWobYikjVGAkhTPU1OG/kzorIvDbLmpGmlLxzG6Fv4s9qSPJNaQ0uTYmL0c0TtTvULOmWpnE75XSfAqFVf049VYEc8IZWg7AL7fe/E9Iw4HSQUxl5UQPrnoDKsCwP1JmpNEGwttYK9K9YIKqixvtGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=KILP2UIP; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QGOFVlBM reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="KILP2UIP";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QGOFVlBM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1711437255; x=1742973255;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=00WgOmyzkRllaoUEEu1uoP3kJXxqshi5oJasmpbz0Ts=;
-  b=KILP2UIPS4IGlRNNh9Khx1ykIj9Z8e9tZEU1g2xBn1SAkNnE9MGvTPte
-   X+O0M1C/deQ03C7di0OOT6uCZpE3P6GNICZ1KbHSYh1/h94t19mk34Tp0
-   RXvYlIxSY6m5GvIy0fHMXxX5+uuEbaPCnOrI5+8W7PmzPo5BnqDNxOkpE
-   5Ifb/A+bYopZybUUkboqJkCQWAs1lnXtSNG4nBlCJDdfA8KF+9O2gXxSr
-   Ztb6XERLpted5msbf9AD8DgxDpop0E/tQq/eafg/QodORAD4Yk3dddnsI
-   Lx9mFgjTiNE1PcpKnAl3LofXrdMRJOMJs4V8hC+Lp5vj0zBVq8hcgpWea
-   A==;
-X-IronPort-AV: E=Sophos;i="6.07,155,1708383600"; 
-   d="scan'208";a="36094014"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 26 Mar 2024 08:14:12 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D4F716EDC7;
-	Tue, 26 Mar 2024 08:14:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1711437248;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=00WgOmyzkRllaoUEEu1uoP3kJXxqshi5oJasmpbz0Ts=;
-	b=QGOFVlBMdZoRZjKwDMSLJZIEbnb9InlFc4QS7xXIRFSfRqN2aMkk4QDZ5brjVC4d9QU+iR
-	tu3C8x+13iQqTrv/MIfOysn7fRaEetW8+YEi8T6CInel22Ol7DAJcI/N835Q94Lx6z7Vj7
-	MQS1Vxm/iDP2OWZF11pl2KOYBnk5YBHw+0pcj/usj64sn7ooM9lRlx0Sbq2sS6AU39+z5t
-	FdmCiKAFE5MFyBiN8/wiV+ANaWMa8b3fuHALyoneIkDytV/ePnwpuaSCMqBCRbmwAvKApv
-	BrfdTqRumIdBxo4u1VlCv/cV7Ab8UQi/vHCFD63qNNjUv7B6uGTrzAkHeTz1xQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-Date: Tue, 26 Mar 2024 08:14:13 +0100
-Message-ID: <2929432.e9J7NaK4W3@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240325204924.GY18799@pendragon.ideasonboard.com>
-References: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com> <4879631.GXAFRqVoOG@steina-w> <20240325204924.GY18799@pendragon.ideasonboard.com>
+	s=arc-20240116; t=1711437848; c=relaxed/simple;
+	bh=l6JtmrWNF3LKBIp+HzdX8pz/gxhDJudluV04fWRvOo4=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ISGxj4N9Jx2kgy+IugcW/EGasY4LzRBzFQDg3OfoMrEk/FEEbj8SKvItW85DZejr6RjtpMxNATJrCOrS6+iEoD8VGxVXPspDLVc/o6APvm0lEc3h7nr4qKTVxlUnfF1eseN/eUKKVBN9hPWDCnhjs8urbJY7w1ZykJ20ib8pNNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk; arc=none smtp.client-ip=46.235.227.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk
+Received: by mailhub-hex-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <jic23@jic23.retrosnub.co.uk>)
+	id 1rp19q-00CxpK-M5; Tue, 26 Mar 2024 07:23:57 +0000
+Date: Mon, 25 Mar 2024 22:32:59 +0000
+From: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Jonathan Cameron <jic23@kernel.org>
+CC: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Trevor Zaharichuk <trevor@au-zone.com>,
+ Greg Lytle <greg@au-zone.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
+ linux-iio@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/5=5D_dt-bindings=3A_iio=3A_da?=
+ =?US-ASCII?Q?c=3A_ti=2Cdac5571=3A_Add_DAC081C081_support?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20240325222308.GA31216@pendragon.ideasonboard.com>
+References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com> <20240325203245.31660-2-laurent.pinchart@ideasonboard.com> <20240325204857.4f2fd468@jic23-huawei> <20240325205641.GD23988@pendragon.ideasonboard.com> <20240325222308.GA31216@pendragon.ideasonboard.com>
+Message-ID: <435DAE05-A189-4238-AAD4-C5F4E3032DD6@jic23.retrosnub.co.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
-
-Hi Laurent,
-
-Am Montag, 25. M=E4rz 2024, 21:49:24 CET schrieb Laurent Pinchart:
-> Hi Alexander,
->=20
-> On Mon, Mar 25, 2024 at 04:52:21PM +0100, Alexander Stein wrote:
-> > Am Montag, 25. M=E4rz 2024, 16:13:39 CET schrieb Laurent Pinchart:
-> > > From: Paul Elder <paul.elder@ideasonboard.com>
-> > >=20
-> > > The ISP supports both CSI and parallel interfaces, where port 0
-> > > corresponds to the former and port 1 corresponds to the latter. Since
-> > > the i.MX8MP's ISPs are connected by the parallel interface to the CSI
-> > > receiver, set them both to port 1.
-> > >=20
-> > > Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > ---
-> > > Changes since v1:
-> > >=20
-> > > - Fix clock ordering
-> > > - Add #address-cells and #size-cells to ports nodes
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 50 +++++++++++++++++++++=
-++
-> > >  1 file changed, 50 insertions(+)
-> > >=20
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
-oot/dts/freescale/imx8mp.dtsi
-> > > index bfc5c81a5bd4..1d2670b91b53 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > @@ -1616,6 +1616,56 @@ isi_in_1: endpoint {
-> > >  				};
-> > >  			};
-> > > =20
-> > > +			isp_0: isp@32e10000 {
-> > > +				compatible =3D "fsl,imx8mp-isp";
-> > > +				reg =3D <0x32e10000 0x10000>;
-> > > +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> > > +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> > > +				clock-names =3D "isp", "aclk", "hclk";
-> > > +				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP>;
-> > > +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_500M>;
-> > > +				assigned-clock-rates =3D <500000000>;
-> > > +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> > > +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
-> > > +				status =3D "disabled";
-> > > +
-> > > +				ports {
-> > > +					#address-cells =3D <1>;
-> > > +					#size-cells =3D <0>;
-> > > +
-> > > +					port@1 {
-> > > +						reg =3D <1>;
-> > > +					};
-> > > +				};
-> > > +			};
-> > > +
-> > > +			isp_1: isp@32e20000 {
-> > > +				compatible =3D "fsl,imx8mp-isp";
-> > > +				reg =3D <0x32e20000 0x10000>;
-> > > +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
-> > > +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> > > +				clock-names =3D "isp", "aclk", "hclk";
-> > > +				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP>;
-> > > +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_500M>;
-> > > +				assigned-clock-rates =3D <500000000>;
-> > > +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> > > +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
-> > > +				status =3D "disabled";
-> > > +
-> > > +				ports {
-> > > +					#address-cells =3D <1>;
-> > > +					#size-cells =3D <0>;
-> > > +
-> > > +					port@1 {
-> > > +						reg =3D <1>;
-> > > +					};
-> > > +				};
-> > > +			};
-> > > +
-> >=20
-> > The patch itself is okay. But you might not be able to
-> > configure the parent of IMX8MP_CLK_MEDIA_ISP if dewarp is enabled befor=
-e.
-> > This is due to IMX8MP_CLK_MEDIA_ISP_ROOT being enabled in 'pgc_ispdwp'
-> > power domain. Reparenting is not possible anymore in this case.
->=20
-> Good point.=20
->=20
-> > Something like
-> > ---8<---
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -1837,11 +1837,13 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
-> >                                                   <&clk IMX8MP_CLK_MEDI=
-A_APB>,
-> >                                                   <&clk IMX8MP_CLK_MEDI=
-A_DISP1_PIX>,
-> >                                                   <&clk IMX8MP_CLK_MEDI=
-A_DISP2_PIX>,
-> > +                                                 <&clk IMX8MP_CLK_MEDI=
-A_ISP>,
-> >                                                   <&clk IMX8MP_VIDEO_PL=
-L1>;
-> >                                 assigned-clock-parents =3D <&clk IMX8MP=
-_SYS_PLL2_1000M>,
-> >                                                          <&clk IMX8MP_S=
-YS_PLL1_800M>,
-> >                                                          <&clk IMX8MP_V=
-IDEO_PLL1_OUT>,
-> > -                                                        <&clk IMX8MP_V=
-IDEO_PLL1_OUT>;
-> > +                                                        <&clk IMX8MP_V=
-IDEO_PLL1_OUT>,
-> > +                                                        <&clk IMX8MP_S=
-YS_PLL2_500M>;
-> >                                 assigned-clock-rates =3D <500000000>, <=
-200000000>,
-> >                                                        <0>, <0>, <10395=
-00000>;
->=20
-> With an assigned clock rate here too then ?
-
-You are right. This posted diff is what I was using for a while now though.
-Apparently the clock frequency was still correct.
-
-Best regards,
-Alexander
-
-> >                                 #power-domain-cells =3D <1>;
-> > ---8<---
-> > is needed.
->=20
-> Sascha, are you OK with this approach ?
->=20
-> > >  			dewarp: dwe@32e30000 {
-> > >  				compatible =3D "nxp,imx8mp-dw100";
-> > >  				reg =3D <0x32e30000 0x10000>;
-> > >=20
-> > > base-commit: 4cece764965020c22cff7665b18a012006359095
->=20
->=20
+X-BlackCat-Spam-Score: 25
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
 
+On 25 March 2024 22:23:08 GMT, Laurent Pinchart <laurent=2Epinchart@ideaso=
+nboard=2Ecom> wrote:
+>On Mon, Mar 25, 2024 at 10:56:44PM +0200, Laurent Pinchart wrote:
+>> On Mon, Mar 25, 2024 at 08:48:57PM +0000, Jonathan Cameron wrote:
+>> > On Mon, 25 Mar 2024 22:32:41 +0200 Laurent Pinchart wrote:
+>> >=20
+>> > > The DAC081C081 is a TI DAC whose software interface is compatible w=
+ith
+>> > > the DAC5571=2E It is the 8-bit version of the DAC121C081, already
+>> > > supported by the DAC5571 bindings=2E Extends the bindings to suppor=
+t this
+>> > > chip=2E
+>> > >=20
+>> > > Signed-off-by: Laurent Pinchart <laurent=2Epinchart@ideasonboard=2E=
+com>
+>> >=20
+>> > Hi Laurent,
+>> >=20
+>> > Given it's a part number where no one is going to guess it is compati=
+ble
+>> > with the DAC5571 and that we don't have a history of fallback compati=
+bles
+>> > I'm fine with this change, but just wanted to ask is a fallback compa=
+tible
+>> > useful to you to run with older kernels?
+>> >=20
+>> > I should have noticed when Peter added the dac121c081=2E If we add a =
+fallback
+>> > should do that one as well=2E
+>>=20
+>> I've indeed noticed that there should have been a fallback for
+>> dac121c081, but didn't stop to ponder why that wasn't the case, and jus=
+t
+>> went along with the flow :-) I agree a fallback could be useful, which
+>> would then allow dropping patch 2/5 from this series (*)=2E I can do so=
+ if
+>> you prefer=2E
+>
+>And in that case, should I first introduce support in the bindings for
+>"ti,dac121c081", "ti,dac7571" and deprecate usage of "ti,dac121c081"
+>alone ?
 
+Yes=2E Not sure if we need an explicit binding entry for deprecated versio=
+n=2E=2E=2E
+
+>
+>> * This is not entirely true=2E While the DAC1081C081 is largely compati=
+ble
+>> with the DAC5573, they have different values for one of the power-down
+>> resistors (2=2E5k=CE=A9 instead of 1k=CE=A9 if I recall correctly)=2E T=
+o be completely
+>> accurate, the driver should report that=2E We could still use the fallb=
+ack
+>> compatible, reporting the wrong power-down resistor value=2E
+>>=20
+>> > > ---
+>> > >  Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml | 1 +
+>> > >  1 file changed, 1 insertion(+)
+>> > >=20
+>> > > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac5571=
+=2Eyaml b/Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml
+>> > > index 79da0323c327=2E=2Ee59db861e2eb 100644
+>> > > --- a/Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml
+>> > > +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml
+>> > > @@ -21,6 +21,7 @@ properties:
+>> > >        - ti,dac5573
+>> > >        - ti,dac6573
+>> > >        - ti,dac7573
+>> > > +      - ti,dac081c081
+>> > >        - ti,dac121c081
+>> > > =20
+>> > >    reg:
+>
