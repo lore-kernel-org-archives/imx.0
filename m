@@ -1,48 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B5213777F;
-	Mon, 25 Mar 2024 17:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF01138483;
+	Mon, 25 Mar 2024 17:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711388658; cv=none; b=m/COSO/C416d1pRJC0aZesqlB13jBAPXIZ4SKTlnPeoOPHD43hrx6xvJXo7HQjXsm1BCr6GNWI2Bff//u1yFY+hioX50uhU/4/BPzRCyk/lnAWswoQ7rBiu6RaKkp00jVH8VAk/KDHVnrXwkYvRig8Pn50ohIhqN0nqcB0vsY30=
+	t=1711388663; cv=none; b=hP9nNgHOV9wdkHttDNT9zXSD/xjBcoNncRqjsEhHhzMc88hbxVp6MjtTIytMsbNk/Xmw3hg5hpxp7gV0EeQHPq7gUmZtUXupA+Q5/0Um3mKPxZLMxL0HQBmDl+LWhk/h25RGemImrPhSqMx13UMz9iMAicHkPeniK2jmoLoWhPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711388658; c=relaxed/simple;
-	bh=qb0iwJLbOS+LnSN4h1wK8br8fS0Emdh+02cjuu/+jmQ=;
+	s=arc-20240116; t=1711388663; c=relaxed/simple;
+	bh=HlljRfHMf/NCDYPz3TGWCjR1ccq1BkXlPa2kqP/9HKY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dwXUWSdFele+QiaVPGhsZutFhWGDJ09tXN/gCaztWTWd4DNUVE6Qp9Y/PQvLmnapDmwZtxlPvrkKOkSMu7R2oAqA6DPrnVZkJde3culSIwtiFdqG+hDa8NOb1/f0yYqJjUAfqElP5UT4hG4Fr503HEvgozEkePwMixIFbw6XMkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CM0olkc8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=tF77mIAMoZR0iLfJ1OGDh/pQW1eSU/8u6v09nj4DqixEg/tP8nJq5SFIn1Pk70va39W4E3Grt8dJe5EzKERkt0lPRMVX8i+/mFvDq2kR7LYDBO9R/5N1b8Fvd10r0G9P2dgasT5AtHikGr7D9p/62pR3pV/+7oLRF4h9bY+qnio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsc7wYOh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CM0olkc8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF51C433F1;
-	Mon, 25 Mar 2024 17:44:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsc7wYOh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CC7C43399;
+	Mon, 25 Mar 2024 17:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711388658;
-	bh=qb0iwJLbOS+LnSN4h1wK8br8fS0Emdh+02cjuu/+jmQ=;
+	s=k20201202; t=1711388663;
+	bh=HlljRfHMf/NCDYPz3TGWCjR1ccq1BkXlPa2kqP/9HKY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=CM0olkc8ABVp8KmSIRMh1EoZWuTErWkfpQ+hJU4vDTWnSETmZfbGeyRGVE4x9Nyxa
-	 27DwkyOdKYLCruQnOqbQHzR05Rp3BAE2hAyghZiJ8C137RVPkChKjQqD/PQV+L4ejY
-	 2reiR8/UxcV8rWkRIj9u0WCdGg5J1pte9EghB0pRGEYPKf2DtOoAsSQ5r4dGkgxqPZ
-	 eQTqsvSSW3FZK4OC3sMVhHKGAkLI2w3TT5ACE1yGocgfq9tUuug0T44ZD3bdxHFEZv
-	 f/WiEP9nvnZXMqXQbbBQSQZvSGXUeZyebHHHVztGIihBia+vYv1+x4Lhc0CHDh/WRj
-	 eV5x9HYl8IfSA==
+	b=gsc7wYOhgpEDVTcEDDVzWajrpaIq3xv9OA240ao53w2I96vPGodgHDHJuktQn3ehL
+	 yxf5gceioW3vXyw0lugBgOYKGa2UkuSs6XmAH+KJXyos7FYKIO8W0WHLcyOhZltBPC
+	 Lklsz4GSmiT50Mwm32LLwKGZLwpjsoiebOhWrXqsIobqWFFukFKkV1ugC/SWHt2l03
+	 x023hxnvWtJp+nUzCOhLB9AXLOWPzzdSHrVvoQbALpBcNw3KJxNWxJU3o8iIXbEAxK
+	 yB1MMJ/GV3O+3gIt3zVDrhAWrq887r+6X6Ml493ijgHoEuYN/ffKeoq6/k4y4oIo7X
+	 g7QkEDnYeGnPQ==
 From: Mark Brown <broonie@kernel.org>
-To: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-In-Reply-To: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
-References: <20240318200804.181516-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 1/1] ASoC: fsl: imx-es8328: Switch to using gpiod
- API
-Message-Id: <171138865464.327140.5568916833564730450.b4-ty@kernel.org>
-Date: Mon, 25 Mar 2024 17:44:14 +0000
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240321150401.2464783-1-Frank.Li@nxp.com>
+References: <20240321150401.2464783-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] ASoC: dt-bindings: fsl-audmix: Convert
+ fsl,audmix.txt to yaml
+Message-Id: <171138866108.327140.7729342706027918016.b4-ty@kernel.org>
+Date: Mon, 25 Mar 2024 17:44:21 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,9 +49,8 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14-dev
 
-On Mon, 18 Mar 2024 22:07:56 +0200, Andy Shevchenko wrote:
-> This updates the driver to gpiod API, and removes yet another use of
-> of_get_named_gpio().
+On Thu, 21 Mar 2024 11:04:00 -0400, Frank Li wrote:
+> Convert fsl,audmix.txt to yaml to let dtb check tools check audmix part.
 > 
 > 
 
@@ -65,8 +60,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: fsl: imx-es8328: Switch to using gpiod API
-      commit: 9855f05e553637f05494cf47a3154cbf9a5cfc67
+[1/1] ASoC: dt-bindings: fsl-audmix: Convert fsl,audmix.txt to yaml
+      commit: 33a499668eb6781a4518e4facf2d85cc8cd1a650
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
