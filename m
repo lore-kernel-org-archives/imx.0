@@ -1,111 +1,89 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E072C87C
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 20:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9DD6DCE8;
+	Mon, 25 Mar 2024 21:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711400212; cv=none; b=baBtFtWQT9m7dpDPYaR+48lc0JKJrAzA4KQ45wWx3fZFAthzBkUjvWkXkejvTHFZa/efGspNL3xU3sbhWSZXeIQDJIz+YpTdKD/Fu8HozRqpxfsqiBrFblO71EMOrCTT2eL2tMSFxSLn7K5q2d9UJePRMuGkq7MHORKjRHc8Klk=
+	t=1711401822; cv=none; b=Ba3hMMF01IOcDCwNZEm8Q8u+Nakvk3ZnSoBCDDGD7c/+aw+UAKLBuUPut4DuZfbqau2Hg+Ru4XPK3t8kG+QsfvavOuBX+quINlC8bXHRi6fgDRJp5csqzpUU1SQtWlWpwboETj4piwe8QMXhbYPC6/8HkzOqFUNvwFtpiAXo+MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711400212; c=relaxed/simple;
-	bh=jZAaZSV8+oeKiKviZ1HtHAmT0OJ5cJAbq/XwTAhv4Z4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AM2dmk7gYY6fMUqDwUTRXv6hG3w3yP+ohiG14E5d6qrxn7uCFBpTvB7UmgoI5fPm4TQQhCyX7ArH2Gli7qqcn+fUyDL5Gv67cr0CYMvofgAgmlvssiI3ZutdiXrBJGVRltTWBgg9EvXG+maGHlr/HCwNmgyBB0i+HZFgAobqjes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WkH5Ay4Y; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1711401822; c=relaxed/simple;
+	bh=5VlNGqcHMvtON5unUlw6MhRhFT/EHB8rh4TeAwp2M0M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=G52BouEfsbin2rZ8DtYkSCkjEd/unGFdowRx1soTdy/FpoKxDRmUuOBiPwyEfOHzN6Dmjj3/4je48SXzafKTxyMUv2BqVluBrz2kj1RKGs/G2aVFbvTOO4BbWCuPn57iKO2TbCjdsne8NY/Usk2HPjx7AMydyQ7nsSXvqMhY4QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7vb34R0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WkH5Ay4Y"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E4DBC7E4;
-	Mon, 25 Mar 2024 21:56:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1711400178;
-	bh=jZAaZSV8+oeKiKviZ1HtHAmT0OJ5cJAbq/XwTAhv4Z4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WkH5Ay4YO65Efcg8u+F3/kraIMLvPDeJo/fzZf51YWL3VgPRDsc+cFPhDTiD6eBZT
-	 m4Gl67UD6OVYRs5tS+4GWkTR3FReLcNPdrV29i8Okyz6jJcy3aHj6YGNj1R0buhf0z
-	 qnqQBXINhnHz5v2pojkw/D4bAG6n1prJr9TrCiYs=
-Date: Mon, 25 Mar 2024 22:56:41 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Trevor Zaharichuk <trevor@au-zone.com>,
-	Greg Lytle <greg@au-zone.com>, Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/5] dt-bindings: iio: dac: ti,dac5571: Add DAC081C081
- support
-Message-ID: <20240325205641.GD23988@pendragon.ideasonboard.com>
-References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com>
- <20240325203245.31660-2-laurent.pinchart@ideasonboard.com>
- <20240325204857.4f2fd468@jic23-huawei>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7vb34R0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63D3C433F1;
+	Mon, 25 Mar 2024 21:23:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711401821;
+	bh=5VlNGqcHMvtON5unUlw6MhRhFT/EHB8rh4TeAwp2M0M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Z7vb34R0SjkxZbMxkaCkDhBVQvHg9e2lR2fuM9VeE4g41CkFoIuihNbq7fEapejgK
+	 5bbMVFfCljC9GoGQGEMeTuo70SMaMFDOg4FzLCzszuEkrWxw1E3gAdGWuBcu3a04WN
+	 bXvltTZdWNIfV3gB5yAFH11NnCJZgWnb66kzQ8+2APZcyWbaVkU/pdIpbCwRM/i0Kk
+	 k2kUrKbaBGMT40PliisX7KRw7d2NeQpRA5gHNPa6jKPVwoYsH8mR2cw2dOX0ELv729
+	 Byu6Q7Q4krVcmB2FjvmQhM4b+EN0hdo+FanbK7jSVAa+ZsEpvf3dptsOestmeFH6Mu
+	 qNtunSaqMxNYQ==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240322145406.2613256-1-Frank.Li@nxp.com>
+References: <20240322145406.2613256-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] ASoC: dt-bindings: fsl-esai: Convert
+ fsl,esai.txt to yaml
+Message-Id: <171140181939.365050.6118403026272055438.b4-ty@kernel.org>
+Date: Mon, 25 Mar 2024 21:23:39 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240325204857.4f2fd468@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
-Hi Jonathan,
-
-On Mon, Mar 25, 2024 at 08:48:57PM +0000, Jonathan Cameron wrote:
-> On Mon, 25 Mar 2024 22:32:41 +0200 Laurent Pinchart wrote:
+On Fri, 22 Mar 2024 10:54:05 -0400, Frank Li wrote:
+> Convert fsl,esai.txt to yaml. So DTB_CHECK tools can verify dts file about
+> esai part.
 > 
-> > The DAC081C081 is a TI DAC whose software interface is compatible with
-> > the DAC5571. It is the 8-bit version of the DAC121C081, already
-> > supported by the DAC5571 bindings. Extends the bindings to support this
-> > chip.
-> > 
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> clock-names 'spba' is optional according to description. So minItems of
+> clocks and clock-names is 3.
 > 
-> Hi Laurent,
 > 
-> Given it's a part number where no one is going to guess it is compatible
-> with the DAC5571 and that we don't have a history of fallback compatibles
-> I'm fine with this change, but just wanted to ask is a fallback compatible
-> useful to you to run with older kernels?
-> 
-> I should have noticed when Peter added the dac121c081. If we add a fallback
-> should do that one as well.
+> [...]
 
-I've indeed noticed that there should have been a fallback for
-dac121c081, but didn't stop to ponder why that wasn't the case, and just
-went along with the flow :-) I agree a fallback could be useful, which
-would then allow dropping patch 2/5 from this series (*). I can do so if
-you prefer.
+Applied to
 
-* This is not entirely true. While the DAC1081C081 is largely compatible
-with the DAC5573, they have different values for one of the power-down
-resistors (2.5kΩ instead of 1kΩ if I recall correctly). To be completely
-accurate, the driver should report that. We could still use the fallback
-compatible, reporting the wrong power-down resistor value.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> > ---
-> >  Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
-> > index 79da0323c327..e59db861e2eb 100644
-> > --- a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
-> > @@ -21,6 +21,7 @@ properties:
-> >        - ti,dac5573
-> >        - ti,dac6573
-> >        - ti,dac7573
-> > +      - ti,dac081c081
-> >        - ti,dac121c081
-> >  
-> >    reg:
+Thanks!
 
--- 
-Regards,
+[1/1] ASoC: dt-bindings: fsl-esai: Convert fsl,esai.txt to yaml
+      commit: 885dd75f41f9fff5b277bc6ab28ad798f98a37b4
 
-Laurent Pinchart
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
