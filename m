@@ -1,150 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8B26BFC5;
-	Mon, 25 Mar 2024 21:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB89745D9
+	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 22:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711401848; cv=none; b=gsN2/O0c1U9PeHYz71AXoHZUECjPXZRn9VLrkhqIj8gda0kaJ/ewQKCzdyqJ4l2eBmZZ+wGN3AHcIbAmL5r1sufJLpL5OI0xNLd0W5KSx52pvUzqxG3NeLswI7r3x9jF6v2ia23Z09+B15VdNUEJlm91d0fAZLHfzF6/3Mzzncs=
+	t=1711405405; cv=none; b=SWEMVG/O3krcqRkS5JqcrgHeL6xEb3nJ4/mAxykUiypyZD0UjEFDG1qIu0n2DnBhMJVZsR/gNiaaUkWMWBfKnyA+qVKPdivceMWp/9VZxvHbGcgP6o8Iq8KULzekkkrflSOHcla56vmIBwhrRtCTWWWtYQYv/d4+2zflx/kwJLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711401848; c=relaxed/simple;
-	bh=2LGOLBNCx7l5fGnLnJy2dGw8TkN9T7q+Oy/fWlM/3bY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AS/GIR+OJk0Chv05bUuGCip1TK6rkxc5AY09kGWi6p7B0Scbea55TqpyAD2WmTPXtY2jRU/Y56naP6ciXmqv8snj8G/MT73SCxSmRLZKT6d4Qp+YCmrOmVCwTBVBRd/SccNJdttoOcOLNoYi3YZI05ZQdRfh7YR4Om8Hc7s+2Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKCBNgJQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711405405; c=relaxed/simple;
+	bh=qhW9rhFDUkH+JTE+MbcNeN6H4W5aicNNvquZESdi4GQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JS4s8UXMUnLmoEO/p+1TWPCBUOEgAzUZvRUlU/CRM95f+7NNSSkOWFMtRxOigp9rcmCnUimAwdwai5jynxDq2iYswHBhnq2kcbc+s9wBNIyKIZ1WSljDX23I+kJXSiFVU3Fwg+EZx0Aw1UpirGg2SUGYMYlU6zV3g0H7k8ca4DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=uaYP/XGP; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKCBNgJQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50E5C433C7;
-	Mon, 25 Mar 2024 21:24:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711401847;
-	bh=2LGOLBNCx7l5fGnLnJy2dGw8TkN9T7q+Oy/fWlM/3bY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GKCBNgJQzb3AwbOviieh4Yfmx7Ji/Wz5feZEaEAmK8zeGqL+8EKZ9erhxUHZtvUlN
-	 VoIwMRslNCcK+IgfN/qNT2o3C8Pz4Q/NGM2FoR1VLLFKIuSxAm0kZZlKZktxRXZM67
-	 qYFzUF97SH7LtBRufTlUf9MMdxbvKAz0ah9/B1FvWbZQxXz1d+VxKFZzOygNLUTDjG
-	 A1nvEcYYPa8LZqn2wa8McPfxAbeZbRDJm0MIEJvwMooxqndgORU72pLAq3Da7V0AfU
-	 yJI3Wa7fEPh0R3AJSW1PQAifdA4gzAmx13Q/ea557ox67ddrm/4TwcTpWOpZ+Eytlv
-	 XZaT1XTW2f+Fg==
-Received: by mercury (Postfix, from userid 1000)
-	id BE877106074E; Mon, 25 Mar 2024 22:24:04 +0100 (CET)
-From: Sebastian Reichel <sre@kernel.org>
-To: Sebastian Reichel <sre@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="uaYP/XGP"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4EB617E4;
+	Mon, 25 Mar 2024 23:22:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1711405364;
+	bh=qhW9rhFDUkH+JTE+MbcNeN6H4W5aicNNvquZESdi4GQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uaYP/XGP7KYzrGqIuBwg/+cd9F7590d8ScIbGTVXxjr/UBVG+po6pvGI5boyepIJN
+	 DgO+dQIiuNOsY2yNQW/mGBagkX1djkxW3iPILvSa32soutZqVtdciWyZ+gD+S0AccX
+	 YGLGalw40uW4yU+Q9QVUTziOmGmLq6KDRq1owJUY=
+Date: Tue, 26 Mar 2024 00:23:08 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH v6 0/1] UNI-T UTi260B support
-Date: Mon, 25 Mar 2024 22:19:53 +0100
-Message-ID: <20240325212402.150906-1-sre@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	Trevor Zaharichuk <trevor@au-zone.com>,
+	Greg Lytle <greg@au-zone.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: iio: dac: ti,dac5571: Add DAC081C081
+ support
+Message-ID: <20240325222308.GA31216@pendragon.ideasonboard.com>
+References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com>
+ <20240325203245.31660-2-laurent.pinchart@ideasonboard.com>
+ <20240325204857.4f2fd468@jic23-huawei>
+ <20240325205641.GD23988@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240325205641.GD23988@pendragon.ideasonboard.com>
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+On Mon, Mar 25, 2024 at 10:56:44PM +0200, Laurent Pinchart wrote:
+> On Mon, Mar 25, 2024 at 08:48:57PM +0000, Jonathan Cameron wrote:
+> > On Mon, 25 Mar 2024 22:32:41 +0200 Laurent Pinchart wrote:
+> > 
+> > > The DAC081C081 is a TI DAC whose software interface is compatible with
+> > > the DAC5571. It is the 8-bit version of the DAC121C081, already
+> > > supported by the DAC5571 bindings. Extends the bindings to support this
+> > > chip.
+> > > 
+> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > 
+> > Hi Laurent,
+> > 
+> > Given it's a part number where no one is going to guess it is compatible
+> > with the DAC5571 and that we don't have a history of fallback compatibles
+> > I'm fine with this change, but just wanted to ask is a fallback compatible
+> > useful to you to run with older kernels?
+> > 
+> > I should have noticed when Peter added the dac121c081. If we add a fallback
+> > should do that one as well.
+> 
+> I've indeed noticed that there should have been a fallback for
+> dac121c081, but didn't stop to ponder why that wasn't the case, and just
+> went along with the flow :-) I agree a fallback could be useful, which
+> would then allow dropping patch 2/5 from this series (*). I can do so if
+> you prefer.
 
-Hi,
+And in that case, should I first introduce support in the bindings for
+"ti,dac121c081", "ti,dac7571" and deprecate usage of "ti,dac121c081"
+alone ?
 
-This adds adds support for the i.MX6ULL based UNI-T UTi260B thermal camera.
-The DT is based on reverse engineered information. More information about
-the device can be found in this presentation from Embedded Recipes 2023:
-
- * https://embedded-recipes.org/2023/wp-content/uploads/2023/10/Running-FOSS-on-a-Thermal-Camera-Sebastian-Reichel-compressed.pdf
- * https://www.youtube.com/watch?v=uvObsCG-Cqo
-
-make -j4 CHECK_DTBS=y nxp/imx/imx6ull-uti260b.dtb reports no issues.
-
-I also prepared a branch with these patches (and a minimal kernel config)
-and published it here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-misc.git/log/?h=uti260b
-
-Changes since PATCHv5:
- * https://lore.kernel.org/all/20240226212740.2019837-1-sre@kernel.org/
-  - rebase to v6.9-rc1
-  - drop merged patches (all but DTS)
-
-Changes since PATCHv4:
- * https://lore.kernel.org/all/20240224213240.1854709-1-sre@kernel.org/
-  - drop merged patches
-  - use new NXP mailing list
-  - UTi260B board DT: change patch title
-  - UTi260B board DT: fix node order
-
-Changes since PATCHv3:
- * https://lore.kernel.org/all/20240216223654.1312880-1-sre@kernel.org/
-  - weim binding: use " instead of '
-  - weim binding: use "if: not: required: - foo" instead of "if: properties: foo: false"
-  - imx6ull-uti260b.dts: merge ecspi3_csgrp into ecspi3grp
-  - collect Reviewed-by from Krzysztof Kozlowski
-
-Changes since PATCHv2:
- * https://lore.kernel.org/all/20240213010347.1075251-1-sre@kernel.org/
-  - drop fsl,imx-asrc YAML binding conversion (merged)
-  - collect a bunch of Reviewed-by/Acked-by tags
-  - weim DT binding: fix issue with requirements
-  - xnur-gpio -> xnur-gpios change: Improve patch long description
-
-Changes since PATCHv1:
- * https://lore.kernel.org/all/20240210012114.489102-1-sre@kernel.org/
-  - uni-t,imx6ull-uti260b -> uni-t,uti260b
-  - add Acked-by for uni-t vendor prefix
-  - add Acked-by for HDMI audio index fix
-  - add Acked-by for LCDIF power-domain requirement drop
-  - anatop DT binding: Fixed indentation in example
-  - anatop DT binding: Described IRQs
-  - touchscreen DT binding: change tsc@ to touchscreen@ in example
-  - touchscreen DT binding: change xnur-gpio to xnur-gpios
-  - weim DT binding: drop acme,whatever example
-  - weim DT binding: use flash@ instead of nor@
-  - weim DT binding: update weim.txt reference in arcx,anybus-controller.txt
-  - weim DT binding: switch to memory-controller binding
-  - fsl,imx-asrc DT binding: fix ASoC patch subject prefix
-  - fsl,imx-asrc DT binding: add constraints
-  - add new patch fixing xnur-gpio(s) in all i.MX6UL board DT files
-  - add new patch fixing touchscreen nodename in i.MX6UL SoC DT file
-  - add new patch fixing weim nodename in all i.MX SoC DT files
-  - device DTS: use color/functions for the led
-  - device DTS: increase SPI speed
-  - device DTS: add comment for SD / eMMC node
-
-Unadressed feedback from PATCHv1:
-  - anatop phandle vs parent: technically it makes sense to just use the
-    parent, but this driver is only used by i.MX6. The current code makes
-	use of the phandle, so we cannot drop it because of backwards
-	compatibility. So I don't see a point in deprecating this property.
-  - touchscreen binding: I kept measure-delay-time and pre-charge-time
-    values in hex, since that is being used everywhere and the unit
-	is unknown. The values are directly written into HW registers and
-	the i.MX6UL TRM does not provide any hints about the unit. I do not
-	have an i.MX6UL device with a touchsreen, so I cannot test either.
-  - regulator name in DT: I did not rename the regulators to just
-    "regulator", since the nodename must be unique.
-
-Greetings,
-
--- Sebastian
-
-Sebastian Reichel (1):
-  ARM: dts: imx: Add UNI-T UTi260B thermal camera board
-
- arch/arm/boot/dts/nxp/imx/Makefile            |   1 +
- arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts | 566 ++++++++++++++++++
- 2 files changed, 567 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts
+> * This is not entirely true. While the DAC1081C081 is largely compatible
+> with the DAC5573, they have different values for one of the power-down
+> resistors (2.5kΩ instead of 1kΩ if I recall correctly). To be completely
+> accurate, the driver should report that. We could still use the fallback
+> compatible, reporting the wrong power-down resistor value.
+> 
+> > > ---
+> > >  Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
+> > > index 79da0323c327..e59db861e2eb 100644
+> > > --- a/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml
+> > > @@ -21,6 +21,7 @@ properties:
+> > >        - ti,dac5573
+> > >        - ti,dac6573
+> > >        - ti,dac7573
+> > > +      - ti,dac081c081
+> > >        - ti,dac121c081
+> > >  
+> > >    reg:
 
 -- 
-2.43.0
+Regards,
 
+Laurent Pinchart
