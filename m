@@ -1,99 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2611B3DAC1B;
-	Mon, 25 Mar 2024 15:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3963DABE6;
+	Mon, 25 Mar 2024 16:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711382115; cv=none; b=nstMcoF4mNVnOvCkdzv0nl3wrUBoIdeDBJN7KJIho8WLtSBRiqY6Z4fuEZgrIetBnrTOUi7vrY5e1tUN7LIK1fQ8XOjmwIzcYX1LY4g7unfNpvg6S/yEQ5Ymtk6gvYMK8Ni1xlAysnJ6GsQYLR97m8q+dR6CPvI0H8xko2TeHts=
+	t=1711385500; cv=none; b=Kq9QH+OFUGkfeu+5Gd3IqzokcHv59vZ55wSrGKU0Q1fp0V2C6j5bPxZ58z4bVNmVyLCBAZm/uRBAQoNYerHoKivBuNDVCBqIwYihebk9SPfHP1Gzxj1W5EYxVsluzeD8wWQtjEo6w+2hbsdPTY+7I7DyG/heLNFvjZmDim+g+Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711382115; c=relaxed/simple;
-	bh=Qrm85A8Diw5Gs2yIB6OBv4B2K3mJND/QD/+WwIzJCi4=;
+	s=arc-20240116; t=1711385500; c=relaxed/simple;
+	bh=Iu8KBH2J8gwOqs7CFvo2VClDZQn6xBSmERMdX7llFo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JPl+iJAaiyg4iNNlRkWi3KfWxuvsxPy3GnHflfVA8PWkzNFDeydTxqNSSSRq1s1/r/6Fd1O7iN1BveD26Nyu9xlkOcu1O47Oj69fkQ5dU8IpXkqBJq2NYwUktcvGqKtlk2oURp+IKotKiPziUAta/ObfzinERbV5XHSrS0nLQOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTVOnG9e; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GM2czId06c0OLTVA2RLWVhxNVin5C16vMr0+Mm+aTE1MV3n1kDKMIezXaOXe0naXvZJncsfXqcAVlGDnWAubajLLyCfSosHfrip+trja6bp7/HQpXKTp1KTIljc2TuxVRmuQCM6ZoD72UpHMGuSdWjJIJO+3a2rOnwFXN3sevho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+1Z1mz5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTVOnG9e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84908C433F1;
-	Mon, 25 Mar 2024 15:55:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+1Z1mz5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C34C433F1;
+	Mon, 25 Mar 2024 16:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711382114;
-	bh=Qrm85A8Diw5Gs2yIB6OBv4B2K3mJND/QD/+WwIzJCi4=;
+	s=k20201202; t=1711385499;
+	bh=Iu8KBH2J8gwOqs7CFvo2VClDZQn6xBSmERMdX7llFo8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HTVOnG9eZEmLxIFYr1M3r3MIu+sGS9zMpH9+XHc3RXu87d4DM6FB9T7VL5ubdvx+J
-	 mbFCn5vtYqfoK3Xqsup3qBq2vjBIT58NflajB/Fo4LLDbL8zcb8F8+G/eKLasa3QS5
-	 /OSDIdLRfTtROM3FtHwAztk/mieNKuxye+N8b9V5zlZbn/xniUiGH96Tod7aFtLTV7
-	 rY7hPOo9lyxVfym0p9eapPz2BJAoddFVNLO2pTaRupHawPoyb4ZhK5OnTRrw37dpaa
-	 ei2rZwk3fEOy5wXhPkMtTTcpMmOXqogDi6tAmNtzrJJFfNswl7GDWmETexBGjn1Hx+
-	 v+vkg82MM0H6Q==
-Date: Mon, 25 Mar 2024 10:55:12 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, linux-kernel@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, dmaengine@vger.kernel.org,
-	Joy Zou <joy.zou@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v3 4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma
- compatible string
-Message-ID: <171138211122.4034960.14889461643514509727.robh@kernel.org>
-References: <20240323-8ulp_edma-v3-0-c0e981027c05@nxp.com>
- <20240323-8ulp_edma-v3-4-c0e981027c05@nxp.com>
+	b=L+1Z1mz5ihW5gtjTmBfXU5UZzmTBjUNp01p6oqQq/GUwWiPlxi93qpigozpyMTMdN
+	 Z/RYEiSHUpzkN8D3UW4ZwuFRlwHPXMqLDkSbDU+gJ8FFfyUQyxioYcVF/rCCAp1F85
+	 9I/JK9X/c3o4/4EiuImJaIPNd1yCZCXKY6+fMEtiPjGeClxpLuIw1JhpxpYvLY1RbO
+	 juXjB9bSH0cMkzqpqfIxk/37qFpNvpYVN5p778mv5OjQv4X90GMRNY9hXKnyODne4U
+	 6p3OccFTTYq5TUbKg3NrI0/vR+uMQ5k8domUKwN80L9w3S0FFsRJ06pI/L0LoIYN/d
+	 G3Hu2FiM65sFg==
+Date: Mon, 25 Mar 2024 16:51:34 +0000
+From: Lee Jones <lee@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
+Message-ID: <20240325165134.GP13211@google.com>
+References: <20240324201210.232301-1-andreas@kemnade.info>
+ <20240324201210.232301-3-andreas@kemnade.info>
+ <472c6eaf-6cbc-484c-bc94-571d115176aa@gmail.com>
+ <20240325131605.6607b778@aktux>
+ <81bf6604-9160-4bae-8da6-7034f8aa3f92@gmail.com>
+ <20240325141032.GO13211@google.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240323-8ulp_edma-v3-4-c0e981027c05@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240325141032.GO13211@google.com>
 
+On Mon, 25 Mar 2024, Lee Jones wrote:
 
-On Sat, 23 Mar 2024 11:34:53 -0400, Frank Li wrote:
-> From: Joy Zou <joy.zou@nxp.com>
+> On Mon, 25 Mar 2024, Matti Vaittinen wrote:
 > 
-> Introduce the compatible string 'fsl,imx8ulp-edma' to enable support for
-> the i.MX8ULP's eDMA, alongside adjusting the clock numbering. The i.MX8ULP
-> eDMA architecture features one clock for each DMA channel and an additional
-> clock for the core controller. Given a maximum of 32 DMA channels, the
-> maximum clock number consequently increases to 33.
+> > Hi Andreas,
+> > 
+> > On 3/25/24 14:16, Andreas Kemnade wrote:
+> > > On Mon, 25 Mar 2024 13:31:15 +0200
+> > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> > > 
+> > > > On 3/24/24 22:12, Andreas Kemnade wrote:
+> > > > > Since the chip can power off the system, add the corresponding
+> > > > > functionality.
+> > > > > Based on https://github.com/kobolabs/Kobo-Reader/raw/master/hw/imx6sll-clara2e/kernel.tar.bz2
+> > > > > No information source about the magic numbers found.
+> > > > 
+> > > > Oh, interesting repository :) Thanks for linking to it! I didn't know
+> > > > someone had reworked this driver...
+> > > > 
+> > > which btw: contains this interesting snippet (output from fdtdump)
+> > >    bd71828-i2c@4b {
+> > >                      reg = <0x0000004b>;
+> > >                      compatible = "rohm,bd71828";
+> > >                      gpio_int = <0x00000008 0x00000013 0x00000001>;
+> > >                      gpio_wdogb = <0x00000039 0x00000018 0x00000001>;
+> > >                      #address-cells = <0x00000001>;
+> > >                      #size-cells = <0x00000000>;
+> > >                      pmic@4b {
+> > >                          compatible = "rohm,bd71828";
+> > >               	        regulators {
+> > >                          	BUCK1 {
+> > >                              		regulator-name = "buck1";
+> > > 
+> > > 
+> > > and to make it work since basically no regulators are registered
+> > > instead just some regmap_write()s are done to configure something
+> > > in probe(). It is a pitfall to think that the information below pmic@4b
+> > > is used, especially since it is not that obvious in the source.
 > 
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+> Odd!  Not only did I not receive the original patch, I also did not
+> receive your response Andreas.  Spam is empty too.
 > 
-> Notes:
->      Changes in v3:
->         - Change clock name form CHXX-CLK to chxx
->         - Fix typeo 'clock'
->         - Add dma-cell description
->         - About clock-names:
->           items:
->             oneOf:
->               - const: dma
->               - pattern: ...
-> 
->         Which already detect naming wrong, for example:
-> 
->         clock-names = "dma", "ch00", "ch01", "ch02", "ch03",
->                       ....
->                       "ch28", "ch29", "ch30", "abcc";
-> 
->         arch/arm64/boot/dts/freescale/imx8ulp-evk.dtb: dma-controller@29010000: clock-names:32: 'oneOf' conditional failed, one must be fixed:
->                 'dma' was expected
->                 'abcc' does not match '^ch(0[0-9]|[1-2][0-9]|3[01])$'
-> 
->         Only lose order check, such as ch00, dma, ch03, ch02, can pass check.
->         I think it is good enough.
-> 
->         I tried rob's suggestion, but met some technology issue. Detail see
-> 
->         https://lore.kernel.org/imx/20240229-8ulp_edma-v2-0-9d12f883c8f7@nxp.com/T/#mc5767dd505d4b7cfc66586a0631684a57e735476
-> 
->  .../devicetree/bindings/dma/fsl,edma.yaml          | 40 ++++++++++++++++++++--
->  1 file changed, 38 insertions(+), 2 deletions(-)
-> 
+> LORE too: https://lore.kernel.org/all/?q=%22mfd:%20rohm-bd71828:%20Add%20power%20off%20functionality%22
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Super weird!  They just all came through.
 
+The LORE link above is now working too.
+
+I suspect an issue with kernel.org.
+
+-- 
+Lee Jones [李琼斯]
