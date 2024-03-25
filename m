@@ -1,205 +1,99 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2174D13B290
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 15:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2611B3DAC1B;
+	Mon, 25 Mar 2024 15:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711381952; cv=none; b=EzApBvUVSVlFzui+Jlv9459t9agoUtyoVa+a6G5kqyugQ7qyqh8aobUeC5Dzrg8JzBpmAvrhtGIK91iD0NXvLMIXzZ8y65cJUiwZVqEv7zyauKznXMRi9TIdGOcAMMcFNhhPw4Ub8OqKuWhcM2VzdGn2IlLUyvpw4f9E+1nIGCM=
+	t=1711382115; cv=none; b=nstMcoF4mNVnOvCkdzv0nl3wrUBoIdeDBJN7KJIho8WLtSBRiqY6Z4fuEZgrIetBnrTOUi7vrY5e1tUN7LIK1fQ8XOjmwIzcYX1LY4g7unfNpvg6S/yEQ5Ymtk6gvYMK8Ni1xlAysnJ6GsQYLR97m8q+dR6CPvI0H8xko2TeHts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711381952; c=relaxed/simple;
-	bh=lRJ4A79DygCuqxWRqDnD+NNRnkayTPbDzZFwZb4A6oM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FrrTfTr8vnLaFaRPjC7kC7uxMPdY+fvgGpbvdVwbpu96DOpe+emfwHg0l+K0Q+YYi+F4vmEBboXyubralmqeXZP3uajlFYL1A5z+b76EPYgPopi6Bb6p0ZPMe6lp8Nq0qZsJ6umXnzjXA2fGpM2dtDtI/gQDI02QISp94o+HQ70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=S090CQe7; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=bAOTpY5j reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1711382115; c=relaxed/simple;
+	bh=Qrm85A8Diw5Gs2yIB6OBv4B2K3mJND/QD/+WwIzJCi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPl+iJAaiyg4iNNlRkWi3KfWxuvsxPy3GnHflfVA8PWkzNFDeydTxqNSSSRq1s1/r/6Fd1O7iN1BveD26Nyu9xlkOcu1O47Oj69fkQ5dU8IpXkqBJq2NYwUktcvGqKtlk2oURp+IKotKiPziUAta/ObfzinERbV5XHSrS0nLQOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTVOnG9e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="S090CQe7";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="bAOTpY5j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1711381949; x=1742917949;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QtCjA8jF6LdIH1jHhbsQNsROhaw0D6l+AUhvNB1YUh4=;
-  b=S090CQe7eonLhKd9txI21gaovBdZnF6wAvDTzHXmXe2dkhTPzT/pXzEM
-   M+2ma3iyau0bc76LPxazAM8tK9de3DY4p9og59B7KMHSgl2zgpLSoCP7+
-   ebTjHhbjVtOf9EdwAGlIJWPW4FtmTnL2w/oqdh4AHLuX4TvVRc1FcuZKa
-   XzZSQ1fvub/tkjdaCpE5mnhay+tHPgY9WPxPxjGTFKafgANATQY6fpYzo
-   hrV4++dPnvkcvb+QrmkK4ryJhZ4AME25vQ+3uFEDh78LJEFB/RI1K+OdN
-   BwFg+aPpkSD9yC9pgMlkuqrLdWzj4Sv+iI/pCim/gu4PnMY8tjFCMQQYk
-   g==;
-X-IronPort-AV: E=Sophos;i="6.07,153,1708383600"; 
-   d="scan'208";a="36084202"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 25 Mar 2024 16:52:20 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 43E5B160A85;
-	Mon, 25 Mar 2024 16:52:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1711381936;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=QtCjA8jF6LdIH1jHhbsQNsROhaw0D6l+AUhvNB1YUh4=;
-	b=bAOTpY5jeZxEyk1N5ffRgkuPA+mQKdjnHFCeTHgLr26+KFrqRQ3Vr141ZwYVr41U4oRcuO
-	St+eFfnSAypOBgpZXiFxGQuVOY6/M31vwbD/bjAaN2DlTeQQcbjU5pZwWH8fB/E+8evECo
-	BlbUwvf6XxHCOgI5/vP3wV4NE76RK8OsGDXVgQPowYs86Ckn3B9Fz6WsIAxTIKMeHdjLQW
-	p0uJi/AbRclSTD26bxDrTaAGBDilGnqB0BATMPmPfutN/KnKX+KXhNfcimuyMbWpylI3sJ
-	xqo7itoUJI5XzHxYZwS0wUzk15TxJisYMDjXX3yzBQcFHHhdeO3cBtPT3LLCRQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-Date: Mon, 25 Mar 2024 16:52:21 +0100
-Message-ID: <4879631.GXAFRqVoOG@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com>
-References: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTVOnG9e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84908C433F1;
+	Mon, 25 Mar 2024 15:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711382114;
+	bh=Qrm85A8Diw5Gs2yIB6OBv4B2K3mJND/QD/+WwIzJCi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HTVOnG9eZEmLxIFYr1M3r3MIu+sGS9zMpH9+XHc3RXu87d4DM6FB9T7VL5ubdvx+J
+	 mbFCn5vtYqfoK3Xqsup3qBq2vjBIT58NflajB/Fo4LLDbL8zcb8F8+G/eKLasa3QS5
+	 /OSDIdLRfTtROM3FtHwAztk/mieNKuxye+N8b9V5zlZbn/xniUiGH96Tod7aFtLTV7
+	 rY7hPOo9lyxVfym0p9eapPz2BJAoddFVNLO2pTaRupHawPoyb4ZhK5OnTRrw37dpaa
+	 ei2rZwk3fEOy5wXhPkMtTTcpMmOXqogDi6tAmNtzrJJFfNswl7GDWmETexBGjn1Hx+
+	 v+vkg82MM0H6Q==
+Date: Mon, 25 Mar 2024 10:55:12 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, linux-kernel@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	Joy Zou <joy.zou@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v3 4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma
+ compatible string
+Message-ID: <171138211122.4034960.14889461643514509727.robh@kernel.org>
+References: <20240323-8ulp_edma-v3-0-c0e981027c05@nxp.com>
+ <20240323-8ulp_edma-v3-4-c0e981027c05@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240323-8ulp_edma-v3-4-c0e981027c05@nxp.com>
 
-Hi Laurent,
 
-Am Montag, 25. M=E4rz 2024, 16:13:39 CET schrieb Laurent Pinchart:
-> From: Paul Elder <paul.elder@ideasonboard.com>
->=20
-> The ISP supports both CSI and parallel interfaces, where port 0
-> corresponds to the former and port 1 corresponds to the latter. Since
-> the i.MX8MP's ISPs are connected by the parallel interface to the CSI
-> receiver, set them both to port 1.
->=20
-> Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+On Sat, 23 Mar 2024 11:34:53 -0400, Frank Li wrote:
+> From: Joy Zou <joy.zou@nxp.com>
+> 
+> Introduce the compatible string 'fsl,imx8ulp-edma' to enable support for
+> the i.MX8ULP's eDMA, alongside adjusting the clock numbering. The i.MX8ULP
+> eDMA architecture features one clock for each DMA channel and an additional
+> clock for the core controller. Given a maximum of 32 DMA channels, the
+> maximum clock number consequently increases to 33.
+> 
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Changes since v1:
->=20
-> - Fix clock ordering
-> - Add #address-cells and #size-cells to ports nodes
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 50 +++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index bfc5c81a5bd4..1d2670b91b53 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1616,6 +1616,56 @@ isi_in_1: endpoint {
->  				};
->  			};
-> =20
-> +			isp_0: isp@32e10000 {
-> +				compatible =3D "fsl,imx8mp-isp";
-> +				reg =3D <0x32e10000 0x10000>;
-> +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> +				clock-names =3D "isp", "aclk", "hclk";
-> +				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP>;
-> +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_500M>;
-> +				assigned-clock-rates =3D <500000000>;
-> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
-> +				status =3D "disabled";
-> +
-> +				ports {
-> +					#address-cells =3D <1>;
-> +					#size-cells =3D <0>;
-> +
-> +					port@1 {
-> +						reg =3D <1>;
-> +					};
-> +				};
-> +			};
-> +
-> +			isp_1: isp@32e20000 {
-> +				compatible =3D "fsl,imx8mp-isp";
-> +				reg =3D <0x32e20000 0x10000>;
-> +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> +				clock-names =3D "isp", "aclk", "hclk";
-> +				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP>;
-> +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_500M>;
-> +				assigned-clock-rates =3D <500000000>;
-> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
-> +				status =3D "disabled";
-> +
-> +				ports {
-> +					#address-cells =3D <1>;
-> +					#size-cells =3D <0>;
-> +
-> +					port@1 {
-> +						reg =3D <1>;
-> +					};
-> +				};
-> +			};
-> +
+> 
+> Notes:
+>      Changes in v3:
+>         - Change clock name form CHXX-CLK to chxx
+>         - Fix typeo 'clock'
+>         - Add dma-cell description
+>         - About clock-names:
+>           items:
+>             oneOf:
+>               - const: dma
+>               - pattern: ...
+> 
+>         Which already detect naming wrong, for example:
+> 
+>         clock-names = "dma", "ch00", "ch01", "ch02", "ch03",
+>                       ....
+>                       "ch28", "ch29", "ch30", "abcc";
+> 
+>         arch/arm64/boot/dts/freescale/imx8ulp-evk.dtb: dma-controller@29010000: clock-names:32: 'oneOf' conditional failed, one must be fixed:
+>                 'dma' was expected
+>                 'abcc' does not match '^ch(0[0-9]|[1-2][0-9]|3[01])$'
+> 
+>         Only lose order check, such as ch00, dma, ch03, ch02, can pass check.
+>         I think it is good enough.
+> 
+>         I tried rob's suggestion, but met some technology issue. Detail see
+> 
+>         https://lore.kernel.org/imx/20240229-8ulp_edma-v2-0-9d12f883c8f7@nxp.com/T/#mc5767dd505d4b7cfc66586a0631684a57e735476
+> 
+>  .../devicetree/bindings/dma/fsl,edma.yaml          | 40 ++++++++++++++++++++--
+>  1 file changed, 38 insertions(+), 2 deletions(-)
+> 
 
-The patch itself is okay. But you might not be able to
-configure the parent of IMX8MP_CLK_MEDIA_ISP if dewarp is enabled before.
-This is due to IMX8MP_CLK_MEDIA_ISP_ROOT being enabled in 'pgc_ispdwp'
-power domain. Reparenting is not possible anymore in this case.
-
-Something like
-=2D--8<---
-=2D-- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -1837,11 +1837,13 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
-                                                  <&clk IMX8MP_CLK_MEDIA_AP=
-B>,
-                                                  <&clk IMX8MP_CLK_MEDIA_DI=
-SP1_PIX>,
-                                                  <&clk IMX8MP_CLK_MEDIA_DI=
-SP2_PIX>,
-+                                                 <&clk IMX8MP_CLK_MEDIA_IS=
-P>,
-                                                  <&clk IMX8MP_VIDEO_PLL1>;
-                                assigned-clock-parents =3D <&clk IMX8MP_SYS=
-_PLL2_1000M>,
-                                                         <&clk IMX8MP_SYS_P=
-LL1_800M>,
-                                                         <&clk IMX8MP_VIDEO=
-_PLL1_OUT>,
-=2D                                                        <&clk IMX8MP_VID=
-EO_PLL1_OUT>;
-+                                                        <&clk IMX8MP_VIDEO=
-_PLL1_OUT>,
-+                                                        <&clk IMX8MP_SYS_P=
-LL2_500M>;
-                                assigned-clock-rates =3D <500000000>, <2000=
-00000>,
-                                                       <0>, <0>, <103950000=
-0>;
-                                #power-domain-cells =3D <1>;
-=2D--8<---
-is needed.
-
-Best regards,
-Alexander
-
->  			dewarp: dwe@32e30000 {
->  				compatible =3D "nxp,imx8mp-dw100";
->  				reg =3D <0x32e30000 0x10000>;
->=20
-> base-commit: 4cece764965020c22cff7665b18a012006359095
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Reviewed-by: Rob Herring <robh@kernel.org>
 
