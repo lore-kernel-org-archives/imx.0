@@ -1,60 +1,60 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEE512C819
-	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA27F12AAEC
+	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711437020; cv=none; b=Dik+r1rsUrLatJRc4J28/ObVQS2+Hc/gnUtdqS48WP78ql72a0vHPO+w8J3qRKoDm0tD4Y1vqo2axDNaQ8ptuQhiEMiV8V57Vkwqzt4Mf+yg3/tpvAFxeyYUe8ghHK1LNnqmm3vsP3n+EYctD73AfbryuIMh/2aOC+D1FxFJl9s=
+	t=1711437101; cv=none; b=UnxVXDhVY5ahmZHUONPH2AMYLLKhjLdEks21CmhWa1Y+MLQltKPlS+a9GNC20pSFbUaE6x3hs7Vu+faVExZsm/BL/PA/tXvUSMx6/ufC0hNpogSn6PNgl1iLEb9jbm4/weow8MoWC9HSMIuZytk74DVcQynVmO0SkRNVwhODQHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711437020; c=relaxed/simple;
-	bh=ldjwzhmXb2fBiddczLor8FhiJZ0wc4J/4AFmykR3m6A=;
+	s=arc-20240116; t=1711437101; c=relaxed/simple;
+	bh=fyuSEI2cGbGpGB8qwlIMFD26pi6Q9G+07pjkAHXBNCk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cACzQdttTFL756R8Qq5Db8avNebkRiBI+lxERi8l8alwJzVCXXn4Lg+fdRynzoMGZZ7VTWeswo68WF1j62Uk+xNYuRdoKiUGS3vCKrECbnIJ/MDGv5gwT4QoXtqVJQwCfgpvLFUbUO5EKOCUx6zI8NVVFGvRa2XXsO0wZ4kA8ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yyH+vuZU; arc=none smtp.client-ip=209.85.218.51
+	 In-Reply-To:Content-Type; b=MbYrelL7Rh4WNpQ3A8FUoW9ursnFcSC6BJZ0IdmHrZqLt354iyXzw6c3h4OXG/6r/FJrSIcxYTSWeMRq1zAS5R4QaQG91ZZLYecCYN+GaSSvGPHIAgkew54x7d8+wK1POnkaNraaeUeCWli+a5QUuARRjwkxP0+wrTLk1h9FGt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nPQ4c+zk; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yyH+vuZU"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2f22bfb4e6so672785466b.0
-        for <imx@lists.linux.dev>; Tue, 26 Mar 2024 00:10:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nPQ4c+zk"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56c2787aff5so598233a12.3
+        for <imx@lists.linux.dev>; Tue, 26 Mar 2024 00:11:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711437017; x=1712041817; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1711437098; x=1712041898; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qlmzj0sf1hp2LTTaE1AX/X6FTCE8mv7N2bIgUWEpv0s=;
-        b=yyH+vuZUI1Tnju2iCU8MAme5gnOcBv8fhLgdf3HJZB3EAOVGLyf0UmiZVO4kN5CNmb
-         Olnt8slNXdZhbGy/mc+1EtSax8mOaIF1P8xrr0ZC2prHf9bOUe5Qo/mZKRfsRMtPOVT6
-         YHbkxmgeyewL1niUwWLOB5DE+jTZGUapFa/RU9d59VZ9NAsp7ON4QHbu0XzlpKQ5MwT5
-         TQ5B2ekQwFIvMI5T776Sp6qcfGTnGFCRlqSNGnioWRGjTbtK5mktWLOt0UbNmaiCUSh5
-         r7M1B+uoAD5nf/k1LKPzDv6VsB2h1EWMfLgjqHuwj2xqMxYv5/UbkyJH1dPEjar0UKiA
-         KKjA==
+        bh=CRgABjnsVuVK4PxTjay2cWac2hJ8gn4ZFGo6CCsUIAk=;
+        b=nPQ4c+zk6MIJGhPwtIkVyTC0sotlNM6foeuVTwQwQ9vWaxbF3DutAERpe/2MsyumPa
+         D/lMM0Q2S/PQ8LDfA5OqGHO/+f+ldYBajDzVm5CGj4OuFDJt4Vtqy9IC+XGx004oSewd
+         RD72EUWM9do5ZacG26Bs67/wrioGwe6+2OTxK77TLebWSGZzJ/wpJ8+k3NYXjw6sbZk9
+         +vLylO6uKCNuWeDwNTNkijCMMttDdX3r9lrHhBAV1bvs2pNIM3qp9/6vDo5CHwArTHGV
+         iYefIcsTkDiOAeypFw362/Lx+HgEAAUqj52H2oQ3uBvNa6iY+4X5lV+GGRupIw0alPM1
+         pqEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711437017; x=1712041817;
+        d=1e100.net; s=20230601; t=1711437098; x=1712041898;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qlmzj0sf1hp2LTTaE1AX/X6FTCE8mv7N2bIgUWEpv0s=;
-        b=uaDTVd7lvbJGs2NkVt4Nc+qR+sJ6MpQ/rrdBHDDqWSNRjLjvFQca7mGHXvKXemMv8Y
-         X0mexw8vc1H5BPBcx1Z1DNicnyHLV+GpPzqygqhRCMB5XgUq5tj89J3iJFtt65SCaiMC
-         cMd1OGxHsqpZZvOVdxBQgrNwA0wQepGLrajUgLpk1TsQmafYroKYAadrDSpHoDYVvc0p
-         F1rf5kNLDdPuoGi9aVebVTGhAj5meckP5TSsV2PWsU+S8WrvX3N2unvjNaW3YaWg38+m
-         mzpNzawJUpsWsokCBzH1eiM98CVR/DLl/S1BHFV0lwXgkt0dKyCQc1zTVU5Vj7+Mh5s3
-         ZTKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVbsnjHhSKfzLD6mINq47N/gml5wodkF8Wd99EQsnPYNroo9LbUZ7P86PA4hKY9XG4xHB2jC/YCNZ3S+7v7NcCBXPO
-X-Gm-Message-State: AOJu0YzURMbVWYakxqLoobZ5m8lUW1bzhxsmumD76jdmn3Dxb8eA0c4v
-	n0vfnRa/lESDyd2GZlA/JsmUDstcN5gpjv5Sa5tgtko278OfPacjQ413V2m2G+o=
-X-Google-Smtp-Source: AGHT+IFzYiPiCUgiK1lOumfheXscF+WhbmjnXM4eUolE+aiXGLSL0Nk/IZ+ZDM/VJYPEhzXXmW9vNw==
-X-Received: by 2002:a17:906:128d:b0:a47:11a9:9038 with SMTP id k13-20020a170906128d00b00a4711a99038mr6598574ejb.58.1711437016897;
-        Tue, 26 Mar 2024 00:10:16 -0700 (PDT)
+        bh=CRgABjnsVuVK4PxTjay2cWac2hJ8gn4ZFGo6CCsUIAk=;
+        b=Lc9Wuy0ns1Tos+gXXRf/TgoKYqfqmqOukC3hcOCUFBicBbZb9koZCbRU0rxJtvZKVf
+         k2idsTowzkg3W51h/DBh3/+5M/9PS4ZVyw8pJmwHFOZSemn3YiGVW3N2HV+YjpSOnVpq
+         rZbSIxymMGzitYWIa0NAABxECfNBqKkHqQo2bG62/wPUQsWuc+nGIp0g9OaqPTzC/NXH
+         8Mp3ZujGOvxENZPrWyRigIzMzGfqNQe+aDT1sTTzm+kun5eDRVxneW137LF/oCUfbIyN
+         CdbdZqaibbm0QQnDe386oe5xPvJ2qmcYIimCp1dnFGMtbdotuUxC+KkO0zQ+MkNH39MM
+         SQtw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTLPg7QLgQlvt/85jndLzkesrRKxbIKP4ibbd6mT5JqWGSjOxlzmNW2fnGVILv0RQW8tYIYHvZhwO675Lo5NkAfM4L
+X-Gm-Message-State: AOJu0YxJgJL6Pbxcz808imzBC+zVu+EiupExx855KoYdBHXmReXTWZ7F
+	mR9lBsI5zM2pWe55fVbYXy4dc70lcpOqbf2F7BRpeULVcXAyYnIP539g1xgAytA=
+X-Google-Smtp-Source: AGHT+IE20j3uR3nA36ra0wflx2Mz8VTwUFFpZ26m+MgDcApN8mvYR7fHHa9M/5Q82DI9c4quDgjbtg==
+X-Received: by 2002:a50:d71e:0:b0:568:a05e:eafd with SMTP id t30-20020a50d71e000000b00568a05eeafdmr6369601edi.39.1711437098264;
+        Tue, 26 Mar 2024 00:11:38 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id ao18-20020a170907359200b00a46aba003eesm3869801ejc.215.2024.03.26.00.10.15
+        by smtp.gmail.com with ESMTPSA id c14-20020aa7c98e000000b0056c2409ce15sm925928edt.49.2024.03.26.00.11.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Mar 2024 00:10:16 -0700 (PDT)
-Message-ID: <f2abb2ff-93f1-4f5d-9078-36a1be7fba2a@linaro.org>
-Date: Tue, 26 Mar 2024 08:10:14 +0100
+        Tue, 26 Mar 2024 00:11:37 -0700 (PDT)
+Message-ID: <75218bd1-0d88-4986-90a6-35f7bdc53918@linaro.org>
+Date: Tue, 26 Mar 2024 08:11:34 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,17 +62,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] dt-bindings: vendor-prefix: Add prefix for Au-Zone
- Technologies
+Subject: Re: [PATCH 4/5] dt-bindings: arm: Add Au-Zone Maivin AI Vision
+ Starter Kit
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org
 Cc: Trevor Zaharichuk <trevor@au-zone.com>, Greg Lytle <greg@au-zone.com>,
  Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Li Yang <leoyang.li@nxp.com>
 References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com>
- <20240325203245.31660-4-laurent.pinchart@ideasonboard.com>
+ <20240325203245.31660-5-laurent.pinchart@ideasonboard.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -119,20 +120,38 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240325203245.31660-4-laurent.pinchart@ideasonboard.com>
+In-Reply-To: <20240325203245.31660-5-laurent.pinchart@ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 25/03/2024 21:32, Laurent Pinchart wrote:
-> Au-Zone Technologies is a company that designs and manufactures products
-> for AI vision applications. Add a DT vendor prefix for it.
+> The Maivin board is an AI vision starter kit sold by Au-Zone
+> Technologies, developed in collaboration with Toradex and Vision
+> Components. It is based on a Toradex Verdin i.MX8MP SoM.
+> 
+> Add a corresponding compatible string.
 > 
 > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 > ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 0027201e19f8..d892c4f9fda3 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1064,6 +1064,13 @@ properties:
+>                - toradex,verdin-imx8mp-wifi  # Verdin iMX8M Plus Wi-Fi / BT Modules
+>            - const: fsl,imx8mp
+>  
+> +      - description: Au-Zone Technologies i.MX8MP-based boards
+> +        items:
+> +          - const: au-zone,maivin-starter-kit        # Au-Zone Maivin AI Vision Starter Kit
+> +          - const: toradex,verdin-imx8mp-nonwifi     # Verdin iMX8M Plus Module without Wi-Fi / BT
+> +          - const: toradex,verdin-imx8mp             # Verdin iMX8M Plus Module
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I think this should be part of existing "Toradex Boards with Verdin
+iMX8M Plus Modules)", just renamed to "boards using Toradex Verdin ...".
 
 Best regards,
 Krzysztof
