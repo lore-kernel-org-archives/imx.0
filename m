@@ -1,91 +1,231 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2105.outbound.protection.outlook.com [40.107.7.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD55495FD;
-	Tue, 26 Mar 2024 12:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711457475; cv=none; b=OPWcEUjWJ21p7R0agJmKtEe6/mQ/drUEZpBTBL8R72N8WLx4GeNr8f98Viy0QMsxEoeyDpCUpZzmLQqcZKxhcRmeB86nkI08YkgWA5Uev/cAUONIhpHF2tdOF0qIEBroA2lwEVtAOupvsWo8QaYOX6hRrr5OqgPT527qPR7D+xU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711457475; c=relaxed/simple;
-	bh=Hnsmw4cSlCWFWusJgFgXB9IFNQHqwcx52ZbhZkS1BMc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fVUqqyYARKqXpg4wqiUyA+ggU1mNaPsu2vr4Qgx5pO5E0Wam8hYNLskGg9rBCPIhF+1XH7p4ZRlIbPyToohz+l2WlhKdbJ/QMOGv4d69t0ZtvasgAnE4Yyy8SAY3D91/Hl3XzuWXLImUB0GewfZNsqv/olqeHqqacJfvmFgmFOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sEPxM8BV; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6A012C541
+	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 14:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.105
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711462473; cv=fail; b=DcbnCklioLbhwyBT4I4I0oipNCKUQC/Iw6AHHtN9sTpMFxDBSBkrDyRDJfwKuv4HrK0cN1OixezvByca4WzRcJS9469owhz9AcRDlFn1NHplkxDEocTxs2VuD6CV48IQk+hPHYJJO9vL794O19zWsG9LWX4USWSLHSbYB0cK73Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711462473; c=relaxed/simple;
+	bh=fi5TjXe/7vNreKSk6/HGt5MHb10MpDbkvNh2BMpp9Io=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WjwTHaxapKgGMiOK/ed3axQchD7uUlBGAbTmIdU6AGzixljBbMgUES1ehOUlaB50lSjXyecfiQpNMkQw4LHwsRJUrh5m5O9WcDRB6FstYp5TjTzDpYkzvuRYltZVsPxa2UPi/ufJIZl24DiHZYV1rzc8nx+ZzaEgqpH/zPYFQbg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=obHF9FjI; arc=fail smtp.client-ip=40.107.7.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sEPxM8BV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C07FC43394;
-	Tue, 26 Mar 2024 12:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711457474;
-	bh=Hnsmw4cSlCWFWusJgFgXB9IFNQHqwcx52ZbhZkS1BMc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=sEPxM8BVbQ07kjm4amF/00CiTgh1i2KSrruwCtk1gy5l57g81+eu/IVT1/qPM6PCt
-	 6C7ar8Me3JW30/ZCq8HNP5Gxzu0Q5lFimE3pAh1S6KHchXGQygXkKp4MHyBcfCsHDB
-	 aamnyV2tG/zleVfYnqAf6knJ9SMbX2+xb8LXr1U89fFxtf+dl57q6BG3o8zy1/m2KL
-	 u43T+2gL2C5qq1jv4rxNcm9D5aGE88x4XKp6iPP0GfFEQsJz0ForRWeP+xAiqam/Sh
-	 HMPA3Qal319cQxp+Hj/EWNEw+E+bJlDQIeOWAQr5oNUI5c4dCFpxCVWucPQ+4ouIEx
-	 PETXvB7mo3aXQ==
-From: Mark Brown <broonie@kernel.org>
-To: Alper Nebi Yasak <alpernebiyasak@gmail.com>, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Stephen Rothwell <sfr@canb.auug.org.au>
-In-Reply-To: <20240325191341.3977321-1-andriy.shevchenko@linux.intel.com>
-References: <20240325191341.3977321-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] ASoC: fsl: imx-es8328: Remove leftover gpio
- initialisation
-Message-Id: <171145746963.70451.9741731830919913816.b4-ty@kernel.org>
-Date: Tue, 26 Mar 2024 12:51:09 +0000
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="obHF9FjI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Z83ZFIWvdUFBTw/cWv7x/x7nfEKp4Tfj0blp33//TdYRNF/pndeHjbQYvy+OVd9e29ZoxK6pIu+XVYgOUFSd4foYrQP1qKcNIj0QApcWdWpbWmZugd/RCFdN8POD3GnOdGdHIu0IeGHj4wXOOo6fh1k3JAGylmq4vaPqctgo5Flc0J8xTaKgbbWBBBkxnzVPpp9woBd2kOMpY7tMFqklFAAhkGYYcZvEgt2TbajM/VKPFcBwJionfgOb1a80iMWK9DV5gt6BFZm8arx3JdX4HVofDQKVl/71X5TzX06t3C8wcMoFGy3K7SXfwf5fgkfMlsMcl1NgnL8+Ls42D2awrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CHINh3znD6VRNJK0fC0Sn1bdx0//xaggWKbhVnJ+fo4=;
+ b=miMGEg/7aB7kB28tuy3+0QUudUqy/kQPeUVeuevl8zm+yPe8kaMEAELeXlbU+i8luqYPJBK4DkuzoB6j543bnsxmJwNMN92YdqCfujkO1TurmMCeIYDV519Adwav4Bq74tQypVj79OJ3qbbdxUfBRptiS2G8pV+W29E/XDooyNjGmRUWZlU8F4LXoTappTbmErAwyrlw95WpzgutI/KpuLzvLot6AEZcOLPLvMrTfEjtqt9BOxngaaD5RSlpZJTLzR7c2pYcGp1GekoggY0dpWHAIwOLlRGode7qKFYexHvvW+j3QRC1N8A6r84iu8u/YSq6YjZBZ5B+qIoegwjjlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CHINh3znD6VRNJK0fC0Sn1bdx0//xaggWKbhVnJ+fo4=;
+ b=obHF9FjIWy91Mks5HKZyrUfcGNF6sYgpKY/YmjUDLDEtJciiggk9lyCIgtiOaJv7QvzB3coOckKZBT/Zu7AlZGffpFMrZF0swwx8PK+jr2x7hbTQ9ZRzQzDMPGv/F8LmelZTaXeR3mysJ2BXdj98yCYw42nalb5JMoc6Xg4E/QU=
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS1PR04MB9683.eurprd04.prod.outlook.com (2603:10a6:20b:473::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 26 Mar
+ 2024 14:14:27 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.028; Tue, 26 Mar 2024
+ 14:14:27 +0000
+Date: Tue, 26 Mar 2024 10:14:17 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v7 0/4] arm64: dts: imx8qxp add asrc and sai
+Message-ID: <ZgLYOYFRxVqK30Z1@lizhi-Precision-Tower-5810>
+References: <20240318-asrc_8qxp-v7-0-01ce5264a761@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240318-asrc_8qxp-v7-0-01ce5264a761@nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0147.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9683:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	8QXLHyr7r7o68kTaurmkF1aBQsJIh1bjujgYxfLq4PJ9A5G7E+VNE3UWWPjcX5Wk+5z0Fo2JqxOooHfo33ypyRmwiZ+X7MBbeqZ7QNRWQdLbHWGJBRwQzJl/pvsyZuU2cIgZGHf5OcF7p8PWMXSGxyWAUo0ZF0x4MD/KLp6Vz/kGLjBtlb1CcRSdlLmviR18siyI1vV6JobwKj5dL9ccOtaJGooHEy1JXXTu3M00w+MWCvqbk2XNr88ZUvRh089Q8X7/kamrq4Ra+4oC1Letr9sT/l/l/PbHBJfDIJ/+3zw1wOhwHp+gilyEuwICR3XINpuAAtyHpP/1fVJOhXmoyL6eiN8Y7qJ7xei+t4j5TLK5g5qK37rw1RUclwVsO2DQJavTMvFUJPDpsDyme2W+QBAoUyZOo8QCd7Zldp+tSfN2FmtieEsnPWK4VwW+IGaNY56rQUdzWyDlJ5npr+SRDdSAAT5MgS7d6IJad5JQVL1FVIVIUnLNxakdIHKhLK/aiRAtIU9JeEZUFU8g/CEUZoI6/Ifg3Nfl/j0RNMYXylIbt2Mv5aoppm8wWlbG92nwQN3YBXQ/Z9nTbf+AXZ6P1wrw/qoiIjB/rMvwDDTTHHmbojPCng5i4GUITy9mfepCt9x2b70BfL/cV3q87NOk9oAKJCvQ/moFAkbylQ5Rw6Hu46swObrQV9HHQjLDP6l3
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(52116005)(376005)(7416005)(921011)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?n7JsXgM7DnSFXYzn0RdkTfXpdj8UJaFFVBdhy2G5352Iwd47qemBI9TNsEj6?=
+ =?us-ascii?Q?LskCYitpg0vVmaQQJ4sbkfwKs0EgsilBYKfnKzmii1lpbiJFjioMyRfJYlGf?=
+ =?us-ascii?Q?J512G5CilYuWHjtNbRHiRqnt+6x0hDXwcAQMnui7LpoAXDok8taYhTFJS2AZ?=
+ =?us-ascii?Q?Nw5LflQ4luSWMTBmScsCuWZOWYaNwW98QZ0vuvIQ9GUxj56larbORUxKxrqy?=
+ =?us-ascii?Q?BEIsvhR4T6rIHlIkC4DGb25JZO7Ghq3rqt1wq3ju2tYcMLBrgPZB4da7o18Q?=
+ =?us-ascii?Q?62GDqv+0ntuzHfTcdaYO3tTV8GhF4fe1WsFWcEJ533fJUU8JCAtDpVrghmJa?=
+ =?us-ascii?Q?dpJKuuGEYpGBAZagRN6cDbN3QZQEtJoLXO4nz0X1ChHt2/S2C8x0BQujJ/ZG?=
+ =?us-ascii?Q?tEF5wBpVF5rS/tT/Nfr4iLjpa9AU0n7HCabRPAGG99ilkEmKpLOx7QnTWafu?=
+ =?us-ascii?Q?idHHqeasGyr33YhgAwfW2Djb7TAfQhX3paAxLR+aF9rGthJKCc/tHuzLIJlo?=
+ =?us-ascii?Q?QpkOBBuwcHPMAReU+kYu/umhYQHYd73Xj+4u5zojP3lucPp5/b3Tf3rVVHpp?=
+ =?us-ascii?Q?brpq/h6ErPudAsmEPYahXOEmjcXpIW4kotnL+gz8e7LPhs3xvpd2qgCcXlJ1?=
+ =?us-ascii?Q?fV6zzv3cAWGPhQtGqGSfukY9E84PxXizdrHGOq8nKAiBQOCSfpkzqZbzSo98?=
+ =?us-ascii?Q?K4ZTIUO/3S5eo/3kkv5/ujeK+Z8SpsZe4Y27QDPoVSmdr2Bu7Tw31jCwgFPM?=
+ =?us-ascii?Q?fjHA7WheXpGqS0zozfjnl3Aa1Duvl4oeFNdl3jDAfUEvRZVbdu3ajFGoX4S2?=
+ =?us-ascii?Q?Uh7p6lh/z7sVU3/+dVCAl8hDthFe9jFxKzJ1NLFnf5ZMG/M/S+ECkkGBSO8q?=
+ =?us-ascii?Q?MvhUz1WUdp5SKEyh8LaSpOEVDwAqD++bzPakNApdp+hrC+IhMi6AR7ieWtNU?=
+ =?us-ascii?Q?xBgFvCMzfZc6PmGK/eDtHjhsHREAPOHzdsOvQAJSn6JfwfvYggmX5xY62WSt?=
+ =?us-ascii?Q?Z/tqtrB+CULvbZBaU+4lqTQb69JXrDbiclxevTVDurXKrCOOyjeL0hjVA7S5?=
+ =?us-ascii?Q?htTODCkH/7Ch0DHtYStdnS2A/0jC5OTj/Qjp0mrn04Kxh+btUDg/939JQ9dW?=
+ =?us-ascii?Q?oN81rfUe7d7kZQ1dhquL0JMrssFSJNX66nl+MdAlleUwYzNkZ7p0iUIWjckj?=
+ =?us-ascii?Q?zuxGu9lYo4hD4YFq7GzY4/8si8muktRO2Q4yERBpsXaopGOoUDAHCbKCz9Nt?=
+ =?us-ascii?Q?73FarytpvQJ16ySejsQvWAhJQyQhdhf2YfnKwTKId0zTPJd4dnzUtbIQX9go?=
+ =?us-ascii?Q?1W+EVOpjfya8wXQe5HiKaTSF4tgbLM5qjGgp6dH5yDay6GODIQx2mmPa2Mzf?=
+ =?us-ascii?Q?yWtK6w3GZt0EKJI49CQItAE2Ya7TdDwxRGVbEia/365J4lHrUhOgzuNoHxev?=
+ =?us-ascii?Q?2p89BFq/72PzfKIaOwdc6xaKwskexeSilO98X60FeKiTRrfExQ/PdkC6Wpac?=
+ =?us-ascii?Q?4vyyr/CvrHXdtH+0j4F9FUp8q69TpFLZ7C3Hm8HGvPUwC69Vg6YFJEU22sYb?=
+ =?us-ascii?Q?+VKq8yjNuY1/sswfAdU=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54c92fe5-1fe5-4d89-c26e-08dc4d9f0bff
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 14:14:27.7363
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XnKuJhoAGDPS8Td+BEXJF3fEBj9nfx4pEzNihrzsa1cOK3CM7tq8l3audyr8GC+OYATLTdI7tuKcdbPwT3u5Dg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9683
 
-On Mon, 25 Mar 2024 21:13:41 +0200, Andy Shevchenko wrote:
-> The gpio field is not used anymore, remove the leftover.
-> This also fixes the compilation error after the ...
+On Mon, Mar 18, 2024 at 03:00:06PM -0400, Frank Li wrote:
+> Update binding doc to avoid warning.
+> Change from v1 to v2
+> - Fixed dts DTB_CHECK warning
 > 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Changes in v7:
+> - Using rob method for dma-names
+> - Drop conor acked tag form dma-names and interrupt patches
+> - Fixed warning for interrupts
+> - Pass dt_bindng check
 > 
+> make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,sai.yaml
+>   LINT    Documentation/devicetree/bindings
+>   DTEX    Documentation/devicetree/bindings/sound/fsl,sai.example.dts
+>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>   DTC_CHK Documentation/devicetree/bindings/sound/fsl,sai.example.dtb
+> 
+>  make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,spdif.yaml
+>   LINT    Documentation/devicetree/bindings
+>   DTEX    Documentation/devicetree/bindings/sound/fsl,spdif.example.dts
+>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>   DTC_CHK Documentation/devicetree/bindings/sound/fsl,spdif.example.dtb
+> 
+> make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-asrc.yaml
+>   LINT    Documentation/devicetree/bindings
+>   DTEX    Documentation/devicetree/bindings/sound/fsl,imx-asrc.example.dts
+>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>   DTC_CHK Documentation/devicetree/bindings/sound/fsl,imx-asrc.example.dtb
+> 
+> - Pass DTB_CHECK, below warning exist because binding doc still be txt.
+> 
+> from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
+> arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb: /bus@59000000/amix@59840000: failed to match any schema with compatible: ['fsl,imx8qm-audmix']
+> 
+> - Link to v6: https://lore.kernel.org/r/20240308-asrc_8qxp-v6-0-e08f6d030e09@nxp.com
+> 
+> Changes in v6:
+> - Add interrupt description in binding doc according to rob suggestion
+> - Link to v5: https://lore.kernel.org/r/20240307-asrc_8qxp-v5-0-db363740368d@nxp.com
+> 
+> Changes in v5:
+> - using rob's suggest logic after fix maxItems.
+> - sort dts nodes.
+> - remove spdif1. Add later when do 8qm upstream
+> - Link to v4: https://lore.kernel.org/r/20240305-asrc_8qxp-v4-0-c61b98046591@nxp.com
+> 
+> Changes in v4:
+> Combine comments' from v2 and v3. I hope I address everythings.
+> 
+> - Krzysztof's comments
+>   - add reson about why change
+> 
+> - rob's comments
+>   using rob's suggest logic to restrict interrupt number
+>   but for dma-names, still need use oneOf to cover 3 case
+>   - [rx, tx]
+>   - [rx]
+>   - [tx]
+> 
+>   oneOf
+>     - items:
+>         - tx
+>         - rx
+>     - enums: [rx, tx]
+> 
+> - Conor's comments
+>   - add power-domains required for imx8qxp and imx8qm
+>   - remove dmas descript, not allow use index to get dma-channel. Current
+> no user using this method.
+> 
+> - Link to v3: https://lore.kernel.org/r/20240228-asrc_8qxp-v3-0-d4d5935fd3aa@nxp.com
+> 
+> Changes in v3:
+> - Fixed dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/fsl,spdif.example.dtb: spdif@2004000: interrupts: [[0, 52, 4]] is too short
+> 	from schema $id: http://devicetree.org/schemas/sound/fsl,spdif.yaml#
+> 
+> - Link to v2: https://lore.kernel.org/r/20240227-asrc_8qxp-v2-0-521bcc7eb1c0@nxp.com
+> 
+> ---
+> Frank Li (4):
+>       ASoC: dt-bindings: fsl,imx-asrc/spdif: Add power-domains property
+>       ASoC: dt-bindings: fsl,imx-asrc: update max interrupt numbers
+>       ASoC: dt-bindings: fsl-sai: allow only one dma-names
 
-Applied to
+@Mark Brown:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+	Could you please pick dt-bindings part? Reviewed by dt team.
 
-Thanks!
+Frank
 
-[1/1] ASoC: fsl: imx-es8328: Remove leftover gpio initialisation
-      commit: 6a92834166b16babd70e99c3e0ce9262893ad6ae
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+>       arm64: dts: imx8qxp: add asrc[0,1], esai0, spdif0 and sai[4,5]
+> 
+>  .../devicetree/bindings/sound/fsl,imx-asrc.yaml    |  14 ++
+>  .../devicetree/bindings/sound/fsl,sai.yaml         |   6 +-
+>  .../devicetree/bindings/sound/fsl,spdif.yaml       |  35 ++-
+>  arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi   | 267 +++++++++++++++++++++
+>  4 files changed, 317 insertions(+), 5 deletions(-)
+> ---
+> base-commit: 8552c902efe7ef670b6961fb8885b67961aeb629
+> change-id: 20240227-asrc_8qxp-25aa6783840f
+> 
+> Best regards,
+> -- 
+> Frank Li <Frank.Li@nxp.com>
+> 
