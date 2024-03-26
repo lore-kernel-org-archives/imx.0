@@ -1,212 +1,147 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2112.outbound.protection.outlook.com [40.107.104.112])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B4413D240
-	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 19:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711481766; cv=fail; b=sSG0a++uF/fDOSlANEeMii+m9z+AvIYo/BbzInsapN1nQ2PtOaczeTS9K0UQJiWCaYvTKraUZVV5C4dtLLNjaB1SF67BNjTEBkOgKFvNtv+1i9XseVdzth4AmkBDiDeluX1FiNhFfChOK14u3w/BQTuwLbxG5FIEaeoT9qvjAz0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711481766; c=relaxed/simple;
-	bh=BROr7rk8vwzQgK2p19UHuNXsTNsZJmL1eAxB2wnXv4c=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Fr5bw+CaptbrdGi7PoztNj90rKshbkp0NrARik7irPnP4qRBlSOIV6XA8peGqnzCc2yzGqPAEU9r6Mfe4dIPo4K2cbvK1+Gpmcn/ciGfGGhoBKF77RTlhthztmb1zlRgQPcC/0UaZaUDRfN/WUnPDULdvMlSzacJqoFKBA4rkDM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=lBNU4Q9e; arc=fail smtp.client-ip=40.107.104.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD05613FD6B
+	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 20:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711484669; cv=none; b=Ec1r+ixFLmIO1y9qHBcgS7pw/czqfOK0VbBF66Ict9efkL4qsYfD5CHqCMSfY+9OdgO+nZ5AH1sV+GgYfkjO7Y5d/77GkflsRPcthDaeUHK3d4KMabWveXTOKPt33owjtQIx17B6Rzcxxb/GxHINknIJGVRW3vl2cM49M/qiX5w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711484669; c=relaxed/simple;
+	bh=3/laPbw4dZzLc5cIWlMGtQPK7sjd5djD9WWYkPnEIy8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Z81A+WZ8wGb13MUFDcdKzs7m8WypbL0T0nLoShoVfr1Q1EBMO7jiqLnNu9ZEAwnCxnxegVOYWptm0jecZ+Uy/hWh76BtQlx5tKZuClJc9paY77gQu7yvcY2gb+etIFZb5N8Faa6ZN95yTx+2izjgUEF9RPbwhqiaf7JXo/4WbYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=klP/P7wX; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="lBNU4Q9e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=f08mJUr6FHf2WwD6zEoU33JZx7OvbRWSc+k33ICkDnKwoHkitMgP9/b9qoK3G3HNHMeCzZv+ZJZZDpZr2STDLue+OWSd+1beOrVbWGgi/rbLI4rfCW3qsYga1KCZgSwjNDjWbkn1VuCZvTgH3YXBij1jdqOCTJ4YNwjJo9xmpzGt1vCWgl7lO9MUlvBy9LC9O5egQDmndFZghnOChFFKWVW1WpzsWj3CSTuDvi9MPjEIlXkGDgWEY8Sx484CHChCvSGLuk1TMKB8FSO0TCnqUdoAfYC9KjaGP+XbgT2xick9cvvQs5vdNtu9kbYId5s17/6c5fgJXBTKI7Iw1kSNBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zlYsfya/NREepbPNsosV8dL8dlZoKSz3Is+4nwBBg/I=;
- b=i0RATdOYXGKAK0EuO8s90OSYLJ1UPccd4aaso1g4hqswzD9ibzEKpc7Gksp7aqfgqGTw2RgcvpUiYIv3tr/EPt8SRVjTSK/5Brb07bqdw4t8vQ0qJNOn6TPjIUSHzRE/ES7Qoo043Q9c8p2Kk217VSKxwlZ8NS60+ysjOIVFKC60e2zzQUlyC7P5cWS7Gc56hCmih8HjSZCa2fWW3pTDjPCIFombC7DGgj4RfDlteiVcveGtrhwGOudBfqYL71/qPKLnUgGKUWs/LhlRScdcwlJQgUM+n36lKzEnACvElmPfLGaNHrBMlscaYopGCTLdJP0JTCQSsUEixGutTHTY6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zlYsfya/NREepbPNsosV8dL8dlZoKSz3Is+4nwBBg/I=;
- b=lBNU4Q9eAprmcQQR0+vM1Jdt9b+NFPmtZhecpbBf9flTiUExxfLSYqUG78ctiEF/PZ5ju689lk0qM/kk8TJacpRcpbyMvUEWlM1dsmXn8XDiRrqwcXuG4B13jJ2RUtvZlylBlF7cCQV0o7DzBtFGN2Lxf9RPA9/W79KgTNswQAc=
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7438.eurprd04.prod.outlook.com (2603:10a6:800:1a0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Tue, 26 Mar
- 2024 19:35:58 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.028; Tue, 26 Mar 2024
- 19:35:58 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: helgaas@kernel.org
-Cc: Frank.Li@nxp.com,
-	bhelgaas@google.com,
-	cassel@kernel.org,
-	gustavo.pimentel@synopsys.com,
-	imx@lists.linux.dev,
-	jdmason@kudzu.us,
-	jingoohan1@gmail.com,
-	kw@linux.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	mani@kernel.org,
-	niklas.cassel@wdc.com,
-	robh@kernel.org
-Subject: [PATCH v3 1/1] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
-Date: Tue, 26 Mar 2024 15:35:40 -0400
-Message-Id: <20240326193540.3610570-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0289.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="klP/P7wX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711484668; x=1743020668;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=3/laPbw4dZzLc5cIWlMGtQPK7sjd5djD9WWYkPnEIy8=;
+  b=klP/P7wXjQS00YZMLKERRA4CvvhbqPheHUv6C0Dv5naQ188WAzPLCJE2
+   r597KLlQghsQMe1UTLrXAUvCmzWp/UdpBxMVtrCB3o5YfAzOsCP5I/dmt
+   P/W3P2gg41dQ1XOEP4L9//yjbC6gaya+Yha926gszcxppgQ2heAAk/+Zp
+   pgvVuzse1qdBgI1FIOFHm6e2LQxcQoi4fn3O3UohIwLl30lh48RkHzbK+
+   k3CqIhDNRqs/xaE41dcS6SxQesOQ69mWnj000XoHoshnGv/ZjJovSRwhP
+   3wlSSBwFsYfMgvYa7yHJ8d/QVlmBG7vzvj31eZgkX7qL3lkwkx1hnA+0r
+   g==;
+X-CSE-ConnectionGUID: umWytUPWSS6phOPWvdxqPA==
+X-CSE-MsgGUID: hKopkOk0SNurJRx/vDxcXA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="17946359"
+X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
+   d="scan'208";a="17946359"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 13:24:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
+   d="scan'208";a="20716653"
+Received: from bhubbert-mobl.amr.corp.intel.com (HELO [10.212.65.108]) ([10.212.65.108])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 13:24:24 -0700
+Message-ID: <1c437229-cbc7-4e0c-987c-9ca31800a572@linux.intel.com>
+Date: Tue, 26 Mar 2024 15:24:23 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7438:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	sW+WBh/djFWX5pdFauMNCxyZnZP9/c20XpVeTK6WRIYgy7kE33pCTTcR1Yev9Yf8GzMLm17JXwoaYswf1hFnoa6E5Utj5jgN/jScDO3YnmKCNl1TDZ8VdvZPMJehO4GfrB66r0HOHVYkpiAmgEn5kkPzFWR693H4Cq1GO0158ZY2pEWNu4JYtK/ELJHTZugW6rtXKU4dUjugiHzxqwdT4AUC1CZ/J2dOK4CT9+zuD6guZ9YlxgdQSYL0l+j/kXw57mT58rbPTKtItP1KwC4CdLJ4IFJqGKCxZGs9jqwGzdwi5idmg4fMCYA9Ndp4fWiJNn9e9jgVglsJzCeep/PmwXKKPIJmW3/hGyD9VrkdfNbl2bMFG6xjS3FWL5JN2z932RpFDUc8gVXlNVCPJNVczhodEL4UnaVsWcewuUDiNay+4KSzUyxNPfr8eTkmiO9M0dg48IrQzvpZR6EXOPeyxRgX/UhNJlfEBVtWEKE1HK5Do8dMbxlXUXph6eWwXx39U3d19LxiYfcA2+N+ndQCIVh9SqkOWXVJrCJ4vj58CjCOAT53G8xr8Nmdxrx8Up0aXELKfMMoNy+zqaEPwOkICapf+HA6ziuHDkwT3YCULweYrjmsBJ1velwzG922vLP+8pxnvo1l+IoD5YWiYcXKbfJX6QM52RI1lHyxVsM3GX0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(366007)(7416005)(376005)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SPzjWGER6qD9g7KQKmcr/QUkH36S8cEpDGmtaoCxqyNYTUHr1ZLVuRz12/ya?=
- =?us-ascii?Q?uyyrYWRx/yPajyxlEqa+wVMwa6V5VzGJ7CphoeacafoNYcCUvRyNZx36vldk?=
- =?us-ascii?Q?Vid8aQiFF5eVW0qNbXUhz7EWeVHV5X+AhYSvLDQNXCneWr1yJjpV9OrI8eng?=
- =?us-ascii?Q?Mp0Nf6Ww0fI/Oy7GZ+x4GYBEctHOhqxl2MNS58S8IFbYXQlAvhlEnsQ4/2LT?=
- =?us-ascii?Q?OLV+1qoDwalJi66ORVtbGvCCpzsUAa9BeLQWdP/OKdJj6dwAKAjqpSq1lO6b?=
- =?us-ascii?Q?oEvNbeWsy1OKDKU8EVZNlIXDqJp9ltoL/DErXM1fbrXTUWiIABwN3r/Vy/Qk?=
- =?us-ascii?Q?0c7Oc1TO+Af9bQFp612ek45LkH3otK71DD3Mn80FbxSokG7kgqH4gbUeipr1?=
- =?us-ascii?Q?KygTuUvefuPrXha5Bnti0wVmoofJ5o8bfSgLTM0uOTQ/7cTamgU6+U6kc++6?=
- =?us-ascii?Q?qRqj/o68nSFQlfyaYMUJWTa9vMOw74vlXr5DasjTHRUBF9gPOTNDBAae6NzS?=
- =?us-ascii?Q?wsgrpkU4Dj8gh7+hsnEoAYh9wLNk6fPglSrMBAEAJl+eh83VKQ8nqPCIfj6h?=
- =?us-ascii?Q?h1sz25q+/xOCzZ+keiLX0nsIYgwgGgfWSwMPLsz8dLby6agYaduRhvn+Vbne?=
- =?us-ascii?Q?btaukWF+pL2OLhzwvi9ilFxzx3dZs6D4yJ5kMoy9UQ3suMwMAMWRwLhZDeFa?=
- =?us-ascii?Q?V3RaABM+64e05kDcyUQXuvIeVAGjQBm//XoT0IZxS0oUifyVi4ffrHqCXl0M?=
- =?us-ascii?Q?wWS3xQVOFaZ0bBmaIzZkLyfcilPRib9XarBIKPiMc52GMPqAnzkfJLzwtEFu?=
- =?us-ascii?Q?DixRz8FCAa6f8Z50F96BPTOaP33aKJgtOEmXK4wfEXjgbaz1Jed32F7brLp6?=
- =?us-ascii?Q?VsAreJwCWZDM0R7g7qn2J2O0ryXaczf5Cag3lP2zd+whFKx49CaYAK6rF/7Y?=
- =?us-ascii?Q?Z/u+dpJvzQAKdG9zktg1ibKSBBzWaiWtkIQO8vy984QzB/2eEN1wxaao7Xp0?=
- =?us-ascii?Q?THL1CFlhM9mpn0/Co12Xz/jqy0lBoy6EPq6Mr+BXt8w6OZWIpuQcer9XALHu?=
- =?us-ascii?Q?hdqreU/q4iLnU+lzz4Q5uzzaJxa5NmpeuWdaTFD8Gnfq2EbJ8tfuMWsfx+tT?=
- =?us-ascii?Q?LblFqmALWQ5C5Gmu3HsINAarM5uWxwSFo1X0BbTjXOVSVW9MJlA4HvhWBMFt?=
- =?us-ascii?Q?88Ltr+pcaFnrXkniuVdjOilZ5VGaux+0MQoOuPGoBYbbCSJPtUckLeI86vvc?=
- =?us-ascii?Q?crVrQlGZWEZX4Us/u2Cw752P/q1L2wa2M184smsq82IXpktKsGJbYbZTyuMv?=
- =?us-ascii?Q?RRZuBgacAXjlt3ox6Y3F8J+9JHDaxDCOX/yTuPDeVVPS74hZXP4DdoluHLIi?=
- =?us-ascii?Q?tWkLL9WvAMnRv3nIT8dHFFWUzHAjrL9H5CWAfufcQFkjsno4212qdtNO/Qwq?=
- =?us-ascii?Q?xZFEI03CHvHHpvXdFbTvqJdt6v9kyJUvGYfjhe8iIS1VS6DO1zjfK4l4xPaf?=
- =?us-ascii?Q?+xRZJjagBzvd1CfKjjgJFJxaU8YgwqfUkEo95ZXO3wODuxG8SF6c2MUhyLnB?=
- =?us-ascii?Q?XqI+FwwgXfYcmnHfxpFxpHLRejhvBj6BvXRalTUO?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e424983-8838-4ed9-b0ee-08dc4dcbf603
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 19:35:58.2636
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: INyqbBJ8PnJDPH5LkyJKxHPKkQBtbExkLBVkTnw0M5awCv93F0QeOWQGhMcKH1i50z8lzTkGts+HJqusD/6TBQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7438
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/15] ASoC: Intel: replace dpcm_playback/capture to
+ playback/capture_only
+Content-Language: en-US
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>,
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Banajit Goswami <bgoswami@quicinc.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>,
+ Maso Huang <maso.huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>,
+ Trevor Wu <trevor.wu@mediatek.com>, Vinod Koul <vkoul@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org,
+ imx@lists.linux.dev, linux-sound@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <87o7b353of.wl-kuninori.morimoto.gx@renesas.com>
+ <87frwf53mq.wl-kuninori.morimoto.gx@renesas.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <87frwf53mq.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When PERST# assert and deassert happens on the PERST# supported platforms,
-the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
-to the area that was previously allocated (iATU0) for BAR0, instead of the
-new area (iATU6) for BAR0.
+Hi Morimoto-san,
 
-The mapping between PCI BAR and iATU inbound window are maintained in the
-dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
-a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
-of the existing mapping in the array and if it is not found (i.e., value in
-the array indexed by the BAR is found to be 0), then it will allocate a new
-map value using find_first_zero_bit().
+> soc_get_playback_capture() is now handling DPCM and normal comprehensively
+> for playback/capture stream. We can use playback/capture_only flag
+> instead of using dpcm_playback/capture. This patch replace these.
 
-The issue here is, the existing logic failed to consider the fact that the
-map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
-will return '0' as the map value for BAR0 (note that it returns the first
-zero bit position).
+This patch no longer applies since Mark merged
+"[PATCH 00/21] ASoC: Intel: boards: updates for 6.10 - part1"
 
-Due to this, when PERST# assert + deassert happens on the PERST# supported
-platforms, the inbound window allocation restarts from BAR0 and the
-existing logic to find the BAR mapping will return '6' for BAR0 instead of
-'0' due to the fact that it considers '0' as an invalid map value.
+https://lore.kernel.org/linux-sound/20240325221059.206042-1-pierre-louis.bossart@linux.intel.com/
 
-So fix this issue by always incrementing the map value before assigning to
-bar_to_atu[] array and then decrementing it while fetching. This will make
-sure that the map value '0' always represents the invalid mapping."
+The odds of additional conflicts are very high due to the number of
+queued changes in machine drivers, I really don't know how we're going
+to find the time to solve those conflicts and test experimental
+versions, while we're also busy checking the 6.9-rc1 transition.
 
-Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
-Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
-Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+In addition, I have a bit of heartburn with the concept of flipping the
+logic from a clear description of playback or capture supported, to an
+implicit 'both supported unless stated otherwise'. We are going to miss
+some cases and have regressions, it's pretty much a given.
 
-Notes:
-    Change from v2 to v3
-    - Add impact in commit message
-    - Add mani's detail description
-    - Fix Closes link
-    
-    Change from v1 to v2
-    - update subject
-    - use free_win + 1 solution
-    - still leave MAX_IATU_IN as 256. I am not sure if there are platfrom have
-    256 ATU. Suppose it only use max 6 in current EP framework.
-    - @Niklas, can you help test it. My platform become unstable today.
+And then there are cases such as the following examples
 
- drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+> @@ -496,8 +494,6 @@ static struct snd_soc_dai_link cml_rt1011_rt5682_dailink[] = {
+>  		 */
+>  		.name = "SSP1-Codec",
+>  		.id = 6,
+> -		.dpcm_playback = 1,
+> -		.dpcm_capture = 1, /* Capture stream provides Feedback */
+>  		.no_pcm = 1,
+>  		.init = cml_rt1011_spk_init,
+>  		.ops = &cml_rt1011_ops,
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 5befed2dc02b7..ba932bafdb230 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -139,7 +139,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
- 	if (!ep->bar_to_atu[bar])
- 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
- 	else
--		free_win = ep->bar_to_atu[bar];
-+		free_win = ep->bar_to_atu[bar] - 1;
- 
- 	if (free_win >= pci->num_ib_windows) {
- 		dev_err(pci->dev, "No free inbound window\n");
-@@ -153,7 +153,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
- 		return ret;
- 	}
- 
--	ep->bar_to_atu[bar] = free_win;
-+	/*
-+	 * Always increment free_win before assignment, since value 0 is used to identify
-+	 * unallocated mapping.
-+	 */
-+	ep->bar_to_atu[bar] = free_win + 1;
- 	set_bit(free_win, ep->ib_window_map);
- 
- 	return 0;
-@@ -190,7 +194,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	enum pci_barno bar = epf_bar->barno;
--	u32 atu_index = ep->bar_to_atu[bar];
-+	u32 atu_index = ep->bar_to_atu[bar] - 1;
-+
-+	if (!ep->bar_to_atu[bar])
-+		return;
- 
- 	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
- 
--- 
-2.34.1
+> @@ -293,8 +291,6 @@ int sof_intel_board_set_ssp_amp_link(struct device *dev,
+>  
+>  	link->id = be_id;
+>  	link->no_pcm = 1;
+> -	link->dpcm_capture = 1; /* feedback stream or firmware-generated echo reference */
+> -	link->dpcm_playback = 1;
+>  
+>  	return 0;
+>  }
 
+> diff --git a/sound/soc/intel/boards/sof_da7219.c b/sound/soc/intel/boards/sof_da7219.c
+> index 6eb5a6144e97..c7cca3e47ed9 100644
+> --- a/sound/soc/intel/boards/sof_da7219.c
+> +++ b/sound/soc/intel/boards/sof_da7219.c
+> @@ -296,8 +296,6 @@ static struct snd_soc_dai_link jsl_dais[] = {
+>  		.id = 0,
+>  		.ignore_pmdown_time = 1,
+>  		.no_pcm = 1,
+> -		.dpcm_playback = 1,
+> -		.dpcm_capture = 1, /* IV feedback */
+>  		SND_SOC_DAILINK_REG(ssp1_pin, max_98373_components, platform),
+
+where we lose comments on what the capture stream is. That's not so
+good, we added those comments on purpose to explain that the capture
+stream isn't a regular PCM format, I don't see a good reason to see them go?
