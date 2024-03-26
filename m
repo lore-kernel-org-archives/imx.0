@@ -1,60 +1,60 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF8A71B4B
-	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 06:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEE512C819
+	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711434731; cv=none; b=qmaFCuRXYIazFCc7wZQy4e+CHA8oPXp0HbCz9x4ZX+vMe5ftTCaBgf4eeWA2do+xMwQXt6+miUNVLgxft1HfyA8wX8oBsxsAty0NGsGVjbMxE5D/mFpD7T7tTTe/g2J+aPm6oWsmK9wWf56vLRI+33O89TymOgHuWpa7B9j1cPI=
+	t=1711437020; cv=none; b=Dik+r1rsUrLatJRc4J28/ObVQS2+Hc/gnUtdqS48WP78ql72a0vHPO+w8J3qRKoDm0tD4Y1vqo2axDNaQ8ptuQhiEMiV8V57Vkwqzt4Mf+yg3/tpvAFxeyYUe8ghHK1LNnqmm3vsP3n+EYctD73AfbryuIMh/2aOC+D1FxFJl9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711434731; c=relaxed/simple;
-	bh=lUIAgy0rufA9zfI1/pKMKqKPwZ8Uq7LasK6dd1NQxbE=;
+	s=arc-20240116; t=1711437020; c=relaxed/simple;
+	bh=ldjwzhmXb2fBiddczLor8FhiJZ0wc4J/4AFmykR3m6A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LXBCaMR9mCbT5zs6GbcVupEyHX4cet86G3duGG9J1S3UIwq9Pp7rlA37gJ1obKmqvpA9kYY2AIO4/E6suVzN2fAX04nQdAyr1IItGbQMQgs0Bi+MCxK6ZxEZq3z2/X02sEMmCjUr9HctZjv3sCEcvcI8Qnd7tYiFeKmEvcLfNog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rUSVkclC; arc=none smtp.client-ip=209.85.167.53
+	 In-Reply-To:Content-Type; b=cACzQdttTFL756R8Qq5Db8avNebkRiBI+lxERi8l8alwJzVCXXn4Lg+fdRynzoMGZZ7VTWeswo68WF1j62Uk+xNYuRdoKiUGS3vCKrECbnIJ/MDGv5gwT4QoXtqVJQwCfgpvLFUbUO5EKOCUx6zI8NVVFGvRa2XXsO0wZ4kA8ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yyH+vuZU; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rUSVkclC"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513ccc70a6dso8834347e87.1
-        for <imx@lists.linux.dev>; Mon, 25 Mar 2024 23:32:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yyH+vuZU"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2f22bfb4e6so672785466b.0
+        for <imx@lists.linux.dev>; Tue, 26 Mar 2024 00:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711434727; x=1712039527; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1711437017; x=1712041817; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=NveLiMrbFvePfALmt6XX47/2qw2u9YrpgAMC6RHpHGg=;
-        b=rUSVkclCQ3UIpTtRfBnAJpexL+6uxvDuT4o+YCeSGZsTe2Spfxj/QQGwnjgun4ZFKp
-         prw6ALhDf/6JyCRXIeSomWQ3irjrA8MaLQ0QSPOH7kddIFqinEVpv36b764VJBaSMomu
-         vPdamTXKcRIT/Wj+AFRThiqfRLGqP9ZRhoAOk4nz7tzDBbu8sA7y4/DphL1gwXzpqJ1m
-         Eu3zUkkZ+ENB4ywnJH9odHMqDsjHQ1qCnj/LgBo/BIli/AHxrSLRy63eI5KpCYluDbvq
-         2kVW6pDriC2pagUbBTVGM5Nmr1LEwARNOLISBAPDFOJjdR5OzPLLYXVJZrlwDb8v7zp3
-         2egA==
+        bh=qlmzj0sf1hp2LTTaE1AX/X6FTCE8mv7N2bIgUWEpv0s=;
+        b=yyH+vuZUI1Tnju2iCU8MAme5gnOcBv8fhLgdf3HJZB3EAOVGLyf0UmiZVO4kN5CNmb
+         Olnt8slNXdZhbGy/mc+1EtSax8mOaIF1P8xrr0ZC2prHf9bOUe5Qo/mZKRfsRMtPOVT6
+         YHbkxmgeyewL1niUwWLOB5DE+jTZGUapFa/RU9d59VZ9NAsp7ON4QHbu0XzlpKQ5MwT5
+         TQ5B2ekQwFIvMI5T776Sp6qcfGTnGFCRlqSNGnioWRGjTbtK5mktWLOt0UbNmaiCUSh5
+         r7M1B+uoAD5nf/k1LKPzDv6VsB2h1EWMfLgjqHuwj2xqMxYv5/UbkyJH1dPEjar0UKiA
+         KKjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711434727; x=1712039527;
+        d=1e100.net; s=20230601; t=1711437017; x=1712041817;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NveLiMrbFvePfALmt6XX47/2qw2u9YrpgAMC6RHpHGg=;
-        b=Fsex+UfjVG7Qo+tFI4ZE5QkGo5HGryW6th0yxIILEBjisNgIWMViltV3dh9a1j6Coo
-         WltFTmdLfsbqZREYfP4W7pkY/qJyKOhc/mEFnpNdlvgm/nQ5wGMsR+mHZ/bMJTldonmL
-         zAW3IfYeLORq3IrsxU737JyzSxzmFfiOFDm1PIwP2SmH+JWFMa9mW06048+nuB/cyGNQ
-         1icHFJPZtq4Kbhv9gzWy7ZE03rPExF/5cdl0tUrQziKMTeDZ3cSx64JVuEPYc2EoCGMW
-         M5T4/49ovAtDPuPYLLUeakqQ1m+scvhk9/aoODQhLtRuksXiFTKEPSSaWDgN5Ttmyjy+
-         oVwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhjLfC55mIaxX/aXvhpdnRO3vzRdFAJFIJ/lBT1hRcThSFC1I0EpXxT0jhGu2uDKin1zu/QfVA/6zE7hqnlw4ZpBrc
-X-Gm-Message-State: AOJu0YwvITftOWRQEBRJfalbLiGmFVMdAW586tgDbvZzgUJrEh6KDCFt
-	iYNLD7+93Q0GakmSJuTznrc5XcXa1MHh9ri7kMyjKWZmeDO44UNCp4++axCJTws=
-X-Google-Smtp-Source: AGHT+IHMNWnS3RxD6LvaJzwKOnobI52GiT24J1lIy/+ZVc10zCNLHDa7GejM4EHBIEo5OTxccvUxlw==
-X-Received: by 2002:ac2:4d07:0:b0:513:db29:8905 with SMTP id r7-20020ac24d07000000b00513db298905mr6318463lfi.69.1711434727252;
-        Mon, 25 Mar 2024 23:32:07 -0700 (PDT)
+        bh=qlmzj0sf1hp2LTTaE1AX/X6FTCE8mv7N2bIgUWEpv0s=;
+        b=uaDTVd7lvbJGs2NkVt4Nc+qR+sJ6MpQ/rrdBHDDqWSNRjLjvFQca7mGHXvKXemMv8Y
+         X0mexw8vc1H5BPBcx1Z1DNicnyHLV+GpPzqygqhRCMB5XgUq5tj89J3iJFtt65SCaiMC
+         cMd1OGxHsqpZZvOVdxBQgrNwA0wQepGLrajUgLpk1TsQmafYroKYAadrDSpHoDYVvc0p
+         F1rf5kNLDdPuoGi9aVebVTGhAj5meckP5TSsV2PWsU+S8WrvX3N2unvjNaW3YaWg38+m
+         mzpNzawJUpsWsokCBzH1eiM98CVR/DLl/S1BHFV0lwXgkt0dKyCQc1zTVU5Vj7+Mh5s3
+         ZTKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVbsnjHhSKfzLD6mINq47N/gml5wodkF8Wd99EQsnPYNroo9LbUZ7P86PA4hKY9XG4xHB2jC/YCNZ3S+7v7NcCBXPO
+X-Gm-Message-State: AOJu0YzURMbVWYakxqLoobZ5m8lUW1bzhxsmumD76jdmn3Dxb8eA0c4v
+	n0vfnRa/lESDyd2GZlA/JsmUDstcN5gpjv5Sa5tgtko278OfPacjQ413V2m2G+o=
+X-Google-Smtp-Source: AGHT+IFzYiPiCUgiK1lOumfheXscF+WhbmjnXM4eUolE+aiXGLSL0Nk/IZ+ZDM/VJYPEhzXXmW9vNw==
+X-Received: by 2002:a17:906:128d:b0:a47:11a9:9038 with SMTP id k13-20020a170906128d00b00a4711a99038mr6598574ejb.58.1711437016897;
+        Tue, 26 Mar 2024 00:10:16 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id la2-20020a170907780200b00a4503a78dd5sm3879491ejc.17.2024.03.25.23.32.05
+        by smtp.gmail.com with ESMTPSA id ao18-20020a170907359200b00a46aba003eesm3869801ejc.215.2024.03.26.00.10.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 23:32:06 -0700 (PDT)
-Message-ID: <5e310358-44b5-413a-a6c0-47dea4944362@linaro.org>
-Date: Tue, 26 Mar 2024 07:32:05 +0100
+        Tue, 26 Mar 2024 00:10:16 -0700 (PDT)
+Message-ID: <f2abb2ff-93f1-4f5d-9078-36a1be7fba2a@linaro.org>
+Date: Tue, 26 Mar 2024 08:10:14 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,15 +62,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] mfd: rohm-bd71828: Add power off functionality
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: lee@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, mazziesaccount@gmail.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-References: <20240324201210.232301-1-andreas@kemnade.info>
- <20240324201210.232301-3-andreas@kemnade.info>
- <b5cc609a-b3c5-4994-bcd5-e25a43d33cff@linaro.org>
- <20240325212127.7583c845@aktux>
+Subject: Re: [PATCH 3/5] dt-bindings: vendor-prefix: Add prefix for Au-Zone
+ Technologies
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Cc: Trevor Zaharichuk <trevor@au-zone.com>, Greg Lytle <greg@au-zone.com>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com>
+ <20240325203245.31660-4-laurent.pinchart@ideasonboard.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -117,47 +119,20 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240325212127.7583c845@aktux>
+In-Reply-To: <20240325203245.31660-4-laurent.pinchart@ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 25/03/2024 21:21, Andreas Kemnade wrote:
-> On Mon, 25 Mar 2024 13:13:13 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On 25/03/2024 21:32, Laurent Pinchart wrote:
+> Au-Zone Technologies is a company that designs and manufactures products
+> for AI vision applications. Add a DT vendor prefix for it.
 > 
->> On 24/03/2024 21:12, Andreas Kemnade wrote:
->>>  	struct regmap_irq_chip_data *irq_data;
->>> @@ -542,7 +560,18 @@ static int bd71828_i2c_probe(struct i2c_client *i2c)
->>>  	ret = devm_mfd_add_devices(&i2c->dev, PLATFORM_DEVID_AUTO, mfd, cells,
->>>  				   NULL, 0, regmap_irq_get_domain(irq_data));
->>>  	if (ret)
->>> -		dev_err_probe(&i2c->dev, ret, "Failed to create subdevices\n");
->>> +		return	dev_err_probe(&i2c->dev, ret, "Failed to create subdevices\n");
->>> +
->>> +	if (of_device_is_system_power_controller(i2c->dev.of_node)) {
->>> +		if (!pm_power_off) {
->>> +			bd71828_dev = i2c;
->>> +			pm_power_off = bd71828_power_off;
->>> +			ret = devm_add_action_or_reset(&i2c->dev,
->>> +						       bd71828_remove_poweroff,
->>> +						       NULL);
->>> +		} else
->>> +			dev_warn(&i2c->dev, "Poweroff callback already assigned\n");  
->>
->> Missing {}
->>
->> Please run scripts/checkpatch.pl and fix reported warnings. Some
->> warnings can be ignored, but the code here looks like it needs a fix.
->> Feel free to get in touch if the warning is not clear.
->>
-> No, it does not complain about the {}. I was a bit unsure whether it is
-> required or not, but I was sure that checkpatch.pl does catch such things.
-> Yes, documentation clearly says that braces are required in those cases.
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 
-"CHECK: braces {} should be used on all arms of this statement"
-
-I will update my template-response to use --strict.
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
