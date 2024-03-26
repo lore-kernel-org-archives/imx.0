@@ -1,145 +1,223 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D93012DDA4
-	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F97174BEB
+	for <imx@lists.linux.dev>; Tue, 26 Mar 2024 07:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711437170; cv=none; b=M4IzrAbX4DkfZ4RHAC4d/MBkiR0rnxSX4esJ4pfeD6KVX75tLs2d6auN0cTh6DkGXpIPjggm8vFvRrSs8oiESjdVUzfTh6+1/ZIoxegTIDhPiyzoI8+5v1igJbTfGpPgSbIYUEaFyRGa5IicV/a+CbTNXMvClVuCb4de4VspUo0=
+	t=1711437259; cv=none; b=FIhc5D8CMRQEp4u9fkhnOTcJMBHABrYeS5OsTbIdODz7twXeqcgw3nopgZ8Vfp5l/tf60yxyouotWI/3pnptZ9T62wm8CtVrRNpOJaEEm0ZTaFFgJWMLqjWQwKRry9HEadwNFHW1pd19zGZT+55DpH3SUYpDVJLdUIqMKKgbvGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711437170; c=relaxed/simple;
-	bh=+DUjQtgmtHLmhR3CCrYX6BaVXKE2KAMRs58wiYJfuCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jyizH5SP/8bBKHoTiBbwUOLvrL8kfpVAm7bcZ3sAxKhhoO0dEGVkgnqgFUUpsggoD05UnIfTKQtmjaXCXYlWrGVJl37gbeoGk9/Zjk1TtFfumtGwEKrpbLKBQBEZBfU2QGDdd97zHAOEMYr63YJeGCVbB4nt/i+ztGVLAn7yRhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mUtmvba8; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1711437259; c=relaxed/simple;
+	bh=R/PF6zodIjJNrkWgq/pzQEcDa7T/S8aNQeuBGFJxGLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fjfW1b9f722Wng6AlAFWQmWobYikjVGAkhTPU1OG/kzorIvDbLmpGmlLxzG6Fv4s9qSPJNaQ0uTYmL0c0TtTvULOmWpnE75XSfAqFVf049VYEc8IZWg7AL7fe/E9Iw4HSQUxl5UQPrnoDKsCwP1JmpNEGwttYK9K9YIKqixvtGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=KILP2UIP; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QGOFVlBM reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mUtmvba8"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56c2787aff5so599387a12.3
-        for <imx@lists.linux.dev>; Tue, 26 Mar 2024 00:12:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="KILP2UIP";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QGOFVlBM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711437167; x=1712041967; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xzceid5SahoZKiYm83GmPygJABOhx89XFj2L00RttnM=;
-        b=mUtmvba8wEaIbKmlim/xtB+dXwgqG8VxF1K1b2LPQbytIYM9YxJimW4rqNvoEOw2Ec
-         2HveOXc+bfRBnKpXGoSTBw+V2sGPWYisidYiqwIzSMXQATs7nK2YWM6+txXoYf6X/e8G
-         swuCHwoDLGWQImJBinoptklHqtDEcok7lTwyAC1i5bbK30sWo/LWS8rzYhxYZcJdJzLa
-         1gc3hLwbqhV7Nj0PnX0tcQgdcnrn3m3A82s0d0D56CNWCcWjkuGYv9DzKfaP/r65Tlk/
-         /g3o4+X8kMHdHMfn5Pv5rHgvrgoTlZeLiptzc1ErIlDAf3aYaLc5z21AeKqyw8ctjLmT
-         YT2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711437167; x=1712041967;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xzceid5SahoZKiYm83GmPygJABOhx89XFj2L00RttnM=;
-        b=QHzOj26zDVJHgXGstON1q9C/rIEZ00tYT5L3FpY53k23SFfmhp3lOolNzr5C54N8LV
-         CXsoR713vl65zVVF7eLxkVmgLee9hniIyHBpYQMtd+16DOBBIkxWW7c3U4C1VaM27bfu
-         yWk9j3GCNlDA6t8TSr848+C1qmYNuNpRC/b7bKBt4Po8gblRZcGLhWNE1494mnEKy2en
-         pbIZQFRXER0X0hwOme00Ev7l5RWFFVHxBDottMWiNWFSGgt1jawCbymRLvjUtNMehVnI
-         k8eB2LkBznoRj8BDBLIDClsFZBrwpK4Ocn3/7gJ4bn89qKApkmo3Te6UdJw9Os8mQT/T
-         R/dw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRGjukJofB+fbDKpC5TTTgkA/EqM11+BIfk1tNsEk4yITOYt39xYK8BGwVfzH7w0qnRbbFwT4/y53v1SpB9gnnKkFh
-X-Gm-Message-State: AOJu0YxvkjF8EOcA1YcN6y2fhQi6uGf4jegpXCgzUjtKCwWoUAOkE075
-	KfBKU7I4YFRKzYpZViR9wS8vMjS+VFgmRGF0BBh1FhDUa6GGGwgDRQSPVs7uQ58=
-X-Google-Smtp-Source: AGHT+IGCfP1VlPOhs1JH1lNw94K0+XmUVgrjArsJUXccfw+B3g/JMU3n+M7c7F4wd0cpBwQKnRtxHw==
-X-Received: by 2002:a50:9ec1:0:b0:568:260b:e502 with SMTP id a59-20020a509ec1000000b00568260be502mr6401139edf.13.1711437167540;
-        Tue, 26 Mar 2024 00:12:47 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id da12-20020a056402176c00b0056b816e253esm3836116edb.13.2024.03.26.00.12.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Mar 2024 00:12:47 -0700 (PDT)
-Message-ID: <8fa53bf5-2467-4d21-9ac9-2824c79a0187@linaro.org>
-Date: Tue, 26 Mar 2024 08:12:45 +0100
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1711437255; x=1742973255;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=00WgOmyzkRllaoUEEu1uoP3kJXxqshi5oJasmpbz0Ts=;
+  b=KILP2UIPS4IGlRNNh9Khx1ykIj9Z8e9tZEU1g2xBn1SAkNnE9MGvTPte
+   X+O0M1C/deQ03C7di0OOT6uCZpE3P6GNICZ1KbHSYh1/h94t19mk34Tp0
+   RXvYlIxSY6m5GvIy0fHMXxX5+uuEbaPCnOrI5+8W7PmzPo5BnqDNxOkpE
+   5Ifb/A+bYopZybUUkboqJkCQWAs1lnXtSNG4nBlCJDdfA8KF+9O2gXxSr
+   Ztb6XERLpted5msbf9AD8DgxDpop0E/tQq/eafg/QodORAD4Yk3dddnsI
+   Lx9mFgjTiNE1PcpKnAl3LofXrdMRJOMJs4V8hC+Lp5vj0zBVq8hcgpWea
+   A==;
+X-IronPort-AV: E=Sophos;i="6.07,155,1708383600"; 
+   d="scan'208";a="36094014"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 26 Mar 2024 08:14:12 +0100
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D4F716EDC7;
+	Tue, 26 Mar 2024 08:14:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1711437248;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=00WgOmyzkRllaoUEEu1uoP3kJXxqshi5oJasmpbz0Ts=;
+	b=QGOFVlBMdZoRZjKwDMSLJZIEbnb9InlFc4QS7xXIRFSfRqN2aMkk4QDZ5brjVC4d9QU+iR
+	tu3C8x+13iQqTrv/MIfOysn7fRaEetW8+YEi8T6CInel22Ol7DAJcI/N835Q94Lx6z7Vj7
+	MQS1Vxm/iDP2OWZF11pl2KOYBnk5YBHw+0pcj/usj64sn7ooM9lRlx0Sbq2sS6AU39+z5t
+	FdmCiKAFE5MFyBiN8/wiV+ANaWMa8b3fuHALyoneIkDytV/ePnwpuaSCMqBCRbmwAvKApv
+	BrfdTqRumIdBxo4u1VlCv/cV7Ab8UQi/vHCFD63qNNjUv7B6uGTrzAkHeTz1xQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT nodes for the two ISPs
+Date: Tue, 26 Mar 2024 08:14:13 +0100
+Message-ID: <2929432.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240325204924.GY18799@pendragon.ideasonboard.com>
+References: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com> <4879631.GXAFRqVoOG@steina-w> <20240325204924.GY18799@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] arm64: dts: Add device tree source for the Au-Zone
- Maivin Starter Kit
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Cc: Trevor Zaharichuk <trevor@au-zone.com>, Greg Lytle <greg@au-zone.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com>
- <20240325203245.31660-6-laurent.pinchart@ideasonboard.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240325203245.31660-6-laurent.pinchart@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 25/03/2024 21:32, Laurent Pinchart wrote:
-> The Maivin board is an AI vision starter kit sold by Au-Zone
-> Technologies, developed in collaboration with Toradex and Vision
-> Components. It is based on a Toradex Verdin i.MX8MP SoM.
-> 
-> Add a device tree that covers the base set the peripherals found on the
-> board:
+Hi Laurent,
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching.
-And drop redundant parts.
-arm64: dts: imx8mp-maivin: Add Au-Zone Maivin Starter Kit board
+Am Montag, 25. M=E4rz 2024, 21:49:24 CET schrieb Laurent Pinchart:
+> Hi Alexander,
+>=20
+> On Mon, Mar 25, 2024 at 04:52:21PM +0100, Alexander Stein wrote:
+> > Am Montag, 25. M=E4rz 2024, 16:13:39 CET schrieb Laurent Pinchart:
+> > > From: Paul Elder <paul.elder@ideasonboard.com>
+> > >=20
+> > > The ISP supports both CSI and parallel interfaces, where port 0
+> > > corresponds to the former and port 1 corresponds to the latter. Since
+> > > the i.MX8MP's ISPs are connected by the parallel interface to the CSI
+> > > receiver, set them both to port 1.
+> > >=20
+> > > Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
+> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > ---
+> > > Changes since v1:
+> > >=20
+> > > - Fix clock ordering
+> > > - Add #address-cells and #size-cells to ports nodes
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 50 +++++++++++++++++++++=
+++
+> > >  1 file changed, 50 insertions(+)
+> > >=20
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
+oot/dts/freescale/imx8mp.dtsi
+> > > index bfc5c81a5bd4..1d2670b91b53 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > @@ -1616,6 +1616,56 @@ isi_in_1: endpoint {
+> > >  				};
+> > >  			};
+> > > =20
+> > > +			isp_0: isp@32e10000 {
+> > > +				compatible =3D "fsl,imx8mp-isp";
+> > > +				reg =3D <0x32e10000 0x10000>;
+> > > +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+> > > +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> > > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> > > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> > > +				clock-names =3D "isp", "aclk", "hclk";
+> > > +				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP>;
+> > > +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_500M>;
+> > > +				assigned-clock-rates =3D <500000000>;
+> > > +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> > > +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
+> > > +				status =3D "disabled";
+> > > +
+> > > +				ports {
+> > > +					#address-cells =3D <1>;
+> > > +					#size-cells =3D <0>;
+> > > +
+> > > +					port@1 {
+> > > +						reg =3D <1>;
+> > > +					};
+> > > +				};
+> > > +			};
+> > > +
+> > > +			isp_1: isp@32e20000 {
+> > > +				compatible =3D "fsl,imx8mp-isp";
+> > > +				reg =3D <0x32e20000 0x10000>;
+> > > +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
+> > > +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> > > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> > > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> > > +				clock-names =3D "isp", "aclk", "hclk";
+> > > +				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP>;
+> > > +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_500M>;
+> > > +				assigned-clock-rates =3D <500000000>;
+> > > +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> > > +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
+> > > +				status =3D "disabled";
+> > > +
+> > > +				ports {
+> > > +					#address-cells =3D <1>;
+> > > +					#size-cells =3D <0>;
+> > > +
+> > > +					port@1 {
+> > > +						reg =3D <1>;
+> > > +					};
+> > > +				};
+> > > +			};
+> > > +
+> >=20
+> > The patch itself is okay. But you might not be able to
+> > configure the parent of IMX8MP_CLK_MEDIA_ISP if dewarp is enabled befor=
+e.
+> > This is due to IMX8MP_CLK_MEDIA_ISP_ROOT being enabled in 'pgc_ispdwp'
+> > power domain. Reparenting is not possible anymore in this case.
+>=20
+> Good point.=20
+>=20
+> > Something like
+> > ---8<---
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -1837,11 +1837,13 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
+> >                                                   <&clk IMX8MP_CLK_MEDI=
+A_APB>,
+> >                                                   <&clk IMX8MP_CLK_MEDI=
+A_DISP1_PIX>,
+> >                                                   <&clk IMX8MP_CLK_MEDI=
+A_DISP2_PIX>,
+> > +                                                 <&clk IMX8MP_CLK_MEDI=
+A_ISP>,
+> >                                                   <&clk IMX8MP_VIDEO_PL=
+L1>;
+> >                                 assigned-clock-parents =3D <&clk IMX8MP=
+_SYS_PLL2_1000M>,
+> >                                                          <&clk IMX8MP_S=
+YS_PLL1_800M>,
+> >                                                          <&clk IMX8MP_V=
+IDEO_PLL1_OUT>,
+> > -                                                        <&clk IMX8MP_V=
+IDEO_PLL1_OUT>;
+> > +                                                        <&clk IMX8MP_V=
+IDEO_PLL1_OUT>,
+> > +                                                        <&clk IMX8MP_S=
+YS_PLL2_500M>;
+> >                                 assigned-clock-rates =3D <500000000>, <=
+200000000>,
+> >                                                        <0>, <0>, <10395=
+00000>;
+>=20
+> With an assigned clock rate here too then ?
 
+You are right. This posted diff is what I was using for a while now though.
+Apparently the clock frequency was still correct.
 
 Best regards,
-Krzysztof
+Alexander
+
+> >                                 #power-domain-cells =3D <1>;
+> > ---8<---
+> > is needed.
+>=20
+> Sascha, are you OK with this approach ?
+>=20
+> > >  			dewarp: dwe@32e30000 {
+> > >  				compatible =3D "nxp,imx8mp-dw100";
+> > >  				reg =3D <0x32e30000 0x10000>;
+> > >=20
+> > > base-commit: 4cece764965020c22cff7665b18a012006359095
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
