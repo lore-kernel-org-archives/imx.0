@@ -1,102 +1,70 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4807FBDC
-	for <imx@lists.linux.dev>; Mon, 25 Mar 2024 22:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E256B1804F;
+	Tue, 26 Mar 2024 00:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711407060; cv=none; b=FLCZP1/0p3h2pS15rYUQ8JnFpEhrCda5S7At9zqyA4rIi9nBwNB+E/NR1QNRNbP+Z2BtdLb/LkiZZ8NilFwVwTjYUDEM5m7fcnNRUDhENUquq9BTvuV5G30Kx4O6RSUP62jXADGDxQytMlxdCzh+OwI4mBFekW+ZH3a0YEP+5tM=
+	t=1711413406; cv=none; b=s/wPuTkwcAZC/mztNgv2M9V/PhIGPAcx6w6BAsDWtQQGkl73MEWj569zN8pFjg74lXLCyU6P9lBTOatNDmpg9fgJ1E8UY8o4YBK8xE2/fqWCI5/w29HDPvH4V3FdgZIU2c95Rf7jXvPdtyhwRXvVjl4h5HVvJaR+/WeXjidT1bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711407060; c=relaxed/simple;
-	bh=0f9qpwXXxWgPJBcoJIpLXonLngQHZiXwSMlsWPCu1vc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PUN9XJb14s9iUysI1iulPvaioO29BzBwu9nSduvcpQ+LVMlsqeify7Ge5TbQY0iwfbxiDVE1kqkIKhZE+BlTVcufnI45gYO+cB1sKdV8jNeopf8C8jIph+wi9QTDMtv7KXsT05pA9e0mp2gM+umpn7E1FKbDZ1Wkckx1DjAwxXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=lcCLsn8/; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1711413406; c=relaxed/simple;
+	bh=r6ja1S3WkmxWys+sE3KabUy5bKAQKHZGyKXel35g+zY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dpc+FvOx18fHm1OGndsMDgpoQyDIMSjFGHKmGbshxy45Ao/sgRnwfvIaTWlts0nhnzwQS945Vc2ZXiv3G3xafTrYj66NuWfvwY14zz2rJ0arutkxDAPH3AAKEy1W4IQjXsK0GJeQkcJbU2848eYoUajcE0okRAQwhJFB19z6Pok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFOy9Sck; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="lcCLsn8/"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 209BE7E4;
-	Mon, 25 Mar 2024 23:50:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1711407025;
-	bh=0f9qpwXXxWgPJBcoJIpLXonLngQHZiXwSMlsWPCu1vc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lcCLsn8/QtQQ5SRufgSvn+D8lNYyO1oU1tR8ZN8k2Yh6EzpMCsRy11cddBqjmN46i
-	 wk5VYPEnlbQFzFmPDGKt+X7CpozFaQutJAMBtnCLjKMdm8xuW9cfK5AriZ2laD1xNl
-	 0qGtRYoL+nnc/dsaqLz3G0sTLaFZTJx0oNvp0RR8=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Jacopo Mondi <jacopo@jmondi.org>
-Subject: [PATCH] arm64: dts: debix-a: Remove i2c2 from base .dts
-Date: Tue, 26 Mar 2024 00:50:48 +0200
-Message-ID: <20240325225048.1159-1-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.43.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFOy9Sck"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84803C433C7;
+	Tue, 26 Mar 2024 00:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711413405;
+	bh=r6ja1S3WkmxWys+sE3KabUy5bKAQKHZGyKXel35g+zY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RFOy9SckrUmOjcVY80p+Bpxbe+5dpDJq+JeaQvIywXepTed1YRXnEepoqUkHhDLDv
+	 KZQ8orGHJmcfhxU4yqXzvKwkkh03GuDsm5VknrzWZxwAeC8moegodFxeAFmHcguP3V
+	 MvMXRlBgmBX55pjBPgOUTWQbK7zrjPHUR7Ivk7miBmPv+gpyP5Ja8S02vD6UZnj61n
+	 CqfQ4NXy/CKPT7KniveufUJdSfosIbl7mM5+gISfC65C9eTYs21OyRMfhMeYTy9MAj
+	 ov2d24lOwn4Oj/ZJVUPrXNuEHsLe2pES4uVY1T8XSrKZegQunB7Zn3qmkn816MOaQo
+	 yZPbuVAYSRHAg==
+Date: Tue, 26 Mar 2024 01:36:41 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, asahi@lists.linux.dev, 
+	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-actions@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH 00/64] i2c: reword i2c_algorithm according to newest
+ specification
+Message-ID: <j2l7tu24itjelylrgwe6gdsy3mfrw3dnve4rdofmri3z7xdroc@se56t5ylmdak>
+References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
+ <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
 
-From: Jacopo Mondi <jacopo@jmondi.org>
+Hi Wolfram,
 
-The I2C2 bus is used for the CSI and DSI connectors only, no devices are
-connected to it on neither the Debix Model A nor its IO board. Remove
-the bus from the board's .dts and rely on display panel or camera sensor
-overlsy to enable it when necessary.
+> > @Andi: are you okay with this approach? It means you'd need to merge
+> > -rc2 into your for-next branch. Or rebase if all fails.
+> 
+> I think it's a good plan, I'll try to support you with it.
 
-Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- .../boot/dts/freescale/imx8mp-debix-model-a.dts    | 14 --------------
- 1 file changed, 14 deletions(-)
+Do you feel more comfortable if I take the patches as soon as
+they are reviewd?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-index 5ac77eaf23d5..26c303b7c7fa 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-@@ -210,13 +210,6 @@ ldo5: LDO5 {
- 	};
- };
- 
--&i2c2 {
--	clock-frequency = <100000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c2>;
--	status = "okay";
--};
--
- &i2c3 {
- 	clock-frequency = <400000>;
- 	pinctrl-names = "default";
-@@ -392,13 +385,6 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA					0x400001c2
- 		>;
- 	};
- 
--	pinctrl_i2c2: i2c2grp {
--		fsl,pins = <
--			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL					0x400001c2
--			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA					0x400001c2
--		>;
--	};
--
- 	pinctrl_i2c3: i2c3grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL					0x400001c2
--- 
-Regards,
+So far I have tagged patch 1-4 and I can already merge 2,3,4 as
+long as you merge patch 1.
 
-Laurent Pinchart
-
+Andi
