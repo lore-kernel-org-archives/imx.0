@@ -1,40 +1,40 @@
-Received: from mail-108-mta20.mxroute.com (mail-108-mta20.mxroute.com [136.175.108.20])
+Received: from mail-108-mta36.mxroute.com (mail-108-mta36.mxroute.com [136.175.108.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1771B152160
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49147153BE2
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711581486; cv=none; b=cNuOBctYsS4WaDCxnBFdKAorbsj7Ctc/3t1kb/hy58q1zPQKLKnvBNKESA/iYkhMDtJlU+ihetcNwKD9JOjsmGR1PGvzIbIpXKjNHRqg8fZPh/XYYAe0kAEwgL82qNIP28N3fDv/ACbgHY64Kw+8lOw5N7/+MHWtDXjz2sUSpOY=
+	t=1711581751; cv=none; b=XWfGifEVa4o+Xr8MVRZrArz7FBg2WKVjiI3upzRu693+/kb2l0B+9OggK9f4kRJesSDdnTDzvbeRfh2f2+BSyOG5h5bPCvuajdx6K/yPqSI4b7NlgKHQjFKLpNStmrPUTdYNXrTE+xB+Wu/8Frpthp5HmEJDDxEavLjj4IOTVUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711581486; c=relaxed/simple;
-	bh=cod9Uff2WJHycV1JgYkB6YcxOlX/FeYXw3c4usUp97o=;
+	s=arc-20240116; t=1711581751; c=relaxed/simple;
+	bh=AdHweroZnT+pHzZ/vSg+ukBfbmEglEx27aSOBLZQSiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOIieRybZ+ZMaDmGKUWA8Ap6kd/BwLdsUKg8rxXhnE5Ll0lwPSCKzRs/wywz74fR9Gs+TMNez3I/g+ZVmod6jdE6mbSvJvrMwQ2ZRBYg5+JdZGFSwyiZNLhAnqzv0tkkgKmwNN28Lq6ZNI8WHR7Tcl56moWjl/ijAPTRazsCPfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=RhqwllJS; arc=none smtp.client-ip=136.175.108.20
+	 MIME-Version; b=hg4Ws1elfNoO4hOh2ulvUOQ9NnpOWJyl1KwrDL9TKkIe/2is6yZwb+rbfxv1Cw7uIjJHIW8BuHC6S3uGqmmA5U1IE6XWrJQXam7cJvMkihG6Tf2saS5ghGpIjGK3gthmreb2ODcVfVkQtV+gdt8A2ubGNFBkR9NulJLTg7VmD00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=XuedZhcO; arc=none smtp.client-ip=136.175.108.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="RhqwllJS"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="XuedZhcO"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta20.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234d0610003bea.00a
+ by mail-108-mta36.mxroute.com (ZoneMTA) with ESMTPSA id 18e82342a660003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 23:18:03 +0000
-X-Zone-Loop: ed48c9ae1baba35f06f57f47279d12e06b0263533049
+ Wed, 27 Mar 2024 23:17:20 +0000
+X-Zone-Loop: f86b70b57523154725224f6aee1159432798d0a8ca24
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LjTpuhBdOaCqahODS/RH8FzgsjiJhHlH8fSAiGxPvj0=; b=RhqwllJSBTxd/TzOcE9rhrNwm/
-	ojUPMl2wS6Zrqe/2JHwhaHKHw98UlTxqsAr5cRSbd4WFMsrgLhtqKkLPjiLHnKAuoCbUOGpC9BRlT
-	LSRjKfvQGq5BsSX16E+OxL25FMF6o0MxG0RaEJPBlB8gUKO0iS6EBFroAgerWKVL1vqJPICZQC4pd
-	rfjN9rIx3y0rOpONq26ezELw0VlWXvhASTYQ0TuqCtc+W0IXoxJgIxDMYyGKN5fz1f06CXkAldUW2
-	/dnfLu3eQN5sT5HyuE853SpSJXAQ//2Jnc68M1Jf9Olo54V2ynbRbqa5fPPdGEYt3NPvhKbmGLL3S
-	k2JD6JFg==;
+	bh=oPBK+fqL/hsM837Y3buk53bLBMvRdlTlsTvv2J3d9qk=; b=XuedZhcOk3oxws/6gsMm1d6NPc
+	CUNpuVFVG+a888XylOiGJqtT0HeZPaGljb9MbfFDV+Qqb8yDOxK/FIDTjskVaK52+g1Vynhc8sKcg
+	daKoLdGV9tTJDnKcnxnBxXKKW5lUqlcLcuCoIIy/xz2017e0+uw+ySDR4VEgxjmiheLlNllk1PXPH
+	Cj6FTLD6mSBjs8PAzafDzUEijaGhkRBhdyWfiQwXlPevVAhk+lJX1GfZQw4Cg18/viTViCA9dDl0o
+	S8DJ0vmgh6gmR96gnOU9sphI2wvl44xE9XCKmiUmWcGXminJkyZ7zy4WsGv2msV5Ik3LqZgfqj5Hl
+	8K7EVUGg==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -51,12 +51,10 @@ Cc: dave.stevenson@raspberrypi.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>,
-	Ondrej Jirman <megous@megous.com>
-Subject: [PATCH 23/23] drivers: media: i2c: imx258: Add support for reset gpio
-Date: Wed, 27 Mar 2024 17:17:09 -0600
-Message-ID: <20240327231710.53188-24-git@luigi311.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 01/23] media: i2c: imx258: Remove unused defines
+Date: Wed, 27 Mar 2024 17:16:47 -0600
+Message-ID: <20240327231710.53188-2-git@luigi311.com>
 In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
 References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
@@ -68,60 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: personal@luigi311.com
 
-From: Luigi311 <git@luigi311.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-It was documented in DT, but not implemented.
+The IMX258_FLL_* defines are unused. Remove them.
 
-Signed-off-by: Ondrej Jirman <megous@megous.com>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
- drivers/media/i2c/imx258.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/media/i2c/imx258.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index d8c51d5f04e0..42e1c9246bed 100644
+index a577afb530b7..2dbafd21dd70 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -687,6 +687,7 @@ struct imx258 {
- 	unsigned int csi2_flags;
+@@ -29,12 +29,6 @@
+ #define IMX258_VTS_30FPS_VGA		0x034c
+ #define IMX258_VTS_MAX			0xffff
  
- 	struct gpio_desc *powerdown_gpio;
-+	struct gpio_desc *reset_gpio;
- 
- 	/*
- 	 * Mutex for serialized access:
-@@ -1239,7 +1240,11 @@ static int imx258_power_on(struct device *dev)
- 		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
- 	}
- 
--	return ret;
-+	gpiod_set_value_cansleep(imx258->reset_gpio, 0);
-+
-+	usleep_range(400, 500);
-+
-+	return 0;
- }
- 
- static int imx258_power_off(struct device *dev)
-@@ -1250,6 +1255,7 @@ static int imx258_power_off(struct device *dev)
- 	clk_disable_unprepare(imx258->clk);
- 	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
- 
-+	gpiod_set_value_cansleep(imx258->reset_gpio, 1);
- 	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
- 
- 	return 0;
-@@ -1561,6 +1567,12 @@ static int imx258_probe(struct i2c_client *client)
- 	if (IS_ERR(imx258->powerdown_gpio))
- 		return PTR_ERR(imx258->powerdown_gpio);
- 
-+	/* request optional reset pin */
-+	imx258->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-+						    GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx258->reset_gpio))
-+		return PTR_ERR(imx258->reset_gpio);
-+
- 	/* Initialize subdev */
- 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+-/*Frame Length Line*/
+-#define IMX258_FLL_MIN			0x08a6
+-#define IMX258_FLL_MAX			0xffff
+-#define IMX258_FLL_STEP			1
+-#define IMX258_FLL_DEFAULT		0x0c98
+-
+ /* HBLANK control - read only */
+ #define IMX258_PPL_DEFAULT		5352
  
 -- 
 2.42.0
