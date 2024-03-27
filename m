@@ -1,40 +1,40 @@
-Received: from mail-108-mta128.mxroute.com (mail-108-mta128.mxroute.com [136.175.108.128])
+Received: from mail-108-mta188.mxroute.com (mail-108-mta188.mxroute.com [136.175.108.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC89F153814
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5044153BF3
 	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 22:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.128
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711578364; cv=none; b=DWsRizMEvchXqjgzy12obOnNkye0wPOX7k9zoFyj7pBNy47XF0qPJ1ZfjWIal7uXv/iMq1sZX3NHCXLrPZR02suHi1jtiKicQXhPo0QH/HeK46JuwqmZXMLcQCnyCOJUo3WZmM7bjaRJQoJ30Sh/lD61wNZqipecXIBkGuG8Btw=
+	t=1711578365; cv=none; b=FedAX18rEJMdU+gZ+ZPZD4reb4xid8D1BeO5L/EFmoRPNd/05q3KzIqwnXhYjkVwmfaGslvb4rMw10eNiQjUTDGUudCJ59hE4K8rhS/L17LTuFhi4eMPcHpAISQR2VA/WDF7u1B/S5M8X0tMEFG26sWxeDNcGfdUo9WRp+LooKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711578364; c=relaxed/simple;
-	bh=3Os/T7XYPPuIQ9wkr2Su5Kx7M9odE7Rv2QP5TKP3BkE=;
+	s=arc-20240116; t=1711578365; c=relaxed/simple;
+	bh=B4s2yCDpIKOW86tAjjQ6L/UaYF/IQ6mt7oWrgOD4HUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkQtUcyZaCrQV1bIPD+UvwgATtMeD9S8bwoh15k+d6yUSwFzjLm43cMpXiWT0297AEc3KPIUvOE8b57ujLiHzgaIh/4Ia4b5tlLI1Rbsui4nLYk0N8zThAmyKDG/yeaWrRxuITaC5dCRmDJUv8+INaNBpmXZgmazLFJ8aDcD8D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=u0ItyWUb; arc=none smtp.client-ip=136.175.108.128
+	 MIME-Version; b=R+wqa099u78KmvJfIiXcknwXvJx7AIVFekVt/9Y9z8VvqYY6NDkOFXLAtsjtRQLp9QexjLZQe7+2Mm+3ybGzigez0DCFwfFOiAFczdywEOVAFMpE2g4QXodeAS8SOwcN6JaLENCG1NieDiha+EAYBGmDyTyBhD9hh/K29GsY/XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=MqX3fr/K; arc=none smtp.client-ip=136.175.108.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="u0ItyWUb"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="MqX3fr/K"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta128.mxroute.com (ZoneMTA) with ESMTPSA id 18e8200738e0003bea.00a
+ by mail-108-mta188.mxroute.com (ZoneMTA) with ESMTPSA id 18e82007a190003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 22:20:51 +0000
-X-Zone-Loop: eefb9b1dca58bb4725705d0474511ebd8398b4f20d4f
+ Wed, 27 Mar 2024 22:20:53 +0000
+X-Zone-Loop: d8b1d6075daebf7eb3bb90a0893aef6d6646ff64408c
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KW1mmB+UsQBWu80vviFCvkS83K6yY9xI4ffO4IjmdFk=; b=u0ItyWUb09UfcJxkaIveclCfXh
-	xBOlan1n/02oKFXfvTm1s80u8WWKXF/2XsJUUc4r04bycRw+nrXanaRi7LA2/Z+7uDZuwITZ4GL6r
-	4qTyvTEAjeIK2t8ofXNg0LY70w20wWaA/XjhhuLGvRgBKErQYUJxED7hV8L/fXTUSAAfvVlCtHrCz
-	Qg5CGjGpOw85bi9JkaxzCc/eRQ0rw6fA6//7GKM8TU/phxx7ueujmMi3hEq0tuIuY2TJqIVyL4HIt
-	oVNl5uQnN7uFT377WZaE94XlhJKX1nyBNotWQ0/7mZNmOl5EwrezJ+QQ/+bSW1Hux86eWwrorPB3l
-	s2jHPlmw==;
+	bh=8bhqgLzRjHq8zDgKCYHR1LOSNnMHG3H17WmIQSeJXnE=; b=MqX3fr/KR2+xxLWjV6UgowE1Je
+	IT+8u+qiekK5aAhIE2blnT3okZK2v6Q1DPHvl1UdCIO70g9SZ4pQUcK53HJgIsFpMMPFrTv9UzDwu
+	WOgaLgnQ+qDiWRSHE7asfcUcIIXs5MYHQbnfE2vVnEjoH5dgSsX8C5PitVGuFIXStNbKoVGDx/Xb7
+	Ad5c4J8rxKbEhrjwakKQPBZQtQUSMflPYI2u+3aSIBvaIOYF8uPp553KF5TecISCjLwSmVQMN5o9A
+	z6WGGuvnFOYbJK1DbfYtGSNJrAKkUKhtouHjY8lWFE2BBgTx9W+oZ2OjFflemwcKxNbt+91KM9CTW
+	5mmO7sZA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -53,9 +53,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	x@xnux.eu
-Subject: [PATCH 03/23] media: i2c: imx258: Disable digital cropping on binned modes
-Date: Wed, 27 Mar 2024 16:20:15 -0600
-Message-ID: <20240327222035.47208-4-git@luigi311.com>
+Subject: [PATCH 04/23] media: i2c: imx258: Remove redundant I2C writes.
+Date: Wed, 27 Mar 2024 16:20:16 -0600
+Message-ID: <20240327222035.47208-5-git@luigi311.com>
 In-Reply-To: <20240327222035.47208-1-git@luigi311.com>
 References: <20240327222035.47208-1-git@luigi311.com>
 Precedence: bulk
@@ -69,49 +69,46 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-The binned modes set DIG_CROP_X_OFFSET and DIG_CROP_IMAGE_WIDTH
-to less than the full image, even though the image being captured
-is meant to be a scaled version of the full array size.
-
-Reduce X_OFFSET to 0, and increase IMAGE_WIDTH to the full array.
+Registers 0x0202 and 0x0203 are written via the control handler
+for V4L2_CID_EXPOSURE, so are not needed from the mode lists.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
- drivers/media/i2c/imx258.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/i2c/imx258.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 4a7048d834c6..0ae4371940ca 100644
+index 0ae4371940ca..df7ed4716762 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -340,11 +340,11 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
- 	{ 0x0404, 0x00 },
- 	{ 0x0405, 0x20 },
- 	{ 0x0408, 0x00 },
--	{ 0x0409, 0x02 },
-+	{ 0x0409, 0x00 },
- 	{ 0x040A, 0x00 },
- 	{ 0x040B, 0x00 },
- 	{ 0x040C, 0x10 },
--	{ 0x040D, 0x6A },
-+	{ 0x040D, 0x70 },
- 	{ 0x040E, 0x06 },
- 	{ 0x040F, 0x18 },
- 	{ 0x3038, 0x00 },
-@@ -459,11 +459,11 @@ static const struct imx258_reg mode_1048_780_regs[] = {
- 	{ 0x0404, 0x00 },
- 	{ 0x0405, 0x40 },
- 	{ 0x0408, 0x00 },
--	{ 0x0409, 0x06 },
-+	{ 0x0409, 0x00 },
- 	{ 0x040A, 0x00 },
- 	{ 0x040B, 0x00 },
- 	{ 0x040C, 0x10 },
--	{ 0x040D, 0x64 },
-+	{ 0x040D, 0x70 },
- 	{ 0x040E, 0x03 },
- 	{ 0x040F, 0x0C },
- 	{ 0x3038, 0x00 },
+@@ -237,8 +237,6 @@ static const struct imx258_reg mode_4208x3120_regs[] = {
+ 	{ 0x034E, 0x0C },
+ 	{ 0x034F, 0x30 },
+ 	{ 0x0350, 0x01 },
+-	{ 0x0202, 0x0C },
+-	{ 0x0203, 0x46 },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
+@@ -356,8 +354,6 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x034E, 0x06 },
+ 	{ 0x034F, 0x18 },
+ 	{ 0x0350, 0x01 },
+-	{ 0x0202, 0x06 },
+-	{ 0x0203, 0x2E },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
+@@ -475,8 +471,6 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x034E, 0x03 },
+ 	{ 0x034F, 0x0C },
+ 	{ 0x0350, 0x01 },
+-	{ 0x0202, 0x03 },
+-	{ 0x0203, 0x42 },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
 -- 
 2.42.0
 
