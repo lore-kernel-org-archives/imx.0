@@ -1,40 +1,40 @@
-Received: from mail-108-mta13.mxroute.com (mail-108-mta13.mxroute.com [136.175.108.13])
+Received: from mail-108-mta183.mxroute.com (mail-108-mta183.mxroute.com [136.175.108.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE571552E8
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954D8155A39
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711581782; cv=none; b=poldQ2y5qP1beip7neje3hr0OV5GbulEEyKROgJkkBDs68kAfOytpNkZk7s9jmXSFNemmzKen0483C+VW2WBOlmHU/RI9AS6joOKdcpLW3eXbZw1vr4V1A2YJaw0N/OA7Bh51ncqZQHuqlYrGU6bmBTUNZohmXizxTEOoqeVK08=
+	t=1711581787; cv=none; b=TRTlEMRfCmGLdkIyW9LxyPUqKsNT5JDcwaIiFq7gLnifT2velWqXVsOBI2lTcr6QSrLQvq5anoa7yU1o7fWnTierm27XbsUUnPxk2TPwpbYxjRGWNaJMYXA/+oon9u/dlmBgGloaz+bHU69w6I3RZFxnKI4tfP7ZcUkFBmT/KDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711581782; c=relaxed/simple;
-	bh=KZ76x2fc3WeOj7LBiWJxeujGzu6MDjyqqWFmrDXeA10=;
+	s=arc-20240116; t=1711581787; c=relaxed/simple;
+	bh=x58t6k8EokPq4aAnaC2oATm/gQ5TdBN5BQeF0p+fL0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tA6EHqI088Qktgfy1PiM530jrrFeoAx7BnymjMZtvYTVRNHhhF/H97+6tn+AAFTZUuZz2Xh4wb4A0UXxU6tPuxV6UEodcFC3yjEklC7RXU9Zx/ndvSYq8GZOrDBlse6LXiW2WULHbCdpJItyzydlcrBrgHvjBO5yANesBWVAkXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=TPzVje5o; arc=none smtp.client-ip=136.175.108.13
+	 MIME-Version; b=FfkA0LnQOxwkf1+vBgkFHl4Cmnt6juuxV2j7OUqWKmmtLmVlqF3OZXJprJVhFDMhitnciTkA+qajtWOyUUpcWh1L1vTsnJjvjKNXvk3ovcCTL1dE5fkNmn+maD0+GyeQh/I+1DbM7aBp5I3dVWd/MJr/RTVZdQE3iTIHVoQogAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=dLhz1N/8; arc=none smtp.client-ip=136.175.108.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="TPzVje5o"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="dLhz1N/8"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta13.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234974b0003bea.00a
+ by mail-108-mta183.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234abc60003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 23:17:48 +0000
-X-Zone-Loop: a171116e40dd0e045670b8b28f410fcc129de467e4c0
+ Wed, 27 Mar 2024 23:17:53 +0000
+X-Zone-Loop: b7d58c5c0ccfd102e70ea57d2f7719c1d7c3fcb928d4
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2hEJDv6UdkDP+8OHpzsCbaDIrQpZ6/TPz2mkJ9spkto=; b=TPzVje5oQxj2tk/MgXVmnCTfJU
-	gEmic0UoH8ECDZC3vJwbVOVsW/MtnxZIpxTph7HETUijp6zsgIi0JeTBNw7GFvYIQs6rByQ7V/kjP
-	/4OWR2uMWU6LXZgul/fdJbO5SB05j4OlH+AbB87696i5cm0Eo/hMlhDBOZegSOIonL/AR7BPtRAkd
-	vAny6JcJy1nnI7yMqM8O6wuBu0LlV8Xjsnk/01quoWHWwkxTuZ8YKRQeJhuBkNlpjLZi9gBWd6Uxk
-	f2rFKAHqnbndZVHd1N10NWGU8T8BDCFP7phplahzDskHf/bCqOF/hyCK2ol8vaWIKjkcv1jkXVgbe
-	e+QUN0wQ==;
+	bh=UNQcRvC+BTJmcFMUv7/581GlzybaY7yH1KloLiIT/SI=; b=dLhz1N/8XTD0i1MlofJeNmVnd9
+	KNK0xCCp/l+iZzxi0rYKrbFjimMoRnkkze42ULyiXwsQaivKWjnVPo/aY+g2TXhKbYDvpmQK91rJZ
+	QgVVze3hO+RXJIv2dxPal421YStiXvBnnNHFf3oi+nArsRoxo8S9VUaoe/CCF8c0mpt8hs9ClNP3H
+	VJYeVDiw7Si5GzR9tTHr2tYsz7nYmdzE9+BsTRsf1gd6bsPAw4pt8aav1Vw0X9MwTA+cfmY8qmJxt
+	TEEkKQGeYM5wkg3Adq30woS3FPIGOSxl8LO450RCfdmQDQYP1w8/m6vyh0R3Rc2DZbU80ScFOJ17o
+	UGSrKYBQ==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -51,10 +51,11 @@ Cc: dave.stevenson@raspberrypi.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 16/23] media: i2c: imx258: Support faster pixel rate on binned modes
-Date: Wed, 27 Mar 2024 17:17:02 -0600
-Message-ID: <20240327231710.53188-17-git@luigi311.com>
+	linux-kernel@vger.kernel.org,
+	Luigi311 <git@luigi311.com>
+Subject: [PATCH 18/23] dt-bindings: media: imx258: Add alternate compatible strings
+Date: Wed, 27 Mar 2024 17:17:04 -0600
+Message-ID: <20240327231710.53188-19-git@luigi311.com>
 In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
 References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
@@ -68,258 +69,35 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-With the binned modes, there is little point in faithfully
-reproducing the horizontal line length of 5352 pixels on the CSI2
-bus, and the FIFO between the pixel array and MIPI serialiser
-allows us to remove that dependency.
-
-Allow the pixel array to run with the normal settings, with the MIPI
-serialiser at half the rate. This requires some additional
-information for the link frequency to pixel rate function that
-needs to be added to the configuration tables.
+There are a number of variants of the imx258 modules that can not
+be differentiated at runtime, so add compatible strings for them.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Luigi311 <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 109 ++++++++++++++++++++++++-------------
- 1 file changed, 71 insertions(+), 38 deletions(-)
+ .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 66022088e4da..f5d0979110fe 100644
---- a/drivers/media/i2c/imx258.c
-+++ b/drivers/media/i2c/imx258.c
-@@ -99,6 +99,11 @@ struct imx258_reg_list {
- 	const struct imx258_reg *regs;
- };
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+index bee61a443b23..c7856de15ba3 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+@@ -14,10 +14,14 @@ description: |-
+   type stacked image sensor with a square pixel array of size 4208 x 3120. It
+   is programmable through I2C interface.  Image data is sent through MIPI
+   CSI-2.
++  There are a number of variants of the sensor which cannot be detected at
++  runtime, so multiple compatible strings are required to differentiate these.
  
-+struct imx258_link_cfg {
-+	unsigned int lf_to_pix_rate_factor;
-+	struct imx258_reg_list reg_list;
-+};
-+
- enum {
- 	IMX258_2_LANE_MODE,
- 	IMX258_4_LANE_MODE,
-@@ -109,8 +114,8 @@ enum {
- struct imx258_link_freq_config {
- 	u32 pixels_per_line;
+ properties:
+   compatible:
+-    const: sony,imx258
++    - enum:
++        - sony,imx258
++        - sony,imx258-pdaf
  
--	/* PLL registers for this link frequency */
--	struct imx258_reg_list reg_list[IMX258_LANE_CONFIGS];
-+	/* Configuration for this link frequency / num lanes selection */
-+	struct imx258_link_cfg link_cfg[IMX258_LANE_CONFIGS];
- };
- 
- /* Mode : resolution and related config&values */
-@@ -273,7 +278,7 @@ static const struct imx258_reg mipi_640mbps_19_2mhz_4l[] = {
- static const struct imx258_reg mipi_642mbps_24mhz_2l[] = {
- 	{ 0x0136, 0x18 },
- 	{ 0x0137, 0x00 },
--	{ 0x0301, 0x0A },
-+	{ 0x0301, 0x05 },
- 	{ 0x0303, 0x02 },
- 	{ 0x0305, 0x04 },
- 	{ 0x0306, 0x00 },
-@@ -479,14 +484,22 @@ enum {
- };
- 
- /*
-- * pixel_rate = link_freq * data-rate * nr_of_lanes / bits_per_sample
-- * data rate => double data rate;
-- * number of lanes => (configurable 2 or 4);
-- * bits per pixel => 10
-+ * Pixel rate does not necessarily relate to link frequency on this sensor as
-+ * there is a FIFO between the pixel array pipeline and the MIPI serializer.
-+ * The recommendation from Sony is that the pixel array is always run with a
-+ * line length of 5352 pixels, which means that there is a large amount of
-+ * blanking time for the 1048x780 mode. There is no need to replicate this
-+ * blanking on the CSI2 bus, and the configuration of register 0x0301 allows the
-+ * divider to be altered.
-+ *
-+ * The actual factor between link frequency and pixel rate is in the
-+ * imx258_link_cfg, so use this to convert between the two.
-+ * bits per pixel being 10, and D-PHY being DDR is assumed by this function, so
-+ * the value is only the combination of number of lanes and pixel clock divider.
-  */
--static u64 link_freq_to_pixel_rate(u64 f, unsigned int nlanes)
-+static u64 link_freq_to_pixel_rate(u64 f, const struct imx258_link_cfg *link_cfg)
- {
--	f *= 2 * nlanes;
-+	f *= 2 * link_cfg->lf_to_pix_rate_factor;
- 	do_div(f, 10);
- 
- 	return f;
-@@ -511,31 +524,33 @@ static const s64 link_freq_menu_items_24[] = {
- 	IMX258_LINK_FREQ_321MHZ,
- };
- 
-+#define REGS(_list) { .num_of_regs = ARRAY_SIZE(_list), .regs = _list, }
-+
- /* Link frequency configs */
- static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
- 	[IMX258_LINK_FREQ_1267MBPS] = {
- 		.pixels_per_line = IMX258_PPL_DEFAULT,
--		.reg_list = {
-+		.link_cfg = {
- 			[IMX258_2_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz_2l),
--				.regs = mipi_1267mbps_19_2mhz_2l,
-+				.lf_to_pix_rate_factor = 2 * 2,
-+				.reg_list = REGS(mipi_1267mbps_19_2mhz_2l),
- 			},
- 			[IMX258_4_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz_4l),
--				.regs = mipi_1267mbps_19_2mhz_4l,
-+				.lf_to_pix_rate_factor = 4,
-+				.reg_list = REGS(mipi_1267mbps_19_2mhz_4l),
- 			},
- 		}
- 	},
- 	[IMX258_LINK_FREQ_640MBPS] = {
- 		.pixels_per_line = IMX258_PPL_DEFAULT,
--		.reg_list = {
-+		.link_cfg = {
- 			[IMX258_2_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz_2l),
--				.regs = mipi_640mbps_19_2mhz_2l,
-+				.lf_to_pix_rate_factor = 2,
-+				.reg_list = REGS(mipi_640mbps_19_2mhz_2l),
- 			},
- 			[IMX258_4_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz_4l),
--				.regs = mipi_640mbps_19_2mhz_4l,
-+				.lf_to_pix_rate_factor = 4,
-+				.reg_list = REGS(mipi_640mbps_19_2mhz_4l),
- 			},
- 		}
- 	},
-@@ -544,27 +559,27 @@ static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
- static const struct imx258_link_freq_config link_freq_configs_24[] = {
- 	[IMX258_LINK_FREQ_1267MBPS] = {
- 		.pixels_per_line = IMX258_PPL_DEFAULT,
--		.reg_list = {
-+		.link_cfg = {
- 			[IMX258_2_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz_2l),
--				.regs = mipi_1272mbps_24mhz_2l,
-+				.lf_to_pix_rate_factor = 2,
-+				.reg_list = REGS(mipi_1272mbps_24mhz_2l),
- 			},
- 			[IMX258_4_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz_4l),
--				.regs = mipi_1272mbps_24mhz_4l,
-+				.lf_to_pix_rate_factor = 4,
-+				.reg_list = REGS(mipi_1272mbps_24mhz_4l),
- 			},
- 		}
- 	},
- 	[IMX258_LINK_FREQ_640MBPS] = {
- 		.pixels_per_line = IMX258_PPL_DEFAULT,
--		.reg_list = {
-+		.link_cfg = {
- 			[IMX258_2_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz_2l),
--				.regs = mipi_642mbps_24mhz_2l,
-+				.lf_to_pix_rate_factor = 2 * 2,
-+				.reg_list = REGS(mipi_642mbps_24mhz_2l),
- 			},
- 			[IMX258_4_LANE_MODE] = {
--				.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz_4l),
--				.regs = mipi_642mbps_24mhz_4l,
-+				.lf_to_pix_rate_factor = 4,
-+				.reg_list = REGS(mipi_642mbps_24mhz_4l),
- 			},
- 		}
- 	},
-@@ -642,7 +657,7 @@ struct imx258 {
- 
- 	const struct imx258_link_freq_config *link_freq_configs;
- 	const s64 *link_freq_menu_items;
--	unsigned int nlanes;
-+	unsigned int lane_mode_idx;
- 	unsigned int csi2_flags;
- 
- 	/*
-@@ -952,8 +967,10 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
- 				 struct v4l2_subdev_format *fmt)
- {
- 	struct imx258 *imx258 = to_imx258(sd);
--	const struct imx258_mode *mode;
-+	const struct imx258_link_freq_config *link_freq_cfgs;
-+	const struct imx258_link_cfg *link_cfg;
- 	struct v4l2_mbus_framefmt *framefmt;
-+	const struct imx258_mode *mode;
- 	s32 vblank_def;
- 	s32 vblank_min;
- 	s64 h_blank;
-@@ -977,7 +994,11 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
- 		__v4l2_ctrl_s_ctrl(imx258->link_freq, mode->link_freq_index);
- 
- 		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
--		pixel_rate = link_freq_to_pixel_rate(link_freq, imx258->nlanes);
-+		link_freq_cfgs =
-+			&imx258->link_freq_configs[mode->link_freq_index];
-+
-+		link_cfg = &link_freq_cfgs->link_cfg[imx258->lane_mode_idx];
-+		pixel_rate = link_freq_to_pixel_rate(link_freq, link_cfg);
- 		__v4l2_ctrl_modify_range(imx258->pixel_rate, pixel_rate,
- 					 pixel_rate, 1, pixel_rate);
- 		/* Update limits and set FPS to default */
-@@ -1075,7 +1096,8 @@ static int imx258_start_streaming(struct imx258 *imx258)
- 	/* Setup PLL */
- 	link_freq_index = imx258->cur_mode->link_freq_index;
- 	link_freq_cfg = &imx258->link_freq_configs[link_freq_index];
--	reg_list = &link_freq_cfg->reg_list[imx258->nlanes == 2 ? 0 : 1];
-+
-+	reg_list = &link_freq_cfg->link_cfg[imx258->lane_mode_idx].reg_list;
- 	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
- 	if (ret) {
- 		dev_err(&client->dev, "%s failed to set plls\n", __func__);
-@@ -1265,9 +1287,11 @@ static const struct v4l2_subdev_internal_ops imx258_internal_ops = {
- static int imx258_init_controls(struct imx258 *imx258)
- {
- 	struct i2c_client *client = v4l2_get_subdevdata(&imx258->sd);
-+	const struct imx258_link_freq_config *link_freq_cfgs;
- 	struct v4l2_fwnode_device_properties props;
--	struct v4l2_ctrl_handler *ctrl_hdlr;
- 	struct v4l2_ctrl *vflip, *hflip;
-+	struct v4l2_ctrl_handler *ctrl_hdlr;
-+	const struct imx258_link_cfg *link_cfg;
- 	s64 vblank_def;
- 	s64 vblank_min;
- 	s64 pixel_rate;
-@@ -1301,8 +1325,11 @@ static int imx258_init_controls(struct imx258 *imx258)
- 	if (vflip)
- 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
- 
-+	link_freq_cfgs = &imx258->link_freq_configs[0];
-+	link_cfg = link_freq_cfgs[imx258->lane_mode_idx].link_cfg;
- 	pixel_rate = link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
--					     imx258->nlanes);
-+					     link_cfg);
-+
- 	/* By default, PIXEL_RATE is read only */
- 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
- 				V4L2_CID_PIXEL_RATE,
-@@ -1456,10 +1483,16 @@ static int imx258_probe(struct i2c_client *client)
- 	}
- 
- 	/* Get number of data lanes */
--	imx258->nlanes = ep.bus.mipi_csi2.num_data_lanes;
--	if (imx258->nlanes != 2 && imx258->nlanes != 4) {
-+	switch (ep.bus.mipi_csi2.num_data_lanes) {
-+	case 2:
-+		imx258->lane_mode_idx = IMX258_2_LANE_MODE;
-+		break;
-+	case 4:
-+		imx258->lane_mode_idx = IMX258_4_LANE_MODE;
-+		break;
-+	default:
- 		dev_err(&client->dev, "Invalid data lanes: %u\n",
--			imx258->nlanes);
-+			ep.bus.mipi_csi2.num_data_lanes);
- 		ret = -EINVAL;
- 		goto error_endpoint_free;
- 	}
+   assigned-clocks: true
+   assigned-clock-parents: true
 -- 
 2.42.0
 
