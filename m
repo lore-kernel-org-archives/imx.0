@@ -1,152 +1,114 @@
-Received: from mout.perfora.net (mout.perfora.net [74.208.4.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8D6225D9;
-	Wed, 27 Mar 2024 07:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB75114D2BE;
+	Wed, 27 Mar 2024 12:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711524048; cv=none; b=qjdV3cgWQGi5mEgBLDChkjmQY6gaPEJpbpvzdSAquU2hmm6/RXE/14hNf/9YEbXnlxLCJQ3abIt0wOmqdV/XRy6qfx6rXaW8B9E/maDPw+4tdP7OiN01GWbOIC4MLQY5eh0YgX4Y1fkYJuZ+Ls2LSu7tNRXpOcpbTcZSyj8IW+4=
+	t=1711541635; cv=none; b=j4pQ9GnYyPIGoacOahIkhgdlDqBvLJhz95+up/gm2kSgUKFEGrqfAIDf+ideLl57efUEAsoMuFz2VNwx11k7Aw0IkYuP5Y8yfRJPFKQ2eLyGuKUXXhFUlXclSlDa9l5Sz6N2Aa9ZCdDMNif2xPzNjaUo6FSm4q2kdn+ZyWpTc10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711524048; c=relaxed/simple;
-	bh=0mw3Z0iuLK/Oy5qllO5ABVscdcllvCYUuXhvUv08Jv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cHz931wdOigztEtkTBwus3e3dwAII9FkCYa60fErt1ptdK9Leotk08Eo2aSqt0e8/Cha07gHN7vclOpb72duK6FQshbLwmCWLnFg1HLbU9C/nDR2OUPaFNMvUUE0p5uMjBSdsWSYQb/fnUHihRTuQbrpfyrCEXf4PhyuEQ51qRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziswiler.com; spf=pass smtp.mailfrom=ziswiler.com; dkim=pass (2048-bit key) header.d=ziswiler.com header.i=marcel@ziswiler.com header.b=B+dGVDVn; arc=none smtp.client-ip=74.208.4.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziswiler.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziswiler.com
+	s=arc-20240116; t=1711541635; c=relaxed/simple;
+	bh=JsFu3wR3DhF000KcrA8afqUCDSA8XExED+j71OfMf/U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SNwJs7kGRs+ns5X0bsceLIA5+h4Qwe9bNdDXM+QEpPrP+pjdiMcXnFSVR7PB/3mtAwllnM7EFUqDjheaZq4lsaNDph6upshTw1UMurNCdSXx8+Rk+IaYmdd62lnyNt+HBERgvk/PmOtGo6GjtnNe3bmcWJ3+A8QrkclVxc7PjC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAnJHGme; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziswiler.com header.i=marcel@ziswiler.com header.b="B+dGVDVn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziswiler.com;
-	s=s1-ionos; t=1711524005; x=1712128805; i=marcel@ziswiler.com;
-	bh=wnNVEOncldO1On7KO8fAvEAupvlzSNB7wVXjAeDRXl8=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-	b=B+dGVDVnTFoO4u/IWt9pIZKnBjwU3o/Sn78+04Q3wr3UDgNoZmLYJPzCaa31iYTF
-	 PvVYMcBVryIIPFI1dO7QbcHZuzdPG0RUGOI+T/c7CrrwvMsaYcLOVDKr45PSIDTnY
-	 7WI662hjcCHUbauBAHMBaaHdqcI9dpHqC3nSfhnSeWeqgjhhR/s31JFQrC2eXPeMn
-	 3JxvZiIWvTYy2t8tE792StegeSHOImTcJtKANLv+YFKY18Erp5tkvx3eRhy8IBn7I
-	 OvNgPjTGe1S/skQxK79vuFWsD0MDWfckTOj7Eq+99zQdpdSV2VznpwOFVvskoJdtV
-	 tY+od10URcnvELY6aw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost.localdomain ([213.55.224.253]) by mrelay.perfora.net
- (mreueus002 [74.208.5.2]) with ESMTPSA (Nemesis) id 0MVen3-1sMdNT3wFD-00OqWK;
- Wed, 27 Mar 2024 08:20:05 +0100
-From: Marcel Ziswiler <marcel@ziswiler.com>
-To: linux-phy@lists.infradead.org
-Cc: linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAnJHGme"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA759C433F1;
+	Wed, 27 Mar 2024 12:13:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711541634;
+	bh=JsFu3wR3DhF000KcrA8afqUCDSA8XExED+j71OfMf/U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HAnJHGmeN5xIf2DgHZlRthESGuTZPBlZOv3hC5DpbReefGpRyJKondDOHknSxQ+6o
+	 sT391gKG7CeIZel1AMlZ6lX80ZNiBy0Og1jitWHnMGv1IPAKdJwVp0NrWy+qMBQFu0
+	 9NvuK18f5UQiGdJ8VfpfsGLpJiHKapPCHv93yUn+0ahpxKKX8KlN2j93VHHsT+BqBj
+	 eA3GDkc4qybwwJAbPuWFs/p3jpJ07mK9FxnT4Dl5xGJh1Q9orC9I512Jy+IbzlUqNe
+	 RkzL/d/IW3jspjQ0wwcXAJE3APEoj+Wy5ggzE2wGXWXHLiqjlwKGWaSAEM6QJTq7yA
+	 kLOo3beCX1fvw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	laurent.pinchart@ideasonboard.com
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Tim Harvey <tharvey@gateworks.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	imx@lists.linux.dev
-Subject: [PATCH v2] phy: freescale: imx8m-pcie: fix pcie link-up instability
-Date: Wed, 27 Mar 2024 08:19:37 +0100
-Message-ID: <20240327071946.8869-1-marcel@ziswiler.com>
-X-Mailer: git-send-email 2.44.0
+	linux-kernel@vger.kernel.org
+Subject: FAILED: Patch "media: nxp: imx8-isi: Mark all crossbar sink pads as MUST_CONNECT" failed to apply to 6.1-stable tree
+Date: Wed, 27 Mar 2024 08:13:52 -0400
+Message-ID: <20240327121352.2830698-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lbH4shU1mJFfwL/g76O9vJC4HBEY1pkPhgwYOBwWvJviKC6wYBk
- eSgVNuWN7mq68FVIVZu8Ignbe3vMNcizoCe9oBipJoJlfDe7Jctbka4ZbAcMVtjeDzkQDg8
- HZRospSzMu7DDOIz6yqf37LI/j1T5QUmEZQpvmr7fLyj128cxl6RnwoRuSkU5PIdMLG6ucU
- SY9JIMQnO60+H5A2M4pJw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:CIxx/7qf/R8=;cr8oAoSV4b4/HSUiSremUO3fQ1n
- GZac4UIL79J6yAl89goDCpau85ZNY6AprrHuSrxuBINAhNjtX9j+gQLbd0CReMXyvY8slULHt
- RnvU8jAd/OLNLUo5dzTNBqulw3FKD3pKS21x2e0HB3j3dHvuDSb57IpIpOCIBMdJORUIFGLUN
- viPumuf2NyBMt+keg41XiY826R+ycUSnT94TFZHhPSyTPYSY5ByJbsFA5jlK0C+bX3tDZBglK
- XsudkDcuQIsOw2Cnbt90nctrOe5Y0+PTvO3DbNA8ByKfdn4m4VTvYJM2ZOy9D7hVD36ui1pVQ
- wRRWgTyY02hb5QCYXr8yrmmCO0cuT8ogBxxNPjcX8zW36Gsr2KnmgIc7E0+xwAPNGZceN8cwT
- hWocNhGrijq46m/nE6qjY22woNc37GP5ucuPxS/eBsOMwh23dtzG7KQ6KzXZfGFNKhzl88C+r
- 6jPAvm84oDavTj7X/r7G7tMCaJgrcS1v2us0CzW1LbUpGiz/ibNLPxuy3KB6dfAQ0K7pK+zce
- DJ1qfM8Azr1iiwCwm1wCQQBnx0JBtFf7xbduYQZ+WQbohbOAc3jYLBnQdJm5+oksFAYjgyjCN
- qR8irzH/IQdhkaXIBg7RA/RztGUP9oNlCsRKsHo2QTiHFmD3IEOntuQQu/Zc6Zm8cQAAMm2eR
- pAUxJ7kzQLxQfvQVIADTRuGuUm0MGOmGN3rG070Hn3oO1o2WSpSLqhjkn1BiOfHq9mt2aWOHR
- Ujiu6Q+vXMtEZFAGVCQrTIKTi56sv8rrI7xqMw1JZUnAddE68YCgXY=
+X-Patchwork-Hint: ignore
+X-stable: review
+Content-Transfer-Encoding: 8bit
 
-From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On the i.MX 8M Mini, the AUX_PLL_REFCLK_SEL has to be left at its reset
-default of AUX_IN (PLL clock).
+Thanks,
+Sasha
 
-Background Information:
-In our automated testing setup, we use Delock Mini-PCIe SATA cards [1].
-While this setup has proven very stable overall we noticed upstream on
-the i.MX 8M Mini fails quite regularly (about 50/50) to bring up the
-PCIe link while with NXP's downstream BSP 5.15.71_2.2.2 it always works.
-As that old downstream stuff was quite different, I first also tried
-NXP's latest downstream BSP 6.1.55_2.2.0 which from a PCIe point of view
-is fairly vanilla, however, also there the PCIe link-up was not stable.
-Comparing and debugging I noticed that upstream explicitly configures
-the AUX_PLL_REFCLK_SEL to I_PLL_REFCLK_FROM_SYSPLL while working
-downstream [2] leaving it at reset defaults of AUX_IN (PLL clock).
-Unfortunately, the TRM does not mention any further details about this
-register (both for the i.MX 8M Mini as well as the Plus).
-NXP confirmed their validation codes for the i.MX8MM PCIe doesn't
-configure cmn_reg063 (offset: 0x18C).
-BTW: On the i.MX 8M Plus we have not seen any issues with PCIe with the
-exact same setup which is why I left it unchanged.
+------------------ original commit in Linus's tree ------------------
 
-[1] https://www.delock.com/produkt/95233/merkmale.html
-[2] https://github.com/nxp-imx/linux-imx/blob/lf-5.15.71-2.2.0/drivers/pci=
-/controller/dwc/pci-imx6.c#L1548
+From 9b71021b2ea537632b01e51e3f003df24a637858 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Mon, 15 Jan 2024 04:16:29 +0200
+Subject: [PATCH] media: nxp: imx8-isi: Mark all crossbar sink pads as
+ MUST_CONNECT
 
-Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie stand=
-alone phy driver")
+All the sink pads of the crossbar switch require an active link if
+they're part of the pipeline. Mark them with the
+MEDIA_PAD_FL_MUST_CONNECT flag to fail pipeline validation if they're
+not connected. This allows removing a manual check when translating
+streams.
 
-Cc: stable@vger.kernel.org # 6.1.x: ca679c49: phy: freescale: imx8m-pcie: =
-Refine i.MX8MM PCIe PHY driver
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-Link: https://lore.kernel.org/all/AS8PR04MB867661386FEA07649771FBE18C362@A=
-S8PR04MB8676.eurprd04.prod.outlook.com
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+---
+ .../media/platform/nxp/imx8-isi/imx8-isi-crossbar.c    | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-=2D--
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+index 1bb1334ec6f2b..93a55c97cd173 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+@@ -160,13 +160,6 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_crossbar *xbar,
+ 	}
+ 
+ 	pad = media_pad_remote_pad_first(&xbar->pads[sink_pad]);
+-	if (!pad) {
+-		dev_dbg(xbar->isi->dev,
+-			"no pad connected to crossbar input %u\n",
+-			sink_pad);
+-		return ERR_PTR(-EPIPE);
+-	}
+-
+ 	sd = media_entity_to_v4l2_subdev(pad->entity);
+ 	if (!sd) {
+ 		dev_dbg(xbar->isi->dev,
+@@ -475,7 +468,8 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
+ 	}
+ 
+ 	for (i = 0; i < xbar->num_sinks; ++i)
+-		xbar->pads[i].flags = MEDIA_PAD_FL_SINK;
++		xbar->pads[i].flags = MEDIA_PAD_FL_SINK
++				    | MEDIA_PAD_FL_MUST_CONNECT;
+ 	for (i = 0; i < xbar->num_sources; ++i)
+ 		xbar->pads[i + xbar->num_sinks].flags = MEDIA_PAD_FL_SOURCE;
+ 
+-- 
+2.43.0
 
-Changes in v2:
-- Reword the commmit message.
-- Meld the background information from the cover letter into the commit
-  message as suggested by Fabio. Thanks!
-- Document NXP's confirmation from their validation codes and add
-  Richard Zhu's reviewed-by. Thanks!
 
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/free=
-scale/phy-fsl-imx8m-pcie.c
-index b700f52b7b67..11fcb1867118 100644
-=2D-- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -110,8 +110,10 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 		/* Source clock from SoC internal PLL */
- 		writel(ANA_PLL_CLK_OUT_TO_EXT_IO_SEL,
- 		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG062);
--		writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
--		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
-+		if (imx8_phy->drvdata->variant !=3D IMX8MM) {
-+			writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
-+			       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
-+		}
- 		val =3D ANA_AUX_RX_TX_SEL_TX | ANA_AUX_TX_TERM;
- 		writel(val | ANA_AUX_RX_TERM_GND_EN,
- 		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG064);
-=2D-
-2.44.0
 
