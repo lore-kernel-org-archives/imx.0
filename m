@@ -1,40 +1,40 @@
-Received: from mail-108-mta11.mxroute.com (mail-108-mta11.mxroute.com [136.175.108.11])
+Received: from mail-108-mta100.mxroute.com (mail-108-mta100.mxroute.com [136.175.108.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7895015575F
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819A2154C05
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711581772; cv=none; b=a9u71UtuDEoHCC0Uf62ul+aoEUeb+kSCOqe1Hu1w6zDdn35WRQQqNbhU7sxhaNonVdBiKt7lb6/Z2komDLK2GUpWwmi3Pd7hE8fL638e6ldiIadddx105XLmTrpNWYPEHLZo52Ejkpg8BV6YibMo016sjcjxCkr5/REK89HVy3s=
+	t=1711581777; cv=none; b=PDcv0yLGwM0jc1L23VwjxXH6nouEA+J99b4ZNOLET3hRh/6RLK16RIXgTZOmcfGMEg9cmIsz/5B/bnoe71RyalB3/RcLMTSBoNVJisQx9qcno9A08Z21ezKV+B3xqAzyXckJKoa0+0ovVTMJwLi1zNtJclrU25T8IiUa03oDs5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711581772; c=relaxed/simple;
-	bh=4IFlHHYQOC9tV4yl8FKLXbjVjJLVUilxrsOQLLplhHk=;
+	s=arc-20240116; t=1711581777; c=relaxed/simple;
+	bh=cA+a4yuqQVkS/8K8gNj/TEvJEub7ZleI9BN5eH1wpf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyX8L0RWHdYakDoRjvu0VJW5lls8kgn+1BUTLBHQPQUSt6B7R864EfQVdHioKHtuwDW8d0MEPhX9s5n8x5oHkdWJC7Jq+Ink0/UaYRzEFmcYxeBeCHdh61RY849uZdDsHJLS6luPBTHvTeLoXy4/xAlrh+yH7J9Q2kX9fSLbMr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=jjSDi0ap; arc=none smtp.client-ip=136.175.108.11
+	 MIME-Version; b=CGE+0zPSOfgX6PijpGZ1iP3FH4PjEoBAHAfZi2l+fD34iAgSRcom46thL1HqiYiR8JiMnyShBl43bUkxm1zV+luCtxidcH0HkrcO8rZYB+JD1D6nTPr4ZZp2o9iRUmXKz69yZBms5HdCf6vWlK5NbR1KwXuSOdk2rNbo96ooeA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=BGA5xBr7; arc=none smtp.client-ip=136.175.108.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="jjSDi0ap"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="BGA5xBr7"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta11.mxroute.com (ZoneMTA) with ESMTPSA id 18e823473d50003bea.00a
+ by mail-108-mta100.mxroute.com (ZoneMTA) with ESMTPSA id 18e823480f30003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 23:17:39 +0000
-X-Zone-Loop: d62fe3e8cba862e0a99c22bcc32f068fe26ceb3e8dc5
+ Wed, 27 Mar 2024 23:17:42 +0000
+X-Zone-Loop: c50469b7ec2dc3e7727131822f826a8262e7faffe3ca
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KTzgM/Hg/qDUQABeevstUkAZjkMCak0+N7cZAxmCg3o=; b=jjSDi0apZwodL/ENrPR2nIWVBK
-	0YJHaHEqGP2vIlEsZWNEvBhXySz5pt+VvjrFo31pqxt/X8hmZyokc5Vu06BUpmk+PJc198ZrE9O5F
-	LB0DHgUix/P0IVmDDGM7437z/dGiXanogqUOPy5W3hXm0xSkkgj1Qh0OlUYnwU/p6SuumnxEuaUyl
-	CicIVvuADexow2WYWq9ghTX4kwPZ52dAEMajoOyoFIfeu66c9kgEf8832g+9sZDCEIJMIzaMxSbl1
-	PqafgWgTf3DlA+8e/qIPl0XkIXVL+scReX9jB5gLX9sU1Lne3DSSjO/qOIjRAv/oe2riA6lww60w5
-	eFuUM5PQ==;
+	bh=8VAPtDzgGszeDreMGf3K+a0lokdNPZGj6/qmTj7fPpc=; b=BGA5xBr7spbPlohctMY2ikBX6L
+	nYRFBgh7yjBoSbZiHv/G47ylGySSOIMFla4COvMGL6MJSHaJjUCx/1m/qJ+eLh540Mlgv/4qpKGMv
+	6z4Cq3laUoNYklfCNQ2cbpOj0nH45RMB6baefLdk8hNbuJ+5lZX4aKiaQii8/9cH79Wr5xV/Cz6n4
+	PbzyeUZJRIFxra7CSRWmCdKMWWGJYqxBkAVLZunU0Y7F25JV4MgjYs2PoWkmBNN1EguIH1cKlaR88
+	5SfpUGzk9WlkzU/oeZXh+zr4xJIzglaQmvL1YUBZC08KCt+JISN+4Ml0hHKZDcEUo1Y4CnKbdzXGC
+	oAT7MTKw==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -51,11 +51,10 @@ Cc: dave.stevenson@raspberrypi.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>
-Subject: [PATCH 11/23] media: i2c: imx258: Add get_selection for pixel array information
-Date: Wed, 27 Mar 2024 17:16:57 -0600
-Message-ID: <20240327231710.53188-12-git@luigi311.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 13/23] media: i2c: imx258: Correct max FRM_LENGTH_LINES value
+Date: Wed, 27 Mar 2024 17:16:59 -0600
+Message-ID: <20240327231710.53188-14-git@luigi311.com>
 In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
 References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
@@ -69,173 +68,29 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Libcamera requires the cropping information for each mode, so
-add this information to the driver.
+The data sheet states that the maximum value for registers
+0x0340/0x0341 FRM_LENGTH_LINES is 65525(decimal), not the
+0xFFFF defined in this driver. Correct this limit.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Luigi311 <git@luigi311.com>
 Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
- drivers/media/i2c/imx258.c | 90 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ drivers/media/i2c/imx258.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 1f5fb980cfbe..979ac7872249 100644
+index 85c2f1ccaea1..c2c5e819ddc0 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -77,6 +77,14 @@
- #define REG_CONFIG_MIRROR_FLIP		0x03
- #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
+@@ -28,7 +28,7 @@
+ #define IMX258_VTS_30FPS		0x0c50
+ #define IMX258_VTS_30FPS_2K		0x0638
+ #define IMX258_VTS_30FPS_VGA		0x034c
+-#define IMX258_VTS_MAX			0xffff
++#define IMX258_VTS_MAX			65525
  
-+/* IMX258 native and active pixel array size. */
-+#define IMX258_NATIVE_WIDTH		4224U
-+#define IMX258_NATIVE_HEIGHT		3192U
-+#define IMX258_PIXEL_ARRAY_LEFT		8U
-+#define IMX258_PIXEL_ARRAY_TOP		16U
-+#define IMX258_PIXEL_ARRAY_WIDTH	4208U
-+#define IMX258_PIXEL_ARRAY_HEIGHT	3120U
-+
- struct imx258_reg {
- 	u16 address;
- 	u8 val;
-@@ -116,6 +124,9 @@ struct imx258_mode {
- 	u32 link_freq_index;
- 	/* Default register values */
- 	struct imx258_reg_list reg_list;
-+
-+	/* Analog crop rectangle. */
-+	struct v4l2_rect crop;
- };
+ #define IMX258_REG_VTS			0x0340
  
- /*
-@@ -567,6 +578,12 @@ static const struct imx258_mode supported_modes[] = {
- 			.regs = mode_4208x3120_regs,
- 		},
- 		.link_freq_index = IMX258_LINK_FREQ_1267MBPS,
-+		.crop = {
-+			.left = IMX258_PIXEL_ARRAY_LEFT,
-+			.top = IMX258_PIXEL_ARRAY_TOP,
-+			.width = 4208,
-+			.height = 3120,
-+		},
- 	},
- 	{
- 		.width = 2104,
-@@ -578,6 +595,12 @@ static const struct imx258_mode supported_modes[] = {
- 			.regs = mode_2104_1560_regs,
- 		},
- 		.link_freq_index = IMX258_LINK_FREQ_640MBPS,
-+		.crop = {
-+			.left = IMX258_PIXEL_ARRAY_LEFT,
-+			.top = IMX258_PIXEL_ARRAY_TOP,
-+			.width = 4208,
-+			.height = 3120,
-+		},
- 	},
- 	{
- 		.width = 1048,
-@@ -589,6 +612,12 @@ static const struct imx258_mode supported_modes[] = {
- 			.regs = mode_1048_780_regs,
- 		},
- 		.link_freq_index = IMX258_LINK_FREQ_640MBPS,
-+		.crop = {
-+			.left = IMX258_PIXEL_ARRAY_LEFT,
-+			.top = IMX258_PIXEL_ARRAY_TOP,
-+			.width = 4208,
-+			.height = 3120,
-+		},
- 	},
- };
- 
-@@ -705,6 +734,7 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- {
- 	struct v4l2_mbus_framefmt *try_fmt =
- 		v4l2_subdev_state_get_format(fh->state, 0);
-+	struct v4l2_rect *try_crop;
- 
- 	/* Initialize try_fmt */
- 	try_fmt->width = supported_modes[0].width;
-@@ -712,6 +742,13 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- 	try_fmt->code = MEDIA_BUS_FMT_SBGGR10_1X10;
- 	try_fmt->field = V4L2_FIELD_NONE;
- 
-+	/* Initialize try_crop */
-+	try_crop = v4l2_subdev_state_get_crop(fh->state, 0);
-+	try_crop->left = IMX258_PIXEL_ARRAY_LEFT;
-+	try_crop->top = IMX258_PIXEL_ARRAY_TOP;
-+	try_crop->width = IMX258_PIXEL_ARRAY_WIDTH;
-+	try_crop->height = IMX258_PIXEL_ARRAY_HEIGHT;
-+
- 	return 0;
- }
- 
-@@ -959,6 +996,58 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
- 	return 0;
- }
- 
-+static const struct v4l2_rect *
-+__imx258_get_pad_crop(struct imx258 *imx258,
-+		      struct v4l2_subdev_state *sd_state,
-+		      unsigned int pad, enum v4l2_subdev_format_whence which)
-+{
-+	switch (which) {
-+	case V4L2_SUBDEV_FORMAT_TRY:
-+		return v4l2_subdev_state_get_crop(sd_state, pad);
-+	case V4L2_SUBDEV_FORMAT_ACTIVE:
-+		return &imx258->cur_mode->crop;
-+	}
-+
-+	return NULL;
-+}
-+
-+static int imx258_get_selection(struct v4l2_subdev *sd,
-+				struct v4l2_subdev_state *sd_state,
-+				struct v4l2_subdev_selection *sel)
-+{
-+	switch (sel->target) {
-+	case V4L2_SEL_TGT_CROP: {
-+		struct imx258 *imx258 = to_imx258(sd);
-+
-+		mutex_lock(&imx258->mutex);
-+		sel->r = *__imx258_get_pad_crop(imx258, sd_state, sel->pad,
-+						sel->which);
-+		mutex_unlock(&imx258->mutex);
-+
-+		return 0;
-+	}
-+
-+	case V4L2_SEL_TGT_NATIVE_SIZE:
-+		sel->r.left = 0;
-+		sel->r.top = 0;
-+		sel->r.width = IMX258_NATIVE_WIDTH;
-+		sel->r.height = IMX258_NATIVE_HEIGHT;
-+
-+		return 0;
-+
-+	case V4L2_SEL_TGT_CROP_DEFAULT:
-+	case V4L2_SEL_TGT_CROP_BOUNDS:
-+		sel->r.left = IMX258_PIXEL_ARRAY_LEFT;
-+		sel->r.top = IMX258_PIXEL_ARRAY_TOP;
-+		sel->r.width = IMX258_PIXEL_ARRAY_WIDTH;
-+		sel->r.height = IMX258_PIXEL_ARRAY_HEIGHT;
-+
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- /* Start streaming */
- static int imx258_start_streaming(struct imx258 *imx258)
- {
-@@ -1135,6 +1224,7 @@ static const struct v4l2_subdev_pad_ops imx258_pad_ops = {
- 	.get_fmt = imx258_get_pad_format,
- 	.set_fmt = imx258_set_pad_format,
- 	.enum_frame_size = imx258_enum_frame_size,
-+	.get_selection = imx258_get_selection,
- };
- 
- static const struct v4l2_subdev_ops imx258_subdev_ops = {
 -- 
 2.42.0
 
