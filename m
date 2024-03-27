@@ -1,40 +1,40 @@
-Received: from mail-108-mta183.mxroute.com (mail-108-mta183.mxroute.com [136.175.108.183])
+Received: from mail-108-mta226.mxroute.com (mail-108-mta226.mxroute.com [136.175.108.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954D8155A39
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1E6156222
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711581787; cv=none; b=TRTlEMRfCmGLdkIyW9LxyPUqKsNT5JDcwaIiFq7gLnifT2velWqXVsOBI2lTcr6QSrLQvq5anoa7yU1o7fWnTierm27XbsUUnPxk2TPwpbYxjRGWNaJMYXA/+oon9u/dlmBgGloaz+bHU69w6I3RZFxnKI4tfP7ZcUkFBmT/KDY=
+	t=1711581792; cv=none; b=cL9qaL1BFMGJzcVs5543E/v8AiH2u+AwrOsVgDRak87dvioxk1KWzm/dw6nJZvf+8/ePAP53eUpdhflFSwQlcI+tnEG5AQSCLMTeCIzzbmrIizdxxbv+dSuz4a6vgGvUtRVY/BjAObinoM0xpmDatC9sxff+5OzgBTD/dmyILNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711581787; c=relaxed/simple;
-	bh=x58t6k8EokPq4aAnaC2oATm/gQ5TdBN5BQeF0p+fL0M=;
+	s=arc-20240116; t=1711581792; c=relaxed/simple;
+	bh=0vPk/AhRfa0eJWWuR2HM/VywuaD7+XD66XjsHchVAAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FfkA0LnQOxwkf1+vBgkFHl4Cmnt6juuxV2j7OUqWKmmtLmVlqF3OZXJprJVhFDMhitnciTkA+qajtWOyUUpcWh1L1vTsnJjvjKNXvk3ovcCTL1dE5fkNmn+maD0+GyeQh/I+1DbM7aBp5I3dVWd/MJr/RTVZdQE3iTIHVoQogAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=dLhz1N/8; arc=none smtp.client-ip=136.175.108.183
+	 MIME-Version; b=pF+u+VFlxPe/HFK4Wgdb4tVJgkO35fqRS83S8R5NFbNDq8Py3BPmvxDBos1yVWlMikDahTwII49weGDvRWk4ewac0MveQXh3rR7qkieLKo1uHdjcSF18yBhPfsmYkMZ+5edmYJQHnVHuLhGTkjg/UwOVrkYEle8YWa1zERZBW14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=CQZa0O3P; arc=none smtp.client-ip=136.175.108.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="dLhz1N/8"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="CQZa0O3P"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta183.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234abc60003bea.00a
+ by mail-108-mta226.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234c8880003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 23:17:53 +0000
-X-Zone-Loop: b7d58c5c0ccfd102e70ea57d2f7719c1d7c3fcb928d4
+ Wed, 27 Mar 2024 23:18:01 +0000
+X-Zone-Loop: 8549fc26f6fb21d080553409a9fe582bf9da676dcaf7
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UNQcRvC+BTJmcFMUv7/581GlzybaY7yH1KloLiIT/SI=; b=dLhz1N/8XTD0i1MlofJeNmVnd9
-	KNK0xCCp/l+iZzxi0rYKrbFjimMoRnkkze42ULyiXwsQaivKWjnVPo/aY+g2TXhKbYDvpmQK91rJZ
-	QgVVze3hO+RXJIv2dxPal421YStiXvBnnNHFf3oi+nArsRoxo8S9VUaoe/CCF8c0mpt8hs9ClNP3H
-	VJYeVDiw7Si5GzR9tTHr2tYsz7nYmdzE9+BsTRsf1gd6bsPAw4pt8aav1Vw0X9MwTA+cfmY8qmJxt
-	TEEkKQGeYM5wkg3Adq30woS3FPIGOSxl8LO450RCfdmQDQYP1w8/m6vyh0R3Rc2DZbU80ScFOJ17o
-	UGSrKYBQ==;
+	bh=bZsei1tpRAidGrbzZBEBrMkrAWAYUFFFPXs9zNhTnjM=; b=CQZa0O3PSCbFR1uiO7kH14OhAl
+	MRIrBoW588+LBeFTMgqoC9m6Q6QhFF9QJXofPkO5Y608wcdb0mwdS6uG971ktGYzOVPFDlYRrMxT5
+	IdUr7FImKuxuMA+r9BaBdB+OKEHWTAGM2a1CpTzW/dkctGnYYIiOghw5joJ7TBgpxNhMvXDT9KF+5
+	+tx2NWcH66UGXEkkA8Sv+WMKabdhX1UQ6i5zz7Zu8XnkY2SXNq6/B+3VvboiVrKMTNrmjlSlcQiDT
+	nACFUSO4pwvsJzaOX+uq8qWVO65/VB4hXQnNfhxEKxrgq/aDrjIKRVHJ34Zf6krUjS6W9wFpMESaN
+	3sPxq0kg==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -52,10 +52,11 @@ Cc: dave.stevenson@raspberrypi.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>
-Subject: [PATCH 18/23] dt-bindings: media: imx258: Add alternate compatible strings
-Date: Wed, 27 Mar 2024 17:17:04 -0600
-Message-ID: <20240327231710.53188-19-git@luigi311.com>
+	Luigi311 <git@luigi311.com>,
+	Ondrej Jirman <megi@xff.cz>
+Subject: [PATCH 22/23] drivers: media: i2c: imx258: Add support for powerdown gpio
+Date: Wed, 27 Mar 2024 17:17:08 -0600
+Message-ID: <20240327231710.53188-23-git@luigi311.com>
 In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
 References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
@@ -67,37 +68,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: personal@luigi311.com
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Luigi311 <git@luigi311.com>
 
-There are a number of variants of the imx258 modules that can not
-be differentiated at runtime, so add compatible strings for them.
+On some boards powerdown signal needs to be deasserted for this
+sensor to be enabled.
 
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Luigi311 <git@luigi311.com>
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
 ---
- .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/media/i2c/sony,imx258.yaml  |  4 ++++
+ drivers/media/i2c/imx258.c                          | 13 +++++++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-index bee61a443b23..c7856de15ba3 100644
+index c7856de15ba3..0414085bf22f 100644
 --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
 +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-@@ -14,10 +14,14 @@ description: |-
-   type stacked image sensor with a square pixel array of size 4208 x 3120. It
-   is programmable through I2C interface.  Image data is sent through MIPI
-   CSI-2.
-+  There are a number of variants of the sensor which cannot be detected at
-+  runtime, so multiple compatible strings are required to differentiate these.
+@@ -35,6 +35,10 @@ properties:
+   reg:
+     maxItems: 1
  
- properties:
-   compatible:
--    const: sony,imx258
-+    - enum:
-+        - sony,imx258
-+        - sony,imx258-pdaf
++  powerdown-gpios:
++    description: |-
++      Reference to the GPIO connected to the PWDN pin, if any.
++
+   reset-gpios:
+     description: |-
+       Reference to the GPIO connected to the XCLR pin, if any.
+diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+index c559a06bf180..d8c51d5f04e0 100644
+--- a/drivers/media/i2c/imx258.c
++++ b/drivers/media/i2c/imx258.c
+@@ -686,6 +686,8 @@ struct imx258 {
+ 	unsigned int lane_mode_idx;
+ 	unsigned int csi2_flags;
  
-   assigned-clocks: true
-   assigned-clock-parents: true
++	struct gpio_desc *powerdown_gpio;
++
+ 	/*
+ 	 * Mutex for serialized access:
+ 	 * Protect sensor module set pad format and start/stop streaming safely.
+@@ -1220,6 +1222,8 @@ static int imx258_power_on(struct device *dev)
+ 	struct imx258 *imx258 = to_imx258(sd);
+ 	int ret;
+ 
++	gpiod_set_value_cansleep(imx258->powerdown_gpio, 0);
++
+ 	ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
+ 				    imx258->supplies);
+ 	if (ret) {
+@@ -1231,6 +1235,7 @@ static int imx258_power_on(struct device *dev)
+ 	ret = clk_prepare_enable(imx258->clk);
+ 	if (ret) {
+ 		dev_err(dev, "failed to enable clock\n");
++		gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
+ 		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
+ 	}
+ 
+@@ -1245,6 +1250,8 @@ static int imx258_power_off(struct device *dev)
+ 	clk_disable_unprepare(imx258->clk);
+ 	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
+ 
++	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
++
+ 	return 0;
+ }
+ 
+@@ -1548,6 +1555,12 @@ static int imx258_probe(struct i2c_client *client)
+ 	if (!imx258->variant_cfg)
+ 		imx258->variant_cfg = &imx258_cfg;
+ 
++	/* request optional power down pin */
++	imx258->powerdown_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
++						    GPIOD_OUT_HIGH);
++	if (IS_ERR(imx258->powerdown_gpio))
++		return PTR_ERR(imx258->powerdown_gpio);
++
+ 	/* Initialize subdev */
+ 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+ 
 -- 
 2.42.0
 
