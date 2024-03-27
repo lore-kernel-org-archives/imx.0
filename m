@@ -1,40 +1,40 @@
-Received: from mail-108-mta106.mxroute.com (mail-108-mta106.mxroute.com [136.175.108.106])
+Received: from mail-108-mta50.mxroute.com (mail-108-mta50.mxroute.com [136.175.108.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E693153BF9
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 22:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E64152160
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711578380; cv=none; b=m+VsxX/0oz3Ibwl7/Oh3UyDKIgUyaIuunY0dqLUhDvCUydMSAwAOYqWzkfrM+++ty28Wt29Xe3Fmoo/RqEx/Y65Q+Nsn4T6Uuar+dlwrTp3Sxm8RRUipXFkFwlKM67xLqZdG2a26Ps4atsFnAbxjfFZNnlh+zHN8F9Jw3pRy72o=
+	t=1711581466; cv=none; b=rWJBI+1C5MIecIrIskEFwKavlEcAeokeYKWrPOwcX1DuG7VNLFhAmqlJVV3cyL/jvX9kYrxYBV8/YHrUpq2kvbp0NDGGMFZPuzvoQ8aSSpAR9v2Ucze+5Y98gFZD6MMgFjnn5yzsJQsxg7tYbop84x+U8KkZoLNuBcUaVpiTMdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711578380; c=relaxed/simple;
-	bh=l/d1KTSxrdSi8t1Av6GsBX7faXE7YS03/s1Y6XmUM9o=;
+	s=arc-20240116; t=1711581466; c=relaxed/simple;
+	bh=sWAfFhAGvw4CqbUg4tIVjRY+a1yJUW3dKOY9ml8HHIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlrNOuC/b+kAQMKnDXHHw1EnwmEhg4Be1yxMvi/lQhS491/l6UqWMMwM6UVh9+6r/Y3o4yQfqOqmDyLknZh3oQBpYkvBeK/ZbgmnsnjMD7gBwdgd18p+NPGj5vTb0C20s/y74kW9enymNWPfmDys6e0HaHyqUhd9RjS5qMWta3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=wkfO23G8; arc=none smtp.client-ip=136.175.108.106
+	 MIME-Version; b=FJsrT4+Zk/U8vqWVCFBqBnIBWDc0IZ4TTmJqtlwvTjJPruT/cp29BQ7Ke8mTlup9IieZjkwmbg39sOFBrHFfxQVAKmAU5VYjExX5SYftAhxrwchu380FHyvkzFY7KCP83qIqHJzPGXI5ge75hWKGnIQyguXWFeXQBnreeA2u1Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=pc/+BPko; arc=none smtp.client-ip=136.175.108.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="wkfO23G8"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="pc/+BPko"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta106.mxroute.com (ZoneMTA) with ESMTPSA id 18e8200a9520003bea.00a
+ by mail-108-mta50.mxroute.com (ZoneMTA) with ESMTPSA id 18e82344cff0003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 22:21:05 +0000
-X-Zone-Loop: cd9d35fccad5203d2940aa1777cfcbfcbda591dcdcbc
+ Wed, 27 Mar 2024 23:17:29 +0000
+X-Zone-Loop: ec46d836598670c7e6e1faf65f4c68f955fa154c0688
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Wfd3IM9yvSlmOOZPNTkn/UcYNYLQj3XQ9wKwbMSeFFA=; b=wkfO23G8d0f1UmDKwI19ALxOur
-	Whk3/ewONqmq7ThLU38LoZaX7TeVQZ/ZlWhkVCY1Nv72S47KuKoOsoZPYF5APnEL11iLUJPqE40ZQ
-	UeGs1Py8YqIIcqYkUDRvFcF0XycPaaersLvz1IDyI+8ExNFLwf07T/bgSeB7rBV0Z4Vg7tGKdc00f
-	ZF9VlALEMgUZEvkk0Zgljww5smZWqUoEtjXB5t1CEVSvVFQs/jziUp1nED2tsJ2wrD1WCqUZWR7h6
-	RnGE5Ifiy+US2qVPFxjNTNMtSDYZPm/Vw46Bz4FodRkj0K2tNnbv/VrZ+uiMiRmOqJA0ZWmFMFMF6
-	+HODCqiA==;
+	bh=XYmNM0zbv3+O+YfnDH4hEcGfkU7Y/smW11E/sBjJxo8=; b=pc/+BPkonW5guBkaLMYnqc+UZj
+	3qDQacC3Wjy7gocq2iX0HFpZqURNpocPIyOXrrSlcy4Cvhh5+D287Ln+Bk+PTGBC4n2vuFevW2I62
+	lQ4OsB5+9XrSyPjNsdIIpxw+NxfJUWMgaGhSKTI12grVagEIRSMBaGj7FfXL4sLeY5GMOFvWNtwdt
+	Hif1pptKXWK5b2xBtfuhfyuXZ39hUo0SKM/Bm2dbWvVFVBtN1ZG9n5VKcVDluKLY/EiXxROhq5YQG
+	4yKb61/9xE8z2/QNeVeHGRhfw1ET2ufflRwC4glFUNx5kcn+EkVQe2xdxHqH3xzblVMLWtxqzNQ3l
+	9VHqt3dA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -51,13 +51,12 @@ Cc: dave.stevenson@raspberrypi.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	x@xnux.eu
-Subject: [PATCH 10/23] media: i2c: imx258: Follow normal V4L2 behaviours for clipping exposure
-Date: Wed, 27 Mar 2024 16:20:22 -0600
-Message-ID: <20240327222035.47208-11-git@luigi311.com>
-In-Reply-To: <20240327222035.47208-1-git@luigi311.com>
-References: <20240327222035.47208-1-git@luigi311.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 06/23] media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
+Date: Wed, 27 Mar 2024 17:16:52 -0600
+Message-ID: <20240327231710.53188-7-git@luigi311.com>
+In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
+References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,80 +68,78 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-V4L2 sensor drivers are expected are expected to clip the supported
-exposure range based on the VBLANK configured.
-IMX258 wasn't doing that as register 0x350 (FRM_LENGTH_CTL)
-switches it to a mode where frame length tracks coarse exposure time.
-
-Disable this mode and clip the range for V4L2_CID_EXPOSURE appropriately
-based on V4L2_CID_VBLANK.
+The values and ranges of V4L2_CID_VBLANK are all computed,
+so there is no reason for it to be a read only control.
+Remove the register values from the mode lists, add the
+handler, and remove the read only flag.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
- drivers/media/i2c/imx258.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx258.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index c65b9aad3b0a..1f5fb980cfbe 100644
+index 495eaada2945..321b504c6a48 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -37,10 +37,11 @@
+@@ -30,6 +30,8 @@
+ #define IMX258_VTS_30FPS_VGA		0x034c
+ #define IMX258_VTS_MAX			0xffff
  
- /* Exposure control */
- #define IMX258_REG_EXPOSURE		0x0202
-+#define IMX258_EXPOSURE_OFFSET		10
- #define IMX258_EXPOSURE_MIN		4
- #define IMX258_EXPOSURE_STEP		1
- #define IMX258_EXPOSURE_DEFAULT		0x640
--#define IMX258_EXPOSURE_MAX		65535
-+#define IMX258_EXPOSURE_MAX		(IMX258_VTS_MAX - IMX258_EXPOSURE_OFFSET)
- 
- /* Analog gain control */
- #define IMX258_REG_ANALOG_GAIN		0x0204
-@@ -371,7 +372,7 @@ static const struct imx258_reg mode_common_regs[] = {
- 	{ 0x303A, 0x00 },
- 	{ 0x303B, 0x10 },
- 	{ 0x300D, 0x00 },
--	{ 0x0350, 0x01 },
-+	{ 0x0350, 0x00 },
- 	{ 0x0204, 0x00 },
- 	{ 0x0205, 0x00 },
- 	{ 0x020E, 0x01 },
-@@ -741,6 +742,19 @@ static int imx258_update_digital_gain(struct imx258 *imx258, u32 len, u32 val)
- 	return 0;
- }
- 
-+static void imx258_adjust_exposure_range(struct imx258 *imx258)
-+{
-+	int exposure_max, exposure_def;
++#define IMX258_REG_VTS			0x0340
 +
-+	/* Honour the VBLANK limits when setting exposure. */
-+	exposure_max = imx258->cur_mode->height + imx258->vblank->val -
-+		       IMX258_EXPOSURE_OFFSET;
-+	exposure_def = min(exposure_max, imx258->exposure->val);
-+	__v4l2_ctrl_modify_range(imx258->exposure, imx258->exposure->minimum,
-+				 exposure_max, imx258->exposure->step,
-+				 exposure_def);
-+}
-+
- static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
- {
- 	struct imx258 *imx258 =
-@@ -748,6 +762,13 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
- 	struct i2c_client *client = v4l2_get_subdevdata(&imx258->sd);
- 	int ret = 0;
+ /* HBLANK control - read only */
+ #define IMX258_PPL_DEFAULT		5352
  
-+	/*
-+	 * The VBLANK control may change the limits of usable exposure, so check
-+	 * and adjust if necessary.
-+	 */
-+	if (ctrl->id == V4L2_CID_VBLANK)
-+		imx258_adjust_exposure_range(imx258);
-+
- 	/*
- 	 * Applying V4L2 control value only happens
- 	 * when power is up for streaming
+@@ -202,8 +204,6 @@ static const struct imx258_reg mode_4208x3120_regs[] = {
+ 	{ 0x0114, 0x03 },
+ 	{ 0x0342, 0x14 },
+ 	{ 0x0343, 0xE8 },
+-	{ 0x0340, 0x0C },
+-	{ 0x0341, 0x50 },
+ 	{ 0x0344, 0x00 },
+ 	{ 0x0345, 0x00 },
+ 	{ 0x0346, 0x00 },
+@@ -319,8 +319,6 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x0114, 0x03 },
+ 	{ 0x0342, 0x14 },
+ 	{ 0x0343, 0xE8 },
+-	{ 0x0340, 0x06 },
+-	{ 0x0341, 0x38 },
+ 	{ 0x0344, 0x00 },
+ 	{ 0x0345, 0x00 },
+ 	{ 0x0346, 0x00 },
+@@ -436,8 +434,6 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x0114, 0x03 },
+ 	{ 0x0342, 0x14 },
+ 	{ 0x0343, 0xE8 },
+-	{ 0x0340, 0x03 },
+-	{ 0x0341, 0x4C },
+ 	{ 0x0344, 0x00 },
+ 	{ 0x0345, 0x00 },
+ 	{ 0x0346, 0x00 },
+@@ -800,6 +796,11 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
+ 					       BIT(IMX258_HDR_RATIO_MAX));
+ 		}
+ 		break;
++	case V4L2_CID_VBLANK:
++		ret = imx258_write_reg(imx258, IMX258_REG_VTS,
++				       IMX258_REG_VALUE_16BIT,
++				       imx258->cur_mode->height + ctrl->val);
++		break;
+ 	default:
+ 		dev_info(&client->dev,
+ 			 "ctrl(id:0x%x,val:0x%x) is not handled\n",
+@@ -1174,9 +1175,6 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 				IMX258_VTS_MAX - imx258->cur_mode->height, 1,
+ 				vblank_def);
+ 
+-	if (imx258->vblank)
+-		imx258->vblank->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+-
+ 	imx258->hblank = v4l2_ctrl_new_std(
+ 				ctrl_hdlr, &imx258_ctrl_ops, V4L2_CID_HBLANK,
+ 				IMX258_PPL_DEFAULT - imx258->cur_mode->width,
 -- 
 2.42.0
 
