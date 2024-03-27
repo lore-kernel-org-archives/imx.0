@@ -1,40 +1,40 @@
-Received: from mail-108-mta142.mxroute.com (mail-108-mta142.mxroute.com [136.175.108.142])
+Received: from mail-108-mta44.mxroute.com (mail-108-mta44.mxroute.com [136.175.108.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E440A154BEA
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0885F154BF7
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711581470; cv=none; b=RPTyZBSRBRI7vaHO02fiI6PSXzDUSs2dZIQhxjVKhc78GNG2bgDrezJoNvR13QU7hLycT9eF53K7qEmcGspN7YppgsdJeQsDvHc+yLoq4Wyq/MbOSKaCYoKffkq04C7wew8WLJ9quhxD8ACmw5DaQ+ozdrm2RhfpVS5kV1q9pl8=
+	t=1711581480; cv=none; b=BXsMe73phockpUbq7Z+ah936hDnz0JKSQ0m+z0nv0g9eIH3e51kJaBen1JpncSXmgmYA3ESbS3CjGjSPz1AC4N2tMuQat/8e6mhb2NSyTJd1NqJu3edvv9cHbBB1ugg0OLvkLIEbkUxkv2mnLKCRgzPCxieSBKLJ1E3dZYbGJ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711581470; c=relaxed/simple;
-	bh=6+2wz7C48VzI3IyZhlih65O+oIcytRh3P8S1DW3VqYU=;
+	s=arc-20240116; t=1711581480; c=relaxed/simple;
+	bh=7i/9IjTAd+pde/paZFBB+EA9Lnwb/pQVeVpaMtOzxi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1VfLRhz8ai/cOG8PeS7Vafyqgr5bnH0kJd2/kqTtC2YrKjkUAHaSu7C87jQvY1KVJZ6r1gZP45sJ1xYJnfehp6mK46J668nfSI03dGHbDyq2XbEJJri9JY0Fwo3pduzgwJ1bk58vLuE5VtpAp9PoiXMwN0U0yr9EKPf/QSc/B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=HJ1eg5oN; arc=none smtp.client-ip=136.175.108.142
+	 MIME-Version; b=hKHIL0R8NNPVM8IpIMH3Y2Dcm7JgsrVDsrBOSgLCbYM2WiEmwtHINpI655zo8D30wUkQ+ivwgJ/XtdRFgyIP5qexwuimsU2V6c3odBD0Ffj9071cCDq/uZd71qzHHc3MkdxourKRY2K6g+q0YJEz80YFbYCZ/Jbd6Njjeb/rfJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=kNmHO50O; arc=none smtp.client-ip=136.175.108.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="HJ1eg5oN"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="kNmHO50O"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta142.mxroute.com (ZoneMTA) with ESMTPSA id 18e823488ac0003bea.00a
+ by mail-108-mta44.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234b0050003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 23:17:44 +0000
-X-Zone-Loop: 1d3514ca4d3736d6f5a40b426c854684883a05f2424b
+ Wed, 27 Mar 2024 23:17:54 +0000
+X-Zone-Loop: 54e3da433e2f91554ec64e3ff7fe47d4ef3c5a12b0f9
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MWmmMzvpB7rAQwa1TAxwPfh+Zj5RVzbFzB4BAQpgxHA=; b=HJ1eg5oNFBw6ptNnK6DZzTUMzV
-	eizEzmCukzFA5ZssZ1MdX5BAte3cGofJ/hqCj6uVuVQxWdTOIcAB6FGDKE420+IytRo4HNswQy6FN
-	QQADfHQLAFNW88ni8/35rUCXtevGG3wkSdJK5pAfyDJMbTpTd5RI3/bhay2IZ3FQA7bkxvabqSlx+
-	Yu2Gy8YQnWQauI3NjagAnxbq/LJlYm3VrFd3rVRaiTMrMnUvrTzeCLfwdC1qakl1Y3LHSgiGoJFVH
-	CxcosMAqcgoF1xgeaL3Js5On987dUVbavhEkf4YpNn4jsogebyYaEjxb3q9lwlbmMvhrJAiok8oFr
-	EOelcVUg==;
+	bh=7j4MzTjtD7AfwCCrPVn3U68Ne8jjZ+gWNwi69A2egJA=; b=kNmHO50OQJHrToL8EwUTx/NHHt
+	Eq3XH7Z6+3IJBrfaGBrRLXAuZT/hX1rsH+TuAJivxpMsBTcp3HHQvkByzmtIuidYGhBkchS0kuhPi
+	bq/ZT5r22YjmgKcACJTv+CG6+BpMd2pDsGef8qmwnOijWx2yNI8mdtF5Zzu6sPSIf1UpBbqNId3zg
+	E6xobz8A9LCPlTGcvGb+jQN3BYtmEW9B8qKCHvvepvOaFupQttzRuHG4yquDFJjNgC1HNLVjVKbeL
+	c6lOoNd8TdDH9feQeQjmseOxRILiKtfz2yB2ElXyyBW1zvXtahvAHRnIwHo4swHa+6dCrJjAmNP+w
+	gRsBHZmA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -51,10 +51,11 @@ Cc: dave.stevenson@raspberrypi.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 14/23] media: i2c: imx258: Issue reset before starting streaming
-Date: Wed, 27 Mar 2024 17:17:00 -0600
-Message-ID: <20240327231710.53188-15-git@luigi311.com>
+	linux-kernel@vger.kernel.org,
+	Luigi311 <git@luigi311.com>
+Subject: [PATCH 19/23] media: i2c: imx258: Change register settings for variants of the sensor
+Date: Wed, 27 Mar 2024 17:17:05 -0600
+Message-ID: <20240327231710.53188-20-git@luigi311.com>
 In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
 References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
@@ -68,45 +69,130 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Whilst not documented, register 0x0103 bit 0 is the soft
-reset for the sensor, so send it before trying to configure
-the sensor.
+Sony have advised that there are variants of the IMX258 sensor which
+require slightly different register configuration to the mainline
+imx258 driver defaults.
+
+There is no available run-time detection for the variant, so add
+configuration via the DT compatible string.
+
+The Vision Components imx258 module supports PDAF, so add the
+register differences for that variant
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Luigi311 <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/media/i2c/imx258.c | 48 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index c2c5e819ddc0..a62ed8c26663 100644
+index f5d0979110fe..09f635574215 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -20,6 +20,8 @@
- #define IMX258_MODE_STANDBY		0x00
- #define IMX258_MODE_STREAMING		0x01
+@@ -6,6 +6,7 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
++#include <linux/of_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ #include <media/v4l2-ctrls.h>
+@@ -321,8 +322,6 @@ static const struct imx258_reg mipi_642mbps_24mhz_4l[] = {
  
-+#define IMX258_REG_RESET		0x0103
+ static const struct imx258_reg mode_common_regs[] = {
+ 	{ 0x3051, 0x00 },
+-	{ 0x3052, 0x00 },
+-	{ 0x4E21, 0x14 },
+ 	{ 0x6B11, 0xCF },
+ 	{ 0x7FF0, 0x08 },
+ 	{ 0x7FF1, 0x0F },
+@@ -345,7 +344,6 @@ static const struct imx258_reg mode_common_regs[] = {
+ 	{ 0x7FA8, 0x03 },
+ 	{ 0x7FA9, 0xFE },
+ 	{ 0x7B24, 0x81 },
+-	{ 0x7B25, 0x00 },
+ 	{ 0x6564, 0x07 },
+ 	{ 0x6B0D, 0x41 },
+ 	{ 0x653D, 0x04 },
+@@ -460,6 +458,33 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x034F, 0x0C },
+ };
+ 
++struct imx258_variant_cfg {
++	const struct imx258_reg *regs;
++	unsigned int num_regs;
++};
 +
- /* Chip ID */
- #define IMX258_REG_CHIP_ID		0x0016
- #define IMX258_CHIP_ID			0x0258
-@@ -1059,6 +1061,16 @@ static int imx258_start_streaming(struct imx258 *imx258)
- 	const struct imx258_link_freq_config *link_freq_cfg;
- 	int ret, link_freq_index;
++static const struct imx258_reg imx258_cfg_regs[] = {
++	{ 0x3052, 0x00 },
++	{ 0x4E21, 0x14 },
++	{ 0x7B25, 0x00 },
++};
++
++static const struct imx258_variant_cfg imx258_cfg = {
++	.regs = imx258_cfg_regs,
++	.num_regs = ARRAY_SIZE(imx258_cfg_regs),
++};
++
++static const struct imx258_reg imx258_pdaf_cfg_regs[] = {
++	{ 0x3052, 0x01 },
++	{ 0x4E21, 0x10 },
++	{ 0x7B25, 0x01 },
++};
++
++static const struct imx258_variant_cfg imx258_pdaf_cfg = {
++	.regs = imx258_pdaf_cfg_regs,
++	.num_regs = ARRAY_SIZE(imx258_pdaf_cfg_regs),
++};
++
+ static const char * const imx258_test_pattern_menu[] = {
+ 	"Disabled",
+ 	"Solid Colour",
+@@ -644,6 +669,8 @@ struct imx258 {
+ 	struct v4l2_subdev sd;
+ 	struct media_pad pad;
  
-+	ret = imx258_write_reg(imx258, IMX258_REG_RESET, IMX258_REG_VALUE_08BIT,
-+			       0x01);
++	const struct imx258_variant_cfg *variant_cfg;
++
+ 	struct v4l2_ctrl_handler ctrl_handler;
+ 	/* V4L2 Controls */
+ 	struct v4l2_ctrl *link_freq;
+@@ -1111,6 +1138,14 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 		return ret;
+ 	}
+ 
++	ret = imx258_write_regs(imx258, imx258->variant_cfg->regs,
++				imx258->variant_cfg->num_regs);
 +	if (ret) {
-+		dev_err(&client->dev, "%s failed to reset sensor\n", __func__);
++		dev_err(&client->dev, "%s failed to set variant config\n",
++			__func__);
 +		return ret;
 +	}
 +
-+	/* 12ms is required from poweron to standby */
-+	fsleep(12000);
+ 	ret = imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
+ 			       IMX258_REG_VALUE_08BIT,
+ 			       imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK ?
+@@ -1499,6 +1534,10 @@ static int imx258_probe(struct i2c_client *client)
+ 
+ 	imx258->csi2_flags = ep.bus.mipi_csi2.flags;
+ 
++	imx258->variant_cfg = of_device_get_match_data(&client->dev);
++	if (!imx258->variant_cfg)
++		imx258->variant_cfg = &imx258_cfg;
 +
- 	/* Setup PLL */
- 	link_freq_index = imx258->cur_mode->link_freq_index;
- 	link_freq_cfg = &imx258->link_freq_configs[link_freq_index];
+ 	/* Initialize subdev */
+ 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+ 
+@@ -1586,7 +1625,8 @@ MODULE_DEVICE_TABLE(acpi, imx258_acpi_ids);
+ #endif
+ 
+ static const struct of_device_id imx258_dt_ids[] = {
+-	{ .compatible = "sony,imx258" },
++	{ .compatible = "sony,imx258", .data = &imx258_cfg },
++	{ .compatible = "sony,imx258-pdaf", .data = &imx258_pdaf_cfg },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, imx258_dt_ids);
 -- 
 2.42.0
 
