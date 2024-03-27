@@ -1,593 +1,205 @@
-Received: from mail-108-mta191.mxroute.com (mail-108-mta191.mxroute.com [136.175.108.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11011009.outbound.protection.outlook.com [52.101.228.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBBA155A5B
-	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.191
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711581793; cv=none; b=f/j4qfO7kSJujConrsVkgsRYEMbWxgbjWNSJFsAa9YYvU1zPeNkg4/ZglmqUzzHBFXUuxLeAxKXl77nGy8Ran+59qEOzfXtF9/0jPdqM1OMykOQNgSvDqMFHgwvbKoktNkegaRQSSo7477jPTvUrX1AKAiYIJJmMPpsiQF2/JOA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711581793; c=relaxed/simple;
-	bh=ISJQZg/va0bJn9MzLhyERzpFnUpi77sLgvN5lX6nd7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUmggRb5AhuZTkl6mjwcHKKL5kdhZ+FggRgwXQoXOFcEfqYLVOThrm9662fpLOF2vlQln4hxiqi6J4Ol/wooARJdD8keY6yTCnsYhYH4S78kcpzRsqd5P4GiEWPBxScZlcy36e26zbm9unKlp5RPh/AhZ4ZBnT96MV43xrvnEGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=UCii/iEb; arc=none smtp.client-ip=136.175.108.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE59153593
+	for <imx@lists.linux.dev>; Wed, 27 Mar 2024 23:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711583103; cv=fail; b=esZ+v7lyqIKkRBGzInvKW1ffdtfKPDZc+6jLDRwncEKeY4ggsJoG0RQuXHAfetbMBxPrHyJaOD8FmRlALnuk7VDDLXxEvrvYY2AZ0srWLtqEjffg/hfj5r/dDSVP8cF9zLqMTGzfwqQLOuhvFrtUsXGh8EPYEs8tFG01UMIRl28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711583103; c=relaxed/simple;
+	bh=4I9lcgckFbuTynI2eTd22KTu3YO23GXEcls4DBPupxQ=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=ipJxRKBuyyg4PEufTc07BQnzdFdRj5BdEEWhTtZiv3nh15HAGslg3flgZV7wMBGXSKvMIsVotlGih6+Qg3h4gv/IHRgT9vzgTpAs/f7iTvwjk/2BbponJi/k4JwQFSrsuOy2oe91e2xhsrbdRMxDxB7RtCGxzkP3SQQeTgUq1Qw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=bV/LI9E6; arc=fail smtp.client-ip=52.101.228.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="UCii/iEb"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta191.mxroute.com (ZoneMTA) with ESMTPSA id 18e8234c1a30003bea.00a
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 27 Mar 2024 23:17:59 +0000
-X-Zone-Loop: 20b8fc562bd6c09501cb9f249ce19db520a899a3a63b
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=TEp1bCg9Xk1t1iOO9iALQWCSXdThTUMkM/LQcqgMzj0=; b=UCii/iEbyUCup97dmyifjoV2LB
-	Il9k+0FKduVSeJW1TRlLnkDzSYtCF1yVaHjauzA0Xp2+Yy1BzQnFWl+ruueK3mPf4BGqebn2rDIyX
-	fi5hehHix6B0rhAMKDu4QIsjfMIEllzgtuiTQbAGlvVSB0eUe2CPyU6Bt4rnjs7RiFEf3APLYvTsL
-	Zr34sXlbYGBAkh6zt0DJNGL24ytrppIsU848AX7GCmj1QPUo+NZXNw2yJlO4YUuTZsIoLgcyVHwVP
-	fuyLgO2kVBW2Lk/HXD7RhB3J9V9UWN1HlBp9qwiKrC0/pGOO+W/yRflUSNt+5H6YjG6ojv72mI9YH
-	D2ZTfo8Q==;
-From: git@luigi311.com
-To: linux-media@vger.kernel.org
-Cc: dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com,
-	mchehab@kernel.org,
-	robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>,
-	Ondrej Jirman <megi@xff.cz>
-Subject: [PATCH 21/23] drivers: media: i2c: imx258: Use macros
-Date: Wed, 27 Mar 2024 17:17:07 -0600
-Message-ID: <20240327231710.53188-22-git@luigi311.com>
-In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
-References: <20240327231710.53188-1-git@luigi311.com>
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="bV/LI9E6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ypj9sFjlwihjeLj0zrDUSw5ryKZEFAC0rkCjGGf87re4lqTCqz4NCkGf70DMgM0kl/wN49kEp/wUOD0kUv9Nsztd3OenCUIkPYnsIS4ZcOWpT/eVyOMMnKDM8MvK8sebxQytGA9nZJGty05O+2YvHEaj80pv/cbmcPOV42f/uUNYC8nBuiWd1Xin/nWHjmqjyoR4ComwxF8hqo4Kq87h6S0ylOUkf+GN3250GYbVPvk88OIin0OOh+DtKoO0+1tkStwvxcZL2U9u+MZxCoFr0w//91yGNmMGWy3yqZoyTMmFaBILvMTCwZy5+ERmy1hASr24tfambJ3U6GJZ/aaN6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Sm1x6atxman+df0+eqBw/r9TvNKUY4uDsPw2QAnH5BE=;
+ b=kAz9OlACCclahlB5NnT21XN62qryiIyyyBDrmumw/GIXyPDzsdkkRDw9Kxham++5MRtLV9f3VWQz+aVsZTmphdwF42oaq4WC7tKYEpmy+1xvBSBzxvrcWykw8MC8DNDngN8T7WaF3Cdng4rrj5Va43St8pFGC22zD8CHkNM6CA7gYuMizYZ4ocieAAv3KHgzrOPBaPcELJz953Vp761e21qyyebhZh9oUd9TkND9g56eB5vJVbvnko4zxS7Z5a3csKmEiIgejgB87pJmvTKVAsYrhPLN6pD4+zUF3JoR6JLRWQf8wvAjLrEBRExNgUeSiLjyDAK7j/fST3ANvl0tYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Sm1x6atxman+df0+eqBw/r9TvNKUY4uDsPw2QAnH5BE=;
+ b=bV/LI9E6TRPIWB6LBuwFvDbgXGNfIvWjxDAijBCc2WZjAjMvmO9AekDYiDdVXYM/da1BJ5ekITkYftfnwoW0NuA7nnKUGMQwX6QSQoUTVHHzH/UgDY9xDieddLiQ0W4MwCAf3RB0b6ufMdQCZfV6+tgw7U4JDFBsuTCwamXGAsg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by TYVPR01MB10863.jpnprd01.prod.outlook.com
+ (2603:1096:400:2ab::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Wed, 27 Mar
+ 2024 23:44:56 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Wed, 27 Mar 2024
+ 23:44:56 +0000
+Message-ID: <87r0fvutn6.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
+ <amadeuszx.slawinski@linux.intel.com>,	Alper Nebi Yasak
+ <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
+ <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent 
+  Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,	Daniel Baluta
+ <daniel.baluta@nxp.com>,	Hans de Goede <hdegoede@redhat.com>,	Jaroslav  
+ Kysela <perex@perex.cz>,	Kai Vehmanen <kai.vehmanen@linux.intel.com>,	Kevin
+  Hilman <khilman@baylibre.com>,	Liam  Girdwood <lgirdwood@gmail.com>,
+	Linus  Walleij <linus.walleij@linaro.org>,	Mark Brown <broonie@kernel.org>,
+	Maso  Huang <maso.huang@mediatek.com>,	Matthias Brugger
+ <matthias.bgg@gmail.com>,	Neil Armstrong <neil.armstrong@linaro.org>,	Peter
+ Ujfalusi <peter.ujfalusi@linux.intel.com>,	Pierre-Louis Bossart
+ <pierre-louis.bossart@linux.intel.com>,	Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
+ <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Trevor Wu
+ <trevor.wu@mediatek.com>,	Vinod Koul <vkoul@kernel.org>,	Xiubo Li
+ <Xiubo.Lee@gmail.com>,	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
+	linux-sound@vger.kernel.org,	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 15/15] ASoC: soc-pcm: indicate warning if DPCM BE Codec has no settings
+In-Reply-To: <1jcyrfal6f.fsf@starbuckisacylon.baylibre.com>
+References: <87o7b353of.wl-kuninori.morimoto.gx@renesas.com>
+	<8734sf53kv.wl-kuninori.morimoto.gx@renesas.com>
+	<1j7chp9gbb.fsf@starbuckisacylon.baylibre.com>
+	<87v858cwki.wl-kuninori.morimoto.gx@renesas.com>
+	<1jcyrfal6f.fsf@starbuckisacylon.baylibre.com>
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Wed, 27 Mar 2024 23:44:55 +0000
+X-ClientProxiedBy: TY2PR02CA0056.apcprd02.prod.outlook.com
+ (2603:1096:404:e2::20) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: personal@luigi311.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYVPR01MB10863:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec643778-df40-4935-8d82-08dc4eb7e80a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	ZTGO6lUyk/RZaQhYkVypfut7Qvxk/n/Qtc568GpTIq0xTrQbGNeLt1+cM8yi4cZiqJ48tU7HiXrNG1goV9282bfeG4vKpmZTyc7NZhXxnZ2zAdN4zC0FAUzwmRSrRSFUv8UoRMDquKa9cxU/5QA3YWkmxXEzKAiCQN+Apr0wfw/JHeTmzrEpQr5nacJ3TaCHdGkvZQIQcXnN1OfOASC9oJL4J9XB4N7QnSArAezlTRC3bPA1OW706YUWpP6A8jnQ2slH+Zs2u9/c0Tc55sDIW+8ghkn/avuvin8/QYLyR4M1QWFC9TtiaEub50E9SdBYqvyG87AOTJ1zgEpqMVp6YWpV0NIVa22o8Xy8WyJoUUNmiPN/QIWVU5Dh+r0VPLWkoCBn6w0IyFlNqBwpRLQFz1njEnmJWOfbM+JDlQJquNgF+ySeBiibzj2WCBPewqdY47T2x9BbhykadHYxtsuTq3S2MaPchEZXimIX35LYVUccKqjVgP84FRoFtkx8CAj6zALeA62ylCHWFaYdWJ8rIKMmezKXyPlpE3SPyoUTRiSWvU89ujxtqX9iZJocXMoLp0OlKSJhMwk9rYmzV2w0JDJGwumrepGZp2pNXK1E310I6dihD8FJfAm6Y20mDLlZKmlW0JY84FBsruIvDTKqIpgq7mt13d/J6rCJ7LvF3UvyAr4TM8X2fBZeAIMnLV9VJ8PSTnCypLZYfdZqrClk9c2gy3nlBIKUd5u7CsSjl0g=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(7416005)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xDpzGCviusO0ajR1ufrblcE59g6C02XJPPYxsxNvoOUPmP7k6v0nTfUE2zdd?=
+ =?us-ascii?Q?kGmlSyrDzwtzjSyCLKM4SWUqZWtAlyKmzI0Wgt2FEn7CFAIDuoygVN/LY+7I?=
+ =?us-ascii?Q?B60kOZGuwBWWh7sEGso8DlTMSwjybGgfpaEtOcuEH1kGxpqOLvG4zThqqL4Y?=
+ =?us-ascii?Q?smp+RjKBvF2hcJfOMoJnY+f/MXBrWvvWzdFgA9JQp9dx8V4UYo4uhGnu9atl?=
+ =?us-ascii?Q?iEq6Ae7ZGczYuhSH7UGarxzZJ1Dhj+PoxW9ujrHkDc9N27W+b5XjQRMjxlee?=
+ =?us-ascii?Q?fjgkHrb5+YBA5B+JoIR4NRfHcPaM8cfAI2nXJMKM8U42U/TBE0srwXNJdhe6?=
+ =?us-ascii?Q?wmuf5446dOhkilVYy6TJ4Yn6zap3PU76toN4n3Q+2r08uTb9FmQ2LMN5f1kp?=
+ =?us-ascii?Q?IHIfToD8rm7o3BteVh6d7LMeYpgwWSTXSN5rn7KnLHwNIRSxJ9K4y1lxrmfh?=
+ =?us-ascii?Q?VkJYlPBZvcZmEbpxiUgCKypqu9/KCtr1Roi9O607SBzGY7BLTB3eQP3GiDYT?=
+ =?us-ascii?Q?XMXm88K5PzT7X6OCw5ymTgC5E9Slfv7nYtFQiQKX8PlBoo11pm/AXSq3a8iJ?=
+ =?us-ascii?Q?EyLSBtBjWn6Fh5cdV7peZY0bZSyHSTcZgTEHdmfEpSRSCue40KVrN7AiWys8?=
+ =?us-ascii?Q?GzGUZzz/VV0rmlG02mW/XRsJprYA6mEvNmG/SLe2Jf1tKlvBbeQfFU1njiFr?=
+ =?us-ascii?Q?hQhdB5gCd52R0L5b3g8Hb2/0xC9r4ReHgQGEjevUs5RMOeZIE8k4UHXR3+Oq?=
+ =?us-ascii?Q?rnvg9wmFNv1x8jAz8/CgA1Jh/BbXuqVAdLD8/5V0x1QdmoYAUypjrI1fAC8w?=
+ =?us-ascii?Q?G+P6p8mQ1FvN7FV5svclfzZH+kRMyoruy8XQ6lEQdH7t+yYbXjUmo9stiU/p?=
+ =?us-ascii?Q?aTCuRxfxlql3dmOa5RDZ89z+MlzJht+vLP0ne6RAVassKIn8u428R0sohkvK?=
+ =?us-ascii?Q?D5Rz1ncBv4LFe2g68+apaPnI02j0JGAMm7XdXqB7Mq430EgMBAnmbIiUq1/9?=
+ =?us-ascii?Q?qYIrOM/dibn6Dj2ukzcsaMdf6Vop37OOq6vCGOpULIokxYk5O4SEep4Kp0er?=
+ =?us-ascii?Q?8HRPhc0fXJLuAtaOm8nBkM9hqrmPRB0OiMbQK6rgheWUtIy42olYDQ/Lyr8+?=
+ =?us-ascii?Q?CM2NRdS9mnn+nyMgYnJAHW3UEtW0QiTK47iIcMTMW2ukJv8TMNMweuXMIH0w?=
+ =?us-ascii?Q?E4i1t3BHeMVyIAdRzuPbapWoqToesBCc4VyfzOULzte2I0JKGT3vyOqLvtKG?=
+ =?us-ascii?Q?IccYKgAS5uzt04alryQ30DFVfi21KDt5yrSAEkmFsQjS3x2yhoXy0FeG0MFS?=
+ =?us-ascii?Q?MoS/tScmLPNUE9UObyYlkCaZmOB8+/ILR5tGY8Jm55UBYI57e0eqS+qvAhKR?=
+ =?us-ascii?Q?DlJgd62N0MWhZjLGTgwvDa6+QjMI7rXqIAp+CzaFlk/B34ygTTc6nSN0tetM?=
+ =?us-ascii?Q?Xz6Kh4qNF+w+WW4otZJCcDEGbuhq8NB5FIa/w2l/AUHeYg93bWhKdA1sd1cw?=
+ =?us-ascii?Q?5eU3d0kENA8TOukK3jolYS6hApurzv0TgtXUN5fauDXVnjRgfkdpVFHlZqeA?=
+ =?us-ascii?Q?B5V+13QWPr/99a/n63ucUWbmvKIyU39emBW+XG/lC3bdT2lOlRWtZ7M1FudR?=
+ =?us-ascii?Q?kbY+FZyU2oj7ENhTkTV3hTA=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec643778-df40-4935-8d82-08dc4eb7e80a
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2024 23:44:56.0165
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K+y88cZrD/Y/hpzAxIn/sjhhXPijF0ZQsJs7z+6s7guZ2SQTj8oClTvT+ld/sZE2PhbVzbPV8s3o6jkIiouRZwiH97pa9mpJg6iTDIw7t0X80CzibjsYHCtkondkSCyW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYVPR01MB10863
 
-From: Luigi311 <git@luigi311.com>
 
-Use understandable macros instead of raw values.
+Hi Jerome
 
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Luigi311 <git@luigi311.com>
+Thank you for your feedback
+
+> 	DPCM
+> 		[CPU/xxxx]-[xxxx/Codec]
+> 		^^^^                   (A)
+(snip)
+> 	DPCM
+> 		[CPU/xxxx]-[xxxx/Codec]
+> 		^^^^^^^^^   ^^^^^^^^^^ (B)
+(snip)
+> > 	if ((dai_link->no_pcm) &&
+>                          ^ Actually my comment applies to all links, DPCM backend or not
+(snip)
+> A codec that does not support playback and does not support capture does
+> not support much, does it ? ;)
+
+Unfortunately, some codec which is used on DPCM BE doesn't have
+.channels_min = 1 settings which is used on snd_soc_dai_stream_valid().
+At least Intel is using it. For both Playback/Capture.
+
+But it *was* no problem, because (A) part was not checked before.
+
+Because of this background, [01/15] patch is using dummy Codec
+to avoid (B) check.
+
+[15/15] patch will indicate WARNING for such codec driver
+instead of just avoiding.
+At least, below are the drivers. It is mentioned in git-log.
+
+	sound/soc/codecs/hda.c
+	sound/pci/hda/patch_hdmi.c
+
+dai_link->no_pcm only is OK I think, because it needs to keep
+compatibility and try to indicates warning for (A) and/or (B) part.
+If such things happen on FE side, it is just error, not warning.
+
+>           (!cpu_play_t && !codec_capture_t)) { 
+>
+> Then at first glance, maybe ... CPU and codec seem to exclude each other but
+> that will only work as long as DCPM is limited to a single CPU per link.
+
+Hmm ?? I'm confusing
+Did you copy-and-paste miss ??
+I have never indicate this pair
+
++ I have indicated before
+- I have not
+
++	( cpu_capture_t && !codec_capture_t)	// in [15/15] patch
++	(!codec_play_t  && !codec_capture_t)	// in previous mail
+-	(!cpu_play_t    && !codec_capture_t)
+
+and I'm sorry but I can't understand what you want to tell me.
+Do you mean Multi-CPU case ?
+If you can indicate Image or code, it can more help me.
+
+Thank you for your help !!
+
+Best regards
 ---
- drivers/media/i2c/imx258.c | 434 ++++++++++++++++++-------------------
- 1 file changed, 207 insertions(+), 227 deletions(-)
-
-diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 52eaeeae1bed..c559a06bf180 100644
---- a/drivers/media/i2c/imx258.c
-+++ b/drivers/media/i2c/imx258.c
-@@ -33,8 +33,6 @@
- #define IMX258_VTS_30FPS_VGA		0x034c
- #define IMX258_VTS_MAX			65525
- 
--#define IMX258_REG_VTS			0x0340
--
- /* HBLANK control - read only */
- #define IMX258_PPL_DEFAULT		5352
- 
-@@ -90,6 +88,53 @@
- #define IMX258_PIXEL_ARRAY_WIDTH	4208U
- #define IMX258_PIXEL_ARRAY_HEIGHT	3120U
- 
-+/* regs */
-+#define IMX258_REG_PLL_MULT_DRIV                  0x0310
-+#define IMX258_REG_IVTPXCK_DIV                    0x0301
-+#define IMX258_REG_IVTSYCK_DIV                    0x0303
-+#define IMX258_REG_PREPLLCK_VT_DIV                0x0305
-+#define IMX258_REG_IOPPXCK_DIV                    0x0309
-+#define IMX258_REG_IOPSYCK_DIV                    0x030b
-+#define IMX258_REG_PREPLLCK_OP_DIV                0x030d
-+#define IMX258_REG_PHASE_PIX_OUTEN                0x3030
-+#define IMX258_REG_PDPIX_DATA_RATE                0x3032
-+#define IMX258_REG_SCALE_MODE                     0x0401
-+#define IMX258_REG_SCALE_MODE_EXT                 0x3038
-+#define IMX258_REG_AF_WINDOW_MODE                 0x7bcd
-+#define IMX258_REG_FRM_LENGTH_CTL                 0x0350
-+#define IMX258_REG_CSI_LANE_MODE                  0x0114
-+#define IMX258_REG_X_EVN_INC                      0x0381
-+#define IMX258_REG_X_ODD_INC                      0x0383
-+#define IMX258_REG_Y_EVN_INC                      0x0385
-+#define IMX258_REG_Y_ODD_INC                      0x0387
-+#define IMX258_REG_BINNING_MODE                   0x0900
-+#define IMX258_REG_BINNING_TYPE_V                 0x0901
-+#define IMX258_REG_FORCE_FD_SUM                   0x300d
-+#define IMX258_REG_DIG_CROP_X_OFFSET              0x0408
-+#define IMX258_REG_DIG_CROP_Y_OFFSET              0x040a
-+#define IMX258_REG_DIG_CROP_IMAGE_WIDTH           0x040c
-+#define IMX258_REG_DIG_CROP_IMAGE_HEIGHT          0x040e
-+#define IMX258_REG_SCALE_M                        0x0404
-+#define IMX258_REG_X_OUT_SIZE                     0x034c
-+#define IMX258_REG_Y_OUT_SIZE                     0x034e
-+#define IMX258_REG_X_ADD_STA                      0x0344
-+#define IMX258_REG_Y_ADD_STA                      0x0346
-+#define IMX258_REG_X_ADD_END                      0x0348
-+#define IMX258_REG_Y_ADD_END                      0x034a
-+#define IMX258_REG_EXCK_FREQ                      0x0136
-+#define IMX258_REG_CSI_DT_FMT                     0x0112
-+#define IMX258_REG_LINE_LENGTH_PCK                0x0342
-+#define IMX258_REG_SCALE_M_EXT                    0x303a
-+#define IMX258_REG_FRM_LENGTH_LINES               0x0340
-+#define IMX258_REG_FINE_INTEG_TIME                0x0200
-+#define IMX258_REG_PLL_IVT_MPY                    0x0306
-+#define IMX258_REG_PLL_IOP_MPY                    0x030e
-+#define IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H       0x0820
-+#define IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L       0x0822
-+
-+#define REG8(a, v) { a, v }
-+#define REG16(a, v) { a, ((v) >> 8) & 0xff }, { (a) + 1, (v) & 0xff }
-+
- struct imx258_reg {
- 	u16 address;
- 	u8 val;
-@@ -145,179 +190,139 @@ struct imx258_mode {
-  * lane data rate when using 2 lanes, thus allowing a maximum of 15fps.
-  */
- static const struct imx258_reg mipi_1267mbps_19_2mhz_2l[] = {
--	{ 0x0136, 0x13 },
--	{ 0x0137, 0x33 },
--	{ 0x0301, 0x0A },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x03 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0xC6 },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x01 },
--	{ 0x0820, 0x09 },
--	{ 0x0821, 0xa6 },
--	{ 0x0822, 0x66 },
--	{ 0x0823, 0x66 },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1333),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 10),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 3),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x00C6),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 1),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x09A6),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0x6666),
- };
- 
- static const struct imx258_reg mipi_1267mbps_19_2mhz_4l[] = {
--	{ 0x0136, 0x13 },
--	{ 0x0137, 0x33 },
--	{ 0x0301, 0x05 },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x03 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0xC6 },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x03 },
--	{ 0x0820, 0x13 },
--	{ 0x0821, 0x4C },
--	{ 0x0822, 0xCC },
--	{ 0x0823, 0xCC },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1333),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 5),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 3),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x00C6),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 3),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x134C),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0xCCCC),
- };
- 
- static const struct imx258_reg mipi_1272mbps_24mhz_2l[] = {
--	{ 0x0136, 0x18 },
--	{ 0x0137, 0x00 },
--	{ 0x0301, 0x0a },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x04 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0xD4 },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x01 },
--	{ 0x0820, 0x13 },
--	{ 0x0821, 0x4C },
--	{ 0x0822, 0xCC },
--	{ 0x0823, 0xCC },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1800),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 10),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 4),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x00D4),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 1),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x134C),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0xCCCC),
- };
- 
- static const struct imx258_reg mipi_1272mbps_24mhz_4l[] = {
--	{ 0x0136, 0x18 },
--	{ 0x0137, 0x00 },
--	{ 0x0301, 0x05 },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x04 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0xD4 },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x03 },
--	{ 0x0820, 0x13 },
--	{ 0x0821, 0xE0 },
--	{ 0x0822, 0x00 },
--	{ 0x0823, 0x00 },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1800),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 5),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 4),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x00D4),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 3),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x13E0),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0x0000),
- };
- 
- static const struct imx258_reg mipi_640mbps_19_2mhz_2l[] = {
--	{ 0x0136, 0x13 },
--	{ 0x0137, 0x33 },
--	{ 0x0301, 0x05 },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x03 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0x64 },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x01 },
--	{ 0x0820, 0x05 },
--	{ 0x0821, 0x00 },
--	{ 0x0822, 0x00 },
--	{ 0x0823, 0x00 },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1333),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 5),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 3),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x0064),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 1),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x0500),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0x0000),
- };
- 
- static const struct imx258_reg mipi_640mbps_19_2mhz_4l[] = {
--	{ 0x0136, 0x13 },
--	{ 0x0137, 0x33 },
--	{ 0x0301, 0x05 },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x03 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0x64 },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x03 },
--	{ 0x0820, 0x0A },
--	{ 0x0821, 0x00 },
--	{ 0x0822, 0x00 },
--	{ 0x0823, 0x00 },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1333),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 5),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 3),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x0064),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 3),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x0A00),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0x0000),
- };
- 
- static const struct imx258_reg mipi_642mbps_24mhz_2l[] = {
--	{ 0x0136, 0x18 },
--	{ 0x0137, 0x00 },
--	{ 0x0301, 0x05 },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x04 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0x6B },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x01 },
--	{ 0x0820, 0x0A },
--	{ 0x0821, 0x00 },
--	{ 0x0822, 0x00 },
--	{ 0x0823, 0x00 },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1800),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 5),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 4),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x006B),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 1),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x0A00),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0x0000),
- };
- 
- static const struct imx258_reg mipi_642mbps_24mhz_4l[] = {
--	{ 0x0136, 0x18 },
--	{ 0x0137, 0x00 },
--	{ 0x0301, 0x05 },
--	{ 0x0303, 0x02 },
--	{ 0x0305, 0x04 },
--	{ 0x0306, 0x00 },
--	{ 0x0307, 0x6B },
--	{ 0x0309, 0x0A },
--	{ 0x030B, 0x01 },
--	{ 0x030D, 0x02 },
--	{ 0x030E, 0x00 },
--	{ 0x030F, 0xD8 },
--	{ 0x0310, 0x00 },
--
--	{ 0x0114, 0x03 },
--	{ 0x0820, 0x0A },
--	{ 0x0821, 0x00 },
--	{ 0x0822, 0x00 },
--	{ 0x0823, 0x00 },
-+	REG16(IMX258_REG_EXCK_FREQ, 0x1800),
-+	REG8(IMX258_REG_IVTPXCK_DIV, 5),
-+	REG8(IMX258_REG_IVTSYCK_DIV, 2),
-+	REG8(IMX258_REG_PREPLLCK_VT_DIV, 4),
-+	REG16(IMX258_REG_PLL_IVT_MPY, 0x006B),
-+	REG8(IMX258_REG_IOPPXCK_DIV, 10),
-+	REG8(IMX258_REG_IOPSYCK_DIV, 1),
-+	REG8(IMX258_REG_PREPLLCK_OP_DIV, 2),
-+	REG16(IMX258_REG_PLL_IOP_MPY, 0x00D8),
-+	REG8(IMX258_REG_PLL_MULT_DRIV, 0),
-+
-+	REG8(IMX258_REG_CSI_LANE_MODE, 3),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H, 0x0A00),
-+	REG16(IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L, 0x0000),
- };
- 
- static const struct imx258_reg mode_common_regs[] = {
-@@ -363,45 +368,29 @@ static const struct imx258_reg mode_common_regs[] = {
- 	{ 0x7423, 0xD7 },
- 	{ 0x5F04, 0x00 },
- 	{ 0x5F05, 0xED },
--	{ 0x0112, 0x0A },
--	{ 0x0113, 0x0A },
--	{ 0x0342, 0x14 },
--	{ 0x0343, 0xE8 },
--	{ 0x0344, 0x00 },
--	{ 0x0345, 0x00 },
--	{ 0x0346, 0x00 },
--	{ 0x0347, 0x00 },
--	{ 0x0348, 0x10 },
--	{ 0x0349, 0x6F },
--	{ 0x034A, 0x0C },
--	{ 0x034B, 0x2F },
--	{ 0x0381, 0x01 },
--	{ 0x0383, 0x01 },
--	{ 0x0385, 0x01 },
--	{ 0x0387, 0x01 },
--	{ 0x0404, 0x00 },
--	{ 0x0408, 0x00 },
--	{ 0x0409, 0x00 },
--	{ 0x040A, 0x00 },
--	{ 0x040B, 0x00 },
--	{ 0x040C, 0x10 },
--	{ 0x040D, 0x70 },
--	{ 0x3038, 0x00 },
--	{ 0x303A, 0x00 },
--	{ 0x303B, 0x10 },
--	{ 0x300D, 0x00 },
--	{ 0x0350, 0x00 },
--	{ 0x0204, 0x00 },
--	{ 0x0205, 0x00 },
--	{ 0x020E, 0x01 },
--	{ 0x020F, 0x00 },
--	{ 0x0210, 0x01 },
--	{ 0x0211, 0x00 },
--	{ 0x0212, 0x01 },
--	{ 0x0213, 0x00 },
--	{ 0x0214, 0x01 },
--	{ 0x0215, 0x00 },
--	{ 0x7BCD, 0x00 },
-+	REG16(IMX258_REG_CSI_DT_FMT, 0x0a0a),
-+	REG16(IMX258_REG_LINE_LENGTH_PCK, 5352 ),
-+	REG16(IMX258_REG_X_ADD_STA, 0),
-+	REG16(IMX258_REG_Y_ADD_STA, 0),
-+	REG16(IMX258_REG_X_ADD_END, 4207),
-+	REG16(IMX258_REG_Y_ADD_END, 3119),
-+	REG8(IMX258_REG_X_EVN_INC, 1),
-+	REG8(IMX258_REG_X_ODD_INC, 1),
-+	REG8(IMX258_REG_Y_EVN_INC, 1),
-+	REG8(IMX258_REG_Y_ODD_INC, 1),
-+	REG16(IMX258_REG_DIG_CROP_X_OFFSET, 0),
-+	REG16(IMX258_REG_DIG_CROP_Y_OFFSET, 0),
-+	REG16(IMX258_REG_DIG_CROP_IMAGE_WIDTH, 4208),
-+	REG8(IMX258_REG_SCALE_MODE_EXT, 0),
-+	REG16(IMX258_REG_SCALE_M_EXT, 16),
-+	REG8(IMX258_REG_FORCE_FD_SUM, 0),
-+	REG8(IMX258_REG_FRM_LENGTH_CTL, 0),
-+	REG16(IMX258_REG_ANALOG_GAIN, 0),
-+	REG16(IMX258_REG_GR_DIGITAL_GAIN, 256),
-+	REG16(IMX258_REG_R_DIGITAL_GAIN, 256),
-+	REG16(IMX258_REG_B_DIGITAL_GAIN, 256),
-+	REG16(IMX258_REG_GB_DIGITAL_GAIN, 256),
-+	REG8(IMX258_REG_AF_WINDOW_MODE, 0),
- 	{ 0x94DC, 0x20 },
- 	{ 0x94DD, 0x20 },
- 	{ 0x94DE, 0x20 },
-@@ -414,48 +403,39 @@ static const struct imx258_reg mode_common_regs[] = {
- 	{ 0x941B, 0x50 },
- 	{ 0x9519, 0x50 },
- 	{ 0x951B, 0x50 },
--	{ 0x3030, 0x00 },
--	{ 0x3032, 0x00 },
--	{ 0x0220, 0x00 },
-+	REG8(IMX258_REG_PHASE_PIX_OUTEN, 0),
-+	REG8(IMX258_REG_PDPIX_DATA_RATE, 0),
-+	REG8(IMX258_REG_HDR, 0),
- };
- 
- static const struct imx258_reg mode_4208x3120_regs[] = {
--	{ 0x0900, 0x00 },
--	{ 0x0901, 0x11 },
--	{ 0x0401, 0x00 },
--	{ 0x0405, 0x10 },
--	{ 0x040E, 0x0C },
--	{ 0x040F, 0x30 },
--	{ 0x034C, 0x10 },
--	{ 0x034D, 0x70 },
--	{ 0x034E, 0x0C },
--	{ 0x034F, 0x30 },
-+	REG8(IMX258_REG_BINNING_MODE, 0),
-+	REG8(IMX258_REG_BINNING_TYPE_V, 0x11),
-+	REG8(IMX258_REG_SCALE_MODE, 0),
-+	REG16(IMX258_REG_SCALE_M, 16),
-+	REG16(IMX258_REG_DIG_CROP_IMAGE_HEIGHT, 3120),
-+	REG16(IMX258_REG_X_OUT_SIZE, 4208),
-+	REG16(IMX258_REG_Y_OUT_SIZE, 3120),
- };
- 
- static const struct imx258_reg mode_2104_1560_regs[] = {
--	{ 0x0900, 0x01 },
--	{ 0x0901, 0x12 },
--	{ 0x0401, 0x01 },
--	{ 0x0405, 0x20 },
--	{ 0x040E, 0x06 },
--	{ 0x040F, 0x18 },
--	{ 0x034C, 0x08 },
--	{ 0x034D, 0x38 },
--	{ 0x034E, 0x06 },
--	{ 0x034F, 0x18 },
-+	REG8(IMX258_REG_BINNING_MODE, 1),
-+	REG8(IMX258_REG_BINNING_TYPE_V, 0x12),
-+	REG8(IMX258_REG_SCALE_MODE, 1),
-+	REG16(IMX258_REG_SCALE_M, 32),
-+	REG16(IMX258_REG_DIG_CROP_IMAGE_HEIGHT, 1560),
-+	REG16(IMX258_REG_X_OUT_SIZE, 2104),
-+	REG16(IMX258_REG_Y_OUT_SIZE, 1560),
- };
- 
- static const struct imx258_reg mode_1048_780_regs[] = {
--	{ 0x0900, 0x01 },
--	{ 0x0901, 0x14 },
--	{ 0x0401, 0x01 },
--	{ 0x0405, 0x40 },
--	{ 0x040E, 0x03 },
--	{ 0x040F, 0x0C },
--	{ 0x034C, 0x04 },
--	{ 0x034D, 0x18 },
--	{ 0x034E, 0x03 },
--	{ 0x034F, 0x0C },
-+	REG8(IMX258_REG_BINNING_MODE, 1),
-+	REG8(IMX258_REG_BINNING_TYPE_V, 0x14),
-+	REG8(IMX258_REG_SCALE_MODE, 1),
-+	REG16(IMX258_REG_SCALE_M, 64),
-+	REG16(IMX258_REG_DIG_CROP_IMAGE_HEIGHT, 780),
-+	REG16(IMX258_REG_X_OUT_SIZE, 1048),
-+	REG16(IMX258_REG_Y_OUT_SIZE, 780),
- };
- 
- struct imx258_variant_cfg {
-@@ -930,7 +910,7 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
- 		}
- 		break;
- 	case V4L2_CID_VBLANK:
--		ret = imx258_write_reg(imx258, IMX258_REG_VTS,
-+		ret = imx258_write_reg(imx258, IMX258_REG_FRM_LENGTH_LINES,
- 				       IMX258_REG_VALUE_16BIT,
- 				       imx258->cur_mode->height + ctrl->val);
- 		break;
--- 
-2.42.0
-
+Renesas Electronics
+Ph.D. Kuninori Morimoto
