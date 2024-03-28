@@ -1,106 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EE0136994;
-	Thu, 28 Mar 2024 20:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB607D07D
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 20:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711656402; cv=none; b=dJqcN1rkQzwlfS+aKweJIY/jIxv3MlMhqcOLyPD5KWi2WIetLZ5Z/TY+/wr+hBBdsS/TTQd1eitrQ8PBVXQ4IPzEu6QoMhrFUo68IleOVQoL9O+guQOQl4tIHaBQDDe8AfDrOZrW8LuWtNW9XHrYQ/8TLKHDA+M+WGolPA3994Q=
+	t=1711657426; cv=none; b=f9FAlKGOu97x4d5VLfNt1SKGn/O7gscDt25YOT9AHmEwvpd3+R0RsSaULEZhFsoRd5IY5OkQMW0q7KPW1xtekm2r/Xe4yyiJAcvwWznrXcRiyRslo95CnhQ7+Zc+VlP5CpiT2WgMHe5BLyUWYJ6c8479CEXYWFnpLQBiptdqKgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711656402; c=relaxed/simple;
-	bh=nkIjd0IXCVDR6LITaen5NTM7zN+lmF4nDqCRUBJ5Urs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nQ+mxNTQAB2ogMhBIw5Xat2Vqov0m1zUdnImex8+uivZ1dfcqpWzgaZPtuWb9P8DFBpxyIczqDJ1ekDnANRiUxrp3M4e/7gG9E5sUDaaFLnyAedT9LayWRjd+8Hh3+M7gSQMhxjMFptvZh3G212T7b8JZDw+L6vw0DW3LXxCz4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JasIlo3P; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711657426; c=relaxed/simple;
+	bh=Bpn9BWZNH5PRThSfi4wPtUSACyo5xNzRrF/AQoUWk9I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pFEomtR+ttFg4AeC1ovB8f+c/2x+vtMLjerPTyo4QQ5ohix3p6Py2JOvTGRBI8S/kwhH0MtLZ1qZzn+Vk4/FSktrC2Tz9OulWlju806sSeiA6oiz8crybmpBa9aMAVbWHPjPM7NZL6B1//VxA38NTNk+m029HLd6nQXisTmnoJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKlYfc7K; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JasIlo3P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711656401; x=1743192401;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nkIjd0IXCVDR6LITaen5NTM7zN+lmF4nDqCRUBJ5Urs=;
-  b=JasIlo3PcxsTu3uG+Slk2DIDQ254NvJc+G1jFYErPA1ZLlTRZEoufzlq
-   tgXmZGesSKY1sS8sURSmSBxaE480YXfr3H7iyPhEc3tk/fokrnOHgoKan
-   I3vRmD9JXlKOJKdm3/BoAB+63RHFOmGBnGmepmIzSNgtDhmJbQb5dcLzd
-   dJEBjm0ouGIrvSQFtdspxKBYNxcrMFobL5iktqZEK0mIx7pJ5vwbVZB1s
-   8IJLMcQBMBW4H50fXFDrpWISpXfhZpo40UU5uS98UEfyKbSBG3fJzQcWO
-   9tMZHRqpe9suxnq6lIEieT4rlF6De1tsfeRH9hSzNxeqKaVOMhNMWRexs
-   Q==;
-X-CSE-ConnectionGUID: ELx41s00TrqkbbzwEfl36Q==
-X-CSE-MsgGUID: FW6AHHXJQrq1DqeIadpnqg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="7030084"
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="7030084"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 13:06:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="16786652"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 28 Mar 2024 13:06:21 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rpw0w-0002UQ-2z;
-	Thu, 28 Mar 2024 20:06:18 +0000
-Date: Fri, 29 Mar 2024 04:05:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: git@luigi311.com, linux-media@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>
-Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
- compatible strings
-Message-ID: <202403290352.sV38QfhQ-lkp@intel.com>
-References: <20240327231710.53188-19-git@luigi311.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKlYfc7K"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-33ed4d8e9edso986616f8f.2
+        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 13:23:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711657423; x=1712262223; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aN4PhuvWAnA2tTEHvF8Ua7mWUQaPffQCdMxsppNaWgM=;
+        b=QKlYfc7K3fsmIeq+rAUH9dRlw8Kb8snBOusWxR0iA+2cdHkqK1Cr3Obj8cuT/qtR3K
+         V1hO87B4oNs0kfHslhuhIks+MpbjOj0+ZggxYwYar3ohwQhZQB43MLNnc+ekwbV/HdUE
+         ilqXF+L8wpd9Xoguo6DUlNrHQouW5MvlUQOqFOUejUzaiwMX6baiGyAxnoJxNv5kkfb+
+         4INrdFZhhSXB0Pf5ZsGhar1onPzryUgsWD1GurN3oDpBgeyWFqPDUH75oGSd5aQzsRQp
+         W/rDaceiN6C0Anps7j3NezsM+tKDSyG0b3+2Ase9WOF/vaXTk5qRgZcBNlb811x3q+P2
+         38pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711657423; x=1712262223;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aN4PhuvWAnA2tTEHvF8Ua7mWUQaPffQCdMxsppNaWgM=;
+        b=Q0SCqQm1FAqZCuUp2OIfJwhMGZ2GEqpeceSfWojGu+revMmCngpkC5cbQieEY5Pvzi
+         snxZpbYSFd06XYk5P6z2Oj4Uzl3lXoFN0RSr1J0xe51RRUDnf/vJZyIiRTPz6PsAhSdZ
+         hHyPW+rI9DkQdgmdy3MrYOVrmWt/3u+L9csjw6Gou0TzxAwjrFc0kp3fTMeuQE80UzSh
+         4ZZGTa5jB6u7soLgud8KKhwG70DyoAaKBy7vdSX59kJjY6PaCaHk1QrYwrdg+hZSvgk7
+         L5NPdEhHKZVprOwTXOCFxLSoAKxgm9QVEmpIzLx/Tx7K8f/pXJMTwYpOYpN3VwTFh7Zb
+         skCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUb7XbbEa85wWMO3HCm0/eSIIG3dbtolpZF8yzq4cBZI3QQ4+QGczHmJIS6LBzZUHXjU1hTmSsp9xi16Uo347Gjaxkc
+X-Gm-Message-State: AOJu0YyJYaDMQiSqoL6Bxid+GIxlHWjEkRGvd6dkUcdBWyOTO6CmUgIA
+	PYFOkxScPyR5cpDIdA9YUiqxB+1CFqvO+HABSpuC7+mui98be2xy
+X-Google-Smtp-Source: AGHT+IG14NBt9Lfnp5zRiB//c/Nkx/NjUDrErRTTIGaXk/rXF9TdrJ2RsYII1laA0G/j1M2Z70tKLw==
+X-Received: by 2002:adf:e54e:0:b0:33d:74f2:820e with SMTP id z14-20020adfe54e000000b0033d74f2820emr88912wrm.30.1711657423264;
+        Thu, 28 Mar 2024 13:23:43 -0700 (PDT)
+Received: from localhost.localdomain ([2605:59c8:6662:b310:26a7:2d64:79c1:dee4])
+        by smtp.gmail.com with ESMTPSA id dp18-20020a0560000c9200b00341de138a2esm2538974wrb.94.2024.03.28.13.23.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 13:23:42 -0700 (PDT)
+From: Gilles Talis <gilles.talis@gmail.com>
+To: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: conor+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	robh@kernel.org,
+	shawnguo@kernel.org,
+	festevam@gmail.com,
+	alex@voxelbotics.com,
+	Gilles Talis <gilles.talis@gmail.com>
+Subject: [PATCH 0/3] Add support for Emcraft Systems NavQ+ kit
+Date: Thu, 28 Mar 2024 16:23:17 -0400
+Message-Id: <20240328202320.187596-1-gilles.talis@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327231710.53188-19-git@luigi311.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Hello
 
-kernel test robot noticed the following build warnings:
+This series adds a device tree file for the Emcraft Systems NavQ+ kit [1]
 
-[auto build test WARNING on media-tree/master]
-[also build test WARNING on linuxtv-media-stage/master linus/master v6.9-rc1 next-20240328]
-[cannot apply to sailus-media-tree/streams]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The first patch adds a new vendor prefix for Emcraft Systems
+The second one adds the board to the arm/fsl.yaml DT bindings.
+Last patch adds device tree file for the kit.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/git-luigi311-com/media-i2c-imx258-Remove-unused-defines/20240328-072629
-base:   git://linuxtv.org/media_tree.git master
-patch link:    https://lore.kernel.org/r/20240327231710.53188-19-git%40luigi311.com
-patch subject: [PATCH 18/23] dt-bindings: media: imx258: Add alternate compatible strings
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240329/202403290352.sV38QfhQ-lkp@intel.com/reproduce)
+[1] https://www.emcraft.com/products/1222
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403290352.sV38QfhQ-lkp@intel.com/
 
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: properties:compatible: [{'enum': ['sony,imx258', 'sony,imx258-pdaf']}] is not of type 'object', 'boolean'
-   	from schema $id: http://json-schema.org/draft-07/schema#
->> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: properties:compatible: [{'enum': ['sony,imx258', 'sony,imx258-pdaf']}] is not of type 'object', 'boolean'
-   	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
---
->> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: ignoring, error in schema: properties: compatible
+Gilles Talis (3):
+  dt-bindings: vendor-prefixes: Add Emcraft Systems
+  dt-bindings: arm: Add Emcraft Systems i.MX8M Plus NavQ+ Kit
+  arm64: dts: freescale: Add device tree for Emcraft Systems NavQ+ Kit
 
+ .../devicetree/bindings/arm/fsl.yaml          |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../arm64/boot/dts/freescale/imx8mp-navqp.dts | 435 ++++++++++++++++++
+ 4 files changed, 439 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
+
+
+base-commit: 4cece764965020c22cff7665b18a012006359095
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
