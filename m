@@ -1,47 +1,45 @@
 Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D70228DB3
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD7E14294
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 14:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711634104; cv=none; b=OvGqTGEbsR1xCnIgc0uDIr0GNYvEBxzh5gpZeZqF+tYK7CRCTa5UFOAJfWR5NYGHu9/nugfZ92nIzmjDn/sRKZftW8NaCx3w0iLAM31NjR5N+54xV6JNdfaGhAK/3rJciblfIJW11gx/iV261wYTm/qbssRhPtYoyNBsywk2xpU=
+	t=1711635076; cv=none; b=UiRqByaTHJNSa/ZencVGsOB17xHcP53qfx3VkCN/RLGiz+w/Tm90ViwOGSDdA2H4R6j7BplzsKB0fsxvRHfMC6jsZgi/kkC/8KkLTot4h2FRLSF+ztTkf6HlGoNtn1XN8mafl32Cqa8JMClaEEHrXRnKxyD6Lr7/PCEXL+V3jA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711634104; c=relaxed/simple;
-	bh=DfrrIRMhf7F8dxUPrgdMEfjKADIvaXWsP4TCkcLf8oU=;
+	s=arc-20240116; t=1711635076; c=relaxed/simple;
+	bh=/ST9c7ah1zJQ/+6Zv31rMPGfOa55LO5wYb9NpYAsWEw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GYVxj2YFx+TeyEjMdxmC4uZ1kZANksc0ddPJM5p14zo5V5uGMxy58itMqgqcVoYxNzI5q8SH9PgWDmASIkiVKJYGKdNJUyRQf0ltqieplDrNvvsJQrobA2IMwiDXMNjUmJyJIjvlslkPHjrZ9F8gH5rfjvlqY4MipUGlZA/hnso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=B2GyGhGb; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCyoJNm+1bH6UvL3ldnLMfMOg+DdtCO/KBmXRzbijc/g3Lr/idJocU+xGBD3yheq60k6xw1RJPQmM33IsAl8CsN4S6Eo/K/wXFGe2I4eN4yQztNtymz+YMNzJ8tBr7Xn/ExQwhPp4DkNODbkxFfS3bHtGHfN/6yqFhB22wG1Big=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gQVcQj6c; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="B2GyGhGb"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gQVcQj6c"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=7HuHZRVaWONhQpUVLGaH8mCBo7oDHLgcq9J6Ysi17V0=;
-	b=B2GyGhGbnijYUIE6ovaPBfHzlyeGNvjf5Hhrjr8xzi9lf6SKybB5fCzs2nsSwP
-	8yRBh9ydcmcMzpDLlDtl85B3L+9oYj7BH7B362RxH/J9yoXxb/KNunXRYX4qiDyw
-	N+hCK6djPwQlH1MPT/ayTcKoR+M5tH4kvAtUz6U8IMvfM=
+	Content-Type; bh=9wIZc962l46yPuHvVREzBXZG1fmGa5fztlhnsqKpiUU=;
+	b=gQVcQj6cd0ODZmK/ARzB82ixPy+CUwbipuGuMN5nm3C9AxyFwoJWyyLjAA457V
+	U8Eam1ZnkDMnbhQuETeCEt3vNVovl1bP29xSwVXHMd9R2nPpLM71ssgBUW+uBSbM
+	SLbRaMquYRYWC778LkDzKVVxIi5erkXBhi3ZcunHkvfR8=
 Received: from dragon (unknown [183.213.196.225])
-	by smtp2 (Coremail) with SMTP id C1UQrACX_heAdgVmyl1aAg--.12337S3;
-	Thu, 28 Mar 2024 21:54:09 +0800 (CST)
-Date: Thu, 28 Mar 2024 21:54:07 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrAC3HhhregVmdY9aAg--.12946S3;
+	Thu, 28 Mar 2024 22:10:52 +0800 (CST)
+Date: Thu, 28 Mar 2024 22:10:51 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Sebastian Reichel <sre@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Rob Herring <robh+dt@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
-Subject: Re: [PATCH v5 6/6] ARM: dts: imx: Add UNI-T UTi260B thermal camera
- board
-Message-ID: <ZgV2fyfV5/SW/v+x@dragon>
-References: <20240226212740.2019837-1-sre@kernel.org>
- <20240226212740.2019837-7-sre@kernel.org>
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8qxp: add asrc[0,1], esai0,
+ spdif[0,1] and sai[4,5]
+Message-ID: <ZgV6a7ZMwM4aR7f+@dragon>
+References: <20240226192130.259288-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,17 +48,360 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240226212740.2019837-7-sre@kernel.org>
-X-CM-TRANSID:C1UQrACX_heAdgVmyl1aAg--.12337S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIzB-DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBCvZV6NnpnNkwACsK
+In-Reply-To: <20240226192130.259288-1-Frank.Li@nxp.com>
+X-CM-TRANSID:C1UQrAC3HhhregVmdY9aAg--.12946S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW3ZrWftF4UWFykCF4xArWUArb_yoWDuryUpF
+	97KFW5Ga4xtF129w1YgF4kGF1kW3s8CFyj93ZxWay8CF9Fgr9rtr4xGr4kWFyYyr12vw1U
+	XF15Xr1akwnxK3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO8nOUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQ6vZVsVCaj6-gAAsq
 
-On Mon, Feb 26, 2024 at 10:26:28PM +0100, Sebastian Reichel wrote:
-> Add DT for the UNI-T UTi260B handheld thermal camera.
+On Mon, Feb 26, 2024 at 02:21:29PM -0500, Frank Li wrote:
+> Add asrc[0,1], esai0, spdif[0,1], sai[4,5] and related lpcg node for
+> imx8 audio subsystem.
 > 
-> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> Signed-off-by: Sebastian Reichel <sre@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx8-ss-audio.dtsi     | 306 ++++++++++++++++++
+>  1 file changed, 306 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> index 07afeb78ed564..6d78d6c0d9002 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+> @@ -6,6 +6,7 @@
+>  
+>  #include <dt-bindings/clock/imx8-clock.h>
+>  #include <dt-bindings/clock/imx8-lpcg.h>
+> +#include <dt-bindings/dma/fsl-edma.h>
+>  #include <dt-bindings/firmware/imx/rsrc.h>
+>  
+>  audio_ipg_clk: clock-audio-ipg {
+> @@ -481,4 +482,309 @@ acm: acm@59e00000 {
+>  			      "sai3_rx_bclk",
+>  			      "sai4_rx_bclk";
+>  	};
+> +
+> +	asrc0: asrc@59000000 {
 
-Applied, thanks!
+We want to sort nodes in unit-address, right?
+
+> +		compatible = "fsl,imx8qm-asrc";
+> +		reg = <0x59000000 0x10000>;
+> +		interrupts = <GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 373 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks = <&asrc0_lpcg 0>,
+> +			 <&asrc0_lpcg 0>,
+> +			 <&aud_pll_div0_lpcg 0>,
+> +			 <&aud_pll_div1_lpcg 0>,
+> +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
+> +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>;
+> +		clock-names = "ipg", "mem",
+> +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
+> +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
+> +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
+> +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
+> +			      "spba";
+> +		dmas = <&edma0 0 0 0>,
+> +		       <&edma0 1 0 0>,
+> +		       <&edma0 2 0 0>,
+> +		       <&edma0 3 0 FSL_EDMA_RX>,
+> +		       <&edma0 4 0 FSL_EDMA_RX>,
+> +		       <&edma0 5 0 FSL_EDMA_RX>;
+> +		/* tx* is output channel of asrc, it is rx channel for eDMA */
+> +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
+> +		fsl,asrc-rate  = <8000>;
+
+One space around =
+
+> +		fsl,asrc-width = <16>;
+> +		fsl,asrc-clk-map = <0>;
+> +		power-domains = <&pd IMX_SC_R_ASRC_0>;
+> +		status = "disabled";
+> +	};
+> +
+> +	esai0: esai@59010000 {
+> +		compatible = "fsl,imx8qm-esai", "fsl,imx6ull-esai";
+> +		reg = <0x59010000 0x10000>;
+> +		interrupts = <GIC_SPI 409 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks = <&esai0_lpcg 1>, <&esai0_lpcg 0>, <&esai0_lpcg 1>, <&clk_dummy>;
+> +		clock-names = "core", "extal", "fsys", "spba";
+> +		dmas = <&edma0 6 0 FSL_EDMA_RX>, <&edma0 7 0 0>;
+> +		dma-names = "rx", "tx";
+> +		power-domains = <&pd IMX_SC_R_ESAI_0>;
+> +		status = "disabled";
+> +	};
+> +
+> +	spdif0: spdif@59020000 {
+> +		compatible = "fsl,imx8qm-spdif";
+> +		reg = <0x59020000 0x10000>;
+> +		interrupts =  <GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>, /* rx */
+
+Ditto
+
+> +			      <GIC_SPI 458 IRQ_TYPE_LEVEL_HIGH>; /* tx */
+> +		clocks = <&spdif0_lpcg 1>,	/* core */
+> +			 <&clk_dummy>,		/* rxtx0 */
+> +			 <&spdif0_lpcg 0>,	/* rxtx1 */
+> +			 <&clk_dummy>,		/* rxtx2 */
+> +			 <&clk_dummy>,		/* rxtx3 */
+> +			 <&clk_dummy>,		/* rxtx4 */
+> +			 <&audio_ipg_clk>,	/* rxtx5 */
+> +			 <&clk_dummy>,		/* rxtx6 */
+> +			 <&clk_dummy>,		/* rxtx7 */
+> +			 <&clk_dummy>;		/* spba */
+> +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
+> +			      "rxtx5", "rxtx6", "rxtx7", "spba";
+> +		dmas = <&edma0 8 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
+> +		       <&edma0 9 0 FSL_EDMA_MULTI_FIFO>;
+> +		dma-names = "rx", "tx";
+> +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
+> +		status = "disabled";
+> +	};
+> +
+> +	spdif1: spdif@59030000 {
+> +		compatible = "fsl,imx8qm-spdif";
+> +		reg = <0x59030000 0x10000>;
+> +		interrupts =  <GIC_SPI 460 IRQ_TYPE_LEVEL_HIGH>, /* rx */
+
+Ditto
+
+Shawn
+
+> +			      <GIC_SPI 462 IRQ_TYPE_LEVEL_HIGH>; /* tx */
+> +		clocks = <&spdif1_lpcg 1>,	/* core */
+> +			 <&clk_dummy>,		/* rxtx0 */
+> +			 <&spdif1_lpcg 0>,	/* rxtx1 */
+> +			 <&clk_dummy>,		/* rxtx2 */
+> +			 <&clk_dummy>,		/* rxtx3 */
+> +			 <&clk_dummy>,		/* rxtx4 */
+> +			 <&audio_ipg_clk>,	/* rxtx5 */
+> +			 <&clk_dummy>,		/* rxtx6 */
+> +			 <&clk_dummy>,		/* rxtx7 */
+> +			 <&clk_dummy>;		/* spba */
+> +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
+> +			      "rxtx5", "rxtx6", "rxtx7", "spba";
+> +		dmas = <&edma0 10 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
+> +		       <&edma0 11 0 FSL_EDMA_MULTI_FIFO>;
+> +		dma-names = "rx", "tx";
+> +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
+> +		status = "disabled";
+> +	};
+> +
+> +	asrc1: asrc@59800000 {
+> +		compatible = "fsl,imx8qm-asrc";
+> +		reg = <0x59800000 0x10000>;
+> +		interrupts = <GIC_SPI 380 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <GIC_SPI 381 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks = <&asrc1_lpcg 0>,
+> +			 <&asrc1_lpcg 0>,
+> +			 <&aud_pll_div0_lpcg 0>,
+> +			 <&aud_pll_div1_lpcg 0>,
+> +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
+> +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>;
+> +		clock-names = "ipg", "mem",
+> +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
+> +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
+> +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
+> +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
+> +			      "spba";
+> +		dmas = <&edma1 0 0 0>,
+> +		       <&edma1 1 0 0>,
+> +		       <&edma1 2 0 0>,
+> +		       <&edma1 3 0 FSL_EDMA_RX>,
+> +		       <&edma1 4 0 FSL_EDMA_RX>,
+> +		       <&edma1 5 0 FSL_EDMA_RX>;
+> +		/* tx* is output channel of asrc, it is rx channel for eDMA */
+> +		dma-names = "txa", "txb", "txc", "rxa", "rxb", "rxc";
+> +		fsl,asrc-rate  = <8000>;
+> +		fsl,asrc-width = <16>;
+> +		fsl,asrc-clk-map = <1>;
+> +		power-domains = <&pd IMX_SC_R_ASRC_1>;
+> +		status = "disabled";
+> +	};
+> +
+> +	sai4: sai@59820000 {
+> +		compatible = "fsl,imx8qm-sai";
+> +		reg = <0x59820000 0x10000>;
+> +		interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks = <&sai4_lpcg 1>,
+> +			 <&clk_dummy>,
+> +			 <&sai4_lpcg 0>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>;
+> +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
+> +		dmas = <&edma1 8 0 FSL_EDMA_RX>, <&edma1 9 0 0>;
+> +		dma-names = "rx", "tx";
+> +		power-domains = <&pd IMX_SC_R_SAI_4>;
+> +		status = "disabled";
+> +	};
+> +
+> +	sai5: sai@59830000 {
+> +		compatible = "fsl,imx8qm-sai";
+> +		reg = <0x59830000 0x10000>;
+> +		interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks = <&sai5_lpcg 1>,
+> +			 <&clk_dummy>,
+> +			 <&sai5_lpcg 0>,
+> +			 <&clk_dummy>,
+> +			 <&clk_dummy>;
+> +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
+> +		dmas = <&edma1 10 0 0>;
+> +		dma-names = "tx";
+> +		power-domains = <&pd IMX_SC_R_SAI_5>;
+> +		status = "disabled";
+> +	};
+> +
+> +	amix: amix@59840000 {
+> +		compatible = "fsl,imx8qm-audmix";
+> +		reg = <0x59840000 0x10000>;
+> +		clocks = <&amix_lpcg 0>;
+> +		clock-names = "ipg";
+> +		power-domains = <&pd IMX_SC_R_AMIX>;
+> +		dais = <&sai4>, <&sai5>;
+> +		status = "disabled";
+> +	};
+> +
+> +	mqs: mqs@59850000 {
+> +		compatible = "fsl,imx8qm-mqs";
+> +		reg = <0x59850000 0x10000>;
+> +		clocks = <&mqs0_lpcg 1>,
+> +			<&mqs0_lpcg 0>;
+> +		clock-names = "core", "mclk";
+> +		power-domains = <&pd IMX_SC_R_MQS_0>;
+> +		status = "disabled";
+> +	};
+> +
+> +	asrc0_lpcg: clock-controller@59400000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59400000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "asrc0_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_ASRC_0>;
+> +	};
+> +
+> +	esai0_lpcg: clock-controller@59410000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59410000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&acm IMX_ADMA_ACM_ESAI0_MCLK_SEL>,
+> +			 <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "esai0_lpcg_extal_clk",
+> +				     "esai0_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_ESAI_0>;
+> +	};
+> +
+> +	spdif0_lpcg: clock-controller@59420000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59420000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&acm IMX_ADMA_ACM_SPDIF0_TX_CLK_SEL>,
+> +			 <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "spdif0_lpcg_tx_clk",
+> +				     "spdif0_lpcg_gclkw";
+> +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
+> +	};
+> +
+> +	spdif1_lpcg: clock-controller@59430000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59430000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&acm IMX_ADMA_ACM_SPDIF1_TX_CLK_SEL>,
+> +			 <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "spdif1_lpcg_tx_clk",
+> +				     "spdif1_lpcg_gclkw";
+> +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
+> +		status = "disabled";
+> +	};
+> +
+> +	asrc1_lpcg: clock-controller@59c00000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59c00000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "asrc1_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_ASRC_1>;
+> +	};
+> +
+> +	sai4_lpcg: clock-controller@59c20000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59c20000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&acm IMX_ADMA_ACM_SAI4_MCLK_SEL>,
+> +			 <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "sai4_lpcg_mclk",
+> +				     "sai4_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_SAI_4>;
+> +	};
+> +
+> +	sai5_lpcg: clock-controller@59c30000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59c30000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> +			 <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "sai5_lpcg_mclk",
+> +				     "sai5_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_SAI_5>;
+> +	};
+> +
+> +	amix_lpcg: clock-controller@59c40000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59c40000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>;
+> +		clock-output-names = "amix_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_AMIX>;
+> +	};
+> +
+> +	mqs0_lpcg: clock-controller@59c50000 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x59c50000 0x10000>;
+> +		#clock-cells = <1>;
+> +		clocks = <&acm IMX_ADMA_ACM_MQS_TX_CLK_SEL>,
+> +			 <&audio_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "mqs0_lpcg_mclk",
+> +				     "mqs0_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_MQS_0>;
+> +	};
+>  };
+> -- 
+> 2.34.1
+> 
 
