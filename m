@@ -1,97 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4816137908;
-	Thu, 28 Mar 2024 18:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EB2136E13;
+	Thu, 28 Mar 2024 19:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711652129; cv=none; b=tYfsZEs0fvQlSU0zyUKXftG9sDOjX9L1mQiUZIujRTJYb1LdfBYW5NEXFmCtJzLc99WBWki0acuIbrmMyjeiKOG79zKpx2zipfq+FvbmqWcU77koa+8MaHs61/yx8gYYGUoNw4fiLFyBzj2vz3/KEa+zPxyC+XHHMBhvXxsoXZk=
+	t=1711653554; cv=none; b=gmvVAeEoNVm1W2ErNyvyMcxhxiQ7TGXzydI1NNQQcF4caCsiXH9+W1iELLbZgxf1i2C2fxASq3g5UvnWcTyq+cX08HX1JOtHyc2ralh3JMQR9drH44w4KQ5fVI7ky68d3d9dSqhJRaPAEnwSVC89TH/11cC1z1nznaKu8+Tb5Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711652129; c=relaxed/simple;
-	bh=O6RUd0FiuATOUi3p2Fr6EOtVM8/VxTL6vhWICc/xTtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hAhlguzQ4pNbykAHftW19X/Rvj6WgzATmqbD+McapbIUhxoquMGI4DmOAADDE9V7wBdL36YD0XenDTuOEb2xClA7Jk9Nky/LmPzbuW3TdfkKerZgJFQKCyMz9Xlrx6TW7lK8if5q+MQbdyg9GrF15OlyYFqUiEUeovSIslznmZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMVJ+HLg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711653554; c=relaxed/simple;
+	bh=iSmXMTfJak8gxA9ioiFk1xWqNqgnFX4tNdouyFOFKzU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=GJC/lOoBnMUnrbc4V4WxrGyZEiqAw6Qz7MDimPaYdhuEHwCdcBqKwl6FJiCvwAedYWv0ybESgd7wpKJo5YMA7NfY/B8biln9Xf0o7yZKJLHUjaNr7HJFBuMcRPsR34j4RnZBmQEPh+3iBtZkRxLlO0V6jebflA/1y0UQrxy9APQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TX/TPPK/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMVJ+HLg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285F8C433F1;
-	Thu, 28 Mar 2024 18:55:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TX/TPPK/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76F6C433C7;
+	Thu, 28 Mar 2024 19:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711652128;
-	bh=O6RUd0FiuATOUi3p2Fr6EOtVM8/VxTL6vhWICc/xTtE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rMVJ+HLghR8zyz+qCC2JJP7kQGIEGPxr5Ml98x4dA7YSvWIuBNBkAKz5BVNnt1cKC
-	 U4X26lSPrv66WvoaSs7HO7Wjv4vJagUioEMbZYr1bzr4fbuCXEYXLEBlrzMCUfI9oK
-	 7Q8cOeQUyi5lfFD2idby9yZOvPuqWB7rhehfUD0c5e1jbcPeMeCUWGyKB7TWceDNYH
-	 NiCdtRDgKp5SrrIGkWBPfkU55FKLpe/A0hGW9al8izHQTEQemTRp611vGqDyI+9lvW
-	 uC+e9g+wberfvYWj6IomFhK8s2kj1mbgF965VRhIRBkGAHahwkwi0j++Am1kna3fJ5
-	 EFVYHhWqdN2Nw==
-Date: Thu, 28 Mar 2024 13:55:26 -0500
-From: Rob Herring <robh@kernel.org>
-To: git@luigi311.com
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
- compatible strings
-Message-ID: <20240328185526.GA88354-robh@kernel.org>
-References: <20240327231710.53188-1-git@luigi311.com>
- <20240327231710.53188-19-git@luigi311.com>
+	s=k20201202; t=1711653553;
+	bh=iSmXMTfJak8gxA9ioiFk1xWqNqgnFX4tNdouyFOFKzU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=TX/TPPK/XYJzzO1pwCUb26poWrm2a/lS7wwJ7llDMUc/EuBapf9fqGcDrhGHjCw9n
+	 plST4hgyhv4Zov7gosFoJG/QvYT871e/R9w5iNxREXpufEFN63qHMW9S/OBcaFmov/
+	 +RSPIX34qNS84ArOZw53H+LaycdJtiO3yEM2HcJ83zb/rmocUC4hmANtTTHZIPXK1y
+	 sgbV56KSpI5LhIl/TicLck10mIjAH0dyTgo//Zucn1mSxzAen9oXTcWW7Gr1aVysM1
+	 NeP4sZnb+KeI6Ex/EaLgd0X4L1885xGZGa/lvALogFoQIcPCbNZO9K1tdfu1efddeI
+	 KztvTwCdhlUNA==
+From: Vinod Koul <vkoul@kernel.org>
+To: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
+ Adam Ford <aford173@gmail.com>
+Cc: aford@beaconembedded.com, Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Lucas Stach <l.stach@pengutronix.de>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20240227220444.77566-1-aford173@gmail.com>
+References: <20240227220444.77566-1-aford173@gmail.com>
+Subject: Re: (subset) [PATCH V7 0/6] soc: imx8mp: Finish support for HDMI
+Message-Id: <171165354734.152390.12386757633951091803.b4-ty@kernel.org>
+Date: Fri, 29 Mar 2024 00:49:07 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327231710.53188-19-git@luigi311.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 
-On Wed, Mar 27, 2024 at 05:17:04PM -0600, git@luigi311.com wrote:
-> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+
+On Tue, 27 Feb 2024 16:04:34 -0600, Adam Ford wrote:
+> The i.MX8M Plus has an HDMI controller, which depends on several
+> other systems.  The Parallel Video Interface (PVI) and the
+> HDMI-TX are already in the Linux-Next staging area 20240209, but
+> the HDMI PHY driver and several device trees updates are still needed.
 > 
-> There are a number of variants of the imx258 modules that can not
-> be differentiated at runtime, so add compatible strings for them.
-
-But you are only adding 1 variant.
-
+> This series is adapted from multiple series from Lucas Stach with
+> edits and suggestions from feedback from various attempts, but it
+> since it's difficult to use and test them independently,
+> I merged them into on unified series.  The version history is a
+> bit ambiguous since different components were submitted at different
+> times and had different amount of attempts.
 > 
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> Signed-off-by: Luigi311 <git@luigi311.com>
-> ---
->  .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-> index bee61a443b23..c7856de15ba3 100644
-> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-> @@ -14,10 +14,14 @@ description: |-
->    type stacked image sensor with a square pixel array of size 4208 x 3120. It
->    is programmable through I2C interface.  Image data is sent through MIPI
->    CSI-2.
-> +  There are a number of variants of the sensor which cannot be detected at
-> +  runtime, so multiple compatible strings are required to differentiate these.
+> [...]
 
-That's more reasoning/why for the patch than description of the h/w.
+Applied, thanks!
 
->  properties:
->    compatible:
-> -    const: sony,imx258
-> +    - enum:
-> +        - sony,imx258
-> +        - sony,imx258-pdaf
+[1/6] dt-bindings: phy: add binding for the i.MX8MP HDMI PHY
+      commit: d0f4b70eb9a9ed05a37d963655698906cd4dac9a
+[2/6] phy: freescale: add Samsung HDMI PHY
+      commit: 6ad082bee9025fa8e0ef8ee478c5a614b9db9e3d
 
-How do I know which one to use? Please define what PDAF means somewhere 
-as well as perhaps what the original/default variant is or isn't.
+Best regards,
+-- 
+~Vinod
 
->  
->    assigned-clocks: true
->    assigned-clock-parents: true
-> -- 
-> 2.42.0
-> 
+
