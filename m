@@ -1,60 +1,60 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556FD1E533
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 22:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4001413AD18
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 22:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711663224; cv=none; b=oosaNUzxBMw2j3NvhON2VbeY3NGreGg4mSEhAY8h1jOXIljJG7Z3ej37M/MnTCiXw9Yv+WD6ReifH73YNVw1JqWCckgA1BjW8/t0UH69fsl9yqfeUYoPuam0J993qYWsrhyGIeRHEGtOBtTl6gQWn4c5xkcNX7EuvX9t7ptYfDw=
+	t=1711663233; cv=none; b=Rq+avcA1x/f/ieuWtsDuY0yhbtfmro4yDlDIpvKxb+NPl4o8Sfn2RZTM+j0VmJPJREdCopjiCYbzxm7x649F1P6ccSBrlDBNHrrUxWq7Bd0uqi2ZKJna9jVsXsQqYTVtiN4j5aGxCEhLh+qh1ZM38EPkevbfb+srv10AjAGMd9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711663224; c=relaxed/simple;
-	bh=7MqrmimirpAMc8bI17wSVbDTaNTRMixXbxuO4WyuWv4=;
+	s=arc-20240116; t=1711663233; c=relaxed/simple;
+	bh=OnsfEWGxjPhenLXNPPgn/fTxfEbTRbr9ba77sLH2j5s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BIe9hktpeuMraf7jkK4nU/FC4WydUXjHR2fBpM1gaxn3OE7SNuhrGBNhxmOb+HwpJAlqCBvHPOs0/Ia5wXclvnbPLH1v4GvGpinEXJplnpOC9r18AnuBnOJsCZsfomPMcGF/ApTdFGIYFLKbV2wvLc+fbvAyimJBExQjuTZNFG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CW8z67Jk; arc=none smtp.client-ip=209.85.128.54
+	 In-Reply-To:Content-Type; b=Kopm2XELsZJKvTbFbwIEBVjiz4T/7IwAt9DeBRB1cA2Fi/ag9x+dv805+kpE9FxmduKZZ9AD0SXjri/h6XSu3pLwDWFH9ojCNuJcvelKH/tvM0rDznH3F4oQSDOSzHggDsYSMwPi+7VH5uEScMvKoOJj/IpoRnHBzLBw+1odjTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UCHM58tR; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CW8z67Jk"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4149532da36so10061205e9.0
-        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 15:00:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UCHM58tR"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-341b01dbebbso1205676f8f.0
+        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 15:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711663221; x=1712268021; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1711663229; x=1712268029; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=o+nzz842T8uvPgGA37gRhi/RyRugh8WFT8T5DDSxKVI=;
-        b=CW8z67Jk3MGBsojHkvD7bwO8yVG04Bl35JdPrV91zFDoN+Rh5Pmqvh5QjHSQKPDOEi
-         U4kqUxTVXihKkjZqdtwqLiwBSooO9ktW/uRmBqaYS2FWVRT7S+aIoyU5RjtS76LpAYQg
-         1klvppyZ24kO0b+KKZ7cy4pRBFkK9zxIv7qXe7nURPaXGSUGGFQoTaT+8GsfK09oazei
-         8S54wctwylx9Mny52L4G+zkUUR9IQ7aXHOoQ1VVWYqu+7FEGvfyxfcK6E57NXvt4369R
-         LoEhL9U5rLSXH2VdL1s9h4eu+xYkH1kiad/vv/hO4dEHDjsZwlcj9+i2ZaacG3pluqhj
-         NzGw==
+        bh=+UXpLDzEJhLrG5sKF75pz/iotzbUX0jhYNPtvtcn7a8=;
+        b=UCHM58tRe8KcQPBCaa8UKe3RcrQHJ0Pi21F0UNiChkYO/3QnJL4KqIc1sb+YjTRLlm
+         q0TuzMmnG115Rh6HkmJDkNH3i5PgWd/O3LAtATEwl8MC5eDI0yaQ7DSsatuTF/4IbxiS
+         LtYSRbAt1XbdG2hC1hpig3xLz5tgC4GudBUiXXDaw39G/v/VuHmq40fOGjSlNmLkKYhI
+         O7Fcl+4zoJGBsP0/DjmJ7lRevhuDXjHJfTE8Tqpggmv7HBo7TCrcm364vrppNl9/+UYV
+         my8L19u2q2OFk7/91YcRt2MSRSqYQSHZ/ufRjKXlL/mDZS3aWTOH2oB3/hJPxNF15Xu5
+         hb2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711663221; x=1712268021;
+        d=1e100.net; s=20230601; t=1711663229; x=1712268029;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o+nzz842T8uvPgGA37gRhi/RyRugh8WFT8T5DDSxKVI=;
-        b=R9K2iLysSNxTRGUvUXxdUAmSHnbm22Pg+U/kq21oLlz4PSX+LRo+3hiGo6HUnDJCwW
-         TMsmZpQJ39w0WMyKqg7qgIK61HTppCLdmD+QougR6nWivuzOgqckKHNNInQi+DzVpLz/
-         AmuoLg7/WUTV/t5y8nMhd7m9jPks7BwW6YCpQvo80MxsTQIcZ6JjqRPJj96HUc9qB+KN
-         Nmt/9M+zqVGEvTP+LZnGAfHOve/I0RipKeFtgW60+0S7yRhUGwJGYmcOdaIn6DOwcMlY
-         bTGNXn886UQKH2QXr0GHruPiHxZxR7SPNfrEQNn7KeBEt5AqELojwjuXy3q9kUlKd54I
-         X8PA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJBZm5mjvfl1MzIacgBxvXghZ4c8mIyL0PrPwGtko4teHEUOEZC1Ijf0ocg+vNnuOd29w27nAUX72KRgPgcfkNdBeu
-X-Gm-Message-State: AOJu0YzOlVsm1b4W8BCq7QYIVXv/TpvmsP3VM56Cc/GNbYYWqla0eaAH
-	p1mQ9erNk2GfaeK3qQOdLsaEWaw0+wkcyaNoRwrj+ZGpMbJ8Y40aISiJgP2dbuo=
-X-Google-Smtp-Source: AGHT+IFg7XOKE3EJsJnj8dVwV9Ot9zLykBjJowmIs90t1vuvC0KZGpRWRGZa7XwOahPI3juFH7h94w==
-X-Received: by 2002:a05:600c:4f4b:b0:414:8e02:e435 with SMTP id m11-20020a05600c4f4b00b004148e02e435mr397745wmq.3.1711663220643;
-        Thu, 28 Mar 2024 15:00:20 -0700 (PDT)
+        bh=+UXpLDzEJhLrG5sKF75pz/iotzbUX0jhYNPtvtcn7a8=;
+        b=twk/fTNpeiSyiCuZf+sXZlL2j4RmIUOd+6H4wevj86PBdMceD4lZ4BuIUH/tvKVmMI
+         qIi8qeLnc9WtYqAQtGMCrXdEUAbJwA+1bZn0cZUMKYMgXhzMEND0PjTKSYlLtaZgbWmJ
+         akd4fZmSIOpU+CSDRJsBsGDBYCisk2ZqNzTQjn9JZLcQ5Oj7dc90B07Flg5f61sqbWg5
+         T37zu8PapMj4pMgFM6QBxbOTo3reNbZF8iQtXpb4KG+Sn1pdNKFjDu5stshfrks1lFgi
+         UyKot48jofWWalbBWjWfkOooyMb4wm6WJE2DnBNWeQo+ttXQJYQviiMDxaXp4PT65S2u
+         zDcA==
+X-Forwarded-Encrypted: i=1; AJvYcCXseUVgkLFVv3o9v/sUYoNYiz7NPfwgwhtWUXgrGwvlldrQ5bhP2iP4+icHOKDZHMP08A0ExcEBlv0tt3cFdhSNV8Ud
+X-Gm-Message-State: AOJu0YyGFzwwhDRvPGCEzpts5zBb2ooMh5GCTy95gNXm9ngHX8TxYScS
+	bNRKmUtxvFeEJUNz68mT5zgEv7YE2MM+RyiEjlQGiyTUseO93z9b+8WyvHoTjA4=
+X-Google-Smtp-Source: AGHT+IHksJkhKrH5njNeiv6zhPfLLsMVt8hDw8dLc+YeObfnbywVwkOis4YCll41OGC8zaz2+3zjDA==
+X-Received: by 2002:a5d:49ca:0:b0:341:ab13:6d50 with SMTP id t10-20020a5d49ca000000b00341ab136d50mr241818wrs.28.1711663229613;
+        Thu, 28 Mar 2024 15:00:29 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.50])
-        by smtp.gmail.com with ESMTPSA id o15-20020a05600c4fcf00b0041488895a37sm6601485wmq.33.2024.03.28.15.00.19
+        by smtp.gmail.com with ESMTPSA id co20-20020a0560000a1400b0034334af2957sm1241600wrb.37.2024.03.28.15.00.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 15:00:20 -0700 (PDT)
-Message-ID: <7241501f-27aa-4c0b-8930-c8fcb0e2926b@linaro.org>
-Date: Thu, 28 Mar 2024 23:00:18 +0100
+        Thu, 28 Mar 2024 15:00:28 -0700 (PDT)
+Message-ID: <4babcbcd-d123-4725-b1bc-1edd7269900b@linaro.org>
+Date: Thu, 28 Mar 2024 23:00:27 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,13 +62,14 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: Add Emcraft Systems
+Subject: Re: [PATCH 2/3] dt-bindings: arm: Add Emcraft Systems i.MX8M Plus
+ NavQ+ Kit
 To: Gilles Talis <gilles.talis@gmail.com>, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 Cc: conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org,
  shawnguo@kernel.org, festevam@gmail.com, alex@voxelbotics.com
 References: <20240328202320.187596-1-gilles.talis@gmail.com>
- <20240328202320.187596-2-gilles.talis@gmail.com>
+ <20240328202320.187596-3-gilles.talis@gmail.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -115,34 +116,17 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240328202320.187596-2-gilles.talis@gmail.com>
+In-Reply-To: <20240328202320.187596-3-gilles.talis@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 28/03/2024 21:23, Gilles Talis wrote:
-> Add an entry for Emcraft Systems (https://www.emcraft.com/)
+> Add DT compatible string for Emcraft NavQ+ kit based on
+> the i.MX8M Plus SoC from NXP
 > 
 > Signed-off-by: Gilles Talis <gilles.talis@gmail.com>
-> ---
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
----
-
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
 
 Best regards,
 Krzysztof
