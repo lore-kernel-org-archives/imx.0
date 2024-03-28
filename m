@@ -1,60 +1,60 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9A92C856
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 07:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EAD50A7E
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 07:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711611804; cv=none; b=RWqsFWfTsjQPUoJPDspJIEoNvrCJpOZNH8TjceKUBpc9fnmilK+exGIZodUcal/rlbV9tCb0u05DU9222JrJ5x6f2f2kUktsX8OZJrzGZtj8SIUSE+8JrncAAM3Rds4NftpZmthsO0dXxEQALa4HRRsTiCb2hTwLnAScQIP2hwk=
+	t=1711612027; cv=none; b=ZOEZdXdpkKmzTpr/AulJ7sJYhNwkrwdx50Q3HzT0XGeIf1B2jgN0PjD03el84Pgff7kGUKmjPxDcm/7AxLlRObHWqEU5BbT26S2nXpLihzM3vMMMHDw2uOoYUDkK34rI7xkyO5NERP0+Ul4OyUO5I2YiphspxCQKkXE1WbtCfOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711611804; c=relaxed/simple;
-	bh=66zxokx1nRQdSBmOu68wpmC9NaXo0h0oCncgKoT+iok=;
+	s=arc-20240116; t=1711612027; c=relaxed/simple;
+	bh=KOJwoVFlRObnl8G7XcM8J0gumGAm01L3G0CqgIwHzEM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aeWjoX3Lws+UbUoQvsJF9mI0/Ia3T3QKPNakx/wSeFGu6b2Knn0P7Nv+ZbzvesXBMw3+1+RXGKRzfIhs09KWQUTcLdDXIvd68XqU444b4Unxzu1lh2vOaOpmQMDfk4uaILsUYtNeB/8JPLFhUZ57gIOYKYGXisi65EQll9lkpgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YVlgqiae; arc=none smtp.client-ip=209.85.128.43
+	 In-Reply-To:Content-Type; b=Q+5ih5Z2fLKaVcy6CLlniewtkwy2yw4sh4f/eJr0NbB6y4Viy/r98xMtZEiEBDwkEpZuG6BcTwHfyUQGqCDa1ITtwPVyiW2v3xkX0c7RNV5Ar1QAejk6Q6sS2xH4rm7gy6FjeCPSrZji7TjsZ+0cAmk4SqSuIb7LXqJ0ELyDzso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I52/fbXD; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YVlgqiae"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4151d2322caso3920615e9.0
-        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 00:43:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I52/fbXD"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3416df43cabso424352f8f.3
+        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 00:47:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711611801; x=1712216601; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1711612023; x=1712216823; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=9w9NlNqtmEVT7vdpnD6oPHWlOT/uMz7BEE/DMphkNNw=;
-        b=YVlgqiaeIGaHBVC9lYWAmHUw/7QMS+w1aDrrYxjmDWDRuaO6UYlmhz32ZpoQ2ZUAeH
-         ljQuqcQsEq0lRzN84yQQPtIFx7FnTfrzYwjN95SBO//bVXaLf/UX3w6QJom1ILOViN5t
-         3ToH/McPWuZ/e2zOpElUfWqJ7zBLSUMT7s0mSLJojmjbdJK6VghoJpoxbPt0rhZZi/+k
-         ZrriyFcRJNWO1GxQocuH68l+o7URTzqwfJD6gSpBuDamMJ3uvknV/+FcyztMHHwEdDBF
-         JBCWeL/cK6HYG43cSzks5Um1R9u2eEyFZh8qTABTBu77KgsfzPigh4hBV+0tHORxw6hm
-         rYwQ==
+        bh=CrkzSrlFWgfCQCwVdklZp2cB+vi+PxEblAJ5L8nXNWY=;
+        b=I52/fbXDnGCWYiRBHP6+DqjeF0kWbLDUYQNO0q+GHFr5UU3LnP07CnYsJZ2tkTQaRG
+         bBZH5wGk0C7xxPbUQdB5Tu5itFVsLd7AV7Z4bGb00k9VQhHYzmtpaxYBpQwvrrY2kA8Y
+         Y4qoHVAC1EEsiinoZgC5aVXbV/YjFS5HR5vDkZyW9A8b87XOT8lg7MSWxPlKSkXubtHL
+         hmJhj4Fw80oqQe/dXH8iLKf+kHjoJXCm+Bq/aDmFF/yO5bd3AhV8gtKv1j0PBUO+FOp4
+         hWjivptnE6aYGavf5r6H+1+EJiDM8sXon5B/qNaDvtXJNkjTa/MQZaVepnTJChYkIH4r
+         /egg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711611801; x=1712216601;
+        d=1e100.net; s=20230601; t=1711612023; x=1712216823;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9w9NlNqtmEVT7vdpnD6oPHWlOT/uMz7BEE/DMphkNNw=;
-        b=VLz811t7ZbKlzLHjAcv90xI7r/iwKoW/VfSmdOW1C/X+VPK4DwuzvYoV0CzkRV4FYD
-         bwImsHMBG9pY8s6fVhGCxr1xUknFvg74bKqjgUEK6HuTZtilxB0PT6Fp+KhZadS92dd0
-         kKYqiA1ppczZn4iA0ECAF92HqJnOwNMd6gvwRxuf4p5yc2POoGQbq7NWQIaED/airOWf
-         cALA5JnQDtyhdmpDc+4ZApqBjGE1m3Q6KD9aiTdLBbddLCRoG4W7QI2NRA365SwZ4KN6
-         7qVtLWGwm1S6U9xP7zJF4puUjxA2pJTU11CtZFtycJ/R5T2kDv0Bf8OELi17ySqq5ZzI
-         khgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXeCnfBBXhgdAHq/TjW/YALBuIl9pr6kaoRojB1XpZZhr6AS/BoVx7Y6WBJ1YyDXTpKg0PmikTr0RO6e1jnzbuoFKRX
-X-Gm-Message-State: AOJu0YzaEL3PdGzcDDXd/+XjSLRYdpBYpHENuHw/E/3jUFoXxX2tj6vQ
-	orqNU+hh8soHCCD9ytZL4MVtUEdSBiYOCKNiowKh6WUQmIovT21PBuVIKYNxrhI=
-X-Google-Smtp-Source: AGHT+IGbKXWWmqSBrqx9Fly4WzeTAT73S7w1uGe6NMs2c0vhF8gAfvTdwIzhfljk3xLD6AwLYYFpXw==
-X-Received: by 2002:a05:600c:444e:b0:414:12b6:7315 with SMTP id v14-20020a05600c444e00b0041412b67315mr1785675wmn.17.1711611801190;
-        Thu, 28 Mar 2024 00:43:21 -0700 (PDT)
+        bh=CrkzSrlFWgfCQCwVdklZp2cB+vi+PxEblAJ5L8nXNWY=;
+        b=BInhWYCboC2ogDypAw5tC4MTKOy1AIqLmBE83ci/ZP/rYu6/Fw6LDmG06QTxrC12G1
+         41lFLTqGoJESjVDTWPwbTyzgXlE+Re381dk1muGYhBIPfhfTOcEJKsXxCNaQnmIKuw9O
+         P4z0A8JdcjCJWDorK4KC+FzoF3YoZMGxZrA6JdbA/D5Pyi5gBWBEGeRJZNpmRF3IrpNW
+         xxnWRXUN5PvoO3EoUgz3XpnZrYTnK4Fow2YaCuYF7ywVWsE6cHJaF6GAhJ9XmgM9+MDS
+         yJhnK9pZW7yhsBznKxTeQIBFEyIgbNjLq6cYtS1RQlXQedg3PSud4bc5CsYSArgxMQZ3
+         CN/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWgDjVkrbPnTbnUoPvgNgH5cHac7p+Xs9mBJVk4kfD82PnAtIlPGBMlbyhjoxbYknXv6ICjlZoBvycB/2fZLafaqZvX
+X-Gm-Message-State: AOJu0Yy9JiW0gUIUTwEjhuynIwhaSYdljyC2NV+MZQDDrWbvFoKlV4Gi
+	mV4CrK18hAaYV47fke56Gc63TQKZab/Q+mDxh/ofWc1a0bpyUO7/lSECnT+ugX4=
+X-Google-Smtp-Source: AGHT+IEgsF9/UWpCuhbvnJQPCDxVYa0onZfec4+ZEFNCJ/4wRGH2kGvRxv7bFSpQ0maoRWkpvsT9oQ==
+X-Received: by 2002:a05:6000:1544:b0:341:d912:1fec with SMTP id 4-20020a056000154400b00341d9121fecmr1910176wry.49.1711612022976;
+        Thu, 28 Mar 2024 00:47:02 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.148])
-        by smtp.gmail.com with ESMTPSA id g16-20020a05600c311000b004148670f9ecsm1404554wmo.23.2024.03.28.00.43.19
+        by smtp.gmail.com with ESMTPSA id a9-20020a056000050900b00341d7596ec0sm1005568wrf.15.2024.03.28.00.47.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 00:43:20 -0700 (PDT)
-Message-ID: <de2a1689-66f1-49cf-8239-09e763034f1f@linaro.org>
-Date: Thu, 28 Mar 2024 08:43:19 +0100
+        Thu, 28 Mar 2024 00:47:02 -0700 (PDT)
+Message-ID: <586bdcc9-793d-4cbe-9544-9012a665288e@linaro.org>
+Date: Thu, 28 Mar 2024 08:47:00 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,7 +62,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/23] v2: imx258 improvement series
+Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
+ compatible strings
 To: git@luigi311.com, linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
  mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -71,6 +72,7 @@ Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20240327231710.53188-1-git@luigi311.com>
+ <20240327231710.53188-19-git@luigi311.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -117,18 +119,46 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
+In-Reply-To: <20240327231710.53188-19-git@luigi311.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/03/2024 00:16, git@luigi311.com wrote:
-> From: Luigi311 <git@luigi311.com>
+On 28/03/2024 00:17, git@luigi311.com wrote:
+> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 > 
-> Resend due to email message limits being exceeded.
+> There are a number of variants of the imx258 modules that can not
+> be differentiated at runtime, so add compatible strings for them.
 > 
-> v2 changes:
+> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> Signed-off-by: Luigi311 <git@luigi311.com>
+> ---
+>  .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> index bee61a443b23..c7856de15ba3 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> @@ -14,10 +14,14 @@ description: |-
+>    type stacked image sensor with a square pixel array of size 4208 x 3120. It
+>    is programmable through I2C interface.  Image data is sent through MIPI
+>    CSI-2.
+> +  There are a number of variants of the sensor which cannot be detected at
+> +  runtime, so multiple compatible strings are required to differentiate these.
+>  
+>  properties:
+>    compatible:
+> -    const: sony,imx258
+> +    - enum:
+> +        - sony,imx258
 
-Please mark your patches correctly. Use b4 or -v2 for format-patch.
+Two people working on patch but no one tested it before sending. Do not
+send untested code.
+
+It does not look like you tested the bindings, at least after quick
+look. Please run `make dt_binding_check` (see
+Documentation/devicetree/bindings/writing-schema.rst for instructions).
+Maybe you need to update your dtschema and yamllint.
 
 Best regards,
 Krzysztof
