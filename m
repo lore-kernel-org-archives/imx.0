@@ -1,161 +1,131 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+Received: from mail-108-mta60.mxroute.com (mail-108-mta60.mxroute.com [136.175.108.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDDA130AD4
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 15:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6377131184
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 16:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.60
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711641577; cv=none; b=HPnRh7cQcGPiVsf4dr9+oBzkdhNWQRFT5Not7TSqR8cixUJ2fQSzp11+qATuaYOoSFuwTNCN67GJjXvx0fzzeMIQBk8AgJP7Vf2C+K5hy6rvyGk8ExX8Vf9AofZXNoVq5Lid89YRy3K4QfI1MfqZ4xs/Rt+U/iJ26GKZPqmTM2s=
+	t=1711642555; cv=none; b=A6Kwp9zd1s09TiMzhDDnuONfdoQNruUh5ml+AdtFcfPNzeAEria/hDhPRr0xaxvC1Ho+qaupDs14D4RczPQdIz4IQhTdlRST/WkKbuuwxkHBH1eADLy27Rdf4QV6/REMLiKExCF7nw4QU7YA8tYD2Dxj9xd4L9EtnEsG256SZbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711641577; c=relaxed/simple;
-	bh=UvFVPUriBw/O+tP6PxLNlmjDO3SPq+EmZIKLkI817Vs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IVqeRTolF/fSpVvn6tmy4A27na0G//GrLOgenH3fMl6Bbz1jOGQgvoDhf52O7B1NMqS0CBQk5thJbs4q6G/VRrruuBu5X6Syt3CLBGLjHIMPcg1lwf7VrImp7MGS7zj5NqKqbSflRN6zP3cWDEILxqgLmJN7qFuDHIaM4vcdf+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
- (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 28 Mar
- 2024 16:59:30 +0100
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%4]) with mapi id
- 15.01.2507.037; Thu, 28 Mar 2024 16:59:30 +0100
-From: John Ernberg <john.ernberg@actia.se>
-To: Wei Fang <wei.fang@nxp.com>
-CC: Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Florian
- Fainelli" <f.fainelli@gmail.com>, Russell King <linux@armlinux.org.uk>,
-	"Maxime Chevallier" <maxime.chevallier@bootlin.com>, John Ernberg
-	<john.ernberg@actia.se>
-Subject: [PATCH v4 1/1] net: fec: Set mac_managed_pm during probe
-Thread-Topic: [PATCH v4 1/1] net: fec: Set mac_managed_pm during probe
-Thread-Index: AQHagSjq+ds97ioUXkWTdcA71FXzTg==
-Date: Thu, 28 Mar 2024 15:59:29 +0000
-Message-ID: <20240328155909.59613-2-john.ernberg@actia.se>
-References: <20240328155909.59613-1-john.ernberg@actia.se>
-In-Reply-To: <20240328155909.59613-1-john.ernberg@actia.se>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: git-send-email 2.44.0
-x-esetresult: clean, is OK
-x-esetid: 37303A2958D729556C7D60
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1711642555; c=relaxed/simple;
+	bh=YGOEk9oKZHq64MKnhZtMmCLowNGolRXyvDgx+imDZ0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IOiomombQRwsI8CeIQn+PP8IB+ECk9bUe/yk2AySxL7BoHwgps8+DN2dBqvWSaEnZkJd3eXhzcwuHYAi6+VyLxcKV4mYW9eEvb1bamntwGckxpxHtfVW66nipk3yQdqrw+Zf5sOQQyQUwDFIzRgYukhg7ZqtA3L1Gh0Glp1Ya40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=aWfpoOad; arc=none smtp.client-ip=136.175.108.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="aWfpoOad"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta60.mxroute.com (ZoneMTA) with ESMTPSA id 18e85d89b8a0003bea.00c
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Thu, 28 Mar 2024 16:15:49 +0000
+X-Zone-Loop: 9df34935e02c1ffe1f66daff0b3a1376bf223b300392
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=cwugKwOI6owueldBI/qieNd7LO4DtJURj2EGZCG3x/k=; b=aWfpoOadUR4xHUIzRi70tTlv+/
+	blWiooHO+TqI/ECwvXsh8bJODVu6QbL4BKXe1C/0ZJfJy5n3dOTuLRSto2iucUnQDeGicb4NRqZhp
+	vnmvi7ImWm+XubSyGD2YuU95yIFWU5lQlhKb0xRzhsRXzbOV6BCXO8qCO/Tn4BxDqfij5fKEAavU2
+	1QNVduCGxvYgYuwu3UJ3e5I55Xvqaj7RTLphjVIMjLnbpYS9qdG7w/QYTBZIB9gD635qDn+ZO3O25
+	68ZljAx1ZIEIT7GuFZXS/9ZHQTgPcIP+HFyChMg7fvJ5ArbNtZ+7N7F8P14sqEgnDE4b/lpUI2Taq
+	3Y8+M4KQ==;
+Message-ID: <c6053c86-2ce9-412b-aaee-fbe1ac25b7c2@luigi311.com>
+Date: Thu, 28 Mar 2024 10:15:42 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/23] dt-bindings: media: imx258: Rename to include
+ vendor prefix
+Content-Language: en-US
+To: Conor Dooley <conor.dooley@microchip.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Conor Dooley <conor@kernel.org>, git@luigi311.com,
+ linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240327231710.53188-1-git@luigi311.com>
+ <20240327231710.53188-18-git@luigi311.com>
+ <20240327-ninth-tulip-77191ad10fdd@spud>
+ <0e658ecc-38d2-4d6f-b0cf-f5f3ec32c1b8@luigi311.com>
+ <171161592126.3072637.14564447281929105708@ping.linuxembedded.co.uk>
+ <20240328-prideful-unopposed-e29fcee74c29@wendy>
+From: Luigi311 <personal@luigi311.com>
+In-Reply-To: <20240328-prideful-unopposed-e29fcee74c29@wendy>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: personal@luigi311.com
 
-From: Wei Fang <wei.fang@nxp.com>
+On 3/28/24 04:15, Conor Dooley wrote:
+> On Thu, Mar 28, 2024 at 08:52:01AM +0000, Kieran Bingham wrote:
+>> Quoting git@luigi311.com (2024-03-28 00:57:34)
+>>> On 3/27/24 17:47, Conor Dooley wrote:
+>>>> On Wed, Mar 27, 2024 at 05:17:03PM -0600, git@luigi311.com wrote:
+>>>>> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>>>>>
+>>>>> imx258.yaml doesn't include the vendor prefix of sony, so
+>>>>> rename to add it.
+>>>>> Update the id entry and MAINTAINERS to match.
+>>>>>
+>>>>> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>>>>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>>>>
+>>>> This is a v1 with my ack, something has gone awry here. It's also
+>>>> missing your signoff. Did you pick up someone else's series?
+>>>
+>>> Yes, this is a continuation of Dave's work. I contacted him directly,
+>>> and he mentioned that he is unable to submit a v2 any time soon and
+>>> was open to someone else continuing it in his stead.
+> 
+> Ah okay. Unfortunately I see so many binding patches pass by that I
+> sometimes forget about what I already reviewed, and I did not
+> remember this one at all.
 
-Setting mac_managed_pm during interface up is too late.
+No worries I'm not surprised since i see constant things submitted
+to upstream and v1 was actually sent a year ago so there would be no
+shot that i would remember it either.
 
-In situations where the link is not brought up yet and the system suspends
-the regular PHY power management will run. Since the FEC ETHEREN control
-bit is cleared (automatically) on suspend the controller is off in resume.
-When the regular PHY power management resume path runs in this context it
-will write to the MII_DATA register but nothing will be transmitted on the
-MDIO bus.
+> 
+>>> This is my first
+>>> time submitting a patch via a mailing list, so I'm not sure if I'm
+>>> missing something, but I only added my sign off for anything that
+>>> actually included work from my side and not just bringing his patch
+>>> forward to this patch series.
+> 
+> Right. The rules are that you need to add it when you send someone's
+> work, like chain of custody type of thing.
 
-This can be observed by the following log:
+Ohh i see, ok ill go ahead and add my sign off to all the patches then
 
-    fec 5b040000.ethernet eth0: MDIO read timeout
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: dpm_run_callback(): md=
-io_bus_phy_resume+0x0/0xc8 returns -110
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: failed to resume: erro=
-r -110
 
-The data written will however remain in the MII_DATA register.
+> 
+>> Your cover letter states v2, but the individual patches do not.
+>>
+>> Add the '-v2' (or, rather, next it will be '-v3') to git format-patch
+>> when you save your series and it will add the version to each patch. You
+>> can also add '-s' to that command I believe to add your SoB to each
+>> patch.
+> 
+> or a rebase will do it with --signoff:
+> https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---signoff
 
-When the link later is set to administrative up it will trigger a call to
-fec_restart() which will restore the MII_SPEED register. This triggers the
-quirk explained in f166f890c8f0 ("net: ethernet: fec: Replace interrupt
-driven MDIO with polled IO") causing an extra MII_EVENT.
+Perfect thanks for the information you two! Ill be sure to use those 
+for the next revision.
 
-This extra event desynchronizes all the MDIO register reads, causing them
-to complete too early. Leading all reads to read as 0 because
-fec_enet_mdio_wait() returns too early.
+> 
+> Cheers,
+> Conor.
 
-When a Microchip LAN8700R PHY is connected to the FEC, the 0 reads causes
-the PHY to be initialized incorrectly and the PHY will not transmit any
-ethernet signal in this state. It cannot be brought out of this state
-without a power cycle of the PHY.
-
-Fixes: 557d5dc83f68 ("net: fec: use mac-managed PHY PM")
-Closes: https://lore.kernel.org/netdev/1f45bdbe-eab1-4e59-8f24-add177590d27=
-@actia.se/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-[jernberg: commit message]
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-
----
-
-v4:
- - Adjustments to commit message after a better understanding of the
-   behavior explained in f166f890c8f0 as a result of the discussion on v3
-   patch 2.
-
-v3:
- - No changes
-
-v2:
- - New patch. Big thanks to Wei for the help on this issue.
----
- drivers/net/ethernet/freescale/fec_main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethern=
-et/freescale/fec_main.c
-index d7693fdf640d..8bd213da8fb6 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2454,8 +2454,6 @@ static int fec_enet_mii_probe(struct net_device *ndev=
-)
- 	fep->link =3D 0;
- 	fep->full_duplex =3D 0;
-=20
--	phy_dev->mac_managed_pm =3D true;
--
- 	phy_attached_info(phy_dev);
-=20
- 	return 0;
-@@ -2467,10 +2465,12 @@ static int fec_enet_mii_init(struct platform_device=
- *pdev)
- 	struct net_device *ndev =3D platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep =3D netdev_priv(ndev);
- 	bool suppress_preamble =3D false;
-+	struct phy_device *phydev;
- 	struct device_node *node;
- 	int err =3D -ENXIO;
- 	u32 mii_speed, holdtime;
- 	u32 bus_freq;
-+	int addr;
-=20
- 	/*
- 	 * The i.MX28 dual fec interfaces are not equal.
-@@ -2584,6 +2584,13 @@ static int fec_enet_mii_init(struct platform_device =
-*pdev)
- 		goto err_out_free_mdiobus;
- 	of_node_put(node);
-=20
-+	/* find all the PHY devices on the bus and set mac_managed_pm to true */
-+	for (addr =3D 0; addr < PHY_MAX_ADDR; addr++) {
-+		phydev =3D mdiobus_get_phy(fep->mii_bus, addr);
-+		if (phydev)
-+			phydev->mac_managed_pm =3D true;
-+	}
-+
- 	mii_cnt++;
-=20
- 	/* save fec0 mii_bus */
---=20
-2.44.0
