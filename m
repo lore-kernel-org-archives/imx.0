@@ -1,131 +1,131 @@
-Received: from mail-108-mta60.mxroute.com (mail-108-mta60.mxroute.com [136.175.108.60])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6377131184
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 16:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD1A7E787;
+	Thu, 28 Mar 2024 16:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711642555; cv=none; b=A6Kwp9zd1s09TiMzhDDnuONfdoQNruUh5ml+AdtFcfPNzeAEria/hDhPRr0xaxvC1Ho+qaupDs14D4RczPQdIz4IQhTdlRST/WkKbuuwxkHBH1eADLy27Rdf4QV6/REMLiKExCF7nw4QU7YA8tYD2Dxj9xd4L9EtnEsG256SZbI=
+	t=1711642898; cv=none; b=ZmdinYQ81tKppTn4DD33yp8jNWf52d2OoNOPFfWkSXfdwPaaDroiiL8YT9f0AkvPaJuN/avIlprs9xCiuzhs0CiKOFRcOvTYnd7lpWd9Cw0u5p/3XRIlu0NXWHXk1GyI297F6TD8GBa//F/XBTWUDgP23/5z9FKsiwAm7DCerMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711642555; c=relaxed/simple;
-	bh=YGOEk9oKZHq64MKnhZtMmCLowNGolRXyvDgx+imDZ0s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IOiomombQRwsI8CeIQn+PP8IB+ECk9bUe/yk2AySxL7BoHwgps8+DN2dBqvWSaEnZkJd3eXhzcwuHYAi6+VyLxcKV4mYW9eEvb1bamntwGckxpxHtfVW66nipk3yQdqrw+Zf5sOQQyQUwDFIzRgYukhg7ZqtA3L1Gh0Glp1Ya40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=aWfpoOad; arc=none smtp.client-ip=136.175.108.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1711642898; c=relaxed/simple;
+	bh=cb1ZOrJZuOdP2ez095r01xUHOIJ2EXFtH/u5E76hFpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UAhf7W5BBJMJ3JZlhj6tK4Y1CsQk7EUJvVfC80lWKgREqWMNqXlf/ocVGknyxh5SDRV1yyydgQno6frJ/+VV5GIrZfWNP2hAR89j6QBAiI9UUcXx+LGljNLQaibuKlMk7y1PHr9Aup9Q/+YgNXU/5Qbwo1sw5shnsM++cljPDco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRwpehZU; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="aWfpoOad"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta60.mxroute.com (ZoneMTA) with ESMTPSA id 18e85d89b8a0003bea.00c
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Thu, 28 Mar 2024 16:15:49 +0000
-X-Zone-Loop: 9df34935e02c1ffe1f66daff0b3a1376bf223b300392
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=cwugKwOI6owueldBI/qieNd7LO4DtJURj2EGZCG3x/k=; b=aWfpoOadUR4xHUIzRi70tTlv+/
-	blWiooHO+TqI/ECwvXsh8bJODVu6QbL4BKXe1C/0ZJfJy5n3dOTuLRSto2iucUnQDeGicb4NRqZhp
-	vnmvi7ImWm+XubSyGD2YuU95yIFWU5lQlhKb0xRzhsRXzbOV6BCXO8qCO/Tn4BxDqfij5fKEAavU2
-	1QNVduCGxvYgYuwu3UJ3e5I55Xvqaj7RTLphjVIMjLnbpYS9qdG7w/QYTBZIB9gD635qDn+ZO3O25
-	68ZljAx1ZIEIT7GuFZXS/9ZHQTgPcIP+HFyChMg7fvJ5ArbNtZ+7N7F8P14sqEgnDE4b/lpUI2Taq
-	3Y8+M4KQ==;
-Message-ID: <c6053c86-2ce9-412b-aaee-fbe1ac25b7c2@luigi311.com>
-Date: Thu, 28 Mar 2024 10:15:42 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRwpehZU"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6e782e955adso1090001b3a.3;
+        Thu, 28 Mar 2024 09:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711642896; x=1712247696; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TpQlnbUKf5vfOk3TpOVHNGMqh00k5XUuxEvlHT+naYc=;
+        b=PRwpehZUEAMtBl2quzmoug81sDcfgHD7qpUhEQrUbJUwC0XUsOHh+JVi02UIkyv8em
+         AP1/GnfpuYKMEN/5Tf4jKOWTiWgp/iI7Z7FyqCqmbwfSAgkbN50fKtisCeN4FU7WLLOs
+         Nd9gWZumRmf6f0bN6U0ztssJjhbocp6MTesM9q68LHWlDxA9Ska361i/V9abXs5YApLB
+         b23SfFSe8oLjX6DF8iC7jlQK9dC94R1XlvyFK0hvPTn9QDbyP6LPvVjOUFkqaZ6IwLyh
+         oISKZvTnbysPTwgvG/w3Qeybb90ebCPEChwkwEGUODRxk6IctP3TGrch1SF7pI+E04J7
+         Yz1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711642896; x=1712247696;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TpQlnbUKf5vfOk3TpOVHNGMqh00k5XUuxEvlHT+naYc=;
+        b=Ye8EX68IcKPwMjYPGZb5o05T7axEWKUs1gO2Q7xSgj/DwXXs0OsLn58gvsAm198knp
+         7AYpjAn4/LOny7addQmONV4qNu5ZiNtzebsrgRm3vLcEFE8qlnnVtd2HUsprDseps471
+         cUhsYlSP//oax2aFhIhWcosWRzwySszHtX2BJ6giJFtEA3noz9gaiJDqrgy0PQNywgj2
+         XlLgA5Go5IxpjmJdeJ5MpJaQ08rYfm5BhtahN3wd6yNT/KcXt18Fn+GhZcitESlWcdcc
+         uocn/U82PZ2bX79IXr+AJCsynj4WDo3uI191n4i9CMkDPMcYHYhz555L9JXggcPCd2sj
+         VJKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXmd2okOInvOHStmOCTbh1wOo+lKobMK93yquXcE+SQtbsZ0CSRynsEsDKMmwoZLG5yjao0yg7PRYAed2HmPnjJ5NTfrn2tSzW1DxQMGIizwntw8Uime1/jJ/OpqY2cNWK6vT9v9JHBHE3QrsJHJ2TA4qzLkLUSQ==
+X-Gm-Message-State: AOJu0YxSP0/ExsxxQWA6VxqKSEI7bsM1hgDOyHyTCZRTHMiy87F+hUXE
+	bvgRl5hD76OekZyo2liWO6o03YFPsW0INIiwikniju7X3k79vvTD
+X-Google-Smtp-Source: AGHT+IHNLtSIfLiMjPgdNbH73n29Rqo4mQsh/oBERN464FH6NwbPkAtXL24hv7Aec7RU+H+HqkGb1w==
+X-Received: by 2002:a05:6a20:7495:b0:1a5:7308:3297 with SMTP id p21-20020a056a20749500b001a573083297mr1591044pzd.0.1711642896210;
+        Thu, 28 Mar 2024 09:21:36 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:400::5:4d4e])
+        by smtp.gmail.com with ESMTPSA id fd37-20020a056a002ea500b006eab6ac1f83sm1576815pfb.0.2024.03.28.09.21.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 09:21:35 -0700 (PDT)
+Sender: Tejun Heo <htejun@gmail.com>
+Date: Thu, 28 Mar 2024 06:21:34 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Allen Pais <apais@linux.microsoft.com>, linux-kernel@vger.kernel.org,
+	keescook@chromium.org, vkoul@kernel.org, marcan@marcan.st,
+	sven@svenpeter.dev, florian.fainelli@broadcom.com,
+	rjui@broadcom.com, sbranden@broadcom.com, paul@crapouillou.net,
+	Eugeniy.Paltsev@synopsys.com, manivannan.sadhasivam@linaro.org,
+	vireshk@kernel.org, Frank.Li@nxp.com, leoyang.li@nxp.com,
+	zw@zh-kernel.org, wangzhou1@hisilicon.com, haijie1@huawei.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, sean.wang@mediatek.com,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	afaerber@suse.de, logang@deltatee.com, daniel@zonque.org,
+	haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+	andersson@kernel.org, konrad.dybcio@linaro.org, orsonzhai@gmail.com,
+	baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com,
+	patrice.chotard@foss.st.com, linus.walleij@linaro.org,
+	wens@csie.org, jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com,
+	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, jassisinghbrar@gmail.com, mchehab@kernel.org,
+	maintainers@bluecherrydvr.com, aubin.constans@microchip.com,
+	manuel.lauss@gmail.com, mirq-linux@rere.qmqm.pl,
+	jh80.chung@samsung.com, oakad@yahoo.com,
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+	brucechang@via.com.tw, HaraldWelte@viatech.com, pierre@ossman.eu,
+	duncan.sands@free.fr, stern@rowland.harvard.edu, oneukum@suse.com,
+	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-mediatek@lists.infradead.org,
+	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
+Message-ID: <ZgWZDtNU4tCwqyeu@slm.duckdns.org>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-10-apais@linux.microsoft.com>
+ <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/23] dt-bindings: media: imx258: Rename to include
- vendor prefix
-Content-Language: en-US
-To: Conor Dooley <conor.dooley@microchip.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Conor Dooley <conor@kernel.org>, git@luigi311.com,
- linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
- jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240327231710.53188-1-git@luigi311.com>
- <20240327231710.53188-18-git@luigi311.com>
- <20240327-ninth-tulip-77191ad10fdd@spud>
- <0e658ecc-38d2-4d6f-b0cf-f5f3ec32c1b8@luigi311.com>
- <171161592126.3072637.14564447281929105708@ping.linuxembedded.co.uk>
- <20240328-prideful-unopposed-e29fcee74c29@wendy>
-From: Luigi311 <personal@luigi311.com>
-In-Reply-To: <20240328-prideful-unopposed-e29fcee74c29@wendy>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: personal@luigi311.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
 
-On 3/28/24 04:15, Conor Dooley wrote:
-> On Thu, Mar 28, 2024 at 08:52:01AM +0000, Kieran Bingham wrote:
->> Quoting git@luigi311.com (2024-03-28 00:57:34)
->>> On 3/27/24 17:47, Conor Dooley wrote:
->>>> On Wed, Mar 27, 2024 at 05:17:03PM -0600, git@luigi311.com wrote:
->>>>> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
->>>>>
->>>>> imx258.yaml doesn't include the vendor prefix of sony, so
->>>>> rename to add it.
->>>>> Update the id entry and MAINTAINERS to match.
->>>>>
->>>>> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
->>>>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
->>>>
->>>> This is a v1 with my ack, something has gone awry here. It's also
->>>> missing your signoff. Did you pick up someone else's series?
->>>
->>> Yes, this is a continuation of Dave's work. I contacted him directly,
->>> and he mentioned that he is unable to submit a v2 any time soon and
->>> was open to someone else continuing it in his stead.
-> 
-> Ah okay. Unfortunately I see so many binding patches pass by that I
-> sometimes forget about what I already reviewed, and I did not
-> remember this one at all.
+Hello,
 
-No worries I'm not surprised since i see constant things submitted
-to upstream and v1 was actually sent a year ago so there would be no
-shot that i would remember it either.
+On Thu, Mar 28, 2024 at 01:53:25PM +0100, Ulf Hansson wrote:
+> At this point we have suggested to drivers to switch to use threaded
+> irq handlers (and regular work queues if needed too). That said,
+> what's the benefit of using the BH work queue?
 
-> 
->>> This is my first
->>> time submitting a patch via a mailing list, so I'm not sure if I'm
->>> missing something, but I only added my sign off for anything that
->>> actually included work from my side and not just bringing his patch
->>> forward to this patch series.
-> 
-> Right. The rules are that you need to add it when you send someone's
-> work, like chain of custody type of thing.
+BH workqueues should behave about the same as tasklets which have more
+limited interface and is subtly broken in an expensive-to-fix way (around
+freeing in-flight work item), so the plan is to replace tasklets with BH
+workqueues and remove tasklets from the kernel.
 
-Ohh i see, ok ill go ahead and add my sign off to all the patches then
+The [dis]advantages of BH workqueues over threaded IRQs or regular threaded
+workqueues are the same as when you compare them to tasklets. No thread
+switching overhead, so latencies will be a bit tighter. Wheteher that
+actually matters really depends on the use case. Here, the biggest advantage
+is that it's mostly interchangeable with tasklets and can thus be swapped
+easily.
 
+Thanks.
 
-> 
->> Your cover letter states v2, but the individual patches do not.
->>
->> Add the '-v2' (or, rather, next it will be '-v3') to git format-patch
->> when you save your series and it will add the version to each patch. You
->> can also add '-s' to that command I believe to add your SoB to each
->> patch.
-> 
-> or a rebase will do it with --signoff:
-> https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---signoff
-
-Perfect thanks for the information you two! Ill be sure to use those 
-for the next revision.
-
-> 
-> Cheers,
-> Conor.
-
+-- 
+tejun
