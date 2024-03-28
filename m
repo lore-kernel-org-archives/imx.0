@@ -1,147 +1,84 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AEF13E6D5
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 22:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0E43BBEC
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 22:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711664018; cv=none; b=LpWvaF04cx0D/DUUgpW2ENM7vvd92s5jDpCOJy3HDBU9xF8OpuizNIArR2Ym3DG9RWRHdfngYXLySlTnFETMLu2WBPmR6UV3qYYoh9fI1KK2vT4LPAgE5ojJ9x5UJZLsezdtJvpanqwgyLzfzhfO7MdLIS2funkPvaqbabC3k4A=
+	t=1711666522; cv=none; b=ZZ2Eb5uLNsITyZhWwlLnTmU+hYOsqRjuCAnt+MKLdDA84/NBQFTzhPZqfXFhR5IAnuM8ZbEmCatIu56pG0VCfgaMhrZINlawVsHmPYVusWKJGD7w9cQJbrmWE/1wH7COR38rC9DFEJpV7fLB4zINAORv6zIte4jFAEdkQyplxEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711664018; c=relaxed/simple;
-	bh=2lMT6KNPvKzbBMwVwrI0RDmqQ5yOjbh0txjmVUXqLU0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gv4thLdtFzd9tCbwTJblyXd/OlX2CnBrds0YOXPQA6eYm+15PfFt+PDbZUMny/R0cgPq7L4p5nTQuzd50Toid9tUK3Bg62JNRQJzmbXQImnPSz9k0D0LQXP0w+yd4fo+ehY9yRHX5gVE47zpzRKlgQ2PjIhsHs+sIvELvaq/jXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FsdxDJLi; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1711666522; c=relaxed/simple;
+	bh=a6BhrS87z3pko3toIAAUOX3mE9FhwdlWfA9c7yQ+vjE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WPTjYpL6VqERwseC0H6aB5kwTULnJe7K0FLmg3fVF76nBqJIhSy5NGazqgf7/ucXnI9El7bQIBxmQYUnPPMnWcYZux44/6B26DRMfUZ0h4/DhfQY7VTjMd3O5A8YRI+aSvfhkSzi29Hh/3jTf4q/pkXoxQFGKVBvvz/ZdNKuQKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PD1ga41h; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FsdxDJLi"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d47a92cfefso16849161fa.1
-        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 15:13:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PD1ga41h"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-29f66c9ffa5so292280a91.0
+        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 15:55:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711664014; x=1712268814; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1711666520; x=1712271320; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aZDt6XPS0X9RrCsopZrtOFphc1SwMJgyr4eQSlHmJ/w=;
-        b=FsdxDJLiE72c0fxo/3dbkDYsWnQK8b9Nl2OT6z1fzIPos1eU7C1srC523nUBygLHGN
-         aLL/ojR5qBIwgDZNFlNppw3qzdt3VsFysCYRj5Tu++peTmP37iXj8YimaU/PZ/D6LUgg
-         3H6Xmz2PboXXV6J6bqgy/5yK/eDWeOiQcqPSqk9IsW2fPNdjXUinOaXCu5vwhnt9qITP
-         Q460Ks5ByxtTuFpBGTSF9fqG02IO4IvmDYT3SDYsKbEIB9jxT1RDQDn8M+7RGH8jgl27
-         ulMdqEM99wqrBroxBkWLrNe9XlnsLxHay0lR76Y33baX1g7UqyW6LlCS2axCwmgfgE7W
-         30xA==
+        bh=5nq4+R8+Nhyb9idDvKsWt+ny8JkXRRmqWQXDfRxdxZ4=;
+        b=PD1ga41h1heLM8oOC0taHpjdkMlitG9QNXWCcBdWienUsXrMlhO2VrA0VdpK0BbDpG
+         Br5dT9FCjkTLyxqrAD6m49zVL6sOa90J3xeJGbmXDfSQ4tzbOEqbyUqY4/H2p5NBBAme
+         SibT5a+zyUiDEP2iUAZz3pGLlRzXkZU3S4iLmVp6MEzs27Rge9Z+VQXO56fNF3FhcpLx
+         MPSVCDdPUcXKxD2SocUDDJexdIDSiakPHqns0meB2av2lCZhuUEcSqzLf6HlPZ4oM+5e
+         xFBF/bIKo2YzYvT4nrDnpoNpZUNPYxM37+9S7V/MCK1utm0JnmVB4etpe0oBicaT19Zp
+         yAeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711664014; x=1712268814;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1711666520; x=1712271320;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aZDt6XPS0X9RrCsopZrtOFphc1SwMJgyr4eQSlHmJ/w=;
-        b=avYxB8XPKCL2M8Xn6MD0q7IKd250DB6absy56uDrbaXY1TnR7uPEh3Ftma7GhOK0N8
-         Qs9ZZkB1pQoWm4smux3dgtsuY6lTtQYpe2m1KAtzn4PLWT8EOTFIsrRg3Hl+n/09JBUr
-         9IyU2N9st0CaMt7Jd9KkknqLCwd8GrjNXv+QVB/jRmnDxXM079ZxxsJ37TMfLkjvUexP
-         Zc2nPFdQtaJMO9C1lcQGxfMnOi2bc46v/B4dUpYqFQ6GAT623WkREfOHygbzUYtlv7dU
-         g8281SLIS8lBha2q8AjLAjUG3iG96a4jEwCkTBuGaRF3EpS47a1lX2Y9u88+7zqdfYaK
-         tNLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWDzAj2Z7QA+vsa/gyALSpRqveFc7hQPdCj2lfjbyRlkbcSLrcRPQYHir9X2nS3Khl4Vs3Am2MpaePzKhkp5JhrQt6n
-X-Gm-Message-State: AOJu0Yz0vAE9tCxtM3Vst83Ug2Z04m4xPHIBnpz0EVKa961PIHMSbVsD
-	imSEudq9F+4RZnU3msZsN9GdXKQchZ9GZtMlOBFI9AiX0Hmvnfim
-X-Google-Smtp-Source: AGHT+IEQXyiCKApTwZRRWL08M7GZqI7Ri9/gYPz/35OH0zL1qkQi4HnbVQl7wV1Kcip+ZffOmf4zUg==
-X-Received: by 2002:a2e:9d45:0:b0:2d4:707e:623 with SMTP id y5-20020a2e9d45000000b002d4707e0623mr254372ljj.37.1711664014152;
-        Thu, 28 Mar 2024 15:13:34 -0700 (PDT)
-Received: from lmc-playground.localdomain ([188.25.208.244])
-        by smtp.gmail.com with ESMTPSA id m28-20020a05600c3b1c00b00414688af147sm6666778wms.20.2024.03.28.15.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 15:13:33 -0700 (PDT)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: broonie@kernel.org
-Cc: lgirdwood@gmail.com,
-	peter.ujfalusi@linux.intel.com,
-	pierre-louis.bossart@linux.intel.com,
-	daniel.baluta@nxp.com,
-	iuliana.prodan@nxp.com,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	laurentiu.mihalcea@nxp.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: SOF: imx: remove imx8_*_clocks API
-Date: Fri, 29 Mar 2024 00:12:01 +0200
-Message-Id: <20240328221201.24722-3-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240328221201.24722-1-laurentiumihalcea111@gmail.com>
-References: <20240328221201.24722-1-laurentiumihalcea111@gmail.com>
+        bh=5nq4+R8+Nhyb9idDvKsWt+ny8JkXRRmqWQXDfRxdxZ4=;
+        b=dGZ1KZN7EbspK2yDiTF8R8nNbD4Aq2tBvbswElA/UN0tFZbACrM5TXjxR14lAJWKtS
+         qirriWlkCmYQecrTs/gp6d/IJ46F1MdmJm/gXByPQSbm+7JJ5mjiRhiDpmv7Bj3GavnS
+         vmJC2v5gUY9FEYd7D7FgA5DLADeyzQFTiulIV81UnSRmnbhph9//1oXXWFLDCRXxEXFs
+         9NVtB6/0EcNRVSbDTuxfZVu9LJbiYFgtkFK7jtnuFNqyq2wexYn9cXG4JdRTDwsSOG0u
+         Qmh88fnyxNGaTkWqt1X9KcHEktjI6KKnSmb4goT+h9S1nckzaZfdudlZorJoIuelALgW
+         CMAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBZEy2j93OLfalomxETd7m0DWHmwGMZD5f13aXeWFOWroltO9XENT0m7iUdRShkjO5ezIRQjnH9UIpaYdl0SpBvxCr
+X-Gm-Message-State: AOJu0Yw+LfQt7yr070oxOCw+0a+glI/69mBSM9AWJsbWKG7P6FQCzZ3p
+	uAlTeEs4jfG2Hhjfn5SvQA9JtkRo41Fnnh1a1zpcueSK+YxddV/h4YauK3HWxLplKbLgVreysn1
+	WW+174ssc8v7fZ4IHUnKatyVVTJg=
+X-Google-Smtp-Source: AGHT+IHa2EEFf+ie1eVHL+gVjuuYVi07LYMkuv7wkDhnss2E3v6sB+pmWDJIrUJ26p+DRfMCtkU3FphvfAu0WDWhNNE=
+X-Received: by 2002:a17:90a:bd8b:b0:29f:718b:16b2 with SMTP id
+ z11-20020a17090abd8b00b0029f718b16b2mr929263pjr.0.1711666520377; Thu, 28 Mar
+ 2024 15:55:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240328202320.187596-1-gilles.talis@gmail.com> <20240328202320.187596-4-gilles.talis@gmail.com>
+In-Reply-To: <20240328202320.187596-4-gilles.talis@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 28 Mar 2024 19:55:08 -0300
+Message-ID: <CAOMZO5D7QG3sbtCe_Y3h1i0b1VaLXCftLSCkjSuXcso+dKij9Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] arm64: dts: freescale: Add device tree for Emcraft
+ Systems NavQ+ Kit
+To: Gilles Talis <gilles.talis@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, conor+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, shawnguo@kernel.org, 
+	alex@voxelbotics.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Thu, Mar 28, 2024 at 5:23=E2=80=AFPM Gilles Talis <gilles.talis@gmail.co=
+m> wrote:
 
-Since the i.MX drivers no longer use the imx8_*_clocks API
-this can be removed.
+> +       pinctrl_i2c6: i2c6grp {
+> +               fsl,pins =3D <
+> +                       MX8MP_IOMUXC_UART4_RXD__I2C6_SCL                 =
+               0x400001c3
+> +                       MX8MP_IOMUXC_UART4_TXD__I2C6_SDA                 =
+               0x400001c3
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
----
- sound/soc/sof/imx/imx-common.c | 24 ------------------------
- sound/soc/sof/imx/imx-common.h |  9 ---------
- 2 files changed, 33 deletions(-)
-
-diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-common.c
-index 36e3d414a18f..2981aea123d9 100644
---- a/sound/soc/sof/imx/imx-common.c
-+++ b/sound/soc/sof/imx/imx-common.c
-@@ -74,28 +74,4 @@ void imx8_dump(struct snd_sof_dev *sdev, u32 flags)
- }
- EXPORT_SYMBOL(imx8_dump);
- 
--int imx8_parse_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks)
--{
--	int ret;
--
--	ret = devm_clk_bulk_get(sdev->dev, clks->num_dsp_clks, clks->dsp_clks);
--	if (ret)
--		dev_err(sdev->dev, "Failed to request DSP clocks\n");
--
--	return ret;
--}
--EXPORT_SYMBOL(imx8_parse_clocks);
--
--int imx8_enable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks)
--{
--	return clk_bulk_prepare_enable(clks->num_dsp_clks, clks->dsp_clks);
--}
--EXPORT_SYMBOL(imx8_enable_clocks);
--
--void imx8_disable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks)
--{
--	clk_bulk_disable_unprepare(clks->num_dsp_clks, clks->dsp_clks);
--}
--EXPORT_SYMBOL(imx8_disable_clocks);
--
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/sound/soc/sof/imx/imx-common.h b/sound/soc/sof/imx/imx-common.h
-index ec4b3a5c7496..13d7f3ef675e 100644
---- a/sound/soc/sof/imx/imx-common.h
-+++ b/sound/soc/sof/imx/imx-common.h
-@@ -15,13 +15,4 @@ void imx8_get_registers(struct snd_sof_dev *sdev,
- 
- void imx8_dump(struct snd_sof_dev *sdev, u32 flags);
- 
--struct imx_clocks {
--	struct clk_bulk_data *dsp_clks;
--	int num_dsp_clks;
--};
--
--int imx8_parse_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks);
--int imx8_enable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks);
--void imx8_disable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks);
--
- #endif
--- 
-2.34.1
-
+If i2c6 is not used, you can drop its pinctrl entry.
