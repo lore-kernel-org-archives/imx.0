@@ -1,42 +1,60 @@
-Received: from mail-108-mta240.mxroute.com (mail-108-mta240.mxroute.com [136.175.108.240])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1D83C092
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 17:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B09B137935
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 17:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711645516; cv=none; b=YHnGHt67ynOgE04aUaYkkzYabi4UJX2/FwyrDXq95JYtKaJaudNBWI+uJjUwadby5o394E62BuKDVERpQy68uJVzxIQq3mzzrmU1NqEkCWjz+nC1uY/QDTGTj/v2HwiRR5ktDOjStpfcWy5ehi9iqbiu8R/7WZ/I0zKQZ4qZNwE=
+	t=1711645624; cv=none; b=CUdjUUHvkOykvKCGFgJ84I7Gb7btraEf551QSRwHqBKa9B8bMuEWavWdDT+BYrzXQTSfvSTjbxrH/tZulMM3NQhqKVUtgUyrlwXIhOCg6zx75tDT8UuBRGu4IszSbSpp7QBDue/JbKRi51OOOVbvPThSPa+h2Zo/1cxQr3g/rho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711645516; c=relaxed/simple;
-	bh=9zNP92bNPgp9w0XFvKSF/0xg28mBtIKDRH7jxflanx0=;
+	s=arc-20240116; t=1711645624; c=relaxed/simple;
+	bh=S/rMmcnmpsGVrWPMgaxxFuJITwvJsDmZfZRoYbd7kJw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GmqUZNZOpuoNAjShKHvJflW0nEvsgSJbMQjjEr+oxRKzeb6L+Mt4AXj7/wrbwH5PkHwjW/CkqB7j4wUej5Ye1bJch2uLRR8vG+h7GVN40o8KtRzP/tH/bOecp6+Dbhb69CfDD4VMzTMVatf1EC/DppybIZHxsetUI446fTGT2Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=ytSYbPaf; arc=none smtp.client-ip=136.175.108.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	 In-Reply-To:Content-Type; b=uYU2nRWn1q1dDRd9TAbOab86xtBNE+7dptKhO5qzSib1WxKaPOuQyCMgCOgDONPdxQixPImLuzFikIwZm9rPgP/cUZJBZRNifP/mQYGq3P7j3Bd299Kt8LT+EwvQMvdWislpi3L8YVmPVHnkKj9GEkbGLyN2q8sBh1TrSdR+ais=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P+vkUSpi; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="ytSYbPaf"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta240.mxroute.com (ZoneMTA) with ESMTPSA id 18e8605d28c0003bea.00b
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Thu, 28 Mar 2024 17:05:12 +0000
-X-Zone-Loop: 5b3602dc611783a72a3278dce2f65e286741e4dfb53e
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mZL5hLBkloRsl6YhllysqkuiGbw1qHa4I22VeBcbYtE=; b=ytSYbPafdQBqFW/aT7tiYbrWV2
-	vCDSLcj/SXxrXAEOyX7t//p6PPq+Fne+0Kcnb7Ie5h8X63HWNxJBYSLEKNzAA33O4nEE5r6B6WVV+
-	EXlEH+oH/+qZRIwHLX4KChloLIYrXkHu4qdajB2S0q8uVSuBzZksOzFF4aS7A9gDlFqdqLEo7l+qw
-	t9xKAIgM6QhretsOfuKTDPilYyGXf5PPYMM344OtVOZ9b9lGSFBveuZayUo801/N8eZfKyoM0Se2d
-	X1umR6FA73bFEhY8XCAAxFl/Ht6t6hmqVKiTpgfSim60XGUAM587LvOf42kDCig3Q8NY7JUSaZ9C9
-	+dBivuRQ==;
-Message-ID: <30d886be-cac8-400a-9b2f-dd2ce64b34d8@luigi311.com>
-Date: Thu, 28 Mar 2024 11:05:00 -0600
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P+vkUSpi"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-341cf28dff6so854896f8f.1
+        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 10:07:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711645621; x=1712250421; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fXQkktLwKnjh/iLjR9yQ58intWukOcyLPotu7tuR3uI=;
+        b=P+vkUSpilixH7sukZx9bHnRaj4VyGZtOU4kZB9ePu3zOjPSaTakL1SISWh1xY8PcMD
+         6OB6LM8/1sJEppH45YHpgg8vtafuvoLcE0Tc/bfM+ukD/AuSVYXtTlPI5CyNhWsiuNq9
+         RVo5JLBelU0DV5TA4LxgQ253NZlmBdUDsTIFi+csw7+O1NNS9UFnmxtRfU9ZA96/qDsv
+         JYyMl6NsnufE4bcd5ixRAvpHy00Mu3HiCXLotQcpFkP11/2pkuOPP6VsM9XAt/IaXtQa
+         5aelSIvIew3VJEg390piWWd4JwPnN5V0bGZxGmsTfYbfR87wqgbix3Zn+u4F1PMgFqBV
+         iyiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711645621; x=1712250421;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fXQkktLwKnjh/iLjR9yQ58intWukOcyLPotu7tuR3uI=;
+        b=H4LzwhZxSxlLuHMNRPjNEjvJGPvrvFOmpywH0KV+Elghwc3H/KBtMnGDiBPBc3B7Rf
+         j8knuwq/RTWKVnoRsInE4hHqSJnZjXo8JWTvch36GyPJ5JdFpHhuXCxs56X7hIXmPjEb
+         myKzfKxZnZKiIpT+lkZIzoOUulOIS+szOU/ZVELfdZOj2XRehAmd7MAnaaGe5LidHNrH
+         X/ntQJKEijIn/j8BYqj+7cVug5gF6LiAK5HOKXG4bAu4V5v1vcIc/0Gjx1kV/BDsKWVE
+         4AgdloXEy4Gha5QLRNWRItKKa3xw/coz7hg/uXgpn6kWHS12C2eFnbXFKoVi+BAosv/x
+         CNKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ2EFp2L/HhST6BQR/E/RFD0egFDpR4gbJn2rvynQ6uTeya7rb5qgEeZbjX5ef2ZV6hWsoDaUtsDhgOI0aAHSjM0k6
+X-Gm-Message-State: AOJu0YyqVYacAtVf4yzWoz//eHazoDiFpyqO8n+ueXM9krC6YyOIefqO
+	yEwerjiuvbcMkIyBs8phmhGJa3AQAwq9QY4Q1MmGPb5e1JqvHguPDYYGQupt6HQ=
+X-Google-Smtp-Source: AGHT+IFSWtJLxRRZrsyDz22Q8s/vm/VgEryUJzgbTw3fttmGr+830itvEDGfu5ORaeXEt5+psUXb2A==
+X-Received: by 2002:a05:6000:50e:b0:33e:bfb8:732c with SMTP id a14-20020a056000050e00b0033ebfb8732cmr2225093wrf.64.1711645620763;
+        Thu, 28 Mar 2024 10:07:00 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.50])
+        by smtp.gmail.com with ESMTPSA id y18-20020a5d6212000000b0034181bea3b0sm2229735wru.3.2024.03.28.10.06.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Mar 2024 10:07:00 -0700 (PDT)
+Message-ID: <c61e2120-1a74-4e64-a3e7-e712d33e97df@linaro.org>
+Date: Thu, 28 Mar 2024 18:06:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,7 +64,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
  compatible strings
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, git@luigi311.com,
+To: Luigi311 <personal@luigi311.com>, git@luigi311.com,
  linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
  mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -57,72 +75,75 @@ Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
 References: <20240327231710.53188-1-git@luigi311.com>
  <20240327231710.53188-19-git@luigi311.com>
  <586bdcc9-793d-4cbe-9544-9012a665288e@linaro.org>
+ <30d886be-cac8-400a-9b2f-dd2ce64b34d8@luigi311.com>
 Content-Language: en-US
-From: Luigi311 <personal@luigi311.com>
-In-Reply-To: <586bdcc9-793d-4cbe-9544-9012a665288e@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <30d886be-cac8-400a-9b2f-dd2ce64b34d8@luigi311.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: personal@luigi311.com
 
-On 3/28/24 01:47, Krzysztof Kozlowski wrote:
-> On 28/03/2024 00:17, git@luigi311.com wrote:
->> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
->>
->> There are a number of variants of the imx258 modules that can not
->> be differentiated at runtime, so add compatible strings for them.
->>
->> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
->> Signed-off-by: Luigi311 <git@luigi311.com>
->> ---
->>  .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
->>  1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
->> index bee61a443b23..c7856de15ba3 100644
->> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
->> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
->> @@ -14,10 +14,14 @@ description: |-
->>    type stacked image sensor with a square pixel array of size 4208 x 3120. It
->>    is programmable through I2C interface.  Image data is sent through MIPI
->>    CSI-2.
->> +  There are a number of variants of the sensor which cannot be detected at
->> +  runtime, so multiple compatible strings are required to differentiate these.
->>  
->>  properties:
->>    compatible:
->> -    const: sony,imx258
->> +    - enum:
->> +        - sony,imx258
+On 28/03/2024 18:05, Luigi311 wrote:
 > 
-> Two people working on patch but no one tested it before sending. Do not
-> send untested code.
+> Looks like it no longer complains when i run
+> make dt_binding_check DT_SCHEMA_FILES=media/i2c/sony,imx258
 > 
-> It does not look like you tested the bindings, at least after quick
-> look. Please run `make dt_binding_check` (see
-> Documentation/devicetree/bindings/writing-schema.rst for instructions).
-> Maybe you need to update your dtschema and yamllint.
-
-Hello, looks like I messed this up during my v2 (sorry missed the v in 
-my format patch) when I took this off Dave's hands. This is all new to
-me so thank you for the command used to check, I was only compiling
-the kernel and testing that so I didn't realize this needed separate 
-testing. 
-
-Looks like it no longer complains when i run
-make dt_binding_check DT_SCHEMA_FILES=media/i2c/sony,imx258
-
-with the following
-
-properties:
-  compatible:
-    enum:
-      - sony,imx258
-      - sony,imx258-pdaf
-
-If that looks good I can go ahead and include that in the v3
-
+> with the following
 > 
-> Best regards,
-> Krzysztof
+> properties:
+>   compatible:
+>     enum:
+>       - sony,imx258
+>       - sony,imx258-pdaf
 > 
+> If that looks good I can go ahead and include that in the v3
+> 
+
+Looks good, thanks.
+
+Best regards,
+Krzysztof
 
