@@ -1,60 +1,60 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97765537E7
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 07:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9A92C856
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 07:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711611778; cv=none; b=hDFeI8xifygTjuRkMhriue0oOj4Lfwho7hdNdhpz94cfGugLavzpgZDEl7tt3CSDrqbcnZc4FwZLJ0m0F/dyMps1v2hhgy8gn5OBBuSopk30e4lPn0KeQWFnhCd+Aebe55L6YVq6yzErZ8YtZ9nyeb+1ncMH3IIMpRJ2MYWLA/M=
+	t=1711611804; cv=none; b=RWqsFWfTsjQPUoJPDspJIEoNvrCJpOZNH8TjceKUBpc9fnmilK+exGIZodUcal/rlbV9tCb0u05DU9222JrJ5x6f2f2kUktsX8OZJrzGZtj8SIUSE+8JrncAAM3Rds4NftpZmthsO0dXxEQALa4HRRsTiCb2hTwLnAScQIP2hwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711611778; c=relaxed/simple;
-	bh=nKUzJTHQzNFpVntUC/PVLAP63nOsFjnAW7ofZ93y5EU=;
+	s=arc-20240116; t=1711611804; c=relaxed/simple;
+	bh=66zxokx1nRQdSBmOu68wpmC9NaXo0h0oCncgKoT+iok=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZFNwo3ELquy29Zs3iGkCvdA5KAy8uoDP+Rn5pjWW6wAG9INCY7UemioQUXpUx2vC3ecyPJvuU703RTSDHZgsufoByFdp34t9qv7+8qIcR8MSfdkQQ0Ma1MCH7XjkXS2vK2rlCgVlUpsbOBMP1/dkY4BZFFKURZsnR6yfbCW9boQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ts6jZyFq; arc=none smtp.client-ip=209.85.128.54
+	 In-Reply-To:Content-Type; b=aeWjoX3Lws+UbUoQvsJF9mI0/Ia3T3QKPNakx/wSeFGu6b2Knn0P7Nv+ZbzvesXBMw3+1+RXGKRzfIhs09KWQUTcLdDXIvd68XqU444b4Unxzu1lh2vOaOpmQMDfk4uaILsUYtNeB/8JPLFhUZ57gIOYKYGXisi65EQll9lkpgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YVlgqiae; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ts6jZyFq"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4148d1b4a26so4630855e9.1
-        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 00:42:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YVlgqiae"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4151d2322caso3920615e9.0
+        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 00:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711611775; x=1712216575; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1711611801; x=1712216601; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=y9Z1hl3Voqz4rKbH/aYbXcmA5wCp7kHC4YYlDvX1XsQ=;
-        b=ts6jZyFquCv4WjZR78uygkvZ9On/QquHxYtsUYAdPs79hFgpPYMgy7FcMp8i2gFEsP
-         PAOZ+7/K6ZoGr5MTIrKLuyLigDqQts4eHvpKRbAGxIMMAH3lW9Oc76mG7rvmARQlD8dG
-         MO3dG8E/fb+iOqggMD3fr6KY5UFKPOjGI+o9XDPdhME7RTjBvPu0s4R5NXPY5VJvaOz3
-         JF7YbDogLv0DCMZ0dc0hhNko4c2KKhj06R797qxIWizCPlUaU9Uk1Dt7hzsxiy69J7tT
-         xcxLPBoZZcdhezC4zYsWj+dPMYVMN2dcZRDhnUNt5mMjMsaQxAiW+lm1DmuJds+JC1qK
-         Rqbg==
+        bh=9w9NlNqtmEVT7vdpnD6oPHWlOT/uMz7BEE/DMphkNNw=;
+        b=YVlgqiaeIGaHBVC9lYWAmHUw/7QMS+w1aDrrYxjmDWDRuaO6UYlmhz32ZpoQ2ZUAeH
+         ljQuqcQsEq0lRzN84yQQPtIFx7FnTfrzYwjN95SBO//bVXaLf/UX3w6QJom1ILOViN5t
+         3ToH/McPWuZ/e2zOpElUfWqJ7zBLSUMT7s0mSLJojmjbdJK6VghoJpoxbPt0rhZZi/+k
+         ZrriyFcRJNWO1GxQocuH68l+o7URTzqwfJD6gSpBuDamMJ3uvknV/+FcyztMHHwEdDBF
+         JBCWeL/cK6HYG43cSzks5Um1R9u2eEyFZh8qTABTBu77KgsfzPigh4hBV+0tHORxw6hm
+         rYwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711611775; x=1712216575;
+        d=1e100.net; s=20230601; t=1711611801; x=1712216601;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=y9Z1hl3Voqz4rKbH/aYbXcmA5wCp7kHC4YYlDvX1XsQ=;
-        b=TkmPYeqVUQz7+DjqYzar7/USQGWOKmfZTE5UUJwtHdcqKhXutkwn9ZBMtliZmuKFCz
-         MnQbSGvRV91vBrcNhzk+lA70+8aUz1JPLBpMbaYMw48RlgZyxlzuk/7zNIm2c0DaH+r6
-         3iyXf70FfrBvE5OAY/mejNOlBN4rhPT4gc1e1iDwwOGsJNvTYPbnNDKh43eEKX+8UAms
-         Ee58yidGnZzVJV2QrvWDOgi8QJ7cPjvV/9oxz4G5i8TMRPnedsK6DEN5VNScRojKH12A
-         u9S+KCOZLq2McOwIh/6p8dHMq/YfC67lw8oJYKQ2Lw0n+6yImgpom92P3R1FMWqoDG8D
-         GK/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVGkEtNf45IuD+vEVchbSE6cScgEqg9LEdQShbVGby/TmNQM2PqS85X81MKZ5NmaOvM7X5UheI7p8Uw1CvM8iq7dlad
-X-Gm-Message-State: AOJu0YwXhN7S1UpArLqglvF8CMv8OykiXTEDK0Bb3tTC8wuA9NiXw3lG
-	iobF9Oc35Xryfp3R58pE/VJpwZ72nNBXVgYfv4xPHCXHAP6PF5gb2VUvbkJEqy0=
-X-Google-Smtp-Source: AGHT+IEn1uwQTxgQZwYHfKejub4W7DzhIEQCVx8fpRARAzaog7bFVr8dcc8Ld3RH0v2OOStWQi5bAA==
-X-Received: by 2002:a05:600c:5246:b0:414:24b:2f4e with SMTP id fc6-20020a05600c524600b00414024b2f4emr1091644wmb.39.1711611774960;
-        Thu, 28 Mar 2024 00:42:54 -0700 (PDT)
+        bh=9w9NlNqtmEVT7vdpnD6oPHWlOT/uMz7BEE/DMphkNNw=;
+        b=VLz811t7ZbKlzLHjAcv90xI7r/iwKoW/VfSmdOW1C/X+VPK4DwuzvYoV0CzkRV4FYD
+         bwImsHMBG9pY8s6fVhGCxr1xUknFvg74bKqjgUEK6HuTZtilxB0PT6Fp+KhZadS92dd0
+         kKYqiA1ppczZn4iA0ECAF92HqJnOwNMd6gvwRxuf4p5yc2POoGQbq7NWQIaED/airOWf
+         cALA5JnQDtyhdmpDc+4ZApqBjGE1m3Q6KD9aiTdLBbddLCRoG4W7QI2NRA365SwZ4KN6
+         7qVtLWGwm1S6U9xP7zJF4puUjxA2pJTU11CtZFtycJ/R5T2kDv0Bf8OELi17ySqq5ZzI
+         khgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeCnfBBXhgdAHq/TjW/YALBuIl9pr6kaoRojB1XpZZhr6AS/BoVx7Y6WBJ1YyDXTpKg0PmikTr0RO6e1jnzbuoFKRX
+X-Gm-Message-State: AOJu0YzaEL3PdGzcDDXd/+XjSLRYdpBYpHENuHw/E/3jUFoXxX2tj6vQ
+	orqNU+hh8soHCCD9ytZL4MVtUEdSBiYOCKNiowKh6WUQmIovT21PBuVIKYNxrhI=
+X-Google-Smtp-Source: AGHT+IGbKXWWmqSBrqx9Fly4WzeTAT73S7w1uGe6NMs2c0vhF8gAfvTdwIzhfljk3xLD6AwLYYFpXw==
+X-Received: by 2002:a05:600c:444e:b0:414:12b6:7315 with SMTP id v14-20020a05600c444e00b0041412b67315mr1785675wmn.17.1711611801190;
+        Thu, 28 Mar 2024 00:43:21 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.148])
-        by smtp.gmail.com with ESMTPSA id fc11-20020a05600c524b00b0041408e16e6bsm1392429wmb.25.2024.03.28.00.42.53
+        by smtp.gmail.com with ESMTPSA id g16-20020a05600c311000b004148670f9ecsm1404554wmo.23.2024.03.28.00.43.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 00:42:54 -0700 (PDT)
-Message-ID: <c89aeaea-f575-4514-b4cb-a75fbda2a6eb@linaro.org>
-Date: Thu, 28 Mar 2024 08:42:52 +0100
+        Thu, 28 Mar 2024 00:43:20 -0700 (PDT)
+Message-ID: <de2a1689-66f1-49cf-8239-09e763034f1f@linaro.org>
+Date: Thu, 28 Mar 2024 08:43:19 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/23] media: i2c: imx258: Remove unused defines
+Subject: Re: [PATCH 00/23] v2: imx258 improvement series
 To: git@luigi311.com, linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
  mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -71,7 +71,6 @@ Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20240327231710.53188-1-git@luigi311.com>
- <20240327231710.53188-2-git@luigi311.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -118,19 +117,18 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240327231710.53188-2-git@luigi311.com>
+In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 28/03/2024 00:16, git@luigi311.com wrote:
-> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> From: Luigi311 <git@luigi311.com>
 > 
-> The IMX258_FLL_* defines are unused. Remove them.
+> Resend due to email message limits being exceeded.
 > 
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> v2 changes:
 
-Your SoB is missing.
+Please mark your patches correctly. Use b4 or -v2 for format-patch.
 
 Best regards,
 Krzysztof
