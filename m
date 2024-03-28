@@ -1,127 +1,66 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB8B1DFF2
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 13:37:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D70228DB3
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 13:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711633045; cv=none; b=iBlIY7w/YqAlHtQQ2yqC3FOItNDGlznKe8P91gamNPLkAoq2wJxJPqc/qZb+8EUJw4JO0FKJelHPMdSTiWr3no6uDtSZJUmSS1KD4CLpEDY1Bj/0sfAUFyL82dVz9TBbtn5tLIHBegFNMUZfBfI/WhjI05stvW7q/mhsG/qRWhw=
+	t=1711634104; cv=none; b=OvGqTGEbsR1xCnIgc0uDIr0GNYvEBxzh5gpZeZqF+tYK7CRCTa5UFOAJfWR5NYGHu9/nugfZ92nIzmjDn/sRKZftW8NaCx3w0iLAM31NjR5N+54xV6JNdfaGhAK/3rJciblfIJW11gx/iV261wYTm/qbssRhPtYoyNBsywk2xpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711633045; c=relaxed/simple;
-	bh=vhptj9/Vq4Rm0PoGzxaGiCJqIgDUZwkAbXDvc9ksjDI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AgN6inN/ovWlrjJszV3kOk9Gb1jIBPa0jYUZNi3OGakT8xG0bzJipNNDl0lRViN+cSJthN3n8PyMIrfYShxRNrta+z2yqrwCf9ULwx7d2dZYlCdr32Av9KkCljuanvikuF/ZzXfBTv8BRdyTKmy9/VZ7zp13K4SUpLP5oZBKYg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SIqWtTFM; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1711634104; c=relaxed/simple;
+	bh=DfrrIRMhf7F8dxUPrgdMEfjKADIvaXWsP4TCkcLf8oU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GYVxj2YFx+TeyEjMdxmC4uZ1kZANksc0ddPJM5p14zo5V5uGMxy58itMqgqcVoYxNzI5q8SH9PgWDmASIkiVKJYGKdNJUyRQf0ltqieplDrNvvsJQrobA2IMwiDXMNjUmJyJIjvlslkPHjrZ9F8gH5rfjvlqY4MipUGlZA/hnso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=B2GyGhGb; arc=none smtp.client-ip=123.58.177.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SIqWtTFM"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso815438276.2
-        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 06:37:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711633042; x=1712237842; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vhptj9/Vq4Rm0PoGzxaGiCJqIgDUZwkAbXDvc9ksjDI=;
-        b=SIqWtTFMnJtqqu4rJ/7MLgT7CdeN2PIerRgt0FN/tyjx45poQJrq1FkKE5Zm6DJcPO
-         JXX9/Y+EhjWDy1IIax/bvNgEdiSf5ug3MGPCGaqR3sbIB6QNf6UApGeawmXRsZEB3Eei
-         dQQchif24DT0hEvP0uazYArBzdhgPQQMq74aaZAubQmmrfb24Wyp7KBjzWa6z2YDKcXe
-         tdm32XhhH2j1vqk+j6dOXoPrPQq95HCsYVDcWspPoysQrxh91a0dutyMgwvyqtxq32z+
-         4tW90BqZyuthfpcXmwHCCdJJDBnIB0N+6KnGHiykPp/Gd/4HOUkj/lFY9HBLJ8Xd18Nv
-         x6Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711633042; x=1712237842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vhptj9/Vq4Rm0PoGzxaGiCJqIgDUZwkAbXDvc9ksjDI=;
-        b=NGuigPDp4AgaVsn9XMg/t3rW4PhBJFuoQaDvIGzZTnCnu8ABgPwaP35MWX31Yf0Eo0
-         vD+iySpMOCZVFounq0q3T385W/AtAWASYk6WGxZi8SP2QsUMg1FzqVGY1/WdmyLLjlCv
-         76JtNMYridj+zdUGZqvUQWOtkrMTpeJtFLooJAlUIOAGmjBqw4haFEcrv4PrCRCs2eJm
-         na9aSwbTczIX2HMuT39gE1ZVT/GLlrUoZHO5PAuDflj/9A2+W5X0esaVwSY4KRV8NgpT
-         vDiuj4A7bKPXAwXPceS9lf5fiZtXD7l+zErMg9kVsnlyVIAhpA8PEz1kLM71NTeGoOBn
-         xoog==
-X-Forwarded-Encrypted: i=1; AJvYcCUAm6+v8ExDyTiQamvVLxmF23ZVkYrAR+mFKZluV78LVMVSCS+fNKSbWV9yzspENyZozKrq+WbO0DtQyvMZSsmSh+dB
-X-Gm-Message-State: AOJu0YwmL/OliHVgN2dp0bjRZl2siGr5W18nz/3Lqq3rinHf4lmYvYIW
-	3jNKIeA387t+SNDCshRbGaK6Xq0VuKRnuM3mBbZ0PfWFrHUNARmMm0wE8P1YFZfZ4BS2LZKHeFP
-	bggIr4A9iC0RblAKpCNFLyOFpNxLQsAUyKHPw0Q==
-X-Google-Smtp-Source: AGHT+IGjGHEbsk10nKTaVGgOOQzkHc5Qm9STf87bHGVpMP0DEmjO9lKjEWUgvRJ23UvcJC23rRkiymMtwiTmbVMLRs0=
-X-Received: by 2002:a25:b9ca:0:b0:dd1:3cc1:5352 with SMTP id
- y10-20020a25b9ca000000b00dd13cc15352mr2820459ybj.15.1711633040798; Thu, 28
- Mar 2024 06:37:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="B2GyGhGb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=7HuHZRVaWONhQpUVLGaH8mCBo7oDHLgcq9J6Ysi17V0=;
+	b=B2GyGhGbnijYUIE6ovaPBfHzlyeGNvjf5Hhrjr8xzi9lf6SKybB5fCzs2nsSwP
+	8yRBh9ydcmcMzpDLlDtl85B3L+9oYj7BH7B362RxH/J9yoXxb/KNunXRYX4qiDyw
+	N+hCK6djPwQlH1MPT/ayTcKoR+M5tH4kvAtUz6U8IMvfM=
+Received: from dragon (unknown [183.213.196.225])
+	by smtp2 (Coremail) with SMTP id C1UQrACX_heAdgVmyl1aAg--.12337S3;
+	Thu, 28 Mar 2024 21:54:09 +0800 (CST)
+Date: Thu, 28 Mar 2024 21:54:07 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Sebastian Reichel <sre@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
+Subject: Re: [PATCH v5 6/6] ARM: dts: imx: Add UNI-T UTi260B thermal camera
+ board
+Message-ID: <ZgV2fyfV5/SW/v+x@dragon>
+References: <20240226212740.2019837-1-sre@kernel.org>
+ <20240226212740.2019837-7-sre@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240327160314.9982-1-apais@linux.microsoft.com>
- <20240327160314.9982-10-apais@linux.microsoft.com> <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
-In-Reply-To: <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 28 Mar 2024 14:37:09 +0100
-Message-ID: <CACRpkdZ7wAbtTUmmLCef7KnATmfZeAL26Q-gLqnGe3CdZ3+O3A@mail.gmail.com>
-Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Allen Pais <apais@linux.microsoft.com>, linux-kernel@vger.kernel.org, tj@kernel.org, 
-	keescook@chromium.org, vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev, 
-	florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com, 
-	paul@crapouillou.net, Eugeniy.Paltsev@synopsys.com, 
-	manivannan.sadhasivam@linaro.org, vireshk@kernel.org, Frank.Li@nxp.com, 
-	leoyang.li@nxp.com, zw@zh-kernel.org, wangzhou1@hisilicon.com, 
-	haijie1@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, afaerber@suse.de, 
-	logang@deltatee.com, daniel@zonque.org, haojian.zhuang@gmail.com, 
-	robert.jarzmik@free.fr, andersson@kernel.org, konrad.dybcio@linaro.org, 
-	orsonzhai@gmail.com, baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com, 
-	patrice.chotard@foss.st.com, wens@csie.org, jernej.skrabec@gmail.com, 
-	peter.ujfalusi@gmail.com, kys@microsoft.com, haiyangz@microsoft.com, 
-	wei.liu@kernel.org, decui@microsoft.com, jassisinghbrar@gmail.com, 
-	mchehab@kernel.org, maintainers@bluecherrydvr.com, 
-	aubin.constans@microchip.com, manuel.lauss@gmail.com, mirq-linux@rere.qmqm.pl, 
-	jh80.chung@samsung.com, oakad@yahoo.com, hayashi.kunihiko@socionext.com, 
-	mhiramat@kernel.org, brucechang@via.com.tw, HaraldWelte@viatech.com, 
-	pierre@ossman.eu, duncan.sands@free.fr, stern@rowland.harvard.edu, 
-	oneukum@suse.com, openipmi-developer@lists.sourceforge.net, 
-	dmaengine@vger.kernel.org, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-mediatek@lists.infradead.org, 
-	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-s390@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226212740.2019837-7-sre@kernel.org>
+X-CM-TRANSID:C1UQrACX_heAdgVmyl1aAg--.12337S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIzB-DUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBCvZV6NnpnNkwACsK
 
-On Thu, Mar 28, 2024 at 1:54=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.org=
-> wrote:
+On Mon, Feb 26, 2024 at 10:26:28PM +0100, Sebastian Reichel wrote:
+> Add DT for the UNI-T UTi260B handheld thermal camera.
+> 
+> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> Signed-off-by: Sebastian Reichel <sre@kernel.org>
 
-> At this point we have suggested to drivers to switch to use threaded
-> irq handlers (and regular work queues if needed too). That said,
-> what's the benefit of using the BH work queue?
+Applied, thanks!
 
-Context:
-https://lwn.net/Articles/960041/
-"Tasklets, in particular, remain because they offer lower latency than
-workqueues which, since they must go through the CPU scheduler,
-can take longer to execute a deferred-work item."
-
-The BH WQ is controlled by a software IRQ and quicker than an
-ordinary work item.
-
-I don't know if this little latency could actually affect any MMC
-device, I doubt it.
-
-The other benefit IIUC is that it is easy to mechanically rewrite tasklets
-to BH workqueues and be sure that it is as fast as the tasklet, if you want
-to switch to threaded IRQ handlers or proper work, you need to write a
-lot of elaborate code and test it (preferably on real hardware).
-
-Yours,
-Linus Walleij
