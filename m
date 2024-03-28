@@ -1,107 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta129.mxroute.com (mail-108-mta129.mxroute.com [136.175.108.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2110F13AA31;
-	Thu, 28 Mar 2024 21:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22E713958D
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 21:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711659669; cv=none; b=dIFo77meHd8PwyZqaIU+UcBEaGbVkld8wInLYXZfYrcZKqPN6uGv4u7nq2YYRqT/rkOKCIP/MFMN40QoVf0U59a7dFfTLV5yzcECDBWzUEW6dFOrGWMyBAjXeolmSFDN4VxE1ulgSwOHtcFhBqvgfxM6KIFyQP0hSoYih+CIB4Q=
+	t=1711659747; cv=none; b=Liw32YFBRsBRGQqy5vp8pOSmxCkcCB2FgovGtxvpd8SlvmuWFvKUTPH571JATJCHS2N3zAgIQrmeFSBUlpupS1DtVliCLfZG8pYwSUc+diaubpfYJvsI5FZ4xhxkK3hPYUW+dqWBrYHjpsXMith+B6Laigzv397/H1SmS+Wo1N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711659669; c=relaxed/simple;
-	bh=cjvFOrG60Gr0hyCI8FeQFybYfL/zDNuhXIbJTZM5ZWs=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=ttFMFFrh5OZxNcxgHrgzfNHUmvlATyv4kIol4rTs+onNtnXQsOANTu6qTg8SPpOGG8Nuf6drwPS468twIUOvEpmCHpd/M1bWYdojrci7f+U1PvVtfb8BsJT4CHAEMsiUghwV3iFRBoUbDYna2n1QX8tMfS8IKDV3xIUvH5WTK9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfhnGO2z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711659747; c=relaxed/simple;
+	bh=r0EcBPQ3qmpeCX4m58ZcZEDwZXCeT1PRpsmqW991s+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YdMbliknhLnuzuKS/QAyzSLkajF4Q1SX6vkz5NZaEMaROKfU89tSOjorn5OCU2LwCxdTB4KyVEsVwZfpjpJsiZyK9kfbuNnssD95dxIwWqfgOSs82zC42zpAvbZKw+m9FY9GlMRO1vJrBjBrXe2YPxnLHs4kjgFoLA9do7IDof4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=h8XynL+L; arc=none smtp.client-ip=136.175.108.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfhnGO2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B253C43390;
-	Thu, 28 Mar 2024 21:01:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711659668;
-	bh=cjvFOrG60Gr0hyCI8FeQFybYfL/zDNuhXIbJTZM5ZWs=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=MfhnGO2zoRvqnJn+HsbeRSQXrk9A1Ubg7paHB4ronSqEXG7slRUxhB5A+sOaidHRU
-	 6YS286vQmqb662H9b5T5gxQJqm5yHbs7YCabKOKENVEFSWGv9+fpnWs8QcxkshZcLq
-	 acjV1/wJ0FsZ3syRdVoROQ/sRyz9YbDqneHW1ybw/HNlvCyFigKSOQlMLvB3ZfQAWD
-	 xw0uZgaVrDMQW7iImIP2B4v0H1NONnAi9IoXfSJ1Tq2Hq7kOoY7uG9zZBXVsYxha7d
-	 tvpVkltUvfLqbDT6yFriEau09c2Gb/zyHB4V1NkcADMXJqz6SyQYm1RCbScwIhNp18
-	 ra7kuXd4Z1UdQ==
-Date: Thu, 28 Mar 2024 16:01:07 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="h8XynL+L"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta129.mxroute.com (ZoneMTA) with ESMTPSA id 18e86dee3df0003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Thu, 28 Mar 2024 21:02:18 +0000
+X-Zone-Loop: 3b0067135e160b4346c77438d3d043200fdeeb699f39
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=n0BJjZfxDNb/uyF3bBh2pp0ckq9viE9E1DscdmPJyFc=; b=h8XynL+LgJCxtIBV8QoxL5mr/m
+	ev7KBLRvh1FI44Uu/Nw6Gc9q5HYuzaORe8rm19V2oFqd5dbEjW7JUE+4+ewSexyZrmHpJF0AN2IIg
+	pKUexC3rVtTJNgN9njahSH9UbTXDwti85J8R2TiTnWvA+j4M2PbDcVJSlUdLZZlEH8BqWFI2+o8OR
+	NinPlMA4xScARG2ZZaWVJfvu+sy+0ZtNEA5lDuXMqls5/t4Y4S8BWe84VKcVCVk1bezjOAoIxcBh/
+	vNE5NchcJTfHxXpKHkXkQ9Ds9q2+FFMaFYeB6+cj05AkMYqnuW0XSjbsnqWKSYnF4WZRE0S+uf8Kv
+	VTD5pPvQ==;
+Message-ID: <0b6fe14e-c990-4084-bc54-57872aa9ae21@luigi311.com>
+Date: Thu, 28 Mar 2024 15:02:13 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Gilles Talis <gilles.talis@gmail.com>
-Cc: shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org, 
- festevam@gmail.com, devicetree@vger.kernel.org, conor+dt@kernel.org, 
- imx@lists.linux.dev, alex@voxelbotics.com, 
- krzysztof.kozlowski+dt@linaro.org
-In-Reply-To: <20240328202320.187596-1-gilles.talis@gmail.com>
-References: <20240328202320.187596-1-gilles.talis@gmail.com>
-Message-Id: <171165955958.338166.637159959517861082.robh@kernel.org>
-Subject: Re: [PATCH 0/3] Add support for Emcraft Systems NavQ+ kit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
+ compatible strings
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240327231710.53188-1-git@luigi311.com>
+ <20240327231710.53188-19-git@luigi311.com>
+ <20240328185526.GA88354-robh@kernel.org>
+ <76f999a7-55e0-4676-aa75-8fcd466e046b@luigi311.com>
+ <20240328204657.GA314523-robh@kernel.org>
+From: Luigi311 <git@luigi311.com>
+In-Reply-To: <20240328204657.GA314523-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: git@luigi311.com
 
-
-On Thu, 28 Mar 2024 16:23:17 -0400, Gilles Talis wrote:
-> Hello
+On 3/28/24 14:46, Rob Herring wrote:
+> On Thu, Mar 28, 2024 at 01:16:22PM -0600, Luigi311 wrote:
+>> On 3/28/24 12:55, Rob Herring wrote:
+>>> On Wed, Mar 27, 2024 at 05:17:04PM -0600, git@luigi311.com wrote:
+>>>> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>>>>
+>>>> There are a number of variants of the imx258 modules that can not
+>>>> be differentiated at runtime, so add compatible strings for them.
+>>>> But you are only adding 1 variant.
+>>
+>> I can not speak for Dave but as to why this was added here but looking
+>> at the imx296 yaml that has something similar where there are multiple
+>> variants that may not be detectable at run time but does not include
+>> similar verbiage in the main description. Should I drop this from the
+>> description so it matches the imx296?
 > 
-> This series adds a device tree file for the Emcraft Systems NavQ+ kit [1]
-> 
-> The first patch adds a new vendor prefix for Emcraft Systems
-> The second one adds the board to the arm/fsl.yaml DT bindings.
-> Last patch adds device tree file for the kit.
-> 
-> [1] https://www.emcraft.com/products/1222
-> 
-> 
-> Gilles Talis (3):
->   dt-bindings: vendor-prefixes: Add Emcraft Systems
->   dt-bindings: arm: Add Emcraft Systems i.MX8M Plus NavQ+ Kit
->   arm64: dts: freescale: Add device tree for Emcraft Systems NavQ+ Kit
-> 
->  .../devicetree/bindings/arm/fsl.yaml          |   1 +
->  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../arm64/boot/dts/freescale/imx8mp-navqp.dts | 435 ++++++++++++++++++
->  4 files changed, 439 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
-> 
-> 
-> base-commit: 4cece764965020c22cff7665b18a012006359095
-> --
-> 2.39.2
-> 
-> 
+> Just change "add compatible strings for them" to "add compatible string 
+> for the PDAF variant" or something.
 > 
 
+Ohh i see what you mean now, this is in reference to the commit message,
+it was throwing me off because the imx258 description had almost the
+exact same wording. Yes that makes sense, ill change the commit
+message to specify PDAF.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+>>
+>>>
+>>>>
+>>>> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>>>> Signed-off-by: Luigi311 <git@luigi311.com>
+>>>> ---
+>>>>  .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
+>>>>  1 file changed, 5 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+>>>> index bee61a443b23..c7856de15ba3 100644
+>>>> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+>>>> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+>>>> @@ -14,10 +14,14 @@ description: |-
+>>>>    type stacked image sensor with a square pixel array of size 4208 x 3120. It
+>>>>    is programmable through I2C interface.  Image data is sent through MIPI
+>>>>    CSI-2.
+>>>> +  There are a number of variants of the sensor which cannot be detected at
+>>>> +  runtime, so multiple compatible strings are required to differentiate these.
+>>>
+>>> That's more reasoning/why for the patch than description of the h/w.
+>>>
+>>>>  properties:
+>>>>    compatible:
+>>>> -    const: sony,imx258
+>>>> +    - enum:
+>>>> +        - sony,imx258
+>>>> +        - sony,imx258-pdaf
+>>>
+>>> How do I know which one to use? Please define what PDAF means somewhere 
+>>> as well as perhaps what the original/default variant is or isn't.
+>>
+>> Would it make sense to change the properties to include a description like so
+>>
+>> properties:
+>>   compatible:
+>>     enum:
+>>       - sony,imx258
+>>       - sony,imx258-pdaf
+>>     description:
+>>       The IMX258 sensor exists in two different models, a standard variant
+>>       (IMX258) and a variant with phase detection autofocus (IMX258-PDAF).
+>>       The camera module does not expose the model through registers, so the
+>>       exact model needs to be specified.
+> 
+> Looks fine, but I'd move this to the top-level 'description'.
+> 
+> Rob
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx8mp-navqp.dtb' for 20240328202320.187596-1-gilles.talis@gmail.com:
-
-arch/arm64/boot/dts/freescale/imx8mp-navqp.dtb: pinctrl@30330000: 'pmicirq', 'usdhc2grp-100mhz', 'usdhc2grp-200mhz', 'usdhc2grp-gpio', 'usdhc3grp-100mhz', 'usdhc3grp-200mhz' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-navqp.dtb: pinctrl@30330000: usdhc2grp-gpio: {'fsl,pins': [[188, 796, 0, 5, 0, 452]], 'phandle': [[51]]} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
-
-
-
-
-
+Perfect ill move this to the top level description and remove that small section
+that Dave added
