@@ -1,361 +1,142 @@
-Received: from mail-108-mta148.mxroute.com (mail-108-mta148.mxroute.com [136.175.108.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3543CF58
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 17:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A3C1327F8;
+	Thu, 28 Mar 2024 18:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711648538; cv=none; b=DwslvycK4xjiU8abqpaeKGlcs7xnxijfN6vui5XvODThldwamoewaG3N/SuISPZ1EitjETwgPUpSqdMpkVvZ8qgWOKEImqh7PYh5pXvFqbj1c/jSZE8jLPJqix83+F0EKI++GoJdDIZOAl5paC/R+pAzRcqbPeyI35ZY2dZwEFA=
+	t=1711650709; cv=none; b=SMfPpC/Ltxe6Y8bC5SBajqJZrUZLWeDjd2q2tPn0YmZY9VqROns4nCSEjN28OGtBPUoFVC6vNDa/1JN0QcGmhBt6aACp2g2UpXJYEOUrvYNlyQdao53zf+y/wfrcMLfoc7GQcKGxMhctD+J7/mfxBTufds1UkseUkYlu5fDxnxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711648538; c=relaxed/simple;
-	bh=9JQrfxIFYw4wMMtwKrIRRSIUWt1KQ+q0fSgnUWKDvGY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GVhnb5hY6RV84Xqb/lhDylfll0m108/TiIuy5bCX3ZIv5GwiBp9rQo9xZ+MIDjiVePVn7c18n+J2qb8puliOWB2nLoAHQoqFwAUCClH0674fbxoWq2qSdTI4hYICkyo0l0MfoLlOCE5DaHJy8EDz8LbuvZstfdFckQ8Fsyl0fxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=iLeD3wxB; arc=none smtp.client-ip=136.175.108.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1711650709; c=relaxed/simple;
+	bh=09Kq07Ctu1YK6YAopY47/y5AlbJwjHjNBMXfeYxKY3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mc+bmHU7JCh9T2qz/jKyKISblvHUMRyjYOEKwefhMp+SpBo+KEZunCDaUOfyxVqaH2nRtbEFzsaXfY7St2PHPArtNQ18jv3kbP8sMNYjt2B8WRyDhc54G3/LIVhXybYiD9uu0NBwwzc92ifzdPX4yIYM9RzRZUURIOKxpkoXwjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQ+Ol01e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="iLeD3wxB"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta148.mxroute.com (ZoneMTA) with ESMTPSA id 18e8633df680003bea.00a
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Thu, 28 Mar 2024 17:55:30 +0000
-X-Zone-Loop: 8535ac21d9598d6a5a33db6d44c2886d335928219ce7
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=TooUpKNmahOQVfIystDvjov+ubya1DEVDHbSgKDdBdY=; b=iLeD3wxB3DGXbIVeCmPmtFdeRO
-	2suXeGLlEOBqOcSGSM92Brmb0N8QO7gB3KXVQyxRu679pRAzNoN7jMunuZq1UCdxrvEu2YEbsDuYQ
-	arfBJctpQ8qeFe0BJfTGSFJxZToKZcxiO2b/LRtN/j/Zmq+dl2cj1bU/YoZzpNMLKykSYffYlWK/K
-	78E3D62s42HquXQpe9QT645PT6WdBpCdtrE5et8vch9YubAlOS+gmOCIYiUgA3pzLZ7gk5rpass2/
-	C0vjD1PkieP4dtddHo9kOdoGq/jyLhaiuoX467b54X8FQMWUI9nrbdgqVPW8/iFx0F4+rOgA7U7Si
-	z8ujZmzg==;
-Message-ID: <11f2e7d8-fd4c-4e14-81d8-cbc2cd2442fa@luigi311.com>
-Date: Thu, 28 Mar 2024 11:55:24 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQ+Ol01e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9561C433C7;
+	Thu, 28 Mar 2024 18:31:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711650709;
+	bh=09Kq07Ctu1YK6YAopY47/y5AlbJwjHjNBMXfeYxKY3s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QQ+Ol01eGrtbmmXmm5UOF8z3YVrAFzrLyUinoyXQOw2oD/3BtgXxtRpcyL6qEGHMi
+	 Fuf1dGmu1+mXVCx0A2v+QG1OZmZa5GwKeTprSp0vXiGl5WvN4w7glf0wb/Ho4jGsI6
+	 A7WhuNfxRZ+SYEDd2EHDavctgY396ec7mZY6h+UmOVbwQhncgmm56Grgtq512eTU0I
+	 juRVEJtAyO8mA2/2SAJmqgsMiWvU8lqDqaMAEVDmDUSGgn+tYLJ7mum23hafaIgM0S
+	 0/cB+mlWradcKD4+nkGPqD1rFiy3Q7s73Qm1b4qRq5IHy2lK358t2WVn9s4EqNJkuF
+	 qXaWYWlrz6OoQ==
+Date: Fri, 29 Mar 2024 00:01:43 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Allen Pais <apais@linux.microsoft.com>, linux-kernel@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>, Kees Cook <keescook@chromium.org>,
+	Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Paul Cercueil <paul@crapouillou.net>, Eugeniy.Paltsev@synopsys.com,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Viresh Kumar <vireshk@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Leo Li <leoyang.li@nxp.com>, zw@zh-kernel.org,
+	Zhou Wang <wangzhou1@hisilicon.com>, haijie1@huawei.com,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	logang@deltatee.com, Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>, peter.ujfalusi@gmail.com,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	maintainers@bluecherrydvr.com, aubin.constans@microchip.com,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>,
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+	"jh80.chung" <jh80.chung@samsung.com>, oakad@yahoo.com,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>, brucechang@via.com.tw,
+	HaraldWelte@viatech.com, pierre@ossman.eu, duncan.sands@free.fr,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Oliver Neukum <oneukum@suse.com>,
+	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-mediatek@lists.infradead.org,
+	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+	"linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
+	Linux-OMAP <linux-omap@vger.kernel.org>,
+	Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+	linux-s390@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH 2/9] dma: Convert from tasklet to BH workqueue
+Message-ID: <ZgW3j1qkLA-QU4iM@matsya>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-3-apais@linux.microsoft.com>
+ <ZgUGXTKPVhrA1tam@matsya>
+ <2e9257af-c123-406b-a189-eaebeecc1d71@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/23] media: i2c: imx258: Add support for 24MHz clock
-Content-Language: en-US
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, git@luigi311.com
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
- jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240327231710.53188-1-git@luigi311.com>
- <20240327231710.53188-9-git@luigi311.com>
- <ZgUlzCfUN-PnF8Yy@kekkonen.localdomain>
-From: Luigi311 <personal@luigi311.com>
-In-Reply-To: <ZgUlzCfUN-PnF8Yy@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: personal@luigi311.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e9257af-c123-406b-a189-eaebeecc1d71@app.fastmail.com>
 
-On 3/28/24 02:09, Sakari Ailus wrote:
-> Hi Luigi311,
+On 28-03-24, 11:08, Arnd Bergmann wrote:
+> On Thu, Mar 28, 2024, at 06:55, Vinod Koul wrote:
+> > On 27-03-24, 16:03, Allen Pais wrote:
+> >> The only generic interface to execute asynchronously in the BH context is
+> >> tasklet; however, it's marked deprecated and has some design flaws. To
+> >> replace tasklets, BH workqueue support was recently added. A BH workqueue
+> >> behaves similarly to regular workqueues except that the queued work items
+> >> are executed in the BH context.
+> >
+> > Thanks for conversion, am happy with BH alternative as it helps in
+> > dmaengine where we need shortest possible time between tasklet and
+> > interrupt handling to maximize dma performance
 > 
-> Thank you for the patchset.
+> I still feel that we want something different for dmaengine,
+> at least in the long run. As we have discussed in the past,
+> the tasklet context in these drivers is what the callbacks
+> from the dma client device is run in, and a lot of these probably
+> want something other than tasklet context, e.g. just call
+> complete() on a client-provided completion structure.
 > 
-> On Wed, Mar 27, 2024 at 05:16:54PM -0600, git@luigi311.com wrote:
->> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
->>
->> There's no reason why only a clock of 19.2MHz is supported.
->> Indeed this isn't even a frequency listed in the datasheet.
->>
->> Add support for 24MHz as well.
->> The PLL settings result in slightly different link frequencies,
->> so parameterise those.
->>
->> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
->> Signed-off-by: Luigi311 <git@luigi311.com>
+> Instead of open-coding the use of the system_bh_wq in each
+> dmaengine, how about we start with a custom WQ_BH
+> specifically for the dmaengine subsystem and wrap them
+> inside of another interface.
 > 
-> Is Luigi311 your real name? As per
-> Documentation/process/submitting-patches.rst, anonymous (or pseudonym I'd
-> say as well) contributions are not an option.
+> Since almost every driver associates the tasklet with the
+> dma_chan, we could go one step further and add the
+> work_queue structure directly into struct dma_chan,
+> with the wrapper operating on the dma_chan rather than
+> the work_queue.
 
-Luigi311 is not my real name but it would be a lot easier to find me if
-it was. My real name is Luis Garcia which is a super common name so its
-actually way easier to find me and all my work using my online name of
-Luigi311. I can go ahead and swap over to Luis Garcia if required but a
-name like that would provide no value in contacting/finding me since I'm
-not famous like all the other Luis Garcia's that appear on google.
+I think that is very great idea. having this wrapped in dma_chan would
+be very good way as well
 
-> 
->> ---
->>  drivers/media/i2c/imx258.c | 133 +++++++++++++++++++++++++++++--------
->>  1 file changed, 107 insertions(+), 26 deletions(-)
->>
->> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
->> index 351add1bc5d5..6ee7de079454 100644
->> --- a/drivers/media/i2c/imx258.c
->> +++ b/drivers/media/i2c/imx258.c
->> @@ -76,9 +76,6 @@
->>  #define REG_CONFIG_MIRROR_FLIP		0x03
->>  #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
->>  
->> -/* Input clock frequency in Hz */
->> -#define IMX258_INPUT_CLOCK_FREQ		19200000
->> -
->>  struct imx258_reg {
->>  	u16 address;
->>  	u8 val;
->> @@ -115,7 +112,9 @@ struct imx258_mode {
->>  };
->>  
->>  /* 4208x3120 needs 1267Mbps/lane, 4 lanes */
->> -static const struct imx258_reg mipi_data_rate_1267mbps[] = {
->> +static const struct imx258_reg mipi_1267mbps_19_2mhz[] = {
->> +	{ 0x0136, 0x13 },
->> +	{ 0x0137, 0x33 },
->>  	{ 0x0301, 0x05 },
->>  	{ 0x0303, 0x02 },
->>  	{ 0x0305, 0x03 },
->> @@ -133,7 +132,29 @@ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
->>  	{ 0x0823, 0xCC },
->>  };
->>  
->> -static const struct imx258_reg mipi_data_rate_640mbps[] = {
->> +static const struct imx258_reg mipi_1272mbps_24mhz[] = {
->> +	{ 0x0136, 0x18 },
->> +	{ 0x0137, 0x00 },
->> +	{ 0x0301, 0x05 },
->> +	{ 0x0303, 0x02 },
->> +	{ 0x0305, 0x04 },
->> +	{ 0x0306, 0x00 },
->> +	{ 0x0307, 0xD4 },
->> +	{ 0x0309, 0x0A },
->> +	{ 0x030B, 0x01 },
->> +	{ 0x030D, 0x02 },
->> +	{ 0x030E, 0x00 },
->> +	{ 0x030F, 0xD8 },
->> +	{ 0x0310, 0x00 },
->> +	{ 0x0820, 0x13 },
->> +	{ 0x0821, 0x4C },
->> +	{ 0x0822, 0xCC },
->> +	{ 0x0823, 0xCC },
->> +};
->> +
->> +static const struct imx258_reg mipi_640mbps_19_2mhz[] = {
->> +	{ 0x0136, 0x13 },
->> +	{ 0x0137, 0x33 },
->>  	{ 0x0301, 0x05 },
->>  	{ 0x0303, 0x02 },
->>  	{ 0x0305, 0x03 },
->> @@ -151,9 +172,27 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
->>  	{ 0x0823, 0x00 },
->>  };
->>  
->> +static const struct imx258_reg mipi_642mbps_24mhz[] = {
->> +	{ 0x0136, 0x18 },
->> +	{ 0x0137, 0x00 },
->> +	{ 0x0301, 0x05 },
->> +	{ 0x0303, 0x02 },
->> +	{ 0x0305, 0x04 },
->> +	{ 0x0306, 0x00 },
->> +	{ 0x0307, 0x6B },
->> +	{ 0x0309, 0x0A },
->> +	{ 0x030B, 0x01 },
->> +	{ 0x030D, 0x02 },
->> +	{ 0x030E, 0x00 },
->> +	{ 0x030F, 0xD8 },
->> +	{ 0x0310, 0x00 },
->> +	{ 0x0820, 0x0A },
->> +	{ 0x0821, 0x00 },
->> +	{ 0x0822, 0x00 },
->> +	{ 0x0823, 0x00 },
->> +};
->> +
->>  static const struct imx258_reg mode_common_regs[] = {
->> -	{ 0x0136, 0x13 },
->> -	{ 0x0137, 0x33 },
->>  	{ 0x3051, 0x00 },
->>  	{ 0x3052, 0x00 },
->>  	{ 0x4E21, 0x14 },
->> @@ -313,10 +352,6 @@ static const char * const imx258_supply_name[] = {
->>  
->>  #define IMX258_NUM_SUPPLIES ARRAY_SIZE(imx258_supply_name)
->>  
->> -/* Configurations for supported link frequencies */
->> -#define IMX258_LINK_FREQ_634MHZ	633600000ULL
->> -#define IMX258_LINK_FREQ_320MHZ	320000000ULL
->> -
->>  enum {
->>  	IMX258_LINK_FREQ_1267MBPS,
->>  	IMX258_LINK_FREQ_640MBPS,
->> @@ -335,25 +370,55 @@ static u64 link_freq_to_pixel_rate(u64 f)
->>  }
->>  
->>  /* Menu items for LINK_FREQ V4L2 control */
->> -static const s64 link_freq_menu_items[] = {
->> +/* Configurations for supported link frequencies */
->> +#define IMX258_LINK_FREQ_634MHZ	633600000ULL
->> +#define IMX258_LINK_FREQ_320MHZ	320000000ULL
->> +
->> +static const s64 link_freq_menu_items_19_2[] = {
->>  	IMX258_LINK_FREQ_634MHZ,
->>  	IMX258_LINK_FREQ_320MHZ,
->>  };
->>  
->> +/* Configurations for supported link frequencies */
->> +#define IMX258_LINK_FREQ_636MHZ	636000000ULL
->> +#define IMX258_LINK_FREQ_321MHZ	321000000ULL
-> 
-> These values aren't used outside the array below and the macro names are
-> imprecise anyway. Could you put the numerical values to the array instead?
+Am not sure if Allen is up for it :-)
 
-Ok I've removed the defines and just threw the values into the array instead.
-
-> 
->> +
->> +static const s64 link_freq_menu_items_24[] = {
->> +	IMX258_LINK_FREQ_636MHZ,
->> +	IMX258_LINK_FREQ_321MHZ,
->> +};
->> +
->>  /* Link frequency configs */
->> -static const struct imx258_link_freq_config link_freq_configs[] = {
->> +static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
->>  	[IMX258_LINK_FREQ_1267MBPS] = {
->>  		.pixels_per_line = IMX258_PPL_DEFAULT,
->>  		.reg_list = {
->> -			.num_of_regs = ARRAY_SIZE(mipi_data_rate_1267mbps),
->> -			.regs = mipi_data_rate_1267mbps,
->> +			.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz),
->> +			.regs = mipi_1267mbps_19_2mhz,
->>  		}
->>  	},
->>  	[IMX258_LINK_FREQ_640MBPS] = {
->>  		.pixels_per_line = IMX258_PPL_DEFAULT,
->>  		.reg_list = {
->> -			.num_of_regs = ARRAY_SIZE(mipi_data_rate_640mbps),
->> -			.regs = mipi_data_rate_640mbps,
->> +			.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz),
->> +			.regs = mipi_640mbps_19_2mhz,
->> +		}
->> +	},
->> +};
->> +
->> +static const struct imx258_link_freq_config link_freq_configs_24[] = {
->> +	[IMX258_LINK_FREQ_1267MBPS] = {
->> +		.pixels_per_line = IMX258_PPL_DEFAULT,
->> +		.reg_list = {
->> +			.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz),
->> +			.regs = mipi_1272mbps_24mhz,
->> +		}
->> +	},
->> +	[IMX258_LINK_FREQ_640MBPS] = {
->> +		.pixels_per_line = IMX258_PPL_DEFAULT,
->> +		.reg_list = {
->> +			.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz),
->> +			.regs = mipi_642mbps_24mhz,
->>  		}
->>  	},
->>  };
->> @@ -410,6 +475,9 @@ struct imx258 {
->>  	/* Current mode */
->>  	const struct imx258_mode *cur_mode;
->>  
->> +	const struct imx258_link_freq_config *link_freq_configs;
->> +	const s64 *link_freq_menu_items;
->> +
->>  	/*
->>  	 * Mutex for serialized access:
->>  	 * Protect sensor module set pad format and start/stop streaming safely.
->> @@ -713,7 +781,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
->>  		imx258->cur_mode = mode;
->>  		__v4l2_ctrl_s_ctrl(imx258->link_freq, mode->link_freq_index);
->>  
->> -		link_freq = link_freq_menu_items[mode->link_freq_index];
->> +		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
->>  		pixel_rate = link_freq_to_pixel_rate(link_freq);
->>  		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
->>  		/* Update limits and set FPS to default */
->> @@ -727,7 +795,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
->>  			vblank_def);
->>  		__v4l2_ctrl_s_ctrl(imx258->vblank, vblank_def);
->>  		h_blank =
->> -			link_freq_configs[mode->link_freq_index].pixels_per_line
->> +			imx258->link_freq_configs[mode->link_freq_index].pixels_per_line
->>  			 - imx258->cur_mode->width;
->>  		__v4l2_ctrl_modify_range(imx258->hblank, h_blank,
->>  					 h_blank, 1, h_blank);
->> @@ -747,7 +815,7 @@ static int imx258_start_streaming(struct imx258 *imx258)
->>  
->>  	/* Setup PLL */
->>  	link_freq_index = imx258->cur_mode->link_freq_index;
->> -	reg_list = &link_freq_configs[link_freq_index].reg_list;
->> +	reg_list = &imx258->link_freq_configs[link_freq_index].reg_list;
->>  	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
->>  	if (ret) {
->>  		dev_err(&client->dev, "%s failed to set plls\n", __func__);
->> @@ -946,9 +1014,9 @@ static int imx258_init_controls(struct imx258 *imx258)
->>  	imx258->link_freq = v4l2_ctrl_new_int_menu(ctrl_hdlr,
->>  				&imx258_ctrl_ops,
->>  				V4L2_CID_LINK_FREQ,
->> -				ARRAY_SIZE(link_freq_menu_items) - 1,
->> +				ARRAY_SIZE(link_freq_menu_items_19_2) - 1,
->>  				0,
->> -				link_freq_menu_items);
->> +				imx258->link_freq_menu_items);
->>  
->>  	if (imx258->link_freq)
->>  		imx258->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
->> @@ -964,8 +1032,10 @@ static int imx258_init_controls(struct imx258 *imx258)
->>  	if (vflip)
->>  		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
->>  
->> -	pixel_rate_max = link_freq_to_pixel_rate(link_freq_menu_items[0]);
->> -	pixel_rate_min = link_freq_to_pixel_rate(link_freq_menu_items[1]);
->> +	pixel_rate_max =
->> +		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0]);
->> +	pixel_rate_min =
->> +		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1]);
-> 
-> The arrays currently have two entries so this works but it'd nice to have a
-> bit more robust way to handle differences between the two arrays. Could you
-> maintain e.g. the number of entries in the array in a struct field perhaps?
-
-Would it make more sense to do something like default to index 0 and then use 
-ARRAY_SIZE to iterate through the array and do a comparison to get the min and
-max size so it would always choose the correct value no matter how many entries
-there are?
-
-> 
->>  	/* By default, PIXEL_RATE is read only */
->>  	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
->>  				V4L2_CID_PIXEL_RATE,
->> @@ -1086,8 +1156,19 @@ static int imx258_probe(struct i2c_client *client)
->>  	} else {
->>  		val = clk_get_rate(imx258->clk);
->>  	}
->> -	if (val != IMX258_INPUT_CLOCK_FREQ) {
->> -		dev_err(&client->dev, "input clock frequency not supported\n");
->> +
->> +	switch (val) {
->> +	case 19200000:
->> +		imx258->link_freq_configs = link_freq_configs_19_2;
->> +		imx258->link_freq_menu_items = link_freq_menu_items_19_2;
->> +		break;
->> +	case 24000000:
->> +		imx258->link_freq_configs = link_freq_configs_24;
->> +		imx258->link_freq_menu_items = link_freq_menu_items_24;
->> +		break;
->> +	default:
->> +		dev_err(&client->dev, "input clock frequency of %u not supported\n",
->> +			val);
->>  		return -EINVAL;
->>  	}
->>  
-> 
-
+-- 
+~Vinod
