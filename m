@@ -1,69 +1,62 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2085.outbound.protection.outlook.com [40.107.241.85])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2066.outbound.protection.outlook.com [40.107.20.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96E964CF3
-	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 14:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18DE3DBBF
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 15:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711637869; cv=fail; b=erkkowhW4YOMhooXHZLPQyeGVpN5J0VWv2qs5WRIQVQl7sEmULWAcUKASgtf5df9IfOM4xU9zp/6mwFpelOhWPLMN0/YaSyRIgi6CT1QEa78rgiGVbFb+mrf2u0VOfks4emG3WH/V3fmQE6K/w8Ky9n0belz71sMmFDBqDFhYhE=
+	t=1711640926; cv=fail; b=QqUcUIJ7MU51OYLBJy1iRPs4r/AdYrFsNyeBUga8mLxE5Gnj7XP/UczT3Ab7De7EwL6vh71fqfI+UQ+eb4nyD8IL2L4K2ueoyt/b516508UlMk3GvSqjBfJaouKfeH+Vq1fOoE6cW7C27cf/9o8M7v/Gis7N6aSya2VtGsh+Ucc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711637869; c=relaxed/simple;
-	bh=9d33e/6K6Mbjr7mqgEo1Kor+bna1KUVLdJHO9BBAYEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PQS6HlwRzt5tYBUmyXZFjk82/KoaJZETwpDj3KKvApVOgLfUciwVLUn7xIPO1ZvN4qtzA7Nrmy2ePImby6qxLIBBZy6LAdU62z/KoolwsB+Eef8xodiNHFh08bu8cf4CFs8U5jAbAmRy5zcNNXmblSue2lTNzLaLRSda5ANOYeA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cp3aj2l3; arc=fail smtp.client-ip=40.107.241.85
+	s=arc-20240116; t=1711640926; c=relaxed/simple;
+	bh=HFEf840cChStFOd184B+wpOQkKXRGELS4FqAgblF82I=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rjpS5ngWkg6PG4+vfPKcOnB9o9jb1g2M5ELUw8b09F9xN5PxmM0IcINHekemnTBjGc7pg5BRCFLG99g/5F5mMUa7DPr6Kqcb+8zBjI9ajLGB16CIf93WpsK0SdCcizL+rWi8hqprIRUhOw4nRbOP6POO7snkAc2VH7fQkpURoW8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=fl/Zz0X2; arc=fail smtp.client-ip=40.107.20.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cp3aj2l3"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="fl/Zz0X2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EWxECZGio8lXMOIdmMiPxDyOBUDmmJPm0RMHJcDEh+OrondtSoriE0YykBIBltl0tsN2ZIiC25DIhbzywyV8GUcZR6yddB0h3qL9AWGDug/XY9JOlE05ACsH9u+R8esj7LTk4/0hcqWXe6O5ha+vS7CNvqRK3R+Igc1gy0lyOG0Y2+N6jKeML77ThLS4Ep0DN82CtZ72pDuBWK9igf5Bx67dXMhaF9E2c/B/D+ZjhzoB03Tl9iXtQQNK17aMbgGBaOSxSeKdSO4I1I28V7AuQr3aV8a1rciQp1M29IOVN3qAILo0QX/YeyUw67Bh5m7OyUBhx9SNZFtDlVCl1j67Sg==
+ b=Nr7ffwfamO/vv0AmqUY0OvDvB0d5WK26sAQaTLszlsIj3m3iAhjB1Qm3u4W4RSp6ewS8kPfPDR+1ETCVWRvrSV9AWGvxnfiqtHscx+uAWRjIySVu/d1Isyd8y0Rah5X8+ZiOlHajXKgkCa988pTD8sw+dOne91j0FmbPemAWyhUT3TiGVqZZb71GohQJQwOOScGe5pnqiTsy3X+BkyTqFphvgzEPN2kAbB6qCtoW6PmLv4kihTpIpUeFmIgh2kM/aQ0KiVQylrj9DC8h0LFf/k9WhHnV4XWw42ZUKpl5axXx5Thg0TRp1q0pmivAlmBWfT6Fb4tnVLyNlOOoEb6nbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sSvmBxIjPfT6Lac0xlJdvmaJnNMOZtYa8B7ViXb+jvg=;
- b=GeGKw2lBLxVBzBXYTXgQNPf9fFH7mTpW07aPGpH2pMVc4r0u5zXxK/XxynAJ+3nL4Tj1/E+29QPSLkQwrfVhAN29afB8wcCHPMfDqhMgeQFVr/24x9+l6OZmfK7zOiJ59tcyTOw02x7aIYa4Ffo9jpdotF23fS99NbJnAKoDjz64CDmaV+4Wxxn3/Z3y5/yEp4T3y4hMaGGgYg5FMKuUjoCJ7Fm+GMvQiMaLTkITvc7mBZAWBBLlFWMyr3Ojx1tRqnTmYOahmDR2xxLYD3KOw3dTrrI8wsnSWD51sugofGWV1Hc4kQ0hG20RbzmpElKZcRBhFXF7UpeMoy2PoFJsIQ==
+ bh=WkHe/8n3QtMDjxbwwuvhKNkqGevFly2mGicqDv0ysUo=;
+ b=gPTzDOhEII02JCy5Kk6C2Y/81ytmX1yUUbJAMQicl/iLczN6L3zwq4K2jhGY+Z1QXung1e3XO82nGsn+E4X6vMqgV4cpWuUvBKWBMJXpY7ycEnR4lPtcPoXe1h9WzEIXbWw3/Ns97kQQmZ5eQc7uMj6bhIkaYwAkMy/8jhSGx2dz1rnmim2XJFpATtZ/oXJfgCGVPdHly0cI19+8wEEadSXKq6rvF5nulu7EbHA49fbSEtQeuHrjvAtHx4L3nDaCUtIzXFem1K+xjHqNQ3Olfk2HI5+ji6mVCRtr/C97Okf556Lt/ndS0caKEytbfWMXgS1PHF+MdiQXBf7ieLWLTw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sSvmBxIjPfT6Lac0xlJdvmaJnNMOZtYa8B7ViXb+jvg=;
- b=cp3aj2l3Jr15nFvkTJlGy4xqfji+iyYC3+ZGq3hYNdnjmoe928CkADqzpZrIDlJmV8IqFmODzuDpeAKAfOMHhgzWFUq+OFsZppJzZAApEbcm4HAai0oAP+GYLBfMfDlZrhQU7gsfmqfskH3J5CQDk1AO83J+oJOT2vDZzafm9aU=
+ bh=WkHe/8n3QtMDjxbwwuvhKNkqGevFly2mGicqDv0ysUo=;
+ b=fl/Zz0X2Jol+Bzr6JSog259oYtdqw/JJzfW+dRFB+e80SHTlENlSyM6Lc0WNDEDbJA12KaiBiDdw0Lwt6oVjzMR4RlIrh+CB6VUzHYWAn/iWOtZDh3WxUr+pAKaF1CshLL83Y87Wl5zm+GukBn8VVTI5RThlEk0w/4w7O7wRLgM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7916.eurprd04.prod.outlook.com (2603:10a6:10:1ec::15) with
+ by GV1PR04MB10273.eurprd04.prod.outlook.com (2603:10a6:150:1a5::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
- 2024 14:57:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.26; Thu, 28 Mar
+ 2024 15:48:42 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.028; Thu, 28 Mar 2024
- 14:57:43 +0000
-Date: Thu, 28 Mar 2024 10:57:35 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8qxp: add asrc[0,1], esai0,
- spdif[0,1] and sai[4,5]
-Message-ID: <ZgWFX70McJc5PoNg@lizhi-Precision-Tower-5810>
-References: <20240226192130.259288-1-Frank.Li@nxp.com>
- <ZgV6a7ZMwM4aR7f+@dragon>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZgV6a7ZMwM4aR7f+@dragon>
-X-ClientProxiedBy: SJ0PR05CA0118.namprd05.prod.outlook.com
- (2603:10b6:a03:334::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 15:48:42 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: imx@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 1/1] docs: dma: correct dma_set_mask() sample code
+Date: Thu, 28 Mar 2024 11:48:26 -0400
+Message-Id: <20240328154827.809286-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR02CA0015.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,414 +65,168 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7916:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb717032-b944-4cbc-5987-08dc4f376c13
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10273:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3c970c6-8270-4f40-5ecb-08dc4f3e8b10
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	bnmXTbHUkAO7Ug6WSjDghP8vfkuW7fMtncLhRJ5PiaDYBcPqvkb5ocwRXCj2rWEamwZZqWq+8oOg/nhEZ7zUXOXWwxHXcwwTTaBG7DqaiL0QJCYVvnvBeu/cqhYl9yEPGl2SkcEy34mPnezoHCzGOmHJQm+5IdnDOkSk7nDlZFDJIXKot4ysPYB8sDXyDp+RuAXk94LFiMh90PoFasqfBi4vii0DTSsuxb0GClspHK3mRVVL3YTChGDzJ2hEJBieILtrwD4UBo+W61DCFAbsIfB9cPoH1PUV6tp6GrwMguG9a4+UaCT8ty7anjiqnXw+QY/JlwVudmnatPRJeAs44/vk81GYNHrWagG8SUvmnxWyie6jgkgxO/YfPvIX/TWh5ppY/HEVfkLATCGooYlFhPkhFA/9Hq6ZVMVFd5fx/3ZGBHd0NpUzkyUC7MGwbXOzKTObU2aY+ERRlJjVYfW/7ij9xMmQRv3c+wwXEqk/loL0hcgz1UH9PyY5l4Q5lauVCkk0kFIp7c0n8BGOqjf0VLL8FN/jNn06heMYdS018OkrG4o0OiRVd4r5MsBmfY9+bjK38ssWN6EETHfFA0+PJXEQIebBPBfHo8EVStosCHrWsA/UkrIhARbqocodp4M/xYe1SSiUCdtw2pBut+GFy89Jo9+//GwsA4WtsFsss4g=
+	MhXqa9Oj0oE+hw+8KShMDyCctySdW2mBu+I0rrreAZjZOOxadSNtN5G58ltVEKQKec4mGYb/wwc7w7NHiozs88QWKO8KAGmDQU9SuVQlgJNCS5idpyJTPqpIlyK6s+UgHyuSKKDM5TAJ3NtzNowXPVbNzvpBQpE2mtOolwpPzf4LErASi77qN5qWhFgD5xjZqlk/CSuleT2jT2pFbhdVUzGtDW2eBiY7jslOfMk65WUAQWlLbSg3R8XNdtJyfgRiyVPaHxEI09JEMOBq4baiDMMOsdv0VPnPBdn+jet7MvI3sbXSfCiQQYsYN58EJRrwlS12cuNDvHVf4J66OsCJ8Qno37Gf57ljATZ8DkRkdnCYN1aqRvnnRcD2wRBEHEQIyrCnbbjkIVLHH+DmPRf4X7Fb/V+445F4CJlLrVpELHprWaAZSg2a0lh66IqhBQG5lvM1zV5Z8Wg/tJdSWKp5+sMVlER+NYMsolXXRINmgWvmTbRCCAZZSiSkccU14bYtb342nXFlY17YucIvbHstVHQCmcJL67W4edbeMOkncJXh/HL65LXwrL9HC1Cf8yeh48zB2i5n90/oitVv+oDOREPj9/d/uRE56egAWPiYHWv0krsQi+37Kr51CJ33lZ6VG0H+teJ5AZ1eL+rmdCC8FP19Aw+Aj6UfsuDeApvpO5a1t3GukCIs2vxnIz6NrtNgKb7s7/C2avZza/lI6U38WPqu8GkedES+QoYwhbhx5rE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(52116005)(1800799015)(366007)(376005)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(376005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a1XRmNBNU+vDia+SgCCqOF0XGhPsnMaUs8jGnq6AfP6SRHnoojxa/23Wn9ld?=
- =?us-ascii?Q?myucYUlhK8bH+qkf2uP3bSN0qBqK9Bs28yjmPtEBg8BFnzq2lW188tZNc39W?=
- =?us-ascii?Q?rt0E3dS+Jl6BWlpUGHxn627siWwPXR35ehsODSH3/jArjsGKf0uHq9MV+cqU?=
- =?us-ascii?Q?M2J8wY9v+pjAuR2LIAZvcBHbrWNic+mB61qEejZwcC2tYg6FJpG9PB2wa9+9?=
- =?us-ascii?Q?HOUolhtVkYGlfDNL4cuNKCgc+1UB2Te/aodeEetCLR1mM2kEH8EdLR78Kdm1?=
- =?us-ascii?Q?9qbEuuW1fik8PR0GEV+nCD/5p3B0+lRwcWx7LfABCqDAqWvxdKPStwIn2hl+?=
- =?us-ascii?Q?NGNsvWy2+ro3GyELnZ0/9oMltdGrlNXdo71AOF9UvWcHHrSdsKdaRwxSVJ7i?=
- =?us-ascii?Q?VntGLDvgeteI8B2x+dLkLPBde05KTQcWg1TFSVogtYxKPTW9eLsyVyhEpFCf?=
- =?us-ascii?Q?ziL0YUWasrKjNaaRF9vYq6qio0AijHWQsctmKMT+17m8U9usRc1ucAH+f8jC?=
- =?us-ascii?Q?c6LAbBtf48f4H8zcMjfRW3srEbYapZj5rKDPN5gK2jMgke/yPpH5VRJNMUTA?=
- =?us-ascii?Q?7cSqk32yJrZX19ABEqMhWzHFDg7LB5Kg7yf6JXxvONVsV0u7sXH11H1LaUS7?=
- =?us-ascii?Q?7BC/Z/CuWwzDZV/+gzfdPUOTpy1wp466fhE0jZrEEZFAtsk4tkVzPS//WG+A?=
- =?us-ascii?Q?ZUsmCFqOqEVfsI+DOxIP403BYvnzggDVJKpovsB9B9c7Jkr5OVnF12Aoo8Jf?=
- =?us-ascii?Q?w0NnWX88SGI1s1gkpOK+sJd+qItXolj0H0psawsRtheYZWHtAdaQLglHlQzS?=
- =?us-ascii?Q?zNETBpn9pCkSmq6/EmkvMwSac0v8tWp+72TFmS6OPq8RCUZcrvNhAqoTzBBE?=
- =?us-ascii?Q?vgaI3mPy3RFzFxgHglY4hCm1YoANi59FzUZWf4agy7ZkzF3NWtDzjKI8vnnn?=
- =?us-ascii?Q?JMiS/hKH4OMzrjJnUdo4aq2kHV33JHMJXJo99S3mFuy0EgYF+AIPnsNh6ba4?=
- =?us-ascii?Q?yfPWxYzWNdF4Pe+AkTATgj2KQsvYlezHBpZ+6LF7ZifU7wCvmgnB/pDCnv2X?=
- =?us-ascii?Q?/YHFPNRLrQdmfz+HYsB7P6JaCCl+KddPZsgTljyDxkXOaueLXL6maANsG5JC?=
- =?us-ascii?Q?rtP9ipb/1/vsrK4fxFWJI5DIgm4sJkszuK8iQ8gy83JU9AHirubuMTDb1/YZ?=
- =?us-ascii?Q?yxskZ8eNAhjiZ2An6nRT7OtRMjabcKr9h13VU3O+ME0zNNm+ege5gqM/w9w6?=
- =?us-ascii?Q?CiI6hTlUdZONqo+tGyFcjaGpBxiwNexzsNXqyrOWFw//HZBMQsMMwF5QzWtj?=
- =?us-ascii?Q?FnqYOEv7/ZLGp5B6rrKirxGpwPeu+OhFd1cKvv46GnloBGUflYwiHEKdne6e?=
- =?us-ascii?Q?RVbYsTuGnCfOiFv9LfH1q+SN+GD8/GbVsn2n4QXi9dofV9wHYbuw5VZTTBau?=
- =?us-ascii?Q?cP0UI4p9q85sFdkbTiWHMsQRN7flvCEeja1B9Hc7ES1wDtnXOewk+7KWSmZq?=
- =?us-ascii?Q?1rJitazF2c2GxSXxUVNQfHVAp6cg3ug/wpgYb5IbnRfWLHJnSs7O96OkjZdG?=
- =?us-ascii?Q?MqZ0tOyV4FBab3RUih7J8XCisXnNl5EkQCXBcpjL?=
+	=?us-ascii?Q?1+wYiuPjONw3ixlMq1LeyKjHSiQmEckqmGDq6NB34Jwh9BRhW6HRpD3JS9N+?=
+ =?us-ascii?Q?O2V0IZEp2lfZxsxJCKa5octwdDbCTH9XXyfNJT4948q1KEQGpOPjbBetJvDz?=
+ =?us-ascii?Q?sC7cYIOtZ19a3yDgLxBzw+qmAwMnPfhtms0kDnhnCwYnQwb+d7kO+KI5YPbi?=
+ =?us-ascii?Q?C4yYdgLYqMOBv109gi1xFpBLmOZV1B6DCAthmZ8L7RMbuhFAHJqvS/lFL2tf?=
+ =?us-ascii?Q?g6gz9yA86DM03RdQg/UbB2/isffSyOxeh+6Bygu22COTMNdQoVg1Pkla4iqG?=
+ =?us-ascii?Q?7fQCQPi0onZye/9IBbgm1P4c/tzKxaQi0Tg2gTVVdXWhRi1+J2+WWxpYy620?=
+ =?us-ascii?Q?LXS0MloWJhSI/HVl+qXEDEpFYyops6SHb2eZtkU98WfrZuQb+q5enWgHSaZS?=
+ =?us-ascii?Q?Pjb6aFkEXgK76s4jK0Yu4sAE9/i5lA1XBuBndyJ7/5Mf1otPtLcFlb2u/pfC?=
+ =?us-ascii?Q?sxFyBp1xmKjgjrZa9zGmCX7EhGVQopXia3b1EMQp77Bz6wBb6xXnVmywp9qb?=
+ =?us-ascii?Q?xLEaNxlsLzZXTU6M3455wX9W0hc0fHHuxvX4jICF887unFW0+xW1yNkvERdq?=
+ =?us-ascii?Q?TGy6MXH0Uc/RVp4yl2evuuAZxtaGbScPvTV8HT10BOvBcTXD9XV851xRkCP4?=
+ =?us-ascii?Q?4O537acMRLffJ0a9RdSvCcycU2XLn7/kVXfqRUOteVicVNzeLrOKq3saRgyT?=
+ =?us-ascii?Q?8OEntZIrtmgDMMAbFPznfQufs3wonEPJb7qy+iaLGYBVgNJbCfYV7SP695TX?=
+ =?us-ascii?Q?LR7h4cKYG504JayvqQn7DW6xkWpTO2m7JygjnCOcTtvubvp4AZnMNrsUie/R?=
+ =?us-ascii?Q?znlI5P7ieCaSLSENZ+cKBxvWH3gGyig2TF4VwSbdCh1HhV2DjYtzsk43LmrA?=
+ =?us-ascii?Q?cdF938ec4Zm4+UG1EdtR6vkbiZAFf6yAJLJnAQx9fzLhGfUbFLhnf3eHEubr?=
+ =?us-ascii?Q?6wbWBRpK9tlgjtiNi/scuKvwMXvo8OfgECL3Xv4uKN4l2TW2LP3B80KdtGh+?=
+ =?us-ascii?Q?pwVYptAykrKkCsmSj4LLufLLHZmyjcdvYYW3GoV+e1IJDGpvsVKdFXvzH7/E?=
+ =?us-ascii?Q?3Tlrh08G7E98ednuathASECx5OEYrgGuQ2H70BXFtrpfhFGOQX2wodEH8+CH?=
+ =?us-ascii?Q?sS4tg6mY5v7j65hBub3R7pxS4OBoQ2rESv4fRrIU74U1keRI1zoMB/irTejt?=
+ =?us-ascii?Q?YfbJ7POpVGdllXs1P+R89CNijBUFx27KXlu6MZXjH/Bd4MBtkU1WTrb6Ayf/?=
+ =?us-ascii?Q?QY1MM+z5CmQ9LIR3XIyWK8Z8j6PY/fpPZCPaIVRYGWZ0RbcwO2rHbfoqQNbZ?=
+ =?us-ascii?Q?78g9xzf844iV/7XvrJ+h6PNabHrjWVgEeQyWG/SqHyesorXj+LxrUt4J9lF0?=
+ =?us-ascii?Q?ZnxgdVzP4qdHBgA0xqzJ+5B3r/Kn00WrAi4q39WJ1QZF8BeuTM4Q0ufXVGgb?=
+ =?us-ascii?Q?kaz6R4VzUzjZZbWcDUHwWSCe8AN9DZqkhW140ge45xr9n9UV1k0gMtFNGM+b?=
+ =?us-ascii?Q?4j9k8q2s3Cjrh+IzIWP0koZl3ECLmpSWkrsvGjnUkbkH/8oN4tB1BBFScY6l?=
+ =?us-ascii?Q?GMCNxSnww/6L5ewe10MFF40xe/axkzarolwHeJGA?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb717032-b944-4cbc-5987-08dc4f376c13
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3c970c6-8270-4f40-5ecb-08dc4f3e8b10
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 14:57:43.5567
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 15:48:42.1019
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sG7+/KpZhkkBRTbIw67hjiR43N/WHNcFRZ2JseQI/tt09Q4sDcZAsZg44KKRoGsk5HZmndfPVwekSv4b1RHUsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7916
+X-MS-Exchange-CrossTenant-UserPrincipalName: YZ37RoKBorA6FCWoyjJj07QaD2rThRhs79DKSEhcqvKzhbx/of0x3o3XWxKa7IoYUZSg4Cx7FXfgk8Eqr/eZ+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10273
 
-On Thu, Mar 28, 2024 at 10:10:51PM +0800, Shawn Guo wrote:
-> On Mon, Feb 26, 2024 at 02:21:29PM -0500, Frank Li wrote:
-> > Add asrc[0,1], esai0, spdif[0,1], sai[4,5] and related lpcg node for
-> > imx8 audio subsystem.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../boot/dts/freescale/imx8-ss-audio.dtsi     | 306 ++++++++++++++++++
-> >  1 file changed, 306 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> > index 07afeb78ed564..6d78d6c0d9002 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
-> > @@ -6,6 +6,7 @@
-> >  
-> >  #include <dt-bindings/clock/imx8-clock.h>
-> >  #include <dt-bindings/clock/imx8-lpcg.h>
-> > +#include <dt-bindings/dma/fsl-edma.h>
-> >  #include <dt-bindings/firmware/imx/rsrc.h>
-> >  
-> >  audio_ipg_clk: clock-audio-ipg {
-> > @@ -481,4 +482,309 @@ acm: acm@59e00000 {
-> >  			      "sai3_rx_bclk",
-> >  			      "sai4_rx_bclk";
-> >  	};
-> > +
-> > +	asrc0: asrc@59000000 {
-> 
-> We want to sort nodes in unit-address, right?
+There are bunch of codes in driver like
 
-Actually it is fixed at v2. I just send out v8, which include extra space
-fix and wrong clock index fixes.
+       if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
+               dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32))
 
-https://lore.kernel.org/imx/20240328-asrc_8qxp-v8-0-801cd6bb5be2@nxp.com/T/#t
+Actaully it is wrong because if dma_set_mask_and_coherent(64) failure,
+dma_set_mask_and_coherent(32) will be failure by the same reason.
 
-Also need below patches to make board level audio work.
-https://lore.kernel.org/imx/20240305-m4_lpuart-v3-0-592463ef1d22@nxp.com/
+And dma_set_mask_and_coherent(64) never return failure.
 
-Frank
+According to defination of dma_set_mask(), it indicate the width of address
+that device DMA can access. If it can access 64bit address, it must access
+32bit address inherently. So only need set biggest address width.
 
-> 
-> > +		compatible = "fsl,imx8qm-asrc";
-> > +		reg = <0x59000000 0x10000>;
-> > +		interrupts = <GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>,
-> > +			     <GIC_SPI 373 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&asrc0_lpcg 0>,
-> > +			 <&asrc0_lpcg 0>,
-> > +			 <&aud_pll_div0_lpcg 0>,
-> > +			 <&aud_pll_div1_lpcg 0>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "ipg", "mem",
-> > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
-> > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
-> > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
-> > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
-> > +			      "spba";
-> > +		dmas = <&edma0 0 0 0>,
-> > +		       <&edma0 1 0 0>,
-> > +		       <&edma0 2 0 0>,
-> > +		       <&edma0 3 0 FSL_EDMA_RX>,
-> > +		       <&edma0 4 0 FSL_EDMA_RX>,
-> > +		       <&edma0 5 0 FSL_EDMA_RX>;
-> > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
-> > +		dma-names = "rxa", "rxb", "rxc", "txa", "txb", "txc";
-> > +		fsl,asrc-rate  = <8000>;
-> 
-> One space around =
-> 
-> > +		fsl,asrc-width = <16>;
-> > +		fsl,asrc-clk-map = <0>;
-> > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	esai0: esai@59010000 {
-> > +		compatible = "fsl,imx8qm-esai", "fsl,imx6ull-esai";
-> > +		reg = <0x59010000 0x10000>;
-> > +		interrupts = <GIC_SPI 409 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&esai0_lpcg 1>, <&esai0_lpcg 0>, <&esai0_lpcg 1>, <&clk_dummy>;
-> > +		clock-names = "core", "extal", "fsys", "spba";
-> > +		dmas = <&edma0 6 0 FSL_EDMA_RX>, <&edma0 7 0 0>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	spdif0: spdif@59020000 {
-> > +		compatible = "fsl,imx8qm-spdif";
-> > +		reg = <0x59020000 0x10000>;
-> > +		interrupts =  <GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>, /* rx */
-> 
-> Ditto
-> 
-> > +			      <GIC_SPI 458 IRQ_TYPE_LEVEL_HIGH>; /* tx */
-> > +		clocks = <&spdif0_lpcg 1>,	/* core */
-> > +			 <&clk_dummy>,		/* rxtx0 */
-> > +			 <&spdif0_lpcg 0>,	/* rxtx1 */
-> > +			 <&clk_dummy>,		/* rxtx2 */
-> > +			 <&clk_dummy>,		/* rxtx3 */
-> > +			 <&clk_dummy>,		/* rxtx4 */
-> > +			 <&audio_ipg_clk>,	/* rxtx5 */
-> > +			 <&clk_dummy>,		/* rxtx6 */
-> > +			 <&clk_dummy>,		/* rxtx7 */
-> > +			 <&clk_dummy>;		/* spba */
-> > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
-> > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
-> > +		dmas = <&edma0 8 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
-> > +		       <&edma0 9 0 FSL_EDMA_MULTI_FIFO>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	spdif1: spdif@59030000 {
-> > +		compatible = "fsl,imx8qm-spdif";
-> > +		reg = <0x59030000 0x10000>;
-> > +		interrupts =  <GIC_SPI 460 IRQ_TYPE_LEVEL_HIGH>, /* rx */
-> 
-> Ditto
-> 
-> Shawn
-> 
-> > +			      <GIC_SPI 462 IRQ_TYPE_LEVEL_HIGH>; /* tx */
-> > +		clocks = <&spdif1_lpcg 1>,	/* core */
-> > +			 <&clk_dummy>,		/* rxtx0 */
-> > +			 <&spdif1_lpcg 0>,	/* rxtx1 */
-> > +			 <&clk_dummy>,		/* rxtx2 */
-> > +			 <&clk_dummy>,		/* rxtx3 */
-> > +			 <&clk_dummy>,		/* rxtx4 */
-> > +			 <&audio_ipg_clk>,	/* rxtx5 */
-> > +			 <&clk_dummy>,		/* rxtx6 */
-> > +			 <&clk_dummy>,		/* rxtx7 */
-> > +			 <&clk_dummy>;		/* spba */
-> > +		clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3", "rxtx4",
-> > +			      "rxtx5", "rxtx6", "rxtx7", "spba";
-> > +		dmas = <&edma0 10 0 (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)>,
-> > +		       <&edma0 11 0 FSL_EDMA_MULTI_FIFO>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	asrc1: asrc@59800000 {
-> > +		compatible = "fsl,imx8qm-asrc";
-> > +		reg = <0x59800000 0x10000>;
-> > +		interrupts = <GIC_SPI 380 IRQ_TYPE_LEVEL_HIGH>,
-> > +			     <GIC_SPI 381 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&asrc1_lpcg 0>,
-> > +			 <&asrc1_lpcg 0>,
-> > +			 <&aud_pll_div0_lpcg 0>,
-> > +			 <&aud_pll_div1_lpcg 0>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK0_SEL>,
-> > +			 <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "ipg", "mem",
-> > +			      "asrck_0", "asrck_1", "asrck_2", "asrck_3",
-> > +			      "asrck_4", "asrck_5", "asrck_6", "asrck_7",
-> > +			      "asrck_8", "asrck_9", "asrck_a", "asrck_b",
-> > +			      "asrck_c", "asrck_d", "asrck_e", "asrck_f",
-> > +			      "spba";
-> > +		dmas = <&edma1 0 0 0>,
-> > +		       <&edma1 1 0 0>,
-> > +		       <&edma1 2 0 0>,
-> > +		       <&edma1 3 0 FSL_EDMA_RX>,
-> > +		       <&edma1 4 0 FSL_EDMA_RX>,
-> > +		       <&edma1 5 0 FSL_EDMA_RX>;
-> > +		/* tx* is output channel of asrc, it is rx channel for eDMA */
-> > +		dma-names = "txa", "txb", "txc", "rxa", "rxb", "rxc";
-> > +		fsl,asrc-rate  = <8000>;
-> > +		fsl,asrc-width = <16>;
-> > +		fsl,asrc-clk-map = <1>;
-> > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	sai4: sai@59820000 {
-> > +		compatible = "fsl,imx8qm-sai";
-> > +		reg = <0x59820000 0x10000>;
-> > +		interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&sai4_lpcg 1>,
-> > +			 <&clk_dummy>,
-> > +			 <&sai4_lpcg 0>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> > +		dmas = <&edma1 8 0 FSL_EDMA_RX>, <&edma1 9 0 0>;
-> > +		dma-names = "rx", "tx";
-> > +		power-domains = <&pd IMX_SC_R_SAI_4>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	sai5: sai@59830000 {
-> > +		compatible = "fsl,imx8qm-sai";
-> > +		reg = <0x59830000 0x10000>;
-> > +		interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
-> > +		clocks = <&sai5_lpcg 1>,
-> > +			 <&clk_dummy>,
-> > +			 <&sai5_lpcg 0>,
-> > +			 <&clk_dummy>,
-> > +			 <&clk_dummy>;
-> > +		clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3";
-> > +		dmas = <&edma1 10 0 0>;
-> > +		dma-names = "tx";
-> > +		power-domains = <&pd IMX_SC_R_SAI_5>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	amix: amix@59840000 {
-> > +		compatible = "fsl,imx8qm-audmix";
-> > +		reg = <0x59840000 0x10000>;
-> > +		clocks = <&amix_lpcg 0>;
-> > +		clock-names = "ipg";
-> > +		power-domains = <&pd IMX_SC_R_AMIX>;
-> > +		dais = <&sai4>, <&sai5>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	mqs: mqs@59850000 {
-> > +		compatible = "fsl,imx8qm-mqs";
-> > +		reg = <0x59850000 0x10000>;
-> > +		clocks = <&mqs0_lpcg 1>,
-> > +			<&mqs0_lpcg 0>;
-> > +		clock-names = "core", "mclk";
-> > +		power-domains = <&pd IMX_SC_R_MQS_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	asrc0_lpcg: clock-controller@59400000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59400000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "asrc0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_ASRC_0>;
-> > +	};
-> > +
-> > +	esai0_lpcg: clock-controller@59410000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59410000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_ESAI0_MCLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "esai0_lpcg_extal_clk",
-> > +				     "esai0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_ESAI_0>;
-> > +	};
-> > +
-> > +	spdif0_lpcg: clock-controller@59420000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59420000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SPDIF0_TX_CLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "spdif0_lpcg_tx_clk",
-> > +				     "spdif0_lpcg_gclkw";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_0>;
-> > +	};
-> > +
-> > +	spdif1_lpcg: clock-controller@59430000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59430000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SPDIF1_TX_CLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "spdif1_lpcg_tx_clk",
-> > +				     "spdif1_lpcg_gclkw";
-> > +		power-domains = <&pd IMX_SC_R_SPDIF_1>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	asrc1_lpcg: clock-controller@59c00000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c00000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "asrc1_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_ASRC_1>;
-> > +	};
-> > +
-> > +	sai4_lpcg: clock-controller@59c20000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c20000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SAI4_MCLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "sai4_lpcg_mclk",
-> > +				     "sai4_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_SAI_4>;
-> > +	};
-> > +
-> > +	sai5_lpcg: clock-controller@59c30000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c30000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "sai5_lpcg_mclk",
-> > +				     "sai5_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_SAI_5>;
-> > +	};
-> > +
-> > +	amix_lpcg: clock-controller@59c40000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c40000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "amix_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_AMIX>;
-> > +	};
-> > +
-> > +	mqs0_lpcg: clock-controller@59c50000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x59c50000 0x10000>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&acm IMX_ADMA_ACM_MQS_TX_CLK_SEL>,
-> > +			 <&audio_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "mqs0_lpcg_mclk",
-> > +				     "mqs0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MQS_0>;
-> > +	};
-> >  };
-> > -- 
-> > 2.34.1
-> > 
-> 
+See below code fragment:
+
+dma_set_mask(mask)
+{
+	mask = (dma_addr_t)mask;
+
+	if (!dev->dma_mask || !dma_supported(dev, mask))
+		return -EIO;
+
+	arch_dma_set_mask(dev, mask);
+	*dev->dma_mask = mask;
+	return 0;
+}
+
+dma_supported() will call dma_direct_supported or iommux's dma_supported
+call back function.
+
+int dma_direct_supported(struct device *dev, u64 mask)
+{
+	u64 min_mask = (max_pfn - 1) << PAGE_SHIFT;
+
+	/*
+	 * Because 32-bit DMA masks are so common we expect every architecture
+	 * to be able to satisfy them - either by not supporting more physical
+	 * memory, or by providing a ZONE_DMA32.  If neither is the case, the
+	 * architecture needs to use an IOMMU instead of the direct mapping.
+	 */
+	if (mask >= DMA_BIT_MASK(32))
+		return 1;
+
+	...
+}
+
+The iommux's dma_supported() actual means iommu require devices's minimized
+dma capatiblity.
+
+An example:
+
+static int sba_dma_supported( struct device *dev, u64 mask)()
+{
+	...
+	 * check if mask is >= than the current max IO Virt Address
+         * The max IO Virt address will *always* < 30 bits.
+         */
+        return((int)(mask >= (ioc->ibase - 1 +
+                        (ioc->pdir_size / sizeof(u64) * IOVP_SIZE) )));
+	...
+}
+
+1 means supported. 0 means unsupported.
+
+Correct document to make it more clear and provide correct sample code.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ Documentation/core-api/dma-api-howto.rst | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/core-api/dma-api-howto.rst b/Documentation/core-api/dma-api-howto.rst
+index e8a55f9d61dbc..7871d3b906104 100644
+--- a/Documentation/core-api/dma-api-howto.rst
++++ b/Documentation/core-api/dma-api-howto.rst
+@@ -203,13 +203,33 @@ setting the DMA mask fails.  In this manner, if a user of your driver reports
+ that performance is bad or that the device is not even detected, you can ask
+ them for the kernel messages to find out exactly why.
+ 
+-The standard 64-bit addressing device would do something like this::
++The 24-bit addressing device would do something like this::
+ 
+-	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64))) {
++	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(24))) {
+ 		dev_warn(dev, "mydev: No suitable DMA available\n");
+ 		goto ignore_this_device;
+ 	}
+ 
++The standard 64-bit addressing device would do something like this::
++
++	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64))
++
++dma_set_mask_and_coherence never return fail when DMA_BIT_MASK(64). Typical
++error code like::
++
++	/* Wrong code */
++	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
++		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32))
++
++dma_set_mask_and_coherence() will never return failure when bigger then 32.
++So typical code like::
++
++	/* Recommented code */
++	if (support_64bit)
++		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++	else
++		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
++
+ If the device only supports 32-bit addressing for descriptors in the
+ coherent allocations, but supports full 64-bits for streaming mappings
+ it would look like this::
+-- 
+2.34.1
+
