@@ -1,84 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta140.mxroute.com (mail-108-mta140.mxroute.com [136.175.108.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EB2136E13;
-	Thu, 28 Mar 2024 19:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF5E12F379
+	for <imx@lists.linux.dev>; Thu, 28 Mar 2024 19:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711653554; cv=none; b=gmvVAeEoNVm1W2ErNyvyMcxhxiQ7TGXzydI1NNQQcF4caCsiXH9+W1iELLbZgxf1i2C2fxASq3g5UvnWcTyq+cX08HX1JOtHyc2ralh3JMQR9drH44w4KQ5fVI7ky68d3d9dSqhJRaPAEnwSVC89TH/11cC1z1nznaKu8+Tb5Jw=
+	t=1711653701; cv=none; b=OYypSmKo/y6/9HhoybL9g42yj1hHHmyHVmdMbLH5lpH7le3Z67f/GFJRH71fyfZ+iMpxZ8Wt3rv2qb1MWCOfg0jGzqVz8AmMvo+ZQJ/8Vw2t+/JiHAuP0OHju/DFiAI5xFsky46R0xFzOQ4dq/9ba4+KOfHGie7Y1cHskEpKSrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711653554; c=relaxed/simple;
-	bh=iSmXMTfJak8gxA9ioiFk1xWqNqgnFX4tNdouyFOFKzU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GJC/lOoBnMUnrbc4V4WxrGyZEiqAw6Qz7MDimPaYdhuEHwCdcBqKwl6FJiCvwAedYWv0ybESgd7wpKJo5YMA7NfY/B8biln9Xf0o7yZKJLHUjaNr7HJFBuMcRPsR34j4RnZBmQEPh+3iBtZkRxLlO0V6jebflA/1y0UQrxy9APQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TX/TPPK/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711653701; c=relaxed/simple;
+	bh=+P6JDdjJ1Ex7kuwioyIjjSETZSNuTHoLH51U4FVMcjg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u0e6jvtewsS/oPQab6o+xPS0+vTPw18xgzlCB9NuUYCCblZ5hoBG+uVSy+U/2+1IxnrlVxJdy9g6qWRjM0O9E0DPdUQt1LVH6Qf/Jj8q6nh6jrE14jdVJbbUohGI5Sf/WCofozmlT9/uhjFxDoRTwBxQePLovHLBVQ1l/xJQSWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=qwCXm9BF; arc=none smtp.client-ip=136.175.108.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TX/TPPK/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76F6C433C7;
-	Thu, 28 Mar 2024 19:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711653553;
-	bh=iSmXMTfJak8gxA9ioiFk1xWqNqgnFX4tNdouyFOFKzU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=TX/TPPK/XYJzzO1pwCUb26poWrm2a/lS7wwJ7llDMUc/EuBapf9fqGcDrhGHjCw9n
-	 plST4hgyhv4Zov7gosFoJG/QvYT871e/R9w5iNxREXpufEFN63qHMW9S/OBcaFmov/
-	 +RSPIX34qNS84ArOZw53H+LaycdJtiO3yEM2HcJ83zb/rmocUC4hmANtTTHZIPXK1y
-	 sgbV56KSpI5LhIl/TicLck10mIjAH0dyTgo//Zucn1mSxzAen9oXTcWW7Gr1aVysM1
-	 NeP4sZnb+KeI6Ex/EaLgd0X4L1885xGZGa/lvALogFoQIcPCbNZO9K1tdfu1efddeI
-	 KztvTwCdhlUNA==
-From: Vinod Koul <vkoul@kernel.org>
-To: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
- Adam Ford <aford173@gmail.com>
-Cc: aford@beaconembedded.com, Kishon Vijay Abraham I <kishon@kernel.org>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Lucas Stach <l.stach@pengutronix.de>, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-In-Reply-To: <20240227220444.77566-1-aford173@gmail.com>
-References: <20240227220444.77566-1-aford173@gmail.com>
-Subject: Re: (subset) [PATCH V7 0/6] soc: imx8mp: Finish support for HDMI
-Message-Id: <171165354734.152390.12386757633951091803.b4-ty@kernel.org>
-Date: Fri, 29 Mar 2024 00:49:07 +0530
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="qwCXm9BF"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta140.mxroute.com (ZoneMTA) with ESMTPSA id 18e867e00920003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Thu, 28 Mar 2024 19:16:28 +0000
+X-Zone-Loop: b9b56dde5853e05726d92e595c7b587e628ed866ad01
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tQJb1jl0+k5VWPtDnFdvdOzbEiK5LWRoPsu+EFTE44M=; b=qwCXm9BF5B/BKG1LMbYhN94yUV
+	rAc3/t4oTkVHcORDV9B8HrlemSm+v5kD/t39rjI6ws/L1XXVKQc+i7KbjwCBB3NAAxMyt6oXQ1EfD
+	IlhlxeC1iAParASXRSIBb+oE/zna2MuWrkPKPO3l9gROf39Fs21jOlpBJqFu10PqisHRKMl6kjNEs
+	Jahj+QjNfU9EwqGze4OsIvNSOts0YMcTLDSyvubePtWWK2F9R9GVJI0nuN0jtfVHViTaIo6lOu3qn
+	aRtavdTKoklJWGZYZx6JUB9w2wB3k9wPEXoOAViWsskP1Jok9Yibg6Z30Qwhewbeb2ybGBRRe9khs
+	pEyvc0EQ==;
+Message-ID: <76f999a7-55e0-4676-aa75-8fcd466e046b@luigi311.com>
+Date: Thu, 28 Mar 2024 13:16:22 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
+ compatible strings
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240327231710.53188-1-git@luigi311.com>
+ <20240327231710.53188-19-git@luigi311.com>
+ <20240328185526.GA88354-robh@kernel.org>
+From: Luigi311 <git@luigi311.com>
+In-Reply-To: <20240328185526.GA88354-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+X-Authenticated-Id: git@luigi311.com
 
+On 3/28/24 12:55, Rob Herring wrote:
+> On Wed, Mar 27, 2024 at 05:17:04PM -0600, git@luigi311.com wrote:
+>> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>>
+>> There are a number of variants of the imx258 modules that can not
+>> be differentiated at runtime, so add compatible strings for them.
+>> But you are only adding 1 variant.
 
-On Tue, 27 Feb 2024 16:04:34 -0600, Adam Ford wrote:
-> The i.MX8M Plus has an HDMI controller, which depends on several
-> other systems.  The Parallel Video Interface (PVI) and the
-> HDMI-TX are already in the Linux-Next staging area 20240209, but
-> the HDMI PHY driver and several device trees updates are still needed.
+I can not speak for Dave but as to why this was added here but looking
+at the imx296 yaml that has something similar where there are multiple
+variants that may not be detectable at run time but does not include
+similar verbiage in the main description. Should I drop this from the
+description so it matches the imx296?
+
 > 
-> This series is adapted from multiple series from Lucas Stach with
-> edits and suggestions from feedback from various attempts, but it
-> since it's difficult to use and test them independently,
-> I merged them into on unified series.  The version history is a
-> bit ambiguous since different components were submitted at different
-> times and had different amount of attempts.
+>>
+>> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>> Signed-off-by: Luigi311 <git@luigi311.com>
+>> ---
+>>  .../devicetree/bindings/media/i2c/sony,imx258.yaml          | 6 +++++-
+>>  1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+>> index bee61a443b23..c7856de15ba3 100644
+>> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+>> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+>> @@ -14,10 +14,14 @@ description: |-
+>>    type stacked image sensor with a square pixel array of size 4208 x 3120. It
+>>    is programmable through I2C interface.  Image data is sent through MIPI
+>>    CSI-2.
+>> +  There are a number of variants of the sensor which cannot be detected at
+>> +  runtime, so multiple compatible strings are required to differentiate these.
 > 
-> [...]
+> That's more reasoning/why for the patch than description of the h/w.
+> 
+>>  properties:
+>>    compatible:
+>> -    const: sony,imx258
+>> +    - enum:
+>> +        - sony,imx258
+>> +        - sony,imx258-pdaf
+> 
+> How do I know which one to use? Please define what PDAF means somewhere 
+> as well as perhaps what the original/default variant is or isn't.
 
-Applied, thanks!
+Would it make sense to change the properties to include a description like so
 
-[1/6] dt-bindings: phy: add binding for the i.MX8MP HDMI PHY
-      commit: d0f4b70eb9a9ed05a37d963655698906cd4dac9a
-[2/6] phy: freescale: add Samsung HDMI PHY
-      commit: 6ad082bee9025fa8e0ef8ee478c5a614b9db9e3d
+properties:
+  compatible:
+    enum:
+      - sony,imx258
+      - sony,imx258-pdaf
+    description:
+      The IMX258 sensor exists in two different models, a standard variant
+      (IMX258) and a variant with phase detection autofocus (IMX258-PDAF).
+      The camera module does not expose the model through registers, so the
+      exact model needs to be specified.
 
-Best regards,
--- 
-~Vinod
-
+> 
+>>  
+>>    assigned-clocks: true
+>>    assigned-clock-parents: true
+>> -- 
+>> 2.42.0
+>>
 
