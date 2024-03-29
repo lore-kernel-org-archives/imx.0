@@ -1,159 +1,228 @@
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208EA3B1B2
-	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 04:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9752B42055
+	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 07:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711686340; cv=none; b=nM1tgI5yTh9cRvd1F7Wj4vyM9Bc83zux5EvRKGl1dPff57+FHeZCgiAi3oe6ZX/2Sm5Wj9YGmQrA6Nx8M2pGdL8vcb6L3eOT9NEA8TtgEjwjgJ2gjDXVLxDy36ljv05dAu+WOexEHH0PTW8KCFihX5gycNiPVRDmlHvighQ4JD0=
+	t=1711699135; cv=none; b=MkovHR/X4byqRCurghL970pc/5M3e4bu0KzR3ZIxulps34PwYaWY96Cag10mV9Nkd7aqUe+PoBzEi91EecWEEYYFv1jt8jpHYmkxPlhLbrLuq/428y2IAfnUsPhMW9TmGMpcnh3hqkx2z44ROmNbRw++aoYvwdubZrZkh6sg6yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711686340; c=relaxed/simple;
-	bh=7IZ6TQHzHNNntSBebLRFQSFiXdqxcUmk7UYW3JKtsJE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KBh2QsFGd6v6dKlBj5bx05l3qMQ6wGM02QnfK58jbRymmnoNK8PyXmM1DhBmZPJmZiTbJRlXFHvDfDtcLg0r/wHTDGOmX/+/A9E1DczaSf9g5y1PCiT037hcekhyPIDKtUZO16I4eEwOI352D7P+BLj3szSjLmJzXwUYFXlVLXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=imZ6nkyL; arc=none smtp.client-ip=209.85.166.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711699135; c=relaxed/simple;
+	bh=yBqdFYWJ7meNuEn1L+kQXqFNRWSolH3SOPxtgfU/HK8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uEeliS1vbSc9qhFXoZFUH47Il+JsyRDEHvBykRLbDPawxgSQMOD9671IRIYnjycZGLsF8P7GwhRSPYZq4MHNk7Oq53/TVoxOL08uI6hHj8k4gFtTEO64aLwyiBs4IORfhZPWdL1GbwP1WwNK5Jdrjip/N5HfZd+inEtFlDrNZsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cvhrZWSP; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="imZ6nkyL"
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-366a4bcb2a8so6858655ab.3
-        for <imx@lists.linux.dev>; Thu, 28 Mar 2024 21:25:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711686338; x=1712291138; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VZ37qzu7x1RT4FhH9Pq0w6AEDnJWDjXnQkreRgUC0As=;
-        b=imZ6nkyLQY54CzCzXcsJ84LnUZepv8gs8jIiwimDvT3vXQy0CKvP+ow3r4WLH7rvZf
-         yl6sTTYl/HRE/Zv3I9RnNhjPOXK9wQtJnisba4M/MfGzl6aIvbdTS1JYTMUBQVmV5Xmf
-         z5jvTa6Huul+O/AZFroVYyuZ6yzECf40Lx1M7pWRAoXu4k9nliXJ08cIvYPE6FfZDkQk
-         ukcg7YJSrcbCXAAyNsSsk8BXWtGQpO4zro+Pf2OPrWo9G0C5vm1lOrZt3cb4dV+IS6IW
-         JTu5U4/Fa7YlVvigLnOnSMpo+b0SoPaiPaDTVXMrng14cb2bAW/8s5e3Jf903qxcmPva
-         S1ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711686338; x=1712291138;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VZ37qzu7x1RT4FhH9Pq0w6AEDnJWDjXnQkreRgUC0As=;
-        b=iNYbDpKSLoYCq7G2sBn0rpOXM3zFsR9FBvrWQQQODQubg2fzAiCHLqeGgzX7NSg4A4
-         UM948tmMgxjmKWWRfbGifUuBgK3I0I5NQQoFwZkVK9N6G98vfNVtAefsR1cm4grfzgUW
-         GHxhV98geJuTp42EeQJZ9qY8v+yjINTfHbAOsUF7VDeVG9mMGp65VSTi4mcz9IYCPo/3
-         lOnsgZJP8nuvp5b4YbRmCsE6OO5s2pt3bNDUGWDdPCoTAOXb88+oPbvuFIlJeEUI/eei
-         6ZUCndm7ws86mKNKAK5Ukf20bYjMhUupAeRREc8p3Vo6ZN5Hh/ttL3w4POUR8kjO5cNG
-         SOLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWgX9bmogLS5pa4/wc8+n+zyjuyflusdOa/Fa4mPOBsd1z1mGONIKph0lUWm5SHRdwiDNFU5s1OzM/9E1malEGskYOY
-X-Gm-Message-State: AOJu0Yybo/gZsuUDjHS9hzPwC/FdJVPHn6DOPTfy944q3BMOykZkrIkt
-	gmvkT/xbVvv0xk7BP5OyxqEUSo4h7VzCt7lTR6ALbVMmyiooCO7iPk4+2XOeWbWRjMjvp7Zzd2z
-	GVuXY9Ck/OWx75jTP5jJ5HCs7u0I=
-X-Google-Smtp-Source: AGHT+IFPBNrPz2Mqe5xoNxdfvTWN/1rO/cx1RiqAvIgUhy/WtGLP7XhI5A97GYuDTi7AdbNfcGzOUxPoWL71kIj81FE=
-X-Received: by 2002:a05:6e02:18ca:b0:366:bed3:a218 with SMTP id
- s10-20020a056e0218ca00b00366bed3a218mr1237240ilu.32.1711686338112; Thu, 28
- Mar 2024 21:25:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cvhrZWSP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=VB+uYV6z1osfsY3qvVmgNrhkcULtGFhdn5kc4Qzej/U=; b=cvhrZWSPR+Yv98T3SACOGJoTbj
+	/92sDiJPAIdKFqbQpQFDxMGds6Uuaeq2/bq2G7ogYz0lhvXlUFmMJYmVfB24YK2oxkIoBS7oGwP6H
+	f3SuFIA1xiz8tK2pps/Xz9w3rPTyNkw2YAbbCzeQ8vOaQ7ZX10a5GJmpvcPmkmExS522ncxG91xoJ
+	6ztsz0ABBW+TDQ/u4xJw9f+6TjnMnq8uEmQ87toUtLjaes0+PPk9H0of8LUj1k2xnDYqVQKh41Ojh
+	ykIg9heBPjNsW++47JxBTJmOqRwi/aXWC3zLxoe10Zr/eWzPhKJuxbmCypAq/3ojpIWAypOqgLykp
+	28fVe3nQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:57518 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1rq78Q-009wAj-2G;
+	Fri, 29 Mar 2024 08:58:46 +0100
+Message-ID: <d9a233d6-95cd-4901-9c06-d8319f2eb3b4@norik.com>
+Date: Fri, 29 Mar 2024 08:58:42 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1711682887-15676-1-git-send-email-shengjiu.wang@nxp.com> <ZgZBH/HsO8YmgFZx@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZgZBH/HsO8YmgFZx@lizhi-Precision-Tower-5810>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 29 Mar 2024 12:25:27 +0800
-Message-ID: <CAA+D8AM=1syyawLu7Wna5jHqzVsOuVvTKpTsaNUK7LCXMciL7A@mail.gmail.com>
-Subject: Re: [RESEND PATCH] dmaengine: imx-sdma: support dual fifo for DEV_TO_DEV
-To: Frank Li <Frank.li@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-imx@nxp.com, dmaengine@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Upstream] [PATCH 0/2] i.MX93 ADC calibration settings
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Andrej Picej <andrej.picej@norik.com>, Jonathan Cameron
+ <jic23@kernel.org>, devicetree@vger.kernel.org, conor+dt@kernel.org,
+ lars@metafoo.de, krzysztof.kozlowski+dt@linaro.org, imx@lists.linux.dev,
+ linux-iio@vger.kernel.org, festevam@gmail.com, s.hauer@pengutronix.de,
+ upstream@lists.phytec.de, linux-kernel@vger.kernel.org, haibo.chen@nxp.com,
+ kernel@pengutronix.de, shawnguo@kernel.org, robh@kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+ <20240324135559.1640551d@jic23-huawei>
+ <3423ea96-859d-4c4b-a9a7-e0d9c3c00727@norik.com>
+ <44ac8977-cf98-46a5-be15-1bec330c6a2e@norik.com>
+ <20240325144555.00002d16@Huawei.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
+Organization: Norik systems d.o.o.
+In-Reply-To: <20240325144555.00002d16@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Fri, Mar 29, 2024 at 12:18=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Fri, Mar 29, 2024 at 11:28:07AM +0800, Shengjiu Wang wrote:
-> > SSI and SPDIF are dual fifo interface, when support ASRC P2P
-> > with SSI and SPDIF, the src fifo or dst fifo number can be
-> > two.
-> >
-> > The p2p watermark level bit 13 and 14 are designed for
-> > these use case. This patch is to complete this function
-> > in driver.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> > Acked-by: Iuliana Prodan <iuliana.prodan@nxp.com>
->
-> This already in my sdma improvement patch list.
->
-> https://lore.kernel.org/imx/20240318-sdma_upstream-v3-0-da37ddd44d49@nxp.=
-com/T/#m59e4e03a527103de7bf1a7fe86e8fbc570454970
->
-> This have more nice commit message. Can I take one into my patch series t=
-o
-> avoid conflict.
+Hi Jonathan,
 
-Yes, please.
+On 25. 03. 24 15:45, Jonathan Cameron wrote:
+> On Mon, 25 Mar 2024 09:55:23 +0100
+> Primoz Fiser <primoz.fiser@norik.com> wrote:
+> 
+>> Hi Jonathan,
+>>
+>> On 25. 03. 24 09:32, Andrej Picej wrote:
+>>> Hi Jonathan,
+>>>
+>>> On 24. 03. 24 14:55, Jonathan Cameron wrote:  
+>>>> On Wed, 20 Mar 2024 11:04:04 +0100
+>>>> Andrej Picej <andrej.picej@norik.com> wrote:
+>>>>  
+>>>>> Hi all,
+>>>>>
+>>>>> we had some problems with failing ADC calibration on the i.MX93 boards.
+>>>>> Changing default calibration settings fixed this. The board where this
+>>>>> patches are useful is not yet upstream but will be soon (hopefully).  
+>>>>
+>>>> Tell us more.  My initial instinct is that this shouldn't be board
+>>>> specific.
+>>>> What's the trade off we are making here?  Time vs precision of
+>>>> calibration or
+>>>> something else?  If these are set to a level by default that doesn't work
+>>>> for our board, maybe we should just change them for all devices?
+>>>>  
+>>
+>> The imx93_adc driver is quite new.
+>>
+>> If you look at line #162, you will find a comment by the original author:
+>>
+>>> 	/*
+>>> 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+>>> 	 * can add the setting of these bit if need in future.
+>>> 	 */  
+>>
+>> URL:
+>> https://github.com/torvalds/linux/blob/master/drivers/iio/adc/imx93_adc.c#L162
+>>
+>> So, for most use-cases the default setting should work, but why not make
+>> them configurable?
+>>
+>> So this patch-series just implement what was missing from the beginning
+>> / was planned for later.
+> Hi Primoz,
+> 
+> I doubt anyone reviewed the comment closely enough to say if what it was
+> suggesting was sensible or not, so the fact it was listed as a todo
+> doesn't directly impact this discussion.
 
-best regards
-wang shengjiu
->
-> Frank
->
-> > ---
-> >  drivers/dma/imx-sdma.c | 18 +++++++++++++++++-
-> >  1 file changed, 17 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> > index 9b42f5e96b1e..079e6e8f4f59 100644
-> > --- a/drivers/dma/imx-sdma.c
-> > +++ b/drivers/dma/imx-sdma.c
-> > @@ -137,7 +137,11 @@
-> >   *                                           0: Source on AIPS
-> >   *   12              Destination Bit(DP)     1: Destination on SPBA
-> >   *                                           0: Destination on AIPS
-> > - *   13-15           ---------               MUST BE 0
-> > + *   13              Source FIFO             1: Source is dual FIFO
-> > + *                                           0: Source is single FIFO
-> > + *   14              Destination FIFO        1: Destination is dual FI=
-FO
-> > + *                                           0: Destination is single =
-FIFO
-> > + *   15              ---------               MUST BE 0
-> >   *   16-23           Higher WML              HWML
-> >   *   24-27           N                       Total number of samples a=
-fter
-> >   *                                           which Pad adding/Swallowi=
-ng
-> > @@ -168,6 +172,8 @@
-> >  #define SDMA_WATERMARK_LEVEL_SPDIF   BIT(10)
-> >  #define SDMA_WATERMARK_LEVEL_SP              BIT(11)
-> >  #define SDMA_WATERMARK_LEVEL_DP              BIT(12)
-> > +#define SDMA_WATERMARK_LEVEL_SD              BIT(13)
-> > +#define SDMA_WATERMARK_LEVEL_DD              BIT(14)
-> >  #define SDMA_WATERMARK_LEVEL_HWML    (0xFF << 16)
-> >  #define SDMA_WATERMARK_LEVEL_LWE     BIT(28)
-> >  #define SDMA_WATERMARK_LEVEL_HWE     BIT(29)
-> > @@ -1255,6 +1261,16 @@ static void sdma_set_watermarklevel_for_p2p(stru=
-ct sdma_channel *sdmac)
-> >               sdmac->watermark_level |=3D SDMA_WATERMARK_LEVEL_DP;
-> >
-> >       sdmac->watermark_level |=3D SDMA_WATERMARK_LEVEL_CONT;
-> > +
-> > +     /*
-> > +      * Limitation: The p2p script support dual fifos in maximum,
-> > +      * So when fifo number is larger than 1, force enable dual
-> > +      * fifos.
-> > +      */
-> > +     if (sdmac->n_fifos_src > 1)
-> > +             sdmac->watermark_level |=3D SDMA_WATERMARK_LEVEL_SD;
-> > +     if (sdmac->n_fifos_dst > 1)
-> > +             sdmac->watermark_level |=3D SDMA_WATERMARK_LEVEL_DD;
-> >  }
-> >
-> >  static void sdma_set_watermarklevel_for_sais(struct sdma_channel *sdma=
-c)
-> > --
-> > 2.34.1
-> >
+I agree.
+
+However on the other hand, since we stumbled upon a use-case that
+requires adjusting the driver provided default settings of the i.MX93
+ADC, this TODO to us is and was a clear indication from the original
+author that the driver needs little TLC.
+
+Anyhow, a stance from the author/NXP would be highly welcoming in this
+situation.
+
+BR,
+Primoz
+
+
+> 
+>>
+>> BR,
+>> Primoz
+>>
+>>
+>>>
+>>> So we have two different boards with the same SoC. On one, the
+>>> calibration works with the default values, on the second one the
+>>> calibration fails, which makes the ADC unusable. What the ADC lines
+>>> measure differ between the boards though. But the implementation is
+>>> nothing out of the ordinary.
+>>>
+>>> We tried different things but the only thing that helped is to use
+>>> different calibration properties. We tried deferring the probe and
+>>> calibration until later boot and after boot, but it did not help.
+>>>
+>>> In the Reference Manual [1] (chapter 72.5.1) it is written:
+>>>   
+>>>> 4. Configure desired calibration settings (default values kept for
+>>>> highest accuracy maximum time).  
+>>>
+>>> So your assumption is correct, longer calibration time (more averaging
+>>> samples) -> higher precision. The default values go for a high accuracy.
+>>> And since we use a NRSMPL (Number of Averaging Samples) of 32 instead of
+>>> default 512, we reduce the accuracy so the calibration values pass the
+>>> internal defined limits.
+> 
+> Ouch.  Let me try to dig into this. Is this effectively relaxing the
+> constraints? I guess because a value that is perhaps always biased one way
+> is considered within bounds if those acceptable bounds are wider because
+> of lower precision?
+> 
+> I was assuming it was the other way around and the device had fixed constraint
+> limits and you needed to take more samples due to higher noise. Seems the
+> opposite is true here and that worries me.
+> 
+> I'll definitely need input from NXP on this as a workaround and their
+> strong support to consider it.
+> 
+>>>
+>>> I'm not sure that changing default values is the right solution here. We
+>>> saw default values work with one of the boards. And since the NXP kept
+>>> these values adjustable I think there is a reason behind it.
+> 
+> I'd assume trade off between time and calibration precision, not the
+> sort of use I think you are describing.
+> 
+>>>
+>>> Note: When I say one of the boards I mean one board form. So same board
+>>> version, but different HW.
+> 
+> Superficially I'm struggling to not see this as broken hardware that it
+> is out of expected tolerances in some fashion.  Maybe I misunderstood
+> the issue.
+> 
+> Jonathan
+> 
+>>>
+>>> Best regards,
+>>> Andrej
+>>>
+>>> [1] i.MX 93 Applications Processor Reference Manual, Rev. 4, 12/2023
+>>> _______________________________________________
+>>> upstream mailing list
+>>> upstream@lists.phytec.de
+>>> http://lists.phytec.de/cgi-bin/mailman/listinfo/upstream  
+>>
+>>
+>> _______________________________________________
+>> linux-arm-kernel mailing list
+>> linux-arm-kernel@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
+
+-- 
+Primoz Fiser                    | phone: +386-41-390-545
+<tel:+386-41-390-545> |
+---------------------------------------------------------|
+Norik systems d.o.o.            | https://www.norik.com
+<https://www.norik.com>  |
+Your embedded software partner  | email: info@norik.com
+<mailto:info@norik.com> |
+Slovenia, EU                    | phone: +386-41-540-545
+<tel:+386-41-540-545> |
+
