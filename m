@@ -1,125 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B031553BE;
-	Fri, 29 Mar 2024 12:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B14316D9C8;
+	Fri, 29 Mar 2024 12:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715436; cv=none; b=ngDHZBO1qegpDtLTehCd9pNyX0M2ezQkJfAruxR+quIidakzxNKtNz0XIyvY/6uSSG4DgCEYhvqz2ADGhSJjDfEkmvfjH1blMgWduMqHmsy+VSgU+gH72PuyNML1hDvj+UQ8cAFvzAw2iBk4IuJDpnKfgMj44/AnMNlhgcuXfxA=
+	t=1711715649; cv=none; b=kYyWKSKUGOOMsTlFtGRLXP8oLkOWDSdMXHaq/qS3tnwcsZEiBiUINKg/VtCXNL+kzcoYBlBrtXfKD7s+ImhbiZiy9mBamK9uPAK4EJ4FAWBWQr908PqSTAvDlWgh7PQg9y6xmkPF0fu9acPuRMRjiaAKvPioTV2WpnnSmrgUn1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715436; c=relaxed/simple;
-	bh=IcBZv3SzKonQC6Je+MdRBI/FShiONCtFBUzie7WvtW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1rjM9xVh94yxrjp+8RpqDSjGAKgcUmdbHdOoDVLCP5WYaadjlmj0I6ztkL4/r7c1s6lgAdAn95GbKtXJfNagkgYC7vlAjSNYJzgKACQTzzCmiVkKLaeyXlcbSXaPZaN7ocjutYNLrLqUImdPS8zREiDtN65oQTKf+e4Juy5M2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4Ing9a2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711715649; c=relaxed/simple;
+	bh=07Im89H4tHbl47gQN4Y6CAqTRo++fE4Q9rVsVsY1nW0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=fwZK8er058khVV0NKHFef38aQdFeK76s0dGwjnMCktApwsD5a0TJL5qrY79RVcQJMY5OWVssKal0msuFP/VnuTeN3uwcoywcT75AjmI5jX7bnDQ7vQXPM24/ExYZgOsrpmHnxoOcjxig+e1JyaOpBsXaSD0YGkAeTxv06/3T++o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJcORa8/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4Ing9a2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79E0C433F1;
-	Fri, 29 Mar 2024 12:30:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJcORa8/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8C9C43399;
+	Fri, 29 Mar 2024 12:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715436;
-	bh=IcBZv3SzKonQC6Je+MdRBI/FShiONCtFBUzie7WvtW8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4Ing9a252IQLn4CWSZcqNdlJsLoZ+EyOQSyKZ79GExvDmFQ80KsXZdciRf9m98th
-	 Xxwe2+EhIezgTwUaW2W2NofZG8ZZvBB7uTaToA7bsG+TGXGd98k5YuEew5yLOHPpjm
-	 I6D3PuIctqjnCyb2BgsZ60xKM1DFpBYpsSuTT0xQ6yzqd1iRiHCNF/Rj9jJ8veLagn
-	 bPy/yg/vwi9RYI8EQzbMHWYWgkpOt+fWE7dNvSVBFs56krsfHb9P/LIskSyE82BreB
-	 tkWuF4X20wqcBVtdMG05GY9eWWI0owclIq6v4FaHvKToO8cIJCcSqaIYTqnpH2Wx7R
-	 4GkcDhBVTZLDQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Adam Ford <aford173@gmail.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sandor Yu <Sandor.yu@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	peng.fan@nxp.com,
-	geert+renesas@glider.be,
-	festevam@gmail.com,
-	marex@denx.de,
-	u.kleine-koenig@pengutronix.de,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 21/52] pmdomain: imx8mp-blk-ctrl: imx8mp_blk: Add fdcc clock to hdmimix domain
-Date: Fri, 29 Mar 2024 08:28:51 -0400
-Message-ID: <20240329122956.3083859-21-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329122956.3083859-1-sashal@kernel.org>
-References: <20240329122956.3083859-1-sashal@kernel.org>
+	s=k20201202; t=1711715648;
+	bh=07Im89H4tHbl47gQN4Y6CAqTRo++fE4Q9rVsVsY1nW0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=dJcORa8/SPhfnx6Lc3PvgaxYPdxcahiymbXYW8+no8GI9tFomloDoADyDaB/3TL8K
+	 K3SK86xefwZBHTqooPYhwX6cYjyBDmJvTp97/6xKAqBtxmf8p9RmOZ8qrEDE44DB7H
+	 MoOCuEqIFmsPQfDzskIC012ryHj6U4JXg6s49go8rWEX4OW16glDYTEO4rMwZH1EsP
+	 xLqHPaV12qWaYiACWEU0z0ZmGNfQXxONScEi5oRmPawLDHAbLjyih22ft5d2iXoeQa
+	 rAlxMfOmAdF3+8Cij5+mp6eS8WUefto0A2Hl1oDaQobq8paRpuAhfx0wjz6h/2uImD
+	 iefApBXfd9V4A==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
+In-Reply-To: <20240328-asrc_8qxp-v8-0-801cd6bb5be2@nxp.com>
+References: <20240328-asrc_8qxp-v8-0-801cd6bb5be2@nxp.com>
+Subject: Re: (subset) [PATCH v8 0/5] arm64: dts: imx8qxp add asrc and sai
+Message-Id: <171171564576.7557.13075267418118502846.b4-ty@kernel.org>
+Date: Fri, 29 Mar 2024 12:34:05 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.23
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
-From: Adam Ford <aford173@gmail.com>
+On Thu, 28 Mar 2024 10:51:32 -0400, Frank Li wrote:
+> Update binding doc to avoid warning.
+> Change from v1 to v2
+> - Fixed dts DTB_CHECK warning
+> 
+> 
 
-[ Upstream commit 697624ee8ad557ab5417f985d2c804241a7ad30d ]
+Applied to
 
-According to i.MX8MP RM and HDMI ADD, the fdcc clock is part of
-hdmi rx verification IP that should not enable for HDMI TX.
-But actually if the clock is disabled before HDMI/LCDIF probe,
-LCDIF will not get pixel clock from HDMI PHY and print the error
-logs:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-[CRTC:39:crtc-2] vblank wait timed out
-WARNING: CPU: 2 PID: 9 at drivers/gpu/drm/drm_atomic_helper.c:1634 drm_atomic_helper_wait_for_vblanks.part.0+0x23c/0x260
+Thanks!
 
-Add fdcc clock to LCDIF and HDMI TX power domains to fix the issue.
+[1/5] ASoC: dt-bindings: fsl,imx-asrc/spdif: Add power-domains property
+      commit: 9b21531866fced634bcc7fca33667c7ef258433f
+[2/5] ASoC: dt-bindings: fsl,imx-asrc: update max interrupt numbers
+      commit: 82330327ce03889f20072cef5167499d51cdf260
+[3/5] ASoC: dt-bindings: fsl-sai: allow only one dma-names
+      commit: 7b5f2072657a9041cbaf4ba139f672be11694ca3
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
-Link: https://lore.kernel.org/r/20240203165307.7806-5-aford173@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-index c6ac32c1a8c17..31693add7d633 100644
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -55,7 +55,7 @@ struct imx8mp_blk_ctrl_domain_data {
- 	const char *gpc_name;
- };
- 
--#define DOMAIN_MAX_CLKS 2
-+#define DOMAIN_MAX_CLKS 3
- #define DOMAIN_MAX_PATHS 3
- 
- struct imx8mp_blk_ctrl_domain {
-@@ -457,8 +457,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
- 	},
- 	[IMX8MP_HDMIBLK_PD_LCDIF] = {
- 		.name = "hdmiblk-lcdif",
--		.clk_names = (const char *[]){ "axi", "apb" },
--		.num_clks = 2,
-+		.clk_names = (const char *[]){ "axi", "apb", "fdcc" },
-+		.num_clks = 3,
- 		.gpc_name = "lcdif",
- 		.path_names = (const char *[]){"lcdif-hdmi"},
- 		.num_paths = 1,
-@@ -483,8 +483,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
- 	},
- 	[IMX8MP_HDMIBLK_PD_HDMI_TX] = {
- 		.name = "hdmiblk-hdmi-tx",
--		.clk_names = (const char *[]){ "apb", "ref_266m" },
--		.num_clks = 2,
-+		.clk_names = (const char *[]){ "apb", "ref_266m", "fdcc" },
-+		.num_clks = 3,
- 		.gpc_name = "hdmi-tx",
- 	},
- 	[IMX8MP_HDMIBLK_PD_HDMI_TX_PHY] = {
--- 
-2.43.0
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
