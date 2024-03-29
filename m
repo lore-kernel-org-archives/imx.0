@@ -1,74 +1,108 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2FB364D4
-	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 03:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520C239FD0
+	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 03:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711682391; cv=none; b=U59/evvoLOnG3khJSiSg9wHapv5HfcAJ0XpMHND7TRC1MiummDeyfoISrc2XZb7PhRDIKdCYOmshkhngs031hl38o00GNvlD3Ks2j9dFBBycPrl8VDB8F3SK2ZrT7HsJ9YhGHe2QURYk+WqWrgISZuRG/dnfSySbHYVEnEOxJfI=
+	t=1711683920; cv=none; b=sW0ItuDaqHFA014GO3NT6LoWSN0sPx/U4BfDS+Uyxqs5ZGkS8Y3Yv2BVJM5OVPusy7jTTiWh1WKEh8V5uaFqjQxM9v+9x0MLTtyHMGouTjgWJWyLUvKaxmt2R2E6yTZh3Bs5eoCJuX14k6gnnIx4OAiD98djG9IOOPnC5HIiFK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711682391; c=relaxed/simple;
-	bh=exObhU+NPhsrphGqdTFlopH3qXjgSIhlXiSsXlX2p5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O3e6SiL0tl9OXUZrtuWSdgjCB6Zw0GOK1Bg/j2KrZaebyvf+zKVDwSgh3zeS5fm/DIAdmSoQJjBnGqaJML5tMFITvguvh/rxGtWeFhGhNlJl7eFOFoL+F+jpZpLimOJ1X5sTgQlJX36lPEPqoBSqnH3psbZrUhW3cu6DOx9I4EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Kxoaro4C; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Kxoaro4C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=h8cOZy/XmPaW8U15xIsY8Qi7DKjXQPidiqYs2w/rIm8=;
-	b=Kxoaro4CBxsiMM6cSL7pQIQDb5AumCfW9J3fXMxkI3yX69GQt46stjvHdr7egl
-	L4q6mwLTvWR6DUPs4hxhr99/RxA1vd5iYbtUuKeE0g8E8wli0n0Xc/JqPYiwzCms
-	CBjCZ5DZg77H88HU7RikpCvJVrJ4j07QvM+ZjQIb5OItg=
-Received: from dragon (unknown [183.213.196.225])
-	by smtp1 (Coremail) with SMTP id ClUQrAAXnw4yMwZmLmJdAQ--.20927S3;
-	Fri, 29 Mar 2024 11:19:15 +0800 (CST)
-Date: Fri, 29 Mar 2024 11:19:14 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
-	aford@beaconembedded.com, Lucas Stach <l.stach@pengutronix.de>,
-	Marek Vasut <marex@denx.de>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V7 3/6] arm64: dts: imx8mp: add HDMI power-domains
-Message-ID: <ZgYzMirCta6FbD0I@dragon>
-References: <20240227220444.77566-1-aford173@gmail.com>
- <20240227220444.77566-4-aford173@gmail.com>
+	s=arc-20240116; t=1711683920; c=relaxed/simple;
+	bh=Lg8RQNfQWRVNjwDCPa0PeRNPU4BSAxRxHYfrnD7JNsk=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=lV3O9Wbl48arg5krD0HsgDdd6EbvTXxtqPCholZLk8XV3C1WDQk4BTTUeIEr2H1rKQQ3aWiBTp/FKVpFj9cLlLlNZJPSquIlGQVojV4KOOYqZ4ZbW11faexW9lHGFjuk+yFdvNKVGTkas4NFZVx4UJbMe/eld+UtUv8oztS90A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E0945200820;
+	Fri, 29 Mar 2024 04:45:10 +0100 (CET)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 964112011A8;
+	Fri, 29 Mar 2024 04:45:10 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id CB5DA180222F;
+	Fri, 29 Mar 2024 11:45:08 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: vkoul@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	shengjiu.wang@gmail.com,
+	linux-imx@nxp.com,
+	dmaengine@vger.kernel.org,
+	imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH] dmaengine: imx-sdma: support dual fifo for DEV_TO_DEV
+Date: Fri, 29 Mar 2024 11:28:07 +0800
+Message-Id: <1711682887-15676-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227220444.77566-4-aford173@gmail.com>
-X-CM-TRANSID:ClUQrAAXnw4yMwZmLmJdAQ--.20927S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVaZXUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDROwZVszXXHD-QAAsx
 
-On Tue, Feb 27, 2024 at 04:04:37PM -0600, Adam Ford wrote:
-> From: Lucas Stach <l.stach@pengutronix.de>
-> 
-> This adds the PGC and HDMI blk-ctrl nodes providing power control for
-> HDMI subsystem peripherals.
-> 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> Tested-by: Marek Vasut <marex@denx.de>
-> Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+SSI and SPDIF are dual fifo interface, when support ASRC P2P
+with SSI and SPDIF, the src fifo or dst fifo number can be
+two.
 
-Applied 3 ~ 6, thanks!
+The p2p watermark level bit 13 and 14 are designed for
+these use case. This patch is to complete this function
+in driver.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Joy Zou <joy.zou@nxp.com>
+Acked-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+---
+ drivers/dma/imx-sdma.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+index 9b42f5e96b1e..079e6e8f4f59 100644
+--- a/drivers/dma/imx-sdma.c
++++ b/drivers/dma/imx-sdma.c
+@@ -137,7 +137,11 @@
+  *						0: Source on AIPS
+  *	12		Destination Bit(DP)	1: Destination on SPBA
+  *						0: Destination on AIPS
+- *	13-15		---------		MUST BE 0
++ *	13		Source FIFO		1: Source is dual FIFO
++ *						0: Source is single FIFO
++ *	14		Destination FIFO	1: Destination is dual FIFO
++ *						0: Destination is single FIFO
++ *	15		---------		MUST BE 0
+  *	16-23		Higher WML		HWML
+  *	24-27		N			Total number of samples after
+  *						which Pad adding/Swallowing
+@@ -168,6 +172,8 @@
+ #define SDMA_WATERMARK_LEVEL_SPDIF	BIT(10)
+ #define SDMA_WATERMARK_LEVEL_SP		BIT(11)
+ #define SDMA_WATERMARK_LEVEL_DP		BIT(12)
++#define SDMA_WATERMARK_LEVEL_SD		BIT(13)
++#define SDMA_WATERMARK_LEVEL_DD		BIT(14)
+ #define SDMA_WATERMARK_LEVEL_HWML	(0xFF << 16)
+ #define SDMA_WATERMARK_LEVEL_LWE	BIT(28)
+ #define SDMA_WATERMARK_LEVEL_HWE	BIT(29)
+@@ -1255,6 +1261,16 @@ static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
+ 		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_DP;
+ 
+ 	sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_CONT;
++
++	/*
++	 * Limitation: The p2p script support dual fifos in maximum,
++	 * So when fifo number is larger than 1, force enable dual
++	 * fifos.
++	 */
++	if (sdmac->n_fifos_src > 1)
++		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_SD;
++	if (sdmac->n_fifos_dst > 1)
++		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_DD;
+ }
+ 
+ static void sdma_set_watermarklevel_for_sais(struct sdma_channel *sdmac)
+-- 
+2.34.1
 
