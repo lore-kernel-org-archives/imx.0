@@ -1,152 +1,123 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD7D16EBFB
-	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 12:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D3217A909;
+	Fri, 29 Mar 2024 12:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715655; cv=none; b=RsAuzS+u3p3JYzL96nO/LelfP8mraOvdLw0ff+AJKBCY98OB12iQqL+qwln/Atstz4q8Qoa+wjvv1lnxuMRZSp1LwMa5VRq5M5R6spWvweBsRyGTEnV/Jf5igaXpEHGMJ4N9uUri/5kRO6ISsRe/x3ooSiCKu/KSM8448la5VsI=
+	t=1711716066; cv=none; b=q6rQKvNsBjOOpiE3nnoNts44Cnxk5j1nf/umxa1PV4eaHVq1JJZ8oV5ygtfWnotHo5UJ+dXBfjR7cH0bHnUwunO3UsrAaDb8OBI2fRkfqCUICcdcN1HftQz1M9nKwYvEEp4EIGS8JOf8x8ys9SOKNbElnhvD+jGA9shIzrseEEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715655; c=relaxed/simple;
-	bh=6O6Y3EAVNfVUZZVE7YNho1XRSttKnwFyPtlgwub02tU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tp7ZJkEEzAwJ0HlV7tzw2n74sev4flaWkpGzSPR5+7QK1bHlAVO83W4bWXOtcMPARBTtys6YXfLeMI+a/TeXZj1/pWxn5DeLqpj05ycJww+tJIuAcsLKfgc3L3xmJ8EB9Vsjpd71hLoduBLSjQllSmOK8GXqXsjSCpeb3yxuGyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=GMnsHEV8; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1711716066; c=relaxed/simple;
+	bh=r4/4GXGTk++z1W7+MaTn3Izp/E4xpOEvXWgaDBkkPY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=H4fT+RHPxSYLacqdqc0QwIuPUYXGkcD35HMo06U2wJYeJfPGIgNxaLhL/1B8qlR3k3B1b+k5ZW316+LtmHbYK5vDOpQf6ZKbuiKD73v8/3g/SUayANThD/1kuSHoNltQz7BbEqyTntPofG6vH5j8noJbjg8Aoh6SKFjnHO8nv3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=baLQioz5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="GMnsHEV8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=wI/Amv+RPJQvoX1/bZKyPoE67fMI/bfxn2JETr9yooI=;
-	b=GMnsHEV85i18nXqtnctK+aBOGvJSHHdh/Q6wqIWzMUjwo+PhL4Rzq3GeEWCVNk
-	ULA1eifGYHc2ZvbvDDMUp36z67QOGv7OHDfb5fGBfjh2i3ZbIt4pPdbgP9LYzgGc
-	h3eUp5/GqAzaCx7qYvkehX/e6tt1IqAR8RRFoUDyuQpkU=
-Received: from dragon (unknown [183.213.196.225])
-	by smtp1 (Coremail) with SMTP id ClUQrADHz0MRtQZmCxhkAQ--.16042S3;
-	Fri, 29 Mar 2024 20:33:22 +0800 (CST)
-Date: Fri, 29 Mar 2024 20:33:21 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] dts: arm64: imx8dxl-evk: add lpuart1 and cm40 uart
-Message-ID: <Zga1Eb+46Uua/jJi@dragon>
-References: <20240305-m4_lpuart-v3-0-592463ef1d22@nxp.com>
- <20240305-m4_lpuart-v3-4-592463ef1d22@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="baLQioz5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A360AC433C7;
+	Fri, 29 Mar 2024 12:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711716066;
+	bh=r4/4GXGTk++z1W7+MaTn3Izp/E4xpOEvXWgaDBkkPY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=baLQioz50XIsKuHdo+rpqttrJPekLBK3y7njFGIM9EeM04Q6M3WhI69erfyAF+gDX
+	 Inv58JKl5Jlu/Eu4dA09v/zBxqE3K7CI8qlRzucZLyzHM01sjWfQq87oigoBOEhkq4
+	 Bf+ewqbWznthQ1a8KrqfTzSeI1wjSeV0a8LUSydScxYKnzThR3OugrGxNTIf0S+wyk
+	 iYLM9ISlZkm+H8IwNnO436fRCodP7nfcIE8sF8Yhr85EtvaSQL4jJwJ524isePhzM4
+	 xQVKefDLuyWuZMSagwHMI1gHD25BE9yQ1KGFQiYjqHvlNgYXV+F38delwiPyC4eIDf
+	 9bekIRWMy6UZg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Adam Ford <aford173@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Sandor Yu <Sandor.yu@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shawnguo@kernel.org,
+	heiko@sntech.de,
+	marex@denx.de,
+	u.kleine-koenig@pengutronix.de,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.8 35/98] pmdomain: imx8mp-blk-ctrl: imx8mp_blk: Add fdcc clock to hdmimix domain
+Date: Fri, 29 Mar 2024 08:37:06 -0400
+Message-ID: <20240329123919.3087149-35-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240329123919.3087149-1-sashal@kernel.org>
+References: <20240329123919.3087149-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240305-m4_lpuart-v3-4-592463ef1d22@nxp.com>
-X-CM-TRANSID:ClUQrADHz0MRtQZmCxhkAQ--.16042S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF1rCrW8tr4xZrykXFyDAwb_yoW8Kry5p3
-	Z3ZFZ5Wr1fJF17AasxGr1xKF45Wan5KayDurnrWrWrCrW5uasFqrsxKr1rGr1vqr13Xw4Y
-	yF1DCr1293ZFg3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j7txhUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDxOwZVnxclwFagAAsg
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.2
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 05, 2024 at 10:54:58AM -0500, Frank Li wrote:
-> Add lpuart1 and cm40 uart.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 37 +++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> index 2123d431e0613..737bacacc2da1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> @@ -16,6 +16,8 @@ aliases {
->  		mmc0 = &usdhc1;
->  		mmc1 = &usdhc2;
->  		serial0 = &lpuart0;
-> +		serial1 = &lpuart1;
-> +		serial6 = &cm40_lpuart;
->  	};
->  
->  	chosen {
-> @@ -51,6 +53,16 @@ linux,cma {
->  		};
->  	};
->  
-> +	m2_uart1_sel: fixedregulator-101 {
+From: Adam Ford <aford173@gmail.com>
 
-Why do we not name the node regulator-xxx just like other fixed
-regulators?  Also not sure what suffix -101 means.  Can we name it like
-regulator-m2uart1sel or something?
+[ Upstream commit 697624ee8ad557ab5417f985d2c804241a7ad30d ]
 
-Shawn
+According to i.MX8MP RM and HDMI ADD, the fdcc clock is part of
+hdmi rx verification IP that should not enable for HDMI TX.
+But actually if the clock is disabled before HDMI/LCDIF probe,
+LCDIF will not get pixel clock from HDMI PHY and print the error
+logs:
 
-> +		compatible = "regulator-fixed";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-name = "m2_uart1_sel";
-> +		gpio = <&pca6416_1 6 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		regulator-always-on;
-> +	};
-> +
->  	mux3_en: regulator-0 {
->  		compatible = "regulator-fixed";
->  		regulator-min-microvolt = <3300000>;
-> @@ -340,6 +352,12 @@ &lpuart0 {
->  	status = "okay";
->  };
->  
-> +&lpuart1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_lpuart1>;
-> +	status = "okay";
-> +};
-> +
->  &flexcan2 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_flexcan2>;
-> @@ -354,6 +372,16 @@ &flexcan3 {
->  	status = "okay";
->  };
->  
-> +&cm40_intmux {
-> +	status = "disabled";
-> +};
-> +
-> +&cm40_lpuart {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_cm40_lpuart>;
-> +	status = "disabled";
-> +};
-> +
->  &lsio_gpio4 {
->  	status = "okay";
->  };
-> @@ -595,6 +623,15 @@ IMX8DXL_UART0_TX_ADMA_UART0_TX		0x06000020
->  		>;
->  	};
->  
-> +	pinctrl_lpuart1: lpuart1grp {
-> +		fsl,pins = <
-> +			IMX8DXL_UART1_TX_ADMA_UART1_TX          0x06000020
-> +			IMX8DXL_UART1_RX_ADMA_UART1_RX          0x06000020
-> +			IMX8DXL_UART1_RTS_B_ADMA_UART1_RTS_B    0x06000020
-> +			IMX8DXL_UART1_CTS_B_ADMA_UART1_CTS_B    0x06000020
-> +		>;
-> +	};
-> +
->  	pinctrl_usdhc1: usdhc1grp {
->  		fsl,pins = <
->  			IMX8DXL_EMMC0_CLK_CONN_EMMC0_CLK	0x06000041
-> 
-> -- 
-> 2.34.1
-> 
+[CRTC:39:crtc-2] vblank wait timed out
+WARNING: CPU: 2 PID: 9 at drivers/gpu/drm/drm_atomic_helper.c:1634 drm_atomic_helper_wait_for_vblanks.part.0+0x23c/0x260
+
+Add fdcc clock to LCDIF and HDMI TX power domains to fix the issue.
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+Link: https://lore.kernel.org/r/20240203165307.7806-5-aford173@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+index e3203eb6a0229..a56f7f92d0915 100644
+--- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+@@ -55,7 +55,7 @@ struct imx8mp_blk_ctrl_domain_data {
+ 	const char *gpc_name;
+ };
+ 
+-#define DOMAIN_MAX_CLKS 2
++#define DOMAIN_MAX_CLKS 3
+ #define DOMAIN_MAX_PATHS 3
+ 
+ struct imx8mp_blk_ctrl_domain {
+@@ -457,8 +457,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_LCDIF] = {
+ 		.name = "hdmiblk-lcdif",
+-		.clk_names = (const char *[]){ "axi", "apb" },
+-		.num_clks = 2,
++		.clk_names = (const char *[]){ "axi", "apb", "fdcc" },
++		.num_clks = 3,
+ 		.gpc_name = "lcdif",
+ 		.path_names = (const char *[]){"lcdif-hdmi"},
+ 		.num_paths = 1,
+@@ -483,8 +483,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_HDMI_TX] = {
+ 		.name = "hdmiblk-hdmi-tx",
+-		.clk_names = (const char *[]){ "apb", "ref_266m" },
+-		.num_clks = 2,
++		.clk_names = (const char *[]){ "apb", "ref_266m", "fdcc" },
++		.num_clks = 3,
+ 		.gpc_name = "hdmi-tx",
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_HDMI_TX_PHY] = {
+-- 
+2.43.0
 
