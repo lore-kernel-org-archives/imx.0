@@ -1,78 +1,125 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94E769E1E
-	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 12:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2B914388F;
+	Fri, 29 Mar 2024 12:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711714659; cv=none; b=qkVDZWkDFUwFqNXdzyKLRep9cF9nsPCoV55AJVn7L43JQda1tKwXKVS9hpVQbUjOhiuA3P5vOnnKG0N0hCuWx+4GlC7hZ5ieuZbbjuCCx/uQ8ZO1Ovie/KHFMWWKUvMKyj57sekp3P6L5LhGM/+aKn+DYiUaNGzLCHgREsbZ+RQ=
+	t=1711715274; cv=none; b=SXTwLyCRJAgULgmSitzJ6CGWyW7EkgVFvfj0XuTsqrBweHnLrqf2KoP0fb56kKM9ooaco5+C+Nr8l3iiKG86T085Sp8/bDgd+A0DYO8vwZbKCaYAaHIUgtW040awN05AOP3sF8V23x6+NOFeKKwAZkHkNW5CVj6wsafpu4nIGLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711714659; c=relaxed/simple;
-	bh=BwzJ4F77ijdSPim6oxVFzaz9GKvT5/g2jWD6+edV0FA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brXjsenCnipy6koX6Sj3rnLlK2qU3+aIK8uPMCprJqRHXuQL/YHSyEjJfARSSVw5L9t1UlF06SGLsK/tpqBSOsxMngcL7uxsgO1FIet820BpjdtMnG+ijJqLpAzKhzx0CM1fX9yVWvgIhf7hNhzDKJAtbzvoy4l5w+Gmj5aMhXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VcMXxBw2; arc=none smtp.client-ip=123.58.177.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1711715274; c=relaxed/simple;
+	bh=r4/4GXGTk++z1W7+MaTn3Izp/E4xpOEvXWgaDBkkPY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mW39iW9ignET5iN6SUeZFzJXVlREoRc4JvJKOWhRzksQw0wM1qcHyT8lONeto0b2XeYbBMaVw6ruVePUmClI3Ea5bfGrqLyXwMK6McjJzdWnkwtxVoSg32V1SPzmK0OkfnKZ5VKaCG1MpRNbw8o/Nqg+N5Vq5+IMKJwAIo5xXFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JRO3QA74; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VcMXxBw2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=nJmPfGmdfks9ilRd/z75AIMlDh+qABTjjHAxxNVBALI=;
-	b=VcMXxBw2miwVNfMrHTN43yl2vOugSzqDVTtu6r4jN6wmRJGRlJPvp4SsFbG7uE
-	JS8YGytJ+bhGJIBRRQaR0GnJ4GOD+dFMCPmnBEvt19D52pzA6W/PchHtDGKMMNaw
-	iJbeZOIgz8uY7XFpWNNNWbi81gpnJDbSg5nOT7rKigKIo=
-Received: from dragon (unknown [183.213.196.225])
-	by smtp2 (Coremail) with SMTP id C1UQrAD3f0wasQZmyCNqAg--.46157S3;
-	Fri, 29 Mar 2024 20:16:27 +0800 (CST)
-Date: Fri, 29 Mar 2024 20:16:26 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 0/5] i.MX8M add DSI output endpoint
-Message-ID: <ZgaxGkSEg7+m8dGf@dragon>
-References: <20240301091413.3050689-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JRO3QA74"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC0FC433F1;
+	Fri, 29 Mar 2024 12:27:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711715274;
+	bh=r4/4GXGTk++z1W7+MaTn3Izp/E4xpOEvXWgaDBkkPY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JRO3QA74ot/ygm3sb0I4FPQv5bTdTT54u1248iwryEvWVYiXmWpZ1nRYSf3xZn8Kd
+	 QTC5tuhOq/Au8rNHc36159ZAVtzooCCeoaLOWTMRWmKixSz3djqlQDzSsjMZ5q9cfh
+	 44GJ8L65tuP4Nv3M0OR3F7D2+lgPqTON2g5pAroYzeOeYdYWuGyu+a/PG2tJOFDfA9
+	 eFRewdAJYZMMqz9o2We+0uNHDAp4WyKRxLCtatAsdBwy/+FVH69mcFNU74IDOPzJGp
+	 hMiiNi9hG14mVyxYRLa6SnjajXL3p1zrhPCQpwrdrswEWsnSuilVOREyUA+f+u9BPL
+	 yngRRbO0/ycRA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Adam Ford <aford173@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Sandor Yu <Sandor.yu@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shawnguo@kernel.org,
+	geert+renesas@glider.be,
+	festevam@gmail.com,
+	heiko@sntech.de,
+	u.kleine-koenig@pengutronix.de,
+	marex@denx.de,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.8 31/68] pmdomain: imx8mp-blk-ctrl: imx8mp_blk: Add fdcc clock to hdmimix domain
+Date: Fri, 29 Mar 2024 08:25:27 -0400
+Message-ID: <20240329122652.3082296-31-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240329122652.3082296-1-sashal@kernel.org>
+References: <20240329122652.3082296-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240301091413.3050689-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:C1UQrAD3f0wasQZmyCNqAg--.46157S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWruw1ftr1kZF1kGF15uFWruFg_yoW3KwbE9a
-	s3uF4kWw4DWrsYkwn8CF9FvryYk34avFyUXr4jgwsIvw1fX3W3Cr95tayfAw18AF1rWFyq
-	yFn0yws5Zrn0gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUndMaUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGB6wZV6Nnp38owAAsc
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.2
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 01, 2024 at 10:14:08AM +0100, Alexander Stein wrote:
-> Hi,
-> 
-> this series was initially triggered by dtbs_check warnings. Despite [1]
-> rendering them invalid, this series still simplifies the DSI OF graphs on all
-> i.MX8M variants by adding an empty output endpoint.
-> Each board enabling DSI connection can simply reference the label.
-> Patch 5 uses applies this to MBa8Mx board.
-> 
-> Best regards,
-> Alexander
-> 
-> [1] https://lore.kernel.org/linux-samsung-soc/20231122-dtc-warnings-v2-1-bd4087325392@kernel.org/
-> 
-> Alexander Stein (5):
->   arm64: dts: imx8mm: Add empty DSI output endpoint
->   arm64: dts: imx8mn: Add empty DSI output endpoint
->   arm64: dts: imx8mq: Add empty DSI output endpoint
->   arm64: dts: imx8mp: Add empty DSI output endpoint
->   arm64: dts: mba8mx: Simplify DSI connection
+From: Adam Ford <aford173@gmail.com>
 
-Applied all, thanks!
+[ Upstream commit 697624ee8ad557ab5417f985d2c804241a7ad30d ]
+
+According to i.MX8MP RM and HDMI ADD, the fdcc clock is part of
+hdmi rx verification IP that should not enable for HDMI TX.
+But actually if the clock is disabled before HDMI/LCDIF probe,
+LCDIF will not get pixel clock from HDMI PHY and print the error
+logs:
+
+[CRTC:39:crtc-2] vblank wait timed out
+WARNING: CPU: 2 PID: 9 at drivers/gpu/drm/drm_atomic_helper.c:1634 drm_atomic_helper_wait_for_vblanks.part.0+0x23c/0x260
+
+Add fdcc clock to LCDIF and HDMI TX power domains to fix the issue.
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+Link: https://lore.kernel.org/r/20240203165307.7806-5-aford173@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+index e3203eb6a0229..a56f7f92d0915 100644
+--- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+@@ -55,7 +55,7 @@ struct imx8mp_blk_ctrl_domain_data {
+ 	const char *gpc_name;
+ };
+ 
+-#define DOMAIN_MAX_CLKS 2
++#define DOMAIN_MAX_CLKS 3
+ #define DOMAIN_MAX_PATHS 3
+ 
+ struct imx8mp_blk_ctrl_domain {
+@@ -457,8 +457,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_LCDIF] = {
+ 		.name = "hdmiblk-lcdif",
+-		.clk_names = (const char *[]){ "axi", "apb" },
+-		.num_clks = 2,
++		.clk_names = (const char *[]){ "axi", "apb", "fdcc" },
++		.num_clks = 3,
+ 		.gpc_name = "lcdif",
+ 		.path_names = (const char *[]){"lcdif-hdmi"},
+ 		.num_paths = 1,
+@@ -483,8 +483,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_HDMI_TX] = {
+ 		.name = "hdmiblk-hdmi-tx",
+-		.clk_names = (const char *[]){ "apb", "ref_266m" },
+-		.num_clks = 2,
++		.clk_names = (const char *[]){ "apb", "ref_266m", "fdcc" },
++		.num_clks = 3,
+ 		.gpc_name = "hdmi-tx",
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_HDMI_TX_PHY] = {
+-- 
+2.43.0
 
