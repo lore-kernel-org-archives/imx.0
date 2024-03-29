@@ -1,55 +1,55 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A997013B2B2
-	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 21:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B420339FD6
+	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 22:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711748687; cv=none; b=oB2KzpJAPoauVLvUfYzjABMGtB4ftpkhZ/zNLIEb4CiRXovt41WQPbZw1p7WoqaboyQbRgz/5bykI7IqUzFbxmDTszBp085xxE9DeLlFO7hAwOkTaueflItXh0DWwUh71qWInUOHX6J+KgMylLWJlvLkobmJy303tNpq9tZ2O2g=
+	t=1711750139; cv=none; b=urfUsxtKM0QSS1ufmVyamQs3jnJ6FYGxwt2a+CEBx7rgmfPN5MqwmOZ0Gj9QIOXJIK6KZqsHpgXE/ZLOiS17ZLWrMIY8m+/YH5HSfqNyye/caL3V6U79mt9MoA4eSUfJ/MyOIJmXtVB4DZPF0mFlSU6qgzbMK0UZ/hpP6Ey5Y9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711748687; c=relaxed/simple;
-	bh=R0748x8HaAZ6ztcZqMARaww0FvPGRFQrV6Zx2gzOeuY=;
+	s=arc-20240116; t=1711750139; c=relaxed/simple;
+	bh=y7G4DYNMOFyxffVLJMZBeVXO/WaC4q6q2VAU4bC9rXY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LJxSctwkIEfYvglsaxmN0hlUvb1+I839yIAnSVHfDwp88yG1bFL8h/dQX2PAdHxHkRIx5V04R9Z+cpqpDwd74rRhyLyiept71+BJfdx+5VoFnVq45p4UMgaqq2g7CvR87E0i1LiXaBBB5obK8AMkyeCXKeHwQmNG4qVNVn00e0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKFRHErd; arc=none smtp.client-ip=209.85.218.41
+	 To:Cc:Content-Type; b=aRJS9CZzOErk7lSHS82fZX6LaYxTqV/J4P49IujMC9L9r9ebcUgmC4WuItL6GfdCuk3j+jDs21Bg1k4shwaLOPH6U/NpsFRV5xqtbp9gDuYcANgl2HALnJDCuw61DpsOeLLwonL0VhFaBBm1s3WICBC0a3NP3fWXZeEh+FiTTf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K3TBy4DB; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKFRHErd"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a4e47df06b8so19486766b.3
-        for <imx@lists.linux.dev>; Fri, 29 Mar 2024 14:44:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3TBy4DB"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-515b3077d09so2532756e87.1
+        for <imx@lists.linux.dev>; Fri, 29 Mar 2024 15:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711748684; x=1712353484; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1711750136; x=1712354936; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jMjQQdvnAkpsaPKKclld6kAFP0Qb9Efzjh5DqJYyG9w=;
-        b=RKFRHErdjomV7XO3NrKaO5ds4sVW3T0fPrB2Qu3EAZlmv8SNukJHdLBa0DMYP74ec6
-         vNvylA+IKhKQC45PVk98yzwiSjV2kzu7P5//hBC8b2P9Xq/MG8WMeqlYPLveGYfJXYPx
-         o+SHNXN7XalheNyV6Yj7iwUZ2haiCIFTBAz/tRu/AVnZt/8yt9kqPN5gnX7U06ehTPpG
-         uwqAFyKbRZBzYBLrLCcW5XPbL1yEjNzzjueG3LilIPvfzzosFEfOX+qlX4NsIjGDPWCt
-         0uRKDx6p47RuqlEaYJE9KxnknRm8wHQq/GusM4JPOFp0wLf/XAU7+d20SEaceBsnal8S
-         JIeg==
+        bh=S66csGSC2x765yPT5DOSH4bfdTHAf2X5g8oHEEBVFJs=;
+        b=K3TBy4DBX4fppWRDXXC0WDooBqwtZ4egmNRf1pbJdSXEDbcXJeJNaOET+Mi/DOdR3S
+         8BdkBJKiXBVjqBYGrn+lfa9g0vrsmcb65uqjti6uqhPaLMkTyYcPVb1yPQNhyKy3Hs7g
+         N+/w4/DtThxmo4MuvJOR36+9hIMYdPw5v/NCrWpg/Yj1wWRq/WItva5SmPHjVNs128A1
+         1KAgpMhP5LYjg4V2JJ8RIyFonqK7vUdgIPHOrr4l6Y6wJTyQ78ELtZAJ5AMAE1xAKidf
+         qk56DpDejKvmLbHBaLfuGr0romRBiVW9l26jfnvlFrUundFCcVebwDr0iNq80MUTs7B9
+         /FWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711748684; x=1712353484;
+        d=1e100.net; s=20230601; t=1711750136; x=1712354936;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jMjQQdvnAkpsaPKKclld6kAFP0Qb9Efzjh5DqJYyG9w=;
-        b=gF626rvinp4rqKtuIHTjlIEHItGP80Ab0bQ5pWu/ofIFlg/h7BL3W5rdke/egvVSw5
-         BAME+ZNbqF7+N1JdXRMo5cHJQMmx3X3KI2zHv5uNkR77CPg7uTzQciEIs0WorTnMm3WG
-         +5FawFNNkrJzbGh3WOg0CkrGF6gj3wl5F5p1vRf7zK7sYwScEvBL/ENI+akFRZQ0SKvj
-         b8B04OgLeepM1Q9qL4Q+fYpj4ir2LTMrs9oHNvgm1LGAoMbpK1h/zPxGYS/ARO7rbdV8
-         3mllVnX7+rvEnG2elRF9xXG0kEi1jLby+FF49GD674Gj6FpusFSVT5EoO7q/T6F5EedK
-         Ef7A==
-X-Forwarded-Encrypted: i=1; AJvYcCXmrF6uUeeD1PfA4W9TO8aHeDTKN8PVh23As8XeamVsp3ivSwbLAPbCLdIGEruSXtY2L85aF5O2xqBskL4SjABxDzhy
-X-Gm-Message-State: AOJu0Yww3MVSjXzB2u5/Vc8fISSRaanv4to9Sha4TbHoTFxTIPzwMUjw
-	CGopSz3tjASxINXhYEX/q8ORpJ72smVLBoqCmWXzZqpfDzHRsXeb2BLWpkEchEW6LRzYDmitrT9
-	CGaARie6KnRuTLBz4Ky7ywoFZewU=
-X-Google-Smtp-Source: AGHT+IGnzhTMA6HHYVX0olI3Uv+9/awh0ir8pNhdla3RNXl26d+VZIeHZUDWe+RJNRV+KqFpSStgls6l+6RJr8d/fp0=
-X-Received: by 2002:a17:906:2847:b0:a4e:ce3:bb8 with SMTP id
- s7-20020a170906284700b00a4e0ce30bb8mr1939897ejc.43.1711748683759; Fri, 29 Mar
- 2024 14:44:43 -0700 (PDT)
+        bh=S66csGSC2x765yPT5DOSH4bfdTHAf2X5g8oHEEBVFJs=;
+        b=PD5dC0Tw5QBXh53iTrHWoWZYt8XXtGVwPcxOScFWYjw3xLrDuqQRoljSqNgZEyq/Ha
+         qRmK0vmzrTRDeQgH+aSWY9mZc3heBrMTXZUK24X+5Ih7ASaTK8/UWHNuJv6siZpBEeU5
+         mLj4nHyB1MgY/EZsPeNDPvR7IcTFHetM8knUARSZcLgsN6ThzRYkvWpn5GfqmwCFBe/s
+         Cdzm5MVFjeoXmDk6TNfUdc5jxCLyqS4keetQsl65ipqUCxqTMZZlFoxqigx9WQJlj4Ap
+         Y2NsBmRT7UGtiv8UUFu5Z7S94FQv4BKDkutkp9iaaSIgs2lrpfCFWI0eaW/vq4SVnEwm
+         WkmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW8iqA3Qho25UIzMj9Gd9zCnMzfOZ8TDR0ITS5nlT9GXA/7mdJjxKoPgSamrfOWMcUhf0yqWcABA04VfdZLPR1qzSV2
+X-Gm-Message-State: AOJu0YwtPpfpXSoeuRI8bg1XB15TzPmkiRV2d+t1r/rybWKdoZBBQuk8
+	2lPsJacC3jj0KLTDCRTb4LAXda7J4abVG/i88ANm3kXGOPTF1d8TicMVj5MPmqPDYEr4cLN1LO8
+	Uy7LmBz3E0/bJ9PJe6nWCslCiNAaJNUm7D7MnEw==
+X-Google-Smtp-Source: AGHT+IF/i/keKyUqajH+MNEiAQeWqJNezNRGZW9H1GCKnNaMSID2v8bQk8oNYVdfDdGN4IlNDcT0n/51mjCqfqlkJlQ=
+X-Received: by 2002:a05:6512:344b:b0:513:c632:24bc with SMTP id
+ j11-20020a056512344b00b00513c63224bcmr2380546lfr.35.1711750135729; Fri, 29
+ Mar 2024 15:08:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,39 +57,59 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20240328202320.187596-1-gilles.talis@gmail.com>
- <20240328202320.187596-4-gilles.talis@gmail.com> <CAOMZO5D7QG3sbtCe_Y3h1i0b1VaLXCftLSCkjSuXcso+dKij9Q@mail.gmail.com>
-In-Reply-To: <CAOMZO5D7QG3sbtCe_Y3h1i0b1VaLXCftLSCkjSuXcso+dKij9Q@mail.gmail.com>
+ <20240328202320.187596-4-gilles.talis@gmail.com> <147dfc5e-91e5-4ad4-b818-f6717e62df45@lunn.ch>
+In-Reply-To: <147dfc5e-91e5-4ad4-b818-f6717e62df45@lunn.ch>
 From: Gilles Talis <gilles.talis@gmail.com>
-Date: Fri, 29 Mar 2024 17:44:32 -0400
-Message-ID: <CAKcgs2wVe_4J-hYoMisoLyRv+roRsFTNXuvFjAP09uEWLOUpHA@mail.gmail.com>
+Date: Fri, 29 Mar 2024 18:08:43 -0400
+Message-ID: <CAKcgs2xJ1pgzuARV+qHgoqDXi7uE85FbAiGRiT8uwT=BM6yiCg@mail.gmail.com>
 Subject: Re: [PATCH 3/3] arm64: dts: freescale: Add device tree for Emcraft
  Systems NavQ+ Kit
-To: Fabio Estevam <festevam@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, conor+dt@kernel.org, 
 	krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, shawnguo@kernel.org, 
-	alex@voxelbotics.com
+	festevam@gmail.com, alex@voxelbotics.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Fabio,
+Hi Andrew,
 
-Thank you for the review.
+Thank you for your review.
 
-Le jeu. 28 mars 2024 =C3=A0 18:55, Fabio Estevam <festevam@gmail.com> a =C3=
-=A9crit :
+Le jeu. 28 mars 2024 =C3=A0 18:11, Andrew Lunn <andrew@lunn.ch> a =C3=A9cri=
+t :
 >
-> On Thu, Mar 28, 2024 at 5:23=E2=80=AFPM Gilles Talis <gilles.talis@gmail.=
-com> wrote:
+> > +&eqos {
+> > +     pinctrl-names =3D "default";
+> > +     pinctrl-0 =3D <&pinctrl_eqos>;
+> > +     phy-mode =3D "rgmii-id";
+> > +     phy-handle =3D <&ethphy0>;
+> > +     status =3D "okay";
+> > +
+> > +     mdio {
+> > +             compatible =3D "snps,dwmac-mdio";
+> > +             #address-cells =3D <1>;
+> > +             #size-cells =3D <0>;
+> > +
+> > +             ethphy0: ethernet-phy@0 {
+> > +                     compatible =3D "ethernet-phy-ieee802.3-c22";
+> > +                     reg =3D <0>;
+> > +                     reset-gpios =3D <&gpio4 22 GPIO_ACTIVE_LOW>;
+> > +                     reset-assert-us =3D <1000>;
+> > +                     reset-deassert-us =3D <10000>;
+> > +                     qca,disable-smarteee;
+> > +                     qca,disable-hibernation-mode;
+> > +                     vddio-supply =3D <&vddio>;
+> > +
+> > +                     vddio: vddio-regulator {
+> > +                             regulator-min-microvolt =3D <1800000>;
+> > +                             regulator-max-microvolt =3D <1800000>;
+> > +                     };
 >
-> > +       pinctrl_i2c6: i2c6grp {
-> > +               fsl,pins =3D <
-> > +                       MX8MP_IOMUXC_UART4_RXD__I2C6_SCL               =
-                 0x400001c3
-> > +                       MX8MP_IOMUXC_UART4_TXD__I2C6_SDA               =
-                 0x400001c3
+> Please could you explain what this last node is doing.
 >
-> If i2c6 is not used, you can drop its pinctrl entry.
-Got it. Will fix that.
-thanks!
+>        Andrew
+It seems like this might not be needed. Will check that and fix as appropri=
+ate.
+thanks
 Gilles.
