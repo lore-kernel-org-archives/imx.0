@@ -1,115 +1,106 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B420339FD6
-	for <imx@lists.linux.dev>; Fri, 29 Mar 2024 22:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1086117D2;
+	Sat, 30 Mar 2024 00:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711750139; cv=none; b=urfUsxtKM0QSS1ufmVyamQs3jnJ6FYGxwt2a+CEBx7rgmfPN5MqwmOZ0Gj9QIOXJIK6KZqsHpgXE/ZLOiS17ZLWrMIY8m+/YH5HSfqNyye/caL3V6U79mt9MoA4eSUfJ/MyOIJmXtVB4DZPF0mFlSU6qgzbMK0UZ/hpP6Ey5Y9s=
+	t=1711758679; cv=none; b=jPRYOa1pZb5xXyRVHiCt8Y4rfDZ4hrL3kjqRg9TVczb5lANAix04kKL/hA1emqJFzCTtBOPbESgWGA/hZ/sxTln1EAB6x/6W9rPPDWy6wCK6Gamg+2XrRQaDwgYdo0PVoXphJT/r9fA6KrKMNOpjHxFdmtr7KYsmk+mRdr33+z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711750139; c=relaxed/simple;
-	bh=y7G4DYNMOFyxffVLJMZBeVXO/WaC4q6q2VAU4bC9rXY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aRJS9CZzOErk7lSHS82fZX6LaYxTqV/J4P49IujMC9L9r9ebcUgmC4WuItL6GfdCuk3j+jDs21Bg1k4shwaLOPH6U/NpsFRV5xqtbp9gDuYcANgl2HALnJDCuw61DpsOeLLwonL0VhFaBBm1s3WICBC0a3NP3fWXZeEh+FiTTf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K3TBy4DB; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711758679; c=relaxed/simple;
+	bh=7YZ2emKoPRQ2Oh1HSYDBnvLIiVwOATZLjFZIyAOLekY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KFfyiNNd7X2drPjiWcwBOOBCiavjGYb8OqWmxgKkt0zni72zK/iUpEH0mhOeQ97UZgw2RSsFS8XMygvXEvHpK3/nT41q2lkf9Varp+DDttnuyY661UKynM7fC/Z/t6K3HRW5Qqi7TGvUQAIgo0ckVFrC6cMVevw3ui+dEhGsJ2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l/GU0cHL; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3TBy4DB"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-515b3077d09so2532756e87.1
-        for <imx@lists.linux.dev>; Fri, 29 Mar 2024 15:08:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711750136; x=1712354936; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S66csGSC2x765yPT5DOSH4bfdTHAf2X5g8oHEEBVFJs=;
-        b=K3TBy4DBX4fppWRDXXC0WDooBqwtZ4egmNRf1pbJdSXEDbcXJeJNaOET+Mi/DOdR3S
-         8BdkBJKiXBVjqBYGrn+lfa9g0vrsmcb65uqjti6uqhPaLMkTyYcPVb1yPQNhyKy3Hs7g
-         N+/w4/DtThxmo4MuvJOR36+9hIMYdPw5v/NCrWpg/Yj1wWRq/WItva5SmPHjVNs128A1
-         1KAgpMhP5LYjg4V2JJ8RIyFonqK7vUdgIPHOrr4l6Y6wJTyQ78ELtZAJ5AMAE1xAKidf
-         qk56DpDejKvmLbHBaLfuGr0romRBiVW9l26jfnvlFrUundFCcVebwDr0iNq80MUTs7B9
-         /FWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711750136; x=1712354936;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S66csGSC2x765yPT5DOSH4bfdTHAf2X5g8oHEEBVFJs=;
-        b=PD5dC0Tw5QBXh53iTrHWoWZYt8XXtGVwPcxOScFWYjw3xLrDuqQRoljSqNgZEyq/Ha
-         qRmK0vmzrTRDeQgH+aSWY9mZc3heBrMTXZUK24X+5Ih7ASaTK8/UWHNuJv6siZpBEeU5
-         mLj4nHyB1MgY/EZsPeNDPvR7IcTFHetM8knUARSZcLgsN6ThzRYkvWpn5GfqmwCFBe/s
-         Cdzm5MVFjeoXmDk6TNfUdc5jxCLyqS4keetQsl65ipqUCxqTMZZlFoxqigx9WQJlj4Ap
-         Y2NsBmRT7UGtiv8UUFu5Z7S94FQv4BKDkutkp9iaaSIgs2lrpfCFWI0eaW/vq4SVnEwm
-         WkmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW8iqA3Qho25UIzMj9Gd9zCnMzfOZ8TDR0ITS5nlT9GXA/7mdJjxKoPgSamrfOWMcUhf0yqWcABA04VfdZLPR1qzSV2
-X-Gm-Message-State: AOJu0YwtPpfpXSoeuRI8bg1XB15TzPmkiRV2d+t1r/rybWKdoZBBQuk8
-	2lPsJacC3jj0KLTDCRTb4LAXda7J4abVG/i88ANm3kXGOPTF1d8TicMVj5MPmqPDYEr4cLN1LO8
-	Uy7LmBz3E0/bJ9PJe6nWCslCiNAaJNUm7D7MnEw==
-X-Google-Smtp-Source: AGHT+IF/i/keKyUqajH+MNEiAQeWqJNezNRGZW9H1GCKnNaMSID2v8bQk8oNYVdfDdGN4IlNDcT0n/51mjCqfqlkJlQ=
-X-Received: by 2002:a05:6512:344b:b0:513:c632:24bc with SMTP id
- j11-20020a056512344b00b00513c63224bcmr2380546lfr.35.1711750135729; Fri, 29
- Mar 2024 15:08:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l/GU0cHL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711758677; x=1743294677;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7YZ2emKoPRQ2Oh1HSYDBnvLIiVwOATZLjFZIyAOLekY=;
+  b=l/GU0cHL8soqEEbc8gHM8kmlGkX9/ba/CLb6TbNgzpErBTiw0QuYI7kM
+   W5LJkHIOxgZXu0GcgZr1mVEZCI5N6phBZoFY070wTOaC4et7l+Vk1iXTW
+   1mv633GbkuEIzXfxYRLt587/x0oXGGCAdfjcgMbWKOmJ/AUSFxVHIYGxz
+   /c2M3nup2U22wjlagvYfiZQszOw87pSeZRkcA3/01/7nmO5QgLE/nhDZF
+   iVi30p9+JZJ/PMY1LDhTXGEvEGOFBreRyLn/S0Nl0ySmnBZDV7pdH/q6i
+   Llow5aK2UGN4uJLyaNbNHknROrQF3wX/YYSy+SBuoUoSeGtx52BkWW9Lf
+   Q==;
+X-CSE-ConnectionGUID: HTU8/mL3SgOAXmnaIGctKQ==
+X-CSE-MsgGUID: Hmx79JlVQ2G9pbPL8kRKsA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="6801835"
+X-IronPort-AV: E=Sophos;i="6.07,166,1708416000"; 
+   d="scan'208";a="6801835"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 17:31:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,166,1708416000"; 
+   d="scan'208";a="21768159"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 29 Mar 2024 17:31:13 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rqMcn-0003mQ-2h;
+	Sat, 30 Mar 2024 00:31:09 +0000
+Date: Sat, 30 Mar 2024 08:30:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: git@luigi311.com, linux-media@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Luigi311 <git@luigi311.com>
+Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
+ compatible strings
+Message-ID: <202403300820.NEs0EOr7-lkp@intel.com>
+References: <20240327231710.53188-19-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240328202320.187596-1-gilles.talis@gmail.com>
- <20240328202320.187596-4-gilles.talis@gmail.com> <147dfc5e-91e5-4ad4-b818-f6717e62df45@lunn.ch>
-In-Reply-To: <147dfc5e-91e5-4ad4-b818-f6717e62df45@lunn.ch>
-From: Gilles Talis <gilles.talis@gmail.com>
-Date: Fri, 29 Mar 2024 18:08:43 -0400
-Message-ID: <CAKcgs2xJ1pgzuARV+qHgoqDXi7uE85FbAiGRiT8uwT=BM6yiCg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] arm64: dts: freescale: Add device tree for Emcraft
- Systems NavQ+ Kit
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, conor+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, shawnguo@kernel.org, 
-	festevam@gmail.com, alex@voxelbotics.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327231710.53188-19-git@luigi311.com>
 
-Hi Andrew,
+Hi,
 
-Thank you for your review.
+kernel test robot noticed the following build warnings:
 
-Le jeu. 28 mars 2024 =C3=A0 18:11, Andrew Lunn <andrew@lunn.ch> a =C3=A9cri=
-t :
->
-> > +&eqos {
-> > +     pinctrl-names =3D "default";
-> > +     pinctrl-0 =3D <&pinctrl_eqos>;
-> > +     phy-mode =3D "rgmii-id";
-> > +     phy-handle =3D <&ethphy0>;
-> > +     status =3D "okay";
-> > +
-> > +     mdio {
-> > +             compatible =3D "snps,dwmac-mdio";
-> > +             #address-cells =3D <1>;
-> > +             #size-cells =3D <0>;
-> > +
-> > +             ethphy0: ethernet-phy@0 {
-> > +                     compatible =3D "ethernet-phy-ieee802.3-c22";
-> > +                     reg =3D <0>;
-> > +                     reset-gpios =3D <&gpio4 22 GPIO_ACTIVE_LOW>;
-> > +                     reset-assert-us =3D <1000>;
-> > +                     reset-deassert-us =3D <10000>;
-> > +                     qca,disable-smarteee;
-> > +                     qca,disable-hibernation-mode;
-> > +                     vddio-supply =3D <&vddio>;
-> > +
-> > +                     vddio: vddio-regulator {
-> > +                             regulator-min-microvolt =3D <1800000>;
-> > +                             regulator-max-microvolt =3D <1800000>;
-> > +                     };
->
-> Please could you explain what this last node is doing.
->
->        Andrew
-It seems like this might not be needed. Will check that and fix as appropri=
-ate.
-thanks
-Gilles.
+[auto build test WARNING on media-tree/master]
+[also build test WARNING on linuxtv-media-stage/master linus/master v6.9-rc1 next-20240328]
+[cannot apply to sailus-media-tree/streams]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/git-luigi311-com/media-i2c-imx258-Remove-unused-defines/20240328-072629
+base:   git://linuxtv.org/media_tree.git master
+patch link:    https://lore.kernel.org/r/20240327231710.53188-19-git%40luigi311.com
+patch subject: [PATCH 18/23] dt-bindings: media: imx258: Add alternate compatible strings
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20240330/202403300820.NEs0EOr7-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403300820.NEs0EOr7-lkp@intel.com/
+
+dtcheck warnings: (new ones prefixed by >>)
+>> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: properties:compatible: [{'enum': ['sony,imx258', 'sony,imx258-pdaf']}] is not of type 'object', 'boolean'
+   	from schema $id: http://json-schema.org/draft-07/schema#
+>> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: properties:compatible: [{'enum': ['sony,imx258', 'sony,imx258-pdaf']}] is not of type 'object', 'boolean'
+   	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
+--
+>> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: ignoring, error in schema: properties: compatible
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
