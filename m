@@ -1,57 +1,57 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BAE14A96
-	for <imx@lists.linux.dev>; Sat, 30 Mar 2024 13:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C8B22F19
+	for <imx@lists.linux.dev>; Sat, 30 Mar 2024 13:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711805665; cv=none; b=k90DfTVi5RTWjtOm6/LiQYp08DaaAn2ZV3km4iwojzMSZ1tg/5SgX0jwUyOvC+dxx4Z0H7cgUFmh1E29s/lTU+vuMcitzzHcaAK75T8RhJprk40xsmZktrQegPXW50SzXoGkRf0D9ey/0W9Wj4zC4ocu1u41fi3eWKHydB2J47Q=
+	t=1711805668; cv=none; b=V7ggDft7I9fw2nKZ5F0kRh34UuKi/wTQ8J4rZm2p1Q4e5sL/WVcylerdSd4Z46IuC6y5R1BZ/B4mFAagPcgfOvJJv9rykwnuO4CvAu9n6sytl+cn7c1y/w736lrezYHqIuxc9thbwIs2hrc6vHrYQfiDmaIYYL14TTgUpXz7/Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711805665; c=relaxed/simple;
-	bh=LGw6kak4lZFihhndUY61EFLYz8x56qhQ5QE0nUpuhjo=;
+	s=arc-20240116; t=1711805668; c=relaxed/simple;
+	bh=oXYRNgJdWbjdepWwOY/KvRs0KAk3andYOyVJDfzA6rA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hMaCjNNXH8XMFcf1JvwX560bvGLLuccyjZrYYFKsT6ypTvdP/aPE7tsw7brl9lwwnm3H8MAa48U7X/ygPhgMIruBx+YdT/B53mUNQBH6Bd/hdVhOnlf/gvWiVQpf5I/577vBA7tLrp2HleFuLhwCMjGU0iEV74MLtfC4zPhN+yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aupcDnp9; arc=none smtp.client-ip=209.85.221.41
+	 MIME-Version; b=RcS05dJXKvFNfdwtoHP+tGBRIr8ClptIAjBD9OOpWMkgiiFKNKL5OS25dC3SqEnbIgof9fdC1xOZN22UsHMJZ67WRsE9eBINdzAeL3jM93hucr/zLWY9kthui2GqFsTOwXSjdkbB7SrJBta2jjuF06QMBfJnW8rgZrEUSlMtF4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y4y3K9n+; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aupcDnp9"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-33ed4dd8659so2382612f8f.0
-        for <imx@lists.linux.dev>; Sat, 30 Mar 2024 06:34:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y4y3K9n+"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4154d24cc77so10533805e9.3
+        for <imx@lists.linux.dev>; Sat, 30 Mar 2024 06:34:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711805662; x=1712410462; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1711805665; x=1712410465; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hwVvoPowNn0OI3aCiowgffdI708sY5tNSiLWt+MX6xI=;
-        b=aupcDnp9kfpwuJGJ04riaWO02aOuJH55ofguz2oz6l7IESEUVzFeLD3StCwIo9lIWS
-         sXT2Hwmw5SRIlJW0jjEn70zjTtgMmgiy/ivt7OpVnQEEGkXUPDvYmeUM+6/NCTBB9mRH
-         nsEEK0BT5ZmMq9XpdopAiY90s/dO2DXO3o2TTEu48Ys+UXFoF+cmz2AYGcmvsSlCKwaG
-         ahI+AkA/pByCTYyINymwZSSrewGAEDkHrfbiDnkDs2k6F+LVL+K7nj+76yGbAKjiE3Zc
-         jWguz/SuZi/GnTFc0MFGqvftcX8mgNJJ+cC+8lwheGn1L84GCj+djYSCYvKAczSz30I5
-         M8Dw==
+        bh=rymSuP0sS0VsQ6tf1rW9MJE5OL/RKLdSb3bB5F/aqEw=;
+        b=Y4y3K9n+WdlEYE7IjWYDZD1oZBjba6r2bADl4CwUMEEo6FReIQUaKa9+IH3tO7me6H
+         MoaLHxlUj5imLP5wRUiF0H6N+RwAmnTUoOlUNOz5iy9lUvuU5+Z7QrQ9nC1NOCWXaT3G
+         450025CyaXfwQYvqQ6tpvpuu9sa712vgh8IRO325eD1m54k7l4Zsm17orZU6RK2gyB/J
+         LgOv+i7cJfgD/Tcs9hrTsy8GYg1Yaw8Jdwou2/Apy9CDJGwrWCgK8orS+JH5umkS5GRR
+         hm1XJGhhxp6QgZROJPiO+Feb84INFGK6Bmfh0xQ5lWlIqQH/Ycqz2eOErOenS7T7wM1O
+         2MwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711805662; x=1712410462;
+        d=1e100.net; s=20230601; t=1711805665; x=1712410465;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hwVvoPowNn0OI3aCiowgffdI708sY5tNSiLWt+MX6xI=;
-        b=pNBFPV4hjG6/+ZwmdqraRFy+ou8nD2aGyddGnobNqjp7PsiDTPs128VGka0SgmesAB
-         fugGAwbBoXilVWWSQjHZpU6XFAho3ozTGFeQ7Bk+N/rwHktFfudpOfqUzycmDQj7yC2Q
-         v7TgFGdjp+JwDyFavk/WdES+wPqJWTgnF29uXW18CAzO4syHPFo+BVfERZ9bqZ7qodry
-         gI6wwFkpSZWaYpH+s6fALLt9qB+1KYEZ95TWSUtLsFx7hvRcO3BXVP/6O0zeP3R7DFdz
-         32AHUiGH/Espb3tLCqHS0WrVdR2GPwUBfGiM3W0UFxKfWsS51LaLv5Tz+OnOeF9sJuMy
-         16SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvBONoF6PucLYmX6xD3MVIc8/FnNb6rOVhMWWrt6NdhPxwvzGsS5ONl6U/8ebhvITAzFhkgMlQDa1vZU7jKj6NmceK
-X-Gm-Message-State: AOJu0Yyv3oUkQoONtbCDYBABr05D9pknf2yK1ci5Jkgd6/QWfkoiHats
-	DKJBto+p6xlB+TQ3baDFbZNOM+gz2VpPAJVD607GcptfiwChDQJ628mF0Aj2FdzIlA==
-X-Google-Smtp-Source: AGHT+IHh9DQvqoy8Dp3di8r3TZhfjeHHkmjziX1hFRPX9T94+4F4w2FRwgmkStv6sOb068nXquIpew==
-X-Received: by 2002:adf:cc92:0:b0:341:8a0a:a354 with SMTP id p18-20020adfcc92000000b003418a0aa354mr3626691wrj.5.1711805662301;
-        Sat, 30 Mar 2024 06:34:22 -0700 (PDT)
+        bh=rymSuP0sS0VsQ6tf1rW9MJE5OL/RKLdSb3bB5F/aqEw=;
+        b=gCtOkjmWio+AQT3/BbOka1N2li+BGV4RDQi4vZVgL1kR1ID8VABuF5wZwhgb2nebWG
+         TdJqRg4VFxJ+njuNrJVp35JYG1CbJRsLUd9u3S5UxV3tDyMF6EbK2oz3tMMSy/LnqhNk
+         0+A/g+gWdwW6/j7IFtgdAldzyX0aWa37llUvk7RrKXc/TbErfPLiywUSmaByucl0btal
+         TneWQeGdSV2xAQa1DItlFZclrgSzEyeOC0ePPO8eDdq1QorJ6Juv/OyHioWTB7svzLTq
+         nhJPJi8KHAyGglnOvRUzDbuPhx545ggmOdTQm0XOLx75XuC1XmkIWDcmHzymisvFGpfp
+         zAcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWiMtjhDbPAgoYxulR1uc39MJ7vbT0wy7Ljz1LjbrnYBfbqw8tkbzWPioQ+Xm6LkfMQFrVcpuMAxpme0fMd+yT8PTp3
+X-Gm-Message-State: AOJu0YxiHhnnTBSSP+G8uvBDRVbSoosw97XNyGQTA2o31hA1Eocw2fSh
+	9Sf6mkdLXu2c6FwELhJ1KuVSdu0GtESXcKLRslOR9jopDs+guoZl
+X-Google-Smtp-Source: AGHT+IH/1wUccWdZ+DMlCtESPEkHwH88ePvv0ej6zdewXAdqnjnXpdf+0VZv9IAKFLfQ1mS9Gz6jgw==
+X-Received: by 2002:a05:6000:1863:b0:343:3a4b:41ee with SMTP id d3-20020a056000186300b003433a4b41eemr4744206wri.23.1711805665179;
+        Sat, 30 Mar 2024 06:34:25 -0700 (PDT)
 Received: from gilles-Precision-3571.lan ([2605:59c8:6662:b310:962a:f8cf:49d0:f63e])
-        by smtp.gmail.com with ESMTPSA id dw11-20020a0560000dcb00b00341c7129e28sm6454869wrb.91.2024.03.30.06.34.19
+        by smtp.gmail.com with ESMTPSA id dw11-20020a0560000dcb00b00341c7129e28sm6454869wrb.91.2024.03.30.06.34.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Mar 2024 06:34:22 -0700 (PDT)
+        Sat, 30 Mar 2024 06:34:24 -0700 (PDT)
 From: Gilles Talis <gilles.talis@gmail.com>
 To: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
@@ -65,9 +65,9 @@ Cc: conor+dt@kernel.org,
 	andrew@lunn.ch,
 	Gilles Talis <gilles.talis@gmail.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v2 1/3] dt-bindings: vendor-prefixes: Add Emcraft Systems
-Date: Sat, 30 Mar 2024 09:34:08 -0400
-Message-Id: <20240330133410.41408-2-gilles.talis@gmail.com>
+Subject: [PATCH v2 2/3] dt-bindings: arm: Add Emcraft Systems i.MX8M Plus NavQ+ Kit
+Date: Sat, 30 Mar 2024 09:34:09 -0400
+Message-Id: <20240330133410.41408-3-gilles.talis@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240330133410.41408-1-gilles.talis@gmail.com>
 References: <20240330133410.41408-1-gilles.talis@gmail.com>
@@ -79,27 +79,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an entry for Emcraft Systems (https://www.emcraft.com/)
+Add DT compatible string for Emcraft NavQ+ kit based on
+the i.MX8M Plus SoC from NXP
 
 Signed-off-by: Gilles Talis <gilles.talis@gmail.com>
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index b97d298b3eb6..8b978c6f1dfd 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -438,6 +438,8 @@ patternProperties:
-     description: Dongguan EmbedFire Electronic Technology Co., Ltd.
-   "^embest,.*":
-     description: Shenzhen Embest Technology Co., Ltd.
-+  "^emcraft,.*":
-+    description: Emcraft Systems
-   "^emlid,.*":
-     description: Emlid, Ltd.
-   "^emmicro,.*":
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 0027201e19f8..cec1b31d0792 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1050,6 +1050,7 @@ properties:
+           - enum:
+               - beacon,imx8mp-beacon-kit  # i.MX8MP Beacon Development Kit
+               - dmo,imx8mp-data-modul-edm-sbc # i.MX8MP eDM SBC
++              - emcraft,imx8mp-navqp      # i.MX8MP Emcraft Systems NavQ+ Kit
+               - fsl,imx8mp-evk            # i.MX8MP EVK Board
+               - gateworks,imx8mp-gw71xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw72xx-2x # i.MX8MP Gateworks Board
 -- 
 2.39.2
 
