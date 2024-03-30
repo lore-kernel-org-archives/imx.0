@@ -1,106 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1086117D2;
-	Sat, 30 Mar 2024 00:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFA86FB9
+	for <imx@lists.linux.dev>; Sat, 30 Mar 2024 03:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711758679; cv=none; b=jPRYOa1pZb5xXyRVHiCt8Y4rfDZ4hrL3kjqRg9TVczb5lANAix04kKL/hA1emqJFzCTtBOPbESgWGA/hZ/sxTln1EAB6x/6W9rPPDWy6wCK6Gamg+2XrRQaDwgYdo0PVoXphJT/r9fA6KrKMNOpjHxFdmtr7KYsmk+mRdr33+z8=
+	t=1711770753; cv=none; b=FL2iS3+1EAWXdEqMQi22NmS1zTT48fy3wJ1d4fYYtJDznSRjf6/ATi5zZj1s/VwUDHfJAw1ws/5grEYCZofa/AFTjU6gRgxlLcjK7JFbV3IWUGznkvr3yHsdx0R2gjnn4Xp+/waPtDO4dlX8EX0lmV18oZ7CC7H6LoEl1mBVzcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711758679; c=relaxed/simple;
-	bh=7YZ2emKoPRQ2Oh1HSYDBnvLIiVwOATZLjFZIyAOLekY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KFfyiNNd7X2drPjiWcwBOOBCiavjGYb8OqWmxgKkt0zni72zK/iUpEH0mhOeQ97UZgw2RSsFS8XMygvXEvHpK3/nT41q2lkf9Varp+DDttnuyY661UKynM7fC/Z/t6K3HRW5Qqi7TGvUQAIgo0ckVFrC6cMVevw3ui+dEhGsJ2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l/GU0cHL; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711770753; c=relaxed/simple;
+	bh=pLFOE/nP5lpMYNG+2LK9dk+rrFBf+9iWpFWOlugIBMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bpuyr0RAyOPlVV2arxe7MsZ/pQnqJCjzSoM0Ik38UzUIyyQEGvN5wQ79UgJfL3gh8rZvD2HH2iKZv+toWho4afnQkQPHIm/19nfW8R3PQcfOV/+wEUNQUgDEQ89gD/mjyasTIcNZ2kbkn01lOGlcwEd4l6d3oblupfVI8xvlEiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=p0zHST5m; arc=none smtp.client-ip=198.252.153.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l/GU0cHL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711758677; x=1743294677;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7YZ2emKoPRQ2Oh1HSYDBnvLIiVwOATZLjFZIyAOLekY=;
-  b=l/GU0cHL8soqEEbc8gHM8kmlGkX9/ba/CLb6TbNgzpErBTiw0QuYI7kM
-   W5LJkHIOxgZXu0GcgZr1mVEZCI5N6phBZoFY070wTOaC4et7l+Vk1iXTW
-   1mv633GbkuEIzXfxYRLt587/x0oXGGCAdfjcgMbWKOmJ/AUSFxVHIYGxz
-   /c2M3nup2U22wjlagvYfiZQszOw87pSeZRkcA3/01/7nmO5QgLE/nhDZF
-   iVi30p9+JZJ/PMY1LDhTXGEvEGOFBreRyLn/S0Nl0ySmnBZDV7pdH/q6i
-   Llow5aK2UGN4uJLyaNbNHknROrQF3wX/YYSy+SBuoUoSeGtx52BkWW9Lf
-   Q==;
-X-CSE-ConnectionGUID: HTU8/mL3SgOAXmnaIGctKQ==
-X-CSE-MsgGUID: Hmx79JlVQ2G9pbPL8kRKsA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="6801835"
-X-IronPort-AV: E=Sophos;i="6.07,166,1708416000"; 
-   d="scan'208";a="6801835"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 17:31:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,166,1708416000"; 
-   d="scan'208";a="21768159"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 29 Mar 2024 17:31:13 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rqMcn-0003mQ-2h;
-	Sat, 30 Mar 2024 00:31:09 +0000
-Date: Sat, 30 Mar 2024 08:30:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: git@luigi311.com, linux-media@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>
-Subject: Re: [PATCH 18/23] dt-bindings: media: imx258: Add alternate
- compatible strings
-Message-ID: <202403300820.NEs0EOr7-lkp@intel.com>
-References: <20240327231710.53188-19-git@luigi311.com>
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="p0zHST5m"
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4V63J85CkqzDqLd;
+	Sat, 30 Mar 2024 03:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+	t=1711770745; bh=pLFOE/nP5lpMYNG+2LK9dk+rrFBf+9iWpFWOlugIBMc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p0zHST5mQjd11XNnhXY2VjNAX95Lo8K1cIjO+pqd49hYfjviptmaakSIZErj9eHyZ
+	 nT/E+4X8l08PHWEz/rR1zj5NZJyhV9bKr2bRPQFsinhKumatshE94PR69su0YG0OM2
+	 IyC2uYORVuFNHvU8T3FARBCdgAFSzb6Vzz4LekNU=
+X-Riseup-User-ID: 1BA547B91BE34F02CC25BDFC23FFDB9B0F257A791B2954B3F508845C9EC61ECE
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4V63Hr5rJSzJrxj;
+	Sat, 30 Mar 2024 03:52:08 +0000 (UTC)
+From: Dang Huynh <danct12@riseup.net>
+To: linux-media@vger.kernel.org, git@luigi311.com
+Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
+ mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, sakari.ailus@linux.intel.com,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luigi311 <git@luigi311.com>
+Subject: Re: [PATCH 00/23] v2: imx258 improvement series
+Date: Sat, 30 Mar 2024 03:51:55 +0000
+Message-ID: <4599295.LvFx2qVVIh@melttower>
+In-Reply-To: <20240327231710.53188-1-git@luigi311.com>
+References: <20240327231710.53188-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327231710.53188-19-git@luigi311.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-Hi,
+On Wednesday, March 27, 2024 11:16:46=E2=80=AFPM UTC git@luigi311.com wrote:
+> From: Luigi311 <git@luigi311.com>
 
-kernel test robot noticed the following build warnings:
+The Linux kernel does not allow anonymous (or pseudonymous) contributions. =
+You=20
+should use your real first and last name.
 
-[auto build test WARNING on media-tree/master]
-[also build test WARNING on linuxtv-media-stage/master linus/master v6.9-rc1 next-20240328]
-[cannot apply to sailus-media-tree/streams]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+See section 1.5 in "A guide to the Kernel Development Process":
+https://www.kernel.org/doc/html/v6.8/process/1.Intro.html#licensing
 
-url:    https://github.com/intel-lab-lkp/linux/commits/git-luigi311-com/media-i2c-imx258-Remove-unused-defines/20240328-072629
-base:   git://linuxtv.org/media_tree.git master
-patch link:    https://lore.kernel.org/r/20240327231710.53188-19-git%40luigi311.com
-patch subject: [PATCH 18/23] dt-bindings: media: imx258: Add alternate compatible strings
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240330/202403300820.NEs0EOr7-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403300820.NEs0EOr7-lkp@intel.com/
-
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: properties:compatible: [{'enum': ['sony,imx258', 'sony,imx258-pdaf']}] is not of type 'object', 'boolean'
-   	from schema $id: http://json-schema.org/draft-07/schema#
->> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: properties:compatible: [{'enum': ['sony,imx258', 'sony,imx258-pdaf']}] is not of type 'object', 'boolean'
-   	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
---
->> Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml: ignoring, error in schema: properties: compatible
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
