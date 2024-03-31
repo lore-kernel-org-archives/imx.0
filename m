@@ -1,60 +1,60 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5093A145B0F
-	for <imx@lists.linux.dev>; Sun, 31 Mar 2024 19:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2F1474CB
+	for <imx@lists.linux.dev>; Sun, 31 Mar 2024 19:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711914771; cv=none; b=cmEMCDiKSHlCWEXfgkfzLIjZWAM1L982KIZ1C7YE3BSKUWCAyA8z79aOfj/BqFVZpV9gMlu2f67Y0Dfzmo1g75vYIRWbKWZsCfSe2whgO+gIP9lO8LY+3X6wF2RCkEQ66ZB9cVKq4cWUaqsoxO6WIMuhlfCaRJQpX3cXwR9EAdI=
+	t=1711914825; cv=none; b=WpurdsTI8I1dzlEV6GmOrtk1AcLnQk23lSnjeHmjwctNpedKV2m/eww2TN4qkNVfvMnxMuyneOxf+FyVQezwvF45KkfcLPw4mpETN5K8KwPXtcgpXFaZhWoFZEpq9aPJeLjJxHU3lpGxvILA2OY/sf+q44V0bsjYw5xt9avzqCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711914771; c=relaxed/simple;
-	bh=EbTkIL/swUomdW9wMjBymcbkcR+Wh85BPB4Hiv4GyIk=;
+	s=arc-20240116; t=1711914825; c=relaxed/simple;
+	bh=86E79lBADpkhatxugvZKRP6tnDy5hZGpVtOTbREHzf4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QvNnsGN5WzcopT+8mibIHIdtEvhs0O1XQdMxvxl16GFVamSWzZRWnNPE4Ky5t1lhVUNta3lceLsOvARg+d0oqZ3ZbEAytRXrDa+Yfe3j5gb1PzO/ZmzpwK4UKkplwYowPEeO3vqoOvok4CxJtA3MFpd+caQy7BO2qs+sVmfxGaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Hta51bMY; arc=none smtp.client-ip=209.85.208.170
+	 In-Reply-To:Content-Type; b=F7lBIME90NdHibQUsOuEd0uMsRaJdg2JDtKGWMaRa523Fb07Fk2YildVXBjYnL5KZlkKXA4tmMABL2sXWuoIdAAebCCpbPKyHZV0J7I+CAvGrkm+4GVJ1W367TPOEi42wGEL9JUYQ7I5082Vjn1EKnSSM4DR5gMeRnKONoU9qEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EdtE4y0g; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hta51bMY"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d700beb60bso62459841fa.1
-        for <imx@lists.linux.dev>; Sun, 31 Mar 2024 12:52:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EdtE4y0g"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-56d7a0cf96cso2147996a12.2
+        for <imx@lists.linux.dev>; Sun, 31 Mar 2024 12:53:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711914767; x=1712519567; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1711914822; x=1712519622; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nEq5in0z0f4vlhEZW9aTuX+Y1gknTX4JajMY0JG06rs=;
-        b=Hta51bMYiaWbku0zk/v9tiBj3cLMQoJZoDctmXs4uRfUzuP1dmMXgWGS1zEEHBW68u
-         WpJ7PF4MAw8mmAwdpA09ZyRqJJO0fXGw5f1pdB7nVRaZbsFyo6/GWSDjaiUBVwu+qftU
-         aplu0R8vv5gqvb6okZTJmZQ1Xd3KBX8IsCm5ckse7YxnlE+cZSxrmCc+drYgx7ssfx12
-         CsW92/oEGdloKxcgwUYbbzo8cmzMoMxeMbTzxOTmRzC55WoIXKvofUmGX6/7As3RLW9o
-         zl4jzCrzuHgbuTdo+s71taepxBkso6mG9hnWlKZlqmcVSGkizgZuYp9R2oX7AhcbbvHN
-         nowQ==
+        bh=bRzhiBeUjd+mUeMOnyzOzBUEf3I5ECrDUeyDnQ05+p8=;
+        b=EdtE4y0geFpkQIFe+wDkRevhl0mbCZgaM1FolNSAe/yNMHh2PF6dEbyxQS8T5855tA
+         S++7Gr9r4G0ETwyB3l5CdsStkcW4Ga3fo110r7jMoid80N230VOqutkFr7INk7aP/j4E
+         rx9Lx8FuV3L1vPNpKbFnn1WAD5Ye+SFIsl7RM7t8BuV0gBdsdoMJm0pAqOqzs8xW9g+U
+         S1ZhOXqmX0U5dnmEKlR1G+ywbnHVl6GFZawFhQCknw+v9ke1kAiJjSQfenrYFok5Kxlj
+         OQb3KJOOnB9Gnwg4u4wRkhPwXKIsi9KtD4gZC+9AzHy2YRdZ6/goVuTnUmFSDvPMqRJV
+         p7nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711914767; x=1712519567;
+        d=1e100.net; s=20230601; t=1711914822; x=1712519622;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nEq5in0z0f4vlhEZW9aTuX+Y1gknTX4JajMY0JG06rs=;
-        b=H2/f+cd6aaTAkqSzqMjYOEhgPlFBZd8W2YwPVyOzlmwh+biby5C0IhUTzcAcBQa6SE
-         E8AFLk8VGYoq/shaFJ0siQmKGfE9/G4vc9+yKHRHKt3GsR5DreCEUWf8A5PDKTVh5eOW
-         hbheuMSWYt/HN+Me7nu/REYzzWD4RRqiLrPhuy6MNYBV/RDdUqEQp3m+e6eMW4lnJZcn
-         5bzZlEz1//SzOLFWD1mx7z7ISWaioGUMQk6XI2QjTAPmPGmw+LILk6KZim9pHi7GynmD
-         7ZJOTRrVt8QKlmUEvEknW85NglAlntecJl3UAPqPCbsLo5paxdY1sA3uXo6BJgGjvEhK
-         LErQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKk/dF+DUzOsiWZj4vMYMQTvZqnSAG70xGKwySjt2HG324kPuI16QaWnLibvcj7p+yMoqYfNvtabomuLsx7cTpZDzO
-X-Gm-Message-State: AOJu0YwGNFwibuIx6wwwwZCvkyzRYKVRFfrJmZruQDHL/UxdLfiScJPr
-	FZWMMPAF/Zx3/FmFmArhDZoa6MfOi6tqusoDfgv7leG8nbTJajEshpAmUux2iMQ=
-X-Google-Smtp-Source: AGHT+IEd0KTvxBQTNGk8inkxfvQV4qJPxaIOeWoWJQ237yA4vryNoS4fW54OHBuBpV3qMPD2rcjxeA==
-X-Received: by 2002:a2e:3209:0:b0:2d4:aa55:72db with SMTP id y9-20020a2e3209000000b002d4aa5572dbmr5960652ljy.19.1711914767471;
-        Sun, 31 Mar 2024 12:52:47 -0700 (PDT)
+        bh=bRzhiBeUjd+mUeMOnyzOzBUEf3I5ECrDUeyDnQ05+p8=;
+        b=X/iKo75RcsSM5O4uXY/cACE1M491OLo9YJ7DY5aVzmcaov0/W6+ySefxcdcXkmBYJB
+         /BSxXVnW5xiI+yymkoElhxeBezJJZobV4pJKVRxO14Hv79W5S+3fU1VT8n+nluia238Y
+         cJ0oAfshNx7nlVV1b/gZq/1oZ4Jko4+4PYG9WbSvKbUhvKBZcLmjjRtgzRRm5vJn+LjS
+         aB4WN+iN6aiBN8ScEm97Qopib64c028c7l2vOQ7LUKrEEg18YkF+cKK7ZUTYFmO2c07O
+         rmdsDfZDqrOfMU0I82oWaNt06gkknt/zHboUHrN1LH/F2ciNJn8haA8OuoJ2IZpRM9EX
+         ixsw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3EX3iO9u4onEjEfW0IJUUpjgWhyYTWpIcWfDSJSQ3zLTGiFOM0QA2O3R3j1VqxHzUGqsPxS2eXyd1Uug2t9sBra/9
+X-Gm-Message-State: AOJu0Yzd6KeIVkOWmNMft44gOSiMzQIODrjKK0eE2FXibPqOflLC8d/Q
+	+TydR37H8+8xHc8pDj/hd1jMgUMSjMVCntYuCQ7D2MejIrE9IMXQz6RY8I5UoN4=
+X-Google-Smtp-Source: AGHT+IGn6zFCTs4ZtvnaVuPzUlhajsp4FwGqiYJeYJjaYN8e8wZH5rRehMeDlZjR6yT5MsypVMoMCw==
+X-Received: by 2002:a50:8d07:0:b0:56c:17be:5b03 with SMTP id s7-20020a508d07000000b0056c17be5b03mr5746372eds.36.1711914821803;
+        Sun, 31 Mar 2024 12:53:41 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id r17-20020a056402019100b0056c4a0ccaacsm4654926edv.83.2024.03.31.12.52.45
+        by smtp.gmail.com with ESMTPSA id f5-20020a05640214c500b0056bf7f92346sm4747110edx.50.2024.03.31.12.53.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 Mar 2024 12:52:46 -0700 (PDT)
-Message-ID: <eedeb8d5-3076-4e19-b935-813a341864e0@linaro.org>
-Date: Sun, 31 Mar 2024 21:52:45 +0200
+        Sun, 31 Mar 2024 12:53:41 -0700 (PDT)
+Message-ID: <e9809695-760e-42d2-a79c-bc2d4debdc32@linaro.org>
+Date: Sun, 31 Mar 2024 21:53:39 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/4] clk: imx: add i.MX95 BLK CTL clk driver
+Subject: Re: [PATCH v5 0/4] Add support i.MX95 BLK CTL module clock features
 To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
  Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
  <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -78,9 +78,8 @@ Cc: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
  <linux-arm-kernel@lists.infradead.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com>
- <20240324-imx95-blk-ctl-v5-4-7a706174078a@nxp.com>
- <d3770f5e-f3cc-40fd-a211-b229be46d974@linaro.org>
- <DU0PR04MB941774D0A1CD037AB7108AAF88382@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <ce1b814a-6b1b-4773-ad29-b572d00f56c9@linaro.org>
+ <DU0PR04MB9417426E1F8EA9560213E58488382@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -127,49 +126,34 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <DU0PR04MB941774D0A1CD037AB7108AAF88382@DU0PR04MB9417.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB9417426E1F8EA9560213E58488382@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/03/2024 14:01, Peng Fan wrote:
->> Subject: Re: [PATCH v5 4/4] clk: imx: add i.MX95 BLK CTL clk driver
+On 31/03/2024 14:00, Peng Fan wrote:
+>> Subject: Re: [PATCH v5 0/4] Add support i.MX95 BLK CTL module clock
+>> features
 >>
->> On 24/03/2024 08:52, Peng Fan (OSS) wrote:
->>> From: Peng Fan <peng.fan@nxp.com>
+>> On 24/03/2024 08:51, Peng Fan (OSS) wrote:
+>>> i.MX95's several MIXes has BLK CTL module which could be used for clk
+>>> settings, QoS settings, Misc settings for a MIX. This patchset is to
+>>> add the clk feature support, including dt-bindings
 >>>
+>>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>>> ---
+>>> Changes in v5:
+>>> - Merge bindings except the one has mux-controller
+>>> - Separate clock ID headers in a separate patch per Rob's comments
 >>
->> ...
->>
->>> +
->>> +static const struct of_device_id imx95_bc_of_match[] = {
->>> +	{ .compatible = "nxp,imx95-camera-csr", .data = &camblk_dev_data },
->>> +	{ .compatible = "nxp,imx95-display-master-csr", },
->>> +	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
->>> +	{ .compatible = "nxp,imx95-display-csr", .data =
->> &dispmix_csr_dev_data },
->>> +	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
->>> +	{ /* Sentinel */ },
->>> +};
->>> +MODULE_DEVICE_TABLE(of, imx95_bc_of_match);
->>> +
->>> +static struct platform_driver imx95_bc_driver = {
->>> +	.probe = imx95_bc_probe,
->>> +	.driver = {
->>> +		.name = "imx95-blk-ctl",
->>> +		.of_match_table = of_match_ptr(imx95_bc_of_match),
->>
->> Drop of_match_ptr(), causes warnings. From where did you copy such code?
->> Which mainline driver has such pattern?
+>> Where did he suggest it?
 > 
-> I recall that when COMPILE_TEST is selected, OF is not selected, kernel
-> robot reports warning. This may not be true now.
+> See https://lore.kernel.org/all/20240315165422.GA1472059-robh@kernel.org/
 > 
 
-This itself was never true. Any compilation, not robots, which you can
-test by yourself will report warnings if your code is not correct. Don't
-use random C syntax to suppress warnings, but actually something which
-will work. of_match_ptr does not make sense without maybe_unused or
-ifdef. But anyway of_match_ptr is not recommended.
+He said under specific line about one specific define. There is
+absolutely nothing about splitting the header into new patch.
+
+NAK
 
 Best regards,
 Krzysztof
