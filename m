@@ -1,157 +1,135 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A421474CE
-	for <imx@lists.linux.dev>; Sun, 31 Mar 2024 19:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A610147C6A
+	for <imx@lists.linux.dev>; Sun, 31 Mar 2024 20:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711914895; cv=none; b=rQWsRdF3/aBSblTVboiHZl0ZZ9i1W0VDkzmoouXdkwUfIup/+QsL/Q7kDlmkrZDIzU5m/56sjGtRGxVlKLPvBicU/nsUy2wg0cEk8qcRDwWQ9ZrZFy4qERy1aYMOfpElBftKqDM/G/ejrjojqFzLS8xSBsL2U53zA8tUEVaNn4A=
+	t=1711916950; cv=none; b=WE8vNA1bB+8Kh1xsXWkyeOlsxn2c3gKZo8azgP1hX60eFUckPiZlnzn0gRrIyxv8gy7YMUOAa+Ktl5qFCDe9hlglYSdSZ7AqKkdLtEZOB/XUy+fhY0EKq5eztDjTyZybNnwyqdiHw2BHRrsRLDFMUGKwX8CVxZ5muh9FDkVYN40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711914895; c=relaxed/simple;
-	bh=Jzbz8f+asRwDfPaf0P1sWmtFFFlnMg/Wnkm1RR3ybDU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M9I/cQvugfnE1RZz06GGKVoinv31AtvYcEgFWaFTwD4ocE3ZdeStpYj1gVJ1tltiskQIIENcRnxAQHnc2XHcsPq0qvcdmubtpqWZ3iRDePXoLb3l3GY2Qe/6LjI9onBNNO0CZ4WwU6TuyVuxk5PLn3eLq18vgHpzA42JU1bD0gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XMuIJmq+; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1711916950; c=relaxed/simple;
+	bh=SFNXn1zh/yUH5lKBoXzlQkp+p1CQ7cqY5rYlPQmKP7Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uOyHV9GqV0Qc9enhVNFgVORqIpnhcw/c5YmmJ5CPWpmsACww/BqZkI/q9Ia9U6tyAMnII1mPRjv89bRaMpa4u0vSms6VGn1wrty8Ivn6YL4wGsG/rsemHWyftNdzkXf2ketxVOrnIsbzaUiNHFwcqFGz/UXJL6WHPJsbL0N7UTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lCnotT9I; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XMuIJmq+"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a466a1f9ea0so198580266b.1
-        for <imx@lists.linux.dev>; Sun, 31 Mar 2024 12:54:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lCnotT9I"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-513e25afabaso3711899e87.2
+        for <imx@lists.linux.dev>; Sun, 31 Mar 2024 13:29:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711914891; x=1712519691; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=dvwWr31vSJ/AJpCkPGPl6xx7EMANSuQoqg5qdfd34Ng=;
-        b=XMuIJmq+UuIjQc8+tovKlo0SBsjjKxtDLew+Ow66M3t3KN/Ki2JoayFo7+CZ6riMVH
-         u1S5VROYvw17dxVI08iNddnoHbBDJQQ2ACoSdzH9jZBVlB9uXBk7J9ZezOT/wS6XzwSD
-         PA1SH2zp6+HwmnpDwYpl1R2NU6t81r5WfAa51dxeVahG+Jyt9JFmGhlaVo5c/CEpNwd+
-         0JUHgPq1YEp5kjTL5dBnRXPlZjBV1oOp3SwUgPDsQOvzxHAYzdfQaWqf1UIryQbapzY0
-         TPyFmIxiQXmYvpWDhqqjz1JnvCaTj4VlyH3D7F3RiVniQL1/YR8qBuzYkAmucCp5yUDx
-         t9Og==
+        d=linaro.org; s=google; t=1711916946; x=1712521746; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pQWdjTwgnIdZS6takOhMDQQy8XjSBnwUC2ksC3WzZco=;
+        b=lCnotT9IOLj5sE6wQHYa+Ez7UkRXcHJYRu6tQPSy77yvLI85r4nNi4cvh4OKz7JapW
+         WSJLpZtR28gNgM1Q/46j5D4GOtuII40DCvSx07X+vKsxb2WxMr4tdER50gmkkctbS1tm
+         Nw/TFpqy+8Wd1zCv70EW7GYVeYqoTC+ssHtd/DM1n/bXRRVHFlZFEeNKDgH54zYJZNbM
+         TNLKhayP91S9zMefi4SWyT4UfCC0LGO2IXrjQ4DVxOSE0LHQfDiXkBYOQ68szLTOEZWS
+         1GlrXcAA2KmzqLjP9W73oqFCqScEgZuouQW+Yru8VDluPfJNkVaT8QKfb20qdrddQaIM
+         Nrmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711914891; x=1712519691;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dvwWr31vSJ/AJpCkPGPl6xx7EMANSuQoqg5qdfd34Ng=;
-        b=ukrJHTHVXH/Bs4dzJfRbf4BWX4h4YV022ECvlW5ngEVkF1LEshUzWnErLkCOpwJTFG
-         VA6ov7Ut+KD7RgU6eAj8uVaEXhE4DcaAG4G5DE1uqzXIiwnW8PwEWDIUFVYDuUOOeQDK
-         CijWHzM2HiMSA8uAl8FXralWAJ+tGYzI0rK7BwmTW1RKSD6HQ7DolNf0k0C6Mb2dxoWn
-         xTwHKcH6qJaAOtK4Ypc011/V5Z4YNRPbtlYmfQkUgyTGsdqqMj/oNC8NpYYpGkdT4NMj
-         eVT8sZ4U4WE6Klwat28vGk3gJeHUYvIL5QPo8R4rBaFgtsjBzSSsTgCaLNpmNyVVCBZB
-         +Asw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnDf0sAyrC43TZxCBF6Q0J7krWUTMlYy6y3HiPKZEH+QQZATIJWXwmwXBVHamh7wsP0dnXVEQaGO60/lsOfW3Nva0P
-X-Gm-Message-State: AOJu0Yz9GiJ95SbBDT0AolDB8iaELi7HTaLZuE6gdxMFdbp8oWypwi8O
-	v+ynKwSxyNaEjMF4elTGuTlrsmCXhUKVKiTVmd7VMroan6XOS0L/2TshwMUVtZM=
-X-Google-Smtp-Source: AGHT+IHw5HwImYZkbQ92gsxdUhbrZOCRehj28uNyM++lfjdBeaqnyrQW9NZNX9SiEwSBLi+Ha2bUPg==
-X-Received: by 2002:a50:d482:0:b0:56b:a8ea:9642 with SMTP id s2-20020a50d482000000b0056ba8ea9642mr6554715edi.14.1711914891647;
-        Sun, 31 Mar 2024 12:54:51 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id 11-20020a0564021f4b00b0056c36b2f6f4sm4670627edz.59.2024.03.31.12.54.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 Mar 2024 12:54:51 -0700 (PDT)
-Message-ID: <1ee97afd-2d64-469b-b85c-58a1f1fd59ea@linaro.org>
-Date: Sun, 31 Mar 2024 21:54:49 +0200
+        d=1e100.net; s=20230601; t=1711916946; x=1712521746;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pQWdjTwgnIdZS6takOhMDQQy8XjSBnwUC2ksC3WzZco=;
+        b=EumYeGuV1ykeraLRk61bxat7KRj7X8AXLLsKSKzEcYw22T7zBekXsucYhlfJs5gsMs
+         uoHjTv2ipwTeU6lFpqbHhxEPFg9QoZwpF66W0fRbjJWItT3Vn2ZETC0mGeV/ZFTfCxPq
+         aUoQ/HFESqgR0QaIEKfN13smvAypKfegLWjxULT6nsJlwchVFWZpkuKMcNT3mOYiiOu4
+         fbJZN0RVsL0QiBuJSEm4XEHvcLydN5/hyFqZrpwRcFWopALzyDNC8Kiv92NvXjsyPt+J
+         xKQalcK4SraiJO7PVBYtZ94PnCNfdlYQTkVZLLrxwWT5uVoi0Qv/QH98bTGEUNppFmdd
+         sohA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgsdK1lgAC+nEWBsCq4NZIZiKcMwPMdQN/70xc64DnW7muIJ1AvRlHny9sSNGEUEJpemMsI80cYdhIw+dRk0u/ezBx
+X-Gm-Message-State: AOJu0YxucvNj89h1TvPmemTBgDR/qlXXywlgNCH5g7uZN4lP8CN0B4jd
+	9fHxD4qtuOyBNa40HTqFWOXy3CacKpbChKhzLW66k9XI+pMq5RC6aNVtJa4Antg=
+X-Google-Smtp-Source: AGHT+IGQdqPZQuZrp4rMIkttCQZXwzzfHQ8qGULNfSAfqZZSLM5BQiVtoEAQJyL03sBpJPsmSiXibg==
+X-Received: by 2002:ac2:465e:0:b0:515:d100:1650 with SMTP id s30-20020ac2465e000000b00515d1001650mr4831112lfo.57.1711916946553;
+        Sun, 31 Mar 2024 13:29:06 -0700 (PDT)
+Received: from umbar.lan ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id y25-20020a197519000000b00513cfc2a7aesm1237276lfe.71.2024.03.31.13.29.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Mar 2024 13:29:05 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Sun, 31 Mar 2024 23:28:58 +0300
+Subject: [PATCH v2 01/12] dt-bindings: display: fsl-imx-drm: drop edid
+ property support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] dt-bindings: clock: support i.MX95 BLK CTL module
-To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>
-Cc: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com>
- <20240324-imx95-blk-ctl-v5-1-7a706174078a@nxp.com>
- <1709e7df-268b-4da6-a75d-9d7ce80d9a41@linaro.org>
- <DU0PR04MB94171DDC725D52E66DF3A77F88382@DU0PR04MB9417.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <DU0PR04MB94171DDC725D52E66DF3A77F88382@DU0PR04MB9417.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240331-drm-imx-cleanup-v2-1-d81c1d1c1026@linaro.org>
+References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
+In-Reply-To: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1524;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=SFNXn1zh/yUH5lKBoXzlQkp+p1CQ7cqY5rYlPQmKP7Y=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmCceOu5x7edAmH8+j3eGaGmmWCs+FoRdo+9fSq
+ UX49KHJUhWJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZgnHjgAKCRCLPIo+Aiko
+ 1XkMB/4jYrMQ2Pto+iPk8j5wCQ3lBNRQBXOOxIa36gpTWGBLXN2GMgq4T7AeSxsn9W4uYJAhsST
+ zHQ4WQaOaSHhKvVfvr6alCYvShW1Yffn7kru9PtHsb1YlYvbfyYV6GJy4r+eOitmea2us9BMgqd
+ 75bzb0KkIdLmVYWRygT8xARQ/AZ0RZRvmWJKAKq94B62Yj3eNCDbWUkpHtkte3s5Z1IawpY75jR
+ RCDDAnQO9BSYH2we2tHqKiIbf4TJBGRQpIM3486HR19gxyNT2AVWyZVuMY2UxZ9drbNgwIfG20z
+ 311P8qvYPgPF4VXolTrtGq+n9JR6WwA+ID/jrmIaxce/aZRk
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-On 31/03/2024 13:58, Peng Fan wrote:
->>> +    const: 1
->>> +    description:
->>> +      The clock consumer should specify the desired clock by having the
->> clock
->>> +      ID in its "clocks" phandle cell. See
->>> +      include/dt-bindings/clock/nxp,imx95-clock.h
->>
->> In such case, put header as your first patch in the patchset. I don't understand
->> why it was split in the first place...
-> 
-> Rob gave a comment in v4, so I split the headers.
-> "
-> If this number can change, then it is not ABI and doesn't go in this 
-> header. With that dropped,
-> "
+None of the in-kernel DT files ever used edid override with the
+fsl-imx-drm driver. In case the EDID needs to be specified manually, DRM
+core allows one to either override it via the debugfs or to load it via
+request_firmware by using DRM_LOAD_EDID_FIRMWARE. In all other cases
+EDID and/or modes are to be provided as a part of the panel driver.
 
-Nothing here speaks about splitting headers. Absolutely NOTHING. Rob
-commented that you added number which can change, thus this is not a
-binding.
+Drop the edid property from the fsl-imx-drm bindings.
 
-Best regards,
-Krzysztof
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+---
+ Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt b/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
+index 3c35338a2867..269b1ae2fca9 100644
+--- a/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
++++ b/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
+@@ -119,7 +119,6 @@ Optional properties:
+ - interface-pix-fmt: How this display is connected to the
+   display interface. Currently supported types: "rgb24", "rgb565", "bgr666"
+   and "lvds666".
+-- edid: verbatim EDID data block describing attached display.
+ - ddc: phandle describing the i2c bus handling the display data
+   channel
+ - port@[0-1]: Port nodes with endpoint definitions as defined in
+@@ -131,7 +130,6 @@ example:
+ 
+ disp0 {
+ 	compatible = "fsl,imx-parallel-display";
+-	edid = [edid-data];
+ 	interface-pix-fmt = "rgb24";
+ 
+ 	port@0 {
+
+-- 
+2.39.2
 
