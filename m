@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5887C249E4
-	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 16:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9547B1C0DE7
+	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 16:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989047; cv=none; b=ZJh3JvZPQNvYH4JLA1mQrGXtn1Tm117cdK8Cl7dZlwNMYH6Xf6Kth1Qnz9z7YiM9LkcSXfcU5+fBHlXDCT/6T1QtiJ1IACXy93cbCbkh+7E7tKn6tSPVKaP+Y2JWqWRgII+Gp3RVPre6wQmQKumAJmKD97V58hWfiLz4Piwsjx8=
+	t=1711989051; cv=none; b=IcDdMjzYF6G8vPRgCJQf7Rm0sxjexRIpAFh+Flegl10RQ8Rar9enIOYqeB3m6bXVinjEnsFwyz5R2RQLXgCZSBlkNvClTpAnCTJA99nQJu+hqCpPQCdBYJmHVLq3SMFapPRLEk8mtY81PrAMSY97qNU6fbW42tt75MCQloIxu1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989047; c=relaxed/simple;
-	bh=X6o+CiRuRbPSoFA1uNV4CraaV9Ro04bAs5btj8iowP0=;
+	s=arc-20240116; t=1711989051; c=relaxed/simple;
+	bh=eTX/7NaNoXDzfyhrzqmm6Ups4VgCiQZr26N1KsucA/U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=etJlMpEoYBpKKN1OHVT2yVT3x+sidp8u9KhCbMpfrn/JRPj1C9F2VIR64lmSs/ka1siqDnwiMZM//42CsejJJZKGyu/tRotoolsxt2MWwk5DZ6tbqFiceMQDkt7ICRw6TzZY34LDxvNB/I350HNfVqZIQpuqB4ngDiGyalKyv2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fldC04eF; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=qIeQPiSW3XERSoE42R/MkrSOiQ4h/ZzGxx5r3JRjDEzP0iIhOOudanHhDj/o852YbHX4tV+xEMwtBiILviuV7cwe3LmUVC2QzyUjCTsSEKI1K6K8QsVwZ7afbY14V/7BET2BMuU6NmVr8lSX6v/TVUAfzN1QTOAwZ6lcL8zTYI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SIR3iuSg; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fldC04eF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SIR3iuSg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711989046; x=1743525046;
+  t=1711989050; x=1743525050;
   h=message-id:date:mime-version:subject:to:references:from:
    in-reply-to:content-transfer-encoding;
-  bh=X6o+CiRuRbPSoFA1uNV4CraaV9Ro04bAs5btj8iowP0=;
-  b=fldC04eF+7QwaiTDUeHTA4MiEuHBmtHeuLOrPVccXP+3gnlEdNHwkAmm
-   fT2aRCjd7ihHmFXgezckpNUB6nH1b++wh6uaVO4ODCrjswQaqBJ3nYoWE
-   ZtTiXMgUGrgveZl7Kk2Feup2NNHkIzCQ8ystZ7jKnAWvMZDTsIBU00M/y
-   KfUU6myRnlKwo0D/30dEGScoI/UqNxZiM6cnk8IoNBsBug6J1PZvhm3u9
-   vz0eMlaWchd4MX/GCcxIlQDWZRD1RjKKZJ7RnzTL/kMA0bYH+5Zb+Pbbe
-   OMl5KWCieZiZXHwxxi+Tc5Qb/b1DHQX4ptLeFCvRQGCQPbRJIqZu1nflm
-   A==;
-X-CSE-ConnectionGUID: cRGw1joEQuqBBbPHlpvD1w==
-X-CSE-MsgGUID: lEUgQL+ASSebogFfbK26mw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="10083747"
+  bh=eTX/7NaNoXDzfyhrzqmm6Ups4VgCiQZr26N1KsucA/U=;
+  b=SIR3iuSgGE45E9Yqg4nq9MJhlKuAU6367M2QK0Kcwjqz3V9xQaitCaq7
+   fgeWQg3YsPx7O2EF0+3Hbe3PLsSIE5VYL2UG7sA813fdMb0apG7NAxigr
+   Wl/ivbV3NUoK0rllBG1sVSg+2Oa1Pr+GHihne4M58bXCPecAqjjfUUMWB
+   U4s6I6h3hWxlEgs0wjXxbCn3UWOZOLOVhTTEJBK95/I0Dwbt2G1hmyvHj
+   VaMKfrt73/oYxHK7VsQEfilO8buYDR+x6e0n6Tuu1JnHeICebz8MfnhLu
+   kLv/1AxSwdAJA0wvRoF2HmGvLLrVWpFnQcrDx3bhH6lR5OWdxNBpet+sM
+   Q==;
+X-CSE-ConnectionGUID: FGVnPCGuTWmQTZjItDEuPw==
+X-CSE-MsgGUID: YwgB6T3sQue1QAENpSXWrg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="10083779"
 X-IronPort-AV: E=Sophos;i="6.07,172,1708416000"; 
-   d="scan'208";a="10083747"
+   d="scan'208";a="10083779"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 09:30:46 -0700
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 09:30:49 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,172,1708416000"; 
-   d="scan'208";a="18224587"
+   d="scan'208";a="18224594"
 Received: from anahar-mobl.amr.corp.intel.com (HELO [10.212.2.239]) ([10.212.2.239])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 09:30:43 -0700
-Message-ID: <1a42ebbb-1e1f-4ecf-a1ec-7af292f7ff96@linux.intel.com>
-Date: Mon, 1 Apr 2024 11:22:07 -0500
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 09:30:47 -0700
+Message-ID: <54ace545-8cdc-49aa-8214-5f07bee0e2f6@linux.intel.com>
+Date: Mon, 1 Apr 2024 11:26:43 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,8 +50,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/16] ASoC: soc-core: Replace dpcm_playback/capture to
- playback/capture_only
+Subject: Re: [PATCH v2 13/16] ASoC: remove snd_soc_dai_link_set_capabilities()
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
  =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
  <amadeuszx.slawinski@linux.intel.com>,
@@ -80,67 +79,51 @@ To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
  imx@lists.linux.dev, linux-sound@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com
 References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
- <87msqdudn7.wl-kuninori.morimoto.gx@renesas.com>
+ <87h6gludmj.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <87msqdudn7.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87h6gludmj.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 3/31/24 19:31, Kuninori Morimoto wrote:
-> soc_get_playback_capture() is now handling DPCM and normal comprehensively
-> for playback/capture stream. We can use playback/capture_only flag
-> instead of using dpcm_playback/capture. This patch replace these.
+On 3/31/24 19:32, Kuninori Morimoto wrote:
+> snd_soc_dai_link_set_capabilities() checks all CPU/Codec DAI (Y)(Z)
+> for Playback/Capture (X) and checks its validation (A), and setup
+> dpcm_playback/capture flags (a).
 > 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-> ---
->  sound/soc/soc-core.c | 20 +-------------------
->  1 file changed, 1 insertion(+), 19 deletions(-)
+> 	void snd_soc_dai_link_set_capabilities(...)
+> 	{
+> 		...
+> (X)		for_each_pcm_streams(direction) {
+> 			...
+> (Y)			for_each_link_cpus(dai_link, i, cpu) {
+> 				...
+> (A)				if (... snd_soc_dai_stream_valid(...)) {
+> 					...
+> 				}
+> 			}
+> (Z)			for_each_link_codecs(dai_link, i, codec) {
+> 				...
+> (A)				if (... snd_soc_dai_stream_valid(...)) {
+> 					...
+> 				}
+> 			}
+> 			...
+> 		}
 > 
-> diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-> index 3ab6626ad680..b168cf642092 100644
-> --- a/sound/soc/soc-core.c
-> +++ b/sound/soc/soc-core.c
-> @@ -2000,25 +2000,7 @@ static void soc_check_tplg_fes(struct snd_soc_card *card)
->  				dai_link->platforms->name = component->name;
->  
->  			/* convert non BE into BE */
-> -			if (!dai_link->no_pcm) {
-> -				dai_link->no_pcm = 1;
-> -
-> -				if (dai_link->dpcm_playback)
-> -					dev_warn(card->dev,
-> -						 "invalid configuration, dailink %s has flags no_pcm=0 and dpcm_playback=1\n",
-> -						 dai_link->name);
-> -				if (dai_link->dpcm_capture)
-> -					dev_warn(card->dev,
-> -						 "invalid configuration, dailink %s has flags no_pcm=0 and dpcm_capture=1\n",
-> -						 dai_link->name);
-> -
-> -				/* convert normal link into DPCM one */
-> -				if (!(dai_link->dpcm_playback ||
-> -				      dai_link->dpcm_capture)) {
-> -					dai_link->dpcm_playback = !dai_link->capture_only;
-> -					dai_link->dpcm_capture = !dai_link->playback_only;
-> -				}
-> -			}
-> +			dai_link->no_pcm = 1;
->  
->  			/*
->  			 * override any BE fixups
+> (a)		dai_link->dpcm_playback = supported[...];
+> (a)		dai_link->dpcm_capture  = supported[...];
+> 	}
+> 
+> This validation check will be automatically done on new
+> soc_get_playback_capture(). snd_soc_dai_link_set_capabilities() is no
+> longer needed. Let's remove it.
 
-Not following this last change either, the code used to be conditional
+Humm, this is really hard to review.
 
-                        /* convert non BE into BE */
-			if (!dai_link->no_pcm) {
-				dai_link->no_pcm = 1;
+soc_get_playback_capture() used to do a verification of the match
+between dailink and dais, and now it doesn't have it any longer and this
+patch removes the checks?
 
-and not it's unconditional
-
-                        dai_link->no_pcm = 1;
-
-It's not clear to me how this is related to the
-dpcm_playback/dpcm_capture removal.
