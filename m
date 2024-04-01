@@ -1,78 +1,66 @@
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2103.outbound.protection.outlook.com [40.107.114.103])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2099.outbound.protection.outlook.com [40.107.6.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0421E623
-	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 00:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C41624
+	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 01:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711931546; cv=fail; b=dxhfU+UddyawbEwlisZlCOs3MeiamY2u0WXoJ9mSTwlcfezCUa6RyQ7MwRou6zND+aaFHXXHehBnciwmZ7yC2YWNR8/t2+zI/p0uPEb0VqEXeCI5HGELeGrCf0j5IMi+3wxqPpsMw1F0hW+3Nd0pDdsb7dxuEhNKGFgfHwit8Qg=
+	t=1711933398; cv=fail; b=M7z7zLYVGy7+bZh0v041y1bvYlH7Use5U5hTTVpvISou8/fm5UU/Of3nNaUFqQrc2GFfMBM9qThD1teCgiOvHYwEazzreaNhHBxN0aCETHzDMUmWNIfcFsu/YcZ8Lq1oqzHbs/l0NAeJxqMMdOEIuqahcHwmtK8pRHos86sm/zY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711931546; c=relaxed/simple;
-	bh=DzrRwV6zDKWNoVo6h3JInlIFyBVvs3bo5dnLKdjOXH0=;
-	h=Message-ID:To:In-Reply-To:References:From:Subject:Content-Type:
-	 Date:MIME-Version; b=BazgoTrJKv1NO+TgS4Pi+GtmYIy3Qrtn+ITVgyRKxYMLD8wFukZgZiPNSaI7x1w1v5T/vWCvvbCwQpbYco3DK3/tb5CaR92CgD0d5s/tRTCHaOTsBDwdyJQVQTBDVgn/qzCvdXVay2pIJC9PV66eX76i8XxwyDQCnACOoFSJiyU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=gN3HpRd9; arc=fail smtp.client-ip=40.107.114.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	s=arc-20240116; t=1711933398; c=relaxed/simple;
+	bh=JetuwSOueTwY7PmrA5igNTT1XRasDNw0Sxh0G3DvX6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uEJAsbp4i+K5DUsIpcJao8cYTqh1sqLDwlU0A8UUw6pr7yRNSweDEzUpdOCzJ6pHPsWoRtvZlW/EhdPFBKnL2zD89CwYLKISstMJNW1f0KkeNC0bhAo0Kxf8befudkGB/CZGOQlMVlinYMEurkyC8i3xrRqIg9tmJtiMujwEON0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=jgHNoHMV; arc=fail smtp.client-ip=40.107.6.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="gN3HpRd9"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="jgHNoHMV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hAYmhtYW6h8ysskAv/AhncKj8fuPNrc/+BbPFtXLa+iwRiI+xwy0NMYt23MLFqvE0/Ku16gE+afvjRFNENGRWxTt/L588L+EctUPAGrk3OZWhJey3whlcfO08rGFF4FlkVmqdIWAHSHoOtoaFh1iy8ve1kN4Rca3a9TKFKawW0T71cdggnfnWHs5vsvV9RIilj9a9cqxCYzzy1B64TEDRzA53ytsyKfbgO8R68YKGePpt8MTIkikzcSvENzH8cI+FYY+GkVKGZxclg7TuwQvbNmacY2nvihvbZurJz2OMxxyJSGsmkrgXkxDU/V4WSjk0ylSysoDtY/xJMcBEkOyHQ==
+ b=aOZNX8rmJvRU9pAVRzlXe+Xgi2zK9C8SYCKzKi5Jq04nKW5m4FMkJxMPlo+nctGR08HVwH7DVC8USzdorf9iF05JpRF902T07IifipVwD4PBugkk9yYWRwOKm2Jj63Ae5FQwSyApAgt0KcTUSF4ecUglWzZF60in6dp3P+c34RHVb0uw1bVHonwyNb6IvIk/6U/+tifwOLH/fZtXsqeRlx8zxlc47w0SPEzuXIyq/ZHPmRvoTiZpkInaD0BIP0MdTFuol+ElpCxD+7KAZQtJMJfTHMz8FPMp4EM21+UKnZ0v9vmmg6Nq8FwA+uedJVRQJw+gWliTiFc8mrMWpP4Kig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Fi5YmLAN/ztC8pwduR+1TD1gF6rQnTeW9R9HKSHXOQ=;
- b=McSmHWtg3M7L87y8U/blvUfk0uWpTKpKpVbdta/Dtw6496M+FMRTis2YHc1VlcDW2XW64KlIju3buSKMJlzEP3nASCeGaTobupbOvQde4oEBRDAm1Vde4az5fiP42Tzf638S7Vr/A/iRyMIPf8Naw54SMP+JXOMElM9RtGt2Rm9WIGQgJWx8BieoyJTtErrl0np4iBbiheB42MlWs+Ytyj6EAYOuOOvFYv/NnyBShKP37zgMlNKv13lDU2CStX3EQFTlZhp6lkadRRuZ5fqmDsr1FOygG3xZiYVrxvOKA652wZ9681GuKfmyngC5OCkopdITW5uTxoOZd6TgPTEjHg==
+ bh=QCT9vwBoY2GujEKG069PStJQl5/x1B7fJ5gCvsM8J/Y=;
+ b=N8/gc1IO1tOP5MOp75JD9uE52XsIfTNgHHIFM2mXlkR6I/KXYC7faWi0YEn08DxdQL0VPWgC73EX36ed9vYpl/N0GFRher7CCwHbEckzu0gQF1SM+vowW3+BiKJ2kWtUvVZV7jyuaK/RQvH0TSDP7YcjLsEfy7yhyJ0U7okvRP6UgfLc+He7exTU6JGMHnjqVAqdMpqvHGFp6tYyyNW/ra2B+OBFuG2YsrdLiL4QQqynOCMhHl+1khrKtXLfpNqbZ3EaWn9v3pAjyNiYgtjiBpeVr46R1sSdWqzW2Grgyw7iVfiRDdesE+aSTaGVq24hQWVYFYZK/EmXpM26p2HgGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Fi5YmLAN/ztC8pwduR+1TD1gF6rQnTeW9R9HKSHXOQ=;
- b=gN3HpRd9G5JaP6tFzfIxaUe89Dp19QJXvCYyAQkgAJYQOQRRNA4upJUa3ALNHqSjJtU3dLDIOlSMkHSytleQ5DF1EGPMTwLggSR4HQIJsundtCPqFqpTQFBdRojtkNRpHkECFbqfQshmRgYapU1YOF29NSAcV8d5WHlg8i+YLTs=
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by TY3PR01MB9964.jpnprd01.prod.outlook.com
- (2603:1096:400:1df::9) with Microsoft SMTP Server (version=TLS1_2,
+ bh=QCT9vwBoY2GujEKG069PStJQl5/x1B7fJ5gCvsM8J/Y=;
+ b=jgHNoHMVkv6q+dQ683SobM9YzlZ6OyOEstseEI1xRQyHLZTZGYJ/VVwZYrQ6IsBLuQNc9SAa0DPmLVKaN/FUhhmmb/s55K6joz4QjqY22t3wOtFCglZJ5ycswXCm/A0PpAhL55HjIwNppnKeEm88TWDa+dcJ5tDcfzJirE+Ntw4=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by PR3PR04MB7257.eurprd04.prod.outlook.com (2603:10a6:102:93::14) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 1 Apr
- 2024 00:32:22 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Mon, 1 Apr 2024
- 00:32:22 +0000
-Message-ID: <87cyr9udm2.wl-kuninori.morimoto.gx@renesas.com>
-To: =?ISO-8859-2?Q?=22Amadeusz_S=B3awi=F1ski=22?=
- <amadeuszx.slawinski@linux.intel.com>,	Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
- <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent
- Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,	Daniel Baluta
- <daniel.baluta@nxp.com>,	Hans de Goede <hdegoede@redhat.com>,	Jaroslav
- Kysela <perex@perex.cz>,	Jerome Brunet <jbrunet@baylibre.com>,	Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,	Kevin Hilman <khilman@baylibre.com>,	Liam
- Girdwood <lgirdwood@gmail.com>,	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>,	Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>,	Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
- <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Trevor Wu
- <trevor.wu@mediatek.com>,	Vinod Koul <vkoul@kernel.org>,	Xiubo Li
- <Xiubo.Lee@gmail.com>,	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
-	linux-sound@vger.kernel.org,	linux-stm32@st-md-mailman.stormreply.com
-In-Reply-To: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
-References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH v2 16/16] ASoC: doc: remove .dpcm_playback/capture flags
-Content-Type: text/plain; charset=US-ASCII
-Date: Mon, 1 Apr 2024 00:32:21 +0000
-X-ClientProxiedBy: TYCP286CA0182.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:382::9) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+ 2024 01:03:13 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Mon, 1 Apr 2024
+ 01:03:12 +0000
+Date: Mon, 1 Apr 2024 10:02:49 +0800
+From: Peng Fan <peng.fan@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: Re: [PATCH v4 1/4] arm64: dts: imx8: add cm40 subsystem dtsi
+Message-ID: <20240401020249.gkiextdndgq5x3pj@localhost.localdomain>
+References: <20240329-m4_lpuart-v4-0-c11d9ca2a317@nxp.com>
+ <20240329-m4_lpuart-v4-1-c11d9ca2a317@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240329-m4_lpuart-v4-1-c11d9ca2a317@nxp.com>
+X-ClientProxiedBy: SI2PR02CA0037.apcprd02.prod.outlook.com
+ (2603:1096:4:196::8) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -80,105 +68,181 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TY3PR01MB9964:EE_
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|PR3PR04MB7257:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	LHhobh9QIIh6ggyi5IFUCIIKxivljQNLS17UYp6V8MuKOtf0pxKRsPmDidgS7oX6/Yb0f3ZBuzgClequSwaZhkI8vx1GfjiFYdtz1l6WCOPq0UlSz5Z2ur6hIsdN/wAWNa1WY1FYFh6k+5yE0JuowO9tJLwwaRLp0aK30kQ0NGC+DKXj8jx103sezb2NowQ06gA85YI3zc4PEKpIutG2pWOEpuDdprsYXEAT0LNAYqcxhMgDqSctKyF9OeQoIGD4BmcnrHYE+JqZFlTNxVFYMHNOswlH/TdeVYsrLvHT85jVMEKb1028FlRGVT89Dvf1GO/c3h4JsQ4s4ThOfZwNbNc/ey742c6mdhwVYgr+OC5sQasXJBfd13fp0BINyyEqNh85B/95BXOkFWSMUkRKgvHFUQTnN1rsMojosOhR2M8GhthAcHDIllPUlx1WERLEhPYBH0e3WUS23AyuCtrnggU8a2Y17E+8QhrpicDxO0mdLC1QQZ9giUu0rRm0b/SgAs+FwYw57FBtB9u60vTDYJjGRDc33wFA/WJwW4/bsiWFJcwBZ7aXF7WlOe1XiA3ZX5RV4lMLVxpwhUIARP5r5VhkaVYyM5qRimju9P1oSF7vacrEYPc84ubps3DNja/c1yUeJv1aKEyvKM/8datrz2lFD1OMBWchVVKpE1BJr8htVPG6p9B5lRFTgFNfWyW5znrmdmWylT1tRCiOuj0Wda6FxJybABBNZX61C26p1h4=
+	5b2I59tVUC5vUvG05hLA2h7O2cysiBaEZciqVxMcAyPbha5WE6HNUo9OJC7YiL0l8z8s+pCPIJEhTkNcoApLMXXJbD2iXiP74XHLxQP9KKwL46mf/dM6Wd7c1lzLeNe39Edv3dR5FJObFcNFRakEzzu3k6pNnvKkClwHxpN/j+nArdaQ7fXmrpwWjZDEpDIK6Aw/BIeIVT1yjnmWeFi3mOiNty7wI69e+KK6UJbd79ad8BeLYBeTY/nKQkRUF+hCwqmr5xcPomLyW6sQIfBMqvUElSlO4gNq1vyDNqZwGaQ8KSpvic2HiqaS9nVJJpPVqdbZ7/rNaUig4GMKZm2QYRDv5htQYRGQzVtkw0VCYq16NhrPikeI7Z7iZJggbqxWGDsuhbKP5BhEgvHW3z7O1/CsD8xo5Y40jWoua1jGI//Ae99jJDrscyC21ZYaY5WeNdmfcNzRfpKq1BlMX+g5y9PNgoTrP9bSHVTvdRTSAUFKQkhkfnVj1sfHLBIODHvYgsQkVbACdP0VHoEEzj0VXXJyLynaLzE8JTTzxpcno1S8yScnEoODb8CrvTeVFd0ElWN70R1URU3PX3+cAIkIo8MkMewsnD/b5dv9VC8ebr8Oz0t0yXWajAnJJ1ieYqTHBaQyM1OQbVqdfdl7qQyg/HcUhJ8PblIy0xrUtUaZb1Wxr7Ka2+wPm+tro1IXnuz0YH+IpSEHAUZY+XJawnQX/TEuokQhlPtnHq/0JfZA6mk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(7416005)(376005)(1800799015)(38350700005)(921011);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(7416005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VGj90DM5kx07tpO6n5yq3BAjyectX65ZcFqlIByDQJPvo2FmGVaNWbbl6F0i?=
- =?us-ascii?Q?KRuTsPmuwfpoG+sd7gg1/kbTMVPP1Y2obOtuoSIieqzN11ETj9TYktuccCX3?=
- =?us-ascii?Q?+fd//5sVWD8TJGnEOXLqRAnL7L6pT77zsJgO6/vo7quUYg0lR3h7T61jLhtp?=
- =?us-ascii?Q?A3eLtJ3RaH0Gvv2gbVQpkOVGSOif1YWzATspMxy3drqnUGRtQc0taxYSvTaj?=
- =?us-ascii?Q?BZ8We5X0tXSuj719KD8llC7pDaCxbdaQgf0dPaPmDv1eC0/gfOBNH90cw6Fy?=
- =?us-ascii?Q?bNiXUkKETiaV89nCT/5vFljYyl8fsbUG9uEsRWVr+S+YHz6gzdGaNmrRDAv6?=
- =?us-ascii?Q?s73wwq0l7wglAA4oNRHgO63q8o99y9rVdiYI/zJYWgyZ9UXQ4JmLGdBYf1Ws?=
- =?us-ascii?Q?YUCuelHGjOGHoBIcdHtYbWoZw+GaAJO862lFYtK0f9g7VJDx4OuB7KZdlW+g?=
- =?us-ascii?Q?HrkFvgPLn+mawSDNQg62ptQtv9/2Ex3Vpsjbt4oDHFeBU36Dxle6UIDJTdfB?=
- =?us-ascii?Q?+NZky8LtEZjYinsH9+5jTMzJsuQU5QyKCZn29CiLC4BtW9gP9YLW+p2bR2zf?=
- =?us-ascii?Q?CBCVQUL3Sr7rdTm/dE/EMsEiRFGlpaRZehIxHTYym5TTTcC1YrQQtFxF9Zc+?=
- =?us-ascii?Q?Yg/78CZMRcoEZatOOxOtwAi2rwUlXDu+DJEwJu1lgIPhn3i1bzQu9jk9YM0l?=
- =?us-ascii?Q?6PLjse+1Nafs/DOLgzSP2Oh8VB4KrPV8/reiyAeN9y2QlDyUn9Wyvjn7EQ4O?=
- =?us-ascii?Q?ar8dr5PPk214VRyUMo/sezdfzmGXZ6CYr9eX+biIEm6rB9VLP1n5X7U+OYT2?=
- =?us-ascii?Q?Klhl9Cdyzs2p8VI/HqYsfj/lFxwXVO6QA1WA4wAsRNvQDFmkK3eUo7BdEEuO?=
- =?us-ascii?Q?UaXfpm3M5kxlt4UeOcrmjdgmQ+08JHEzp9OEPPDTajwp9I6N3RKFcI74+Oeg?=
- =?us-ascii?Q?9/5kbUqhPDpqDodoS/p/xi8VPq6N0G3GPxohltcEzUWszXjcnAWOQzKhGYai?=
- =?us-ascii?Q?4hiB+YJR4ypiF1EjdCWGq/2f+EMxkCzUAxj2ckzRND8cDVFAtidjJIV096KS?=
- =?us-ascii?Q?NLGeMn4MLo/Op7mKgfmNSe/lvpDo+/G2YXZe6c0DWn/qq9QBPdAtaKYl7hVy?=
- =?us-ascii?Q?mKRO5ZrD6lxsX2/rmezrzzd5QsX/J8sprMOquZF2/iA4AZpqUiE/7Uh5tdit?=
- =?us-ascii?Q?G/vddZZ+mTbiL/tBuEWhtrvwTqCMy6+lc2u9X2ku8V4Sx0cKaNslHqvbtvi/?=
- =?us-ascii?Q?eiowuxy9Px29d0av197mwHlDPvmc71kqGIHCTTZrYNT3TFlCJsXFSSPkHKz2?=
- =?us-ascii?Q?teNpqr3efaZT2lHkbqFnZn9nayNhhzzmLb+jLdHinW8eFk0S+ZEmFhy71zC6?=
- =?us-ascii?Q?cEwaYiP8t6VFd+aJCL71jT0+SRyHTkccq9XU+Pfca7pmn1Ld1kp4z/dW6EeF?=
- =?us-ascii?Q?ADHfL3iVk6DvzB+g2cNWBmUo/XO9ukce8owL1dbveOsudVKmzkfxRJj/yDwq?=
- =?us-ascii?Q?T5KBqsKwx10UvgC0+jPcMYCOquybjDtEzYSgnd6FTHc7nf0j2AZswA5PULs/?=
- =?us-ascii?Q?kBBK4tIOJk3C6GZY/mT4EKBWnCDa8A63EY5oZVwQFONxZH0vDeq+YxOd8i32?=
- =?us-ascii?Q?3mPse2cVkEVM1gmYMcjOH04=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04ab1d72-ef1a-4b07-1596-08dc51e331f7
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+	=?us-ascii?Q?yKIXaF/69rG6tawCga9JbUNzjAmyDdm9LbSEcxLjmz5xmejhpxq9VjxogdZ0?=
+ =?us-ascii?Q?ifvFTzZNqUwyMwuvuKpzvCOJ+YNOEedeIzqKWkLGuXvbl8khGPrr+Jzjr5DV?=
+ =?us-ascii?Q?s4eI2bbJapiualYKhtsT7BzmYYlby/8LP9a1+yPlVhOto/lxOvVp6D2haPhB?=
+ =?us-ascii?Q?Znh+cmcK6rR1YqQPDjlbrfSo108zi6CpNTHUDKDCEMHgD9yDpA/WnIQa5jCo?=
+ =?us-ascii?Q?q0ktw7D5b0Wcu+h0YniDUqtKxyRGA1cfpEkJRYww0HFujzcZJS+S1Xz5707e?=
+ =?us-ascii?Q?IYHeS0VQWcZorJ0yT0OygV0ncqsfoQWB9PEbA+L7OU5sjfzSL3RN7kmafQq3?=
+ =?us-ascii?Q?VJRzvDtBscvG5fB6xJyatxnRNr3QWlTDXvxy5VrOXwemF1Qzvr1+xt1Wal9f?=
+ =?us-ascii?Q?Ck+Zgbme1YNzZyYk93DFX0IlRwpGgOyTmu1C5dwTqy933xW73PJmsa3/YPuQ?=
+ =?us-ascii?Q?vncwkaland6bFTtiJGM4WAGrphMn7UDQY4zskYJAytbia2vHP+9UtEnBHhkP?=
+ =?us-ascii?Q?1BX6gA39TG86vrE4OUmwQC+h3byUzbT1o2gz+VvadxnuMsHXBvvGUuWoIA8d?=
+ =?us-ascii?Q?MMceVwCHCrmfChGPn7XBGDKaI3Y+oAIXIEvT4ZJZAeHucJ993FnRY35cA9gJ?=
+ =?us-ascii?Q?54ilBaWC2+AeZDW+v9ns7NDOZ2CWdmSy2EDAI4H6egOOLBylmX+isQvEtj77?=
+ =?us-ascii?Q?b9d0QS+7vrWl/GZBZUYNfUk0bsCFOsANVd5oQ1F5huzNUyhE8qWZcx/97Zc9?=
+ =?us-ascii?Q?FQ8FQkbRNGZYEzV363piT7zKQtK97ogqGQbyXraYIHT78xk44Ss8hoSWlQjm?=
+ =?us-ascii?Q?sxVui6celBNMzt1DPRktQViHd+pSJLk7vLbcnU4Sv4u9b3Lba2XkidPjyNzX?=
+ =?us-ascii?Q?W7AUPKgho2j2fzTZZL+ErSKuI+xPttJAV5xIXY+1bFX6rKdcD7cS4murEhUV?=
+ =?us-ascii?Q?xP67wurT6EcROINiJqDhMAykL7tH3yMwBw8Jo1DsrnQjCqHcJwUUXPIquQC+?=
+ =?us-ascii?Q?MXjZK3zQUH96qoa1LZPtTuLV/5QZVOovnbWYmDz2S9/F4GmNg7/+EUgvfMF/?=
+ =?us-ascii?Q?qcRkYgQBqE+4PDC5vdpxbWmwOfti9qPNk5RE7cmgubOtUI6TnquTA/PE0rkd?=
+ =?us-ascii?Q?/DCQBlXPwfw+alFzzSIn6ffLJhwqJqSolLjhmxsbf1U96KaWCABeO4ek3kxP?=
+ =?us-ascii?Q?rtK5iAOJqYgPnbYhWUZOwqJx2AqMMjrUMuYUNHmKaatQmaKvkqA6mWTEq30J?=
+ =?us-ascii?Q?MIWyh0m3/T4A2z+nxULVdZWT4nh7V+tbJckh6HVdkg+SSHv0WRzd3ixtQ3Lb?=
+ =?us-ascii?Q?vYQYEM/4bmR4asvpTArhrE5PKIdOfpH7AnXXCewSmX0LquDvPXXaN8R/sa4p?=
+ =?us-ascii?Q?ODbsYDf1sGyfq3Wen3PgOD2HcGAFwPjMjJSwsQ0jHzRcdZp8XGbley8uMikr?=
+ =?us-ascii?Q?tnLlp/wcKKhHiSJyPY97Ndq0v9Kq+z51xsQnMPsgVWcKe6L0P2OFqJSuI7bk?=
+ =?us-ascii?Q?85QMzHSajOa2ky/wfRjGn2wpIixCTc0fBUqRQyz+5srmBKxjs6jZxUv8oADa?=
+ =?us-ascii?Q?gAg4udkdq1ptOhmyXH0dpOK0xiSL80Rt3vWSGLzy?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 397acc7f-d04b-4b56-1773-08dc51e780fa
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2024 00:32:21.8826
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2024 01:03:12.5350
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LIaP62mve4UHd/vopiyLjyq5kK10f0XGhArIAtcf09B3S4Z9IbW49ClAlI0/w2vxlfO0IdUdELys8Db4kIZC6MPTJaZYaCGXPDYJoHcxVixrC2FmofAQYnYzq+htTgvG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB9964
+X-MS-Exchange-CrossTenant-UserPrincipalName: +qAd+JIvfPvVMAuh6dJm3rpQIwVwW6G7QTCn/TgAR5YZDo0k1D3thtEFZfR0lNSh1cjMIPbNmseHul7oIwWKAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7257
 
-.dpcm_playback/capture flags are no longer needed. remove it.
+On Fri, Mar 29, 2024 at 12:37:05PM -0400, Frank Li wrote:
+>From: Dong Aisheng <aisheng.dong@nxp.com>
+>
+>Add cm40 subsystem dtsi.
+>
+>Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+>Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+>Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>---
+> arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi | 67 +++++++++++++++++++++++++
+> arch/arm64/boot/dts/freescale/imx8dxl.dtsi      |  2 +
+> arch/arm64/boot/dts/freescale/imx8qxp.dtsi      |  1 +
+> 3 files changed, 70 insertions(+)
+>
+>diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi
+>new file mode 100644
+>index 0000000000000..10a05db06ade9
+>--- /dev/null
+>+++ b/arch/arm64/boot/dts/freescale/imx8-ss-cm40.dtsi
+>@@ -0,0 +1,67 @@
+>+// SPDX-License-Identifier: GPL-2.0+
+>+/*
+>+ * Copyright 2019 NXP
+The time needs to be 2024, otherwise LGTM:
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
----
- Documentation/sound/soc/dpcm.rst | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-diff --git a/Documentation/sound/soc/dpcm.rst b/Documentation/sound/soc/dpcm.rst
-index 2d7ad1d91504..259c39add421 100644
---- a/Documentation/sound/soc/dpcm.rst
-+++ b/Documentation/sound/soc/dpcm.rst
-@@ -157,16 +157,15 @@ FE DAI links are defined as follows :-
- 		.codec_dai_name = "snd-soc-dummy-dai",
- 		.dynamic = 1,
- 		.trigger = {SND_SOC_DPCM_TRIGGER_POST, SND_SOC_DPCM_TRIGGER_POST},
--		.dpcm_playback = 1,
-+		.playback_only,
- 	},
- 	.....< other FE and BE DAI links here >
-   };
- 
- This FE DAI link is pretty similar to a regular DAI link except that we also
--set the DAI link to a DPCM FE with the ``dynamic = 1``. The supported FE stream
--directions should also be set with the ``dpcm_playback`` and ``dpcm_capture``
--flags. There is also an option to specify the ordering of the trigger call for
--each FE. This allows the ASoC core to trigger the DSP before or after the other
-+set the DAI link to a DPCM FE with the ``dynamic = 1``. There is also an
-+option to specify the ordering of the trigger call for each FE.
-+This allows the ASoC core to trigger the DSP before or after the other
- components (as some DSPs have strong requirements for the ordering DAI/DSP
- start and stop sequences).
- 
-@@ -189,15 +188,12 @@ The BE DAIs are configured as follows :-
- 		.ignore_pmdown_time = 1,
- 		.be_hw_params_fixup = hswult_ssp0_fixup,
- 		.ops = &haswell_ops,
--		.dpcm_playback = 1,
--		.dpcm_capture = 1,
- 	},
- 	.....< other BE DAI links here >
-   };
- 
- This BE DAI link connects DAI0 to the codec (in this case RT5460 AIF1). It sets
--the ``no_pcm`` flag to mark it has a BE and sets flags for supported stream
--directions using ``dpcm_playback`` and ``dpcm_capture`` above.
-+the ``no_pcm`` flag to mark it has a BE.
- 
- The BE has also flags set for ignoring suspend and PM down time. This allows
- the BE to work in a hostless mode where the host CPU is not transferring data
+>+ *	Dong Aisheng <aisheng.dong@nxp.com>
+>+ */
+>+
+>+#include <dt-bindings/firmware/imx/rsrc.h>
+>+
+>+cm40_ipg_clk: clock-cm40-ipg {
+>+	compatible = "fixed-clock";
+>+	#clock-cells = <0>;
+>+	clock-frequency = <132000000>;
+>+	clock-output-names = "cm40_ipg_clk";
+>+};
+>+
+>+cm40_subsys: bus@34000000 {
+>+	compatible = "simple-bus";
+>+	#address-cells = <1>;
+>+	#size-cells = <1>;
+>+	ranges = <0x34000000 0x0 0x34000000 0x4000000>;
+>+	interrupt-parent = <&cm40_intmux>;
+>+
+>+	cm40_i2c: i2c@37230000 {
+>+		compatible = "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
+>+		reg = <0x37230000 0x1000>;
+>+		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>;
+>+		clocks = <&cm40_i2c_lpcg IMX_LPCG_CLK_0>,
+>+			 <&cm40_i2c_lpcg IMX_LPCG_CLK_4>;
+>+		clock-names = "per", "ipg";
+>+		assigned-clocks = <&clk IMX_SC_R_M4_0_I2C IMX_SC_PM_CLK_PER>;
+>+		assigned-clock-rates = <24000000>;
+>+		power-domains = <&pd IMX_SC_R_M4_0_I2C>;
+>+		status = "disabled";
+>+	};
+>+
+>+	cm40_intmux: intmux@37400000 {
+>+		compatible = "fsl,imx-intmux";
+>+		reg = <0x37400000 0x1000>;
+>+		interrupt-parent = <&gic>;
+>+		interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
+>+			     <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+>+		interrupt-controller;
+>+		#interrupt-cells = <2>;
+>+		clocks = <&cm40_ipg_clk>;
+>+		clock-names = "ipg";
+>+		power-domains = <&pd IMX_SC_R_M4_0_INTMUX>;
+>+		status = "disabled";
+>+	};
+>+
+>+	cm40_i2c_lpcg: clock-controller@37630000 {
+>+		compatible = "fsl,imx8qxp-lpcg";
+>+		reg = <0x37630000 0x1000>;
+>+		#clock-cells = <1>;
+>+		clocks = <&clk IMX_SC_R_M4_0_I2C IMX_SC_PM_CLK_PER>,
+>+			 <&cm40_ipg_clk>;
+>+		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+>+		clock-output-names = "cm40_lpcg_i2c_clk",
+>+				     "cm40_lpcg_i2c_ipg_clk";
+>+		power-domains = <&pd IMX_SC_R_M4_0_I2C>;
+>+	};
+>+};
+>diff --git a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
+>index a0674c5c55766..9d49c75a26222 100644
+>--- a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
+>+++ b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
+>@@ -5,6 +5,7 @@
+> 
+> #include <dt-bindings/clock/imx8-clock.h>
+> #include <dt-bindings/dma/fsl-edma.h>
+>+#include <dt-bindings/clock/imx8-lpcg.h>
+> #include <dt-bindings/firmware/imx/rsrc.h>
+> #include <dt-bindings/gpio/gpio.h>
+> #include <dt-bindings/interrupt-controller/arm-gic.h>
+>@@ -231,6 +232,7 @@ xtal24m: clock-xtal24m {
+> 	};
+> 
+> 	/* sorted in register address */
+>+	#include "imx8-ss-cm40.dtsi"
+> 	#include "imx8-ss-adma.dtsi"
+> 	#include "imx8-ss-conn.dtsi"
+> 	#include "imx8-ss-ddr.dtsi"
+>diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+>index 10e16d84c0c3b..0313f295de2e9 100644
+>--- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+>+++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+>@@ -317,6 +317,7 @@ map0 {
+> 	/* sorted in register address */
+> 	#include "imx8-ss-img.dtsi"
+> 	#include "imx8-ss-vpu.dtsi"
+>+	#include "imx8-ss-cm40.dtsi"
+> 	#include "imx8-ss-gpu0.dtsi"
+> 	#include "imx8-ss-adma.dtsi"
+> 	#include "imx8-ss-conn.dtsi"
+>
+>-- 
+>2.34.1
+>
+
 -- 
-2.25.1
-
