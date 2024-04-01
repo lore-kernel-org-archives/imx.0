@@ -1,161 +1,179 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2097.outbound.protection.outlook.com [40.107.8.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD669475
-	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 07:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.97
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711956411; cv=fail; b=WhkN4+aFLGKYyLCkH0krlq2ApXjRDDjKIFVT7KG8gS0RGhvA/jpEQUwTK4alZ8lzJAe9vy1VzeDVSWiYQzNiBkcaG64TbltWM8v0vzLwc4FKnq3P+RK5TsXGvsRY6UCUT/2sx/2SCgc9Rh8v8SIZ58sP/ICPsGljItjK7fwio0s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711956411; c=relaxed/simple;
-	bh=1raNL0GGHxN2nqMDSye8RjemmmCF9QjpXnYqtleE4Zo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jIYzMEEaGYy2V2+zCA/tDsNh3E3K3uRG03lDQsDl7Zw+X8lEEzds2inDS047KafXPzhykRfIWjHetPkz8JWgrvgPeM0E0pXZfJZYJ9xg9KhK27OllF916gMBj11AdBZomzw7cKsEsKaCOKPXtABHiDKmUlp1zOhtH+BDmIU45/k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=FIwqLREx; arc=fail smtp.client-ip=40.107.8.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8658B10A25
+	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 09:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711965107; cv=none; b=GFQ3MxOL0OaPhn8pRbTdCbaK8nKgrv3aPNqwxPsACbxozUiKauQZj8epijHtuOMQdt0TqctdOpQ1rwkbw5brOrtVIVF6XB5sjjSnb6HMFokp0Wuz+1BYnRMlQManZuqCqmbIVQbPG8Wq4pBJdILle/V5gWYlK8qLcu2Bir9EuT0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711965107; c=relaxed/simple;
+	bh=Z/fDI7u4ASepE5PkwvvEezq2L8x53f4d2VHoI/MP91I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Usg6znWnY3IqWcumVnpsk7yfIpcIg0kA1LSCtX9S/6Ra4JMY6S6zVTcGR2x7NjKPNaciJ7A9TFo/n6dKcglF1cJXC4wZgljsJmyUeZXQt1uaiMoBaEA04AM/yyLk+j4bM2pLqZXd2VFVQjlOsg2LNLTyl5cukQ6bbxgHPEryVtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iVeZL5bK; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="FIwqLREx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jCMU1k1+jcygw3CT8DzDmDep0rSyobVQ9UMERX5vzt9PPQrF45KPZnec2fp73Dt+Ae1265XUYnzqq41BGTxkjOo2FD1BDhXLE7V/tKZWpb3diaSRmCDyXardiyJNlU0CHQGxoGtI2P2fm6x/UbC7Hrg3MLaGnZBvywpQaz8WxQsCZsR6ql3IaPLAG++keZiiJMN8cwwlkPUWDJvQB8AsG3Xfqka+J5QBVoBSKXFGJUq6uzexPUe/X7nuSSRDtBVRqS362Ojac2NhneRaCUpWiArgJIlVUGt5AznnAkeh6Mv2W24/tTHXR+krqIpqhl5XO9d3qq3rY1UPVpYhhTzTtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1raNL0GGHxN2nqMDSye8RjemmmCF9QjpXnYqtleE4Zo=;
- b=aAoAOcNwPtYUad3yBBmOfhOltYGNTMEsH8n9dIC+OocHaghsqpB3Wx0NKs6LttA1sFqj0xptFW4BU2PeBsMvDEJ+Npa63lkfr5JwlS0ckyZDCp6ccgaReHFFpjMEBVN74XfdmrgHnEMtm+iLjkibR2wtTW9GUFItd/MmZvvAcsL/T9vYn3dsrFbPBN/ImgXCnUHI/9aLoUkuaVLcY01Nj2zuM1kaVrogXvA6wX87hqSdwDsE0eFbBsE+d4SoJX+cQiNa9xqp6oe/g1hGbETkwsy2/z7idtA8ePUiTI1ly48XjkEm2zTs+o5A/njAqvCwi+OegRJT+zqOW/F93Q8kig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1raNL0GGHxN2nqMDSye8RjemmmCF9QjpXnYqtleE4Zo=;
- b=FIwqLRExgJVHXIww4+6Batr0NYBsyhlDOmkAkH6Pj7t8+DaWwfIitbSo5C8AM9p48h0WIPwisPHXhfw206KK9+ZE/Frtfu4JU9z0t1Wu1+sxHTSZLesCnCrp7gJt2d14QozLUdEnj/F4XKdekJUR8+ko192mpvf5SkDtILT23eM=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by AS8PR04MB8994.eurprd04.prod.outlook.com (2603:10a6:20b:42d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 1 Apr
- 2024 07:26:46 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Mon, 1 Apr 2024
- 07:26:46 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>, Michael Turquette <mturquette@baylibre.com>, Stephen
- Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v5 3/4] dt-bindings: clock: add i.MX95 clock header
-Thread-Topic: [PATCH v5 3/4] dt-bindings: clock: add i.MX95 clock header
-Thread-Index: AQHafb8M1T56G0UGOUeRRrQyv48VEbFI2C8AgAo3ktA=
-Date: Mon, 1 Apr 2024 07:26:46 +0000
-Message-ID:
- <DU0PR04MB9417AD4C2F5644FAE6D5A762883F2@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com>
- <20240324-imx95-blk-ctl-v5-3-7a706174078a@nxp.com>
- <31b493d1-ad74-48c7-8585-9df323418ae3@linaro.org>
-In-Reply-To: <31b493d1-ad74-48c7-8585-9df323418ae3@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AS8PR04MB8994:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- G4ya88hlGO9YQgm3s9/z5D8sMrkos/bperG+1z+REjobhesUo6hjOvP34onzzlREm7e2E78M7pxLSzHdHAfICLcmam+TXHzq4sPkLmdWrfshFprEmqxdHuX2OS2Ax1DKSTM1zdIzZxQ5fYcfwBOwrbnZEl59+HGMnXaESUJGXIjR/OqM8wxmjw6Oye00rYnGEhfe+SyUCQiofL9/LWyhBqweaZQn1LvakBtz9necdglpSM7fLeEodZzg2NvSMhH97S/8h6vBcGdoNhJq/HHLDltUh5J//qvHAesqCy99ycv+c+mFulLNawAha0X/yxmFOstrrpiDDfm2zcuiH0k4EPwR9rShshhmMTMcIcnkNZBD54jWFEJwXEJoVOLQ0/cB8hH+G6MJ3csmNA5RSVrcZ8aN3ERV84gDGF9M23Eq0J4G81c2mzs5TTa4oGMb2o7ov0oL+6BuPKASoAsZxEz2tcwXyr84yy0kuAkcxm1k/6uCdPFc9hbnjEZ0/tNaqGtobQmRAJ7z53L0g6yrV9dES9jyp3cMbu0Jev0NWsKxRj1Fg2IvODVto9VcOMZ5SvGlFXa/iQjD7JlBlmpwBTENN9ikpGgvfJdTPVA+xhPEPsEdLgMsbhvfjW3sAVe6F9t7S616CFHLf1hWnnqNexgJtQbMbooCqKZ6CHWwHXPZdUSolGhPH1MiTolJOW5sFn5WWf69NVKRWTlmZhiNkEZh2Q==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(7416005)(921011);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?R0lLQVV2TEZPaVVkSlJuaS92OEM3MDF3dGtIaUs2ZitpL0lZN2pUOU5xM1Qy?=
- =?utf-8?B?RWVxekppSUw2VERBRHBTdktZTU03VWhDQXpkR3VJMEdaRjh3bDR3ZVZQZlV4?=
- =?utf-8?B?dERlZjRTY2Z2ejRwVmVrRGZaeXBodUliUS9NcENsd0pOT3NUSGJvOU5INVFi?=
- =?utf-8?B?NXppc1FRTUFFSFhYQVJTWWIvSXIxMXB1RFZZNkl3cGNJb1B5bEgwbGZrNE1v?=
- =?utf-8?B?SmxMaThJeEc3aFBLNTNNYlZ6WFFWSXBzMXdnTzZPMTRxYlJJaW9kMTdUcmZi?=
- =?utf-8?B?RmkyZWVaaDM0YlJaYWZjeGYrcktiaThUVzJUbzlTRkQyTDNqU1BTRmVYbHB4?=
- =?utf-8?B?TEU1a3g3V0hUY0RmZ2VkZUZjeU5VekI5aGhiR1FiSnJmekZPVFQzTEQveVMr?=
- =?utf-8?B?b2VCWENyWmFpd2c2b0gwZ0hQNFYrUDNtUTJQU3NHQU9Rd3lWSzBCdVNDL2Zq?=
- =?utf-8?B?M2FITjdzczR0ZnM2QmhLMnVVZlBZWjExamp5aUhNY2ZJT004ZklLZ0ZVUldI?=
- =?utf-8?B?b2lpTjFqZmRjZzR0MmEwenE5MUdEWkdVNzg0SnFkSnNrSGNia2czVnNzOXkr?=
- =?utf-8?B?L3FIMDlUQnFlZXpkYlFKOXE5SEc0dHVtK25iR2dxR3cxSGpFUnk0MUVabEV0?=
- =?utf-8?B?YnlVOXZ6WHl1SnBIZWJvUjlobTJEdS9wZGI0a0hwQ2JxelpUZjc0Z0NzUlBD?=
- =?utf-8?B?aGdMY0ZuSzVHZ0gzc1p5Y1p1WUJ0aDFQWUFFT0Z5NENIYllSWUdkSjhqTjF6?=
- =?utf-8?B?bmNNQW9oTit2UTJHSXNsSlp4d2FZamJvSHMrK29oQWFmNy8vWm5OcEVva1hu?=
- =?utf-8?B?SW5DSXJWVDRiTTJkWTFlaVhaVWE3b3Y2S1Z5SVJiM0dIcFRYQVFYM3ZtdE1D?=
- =?utf-8?B?WEF2UnJoNHdjZjk4Q3BuYWgrNXZWaWRLY3pQMWY0SkJnVXdrUUt1YTBISkw3?=
- =?utf-8?B?Y3lHcDJOOVBBV0hVT0JhSCt1NjErMzJ1MUtrS3JZTmNOV0hRQVp2Z3lvS093?=
- =?utf-8?B?c2pQT3U3dVE2bG9RVVhXMDltWlREM3IxcUloYjg0Rm9MTXVod1RqNS8rejRa?=
- =?utf-8?B?S09kbmY0N2tlODZuMmdDanIxaEEyN3hpTnZmSU9nSEZKU1MwZVhlK1JJcGRw?=
- =?utf-8?B?c2Q5MEFWV3h3NXB1SW0zTzNxQ2Z2SktnK0tzSys5aTU4SWZQblJjL3NvVlRI?=
- =?utf-8?B?am9DMkZpcWUxZTJYQUtpZTRkZHBlck8zek1HRURuYzYydXFmaWN4VVFyczk4?=
- =?utf-8?B?ejV5ZDYzUk95REUyZ0o0VHVUVU9WamJiRlJDWVFwb0NKaVB0WlVKUmJqRkxx?=
- =?utf-8?B?NUFZWm1vWUFRNXIvdWZxVlIwY0JWb1lucEU1bWxtUkZuS0ZyUEFrYWtoSnZx?=
- =?utf-8?B?dkhPcUF1SDJSUVNOY3d2UkwxL0NITi80azFYOWdlSDBZZXpyTFEza2kvN1kx?=
- =?utf-8?B?THBqRzAxZmhLaDBGRHRFeHdCb05mcW1CcG9ZNlpvNXF2MWRSbWZTR3RtMnIz?=
- =?utf-8?B?bU5nVGU2TnZtRnNhOHNOUy9LaEZKMnhuOStUc3FqRFpTSkVwTjdLQTIwTU84?=
- =?utf-8?B?dFZoVklqbU54NUtQV2F4eDhHdElrcjNLYUpxVGVQcXBFd0V5QWV2L3AvdXZK?=
- =?utf-8?B?dnVQczlndWVha0Z1QVVxTmY1em15TDhwYS8vTm1COXpzU0hjQTlvdzhhOGZt?=
- =?utf-8?B?eHZhRWF5RUE4ZWhpYjVEc1dXNkF1cTV6ZEptZ2laU1lPbEEzcGN4RlBtSStH?=
- =?utf-8?B?TkF5NE9GYkxDWEpRdWdnMUZzeHhGcStPM0ZUR3p2YU01RU9XQ3Z0bUw3L0Y0?=
- =?utf-8?B?TlIxZDVPdVpTVThSazl0K1pDVVZZTi9URHlnSGZrM0hUaHQ5M0pwZXJoOFNy?=
- =?utf-8?B?Wnppd01XVnRYY2FaU2RMU0tVdG9nRS9XdjVBYTViYy9HWXBOeGpibXRUTm1k?=
- =?utf-8?B?UU9MZlpHaHI5Q2lEeEpLZWhXcDJSaGh3MWNLb0RIM3R5WmV0c09IVlhaUmtT?=
- =?utf-8?B?ZHBmNHZvSHJ4NG1wQVpzVlVzQ3cxQjJnd2tnWmxaZC9CN09mQVBncllRN2J1?=
- =?utf-8?B?c3JzdU9Na0tHVU5jZWxyWFBtZDBWNGlzNlVTd1V3UTcwMUhZbXFVY1VSMFhG?=
- =?utf-8?Q?E0Ps=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iVeZL5bK"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56dc9955091so810504a12.1
+        for <imx@lists.linux.dev>; Mon, 01 Apr 2024 02:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711965104; x=1712569904; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dzql5prZwnt+vohd76RG25/DjYuQd5VmqrQyYq+ATkM=;
+        b=iVeZL5bKDiHqhR/+I7DqDzhFr/v4wcY0/YuQ14A+TZDNB/W4/dmN7d/LZYB2LZvc2v
+         CxeXnQLtNtBTGRGbMeQ4de1378vg9Q/cxR14oOivqLTcSA1HMAuKZSO7QohgglU8EerJ
+         EJjfbAkH9t+s/EGTTt3ycX7TRpLe5P0vb331OPKJil+WpVZ2UE9AcGaeVic3w79uLQM2
+         TShNgDZPmew3PbYskZ4NsRtRqlzHIblT5cB8oV1t+sRI5+tararHw3OaWEdatntyHL5l
+         +jU40fiX3TWvXCZgfU+ybwBNDCyDRlDaDnQDuTuIwxME0NqGRBCSD5lyMBwiNTQE9sQj
+         0/7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711965104; x=1712569904;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dzql5prZwnt+vohd76RG25/DjYuQd5VmqrQyYq+ATkM=;
+        b=AhSg7Xv/kdi82HhQc7RgFhql4g/z6sZP9bRGZ6cdnjQM3OKW7rHGuuA6SDeZ7SR+9Z
+         YgBk9ENX0Gf9Uv+dBG1d2kKrfOs7N7fC/OZVJ8/7g/DlKiMExyuXKFxO1S5jxbTJQ/Z4
+         oYEkqZp+GsY0TgECQPFXzxwGmIrBTWZF3ynlslzWcj75t0A/ml5zXin9HjDsWlua3YgK
+         WDHaZcz1oiIlnWUr/kuKMbH5fO55hi0I84uiF4hZJasyLGF7ETJd/8tbIvsq1iPNIDME
+         IhkmqYjj3nO1JrjHyy2eTpk4Z2go1JwbpduhAPCi1HFUQMwtDmKbflj7Wf7Ws0216KLY
+         zawg==
+X-Forwarded-Encrypted: i=1; AJvYcCXf52IsGlQWAI+0qfZDmdGwapvr6t0X2U9g9eQs01hjBEhxaaYN1W2I03jeNsXqCqGeMsbG7M/EkB8g7H7221wGMs9u
+X-Gm-Message-State: AOJu0YzRIKkBCF+Bizss+LYQxOCFYLORrz/F328pxMxRX5CAYyn/he2C
+	hCVqcL/CN5Gco1PnElAFzfeA9DcNxrSee50sb6ipqU3ux9i6nqlyzKwWZs1tYME=
+X-Google-Smtp-Source: AGHT+IExQYQm0NtAZHBPONy7nCXeQvXeh7zREgZ48G/YhMdHAfJzfcWm7cIICaIC6PIwA+ynBGZlzg==
+X-Received: by 2002:a17:906:1253:b0:a4d:ff5f:98ad with SMTP id u19-20020a170906125300b00a4dff5f98admr5550248eja.37.1711965103725;
+        Mon, 01 Apr 2024 02:51:43 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id gl20-20020a170906e0d400b00a46c39e6a47sm5158120ejb.148.2024.04.01.02.51.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Apr 2024 02:51:43 -0700 (PDT)
+Message-ID: <c5bc1d09-22f7-4e47-b87c-af412eb57278@linaro.org>
+Date: Mon, 1 Apr 2024 11:51:41 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d3ebcc8-8bc5-4421-2875-08dc521d16a6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2024 07:26:46.7222
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z5iijJbSAA/oFwwyCPxAj06lpR7hHl0pxaqyN6EsHJ+NB1Ev7RriYfxrTNHvY69Eflr55F8GP99m8xIzxzCJww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8994
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/4] dt-bindings: clock: add i.MX95 clock header
+To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>
+Cc: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com>
+ <20240324-imx95-blk-ctl-v5-3-7a706174078a@nxp.com>
+ <31b493d1-ad74-48c7-8585-9df323418ae3@linaro.org>
+ <DU0PR04MB9417AD4C2F5644FAE6D5A762883F2@DU0PR04MB9417.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <DU0PR04MB9417AD4C2F5644FAE6D5A762883F2@DU0PR04MB9417.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIHY1IDMvNF0gZHQtYmluZGluZ3M6IGNsb2NrOiBhZGQgaS5N
-WDk1IGNsb2NrIGhlYWRlcg0KPiANCj4gT24gMjQvMDMvMjAyNCAwODo1MiwgUGVuZyBGYW4gKE9T
-Uykgd3JvdGU6DQo+ID4gRnJvbTogUGVuZyBGYW4gPHBlbmcuZmFuQG54cC5jb20+DQo+ID4NCj4g
-PiBBZGQgY2xvY2sgaGVhZGVyIGZvciBpLk1YOTUgQkxLIENUTCBtb2R1bGVzDQo+ID4NCj4gPiBT
-aWduZWQtb2ZmLWJ5OiBQZW5nIEZhbiA8cGVuZy5mYW5AbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiAg
-aW5jbHVkZS9kdC1iaW5kaW5ncy9jbG9jay9ueHAsaW14OTUtY2xvY2suaCB8IDMyDQo+ICsrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAzMiBpbnNlcnRp
-b25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9kdC1iaW5kaW5ncy9jbG9jay9u
-eHAsaW14OTUtY2xvY2suaCBiL2luY2x1ZGUvZHQtDQo+IGJpbmRpbmdzL2Nsb2NrL254cCxpbXg5
-NS1jbG9jay5oDQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBpbmRleCAwMDAwMDAwMDAw
-MDAuLjgzZmEzZmZlNzhhOA0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiArKysgYi9pbmNsdWRlL2R0
-LWJpbmRpbmdzL2Nsb2NrL254cCxpbXg5NS1jbG9jay5oDQo+ID4gQEAgLTAsMCArMSwzMiBAQA0K
-PiA+ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5IE9SIE1JVCAqLw0K
-PiA+ICsvKg0KPiA+ICsgKiBDb3B5cmlnaHQgMjAyNCBOWFANCj4gPiArICovDQo+ID4gKw0KPiA+
-ICsjaWZuZGVmIF9fRFRfQklORElOR1NfQ0xPQ0tfSU1YOTVfSA0KPiA+ICsjZGVmaW5lIF9fRFRf
-QklORElOR1NfQ0xPQ0tfSU1YOTVfSA0KPiA+ICsNCj4gPiArI2RlZmluZSBJTVg5NV9DTEtfVlBV
-QkxLX1dBVkUJCQkwDQo+ID4gKyNkZWZpbmUgSU1YOTVfQ0xLX1ZQVUJMS19KUEVHX0VOQwkJMQ0K
-PiA+ICsjZGVmaW5lIElNWDk1X0NMS19WUFVCTEtfSlBFR19ERUMJCTINCj4gPiArI2RlZmluZSBJ
-TVg5NV9DTEtfVlBVQkxLX0VORAkJCTMNCj4gDQo+IE5vIGltcHJvdmVtZW50cywgc28gYWdhaW46
-IGRyb3AgY291bnRpbmcuDQoNCkNvdWxkIHlvdSBwbGVhc2UgZ2l2ZSBtb3JlIGRldGFpbHMgb24g
-d2hhdCB5b3UgdGhpbmsgbmVlZHMNCnRvIGJlIGFkZHJlc3NlZCBoZXJlPyBJIG1heSBvdmVybG9v
-ayB5b3VyIGNvbW1lbnRzIGJlZm9yZSwNCmJ1dCBJIHNlYXJjaCB2MS12NCwgbm90IGZpbmQgY29t
-bWVudHMgb24gdGhlIGhlYWRlcnMsDQpleGNlcHQgdGhlIG9uZSBmaWxlIG5hbWUgYWxpZ24gd2l0
-aCBiaW5kaW5nIGlmIDE6MSBtYXRjaC4NCg0KVGhhbmtzLA0KUGVuZy4NCg0KPiANCj4gU2FtZSBp
-biBvdGhlciBwbGFjZXMuDQo+IA0KPiBCZXN0IHJlZ2FyZHMsDQo+IEtyenlzenRvZg0KDQo=
+On 01/04/2024 09:26, Peng Fan wrote:
+>> Subject: Re: [PATCH v5 3/4] dt-bindings: clock: add i.MX95 clock header
+>>
+>> On 24/03/2024 08:52, Peng Fan (OSS) wrote:
+>>> From: Peng Fan <peng.fan@nxp.com>
+>>>
+>>> Add clock header for i.MX95 BLK CTL modules
+>>>
+>>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>>> ---
+>>>  include/dt-bindings/clock/nxp,imx95-clock.h | 32
+>> +++++++++++++++++++++++++++++
+>>>  1 file changed, 32 insertions(+)
+>>>
+>>> diff --git a/include/dt-bindings/clock/nxp,imx95-clock.h b/include/dt-
+>> bindings/clock/nxp,imx95-clock.h
+>>> new file mode 100644
+>>> index 000000000000..83fa3ffe78a8
+>>> --- /dev/null
+>>> +++ b/include/dt-bindings/clock/nxp,imx95-clock.h
+>>> @@ -0,0 +1,32 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
+>>> +/*
+>>> + * Copyright 2024 NXP
+>>> + */
+>>> +
+>>> +#ifndef __DT_BINDINGS_CLOCK_IMX95_H
+>>> +#define __DT_BINDINGS_CLOCK_IMX95_H
+>>> +
+>>> +#define IMX95_CLK_VPUBLK_WAVE			0
+>>> +#define IMX95_CLK_VPUBLK_JPEG_ENC		1
+>>> +#define IMX95_CLK_VPUBLK_JPEG_DEC		2
+>>> +#define IMX95_CLK_VPUBLK_END			3
+>>
+>> No improvements, so again: drop counting.
+> 
+> Could you please give more details on what you think needs
+> to be addressed here? I may overlook your comments before,
+> but I search v1-v4, not find comments on the headers,
+> except the one file name align with binding if 1:1 match.
+
+Drop all defines which count number of clocks.
+
+Best regards,
+Krzysztof
+
