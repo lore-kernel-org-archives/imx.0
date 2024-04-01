@@ -1,427 +1,195 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2124.outbound.protection.outlook.com [40.107.20.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2231B3F8F7
-	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 13:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711977117; cv=none; b=fw0MDHfn+fzPwL6K+Jvdhjk9xpsvBI4zQgB9broPy/xKAv8nXa31cyxkOrFHI7/Nj5fNWL6FAwYj4KDa6wd3UUEeXoYOAZmWwuW5nH1kTvfRGeECWJwv/Dvq8AKVDhjH6sek/4Jc/tKw1J8XQIBcg5cEA9pbJ8yH5TvaHkkUMa4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711977117; c=relaxed/simple;
-	bh=m5sTEVKt0IgRfcqgwp1N1TQiw2ClvuvNQIqZU6sThvQ=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=ql16eL8CpZZ59ZXPCrISK8hMF7XduCDroBHRWT4zHznB/w/+UEpKq7u7uEX6i7fAMMsUb2rsjiX69gBrISbbRU7wpXgJrK+47DUK4xW/Hr+QGMk7Gk0pIy5dlIZ02QQzikobzyJ6HdbY/xIu+1EjHYMczNN6FM/nvhTc16SRMLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D95A2200166;
-	Mon,  1 Apr 2024 15:11:47 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4F6CB200196;
-	Mon,  1 Apr 2024 15:11:47 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BD98A183AD0A;
-	Mon,  1 Apr 2024 21:11:45 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shengjiu.wang@gmail.com,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 2/2] ASoC: dt-bindings: fsl-asoc-card: convert to YAML
-Date: Mon,  1 Apr 2024 20:54:16 +0800
-Message-Id: <1711976056-19884-3-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1711976056-19884-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1711976056-19884-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B77621A0A
+	for <imx@lists.linux.dev>; Mon,  1 Apr 2024 13:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711977627; cv=fail; b=klFDAVC4ABzn2ODYvCNs6/ajR3jgkJ303LpUtfNnbchVR5fwHSHaaZ/v/Dm1MDIwkHd5AMcSCyAhr3YtwVgj1F6yTyoD0fOqbveA+Xq1N0IAtni1hSqKQP6dnpKNN+cPzGUwLLo7xk+cICcTAWMYCJBKs+uvrSTi8ZS86R45txg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711977627; c=relaxed/simple;
+	bh=zRvvlCzPi4nMoCVAWGaamkxCdQsaKXFf5dq5f6ecC1E=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=OdSr+O2aSqqJlu8S6QgHHaRYKnKno3QxRkJoVDrvTv0f/4+iA7jguY8Dvg8N3fVESwNeo7BsfVvXfCV1/P+wnkwW70I/TtFkwR7dBsoDqPkC/z7Y1EeiaDjv4nhrbcDqBviZZCCetF+3xc+kDexn51uDnKfExBLwFQg4XdLgFkw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SMpJwOog; arc=fail smtp.client-ip=40.107.20.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SMpJwOog"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hx8mMVhkI7sPtwNmQtWUTok+flkPMKBRJM/jnnSwmhR2vTySe/FcIp3QuDRC07+Fb/jtMMylCRhIaIpVC21Zegat56lTJBGtD2CUndddiTLZAOgqciGXbuPNbs9xdhe3OPxbjqGAuzkcxtwkJa6h1vrCEyaZHwbZsQ+L/sX2OtFzzbb7WG5gstaS9KikjAs64fTv4k/YeXwCelOAKuKSaI/N0dDtYwiTAwbh6iiU/hT4ZDcZHONhmu14cEH0UfFAxpSck2xY/v14QbbMYE9K5Lz9IlC5MRr2qcRJc7tMarjjSecEv6WRqok+8bfKxg/DwmFJmxW2kI+IKFuIgetN/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xLQiYNxlJqL05Axfp8TF1rTfrGFbedBwPn9lDinAXMg=;
+ b=clfWNc8viLqDmAZjF/RfAP7g0NC8wIofg2fJ+RJ6VPjNvIf98LsDDIRA5osh4pNUItDvo7FR2RaBd2vQAi1EqtksK9dfu3SGhUdZdkdv9cwI/wNdNpXHHlL65l+EuIOMdHX2DUtEYddjvtiH7EtWyRr5353pTUYobAtMdt8PCkZ4aS3bBVWzjrmqyOPH/7eKKGzoH1Pcz3R8d/RcRoJV7GR+bk3Hp6xtJMn243URpTlvuDYBVJr+lpw2uSP4b6Qpkz0qDSDpPkTh4+vxhl0Ya/i+5q+GWHKonjcWjCcpHDqP2WWY+4XFqyElfPufmI6HrAneRfhEdVL1dXLy3xSbnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xLQiYNxlJqL05Axfp8TF1rTfrGFbedBwPn9lDinAXMg=;
+ b=SMpJwOogOvUunfLhrW+MhcstoVNOrtTbCazbFc48tWZP9413/9KsdBsW1n0AFohC2VUwMUg21wQMnErdq4N/lHmfRspB/Rk8OCFaiAXOoVl4680cPDmOR2l/AN+5lmt298I42KDVOdPMEIBy/ChgvoefzsbOT9W7TdIMNWcypfs=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by PAXPR04MB8766.eurprd04.prod.outlook.com (2603:10a6:102:20d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 1 Apr
+ 2024 13:20:22 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Mon, 1 Apr 2024
+ 13:20:22 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v6 0/4] Add support i.MX95 BLK CTL module clock features
+Date: Mon, 01 Apr 2024 21:28:14 +0800
+Message-Id: <20240401-imx95-blk-ctl-v6-0-84d4eca1e759@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG62CmYC/33MwY6CMBSF4VcxXVvTe1souPI9jIv29nZsVCBgC
+ Mbw7lY3ykzG5TnJ99/FwH3iQWxXd9HzmIbUNnmU65Wgo2t+WKaQt0CFRiFWMl2mupD+fJJ0Pcu
+ aY0UQyRCiyKbrOabp1dsf8j6m4dr2t1d+hOf7X2kEqWTtC8eawIRK75qp21B7Ec/OiF8tZhujt
+ 8zRl4HC0uqvVmdrFLF3ChwCLK15Ww3mtzXZBtSBUfsyRlza4sPiH1tka51VJVijbOXedp7nB1n
+ ceRKYAQAA
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711978117; l=2192;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=zRvvlCzPi4nMoCVAWGaamkxCdQsaKXFf5dq5f6ecC1E=;
+ b=ZJ4B9HrI0bcDCtwspMFpx4CFtBy21+OrQ+ett3EXNgUGr8x+E9tbucNDwyEzjGb56VVVzBnUW
+ G1Rp+63uHCZDDPTuuISxkXfrSPJnf1lUONi8HDy2TdLPhTt+idZbGP0
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SG3P274CA0017.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::29)
+ To DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|PAXPR04MB8766:EE_
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	5Qr39J2jHNE4FWpMBuai2hHd31ba3Kf2K/EIsssJ+zmyzkyl4NaEXuUUF6lRa/wPck9aatW2xGFoiW8DU0lH1o4bP2zi2bJfr/ZmDs1kMiRwglBY1UXZH5ks/qmiP/frO3sBcGqdoIz5r6vaSmIQr1reK9i4qPn5GIKYV9jiDOg/VmUL+O5rKJ8nU0uRxvTLHeQznrbuLYzR/MxQGqcn9ZG1f5I6YgzNNtIT2brneRhrDi/2i2RokIQRX7l7deXnNnvmtgIwAl5XZKCwwymEoGwy/tJRdlgum+0MQLrQiB09k/B4cHjvIhXFSaelxmY9MA582nCAxaF5C6a6HIR4pE0kmawMadOh3nFf3UAfi764Zgomlkt+am7jy0nvQm+3rBCUlR+R8cBciQ43zzrQ0pqk4OoxbNAA1sABXZI6d4568HBUxyoaZcTQ9k4nle2asVoXvPIbXTxzOok0FadlUizljQrLLgvQJS4OXRhkeyPsVB0nS6ohtA2HFVrVFS1uPKzR2CxZP9X4HNhWHv987trsFlqsNKXx7oEBf+T/FoqQzkH111FSVjzdmIJGxGRtYXZtZ0f3SP/OhSzj2Qwaby0p0UFb+5V8+MnAckvmCrn4jlobtjL455mNC9KCMjjF99duYGuhOCLvJQ7aKMtDfna4tS+sjLkOpLCmmKc3onP2RUpwrxBP7r8+WwgNtiaO
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(7416005)(376005)(366007)(921011)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MlMzVFVpOXJmT3RDMDF0dlBha2ZBKzhnUVVub2psaHA3YkJkdGNxM2hTZVFE?=
+ =?utf-8?B?Mk9mOGxkV1RJUXN0TEhEQm5WcEZQNHlkbVZiaU41UysrQlY1cHdhQlcvdDhH?=
+ =?utf-8?B?ejIzNnlpQ2F5OUJheEllTmVDd2g3VmVZSmJIb1kyZGxKYWJmMGhycWZ1dWhU?=
+ =?utf-8?B?U3NvUGprUnBueHdmOEY1SDBVdVZxeldUQ0t2R21mRldGdlR6aGl0K2N0WWJK?=
+ =?utf-8?B?VXpleEMrZWxseUVqdnVDTXpKdDhTY04vd1ZqU0xWVTdESmNTc2lnUEhsOFd5?=
+ =?utf-8?B?YUVPKy9RWGY0VnN4RjJRU2V0K3ovS0JQNTd1OXJUWDRLSEVManlVWTlhOVJZ?=
+ =?utf-8?B?c09obFpNemxNbjZ1dlFTSW83MjZJSURYZDhEaDVpU0dlNkNzaTlUTnFZRGpk?=
+ =?utf-8?B?OHdxUVRqRms2aTkxM2dlejFnTUxlN3BOUzdsd2N1RllsM3pKajBuaEs1alNz?=
+ =?utf-8?B?ZkUvQ2xyTnhUYU8xVThrTmlMaGNWeXZwTXEybXpaTjhyQUlOajdla1llZjg2?=
+ =?utf-8?B?d01KVUlxcHEyVnRvR0NlZ2l6QnovUURCblZxQnh3SzFTNlBMTnlwVE4zb0t0?=
+ =?utf-8?B?dHQ3d1ZKSm9paERuYXBrNjVPMmI2N0Jld09DYTF2Z3oybTA3YzE4ekYvSUEz?=
+ =?utf-8?B?QkIxWmoxR3hnbWJNeFRRa3V4K1lWK2sySkx1Q2JTQUUvWGJEdERTa0Q1VnRq?=
+ =?utf-8?B?aEJkaFZka1pqUWkzSWNLbHpvVSs3T3I3djdFQi9ZMlJXWGpveWhia1A5eUxR?=
+ =?utf-8?B?WDFXb01tNnhzdU5uN2J0bWwyZStkalh0ek1DaXVFREI4bWhWNDZGbmMvemkx?=
+ =?utf-8?B?R3pjNThKYXkrNkx2RWxUQW5tbWYwN3hqMldVVkhrMXllUEIvVjluU1Fhc25w?=
+ =?utf-8?B?NHFWUkJuSDZVS1ZKNUUwWlM3YUZlUExyNE5JMk0xMFNlTTlMNEppMlhwY09j?=
+ =?utf-8?B?RGFTb3Urc09RYW4rSXVtN0wyVlhlTjFPTmhPclhvTXptQjFRdjZtMU5xVzgr?=
+ =?utf-8?B?ZFdPRGNUSGpsRDRxMmQ5NlBjNzJRem8wQm01UnRrbldMa2RDSk5INkVBYXl1?=
+ =?utf-8?B?S0VYak15WVRuWlJhTFl2bVh0ZFFtL1JEbDBIVTBuT3grNVdsdzhjRnZmSUF2?=
+ =?utf-8?B?QWVJTEgrVnoyY3Zjbm9TR2RrT1dyanFkZ2hjVTVvRERhTkFTMXdweWdSeGdt?=
+ =?utf-8?B?QXB6TmN6anZPd2R0RVZRKzI4U0hKWU9WK3JzcFhsQ2JuWnZoVkdkYXFxTzBF?=
+ =?utf-8?B?Z0FWQ0p4MTdCSXBKTGNpYWswVU9zRUIxSXpXYWFieDNqK2VkKzNhaUNlZFU4?=
+ =?utf-8?B?Q2dGdEdLNmxsVGVBOS84eTJIZFhMQjhkOW1KU282cDlOd0ZZYTV6dnk0cFQx?=
+ =?utf-8?B?T1B4LzJvTnNlZ0tmTFVvdERleVl1eW5MNzFCV0tPSVFIYkN6VXVsdEZ6aDF3?=
+ =?utf-8?B?M3FBOTh5N0JoUmxuTXVuNmg4aUFiWUZJWEZPVkRkb2Vmak5QV0gyWTRDMkg1?=
+ =?utf-8?B?QjBKS3k4TUxOMUd1bVlycWlhc0wzKzhjY0xVc0V6aEZsR1pVeW9GZkNub09h?=
+ =?utf-8?B?NDRwNXdvMk9nd2toeE5YWjlTa0t4UU9LWU52TUxlN1psbXB1d1RDUWJOUTlM?=
+ =?utf-8?B?bm8vWTUySlVhMk5QcldFV0Fxd01wKzl1QXJaNUJlZThhUUxLMHlQY1M2dkpB?=
+ =?utf-8?B?R2Jtb3V1b2hYU0JhUnlpOUZQS29tV3FCZXFHSHRyNGF2bkE3NVN2c3ZtYzdm?=
+ =?utf-8?B?TmlheWxmaTk5UU1PVS92Y1JZYS91b2tUclZQelRacG9Yei9FK3Q4cEFodnoy?=
+ =?utf-8?B?TkhoMWhRYWV2N2R0dXJQSWdLbmZZTG1Ld3Y3NTFUb0dpUFEyK3lReG1wSkht?=
+ =?utf-8?B?MS9IWnJ1YmlmZGEvNXZxT1UyaXBxSkRkNTJPcFFSSnV5dStOYWRlc3cwaHFB?=
+ =?utf-8?B?eHZQVDhkZUdDR3JBUjc1bVJzdllDSDNvWGJkcmlLK2F4NUhrcmd3WWlJYlFF?=
+ =?utf-8?B?eVVHbEFDVlB4UGtCTUtDZWVCdzVXRU9DOC8yL2kyNkg2OHBsNnFERzA0RGJh?=
+ =?utf-8?B?V3JCdzdCRUlhVnZ6Sis1Ymk4Rk5UbnhwK2diTEdqNjBKWGwyVENHOG9zRTB0?=
+ =?utf-8?Q?APRCwxbayDopl6JXQL1Zalwjk?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86f82af1-18c8-4155-0d70-08dc524e7ba9
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2024 13:20:21.9695
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LP/6418rN3fmBkUSP+U9OxTo59zTx5HaxjW76ZFVg8+10UsDC3qscGgKmcK+FU+r2GsSpOZsP0Kn8kEYd+WP3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8766
 
-Convert the fsl-asoc-card binding to YAML.
+i.MX95's several MIXes has BLK CTL module which could be used for
+clk settings, QoS settings, Misc settings for a MIX. This patchset
+is to add the clk feature support, including dt-bindings
 
-When testing dtbs_check, found below compatible strings
-are not listed in document:
-
-fsl,imx-sgtl5000
-fsl,imx53-cpuvo-sgtl5000
-fsl,imx51-babbage-sgtl5000
-fsl,imx53-m53evk-sgtl5000
-fsl,imx53-qsb-sgtl5000
-fsl,imx53-voipac-sgtl5000
-fsl,imx6-armadeus-sgtl5000
-fsl,imx6-rex-sgtl5000
-fsl,imx6-sabreauto-cs42888
-fsl,imx6-wandboard-sgtl5000
-fsl,imx6dl-nit6xlite-sgtl5000
-fsl,imx6q-ba16-sgtl5000
-fsl,imx6q-nitrogen6_max-sgtl5000
-fsl,imx6q-nitrogen6_som2-sgtl5000
-fsl,imx6q-nitrogen6x-sgtl5000
-fsl,imx6q-sabrelite-sgtl5000
-fsl,imx6q-sabresd-wm8962
-fsl,imx6q-udoo-ac97
-fsl,imx6q-ventana-sgtl5000
-fsl,imx6sl-evk-wm8962
-fsl,imx6sx-sdb-mqs
-fsl,imx6sx-sdb-wm8962
-fsl,imx7d-evk-wm8960
-karo,tx53-audio-sgtl5000
-tq,imx53-mba53-sgtl5000
-
-So add them in yaml file to pass the test.
-
-Also correct the 'dai-format' to 'format' in document.
-
-For 'audio-routing', the items are not listed. Because
-this fsl-asoc-card is generic driver, which supports several
-codecs, if list all the items, there will be a long list.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- .../bindings/sound/fsl-asoc-card.txt          | 117 -----------
- .../bindings/sound/fsl-asoc-card.yaml         | 195 ++++++++++++++++++
- 2 files changed, 195 insertions(+), 117 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
- create mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+Changes in v6:
+- Put the header as 1st patch, and drop the macro that counting the clks
+- Add R-b for patch 2&3
+- Drop of_match_ptr in patch 4
+- Link to v5: https://lore.kernel.org/r/20240324-imx95-blk-ctl-v5-0-7a706174078a@nxp.com
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-deleted file mode 100644
-index 4e8dbc5abfd1..000000000000
---- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-+++ /dev/null
-@@ -1,117 +0,0 @@
--Freescale Generic ASoC Sound Card with ASRC support
--
--The Freescale Generic ASoC Sound Card can be used, ideally, for all Freescale
--SoCs connecting with external CODECs.
--
--The idea of this generic sound card is a bit like ASoC Simple Card. However,
--for Freescale SoCs (especially those released in recent years), most of them
--have ASRC (Documentation/devicetree/bindings/sound/fsl,asrc.txt) inside. And
--this is a specific feature that might be painstakingly controlled and merged
--into the Simple Card.
--
--So having this generic sound card allows all Freescale SoC users to benefit
--from the simplification of a new card support and the capability of the wide
--sample rates support through ASRC.
--
--Note: The card is initially designed for those sound cards who use AC'97, I2S
--      and PCM DAI formats. However, it'll be also possible to support those non
--      AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI audio, as
--      long as the driver has been properly upgraded.
--
--
--The compatible list for this generic sound card currently:
-- "fsl,imx-audio-ac97"
--
-- "fsl,imx-audio-cs42888"
--
-- "fsl,imx-audio-cs427x"
-- (compatible with CS4271 and CS4272)
--
-- "fsl,imx-audio-wm8962"
--
-- "fsl,imx-audio-sgtl5000"
-- (compatible with Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt)
--
-- "fsl,imx-audio-wm8960"
--
-- "fsl,imx-audio-mqs"
--
-- "fsl,imx-audio-wm8524"
--
-- "fsl,imx-audio-tlv320aic32x4"
--
-- "fsl,imx-audio-tlv320aic31xx"
--
-- "fsl,imx-audio-si476x"
--
-- "fsl,imx-audio-wm8958"
--
-- "fsl,imx-audio-nau8822"
--
--Required properties:
--
--  - compatible		: Contains one of entries in the compatible list.
--
--  - model		: The user-visible name of this sound complex
--
--  - audio-cpu		: The phandle of an CPU DAI controller
--
--  - audio-codec		: The phandle of an audio codec
--
--Optional properties:
--
--  - audio-asrc		: The phandle of ASRC. It can be absent if there's no
--			  need to add ASRC support via DPCM.
--
--  - audio-routing	: A list of the connections between audio components.
--			  Each entry is a pair of strings, the first being the
--			  connection's sink, the second being the connection's
--			  source. There're a few pre-designed board connectors:
--			   * Line Out Jack
--			   * Line In Jack
--			   * Headphone Jack
--			   * Mic Jack
--			   * Ext Spk
--			   * AMIC (stands for Analog Microphone Jack)
--			   * DMIC (stands for Digital Microphone Jack)
--
--			  Note: The "Mic Jack" and "AMIC" are redundant while
--			        coexisting in order to support the old bindings
--				of wm8962 and sgtl5000.
--
--  - hp-det-gpio		: The GPIO that detect headphones are plugged in
--  - mic-det-gpio	: The GPIO that detect microphones are plugged in
--  - bitclock-master	: Indicates dai-link bit clock master; for details see simple-card.yaml.
--  - frame-master	: Indicates dai-link frame master; for details see simple-card.yaml.
--  - dai-format		: audio format, for details see simple-card.yaml.
--  - frame-inversion	: dai-link uses frame clock inversion, for details see simple-card.yaml.
--  - bitclock-inversion	: dai-link uses bit clock inversion, for details see simple-card.yaml.
--  - mclk-id		: main clock id, specific for each card configuration.
--
--Optional unless SSI is selected as a CPU DAI:
--
--  - mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX)
--
--  - mux-ext-port	: The external port of the i.MX audio muxer
--
--Example:
--sound-cs42888 {
--	compatible = "fsl,imx-audio-cs42888";
--	model = "cs42888-audio";
--	audio-cpu = <&esai>;
--	audio-asrc = <&asrc>;
--	audio-codec = <&cs42888>;
--	audio-routing =
--		"Line Out Jack", "AOUT1L",
--		"Line Out Jack", "AOUT1R",
--		"Line Out Jack", "AOUT2L",
--		"Line Out Jack", "AOUT2R",
--		"Line Out Jack", "AOUT3L",
--		"Line Out Jack", "AOUT3R",
--		"Line Out Jack", "AOUT4L",
--		"Line Out Jack", "AOUT4R",
--		"AIN1L", "Line In Jack",
--		"AIN1R", "Line In Jack",
--		"AIN2L", "Line In Jack",
--		"AIN2R", "Line In Jack";
--};
-diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-new file mode 100644
-index 000000000000..42ca39eebd49
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-@@ -0,0 +1,195 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl-asoc-card.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Generic ASoC Sound Card with ASRC support
-+
-+description:
-+  The Freescale Generic ASoC Sound Card can be used, ideally,
-+  for all Freescale SoCs connecting with external CODECs.
-+
-+  The idea of this generic sound card is a bit like ASoC Simple Card.
-+  However, for Freescale SoCs (especially those released in recent years),
-+  most of them have ASRC inside. And this is a specific feature that might
-+  be painstakingly controlled and merged into the Simple Card.
-+
-+  So having this generic sound card allows all Freescale SoC users to
-+  benefit from the simplification of a new card support and the capability
-+  of the wide sample rates support through ASRC.
-+
-+  Note, The card is initially designed for those sound cards who use AC'97, I2S
-+  and PCM DAI formats. However, it'll be also possible to support those non
-+  AC'97/I2S/PCM type sound cards, such as S/PDIF audio and HDMI audio, as
-+  long as the driver has been properly upgraded.
-+
-+maintainers:
-+  - Shengjiu Wang <shengjiu.wang@nxp.com>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - fsl,imx-sgtl5000
-+              - fsl,imx53-cpuvo-sgtl5000
-+              - fsl,imx51-babbage-sgtl5000
-+              - fsl,imx53-m53evk-sgtl5000
-+              - fsl,imx53-qsb-sgtl5000
-+              - fsl,imx53-voipac-sgtl5000
-+              - fsl,imx6-armadeus-sgtl5000
-+              - fsl,imx6-rex-sgtl5000
-+              - fsl,imx6-sabreauto-cs42888
-+              - fsl,imx6-wandboard-sgtl5000
-+              - fsl,imx6dl-nit6xlite-sgtl5000
-+              - fsl,imx6q-ba16-sgtl5000
-+              - fsl,imx6q-nitrogen6_max-sgtl5000
-+              - fsl,imx6q-nitrogen6_som2-sgtl5000
-+              - fsl,imx6q-nitrogen6x-sgtl5000
-+              - fsl,imx6q-sabrelite-sgtl5000
-+              - fsl,imx6q-sabresd-wm8962
-+              - fsl,imx6q-udoo-ac97
-+              - fsl,imx6q-ventana-sgtl5000
-+              - fsl,imx6sl-evk-wm8962
-+              - fsl,imx6sx-sdb-mqs
-+              - fsl,imx6sx-sdb-wm8962
-+              - fsl,imx7d-evk-wm8960
-+              - karo,tx53-audio-sgtl5000
-+              - tq,imx53-mba53-sgtl5000
-+          - enum:
-+              - fsl,imx-audio-ac97
-+              - fsl,imx-audio-cs42888
-+              - fsl,imx-audio-mqs
-+              - fsl,imx-audio-sgtl5000
-+              - fsl,imx-audio-wm8960
-+              - fsl,imx-audio-wm8962
-+      - items:
-+          - enum:
-+              - fsl,imx-audio-ac97
-+              - fsl,imx-audio-cs42888
-+              - fsl,imx-audio-cs427x
-+              - fsl,imx-audio-mqs
-+              - fsl,imx-audio-nau8822
-+              - fsl,imx-audio-sgtl5000
-+              - fsl,imx-audio-si476x
-+              - fsl,imx-audio-tlv320aic31xx
-+              - fsl,imx-audio-tlv320aic32x4
-+              - fsl,imx-audio-wm8524
-+              - fsl,imx-audio-wm8960
-+              - fsl,imx-audio-wm8962
-+              - fsl,imx-audio-wm8958
-+
-+  model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: The user-visible name of this sound complex
-+
-+  audio-asrc:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      The phandle of ASRC. It can be absent if there's no
-+      need to add ASRC support via DPCM.
-+
-+  audio-codec:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of an audio codec
-+
-+  audio-cpu:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of an CPU DAI controller
-+
-+  audio-routing:
-+    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-+    description:
-+      A list of the connections between audio components. Each entry is a
-+      pair of strings, the first being the connection's sink, the second
-+      being the connection's source. There're a few pre-designed board
-+      connectors. "AMIC" stands for Analog Microphone Jack.
-+      "DMIC" stands for Digital Microphone Jack. The "Mic Jack" and "AMIC"
-+      are redundant while coexisting in order to support the old bindings
-+      of wm8962 and sgtl5000.
-+
-+  hp-det-gpio:
-+    deprecated: true
-+    maxItems: 1
-+    description: The GPIO that detect headphones are plugged in
-+
-+  hp-det-gpios:
-+    maxItems: 1
-+    description: The GPIO that detect headphones are plugged in
-+
-+  mic-det-gpio:
-+    deprecated: true
-+    maxItems: 1
-+    description: The GPIO that detect microphones are plugged in
-+
-+  mic-det-gpios:
-+    maxItems: 1
-+    description: The GPIO that detect microphones are plugged in
-+
-+  bitclock-master:
-+    $ref: simple-card.yaml#/definitions/bitclock-master
-+    description: Indicates dai-link bit clock master.
-+
-+  frame-master:
-+    $ref: simple-card.yaml#/definitions/frame-master
-+    description: Indicates dai-link frame master.
-+
-+  format:
-+    $ref: simple-card.yaml#/definitions/format
-+    description: audio format.
-+
-+  frame-inversion:
-+    $ref: simple-card.yaml#/definitions/frame-inversion
-+    description: dai-link uses frame clock inversion.
-+
-+  bitclock-inversion:
-+    $ref: simple-card.yaml#/definitions/bitclock-inversion
-+    description: dai-link uses bit clock inversion.
-+
-+  mclk-id:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: main clock id, specific for each card configuration.
-+
-+  mux-int-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 7]
-+    description: The internal port of the i.MX audio muxer (AUDMUX)
-+
-+  mux-ext-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [3, 4, 5, 6]
-+    description: The external port of the i.MX audio muxer
-+
-+  ssi-controller:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of an CPU DAI controller
-+
-+required:
-+  - compatible
-+  - model
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    sound-cs42888 {
-+        compatible = "fsl,imx-audio-cs42888";
-+        model = "cs42888-audio";
-+        audio-cpu = <&esai>;
-+        audio-asrc = <&asrc>;
-+        audio-codec = <&cs42888>;
-+        audio-routing =
-+             "Line Out Jack", "AOUT1L",
-+             "Line Out Jack", "AOUT1R",
-+             "Line Out Jack", "AOUT2L",
-+             "Line Out Jack", "AOUT2R",
-+             "Line Out Jack", "AOUT3L",
-+             "Line Out Jack", "AOUT3R",
-+             "Line Out Jack", "AOUT4L",
-+             "Line Out Jack", "AOUT4R",
-+             "AIN1L", "Line In Jack",
-+             "AIN1R", "Line In Jack",
-+             "AIN2L", "Line In Jack",
-+             "AIN2R", "Line In Jack";
-+    };
+Changes in v5:
+- Merge bindings except the one has mux-controller
+- Separate clock ID headers in a separate patch per Rob's comments
+- Link to v4: https://lore.kernel.org/r/20240314-imx95-blk-ctl-v4-0-d23de23b6ff2@nxp.com
+
+Changes in v4:
+- Separate binding doc for each modules, I still keep the syscon as node
+name, because the module is not just for clock
+- Pass dt-schema check
+- Update node compatibles
+- Link to v3: https://lore.kernel.org/r/20240228-imx95-blk-ctl-v3-0-40ceba01a211@nxp.com
+
+Changes in v3:
+- Correct example node compatible string
+- Pass "make ARCH=arm64 DT_CHECKER_FLAGS=-m -j32 dt_binding_check"
+- Link to v2: https://lore.kernel.org/r/20240228-imx95-blk-ctl-v2-0-ffb7eefb6dcd@nxp.com
+
+Changes in v2:
+- Correct example node compatible string
+- Link to v1: https://lore.kernel.org/r/20240228-imx95-blk-ctl-v1-0-9b5ae3c14d83@nxp.com
+
+---
+Peng Fan (4):
+      dt-bindings: clock: add i.MX95 clock header
+      dt-bindings: clock: support i.MX95 BLK CTL module
+      dt-bindings: clock: support i.MX95 Display Master CSR module
+      clk: imx: add i.MX95 BLK CTL clk driver
+
+ .../bindings/clock/nxp,imx95-blk-ctl.yaml          |  56 +++
+ .../clock/nxp,imx95-display-master-csr.yaml        |  64 +++
+ drivers/clk/imx/Kconfig                            |   7 +
+ drivers/clk/imx/Makefile                           |   1 +
+ drivers/clk/imx/clk-imx95-blk-ctl.c                | 438 +++++++++++++++++++++
+ include/dt-bindings/clock/nxp,imx95-clock.h        |  28 ++
+ 6 files changed, 594 insertions(+)
+---
+base-commit: c9c32620af65fee2b1ac8390fe1349b33f9d0888
+change-id: 20240228-imx95-blk-ctl-9ef8c1fc4c22
+
+Best regards,
 -- 
-2.34.1
+Peng Fan <peng.fan@nxp.com>
 
