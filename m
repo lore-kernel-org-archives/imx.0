@@ -1,135 +1,132 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5613877F11
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 12:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24E578285
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 12:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712060732; cv=none; b=YDYLFYyQdSsl5LzNX7NysHdvpUpUqoF8bNeG9klcBmjXrVIJo++v2Jqk1gHBzkGF4FMrdXlH4KZj2I3kiIFgjadJV/JQ3acRY/0+Ll2HX9/tfQ8gEcuUfkKmA9lidKe0ik32tiETQzVkdE8D5aaiDPyyeJd4+lekbHO7Ur2ZcQs=
+	t=1712061332; cv=none; b=Vv23DT7trhwD1Wv44y64NqkWTu5WkgeDK2F7y0jTwH5TJikOv6TCfdvRpiYmkIYT4f5IcJXheAPy0Rw+ZZDl8OE9sDC39LsJhV2zdmlDexfmqS73eyHEmOj+5pqCmUWEr4kBq43usVYTBjnBilpZr0uAM4sO4cqURyZGDPx5B20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712060732; c=relaxed/simple;
-	bh=p/UeUz6BQzzlTj362U5Q+0hUyUg483V1OKi+HLKX4OI=;
+	s=arc-20240116; t=1712061332; c=relaxed/simple;
+	bh=ZhodAsfbqQph/6Oss9KdocUA4jNT8v1VGBe4Vmslbbg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c++p0VwvXgphpFfmR05l5aDK2IYOADfZVkc7+4u4hzqhmV/z5ZgWaze9D5ROgPxAyIKu3TJMl9rD/vjj1hJLhy5ZUY19C78V+bHvm3JA+wVWaRVGdUYN3iHQ4DQsu+WQBO/nKaf521Jd6HTQBpEd/Ustgg44L0cAvuZQSClP+sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wD/D2Sp+; arc=none smtp.client-ip=209.85.219.177
+	 To:Cc:Content-Type; b=KJtwfRmV2XPwxHIz50QbIN5lK/896VNjQH8aJWCEpYRYcfYG1Ca9ArJEGNYhTJXJmDf4UiykOaaZXh3cQhpzHVOPOwjVSFoIoLLECqR4NIxFqtCwzxFHaY/LNhaxIZxUrssU1gyKAbjnruWu2Cb4XqeayeWHQc5vJ8swhThkHFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mLukDMSj; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wD/D2Sp+"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc6d8bd612dso5091295276.1
-        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 05:25:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mLukDMSj"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-615019cd427so11884107b3.3
+        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 05:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712060727; x=1712665527; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1712061329; x=1712666129; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XYDEIQksW8zQ45WbeyUEVn5ldQ4luRyFOVVyheFSkHo=;
-        b=wD/D2Sp+g1TCnJS6lE0DEwMQfiCYNTpfpZdHSinpq364J51zeEJVqXARatwrQ9Dzre
-         e4rpdLrC/EBJUGyMc3sqviFZVddS/fzvk0WWEF6XvZaT3tMrIY7sizjb7QFQ3ReeeYu0
-         hpGVaQfh146uh06Vx+NdvWLvUzK6OMMRgHmO3OEjemmNtChjCsGzKHeqSdhc+SUyhA/E
-         hQ7IF/2BsWDJ+eSYy9GuA5c4edubvWMox3W6btKaRmUjn4lud5/jdz6IwcZWTbD8wE/X
-         Pz8OYxkeGp3MEmzclT+pwaL2k/dwPGXFVGJgvAG8XUrmgN+wy5GU5Qw98xPVsmF24kfp
-         oaqw==
+        bh=ZhodAsfbqQph/6Oss9KdocUA4jNT8v1VGBe4Vmslbbg=;
+        b=mLukDMSjAbksujDy4RdTTaLIq9MulL8NyGN281gkbz2bHyONqySwvNYzIooDjTk/Wr
+         6sdsmcHvwcS0mAjhFamOqiHlEFSCX+S+07XdgOK9IbhsA9LIgiUujywcf8xkngbJTHE/
+         0+3oOXJH9CKtwSWcPqoimDeTa/jlYvQMbKYUW2Fv0BxPGU2fcBvgZUoJW/WT7zaHZmpl
+         Bkuy/ehLaw7edRAh7TV+64tFEDhfBDEPyoC+tbvjfzAmty+duMmi4wGw7ktir4ju+ISz
+         gTKUSoB+uZufxEPiB9167oHgjXk9XFP7PpORjcSXECK54Q8Q1wSlrvyRlyjXWGUhqBwm
+         wIlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712060727; x=1712665527;
+        d=1e100.net; s=20230601; t=1712061329; x=1712666129;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XYDEIQksW8zQ45WbeyUEVn5ldQ4luRyFOVVyheFSkHo=;
-        b=DpJlfEYtHtjnGVZddAijloodSUihVUghN7Lb21RMi4ynMb9XD6Ej1y89zo45OQVhul
-         3T28UOFdukcW0wcw795vcmhA52nAC81HTIvspAywLJYTsBcyJgp5yYRXKxWYxlzTpnuY
-         O8JbxmphBNtBF3VAHj+GozwnO8SYLWS2qKP9phgJndrq8URXkJhyVFSpBChOxIUyVEqT
-         IsXzZefioKX4X6+MoOJT5zbQ0OvDvwOESNOXqMRgeOOK58o4he1eBReToEWaCxivMx/7
-         J5WycBR0JbbFJHGZyAPKUL9MZveW1nBZJ6hMjMx+ucszxC/Ja9UKWpLj/XfrIR7OvBoM
-         mzJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIbo6C0EJyUYxh6bg7RT/cCsS7vXV77RRb/oCSNjzpWo0pHBu8/X9SdMIEDCzYNmtTw5KigBygrZgt3JgovpRGj96V
-X-Gm-Message-State: AOJu0Yy3a3oGfFGWKNLe7me8w6GiirYaSfMi180FXUAgI4i+rmG4Y1gc
-	Ke/5Wu90/pRUAcNiUMxAKki9QkNFC/nxhJLL5GMEyuFZCbt+W4NbHJNPir23yVSb0oiJx1Si3p5
-	bzek8vpegf5WS2Bw6/dS8R2RQQgZAvEV8JbkdXA==
-X-Google-Smtp-Source: AGHT+IFUrSspS0uEXi4Mtdf0lWq2f6Bt6/664idaePnQ5n7gs/Aofr4lkRbBJPYECBaOux5ZgxpPBc0T/C/GsKmHDRA=
-X-Received: by 2002:a5b:104:0:b0:dcc:ec02:38b0 with SMTP id
- 4-20020a5b0104000000b00dccec0238b0mr8733778ybx.64.1712060727251; Tue, 02 Apr
- 2024 05:25:27 -0700 (PDT)
+        bh=ZhodAsfbqQph/6Oss9KdocUA4jNT8v1VGBe4Vmslbbg=;
+        b=h8/JM/Aa7ivBEn0zk806WpRElmEk/dOvJssqohi+vA9Wb9BavN57J2SWB0vURZmgf3
+         xQVwjaMikF+KjgPrzge17uLFxJcms/PBxXp1ZrwOuomVxTEyO2jq+AFNSdbi/qUi5K+k
+         s6J/rtbFWl9Hzu6rdWfjnXwNeJweEmTezX6wVC3CqlxZXpd7dnSxGhRtw/hB2m61a6br
+         IROiHqHjKTu6FYE/6eM8dkfBqUNYeAVI4w/WN96foE3n8pYEA1rDhZ4OcLVHTxZ2iWip
+         QZcAdUq5UxoOLHydWMEe0tlG7Ptxpa1hP4JAzOUyLYELK7qLyG97vHjGOw/tDe93CrNg
+         Hwsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhhiRq4fLbMFbcKoQK2eavcxR3u5nmcTKIj39Hn+gCzlEcAMwX/QsmtYn3921oyBihXvRncZXn9kSfYZ/xxblmuYvC
+X-Gm-Message-State: AOJu0YzVXWgvgCtrdi1NAkTnSDIKrOEDY0mrHtcl/1sdUEZyJuNM721a
+	AwUHACVFN2B4tCG0AeqBFQkvFSa2XFkXkAzdmEej4Oas7MO3tnIFJJN2mi0j95cql6bqZwMug3C
+	11pROP0EAQuaDq9YrkcMK1YZg1uf44nmOoRVWVA==
+X-Google-Smtp-Source: AGHT+IG5hxT/EMYnHoU6u7S6MkbvLw5l9U/Ss0P2rks8Fb0m+zQTGqjqkjSlSz0lY1KsLwpjx1moujtIXAN3uBffPV8=
+X-Received: by 2002:a25:6d86:0:b0:dc2:2d75:5fde with SMTP id
+ i128-20020a256d86000000b00dc22d755fdemr10687728ybc.29.1712061328813; Tue, 02
+ Apr 2024 05:35:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240327160314.9982-1-apais@linux.microsoft.com> <20240327160314.9982-3-apais@linux.microsoft.com>
-In-Reply-To: <20240327160314.9982-3-apais@linux.microsoft.com>
+References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com> <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 2 Apr 2024 14:25:15 +0200
-Message-ID: <CACRpkdaSBGe0EFm1gK-7qPK4e6T2H1dxFXjhJqO2hWCm1-bNdA@mail.gmail.com>
-Subject: Re: [PATCH 2/9] dma: Convert from tasklet to BH workqueue
-To: Allen Pais <apais@linux.microsoft.com>
-Cc: linux-kernel@vger.kernel.org, tj@kernel.org, keescook@chromium.org, 
-	vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev, 
-	florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com, 
-	paul@crapouillou.net, Eugeniy.Paltsev@synopsys.com, 
-	manivannan.sadhasivam@linaro.org, vireshk@kernel.org, Frank.Li@nxp.com, 
-	leoyang.li@nxp.com, zw@zh-kernel.org, wangzhou1@hisilicon.com, 
-	haijie1@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, afaerber@suse.de, 
-	logang@deltatee.com, daniel@zonque.org, haojian.zhuang@gmail.com, 
-	robert.jarzmik@free.fr, andersson@kernel.org, konrad.dybcio@linaro.org, 
-	orsonzhai@gmail.com, baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com, 
-	patrice.chotard@foss.st.com, wens@csie.org, jernej.skrabec@gmail.com, 
-	peter.ujfalusi@gmail.com, kys@microsoft.com, haiyangz@microsoft.com, 
-	wei.liu@kernel.org, decui@microsoft.com, jassisinghbrar@gmail.com, 
-	mchehab@kernel.org, maintainers@bluecherrydvr.com, 
-	aubin.constans@microchip.com, ulf.hansson@linaro.org, manuel.lauss@gmail.com, 
-	mirq-linux@rere.qmqm.pl, jh80.chung@samsung.com, oakad@yahoo.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, brucechang@via.com.tw, 
-	HaraldWelte@viatech.com, pierre@ossman.eu, duncan.sands@free.fr, 
-	stern@rowland.harvard.edu, oneukum@suse.com, 
-	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org, 
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-mediatek@lists.infradead.org, linux-actions@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org
+Date: Tue, 2 Apr 2024 14:35:17 +0200
+Message-ID: <CACRpkdbtRoDtWN4mnyZY_yEfWQFPCQaVudjBki8N1sOXxXWupQ@mail.gmail.com>
+Subject: Re: [PATCH 64/64] i2c: reword i2c_algorithm in drivers according to
+ newest specification
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, Elie Morisse <syniurge@gmail.com>, 
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Krzysztof Adamski <krzysztof.adamski@nokia.com>, Benson Leung <bleung@chromium.org>, 
+	Guenter Roeck <groeck@chromium.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Jan Dabros <jsd@semihalf.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Jean-Marie Verdun <verdun@hpe.com>, Nick Hawkins <nick.hawkins@hpe.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Khalil Blaiech <kblaiech@nvidia.com>, 
+	Asmaa Mnebhi <asmaa@nvidia.com>, Qii Wang <qii.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
+	Ajay Gupta <ajayg@nvidia.com>, Peter Korsgaard <peter@korsgaard.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Robert Richter <rric@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, Vignesh R <vigneshr@ti.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Hector Martin <marcan@marcan.st>, 
+	Sven Peter <sven@svenpeter.dev>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+	Vladimir Zapolskiy <vz@mleia.com>, Loic Poulain <loic.poulain@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Laxman Dewangan <ldewangan@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, 
+	Conghui Chen <conghui.chen@intel.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Michal Simek <michal.simek@amd.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev, 
+	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org, 
+	linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	asahi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-tegra@vger.kernel.org, virtualization@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Allen,
+On Fri, Mar 22, 2024 at 2:27=E2=80=AFPM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 
-thanks for your patch!
-
-On Wed, Mar 27, 2024 at 5:03=E2=80=AFPM Allen Pais <apais@linux.microsoft.c=
-om> wrote:
-
-> The only generic interface to execute asynchronously in the BH context is
-> tasklet; however, it's marked deprecated and has some design flaws. To
-> replace tasklets, BH workqueue support was recently added. A BH workqueue
-> behaves similarly to regular workqueues except that the queued work items
-> are executed in the BH context.
+> Match the wording in i2c_algorithm in I2C drivers wrt. the newest I2C
+> v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
+> appropriate terms. For some drivers, this means no more conversions are
+> needed. For the others more work needs to be done but this will be
+> performed incrementally along with API changes/improvements. All these
+> changes here are simple search/replace results.
 >
-> This patch converts drivers/dma/* from tasklet to BH workqueue.
->
-> Based on the work done by Tejun Heo <tj@kernel.org>
-> Branch: git://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
->
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-(...)
-> diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-(...)
->         if (d40c->pending_tx)
-> -               tasklet_schedule(&d40c->tasklet);
-> +               queue_work(system_bh_wq, &d40c->work);
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Why is "my" driver not allowed to use system_bh_highpri_wq?
-
-I can't see the reasoning between some drivers using system_bh_wq
-and others being highpri?
-
-Given the DMA usecase I would expect them all to be high prio.
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
