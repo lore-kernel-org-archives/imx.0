@@ -1,103 +1,266 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6508D59B4B
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 10:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712055385; cv=none; b=aLFMITUTdpR2E4x9YiHvTgQqREJRZve6TihSm6lm5Mpa+FKlrV26RG7XhaLShx3DNyNFJvG4MSGkm+WNpALfkPeJSBVCFb0qThFo9t7wH01a6lKXbBmM9FKcPUxkGQRnqRd9ewF0s2pQX6wePT0LUD2FrtrXRl+nAjdSOzb28ZU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712055385; c=relaxed/simple;
-	bh=ZsQBIyXKKSheuF7mF3S6XPB3YrTCv+P0r+MuG3O/sww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DLTOqe+B01g049avafCSsQAiUwqXxtcHoMyH0Aa+n9SOiARCg+JrOhSXjxmKmSZ+Ah2pgb+uCPex81IIla9YFGq09MDjt+lXWqi5acvS5N7QkTv/7akDUN5OOqoeD8IP+sgCGxSJK+W/0uEcFHPflxjM+WxP9jegkjF3CtR+yGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VNu7cS6I; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2105.outbound.protection.outlook.com [40.107.14.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C15E7E58A
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 10:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.105
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712055472; cv=fail; b=PF+/OBNkXae58F2O93obQGlDiVD7DyG0XmWmLyjVzeO1xLyHYr2nRJ4Xrv0yV8NW18nj4HKRq/Tnho5I/BDHyO1jFTeZh9j0w7FK3mfHzo2VAMu1z3w123cp5AH+pT4DZrch6Q9omu9xiUdVnIF2m5rzVp2a3x73b9Tna97Oa2k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712055472; c=relaxed/simple;
+	bh=fZkX2XEb8DTPL0ZpRZoHq/C2Rf4hON5OJcowwF4LKRs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=h2w29KDg8zeG2zkNKijL8RLjVai7wqTAGLHO+4PM4Zeb8YNZb8/qj0ZsiliCJW5zRHPu0Tj/Ig3yUdg827XPx2k5cLoCc41WfG2gs4OIHgNkU2dMS60QJ/qbfbvGa+pFLi+6YREKMOhso/VPNqSHMFaHcNcLwWYlUBirotUZXrI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Trq6JsZ8; arc=fail smtp.client-ip=40.107.14.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VNu7cS6I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=HL6yYIAfmTq4orQz8KSraMu08Ey5PkjYaek7rExViLg=;
-	b=VNu7cS6INVdcwM+6pNaYKAjz3A2GHUDmyqhZWbK0VIuHzo3qOD2TYP6ttmW+WW
-	5G48e74VnTMRoqYxj503QRPPyOYOO2x1V4SqFTj2ev6EzArNOowif4jDTu27L7hS
-	Or5iqK9IVHUewtXmEY/uHA73Qu626ycrTUftGDkl05PNk=
-Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrAD3HyBE5AtmXiWkAQ--.64379S3;
-	Tue, 02 Apr 2024 18:56:05 +0800 (CST)
-Date: Tue, 2 Apr 2024 18:56:04 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-conn: fix usdhc wrong lpcg clock
- order
-Message-ID: <ZgvkRFxkNzQ2Z8re@dragon>
-References: <20240322164706.2626088-1-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Trq6JsZ8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mFUB1lXmUB9gnXgBcpRwBOwpTvU9Oz2gCF+gpNRAkQPLCpXx3OnRH8WjlRatyyiVMc+hdtS7AtUUyoLzF1i5KmC0LOyhkCpMprLJL5gMhnNBah0R6EkeKlj/CMPa1EIZ3fRBccsnphG5rNlprHsqEw5xPSg2P4zh7m9hinIsrjkxS85uwgrklvVrJ1m4etnLjTyE6kSS1hjUjWBSqIcznPa5EEN1eAkwang5vIx+rod13DRNCnZjcZiKXrKTGXBLm3Kp4cFZ2Hj/3vlPvSxw6frrq3AZxewGQKOoD/NZ66XlI6TU/bON2pgRAt4AzVJLY9pz8HfocZM1QioYkOlEUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1aykXMAnVJm1znKxK1fpgoUG8C6P1KgATvjvhvZBcuw=;
+ b=MGjwz2AyrcYjLoQSGN4VRBslOHy83Y+A4h5LQKsh/5Mu8U0E/ixdrV2TbIF/sogt3eAU+HBiSRTQ8iN925kvv62SQNepXC2wAA6OEIgLopPGp6W1wkZIJnIn59Gb/fPdQg9oh222WX3dVsOsilK+nwIP3Rm3E9U1D47G7EvEEPZ7l283z98uNKxmsrVapZ03IfsCGfMUZWrt9b/+i9ZkOWBoKMnG6Qs5xH8p5fbmBpOKFbsqdl8MJeUWbd/mDMhEs2q9hnInHduehXjJBTIkvixyn1Hp/QSPdqk4u0usHYPVB6KrE9yuPjUrw87npjwUx3gRpQZrHyy41hXCg/D2Gg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1aykXMAnVJm1znKxK1fpgoUG8C6P1KgATvjvhvZBcuw=;
+ b=Trq6JsZ8u1Y0ajR8XAr2jXM1aXFoXpqGDVHnCrwE6AnfZSAchr8vEKTvecu8iTcmERjurSH0wOlWCPufBJyjhMYmxhd4JNr2dKVihKrR9iCks2oeyoowqoorPLn/3sSN9/9GghY1OGj4RfqjqpLZr1x0aDSC1Q9XMmfpAhCSELE=
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AM9PR04MB8115.eurprd04.prod.outlook.com (2603:10a6:20b:3e8::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
+ 2024 10:57:46 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::8d2f:ac7e:966a:2f5f]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::8d2f:ac7e:966a:2f5f%5]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
+ 10:57:46 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Shawn Guo <shawnguo2@yeah.net>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
+	"peter.chen@kernel.org" <peter.chen@kernel.org>, Jun Li <jun.li@nxp.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] Re: [PATCH v10 08/11] arm64: dts: imx93: add usb nodes
+Thread-Topic: [EXT] Re: [PATCH v10 08/11] arm64: dts: imx93: add usb nodes
+Thread-Index: AQHae2ffBy+Xup/fwE6K9MWKmQtH4LFUu9+AgAAgiJA=
+Date: Tue, 2 Apr 2024 10:57:46 +0000
+Message-ID:
+ <DU2PR04MB8822270270971F34455558ED8C3E2@DU2PR04MB8822.eurprd04.prod.outlook.com>
+References: <20240321081439.541799-1-xu.yang_2@nxp.com>
+ <20240321081439.541799-8-xu.yang_2@nxp.com> <ZgvEXZTOHUv+GGeH@dragon>
+In-Reply-To: <ZgvEXZTOHUv+GGeH@dragon>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU2PR04MB8822:EE_|AM9PR04MB8115:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ UVx1I/+XQ6nkp3mLYe7oCv6L8R8FJyVT3fDnjrm3pMFOoMPgN2pTTQ6bejupehcW/CkFUJHubDUCJRI6CYAwWCqQi/oPalhMYGZpUVujU5L++olmVPQiiCiCV1IeVaD3hrQySvoq4kG5dgsdt+kaQCFyskf7s4x0N0oFxDXUTFaZuooWIltN9v/XJtsmbvuePQuNMXS7qA2FH3HY5Ex59AHmJnAwDOmLvpTtzxHef+Qict39JLhu/B+UfDQxkA4Vhig0mzAFTnb5zU22d6r9HRtZjvrgjWzq0BOrnyKs8zpyDFVu4CSQ7qCpDNHlZt5yiylwrRAy4LfxUKmK4UFfAWvfDsq+XGbJCuOFKv1JsA7M/JVE/MpZ+N4hbffNXe6yNha3KBSJxsJUqUVbGoDZLrkjX+cMCpVDWvidqy9loIgYjt7Z5Xd3555hR1dYhZjll/gm89EEoY2n1McFouCVd+Kc/HMryRX3D1I7L0HyLFCoqAdJTsBbT6/R+o4WNobU/FBtbW9QjctQ8C/eY+8hJPzi/XXJlR1qF993l6cQza7JHmaQjZf4Gc66o/d5/X6YIA3VrvGBbqkTYW3UTLOqA6mKf7DkYMS3KWsH/pWaEkcz4DQnp39p0LWrt+1Ux9dthUJr5HMq1l86yk7t1H49obXOWvQUGPWD+3LsvCXmrps=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(7416005)(366007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?4/ZERUg6fLnxey3ILbFGtt6Dg/R2e8RdUkIv0qFxHt0EOJAoYUI3MnebvFVj?=
+ =?us-ascii?Q?nJOERQ0EzXp6rCg4PTV4/YlY7+ULyVeHxlByDhKHMoPfLkFKt+F0B2tX2T0E?=
+ =?us-ascii?Q?ENebMKkHzV2d04ze3hDJvhTOrF4qR6jcASnFnGnJR6iQScHP8D4BZeYIap9h?=
+ =?us-ascii?Q?QWz0TQ+Y1Q2Gog+loYc0HDzFkoNCKWf7Tn++wRj/fNjzj3mPdkyaKMFg6Ch7?=
+ =?us-ascii?Q?Yup+yomwL5U221dUZ0MA2lu7GLscEbklHOvmQE+x5kui2x78c78KW8XBovNI?=
+ =?us-ascii?Q?5cMxhnkKuigPDQhzZxrghrTyFQeWbM01WNHLr9K7XSBcVXifilJL0Dm8kKSa?=
+ =?us-ascii?Q?AhX5cTtWOEHYJND/Ve8BuAvz/ff058FA8FoZ+20RyDySeMOKfOCsTmEmoGxw?=
+ =?us-ascii?Q?GEE17wml8RQSPsiESrc+EvPe6GbNv6ASvfd+XtSTgtTdoVP7TcCh7e8MoWfj?=
+ =?us-ascii?Q?rTcWwcNfwqg0vqy2F7I20t9DM7p6ymveZER9CobgIk91+pNAPALWIC5wrZF8?=
+ =?us-ascii?Q?2WT75HSKGjxttzUQIICxB3eSxRn8YLomNbir4DcnxwEnPvXQFDGv6O3Ka4Ma?=
+ =?us-ascii?Q?HPtVGJdlhMRgfTdjZKfO3Ak20MOS+2hPp2An4cAEnm0DP+3p7VP2hRu3VPQJ?=
+ =?us-ascii?Q?22/RGQFWvGw5pNaT04ReS4o/BYkIXtCbATAS5QfQd0l/7F15gItmF4uaxe9O?=
+ =?us-ascii?Q?UQ5RZwySlPQl0HKMLYMQ/AOpD5FzqnEB1lzB7LJw/4GxWRYgUyBvqltf5uC1?=
+ =?us-ascii?Q?x+fgFh0ISowNpR+ffrH+WD4MVic8JyH1Jx7ahthjkRmD3es15W1WHKUR9cwx?=
+ =?us-ascii?Q?f5CCh4Uo4T9JT7n6ljLPScplrA4m6ULbN4rw2mSNitSn+ZSM4zDGtG2zJzNu?=
+ =?us-ascii?Q?tYN9WD1AUYyNqwSKdYU6T9JqOIs+MBOZWcX2pntFYRdUm5U0rSxlgUa5M/MO?=
+ =?us-ascii?Q?baa2swqKu4tvBqiL01Sp4JIbchpyybbT9++9WO9Aiepc3OK77lA6g3KDA3di?=
+ =?us-ascii?Q?LEtSpGvs8/AcfMdDCB+EALJIsCGE5FtjXdk9oW32qwrVyx8ByK7cT1O9INgd?=
+ =?us-ascii?Q?STms7OAy/MtKXLj+4WTct8Qy5V6k4Y0Q/J8ClAy0qLeOFWCrgsZVruSD9krZ?=
+ =?us-ascii?Q?itQbu60Qrcw5nA22A32m8ha2rmT3+DvUgRJr76gFeig1lmo7SL9wpMtlOHC9?=
+ =?us-ascii?Q?HNOsMTr2DlKbNQnLuxz3irpnsjWESKRWDBkx2KQt+SsZzZXtqH7XEDno+/kT?=
+ =?us-ascii?Q?sI3Uaw3UZm43pFN/3ogREWEfe+eeq8rcuQG0ygaSiuu2hTrcpMujQH97SYoR?=
+ =?us-ascii?Q?TFSA1kLLta/Nq1ML23b4/uWfOi4s7WwikOL01zWHBaNOZEHSUaEpsLzzHV+X?=
+ =?us-ascii?Q?WIm4beQh745Bm2Jx5FVkfIYckpuPrCARKmHOCNDsQp0oql+pgmZa8tbC0/jK?=
+ =?us-ascii?Q?fWdjEyjRrXTp9+L9benfHMrtQKZUQlYimFnwz6iFBdzrIZ8whbIeXd6FJVVK?=
+ =?us-ascii?Q?v1OJMeeZ9U6TfLHdH4ZgljFYxUKpZ143BCarWJQb8IRXYT6oinrP0964an28?=
+ =?us-ascii?Q?f1rlrs/EW0H4uPXRiUo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240322164706.2626088-1-Frank.Li@nxp.com>
-X-CM-TRANSID:ClUQrAD3HyBE5AtmXiWkAQ--.64379S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GF1rZr43Aw4DJryfAFWrKrg_yoWkKwb_Xw
-	18Xrn5KFZrurZayF95ArWxu3y8K3W7Ar1UJas2yr4xXF98G3yUCr1UJ3yrurn8WFnFqws8
-	AF4DJrWkJryS9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0kwIDUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDQe0ZVszXX2VXgAAsY
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a19dff0c-0de8-410c-8cc9-08dc5303bb17
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Apr 2024 10:57:46.8009
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Y+ecqbd0H6SpuGUGoS8lHZZZzG7nJyqnlKhEdJfxmPKgUQuuu/nWv/hL/OeDsTNUrn0egZ2cY35oItmuxY0uqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8115
 
-On Fri, Mar 22, 2024 at 12:47:05PM -0400, Frank Li wrote:
-> The actual clock show wrong frequency:
-> 
->    echo on >/sys/devices/platform/bus\@5b000000/5b010000.mmc/power/control
->    cat /sys/kernel/debug/mmc0/ios
-> 
->    clock:          200000000 Hz
->    actual clock:   166000000 Hz
->                    ^^^^^^^^^
->    .....
-> 
-> According to
-> 
-> sdhc0_lpcg: clock-controller@5b200000 {
->                 compatible = "fsl,imx8qxp-lpcg";
->                 reg = <0x5b200000 0x10000>;
->                 #clock-cells = <1>;
->                 clocks = <&clk IMX_SC_R_SDHC_0 IMX_SC_PM_CLK_PER>,
->                          <&conn_ipg_clk>, <&conn_axi_clk>;
->                 clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>,
->                                 <IMX_LPCG_CLK_5>;
->                 clock-output-names = "sdhc0_lpcg_per_clk",
->                                      "sdhc0_lpcg_ipg_clk",
->                                      "sdhc0_lpcg_ahb_clk";
->                 power-domains = <&pd IMX_SC_R_SDHC_0>;
->         }
-> 
-> "per_clk" should be IMX_LPCG_CLK_0 instead of IMX_LPCG_CLK_5.
-> 
-> After correct clocks order:
-> 
->    echo on >/sys/devices/platform/bus\@5b000000/5b010000.mmc/power/control
->    cat /sys/kernel/debug/mmc0/ios
-> 
->    clock:          200000000 Hz
->    actual clock:   198000000 Hz
->                    ^^^^^^^^
->    ...
-> 
-> Fixes: 16c4ea7501b1 ("arm64: dts: imx8: switch to new lpcg clock binding")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Hi Shawn,
 
-Applied, thanks!
+>=20
+> On Thu, Mar 21, 2024 at 04:14:36PM +0800, Xu Yang wrote:
+> > There are 2 USB controllers on i.MX93. Add them.
+> >
+> > Acked-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa9352=
+LA/CA
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> >
+> > ---
+> > Changes in v2:
+> >  - fix format as suggested by Alexander
+> >  - change compatible from fsl,imx8mm-usb to fsl,imx93-usb
+> > Changes in v3:
+> >  - replace deprecated fsl,usbphy with phys as suggested by Alexander
+> >  - reorder nodes
+> > Changes in v4:
+> >  - fix the alignment
+> > Changes in v5:
+> >  - rename usb_wakeup_clk to usb_wakeup
+> > Changes in v6:
+> >  - rename usb_ctrl_root_clk to usb_ctrl_root
+> > Changes in v7:
+> >  - no changes
+> > Changes in v8:
+> >  - no changes
+> > Changes in v9:
+> >  - no changes
+> > Changes in v10:
+> >  - no changes
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx93.dtsi | 58 ++++++++++++++++++++++++
+> >  1 file changed, 58 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot=
+/dts/freescale/imx93.dtsi
+> > index 8f2e7c42ad6e..4a7efccb4f67 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > @@ -183,6 +183,20 @@ mqs2: mqs2 {
+> >               status =3D "disabled";
+> >       };
+> >
+> > +     usbphynop1: usbphynop1 {
+> > +             compatible =3D "usb-nop-xceiv";
+> > +             #phy-cells =3D <0>;
+> > +             clocks =3D <&clk IMX93_CLK_USB_PHY_BURUNIN>;
+> > +             clock-names =3D "main_clk";
+> > +     };
+> > +
+> > +     usbphynop2: usbphynop2 {
+> > +             compatible =3D "usb-nop-xceiv";
+> > +             #phy-cells =3D <0>;
+> > +             clocks =3D <&clk IMX93_CLK_USB_PHY_BURUNIN>;
+> > +             clock-names =3D "main_clk";
+> > +     };
+> > +
+> >       soc@0 {
+> >               compatible =3D "simple-bus";
+> >               #address-cells =3D <1>;
+> > @@ -1167,6 +1181,50 @@ media_blk_ctrl: system-controller@4ac10000 {
+> >                       status =3D "disabled";
+> >               };
+> >
+> > +             usbotg1: usb@4c100000 {
+> > +                     compatible =3D "fsl,imx93-usb", "fsl,imx7d-usb", =
+"fsl,imx27-usb";
+> > +                     reg =3D <0x4c100000 0x200>;
+> > +                     interrupts =3D <GIC_SPI 187 IRQ_TYPE_LEVEL_HIGH>;
+> > +                     clocks =3D <&clk IMX93_CLK_USB_CONTROLLER_GATE>,
+> > +                              <&clk IMX93_CLK_HSIO_32K_GATE>;
+> > +                     clock-names =3D "usb_ctrl_root", "usb_wakeup";
+> > +                     assigned-clocks =3D <&clk IMX93_CLK_HSIO>;
+> > +                     assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PL=
+L_PFD1_DIV2>;
+> > +                     assigned-clock-rates =3D <133000000>;
+> > +                     phys =3D <&usbphynop1>;
+> > +                     fsl,usbmisc =3D <&usbmisc1 0>;
+> > +                     status =3D "disabled";
+> > +             };
+> > +
+> > +             usbmisc1: usbmisc@4c100200 {
+> > +                     compatible =3D "fsl,imx8mm-usbmisc", "fsl,imx7d-u=
+sbmisc",
+> > +                                  "fsl,imx6q-usbmisc";
+> > +                     reg =3D <0x4c100200 0x200>;
+> > +                     #index-cells =3D <1>;
+>=20
+> Do we still need this '#index-cells' property?  I see it's being marked
+> as deprecated in bindings doc.
+
+Sorry, the driver still needs fetch the value of this property so far. Othe=
+rwise,
+the driver will probe failed. We still need some time to totally retire thi=
+s property.=20
+
+Thanks,
+Xu Yang
+
+>=20
+> Shawn
+>=20
+> > +             };
+> > +
+> > +             usbotg2: usb@4c200000 {
+> > +                     compatible =3D "fsl,imx93-usb", "fsl,imx7d-usb", =
+"fsl,imx27-usb";
+> > +                     reg =3D <0x4c200000 0x200>;
+> > +                     interrupts =3D <GIC_SPI 188 IRQ_TYPE_LEVEL_HIGH>;
+> > +                     clocks =3D <&clk IMX93_CLK_USB_CONTROLLER_GATE>,
+> > +                              <&clk IMX93_CLK_HSIO_32K_GATE>;
+> > +                     clock-names =3D "usb_ctrl_root", "usb_wakeup";
+> > +                     assigned-clocks =3D <&clk IMX93_CLK_HSIO>;
+> > +                     assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PL=
+L_PFD1_DIV2>;
+> > +                     assigned-clock-rates =3D <133000000>;
+> > +                     phys =3D <&usbphynop2>;
+> > +                     fsl,usbmisc =3D <&usbmisc2 0>;
+> > +                     status =3D "disabled";
+> > +             };
+> > +
+> > +             usbmisc2: usbmisc@4c200200 {
+> > +                     compatible =3D "fsl,imx8mm-usbmisc", "fsl,imx7d-u=
+sbmisc",
+> > +                                  "fsl,imx6q-usbmisc";
+> > +                     reg =3D <0x4c200200 0x200>;
+> > +                     #index-cells =3D <1>;
+> > +             };
+> > +
+> >               ddr-pmu@4e300dc0 {
+> >                       compatible =3D "fsl,imx93-ddr-pmu";
+> >                       reg =3D <0x4e300dc0 0x200>;
+> > --
+> > 2.34.1
+> >
 
