@@ -1,170 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDB51E525;
-	Tue,  2 Apr 2024 09:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068FB5B5D6
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 10:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712049836; cv=none; b=tYgzL/Ir7q9qEFN+KOqSSKsmDqpXjgG0ELBr2pin0Bh8hfZfSlq362d6bE60R+I3KRaBZ7rtFtFwV9MfhnbaYirwCWOG+vfN9MNkSS6fV1nZLlWNORGhuflcn+zckEEj5RWXPvAJqom/+U8gWdkdkGjLHun4iWsfb72vEJ+mvvA=
+	t=1712052986; cv=none; b=SIojs6Xp/k5W4xOMslR2CkqlV6+ZQ1NhNG2kvDlrzAmMSE/skF/BReP/UYTPgyeAu4vkqrO6/0MGZUFXeIITDeRuOGI6+AyCLAZtE4tICvkH3VjpqX+Hipa4qPfFvS3uRawtEnQt0ct/dG2kOmkwPYzkrJiiieURyzUTfqobl7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712049836; c=relaxed/simple;
-	bh=uP3ZmE2O+vWIbuxP60+6a2e0IG8mb6uOK8upxIwNDxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zw+XcjfYqRVltEPGykyZUMghs6uy2kwK8k2OYlftSw2JGh1aaEzzZEprDih69gBIOz8OD/FkFj2K1rotJvGokS5obWBtlXVc877d01ZZu0+oyRKyUEIblTrebSSt2pBzMIxcQMitHKWSXn8o+xkLZ3BSrw+CX1jaD7zy7TClqgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnrBuzK8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712052986; c=relaxed/simple;
+	bh=uzac7wtIrnnrBvtOLPs8xaD+ikoHcCxqEerEJoMcBFs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jSgveFIfu9orp9RXXglTwqFeqfCO3WFyHK2guOMwc9VrEf/jkpGY1A8Muiq7ST+QLPLuccUdpVvTaoWWN2Mwg8my+l8qiq+E94vmWH1aszsXeOBxxNYRezoDjtenIIzzh9rXA38G5uNb+Ul6vvdRGs1wJWHDIvf25fiiC/ZWLGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZiiZAHRh; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnrBuzK8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12EEC433F1;
-	Tue,  2 Apr 2024 09:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712049835;
-	bh=uP3ZmE2O+vWIbuxP60+6a2e0IG8mb6uOK8upxIwNDxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mnrBuzK8nGsFabYx53PEMMB0te+6pec8eOp74nmqVq0bPhfoJRvQ9s0jywus8q4GD
-	 ead5w6G5Jmu6FlHmkbvWztAS+ZeB5qpDqd4Hogv2HZvsut4EcofECFqgcWKdTXr+pN
-	 wbtO4pXWFpOOP32lpu3KGLGfzcMfoQukNeCyIaZ2OiF2qlYLrLwpcOwQIJCVJWPOt1
-	 tmg+DukvgBG76/zUExNTDjjCdS/7i+rw3IS/rFQdV/EjP+Lrc+AfZJ+AIu+Dc9wyCG
-	 4RjCGCnAcp5PEqxq0BCNpG132uA8c04yLfHGfvET9e7ZeWwJhjVL/mji7a/HVSsWiP
-	 jxpJq83NbsbWA==
-Date: Tue, 2 Apr 2024 11:23:49 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	niklas.cassel@wdc.com, bhelgaas@google.com,
-	gustavo.pimentel@synopsys.com, imx@lists.linux.dev,
-	jdmason@kudzu.us, jingoohan1@gmail.com, kw@linux.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org, robh@kernel.org
-Subject: Re: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
- interpreted as a free ATU slot
-Message-ID: <ZgvOpTcNKPantiHg@ryzen>
-References: <20240321171345.GA2385@thinkpad>
- <20240321180732.GA1329092@bhelgaas>
- <20240322052623.GA4092@thinkpad>
- <Zf0i1X5fg-E59NWx@ryzen>
- <20240402051228.GH2933@thinkpad>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZiiZAHRh"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dcbd1d4904dso4576658276.3
+        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 03:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712052982; x=1712657782; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uzac7wtIrnnrBvtOLPs8xaD+ikoHcCxqEerEJoMcBFs=;
+        b=ZiiZAHRhwtcSgxTB/tXxP7iw5yibr8flu2COZgBYM3CWmjlxlmqdzsB3AHcWetOtFy
+         Eu+zYIPGbjl2ulJH+BVje7SE8+M4PTXYHnKaC7SAtF1wEtnYMOwe+/bdFHm758kpMSxM
+         BVlZnKOU8m8/CY0nNgbyXMCx8Rn80sBbWJa5YzqyWeqGJu5NWuK3eVYYOnQ1yLeRaNyC
+         b9cxS+Bn18PVgyv0QM+bP3HdU0gdR9r58C2pcJRTAbn8BoQPb4RIXwFFTC/h2wLN69yH
+         Xm5CiHVyjWEpjfZ5XCsiCW0vHeBtLwuErmG11jm3OjQIEAI8PCJGThmR6hDXidw5+EJV
+         PY8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712052982; x=1712657782;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uzac7wtIrnnrBvtOLPs8xaD+ikoHcCxqEerEJoMcBFs=;
+        b=msj49F8FF2uEie3LNTxcpfinyrDWEy1lu7A/xqLyM7eLMXtMT/PS3lN0na0WE3aJjs
+         XaMp4DPpB3gJ/lwJ2B4EZD7ZY6I8VplVq1nPptsj9aJ/APS/YVQIv6wfoaidi7TCSxrZ
+         c4L1nVPLe3/ZOLl25Og+ROLkCqpLMGsIoruK3Om3YJQsbUAQUjzakgfJD8A3z0IM8HiZ
+         bmqI1xZ42O1Bsu7YFFtbWQkr2Wb7a1Eqy8H6qe/Y4t8vtR0k3rUZT38allkNwNIYJUx0
+         /kHJU0rD1iEEqSKazt56Ea6as/nELBCgdDG8C9CHWQkvtyuyOLp/lD0hsQ5oDb2S29ka
+         qDSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNjGbJftmV0Mhf/tLuArVE7tDxVkIiSpyhTJ6cG42Q5TqNfHDEG0iWBe+kAeXhW+4b//3U8ayMqvtdKHX7WAZ9uSAk
+X-Gm-Message-State: AOJu0YzXYzaPftnUxC302coMfTL/Rf2+iVAOz4VO156RA0YpBcCroB05
+	X5/+N8P8tVAMfBgIKlolFrkmYWjNFvTCCnbpAhDJJec1gzWPeGmdyPEzv4CiwlcubEe4ZFE2C0M
+	r2d/UDfjE6/0YAqoXJahLkbFmnLNWg/FKFpXPqg==
+X-Google-Smtp-Source: AGHT+IHzjYx5u+Am4EzQhN6aMsFTdxF/7ehGqP9AXe12JTbN0HclFOy9oE6Q1Tva+ZRKMaaQSSepEoCeBcfLH2AuW+A=
+X-Received: by 2002:a25:b191:0:b0:dcd:b034:b504 with SMTP id
+ h17-20020a25b191000000b00dcdb034b504mr9487652ybj.27.1712052982018; Tue, 02
+ Apr 2024 03:16:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240402051228.GH2933@thinkpad>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-10-apais@linux.microsoft.com> <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
+ <ZgWZDtNU4tCwqyeu@slm.duckdns.org>
+In-Reply-To: <ZgWZDtNU4tCwqyeu@slm.duckdns.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 2 Apr 2024 12:15:45 +0200
+Message-ID: <CAPDyKFp5KET0HR+8MwO4cf0O6W2kyFqHoKcVf5jbgBuLuQUcFA@mail.gmail.com>
+Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
+To: Tejun Heo <tj@kernel.org>
+Cc: Allen Pais <apais@linux.microsoft.com>, linux-kernel@vger.kernel.org, 
+	keescook@chromium.org, vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev, 
+	florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com, 
+	paul@crapouillou.net, Eugeniy.Paltsev@synopsys.com, 
+	manivannan.sadhasivam@linaro.org, vireshk@kernel.org, Frank.Li@nxp.com, 
+	leoyang.li@nxp.com, zw@zh-kernel.org, wangzhou1@hisilicon.com, 
+	haijie1@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, afaerber@suse.de, 
+	logang@deltatee.com, daniel@zonque.org, haojian.zhuang@gmail.com, 
+	robert.jarzmik@free.fr, andersson@kernel.org, konrad.dybcio@linaro.org, 
+	orsonzhai@gmail.com, baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com, 
+	patrice.chotard@foss.st.com, linus.walleij@linaro.org, wens@csie.org, 
+	jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com, kys@microsoft.com, 
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, 
+	jassisinghbrar@gmail.com, mchehab@kernel.org, maintainers@bluecherrydvr.com, 
+	aubin.constans@microchip.com, manuel.lauss@gmail.com, mirq-linux@rere.qmqm.pl, 
+	jh80.chung@samsung.com, oakad@yahoo.com, hayashi.kunihiko@socionext.com, 
+	mhiramat@kernel.org, brucechang@via.com.tw, HaraldWelte@viatech.com, 
+	pierre@ossman.eu, duncan.sands@free.fr, stern@rowland.harvard.edu, 
+	oneukum@suse.com, openipmi-developer@lists.sourceforge.net, 
+	dmaengine@vger.kernel.org, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-mediatek@lists.infradead.org, 
+	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-s390@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 02, 2024 at 10:42:28AM +0530, Manivannan Sadhasivam wrote:
-> On Fri, Mar 22, 2024 at 07:19:01AM +0100, Niklas Cassel wrote:
-> > On Fri, Mar 22, 2024 at 10:56:23AM +0530, Manivannan Sadhasivam wrote:
-> > > On Thu, Mar 21, 2024 at 01:07:32PM -0500, Bjorn Helgaas wrote:
-> > > > On Thu, Mar 21, 2024 at 10:43:45PM +0530, Manivannan Sadhasivam wrote:
-> > > > > On Mon, Mar 04, 2024 at 05:46:16PM -0500, Frank Li wrote:
-> > > > > > dw_pcie_ep_inbound_atu()
-> > > > > > {
-> > > > > > 	...
-> > > > > > 	if (!ep->bar_to_atu[bar])
-> > > > > > 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
-> > > > > > 	else
-> > > > > > 		free_win = ep->bar_to_atu[bar];
-> > > > > > 	...
-> > > > > > }
-> > > > > > 
-> > > > > > The atu index 0 is valid case for atu number. The find_first_zero_bit()
-> > > > > > will return 6 when second time call into this function if atu is 0. Suppose
-> > > > > > it should use branch 'free_win = ep->bar_to_atu[bar]'.
-> > > > > > 
-> > > > > > Change 'bar_to_atu' to free_win + 1. Initialize bar_to_atu as 0 to indicate
-> > > > > > it have not allocate atu to the bar.
-> > > > > 
-> > > > > I'd rewrite the commit message as below:
-> > > > > 
-> > > > > "The mapping between PCI BAR and iATU inbound window are maintained in the
-> > > > > dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for a
-> > > > > BAR, dw_pcie_ep_inbound_atu() API will first check for the availability of the
-> > > > > existing mapping in the array and if it is not found (i.e., value in the array
-> > > > > indexed by the BAR is found to be 0), then it will allocate a new map value
-> > > > > using find_first_zero_bit().
-> > > > > 
-> > > > > The issue here is, the existing logic failed to consider the fact that the map
-> > > > > value '0' is a valid value for BAR0. Because, find_first_zero_bit() will return
-> > > > > '0' as the map value for BAR0 (note that it returns the first zero bit
-> > > > > position).
-> > > > > 
-> > > > > Due to this, when PERST# assert + deassert happens on the PERST# supported
-> > > > > platforms, the inbound window allocation restarts from BAR0 and the existing
-> > > > > logic to find the BAR mapping will return '6' for BAR0 instead of '0' due to the
-> > > > > fact that it considers '0' as an invalid map value.
-> > > > > 
-> > > > > So fix this issue by always incrementing the map value before assigning to
-> > > > > bar_to_atu[] array and then decrementing it while fetching. This will make sure
-> > > > > that the map value '0' always represents the invalid mapping."
-> > > > 
-> > > > This translates C code to English in great detail, but still doesn't
-> > > > tell me what's broken from a user's point of view, how urgent the fix
-> > > > is, or how it should be handled.
-> > > > 
-> > > > DMA doesn't work because ATU setup is wrong?  Driver MMIO access to
-> > > > the device doesn't work?  OS crashes?  How?  Incorrectly routed access
-> > > > causes UR response?  Happens on every boot?  Only after a reboot or
-> > > > controller reset?  What platforms are affected?  "PERST# supported
-> > > > platforms" is not actionable without a lot of research or pre-existing
-> > > > knowledge.  Should this be backported to -stable?
-> > > > 
-> > > 
-> > > Severity is less for the bug fixed by this patch. We have 8 inbound iATU windows
-> > > on almost all of the platforms and after PERST# assert + deassert, BAR0 uses map
-> > > '6' instead of '0'.
-> > > 
-> > > This has no user visibility since the mapping will go fine and we have only 6
-> > > BARs. So I'd not mark this as as critical fix that needs special attention.
-> > 
-> > So we will have 6 mappings configured, but only 5 BARs, so two mappings for
-> > BAR0. The iATU looks at them in order, so index 0 will override index 6.
-> > 
-> > We are lucky that the endpoint subsystem does not clean up allocations properly
-> > right now (you have an outstanding series which fixes this).
-> > 
-> > If the endpoint subsystem did clean up resources properly, we would DMA to the
-> > area that was previously allocated for BAR0, instead of the new area for BAR0.
-> > 
-> 
-> How would DMA happen to the previously allocated area? When the BARs are cleared
-> properly and then allocated again, BAR0 will get the map of 0 again and then the
-> iATU will map window 0 with BAR0. Only if we don't clear the BARs properly (as
-> like now), then it will result in BAR0 having 2 identical mappings and even with
-> that there won't be any issue since both map 0 and 6 are valid.
-> 
-> Am I missing anything?
+On Thu, 28 Mar 2024 at 17:21, Tejun Heo <tj@kernel.org> wrote:
+>
+> Hello,
+>
+> On Thu, Mar 28, 2024 at 01:53:25PM +0100, Ulf Hansson wrote:
+> > At this point we have suggested to drivers to switch to use threaded
+> > irq handlers (and regular work queues if needed too). That said,
+> > what's the benefit of using the BH work queue?
+>
+> BH workqueues should behave about the same as tasklets which have more
+> limited interface and is subtly broken in an expensive-to-fix way (around
+> freeing in-flight work item), so the plan is to replace tasklets with BH
+> workqueues and remove tasklets from the kernel.
 
-Like Bjorn summarize it:
-"We dodge the bullet as long as the mappings for BAR 0 are identical,
-which doesn't feel like much comfort."
+Seems like a good approach!
 
-Yes, right now we don't have a cleanup of either the backing memory for
-the BAR, or the iATUs mapping the PCI address to backing memory.
-(We allocate the backing memory for the BARs in .bind(), and free it in
-unbind().)
+>
+> The [dis]advantages of BH workqueues over threaded IRQs or regular threaded
+> workqueues are the same as when you compare them to tasklets. No thread
+> switching overhead, so latencies will be a bit tighter. Wheteher that
+> actually matters really depends on the use case. Here, the biggest advantage
+> is that it's mostly interchangeable with tasklets and can thus be swapped
+> easily.
 
-So the superfluous iATU6 mapping will be the same as the iATU0 mapping.
+Right, thanks for clarifying!
 
-After your series, we will still allocate and free the backing memory
-in .bind()/.unbind(), but we will set/clear the iATU mapping in the
-.init()/.deinit() EPF callbacks.
+However, the main question is then - if/when it makes sense to use the
+BH workqueue for an mmc host driver. Unless there are some HW
+limitations, a threaded irq handler should be sufficient, I think.
 
+That said, moving to threaded irq handlers is a different topic and
+doesn't prevent us from moving to BH workqueues as it seems like a
+step in the right direction.
 
-> 
-> > Perhaps just include this fix in your series that actually cleans up the BARs?
-> > 
-> 
-> Yeah, makes sense. Once we agree on a finalized commit message in this thread,
-> I'll include this patch in my series.
-
-I think that we have spent too much time on this patch already.
-
-My suggestion is that you simply apply it to pci/endpoint branch directly and
-fixup the commit message (like Bjorn usually does with [bhelgaas: commit log])
-after Frank's Sign-off.
-
-
-Kind regards,
-Niklas
+Kind regards
+Uffe
