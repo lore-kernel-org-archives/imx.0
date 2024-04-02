@@ -1,619 +1,188 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11021010.outbound.protection.outlook.com [52.101.228.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4F91DFCE
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 06:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712037742; cv=none; b=ZjoMmOKtADdxG7g4T7hIefoNTr2QnnrXQcfA10VmQkXSE5GHX5R6nUHpHmv4+43TLuqhemphA6FpqO3CUqQY6emXlgNPyfk1dxgFi5WEwlj9+TujAFsewbIormodT6AGxw6lY4lI/NY9l0k5oSZlSXhHvszF88ij7Ec50ivH+zE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712037742; c=relaxed/simple;
-	bh=zlQZWfIe1kVBbJIA7bkjb9fwGdIMjC0mrLU/lEnxMQg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=XPtnLu4clfx17/Iagsn19KBCmxPiKmmPPZVk/NdJnIIG9XKMaSunzoIAiKaE+APHTk1zL9ORsYgjUcDZMNUR78rXWmF8lL3o9G6DZ19JYt3SZza0BWXkjZvMAhT+A7cKpn9mVZ+AG+rtEMgHOUFFZabl1DQ350B+ZWVljzSzvsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id DC1521A04E5;
-	Tue,  2 Apr 2024 08:02:18 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5FC1E1A19BC;
-	Tue,  2 Apr 2024 08:02:18 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 0100A183ACAF;
-	Tue,  2 Apr 2024 14:02:16 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: vkoul@kernel.org,
-	kishon@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	frank.li@nxp.com,
-	conor+dt@kernel.org
-Cc: hongxing.zhu@nxp.com,
-	linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev
-Subject: [PATCH v2 3/3] phy: freescale: imx8q-hsio: Add i.MX8Q HSIO PHY driver support
-Date: Tue,  2 Apr 2024 13:45:04 +0800
-Message-Id: <1712036704-21064-4-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1712036704-21064-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1712036704-21064-1-git-send-email-hongxing.zhu@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A142BCE8
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 06:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712040203; cv=fail; b=WA9cAwvXRoZgJmCC5lo+Qp7giAnWAQWDrIK5z6Fn03ij0hfyqBjwUPvtxsCm/b1HnKo1rOQYIM/DV6ZzGWdjz4qgQU3tLSK4ZYYfciTQ9PoJ5WspVat4Rt5FdPS5FHtsynHJIP+glXD+y80m9kuHlIiV1/fEJe5R5LccmlSxnqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712040203; c=relaxed/simple;
+	bh=5mzDg1MpR5+D7I5ujfZQSOElERi3JYLG5yKE9re0hyo=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=OzSDpf+ltga9VSxl75gWW0arQdKoy9x60eJkhpIE3MW0P0rXIyf3YBW0QgFi137CjIHz8VoDhdFrAupO5wGXyzCWbC5KoGecKuOqRWSfDXyiK7TfCL5m/0LtrI+47Ee3fImwKFCs0W/Vh7JDHNuzQXgSxgoEcsA8zdRf4jikd+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=C0iR27NE; arc=fail smtp.client-ip=52.101.228.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="C0iR27NE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZYMelNczKGGtqHaWBQoIJ8AaWxKRpVIptpcC5WAzwhXgG25deGnYVdvhzWR7tGIy+X23r12d4r5DOeLa+wwFs4BszA97a9MibZAaz3bFH3vNBYyhRsSblgREXokFDNf/0KHvOHKQg9Thp2lI+hHNGvRKEg6lNszLGqJ2DuArgERRz9pwPYwZC97rxEJczLXGaoCGR8P07CT7qQhZOWSx+KmKxY3KwPevUR5/evGqTnoINNqSEDeA4xTl9CCmsmMX/M2dFAZdmwiPzsLM2bcM9b8LWFReOqt1kTcndoEC2M0+Bxphm1H+CfJv8RDcn8RaxRbjhP9mvsTyM1s79t5kTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1htx8VIPkbMIrMXe6sdnAxfXp+H7wTWuHPuyQ1WDErk=;
+ b=LPxiP+0n8DRnt0convau4WQWiLJ4ZCumHsXEpeuFX7lGyeiX2TKD28vNgcZKGG49qZXukJ8AsAY+J9VbN2UMj0c3foBoJHJ4sACl1P073wPOrX4rTuViuf+gjx8gaLvZt1mu4WsVZ/+kTGai975Uw4X57bmBW15/3xoEeleHuGmPsf9EmPjpXzvM9oOxFKeY3FQ1iiRUusyWsrSNB4ZvvNB5BG6Qnw7Ub1nXEHakgKqOVq/xd6XDbyWJWM7xHefDn24McYF+M3SWen1f16KYIRgjP2nJRS+e0yuUlOGJaGJiVCMInxeAX2cbOwWz89UAH3436z9h8Y3RzYb4aHOaBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1htx8VIPkbMIrMXe6sdnAxfXp+H7wTWuHPuyQ1WDErk=;
+ b=C0iR27NEZ4vuFxGsFbPNKdkJzF4b2YFCaxnApmUY79cBonUf8qqpiWmJ3X+I56RMMwCLjm5nKUFaP4V4moz1oTIpseW1QlUJBn2jlP0UDLY035UzP9qqWn2W52ivxF8c35WXNgp35KSGOUwJxRaiSSKufdkrfHUuqUlqgzEkVwU=
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OSZPR01MB7724.jpnprd01.prod.outlook.com
+ (2603:1096:604:1b4::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.23; Tue, 2 Apr
+ 2024 06:43:17 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Tue, 2 Apr 2024
+ 06:43:17 +0000
+Message-ID: <87ttkk9se3.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc: Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
+ <amadeuszx.slawinski@linux.intel.com>,	Alper Nebi Yasak
+ <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
+ <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent
+ Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,	Daniel Baluta
+ <daniel.baluta@nxp.com>,	Hans de Goede <hdegoede@redhat.com>,	Jaroslav
+ Kysela <perex@perex.cz>,	Jerome Brunet <jbrunet@baylibre.com>,	Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,	Kevin Hilman <khilman@baylibre.com>,	Liam
+ Girdwood <lgirdwood@gmail.com>,	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
+ <neil.armstrong@linaro.org>,	Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,	Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
+ <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Trevor Wu
+ <trevor.wu@mediatek.com>,	Vinod Koul <vkoul@kernel.org>,	Xiubo Li
+ <Xiubo.Lee@gmail.com>,	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
+	linux-sound@vger.kernel.org,	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v2 01/16] ASoC: soc-pcm.c: cleanup soc_get_playback_capture()
+In-Reply-To: <87zfuc7gya.wl-kuninori.morimoto.gx@renesas.com>
+References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
+	<87y19xudor.wl-kuninori.morimoto.gx@renesas.com>
+	<b4b37541-b67f-4593-9fd5-fc6242a0673a@linux.intel.com>
+	<87zfuc7gya.wl-kuninori.morimoto.gx@renesas.com>
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Tue, 2 Apr 2024 06:43:16 +0000
+X-ClientProxiedBy: TYCPR01CA0057.jpnprd01.prod.outlook.com
+ (2603:1096:405:2::21) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OSZPR01MB7724:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	xMpHpYCJQFX0LsnbN7NGE+iNJ976p0lquWNsFyFooFVRVUlRjAVZ1FCfx0RKst7H9HJ+WmL9XsuUTpLeBRCcLxkfoOsbJwJ4rOHceOGOJdCRTaRwjg1qNc/c07yr62z2g3iXc2bFGQbKXbLahxgwoKK2YIudcG30fRwKED9omPvw55NI9B5VbgEJK3tLGdyATZROPfKyk1j7saX02SgV3GfERtj56eonYb9yNLGClsagUfnMKdI9UzR71Ndp12sW1EeWfHpJ2L2wCVqsRMiiLx+bWbKA4+JdBk9ms0fW9pCh+99V+WboAsPEGIKFD3AXCGAjIIs/GPtlIKoUDkXQm2oYoxkjSRvipQ5cJkLP564vp/BGMXNeHIAc3srM9/4+SxEO6r7m7ZkmA5MOXD5uR+PfEOrC+ggJG+ih7lDWX37imF4x+Oc3V1eTp7lTw0VMOkJ1I9V6P/VuQiqNKHe1vezxMMC0XIchL2AEFvz2k4oRko+XG5OqufE7Kj91Ed0P/J3fNjI+xwGqCAuCr+GsFqHGEPf5YCcPgsaBQV710nCldwKbDEhFNCubXuS1040/aOy4/o0Vy6HPLay1oIXy/p70EzqLK+0s0QT1kpSOeaf9TkA+PG42pRcMnrkKU3+LWYUoeltV8kLPTV7LQwuDluzEkadMbbbuCj82H1u1X6xAMKRHiR/0bxLmIB4qXeLgL6NU0unkvwgSKU4HmiCj5Lg29mCkfzYPZK+Wqe1fz3k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007)(52116005)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fx8ZXlOMGxiX5mTweTg3Ww54bM0opm51B2OwfplMD8V8rIBotnSmYehTLqgy?=
+ =?us-ascii?Q?eouEgvzmBPvknluKDNmTtZpf1E6a4Nt/K06ekS8SPL4QvOB3kZaWxqG4H4uO?=
+ =?us-ascii?Q?lEUHzhNvsibxMPmq/362jbYQejyMeMZNXewfennq5NV0iKmh3+5C3mn+bx7t?=
+ =?us-ascii?Q?ZkZtzVY4cgqZtTs/ZimkZLYZdYbHZM1NUdIFRrfxOaqAVOqDTqVAsmLPwwy8?=
+ =?us-ascii?Q?1Jbi6vlFwCCSHkVz7ip2ywmCYDCuQ/Z7AgLYIyjP4duHe9xdQa3CskFbrCK3?=
+ =?us-ascii?Q?nKTRrir9eY+2GzelEcf8blgEy/zMRV4veyZ8IBKaWoYDEUt7aLb7/cIALMsO?=
+ =?us-ascii?Q?DPyiQEKlbFRBVKHdIseYyRQK9aOlDtqoIyofnZtu4GWh5FsS7aATYTOVKqbv?=
+ =?us-ascii?Q?P6lJK3C5lD5qudDGrZvvdx8uM4012wRGu35NIc9fw2VT243wV5nY1B5MgDQW?=
+ =?us-ascii?Q?WQZDdKzg8J3EJ2xEm1FSWLx8keibLaIg7KNLRjryWUZImo6k4we2yFP6pkHP?=
+ =?us-ascii?Q?B4k7GFpFsgjOBzkscaebDNz8j2v8qLrDYcanrAnIb69THF3HgkHrlWBRNVDS?=
+ =?us-ascii?Q?GMAdmQDuEZrYUR0ez60rLDiGZPbf3gI6r5KB9PbHDRywsVEY6nWCUFlOzUfS?=
+ =?us-ascii?Q?96DOwpBWfwV3O2odqIUALAymFQl5rrKK6kkQvlroOoEkN8XVXDVB6K8t4SjV?=
+ =?us-ascii?Q?WedVjcZj9elMjlmljJcsJlpY+BD6yUs0MOgp5HNyyKtDDYQyhisYQoBT7ata?=
+ =?us-ascii?Q?mSKLBnZDI2r9C2zoiAUgqI/zO1454COWWyRZtV2osoJYKyXc+AezMDiNimC2?=
+ =?us-ascii?Q?8DZ6bm0S3LMx5tNpEMMtL+kkQucENrkm4MbEX/ZFV9qLgQqXTyXDYpURbxox?=
+ =?us-ascii?Q?K008wL/zXpXQlsYe/cAVkOQk32mFTMaxm4LFTdYJ2DVKg9nqDVYzOmAREqzo?=
+ =?us-ascii?Q?eJ5ZlVODpRLt+nnU9RrjeRFNDS0y/GeQA5bxFg0SvUeskv5FMr7C33cH2V4i?=
+ =?us-ascii?Q?FI4k80/1HE1pm3Lj0S1lGrBzKoxZSQa26KOrUxSYxqNUkaxmckg8xEIDdYB4?=
+ =?us-ascii?Q?/sSRIKGDsufZTYcQ1VUDeceLemSIcnYOIGVcJ9jwClhfNnCohjhAI0MuVIne?=
+ =?us-ascii?Q?F5zq1oAwCIHjOeGhUX4gOvhUrM1ik1oxALS6CU6A/2fammKE0oXqIeNVtTIX?=
+ =?us-ascii?Q?+zk0PdN44ukeh3bXLYNJsHp3FizVszEpxxgrg1TRnpvb9EPhfyOhykLKVlGV?=
+ =?us-ascii?Q?jJEQNEdxMCJDAKay5T+tfhObK3xDiYfDlcSnoP+wtBz2Xfe3ETNZ4FM9Jfz7?=
+ =?us-ascii?Q?7QX9GGXiHyp6mV+zpZRupY1T7n5oNqXDPrfKPjD79ftJ3OtMNPGcCPc3KWUN?=
+ =?us-ascii?Q?nhJ++XRrjh8fvCuO6tVoxMm+CV4ALvQR2yJejnLUl51QJ9J7TDQSqa9SvM02?=
+ =?us-ascii?Q?LyAHI4gR29u0eM1GYR4GTG59KftarH6aJ+DLW2GqZ5G6OzudOc0uyXhlrPEb?=
+ =?us-ascii?Q?Wj/5iTSr77sW06lYRCdMImuNAqlcOcU95o5+vMptD5qIIEzfgs6+IFMgs/rd?=
+ =?us-ascii?Q?FFfK23Lt/1+pVIwKCNRXWLjIb5fcFFj47KtB7H4qTgQ7rTHeZ5FnCpp0ykco?=
+ =?us-ascii?Q?5fe0ty9cxQ/gBtyR1nj4kbg=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b32eb9ff-a4ed-4d08-9932-08dc52e02d99
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 06:43:17.2680
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fQwSl7voZbltFFOEnkoSiFAqf/lZzwkPaMP9e/N+/vfBUpNr+llUHezh31LNx0M4zCZpKAfiPMkfM3r1l7jSi0ycIXo/l0LCgzLu72yMJYXY1eAXiobmSSNG10i6uJER
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB7724
 
-Add i.MX8Q HSIO PHY driver support.
-- Add one HSIO configuration property, that used to select the
-"PCIE_AB_SELECT" and "PHY_X1_EPCS_SEL" during the initialization.
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Hi Pierre-Louis, again
+
+> > The problem I have is with the following code (not shown with diff)
+> > 
+> > 	if (dai_link->playback_only)
+> > 		has_capture = 0;
+> > 
+> > 	if (dai_link->capture_only)
+> > 		has_playback = 0;
+> > 
+> > So with this grand unification, all the loops above may make a decision
+> > that could be overridden by these two branches.
+> > 
+> > This was not the case before for DPCM, all the 'has_capture' and
+> > 'has_playback' variables were used as a verification of the dai_link
+> > settings with an error thrown e.g. if the dpcm_playback was set without
+> > any DAIs supporting playback.
+
+Hmm... above 2 branches are used for DPCM too before.
+
+> > Now the dailink settings are used unconditionally. There is one warning
+> > added if there are no settings for a dailink, but we've lost the
+> > detection of a mismatch between dailink and the set of cpu/codec dais
+> > that are part of this dailink.
+
+Does this mean, for example you want to have warning/error by dpcm_playback
+flag if you are thinking it can use playback , but FE or BE playback was
+not valid ?
+
+If so, yes indeed this patch removes such flags.
+But I wonder why you want to get it in case of DPCM only ?
+I can understand if all case want to have it.
+
+Then, I think we can check _only for this purpose too ?
+
+(A)	if dai_link has playback_only        -> it should have has_playback
+(B)	if dai_link has capture_only         -> it should have has_capture
+(C)	if dai_link don't have both xxx_only -> it should have both has_xxx
+
+I think we already have (A)(B) check. We want to add (C) check ?
+
+If my understanding was correct, the things dpcm_xxx flag can do is also
+can do by xxx_only flag. But dpcm_xxx flag is used only DPCM, but xxx_only
+flag is used on all cases.
+
+Thank you for your help !!
+
+Best regards
 ---
- drivers/phy/freescale/Kconfig              |   8 +
- drivers/phy/freescale/Makefile             |   1 +
- drivers/phy/freescale/phy-fsl-imx8q-hsio.c | 518 +++++++++++++++++++++
- 3 files changed, 527 insertions(+)
- create mode 100644 drivers/phy/freescale/phy-fsl-imx8q-hsio.c
-
-diff --git a/drivers/phy/freescale/Kconfig b/drivers/phy/freescale/Kconfig
-index 853958fb2c06..bcddddef1cbb 100644
---- a/drivers/phy/freescale/Kconfig
-+++ b/drivers/phy/freescale/Kconfig
-@@ -35,6 +35,14 @@ config PHY_FSL_IMX8M_PCIE
- 	  Enable this to add support for the PCIE PHY as found on
- 	  i.MX8M family of SOCs.
- 
-+config PHY_FSL_IMX8Q_HSIO
-+	tristate "Freescale i.MX8Q HSIO PHY"
-+	depends on OF && HAS_IOMEM
-+	select GENERIC_PHY
-+	help
-+	  Enable this to add support for the HSIO PHY as found on
-+	  i.MX8Q family of SOCs.
-+
- endif
- 
- config PHY_FSL_LYNX_28G
-diff --git a/drivers/phy/freescale/Makefile b/drivers/phy/freescale/Makefile
-index cedb328bc4d2..db888c37fcf9 100644
---- a/drivers/phy/freescale/Makefile
-+++ b/drivers/phy/freescale/Makefile
-@@ -3,4 +3,5 @@ obj-$(CONFIG_PHY_FSL_IMX8MQ_USB)	+= phy-fsl-imx8mq-usb.o
- obj-$(CONFIG_PHY_MIXEL_LVDS_PHY)	+= phy-fsl-imx8qm-lvds-phy.o
- obj-$(CONFIG_PHY_MIXEL_MIPI_DPHY)	+= phy-fsl-imx8-mipi-dphy.o
- obj-$(CONFIG_PHY_FSL_IMX8M_PCIE)	+= phy-fsl-imx8m-pcie.o
-+obj-$(CONFIG_PHY_FSL_IMX8Q_HSIO)	+= phy-fsl-imx8q-hsio.o
- obj-$(CONFIG_PHY_FSL_LYNX_28G)		+= phy-fsl-lynx-28g.o
-diff --git a/drivers/phy/freescale/phy-fsl-imx8q-hsio.c b/drivers/phy/freescale/phy-fsl-imx8q-hsio.c
-new file mode 100644
-index 000000000000..14fc925c4f57
---- /dev/null
-+++ b/drivers/phy/freescale/phy-fsl-imx8q-hsio.c
-@@ -0,0 +1,518 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/io.h>
-+#include <linux/iopoll.h>
-+#include <linux/module.h>
-+#include <linux/of_address.h>
-+#include <linux/of_device.h>
-+#include <linux/pci_regs.h>
-+#include <linux/phy/phy.h>
-+#include <linux/phy/pcie.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+
-+#include <dt-bindings/phy/phy-imx8-pcie.h>
-+
-+#define MAX_NUM_LANES	3
-+#define LANE_NUM_CLKS	5
-+
-+/* Parameters for the waiting for PCIe PHY PLL to lock */
-+#define PHY_INIT_WAIT_USLEEP_MAX	10
-+#define PHY_INIT_WAIT_TIMEOUT		(1000 * PHY_INIT_WAIT_USLEEP_MAX)
-+
-+/* i.MX8Q HSIO registers */
-+#define CTRL0			0x0
-+#define APB_RSTN_0		BIT(0)
-+#define APB_RSTN_1		BIT(1)
-+#define PIPE_RSTN_0_MASK	GENMASK(25, 24)
-+#define PIPE_RSTN_1_MASK	GENMASK(27, 26)
-+#define MODE_MASK		GENMASK(20, 17)
-+#define MODE_PCIE		0x0
-+#define MODE_SATA		0x4
-+#define DEVICE_TYPE_MASK	GENMASK(27, 24)
-+#define EPCS_TXDEEMP		BIT(5)
-+#define EPCS_TXDEEMP_SEL	BIT(6)
-+#define EPCS_PHYRESET_N		BIT(7)
-+#define RESET_N			BIT(12)
-+
-+#define IOB_RXENA		BIT(0)
-+#define IOB_TXENA		BIT(1)
-+#define IOB_A_0_TXOE		BIT(2)
-+#define IOB_A_0_M1M0_2		BIT(4)
-+#define IOB_A_0_M1M0_MASK	GENMASK(4, 3)
-+#define PHYX1_EPCS_SEL		BIT(12)
-+#define PCIE_AB_SELECT		BIT(13)
-+#define CLKREQN_OUT_OVERRIDE	GENMASK(25, 24)
-+
-+#define PHY_STTS0		0x4
-+#define LANE0_TX_PLL_LOCK	BIT(4)
-+#define LANE1_TX_PLL_LOCK	BIT(12)
-+
-+#define CTRL2			0x8
-+#define LTSSM_ENABLE		BIT(4)
-+#define BUTTON_RST_N		BIT(21)
-+#define PERST_N			BIT(22)
-+#define POWER_UP_RST_N		BIT(23)
-+
-+#define PCIE_STTS0		0xc
-+#define PM_REQ_CORE_RST		BIT(19)
-+
-+#define REG48_PMA_STATUS	0x30
-+#define REG48_PMA_RDY		BIT(7)
-+
-+struct imx8q_hsio_drvdata {
-+	int num_lane;
-+};
-+
-+struct imx8q_hsio_lane {
-+	const char * const *clk_names;
-+	struct clk_bulk_data clks[LANE_NUM_CLKS];
-+	u32 clks_cnt;
-+	u32 ctrl_id;
-+	u32 ctrl_off;
-+	u32 idx;
-+	u32 phy_off;
-+	struct imx8q_hsio_priv *priv;
-+	struct phy *phy;
-+	enum phy_mode lane_mode;
-+};
-+
-+struct imx8q_hsio_priv {
-+	void __iomem *base;
-+	struct device *dev;
-+	u32 refclk_pad_mode;
-+	u32 hsio_cfg;
-+	struct regmap *phy;
-+	struct regmap *ctrl;
-+	struct regmap *misc;
-+	const struct imx8q_hsio_drvdata *drvdata;
-+	struct imx8q_hsio_lane lane[MAX_NUM_LANES];
-+};
-+
-+static const char * const imx8q_hsio_lan0_pcie_clks[] = {"apb_pclk0", "pclk0",
-+	"ctl0_crr", "phy0_crr", "misc_crr"};
-+static const char * const imx8q_hsio_lan1_pciea_clks[] = {"apb_pclk1", "pclk1",
-+	"ctl0_crr", "phy0_crr", "misc_crr"};
-+static const char * const imx8q_hsio_lan1_pcieb_clks[] = {"apb_pclk1", "pclk1",
-+	"ctl1_crr", "phy0_crr", "misc_crr"};
-+static const char * const imx8q_hsio_lan2_pcieb_clks[] = {"apb_pclk2", "pclk2",
-+	"ctl1_crr", "phy1_crr", "misc_crr"};
-+static const char * const imx8q_hsio_lane_sata_clks[] = {"pclk2", "epcs_tx",
-+	"epcs_rx", "phy1_crr", "misc_crr"};
-+
-+static const struct regmap_config regmap_config = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.reg_stride = 4,
-+};
-+
-+static int imx8q_hsio_init(struct phy *phy)
-+{
-+	int ret, i;
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+	struct device *dev = priv->dev;
-+
-+	/* Assign clocks refer to different modes */
-+	switch (lane->ctrl_id) {
-+	case IMX8Q_HSIO_PCIEA_ID:
-+		if (lane->idx > 1) {
-+			dev_err(dev, "invalid lane ID.");
-+			return -EINVAL;
-+		}
-+
-+		lane->lane_mode = PHY_MODE_PCIE;
-+		lane->ctrl_off = 0;
-+		lane->phy_off = 0;
-+
-+		for (i = 0; i < LANE_NUM_CLKS; i++) {
-+			if (lane->idx)
-+				lane->clks[i].id = imx8q_hsio_lan1_pciea_clks[i];
-+			else
-+				lane->clks[i].id = imx8q_hsio_lan0_pcie_clks[i];
-+		}
-+		break;
-+	case IMX8Q_HSIO_PCIEB_ID:
-+		if (lane->idx > 2) {
-+			dev_err(dev, "invalid lane ID.");
-+			return -EINVAL;
-+		}
-+
-+		lane->lane_mode = PHY_MODE_PCIE;
-+		if (lane->idx == 0) {
-+			/* i.MX8QXP */
-+			lane->ctrl_off = 0;
-+			lane->phy_off = 0;
-+		} else {
-+			/*
-+			 * On i.MX8QM, only second or third lane PHY can
-+			 * be binded to PCIEB.
-+			 */
-+			lane->ctrl_off = SZ_64K;
-+			if (lane->idx == 1)
-+				lane->phy_off = 0;
-+			else /* idx == 2, the third lane is binded to PCIEB */
-+				lane->phy_off = SZ_64K;
-+		}
-+
-+		for (i = 0; i < LANE_NUM_CLKS; i++) {
-+			if (lane->idx == 1)
-+				lane->clks[i].id = imx8q_hsio_lan1_pcieb_clks[i];
-+			else if (lane->idx == 2)
-+				lane->clks[i].id = imx8q_hsio_lan2_pcieb_clks[i];
-+			else /* i.MX8QXP only has PCIEB, it's idx == 0 */
-+				lane->clks[i].id = imx8q_hsio_lan0_pcie_clks[i];
-+
-+		}
-+		break;
-+	case IMX8Q_HSIO_SATA_ID:
-+		/* On i.MX8QM, only the third lane PHY can be binded to SATA */
-+		if (lane->idx != 2) {
-+			dev_err(dev, "invalid lane ID.");
-+			return -EINVAL;
-+		}
-+		lane->ctrl_off = SZ_128K;
-+		lane->lane_mode = PHY_MODE_SATA;
-+		lane->phy_off = SZ_64K;
-+
-+		for (i = 0; i < LANE_NUM_CLKS; i++)
-+			lane->clks[i].id = imx8q_hsio_lane_sata_clks[i];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	/* Fetch clocks */
-+	ret = devm_clk_bulk_get(dev, LANE_NUM_CLKS, lane->clks);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_bulk_prepare_enable(LANE_NUM_CLKS, lane->clks);
-+	if (ret)
-+		return ret;
-+
-+	/* allow the clocks to stabilize */
-+	usleep_range(200, 500);
-+	return 0;
-+}
-+
-+static int imx8q_hsio_exit(struct phy *phy)
-+{
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+
-+	clk_bulk_disable_unprepare(LANE_NUM_CLKS, lane->clks);
-+
-+	return 0;
-+}
-+
-+static void imx8q_hsio_pcie_phy_resets(struct phy *phy)
-+{
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+
-+	regmap_clear_bits(priv->ctrl, lane->ctrl_off + CTRL2, BUTTON_RST_N);
-+	regmap_clear_bits(priv->ctrl, lane->ctrl_off + CTRL2, PERST_N);
-+	regmap_clear_bits(priv->ctrl, lane->ctrl_off + CTRL2, POWER_UP_RST_N);
-+	regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL2, BUTTON_RST_N);
-+	regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL2, PERST_N);
-+	regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL2, POWER_UP_RST_N);
-+
-+	if (lane->idx == 1) {
-+		/* The second lane */
-+		regmap_set_bits(priv->phy, lane->phy_off + CTRL0, APB_RSTN_1);
-+		regmap_set_bits(priv->phy, lane->phy_off + CTRL0, PIPE_RSTN_1_MASK);
-+	} else {
-+		regmap_set_bits(priv->phy, lane->phy_off + CTRL0, APB_RSTN_0);
-+		regmap_set_bits(priv->phy, lane->phy_off + CTRL0, PIPE_RSTN_0_MASK);
-+	}
-+}
-+
-+static void imx8q_hsio_sata_phy_resets(struct phy *phy)
-+{
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+
-+	/* clear PHY RST, then set it */
-+	regmap_clear_bits(priv->ctrl, lane->ctrl_off + CTRL0, EPCS_PHYRESET_N);
-+
-+	regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL0, EPCS_PHYRESET_N);
-+
-+	/* CTRL RST: SET -> delay 1 us -> CLEAR -> SET */
-+	regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL0, RESET_N);
-+	udelay(1);
-+	regmap_clear_bits(priv->ctrl, lane->ctrl_off + CTRL0, RESET_N);
-+	regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL0, RESET_N);
-+}
-+
-+static void imx8q_hsio_configure_clk_pad(struct phy *phy)
-+{
-+	bool pll = false;
-+	u32 pad_mode;
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+
-+	pad_mode = priv->refclk_pad_mode;
-+	if (pad_mode == IMX8_PCIE_REFCLK_PAD_OUTPUT) {
-+		pll = true;
-+		regmap_update_bits(priv->misc, CTRL0,
-+				   IOB_A_0_TXOE | IOB_A_0_M1M0_MASK,
-+				   IOB_A_0_TXOE | IOB_A_0_M1M0_2);
-+	}
-+
-+	regmap_update_bits(priv->misc, CTRL0, IOB_RXENA, pll ? 0 : IOB_RXENA);
-+	regmap_update_bits(priv->misc, CTRL0, IOB_TXENA, pll ? IOB_TXENA : 0);
-+}
-+
-+static int imx8q_hsio_power_on(struct phy *phy)
-+{
-+	int ret;
-+	u32 val, cond;
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+
-+	if (lane->lane_mode == PHY_MODE_PCIE)
-+		imx8q_hsio_pcie_phy_resets(phy);
-+	else
-+		/* SATA */
-+		regmap_set_bits(priv->phy, lane->phy_off + CTRL0, APB_RSTN_0);
-+
-+	if (priv->hsio_cfg & IMX8Q_HSIO_CFG_PCIEB)
-+		regmap_set_bits(priv->misc, CTRL0, PCIE_AB_SELECT);
-+	if (priv->hsio_cfg & IMX8Q_HSIO_CFG_SATA)
-+		regmap_set_bits(priv->misc, CTRL0, PHYX1_EPCS_SEL);
-+
-+	imx8q_hsio_configure_clk_pad(phy);
-+
-+	if (lane->lane_mode == PHY_MODE_SATA) {
-+		/*
-+		 * It is possible, for PCIe and SATA are sharing
-+		 * the same clock source, HPLL or external oscillator.
-+		 * When PCIe is in low power modes (L1.X or L2 etc),
-+		 * the clock source can be turned off. In this case,
-+		 * if this clock source is required to be toggling by
-+		 * SATA, then SATA functions will be abnormal.
-+		 * Set the override here to avoid it.
-+		 */
-+		regmap_set_bits(priv->misc, CTRL0, CLKREQN_OUT_OVERRIDE);
-+		regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL0, EPCS_TXDEEMP);
-+		regmap_set_bits(priv->ctrl, lane->ctrl_off + CTRL0, EPCS_TXDEEMP_SEL);
-+
-+		imx8q_hsio_sata_phy_resets(phy);
-+	} else {
-+		/* Toggle apb_pclk to make sure clear the PM_REQ_CORE_RST bit */
-+		clk_disable_unprepare(lane->clks[0].clk);
-+		mdelay(1);
-+		ret = clk_prepare_enable(lane->clks[0].clk);
-+		if (ret) {
-+			dev_err(priv->dev, "unable to enable phy apb_pclk\n");
-+			return ret;
-+		}
-+
-+		/* Bit19 PM_REQ_CORE_RST of pcie_stts0 should be cleared. */
-+		ret = regmap_read_poll_timeout(priv->ctrl,
-+				lane->ctrl_off + PCIE_STTS0,
-+				val, (val & PM_REQ_CORE_RST) == 0,
-+				PHY_INIT_WAIT_USLEEP_MAX,
-+				PHY_INIT_WAIT_TIMEOUT);
-+		if (ret) {
-+			dev_err(priv->dev, "PM_REQ_CORE_RST is set\n");
-+			return ret;
-+		}
-+	}
-+
-+	/* Polling to check the PHY is ready or not. */
-+	if (lane->idx == 1)
-+		cond = LANE1_TX_PLL_LOCK;
-+	else
-+		cond = LANE0_TX_PLL_LOCK;
-+
-+	ret = regmap_read_poll_timeout(priv->phy, lane->phy_off + PHY_STTS0,
-+			val, ((val & cond) == cond),
-+			PHY_INIT_WAIT_USLEEP_MAX, PHY_INIT_WAIT_TIMEOUT);
-+	if (ret)
-+		dev_err(priv->dev, "IMX8Q PHY%d PLL lock timeout\n", lane->idx);
-+	else
-+		dev_info(priv->dev, "IMX8Q PHY%d PLL is locked\n", lane->idx);
-+
-+	if (lane->lane_mode == PHY_MODE_SATA) {
-+		cond = REG48_PMA_RDY;
-+		ret = read_poll_timeout(readb, val, ((val & cond) == cond),
-+				PHY_INIT_WAIT_USLEEP_MAX, PHY_INIT_WAIT_TIMEOUT,
-+				false, priv->base + REG48_PMA_STATUS);
-+		if (ret)
-+			dev_err(priv->dev, "PHY calibration is timeout\n");
-+		else
-+			dev_info(priv->dev, "PHY calibration is done\n");
-+	}
-+
-+	return ret;
-+}
-+
-+static int imx8q_hsio_set_mode(struct phy *phy, enum phy_mode mode,
-+				   int submode)
-+{
-+	u32 val;
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+
-+	if (lane->lane_mode != mode)
-+		return -EINVAL;
-+
-+	val = (mode == PHY_MODE_PCIE) ? MODE_PCIE : MODE_SATA;
-+	val = FIELD_PREP(MODE_MASK, val);
-+	regmap_update_bits(priv->phy, lane->phy_off + CTRL0, MODE_MASK, val);
-+
-+	switch (submode) {
-+	case PHY_MODE_PCIE_RC:
-+		val = FIELD_PREP(DEVICE_TYPE_MASK, PCI_EXP_TYPE_ROOT_PORT);
-+		break;
-+	case PHY_MODE_PCIE_EP:
-+		val = FIELD_PREP(DEVICE_TYPE_MASK, PCI_EXP_TYPE_ENDPOINT);
-+		break;
-+	default: /* Support only PCIe EP and RC now. */
-+		return 0;
-+	}
-+	if (submode)
-+		regmap_update_bits(priv->ctrl, lane->ctrl_off + CTRL0,
-+				   DEVICE_TYPE_MASK, val);
-+
-+	return 0;
-+}
-+
-+static int imx8q_hsio_set_speed(struct phy *phy, int speed)
-+{
-+	struct imx8q_hsio_lane *lane = phy_get_drvdata(phy);
-+	struct imx8q_hsio_priv *priv = lane->priv;
-+
-+	regmap_update_bits(priv->ctrl, lane->ctrl_off + CTRL2, LTSSM_ENABLE,
-+			   speed ? LTSSM_ENABLE : 0);
-+	return 0;
-+}
-+
-+static const struct phy_ops imx8q_hsio_ops = {
-+	.init = imx8q_hsio_init,
-+	.exit = imx8q_hsio_exit,
-+	.power_on = imx8q_hsio_power_on,
-+	.set_mode = imx8q_hsio_set_mode,
-+	.set_speed = imx8q_hsio_set_speed,
-+	.owner = THIS_MODULE,
-+};
-+
-+static const struct imx8q_hsio_drvdata imx8qxp_serdes_drvdata = {
-+	.num_lane = 1,
-+};
-+
-+static const struct imx8q_hsio_drvdata imx8qm_serdes_drvdata = {
-+	.num_lane = 3,
-+};
-+
-+static const struct of_device_id imx8q_hsio_of_match[] = {
-+	{.compatible = "fsl,imx8qxp-serdes", .data = &imx8qxp_serdes_drvdata},
-+	{.compatible = "fsl,imx8qm-serdes", .data = &imx8qm_serdes_drvdata},
-+	{ },
-+};
-+
-+MODULE_DEVICE_TABLE(of, imx8q_hsio_of_match);
-+
-+static struct phy *imx8q_hsio_xlate(struct device *dev,
-+				    const struct of_phandle_args *args)
-+{
-+	struct imx8q_hsio_priv *priv = dev_get_drvdata(dev);
-+	int idx = args->args[0];
-+	int ctrl_id = args->args[1];
-+	int hsio_cfg = args->args[2];
-+
-+	if (idx >= priv->drvdata->num_lane)
-+		return ERR_PTR(-EINVAL);
-+	priv->lane[idx].idx = idx;
-+	priv->lane[idx].ctrl_id = ctrl_id;
-+	priv->hsio_cfg = hsio_cfg;
-+
-+	return priv->lane[idx].phy;
-+}
-+
-+static int imx8q_hsio_probe(struct platform_device *pdev)
-+{
-+	int i;
-+	void __iomem *off;
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = dev->of_node;
-+	const struct of_device_id *of_id;
-+	struct imx8q_hsio_priv *priv;
-+	struct phy_provider *provider;
-+
-+	of_id = of_match_device(imx8q_hsio_of_match, dev);
-+	if (!of_id)
-+		return -EINVAL;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	priv->dev = &pdev->dev;
-+	priv->drvdata = of_device_get_match_data(dev);
-+
-+	/* Get PHY refclk pad mode */
-+	of_property_read_u32(np, "fsl,refclk-pad-mode", &priv->refclk_pad_mode);
-+
-+	priv->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
-+
-+	off = devm_platform_ioremap_resource_byname(pdev, "phy");
-+	priv->phy = devm_regmap_init_mmio(dev, off, &regmap_config);
-+	if (IS_ERR(priv->phy))
-+		return dev_err_probe(dev, PTR_ERR(priv->phy),
-+				     "unable to find phy csr registers\n");
-+
-+	off = devm_platform_ioremap_resource_byname(pdev, "ctrl");
-+	priv->ctrl = devm_regmap_init_mmio(dev, off, &regmap_config);
-+	if (IS_ERR(priv->ctrl))
-+		return dev_err_probe(dev, PTR_ERR(priv->ctrl),
-+				     "unable to find ctrl csr registers\n");
-+
-+	off = devm_platform_ioremap_resource_byname(pdev, "misc");
-+	priv->misc = devm_regmap_init_mmio(dev, off, &regmap_config);
-+	if (IS_ERR(priv->misc))
-+		return dev_err_probe(dev, PTR_ERR(priv->misc),
-+				     "unable to find misc csr registers\n");
-+
-+	for (i = 0; i < priv->drvdata->num_lane; i++) {
-+		struct imx8q_hsio_lane *lane = &priv->lane[i];
-+		struct phy *phy;
-+
-+		memset(lane, 0, sizeof(*lane));
-+
-+		phy = devm_phy_create(&pdev->dev, NULL, &imx8q_hsio_ops);
-+		if (IS_ERR(phy))
-+			return PTR_ERR(phy);
-+
-+		lane->priv = priv;
-+		lane->phy = phy;
-+		lane->idx = i;
-+		phy_set_drvdata(phy, lane);
-+	}
-+
-+	dev_set_drvdata(dev, priv);
-+	dev_set_drvdata(&pdev->dev, priv);
-+
-+	provider = devm_of_phy_provider_register(&pdev->dev, imx8q_hsio_xlate);
-+
-+	return PTR_ERR_OR_ZERO(provider);
-+}
-+
-+static struct platform_driver imx8q_hsio_driver = {
-+	.probe	= imx8q_hsio_probe,
-+	.driver = {
-+		.name	= "imx8q-hsio-phy",
-+		.of_match_table	= imx8q_hsio_of_match,
-+	}
-+};
-+module_platform_driver(imx8q_hsio_driver);
-+
-+MODULE_DESCRIPTION("FSL IMX8Q HSIO SERDES PHY driver");
-+MODULE_LICENSE("GPL");
--- 
-2.37.1
-
+Renesas Electronics
+Ph.D. Kuninori Morimoto
