@@ -1,55 +1,57 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D889F15B98E
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 19:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FBC15CD5C
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 19:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712086553; cv=none; b=kGwUTwd5CYZC1hC6zO54cq0E2jaxaQOtbWsfd3avkhwMg1zfstdNIKRTZeA2ESpHlTxEm8JrHaM3JBCXZluHsmGmjgZyywZyXafLFLplLZfBLU8M9/CpbA0kxfhlIkSfYOU3LqJ0Am7l0q0QCvn7q8rvu738wliDhIFBM+zQgsM=
+	t=1712086556; cv=none; b=gjeW0LhWbn+1/Ke7cTQHqPNfmcSd7+2I7l9yISRP5aAILJvaI43ikt1fLVJVK68QDGQOpD4fu+ejqRNIei2VQFbXCTxZ75sj6e2qnFglIwDLP7JYhBFGfjNoERBuVmgjmRV3TfTZXIqCF5IkpIHo+l34Bc85gCm55lD9I9aPX2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712086553; c=relaxed/simple;
-	bh=w6Zk1mErBPhMR/fPvTKIp80OCxzxeQAfQ1sc1ZTrGqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WoUSRRR4zIvwXeQ8jQc8Bt1THdMMbspr83JhgpCPQsD23rmblxfNqAjuvgWdW0A9HaL8vWt+sZd1XEu4CrmyKE/CPuZRC1Vre1y8vxJV1NxU+XX2lzWrvauDpB1Zf+EZhDtB0MxuXmjW5Qw1eFKuEBgkbPNFRKyZe+0CE3EjFRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XQHK8CH4; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1712086556; c=relaxed/simple;
+	bh=0RvejRjIJPduOyyCTlLj3EvG2tcNMQT1bKnp5UWuaPs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=tzaUxJrSKIWE1Ib99yXz2RRf9RXTHDQdvQsFSoNknHTwp7+vlACByQKg/ziS7pvmu8LSFryHGyHjX04FvrpliGQMvuEw/8iWQ3JCyCx5y/nbDoBpPIXoktqXmJzS60Jyos4HPRGZAUzb3t6bwga1F00RADA1FuGNDxpAsPSli5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hBvZD5IC; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XQHK8CH4"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1e0025ef1efso38253235ad.1
-        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 12:35:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hBvZD5IC"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1def89f0cfdso1815455ad.0
+        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 12:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712086551; x=1712691351; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RngipVMjADW9RKKBJpWn5bUjtga81BHfJMQO2kVCeRo=;
-        b=XQHK8CH4k82izU1OsVlJUe6NSo1/ToKHs9BoF3XZa2RyxW9/R5rRPKYXDDLVAluE4u
-         uMjBu5S252WNu0zFA25tqZhZv0Ux2FSgCaZlISWn7sf4GZSedKiTgwJ3ZD7jNXGj+O5Y
-         iwNnQKIdFWZMFjAOm0JHV7fDmBXtfQXNC6oMfqqwMuRULW1dWXEVJFls6l2nT+cEXet5
-         gB+z+fYiHwtjswEJWzpLbDXuL5mFipA/uo00bZWhELuSnIHhYa+9ME7xm8yL1kLoDKG4
-         9vd9OJWXdBaVNdJEgkDoTxEl3E2Kf+3eMOQnbqVM0VrPFqlzFhH3nebMrcAlTbSYzzFh
-         /BMw==
+        d=gmail.com; s=20230601; t=1712086555; x=1712691355; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sHKgofjtLfTWJ/FAwhBqVxJWAROfQE6XjH/ZqxNReeE=;
+        b=hBvZD5ICbZeQS+ldFshMIKLWe9OYqe6wXnxEOMIElbsGGAUBCofpwNIU1RPBYL1Abf
+         O3rytxE5pmnjmS9rsSsCvv8BB8SnQnMoeubvK3wo1FUa64BY5APIBwJfCQIr1WocKo8J
+         OnbayIzsdN4PsNryRj7+6zv20Qlcm1DHAOsxLySGsChFrubb/tpgTN8wjapK2QW7tSk6
+         tjBWdJlav1RbaSb7P1vfkFPGS1EGuZMgC3kRA0XuGkJG9G8QIdQupt4zgL8DLRF1xw/e
+         faBFlWyqHlAoArvzb/VsWc+UfNkW9/0nA8z01XFqk+ahSrCN5z92XflinItQF2GT61mk
+         +p8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712086551; x=1712691351;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RngipVMjADW9RKKBJpWn5bUjtga81BHfJMQO2kVCeRo=;
-        b=ww+4vXD6y0YHncKVBa518tfxQzrc3zIX/G/fvgkZ0V3bin5Ha+Y++hJ6Af6Q0MCA6q
-         u6EsW/pmzMzFCWV0GZreY3q0Sg0XXJXZttJ2hPDSiHOP5pUVcZ70vORK6V7B6uQ/MfCm
-         D09jvkRWgy9GbxGY4XfMtz47pUMmcCuA6MGOK5Qc1+4Pi5i6Fw8IrclhTY4SMZE23+6t
-         Dnq0diJmEoFTwm+SJzrrehbYMTnN+G/w9hf5z29zyJ2ANvCq2fg4f5l1m4trIDNlVMki
-         xaox3OItgxhO1dRtlWzI3gFID/RG/nEMIJRr6BKCV2I+tu70KUdg9FZu900AuIBm2d/T
-         PuFg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3E/HU1/Yz/KF9cfM3dx7Gu+jxlReX8N/9t9F2QkNetWxoJvnpspJ3Rad8NvfuqFUOyDNRpiA39hYoXtIZXBgq70zD
-X-Gm-Message-State: AOJu0Ywu6E9L7KNvIuBBVgA5XzgkG2bmh8YsdQCQ0ZxdquBHMLVl+Dhv
-	2yYIFTW37BtiOKy6JPapRRZA/GxHWcT2ETCWuJhjJHZVsZFVSpGt
-X-Google-Smtp-Source: AGHT+IHkn8aFme4OXrpn85RNfDGAyTRZqwdG1hTXtcrnOUJFUUK8ztRNaqtmIG4ZzSBOiQNLb8Lvmw==
-X-Received: by 2002:a17:902:e80e:b0:1e0:1486:e80c with SMTP id u14-20020a170902e80e00b001e01486e80cmr732619plg.7.1712086551183;
-        Tue, 02 Apr 2024 12:35:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712086555; x=1712691355;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sHKgofjtLfTWJ/FAwhBqVxJWAROfQE6XjH/ZqxNReeE=;
+        b=fQGHAEBUPAhjhMPsdoAjxoQJ/GL7i/bf0/hM6rQ3Tljh3c/k0S+q6tAAdl+Q/xXmSB
+         2QcEfJoFE1tgFQwWHhMn4ynnq0bZ65LoHiuA5yYC2SxUOv3lFUVHs8ZJK2njMeJTl2Pa
+         k/wuOqp+ZvHEPH3rLqYH0w0lCwGMu98PphSRaTTYbnY8mkFSCu/t9pldwkXLc5pmB100
+         bIVwR1gxDotB7jbQu6rI/7EJMLcYaK3ToXZnagixddymE99H9O0aTrFVamm5pzKNxedB
+         ZWG27LHdwl3j/fvO/qQ5YD9tMZjKbEIzhCUs9t+/jwAY/PdU/kRfcoUbeNChdJqxV67h
+         GNUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAXVmfaR6ye7zFD8nb/5D5yL5qh9k3rBSfpngAuMKOEO8+shqR/vzLp+zVR8R0aq3PP0FyFUQH0WtEO7bC42CINgUk
+X-Gm-Message-State: AOJu0Yyk90U3RHw5c/l7/s8/hSMa1nm0sE45NtqkPtv3cN6nOmbG/C9b
+	hAggYCItWqvTaTvkrr0u2Qg8sgs/Y+g05+6io2jm9rHzMaO7l4y/
+X-Google-Smtp-Source: AGHT+IFo4t051oCixR4x2puMKN9+F3XA0BHfQTTOfa7GG3oxo+qvOGVEAXWPPM1McWQQCcoNyHTzLQ==
+X-Received: by 2002:a17:902:f54c:b0:1e2:76ad:caa with SMTP id h12-20020a170902f54c00b001e276ad0caamr580629plf.22.1712086554826;
+        Tue, 02 Apr 2024 12:35:54 -0700 (PDT)
 Received: from frhdebian.. ([2804:14d:8084:b86e:ac17:f518:b547:13a8])
-        by smtp.gmail.com with ESMTPSA id g6-20020a1709026b4600b001dd59b54f9fsm7775841plt.136.2024.04.02.12.35.47
+        by smtp.gmail.com with ESMTPSA id g6-20020a1709026b4600b001dd59b54f9fsm7775841plt.136.2024.04.02.12.35.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Apr 2024 12:35:50 -0700 (PDT)
+        Tue, 02 Apr 2024 12:35:54 -0700 (PDT)
 From: Hiago De Franco <hiagofranco@gmail.com>
 To: Shawn Guo <shawnguo@kernel.org>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>,
@@ -63,10 +65,12 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 0/4] arm64: dts: freescale: Add Toradex Colibri iMX8DX 
-Date: Tue,  2 Apr 2024 16:35:08 -0300
-Message-Id: <20240402193512.240417-1-hiagofranco@gmail.com>
+Subject: [PATCH v1 1/4] arm64: dts: freescale: Add i.MX8DX dtsi
+Date: Tue,  2 Apr 2024 16:35:09 -0300
+Message-Id: <20240402193512.240417-2-hiagofranco@gmail.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240402193512.240417-1-hiagofranco@gmail.com>
+References: <20240402193512.240417-1-hiagofranco@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,34 +81,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Hiago De Franco <hiago.franco@toradex.com>
 
-This patch series introduces support for Colibri iMX8DX SoM and its
-carrier boards, where the board can be mated with: Aster, Evaluation Board
-v3, Iris v2, and Iris v1. This SoM is a variant of the already supported
-Colibri iMX8QXP, utilizing an NXP i.MX8DX SoC instead of i.MX8QXP.
-Therefore, this patch series also adds support for the i.MX8DX processor.
+Add DTSI for i.MX8DX processor. According to 'i.MX 8DualX Industrial
+Applications Processors Data Sheet', the GPU and shader use a clock of
+372MHz. Therefore, this dtsi includes the imx8dxp.dtsi and changes the
+clock accordingly.
 
-Hiago De Franco (4):
-  arm64: dts: freescale: Add i.MX8DX dtsi
-  dt-bindings: arm: fsl: remove reduntant toradex,colibri-imx8x
-  dt-bindings: arm: fsl: Add Colibri iMX8DX
-  arm64: dts: freescale: Add Toradex Colibri iMX8DX
-
- Documentation/devicetree/bindings/arm/fsl.yaml   |  7 ++++---
- arch/arm64/boot/dts/freescale/Makefile           |  4 ++++
- .../boot/dts/freescale/imx8dx-colibri-aster.dts  | 16 ++++++++++++++++
- .../dts/freescale/imx8dx-colibri-eval-v3.dts     | 16 ++++++++++++++++
- .../dts/freescale/imx8dx-colibri-iris-v2.dts     | 16 ++++++++++++++++
- .../boot/dts/freescale/imx8dx-colibri-iris.dts   | 16 ++++++++++++++++
- .../arm64/boot/dts/freescale/imx8dx-colibri.dtsi | 11 +++++++++++
- arch/arm64/boot/dts/freescale/imx8dx.dtsi        | 13 +++++++++++++
- 8 files changed, 96 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri.dtsi
+Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8dx.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx.dtsi
 
+diff --git a/arch/arm64/boot/dts/freescale/imx8dx.dtsi b/arch/arm64/boot/dts/freescale/imx8dx.dtsi
+new file mode 100644
+index 000000000000..ce76efc1a041
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8dx.dtsi
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2016 Freescale Semiconductor, Inc.
++ * Copyright 2017-2020 NXP
++ */
++
++/dts-v1/;
++
++#include "imx8dxp.dtsi"
++
++&gpu_3d0 {
++	assigned-clock-rates = <372000000>, <372000000>;
++};
 -- 
 2.39.2
 
