@@ -1,258 +1,231 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2112.outbound.protection.outlook.com [40.107.7.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7320D8615E
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 14:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712068135; cv=none; b=eQnTcF2fWz/z4RL1XmCBQGwPLJhbvH9S1+5rWAqxpcvhC25CiZQq89g641+Xkp7TsmtRzsEji5y6f7kbGl3lGtCjuTHh+8ZtO6U0cme2swYERk6bqwtZ4j5lTZbVa/u2z3koqEWYCJFsvC2Cybw1MBfNUkyPHl9g7mQTRrJfs0Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712068135; c=relaxed/simple;
-	bh=fRHOq+mWZPSalcGiLvnJcNAakk7ykW7S34Y0J2V0d1U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Qi2ZOI4bb+//SH1zcZXj1lK/Jtnj7lfhi197HvZg1RiqzeOLigaC53V82GBQBy19lPH+TpxLjoKhJGO/fOsqVZyEdqZe8jqYL7UdhGzVyYk4SdEBzVeqvAvYmxM6FBw08Sm+jnCFyP7wUy3jskX335GyFEx0wXoCx9jtNJw2cO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Pa4z8qXg; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5311272C9
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 14:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712068443; cv=fail; b=ZgEdvBza7Y0+42r/sJvDUJ5oFP2E/8mLg88x4Zkk5uJmuxSjKknxRWarqNV802XIdUEvmKswQJRpRGhbm+mZdQjm2oHBydsvm9RJMGxq6vF/enpWR4AVWSfd9K5FnOPVo5zgDrPWTFhDqEv+vgGW/hq9buiJ6zgApg4kX1NvoSQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712068443; c=relaxed/simple;
+	bh=g0TnLssf6ZO/VS4hksqxYpwW9GwlcB36cQW12l9OG0Y=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=KC/xAooQfPaYjNEIGjNSXxmkDUOmlaQzoDXDeBAFsaGvFcuyGveVUeBdsWDnijI3RMUXWntEH+HiVk5gXNbsZDHSctKCufAQZTJ6vUkrJ40Mxnv3XAkYL8IhBt4mhgFvYUkr6DvG4MiPqI70XFBi7ku4WbpD1Kwhf9lESedmq0E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=rnB84iME; arc=fail smtp.client-ip=40.107.7.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Pa4z8qXg"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56be32b9775so6917556a12.1
-        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 07:28:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712068132; x=1712672932; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pSKxf0IIEUwyutNpDWLf0ZVVUCmfh34i9H8sYjRga6I=;
-        b=Pa4z8qXg8ATeU+m6BShNgo2erPanYXTFen+DaaFJvAjLcDkcmCqnQ4VqusJG1tNCBM
-         Yy/88443klDzI20o9SdtGxeZ49rDnB9ofd2RJvnqrlN/wkQWoBbOD8qlw/NluQPm0dcU
-         Q1ZuUhDt7cn7BB+OhsGB873uk646no45f9eoQz4S1AFkHyXPnRUvsiGaIEEcgQwuGtn8
-         G6z0lB27Bj2ekgE3VOtGAnuaOewq61xGM8abAPI9boAo84ZYwo1JGbJATii+CzHfxaYk
-         WDM6/zDgCI0bLQUPpjpbch/p/Pay4rR5w+e9HnDXbZ1zr+ZeLH5+sx7nhyg1whFvkFpl
-         mCHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712068132; x=1712672932;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pSKxf0IIEUwyutNpDWLf0ZVVUCmfh34i9H8sYjRga6I=;
-        b=xEZGe8r0G3jxf5QkbemK3R3FnseE5D0r1N0hyjoVMcdBsk0YhJx27aZfVLSMkxiysE
-         Xv5CtMmqClA6dz/v65P6qoBt9ndGvNGUX2jrthIYexv+HThSYRSCzUU0YCkTBp9Vcxjl
-         CV8x8Tlo0HV5nv+MnNu9I/U6m59/TgqnQ1fTjfsKFabAvovfqVEe30wHrHUiY7U+pn29
-         4QV8w+XxH0bAzOKhjC0j4RfRr36ODjMOv2BKTy7Bf2lFaT1iMQElxBBkYQW43E3/dPFA
-         c/gHDTxIcmTEqLkGRzXiQfi2iYTNa3A8Joo2sMKbhXgoNUorzGO/4K6ORfMXPmqc1jkR
-         2hmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBYAjozz1xi4QesMhMVQtlAmINiTTi/A6V93DFW1N1bZDH4x6hsUutCtjR+QW5KUBKMwFbvosoZ7vlFRWbYga0F8Gl
-X-Gm-Message-State: AOJu0Yynd0M53rzUpzwclOW7UR4a1lU4l0l+dHWYqZNGLN5nBvoEQD8H
-	vWBYjBKTT8oeFs5Y1yF/6aE4nCeZtch4RV+6oqbZzEM2bYHkprBprlBcHRzRcaDYMImEcppYsZ6
-	s
-X-Google-Smtp-Source: AGHT+IGg3KQKWJHw4XuJFppAkBsb9cAouGb9m1ZHLRR8XQFwuIhpnlS9HkKPOad2YoSJ8s/R871tqQ==
-X-Received: by 2002:a17:907:7ea8:b0:a4e:5abe:3832 with SMTP id qb40-20020a1709077ea800b00a4e5abe3832mr5567936ejc.72.1712068131602;
-        Tue, 02 Apr 2024 07:28:51 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id qf31-20020a1709077f1f00b00a4df4243473sm6556183ejc.4.2024.04.02.07.28.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Apr 2024 07:28:50 -0700 (PDT)
-Date: Tue, 2 Apr 2024 17:28:41 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, git@luigi311.com,
-	linux-media@vger.kernel.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
-	mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Luigi311 <git@luigi311.com>, Ondrej Jirman <megi@xff.cz>
-Subject: Re: [PATCH 22/23] drivers: media: i2c: imx258: Add support for
- powerdown gpio
-Message-ID: <fae1ba7c-2f74-42f9-a79e-ce2a04f5d6da@moroto.mountain>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="rnB84iME"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Uk+onZuHgkMKP24Uyt0Nrk0A4DNqgCIiitjoPfY1hSFfIWWelMNBre4Hu8JmRG4ooXRaDmnPSD5aCg+ldLsGhZ5Dbw5GFHnrjiiIidkgjo1Ck8VV31yi9e0E2ppEjtsZ6LyE8l7T6D3z2cIywzAPFATtLLwY8F8iTqDdn1sP3QKkvb+jZpMBJp3qguE1J/2kCghVTK1ZAIMuPksrKSXC+2VFAN0sQ1ywOJcgUuSfagZz12CyF6Fh6QIXpGDdSrZ0gf7rqhRvKMy3jT3RB03jG4BjBxoiOExwPccpduPJmFzyVKTja5vfJDLx6PwjRlAEftdLgjsb2QUWqoCgbrJz1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c2xBhOE5xCX03MkkfZ7geeWDcK1LxfnKQHQchpUyzq0=;
+ b=AkVwgkgPL9ZKKpE9Z8wyDNIXZfiRTop7fFSURaIveLNZA15IdPlP1i3lspvezQXXBXaA6ySJjFgtpZ2ltxeMv+RtQgdmsaR+xtnHAfhOUbCTgEUlSzqxbyJcMMoypiuFouMf4Jem84pyNO26lStNZN5JD/rl2IAoLfxjmuA8ZM5NQHNuu2c75kkf8BCEFgODYKvDZUcneHR0eDAPlsqOMex81PNb6QuRN+zp9DSQewboRkma+mWsF3ZksugjBkz1Jt7J7u1XkozTmKmSVeeyEf/TuYNk8E0y0jC2qBs82da4nKVxAcDqNOcLpznrwT6Zqfll09I5YeV8yAFrtVrswQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c2xBhOE5xCX03MkkfZ7geeWDcK1LxfnKQHQchpUyzq0=;
+ b=rnB84iMEGYxNxglnAP8oISAINxxM90Jbin3GPzkt+mHPMtTUJECqp/rGqIdISXHdf1HuO0FE/P7MO2cCLq04TDA0V7b5Z40pINrefRJsshUjtTvwCd0VWf2SXqhaa3oEG6sppzjo58NnEfm/yC93qEB2fBItIM0XfC6dYsZaZDk=
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DB9PR04MB10036.eurprd04.prod.outlook.com (2603:10a6:10:4c8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
+ 2024 14:33:57 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
+ 14:33:57 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v3 00/11] PCI: imx6: Fix\rename\clean up and add lut
+ information for imx95
+Date: Tue, 02 Apr 2024 10:33:36 -0400
+Message-Id: <20240402-pci2_upstream-v3-0-803414bdb430@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEAXDGYC/3XM0QqDIBiG4VsJj+f4/S1bO9p9jDFMbXlQijZpR
+ Pc+6yQY7PD74HkXEk2wJpJrsZBgko3WjXnwU0FUL8eXoVbnTRCwBMSaemXx+fZxCkYOFJTWrJG
+ sYoKTbHwwnZ333v2Rd2/j5MJnzye2vf9KiVGgbVNhd+GcCxC3cfZn5QaydRIelkP5azFbqaFWl
+ WmFFvVh13X9Amxz9SrkAAAA
+To: Richard Zhu <hongxing.zhu@nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, devicetree@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>, Jason Liu <jason.hui.liu@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712068432; l=3642;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=g0TnLssf6ZO/VS4hksqxYpwW9GwlcB36cQW12l9OG0Y=;
+ b=4df7Z1o9zd1ydMWO9SVVnPWYP7Y8vJ/5WfHNlo0BXhqBScVNh/Il6iGUN4SRbyvdHnEdcNQBa
+ 0fp/vFc9WIrBnMwKzjIbJtZgX9JaFZLI+n2fHp3GaOQIPgp/Ca/8zjB
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: PH7PR17CA0011.namprd17.prod.outlook.com
+ (2603:10b6:510:324::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327231710.53188-23-git@luigi311.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB10036:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Yp30ENuvDzxxqSrmv7ktovbUkmj/a8Gcfpvii4Xljfr+cdMlTdLv99KGua+bxLR4ya6XgnEkR0XO73tDwV7RJd1pyAfkQJiJTn8yaUzzl6RfhwcIKtsGtEp+lC4TtQ4yVV+Mt49PFSVOXD2VdQYISjDJZscDJenQqyEIt/6WiMEyRbkm2qfeeHLa0XOcz87tTH6iyOdttXAe4J6yw3OQ2KTL6VJVS1M4z9dX0REpDHWqCCOFoZJWbWxseD2hHrZ9PIjEXXiiP04P0Khs72oMmRVh22lNHNXBCGDwdX2rLUwbRji518FpRQrqfT+Rz813x1hFESvbR3an5jv7fFWYv78l3ZP68i28ZZVFiTrS34XMqUI7C2QWHgBxK1xL1JEGWnl0AfVUyIDqxKOfHDevKCcAjV/ZIZGJrLlQly9YODqA3Ocw+0Or1ufVY2IBwhjc9ol4qbEeSMC2UyG1F4s6F45Xd3IlpmGQ5vB8oz2Cagrxy1xIZhzqTAssdKvh/TnnWZPLRCYU6PWrOGOYjT8yT4ncMLPpJSc9zNc/vXU1J+OkTNnkf2yvZUc618O+spaPWfuZodRS2RuTmNzq7Wl3YxSywjvVaXN86loXYjRJV8qs0yPEn/P089LNwLQmRDUVNAGbi+sxwmydHJWQG9Cl/YezUS+ILalbju21k1K9/WMEgAkLwd7A/h/Zj9zEZ9lL
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(376005)(52116005)(1800799015)(921011)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YUFUQ1RqZVdZOTBRMDZhcFI4d0RhbTlDbjdlUWdKNUVMVlJGakJqNmJJRmRv?=
+ =?utf-8?B?bi9VVzBzZkt4bzErVC8vR08rb3FYd0trdjJIODFwaFYzbllubG00SnRuS01u?=
+ =?utf-8?B?Vkx2K0MxeTlDTnpkc3JUZlF5OUdDRVo3Y0VkWHByOEp0ZnFQejVEZnBNWUl4?=
+ =?utf-8?B?RHZHQ2dQbGNPSklnbU1VTGFQY1M1K3dJQWx2UG5MWTIwWTEvUUs1THZ2cHZo?=
+ =?utf-8?B?Ykx1UGIrME5qY0ZpUEkweWdnQ2p2MHpzR1VGWkU1TTlWRk9IWXVVMSttNWd3?=
+ =?utf-8?B?WXB6cjZzUmkzNkJjU3p1OEVSRDlRMnFoekdvY01zM0NFbERsM0tJaTNwOWdi?=
+ =?utf-8?B?R3l0TnYvMWMrOWFtaEFxbEQ3emZhRFlyRXRkWHZ0MFBkU0xrV1RuWlMrTDIv?=
+ =?utf-8?B?UWdNbHlQOFhaSlBSRkhCTjMxKy92bW85dkphWkduaXd4YVhuZm1vWjEwenhT?=
+ =?utf-8?B?UUZnbGxzdW8zVHRoNzN0eDR3SlJxMEw2c08zRXcxYWlNWDJJdUVjdHY2OHQ0?=
+ =?utf-8?B?Q3hGRU4wWTd2aWhEM2VvektBbkR0TFJWUmdGaW5IV1VXUUQ4dmNIV1dna3U2?=
+ =?utf-8?B?SHJjbFdzeEl0UERJYkZjSEo1U3NDWUduMGVNR3ZEekRtaGN2bkRtWFdja0RI?=
+ =?utf-8?B?cU1YWkZoZ1BKL2dydThXTmdIanlqZDJTRkMzbUFGaVdVZkcwaWpRMURleFcv?=
+ =?utf-8?B?WTlkTCtWM1ZpZ2Zub0JIMGZmaTQ3dWovNjNudng2Wml1V09IWHkwQkV1NUhi?=
+ =?utf-8?B?WWhreEpLWGxMS1NmRUxOQmJuTWt2cGlQT0ZpdHhhTzdFWEl3Nmw0ellQQmxQ?=
+ =?utf-8?B?TXlBNkc3RmlYWnpnZ2hkM01DRE9DMTRoODVrRFlPaXFZS1h5V1FISWVnS29Y?=
+ =?utf-8?B?OWJMSDNqMTUvSzNTb0ZPaUhWTUtsMkxMbCs2bGJpM0p1KytveWg2bm1WRXJM?=
+ =?utf-8?B?SlF2VCs0OFNtUStlRXR3OTF1Mzh2ZmdVMEVkVTBCbXRNL2NJc1lieVY5VGpi?=
+ =?utf-8?B?NjhyUzJuM255YUpQNG1zU3diNHhWNGhrWUg1RXZZUno0YTcyb3EwRVNVdGtw?=
+ =?utf-8?B?VFZFdkx5cW41NFhHVGVVUVowTE9DRzI5bjhTVjJ4RUc4S0JiTFNiTDZEVGJY?=
+ =?utf-8?B?WnpGNFJ6cVR6dkszLzBsMGV6QW9BOXd4MGtTUWVoc1hOK1VlYlA4QVA1ZG5D?=
+ =?utf-8?B?eHVkMzdIc0tqdXZybUE1N3BXNWdyK3R0NjJHV2RRQUdWcXhNeHE3WXFKUUJ6?=
+ =?utf-8?B?WVJqSEdseUpJckdQbzQ4MkZjdldzOHBxTVk1bU5jeWwyRzVwMjllOFVneSt3?=
+ =?utf-8?B?aVhYN2dCNWVRaVlxa0R4a3hlV3E4a2pzSGVFTU05OEIyeUxPV0pCNHVtWFZJ?=
+ =?utf-8?B?WHBZZ0taamRJc1hOQ1VIMk9sNHgvMHdpREg2RFZES0dTU0pidGxJcitid2NP?=
+ =?utf-8?B?SzVrcHNXUjFsMk9pMXU1emFnSnVqaDJ5cjJXTTJrbkVjRFNvUVJ3Um9JT005?=
+ =?utf-8?B?ZnBnRllQQVFVd0hsM0JMd3hOSXh6N3JEZGc1M3hNeXltYkhhYVJYNUg1aEFl?=
+ =?utf-8?B?YkVtYUxtbkM5M2YzS3M4WXhKVUhxRlczRnNBTXFLOXlRaitxd3htdXhxQ3pR?=
+ =?utf-8?B?T0FRY3RCdEtDQ1RDellzNXUvY1FEQnFST2FsaHk2cFQ4eE1yK05Wamt6eEpk?=
+ =?utf-8?B?S3VmbjBmSjE4cVYyQWxWdjk3YTh5T0l6RDk5YVByckIwVUl1L3JHeTRaN3Zz?=
+ =?utf-8?B?SncwOUxqcUVoL1pnZkRIZnQ2aWZYczJrbFFabW93KzhFcElUNFp2UnpYSmMx?=
+ =?utf-8?B?SEN4aTFvY2I4blZGV1AvRDIvcVU1OHJDSVkxTjFINmx5MmdyWko1OXE2bzJm?=
+ =?utf-8?B?WGlwcmRUc3luY1pGTnNETldqY0lXdkZvVGNMbUFOdTZhbzhobDdwc3JtYld0?=
+ =?utf-8?B?SWY2RFB3dWdkcUNuSmk5L3hTMll2TUpMVVkzVitjdEk3b3hJeWYrYm5FRHF3?=
+ =?utf-8?B?WnV3aXNoMjFvUlRucTlvZ25tTVd4UWRVRml6b25MOGlrZ0J6VmNZejVKM05m?=
+ =?utf-8?B?NjY1Zld1Qk9kWWFSaktSdGNpL3RqSnJpUFljVHZBVDNSTkF0WDBUdzh0SEFV?=
+ =?utf-8?Q?W1OpEaU356GRThxqDH1sDimAc?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bec597d-fb01-4b2b-1d51-08dc5321ee01
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 14:33:57.2796
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /w1xinqMeR6qJ/wV/ycfHGw8ZXZY76fcGjbTTSI0rkv1rxzdu6/lysqGjU2ulVhC+hoQ4hhkURc1YwTZo+b+yg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB10036
 
-Hi,
+Fixed 8mp EP mode problem.
 
-kernel test robot noticed the following build warnings:
+imx6 actaully for all imx chips (imx6*, imx7*, imx8*, imx9*). To avoid     
+confuse, rename all imx6_* to imx_*, IMX6_* to IMX_*. pci-imx6.c to        
+pci-imx.c to avoid confuse.                                                
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Using callback to reduce switch case for core reset and refclk.            
 
-url:    https://github.com/intel-lab-lkp/linux/commits/git-luigi311-com/media-i2c-imx258-Remove-unused-defines/20240328-072629
-base:   git://linuxtv.org/media_tree.git master
-patch link:    https://lore.kernel.org/r/20240327231710.53188-23-git%40luigi311.com
-patch subject: [PATCH 22/23] drivers: media: i2c: imx258: Add support for powerdown gpio
-config: x86_64-randconfig-161-20240331 (https://download.01.org/0day-ci/archive/20240401/202404011425.PVKV9Lf1-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+Add imx95 iommux and its stream id information.                            
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202404011425.PVKV9Lf1-lkp@intel.com/
+Base on linux-pci/controller/imx
 
-smatch warnings:
-drivers/media/i2c/imx258.c:1562 imx258_probe() warn: missing unwind goto?
+To: Richard Zhu <hongxing.zhu@nxp.com>
+To: Lucas Stach <l.stach@pengutronix.de>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Krzysztof Wilczyński <kw@linux.com>
+To: Rob Herring <robh@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+To: Shawn Guo <shawnguo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: NXP Linux Team <linux-imx@nxp.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+To: Liam Girdwood <lgirdwood@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: linux-pci@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: bpf@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-vim +1562 drivers/media/i2c/imx258.c
+Changes in v3:
+- Add an EP fixed patch
+  PCI: imx6: Fix PCIe link down when i.MX8MM and i.MX8MP PCIe is EP mode
+  PCI: imx6: Fix i.MX8MP PCIe EP can not trigger MSI
+- Add 8qxp rc support
+dt-bing yaml pass binding check
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx6q-pcie.yaml
+  LINT    Documentation/devicetree/bindings
+  DTEX    Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.example.dts
+  CHKDT   Documentation/devicetree/bindings/processed-schema.json
+  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+  DTC_CHK Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.example.dtb
 
-d3773094af21c9 Dave Stevenson      2024-03-27  1476  
-e4802cb00bfe3d Jason Chen          2018-05-02  1477  static int imx258_probe(struct i2c_client *client)
-e4802cb00bfe3d Jason Chen          2018-05-02  1478  {
-e4802cb00bfe3d Jason Chen          2018-05-02  1479  	struct imx258 *imx258;
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1480  	struct fwnode_handle *endpoint;
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1481  	struct v4l2_fwnode_endpoint ep = {
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1482  		.bus_type = V4L2_MBUS_CSI2_DPHY
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1483  	};
-e4802cb00bfe3d Jason Chen          2018-05-02  1484  	int ret;
-e4802cb00bfe3d Jason Chen          2018-05-02  1485  	u32 val = 0;
-e4802cb00bfe3d Jason Chen          2018-05-02  1486  
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1487  	imx258 = devm_kzalloc(&client->dev, sizeof(*imx258), GFP_KERNEL);
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1488  	if (!imx258)
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1489  		return -ENOMEM;
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1490  
-d3773094af21c9 Dave Stevenson      2024-03-27  1491  	ret = imx258_get_regulators(imx258, client);
-d3773094af21c9 Dave Stevenson      2024-03-27  1492  	if (ret)
-d3773094af21c9 Dave Stevenson      2024-03-27  1493  		return dev_err_probe(&client->dev, ret,
-d3773094af21c9 Dave Stevenson      2024-03-27  1494  				     "failed to get regulators\n");
-d3773094af21c9 Dave Stevenson      2024-03-27  1495  
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1496  	imx258->clk = devm_clk_get_optional(&client->dev, NULL);
-d170b0ea176098 Sakari Ailus        2021-08-16  1497  	if (IS_ERR(imx258->clk))
-d170b0ea176098 Sakari Ailus        2021-08-16  1498  		return dev_err_probe(&client->dev, PTR_ERR(imx258->clk),
-d170b0ea176098 Sakari Ailus        2021-08-16  1499  				     "error getting clock\n");
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1500  	if (!imx258->clk) {
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1501  		dev_dbg(&client->dev,
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1502  			"no clock provided, using clock-frequency property\n");
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1503  
-e4802cb00bfe3d Jason Chen          2018-05-02  1504  		device_property_read_u32(&client->dev, "clock-frequency", &val);
-d170b0ea176098 Sakari Ailus        2021-08-16  1505  	} else {
-d170b0ea176098 Sakari Ailus        2021-08-16  1506  		val = clk_get_rate(imx258->clk);
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1507  	}
-8bde18cb296d0e Dave Stevenson      2024-03-27  1508  
-8bde18cb296d0e Dave Stevenson      2024-03-27  1509  	switch (val) {
-8bde18cb296d0e Dave Stevenson      2024-03-27  1510  	case 19200000:
-8bde18cb296d0e Dave Stevenson      2024-03-27  1511  		imx258->link_freq_configs = link_freq_configs_19_2;
-8bde18cb296d0e Dave Stevenson      2024-03-27  1512  		imx258->link_freq_menu_items = link_freq_menu_items_19_2;
-8bde18cb296d0e Dave Stevenson      2024-03-27  1513  		break;
-8bde18cb296d0e Dave Stevenson      2024-03-27  1514  	case 24000000:
-8bde18cb296d0e Dave Stevenson      2024-03-27  1515  		imx258->link_freq_configs = link_freq_configs_24;
-8bde18cb296d0e Dave Stevenson      2024-03-27  1516  		imx258->link_freq_menu_items = link_freq_menu_items_24;
-8bde18cb296d0e Dave Stevenson      2024-03-27  1517  		break;
-8bde18cb296d0e Dave Stevenson      2024-03-27  1518  	default:
-8bde18cb296d0e Dave Stevenson      2024-03-27  1519  		dev_err(&client->dev, "input clock frequency of %u not supported\n",
-8bde18cb296d0e Dave Stevenson      2024-03-27  1520  			val);
-e4802cb00bfe3d Jason Chen          2018-05-02  1521  		return -EINVAL;
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1522  	}
-e4802cb00bfe3d Jason Chen          2018-05-02  1523  
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1524  	endpoint = fwnode_graph_get_next_endpoint(dev_fwnode(&client->dev), NULL);
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1525  	if (!endpoint) {
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1526  		dev_err(&client->dev, "Endpoint node not found\n");
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1527  		return -EINVAL;
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1528  	}
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1529  
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1530  	ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, &ep);
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1531  	fwnode_handle_put(endpoint);
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1532  	if (ret) {
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1533  		dev_err(&client->dev, "Parsing endpoint node failed\n");
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1534  		return ret;
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1535  	}
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1536  
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1537  	/* Get number of data lanes */
-a42d61a239fac8 Dave Stevenson      2024-03-27  1538  	switch (ep.bus.mipi_csi2.num_data_lanes) {
-a42d61a239fac8 Dave Stevenson      2024-03-27  1539  	case 2:
-a42d61a239fac8 Dave Stevenson      2024-03-27  1540  		imx258->lane_mode_idx = IMX258_2_LANE_MODE;
-a42d61a239fac8 Dave Stevenson      2024-03-27  1541  		break;
-a42d61a239fac8 Dave Stevenson      2024-03-27  1542  	case 4:
-a42d61a239fac8 Dave Stevenson      2024-03-27  1543  		imx258->lane_mode_idx = IMX258_4_LANE_MODE;
-a42d61a239fac8 Dave Stevenson      2024-03-27  1544  		break;
-a42d61a239fac8 Dave Stevenson      2024-03-27  1545  	default:
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1546  		dev_err(&client->dev, "Invalid data lanes: %u\n",
-a42d61a239fac8 Dave Stevenson      2024-03-27  1547  			ep.bus.mipi_csi2.num_data_lanes);
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1548  		ret = -EINVAL;
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1549  		goto error_endpoint_free;
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1550  	}
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1551  
-7db096053387db Dave Stevenson      2024-03-27  1552  	imx258->csi2_flags = ep.bus.mipi_csi2.flags;
-7db096053387db Dave Stevenson      2024-03-27  1553  
-a8bb93eeccfa73 Dave Stevenson      2024-03-27  1554  	imx258->variant_cfg = of_device_get_match_data(&client->dev);
-a8bb93eeccfa73 Dave Stevenson      2024-03-27  1555  	if (!imx258->variant_cfg)
-a8bb93eeccfa73 Dave Stevenson      2024-03-27  1556  		imx258->variant_cfg = &imx258_cfg;
-a8bb93eeccfa73 Dave Stevenson      2024-03-27  1557  
-8a1906e91c0093 Luigi311            2024-03-27  1558  	/* request optional power down pin */
-8a1906e91c0093 Luigi311            2024-03-27  1559  	imx258->powerdown_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
-8a1906e91c0093 Luigi311            2024-03-27  1560  						    GPIOD_OUT_HIGH);
-8a1906e91c0093 Luigi311            2024-03-27  1561  	if (IS_ERR(imx258->powerdown_gpio))
-8a1906e91c0093 Luigi311            2024-03-27 @1562  		return PTR_ERR(imx258->powerdown_gpio);
+- Link to v2: https://lore.kernel.org/r/20240304-pci2_upstream-v2-0-ad07c5eb6d67@nxp.com
 
-	ret = PTR_ERR(imx258->powerdown_gpio);
-	goto error_endpoint_free;
+Changes in v2:
+- remove file to 'pcie-imx.c'
+- keep CONFIG unchange.
+- Link to v1: https://lore.kernel.org/r/20240227-pci2_upstream-v1-0-b952f8333606@nxp.com
 
-8a1906e91c0093 Luigi311            2024-03-27  1563  
-e4802cb00bfe3d Jason Chen          2018-05-02  1564  	/* Initialize subdev */
-e4802cb00bfe3d Jason Chen          2018-05-02  1565  	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
-e4802cb00bfe3d Jason Chen          2018-05-02  1566  
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1567  	/* Will be powered off via pm_runtime_idle */
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1568  	ret = imx258_power_on(&client->dev);
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1569  	if (ret)
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1570  		goto error_endpoint_free;
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1571  
-e4802cb00bfe3d Jason Chen          2018-05-02  1572  	/* Check module identity */
-e4802cb00bfe3d Jason Chen          2018-05-02  1573  	ret = imx258_identify_module(imx258);
-e4802cb00bfe3d Jason Chen          2018-05-02  1574  	if (ret)
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1575  		goto error_identify;
-e4802cb00bfe3d Jason Chen          2018-05-02  1576  
-e4802cb00bfe3d Jason Chen          2018-05-02  1577  	/* Set default mode to max resolution */
-e4802cb00bfe3d Jason Chen          2018-05-02  1578  	imx258->cur_mode = &supported_modes[0];
-e4802cb00bfe3d Jason Chen          2018-05-02  1579  
-e4802cb00bfe3d Jason Chen          2018-05-02  1580  	ret = imx258_init_controls(imx258);
-e4802cb00bfe3d Jason Chen          2018-05-02  1581  	if (ret)
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1582  		goto error_identify;
-e4802cb00bfe3d Jason Chen          2018-05-02  1583  
-e4802cb00bfe3d Jason Chen          2018-05-02  1584  	/* Initialize subdev */
-e4802cb00bfe3d Jason Chen          2018-05-02  1585  	imx258->sd.internal_ops = &imx258_internal_ops;
-e4802cb00bfe3d Jason Chen          2018-05-02  1586  	imx258->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
-e4802cb00bfe3d Jason Chen          2018-05-02  1587  	imx258->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
-e4802cb00bfe3d Jason Chen          2018-05-02  1588  
-e4802cb00bfe3d Jason Chen          2018-05-02  1589  	/* Initialize source pad */
-e4802cb00bfe3d Jason Chen          2018-05-02  1590  	imx258->pad.flags = MEDIA_PAD_FL_SOURCE;
-e4802cb00bfe3d Jason Chen          2018-05-02  1591  
-e4802cb00bfe3d Jason Chen          2018-05-02  1592  	ret = media_entity_pads_init(&imx258->sd.entity, 1, &imx258->pad);
-e4802cb00bfe3d Jason Chen          2018-05-02  1593  	if (ret)
-e4802cb00bfe3d Jason Chen          2018-05-02  1594  		goto error_handler_free;
-e4802cb00bfe3d Jason Chen          2018-05-02  1595  
-15786f7b564eff Sakari Ailus        2021-03-05  1596  	ret = v4l2_async_register_subdev_sensor(&imx258->sd);
-e4802cb00bfe3d Jason Chen          2018-05-02  1597  	if (ret < 0)
-e4802cb00bfe3d Jason Chen          2018-05-02  1598  		goto error_media_entity;
-e4802cb00bfe3d Jason Chen          2018-05-02  1599  
-e4802cb00bfe3d Jason Chen          2018-05-02  1600  	pm_runtime_set_active(&client->dev);
-e4802cb00bfe3d Jason Chen          2018-05-02  1601  	pm_runtime_enable(&client->dev);
-e4802cb00bfe3d Jason Chen          2018-05-02  1602  	pm_runtime_idle(&client->dev);
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1603  	v4l2_fwnode_endpoint_free(&ep);
-e4802cb00bfe3d Jason Chen          2018-05-02  1604  
-e4802cb00bfe3d Jason Chen          2018-05-02  1605  	return 0;
-e4802cb00bfe3d Jason Chen          2018-05-02  1606  
-e4802cb00bfe3d Jason Chen          2018-05-02  1607  error_media_entity:
-e4802cb00bfe3d Jason Chen          2018-05-02  1608  	media_entity_cleanup(&imx258->sd.entity);
-e4802cb00bfe3d Jason Chen          2018-05-02  1609  
-e4802cb00bfe3d Jason Chen          2018-05-02  1610  error_handler_free:
-e4802cb00bfe3d Jason Chen          2018-05-02  1611  	imx258_free_controls(imx258);
-e4802cb00bfe3d Jason Chen          2018-05-02  1612  
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1613  error_identify:
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1614  	imx258_power_off(&client->dev);
-9fda25332c4b9e Krzysztof Kozlowski 2021-01-27  1615  
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1616  error_endpoint_free:
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1617  	v4l2_fwnode_endpoint_free(&ep);
-786d2ad50b9b49 Dave Stevenson      2024-03-27  1618  
-e4802cb00bfe3d Jason Chen          2018-05-02  1619  	return ret;
-e4802cb00bfe3d Jason Chen          2018-05-02  1620  }
+---
+Frank Li (7):
+      PCI: imx6: Rename imx6_* with imx_*
+      PCI: imx6: Rename pci-imx6.c to pcie-imx.c
+      MAINTAINERS: pci: imx: update imx6* to imx* since rename driver file
+      PCI: imx: Simplify switch-case logic by involve set_ref_clk callback
+      PCI: imx: Simplify switch-case logic by involve core_reset callback
+      PCI: imx: Config look up table(LUT) to support MSI ITS and IOMMU for i.MX95
+      PCI: imx: Consolidate redundant if-checks
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Richard Zhu (4):
+      PCI: imx6: Fix PCIe link down when i.MX8MM and i.MX8MP PCIe is EP mode
+      PCI: imx6: Fix i.MX8MP PCIe EP can not trigger MSI
+      dt-bindings: imx6q-pcie: Add i.MX8Q pcie compatible string
+      PCI: imx6: Add i.MX8Q PCIe support
+
+ .../bindings/pci/fsl,imx6q-pcie-common.yaml        |    5 +
+ .../devicetree/bindings/pci/fsl,imx6q-pcie.yaml    |   18 +
+ MAINTAINERS                                        |    4 +-
+ drivers/pci/controller/dwc/Makefile                |    2 +-
+ .../pci/controller/dwc/{pci-imx6.c => pcie-imx.c}  | 1173 ++++++++++++--------
+ 5 files changed, 727 insertions(+), 475 deletions(-)
+---
+base-commit: 2e45e73eebd43365cb585c49b3a671dcfae6b5b5
+change-id: 20240227-pci2_upstream-0cdd19a15163
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
