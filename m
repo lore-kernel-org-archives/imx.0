@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06BC146D53
-	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 12:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAC01474C7
+	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 12:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712148628; cv=none; b=g4ua4/ihJeQe8EaTntoLS4SFKnr8P+iQ7dfoVRxyTuwRHjHNEw3U7lER8U8isv5qmpTWbqFTqOcWRtGCbzusDWWz2BjtJkdEQ2a4iM2iKOj6fMFA7j0rwet1abs5nvkp3qzMZe/x0Gdn2OxLzc5q6izehvDoHoqduuz06lhNNcs=
+	t=1712148630; cv=none; b=bulLZezr1/ofBUzfQ5ymFHT+IpF8HjxcI5ljQQlluTN2QK31ca3A5Wx93IQ6KsG9Kqv/ZRlY/as999BN2gCQXiObslD+SonMlXAWWY+c5JP3CUzUwFhZVK1r+OcAFE64Sf8oth2GXR8Mg0rhXqz8d1EGTqHVw24JT9/FFOQIq1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712148628; c=relaxed/simple;
-	bh=kMKCTwKn8cIKYzkCfS7drdn8LHov9ndMuinvA3lbcgw=;
+	s=arc-20240116; t=1712148630; c=relaxed/simple;
+	bh=D/FfpbAsiof89LgUZ4/UlHEJN8aXS0QySDUDCd5cFgU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LlMfV9CxQep5JcrieAZAIsN+6Q5T72Pz1emRvrhEwQzHPPzgCOPJD9hSqZSuMxtxTPXSj2165Zo2frjB9NOk6QXwb1lQgdGzbBDrK5hv8575jUMLCqROdY+b4FUvZMOsO2U4jd52oxvdtOlg2fHbvG5TWEhMVzxkulHzbtYzhxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DqGa2Er6; arc=none smtp.client-ip=198.175.65.18
+	 In-Reply-To:Content-Type; b=qf9AGkv3PXXPzirMrd9bLLldFPJjTchyNLdNJwSwIyBX5H5Si9H3kLZo0EMqAhmXWaY5sXyiU9NHYAZIAd9xk0/6Zy003aCuZmMAE6VXlkWhY4KKaS7vHK8RO7h8zcItuOC7jxUQyPOor+wWERGf5Wrn4zs1OX18llaPGKXZWyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TtO+xowu; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqGa2Er6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TtO+xowu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712148627; x=1743684627;
+  t=1712148629; x=1743684629;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=kMKCTwKn8cIKYzkCfS7drdn8LHov9ndMuinvA3lbcgw=;
-  b=DqGa2Er6X3qO3pn9KbSr+190MOxRfHyrDe+/hsWzJTudpbcJ5+Zo+QkF
-   lx2G7n9Ew6+swkaiYP0Znq1ZP8fAJdz2wmqRffKOeAeG4OJyYwxWLwjvu
-   2x2V6rg9stypDtwS7qyfew3065nx7HH2Z+NDXpIwAbpxAkCtAZ0DH+yn3
-   dfFZVYvD0LtwOHMzBYu28vXLG9fwam2jUKDAXH4x9U6gTe7wluS0OIwbE
-   Xg9RyddNta9WD+pHnXa+zNt26HYEULvRYhuDsConOmAhmR0qWMsZfxtDI
-   byDZPbrQD8yONh6LRdyDRZaD8OJrYKNMIsB5z3ipS5DGz8pq1W9KCosIG
-   w==;
-X-CSE-ConnectionGUID: yAN0Di3gQ2KUzJhDOsAMeA==
-X-CSE-MsgGUID: ZV0bB82nQu+B6hl1lTWPow==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7539319"
+  bh=D/FfpbAsiof89LgUZ4/UlHEJN8aXS0QySDUDCd5cFgU=;
+  b=TtO+xowu/soTqSx6iXJOUFuZpASPEUyEIRoCYPeHUiFzxTmqbbr33ww9
+   Kxv0mQ9Fkq68ReLcUGXCvK6rq+mdjYwkQJTk3sw1WmMbMb91hXQfek8NY
+   FYY7pUyApIghBreegOxoI9poHAQZkY33Z0EgkYIWMlLyofOc5Zy2bvHAm
+   Y4s/ZWLoU8heqA6mpYJeprfVInVH/eRGRXuhSQ5hVFnu9p66XWdY3BBDN
+   MJ5mg+wnZbOcgZbHI7eRk+uV0kX4EcG75aJv/wnHQ+PPPf3YV84jEKxc/
+   a/OY8P0rE42YmZqwBOWO727FaNg/ayMuFlnDQ+EWpPi8TsZ8Yyy4XdHyK
+   A==;
+X-CSE-ConnectionGUID: 9VsMyEm1Rm+2Gci65hQKyQ==
+X-CSE-MsgGUID: /8L/Q7xmSwSBBBLc178guQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7539343"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="7539319"
+   d="scan'208";a="7539343"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 05:50:26 -0700
-X-CSE-ConnectionGUID: hVk+VsPMTNGqw+pBvOSqyw==
-X-CSE-MsgGUID: RwciptEsRAWsX8VxQF1m0Q==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 05:50:28 -0700
+X-CSE-ConnectionGUID: /D+wW3RkS/a6+yA0ZGswww==
+X-CSE-MsgGUID: J/jGeT/nQbCMDRSoTLK5iQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="18343230"
+   d="scan'208";a="18343238"
 Received: from makulkar-mobl1.amr.corp.intel.com (HELO [10.212.52.18]) ([10.212.52.18])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 05:50:24 -0700
-Message-ID: <27d79c07-4ff9-48f4-9785-2643a8c5f4c5@linux.intel.com>
-Date: Tue, 2 Apr 2024 09:06:16 -0500
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 05:50:26 -0700
+Message-ID: <2cb2f96f-836c-4816-86f8-2262c2dd1ce3@linux.intel.com>
+Date: Tue, 2 Apr 2024 09:09:23 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/16] ASoC: soc-pcm.c: cleanup
- soc_get_playback_capture()
+Subject: Re: [PATCH v2 09/16] ASoC: soc-core: Replace dpcm_playback/capture to
+ playback/capture_only
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Cc: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
  <amadeuszx.slawinski@linux.intel.com>,
@@ -82,80 +82,57 @@ Cc: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
  imx@lists.linux.dev, linux-sound@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com
 References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
- <87y19xudor.wl-kuninori.morimoto.gx@renesas.com>
- <b4b37541-b67f-4593-9fd5-fc6242a0673a@linux.intel.com>
- <87zfuc7gya.wl-kuninori.morimoto.gx@renesas.com>
- <87ttkk9se3.wl-kuninori.morimoto.gx@renesas.com>
+ <87msqdudn7.wl-kuninori.morimoto.gx@renesas.com>
+ <1a42ebbb-1e1f-4ecf-a1ec-7af292f7ff96@linux.intel.com>
+ <871q7o8y0d.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <87ttkk9se3.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <871q7o8y0d.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 4/2/24 01:43, Kuninori Morimoto wrote:
+On 4/1/24 18:27, Kuninori Morimoto wrote:
 > 
-> Hi Pierre-Louis, again
+> Hi Pierre-Louis
 > 
->>> The problem I have is with the following code (not shown with diff)
->>>
->>> 	if (dai_link->playback_only)
->>> 		has_capture = 0;
->>>
->>> 	if (dai_link->capture_only)
->>> 		has_playback = 0;
->>>
->>> So with this grand unification, all the loops above may make a decision
->>> that could be overridden by these two branches.
->>>
->>> This was not the case before for DPCM, all the 'has_capture' and
->>> 'has_playback' variables were used as a verification of the dai_link
->>> settings with an error thrown e.g. if the dpcm_playback was set without
->>> any DAIs supporting playback.
+> Thank you for the feedback
 > 
-> Hmm... above 2 branches are used for DPCM too before.
+>>>  			/* convert non BE into BE */
+>>> -			if (!dai_link->no_pcm) {
+>>> -				dai_link->no_pcm = 1;
+>>> -
+>>> -				if (dai_link->dpcm_playback)
+>>> -					dev_warn(card->dev,
+>>> -						 "invalid configuration, dailink %s has flags no_pcm=0 and dpcm_playback=1\n",
+>>> -						 dai_link->name);
+>>> -				if (dai_link->dpcm_capture)
+>>> -					dev_warn(card->dev,
+>>> -						 "invalid configuration, dailink %s has flags no_pcm=0 and dpcm_capture=1\n",
+>>> -						 dai_link->name);
+>>> -
+>>> -				/* convert normal link into DPCM one */
+>>> -				if (!(dai_link->dpcm_playback ||
+>>> -				      dai_link->dpcm_capture)) {
+>>> -					dai_link->dpcm_playback = !dai_link->capture_only;
+>>> -					dai_link->dpcm_capture = !dai_link->playback_only;
+>>> -				}
+>>> -			}
+>>> +			dai_link->no_pcm = 1;
+> (snip)
+>> It's not clear to me how this is related to the
+>> dpcm_playback/dpcm_capture removal.
+> 
+> In my understanding, if "dai_link->no_pcm" was 0, it sets no_pcm and
+> convert setting to BE. If no_pcm was 1, it is BE anyway. So no_pcm will
+> be 1 anyway after this code.
+> And then, dpcm_playback/capture is no longer needed.
+> So it just set no_pcm = 1 here. But am I wrong ??
 
-Not really, playback_only and capture_only were never set so those two
-branches were always false.
-> 
->>> Now the dailink settings are used unconditionally. There is one warning
->>> added if there are no settings for a dailink, but we've lost the
->>> detection of a mismatch between dailink and the set of cpu/codec dais
->>> that are part of this dailink.
-> 
-> Does this mean, for example you want to have warning/error by dpcm_playback
-> flag if you are thinking it can use playback , but FE or BE playback was
-> not valid ?
+The problem is that the patchset is supposed to be only about removal of
+flags to align on one set, but then we also have "simplifications" or
+removal of checks without explanations.
 
-Again we had a verification that if the dpcm_playback was set at the
-dailink level, it was actually supported by the dais.
-
-We seem to have lost this verification. We only have an error when there
-are no settings at all.
-
-> 
-> If so, yes indeed this patch removes such flags.
-> But I wonder why you want to get it in case of DPCM only ?
-
-It's helpful to detect invalid configurations. And I see to reason why
-the removal of flags should change the functionality.
-
-> I can understand if all case want to have it.
-> 
-> Then, I think we can check _only for this purpose too ?
-> 
-> (A)	if dai_link has playback_only        -> it should have has_playback
-> (B)	if dai_link has capture_only         -> it should have has_capture
-> (C)	if dai_link don't have both xxx_only -> it should have both has_xxx
-> 
-> I think we already have (A)(B) check. We want to add (C) check ?
-> 
-> If my understanding was correct, the things dpcm_xxx flag can do is also
-> can do by xxx_only flag. But dpcm_xxx flag is used only DPCM, but xxx_only
-> flag is used on all cases.
-
-I am only concerned about mismatches between dailinks and dai
-capabilities. The logic above is fine, but it's in the scope of the
-dailink only.
-
+It would be far less invasive if we only replaced flags and had
+iso-functionality. Then we can discuss the merits of simplifications.
