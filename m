@@ -1,136 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B74A159919;
-	Tue,  2 Apr 2024 18:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D889F15B98E
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 19:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712082405; cv=none; b=CjEEzZ2qL5jr9vylnu/9yFnjtyJI4uKsgZDX8vWjum9jJ5rfELSrBj/i3XL9gQDPeyXJq3I78Cd5x5mVpvzJ3ks/p0KJ+9rQFWOw6o5ZkYFYaG6vyEvhsYDvNke8Pfnp2CAsL6a0XUgo2bvWiJjXFS/1suJ2Wwv4mN7yAl7NcYo=
+	t=1712086553; cv=none; b=kGwUTwd5CYZC1hC6zO54cq0E2jaxaQOtbWsfd3avkhwMg1zfstdNIKRTZeA2ESpHlTxEm8JrHaM3JBCXZluHsmGmjgZyywZyXafLFLplLZfBLU8M9/CpbA0kxfhlIkSfYOU3LqJ0Am7l0q0QCvn7q8rvu738wliDhIFBM+zQgsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712082405; c=relaxed/simple;
-	bh=sz+2d1gs1ehBN3Q4pGBpK6maDbOhiUQSkQL1PjdfiB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=godsXFBtLe+xNLqunUiY1wgf6Fs5g+RtaUZfUivaPglZecZrnqQb04tayws5awQcXJKyzgwMpRkpacQ8EbmlAhFLIlyb+kk9UMf+L3cxonjEoCJcqxSwdgYoXzQqE5XPfhc3CzuYadbk2dbDxBpTgIPnrJtJ1x+/VmeIJfjNuyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FBQBfQ7L; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1712086553; c=relaxed/simple;
+	bh=w6Zk1mErBPhMR/fPvTKIp80OCxzxeQAfQ1sc1ZTrGqg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WoUSRRR4zIvwXeQ8jQc8Bt1THdMMbspr83JhgpCPQsD23rmblxfNqAjuvgWdW0A9HaL8vWt+sZd1XEu4CrmyKE/CPuZRC1Vre1y8vxJV1NxU+XX2lzWrvauDpB1Zf+EZhDtB0MxuXmjW5Qw1eFKuEBgkbPNFRKyZe+0CE3EjFRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XQHK8CH4; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBQBfQ7L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712082404; x=1743618404;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sz+2d1gs1ehBN3Q4pGBpK6maDbOhiUQSkQL1PjdfiB0=;
-  b=FBQBfQ7LZJUnMic61TiGsZU3+92kYtL1AXDgSo0d1n4wqVQtLMXh939R
-   meXxdwLjrcpSlYZ/4ewhaVk2YWP9N0Khb0HBA9YQZpCpnzXnoJZwTbyBy
-   ztWztTS8+tb+QeSWbzVbWXa+Xup/QhfQqojiJ4uAw7I+A7PSV9YtFfw/e
-   C0kHM2usGv9j+EikdCuH3DVdefnh444vyMSWX+04srPH+47Rz/OANw5+u
-   FCOMcsH0gXVnuZHI8TRlhk2bf8kGd+f7JgJH1dC/lGEIGqzBsGxiKg8Yf
-   MJmXLQEot3KXHP5ZyXUGsSPgHcDuOlm5E8hJxfYEj3WJar0furnlFhVyi
-   w==;
-X-CSE-ConnectionGUID: ygaqcgZFRrevMuwpVquL/Q==
-X-CSE-MsgGUID: 12OChjChTlKPVVlDR2oWIw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="18635987"
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
-   d="scan'208";a="18635987"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 11:26:43 -0700
-X-CSE-ConnectionGUID: JE8ygY+RRSuHgF03rDWXmg==
-X-CSE-MsgGUID: fQuqhyGWTHWP9oNxtrYh5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
-   d="scan'208";a="22898037"
-Received: from lkp-server02.sh.intel.com (HELO 90ee3aa53dbd) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 02 Apr 2024 11:26:40 -0700
-Received: from kbuild by 90ee3aa53dbd with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rriqD-0001Qm-14;
-	Tue, 02 Apr 2024 18:26:37 +0000
-Date: Wed, 3 Apr 2024 02:26:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	frank.li@nxp.com, conor+dt@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, hongxing.zhu@nxp.com,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, imx@lists.linux.dev
-Subject: Re: [PATCH v2 3/3] phy: freescale: imx8q-hsio: Add i.MX8Q HSIO PHY
- driver support
-Message-ID: <202404030236.zuDJQOtw-lkp@intel.com>
-References: <1712036704-21064-4-git-send-email-hongxing.zhu@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XQHK8CH4"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1e0025ef1efso38253235ad.1
+        for <imx@lists.linux.dev>; Tue, 02 Apr 2024 12:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712086551; x=1712691351; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RngipVMjADW9RKKBJpWn5bUjtga81BHfJMQO2kVCeRo=;
+        b=XQHK8CH4k82izU1OsVlJUe6NSo1/ToKHs9BoF3XZa2RyxW9/R5rRPKYXDDLVAluE4u
+         uMjBu5S252WNu0zFA25tqZhZv0Ux2FSgCaZlISWn7sf4GZSedKiTgwJ3ZD7jNXGj+O5Y
+         iwNnQKIdFWZMFjAOm0JHV7fDmBXtfQXNC6oMfqqwMuRULW1dWXEVJFls6l2nT+cEXet5
+         gB+z+fYiHwtjswEJWzpLbDXuL5mFipA/uo00bZWhELuSnIHhYa+9ME7xm8yL1kLoDKG4
+         9vd9OJWXdBaVNdJEgkDoTxEl3E2Kf+3eMOQnbqVM0VrPFqlzFhH3nebMrcAlTbSYzzFh
+         /BMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712086551; x=1712691351;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RngipVMjADW9RKKBJpWn5bUjtga81BHfJMQO2kVCeRo=;
+        b=ww+4vXD6y0YHncKVBa518tfxQzrc3zIX/G/fvgkZ0V3bin5Ha+Y++hJ6Af6Q0MCA6q
+         u6EsW/pmzMzFCWV0GZreY3q0Sg0XXJXZttJ2hPDSiHOP5pUVcZ70vORK6V7B6uQ/MfCm
+         D09jvkRWgy9GbxGY4XfMtz47pUMmcCuA6MGOK5Qc1+4Pi5i6Fw8IrclhTY4SMZE23+6t
+         Dnq0diJmEoFTwm+SJzrrehbYMTnN+G/w9hf5z29zyJ2ANvCq2fg4f5l1m4trIDNlVMki
+         xaox3OItgxhO1dRtlWzI3gFID/RG/nEMIJRr6BKCV2I+tu70KUdg9FZu900AuIBm2d/T
+         PuFg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3E/HU1/Yz/KF9cfM3dx7Gu+jxlReX8N/9t9F2QkNetWxoJvnpspJ3Rad8NvfuqFUOyDNRpiA39hYoXtIZXBgq70zD
+X-Gm-Message-State: AOJu0Ywu6E9L7KNvIuBBVgA5XzgkG2bmh8YsdQCQ0ZxdquBHMLVl+Dhv
+	2yYIFTW37BtiOKy6JPapRRZA/GxHWcT2ETCWuJhjJHZVsZFVSpGt
+X-Google-Smtp-Source: AGHT+IHkn8aFme4OXrpn85RNfDGAyTRZqwdG1hTXtcrnOUJFUUK8ztRNaqtmIG4ZzSBOiQNLb8Lvmw==
+X-Received: by 2002:a17:902:e80e:b0:1e0:1486:e80c with SMTP id u14-20020a170902e80e00b001e01486e80cmr732619plg.7.1712086551183;
+        Tue, 02 Apr 2024 12:35:51 -0700 (PDT)
+Received: from frhdebian.. ([2804:14d:8084:b86e:ac17:f518:b547:13a8])
+        by smtp.gmail.com with ESMTPSA id g6-20020a1709026b4600b001dd59b54f9fsm7775841plt.136.2024.04.02.12.35.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 12:35:50 -0700 (PDT)
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/4] arm64: dts: freescale: Add Toradex Colibri iMX8DX 
+Date: Tue,  2 Apr 2024 16:35:08 -0300
+Message-Id: <20240402193512.240417-1-hiagofranco@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1712036704-21064-4-git-send-email-hongxing.zhu@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Richard,
+From: Hiago De Franco <hiago.franco@toradex.com>
 
-kernel test robot noticed the following build warnings:
+This patch series introduces support for Colibri iMX8DX SoM and its
+carrier boards, where the board can be mated with: Aster, Evaluation Board
+v3, Iris v2, and Iris v1. This SoM is a variant of the already supported
+Colibri iMX8QXP, utilizing an NXP i.MX8DX SoC instead of i.MX8QXP.
+Therefore, this patch series also adds support for the i.MX8DX processor.
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.9-rc2]
-[cannot apply to next-20240402]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hiago De Franco (4):
+  arm64: dts: freescale: Add i.MX8DX dtsi
+  dt-bindings: arm: fsl: remove reduntant toradex,colibri-imx8x
+  dt-bindings: arm: fsl: Add Colibri iMX8DX
+  arm64: dts: freescale: Add Toradex Colibri iMX8DX
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Richard-Zhu/dt-bindings-phy-phy-imx8-pcie-Add-binding-for-i-MX8Q-HSIO-SerDes-PHY/20240402-140347
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/1712036704-21064-4-git-send-email-hongxing.zhu%40nxp.com
-patch subject: [PATCH v2 3/3] phy: freescale: imx8q-hsio: Add i.MX8Q HSIO PHY driver support
-config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20240403/202404030236.zuDJQOtw-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240403/202404030236.zuDJQOtw-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404030236.zuDJQOtw-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/phy/freescale/phy-fsl-imx8q-hsio.c:34: warning: "MODE_MASK" redefined
-      34 | #define MODE_MASK               GENMASK(20, 17)
-         | 
-   In file included from arch/arm/include/asm/ptrace.h:10,
-                    from arch/arm/include/asm/irqflags.h:7,
-                    from include/linux/irqflags.h:18,
-                    from arch/arm/include/asm/bitops.h:28,
-                    from include/linux/bitops.h:68,
-                    from include/linux/kernel.h:23,
-                    from include/linux/clk.h:13,
-                    from drivers/phy/freescale/phy-fsl-imx8q-hsio.c:6:
-   arch/arm/include/uapi/asm/ptrace.h:67: note: this is the location of the previous definition
-      67 | #define MODE_MASK       0x0000001f
-         | 
-
-
-vim +/MODE_MASK +34 drivers/phy/freescale/phy-fsl-imx8q-hsio.c
-
-    27	
-    28	/* i.MX8Q HSIO registers */
-    29	#define CTRL0			0x0
-    30	#define APB_RSTN_0		BIT(0)
-    31	#define APB_RSTN_1		BIT(1)
-    32	#define PIPE_RSTN_0_MASK	GENMASK(25, 24)
-    33	#define PIPE_RSTN_1_MASK	GENMASK(27, 26)
-  > 34	#define MODE_MASK		GENMASK(20, 17)
-    35	#define MODE_PCIE		0x0
-    36	#define MODE_SATA		0x4
-    37	#define DEVICE_TYPE_MASK	GENMASK(27, 24)
-    38	#define EPCS_TXDEEMP		BIT(5)
-    39	#define EPCS_TXDEEMP_SEL	BIT(6)
-    40	#define EPCS_PHYRESET_N		BIT(7)
-    41	#define RESET_N			BIT(12)
-    42	
+ Documentation/devicetree/bindings/arm/fsl.yaml   |  7 ++++---
+ arch/arm64/boot/dts/freescale/Makefile           |  4 ++++
+ .../boot/dts/freescale/imx8dx-colibri-aster.dts  | 16 ++++++++++++++++
+ .../dts/freescale/imx8dx-colibri-eval-v3.dts     | 16 ++++++++++++++++
+ .../dts/freescale/imx8dx-colibri-iris-v2.dts     | 16 ++++++++++++++++
+ .../boot/dts/freescale/imx8dx-colibri-iris.dts   | 16 ++++++++++++++++
+ .../arm64/boot/dts/freescale/imx8dx-colibri.dtsi | 11 +++++++++++
+ arch/arm64/boot/dts/freescale/imx8dx.dtsi        | 13 +++++++++++++
+ 8 files changed, 96 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8dx.dtsi
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
