@@ -1,43 +1,48 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B7B53E3D
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 09:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDB51E525;
+	Tue,  2 Apr 2024 09:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712048843; cv=none; b=sS3+nsfHycgSpPx8j70O1sz65ME2hkf03wQEIHKbU6O0BLRCfvJL0lr+pZaMVypxmzqVecqCZkcQxj7AWwpBxeyisQHqMti2zbG82khFHVYyh9bAOE1xtwVFmapJ/bUa+ZfQcxCSotZJN+Ym0TQfi01uHrXsxeV9f3pd5aefB70=
+	t=1712049836; cv=none; b=tYgzL/Ir7q9qEFN+KOqSSKsmDqpXjgG0ELBr2pin0Bh8hfZfSlq362d6bE60R+I3KRaBZ7rtFtFwV9MfhnbaYirwCWOG+vfN9MNkSS6fV1nZLlWNORGhuflcn+zckEEj5RWXPvAJqom/+U8gWdkdkGjLHun4iWsfb72vEJ+mvvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712048843; c=relaxed/simple;
-	bh=D6WrjkDPoDGOGRdjF9W8yG6nCD7d5fEpEm8TrvcfTFM=;
+	s=arc-20240116; t=1712049836; c=relaxed/simple;
+	bh=uP3ZmE2O+vWIbuxP60+6a2e0IG8mb6uOK8upxIwNDxU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RC9MczNhtZFoawPd/3BZxlhnIzU5SVWG8vyATOEJxit2lvywozG2gFKUmH5RTddKmqf7IemUnW17NOw/502r+adBG3caxTP+1oO0bf6llJ3LL/Nnoh/1oqVgYW/n8i4UbvF7qa9zfQPfpxnrFSNwIslRFWyoJqdmiWtCDpJymO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=i71bd1oB; arc=none smtp.client-ip=123.58.177.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zw+XcjfYqRVltEPGykyZUMghs6uy2kwK8k2OYlftSw2JGh1aaEzzZEprDih69gBIOz8OD/FkFj2K1rotJvGokS5obWBtlXVc877d01ZZu0+oyRKyUEIblTrebSSt2pBzMIxcQMitHKWSXn8o+xkLZ3BSrw+CX1jaD7zy7TClqgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnrBuzK8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="i71bd1oB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=v7Irp6bBJXCNebn36Vh9yPqqXllV/JsIy2dz+cR9M1U=;
-	b=i71bd1oBVnbF2weU2rijlRWhD80QnleM+MIkGvEuKtUZ0fiSSP1mr6DnM7Jruk
-	5ZVPZVq9CmyjchKiLVd3k4jlC/UBPbafA1tdsuqOu2pbx/iZbbgGtcLSxuyfSPOl
-	XahU3ZEsKYmpjll6AxDnGAPOgRzkRPNwLUA5Y5Yqi8y2s=
-Received: from dragon (unknown [223.68.79.243])
-	by smtp2 (Coremail) with SMTP id C1UQrABHrxi1ygtm5xGoAg--.42276S3;
-	Tue, 02 Apr 2024 17:07:02 +0800 (CST)
-Date: Tue, 2 Apr 2024 17:07:01 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
-	conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-imx@nxp.com, peter.chen@kernel.org,
-	jun.li@nxp.com, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 09/11] arm64: dts: imx93-11x11-evk: enable usb and
- typec nodes
-Message-ID: <ZgvKteCEZJxShA/j@dragon>
-References: <20240321081439.541799-1-xu.yang_2@nxp.com>
- <20240321081439.541799-9-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnrBuzK8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12EEC433F1;
+	Tue,  2 Apr 2024 09:23:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712049835;
+	bh=uP3ZmE2O+vWIbuxP60+6a2e0IG8mb6uOK8upxIwNDxU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mnrBuzK8nGsFabYx53PEMMB0te+6pec8eOp74nmqVq0bPhfoJRvQ9s0jywus8q4GD
+	 ead5w6G5Jmu6FlHmkbvWztAS+ZeB5qpDqd4Hogv2HZvsut4EcofECFqgcWKdTXr+pN
+	 wbtO4pXWFpOOP32lpu3KGLGfzcMfoQukNeCyIaZ2OiF2qlYLrLwpcOwQIJCVJWPOt1
+	 tmg+DukvgBG76/zUExNTDjjCdS/7i+rw3IS/rFQdV/EjP+Lrc+AfZJ+AIu+Dc9wyCG
+	 4RjCGCnAcp5PEqxq0BCNpG132uA8c04yLfHGfvET9e7ZeWwJhjVL/mji7a/HVSsWiP
+	 jxpJq83NbsbWA==
+Date: Tue, 2 Apr 2024 11:23:49 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	niklas.cassel@wdc.com, bhelgaas@google.com,
+	gustavo.pimentel@synopsys.com, imx@lists.linux.dev,
+	jdmason@kudzu.us, jingoohan1@gmail.com, kw@linux.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org
+Subject: Re: [PATCH v2 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <ZgvOpTcNKPantiHg@ryzen>
+References: <20240321171345.GA2385@thinkpad>
+ <20240321180732.GA1329092@bhelgaas>
+ <20240322052623.GA4092@thinkpad>
+ <Zf0i1X5fg-E59NWx@ryzen>
+ <20240402051228.GH2933@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,202 +51,120 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240321081439.541799-9-xu.yang_2@nxp.com>
-X-CM-TRANSID:C1UQrABHrxi1ygtm5xGoAg--.42276S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCr17Jw4kuF4DGF1ktrW7XFb_yoWrAF4DpF
-	ZxC395Xr4xXr13Aa98JF17GF93C3ZYgFy09rnFg343A39ruwsxJr45Kr1Ygr1qkFsrXw4a
-	qFWv9rWIgwnFgw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jqlksUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDha0ZVszYdVKJwAAs4
+In-Reply-To: <20240402051228.GH2933@thinkpad>
 
-On Thu, Mar 21, 2024 at 04:14:37PM +0800, Xu Yang wrote:
-> There are 2 Type-C ports and 2 USB controllers on i.MX93. Enable them.
+On Tue, Apr 02, 2024 at 10:42:28AM +0530, Manivannan Sadhasivam wrote:
+> On Fri, Mar 22, 2024 at 07:19:01AM +0100, Niklas Cassel wrote:
+> > On Fri, Mar 22, 2024 at 10:56:23AM +0530, Manivannan Sadhasivam wrote:
+> > > On Thu, Mar 21, 2024 at 01:07:32PM -0500, Bjorn Helgaas wrote:
+> > > > On Thu, Mar 21, 2024 at 10:43:45PM +0530, Manivannan Sadhasivam wrote:
+> > > > > On Mon, Mar 04, 2024 at 05:46:16PM -0500, Frank Li wrote:
+> > > > > > dw_pcie_ep_inbound_atu()
+> > > > > > {
+> > > > > > 	...
+> > > > > > 	if (!ep->bar_to_atu[bar])
+> > > > > > 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+> > > > > > 	else
+> > > > > > 		free_win = ep->bar_to_atu[bar];
+> > > > > > 	...
+> > > > > > }
+> > > > > > 
+> > > > > > The atu index 0 is valid case for atu number. The find_first_zero_bit()
+> > > > > > will return 6 when second time call into this function if atu is 0. Suppose
+> > > > > > it should use branch 'free_win = ep->bar_to_atu[bar]'.
+> > > > > > 
+> > > > > > Change 'bar_to_atu' to free_win + 1. Initialize bar_to_atu as 0 to indicate
+> > > > > > it have not allocate atu to the bar.
+> > > > > 
+> > > > > I'd rewrite the commit message as below:
+> > > > > 
+> > > > > "The mapping between PCI BAR and iATU inbound window are maintained in the
+> > > > > dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for a
+> > > > > BAR, dw_pcie_ep_inbound_atu() API will first check for the availability of the
+> > > > > existing mapping in the array and if it is not found (i.e., value in the array
+> > > > > indexed by the BAR is found to be 0), then it will allocate a new map value
+> > > > > using find_first_zero_bit().
+> > > > > 
+> > > > > The issue here is, the existing logic failed to consider the fact that the map
+> > > > > value '0' is a valid value for BAR0. Because, find_first_zero_bit() will return
+> > > > > '0' as the map value for BAR0 (note that it returns the first zero bit
+> > > > > position).
+> > > > > 
+> > > > > Due to this, when PERST# assert + deassert happens on the PERST# supported
+> > > > > platforms, the inbound window allocation restarts from BAR0 and the existing
+> > > > > logic to find the BAR mapping will return '6' for BAR0 instead of '0' due to the
+> > > > > fact that it considers '0' as an invalid map value.
+> > > > > 
+> > > > > So fix this issue by always incrementing the map value before assigning to
+> > > > > bar_to_atu[] array and then decrementing it while fetching. This will make sure
+> > > > > that the map value '0' always represents the invalid mapping."
+> > > > 
+> > > > This translates C code to English in great detail, but still doesn't
+> > > > tell me what's broken from a user's point of view, how urgent the fix
+> > > > is, or how it should be handled.
+> > > > 
+> > > > DMA doesn't work because ATU setup is wrong?  Driver MMIO access to
+> > > > the device doesn't work?  OS crashes?  How?  Incorrectly routed access
+> > > > causes UR response?  Happens on every boot?  Only after a reboot or
+> > > > controller reset?  What platforms are affected?  "PERST# supported
+> > > > platforms" is not actionable without a lot of research or pre-existing
+> > > > knowledge.  Should this be backported to -stable?
+> > > > 
+> > > 
+> > > Severity is less for the bug fixed by this patch. We have 8 inbound iATU windows
+> > > on almost all of the platforms and after PERST# assert + deassert, BAR0 uses map
+> > > '6' instead of '0'.
+> > > 
+> > > This has no user visibility since the mapping will go fine and we have only 6
+> > > BARs. So I'd not mark this as as critical fix that needs special attention.
+> > 
+> > So we will have 6 mappings configured, but only 5 BARs, so two mappings for
+> > BAR0. The iATU looks at them in order, so index 0 will override index 6.
+> > 
+> > We are lucky that the endpoint subsystem does not clean up allocations properly
+> > right now (you have an outstanding series which fixes this).
+> > 
+> > If the endpoint subsystem did clean up resources properly, we would DMA to the
+> > area that was previously allocated for BAR0, instead of the new area for BAR0.
+> > 
 > 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> How would DMA happen to the previously allocated area? When the BARs are cleared
+> properly and then allocated again, BAR0 will get the map of 0 again and then the
+> iATU will map window 0 with BAR0. Only if we don't clear the BARs properly (as
+> like now), then it will result in BAR0 having 2 identical mappings and even with
+> that there won't be any issue since both map 0 and 6 are valid.
 > 
-> ---
-> Changes in v2:
->  - remove status property in ptn5110 nodes
->  - fix dt-schema warnings
-> Changes in v3:
->  - no changes
-> Changes in v4:
->  - no changes
-> Changes in v5:
->  - no changes
-> Changes in v6:
->  - no changes
-> Changes in v7:
->  - no changes
-> Changes in v8:
->  - no changes
-> Changes in v9:
->  - use compatible "nxp,ptn5110", "tcpci"
-> Changes in v10:
->  - no changes
-> ---
->  .../boot/dts/freescale/imx93-11x11-evk.dts    | 118 ++++++++++++++++++
->  1 file changed, 118 insertions(+)
+> Am I missing anything?
+
+Like Bjorn summarize it:
+"We dodge the bullet as long as the mappings for BAR 0 are identical,
+which doesn't feel like much comfort."
+
+Yes, right now we don't have a cleanup of either the backing memory for
+the BAR, or the iATUs mapping the PCI address to backing memory.
+(We allocate the backing memory for the BARs in .bind(), and free it in
+unbind().)
+
+So the superfluous iATU6 mapping will be the same as the iATU0 mapping.
+
+After your series, we will still allocate and free the backing memory
+in .bind()/.unbind(), but we will set/clear the iATU mapping in the
+.init()/.deinit() EPF callbacks.
+
+
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-> index 9921ea13ab48..ecc01d872e95 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-> @@ -5,6 +5,7 @@
->  
->  /dts-v1/;
->  
-> +#include <dt-bindings/usb/pd.h>
->  #include "imx93.dtsi"
->  
->  / {
-> @@ -104,6 +105,80 @@ &mu2 {
->  	status = "okay";
->  };
->  
-> +&lpi2c3 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	clock-frequency = <400000>;
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&pinctrl_lpi2c3>;
-> +	pinctrl-1 = <&pinctrl_lpi2c3>;
-
-Do you really need "sleep" pinctrl state?
-
-> +	status = "okay";
-> +
-> +	ptn5110: tcpc@50 {
-> +		compatible = "nxp,ptn5110", "tcpci";
-> +		reg = <0x50>;
-> +		interrupt-parent = <&gpio3>;
-> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +		typec1_con: connector {
-> +			compatible = "usb-c-connector";
-> +			label = "USB-C";
-> +			power-role = "dual";
-> +			data-role = "dual";
-> +			try-power-role = "sink";
-> +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-> +			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
-> +				     PDO_VAR(5000, 20000, 3000)>;
-> +			op-sink-microwatt = <15000000>;
-> +			self-powered;
-> +
-> +			ports {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				port@0 {
-> +					reg = <0>;
-
-Have a newline between properties and child node.
-
-Shawn
-
-> +					typec1_dr_sw: endpoint {
-> +						remote-endpoint = <&usb1_drd_sw>;
-> +					};
-> +				};
-> +			};
-> +		};
-> +	};
-> +
-> +	ptn5110_2: tcpc@51 {
-> +		compatible = "nxp,ptn5110", "tcpci";
-> +		reg = <0x51>;
-> +		interrupt-parent = <&gpio3>;
-> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +		typec2_con: connector {
-> +			compatible = "usb-c-connector";
-> +			label = "USB-C";
-> +			power-role = "dual";
-> +			data-role = "dual";
-> +			try-power-role = "sink";
-> +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-> +			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
-> +				     PDO_VAR(5000, 20000, 3000)>;
-> +			op-sink-microwatt = <15000000>;
-> +			self-powered;
-> +
-> +			ports {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				port@0 {
-> +					reg = <0>;
-> +					typec2_dr_sw: endpoint {
-> +						remote-endpoint = <&usb2_drd_sw>;
-> +					};
-> +				};
-> +			};
-> +		};
-> +	};
-> +};
-> +
->  &eqos {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_eqos>;
-> @@ -156,6 +231,42 @@ &lpuart5 {
->  	status = "okay";
->  };
->  
-> +&usbotg1 {
-> +	dr_mode = "otg";
-> +	hnp-disable;
-> +	srp-disable;
-> +	adp-disable;
-> +	usb-role-switch;
-> +	disable-over-current;
-> +	samsung,picophy-pre-emp-curr-control = <3>;
-> +	samsung,picophy-dc-vol-level-adjust = <7>;
-> +	status = "okay";
-> +
-> +	port {
-> +		usb1_drd_sw: endpoint {
-> +			remote-endpoint = <&typec1_dr_sw>;
-> +		};
-> +	};
-> +};
-> +
-> +&usbotg2 {
-> +	dr_mode = "otg";
-> +	hnp-disable;
-> +	srp-disable;
-> +	adp-disable;
-> +	usb-role-switch;
-> +	disable-over-current;
-> +	samsung,picophy-pre-emp-curr-control = <3>;
-> +	samsung,picophy-dc-vol-level-adjust = <7>;
-> +	status = "okay";
-> +
-> +	port {
-> +		usb2_drd_sw: endpoint {
-> +			remote-endpoint = <&typec2_dr_sw>;
-> +		};
-> +	};
-> +};
-> +
->  &usdhc1 {
->  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->  	pinctrl-0 = <&pinctrl_usdhc1>;
-> @@ -222,6 +333,13 @@ MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x57e
->  		>;
->  	};
->  
-> +	pinctrl_lpi2c3: lpi2c3grp {
-> +		fsl,pins = <
-> +			MX93_PAD_GPIO_IO28__LPI2C3_SDA			0x40000b9e
-> +			MX93_PAD_GPIO_IO29__LPI2C3_SCL			0x40000b9e
-> +		>;
-> +	};
-> +
->  	pinctrl_uart1: uart1grp {
->  		fsl,pins = <
->  			MX93_PAD_UART1_RXD__LPUART1_RX			0x31e
-> -- 
-> 2.34.1
+> > Perhaps just include this fix in your series that actually cleans up the BARs?
+> > 
 > 
+> Yeah, makes sense. Once we agree on a finalized commit message in this thread,
+> I'll include this patch in my series.
 
+I think that we have spent too much time on this patch already.
+
+My suggestion is that you simply apply it to pci/endpoint branch directly and
+fixup the commit message (like Bjorn usually does with [bhelgaas: commit log])
+after Frank's Sign-off.
+
+
+Kind regards,
+Niklas
