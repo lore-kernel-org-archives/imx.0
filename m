@@ -1,64 +1,104 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC0B1339A5
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 16:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB5114AD35;
+	Tue,  2 Apr 2024 16:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712074103; cv=none; b=sC8R6aWGhPSyP08G6a9f4FzOr7HGlr8w9iMzreZDr82ZQkuZPkNZRpM7Ywlxka0pigo/I7UDc82RlcEN/WoP/7bBKw9uOSqEMo3XkOHWc0QY8Afh6G6mUzxCc67uHw77dE9vlYDwIqzOk0UUHefVas4fU6A/wrrwtYztwwXGg4k=
+	t=1712074360; cv=none; b=ZPZRpSO59yR5lU5E118IAxUPxb+TwGp3Pbw4lyo6tjnaxVx4kZvlmBbql2psIhQJMGQX0RTbgVBauoFNvGRRl0iIfYgT8M8XBgGOhl94U5tw9gwo2M1FvJORBx8Nur6FWhaaSBJlW3QCn07hpSTqa+ABD/+gdK18hDSLeVAy/+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712074103; c=relaxed/simple;
-	bh=23pqOOguUxwf+LlNromuawcHxktlPOCtCpPzM0ENPtI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U7320wLkYk3WOetci8ThHdqH4S1maTaWOvM/xan7V3k4m+fTcRmkhMyMjSHkvTLJn4MFbOFbL238MQgwb3+AtQKpnvdWGNJwHHiW6Qf3POoU+8whYwBSJphqqPO2Zeim4Bam8JC+dm5JqhIolTme+91deqWsotw27re74HZdtBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=LWK3upwT; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1712074360; c=relaxed/simple;
+	bh=GoS+A41EcPpbxG16cfUt+KE8yGdbrG9cCPQp1tPUxgI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kNtvqiowS9yrNDJsOaDjmuiVwKyNkP6/52vVSXpsSrawlVzd0lTZHcE9KtCfb/dXmVaCxHJ1y9qvc/HwTA9nz6+PoRQenESC/7jmqkqeF+0fRRAxQkr2t5A24RlmN93i73t7R58U9WlD2E9IskBhD9s/C80hfxF46DgQN/MYFLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwCOAse1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="LWK3upwT"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 9FF5247C3C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1712074101; bh=23pqOOguUxwf+LlNromuawcHxktlPOCtCpPzM0ENPtI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LWK3upwTNkKNQHwEia1hNlcwpjRg+QpVu/4dVwwvnol6g/XonRQE/Kq/h6+/Mjq7g
-	 JumnRrJA/Gj2qQtrETtRIJjzyP8tIsp/ttgYNATOgzWcSnQUBSJakaWC7f/I/y0fla
-	 f14iwDjScbHjc3PhV6az7p23WxYcAheUJx6a7hh00QVZhfAi/TLF45pLaLU9FVrQz9
-	 M4rehryoyTe/7O/sZCPZpWImuCzyydB20oio1EXeegq+FEGP3nsmW4Ki1w8uihJAsH
-	 eXB98prpB0pGc3YNe4l/hUW+q4WR/W0YxKGkfaEEM2d/H2I4RUWhtIOLMTaA3xiQ3l
-	 HRg2krCW25+Qw==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::646])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 9FF5247C3C;
-	Tue,  2 Apr 2024 16:08:21 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Niklas Cassel <cassel@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: rdunlap@infradead.org, hch@infradead.org, dmaengine@vger.kernel.org,
- imx@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- lizhijian@fujitsu.com, mst@redhat.com
-Subject: Re: [PATCH v2 1/1] docs: dma: correct dma_set_mask() sample code
-In-Reply-To: <ZgwnsEWQXluVsWm-@ryzen>
-References: <20240401174159.642998-1-Frank.Li@nxp.com> <ZgwnsEWQXluVsWm-@ryzen>
-Date: Tue, 02 Apr 2024 10:08:20 -0600
-Message-ID: <87r0fnvjbf.fsf@meer.lwn.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwCOAse1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D05C433C7;
+	Tue,  2 Apr 2024 16:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712074360;
+	bh=GoS+A41EcPpbxG16cfUt+KE8yGdbrG9cCPQp1tPUxgI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DwCOAse1eCh7vo453eDS7eV2SZ28zDshR+MgeZjLK71eFtib4/9LOzRIzQMtS32kk
+	 PJn3L1K3mQvDhiPpzt7WDfqXpjIgHnsXX0Y9RCcec3tyIqlQ/4OXbdaFkfsRh1PHX7
+	 6zdYVMSJbVIvuvjoljh6mDuKust3BxExigY4j1sVXG4npesIbFliyE5vcEwuhxjV3C
+	 bSxdp8fbc9F3ysRt8wupzy4MOMMwZ9P0gU6CUTOfZ9DI/SXowS7t0pcAfEHey4iGoj
+	 XcKNxuErxtEgC6Q+mnwsgT6RUIfu8xGXezsCUbaT2eYMs9eXH/NNh70aq7pFV6TrNE
+	 YQLrRsqjIAQDQ==
+Date: Tue, 2 Apr 2024 11:12:37 -0500
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: festevam@gmail.com, shengjiu.wang@gmail.com, shawnguo@kernel.org,
+	broonie@kernel.org, linux-kernel@vger.kernel.org,
+	robh+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	imx@lists.linux.dev, s.hauer@pengutronix.de, lgirdwood@gmail.com,
+	linux-sound@vger.kernel.org, kernel@pengutronix.de,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] ASoC: dt-bindings: fsl-asoc-card: convert to YAML
+Message-ID: <171207435593.237814.17122445408696943016.robh@kernel.org>
+References: <1711976056-19884-1-git-send-email-shengjiu.wang@nxp.com>
+ <1711976056-19884-3-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1711976056-19884-3-git-send-email-shengjiu.wang@nxp.com>
 
-Niklas Cassel <cassel@kernel.org> writes:
 
->> +dma_set_mask_and_coherent() will never return failure when bigger then 32.
->
-> Nit:
-> s/then/than/
+On Mon, 01 Apr 2024 20:54:16 +0800, Shengjiu Wang wrote:
+> Convert the fsl-asoc-card binding to YAML.
+> 
+> When testing dtbs_check, found below compatible strings
+> are not listed in document:
+> 
+> fsl,imx-sgtl5000
+> fsl,imx53-cpuvo-sgtl5000
+> fsl,imx51-babbage-sgtl5000
+> fsl,imx53-m53evk-sgtl5000
+> fsl,imx53-qsb-sgtl5000
+> fsl,imx53-voipac-sgtl5000
+> fsl,imx6-armadeus-sgtl5000
+> fsl,imx6-rex-sgtl5000
+> fsl,imx6-sabreauto-cs42888
+> fsl,imx6-wandboard-sgtl5000
+> fsl,imx6dl-nit6xlite-sgtl5000
+> fsl,imx6q-ba16-sgtl5000
+> fsl,imx6q-nitrogen6_max-sgtl5000
+> fsl,imx6q-nitrogen6_som2-sgtl5000
+> fsl,imx6q-nitrogen6x-sgtl5000
+> fsl,imx6q-sabrelite-sgtl5000
+> fsl,imx6q-sabresd-wm8962
+> fsl,imx6q-udoo-ac97
+> fsl,imx6q-ventana-sgtl5000
+> fsl,imx6sl-evk-wm8962
+> fsl,imx6sx-sdb-mqs
+> fsl,imx6sx-sdb-wm8962
+> fsl,imx7d-evk-wm8960
+> karo,tx53-audio-sgtl5000
+> tq,imx53-mba53-sgtl5000
+> 
+> So add them in yaml file to pass the test.
+> 
+> Also correct the 'dai-format' to 'format' in document.
+> 
+> For 'audio-routing', the items are not listed. Because
+> this fsl-asoc-card is generic driver, which supports several
+> codecs, if list all the items, there will be a long list.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../bindings/sound/fsl-asoc-card.txt          | 117 -----------
+>  .../bindings/sound/fsl-asoc-card.yaml         | 195 ++++++++++++++++++
+>  2 files changed, 195 insertions(+), 117 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> 
 
-I hadn't pushed anything yet, so I took the liberty of going and fixing
-this one, thanks.
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-jon
