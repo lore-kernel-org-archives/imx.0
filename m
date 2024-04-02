@@ -1,112 +1,155 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2099.outbound.protection.outlook.com [40.107.6.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687F415AAAA;
-	Tue,  2 Apr 2024 19:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712087538; cv=none; b=azoT5H8sA1Rq7l8C3Nt6auw4IP8tvoGWrKg2e335hEzT1Uz1XpWGrLVlVwAK17Qqfn4Q+QiG6jb7ak4NlAVCALE9V0DstB8LXIc9PXxFCbepCYnm2Vetalpi+gviK7cjST2wViponlA3dxjyqsJII2m3IlRf5pL2CzvlasAps2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712087538; c=relaxed/simple;
-	bh=zVrwAjUcGsk/Gvd0IQbWlkXCkBrhd705XLqPbvC6bLI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W7Et+TADx9XYY3jKrTXrVgFyI796Qip4wrJKcVIygXImrQwzpvAMKOKthDs9lCvD2esZ5MngTqheNXE1sGsmCBpvkwUIZgUsy8Y309qOnaPYjRYdf8mgNPtSOg3vfUfsj6RuKk6eguzD9Oa8W3MznQzURZv9pJrLtF/Br9mne+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from 068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1rrjtR-000HwR-Jr;
-	Tue, 02 Apr 2024 19:34:01 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Tim Harvey <tharvey@gateworks.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH] arm64: dts: imx8m*-venice-gw7: Fix TPM schema violations
-Date: Tue,  2 Apr 2024 12:33:55 -0700
-Message-Id: <20240402193355.2333597-1-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BB915DBB5
+	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 21:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.99
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712091815; cv=fail; b=OV/tObid3Q8Z6oS4CSF8SC4qt7ZxlYRiKE/QIC9LfOGpyJpBC8KYw1IsT6NNSsMufR6xhU8Xa10uzXgw+3ZywFzEZo+bvQkytaKQSg7Xo5x7WZ5wYGnZ8zQOuNE7IVNsf7dpnT7Xtzx80yqFGIjFSFh512hbx76VLdq5JK9gvk0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712091815; c=relaxed/simple;
+	bh=6EzLhbi6fJjnWXOgqAJg6Ww1frl14zBM6XLR20QIV8A=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=gW2jEh6s8+hN+tvWnnige9v2NiI1WGq4DAFLjPXD1Xkg7AzK25oMh7IuGP2PC7I6HkkZ2+ly5+Mpzg3O3HFYzO8HUquw8ogALuCf5tBH6mKWibq9gV+mr/Vj8mD9SOs4UhpIxcPww+rYuDnjo9WHpGCOSYljku2DhSctZtiUSRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cVaP2EZ2; arc=fail smtp.client-ip=40.107.6.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cVaP2EZ2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KB0P8ADZWGLmNjFFg3/6LUClZI7DAiWUblVM8iaaVIDae86xe86rXbI680X9f/5WSsZJbuwyrzcoK3tEUTkd6miEANZKz7kfCWFjGL9SpULb5KqOlZHM3KuyWQlfceEofTdJDwT+dMdG+1qZ69ray0d68nvFiCGsJx0oUfLeNpFdHvi6VJUiTjSJZiLz8ki0hDPbYxwaJu3RcrqOnFjpKI0lghdtIjs0VOT99WWINrq3H3BslWqIDeggONP8MvmHpIaQ/lUNKE4DpKv8Gl3lPXwe0nQIn7mM2i0jizubqDPVygzFgK0rsvsM+VcO23snvMVqcEu5FXxEemSfVJ5tKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sBq1pdX7Xvppgo1/88zar2lC5ihojOPbImqkbX0OloM=;
+ b=DqeGPaPf+QqSO9N347LZ0WUcHHOqbE9BHMi2k/5Ti+BDzdhNqy5N76GQpc50dy/K1gcPRqVU5dsP1//ej2H7ZIz676jEcwTAifG1Gc4hmFTcYov8m3nLZ0GO56212HkAWj4VtREO2MT7Tfsng7Vlg5hoR90orydmw2Pqw3IKlrHmNswKXJ9voKyDKvIvKvA1t0BWjvVCA+vhKMSwa888SD2cZx2Ngco93slRnqXNrkWlStl33X4FdhbCD6ZFJCqa/2Ky/i2V69Mf28sfCUIV/G84lv/NOs+8n1riPRBsHi2oJd2QhNstDzBLqmaP0mW+EqNNvqqL4ZBGA+AQX8vLnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sBq1pdX7Xvppgo1/88zar2lC5ihojOPbImqkbX0OloM=;
+ b=cVaP2EZ2CTndEEGI3QLui4r6E/bFa4tssA85JexjQdkaer+dIcoat4YxK4XHuT0bC6rWJDsyv97rzRQDqzNnjYKYiANCfFn12T+dUW12cuhfQ3uRJEx7VWwCRKCInv4Yu/Pn0MX1PwvHiRt8aSZ5LT2bltKsmLPMQMME6Srz1ZM=
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU2PR04MB8648.eurprd04.prod.outlook.com (2603:10a6:10:2df::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
+ 2024 21:03:30 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
+ 21:03:30 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/3] arm64: dts: imx8dxl: add audio support for imx8dxl
+Date: Tue, 02 Apr 2024 17:02:27 -0400
+Message-Id: <20240402-b4-dts_dxl_audio-v1-0-d26d25b84a08@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGNyDGYC/x3MQQqAIBBA0avErBOmSQi6SkRoTjUQGlohRHdPW
+ r7F/w8kjsIJ+uqByLckCb6gqSuYN+NXVuKKgZA0aiRltXJnmlzeJ3M5CarT1iBhi6YjKNkReZH
+ 8L4fxfT+lij7oYgAAAA==
+To: Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712091807; l=716;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=6EzLhbi6fJjnWXOgqAJg6Ww1frl14zBM6XLR20QIV8A=;
+ b=n+in6f6s38g3diqA0/XR4E/UAwS3o6MXQtMgMs5xzihaACuGECIFBkBaOr4KwaHBa4Sh65QQ0
+ WDtjrjMPYovDIG14wYu9+8DNxbgOZdHorUh9fFYEFQfsNtOlJ6QhA3R
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BY5PR03CA0018.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8648:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	wLSGV8vIILiHBQJRWO74zXr6e4753aAfL4seBQ2osC9FLK5DqqzYJ5Vv8PN8BuwnFRNlAfp3QIpcZm9YsEna8PXTFTTFxMU3k3z5nWpkCGNv2ls6Hy+isM6TBl68fO9XzKtS6RrXRMZfmXzkjewGY1E+Y0MDbWrj9/5O3g138XdouoUci9Rw4x5Nh5WJxDIe13mUSzjnZ21crqaD4/rk3F4y7lxmIqlCjd+WCf2nnPU4jffod+mWfB5bjlTrdbY6na1ChfqUNza7gf7cc22CZ63WDj3J8ZCg2Cz36H0y3mJt/KZlutBtjP8TsgkIHyfR6e3SeGPE/NDf3d1W7wWcK+CK3ytt47hUNywH83qZX2nFMLZIAxa8QhEg/HuoxTxLf4DEk7KlXZwNTtR/72JVu29qDStqW6u0ytthHvtqxzeLqeMjXbC6h2DXS5nBnpG7xiIuDe4PK1aeuawLjY0NRvsr/ya8ksFunXTsG94FJgazXyfKkiSZbuvkbGNHzYgKc1EZJdUlfslhsEkSsxx/fpECGIhecLjUEZcKvJjELJQHRPY+Ino5kzR6UqPUVnP5Tvq2kSxA+7nEy0nw9tUSMfyuhsM/etAgnT8YIqvSKpxZ4UGuEXY0XZBtNK1e3QfmYQor9jcBvJprimhJ6xAXmy2CeoztBMoz2fYP5KnDZAU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(376005)(7416005)(366007)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?emFOV24vdTU3cE9PcFVFUlhZSmM1RUlmb0kxZEUrL3FXbzhST0pWQ0pPTnZR?=
+ =?utf-8?B?UVJkOVFvUjV6VGlYM0hqcmpWSUZZYkhYTUhlM3AzSjNyQkFPMTlCWlFFcVhw?=
+ =?utf-8?B?RWpFc2tMQzRROTVOdFJORFpOb2xtSzVpazFlVDU5eWJmcHBmV3k1akR5dG1X?=
+ =?utf-8?B?eVl1TkVSTm51dUE4NDlSekI5NUV3aXJzbEgwZEpyeUd0b1pkL0QyKzA0VjVj?=
+ =?utf-8?B?cWRBWVNOQkVsdDVEWDVXZVd6cWU0SmZuZHVESUVaNU9YbGxuTWdyL1lsaXJa?=
+ =?utf-8?B?YmpwQkZsY2ZJNmlXYThaOWtMdWV5YWwwQUM2ckNNSFdTOTBSNTZFMmdKTXJ3?=
+ =?utf-8?B?cm1oN2dLVWFMaUdxTG5wN2Z6b3Z3c3FsZkowUHdVbGJ0QVFkRW9VK3BKaDJD?=
+ =?utf-8?B?Z2JnTWt6R2kzc0dnZ3cxQ2JIZmZkVkNQS01KM2RkTWQzZVFHaFh0K2I0cU9J?=
+ =?utf-8?B?N3EydkhTdEk3WVJhbDllMW5acUV3Y2xFaHVQbHlnWk9UQWxtMy9mTVFJUlFp?=
+ =?utf-8?B?ZzA1VDV2Ym9zRjFMUmVIdFRic3RuUnlQdXJpdzBjckRxSEIyVnc3WDRyQWh1?=
+ =?utf-8?B?UGx0YWdKSEdYMGVrRWpyV1cxNFBhenFWdkZOSEM2aU9GMVdGSmlGUEZEQVhQ?=
+ =?utf-8?B?c0twVnFjeHBtY1NLTkFBanhMbGsrOS9yWCs1QktXc0tjdDFpSnlZOURwMGEz?=
+ =?utf-8?B?RGNCRlNWdTR3aWptb0ZTY2EzS01EY3JSV3NFSzNZcnJEWitQZVlrUjB0Q05j?=
+ =?utf-8?B?VzBIY2dyV1pjcWJ6bCs3VGJMOC9VRDl0QmVYNStEQ3hRYWJLS2pMd2Jqbk1v?=
+ =?utf-8?B?MCtNVGZSNk9PMkZiNDE4MmxJSCtVVHJtc2haQnpVTzA1SVI3YVYwcVN1MDFz?=
+ =?utf-8?B?RU9UdjcrOFg2WEdiQjNwbG9EUkdBYVJxSWdHQjZ3amhmVVVQTnBRTXFpNnB2?=
+ =?utf-8?B?aG5MaWxvUlBzbTFqNFFudVJlVFYvRjJIdndOMkNIS29qTHh3cjRob1paNG9m?=
+ =?utf-8?B?cUhHc0U3bVUzZUE4WXVEamRNWlVRTUFrUzJqRTFPQjBjUXQ2S2VCUVJPTTJW?=
+ =?utf-8?B?MmxVbnZNUjZHR1VYdjE5bzRobkVoTWpwcnVtb2ZCcGtjWjN1RGRTK0pFdndR?=
+ =?utf-8?B?YUh4YUNjNmdubzA1TWJ5TnFVY2tGTklsYW1WVGVReG1sWkxIRE8wcU1ZNVU0?=
+ =?utf-8?B?cC95dnNzdjdDK3dDajhYMXdZN0hUV3g1bGpZL0pnMTZISXpwK2RySHJzdS9Y?=
+ =?utf-8?B?RUphMTlmTnE2b0FhM2I1THMvdzJ6WWlMSVh0T3ZtMWE5Sm9sOVhlVG0vY1Bz?=
+ =?utf-8?B?ME9Cc3ZhTXVhd053UnBxMm5ZZzhKTWQ1alBMQjZ2dkdFbitpdVpuM1hZSVlh?=
+ =?utf-8?B?SHlIZ2JHUXBrQlMzUEo4TEZBM3Z0VnU2LzQyWURMeEE0WDZqcW4yWkw2YU1T?=
+ =?utf-8?B?RGQ0WWpoN3cyVG9VVTN3NFFlYjZlZHdrYmMrNnFxb25NZkhUVVdUMDZqRmR4?=
+ =?utf-8?B?RVJlVXdqK2RDNWlsbUo2VWFNQTdyRGg4YkVHZUE2cUgvR01tUFRUdmlNYUhC?=
+ =?utf-8?B?Mnc2MWtuOHZrcmhPWXBEYjhFQ3ZkTlhkM3VUUGk3YkdxaGV1QVBEY2ViMGFV?=
+ =?utf-8?B?MVFMeDYwQ3Bjci9kVklOU2E0RXRWUkhKZDJhYzZ1cERrWmpYTW5UZkYrd1ha?=
+ =?utf-8?B?NjhZMERkRW02bDZmdmxmZU5qMFZLMnNUOCtTcDVJak9PTHdRVjhoeEZURmJP?=
+ =?utf-8?B?MWxrTUdHWC9HaEljYUZsWG5JZWh4YS9zbm9pYmpoTzdwZnNzcnJ5S1dDY3Nj?=
+ =?utf-8?B?RkpKQVRQVzRlUm1QNWNncWV2T3R1K2tMaDF3QXdXRU5UTFh6RjcyWnNFbkQ0?=
+ =?utf-8?B?eGRYZk4wVXhVUUJON21tRUlwV2lEVUsrZHFkZCtUVGFhVFdyQ3lENlpaQ2ls?=
+ =?utf-8?B?WE1DSklyMlpkNzZlQk04eC9ZSjBDMks0R3U4dFFVUkdzOEJmbDNRdWJKR2px?=
+ =?utf-8?B?NStpUGIzYWt3SmRtUGZ0bE9waTBBREhFT1hnU3RkREIvTTRFb2V6ZzVGQThr?=
+ =?utf-8?B?TWZBY2pCdThQbVpYOFV1Um1XcjVVRFhkaXV4UFVuVEhGOWFmdmxYWUZqWTJn?=
+ =?utf-8?Q?wwGs=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77c07390-5549-4ef0-f429-08dc53585982
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 21:03:30.5303
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7ce5PBu7JkWFa0EbBqGxhgjxLnsNI+dm18rXhWIwhY9IRChjiT7ni10nlmKY5lNFv9+vmxAGfAEUmfRIpVLqTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8648
 
-Since commit 26c9d152ebf3 ("dt-bindings: tpm: Consolidate TCG TIS
-bindings"), several issues are reported by "make dtbs_check" for arm64
-devicetrees:
+This patches depend on dts part in
+https://lore.kernel.org/imx/20240328-asrc_8qxp-v8-0-801cd6bb5be2@nxp.com/T/#t
 
-The compatible property needs to contain the chip's name in addition to
-the generic "tcg,tpm_tis-spi".
-
-tpm@1: compatible: ['tcg,tpm_tis-spi'] is too short
-	from schema $id:
-http://devicetree.org/schemas/tpm/tcg,tpm_tis-spi.yaml#
-
-Fix these schema violations.
-
-Gateworks Venice uses an Atmel ATTPM20P:
-https://trac.gateworks.com/wiki/tpm
-
-Cc: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts  | 2 +-
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Frank Li (3):
+      arm64: dts: imx8dxl-ss-adma: delete unused node
+      arm64: dts: imx8dxl-ss-adma: update audio node power domains and IRQ number
+      arm64: dts: imx8dxl-evk: add audio nodes
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi
-index 41c966147b94..429be2bab8a2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi
-@@ -57,7 +57,7 @@ &ecspi2 {
- 	status = "okay";
- 
- 	tpm@1 {
--		compatible = "tcg,tpm_tis-spi";
-+		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
- 		reg = <0x1>;
- 		spi-max-frequency = <36000000>;
- 	};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-index 5e2cbaf27e0f..35ae0faa815b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-@@ -297,7 +297,7 @@ flash@0 {
- 	};
- 
- 	tpm@1 {
--		compatible = "tcg,tpm_tis-spi";
-+		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
- 		reg = <0x1>;
- 		spi-max-frequency = <36000000>;
- 	};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-index e7bf032265e0..2f740d74707b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-@@ -68,7 +68,7 @@ &ecspi2 {
- 	status = "okay";
- 
- 	tpm@1 {
--		compatible = "tcg,tpm_tis-spi";
-+		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
- 		reg = <0x1>;
- 		spi-max-frequency = <36000000>;
- 	};
--- 
-2.25.1
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts      | 234 +++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi |  78 +++++++
+ 2 files changed, 312 insertions(+)
+---
+base-commit: 2d13a7797c3970a4eea160844d8905c93065634f
+change-id: 20240402-b4-dts_dxl_audio-74ba02030a72
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
