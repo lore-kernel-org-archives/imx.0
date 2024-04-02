@@ -1,215 +1,116 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2128.outbound.protection.outlook.com [40.107.6.128])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159EE5FBA6
-	for <imx@lists.linux.dev>; Tue,  2 Apr 2024 16:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712074570; cv=fail; b=YYie47n6VbS8H5cBfj6JvuWXh7C1pfif8wJEBhmki8PEa/AsQhVzbbridVDolaFmdPyRFJo7jkAK2wZe7JgZYKdLb/xVI4aY8b+r6ERqjFd1EtETcVNVr92PjuxOl7cpS3YhLjuLNyX5XI1Z/0gKV4++F+Di0RPAVDrAuxp0zRM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712074570; c=relaxed/simple;
-	bh=3pGR/ddW9dEh8gc9hakUC/itow/9ISfzO+zUdzmjzeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DTksFul2WY8eHQWwlc5Kpl7Kfn+2jetqwRpuU0gr5Fvko8HHCc261VeJ8SnkeFdcSUpL69+tSkuOOTwQz8G2ke8v+13zlIRnUZfHfbdEuF3wBg1yHOTV4g0qfo1ftuBt+LJG9EJgeSHZ7bm3Vhswf6D/Siqwcp2QIcdOpCwEToc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=jUeLaosL; arc=fail smtp.client-ip=40.107.6.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBFB14B07B;
+	Tue,  2 Apr 2024 17:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712078492; cv=none; b=J0Xr8pfEMX58vYxpLwFW1EqZq5wmDirqwKkkmkulMVPlw0jvHy63E50me5H2U2lnmJM9qHCJ1hQfW5jrgN9FWgiva0nWewoUL2D7AABXEV5RiWn0lo9rIXtJ5X/rLKgFUTHS4Ewn0U6dp5i7WmG1j+b3CpKICW+zgnKNE9AwTGI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712078492; c=relaxed/simple;
+	bh=DnpOibWeEhhYJWAo5GJdkNBTBKaVlT4nCoBWBnjQiTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IXD9Ei78IpVr0rN2b0M6PgSBUrar1+0I2dqL3ObeNIPp7r6UylJXg5FUfUR6hWk+tNXCEjbH7H6g26EQsg6wgMG7MW96AGB/darrSsGMaOwkCkuG+TKqKFARRvIrMTgMwG/itFhJyBXzQnekZVImhIXlCcTQLKSefvhyA9jPL+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kkR1LxWP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="jUeLaosL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eEBMc1CRn6pOnESFPYeJap54mC75yQXfM770+D26lX+qb6q7/Lnx1EtCHRRivRmRdDL9/e9wGB+cqrwc9yu3vm+AnBvhcQ4xO8AqQEuemx1/XMByGmPQUF2NPEJS8t3kznjzfD2RBEgC4R2zALNTxQdTI6b9fpjnPgh2vAAknLPJthLsxPRGKShwkvNDChpwwq4BkHp6o2XMmdvSpNlZ0ENWPuJMQaVu6+jxfSRnK3HKXILMlek8xSuxolq6y1DB9R1sQmgziiR8SEeG6TAeHlIrAXUrg+E6WeUmkYIgx/oK8eduaY5WXqEMLByQNa05jtuGPxYzzy1JVIZ18pMcHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=62qibg0CLg8Od4rQwvqlnEBbDzREBhUJH2r8VaQGCNI=;
- b=hU+HvwTqd7SkYpQliQIdImn4bG1MIBDXEfkOxeMVC43jZz/Bf3h6/z2r+O2tuHc7Qma+CFTdwTGHzrHkrm/2cPvESAqcL3AAKxZH8oEJ5V4Av3IAYVdNPD+7MwtPUy8qTG9nnsqwA/6khyjBEaexxmc6sNSndUT+TTY6SW8/w+GWQWMX/tB4d0Zj+/eP9oQYuw2Xn8qpVGa1/cvIVQmkuxoNuMHMqDskgZdCTUn+fPrw7/f9MFQfkCIn6VjXuqY6cvh0JNSSm8txWmtm3KHouhZU0pzXhLLekuX8AnL3n47xYZPiz9aogQfbeMOZqx90TZdftE2MeOEy+7E4OWyCyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=62qibg0CLg8Od4rQwvqlnEBbDzREBhUJH2r8VaQGCNI=;
- b=jUeLaosLhTLHTSMlvs6Md8KNlQ8Ob16N6B3tx2uY8SnQZz7X9d/t19T3JFKnfDhUypE7qNRYmNyra/yfjz826MIurYI9agcq0ahQ226J4/R5UIcf7FwXPtUatEpp69bDH7tFhzUZVBETqcgd9UOiJXLuVs8zbL4M2qVuQCXBtaI=
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM8PR04MB7731.eurprd04.prod.outlook.com (2603:10a6:20b:249::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.42; Tue, 2 Apr
- 2024 16:16:04 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
- 16:16:04 +0000
-Date: Tue, 2 Apr 2024 12:15:56 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Serge Semin <fancer.lancer@gmail.com>
-Subject: Re: [PATCH v5 0/5] PCI: dwc: Add common pme_turn_off message by
- using outbound iATU
-Message-ID: <ZgwvPB/LbPRshVCy@lizhi-Precision-Tower-5810>
-References: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
-X-ClientProxiedBy: SJ0P220CA0012.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kkR1LxWP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879E7C433F1;
+	Tue,  2 Apr 2024 17:21:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712078491;
+	bh=DnpOibWeEhhYJWAo5GJdkNBTBKaVlT4nCoBWBnjQiTg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kkR1LxWPiOyeNYU2wTg7krNhTXupOzH+yuLhG3Iv+H/QqOzbVHpk1rcdPtc/M1lRU
+	 tqr3GNmoceWktBQ8jqNGbwAy41Qtqbq10Li5hNplEEYfnXR0WlE6zkC18TmVn2XU+g
+	 SQLPNRsEPBV4N1gbp3O5uHPw2AyRVxQzusInycQmfyq0xWc4zDlSbpise0OugxksUJ
+	 HKvEnkkDyWpMQnBsUZmqp8dJCP3h9/OqsrbU9MxaPuHlZaQWW7mHsXs48GvN54zWeE
+	 p1NX0/yOEiYW/Fv57vWyBta9YswZqIDjwrkyK7wfEKMZBxHChHIZPu/G2Wj7YC1b5q
+	 slvAW9kE4DQSw==
+Date: Tue, 2 Apr 2024 12:21:28 -0500
+From: Rob Herring <robh@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: vkoul@kernel.org, kishon@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	frank.li@nxp.com, conor+dt@kernel.org,
+	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/3] dt-bindings: phy: phy-imx8-pcie: Add binding for
+ i.MX8Q HSIO SerDes PHY
+Message-ID: <20240402172128.GA250151-robh@kernel.org>
+References: <1712036704-21064-1-git-send-email-hongxing.zhu@nxp.com>
+ <1712036704-21064-2-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7731:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	974Ocef1OVSJPzdjqqvRRDP2MenXpb6XSP6gpKaHUhX9VWGsvfJ/3EoORJuXBNx2EP2XZc6awbKHQEHNdu2tNxwy21e5V/7HKtx8dTuLdYhSepYBnfSYgea88iyje8VR1UShJ+c2tGkYjcgp71ErAZITlPgPtWuI41KBf8lLcKCKMXLuajeZF9MYc9sCo6QL1VQiWxpLvreq77fDm3zgoRfhLBwKfIfoFNJerwbIleXtFpzc8auk6sKb7OfOACwM4OIWL+Zd1pnJs5bRSTl42Oedd4CcUazhBy9MGSjtylx3KH4oLGOlm0huAfctRsm4uaV6ewpltOhvZAtdXUVSD+8mE3DPeZZzYp7vLy84C7tp5ieXOfr8NknQZdItNHtdgLyQMlwwrI3Sjj12/3D9g0Hsdw70zfbcROBQ4kdeenzZMilIoDa+maU3Ea00zlPGXMx91zOX4JUALsHl8Pe3Oi7GS/10+cVfH4lFlAFGhGMYzEZHwQHTo6MqD90l9Cp8HzIzhTvGqg1xh1s7yGS3ihmrpz/IQEfoln0dzHQYbXdqDpMnD2SwAqkZnaN93oWWq4+k03YsS+pvK/XygqC2xUkJc9rwo9kThpxrfWlUbT1KN5BVf7/Hk3o6S9DI+dB4HHdFQS2iPLUerIDXJ0IbP7sr0Ph11JhPyBSG2Plg9ZSXXsz2cofoEUFZefPfYL6a
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(7416005)(376005)(366007)(38350700005)(921011);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tLpR1Y50JzXDqDOlbiZgdQHBuq19xZlQlXstkoCPhdjZH72B2kAok3cY1qCG?=
- =?us-ascii?Q?qHOMggCmd93sp/zHRw/VYFd48OiX/QCm2e4arU3BK2KICmMILfCi2UsNc5te?=
- =?us-ascii?Q?Wf/Ig1XX581cPdAb/N23aTgoQ/sP+TPmKvdXZHhLYtXtGkw/6M+2HF60VTRc?=
- =?us-ascii?Q?4C3hdkcV9sgLWTHi+iODiGkMU2aAVhfu2QXallCF6vOYFLOh5BxFD0EIc1Uw?=
- =?us-ascii?Q?fSNPRuqV1HefqEHOIek7OP6wCIbRm/8Mo0wUwco7ymX9DhhLZFJ82t5yclYi?=
- =?us-ascii?Q?J0p4887UwMBuMNofx+M+HuneDf2lgnFEvwbkaFC/iS3I8rNzYXyPRDr56S29?=
- =?us-ascii?Q?xO0BtdVXHQ4ZJJDn7YFEUCuayQX9OwXZII3C47Pu+FD+ouTy8XfQAfmlPQX+?=
- =?us-ascii?Q?I8Dfx4IH3p7Bj/B4HRmeUm9kco2aZk+fbzwSOxMdqpXspxLdP0yoAu9v4DhF?=
- =?us-ascii?Q?emodIzekECVi0H8LVuEKAxUToLzdhsrTkdQArjGDmoKTWmx/9pUYcXsUeJ5f?=
- =?us-ascii?Q?s/x4doA+3KmcKOtt+o2G+VWYZ6lm1wT55U02D2/JaBhYvyL3kNwsNGWw/GsG?=
- =?us-ascii?Q?Ivmm68foRjvtbZVcjZzlsGMVq1jxa1BdMzHrvO5J1f5BtxR0PcHA2qkMYYcg?=
- =?us-ascii?Q?Dywv4yCaIG1o2bdKgWYxq7qJvmtqVSFfhc+qbqXrldHbH5rZ5Xmkqvd2A78h?=
- =?us-ascii?Q?dP1ilvoSNKDOxkH34n6CAdANdkGCaM7da0jz/DG3hm8tEgQZBAi25CJDdUL2?=
- =?us-ascii?Q?HEYLHtcijhQfQfXHS0jX3iLZZDKmbOKVEzmYHiQoZ44HiEDGXNbK69YkwLbe?=
- =?us-ascii?Q?ZIXONHE/oKDaMYv5AeoWTca1aACDtNFJILyHIOsU0Q+e1ExPx5jKoUPaPdOp?=
- =?us-ascii?Q?kqPBXNhU1XSyApItj4Ud4qCXBHbqQKKFnmYY60x1f4M2y0zJU2MoGgual7Xp?=
- =?us-ascii?Q?ebJcGXwuClO4a6KBAIe1AWXabzf3jwe/rNQdUcSNW2U+u0qzsva286nUCpkD?=
- =?us-ascii?Q?LzyoAK+PcUnCPBSn+jbrhCa3d6TYTOvh7iOWBowUBd642k9J5Ax53PJaWjev?=
- =?us-ascii?Q?U6Q+01r6FQIMS8mKBOGWlyvQpuRgErEthZVMEZbhD2Mp+OyKzkcgk6LttEO2?=
- =?us-ascii?Q?RzshkYcrpvW9sS9EvhIa71ogL6G4GruHbphQoZVHRuN6EzHdiXzhd1mLQuWa?=
- =?us-ascii?Q?Ao+T0JGB0pw88I/P3O7b5gZeb0DJGjBJ4e412BpbwwShM8gebippw5z2NwYe?=
- =?us-ascii?Q?rxrLSnwv7drKGtopck0L/dZsTf3N4MOVTxUJAhBQ7HfJ3S/0laAnmpgRlbvE?=
- =?us-ascii?Q?cYsJBPWqK5cZj3ZP9xAJ6vkyuO08sGolsKeSs2sapxEpu4GNAfc8HnLji3up?=
- =?us-ascii?Q?J6CCo1LqSVwBGfVzn+mKJMwTZmanz1WQDtlDFDOCETpBGM1xYewFUvJV3Hf5?=
- =?us-ascii?Q?o1GbAvVgCq9UFBJ4XsrDeOWI5I2XLYE+juhsGpx0pa0ZH+0i58KvbYRKBvfp?=
- =?us-ascii?Q?c7ahhJpR7JA4f0yi5TCYTvr3PDdN4Lsf1xcIZfTZTExoyxZyTXZvco81E3tu?=
- =?us-ascii?Q?Dowq7ajaRU23iUeIE6/W890zvgH8W5ggExNcnRa6?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f8d4fee-e2d3-45a5-4b9c-08dc53303203
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 16:16:04.4025
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gu9Q0E4Hlp1S/z/aD2I8MIBPscFfbQqTL4Ierhiy0j86pr8Bqvx93q5ChsDTlwBXgNNrObkrpBcvzq4gasKLgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7731
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1712036704-21064-2-git-send-email-hongxing.zhu@nxp.com>
 
-On Tue, Mar 19, 2024 at 12:07:10PM -0400, Frank Li wrote:
-> Involve an new and common mathod to send pme_turn_off() message. Previously
-> pme_turn_off() implement by platform related special register to trigge    
-> it.                                                                        
->                                                                            
-> But Yoshihiro give good idea by using iATU to send out message. Previously 
-> Yoshihiro provide patches to raise INTx message by dummy write to outbound 
-> iATU.                                                                      
->                                                                            
-> Use similar mathod to send out pme_turn_off message.                       
->                                                                            
-> Previous two patches is picked from Yoshihiro' big patch serialise.        
->  PCI: dwc: Change arguments of dw_pcie_prog_outbound_atu()                 
->  PCI: Add INTx Mechanism Messages macros                                   
->                                                                            
-> PCI: Add PME_TURN_OFF message macro                                        
-> dt-bindings: PCI: dwc: Add 'msg" register region, Add "msg" region to use  
-> to map PCI msg.                                                            
->                                                                            
-> PCI: dwc: Add common pme_turn_off message method                           
-> Using common pme_turn_off() message if platform have not define their.
+On Tue, Apr 02, 2024 at 01:45:02PM +0800, Richard Zhu wrote:
+> Add binding for controller ID and HSIO configuration setting of the
+> i.MX8Q HSIO SerDes PHY.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Changes in v5:
-> - Default disable allocate TLP message memory windows. If driver need use
-> this feature, need set use_atu_msg = true before call dw_host_init().
+>  include/dt-bindings/phy/phy-imx8-pcie.h | 29 +++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+> 
+> diff --git a/include/dt-bindings/phy/phy-imx8-pcie.h b/include/dt-bindings/phy/phy-imx8-pcie.h
+> index 8bbe2d6538d8..3292c8be3354 100644
+> --- a/include/dt-bindings/phy/phy-imx8-pcie.h
+> +++ b/include/dt-bindings/phy/phy-imx8-pcie.h
+> @@ -11,4 +11,33 @@
+>  #define IMX8_PCIE_REFCLK_PAD_INPUT	1
+>  #define IMX8_PCIE_REFCLK_PAD_OUTPUT	2
+>  
+> +/*
+> + * i.MX8QM HSIO subsystem has three lane PHYs and three controllers:
+> + * PCIEA(2 lanes capapble PCIe controller), PCIEB (only support one
 
+capable
 
-Mani, lorenzo and bjorn
+> + * lane) and SATA.
+> + *
+> + * In the different use cases. PCIEA can be binded to PHY lane0, lane1
 
-Any comments about these patches? I already set this feature default as
-false. It is common for all dwc platform. 
+s/binded/bound/
 
-After this merge, imx6 and layerscape many customer PME code can be
-removed.
+And throughout your patches.
 
-Frank
+> + * or Lane0 and lane1. PCIEB can be binded to lane1 or lane2 PHY. SATA
+> + * can only be binded to last lane2 PHY.
+> + *
+> + * Define i.MX8Q HSIO controller ID here to specify the controller
+> + * binded to the PHY.
+> + * Meanwhile, i.MX8QXP HSIO subsystem has one lane PHY and PCIEB(only
+> + * support one lane) controller.
+> + */
+> +#define IMX8Q_HSIO_PCIEA_ID	0
+> +#define IMX8Q_HSIO_PCIEB_ID	1
+> +#define IMX8Q_HSIO_SATA_ID	2
 
-> 
-> - Link to v4: https://lore.kernel.org/r/20240213-pme_msg-v4-0-e2acd4d7a292@nxp.com
-> 
-> Changes in v4:
-> - Remove dt-binding patch. Needn't change any dts file and binding doc.
->   Reserve a region at end of first IORESOURCE_MEM window by call
->   request_resource(). So PCIe stack will not use this reserve region to any
-> PCIe devices.
->   I tested it by reserve at begin of IORESOURCE_MEM window. PCIe stack
-> will skip it as expection.
-> 
->   Fixed a issue, forget set iATU index when sent PME_turn_off.
-> 
-> - Link to v3: https://lore.kernel.org/r/20240202-pme_msg-v3-0-ff2af57a02ad@nxp.com
-> 
-> Changes in v3:
-> - fix 'MSG"
-> - Add pcie spec ref in head file
-> - using function name dw_pci_pme_turn_off()
-> - Using PCIE_ prefix macro
-> - Link to v2: https://lore.kernel.org/r/20240201-pme_msg-v2-0-6767052fe6a4@nxp.com
-> 
-> Changes in v2:
->   - Add my sign off at PCI: dwc: Add outbound MSG TLPs support
->   - Add Bjorn review tag at  Add INTx Mechanism Messages macros
->   - using PME_Turn_Off match PCIe spec
->   - ref to pcie spec v6.1
->   - using section number.
-> 
-> - Link to v1: https://lore.kernel.org/r/20240130-pme_msg-v1-0-d52b0add5c7c@nxp.com
-> 
-> ---
-> Frank Li (2):
->       PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
->       PCI: dwc: Add common send PME_Turn_Off message method
-> 
-> Yoshihiro Shimoda (3):
->       PCI: Add INTx Mechanism Messages macros
->       PCI: dwc: Consolidate args of dw_pcie_prog_outbound_atu() into a structure
->       PCI: dwc: Add outbound MSG TLPs support
-> 
->  drivers/pci/controller/dwc/pcie-designware-ep.c   |  21 ++--
->  drivers/pci/controller/dwc/pcie-designware-host.c | 146 +++++++++++++++++++---
->  drivers/pci/controller/dwc/pcie-designware.c      |  54 ++++----
->  drivers/pci/controller/dwc/pcie-designware.h      |  22 +++-
->  drivers/pci/pci.h                                 |  20 +++
->  5 files changed, 199 insertions(+), 64 deletions(-)
-> ---
-> base-commit: e08fc59eee9991afa467d406d684d46d543299a9
-> change-id: 20240130-pme_msg-dd2d81ee9886
-> 
-> Best regards,
-> ---
-> Frank Li <Frank.Li@nxp.com>
-> 
+Please use the standard phy mode defines.
+
+> +
+> +/*
+> + * On i.MX8QM, PCIEA is mandatory required if the HSIO is enabled.
+> + * Define configurations beside PCIEA is enabled.
+> + *
+> + * On i.MX8QXP, HSIO module only has PCIEB and one lane PHY.
+> + * The "IMX8Q_HSIO_CFG_PCIEB" can be used on i.MX8QXP platforms.
+> + */
+> +#define IMX8Q_HSIO_CFG_SATA		1
+> +#define IMX8Q_HSIO_CFG_PCIEB		2
+> +#define IMX8Q_HSIO_CFG_PCIEBSATA	3
+
+This seems somewhat redundant both as the 3rd define is just an OR of 
+the first 2 and all 3 overlap with the prior defines.
+
+Seems like with standard PHY modes, the only additional information you 
+might need is PCIEB vs. PCIEA.
+
+Rob
