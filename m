@@ -1,130 +1,87 @@
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83E91E520;
-	Wed,  3 Apr 2024 16:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70E63E487;
+	Wed,  3 Apr 2024 16:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712162654; cv=none; b=QmThfB2uG0DjDE/oD78W99O25/ADBN99gJ4GWZA7LIZ3B1CO1yTVfZ5ECgpRSGGXOAWldz11Dkop+eY0xFFwRiTjBZesftEsgmVSBKTjLCACuug1GvdNOv0Gu6B/tQyZrPVpXo0Nnys8riSOshTc0sdk6CJ0QqbqPsW6ESwbEl0=
+	t=1712163443; cv=none; b=A0+kBFuX95nt9AOWmsaGcASRpQh3e9uwgtuxYJFgPay49N/jFzxMDFDQXzNf5FzhFOe43DnUPemiri4z8VpBF+ji26eBxh9ZspfBB1+p6vgjUyDB9X/jKpZOri7zY9LbrK/zQpz9iMTRFySttAXDU3lmgHktW10FnjRbQSzR2Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712162654; c=relaxed/simple;
-	bh=M1neYOlhzngATdBbVyJaKe7fkRAK//9DrStR8GOcQu4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HZT2XFqARwF4Z+85DrgQGT9BNu/Qrhxwgl8kP7Kvm8wgPlOlU/6YaxP4O4hledGA1mkNbcaArPbCmwBNh874p01oMZ7M+zmfhwIFzX9WxPwNE6IJi2Zzcv3q9EeX9nmUg35ytnMDbJMJvOYA0YtYAitbeCsfo+gmgvjcjnhaH6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgmwMsXH; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712163443; c=relaxed/simple;
+	bh=Lyo2Jkd+NP2jcyMjfmSSDQpvC/i5lfwUw1klvOt8u4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a/GJvqAhDi0hUj8L7rX+y36aBnVWe0UlrwVEAiO30C+7hbGqZRNFAVD4HM0Oa/d74B1vivSQBRKxHEvUggk4vbRHaVt2ixMBhm8A+FKMs7Yx/vblsiLbghD8VOBoere/grTx+4Pug9htbzB6fuJezd3E1Qe4PxCtYqSIrxwxydk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+rl5fcW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgmwMsXH"
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4d8e8619f4aso9301e0c.0;
-        Wed, 03 Apr 2024 09:44:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712162651; x=1712767451; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aej6QFoETxeFvbQm8/sOYYAdEcWAnghw/7Ynm8n0ucQ=;
-        b=RgmwMsXHbjzKaDOljdtc6tb+kslE/qRlIaIsIrbaKnpCQCLpYYTGxsJmmtHCUNEBSf
-         HGI82OwR+Ws5ZxSkAzRPRDG6gW4ac0QHJgCaGo2fTS+DoZW4hdvz6r48cv13JGCUduIX
-         6DlD6SIgyJocfkqXv/VNj4UfvujKb2vPSaWwWRAPRMUoezUyINhfRifGfPxPITG98C/8
-         oepZ1smESLXetRfQ1EKueSr68RrDOoJdHsbaaKSPFTu4K81MlwkRaQa2kP/MuVYjtyNw
-         LEpQMg89y4ruQYHe1dgd9p0n9xN/VuzAChxs0W0rlcwqtVeDgebjvsr+iidy7QWSOTGV
-         z2UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712162651; x=1712767451;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Aej6QFoETxeFvbQm8/sOYYAdEcWAnghw/7Ynm8n0ucQ=;
-        b=ljflk8Fno0C/nQUhP5DIZPTxs1rZzpI3v1rUp0XZU5eAvtdeP6n5DBZE9BfClNjo8W
-         b8fFEZw5iMKkCQXkR0+aSLE53kzSnysc+cAG674vb7EfAUHuEp/sRY9beFh5uY6vUZyV
-         7NFPgeZfUKBFxX+k8dw32rvPFZFblmhH1dArmBeDUvr0Jvyt5fvoIKJqLH7p49qtnGK0
-         lupKVnFd6P7oUnW/7zi9OjjJ44557v81TkBMeIX4Jgj/nFqWxtBrs6ZlGZgLWikZGwfv
-         YSX2I7SWon+yBUJMCvHLGsQcGr/NADc1BOuPXSJLSBHYCCcma8HDjqRYI9DN8iUJc64L
-         9w+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX5NN7ajmEKKgmvtvFkxMzVSn3QdLCElTUGD+X784Ry9AYrliGmRYlSeukTTW7IZr2yRs42TCfiltwJqazfHz7zay/gt9MQDCWux8NAIOZZU4KwYklnUaMIlX5aQo1DV55sQgi2f5MHcFq7j+lUKy9srOcZih1F2Q==
-X-Gm-Message-State: AOJu0YxvNIQx6yqoymQCto4zR+qrcThB/YlastJcg34Dn8zw27AKm/gJ
-	xjqNAw3vB1r/jAUlEHQD+amDPBJsQRXvMDqwMOCpGKw84N50eQSzjuaw0nziVAZ37EbdjdNqgEX
-	t/ykQan9V05dI8JScUPJFpkkjI/Q=
-X-Google-Smtp-Source: AGHT+IFEFFEcpcdQfCxRWJYlDuuUETZ0sWBciDlGUMCvLnJmEBIY1oP87nAaJSL5QQDatxb4oTnFcly4MrzzQ8OrF5o=
-X-Received: by 2002:a05:6122:499a:b0:4d3:b326:5ae8 with SMTP id
- ex26-20020a056122499a00b004d3b3265ae8mr10815788vkb.14.1712162651582; Wed, 03
- Apr 2024 09:44:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+rl5fcW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20326C433C7;
+	Wed,  3 Apr 2024 16:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712163443;
+	bh=Lyo2Jkd+NP2jcyMjfmSSDQpvC/i5lfwUw1klvOt8u4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W+rl5fcWtGDnzgkuQ9dJB/MwuM578FH1ChxNzfvkUSA1zsCW76Y+Jb4K9xEuvgOV9
+	 tjL5skqR7xA4W7dv6pD6ffSM0hGgqXNvpUa8crYjhlaVvlVOm6GZImf5s+rCDgvLdL
+	 d8n4yFN+d9HK5MX0H5vxMv30iOwMHPwedVEyhg7j9qrLoH4jHgIXBqjhCXPXmppdMF
+	 Z3dJ9WiTjuNXu4DHm6rMM79HQcX33+Ni+dUKHOwTBKt3heDHMBYh2j2WN8lWTxBfzw
+	 ITXeEK9Ygz/3cFHNLCE7mVVIaBGfeJc1qe84Gn7G++0NFjlAUIhvQRbJOOkF+nkLk/
+	 +ZXGCFDUSq93g==
+Date: Wed, 3 Apr 2024 11:57:21 -0500
+From: Rob Herring <robh@kernel.org>
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/4] dt-bindings: arm: fsl: remove reduntant
+ toradex,colibri-imx8x
+Message-ID: <20240403165721.GA3980362-robh@kernel.org>
+References: <20240402193512.240417-1-hiagofranco@gmail.com>
+ <20240402193512.240417-3-hiagofranco@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240327160314.9982-1-apais@linux.microsoft.com> <20240327160314.9982-2-apais@linux.microsoft.com>
-In-Reply-To: <20240327160314.9982-2-apais@linux.microsoft.com>
-From: Allen <allen.lkml@gmail.com>
-Date: Wed, 3 Apr 2024 09:43:57 -0700
-Message-ID: <CAOMdWSLavg27YZgnfE2QHjO=4RNmFx_7veAURaPG_=qWX=KMVA@mail.gmail.com>
-Subject: Re: [PATCH 1/9] hyperv: Convert from tasklet to BH workqueue
-To: Allen Pais <apais@linux.microsoft.com>
-Cc: linux-kernel@vger.kernel.org, tj@kernel.org, keescook@chromium.org, 
-	vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev, 
-	florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com, 
-	paul@crapouillou.net, Eugeniy.Paltsev@synopsys.com, 
-	manivannan.sadhasivam@linaro.org, vireshk@kernel.org, Frank.Li@nxp.com, 
-	leoyang.li@nxp.com, zw@zh-kernel.org, wangzhou1@hisilicon.com, 
-	haijie1@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, afaerber@suse.de, 
-	logang@deltatee.com, daniel@zonque.org, haojian.zhuang@gmail.com, 
-	robert.jarzmik@free.fr, andersson@kernel.org, konrad.dybcio@linaro.org, 
-	orsonzhai@gmail.com, baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com, 
-	patrice.chotard@foss.st.com, linus.walleij@linaro.org, wens@csie.org, 
-	jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com, kys@microsoft.com, 
-	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, 
-	jassisinghbrar@gmail.com, mchehab@kernel.org, maintainers@bluecherrydvr.com, 
-	aubin.constans@microchip.com, ulf.hansson@linaro.org, manuel.lauss@gmail.com, 
-	mirq-linux@rere.qmqm.pl, jh80.chung@samsung.com, oakad@yahoo.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, brucechang@via.com.tw, 
-	HaraldWelte@viatech.com, pierre@ossman.eu, duncan.sands@free.fr, 
-	stern@rowland.harvard.edu, oneukum@suse.com, 
-	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org, 
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-mediatek@lists.infradead.org, linux-actions@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240402193512.240417-3-hiagofranco@gmail.com>
 
-> The only generic interface to execute asynchronously in the BH context is
-> tasklet; however, it's marked deprecated and has some design flaws. To
-> replace tasklets, BH workqueue support was recently added. A BH workqueue
-> behaves similarly to regular workqueues except that the queued work items
-> are executed in the BH context.
->
-> This patch converts drivers/hv/* from tasklet to BH workqueue.
->
-> Based on the work done by Tejun Heo <tj@kernel.org>
-> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
->
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+On Tue, Apr 02, 2024 at 04:35:10PM -0300, Hiago De Franco wrote:
+> From: Hiago De Franco <hiago.franco@toradex.com>
+> 
+> 'toradex,colibri-imx8x' is already present as a constant value for
+> 'i.MX8QP Board with Toradex Colibri iMX8X Modules', so there is no need
+> to keep it twice as a enum value for 'i.MX8QXP based Boards'.
+
+If the module can operate on its own, then it would be valid to have 
+just "toradex,colibri-imx8x". If not, then:
+
+Acked-by: Rob Herring <robh@kernel.org>
+
+> 
+> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 > ---
->  drivers/hv/channel.c      |  8 ++++----
->  drivers/hv/channel_mgmt.c |  5 ++---
->  drivers/hv/connection.c   |  9 +++++----
->  drivers/hv/hv.c           |  3 +--
->  drivers/hv/hv_balloon.c   |  4 ++--
->  drivers/hv/hv_fcopy.c     |  8 ++++----
->  drivers/hv/hv_kvp.c       |  8 ++++----
->  drivers/hv/hv_snapshot.c  |  8 ++++----
->  drivers/hv/hyperv_vmbus.h |  9 +++++----
->  drivers/hv/vmbus_drv.c    | 19 ++++++++++---------
->  include/linux/hyperv.h    |  2 +-
->  11 files changed, 42 insertions(+), 41 deletions(-)
-
-Wei,
-
- I need to send out a v2 as I did not include the second patch that
-updates drivers/pci/controller/pci-hyperv.c
-
-Thanks.
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 0027201e19f8..6fdfa10af43c 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1218,7 +1218,6 @@ properties:
+>            - enum:
+>                - einfochips,imx8qxp-ai_ml  # i.MX8QXP AI_ML Board
+>                - fsl,imx8qxp-mek           # i.MX8QXP MEK Board
+> -              - toradex,colibri-imx8x     # Colibri iMX8X Modules
+>            - const: fsl,imx8qxp
+>  
+>        - description: i.MX8DXL based Boards
+> -- 
+> 2.39.2
+> 
