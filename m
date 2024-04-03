@@ -1,40 +1,40 @@
-Received: from mail-108-mta33.mxroute.com (mail-108-mta33.mxroute.com [136.175.108.33])
+Received: from mail-108-mta245.mxroute.com (mail-108-mta245.mxroute.com [136.175.108.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3578814A636
-	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 15:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46D514A62A
+	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 15:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712156870; cv=none; b=sh6EgQL0N4LSmR0cuY0aui5uZ194WByZgVukiIm5JXq98yYuyY5X6Rg/YpQyCC0QH9/k8bfc0Q/OJb6dJwnmp7+zYZjq0BwHeWw+7H8l1k1nsTtHc/tior0ytelW2KmLO/0/epTVoi8XLyiWpNaRJpGzzl4PTn1suChTAFOglk8=
+	t=1712156870; cv=none; b=pQOXoT53VftwE7133GQ3wuFyllk6kZgfZpFzdUfxhGpVI7dRfHC42G0s22ibu6P2VcXdwWX6ghz3DZ1lcb75oNuEnGkCuRaWqEF+XhgMvt/UIzKdet/CMRfLnXZULwFBCrMs+/0HFCYtZsz1QUfz3EEIl5D0HCVu24vwOKmmHNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712156870; c=relaxed/simple;
-	bh=MHu7+7NL+G0C2Z57Tifm6r+n2agIFU7zrz+0ZLE9tUE=;
+	bh=wgUfPDIer7AQ37jo80J/dyoU1vBDqQa6Etcv/8WWMyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HiG1kn8wZQpqu+x5cb47a3dRTNGArqdFObwT5dyZ+CcuL/ynQeiptsgmux+s5NzioXB1/CgsapDvPOtpEGQHLvm/qabdBHM4DowUvPhs+pFOtGSuMJeeFTTPt08mAwgFrH9WX8LPitPd9GjRF/tYDtHBTDEJgpCDKryG36YK2BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=XZMn3TDX; arc=none smtp.client-ip=136.175.108.33
+	 MIME-Version; b=INIGmX0CgPkDr9nuBP+43PGyzTJbhPrPxyW7P4+lWf/xwZVY/RR/03U+S50mfVUesLbZ5p4z7X8p9KBAfckKu6lyk4TuyJ2c85rxynCsbMtApR0blUqsHf9NfH5K7aHLbvOiJC4dEnAZrknNiEYImgBE1rX0Nlz+C1ePmP/Ysfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=c64wUaeF; arc=none smtp.client-ip=136.175.108.245
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="XZMn3TDX"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="c64wUaeF"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta33.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48070c60003bea.00a
+ by mail-108-mta245.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48054c90003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:07:44 +0000
-X-Zone-Loop: 2ce1eb6e67d5fd45b5cd74453b5647f293d12e06be50
+ Wed, 03 Apr 2024 15:07:37 +0000
+X-Zone-Loop: 6c6a971a8eff271d8adbfd169097b20c63330b9b4373
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=plPPlYadwD1Zq3aCFcCornPVdyLJjy9mkC8TslTlGRg=; b=XZMn3TDXzjxo/AY9iV4ctJmnqG
-	TNUAqR1GvGhf7UNlqRn2faDBG3DtpVaRkaqTx2xPDUDLgP2ZsjLSI6AR6bKM65pzMZyi0AIlGVt7d
-	yQkKSHcm95alqOLAjWvMqcZ57B1wfTIm/7yI8RsAzCp4x7SAyY22nGnz+MaBgHMragTtBmWbDyAhn
-	/Mz2Or1HIYZEmVc+3G/i7G493kqsYdZhTwv7BNMBPJo3w7RQCsqYwRj8YJ6jtwT3ZxXS2tVin9giY
-	e9EAeo2M/u3eLPKUdpSy0a69TkTLyBghyh001jE6KsmKpJ1VsKOmcGDm1ivzoTh7n0ka4QrdelgeS
-	staZ//Jw==;
+	bh=y+VeEU5f+LeGJ8HV2ZAWs/R6ixOD7sSWebXM6B8M/iY=; b=c64wUaeF3gqp4Yo/TbEETxoUF7
+	eIP101qUT8Hr6POQ62/2bo+Q/Cqvt5+QuDtXOgfqZKps1hOxF7MEf8ruDA/WxMKVDp9nVLK9/Nax9
+	BDypkk8WOqCao6pZOcYRsiN9wGGZKZraKT7yoa1J547qv9u5L4/yBjWr8AYhsVtwtA/1gpV+HGFby
+	ef+nBcUjnVXHGRGw6LeudOJhzg4xJQFdlBpk2kYeAmdI/9F/wkCXTXtbgP+XPYF0Pq0F70nc8/xj8
+	OoWkqIKYpyV9uueLAub5pBFanAGEMgMPalkYpWwBVfBaPT103yMPwDQ7kZKaQKUqTwvIBjWVR7UB6
+	D51J9QsA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v3 11/25] media: i2c: imx258: Add get_selection for pixel array information
-Date: Wed,  3 Apr 2024 09:03:40 -0600
-Message-ID: <20240403150355.189229-12-git@luigi311.com>
+Subject: [PATCH v3 10/25] media: i2c: imx258: Follow normal V4L2 behaviours for clipping exposure
+Date: Wed,  3 Apr 2024 09:03:39 -0600
+Message-ID: <20240403150355.189229-11-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -71,173 +71,81 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Libcamera requires the cropping information for each mode, so
-add this information to the driver.
+V4L2 sensor drivers are expected are expected to clip the supported
+exposure range based on the VBLANK configured.
+IMX258 wasn't doing that as register 0x350 (FRM_LENGTH_CTL)
+switches it to a mode where frame length tracks coarse exposure time.
+
+Disable this mode and clip the range for V4L2_CID_EXPOSURE appropriately
+based on V4L2_CID_VBLANK.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 90 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ drivers/media/i2c/imx258.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index ebc404b548b3..805308b4a4c6 100644
+index 8f792f0e0738..ebc404b548b3 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -77,6 +77,14 @@
- #define REG_CONFIG_MIRROR_FLIP		0x03
- #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
+@@ -37,10 +37,11 @@
  
-+/* IMX258 native and active pixel array size. */
-+#define IMX258_NATIVE_WIDTH		4224U
-+#define IMX258_NATIVE_HEIGHT		3192U
-+#define IMX258_PIXEL_ARRAY_LEFT		8U
-+#define IMX258_PIXEL_ARRAY_TOP		16U
-+#define IMX258_PIXEL_ARRAY_WIDTH	4208U
-+#define IMX258_PIXEL_ARRAY_HEIGHT	3120U
-+
- struct imx258_reg {
- 	u16 address;
- 	u8 val;
-@@ -116,6 +124,9 @@ struct imx258_mode {
- 	u32 link_freq_index;
- 	/* Default register values */
- 	struct imx258_reg_list reg_list;
-+
-+	/* Analog crop rectangle. */
-+	struct v4l2_rect crop;
- };
+ /* Exposure control */
+ #define IMX258_REG_EXPOSURE		0x0202
++#define IMX258_EXPOSURE_OFFSET		10
+ #define IMX258_EXPOSURE_MIN		4
+ #define IMX258_EXPOSURE_STEP		1
+ #define IMX258_EXPOSURE_DEFAULT		0x640
+-#define IMX258_EXPOSURE_MAX		65535
++#define IMX258_EXPOSURE_MAX		(IMX258_VTS_MAX - IMX258_EXPOSURE_OFFSET)
  
- /*
-@@ -560,6 +571,12 @@ static const struct imx258_mode supported_modes[] = {
- 			.regs = mode_4208x3120_regs,
- 		},
- 		.link_freq_index = IMX258_LINK_FREQ_1267MBPS,
-+		.crop = {
-+			.left = IMX258_PIXEL_ARRAY_LEFT,
-+			.top = IMX258_PIXEL_ARRAY_TOP,
-+			.width = 4208,
-+			.height = 3120,
-+		},
- 	},
- 	{
- 		.width = 2104,
-@@ -571,6 +588,12 @@ static const struct imx258_mode supported_modes[] = {
- 			.regs = mode_2104_1560_regs,
- 		},
- 		.link_freq_index = IMX258_LINK_FREQ_640MBPS,
-+		.crop = {
-+			.left = IMX258_PIXEL_ARRAY_LEFT,
-+			.top = IMX258_PIXEL_ARRAY_TOP,
-+			.width = 4208,
-+			.height = 3120,
-+		},
- 	},
- 	{
- 		.width = 1048,
-@@ -582,6 +605,12 @@ static const struct imx258_mode supported_modes[] = {
- 			.regs = mode_1048_780_regs,
- 		},
- 		.link_freq_index = IMX258_LINK_FREQ_640MBPS,
-+		.crop = {
-+			.left = IMX258_PIXEL_ARRAY_LEFT,
-+			.top = IMX258_PIXEL_ARRAY_TOP,
-+			.width = 4208,
-+			.height = 3120,
-+		},
- 	},
- };
- 
-@@ -698,6 +727,7 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- {
- 	struct v4l2_mbus_framefmt *try_fmt =
- 		v4l2_subdev_state_get_format(fh->state, 0);
-+	struct v4l2_rect *try_crop;
- 
- 	/* Initialize try_fmt */
- 	try_fmt->width = supported_modes[0].width;
-@@ -705,6 +735,13 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- 	try_fmt->code = MEDIA_BUS_FMT_SBGGR10_1X10;
- 	try_fmt->field = V4L2_FIELD_NONE;
- 
-+	/* Initialize try_crop */
-+	try_crop = v4l2_subdev_state_get_crop(fh->state, 0);
-+	try_crop->left = IMX258_PIXEL_ARRAY_LEFT;
-+	try_crop->top = IMX258_PIXEL_ARRAY_TOP;
-+	try_crop->width = IMX258_PIXEL_ARRAY_WIDTH;
-+	try_crop->height = IMX258_PIXEL_ARRAY_HEIGHT;
-+
+ /* Analog gain control */
+ #define IMX258_REG_ANALOG_GAIN		0x0204
+@@ -371,7 +372,7 @@ static const struct imx258_reg mode_common_regs[] = {
+ 	{ 0x303A, 0x00 },
+ 	{ 0x303B, 0x10 },
+ 	{ 0x300D, 0x00 },
+-	{ 0x0350, 0x01 },
++	{ 0x0350, 0x00 },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
+@@ -734,6 +735,19 @@ static int imx258_update_digital_gain(struct imx258 *imx258, u32 len, u32 val)
  	return 0;
  }
  
-@@ -952,6 +989,58 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
- 	return 0;
- }
- 
-+static const struct v4l2_rect *
-+__imx258_get_pad_crop(struct imx258 *imx258,
-+		      struct v4l2_subdev_state *sd_state,
-+		      unsigned int pad, enum v4l2_subdev_format_whence which)
++static void imx258_adjust_exposure_range(struct imx258 *imx258)
 +{
-+	switch (which) {
-+	case V4L2_SUBDEV_FORMAT_TRY:
-+		return v4l2_subdev_state_get_crop(sd_state, pad);
-+	case V4L2_SUBDEV_FORMAT_ACTIVE:
-+		return &imx258->cur_mode->crop;
-+	}
++	int exposure_max, exposure_def;
 +
-+	return NULL;
++	/* Honour the VBLANK limits when setting exposure. */
++	exposure_max = imx258->cur_mode->height + imx258->vblank->val -
++		       IMX258_EXPOSURE_OFFSET;
++	exposure_def = min(exposure_max, imx258->exposure->val);
++	__v4l2_ctrl_modify_range(imx258->exposure, imx258->exposure->minimum,
++				 exposure_max, imx258->exposure->step,
++				 exposure_def);
 +}
 +
-+static int imx258_get_selection(struct v4l2_subdev *sd,
-+				struct v4l2_subdev_state *sd_state,
-+				struct v4l2_subdev_selection *sel)
-+{
-+	switch (sel->target) {
-+	case V4L2_SEL_TGT_CROP: {
-+		struct imx258 *imx258 = to_imx258(sd);
-+
-+		mutex_lock(&imx258->mutex);
-+		sel->r = *__imx258_get_pad_crop(imx258, sd_state, sel->pad,
-+						sel->which);
-+		mutex_unlock(&imx258->mutex);
-+
-+		return 0;
-+	}
-+
-+	case V4L2_SEL_TGT_NATIVE_SIZE:
-+		sel->r.left = 0;
-+		sel->r.top = 0;
-+		sel->r.width = IMX258_NATIVE_WIDTH;
-+		sel->r.height = IMX258_NATIVE_HEIGHT;
-+
-+		return 0;
-+
-+	case V4L2_SEL_TGT_CROP_DEFAULT:
-+	case V4L2_SEL_TGT_CROP_BOUNDS:
-+		sel->r.left = IMX258_PIXEL_ARRAY_LEFT;
-+		sel->r.top = IMX258_PIXEL_ARRAY_TOP;
-+		sel->r.width = IMX258_PIXEL_ARRAY_WIDTH;
-+		sel->r.height = IMX258_PIXEL_ARRAY_HEIGHT;
-+
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- /* Start streaming */
- static int imx258_start_streaming(struct imx258 *imx258)
+ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
  {
-@@ -1128,6 +1217,7 @@ static const struct v4l2_subdev_pad_ops imx258_pad_ops = {
- 	.get_fmt = imx258_get_pad_format,
- 	.set_fmt = imx258_set_pad_format,
- 	.enum_frame_size = imx258_enum_frame_size,
-+	.get_selection = imx258_get_selection,
- };
+ 	struct imx258 *imx258 =
+@@ -741,6 +755,13 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
+ 	struct i2c_client *client = v4l2_get_subdevdata(&imx258->sd);
+ 	int ret = 0;
  
- static const struct v4l2_subdev_ops imx258_subdev_ops = {
++	/*
++	 * The VBLANK control may change the limits of usable exposure, so check
++	 * and adjust if necessary.
++	 */
++	if (ctrl->id == V4L2_CID_VBLANK)
++		imx258_adjust_exposure_range(imx258);
++
+ 	/*
+ 	 * Applying V4L2 control value only happens
+ 	 * when power is up for streaming
 -- 
 2.42.0
 
