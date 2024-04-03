@@ -1,160 +1,107 @@
-Received: from mail-108-mta162.mxroute.com (mail-108-mta162.mxroute.com [136.175.108.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1DC155317
-	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 19:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BE915099C;
+	Wed,  3 Apr 2024 23:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712173741; cv=none; b=KGvs++owUnF4vultsp1HnOtOtC2aypuqeh5qERX0780iJSGWB323FZuLVUHKHtJQ+dYg2EvXFU1PJSFDZS64VUZkHJNmICYdHmsUbLmDrPjaNJobTnjOxEahXMRAtXllWw0Pt23lm9Tx6gmy+wyPVvFipCDjxjJ6c96PCNm+EB8=
+	t=1712186122; cv=none; b=BFBSsOCmAwlzUo+t139xVk9pMYv+dQTGsnxz5vqcmKmKprhzyE+ACQ7enq6bXmE59p06drBrFv3kxZEK+LG4YBNnrjcpBhruPqIBSlHMhgCIs5tkIh2fdcdQ1v7fzsZ7Wr7DS03iXB6vKC6zYjALaX0VZoUOm4Nh7V3V1PbwyWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712173741; c=relaxed/simple;
-	bh=Kjy6x/NXd4JfxF0RWGjqpeR43/pbqZZRFhcY/LUk/Mk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=uuH+PTod9evmxxuHYWM1Rx931+RZbm9VxnL1A6NLOJFhFVPkRW9W5Q/98+aWpYIQnFQs9DDway108g/2ln3MSuWmq14++3mwfzF6akdaxctvZQHJ/ud76QSAr8+bFMU37o8B3FK/mF3QzvdqJjueVHQWUdGbDhsEY/V+O3q3ums=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=wfCLRkKP; arc=none smtp.client-ip=136.175.108.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1712186122; c=relaxed/simple;
+	bh=7YP3abqizRPoAPL8obPaJDqiuw0+wj9ZdRKndmVtWO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FJyNIUPvmWJ5WvaQ11GERLNy50CBnTMk8E5vXxw6U5LJj+PAxR4dJ7avG/VMUIv4sN88ZXsPITVOZklBz5X3jD48eBK+6SVfeWsd/Q8oTLqnfH9GQUGti2f3XV8tT2iTtX1B/hMzGf7D4nVVc3vHexiLXsbb/uPp72QPElLDPeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qpy/c9+x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="wfCLRkKP"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta162.mxroute.com (ZoneMTA) with ESMTPSA id 18ea581c24b0003bea.00a
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 19:48:48 +0000
-X-Zone-Loop: daecd6b5f19608306353ebdd017806584eeac0c499ed
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WUWgE1DnjMBPuy5PLgN2/f0W38XSumLNGP2rZjB3XuA=; b=wfCLRkKPVOOds6T51nt/KWinGa
-	4P2uvdx2JXMT+k9h6TDeiMKDal9WlFQwPToTSlyuh4s0Rc3s8sF+XjDhED3cgzvAb//vVPOoKfPs6
-	Cszp2qBdHJ4Pl7MT3JFlzZ6vZ7sbK19WCmdWLpMEc+CV5fty/jD2fzdPRW3DTuynVkLG4JvADrTNS
-	GfLGYBa+Lhq+C0x5TFuiFLSJij8w+XfG3rn5kgwRkFWTgeDaDHULwyDavW/72vB3wvAj1/xdu5atj
-	9JP3BzEBqEJKnNYgMxj7cr8Ko6gC+GmH5AtRDwP/hf2yyL3srs4Wi3tChGvR4PbAGARtZBhmCWmco
-	ItAsMfaA==;
-Message-ID: <1080d78d-73f4-41d3-ab72-f2cc1001e184@luigi311.com>
-Date: Wed, 3 Apr 2024 13:48:43 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qpy/c9+x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C237C433F1;
+	Wed,  3 Apr 2024 23:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712186121;
+	bh=7YP3abqizRPoAPL8obPaJDqiuw0+wj9ZdRKndmVtWO8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qpy/c9+xzO52cbTnZVZQNwr/ma8IJrDqRf3Q1uoZRVZmSfrqidlLNOhkIHDPJoJC3
+	 utFvpj8ghJVowSGnlB57QR1V4M1W22XOEbU7wvl5FUztrdxLuN1L322EH5QQE49ofX
+	 o9Ivk8XkN/SvXzSVGclTvJ1n+egjPz0eCLHWQAuPwOFkxO4exu1cUikXCF5rrB8dLr
+	 t5nkXMVBzwJWvik/+k4/P+XMb95SyH37eT4p+tA1xIO7RPtZFAhDkfjRVLf8RNVQUv
+	 hyfxyhBY1oZHJacBmfWXTlfmMHlxdpP7ZxBAoUumEoFhYMY661Nhllx8IX9KCHK8qs
+	 7MPUrns95zUPA==
+Date: Thu, 4 Apr 2024 00:15:12 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 0/7] drm/display: Fix display helpers depends on fallouts
+Message-ID: <b0ac6a85-d40c-4360-a164-ef7f2518a508@sirena.org.uk>
+References: <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 24/25] drivers: media: i2c: imx258: Add support for
- reset gpio
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megous@megous.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
- mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, pavel@ucw.cz, phone-devel@vger.kernel.org
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-25-git@luigi311.com>
- <Zg2Dy2QBguXQoR3P@kekkonen.localdomain>
- <vesqdx7w2sobjnx7tmk6s6i5zplbhsphamoalysx625r4aqffq@hos5otov5ids>
-Content-Language: en-US
-From: Luigi311 <git@luigi311.com>
-In-Reply-To: <vesqdx7w2sobjnx7tmk6s6i5zplbhsphamoalysx625r4aqffq@hos5otov5ids>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: git@luigi311.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="t5XS027i4Mgf+9A4"
+Content-Disposition: inline
+In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
+X-Cookie: Knowledge is power.
 
-On 4/3/24 11:03, Ondřej Jirman wrote:
+
+--t5XS027i4Mgf+9A4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Apr 03, 2024 at 12:56:18PM +0200, Maxime Ripard wrote:
 > Hi,
-> 
-> On Wed, Apr 03, 2024 at 04:28:59PM GMT, Sakari Ailus wrote:
->> Hi Luis,
->>
->> Could you unify the subject prefix for the driver patches, please? E.g.
->> "media: imx258: " would be fine.
->>
->> On Wed, Apr 03, 2024 at 09:03:53AM -0600, git@luigi311.com wrote:
->>> From: Luis Garcia <git@luigi311.com>
->>>
->>> It was documented in DT, but not implemented.
->>>
->>> Signed-off-by: Ondrej Jirman <megous@megous.com>
->>> Signed-off-by: Luis Garcia <git@luigi311.com>
->>> ---
->>>  drivers/media/i2c/imx258.c | 14 +++++++++++++-
->>>  1 file changed, 13 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
->>> index 163f04f6f954..4c117c4829f1 100644
->>> --- a/drivers/media/i2c/imx258.c
->>> +++ b/drivers/media/i2c/imx258.c
->>> @@ -680,6 +680,7 @@ struct imx258 {
->>>  	unsigned int csi2_flags;
->>>  
->>>  	struct gpio_desc *powerdown_gpio;
->>> +	struct gpio_desc *reset_gpio;
->>>  
->>>  	/*
->>>  	 * Mutex for serialized access:
->>> @@ -1232,7 +1233,11 @@ static int imx258_power_on(struct device *dev)
->>>  		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->>>  	}
->>>  
->>> -	return ret;
->>> +	gpiod_set_value_cansleep(imx258->reset_gpio, 0);
->>> +
->>> +	usleep_range(400, 500);
->>
->> You could mention this at least in the commit message.
-> 
-> This is T6 in the datasheet: https://megous.com/dl/tmp/92c9223ce877216e.png
-> 
-> 
->>> +
->>> +	return 0;
->>>  }
->>>  
->>>  static int imx258_power_off(struct device *dev)
->>> @@ -1243,6 +1248,7 @@ static int imx258_power_off(struct device *dev)
->>>  	clk_disable_unprepare(imx258->clk);
->>>  	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->>>  
->>> +	gpiod_set_value_cansleep(imx258->reset_gpio, 1);
->>
->> Same question than on the other GPIO: does this belong here?
-> 
-> No, this should be before the regulator_bulk_disable.
-> 
-> See: https://megous.com/dl/tmp/c96180b23d7ce63a.png
-> 
-> kind regards,
-> 	o.
-> 
+>=20
+> Here's a series addressing the various regressions that were reported
+> after the Kconfig rework for the DRM display helpers.
 
-Since I'm supposed to move the reset up should I also
-move the power up with it to match your downstream
-driver?
+This makes sense to me and looks like it does the right thing for
+multi_v7_defconfig so
 
->>>  	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
->>>  
->>>  	return 0;
->>> @@ -1554,6 +1560,12 @@ static int imx258_probe(struct i2c_client *client)
->>>  	if (IS_ERR(imx258->powerdown_gpio))
->>>  		return PTR_ERR(imx258->powerdown_gpio);
->>>  
->>> +	/* request optional reset pin */
->>> +	imx258->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
->>> +						    GPIOD_OUT_HIGH);
->>> +	if (IS_ERR(imx258->reset_gpio))
->>> +		return PTR_ERR(imx258->reset_gpio);
->>> +
->>>  	/* Initialize subdev */
->>>  	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
->>>  
->>
->> -- 
->> Regards,
->>
->> Sakari Ailus
+Reviewed-by: Mark Brown <broonie@kernel.org>
 
+Between the arm64 defconfig update not applying on -next and unrelated
+breakage on arm I didn't actually do a proper test.
+
+--t5XS027i4Mgf+9A4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYN4v8ACgkQJNaLcl1U
+h9APkgf+MD+F72G2etxjJQQnDLLpAUSedXzD9qG7v6PJcIYiQhEHyncENGiWMsro
+JNXG/Uiuu7sJtoW9VqjSHeZynUGV610eWCnRx7iXGEzVWCsQwMsHgOZOXPMi/ygx
+DHV5IEHQy9NXNdT5a+36vbujPacH1sJspLJ0b2Yp6blws16L4rbwk/jpKRckQA90
+ZDtMRrlyWvK7/7gVjAfnHnu3bVFF2ZgQ6m7iP8wJOCVEd8U9T3tqAweFBREyNECn
+HME9N5UtA1Ee3V1X2SVlvkC9HKEtky4u6ysnULdlNB2DF3i3VtopCMwrcT1AAOrA
+SkNkR/WHG8F9KFz2/dh84C0Oug43EA==
+=0WKT
+-----END PGP SIGNATURE-----
+
+--t5XS027i4Mgf+9A4--
