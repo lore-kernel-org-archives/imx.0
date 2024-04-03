@@ -1,237 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta106.mxroute.com (mail-108-mta106.mxroute.com [136.175.108.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA8E168BD;
-	Wed,  3 Apr 2024 14:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A589C14BF8A
+	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 15:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712153748; cv=none; b=kVeVpROPMoYriXWnY2B2Oq1VJLSRCTuyD8MaEULbyUX1JQLvZ30vj2IL0F+KOk3C6knGXmNe95kOTYD7agfktRVMfZ11bZZWwe6y9Yvza8yIgF4r5YoGjbhkmO1WqFS/H3PUKHxSCXh1vjcNyZWd9THwaX45Krzcqj5armbIWTw=
+	t=1712156855; cv=none; b=MDjeRuHzJBoGtwPhm5p2AsuJheHAI/WJx+OctgstAEiGB1CSs4ds+Kib7m0Q9gWsjdOxkbRs9vyZrhZziEUr2l1XxmxJkaOl2kNUHhTcKUGc5XVGQCIIVT7iYPu9qfqLP7mmzjEQGQg9g7i77kHbvLEgxIURRr58ESns0KF4Dbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712153748; c=relaxed/simple;
-	bh=D3r5+wFBx1FLrlvAY8cNuumj/f9OxZ2xeveSM5Ic+Y8=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=XYY8TqWkoHdfSmvP2IpO+Kqx8yd88IYiC6+MYY8xhdagO+quGXPXg8LMEJ59WCJyy3v75Fe04GaQRbp/qinWqBc5T2OR7kdgwtquB8zwPBQZ8nWUZC6m/MvRvuinEQRpYAZ5bbvykRhUxEMJ2GGXKoF6f9Q38HfZXDGLl0Uh9rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRe3iJk+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712156855; c=relaxed/simple;
+	bh=v0sCmJBOD6XpjppCe6NIu80dHEr87sRx5uo7mwRw3LE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G6BPa6/Hw6hH3AsnmC1GMXK4keIO7d85+HOyqPYj21E54n8yNAEuQmrJdkPlN16AToqJCM94d+omd+qLkzbeyFilch85sylh8cB4UVUGoBVHLYGs8hgQSZ+TAB37IimxbjwaWAGEr177zUqA0cCA3evznS1Cr18JRRRvkmt8bj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=iR14Ucu/; arc=none smtp.client-ip=136.175.108.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRe3iJk+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A84C433F1;
-	Wed,  3 Apr 2024 14:15:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712153748;
-	bh=D3r5+wFBx1FLrlvAY8cNuumj/f9OxZ2xeveSM5Ic+Y8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=LRe3iJk+8YCak/5bwJM3P3gLRlEXJOTKZYHHnMrJWFxQIg0m9w4kLJDI/NYTg7GiQ
-	 eMQ0i5WpbhkKCVqLCvidz/Z1o8OEtdfO0UHFSdCUbxh3BMIb6e6aJB30cLdAryemRJ
-	 QSu1pOf0O3fimpsvJYiktMVyNRcK0Jxgm5CwWu6+8a6YRhHyf7DCAC8uuKRVo0Qk+v
-	 y+1B6BxxEg4t9Sj2+M87kObm6IEYmbtWig732v80KMuWaiM45V4lg+6+hI0k+/1WKH
-	 1nLCmEqaVGYsgW0dvQ5Bn+4RkH7LCSWnC5akB+NaEcT/FuD6LGvUouMZingeGqMgva
-	 LotgRe8x7+0MQ==
-Date: Wed, 03 Apr 2024 09:15:46 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="iR14Ucu/"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta106.mxroute.com (ZoneMTA) with ESMTPSA id 18ea4801b1a0003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Wed, 03 Apr 2024 15:07:22 +0000
+X-Zone-Loop: 6b662750bbe506b542a8035e2fd6565d2fadcd5e5ae8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DI8jVpDIHtDq0iyliDqyXlGj2OTV9OLOlBmhx287KBo=; b=iR14Ucu/p6jeSJovKRYcP0uGQT
+	vPDqb2nKUJMOuTZ4iPONZRPaBp+SEUptD2Lht4AmB9Hogi2KLlsJYlwKMiu66k4mvRnQ0pIG0HMHv
+	FR6CU89PoGTyv1HLPvIHrGm47Y2oovSD48PxRVqbcmgualE619mbugm7DLjt92ilWgkzB+FF/nEjS
+	ZIQ0VBkf0qyioHkgGQzicZt3cx+858oo/8FXB10SupjHufDEA43TzIk9VVfF9a4p81+x6fUybmUNU
+	RHCpVJ7xljj0IMmII5mECl/jLYXkscyz3EROpRFwxu3Lt+OWMnNluM4S0XnIhrT9J9BHuZo5UZY7/
+	j1duDBKw==;
+From: git@luigi311.com
+To: linux-media@vger.kernel.org
+Cc: dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com,
+	mchehab@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	pavel@ucw.cz,
+	phone-devel@vger.kernel.org,
+	Luis Garcia <git@luigi311.com>
+Subject: [PATCH v3 03/25] media: i2c: imx258: Disable digital cropping on binned modes
+Date: Wed,  3 Apr 2024 09:03:32 -0600
+Message-ID: <20240403150355.189229-4-git@luigi311.com>
+In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
+References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Hiago De Franco <hiagofranco@gmail.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20240402193512.240417-1-hiagofranco@gmail.com>
-References: <20240402193512.240417-1-hiagofranco@gmail.com>
-Message-Id: <171215356139.3498982.1934989893138550223.robh@kernel.org>
-Subject: Re: [PATCH v1 0/4] arm64: dts: freescale: Add Toradex Colibri
- iMX8DX
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: personal@luigi311.com
 
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-On Tue, 02 Apr 2024 16:35:08 -0300, Hiago De Franco wrote:
-> From: Hiago De Franco <hiago.franco@toradex.com>
-> 
-> This patch series introduces support for Colibri iMX8DX SoM and its
-> carrier boards, where the board can be mated with: Aster, Evaluation Board
-> v3, Iris v2, and Iris v1. This SoM is a variant of the already supported
-> Colibri iMX8QXP, utilizing an NXP i.MX8DX SoC instead of i.MX8QXP.
-> Therefore, this patch series also adds support for the i.MX8DX processor.
-> 
-> Hiago De Franco (4):
->   arm64: dts: freescale: Add i.MX8DX dtsi
->   dt-bindings: arm: fsl: remove reduntant toradex,colibri-imx8x
->   dt-bindings: arm: fsl: Add Colibri iMX8DX
->   arm64: dts: freescale: Add Toradex Colibri iMX8DX
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml   |  7 ++++---
->  arch/arm64/boot/dts/freescale/Makefile           |  4 ++++
->  .../boot/dts/freescale/imx8dx-colibri-aster.dts  | 16 ++++++++++++++++
->  .../dts/freescale/imx8dx-colibri-eval-v3.dts     | 16 ++++++++++++++++
->  .../dts/freescale/imx8dx-colibri-iris-v2.dts     | 16 ++++++++++++++++
->  .../boot/dts/freescale/imx8dx-colibri-iris.dts   | 16 ++++++++++++++++
->  .../arm64/boot/dts/freescale/imx8dx-colibri.dtsi | 11 +++++++++++
->  arch/arm64/boot/dts/freescale/imx8dx.dtsi        | 13 +++++++++++++
->  8 files changed, 96 insertions(+), 3 deletions(-)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx-colibri.dtsi
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8dx.dtsi
-> 
-> --
-> 2.39.2
-> 
-> 
-> 
+The binned modes set DIG_CROP_X_OFFSET and DIG_CROP_IMAGE_WIDTH
+to less than the full image, even though the image being captured
+is meant to be a scaled version of the full array size.
 
+Reduce X_OFFSET to 0, and increase IMAGE_WIDTH to the full array.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Luis Garcia <git@luigi311.com>
+---
+ drivers/media/i2c/imx258.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx8dx-colibri-aster.dtb freescale/imx8dx-colibri-eval-v3.dtb freescale/imx8dx-colibri-iris-v2.dtb freescale/imx8dx-colibri-iris.dtb' for 20240402193512.240417-1-hiagofranco@gmail.com:
-
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: jpegdec@58400000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: jpegenc@58450000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: jpegdec@58400000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: jpegenc@58450000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: jpegdec@58400000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: jpegenc@58450000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: jpegdec@58400000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: jpegenc@58450000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'slot' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@591f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@591f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@591f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@599f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@591f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@591f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@591f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@599f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@591f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@591f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@599f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@599f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@5a1f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@5a1f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: /bus@5a000000/spi@5a020000/can@0: failed to match any schema with compatible: ['microchip,mcp2515']
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@5a1f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@5a1f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@5a1f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@5a1f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: touchscreen@2c: adi,first-conversion-delay: b'\x03' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: touchscreen@2c: adi,acquisition-time: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: touchscreen@2c: adi,median-filter-size: b'\x02' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: touchscreen@2c: adi,averaging: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: touchscreen@2c: adi,conversion-interval: b'\xff' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@5a1f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@5a1f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: /bus@5a000000/i2c@5a800000/touchscreen@2c: failed to match any schema with compatible: ['adi,ad7879-1']
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: touchscreen@2c: adi,first-conversion-delay: b'\x03' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: touchscreen@2c: adi,acquisition-time: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: touchscreen@2c: adi,median-filter-size: b'\x02' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: touchscreen@2c: adi,averaging: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: touchscreen@2c: adi,conversion-interval: b'\xff' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@5a9f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: /bus@5a000000/i2c@5a800000/touchscreen@2c: failed to match any schema with compatible: ['adi,ad7879-1']
-arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: dma-controller@5a9f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: touchscreen@2c: adi,first-conversion-delay: b'\x03' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: touchscreen@2c: adi,acquisition-time: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: touchscreen@2c: adi,median-filter-size: b'\x02' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: touchscreen@2c: adi,averaging: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: touchscreen@2c: adi,conversion-interval: b'\xff' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: /bus@5a000000/i2c@5a800000/touchscreen@2c: failed to match any schema with compatible: ['adi,ad7879-1']
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: touchscreen@2c: adi,first-conversion-delay: b'\x03' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: touchscreen@2c: adi,acquisition-time: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: touchscreen@2c: adi,median-filter-size: b'\x02' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: touchscreen@2c: adi,averaging: b'\x01' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: touchscreen@2c: adi,conversion-interval: b'\xff' is not of type 'object', 'integer', 'array', 'boolean', 'null'
-	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: /bus@5a000000/i2c@5a800000/touchscreen@2c: failed to match any schema with compatible: ['adi,ad7879-1']
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@5a9f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: dma-controller@5a9f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@5a9f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris-v2.dtb: dma-controller@5a9f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@5a9f0000: 'clocks' is a required property
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: dma-controller@5a9f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-	from schema $id: http://devicetree.org/schemas/dma/fsl,edma.yaml#
-
-
-
-
+diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+index 4a7048d834c6..0ae4371940ca 100644
+--- a/drivers/media/i2c/imx258.c
++++ b/drivers/media/i2c/imx258.c
+@@ -340,11 +340,11 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x0404, 0x00 },
+ 	{ 0x0405, 0x20 },
+ 	{ 0x0408, 0x00 },
+-	{ 0x0409, 0x02 },
++	{ 0x0409, 0x00 },
+ 	{ 0x040A, 0x00 },
+ 	{ 0x040B, 0x00 },
+ 	{ 0x040C, 0x10 },
+-	{ 0x040D, 0x6A },
++	{ 0x040D, 0x70 },
+ 	{ 0x040E, 0x06 },
+ 	{ 0x040F, 0x18 },
+ 	{ 0x3038, 0x00 },
+@@ -459,11 +459,11 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x0404, 0x00 },
+ 	{ 0x0405, 0x40 },
+ 	{ 0x0408, 0x00 },
+-	{ 0x0409, 0x06 },
++	{ 0x0409, 0x00 },
+ 	{ 0x040A, 0x00 },
+ 	{ 0x040B, 0x00 },
+ 	{ 0x040C, 0x10 },
+-	{ 0x040D, 0x64 },
++	{ 0x040D, 0x70 },
+ 	{ 0x040E, 0x03 },
+ 	{ 0x040F, 0x0C },
+ 	{ 0x3038, 0x00 },
+-- 
+2.42.0
 
