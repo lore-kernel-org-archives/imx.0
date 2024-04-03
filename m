@@ -1,40 +1,40 @@
-Received: from mail-108-mta206.mxroute.com (mail-108-mta206.mxroute.com [136.175.108.206])
+Received: from mail-108-mta61.mxroute.com (mail-108-mta61.mxroute.com [136.175.108.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C99149E13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFB0149E1C
 	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 15:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.206
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712156895; cv=none; b=N2QjZqvCGJK29Q1DbokRstIBHPLOyh2uUhWIXqcC+EcbQAH/iN2kGNTAlpDUwX6fkCF3nO6MDFoor91CXml5/xT11tlP7DcOeBkSudcaQOAaM4x7IAKzF/yDOp5XmDak5S1cClxbNpmPDbVW6AkXKwo2sq4JLiKkkwMgjSf0EZQ=
+	t=1712156895; cv=none; b=LYYXEVjEM895o68/oxNCyhUIihRTBgKx2kswVqerIu+p9DXzuDsrHegZ8cD4JwXUFJnu/J+Vkjf4WvgAZPtNJwUYCEoqh6DUgHbTmzS0tta/UkbwZRt9k3G6xfgpEtpT2u7UexTdywZ54p6P9+yqam9EGopP1mNRUMRSzdRBh+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712156895; c=relaxed/simple;
-	bh=X8l0Qu5ct8EeMly/eTF0Crxww6UHAs2wZ0Q0VRWgXwg=;
+	bh=wIpVOMNTepZOMW3UvbZH0rdRDmA+UQLMgr2GlfwRQGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRtGFRwWjMGowJ7PzcK+sbmTxxeI3hgTVztnjmTLewv0cuoeWJ1SIZ80vhRi/195WWI66hoNCgEfwLUH+0v2Z7ApIQpJcG941Vr9yBjmFfS/pbEszhCHi5im6TnVVXDqX5/EhOnQoTF4dA9zeFVmPy5IlFrp7VYKz/d7UGc0yh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=Mx8JedB6; arc=none smtp.client-ip=136.175.108.206
+	 MIME-Version; b=i7HAenyrbGTqTHWURPjvYaCbWd+H1ZuXm9mvvBLC7r4ud9zx8eOtYhoobp3wGaFEKwUFtvo3W3TZF7F5QpuBSEgIahs4welyA7pz4X9E4cKDS9TVY5PWdggCEtsU7Dbq+Mxxxvel9ucv0MtcAz1Cnzy6w39J/rQjwyE9iiJMfBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=kA1ORBz6; arc=none smtp.client-ip=136.175.108.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="Mx8JedB6"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="kA1ORBz6"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta206.mxroute.com (ZoneMTA) with ESMTPSA id 18ea480c0610003bea.00a
+ by mail-108-mta61.mxroute.com (ZoneMTA) with ESMTPSA id 18ea480b8510003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:08:05 +0000
-X-Zone-Loop: 8623470f1752327a2845590ff2eef2f22e409e5b7274
+ Wed, 03 Apr 2024 15:08:03 +0000
+X-Zone-Loop: e18c5eae89f5487d601522b52a2c1fd0102e6cf19475
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MUtTZIUft2Qwd/Ss8DLnay+tIu1VwSFMmHTaDB0Zatw=; b=Mx8JedB6wozdYbTdvWIQzPOy0e
-	w6Plus8ggU9/koj1uwXYIszoXv64qrgqvk15H0r5BAj68b2y9h8r7PKgGwN49Uwh/5s/BBDlRLma8
-	KcbV3u6V0bVVYd3wDdorlrd+51wNDg0LSKIknwqv70jgmpm9mj9Zih9E588IoQZLVADJS5dxd3C+W
-	//o2aCL84V2i2etbv2S/PSG9dFlr/y4qKsnwKj3OV7tfSjm2b3VXkFGfQAN/qkzwXu35ITEvkOArA
-	jAZgVg2H08N+AxO1s8jk/trOSANpG4aJecgwm1Ia1b6jzOUHvbo3JxHOhoFjg+HeFsjAqEDxkZqCS
-	VQtQv09g==;
+	bh=+hno/NO5DLefJIOqoOH2kmnTpizyU8GDGwSxBdTiTxg=; b=kA1ORBz6pfHHAqSDL9oc6Bnp9o
+	ektfpP8ACACEUehYTzqVKk5hoQ5s2j+4+K9osj+aBbYHGNfnAYZo+3MK9DoiyCBNDbXEp5GtFkM0f
+	Iz/dgW5juy0V3OvJfzkwOriPQLHG5GazMSMcoJuxmsKrNoje3ChMBqlPerDNYhAGzIfDgyOE6iNyP
+	3H3wvWhKEQ8LMQK3/P5dZLaoD48ZaKkJ4rmpMGd+xq+3AwCPylLEhaBAuKgN6UnAwtF1a95NoBhNx
+	aXkhC+1upEF8WKoydrMT2JHjeLPYpepESAYT0tK/FOmAWM61zQjAj6XojaitK9ktHXMlYld53wAnf
+	OmGrZV4A==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -56,9 +56,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>,
 	Ondrej Jirman <megi@xff.cz>
-Subject: [PATCH v3 23/25] drivers: media: i2c: imx258: Add support for powerdown gpio
-Date: Wed,  3 Apr 2024 09:03:52 -0600
-Message-ID: <20240403150355.189229-24-git@luigi311.com>
+Subject: [PATCH v3 22/25] dt-bindings: media: imx258: Add binding for powerdown-gpio
+Date: Wed,  3 Apr 2024 09:03:51 -0600
+Message-ID: <20240403150355.189229-23-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -72,67 +72,29 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Luis Garcia <git@luigi311.com>
 
-On some boards powerdown signal needs to be deasserted for this
-sensor to be enabled.
+Add powerdown-gpio binding as it is required for some boards
 
 Signed-off-by: Ondrej Jirman <megi@xff.cz>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 30352c33f63c..163f04f6f954 100644
---- a/drivers/media/i2c/imx258.c
-+++ b/drivers/media/i2c/imx258.c
-@@ -679,6 +679,8 @@ struct imx258 {
- 	unsigned int lane_mode_idx;
- 	unsigned int csi2_flags;
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+index c978abc0cdb3..33338139e6e8 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+@@ -36,6 +36,10 @@ properties:
+   reg:
+     maxItems: 1
  
-+	struct gpio_desc *powerdown_gpio;
++  powerdown-gpios:
++    description:
++      Reference to the GPIO connected to the PWDN pin, if any.
 +
- 	/*
- 	 * Mutex for serialized access:
- 	 * Protect sensor module set pad format and start/stop streaming safely.
-@@ -1213,6 +1215,8 @@ static int imx258_power_on(struct device *dev)
- 	struct imx258 *imx258 = to_imx258(sd);
- 	int ret;
- 
-+	gpiod_set_value_cansleep(imx258->powerdown_gpio, 0);
-+
- 	ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
- 				    imx258->supplies);
- 	if (ret) {
-@@ -1224,6 +1228,7 @@ static int imx258_power_on(struct device *dev)
- 	ret = clk_prepare_enable(imx258->clk);
- 	if (ret) {
- 		dev_err(dev, "failed to enable clock\n");
-+		gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
- 		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
- 	}
- 
-@@ -1238,6 +1243,8 @@ static int imx258_power_off(struct device *dev)
- 	clk_disable_unprepare(imx258->clk);
- 	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
- 
-+	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
-+
- 	return 0;
- }
- 
-@@ -1541,6 +1548,12 @@ static int imx258_probe(struct i2c_client *client)
- 	if (!imx258->variant_cfg)
- 		imx258->variant_cfg = &imx258_cfg;
- 
-+	/* request optional power down pin */
-+	imx258->powerdown_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
-+						    GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx258->powerdown_gpio))
-+		return PTR_ERR(imx258->powerdown_gpio);
-+
- 	/* Initialize subdev */
- 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
- 
+   reset-gpios:
+     description: |-
+       Reference to the GPIO connected to the XCLR pin, if any.
 -- 
 2.42.0
 
