@@ -1,147 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84343139585
-	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 16:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83E91E520;
+	Wed,  3 Apr 2024 16:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712161748; cv=none; b=H4gGb46i4yFvErrNn0VE0+1Ile8PLMtqSv9H8w3HWrRDqZ9NFghQUcWdt5+qZQaEhF2MfH8KkGBRgAdHfUlMMzeeCiGmYDGwxms6TQtawHHY2xbhGgjr2IYTEpVp2UHXivUlP7xwVVUldCyDxT6lxWtl5FDTO9i1SY/jsyjHq/Y=
+	t=1712162654; cv=none; b=QmThfB2uG0DjDE/oD78W99O25/ADBN99gJ4GWZA7LIZ3B1CO1yTVfZ5ECgpRSGGXOAWldz11Dkop+eY0xFFwRiTjBZesftEsgmVSBKTjLCACuug1GvdNOv0Gu6B/tQyZrPVpXo0Nnys8riSOshTc0sdk6CJ0QqbqPsW6ESwbEl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712161748; c=relaxed/simple;
-	bh=mhuKbmAv0FK32oWKE8zDOqzcjDgwcdmOI00I9TTS6DI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=heI+Z8m4rHaLsKhw8+E6txBHNBCZ8+7nWN4WW5L/SipVs3elwQrIS95PSTaYeDuMmIoYaf8yfebiNznucIsEkr7gScPMy2EU2mGfaBkYRCRgI6E7LBmtCu1Qw+bIUaWDDyHjOQe9KYUkeTHIRUKlLOmDAWrUOnrCWV/1puIvjXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nB6WncOC; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1712162654; c=relaxed/simple;
+	bh=M1neYOlhzngATdBbVyJaKe7fkRAK//9DrStR8GOcQu4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HZT2XFqARwF4Z+85DrgQGT9BNu/Qrhxwgl8kP7Kvm8wgPlOlU/6YaxP4O4hledGA1mkNbcaArPbCmwBNh874p01oMZ7M+zmfhwIFzX9WxPwNE6IJi2Zzcv3q9EeX9nmUg35ytnMDbJMJvOYA0YtYAitbeCsfo+gmgvjcjnhaH6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgmwMsXH; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nB6WncOC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712161746; x=1743697746;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mhuKbmAv0FK32oWKE8zDOqzcjDgwcdmOI00I9TTS6DI=;
-  b=nB6WncOCdoRIuSwbsy6I5dC1iHkLY/Rcj7WO522/HZZ3J+e1IM3wE6Z0
-   Pveikps4kDrMhQGcvH3dKtPfJ37K/YNz74b0STf80jAQ85Sdv2VLyELGq
-   GowYFtnGIlObGf/ORoAOqxelRR12lathtxfXG5tTHDSvb20bPk3JkDBO7
-   5tBg3JOU3aZ4WWN+pC/h0p55TyL5yjMieenGLhle/ORv/VzGOL6kNfdrS
-   SA/4yWbRcG1JDutu5znIW9d+yOvDLMAZzpPYAYnQu8yNnFDkGYZOR+8s6
-   d3PKzDpVixmfknO3wB/SD7HLhHQsp5jMAVcFygvAn40kncSRbfbfMINPi
-   Q==;
-X-CSE-ConnectionGUID: bRsBFalPThGU53mlnBXG1g==
-X-CSE-MsgGUID: j8yO8wnFS9eJn3qG19Im3Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="24912191"
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="24912191"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 09:29:05 -0700
-X-CSE-ConnectionGUID: m6ew5ttxTs6sDcZnFGoCRQ==
-X-CSE-MsgGUID: lf/Y9co2QV+RE2aMxcSKCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="18419481"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 09:29:02 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 7BCC311F811;
-	Wed,  3 Apr 2024 19:28:59 +0300 (EEST)
-Date: Wed, 3 Apr 2024 16:28:59 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@luigi311.com
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pavel@ucw.cz, phone-devel@vger.kernel.org,
-	Ondrej Jirman <megous@megous.com>
-Subject: Re: [PATCH v3 24/25] drivers: media: i2c: imx258: Add support for
- reset gpio
-Message-ID: <Zg2Dy2QBguXQoR3P@kekkonen.localdomain>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-25-git@luigi311.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgmwMsXH"
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4d8e8619f4aso9301e0c.0;
+        Wed, 03 Apr 2024 09:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712162651; x=1712767451; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aej6QFoETxeFvbQm8/sOYYAdEcWAnghw/7Ynm8n0ucQ=;
+        b=RgmwMsXHbjzKaDOljdtc6tb+kslE/qRlIaIsIrbaKnpCQCLpYYTGxsJmmtHCUNEBSf
+         HGI82OwR+Ws5ZxSkAzRPRDG6gW4ac0QHJgCaGo2fTS+DoZW4hdvz6r48cv13JGCUduIX
+         6DlD6SIgyJocfkqXv/VNj4UfvujKb2vPSaWwWRAPRMUoezUyINhfRifGfPxPITG98C/8
+         oepZ1smESLXetRfQ1EKueSr68RrDOoJdHsbaaKSPFTu4K81MlwkRaQa2kP/MuVYjtyNw
+         LEpQMg89y4ruQYHe1dgd9p0n9xN/VuzAChxs0W0rlcwqtVeDgebjvsr+iidy7QWSOTGV
+         z2UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712162651; x=1712767451;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Aej6QFoETxeFvbQm8/sOYYAdEcWAnghw/7Ynm8n0ucQ=;
+        b=ljflk8Fno0C/nQUhP5DIZPTxs1rZzpI3v1rUp0XZU5eAvtdeP6n5DBZE9BfClNjo8W
+         b8fFEZw5iMKkCQXkR0+aSLE53kzSnysc+cAG674vb7EfAUHuEp/sRY9beFh5uY6vUZyV
+         7NFPgeZfUKBFxX+k8dw32rvPFZFblmhH1dArmBeDUvr0Jvyt5fvoIKJqLH7p49qtnGK0
+         lupKVnFd6P7oUnW/7zi9OjjJ44557v81TkBMeIX4Jgj/nFqWxtBrs6ZlGZgLWikZGwfv
+         YSX2I7SWon+yBUJMCvHLGsQcGr/NADc1BOuPXSJLSBHYCCcma8HDjqRYI9DN8iUJc64L
+         9w+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX5NN7ajmEKKgmvtvFkxMzVSn3QdLCElTUGD+X784Ry9AYrliGmRYlSeukTTW7IZr2yRs42TCfiltwJqazfHz7zay/gt9MQDCWux8NAIOZZU4KwYklnUaMIlX5aQo1DV55sQgi2f5MHcFq7j+lUKy9srOcZih1F2Q==
+X-Gm-Message-State: AOJu0YxvNIQx6yqoymQCto4zR+qrcThB/YlastJcg34Dn8zw27AKm/gJ
+	xjqNAw3vB1r/jAUlEHQD+amDPBJsQRXvMDqwMOCpGKw84N50eQSzjuaw0nziVAZ37EbdjdNqgEX
+	t/ykQan9V05dI8JScUPJFpkkjI/Q=
+X-Google-Smtp-Source: AGHT+IFEFFEcpcdQfCxRWJYlDuuUETZ0sWBciDlGUMCvLnJmEBIY1oP87nAaJSL5QQDatxb4oTnFcly4MrzzQ8OrF5o=
+X-Received: by 2002:a05:6122:499a:b0:4d3:b326:5ae8 with SMTP id
+ ex26-20020a056122499a00b004d3b3265ae8mr10815788vkb.14.1712162651582; Wed, 03
+ Apr 2024 09:44:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240403150355.189229-25-git@luigi311.com>
+References: <20240327160314.9982-1-apais@linux.microsoft.com> <20240327160314.9982-2-apais@linux.microsoft.com>
+In-Reply-To: <20240327160314.9982-2-apais@linux.microsoft.com>
+From: Allen <allen.lkml@gmail.com>
+Date: Wed, 3 Apr 2024 09:43:57 -0700
+Message-ID: <CAOMdWSLavg27YZgnfE2QHjO=4RNmFx_7veAURaPG_=qWX=KMVA@mail.gmail.com>
+Subject: Re: [PATCH 1/9] hyperv: Convert from tasklet to BH workqueue
+To: Allen Pais <apais@linux.microsoft.com>
+Cc: linux-kernel@vger.kernel.org, tj@kernel.org, keescook@chromium.org, 
+	vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev, 
+	florian.fainelli@broadcom.com, rjui@broadcom.com, sbranden@broadcom.com, 
+	paul@crapouillou.net, Eugeniy.Paltsev@synopsys.com, 
+	manivannan.sadhasivam@linaro.org, vireshk@kernel.org, Frank.Li@nxp.com, 
+	leoyang.li@nxp.com, zw@zh-kernel.org, wangzhou1@hisilicon.com, 
+	haijie1@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, afaerber@suse.de, 
+	logang@deltatee.com, daniel@zonque.org, haojian.zhuang@gmail.com, 
+	robert.jarzmik@free.fr, andersson@kernel.org, konrad.dybcio@linaro.org, 
+	orsonzhai@gmail.com, baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com, 
+	patrice.chotard@foss.st.com, linus.walleij@linaro.org, wens@csie.org, 
+	jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com, kys@microsoft.com, 
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, 
+	jassisinghbrar@gmail.com, mchehab@kernel.org, maintainers@bluecherrydvr.com, 
+	aubin.constans@microchip.com, ulf.hansson@linaro.org, manuel.lauss@gmail.com, 
+	mirq-linux@rere.qmqm.pl, jh80.chung@samsung.com, oakad@yahoo.com, 
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, brucechang@via.com.tw, 
+	HaraldWelte@viatech.com, pierre@ossman.eu, duncan.sands@free.fr, 
+	stern@rowland.harvard.edu, oneukum@suse.com, 
+	openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org, 
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-mediatek@lists.infradead.org, linux-actions@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Luis,
-
-Could you unify the subject prefix for the driver patches, please? E.g.
-"media: imx258: " would be fine.
-
-On Wed, Apr 03, 2024 at 09:03:53AM -0600, git@luigi311.com wrote:
-> From: Luis Garcia <git@luigi311.com>
-> 
-> It was documented in DT, but not implemented.
-> 
-> Signed-off-by: Ondrej Jirman <megous@megous.com>
-> Signed-off-by: Luis Garcia <git@luigi311.com>
+> The only generic interface to execute asynchronously in the BH context is
+> tasklet; however, it's marked deprecated and has some design flaws. To
+> replace tasklets, BH workqueue support was recently added. A BH workqueue
+> behaves similarly to regular workqueues except that the queued work items
+> are executed in the BH context.
+>
+> This patch converts drivers/hv/* from tasklet to BH workqueue.
+>
+> Based on the work done by Tejun Heo <tj@kernel.org>
+> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
+>
+> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
 > ---
->  drivers/media/i2c/imx258.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> index 163f04f6f954..4c117c4829f1 100644
-> --- a/drivers/media/i2c/imx258.c
-> +++ b/drivers/media/i2c/imx258.c
-> @@ -680,6 +680,7 @@ struct imx258 {
->  	unsigned int csi2_flags;
->  
->  	struct gpio_desc *powerdown_gpio;
-> +	struct gpio_desc *reset_gpio;
->  
->  	/*
->  	 * Mutex for serialized access:
-> @@ -1232,7 +1233,11 @@ static int imx258_power_on(struct device *dev)
->  		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->  	}
->  
-> -	return ret;
-> +	gpiod_set_value_cansleep(imx258->reset_gpio, 0);
-> +
-> +	usleep_range(400, 500);
+>  drivers/hv/channel.c      |  8 ++++----
+>  drivers/hv/channel_mgmt.c |  5 ++---
+>  drivers/hv/connection.c   |  9 +++++----
+>  drivers/hv/hv.c           |  3 +--
+>  drivers/hv/hv_balloon.c   |  4 ++--
+>  drivers/hv/hv_fcopy.c     |  8 ++++----
+>  drivers/hv/hv_kvp.c       |  8 ++++----
+>  drivers/hv/hv_snapshot.c  |  8 ++++----
+>  drivers/hv/hyperv_vmbus.h |  9 +++++----
+>  drivers/hv/vmbus_drv.c    | 19 ++++++++++---------
+>  include/linux/hyperv.h    |  2 +-
+>  11 files changed, 42 insertions(+), 41 deletions(-)
 
-You could mention this at least in the commit message.
+Wei,
 
-> +
-> +	return 0;
->  }
->  
->  static int imx258_power_off(struct device *dev)
-> @@ -1243,6 +1248,7 @@ static int imx258_power_off(struct device *dev)
->  	clk_disable_unprepare(imx258->clk);
->  	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->  
-> +	gpiod_set_value_cansleep(imx258->reset_gpio, 1);
+ I need to send out a v2 as I did not include the second patch that
+updates drivers/pci/controller/pci-hyperv.c
 
-Same question than on the other GPIO: does this belong here?
-
->  	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
->  
->  	return 0;
-> @@ -1554,6 +1560,12 @@ static int imx258_probe(struct i2c_client *client)
->  	if (IS_ERR(imx258->powerdown_gpio))
->  		return PTR_ERR(imx258->powerdown_gpio);
->  
-> +	/* request optional reset pin */
-> +	imx258->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-> +						    GPIOD_OUT_HIGH);
-> +	if (IS_ERR(imx258->reset_gpio))
-> +		return PTR_ERR(imx258->reset_gpio);
-> +
->  	/* Initialize subdev */
->  	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
->  
-
--- 
-Regards,
-
-Sakari Ailus
+Thanks.
