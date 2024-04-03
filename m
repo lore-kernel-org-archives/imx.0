@@ -1,40 +1,40 @@
-Received: from mail-108-mta35.mxroute.com (mail-108-mta35.mxroute.com [136.175.108.35])
+Received: from mail-108-mta102.mxroute.com (mail-108-mta102.mxroute.com [136.175.108.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C676149E15
-	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 15:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E547514AD06
+	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 15:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712156874; cv=none; b=BelzQxsAib64KYZVTOYLO1X7UHqwfjllaRFu1gJKKrmbjYvE5sV7Qti7Zwotrq6AhSsxg66Ijeqcpz7Y7cepkl/D1C+qPhWQNmu0vKaDpvgagKjFd9tt25iADXE3JFx9coQ8eUpF3ibCcL5P4IlFv+JK0lJxdeCRXoyfBfbsrgY=
+	t=1712156875; cv=none; b=MMI1Bg9b3loW8AF3+rQGi1ltr5yzP/u1Fb3FaskyXvM/7oPVUmvbw8FPladuKANyOB5gNId0oc7px3xppNGgNaB4ZaVMMFhLcJrwMHOeaRO6F32xxWcD1xC08Zc88OuYQCldLpa4ce3dhX/xnPH+5FGTV+dj3ZvLazcWB4ilQqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712156874; c=relaxed/simple;
-	bh=orKRL9k3h4MQbuG4dRP6H2viAfkBXdURmtZNsy+EARg=;
+	s=arc-20240116; t=1712156875; c=relaxed/simple;
+	bh=7PlAfVztKQMARKBbcpVjFWXyV1tsnHi7QOOFhMQbxgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6HZLiTjRku57X90EcfoLqYSDJeneROVQxkLFSozX9J1kDlDpqmCYToSkBpk+N4rUNdptylEZHRtyaqyo7JF6iFV7QhE0TZStWqHiULhU8OK1UXsCOWwOlzFYQlTeI97Csf8dcO4gHESVmj7Vt6psNzCqBGoThel70PyziqneZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=yhQ0Igzq; arc=none smtp.client-ip=136.175.108.35
+	 MIME-Version; b=qsJAJNr0ZZdZqLjbx/yqxqO9qXtuNgyyTgZCo1GspPbafTw78Py9/greZhZ52jNRgSrHZIxTGGKD8n/oqMyMZr2zzB0qu4IBufNVBc/Tbf120ohg0zD7bwa1Ccj8LW6EHADUex+63HX5sDgyeccXadlqCL/4m0tltPdSU1jnfYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=fV06Zg9W; arc=none smtp.client-ip=136.175.108.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="yhQ0Igzq"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="fV06Zg9W"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta35.mxroute.com (ZoneMTA) with ESMTPSA id 18ea4807e200003bea.00a
+ by mail-108-mta102.mxroute.com (ZoneMTA) with ESMTPSA id 18ea4806d450003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:07:48 +0000
-X-Zone-Loop: d1eb62728ab97fd55942bbd67e4c5b096d387db4e03a
+ Wed, 03 Apr 2024 15:07:43 +0000
+X-Zone-Loop: c515e8bb819ef9c8c67e41d7698428c1ad095e0cec6b
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=um6Hj3+66bt6kjL5BKukA1fuuXmDo6jHd9WAJeM/FZM=; b=yhQ0IgzqM+a20jFZcASsvQ5ncx
-	EMiRWEP5cGixlUh+70Z6ymKyvMOMtTlpsNHm+OQ3DSSKkvCbsKbP2JnmUvXeAQkiMf2TlesAkd6/h
-	mZdcpPDFWE5Jh67T8CoeNe5WB4/jVIPNa1VgLtUHmZt48pVB3WDMntqgH/Q99lFzOrZXTwAZ6cbqH
-	+U0q18W+/c04ecmR8UnwHr2Lrq1IH3NDTcTWbEzsf1v0ugvxYUf6TJxzas9wfClobp9mwQqFbjzmY
-	HlOld8pueeoRTacIuXL10sIwK7AEk0WpjaDYYPqrdmQjIZZQSCi+aCJqaXmxC6vXq5u6ZhEPSAvl5
-	nPKQwLMQ==;
+	bh=A5USQN4/h/HmEuUVVMz6q8rv2sJt6lF+TSZcmadaFDA=; b=fV06Zg9WcJDysEv6YoDTj10Wkb
+	8EbQWsa+xhaFRiNbrerrWg3hcn0p7dt93VMDkYCKxXhGwvsKu7+TSyOse0v9Hg7CphoTZVRStKZIy
+	d9Zncoinm1XODf+3oLTE8n6IHnFVgG3HHnMtwR6xrwSwjN39eSRc65gpwpu2Nb8VIYL4HbXJaoJaA
+	MwjO0HexoawzdiDk0Pow1cD8E0LoVLP8Gn6ARvhW2bh07bpce+s1n3QEw3m/4DAcr8xWguLAOJlBJ
+	3fUuk8+Mie8d1fqYpOdzzASFkZ7tD0eJHdKowPsLIbsolPA6MKpFl+so0qvy4obaT4gdSaJkKXdYs
+	e0XT39Hw==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v3 15/25] media: i2c: imx258: Set pixel_rate range to the same as the value
-Date: Wed,  3 Apr 2024 09:03:44 -0600
-Message-ID: <20240403150355.189229-16-git@luigi311.com>
+Subject: [PATCH v3 13/25] media: i2c: imx258: Correct max FRM_LENGTH_LINES value
+Date: Wed,  3 Apr 2024 09:03:42 -0600
+Message-ID: <20240403150355.189229-14-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -71,64 +71,30 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-With a read only control there is limited point in advertising
-a minimum and maximum for the control, so change to set the
-value, min, and max all to the selected pixel rate.
+The data sheet states that the maximum value for registers
+0x0340/0x0341 FRM_LENGTH_LINES is 65525(decimal), not the
+0xFFFF defined in this driver. Correct this limit.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/media/i2c/imx258.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index c242e318be11..7d434bc12c6a 100644
+index 692a5aeb7941..5a5bf2b25bdf 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -971,7 +971,8 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+@@ -28,7 +28,7 @@
+ #define IMX258_VTS_30FPS		0x0c50
+ #define IMX258_VTS_30FPS_2K		0x0638
+ #define IMX258_VTS_30FPS_VGA		0x034c
+-#define IMX258_VTS_MAX			0xffff
++#define IMX258_VTS_MAX			65525
  
- 		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
- 		pixel_rate = link_freq_to_pixel_rate(link_freq, imx258->nlanes);
--		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
-+		__v4l2_ctrl_modify_range(imx258->pixel_rate, pixel_rate,
-+					 pixel_rate, 1, pixel_rate);
- 		/* Update limits and set FPS to default */
- 		vblank_def = imx258->cur_mode->vts_def -
- 			     imx258->cur_mode->height;
-@@ -1262,8 +1263,7 @@ static int imx258_init_controls(struct imx258 *imx258)
- 	struct v4l2_ctrl *vflip, *hflip;
- 	s64 vblank_def;
- 	s64 vblank_min;
--	s64 pixel_rate_min;
--	s64 pixel_rate_max;
-+	s64 pixel_rate;
- 	int ret;
+ #define IMX258_REG_VTS			0x0340
  
- 	ctrl_hdlr = &imx258->ctrl_handler;
-@@ -1294,18 +1294,13 @@ static int imx258_init_controls(struct imx258 *imx258)
- 	if (vflip)
- 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
- 
--	pixel_rate_max =
--		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
--					imx258->nlanes);
--	pixel_rate_min =
--		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1],
--					imx258->nlanes);
-+	pixel_rate = link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
-+					     imx258->nlanes);
- 	/* By default, PIXEL_RATE is read only */
- 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
- 				V4L2_CID_PIXEL_RATE,
--				pixel_rate_min, pixel_rate_max,
--				1, pixel_rate_max);
--
-+				pixel_rate, pixel_rate,
-+				1, pixel_rate);
- 
- 	vblank_def = imx258->cur_mode->vts_def - imx258->cur_mode->height;
- 	vblank_min = imx258->cur_mode->vts_min - imx258->cur_mode->height;
 -- 
 2.42.0
 
