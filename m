@@ -1,31 +1,31 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D094125CC
-	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 01:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54A6125CC
+	for <imx@lists.linux.dev>; Wed,  3 Apr 2024 01:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712108774; cv=none; b=DfeX4Ko5qWObUx2ZVbO7MUFiMc8aL9FOLVf8zgyrDCwMqdbCLXzJNuFrp22+pGc8CVGxoGGtsNiiNItnmNGif4gtTuYYk7odcnjx1x9EKFKcWhJcS2654uJw9VvrRRUO49dFnh2xwZCZx0X4Rnpi0HxwRFBynLdL8jkClOdNByY=
+	t=1712109063; cv=none; b=GyezsfsezFg3XSj9ucCeFg9VtckkkGqhncnPdl8mvmfC3WwejUE0lWMia9gt6a2CEBmk38iYcVTLmsvGtpbmB5R0x5NHxtW1on53EWyg9ENUWRdUSeWQSAruKXgB9N4gQ4GOCVddxp1vZE6FKjVD9KbX2MPPvPaEGH3raSHnaSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712108774; c=relaxed/simple;
-	bh=MuznxIArtT+GpJBNXazw+Q5Rm/vUC2YziMQinmmP118=;
+	s=arc-20240116; t=1712109063; c=relaxed/simple;
+	bh=AUn408o5zF2Evj1dSYZFE/QDZDOFRaaeO0o7pv48Alk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XpMk+pmHZ7hHVfNowMY1VDkB2RjJu1iXmygl1+rSnFgR44ly0zKHhDHPNADMj/lehiynWOE4iXjpSpkYPgRjXsXbtnuHNmCCfgfAJcKz8JbHb7vC00w99rn04JQT4agEG7cCVkp3XehctdJMkTsaJmIHfuNHiQgA2YgmEBuOHP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HqMo8bGW; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=dUOnjReLjzlpzd7lTxymFD7UYmAsDgVymnuIvx6xTAqpUg3mfmqeUQnu/z0PjXu+jJgWnfgs80qU/t+tp5J1Nlctk582RVn544wZflKNn9cZzBtdFJPEXPHKb6u7Gt98GPH0nryXSWsUGD4h7ye7RCu63ZNMwfHLEHdW08b+b9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=BeMuzgLd; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HqMo8bGW"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="BeMuzgLd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=wI38BOff83Z3O570b58MMMyCQE8jw/HSaBPct6nheZw=;
-	b=HqMo8bGW80N59J7AVklQNLtkhdt3Lmt0/fjZ14xq1zmIzbw+7qekdRb8+pgTlB
-	Vzj+uQB0/oWpr99oTyFv/P9X34eXQxMr2xez6/lxTMBkkXDPQP5IlVdQZtpI23Ze
-	3Nf4/GJjatmsrgJlNcQn8TpFyMsFeWFegEcYy8C+ZDPEw=
+	Content-Type; bh=0ZpIemGJwBDqYoWurg9vfIC28+h0FY31ig8VDbMFrmw=;
+	b=BeMuzgLdnvGuLOCMkTbmQAwjVJMeBmhogr59a3iI4UXujVHaf95L2PLet1RIbZ
+	ogkpYCJ7IJmhCsk+qtJOcIkf47pYutC5fVYftaBOuBvZwlBvk81/aYm+2WWQpspD
+	uaY7iXNZyFPeI53q51eCPf0vQng2jYROjsjc6A9KbCp6U=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrADnDyDQtAxmZ6ytAQ--.3637S3;
-	Wed, 03 Apr 2024 09:45:53 +0800 (CST)
-Date: Wed, 3 Apr 2024 09:45:52 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrADX32X3tQxmi8CtAQ--.14739S3;
+	Wed, 03 Apr 2024 09:50:48 +0800 (CST)
+Date: Wed, 3 Apr 2024 09:50:47 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -33,13 +33,10 @@ Cc: Rob Herring <robh@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Alice Guo <alice.guo@nxp.com>
-Subject: Re: [PATCH v5 0/4] arm64: dts: imx8: add cm40 and cm40_uart
-Message-ID: <Zgy00Iky4hXlK+Gc@dragon>
-References: <20240402-m4_lpuart-v5-0-3292629ba808@nxp.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arch: arm: mxc: phyCARD-i.MX27: Add USB support
+Message-ID: <Zgy191gmlZ9No5pi@dragon>
+References: <20240328-pca100-v1-1-58df67c2c950@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,26 +45,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240402-m4_lpuart-v5-0-3292629ba808@nxp.com>
-X-CM-TRANSID:ClUQrADnDyDQtAxmZ6ytAQ--.3637S3
+In-Reply-To: <20240328-pca100-v1-1-58df67c2c950@pengutronix.de>
+X-CM-TRANSID:ClUQrADX32X3tQxmi8CtAQ--.14739S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsyCJDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBRG1ZVsVCbg3pQAAsp
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI5fHUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFRi1ZV6NnBtGbQAAsi
 
-On Tue, Apr 02, 2024 at 10:41:27AM -0400, Frank Li wrote:
-> Alice Guo (1):
->       arm64: dts: imx8dxl: add lpuart device in cm40 subsystem
+On Tue, Apr 02, 2024 at 09:35:33AM +0200, Michael Grzeschik wrote:
+> This patch adds the pinmux and nodes for usbotg and usbh2.
 > 
-> Dong Aisheng (1):
->       arm64: dts: imx8: add cm40 subsystem dtsi
+> In v6 revision of the pca100 the usb phys were changed to usb3320 which
+> are connected by their reset pins. We add the phy configuration to the
+> description.
 > 
-> Frank Li (2):
->       arm64: dts: imx8dxl: update cm40 irq number information
->       dts: arm64: imx8dxl-evk: add lpuart1 and cm40 uart
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-arm64: dts: imx8dxl-evk: ...
-
-Fixed it up and applied the series, thanks!
+"ARM: dts: ..." for subject prefix.
 
 Shawn
 
