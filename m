@@ -1,355 +1,270 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1891A5D734
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD6B7172C
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712217850; cv=none; b=GEf+B7R4C3u118KGoHkqkHp7v/T5UQa8jfNlrAlk2GjzW7NhbXfXnvnq+wSfnRzOFaJ3/5DfG05R9itfCG8W8RoSgDzOJ6JXeGnYwn7+YB03QuCkLCipHbLg08nBSRgunESCiMnyc2w1EL6nU/ckdEffmbOh4e4w+xCemBw8ADs=
+	t=1712220327; cv=none; b=rvRoaUdhJeKFiLrsLgGhneKxvtjsmp64UMVQPfKUrpCU9Cb5ZSxq3wM42GyI1gSPlL+x0+AeziUhbqIxQB8JB9IWiI+gaxGJKqaScyGW3+Ef+yhUBq1y0W4xFnYFNDbwG+qZKf3gMVz0exLJCB9OXs+WX/0VYB+cAqB5F07SR68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712217850; c=relaxed/simple;
-	bh=jOkqW2E7hIrpQcS2etNxADrH9Qc++Sk6dDKBF1O+XXw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nb1TzpQPVkBJjvQ9T9r3/DxOSSVVxWVYIzhJD3zgcwU/afCuBZ9zHEZIdBKGz2EniTA3/8t3wdFN1a1H+9ZdJ6pb/6ADDAp4crbF37sSVewF5Hn72rvWt6xvGXRFB4Ve1sPGIspfXSSNxvo+BMH5eBcmZpNvIU5LejM0rS/D4S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZyAJOz6W; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1712220327; c=relaxed/simple;
+	bh=aRrOYrta+1RXuR175jubYLyOAM6aPkS6N48rtWm1kxg=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=LI7Tk7yBfZtcBBukr2TrKciW/gd/aM0GI3hhmtJ08/LL2XFjOoWxkkUGcid5CXZyZjq0oS0L3ezz/XjX7kvgrq/x0ABPigMfxGPwU5jTehOV1y1R5eS3R1ZU2dQcnw24ZFEPsmB4k1GeA5b9QW0Rs9tCtd6oj5MUV3qnpY5utHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JWrVawa3; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZyAJOz6W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712217846; x=1743753846;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jOkqW2E7hIrpQcS2etNxADrH9Qc++Sk6dDKBF1O+XXw=;
-  b=ZyAJOz6W7kOMGMl/pC7h6yNcx/z0Enhl80Dvwyfvh2oZz160+pSyxSNr
-   vSAPhwgl337LtKzL/nnZHfjCXyM84dghFdAfngn52AxpAuoxyMXXp4zgT
-   tO1Xf+A1hO0zgUGK5FQMHGvQmkfBWckRfAnJyo7l8xFcf6XqpNnr7HLuK
-   vZwuNULFUZSyUWcQhp6gS3ilY+8U3EUuvNV7J82mW5bo9i1+GRjjrUeGS
-   UULgw+pJySFokpIYhXK5DN462THJxoMOfX+HBrrnpwTYrXjR33FzZbpbD
-   A7d+M/rdDqamSoOKzCLt19Kb0+3N77Z7uAvuhpp/pOj1NVtknrhfGG2YX
-   A==;
-X-CSE-ConnectionGUID: FqkEQMDFSBegc6RrdU82oA==
-X-CSE-MsgGUID: 1zWW7KReQQeP6OXIbn5PmA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="8063237"
-X-IronPort-AV: E=Sophos;i="6.07,178,1708416000"; 
-   d="scan'208";a="8063237"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 01:04:05 -0700
-X-CSE-ConnectionGUID: HhBK4V/wTBG1ubej6USvBg==
-X-CSE-MsgGUID: ZtpcSPjFQjq6uyK9CGSKXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,178,1708416000"; 
-   d="scan'208";a="56154819"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 01:04:02 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 9091111F82F;
-	Thu,  4 Apr 2024 11:03:58 +0300 (EEST)
-Date: Thu, 4 Apr 2024 08:03:58 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Luigi311 <personal@luigi311.com>
-Cc: git@luigi311.com, linux-media@vger.kernel.org,
-	dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
-	mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/23] media: i2c: imx258: Add support for 24MHz clock
-Message-ID: <Zg5e7teCn2LDfUZt@kekkonen.localdomain>
-References: <20240327231710.53188-1-git@luigi311.com>
- <20240327231710.53188-9-git@luigi311.com>
- <ZgUlzCfUN-PnF8Yy@kekkonen.localdomain>
- <11f2e7d8-fd4c-4e14-81d8-cbc2cd2442fa@luigi311.com>
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JWrVawa3"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3436fec6a70so529270f8f.2
+        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 01:45:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712220323; x=1712825123; darn=lists.linux.dev;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=8fo6r6+GpOmbs58KA8H03fqz5IfKM9XbnGIu84c+CU0=;
+        b=JWrVawa3JmXHFm0dmuqQddn2de4Ykw77QzJChg51cWVBC5w+VbFojxwaNx01e/Owzq
+         FR9mFvqeIOAyTQOuTdZWMbafCO+2LGpzv8xOTt+k8+v2LCd/ULeebPhT4uragprHOSbX
+         xjhCKxCaqAPym8kC8nBG7dbayFfEC4Gh6lbkVt6/XV+aL3LucBaa/3MpIR2E+1uEzJ7a
+         NVJW+mpSVioleTbijF/X0xWVePEExWo79EkR0Y3wSYRznjXJ5NtT2okxmW02ccwqZJ8u
+         hDXWqUZ/rnMt2tAeZWIsgap8fqvIPmjI0zxM9gGxHOEhYTjlyiAM1QDkixuXtvVj3sd7
+         irQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712220323; x=1712825123;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8fo6r6+GpOmbs58KA8H03fqz5IfKM9XbnGIu84c+CU0=;
+        b=vnLqkmogSrpG6enqZoje4Ib35z+I5Ven3/hlz5RqJPU2iSa6UxxiI2mweeK6Gg3znL
+         dgyWKQfagHZ2MbfHrG0rEWIpz4w///+ITz38tN2ConaJ6r0zuJ8U4xbvVvxCCqsCFhzv
+         FG24GnSxo7aqoBAss3bfAXKlqLQ0bUUQZNYBxutU4uQl4HW78a8Tpkq2zVjfo87eENUH
+         p69b0hlJ6cTRJ+sGOPUKnm8zrAC2zw1am2gsHSW10ktN/uR9C0sAUP8Zn0fNcQsCDsXM
+         UzihsMpLw/ayJ/ey/5x3DLh61s06dPYuDfwqYUSRJkX31nlFEkejva7Zc9on4hPVObik
+         eheA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaI+FQlJhc6GgjVQPJiuKPP85w55qdCsBXkxB1zqvtxWnUAymImLLKrTy0P6u29M5pfQDRH24dVTNK4cVnlWc5P2Xg
+X-Gm-Message-State: AOJu0YyUAmCDKGFeP4JwZyuqwYoAQDFJhedUz1a26evKDdEYQmNDQKE3
+	FtsALuHyaRLoYWDBNzbtc4AlsXeRhx09V7wriyKoaFEzvnTtTraJq5NGpRIMHkA=
+X-Google-Smtp-Source: AGHT+IEAcsOPc4S1DUcCXvM+g9yxoPEXC4apjaO2kFEGisIgkysCQizj9ZAWeb5epN2r4xqgWw8tKA==
+X-Received: by 2002:adf:fec4:0:b0:343:61bb:115d with SMTP id q4-20020adffec4000000b0034361bb115dmr1666179wrs.26.1712220323243;
+        Thu, 04 Apr 2024 01:45:23 -0700 (PDT)
+Received: from localhost ([2a01:e0a:3c5:5fb1:b7ad:8118:73f1:92e5])
+        by smtp.gmail.com with ESMTPSA id bs26-20020a056000071a00b003439b45ca08sm3621056wrb.17.2024.04.04.01.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Apr 2024 01:45:22 -0700 (PDT)
+References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
+User-agent: mu4e 1.10.8; emacs 29.2
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: =?utf-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>, Alper Nebi
+ Yasak <alpernebiyasak@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Banajit Goswami
+ <bgoswami@quicinc.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Brent
+  Lu <brent.lu@intel.com>, Cezary Rojewski <cezary.rojewski@intel.com>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Daniel Baluta
+ <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>, Jaroslav
+  Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, Kai
+ Vehmanen <kai.vehmanen@linux.intel.com>, Kevin Hilman
+ <khilman@baylibre.com>, Liam  Girdwood <lgirdwood@gmail.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, Maso
+ Huang <maso.huang@mediatek.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Pierre-Louis Bossart
+ <pierre-louis.bossart@linux.intel.com>, Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang
+ <shengjiu.wang@gmail.com>, Srinivas Kandagatla
+ <srinivas.kandagatla@linaro.org>, Sylwester Nawrocki
+ <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Trevor Wu
+ <trevor.wu@mediatek.com>, Vinod Koul <vkoul@kernel.org>, Xiubo Li
+ <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org, imx@lists.linux.dev,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v2 00/16] ASoC: Replace dpcm_playback/capture to
+ playback/capture_only
+Date: Thu, 04 Apr 2024 10:27:11 +0200
+In-reply-to: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
+Message-ID: <1jil0xplcu.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11f2e7d8-fd4c-4e14-81d8-cbc2cd2442fa@luigi311.com>
+Content-Type: text/plain
 
-Hi Luigi311,
 
-On Thu, Mar 28, 2024 at 11:55:24AM -0600, Luigi311 wrote:
-> On 3/28/24 02:09, Sakari Ailus wrote:
-> > Hi Luigi311,
-> > 
-> > Thank you for the patchset.
-> > 
-> > On Wed, Mar 27, 2024 at 05:16:54PM -0600, git@luigi311.com wrote:
-> >> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> >>
-> >> There's no reason why only a clock of 19.2MHz is supported.
-> >> Indeed this isn't even a frequency listed in the datasheet.
-> >>
-> >> Add support for 24MHz as well.
-> >> The PLL settings result in slightly different link frequencies,
-> >> so parameterise those.
-> >>
-> >> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> >> Signed-off-by: Luigi311 <git@luigi311.com>
-> > 
-> > Is Luigi311 your real name? As per
-> > Documentation/process/submitting-patches.rst, anonymous (or pseudonym I'd
-> > say as well) contributions are not an option.
-> 
-> Luigi311 is not my real name but it would be a lot easier to find me if
-> it was. My real name is Luis Garcia which is a super common name so its
-> actually way easier to find me and all my work using my online name of
-> Luigi311. I can go ahead and swap over to Luis Garcia if required but a
-> name like that would provide no value in contacting/finding me since I'm
-> not famous like all the other Luis Garcia's that appear on google.
+On Mon 01 Apr 2024 at 00:27, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
 
-Thanks. E-mail addresses are still unique, presumably, so that helps.
+> Hi Mark
+>
+> This is v2 patch-set
+>
+> When we use DPCM, we need to set dpcm_playback/capture flag.
+> If these flag are set, soc_get_playback_capture() will check its
+> availability, but non DPCM doesn't need such special flags.
+>
+> OTOH, it cares playback/capture_only flag. It is needed.
+>
+> This patch remove DPCM special flag, and replace it playback/capture_only
+> flag if needed.
 
-> 
-> > 
-> >> ---
-> >>  drivers/media/i2c/imx258.c | 133 +++++++++++++++++++++++++++++--------
-> >>  1 file changed, 107 insertions(+), 26 deletions(-)
-> >>
-> >> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> >> index 351add1bc5d5..6ee7de079454 100644
-> >> --- a/drivers/media/i2c/imx258.c
-> >> +++ b/drivers/media/i2c/imx258.c
-> >> @@ -76,9 +76,6 @@
-> >>  #define REG_CONFIG_MIRROR_FLIP		0x03
-> >>  #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
-> >>  
-> >> -/* Input clock frequency in Hz */
-> >> -#define IMX258_INPUT_CLOCK_FREQ		19200000
-> >> -
-> >>  struct imx258_reg {
-> >>  	u16 address;
-> >>  	u8 val;
-> >> @@ -115,7 +112,9 @@ struct imx258_mode {
-> >>  };
-> >>  
-> >>  /* 4208x3120 needs 1267Mbps/lane, 4 lanes */
-> >> -static const struct imx258_reg mipi_data_rate_1267mbps[] = {
-> >> +static const struct imx258_reg mipi_1267mbps_19_2mhz[] = {
-> >> +	{ 0x0136, 0x13 },
-> >> +	{ 0x0137, 0x33 },
-> >>  	{ 0x0301, 0x05 },
-> >>  	{ 0x0303, 0x02 },
-> >>  	{ 0x0305, 0x03 },
-> >> @@ -133,7 +132,29 @@ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
-> >>  	{ 0x0823, 0xCC },
-> >>  };
-> >>  
-> >> -static const struct imx258_reg mipi_data_rate_640mbps[] = {
-> >> +static const struct imx258_reg mipi_1272mbps_24mhz[] = {
-> >> +	{ 0x0136, 0x18 },
-> >> +	{ 0x0137, 0x00 },
-> >> +	{ 0x0301, 0x05 },
-> >> +	{ 0x0303, 0x02 },
-> >> +	{ 0x0305, 0x04 },
-> >> +	{ 0x0306, 0x00 },
-> >> +	{ 0x0307, 0xD4 },
-> >> +	{ 0x0309, 0x0A },
-> >> +	{ 0x030B, 0x01 },
-> >> +	{ 0x030D, 0x02 },
-> >> +	{ 0x030E, 0x00 },
-> >> +	{ 0x030F, 0xD8 },
-> >> +	{ 0x0310, 0x00 },
-> >> +	{ 0x0820, 0x13 },
-> >> +	{ 0x0821, 0x4C },
-> >> +	{ 0x0822, 0xCC },
-> >> +	{ 0x0823, 0xCC },
-> >> +};
-> >> +
-> >> +static const struct imx258_reg mipi_640mbps_19_2mhz[] = {
-> >> +	{ 0x0136, 0x13 },
-> >> +	{ 0x0137, 0x33 },
-> >>  	{ 0x0301, 0x05 },
-> >>  	{ 0x0303, 0x02 },
-> >>  	{ 0x0305, 0x03 },
-> >> @@ -151,9 +172,27 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
-> >>  	{ 0x0823, 0x00 },
-> >>  };
-> >>  
-> >> +static const struct imx258_reg mipi_642mbps_24mhz[] = {
-> >> +	{ 0x0136, 0x18 },
-> >> +	{ 0x0137, 0x00 },
-> >> +	{ 0x0301, 0x05 },
-> >> +	{ 0x0303, 0x02 },
-> >> +	{ 0x0305, 0x04 },
-> >> +	{ 0x0306, 0x00 },
-> >> +	{ 0x0307, 0x6B },
-> >> +	{ 0x0309, 0x0A },
-> >> +	{ 0x030B, 0x01 },
-> >> +	{ 0x030D, 0x02 },
-> >> +	{ 0x030E, 0x00 },
-> >> +	{ 0x030F, 0xD8 },
-> >> +	{ 0x0310, 0x00 },
-> >> +	{ 0x0820, 0x0A },
-> >> +	{ 0x0821, 0x00 },
-> >> +	{ 0x0822, 0x00 },
-> >> +	{ 0x0823, 0x00 },
-> >> +};
-> >> +
-> >>  static const struct imx258_reg mode_common_regs[] = {
-> >> -	{ 0x0136, 0x13 },
-> >> -	{ 0x0137, 0x33 },
-> >>  	{ 0x3051, 0x00 },
-> >>  	{ 0x3052, 0x00 },
-> >>  	{ 0x4E21, 0x14 },
-> >> @@ -313,10 +352,6 @@ static const char * const imx258_supply_name[] = {
-> >>  
-> >>  #define IMX258_NUM_SUPPLIES ARRAY_SIZE(imx258_supply_name)
-> >>  
-> >> -/* Configurations for supported link frequencies */
-> >> -#define IMX258_LINK_FREQ_634MHZ	633600000ULL
-> >> -#define IMX258_LINK_FREQ_320MHZ	320000000ULL
-> >> -
-> >>  enum {
-> >>  	IMX258_LINK_FREQ_1267MBPS,
-> >>  	IMX258_LINK_FREQ_640MBPS,
-> >> @@ -335,25 +370,55 @@ static u64 link_freq_to_pixel_rate(u64 f)
-> >>  }
-> >>  
-> >>  /* Menu items for LINK_FREQ V4L2 control */
-> >> -static const s64 link_freq_menu_items[] = {
-> >> +/* Configurations for supported link frequencies */
-> >> +#define IMX258_LINK_FREQ_634MHZ	633600000ULL
-> >> +#define IMX258_LINK_FREQ_320MHZ	320000000ULL
-> >> +
-> >> +static const s64 link_freq_menu_items_19_2[] = {
-> >>  	IMX258_LINK_FREQ_634MHZ,
-> >>  	IMX258_LINK_FREQ_320MHZ,
-> >>  };
-> >>  
-> >> +/* Configurations for supported link frequencies */
-> >> +#define IMX258_LINK_FREQ_636MHZ	636000000ULL
-> >> +#define IMX258_LINK_FREQ_321MHZ	321000000ULL
-> > 
-> > These values aren't used outside the array below and the macro names are
-> > imprecise anyway. Could you put the numerical values to the array instead?
-> 
-> Ok I've removed the defines and just threw the values into the array instead.
-> 
-> > 
-> >> +
-> >> +static const s64 link_freq_menu_items_24[] = {
-> >> +	IMX258_LINK_FREQ_636MHZ,
-> >> +	IMX258_LINK_FREQ_321MHZ,
-> >> +};
-> >> +
-> >>  /* Link frequency configs */
-> >> -static const struct imx258_link_freq_config link_freq_configs[] = {
-> >> +static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
-> >>  	[IMX258_LINK_FREQ_1267MBPS] = {
-> >>  		.pixels_per_line = IMX258_PPL_DEFAULT,
-> >>  		.reg_list = {
-> >> -			.num_of_regs = ARRAY_SIZE(mipi_data_rate_1267mbps),
-> >> -			.regs = mipi_data_rate_1267mbps,
-> >> +			.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz),
-> >> +			.regs = mipi_1267mbps_19_2mhz,
-> >>  		}
-> >>  	},
-> >>  	[IMX258_LINK_FREQ_640MBPS] = {
-> >>  		.pixels_per_line = IMX258_PPL_DEFAULT,
-> >>  		.reg_list = {
-> >> -			.num_of_regs = ARRAY_SIZE(mipi_data_rate_640mbps),
-> >> -			.regs = mipi_data_rate_640mbps,
-> >> +			.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz),
-> >> +			.regs = mipi_640mbps_19_2mhz,
-> >> +		}
-> >> +	},
-> >> +};
-> >> +
-> >> +static const struct imx258_link_freq_config link_freq_configs_24[] = {
-> >> +	[IMX258_LINK_FREQ_1267MBPS] = {
-> >> +		.pixels_per_line = IMX258_PPL_DEFAULT,
-> >> +		.reg_list = {
-> >> +			.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz),
-> >> +			.regs = mipi_1272mbps_24mhz,
-> >> +		}
-> >> +	},
-> >> +	[IMX258_LINK_FREQ_640MBPS] = {
-> >> +		.pixels_per_line = IMX258_PPL_DEFAULT,
-> >> +		.reg_list = {
-> >> +			.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz),
-> >> +			.regs = mipi_642mbps_24mhz,
-> >>  		}
-> >>  	},
-> >>  };
-> >> @@ -410,6 +475,9 @@ struct imx258 {
-> >>  	/* Current mode */
-> >>  	const struct imx258_mode *cur_mode;
-> >>  
-> >> +	const struct imx258_link_freq_config *link_freq_configs;
-> >> +	const s64 *link_freq_menu_items;
-> >> +
-> >>  	/*
-> >>  	 * Mutex for serialized access:
-> >>  	 * Protect sensor module set pad format and start/stop streaming safely.
-> >> @@ -713,7 +781,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
-> >>  		imx258->cur_mode = mode;
-> >>  		__v4l2_ctrl_s_ctrl(imx258->link_freq, mode->link_freq_index);
-> >>  
-> >> -		link_freq = link_freq_menu_items[mode->link_freq_index];
-> >> +		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
-> >>  		pixel_rate = link_freq_to_pixel_rate(link_freq);
-> >>  		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
-> >>  		/* Update limits and set FPS to default */
-> >> @@ -727,7 +795,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
-> >>  			vblank_def);
-> >>  		__v4l2_ctrl_s_ctrl(imx258->vblank, vblank_def);
-> >>  		h_blank =
-> >> -			link_freq_configs[mode->link_freq_index].pixels_per_line
-> >> +			imx258->link_freq_configs[mode->link_freq_index].pixels_per_line
-> >>  			 - imx258->cur_mode->width;
-> >>  		__v4l2_ctrl_modify_range(imx258->hblank, h_blank,
-> >>  					 h_blank, 1, h_blank);
-> >> @@ -747,7 +815,7 @@ static int imx258_start_streaming(struct imx258 *imx258)
-> >>  
-> >>  	/* Setup PLL */
-> >>  	link_freq_index = imx258->cur_mode->link_freq_index;
-> >> -	reg_list = &link_freq_configs[link_freq_index].reg_list;
-> >> +	reg_list = &imx258->link_freq_configs[link_freq_index].reg_list;
-> >>  	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
-> >>  	if (ret) {
-> >>  		dev_err(&client->dev, "%s failed to set plls\n", __func__);
-> >> @@ -946,9 +1014,9 @@ static int imx258_init_controls(struct imx258 *imx258)
-> >>  	imx258->link_freq = v4l2_ctrl_new_int_menu(ctrl_hdlr,
-> >>  				&imx258_ctrl_ops,
-> >>  				V4L2_CID_LINK_FREQ,
-> >> -				ARRAY_SIZE(link_freq_menu_items) - 1,
-> >> +				ARRAY_SIZE(link_freq_menu_items_19_2) - 1,
-> >>  				0,
-> >> -				link_freq_menu_items);
-> >> +				imx258->link_freq_menu_items);
-> >>  
-> >>  	if (imx258->link_freq)
-> >>  		imx258->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> >> @@ -964,8 +1032,10 @@ static int imx258_init_controls(struct imx258 *imx258)
-> >>  	if (vflip)
-> >>  		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-> >>  
-> >> -	pixel_rate_max = link_freq_to_pixel_rate(link_freq_menu_items[0]);
-> >> -	pixel_rate_min = link_freq_to_pixel_rate(link_freq_menu_items[1]);
-> >> +	pixel_rate_max =
-> >> +		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0]);
-> >> +	pixel_rate_min =
-> >> +		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1]);
-> > 
-> > The arrays currently have two entries so this works but it'd nice to have a
-> > bit more robust way to handle differences between the two arrays. Could you
-> > maintain e.g. the number of entries in the array in a struct field perhaps?
-> 
-> Would it make more sense to do something like default to index 0 and then use 
-> ARRAY_SIZE to iterate through the array and do a comparison to get the min and
-> max size so it would always choose the correct value no matter how many entries
-> there are?
+Hi Kuninori-san,
 
-I'll check that later patch you mentioned in the follow-up separately.
+Thanks for taking the time to clean the dpcm flags.
+While at it, I wonder if it would be worth taking it a step further.
+
+playback_only and capture_only have implication on each other. If one is
+set, the other can/must not be set. This leads to conditions which can
+be fairly hard to read and possibly bugs.
+
+I had to re-read the meson patch a few times to make sure it still had the
+same meaning, TBH
+
+Wouldn't it be better to replace those 2 flags with a single bitfield ?
+
+something like:
+
+unsigned int directions;
+#define PLAYBACK_VALID	BIT(0)
+#define CAPTURE_VALID BIT(1)
+
+... or something similar.
+
+I think conditions on the enabled stream would become much clearer like
+this. The only invalid configuation would be '!directions', which again
+is easier to read, instead of checking if both flags are set.
+
+It would be easy to keep playback_only/capture_only tests, where
+necessary, with an helper function.
+
+What do you think ?
+
+Sorry if it is a bit late to discuss this.
+
+>
+> v1 -> v2
+> 	- based on latest ASoC branch
+> 	- keep comment on Intel
+> 	- tidyup patch title
+> 	- tidyup DPCM BE warning output condition
+> 	- Add new patch for Document
+>
+> Link: https://lore.kernel.org/r/87o7b353of.wl-kuninori.morimoto.gx@renesas.com
+>
+> Kuninori Morimoto (16):
+>   ASoC: soc-pcm.c: cleanup soc_get_playback_capture()
+>   ASoC: amd: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: fsl: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: sof: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: meson: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: Intel: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: samsung: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: mediatek: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: soc-core: Replace dpcm_playback/capture to playback/capture_only
+>   ASoC: soc-topology: Replace dpcm_playback/capture to
+>     playback/capture_only
+>   ASoC: soc-compress: Replace dpcm_playback/capture to
+>     playback/capture_only
+>   ASoC: Intel: avs: boards: Replace dpcm_playback/capture to
+>     playback/capture_only
+>   ASoC: remove snd_soc_dai_link_set_capabilities()
+>   ASoC: soc-pcm: remove dpcm_playback/capture
+>   ASoC: soc-pcm: indicate warning if DPCM BE Codec has no settings
+>   ASoC: doc: remove .dpcm_playback/capture flags
+>
+>  Documentation/sound/soc/dpcm.rst              | 14 ++-
+>  include/sound/soc-dai.h                       |  1 -
+>  include/sound/soc.h                           |  4 -
+>  sound/soc/amd/acp-da7219-max98357a.c          | 20 ++---
+>  sound/soc/amd/acp-es8336.c                    |  2 -
+>  sound/soc/amd/acp/acp-mach-common.c           | 24 ++---
+>  sound/soc/amd/acp3x-rt5682-max9836.c          |  6 +-
+>  sound/soc/amd/vangogh/acp5x-mach.c            |  6 --
+>  sound/soc/fsl/fsl-asoc-card.c                 | 16 ++--
+>  sound/soc/fsl/imx-audmix.c                    |  6 +-
+>  sound/soc/fsl/imx-card.c                      |  7 +-
+>  sound/soc/generic/audio-graph-card.c          |  2 -
+>  sound/soc/generic/audio-graph-card2.c         |  2 -
+>  sound/soc/generic/simple-card.c               |  2 -
+>  sound/soc/intel/avs/boards/da7219.c           |  2 -
+>  sound/soc/intel/avs/boards/dmic.c             |  4 +-
+>  sound/soc/intel/avs/boards/es8336.c           |  2 -
+>  sound/soc/intel/avs/boards/hdaudio.c          |  4 -
+>  sound/soc/intel/avs/boards/i2s_test.c         |  2 -
+>  sound/soc/intel/avs/boards/max98357a.c        |  2 +-
+>  sound/soc/intel/avs/boards/max98373.c         |  2 -
+>  sound/soc/intel/avs/boards/max98927.c         |  2 -
+>  sound/soc/intel/avs/boards/nau8825.c          |  2 -
+>  sound/soc/intel/avs/boards/rt274.c            |  2 -
+>  sound/soc/intel/avs/boards/rt286.c            |  2 -
+>  sound/soc/intel/avs/boards/rt298.c            |  2 -
+>  sound/soc/intel/avs/boards/rt5514.c           |  2 +-
+>  sound/soc/intel/avs/boards/rt5663.c           |  2 -
+>  sound/soc/intel/avs/boards/rt5682.c           |  2 -
+>  sound/soc/intel/avs/boards/ssm4567.c          |  2 -
+>  sound/soc/intel/boards/bdw-rt5650.c           |  4 -
+>  sound/soc/intel/boards/bdw-rt5677.c           |  4 -
+>  sound/soc/intel/boards/bdw_rt286.c            | 10 +--
+>  sound/soc/intel/boards/bxt_da7219_max98357a.c | 32 ++++---
+>  sound/soc/intel/boards/bxt_rt298.c            | 26 +++---
+>  sound/soc/intel/boards/bytcht_cx2072x.c       |  6 +-
+>  sound/soc/intel/boards/bytcht_da7213.c        |  6 +-
+>  sound/soc/intel/boards/bytcht_es8316.c        |  6 +-
+>  sound/soc/intel/boards/bytcht_nocodec.c       |  6 +-
+>  sound/soc/intel/boards/bytcr_rt5640.c         |  6 +-
+>  sound/soc/intel/boards/bytcr_rt5651.c         |  6 +-
+>  sound/soc/intel/boards/bytcr_wm5102.c         |  6 +-
+>  sound/soc/intel/boards/cht_bsw_max98090_ti.c  |  6 +-
+>  sound/soc/intel/boards/cht_bsw_nau8824.c      |  6 +-
+>  sound/soc/intel/boards/cht_bsw_rt5645.c       |  6 +-
+>  sound/soc/intel/boards/cht_bsw_rt5672.c       |  6 +-
+>  sound/soc/intel/boards/cml_rt1011_rt5682.c    | 15 ++--
+>  sound/soc/intel/boards/ehl_rt5660.c           | 14 ++-
+>  sound/soc/intel/boards/glk_rt5682_max98357a.c | 30 +++----
+>  sound/soc/intel/boards/hsw_rt5640.c           | 10 +--
+>  sound/soc/intel/boards/kbl_da7219_max98357a.c | 26 +++---
+>  sound/soc/intel/boards/kbl_da7219_max98927.c  | 54 +++++-------
+>  sound/soc/intel/boards/kbl_rt5660.c           | 18 ++--
+>  sound/soc/intel/boards/kbl_rt5663_max98927.c  | 44 +++++-----
+>  .../intel/boards/kbl_rt5663_rt5514_max98927.c | 22 ++---
+>  sound/soc/intel/boards/skl_hda_dsp_common.c   | 14 ++-
+>  .../soc/intel/boards/skl_nau88l25_max98357a.c | 26 +++---
+>  sound/soc/intel/boards/skl_nau88l25_ssm4567.c | 26 +++---
+>  sound/soc/intel/boards/skl_rt286.c            | 26 +++---
+>  sound/soc/intel/boards/sof_board_helpers.c    | 13 +--
+>  sound/soc/intel/boards/sof_es8336.c           |  8 +-
+>  sound/soc/intel/boards/sof_pcm512x.c          |  8 +-
+>  sound/soc/intel/boards/sof_sdw.c              |  4 +-
+>  sound/soc/intel/boards/sof_wm8804.c           |  2 -
+>  sound/soc/mediatek/mt2701/mt2701-cs42448.c    | 20 ++---
+>  sound/soc/mediatek/mt2701/mt2701-wm8960.c     |  6 +-
+>  sound/soc/mediatek/mt6797/mt6797-mt6351.c     | 24 ++---
+>  sound/soc/mediatek/mt7986/mt7986-wm8960.c     |  6 +-
+>  sound/soc/mediatek/mt8173/mt8173-max98090.c   |  6 +-
+>  .../mediatek/mt8173/mt8173-rt5650-rt5514.c    |  6 +-
+>  .../mediatek/mt8173/mt8173-rt5650-rt5676.c    | 10 +--
+>  sound/soc/mediatek/mt8173/mt8173-rt5650.c     | 10 +--
+>  .../mediatek/mt8183/mt8183-da7219-max98357.c  | 34 +++-----
+>  .../mt8183/mt8183-mt6358-ts3a227-max98357.c   | 34 +++-----
+>  .../mt8186/mt8186-mt6366-da7219-max98357.c    | 86 +++++++-----------
+>  .../mt8186/mt8186-mt6366-rt1019-rt5682s.c     | 86 +++++++-----------
+>  sound/soc/mediatek/mt8188/mt8188-mt6359.c     | 58 ++++++-------
+>  .../mt8192/mt8192-mt6359-rt1015-rt5682.c      | 78 ++++++++---------
+>  sound/soc/mediatek/mt8195/mt8195-mt6359.c     | 60 +++++++------
+>  sound/soc/meson/axg-card.c                    |  9 +-
+>  sound/soc/meson/gx-card.c                     |  1 -
+>  sound/soc/meson/meson-card-utils.c            |  4 +-
+>  sound/soc/qcom/common.c                       |  1 -
+>  sound/soc/samsung/odroid.c                    | 11 ++-
+>  sound/soc/soc-compress.c                      | 10 ++-
+>  sound/soc/soc-core.c                          | 20 +----
+>  sound/soc/soc-dai.c                           | 38 --------
+>  sound/soc/soc-pcm.c                           | 87 ++++++++-----------
+>  sound/soc/soc-topology-test.c                 |  2 -
+>  sound/soc/soc-topology.c                      |  4 +-
+>  sound/soc/sof/nocodec.c                       |  4 -
+>  91 files changed, 502 insertions(+), 863 deletions(-)
+
 
 -- 
-Kind regards,
-
-Sakari Ailus
+Jerome
