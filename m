@@ -1,122 +1,200 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01631B952
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 12:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A0386AEE
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 13:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712233825; cv=none; b=qitZnQaKEYHUDgUYxENvjYtXJfhFJ60Iuli2d62Sci4XEOUfMOLfT2ov6dqtOelkHOL4tvye6iCLv1f6GRK/k5HB4XDet1lKOuqVpDohpR4rqsZEag4Y4hWAdygd+ubsLfsdZV8/vAqgt1dnV7tCHqMeWliNEU3Mq3RJbQLRQ50=
+	t=1712237283; cv=none; b=UAH26OANgJ19CH0yB7bAzBpsi9V9IIev6wzapt4M5eTf6jEZ4keTfFGmm1zU62Qfhvz+g9uIPLzKosA7cu4znwCrjzi06ZNe0zGA0yFsVgSq/tJ4/JVmklU5p8PxwDA3bQTS/904wG+jWYQg+7TBN95zi/Gqv2eH/1tOOELMoOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712233825; c=relaxed/simple;
-	bh=hMGCi5U/GTUr4s1TD2pXM9wRWDVE6D4wK5xdmE2YqBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n2zhoSgT0bFGvMcrT9sylKbifljpq85nqQ/vaNVyxhvuRdWwZQhbE+vmCVKOErPruU6d/mR/EO8H7TeK/O17oGAzNSIhpNNdj9UpPk8KNzps5SKNhSl2he7qn/1mM3wyxJH1SIMXkcFiLAKDBhoQqk/updBirjFNA8ZBPBx6y1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R4ZlAa8w; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712237283; c=relaxed/simple;
+	bh=O2FCZHFbVWkFqB1QcGwdd1JkWBZ9ekBrh/mg+gockjc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u06L5NRELhCdTIfCICG1QvouGOSerZjFZoiKIXtA5AqtWYGDiCCwqEntWbBLfgYJEm1COSVEnNc75st1mnkslf/xNDiWRnpJF7b8Z5kATJycHyThuRljhLHM4jlOvIAFIEsBT3l8LytHcp8q3PFDRurp/ptk5T2h4QpXsTJiJYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=msZttTXa; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R4ZlAa8w"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51588f70d2dso1183099e87.3
-        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 05:30:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712233822; x=1712838622; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X20l1OIbEglZq76t9YzipvH9/8wF8pWqOBX+VeO6mJ4=;
-        b=R4ZlAa8w8pPGZb2eobjeNoW3ctpyakr/OK6RLiGfJuL2647PHmlhdiHrvBOAxk9XKu
-         OOi253qmsbiLfVPbq8bb+phQsCgoRLdvjlk9mJj1cxSKSk+t4QQBIxPtfAwjyLmMXIJR
-         C7B3JcNeLe49G0zoO1QIOhjhrMQHIbHjnXAyYAYG34KK7je6zxX4OnZzpsWf4BXOvrlt
-         xOFhSqsOFfCS8uP34uLlEniNZRhyNgpOkw+xlRnU/ZqVK+D5uBqMvtqYOfXUag2ZvAvx
-         7PqW87zY0EteMSchaYMQcdXH/uBxbGvJxnAlQXudoEpBsF/lWZm8MpCX8M0Jkh1NrI9K
-         dyzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712233822; x=1712838622;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X20l1OIbEglZq76t9YzipvH9/8wF8pWqOBX+VeO6mJ4=;
-        b=RNViLEEhU+EehBi4B4GmHOMnFrccJ+V2Qivwin01Kpgd1dcljB7C+nhhxGXiMtttTS
-         bsZUFaAGh2LyquvQFu8mXkTnPInvasnhoaDOoSlb+MfNur0vTWVssIkDd7phR7nO4YSw
-         N/dlqF2gvAHqvi1z2KkzHy5RZ9b3zx3yLcQoR+KIBjrEWk0T1Pxqu4NtqYd/SCHuxPv2
-         YH2el/3ifgrvGZV1AjDrLtOMJutTY60GLO0BTFbL3GGxAUFa81u8BUmnQkdhucevJGHr
-         mjrZZOIBHDbCFT3hJujyA/2za9E7NL5Cx1Lw9Co3qewL6jAr5zpjYBLJTWwBTLrH/mGc
-         mayg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgVimo2mTOztCki0796yVY+4QncPX/o/Y+8/a+5iERLwDJUpVOvyWImScLleEjuMKBSvVDSBUTV6xCg3Oq3sR6ePTd
-X-Gm-Message-State: AOJu0Yw9+g1dmvM4KcBOnp9x2mNCLa5v2HKe86iV4Q9cClVx/G43jI9L
-	A3LHl+GnKsY1hZ6+7C5i7q4qn/XZ1yof3oQSGsdmA9ndeJPsNkwokqHsOowlYiY=
-X-Google-Smtp-Source: AGHT+IFUb5zsg1JnqPSDM6WCJg3DgMPy79GM9WkgadXKzQqBbfSPE4iFlNdz1Kc4Oxni4f8yZOheig==
-X-Received: by 2002:a05:6512:3707:b0:516:a115:4a4d with SMTP id z7-20020a056512370700b00516a1154a4dmr1578665lfr.68.1712233822050;
-        Thu, 04 Apr 2024 05:30:22 -0700 (PDT)
-Received: from eriador.lan (dzyjmhyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a00e:a300::227])
-        by smtp.gmail.com with ESMTPSA id b19-20020a056512071300b00515abab7697sm2286667lfs.55.2024.04.04.05.30.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 05:30:21 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: dri-devel@lists.freedesktop.org,
-	Adam Ford <aford173@gmail.com>
-Cc: aford@beaconembedded.com,
-	laurent.pinchart@ideasonboard.com,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH V2 1/2] drm/bridge: adv7511: Allow IRQ to share GPIO pins
-Date: Thu,  4 Apr 2024 15:30:19 +0300
-Message-ID: <171223381119.1231870.1373781151741394452.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240305004859.201085-1-aford173@gmail.com>
-References: <20240305004859.201085-1-aford173@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="msZttTXa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712237281; x=1743773281;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=O2FCZHFbVWkFqB1QcGwdd1JkWBZ9ekBrh/mg+gockjc=;
+  b=msZttTXaghpX2OWDzL9qLh+m9gzwFhzddLTWvb82UhC9ZwzEQXwJ10e/
+   CZbLIP3uRb6m+iLALlCSzMKo9OvFQeMvMSjaYhu1nSBAWxzwDnfZBAaT4
+   fEsN5XKyz+oGwS+OSlMCZ2r2uuqt8ey+Y+FEdRb5h5BNcn4p7n20XRTEE
+   TC/RSawK4XJL/VnPkZnzFYoYXeN5425QZBDhu0faCgqd2XR0WfB0dMzZT
+   p5H8sXeTK0BTFEx5rwwBRprtCMAtH1DhosiE6oh9feJPEHmR96WX+oBMR
+   UZd5mOYoyySLL27VAlcpAgXeDFDVWaHTVm8lqLM84MmewlFfn9874aRmi
+   A==;
+X-CSE-ConnectionGUID: aLddKMCGRSSGAy/wSvHtIg==
+X-CSE-MsgGUID: wr0Wxb8eSrq6fd3JJrz/LA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7385546"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="7385546"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:28:00 -0700
+X-CSE-ConnectionGUID: sp3ox9/wRG+HXpegDZH/cQ==
+X-CSE-MsgGUID: 2kE90uPZQRaWPfZtXz0Ytg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="23436766"
+Received: from libintan-mobl.amr.corp.intel.com (HELO [10.213.164.95]) ([10.213.164.95])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:27:58 -0700
+Message-ID: <40e23972-6745-48e2-81ae-4b93f2ee2dcc@linux.intel.com>
+Date: Thu, 4 Apr 2024 08:27:57 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/16] ASoC: soc-pcm.c: cleanup
+ soc_get_playback_capture()
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>,
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Banajit Goswami <bgoswami@quicinc.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>,
+ Maso Huang <maso.huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>,
+ Trevor Wu <trevor.wu@mediatek.com>, Vinod Koul <vkoul@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org,
+ imx@lists.linux.dev, linux-sound@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
+ <87y19xudor.wl-kuninori.morimoto.gx@renesas.com>
+ <b4b37541-b67f-4593-9fd5-fc6242a0673a@linux.intel.com>
+ <87zfuc7gya.wl-kuninori.morimoto.gx@renesas.com>
+ <600cef67-ad90-4b67-8da7-2006339d430b@linux.intel.com>
+ <874jch99m5.wl-kuninori.morimoto.gx@renesas.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <874jch99m5.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, 04 Mar 2024 18:48:57 -0600, Adam Ford wrote:
-> The IRQ registration currently assumes that the GPIO is dedicated
-> to it, but that may not necessarily be the case. If the board has
-> another device sharing the GPIO, it won't be registered and the
-> hot-plug detect fails to function.
+
+
+On 4/3/24 20:53, Kuninori Morimoto wrote:
 > 
-> Currently, the handler reads two registers and blindly
-> assumes one of them caused the interrupt and returns IRQ_HANDLED
-> unless there is an error. In order to properly do this, the IRQ
-> handler needs to check if it needs to handle the IRQ and return
-> IRQ_NONE if there is nothing to handle.  With the check added
-> and the return code properly indicating whether or not it there
-> was an IRQ, the IRQF_SHARED can be set to share a GPIO IRQ.
+> Hi Pierre-Louis
 > 
-> [...]
+> Thank you for your feedback.
+> I could understand your comment 80%, but not yet 100%
+> 
+>> With the older code, if the dpcm_playback was set for the dailink but
+>> there isn't any dai connected to support playback, an error was thrown.
+>>
+>> With the new code, if playback_only is set but there isn't any dai
+>> connected, there is no error thrown, is there?
+> (snip)
+>> Again we had a verification that if the dpcm_playback was set at the
+>> dailink level, it was actually supported by the dais.
+>>
+>> We seem to have lost this verification. We only have an error when there
+>> are no settings at all.
+> 
+> Pseudo code of new soc_get_playback_capture() is like this
+> 
+> 	soc_get_playback_capture(...)
+> 	{
+> 		...
+>  ^		for_each_rtd_ch_maps(...) {
+>  |			...
+> (A)			has_playback = xxx;
+>  |			has_capture  = xxx;
+>  v		}
+> 
+>  ^		if (dai_link->playback_only)
+>  |			has_capture = 0;
+> (B)
+>  |		if (dai_link->capture_only)
+>  v			has_playback = 0;
+> 
+>  ^		if (!has_playback && !has_capture) {
+> (C)			dev_err(...);
+>  v			return -EINVAL;
+> 		}
+> 		...
+> 	}
+> 
+> In old/new soc_get_playback_capture(), has_xxx will be set at least
+> if one of rtd connected DAI can handle playback/capture.
+> In new code, it will be handled at (A).
+> 
+> And unneeded has_xxx will be removed if xxx_only was set (B)
 
-Applied to drm-misc-next, thanks!
+The problem is that we have two sources of information
 
-[1/2] drm/bridge: adv7511: Allow IRQ to share GPIO pins
-      commit: f3d9683346d6b1d6e24f57e954385995601594d4
+1) the dais included in the dailink (the (A) part above)
+2) the dailink itself (the (B) part above)
 
-Best regards,
--- 
-With best wishes
-Dmitry
+the code in A) constructs the information from the ground-up, but it's
+overridden by B).
 
+You can view it as 'removing unneeded has_xxx' flags, but it's also a
+problem is the dailink information is incorrect...
+
+In the past we would report an error if the dailink was not aligned with
+the dais. Now we just ignore the dai information.
+
+That's the concern, we're changing the behavior.
+
+> Then, if neither has_xxx was set, it will be error (C)
+
+That's not the concern. The concern is a discrepancy between A) and B).
+
+> 
+> 	In new code, if playback_only is set but there isn't any dai
+> 	connected, there is no error thrown, is there?
+> 
+> If playback_only was set, has_capture will be removed at (B).
+> And if DAI was not playback-able, this means has_playback was not set at (A).
+> In such case, (C) will indicate error. Same things happen if capture_only too.
+> 
+> So, old functions validation still exist in my opinion, but am I
+> misunderstanding ?
+> 
+> One note here is that in DPCM case, old function checks CPU only,
+> but new function checks both CPU and Codec.
+> 
+> 2nd note is that in current version of patch-set, if dai_link doesn't
+> have xxx_only settings (= it should have both playback/capture), but if
+> DAI has has_playback or has_capture only, it can't detect about it.
+> I suggested it in previous mail, and will fix in v3
+> 
+>> The point is that these flags are sometimes set in the machine driver,
+>> sometimes set in the framework, and the open is which one has the priority.
+> 
+> I couldn't understand this.
+> 
+> I think "machine driver" = CPU/Codec driver, but what is "these flags"
+> which is sometimes set in machine driver, and sometimes set in framework ??
+> dpcm_xxx ? xxx_only ?? I don't think framework set these...
+
+The has_xxx flag is set based on dai capabilities in (A) - which I call
+"the framework" OR by the machine driver setting the
+playback_only/capture_only flags, then used in (B) to override (A).
+
+When you have two sources of information competing to set a state, we
+have to be really careful on which one has priority/precedence.
