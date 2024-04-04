@@ -1,163 +1,227 @@
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2136.outbound.protection.outlook.com [40.107.114.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta177.mxroute.com (mail-108-mta177.mxroute.com [136.175.108.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A7113A41A
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 23:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.136
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712272445; cv=fail; b=RvsPTTTxFTl/4Wb8bWvB7lBA8yiWV1360d9iPAcq5zDjJe9NEuhgxSidrZ8AqQa7UJ5bTemoHyB7owsgPnb64EYpvCETaOrIGKOduwbm6sQNATa/rYvGPeH14rcaD8UWlZNZjE40gNvW/BrQUek5JlcJmAPNpfh4ODgC2lSkcKc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712272445; c=relaxed/simple;
-	bh=Ucg1BJoQUPeQ64IRapCNQ0MoOp5xyatQwhQGd2BIjLk=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=CmruQ6pfAJQ1Dc+WNJjeaW3aqsvnODrtDxN1NtjQvPngGOa0ZYqjXoiZ4MYoEdcKlAc4f529f7SKC+je0o/IK522XiVdBuDnfAZPNFxN8YAvM/vB7Li0lpgEsHrNIuxP7p50x9OOZXeijf2PNXqMzj5eyACYrEsO3qkxgHKqjxM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=DJm0snxB; arc=fail smtp.client-ip=40.107.114.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A058213849C
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 23:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712273012; cv=none; b=sYvlAksEF20umcCDjUwqaoP8tQxcv6jcdEb0coPOfGf60th/tbb18N182XlBPCXLkWI3xesEdHBUw6HRxnYRSesDts7HuEkmtsyX1HhX3WFcfTMu3Hc4ZZVFZgMsoFiIboeQl90/JJVOVQ1A9by8Xhz81LJz/zUODmyaydS3Kag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712273012; c=relaxed/simple;
+	bh=Mrk+i3rtrrQiqKcF5jKGWs2vl61KOuvTlYIW8k8/MPg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ntLJa3mU9xF5rne/eG4g79fLbuklOQ/8JkZhQ5PyzMvS/sagDCCxR/uGJrkIGi2+JLslse0VJ7+ksMOZNN9L8UYgJCtq3uzSuvbf075/Lvu9XcUqmUflO6B8LXJWqlMgCU3WqlOejumxLQ2OgGrDc93/TNrAhXFrAmciSrZVTRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=OmhWcmTc; arc=none smtp.client-ip=136.175.108.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="DJm0snxB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jBl7hsmSeUGqdZ+4ZSkxmZc38WWruQymX1ZCspbmCUwydgdcy243nvkjGTYRz7Ewms+YHMXW4lX/DLzVNbrA2nKVrhaBktdKtBzfUkbKKDTNHZDsBmBxwWQ5P9W34eN6Oqj5la/jF6HJ8Bq8ir/+XEZOEVcfV22Vm6/PxNUmLGN9IWeUJ2DK+k5DD0QQQPqcEcxdyHkjlExSifHPJ2ywRKSlgW/rRWmLCPzuY0jLQI4ycUgh8l7Yu0a4t90g0cWW68jbleokQ+e99ZgkIf2pAQPKFbmHNlItuAovlEkeZ/Z9SbJwM3esfCok7EAO8xe30wArejYs3pu0wvQBIecsBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cMlle8t5qu8Z5r/1AAVEMPyeW4R1CyP7sQ+ENP8GqGc=;
- b=UIP8/Mo9s3lojrfY5IKyrs30VxcIuJ09sS8aEN68RewFT8yXujLs9Mr4zc7wkDGXevFc3CFxALgURNcUaE8qQw+FizlSBnJX2KfMMQAliQ8FCruY5GXX+qPxloR9+TjQeS8e2cjYJrQh/MK9dkrYqOfPqA8Oz4C9+iyNK5/okpUvCjKYLgLp2PqqUfHLjFZ2dyAcJmMKumgldHeO2VFegJTHRtwT7mXfeH1e39wtGnmI/xWIXtl5+PeQjhTBHkhdOTND/vkoe1q0XVhjRkx4Mc614lfQWQaNpiSU/SHaDAOfUBImFPiwW0bzpX11QsdxzSr+GcOtc1qZdbv4NwZ6bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cMlle8t5qu8Z5r/1AAVEMPyeW4R1CyP7sQ+ENP8GqGc=;
- b=DJm0snxBx4b4yPl4helZmikk0vdnpvaeoC4dr75eyZskqUsZiJ42mZmCM4dezAQPbIU88WC/gy5gD4MXj7eSCqEzZVp4iOdXrpxbZU2IBfsedJCN1xys28x0MrPcbs63C43p0/ltXwuNRAcqXUcGXaIc63QSmR+xk+YvPdGEdLg=
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by TYCPR01MB6913.jpnprd01.prod.outlook.com
- (2603:1096:400:b8::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Thu, 4 Apr
- 2024 23:13:58 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Thu, 4 Apr 2024
- 23:13:57 +0000
-Message-ID: <877chcraaa.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Xiubo Li <Xiubo.Lee@gmail.com>,	Vinod Koul <vkoul@kernel.org>,	Trevor Wu
- <trevor.wu@mediatek.com>,	Takashi Iwai <tiwai@suse.com>,	Sylwester
- Nawrocki <s.nawrocki@samsung.com>,	Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,	Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>,	Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Matthias Brugger <matthias.bgg@gmail.com>,
-	Maso Huang <maso.huang@mediatek.com>,	Mark Brown <broonie@kernel.org>,
-	Linux-ALSA <alsa-devel@alsa-project.org>,	Linus Walleij
- <linus.walleij@linaro.org>,	Liam Girdwood <lgirdwood@gmail.com>,	Kevin
- Hilman <khilman@baylibre.com>,	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Jaroslav  Kysela <perex@perex.cz>,	Hans de Goede <hdegoede@redhat.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,	Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>,	Cezary Rojewski
- <cezary.rojewski@intel.com>,	Brent  Lu <brent.lu@intel.com>,	Bard Liao
- <yung-chuan.liao@linux.intel.com>,	Banajit Goswami <bgoswami@quicinc.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
- <amadeuszx.slawinski@linux.intel.com>,	Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sound@vger.kernel.org,	imx@lists.linux.dev
-Subject: Re: [PATCH v2 00/16] ASoC: Replace dpcm_playback/capture to playback/capture_only
-In-Reply-To: <1jil0xplcu.fsf@starbuckisacylon.baylibre.com>
-References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
-	<1jil0xplcu.fsf@starbuckisacylon.baylibre.com>
-User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Thu, 4 Apr 2024 23:13:56 +0000
-X-ClientProxiedBy: TYCP286CA0195.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:382::13) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="OmhWcmTc"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta177.mxroute.com (ZoneMTA) with ESMTPSA id 18eab67d9c60003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Thu, 04 Apr 2024 23:18:13 +0000
+X-Zone-Loop: 676fdc9f590ac3f3e2ed040e69c772551a767d9d74a5
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bwJMNX6ZJRpOtWTanY4h6tkZAqYIG8MU3/GQ1Ir4QUU=; b=OmhWcmTc+ZWR/7jOr0eC8Did2s
+	XaOoTRQprjnw/jOSBzBf8qWj4VGuJQeZpp4OgU0Hw2+W1MiG9Wk/SxJNk1reSX2pGyLm/gEQCX52F
+	4b1FZmdNB3tD+nQKSDI1X+febDGcaztfxp8JtdCKzM3rCz3UKdlaTsOc7oVzH0FNPcz8hglFypx5G
+	bRC0hI/GUwYgZZTKujRC4dBuxtGTl5q7BJRfYoaDpgQKYeUo5Kz5na9OiIpUYk7nhgV4wQZ0OFI1h
+	qxbHga8hBpyvNgXQgtEvyIjpn0AYllXKbBB9Z/4n0OIaRiacb22SxckwpIxE4zU0zulY4T46I9GGn
+	PTn0YqIA==;
+Message-ID: <a1db5dc8-5370-4fb8-ad22-2a5c1e45ad58@luigi311.com>
+Date: Thu, 4 Apr 2024 17:18:09 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYCPR01MB6913:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	6ZI7IKjqFFf5hB9MeFyklGbF4Cn4qbsRwTM/OCEUI5ZqhxOvkSAFdY4H+soqqvfTytq360TcXPQ9c1Iv1eApe+Vkp2tOL3zq1sVePHUMORSVpCYRcYSWaQc9wE7K5hTSz76gnTvX4i7VOQXZUDmubBMtr8l7u/v3ENFCNNu02XAwUOe3yYBWE7SYfICWVU2CneVjvJC0AAbkDuSqe/czs6kUUA0EwpvECI2wnGvhk3J2LUoWXZEIus5zKT3AwK1cNsgDw2HWIdrAwkYp1bAOav9r2NDr9s1pFkhMERXk7a/Z40Dfy8yYjybeAEwbuIHBwJfHDKw03Iny6SvxF4jtJeIDvl2PkgCQgD+4QAWW9r/ZMkKVDkVErWyYRv6uOs4iSn/0dt4vSrQlqexTimNgUvBH8c8BrIPxXwqRHoD4yta/Gro47n+sxlJcU2SK7kVW69JsR3QEO5XmA3y8pkY6tcUmsVdES4/KCqX68/xa5bPf7n+QeCfsD0CFKOh2xdBJ2SaEQQj7buAAeucWgyFXc1WPvihni8/iN7yVbfj7FjNhUKmI/B4pyACZ6aKPO7kYZdL7e0/vIOILrdL/7rvxNhCHXGqkJHtP4R1RxsMN5TxMR/QfNClBrHqC/6vryal7riHKtu5s0hE3ugIJsZ0gT+eaikfVoD98iQf7Y0bwCsDS/wchyBpeCkGCHOpo9BqiyJ8+jFTdA/s03vueYABL6JLa6CRBqBFUnD2TBmuize0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(7416005)(52116005)(376005)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TA/rZKrz5gD2JIZhQoS1iycYOl1KXIET7pLlBlL88cpIWjxXm/xbPbsVOe4C?=
- =?us-ascii?Q?YGgAtTum2/VE2aX9NL5sfn1SIkJ7OiWwdHhmd6WwrXIRKf2mCDStB/mPxlyb?=
- =?us-ascii?Q?K5WjRp01RkPsHTmQ1oYXx3r2BlLB5aeGVr8BX6xQZlzDFNAfeDvSGQd005tW?=
- =?us-ascii?Q?3ReQ28MjrFIDJxmLgmzfbC92a3965IWBoo8DUL+rgWiKA7RLnqcOks2rKh+L?=
- =?us-ascii?Q?KGnQxszWLc3yrssciw+X6xqUqTHSX8ZbuUoe5dCLEIl0eW3C5xYEFBVyu4hQ?=
- =?us-ascii?Q?xprVrBd0JQQOPNwusddIzhtHvtV8qnoy0QzcGo6mL7PdOWJ5lFSM6PlbOba/?=
- =?us-ascii?Q?ZC6OcTD2JZ6YoHRb+v1b/4TybgJsSQP44fboh4SRcY+oCKYs+k/SveizHvCs?=
- =?us-ascii?Q?UGM091GF8O1vsTS5icJWNLYpDGNxUiLzruailq/NSYNsaphKkiX7MDb/rVkW?=
- =?us-ascii?Q?dy0h2FVh4wFpjEvlhCEwjBSwFWC7kbZuL6ZFkddBNP1aSSuJdNsMAu90QS+2?=
- =?us-ascii?Q?a9Cx5tjXUIkNET5cZo9vBEK8CdUvBUP2volS1rwBI+iIrdrp18JayVCdCsIP?=
- =?us-ascii?Q?wU38nhYjczxgH0/g+0ncvrc47/Il9TfAka+rrUTQ6Xgs2rAan8HWaxxWYTXh?=
- =?us-ascii?Q?F+5oQLfDKPJ6MXhpYoOzPaJ1jCf3cWedC8yDOeImHNds9xOlBSQ5gHlImP+G?=
- =?us-ascii?Q?uu080Xxb2IW3h6dO4Ub/4Bgqx29mm2yvzqO7AGP1I0NZTwDAauBscfN1uhcS?=
- =?us-ascii?Q?JMS5tP/E0zBDIl8fXSysUWdtvtw1Ksg16nrhKFLUJ+83YYp2IF3r5OgqwwRA?=
- =?us-ascii?Q?rf9ZGSOe+63oX+SrHIVQrmOq0Fz31uzL8VlxtIHl3MVvvC+aRFnLHNDQna7t?=
- =?us-ascii?Q?tQZ7Uqt2LX3CLEJ0R+1ttw5m4bLshUARfeMXp45zy9AFzfVq4en4JqB4mL1t?=
- =?us-ascii?Q?ZnU1bVtcrPptwLme2I9JNwe/DUpP5UUSHqeW7aSTAswT2o8RnUqRd+aHAj+T?=
- =?us-ascii?Q?3vWHhMykMs+U3slYvOnWGFo85GYCRePfyerHvmQ+q4VXaBR/dmRHn8zme5yi?=
- =?us-ascii?Q?06QXIHaaSkpXFTbZIMqGUVWbI8Cx5L4+s6iJZx6LwUCJyH8MQjMvr8SeeBWC?=
- =?us-ascii?Q?qnbkMVc/VOPfa1zxh+8DZZimSRlojyndxPc5e4ll77rqRUlv37qr0dSJYamX?=
- =?us-ascii?Q?5h+RJYB6c6meDL2SovIPNwPqtgrgbN5eVmZUuaBArNpb4Rf491JQZ11U7DHx?=
- =?us-ascii?Q?e0UPnv7xs40+u5mPkJraCLtXR85DyykwuicuqCZ6hX9+6FZtR4RkuFJRQWZz?=
- =?us-ascii?Q?sAbQqbHEthvsCj8YYQQ3JYC2xkO/juEAQynfapuxNtLoBDdQO7TlsU1c9UIV?=
- =?us-ascii?Q?4I8hXxQL5fPVeDBA3og/pTWf6zxBtgJvjEBNG6Nhl+CR7NRo3Ovyezj4tFE0?=
- =?us-ascii?Q?sxArDuMZ9g8aqGYEBIdx84Tba++KnoH5s7XcM/f/u7XaqNTDlvsOj88/k7Pz?=
- =?us-ascii?Q?Iei9GQvt3Cq7EohIY7FUfTxGpfRHcGQNveJMO4Sdvpd5UsJ0gymgmOlTBn0/?=
- =?us-ascii?Q?MerdU83rR2qsB0d4TIzyZXVt6Zn+uRHuQ5H2F+yS4viAkE3HfYmmuC2b+qli?=
- =?us-ascii?Q?W8clNz7bxjyUd6YPIxofg5w=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c14f534-3956-497e-f00f-08dc54fce75d
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2024 23:13:57.3007
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tyx8xh0JVJCbnTuf5Hwugn+UKKHKuo1oVkmdk3G6YhORcPHPNLIjtsuuLIzyNsQiiYWk39xymqHJhSEQYEmLiqsS1lnDUbMCDOBUgoeU+GHhcrUoAL0sOwv9YeJsTTwk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB6913
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 23/25] drivers: media: i2c: imx258: Add support for
+ powerdown gpio
+To: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megous@megous.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ pavel@ucw.cz, phone-devel@vger.kernel.org
+References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-24-git@luigi311.com>
+ <Zg2DBasC501hMQSS@kekkonen.localdomain>
+ <wjlcde7yoooygj4hhdmiwrdloh6l4p6i2qbmjek5uwsifyzwgu@xjhutvmsdfou>
+ <dd0e64c8-5eef-421a-9d9f-8a5865743369@luigi311.com>
+ <CAPY8ntAcB3wyLj1wNE5YBx0_UGRiXEv6057XfEBfjk8NOLC9yQ@mail.gmail.com>
+Content-Language: en-US
+From: Luis Garcia <git@luigi311.com>
+In-Reply-To: <CAPY8ntAcB3wyLj1wNE5YBx0_UGRiXEv6057XfEBfjk8NOLC9yQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: git@luigi311.com
 
-
-Hi Jerome
-
-Thank you for your feedback
-
-> playback_only and capture_only have implication on each other. If one is
-> set, the other can/must not be set. This leads to conditions which can
-> be fairly hard to read and possibly bugs.
-(snip)
-> Wouldn't it be better to replace those 2 flags with a single bitfield ?
+On 4/4/24 08:12, Dave Stevenson wrote:
+> Hi Luigi
 > 
-> something like:
+> On Wed, 3 Apr 2024 at 20:34, Luigi311 <git@luigi311.com> wrote:
+>>
+>> On 4/3/24 10:57, Ondřej Jirman wrote:
+>>> Hi Sakari and Luis,
+>>>
+>>> On Wed, Apr 03, 2024 at 04:25:41PM GMT, Sakari Ailus wrote:
+>>>> Hi Luis, Ondrej,
+>>>>
+>>>> On Wed, Apr 03, 2024 at 09:03:52AM -0600, git@luigi311.com wrote:
+>>>>> From: Luis Garcia <git@luigi311.com>
+>>>>>
+>>>>> On some boards powerdown signal needs to be deasserted for this
+>>>>> sensor to be enabled.
+>>>>>
+>>>>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+>>>>> Signed-off-by: Luis Garcia <git@luigi311.com>
+>>>>> ---
+>>>>>  drivers/media/i2c/imx258.c | 13 +++++++++++++
+>>>>>  1 file changed, 13 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+>>>>> index 30352c33f63c..163f04f6f954 100644
+>>>>> --- a/drivers/media/i2c/imx258.c
+>>>>> +++ b/drivers/media/i2c/imx258.c
+>>>>> @@ -679,6 +679,8 @@ struct imx258 {
+>>>>>     unsigned int lane_mode_idx;
+>>>>>     unsigned int csi2_flags;
+>>>>>
+>>>>> +   struct gpio_desc *powerdown_gpio;
+>>>>> +
+>>>>>     /*
+>>>>>      * Mutex for serialized access:
+>>>>>      * Protect sensor module set pad format and start/stop streaming safely.
+>>>>> @@ -1213,6 +1215,8 @@ static int imx258_power_on(struct device *dev)
+>>>>>     struct imx258 *imx258 = to_imx258(sd);
+>>>>>     int ret;
+>>>>>
+>>>>> +   gpiod_set_value_cansleep(imx258->powerdown_gpio, 0);
+>>>>
+>>>> What does the spec say? Should this really happen before switching on the
+>>>> supplies below?
+>>>
+>>> There's no powerdown input in the IMX258 manual. The manual only mentions
+>>> that XCLR (reset) should be held low during power on.
+>>>
+>>> https://megous.com/dl/tmp/15b0992a720ab82d.png
+>>>
+>>> https://megous.com/dl/tmp/f2cc991046d97641.png
+>>>
+>>>    This sensor doesn’t have a built-in “Power ON Reset” function. The XCLR pin
+>>>    is set to “LOW” and the power supplies are brought up. Then the XCLR pin
+>>>    should be set to “High” after INCK supplied.
+>>>
+>>> So this input is some feature on camera module itself outside of the
+>>> IMX258 chip, which I think is used to gate power to the module. Eg. on Pinephone
+>>> Pro, there are two modules with shared power rails, so enabling supply to
+>>> one module enables it to the other one, too. So this input becomes the only way
+>>> to really enable/disable power to the chip when both are used at once at some
+>>> point, because regulator_bulk_enable/disable becomes ineffective at that point.
+>>>
+>>> Luis, maybe you saw some other datasheet that mentions this input? IMO,
+>>> it just gates the power rails via some mosfets on the module itself, since
+>>> there's not power down input to the chip itself.
+>>>
+>>> kind regards,
+>>>       o.
+>>>
+>>
+>> Ondrej, I did not see anything else in the datasheet since I'm pretty sure
+>> I'm looking at the same datasheet as it was supplied to me by Pine64. I'm
+>> not sure what datasheet Dave has access to since he got his for a
+>> completely different module than what we are testing with though.
 > 
-> unsigned int directions;
-> #define PLAYBACK_VALID	BIT(0)
-> #define CAPTURE_VALID BIT(1)
+> I only have a leaked datasheet (isn't the internet wonderful!)  [1]
+> XCLR is documented in that, as Ondrej has said.
+> 
+> If this powerdown GPIO is meant to be driving XCLR, then it is in the
+> wrong order against the supplies.
+> 
+> This does make me confused over the difference between this powerdown
+> GPIO and the reset GPIO that you implement in 24/25.
+> 
+> Following the PinePhone Pro DT [3] and schematics [4]
+> reset-gpios = <&gpio1 RK_PA0 GPIO_ACTIVE_LOW>;
+> powerdown-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+> 
+> Schematic page 11 upper right block
+> GPIO1_A0/ISP0_SHUTTER_EN/ISP1_SHUTTER_EN/TCPD_VBUS_SINK_EN_d becomes
+> Camera_RST_L. Page 18 feeds that through to the RESET on the camera
+> connector.
+> Page 11 left middle block GPIO2_D4/SDIO0_BKPWR_d becomes DVP_PDN1_H.
+> Page 18 feeds that through to the PWDN on the camera connector.
+> 
+> Seeing as we apparently have a lens driver kicking around as well,
+> potentially one is reset to the VCM, and one to the sensor? DW9714
+> does have an XSD shutdown pin.
+> Only the module integrator is going to really know the answer,
+> although potentially a little poking with gpioset and i2cdetect may
+> tell you more.
+> 
+>   Dave
+> 
+> [1] https://web.archive.org/web/20201027131326/www.hi.app/IMX258-datasheet.pdf
+> [2] https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
+> [3] https://xff.cz/git/linux/tree/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts?h=orange-pi-5.18#n868
+> [4] https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
+> 
+> 
 
-I think Amadeusz indicated similar idea, and basically I can agree about
-it. But in this patch-set, I want focus to removing dpcm_xxx flag as 1st
-step. So I'm happy to create such patch-set, but I want to handle it as
-another patch-set.
+Out of curiosity I dropped this and tested it on my PPP and it still loads
+up the camera correctly so I am fine with dropping this and patch 22 that
+adds in the dt binding
 
-Thank you for your help !!
+>>>>> +
+>>>>>     ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
+>>>>>                                 imx258->supplies);
+>>>>>     if (ret) {
+>>>>> @@ -1224,6 +1228,7 @@ static int imx258_power_on(struct device *dev)
+>>>>>     ret = clk_prepare_enable(imx258->clk);
+>>>>>     if (ret) {
+>>>>>             dev_err(dev, "failed to enable clock\n");
+>>>>> +           gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
+>>>>>             regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
+>>>>>     }
+>>>>>
+>>>>> @@ -1238,6 +1243,8 @@ static int imx258_power_off(struct device *dev)
+>>>>>     clk_disable_unprepare(imx258->clk);
+>>>>>     regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
+>>>>>
+>>>>> +   gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
+>>>>> +
+>>>>>     return 0;
+>>>>>  }
+>>>>>
+>>>>> @@ -1541,6 +1548,12 @@ static int imx258_probe(struct i2c_client *client)
+>>>>>     if (!imx258->variant_cfg)
+>>>>>             imx258->variant_cfg = &imx258_cfg;
+>>>>>
+>>>>> +   /* request optional power down pin */
+>>>>> +   imx258->powerdown_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
+>>>>> +                                               GPIOD_OUT_HIGH);
+>>>>> +   if (IS_ERR(imx258->powerdown_gpio))
+>>>>> +           return PTR_ERR(imx258->powerdown_gpio);
+>>>>> +
+>>>>>     /* Initialize subdev */
+>>>>>     v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+>>>>>
+>>>>
+>>>> --
+>>>> Regards,
+>>>>
+>>>> Sakari Ailus
+>>
 
-Best regards
----
-Renesas Electronics
-Ph.D. Kuninori Morimoto
