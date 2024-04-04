@@ -1,173 +1,98 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7009A71B20
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929B929D1C
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712220417; cv=none; b=ssi9oIpijMy5mWETTQsLAyhid3wXBFkTkMqZ61uAlgUVGmOUYcF1gFqcPhvpQA90yF66VmtvqXvwg+4vlo7uWS+xqq7+Fu2gKTs5QbX6DvUiTr2Ctq1ZxEGfxbPSh4K5X19dFpn+XTeLj3m7wnigvIYoFZSq73zxNfJWHcP/sTw=
+	t=1712221093; cv=none; b=A3giYMNg8yBDvVeqUeQ8IckcN+yD6GEUYXZNTL7+1fxQtUwS+KcaSol88wq8A9gfNSxYCJCbEQg29V+1uF+LxW+0nsyo8ftihvfVJVLRQphRXBIDNorEGBoqakoJb5DhvPLlBx//xBjy26+VQwQ45wH287CpJroooW17hD6P1OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712220417; c=relaxed/simple;
-	bh=Q9rxavh+3jGPYQmhPcwtJShwvPawHe7CzUPk3kXsc38=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=fEi3ZU2hzqC3fy/gLhdKjlda44Wevfs0BDnkgz35d7Of4Zuw8x1cFxqO3I2O7Y9aUTzZCypVBiwXD8YX/DNZ9HpMUupHZ8VUx74OSUXmwW6nsAmKoSCzB1oYW4f4zGeBtIPIfRsjXIzb1W3n9RNun7s0VQZrMpU8TuJ7fm1RNGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=SVg+Zpnc; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1712221093; c=relaxed/simple;
+	bh=WVDtzPK+J17RLFazAce4YI5UXAV7A3dkUvt1WEcLXy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rLyBb5/OwhRR50tXhnnUxxUxWcF60brsVLb13knvAIAWblKXdD+OnzBNT6586kL/kI6dwfiYzHUmpr5bXsG3qVV2EMYZHvHfppIrrB9/UPQrbLOauEv7GlT/mdUoaE7ZEqHe9Uk4AjScKTqMOsxkLH3ByiP9MMizqQfg12gFL70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QP6TB58D; arc=none smtp.client-ip=123.58.177.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="SVg+Zpnc"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-513d3746950so844874e87.1
-        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 01:46:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712220413; x=1712825213; darn=lists.linux.dev;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=vssJvDsEm5h5nxOLNKKmfZj8jedONQ1OyiP3MNwrwU4=;
-        b=SVg+ZpncMnyXpjAHzVUIkqgGVwQJ0+DJ6G2aG1DeIy2C7usaNvkFyxQzpGXJfklP0C
-         0Isx97yIXpbqpRbfCDc6dhcN7/gHa02P+msJXS52Ds74QCGyKiWJGLlChqr5tW8JJEHY
-         Yk1g7/yp0hEGqMfZL4ryfXxyf7PnxS3X0hkQ8ts9qSrTG+AXYVn6wQWypuDx07HLRFbK
-         6zAS81vmuhGlKhbqcRhs2DrE0qyppijeDIZtAJDKxp95B2iRlz5NSGE7vqHE1VTaIUyv
-         k4yte+zPhSL7y+/qHV+Ry/Q1yhRsQGMPYcZO8tmiGATWEHWULyHJY0mf8GGe6jnKEQUp
-         Nhsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712220413; x=1712825213;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vssJvDsEm5h5nxOLNKKmfZj8jedONQ1OyiP3MNwrwU4=;
-        b=ZjfVrccH8OmkCU1mmPe1Tk8xHTX9U40AuUl2VgxbMl3KN8FUgwKgsyMlGFE6eVUmbX
-         GPlf0NnMMwys3zHx71ZG3vwPg/lPApkfUV1LDoEeq2JAW2ZmSjLqAhe11BjEQDBTJMTA
-         PesFlBGDnt8ZSxkkXwplqDZjHXiCtB1r3XDJN9SXbokdJmOFttHiPxhE6C4TYMIzHfA1
-         BnB6DMYW4xzqiCN7nTAtj9H4KYc2mUKXowKfezNDjOELTc6j2w9bIjc9RTchmr3aNEOn
-         GENEz0l1CqQ116eSx6hi73mCLZyHBAILQfR+utbAoZqI2dv7gD9psJLHemRkH8BicoPe
-         Yrvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOiWK7zSJ/pxk+8J7mdEuFSsDKaBRk0mwnrglueArO5923TBC4GD4WN5n6sfj/UEaJKsD9+e1rU5astGfAOVgnB3Aq
-X-Gm-Message-State: AOJu0YwxwZYvKUv78fuI7PIb0ZTSZV8NsPBkaAttwN+ODrjmk/NEaliB
-	2tylr7HqzbLx3ktqoxbHq6UZ7ko1UOyCj3fYzcQbccJmlP9EFvEWA/eZaFD7g6M=
-X-Google-Smtp-Source: AGHT+IGfmakMeTh3jAGVQJKJ+VTm2R438vkeBhF7L+wEWqOROEyvzepKwPfwlLVcE3mN6ey9Em+MkA==
-X-Received: by 2002:ac2:4c8f:0:b0:513:d01e:b68 with SMTP id d15-20020ac24c8f000000b00513d01e0b68mr1237043lfl.3.1712220413384;
-        Thu, 04 Apr 2024 01:46:53 -0700 (PDT)
-Received: from localhost ([2a01:e0a:3c5:5fb1:b7ad:8118:73f1:92e5])
-        by smtp.gmail.com with ESMTPSA id p15-20020a05600c468f00b0041550e03bc6sm1869265wmo.44.2024.04.04.01.46.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 01:46:53 -0700 (PDT)
-References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
- <87sf05udnx.wl-kuninori.morimoto.gx@renesas.com>
-User-agent: mu4e 1.10.8; emacs 29.2
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: =?utf-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
- <amadeuszx.slawinski@linux.intel.com>, Alper Nebi
- Yasak <alpernebiyasak@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Banajit Goswami
- <bgoswami@quicinc.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Brent
-  Lu <brent.lu@intel.com>, Cezary Rojewski <cezary.rojewski@intel.com>,
- Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Daniel Baluta
- <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>, Jaroslav
-  Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, Kai
- Vehmanen <kai.vehmanen@linux.intel.com>, Kevin Hilman
- <khilman@baylibre.com>, Liam  Girdwood <lgirdwood@gmail.com>, Linus
- Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, Maso
- Huang <maso.huang@mediatek.com>, Matthias Brugger
- <matthias.bgg@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>, Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang
- <shengjiu.wang@gmail.com>, Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>, Sylwester Nawrocki
- <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Trevor Wu
- <trevor.wu@mediatek.com>, Vinod Koul <vkoul@kernel.org>, Xiubo Li
- <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org, imx@lists.linux.dev,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 05/16] ASoC: meson: Replace dpcm_playback/capture to
- playback/capture_only
-Date: Thu, 04 Apr 2024 10:46:13 +0200
-In-reply-to: <87sf05udnx.wl-kuninori.morimoto.gx@renesas.com>
-Message-ID: <1jedblplab.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QP6TB58D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=m9wfLN0/U6O/h9jSHSpgQxev0RktWios43AT403zDCY=;
+	b=QP6TB58DvYcpoikETNbDTbQfhroTLAS3FlM83/d4ID+xbmWu8Hwz77E05FomxA
+	92+HK14MKQYqx/jYVAxyCS/Dx7JqS9xgnc4wJmbQSDVsLMYTHPV9YDp+YPJSEDff
+	zoR22aW2guXBEX8ACUUcG41kY4yHAxw0+/j7nxPf8V18g=
+Received: from dragon (unknown [223.68.79.243])
+	by smtp1 (Coremail) with SMTP id ClUQrADXP0N9aw5mz43DAQ--.14732S3;
+	Thu, 04 Apr 2024 16:57:35 +0800 (CST)
+Date: Thu, 4 Apr 2024 16:57:33 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org, arm@kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>,
+	kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX fixes for 6.9
+Message-ID: <Zg5rfaVVvD9egoBK@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-CM-TRANSID:ClUQrADXP0N9aw5mz43DAQ--.14732S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WFWxXrWUAF45Kw4xJFW7CFg_yoW8uw45pF
+	yfGw42gr1kCryrZr9rZa4xta98Cwn8JF4kJrW5GrWkJrn8AryqqFn5Crn5WryUXFWxXr40
+	vF1rJr1DXry5Xr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UuT5LUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFQC2ZV6NnB8eRgAAsO
 
+The following changes since commit 4cece764965020c22cff7665b18a012006359095:
 
-On Mon 01 Apr 2024 at 00:31, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
 
-> soc_get_playback_capture() is now handling DPCM and normal comprehensively
-> for playback/capture stream. We can use playback/capture_only flag
-> instead of using dpcm_playback/capture. This patch replace these.
->
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+are available in the Git repository at:
 
-Looks OK
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.9
 
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+for you to fetch changes up to 00b436182138310bb8d362b912b12a9df8f72ca3:
 
-> ---
->  sound/soc/meson/axg-card.c         | 8 ++++----
->  sound/soc/meson/meson-card-utils.c | 4 ++--
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-> index 3180aa4d3a15..21bf1453af43 100644
-> --- a/sound/soc/meson/axg-card.c
-> +++ b/sound/soc/meson/axg-card.c
-> @@ -132,7 +132,7 @@ static int axg_card_add_tdm_loopback(struct snd_soc_card *card,
->  	lb->stream_name = lb->name;
->  	lb->cpus->of_node = pad->cpus->of_node;
->  	lb->cpus->dai_name = "TDM Loopback";
-> -	lb->dpcm_capture = 1;
-> +	lb->capture_only = 1;
->  	lb->no_pcm = 1;
->  	lb->ops = &axg_card_tdm_be_ops;
->  	lb->init = axg_card_tdm_dai_lb_init;
-> @@ -176,7 +176,7 @@ static int axg_card_parse_cpu_tdm_slots(struct snd_soc_card *card,
->  
->  	/* Disable playback is the interface has no tx slots */
->  	if (!tx)
-> -		link->dpcm_playback = 0;
-> +		link->capture_only = 1;
->  
->  	for (i = 0, rx = 0; i < AXG_TDM_NUM_LANES; i++) {
->  		snprintf(propname, 32, "dai-tdm-slot-rx-mask-%d", i);
-> @@ -186,7 +186,7 @@ static int axg_card_parse_cpu_tdm_slots(struct snd_soc_card *card,
->  
->  	/* Disable capture is the interface has no rx slots */
->  	if (!rx)
-> -		link->dpcm_capture = 0;
-> +		link->playback_only = 1;
->  
->  	/* ... but the interface should at least have one of them */
->  	if (!tx && !rx) {
-> @@ -275,7 +275,7 @@ static int axg_card_parse_tdm(struct snd_soc_card *card,
->  		return ret;
->  
->  	/* Add loopback if the pad dai has playback */
-> -	if (link->dpcm_playback) {
-> +	if (!link->capture_only) {
->  		ret = axg_card_add_tdm_loopback(card, index);
->  		if (ret)
->  			return ret;
-> diff --git a/sound/soc/meson/meson-card-utils.c b/sound/soc/meson/meson-card-utils.c
-> index ed6c7e2f609c..1a4ef124e4e2 100644
-> --- a/sound/soc/meson/meson-card-utils.c
-> +++ b/sound/soc/meson/meson-card-utils.c
-> @@ -186,9 +186,9 @@ int meson_card_set_fe_link(struct snd_soc_card *card,
->  	link->dpcm_merged_rate = 1;
->  
->  	if (is_playback)
-> -		link->dpcm_playback = 1;
-> +		link->playback_only = 1;
->  	else
-> -		link->dpcm_capture = 1;
-> +		link->capture_only = 1;
->  
->  	return meson_card_set_link_name(card, link, node, "fe");
->  }
+  arm64: dts: imx8qm-ss-dma: fix can lpcg indices (2024-04-03 20:44:54 +0800)
 
+----------------------------------------------------------------
+i.MX fixes for 6.9:
 
--- 
-Jerome
+- A couple of i.MX7 board fixes from Fabio Estevam that use correct
+  'no-mmc' property and pass 'link-frequencies' for OV2680.
+- A series from Frank Li to fix LPCG clock indices for i.MX8 subsystems.
+- A couple of changes from Tim Harvey that fix USB VBUS regulator for
+  imx8mp-venice board.
+
+----------------------------------------------------------------
+Fabio Estevam (2):
+      ARM: dts: imx7-mba7: Use 'no-mmc' property
+      ARM: dts: imx7s-warp: Pass OV2680 link-frequencies
+
+Frank Li (8):
+      arm64: dts: imx8-ss-conn: fix usdhc wrong lpcg clock order
+      arm64: dts: imx8-ss-lsio: fix pwm lpcg indices
+      arm64: dts: imx8-ss-conn: fix usb lpcg indices
+      arm64: dts: imx8-ss-dma: fix spi lpcg indices
+      arm64: dts: imx8-ss-dma: fix pwm lpcg indices
+      arm64: dts: imx8-ss-dma: fix adc lpcg indices
+      arm64: dts: imx8-ss-dma: fix can lpcg indices
+      arm64: dts: imx8qm-ss-dma: fix can lpcg indices
+
+Tim Harvey (2):
+      arm64: dts: freescale: imx8mp-venice-gw72xx-2x: fix USB vbus regulator
+      arm64: dts: freescale: imx8mp-venice-gw73xx-2x: fix USB vbus regulator
+
+ arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi           |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx7s-warp.dts           |  1 +
+ arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi    | 16 ++++-----
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi     | 40 +++++++++++-----------
+ arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi    | 16 ++++-----
+ .../boot/dts/freescale/imx8mp-venice-gw72xx.dtsi   |  2 +-
+ .../boot/dts/freescale/imx8mp-venice-gw73xx.dtsi   |  2 +-
+ arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi   |  8 ++---
+ 8 files changed, 44 insertions(+), 43 deletions(-)
+
