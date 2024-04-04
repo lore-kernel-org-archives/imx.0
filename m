@@ -1,154 +1,151 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F94184FC8
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 12:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4873285624
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 12:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712232003; cv=none; b=S+3L0NH8ZMyj+3QEmP3OdK5/KVqHzLAO1zteqYEsVzAEde9Xo/e7wE+qBRWcxbshgn4EPewe8RVeNReeWNvwrfPPlEm2G8UmDdurZaDHbyq0zZWQuaW9eJvC8DSl3dKX4quwpdoYPnvD1MxiCQjosLezXsRnFVd/ULQkEuUqB5g=
+	t=1712232063; cv=none; b=hrc0Xsuvb2DdPqsERRTCudxTDtO317/ayscfJ8AnmTPwweASUmoMqC8rgkA49JhjTpaZb+lP9+l0jzSO9cfan+z+c9wqDjxjv6/GcAaCHYpA4Na5oeTVoBvvrrUCFPbbDVzQC4GZx/bB5LPYEvUEGdhmbiOEcwAf2n1UoaELCRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712232003; c=relaxed/simple;
-	bh=FEeqM0QXIfOr3fliFm1l8zjQQUGQnK0ajtDwI4qCyjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TvUkX8XbAE3K9gsaPC20L9Kk7O9GzZHN5Ep1GHVS4A4Ezkd4VhbW2INqw9EwB+TGihylpnJYGXGtai3RGfS1BGCHrd0VZb/xoiMXn1bj1RbXI9QPBiaYGclKT7XJ2fL85XbKtNbIJeoIcSgSnex6bKM/M3RB0VgJDlk9I8befXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MuVGz7Lk; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712232063; c=relaxed/simple;
+	bh=Aqeqvw4GrvT18e980JUpO21rtv2qBW15mhfK8EzHsvM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Na70TxuYkDB65Z8YXOh3vy92mefAWhEj5//XqXSqj9GsXYtBhPVYw1EPzlMDCjvH8mK0kABP+cbVKu8pT6cJT9f0xYDMLZ5G1ycMcTTcVa9QN2SQd+J+gC+bpVukooMYf8+Tpe+yGLqSHKgnGZpE6fC7N2gwpCFdKOMTIL0NVU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aq2Vpy2J; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MuVGz7Lk"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56c404da0ebso1358615a12.0
-        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 05:00:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aq2Vpy2J"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1e2178b2cf2so7866405ad.0
+        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 05:01:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712232000; x=1712836800; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nXx5yz65zaeAOrWd6X0p4TMONHDZtAudltRg4le3KKs=;
-        b=MuVGz7LkjDcU+2CMZwWXdSwdyMYehAI7zpcDSSpUpmN1GnL3xk/Rwf75mbnjJIksQQ
-         1wnwEEoGNZUXyH/9bBsf9aGlv71iWVaPd2EHmlPtfAbIM9ziG7btcAlz526r9kb2hZZq
-         G097o5KBFufi3tgm/+O0RM9PnppY0xf8eyO+YmhDyfQCAjztXp5s9Kx6tiFQ+ecBkBvV
-         tm7QZg80poZS9xVewxTX/mG2GH2up/cDNa9xLg7xbgqBrIFKP8L7f7sPubZgY2JiynaU
-         mXXD2aROqE2h5uahRCmGWEgrfTQK2TGXereLVrYL/xj6JFmuvCeRp9xhsRAZIS0AT5f9
-         0Pog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712232000; x=1712836800;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1712232061; x=1712836861; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nXx5yz65zaeAOrWd6X0p4TMONHDZtAudltRg4le3KKs=;
-        b=UgVxidfGbaAU+MsimUNC/GvmIt1v7SVnqALZKcq9LIfYyn/M+F5H0Mzp5sfOX4KHFk
-         LSOVdESLWuIHBafLZkGPoXaNSt99FnWUKJa8gGbbCZkM+2lNV+Kk2anHnrd7i3bGiK4o
-         +fKKPSnfMsmXNfVuk93HILo7VNRBW+oCGP1CSr72AyFmCzU3f2SWB7NT6WLagt/u1Nno
-         ryJyp4oNplG3k5FEHteyWBqPTpYc+EwtCnRPALm2L/a7knWyJioiulL/e4khYaEx/UFL
-         Um1Gtg0tgzYkZRjTOcK7Ba09V5NTuB0cGfLDYORuwArRS9NjUO6gU8gNmslch1F3d4ZJ
-         MWNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKBGYIOR/yD7t0FZHhAS2MtNKvbXWsVB/A7167/lWMNLJ+Qtx5wgUZCiKhyFqcVdXclPYbNQvvC9zRecbLumJ8xjyI
-X-Gm-Message-State: AOJu0YxFH+DH8xAc9IjDWCV9WOgKSjpArVJv33dgXlEuANaqwWopaV85
-	ctLP/6PpWNDk3LU/xFsB0OQ9+Z5T/Aj4izwhMLamVtsPQkZxo8A7Q1EvwaY+c3g=
-X-Google-Smtp-Source: AGHT+IHCWsBjiESlX+BWKOs8k4LriA4MwY8hUEBP7Jwq9fmc2PdD8jlpYByT4Mw/hMUat/3xwY8ocg==
-X-Received: by 2002:a50:ab50:0:b0:56c:d20:22df with SMTP id t16-20020a50ab50000000b0056c0d2022dfmr1582068edc.20.1712232000241;
-        Thu, 04 Apr 2024 05:00:00 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id u17-20020aa7db91000000b0056c06d5dce1sm9256367edt.81.2024.04.04.04.59.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Apr 2024 04:59:59 -0700 (PDT)
-Message-ID: <e78c8c2e-1c83-4492-9db9-08f06856a414@linaro.org>
-Date: Thu, 4 Apr 2024 13:59:57 +0200
+        bh=wL4i2rxVSO4Dx2Z9A/DMCu9nioCZUVI1YGXCUgVZyec=;
+        b=Aq2Vpy2J6IWNXARVbFufQAFtJQY3O67/DWe/eKTnq6NznpxTZhqk4Wk423TpdZu8gR
+         Ww3tHVXthZFpXO0ZAH1hl+KU2+ALyCVLMFLfUtW8qwJp927H94AYrLKGYTdB029SdVv2
+         1ndPcl1ObVgXE7TxwPXVFLQevXiu91q/ktGDUUDU9Nobih/KQhoNETq/WSi36QmmsGec
+         hcwRkOPgPsbYKz9589jkvWyc0G1snD3ROX7UNsbb+PjBBhl9WZbaTcw47j7SemoQtP4v
+         ZgVgAaT/XvGkPxcogrphhwo9c70vnsVUO2bTj/IqHQ3ZmXbgw0nTgNVE+gZeQhAONXQb
+         8olg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712232061; x=1712836861;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wL4i2rxVSO4Dx2Z9A/DMCu9nioCZUVI1YGXCUgVZyec=;
+        b=ZDosZheuiG5w9bUdMr0B2c99PMQlVPreQ0vf1sgHhYbXjQueRC5Lwq1n5jA+NZnxre
+         04nZY3bSdhgd8bvKQJkUIBXoIDGeo6M5nhRjFs7lMv7TEWmxi9eaV32V3NbDeRdj5Wzs
+         WBqMNbFS3NjF3IlFsyYcnkLf4w2pxBOzXohddJbxDd8ECvWYaV4Nc6uYMIKN1PYe4/jy
+         eLXK0ETD2XizO+z7zCHl7d3wusO9x2YtMovGRAxtdiJXBMnrmZo1aHq+FQ1PHsZ6CAVG
+         4+exgF0OG+qxTO1eKhwVqX+GGOeQEr+ZSJmUqr8OeyU9ewonpDyQn/0NZM4yXtFY9Fsb
+         PacA==
+X-Forwarded-Encrypted: i=1; AJvYcCWy6WM4/3c4WKHLShHe180nWrU1zEXuShkId+6sUAJyf588BwP+42pO1V7/FSBVjdnI20zheteFa/utzRtwKTzndlw4
+X-Gm-Message-State: AOJu0YxetfETvKVbWs8c8HocWzU6N8oZC3QvCBxWAsfjPj9IV99u9KJT
+	3wKSm/2rE3WVDbgZvX2iiHa/yzFy9SAVUb/Mvw1dqmok2MYrus2aeOEAWYzh2mASBQaC12HUGgU
+	WAQALiqwW8T0Fw2Srp5ofD3ObwgY=
+X-Google-Smtp-Source: AGHT+IGcM7phzQ4a6LWlb+ZbUy46QOrWqPtD6hZ2VF2T8uxuZk2nkBNtUNgHlEIleOyY0tflROY1ahFFF1Z2hTRU4SA=
+X-Received: by 2002:a17:902:7282:b0:1e2:7356:aa31 with SMTP id
+ d2-20020a170902728200b001e27356aa31mr1882050pll.34.1712232061199; Thu, 04 Apr
+ 2024 05:01:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: media: imx-jpeg: add
- clocks,clock-names,slot to fix warning
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Mirela Rabulea <mirela.rabulea@nxp.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- "open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER" <imx@lists.linux.dev>,
- "open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER"
- <linux-media@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20240404035205.59492-1-Frank.Li@nxp.com>
- <af602862-5120-4717-adb6-694ada09e8d8@linaro.org>
- <f5fa1872-0bae-4f04-aa94-27db937516e9@linaro.org>
- <CAOMZO5Dtd_p02YeX6tcWMGzujZ-GwLQMQBPBOx9xLmEgs6VVNg@mail.gmail.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CAOMZO5Dtd_p02YeX6tcWMGzujZ-GwLQMQBPBOx9xLmEgs6VVNg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240305004859.201085-1-aford173@gmail.com> <20240305081816.GF12503@pendragon.ideasonboard.com>
+In-Reply-To: <20240305081816.GF12503@pendragon.ideasonboard.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Thu, 4 Apr 2024 07:00:49 -0500
+Message-ID: <CAHCN7xKwScoXouUHyH=dPZ0fgibmEUXRFwFPUF8mdKMf8YNA2g@mail.gmail.com>
+Subject: Re: [PATCH V2 1/2] drm/bridge: adv7511: Allow IRQ to share GPIO pins
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: dri-devel@lists.freedesktop.org, aford@beaconembedded.com, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 04/04/2024 13:03, Fabio Estevam wrote:
-> On Thu, Apr 4, 2024 at 3:54 AM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> And for the clocks, instead pick up this patch:
->> https://lore.kernel.org/all/20230721111020.1234278-3-alexander.stein@ew.tq-group.com/
-> 
-> Or maybe this one:
-> https://lore.kernel.org/linux-devicetree/DB9PR04MB923493D0DA82C9EC4386BC2A8FF1A@DB9PR04MB9234.eurprd04.prod.outlook.com/
+On Tue, Mar 5, 2024 at 2:18=E2=80=AFAM Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> Hello Adam,
+>
+> Thank you for the patch.
+>
+> On Mon, Mar 04, 2024 at 06:48:57PM -0600, Adam Ford wrote:
+> > The IRQ registration currently assumes that the GPIO is dedicated
+> > to it, but that may not necessarily be the case. If the board has
+> > another device sharing the GPIO, it won't be registered and the
+> > hot-plug detect fails to function.
+> >
+> > Currently, the handler reads two registers and blindly
+> > assumes one of them caused the interrupt and returns IRQ_HANDLED
+> > unless there is an error. In order to properly do this, the IRQ
+> > handler needs to check if it needs to handle the IRQ and return
+> > IRQ_NONE if there is nothing to handle.  With the check added
+> > and the return code properly indicating whether or not it there
+> > was an IRQ, the IRQF_SHARED can be set to share a GPIO IRQ.
+> >
+> > Signed-off-by: Adam Ford <aford173@gmail.com>
+>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
 
-Three people were fixing same clocks issue... and three or more people
-were trying to fix the slot property.
+Gentle nudge on this one.   It's been about a month, and without it,
+it is preventing hot-plug detection on one board for me.
 
-This is really bad binding maintenance and driver upstreaming, NXP.
+Thanks
 
-Best regards,
-Krzysztof
+adam
 
+>
+> > ---
+> > V2:  Add check to see if there is IRQ data to handle
+> >
+> > diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu=
+/drm/bridge/adv7511/adv7511_drv.c
+> > index b5518ff97165..f3b4616a8fb6 100644
+> > --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+> > +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+> > @@ -477,6 +477,11 @@ static int adv7511_irq_process(struct adv7511 *adv=
+7511, bool process_hpd)
+> >       if (ret < 0)
+> >               return ret;
+> >
+> > +     /* If there is no IRQ to handle, exit indicating no IRQ data */
+> > +     if (!(irq0 & (ADV7511_INT0_HPD | ADV7511_INT0_EDID_READY)) &&
+> > +         !(irq1 & ADV7511_INT1_DDC_ERROR))
+> > +             return -ENODATA;
+> > +
+> >       regmap_write(adv7511->regmap, ADV7511_REG_INT(0), irq0);
+> >       regmap_write(adv7511->regmap, ADV7511_REG_INT(1), irq1);
+> >
+> > @@ -1318,7 +1323,8 @@ static int adv7511_probe(struct i2c_client *i2c)
+> >
+> >               ret =3D devm_request_threaded_irq(dev, i2c->irq, NULL,
+> >                                               adv7511_irq_handler,
+> > -                                             IRQF_ONESHOT, dev_name(de=
+v),
+> > +                                             IRQF_ONESHOT | IRQF_SHARE=
+D,
+> > +                                             dev_name(dev),
+> >                                               adv7511);
+> >               if (ret)
+> >                       goto err_unregister_audio;
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
