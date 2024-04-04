@@ -1,115 +1,86 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0012AACA
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 15:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F8F129E7C
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 15:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712246026; cv=none; b=Jv2kdFI/ONW5AWZIsLgz/Oo+G3dwrRPpJjEGp+v+EMM8xthzB8gKRQ3SN240qyimrontGw5q+DebcXlIOyErAJpnStdeGv1WyNTR4OQCCAuJkaTnSvfo0jauhxRzb7b8JcIjiWMctJ+MAbaNL1T8I5LbBDvFIS/21k3G1Mu2O4s=
+	t=1712246043; cv=none; b=Ldaxc7UCBCtNA7f5Xa7DyS12QV78n9HY5BIngz3tkUNXm0WVHegPPKmtz1Gg4eaSwO3NuBS16/QkzUeJ6WD8jbr1PjQn5QHBVhs3rFLhBZpGeiXZOzQT/DrvqOgYBixsBmDrMHgNySuaLfO2xWlDTFabxMM07MhNgJPteI/loO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712246026; c=relaxed/simple;
-	bh=IOtUCFZKVp3dT19yR6jJ9GMvsH8zvq9FCQseOX3yf9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XaN/1DrP9KYShp42cOZalh6JynSaD8qsVwR7lSm5Y9Yjqx+BZzzK/EPD2ly5mR4To21MOVuk/LlTQc4CGBojaijcvJXnAfUN7EXSg3YYbxWD14nU1768L/FhvNySKYEhmSmBMtMC0qaY2VwOAt8t0xTDqW5SjVY6ujHI8FWek8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Pzw4h7lT; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712246043; c=relaxed/simple;
+	bh=/3m8tbMTKbpp8DczNbgjKG86CcVoJKTX6w3QpC6Pclo=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=JXmDH7PyHbcENDOKLg8chVDeoArGCOKBQrm2147ss80pKLVHbuYvQjjaY1O2pllgMBc52k0wFp8xTp1w5xXwdst/JrbLdTPNt9L5xVi3mQh/bk7oeCAn9lNHGy+MrhlY/nav1GuraWX4zc/BT8BMazjal1cm+f7vsXau+7WdHF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWSIFTgz; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Pzw4h7lT"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1e2b137d666so6139905ad.2
-        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 08:53:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWSIFTgz"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-343b4601415so500194f8f.0
+        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 08:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712246024; x=1712850824; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A76vBCCK1MtmEH4eG8ItKOT6t7ZQD66dj/w9DMvOXMg=;
-        b=Pzw4h7lTvK5OMQLtlYHFtqGDJgV/jYmzG2RLycxsxySvx8/z/eCA84SAvNRt2skR4h
-         yJrEICWb9K3oH52C/sgFif6pKnbAOoYH8+yTk6wsAlM33NR+pHpI+h8Kfc9p/mVPyiVa
-         prmaQnqg4n4MrxUONvUAvl8RL5exihTbO/gKjdPBuW5/uEMOq2mGugMHyI+Rkt326zGf
-         lV43+RxMIMMUK7+dZxN7uok4ICZM5YYtShTgWjHiGdr3LpuTg/q/Qzv6y4otpS2aWW1s
-         QwDCO2R9xXN8Y1ISyHyikUht7txsoId6nrFEMlLHyWNJD947Kj4zLN1nDlxg4RqUs9Ru
-         UvVg==
+        d=gmail.com; s=20230601; t=1712246040; x=1712850840; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/3m8tbMTKbpp8DczNbgjKG86CcVoJKTX6w3QpC6Pclo=;
+        b=gWSIFTgzndsd/iNBQVpv+0ngA9I7xybD5+4ZaB8gd5//285eOCmRsJglyxIJfDwzer
+         PF3XCJW/egyGMzKaFTkZzrQA4tF3o+Mr7WQ+d01XOyvLBBZr6XvAeIhqhhTi3pai/Qwd
+         AICN4SlHOa39+Goc9Y/Wv4KsJibCZsUCFAHnLkR1XbFrbUEZ5o/vowU7VWQJteInNFB7
+         jngrTvrW+Un4seHgx1fwPKpkAML8zXqCf68wlQy471CDnaKAWNBM0iu5BUwqiTqrIn8V
+         OdXY09EmgQZMGYLp78ELL0SvU1g1v894bhFP9KvOwucY8ArJLnVwgbfSbIMlCFMQaXNE
+         maBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712246024; x=1712850824;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A76vBCCK1MtmEH4eG8ItKOT6t7ZQD66dj/w9DMvOXMg=;
-        b=TepJuNsE8N/RLDR9oqw78At4YV1hESOw6dakK9DIa+bIKmsCDazXLeS+knZSMxwJIo
-         Vd7dDoewZvybFcRDGF0NLEbIcblyE3skdZ6k047CbSDoTL3N09rp7GXlBcTfnhyunuKS
-         zpF0ig3xHXYYndTQ1yDEcCsrnnUv89UsQoOmTy8pYliIwryjFHsTJf53AIYFWTbXoazK
-         gii/zjUFAjDaubnVB2VMicNR7OzrPqwCOLVmSlSrzabU+h5sNx8/UZQaITGJkLn/WDuM
-         /OLf2aJ/wRg4ivWEAxNj5/2SpZAfofQccueBg8a0qiVym1kDv9j/8xvnAm2wi92/a1Jf
-         26SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/RYRHyP15EKFafU5MtHr7k4fFEHyhCpe6EAlbuFaguEsrAHooSEuFVRAomnf78Nn7Ucelj/G59HU+0Ruz+cusLpz1
-X-Gm-Message-State: AOJu0Yx1wBxpI3twAeHD9vCwZTh7iUB4L9F7A2Qq7qUoqQ/REPSDBbmI
-	1KTgN7XwRHsp9ADHzlDSYEG+4mXYHNxFnFvBOrIOFn50CN93Rc2ObXy4O6M65A==
-X-Google-Smtp-Source: AGHT+IHdHFRWhWuUy3OLIL8u9AasmKRgsmM+36CA87IVGIRfTrIK/xuFlhL0VT9keY1uCHdtZQz8uw==
-X-Received: by 2002:a17:902:ce86:b0:1e2:5e2f:682 with SMTP id f6-20020a170902ce8600b001e25e2f0682mr3358537plg.2.1712246023633;
-        Thu, 04 Apr 2024 08:53:43 -0700 (PDT)
-Received: from thinkpad ([103.203.73.241])
-        by smtp.gmail.com with ESMTPSA id n18-20020a170903111200b001e0bae4490fsm15599425plh.154.2024.04.04.08.53.39
+        d=1e100.net; s=20230601; t=1712246040; x=1712850840;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/3m8tbMTKbpp8DczNbgjKG86CcVoJKTX6w3QpC6Pclo=;
+        b=QfdfAAgkmKY079AisveSap3O3UMMsW7N3hbNqUzTnNYX/TFKHXHRAtK/Rf2wvYXfpu
+         3wwajrHZ7eczpAItIzQk1Ix5DBCyvbCjUw3Lxf8WlAqeL3HnJb7WnsGzX1DmckF25jRT
+         MxfxdrzMP7RCBQiGRB9ipvWzXFLM1y7/LfThKTZIYyRYgrIReZAHIoBzrdKI02nS76fB
+         mTen8acorlzoD2aZI0/T261F5I1XeDNhFFjg/ZgNbjgU6Glvdh5NAqS2r5bl9U99J1MP
+         SQHY21GC9thxh9iDN5A9+rnTl7MKM/OCVSY/YdrSyFQeDskW+NfZTT7h9VOMegd1rrz9
+         aeXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdNUakFi1BK+ulU+Msq0PVNmcwCYpAJspjjIyKon1ClT9ibgMm0qiM1Qk+NH4dsZWq9MXraiJnj4eQ6LaG9zph5AQp
+X-Gm-Message-State: AOJu0YyhxofNK3y29b4qErfoxtbPKwmU+OrXvPtX80Qc18QkI2NJLg6i
+	nv7cTkEz1LikXfuIUPR/YZ6A25+OF0ITEsKL5pZoalcBv2bzFY8W
+X-Google-Smtp-Source: AGHT+IHVFPGEZrCTsk92L3eJtuYBge9oeCNt9BZBgO+gIRZfLUwK7t6faaFK5b1/SpqxVj9fbL6r3w==
+X-Received: by 2002:a05:6000:4f1:b0:343:6c07:c816 with SMTP id cr17-20020a05600004f100b003436c07c816mr3091423wrb.16.1712246040329;
+        Thu, 04 Apr 2024 08:54:00 -0700 (PDT)
+Received: from ?IPv6:2001:8a0:e622:f700:7d3e:f9e7:30e2:91a5? ([2001:8a0:e622:f700:7d3e:f9e7:30e2:91a5])
+        by smtp.gmail.com with ESMTPSA id by7-20020a056000098700b0033ec94c6277sm20590586wrb.115.2024.04.04.08.53.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 08:53:43 -0700 (PDT)
-Date: Thu, 4 Apr 2024 21:23:37 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
-Message-ID: <20240404155337.GB35218@thinkpad>
-References: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
- <20240319-pme_msg-v5-4-af9ffe57f432@nxp.com>
+        Thu, 04 Apr 2024 08:54:00 -0700 (PDT)
+Message-ID: <fccbb040330a706a4f7b34875db1d896a0bf81c8.camel@gmail.com>
+Subject: iMX8M Mini suspend/resume hanging on imx8m_blk_ctrl_power_on()
+From: vitor <ivitro@gmail.com>
+To: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: ivitro@gmail.com, vitor.soares@toradex.com, ulf.hansson@linaro.org, 
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, rafael@kernel.org, geert+renesas@glider.be,
+ peng.fan@nxp.com,  linus.walleij@linaro.org,
+ u.kleine-koenig@pengutronix.de, marex@denx.de
+Date: Thu, 04 Apr 2024 16:53:58 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240319-pme_msg-v5-4-af9ffe57f432@nxp.com>
 
-On Tue, Mar 19, 2024 at 12:07:14PM -0400, Frank Li wrote:
-> Add PCIE_MSG_CODE_PME_TURN_OFF macros to enable a PCIe host driver to send
-> PME_Turn_Off messages.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/pci.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index ffd066c15f3bb..989681a0d6057 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -40,6 +40,8 @@
->  #define PCIE_MSG_CODE_DEASSERT_INTC	0x26
->  #define PCIE_MSG_CODE_DEASSERT_INTD	0x27
->  
-> +#define PCIE_MSG_CODE_PME_TURN_OFF	0x19
-> +
+Greetings,
 
-I think this could be moved before INTx to keep the codes sorted.
+I'm trying to suspend/resume our Verdin iMX8M Mini with VPU IP using
+the latest 6.9.0-rc2 Kernel. While the system can suspend without
+issues, it hangs on the resume routine. After some investigation, I can
+see the Kernel hanging on imx8m_blk_ctrl_power_on()[1] while resuming
+the hantro-vpu power domain.
 
-- Mani
+Any hint about that?
 
->  extern const unsigned char pcie_link_speed[];
->  extern bool pci_early_dump;
->  
-> 
-> -- 
-> 2.34.1
-> 
+[1]https://elixir.bootlin.com/linux/v6.9-rc2/source/drivers/pmdomain/imx/im=
+x8m-blk-ctrl.c#L101
 
--- 
-மணிவண்ணன் சதாசிவம்
