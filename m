@@ -1,90 +1,154 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C3B80C09
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 11:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F94184FC8
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 12:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712228606; cv=none; b=Hq3W7c3pNy6ehoyZlCdO+JJbNbh1pUEaa2r4pEE1Mdty3Xpo7LgaF6UBcmNe4RfUhT+FwwBu8M3E/KAi/h+IKG36g2gW7NcDav7dloLup1irQ9E+//wlYSNx9MHarpNiOkMh5mPwqq20PqynrJ6KJEylNF+L4ll+8IPgOawDj9g=
+	t=1712232003; cv=none; b=S+3L0NH8ZMyj+3QEmP3OdK5/KVqHzLAO1zteqYEsVzAEde9Xo/e7wE+qBRWcxbshgn4EPewe8RVeNReeWNvwrfPPlEm2G8UmDdurZaDHbyq0zZWQuaW9eJvC8DSl3dKX4quwpdoYPnvD1MxiCQjosLezXsRnFVd/ULQkEuUqB5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712228606; c=relaxed/simple;
-	bh=+hAeU74QQfbsZOvQyLbhO6tKobZra3FmBs+/7VBvJaE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EncSGdVUnlGmIUEGbO2rHKdPiUbBle/CuMCpiQS+9bxRHz3m2d/xx+tf4RrBcV0RECtM8Ey8Zmm/zUry7qW3kEbrYeQw4dBw/Yc6Gy0SWqhMgE7zSIkxX7of5J7hCTbIM6Nj0mpMV9Y6ggw1qssp0O6lUvptFpH3ZLzrhktL5K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lAK4F3NL; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712232003; c=relaxed/simple;
+	bh=FEeqM0QXIfOr3fliFm1l8zjQQUGQnK0ajtDwI4qCyjs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TvUkX8XbAE3K9gsaPC20L9Kk7O9GzZHN5Ep1GHVS4A4Ezkd4VhbW2INqw9EwB+TGihylpnJYGXGtai3RGfS1BGCHrd0VZb/xoiMXn1bj1RbXI9QPBiaYGclKT7XJ2fL85XbKtNbIJeoIcSgSnex6bKM/M3RB0VgJDlk9I8befXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MuVGz7Lk; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lAK4F3NL"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e694337fffso204136b3a.1
-        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 04:03:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MuVGz7Lk"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56c404da0ebso1358615a12.0
+        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 05:00:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712228605; x=1712833405; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+hAeU74QQfbsZOvQyLbhO6tKobZra3FmBs+/7VBvJaE=;
-        b=lAK4F3NL3rSdrX+sFyGJfjUZCbkiFwTAWBMPFey2RGlvnP1bR1MV0QO1EfvqG6BiuO
-         U4fOmZw4xM/Tw6fNgFCb3+FDLbM2weOvocyRnkXp8AQvR+oa+jNwoZQLBDNiUOm9u+nr
-         IiXzx0gzmpImWJpcS7368HS5cfv3ak8uMQjqIcYT0vbAlC9ZREwA2YbTCp8zn/CC6uaP
-         kQqj/GaBM1QxRlEc+IHvIk24eJGLFwzT7KLW2Yc39OFIVFaEQ46OLUD6H3m7YPBltPCU
-         q950Z4ihIcsstu0Fqo0NH35PwzJlblLODB4tuR41y0xZts7hCRoCZ9yd5U8aztuEb35a
-         cNrg==
+        d=linaro.org; s=google; t=1712232000; x=1712836800; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=nXx5yz65zaeAOrWd6X0p4TMONHDZtAudltRg4le3KKs=;
+        b=MuVGz7LkjDcU+2CMZwWXdSwdyMYehAI7zpcDSSpUpmN1GnL3xk/Rwf75mbnjJIksQQ
+         1wnwEEoGNZUXyH/9bBsf9aGlv71iWVaPd2EHmlPtfAbIM9ziG7btcAlz526r9kb2hZZq
+         G097o5KBFufi3tgm/+O0RM9PnppY0xf8eyO+YmhDyfQCAjztXp5s9Kx6tiFQ+ecBkBvV
+         tm7QZg80poZS9xVewxTX/mG2GH2up/cDNa9xLg7xbgqBrIFKP8L7f7sPubZgY2JiynaU
+         mXXD2aROqE2h5uahRCmGWEgrfTQK2TGXereLVrYL/xj6JFmuvCeRp9xhsRAZIS0AT5f9
+         0Pog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712228605; x=1712833405;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+hAeU74QQfbsZOvQyLbhO6tKobZra3FmBs+/7VBvJaE=;
-        b=S0PgQJT/Slkx8JTVAJIuNRqNUB6LWszbChSdEq9cCpW7f6IWQhPTpp9RYqCpT2+bXw
-         m8aqlEVx0LzWzXY9fRHGirh7evNF4+yo//mKslSDbLIPq7YxcguYIxvZnVKR2z+ZwZF+
-         iFmjVtYJqvb77Rl2TcoPa2v9hPuZ9TBZMyFaQnLtWInZMG/3Rvgl9VADZP494E3cIpAz
-         CS3yPYN6QBiqjxYVBqfNxCJL2ZB4OECKgm089BP6PHW3520ZmyQ2WIxMFSMRXlI7yb6c
-         1jFauJlYqc8tjVLtknQMxa2K0aYM5Y8A4csMjkaXzJA73CNbaHjL8tTh6CS2cs3fM2Pz
-         +dEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6pZ+12Aq2KJIB634FLhvt51uYL0BHfPcfUc0y3Qv6rEQFSHvaKkZFT/uOAb/Wbnhv8yrAUAfSbeMBTwwSfnfY42V7
-X-Gm-Message-State: AOJu0YyKb049aEOHZyJcptjXoSCRUOEH0muNejV4Uu9Msa+UbMI3wy2L
-	FWvZUDzfUegQQT+S4eLOgvOk0RoinIN+XhiTDn+Oga1t+9YW7neNxmM4acJw4nJFLnWVEq/Ju5I
-	oCLCaPQ8O6A5HDoveViYiSXoTkZ0=
-X-Google-Smtp-Source: AGHT+IEiV3mYP5jcL1qYae16r/KN6hqKughbDlZ4LxlcHlZBBb1xETAo6BgRMuLOSJwR/Fy2iLftYZBAuG/Ww1JZaBM=
-X-Received: by 2002:a05:6a21:6d88:b0:1a7:199:8ac5 with SMTP id
- wl8-20020a056a216d8800b001a701998ac5mr2303003pzb.4.1712228604634; Thu, 04 Apr
- 2024 04:03:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712232000; x=1712836800;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nXx5yz65zaeAOrWd6X0p4TMONHDZtAudltRg4le3KKs=;
+        b=UgVxidfGbaAU+MsimUNC/GvmIt1v7SVnqALZKcq9LIfYyn/M+F5H0Mzp5sfOX4KHFk
+         LSOVdESLWuIHBafLZkGPoXaNSt99FnWUKJa8gGbbCZkM+2lNV+Kk2anHnrd7i3bGiK4o
+         +fKKPSnfMsmXNfVuk93HILo7VNRBW+oCGP1CSr72AyFmCzU3f2SWB7NT6WLagt/u1Nno
+         ryJyp4oNplG3k5FEHteyWBqPTpYc+EwtCnRPALm2L/a7knWyJioiulL/e4khYaEx/UFL
+         Um1Gtg0tgzYkZRjTOcK7Ba09V5NTuB0cGfLDYORuwArRS9NjUO6gU8gNmslch1F3d4ZJ
+         MWNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUKBGYIOR/yD7t0FZHhAS2MtNKvbXWsVB/A7167/lWMNLJ+Qtx5wgUZCiKhyFqcVdXclPYbNQvvC9zRecbLumJ8xjyI
+X-Gm-Message-State: AOJu0YxFH+DH8xAc9IjDWCV9WOgKSjpArVJv33dgXlEuANaqwWopaV85
+	ctLP/6PpWNDk3LU/xFsB0OQ9+Z5T/Aj4izwhMLamVtsPQkZxo8A7Q1EvwaY+c3g=
+X-Google-Smtp-Source: AGHT+IHCWsBjiESlX+BWKOs8k4LriA4MwY8hUEBP7Jwq9fmc2PdD8jlpYByT4Mw/hMUat/3xwY8ocg==
+X-Received: by 2002:a50:ab50:0:b0:56c:d20:22df with SMTP id t16-20020a50ab50000000b0056c0d2022dfmr1582068edc.20.1712232000241;
+        Thu, 04 Apr 2024 05:00:00 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id u17-20020aa7db91000000b0056c06d5dce1sm9256367edt.81.2024.04.04.04.59.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Apr 2024 04:59:59 -0700 (PDT)
+Message-ID: <e78c8c2e-1c83-4492-9db9-08f06856a414@linaro.org>
+Date: Thu, 4 Apr 2024 13:59:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240404035205.59492-1-Frank.Li@nxp.com> <af602862-5120-4717-adb6-694ada09e8d8@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: media: imx-jpeg: add
+ clocks,clock-names,slot to fix warning
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Mirela Rabulea <mirela.rabulea@nxp.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER" <imx@lists.linux.dev>,
+ "open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER"
+ <linux-media@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20240404035205.59492-1-Frank.Li@nxp.com>
+ <af602862-5120-4717-adb6-694ada09e8d8@linaro.org>
  <f5fa1872-0bae-4f04-aa94-27db937516e9@linaro.org>
-In-Reply-To: <f5fa1872-0bae-4f04-aa94-27db937516e9@linaro.org>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 4 Apr 2024 08:03:12 -0300
-Message-ID: <CAOMZO5Dtd_p02YeX6tcWMGzujZ-GwLQMQBPBOx9xLmEgs6VVNg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: media: imx-jpeg: add clocks,clock-names,slot
- to fix warning
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Mirela Rabulea <mirela.rabulea@nxp.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	"open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER" <imx@lists.linux.dev>, 
-	"open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER" <linux-media@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAOMZO5Dtd_p02YeX6tcWMGzujZ-GwLQMQBPBOx9xLmEgs6VVNg@mail.gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAOMZO5Dtd_p02YeX6tcWMGzujZ-GwLQMQBPBOx9xLmEgs6VVNg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 4, 2024 at 3:54=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+On 04/04/2024 13:03, Fabio Estevam wrote:
+> On Thu, Apr 4, 2024 at 3:54 AM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+> 
+>> And for the clocks, instead pick up this patch:
+>> https://lore.kernel.org/all/20230721111020.1234278-3-alexander.stein@ew.tq-group.com/
+> 
+> Or maybe this one:
+> https://lore.kernel.org/linux-devicetree/DB9PR04MB923493D0DA82C9EC4386BC2A8FF1A@DB9PR04MB9234.eurprd04.prod.outlook.com/
 
-> And for the clocks, instead pick up this patch:
-> https://lore.kernel.org/all/20230721111020.1234278-3-alexander.stein@ew.t=
-q-group.com/
 
-Or maybe this one:
-https://lore.kernel.org/linux-devicetree/DB9PR04MB923493D0DA82C9EC4386BC2A8=
-FF1A@DB9PR04MB9234.eurprd04.prod.outlook.com/
+Three people were fixing same clocks issue... and three or more people
+were trying to fix the slot property.
+
+This is really bad binding maintenance and driver upstreaming, NXP.
+
+Best regards,
+Krzysztof
+
