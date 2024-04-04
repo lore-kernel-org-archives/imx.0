@@ -1,57 +1,58 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD6B7172C
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7009A71B20
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712220327; cv=none; b=rvRoaUdhJeKFiLrsLgGhneKxvtjsmp64UMVQPfKUrpCU9Cb5ZSxq3wM42GyI1gSPlL+x0+AeziUhbqIxQB8JB9IWiI+gaxGJKqaScyGW3+Ef+yhUBq1y0W4xFnYFNDbwG+qZKf3gMVz0exLJCB9OXs+WX/0VYB+cAqB5F07SR68=
+	t=1712220417; cv=none; b=ssi9oIpijMy5mWETTQsLAyhid3wXBFkTkMqZ61uAlgUVGmOUYcF1gFqcPhvpQA90yF66VmtvqXvwg+4vlo7uWS+xqq7+Fu2gKTs5QbX6DvUiTr2Ctq1ZxEGfxbPSh4K5X19dFpn+XTeLj3m7wnigvIYoFZSq73zxNfJWHcP/sTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712220327; c=relaxed/simple;
-	bh=aRrOYrta+1RXuR175jubYLyOAM6aPkS6N48rtWm1kxg=;
+	s=arc-20240116; t=1712220417; c=relaxed/simple;
+	bh=Q9rxavh+3jGPYQmhPcwtJShwvPawHe7CzUPk3kXsc38=;
 	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=LI7Tk7yBfZtcBBukr2TrKciW/gd/aM0GI3hhmtJ08/LL2XFjOoWxkkUGcid5CXZyZjq0oS0L3ezz/XjX7kvgrq/x0ABPigMfxGPwU5jTehOV1y1R5eS3R1ZU2dQcnw24ZFEPsmB4k1GeA5b9QW0Rs9tCtd6oj5MUV3qnpY5utHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JWrVawa3; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version:Content-Type; b=fEi3ZU2hzqC3fy/gLhdKjlda44Wevfs0BDnkgz35d7Of4Zuw8x1cFxqO3I2O7Y9aUTzZCypVBiwXD8YX/DNZ9HpMUupHZ8VUx74OSUXmwW6nsAmKoSCzB1oYW4f4zGeBtIPIfRsjXIzb1W3n9RNun7s0VQZrMpU8TuJ7fm1RNGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=SVg+Zpnc; arc=none smtp.client-ip=209.85.167.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JWrVawa3"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3436fec6a70so529270f8f.2
-        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 01:45:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="SVg+Zpnc"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-513d3746950so844874e87.1
+        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 01:46:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712220323; x=1712825123; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712220413; x=1712825213; darn=lists.linux.dev;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=8fo6r6+GpOmbs58KA8H03fqz5IfKM9XbnGIu84c+CU0=;
-        b=JWrVawa3JmXHFm0dmuqQddn2de4Ykw77QzJChg51cWVBC5w+VbFojxwaNx01e/Owzq
-         FR9mFvqeIOAyTQOuTdZWMbafCO+2LGpzv8xOTt+k8+v2LCd/ULeebPhT4uragprHOSbX
-         xjhCKxCaqAPym8kC8nBG7dbayFfEC4Gh6lbkVt6/XV+aL3LucBaa/3MpIR2E+1uEzJ7a
-         NVJW+mpSVioleTbijF/X0xWVePEExWo79EkR0Y3wSYRznjXJ5NtT2okxmW02ccwqZJ8u
-         hDXWqUZ/rnMt2tAeZWIsgap8fqvIPmjI0zxM9gGxHOEhYTjlyiAM1QDkixuXtvVj3sd7
-         irQw==
+        bh=vssJvDsEm5h5nxOLNKKmfZj8jedONQ1OyiP3MNwrwU4=;
+        b=SVg+ZpncMnyXpjAHzVUIkqgGVwQJ0+DJ6G2aG1DeIy2C7usaNvkFyxQzpGXJfklP0C
+         0Isx97yIXpbqpRbfCDc6dhcN7/gHa02P+msJXS52Ds74QCGyKiWJGLlChqr5tW8JJEHY
+         Yk1g7/yp0hEGqMfZL4ryfXxyf7PnxS3X0hkQ8ts9qSrTG+AXYVn6wQWypuDx07HLRFbK
+         6zAS81vmuhGlKhbqcRhs2DrE0qyppijeDIZtAJDKxp95B2iRlz5NSGE7vqHE1VTaIUyv
+         k4yte+zPhSL7y+/qHV+Ry/Q1yhRsQGMPYcZO8tmiGATWEHWULyHJY0mf8GGe6jnKEQUp
+         Nhsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712220323; x=1712825123;
+        d=1e100.net; s=20230601; t=1712220413; x=1712825213;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8fo6r6+GpOmbs58KA8H03fqz5IfKM9XbnGIu84c+CU0=;
-        b=vnLqkmogSrpG6enqZoje4Ib35z+I5Ven3/hlz5RqJPU2iSa6UxxiI2mweeK6Gg3znL
-         dgyWKQfagHZ2MbfHrG0rEWIpz4w///+ITz38tN2ConaJ6r0zuJ8U4xbvVvxCCqsCFhzv
-         FG24GnSxo7aqoBAss3bfAXKlqLQ0bUUQZNYBxutU4uQl4HW78a8Tpkq2zVjfo87eENUH
-         p69b0hlJ6cTRJ+sGOPUKnm8zrAC2zw1am2gsHSW10ktN/uR9C0sAUP8Zn0fNcQsCDsXM
-         UzihsMpLw/ayJ/ey/5x3DLh61s06dPYuDfwqYUSRJkX31nlFEkejva7Zc9on4hPVObik
-         eheA==
-X-Forwarded-Encrypted: i=1; AJvYcCXaI+FQlJhc6GgjVQPJiuKPP85w55qdCsBXkxB1zqvtxWnUAymImLLKrTy0P6u29M5pfQDRH24dVTNK4cVnlWc5P2Xg
-X-Gm-Message-State: AOJu0YyUAmCDKGFeP4JwZyuqwYoAQDFJhedUz1a26evKDdEYQmNDQKE3
-	FtsALuHyaRLoYWDBNzbtc4AlsXeRhx09V7wriyKoaFEzvnTtTraJq5NGpRIMHkA=
-X-Google-Smtp-Source: AGHT+IEAcsOPc4S1DUcCXvM+g9yxoPEXC4apjaO2kFEGisIgkysCQizj9ZAWeb5epN2r4xqgWw8tKA==
-X-Received: by 2002:adf:fec4:0:b0:343:61bb:115d with SMTP id q4-20020adffec4000000b0034361bb115dmr1666179wrs.26.1712220323243;
-        Thu, 04 Apr 2024 01:45:23 -0700 (PDT)
+        bh=vssJvDsEm5h5nxOLNKKmfZj8jedONQ1OyiP3MNwrwU4=;
+        b=ZjfVrccH8OmkCU1mmPe1Tk8xHTX9U40AuUl2VgxbMl3KN8FUgwKgsyMlGFE6eVUmbX
+         GPlf0NnMMwys3zHx71ZG3vwPg/lPApkfUV1LDoEeq2JAW2ZmSjLqAhe11BjEQDBTJMTA
+         PesFlBGDnt8ZSxkkXwplqDZjHXiCtB1r3XDJN9SXbokdJmOFttHiPxhE6C4TYMIzHfA1
+         BnB6DMYW4xzqiCN7nTAtj9H4KYc2mUKXowKfezNDjOELTc6j2w9bIjc9RTchmr3aNEOn
+         GENEz0l1CqQ116eSx6hi73mCLZyHBAILQfR+utbAoZqI2dv7gD9psJLHemRkH8BicoPe
+         Yrvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUOiWK7zSJ/pxk+8J7mdEuFSsDKaBRk0mwnrglueArO5923TBC4GD4WN5n6sfj/UEaJKsD9+e1rU5astGfAOVgnB3Aq
+X-Gm-Message-State: AOJu0YwxwZYvKUv78fuI7PIb0ZTSZV8NsPBkaAttwN+ODrjmk/NEaliB
+	2tylr7HqzbLx3ktqoxbHq6UZ7ko1UOyCj3fYzcQbccJmlP9EFvEWA/eZaFD7g6M=
+X-Google-Smtp-Source: AGHT+IGfmakMeTh3jAGVQJKJ+VTm2R438vkeBhF7L+wEWqOROEyvzepKwPfwlLVcE3mN6ey9Em+MkA==
+X-Received: by 2002:ac2:4c8f:0:b0:513:d01e:b68 with SMTP id d15-20020ac24c8f000000b00513d01e0b68mr1237043lfl.3.1712220413384;
+        Thu, 04 Apr 2024 01:46:53 -0700 (PDT)
 Received: from localhost ([2a01:e0a:3c5:5fb1:b7ad:8118:73f1:92e5])
-        by smtp.gmail.com with ESMTPSA id bs26-20020a056000071a00b003439b45ca08sm3621056wrb.17.2024.04.04.01.45.22
+        by smtp.gmail.com with ESMTPSA id p15-20020a05600c468f00b0041550e03bc6sm1869265wmo.44.2024.04.04.01.46.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 01:45:22 -0700 (PDT)
+        Thu, 04 Apr 2024 01:46:53 -0700 (PDT)
 References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
+ <87sf05udnx.wl-kuninori.morimoto.gx@renesas.com>
 User-agent: mu4e 1.10.8; emacs 29.2
 From: Jerome Brunet <jbrunet@baylibre.com>
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
@@ -79,11 +80,11 @@ Cc: =?utf-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
  <trevor.wu@mediatek.com>, Vinod Koul <vkoul@kernel.org>, Xiubo Li
  <Xiubo.Lee@gmail.com>, alsa-devel@alsa-project.org, imx@lists.linux.dev,
  linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 00/16] ASoC: Replace dpcm_playback/capture to
+Subject: Re: [PATCH v2 05/16] ASoC: meson: Replace dpcm_playback/capture to
  playback/capture_only
-Date: Thu, 04 Apr 2024 10:27:11 +0200
-In-reply-to: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
-Message-ID: <1jil0xplcu.fsf@starbuckisacylon.baylibre.com>
+Date: Thu, 04 Apr 2024 10:46:13 +0200
+In-reply-to: <87sf05udnx.wl-kuninori.morimoto.gx@renesas.com>
+Message-ID: <1jedblplab.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -93,177 +94,79 @@ MIME-Version: 1.0
 Content-Type: text/plain
 
 
-On Mon 01 Apr 2024 at 00:27, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+On Mon 01 Apr 2024 at 00:31, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
 
-> Hi Mark
+> soc_get_playback_capture() is now handling DPCM and normal comprehensively
+> for playback/capture stream. We can use playback/capture_only flag
+> instead of using dpcm_playback/capture. This patch replace these.
 >
-> This is v2 patch-set
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+
+Looks OK
+
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+
+> ---
+>  sound/soc/meson/axg-card.c         | 8 ++++----
+>  sound/soc/meson/meson-card-utils.c | 4 ++--
+>  2 files changed, 6 insertions(+), 6 deletions(-)
 >
-> When we use DPCM, we need to set dpcm_playback/capture flag.
-> If these flag are set, soc_get_playback_capture() will check its
-> availability, but non DPCM doesn't need such special flags.
->
-> OTOH, it cares playback/capture_only flag. It is needed.
->
-> This patch remove DPCM special flag, and replace it playback/capture_only
-> flag if needed.
-
-Hi Kuninori-san,
-
-Thanks for taking the time to clean the dpcm flags.
-While at it, I wonder if it would be worth taking it a step further.
-
-playback_only and capture_only have implication on each other. If one is
-set, the other can/must not be set. This leads to conditions which can
-be fairly hard to read and possibly bugs.
-
-I had to re-read the meson patch a few times to make sure it still had the
-same meaning, TBH
-
-Wouldn't it be better to replace those 2 flags with a single bitfield ?
-
-something like:
-
-unsigned int directions;
-#define PLAYBACK_VALID	BIT(0)
-#define CAPTURE_VALID BIT(1)
-
-... or something similar.
-
-I think conditions on the enabled stream would become much clearer like
-this. The only invalid configuation would be '!directions', which again
-is easier to read, instead of checking if both flags are set.
-
-It would be easy to keep playback_only/capture_only tests, where
-necessary, with an helper function.
-
-What do you think ?
-
-Sorry if it is a bit late to discuss this.
-
->
-> v1 -> v2
-> 	- based on latest ASoC branch
-> 	- keep comment on Intel
-> 	- tidyup patch title
-> 	- tidyup DPCM BE warning output condition
-> 	- Add new patch for Document
->
-> Link: https://lore.kernel.org/r/87o7b353of.wl-kuninori.morimoto.gx@renesas.com
->
-> Kuninori Morimoto (16):
->   ASoC: soc-pcm.c: cleanup soc_get_playback_capture()
->   ASoC: amd: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: fsl: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: sof: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: meson: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: Intel: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: samsung: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: mediatek: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: soc-core: Replace dpcm_playback/capture to playback/capture_only
->   ASoC: soc-topology: Replace dpcm_playback/capture to
->     playback/capture_only
->   ASoC: soc-compress: Replace dpcm_playback/capture to
->     playback/capture_only
->   ASoC: Intel: avs: boards: Replace dpcm_playback/capture to
->     playback/capture_only
->   ASoC: remove snd_soc_dai_link_set_capabilities()
->   ASoC: soc-pcm: remove dpcm_playback/capture
->   ASoC: soc-pcm: indicate warning if DPCM BE Codec has no settings
->   ASoC: doc: remove .dpcm_playback/capture flags
->
->  Documentation/sound/soc/dpcm.rst              | 14 ++-
->  include/sound/soc-dai.h                       |  1 -
->  include/sound/soc.h                           |  4 -
->  sound/soc/amd/acp-da7219-max98357a.c          | 20 ++---
->  sound/soc/amd/acp-es8336.c                    |  2 -
->  sound/soc/amd/acp/acp-mach-common.c           | 24 ++---
->  sound/soc/amd/acp3x-rt5682-max9836.c          |  6 +-
->  sound/soc/amd/vangogh/acp5x-mach.c            |  6 --
->  sound/soc/fsl/fsl-asoc-card.c                 | 16 ++--
->  sound/soc/fsl/imx-audmix.c                    |  6 +-
->  sound/soc/fsl/imx-card.c                      |  7 +-
->  sound/soc/generic/audio-graph-card.c          |  2 -
->  sound/soc/generic/audio-graph-card2.c         |  2 -
->  sound/soc/generic/simple-card.c               |  2 -
->  sound/soc/intel/avs/boards/da7219.c           |  2 -
->  sound/soc/intel/avs/boards/dmic.c             |  4 +-
->  sound/soc/intel/avs/boards/es8336.c           |  2 -
->  sound/soc/intel/avs/boards/hdaudio.c          |  4 -
->  sound/soc/intel/avs/boards/i2s_test.c         |  2 -
->  sound/soc/intel/avs/boards/max98357a.c        |  2 +-
->  sound/soc/intel/avs/boards/max98373.c         |  2 -
->  sound/soc/intel/avs/boards/max98927.c         |  2 -
->  sound/soc/intel/avs/boards/nau8825.c          |  2 -
->  sound/soc/intel/avs/boards/rt274.c            |  2 -
->  sound/soc/intel/avs/boards/rt286.c            |  2 -
->  sound/soc/intel/avs/boards/rt298.c            |  2 -
->  sound/soc/intel/avs/boards/rt5514.c           |  2 +-
->  sound/soc/intel/avs/boards/rt5663.c           |  2 -
->  sound/soc/intel/avs/boards/rt5682.c           |  2 -
->  sound/soc/intel/avs/boards/ssm4567.c          |  2 -
->  sound/soc/intel/boards/bdw-rt5650.c           |  4 -
->  sound/soc/intel/boards/bdw-rt5677.c           |  4 -
->  sound/soc/intel/boards/bdw_rt286.c            | 10 +--
->  sound/soc/intel/boards/bxt_da7219_max98357a.c | 32 ++++---
->  sound/soc/intel/boards/bxt_rt298.c            | 26 +++---
->  sound/soc/intel/boards/bytcht_cx2072x.c       |  6 +-
->  sound/soc/intel/boards/bytcht_da7213.c        |  6 +-
->  sound/soc/intel/boards/bytcht_es8316.c        |  6 +-
->  sound/soc/intel/boards/bytcht_nocodec.c       |  6 +-
->  sound/soc/intel/boards/bytcr_rt5640.c         |  6 +-
->  sound/soc/intel/boards/bytcr_rt5651.c         |  6 +-
->  sound/soc/intel/boards/bytcr_wm5102.c         |  6 +-
->  sound/soc/intel/boards/cht_bsw_max98090_ti.c  |  6 +-
->  sound/soc/intel/boards/cht_bsw_nau8824.c      |  6 +-
->  sound/soc/intel/boards/cht_bsw_rt5645.c       |  6 +-
->  sound/soc/intel/boards/cht_bsw_rt5672.c       |  6 +-
->  sound/soc/intel/boards/cml_rt1011_rt5682.c    | 15 ++--
->  sound/soc/intel/boards/ehl_rt5660.c           | 14 ++-
->  sound/soc/intel/boards/glk_rt5682_max98357a.c | 30 +++----
->  sound/soc/intel/boards/hsw_rt5640.c           | 10 +--
->  sound/soc/intel/boards/kbl_da7219_max98357a.c | 26 +++---
->  sound/soc/intel/boards/kbl_da7219_max98927.c  | 54 +++++-------
->  sound/soc/intel/boards/kbl_rt5660.c           | 18 ++--
->  sound/soc/intel/boards/kbl_rt5663_max98927.c  | 44 +++++-----
->  .../intel/boards/kbl_rt5663_rt5514_max98927.c | 22 ++---
->  sound/soc/intel/boards/skl_hda_dsp_common.c   | 14 ++-
->  .../soc/intel/boards/skl_nau88l25_max98357a.c | 26 +++---
->  sound/soc/intel/boards/skl_nau88l25_ssm4567.c | 26 +++---
->  sound/soc/intel/boards/skl_rt286.c            | 26 +++---
->  sound/soc/intel/boards/sof_board_helpers.c    | 13 +--
->  sound/soc/intel/boards/sof_es8336.c           |  8 +-
->  sound/soc/intel/boards/sof_pcm512x.c          |  8 +-
->  sound/soc/intel/boards/sof_sdw.c              |  4 +-
->  sound/soc/intel/boards/sof_wm8804.c           |  2 -
->  sound/soc/mediatek/mt2701/mt2701-cs42448.c    | 20 ++---
->  sound/soc/mediatek/mt2701/mt2701-wm8960.c     |  6 +-
->  sound/soc/mediatek/mt6797/mt6797-mt6351.c     | 24 ++---
->  sound/soc/mediatek/mt7986/mt7986-wm8960.c     |  6 +-
->  sound/soc/mediatek/mt8173/mt8173-max98090.c   |  6 +-
->  .../mediatek/mt8173/mt8173-rt5650-rt5514.c    |  6 +-
->  .../mediatek/mt8173/mt8173-rt5650-rt5676.c    | 10 +--
->  sound/soc/mediatek/mt8173/mt8173-rt5650.c     | 10 +--
->  .../mediatek/mt8183/mt8183-da7219-max98357.c  | 34 +++-----
->  .../mt8183/mt8183-mt6358-ts3a227-max98357.c   | 34 +++-----
->  .../mt8186/mt8186-mt6366-da7219-max98357.c    | 86 +++++++-----------
->  .../mt8186/mt8186-mt6366-rt1019-rt5682s.c     | 86 +++++++-----------
->  sound/soc/mediatek/mt8188/mt8188-mt6359.c     | 58 ++++++-------
->  .../mt8192/mt8192-mt6359-rt1015-rt5682.c      | 78 ++++++++---------
->  sound/soc/mediatek/mt8195/mt8195-mt6359.c     | 60 +++++++------
->  sound/soc/meson/axg-card.c                    |  9 +-
->  sound/soc/meson/gx-card.c                     |  1 -
->  sound/soc/meson/meson-card-utils.c            |  4 +-
->  sound/soc/qcom/common.c                       |  1 -
->  sound/soc/samsung/odroid.c                    | 11 ++-
->  sound/soc/soc-compress.c                      | 10 ++-
->  sound/soc/soc-core.c                          | 20 +----
->  sound/soc/soc-dai.c                           | 38 --------
->  sound/soc/soc-pcm.c                           | 87 ++++++++-----------
->  sound/soc/soc-topology-test.c                 |  2 -
->  sound/soc/soc-topology.c                      |  4 +-
->  sound/soc/sof/nocodec.c                       |  4 -
->  91 files changed, 502 insertions(+), 863 deletions(-)
+> diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
+> index 3180aa4d3a15..21bf1453af43 100644
+> --- a/sound/soc/meson/axg-card.c
+> +++ b/sound/soc/meson/axg-card.c
+> @@ -132,7 +132,7 @@ static int axg_card_add_tdm_loopback(struct snd_soc_card *card,
+>  	lb->stream_name = lb->name;
+>  	lb->cpus->of_node = pad->cpus->of_node;
+>  	lb->cpus->dai_name = "TDM Loopback";
+> -	lb->dpcm_capture = 1;
+> +	lb->capture_only = 1;
+>  	lb->no_pcm = 1;
+>  	lb->ops = &axg_card_tdm_be_ops;
+>  	lb->init = axg_card_tdm_dai_lb_init;
+> @@ -176,7 +176,7 @@ static int axg_card_parse_cpu_tdm_slots(struct snd_soc_card *card,
+>  
+>  	/* Disable playback is the interface has no tx slots */
+>  	if (!tx)
+> -		link->dpcm_playback = 0;
+> +		link->capture_only = 1;
+>  
+>  	for (i = 0, rx = 0; i < AXG_TDM_NUM_LANES; i++) {
+>  		snprintf(propname, 32, "dai-tdm-slot-rx-mask-%d", i);
+> @@ -186,7 +186,7 @@ static int axg_card_parse_cpu_tdm_slots(struct snd_soc_card *card,
+>  
+>  	/* Disable capture is the interface has no rx slots */
+>  	if (!rx)
+> -		link->dpcm_capture = 0;
+> +		link->playback_only = 1;
+>  
+>  	/* ... but the interface should at least have one of them */
+>  	if (!tx && !rx) {
+> @@ -275,7 +275,7 @@ static int axg_card_parse_tdm(struct snd_soc_card *card,
+>  		return ret;
+>  
+>  	/* Add loopback if the pad dai has playback */
+> -	if (link->dpcm_playback) {
+> +	if (!link->capture_only) {
+>  		ret = axg_card_add_tdm_loopback(card, index);
+>  		if (ret)
+>  			return ret;
+> diff --git a/sound/soc/meson/meson-card-utils.c b/sound/soc/meson/meson-card-utils.c
+> index ed6c7e2f609c..1a4ef124e4e2 100644
+> --- a/sound/soc/meson/meson-card-utils.c
+> +++ b/sound/soc/meson/meson-card-utils.c
+> @@ -186,9 +186,9 @@ int meson_card_set_fe_link(struct snd_soc_card *card,
+>  	link->dpcm_merged_rate = 1;
+>  
+>  	if (is_playback)
+> -		link->dpcm_playback = 1;
+> +		link->playback_only = 1;
+>  	else
+> -		link->dpcm_capture = 1;
+> +		link->capture_only = 1;
+>  
+>  	return meson_card_set_link_name(card, link, node, "fe");
+>  }
 
 
 -- 
