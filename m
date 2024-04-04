@@ -1,98 +1,90 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929B929D1C
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 08:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C3B80C09
+	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 11:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712221093; cv=none; b=A3giYMNg8yBDvVeqUeQ8IckcN+yD6GEUYXZNTL7+1fxQtUwS+KcaSol88wq8A9gfNSxYCJCbEQg29V+1uF+LxW+0nsyo8ftihvfVJVLRQphRXBIDNorEGBoqakoJb5DhvPLlBx//xBjy26+VQwQ45wH287CpJroooW17hD6P1OA=
+	t=1712228606; cv=none; b=Hq3W7c3pNy6ehoyZlCdO+JJbNbh1pUEaa2r4pEE1Mdty3Xpo7LgaF6UBcmNe4RfUhT+FwwBu8M3E/KAi/h+IKG36g2gW7NcDav7dloLup1irQ9E+//wlYSNx9MHarpNiOkMh5mPwqq20PqynrJ6KJEylNF+L4ll+8IPgOawDj9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712221093; c=relaxed/simple;
-	bh=WVDtzPK+J17RLFazAce4YI5UXAV7A3dkUvt1WEcLXy4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=rLyBb5/OwhRR50tXhnnUxxUxWcF60brsVLb13knvAIAWblKXdD+OnzBNT6586kL/kI6dwfiYzHUmpr5bXsG3qVV2EMYZHvHfppIrrB9/UPQrbLOauEv7GlT/mdUoaE7ZEqHe9Uk4AjScKTqMOsxkLH3ByiP9MMizqQfg12gFL70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QP6TB58D; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1712228606; c=relaxed/simple;
+	bh=+hAeU74QQfbsZOvQyLbhO6tKobZra3FmBs+/7VBvJaE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EncSGdVUnlGmIUEGbO2rHKdPiUbBle/CuMCpiQS+9bxRHz3m2d/xx+tf4RrBcV0RECtM8Ey8Zmm/zUry7qW3kEbrYeQw4dBw/Yc6Gy0SWqhMgE7zSIkxX7of5J7hCTbIM6Nj0mpMV9Y6ggw1qssp0O6lUvptFpH3ZLzrhktL5K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lAK4F3NL; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QP6TB58D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=m9wfLN0/U6O/h9jSHSpgQxev0RktWios43AT403zDCY=;
-	b=QP6TB58DvYcpoikETNbDTbQfhroTLAS3FlM83/d4ID+xbmWu8Hwz77E05FomxA
-	92+HK14MKQYqx/jYVAxyCS/Dx7JqS9xgnc4wJmbQSDVsLMYTHPV9YDp+YPJSEDff
-	zoR22aW2guXBEX8ACUUcG41kY4yHAxw0+/j7nxPf8V18g=
-Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrADXP0N9aw5mz43DAQ--.14732S3;
-	Thu, 04 Apr 2024 16:57:35 +0800 (CST)
-Date: Thu, 4 Apr 2024 16:57:33 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org, arm@kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>,
-	kernel@pengutronix.de, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] i.MX fixes for 6.9
-Message-ID: <Zg5rfaVVvD9egoBK@dragon>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lAK4F3NL"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e694337fffso204136b3a.1
+        for <imx@lists.linux.dev>; Thu, 04 Apr 2024 04:03:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712228605; x=1712833405; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+hAeU74QQfbsZOvQyLbhO6tKobZra3FmBs+/7VBvJaE=;
+        b=lAK4F3NL3rSdrX+sFyGJfjUZCbkiFwTAWBMPFey2RGlvnP1bR1MV0QO1EfvqG6BiuO
+         U4fOmZw4xM/Tw6fNgFCb3+FDLbM2weOvocyRnkXp8AQvR+oa+jNwoZQLBDNiUOm9u+nr
+         IiXzx0gzmpImWJpcS7368HS5cfv3ak8uMQjqIcYT0vbAlC9ZREwA2YbTCp8zn/CC6uaP
+         kQqj/GaBM1QxRlEc+IHvIk24eJGLFwzT7KLW2Yc39OFIVFaEQ46OLUD6H3m7YPBltPCU
+         q950Z4ihIcsstu0Fqo0NH35PwzJlblLODB4tuR41y0xZts7hCRoCZ9yd5U8aztuEb35a
+         cNrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712228605; x=1712833405;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+hAeU74QQfbsZOvQyLbhO6tKobZra3FmBs+/7VBvJaE=;
+        b=S0PgQJT/Slkx8JTVAJIuNRqNUB6LWszbChSdEq9cCpW7f6IWQhPTpp9RYqCpT2+bXw
+         m8aqlEVx0LzWzXY9fRHGirh7evNF4+yo//mKslSDbLIPq7YxcguYIxvZnVKR2z+ZwZF+
+         iFmjVtYJqvb77Rl2TcoPa2v9hPuZ9TBZMyFaQnLtWInZMG/3Rvgl9VADZP494E3cIpAz
+         CS3yPYN6QBiqjxYVBqfNxCJL2ZB4OECKgm089BP6PHW3520ZmyQ2WIxMFSMRXlI7yb6c
+         1jFauJlYqc8tjVLtknQMxa2K0aYM5Y8A4csMjkaXzJA73CNbaHjL8tTh6CS2cs3fM2Pz
+         +dEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6pZ+12Aq2KJIB634FLhvt51uYL0BHfPcfUc0y3Qv6rEQFSHvaKkZFT/uOAb/Wbnhv8yrAUAfSbeMBTwwSfnfY42V7
+X-Gm-Message-State: AOJu0YyKb049aEOHZyJcptjXoSCRUOEH0muNejV4Uu9Msa+UbMI3wy2L
+	FWvZUDzfUegQQT+S4eLOgvOk0RoinIN+XhiTDn+Oga1t+9YW7neNxmM4acJw4nJFLnWVEq/Ju5I
+	oCLCaPQ8O6A5HDoveViYiSXoTkZ0=
+X-Google-Smtp-Source: AGHT+IEiV3mYP5jcL1qYae16r/KN6hqKughbDlZ4LxlcHlZBBb1xETAo6BgRMuLOSJwR/Fy2iLftYZBAuG/Ww1JZaBM=
+X-Received: by 2002:a05:6a21:6d88:b0:1a7:199:8ac5 with SMTP id
+ wl8-20020a056a216d8800b001a701998ac5mr2303003pzb.4.1712228604634; Thu, 04 Apr
+ 2024 04:03:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-CM-TRANSID:ClUQrADXP0N9aw5mz43DAQ--.14732S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WFWxXrWUAF45Kw4xJFW7CFg_yoW8uw45pF
-	yfGw42gr1kCryrZr9rZa4xta98Cwn8JF4kJrW5GrWkJrn8AryqqFn5Crn5WryUXFWxXr40
-	vF1rJr1DXry5Xr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UuT5LUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFQC2ZV6NnB8eRgAAsO
+References: <20240404035205.59492-1-Frank.Li@nxp.com> <af602862-5120-4717-adb6-694ada09e8d8@linaro.org>
+ <f5fa1872-0bae-4f04-aa94-27db937516e9@linaro.org>
+In-Reply-To: <f5fa1872-0bae-4f04-aa94-27db937516e9@linaro.org>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 4 Apr 2024 08:03:12 -0300
+Message-ID: <CAOMZO5Dtd_p02YeX6tcWMGzujZ-GwLQMQBPBOx9xLmEgs6VVNg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] dt-bindings: media: imx-jpeg: add clocks,clock-names,slot
+ to fix warning
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Mirela Rabulea <mirela.rabulea@nxp.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	"open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER" <imx@lists.linux.dev>, 
+	"open list:NXP i.MX 8QXP/8QM JPEG V4L2 DRIVER" <linux-media@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit 4cece764965020c22cff7665b18a012006359095:
+On Thu, Apr 4, 2024 at 3:54=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 
-  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
+> And for the clocks, instead pick up this patch:
+> https://lore.kernel.org/all/20230721111020.1234278-3-alexander.stein@ew.t=
+q-group.com/
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.9
-
-for you to fetch changes up to 00b436182138310bb8d362b912b12a9df8f72ca3:
-
-  arm64: dts: imx8qm-ss-dma: fix can lpcg indices (2024-04-03 20:44:54 +0800)
-
-----------------------------------------------------------------
-i.MX fixes for 6.9:
-
-- A couple of i.MX7 board fixes from Fabio Estevam that use correct
-  'no-mmc' property and pass 'link-frequencies' for OV2680.
-- A series from Frank Li to fix LPCG clock indices for i.MX8 subsystems.
-- A couple of changes from Tim Harvey that fix USB VBUS regulator for
-  imx8mp-venice board.
-
-----------------------------------------------------------------
-Fabio Estevam (2):
-      ARM: dts: imx7-mba7: Use 'no-mmc' property
-      ARM: dts: imx7s-warp: Pass OV2680 link-frequencies
-
-Frank Li (8):
-      arm64: dts: imx8-ss-conn: fix usdhc wrong lpcg clock order
-      arm64: dts: imx8-ss-lsio: fix pwm lpcg indices
-      arm64: dts: imx8-ss-conn: fix usb lpcg indices
-      arm64: dts: imx8-ss-dma: fix spi lpcg indices
-      arm64: dts: imx8-ss-dma: fix pwm lpcg indices
-      arm64: dts: imx8-ss-dma: fix adc lpcg indices
-      arm64: dts: imx8-ss-dma: fix can lpcg indices
-      arm64: dts: imx8qm-ss-dma: fix can lpcg indices
-
-Tim Harvey (2):
-      arm64: dts: freescale: imx8mp-venice-gw72xx-2x: fix USB vbus regulator
-      arm64: dts: freescale: imx8mp-venice-gw73xx-2x: fix USB vbus regulator
-
- arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi           |  2 +-
- arch/arm/boot/dts/nxp/imx/imx7s-warp.dts           |  1 +
- arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi    | 16 ++++-----
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi     | 40 +++++++++++-----------
- arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi    | 16 ++++-----
- .../boot/dts/freescale/imx8mp-venice-gw72xx.dtsi   |  2 +-
- .../boot/dts/freescale/imx8mp-venice-gw73xx.dtsi   |  2 +-
- arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi   |  8 ++---
- 8 files changed, 44 insertions(+), 43 deletions(-)
-
+Or maybe this one:
+https://lore.kernel.org/linux-devicetree/DB9PR04MB923493D0DA82C9EC4386BC2A8=
+FF1A@DB9PR04MB9234.eurprd04.prod.outlook.com/
