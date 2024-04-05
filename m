@@ -1,51 +1,47 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE2171669
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFE51B962
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712335477; cv=none; b=H17s351nOT+3zS2u/lKsBv25ageG4V9jU+Vt9yZ/H0QZtvsU6Lpi4VYAGKzjuZ9cdAZHN7xfi3azDSFvyHEMuPpc3AMpmkVulzZkspD5cT5igQAkM9/OnpOvv/B7RWxMEZmr/p/ArKyyux9Jd8lI87TWpBkkiRxVDsrsxgha0W4=
+	t=1712335690; cv=none; b=a/+9i3g7LrMlcS7AKcFSMNGDR0yE70VUcDsVhmvV7l2h2CqQ2Vfu4hdd64IH7EE3o2dG49oVM4+OteQbz8tT9C+uOfuunnkE5+yZljl5TPQGGU1s4R1OnY/cnRafGFYPYLkMW6Rs9D/7ovT+GYb69iY2qX8mJl1H4llKCRBAXQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712335477; c=relaxed/simple;
-	bh=X+tQ+F9zFRo+NeHUeH0ZHKDG+AN3DRCvq73kJ37fjcw=;
+	s=arc-20240116; t=1712335690; c=relaxed/simple;
+	bh=Rca1o2FBhj6lgrKzncw2lDGKtrVSO+XtFw9fsH7yT8U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXkARSt7pGrItQ3XgfVb3eG1DEFHPO87EqVjg0M3qfl0lYWCajzueImfQ2UGSJS//m9ImqiEPrvutc+0B+TV+9pIB41B0MEcLlzJD7WCjqIxMQDoiFvaAkwYy6udJ9aK1ZRK7EDc9NsMYqPa/iHCTm7DdOu+wbLXIdZg30iuQBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rsmfn-0000zo-A0; Fri, 05 Apr 2024 18:44:15 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rsmfm-00AanH-HK; Fri, 05 Apr 2024 18:44:14 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rsmfm-00FjmI-1P;
-	Fri, 05 Apr 2024 18:44:14 +0200
-Date: Fri, 5 Apr 2024 18:44:14 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 4/6] firmware: arm_scmi: add initial support for i.MX
- MISC protocol
-Message-ID: <20240405164414.t3fqhnwudxxt2ozv@pengutronix.de>
-References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-4-9fc9186856c2@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lCnTyj3IpTPpSWfOFz7tPACZ+8zE5UP4PAHcoDSndy3VWmpgE/hqBD/UwoRf9nun1MkrfxLNKND5SSmZlEY3bfk6RE4AX3KQ5QjGLrAJSypsNU8zATl3/RKDShIYoPUfLZ33PQ9o4wfUzPneD/QKfZERh9MkLvPs/FEyNPlJXik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=t33EO4xO; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="t33EO4xO"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 822EA1F8F7;
+	Fri,  5 Apr 2024 18:48:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1712335684;
+	bh=foR7bmaRUcq8x5BtLYzCdRDc3wu+vH8F2zTuBsXYaNc=; h=From:To:Subject;
+	b=t33EO4xO6wGe8mGOF++zT32IG9JaZc9pURFgkQmHbtI5p+AIE4VSEK76Hl3DuXXEP
+	 RK8ipqm4UWZRHEahyGwrUoABCK+hRDPkV3o7HB2xc9e2uf7oNLIE+sDiD3rIpcY5Go
+	 L3DRcwm/E/WkS+wOWrE/L0tCd1/BLsp2Kz+I80SbJrSVVPbWHysX1xgPMopINFmWqo
+	 B1olPRSGsUQOfBtDH46HZf5bb7kHvbEMVS2L2EvU3Z+OUk8fPQu2pprxJnXHqyZVIT
+	 Yx+PLRHeE4Ey0P/2Wziw7mXHHyGcTqiz4nCWHv5g25A0TvRnBdiMO9+329TWhB/Bw2
+	 J6hwWy18bIyPg==
+Date: Fri, 5 Apr 2024 18:48:00 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v1 1/4] arm64: dts: freescale: imx8mp-verdin: replace
+ sleep-moci hog with regulator
+Message-ID: <20240405164800.GA5994@francesco-nb>
+References: <20240405160720.5977-1-eichest@gmail.com>
+ <20240405160720.5977-2-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,414 +50,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240405-imx95-bbm-misc-v2-v2-4-9fc9186856c2@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20240405160720.5977-2-eichest@gmail.com>
 
-Hi Peng,
+On Fri, Apr 05, 2024 at 06:07:17PM +0200, Stefan Eichenberger wrote:
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> 
+> The Verdin family has a signal called sleep-moci which can be used to
+> turn off peripherals on the carrier board when the SoM goes into
+> suspend. So far we have hogged this signal, which means the peripherals
+> are always on and it is not possible to add peripherals that depend on
+> the sleep-moci to be on. With this change, we replace the hog with a
+> regulator so that peripherals can add their own regulators that use the
+> same gpio. Carrier boards that allow peripherals to be powered off in
+> suspend can disable this regulator and implement their own regulator to
+> control the sleep-moci.
+> 
+> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-On 24-04-05, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> The i.MX MISC protocol is for misc settings, such as gpio expander
-> wakeup.
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Can you elaborate a bit more please?
-
-Regards,
-  Marco
-
-
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/firmware/arm_scmi/Kconfig       |  10 ++
->  drivers/firmware/arm_scmi/Makefile      |   1 +
->  drivers/firmware/arm_scmi/imx-sm-misc.c | 305 ++++++++++++++++++++++++++++++++
->  include/linux/scmi_imx_protocol.h       |  17 ++
->  4 files changed, 333 insertions(+)
-> 
-> diff --git a/drivers/firmware/arm_scmi/Kconfig b/drivers/firmware/arm_scmi/Kconfig
-> index 56d11c9d9f47..bfeae92f6420 100644
-> --- a/drivers/firmware/arm_scmi/Kconfig
-> +++ b/drivers/firmware/arm_scmi/Kconfig
-> @@ -191,3 +191,13 @@ config IMX_SCMI_BBM_EXT
->  	  and BUTTON.
->  
->  	  This driver can also be built as a module.
-> +
-> +config IMX_SCMI_MISC_EXT
-> +	tristate "i.MX SCMI MISC EXTENSION"
-> +	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
-> +	default y if ARCH_MXC
-> +	help
-> +	  This enables i.MX System MISC control logic such as gpio expander
-> +	  wakeup
-> +
-> +	  This driver can also be built as a module.
-> diff --git a/drivers/firmware/arm_scmi/Makefile b/drivers/firmware/arm_scmi/Makefile
-> index 327687acf857..a23fde721222 100644
-> --- a/drivers/firmware/arm_scmi/Makefile
-> +++ b/drivers/firmware/arm_scmi/Makefile
-> @@ -12,6 +12,7 @@ scmi-transport-$(CONFIG_ARM_SCMI_TRANSPORT_VIRTIO) += virtio.o
->  scmi-transport-$(CONFIG_ARM_SCMI_TRANSPORT_OPTEE) += optee.o
->  scmi-protocols-y = base.o clock.o perf.o power.o reset.o sensors.o system.o voltage.o powercap.o
->  scmi-protocols-$(CONFIG_IMX_SCMI_BBM_EXT) += imx-sm-bbm.o
-> +scmi-protocols-$(CONFIG_IMX_SCMI_MISC_EXT) += imx-sm-misc.o
->  scmi-module-objs := $(scmi-driver-y) $(scmi-protocols-y) $(scmi-transport-y)
->  
->  obj-$(CONFIG_ARM_SCMI_PROTOCOL) += scmi-core.o
-> diff --git a/drivers/firmware/arm_scmi/imx-sm-misc.c b/drivers/firmware/arm_scmi/imx-sm-misc.c
-> new file mode 100644
-> index 000000000000..1b0ec2281518
-> --- /dev/null
-> +++ b/drivers/firmware/arm_scmi/imx-sm-misc.c
-> @@ -0,0 +1,305 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * System control and Management Interface (SCMI) NXP MISC Protocol
-> + *
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#define pr_fmt(fmt) "SCMI Notifications MISC - " fmt
-> +
-> +#include <linux/bits.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/scmi_protocol.h>
-> +#include <linux/scmi_imx_protocol.h>
-> +
-> +#include "protocols.h"
-> +#include "notify.h"
-> +
-> +#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x10000
-> +
-> +enum scmi_imx_misc_protocol_cmd {
-> +	SCMI_IMX_MISC_CTRL_SET	= 0x3,
-> +	SCMI_IMX_MISC_CTRL_GET	= 0x4,
-> +	SCMI_IMX_MISC_CTRL_NOTIFY = 0x8,
-> +};
-> +
-> +struct scmi_imx_misc_info {
-> +	u32 version;
-> +	u32 nr_dev_ctrl;
-> +	u32 nr_brd_ctrl;
-> +	u32 nr_reason;
-> +};
-> +
-> +struct scmi_msg_imx_misc_protocol_attributes {
-> +	__le32 attributes;
-> +};
-> +
-> +#define GET_BRD_CTRLS_NR(x)	le32_get_bits((x), GENMASK(31, 24))
-> +#define GET_REASONS_NR(x)	le32_get_bits((x), GENMASK(23, 16))
-> +#define GET_DEV_CTRLS_NR(x)	le32_get_bits((x), GENMASK(15, 0))
-> +#define BRD_CTRL_START_ID	BIT(15)
-> +
-> +struct scmi_imx_misc_ctrl_set_in {
-> +	__le32 id;
-> +	__le32 num;
-> +	__le32 value[MISC_MAX_VAL];
-> +};
-> +
-> +struct scmi_imx_misc_ctrl_notify_in {
-> +	__le32 ctrl_id;
-> +	__le32 flags;
-> +};
-> +
-> +struct scmi_imx_misc_ctrl_notify_payld {
-> +	__le32 ctrl_id;
-> +	__le32 flags;
-> +};
-> +
-> +struct scmi_imx_misc_ctrl_get_out {
-> +	__le32 num;
-> +	__le32 *val;
-> +};
-> +
-> +static int scmi_imx_misc_attributes_get(const struct scmi_protocol_handle *ph,
-> +					struct scmi_imx_misc_info *mi)
-> +{
-> +	int ret;
-> +	struct scmi_xfer *t;
-> +	struct scmi_msg_imx_misc_protocol_attributes *attr;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0,
-> +				      sizeof(*attr), &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	attr = t->rx.buf;
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret) {
-> +		mi->nr_dev_ctrl = GET_DEV_CTRLS_NR(attr->attributes);
-> +		mi->nr_brd_ctrl = GET_BRD_CTRLS_NR(attr->attributes);
-> +		mi->nr_reason = GET_REASONS_NR(attr->attributes);
-> +		dev_info(ph->dev, "i.MX MISC NUM DEV CTRL: %d, NUM BRD CTRL: %d,NUM Reason: %d\n",
-> +			 mi->nr_dev_ctrl, mi->nr_brd_ctrl, mi->nr_reason);
-> +	}
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_misc_ctrl_validate_id(const struct scmi_protocol_handle *ph,
-> +					  u32 ctrl_id)
-> +{
-> +	struct scmi_imx_misc_info *mi = ph->get_priv(ph);
-> +
-> +	if ((ctrl_id < BRD_CTRL_START_ID) && (ctrl_id > mi->nr_dev_ctrl))
-> +		return -EINVAL;
-> +	if (ctrl_id >= BRD_CTRL_START_ID + mi->nr_brd_ctrl)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int scmi_imx_misc_ctrl_notify(const struct scmi_protocol_handle *ph,
-> +				     u32 ctrl_id, u32 flags)
-> +{
-> +	struct scmi_imx_misc_ctrl_notify_in *in;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_NOTIFY,
-> +				      sizeof(*in), 0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	in = t->tx.buf;
-> +	in->ctrl_id = cpu_to_le32(ctrl_id);
-> +	in->flags = cpu_to_le32(flags);
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int
-> +scmi_imx_misc_ctrl_set_notify_enabled(const struct scmi_protocol_handle *ph,
-> +				      u8 evt_id, u32 src_id, bool enable)
-> +{
-> +	int ret;
-> +
-> +	ret = scmi_imx_misc_ctrl_notify(ph, src_id, enable ? evt_id : 0);
-> +	if (ret)
-> +		dev_err(ph->dev, "FAIL_ENABLED - evt[%X] src[%d] - ret:%d\n",
-> +			evt_id, src_id, ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_misc_ctrl_get_num_sources(const struct scmi_protocol_handle *ph)
-> +{
-> +	return GENMASK(15, 0);
-> +}
-> +
-> +static void *
-> +scmi_imx_misc_ctrl_fill_custom_report(const struct scmi_protocol_handle *ph,
-> +				      u8 evt_id, ktime_t timestamp,
-> +				      const void *payld, size_t payld_sz,
-> +				      void *report, u32 *src_id)
-> +{
-> +	const struct scmi_imx_misc_ctrl_notify_payld *p = payld;
-> +	struct scmi_imx_misc_ctrl_notify_report *r = report;
-> +
-> +	if (sizeof(*p) != payld_sz)
-> +		return NULL;
-> +
-> +	r->timestamp = timestamp;
-> +	r->ctrl_id = p->ctrl_id;
-> +	r->flags = p->flags;
-> +	*src_id = r->ctrl_id;
-> +	dev_dbg(ph->dev, "%s: ctrl_id: %d flags: %d\n", __func__,
-> +		r->ctrl_id, r->flags);
-> +
-> +	return r;
-> +}
-> +
-> +static const struct scmi_event_ops scmi_imx_misc_event_ops = {
-> +	.get_num_sources = scmi_imx_misc_ctrl_get_num_sources,
-> +	.set_notify_enabled = scmi_imx_misc_ctrl_set_notify_enabled,
-> +	.fill_custom_report = scmi_imx_misc_ctrl_fill_custom_report,
-> +};
-> +
-> +static const struct scmi_event scmi_imx_misc_events[] = {
-> +	{
-> +		.id = SCMI_EVENT_IMX_MISC_CONTROL_DISABLED,
-> +		.max_payld_sz = sizeof(struct scmi_imx_misc_ctrl_notify_payld),
-> +		.max_report_sz = sizeof(struct scmi_imx_misc_ctrl_notify_report),
-> +	},
-> +	{
-> +		.id = SCMI_EVENT_IMX_MISC_CONTROL_FALLING_EDGE,
-> +		.max_payld_sz = sizeof(struct scmi_imx_misc_ctrl_notify_payld),
-> +		.max_report_sz = sizeof(struct scmi_imx_misc_ctrl_notify_report),
-> +	},
-> +	{
-> +		.id = SCMI_EVENT_IMX_MISC_CONTROL_RISING_EDGE,
-> +		.max_payld_sz = sizeof(struct scmi_imx_misc_ctrl_notify_payld),
-> +		.max_report_sz = sizeof(struct scmi_imx_misc_ctrl_notify_report),
-> +	}
-> +};
-> +
-> +static struct scmi_protocol_events scmi_imx_misc_protocol_events = {
-> +	.queue_sz = SCMI_PROTO_QUEUE_SZ,
-> +	.ops = &scmi_imx_misc_event_ops,
-> +	.evts = scmi_imx_misc_events,
-> +	.num_events = ARRAY_SIZE(scmi_imx_misc_events),
-> +};
-> +
-> +static int scmi_imx_misc_protocol_init(const struct scmi_protocol_handle *ph)
-> +{
-> +	struct scmi_imx_misc_info *minfo;
-> +	u32 version;
-> +	int ret;
-> +
-> +	ret = ph->xops->version_get(ph, &version);
-> +	if (ret)
-> +		return ret;
-> +
-> +	dev_info(ph->dev, "NXP SM MISC Version %d.%d\n",
-> +		 PROTOCOL_REV_MAJOR(version), PROTOCOL_REV_MINOR(version));
-> +
-> +	minfo = devm_kzalloc(ph->dev, sizeof(*minfo), GFP_KERNEL);
-> +	if (!minfo)
-> +		return -ENOMEM;
-> +
-> +	ret = scmi_imx_misc_attributes_get(ph, minfo);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ph->set_priv(ph, minfo, version);
-> +}
-> +
-> +static int scmi_imx_misc_ctrl_get(const struct scmi_protocol_handle *ph,
-> +				  u32 ctrl_id, u32 *num, u32 *val)
-> +{
-> +	struct scmi_imx_misc_ctrl_get_out *out;
-> +	struct scmi_xfer *t;
-> +	int ret, i;
-> +
-> +	ret = scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_GET, sizeof(u32),
-> +				      0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	put_unaligned_le32(ctrl_id, t->tx.buf);
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret) {
-> +		out = t->rx.buf;
-> +		*num = le32_to_cpu(out->num);
-> +		for (i = 0; i < *num && i < MISC_MAX_VAL; i++)
-> +			val[i] = le32_to_cpu(out->val[i]);
-> +	}
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_misc_ctrl_set(const struct scmi_protocol_handle *ph,
-> +				  u32 ctrl_id, u32 num, u32 *val)
-> +{
-> +	struct scmi_imx_misc_ctrl_set_in *in;
-> +	struct scmi_xfer *t;
-> +	int ret, i;
-> +
-> +	ret = scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (num > MISC_MAX_VAL)
-> +		return -EINVAL;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_SET, sizeof(*in),
-> +				      0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	in = t->tx.buf;
-> +	in->id = cpu_to_le32(ctrl_id);
-> +	in->num = cpu_to_le32(num);
-> +	for (i = 0; i < num; i++)
-> +		in->value[i] = cpu_to_le32(val[i]);
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct scmi_imx_misc_proto_ops scmi_imx_misc_proto_ops = {
-> +	.misc_ctrl_set = scmi_imx_misc_ctrl_set,
-> +	.misc_ctrl_get = scmi_imx_misc_ctrl_get,
-> +};
-> +
-> +static const struct scmi_protocol scmi_imx_misc = {
-> +	.id = SCMI_PROTOCOL_IMX_MISC,
-> +	.owner = THIS_MODULE,
-> +	.instance_init = &scmi_imx_misc_protocol_init,
-> +	.ops = &scmi_imx_misc_proto_ops,
-> +	.events = &scmi_imx_misc_protocol_events,
-> +	.supported_version = SCMI_PROTOCOL_SUPPORTED_VERSION,
-> +};
-> +module_scmi_protocol(scmi_imx_misc);
-> diff --git a/include/linux/scmi_imx_protocol.h b/include/linux/scmi_imx_protocol.h
-> index 90ce011a4429..a69bd4a20f0f 100644
-> --- a/include/linux/scmi_imx_protocol.h
-> +++ b/include/linux/scmi_imx_protocol.h
-> @@ -13,8 +13,14 @@
->  #include <linux/notifier.h>
->  #include <linux/types.h>
->  
-> +#define SCMI_PAYLOAD_LEN	100
-> +
-> +#define SCMI_ARRAY(X, Y)	((SCMI_PAYLOAD_LEN - (X)) / sizeof(Y))
-> +#define MISC_MAX_VAL		SCMI_ARRAY(8, uint32_t)
-> +
->  enum scmi_nxp_protocol {
->  	SCMI_PROTOCOL_IMX_BBM = 0x81,
-> +	SCMI_PROTOCOL_IMX_MISC = 0x84,
->  };
->  
->  struct scmi_imx_bbm_proto_ops {
-> @@ -42,4 +48,15 @@ struct scmi_imx_bbm_notif_report {
->  	unsigned int		rtc_id;
->  	unsigned int		rtc_evt;
->  };
-> +
-> +struct scmi_imx_misc_ctrl_notify_report {
-> +	ktime_t			timestamp;
-> +	unsigned int		ctrl_id;
-> +	unsigned int		flags;
-> +};
-> +
-> +struct scmi_imx_misc_proto_ops {
-> +	int (*misc_ctrl_set)(const struct scmi_protocol_handle *ph, u32 id, u32 num, u32 *val);
-> +	int (*misc_ctrl_get)(const struct scmi_protocol_handle *ph, u32 id, u32 *num, u32 *val);
-> +};
->  #endif
-> 
-> -- 
-> 2.37.1
-> 
-> 
-> 
