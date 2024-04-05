@@ -1,124 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8088171658;
-	Fri,  5 Apr 2024 15:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFBD171069
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712332356; cv=none; b=A1RsOGBuhM//FsAGDefhi2vGaHaqpzVR10bt+uNIH7bH7uJkfm7TiwdwCTmj+Vi2cpqa608gpzB3EJAXlfCT9Rd9jjQ7T5/L4C9rYVVKA5FWiBwPzm2Bd/9yOApvli4BedywLxxHWMGYdy/Y1WU+b3rDRQa6DNMSFf/eZwkWnbo=
+	t=1712333258; cv=none; b=pR50VUYhO//33GlHWdV9U3lAghYCqrhDxuIGDiOSLNi1Av1tnfYrePS+W0Hi5NmjzHclF6w+bGoy+B/rmKrFrtmHH+c++pD0854PYf8cWwz10wYGo9/Sr5iE6S8nbzNig875Kfe/RsVVJtklQ+zfTRix4wzzmPSGtTQb1IVsR7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712332356; c=relaxed/simple;
-	bh=zpr4dQm3nm9LfkfCTtXpoXqHkpx3qH1bE57/AAn3+S8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fYqvCh/L1AMBH4c1LAM33u8gjPTXd9TnhmeaBf+YTibnacyWR0M9tPS/PQ9g1ZQbsFbDA+PiohCAqTQXTU6/0QT6Snz5RBK3s0G/HwP4Eo2fUG3PYo6bEBuOyJZtmi8qq3KMRdatSkRBnj0eHs+RiUAici1pV1q/7qcI3CYNRTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1RscKEI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712333258; c=relaxed/simple;
+	bh=JCg24l5O0gOfe0KIuyI+DI7HRre4Hr0HKChSVFoKMjo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Aep8SFGtDTFRUYnWCi2W8+T29rIlSORwxF8aEZsmTifQjy+GygfV3WRbi09T41Eb5mU921I1On+5GDvdqtI5Ku565kr2hbIVCNAOUVLMFcQo6DpJis80EOCTPtP4v6n4eX6P0ZaRBfLt+IbWWb0UY2Q9MtbOBO7jUCbMegZH9CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KB23QGQt; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1RscKEI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF029C433C7;
-	Fri,  5 Apr 2024 15:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712332355;
-	bh=zpr4dQm3nm9LfkfCTtXpoXqHkpx3qH1bE57/AAn3+S8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=G1RscKEITOjXIsvfj1orjtQTTRAGG7pieQAli0pGaGr7uDlzXS5uXiHCyli8xYmlN
-	 mw/z0K3hCRBdQK2eQBZv3eytMQIaDXQDgJbApEL+dLuGfMqFi9bR4UqV6Lu0ETgmcD
-	 b8h7zhmTOuEuBYUGuhznNIRgGcBu1MR9bfQIZg2edV1tvAygX1b5wRwsrTqwELUdei
-	 uc5NzTXMRNecUKG1WnOuTqGidE7LYvup1wkXFvou0XimbtCYPblONTfo1L6mQ0mAM9
-	 FPI0YQTOiV9+rT4goySzZoYY5Q3OCy/vvt0pJLWKShkYXHI1kCLxt7v19nJ3/ZvgXj
-	 1iuywcnWrUFfg==
-Message-ID: <6f59551a-24df-4b7f-8ddf-beaa62a850f9@kernel.org>
-Date: Fri, 5 Apr 2024 17:52:25 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KB23QGQt"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d476d7972aso30342501fa.1
+        for <imx@lists.linux.dev>; Fri, 05 Apr 2024 09:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712333254; x=1712938054; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d8ACUCkXVn+Z+2m55cWPPzA56jBR7xG2uunEsI9uDIY=;
+        b=KB23QGQtVT9mmneDLe/Vsr5PpLzcE890c9SLzup+t2cEaQ9ZPOUv74imujC5nQKI8N
+         TOITWZp8+EM1gkVi/5+FYivz611kLSfa/khb3/Dpnr5ywXEei0zTnFvv23qbv6NmwL97
+         n3ZcTnKbzjQM0MwWg0rv9eoA/ekwgFekdWU6fEwAsBq1KwrYFTBdG1TF0FHzvk4t3bub
+         6dC5A1CvURbyF+SxOJ7WvRPnioRcSYml7WDn1j5DrxKxZ98ysX7uFZXE8ymoMm4nObNu
+         ghsZh3gDdoV7kyTcOpyi+wgIy0UAYjSC3UYyiJGCFVqv0t0iJtyhRqcFCafMpgFRqQHo
+         IUEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712333254; x=1712938054;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d8ACUCkXVn+Z+2m55cWPPzA56jBR7xG2uunEsI9uDIY=;
+        b=IMXgEcE44JeSlTVM7g3+UovRK1rwU9L4PV6773e8VjEFhgk73pLLqO2mTrQApa2QO/
+         t21JN7vgsxFc2E2DZPNObX9Dy+lzHBZTZZKeo7X068aJf2A3xDZ2lemqp9wp8yGcim5/
+         ipG0og30/bqBYtjVlSUAoYt2o/DuRzmI0gG9RZTgx2Ey3PjKdybgw9TncjN/Win/faOm
+         jKPxy3NF6LycMGzIXYkjP3PcLx7sTBZNfrUk0HVqQc+r6cZPRT4pfk+YFUHq5Sgz5idI
+         Cj50k3smUCYmwle3MKL2rkIX3aQvBu7kowAdUOeAwcRuFLz53XC0qaUkXh4D0yKqHFOo
+         9Yvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXPykfpvrnCcxpesvPSu8sR5wuE/7IB30HHQ288tA2t+0d+7zCxGLjTQWkGHQ7U7yiUabPPcEdprNcShyX5qmE7ZZE9
+X-Gm-Message-State: AOJu0Yw3j9zVpeH1gRgsCDGwoRvjEfJtTjNoDIxtMyLXyELW1jokr+mi
+	rGz8C1F8zRVJ/ByhFIOUkiLcquQoEW6udGo9AYZNblBGqWxS7VPW
+X-Google-Smtp-Source: AGHT+IFSqqF7fc40vyf1BiVSyKrPRsJgTa+Q3MsIjbw97gBnQC3Jo7hyUsS9wUJ/Dl9TigwPbatgHA==
+X-Received: by 2002:a2e:9f4b:0:b0:2d8:6787:eaed with SMTP id v11-20020a2e9f4b000000b002d86787eaedmr1764254ljk.2.1712333254344;
+        Fri, 05 Apr 2024 09:07:34 -0700 (PDT)
+Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:f624:ad13:2091:c808])
+        by smtp.gmail.com with ESMTPSA id k41-20020a05600c1ca900b004156c501e24sm6902651wms.12.2024.04.05.09.07.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Apr 2024 09:07:33 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	francesco.dolcini@toradex.com
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH v1 0/4] arm64: dts: freescale: verdin-imx8mm/imx8mp: add sleep-moci support
+Date: Fri,  5 Apr 2024 18:07:16 +0200
+Message-Id: <20240405160720.5977-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] dts: qcom: sa8775p-ride: remove tx-sched-sp property
-To: Flavio Suligoi <f.suligoi@asem.it>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240405152800.638461-1-f.suligoi@asem.it>
- <20240405152800.638461-7-f.suligoi@asem.it>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240405152800.638461-7-f.suligoi@asem.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 05/04/2024 17:28, Flavio Suligoi wrote:
-> The property "tx-sched-sp" no longer exists, as it was removed from the
-> file:
-> 
-> drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> 
-> by the commit:
-> 
-> commit aed6864035b1 ("net: stmmac: platform: Delete a redundant condition
-> branch")
-> 
-> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Fixes in commit msg needed and patch prefix got mangled: missing arm64.
+This patch series adds support for sleep-moci to the Verdin iMX8MM and
+iMX8MP in combination with the Dahlia carrier board. sleep-moci is a
+GPIO that allows the system on module to turn off regulators that are
+not needed in suspend mode on the carrier board.
 
-Best regards,
-Krzysztof
+Stefan Eichenberger (4):
+  arm64: dts: freescale: imx8mp-verdin: replace sleep-moci hog with
+    regulator
+  arm64: dts: freescale: imx8mp-verdin-dahlia: support sleep-moci
+  arm64: dts: freescale: imx8mm-verdin: replace sleep-moci hog with
+    regulator
+  arm64: dts: freescale: imx8mm-verdin-dahlia: support sleep-moci
+
+ .../dts/freescale/imx8mm-verdin-dahlia.dtsi   | 39 +++++++++++++++
+ .../boot/dts/freescale/imx8mm-verdin-dev.dtsi |  5 ++
+ .../dts/freescale/imx8mm-verdin-yavia.dtsi    |  5 ++
+ .../boot/dts/freescale/imx8mm-verdin.dtsi     | 26 ++++++----
+ .../dts/freescale/imx8mp-verdin-dahlia.dtsi   | 50 +++++++++++++++++++
+ .../boot/dts/freescale/imx8mp-verdin-dev.dtsi |  5 ++
+ .../dts/freescale/imx8mp-verdin-yavia.dtsi    |  5 ++
+ .../boot/dts/freescale/imx8mp-verdin.dtsi     | 26 ++++++----
+ 8 files changed, 141 insertions(+), 20 deletions(-)
+
+-- 
+2.40.1
 
