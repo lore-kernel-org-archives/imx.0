@@ -1,234 +1,198 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2136.outbound.protection.outlook.com [40.107.20.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD6914F9D3
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 10:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712314784; cv=none; b=Q6mch8W3fwnEyQ9d+owICFQmhZDAd2EnIgMza2doPO9SfJdVgvw5ZQfNSd0VQhncy/bL37CpTfTA+yQ9iE9AhDKlkVtaiOdqdRyWrEP+2bk1C+uJYU+Tx/nHaj26LsEj430uvoCQQMxCRWeFA7fru3gLoc5N1VotSf2dol/8iJM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712314784; c=relaxed/simple;
-	bh=D8Y8kSPgdNQltZQgMyJDuKh4/mxZzHlrbAO8HfxrMCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kn6/zmH6k4lnDIRgOwq7gsRwZeh2fKFBDLG+JVaqtb9E87AxPIl90XwjfNZpJgyLcrEGYKIx2DL6+/SPLHnW4sMZ65MrjyT0WM5CjCIoyOYW90GacywahzsBpX8IcuEJgqV9oFPbWeMDHAOZ4TT7B+5E1tnho0QWmNn8sk+N4Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QON1ZqZQ; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E2216C877
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 12:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.136
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712320302; cv=fail; b=q8eC/0elqg+B0kQcgNPnObwDPbDlNiJnm9lNrt5ixKWAkpvnKlH+FAz5C4eqdljJwHMFd0g/U2DUAJxA4cxIorqkijBIKGqeujrL2xytNwjMmVckTVTyLloCfbfEGof2cda6Ek/AZ/7AGrtMM5rTGrxmgc0V7hqawyzOCi9CAaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712320302; c=relaxed/simple;
+	bh=dOBkgjs/jb/HONnQGf/3KjMH4BWduYVwov2hTsuR/Og=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=eGCNWuAacqlEU+p9Bdc44pfv5FFm+J2NiTxQ0PpEZ5BN/LkYJGjjiJdhWVoqIK+RcQ3VXW8ayqvFH5ZvClr14K8iPSd9EDkBQ67x/3Xo7+YskRB3km/H2Ofvo7LB8Os+VCuJI/3T5NZxSICqvDT1GiZZd02aBsVIlXkv4Kw2TxM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=L8K6jwbQ; arc=fail smtp.client-ip=40.107.20.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QON1ZqZQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712314782; x=1743850782;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=D8Y8kSPgdNQltZQgMyJDuKh4/mxZzHlrbAO8HfxrMCg=;
-  b=QON1ZqZQeXofwhmhn/aknv+DNXyl0PRG3QL66nCuoghKgOp+LM1d5iB8
-   iBsEbc+J1ii86uGxk9RnBNdqP/zTxtGJR/X2czl7kZMMgV0os3to/hiKu
-   fm07jetmEK+pQr8Izdtq+Bri5eRUVL9btOzk9BjVNMteTZkzLHVpb4KMn
-   byU6IZEETqsEtRaoVJjej3YQZ4PoZ+GiGSUa1UmuakkolAfFmaViHSxxC
-   St9LbxHpscnGVf+0K0t44DHPpBdnKcUrGOSZFPGLcuD6lD2auQQbtBwdo
-   RJXDSSoPuOVOM/pd+e5bHoErVfrcsDKmwGhHcPMGQfq1+iCvY/qqQVB38
-   A==;
-X-CSE-ConnectionGUID: 7Dwm008RSQSATn5BR3+lDw==
-X-CSE-MsgGUID: L4DYtudCQYqsOL+i8WfBSQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="11431795"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="11431795"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 03:59:42 -0700
-X-CSE-ConnectionGUID: IuMHpOWjTvq08bwRRgjn6A==
-X-CSE-MsgGUID: 6/LVX0bqSlWd8NIDS/R2qg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="19579543"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 03:59:38 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 68C1311F8B1;
-	Fri,  5 Apr 2024 13:59:35 +0300 (EEST)
-Date: Fri, 5 Apr 2024 10:59:35 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Luigi311 <git@luigi311.com>
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pavel@ucw.cz, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 19/25] media: i2c: imx258: Change register settings
- for variants of the sensor
-Message-ID: <Zg_Zl0Q2kEDJoQoe@kekkonen.localdomain>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-20-git@luigi311.com>
- <Zg2BZXQpzsm7jMnc@kekkonen.localdomain>
- <998efafa-699b-4226-91d4-2ebba85d63ec@luigi311.com>
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="L8K6jwbQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=M0lrr1pSjw/mx2qSRX0dqvgJSxtacwifQgnLjkDAalYZJu5BW1FchtvMLg7LGrB17bwGKBxbFJsv1L7qrShNjGnz2Lediqv1wbCx3Vj7cjNvpOHoP4sXGVQzk640tOtu8HcEe9YXpr/Acf0Fhr2p7Lqhnp34KmSmnLPjlTVqRnImWS0MAPNnq6BK/6jMkgtq131oMsx0pdH3pckDKMiZk9r1gqmX1U3/kcnfoXaiAlAIDlxgOcVApT/4b+8BjUwFPl00Q2rEeMgjhkNuHgZkrLRGgCCPaRepz6WzMIE6O3/omkralD336VU22rM00TXf6BBLSVWdHcPbUMnK7qAXog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f7r/QbCh6yxfaNa2Ama41YWrsrix2m0n5/CpYxO2YqQ=;
+ b=HuJ0iB+LVRlE+MD8YaFJRIDvzZCpb+mUJ2lMaI9kG5VVB/JExe2LmC90xA28Px4VSr5DT9AsGcLblFfcOHaYw42dSVqQ/B6K/CU+VF1ZxCUxTpVCg/NNkd9gvGmL6h7hgQ/fHJtdabpXQwQNvSymoEHTFPxUVU6S7AI3YCgsGltSz/Y5pvQu9MVLLL/rHewNZGWs0FydxbT7SpjbtnFIdF4v1S3CjaVHjAOhgdeYvihjFJ6MkKCgp6Xgs8KQZzRh7hBYSSpNkv7m0M0ysL8+XthwuRyAeh+AqbUy/wotZN2NBCa1RwRes00VIMQUj+1Yel1Dl2b5H//sJk5JhMQf4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f7r/QbCh6yxfaNa2Ama41YWrsrix2m0n5/CpYxO2YqQ=;
+ b=L8K6jwbQa1KuR3d2P8fTnLo8UFHonHf3/0eHLB7lRcEqcETbCCSSCPqa0Vbg2CLieb4KVVqq+tRH3Wmq3fEmCyQRfyUk01coWTZ3NZlj5mtDncBnGcsaZfNPqTAjjJxpvEboHLLw7R7zWH7Ridh+WvJCyynmjnr/iC96q3Gy1i0=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by PA4PR04MB7744.eurprd04.prod.outlook.com (2603:10a6:102:c9::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 5 Apr
+ 2024 12:31:37 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Fri, 5 Apr 2024
+ 12:31:37 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v2 0/6] firmware: support i.MX95 SCMI BBM/MISC Extenstion
+Date: Fri, 05 Apr 2024 20:39:22 +0800
+Message-Id: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPrwD2YC/x3MTQqAIBBA4avIrBuQQRd2lWjhz1Sz0EJBgujuS
+ ctv8d4Djatwg1k9ULlLk7MM0KQgHr7sjJKGgTQZbbRFybezGELGLC1iJwyWXSLjUzQEo7sqb3L
+ /z2V93w8VX8hQYwAAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>
+Cc: Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712320792; l=2568;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=dOBkgjs/jb/HONnQGf/3KjMH4BWduYVwov2hTsuR/Og=;
+ b=TK8qY4ZqbMBehn5Ahf1xeSB9pvdYdp1Gbudq3FAA1jfADeGIzYrFTCr9xomhCaxg7YxvlWo2Z
+ FVkfnEATm/aD/v8rZJpjsp/pwap3G8WV/tiFhQRWF7f3jp/1DGdU9//
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::12) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <998efafa-699b-4226-91d4-2ebba85d63ec@luigi311.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|PA4PR04MB7744:EE_
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	pdif9JdbFNt70bh7vLKKQMBVjM3GJ9503/0mc+FBl3/6lhOt8wGcY2kkML07GrJyk17OQ6k8VT77LIbWMc7sneYHcaacLCMcAvrMFodUDn+q6p0fTpM81ouLy9JmZ35FLwtqJfTnhC01my2NqrKJjBbCbGPA6r/dUR0DfTnyxAr/is+i+n0p8HB4qlNcUHFWOuKEkELFjFHE1aYd9Xu6MkdnLFMUck8BQCxbfaHn3mdTbb2cXIzQqgYyGjq8o7dP0ituP0ajGT9x4mZfDq+eUzESWFt8z3C284Kt4JBETMioqXK7sbTuv3OxG6XkMwTK1zWebWxpDpRvJuQ/qYgB9+NZ7EE4NC7jlpaMjxWb/X2g2IRYfHgREqAMOVe2TC4SJn19+5jDK9N/lVhlUdKjawXXgij+oySkF0DoltyXfX7qm7vJ5aAwyS/0EUR5Qc/xaDaNSV3Zel/X8tu7PCXB6/m5q9TE42oNqmsXTLRv3xeK4AU/UapYEWGIaGjI5grXm2HjH2EuMBMacX8831xJkNHA4jrVVtlI4rkHoKjevtHB8/zFq87yO2Q2+4nwhEBUI9sh2AYnRuWKUeFPS/OWRVQnJ6EA7UWPHycGbmfrGTtAR5ZFF2nm0iBfhVCKemT6Dv7V0gilg//6QmgsdUGe9aRIC2heJ6pHYinkGYXO7t0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SUlIMUQwMTlNQWEwaEw4SXhkcG9Bb3F4VHZESk9GM0hTdnVDRnFOS1hzVFF5?=
+ =?utf-8?B?RnJTTDVrRXNzRFBRYTZoRzdENDJLNlh2MzVyeThaMVZ1QlFta3JFUFh1OXV2?=
+ =?utf-8?B?YnJxekpvb05obVhLd2tHTUhmOUZGSXVML0t0b0g1T1V4KzA1dlpkMHo4UTdP?=
+ =?utf-8?B?ZWJNQW1OcllaYndkajA2WDRiRit1TWJXTE1hSGlqOW5wb2l3czJMQmhrQ1pi?=
+ =?utf-8?B?WUdYNmFFVlcwSWc3cU5LNjVVaEhUbndrQ1Q4TXQ2STBoS1RiVTFqN3lzY1Fx?=
+ =?utf-8?B?WFgwREpQY0JTVmRycGIwTFBUTHNCUERyaDJsMWJFcjNnNnkrZ2VSckVDZWlV?=
+ =?utf-8?B?cG9vWEJwd0V6SHJoSjRBRUJLMHZ0NVFoaDduaEV3SGMwdm15ZEdtNDJEeDRi?=
+ =?utf-8?B?TTBFaUwySXYrYWE3UnJXL2VXYU5WSDI2QzZsWnpkZmhuajBZaWpPcmpwR3c4?=
+ =?utf-8?B?ZG01ZkQ1UEJONzFsaDd4MFcrWG9SczFUZDVIbEMxU25yOElYdlgzRkIyZ3d3?=
+ =?utf-8?B?cEVyMktJVlFVNXpZSWpoZHJIVnJYbWY4M2tmOGJESjdWU3ZRMUx2aWNsZER4?=
+ =?utf-8?B?UXovNEg1RU0rWVMwa3UxbkplMzdzTENoMXB1M1cwclpUc3lJRW41eXNNQXNI?=
+ =?utf-8?B?cmdPNHdpTGNiQUVMdndkUGJoRk5RNUVOWFJuR3V1MmZFanJMaDU3enJibmlR?=
+ =?utf-8?B?aVVMYXZiY092b0lwUFBsSjg1WUh0Z1IzU3lJNWVld2QwSmlwRWxtdVdrcDkx?=
+ =?utf-8?B?ZW1aUkh0T09udUJJekIyMno1cVNOMWMvK2JUK29zVHR5dG9ZNVg4NDFBWUhW?=
+ =?utf-8?B?c29obHlkWnJ3Zk96amljbDVIZVdTZFBYWmhqeS9mbm5MZzhYWWRXZlBFbStP?=
+ =?utf-8?B?TEx5ZkJ3ZTVPcnl1aHEzZTc4ci9OdkRKcDdoT1hlNmF0WXZISTEzcnpNOUU0?=
+ =?utf-8?B?NWtxTWl0Y2xybTEzWG0xT1dYdUpsakJUc1dqbjJIcUpJYTVpU0N3NkgvM2VL?=
+ =?utf-8?B?LytFejhnUVVHdHdqU2syM2FZNjduaE91cmxzb2UwenVVTGFlK1FJalIvVGVZ?=
+ =?utf-8?B?ZjhHcUhicWJ1QUI3YkNLbG1wTHFpZ1BRRS9ERDFiVXBYSnlnRTZHUTEvZ3Vu?=
+ =?utf-8?B?OXErOHhZQzhEVnFVTjEvclBlOVpSdVF1ZU1hRGlpNjJuc3hENjI3aVVLSDA2?=
+ =?utf-8?B?U1BWcEhjeXdlRmJyRUNVYzlaMmVyQWlVd0Rkd2lnVXY3NzFSN0E5RUxkcGJt?=
+ =?utf-8?B?eHBlMWlCUURSdEtXNDkwd1A1WElOZVpudloxRFlkK2hJNENLKy9Wa2FKUnM3?=
+ =?utf-8?B?cVR0M3B3TnBKRy85bHo0NkV4MnljbjRId3ZreFhZNlgwS3dxekQ2cHpybmpO?=
+ =?utf-8?B?U3ZLU1l1U2paUVNiY3RoQXp1cmFTaGpGNGpLRzZPZlBHTTdOK0cxZDVwcnFy?=
+ =?utf-8?B?dGVRYXdqVmhhSFZra3YvMWM2MFpqTzJEQ1RSMUhGc2JJWm1DeDY1ekJnRUFP?=
+ =?utf-8?B?ZGFpSlNQaEhEaml0VWRkbzVkOEV1S3l4czhmR2V1OTdRaUNhKy9NWE5aM25C?=
+ =?utf-8?B?eG9DWkQzK2VkOUg0eWR4Ync3d3pMMGFhU3VSRDFGWGQ1ZVp2RHRHRnFlNW1F?=
+ =?utf-8?B?ZUJGZGNUcUpsellicTNCMmE1NG9EbHpXbG9SNGZGMGluaytvb2taVWZETkR4?=
+ =?utf-8?B?clZNRjQ2bmZqNmNYQmgvWmsybFVXNzNVWXZER0xYOStnMFRhZ3JoSUwreGtj?=
+ =?utf-8?B?cStVNWFJV2FEcE5pTnZlV3BsQ2t1dTN0YjJockgvSmtrWkQrclJlL1hIaFE4?=
+ =?utf-8?B?NUo1RWt5a01jZmRFWWRkRHF2M0VwbmFZZUFjbEhXazdRMnpJZ2prNXd0YURx?=
+ =?utf-8?B?bGZTWkN6ZFRIUUQvUWJGckh1SzFiYVpRWlpzQnA2RkVWcVVGaXhPOUk5Q21F?=
+ =?utf-8?B?QmIweFFrSGJPYlA5YTdwaTFXSHkyRkhUVGJtL2hyci9rQVE3RGpqQXNZSXB2?=
+ =?utf-8?B?VWcyU3lMSGJBY0R5U3RMOS9GR3FMYUt0RTcrUXBtYStHaTYyMDNoNml3dkVl?=
+ =?utf-8?B?bUV4VkxaY2p4WEFCT05GVnRWRUFLa1c1RDRSV0NuNVFNM0FMc3JJUTlzWmtl?=
+ =?utf-8?Q?1NRMCvFXJo4M/5xeLmE/8vIT3?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c838cc8-4ddc-41c0-cbc7-08dc556c560e
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 12:31:37.2489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U8RSrtnnEazJlZ5dgBgh3dODl+JY+jJmmYNnCdgi1ZLEClBNVVzAmxt5Q1a0ISIgRORxPQOg59NYfrRlkzCRkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7744
 
-Hi Luis, Dave,
+i.MX95 System Manager Firmware support vendor extension protocol:
+- Battery Backed Module(BBM) Protocol for RTC and BUTTON feature.
+- MISC Protocol for misc settings, such as BLK CTRL GPR settings, GPIO
+expander settings.
 
-On Thu, Apr 04, 2024 at 04:44:05PM -0600, Luigi311 wrote:
-> On 4/3/24 10:18, Sakari Ailus wrote:
-> > Hi Luis, Dave,
-> > 
-> > On Wed, Apr 03, 2024 at 09:03:48AM -0600, git@luigi311.com wrote:
-> >> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> >>
-> >> Sony have advised that there are variants of the IMX258 sensor which
-> >> require slightly different register configuration to the mainline
-> >> imx258 driver defaults.
-> >>
-> >> There is no available run-time detection for the variant, so add
-> >> configuration via the DT compatible string.
-> >>
-> >> The Vision Components imx258 module supports PDAF, so add the
-> >> register differences for that variant
-> >>
-> >> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> >> Signed-off-by: Luis Garcia <git@luigi311.com>
-> >> ---
-> >>  drivers/media/i2c/imx258.c | 48 ++++++++++++++++++++++++++++++++++----
-> >>  1 file changed, 44 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> >> index 775d957c9b87..fa48da212037 100644
-> >> --- a/drivers/media/i2c/imx258.c
-> >> +++ b/drivers/media/i2c/imx258.c
-> >> @@ -6,6 +6,7 @@
-> >>  #include <linux/delay.h>
-> >>  #include <linux/i2c.h>
-> >>  #include <linux/module.h>
-> >> +#include <linux/of_device.h>
-> >>  #include <linux/pm_runtime.h>
-> >>  #include <linux/regulator/consumer.h>
-> >>  #include <media/v4l2-ctrls.h>
-> >> @@ -321,8 +322,6 @@ static const struct imx258_reg mipi_642mbps_24mhz_4l[] = {
-> >>  
-> >>  static const struct imx258_reg mode_common_regs[] = {
-> >>  	{ 0x3051, 0x00 },
-> >> -	{ 0x3052, 0x00 },
-> >> -	{ 0x4E21, 0x14 },
-> >>  	{ 0x6B11, 0xCF },
-> >>  	{ 0x7FF0, 0x08 },
-> >>  	{ 0x7FF1, 0x0F },
-> >> @@ -345,7 +344,6 @@ static const struct imx258_reg mode_common_regs[] = {
-> >>  	{ 0x7FA8, 0x03 },
-> >>  	{ 0x7FA9, 0xFE },
-> >>  	{ 0x7B24, 0x81 },
-> >> -	{ 0x7B25, 0x00 },
-> >>  	{ 0x6564, 0x07 },
-> >>  	{ 0x6B0D, 0x41 },
-> >>  	{ 0x653D, 0x04 },
-> >> @@ -460,6 +458,33 @@ static const struct imx258_reg mode_1048_780_regs[] = {
-> >>  	{ 0x034F, 0x0C },
-> >>  };
-> >>  
-> >> +struct imx258_variant_cfg {
-> >> +	const struct imx258_reg *regs;
-> >> +	unsigned int num_regs;
-> >> +};
-> >> +
-> >> +static const struct imx258_reg imx258_cfg_regs[] = {
-> >> +	{ 0x3052, 0x00 },
-> >> +	{ 0x4E21, 0x14 },
-> >> +	{ 0x7B25, 0x00 },
-> >> +};
-> >> +
-> >> +static const struct imx258_variant_cfg imx258_cfg = {
-> >> +	.regs = imx258_cfg_regs,
-> >> +	.num_regs = ARRAY_SIZE(imx258_cfg_regs),
-> >> +};
-> >> +
-> >> +static const struct imx258_reg imx258_pdaf_cfg_regs[] = {
-> >> +	{ 0x3052, 0x01 },
-> >> +	{ 0x4E21, 0x10 },
-> >> +	{ 0x7B25, 0x01 },
-> >> +};
-> >> +
-> >> +static const struct imx258_variant_cfg imx258_pdaf_cfg = {
-> >> +	.regs = imx258_pdaf_cfg_regs,
-> >> +	.num_regs = ARRAY_SIZE(imx258_pdaf_cfg_regs),
-> >> +};
-> >> +
-> >>  static const char * const imx258_test_pattern_menu[] = {
-> >>  	"Disabled",
-> >>  	"Solid Colour",
-> >> @@ -637,6 +662,8 @@ struct imx258 {
-> >>  	struct v4l2_subdev sd;
-> >>  	struct media_pad pad;
-> >>  
-> >> +	const struct imx258_variant_cfg *variant_cfg;
-> >> +
-> >>  	struct v4l2_ctrl_handler ctrl_handler;
-> >>  	/* V4L2 Controls */
-> >>  	struct v4l2_ctrl *link_freq;
-> >> @@ -1104,6 +1131,14 @@ static int imx258_start_streaming(struct imx258 *imx258)
-> >>  		return ret;
-> >>  	}
-> >>  
-> >> +	ret = imx258_write_regs(imx258, imx258->variant_cfg->regs,
-> >> +				imx258->variant_cfg->num_regs);
-> >> +	if (ret) {
-> >> +		dev_err(&client->dev, "%s failed to set variant config\n",
-> >> +			__func__);
-> >> +		return ret;
-> >> +	}
-> >> +
-> >>  	ret = imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
-> >>  			       IMX258_REG_VALUE_08BIT,
-> >>  			       imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK ?
-> >> @@ -1492,6 +1527,10 @@ static int imx258_probe(struct i2c_client *client)
-> >>  
-> >>  	imx258->csi2_flags = ep.bus.mipi_csi2.flags;
-> >>  
-> >> +	imx258->variant_cfg = of_device_get_match_data(&client->dev);
-> > 
-> > You'll also need to keep this working for ACPI based systems. I.e. in
-> > practice remove "of_" prefix here and add the non-PDAF variant data to the
-> > relevant ACPI ID list.
-> > 
-> 
-> Removing of_ is easy enough and looking at all the other commits that make
-> this change in other drivers I dont see anything else being done besides
-> adding in the .data section that is down below for both imx258 and pdaf
-> versions. Is that what you are referencing or is there some other place
-> to add variant data to ACPI ID list?
+This patchset is to support the two protocols and users that use the
+protocols.
 
-Speaking of which---are you absolutely certain there are two variants of
-this sensor? Many sensors that have a different pixel pattern (PDAF pixels
-or a non-Bayer pattern) can produce Bayer data when condigured so. The fact
-that you have differing register configuration for the PDAF and non-PDAF
-cases suggests this may well be the case.
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: Peng Fan <peng.fan@nxp.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+To: Cristian Marussi <cristian.marussi@arm.com>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
 
-> 
-> >> +	if (!imx258->variant_cfg)
-> >> +		imx258->variant_cfg = &imx258_cfg;
-> >> +
-> >>  	/* Initialize subdev */
-> >>  	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
-> >>  
-> >> @@ -1579,7 +1618,8 @@ MODULE_DEVICE_TABLE(acpi, imx258_acpi_ids);
-> >>  #endif
-> >>  
-> >>  static const struct of_device_id imx258_dt_ids[] = {
-> >> -	{ .compatible = "sony,imx258" },
-> >> +	{ .compatible = "sony,imx258", .data = &imx258_cfg },
-> >> +	{ .compatible = "sony,imx258-pdaf", .data = &imx258_pdaf_cfg },
-> >>  	{ /* sentinel */ }
-> >>  };
-> >>  MODULE_DEVICE_TABLE(of, imx258_dt_ids);
-> > 
-> 
+Changes in v2:
+- Sorry for late update since v1.
+- Add a new patch 1
+- Address imx,scmi.yaml issues
+- Address comments for imx-sm-bbm.c and imx-sm-misc.c
+- I not add vendor id since related patches not landed in linux-next.
+- Link to v1: https://lore.kernel.org/r/20240202-imx95-bbm-misc-v1-0-3cb743020933@nxp.com
 
+---
+Peng Fan (6):
+      dt-bindings: firmware: arm,scmi: set additionalProperties to true
+      dt-bindings: firmware: add i.MX SCMI Extension protocol
+      firmware: arm_scmi: add initial support for i.MX BBM protocol
+      firmware: arm_scmi: add initial support for i.MX MISC protocol
+      firmware: imx: support BBM module
+      firmware: imx: add i.MX95 MISC driver
+
+ .../devicetree/bindings/firmware/arm,scmi.yaml     |   2 +-
+ .../devicetree/bindings/firmware/imx,scmi.yaml     |  80 +++++
+ drivers/firmware/arm_scmi/Kconfig                  |  20 ++
+ drivers/firmware/arm_scmi/Makefile                 |   2 +
+ drivers/firmware/arm_scmi/imx-sm-bbm.c             | 378 +++++++++++++++++++++
+ drivers/firmware/arm_scmi/imx-sm-misc.c            | 305 +++++++++++++++++
+ drivers/firmware/imx/Makefile                      |   2 +
+ drivers/firmware/imx/sm-bbm.c                      | 317 +++++++++++++++++
+ drivers/firmware/imx/sm-misc.c                     |  92 +++++
+ include/linux/firmware/imx/sm.h                    |  33 ++
+ include/linux/scmi_imx_protocol.h                  |  62 ++++
+ 11 files changed, 1292 insertions(+), 1 deletion(-)
+---
+base-commit: 2b3d5988ae2cb5cd945ddbc653f0a71706231fdd
+change-id: 20240405-imx95-bbm-misc-v2-b5e9d24adc42
+
+Best regards,
 -- 
-Regards,
+Peng Fan <peng.fan@nxp.com>
 
-Sakari Ailus
