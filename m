@@ -1,34 +1,34 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE001171656
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E16171645
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712335701; cv=none; b=qJtvOLQs6K6DW7fv1MXC7X8F+C7p/W5j8WwTpLR+v/16yEwIz79ovgn1E4laT8elweViWIJDXGgN6LReDqWrebI1wxkpBrpxo/FZExogz7zMq/Iv8NlxQy9Z4rJKZS4LUXCmtA6dGBx4B9xV9VrQZSVGC+c2NMM+Hum1sp0jseo=
+	t=1712335714; cv=none; b=AtzuDvldPNbpmgUgAr4C83CQci6PqYzyBJuRrLDSt17WucVjnHRWCEiAdR7qiGR56sU9wmup2X3iljpJAlvq87F/tPbCxVHW1Y69S9nL9zupE424LeXMPIrgDfou57QU8yygeiqbL4NdG2S9mL0TtSentAvN8LbmdruBCG4oPnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712335701; c=relaxed/simple;
-	bh=KDqdUluM40o2fzI058Ag48OzZtWO4/ZJ8Ed3fjztaxQ=;
+	s=arc-20240116; t=1712335714; c=relaxed/simple;
+	bh=Xv13cyEjvsg2QGk7Fwb3W82vEV7OTPf7ypIZZmWM9YA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tRA2rC+OILjxlYHo3MhzIrKzO+nuHi85IPFXugQT3XcPEIHuwyK/Lu3CSQkgZH7yK9y74dzySHmGeM7c8b9j6I2PKTwQ7L65lhLQXrS7eNIIMAF+IUAKd3qSOloUysZy/Lp04hXoUe4gQFc6QMwTTxoVDyt7SlfzLn+ZhXWZ6eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TDe+wZiT; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQtoXcHTRAQnYWszKKeG1eJwtnjUpJC5aZ1f8KhYCw32N1iIVF/rD6P1xB/axlH8Qz1fI3SKUwfXzScs/yJqUQnkBq/FV78mREYwWtYnoiAI3wKNwGPPrgw0nvUo7+oRBqhxEG674sa+LUDcogYSPxQA2q/YEchF8F4uCEJ/UAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=defkolX2; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TDe+wZiT"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="defkolX2"
 Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id DA4EE1F8F8;
-	Fri,  5 Apr 2024 18:48:17 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id B1C881F8F7;
+	Fri,  5 Apr 2024 18:48:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1712335698;
-	bh=hlfps7bjzQHeLJP55InKnvxxZsK4HvjU/VrN10ewGE4=; h=From:To:Subject;
-	b=TDe+wZiT6n6AjYZKFG7qJ5YzhTzB3I4YwhAkmkBkgNwrza5LG3G9QZGwlbMo81cuq
-	 QFr0cE+Rgf5Gwsc+3Bd5jji74GDzFB7pAUuaunxfWlP2B0JXZg5FL2xl7MN3Sqsxa7
-	 E66O+YfHSgIl/ss8fT8A/6V47YWfwmtSGP0W7n++qL/lX5XrOb/WNYaqoNAgliaqus
-	 NSuuPtp/cZLvDanYPyRBtbLYHlwdaXtIuRG725S0mrbW/hTEgGkQkFDSYkIe7JP5SW
-	 q2d/J5T66CLOA470uph6G/wa/FtXgtLZa+iWYQH9PWrKc/6CDcn1NCwkkbx7DCY124
-	 se6VYbEscPc9Q==
-Date: Fri, 5 Apr 2024 18:48:16 +0200
+	s=default; t=1712335709;
+	bh=il2qU58UHLxy6P7NB6cyRdQntf0V6syrYQfTTjcncvM=; h=From:To:Subject;
+	b=defkolX2cYoGUSNbL402FLL8MAq6f0gyqjQoL8xtSWq12xb+U33fq+ye+MqZBrc8w
+	 jyVjxSGwtUA3oZAVhKe5k8iO+G6c+iQlAFC4iIcjV16PHiXNYJ0L6iZRzedewHMhZd
+	 OKW8TnethTpEqNDOYqNgUCx34SA8xHkGZXOjerypmFoGCUYkX7xxyEQ0ITuxlMLnhQ
+	 CHvim4ftTfE+3V1rKHXOkneQyRgyeywQqh3IlRrSTXkznKxEZPTLcXEUrDwndD9Rp0
+	 VFEGuajX4H8xuUqPVisP+Msh2WfBcN5zYX9C/hf1DEShREbul4EnKi+Ai3FJXeuhyL
+	 euaDJNzNKcxrw==
+Date: Fri, 5 Apr 2024 18:48:27 +0200
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Stefan Eichenberger <eichest@gmail.com>
 Cc: robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
@@ -37,11 +37,11 @@ Cc: robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v1 3/4] arm64: dts: freescale: imx8mm-verdin: replace
- sleep-moci hog with regulator
-Message-ID: <20240405164816.GC5994@francesco-nb>
+Subject: Re: [PATCH v1 4/4] arm64: dts: freescale: imx8mm-verdin-dahlia:
+ support sleep-moci
+Message-ID: <20240405164827.GD5994@francesco-nb>
 References: <20240405160720.5977-1-eichest@gmail.com>
- <20240405160720.5977-4-eichest@gmail.com>
+ <20240405160720.5977-5-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,20 +50,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240405160720.5977-4-eichest@gmail.com>
+In-Reply-To: <20240405160720.5977-5-eichest@gmail.com>
 
-On Fri, Apr 05, 2024 at 06:07:19PM +0200, Stefan Eichenberger wrote:
+On Fri, Apr 05, 2024 at 06:07:20PM +0200, Stefan Eichenberger wrote:
 > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > 
-> The Verdin family has a signal called sleep-moci which can be used to
-> turn off peripherals on the carrier board when the SoM goes into
-> suspend. So far we have hogged this signal, which means the peripherals
-> are always on and it is not possible to add peripherals that depend on
-> the sleep-moci to be on. With this change, we replace the hog with a
-> regulator so that peripherals can add their own regulators that use the
-> same gpio. Carrier boards that allow peripherals to be powered off in
-> suspend can disable this regulator and implement their own regulator to
-> control the sleep-moci.
+> Previously, we had the sleep-moci pin set to always on. However, the
+> Dahlia carrier board supports disabling the sleep-moci when the system
+> is suspended to power down peripherals that support it. This reduces
+> overall power consumption. This commit adds support for this feature by
+> disabling the reg_force_sleep_moci regulator and adding two new
+> regulators for the USB hub and PCIe that can be turned off when the
+> system is suspended.
 > 
 > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
