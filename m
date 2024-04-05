@@ -1,57 +1,57 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B9017107A
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA7171080
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 16:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712333260; cv=none; b=I/L6goHyh3c5FAADt4hPLdbGDqRKLvg2uH6+92VZs1MTpdCr8rs749kKHG+MQo7FY37rOG2Nymd1krB6KYHQWec9nOWH7rTsNKW4Vp9YcwQeevtagIIKFIZVRrIss4R0lvRKNzzHkprjV+k8mWdQlZEsOEl7vct0yvolchZbUxU=
+	t=1712333261; cv=none; b=fAMCKhw/ejB5irIwlFk40saXCcrXB/Y5btLRHrHqUYuMsF2CEh4eYD3wBvZo6aa9UhmpGMHjsf4dYxoS+E1Y5d86hY46M9NKe/GdRm4mVlt3CE7EEskCK4tHZlxgHwGtOTswcrhYOLNNBwJOlxf+Ux9bB19/8xkKcQLgUQ9lOqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712333260; c=relaxed/simple;
-	bh=qBYmF0xGWXhV6hUCfu3HKLzpWqtGV+Hfy6dq9NOruFU=;
+	s=arc-20240116; t=1712333261; c=relaxed/simple;
+	bh=dBH1j/h1dRu0ygt9hNbmwa87jEdhv9yAzGW6ZwQoLsM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pUqdQIlldCWNfbfqDDrXbc9f/P+e4Faspl+ymYmTmRf2ZZihap+LxnAE0WMKaokBvNFCXa4npnKHq0kuH30Pk9HsyDpgg1cy+S8JylvR6m27xQLA2rHLFZPZY0oS3ir8zCa90DGcWn0Me8K9IHVrvRY56p5uRwxcAbrLYvWJzIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XddoinEc; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=M1qQPZ86GtgRGlmFt3Fycw7ETdGiaTXkpikPN0c645679HuAp3AmsYhJQ6YuNFAr7JAuEjJBe13nRUwXFBa7/vVCnLMvHPL+JS3uvBTI1tKzA26TvP+BlDFVN9mW68k9ybO1Pl0ytRCZABQxjVS6VFk2wSvoQrUCaqm4gCA2ge0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mOyit0hT; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XddoinEc"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4156a29ff70so17799405e9.3
-        for <imx@lists.linux.dev>; Fri, 05 Apr 2024 09:07:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mOyit0hT"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d700beb6beso26390581fa.2
+        for <imx@lists.linux.dev>; Fri, 05 Apr 2024 09:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712333256; x=1712938056; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1712333258; x=1712938058; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qOce/01hbDzl8+x1yOJ/1AVGMenhuK+vsq/FsL52bf0=;
-        b=XddoinEc1iFohBLoquhpefB17+mQQb4h2Uoutu50mFW12Gb3xztRJ17RXlLm4yFOfH
-         UUpxWaZ3wkRdFqAVwf4ubk3Ei8wBQAapbbigETA0KJ4u06MYLir1HaJGdhSAsokV4n1R
-         7+k8ouyHOwplDrqfz3iqnPvXXFkiLJv3Xi1uMLBXI6Tz5WFFs+WCZrh/IstYidMEiPZv
-         /MaEv1O3tNeZROIr7S7expUYcHt5WZRm6Yl/a6IXx97WHBc5qplM3un67GM6dOrjF6og
-         HQCn06f8KccJpd6ARwZ5v4M8Lu5z5pXOJ4qhrVZQ8m9rWERvBgvbTHhgc8wMi/CLhBDR
-         JXlg==
+        bh=lgmM3Xbata7VzEXtxd2ThwevKFI1uBmzRn4wOr+9OFw=;
+        b=mOyit0hTgtcz0H9HdHDNN1ghE0j9KnCtjZs6wWdqxzq5WFheQlsCllZxRJMWNmirnl
+         Y8epFksUOLEt77u7rMsimbNaIQGvkW+kws5ZVO4tKYQN6AkuhwDQYDuI4NB5wkO18XxX
+         GND2wT3E0YwrVHpz2Gw8IhMmdX2mthl0vmZE2uIRbMvZd/XD4cPvSJX7Vgd7Eog4mPJL
+         tGBdLreFvGQaRlLjH6COeVsA0Cc9Q/i4vzlPYcbe/O2hrAgNMEgu3zWLpNKUiQQ1ix5a
+         VU+a6uGuhfkrzETo6QnXT+N/v/sNLjJgw3oK+FAnEF/b+OVX0PE8SAP0K/5m2fJO2C2o
+         EKqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712333256; x=1712938056;
+        d=1e100.net; s=20230601; t=1712333258; x=1712938058;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qOce/01hbDzl8+x1yOJ/1AVGMenhuK+vsq/FsL52bf0=;
-        b=gwNgSBNzH2TU7IDB5h82JzzNIvC2AZ2wMbhv8wfPwVVM0YnFnYRTD6JE3TFg50NK4l
-         kOe6+R9LqcZjOLrJefTLHcUXoAawe+eRfK5WjS7rjFyjSXeW4lbCQ1DJxZLO2PjDbVMl
-         TGR8hBkb5rUuUXBI9t3dtm+FSyEVaWf0rcP4VW8iRwgriP2nP9aNudvsrnMJTUOFcOBw
-         i4NIODrB7F0rCVoYRRCA1guAw+4on3wAwY6JNFD1w2tvBBiyF0oP1yVMJuasUP4bSasw
-         ybHcMIUQZm0RrDAe0Sz8QaDjJOkCoKMxvdl0Odj4zwkHxrabn5aFPba91+CMVnRlgFdI
-         SQBA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjMJbPBIZTiR6a5svQP3K2SDr1zsvrfetwyTnYKNSQvEsug3E37YLyVITiHw4oxELa9O8Wvj3i+HHfKbTXLUGyinmK
-X-Gm-Message-State: AOJu0YwMpoDNOuUVrTMYKEYmz/adioBDeb3Q2bYyHev9WMKXM1eOhMPp
-	NBlGownaHDmTCOfP9RXlobOWYR7BkYPjKBcJxZo6uZhXjcFySrI2
-X-Google-Smtp-Source: AGHT+IHX223U4DsZ/xQPDPFZTq5ivcV0JxX0dpOp4Q0Djfm9YV+NtF1fazKA8gfSCWvEVdck2JLcjA==
-X-Received: by 2002:a05:600c:3d88:b0:415:52f8:ca74 with SMTP id bi8-20020a05600c3d8800b0041552f8ca74mr1533482wmb.36.1712333256089;
-        Fri, 05 Apr 2024 09:07:36 -0700 (PDT)
+        bh=lgmM3Xbata7VzEXtxd2ThwevKFI1uBmzRn4wOr+9OFw=;
+        b=LA67QQ5e7mqcwNihTj01pNvBMsAUzbMXxWCCYmFJ/GmsL0FWOLArL1SSDpRRpHQBCD
+         wfXaThp/4XK1vzHOMUvkib6V4qONGbHuPowNrlYInboeejFb3/sbB6UuVNpaf32Eb+4Y
+         cTdgIaCSGAwb18ikV11xOY2Xg3/gXyqKouw23/NIqBEPGRL+6Oy0Aa6cXVm9rnce9kJH
+         oB7vEfw85gtpnrHA6uq9r46ss5DCvbXtiMeduwS/enqyr7O9JWV+uUpzIjL4ZkElwUer
+         7L0b9jUqgRNwG4x/KzGnmYkJjE1S8x598p95go7yURNmnJSJzgiDS+LZXYw5vy9/xK9o
+         8Jjw==
+X-Forwarded-Encrypted: i=1; AJvYcCVKYCVhE08/CwHiZq27UbP3vt1xikZvG/9iWh1qcs/0p4yeRrCNKIaXSWta6b2K0n3aWvx/duxycdU+zz9Uc09bvqKv
+X-Gm-Message-State: AOJu0YznWtepLuYEtvzBu+6E6eP1NkpcHQEBeZpi82V9++oIWUOBMg0B
+	IKsSrZlaq3DKNFnXOkghil795RF2OuOJh8rmTXqHZ7qyqYRXenKT
+X-Google-Smtp-Source: AGHT+IGcCu7kSbpvYBdqwmxAjtE9WbGU1f3WKzshRVZ88A/8Ug7BCKSWBua5SkDNKu2NdPeTUB5Puw==
+X-Received: by 2002:a2e:9045:0:b0:2d8:681:dc9e with SMTP id n5-20020a2e9045000000b002d80681dc9emr1448379ljg.41.1712333258017;
+        Fri, 05 Apr 2024 09:07:38 -0700 (PDT)
 Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:f624:ad13:2091:c808])
-        by smtp.gmail.com with ESMTPSA id k41-20020a05600c1ca900b004156c501e24sm6902651wms.12.2024.04.05.09.07.34
+        by smtp.gmail.com with ESMTPSA id k41-20020a05600c1ca900b004156c501e24sm6902651wms.12.2024.04.05.09.07.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Apr 2024 09:07:34 -0700 (PDT)
+        Fri, 05 Apr 2024 09:07:36 -0700 (PDT)
 From: Stefan Eichenberger <eichest@gmail.com>
 To: robh@kernel.org,
 	krzysztof.kozlowski+dt@linaro.org,
@@ -66,9 +66,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v1 1/4] arm64: dts: freescale: imx8mp-verdin: replace sleep-moci hog with regulator
-Date: Fri,  5 Apr 2024 18:07:17 +0200
-Message-Id: <20240405160720.5977-2-eichest@gmail.com>
+Subject: [PATCH v1 2/4] arm64: dts: freescale: imx8mp-verdin-dahlia: support sleep-moci
+Date: Fri,  5 Apr 2024 18:07:18 +0200
+Message-Id: <20240405160720.5977-3-eichest@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240405160720.5977-1-eichest@gmail.com>
 References: <20240405160720.5977-1-eichest@gmail.com>
@@ -82,116 +82,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-The Verdin family has a signal called sleep-moci which can be used to
-turn off peripherals on the carrier board when the SoM goes into
-suspend. So far we have hogged this signal, which means the peripherals
-are always on and it is not possible to add peripherals that depend on
-the sleep-moci to be on. With this change, we replace the hog with a
-regulator so that peripherals can add their own regulators that use the
-same gpio. Carrier boards that allow peripherals to be powered off in
-suspend can disable this regulator and implement their own regulator to
-control the sleep-moci.
+Previously, we had the sleep-moci pin set to always on. However, the
+Dahlia carrier board supports disabling the sleep-moci when the system
+is suspended to power down peripherals that support it. This reduces
+overall power consumption. This commit adds support for this feature by
+disabling the reg_force_sleep_moci regulator and adding two new
+regulators for the USB hub and PCIe that can be turned off when the
+system is suspended.
 
 Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 ---
- .../dts/freescale/imx8mp-verdin-dahlia.dtsi   |  5 ++++
- .../boot/dts/freescale/imx8mp-verdin-dev.dtsi |  5 ++++
- .../dts/freescale/imx8mp-verdin-yavia.dtsi    |  5 ++++
- .../boot/dts/freescale/imx8mp-verdin.dtsi     | 26 ++++++++++++-------
- 4 files changed, 31 insertions(+), 10 deletions(-)
+ .../dts/freescale/imx8mp-verdin-dahlia.dtsi   | 44 +++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-index 7e9e4b13b5c5..e68e0e6f21e9 100644
+index e68e0e6f21e9..abad1887040a 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-@@ -70,6 +70,11 @@ &flexspi {
- 	status = "okay";
- };
- 
-+&gpio4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
-+};
-+
- /* Current measurement into module VCC */
- &hwmon {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-index a509b2b7fa85..1a2520d4d6cf 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-@@ -93,6 +93,11 @@ &flexspi {
- 	status = "okay";
- };
- 
-+&gpio4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
-+};
-+
- &gpio_expander_21 {
- 	status = "okay";
- 	vcc-supply = <&reg_1p8v>;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-index db1722f0d80e..27160024d5b5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-@@ -100,6 +100,11 @@ &flexcan1 {
- 	status = "okay";
- };
- 
-+&gpio4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
-+};
-+
- &hwmon_temp {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index faa17cbbe2fd..e523762947aa 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -116,6 +116,22 @@ reg_module_eth1phy: regulator-module-eth1phy {
- 		vin-supply = <&reg_vdd_3v3>;
+@@ -32,6 +32,25 @@ simple-audio-card,cpu {
+ 			sound-dai = <&sai1>;
+ 		};
  	};
- 
-+	/*
-+	 * By default we enable CTRL_SLEEP_MOCI#, this is required to have
-+	 * peripherals on the carrier board powered.
-+	 * If more granularity or power saving is required this can be disabled
-+	 * in the carrier board device tree files.
-+	 */
-+	reg_force_sleep_moci: regulator-force-sleep-moci {
++
++	reg_usb_hub: regulator-usb-hub {
 +		compatible = "regulator-fixed";
 +		enable-active-high;
 +		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
 +		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-+		regulator-always-on;
 +		regulator-boot-on;
-+		regulator-name = "CTRL_SLEEP_MOCI#";
++		regulator-name = "HUB_PWR_EN";
 +	};
 +
- 	reg_usb1_vbus: regulator-usb1-vbus {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
-@@ -439,16 +455,6 @@ &gpio4 {
- 			  "SODIMM_256",
- 			  "SODIMM_48",
- 			  "SODIMM_44";
--
--	ctrl-sleep-moci-hog {
--		gpio-hog;
--		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
--		gpios = <29 GPIO_ACTIVE_HIGH>;
--		line-name = "CTRL_SLEEP_MOCI#";
--		output-high;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
--	};
++	reg_pcie: regulator-pcie {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
++		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
++		regulator-boot-on;
++		regulator-name = "PCIE_1_PWR_EN";
++		startup-delay-us = <100000>;
++	};
  };
  
- /* On-module I2C */
+ &backlight {
+@@ -117,6 +136,7 @@ wm8904_1a: audio-codec@1a {
+ 
+ /* Verdin PCIE_1 */
+ &pcie {
++	vpcie-supply = <&reg_pcie>;
+ 	status = "okay";
+ };
+ 
+@@ -143,6 +163,11 @@ &reg_usdhc2_vmmc {
+ 	vin-supply = <&reg_3p3v>;
+ };
+ 
++/* We support turning off sleep moci on Dahlia */
++&reg_force_sleep_moci {
++	status = "disabled";
++};
++
+ /* Verdin I2S_1 */
+ &sai1 {
+ 	assigned-clocks = <&clk IMX8MP_CLK_SAI1>;
+@@ -186,6 +211,25 @@ &usb3_phy1 {
+ 	status = "okay";
+ };
+ 
++&usb_dwc3_1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	usb_hub_3_0: usb-hub@1 {
++		compatible = "usb424,5744";
++		reg = <1>;
++		peer-hub = <&usb_hub_2_0>;
++		vdd-supply = <&reg_usb_hub>;
++	};
++
++	usb_hub_2_0: usb-hub@2 {
++		compatible = "usb424,2744";
++		reg = <2>;
++		peer-hub = <&usb_hub_3_0>;
++		vdd-supply = <&reg_usb_hub>;
++	};
++};
++
+ /* Verdin SD_1 */
+ &usdhc2 {
+ 	status = "okay";
 -- 
 2.40.1
 
