@@ -1,58 +1,72 @@
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61930134404;
-	Fri,  5 Apr 2024 09:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1371115FD0E
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 09:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712309120; cv=none; b=oZR2CZY5ymAcbpXum4GwTB3o4hcnhbhBhNdy8TJ+++Sr7jSoB5jM9xrZgN114e0Ehq8RgCMW4+XfWJsXuYOymyFuXSVimoGswo0GAfsoTSVbXtE+yjc/oBG7lw6lmSwF10Tfr55qcr10+/+H/WUGl+rCWrIRPzNZgnASOKSBd9U=
+	t=1712309307; cv=none; b=RpzZklNfHAYhhNPYN+fxEc3SiqFoR/L6EDWPNTytP4qwdWo/IMd+a4AQQg2B1a7ArYnG9E5i3vr+VA7lCJof6eibjc/aTABHnsTpIhgm9xSkhbS4DECdUPDPLxw4DSB/Gp6QrWEt+gn60ARa4dInk1oCVzfpSUag78ERgqiCuGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712309120; c=relaxed/simple;
-	bh=LegK3ExFHR/1h7eBlgS2YcN2cj0X5XUHxShJ3eJQaDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bb1wab3nvouEDG3W/OyPgh5AEudv4Ll+Br5a/zqbpzCBNAGvUrQpJEeQFcD6YpgcEzLVk4VQjSdVK9MQ1ersO6WTILIrl2eW7TEGi9efVlf1ieJlEX5AzjLWM+QtwriqElJ1RCms0GcKcIjY/dif69RAujgqA+Yj5V/Wcu7ilBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=WcMRfZrH; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1712309307; c=relaxed/simple;
+	bh=2cAmqcIHyrbHhGybTCFdHS/3brV/c7gmFnh2geGe/QY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LTtFrlUx94x70NzDci+ivkU5DqDVGxjjWbuIFoojQEJ8oSllmiKTqbf0yv1ZjyBJujVa7q5VBzKDz5wEzzJXD+UuLqVcpwOmJtxHGbOf7lw1K4twx9LGqbEebPk3fiul1Tgh1vFShTHOjfSeLmkwKeg6qWda/cfeGVuhN9KGYe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wY+TFigT; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="WcMRfZrH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=7dcSbryEJQBvrS2PQ/uX0RZsRPEyzPJFXC461YQLAEI=; b=WcMRfZrHfD5Kz+BAUns9apNjZy
-	N/6W5kSGc9CvCl/0AgBAZA/Qja5Dc3ZAtnJ074m1/gIW+V0M7YiVtMu4YJ75IcQR8NXQVd48BJ4cX
-	yjcwcc4dvsGy7p2TAlFKkKyBCTEtENxVPHxSyulOIeD5fUD5baGCo1X6PycvDbNex3wnUoeXyX567
-	WsbKAhCSvBi5O4Eu9N/LqmavJcScDcU8XWDBRrErZW4tR1BlDHMUWai/KFADXLr0xhwGsbAH1YYJn
-	2FZ7PId0xWVCH33V8AWPAwnderJESA6czDKtukDaWAvz3fyAhGSjbDz1abBmrHsC5nrm+Zsy/ZxeV
-	my/os/ew==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1rsfow-000KBi-TR; Fri, 05 Apr 2024 11:25:14 +0200
-Received: from [185.17.218.86] (helo=localhost)
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <esben@geanix.com>)
-	id 1rsfow-000AR5-0H;
-	Fri, 05 Apr 2024 11:25:14 +0200
-From: Esben Haabendal <esben@geanix.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wY+TFigT"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-56b0af675deso2256671a12.1
+        for <imx@lists.linux.dev>; Fri, 05 Apr 2024 02:28:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712309302; x=1712914102; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tYhVWsiKKRdx7jYs05D0WEroCMJY9Qd94N0BcccLXcU=;
+        b=wY+TFigTlgufm+1qo2I/664Z/qRRmy7OTHv8/1XmZ9cRSGvMrDnX8mqwiQ9MLyeyn/
+         hAJIIFXxsa2w5tmrAJQuQKj/KfaE1hmxMrU3IGdsdP85VGBen9Xu4MweybiAGASynJzb
+         GFKBHVbcLj5SUN63TLUaAbd9rXjO5gwvxbMxnW69K8uk7OyDWS6FthTEB9pgLKUpMyNm
+         pIk/e5qi7cqLFawKYcVYaIIH/hmYu/GawAxIOvevpK7eK1wbCAvBM4rFykMaSBEISmdU
+         YPK7lyYNQHo9V8PRqKybfpPpoX7IZzLtPbzK80sHPmDUrbkPPtlXuw8PnYTqgwdWXVxC
+         sgOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712309302; x=1712914102;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tYhVWsiKKRdx7jYs05D0WEroCMJY9Qd94N0BcccLXcU=;
+        b=ULWvTHt8Q7YbIaLji9QmBI2m2B7YlvRE8BcSoxhkoV33pTqocMzmGLS+begOUB/Hye
+         LNKC9c3JCJMZJyO3LML1RPW4SfeUG2c0m8Sb0ZhKF2Vq9xQzw39C4l/z2X7FudaIR8Je
+         8bdYFuDWMB2h6a/bz64uHSY1ct37ECt8imFwUGDwLQFcENSeYvuX9c2fbIMx8OCrE73l
+         mlSmDG5V/Bo51ML5a2xXEjcvH1CrRiO2R23SxFAnwR4O8Jfccfc739DbmcPZTewox9/V
+         tSp8rAyVhqXdTd+qrHuDIRFo17S5epheDpkccA0zpIPRdpkf4wYF1h+r+8N78muTmt1s
+         NV0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXnSZeIEUJP8f33BJRa6HWQ+mVuYHenXvRwH3lLtr0ThoSoYr+PrutSG1i70siyF2nCA/RCtemh4d7R9ZseqWkRE97g
+X-Gm-Message-State: AOJu0YxEb/LJeNpRUWOFO11RGUgXLX/1+tWKCPFupgjgSb+N7t1gHVRy
+	wpBpi/ngVxsU/bq9m5l3+6Exq/jxATM7dpIKTplk6mC/rNmW2UYwmfS5btqe8wA=
+X-Google-Smtp-Source: AGHT+IFkfahotwq8cHOkal6qSEvAwTkdlqinu+jVeTN/KjeYhmM03EB06dwZOWx3FQkSAjd3MFhAYA==
+X-Received: by 2002:a50:d6da:0:b0:566:d333:45e8 with SMTP id l26-20020a50d6da000000b00566d33345e8mr664518edj.20.1712309302296;
+        Fri, 05 Apr 2024 02:28:22 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id a1-20020a508581000000b0056e2432d10bsm587750edh.70.2024.04.05.02.28.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Apr 2024 02:28:21 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/2] serial: imx: Introduce timeout when waiting on transmitter empty
-Date: Fri,  5 Apr 2024 11:25:13 +0200
-Message-ID: <76cf9ce9cbf9dcdf78bc00ce7a919db1776ebce1.1712309058.git.esben@geanix.com>
-X-Mailer: git-send-email 2.44.0
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] arm64: dts: imx8mm-var-som-symphony: drop redundant status from typec
+Date: Fri,  5 Apr 2024 11:28:18 +0200
+Message-Id: <20240405092819.40994-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,53 +74,27 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27235/Thu Apr  4 10:24:59 2024)
 
-By waiting at most 1 second for USR2_TXDC to be set, we avoid a potentital
-deadlock.
+"okay" is the default status, so drop redundant property from the typec
+node.
 
-In case of the timeout, there is not much we can do, so we simply ignore
-the transmitter state and optimistically try to continue.
-
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/tty/serial/imx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index e14813250616..09c1678ddfd4 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -26,6 +26,7 @@
- #include <linux/slab.h>
- #include <linux/of.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/dma-mapping.h>
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+index d643381417f1..affbc67c2ef6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+@@ -117,7 +117,6 @@ extcon_usbotg1: typec@3d {
+ 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_ptn5150>;
+-		status = "okay";
+ 	};
+ };
  
- #include <asm/irq.h>
-@@ -2010,7 +2011,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	struct imx_port *sport = imx_uart_ports[co->index];
- 	struct imx_port_ucrs old_ucr;
- 	unsigned long flags;
--	unsigned int ucr1;
-+	unsigned int ucr1, usr2;
- 	int locked = 1;
- 
- 	if (sport->port.sysrq)
-@@ -2041,8 +2042,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	 *	Finally, wait for transmitter to become empty
- 	 *	and restore UCR1/2/3
- 	 */
--	while (!(imx_uart_readl(sport, USR2) & USR2_TXDC));
--
-+	read_poll_timeout_atomic(imx_uart_readl, usr2, usr2 & USR2_TXDC,
-+				 0, USEC_PER_SEC, false, sport, USR2);
- 	imx_uart_ucrs_restore(sport, &old_ucr);
- 
- 	if (locked)
 -- 
-2.44.0
+2.34.1
 
