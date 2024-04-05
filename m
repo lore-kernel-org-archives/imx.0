@@ -1,227 +1,194 @@
-Received: from mail-108-mta177.mxroute.com (mail-108-mta177.mxroute.com [136.175.108.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2094.outbound.protection.outlook.com [40.107.113.94])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A058213849C
-	for <imx@lists.linux.dev>; Thu,  4 Apr 2024 23:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712273012; cv=none; b=sYvlAksEF20umcCDjUwqaoP8tQxcv6jcdEb0coPOfGf60th/tbb18N182XlBPCXLkWI3xesEdHBUw6HRxnYRSesDts7HuEkmtsyX1HhX3WFcfTMu3Hc4ZZVFZgMsoFiIboeQl90/JJVOVQ1A9by8Xhz81LJz/zUODmyaydS3Kag=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712273012; c=relaxed/simple;
-	bh=Mrk+i3rtrrQiqKcF5jKGWs2vl61KOuvTlYIW8k8/MPg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ntLJa3mU9xF5rne/eG4g79fLbuklOQ/8JkZhQ5PyzMvS/sagDCCxR/uGJrkIGi2+JLslse0VJ7+ksMOZNN9L8UYgJCtq3uzSuvbf075/Lvu9XcUqmUflO6B8LXJWqlMgCU3WqlOejumxLQ2OgGrDc93/TNrAhXFrAmciSrZVTRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=OmhWcmTc; arc=none smtp.client-ip=136.175.108.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C405695
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 00:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712277983; cv=fail; b=hxCYAK3fjw+8vLbsjGRwyHIu86nXdoyP+6YCpVd6ZgVmAx79Bm3VzlojJlJKpwk+e7Iu3EIbSf8NDWUaDIxkncCIpSlBiJZT1m56ASYZ3sU18ULrnS32WsVu1zYW47otZi1rhLKnHOFuO6vchtUF9RzwbY0JZ3AmZhRZhvQ+VYU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712277983; c=relaxed/simple;
+	bh=Ku6c75e8jmILA61lXIiUdofTB4JlNJrA/tg48ilGjJg=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=uqJYYk9aJbyMTvFwT3ShmXSAb0ZAxLj04ZfRcsdlBR7zGcj8wtGeMG8Bv4aSvuWO9xI+qhfaOZXojoO5BaxPxCnVxeS72xbK/C4BEvLvhN/mZbdrAyIqTw3NlN6P1E8Wixk6TPfqI+DKVE1icTQ1ZyCl00EzMoRRfLLIliDY5Ro=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=d8hfmcjD; arc=fail smtp.client-ip=40.107.113.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="OmhWcmTc"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta177.mxroute.com (ZoneMTA) with ESMTPSA id 18eab67d9c60003bea.00a
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Thu, 04 Apr 2024 23:18:13 +0000
-X-Zone-Loop: 676fdc9f590ac3f3e2ed040e69c772551a767d9d74a5
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bwJMNX6ZJRpOtWTanY4h6tkZAqYIG8MU3/GQ1Ir4QUU=; b=OmhWcmTc+ZWR/7jOr0eC8Did2s
-	XaOoTRQprjnw/jOSBzBf8qWj4VGuJQeZpp4OgU0Hw2+W1MiG9Wk/SxJNk1reSX2pGyLm/gEQCX52F
-	4b1FZmdNB3tD+nQKSDI1X+febDGcaztfxp8JtdCKzM3rCz3UKdlaTsOc7oVzH0FNPcz8hglFypx5G
-	bRC0hI/GUwYgZZTKujRC4dBuxtGTl5q7BJRfYoaDpgQKYeUo5Kz5na9OiIpUYk7nhgV4wQZ0OFI1h
-	qxbHga8hBpyvNgXQgtEvyIjpn0AYllXKbBB9Z/4n0OIaRiacb22SxckwpIxE4zU0zulY4T46I9GGn
-	PTn0YqIA==;
-Message-ID: <a1db5dc8-5370-4fb8-ad22-2a5c1e45ad58@luigi311.com>
-Date: Thu, 4 Apr 2024 17:18:09 -0600
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="d8hfmcjD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jgPnAK6EPYN93RB0SV3p8UBexOF6tHsFqwMsbywU6vn8a6KabOIXTZDrXc/UiaIxnBjHFblha0lm/ZLw1XNyXyBirMjuletUgfhdhJ8VDBkQ6/o7NPFnIVN/jwUWK2g71tMeUCaMHonLq1XvX8DH6/NPepUEmJvzmCIOaKONXv10tnDe13YdkUZ+HSOzqk5OVIDBOhe8nqMwm2ezVsczE4xNyidVqMVqmp5/voTPcoTXtF9jTTjgphwbTY4ADuNSe+/m6wxie9e3jj+3AzHESA7AdfEijLHAdo4IocNpGGpkoLGSov5wuqlvFnl8jlqJq8svj4tAankNWqGTIkWQQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1ea+dNNqizDQwYx+aect0c4YwAXF9It2j2lT4WpLkrM=;
+ b=aFKXWPi211Me3neHtogXOkNZNrlib6Jbf1jCrb4fHcCx27AHZf+B4h+lm72UHzTFrFi+o9AOU2zMjEtaiQoju0M6T0RbcZe1Oi/5XNl3mqJwvDtCzr5voFu5Hu8CVkKUYwFvrztmxyuczc6JWbKeRJstmHRJvAAHBSWRQYcE/WN4t7XCZ/UeMFbNswsmdXWxeR0FEnfjmBKWd+oMS1hjOdGezQK3g+oL0hcywDjTQRR1zEvlAo8EkdDwyQHnkj1kJx4n4MfEnHSKBonZ1OJ/7QVBJaKnxHRGHRxIXwCnajvXPvKtMZ1HBnf+DgtWGbHCAGxl50JZqC9Xx6UjeRubDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1ea+dNNqizDQwYx+aect0c4YwAXF9It2j2lT4WpLkrM=;
+ b=d8hfmcjDmcjs/ohX5aTsdHGWvjo6hbMJee4jqv51oZEDVnPXJAa9VNkX5UK0DoQWHRO/HdEmg8c2EbxKq5f+ItCKJtRM/yNtX9B70bYFQRZc85xysecPWrRTsJq4CJB/4IsC8UajP4DdyGohy+Vn9+bwc//wRnIhf2O0vvBFbs8=
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OS7PR01MB11519.jpnprd01.prod.outlook.com
+ (2603:1096:604:241::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 5 Apr
+ 2024 00:46:16 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Fri, 5 Apr 2024
+ 00:46:16 +0000
+Message-ID: <875xwwr60a.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc: Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
+ <amadeuszx.slawinski@linux.intel.com>,	Alper Nebi Yasak
+ <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
+ <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent
+ Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,	Daniel Baluta
+ <daniel.baluta@nxp.com>,	Hans de Goede <hdegoede@redhat.com>,	Jaroslav
+ Kysela <perex@perex.cz>,	Jerome Brunet <jbrunet@baylibre.com>,	Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,	Kevin Hilman <khilman@baylibre.com>,	Liam
+ Girdwood <lgirdwood@gmail.com>,	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
+ <neil.armstrong@linaro.org>,	Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,	Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
+ <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Trevor Wu
+ <trevor.wu@mediatek.com>,	Vinod Koul <vkoul@kernel.org>,	Xiubo Li
+ <Xiubo.Lee@gmail.com>,	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
+	linux-sound@vger.kernel.org,	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v2 01/16] ASoC: soc-pcm.c: cleanup soc_get_playback_capture()
+In-Reply-To: <40e23972-6745-48e2-81ae-4b93f2ee2dcc@linux.intel.com>
+References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
+	<87y19xudor.wl-kuninori.morimoto.gx@renesas.com>
+	<b4b37541-b67f-4593-9fd5-fc6242a0673a@linux.intel.com>
+	<87zfuc7gya.wl-kuninori.morimoto.gx@renesas.com>
+	<600cef67-ad90-4b67-8da7-2006339d430b@linux.intel.com>
+	<874jch99m5.wl-kuninori.morimoto.gx@renesas.com>
+	<40e23972-6745-48e2-81ae-4b93f2ee2dcc@linux.intel.com>
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Fri, 5 Apr 2024 00:46:14 +0000
+X-ClientProxiedBy: TYCP301CA0040.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:380::12) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 23/25] drivers: media: i2c: imx258: Add support for
- powerdown gpio
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megous@megous.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- pavel@ucw.cz, phone-devel@vger.kernel.org
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-24-git@luigi311.com>
- <Zg2DBasC501hMQSS@kekkonen.localdomain>
- <wjlcde7yoooygj4hhdmiwrdloh6l4p6i2qbmjek5uwsifyzwgu@xjhutvmsdfou>
- <dd0e64c8-5eef-421a-9d9f-8a5865743369@luigi311.com>
- <CAPY8ntAcB3wyLj1wNE5YBx0_UGRiXEv6057XfEBfjk8NOLC9yQ@mail.gmail.com>
-Content-Language: en-US
-From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <CAPY8ntAcB3wyLj1wNE5YBx0_UGRiXEv6057XfEBfjk8NOLC9yQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: git@luigi311.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS7PR01MB11519:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	2/gmkhBa6/9g0ja1E0+xpc7Ml42YNm7+2gMyB33O/oOFr9uvrPO4Cu+49zmG2jtCzgCv7gY1IDseMyqFu0sPs++ctB/0XTyFBW6F6o2wUHSOUDyFKJBg2g0AlcpSilt+6r38eY+H6aFoZJXe4NZ743Yn9BSKMOX7GAh3KopI3+rGJC+IXnA7WXqPvydPwsRyphqyrQL8F9X8gbcJr+tdJclNje5nxQhfM/0OT0b3LgIpnvLvvcJ+QsyrCisDw+CXGpNZOsOtBDVpUKsxSPAq4u09fGkTrI+IgokOI1XBnFOLg6z3bqx1ORMD9ihQ0bRffFnwfDIWRkjHVrsfBfFLnSRn8ukrnexIFv7d00lY3ePLjv7kh54BHKIm/owhp9DpY3rhN7652jP2IK9yc0rI9rzMSHrWc4J5q6v8dl/otN/dAb/ANnhhY3yibA8ugARjr11Bp+qvamk6Jg5KQqoeyDwUh9N+GBp/n+lGOkhW8ytpee90+/PlQsPVZXkmEkhTOEjD2N0BWSUO5uJ+Q08jboBPCzYOLqUoCLf39/H8gwycDRB7fmiqdGC41pCoC9K+pzZqQGnhlcUsC4sTodaG7liQ4C9c9v2rt/Btw//Ak5fNwzS38BXU7VmOVl8Vq9UVcyaqJMoRNVs+63BF6IJUx1wr1a/4gM6od4g1wi+hXzJ+We0PRwWE7TQmFDvPv/QSVILEO+ClvU4UBx5udGB/cjqo4Am4ywyLCF/kbRXb5lk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(7416005)(1800799015)(376005)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7PbQDSDKuWm2ojemTluy12aQu9jYnUKHYJjLONMBLsSwcrxLiZqSv6Bl3bNt?=
+ =?us-ascii?Q?e5hhURaLSQAZO8jaKpkENqTqvWxopCQLXE6jXke1u8J61ZEsTGRJBlR/5zNj?=
+ =?us-ascii?Q?3fgNPlbVWOPPpjnziMGQwfjs7ueWAWjY3e2dnWdnQe377EDvTgCJ8cxAN3PJ?=
+ =?us-ascii?Q?LFrLxNu7uROkOrgLzPIdqJuwgM2YQq0W6d5a1xfFmX5kfROtHOCaIg4a8F6f?=
+ =?us-ascii?Q?wuAWBi0IyQDanx3cMHXoUiLUXrhlz6ABuU5wOLuNfQyefuZfG74xXYf9qwEf?=
+ =?us-ascii?Q?qo81aJFycgZPgPBsmofKLlVxSu/8BpeMPb+Ao/ajc7/Z0MLmUfDe7V1CH5oS?=
+ =?us-ascii?Q?t3xIjimP99H/VrpPk0FzpXs67pRa8GZEqNSDh4KbogQVgwKTlBVMkD7O2ERn?=
+ =?us-ascii?Q?K3y90/N96e3UiloUNiGXK8MQijaXYleyHaiRO89y3M3QnU1L7zccBowN98oY?=
+ =?us-ascii?Q?oqrHl9fX30jKpajJbnUHf2IkXco31RVmKQpV69/652WOhqbk74w1AHrmnp7G?=
+ =?us-ascii?Q?cMEzj1TKHVZiE4+VpuRvI1nPBypFJDdsI5JhoumjTdUxQHL/SjWrm/C8FQNS?=
+ =?us-ascii?Q?GhJwDOnO2CX2N8L5f7q/ZYwjfpRKJTcM3mkqpsx2GMuiUSIQsBwkhB16noU6?=
+ =?us-ascii?Q?1O725MUVa4G5hWaA+1Guy1GURUzxu5EYM61mddXB45/jeGWCD1HHZnVS7+o6?=
+ =?us-ascii?Q?sBt3ufT6qUGx3nrLPDX6CKCDhc9/umZuDbQTMUYAGF+zcTqVqLE+dj4TQYRn?=
+ =?us-ascii?Q?tu89FbSMeq39NgrX6Lw4MsqzIBDKA1bw/HUzd0h9XmuMeGPTe9Em3qklXDLo?=
+ =?us-ascii?Q?Kaox5jQV7XEzbrRRep3P2s+dsvs9yvsGktfbKu+wGxiVn0bPn04goav9L1Hz?=
+ =?us-ascii?Q?YYP00NXwCeQgX5nMSJzj301YpdDTquQXsjTY/KLxte10A1w7K2HNTyXJeNIa?=
+ =?us-ascii?Q?NlrRPYzXI2F61tsRo7rqF+Eq4lfRGImiFd4fwpVEj3uju3FRUHOUSHr0dnS4?=
+ =?us-ascii?Q?ifSDZI7VWEDVyzSWeTN2dzF6BN6X/jfT4EhHWsSfVkoWV4XhCVcJ3BpzURx2?=
+ =?us-ascii?Q?aDsCFypH6poQrv/ltA5979YyrarbsNRawc2V3CqBbmkdGzTDgjSwhsGIZbh5?=
+ =?us-ascii?Q?ckfkt2J4VxCVDLP/NzOsR/iMURNaENLc7dTmdpE4f7dVaef5InbnneOOLJdQ?=
+ =?us-ascii?Q?8Lz4OBULlYBoTPPpCUia90juKCJy9d/jGP2yb4pidLzNz2XSmTyKQuCFkSZQ?=
+ =?us-ascii?Q?hSYpdX3VTleEvBiiPGYEgPqCZrIOOUyudV4w6m96hkrOtBexHhHEqj8nIres?=
+ =?us-ascii?Q?pKTdW81iN7gIXXJfYk+Ld2KRL24f6aEroLCN1s+vrmUjGzzcxDbAc+zhK/5s?=
+ =?us-ascii?Q?Xupie59B5ul3+j18FJInCPx0YCaLKbWX2jgpI6Pxn9gsXKqdgJZgpzKkEn8l?=
+ =?us-ascii?Q?EkJDs/A6kObxUBxPiHvRfV7YnhXm4+KXwW0uKpG8LyBz7Sok3etO5QOK2OTg?=
+ =?us-ascii?Q?2sDKgZaYofPK5OfFvLCw9Fz9DH4i6bXqayXRfoaM7h/L7NcCWnongCNHZaXy?=
+ =?us-ascii?Q?EyoC/Pp0n78JXiYXdFZ+PCbkPTkY1UAZGTOdPsshdF/cQ+UuYzF1wSBc1iFr?=
+ =?us-ascii?Q?InzHnZ9gVwEEfBhOmte4uuI=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b2ebce6-2931-4d15-6a84-08dc5509cd47
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 00:46:16.8386
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hF/qJ+pc/n2Z6U7iDfSaM0vho03hgC6/83sEdgJlEGUn8+Zc6H04iwa2SDPYsz5xt6yDsxwAOcz6JlWtfF4WfCFZKGorWxkXxBEP8v5a1OzuSFFf96VKlRMotrDNk9PC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB11519
 
-On 4/4/24 08:12, Dave Stevenson wrote:
-> Hi Luigi
-> 
-> On Wed, 3 Apr 2024 at 20:34, Luigi311 <git@luigi311.com> wrote:
->>
->> On 4/3/24 10:57, Ondřej Jirman wrote:
->>> Hi Sakari and Luis,
->>>
->>> On Wed, Apr 03, 2024 at 04:25:41PM GMT, Sakari Ailus wrote:
->>>> Hi Luis, Ondrej,
->>>>
->>>> On Wed, Apr 03, 2024 at 09:03:52AM -0600, git@luigi311.com wrote:
->>>>> From: Luis Garcia <git@luigi311.com>
->>>>>
->>>>> On some boards powerdown signal needs to be deasserted for this
->>>>> sensor to be enabled.
->>>>>
->>>>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
->>>>> Signed-off-by: Luis Garcia <git@luigi311.com>
->>>>> ---
->>>>>  drivers/media/i2c/imx258.c | 13 +++++++++++++
->>>>>  1 file changed, 13 insertions(+)
->>>>>
->>>>> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
->>>>> index 30352c33f63c..163f04f6f954 100644
->>>>> --- a/drivers/media/i2c/imx258.c
->>>>> +++ b/drivers/media/i2c/imx258.c
->>>>> @@ -679,6 +679,8 @@ struct imx258 {
->>>>>     unsigned int lane_mode_idx;
->>>>>     unsigned int csi2_flags;
->>>>>
->>>>> +   struct gpio_desc *powerdown_gpio;
->>>>> +
->>>>>     /*
->>>>>      * Mutex for serialized access:
->>>>>      * Protect sensor module set pad format and start/stop streaming safely.
->>>>> @@ -1213,6 +1215,8 @@ static int imx258_power_on(struct device *dev)
->>>>>     struct imx258 *imx258 = to_imx258(sd);
->>>>>     int ret;
->>>>>
->>>>> +   gpiod_set_value_cansleep(imx258->powerdown_gpio, 0);
->>>>
->>>> What does the spec say? Should this really happen before switching on the
->>>> supplies below?
->>>
->>> There's no powerdown input in the IMX258 manual. The manual only mentions
->>> that XCLR (reset) should be held low during power on.
->>>
->>> https://megous.com/dl/tmp/15b0992a720ab82d.png
->>>
->>> https://megous.com/dl/tmp/f2cc991046d97641.png
->>>
->>>    This sensor doesn’t have a built-in “Power ON Reset” function. The XCLR pin
->>>    is set to “LOW” and the power supplies are brought up. Then the XCLR pin
->>>    should be set to “High” after INCK supplied.
->>>
->>> So this input is some feature on camera module itself outside of the
->>> IMX258 chip, which I think is used to gate power to the module. Eg. on Pinephone
->>> Pro, there are two modules with shared power rails, so enabling supply to
->>> one module enables it to the other one, too. So this input becomes the only way
->>> to really enable/disable power to the chip when both are used at once at some
->>> point, because regulator_bulk_enable/disable becomes ineffective at that point.
->>>
->>> Luis, maybe you saw some other datasheet that mentions this input? IMO,
->>> it just gates the power rails via some mosfets on the module itself, since
->>> there's not power down input to the chip itself.
->>>
->>> kind regards,
->>>       o.
->>>
->>
->> Ondrej, I did not see anything else in the datasheet since I'm pretty sure
->> I'm looking at the same datasheet as it was supplied to me by Pine64. I'm
->> not sure what datasheet Dave has access to since he got his for a
->> completely different module than what we are testing with though.
-> 
-> I only have a leaked datasheet (isn't the internet wonderful!)  [1]
-> XCLR is documented in that, as Ondrej has said.
-> 
-> If this powerdown GPIO is meant to be driving XCLR, then it is in the
-> wrong order against the supplies.
-> 
-> This does make me confused over the difference between this powerdown
-> GPIO and the reset GPIO that you implement in 24/25.
-> 
-> Following the PinePhone Pro DT [3] and schematics [4]
-> reset-gpios = <&gpio1 RK_PA0 GPIO_ACTIVE_LOW>;
-> powerdown-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
-> 
-> Schematic page 11 upper right block
-> GPIO1_A0/ISP0_SHUTTER_EN/ISP1_SHUTTER_EN/TCPD_VBUS_SINK_EN_d becomes
-> Camera_RST_L. Page 18 feeds that through to the RESET on the camera
-> connector.
-> Page 11 left middle block GPIO2_D4/SDIO0_BKPWR_d becomes DVP_PDN1_H.
-> Page 18 feeds that through to the PWDN on the camera connector.
-> 
-> Seeing as we apparently have a lens driver kicking around as well,
-> potentially one is reset to the VCM, and one to the sensor? DW9714
-> does have an XSD shutdown pin.
-> Only the module integrator is going to really know the answer,
-> although potentially a little poking with gpioset and i2cdetect may
-> tell you more.
-> 
->   Dave
-> 
-> [1] https://web.archive.org/web/20201027131326/www.hi.app/IMX258-datasheet.pdf
-> [2] https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
-> [3] https://xff.cz/git/linux/tree/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts?h=orange-pi-5.18#n868
-> [4] https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
-> 
-> 
 
-Out of curiosity I dropped this and tested it on my PPP and it still loads
-up the camera correctly so I am fine with dropping this and patch 22 that
-adds in the dt binding
+Hi Pierre-Louis
 
->>>>> +
->>>>>     ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
->>>>>                                 imx258->supplies);
->>>>>     if (ret) {
->>>>> @@ -1224,6 +1228,7 @@ static int imx258_power_on(struct device *dev)
->>>>>     ret = clk_prepare_enable(imx258->clk);
->>>>>     if (ret) {
->>>>>             dev_err(dev, "failed to enable clock\n");
->>>>> +           gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
->>>>>             regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->>>>>     }
->>>>>
->>>>> @@ -1238,6 +1243,8 @@ static int imx258_power_off(struct device *dev)
->>>>>     clk_disable_unprepare(imx258->clk);
->>>>>     regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->>>>>
->>>>> +   gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
->>>>> +
->>>>>     return 0;
->>>>>  }
->>>>>
->>>>> @@ -1541,6 +1548,12 @@ static int imx258_probe(struct i2c_client *client)
->>>>>     if (!imx258->variant_cfg)
->>>>>             imx258->variant_cfg = &imx258_cfg;
->>>>>
->>>>> +   /* request optional power down pin */
->>>>> +   imx258->powerdown_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
->>>>> +                                               GPIOD_OUT_HIGH);
->>>>> +   if (IS_ERR(imx258->powerdown_gpio))
->>>>> +           return PTR_ERR(imx258->powerdown_gpio);
->>>>> +
->>>>>     /* Initialize subdev */
->>>>>     v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
->>>>>
->>>>
->>>> --
->>>> Regards,
->>>>
->>>> Sakari Ailus
->>
+Thank you for clarifying the point
 
+> > And unneeded has_xxx will be removed if xxx_only was set (B)
+> 
+> The problem is that we have two sources of information
+> 
+> 1) the dais included in the dailink (the (A) part above)
+> 2) the dailink itself (the (B) part above)
+> 
+> the code in A) constructs the information from the ground-up, but it's
+> overridden by B).
+> 
+> You can view it as 'removing unneeded has_xxx' flags, but it's also a
+> problem is the dailink information is incorrect...
+> 
+> In the past we would report an error if the dailink was not aligned with
+> the dais. Now we just ignore the dai information.
+
+Ah, OK now I could understand.
+
+Hmm... is below what you mean in summary?
+
+dpcm_xxx is used to declare that the DAI/dailink is possible to use
+playback/capture. For example dpcm_playback means the DAI / dailink
+should playback-able, if not it is error.
+
+xxx_only is used to limit the playback/capture.
+For example the DAI / dailink can use both playback and capture,
+but want to use playback only for some reasons, we can use playback_only.
+
+So these are used for different purpose.
+
+Hmm... I re-consider about it for many cases, and indeed these can't
+merge. But in such case, this feature is needed not only for DPCM ?
+
+Now Jerome / Amadeusz are suggesting new idea to use bitfield idea.
+We can use it ?
+
+	#define PLAYBACK_VALID	BIT(0)
+	#define CAPTURE_VALID	BIT(1)
+
+	#define PLAYBACK_LIMIT	BIT(2)
+	#define CAPTURE_LIMIT	BIT(3)
+
+I need to think about keeping compatibility, but maybe OK.
+
+Thank you for your help !!
+
+Best regards
+---
+Renesas Electronics
+Ph.D. Kuninori Morimoto
