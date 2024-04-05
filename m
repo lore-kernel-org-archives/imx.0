@@ -1,105 +1,109 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4083E1A26E
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 09:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AA916133A
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 09:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712310610; cv=none; b=rS8IIfZYlKbtPqOvBchw1J5iZPqx2UqN1tsUU6g+bwPUK31kn4M7p+ngYMZeNuO5DVSLOk3VrNIitYCGAZX/zPG9J778c0DTS5JbV+wYpGjl1zfSyCIVo9yNTOiTQc6yrxqY3/HFlFmJZWLnkbjqs6nf6B/2efEtWhBRVXeBAgs=
+	t=1712310908; cv=none; b=qhtI9Vejb0ryDdB2tvw6IOldglDdQ0TX/hB/CHbvmNy4PwRxh6E2ccwcE/3oKVIkaO4/HijVoICqhbpQxOrWYlOTkoEuPsKZfNfrxfWcHvVSst8rdzjtSamzTgZ5JJateB0S4kII4MW2byHVlTpVUez+jAhyrvQoiVUJbhKrFww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712310610; c=relaxed/simple;
-	bh=hSWXhZbD6PA6W0zh+ZqK9opYJ0KSx0CuUh2LDJVqsug=;
+	s=arc-20240116; t=1712310908; c=relaxed/simple;
+	bh=NyWIdfoLw4+Om5494u2pahfJXuPCd1feRA04/HEmkhM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kclvYGc7hwqK/JcibqVx5kTocBdKB+ElZ+XCRpCWx8ex6B6ZYVyNDEYzGS77mzA66ZuZHcf54UO6lGDR+mFC4MxdwGIn2zu9TfoC66USq1guRzQTWYB8m9TfrAruxs4fyUD0rIhqo23yll48uUCFTjZVTnXo+mnbX/GVAKfEDuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1rsgCl-0003Gt-Rv; Fri, 05 Apr 2024 11:49:51 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1rsgCl-00AXqP-3W; Fri, 05 Apr 2024 11:49:51 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id AE6A52B282F;
-	Fri,  5 Apr 2024 09:49:50 +0000 (UTC)
-Date: Fri, 5 Apr 2024 11:49:50 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Esben Haabendal <esben@geanix.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] serial: imx: Introduce timeout when waiting on
- transmitter empty
-Message-ID: <20240405-impurity-emerald-f67dc37adf9b-mkl@pengutronix.de>
-References: <76cf9ce9cbf9dcdf78bc00ce7a919db1776ebce1.1712309058.git.esben@geanix.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dzbMP29pkhj1lpajurlplH9exkFPg4LSSx8UChlhN/bYFIHx5cIsxMpEaXRBPk17COOr+N5zDf9v5lD7W76VEH6AsykbMt/cs/ogSRwqYv9cl2hyuN5lMjFCjIL5BW204qCvm/TyOElxgEGNjf0BmhRInftAexiSg5AOMckEHeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=pXq43Nyv; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="pXq43Nyv"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 5F22D1C0081; Fri,  5 Apr 2024 11:54:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1712310898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KeeSzrV/c8t8t/nPYFpFifWuxbREJt0Oh2urSISuXnE=;
+	b=pXq43Nyvr4+L+9FP3GWnql7Lv0CHkXyMhVFm+sfYi/+RkKZOMqxacu72RVctjOwMkTGq/N
+	mpuQ1AAI+ydn4pdTIlAxuDEXo3+BWP8kIaifTqQilFiWuwefKA8DiJnRg3R/j7byKnvjIC
+	xvU5oYJ2quDsoQNuzG1YjL3fitmsm70=
+Date: Fri, 5 Apr 2024 11:54:57 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Luigi311 <git@luigi311.com>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 12/25] media: i2c: imx258: Allow configuration of
+ clock lane behaviour
+Message-ID: <Zg/KcQ6OI5QhgMaI@duo.ucw.cz>
+References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-13-git@luigi311.com>
+ <Zg2kcI/1Gdgt0ilB@duo.ucw.cz>
+ <6c15e492-411a-40aa-b02e-83b8a6d107da@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6rhh7y57qqxw7exf"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="webUCHTtncLR1UEx"
 Content-Disposition: inline
-In-Reply-To: <76cf9ce9cbf9dcdf78bc00ce7a919db1776ebce1.1712309058.git.esben@geanix.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <6c15e492-411a-40aa-b02e-83b8a6d107da@luigi311.com>
 
 
---6rhh7y57qqxw7exf
-Content-Type: text/plain; charset=utf-8
+--webUCHTtncLR1UEx
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On 05.04.2024 11:25:13, Esben Haabendal wrote:
-> By waiting at most 1 second for USR2_TXDC to be set, we avoid a potentital
-> deadlock.
+On Thu 2024-04-04 16:29:11, Luigi311 wrote:
+> On 4/3/24 12:48, Pavel Machek wrote:
+> > Hi!
+> >=20
+> >> The sensor supports the clock lane either remaining in HS mode
+> >> during frame blanking, or dropping to LP11.
+> >>
+> >> Add configuration of the mode via V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK.
+> >=20
+> >> +	ret =3D imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
+> >> +			       IMX258_REG_VALUE_08BIT,
+> >> +			       imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK ?
+> >> +			       1 : 0);
+> >=20
+> > !! can be used to turn value into 1/0. I find it easier to read than ?
+> > 1 : 0  combination, but possibly that's fine, too.
+> >=20
+> > Best regards,
+> > 								Pavel
+> >=20
 >=20
-> In case of the timeout, there is not much we can do, so we simply ignore
-> the transmitter state and optimistically try to continue.
+> I assume you mean by using=20
 >=20
-> Signed-off-by: Esben Haabendal <esben@geanix.com>
-> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> !!(imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK)
+>=20
+> I can go ahead and use that instead
 
-Where's the cover letter and patch 2/2? Have a look at b4 [1], it's a
-great tool to help you with sending git patch series.
+Yes, I'd do that.
 
-[1] https://b4.docs.kernel.org/en/latest/
-
-Marc
-
+Best regards,
+								Pavel
 --=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+People of Russia, stop Putin before his war on Ukraine escalates.
 
---6rhh7y57qqxw7exf
+--webUCHTtncLR1UEx
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmYPyTsACgkQKDiiPnot
-vG8gsAf/fEGSFLsAsbgzZopYqja0FtibvbPZ1dlovaaUkpMAPJxw50RrvIK4/Nor
-CQYR8XnT9GiH77IUOjNphjpvJJYNXWxkvsj1U9vAYziAV+fDRCzXxYWVmJf/7MNC
-gJ2EOm2FCAmlOkiRcvzeoaIIodo2465NLn9WQaWj9qbrGslgQ996WZ6bl1wu6aZG
-LS4/7FK9dbdAu8w6poagajePRAYZ9U5faIiBA5ZMSegB0dHHXgUbQAzRqvCZmWVY
-3qbzsy+0uvN0lz4Z7jP6tQ/8YcKl5vz/HOdYAyN2qI3yJnB+ChB71ON3RwYSSHTO
-pVA/zhZztk307ZmaTA7eeWnLFBAyFw==
-=BAfU
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZg/KcQAKCRAw5/Bqldv6
+8mS+AKCFPh0X/iB6sA+t92hWIheMuvdPJgCgrDY5MXzkkvty0rnIgJpFyEfabBg=
+=ZRF5
 -----END PGP SIGNATURE-----
 
---6rhh7y57qqxw7exf--
+--webUCHTtncLR1UEx--
