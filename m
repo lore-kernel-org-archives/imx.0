@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133A0176FA4
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 21:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF9A176FA5
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 21:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712353633; cv=none; b=GeOoBfGz4Xy8QUH9xU9o6WTFo6UPSB/rvae05dhsHz+/yxWUvWU2ruQDjOchCoczfseuwR17PpEXmdjwDjvn+qCrtf1Pur6ZyRomcEixS4SFi+NX5n9lE33ApP6pVXv2aKyLtA9HDqnuh6vre+RNGu9n/a+jAOjfRSwvSwV7lgs=
+	t=1712353634; cv=none; b=ftbEb1TGQpkypIAUjibVbmLBcqIptujpbSVkE8CmIy2BoHWlplrcNok/Nwqusx3tEzkksIGUH5Y+B9Apw/qxT5vL57xwz1f9clad5TwHv3jaNT+TklTc2a+tuOm/gs7nR5vjERNtGzYU8D0piHEMof2iCgQmBlNYtFy3kT1GF+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712353633; c=relaxed/simple;
-	bh=ldLC1iIMHcgBNmvUSXQuQfYEQNQn79OqYKy2TjZvs/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C5Gw81nMxDyMEcdGW633VgJXIsw0C8Oy/cAb+EsOQL4H0/UId7mCAnchKOlh9gJdYMdfyJo6HX4TZ4V4m48eT056VFUnZZ+fg8EX8wM1PoOo4U3CALSnFfV7+9Opp/qpx5aVsqcVNwQfeFs6KG/iu7gJKUzyNOhYI//iK4rjDJE=
+	s=arc-20240116; t=1712353634; c=relaxed/simple;
+	bh=1WGcyZoSiINM1IuI5/LvaH/2stxLwoA9me9eJn6xxyo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qLfbADUWgoDcjp1tZOylMmgJB2yDStWp9LEfPAuOC3NYwN6Rv609OCIujNHiJpNSn3DYLWqNSHawO5x4Q/hWrQHYt1Mvn0OtAjueGF4XnxriRIcxb/Db0gO+3zHDDWDvHrRRb6KfyKnbWMxrJQZeN6nz33zoafVwqrg/XubCyJ8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,22 +17,23 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rsrOb-0003T1-Ji; Fri, 05 Apr 2024 23:46:49 +0200
+	id 1rsrOW-0002yq-D8; Fri, 05 Apr 2024 23:46:44 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rsrOb-00Ad56-6i; Fri, 05 Apr 2024 23:46:49 +0200
+	id 1rsrOV-00Ad3K-9r; Fri, 05 Apr 2024 23:46:43 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rsrOb-00FZqE-0O;
-	Fri, 05 Apr 2024 23:46:49 +0200
+	id 1rsrOV-00FZoQ-0h;
+	Fri, 05 Apr 2024 23:46:43 +0200
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Russell King <linux@armlinux.org.uk>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	devicetree@vger.kernel.org,
@@ -41,12 +41,10 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH v1 28/49] ARM: dts: imx6qdl-sabrelite: Use #pwm-cells = <3> for imx27-pwm device
-Date: Fri,  5 Apr 2024 23:42:15 +0200
-Message-ID:  <3f8efd3b904a272b0a5b6df5d4314df2bcd43e7b.1712352665.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v1 00/49] ARM: dts: imx: Use #pwm-cells = <3> for imx27-pwm device
+Date: Fri,  5 Apr 2024 23:41:47 +0200
+Message-ID: <cover.1712352665.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1712352665.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1712352665.git.u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,7 +52,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2779; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=ldLC1iIMHcgBNmvUSXQuQfYEQNQn79OqYKy2TjZvs/0=; b=owGbwMvMwMXY3/A7olbonx/jabUkhjSBgtoVVxIEuer5llX86Lcpm5de78g+UbK2tm0W28spL 3fLy+7pZDRmYWDkYpAVU2Sxb1yTaVUlF9m59t9lmEGsTCBTGLg4BWAiU45xMKwUD7m+VostdaXG i90/Ot+WWm/f6ZTNWl43N79CsGgt20Sn9Y9Z2tncTPp8ol3it5U27Fw+Y8/2xFq+oM3r/FrvaAl Vc6bxFfv6um64brTPQDBPSfP9s5lLIiIcf/8KDTuplOyZ3JP0lUNm3f3a4jW9LtnHPr57o+2ZPl 9UM+3hwj3pRl6/ulj/Whi98E29Jv6bceEVM63FSpo5jc29t50evjTMKd6+OHZ90JHwxeo7/iTPS nYIk3dM1fv7qmSr77VrlyY5zuG8KJgbJ9oiEHbUv3i53wVdoVJ3TYdpS0xuRlqU/rXKN7tu9lLf LGmz0jZp1oR7Wx9cuBXjvlHZ5EvKo0vC71JyJ9xT3/ABAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7546; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=1WGcyZoSiINM1IuI5/LvaH/2stxLwoA9me9eJn6xxyo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmEHAh3dGYosiZSAMHJ1Z9MlCZ5Ea4yNVunFiVY Ky0Tebq1X+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZhBwIQAKCRCPgPtYfRL+ TuzUB/90mdnnlAO+JFumLK2RhLfw4uukm+8bXN3SpmijDUA1cS50TGf6vd8zzGi4Yr2UUf9pR3k QOr97qNiHurHxTxJqjcYzRGqmy9a99hDzcaV0lZOQryTnMRMA3PDl0b+Jkv+PU26h22e6a10Y93 8C9KjpMfm1iV9F3C9R1uB6cBZJdhpo1M2g319oDyDl2ah6QnkDCyHIzncDbdjDkqBTpC+M8ctpt FtfAq1lmKErUYmyP+F/YZJcY9OfAM1hEJbdvyvY2uT5T0Q7T/GUz/vhVlEBkBrB/v1eBsG/rBeq JUd2WpZXLgDKXG38JPCZ0XDdxAEZgwL3biLN7f+Vd1AJA3Dt
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -62,81 +60,129 @@ X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The binding dictates using 3 pwm-cells. Adhere to that.
+Hello,
 
-This fixes the following dtbs_check warnings:
+this series addresses many warnings of the type:
 
-	arch/arm/boot/dts/nxp/imx/imx6dl-sabrelite.dtb: pwm@2080000: #pwm-cells:0:0: 3 was expected
-		from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
-	arch/arm/boot/dts/nxp/imx/imx6dl-sabrelite.dtb: pwm@2088000: #pwm-cells:0:0: 3 was expected
-		from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
-	arch/arm/boot/dts/nxp/imx/imx6dl-sabrelite.dtb: pwm@208c000: #pwm-cells:0:0: 3 was expected
-		from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
-	arch/arm/boot/dts/nxp/imx/imx6q-sabrelite.dtb: pwm@2080000: #pwm-cells:0:0: 3 was expected
-		from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
-	arch/arm/boot/dts/nxp/imx/imx6q-sabrelite.dtb: pwm@2088000: #pwm-cells:0:0: 3 was expected
-		from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
-	arch/arm/boot/dts/nxp/imx/imx6q-sabrelite.dtb: pwm@208c000: #pwm-cells:0:0: 3 was expected
-		from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
+	arch/arm/boot/dts/nxp/imx/imx6ul-pico-dwarf.dtb: pwm@2088000: #pwm-cells:0:0: 3 was expected
+	        from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+that is emitted when building with CHECK_DTBS=1.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi
-index 84c8a9531e18..9c502bf77d0b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi
-@@ -99,7 +99,7 @@ mipi_xclk: mipi_xclk {
- 		#clock-cells = <0>;
- 		clock-frequency = <22000000>;
- 		clock-output-names = "mipi_pwm3";
--		pwms = <&pwm3 0 45>; /* 1 / 45 ns = 22 MHz */
-+		pwms = <&pwm3 0 45 0>; /* 1 / 45 ns = 22 MHz */
- 		status = "okay";
- 	};
- 
-@@ -162,7 +162,7 @@ sound {
- 
- 	backlight_lcd: backlight-lcd {
- 		compatible = "pwm-backlight";
--		pwms = <&pwm1 0 5000000>;
-+		pwms = <&pwm1 0 5000000 0>;
- 		brightness-levels = <0 4 8 16 32 64 128 255>;
- 		default-brightness-level = <7>;
- 		power-supply = <&reg_3p3v>;
-@@ -171,7 +171,7 @@ backlight_lcd: backlight-lcd {
- 
- 	backlight_lvds: backlight-lvds {
- 		compatible = "pwm-backlight";
--		pwms = <&pwm4 0 5000000>;
-+		pwms = <&pwm4 0 5000000 0>;
- 		brightness-levels = <0 4 8 16 32 64 128 255>;
- 		default-brightness-level = <7>;
- 		power-supply = <&reg_3p3v>;
-@@ -654,21 +654,18 @@ &pcie {
- };
- 
- &pwm1 {
--	#pwm-cells = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pwm1>;
- 	status = "okay";
- };
- 
- &pwm3 {
--	#pwm-cells = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pwm3>;
- 	status = "okay";
- };
- 
- &pwm4 {
--	#pwm-cells = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pwm4>;
- 	status = "okay";
+This completes the conversion started with
+
+	fa28d8212ede ("ARM: dts: imx: default to #pwm-cells = <3> in the SoC dtsi files")
+	4c6f19ab2aed ("dt-bindings: pwm: imx-pwm: Unify #pwm-cells for all compatibles")
+
+Best regards
+Uwe
+
+Uwe Kleine-König (49):
+  ARM: dts: imx51-ts4800: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx53-m53evk: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx53-ppd: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx53-kp: Drop redundant settings in pwm nodes
+  ARM: dts: imx53-tqma: Use #pwm-cells = <3> for imx27-pwm devices
+  ARM: dts: imx6dl-aristainetos_4: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6dl-aristainetos_7: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6dl-mamoj: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-ba16: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-bosch-acc: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-apf6dev: Use #pwm-cells = <3> for imx27-pwm devices
+  ARM: dts: imx6qdl-aristainetos2: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-cubox-i: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-emcon: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-gw52xx: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-gw53xx: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-gw54xx: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-gw560x: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-gw5903: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-gw5904: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-icore: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-nit6xlite: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-nitrogen6_max: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-nitrogen6_som2: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-nitrogen6x: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-phytec-mira: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-sabreauto: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-sabrelite: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-sabresd: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-savageboard: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6qdl-skov-cpu: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-kp: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-novena: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-pistachio: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-prti6q: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6q-var-dt6customboard: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6sl-evk: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6sll-evk: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6sx-nitrogen6sx: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6sx-sdb: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6sx-softing-vining-2000: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-14x14-evk: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-ccimx6ulsbcpro: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-geam: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-imx6ull-opos6uldev: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-isiot: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-kontron-bl-43: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-kontron-bl-common: Use #pwm-cells = <3> for imx27-pwm device
+  ARM: dts: imx6ul-pico: Use #pwm-cells = <3> for imx27-pwm device
+
+ arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts           |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts           |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi              | 10 +---------
+ arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts           |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx53-mba53.dts            |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx53-ppd.dts              |  6 ++----
+ arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi          |  8 --------
+ arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_4.dts  |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_7.dts  |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6dl-mamoj.dts           |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi            |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6q-bosch-acc.dts        | 10 +++-------
+ arch/arm/boot/dts/nxp/imx/imx6q-kp.dtsi              |  6 ++----
+ arch/arm/boot/dts/nxp/imx/imx6q-novena.dts           |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6q-pistachio.dts        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts           |  3 +--
+ .../boot/dts/nxp/imx/imx6q-var-dt6customboard.dts    |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi       |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi       |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-emcon.dtsi         |  9 +++------
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi        |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi         |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-nit6xlite.dtsi     |  6 ++----
+ arch/arm/boot/dts/nxp/imx/imx6qdl-nitrogen6_max.dtsi |  9 +++------
+ .../arm/boot/dts/nxp/imx/imx6qdl-nitrogen6_som2.dtsi |  6 ++----
+ arch/arm/boot/dts/nxp/imx/imx6qdl-nitrogen6x.dtsi    |  6 ++----
+ arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-mira.dtsi   |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi     |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi     |  9 +++------
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi       |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-savageboard.dtsi   |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi      |  1 -
+ arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts             |  4 +---
+ arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts            |  4 +---
+ arch/arm/boot/dts/nxp/imx/imx6sx-nitrogen6sx.dts     |  4 +---
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi            |  4 +---
+ .../boot/dts/nxp/imx/imx6sx-softing-vining-2000.dts  | 12 +++---------
+ arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi      |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6ul-ccimx6ulsbcpro.dts  |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts            |  3 +--
+ .../boot/dts/nxp/imx/imx6ul-imx6ull-opos6uldev.dtsi  |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi          |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-43.dts   |  3 +--
+ .../boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi   |  3 +--
+ arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi           |  3 +--
+ 51 files changed, 64 insertions(+), 150 deletions(-)
+
+
+base-commit: 4cece764965020c22cff7665b18a012006359095
 -- 
 2.43.0
 
