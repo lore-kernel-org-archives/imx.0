@@ -1,28 +1,28 @@
 Received: from e3i57.smtp2go.com (e3i57.smtp2go.com [158.120.84.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A78117106D
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 15:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C71171E43
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 15:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712330961; cv=none; b=ROwLqTzOXysDn5wrnYUDIg3nb8eGvwrjC74xpoww8dzcLvOSGWicqi//dAcIZGG4EJ6CIXsk5wkRfTbLt9S+mV2nTgSqQZB0ldYQ08UCIaAUroztJo5b8ef5Drf9tsQnVvoW6KmaODMsR7i3dCroiy4VVw6jJCLYqiS0WAcLqow=
+	t=1712330972; cv=none; b=q0rZzf0+M5z7sBh6HPKAXtVXRZ3McfHkD3xK+QpdbNukPSOC4kSJfgECk2wRZ10PAUfX7273zkWAFBbtrVJEGblYTjikdl8KP5lhgr40HZ8oKJ25GHIuJyroGh/SppQAzeJWKFv+6wgUa0YKp3MdrDZu/dDp/GC+VENa9rIuicg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712330961; c=relaxed/simple;
-	bh=0pYDM4UNhKfS+fr+khXSp9jVPuhVAFWiMJpP1HoiGpE=;
+	s=arc-20240116; t=1712330972; c=relaxed/simple;
+	bh=eTkke8cTaQuTil9Qf4Y1E+o+QFAi4UuM4kJMCq08Ef8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YgHCUCx1TAHcKIVIMl117/eJ7ALXXqF1WClmWQYJqwDHqpkKedKRuALQbnQTVMDEWKpyLm2MlQIA8dS52x803alkpcD1oVc5GHNYFHgBh39Fgn+CkogrsTtVI8yNzMdfmPayQuzPwne7Z9GTd/dQuMrb5whm4/f9xtOzZ+HzpZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=aS1lbxVU; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=eIwXx5tB; arc=none smtp.client-ip=158.120.84.57
+	 MIME-Version; b=AF+oRhixnhGkrnL4X4jW9O1vVWPmEXGOOc81Xd63X+GKJUoB/6UuYQaFLQWfNsBnj3uMQhhhXqGe4vOai1jCsaIIBH0Cugd6/A/VpdsRpYgtBNZIgojxXPTUABGrTTxjbihvednmNGq6tEXlqY8E8CZMaXWsst2JeKqUoaLgkK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=a7LDeQRN; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=FR24ZxCQ; arc=none smtp.client-ip=158.120.84.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174574.asem.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="aS1lbxVU";
-	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="eIwXx5tB"
+	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="a7LDeQRN";
+	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="FR24ZxCQ"
 Received: from [10.86.249.198] (helo=asas054.asem.intra)
 	by smtpcorp.com with esmtpa (Exim 4.96.1-S2G)
 	(envelope-from <f.suligoi@asem.it>)
-	id 1rslVC-ynZKb9-0Y
+	id 1rslV5-ynZKb9-1I
 	for imx@lists.linux.dev;
-	Fri, 05 Apr 2024 15:29:14 +0000
+	Fri, 05 Apr 2024 15:29:07 +0000
 Received: from flavio-x.asem.intra ([172.16.18.47]) by asas054.asem.intra with Microsoft SMTPSVC(10.0.14393.4169);
 	 Fri, 5 Apr 2024 17:29:01 +0200
 From: Flavio Suligoi <f.suligoi@asem.it>
@@ -51,9 +51,9 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Flavio Suligoi <f.suligoi@asem.it>
-Subject: [PATCH 6/6] dts: qcom: sa8775p-ride: remove tx-sched-sp property
-Date: Fri,  5 Apr 2024 17:28:00 +0200
-Message-Id: <20240405152800.638461-7-f.suligoi@asem.it>
+Subject: [PATCH 2/6] arm64: dts: imx8mp-beacon: remove tx-sched-sp property
+Date: Fri,  5 Apr 2024 17:27:56 +0200
+Message-Id: <20240405152800.638461-3-f.suligoi@asem.it>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405152800.638461-1-f.suligoi@asem.it>
 References: <20240405152800.638461-1-f.suligoi@asem.it>
@@ -64,26 +64,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 05 Apr 2024 15:29:01.0798 (UTC) FILETIME=[FC7B6060:01DA876D]
-X-smtpcorp-track: 1rs_VCynZKP90Y.EuMLjfTkJ027o
+X-OriginalArrivalTime: 05 Apr 2024 15:29:01.0479 (UTC) FILETIME=[FC4AB370:01DA876D]
+X-smtpcorp-track: 1rs_V5ynZKP91m.EuMCjfTtD6xKo
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpcorp.com;
- i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1712330957; h=feedback-id :
+ i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1712330967; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe;
- bh=ZlqPPXH5bNJhEltSGKCBrMvzg4Eqwu2ZB1ba92tVMY8=;
- b=aS1lbxVUsHU//uc6SUvMYO0HZ0Gs98HIDieINceMalYqKcsCrm6vHv+0UxiTXM3Qii6oD
- nWC3jfEc7ayPQatuMuZmL5PsluASvRZ3a8Mc5QkPssr8iFcCGziXjxwimKwakvWeqyimPGt
- /i/twMMP9YIaNcl7RJBjqluWgwnUA65zNplWQEyRp5MhOAkKFzdTCUMz8SxEGXw0Om7Bzv+
- 5GdWA0OGQg4WrJR4bwCUzgxaAziLIM4lFf1wzp0U/1JKoJywnsXadifp7m+8g4n1Ic1IZ0s
- myp9s8eCBsKIKSC0MlTkwDFWmTMLfWaT6nyLZvHqBrGtywKMiper9z2aj5Qg==
+ bh=2+Mlo/B8JEt+9O2DNgOncVR4IzdOkeJ/dXwp0ZpjBmA=;
+ b=a7LDeQRNltQmWfTVP1ecxTYqLQ4gVAEJuWi/aIq/csdSDSMM1YnZDUtQclkr2PvnnRgAW
+ 42DbkaI8maGQhTHeIP+VBWLHjaWco0LbeN+6y7FFKT/l47VAWL3oNaHKmjH3ZQJEvsaNASs
+ C/ikE9UDYYhXFJehXg2N+CZuiQ8/27Djx0C/L6BJ2Smg9kK83wnbtW00vPeHw0azQiioy4N
+ nsXe5ULqKSThQIDeHQgmgVznm/L2QbG3uMnzhbgFkReqZar4h7eE4DW54emTbT42Mr/rg+G
+ RtOCo6Q4ca+qQcf4ZKxUOoxNAHel10IfHRLyrzajzMWjsB9SifJnR4AoNkzQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it;
- i=@asem.it; q=dns/txt; s=s1174574; t=1712330957; h=from : subject : to
- : message-id : date; bh=ZlqPPXH5bNJhEltSGKCBrMvzg4Eqwu2ZB1ba92tVMY8=;
- b=eIwXx5tBhy0oPPkfCanE4wLZYKwZz0fCDymkLKdJmMTwjEdace3QEtTCoHc9YzmkEyFZ2
- BhwZh29DPtn5Ub7iLnVpS9cWYC8xvFOBVWXto8pI4F+5DloCEhK5X18kIA6PL5M+dITvVUm
- HZvNkgU+t0D34CIqKP59MHB/gLnXnOgfL8SvAH/jRVUpqZUkHnQROqYrVvIKNtkjqDO2/kx
- MS29u2XtEJnydTPRZcSkOl7W03cHnfaqEAOTioIoRKo632qKX+XVemP0OOUc1pb3c/3Pr1P
- UI7TgiLrqhmkvC7WRnB9vKIciGQWIAPGMbkdN4TOKiOB/BSJwy5R8tgGz+3Q==
+ i=@asem.it; q=dns/txt; s=s1174574; t=1712330967; h=from : subject : to
+ : message-id : date; bh=2+Mlo/B8JEt+9O2DNgOncVR4IzdOkeJ/dXwp0ZpjBmA=;
+ b=FR24ZxCQELoenRoDlTynF2O0uAOUQ7Vo0WHPPTcUCFLxB7vd1v2rixVJHkfkdvtjRlXa4
+ J8E4dCgVi5gN+88v6/b0pS1iIqTO+GuEfbkPAzD0BBvMvmxUXbc0zHApljpiXhZfNlUVEf7
+ Cs6l5HXoOko8WdJgdwSJpJnTYZYwJgfDIR+pB/ijXxC/RSxpfN36GwyHWSP2ayF+Zl7RZ/r
+ y4axOCgiGZ5m8ZIYe2a1QnEol2s0SOGCflK9XVT+d5vIH8ua7MKnoF5gLl7gw6SE4xyDzqg
+ yB2RhWfNoF7DHxEYDRa8OE9dqwwptlXx/dgMfq/st3IzXLIuBHtMcoKRkFuQ==
 
 The property "tx-sched-sp" no longer exists, as it was removed from the
 file:
@@ -97,25 +97,17 @@ branch")
 
 Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 ---
- arch/arm64/boot/dts/qcom/sa8775p-ride.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
-index 26ad05bd3b3f..2e1770e07f45 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
-+++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
-@@ -334,7 +334,6 @@ queue3 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+index 8be251b69378..34339dc4a635 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+@@ -106,7 +106,6 @@ queue4 {
  
  	mtl_tx_setup: tx-queues-config {
- 		snps,tx-queues-to-use = <4>;
--		snps,tx-sched-sp;
- 
- 		queue0 {
- 			snps,dcb-algorithm;
-@@ -404,7 +403,6 @@ queue3 {
- 
- 	mtl_tx_setup1: tx-queues-config {
- 		snps,tx-queues-to-use = <4>;
+ 		snps,tx-queues-to-use = <5>;
 -		snps,tx-sched-sp;
  
  		queue0 {
