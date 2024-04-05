@@ -1,27 +1,28 @@
 Received: from e3i57.smtp2go.com (e3i57.smtp2go.com [158.120.84.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9A116F90E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA0916F90F
 	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 15:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712330951; cv=none; b=k1Ml7SgU+paNyAGwutjyQ3ylasPNw9qfvRuchz58imYdO1BQaTIodSdi7y73bR1UxGlFwMUFdEEOWfBEP+D1uJHv16cUFhhNDpKpCo584mfewxU/xJDzCtd0LT97mPfC/8aG/S5DdZtKBinT9k/4mMjnpVCu1N8Nz8hNTUyPUm8=
+	t=1712330952; cv=none; b=lMAmSHkEYl6xUnrTSgz+oUu5HeP+ncJK5hfph2tWQ6YQ9soBcm0rrCIEn/xNCNMg2XYhEEBg6le5YkCELwULc6e+3GMKHp96t0c6tN36x4/B0pT+xTLMb3w0AQTemtvpFij5Ykok43ptmyvTY2MJYWLVafTrt5C7Z5+zJHv2UWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712330951; c=relaxed/simple;
-	bh=yEXd6R2RFIyAkUmeFULIOxy0s9OfDiNnoGFMw55jKdY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o2zsqyn/SGa9rhBjpH7PV42Up3Y9IbBeJbFfYYE4+jWf8o5q/krEvsfp3CiFJiT1nY1iL7fTBO2NVPAQT4+XwJXaJJAnkCyho5CTmwwDVgSWxqAdQz3ZVWCr8GBI18FyaYdcpFX4iu6TMJ6Lr9gB+RZmFDl/U75OcY8d4bb/tv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=tgYnG+lw; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=hQQtzrsh; arc=none smtp.client-ip=158.120.84.57
+	s=arc-20240116; t=1712330952; c=relaxed/simple;
+	bh=4qwJYpjiE6fWwx3p9TfXqvaGfWov9YXj6SAWVJ99Sgc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uRI8zKOUtbIx6qitYZjbEyJKyvNd2MmzPTyX1eIgPsF9jLLMDayLA46/CP6u52GBahYKTvTJl2tMbzTNYt8Dhmm7sDYfi4IVSSK+ORar8LAE1Z66d291CyTiWLWbTM7wnlud60Ff74GYiGErGxamBpalwC6DjXNrIz6mhXjEdGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=WE4glPEy; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=hB0qthzl; arc=none smtp.client-ip=158.120.84.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174574.asem.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="tgYnG+lw";
-	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="hQQtzrsh"
+	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="WE4glPEy";
+	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="hB0qthzl"
 Received: from [10.86.249.198] (helo=asas054.asem.intra)
 	by smtpcorp.com with esmtpa (Exim 4.96.1-S2G)
 	(envelope-from <f.suligoi@asem.it>)
-	id 1rslV1-ynZKb9-31
+	id 1rslV3-ynZKb9-21
 	for imx@lists.linux.dev;
-	Fri, 05 Apr 2024 15:29:04 +0000
+	Fri, 05 Apr 2024 15:29:06 +0000
 Received: from flavio-x.asem.intra ([172.16.18.47]) by asas054.asem.intra with Microsoft SMTPSVC(10.0.14393.4169);
 	 Fri, 5 Apr 2024 17:29:01 +0200
 From: Flavio Suligoi <f.suligoi@asem.it>
@@ -50,10 +51,12 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Flavio Suligoi <f.suligoi@asem.it>
-Subject: [PATCH 0/6] Remove stmmac tx-sched-sp property from documentation and DT
-Date: Fri,  5 Apr 2024 17:27:54 +0200
-Message-Id: <20240405152800.638461-1-f.suligoi@asem.it>
+Subject: [PATCH 1/6] dt-bindings: net: snps,dwmac: remove tx-sched-sp property
+Date: Fri,  5 Apr 2024 17:27:55 +0200
+Message-Id: <20240405152800.638461-2-f.suligoi@asem.it>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240405152800.638461-1-f.suligoi@asem.it>
+References: <20240405152800.638461-1-f.suligoi@asem.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,26 +64,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 05 Apr 2024 15:29:01.0370 (UTC) FILETIME=[FC3A11A0:01DA876D]
-X-smtpcorp-track: 1rs_V1ynZKP931.EuiAjfSRBw7Cy
+X-OriginalArrivalTime: 05 Apr 2024 15:29:01.0385 (UTC) FILETIME=[FC3C5B90:01DA876D]
+X-smtpcorp-track: 1rs_V3ynZKP921.EuMjjfTvKjK8u
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpcorp.com;
- i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1712330947; h=feedback-id :
+ i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1712330948; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe;
- bh=PPveenjhvhYMsU4A99FqUOwm3FtKhb+PERao04VTYEk=;
- b=tgYnG+lw/bWwPwCPWGpMUnrKZSmOXL+KSEutex16ycJN8mqsMpKNGSVe9PFqn2UYSV1Hk
- dIPRHtm1fyi5yq+s7iU8Zf+n5bX2dY+0lfAKJSCiw1Fn/AipMfCJSnoUvqgQpKlMwH3dH5h
- gInYiNlOgoluiAulLC2ataFS+bYvMLYifjTnSBeV+bLPC6bxhJVZ0zXP/9ihy8xYeUue2p2
- fM6Kd7MoaSSbpq11NxGo/bwEmSj47NN5ka37GxTvNdSy1uWiJtMMdpFspqQSDTxJYwzAfdI
- S3pSzaygJqHn0BVO6dI6R3VM8GiPuEc1/TFVSlRpcRsPjGIgTBgwoKMhL9Xg==
+ bh=5jJHGZta+4HpJK5sG35qXkW6G+1lFaAs7ITAMPwZI1s=;
+ b=WE4glPEy48t+V+vQ73mDM3OpI0zLUyMFickCwQa9me9JowLq3RJEzObT8FlmAcs0ZLGs/
+ apmfijjwWnEGQHgnFy60AaAMNsapK8wH6APVoXQ2YLMzPFLmXDB5cw/Us29Ke2KFaBAD8+8
+ o4PGpIs9ZJVCWDeRCL4qzEZa0Rr8+MCxoYGHcRfdY39AlsGtd9bSVALMGX0XOqhpQrMkyPu
+ VSg17rked5rC9tQpGS8hQYdpatUelwrXCtnZe5uMaFLJ2Bt3ZknddeyAByH2r2xxth4ZeDj
+ vooNl3Qt3Ur9X9wdtPcPTfD9jiJwFvTNTI0NBp+h1toGbdqzpiU4Cw+T9cYw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it;
- i=@asem.it; q=dns/txt; s=s1174574; t=1712330947; h=from : subject : to
- : message-id : date; bh=PPveenjhvhYMsU4A99FqUOwm3FtKhb+PERao04VTYEk=;
- b=hQQtzrsh9Ut0FbdUGKJ+gRLzMny4/GN83yWVdC2J33269ZlIKDNsiSsrSV5ypJPOViPIR
- w8gthpVh/Tg/AivxEeJJAfIioMYF2BkBrK412B34tUP4bqiW6TXq5dH5iaRXMRCT66Vwe3v
- uXpfNqhyaaGP/ecmOSZxMReOTXL67pNa+KLQrS2hUQ/i3gKc1O4l/QEKspJ+nYaCdbrPHmT
- 1YH2LAFpKmcji+QUtWWEfDkFihsamIc7/5luAjk9l4FJHNBA5XUMtGlND6jS1t0b80Vtxfi
- obBabZjBODTuVKXD74DHRX+oeoDZdogrwal8MtCCkrbwjLWbAV8ZGB6QDyWQ==
+ i=@asem.it; q=dns/txt; s=s1174574; t=1712330948; h=from : subject : to
+ : message-id : date; bh=5jJHGZta+4HpJK5sG35qXkW6G+1lFaAs7ITAMPwZI1s=;
+ b=hB0qthzlpQ6EP4iU38yzn6tDwfy+da8WRcfL6xhtCNQ7SZynhPZe+MmXLqzdwxS/OyNfm
+ CwJxFmO2moVNY2IzLGCihrIn5pcRM2DU0tiaAt+XYGxan+aMz3SfH5ZiW1b4wlbYVC0rUBO
+ kt7ccrvnm54wfR576rNZifGEgxpaZgh8M20RFbwoFG+vpm5FmYaPWt4d6M1/n1diJhWrDBc
+ L63qxUKt9OvIHU46CNNXlZTO+0ZpIZ4zl5bk3W6rO7U3OZZ6IA+26ZGRQijHHUvRMS/zZas
+ XE71aDensaPcpIskODnF27FabrZnfYiGvc3qNxtOJqpiBwyP9/6mY/ejgrsw==
 
 The property "tx-sched-sp" no longer exists, as it was removed from the
 file:
@@ -92,25 +95,57 @@ by the commit:
 commit aed6864035b1 ("net: stmmac: platform: Delete a redundant condition
 branch")
 
-This patch serie remove this property both from the "snps,dwmac.yaml"
-documentation and from some device-tree boards files where was still used.
-
-Flavio Suligoi (6):
-  dt-bindings: net: snps,dwmac: remove tx-sched-sp property
-  arm64: dts: imx8mp-beacon: remove tx-sched-sp property
-  arm64: dts: imx8mp-evk: remove tx-sched-sp property
-  arm64: dts: imx8mp-verdin: remove tx-sched-sp property
-  arm64: dts: qcom: sa8540p-ride: remove tx-sched-sp property
-  dts: qcom: sa8775p-ride: remove tx-sched-sp property
-
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+---
  .../devicetree/bindings/net/snps,dwmac.yaml        | 14 --------------
- .../boot/dts/freescale/imx8mp-beacon-som.dtsi      |  1 -
- arch/arm64/boot/dts/freescale/imx8mp-evk.dts       |  1 -
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi   |  1 -
- arch/arm64/boot/dts/qcom/sa8540p-ride.dts          |  2 --
- arch/arm64/boot/dts/qcom/sa8775p-ride.dts          |  2 --
- 6 files changed, 21 deletions(-)
+ 1 file changed, 14 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index 15073627c53a..21cc27e75f50 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -328,9 +328,6 @@ properties:
+       snps,tx-sched-dwrr:
+         type: boolean
+         description: Deficit Weighted Round Robin
+-      snps,tx-sched-sp:
+-        type: boolean
+-        description: Strict priority
+     allOf:
+       - if:
+           required:
+@@ -339,7 +336,6 @@ properties:
+           properties:
+             snps,tx-sched-wfq: false
+             snps,tx-sched-dwrr: false
+-            snps,tx-sched-sp: false
+       - if:
+           required:
+             - snps,tx-sched-wfq
+@@ -347,7 +343,6 @@ properties:
+           properties:
+             snps,tx-sched-wrr: false
+             snps,tx-sched-dwrr: false
+-            snps,tx-sched-sp: false
+       - if:
+           required:
+             - snps,tx-sched-dwrr
+@@ -355,15 +350,6 @@ properties:
+           properties:
+             snps,tx-sched-wrr: false
+             snps,tx-sched-wfq: false
+-            snps,tx-sched-sp: false
+-      - if:
+-          required:
+-            - snps,tx-sched-sp
+-        then:
+-          properties:
+-            snps,tx-sched-wrr: false
+-            snps,tx-sched-wfq: false
+-            snps,tx-sched-dwrr: false
+     patternProperties:
+       "^queue[0-9]$":
+         description: Each subnode represents a queue.
 -- 
 2.34.1
 
