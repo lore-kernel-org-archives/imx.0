@@ -1,68 +1,67 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2107.outbound.protection.outlook.com [40.107.104.107])
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2105.outbound.protection.outlook.com [40.107.14.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C2716EC02
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 14:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA7A8BEF
+	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 14:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712327492; cv=fail; b=PnG5RYj3p+L+JwGVkTU61kNfnpLc6CXUC02YG2gRrmQEuBAKuclmkx5eVoOxWOITujIKxIWS+IDeGvEkFg4aQHFYlg1ZLsDwWNZ/Tp/WFdL8sts3hkH3l0Btsf0DHNBrM9UdvhIkbprGu/N9f2bTjhhqL0F71k+0dIF66qvFSi4=
+	t=1712328430; cv=fail; b=Mv2+1Dli/acV65XTgmCEUzWBWaqtja98BwyJpM8qbteWPLj/YKETrd39WF1SP9RFiT9xe2hWAc6M/Lxd5b3jFCNNa1jGiyCYWbbcTpaD7lZBjdWc6O0p1eccfTCJ2PKUDxv4R8pZYQHRiUGG8kXvOSVUXddrgE6p240nGV97v/Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712327492; c=relaxed/simple;
-	bh=ZkyDbPSt9J+mjkR/YmBmmhsR0kFc3f/ryUPYMl/VJ/Q=;
+	s=arc-20240116; t=1712328430; c=relaxed/simple;
+	bh=QOWpdv4glV59l0twkisvZUqkr9ajt78houcSMv6NAP0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cce6ZRELKk81faBM2t+sauGJ6WAt94/ndd6cc245x4NTOHdWZGyuSJ0Y8ZcMWYEIwb2DHNjenI4gLyQoQpcRfAwFA8J2p0vxqAKerd5rJP1gNPo2RKJz2hyqakM+rW9pcGe2pLqqidCxnskA5rcu/iCbNuI/3dY7VAAdK9XGYOU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=MjMUcPS3; arc=fail smtp.client-ip=40.107.104.107
+	 Content-Disposition:In-Reply-To:MIME-Version; b=P0wmR4hES57E+SyOAxrSEtOcuVqRwbez2jItuHSLHJA3CsbolaxlSqtswATwb/TtdTR1mRHVXFsOywX/OE4mDxR7NsnWSufuDcP5Xd594eVtQxGwTzitmj1vMfTqUCjtNV6sTOyscd0cUAfv+VX6bDPQDYVn63DPfFHHkNuJYno=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TdGrQ53w; arc=fail smtp.client-ip=40.107.14.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="MjMUcPS3"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TdGrQ53w"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bLXRp7ZkheXYegxL0+94yILbGJ7WWdZoo1yN/lUFPwDuqC97Jr8Oid/FgVE0KmN4dgjV1u1D4EQFxQe9NnUKOn+zFZy48qbLWzyQJ1wFpURE4RSsJZlql+yKxuhXXaatbyRQXn4FUW9apUJuNN8oOOiWnupzzEDRgcSU5VJ59KG1ZGc5EVmaYWW6Pfc4+wCBPbUuxnqJYcuDNMddPEdBzUOaLEnTa/tNzV382eBDdKewKRMJmzX6p7Cx4Xl64NfpoibUVGHCP9avEp0nZ35FOfM2bAJPpcS5d+L8gYNSyCPj9j1g5AiTx/+3q90SfbxTu0aG6mrXoBQkTwuWwiZNug==
+ b=Jfj+X3cioHtAxm3d8qpsYt0wTpcy9LpYJonmMZoaCV5SPoIgtICIDYgp/+KduvTXELzn0HWMnjfyrw5SBPRl3XChJY3wYW5hBChij5YI1VRb8i0zCWcEVPylj30Rw9+ckTHh+DWuV6RDzZoLPEh9n+8KCTlzky5UHkUMsRXzAJursAn2X4s3vD1kj4zVUML0RNdb1/0itpBk3E9tjfL7YT6FhZCqhRTWgiHtwuDhNMIO8/mkMBvZjexvz+CRw0mR7AzA/FkocvDM+ItD7pWfpLoIt9M48ZddAnq33fM/WQ2bSVOlN2e+w5S8m99NaAIwRJwQNauFbJ+S8jE6eET+uw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s8oG/xyY1y6rQSd4iY8dIMktqwje1r/aPomkB6Z5YGg=;
- b=ENJ5VDunPoHWq7FHOh0tp4qQyBkY9sqk/LHNj+C/r9tiorhVl9zhhGCFZG2Sf4nC+bamj7xTVd97iyjUO1359Cs6XXiAmYQ3PuVSh7ruoHvZsrbI8ky/DtnpU7G4vfDFvXrv2bpMKHHxaK+6uDf0VrkX3tLdMUV6481de3NCBehIEHCNsEPX7pJU31OBQD+BUNbzSDMSRv8TaK/BlYRtBmRuzYfOUlryUahpdHnje+zNIuDcmwCUYCrAn5QVqsnB0EtshJY7ma7UFP4C8Xtd4OpTcEWDOt9ShwGV6+F880MJs3dvUZHpA8gKTKaRi+8Y92zKXK9O08chFR2Wa2m64g==
+ bh=FZAZsbhwLpQBEfOedzNQ/szrY2rUpj75SWzkunFYAqE=;
+ b=FGjddNWFDX7RmEMjsPzAeurAZT6yDaU7JB5L63Y59ei/Xw7m0C1fo60l19EX3R9D6DUje8jy4vh2ok+UgCzzDU7Ts8sQzYrFLALfXJCXxDODjAvGQGiBNiXYnmdZeFgMQp699t+SK9K5X5BTab3IzEQZqVbtEaJheKpj5z9pN6qSMMyjlh6p9m5tKUFhSWvO2bkzf1X0p4gFZdjMiomngO30ci3ZRzmIaodcQ7U33Ch7StBIsIQsQg27XGJHv+SILkUHzK//bkHwz/nLZQ9HvXZYge45wLzBp+b+LGvmB4saEUNRRHKdr2YshQj77ODDKL08xZSGcumA5ejXHGgpFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s8oG/xyY1y6rQSd4iY8dIMktqwje1r/aPomkB6Z5YGg=;
- b=MjMUcPS3RLwoxKFCAYj634pOymxbygSlirqXGLN0Ovp0ZBXI8Gij5IDQsIbcSEXKTXKD2d5HDC5muxrynUAGjbX4YnnKhOlmmiiRVAiqCByM0Ki8qcGSjUqsOcvWF2KZ6tQYeD2t9D6uadUx/Zr0GILW5qwxpKgoqAuAHwdNwn8=
+ bh=FZAZsbhwLpQBEfOedzNQ/szrY2rUpj75SWzkunFYAqE=;
+ b=TdGrQ53w0KzLDYzTy2b0D09h5C2aU4zk6jI5yOB6RHH4I6EFFf/oUVkxqHj2xq5PdOwR5BAyOGPyp1Vt6aBxQOeMNB+tcuT631AOYLCtVF2KejvwCbYJx1OO78eMVs2eRc2lHkeshsaMHXEkf+ep27CFVPpcQ0Glm0MZgs4yMBQ=
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM0PR04MB6946.eurprd04.prod.outlook.com (2603:10a6:208:186::24) with
+ by AM0PR04MB7187.eurprd04.prod.outlook.com (2603:10a6:208:196::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 5 Apr
- 2024 14:31:26 +0000
+ 2024 14:47:04 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.042; Fri, 5 Apr 2024
- 14:31:26 +0000
-Date: Fri, 5 Apr 2024 10:31:16 -0400
+ 14:47:04 +0000
+Date: Fri, 5 Apr 2024 10:46:57 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] PCI: dwc: Add common send PME_Turn_Off message
- method
-Message-ID: <ZhALNGyNTAzN86GF@lizhi-Precision-Tower-5810>
-References: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
- <20240319-pme_msg-v5-5-af9ffe57f432@nxp.com>
- <20240405062426.GB2953@thinkpad>
-Content-Type: text/plain; charset=utf-8
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8qxp-mek: add cm40_i2c, wm8960/wm8962
+ and sai[0,1,4,5]
+Message-ID: <ZhAO4YWuB8r8k+m8@lizhi-Precision-Tower-5810>
+References: <20240404161914.1655305-1-Frank.Li@nxp.com>
+ <efc9c624-6a31-4299-a604-8aad1d0cd878@linaro.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240405062426.GB2953@thinkpad>
-X-ClientProxiedBy: SJ0PR03CA0255.namprd03.prod.outlook.com
- (2603:10b6:a03:3a0::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <efc9c624-6a31-4299-a604-8aad1d0cd878@linaro.org>
+X-ClientProxiedBy: BYAPR04CA0024.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,316 +70,170 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6946:EE_
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB7187:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	THlDhrmixRXwMWsfORUKPiLpj35O/ijX9IWHhaZUGsWpWfrFw0Cj/jVfq6OCxpMl1RppgHXTBl3FWnoueEIF8SXHNy+yfW3GCCU6tiqfRVo3xwkE9M4FYrmNw2ag56QwSSOuJ1x8pw2mg2sc7yZFvAdrCmmz+iY8O/Vp7FVkwdQgJVF3RZ4YiIyPx9OO7sE6q4x2PmXTeVyJWniMSDucd3lpwB/kTub3C3V0VrabGl+/EKskGN+fqpbrSxtrc1LglUAVbMWk3qk53S9kBztY+Sz2JhrjYA/CdzYPdKeno4OKCLSNiasYvVeDvfIL56VXEiwDGBja5oOuG/TJ1BhV1pDD2KD53DTfnHew84Pp9Rdi/FftXGXBa9JFcPU4pgix/B1oWkWKNDdBzxZuBOy08SBqvfwFgDVNljiHbmmO77tax7thoMO1WZmo9lLPBnx/8chcQaeiSXtqRt/g3cTpGK4anHb2lzFwyBRH7cSoQEql3o96vVAQ6aYlpfQex+0ku7zw8OS/MXpRK+Amh65zoaHzHAK/0tHL/8ORSUdgXHi6Q6z7t1Sr7uhR0/u7pR+KKmVVYvFsd7v+L14nkjSF6hqOwTiO6ho5DIwoG2/KVKXXdwvYh9NNH4HEemxFfcw1JjTuNgmNKKpyHUyvc8ClNr9D6iQQO71RjJNlRucVgGoVlT1zb+MkYVpNI5+SgA6Ia3mpOZM0+pn6Nhl3DQML/G4/daSvDL5DUJmdAFk+3vw=
+	1IoVZKjVrflE3wm/41ljlp3rgDTp6+9lgwyUwEnNdVk+KilnzngkoEOAVVdXhzKS1wt167kl93CfAfBX9VHGLcZbTGS+lXu2goVCUDDznNIf6gQdEeCWnoeTsXIt/KFUSBxpeH5qdRt7qVRLehtKgUqeSavsOa3GgJNQB0pI6NcXf3JkgrRA3iXfonH3HTon9yNQb7uvXsXXekv086OOoa6Ua8aM0pwuxAOhXHYApkwfoDA21rl3QmH6/olU1rRSKAEGQ1V/RHkf2vRcC1PfmGSa5X8AmzpxhwEY9EtwelOSWRqrGkQ307nWlpRaoSbDQo+PIOxaOW0gBIHTpvsVHDSm5RHS0VD44XUZSfHJ4yc+ArGdVcyiAFnC/+gvUfkV049eySFkfL1SiR3Pt6mwbRWWtq+E/pz2aLPWxUdm7oItdT0N76RwzP0HR93JpVV8xH+sRKERjmbKp2IG0HA+NzPouZRXQlaEIZWpQ16mAFOYPxb1g+LPZFeu4nCe0+ygKk5KoEG5PMD0QO4PNwteMR/GJqBAgXwKcOa8sOmkhhIg56A3i0T8Vr76fJdzn2tePKjLvMBhmkjZ/iOYDjAaE7xboLrDvODlZiaf51WlD3rdUv9s6JH4IS2V+u4cLbbYkFHdfPDTSCBItoZTpReoU6PgMrWffryBBeCx5zjBrvxEDr0Rf6gLJZNUlEO87ykTfjiK/7C0mZLqrkPUxBmdlQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(1800799015)(366007)(7416005)(376005)(38350700005);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(52116005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VitXZEpFSGlsbWhYQkxIeTFzakpJYmFvdlYyaTFPVURROUhDNk15VkdvTUpx?=
- =?utf-8?B?VWpJcGozNncvN2dSZVA0dXBKd21Ranlyd3JSOEdtRTZHM0VpU0RmTGRoS3Bi?=
- =?utf-8?B?cXFmakpERjR6elVidUZWemtudjBONVJndWg5TGVEdWtESE5uTlBxc3BWajA1?=
- =?utf-8?B?ODBVYkpueTg4cU52RExUWWRzUnNiZDErbHRLZUpvVTJlMHJ5YmtZNkdRbzZZ?=
- =?utf-8?B?aW5SdnhIMXpYTFlZQysyMDRmZTh3ZnRKZXRpUHZrVXY0aFlabnU4QTVpbUF2?=
- =?utf-8?B?YndVSVF1cllodWwyRzUzVFA0dXlLZkRsbDg5TTAxNHBOY3Zsa2U5djVlWFJJ?=
- =?utf-8?B?S0tDQ1JFdlFTVE9WTVRUTE5tV3NKUmZWdmVTYlN2YTNPZGlzZWlDOGQwTlVM?=
- =?utf-8?B?aU90T3BKT092K09qa1JIelhUK1JvaEhELzlmT2VGdk9JQTIrSDRDVWt0MFph?=
- =?utf-8?B?UHpIdmpYd1Q5eWQyenYxREN1OGY5R1FRZDVRRHZNeTg4RkZBV3Q4UmZlOEdy?=
- =?utf-8?B?S0lBVEhRS0NSMUFqbXdRUzlEVnZUek9HRmFwMENjTkdmWHVnWVZOaitabW9t?=
- =?utf-8?B?ZWdvYW15Mkw1TVM0alc0bnlYTDlud1NKS0NwdFU1aHAyaS9RUG5LU0xOWUlT?=
- =?utf-8?B?QUJhSWtOMGN1UXBuM2VkaGRXeFFIYW9tZXhHdHhJYlI1L2ZRZmQ4dXpoNXps?=
- =?utf-8?B?Y0lOdElJMS9PSkV4Y2Q5V1lqMjllMFJySXgxMTR1djhyNk5SRzNFM0VycFR5?=
- =?utf-8?B?Y3hUaWNxbTNvM3FMa2tWdTVBSjczNGpEb0owSzcraHRlTXFMSTRTNDBzWm96?=
- =?utf-8?B?VmNIUkJ3SnpWb0ZsdE0zOCtjN3FEc0UrbXF4Ky9WVkxHMC9oYWhqWjM5YU9i?=
- =?utf-8?B?Uk5DNkh1Ti9aNCsvZFlTc3BFeURRSFV1a1JKVTZsS282dXBvMUorNnkvZVJR?=
- =?utf-8?B?MFNEMkRvbk4wRDVkOE92VzJQbjlhV3o1VHI0SXFOV1hDclM4UFgzSDkxM2V2?=
- =?utf-8?B?c0pOaVVML2VBbUJVUlM2OWo3TVJTc1JPSGtydisxeUxrSEhyc3dxVVlsazNV?=
- =?utf-8?B?UEsyeWJOTW5MVTFTdDdrb3FLSTRFS0c1dFo0M3hnQXJORldWVHVnMnZaSS9H?=
- =?utf-8?B?YnphVkZIdGd2bk15dFpuM21KRTRWOWpDUlpON3JkQjdSZ0RTUjVqQUlvUUhL?=
- =?utf-8?B?M2laRzFOTnR3SlhkZUlpUWRYcHZTMHJWUXZCZC9UZk80bGJQV1F0YXMwbGtM?=
- =?utf-8?B?VkxSNEl4UnFDd3c2Nm1IN3lPb2R4WjVod2JkUERYTVFhMUVhSDhTNFJYd1ZX?=
- =?utf-8?B?TFVYbzgxdEJWczB1UDlmZzNTWk1NVVk1RUd5bHBGcWNGMERnWmhyZDBvK0JL?=
- =?utf-8?B?TTYzbGxsNS9uaUhucDRwSHIybnZkdXY5a1BtbU9IakE2MWVkSlNkL1hvVU0z?=
- =?utf-8?B?VjJzNVJITUZqT09FcnpWZ0gzZ0xBdlZOTXZ3WnJUQmtDSDI3Sk1XVXhwamVz?=
- =?utf-8?B?dE9FUFZvbDRMQ3BNeFk4R2pkMStndXQvdUJxT1pyNjZsa1pxMlhjL1djak42?=
- =?utf-8?B?YW9vQkJ5RzNpbXkyalpHdEt1U2ViTFJBODRrUkJaSUZJdlJvL1M2ZWpZVzVj?=
- =?utf-8?B?Uk1kYS9CWUJQc0MrSDZuc2RHVGtzQWpMOG9sRDc2bUxnNzF0RTdlWmlwMWpM?=
- =?utf-8?B?Q09QSERjRHJXT1pwbk85blhjNXM3YUZRcXhONUp5SkZhWTFNMlVQWnlhL3Bv?=
- =?utf-8?B?NXRKRmtPclk0RHJ0WkYzZU1JSVY5Zll0SW53NW5KVjZwN2VtbjBqTFpoVUpD?=
- =?utf-8?B?WlVHeDgrdjVTdUlXWkxsTGMxakdnUmRuRHNuTHlxQVpQWXZCOStoTXo2RE9l?=
- =?utf-8?B?MlRDQTQ5dEtSSWliUktIVGN4TGxBZlNWUXNad0VMYnozY3p3SXNOc1h6SU9s?=
- =?utf-8?B?UVk2UFNPc2VrYmN3a0IwVS9mUWlTYUczNUhmemU1aTN3OW5Va3U0RjcvWHF6?=
- =?utf-8?B?U2tGZlI1ajllY296Qmp0ZndoN0h1RVUrS0djZ01lSVFBdDJxUDhoWHMzaTZH?=
- =?utf-8?B?RG1ndjkwOEVTUVVEczFlenArVnNIRVhadmV5aENrOW9JVDAwNUlOSzNHTVI3?=
- =?utf-8?Q?ldv7P2/Fogbrn46ASptPQykEx?=
+	=?us-ascii?Q?8ta9K4F7TP0vflHC1ujZqjAtTeymW2wtYBBOS34WrMPI9k6wpm3dlBAs69Lo?=
+ =?us-ascii?Q?AzOjPAz8yoq9jopYOgV5r4Ozu5XI25AzGQhi8ZxWJUm5snpS1FMasmApvee/?=
+ =?us-ascii?Q?av59HQt1nwIB20PLXcKswLBAwJ3NzuSelzGdZ7Gr0exmh7QNUz0m0d+yvTmg?=
+ =?us-ascii?Q?03wktVWqk3E08+NLb8gSiLW94AVofDyxYTwDIWH6741aUX/Dp9ssrr5GALQ1?=
+ =?us-ascii?Q?YzhcfIi6vdJTc6U4HdfHExOXuEf0Y93sHx6KgDBB3e+/8j9mVi4BeoeeFIXx?=
+ =?us-ascii?Q?AuovNh+GsHfQTnZGgAbFPsNnHKd5cOSA3IEfKnWBGg+wkCMlJlN19eUVHF7t?=
+ =?us-ascii?Q?Bq7LCbsic2Ynren6dKAjDp6poAxy10WyV4swHLLwVloLK3zYoa5hRknNhfSZ?=
+ =?us-ascii?Q?Jlq/cCqlawN61bXBcWZYQIWpr/BbJqFcbNSJ7yRVSLLhH2bEgo0crwDsJbj0?=
+ =?us-ascii?Q?pceciQTqHm8whuw9eyijIw7bV4OndonKpx2Vvb4GM4X8Kw08uXZ4OrXvGCqa?=
+ =?us-ascii?Q?zxndt/tjaho7iZnnXgFI+HbdfBIZjWEhHH+2TEfYJZz/D5k8+JjAB3SgYKjU?=
+ =?us-ascii?Q?NIX7fhb3r2godszwHDAtfQXk9m8F9LsjiyYFga/oH61Ep9yL3SfjfN+556xj?=
+ =?us-ascii?Q?A1MlSGFKURP3bZSeWjG6s7VHAQvAIO0zPGNtV6OBnKwk6qBw4tBLWArClxuh?=
+ =?us-ascii?Q?kTtB3Topj33Sw/ER5g9HwaP6vL/1yUHFbHZwBHTyHcON/JvUn30jOQo38dny?=
+ =?us-ascii?Q?xS0CeyjR2ojIXQAvrwKPlPhEYX6mTwPg159QK0mM33BhbNgZAzgqmgzH5rsv?=
+ =?us-ascii?Q?CDzVQBi8UOkkuNwOFdPMn71fTIpEZzlRFRUGgglW09kHf2cZ4GC+20HkGgJa?=
+ =?us-ascii?Q?Mt9jX/NYe7xpdgT/rlHop4ul58XJMxDFNwaKRLOB5oy9U+xH5qrt5VfXWTyl?=
+ =?us-ascii?Q?fi7wZ2xG7qmnAVb7vS+mIFmyuXg8Hmu722+QCCII9YCAOeSv0JcTqSaBOevk?=
+ =?us-ascii?Q?ceFiDZREsdhCjk9/Mgavt//SODCH5KaytBfMNpukPl5WHcKo3RvbfomnjgOM?=
+ =?us-ascii?Q?1Km995b6fFhmpf6bI5ov4tTlvBSo/3RTbn5CcaHmuRv3Hkg/By3TJz8l4KQc?=
+ =?us-ascii?Q?GvOzrh1ECwFCRVej5socmD4ImFR2RCooh+wNOvxDehw9KjrVCG99IP3h7DcR?=
+ =?us-ascii?Q?TcteMDw+3S8DDw+oF26x0dClaSNWbJMlHOlQDj64GurvnOloN1S3GTgAVmfT?=
+ =?us-ascii?Q?Gagp7z5BthElNawYzjA5oYjsi82cbvKRrMXqqwbg8SnB9sNy2fBlyS7smiqm?=
+ =?us-ascii?Q?7t9I4udMKB7Z+WZ3dcoubnIK3mbpxBmRK4VumMWJ1SKvj42vUYf2TgHEyQrK?=
+ =?us-ascii?Q?noIV7aaXSOoebO42VFy9EY1cXMIO4hIs2dwYcsSd5xOM6Y93luOvkvbr5swV?=
+ =?us-ascii?Q?TuMbePbEPg+vKAnDg8XdwNAasMDy85nEeB4KjbzGOPKfeXZn77x1+u9q9r03?=
+ =?us-ascii?Q?Cw6qSEA/Amka/IsQvRBb9Q6WAmFjEkFMlD8jdZ6nuAAT0zuSoKcCcRLrxnxt?=
+ =?us-ascii?Q?lnmt5Cbf0npv6yNuAyvz+jXUS/67ckVn5JGc8OVd?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b629c676-1634-44b8-c444-08dc557d1368
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7c4e60d-9ba8-4ca0-6e67-08dc557f4245
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 14:31:26.6885
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 14:47:04.1883
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6HUgMFUU2hph1Zqx7wb1NFR9Xzx5YIwiE6wa9TMXpWDsju7BptMUdt4E7Zgzbi5hd7kAvxuJGAGnvOfyp/8cIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6946
+X-MS-Exchange-CrossTenant-UserPrincipalName: QWUFUi1xx7mh/FkNf+6NR/rlXjsQJW3nImN5USymTi7okeZsFWShpjfsaHdEdedLg2FbDpWmSprb9LialgSOIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7187
 
-On Fri, Apr 05, 2024 at 11:54:26AM +0530, Manivannan Sadhasivam wrote:
-> On Tue, Mar 19, 2024 at 12:07:15PM -0400, Frank Li wrote:
+On Fri, Apr 05, 2024 at 08:41:59AM +0200, Krzysztof Kozlowski wrote:
+> On 04/04/2024 18:19, Frank Li wrote:
+> > imx8qxp-mek use two kind audio codec, wm8960 and wm8962. Using dummy gpio
+> > i2c bus mux to connect both i2c devices. One will probe failure and other
+> > will probe success when devices driver check whoami. So one dtb can cover
+> > both board configuration.
 > 
-> PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off during system suspend
+> I don't understand it. Either you add real device or not. If one board
+> has two devices, then why do you need to check for failures?
 > 
-> > Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
-> > window. This space's size is 'region_align'.
+> Anyway, don't add fake stuff to DTS.
+
+NAK can't resolve the problem. It should be common problem for long time
+cycle boards. Some chipes will be out life cycle. such as some sensor. So
+chips on boards have been replace by some pin to pin compatible sensor. For
+example: 
+	old boards: use sensor A with address 0x1a
+	new bench: use sensor B with address 0x1b.
+
+You can treat it as two kind boards, RevA or RevB. But most user want to
+use one dtb to handle such small differences. For this case, it should be
+simple. Just add a super set.
+	i2c
+	{
+		sensorA@1a
+		{
+		}
+		sensorB@1b
+		{
+		}	
+	}
+
+It also depend on whoami check by i2c devices. Only A or B will probe.
+
+wm8960 and wm8962 are more complex example.  wm8960 is out of life. But
+wm8962 and wm8960 have the same i2c address. The current i2c frame can't
+allow the same i2c address in one i2c bus.
+
+You are feel to NAK my method, but I hope you also provide constructive
+solution to help resolve the problem.
+
+Frank
+
+> 
+> NAK.
 > > 
-> > Set outbound ATU map memory write to send PCI message. So one MMIO write
-> > can trigger a PCI message, such as PME_Turn_Off.
-> > 
-> > Add common dwc_pme_turn_off() function.
-> > 
-> > Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
-> > dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
-> > exist.
-> > 
-> 
-> How about:
-> 
-> "Instead of relying on the vendor specific implementations to send the
-> PME_Turn_Off message, let's introduce a generic way of sending the message using
-> the MSG TLP.
-> 
-> This is achieved by reserving a region for MSG TLP of size 'pci->region_align',
-> at the end of the first IORESOURCE_MEM window of the host bridge. And then
-> sending the PME_Turn_Off message during system suspend with the help of iATU.
-> 
-> It should be noted that this generic implementation is optional for the glue
-> drivers and can be overridden by a custom 'pme_turn_off' callback."
-> 
 > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > > ---
-> >  drivers/pci/controller/dwc/pcie-designware-host.c | 94 ++++++++++++++++++++++-
-> >  drivers/pci/controller/dwc/pcie-designware.h      |  3 +
-> >  2 files changed, 93 insertions(+), 4 deletions(-)
+> >  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 210 ++++++++++++++++++
+> >  1 file changed, 210 insertions(+)
 > > 
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > index 267687ab33cbc..d5723fce7a894 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
-> >  	return 0;
-> >  }
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+> > index 8360bb851ac03..adff87c7cf305 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+> > @@ -30,6 +30,13 @@ reg_usdhc2_vmmc: usdhc2-vmmc {
+> >  		enable-active-high;
+> >  	};
 > >  
-> > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
-> > +{
-> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > +	struct resource_entry *win;
-> > +	struct resource *res;
+> > +	reg_audio: regulator-wm8962 {
+> > +		compatible = "regulator-fixed";
+> > +		regulator-name = "3v3_aud";
+> > +		regulator-min-microvolt = <3300000>;
+> > +		regulator-max-microvolt = <3300000>;
+> > +	};
 > > +
-> > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-> > +	if (win) {
-> > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
-> > +		if (!res)
-> > +			return;
+> >  	gpio-sbu-mux {
+> >  		compatible = "nxp,cbdtu02043", "gpio-sbu-mux";
+> >  		pinctrl-names = "default";
+> > @@ -44,6 +51,105 @@ usb3_data_ss: endpoint {
+> >  			};
+> >  		};
+> >  	};
 > > +
-> > +		/* Reserve last region_align block as message TLP space */
-> > +		res->start = win->res->end - pci->region_align + 1;
-> > +		res->end = win->res->end;
-> 
-> Don't you need to adjust the host bridge window size and end address?
-
-Needn't. request_resource will reserve it from bridge window. Like malloc,
-if you malloc to get a region of memory, which will never get by malloc
-again utill you call free.
-
-> 
-> > +		res->name = "msg";
-> > +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> > +	sound-wm8960 {
+> > +		compatible = "fsl,imx-audio-wm8960";
+> > +		model = "wm8960-audio";
+> > +		audio-cpu = <&sai1>;
+> > +		audio-codec = <&wm8960>;
+> > +		hp-det-gpio = <&lsio_gpio1 0 GPIO_ACTIVE_HIGH>;
+> > +		audio-routing =
+> > +			"Headphone Jack", "HP_L",
+> > +			"Headphone Jack", "HP_R",
+> > +			"Ext Spk", "SPK_LP",
+> > +			"Ext Spk", "SPK_LN",
+> > +			"Ext Spk", "SPK_RP",
+> > +			"Ext Spk", "SPK_RN",
+> > +			"LINPUT1", "Mic Jack",
+> > +			"Mic Jack", "MICB";
+> > +	};
 > > +
-> 
-> Shouldn't this resource be added back to the host bridge?
-
-No, this resource will reserver for msg only for whole bridge life cycle.
-Genenally alloc resource only happen at PCI devices probe. All pci space
-will be fixed after system probe.
-
-> 
-> > +		if (!request_resource(win->res, res))
-> 
-> Why can't you use devm_ helper to manage the resource, since the lifetime of the
-> resource is till dw_pcie_host_deinit()?
-> 
-> > +			pp->msg_res = res;
-> > +		else
-> > +			devm_kfree(pci->dev, res);
-> > +	}
-> > +}
+> > +	sound-wm8962 {
+> > +		compatible = "fsl,imx-audio-wm8962";
+> > +		model = "wm8962-audio";
+> > +		audio-cpu = <&sai1>;
+> > +		audio-codec = <&wm8962>;
+> > +		hp-det-gpio = <&lsio_gpio1 0 GPIO_ACTIVE_HIGH>;
+> > +		audio-routing =
+> > +			"Headphone Jack", "HPOUTL",
+> > +			"Headphone Jack", "HPOUTR",
+> > +			"Ext Spk", "SPKOUTL",
+> > +			"Ext Spk", "SPKOUTR",
+> > +			"AMIC", "MICBIAS",
+> > +			"IN3R", "AMIC",
+> > +			"IN1R", "AMIC";
+> > +	};
 > > +
-> >  int dw_pcie_host_init(struct dw_pcie_rp *pp)
-> >  {
-> >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > @@ -479,6 +504,10 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
-> >  
-> >  	dw_pcie_iatu_detect(pci);
-> >  
-> > +	/* Need call after dw_pcie_iatu_detect() before dw_pcie_setup_rc() */
+> > +	/*
+> > +	 * This dummy i2c mux. GPIO actually will not impact selection. At actual boards, only 1
+> > +	 * device connectted. I2C client driver will check ID when probe. Only matched ID's driver
+> > +	 * probe successfully.
 > 
-> It'd be better to add the reason also i.,e
+> NAK
 > 
-> 	/*
-> 	 * Allocate the resource for MSG TLP before programming the iATU
-> 	 * outbound window in dw_pcie_setup_rc(). Since the allocation depends
-> 	 * on the value of 'region_align', this has to be done after
-> 	 * dw_pcie_iatu_detect().
-> 	 */
 > 
-> > +	if (pp->use_atu_msg)
+> Best regards,
+> Krzysztof
 > 
-> Who is setting this flag?
-> 
-> > +		dw_pcie_host_request_msg_tlp_res(pp);
-> > +
-> >  	ret = dw_pcie_edma_detect(pci);
-> >  	if (ret)
-> >  		goto err_free_msi;
-> > @@ -536,6 +565,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
-> >  
-> >  	dw_pcie_edma_remove(pci);
-> >  
-> > +	if (pp->msg_res) {
-> > +		release_resource(pp->msg_res);
-> > +		devm_kfree(pci->dev, pp->msg_res);
-> > +	}
-> > +
-> >  	if (pp->has_msi_ctrl)
-> >  		dw_pcie_free_msi(pp);
-> >  
-> > @@ -697,6 +731,10 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-> >  		atu.pci_addr = entry->res->start - entry->offset;
-> >  		atu.size = resource_size(entry->res);
-> >  
-> > +		/* MSG TLB window resource reserve at one of end of IORESOURCE_MEM resource */
-> > +		if (pp->msg_res && pp->msg_res->parent == entry->res)
-> > +			atu.size -= resource_size(pp->msg_res);
-> 
-> If you adjust the bridge window above, then this won't be needed.
-> 
-> > +
-> >  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
-> >  		if (ret) {
-> >  			dev_err(pci->dev, "Failed to set MEM range %pr\n",
-> > @@ -728,6 +766,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-> >  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
-> >  			 pci->num_ob_windows);
-> >  
-> > +	pp->msg_atu_index = i;
-> > +
-> >  	i = 0;
-> >  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
-> >  		if (resource_type(entry->res) != IORESOURCE_MEM)
-> > @@ -833,11 +873,54 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
-> >  }
-> >  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
-> >  
-> > +/* Using message outbound ATU to send out PME_Turn_Off message for dwc PCIe controller */
-> > +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
-> > +{
-> > +	struct dw_pcie_ob_atu_cfg atu = { 0 };
-> > +	void __iomem *m;
-> 
-> *mem
-> 
-> > +	int ret;
-> > +
-> > +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
-> > +		return -EINVAL;
-> > +
-> > +	if (!pci->pp.msg_res)
-> > +		return -EINVAL;
-> > +
-> > +	atu.code = PCIE_MSG_CODE_PME_TURN_OFF;
-> > +	atu.routing = PCIE_MSG_TYPE_R_BC;
-> > +	atu.type = PCIE_ATU_TYPE_MSG;
-> > +	atu.size = resource_size(pci->pp.msg_res);
-> > +	atu.index = pci->pp.msg_atu_index;
-> > +
-> > +	if (!atu.size) {
-> > +		dev_dbg(pci->dev,
-> > +			"atu memory map windows is zero, please check 'msg' reg in dts\n");
-> 
-> You are already checking the existence of the 'pci->pp.msg_res' region above. So
-> shouldn't that be sufficient enough? Can the size be 0, if the region exist?
-> 
-> - Mani
-> 
-> > +		return -ENOMEM;
-> > +	}
-> > +
-> > +	atu.cpu_addr = pci->pp.msg_res->start;
-> > +
-> > +	ret = dw_pcie_prog_outbound_atu(pci, &atu);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	m = ioremap(atu.cpu_addr, pci->region_align);
-> > +	if (!m)
-> > +		return -ENOMEM;
-> > +
-> > +	/* A dummy write is converted to a Msg TLP */
-> > +	writel(0, m);
-> > +
-> > +	iounmap(m);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> >  {
-> >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> >  	u32 val;
-> > -	int ret;
-> > +	int ret = 0;
-> >  
-> >  	/*
-> >  	 * If L1SS is supported, then do not put the link into L2 as some
-> > @@ -849,10 +932,13 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> >  	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
-> >  		return 0;
-> >  
-> > -	if (!pci->pp.ops->pme_turn_off)
-> > -		return 0;
-> > +	if (pci->pp.ops->pme_turn_off)
-> > +		pci->pp.ops->pme_turn_off(&pci->pp);
-> > +	else
-> > +		ret = dw_pcie_pme_turn_off(pci);
-> >  
-> > -	pci->pp.ops->pme_turn_off(&pci->pp);
-> > +	if (ret)
-> > +		return ret;
-> >  
-> >  	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> >  				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> > index 703b50bc5e0f1..dca5de4c6e877 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > @@ -341,6 +341,9 @@ struct dw_pcie_rp {
-> >  	struct pci_host_bridge  *bridge;
-> >  	raw_spinlock_t		lock;
-> >  	DECLARE_BITMAP(msi_irq_in_use, MAX_MSI_IRQS);
-> > +	bool			use_atu_msg;
-> > +	int			msg_atu_index;
-> > +	struct resource		*msg_res;
-> >  };
-> >  
-> >  struct dw_pcie_ep_ops {
-> > 
-> > -- 
-> > 2.34.1
-> > 
-> 
-> -- 
-> மணிவண்ணன் சதாசிவம்
