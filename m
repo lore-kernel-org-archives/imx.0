@@ -1,76 +1,62 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54A716D9D1
-	for <imx@lists.linux.dev>; Fri,  5 Apr 2024 14:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CB816EBE4;
+	Fri,  5 Apr 2024 14:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712326290; cv=none; b=mZumlSxaJ/pfEx9WR42L5gJCAEgPYJGbsznqoQOesn1UAp3SFOZgexETOD/EYUjcBgtz2u3KvKpnl3FoDyI7EjD4cIyST1igkabnrhxe1hakDInn7etDByuuvFFtirrS0OR3HGUJ/cR9js2WiKORrhxZzG299EUeTUSMdV0yIO0=
+	t=1712327091; cv=none; b=B+epClVHGtr6/YZmeDjbkKpbpJU878mw9gg+t3J5KBG2XMVCIOqo/WeKHTnpGFIjHZ71baWrJ9qZD0GZZ9cHeQ4GTfCjLEf8fpUvQg10fITelUzt9Y0XVRWZTi3ffdA2mJuPUonczVVji3jfdx3q3/DUBWAiGMi6mwFC6iIdfG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712326290; c=relaxed/simple;
-	bh=5yZFTVxPj9WohAyyVh4FnZgcBEYU2viQYh+3SyX+0yc=;
+	s=arc-20240116; t=1712327091; c=relaxed/simple;
+	bh=9u276kZaHIRoTA4fadL2lfzY0PJaTWAhflWuDXQc7KI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UoPyLdIGv4sD8bfnPb95NATP24AqnRjWGvKoNJ9kgps+nl4TTb7Ex5QPyGHj16FQntjCxOlJBUi/niDYeJu2uVkYl2W51gOgdwybSrizS+pGIwHlFQMk602GcQrdR8sz0Ol5/5pKv3N8AIpBjZLsAoS+eJ0hchb6v2S6wrgFHDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jkv4QmEu; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=mUJxMN+3j3/BbAWaUfeCMTpD/3/nc1qOvz4JrvkYYKiYQU4Bs5Wo2pgh1JBJrWsXo2vzWmQ7zg2uXCrltxOJzgXEtvlB/BsKTjqJA1d3GdNXY2Vdmgr/yCI13BsfV18rmnKMHoYd4rKnZ6JjhBGmzcLSYhtfTxcythVsgxp9eOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eltXqxIs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jkv4QmEu"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4162dc4a626so5129635e9.0
-        for <imx@lists.linux.dev>; Fri, 05 Apr 2024 07:11:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712326287; x=1712931087; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rX3Zd1uGycqxks8BkgoQUkcminCKAtXLjmui8Qs7dLA=;
-        b=Jkv4QmEuan+VV8sQG6ldeKo1ex7DJd4ee6mnE4GmHH6tVw5WJY3EHnkLCLh6oGhqmm
-         xwb0Ktil9l6azAtvM2ucH1+9nAp3Si92cFxRCDeXC3Pk7p6pJ7zzlbh/hURBtvBv8y0l
-         aZjMcv2RZoAfjGHsE5KhLKdA7VA/rRUj0vnhjEoZ6oSYyVzrbi5WBhK+E2FFeKVVV/gi
-         QPklxenR608/+yDWzNrdMuJRJ8ERQXjBMJuPR3ZHW8WYn8Pe9FLkRmK5EVk6WR9PZZCM
-         bpo0P0SaVoYuP9m8afdMmjwAb0pMbzn13HjTZRpO9f3aKglTK8k2tmiQ00SMlbvpjMoU
-         H+iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712326287; x=1712931087;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rX3Zd1uGycqxks8BkgoQUkcminCKAtXLjmui8Qs7dLA=;
-        b=nQD/FGpcT/PnheiVgfzX11+ojRx5LadGokAgY7FKHW8/6ormw6qMSlWcucp2Ah6ldr
-         otdIcngJK2fsu76D6gvyd3S10DhcBomXx2W4B3HoG7wC4pTja9YNv8ZD+cJ8gtZW1fvr
-         thOSeHLqsrCIFzjV2hMZ/uyvTmeo5V5eqKpCTAAVZW3MuYChhZM41CECDpRFnr8LRXjN
-         VaOjuY4cpkUvLWgaAwIWUDHAVyGm7t48+BxcS1k9s9tvV9DkLP5nZz2/B+VThaOSRavN
-         YfPAplSXcM4oibWimhNp601AKEAa8YLRczS+eeFPji2SLOou8htsh74WyH+X5aBKaQoh
-         OkSw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuedq9Q+ChQIa3WpcBbfYpBx/TLBDW2az+tzXyo6dPYFaz0Z0GYRe4xni1uXpTt9oNwqpxQemkNmcNPB76/sIAOGNR
-X-Gm-Message-State: AOJu0Yy6UahedwAH032J3oJGfSmY2jZ6bbZO16lZjEzA3aV6DBNNBYTe
-	S5909HnGKtid4Bs2RCLQLlAm9PG0R3mlgrNgv0Tx+5FRyRFxqqb4Q6p1IMCocvE=
-X-Google-Smtp-Source: AGHT+IGnPvnCFSrfZEpp/kUMddY/dDiC+s4YJr+o/MdQnJv2c435miTzy//IJuhXXzmhUXIjj2lfow==
-X-Received: by 2002:a05:600c:4448:b0:414:8ffb:a6bf with SMTP id v8-20020a05600c444800b004148ffba6bfmr2324189wmn.18.1712326286773;
-        Fri, 05 Apr 2024 07:11:26 -0700 (PDT)
-Received: from tom-HP-ZBook-Fury-15-G7-Mobile-Workstation (net-188-217-49-82.cust.vodafonedsl.it. [188.217.49.82])
-        by smtp.gmail.com with ESMTPSA id j11-20020adff54b000000b003433bf6651dsm1326285wrp.75.2024.04.05.07.11.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Apr 2024 07:11:26 -0700 (PDT)
-Date: Fri, 5 Apr 2024 16:11:23 +0200
-From: Tommaso Merciai <tomm.merciai@gmail.com>
-To: Luis Garcia <git@luigi311.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pavel@ucw.cz, phone-devel@vger.kernel.org,
-	Ondrej Jirman <megi@xff.cz>
-Subject: Re: [PATCH v3 21/25] drivers: media: i2c: imx258: Use macros
-Message-ID: <ZhAGi0X2wVOdsrSe@tom-HP-ZBook-Fury-15-G7-Mobile-Workstation>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-22-git@luigi311.com>
- <Zg2CirmwL3JfjA8s@kekkonen.localdomain>
- <df8c245a-40e9-4bf5-b870-7efe321d820a@luigi311.com>
- <Zg5Mz0QSqNDXzY4o@kekkonen.localdomain>
- <082190a8-7ac5-4240-9a16-6b9168c67d57@luigi311.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eltXqxIs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85AAC433C7;
+	Fri,  5 Apr 2024 14:24:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712327090;
+	bh=9u276kZaHIRoTA4fadL2lfzY0PJaTWAhflWuDXQc7KI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eltXqxIseJTpiuRAJ13spAdHEBB1EkmRpmBqdjP6Uehu/d9KdmHKmpaLerp6rcb1b
+	 ytDBJQ9mj8iYPDlAFMU+rbHbI7B2A8Dr21YQV5p+SLT9bq/BLo1HPCnJfXavCO/sUD
+	 6OTWC0kWWTQefiM8pVw61K31PavRnvXPa4a70nAJN7WnIQKT+hl3ylfcO4+L5O9/FT
+	 01vmrmu0p3OPsUPjB0zEVjw7EglL8QZBLzv97TXIquUwe29e9IJw8PdTBlDh7jqG0B
+	 YEj5U8jtyTF0LwOlnHvMtkjYZnV0BpVaMaTgGCz7MrGdazCCg4SuYfSnMLyrUHnzed
+	 boUmhxbFl0yxg==
+Date: Fri, 5 Apr 2024 19:54:46 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Sandor Yu <Sandor.yu@nxp.com>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v15 2/8] phy: Add HDMI configuration options
+Message-ID: <ZhAJridEyhUeFVr0@matsya>
+References: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
+ <20240306101625.795732-3-alexander.stein@ew.tq-group.com>
+ <20240306-inquisitive-funny-bull-017550@houat>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,141 +65,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <082190a8-7ac5-4240-9a16-6b9168c67d57@luigi311.com>
+In-Reply-To: <20240306-inquisitive-funny-bull-017550@houat>
 
-Hi Luis,
-
-On Fri, Apr 05, 2024 at 04:33:38AM -0600, Luis Garcia wrote:
-> On 4/4/24 00:46, Sakari Ailus wrote:
-> > On Wed, Apr 03, 2024 at 01:17:26PM -0600, Luigi311 wrote:
-> >> On 4/3/24 10:23, Sakari Ailus wrote:
-> >>> Hi Luis,
-> >>>
-> >>> On Wed, Apr 03, 2024 at 09:03:50AM -0600, git@luigi311.com wrote:
-> >>>> From: Luis Garcia <git@luigi311.com>
-> >>>>
-> >>>> Use understandable macros instead of raw values.
-> >>>>
-> >>>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> >>>> Signed-off-by: Luis Garcia <git@luigi311.com>
-> >>>> ---
-> >>>>  drivers/media/i2c/imx258.c | 434 ++++++++++++++++++-------------------
-> >>>>  1 file changed, 207 insertions(+), 227 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> >>>> index e2ecf6109516..30352c33f63c 100644
-> >>>> --- a/drivers/media/i2c/imx258.c
-> >>>> +++ b/drivers/media/i2c/imx258.c
-> >>>> @@ -33,8 +33,6 @@
-> >>>>  #define IMX258_VTS_30FPS_VGA		0x034c
-> >>>>  #define IMX258_VTS_MAX			65525
-> >>>>  
-> >>>> -#define IMX258_REG_VTS			0x0340
-> >>>> -
-> >>>>  /* HBLANK control - read only */
-> >>>>  #define IMX258_PPL_DEFAULT		5352
-> >>>>  
-> >>>> @@ -90,6 +88,53 @@
-> >>>>  #define IMX258_PIXEL_ARRAY_WIDTH	4208U
-> >>>>  #define IMX258_PIXEL_ARRAY_HEIGHT	3120U
-> >>>>  
-> >>>> +/* regs */
-> >>>> +#define IMX258_REG_PLL_MULT_DRIV                  0x0310
-> >>>> +#define IMX258_REG_IVTPXCK_DIV                    0x0301
-> >>>> +#define IMX258_REG_IVTSYCK_DIV                    0x0303
-> >>>> +#define IMX258_REG_PREPLLCK_VT_DIV                0x0305
-> >>>> +#define IMX258_REG_IOPPXCK_DIV                    0x0309
-> >>>> +#define IMX258_REG_IOPSYCK_DIV                    0x030b
-> >>>> +#define IMX258_REG_PREPLLCK_OP_DIV                0x030d
-> >>>> +#define IMX258_REG_PHASE_PIX_OUTEN                0x3030
-> >>>> +#define IMX258_REG_PDPIX_DATA_RATE                0x3032
-> >>>> +#define IMX258_REG_SCALE_MODE                     0x0401
-> >>>> +#define IMX258_REG_SCALE_MODE_EXT                 0x3038
-> >>>> +#define IMX258_REG_AF_WINDOW_MODE                 0x7bcd
-> >>>> +#define IMX258_REG_FRM_LENGTH_CTL                 0x0350
-> >>>> +#define IMX258_REG_CSI_LANE_MODE                  0x0114
-> >>>> +#define IMX258_REG_X_EVN_INC                      0x0381
-> >>>> +#define IMX258_REG_X_ODD_INC                      0x0383
-> >>>> +#define IMX258_REG_Y_EVN_INC                      0x0385
-> >>>> +#define IMX258_REG_Y_ODD_INC                      0x0387
-> >>>> +#define IMX258_REG_BINNING_MODE                   0x0900
-> >>>> +#define IMX258_REG_BINNING_TYPE_V                 0x0901
-> >>>> +#define IMX258_REG_FORCE_FD_SUM                   0x300d
-> >>>> +#define IMX258_REG_DIG_CROP_X_OFFSET              0x0408
-> >>>> +#define IMX258_REG_DIG_CROP_Y_OFFSET              0x040a
-> >>>> +#define IMX258_REG_DIG_CROP_IMAGE_WIDTH           0x040c
-> >>>> +#define IMX258_REG_DIG_CROP_IMAGE_HEIGHT          0x040e
-> >>>> +#define IMX258_REG_SCALE_M                        0x0404
-> >>>> +#define IMX258_REG_X_OUT_SIZE                     0x034c
-> >>>> +#define IMX258_REG_Y_OUT_SIZE                     0x034e
-> >>>> +#define IMX258_REG_X_ADD_STA                      0x0344
-> >>>> +#define IMX258_REG_Y_ADD_STA                      0x0346
-> >>>> +#define IMX258_REG_X_ADD_END                      0x0348
-> >>>> +#define IMX258_REG_Y_ADD_END                      0x034a
-> >>>> +#define IMX258_REG_EXCK_FREQ                      0x0136
-> >>>> +#define IMX258_REG_CSI_DT_FMT                     0x0112
-> >>>> +#define IMX258_REG_LINE_LENGTH_PCK                0x0342
-> >>>> +#define IMX258_REG_SCALE_M_EXT                    0x303a
-> >>>> +#define IMX258_REG_FRM_LENGTH_LINES               0x0340
-> >>>> +#define IMX258_REG_FINE_INTEG_TIME                0x0200
-> >>>> +#define IMX258_REG_PLL_IVT_MPY                    0x0306
-> >>>> +#define IMX258_REG_PLL_IOP_MPY                    0x030e
-> >>>> +#define IMX258_REG_REQ_LINK_BIT_RATE_MBPS_H       0x0820
-> >>>> +#define IMX258_REG_REQ_LINK_BIT_RATE_MBPS_L       0x0822
-> >>>> +
-> >>>> +#define REG8(a, v) { a, v }
-> >>>> +#define REG16(a, v) { a, ((v) >> 8) & 0xff }, { (a) + 1, (v) & 0xff }
-> >>>
-> >>> The patch is nice but these macros are better replaced by the V4L2 CCI
-> >>> helper that also offers register access functions. Could you add a patch to
-> >>> convert the driver to use it (maybe after this one)?
-> >>>
-> >>
-> >> Ohh perfect, using something else would be great. Ill go ahead and see
-> >> if I can get that working.
-> > 
-> > Thanks. It may be easier to just do it in this one actually. Up to you.
-> > 
+On 06-03-24, 15:48, Maxime Ripard wrote:
+> Hi Alexander,
 > 
-> I've made the swap but looks like its not playing nice with my ppp,
-> its causing a crash and showing a call trace as soon as it does its
-> first read to check the identity. I went in and dropped the cci_read
-> and left it with the original implementation and I'm getting a very
-> similar crash with cci_write too so it looks like its not liking
-> how I'm implementing it. Looking at the few other drivers that were
-> swapped over to use that, I don't seem to be missing anything. It's
-> a big change so its not really something I can describe what I've
-> changed but I do have the change on my github here
-> https://github.com/luigi311/linux/commit/840593acb20eee87ce361e6929edf51eefbbe737
-
-I checked your commit to switch to cci helper.
-I think you are missing the right cci regmap initialization.
-
-Please take care to use: devm_cci_regmap_init_i2c
-
-/**
- * devm_cci_regmap_init_i2c() - Create regmap to use with cci_*() register
- *                              access functions
- *
- * @client: i2c_client to create the regmap for
- * @reg_addr_bits: register address width to use (8 or 16)
- *
- * Note the memory for the created regmap is devm() managed, tied to the client.
- *
- * Return: %0 on success or a negative error code on failure.
- */
-
-Check drivers/media/i2c/imx290.c:1530
-Hope this help :)
-
-Note:
-Somewhere into the github commit you are reading 16bit reg and storing
-that into 64bit val. Take care! :)
-
-Thanks & Regards,
-Tommaso
-
-
-> if you can provide some guidance, if not I can skip this change
-> all together and we can do a separate attempt at swapping over to it.
+> On Wed, Mar 06, 2024 at 11:16:19AM +0100, Alexander Stein wrote:
+> > From: Sandor Yu <Sandor.yu@nxp.com>
+> > 
+> > Allow HDMI PHYs to be configured through the generic
+> > functions through a custom structure added to the generic union.
+> > 
+> > The parameters added here are based on HDMI PHY
+> > implementation practices.  The current set of parameters
+> > should cover the potential users.
+> > 
+> > Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+> > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > Acked-by: Vinod Koul <vkoul@kernel.org>
+> > ---
+> >  include/linux/phy/phy-hdmi.h | 24 ++++++++++++++++++++++++
+> >  include/linux/phy/phy.h      |  7 ++++++-
+> >  2 files changed, 30 insertions(+), 1 deletion(-)
+> >  create mode 100644 include/linux/phy/phy-hdmi.h
+> > 
+> > diff --git a/include/linux/phy/phy-hdmi.h b/include/linux/phy/phy-hdmi.h
+> > new file mode 100644
+> > index 0000000000000..b7de88e9090f0
+> > --- /dev/null
+> > +++ b/include/linux/phy/phy-hdmi.h
+> > @@ -0,0 +1,24 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+> > + * Copyright 2022 NXP
+> > + */
+> > +
+> > +#ifndef __PHY_HDMI_H_
+> > +#define __PHY_HDMI_H_
+> > +
+> > +#include <linux/hdmi.h>
+> > +/**
+> > + * struct phy_configure_opts_hdmi - HDMI configuration set
+> > + * @pixel_clk_rate: Pixel clock of video modes in KHz.
+> > + * @bpc: Maximum bits per color channel.
+> > + * @color_space: Colorspace in enum hdmi_colorspace.
+> > + *
+> > + * This structure is used to represent the configuration state of a HDMI phy.
+> > + */
+> > +struct phy_configure_opts_hdmi {
+> > +	unsigned int pixel_clk_rate;
+> > +	unsigned int bpc;
+> > +	enum hdmi_colorspace color_space;
+> > +};
 > 
+> Does the PHY actually care about the pixel clock rate, color space and
+> formats, or does it only care about the character rate?
+
+Nope it should not
+
+-- 
+~Vinod
