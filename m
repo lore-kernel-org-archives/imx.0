@@ -1,132 +1,174 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5914D29E
-	for <imx@lists.linux.dev>; Sat,  6 Apr 2024 03:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8BF15EA2
+	for <imx@lists.linux.dev>; Sat,  6 Apr 2024 04:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712372737; cv=none; b=W/YkRYKSiuv+dlp/vRtqG6aT28demxxh0ThYjYDqGtZQIRcLpM7zpryqBOR8Ct3Wghlc/82DgKtGszuph6YEHNJIs6O5mtFVt7VfXS1wc+j19zTesDwzcSELXUMaQCQliS3NnlNlhtavAAGzodBWq3ZYUwO+gQqWEuF+cxSGZr0=
+	t=1712376098; cv=none; b=S/i3Xv6pAR67OcwW/daB7F7hih1Wo0PwWspQoBMbVgp/YaakQJtT/SmpLuE623vP2UkfoIWQYFK9aoiN7LJT+g5hvntv469id+j64z6RAzRlz9UTQOHvYvBGq33VgcCcZwviFl5Vy0MjdeM3jvgS0Iefsr4gCvtmpLFxz3q2bYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712372737; c=relaxed/simple;
-	bh=ZMIzrbbfNhT0+osKQbaDl6ZZ8FiZg74QjizS7mVXHE0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bHz3BR6L7AdeeTVTsSQV3YnvJv6ew+Pq0NtAHw1YKYtS2DDF62umPSHZI/kyFA2rvEb9CXybuf3Fg+fzSE+NlO51JdLBxRgHiKULFHxi/Zc4pf2GTL12LODA6+41A8Xd8OwCSx8Tg2/3zxHZS6z63qHS1lT20jJ0w9SwGA9eyPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=pX9xhHYP; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1712376098; c=relaxed/simple;
+	bh=iGIic5Vke/591CKh/3b9bJwpfTpW9Aa1DcmTqF5MS4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FzfJw7EpjB64/bbyHhaMoJBsa5q5aHoq+8LApAp3QipU4WeUTItnP/Y0BrsDBFyP5grOBX1VwAFbqDq+NSbIjf9QldO0yF0XCtko6r7McPX4WVCG2Z8sIDnytj2qOsHLhEiWWs6VspZk325zjtOJe2YShqtF66lOER1OdH6uzDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zJRM3Nz/; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="pX9xhHYP"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id ECF9688003;
-	Sat,  6 Apr 2024 05:05:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1712372732;
-	bh=ObJuP7iCEb29EVb5EPrgoeoAW4XgwKZjQyDe2HQIMaU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pX9xhHYPSyKZbjtaUSauvNytgw/Z39jmBw8hs+JHDnn9mu+u4Vgz4t1+q3sLQDwXa
-	 UInw7crefLEYc1a0MnWaVeqGwNDHOGHFVWeShGRC+KgT9nj3h5ZP3mXVNdsUuYk4DZ
-	 9FAyVXSIpxMmNYd5XbT2pHyMMWmjw1W03eLi4+z50diFoXPzfX66Gp5TsgHqLZ6+dW
-	 TXMlUSeh1Ju5cf9M557K/w1ePu9wzJZRZD+gukAoE/7/P2uQ33c43CL7rzr8oSFp90
-	 1IPKo8kVCty2TaTQ/zVy50vE4MVTmDwsrBRZdzqltX4KqfyPZ5prPbFfKKGQmz1GMf
-	 FqIt4BdJa+yew==
-Message-ID: <8c1935d1-7f59-4742-9659-bf87ac4b736c@denx.de>
-Date: Sat, 6 Apr 2024 04:58:39 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zJRM3Nz/"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1e0f0398553so26050925ad.3
+        for <imx@lists.linux.dev>; Fri, 05 Apr 2024 21:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712376097; x=1712980897; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FQjty2mOKA3aYPwrRydJz6nV5Fa5xbHN2C7CKYkz1ck=;
+        b=zJRM3Nz/IGrMwahN8Ox/meHcyZ+9DCvULML3x2b6LtNbHmkFyeAM5fChUafu03eNtI
+         GkDBW6nzMMT2KXvwzEQoQNO40Cy4HpoIxS0gSC4aRJb6XIWbcRU7neMhB62P2Yws297C
+         qEnBYS1K31AAQUkfAi+sIIMb9x1gB5Wep4AvFXOo4ExYfWcytTKWvqeCJ2hjgzIdo2CQ
+         TtOiDelYLcXrOwYQWzD0VevqlIw8Ir0ffciJtrgaFRJubLt3VOrXYTcxMYmBaljzw0lx
+         1K1AFCDDJYS7mS5FHGn84k9Cba/vLMhWbzMPagz3ZSs0SRIyRaxfNOhEDpHmiu6/EWue
+         3hjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712376097; x=1712980897;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FQjty2mOKA3aYPwrRydJz6nV5Fa5xbHN2C7CKYkz1ck=;
+        b=vPhEiw1cHoOoembwpmLz2jkqSta+ehoU1MQ9eqhC3sxQ1HgDLUViacxaehj4qSCKj/
+         BSlKMqbcjQrsY6pHdPc+SYSDZytRaqt35za1+3QP2d1Mt1qB6LO3QZg8NXZrKarVrYu9
+         Zr4z9byG8YyODZji7O8TNm/JV0i15nciwg/pNTjtNRJIqxriGJ1RrbuxOWbjESNwUD+V
+         5RevQr9eafpp8E/BPzwmF3FaHVx4Eiz89HRnf/eJ/3jESg/rBRKqo1H2a4+ygrupL7Oc
+         RQGKCsRAbwq8vGIS/sB1Tfe1tl8VG5/W+bMoEOPdi07auOtfH4qps/US8MEcScGqmRp2
+         rbSw==
+X-Forwarded-Encrypted: i=1; AJvYcCXgJReLFVk6MrqsvIeUSCJUn9nLMQy7REb/oz9qtjomizblEX9YVwlgIGjpo332vG9JhyAVB7a/g98HIto33cIRh1DX
+X-Gm-Message-State: AOJu0YzN5doXj5leYeSZ5nUeGIc0Q/5FOMw1dbtwtQcnDXPRqUuW4Mrc
+	2/WWrLeTVnhB2b86Kl94tKOXEISh05Cb0IJBdr0EutPWP+3CnCFtcCjKnFOxlw==
+X-Google-Smtp-Source: AGHT+IFMgTl1ymn76+dFZqiHTXRkv7EeNZvZAC0dcIAOHMClnGKLFdsS4H4hz0A/TXOMBMvrVgvVKQ==
+X-Received: by 2002:a17:903:2990:b0:1e3:e081:e7f6 with SMTP id lm16-20020a170903299000b001e3e081e7f6mr2877plb.66.1712376096519;
+        Fri, 05 Apr 2024 21:01:36 -0700 (PDT)
+Received: from thinkpad ([103.28.246.231])
+        by smtp.gmail.com with ESMTPSA id u8-20020a1709026e0800b001e0e5722788sm2483112plk.17.2024.04.05.21.01.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Apr 2024 21:01:36 -0700 (PDT)
+Date: Sat, 6 Apr 2024 09:31:31 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] PCI: dwc: Add common send PME_Turn_Off message
+ method
+Message-ID: <20240406040131.GC2678@thinkpad>
+References: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
+ <20240319-pme_msg-v5-5-af9ffe57f432@nxp.com>
+ <20240405062426.GB2953@thinkpad>
+ <ZhALNGyNTAzN86GF@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: imx8mp: Align both CSI2 pixel clock
-To: Adam Ford <aford173@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Paul Elder <paul.elder@ideasonboard.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev
-References: <20240405202243.46278-1-marex@denx.de>
- <20240405204251.GE12507@pendragon.ideasonboard.com>
- <CAHCN7xKX7v4tmhjvoPLirEoUG91jpu-8R2DV9eE=mnWt=3FffA@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <CAHCN7xKX7v4tmhjvoPLirEoUG91jpu-8R2DV9eE=mnWt=3FffA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+In-Reply-To: <ZhALNGyNTAzN86GF@lizhi-Precision-Tower-5810>
 
-On 4/5/24 11:04 PM, Adam Ford wrote:
-> On Fri, Apr 5, 2024 at 3:43 PM Laurent Pinchart
-> <laurent.pinchart@ideasonboard.com> wrote:
->>
->> Hi Marek,
->>
->> (CC'ing Adam)
->>
->> Thank you for the patch.
->>
->> On Fri, Apr 05, 2024 at 10:22:26PM +0200, Marek Vasut wrote:
->>> Configure both CSI2 assigned-clock-rates the same way.
->>> There does not seem to be any reason for keeping the
->>> two CSI2 pixel clock set to different frequencies.
->>
->> There's an issue when using two cameras concurrently. This has been
->> discussed some time ago on the linux-media mailing list, see [1]. Adam
->> knows more than I do on this topic.
->>
->> [1] https://lore.kernel.org/linux-media/CAHCN7x+kymRGO2kxvN2=zLiqRjfTc3hdf3VdNVkWjsW3La0bnA@mail.gmail.com/
->>
->>> Signed-off-by: Marek Vasut <marex@denx.de>
->>> ---
->>> Cc: Conor Dooley <conor+dt@kernel.org>
->>> Cc: Fabio Estevam <festevam@gmail.com>
->>> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
->>> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->>> Cc: Paul Elder <paul.elder@ideasonboard.com>
->>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->>> Cc: Rob Herring <robh@kernel.org>
->>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->>> Cc: Shawn Guo <shawnguo@kernel.org>
->>> Cc: devicetree@vger.kernel.org
->>> Cc: imx@lists.linux.dev
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> ---
->>>   arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->>> index 1bb96e96639f2..2e9ce0c3a9815 100644
->>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->>> @@ -1703,7 +1703,7 @@ mipi_csi_1: csi@32e50000 {
->>>                                                  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
->>>                                assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
->>>                                                         <&clk IMX8MP_CLK_24M>;
->>> -                             assigned-clock-rates = <266000000>;
->>> +                             assigned-clock-rates = <500000000>;
+On Fri, Apr 05, 2024 at 10:31:16AM -0400, Frank Li wrote:
+> On Fri, Apr 05, 2024 at 11:54:26AM +0530, Manivannan Sadhasivam wrote:
+> > On Tue, Mar 19, 2024 at 12:07:15PM -0400, Frank Li wrote:
+> > 
+> > PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off during system suspend
+> > 
+> > > Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
+> > > window. This space's size is 'region_align'.
+> > > 
+> > > Set outbound ATU map memory write to send PCI message. So one MMIO write
+> > > can trigger a PCI message, such as PME_Turn_Off.
+> > > 
+> > > Add common dwc_pme_turn_off() function.
+> > > 
+> > > Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
+> > > dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
+> > > exist.
+> > > 
+> > 
+> > How about:
+> > 
+> > "Instead of relying on the vendor specific implementations to send the
+> > PME_Turn_Off message, let's introduce a generic way of sending the message using
+> > the MSG TLP.
+> > 
+> > This is achieved by reserving a region for MSG TLP of size 'pci->region_align',
+> > at the end of the first IORESOURCE_MEM window of the host bridge. And then
+> > sending the PME_Turn_Off message during system suspend with the help of iATU.
+> > 
+> > It should be noted that this generic implementation is optional for the glue
+> > drivers and can be overridden by a custom 'pme_turn_off' callback."
+> > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 94 ++++++++++++++++++++++-
+> > >  drivers/pci/controller/dwc/pcie-designware.h      |  3 +
+> > >  2 files changed, 93 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > index 267687ab33cbc..d5723fce7a894 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct resource_entry *win;
+> > > +	struct resource *res;
+> > > +
+> > > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> > > +	if (win) {
+> > > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> > > +		if (!res)
+> > > +			return;
+> > > +
+> > > +		/* Reserve last region_align block as message TLP space */
+> > > +		res->start = win->res->end - pci->region_align + 1;
+> > > +		res->end = win->res->end;
+> > 
+> > Don't you need to adjust the host bridge window size and end address?
 > 
-> I am traveling, so I don't have the technical documents in front of
-> me, but I beleive this is an over-drive speed, and 400MHz would be the
-> single clock, standard rate.  I created an imx8mm-overdrive and
-> imx8mn-overdrive dtsi file to let users who operate in overdrive mode
-> to update their clocks in one place.
+> Needn't. request_resource will reserve it from bridge window. Like malloc,
+> if you malloc to get a region of memory, which will never get by malloc
+> again utill you call free.
 > 
-> I also think this goes down if the user is running two cameras instead
-> of one.  I re-read the old thread, and it's coming back to me, but
-> until I can get settled into my hotel in Germany, I won't have time to
-> review.  I think the original idea was to use the lowest, conservative
-> value with the idea that people can tweak their clock settings if
-> they're only running one and if they are running in over-drive mode.
 
-MX8MPCEC does indeed read 400 MHz regular, 500 MHz overdrive.
+Hmm, will that modify the window->res->end address and size?
 
-Shall we align both CSI2 ports to 400 MHz ? Currently they are one 500 
-MHz and the other 266 MHz .
+> > 
+> > > +		res->name = "msg";
+> > > +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> > > +
+> > 
+> > Shouldn't this resource be added back to the host bridge?
+> 
+> No, this resource will reserver for msg only for whole bridge life cycle.
+> Genenally alloc resource only happen at PCI devices probe. All pci space
+> will be fixed after system probe.
+> 
+
+I don't think so. This resource still belongs to the host bridge, so we should
+add it back.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
