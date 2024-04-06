@@ -1,89 +1,104 @@
-Received: from mail-108-mta120.mxroute.com (mail-108-mta120.mxroute.com [136.175.108.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D31EB48
-	for <imx@lists.linux.dev>; Sat,  6 Apr 2024 05:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB51803D;
+	Sat,  6 Apr 2024 06:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712381341; cv=none; b=l60CVOkPyD6CXOYZa1EO042VO/8vpiEKNesXJy01eEUBLQSrt6jNQl0kTHx1cT66YtMUfrL09FiaX8SsxPuObvFNenAxL9jIIBw6uohY+2EvcQAdG9ZMPoSXdKnbN9CZjx7o5cAS0Nk0/ziLX8rkothBK+kOrYF07raLXj63TrI=
+	t=1712384916; cv=none; b=LZOsfP+kp+T2weAeHt9XTsCvpCz6WT6OMS8SrDU8suRjKynns6ZKCUecwZO90Bu0VD43/9ClAks8kHTCzi06tMhHiGW/gJVX7n3PJW2iOwr/aInHX7j38jwQF3uB3I5xHmvaMsuv5MOAwJQwGG9Za4db32OmoZ28cVDKCSKTP6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712381341; c=relaxed/simple;
-	bh=XvGGiaKjAp46vAegdWKN0fVnxmrfC1H1J6zN0QKFTrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b18wrU10kKIR7ztROAhRGkeO7L7pLnXngdfB4FaI83Cm0HJG6rU/AbffJza9V9LDmCwaPpNfYXOO1ZkpB5CCF0HxRunrrHUTcqAuOFYjPrTnzlvZpxhlya6E/iepBUffQuiMdvGIiO4JslI7CAm6DoAh/aVmBO1349uTBMGWMiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=RU30JmeZ; arc=none smtp.client-ip=136.175.108.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1712384916; c=relaxed/simple;
+	bh=7/bYiwPy5DVoN65zNqAT7YHPjjFt5UCoXl4SUW2wvaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NuzUONtr6VT0dPn0jPt9eJVp3moZUdQ2rIisd9f+1WeWWnSQQClOOMIW4WMosZDZS7Tx4j/1nRGBfWly8M+U04d12flnZj9UtKGKx7SC15iaNUG4tSRdrLq2sghRJLVBgmZ0I70wetLZhEpAgQIUsVbuI9IXG3dbekMv1zYEwkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLOSuIio; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="RU30JmeZ"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta120.mxroute.com (ZoneMTA) with ESMTPSA id 18eb1dce0660003bea.00a
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 06 Apr 2024 05:23:46 +0000
-X-Zone-Loop: 36228f93970b8c9a628aa91fe545e696762b4bc54987
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZmuhkTALxM8lf0cfAvP+7dJ0PJ20DaBe8z1ii1wZ960=; b=RU30JmeZw8NfKZujRbkVuhHZc7
-	Wdnson/TB15EBa0BLASqHxyQNxUo4sK/fpaxMJHvihEmZLBTATxOJV2BXo3NfWsttfvLKNJJWHRsE
-	CeKtDYAyQP6Ppj2blTGdGqOtuua7XHqeODzZls2nZUb2ZPnnyrjg5+IiMbLf1veOem4ZcIE6FulIa
-	cFzdxpC9SCQ77SbyAmHMfGhhZKRZBLnK2b3qt+pu5WL3NOdQhoD4Sx3PAD7JyD1tpsiBRFs/Iw5M2
-	WYtRtpD/Nl5uPmjzU7acJ0j6ti7PD2GE0ijqjph2h/9H2Iu3mWHFgIpfSZoj8eNzC+j+RW3r4jlbG
-	IjfS1GLw==;
-Message-ID: <bbf7c8c3-ca67-43a1-88d0-199cc9299c6d@luigi311.com>
-Date: Fri, 5 Apr 2024 23:23:42 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLOSuIio"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B22BC433C7;
+	Sat,  6 Apr 2024 06:28:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712384915;
+	bh=7/bYiwPy5DVoN65zNqAT7YHPjjFt5UCoXl4SUW2wvaU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BLOSuIiosYM2nz9esvvTihiOhjk7oOlq2vR96fPttQj3cdcavXpNGAA4omLq//N1L
+	 gNAziXwSF/do3XOsi7gWj0+XY6894daboMcv+5HiBDR7S/ZqNcFxbh05M/n+4I6yHe
+	 0t2GI+yOrw1Uc8VBrR7JoCYgEqK4pFUhQsfdSw71rqaVCpk7nAjDlc7mOthe2cvhh2
+	 Dnb47WUTjX2ECTj/DdmQ639d7csySmHHWTOLcIuYauwThtLNhvDlK4bQhYf/4GQ+Kh
+	 JIry2zTzR+voLYowydTe9cwdaWbzSetLaGaU/Lbp7Yqf6JOjIe3ik3QThE6KU/lm6V
+	 o5CxOvGDyHBhg==
+Date: Sat, 6 Apr 2024 11:58:31 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Marcel Ziswiler <marcel@ziswiler.com>
+Cc: linux-phy@lists.infradead.org, linux-imx@nxp.com,
+	Lucas Stach <l.stach@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+	Richard Zhu <hongxing.zhu@nxp.com>, linux-kernel@vger.kernel.org,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>,
+	Yang Li <yang.lee@linux.alibaba.com>, imx@lists.linux.dev
+Subject: Re: [PATCH v1 1/1] phy: freescale: imx8m-pcie: fix pcie link-up
+ instability
+Message-ID: <ZhDrjzNn5qxzXHiD@matsya>
+References: <20240322130646.1016630-1-marcel@ziswiler.com>
+ <20240322130646.1016630-2-marcel@ziswiler.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/25] media: i2c: imx258: Add regulator control
-To: Pavel Machek <pavel@ucw.cz>
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
- jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-6-git@luigi311.com> <Zg2jgmmqw0nXDYcF@duo.ucw.cz>
-Content-Language: en-US
-From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <Zg2jgmmqw0nXDYcF@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: git@luigi311.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322130646.1016630-2-marcel@ziswiler.com>
 
-On 4/3/24 12:44, Pavel Machek wrote:
-> Hi!
+On 22-03-24, 14:06, Marcel Ziswiler wrote:
+> From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 > 
->> The device tree bindings define the relevant regulators for the
->> sensor, so update the driver to request the regulators and control
->> them at the appropriate times.
+> Leaving AUX_PLL_REFCLK_SEL at its reset default of AUX_IN (PLL clock)
+> proves to be more stable on the i.MX 8M Mini.
 > 
->> @@ -995,9 +1007,19 @@ static int imx258_power_on(struct device *dev)
->>  	struct imx258 *imx258 = to_imx258(sd);
->>  	int ret;
->>  
->> +	ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
->> +				    imx258->supplies);
->> +	if (ret) {
+> Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
 > 
-> Will this make it fail for all current users?
-> 
-> Best regards,
-> 								Pavel
-> 								
 
-It shouldn't affect current users as this was added in by dave for
-a completely different sensor and it still works on my ppp. Looking
-at the dmesg for imx258 it does reference the regulators that the
-ppp doesnt have but it still works.
+Please dont keep an empty line b/w Fixes and s-o-b line...
+
+> Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+> ---
+> 
+>  drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+> index b700f52b7b67..11fcb1867118 100644
+> --- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+> +++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+> @@ -110,8 +110,10 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+>  		/* Source clock from SoC internal PLL */
+>  		writel(ANA_PLL_CLK_OUT_TO_EXT_IO_SEL,
+>  		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG062);
+> -		writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
+> -		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
+> +		if (imx8_phy->drvdata->variant != IMX8MM) {
+> +			writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
+> +			       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
+> +		}
+>  		val = ANA_AUX_RX_TX_SEL_TX | ANA_AUX_TX_TERM;
+>  		writel(val | ANA_AUX_RX_TERM_GND_EN,
+>  		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG064);
+> --
+> 2.44.0
+> 
+> 
+> -- 
+> linux-phy mailing list
+> linux-phy@lists.infradead.org
+> https://lists.infradead.org/mailman/listinfo/linux-phy
+
+-- 
+~Vinod
