@@ -1,91 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E858B2C6AE;
-	Sat,  6 Apr 2024 09:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3718A2B9A3;
+	Sat,  6 Apr 2024 10:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712395131; cv=none; b=ZUEcMwVsTqBR8Ku+XoE02/RLxyYVQLpwubpgVODuPgOd5nPRtLNlnYr1CQgdTAOzgZi00hsaCZl5iIEMMPiVbmT2Q893L823cnTRCWAu8PSQxq45ilMAYvShVnN9UM2wCwWqCxvX79XQrZP3IYcvGskouZOvDfEtsp2sMzF3Z2M=
+	t=1712401078; cv=none; b=eb70Qb4xWIPcXKCtOjrXgj/67QCSRR+YTlqu7r1vjTHY7pjBs47mx52nzVD+kuJbswkbyAxlUf+uucpY1+eIIgpX1Nt+hz02+d6tKOP3WpmCeSku/AoB2z314CJbS2KdlM04S27Q6dxGOthsdqF/xBub9PVW245BJvbfi/0zl4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712395131; c=relaxed/simple;
-	bh=OUXrlxpdyrcqJqLEifsJYtil4okGD8qGZToyOExWkJo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EuP0Hp4Dg1xln8OjiTv80xOI/HqUsYhyHvNyQ3r2WuhDM2u44rVtMxyPCKRiEn2TNPgZjW960Dni5KYOFYvknGLNgzrvGD+umpXCKVSA4Nk+uGqLZ/rtpnxWbKPQ6mfhcFkMRAvP3URmkUJ5hkkhrXv+Rhy6lVpi7cDA23G4c3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPLRPBoU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712401078; c=relaxed/simple;
+	bh=rqw8Wh5G0Ki5AKvdh2k+6Tf5c9k4JZYkGx3BRm4HyNc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Owi2mZ3d0+cZzqua1tsue5/WPwxwJBXdcAdK1hLowpm7LqpASWstYWFdVsJwprK0xPT7H85OJiSvfopvVroHH6WIuj71QGPm62lSvfWylHxykjRADGO34FuBSdNNQdy7fkyhqYsjO4vcclZIKXDv53Trb0jJvwi4SOPzDj+yTsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjrUvcke; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPLRPBoU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2D1C433C7;
-	Sat,  6 Apr 2024 09:18:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjrUvcke"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44053C433C7;
+	Sat,  6 Apr 2024 10:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712395130;
-	bh=OUXrlxpdyrcqJqLEifsJYtil4okGD8qGZToyOExWkJo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IPLRPBoUJTIz64lSs0ulj5jKGWUCP3opeZWNl1GU18wdX6jdXieYh4EYwUZhqDr+4
-	 xEiGH4QXOS5BqiNuo0eQK76RJbaGs2l+X3jIESEOUvA94MhhygBaZ4cy2UV3bqMVHs
-	 65VtuyFD2txH7ZDT5rPRACeIraIQmEn8XFTyxKXlDvA3Nu7d/EFn793Nr5RK60AjIw
-	 BCUqzKJOJBmRV+IyK39P0JPbw92FVfa5QlKj9YkJH38Z+M3HZynMP9SL1+BQxEPNCY
-	 dTwv2hGhmmDC1d5/ULOVqE0nmaFbsq9WrHZhdzmuvFZS1kMtXzyqJ43qNpoLr3Qr85
-	 y7eoSicBuEBTA==
-From: Vinod Koul <vkoul@kernel.org>
-To: linux-phy@lists.infradead.org, Marcel Ziswiler <marcel@ziswiler.com>
-Cc: linux-imx@nxp.com, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
- Marcel Ziswiler <marcel.ziswiler@toradex.com>, 
- Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>, 
- Yang Li <yang.lee@linux.alibaba.com>, imx@lists.linux.dev
-In-Reply-To: <20240327071946.8869-1-marcel@ziswiler.com>
-References: <20240327071946.8869-1-marcel@ziswiler.com>
-Subject: Re: [PATCH v2] phy: freescale: imx8m-pcie: fix pcie link-up
- instability
-Message-Id: <171239512402.352254.17030670986383011631.b4-ty@kernel.org>
-Date: Sat, 06 Apr 2024 14:48:44 +0530
+	s=k20201202; t=1712401077;
+	bh=rqw8Wh5G0Ki5AKvdh2k+6Tf5c9k4JZYkGx3BRm4HyNc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EjrUvckelHV1HjAa/3P8x/lQcVrIlHfbAv6Qnce/PStMK8Vs1DQeJugKu1eT17j55
+	 eojJLifZ5J1Pf03XWdbGJHKOlWBNsQJoyYjbOJbuzKgnqetuy0IykzvAwcJ+Bji22V
+	 KZt7EsoXmTs8VWeY/U1WjR8GZd/yjhbo7WbCX0CCFWqhUK81h3J8Y5dwECWW6mr+5f
+	 G4i1nSkdbV1LhsNQE35t/et5PbLDj6/RNEbIHjdXi2xai1/JZdWmU2W2z9xcvcbzt8
+	 ZnmjJQi2Wa/l9IzYMHlgAr6vb5OsLsOexXLgU2FPdzPqdbw5saCjTf/7SNJN3yD+sI
+	 foM5/4FHXxoDw==
+Message-ID: <614b5107-656d-4d41-99c1-77941c48342c@kernel.org>
+Date: Sat, 6 Apr 2024 12:57:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+ additionalProperties to true
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Cristian Marussi <cristian.marussi@arm.com>
+Cc: Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
+ <20240405-imx95-bbm-misc-v2-v2-1-9fc9186856c2@nxp.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240405-imx95-bbm-misc-v2-v2-1-9fc9186856c2@nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
 
-
-On Wed, 27 Mar 2024 08:19:37 +0100, Marcel Ziswiler wrote:
-> On the i.MX 8M Mini, the AUX_PLL_REFCLK_SEL has to be left at its reset
-> default of AUX_IN (PLL clock).
+On 05/04/2024 14:39, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Background Information:
-> In our automated testing setup, we use Delock Mini-PCIe SATA cards [1].
-> While this setup has proven very stable overall we noticed upstream on
-> the i.MX 8M Mini fails quite regularly (about 50/50) to bring up the
-> PCIe link while with NXP's downstream BSP 5.15.71_2.2.2 it always works.
-> As that old downstream stuff was quite different, I first also tried
-> NXP's latest downstream BSP 6.1.55_2.2.0 which from a PCIe point of view
-> is fairly vanilla, however, also there the PCIe link-up was not stable.
-> Comparing and debugging I noticed that upstream explicitly configures
-> the AUX_PLL_REFCLK_SEL to I_PLL_REFCLK_FROM_SYSPLL while working
-> downstream [2] leaving it at reset defaults of AUX_IN (PLL clock).
-> Unfortunately, the TRM does not mention any further details about this
-> register (both for the i.MX 8M Mini as well as the Plus).
-> NXP confirmed their validation codes for the i.MX8MM PCIe doesn't
-> configure cmn_reg063 (offset: 0x18C).
-> BTW: On the i.MX 8M Plus we have not seen any issues with PCIe with the
-> exact same setup which is why I left it unchanged.
+> When adding vendor extension protocols, there is dt-schema warning:
+> "
+> imx,scmi.example.dtb: scmi: 'protocol@81', 'protocol@84' do not match any
+> of the regexes: 'pinctrl-[0-9]+'
+> "
 > 
-> [...]
+> Set additionalProperties to true to address the issue.
 
-Applied, thanks!
-
-[1/1] phy: freescale: imx8m-pcie: fix pcie link-up instability
-      commit: 3a161017f1de55cc48be81f6156004c151f32677
+I do not see anything addressed here, except making the binding
+accepting anything anywhere...
 
 Best regards,
--- 
-~Vinod
-
+Krzysztof
 
