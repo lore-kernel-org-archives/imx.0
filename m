@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3718A2B9A3;
-	Sat,  6 Apr 2024 10:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D4D210E6;
+	Sat,  6 Apr 2024 11:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712401078; cv=none; b=eb70Qb4xWIPcXKCtOjrXgj/67QCSRR+YTlqu7r1vjTHY7pjBs47mx52nzVD+kuJbswkbyAxlUf+uucpY1+eIIgpX1Nt+hz02+d6tKOP3WpmCeSku/AoB2z314CJbS2KdlM04S27Q6dxGOthsdqF/xBub9PVW245BJvbfi/0zl4w=
+	t=1712401349; cv=none; b=nm+Ar2N3K8Vmxk3Sh1bfEge+jPTrJAGZxXnR8lGZQ+WFRnArm/wjGr4gTpbquCM/cdiPbzR/9eSjjXF3SjYOAbx7LYnBppWuUiCS4BFpzMY8PksuU7z0u7V86/y+PFyC3olI2kz+rCDfjkJ5wielnSfow3rhLQlnMBmGrhr5bFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712401078; c=relaxed/simple;
-	bh=rqw8Wh5G0Ki5AKvdh2k+6Tf5c9k4JZYkGx3BRm4HyNc=;
+	s=arc-20240116; t=1712401349; c=relaxed/simple;
+	bh=ZpMrxADaKtuIXlCnRIxLx0NrrHdkrgR6Fbx126OpUO0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Owi2mZ3d0+cZzqua1tsue5/WPwxwJBXdcAdK1hLowpm7LqpASWstYWFdVsJwprK0xPT7H85OJiSvfopvVroHH6WIuj71QGPm62lSvfWylHxykjRADGO34FuBSdNNQdy7fkyhqYsjO4vcclZIKXDv53Trb0jJvwi4SOPzDj+yTsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjrUvcke; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=IwAjQrNTgitpT0zl6TCpxoc51jCHKqS65s/Ode2koXN4IFUX/FmTCMzk1wGWDaC2ad04kyq9yZcmacxXOAFOD8QZRbVbJedMJwOb6hmiQTVPZijFKlTt0rX3r8Jn/tD6f+DKprZPrvk67+1Da2nIpxkJzKXBoduew98HdaKTOTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGBSp5mv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjrUvcke"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44053C433C7;
-	Sat,  6 Apr 2024 10:57:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGBSp5mv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373C6C433C7;
+	Sat,  6 Apr 2024 11:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712401077;
-	bh=rqw8Wh5G0Ki5AKvdh2k+6Tf5c9k4JZYkGx3BRm4HyNc=;
+	s=k20201202; t=1712401349;
+	bh=ZpMrxADaKtuIXlCnRIxLx0NrrHdkrgR6Fbx126OpUO0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EjrUvckelHV1HjAa/3P8x/lQcVrIlHfbAv6Qnce/PStMK8Vs1DQeJugKu1eT17j55
-	 eojJLifZ5J1Pf03XWdbGJHKOlWBNsQJoyYjbOJbuzKgnqetuy0IykzvAwcJ+Bji22V
-	 KZt7EsoXmTs8VWeY/U1WjR8GZd/yjhbo7WbCX0CCFWqhUK81h3J8Y5dwECWW6mr+5f
-	 G4i1nSkdbV1LhsNQE35t/et5PbLDj6/RNEbIHjdXi2xai1/JZdWmU2W2z9xcvcbzt8
-	 ZnmjJQi2Wa/l9IzYMHlgAr6vb5OsLsOexXLgU2FPdzPqdbw5saCjTf/7SNJN3yD+sI
-	 foM5/4FHXxoDw==
-Message-ID: <614b5107-656d-4d41-99c1-77941c48342c@kernel.org>
-Date: Sat, 6 Apr 2024 12:57:51 +0200
+	b=OGBSp5mv7v2wdUBs6QxDpTnHMH9h1RadzFJbVbEW5sCOWjrDkmPTYm/kZVAMQWZUz
+	 nexpFE0HxrFBlYNET9O+SzYFhqdVnudan30gX/UufdSdDPm1zQWqbN/5vmpjMJXtmi
+	 +3vw0QqvQETlEsTNbmofz7d6hracXoNxc8EE0MGTQE0nJd7vhghxDNCtojGIG8Q9g+
+	 cPUEMDk6VT+y8OIdA/uSa79KuWRydn7WCF8csTGZoLqQtRioMOx9TcT681N5fOvkyT
+	 6+2828psFxvt1G2VWsRTPIokzkhi9MWRZkFmBvK9MeoJGFA+tpYFt8ckQmBGNC3jNe
+	 JuEGoTNZaTDvw==
+Message-ID: <9aab8dab-27c4-40b6-b1d5-0a2babe0700d@kernel.org>
+Date: Sat, 6 Apr 2024 13:02:23 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
- additionalProperties to true
+Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
+ protocol
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -48,7 +48,7 @@ Cc: Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-1-9fc9186856c2@nxp.com>
+ <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -94,23 +94,122 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240405-imx95-bbm-misc-v2-v2-1-9fc9186856c2@nxp.com>
+In-Reply-To: <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 05/04/2024 14:39, Peng Fan (OSS) wrote:
 > From: Peng Fan <peng.fan@nxp.com>
 > 
-> When adding vendor extension protocols, there is dt-schema warning:
-> "
-> imx,scmi.example.dtb: scmi: 'protocol@81', 'protocol@84' do not match any
-> of the regexes: 'pinctrl-[0-9]+'
-> "
-> 
-> Set additionalProperties to true to address the issue.
+> Add i.MX SCMI Extension protocols bindings for:
+>  - Battery Backed Secure Module(BBSM)
 
-I do not see anything addressed here, except making the binding
-accepting anything anywhere...
+Which is what?
+
+>  - MISC settings such as General Purpose Registers settings.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  .../devicetree/bindings/firmware/imx,scmi.yaml     | 80 ++++++++++++++++++++++
+>  1 file changed, 80 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/firmware/imx,scmi.yaml b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+> new file mode 100644
+> index 000000000000..7ee19a661d83
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2024 NXP
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/firmware/imx,scmi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: i.MX System Control and Management Interface(SCMI) Vendor Protocols Extension
+> +
+> +maintainers:
+> +  - Peng Fan <peng.fan@nxp.com>
+> +
+> +allOf:
+> +  - $ref: arm,scmi.yaml#
+
+Sorry, but arm,scmi is a final schema. Is your plan to define some
+common part?
+
+> +
+> +properties:
+> +  protocol@81:
+> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
+> +    unevaluatedProperties: false
+> +    description:
+> +      The BBM Protocol is for managing Battery Backed Secure Module (BBSM) RTC
+> +      and the ON/OFF Key
+> +
+> +    properties:
+> +      reg:
+> +        const: 0x81
+> +
+> +    required:
+> +      - reg
+> +
+> +  protocol@84:
+> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
+> +    unevaluatedProperties: false
+> +    description:
+> +      The MISC Protocol is for managing SoC Misc settings, such as GPR settings
+
+Genera register is not a setting... this is a pleonasm. Please be more
+specific what is the GPR, MISC protocol etc.
+
+> +
+> +    properties:
+> +      reg:
+> +        const: 0x84
+> +
+> +      wakeup-sources:
+> +        description:
+> +          Each entry consists of 2 integers, represents the source and electric signal edge
+
+Can you answer questions from reviewers?
+
+> +        items:
+> +          items:
+> +            - description: the wakeup source
+> +            - description: the wakeup electric signal edge
+> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +
+> +    required:
+> +      - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    firmware {
+> +        scmi {
+> +            compatible = "arm,scmi";
+
+> +            mboxes = <&mu2 5 0>, <&mu2 3 0>, <&mu2 3 1>;
+> +            shmem = <&scmi_buf0>, <&scmi_buf1>;
+> +
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            protocol@81 {
+> +                reg = <0x81>;
+> +            };
+> +
+> +            protocol@84 {
+> +                reg = <0x84>;
+> +                wakeup-sources = <0x8000 1
+> +                                  0x8001 1
+> +                                  0x8002 1
+> +                                  0x8003 1
+> +                                  0x8004 1>;
+
+Nothing improved... If you are going to ignore reviews, then you will
+only get NAKed.
 
 Best regards,
 Krzysztof
