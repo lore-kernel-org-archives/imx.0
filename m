@@ -1,71 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta46.mxroute.com (mail-108-mta46.mxroute.com [136.175.108.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF91CFC19;
-	Sat,  6 Apr 2024 06:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B520322EE5
+	for <imx@lists.linux.dev>; Sat,  6 Apr 2024 06:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712385027; cv=none; b=bMrWTOEAxoJHsTx5JNxFBzBEFh/0WgKw9EwGXI4YjQcAEI2Wbz2Ac2uzQAka+GaF+CmnCAdBIkJvrOX4kFArO+RfEVw82UdWKCanTitEgfeMmR+RIqtwuKFFhlr7VSHQ/wnCjc7QQcRIXS0bN7Trd/4lx4HLdD/nor3oQ5ne0qc=
+	t=1712385424; cv=none; b=Of0Py+aHIxN+pRWdAhJcF+gdhUYqy/28dgQh/mS+BFlEdYhabLoVA5pyxz+SkFG81bsPsvZFM2/pRDruZ5/B0zB54VN84dwTi1Y+gY39Iho6aZhD7YYA5QPTGqQEDvlO2kLg6oBsyjfwMCOwsQjXkNbi+IYm7HPYYsRevdUzQ5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712385027; c=relaxed/simple;
-	bh=qXd+uB2LXhHrOLHpe3rXD95we40I4nRn9suxums/L40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oe9SVGaKMf5GmoUQ1IfXWx18aGjI7xifp7M3Q33VP+Q9NnlfEohyJw+NU4LvRFVOBrjS/rLmUw/plrLW1u/QR8BnxLh09URTPvnbd/oFvaCBY70WEgBzE6zgGDE2jJZ1qwI5Ehkm4spvO2bOxKQbiEqg0Bd07MX1CZp6EwASZDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6NbXAd0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712385424; c=relaxed/simple;
+	bh=OxraREhf6GRED2LQephjdnm0ObJkCkvoK147D6T36ys=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y6LBUIfY/iEqftAD/D7Z9gv1BFF+a4FeL/Ayj0snZO1PCOiManAV4ELL79JiQeez9Jnny9Q54g38dRJN+kDyuomPjHJ3rRbJVQQ4N7Z6W38BQiDzTrfgZvucZXEzbCoLQUPHTxIgQcvzKGRBxJIfutwMwqdE6fTHyYG3xac177o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=WPhbq6ZE; arc=none smtp.client-ip=136.175.108.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6NbXAd0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A15FC433C7;
-	Sat,  6 Apr 2024 06:30:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712385027;
-	bh=qXd+uB2LXhHrOLHpe3rXD95we40I4nRn9suxums/L40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f6NbXAd0eDSiyGzNC0SQnx76z2jb3UKAC2ex3djEdml5hlklPAIV27dudpoFbtrV3
-	 JGiaBdGCXkA2286da4xuS7jQDCPpuNsrGw9JS0956hA56LTL9AIRaxib0WkPWYrsii
-	 +05v+h55yn3LT1dA9FQxKyq4KstE/U/ZyIOg/E6FXeO6sCvBEvbhneW4C54yvBWi0U
-	 zLql2asiuXjFPE1EvFxI0mzk0iKsNUITWmPXJVZigP0vGNKXM/QGcVxwqvhokLOQBX
-	 o0SZq/aLpgRuA595ZY+NRmzpkBDstRzekxxIR2v00l/C8TB5JyKbr2p+MIkOiiO/cv
-	 mT0HiVJTEKoYA==
-Date: Sat, 6 Apr 2024 12:00:23 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Marcel Ziswiler <marcel@ziswiler.com>
-Cc: linux-phy@lists.infradead.org, linux-imx@nxp.com,
-	Lucas Stach <l.stach@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
-	Richard Zhu <hongxing.zhu@nxp.com>, linux-kernel@vger.kernel.org,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>,
-	Yang Li <yang.lee@linux.alibaba.com>, imx@lists.linux.dev
-Subject: Re: [PATCH v1 1/1] phy: freescale: imx8m-pcie: fix pcie link-up
- instability
-Message-ID: <ZhDr_yCBR_oAzD96@matsya>
-References: <20240322130646.1016630-1-marcel@ziswiler.com>
- <20240322130646.1016630-2-marcel@ziswiler.com>
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="WPhbq6ZE"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta46.mxroute.com (ZoneMTA) with ESMTPSA id 18eb21fcaf10003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sat, 06 Apr 2024 06:36:51 +0000
+X-Zone-Loop: 80b7f27fe74d54c6a9d67be2ad2014e7eef4c2ac1155
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=P6oz8jLcfNyvGaOUeOoCwlqC8Ij6mtZ6/gKuz1gexug=; b=WPhbq6ZEa+mQTnijWaBY6xxs/H
+	cfHYUnpSRs8fOhOb/O4yJffkApW8GbdCsZ9fgpCJBUMa3pysrcREVULO1R/UkyRqIiPc9mObnfXPv
+	YmP7o/tAqB0ayOqkRLxs5fQtXrUia6yJroEUCCB+ckUFpQp8RHDB0YyE7tXXD9rJenqQZDa30Cqkj
+	soLpFl0b5rnHDmjMNbaU+mvK6HOXuMsdAhCIuIT3xhAYVnT6i+9TrIfSP7p+3tjqrOm0eD3oFmOvb
+	FE0z2dqpWXi9w++3zacDwlhzLX9akXx4T0C5yl6+Qkahp/SWJ/+9Q9RvAIcOuf71zbchDNERWMcas
+	kIvWVcdg==;
+Message-ID: <91621b30-dc6f-49cb-878c-96d39e38d994@luigi311.com>
+Date: Sat, 6 Apr 2024 00:36:47 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240322130646.1016630-2-marcel@ziswiler.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/25] media: i2c: imx258: Add get_selection for pixel
+ array information
+To: Pavel Machek <pavel@ucw.cz>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-12-git@luigi311.com> <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
+Content-Language: en-US
+From: Luis Garcia <git@luigi311.com>
+In-Reply-To: <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: git@luigi311.com
 
-On 22-03-24, 14:06, Marcel Ziswiler wrote:
-> From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+On 4/3/24 12:46, Pavel Machek wrote:
+> Hi!
 > 
-> Leaving AUX_PLL_REFCLK_SEL at its reset default of AUX_IN (PLL clock)
-> proves to be more stable on the i.MX 8M Mini.
+>> Libcamera requires the cropping information for each mode, so
+>> add this information to the driver.
+> 
+>> @@ -116,6 +124,9 @@ struct imx258_mode {
+>>  	u32 link_freq_index;
+>>  	/* Default register values */
+>>  	struct imx258_reg_list reg_list;
+>> +
+>> +	/* Analog crop rectangle. */
+> 
+> No need for "." at the end, as it is not above.
+> 
 
-This doesn't apply on phy/fixes
+Done
 
-Please rebase
+>> +	struct v4l2_rect crop;
+>>  };
+> 
+> If the crop is same in all modes, should we have it in common place?
+> 
+> Best regards,
+> 								Pavel
 
--- 
-~Vinod
+I see the imx219 made a similar change where it was changed from using
+that .crop format to just setting it in the set_pad_format function
+so we can do something similar here.
