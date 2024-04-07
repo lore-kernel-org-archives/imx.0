@@ -1,53 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E5F3F9D2;
-	Sun,  7 Apr 2024 16:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF124086E;
+	Sun,  7 Apr 2024 16:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712507951; cv=none; b=ZZvscEHmqKSwo5R62HxRRc+C9q2eaDfEoaImR+kibydowrxjtSuaysCCXE4uPHA/r3oj8UEUQW9qyDlLAqCucQr7B+eR+bdGXveUIKzUfszeq/Qe9C3fa6GgWBgItjz4S2JSW9Y7JpEt8h884TB2fwxQ6de+7FxeVPQb/FXcvq0=
+	t=1712507964; cv=none; b=YvcEs4LywwDL2Gh49Ez2ItKD5ZNZnrD4wSWjNxjurxRuYqet+JCLFmrw6i0osClakuWNQA1Tm33qIM1pYx69F7bfrI14zO5XMamXSA8qL7Xr3szDjGbkd5oDkyELj7F4ftvtZcea+uffVADATzLNr3Dn/ryK6+3eCaLoyhgy+0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712507951; c=relaxed/simple;
-	bh=OTmsimQJwp7aDqopRUkhzqXDLl0VnyoKAPtMX+wk7vg=;
+	s=arc-20240116; t=1712507964; c=relaxed/simple;
+	bh=9xep51DmsRdSIQSIA9rfjVwSUOIqYSdBSyWLWEAtevI=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=qUe8ZWDwPxvlryQX4VCjTkLStZh41GiBhZSW/8hog5z+dfSgZId4ulYT4gSNek6N6jxyfTwPoWS8NBqby9W7vwqT0veaygklJow6W/xQOqWFeNYvhGWiDmO6e9U+lCCMQiWpWpFVJXp40whJbhvhAWUGAVBh4ffqmUOs2eKux2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZ5KRPHH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=NOEMMszj3+iqU98/K8i4LVELipRUHwDQybMvuzlmjo6Tf7T567oP/78DX2dzZJKggtXOFMkrHPAM0F1YBu+oqhN6zwXmbm7IoPGgbr5ty2WhKNgPbjumRbuEFjI200r6Lu2VJrGihZji708wVTA+Q1UQkyLrdrAQQYfgbbyBKk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pc0h3DDU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZ5KRPHH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F345C433F1;
-	Sun,  7 Apr 2024 16:39:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pc0h3DDU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C81C433F1;
+	Sun,  7 Apr 2024 16:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712507949;
-	bh=OTmsimQJwp7aDqopRUkhzqXDLl0VnyoKAPtMX+wk7vg=;
+	s=k20201202; t=1712507963;
+	bh=9xep51DmsRdSIQSIA9rfjVwSUOIqYSdBSyWLWEAtevI=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=GZ5KRPHHDq4gJhIPL58t/oLTlxjm8qJ7ce2ITyGMz44i5CunDqCso6+Yd0VgEBBqB
-	 rp3ZRt7sc17sHlrkTof92WlAklQTEp6PZeuhMnJmnThjifb2XxuIZgBjH82dz7bW/1
-	 VVX9Nx0AEKK3wEOOzcoVb+bTow/BKgugJi75fWCV+i3yd7vt3eJUEEfh/k+rXHDoP7
-	 iQiwIdC/Zv7Y6xcVS3MUx99RQrkT8v0Zu55DTzwvLyV+SSNwxj8K23zqA/FX+vUUGq
-	 qFgrRShJou80QA0gBQtiRa/X2ef+4wo6e8lZHOu98Rzm9KoY4Mzxwc9MgD4vCLtWWI
-	 6z8ts0aOv6Gjw==
+	b=pc0h3DDU63ApNDaOWqArA4ze7HHimOZj6FJOxLek2t9D3YDajnqzeHiAnWWglMLI8
+	 j+/XhSV3p+YQBAI7mvpMczE/KSrRTa11rYcxrk3XqsXU/avVi3W5/NeAq61HvhdDXu
+	 GcxZbPBELPyU/Y0kEUZhHIqYNHhNQxuNrIsD5h9cNbFKNGtpea7DjSUsZD/PY7Hmmm
+	 nEH2+QQR69WAu5AOMfkoBeFPaEyvepBsdc6EzjBTeqyoyNmAPlaqclmV3ce5um+tw0
+	 F4OzpLv5vWW8P9Fc4APp8AH6Mdg1qwuCbuxVYdy6JqlQGjWtS8wJi3zvwha54JHIG8
+	 5FUm602L3zYiA==
 From: Vinod Koul <vkoul@kernel.org>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
- Rob Herring <robh@kernel.org>, 
+To: Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>, 
+ Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
  Frank Li <Frank.Li@nxp.com>
-Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, Nicolin Chen <b42378@freescale.com>, 
- Shengjiu Wang <shengjiu.wang@nxp.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, Vipul Kumar <vipul_kumar@mentor.com>, 
- Srikanth Krishnakar <Srikanth_Krishnakar@mentor.com>, 
- Robin Gong <yibin.gong@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
- Clark Wang <xiaoning.wang@nxp.com>
-In-Reply-To: <20240329-sdma_upstream-v4-0-daeb3067dea7@nxp.com>
-References: <20240329-sdma_upstream-v4-0-daeb3067dea7@nxp.com>
-Subject: Re: [PATCH v4 0/5] dmaengine: fsl-sdma: Some improvement for
- fsl-sdma
-Message-Id: <171250794199.435322.8811454483252846455.b4-ty@kernel.org>
-Date: Sun, 07 Apr 2024 22:09:01 +0530
+ Joy Zou <joy.zou@nxp.com>
+In-Reply-To: <20240323-8ulp_edma-v3-0-c0e981027c05@nxp.com>
+References: <20240323-8ulp_edma-v3-0-c0e981027c05@nxp.com>
+Subject: Re: [PATCH v3 0/5] dmaengine: fsl-edma: add 8ulp support
+Message-Id: <171250796008.435322.12483737095962036790.b4-ty@kernel.org>
+Date: Sun, 07 Apr 2024 22:09:20 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,37 +50,30 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 
 
-On Fri, 29 Mar 2024 10:34:40 -0400, Frank Li wrote:
-> To: Vinod Koul <vkoul@kernel.org>
-> To: Shawn Guo <shawnguo@kernel.org>
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> To: Fabio Estevam <festevam@gmail.com>
-> To: NXP Linux Team <linux-imx@nxp.com>
-> To: Rob Herring <robh@kernel.org>
-> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> To: Joy Zou <joy.zou@nxp.com>
-> Cc: dmaengine@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: imx@lists.linux.dev
+On Sat, 23 Mar 2024 11:34:49 -0400, Frank Li wrote:
+> Do some small clean up.
+> 
+> 0c562876972ee dmaengine: fsl-edma: remove 'slave_id' from fsl_edma_chan
+> d9b66cb5fdf62 dmaengine: fsl-edma: add safety check for 'srcid'
+> aae21b7528311 dmaengine: fsl-edma: clean up chclk and FSL_EDMA_DRV_HAS_CHCLK
+> 
+> Update binding doc.
+> 23a1d1a6609fa dt-bindings: fsl-dma: fsl-edma: add fsl,imx8ulp-edma compatible string
 > 
 > [...]
 
 Applied, thanks!
 
-[1/5] dmaengine: imx-sdma: Support allocate memory from internal SRAM (iram)
-      commit: 802ef223101fec83d92e045f89000b228904a580
-[2/5] dmaengine: imx-sdma: Support 24bit/3bytes for sg mode
-      commit: 288109387becd8abadca5c063c70a07ae0dd7716
-[3/5] dmaengine: imx-sdma: support dual fifo for DEV_TO_DEV
-      commit: a20f10d6accb9f5096fa7a7296e5ae34f4562440
-[4/5] dt-bindings: fsl-imx-sdma: Add I2C peripheral types ID
-      (no commit info)
-[5/5] dmaengine: imx-sdma: Add i2c dma support
-      (no commit info)
+[1/5] dmaengine: fsl-edma: remove 'slave_id' from fsl_edma_chan
+      commit: cee8cbfc7be8ff9f3ccf258134f9ab2c273abb75
+[2/5] dmaengine: fsl-edma: add safety check for 'srcid'
+      commit: 6aa60f79e6794bbbc571ea4e0501b9fcc26026e2
+[3/5] dmaengine: fsl-edma: clean up chclk and FSL_EDMA_DRV_HAS_CHCLK
+      commit: 9a5000cf70bcfcb5dd4e5b4bae0a01fb9bdf9fa1
+[4/5] dt-bindings: dma: fsl-edma: add fsl,imx8ulp-edma compatible string
+      commit: b14f56beb289ff67fe484d720bf09092163f90c8
+[5/5] dmaengine: fsl-edma: add i.MX8ULP edma support
+      commit: d8d4355861d874cbd1395ec0edcbe4e0f6940738
 
 Best regards,
 -- 
