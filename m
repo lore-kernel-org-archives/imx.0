@@ -1,111 +1,113 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2099.outbound.protection.outlook.com [40.107.21.99])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2109.outbound.protection.outlook.com [40.107.21.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD20BB65E
-	for <imx@lists.linux.dev>; Sun,  7 Apr 2024 01:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C20EBE
+	for <imx@lists.linux.dev>; Sun,  7 Apr 2024 01:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.109
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712451842; cv=fail; b=pX5hVoNcwL9rh2g+7IkM8pjPV85aYrU7KEBTjxr2WgF3W3c/UzM1Gtx8XgXd3zV99qCH4jX6L7LCHPuwWk7c+/R6Wr5r/vXv1eB+I2Dbsx6EAscMzfyCSN2eCbjcW+C8RTFqEkqizVoOso52X4svSGYwszYSjw+oS5ZSRzFcnQ8=
+	t=1712454609; cv=fail; b=WBwCJ2jjQn8hWxk3EqMUrA+kAE+fgjT3hc18J++NBUUjKicDBB6OEzb+B7/lj+4ZMAR4QBIifbMAsWvNFPORYZiB2LuhjyH/A7bDqKNXrNFldJOE4j+PlSTav0Y4704CByLflQFjVF43E9+07O+bIqGK9QghDYS4TXO4ZRiu5HA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712451842; c=relaxed/simple;
-	bh=71oaXevOXJlO/fAm4WwNuWJAXirOVtejOp8dp5j8H38=;
+	s=arc-20240116; t=1712454609; c=relaxed/simple;
+	bh=LsiGuiKreRiOYuh0GJY/Envm921BA5WXros4lM9TSF4=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mEaA/H0RUpN4XqvIj+/r1xx9QQx3sG5M34slBZeQyHSBby9D0pmqHbQyqS5rbmGWk2dijxssO45sdPr2DP285tKUSvWvgNAtGGPmCOk83nVRrdwBF8mzmdKHbEol6Opy6dPoWjGWZAB5m9A10KP6pPZPbBhCfNltkCNjea1Znho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=SW2iE53c; arc=fail smtp.client-ip=40.107.21.99
+	 Content-Type:MIME-Version; b=R0WuuL7HFn2cjjq+JjUbfOg+C6oYR97+T0MynJJ/XvK4qXqmxOPoSrKleNPY6ZwOzuu927tqGhzH/zbnFoAgoTVCjeVGuTyyXEl0j6zNJIUSGIf/NYjTSiThgHN8bt2X4ci9irTkS9/6kU5maFaJL/Ij3PqwB0NBVb3nyOxVNK0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=hfIdM83a; arc=fail smtp.client-ip=40.107.21.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="SW2iE53c"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="hfIdM83a"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T2aMGrN92P6QIXc+dtPx+7cmlLErb+G6f4FquPOrDq2JXnsFvnsvUBSy6GglaJLIT5nHSNi+GJiD6bG5+K+eREgg4awUjFA4wB1XSrHnlRV1rkkkW7KbPUQ6cT4awTvsx2wVUBSVT8CmT40YOW+DeGEN5HKdE6xXfz7yrupFQkhjM7ahl5VYj7+KkfhhCL0jB4dYjJIPuc524Wr8yHsukxgYJm+W8X8oD1u2OR1QWULozxh6SeZCTuyNB8j9vfa1tHoepja+j119Y+ecoNeIyCSMu2WlYYhPG1yDaQH46eIycWfjEo/DvNozik1c/KN87H1+VDdl8AOoyuVWgGRyfQ==
+ b=XO9VUx+Qr+ZftjLzsHoN8LXHmXHvavL6PvmeQi+PVeT+O9G5DOB5+sKAnna22iI3CSCL//hBCe3ncJDH6knS1fHVOW/Cviu0ccsAhMT4dNq5Hl/rXkUpvq7u0hx60vivEnefcVK9tjgZB87EOMzFLx6IuTp111MlpCTBOQq8lvTNCliZ5PUcAlaYEYk6ZksIJCM4LiwS6IPn6+Fplg1ZfkS6gRyp04TcQUQnqZtOQL1Prn7jOsNqChpoXXzNGmYZYwdtjTsSQo9WddLFM1QwOHCYZMubmAssSe1gfzXhcri9dr4CeW6HZqNOEsJElsZhuEJAYtIWEeiYjDRqTEONoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ft/Hh9+QtDl7Rtxu9oMc+9YGhgZCAlm6OCjoEU9qoRc=;
- b=c9pkaG0rjzMUe44ghnqWwyRFT8OY6jWMHVSb42UK3tGtA5nl2H96NF70Ksy/QqtVG9Lz6z4RWRNcFME73pRnruYpzGqyIZde+UhdziQg60k0dfF2PTxiKfztq9Ghg9bLpF2LcNlnxfZew3iW0Ab2JMGjQTZJb8JGXZrMtsPYLmTRJ4GbX+LwsECUrqh6duBzJCuPwGjwZYJnHGePF9onwtg2tOZbgg1bmVE3Jt9A3lDCtjEz+3B+FUG0Z8pY7GdSl+/gVVzZIcPs2yoPeaWW9rBUajO0BtLXxd5rNGnRa/HAR3QPNt/1A7/egQi0kR6bAkLM6bSwg4GQ8I4qGKnzBA==
+ bh=HmJvNP5e80idrIZUf41xv6kjHcyRbQXGowTFnOoWpAY=;
+ b=coDTufzMHd/L2ALbWJW0f2Ini28aCYnSGu63chmmebp65lZSOMulV2XSMWjH8Z+AYOUoM4+7JGoloJeTot42d22Il+bpA7nUVFmd8mhl66vs33J724CnXC0ZFTqzXQfDLp8X59rP5XJ4COPl5KNZsTlOQtADfIoDtVj6AVd4EZSWhfob5k+4EiqSZzNWY2qR//0WsaQCHxkBmArE5+bHcAYzTWYtRkT0vN3OW4WESugO40bRWLhxLqr3J/1k6cAetn9cDMvGLPCv9VoZt71GzL7GXYgDMOyQQh7RL8ZxPKrOp6IPsZTpm1yA/u2gC8++88HWZVbr3OBKKo9rPEtuDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ft/Hh9+QtDl7Rtxu9oMc+9YGhgZCAlm6OCjoEU9qoRc=;
- b=SW2iE53czaXJ/X6UyGNJcRE8VCNsYUescVggE9n8cFyT5zVEVBOAl8I9FYZR3UcIqRH7TfQGATAoGv6di/zEjS6TzK1fPPGOWDjs3CxZPdpz7N068UHEpHYtYhQtVfnv/5/UZJNzRhvyMawnQ4yi9kyja5Zjpbyxs3s9t9nPe5g=
+ bh=HmJvNP5e80idrIZUf41xv6kjHcyRbQXGowTFnOoWpAY=;
+ b=hfIdM83apfHiNshpZsafiirpcKJLVkKv7gfEvCKooKhPWnfm1yMREjNi8S+qBhsHnsPyWmsZrGVcBbXQPZ8DTK40z4loTSa02XZrHtFwUCz3VR5QLTRMbPjVVqnyB83TkCUBxmpxidYla5bduZ01hSaTtqQSs702zjzv7toNpoo=
 Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by AM7PR04MB7141.eurprd04.prod.outlook.com (2603:10a6:20b:11d::20) with
+ by AS8PR04MB7621.eurprd04.prod.outlook.com (2603:10a6:20b:299::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Sun, 7 Apr
- 2024 01:03:56 +0000
+ 2024 01:50:04 +0000
 Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
  ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
  ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Sun, 7 Apr 2024
- 01:03:56 +0000
+ 01:50:03 +0000
 From: Peng Fan <peng.fan@nxp.com>
-To: Marco Felsch <m.felsch@pengutronix.de>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+To: Krzysztof Kozlowski <krzk@kernel.org>, "Peng Fan (OSS)"
+	<peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Cristian Marussi
+	<cristian.marussi@arm.com>
+CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
 	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v2 4/6] firmware: arm_scmi: add initial support for i.MX
- MISC protocol
-Thread-Topic: [PATCH v2 4/6] firmware: arm_scmi: add initial support for i.MX
- MISC protocol
-Thread-Index: AQHah1U+Ouni2yxGIkadGTHqoE9cS7FZ4lEAgAIamiA=
-Date: Sun, 7 Apr 2024 01:03:55 +0000
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
+ protocol
+Thread-Topic: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
+ protocol
+Thread-Index: AQHah1U59RmV1LBnZEq28+9F7LvjPrFbFSOAgADj6VCAABPlMA==
+Date: Sun, 7 Apr 2024 01:50:03 +0000
 Message-ID:
- <DU0PR04MB9417A07F56B7E14DAB3DCE2188012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <DU0PR04MB9417786C4A0B2B54947D70E588012@DU0PR04MB9417.eurprd04.prod.outlook.com>
 References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-4-9fc9186856c2@nxp.com>
- <20240405164414.t3fqhnwudxxt2ozv@pengutronix.de>
-In-Reply-To: <20240405164414.t3fqhnwudxxt2ozv@pengutronix.de>
+ <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
+ <9aab8dab-27c4-40b6-b1d5-0a2babe0700d@kernel.org>
+ <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AM7PR04MB7141:EE_
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AS8PR04MB7621:EE_
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- +iqLESbyt9/a3IJikbcxLw3kMwgihTMOPlWwT2XImqIwH3c3gbqCit+IXetQq+Qphuabp9nqMouHXbt6s8Dj0Tx9rStKJpLMzD2p4vAsTQtNIhc5HHml29eodzCX0GrfBMBrM9hPC7+QhSAuLoO1iLFaiWg5lQ7Il2o0+2VB/yc0wl0Gh9q2f9p/TejCT9amuzRBzlLr+aeZP1X8Ei3mHF5+tfVnF9Y/LuR3pOaFR8FDdHQ1WYRazJCUSVWUvkGyhx6qGIxJWIV4aJtfMoGK6lB2xNvVFUHx228hALhsZzAZ9s38FRx9PzCz6Xncyj9vTlL9PSG/Smt+TdP8glQ3WR1z4ExEd8mRM2ESDGQaPU/szueNo46fjRE0s9mtbJYLSTRzo3J5qWjDtGUFYELkyPuRDUrB4Csp2qUMD3MJfLciUGb3zdVTX35pxzfZbe6wRhL9oKoqY4unKhk+3+zRBCywm0f5XcWQ7skyegZ3lCNL03GZyz22VF0HQCaTzkR4y8aA2otMSgE2JfpSQp2c+SAiRckRvliox/fUnHETkfEiB7PN1bsdVtiap03LfQmnvtMgrCqayvtK+eYHO4UE3zr0lXt0mJE+2zwa8P+3lZlOWsRw0mLxAbCGkqTtDWVVFtAfmOIxB37t+XopGe2AGQ7S7I9gyR0EOppLtSEL0B0=
+ FByPVvaKyZ0Gpw95kVGqB453/xVBDYodNpoYM9VHfuQ5mBWdXItv5cMIcRcHBWuDQI3CwkyxkGUQxfqg9N0tbdR4K94fwDbxiRnFNeh2RYyOZNnc4mlX9NSlEBB91u/9+SRkhBSMz63yFcbwUue6OiWWfZK0D5/Thf/PE9Tqb9+zv3IIW2wGGAiYAP2fgyoKCuokcf14SLcvjQ8IZGmYJENK8M21W3nWEJttVWrvsAxxkobDkZTfRru+Ah6AJKVnEefCwW4oBxbk0tMdePRVOrZtZi2/227as3fO+N/Fx/whXG4phseXc8TAp6iMslzLaU/Fa0cxEs5EHhVC9MMcgUtSVlLmNrKMDKUx0GjmIds7+jWGakJBpHhRSHhz7g5WQPCvYge8J8fSFhRfF+5h+fTQzgdVNKIdYT5Y5Y8jxGLr69Vlfhi0+PZ6yLuBur1vxqFHbOMJvec7CfmFYLtr9nAzb2LodPTQj9wTIEl7AoP97wQHrIOGVyCdtKI07isbbKdexNByhcbRWDKWJVk5K62NLnG+mg6xGYp/C7Q8MjsxVcpe0QaslGIuSEPbOgC/c3taJAQEapRmkk9rSuAYBtU2OP6GvRn3t24W1L9JTalZnI9U16zp8MHslaP+90NguYZNkuT29duQTWHN2TbPilPwro7aZo88DCvHNMAeDarK09vNvijUWqRk+Yic00Q0qRpax6YCZfdp8NRuC0VSJQ==
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(7416005);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(7416005)(921011);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?qEBxaDubDda93aj8damHYOjCVlkOSERdUbzirhrDQ9P4e5cQDUd6Oc8cWlR5?=
- =?us-ascii?Q?I8qMwbK1NhXrxwsAkZwxuB6BC1fBoXHg5o52iZPSIXCCW1QKRpgaxRDx6OyY?=
- =?us-ascii?Q?hCPLl/AiFJ/VgNuZQ9UmyAzqFY/EAWnK99d/GUp1VXB68gpbZcwTdeniRnvd?=
- =?us-ascii?Q?Y/sc3NqQN9sriKotjhAXmOP8nxnQppz1uv/mP7CQNg6zBoL0DQpAXFmU8f0t?=
- =?us-ascii?Q?lwdxU2LayXN8y4JsWdEHlSBo9tKb8Xw3tybz4fhUp6BGY90hy3pIgtszpsIf?=
- =?us-ascii?Q?UypMrdaa6UEs2dJED5/PJreHRmY7Sr7IlP/dS84Mr0cuvkhg7wFYcQQFCmTI?=
- =?us-ascii?Q?bRj69D1YomtoWNQhMuYweBky+If2XtOGLY3QdUmwSke49yZAAvZXs+x+wqKL?=
- =?us-ascii?Q?EdRutQNoUmhL+8zvmxroxWYCN0a97VYxUGbzBEip/SRLBxkfKfXoG2oxGOBg?=
- =?us-ascii?Q?j8rGnWI6PaICMJAbZN1a0BYy/7pza5WUv3UNoRyj5SvbNJnYElKnK/0m+fZV?=
- =?us-ascii?Q?raP5IO/XezfIoR7Gv4BBhnM+Z4fjWJJnjq1mzyNKBMIe7rtZ6uf7FrK99vEl?=
- =?us-ascii?Q?ext58aWpowbjqYQCGKSwSY9ZDIzEundjmwCwbzNXneoFiT74K80+JsAvG4am?=
- =?us-ascii?Q?gVW7ad4eL3j/gNyjVsZo4sPIburkv8D7BEp+Fr1EYkhpQJ6Ds9VPyL6fSOwB?=
- =?us-ascii?Q?39LaWE1DgNu0+n8rep4XeuwCTyNY10ScyxQ24qumTiqqDfntH+fZ+97r8o8b?=
- =?us-ascii?Q?NMOK+jGDtS5O52oTdg7sqJBnHpWJsgwjNrbketbIxToqvKKsuywhxDrW4jVl?=
- =?us-ascii?Q?kJTVaOymnnWz2oLWqkWOHa0dcKQHze6Jc//vGvveXQlJfN2dNPG09NwYcHDp?=
- =?us-ascii?Q?ReGC8OKqBy1uN7Cd8ifuQ9kZjWAp1w59hTyaZUmKquamdUCLbX4XwrjNpoqB?=
- =?us-ascii?Q?Q5zuououPYxgg15jG+ohsxgzXVNOV7u0W2Ce0+2uSTJx8ybdjdUCml+lhYLx?=
- =?us-ascii?Q?NYvJKBgx64q9zYphtm3p0wVMlL1+jJzR0rQKN7Xu1NfUKW0X3aTyJb8Oro/x?=
- =?us-ascii?Q?8axDcl1ea7/vmNlWn42ScpGzuIeQoa69EzP2D8rv6elmfoxP+CSdjg2OyyKM?=
- =?us-ascii?Q?kLTuWxPxk18yTZmtDYnqQhchaq1s5JGuMoVZVbjkhY4vN9jnEMZ61qBayVJy?=
- =?us-ascii?Q?V8fw2OgYBHuq38CDJjbdjbynaRpYipa7aVLZo5LTeBJpcSzE/A2WjU7hlMRb?=
- =?us-ascii?Q?2hU+9ftgc7ni2sKDS4wgew3mdnKWXiA4AFWG5TPI54Um/nMcg4nLA7iIrs+o?=
- =?us-ascii?Q?0u8Crve2QSTgELwsCg69kQ2uXDxNNRT8wAVw/RbPfm5X+1kMaB19IK5XyWOo?=
- =?us-ascii?Q?RvoXEbjlrpT9gmnwHRm98IMHaV3gYc4BJ9ucd5PKTPAOIJ+mahVpKKnrKpFf?=
- =?us-ascii?Q?thEMTO8OYbnAk4YnX6K8PAo8h+IjDujTgnWP9HAddfGhe7W5mX0EoR3QijkH?=
- =?us-ascii?Q?WrfUSEtXmwuedxhqdc+//oeObtC0Kc1fdvmRHdLyuNWkqkIUmmKgRySn09Jg?=
- =?us-ascii?Q?FpTgql56cSOxEYYFmx8=3D?=
+ =?us-ascii?Q?+L7VUj575xfqU6XiMhrJOq5BoQ6SPnA8IUZJEdiIwNo9vYVs3rMLyTWmtutK?=
+ =?us-ascii?Q?v+O1Fzyj5zwXn4zoF5A93MzaEdSmcKTUWF9LaV7FiI/+caV4klSRBSoagNV8?=
+ =?us-ascii?Q?ZAsI6213pD2jhEf7wJp5HnT6bSRkFhGq1yhdpz0L5rrp+IqJTk++vwa5v4Vh?=
+ =?us-ascii?Q?usIpBJIHNL+n0sgd3pyZhe2Ad+5l42uYsXFr2vbC26t2hB7BtD4Y0ORn/rEZ?=
+ =?us-ascii?Q?uQdgs/wR4VW6T9AQEE9PiSfxmL6gyaCuiEmpO1mzC0XxW/72INvALm3mXiYI?=
+ =?us-ascii?Q?zv4fVevAIXoByuT+cgCfy4tG6I43bUiT3rgt1SZhbUpJkt76DXlN0bpP1dl7?=
+ =?us-ascii?Q?M0YoJ1XZp82Gom/yAcNZ3BOsfk7tfx2dzeQPunLm+puIo4Wr/3MpNnhH9cnl?=
+ =?us-ascii?Q?yaBwN3+HB+p4mRPIL6948X70+52CNyPFDAKsqrjFUO48R0U8RoUU5vPXfxqB?=
+ =?us-ascii?Q?xP5/GqNLSJpQGAj3BsvmHlCsCa7ij3zqkUDNcaUU3+r8SwW+19r9vYDigJHA?=
+ =?us-ascii?Q?3GEbp+zDxhYIG9fn6ro6081epPGgjfUSeRl5ccnLJexZuALM2k94vAP0zlJt?=
+ =?us-ascii?Q?q8Mo8JusjQ9BXAQgQz7eUACyOFOYGON2JtWV7W+8pb7pLoTRSCrQAtz5ogGb?=
+ =?us-ascii?Q?MNGCN12Fo9zHc22o0WFYpO3tDXo/ueRro9IVyTG2qvtGGtx3VIcF0iEeMmNP?=
+ =?us-ascii?Q?yO2yKeC0/29opMAG1i/FGAS6WGEyt6tn7+Fc+M990T3kBxYDoFK36/IoMg3e?=
+ =?us-ascii?Q?Ij4bztwi6gnEOVHCs/jj6NiWUMCXCQpRRfQF4yOzbDk8uAsII4t9w58DLMN3?=
+ =?us-ascii?Q?kthx4OaBvmQqj6o7qdG0pp3OAJ+J49OqZUiwmNeuqn+6d6WQaEt5/K9Vdjvd?=
+ =?us-ascii?Q?xB/feR5TDI3luXdbgM5saEowhXZBpXfvbvZXah10Nka2R5OE+r0wbAeTqUxs?=
+ =?us-ascii?Q?PWPrL5o3MbO4aqh32H0GXntmhfd+QMapWpEVfr5CheDbiAfIGqJKiF46r9to?=
+ =?us-ascii?Q?qgFRUmt4WSf8rsqnAkz0Ty5t+s85/SuDcGjnwsSaaMG7Zksx6rB16z0gsACi?=
+ =?us-ascii?Q?JV74M3f6NPh8CVS5wfD3QiGnHgQS1HSFZcSHokJLHyugb5NtZBbQexDKsvjr?=
+ =?us-ascii?Q?xvDJxNKK4HkWZ8ftsKhGCzEbkBUlQMLVz2PQaramSTJ6B3PF+wuo/tYzuV86?=
+ =?us-ascii?Q?LEqaOh0zv71oGKmAHLFHL6sLbzACF0QETY3oycfpWmFHB0hTT6byuekDclbf?=
+ =?us-ascii?Q?zUIH9w2MEpp9A/YIS7MVbP/sTcd3xFTb1FEAAJpGZGYRK/p5ckHn6kq2pNIh?=
+ =?us-ascii?Q?mOjzW7d5HlOpYhsBbOySxGcJ3CR9R3dpeSO23r/tG5HGLxsKBpx7NrEPS9tT?=
+ =?us-ascii?Q?WTfmgfYJm1THqcrJSDAybVcEJRpWEbYkHzwoHkfec/QjH3V8oLmKNfPJsT22?=
+ =?us-ascii?Q?uNn74nVVfvsneIVXY9CepHJpPnJXNpYop9O/yl195DzxmcjjtwdIBr3UDEks?=
+ =?us-ascii?Q?iAsRwYKFHmHPnB6QYb0ZIRMPOSiRhU/mTbRUI7D5wvbYxBqWjZf8g7RdAWEr?=
+ =?us-ascii?Q?Mkchqm8zyx6eH4B90iE=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -117,462 +119,222 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3dc1fd2-3b0a-4d6d-624e-08dc569e997f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2024 01:03:55.9565
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd9f847c-b4f1-4461-a070-08dc56a50b3c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2024 01:50:03.7538
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bh7zcQLaSkYinuobciE/8Tmv75pfqBS6+16TPfZoAlHwJ+RzTl30DRAiv+ZLzWr9wV/zs6m5Jfxe0fbt0H/tXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7141
+X-MS-Exchange-CrossTenant-userprincipalname: hJo3Mvz19OLCbXLy8IaG1HkCHp8/YW9ahmm2IJQVpys96+wuipewh1JHsBef7Q1AIpfqRLqOOoP9YqnRClDGMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7621
 
-> Subject: Re: [PATCH v2 4/6] firmware: arm_scmi: add initial support for i=
-.MX
-> MISC protocol
+> Subject: RE: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extensio=
+n
+> protocol
 >=20
-> Hi Peng,
->=20
-> On 24-04-05, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
+> > Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI
+> > Extension protocol
 > >
-> > The i.MX MISC protocol is for misc settings, such as gpio expander
-> > wakeup.
+> > On 05/04/2024 14:39, Peng Fan (OSS) wrote:
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > Add i.MX SCMI Extension protocols bindings for:
+> > >  - Battery Backed Secure Module(BBSM)
+> >
+> > Which is what?
 >=20
-> Can you elaborate a bit more please?
+> I should say BBM(BBSM + BBNSM), BBM has RTC and ON/OFF key features,
+> but BBM is managed by SCMI firmware and exported to agent by BBM
+> protocol. So add bindings for i.MX BBM protocol.
+>=20
+> Is this ok?
+>=20
+> >
+> > >  - MISC settings such as General Purpose Registers settings.
+> > >
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/firmware/imx,scmi.yaml     | 80
+> > ++++++++++++++++++++++
+> > >  1 file changed, 80 insertions(+)
+> > >
+> > > diff --git
+> > > a/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+> > > b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+> > > new file mode 100644
+> > > index 000000000000..7ee19a661d83
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+> > > @@ -0,0 +1,80 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) # Copyright
+> > > +2024 NXP %YAML 1.2
+> > > +---
+> > > +$id:
+> > > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fd=
+e
+> > > +vi
+> > >
+> >
+> +cetree.org%2Fschemas%2Ffirmware%2Fimx%2Cscmi.yaml%23&data=3D05%7
+> > C02%7Cp
+> > >
+> >
+> +eng.fan%40nxp.com%7C5d16781d3eca425a342508dc562910b7%7C686ea
+> > 1d3bc2b4c
+> > >
+> > +6fa92cd99c5c301635%7C0%7C0%7C638479981570959816%7CUnknown%
+> > 7CTWFpbGZsb
+> > >
+> >
+> +3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn
+> > 0%3D
+> > >
+> >
+> +%7C0%7C%7C%7C&sdata=3DmWNwPvu2eyF18MroVOBHb%2Fjeo%2BIHfV5V
+> > h%2F9ebdx65MM
+> > > +%3D&reserved=3D0
+> > > +$schema:
+> > > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fd=
+e
+> > > +vi
+> > > +cetree.org%2Fmeta-
+> > schemas%2Fcore.yaml%23&data=3D05%7C02%7Cpeng.fan%40nx
+> > >
+> >
+> +p.com%7C5d16781d3eca425a342508dc562910b7%7C686ea1d3bc2b4c6fa
+> > 92cd99c5c
+> > >
+> >
+> +301635%7C0%7C0%7C638479981570971949%7CUnknown%7CTWFpbGZs
+> > b3d8eyJWIjoiM
+> > >
+> >
+> +C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
+> > C%7C%7
+> > >
+> >
+> +C&sdata=3Dv4XnGG00D4I8j5MJvDUVYMRTm7yRrvz0V3fUyc5KAAA%3D&reser
+> > ved=3D0
+> > > +
+> > > +title: i.MX System Control and Management Interface(SCMI) Vendor
+> > > +Protocols Extension
+> > > +
+> > > +maintainers:
+> > > +  - Peng Fan <peng.fan@nxp.com>
+> > > +
+> > > +allOf:
+> > > +  - $ref: arm,scmi.yaml#
+> >
+> > Sorry, but arm,scmi is a final schema. Is your plan to define some
+> > common part?
+>=20
+> No. I just wanna add vendor extension per SCMI spec.
+>=20
+> 0x80-0xFF:
+> Reserved for vendor or platform-specific extensions to this interface
+>=20
+> Each vendor may have different usage saying id 0x81, so I add i.MX dt-
+> schema file.
+>=20
+> >
+> > > +
+> > > +properties:
+> > > +  protocol@81:
+> > > +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
+> > > +    unevaluatedProperties: false
+> > > +    description:
+> > > +      The BBM Protocol is for managing Battery Backed Secure Module
+> > (BBSM) RTC
+> > > +      and the ON/OFF Key
+> > > +
+> > > +    properties:
+> > > +      reg:
+> > > +        const: 0x81
+> > > +
+> > > +    required:
+> > > +      - reg
+> > > +
+> > > +  protocol@84:
+> > > +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
+> > > +    unevaluatedProperties: false
+> > > +    description:
+> > > +      The MISC Protocol is for managing SoC Misc settings, such as
+> > > + GPR settings
+> >
+> > Genera register is not a setting... this is a pleonasm. Please be more
+> > specific what is the GPR, MISC protocol etc.
+>=20
+> The MISC Protocol is for managing SoC Misc settings, such as SAI MCLK/MQS
+> in Always On domain BLK CTRL,  SAI_CLK_SEL in WAKEUP BLK CTRL, gpio
+> expanders which is under control of SCMI firmware.
+>=20
+> > > +
+> > > +    properties:
+> > > +      reg:
+> > > +        const: 0x84
+> > > +
+> > > +      wakeup-sources:
+> > > +        description:
+> > > +          Each entry consists of 2 integers, represents the source
+> > > + and electric signal edge
+> >
+> > Can you answer questions from reviewers?
+>=20
+> Sorry. Is this ok?
+> minItems: 1
+> maxItems: 32
+>=20
+> >
+> > > +        items:
+> > > +          items:
+> > > +            - description: the wakeup source
+> > > +            - description: the wakeup electric signal edge
+> > > +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> > > +
+> > > +    required:
+> > > +      - reg
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    firmware {
+> > > +        scmi {
+> > > +            compatible =3D "arm,scmi";
+> >
+> > > +            mboxes =3D <&mu2 5 0>, <&mu2 3 0>, <&mu2 3 1>;
+> > > +            shmem =3D <&scmi_buf0>, <&scmi_buf1>;
+> > > +
+> > > +            #address-cells =3D <1>;
+> > > +            #size-cells =3D <0>;
+> > > +
+> > > +            protocol@81 {
+> > > +                reg =3D <0x81>;
+> > > +            };
+> > > +
+> > > +            protocol@84 {
+> > > +                reg =3D <0x84>;
+> > > +                wakeup-sources =3D <0x8000 1
+> > > +                                  0x8001 1
+> > > +                                  0x8002 1
+> > > +                                  0x8003 1
+> > > +                                  0x8004 1>;
+> >
+> > Nothing improved... If you are going to ignore reviews, then you will
+> > only get NAKed.
+>=20
+> Sorry, you mean the examples, or the whole dt-schema?
 
-The gpio expander is under M33(SCMI firmware used core) I2C control,
-But the gpio expander supports board function such as PCIE_WAKEUP,
-BTN_WAKEUP. So these are managed by MISC protocol.
-
-SAI_CLK_MSEL in WAKEUP BLK CTRL is also managed by MISC Protocol.
-
-And etc...
-
-I will add more info in commit log in next version later, after I get more
-reviews on the patchset.
+Missed Rob's comment, will use
+< > for each entry.
 
 Thanks,
 Peng.
 
 >=20
-> Regards,
->   Marco
->=20
->=20
+> Thanks,
+> Peng.
 > >
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  drivers/firmware/arm_scmi/Kconfig       |  10 ++
-> >  drivers/firmware/arm_scmi/Makefile      |   1 +
-> >  drivers/firmware/arm_scmi/imx-sm-misc.c | 305
-> ++++++++++++++++++++++++++++++++
-> >  include/linux/scmi_imx_protocol.h       |  17 ++
-> >  4 files changed, 333 insertions(+)
-> >
-> > diff --git a/drivers/firmware/arm_scmi/Kconfig
-> > b/drivers/firmware/arm_scmi/Kconfig
-> > index 56d11c9d9f47..bfeae92f6420 100644
-> > --- a/drivers/firmware/arm_scmi/Kconfig
-> > +++ b/drivers/firmware/arm_scmi/Kconfig
-> > @@ -191,3 +191,13 @@ config IMX_SCMI_BBM_EXT
-> >  	  and BUTTON.
-> >
-> >  	  This driver can also be built as a module.
-> > +
-> > +config IMX_SCMI_MISC_EXT
-> > +	tristate "i.MX SCMI MISC EXTENSION"
-> > +	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
-> > +	default y if ARCH_MXC
-> > +	help
-> > +	  This enables i.MX System MISC control logic such as gpio expander
-> > +	  wakeup
-> > +
-> > +	  This driver can also be built as a module.
-> > diff --git a/drivers/firmware/arm_scmi/Makefile
-> > b/drivers/firmware/arm_scmi/Makefile
-> > index 327687acf857..a23fde721222 100644
-> > --- a/drivers/firmware/arm_scmi/Makefile
-> > +++ b/drivers/firmware/arm_scmi/Makefile
-> > @@ -12,6 +12,7 @@ scmi-transport-
-> $(CONFIG_ARM_SCMI_TRANSPORT_VIRTIO)
-> > +=3D virtio.o
-> >  scmi-transport-$(CONFIG_ARM_SCMI_TRANSPORT_OPTEE) +=3D optee.o
-> > scmi-protocols-y =3D base.o clock.o perf.o power.o reset.o sensors.o
-> > system.o voltage.o powercap.o
-> >  scmi-protocols-$(CONFIG_IMX_SCMI_BBM_EXT) +=3D imx-sm-bbm.o
-> > +scmi-protocols-$(CONFIG_IMX_SCMI_MISC_EXT) +=3D imx-sm-misc.o
-> >  scmi-module-objs :=3D $(scmi-driver-y) $(scmi-protocols-y)
-> > $(scmi-transport-y)
-> >
-> >  obj-$(CONFIG_ARM_SCMI_PROTOCOL) +=3D scmi-core.o diff --git
-> > a/drivers/firmware/arm_scmi/imx-sm-misc.c
-> > b/drivers/firmware/arm_scmi/imx-sm-misc.c
-> > new file mode 100644
-> > index 000000000000..1b0ec2281518
-> > --- /dev/null
-> > +++ b/drivers/firmware/arm_scmi/imx-sm-misc.c
-> > @@ -0,0 +1,305 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * System control and Management Interface (SCMI) NXP MISC Protocol
-> > + *
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +#define pr_fmt(fmt) "SCMI Notifications MISC - " fmt
-> > +
-> > +#include <linux/bits.h>
-> > +#include <linux/io.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/scmi_protocol.h>
-> > +#include <linux/scmi_imx_protocol.h>
-> > +
-> > +#include "protocols.h"
-> > +#include "notify.h"
-> > +
-> > +#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x10000
-> > +
-> > +enum scmi_imx_misc_protocol_cmd {
-> > +	SCMI_IMX_MISC_CTRL_SET	=3D 0x3,
-> > +	SCMI_IMX_MISC_CTRL_GET	=3D 0x4,
-> > +	SCMI_IMX_MISC_CTRL_NOTIFY =3D 0x8,
-> > +};
-> > +
-> > +struct scmi_imx_misc_info {
-> > +	u32 version;
-> > +	u32 nr_dev_ctrl;
-> > +	u32 nr_brd_ctrl;
-> > +	u32 nr_reason;
-> > +};
-> > +
-> > +struct scmi_msg_imx_misc_protocol_attributes {
-> > +	__le32 attributes;
-> > +};
-> > +
-> > +#define GET_BRD_CTRLS_NR(x)	le32_get_bits((x), GENMASK(31,
-> 24))
-> > +#define GET_REASONS_NR(x)	le32_get_bits((x), GENMASK(23, 16))
-> > +#define GET_DEV_CTRLS_NR(x)	le32_get_bits((x), GENMASK(15, 0))
-> > +#define BRD_CTRL_START_ID	BIT(15)
-> > +
-> > +struct scmi_imx_misc_ctrl_set_in {
-> > +	__le32 id;
-> > +	__le32 num;
-> > +	__le32 value[MISC_MAX_VAL];
-> > +};
-> > +
-> > +struct scmi_imx_misc_ctrl_notify_in {
-> > +	__le32 ctrl_id;
-> > +	__le32 flags;
-> > +};
-> > +
-> > +struct scmi_imx_misc_ctrl_notify_payld {
-> > +	__le32 ctrl_id;
-> > +	__le32 flags;
-> > +};
-> > +
-> > +struct scmi_imx_misc_ctrl_get_out {
-> > +	__le32 num;
-> > +	__le32 *val;
-> > +};
-> > +
-> > +static int scmi_imx_misc_attributes_get(const struct scmi_protocol_han=
-dle
-> *ph,
-> > +					struct scmi_imx_misc_info *mi)
-> > +{
-> > +	int ret;
-> > +	struct scmi_xfer *t;
-> > +	struct scmi_msg_imx_misc_protocol_attributes *attr;
-> > +
-> > +	ret =3D ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0,
-> > +				      sizeof(*attr), &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	attr =3D t->rx.buf;
-> > +
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +	if (!ret) {
-> > +		mi->nr_dev_ctrl =3D GET_DEV_CTRLS_NR(attr->attributes);
-> > +		mi->nr_brd_ctrl =3D GET_BRD_CTRLS_NR(attr->attributes);
-> > +		mi->nr_reason =3D GET_REASONS_NR(attr->attributes);
-> > +		dev_info(ph->dev, "i.MX MISC NUM DEV CTRL: %d, NUM
-> BRD CTRL: %d,NUM Reason: %d\n",
-> > +			 mi->nr_dev_ctrl, mi->nr_brd_ctrl, mi->nr_reason);
-> > +	}
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int scmi_imx_misc_ctrl_validate_id(const struct
-> scmi_protocol_handle *ph,
-> > +					  u32 ctrl_id)
-> > +{
-> > +	struct scmi_imx_misc_info *mi =3D ph->get_priv(ph);
-> > +
-> > +	if ((ctrl_id < BRD_CTRL_START_ID) && (ctrl_id > mi->nr_dev_ctrl))
-> > +		return -EINVAL;
-> > +	if (ctrl_id >=3D BRD_CTRL_START_ID + mi->nr_brd_ctrl)
-> > +		return -EINVAL;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int scmi_imx_misc_ctrl_notify(const struct scmi_protocol_handle
-> *ph,
-> > +				     u32 ctrl_id, u32 flags)
-> > +{
-> > +	struct scmi_imx_misc_ctrl_notify_in *in;
-> > +	struct scmi_xfer *t;
-> > +	int ret;
-> > +
-> > +	ret =3D scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_NOTIFY,
-> > +				      sizeof(*in), 0, &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	in =3D t->tx.buf;
-> > +	in->ctrl_id =3D cpu_to_le32(ctrl_id);
-> > +	in->flags =3D cpu_to_le32(flags);
-> > +
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int
-> > +scmi_imx_misc_ctrl_set_notify_enabled(const struct
-> scmi_protocol_handle *ph,
-> > +				      u8 evt_id, u32 src_id, bool enable) {
-> > +	int ret;
-> > +
-> > +	ret =3D scmi_imx_misc_ctrl_notify(ph, src_id, enable ? evt_id : 0);
-> > +	if (ret)
-> > +		dev_err(ph->dev, "FAIL_ENABLED - evt[%X] src[%d] -
-> ret:%d\n",
-> > +			evt_id, src_id, ret);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int scmi_imx_misc_ctrl_get_num_sources(const struct
-> > +scmi_protocol_handle *ph) {
-> > +	return GENMASK(15, 0);
-> > +}
-> > +
-> > +static void *
-> > +scmi_imx_misc_ctrl_fill_custom_report(const struct scmi_protocol_handl=
-e
-> *ph,
-> > +				      u8 evt_id, ktime_t timestamp,
-> > +				      const void *payld, size_t payld_sz,
-> > +				      void *report, u32 *src_id)
-> > +{
-> > +	const struct scmi_imx_misc_ctrl_notify_payld *p =3D payld;
-> > +	struct scmi_imx_misc_ctrl_notify_report *r =3D report;
-> > +
-> > +	if (sizeof(*p) !=3D payld_sz)
-> > +		return NULL;
-> > +
-> > +	r->timestamp =3D timestamp;
-> > +	r->ctrl_id =3D p->ctrl_id;
-> > +	r->flags =3D p->flags;
-> > +	*src_id =3D r->ctrl_id;
-> > +	dev_dbg(ph->dev, "%s: ctrl_id: %d flags: %d\n", __func__,
-> > +		r->ctrl_id, r->flags);
-> > +
-> > +	return r;
-> > +}
-> > +
-> > +static const struct scmi_event_ops scmi_imx_misc_event_ops =3D {
-> > +	.get_num_sources =3D scmi_imx_misc_ctrl_get_num_sources,
-> > +	.set_notify_enabled =3D scmi_imx_misc_ctrl_set_notify_enabled,
-> > +	.fill_custom_report =3D scmi_imx_misc_ctrl_fill_custom_report,
-> > +};
-> > +
-> > +static const struct scmi_event scmi_imx_misc_events[] =3D {
-> > +	{
-> > +		.id =3D SCMI_EVENT_IMX_MISC_CONTROL_DISABLED,
-> > +		.max_payld_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_payld),
-> > +		.max_report_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_report),
-> > +	},
-> > +	{
-> > +		.id =3D SCMI_EVENT_IMX_MISC_CONTROL_FALLING_EDGE,
-> > +		.max_payld_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_payld),
-> > +		.max_report_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_report),
-> > +	},
-> > +	{
-> > +		.id =3D SCMI_EVENT_IMX_MISC_CONTROL_RISING_EDGE,
-> > +		.max_payld_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_payld),
-> > +		.max_report_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_report),
-> > +	}
-> > +};
-> > +
-> > +static struct scmi_protocol_events scmi_imx_misc_protocol_events =3D {
-> > +	.queue_sz =3D SCMI_PROTO_QUEUE_SZ,
-> > +	.ops =3D &scmi_imx_misc_event_ops,
-> > +	.evts =3D scmi_imx_misc_events,
-> > +	.num_events =3D ARRAY_SIZE(scmi_imx_misc_events), };
-> > +
-> > +static int scmi_imx_misc_protocol_init(const struct
-> > +scmi_protocol_handle *ph) {
-> > +	struct scmi_imx_misc_info *minfo;
-> > +	u32 version;
-> > +	int ret;
-> > +
-> > +	ret =3D ph->xops->version_get(ph, &version);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	dev_info(ph->dev, "NXP SM MISC Version %d.%d\n",
-> > +		 PROTOCOL_REV_MAJOR(version),
-> PROTOCOL_REV_MINOR(version));
-> > +
-> > +	minfo =3D devm_kzalloc(ph->dev, sizeof(*minfo), GFP_KERNEL);
-> > +	if (!minfo)
-> > +		return -ENOMEM;
-> > +
-> > +	ret =3D scmi_imx_misc_attributes_get(ph, minfo);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return ph->set_priv(ph, minfo, version); }
-> > +
-> > +static int scmi_imx_misc_ctrl_get(const struct scmi_protocol_handle *p=
-h,
-> > +				  u32 ctrl_id, u32 *num, u32 *val) {
-> > +	struct scmi_imx_misc_ctrl_get_out *out;
-> > +	struct scmi_xfer *t;
-> > +	int ret, i;
-> > +
-> > +	ret =3D scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_GET,
-> sizeof(u32),
-> > +				      0, &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	put_unaligned_le32(ctrl_id, t->tx.buf);
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +	if (!ret) {
-> > +		out =3D t->rx.buf;
-> > +		*num =3D le32_to_cpu(out->num);
-> > +		for (i =3D 0; i < *num && i < MISC_MAX_VAL; i++)
-> > +			val[i] =3D le32_to_cpu(out->val[i]);
-> > +	}
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int scmi_imx_misc_ctrl_set(const struct scmi_protocol_handle *p=
-h,
-> > +				  u32 ctrl_id, u32 num, u32 *val) {
-> > +	struct scmi_imx_misc_ctrl_set_in *in;
-> > +	struct scmi_xfer *t;
-> > +	int ret, i;
-> > +
-> > +	ret =3D scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (num > MISC_MAX_VAL)
-> > +		return -EINVAL;
-> > +
-> > +	ret =3D ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_SET,
-> sizeof(*in),
-> > +				      0, &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	in =3D t->tx.buf;
-> > +	in->id =3D cpu_to_le32(ctrl_id);
-> > +	in->num =3D cpu_to_le32(num);
-> > +	for (i =3D 0; i < num; i++)
-> > +		in->value[i] =3D cpu_to_le32(val[i]);
-> > +
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static const struct scmi_imx_misc_proto_ops scmi_imx_misc_proto_ops =
-=3D
-> {
-> > +	.misc_ctrl_set =3D scmi_imx_misc_ctrl_set,
-> > +	.misc_ctrl_get =3D scmi_imx_misc_ctrl_get, };
-> > +
-> > +static const struct scmi_protocol scmi_imx_misc =3D {
-> > +	.id =3D SCMI_PROTOCOL_IMX_MISC,
-> > +	.owner =3D THIS_MODULE,
-> > +	.instance_init =3D &scmi_imx_misc_protocol_init,
-> > +	.ops =3D &scmi_imx_misc_proto_ops,
-> > +	.events =3D &scmi_imx_misc_protocol_events,
-> > +	.supported_version =3D SCMI_PROTOCOL_SUPPORTED_VERSION, };
-> > +module_scmi_protocol(scmi_imx_misc);
-> > diff --git a/include/linux/scmi_imx_protocol.h
-> > b/include/linux/scmi_imx_protocol.h
-> > index 90ce011a4429..a69bd4a20f0f 100644
-> > --- a/include/linux/scmi_imx_protocol.h
-> > +++ b/include/linux/scmi_imx_protocol.h
-> > @@ -13,8 +13,14 @@
-> >  #include <linux/notifier.h>
-> >  #include <linux/types.h>
-> >
-> > +#define SCMI_PAYLOAD_LEN	100
-> > +
-> > +#define SCMI_ARRAY(X, Y)	((SCMI_PAYLOAD_LEN - (X)) / sizeof(Y))
-> > +#define MISC_MAX_VAL		SCMI_ARRAY(8, uint32_t)
-> > +
-> >  enum scmi_nxp_protocol {
-> >  	SCMI_PROTOCOL_IMX_BBM =3D 0x81,
-> > +	SCMI_PROTOCOL_IMX_MISC =3D 0x84,
-> >  };
-> >
-> >  struct scmi_imx_bbm_proto_ops {
-> > @@ -42,4 +48,15 @@ struct scmi_imx_bbm_notif_report {
-> >  	unsigned int		rtc_id;
-> >  	unsigned int		rtc_evt;
-> >  };
-> > +
-> > +struct scmi_imx_misc_ctrl_notify_report {
-> > +	ktime_t			timestamp;
-> > +	unsigned int		ctrl_id;
-> > +	unsigned int		flags;
-> > +};
-> > +
-> > +struct scmi_imx_misc_proto_ops {
-> > +	int (*misc_ctrl_set)(const struct scmi_protocol_handle *ph, u32 id,
-> u32 num, u32 *val);
-> > +	int (*misc_ctrl_get)(const struct scmi_protocol_handle *ph, u32 id,
-> > +u32 *num, u32 *val); };
-> >  #endif
-> >
-> > --
-> > 2.37.1
-> >
-> >
-> >
+> > Best regards,
+> > Krzysztof
+
