@@ -1,340 +1,241 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2109.outbound.protection.outlook.com [40.107.21.109])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2098.outbound.protection.outlook.com [40.107.13.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C20EBE
-	for <imx@lists.linux.dev>; Sun,  7 Apr 2024 01:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F9D15C0
+	for <imx@lists.linux.dev>; Sun,  7 Apr 2024 02:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.98
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712454609; cv=fail; b=WBwCJ2jjQn8hWxk3EqMUrA+kAE+fgjT3hc18J++NBUUjKicDBB6OEzb+B7/lj+4ZMAR4QBIifbMAsWvNFPORYZiB2LuhjyH/A7bDqKNXrNFldJOE4j+PlSTav0Y4704CByLflQFjVF43E9+07O+bIqGK9QghDYS4TXO4ZRiu5HA=
+	t=1712457627; cv=fail; b=LE5iMpBdkuVMUn3jFR2YsrWFhaG6y6R+luZwV3RGbZ7XEK9h3Y3aQaLkhkwcC5DBA/CmfNq4lxAydIfsBpU8KRFAclDf85NIq/rJKPa2R0/7BqX0/G614yQ+cEQQgQQDto1R6P+ntuv4nyfqAZa3js8uHBRyUxC6QlB/O5L7V38=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712454609; c=relaxed/simple;
-	bh=LsiGuiKreRiOYuh0GJY/Envm921BA5WXros4lM9TSF4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=R0WuuL7HFn2cjjq+JjUbfOg+C6oYR97+T0MynJJ/XvK4qXqmxOPoSrKleNPY6ZwOzuu927tqGhzH/zbnFoAgoTVCjeVGuTyyXEl0j6zNJIUSGIf/NYjTSiThgHN8bt2X4ci9irTkS9/6kU5maFaJL/Ij3PqwB0NBVb3nyOxVNK0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=hfIdM83a; arc=fail smtp.client-ip=40.107.21.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1712457627; c=relaxed/simple;
+	bh=2MmauUQI8UJe0pDNjdzkzJ11zOBqXZeDuK3kBUhsElw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bRyyKtXDBoyWgqX5yDtzbBwAp3nIIgM1no6MaTVbGLnc2B2gfSiy6D1seg7XuNvNXmCg3VNGWlhtZ2GBQ15Bw5uAHgIH0u2pcwG2OL3m9NPBWiMLRtB3D79tUB1EH6CXDcDoWOGXyXW9Gde96VCcMhvBE1KUtrSFCUQPX4KGZ6M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HpwPuxLc; arc=fail smtp.client-ip=40.107.13.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="hfIdM83a"
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HpwPuxLc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XO9VUx+Qr+ZftjLzsHoN8LXHmXHvavL6PvmeQi+PVeT+O9G5DOB5+sKAnna22iI3CSCL//hBCe3ncJDH6knS1fHVOW/Cviu0ccsAhMT4dNq5Hl/rXkUpvq7u0hx60vivEnefcVK9tjgZB87EOMzFLx6IuTp111MlpCTBOQq8lvTNCliZ5PUcAlaYEYk6ZksIJCM4LiwS6IPn6+Fplg1ZfkS6gRyp04TcQUQnqZtOQL1Prn7jOsNqChpoXXzNGmYZYwdtjTsSQo9WddLFM1QwOHCYZMubmAssSe1gfzXhcri9dr4CeW6HZqNOEsJElsZhuEJAYtIWEeiYjDRqTEONoQ==
+ b=dXbo0pjVEgSGS/HoIf7OzeT7TUaI0X+oQB/2QABQRyobp1eaIgqL4e6i17LKR6JDxM9MvwtO7cLxaJ1sH3JZthu2+xHSbLO84uRRe/mgnAJuZnTkmOCE+yK6lVNLJNVogUytgr9Fy9Fo6s2BA33o2IXZ/DWaGXbL0meC2Edrj7x1GEc+CClqvn8WXocEioB9+1mKfKR/OMQOXrOr9oNp7e0YZrp7WlkDGHXYOvkq1z/8PZvv7XKKIzgggW679wolhAVzKLNpAGIu1p+ukfnd2CjxR7RtAX6oRdrh31CbIr9DKjNLgEnEZnUBo/20AKNVOCJGBY6+fISmnZD8RLg0Mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HmJvNP5e80idrIZUf41xv6kjHcyRbQXGowTFnOoWpAY=;
- b=coDTufzMHd/L2ALbWJW0f2Ini28aCYnSGu63chmmebp65lZSOMulV2XSMWjH8Z+AYOUoM4+7JGoloJeTot42d22Il+bpA7nUVFmd8mhl66vs33J724CnXC0ZFTqzXQfDLp8X59rP5XJ4COPl5KNZsTlOQtADfIoDtVj6AVd4EZSWhfob5k+4EiqSZzNWY2qR//0WsaQCHxkBmArE5+bHcAYzTWYtRkT0vN3OW4WESugO40bRWLhxLqr3J/1k6cAetn9cDMvGLPCv9VoZt71GzL7GXYgDMOyQQh7RL8ZxPKrOp6IPsZTpm1yA/u2gC8++88HWZVbr3OBKKo9rPEtuDQ==
+ bh=VUMTTNGHwgtysAUyHMCYfpuXI9BdjDneIKaZ77cQQQg=;
+ b=CdwxFHdS638Xhfei90VNlIExFJHbX6BEyu3QkSWrU7PmVrWdpAJmtbOdls8IOC6O48JyPS9GZvpBkzpEFOysOP9xQ5s0BXSPXTy+S69NQNfoBhFwOdpYFNWUhjdgwxEySbVmrTDvog3Z2ljpSRp0HJRFZZdeEOBibrHXdXLlVoWBt+/WO7eKsOypqEOV7aooQgBp482GHclegZVLjjN5cQxAj5H42HJd2WnJ/BdgIrcpC5sW6nWhOscVNjmq6jCfl2MnArliXZHJ6DaFySr2YzhoGqZQlFODixcHB3dsHjV2cNR+GdCjP5K7Zli97CuHt4KxkFUIbTIveb+b5jhaew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HmJvNP5e80idrIZUf41xv6kjHcyRbQXGowTFnOoWpAY=;
- b=hfIdM83apfHiNshpZsafiirpcKJLVkKv7gfEvCKooKhPWnfm1yMREjNi8S+qBhsHnsPyWmsZrGVcBbXQPZ8DTK40z4loTSa02XZrHtFwUCz3VR5QLTRMbPjVVqnyB83TkCUBxmpxidYla5bduZ01hSaTtqQSs702zjzv7toNpoo=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by AS8PR04MB7621.eurprd04.prod.outlook.com (2603:10a6:20b:299::9) with
+ bh=VUMTTNGHwgtysAUyHMCYfpuXI9BdjDneIKaZ77cQQQg=;
+ b=HpwPuxLcDhBeZYIPV7BOuVvc+Qt8lw4mKIPcnWookkCw34vdWZsh5YAIuFcqlp2hMff4en1030vVKvafoFjHlDFMvwrI01uIN2wNGaEVckA/GuCWFctJYGuqDQBUVss0cwe1XHQXEOm9vedecJXfmEydwZF5f5zAl4TkPvlTcFs=
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by PA4PR04MB7662.eurprd04.prod.outlook.com (2603:10a6:102:f2::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Sun, 7 Apr
- 2024 01:50:04 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Sun, 7 Apr 2024
- 01:50:03 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Cristian Marussi
-	<cristian.marussi@arm.com>
-CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
- protocol
-Thread-Topic: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
- protocol
-Thread-Index: AQHah1U59RmV1LBnZEq28+9F7LvjPrFbFSOAgADj6VCAABPlMA==
-Date: Sun, 7 Apr 2024 01:50:03 +0000
-Message-ID:
- <DU0PR04MB9417786C4A0B2B54947D70E588012@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
- <9aab8dab-27c4-40b6-b1d5-0a2babe0700d@kernel.org>
- <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
-In-Reply-To:
- <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.47; Sun, 7 Apr
+ 2024 02:40:21 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::da55:641a:a6f2:6e4e]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::da55:641a:a6f2:6e4e%6]) with mapi id 15.20.7409.042; Sun, 7 Apr 2024
+ 02:40:21 +0000
+Message-ID: <e3049f42-400b-4b86-9f9c-c90a89559f78@oss.nxp.com>
+Date: Sun, 7 Apr 2024 10:43:38 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] media: v4l2-ctrls: Add average qp control
+To: Nicolas Dufresne <nicolas@ndufresne.ca>, Ming Qian <ming.qian@nxp.com>,
+ mchehab@kernel.org, hverkuil-cisco@xs4all.nl
+Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
+ imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20240329092352.2648837-1-ming.qian@nxp.com>
+ <5fc25468198cb3a228b91160dcc490600e1197d4.camel@ndufresne.ca>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AS8PR04MB7621:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- FByPVvaKyZ0Gpw95kVGqB453/xVBDYodNpoYM9VHfuQ5mBWdXItv5cMIcRcHBWuDQI3CwkyxkGUQxfqg9N0tbdR4K94fwDbxiRnFNeh2RYyOZNnc4mlX9NSlEBB91u/9+SRkhBSMz63yFcbwUue6OiWWfZK0D5/Thf/PE9Tqb9+zv3IIW2wGGAiYAP2fgyoKCuokcf14SLcvjQ8IZGmYJENK8M21W3nWEJttVWrvsAxxkobDkZTfRru+Ah6AJKVnEefCwW4oBxbk0tMdePRVOrZtZi2/227as3fO+N/Fx/whXG4phseXc8TAp6iMslzLaU/Fa0cxEs5EHhVC9MMcgUtSVlLmNrKMDKUx0GjmIds7+jWGakJBpHhRSHhz7g5WQPCvYge8J8fSFhRfF+5h+fTQzgdVNKIdYT5Y5Y8jxGLr69Vlfhi0+PZ6yLuBur1vxqFHbOMJvec7CfmFYLtr9nAzb2LodPTQj9wTIEl7AoP97wQHrIOGVyCdtKI07isbbKdexNByhcbRWDKWJVk5K62NLnG+mg6xGYp/C7Q8MjsxVcpe0QaslGIuSEPbOgC/c3taJAQEapRmkk9rSuAYBtU2OP6GvRn3t24W1L9JTalZnI9U16zp8MHslaP+90NguYZNkuT29duQTWHN2TbPilPwro7aZo88DCvHNMAeDarK09vNvijUWqRk+Yic00Q0qRpax6YCZfdp8NRuC0VSJQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(7416005)(921011);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+L7VUj575xfqU6XiMhrJOq5BoQ6SPnA8IUZJEdiIwNo9vYVs3rMLyTWmtutK?=
- =?us-ascii?Q?v+O1Fzyj5zwXn4zoF5A93MzaEdSmcKTUWF9LaV7FiI/+caV4klSRBSoagNV8?=
- =?us-ascii?Q?ZAsI6213pD2jhEf7wJp5HnT6bSRkFhGq1yhdpz0L5rrp+IqJTk++vwa5v4Vh?=
- =?us-ascii?Q?usIpBJIHNL+n0sgd3pyZhe2Ad+5l42uYsXFr2vbC26t2hB7BtD4Y0ORn/rEZ?=
- =?us-ascii?Q?uQdgs/wR4VW6T9AQEE9PiSfxmL6gyaCuiEmpO1mzC0XxW/72INvALm3mXiYI?=
- =?us-ascii?Q?zv4fVevAIXoByuT+cgCfy4tG6I43bUiT3rgt1SZhbUpJkt76DXlN0bpP1dl7?=
- =?us-ascii?Q?M0YoJ1XZp82Gom/yAcNZ3BOsfk7tfx2dzeQPunLm+puIo4Wr/3MpNnhH9cnl?=
- =?us-ascii?Q?yaBwN3+HB+p4mRPIL6948X70+52CNyPFDAKsqrjFUO48R0U8RoUU5vPXfxqB?=
- =?us-ascii?Q?xP5/GqNLSJpQGAj3BsvmHlCsCa7ij3zqkUDNcaUU3+r8SwW+19r9vYDigJHA?=
- =?us-ascii?Q?3GEbp+zDxhYIG9fn6ro6081epPGgjfUSeRl5ccnLJexZuALM2k94vAP0zlJt?=
- =?us-ascii?Q?q8Mo8JusjQ9BXAQgQz7eUACyOFOYGON2JtWV7W+8pb7pLoTRSCrQAtz5ogGb?=
- =?us-ascii?Q?MNGCN12Fo9zHc22o0WFYpO3tDXo/ueRro9IVyTG2qvtGGtx3VIcF0iEeMmNP?=
- =?us-ascii?Q?yO2yKeC0/29opMAG1i/FGAS6WGEyt6tn7+Fc+M990T3kBxYDoFK36/IoMg3e?=
- =?us-ascii?Q?Ij4bztwi6gnEOVHCs/jj6NiWUMCXCQpRRfQF4yOzbDk8uAsII4t9w58DLMN3?=
- =?us-ascii?Q?kthx4OaBvmQqj6o7qdG0pp3OAJ+J49OqZUiwmNeuqn+6d6WQaEt5/K9Vdjvd?=
- =?us-ascii?Q?xB/feR5TDI3luXdbgM5saEowhXZBpXfvbvZXah10Nka2R5OE+r0wbAeTqUxs?=
- =?us-ascii?Q?PWPrL5o3MbO4aqh32H0GXntmhfd+QMapWpEVfr5CheDbiAfIGqJKiF46r9to?=
- =?us-ascii?Q?qgFRUmt4WSf8rsqnAkz0Ty5t+s85/SuDcGjnwsSaaMG7Zksx6rB16z0gsACi?=
- =?us-ascii?Q?JV74M3f6NPh8CVS5wfD3QiGnHgQS1HSFZcSHokJLHyugb5NtZBbQexDKsvjr?=
- =?us-ascii?Q?xvDJxNKK4HkWZ8ftsKhGCzEbkBUlQMLVz2PQaramSTJ6B3PF+wuo/tYzuV86?=
- =?us-ascii?Q?LEqaOh0zv71oGKmAHLFHL6sLbzACF0QETY3oycfpWmFHB0hTT6byuekDclbf?=
- =?us-ascii?Q?zUIH9w2MEpp9A/YIS7MVbP/sTcd3xFTb1FEAAJpGZGYRK/p5ckHn6kq2pNIh?=
- =?us-ascii?Q?mOjzW7d5HlOpYhsBbOySxGcJ3CR9R3dpeSO23r/tG5HGLxsKBpx7NrEPS9tT?=
- =?us-ascii?Q?WTfmgfYJm1THqcrJSDAybVcEJRpWEbYkHzwoHkfec/QjH3V8oLmKNfPJsT22?=
- =?us-ascii?Q?uNn74nVVfvsneIVXY9CepHJpPnJXNpYop9O/yl195DzxmcjjtwdIBr3UDEks?=
- =?us-ascii?Q?iAsRwYKFHmHPnB6QYb0ZIRMPOSiRhU/mTbRUI7D5wvbYxBqWjZf8g7RdAWEr?=
- =?us-ascii?Q?Mkchqm8zyx6eH4B90iE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: ming qian <ming.qian@oss.nxp.com>
+In-Reply-To: <5fc25468198cb3a228b91160dcc490600e1197d4.camel@ndufresne.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR01CA0159.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:aa::28) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PA4PR04MB7662:EE_
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	fM4nS4pbZvhiHZ1CDp019LNNqtiHwe6Bgn2RJm4D5FceJ7rKg4oNRcovG7VZZ0uBZre/x2H7M60uEgf+LECdiglSA7OLmrUF4Rocu5WeKV4eO0YRzcQYcAsPwJZUee1046hMuOUbYcTNQNKtv8vnugHbtLz0AQp5gdbY7ZYTdSLFv7m+3DYHfPBSu2iAvjfrBto5rUwqvPssdBQ1Xz6LhjhUu79k9z9xHzwQmCRUYFontPNHeN/qYAHGOJbui2cMDCatDza/sAg9Bot88eMqF+7znvDvpKi30Ga56kwfpgHlaDSxSKM1EYyEnhS2rtoMmNo0Lx/C4by7W8LllkiucUwoDWjQqU9Xye4Dru9eyAjt00c30vmz4iF9fs9d2Sg+x+HuP7HNmRl6ZfE63l4t0T1xcnCXZQY2c6suTPB9jbrpj21SDnxfqcswAqO3raas/TOkNay+exT1LEbtc7v5c+/T+ATU+8aL8FSJYzREGMNqFIYT9n9KasSMrMapFIUpf9hKWjf6T4yq5affiRquYHpTLV+BxlqVAaLLlR7QfauEwRt3n0KqdSs03Fi1a/9WpC3pomUweRz30UGeNcKiFt7/W/0e7VLAJIjwyd+HcXk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L05CeWZPQVJYS3A3blJLRk9ZQUVOQnB0NTA4ZGgzTWVPbUp2TFRoZUhnUEFC?=
+ =?utf-8?B?TXJueENrdWRCTDBpZTk2K0M3WWd5VjNDaW1PbktlOEM0M255bVI1UTg1OGxl?=
+ =?utf-8?B?UVRQVzZvNHFPbER4dXZDY0tiYlNTY1lDUEZCTHhmNFZuelZZZXZTUWJqMDNu?=
+ =?utf-8?B?b0VtcmJZbkNpRFY5NjhLMDNFTGFVTWowajlxTFF0dmdvQWVobWYxYU45Y3lj?=
+ =?utf-8?B?RHlKdnhOU1U1UVltNWhTRDhxZHJrZ3Y1a3JLd0lLR3JreHRoQUVFV2RhbDFy?=
+ =?utf-8?B?bi9UeXI0Q2xQd2NTc3FQdGt0dHZLZTgvak81d3d0NmZicllNS3BNRWRYOE5W?=
+ =?utf-8?B?NWx5ZSt6SkpZSk1GUExraVNkN0syWTl3Sll4R0labndBRUd4d2NzUW91YURt?=
+ =?utf-8?B?Z08zbWZsOW1tdFRiV0JqbE9kZm5tWHZJNDRpNnRsWFBvcURNUWo4YmxLRXRp?=
+ =?utf-8?B?Z3c4NGtJMmlMUXZtZUZLK0NQeEhOTGhhODVLdTV0ZU53cjRKKzVMV2k2U2hi?=
+ =?utf-8?B?R0Y2Vm5hVmVjdElpYytNNGtmRHNra21vK1E4MGgxVDBFK1dZVlV3aWFXa2Zx?=
+ =?utf-8?B?b2tMQW5DbDFGYzRjKzRXRCtZaXJmVzhXL2hSbDhSbkdYZFRDaDZjN2t5R2Q0?=
+ =?utf-8?B?ekpJT2ZxK0ZXWEVxUmFWdWtpMXFlY3RtVUJJK0c2RHVaU0I4OFNoY1I0eUht?=
+ =?utf-8?B?aXg3aDd2dkxZYWR3VTNsaHFBcmZqM0RqV3ZocGRHSVUwQkVSazJwbS8yQzV2?=
+ =?utf-8?B?OFpDZDh2NFhwT2s4TCtPcnZrSlVQdzh0aGlsYWU1ZUp1NW5hekN4QmJVcitu?=
+ =?utf-8?B?K3AveXVjTTd0NzlWRnBvdzNJQTNrU2xUSXd3RHFLM0R1Z1pMSDZ3cExvVTJ4?=
+ =?utf-8?B?K21sOXViY2NHc25jSHEzQk0wVkRvdEhndyswTGtkT3FEODAySUZaRm5tcXdJ?=
+ =?utf-8?B?bCt0c1hFQWdkRnkyOVpGM2RBQmFEUjF3Kzd3cFU5bXNWS1VFT0J1cFBoSXRI?=
+ =?utf-8?B?dmIwaWhxRXZ0Z0lhUUFhYWN0aWlKMUF6RmhrSCtVQ0piWFoySG90aXBwQXJS?=
+ =?utf-8?B?UFJjQVE4RGhrYk9MNVpmMDF2cmVsM2tOQXRCRW1CVDFvZjkzNUE1OTVaVmth?=
+ =?utf-8?B?V1k5YzZRLzNBbUY2a0QrOGdtcGdBeVFOMG51T3YzMlRYRnNlcFE1OXNVRnBH?=
+ =?utf-8?B?YUZFaXRIME5EWUNUaUUwbmFrd2UzTjd4NFl5aWpFWEtMU1ptYVFUS2xweW9x?=
+ =?utf-8?B?NVg2WUw3dnlZNDJTamQraG9zZ2RaV2FTV0F0NFBaSUh5djZTeHZXN0xtdUVL?=
+ =?utf-8?B?WkVoVHh5b1l2cG50VThBdDRkemUwZzU2L1FRVysxazQzRWhGeEFmc01nTkpZ?=
+ =?utf-8?B?Ym8vVCtUZzdlRXE1a1B6YzMrNS90OWxsWGNwSVlFUTRhOEZGTzl3OERFS0k4?=
+ =?utf-8?B?d2ZVbUM0RmJZRHg3aDlPVVdZQmgzOUdJUTBpYUI5ekNKV3VJUm0zazJlOXA0?=
+ =?utf-8?B?cEYrQ1lrTFpIWm14b3ZCYkwxQVZ2aTZ5anduNng1SGx5V254L2JwcFpGUXd1?=
+ =?utf-8?B?ZWZJMlNZNEI1cXlQYk50Vk54bi9Vc0lVakFoMlAxTitZRm91eDlVdVFxbEJU?=
+ =?utf-8?B?Z2lmMkdnOXBIQ1AyNVNxUDJzOTNmeWlGK1A0VEkra2VpSHlBUmw1UUpLa0Y1?=
+ =?utf-8?B?M0l0SmQ4bU1ISkw1dERNRy9QREJ0L3N2MkpOV3NyQmNpMnNZdVJLY2pxaFNE?=
+ =?utf-8?B?Uy85L3pFN2pRbzQ3MHdoeURINkprR2lSR0lhcFhMeU9UVEZvYjd2UU1Ebjhz?=
+ =?utf-8?B?TURQTENMZGpvT0dVL2V6bTlWRytQM2VvRjVDUkhid2NVcWN4Vmdtd2ZPQzVl?=
+ =?utf-8?B?RjlZdW1tOHp3SEdXdU1FRjBTTmVCS0VKd3gzTGlFTkVVRnlMbXRoWkViSjN2?=
+ =?utf-8?B?NzROK3hlb1Q4QzRHZFlsQ1lCaEoySU41bGx4STB5U1JzVSttMEpFUVBQWWZ3?=
+ =?utf-8?B?WHZqTTVCRFMyWnRySnRodmZoREhmb0hxNjBJeUZuRlg3M2plZ1NDTjREcXRV?=
+ =?utf-8?B?VzkvSDFuZytoajg5TzR1UmI3dldwZ2xqem1NWVpHMjVZQTBrKzN2dXdxRE5n?=
+ =?utf-8?Q?2gj0oab0j3NxKFSGvvux9V4Fn?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65489b8c-365c-4084-1607-08dc56ac11df
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd9f847c-b4f1-4461-a070-08dc56a50b3c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2024 01:50:03.7538
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2024 02:40:21.6620
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hJo3Mvz19OLCbXLy8IaG1HkCHp8/YW9ahmm2IJQVpys96+wuipewh1JHsBef7Q1AIpfqRLqOOoP9YqnRClDGMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7621
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aU1WXAdOS4iimoMZB8lumhgq3uH/ccKuQFFQTCcJpQyMZGCVG/oeElf43LpjkUb5lZ0XF1QQtg+ErkpzvEmCuQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7662
 
-> Subject: RE: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extensio=
-n
-> protocol
->=20
-> > Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI
-> > Extension protocol
-> >
-> > On 05/04/2024 14:39, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > Add i.MX SCMI Extension protocols bindings for:
-> > >  - Battery Backed Secure Module(BBSM)
-> >
-> > Which is what?
->=20
-> I should say BBM(BBSM + BBNSM), BBM has RTC and ON/OFF key features,
-> but BBM is managed by SCMI firmware and exported to agent by BBM
-> protocol. So add bindings for i.MX BBM protocol.
->=20
-> Is this ok?
->=20
-> >
-> > >  - MISC settings such as General Purpose Registers settings.
-> > >
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/firmware/imx,scmi.yaml     | 80
-> > ++++++++++++++++++++++
-> > >  1 file changed, 80 insertions(+)
-> > >
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
-> > > b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
-> > > new file mode 100644
-> > > index 000000000000..7ee19a661d83
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
-> > > @@ -0,0 +1,80 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) # Copyright
-> > > +2024 NXP %YAML 1.2
-> > > +---
-> > > +$id:
-> > > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fd=
-e
-> > > +vi
-> > >
-> >
-> +cetree.org%2Fschemas%2Ffirmware%2Fimx%2Cscmi.yaml%23&data=3D05%7
-> > C02%7Cp
-> > >
-> >
-> +eng.fan%40nxp.com%7C5d16781d3eca425a342508dc562910b7%7C686ea
-> > 1d3bc2b4c
-> > >
-> > +6fa92cd99c5c301635%7C0%7C0%7C638479981570959816%7CUnknown%
-> > 7CTWFpbGZsb
-> > >
-> >
-> +3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn
-> > 0%3D
-> > >
-> >
-> +%7C0%7C%7C%7C&sdata=3DmWNwPvu2eyF18MroVOBHb%2Fjeo%2BIHfV5V
-> > h%2F9ebdx65MM
-> > > +%3D&reserved=3D0
-> > > +$schema:
-> > > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fd=
-e
-> > > +vi
-> > > +cetree.org%2Fmeta-
-> > schemas%2Fcore.yaml%23&data=3D05%7C02%7Cpeng.fan%40nx
-> > >
-> >
-> +p.com%7C5d16781d3eca425a342508dc562910b7%7C686ea1d3bc2b4c6fa
-> > 92cd99c5c
-> > >
-> >
-> +301635%7C0%7C0%7C638479981570971949%7CUnknown%7CTWFpbGZs
-> > b3d8eyJWIjoiM
-> > >
-> >
-> +C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
-> > C%7C%7
-> > >
-> >
-> +C&sdata=3Dv4XnGG00D4I8j5MJvDUVYMRTm7yRrvz0V3fUyc5KAAA%3D&reser
-> > ved=3D0
-> > > +
-> > > +title: i.MX System Control and Management Interface(SCMI) Vendor
-> > > +Protocols Extension
-> > > +
-> > > +maintainers:
-> > > +  - Peng Fan <peng.fan@nxp.com>
-> > > +
-> > > +allOf:
-> > > +  - $ref: arm,scmi.yaml#
-> >
-> > Sorry, but arm,scmi is a final schema. Is your plan to define some
-> > common part?
->=20
-> No. I just wanna add vendor extension per SCMI spec.
->=20
-> 0x80-0xFF:
-> Reserved for vendor or platform-specific extensions to this interface
->=20
-> Each vendor may have different usage saying id 0x81, so I add i.MX dt-
-> schema file.
->=20
-> >
-> > > +
-> > > +properties:
-> > > +  protocol@81:
-> > > +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
-> > > +    unevaluatedProperties: false
-> > > +    description:
-> > > +      The BBM Protocol is for managing Battery Backed Secure Module
-> > (BBSM) RTC
-> > > +      and the ON/OFF Key
-> > > +
-> > > +    properties:
-> > > +      reg:
-> > > +        const: 0x81
-> > > +
-> > > +    required:
-> > > +      - reg
-> > > +
-> > > +  protocol@84:
-> > > +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
-> > > +    unevaluatedProperties: false
-> > > +    description:
-> > > +      The MISC Protocol is for managing SoC Misc settings, such as
-> > > + GPR settings
-> >
-> > Genera register is not a setting... this is a pleonasm. Please be more
-> > specific what is the GPR, MISC protocol etc.
->=20
-> The MISC Protocol is for managing SoC Misc settings, such as SAI MCLK/MQS
-> in Always On domain BLK CTRL,  SAI_CLK_SEL in WAKEUP BLK CTRL, gpio
-> expanders which is under control of SCMI firmware.
->=20
-> > > +
-> > > +    properties:
-> > > +      reg:
-> > > +        const: 0x84
-> > > +
-> > > +      wakeup-sources:
-> > > +        description:
-> > > +          Each entry consists of 2 integers, represents the source
-> > > + and electric signal edge
-> >
-> > Can you answer questions from reviewers?
->=20
-> Sorry. Is this ok?
-> minItems: 1
-> maxItems: 32
->=20
-> >
-> > > +        items:
-> > > +          items:
-> > > +            - description: the wakeup source
-> > > +            - description: the wakeup electric signal edge
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> > > +
-> > > +    required:
-> > > +      - reg
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    firmware {
-> > > +        scmi {
-> > > +            compatible =3D "arm,scmi";
-> >
-> > > +            mboxes =3D <&mu2 5 0>, <&mu2 3 0>, <&mu2 3 1>;
-> > > +            shmem =3D <&scmi_buf0>, <&scmi_buf1>;
-> > > +
-> > > +            #address-cells =3D <1>;
-> > > +            #size-cells =3D <0>;
-> > > +
-> > > +            protocol@81 {
-> > > +                reg =3D <0x81>;
-> > > +            };
-> > > +
-> > > +            protocol@84 {
-> > > +                reg =3D <0x84>;
-> > > +                wakeup-sources =3D <0x8000 1
-> > > +                                  0x8001 1
-> > > +                                  0x8002 1
-> > > +                                  0x8003 1
-> > > +                                  0x8004 1>;
-> >
-> > Nothing improved... If you are going to ignore reviews, then you will
-> > only get NAKed.
->=20
-> Sorry, you mean the examples, or the whole dt-schema?
+Hi Nicolas,
 
-Missed Rob's comment, will use
-< > for each entry.
+On 4/5/24 02:14, Nicolas Dufresne wrote:
+> Hi,
+> 
+> Le vendredi 29 mars 2024 à 18:23 +0900, Ming Qian a écrit :
+>> Add a control V4L2_CID_MPEG_VIDEO_AVERAGE_QP to report the average qp
+>> value of current encoded frame.
+>>
+>> Signed-off-by: Ming Qian <ming.qian@nxp.com>
+>> ---
+>>   Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst | 4 ++++
+>>   drivers/media/v4l2-core/v4l2-ctrls-defs.c                 | 5 +++++
+>>   include/uapi/linux/v4l2-controls.h                        | 2 ++
+>>   3 files changed, 11 insertions(+)
+>>
+>> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+>> index 2a165ae063fb..cef20b3f54ca 100644
+>> --- a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+>> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+>> @@ -1653,6 +1653,10 @@ enum v4l2_mpeg_video_h264_hierarchical_coding_type -
+>>       Quantization parameter for a P frame for FWHT. Valid range: from 1
+>>       to 31.
+>>   
+>> +``V4L2_CID_MPEG_VIDEO_AVERAGE_QP (integer)``
+>> +    This read-only control returns the average qp value of the currently
+>> +    encoded frame. Applicable to the H264 and HEVC encoders.
+> 
+> That seems ambiguous at best. What does it mean the "currently encoded frame" ?
+> The OUTPUT and CAPTURE queue can be holding multiple frames. For "per frame"
+> accurate reporting, I feel like we'd need something like Hans' read-only
+> requests proposal [0]. Its basically a mechanism that let you attach request FD
+> to capture buffer, so that supported controls can be saved per v4l2-buffer and
+> read later on.
+> 
+> https://patches.linaro.org/project/linux-media/patch/20210610113615.785359-12-hverkuil-cisco@xs4all.nl/
+> 
+> If this isn't what you wanted, we'll need a better definition. It might be
+> helpful to explain what this is used for.
+> 
+> Nicolas
+> 
 
-Thanks,
-Peng.
+Yes, I want to report the qp value for every frame.
+I thought the request FD is only used for stateless decoder, but I want
+to add a read-only ctrl for the stateful encoder. So I checked the
+defined read-only ctrls, I think it's similar with
+V4L2_CID_MPEG_VIDEO_DEC_PTS.
+(https://linuxtv.org/downloads/v4l-dvb-apis/userspace-api/v4l/ext-ctrls-codec.html?highlight=v4l2_cid_mpeg_video_dec_pts)
 
->=20
-> Thanks,
-> Peng.
-> >
-> > Best regards,
-> > Krzysztof
+then back to your question about the "currently encoded frame", it's the
+last dequeued capture buffer of the encoder, the capture queue can hold
+multiple frames, each frame will have a qp value in this case, and this
+ctrl only report the qp value of the last dequeued frame, when user has
+dequeued an encoded frame from the capture queue, he can get the ctrl
+value of V4L2_CID_MPEG_VIDEO_AVERAGE_QP immediately to get the qp value
+of the currently dequeued frame. If user doesn't care about this
+parameter, he doesn't need to do anything, it's just the same as before.
+so I think this ctrl is backward compatible.
 
+Maybe the request FD is a better and more intuitive way to suggest a
+one-to-one correspondence between ctrl and frame. I'm just not sure if
+it just applies to the stateless decoder. I did find any stateful
+decoder or encoder to use them.
+If we use the request FD for this stateful encoder, I'm not sure if it
+will break the original flow.
+
+best regards,
+Ming
+
+>> +
+>>   .. raw:: latex
+>>   
+>>       \normalsize
+>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>> index 8696eb1cdd61..88e86e4e539d 100644
+>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>> @@ -972,6 +972,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+>>   	case V4L2_CID_MPEG_VIDEO_USE_LTR_FRAMES:		return "Use LTR Frames";
+>>   	case V4L2_CID_FWHT_I_FRAME_QP:				return "FWHT I-Frame QP Value";
+>>   	case V4L2_CID_FWHT_P_FRAME_QP:				return "FWHT P-Frame QP Value";
+>> +	case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:			return "Average QP value";
+>>   
+>>   	/* VPX controls */
+>>   	case V4L2_CID_MPEG_VIDEO_VPX_NUM_PARTITIONS:		return "VPX Number of Partitions";
+>> @@ -1507,6 +1508,10 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+>>   		*max = 0xffffffffffffLL;
+>>   		*step = 1;
+>>   		break;
+>> +	case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:
+>> +		*type = V4L2_CTRL_TYPE_INTEGER;
+>> +		*flags |= V4L2_CTRL_FLAG_VOLATILE | V4L2_CTRL_FLAG_READ_ONLY;
+>> +		break;
+>>   	case V4L2_CID_PIXEL_RATE:
+>>   		*type = V4L2_CTRL_TYPE_INTEGER64;
+>>   		*flags |= V4L2_CTRL_FLAG_READ_ONLY;
+>> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+>> index 99c3f5e99da7..974fd254e573 100644
+>> --- a/include/uapi/linux/v4l2-controls.h
+>> +++ b/include/uapi/linux/v4l2-controls.h
+>> @@ -898,6 +898,8 @@ enum v4l2_mpeg_video_av1_level {
+>>   	V4L2_MPEG_VIDEO_AV1_LEVEL_7_3 = 23
+>>   };
+>>   
+>> +#define V4L2_CID_MPEG_VIDEO_AVERAGE_QP  (V4L2_CID_CODEC_BASE + 657)
+>> +
+>>   /*  MPEG-class control IDs specific to the CX2341x driver as defined by V4L2 */
+>>   #define V4L2_CID_CODEC_CX2341X_BASE				(V4L2_CTRL_CLASS_CODEC | 0x1000)
+>>   #define V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE		(V4L2_CID_CODEC_CX2341X_BASE+0)
+> 
