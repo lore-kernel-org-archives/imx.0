@@ -1,33 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031CC125AC;
-	Sun,  7 Apr 2024 08:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68DC39850
+	for <imx@lists.linux.dev>; Sun,  7 Apr 2024 09:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712480227; cv=none; b=RJfmyR/epjxWd868AmIo2vBD5IE4twyHGnqv2k3r3jbDaJ0APQz1fs8/yG/43kgjDBpRbC841dTM3gspXq2qh4wS1bsc4ONpKhtZszVVQbPQUu4Zx9tMgCLvy+KCZznNa15a4qVlQe9TrrKGVBtYF4ZbiQLMKdfPhPM4Da+SuZ8=
+	t=1712480666; cv=none; b=CGuShuWRf7KFDcLKeSJcRkOYssgdTDOLTmQKv4gMKfrNk9eDpMp/5eaZkbLav7lKybZasOyupsEPPPFBrT4WHG/fcDF0+/GxRD86JjB76VIZU2bO/1ExF2LFwjJYJiuqnVYK4XwEcdV+k1jytMTWbkePv+B4K9vz0c6X3fdsip0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712480227; c=relaxed/simple;
-	bh=1UmJRBIshTbsNwOgZA2SDcfXRmjyJJJe+7oDBNgAf30=;
+	s=arc-20240116; t=1712480666; c=relaxed/simple;
+	bh=9Rxz9uLQQm/s+66PiRuMCLIxRzAvPCh4g/bvkxN5R0s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sfJUv2fVc/VzzwkQiQYVWTh1goqARxnQ/6IX0ajw++gSy80HT0Jw4BHJ2Kfa1E9AZTo4r8yFSqERAtRycPIlutIOVfWQyaS9xdCbnDQUYlvMqpi9ivfuO9TSAs0cRW6viYWUn3RF2cVPh8W+RKMCD3wYf204hD7AedkawxUpQKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9n3FMDo; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=FZrh5eKwCySmT515KG7vUCV6aYZTpZ8HuceMkruukbOabkPqmaZf+hjfIoUDQZZEumdja5nB76//0711wHntI+XQcCY7i77339YD19zfKHNtm8nZo68wi9ylHAoI43Y59spZiYCa30HRfBp8cMT7iMIbrbvOKKO6jO3T8WNcbR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dUrS2qt/; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9n3FMDo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEABC433F1;
-	Sun,  7 Apr 2024 08:57:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712480226;
-	bh=1UmJRBIshTbsNwOgZA2SDcfXRmjyJJJe+7oDBNgAf30=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i9n3FMDooGJnPJbxeHPBkUwJYKIArbiPKkYdJ+i4VzW3zkHL7/gh9OS4kVfo7E8vA
-	 TcFSFEbzZp1RNt7/5hiHsTE+5SHb254FcBCWLASA+czYxiTK4oP2GRoAHXo8+nS12F
-	 rmThpFWbRfbGneYzJRN+Jm3TflUS9CRuD1LpSW15M0vMTpi4iA6I23aoeoU4LB5D38
-	 QGXcX7/iGBQ0pcHr3DpVpE7mtYU4fNENIixnITwRlujbSg6+Hr08F7ab+HzGO0lEVn
-	 ro0EumLzfOqhbgaXMDjlUdacBxg1+iHe/Idz+WMtdsb0tX0T0sI+m/GNevGrVkcFBI
-	 3HrU8pRFFA5/w==
-Message-ID: <ca7f1e62-5f70-4aa5-b539-764b778a71e5@kernel.org>
-Date: Sun, 7 Apr 2024 10:57:01 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dUrS2qt/"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-343e70dd405so1742388f8f.3
+        for <imx@lists.linux.dev>; Sun, 07 Apr 2024 02:04:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712480662; x=1713085462; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=uRNhwyw9FS3sbWuSwutVho3jP99EmZFo+hdFmKQFtUc=;
+        b=dUrS2qt/fo78EIoRZmG56agB1845aa2WqTC9m78ErPTd9OD/YEoQ10ZVWq/jANgFvK
+         dcTZWJ6nSZbhORe0q+tMo7yoHFLBoDTrm9qZ3S9/Krv1r8j8w99mRDyC9+e10M5oUuQO
+         imMwZhcx7kutHjozk4hWVFt3j/C4L6I/q7skvWQpwJvRh1luYXeQtmlKcppnWHMd2iS6
+         oUL51N5lionuQxnSdmcMzzpyY8Sb76G7fHgRDKgFeml9JFnH2jSYMgZw6uIJWRlKhOa/
+         sboQxbFcfkywmPknwQWBP84Q3iuVY+QIVOT/Ecd272WNR6wlf7d12aV8dg9seieGrqfB
+         ipJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712480662; x=1713085462;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uRNhwyw9FS3sbWuSwutVho3jP99EmZFo+hdFmKQFtUc=;
+        b=wTmavAZnieCiVZnjEm9MaZtcI9cKcfPI8/f4Tzc0/3uHVnMc0tBqgxVOnClNDd7l9T
+         xV14fel27wfol5qJYxJsSAy3BWUWpFrr3Pihs5lwZzBpSL9G2M+wtdM1I9DeLLgY0XHv
+         A28V5ZJadoS691cowZy8SHuWjBN4jY0Z+hFfUsJhGvOlyN3MjceW8Dch0ZS/ZnlXbjS0
+         SIfOymrKXf9qfTfliCa/Pd8vkk7unqNhrFRu5vpFJ9EVwdfqFNaQFMxM5r70LJN79gYc
+         DbY05UiSdalCTTula+OnZ2ql6mB92gfRVxsktrg2h+pPE+nUfajZ3j6xoxThhVVS87s0
+         ClUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVEvE/NC4D93f7BU9zYzMO7I4fnM7Rqd90PTb10PeIbZwbViLKwHa9r3ZZGv+ZEeTMoTuPyufkhUPhLbk1oGzvmw0h
+X-Gm-Message-State: AOJu0YwB2IfrQBH9CmZEwNnVaso0khQquk3ZP5q1Qh7vjgOUPO91jxqF
+	0ps1efKlCTBZgT/pEgdZkEEOgBBS6Yy4tigiYg2m3KDw38j40PkGerQCq4ckAsM=
+X-Google-Smtp-Source: AGHT+IEKpCxN3SthrzEr0aFlPZAGWF/+OIRaM7T0GqXAbZgLjeRmQdk+0GcFJEMmF66rUre334UlZw==
+X-Received: by 2002:a5d:58f3:0:b0:33f:6ec1:56dd with SMTP id f19-20020a5d58f3000000b0033f6ec156ddmr4654585wrd.45.1712480662001;
+        Sun, 07 Apr 2024 02:04:22 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id q1-20020adfb181000000b00341c3071c93sm6318807wra.73.2024.04.07.02.04.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Apr 2024 02:04:21 -0700 (PDT)
+Message-ID: <f019690a-2397-4bf8-9472-ec38f4b94c1d@linaro.org>
+Date: Sun, 7 Apr 2024 11:04:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,27 +62,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
- protocol
-To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Cristian Marussi <cristian.marussi@arm.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
- <9aab8dab-27c4-40b6-b1d5-0a2babe0700d@kernel.org>
- <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx93-11x11-evk: add rtc PCF2131
+ support
+To: Joy Zou <joy.zou@nxp.com>, ping.bai@nxp.com, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240407051913.1989364-1-joy.zou@nxp.com>
+ <20240407051913.1989364-2-joy.zou@nxp.com>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
  JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
@@ -65,239 +84,78 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  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
- 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 fv0=
-In-Reply-To: <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240407051913.1989364-2-joy.zou@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07/04/2024 02:51, Peng Fan wrote:
->> Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
->> protocol
->>
->> On 05/04/2024 14:39, Peng Fan (OSS) wrote:
->>> From: Peng Fan <peng.fan@nxp.com>
->>>
->>> Add i.MX SCMI Extension protocols bindings for:
->>>  - Battery Backed Secure Module(BBSM)
->>
->> Which is what?
+On 07/04/2024 07:19, Joy Zou wrote:
+> Support rtc PCF2131 on imx93-11x11-evk.
 > 
-> I should say BBM(BBSM + BBNSM), BBM has RTC and ON/OFF
-> key features, but BBM is managed by SCMI firmware and exported
-> to agent by BBM protocol. So add bindings for i.MX BBM protocol.
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx93-11x11-evk.dts    | 25 +++++++++++++++++++
+>  1 file changed, 25 insertions(+)
 > 
-> Is this ok?
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> index 07e85a30a25f..065fa3390791 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> @@ -281,6 +281,24 @@ ldo5: LDO5 {
+>  	};
+>  };
+>  
+> +&lpi2c3 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&pinctrl_lpi2c3>;
+> +	pinctrl-1 = <&pinctrl_lpi2c3>;
+> +	status = "okay";
+> +
+> +	pcf2131: rtc@53 {
+> +			compatible = "nxp,pcf2131";
+> +			reg = <0x53>;
+> +			interrupt-parent = <&pcal6524>;
+> +			interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+> +			status = "okay";
 
-No, I still don't know what is BBSM, BBNSM and BBM.
+Really, just drop...
 
-> 
->>
->>>  - MISC settings such as General Purpose Registers settings.
->>>
->>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->>> ---
->>>  .../devicetree/bindings/firmware/imx,scmi.yaml     | 80
->> ++++++++++++++++++++++
->>>  1 file changed, 80 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
->>> b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
->>> new file mode 100644
->>> index 000000000000..7ee19a661d83
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
->>> @@ -0,0 +1,80 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) # Copyright 2024
->>> +NXP %YAML 1.2
->>> +---
->>> +$id:
->>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevi
->>>
->> +cetree.org%2Fschemas%2Ffirmware%2Fimx%2Cscmi.yaml%23&data=05%7
->> C02%7Cp
->>>
->> +eng.fan%40nxp.com%7C5d16781d3eca425a342508dc562910b7%7C686ea
->> 1d3bc2b4c
->>>
->> +6fa92cd99c5c301635%7C0%7C0%7C638479981570959816%7CUnknown%
->> 7CTWFpbGZsb
->>>
->> +3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn
->> 0%3D
->>>
->> +%7C0%7C%7C%7C&sdata=mWNwPvu2eyF18MroVOBHb%2Fjeo%2BIHfV5V
->> h%2F9ebdx65MM
->>> +%3D&reserved=0
->>> +$schema:
->>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevi
->>> +cetree.org%2Fmeta-
->> schemas%2Fcore.yaml%23&data=05%7C02%7Cpeng.fan%40nx
->>>
->> +p.com%7C5d16781d3eca425a342508dc562910b7%7C686ea1d3bc2b4c6fa
->> 92cd99c5c
->>>
->> +301635%7C0%7C0%7C638479981570971949%7CUnknown%7CTWFpbGZs
->> b3d8eyJWIjoiM
->>>
->> +C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
->> C%7C%7
->>>
->> +C&sdata=v4XnGG00D4I8j5MJvDUVYMRTm7yRrvz0V3fUyc5KAAA%3D&reser
->> ved=0
->>> +
->>> +title: i.MX System Control and Management Interface(SCMI) Vendor
->>> +Protocols Extension
->>> +
->>> +maintainers:
->>> +  - Peng Fan <peng.fan@nxp.com>
->>> +
->>> +allOf:
->>> +  - $ref: arm,scmi.yaml#
->>
->> Sorry, but arm,scmi is a final schema. Is your plan to define some common
->> part?
-> 
-> No. I just wanna add vendor extension per SCMI spec. 
-> 
-> 0x80-0xFF:
-> Reserved for vendor or platform-specific extensions to this interface
-> 
-> Each vendor may have different usage saying id 0x81, so I add
-> i.MX dt-schema file.
-> 
->>
->>> +
->>> +properties:
->>> +  protocol@81:
->>> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
->>> +    unevaluatedProperties: false
->>> +    description:
->>> +      The BBM Protocol is for managing Battery Backed Secure Module
->> (BBSM) RTC
->>> +      and the ON/OFF Key
->>> +
->>> +    properties:
->>> +      reg:
->>> +        const: 0x81
->>> +
->>> +    required:
->>> +      - reg
->>> +
->>> +  protocol@84:
->>> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
->>> +    unevaluatedProperties: false
->>> +    description:
->>> +      The MISC Protocol is for managing SoC Misc settings, such as
->>> + GPR settings
->>
->> Genera register is not a setting... this is a pleonasm. Please be more specific
->> what is the GPR, MISC protocol etc.
-> 
-> The MISC Protocol is for managing SoC Misc settings, such as SAI MCLK/MQS in
-> Always On domain BLK CTRL,  SAI_CLK_SEL in WAKEUP BLK CTRL, gpio
-> expanders which is under control of SCMI firmware.
-
-So like a bag for everything which you do not want to call something
-specific?
-
-No, be specific...
-
-> 
->>> +
->>> +    properties:
->>> +      reg:
->>> +        const: 0x84
->>> +
->>> +      wakeup-sources:
->>> +        description:
->>> +          Each entry consists of 2 integers, represents the source
->>> + and electric signal edge
->>
->> Can you answer questions from reviewers?
-> 
-> Sorry. Is this ok?
-> minItems: 1
-> maxItems: 32
-
-No. Does it answers Rob's question? I see zero correlation to his question.
-
-Do not ignore emails from reviewers but respond to them.
-
-> 
->>
->>> +        items:
->>> +          items:
->>> +            - description: the wakeup source
->>> +            - description: the wakeup electric signal edge
->>> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
->>> +
->>> +    required:
->>> +      - reg
->>> +
->>> +additionalProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    firmware {
->>> +        scmi {
->>> +            compatible = "arm,scmi";
->>
->>> +            mboxes = <&mu2 5 0>, <&mu2 3 0>, <&mu2 3 1>;
->>> +            shmem = <&scmi_buf0>, <&scmi_buf1>;
->>> +
->>> +            #address-cells = <1>;
->>> +            #size-cells = <0>;
->>> +
->>> +            protocol@81 {
->>> +                reg = <0x81>;
->>> +            };
->>> +
->>> +            protocol@84 {
->>> +                reg = <0x84>;
->>> +                wakeup-sources = <0x8000 1
->>> +                                  0x8001 1
->>> +                                  0x8002 1
->>> +                                  0x8003 1
->>> +                                  0x8004 1>;
->>
->> Nothing improved... If you are going to ignore reviews, then you will only get
->> NAKed.
-> 
-> Sorry, you mean the examples, or the whole dt-schema?
-
-*Read comments and respond to them*. Regardless where they are.
 
 Best regards,
 Krzysztof
