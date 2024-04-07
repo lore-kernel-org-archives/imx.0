@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1DF2599;
-	Sun,  7 Apr 2024 08:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031CC125AC;
+	Sun,  7 Apr 2024 08:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712480107; cv=none; b=cCVtDq9ujS+CufsBV8q9AA6eJWYs76wHZGomtvbCAc5X4BxW/NzY1CpgygrVW72xTRMrncPMW+XqyJFOZfqkQ8yVQLZIm8brpd4iriTXNl75F2j6SFhWfLMZfJb1g0Fpf1LP/IjQRj4NJOx6OHVzYIFdennctsEUSQ66YNBP4YY=
+	t=1712480227; cv=none; b=RJfmyR/epjxWd868AmIo2vBD5IE4twyHGnqv2k3r3jbDaJ0APQz1fs8/yG/43kgjDBpRbC841dTM3gspXq2qh4wS1bsc4ONpKhtZszVVQbPQUu4Zx9tMgCLvy+KCZznNa15a4qVlQe9TrrKGVBtYF4ZbiQLMKdfPhPM4Da+SuZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712480107; c=relaxed/simple;
-	bh=4sIDFOyUU2jKk0/3nYVC+assCZInVL76sF8s/2Ze98Y=;
+	s=arc-20240116; t=1712480227; c=relaxed/simple;
+	bh=1UmJRBIshTbsNwOgZA2SDcfXRmjyJJJe+7oDBNgAf30=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ChOQn+egCyktBdlmD0lYkJU4mZw9ra5VKO2gfVU8NMj1kvKUTT6VMAWLlDsC/okrV/qA7TyuKc7rK1J27EHYCgZFOCSvM0zy12X/keOswSJWGkzi3gV/XC7aiMWBNaUAGP4FZH2GHcKk2J6ZZ2NSj+N3kt3ySjTuEnnke81CLSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JyTURp5l; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=sfJUv2fVc/VzzwkQiQYVWTh1goqARxnQ/6IX0ajw++gSy80HT0Jw4BHJ2Kfa1E9AZTo4r8yFSqERAtRycPIlutIOVfWQyaS9xdCbnDQUYlvMqpi9ivfuO9TSAs0cRW6viYWUn3RF2cVPh8W+RKMCD3wYf204hD7AedkawxUpQKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9n3FMDo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JyTURp5l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6774BC433C7;
-	Sun,  7 Apr 2024 08:55:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9n3FMDo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEABC433F1;
+	Sun,  7 Apr 2024 08:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712480106;
-	bh=4sIDFOyUU2jKk0/3nYVC+assCZInVL76sF8s/2Ze98Y=;
+	s=k20201202; t=1712480226;
+	bh=1UmJRBIshTbsNwOgZA2SDcfXRmjyJJJe+7oDBNgAf30=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JyTURp5lzZzfELmf3twG/9IIa1G1tc5LA8my787ynrnMMiEVSH3xPyn2K6kz2L0dT
-	 fMGYcLBEWro//PWj7t5etOIQyBYcv1p4minqzCJxhLzs2S7OvkuTd6VpZ3eHBDxeMa
-	 4MTkE24NGtkA72nAPOiAweKIW0/IRgCK7+ULt1u6b/MG75OH/U73VvwnQvKhWWkyoz
-	 +8wm7ocPIx223xvdr+zaRbeQf+lRNSIYzClNMNYJSaOnLwrhHLmoMBdNauZRbbgn1y
-	 PZVI5qtA40Ua6tR3u+UsKFwV6AHSqAXMkCgEpW+kNF/MVW1/6HZk2QWf7ZYzjPCtic
-	 51Nfhe4TUisuw==
-Message-ID: <09f6b752-6b72-49d7-b248-6faba2fd13a7@kernel.org>
-Date: Sun, 7 Apr 2024 10:55:00 +0200
+	b=i9n3FMDooGJnPJbxeHPBkUwJYKIArbiPKkYdJ+i4VzW3zkHL7/gh9OS4kVfo7E8vA
+	 TcFSFEbzZp1RNt7/5hiHsTE+5SHb254FcBCWLASA+czYxiTK4oP2GRoAHXo8+nS12F
+	 rmThpFWbRfbGneYzJRN+Jm3TflUS9CRuD1LpSW15M0vMTpi4iA6I23aoeoU4LB5D38
+	 QGXcX7/iGBQ0pcHr3DpVpE7mtYU4fNENIixnITwRlujbSg6+Hr08F7ab+HzGO0lEVn
+	 ro0EumLzfOqhbgaXMDjlUdacBxg1+iHe/Idz+WMtdsb0tX0T0sI+m/GNevGrVkcFBI
+	 3HrU8pRFFA5/w==
+Message-ID: <ca7f1e62-5f70-4aa5-b539-764b778a71e5@kernel.org>
+Date: Sun, 7 Apr 2024 10:57:01 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
- additionalProperties to true
+Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
+ protocol
 To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -50,9 +50,9 @@ Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
  <linux-arm-kernel@lists.infradead.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-1-9fc9186856c2@nxp.com>
- <614b5107-656d-4d41-99c1-77941c48342c@kernel.org>
- <DU0PR04MB9417932A6208128FBBB22C4188012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
+ <9aab8dab-27c4-40b6-b1d5-0a2babe0700d@kernel.org>
+ <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,43 +98,206 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <DU0PR04MB9417932A6208128FBBB22C4188012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB941719A18C3F749E7D180FD888012@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07/04/2024 02:37, Peng Fan wrote:
->> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
->> additionalProperties to true
+On 07/04/2024 02:51, Peng Fan wrote:
+>> Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
+>> protocol
 >>
 >> On 05/04/2024 14:39, Peng Fan (OSS) wrote:
 >>> From: Peng Fan <peng.fan@nxp.com>
 >>>
->>> When adding vendor extension protocols, there is dt-schema warning:
->>> "
->>> imx,scmi.example.dtb: scmi: 'protocol@81', 'protocol@84' do not match
->>> any of the regexes: 'pinctrl-[0-9]+'
->>> "
->>>
->>> Set additionalProperties to true to address the issue.
+>>> Add i.MX SCMI Extension protocols bindings for:
+>>>  - Battery Backed Secure Module(BBSM)
 >>
->> I do not see anything addressed here, except making the binding accepting
->> anything anywhere...
+>> Which is what?
 > 
-> I not wanna add vendor protocols in arm,scmi.yaml, so will introduce
-> a new yaml imx.scmi.yaml which add i.MX SCMI protocol extension.
+> I should say BBM(BBSM + BBNSM), BBM has RTC and ON/OFF
+> key features, but BBM is managed by SCMI firmware and exported
+> to agent by BBM protocol. So add bindings for i.MX BBM protocol.
 > 
-> With additionalProperties set to false, I not know how, please suggest.
+> Is this ok?
 
-First of all, you cannot affect negatively existing devices (their
-bindings) and your patch does exactly that. This should make you thing
-what is the correct approach...
+No, I still don't know what is BBSM, BBNSM and BBM.
 
-Rob gave you the comment about missing compatible - you still did not
-address that.
+> 
+>>
+>>>  - MISC settings such as General Purpose Registers settings.
+>>>
+>>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>>> ---
+>>>  .../devicetree/bindings/firmware/imx,scmi.yaml     | 80
+>> ++++++++++++++++++++++
+>>>  1 file changed, 80 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+>>> b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+>>> new file mode 100644
+>>> index 000000000000..7ee19a661d83
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
+>>> @@ -0,0 +1,80 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) # Copyright 2024
+>>> +NXP %YAML 1.2
+>>> +---
+>>> +$id:
+>>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevi
+>>>
+>> +cetree.org%2Fschemas%2Ffirmware%2Fimx%2Cscmi.yaml%23&data=05%7
+>> C02%7Cp
+>>>
+>> +eng.fan%40nxp.com%7C5d16781d3eca425a342508dc562910b7%7C686ea
+>> 1d3bc2b4c
+>>>
+>> +6fa92cd99c5c301635%7C0%7C0%7C638479981570959816%7CUnknown%
+>> 7CTWFpbGZsb
+>>>
+>> +3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn
+>> 0%3D
+>>>
+>> +%7C0%7C%7C%7C&sdata=mWNwPvu2eyF18MroVOBHb%2Fjeo%2BIHfV5V
+>> h%2F9ebdx65MM
+>>> +%3D&reserved=0
+>>> +$schema:
+>>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevi
+>>> +cetree.org%2Fmeta-
+>> schemas%2Fcore.yaml%23&data=05%7C02%7Cpeng.fan%40nx
+>>>
+>> +p.com%7C5d16781d3eca425a342508dc562910b7%7C686ea1d3bc2b4c6fa
+>> 92cd99c5c
+>>>
+>> +301635%7C0%7C0%7C638479981570971949%7CUnknown%7CTWFpbGZs
+>> b3d8eyJWIjoiM
+>>>
+>> +C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
+>> C%7C%7
+>>>
+>> +C&sdata=v4XnGG00D4I8j5MJvDUVYMRTm7yRrvz0V3fUyc5KAAA%3D&reser
+>> ved=0
+>>> +
+>>> +title: i.MX System Control and Management Interface(SCMI) Vendor
+>>> +Protocols Extension
+>>> +
+>>> +maintainers:
+>>> +  - Peng Fan <peng.fan@nxp.com>
+>>> +
+>>> +allOf:
+>>> +  - $ref: arm,scmi.yaml#
+>>
+>> Sorry, but arm,scmi is a final schema. Is your plan to define some common
+>> part?
+> 
+> No. I just wanna add vendor extension per SCMI spec. 
+> 
+> 0x80-0xFF:
+> Reserved for vendor or platform-specific extensions to this interface
+> 
+> Each vendor may have different usage saying id 0x81, so I add
+> i.MX dt-schema file.
+> 
+>>
+>>> +
+>>> +properties:
+>>> +  protocol@81:
+>>> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
+>>> +    unevaluatedProperties: false
+>>> +    description:
+>>> +      The BBM Protocol is for managing Battery Backed Secure Module
+>> (BBSM) RTC
+>>> +      and the ON/OFF Key
+>>> +
+>>> +    properties:
+>>> +      reg:
+>>> +        const: 0x81
+>>> +
+>>> +    required:
+>>> +      - reg
+>>> +
+>>> +  protocol@84:
+>>> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
+>>> +    unevaluatedProperties: false
+>>> +    description:
+>>> +      The MISC Protocol is for managing SoC Misc settings, such as
+>>> + GPR settings
+>>
+>> Genera register is not a setting... this is a pleonasm. Please be more specific
+>> what is the GPR, MISC protocol etc.
+> 
+> The MISC Protocol is for managing SoC Misc settings, such as SAI MCLK/MQS in
+> Always On domain BLK CTRL,  SAI_CLK_SEL in WAKEUP BLK CTRL, gpio
+> expanders which is under control of SCMI firmware.
 
-You need common schema referenced in arm,scmi and your device specific
-schema, also using it.
+So like a bag for everything which you do not want to call something
+specific?
 
+No, be specific...
+
+> 
+>>> +
+>>> +    properties:
+>>> +      reg:
+>>> +        const: 0x84
+>>> +
+>>> +      wakeup-sources:
+>>> +        description:
+>>> +          Each entry consists of 2 integers, represents the source
+>>> + and electric signal edge
+>>
+>> Can you answer questions from reviewers?
+> 
+> Sorry. Is this ok?
+> minItems: 1
+> maxItems: 32
+
+No. Does it answers Rob's question? I see zero correlation to his question.
+
+Do not ignore emails from reviewers but respond to them.
+
+> 
+>>
+>>> +        items:
+>>> +          items:
+>>> +            - description: the wakeup source
+>>> +            - description: the wakeup electric signal edge
+>>> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+>>> +
+>>> +    required:
+>>> +      - reg
+>>> +
+>>> +additionalProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    firmware {
+>>> +        scmi {
+>>> +            compatible = "arm,scmi";
+>>
+>>> +            mboxes = <&mu2 5 0>, <&mu2 3 0>, <&mu2 3 1>;
+>>> +            shmem = <&scmi_buf0>, <&scmi_buf1>;
+>>> +
+>>> +            #address-cells = <1>;
+>>> +            #size-cells = <0>;
+>>> +
+>>> +            protocol@81 {
+>>> +                reg = <0x81>;
+>>> +            };
+>>> +
+>>> +            protocol@84 {
+>>> +                reg = <0x84>;
+>>> +                wakeup-sources = <0x8000 1
+>>> +                                  0x8001 1
+>>> +                                  0x8002 1
+>>> +                                  0x8003 1
+>>> +                                  0x8004 1>;
+>>
+>> Nothing improved... If you are going to ignore reviews, then you will only get
+>> NAKed.
+> 
+> Sorry, you mean the examples, or the whole dt-schema?
+
+*Read comments and respond to them*. Regardless where they are.
 
 Best regards,
 Krzysztof
