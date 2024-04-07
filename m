@@ -1,153 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAC33A1C7;
-	Sun,  7 Apr 2024 16:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E5F3F9D2;
+	Sun,  7 Apr 2024 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712506550; cv=none; b=MxF4u5KvJ3MtAmU7iDgmOJ8UOsReqbLmHS8iUjoZ5KOoXh8D4BxKFhAPVWA5AsnmXmCFgPZAeWgfiBik0mYQzYdnGNOFIYWt4MrYZY2shbNw4YuQt2QL93bsfh+sWONGTfW99a3eGCOqGQtoC5vEYAanqVK5FdqC+M/Wz2wxhQ0=
+	t=1712507951; cv=none; b=ZZvscEHmqKSwo5R62HxRRc+C9q2eaDfEoaImR+kibydowrxjtSuaysCCXE4uPHA/r3oj8UEUQW9qyDlLAqCucQr7B+eR+bdGXveUIKzUfszeq/Qe9C3fa6GgWBgItjz4S2JSW9Y7JpEt8h884TB2fwxQ6de+7FxeVPQb/FXcvq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712506550; c=relaxed/simple;
-	bh=Wx29/u2HmesnOY5HNS11s3zqFGiGxLSe5oJTWtN3DA8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OYdgUix4v1ZMEXJjyejqsbbTBSiv6Wjx3eivs05ZyUUJTN13bXOp3d0kJozlcms1eCcIkL8eYIn2Lk1CNdJkI2FMbGO4FuuVE05PH5UznBD03QDE2Ajmi8IOWIuN/de8VCSb4dZUF67GLR72zRl+Z++VJB5LTLbsyR2Lhs3lhw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qBwCdcRR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712507951; c=relaxed/simple;
+	bh=OTmsimQJwp7aDqopRUkhzqXDLl0VnyoKAPtMX+wk7vg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qUe8ZWDwPxvlryQX4VCjTkLStZh41GiBhZSW/8hog5z+dfSgZId4ulYT4gSNek6N6jxyfTwPoWS8NBqby9W7vwqT0veaygklJow6W/xQOqWFeNYvhGWiDmO6e9U+lCCMQiWpWpFVJXp40whJbhvhAWUGAVBh4ffqmUOs2eKux2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZ5KRPHH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qBwCdcRR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA570C433F1;
-	Sun,  7 Apr 2024 16:15:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZ5KRPHH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F345C433F1;
+	Sun,  7 Apr 2024 16:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712506549;
-	bh=Wx29/u2HmesnOY5HNS11s3zqFGiGxLSe5oJTWtN3DA8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qBwCdcRR0gpom7F6u9JKMVjSi02D/nwR5BKVWr4PATUuJjKwYNM0W4TI6B8F5cn5m
-	 l/jBOv5gQGmGME8mwyn9piKDle03zot1UFM3rToorJMOwga+e7kdwURDoWaGP/8u7+
-	 QrFzHBWy26f2muW0BIIB5pTV4TJERd6da82sHH5vpkUcYkMJ9dDx7TgRD5OkoJyIjg
-	 W9zr59UBl1h6Z1wGONuKxxwKBfR5aXtS+C0PaaN6urUD4dNnmbBKa3msFlOOGXFz7R
-	 thgjyn5LoB14uAVVnDW81KbmeXKEi6UnJ1arGoo/Aaswe7R1/h7DnEjMxTbt41UaMf
-	 WW1+7OtsAJTsg==
-Message-ID: <5b9e0e44-0b9c-44fc-9d18-21c47b46dc63@kernel.org>
-Date: Sun, 7 Apr 2024 18:15:41 +0200
+	s=k20201202; t=1712507949;
+	bh=OTmsimQJwp7aDqopRUkhzqXDLl0VnyoKAPtMX+wk7vg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=GZ5KRPHHDq4gJhIPL58t/oLTlxjm8qJ7ce2ITyGMz44i5CunDqCso6+Yd0VgEBBqB
+	 rp3ZRt7sc17sHlrkTof92WlAklQTEp6PZeuhMnJmnThjifb2XxuIZgBjH82dz7bW/1
+	 VVX9Nx0AEKK3wEOOzcoVb+bTow/BKgugJi75fWCV+i3yd7vt3eJUEEfh/k+rXHDoP7
+	 iQiwIdC/Zv7Y6xcVS3MUx99RQrkT8v0Zu55DTzwvLyV+SSNwxj8K23zqA/FX+vUUGq
+	 qFgrRShJou80QA0gBQtiRa/X2ef+4wo6e8lZHOu98Rzm9KoY4Mzxwc9MgD4vCLtWWI
+	 6z8ts0aOv6Gjw==
+From: Vinod Koul <vkoul@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, Nicolin Chen <b42378@freescale.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, Vipul Kumar <vipul_kumar@mentor.com>, 
+ Srikanth Krishnakar <Srikanth_Krishnakar@mentor.com>, 
+ Robin Gong <yibin.gong@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
+ Clark Wang <xiaoning.wang@nxp.com>
+In-Reply-To: <20240329-sdma_upstream-v4-0-daeb3067dea7@nxp.com>
+References: <20240329-sdma_upstream-v4-0-daeb3067dea7@nxp.com>
+Subject: Re: [PATCH v4 0/5] dmaengine: fsl-sdma: Some improvement for
+ fsl-sdma
+Message-Id: <171250794199.435322.8811454483252846455.b4-ty@kernel.org>
+Date: Sun, 07 Apr 2024 22:09:01 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
- additionalProperties to true
-To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Cristian Marussi <cristian.marussi@arm.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-1-9fc9186856c2@nxp.com>
- <614b5107-656d-4d41-99c1-77941c48342c@kernel.org>
- <DU0PR04MB9417932A6208128FBBB22C4188012@DU0PR04MB9417.eurprd04.prod.outlook.com>
- <09f6b752-6b72-49d7-b248-6faba2fd13a7@kernel.org>
- <DU0PR04MB9417C5B9BDD9E0B47E7494C088012@DU0PR04MB9417.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <DU0PR04MB9417C5B9BDD9E0B47E7494C088012@DU0PR04MB9417.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 
-On 07/04/2024 12:04, Peng Fan wrote:
->> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
->> additionalProperties to true
->>
->> On 07/04/2024 02:37, Peng Fan wrote:
->>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
->>>> additionalProperties to true
->>>>
->>>> On 05/04/2024 14:39, Peng Fan (OSS) wrote:
->>>>> From: Peng Fan <peng.fan@nxp.com>
->>>>>
->>>>> When adding vendor extension protocols, there is dt-schema warning:
->>>>> "
->>>>> imx,scmi.example.dtb: scmi: 'protocol@81', 'protocol@84' do not
->>>>> match any of the regexes: 'pinctrl-[0-9]+'
->>>>> "
->>>>>
->>>>> Set additionalProperties to true to address the issue.
->>>>
->>>> I do not see anything addressed here, except making the binding
->>>> accepting anything anywhere...
->>>
->>> I not wanna add vendor protocols in arm,scmi.yaml, so will introduce a
->>> new yaml imx.scmi.yaml which add i.MX SCMI protocol extension.
->>>
->>> With additionalProperties set to false, I not know how, please suggest.
->>
->> First of all, you cannot affect negatively existing devices (their
->> bindings) and your patch does exactly that. This should make you thing what
->> is the correct approach...
->>
->> Rob gave you the comment about missing compatible - you still did not
->> address that.
+
+On Fri, 29 Mar 2024 10:34:40 -0400, Frank Li wrote:
+> To: Vinod Koul <vkoul@kernel.org>
+> To: Shawn Guo <shawnguo@kernel.org>
+> To: Sascha Hauer <s.hauer@pengutronix.de>
+> To: Pengutronix Kernel Team <kernel@pengutronix.de>
+> To: Fabio Estevam <festevam@gmail.com>
+> To: NXP Linux Team <linux-imx@nxp.com>
+> To: Rob Herring <robh@kernel.org>
+> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> To: Conor Dooley <conor+dt@kernel.org>
+> To: Joy Zou <joy.zou@nxp.com>
+> Cc: dmaengine@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
 > 
-> I added the compatible in patch 2/6 in the examples "compatible = "arm,scmi";"
+> [...]
 
-So you claim that your vendor extensions are the same or fully
-compatible with arm,scmi and you add nothing... Are your
-extensions/protocol valid for arm,scmi? If yes, why is this in separate
-binding. If no, why you use someone else's compatible?
+Applied, thanks!
 
-Maybe your binding is correct, feel free to convince me (and read first
-writing bindings).
+[1/5] dmaengine: imx-sdma: Support allocate memory from internal SRAM (iram)
+      commit: 802ef223101fec83d92e045f89000b228904a580
+[2/5] dmaengine: imx-sdma: Support 24bit/3bytes for sg mode
+      commit: 288109387becd8abadca5c063c70a07ae0dd7716
+[3/5] dmaengine: imx-sdma: support dual fifo for DEV_TO_DEV
+      commit: a20f10d6accb9f5096fa7a7296e5ae34f4562440
+[4/5] dt-bindings: fsl-imx-sdma: Add I2C peripheral types ID
+      (no commit info)
+[5/5] dmaengine: imx-sdma: Add i2c dma support
+      (no commit info)
 
 Best regards,
-Krzysztof
+-- 
+~Vinod
+
 
