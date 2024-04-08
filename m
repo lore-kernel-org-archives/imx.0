@@ -1,80 +1,85 @@
-Received: from mx0a-00176a03.pphosted.com (mx0b-00176a03.pphosted.com [67.231.157.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB1E69DF5
-	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 11:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C6A69DF5
+	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 11:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712576675; cv=none; b=BYltMg7mcp2m1TlhCf6Ka/EQu4nJrXHEUAt7uXdzIlYJSz+3cn/IS6UU4q7IPzZNcmdvhDxdcZnbG+taL9fUAl5HMsVnUjuXM/bNKFCDuTltEcU5y8F53DyQ97Vm4yrwRSIcyglfeeXeHuF7c4b5X4/uAPnSkrrx7E1iQTGGSuQ=
+	t=1712576945; cv=none; b=J9hsVI+LyS5ywG1eepQ8ZP1ONSerIIFsF9w4kUd3WrCIS7EldWAzDORVqhXYgEN9L4pz6DXgZ8TBksmBo2GCC2vjyOLt39wEPQoOPPfEYp/1HOMWRUNmJFVFZIKif3xEDkb8tPJxL+5tBi8O+5yLH3OpiwfsOe11o7d/C4B+U2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712576675; c=relaxed/simple;
-	bh=gfhvyNWSMWsFDpAHxQSNSe8Ks7o5V+5CUEMbz1tB7jg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SBHDD2M18YmCwxBiLOG3Dt+4u4V4T+NU4b1Yzw6dIV9YnWKGyACjaVHBCWxUMy1p74JufdPxl2d2xfTiLsRzUF58qjnhN79gBNKQv8aSRTMehg8++7PSiIapj4uG5Tsb208m2DmPTfUlk0urghvaaQWJ3PFysVyrrYqBT09KAg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=jvXJB3H0; arc=none smtp.client-ip=67.231.157.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gehealthcare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
+	s=arc-20240116; t=1712576945; c=relaxed/simple;
+	bh=5+GW2zqSXOcVY6HLiP1isJnrQthfe56oJBTjTreix4o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ALRsAHRFvju92YjWG3wsIowQjW4WzPU6rfG/6Gtfh2BfQGGViXf7isZf0UHiPgB1796RPq8AY2F1VMypGAPPtgwaMavaPkNYY3T2BJVEwVQZRoiI4R0XpN+ZZyvssEWazENl3S7ycMSHFq0cuSL63vBXzUQJtYgDEVx9rC7OoZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZVo3jYJT; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="jvXJB3H0"
-Received: from pps.filterd (m0048206.ppops.net [127.0.0.1])
-	by m0048206.ppops.net-00176a03. (8.17.1.24/8.17.1.24) with ESMTP id 4389ojZ5022343
-	for <imx@lists.linux.dev>; Mon, 8 Apr 2024 07:44:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	gehealthcare.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=outbound;
-	 bh=0zih8xpmKEGXnHl6kNe1okyw+V1Wkzcjhoafj6sdOQ8=; b=jvXJB3H0F3rO
-	C+GYCNCtZWPEuamYLMa4B/+KbiW8eoS3qoCwgT7J9Px0umtcw2S8zHd1rgDRkB2v
-	qk0AAsBSGlm+EQb/z4edS+1e0/JocJ5IfXL4nMffXtMwqByL+wXSxV5yXRKfVUS2
-	/l6JpSkBXRUoMPEjPrhqSHzcpAQZXr7v1lscHexFa3wVOMO619gWvuUet+Qqns7V
-	WFXpNwddj1cBoPndthFBQaED3+BIESml+rw3YzFIMQxpCDcAv04ZKkVag48EOn8j
-	j3i9U3qG3YZ6aX0tZDkU1g4zKcH5FqD+afWmFbOsqpoej6HT8Jsz7oxFjDoUa0y6
-	i2A7R04JUg==
-Date: Mon, 8 Apr 2024 14:44:16 +0300
-From: Ian Ray <ian.ray@gehealthcare.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        devicetree@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp-msc-sm2s: Add i2c{1,6} sda-/scl-gpios
-Message-ID: <ZhPYkGLM_b5IEKs2@de2cfed78370>
-References: <20240408092449.6-1-ian.ray@gehealthcare.com>
- <CAOMZO5B-vTRSfi=tNc_iZxnxYstL8JJOd_1rMf4ps9WHyfx0GQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZVo3jYJT"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6ecee443c79so499711b3a.0
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 04:49:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712576943; x=1713181743; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GIQh6B6U2unyStwftymRPGVI14zoMCWts9Hg0rctxvI=;
+        b=ZVo3jYJTArsRK2Od5J7wavPgaZXZhVhKzlgDdAvrDiiFXEfD3K/XEuFb0uIHB1LJa4
+         SDuoj1BThM6t3T57z+DFTsGBF6C8dBnqC/Q84pcbUujqGhFC7Vl6webw0rklfQx/pJR7
+         jocd8YSroBh26fYRkSgpsZTII21Y4H2uOrp6EIUzXDom4Iku+zVT8TGqNZyM5nMx6YiU
+         4Xkx+Ep5YyVuS2RIuKUGvKZcmWAAlE7wrEdZ0fS1y0hDh1d7hE8Dh7WxJO8V4fFK5uv9
+         y4qdp2sdlYaqfeFYTc/qmcTg86corOKvp8mJE/wh8pGU5rsTb1aS5QPUH4qwk3cv47yX
+         aRjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712576943; x=1713181743;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GIQh6B6U2unyStwftymRPGVI14zoMCWts9Hg0rctxvI=;
+        b=hrYbv3d+9qi03ni7b/HTKcmXFJvRv7jJxlI0qfk1c5zN9dzBaWiLbx0RyzN4o+xC6o
+         YDLPKeB7AzlojwJg549lfiMBg9Thijn5eFMcH46Dtx8TcySvDfQyG0GTbL+8aqIxBH6g
+         l01koJRYQaK2vxGBBhqpM+jDYOJsDUoB6+JHXYXMXbkj0ZImTakkr6TIxkcX5nAurmH/
+         OxpOAhZFRM5zcc5gK+i7N/+vqdZQFF7r19yv/x7fgtqpDxMvZJENBHsoUlylp552lHhN
+         /qg93j9ZdO//mP3ERn366xy9nshlT8EkmmJDhgSNGJtSwOKMRLCGmbapr4STFnNhld/T
+         gqfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwKoeWTDugytNFRBEJkwOro5kuyJKPl0jYrCsOia9W8esPkkv7j1FV7K7ung5SvhZpxAVbiuQoKX1Eo0HkbQy2mVM9
+X-Gm-Message-State: AOJu0YyeOGKU+6GBOA12CYqUNyNYcuNlgF8p5D1IQPIWdNZesn+G0Gxz
+	rHDFe1CfcbM1oi+zrqu7A8PFpmYfw5Wx2e9SA5FYdnRczyLScTs/1y5FsNMrVQh5Qtx19gbMlZX
+	1uvlOP3cgLa1bIzZ84IRzPNHrTuo=
+X-Google-Smtp-Source: AGHT+IHth8BZ/ZebZFfLxBn0WT6zE10ZV962hJtv6q7226AlZXO+232Jcw6YYySMzlV1ysO95yXj8UyPZtQEfm3p3vs=
+X-Received: by 2002:a05:6a20:6a14:b0:1a7:c66:121d with SMTP id
+ p20-20020a056a206a1400b001a70c66121dmr11270850pzk.3.1712576943546; Mon, 08
+ Apr 2024 04:49:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOMZO5B-vTRSfi=tNc_iZxnxYstL8JJOd_1rMf4ps9WHyfx0GQ@mail.gmail.com>
-X-Proofpoint-GUID: M-p17AxnN_vvA_DF5lnMLQVIFesZb0Cz
-X-Proofpoint-ORIG-GUID: M-p17AxnN_vvA_DF5lnMLQVIFesZb0Cz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_09,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=676 impostorscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404080089
+References: <20240408092449.6-1-ian.ray@gehealthcare.com> <CAOMZO5B-vTRSfi=tNc_iZxnxYstL8JJOd_1rMf4ps9WHyfx0GQ@mail.gmail.com>
+ <ZhPYkGLM_b5IEKs2@de2cfed78370>
+In-Reply-To: <ZhPYkGLM_b5IEKs2@de2cfed78370>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 8 Apr 2024 08:48:51 -0300
+Message-ID: <CAOMZO5CaOYt72pZJ7fsdQgz3Vz=G+WXNE==ZO7nC32M3oBCKxQ@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp-msc-sm2s: Add i2c{1,6} sda-/scl-gpios
+To: Ian Ray <ian.ray@gehealthcare.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 08, 2024 at 08:31:53AM -0300, Fabio Estevam wrote:
-> 
-> Hi Ian,
-> 
-> > +       pinctrl_i2c1_gpio: i2c1gpiogrp {
-> > +               fsl,pins =
-> > +                       <MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14              0x400001c3>,
-> 
-> The Sion bit is unnecessary in the GPIO mode so you could pass 0x1c3 instead.
+On Mon, Apr 8, 2024 at 8:44=E2=80=AFAM Ian Ray <ian.ray@gehealthcare.com> w=
+rote:
 
-Thank you -- I will submit a V2.
+> Thank you -- I will submit a V2.
+>
+> Would 0x1c2 be more correct?  From the IMX8MPRM.pdf, it seems that the
+> lowest bit is reserved.  Example: 8.2.4.158 SW_PAD_CTL_PAD_GPIO1_IO05
+> SW PAD Control Register (IOMUXC_SW_PAD_CTL_PAD_GPIO1_IO05).
 
-Would 0x1c2 be more correct?  From the IMX8MPRM.pdf, it seems that the
-lowest bit is reserved.  Example: 8.2.4.158 SW_PAD_CTL_PAD_GPIO1_IO05
-SW PAD Control Register (IOMUXC_SW_PAD_CTL_PAD_GPIO1_IO05).
+Yes, good catch. It is better not to write to the reserved bit 0, so
+0x1c2 is preferred.
