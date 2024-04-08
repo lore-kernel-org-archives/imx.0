@@ -1,161 +1,163 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDD35338D;
-	Mon,  8 Apr 2024 10:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C79E52F7D
+	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 10:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712570610; cv=none; b=OdhKoCsXr0SQbdD5mol/WqVWLJn6zvGavpqLcBUGxv89+4ywl3CAKvb5pAq9wTG2tc+Z31BXyQMiitBqUGikQDnb7/uRzthh+GOOUNBeoD099XaMSAjE9ZZDdF4GRX0XcIZcppD2Ar20ztgUtawf6AwKU9zi7GkCDb3KHDPvslA=
+	t=1712571275; cv=none; b=AwgodAJYjT6tHXp2DuV1Hxnk45rOAxMOk9dAZxGH95r97X+2M53POyH6oRaxO646QNNetfx+DXQODifG810sbBYRKrtNx6BtSYU6S93YPyvQnQN7cBq2WTR2EjTms5nq+eBLRjZ3GVlCwfHpa4SHd+JVQyp4BHn4bLsv0u7bfxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712570610; c=relaxed/simple;
-	bh=7Um93ynodoKWvmi4hudSQ6ODRbJB2kpvSRbso69Gbb0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:MIME-Version; b=u41el8AFKdmBJRZy1MpOW7rjaLl8GIUzLMFu10V28LQFPQbI++ZIdQJYWP9ePhWlf/LmXrtXc0592hysfsSzGMbXT3/LRxdED7VptOGhmjd34GWA9cK6ohkauY9Y+21THIa4/MIno+ypaayJYFJy5czMjdUbfcwztxK3VI16qtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=V1m9DY18; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1712571275; c=relaxed/simple;
+	bh=S2e+x9biH4AfHss0WzT07+D8Pd+Nkq+00oYDUxU4lkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PT4QiOus2RVlCyegfOhoZFPJB0azJ9lYjAenmvrMSeo6lVUisA8NvA03KHS0WbW+PZAl+bzRFmEikry9GYV+Sq1ZsDauFgCKMlmL2NqlkbapLuVhlt8rqjy7Fa0+6WK0CXNvl8kQjy9r4/mZmU8yCGoekPTmmoheyWUDD8FqyDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aWzP7p7B; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=XJCrKROH reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="V1m9DY18"
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4389vTLC024196;
-	Mon, 8 Apr 2024 10:03:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : reply-to : in-reply-to : references : message-id : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=WGRw+wpQ+8BkQKcdJ/jvqWzRkTuOQNEebcPy5PQD4Kw=;
- b=V1m9DY18uGHMz8vh9IxAKCdhy2XzRwg7vXDe5eU16f5nEfVNyFSH2bkwzlSGAU2+MppO
- 4KiihhZ6Fk01FJPzdXSR1BLEuGht8lFKOYZkgyQ+XDX6d86NzlDgaIq0J9qJC+jfnfB7
- aEeGTfrHV1qJLbUVw7VwF0wJD3GQGVNebGmuEEwqhBLJ9iqNw/OPA1h1UuFrYBwI63SP
- L8QiPE5Ov/+xNvSEFsQF6+fJ779nZgk/JgjuEZ8d5Yw4SPP9YYyN9phnIKPRv8VXU/FC
- LdWtpshSMMqQ0phdyUamMRN3ZDDlZNvPvkSzaRMK+nFo6z+Im4121GSQHwYWxTP0de2t 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xceda00e7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 10:03:21 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 438A3KAu002830;
-	Mon, 8 Apr 2024 10:03:20 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xceda00e4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 10:03:20 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4387uZ0H019096;
-	Mon, 8 Apr 2024 10:03:18 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xbh3yym76-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 10:03:18 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 438A3FKl53084522
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Apr 2024 10:03:18 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D2E1D58058;
-	Mon,  8 Apr 2024 10:03:15 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F35F85806B;
-	Mon,  8 Apr 2024 10:03:10 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  8 Apr 2024 10:03:10 +0000 (GMT)
-Date: Mon, 08 Apr 2024 12:03:10 +0200
-From: Harald Freudenberger <freude@linux.ibm.com>
-To: Allen Pais <apais@linux.microsoft.com>
-Cc: linux-kernel@vger.kernel.org, tj@kernel.org, keescook@chromium.org,
-        vkoul@kernel.org, marcan@marcan.st, sven@svenpeter.dev,
-        florian.fainelli@broadcom.com, rjui@broadcom.com,
-        sbranden@broadcom.com, paul@crapouillou.net,
-        Eugeniy.Paltsev@synopsys.com, manivannan.sadhasivam@linaro.org,
-        vireshk@kernel.org, Frank.Li@nxp.com, leoyang.li@nxp.com,
-        zw@zh-kernel.org, wangzhou1@hisilicon.com, haijie1@huawei.com,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, sean.wang@mediatek.com,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        afaerber@suse.de, logang@deltatee.com, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr, andersson@kernel.org,
-        konrad.dybcio@linaro.org, orsonzhai@gmail.com,
-        baolin.wang@linux.alibaba.com, zhang.lyra@gmail.com,
-        patrice.chotard@foss.st.com, linus.walleij@linaro.org, wens@csie.org,
-        jernej.skrabec@gmail.com, peter.ujfalusi@gmail.com, kys@microsoft.com,
-        haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-        jassisinghbrar@gmail.com, mchehab@kernel.org,
-        maintainers@bluecherrydvr.com, aubin.constans@microchip.com,
-        ulf.hansson@linaro.org, manuel.lauss@gmail.com,
-        mirq-linux@rere.qmqm.pl, jh80.chung@samsung.com, oakad@yahoo.com,
-        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-        brucechang@via.com.tw, HaraldWelte@viatech.com, pierre@ossman.eu,
-        duncan.sands@free.fr, stern@rowland.harvard.edu, oneukum@suse.com,
-        openipmi-developer@lists.sourceforge.net, dmaengine@vger.kernel.org,
-        asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-mediatek@lists.infradead.org, linux-actions@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, Holger Dengler <dengler@linux.ibm.com>
-Subject: Re: [PATCH 7/9] s390: Convert from tasklet to BH workqueue
-Reply-To: freude@linux.ibm.com
-Mail-Reply-To: freude@linux.ibm.com
-In-Reply-To: <20240327160314.9982-8-apais@linux.microsoft.com>
-References: <20240327160314.9982-1-apais@linux.microsoft.com>
- <20240327160314.9982-8-apais@linux.microsoft.com>
-Message-ID: <702594ec5852c482f96cfcf84a02cab2@linux.ibm.com>
-X-Sender: freude@linux.ibm.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vcJ1PwKFq1RysBO3jh1OFUS_rcqMuAYv
-X-Proofpoint-ORIG-GUID: X3ilzQ7TzOIWEyFQfqPrw-z8aSdSkVVd
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aWzP7p7B";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="XJCrKROH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1712571272; x=1744107272;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rs0Fk9cEZOdXF0db2/Mxr5B0/nzyKRMXHR0l9+QBUz8=;
+  b=aWzP7p7BVrV6xCq7J9JB1Im43Fsgf2wzd8sP85MFFn9O8NuginbxD+gw
+   QIvdWfQuev+/yV51rfA5gni0kjmnhQIxVwfeYPfovYHB+tz59CE2vxuLg
+   abm1Hz3vZVBtbM7d9T53jGyGasNdTrq8JfTd0qy+8k4e4C9FGq/oq79k4
+   8AZp4TRCJEJ1RG5JSMjdgxMpNxAotQHMnvnmGQnBV3eSWQSAdN6nsmOBz
+   Tntjgny1VQmAD9Wh/XoK2AVociJ+jMjpN6hwI0iYcDrhsar/Nlp0AY7Xu
+   LRQejufiBPNZnuzJtX6OR0IWyFbxZ/Pn4Eh1m+1aqYovru+ajkKugiWmu
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.07,186,1708383600"; 
+   d="scan'208";a="36293913"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 08 Apr 2024 12:14:24 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E929160CBC;
+	Mon,  8 Apr 2024 12:14:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1712571260;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=rs0Fk9cEZOdXF0db2/Mxr5B0/nzyKRMXHR0l9+QBUz8=;
+	b=XJCrKROH2TfNQokiLhiogbx9Kt1LLyBnFjYKV0udAwBIeuD5xMEyL84fDOTM28NLzx2WB1
+	Av+JRXF/mTMHiI1oVmPU5YH0im1/CRMsHUs5iiI5zURCJAVlSk4EfnCpVlXW02fuqlZk/s
+	97T94wCUxzJcux32wuhz/ELeGysGZxSKpMoIkA7yE/U6IBtR9A91eHRf9pta3yitvX8+w9
+	GtqN37pCBg86DlFs6gMaas6zazfi+ZcZNp+GmnxtrnB0rizoQlNvCXQ+R5PpzeS/ZWcTkK
+	hxaD5IsEudmIaVWrRu0n6Nrd0DpUyNQWBZCz4qg4SsLyznp92+WitOxg9gzySA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Adam Ford <aford173@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-arm-kernel@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Paul Elder <paul.elder@ideasonboard.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH] arm64: dts: imx8mp: Align both CSI2 pixel clock
+Date: Mon, 08 Apr 2024 12:14:18 +0200
+Message-ID: <5771435.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <8c1935d1-7f59-4742-9659-bf87ac4b736c@denx.de>
+References: <20240405202243.46278-1-marex@denx.de> <CAHCN7xKX7v4tmhjvoPLirEoUG91jpu-8R2DV9eE=mnWt=3FffA@mail.gmail.com> <8c1935d1-7f59-4742-9659-bf87ac4b736c@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_08,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=918
- lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 impostorscore=0 clxscore=1011 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
- definitions=main-2404080077
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 2024-03-27 17:03, Allen Pais wrote:
-> The only generic interface to execute asynchronously in the BH context 
-> is
-> tasklet; however, it's marked deprecated and has some design flaws. To
-> replace tasklets, BH workqueue support was recently added. A BH 
-> workqueue
-> behaves similarly to regular workqueues except that the queued work 
-> items
-> are executed in the BH context.
-> 
-> This patch converts drivers/infiniband/* from tasklet to BH workqueue.
-> 
-> Based on the work done by Tejun Heo <tj@kernel.org>
-> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git 
-> for-6.10
-> 
-> Note: Not tested. Please test/review.
-> 
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> ---
-> ...
->  drivers/s390/crypto/ap_bus.c           | 24 +++++++-------
->  drivers/s390/crypto/ap_bus.h           |  2 +-
->  drivers/s390/crypto/zcrypt_msgtype50.c |  2 +-
->  drivers/s390/crypto/zcrypt_msgtype6.c  |  4 +--
-> ...
+Hi everyone,
 
-Applied and tested the s390 AP bus and zcrypt part of the patch.
-Works fine, a sniff test did not show any problems.
-Thanks for your work.
+Am Samstag, 6. April 2024, 04:58:39 CEST schrieb Marek Vasut:
+> On 4/5/24 11:04 PM, Adam Ford wrote:
+> > On Fri, Apr 5, 2024 at 3:43=E2=80=AFPM Laurent Pinchart
+> > <laurent.pinchart@ideasonboard.com> wrote:
+> >>
+> >> Hi Marek,
+> >>
+> >> (CC'ing Adam)
+> >>
+> >> Thank you for the patch.
+> >>
+> >> On Fri, Apr 05, 2024 at 10:22:26PM +0200, Marek Vasut wrote:
+> >>> Configure both CSI2 assigned-clock-rates the same way.
+> >>> There does not seem to be any reason for keeping the
+> >>> two CSI2 pixel clock set to different frequencies.
+> >>
+> >> There's an issue when using two cameras concurrently. This has been
+> >> discussed some time ago on the linux-media mailing list, see [1]. Adam
+> >> knows more than I do on this topic.
+> >>
+> >> [1] https://lore.kernel.org/linux-media/CAHCN7x+kymRGO2kxvN2=3DzLiqRjf=
+Tc3hdf3VdNVkWjsW3La0bnA@mail.gmail.com/
+> >>
+> >>> Signed-off-by: Marek Vasut <marex@denx.de>
+> >>> ---
+> >>> Cc: Conor Dooley <conor+dt@kernel.org>
+> >>> Cc: Fabio Estevam <festevam@gmail.com>
+> >>> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> >>> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> >>> Cc: Paul Elder <paul.elder@ideasonboard.com>
+> >>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> >>> Cc: Rob Herring <robh@kernel.org>
+> >>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> >>> Cc: Shawn Guo <shawnguo@kernel.org>
+> >>> Cc: devicetree@vger.kernel.org
+> >>> Cc: imx@lists.linux.dev
+> >>> Cc: linux-arm-kernel@lists.infradead.org
+> >>> ---
+> >>>   arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
+> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
+oot/dts/freescale/imx8mp.dtsi
+> >>> index 1bb96e96639f2..2e9ce0c3a9815 100644
+> >>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >>> @@ -1703,7 +1703,7 @@ mipi_csi_1: csi@32e50000 {
+> >>>                                                  <&clk IMX8MP_CLK_MED=
+IA_MIPI_PHY1_REF>;
+> >>>                                assigned-clock-parents =3D <&clk IMX8M=
+P_SYS_PLL2_1000M>,
+> >>>                                                         <&clk IMX8MP_=
+CLK_24M>;
+> >>> -                             assigned-clock-rates =3D <266000000>;
+> >>> +                             assigned-clock-rates =3D <500000000>;
+> >=20
+> > I am traveling, so I don't have the technical documents in front of
+> > me, but I beleive this is an over-drive speed, and 400MHz would be the
+> > single clock, standard rate.  I created an imx8mm-overdrive and
+> > imx8mn-overdrive dtsi file to let users who operate in overdrive mode
+> > to update their clocks in one place.
+> >=20
+> > I also think this goes down if the user is running two cameras instead
+> > of one.  I re-read the old thread, and it's coming back to me, but
+> > until I can get settled into my hotel in Germany, I won't have time to
+> > review.  I think the original idea was to use the lowest, conservative
+> > value with the idea that people can tweak their clock settings if
+> > they're only running one and if they are running in over-drive mode.
+>=20
+> MX8MPCEC does indeed read 400 MHz regular, 500 MHz overdrive.
+>=20
+> Shall we align both CSI2 ports to 400 MHz ? Currently they are one 500=20
+> MHz and the other 266 MHz .
 
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+No, that won't do. The (industrial products) datasheet says (Table 1):
+* Single camera on CSI1: 400/500 MHz in normal/overdrive mode
+* Single camera on CSI2: 277 MHz
+* Dual camera on CSI1 & CSI2: 266 MHz
+
+Assuming you need CSI2 more likely in a dual camera setup only, defaulting =
+to
+266MHz seems sensible to me.
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
+
