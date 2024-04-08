@@ -1,156 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37C552F82;
-	Mon,  8 Apr 2024 10:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DF664CFC
+	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 11:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712571807; cv=none; b=PldBBv1OywN+lAzWXUjzeeTwdtNJGE3m3uM/CcPY9gGXtYcCEellRegxpTFquIqE4gMiquo1i/FL1WA0Pcl6g52PJIiv05Y97oyfe9L8SbxXtam4C93SA5yaAO9s6cVN8O17V2sk5tvlfF4Euj+GuLA/UI+I1GichZM9V/AMfH0=
+	t=1712574889; cv=none; b=SyPazIGZRri+E//ZNq4rELEZowAX6re5s8lM1or1Wa4IJNTNBHO+u1twzk9HEt1R4sU1NRlj11VAYR7OKxhFuWJBfoUkZuv/QXjd3Fc5T0hFZhCbv5XQb5p/iZ/2/yM1ZpkwqSlbYbUro8BZbQ3u4UFjEDHuGTpg2EMVgd47bag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712571807; c=relaxed/simple;
-	bh=defNepUeNvybDxA+Wcux2NfPpGp5OU/cEgHKGppWtpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N4SaiabWixKYKNwLEO4vsG352rRDE6c3w+bn60cPn+QUPlPhbhdTDYZ8fvE8EjND6tuqdJ8aG/YgFmvIvBxY73zgoHrJWAGGNP6SYZW+dBULTTOsxEFwP9hLIzJm1GeC+Ndo5H3gYQ479QOZ0pE6o0d0AOHEv+OThDxjFxX94uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAPrg+vz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712574889; c=relaxed/simple;
+	bh=Hf3/uyTTc7xyvyt0ZRCrCnTsccSJPrqbnLcWcjaVrLk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EH8EgtOx9n5Fv+u2RZBvZpxqzF6CQeHoNM9YPqQrbCzqtuKsNIIzIEWsXUunZu8WqRuvEwUxaHj/7R/c4lYfsJJ/w7gjcfZPGhTrCzZF3clUMy0qtqNz0WDAld53Jiu5ka53dlE6hloPjT2VMBW1TNO14j83v9Cs2ivKeeGgUVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=byN7+8br; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAPrg+vz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE42AC433C7;
-	Mon,  8 Apr 2024 10:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712571806;
-	bh=defNepUeNvybDxA+Wcux2NfPpGp5OU/cEgHKGppWtpY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EAPrg+vz9vTL8BRa2VrU7ReqAihVd/FPmXJpiQPsYyenZCWAkINg9JFQiR9owc32h
-	 T87XUqhIIrk3HsOuTGnZBGPKj1nqnjDroseCR08NpC7TFvtp7vaCX5lLsNx2KGKBW7
-	 KOIBoVYlo/jilRYigckQWUr0Lpq8OyZRVt5/fXGplIw1Gvd52ZxH+AjZBVQp3pB7Fj
-	 EwaEBOKvWNyCG4rFJ7u+T36J4ojsGJ43GLw9TAz7Yi1R06KpDym6WVQRWQTPpcBCYM
-	 fcXoiZtsB1aPdYLi8tZE0N/Q5DdXYkxoZi9DalXL4o8VasPuv/COWVIPQvOvPRfzqo
-	 H7ZW1kb1cIduQ==
-Date: Mon, 8 Apr 2024 12:23:20 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: helgaas@kernel.org, bhelgaas@google.com, gustavo.pimentel@synopsys.com,
-	imx@lists.linux.dev, jdmason@kudzu.us, jingoohan1@gmail.com,
-	kw@linux.com, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, lpieralisi@kernel.org, mani@kernel.org,
-	robh@kernel.org
-Subject: Re: [PATCH v3 1/1] PCI: dwc: Fix index 0 incorrectly being
- interpreted as a free ATU slot
-Message-ID: <ZhPFmFYorWa-sfLp@ryzen>
-References: <20240326193540.3610570-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="byN7+8br"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2a2d37b8c4fso1218030a91.1
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 04:14:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712574887; x=1713179687; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/5yiPdvyV9rNRJJhuFWlvTvKqry4UGZkHf/m3Yo7GDo=;
+        b=byN7+8brK8LlF2GxyNe9ehjQ39ZklZ+3gy6BzMN+lRTJj+Wm3vlsMcnYaNWTVYhn8Z
+         ynGWNTDdbI0OY9H4SRNwA4mrzBbR/WXMQ1t5aLvoVHLj5H28wIc9+zuJGkZdygYtk6JU
+         fva4d1URYPsido2VhwurHI6AkRI0imr1b4tZkWUUx978SaiEQTuxqZ3e1+7yp9IRgpf3
+         sCe8dveIFWaxOI85pVUFSwBGgkjH117CM/XFQ0o8hb0k3MvwBKd2/q/2qVKvFOHIt+Eq
+         D0cwYpkoxw8NuEknLX3Xw76q+p0iOV56WbItYFCGTXVoLH+bXF1LpRejhzEbUAg48De/
+         W5Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712574887; x=1713179687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/5yiPdvyV9rNRJJhuFWlvTvKqry4UGZkHf/m3Yo7GDo=;
+        b=BR63Irkr5DoheXBP0xkpOnV7gR+G38N7cgzwkmjJTiKX6hGnKUDh6lA00gE8o6JueT
+         9bKMxhPonGrDVkEayOdsShCopHwQtIHyTc4OePYy9kWXYsKeh21CWD77YHl6UTbI0e8j
+         pyJqgePQ0Xwr3o4a+CeAZlH2yapksbKegbmS4JsoL/63+YY0+5iPeJ8MrWfjd7mzzeP8
+         lqARZrYgcYr4wgZX9ID3/UhYcx/U30FUqhKo6NJylObKw2xGA3ufiVGJA4YJWyTI0cUy
+         hNXew/Bee2KuVqALx4uAPbMksPl71dg27aFEKPH8yH0i2ezNFiZtWq3bWplY+IPV7z49
+         V1+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVq4ZVXajnZ84i1XCp17TWG3yxf4yPobHzQW/o4QvB5C9WwdsOUdFiPmJUdWgzfYG9lu6oAGAY2YWDi5rGPqAlkrYcR
+X-Gm-Message-State: AOJu0Yyzrn10VXXxwer8xTeqBOzo7AI+xnjQePtxKxecAu2OFXJa9YEi
+	UWhmswnoVvi2m/CNjwW7z0OIJ3goCBvzFAxo0xlwz9HdAI85BBDg3i4wsuSNfUvgIq0tZLQnDZF
+	UAedMNESPd8KouzQlC21nwYduXxw=
+X-Google-Smtp-Source: AGHT+IHCMk1vG85ZQnizg4WMLxtCMOThz1q4RK1dWajN7Z6haa3pN+/ibtoYI3BJZsJ3JH3vODvpabpzfLaIbxL7wQA=
+X-Received: by 2002:a17:90a:b288:b0:2a5:3249:d230 with SMTP id
+ c8-20020a17090ab28800b002a53249d230mr1160056pjr.3.1712574887276; Mon, 08 Apr
+ 2024 04:14:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240326193540.3610570-1-Frank.Li@nxp.com>
+References: <20240408075806.1194297-1-mirela.rabulea@nxp.com>
+In-Reply-To: <20240408075806.1194297-1-mirela.rabulea@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 8 Apr 2024 08:14:35 -0300
+Message-ID: <CAOMZO5BRY5YamT9bxPPMQo8A5msZ-kCUcxn9eLCJEEJwxD-J9A@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] media: dt-bindings: nxp,imx8-jpeg:: Add clocks entries
+To: Mirela Rabulea <mirela.rabulea@nxp.com>
+Cc: shawnguo@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, 
+	festevam@denx.de, alexander.stein@ew.tq-group.com, Frank.li@nxp.com, 
+	ming.qian@nxp.com, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, mchehab@kernel.org, hverkuil@xs4all.nl, 
+	linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 26, 2024 at 03:35:40PM -0400, Frank Li wrote:
-> When PERST# assert and deassert happens on the PERST# supported platforms,
-> the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
-> to the area that was previously allocated (iATU0) for BAR0, instead of the
-> new area (iATU6) for BAR0.
+Hi Mirela,
 
-Nit: If we want additional clarity, we could also add:
-""
-Right now, we dodge the bullet because both iATU0 and iATU6 should currently
-translate inbound accesses to BAR0 to the same allocated memory area. However,
-having two separate inbound mappings for the same BAR is a disaster waiting to
-happen.
-""
+On Mon, Apr 8, 2024 at 4:58=E2=80=AFAM Mirela Rabulea <mirela.rabulea@nxp.c=
+om> wrote:
+>
+> From: Fabio Estevam <festevam@gmail.com>
+>
+> The JPEG decoder/encoder present in iMX8QXP and iMX8QM SoCs need
+> the PER and IPG clocks to be functional, so add the clock entries.
+>
+> This also fixes the following schema warning:
+>
+> imx8qm-apalis-eval.dtb: jpegdec@58400000: 'assigned-clock-rates', 'assign=
+ed-clocks', 'clock-names', 'clocks' do not match any of the regexes: 'pinct=
+rl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpe=
+g.yaml#
+>
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
+> Signed-off-by: Mirela Rabulea <mirela.rabulea@nxp.com>
 
-If the maintainers feel like this additional information is important, I think
-it could be added while applying. (But I also think that the existing commit
-message is detailed enough to be applied as is.)
+Thanks for submitting this series.
 
+In the Subject, you added an extra : "..nxp,imx8-jpeg:: Add". Please
+remove the extra :.
 
-> 
-> The mapping between PCI BAR and iATU inbound window are maintained in the
-> dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
-> a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
-> of the existing mapping in the array and if it is not found (i.e., value in
-> the array indexed by the BAR is found to be 0), then it will allocate a new
-> map value using find_first_zero_bit().
-> 
-> The issue here is, the existing logic failed to consider the fact that the
-> map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
-> will return '0' as the map value for BAR0 (note that it returns the first
-> zero bit position).
-> 
-> Due to this, when PERST# assert + deassert happens on the PERST# supported
-> platforms, the inbound window allocation restarts from BAR0 and the
-> existing logic to find the BAR mapping will return '6' for BAR0 instead of
-> '0' due to the fact that it considers '0' as an invalid map value.
-> 
-> So fix this issue by always incrementing the map value before assigning to
-> bar_to_atu[] array and then decrementing it while fetching. This will make
-> sure that the map value '0' always represents the invalid mapping."
-> 
-> Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-> Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
-> Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
-> Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-> Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     Change from v2 to v3
->     - Add impact in commit message
->     - Add mani's detail description
->     - Fix Closes link
->     
->     Change from v1 to v2
->     - update subject
->     - use free_win + 1 solution
->     - still leave MAX_IATU_IN as 256. I am not sure if there are platfrom have
->     256 ATU. Suppose it only use max 6 in current EP framework.
->     - @Niklas, can you help test it. My platform become unstable today.
-> 
->  drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index 5befed2dc02b7..ba932bafdb230 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -139,7 +139,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
->  	if (!ep->bar_to_atu[bar])
->  		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
->  	else
-> -		free_win = ep->bar_to_atu[bar];
-> +		free_win = ep->bar_to_atu[bar] - 1;
->  
->  	if (free_win >= pci->num_ib_windows) {
->  		dev_err(pci->dev, "No free inbound window\n");
-> @@ -153,7 +153,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
->  		return ret;
->  	}
->  
-> -	ep->bar_to_atu[bar] = free_win;
-> +	/*
-> +	 * Always increment free_win before assignment, since value 0 is used to identify
-> +	 * unallocated mapping.
-> +	 */
-> +	ep->bar_to_atu[bar] = free_win + 1;
->  	set_bit(free_win, ep->ib_window_map);
->  
->  	return 0;
-> @@ -190,7 +194,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	enum pci_barno bar = epf_bar->barno;
-> -	u32 atu_index = ep->bar_to_atu[bar];
-> +	u32 atu_index = ep->bar_to_atu[bar] - 1;
-> +
-> +	if (!ep->bar_to_atu[bar])
-> +		return;
->  
->  	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
->  
-> -- 
-> 2.34.1
-> 
+My From and Signed-off-by tags e-mails do not match.
+
+Please use the email from the Signed-off-by in the From field as well.
+
+The same applies to patch 2/2.
+
+Thanks
