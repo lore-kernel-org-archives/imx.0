@@ -1,163 +1,156 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C79E52F7D
-	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 10:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37C552F82;
+	Mon,  8 Apr 2024 10:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712571275; cv=none; b=AwgodAJYjT6tHXp2DuV1Hxnk45rOAxMOk9dAZxGH95r97X+2M53POyH6oRaxO646QNNetfx+DXQODifG810sbBYRKrtNx6BtSYU6S93YPyvQnQN7cBq2WTR2EjTms5nq+eBLRjZ3GVlCwfHpa4SHd+JVQyp4BHn4bLsv0u7bfxc=
+	t=1712571807; cv=none; b=PldBBv1OywN+lAzWXUjzeeTwdtNJGE3m3uM/CcPY9gGXtYcCEellRegxpTFquIqE4gMiquo1i/FL1WA0Pcl6g52PJIiv05Y97oyfe9L8SbxXtam4C93SA5yaAO9s6cVN8O17V2sk5tvlfF4Euj+GuLA/UI+I1GichZM9V/AMfH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712571275; c=relaxed/simple;
-	bh=S2e+x9biH4AfHss0WzT07+D8Pd+Nkq+00oYDUxU4lkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PT4QiOus2RVlCyegfOhoZFPJB0azJ9lYjAenmvrMSeo6lVUisA8NvA03KHS0WbW+PZAl+bzRFmEikry9GYV+Sq1ZsDauFgCKMlmL2NqlkbapLuVhlt8rqjy7Fa0+6WK0CXNvl8kQjy9r4/mZmU8yCGoekPTmmoheyWUDD8FqyDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aWzP7p7B; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=XJCrKROH reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1712571807; c=relaxed/simple;
+	bh=defNepUeNvybDxA+Wcux2NfPpGp5OU/cEgHKGppWtpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N4SaiabWixKYKNwLEO4vsG352rRDE6c3w+bn60cPn+QUPlPhbhdTDYZ8fvE8EjND6tuqdJ8aG/YgFmvIvBxY73zgoHrJWAGGNP6SYZW+dBULTTOsxEFwP9hLIzJm1GeC+Ndo5H3gYQ479QOZ0pE6o0d0AOHEv+OThDxjFxX94uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAPrg+vz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aWzP7p7B";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="XJCrKROH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1712571272; x=1744107272;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rs0Fk9cEZOdXF0db2/Mxr5B0/nzyKRMXHR0l9+QBUz8=;
-  b=aWzP7p7BVrV6xCq7J9JB1Im43Fsgf2wzd8sP85MFFn9O8NuginbxD+gw
-   QIvdWfQuev+/yV51rfA5gni0kjmnhQIxVwfeYPfovYHB+tz59CE2vxuLg
-   abm1Hz3vZVBtbM7d9T53jGyGasNdTrq8JfTd0qy+8k4e4C9FGq/oq79k4
-   8AZp4TRCJEJ1RG5JSMjdgxMpNxAotQHMnvnmGQnBV3eSWQSAdN6nsmOBz
-   Tntjgny1VQmAD9Wh/XoK2AVociJ+jMjpN6hwI0iYcDrhsar/Nlp0AY7Xu
-   LRQejufiBPNZnuzJtX6OR0IWyFbxZ/Pn4Eh1m+1aqYovru+ajkKugiWmu
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.07,186,1708383600"; 
-   d="scan'208";a="36293913"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 08 Apr 2024 12:14:24 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E929160CBC;
-	Mon,  8 Apr 2024 12:14:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1712571260;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=rs0Fk9cEZOdXF0db2/Mxr5B0/nzyKRMXHR0l9+QBUz8=;
-	b=XJCrKROH2TfNQokiLhiogbx9Kt1LLyBnFjYKV0udAwBIeuD5xMEyL84fDOTM28NLzx2WB1
-	Av+JRXF/mTMHiI1oVmPU5YH0im1/CRMsHUs5iiI5zURCJAVlSk4EfnCpVlXW02fuqlZk/s
-	97T94wCUxzJcux32wuhz/ELeGysGZxSKpMoIkA7yE/U6IBtR9A91eHRf9pta3yitvX8+w9
-	GtqN37pCBg86DlFs6gMaas6zazfi+ZcZNp+GmnxtrnB0rizoQlNvCXQ+R5PpzeS/ZWcTkK
-	hxaD5IsEudmIaVWrRu0n6Nrd0DpUyNQWBZCz4qg4SsLyznp92+WitOxg9gzySA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Adam Ford <aford173@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Paul Elder <paul.elder@ideasonboard.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Date: Mon, 08 Apr 2024 12:14:18 +0200
-Message-ID: <5771435.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <8c1935d1-7f59-4742-9659-bf87ac4b736c@denx.de>
-References: <20240405202243.46278-1-marex@denx.de> <CAHCN7xKX7v4tmhjvoPLirEoUG91jpu-8R2DV9eE=mnWt=3FffA@mail.gmail.com> <8c1935d1-7f59-4742-9659-bf87ac4b736c@denx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAPrg+vz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE42AC433C7;
+	Mon,  8 Apr 2024 10:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712571806;
+	bh=defNepUeNvybDxA+Wcux2NfPpGp5OU/cEgHKGppWtpY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EAPrg+vz9vTL8BRa2VrU7ReqAihVd/FPmXJpiQPsYyenZCWAkINg9JFQiR9owc32h
+	 T87XUqhIIrk3HsOuTGnZBGPKj1nqnjDroseCR08NpC7TFvtp7vaCX5lLsNx2KGKBW7
+	 KOIBoVYlo/jilRYigckQWUr0Lpq8OyZRVt5/fXGplIw1Gvd52ZxH+AjZBVQp3pB7Fj
+	 EwaEBOKvWNyCG4rFJ7u+T36J4ojsGJ43GLw9TAz7Yi1R06KpDym6WVQRWQTPpcBCYM
+	 fcXoiZtsB1aPdYLi8tZE0N/Q5DdXYkxoZi9DalXL4o8VasPuv/COWVIPQvOvPRfzqo
+	 H7ZW1kb1cIduQ==
+Date: Mon, 8 Apr 2024 12:23:20 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: helgaas@kernel.org, bhelgaas@google.com, gustavo.pimentel@synopsys.com,
+	imx@lists.linux.dev, jdmason@kudzu.us, jingoohan1@gmail.com,
+	kw@linux.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lpieralisi@kernel.org, mani@kernel.org,
+	robh@kernel.org
+Subject: Re: [PATCH v3 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <ZhPFmFYorWa-sfLp@ryzen>
+References: <20240326193540.3610570-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240326193540.3610570-1-Frank.Li@nxp.com>
 
-Hi everyone,
+On Tue, Mar 26, 2024 at 03:35:40PM -0400, Frank Li wrote:
+> When PERST# assert and deassert happens on the PERST# supported platforms,
+> the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
+> to the area that was previously allocated (iATU0) for BAR0, instead of the
+> new area (iATU6) for BAR0.
 
-Am Samstag, 6. April 2024, 04:58:39 CEST schrieb Marek Vasut:
-> On 4/5/24 11:04 PM, Adam Ford wrote:
-> > On Fri, Apr 5, 2024 at 3:43=E2=80=AFPM Laurent Pinchart
-> > <laurent.pinchart@ideasonboard.com> wrote:
-> >>
-> >> Hi Marek,
-> >>
-> >> (CC'ing Adam)
-> >>
-> >> Thank you for the patch.
-> >>
-> >> On Fri, Apr 05, 2024 at 10:22:26PM +0200, Marek Vasut wrote:
-> >>> Configure both CSI2 assigned-clock-rates the same way.
-> >>> There does not seem to be any reason for keeping the
-> >>> two CSI2 pixel clock set to different frequencies.
-> >>
-> >> There's an issue when using two cameras concurrently. This has been
-> >> discussed some time ago on the linux-media mailing list, see [1]. Adam
-> >> knows more than I do on this topic.
-> >>
-> >> [1] https://lore.kernel.org/linux-media/CAHCN7x+kymRGO2kxvN2=3DzLiqRjf=
-Tc3hdf3VdNVkWjsW3La0bnA@mail.gmail.com/
-> >>
-> >>> Signed-off-by: Marek Vasut <marex@denx.de>
-> >>> ---
-> >>> Cc: Conor Dooley <conor+dt@kernel.org>
-> >>> Cc: Fabio Estevam <festevam@gmail.com>
-> >>> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> >>> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> >>> Cc: Paul Elder <paul.elder@ideasonboard.com>
-> >>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> >>> Cc: Rob Herring <robh@kernel.org>
-> >>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> >>> Cc: Shawn Guo <shawnguo@kernel.org>
-> >>> Cc: devicetree@vger.kernel.org
-> >>> Cc: imx@lists.linux.dev
-> >>> Cc: linux-arm-kernel@lists.infradead.org
-> >>> ---
-> >>>   arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
-oot/dts/freescale/imx8mp.dtsi
-> >>> index 1bb96e96639f2..2e9ce0c3a9815 100644
-> >>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> >>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> >>> @@ -1703,7 +1703,7 @@ mipi_csi_1: csi@32e50000 {
-> >>>                                                  <&clk IMX8MP_CLK_MED=
-IA_MIPI_PHY1_REF>;
-> >>>                                assigned-clock-parents =3D <&clk IMX8M=
-P_SYS_PLL2_1000M>,
-> >>>                                                         <&clk IMX8MP_=
-CLK_24M>;
-> >>> -                             assigned-clock-rates =3D <266000000>;
-> >>> +                             assigned-clock-rates =3D <500000000>;
-> >=20
-> > I am traveling, so I don't have the technical documents in front of
-> > me, but I beleive this is an over-drive speed, and 400MHz would be the
-> > single clock, standard rate.  I created an imx8mm-overdrive and
-> > imx8mn-overdrive dtsi file to let users who operate in overdrive mode
-> > to update their clocks in one place.
-> >=20
-> > I also think this goes down if the user is running two cameras instead
-> > of one.  I re-read the old thread, and it's coming back to me, but
-> > until I can get settled into my hotel in Germany, I won't have time to
-> > review.  I think the original idea was to use the lowest, conservative
-> > value with the idea that people can tweak their clock settings if
-> > they're only running one and if they are running in over-drive mode.
->=20
-> MX8MPCEC does indeed read 400 MHz regular, 500 MHz overdrive.
->=20
-> Shall we align both CSI2 ports to 400 MHz ? Currently they are one 500=20
-> MHz and the other 266 MHz .
+Nit: If we want additional clarity, we could also add:
+""
+Right now, we dodge the bullet because both iATU0 and iATU6 should currently
+translate inbound accesses to BAR0 to the same allocated memory area. However,
+having two separate inbound mappings for the same BAR is a disaster waiting to
+happen.
+""
 
-No, that won't do. The (industrial products) datasheet says (Table 1):
-* Single camera on CSI1: 400/500 MHz in normal/overdrive mode
-* Single camera on CSI2: 277 MHz
-* Dual camera on CSI1 & CSI2: 266 MHz
-
-Assuming you need CSI2 more likely in a dual camera setup only, defaulting =
-to
-266MHz seems sensible to me.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
+If the maintainers feel like this additional information is important, I think
+it could be added while applying. (But I also think that the existing commit
+message is detailed enough to be applied as is.)
 
 
+> 
+> The mapping between PCI BAR and iATU inbound window are maintained in the
+> dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
+> a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
+> of the existing mapping in the array and if it is not found (i.e., value in
+> the array indexed by the BAR is found to be 0), then it will allocate a new
+> map value using find_first_zero_bit().
+> 
+> The issue here is, the existing logic failed to consider the fact that the
+> map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
+> will return '0' as the map value for BAR0 (note that it returns the first
+> zero bit position).
+> 
+> Due to this, when PERST# assert + deassert happens on the PERST# supported
+> platforms, the inbound window allocation restarts from BAR0 and the
+> existing logic to find the BAR mapping will return '6' for BAR0 instead of
+> '0' due to the fact that it considers '0' as an invalid map value.
+> 
+> So fix this issue by always incrementing the map value before assigning to
+> bar_to_atu[] array and then decrementing it while fetching. This will make
+> sure that the map value '0' always represents the invalid mapping."
+> 
+> Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
+> Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
+> Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
+> Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
+> Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> 
+> Notes:
+>     Change from v2 to v3
+>     - Add impact in commit message
+>     - Add mani's detail description
+>     - Fix Closes link
+>     
+>     Change from v1 to v2
+>     - update subject
+>     - use free_win + 1 solution
+>     - still leave MAX_IATU_IN as 256. I am not sure if there are platfrom have
+>     256 ATU. Suppose it only use max 6 in current EP framework.
+>     - @Niklas, can you help test it. My platform become unstable today.
+> 
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 5befed2dc02b7..ba932bafdb230 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -139,7 +139,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
+>  	if (!ep->bar_to_atu[bar])
+>  		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+>  	else
+> -		free_win = ep->bar_to_atu[bar];
+> +		free_win = ep->bar_to_atu[bar] - 1;
+>  
+>  	if (free_win >= pci->num_ib_windows) {
+>  		dev_err(pci->dev, "No free inbound window\n");
+> @@ -153,7 +153,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
+>  		return ret;
+>  	}
+>  
+> -	ep->bar_to_atu[bar] = free_win;
+> +	/*
+> +	 * Always increment free_win before assignment, since value 0 is used to identify
+> +	 * unallocated mapping.
+> +	 */
+> +	ep->bar_to_atu[bar] = free_win + 1;
+>  	set_bit(free_win, ep->ib_window_map);
+>  
+>  	return 0;
+> @@ -190,7 +194,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	enum pci_barno bar = epf_bar->barno;
+> -	u32 atu_index = ep->bar_to_atu[bar];
+> +	u32 atu_index = ep->bar_to_atu[bar] - 1;
+> +
+> +	if (!ep->bar_to_atu[bar])
+> +		return;
+>  
+>  	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
+>  
+> -- 
+> 2.34.1
+> 
