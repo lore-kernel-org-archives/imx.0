@@ -1,172 +1,131 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2108.outbound.protection.outlook.com [40.107.104.108])
+Received: from mx0a-00176a03.pphosted.com (mx0b-00176a03.pphosted.com [67.231.157.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8836A8BE
-	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 12:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.108
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712578044; cv=fail; b=Gj/eFjgwQv8IeC0LSWJrKGK2SqdoBFs1hx5VuT/lcZ38OzozVjJPzewjgWe+i7u9JmYRKUjgQrGnrx5GNL5p8M6JQBCW4yAfaA9WJNdHdMXRB8zwlumH71p1niXI8p3ZAj2I0+s0b3KVQABgWEZcQ7XKHI6IHuLi3MYYspXpzrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712578044; c=relaxed/simple;
-	bh=ZHkBYrQbR0L5KMKu/omdGqRQbUYkewuR6DQuddHPaCo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC566A342
+	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 12:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712579052; cv=none; b=gPE0rE0fG781kN3YojRgouGZ4pKQHvTDL9D3BUtoD0Rx+egiifcVBo/KKyeHM67iuYIUOol2x46vDcXt+m2WG6NWbRnFlBJoybiEhNd59ny1nmfzUM8PGykI1tA4uedB9SN2n0bXPbDI8JuTtbpcFKVjm++UAVDa9BXNnx2szXo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712579052; c=relaxed/simple;
+	bh=iMn14yBFHMKIIIY04H1NPIFmozgmActewqy/9b1TMfM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=obla/vPDkqQ3TPmTXQSo7xoFhDSVx4Jgbi+A0ZZ0EsyUyxL8bjdSbQQW5u16pzx3Fkv6kSPe9E5SLDIynqsV8N5i/r0FS0sWaC9PO0+aiRt3hTW8vSti9ktNx6GHWBMlhy4sxmRI7f58AtGBWyUMXaiamPl7B1wjXAd1YboZC20=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=L542gy1t; arc=fail smtp.client-ip=40.107.104.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 MIME-Version; b=QIQ8m7WmGbCmzYXaL/ItZcKqkJ5lXonrF9nDiMp7phHQDg3hnIMPLlmJiHf6vC+W8/gQqsRKZ1WUZC+hxCfDllVtBMItend+5WBKw3CBT70e8P6MNNPYXi2QfUMrapgTwht8UBt3+yVYa2LOBo7X1LQfCBbMR5aoOBMGidfhBpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=jk+8p+fC; arc=none smtp.client-ip=67.231.157.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gehealthcare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="L542gy1t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HPNDHnbBS9Y+j14Glr7Q3QA/NGk1sR8AfwPmDAMylf18LhuOoq7NTYaqCUQIoCtWL82Lp4LWuEyhZvN35dP9QoFS601hCmYj/f6C5XbwDxe0eAIVBMMwUaYJft0HsT2br4ZTWe3mpNE9pVMZ9k0dhkaieRl/Ays4BGHvhj2orjeBcwudMNU6VLMaS1275jSSPGhNv5W5fXnSGIckPynsy9QaRYwf6qM8MzZmjlhZxm9qfSgXdeu4jn5wrUD2BieG3Pqyg8WZibX1XG92tpAhGFWYJZPieM5aQ3wmGMn4NYK/GaFcJtzmh68a2VEDOx2FZwhKYDeoApiVIz4fE3kshA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/TCaknamnu/SmzZJBQSL92jC7qzhNnXOjqDbf/p8Vmw=;
- b=F3J3Le8lUHwvRyvQmWal9d6csAkTPkaFpJY+iKNKb0n2OF4nTvIbX+A5GnJO90w5J7tCYOkBr0lZU91UHSNyeYLmzjqUXClPoLMzyPBnPFWVJbf9CI3MZBLWa6sykuDTOsi+z+AGSGkv+vwSySrlI941uzByncj1JLYJgmXxpub9Qv5sHW9qE8YuxUPxk/iXbp3Ge5XXScq9Q6u9K2uV6gIuhX5PtXO+ehTSmFNFVK/tPXuYtiKD4XVW1ihFCQMMBy52vgwENjazLU4JRugF5ESUrFq+meoJr+6BQ8ODwHqhFFEb8W1Nug0SICgJGszpeblAC9KB/96LVMcbp3+tKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/TCaknamnu/SmzZJBQSL92jC7qzhNnXOjqDbf/p8Vmw=;
- b=L542gy1t2rfY3xYQysnLX6qs0YHqOECcrKXm/kHWq+GYALA/eYr8aDZf/kjNPG5Pc5eNrmCRwA8fhscciReZMKYaQnI6WvTylivwYfQwidZHT66P5vybBMvIPJDdlNB33PTnLtW565PT7xnwD7D7DViSxspq6wkpzezzlpN8Ouk=
-Received: from PAXPR04MB9231.eurprd04.prod.outlook.com (2603:10a6:102:2bb::10)
- by PA1PR04MB10416.eurprd04.prod.outlook.com (2603:10a6:102:446::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 8 Apr
- 2024 12:07:13 +0000
-Received: from PAXPR04MB9231.eurprd04.prod.outlook.com
- ([fe80::c2ee:dfc0:577:cc57]) by PAXPR04MB9231.eurprd04.prod.outlook.com
- ([fe80::c2ee:dfc0:577:cc57%3]) with mapi id 15.20.7409.042; Mon, 8 Apr 2024
- 12:07:13 +0000
-From: Mirela Rabulea <mirela.rabulea@nxp.com>
-To: shawnguo@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	festevam@denx.de,
-	festevam@gmail.com,
-	alexander.stein@ew.tq-group.com,
-	Frank.li@nxp.com,
-	ming.qian@nxp.com
-Cc: conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	mchehab@kernel.org,
-	hverkuil@xs4all.nl,
-	linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 2/2] arm64: dts: imx8-ss-img: Remove JPEG clock-names
-Date: Mon,  8 Apr 2024 15:06:54 +0300
-Message-Id: <20240408120654.1196880-2-mirela.rabulea@nxp.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240408120654.1196880-1-mirela.rabulea@nxp.com>
-References: <20240408120654.1196880-1-mirela.rabulea@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR06CA0177.eurprd06.prod.outlook.com
- (2603:10a6:803:c8::34) To PAXPR04MB9231.eurprd04.prod.outlook.com
- (2603:10a6:102:2bb::10)
+	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="jk+8p+fC"
+Received: from pps.filterd (m0048205.ppops.net [127.0.0.1])
+	by m0048205.ppops.net-00176a03. (8.17.1.24/8.17.1.24) with ESMTP id 438B2W4l039139
+	for <imx@lists.linux.dev>; Mon, 8 Apr 2024 08:24:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	gehealthcare.com; h=from:to:cc:subject:date:message-id
+	:in-reply-to:references:mime-version:content-transfer-encoding;
+	 s=outbound; bh=vG3EaXqf3b262/c0/QoTfdhXWijF6zXQ/VHlqLDA1hs=; b=
+	jk+8p+fCR+KIvao7S5Fu/QH6X9TqxSuKIervYNHHCN9PfucDNBr1g7Cs7PnwI2+n
+	QO3Q1AmZh6CU2liBwnxzziUna5bbw7BP+objIHtXVP5SmIONdpa7+969NlvkSkfA
+	yPQZeonltnEbxT72hFhHyZBMLTlHqD9bK/pf+CVLW9zP6hTcd4fe6yU/vVrdEEPB
+	zSfRjatqqBjrXOjG2BhNm72PrUOj1TAkSQ+SG5V3ccWolV1Q6zvqdhWLLH3PZSWa
+	UwuNn47k32QW7nicDhw4dCNI4CTKIBz5nQ1LAa5ZGpcZC14FpwNHVFn0KVAaG7Xz
+	/+IQyx8elVald/XLkKbUuA==
+From: Ian Ray <ian.ray@gehealthcare.com>
+To: Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc: Ian Ray <ian.ray@gehealthcare.com>, devicetree@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH V2 2/2] arm64: dts: imx8mp-msc-sm2s: Add i2c{1,6} sda-/scl-gpios
+Date: Mon,  8 Apr 2024 15:23:21 +0300
+Message-Id: <20240408122321.464-2-ian.ray@gehealthcare.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240408122321.464-1-ian.ray@gehealthcare.com>
+References: <20240408122321.464-1-ian.ray@gehealthcare.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9231:EE_|PA1PR04MB10416:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	jANXkPkFjbkmLlY8qQWcsXH4kYIYSlf587j9/ATHmGpPZobfffABx+DnuDlE1CukY/AQE0Czta5IKDSzO7jfSsoUbK3HY7lPqnkuT8JjesEaHNRCrb640lhoxpOrqyVW4mWYQS07At9hg5aegvWGj9Dl0O6NPR5zTXUVa+MOSH0TOUbz4qvDQHmhop5z9WeSxBUiVIzAvVUlcmY3tn1RS+5s4dCbb+ytu2sjyOzmlYcnwvTFtg5bSxQ6iWYFnVIU5rQMn9oQJidMz98pxC4xCQDv4iuF2/j+b5myQUNTjirxh0yomz2VN7UDn1qa4injiY4PYLuy9zjrEINdsPWVIIMElQikS7Uzmwgdznef8Z27WDNhigWwSUm4KoMvZifnGlr3+VMgZm+4DoTWvX9jwCzf4Q/F0UgXp7lKb8PQM3TALX0V1P30XNJH6Qy+pGTbKg83OAnGvCUdAIt2gY7skYNDUdGj4p+crPdm8F/tnFN3MieLCE/V057a3Av4/LWiRZqRBQtSTjauorylIOVBs6dQNAXLB99jyo3pbbb/Jv6D/Hy7LQXRRb23SVV1wZ15xkpy8Bg74xA/vhUh1um3UgDuaKSl1Wkd65VH8d/td+ady4TR/U6FIcKUyghqr2j8kO8D6QcqPtyO9gl8BswCpjr/kzwUWPNQ5nVaQ5aUIfpoyJ5dGUbILzJsK7ktdHKbOHstvN5H7TZ2IFaRmtzLx7wIjG7cdHceXc4hhIcAzew=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9231.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(7416005)(376005)(366007)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7WpjifQqwWH3N0IM5STexbwdjSNZLTTfUUE+M8cArTPv470slFCqXDpjKAiU?=
- =?us-ascii?Q?FjweKoclSGrRIABEkye4giI0g7PIo42/VD12HRutJKVbaQsMHzPnLp8hJjBX?=
- =?us-ascii?Q?TBqRJ1fcDImyMxEB3RrIHDdmvWDQh0EI1qs3RRgOJqMmg1nrYmDl8bRPf01+?=
- =?us-ascii?Q?ZNzYqDRdRWU98ArgyzxE5FvBEW9wifFmdMEHXy8PBkuIcbCbv6AfcEBs+ahf?=
- =?us-ascii?Q?EMppsiO3GoO5t5ZH08bjmJ8QAQVYPROVYbt8H6hLQj+nCpiYNuiDVduexW1P?=
- =?us-ascii?Q?DtJmmJ/VxIoWniQ+dsfej/rL/lwfiHINRMYPEQKx6gfyRfOVu+B7e3mK/g2n?=
- =?us-ascii?Q?aOs76zpDNmFjOGyYvby+iUTSmY4ZAcGL+IC6EH56CMsDjRUSjUNGhmomwRiR?=
- =?us-ascii?Q?wZiEmQtx2r3n8t1nD0GWPP+NdeECnnniS6M7t0TBkvwgc/yheb0BVCcEHq5j?=
- =?us-ascii?Q?k0tgNKQELGUQ1Knb3vdQUI3vwWulZWsyevau22YPBZOm5ciJYpMMnOvSNDv+?=
- =?us-ascii?Q?OT6WUXt7xbAqbZzzDRzSQR5YHYMoxpKXenAF/xoDSf4qfkZ3Dskl8+8+rYTM?=
- =?us-ascii?Q?kDrjsnvx2A0qiAPfA1MpsUQVKUQbuk/OktNaxZZXCyoWII7KATU9QzQ90BjQ?=
- =?us-ascii?Q?0vLhP1IjER6QinrR4PLe4Uxpc1v+wp1WzCtiOAMVa35ittAYbBoieiLoFvO2?=
- =?us-ascii?Q?+Kf1Q1b1WtWx0FsEzSF3bkOIadBvp6ihCwTcpCA3dL6HeMXxG3Hr/meSqNS2?=
- =?us-ascii?Q?arr4IzDaVtyQ2SlpOR4xs++Uz62y0Vdc0S0ISy58KbhGpDy71h7zBPtUjUTW?=
- =?us-ascii?Q?x5yiYh8f9lv13vmDFB2wZQJt/UL7gGQpI+4Ae4UD91M/vJ3Q3ccmBKSUM2T9?=
- =?us-ascii?Q?pI7EqURHpiEYOEFETbiazxhkxggWh5CgohhGE8/l9dI1YrjhzceIuTRL6wuH?=
- =?us-ascii?Q?xsPfkN84aPl/uFQBco2+gesizOUYIEJFK/wT5RGjjtbYPSJss7x9dQPgmFdj?=
- =?us-ascii?Q?3NNeXfQ0y8LkxGtWeze4kgYIuOZuv/jH3jtAmFbeokRHcKDLn8kV+ukzuM/R?=
- =?us-ascii?Q?FA+bN7vW66rSvpY4DqyBssGOGikWpm8jPZTOkDwtz3ZxCIS2XUZtLmBEQTN+?=
- =?us-ascii?Q?bf8XR+jqFJlfvstDrGBRWV+2crBbfaD3KvsOWxrhxH80J4yfa9NdHdzwUSVn?=
- =?us-ascii?Q?7/rmdgdO8MLQ2CQLw3b+QLW+mYIwpRNzJq2x5aCnEnOgzBnklKJLfqYS/lXp?=
- =?us-ascii?Q?tEuAvJfwRyox/qfb7wg1YW1wBABKQqc1azZErrOorcvr4Wz6T/hkc83vBqAQ?=
- =?us-ascii?Q?UX/Pb39dQWw5YqAzTLVLY0YJEt7rH8tFaUI9f/ZmsyhIbFAfPWfZoTTeD/h9?=
- =?us-ascii?Q?bAvUgd3hvid1W/Q0gI/UiFZTC9namkDORHlxV7EImZdK3Qlu7NmpBcU5Clan?=
- =?us-ascii?Q?N5IA/CiZg5c0oyIYqSWJ3dpcc70sF0Ee2xYNjp9Xi0KSGE1vKFnUhzl1vGVK?=
- =?us-ascii?Q?sdTXLzK59uaxWygbdhbseJ9ZgqJqxQY3BFu2BDFljH9aZ1X0zt27N4C3FC58?=
- =?us-ascii?Q?gDdjo/FU2NmOUdUzap2oU4cyUrUUdyFUA0una0v0QG3QTzwv2sOsqPzVjBNu?=
- =?us-ascii?Q?ig=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cec0880-1092-4d33-8fb0-08dc57c46cd9
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9231.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2024 12:07:13.3203
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TKyzNdk8N0XJ4Jro0s08vSHAUNBLmVh5Zk8J01cTG5jkrtxQiy3NEzzrk4Ppl5iymhKR23qf9+o+nuwgHFVsmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10416
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: F12oe_9OQC3lfOop57iq0KOx0XKd1bcR
+X-Proofpoint-ORIG-GUID: F12oe_9OQC3lfOop57iq0KOx0XKd1bcR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_10,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 mlxlogscore=999 priorityscore=1501 spamscore=0 mlxscore=0
+ impostorscore=0 malwarescore=0 suspectscore=0 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404080094
 
-From: Fabio Estevam <festevam@denx.de>
+Add i2c{1,6} sda-/scl-gpios with the corresponding pinmux entries.
 
-Per nxp,imx8-jpeg.yaml, the clock-names entry is not valid.
-
-Remove them.
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
 ---
-Changes since v5:
-- Use <festevam@denx.de> address for both Author and Signed-of (Fabio's feedback)
-Changes since v4:
-- None
-Changes since v3:
-- Just added "imx8-ss-img:" in the subject
+ .../boot/dts/freescale/imx8mp-msc-sm2s.dtsi   | 22 +++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-Changes since v2:
-- Newly introduced.
-
- arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-index e7783cc2d830..77d2928997b4 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-@@ -21,7 +21,6 @@ jpegdec: jpegdec@58400000 {
- 		interrupts = <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&img_jpeg_dec_lpcg IMX_LPCG_CLK_0>,
- 			 <&img_jpeg_dec_lpcg IMX_LPCG_CLK_4>;
--		clock-names = "per", "ipg";
- 		assigned-clocks = <&img_jpeg_dec_lpcg IMX_LPCG_CLK_0>,
- 				  <&img_jpeg_dec_lpcg IMX_LPCG_CLK_4>;
- 		assigned-clock-rates = <200000000>, <200000000>;
-@@ -35,7 +34,6 @@ jpegenc: jpegenc@58450000 {
- 		interrupts = <GIC_SPI 305 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&img_jpeg_enc_lpcg IMX_LPCG_CLK_0>,
- 			 <&img_jpeg_enc_lpcg IMX_LPCG_CLK_4>;
--		clock-names = "per", "ipg";
- 		assigned-clocks = <&img_jpeg_enc_lpcg IMX_LPCG_CLK_0>,
- 				  <&img_jpeg_enc_lpcg IMX_LPCG_CLK_4>;
- 		assigned-clock-rates = <200000000>, <200000000>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s.dtsi
+index 940bdbe115a3..aeb557fe9dd6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s.dtsi
+@@ -200,8 +200,11 @@ ethphy1: ethernet-phy@1 {
+ };
+ 
+ &i2c1 {
+-	pinctrl-names = "default";
++	pinctrl-names = "default", "gpio";
+ 	pinctrl-0 = <&pinctrl_i2c1>;
++	pinctrl-1 = <&pinctrl_i2c1_gpio>;
++	scl-gpios = <&gpio5 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio5 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 	clock-frequency = <400000>;
+ 	status = "okay";
+ 
+@@ -241,8 +244,11 @@ &i2c5 {
+ };
+ 
+ &i2c6 {
+-	pinctrl-names = "default";
++	pinctrl-names = "default", "gpio";
+ 	pinctrl-0 = <&pinctrl_i2c6>;
++	pinctrl-1 = <&pinctrl_i2c6_gpio>;
++	scl-gpios = <&gpio3 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio3 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 	clock-frequency = <400000>;
+ 	status = "okay";
+ 
+@@ -606,6 +612,12 @@ pinctrl_i2c1: i2c1grp {
+ 			<MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA		0x400001c2>;
+ 	};
+ 
++	pinctrl_i2c1_gpio: i2c1gpiogrp {
++		fsl,pins =
++			<MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14		0x1c2>,
++			<MX8MP_IOMUXC_I2C1_SDA__GPIO5_IO15		0x1c2>;
++	};
++
+ 	pinctrl_i2c2: i2c2grp {
+ 		fsl,pins =
+ 			<MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400001c2>,
+@@ -636,6 +648,12 @@ pinctrl_i2c6: i2c6grp {
+ 			<MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA		0x400001c2>;
+ 	};
+ 
++	pinctrl_i2c6_gpio: i2c6gpiogrp {
++		fsl,pins =
++			<MX8MP_IOMUXC_SAI5_RXFS__GPIO3_IO19		0x1c2>,
++			<MX8MP_IOMUXC_SAI5_RXC__GPIO3_IO20		0x1c2>;
++	};
++
+ 	pinctrl_lcd0_backlight: lcd0-backlightgrp {
+ 		fsl,pins =
+ 			<MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05		0x41>;
 -- 
-2.25.1
+2.39.2
 
