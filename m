@@ -1,60 +1,60 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5295FEED
-	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 12:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205AA13F43D
+	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 15:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712579584; cv=none; b=ef+G0vf4Azv3eX4WQgUxoRkPbwu61s7AyNeaUCVJ/tiZqMPW8XN29PXzp6DBXbIN9YqqJoIFRIa0KXmZ49o6wi6u/e9q1+iNNdaRDshdupaOGVn7bFi6FKuP+vyzX9zJceJIwdjN3Brn9ciDnLgAb26Y3WXmSTCoFWowBmIneVA=
+	t=1712588788; cv=none; b=lOXRcHxqsW2wYgKIJelCpC70tYTS91E0ycAuWoBHyqMPcgvA27rAvS04q1DL4/sRZxz38MQv5BN5nKN0HgsXXfFlwGf9pcxaJDbRXWsYztVBPpFlIcgc5dmb5VDLsK7GJ5+1XqU6+amYy2Cyk+Muf2z4Rx7cznXjrFEy/RFTJHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712579584; c=relaxed/simple;
-	bh=BtExTW8fI55Nk2FXs1ntqdZ2CAfnd9o6XVNnVCbnJr4=;
+	s=arc-20240116; t=1712588788; c=relaxed/simple;
+	bh=MsNpVO9pB/7MMcibh2I88NHwGOLe1uSWzf4L7HJ0tE0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p5tYouhprKSKX1ySWR9JanRpPt6ZDufLjxB/t4u/vYyAzkncp5A28yhM6lnx+fJnBRPq9BY+AneddVmoy0ABVg7UQTLzwaYMlpu8h28S6qbG7kInbTUYp+wdfjqFw7hTewzsG3yl7z7yhQTH4Ae8RCFkeo5Wha0y2reDW5lYZrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eNYe1YbA; arc=none smtp.client-ip=209.85.208.176
+	 In-Reply-To:Content-Type; b=b7on60fzrxgTqvC6zTc+u86/9y5M8N1nZh5OsqNJJGoQ5fBSSONrS7z2HJ6pwK/pdA1ST/JKhCdGZOQ4uFPZC1jETevS+BYQ+R82pWF/RCvYb3epQBIkvsMGuS8F1tgW0404qmyukMOYIDUJtb+IsIv7wDtOiaQSwr38dRaG4Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gBXt7XdX; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eNYe1YbA"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d8129797fcso59895421fa.1
-        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 05:33:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gBXt7XdX"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-343d2b20c4bso2885809f8f.2
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 08:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712579581; x=1713184381; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1712588784; x=1713193584; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=QhfREMjmRFKYklTUK7Py4/3OuLvxrGVK/uQ9yZ61kx0=;
-        b=eNYe1YbAQ5ZNt6hWJ+nM1UNTxdb5LnBmhH8hC3FrWBk3OFaAaKU6VZ08zehkSbUkAK
-         VAvm5Ev1Vyir3fGRZCSzy+s4gBQTgyvrK/q3ldSfsFHUGZleCx98TMHLKi19aixUyH4N
-         IFfhB/QJZplsPHCfyPYikhREAHSwLWCtEKZ9YxtfB2/lkYAdSSDPtaCEokRbm9VNlFhQ
-         q/JUvblYZJUcxZ27H7h0PwBOK0gNHQtdCEZ48ylvr4QhfT++hYx+/AtctuxvuXvTKLU0
-         TYjZW3dKP3Rhf4nkKN3ILCu3jWQv+JOsFMQTzQgmZEuUR4NLHG7ELzzYGyBLHut+8R12
-         VPUw==
+        bh=Dxs6cIQGM15UBhBDso3tA3kUyIdNuLINVbFD4GzTI/Q=;
+        b=gBXt7XdXJkAWpmHmZaYr0oTVLpVO/Iv+IpEleqbzNqM/TmO9chZ74xhg+1Rt8lAhjK
+         sRCbvdG7yIL8cHG8D8cHs0A+dEvpk9APmr4agn5HcUR1qfP4E0m6zUyuaZycZbEgL16d
+         TK9ak4QJXjytgCaCTTQL4ICCLgQMtfKBP/jNOhWx8vkEeKnSze2TYJDrVaWbFu0d65nj
+         YgwuXRU3rJWkuVK4UORUbR4RnPya/QH7UkCyMYEjhp8cnWsVTOWbISk+kKea4MY05UwC
+         uAKodAi4TZ8ZgBMClxojHSH0c2jl9EtRja4m8ziOAIenW1ABwduXs9EaNJPo0XQiMKI3
+         oiHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712579581; x=1713184381;
+        d=1e100.net; s=20230601; t=1712588784; x=1713193584;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QhfREMjmRFKYklTUK7Py4/3OuLvxrGVK/uQ9yZ61kx0=;
-        b=TdM3sdtEYfmF35xY4AHCkQ5vkEVijA3zOcebqtgIkuQDAck6cV4rApaJSfNxDhTa2s
-         lY+9JSrBtosidmYTqbK2MjEJH0raYzRvyWerDS+lZ3yI69CF8udTRpixHhBlDPV9mV9+
-         fX5g1UN93BdegIzmM8GYpQ4+EmhOYx3nFu40DZjsOAgIlD9PhgVdWenLB6SVyWarGQ+u
-         cKl95fPDTgDryUGchGv/XXQ7g3Cf4TOAQ9bBmMTjyMLbyb27zQNz3EXzn+2blcYCWhmy
-         EQBVqfOc5zuC3+WiW+2ccc/Xe806+cNWEFexrh2ow3ZAUc/kGKAoQhQRNlxe+40TSI7i
-         H12Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWFxjfAVeGlJS1DzjW6b2tY5VWDUJDAwWaNkbOo0PDdWWdyVfzXcTSjeE5CxUot7XVs/K1cgG3OSClMWo7MAd9W3oo2
-X-Gm-Message-State: AOJu0YwpAZgHMF5crEGjRPbodcZfRsBMh8tugBhIOp7Y6AlUY3VMU6eq
-	/C7fxil7RmSv0whDxU+On6KzYb4C3YIYdhQeCt6aNBJTmB0eLeKivpH8URUnE9Y=
-X-Google-Smtp-Source: AGHT+IEBhuAtoxZJufWqkiZm3cypA4gq8PqoCBG9xzxkAITKqQ+6e3Rpc2Z74+Qp2VHfYtuEsLaV/g==
-X-Received: by 2002:a2e:90d4:0:b0:2d8:4cff:73e9 with SMTP id o20-20020a2e90d4000000b002d84cff73e9mr5776299ljg.46.1712579581151;
-        Mon, 08 Apr 2024 05:33:01 -0700 (PDT)
+        bh=Dxs6cIQGM15UBhBDso3tA3kUyIdNuLINVbFD4GzTI/Q=;
+        b=PgQHGMrUgeivW5wgeaH86CyvMu+MNOwk5+VCo5oMKNm59DEfWvuxq5JXY9Jqr7bJfZ
+         JwGlKb/6E7GH8yQ35eALnKLnrBzvIuvxdVHvvrxUioHUMdz9yQBHUQBavd3shF0cwIKq
+         CU3KlOw4TAIrMzX0oRnCHkrYZpgohk6/Y82VDX9DD77jWcHqDG2yYyDaMMgBl90FKbqC
+         tWP5McjowLxxp+DcVoRECdANSmJKLWshurmxvVHLdkl3OiJMSl15qTL9ahT78X8PV8BW
+         47ZJCX3ztA4cz/pH6ZnZddomVMwMH8Zfmn9DJwP1nZG7QzcEFzgEZaMzu9WQadJLQNOE
+         foIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjP56xCliMDVQTYsw4Tp8G0e4t+2SUgTg+25heIvjK09o/tKDzn+qTA11VKmU6oyhpJNyFIflID/K8OzKvQSkjgymj
+X-Gm-Message-State: AOJu0YzWf1LAMBNL2w5DzUlmnYvBcnsOc3Bypc+/c3ZT9qGciqVH225q
+	fLrz/f1JKnwtYq7Qbtz7g/uK614GoCCD1RoJWe7BwtqytWr2kJSwy8XPYX2W0c4=
+X-Google-Smtp-Source: AGHT+IFnASuk0b7wQuK6k5VWyqkLb542+HkDjKIZIid0oTGMKzSJn6440x/462PKUtK4PX7NzyAtfA==
+X-Received: by 2002:a5d:6086:0:b0:343:d06e:51fe with SMTP id w6-20020a5d6086000000b00343d06e51femr6955094wrt.20.1712588784285;
+        Mon, 08 Apr 2024 08:06:24 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id a12-20020a05600c348c00b0041654d57f91sm5983080wmq.6.2024.04.08.05.32.58
+        by smtp.gmail.com with ESMTPSA id n6-20020a5d6606000000b0033e745b8bcfsm9165815wru.88.2024.04.08.08.06.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 05:33:00 -0700 (PDT)
-Message-ID: <0e22cf36-6518-41f0-bb11-3f8f9dc49946@linaro.org>
-Date: Mon, 8 Apr 2024 14:32:56 +0200
+        Mon, 08 Apr 2024 08:06:23 -0700 (PDT)
+Message-ID: <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org>
+Date: Mon, 8 Apr 2024 17:06:21 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,18 +62,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/2] media: dt-bindings: nxp,imx8-jpeg: Add clocks
- entries
-To: Mirela Rabulea <mirela.rabulea@nxp.com>, shawnguo@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, festevam@denx.de,
- festevam@gmail.com, alexander.stein@ew.tq-group.com, Frank.li@nxp.com,
- ming.qian@nxp.com
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, mchehab@kernel.org, hverkuil@xs4all.nl,
- linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20240408120654.1196880-1-mirela.rabulea@nxp.com>
+Subject: Re: [PATCH v2] ASoC: dt-bindings: imx-audio-spdif: convert to YAML
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <1712561233-27250-1-git-send-email-shengjiu.wang@nxp.com>
+ <01734d96-bed2-4f7e-bbba-7068f14c822b@linaro.org>
+ <CAA+D8ANiKH7Oc+KAjD_BMp9P2EVeM8Q6dLGFCC8a83bJXUpPEA@mail.gmail.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -120,44 +119,48 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240408120654.1196880-1-mirela.rabulea@nxp.com>
+In-Reply-To: <CAA+D8ANiKH7Oc+KAjD_BMp9P2EVeM8Q6dLGFCC8a83bJXUpPEA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 08/04/2024 14:06, Mirela Rabulea wrote:
-> From: Fabio Estevam <festevam@denx.de>
+On 08/04/2024 10:01, Shengjiu Wang wrote:
+>>> +
+>>> +anyOf:
+>>> +  - required:
+>>> +      - spdif-in
+>>> +  - required:
+>>> +      - spdif-out
+>>> +  - required:
+>>> +      - spdif-out
+>>> +      - spdif-in
+>>
+>> Do you need the last required block?
 > 
-> The JPEG decoder/encoder present in iMX8QXP and iMX8QM SoCs need
-> the PER and IPG clocks to be functional, so add the clock entries.
+> Yes,  one of them or both are required.
+
+And? It's already there: that's the meaning of any. It is not oneOf...
+Before answering please test your changes and ideas. I pointed issue
+here and you responded just to close my comment. That does not make me
+happy, just wastes my time.
+
 > 
-> This also fixes the following schema warning:
+>>
+>>> +
+>>> +additionalProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    sound {
+>>
+>> That's a random change...
+>>
+>> Instead of sending two patches per day, please carefully address the
+>> feedback.
 > 
-> imx8qm-apalis-eval.dtb: jpegdec@58400000: 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks' do not match any of the regexes: 'pinctrl-[0-9]+'
->         from schema $id: http://devicetree.org/schemas/media/nxp,imx8-jpeg.yaml#
-> 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> Signed-off-by: Mirela Rabulea <mirela.rabulea@nxp.com>
-> ---
+> In v1 you suggest to change it to spdif?  but spdif may conflict
+> with the fsl,spdif.yaml.   so which name I should use?
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
----
-
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+I don't understand where is the conflict. That's a different binding.
 
 Best regards,
 Krzysztof
