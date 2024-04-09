@@ -1,221 +1,141 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142811DFD8
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 06:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DA3537E6
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 06:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712644407; cv=none; b=XXbAKsc8EG0loK97daNw5zJ52MGkQkAvs+cI7t9e5gvjOXa1m+upoJ4hRVZgjwXci7TL25+mx17vV7NTeRcJGldJoHx+LitM+YDx3hcYLUjx6AHQOhg1MAigF/k6Yribt43PiQfUHcnp8zJo/Tg3qy9vht+q+9Timv1iZhS8Bfo=
+	t=1712645553; cv=none; b=H+AexAdQJcsY9jfFcpIDw6srvgilIiFX0QNcLwQSFd4JeDl9TEnOZgAUhRWAXbXb5a65/hlr8zl5VJ85O8nF7AJvNLaVVf3XHzUqudtd9F4kDRQ8XLEPY6QHOjbuKACWP7dYPgivXfQD1eKLT8JbfTYUaC/rsx9rqj1vyUko7vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712644407; c=relaxed/simple;
-	bh=Z1aYU/KF6AvQADh2jvgqNZzSsM7Ab0/WmyBX6QaNxeU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k0U/KNB5VW6XCDJY6TaQGS3sXxQj+HHJugLE9kr2UGW7bV8kIZQhSWi6MsXjgNJoPhqKQ1szir7rh02sn9FrMFWpQV4NjGcvfK+7vivzUe5zer5GJv+1nPpcoR21w36K8LxXE6BZVJLYIK4Yxueuujp5GZ7q298yx0r3i7Z5fJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gH7oLd5X; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712645553; c=relaxed/simple;
+	bh=xoULbzlytF5RGrLomSCcvTJXxEPOJ61JtuUKMiYDaX0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vls1WuvJ6kpTx3+bm4gPRFwbY2PZCzNEKzPgaZkBhiY6YUGExqxeLm/Mx67eJdtuVXT8ruShTKlIfLO8xm+MvMM5y1sLc6wLjYlQi8C1Kw9ui0+TCoEh1KNHtyAw1sIOoju3Uq4gCAu5lGHGDVJIFH/dnr1Om+LO7thJAvpkG5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOQznDb7; arc=none smtp.client-ip=209.85.166.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gH7oLd5X"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d700beb6beso57485291fa.2
-        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 23:33:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOQznDb7"
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-36a302e7cc9so2475525ab.1
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 23:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712644404; x=1713249204; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=aTK2tY9bVzfl4l2ZpgIKVHWLJrOw4LwjZTAoE6HkNOo=;
-        b=gH7oLd5XSqtahg9NqnJG9mNWAb60rt2oGFnhlvrvMkqlQwL7xm0ggnr8OM+d3Bj1FW
-         R65sW8KlRhhHlHixVqaJZg9l14xeA9Rt2Jb28nAL5arpLDTmsEDm9D0E6N9AcAs4e+D+
-         3MYzyN9CVL1H65fMhoJWLa0zFCxEUjynvWpQw9flpgelHUt8hnOuugvKt2xVPiRNFk3l
-         saevmmobJ/We+tvVdG+yeEnorKdPmLzwBEZ4m2KMP5CyvrK0oVvqmpcTi9xZ6WpgMOmm
-         wb98d3S6dyT2HG/WfCkB4XwBQKnPQNML2Nly3pGBhHDr66cXUXwOjbcxCb6yFui/rSPP
-         i3qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712644404; x=1713249204;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1712645551; x=1713250351; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aTK2tY9bVzfl4l2ZpgIKVHWLJrOw4LwjZTAoE6HkNOo=;
-        b=c9cxEVOfy3kt3CxOWqt/kURWSdCckioCTNACUzIRTV2OxqNsPHtdPTOmFJYBmQ3yHs
-         KiYuPksLaK+QPJw3P8CUpJ+48wTxJdqUvTXTiAuSCdP80O8HgE0ti48JHBQ6NAn2E2FT
-         Xv+7+HmMnQZZsVrYF4IHwAuL5j3A1KK55/d+eBCs0R+w+LAqrtZiIq8S1ITAh06TpVyY
-         RkyMDBbyzS5EzuQJ0fJrKVcCn5vJRLN/fx4kS/Iu+XEKszO2wxMDK1+30j/XOJsW9gwv
-         qun8zbOfI3Locpx7DPHFZ2Av4r9stWCH14kSDu6/VhBDNMcxK1Xby3aaAjZSN8bekC79
-         onxg==
-X-Forwarded-Encrypted: i=1; AJvYcCUouH9aR3vpJo7DzIxpu9wuTDnnl0YC1ORI1spWriX0REZ35SFPcn+xb6srVJx06PacMTpyPxX5+4ng7UwBTIwc3sot
-X-Gm-Message-State: AOJu0Yxz8Q9/mRvyAUeDeY2N8rTTBbrZRHbd2uNm1ThhS1tgpGvcQXXU
-	7ralRx0JIVbZwlZEGzaNjQT3RIQfhNLeeAuSD0AhHgzUCw9gTH3yqcJ/4W1ebSg=
-X-Google-Smtp-Source: AGHT+IFtzoy+zri/m83EH62Qlj2RXRgsD0JOv9OP762PQl16vrdGvZWkymUpxznvwlBgIWl9uerPQA==
-X-Received: by 2002:a2e:9b84:0:b0:2d6:cbf2:ed2b with SMTP id z4-20020a2e9b84000000b002d6cbf2ed2bmr7291284lji.30.1712644404173;
-        Mon, 08 Apr 2024 23:33:24 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id t15-20020a05600c198f00b00416a6340025sm1235488wmq.6.2024.04.08.23.33.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 23:33:23 -0700 (PDT)
-Message-ID: <76714850-0e02-4333-acce-02c7657666b0@linaro.org>
-Date: Tue, 9 Apr 2024 08:33:22 +0200
+        bh=b352HOzGF/NbEGXGXSDOWNzIVRBqY7hL8lL0mia73U8=;
+        b=gOQznDb7Y+BlCtx7MI4jP2wpNQRaizua6DbRmilNJpTEBxBU/Yjee8UC5j3Cxm0NY6
+         cqPB3yTYNh+16anceJJFZ6aXNsoeeTxTp2468t4bX2LUPVSutHeZLd5t/7LFlVEly/Un
+         3maAdWE+J6jV/3/rnSxelwxhQx3szo20vm0JI2KQP6KiZs/BU5/WLoMUWFaDbS24dQKh
+         ndm9kYq3sicWSooHuCNsm4L3IC8heF6//Zb5sdmzEBZcNZNS5PqYPNmbS0XyfeZQGKjK
+         usP0LiQ2ZHXDLPRBqXSJLdAm+o2oKymUyz0Mj4/B0SAXUChF0JPOYRdWvn+HRBpsaXFK
+         0hbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712645551; x=1713250351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b352HOzGF/NbEGXGXSDOWNzIVRBqY7hL8lL0mia73U8=;
+        b=wuhgWpgopXEkZhG3Ek1uEBRniLOUKNIlSkTzfCAI7C7GHKeBA8bZIsgsNVuIMPalD6
+         XWnRxjkHtRQkLCv+oyCYDpEJh6KWmQnPQhFEjgk6ZU+NtqyUWePZJ6SFmXPWi1lhRY4u
+         G2zeE+Z6rtD9e/Z8cNIuSZVdXzy3dd19P5cvib58B2ZOb7y7VrxEVh3EOeaK5MvjY45p
+         QMx2f1XQQFgJvlQYtrpOU+ADiYgv8F98VynD6PLYq2LlTzk6CP0FFDLVy90zzjMf/24b
+         XGhow5xv1g2pEh/iuNCGKO9J7GcXkBRMs1ydUZjMv0UfgSRhDoOI2+CW56nDBE4usu9Y
+         fV4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXswtsCWG61LkIUs91A4Rdo8bCJoE6ihBghBydtGE58yH3dx2NGc7uWHbNorKmn+wcvMqGfB02ATz0TP2h/rFVcKw34
+X-Gm-Message-State: AOJu0Yz/y/z1ytLJIkQIV1ZwKRrLWH6kfJBYMFh3CNA1yLxBxqK3IL7U
+	oNhiig++an9vJwGzYrjqcCtYrGxt7nrhXDefX5V3YJ1n6vmZ+Bzszpiys5nktinHr4EldhDW9QX
+	V8jkimWzzZEi5lCRKiLbeiMkZPYg=
+X-Google-Smtp-Source: AGHT+IHMPxlU5dxKgUHu5K8XuZe+qftwM2k80rxd63c4T1s7URnjvCONzf8sqUJd4pD7fgxGFHmmOvmrnrNpio20lb8=
+X-Received: by 2002:a05:6e02:13a8:b0:36a:2351:60a with SMTP id
+ h8-20020a056e0213a800b0036a2351060amr6153201ilo.25.1712645550968; Mon, 08 Apr
+ 2024 23:52:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] arm64: dts: imx8qxp-mek: add cm40_i2c, wm8960/wm8962
- and sai[0,1,4,5]
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20240404161914.1655305-1-Frank.Li@nxp.com>
- <efc9c624-6a31-4299-a604-8aad1d0cd878@linaro.org>
- <ZhAO4YWuB8r8k+m8@lizhi-Precision-Tower-5810>
- <938489b1-eb94-4f8a-8881-230951299f6a@linaro.org>
- <ZhQO979YpKA24pML@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZhQO979YpKA24pML@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <1712561233-27250-1-git-send-email-shengjiu.wang@nxp.com>
+ <01734d96-bed2-4f7e-bbba-7068f14c822b@linaro.org> <CAA+D8ANiKH7Oc+KAjD_BMp9P2EVeM8Q6dLGFCC8a83bJXUpPEA@mail.gmail.com>
+ <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org> <CAA+D8AOP6D+xUNF_XJXt-8dMi2qFyVh-Sbe8k67CzvUbnzrwoQ@mail.gmail.com>
+ <51e482b3-ffbf-46f9-972d-875d106c2474@linaro.org>
+In-Reply-To: <51e482b3-ffbf-46f9-972d-875d106c2474@linaro.org>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 9 Apr 2024 14:52:19 +0800
+Message-ID: <CAA+D8AOTtCvsaU4efkEq-7LwSACzuP9qf+e5KeV4OGFgU7OdBQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ASoC: dt-bindings: imx-audio-spdif: convert to YAML
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 08/04/2024 17:36, Frank Li wrote:
-> On Fri, Apr 05, 2024 at 08:21:18PM +0200, Krzysztof Kozlowski wrote:
->> On 05/04/2024 16:46, Frank Li wrote:
->>> On Fri, Apr 05, 2024 at 08:41:59AM +0200, Krzysztof Kozlowski wrote:
->>>> On 04/04/2024 18:19, Frank Li wrote:
->>>>> imx8qxp-mek use two kind audio codec, wm8960 and wm8962. Using dummy gpio
->>>>> i2c bus mux to connect both i2c devices. One will probe failure and other
->>>>> will probe success when devices driver check whoami. So one dtb can cover
->>>>> both board configuration.
->>>>
->>>> I don't understand it. Either you add real device or not. If one board
->>>> has two devices, then why do you need to check for failures?
->>>>
->>>> Anyway, don't add fake stuff to DTS.
->>>
->>> NAK can't resolve the problem. It should be common problem for long time
->>> cycle boards. Some chipes will be out life cycle. such as some sensor. So
->>> chips on boards have been replace by some pin to pin compatible sensor. For
->>> example: 
->>> 	old boards: use sensor A with address 0x1a
->>> 	new bench: use sensor B with address 0x1b.
->>>
->>> You can treat it as two kind boards, RevA or RevB. But most user want to
->>> use one dtb to handle such small differences. For this case, it should be
->>> simple. Just add a super set.
->>> 	i2c
->>> 	{
->>> 		sensorA@1a
->>> 		{
->>> 		}
->>> 		sensorB@1b
->>> 		{
->>> 		}	
->>> 	}
->>>
->>> It also depend on whoami check by i2c devices. Only A or B will probe.
->>>
->>> wm8960 and wm8962 are more complex example.  wm8960 is out of life. But
->>> wm8962 and wm8960 have the same i2c address. The current i2c frame can't
->>> allow the same i2c address in one i2c bus.
->>>
->>> You are feel to NAK my method, but I hope you also provide constructive
->>> solution to help resolve the problem.
->>
->> Yes, we resolved it long time ago. Your bootloader can (usually easily)
->> detect revision of the board and load appropriate DTS or DTS+DTSO.
-> 
-> I knewn it. But the problem is one development boards A have many options,
-> so create many child dts for files, A1, A2, ... An which base on A
+On Tue, Apr 9, 2024 at 2:30=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 09/04/2024 03:37, Shengjiu Wang wrote:
+> > On Mon, Apr 8, 2024 at 11:06=E2=80=AFPM Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> wrote:
+> >>
+> >> On 08/04/2024 10:01, Shengjiu Wang wrote:
+> >>>>> +
+> >>>>> +anyOf:
+> >>>>> +  - required:
+> >>>>> +      - spdif-in
+> >>>>> +  - required:
+> >>>>> +      - spdif-out
+> >>>>> +  - required:
+> >>>>> +      - spdif-out
+> >>>>> +      - spdif-in
+> >>>>
+> >>>> Do you need the last required block?
+> >>>
+> >>> Yes,  one of them or both are required.
+> >>
+> >> And? It's already there: that's the meaning of any. It is not oneOf...
+> >> Before answering please test your changes and ideas. I pointed issue
+> >> here and you responded just to close my comment. That does not make me
+> >> happy, just wastes my time.
+> >
+> > Maybe I didn't express clearly.
+> >
+> > we need at least one of them (spdif-in, spdif-out) in the node.  which =
+means
+> > that we need to select  "spdif-in",  or "spdif-out",  or "spdif-in and
+> > spdif-out".
+> >
+> > So my understanding is that need to use "anyOf", if it is wrong, please=
+ let
+> > me know.
+>
+> Third time: it is wrong.
+>
+> Can you test the code instead continuing this discussion
 
-So use DTSO, what's the problem? Other vendors, liek Rpi does not have
-problem with it and it works well. No confusion.
+Every time I change I definitely do dtbs_check test.
+But There is no error reported by dtbs_check.
 
-> 
-> If there are difference happen at A, create new B. then create all child
-> dtb, B1, B2, ... Bn.  DTB number will increase exponent.
-> 
-> If change is quite bit, we have to do that. But if change is quite small,
-> One dtb can cover it by driver auto detect, which will work like some
-> adaptor card have not plug into boards, or some sensor or NOR-flash have
-> not installed because reduce cost.
+But finally I understand that
+anyOf:
+  - required:
+      - spdif-in
+  - required:
+      - spdif-out
+  - required:
+      - spdif-out
+      - spdif-in
 
-You have two boards, not 20 here!
+is equal to:
+anyOf:
+  - required:
+      - spdif-in
+  - required:
+      - spdif-out
 
->   
-> Although boot loader can update dts or choose difference dts, It also cause
-> many confusition, such as layerscape, uboot update many kernel dtb's
-> information, which actually increase dependence between uboot and kernel.
-> Also it confuse people, for example,  when try to debug kernel dtb, why
-> change have not token affect when change dts because not realized uboot
-> over write it.
-> 
-> What's I dide is that trying to reduce unnecessary dts.
-
-There is no confusion. That's normal process, so if someone is confused
-by having variants of board, this someone will be even more confused by
-seeing non-existing hardware in his DTS.
-
-This problem was solved long time ago and you do not bring any
-reasonable new arguments. All vendors solved it (just look at ongoing
-discussions on board id) but only you have problem with their solution.
-
-NAK
-
-Best regards,
-Krzysztof
-
+best regards
+Shengjiu Wang
