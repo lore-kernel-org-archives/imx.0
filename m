@@ -1,136 +1,160 @@
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA88F45
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 01:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8011B4F20E
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 01:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712626638; cv=none; b=uqAv6NUxra0qgUIJ4LbFIfW1NYyyhvVjCaP0E9NTgpirQoZ3T93XAtEb+SazqV+FSg2T1Nu5ZQeNU8uYIB/YDZvYzIlin7e+NBRiUU3hp0k9gR5IbRr6jqQXyyNvDEcF1j7bipXkEp6agerhicWEm6Ae+Vo8MDB1lD2LBcHNgdk=
+	t=1712626852; cv=none; b=l2UWNR6UtWE/wulp7eefyibvsueFQHtSRo469Yecshyu7tKGCEiN8KLHICnJPltExPnYxHw9/1LldzpsIs0SdK7Zt9abODZi8Hk3avMWJ7IUqwl0uYUIiwa3jC+lM8iPX3r12dHobS0NuJb3C3MZjFKcMHDVmVulVaFjP+ZhSUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712626638; c=relaxed/simple;
-	bh=REUfQMGxi6wZBiAigJvmtnxlwEZNsiAI6JDcOF9qSOs=;
+	s=arc-20240116; t=1712626852; c=relaxed/simple;
+	bh=r2zmZTpMnwocl++95x/nU/XIUjtwCpHeymDjMVB47PM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SBCIHpfeJtTROvTCPMcnscLCuf/NqdZsHwk1VyrdkXF19xcSU2PUR577GSwTTpELajRG9TmmUiiw60rz134fCERMmKW4MkWkU7UdV8UNCy/QP6+Uuk7x76lvCloOu5d5WudRO3tw5Jz+97hT1zTRPyh7mGk3c1Q3Cdwir+e0PUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPxlyo3p; arc=none smtp.client-ip=209.85.166.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=GzwiuagqefLD0NuGJrd+VtKxG5tzuJpA0RClXda74PB88I88dh5uOHYP4CDzDYVx3IT09/PIX33Z0xy7Dd8+M5mq7jKRteMU9v6dfgjpYq9c+VK6yD2wRDEO0vi6Hn3XNdravtTwexqKfbSu6AIIMgor+CtQyL3VWKG0fwxbiPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AUCFoXBO; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPxlyo3p"
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7d0486cf91aso271657839f.1
-        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 18:37:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AUCFoXBO"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-434b5abbb0dso146181cf.0
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 18:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712626636; x=1713231436; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1712626849; x=1713231649; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9lrU41zZbg4rdCONBXZqOnSqD9/BbJGHGI3UVtCYp1A=;
-        b=NPxlyo3pc7bh0IwxToDLNHMMNIFPaCkMsEW5YU26m2sGSeHyeJ9YOfSNM6cbwVXo+z
-         /EeS/YW2DceTE5F/sHyfCk6EbvxMD8X1pbOMTPOTXBqLG6gORvgtCOz6ZCkKWYDasgX/
-         Oqa96Om15pizm5JdnStZLsWBEuSsAhVcOWKr2+laEQ8wXYLmoYXfVk/HGtZExcxlP6yA
-         FqOqcP9i6i5Q+VvvFA42una1lqGvb4LPLiO0Qya7LJUwhk7PoxzPzFdksMgFGcGWWcz0
-         mHmFlCwxQTewAg7f+jJRYKl/KGH8HvuVsoSDx3I1oJSViEcMZrEnW+BmmaTj+q53FRha
-         WLJw==
+        bh=KMxjAHL/FWsCSnB+XuEJfb4SXECUjGEArxNQA5omnzs=;
+        b=AUCFoXBOUZUwX+KPkBIGiI/L8onbjBTv1XQ6WhyrDANM1qv9qQ+6+1t0U17bG31s9t
+         rvS/XcAlyXPJ+GhbwPBJTWHOs2tx+qEScJL29jcxoRTLus72DqXFPOhbhLlwIK127pI1
+         wVypbYzpo8nwriKgVK8GoLp4QnKzXIT1o2PucmXZJV/GkYHJPGRdqlGczAraWLgKxxc6
+         L5vhWo9Ldm2kA2Mzk3rZnXX5SzDkdtGCaMmKijwJc/jXDIBluyCjoQAZW6fYmdD72kwG
+         1aXdHqGfYLTGS8rEsNKQVFHZ0j5rBxqshU6dx+JcGOVE1+O2+zrW/IYDqSC715dnLIGR
+         RIUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712626636; x=1713231436;
+        d=1e100.net; s=20230601; t=1712626849; x=1713231649;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9lrU41zZbg4rdCONBXZqOnSqD9/BbJGHGI3UVtCYp1A=;
-        b=gV7gb7/WJqH8H8AHa1+NW9yxhPJvfetvwX7P8QEp5hqSaKjV9s27uQIAWeTtOC+igq
-         UH+iELmnchau04c+VSgLW3DyB0VvjCUQqUrYk+nQHSCxAUaLDsxsJlEdF7Mlw198WMu1
-         esX/Or2I7V5hxXGY1DrW+cZMI/QO4MbyPv0IPqKONq7WCAAqWVVUsMSzQsVI3T5GSnFz
-         eHtzaFk9Zwq+mKFRtZ2igM+YrCLsg79qBS/ebYhuuUIVaBhw+OeNBwcaCmyuuVmkHlo9
-         afxlA05ifUAihODWm30F46Lc58qkbcrteVwcYwt4tFKB1UVwO3JSvtjpBv7ccDj6AKGK
-         iBSA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3++H8HpksSEnq45UlTtT1PX2L/ySbmuaoWJn//a2nLJ5ehwVKDuS+UsjUusbp4ojnGx1MI8YqniDBEeVQZ3qd3j+Y
-X-Gm-Message-State: AOJu0Yz/7bbRacMpsBddFfoz3YIIhnFOWjCdVz5BsjHuZhpRBJaDmDgG
-	EK8U6RwUAFJJP3qncXIuUfy2LGj5KTUBir48ARxxWk17DhxLM+yxo3u+17VeyocWrfyHekWEY5Q
-	U4wYA3f9a7gEZR1+WUhm8LmX5A/I=
-X-Google-Smtp-Source: AGHT+IGHBYdqw5WuioZTYaZ1SjiEaQQ73sRjZsGoduAA1jBDzDuGbUyCGX9a6fp37uYrTgH2e7VJ2m+I4JB2tYmbQ2Q=
-X-Received: by 2002:a05:6e02:b48:b0:368:aa7a:e25c with SMTP id
- f8-20020a056e020b4800b00368aa7ae25cmr12442798ilu.30.1712626636379; Mon, 08
- Apr 2024 18:37:16 -0700 (PDT)
+        bh=KMxjAHL/FWsCSnB+XuEJfb4SXECUjGEArxNQA5omnzs=;
+        b=reQeA3zOmA1a/7v22ol+KwJNdanYX5Nccvh91CkV5mf4m8j6IeDq4QWaKAoZpM1pga
+         mwKwxO+ezjGbDTu0YT7nqXud6mLKNbD/dJs3ONOPhlz9FrnEmU4Ym8ShI+9VXjuKantU
+         sBckP6z0qvhhUYM85Nt7pmfJVnc3A1aOX0uXWa5QpdAea35dfCKvZ4omrswtFzkufEbA
+         Q+3JrhpYnPcmtDs+uDN7GDCKeQBV/PhynZifm3PzkLoHP6kegvtR7WZpt2PIsiZr3mOQ
+         hsrsITEneLo3+dxAzjRR2qCtMgDPoshwTSnMVa0JPGTHoEZ/kK84bIsvcAA6zlESnwIy
+         eT7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVp6ElnpulfG5LT0z+ryFlO3y0Ehj3PlTN88+POyGidDUVwcUWRoaiwHqXdGv70qWLYZDcXU5dt3DByBMG47VqA3M4/
+X-Gm-Message-State: AOJu0YzLhXGDpS4RKsw7HG8ysso/MtJi7HXfJbeZZ4Lj+9DnwYazgagN
+	OGDo0fi0unXwUOuLiYf3sROzOE6sved0ntqMZzAyFs+jonwgiTewcN6UvnKW3EZzkt083lb+kKI
+	xpwQIP6wNZkPjRZESrs7VdmXIACV0CH2SemWx
+X-Google-Smtp-Source: AGHT+IEfHMMkArtxOzJrm3HH4hiDp/NoiyU+a1zFBYZHw0wqk3suYz8SBSxh/O4d272loLH12QwJvlO1jB0eckScQqE=
+X-Received: by 2002:a05:622a:4249:b0:432:b544:c38c with SMTP id
+ cq9-20020a05622a424900b00432b544c38cmr74945qtb.21.1712626849300; Mon, 08 Apr
+ 2024 18:40:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1712561233-27250-1-git-send-email-shengjiu.wang@nxp.com>
- <01734d96-bed2-4f7e-bbba-7068f14c822b@linaro.org> <CAA+D8ANiKH7Oc+KAjD_BMp9P2EVeM8Q6dLGFCC8a83bJXUpPEA@mail.gmail.com>
- <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org>
-In-Reply-To: <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 9 Apr 2024 09:37:05 +0800
-Message-ID: <CAA+D8AOP6D+xUNF_XJXt-8dMi2qFyVh-Sbe8k67CzvUbnzrwoQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ASoC: dt-bindings: imx-audio-spdif: convert to YAML
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
+References: <20240408231310.325451-1-saravanak@google.com> <20240408231310.325451-3-saravanak@google.com>
+In-Reply-To: <20240408231310.325451-3-saravanak@google.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Mon, 8 Apr 2024 18:40:11 -0700
+Message-ID: <CAGETcx8gGcq01CwTZyn=Q0fSQkzMf6tshSmPr5YWYZuhhJVdXg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 2/2] of: dynamic: Fix probing of overlay devices
+To: Herve Codina <herve.codina@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Rob Herring <robh@kernel.org>, kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 8, 2024 at 11:06=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+On Mon, Apr 8, 2024 at 4:13=E2=80=AFPM Saravana Kannan <saravanak@google.co=
+m> wrote:
 >
-> On 08/04/2024 10:01, Shengjiu Wang wrote:
-> >>> +
-> >>> +anyOf:
-> >>> +  - required:
-> >>> +      - spdif-in
-> >>> +  - required:
-> >>> +      - spdif-out
-> >>> +  - required:
-> >>> +      - spdif-out
-> >>> +      - spdif-in
-> >>
-> >> Do you need the last required block?
-> >
-> > Yes,  one of them or both are required.
+> Get fw_devlink to work well with overlay devices.
 >
-> And? It's already there: that's the meaning of any. It is not oneOf...
-> Before answering please test your changes and ideas. I pointed issue
-> here and you responded just to close my comment. That does not make me
-> happy, just wastes my time.
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/base/core.c    | 10 ++++++++++
+>  drivers/of/dynamic.c   |  8 ++++++++
+>  include/linux/fwnode.h |  2 ++
+>  3 files changed, 20 insertions(+)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 5f4e03336e68..d856f9c5d601 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -237,6 +237,16 @@ static void __fw_devlink_pickup_dangling_consumers(s=
+truct fwnode_handle *fwnode,
+>                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
+>  }
+>
+> +
+> +void fw_devlink_pickup_dangling_consumers(struct fwnode_handle *child,
+> +                                                struct fwnode_handle *pa=
+rent)
+> +{
+> +       mutex_lock(&fwnode_link_lock);
+> +       __fw_devlink_pickup_dangling_consumers(child, parent);
+> +       __fw_devlink_link_to_consumers(parent->dev);
+> +       mutex_unlock(&fwnode_link_lock);
+> +}
+> +
+>  static DEFINE_MUTEX(device_links_lock);
+>  DEFINE_STATIC_SRCU(device_links_srcu);
+>
+> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> index 19a1a38554f2..0a936f46820e 100644
+> --- a/drivers/of/dynamic.c
+> +++ b/drivers/of/dynamic.c
+> @@ -237,6 +237,7 @@ static void __of_attach_node(struct device_node *np)
+>  int of_attach_node(struct device_node *np)
+>  {
+>         struct of_reconfig_data rd;
+> +       struct fwnode_handle *fwnode, *parent;
+>
+>         memset(&rd, 0, sizeof(rd));
+>         rd.dn =3D np;
+> @@ -246,6 +247,13 @@ int of_attach_node(struct device_node *np)
+>         mutex_unlock(&of_mutex);
+>
+>         of_reconfig_notify(OF_RECONFIG_ATTACH_NODE, &rd);
+> +       fwnode =3D of_fwnode_handle(np);
+> +       fwnode_for_each_parent_node(fwnode, parent)
+> +               if (parent->dev) {
+> +                       fw_devlink_pickup_dangling_consumers(fwnode, pare=
+nt);
+> +                       fwnode_handle_put(parent);
+> +                       break;
+> +               }
 
-Maybe I didn't express clearly.
+I'm clearly calling this in the wrong location. Please move this logic
+to __of_changeset_entry_notify() and for the case
+OF_RECONFIG_ATTACH_NODE. Haven't fully thought through the DETACH
+case, but it should work correctly for that case too. If not, I'll
+take care of that next.
 
-we need at least one of them (spdif-in, spdif-out) in the node.  which mean=
-s
-that we need to select  "spdif-in",  or "spdif-out",  or "spdif-in and
-spdif-out".
-
-So my understanding is that need to use "anyOf", if it is wrong, please let
-me know.
+-Saravana
 
 >
-> >
-> >>
-> >>> +
-> >>> +additionalProperties: false
-> >>> +
-> >>> +examples:
-> >>> +  - |
-> >>> +    sound {
-> >>
-> >> That's a random change...
-
-So  I can use "sound-spdif", right?
-
-best regards
-wang shengjiu
-
-> >>
-> >> Instead of sending two patches per day, please carefully address the
-> >> feedback.
-> >
-> > In v1 you suggest to change it to spdif?  but spdif may conflict
-> > with the fsl,spdif.yaml.   so which name I should use?
+>         return 0;
+>  }
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index 0d79070c5a70..4b3f697a90e8 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -220,6 +220,8 @@ int fwnode_link_add(struct fwnode_handle *con, struct=
+ fwnode_handle *sup,
+>                     u8 flags);
+>  void fwnode_links_purge(struct fwnode_handle *fwnode);
+>  void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
+> +void fw_devlink_pickup_dangling_consumers(struct fwnode_handle *child,
+> +                                         struct fwnode_handle *parent);
+>  bool fw_devlink_is_strict(void);
 >
-> I don't understand where is the conflict. That's a different binding.
->
+>  #endif
+> --
+> 2.44.0.478.gd926399ef9-goog
 >
