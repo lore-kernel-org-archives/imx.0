@@ -1,174 +1,82 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2131.outbound.protection.outlook.com [40.107.20.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8461156C6F
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 18:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712689157; cv=fail; b=nHXVvLJ4QSZQfbXc68ruKQQS+N1HwXyaDwfRY12fex5SKHBM5nVpllgOoqkj5xEyCgyC8RuKnVRdZqEHc3EDBLtdHsuFDD54UKZVEbo/6PoJDVdrWqt9oNEX9ScfBjDNmFO+htsuEWzatMuRrkyRcpxQo0WwoK9UwgOlJicwPmk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712689157; c=relaxed/simple;
-	bh=1i0F0SBHenpqm8t5WrECwJ5xaHQp1XBduhVLnj8wtpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=U4M1qSvy7PpbTFR6yfgWFU/+Akx/dV9oxMuYYsh3wLV1w9Q/orv3uWsH4yqekGAYmbdQzydq/87mMTs5xzS4cgAhYCBVsem5Dut3uHrVW9tmXh9J856Yb8anLqG4945sQ1co2YX1gIvTy+zPbT8/63gyBnrtGIYiXpFczsETzT4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=bi4FTvxb; arc=fail smtp.client-ip=40.107.20.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF2313E3E8
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 19:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712689360; cv=none; b=nk7iX7TrcwUyH+p/IfEb7gTqLTLmCwnQ+/6hjjdjBV1ht+GI9AYzp8NJFo+OnUZIJaCgtTbtYbigPcJYNhN6gd9FZzxrt+y58Az1nZsdRlUphPiFws9DgmFZWBvDzDsuPNrW3MjcY5JslTZPSJVUo9I2EBJDkbcuPRGBSNe5Hg8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712689360; c=relaxed/simple;
+	bh=o7hrAYi0nJ4UnJF9L0FefbB+dczQwLGeHO4S3Tb5hGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cAwt4jwujhcrVoTWX3nPllckMoiDRYwDbbHp13Ox3fmxjzVwpDU3O60iBFTUQymZHTNHhBCNcwyo61oadzRAM70rvf6d4RarA/14GVAaouWRf8OXI9LEZM+BqwD7HFVKLhfiVTwQRgGwNFyUZWuL2wzVq/EIUCBdc9RI9RKWN/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hbqt6yQD; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="bi4FTvxb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DGB6Mspzi2I3wfvS5jh/Sw73ckPLp1yUc9VoPb80CvdNIdZP3NUUnQsT9Po7wFNTu5zTAdREqCd9gMLqf8upad22wj+YZal+CnwSZfnrELGv6is7C15YLYSn8jgbJBTAICRbFqskDo4JviTxU6gtQpkaN5vICNpboRsemJeFR6Dj0JGOtz3F3xyftTKhioWI76+5idv1ezIg+ap1ohThNgAVCZ33MjTia1Jm9c8JJFKdZy5cGcmIlACoipcs2UqpVWzCSzn8dCfATe/eKy37mo0oMY3w/GDijBOrIFFaW2QPpeM2ifWBIJmpGRrSc1n0MYsTNpJc1LgxsBSrYmdG9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YhcAid7+3Y7R7+BgTZ3zUHmIPaT5mPU2BTd1U0Vtox0=;
- b=kLjyRfpHJpFSj+pLVXzATdpdbbngStFb8+kEYHwWle34dlqHXMVF2kVf5xH5l9wbEXhTzP/JnPIxK1+YUEL5R0vhvrHuaXd++YRyzHgrkDgumeGcFLXocnL090JpzshnAoWqbyzFjLnGGv/IwJIEDAayZHJErbokfCDNWSGl7jz7vpRFcx8/vxf45U19SqDTJtPl8+eLvogentNOShg4Jz6ww1pnaRQ5Db7ATGZz8IRzVCQ/SISjoPhy32V4muA0o3yMy8E98uVqbLLdsmfY9i0LrLP7WZDQn2oDp2J8CmXOLTZqfp7FWt9K1uTDltqMW4cG9zzKF04oSz0GKvX4aA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YhcAid7+3Y7R7+BgTZ3zUHmIPaT5mPU2BTd1U0Vtox0=;
- b=bi4FTvxb9ORzKgGo73qM2KxiUQ1RxCtdIbYAG3leaQcFJr4TzdqBWUwt2tp2dfMXZNlF+iadC4Us/LUVuBZoLW3EHGmkMilKxyMw3aXKLddnaUcooU4spXmtPLJoP9rbfuwXAvOdNFKDIXPkhYM3EO9mbySYlMn1hKF69XHC0oM=
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7673.eurprd04.prod.outlook.com (2603:10a6:10:202::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.54; Tue, 9 Apr
- 2024 18:59:13 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::3168:91:27c6:edf6%3]) with mapi id 15.20.7409.042; Tue, 9 Apr 2024
- 18:59:13 +0000
-Date: Tue, 9 Apr 2024 14:59:04 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] ASoC: dt-bindings: fsl-esai: Convert fsl,esai.txt
- to yaml
-Message-ID: <ZhWP+Cxy9yMAYXJC@lizhi-Precision-Tower-5810>
-References: <20240322145406.2613256-1-Frank.Li@nxp.com>
- <CAL_JsqLJDhJd_uoL05Z=s3Mc7PRkcJWsQGGjdG0Q0GFp0zA8xw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqLJDhJd_uoL05Z=s3Mc7PRkcJWsQGGjdG0Q0GFp0zA8xw@mail.gmail.com>
-X-ClientProxiedBy: BY3PR05CA0035.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hbqt6yQD"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2a2cced7482so1629584a91.0
+        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 12:02:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712689359; x=1713294159; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o7hrAYi0nJ4UnJF9L0FefbB+dczQwLGeHO4S3Tb5hGc=;
+        b=hbqt6yQDKeR+p8RUEW3WDQe2uBCK6BpwKKJ0f4PBECkH04G/ooGLMsEF6AAiUxv/Px
+         Rd2ctrpogYmcwwEJS84gfdZarDQhPwyjph4Y26bTBbuBAM2BYvtlIwkFdu6Zj4H/8Wp8
+         Ida6FBPAR7qaBulNIq7c2fMsjBqbt/8LiHKj6VlqCddY3H2oyhtPy5N3chu8tViA4dch
+         IHWRUZItXI3ClDAFCarHo8pS9BCEMOeqYc9sZtDP0YVltyCMpBHOEEO6wohcHFkv6hQ9
+         KMwx84n98+1E4rWimI8i7kxIifwSmG2odqb3V/6MwByf7UPiosp+UP5Aq1ebZ7dC6Uqt
+         SDEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712689359; x=1713294159;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o7hrAYi0nJ4UnJF9L0FefbB+dczQwLGeHO4S3Tb5hGc=;
+        b=gGKvkUgQjrfuAgiyEFeQ+jSqznL11EFYYhFQ5xbDp4EkoMGjZ7mumqEvSNcuUGh433
+         yFNNhXEY9/nR3KywPYp4OtMGTiq+joN1Xcd4tJeP12dnodQlrX4jH2eL6Vj6OYVaIHCG
+         9hGAslxXI27Qvs1PmrzF++g6t58lIxDljEb3eWbkr0828oTtlN6hkf5nOM8t9AEFs6bz
+         2lDBxRfVB+8auGuIzYh9poLXj6y5vXEvlh/OvMd0wStO828EoNoN85mM+kYeDANwa1do
+         rgsdsTiiF5hwQQCCgB0A8I79YjbzeATjUOcUwzbdin3mj672R2tb/gHtYQsGe347rQqv
+         I/5w==
+X-Forwarded-Encrypted: i=1; AJvYcCXnKpaF/1aL7Nu+P64W+TP+N9MR+Q4GgyQnTvwNe0hxOAglTVgY3Q6sJASTL6DaR0XM4VlET7gH+RhHTPWaNI4n7D2Z
+X-Gm-Message-State: AOJu0YxylpjKaPuzMzd4caqsvTnvii6yRRl9xYUt8MV/81aKrdyCGt1f
+	HwDqIo7tgSWExazzjFBhLYpUoYNC+NSEnx6L3vY67z9tPpEYADVHKyfta/P2ghIvqFEDV/VHuMm
+	x+voupxr/aHZLtDldxMPyZ0z4Q0U=
+X-Google-Smtp-Source: AGHT+IHyUGvGakm/GRDqNPY/mi72SpILHWwbXaseDKMv1qwJ7UytV8j+qA+cMOhsqtA59ecW62tNo+SkRqsULw0+FXs=
+X-Received: by 2002:a17:90a:550b:b0:2a5:395e:8677 with SMTP id
+ b11-20020a17090a550b00b002a5395e8677mr519798pji.2.1712689358793; Tue, 09 Apr
+ 2024 12:02:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7673:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	XOnI6uAdhYxAl7QGGUR8aVJwHuqnFmPE4NyQ6sOEB2vFPLncvZhEUD1v8DRZJccyl3GcXfAQAqfIxch7cEIIOvtP1trk93aM5KfYYZjxbHUYJYc8pKMV9xNNX1t5fKXDvNNiNVsN0xkXnZF2p2G1seS1RxXAqVyMRVjZD//nzgP7ktUrWZTfPEaKSKsXhY9BM/oKfsqEEojSO0lsJYUh3+tpEIkHVNq1Xcc2VDnER4GVHyJ0YB8mX5tRyWSeAvPr2OagIBwRgisFZpZ6LLZXvnbDBCgpUrHzi+WBVHDVseJrpQate1hhRGiXm3uALlxlxOQ5TplOdPl4txfiUbLUFAknrAKf0AbVGnU3UkeSt551Fo4ol3kxYJrZJdM9oIV7H68d4KFy1nMhYxAApgBHvjkJa1MVgo549x1DEQydwIOCorY+3GSwOKP7s1ICKHuwLP1QrKh7OAW85jewJ6OhXM4J9gbGwyXEiXqwz1J14tOtviS5zCGIduqmQgT12o9AUpicU9fuzzWqzw8nrpBicQ/ZDvQt1BLX+XGLb4Sn1B0aEc/6scuL+3XX28U9f/FT9Z1aJmPk27CY2HkSW2WCY0+dD6ddprEPeNCSlbLnw3U17tqKMDiC/UjRtzMSBsxFaBUe4lmp01oxf29snQSHhR9EqUMMDAshQYQQhA+QJfvy/TmB07bMau/047VJ5/wRJ4/a6tUT7t0Ck8yil/xb5w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c0VET3NSYlFPcVI1L2Ntb3phUTZIZ2xpVkZOR3EwdnQyK0EvSDFlbnUySWhM?=
- =?utf-8?B?TnVDM0xzS1hYbEpqNU94SFByUTduYjhJajFkWE1CcWpyUkFXdnBIYVdZcHBj?=
- =?utf-8?B?UjdVbFJvMWhYUXpqZ08yKzdoYzB2bVF1NTR6a09JRm00Y1g0OUJRQkFQVEJh?=
- =?utf-8?B?YzBhT25NZVA5RWxYRnBLT1ZBU0lUWU04U0p0VFJVZmx2T1J2akdISEtXQ0p3?=
- =?utf-8?B?SWp6NzFnaUZKNWxUelgwVkpqTnN0NEJmdEljNmpWVHZhSVY5cEJkakZZN1Fu?=
- =?utf-8?B?SWhRUmk5Mkc3WDRXd3dES1EraW5oSVhyb3cyMTNMb1FxU0JBY09tUy9pWjg3?=
- =?utf-8?B?bzFnS2pROUFJaGdGaFlqY2JVMHVnS0t1cng3dUgxZ1VvOXhZOWdMdXNCczZ3?=
- =?utf-8?B?VVlpRVVtUitEZk8zSFhDL01rVDVWR2sybGZUVXJLRGErK1N6bHd2a3RPUng4?=
- =?utf-8?B?VE4vd1BNRVhwNytSZnppeFlKa0poOGxJMXZRZnNFWXB3MllMNnpUb05vbXYz?=
- =?utf-8?B?eXBWalMxWnA2VnRjaEZVS0FldlVPeGt3TnA4eU01R2V4L3dLVEEyU0g3cG5h?=
- =?utf-8?B?UUp3OVJQQ3JoTDAyNG9UU2xDb0V4ZjBMQTZJeVFNdW4zZDc0cXlxQ3FSSGts?=
- =?utf-8?B?eDhsam9TdzZKdzVlNmNERUVucU1JQzVCZ3gyUmMyQ21DVEdLaFpJR3FFaDlX?=
- =?utf-8?B?bGdvOHRoYzBYNGJ3cHFMRG1DSjdYTWpMY2t5OFBiQnZEb1lMYThuam5VRjls?=
- =?utf-8?B?TmJQaDFwZFRHUGpOZ283VFBabHJXNWF6ZXZCeWpBVHZzdWxtVmZoenkxKzZ6?=
- =?utf-8?B?UlNtcTY5czFTaXFwLzlZUHRzd0VINUZnQ0RCbXp3Nk5hMjdid3JaQU1LK3B1?=
- =?utf-8?B?M1duSWxyVXVzbUJaVlI4RzFBZ25JT1BLeHZOeUJJZHF3TC9FSUtZSm1sRVRB?=
- =?utf-8?B?MXVGK20ySUZKZ1ZEdjBDUXRjNksrQXZDU3hBNGZURHJyYjN5c2ozRFpnREpC?=
- =?utf-8?B?eXVHdkxaVThHUFZjRjJETXBha2VvSFk4Z1FhcWZRL3BxQzhBcjI1dk91U1Vr?=
- =?utf-8?B?Vk1NZk5MTTNrcS93R3J3ZXBPOFV5TVdsckJRQXJmWHdyWnhzVUNxbUxaTWlp?=
- =?utf-8?B?a1NsSmxpdmFpMDB1WXFKMnRSOFFEUTRLUVJhdk1SRzlVQ2p0TUpvZlc4eWZE?=
- =?utf-8?B?V09nczBNZk4yUG8xeWRKWUxYZ0xPc3p1elRUSFo2ZG4yNTAwNHFXZ2JhdWpY?=
- =?utf-8?B?c0tpTzQvSU1LaHo1Z1EyeXFXRFd0d0JIcmRrOEtLQlhUclhBOEF3K0Zrd2pU?=
- =?utf-8?B?MW1KS1k1MHhxd2s5SzhqZU5XSjI2NWloWlV1aE9WVG51WnU1NUx5T21UYXJS?=
- =?utf-8?B?OXFsR1RnVW8zd1FHc0UxWnhOZndPU2JiWmRmVzBEU0dELzBvRkl1WTF6R0lT?=
- =?utf-8?B?K0FFVnFML1drVWpROGMyWk93WFo1ZURwSXhLSTlFVHh1Y3M0czlpa2l0VzBn?=
- =?utf-8?B?a1hTV2JaMk1RNnBMeFpYRjc5RkhVbVlMTHVteTZ3c09TWXVqazVtUHgvM2Vq?=
- =?utf-8?B?bnJwTVZHNXY0RFgrT2s5aktZc1dmSjhCVWppOTB2OFV1RFVnajd4dVcrQkV4?=
- =?utf-8?B?d0xRVmZQU0g4WkJ0Q1FFRVJvOXNjNkxQTkp5MXVVWmxyMUJlZzMvUlVKK3hY?=
- =?utf-8?B?TWhQUUZROUxWL0JLNHlVWmNWTW5GVzRTQS9FZHBuMDFFOFJDS1ExaE51My80?=
- =?utf-8?B?dWt5Y3dvei9aazBhallxWnY2dWxjOTFHY1NGaWpHbXJHL0QrQnBUaWdYSXAz?=
- =?utf-8?B?SW5tWFBFSDRYNEpIVDJDdHdLbUhIVXVFWGNUQ3JsUGNqVkhRUHpJOE1HQWRk?=
- =?utf-8?B?NTdndktEc2lJeitucHRFNXZYVzN6aGkydlBxeUowcHl5UHRIVWJOcWRHK0da?=
- =?utf-8?B?U2FBdGIrejc5QUZXbVU5LzhYcUFQbmlQWmxOK00xeHVsY3R4WEFYUXp3aVJp?=
- =?utf-8?B?UmNSSDI2Q0ZPZGx5UlE3WTBUckFZS1p2azJaOEE1bmNlOXhxY204U0pnWlBo?=
- =?utf-8?B?VXZ2bGV3bnVaZGtrbEppYWZVSndHMXFHckRyL2dHVnJBM1duZ0lWOGZQcDVl?=
- =?utf-8?Q?MV8yjwEaS09kR5q1WcgmQkMoP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 406fa6fa-a8f0-42de-f91e-08dc58c72557
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2024 18:59:13.0368
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TFFd3pXfqt7dhabXNQywHX9co2Aw3UbDnTYpxXL8axyMXh7o92LIyGUPDugHnoZU+ou0Da0By8VFI5IXLhNOTQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7673
+References: <20240322145406.2613256-1-Frank.Li@nxp.com> <CAL_JsqLJDhJd_uoL05Z=s3Mc7PRkcJWsQGGjdG0Q0GFp0zA8xw@mail.gmail.com>
+ <ZhWP+Cxy9yMAYXJC@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZhWP+Cxy9yMAYXJC@lizhi-Precision-Tower-5810>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 9 Apr 2024 16:02:26 -0300
+Message-ID: <CAOMZO5C=AQOBkOwMBjkgn9TbQ8242Wj0AEHRJ0j_1=N8WfWYRw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ASoC: dt-bindings: fsl-esai: Convert fsl,esai.txt
+ to yaml
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 09, 2024 at 12:26:52PM -0500, Rob Herring wrote:
-> On Fri, Mar 22, 2024 at 9:54 AM Frank Li <Frank.Li@nxp.com> wrote:
-> >
-> > Convert fsl,esai.txt to yaml. So DTB_CHECK tools can verify dts file about
-> > esai part.
-> >
-> > clock-names 'spba' is optional according to description. So minItems of
-> > clocks and clock-names is 3.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >
-> > Notes:
-> >     Change from v1 to v2
-> >     - alphabetical order compatible string according to rob's suggestion
-> >     - clock description move under 'clock' according to kryszof's suggestion
-> >     - fix descritpion indent according to rob's suggestion
-> >
-> >     Pass dt_binding check
-> >      make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml
-> >       DTEX    Documentation/devicetree/bindings/sound/fsl,esai.example.dts
-> >       LINT    Documentation/devicetree/bindings
-> >       CHKDT   Documentation/devicetree/bindings/processed-schema.json
-> >       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-> >       DTC_CHK Documentation/devicetree/bindings/sound/fsl,esai.example.dtb
-> 
-> Did you run dtbs_check too? Probably not arm32 at least (first number
-> is number of warnings):
-> 
->     218  esai@2024000: clocks: [[2, 208], [2, 209], [2, 118], [2,
-> 208], [2, 156]] is too long
->     218  esai@2024000: clock-names:3: 'spba' was expected
->     218  esai@2024000: clock-names:2: 'fsys' was expected
->     218  esai@2024000: clock-names:1: 'extal' was expected
->     218  esai@2024000: clock-names: ['core', 'mem', 'extal', 'fsys',
-> 'spba'] is too long
+On Tue, Apr 9, 2024 at 3:59=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
 
-Yes, I run dtb_check for one platform. Which dtb report this warning?
+> Yes, I run dtb_check for one platform. Which dtb report this warning?
 
-Frank
-
-> 
-> Conversions can leave warnings, but any you think should be fixed in
-> the binding should be fixed in the conversion.
-> 
-> Rob
+Try imx_v6_v7_defconfig.
