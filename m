@@ -1,142 +1,167 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3920757E7
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 05:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D7C76F1D
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 06:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712641039; cv=none; b=Um5o6trgNwoIRR+c+CXQRn9uydo/dgG9w+UtCGfJo0Jm9K8769YY42E7AiksgHYRyDaxlUFefOkDawGdPUHsIXKvi9hdCU0EMiap0I+BIgTsjxOUKEea4hTp5EetUPHk+y7mUmSifNZBM09UqAr+3zqib/D2lYsJzOHJcAvV3FY=
+	t=1712644214; cv=none; b=ph6k9H+xGAf9vKQKZlzuf/o4wfc6iD0j5J6gQ0Wt1Axny2JbAOgU0UjOqRA+10XEOVN9wQVgX712/FqCso/V8uM7H4QKhDVwtmx/27sm9LLjdLTtVJcz3/ogawyKSx+dd8RlIkAzlj/nCVQliQXYcNHGVtP+/efhpl0vY7gkeNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712641039; c=relaxed/simple;
-	bh=wkLOEX+/YulnkTfcEPKaLhHUYq2+5Yqcely2pOg3H0A=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=L52XePVBvUw7ke3ehDHJp4fNOw3XdzRpJrVdnVhLDY1p7CkhJph3eUeJC5Gl0c69RET1Tm5BrhfwDgEQ8jEMe/yBgrupx7h907cmzogNA73mSP9k7zzGxzr1mcXVG2cD+bhBLN552SliKW7ZKXkpgL2wONXg9NCbi36RBUiIxLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3Rg5ZqzM; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
+	s=arc-20240116; t=1712644214; c=relaxed/simple;
+	bh=GLlGOxsGfKxek5hcLAceq+1uQpJbEpoRFNLaAKCpyOE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DD5spyDpyhGM4WiHMq3R7ooCEZtKWcxwCvdYRwXQbAjZreOvXdnuQCZKzVoTqt9fpoa6Y5FZ9yMiu8T58xAbDYYmCGyIn4pUELMmplgkrVkybA3VTxiG6U7+TykpQTnKeILytrHXP+3e3j0dybCekJyg1e7lWtjryGcGxxqMMdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BjIRUDuO; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3Rg5ZqzM"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6150dcdf83fso101540727b3.2
-        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 22:37:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BjIRUDuO"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-56e6e08d328so875335a12.2
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 23:30:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712641037; x=1713245837; darn=lists.linux.dev;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P1+matSQcfLvW/X39T9zNDkLhGrOhW1miO9PFu3HhWQ=;
-        b=3Rg5ZqzMDpA+qDrWAtuKYYIpY1mA2E0xuk5FtE3BHzsMVZTG7x3wzfkI1Pm+SaEbxK
-         uLj49DqAJjTBAPBYfg67VYRufDaLqZ5ViCtQ6zxFgUlmLnQPzVg+jYKqQK2gKP/8Z258
-         /uwcF+krIXKhf3ytCm5sEgZ5+8zYjxrziMWvfdHF7cItWx1o8mqMOpYkyRI2G330mYbk
-         mRpjf780uR2NTy7WQqqYbvdrHluajvC8COYI+MOOEND9E2RO8wUVxWb4FLHpFDy24FXD
-         xZuUXNzKiHEXrfdu8m2dWMbw78nwVUSUcF921z1VCUxQyMzzENvqHSkd5h33ZNLhGMvW
-         gbmQ==
+        d=linaro.org; s=google; t=1712644211; x=1713249011; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=JSfFuREisAT8UwnNGuE+3fIOXrzMP5PSYPhNRbJ9h10=;
+        b=BjIRUDuOShLOkbvX7gAmnwSAG8J7TiFMrxxcqfgmOSvNu8QAsSEy6kQFTiOJnI8GRh
+         mgZ9wDx4JiLYKGuoGawuEVaZhm+oeKdXBNYRtSuLkJydOFA5q0iLadFHD3mMMWHrU8vP
+         v95ZxX17o50bFZ5G3CxTtjIDJ4YEUbRrn3yEzno58K+m2RaDhaGfNMQ+BtfIuGEfBPuk
+         5bazcM5kbSlGVHArHVfU7pxkApgTO/eyrAJ0Fv+jDF/65gnXkCZpwRid7Ejtl7qoQffo
+         V4TMdMD2mo7OMiZSixLxBpOUhINk4J0iKWXXabNbJM/Cs+aoGMzaZq0rvYjYcDBFICKC
+         IpbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712641037; x=1713245837;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P1+matSQcfLvW/X39T9zNDkLhGrOhW1miO9PFu3HhWQ=;
-        b=ThhZgJoZKN1AullGandOTQKSjRSwwor6FCgbXiuk/kVZqppzK1xhqhMtId9qPdniAZ
-         Js8BwXcwR6a6ucNTlOopQWn2VpHlwiTHxy/gsjFT5DQy72V/7+t/Ua3Yj/SjWhuUgGln
-         eP3/N4MDT2JgrKEXaBFOXD4cygGIatDoO1xutwmB0RePFbkEGlfwdNbxQFzzlsA8Fvfy
-         8YLiDBt6Na33eXIc3n+z/WyPit0idaTyN8ICuXufxuA+czkJWSaMfJ+tMVXrh4YmKv07
-         Or/OjYdTwX0FQSLFRAMQcekga9NuKrVf2thl2oIslFYb3dSOTaHRxBY1YU79obL5/Fsf
-         UsOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5h6O0O/ovOWQ3CQgy/kUne22BEOGl+wO6jort29/DUvxNRNziVWfeBsTn3aSrpC3vizaD6f1U7xEfb2qwPkviCsN5
-X-Gm-Message-State: AOJu0YzaRTURroAX8s3bATiqKg0GHGiCJZnis3aqlRQazP+eGgxaa22y
-	PrzwXEYgV8R5dGPyJaNpVi+ghzssUJw3erYy0RA04XZKP6lEHr6Qcc4yIq8Fli6NQfQaVXBXFdS
-	gyf+bpVxmoOuD6g==
-X-Google-Smtp-Source: AGHT+IHRQA3n5GfF0BAtqxsFhNOUIMEXcJ7+XDV5u7QRPNR+Gdp77qx8MK2Ot4WCnaL1W/7lk2smyonaDUUJGAU=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:96d3:321a:67f3:5322])
- (user=saravanak job=sendgmr) by 2002:a05:6902:708:b0:dd9:1db5:8348 with SMTP
- id k8-20020a056902070800b00dd91db58348mr3605580ybt.8.1712641037031; Mon, 08
- Apr 2024 22:37:17 -0700 (PDT)
-Date: Mon,  8 Apr 2024 22:37:03 -0700
-In-Reply-To: <20240409053704.428336-1-saravanak@google.com>
-Message-Id: <20240409053704.428336-3-saravanak@google.com>
+        d=1e100.net; s=20230601; t=1712644211; x=1713249011;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JSfFuREisAT8UwnNGuE+3fIOXrzMP5PSYPhNRbJ9h10=;
+        b=UmuKprmkRLO6zkocxEX2pvwD8QrJJZ17ZyXvV9lvQbTsVvCL6ufvF2vl9MvVh2WpbD
+         cN9E7HKT4TpwF1SXqrTcdWFlfwVtylmq0bqv4ScK9UPKb3j+X4iSQ/qNSQA1UKrTHecV
+         i385T9vwk94XOOuEDRjXGiWuWQ4JxdFPDv8LUogV2IP1RUhcN6P04cjmS252r2Urp4i2
+         5IUvfr/6/YAIocftZYdSUMazy/La50tAMXNFNpyrlBDdYmBuTn/3GxjYKkpuM8VPu6J0
+         wHT8569xd/sYK/0chBFscm7fgdRfOQQIRbp/9NTlv49xwI3KyL5S7zqOTMxLBuHR5KGO
+         OBsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXX8m+yhJHj78s4vjnSZecDYT53Z04OQ5HlEVHYSvR0OLZYbKcExY8XkWdCRGT6SXKJR2tOMH2yjzW9W9+Rn9pRMen6
+X-Gm-Message-State: AOJu0YyJX30bplfC3UzMIerFz1K4BX8Xt5omVnQPDSXbed3bktXwdqIU
+	7uEIufoh8NJ6H84Hm90b9AwYIgTgYW9qlRtQ8JcGOIIGqU4avk27QsHtr4q7j90=
+X-Google-Smtp-Source: AGHT+IG/oFIIAzcBsZm/egCPjFK0/bLUFEtPbvyxlCvGIe0YLL/tYpAaT9ndRheyNFs0seWC7a0ZUQ==
+X-Received: by 2002:a50:ab1d:0:b0:56e:4039:add5 with SMTP id s29-20020a50ab1d000000b0056e4039add5mr6697537edc.22.1712644211611;
+        Mon, 08 Apr 2024 23:30:11 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id di19-20020a056402319300b0056b7ed75a46sm4986932edb.27.2024.04.08.23.30.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 23:30:11 -0700 (PDT)
+Message-ID: <51e482b3-ffbf-46f9-972d-875d106c2474@linaro.org>
+Date: Tue, 9 Apr 2024 08:30:09 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240409053704.428336-1-saravanak@google.com>
-X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
-Subject: [RFC PATCH v2 2/2] of: dynamic: Fix probing of overlay devices
-From: Saravana Kannan <saravanak@google.com>
-To: Herve Codina <herve.codina@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Saravana Kannan <saravanak@google.com>, Rob Herring <robh@kernel.org>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ASoC: dt-bindings: imx-audio-spdif: convert to YAML
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <1712561233-27250-1-git-send-email-shengjiu.wang@nxp.com>
+ <01734d96-bed2-4f7e-bbba-7068f14c822b@linaro.org>
+ <CAA+D8ANiKH7Oc+KAjD_BMp9P2EVeM8Q6dLGFCC8a83bJXUpPEA@mail.gmail.com>
+ <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org>
+ <CAA+D8AOP6D+xUNF_XJXt-8dMi2qFyVh-Sbe8k67CzvUbnzrwoQ@mail.gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAA+D8AOP6D+xUNF_XJXt-8dMi2qFyVh-Sbe8k67CzvUbnzrwoQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Get fw_devlink to work well with overlay devices.
+On 09/04/2024 03:37, Shengjiu Wang wrote:
+> On Mon, Apr 8, 2024 at 11:06 PM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> On 08/04/2024 10:01, Shengjiu Wang wrote:
+>>>>> +
+>>>>> +anyOf:
+>>>>> +  - required:
+>>>>> +      - spdif-in
+>>>>> +  - required:
+>>>>> +      - spdif-out
+>>>>> +  - required:
+>>>>> +      - spdif-out
+>>>>> +      - spdif-in
+>>>>
+>>>> Do you need the last required block?
+>>>
+>>> Yes,  one of them or both are required.
+>>
+>> And? It's already there: that's the meaning of any. It is not oneOf...
+>> Before answering please test your changes and ideas. I pointed issue
+>> here and you responded just to close my comment. That does not make me
+>> happy, just wastes my time.
+> 
+> Maybe I didn't express clearly.
+> 
+> we need at least one of them (spdif-in, spdif-out) in the node.  which means
+> that we need to select  "spdif-in",  or "spdif-out",  or "spdif-in and
+> spdif-out".
+> 
+> So my understanding is that need to use "anyOf", if it is wrong, please let
+> me know.
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- drivers/base/core.c    | 23 +++++++++++++++++++++++
- drivers/of/dynamic.c   |  1 +
- include/linux/fwnode.h |  1 +
- 3 files changed, 25 insertions(+)
+Third time: it is wrong.
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 5f4e03336e68..5ce33dbd7560 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -237,6 +237,29 @@ static void __fw_devlink_pickup_dangling_consumers(struct fwnode_handle *fwnode,
- 		__fw_devlink_pickup_dangling_consumers(child, new_sup);
- }
- 
-+
-+void fw_devlink_fixup_new_fwnode(struct fwnode_handle *new_fwnode)
-+{
-+	struct fwnode_handle *parent;
-+
-+	if (new_fwnode->dev && new_fwnode->dev->bus)
-+		return;
-+
-+	fwnode_for_each_parent_node(new_fwnode, parent)
-+		if (parent->dev && parent->dev->bus)
-+			break;
-+
-+	if (!parent)
-+		return;
-+
-+	mutex_lock(&fwnode_link_lock);
-+	__fw_devlink_pickup_dangling_consumers(new_fwnode, parent);
-+	__fw_devlink_link_to_consumers(parent->dev);
-+	mutex_unlock(&fwnode_link_lock);
-+
-+	fwnode_handle_put(parent);
-+}
-+
- static DEFINE_MUTEX(device_links_lock);
- DEFINE_STATIC_SRCU(device_links_srcu);
- 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 19a1a38554f2..a2ad79ea9a06 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -581,6 +581,7 @@ static int __of_changeset_entry_notify(struct of_changeset_entry *ce,
- 		memset(&rd, 0, sizeof(rd));
- 		rd.dn = ce->np;
- 		ret = of_reconfig_notify(ce->action, &rd);
-+		fw_devlink_fixup_new_fwnode(of_fwnode_handle(ce->np));
- 		break;
- 	case OF_RECONFIG_ADD_PROPERTY:
- 	case OF_RECONFIG_REMOVE_PROPERTY:
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0d79070c5a70..230aeccef6f3 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -220,6 +220,7 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
- 		    u8 flags);
- void fwnode_links_purge(struct fwnode_handle *fwnode);
- void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
-+void fw_devlink_fixup_new_fwnode(struct fwnode_handle *new_fwnode);
- bool fw_devlink_is_strict(void);
- 
- #endif
--- 
-2.44.0.478.gd926399ef9-goog
+Can you test the code instead continuing this discussion
+
+Best regards,
+Krzysztof
 
