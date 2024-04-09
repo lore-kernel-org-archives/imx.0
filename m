@@ -1,72 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA59F75809;
-	Tue,  9 Apr 2024 14:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215FB2836A
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 14:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712671966; cv=none; b=k8kBrYNkVUohi4ZzxIWrSDP25KwEL5/gvCLsOx49LV3oyKXPU1NG40oLe33oSzk4Zc5YnAtn6+JGedeZlVHw/QNGV/F8+dUdYaJxBXy5iplqI70dkszvQ7wJW8sQwrSMcJ3nZIVHUHRNnJ4sjrGUAYy1M8JwQTGQ9vvgRbMMHxg=
+	t=1712673376; cv=none; b=Gj96fenHnlB2VaeLsN6OO40mqzQNIXLr/QG6yB4UuzAav8C8HZgph5a5XUefYbbgEkg2ZxhMMdSHGluCZWj99rTkWJJy6Ox7Mc6Nj86ABhWD0rkL1CGAX8crqM3OYtAX+lY1eWUG4dy8Nm6kzglCthteTapPa8J9HeiZa5eQjgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712671966; c=relaxed/simple;
-	bh=xBaTzncPkClWKcZ+0gQSXyy6lR2MO8ejKBgQTVMKrdc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tgoExPM3NH99V/Mh9qIbWoG2KqjAuvCt/xgbyevctMpnSZ1FhwdWgk2GqsRJH21Khsgy7YSnbRtJRI6L6x8aBUqkrDyurO4LiIYi0pfRoBoSPjxTnvZ1C+REaerGwjMLXeauwBUTpYLYu8qA/dJRI2O9n8KG77GYGCay0Ipuo84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLgNLTwO; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLgNLTwO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AE1C433F1;
-	Tue,  9 Apr 2024 14:12:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712671965;
-	bh=xBaTzncPkClWKcZ+0gQSXyy6lR2MO8ejKBgQTVMKrdc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XLgNLTwOIsjL7F9gQSD2PD33d5tjOWWzin3psRbAe8fyNJ1v0N6zrkEtWx1TUTB2T
-	 TLlsFwJY2mAAD1z0AQ/2sIudZjbeNsSV6wLVUUyps3YuIsU0T2SH3Mtd5k9pfgGsd2
-	 hvJHqsjqL/RXnrytvDItq6INGePuqTDYVcGeL9bqFH9rphZCDxQ0h5Ic2n4GENhitH
-	 LMZmN0dV1QoBNHv65HgiONuhDqg+x4+UmpmlPZDmHgZ3SK5PKkMd4xxd5XEhD3ZHdB
-	 X9PqZhMVd3kGgR5rcSB6N89JJRegDdV3gefwEV4aJ4kA7Faxyy9zNarYpmydrQmewe
-	 hxs8v0Xp5Bf0g==
-Date: Tue, 9 Apr 2024 09:12:43 -0500
-From: Rob Herring <robh@kernel.org>
-To: git@luigi311.com
-Cc: mchehab@kernel.org, devicetree@vger.kernel.org,
-	linux-media@vger.kernel.org, shawnguo@kernel.org,
-	jacopo.mondi@ideasonboard.com, phone-devel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	krzysztof.kozlowski+dt@linaro.org, festevam@gmail.com,
-	sakari.ailus@linux.intel.com, conor+dt@kernel.org,
-	imx@lists.linux.dev, pavel@ucw.cz, dave.stevenson@raspberrypi.com,
-	s.hauer@pengutronix.de, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH v3 18/25] dt-bindings: media: imx258: Add alternate
- compatible strings
-Message-ID: <171267196134.1104703.16459951254766815081.robh@kernel.org>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-19-git@luigi311.com>
+	s=arc-20240116; t=1712673376; c=relaxed/simple;
+	bh=qTJ7Npe3rxJEDPC2nptV7Bl4EgMVk2rZmo8ah4g96es=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lvtOhj9cz9nZZmL5aIe9UNnGAzyDArKdqsmB+235arHvT++Q6NL0T6FzXkxtSNV9pmhFAdNcEOIyRAYAlUGiv+UxHKD68UJvaVZTUfPaLhL5uHSArBaz0d4SL1u4hvW2IGMxaqK8oF1DLFiXRu8eye7n8TPDP61dNwlNVfVWHD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1ruCZv-0000tX-2w; Tue, 09 Apr 2024 16:36:03 +0200
+Message-ID: <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
+Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
+ domain parent
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Vitor Soares <ivitro@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 09 Apr 2024 16:36:01 +0200
+In-Reply-To: <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
+References: <20240409085802.290439-1-ivitro@gmail.com>
+	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
+	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240403150355.189229-19-git@luigi311.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-
-On Wed, 03 Apr 2024 09:03:47 -0600, git@luigi311.com wrote:
-> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> 
-> There are a number of variants of the imx258 modules that can not
-> be differentiated at runtime, so add compatible strings for the
-> PDAF variant.
-> 
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> Signed-off-by: Luis Garcia <git@luigi311.com>
-> ---
->  .../devicetree/bindings/media/i2c/sony,imx258.yaml       | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-
-Reviewed-by: Rob Herring <robh@kernel.org>
+QW0gRGllbnN0YWcsIGRlbSAwOS4wNC4yMDI0IHVtIDE0OjIyICswMTAwIHNjaHJpZWIgVml0b3Ig
+U29hcmVzOgo+IEhpIEx1Y2FzLAo+IAo+IFRoYW5rcyBmb3IgeW91ciBmZWVkYmFjay4KPiAKPiBP
+biBUdWUsIDIwMjQtMDQtMDkgYXQgMTE6MTMgKzAyMDAsIEx1Y2FzIFN0YWNoIHdyb3RlOgo+ID4g
+SGkgVml0b3IsCj4gPiAKPiA+IEFtIERpZW5zdGFnLCBkZW0gMDkuMDQuMjAyNCB1bSAwOTo1OCAr
+MDEwMCBzY2hyaWViIFZpdG9yIFNvYXJlczoKPiA+ID4gRnJvbTogVml0b3IgU29hcmVzIDx2aXRv
+ci5zb2FyZXNAdG9yYWRleC5jb20+Cj4gPiA+IAo+ID4gPiBUaGUgcGdjX3ZwdV8qIG5vZGVzIG1p
+c3MgdGhlIHJlZmVyZW5jZSB0byB0aGUgcG93ZXIgZG9tYWluIHBhcmVudCwKPiA+ID4gbGVhZGlu
+ZyB0aGUgc3lzdGVtIHRvIGhhbmcgZHVyaW5nIHRoZSByZXN1bWUuCj4gPiA+IAo+ID4gVGhpcyBj
+aGFuZ2UgaXMgbm90IGNvcnJlY3QuIFRoZSB2cHVtaXggZG9tYWluIGlzIGNvbnRyb2xsZWQgdGhy
+b3VnaAo+ID4gdGhlCj4gPiBpbXg4bW0tdnB1LWJsay1jdHJsIGFuZCBtdXN0IG5vdCBiZSBkaXJl
+Y3RseSB0cmlnZ2VyZWQgYnkgdGhlIGNoaWxkCj4gPiBkb21haW5zIGluIG9yZGVyIHRvIGd1YXJh
+bnRlZSBwcm9wZXIgcG93ZXIgc2VxdWVuY2luZy4KPiA+IAo+ID4gSWYgdGhlIHNlcXVlbmNpbmcg
+aXMgaW5jb3JyZWN0IGZvciByZXN1bWUsIGl0IG5lZWRzIHRvIGJlIGZpeGVkIGluCj4gPiB0aGUK
+PiA+IGJsay1jdHJsIGRyaXZlci4gSSdsbCBoYXBwaWx5IGFzc2lzdCBpZiB5b3UgaGF2ZSBhbnkg
+cXVlc3Rpb25zIGFib3V0Cj4gPiB0aGlzIGludHJpY2F0ZSBtaXggYmV0d2VlbiBHUEMgYW5kIGJs
+ay1jdHJsIGhhcmR3YXJlL2RyaXZlcnMuCj4gIAo+IEknbSBuZXcgaW50byB0aGUgdG9waWMsIHNv
+IEkgdHJpZWQgdG8gZm9sbG93IHNhbWUgYXBwcm9hY2ggYXMgaW4gaW14OG1wCj4gRFQuCj4gClRo
+YXQncyBhIGdvb2QgaGludCwgdGhlIDhNUCBWUFUgR1BDIG5vZGUgYWRkaXRpb25zIG1pc3NlZCBt
+eSByYWRhci4gVGhlCmRpcmVjdCBkZXBlbmRlbmN5IHRoZXJlIGJldHdlZW4gdGhlIEdQQyBkb21h
+aW5zIGlzIGVxdWFsbHkgd3JvbmcuCgo+IEkgYWxzbyBjaGVja2VkIHRoZSBpbXg4bXEgRFQgYW5k
+IGl0IG9ubHkgaGF2ZSBvbmUgZG9tYWluIGZvciB0aGUKPiBWUFUgaW4gdGhlIEdQQy4gSXQgc2Vl
+bSBibGstY3RybCBhbHNvIGRlcGVuZGVzIG9uIHBnY192cHVfKiB0byB3b3JrCj4gcHJvcGVybHku
+Cj4gCj4gVGhlIGJsay1jdHJsIGRyaXZlciBoYW5ncyBvbiBpbXg4bV9ibGtfY3RybF9wb3dlcl9v
+bigpIHdoZW4gYWNjZXNzIHRoZQo+IGlwIHJlZ2lzdGVycyBmb3IgdGhlIHNvZnQgcmVzZXQuIEkg
+dHJpZWQgdG8gcG93ZXItdXAgdGhlIGJlZm9yZSB0aGUKPiBzb2Z0IHJlc2V0LCBidXQgaXQgZGlk
+bid0IHdvcmsuCj4gClRoZSBydW50aW1lX3BtX2dldF9zeW5jKCkgYXQgdGhlIHN0YXJ0IG9mIHRo
+YXQgZnVuY3Rpb24gc2hvdWxkIGVuc3VyZQp0aGF0IGJ1cyBHUEMgZG9tYWluIGFrYSB2cHVtaXgg
+aXMgcG93ZXJlZCB1cC4gQ2FuIHlvdSBjaGVjayBpZiB0aGF0IGlzCmhhcHBlbmluZz8KClJlZ2Fy
+ZHMsCkx1Y2FzCgo+IERvIHlvdSBoYXZlIGFuIGlkZWEgaG93IHdlIGNhbiBhZGRyZXNzIHRoaXMg
+d2l0aGluIGJsay1jdHJsPwo+IAo+IEJlc3QgcmVnYXJkcywKPiBWaXRvcgo+IAo+ID4gCj4gPiBS
+ZWdhcmRzLAo+ID4gTHVjYXMKPiA+IAo+ID4gPiBBcyB0aGVzZSBQVSBkb21haW5zIGFyZSBuZXN0
+ZWQgaW5zaWRlIHRoZSB2cHVtaXggZG9tYWluLCBsZXQncwo+ID4gPiByZWZlcmVuY2UKPiA+ID4g
+aXQgYWNjb3JkaW5nbHkuIEFmdGVyIHRoaXMgY2hhbmdlLCB0aGUgc3VzcGVuZC9yZXN1bWUgaXMg
+d29ya2luZy4KPiA+ID4gCj4gPiA+IENjOiBMdWNhcyBTdGFjaCA8bC5zdGFjaEBwZW5ndXRyb25p
+eC5kZT4KPiA+ID4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPgo+ID4gPiBDbG9zZXM6Cj4g
+PiA+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC9mY2NiYjA0MDMzMGE3MDZhNGY3YjM0ODc1
+ZGIxZDg5NmEwYmY4MWM4LmNhbWVsQGdtYWlsLmNvbS8KPiA+ID4gRml4ZXM6IGQzOWQ0YmIxNTMx
+MCAoImFybTY0OiBkdHM6IGlteDhtbTogYWRkIEdQQyBub2RlIikKPiA+ID4gU2lnbmVkLW9mZi1i
+eTogVml0b3IgU29hcmVzIDx2aXRvci5zb2FyZXNAdG9yYWRleC5jb20+Cj4gPiA+IC0tLQo+ID4g
+PiDCoGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS5kdHNpIHwgMyArKysKPiA+
+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCj4gPiA+IAo+ID4gPiBkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0c2kKPiA+ID4gYi9h
+cmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0uZHRzaQo+ID4gPiBpbmRleCA4YTFi
+NDJiOTRkY2UuLjk3ZDBjNmQyM2FkOCAxMDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9hcm02NC9ib290
+L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0c2kKPiA+ID4gKysrIGIvYXJjaC9hcm02NC9ib290L2R0
+cy9mcmVlc2NhbGUvaW14OG1tLmR0c2kKPiA+ID4gQEAgLTczOSwxNiArNzM5LDE5IEBAIHBnY192
+cHVtaXg6IHBvd2VyLWRvbWFpbkA2IHsKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwZ2Nf
+dnB1X2cxOiBwb3dlci1kb21haW5ANwo+ID4gPiB7Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCNwb3dlci1kb21haW4tY2VsbHMKPiA+ID4gPSA8MD47Cj4gPiA+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlZyA9Cj4gPiA+IDxJTVg4
+TU1fUE9XRVJfRE9NQUlOX1ZQVUcxPjsKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBwb3dlci1kb21haW5zID0KPiA+ID4gPCZwZ2NfdnB1bWl4PjsKPiA+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gPiDCoAo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoHBnY192cHVfZzI6IHBvd2VyLWRvbWFpbkA4Cj4gPiA+IHsKPiA+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgI3Bvd2VyLWRvbWFpbi1jZWxscwo+ID4gPiA9IDww
+PjsKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmVnID0KPiA+
+ID4gPElNWDhNTV9QT1dFUl9ET01BSU5fVlBVRzI+Owo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoHBvd2VyLWRvbWFpbnMgPQo+ID4gPiA8JnBnY192cHVtaXg+Owo+
+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH07Cj4gPiA+IMKgCj4gPiA+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgcGdjX3ZwdV9oMTogcG93ZXItZG9tYWluQDkKPiA+ID4gewo+ID4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAjcG93ZXItZG9tYWluLWNlbGxzCj4g
+PiA+ID0gPDA+Owo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBy
+ZWcgPQo+ID4gPiA8SU1YOE1NX1BPV0VSX0RPTUFJTl9WUFVIMT47Cj4gPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcG93ZXItZG9tYWlucyA9Cj4gPiA+IDwmcGdjX3Zw
+dW1peD47Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfTsKPiA+ID4gwqAKPiA+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBwZ2NfZGlzcG1peDoKPiA+ID4gcG93ZXItZG9tYWluQDEwIHsK
+PiA+IAo+IAoK
 
