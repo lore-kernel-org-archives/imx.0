@@ -1,158 +1,103 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2124.outbound.protection.outlook.com [40.107.105.124])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D45712CDBF
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 13:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712667671; cv=fail; b=Xig1slGfbuWOX336k5wzycRQ5WyHnx7g+1zcyM8OmDX4cdui3dTY+O9B1vfRrzllmwNtwlWWF7tGbTrfM9ZYXaZH8MTnshKunAuJYAUZmBwG5Xo96EOHCZf8K+60Lwfk0kNwM0JebsmL7PcpHBPu/vqT9IilyrhcTa9yUmmnru4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712667671; c=relaxed/simple;
-	bh=vANFlBy+7N1eLLQvYW2vD5kiYjMqaUAWli5wzx1OuxE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IDhag2+kNDwIkfqXKzBF1wrbuylGWRysu6JPxmezi6S/lWKcTMG1fkLrr1WxS6cJsJh6zzTFVHAK8zJJIDBIoDJIQMtSw5jQQpqE4nUGjxAcJcR3CHKso7Z3SuSjzcnW+j0IuOKDe1xzeWVPGK/3c4k2EBjOGpqoyA5SEj8u1+w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=e5GJ3QF/; arc=fail smtp.client-ip=40.107.105.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335E312E1DC
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 13:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712667775; cv=none; b=j3TBkfdZ/noLwTGXbeve/Ab9kiwQGvPVee1FIwFYD9uSA/nKl8Z8idIOti+ZGzSkx5DtiunrBpBYMe2z+NNq6xOUhtoPptJQcC57ZKaghT9KRyMSFHYLPnKXqwlvgXh0Hs+q6d+Jq0ty5FslnNw7pNpnLtAwU7p4Py2mBVpwLLA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712667775; c=relaxed/simple;
+	bh=rwIEVgFMh+WGvCOOvQuvcOWk36BBF9LkMcniS2KN8gc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CbK66quHe9lxBgT4a+q3AnG+txzqsCemBUKdyrRpBqhE8hvd4lvNO+OIGJAoF8VskFEKuZuTUVVMJOjfKQaAjhtqjvYoLFqHdqfJ8pGWKJh1Ef62ka98kxxAcCyCoOkKoKKx4M48A26DJ+4G1+mC+EfyLJLH8u3HvyV0ZPWPitc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=loSgntWi; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="e5GJ3QF/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=djmXARke2vxflXiLUOeGd58D1lRdLVyJxbzSCR1SJkjBpDGUlNCEjoYi5zMNTJjqb8EuYn4CV2F2MZce4lm8KdyUm9TgDVTjTuUwLmbprPgkaEUDN40O+w5CA7aNr6F6RmJ3AuGz26t/gWuNHZ8yCbFH1ZjJOWOLJ/fs0pNX+DG2YyM9Jy46AOLitlsnigeQaw1e/O+5vCZarxMSTXxx8bf5xHMoMgdiPMUOcUZdTz2CgxC2vwxwQwi4eGARqCowZNDF/NUlrs1YVp1JQV4je6dslf7HrA+k79C8lw0DuCIqmiY4LrckXsE2jbG0Dt0m06qfzHl15BM1QPEB1Z3O+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vANFlBy+7N1eLLQvYW2vD5kiYjMqaUAWli5wzx1OuxE=;
- b=ilLWG4zh+FQ8lTmwzEEs9hT14ST14WtODITPFZQl+Fxez7nNabLGjYLwj1EHl20guyyOh/wCr3ti9cS2zjD5jnFSEbkHn2HhL1rrLTs/L+M6OxMlEM05wa1an+yT4TyawhuAR2nBKd4AFcf9N57WpKoSFxyzOKxYiNad4y/MM6TJfB5CWNJ2GHiSzJ4igEy9nh9aSOtmvjH3pbzltcvYavWeJlWYMx0y4bZ5rKnRzX7KhHrDJCZ0jJxKDyJRcVI6V+lQ9wWyWb1Ff4rx957OwAdiqXhCy9cYNkYuqPRGUr5MGxTrEioIBOsB6hQmQDdPvUYTVK9UPeGiBX0ViLFryQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vANFlBy+7N1eLLQvYW2vD5kiYjMqaUAWli5wzx1OuxE=;
- b=e5GJ3QF/B4CPbsxQt7VY4ckvqPsKm/TZjgGcKBxV+q7FNOBAIfxkjGfbxumDnb6tc5SQ7VfJuQciyNUXwDlocP4k0VD6/Fe81NRKMp2VLq72xZbxdobTv6yef1yglsXGHhBb7vx2r77376jSSSQDyFATGO/ILR9BQMaa2lSt+U8=
-Received: from AS1PR04MB9431.eurprd04.prod.outlook.com (2603:10a6:20b:4d9::7)
- by VI0PR04MB10392.eurprd04.prod.outlook.com (2603:10a6:800:21b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.49; Tue, 9 Apr
- 2024 13:01:06 +0000
-Received: from AS1PR04MB9431.eurprd04.prod.outlook.com
- ([fe80::95f1:f32e:75b4:1ecd]) by AS1PR04MB9431.eurprd04.prod.outlook.com
- ([fe80::95f1:f32e:75b4:1ecd%5]) with mapi id 15.20.7409.042; Tue, 9 Apr 2024
- 13:01:06 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-CC: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Cristian Marussi
-	<cristian.marussi@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 3/6] firmware: arm_scmi: add initial support for i.MX
- BBM protocol
-Thread-Topic: [PATCH v2 3/6] firmware: arm_scmi: add initial support for i.MX
- BBM protocol
-Thread-Index:
- AQHah1U7U7PbHuwUVkuCiXWcSbaKerFer8yAgAD57wCAAACBQIAAHlaAgAAGZeCAABvrgIAAAhDw
-Date: Tue, 9 Apr 2024 13:01:06 +0000
-Message-ID:
- <AS1PR04MB94317CC761A641B7B29C7F8588072@AS1PR04MB9431.eurprd04.prod.outlook.com>
-References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-3-9fc9186856c2@nxp.com>
- <ZhQxu8LVNKf5QDLm@pluto> <ZhUDZGJilhczKlDD@bogus>
- <DU0PR04MB94175384AD9113AC6F60546588072@DU0PR04MB9417.eurprd04.prod.outlook.com>
- <ZhUdQ6M0GkL0do_l@bogus>
- <AS1PR04MB9431F99D49D6A777B09814FB88072@AS1PR04MB9431.eurprd04.prod.outlook.com>
- <ZhU6C2Ovh7xxeREP@bogus>
-In-Reply-To: <ZhU6C2Ovh7xxeREP@bogus>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS1PR04MB9431:EE_|VI0PR04MB10392:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 5Bz3GuQBUKqEc1mD+AvmewkaEV1nlxsxYjFs45LUFTlu6mOLZ4PhJ4vCosxTZ5NibgrtJJvAfNvVTVQM9AzXkbZMcG4u5ho/ivSKZde1vsptLHVN//3t9kfHtinSOSo9j2UB3qbBTkWKocUMbI8RPBKlrLekTUj87yP/A6uWSv5go9zTKP/p2BQyv1StAVRN+Il65BhwKrtmb7FGAcZe4T9r45g4IWhfJog4ANP5mqta+lnUd+ENUdb0QSKiM/FMPdR9IgBhqYMnPdR4xuBCskN8HfW1WDzc7tGIiO8X6ZoFW9gnTNbVNV7hd25cX1k3QwGgWBARbsJ7BKyz3wdn6se2f38i5i7unyNPi+RDEOSr/H4gkHeaKZ9pMbNRZVaxXkVRfEmsWDDz1jiBe8wYfOUA1Z9uE+w991YEKjN3g7h0XVgBPobMCMmUawTWx53oiZ6gD+yQAUVPEhtmeWhUwnbgGGSofEtW6jILlxuZ/IWYITlQFhjmnJh7yd6OFzhjBPIMLf4XMqvFXxTS6/Bpmo9EF55Pm2OLlHcg+jU47aiM74goXS5D6FkQk0xU2P8yu9brlYZC9qf8XYpoj06Vo0Phma3Zod53WKuqqngLwmXmfl1F7hPitQotm6R02IiessAG20MjFr9tNF5pRXi7u0DIIlCL0F2IRzOSN5gwZo0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9431.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?9eFvizHQCNlilyF8KhaB4F0MNfVKx9RnafkbmDW5v//JOHi92ui7XbqcpUW+?=
- =?us-ascii?Q?CMcl5WRC2Px/mUy4uuT3RoYvFVdkiZuPAJp8AbUQwDigiNym/bvyrCYbXJPn?=
- =?us-ascii?Q?nk8P0lErfbR9PqPondkqUBGNC/Bj+agahe8QDMT20mNEbGbX72LOPKhO0Gv7?=
- =?us-ascii?Q?yU20diTMe502AQ7BvoHMW/9ErmZwmoAxA6wSOvtZ4XhwBxHi5OTVA0o7nJ9b?=
- =?us-ascii?Q?M6W5oc7oOFcEa1eb88CfTvm+BqWVtk5i7EoY5T+M6YF/M97cl5wpuw/Zh/XH?=
- =?us-ascii?Q?xoo/EuBJSgEmGKANLDtrvvyQOlgtgbTOwYQiyqI8soeo0o8ho9KPMah1NdyR?=
- =?us-ascii?Q?KS0Yt+v5yUCVQ2q2oQPnwQPtfnmfJcuWvG7XR6O56LE0OJ31x9vDhB7GQkqQ?=
- =?us-ascii?Q?xffUMqzI9nV4pWfYn2ICi1emL7DzP1F2FikzMXSYgmy+c+u0rNyy8W4HCzEk?=
- =?us-ascii?Q?pvo0msIAK9uxprr0sSa7ML0Z0/rBFWATHididL3OW43Wr1fO1SMJO9H0g1QN?=
- =?us-ascii?Q?O9UslOSpyVTINyCyPlTUddw9DZ+bAL4Xzg4xwAztfYxRvPpy57PvbLv5wRUc?=
- =?us-ascii?Q?vrY6XOZjYTlYawyw5wCtyvYOwOm4YRXmbBmV9HjiSx9hOZcAPzp8LhWjhpGo?=
- =?us-ascii?Q?jflu3+L/tw1c3r9TJZ0yTxIeRPULbuNX7TOBzxLCVlOlO6HllK8qk7M/xb+m?=
- =?us-ascii?Q?KJicEaRMjFwpCPj/+9akiL5Bl3OpmdZOeb1ulwtTtznP8O4sZuPwMkPhVyZq?=
- =?us-ascii?Q?CkytTtBaVoqGm3SiKcKMRc2Z7H981/aWRL7uHTa9JQSlQDcCpSbx5mac3VBl?=
- =?us-ascii?Q?6YDTrz0QNKZmnSVnpQpnjrie7X57pKcfqqCn02+sV4vvX9TNI1N0VESXRV7y?=
- =?us-ascii?Q?9OTJcFkXRzy8FeISJXeXyPJSGnGGihfqXR920/IL9iw1Ov4QP4heXbgwbLbB?=
- =?us-ascii?Q?NbtuwMutkhxNXmcketEi6v4u3iSvc/BEAzFkO5DSee6hWJr1yYwQUOm+PmZc?=
- =?us-ascii?Q?libdQ20APAX/POM17gXWfF4bT1+umlee5OVaq6RNcF8tDbJoHloG4N5FWVC+?=
- =?us-ascii?Q?PwG6GVNzZxxkVEYFC7yWC1hsGe2iVALz2j2z93QVDEZXW6Yoejfb0i2Em68h?=
- =?us-ascii?Q?VuOFk70wyM5302Xi8N/PpsIsM4v0WRVDWBkyAkkux5GG2kurSNQTnezNtY6s?=
- =?us-ascii?Q?UVclKWTxyn/hyfdrabdoFgPh/aJX2ZFlvhD8qTGUagiNCfVrILMC0FhNatp9?=
- =?us-ascii?Q?AWnocNll/+xxq3HIDXF0RmMohA/pYnuO+FWI5ZHyTLcJxJeZu6+pjKE/2Uln?=
- =?us-ascii?Q?c3Pew3KeDEnMxUliA7Ad5drMYSSUi3/MHmE/ouJcGz7s//5851rmHidzUIxZ?=
- =?us-ascii?Q?xXvi32Lt8kZx1ObgJGbk4qtW3xZDW/7f7W0EdhlPT52o0DK8wQ9+ZsoEg2Cb?=
- =?us-ascii?Q?hAMIgllgDAQ8qhkpwxFB7Bb8d2/zPIoOY3uLJYVCb37K5UemxqDofdZ/sMrf?=
- =?us-ascii?Q?wrIPO25GE2NHndfMvxcxiOFxP7MycUxtrTT8cA4CHqevZ+Sm+bxTpx4W81+e?=
- =?us-ascii?Q?QF0985XrExABiQZnIZM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="loSgntWi"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B6C9A1BF20B;
+	Tue,  9 Apr 2024 13:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1712667769;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wI/ZpIDI4NGUd3RjmILBW90z5/l8hvyrNiX1+M7d6jM=;
+	b=loSgntWi/p8LDx+CItEXw9eZ9yKjA3dHlUt6vvAPae1dNvyseT60JyRuR0GoQwwvGhFVxu
+	hszgjiOJcEPgZonTelWNkeo+Eneh8dvuOt0Xi9kK7EGq/21w83hewARDMQLbCrpVbAV48Q
+	urStA675ou8KRt39gZi/mcaMIy90sOURv27Uoop0LcTGYegjV2xDULD9XP4sbwN0IrNukZ
+	t0XX/tj6g49hVPRxoeCTmA5ZvV4gfc5nnMIUHlszl3gG0bVcRgHfXEeh66ujA1BO4GtMZ+
+	M+jqgzSYgnGpYel//eqUluL26G/7bd6q3O5teGGbmsRTlFe1ZS2iVPP8HMh6PQ==
+Date: Tue, 9 Apr 2024 15:02:47 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Rob Herring
+ <robh@kernel.org>, kernel-team@android.com, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 0/2] fw_devlink overlay fix
+Message-ID: <20240409150247.61e30a86@bootlin.com>
+In-Reply-To: <20240409053704.428336-1-saravanak@google.com>
+References: <20240409053704.428336-1-saravanak@google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9431.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9a43c26-1e68-4623-abe4-08dc58951e83
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2024 13:01:06.4516
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UmG6pPSf9IUgmRNBOEcO7WpZt1JG5dJCi4ZeVJTJukGOSwZ1DAo1KsJusGyqoAoPz3mMMpNM1PsvVc13SdubYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10392
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-> Subject: Re: [PATCH v2 3/6] firmware: arm_scmi: add initial support for i=
-.MX
-> BBM protocol
->=20
-> On Tue, Apr 09, 2024 at 11:19:31AM +0000, Peng Fan wrote:
-> >
-> > ok, will add more comment in the patch for the commands.
-> >
->=20
-> No I meant add document/description similar to SCMI spec for each of thes=
-e
-> commands. Not just one line comment. For std protocols, we can refer spec=
-,
-> for these vendor protocols, just one like comment will not suffice. Descr=
-ibe in
-> more details and hence the request for separate TXT file for that.
-> Hope that is clear now, I have mentioned it several times already.
+Hi Saravana,
 
-I see, will try to work with our firmware developers to write the details.
++CC Luca and Thomas
 
-Thanks,
-Peng.
->=20
-> --
-> Regards,
-> Sudeep
+On Mon,  8 Apr 2024 22:37:01 -0700
+Saravana Kannan <saravanak@google.com> wrote:
+
+> Don't bother reviewing this patch. It needs to be tested and possibly
+> refactored first.
+> 
+> Geert and Herve,
+> 
+> This patch serious should hopefully fix both of your use cases
+> [1][2][3]. Can you please check to make sure the device links created
+> to/from the overlay devices are to/from the right ones?
+> 
+> I've only compile tested it. If I made some obvious mistake, feel free
+> to fix it and give it a shot.
+> 
+> Cc: Rob Herring <robh@kernel.org>
+> 
+> [1] - https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+> [2] - https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+> [3] - https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> 
+
+I tested your patches.
+
+Concerning my use cases, they fix the issue described in
+  https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+
+But not the one described in
+  https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+A link is still present between the i2c@600 and the PCI device.
+instead of the i2c@600 and the pci-ep-bus.
+
+Adding the patch clearing the FWNODE_FLAG_NOT_DEVICE in device_add() available
+at [1] on top of your patches fixes the link issue.
+With this additional patch applied, the link is present between the i2c@600
+and the pci-ep-bus.
+
+[1] https://lore.kernel.org/lkml/20240220111044.133776-2-herve.codina@bootlin.com/
+
+Best regards,
+Hervé
