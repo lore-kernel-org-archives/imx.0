@@ -1,149 +1,107 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE56815358D
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 16:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03265184E
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 17:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712681082; cv=none; b=u9YluQKtN9Z6936Gu8qZYL08zHHVQUHH3A0PrEqyUgJ+j0G3/Uq/zD8Fb+oK7hbB9e4FsJ9dr28aKk45xa8824MnWsBAtDv2o/kMjPL6h5A9kFfwZylhi8Tc2ZiiNjTV1Sr5scBwEqhCUdbGjoSfC+NHHG+ubHtNWgdKQPJb6y0=
+	t=1712683626; cv=none; b=BXdNrSoUbRnOmPJxagfxuKpjvzQnFKep793aUs+9AfoIFFM8dpSeryDONK1aAMZ6MHpcG8WKzX+8drg7IYqhRbRbczflXws8po7Ux3gdNHSWrWySC+qa4Lx/0xaUk6WmD9BggOnwh+pD8xkphHPfLPA8nbLpx5K77THb04CONJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712681082; c=relaxed/simple;
-	bh=39YyZmAfdf4vHb3K8iCAxVV01Zal5LvvE4zzi2uoc7o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZOG27ZWpauDiRZTV0QhNw1vSqbbebo7qsYPVJA0yFkV4F7i454ttTdRgW1ffXDBd3r9AW/qo48MpyrwiwWwcdNhiXiUrqx2UlBxTEhlE4v80vE8bOhqXkeYORidY5P3/1BRgQ7Gk6WK/IqwmWsV9Z1Wj5knVcVVXYB9XIu/sayg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NA635d5N; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712683626; c=relaxed/simple;
+	bh=Kbut6EHysiAuN2pqwbI1Q3ysmlqsWX1b/pEAFMnt+eg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HiPP0NX/K2RcK3B2AqNgeyz21DFPFYq0jI8MlFWrtEf/HfsuB+9gW81Gb59iPU20uZKLYJMdDt4A2maugis6zjEU3n6dVarXvyIrG+O5nmY+KJH6q/Z3u6D6+T8rj4LqqioABwqOnb5+HPFRMGS1oKlCP5VYNP73cAuJoNipuII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOXtDKhU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NA635d5N"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3455ff1339dso2090709f8f.0
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 09:44:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712681079; x=1713285879; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=39YyZmAfdf4vHb3K8iCAxVV01Zal5LvvE4zzi2uoc7o=;
-        b=NA635d5NMNZSTo0d/F5TXwfg26Z3rkMPstSZwkN2pVE9E3fishAVjubd6K6Nl/kMXW
-         8r+iokTvc9oaRCWo5Prt+cYJXKxyO4aBoc56bZMtcHuk+ekGLR+rgP/RaWKMubZb2WcJ
-         wE5JUuLXaSd1sx4lan2OYRlxnlkEFIGyvVDI58Em4rj+cOWaCxpTkGBUhrVixPOVON/b
-         rAX9i3Y6U0ZYAzxY5OHa0T3td5kOOZbePdSNLU7wDEh1mDOQtUipLmSMOAbIfEQRah8v
-         VduPfaIQjYLJBoGOBzP8qDoyRgcu36GY8QLhIYeMzPIpwIzb8h9JujkbRdoW5Uhf0OuJ
-         /7Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712681079; x=1713285879;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=39YyZmAfdf4vHb3K8iCAxVV01Zal5LvvE4zzi2uoc7o=;
-        b=AmRXP3gWnrql+y8Z54NIdpFf1acxcjyfHOsZSmR6RrmaXX7bhzAsDKb2EL1OrMOChm
-         FZ43Pf+0c4EVLOQeDttPydo+GkzjiWoDkKPsBF7cjkCSeJKDqtDznG5anlOOfqx4jtCS
-         msWw0A1FmG5j79F1fXfmikOqMQwEnG0fgr56Ny0sNhuXq9CeGlhKa6EjbPObL79FDapo
-         9NNQ/gCN0ZuggleQd9Z7YX/oDho43ak2vIv10xLu13mOV6a27+39+sJ77Fz1uL72Uw3u
-         HlLxkd1yB8AMWlrRiQNbvU9p3tDjJBspqQQC0HZCNjNekIEMtA2wgZMXOjIMaPP+nJW2
-         mISA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRn4VX8dMHtfNw0IG38nwNpGVIPGx5ya3VjxrS4BGfajlkjSbAqozcb5ZyXqxyY9hmhFqLNUbRr8qIP3GKJsALjFYs
-X-Gm-Message-State: AOJu0Yy/jgjaMVEI596mQBbLHQ1AUvWX0kgPb2KpLGiNUMlzh8pAjH+1
-	kN5u35C4kkr0eo3nqVrrLYkkCcQ5rQgOLn81s8UVYgtJONBgn11L
-X-Google-Smtp-Source: AGHT+IG9oCRp8KNYrcpRgvkxjASB4B9j7CiacUqJAP6Fnj2ZHjCz12vzOT6sXYOQlWJouTexhhWtPw==
-X-Received: by 2002:adf:f3d0:0:b0:341:8412:a6e7 with SMTP id g16-20020adff3d0000000b003418412a6e7mr188242wrp.18.1712681078763;
-        Tue, 09 Apr 2024 09:44:38 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:5844:d7c8:2851:cad9? ([2001:8a0:e622:f700:5844:d7c8:2851:cad9])
-        by smtp.gmail.com with ESMTPSA id e27-20020a5d595b000000b003445bb2362esm9308419wri.65.2024.04.09.09.44.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Apr 2024 09:44:38 -0700 (PDT)
-Message-ID: <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Vitor Soares <ivitro@gmail.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 09 Apr 2024 17:44:37 +0100
-In-Reply-To: <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
-	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOXtDKhU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE9FC433F1
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 17:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712683625;
+	bh=Kbut6EHysiAuN2pqwbI1Q3ysmlqsWX1b/pEAFMnt+eg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MOXtDKhUSuGy06O0wOHEzMRUsMEx1PIpgQJfGYxuWXcCM0Hi03dVimVFkMGIujRJ3
+	 nnf9k4pl9WHvRGO24qbpJYe5cQPMAlNzXQnqaC5yB23mArWmjYIwoTLkAe3pHeAij7
+	 bVG/W9agnm3h+ORu1i468Ml2zhUUaDQ23Yr1D4nJprQjvE1GV6xLqsfRHLIKOfK+3q
+	 5WbVRukqkcBpuL0jIA799KCPPHH3S8qo1NW+hOFq4D1e/TJ7DFYKieiv1xGAljJsFj
+	 KNdM3guD0TBs5LxYi9iL3llXOJVY7wDUyizpGSx2sSGYlAGQpTxPcJT7ZnjWoES55A
+	 YlEg8mZ22GnFQ==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-516d47ce662so7635170e87.1
+        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 10:27:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUYqElZF7bZ7u7wvq5zVhnyTb+/MpmXUEBKttAphHz6E65sRa0ZyjayEw8BR2y0O+7zxngPxUN94h8cQyh6Qiwm795E
+X-Gm-Message-State: AOJu0YzstQjBmf/KkSvQMbv/nZbEphuCEg3HfGfTOlH8Cf3+4330kGTy
+	8jrrFIibjhazNN09M+Occj9osBAGcLqq9F4ocuO6ByIPCDT5UPRAMdLheIl16kSArcAIEN3J0tk
+	PnOrmf2LYpOckQTDfewG5PzWllA==
+X-Google-Smtp-Source: AGHT+IEHcM0JD7ZqWipo4LWrXKbnA82iD02tShlGX9cvVnQUGGgSKaw7D46ABppnjB6v8ynWM6ZkjO5amGWWIwt6rYg=
+X-Received: by 2002:ac2:4c35:0:b0:516:9fab:75de with SMTP id
+ u21-20020ac24c35000000b005169fab75demr55819lfq.5.1712683624187; Tue, 09 Apr
+ 2024 10:27:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20240322145406.2613256-1-Frank.Li@nxp.com>
+In-Reply-To: <20240322145406.2613256-1-Frank.Li@nxp.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 9 Apr 2024 12:26:52 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLJDhJd_uoL05Z=s3Mc7PRkcJWsQGGjdG0Q0GFp0zA8xw@mail.gmail.com>
+Message-ID: <CAL_JsqLJDhJd_uoL05Z=s3Mc7PRkcJWsQGGjdG0Q0GFp0zA8xw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ASoC: dt-bindings: fsl-esai: Convert fsl,esai.txt
+ to yaml
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
-> Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares:
-> > Hi Lucas,
-> >=20
-> > Thanks for your feedback.
-> >=20
-> > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
-> > > Hi Vitor,
-> > >=20
-> > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor Soares:
-> > > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > >=20
-> > > > The pgc_vpu_* nodes miss the reference to the power domain
-> > > > parent,
-> > > > leading the system to hang during the resume.
-> > > >=20
-> > > This change is not correct. The vpumix domain is controlled
-> > > through
-> > > the
-> > > imx8mm-vpu-blk-ctrl and must not be directly triggered by the
-> > > child
-> > > domains in order to guarantee proper power sequencing.
-> > >=20
-> > > If the sequencing is incorrect for resume, it needs to be fixed
-> > > in
-> > > the
-> > > blk-ctrl driver. I'll happily assist if you have any questions
-> > > about
-> > > this intricate mix between GPC and blk-ctrl hardware/drivers.
-> > =C2=A0
-> > I'm new into the topic, so I tried to follow same approach as in
-> > imx8mp
-> > DT.
-> >=20
-> That's a good hint, the 8MP VPU GPC node additions missed my radar.
-> The
-> direct dependency there between the GPC domains is equally wrong.
->=20
-> > I also checked the imx8mq DT and it only have one domain for the
-> > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* to work
-> > properly.
-> >=20
-> > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when access
-> > the
-> > ip registers for the soft reset. I tried to power-up the before the
-> > soft reset, but it didn't work.
-> >=20
-> The runtime_pm_get_sync() at the start of that function should ensure
-> that bus GPC domain aka vpumix is powered up. Can you check if that
-> is
-> happening?
+On Fri, Mar 22, 2024 at 9:54=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> Convert fsl,esai.txt to yaml. So DTB_CHECK tools can verify dts file abou=
+t
+> esai part.
+>
+> clock-names 'spba' is optional according to description. So minItems of
+> clocks and clock-names is 3.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>
+> Notes:
+>     Change from v1 to v2
+>     - alphabetical order compatible string according to rob's suggestion
+>     - clock description move under 'clock' according to kryszof's suggest=
+ion
+>     - fix descritpion indent according to rob's suggestion
+>
+>     Pass dt_binding check
+>      make ARCH=3Darm64 CROSS_COMPILE=3Daarch64-linux-gnu- -j8  dt_binding=
+_check DT_SCHEMA_FILES=3Dfsl,esai.yaml
+>       DTEX    Documentation/devicetree/bindings/sound/fsl,esai.example.dt=
+s
+>       LINT    Documentation/devicetree/bindings
+>       CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>       DTC_CHK Documentation/devicetree/bindings/sound/fsl,esai.example.dt=
+b
 
-I checked bc->bus_power_dev->power.runtime_status and it is RPM_ACTIVE.
+Did you run dtbs_check too? Probably not arm32 at least (first number
+is number of warnings):
 
-Am I looking to on the right thing? It is RPM_ACTIVE event before
-runtime_pm_get_sync().
+    218  esai@2024000: clocks: [[2, 208], [2, 209], [2, 118], [2,
+208], [2, 156]] is too long
+    218  esai@2024000: clock-names:3: 'spba' was expected
+    218  esai@2024000: clock-names:2: 'fsys' was expected
+    218  esai@2024000: clock-names:1: 'extal' was expected
+    218  esai@2024000: clock-names: ['core', 'mem', 'extal', 'fsys',
+'spba'] is too long
 
+Conversions can leave warnings, but any you think should be fixed in
+the binding should be fixed in the conversion.
 
->=20
-> Regards,
-> Lucas
->=20
-> > Do you have an idea how we can address this within blk-ctrl?
-> >=20
-> > Best regards,
-> > Vitor
-
+Rob
