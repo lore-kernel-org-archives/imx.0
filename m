@@ -1,212 +1,136 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11020003.outbound.protection.outlook.com [52.101.228.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C843518C05
-	for <imx@lists.linux.dev>; Mon,  8 Apr 2024 23:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712619752; cv=fail; b=D6/x5uemeBsvAim5w1pvlHNR6DA9deg321wzyEeBConR5V9B4WEqYA2HS3otRJz18FIFlpIJQ8KESXO9hX5WzVlQykDt4UV+6KM3mhMk2avMJOfMHsddsWqpTLbG3nEheK3kYXB0ndK4AF9GH5Wg1ZvlJEb3YUUJHzxhPhO/3Rc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712619752; c=relaxed/simple;
-	bh=p8Cf++9r0RALugUXRoV7NtIWOs+okJdCzCnb/VCAAMY=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=npHyGafdc0+zlr38YrUYcLhiQvwmW0vfkwTMzVpM1MeFH4JesXKAEetjxDviA8eOrfWJHtEFRGN8Nhym/yl872Yo/Y7FLCU3Q6D7ePjV8Qeg1mgNjAq26hcf1N88hZ/pdnlG73D4/tVC/p3GXfmBjx0RQaAb9TFayOjdYp383Qc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=TruZFrtP; arc=fail smtp.client-ip=52.101.228.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA88F45
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 01:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712626638; cv=none; b=uqAv6NUxra0qgUIJ4LbFIfW1NYyyhvVjCaP0E9NTgpirQoZ3T93XAtEb+SazqV+FSg2T1Nu5ZQeNU8uYIB/YDZvYzIlin7e+NBRiUU3hp0k9gR5IbRr6jqQXyyNvDEcF1j7bipXkEp6agerhicWEm6Ae+Vo8MDB1lD2LBcHNgdk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712626638; c=relaxed/simple;
+	bh=REUfQMGxi6wZBiAigJvmtnxlwEZNsiAI6JDcOF9qSOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SBCIHpfeJtTROvTCPMcnscLCuf/NqdZsHwk1VyrdkXF19xcSU2PUR577GSwTTpELajRG9TmmUiiw60rz134fCERMmKW4MkWkU7UdV8UNCy/QP6+Uuk7x76lvCloOu5d5WudRO3tw5Jz+97hT1zTRPyh7mGk3c1Q3Cdwir+e0PUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPxlyo3p; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="TruZFrtP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BFblZY4n564XnChTsSXzynCGs1npnzcMB95z36PHh0M/WM94GmzCn2GZByF8I5ny3Z4SuDFOZ8WBayqEMcXh9dx8w+qHs2V2ZzyGeyiLbAQ5eMwJ4vTfl0Mv9X9LQSLK80v+ROAcNxwjHfKIE7I05yQxwDIVp8HnChWysy97RK1OvExSMAhSsvvYe/tCdz0skL+EfURlFH29lg6zNCUVvc2cJzbg5UgjZoiI5dYCuaBlGDk3W6y1k/ud4Vg2U1lREFNxDaIGZeDXyH31k3ayMID3KF+RuDqBC+AFM7za1V1xXnnWSKaFlTCSseAiZ5asjQs4fo6EFEmhs6wYvoHR2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L5TdME1jhfzx7nCDeEi8jVtlcjWvi9Y86c2QpOHRFjA=;
- b=GcSxs6Lij95ZMEfUBx5D6Dw2WRAv9MsQ5lhOOh2QGeaNeSVZiw4H4cJWdCiBAkIroqiJ3QBtaZQB5OvHZH+k0dHVYANjQ7eU825VLfyT3TlfDi8HuwX7mWbDehfskPSt2vUY2/QTutKKBySUzbAh0nAHb/QOUc1B4ox+ES7qV3olOkNoYk8QiAGKc7V8AA1qFmCVyDRNNVnimOJ7RQT5ptUIPy6aovBoVLW3uQTmLJwmx49N9NBVMW9pWMqome4HHx9xYyvaZFTqEdJ6c/A3CSGV+fMDZDMu810aXy6R6/ZyI+Zb3kGOY25QGug7V0Pm2FBVFt/RFxhvktMkWJKgbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L5TdME1jhfzx7nCDeEi8jVtlcjWvi9Y86c2QpOHRFjA=;
- b=TruZFrtPMJWTaDs/DtK3wRzfhme0SbgIT5OSSUsryNNutiMTM2vORZFlVKR+5y7+iWKP1+195IOOnYhQNv5cdI1ip+kCf3hC0hjEUtNmWK3/OU3adTWCUeCrTqLwIkhglPyZ7pteQCELxPgC6wFLNt9+qLQYDfsiBAXQQARBmeo=
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by TYCPR01MB6995.jpnprd01.prod.outlook.com
- (2603:1096:400:be::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Mon, 8 Apr
- 2024 23:42:26 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7386.025; Mon, 8 Apr 2024
- 23:42:26 +0000
-Message-ID: <87h6gb4e1q.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
- <amadeuszx.slawinski@linux.intel.com>,	Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
- <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent
- Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,	Daniel Baluta
- <daniel.baluta@nxp.com>,	Hans de Goede <hdegoede@redhat.com>,	Jaroslav
- Kysela <perex@perex.cz>,	Jerome Brunet <jbrunet@baylibre.com>,	Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,	Kevin Hilman <khilman@baylibre.com>,	Liam
- Girdwood <lgirdwood@gmail.com>,	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>,	Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
- <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Trevor Wu
- <trevor.wu@mediatek.com>,	Vinod Koul <vkoul@kernel.org>,	Xiubo Li
- <Xiubo.Lee@gmail.com>,	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
-	linux-sound@vger.kernel.org,	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 01/16] ASoC: soc-pcm.c: cleanup soc_get_playback_capture()
-In-Reply-To: <acf98b6b-7c18-4f1e-ab8f-039c88679ab9@linux.intel.com>
-References: <87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com>
-	<87y19xudor.wl-kuninori.morimoto.gx@renesas.com>
-	<b4b37541-b67f-4593-9fd5-fc6242a0673a@linux.intel.com>
-	<87zfuc7gya.wl-kuninori.morimoto.gx@renesas.com>
-	<600cef67-ad90-4b67-8da7-2006339d430b@linux.intel.com>
-	<874jch99m5.wl-kuninori.morimoto.gx@renesas.com>
-	<40e23972-6745-48e2-81ae-4b93f2ee2dcc@linux.intel.com>
-	<875xwwr60a.wl-kuninori.morimoto.gx@renesas.com>
-	<87sezwecf1.wl-kuninori.morimoto.gx@renesas.com>
-	<acf98b6b-7c18-4f1e-ab8f-039c88679ab9@linux.intel.com>
-User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Mon, 8 Apr 2024 23:42:26 +0000
-X-ClientProxiedBy: TYCP286CA0081.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b3::7) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPxlyo3p"
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7d0486cf91aso271657839f.1
+        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 18:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712626636; x=1713231436; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9lrU41zZbg4rdCONBXZqOnSqD9/BbJGHGI3UVtCYp1A=;
+        b=NPxlyo3pc7bh0IwxToDLNHMMNIFPaCkMsEW5YU26m2sGSeHyeJ9YOfSNM6cbwVXo+z
+         /EeS/YW2DceTE5F/sHyfCk6EbvxMD8X1pbOMTPOTXBqLG6gORvgtCOz6ZCkKWYDasgX/
+         Oqa96Om15pizm5JdnStZLsWBEuSsAhVcOWKr2+laEQ8wXYLmoYXfVk/HGtZExcxlP6yA
+         FqOqcP9i6i5Q+VvvFA42una1lqGvb4LPLiO0Qya7LJUwhk7PoxzPzFdksMgFGcGWWcz0
+         mHmFlCwxQTewAg7f+jJRYKl/KGH8HvuVsoSDx3I1oJSViEcMZrEnW+BmmaTj+q53FRha
+         WLJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712626636; x=1713231436;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9lrU41zZbg4rdCONBXZqOnSqD9/BbJGHGI3UVtCYp1A=;
+        b=gV7gb7/WJqH8H8AHa1+NW9yxhPJvfetvwX7P8QEp5hqSaKjV9s27uQIAWeTtOC+igq
+         UH+iELmnchau04c+VSgLW3DyB0VvjCUQqUrYk+nQHSCxAUaLDsxsJlEdF7Mlw198WMu1
+         esX/Or2I7V5hxXGY1DrW+cZMI/QO4MbyPv0IPqKONq7WCAAqWVVUsMSzQsVI3T5GSnFz
+         eHtzaFk9Zwq+mKFRtZ2igM+YrCLsg79qBS/ebYhuuUIVaBhw+OeNBwcaCmyuuVmkHlo9
+         afxlA05ifUAihODWm30F46Lc58qkbcrteVwcYwt4tFKB1UVwO3JSvtjpBv7ccDj6AKGK
+         iBSA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3++H8HpksSEnq45UlTtT1PX2L/ySbmuaoWJn//a2nLJ5ehwVKDuS+UsjUusbp4ojnGx1MI8YqniDBEeVQZ3qd3j+Y
+X-Gm-Message-State: AOJu0Yz/7bbRacMpsBddFfoz3YIIhnFOWjCdVz5BsjHuZhpRBJaDmDgG
+	EK8U6RwUAFJJP3qncXIuUfy2LGj5KTUBir48ARxxWk17DhxLM+yxo3u+17VeyocWrfyHekWEY5Q
+	U4wYA3f9a7gEZR1+WUhm8LmX5A/I=
+X-Google-Smtp-Source: AGHT+IGHBYdqw5WuioZTYaZ1SjiEaQQ73sRjZsGoduAA1jBDzDuGbUyCGX9a6fp37uYrTgH2e7VJ2m+I4JB2tYmbQ2Q=
+X-Received: by 2002:a05:6e02:b48:b0:368:aa7a:e25c with SMTP id
+ f8-20020a056e020b4800b00368aa7ae25cmr12442798ilu.30.1712626636379; Mon, 08
+ Apr 2024 18:37:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYCPR01MB6995:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	32/yUpmjyU5V3ENXaXduESW3QOx6Ez+lIvQyTTCOJ6xGYHYov21hm7zJe7YxrbVJT1/fpU6ZR4QWIR4bClmclLM8SBTMcRIa//m1JxsvSoV320bF56yN0Fm7UVytxxYS6Be/NFXRPCHRTQkhs2yyGb08dY3kFVg8YMBggsOwgq7pWR9JYcn4aZykflpndh5bdE20tcos0PE0iveO5k4ZKZPc28dC5rwpCWeWEhiBRNOE16QFHxcAkjCNl5Hn5mRtIYvNIigFXblVBSNd3rzWZp9x4b1JUqSlFAHWMzHnf8jSl82ADfSPw/EaTMv3p+kvQKnKPhrCO2xJx4qlMQej41poTEg/8cAUYjQQYW513ZjCugG2YUWhrxZ/Ro2m8gDI8Pq8bpSLToB47dINSGml+2PG3g0tNJllz0Li3F/yMstkaF761GV3ejO8i4sdIFAgzmWSvU62A4iiRquCLFdgQWD+vNEtZOyjjxQHHCsrc6TABHQBRm5JUGC1HeXsn/D6qm/Ob1Jd2FthjEDWSbLuFQVPgtu4ILkgf6xkmdA8XfQoTc57b4IqYGLesbyJ7B97YG4gDbeyp07DKyPM6PHagfqOacY/TgCGMrm9e31dKwMLcZE+6qud4e1PpPlgco/8DcR9HOFocNc3cti4ZmXkzjaXTg9TVW38NyNOHNIBmgn1QL8WfzavZC3VT3JfBP89kzHGMqKWC31kGjIG87GwFNEMxp9Rv4eiGOnbDSaQdSM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(1800799015)(7416005)(376005)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d2Q4I0spbGvOt7PtEG+6rGC2gpksZwqVJfSCFJ67vajJ93DMrs7INciQlflL?=
- =?us-ascii?Q?N712az01EYyZqvRLkAqMh+3Pi52lMDYYsoRQRa1qloQlRYgqjM7DT4OxgDzP?=
- =?us-ascii?Q?RdX2XMBE6PVgfgopeUwixhSZjjlEX6HHQqAGTuUJIKaNlfBWXI7C7WWrAp5C?=
- =?us-ascii?Q?XTdp+OhHBTi4P6Haqn3G3rk6f2ZJ14Am9GsNScZEf9uI8gqhF1c6djZwXh4l?=
- =?us-ascii?Q?RxpqrttHslwSECzmcuQWPYhSxDHKWDczz2rUFKe53idKNHWtrFCZvr32C/pX?=
- =?us-ascii?Q?Ga1Z+Zr7eHlA9OqCiTu7ggkrWzpm9XZVKdS7OBjKzSZrKh2ZUad+B1LFc8sW?=
- =?us-ascii?Q?njN+/1uiiHsDDC0KsEeXPmmmvxw0xH9YNGmBTzEW9D/ajJA+KZwTzilyvUuL?=
- =?us-ascii?Q?ukmklty0ohzzcBVC3B/kDuHuUB0cjcVpYG+CN+1voppyH7Zi8/vNI9HSoDuo?=
- =?us-ascii?Q?/ek9f3pR8ncsLGprkK4P+I3C2j5ZT86c0eitb60BIBroXXSCVTSkNvt329qQ?=
- =?us-ascii?Q?7xtHADHuIW0tF19eOLubERUekCt4ta6A4mf6bwe9QAUC9M53zvLgGbPpOewp?=
- =?us-ascii?Q?qdZ1zUP7bf7NHijTtRVuzVKTW7orrBeJz435xQDfpjYpmz1eLCfG0Ok0qsjp?=
- =?us-ascii?Q?+DfI4xZuY0/EwGTB9X53MBmxYGrZX42P3O26PODLAxNaL0nUP8q5kHcnibXG?=
- =?us-ascii?Q?OX+u/KA5b8RIsD5RB4vqZVlmtOYym95BsvN0CdiByTDF2IQHWSrcVOdlnFSW?=
- =?us-ascii?Q?/xwtdOgTl8iD6AUeH1JGyVoRdWb95xzS36llFtm5AaZRQumUvidPD1cm1nlT?=
- =?us-ascii?Q?Cav4ukyl0jIs1M0wJSO4KNsayWKJtkqfImnWQAkK55xHI9jof6Q4Uq9mKjgE?=
- =?us-ascii?Q?uLqm+/jYoy2pN1bM7ILtjRJz9Ka0hjn0TxQtF+amiLGRbQwQUPWuG6t5g5zS?=
- =?us-ascii?Q?lQoD4CdK+gaUl/48h8Jd7kuuxT8x+klk4DEm27vTIRgMIErifU+4P9G6tjuc?=
- =?us-ascii?Q?uQ6Z7p1Os26P4e52T509VzhhP/M48nsUI77c6k8Ek7rsVmfpnxy2M+La/OEr?=
- =?us-ascii?Q?5HeaTMkUrQB1hip/0fpoWPUb1Ch4X0Vlt0Q6CXu+ZfPhkgjgxxqSRMg1hnp/?=
- =?us-ascii?Q?Nft3i37djwSRx2nNqDKL0wjjxYzWWyPzYghFK7XtOufF+uEizAGo3OBIDv12?=
- =?us-ascii?Q?a6FF6Bykqvz1Oxc0+iho/JmqOzn3LRpXBosuvhFgZE9xNYMA0XW4UWBLzuzW?=
- =?us-ascii?Q?2xl5yEd3dRk+debLi5CZYcfVynGxHtxhKO4rC0I9h3p9/qpAs2fuJ6dAcqSu?=
- =?us-ascii?Q?oMAJabUb9rCd/ygQxiIMtpTz6G16mqUfGWwG+rsF6gAo/O/FIo49VcenirV6?=
- =?us-ascii?Q?rZF2bff+dqBUmQfNC5w7ro3Di6SOtEYbOQw0sFUjpfjtHUQO4NFGkT9tiTOK?=
- =?us-ascii?Q?9fwi9f97/LCAMbbbkJpmkBxwY8Ttp9yZoDaZnAUVRTu/Rs41qjfp6Fs71D/S?=
- =?us-ascii?Q?yxO9deTUsTM6BuqY36Rt7b575jnTgar4ga9jvZFsO0zbPZix8KDnIWP4E5d0?=
- =?us-ascii?Q?7LoqqX8u01DCwy3tQNPkc6vbip4RlMoscW05zF4gYdzuUpo6qQ3EvvMy16S2?=
- =?us-ascii?Q?MPTCTj09b2l+2bjx1a58cjg=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1059eca0-fb60-4be4-bc3c-08dc58258bd6
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2024 23:42:26.3939
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F5Rb3Ug3uh36DRdMbMuePc6J5okLykBFuuFrNWZMJHdQchrwrVwF5Gs/p1w+ZVPjoN4vMaN+UDS65uhigxQa/cyx+8LzQ2dXxBYBAG9lznrO6IbwF3D4e3LkoWjKXtUF
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB6995
+References: <1712561233-27250-1-git-send-email-shengjiu.wang@nxp.com>
+ <01734d96-bed2-4f7e-bbba-7068f14c822b@linaro.org> <CAA+D8ANiKH7Oc+KAjD_BMp9P2EVeM8Q6dLGFCC8a83bJXUpPEA@mail.gmail.com>
+ <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org>
+In-Reply-To: <69ab2bd9-401a-42ff-90fa-6600dd071722@linaro.org>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 9 Apr 2024 09:37:05 +0800
+Message-ID: <CAA+D8AOP6D+xUNF_XJXt-8dMi2qFyVh-Sbe8k67CzvUbnzrwoQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ASoC: dt-bindings: imx-audio-spdif: convert to YAML
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Apr 8, 2024 at 11:06=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 08/04/2024 10:01, Shengjiu Wang wrote:
+> >>> +
+> >>> +anyOf:
+> >>> +  - required:
+> >>> +      - spdif-in
+> >>> +  - required:
+> >>> +      - spdif-out
+> >>> +  - required:
+> >>> +      - spdif-out
+> >>> +      - spdif-in
+> >>
+> >> Do you need the last required block?
+> >
+> > Yes,  one of them or both are required.
+>
+> And? It's already there: that's the meaning of any. It is not oneOf...
+> Before answering please test your changes and ideas. I pointed issue
+> here and you responded just to close my comment. That does not make me
+> happy, just wastes my time.
 
-Hi Pierre-Louis
+Maybe I didn't express clearly.
 
-Thank you for your feedback
+we need at least one of them (spdif-in, spdif-out) in the node.  which mean=
+s
+that we need to select  "spdif-in",  or "spdif-out",  or "spdif-in and
+spdif-out".
 
-> The code looks fine, but what are we trying to achieve?
-> I thought the idea was to have a single field at the dailink, and with
-> the example above we would still have two - just like today.
-> This looks like a lot of code churn in many drivers for limited
-> benefits. Or I am missing something?
+So my understanding is that need to use "anyOf", if it is wrong, please let
+me know.
 
-Yeah.
-Main purpose of this patch-set is cleanup soc-pcm code which is
-very complex today.
+>
+> >
+> >>
+> >>> +
+> >>> +additionalProperties: false
+> >>> +
+> >>> +examples:
+> >>> +  - |
+> >>> +    sound {
+> >>
+> >> That's a random change...
 
-After sending mail, I noticed that xxx_only flag can be merged
-into new xxx_assertion flag. For example "playback_only" means
-it must playback available.
+So  I can use "sound-spdif", right?
 
-One note here is that xxx_assertion flag is not mandatory
+best regards
+wang shengjiu
 
-	dpcm_playback -> playabck_assertion = 1
-
-	dpcm_capture  -> capture_assertion  = 1
-
-	playback_only -> playback_assertion = 1
-	                 capture_assertion  = 0
-
-	capture_only  -> playback_assertion = 0
-	                 capture_assertion  = 1
-
-	/*
-	 * Assertion check
-	 *
-	 * xxx_assertion flag is not mandatory
-	 */
-	if (dai_link->playback_assertion) {
-		if (!has_playback) {
-			dev_err(rtd->dev, ...);
-			return -EINVAL;
-		}
-		/* makes it plyaback only */
-		if (!dai_link->capture_assertion)
-			has_capture = 0;
-	}
-	if (dai_link->capture_assertion) {
-		if (!has_capture) {
-			dev_err(rtd->dev, ...);
-			return -EINVAL;
-		}
-		/* makes it capture only */
-		if (!dai_link->playback_assertion)
-			has_playback = 0;
-	}
-
-	/*
-	 * Detect Mismatch
-	 */
-	if (!has_playback && !has_capture) {
-		dev_err(rtd->dev, ...);
-		return -EINVAL;
-	}
-
-
-Thank you for your help !!
-
-Best regards
----
-Renesas Electronics
-Ph.D. Kuninori Morimoto
+> >>
+> >> Instead of sending two patches per day, please carefully address the
+> >> feedback.
+> >
+> > In v1 you suggest to change it to spdif?  but spdif may conflict
+> > with the fsl,spdif.yaml.   so which name I should use?
+>
+> I don't understand where is the conflict. That's a different binding.
+>
+>
