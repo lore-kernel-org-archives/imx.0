@@ -1,154 +1,284 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9573612EBD6
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 13:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997987F7D0
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 14:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712668943; cv=none; b=BUmckcBGocYoanvgPi7WSrTFKbb8N6vVq9ThALGj1MNwOzMb4Plxw2ZOu+zYY1yKVSlVEbUL0qB+fWwQva7Zr644z6dBiro+v4Y4VklrfEDPOYXOo7t0PsWAr42xcnI2NpOxhLAKeonD1MtOpVjnfNEkUoJPPNG4InJ7CT8Ue2A=
+	t=1712671801; cv=none; b=NoOR/DSQYB/PGjVR/6rWl4hSlMHGI4nRs+hgnuz72tzxE+UcEfo9Sd95MAyJu2ghn9wUx8oiCmCoS2OLtfXXlxzbplr1jRGKpLJLqJh+g849Y0k3YCOaDWQno0s8eXP/m+B/Tt+yA/jR1LAUTzz8SqZ12l5CxyclUKcRwKmdHfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712668943; c=relaxed/simple;
-	bh=cWuDlkVeaUEV0K6gKq/8fei9t5lcZ6BdfywJ4z5hing=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D0AB9WInwSQCpiy/ZkuH6pOmqDg1dEONe4UDiUnhsoZjD5fmcBriYmyn75t8y0lU5/4ctJuBplu2pidqzJV/H6/I9xn9aO3nacF8l1annTIeyt0NdUUApDXg6O/Lyx2MrfeMSki1C2tTiUbkgLlR6K5DpMugoqVo6BF4cYo+ghU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aKdI2dZz; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712671801; c=relaxed/simple;
+	bh=W7xZiCGfrp/J2JNm0PesJiqxLHyBJYWMZRS4zrswi+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lga/4Df5ccM8Bm5V85yhXbcoitTWMOMocw8yRzCqUxoV7w3yktfWKnszhn/fX2d2rr8dOBJOR+WNPSY7qDKSkouRR99/+LmjpUYKjmhy06qj9HRIXWHHlG2btg2omEHpxLyUhmy1FVAh46gUZccO4V88PYwKzi7JjM74sKBkbWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r9IIJLfg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aKdI2dZz"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4169e385984so7140405e9.3
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 06:22:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712668940; x=1713273740; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cWuDlkVeaUEV0K6gKq/8fei9t5lcZ6BdfywJ4z5hing=;
-        b=aKdI2dZz8o6vI1VZCzdvrurQo2JeANgBCb8GrsKdLTYOn9Xsd6NvFYrSRfUXTLulK3
-         Ij65Ye9hoxA4sG2UK/D3p8xSnibaGyBag2b4KUmzo9dX/Xt0+BqdrpdfEvwuue9F1Epv
-         xVXkBLjjI2iKx0JBw4FYXP6p8y1t6goOgiEvkGgsszIroN8Ne/V8roPBg01sa+0LGmaF
-         w8K5yU4zgaYC/lVO4S1B/8XrLxMaANj9AAVT3ThQVUYw2OiG/oigfe3/UUfARPV+58nX
-         +HwN5PCgtQnrsoYsS64UP6PIw+94N9xK64AqQ377aevINlqPr5cY/exUjqhE9ORhV2w/
-         4YnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712668940; x=1713273740;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cWuDlkVeaUEV0K6gKq/8fei9t5lcZ6BdfywJ4z5hing=;
-        b=ntRM5MeqzX1SYyEKb7GVHVuqGU+fGU5E5kkndWaC99DAlhy2jk84scVGZo6Ngz7BAP
-         d5TijM02hC09H/AZR2PRpUyPhZ8Cea5X/8vGOLtSnVM6OKqVWsvVzjpVCnTxxpgP44G7
-         vVriLqoaPlV4r4dhPXL+NrLP0Bf+26UrBdzdThO//UUGFlNPHGUJrgI/BYHMBa01POtQ
-         vMJETm9K8R3LUWMkH2N/Mbwp8hWj1MkDtdTxaq3B7gaHiOxQQyh1hbbh2QMHMvqsM6iA
-         RBsCmLYA3GOZlA9w/MHQAXo+2YPNJsy2/Kifv5+fyQr4ogZWZyX2tgUNM2a/ZYJ8TzKV
-         IL5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUdmRyuHGBNYwMDfhFcNEcDxCsu5vS8xT6oUgZYaNF43CLby0DKUZovv4kAcPao6nXPDp88xr7mZkwSOFqm0Ec4tXcQ
-X-Gm-Message-State: AOJu0YyjZUgziKJ/AkFpzFRbGiSNwh2yRKiAmzgBnV3peVsbMYmlk8SV
-	5ejegdcTV2PUR1nSHTv+oRYgvVvZUVw/DRM1WavQdJa5XIeUnEW+
-X-Google-Smtp-Source: AGHT+IGgbrNoEZ8Sup1xX5K7cB+lPmat/joPV2/YgazjQyOKyqAmRzoIEAzbms/1DuSoDkYfKuwXZQ==
-X-Received: by 2002:a05:600c:1ca1:b0:416:a8a7:9505 with SMTP id k33-20020a05600c1ca100b00416a8a79505mr1068121wms.5.1712668939657;
-        Tue, 09 Apr 2024 06:22:19 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:2455:df03:b036:54c9? ([2001:8a0:e622:f700:2455:df03:b036:54c9])
-        by smtp.gmail.com with ESMTPSA id i21-20020a05600c355500b0041665b6e111sm8601000wmq.12.2024.04.09.06.22.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Apr 2024 06:22:19 -0700 (PDT)
-Message-ID: <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Vitor Soares <ivitro@gmail.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 09 Apr 2024 14:22:17 +0100
-In-Reply-To: <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r9IIJLfg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B04C43390
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 14:10:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712671801;
+	bh=W7xZiCGfrp/J2JNm0PesJiqxLHyBJYWMZRS4zrswi+Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=r9IIJLfgRWb9nAvzxeXzOfe7nfY0TmB1sc3aTOUhhOQKEaAJvYrTtSCOHTbVAGJZx
+	 PcCrWBLEA2ejbMABRpXwQ4pFVpU2epobf0RFmlTM3ieHo3e1EgNFCittJ+XVaqoHjC
+	 nvFZafPuVEJuXWnrvHh9HcfPUocf+KyegKc8UrJd4y1Pf7B3Om95xbuWzuo0hOVE3l
+	 AeDGiKGdMsagGI672LOdQiPDvoSxSJlrQrIpdIC5bF7NdJ8lmJgnW1fC3gKpDZWin1
+	 weKOssZimQ/mgZqNH2Nh5UieAX0DAyS+MbdNfIxDYYzoYSZioyhEgdRnOObX6Hlozt
+	 VMtpTZIugUGBA==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-516d3a470d5so5201177e87.3
+        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 07:10:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWdgYvL/C1Bebp6E6hHlvXaVZYVXD+UgokTymcmQ2oCpMg0E3HSDopsyHlG9aJQ9y3rshfe8pC9jpuKfD3EMlaI33qK
+X-Gm-Message-State: AOJu0YyX62dqmgp0ejiYp5qzgF6qr8R9XQQeEIVKKjVN1RTbZVw5r+BT
+	Wje+RITOQ9oGPKUSQ8PWIWETQNA3v198c1Ds9hgHjMJ5uxtbfTW5obM5y/8nu4DxGYAgqfXuqtk
+	AgL04n02lOZ8mVoTArnv8CWJHNw==
+X-Google-Smtp-Source: AGHT+IGwS/iSR238geA9Q4DgRuWZYrHIvbz4wExMaJgQ3IxeWLrr3RC5Xkhhk27u0LOd9GWR1+cJyQdKUMtvbnmJDwo=
+X-Received: by 2002:ac2:4257:0:b0:515:a360:1d92 with SMTP id
+ m23-20020ac24257000000b00515a3601d92mr9156118lfl.67.1712671799543; Tue, 09
+ Apr 2024 07:09:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <DU0PR04MB9417932A6208128FBBB22C4188012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <09f6b752-6b72-49d7-b248-6faba2fd13a7@kernel.org> <DU0PR04MB9417C5B9BDD9E0B47E7494C088012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <5b9e0e44-0b9c-44fc-9d18-21c47b46dc63@kernel.org> <DU0PR04MB9417839C42681F57366003EF88012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <ba4c9f20-0391-4ac2-a236-d6930285cd7e@kernel.org> <DU0PR04MB94176D02B90528913842B76A88002@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <e6333665-8051-43b1-9e98-f76262ddbc35@kernel.org> <DU0PR04MB9417C8C5013C72AB1F61F1C588002@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <AS1PR04MB9431BE4B2BFE05507A2D93F288072@AS1PR04MB9431.eurprd04.prod.outlook.com>
+ <ZhUuKajQbce2AI9f@pluto>
+In-Reply-To: <ZhUuKajQbce2AI9f@pluto>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 9 Apr 2024 09:09:46 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+aVEOPzqddu-X8GLJPex+J6V+_T1qaGHAXgp94+_-ptg@mail.gmail.com>
+Message-ID: <CAL_Jsq+aVEOPzqddu-X8GLJPex+J6V+_T1qaGHAXgp94+_-ptg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+ additionalProperties to true
+To: Cristian Marussi <cristian.marussi@arm.com>
+Cc: Peng Fan <peng.fan@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGkgTHVjYXMsCgpUaGFua3MgZm9yIHlvdXIgZmVlZGJhY2suCgpPbiBUdWUsIDIwMjQtMDQtMDkg
-YXQgMTE6MTMgKzAyMDAsIEx1Y2FzIFN0YWNoIHdyb3RlOgo+IEhpIFZpdG9yLAo+IAo+IEFtIERp
-ZW5zdGFnLCBkZW0gMDkuMDQuMjAyNCB1bSAwOTo1OCArMDEwMCBzY2hyaWViIFZpdG9yIFNvYXJl
-czoKPiA+IEZyb206IFZpdG9yIFNvYXJlcyA8dml0b3Iuc29hcmVzQHRvcmFkZXguY29tPgo+ID4g
-Cj4gPiBUaGUgcGdjX3ZwdV8qIG5vZGVzIG1pc3MgdGhlIHJlZmVyZW5jZSB0byB0aGUgcG93ZXIg
-ZG9tYWluIHBhcmVudCwKPiA+IGxlYWRpbmcgdGhlIHN5c3RlbSB0byBoYW5nIGR1cmluZyB0aGUg
-cmVzdW1lLgo+ID4gCj4gVGhpcyBjaGFuZ2UgaXMgbm90IGNvcnJlY3QuIFRoZSB2cHVtaXggZG9t
-YWluIGlzIGNvbnRyb2xsZWQgdGhyb3VnaAo+IHRoZQo+IGlteDhtbS12cHUtYmxrLWN0cmwgYW5k
-IG11c3Qgbm90IGJlIGRpcmVjdGx5IHRyaWdnZXJlZCBieSB0aGUgY2hpbGQKPiBkb21haW5zIGlu
-IG9yZGVyIHRvIGd1YXJhbnRlZSBwcm9wZXIgcG93ZXIgc2VxdWVuY2luZy4KPiAKPiBJZiB0aGUg
-c2VxdWVuY2luZyBpcyBpbmNvcnJlY3QgZm9yIHJlc3VtZSwgaXQgbmVlZHMgdG8gYmUgZml4ZWQg
-aW4KPiB0aGUKPiBibGstY3RybCBkcml2ZXIuIEknbGwgaGFwcGlseSBhc3Npc3QgaWYgeW91IGhh
-dmUgYW55IHF1ZXN0aW9ucyBhYm91dAo+IHRoaXMgaW50cmljYXRlIG1peCBiZXR3ZWVuIEdQQyBh
-bmQgYmxrLWN0cmwgaGFyZHdhcmUvZHJpdmVycy4KIApJJ20gbmV3IGludG8gdGhlIHRvcGljLCBz
-byBJIHRyaWVkIHRvIGZvbGxvdyBzYW1lIGFwcHJvYWNoIGFzIGluIGlteDhtcApEVC4gSSBhbHNv
-IGNoZWNrZWQgdGhlIGlteDhtcSBEVCBhbmQgaXQgb25seSBoYXZlIG9uZSBkb21haW4gZm9yIHRo
-ZQpWUFUgaW4gdGhlIEdQQy4gSXQgc2VlbSBibGstY3RybCBhbHNvIGRlcGVuZGVzIG9uIHBnY192
-cHVfKiB0byB3b3JrCnByb3Blcmx5LgoKVGhlIGJsay1jdHJsIGRyaXZlciBoYW5ncyBvbiBpbXg4
-bV9ibGtfY3RybF9wb3dlcl9vbigpIHdoZW4gYWNjZXNzIHRoZQppcCByZWdpc3RlcnMgZm9yIHRo
-ZSBzb2Z0IHJlc2V0LiBJIHRyaWVkIHRvIHBvd2VyLXVwIHRoZSBiZWZvcmUgdGhlCnNvZnQgcmVz
-ZXQsIGJ1dCBpdCBkaWRuJ3Qgd29yay4KCkRvIHlvdSBoYXZlIGFuIGlkZWEgaG93IHdlIGNhbiBh
-ZGRyZXNzIHRoaXMgd2l0aGluIGJsay1jdHJsPwoKQmVzdCByZWdhcmRzLApWaXRvcgoKPiAKPiBS
-ZWdhcmRzLAo+IEx1Y2FzCj4gCj4gPiBBcyB0aGVzZSBQVSBkb21haW5zIGFyZSBuZXN0ZWQgaW5z
-aWRlIHRoZSB2cHVtaXggZG9tYWluLCBsZXQncwo+ID4gcmVmZXJlbmNlCj4gPiBpdCBhY2NvcmRp
-bmdseS4gQWZ0ZXIgdGhpcyBjaGFuZ2UsIHRoZSBzdXNwZW5kL3Jlc3VtZSBpcyB3b3JraW5nLgo+
-ID4gCj4gPiBDYzogTHVjYXMgU3RhY2ggPGwuc3RhY2hAcGVuZ3V0cm9uaXguZGU+Cj4gPiBDYzog
-PHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+Cj4gPiBDbG9zZXM6Cj4gPiBodHRwczovL2xvcmUua2Vy
-bmVsLm9yZy9hbGwvZmNjYmIwNDAzMzBhNzA2YTRmN2IzNDg3NWRiMWQ4OTZhMGJmODFjOC5jYW1l
-bEBnbWFpbC5jb20vCj4gPiBGaXhlczogZDM5ZDRiYjE1MzEwICgiYXJtNjQ6IGR0czogaW14OG1t
-OiBhZGQgR1BDIG5vZGUiKQo+ID4gU2lnbmVkLW9mZi1ieTogVml0b3IgU29hcmVzIDx2aXRvci5z
-b2FyZXNAdG9yYWRleC5jb20+Cj4gPiAtLS0KPiA+IMKgYXJjaC9hcm02NC9ib290L2R0cy9mcmVl
-c2NhbGUvaW14OG1tLmR0c2kgfCAzICsrKwo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRp
-b25zKCspCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2Fs
-ZS9pbXg4bW0uZHRzaQo+ID4gYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0u
-ZHRzaQo+ID4gaW5kZXggOGExYjQyYjk0ZGNlLi45N2QwYzZkMjNhZDggMTAwNjQ0Cj4gPiAtLS0g
-YS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0uZHRzaQo+ID4gKysrIGIvYXJj
-aC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0c2kKPiA+IEBAIC03MzksMTYgKzcz
-OSwxOSBAQCBwZ2NfdnB1bWl4OiBwb3dlci1kb21haW5ANiB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoHBnY192cHVfZzE6IHBvd2VyLWRvbWFpbkA3Cj4gPiB7Cj4gPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAjcG93ZXItZG9tYWluLWNlbGxzCj4gPiA9IDwwPjsK
-PiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlZyA9Cj4gPiA8SU1Y
-OE1NX1BPV0VSX0RPTUFJTl9WUFVHMT47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoHBvd2VyLWRvbWFpbnMgPQo+ID4gPCZwZ2NfdnB1bWl4PjsKPiA+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgfTsKPiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBnY192
-cHVfZzI6IHBvd2VyLWRvbWFpbkA4Cj4gPiB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAjcG93ZXItZG9tYWluLWNlbGxzCj4gPiA9IDwwPjsKPiA+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlZyA9Cj4gPiA8SU1YOE1NX1BPV0VSX0RP
-TUFJTl9WUFVHMj47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBv
-d2VyLWRvbWFpbnMgPQo+ID4gPCZwZ2NfdnB1bWl4PjsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgfTsKPiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBnY192cHVfaDE6IHBvd2Vy
-LWRvbWFpbkA5Cj4gPiB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAjcG93ZXItZG9tYWluLWNlbGxzCj4gPiA9IDwwPjsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoHJlZyA9Cj4gPiA8SU1YOE1NX1BPV0VSX0RPTUFJTl9WUFVIMT47
-Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBvd2VyLWRvbWFpbnMg
-PQo+ID4gPCZwZ2NfdnB1bWl4PjsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfTsKPiA+IMKg
-Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBnY19kaXNwbWl4Ogo+ID4gcG93ZXItZG9tYWlu
-QDEwIHsKPiAKCg==
+On Tue, Apr 9, 2024 at 7:01=E2=80=AFAM Cristian Marussi
+<cristian.marussi@arm.com> wrote:
+>
+> On Tue, Apr 09, 2024 at 09:25:10AM +0000, Peng Fan wrote:
+> > Hi Krzysztof,
+> >
+> > > Subject: RE: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > > additionalProperties to true
+> > >
+> > > > Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > > > additionalProperties to true
+> > > >
+> > > > On 08/04/2024 08:08, Peng Fan wrote:
+> > > > >> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > > > >> additionalProperties to true
+> > > > >>
+> > > > >> On 08/04/2024 01:50, Peng Fan wrote:
+> > > > >>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: s=
+et
+> > > > >>>> additionalProperties to true
+> > > > >>>>
+> > > > >>>> On 07/04/2024 12:04, Peng Fan wrote:
+> > > > >>>>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi:
+> > > > >>>>>> set additionalProperties to true
+> > > > >>>>>>
+> > > > >>>>>> On 07/04/2024 02:37, Peng Fan wrote:
+> > > > >>>>>>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scm=
+i:
+> > > > >>>>>>>> set additionalProperties to true
+> > > > >>>>>>>>
+> > > > >>>>>>>> On 05/04/2024 14:39, Peng Fan (OSS) wrote:
+> > > > >>>>>>>>> From: Peng Fan <peng.fan@nxp.com>
+> > > > >>>>>>>>>
+> > > > >>>>>>>>> When adding vendor extension protocols, there is dt-schem=
+a
+> > > > >> warning:
+> > > > >>>>>>>>> "
+> > > > >>>>>>>>> imx,scmi.example.dtb: scmi: 'protocol@81', 'protocol@84' =
+do
+> > > > >>>>>>>>> not match any of the regexes: 'pinctrl-[0-9]+'
+> > > > >>>>>>>>> "
+> > > > >>>>>>>>>
+> > > > >>>>>>>>> Set additionalProperties to true to address the issue.
+> > > > >>>>>>>>
+> > > > >>>>>>>> I do not see anything addressed here, except making the
+> > > > >>>>>>>> binding accepting anything anywhere...
+> > > > >>>>>>>
+> > > > >>>>>>> I not wanna add vendor protocols in arm,scmi.yaml, so will
+> > > > >>>>>>> introduce a new yaml imx.scmi.yaml which add i.MX SCMI
+> > > > >>>>>>> protocol
+> > > > >> extension.
+> > > > >>>>>>>
+> > > > >>>>>>> With additionalProperties set to false, I not know how, ple=
+ase
+> > > > suggest.
+> > > > >>>>>>
+> > > > >>>>>> First of all, you cannot affect negatively existing devices
+> > > > >>>>>> (their
+> > > > >>>>>> bindings) and your patch does exactly that. This should make
+> > > > >>>>>> you thing what is the correct approach...
+> > > > >>>>>>
+> > > > >>>>>> Rob gave you the comment about missing compatible - you stil=
+l
+> > > > >>>>>> did not address that.
+> > > > >>>>>
+> > > > >>>>> I added the compatible in patch 2/6 in the examples "compatib=
+le
+> > > > >>>>> =3D
+> > > > >>>> "arm,scmi";"
+> > > > >>>>
+> > > > >>>> So you claim that your vendor extensions are the same or fully
+> > > > >>>> compatible with arm,scmi and you add nothing... Are your
+> > > > >>>> extensions/protocol valid for arm,scmi?
+> > > > >>>
+> > > > >>> Yes. They are valid for arm,scmi.
+> > > > >>>
+> > > > >>>  If yes, why is this in separate binding. If no, why you use
+> > > > >>> someone
+> > > > >>>> else's compatible?
+> > > > >>>
+> > > > >>> Per SCMI Spec
+> > > > >>> 0x80-0xFF: Reserved for vendor or platform-specific extensions =
+to
+> > > > >>> this interface
+> > > > >>>
+> > > > >>> i.MX use 0x81 for BBM, 0x84 for MISC. But other vendors will us=
+e
+> > > > >>> the id for their own protocol.
+> > > > >>
+> > > > >> So how are they valid for arm,scmi? I don't understand.
+> > > > >
+> > > > > arm,scmi is a firmware compatible string. The protocol node is a =
+sub-node.
+> > > > > I think the arm,scmi is that saying the firmware following SCMI s=
+pec
+> > > > > to implement the protocols.
+> > > > >
+> > > > > For vendor reserved ID, firmware also follow the SCMI spec to
+> > > > > implement their own usage, so from firmware level, it is ARM SCMI
+> > > > > spec
+> > > > compatible.
+> > > >
+> > > > That's not the point. It is obvious that your firmware is compatibl=
+e
+> > > > with arm,scmi, but what you try to say in this and revised patch is
+> > > > that every arm,scmi is compatible with your implementation. What yo=
+u
+> > > > are saying is that 0x84 is MISC protocol for every firmware, Qualco=
+mm,
+> > > > NXP, Samsung, TI, Mediatek etc.
+> > > >
+> > > > I claim it is not true. 0x84 is not MISC for Qualcomm, for example.
+> > >
+> > > You are right. I am lost now on how to add vendor ID support, using
+> > > arm,scmi.yaml or adding a new imx,scmi.yaml or else.
+> >
+>
+> Hi Peng,
+>
+> I dont think in the following you will find the solution to the problem,
+> it is just to recap the situation and constraints around vendor protocol
+> bindings.
+>
+> Describing SCMI vendors protocols is tricky because while on one side
+> the protocol node has to be rooted under the main scmi fw DT node (like
+> all the standard protocols) and be 'derived' from the arm,scmi.yaml
+> protocol-node definition, the optional additional properties of the a spe=
+cific
+> vendor protocol nodes can be customized by each single vendor, and since,
+> as you said, you can have multiple protocols from different vendors shari=
+ng the
+> same protocol number, you could have multiple disjoint sets of valid prop=
+erties
+> allowed under that same protocol node number; so on one side you have to =
+stick
+> to some basic protocol-node defs and be rooted under the SCMI node, while=
+ on
+> the other side you will have multiple possibly allowed sets of additional
+> properties to check against, so IOW you cannot anyway just set
+> additionalProperties to false since that will result in no checks at all.
+>
+> As a consequence, at runtime, in the final DTB shipped with a specific
+> platform you should have only one of the possible vendor nodes for each
+> of these overlapping protocols, and the SCMI core at probe time will
+> pick the proper protocol implementation based on the vendor/sub_vendor
+> IDs gathered from the running SCMI fw platform at init: this way you
+> can just build the usual "all-inclusive" defconfig without worrying
+> about vendor protocol clashes since the SCMI core can pick the right
+> protocol implementation, you should just had taken care to provide the
+> proper DTB for your protocol; BUT this also means that it is not possible
+> to add multiple DT bindings based on a 'if vendor' condition since the
+> vendor itself is NOT defined and not needed in the bindings since it is
+> discoverable at runtime.
+>
+> So, after all of this blabbing of mine about this, I am wondering if it
+> is not possible that the solution is to handle each and every vendor
+> protocol node that appears with a block of addtional properties that
+> are picked via a oneOf statement from some external vendor specific
+> yaml.
+> (...in a similar way to how pinctrl additional properties are added...)
+>
+>
+> NOTE THAT the following is just an example of what I mean, it is certainl=
+y
+> wrong, incomplete annd maybe just not acceptable (and could cause DT
+> maintainers eyes to bleed :P)...
+>
+> ...so it is just fr the sake of explaining what I mean...
+>
+> diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml b/D=
+ocumentation/devicetree/bindings/firmware/arm,scmi.yaml
+> index e9d3f043c4ed..3c38a1e3ffed 100644
+> --- a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> +++ b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> @@ -278,6 +278,22 @@ properties:
+>      required:
+>        - reg
+>
+> +  protocol@81:
+> +    $ref: '#/$defs/protocol-node'
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        const: 0x81
+> +
+> +    patternProperties:
+> +      '$':
+> +        type: object
 
+Did you mean to have child nodes under the protocol node rather than in it?
+
+> +        oneOf:
+> +          - $ref: /schemas/vendor-A/scmi-protos.yaml#
+> +          - $ref: /schemas/vendor-B/protos.yaml#
+
+Moved up one level, this would work, but it would have to be an
+'anyOf' because it is possible that 2 vendors have the exact same set
+of properties.
+
+I can think of 2 other ways to structure this.
+
+First, is a specific vendor protocol discoverable? Not that is 0x81
+protocol present, but that 0x81 is vendor Foo's extra special
+value-add protocol? If not, I think we should require a compatible
+string on vendor protocols. Then the base SCMI schema can require just
+that, and each vendor protocol defines its node with a $ref to
+'#/$defs/protocol-node'.
+
+The 2nd way is just a variation of the oneOf above, but do we do 1
+file per vendor protocol or 1 file per vendor. Either should be
+doable, just a matter of where 'protocol@81', etc. are defined.
+
+Rob
