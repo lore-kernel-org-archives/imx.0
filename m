@@ -1,91 +1,195 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5209E82D99
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 10:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F4823A2
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 10:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712657219; cv=none; b=Zzue3+OfwKCZ4glwf3koojF58lyZ8flFsxIuKvuWjWcE7ul18ymCChMT95W2zHnovq0QGr+rPnOsZMgn/lzL6iGy1Mu2BKWZp+nc5NBPITMsavzowkEIlLnj/X/u++LoVjfW4ptQYhLGqakDKmL8X55qD4iWw+5g281Tanv73iY=
+	t=1712658572; cv=none; b=SDui65jyGAnGM/qj4udwLXqF6xq56X6ncirE05gR+PBqcoTDkRqQxwnOA99W/dyT6bugJYJ28wv3UMB575wK6gGo3erzDejSVWcO5IwziP20ffyF0Dxiq/Xe4VR994A4kyw9+LW2SZGVlmLG28o2deoU9I1j5wGAXyy2YEboK88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712657219; c=relaxed/simple;
-	bh=1od+6GPq5pbV6DS4pMNA1qWk2fASvx0vw1BVnXaMKxs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HYM90kROMcpM4kG0dzI91CHftywehGhikd+P+bULl77rutoscqUqtYD8E2QBqvZ1ZuERr2mnHz8N4ZavnchREjdSG7spd9l7+wk9U0QWPhrhx4ZlVR9Qaq9X5uPKWrsrhs5cd9rTnYTrI8pqfsb7SBDBMJISaym4bSkEZ1qL8s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mALaGmhU; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712658572; c=relaxed/simple;
+	bh=dYhAReZ1vmDiZdobsjqXxIQmDiSdY/KMsiiQ8xms4CI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=YkkF6fRD5cfbxTJnMyggFYIi9y5Q13Z1du0edjdm/8/6SKgjYV4A+6smgknL9XuTTS3gv5a89YambjQJfNkEVooiWp4IuILyZW1K+ZhaK7DcRkfmxkprv85v9ywcfAYvQj0PfdYnc8FQh+RV372m8dEJ3UBj6mCF8ETgh+i9k70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r1HEQsBt; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mALaGmhU"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6ed4a80c19eso260530b3a.1
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 03:06:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r1HEQsBt"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-343d1003106so3248844f8f.1
+        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 03:29:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712657217; x=1713262017; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nN1BLV01IgpoQTWEsMyLEiQ/+qIuzUOwceRziV5xY0w=;
-        b=mALaGmhUC/D0gCd2CvroX5thx2xgKNKOL7Z5EyNzwtOEQWPd6l3PYAhLBfoeaazvEd
-         FWE2ch6oFlZ5xAiVA0YzzXLVLJaRy/JXk05yaAx4R6IiXGTlCtx1JNxZgra+ZGLTC+FE
-         KTnm1sF5N9yzvMkQfqxmogltNhDRkCbBTNuM/0ta0pk7O6kgzIgf/DSsOb7MHbTuQI32
-         fyDqMr4phRYi/UVEK80BYuRUslGKEYLeBfMgizfbMJ4/ov3YgQK5lIUop5CythB6C4Bf
-         SXEVeQRj0a2pQTFe9CEA1kXYSMzI2DEMNwFPi9FeFtG9TBtyqpXOoVPd/SDMcFx5fQ2T
-         ttsQ==
+        d=linaro.org; s=google; t=1712658569; x=1713263369; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ykat5P5LfbO5un7nzciIKTkPn6WaTsCCKh0bvskUEKE=;
+        b=r1HEQsBtXsgrGPDs/npzU0zAj2H9r/vyKhr1Kv9QIOBGceF8xCiOWb0qxgIKz1RC72
+         YJOvAC7Bb0x2c4KfhQB2Ad+g1sFqFPkPrg5OZxhsSKquU8wfnSUy+hj59ZPn3UDYYC+T
+         EE5u9M/hvySD3r0k8UJbxk6/EmdKstpshvYZssTc+qd3mI4uxh7pMLIH5FegFQA/JVBp
+         tLG10fNzED5iRsBhBUhNbwGcdg1v3EO0GqHSZ+3bVYYuo4v4W5zuG7+yA5cV6xVE4EWr
+         9vVOKrJD9rs/o2++RHVxVhWGghklGU0YWf09xQnerYDyyUocTW9KIEfreTj+eeI8sbjX
+         hufg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712657217; x=1713262017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nN1BLV01IgpoQTWEsMyLEiQ/+qIuzUOwceRziV5xY0w=;
-        b=KfwxFHdT8i6YGR6jCsy+kQfcwGI+fHXrr/Oky6Lcv+GeARf0UuvfkRbWCVMQjUDTo5
-         z8RPVI8VS2l1BMksN4TYPp29wcPaTfil1qtuNjvXaSonRrZRsBR8Ogyh20v1O3vzRyUt
-         iTZPUZ35TC/n6pW/2aVg7PkyqgZ0WBATKUw/eppwazdNCPOffeFqfu2K+y7DggnwygZK
-         CNDnkfEcUrujCXmv7Uz9NE87VkvXlJdBRGrdhZ9sSVZNqM9tcz65jGNtTOZ56njeJXHN
-         RgwizGlfnYz5y47vh3ifjlE6FcS6ZCKnD1217sUa7ov62jsu+3NY8MtTxEC8t1FSFKip
-         50eA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ7Jk2onWdBLuOmfSo7IOHehIx4QijulHi4x+s6UkjrRdghMt3yU1nO3IBbe/xQZ8EleAbh5FOcddTzzWbIbXw2RpP
-X-Gm-Message-State: AOJu0YzY5WgL8XYXZ+CLL9f5nFX8UOX726H7Kq0++TqXSg2HTeaA7Nun
-	fr/rtzzYRwxYBiXT75B1W5cMWofHVgIGMLX5U4hfbiwZ/xrzIxX+Qp1v7b1TBJQbedUa6lRmTnJ
-	yKzMCzm1eu75ePKG9T44VOnw9das=
-X-Google-Smtp-Source: AGHT+IHQoCVGiINYUvQfKxTrsUtBLAkQj+AXwq2x9u/Og21z/Gjz5hL7wTzbKPixjBrhy3BiUueA2htTaWWB2sOdK00=
-X-Received: by 2002:a05:6a21:3383:b0:1a8:2d22:2025 with SMTP id
- yy3-20020a056a21338300b001a82d222025mr575979pzb.0.1712657217545; Tue, 09 Apr
- 2024 03:06:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712658569; x=1713263369;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ykat5P5LfbO5un7nzciIKTkPn6WaTsCCKh0bvskUEKE=;
+        b=qQABLWZbES/EWtn2m3WB6W6zmslBg9HmS6tKXnWXZa6Bk5/aeX3LCQZX4Jab4RDCv8
+         /DH+b4VBy8Oj5N9eNZWnlj9qq98lnTlL69sTUxYjM9GfjCwiooenvJfHFcGXccfP5lyn
+         hyn5FuS+jC04NBEK83qpSzjRGa/M59CsedjMktMR3ukOoyMBWeWfRGn8J3dNG+hkDDYv
+         8Yr4t7DoCwgggrgM7hWpcNJVkU+aPsj2CDWdLzJyPyPXB3YXuWFk1bdweO7RznrPDL42
+         yoiIEyfR9L6CCdDSKohvxACnN6GLr55z2QgBSq/UKu7xp9EM9fOjYWVvC3jN75+hM+kZ
+         ju3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXMReUNsL6QqDaS8gKG86DhwzRjCpYriwQcMdPx+f3xz5aeKDlKdhb+O5OkBQUnx0R/NS5PC0W5vHz8ACDmudJtCApa
+X-Gm-Message-State: AOJu0Yye7bP+Ejmebf3d2LmDijOgwbzWzIKqlHG9v025dWMuVJ6FpBxp
+	NS7yXjafqr85JLXHcZ0BUnjZH6Gj3Pzt43VGfMMYW288wK3zTOTXUw+gqiRFPzk=
+X-Google-Smtp-Source: AGHT+IHg/SYP1OwSQx1phS0Gr4gHr1mGzi2LrzlNYbGgaKVxscSxC6soUmqvYC9x1+rD989bWNX8kw==
+X-Received: by 2002:adf:e849:0:b0:343:e031:69b8 with SMTP id d9-20020adfe849000000b00343e03169b8mr9659991wrn.41.1712658568536;
+        Tue, 09 Apr 2024 03:29:28 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id r18-20020adfce92000000b00343d1d09550sm11145900wrn.60.2024.04.09.03.29.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Apr 2024 03:29:27 -0700 (PDT)
+Message-ID: <bad43869-b6d3-43ba-9509-8b1606c12969@linaro.org>
+Date: Tue, 9 Apr 2024 12:29:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ASoC: dt-bindings: imx-audio-spdif: convert to
+ YAML
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 References: <1712652644-28887-1-git-send-email-shengjiu.wang@nxp.com>
- <1712652644-28887-3-git-send-email-shengjiu.wang@nxp.com> <CAOMZO5Cku1kifsnWJOr0Zd-5+49j-KB67iHZDcvUsKwrhVPtLA@mail.gmail.com>
-In-Reply-To: <CAOMZO5Cku1kifsnWJOr0Zd-5+49j-KB67iHZDcvUsKwrhVPtLA@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 9 Apr 2024 07:06:45 -0300
-Message-ID: <CAOMZO5BfJBkyw2q3wi4q3yjEmQowg7Zsw8yEFyANMYYez3ai+w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] ARM: dts: imx6: exchange fallback and specific
- compatible string
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	shengjiu.wang@gmail.com, linux-sound@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <1712652644-28887-2-git-send-email-shengjiu.wang@nxp.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <1712652644-28887-2-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 9, 2024 at 7:02=E2=80=AFAM Fabio Estevam <festevam@gmail.com> w=
-rote:
->
-> On Tue, Apr 9, 2024 at 6:08=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.c=
-om> wrote:
-> >
-> > exchange fallback and specific compatible string for spdif sound card.
->
-> Ok, but please explain the reason.
+On 09/04/2024 10:50, Shengjiu Wang wrote:
+> Convert the imx-audio-spdif binding to YAML.
+> 
+> When testing dtbs_check, found below compatible strings
+> are not listed in document:
+> 
+> fsl,imx-sabreauto-spdif
+> fsl,imx6sx-sdb-spdif
+> 
+> So add them in yaml file to pass the test.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../bindings/sound/fsl,imx-audio-spdif.yaml   | 67 +++++++++++++++++++
+>  .../bindings/sound/imx-audio-spdif.txt        | 36 ----------
+>  2 files changed, 67 insertions(+), 36 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-spdif.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
+> new file mode 100644
+> index 000000000000..fec008ffae43
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
+> @@ -0,0 +1,67 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/fsl,imx-audio-spdif.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale i.MX audio complex with S/PDIF transceiver
+> +
+> +maintainers:
+> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - fsl,imx-sabreauto-spdif
+> +              - fsl,imx6sx-sdb-spdif
+> +          - enum:
+> +              - fsl,imx-audio-spdif
 
-I mean, why can't these two .dts files be changed to
+If there is going to be any new version/resend:
+This one should be const, not enum.
 
-compatible =3D  "fsl,imx-audio-spdif";
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-, like all the others?
+
+---
+
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
+
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+Best regards,
+Krzysztof
+
