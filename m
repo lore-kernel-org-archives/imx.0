@@ -1,108 +1,238 @@
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D102839F1
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 11:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5EC129E80
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 12:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712661733; cv=none; b=GuYaMxWnYx9vQzWwD8xLPaaaNZNaAVF5fiL14Mg+TtpNMgxVvhGt/ZdPjmw0kgNJDd+yFnVaac8576kAmqLm058v6n6zGJBOp6XwIi648ee/nPgyEsjeDsOYvI02xwf4YMnOujGBe4q1O2XdU35zf5ru8J7snBbd554bdhzNrhU=
+	t=1712664111; cv=none; b=NqrZMLTL8nx9/qUul2tPOUikhF3KBr4QULkh66/YzRGcKGi8Gh2hGmfsXMJVdgEPIDyUfHJPzKh8Hf2UPheaqmjEqNgVrjS8sYZ1SyBBWCnV9N2zge+gULCV1G4v/GI/BWJGyGs3lqHY3rqY7Sosgl31suXI1BOJd2JjaKTRW24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712661733; c=relaxed/simple;
-	bh=z2BYcIxpPV7dA/hoWGZiUhKQFrHNrFSXIXX/wN3zASA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ul/tfcBBSP5sq+NJR6+SU3yZuV4QipnxcQH+AEdkh7383h4Q6GEAxYbpJI3pQDX8ryAK0BZG4m858d8/edmOlz1ZVeYhGN4RYcsr/mqINmpct6P4PIOBGP8iXBuEVw6TQaFtzKM6J/yqFb8LBiaAhuxKp2H4hMq/kFzNe+NKiJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OSYKoGEc; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OSYKoGEc"
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-36a202020ccso11249015ab.2
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 04:22:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712661731; x=1713266531; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cUPlYyCbnZyXJn6L4cZK1glpJcPHCmQEuO505nrY/Cg=;
-        b=OSYKoGEcKtJ5XwPBy8xHyxSgCNWwrPEc+VslSLoIgizYuYkeWKD4sZXXXiwoNs0hdj
-         kKxTuQjARnjLYGkJvtEGSujN6t6tIm7YCoGU9MKvs6dww1sHxltdn2TJQNXkCRzWiD6y
-         QRV9cS4s4zyII1RxwP7bOb7IRMIhkl/kMme9laJSBeZcdpBravaBli6EI9G6MaqAaPaO
-         RCo3bBmp0CBKvVVxPpSbfXeOqdCx3wExFDAZ9Xk8ol+b9lFm82McF3mAC498B/7RpCad
-         1Onu+4HHipcduDHMWVnZYZa0bvCl6jbjgbBiPK0jZJy8RKgyvMPcdPoqtjtU1yjx4zif
-         fiEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712661731; x=1713266531;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cUPlYyCbnZyXJn6L4cZK1glpJcPHCmQEuO505nrY/Cg=;
-        b=N67yegW6Vkctr64r82VinUbCW8pgLga9OEQqaRIOeHVK4g6St28ivV70YVX8arVrjl
-         sjpm9Ua6vMhMS61LUAXGv+DYLpX9qsWzScMHaS2U/Kg78VhtBwBBj/TvqTkTJd58361B
-         BTLzcYPzSE1ZOjVt80IzwUpw0E3EKhYNdR1qjGV8W7bXn9PRq6h/WSKOzeEMMSI6lCO0
-         ZTd644tUdh1CM+NHzNeaJHudKaKFhyZj33B4YhiuJeRhWoNOzM5D2+qlvLyDubH5l+rD
-         LjisyimIqMgzb3vgnmg63RvBHIjAmy3uA3pBjkp9BM9tvO6Nb2ITo6ioGmmnl+tPxv+f
-         Uudw==
-X-Forwarded-Encrypted: i=1; AJvYcCUobZtDhJuPNHfn19+YfHTPMcUh4xWH6tme5zyoLDB3nrtwwrs4brBBVxMhk9x+C4CdaBYh0kz92QQR8ZKwB1jSxQiE
-X-Gm-Message-State: AOJu0YxiJpYfd+KImnyhPUYiYo0BFbvPYQbM0OjkNL4cax4cME/So9y3
-	bdR7d7JbtZ6KjuKGIYLl3grepeKqyj1OuJlb1SoSfjMOsKzaQBCKwPjwMhMIeM+0lYD7A1PK87t
-	fmyoolvKM+U5MGBPoM0U4z8kyPU0=
-X-Google-Smtp-Source: AGHT+IFwJhpIsKcZb+Asw4W/YnwlWjJ+/9Z/cP+F5xlsh0I1LU5T/T/6y3yuehkk3NNmH5hNvipHXtlY44zFA7XMvgU=
-X-Received: by 2002:a05:6e02:1ca5:b0:36a:190f:1932 with SMTP id
- x5-20020a056e021ca500b0036a190f1932mr10670474ill.23.1712661731192; Tue, 09
- Apr 2024 04:22:11 -0700 (PDT)
+	s=arc-20240116; t=1712664111; c=relaxed/simple;
+	bh=9xIZi0QpnO1RKIMpvzvyKziMtxWWeU7GiJ1MO/7yK/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rGN4TgsCVngkHjpzh8bB4u/Trvp2NMms8z7PSqQUZO1fK2ZmdIWdK1OCITQxwx6flkVVo1FZgNyMStoYjm5bXDIhIzT0yjYFgXKavh5R2gshhhaexbxU4EoiWl58NhgXLh20f3VxROgoFPDkE/CZUw+nYIgMUTkvPcIZNb+++fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9BB4139F;
+	Tue,  9 Apr 2024 05:02:19 -0700 (PDT)
+Received: from pluto (unknown [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A9A323F766;
+	Tue,  9 Apr 2024 05:01:47 -0700 (PDT)
+Date: Tue, 9 Apr 2024 13:01:45 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+ additionalProperties to true
+Message-ID: <ZhUuKajQbce2AI9f@pluto>
+References: <DU0PR04MB9417932A6208128FBBB22C4188012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <09f6b752-6b72-49d7-b248-6faba2fd13a7@kernel.org>
+ <DU0PR04MB9417C5B9BDD9E0B47E7494C088012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <5b9e0e44-0b9c-44fc-9d18-21c47b46dc63@kernel.org>
+ <DU0PR04MB9417839C42681F57366003EF88012@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <ba4c9f20-0391-4ac2-a236-d6930285cd7e@kernel.org>
+ <DU0PR04MB94176D02B90528913842B76A88002@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <e6333665-8051-43b1-9e98-f76262ddbc35@kernel.org>
+ <DU0PR04MB9417C8C5013C72AB1F61F1C588002@DU0PR04MB9417.eurprd04.prod.outlook.com>
+ <AS1PR04MB9431BE4B2BFE05507A2D93F288072@AS1PR04MB9431.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1712652644-28887-1-git-send-email-shengjiu.wang@nxp.com>
- <1712652644-28887-3-git-send-email-shengjiu.wang@nxp.com> <CAOMZO5Cku1kifsnWJOr0Zd-5+49j-KB67iHZDcvUsKwrhVPtLA@mail.gmail.com>
- <CAOMZO5BfJBkyw2q3wi4q3yjEmQowg7Zsw8yEFyANMYYez3ai+w@mail.gmail.com>
-In-Reply-To: <CAOMZO5BfJBkyw2q3wi4q3yjEmQowg7Zsw8yEFyANMYYez3ai+w@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 9 Apr 2024 19:22:00 +0800
-Message-ID: <CAA+D8AN+7Ca5wFzTKFDHDEgL5MeW62K4qLsmP6LrngiG75RPBg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] ARM: dts: imx6: exchange fallback and specific
- compatible string
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS1PR04MB9431BE4B2BFE05507A2D93F288072@AS1PR04MB9431.eurprd04.prod.outlook.com>
 
-On Tue, Apr 9, 2024 at 6:06=E2=80=AFPM Fabio Estevam <festevam@gmail.com> w=
-rote:
->
-> On Tue, Apr 9, 2024 at 7:02=E2=80=AFAM Fabio Estevam <festevam@gmail.com>=
- wrote:
-> >
-> > On Tue, Apr 9, 2024 at 6:08=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp=
-.com> wrote:
+On Tue, Apr 09, 2024 at 09:25:10AM +0000, Peng Fan wrote:
+> Hi Krzysztof,
+> 
+> > Subject: RE: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > additionalProperties to true
+> > 
+> > > Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > > additionalProperties to true
 > > >
-> > > exchange fallback and specific compatible string for spdif sound card=
-.
-> >
-> > Ok, but please explain the reason.
->
-> I mean, why can't these two .dts files be changed to
->
-> compatible =3D  "fsl,imx-audio-spdif";
->
-> , like all the others?
+> > > On 08/04/2024 08:08, Peng Fan wrote:
+> > > >> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > > >> additionalProperties to true
+> > > >>
+> > > >> On 08/04/2024 01:50, Peng Fan wrote:
+> > > >>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi: set
+> > > >>>> additionalProperties to true
+> > > >>>>
+> > > >>>> On 07/04/2024 12:04, Peng Fan wrote:
+> > > >>>>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi:
+> > > >>>>>> set additionalProperties to true
+> > > >>>>>>
+> > > >>>>>> On 07/04/2024 02:37, Peng Fan wrote:
+> > > >>>>>>>> Subject: Re: [PATCH v2 1/6] dt-bindings: firmware: arm,scmi:
+> > > >>>>>>>> set additionalProperties to true
+> > > >>>>>>>>
+> > > >>>>>>>> On 05/04/2024 14:39, Peng Fan (OSS) wrote:
+> > > >>>>>>>>> From: Peng Fan <peng.fan@nxp.com>
+> > > >>>>>>>>>
+> > > >>>>>>>>> When adding vendor extension protocols, there is dt-schema
+> > > >> warning:
+> > > >>>>>>>>> "
+> > > >>>>>>>>> imx,scmi.example.dtb: scmi: 'protocol@81', 'protocol@84' do
+> > > >>>>>>>>> not match any of the regexes: 'pinctrl-[0-9]+'
+> > > >>>>>>>>> "
+> > > >>>>>>>>>
+> > > >>>>>>>>> Set additionalProperties to true to address the issue.
+> > > >>>>>>>>
+> > > >>>>>>>> I do not see anything addressed here, except making the
+> > > >>>>>>>> binding accepting anything anywhere...
+> > > >>>>>>>
+> > > >>>>>>> I not wanna add vendor protocols in arm,scmi.yaml, so will
+> > > >>>>>>> introduce a new yaml imx.scmi.yaml which add i.MX SCMI
+> > > >>>>>>> protocol
+> > > >> extension.
+> > > >>>>>>>
+> > > >>>>>>> With additionalProperties set to false, I not know how, please
+> > > suggest.
+> > > >>>>>>
+> > > >>>>>> First of all, you cannot affect negatively existing devices
+> > > >>>>>> (their
+> > > >>>>>> bindings) and your patch does exactly that. This should make
+> > > >>>>>> you thing what is the correct approach...
+> > > >>>>>>
+> > > >>>>>> Rob gave you the comment about missing compatible - you still
+> > > >>>>>> did not address that.
+> > > >>>>>
+> > > >>>>> I added the compatible in patch 2/6 in the examples "compatible
+> > > >>>>> =
+> > > >>>> "arm,scmi";"
+> > > >>>>
+> > > >>>> So you claim that your vendor extensions are the same or fully
+> > > >>>> compatible with arm,scmi and you add nothing... Are your
+> > > >>>> extensions/protocol valid for arm,scmi?
+> > > >>>
+> > > >>> Yes. They are valid for arm,scmi.
+> > > >>>
+> > > >>>  If yes, why is this in separate binding. If no, why you use
+> > > >>> someone
+> > > >>>> else's compatible?
+> > > >>>
+> > > >>> Per SCMI Spec
+> > > >>> 0x80-0xFF: Reserved for vendor or platform-specific extensions to
+> > > >>> this interface
+> > > >>>
+> > > >>> i.MX use 0x81 for BBM, 0x84 for MISC. But other vendors will use
+> > > >>> the id for their own protocol.
+> > > >>
+> > > >> So how are they valid for arm,scmi? I don't understand.
+> > > >
+> > > > arm,scmi is a firmware compatible string. The protocol node is a sub-node.
+> > > > I think the arm,scmi is that saying the firmware following SCMI spec
+> > > > to implement the protocols.
+> > > >
+> > > > For vendor reserved ID, firmware also follow the SCMI spec to
+> > > > implement their own usage, so from firmware level, it is ARM SCMI
+> > > > spec
+> > > compatible.
+> > >
+> > > That's not the point. It is obvious that your firmware is compatible
+> > > with arm,scmi, but what you try to say in this and revised patch is
+> > > that every arm,scmi is compatible with your implementation. What you
+> > > are saying is that 0x84 is MISC protocol for every firmware, Qualcomm,
+> > > NXP, Samsung, TI, Mediatek etc.
+> > >
+> > > I claim it is not true. 0x84 is not MISC for Qualcomm, for example.
+> > 
+> > You are right. I am lost now on how to add vendor ID support, using
+> > arm,scmi.yaml or adding a new imx,scmi.yaml or else.
+> 
 
-The specific compatible string should be first place
-as the dts rules I think. This patch is just to fix this problem.
+Hi Peng,
 
-For removing the specific compatible string,  I think we can
-do that.  but this change may be out of the scope of this patch
-series I think.
+I dont think in the following you will find the solution to the problem,
+it is just to recap the situation and constraints around vendor protocol
+bindings.
 
-So I just change the order of compatible strings
+Describing SCMI vendors protocols is tricky because while on one side
+the protocol node has to be rooted under the main scmi fw DT node (like
+all the standard protocols) and be 'derived' from the arm,scmi.yaml
+protocol-node definition, the optional additional properties of the a specific
+vendor protocol nodes can be customized by each single vendor, and since,
+as you said, you can have multiple protocols from different vendors sharing the
+same protocol number, you could have multiple disjoint sets of valid properties
+allowed under that same protocol node number; so on one side you have to stick
+to some basic protocol-node defs and be rooted under the SCMI node, while on
+the other side you will have multiple possibly allowed sets of additional
+properties to check against, so IOW you cannot anyway just set
+additionalProperties to false since that will result in no checks at all.
 
-best regards
-wang shengjiu
+As a consequence, at runtime, in the final DTB shipped with a specific
+platform you should have only one of the possible vendor nodes for each
+of these overlapping protocols, and the SCMI core at probe time will
+pick the proper protocol implementation based on the vendor/sub_vendor
+IDs gathered from the running SCMI fw platform at init: this way you
+can just build the usual "all-inclusive" defconfig without worrying
+about vendor protocol clashes since the SCMI core can pick the right
+protocol implementation, you should just had taken care to provide the
+proper DTB for your protocol; BUT this also means that it is not possible
+to add multiple DT bindings based on a 'if vendor' condition since the
+vendor itself is NOT defined and not needed in the bindings since it is
+discoverable at runtime.
+
+So, after all of this blabbing of mine about this, I am wondering if it
+is not possible that the solution is to handle each and every vendor
+protocol node that appears with a block of addtional properties that
+are picked via a oneOf statement from some external vendor specific
+yaml.
+(...in a similar way to how pinctrl additional properties are added...)
+
+
+NOTE THAT the following is just an example of what I mean, it is certainly
+wrong, incomplete annd maybe just not acceptable (and could cause DT
+maintainers eyes to bleed :P)...
+
+...so it is just fr the sake of explaining what I mean...
+
+diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+index e9d3f043c4ed..3c38a1e3ffed 100644
+--- a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
++++ b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+@@ -278,6 +278,22 @@ properties:
+     required:
+       - reg
+ 
++  protocol@81:
++    $ref: '#/$defs/protocol-node'
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        const: 0x81
++
++    patternProperties:
++      '$':
++        type: object
++        oneOf:
++          - $ref: /schemas/vendor-A/scmi-protos.yaml#
++          - $ref: /schemas/vendor-B/protos.yaml#
++        unevaluatedProperties: false
++
+ additionalProperties: false
+ 
+...with each new Vendor coming to the party adding a line under
+oneOf...which would mean probably also having a protocol@NN for each new
+protocol that appears...
+
+Thanks,
+Cristian
+
