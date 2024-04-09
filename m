@@ -1,169 +1,91 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-108-mta27.mxroute.com (mail-108-mta27.mxroute.com [136.175.108.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7441F138E
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 05:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEF0433BC
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 05:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712639624; cv=none; b=F5bMDcefQtCTQzIxdiaC2PCBXcREuI4hzPqxIZQQDG/bvjt6RoZ+WLZSxjQlZApRnvf3+FCqrZYKdP1UzcQTdD/OfWFv8tGQzGRKbzwbosGET88KGeLhde1tOmr+wpoVq1C8/VOdxpJGHiy/yuvIokJ0bd35qxRvGurQsZAllyo=
+	t=1712640206; cv=none; b=GncInyGAiNNOAxoXs2+8Jip+rtDRMYeijTisw5HD2v9WprtGnioFrNU5DEV5mmbNCetsMxgMSQHOGRRrXtK+n32N/u6vKpQ+kPGO2XkRnwQ103vv5fwC75iHYdUI+OaJf010R2igKpsVsC4a9+iUXRb1ZbwJPKDlw70cK76nwRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712639624; c=relaxed/simple;
-	bh=KKjF/zFeP2l4ureM8YQ44jPQw1jLe60wvSyJYXpz6XM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lys61r118eTQu46e3laqOa36z6wEDZZIvdSY8hfcQEvuf5mUqIW3Cs9dWPuYJH0Z8rgQjVHtN4YgnsLwKJn/4+ZSQZ7axfiFhS1QPjR2bzD43wsTkaRlxzD7mLdaS3YT2JYRA9UKfBAsHN9mq1zoIL5R9EioaRMWfN+xrfg/7uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RCppTDh6; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1712640206; c=relaxed/simple;
+	bh=8c0Qz860G3WkAb0AcWN5WjJC35eH3MG32MPUl0qvQRI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pYPlxJgQ/ukVRZfp2omBLTuLnuKWlXmQklBm5/RFitZp+4xOVYRu+gzMwB/S7QrfJpOoaNVTmLOt/gmNUaWc9+g7cheVW0FkPGttYYtL42pG7vqcWjyprfy0zDB2i4YUMVwk9tLFWD5iolZtV1DPJO81x83+FuwGix92QzqfwoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=IAFTK/4q; arc=none smtp.client-ip=136.175.108.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RCppTDh6"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-434b5abbb0dso184021cf.0
-        for <imx@lists.linux.dev>; Mon, 08 Apr 2024 22:13:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712639621; x=1713244421; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b6G7fQwZrU8Ut2ONWgYwB5iUHvGBDAPNe+jjAW2C4Mg=;
-        b=RCppTDh6ijs1/XeIThyvU4cOYfjS4HD0KNoJscfNVcipRVDVo3TQ5Ss2C7adBz6V/J
-         9y2UBxoLfappKxuROeYcXBqQFNBm6e+ZCNlzCfQlaLcjQXsr8dBRFiAfuK6AbvJNHc9U
-         3BIvuUdJGtgOdpIHvqRVrHp7kSf+/xBCtPPEzkqE6i/X+RPXAkAl7SlXMUro7gje8QrS
-         S+CmfoG4FoxXKCpQOkOQVrm6NT3ff6iFiBzgCWf4jx0ZuTNDMHccgX5TP3nyyJJAh7zX
-         ybjDQAtoJUcy6bckT6wNvqX8u0Af8LJQpmS0UJNYIluJ00NMwW2zaRpu9P/e7Nv3jK24
-         JXCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712639621; x=1713244421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b6G7fQwZrU8Ut2ONWgYwB5iUHvGBDAPNe+jjAW2C4Mg=;
-        b=fRzpn5hoVLZT9NizrXwUacVWEqJG78RpEO/zR8KAJdfQq9oGfUdfb1T2mckobF87BC
-         IaXmZyjlHQdL5qF5eyE0GQ8/XKgust/MHupYfBSyB+5CDB6qKoklkTwp9vVyW3kq60xK
-         kid9bXBXWWIL+gZVEgoMQv5AZa+F3cUyJpdt9Dq0EXaYfzZ9y+KHPa0mhvDcv1AN03Il
-         tvMejqiTvzIfMXCbbMF8rp0r68d7BqgSwAjfFcXwSIn3a9VvOF71NopTSOlOJx2BN76O
-         1zvMS8AB+ddZvGlndyFonCQGMB2eIwmZcMwkdFIxI49djf53mWHIhJCU88IIhTX5LHFe
-         2iWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ4hbk0t047uF55fzJT3h4wmsoF+0i01IQOhH4/wLK1Inly6FLs9e7eayKWd32jCW0YITEF+PRSOxWSKU0Kxd+Dzzp
-X-Gm-Message-State: AOJu0Yy2vtwd7wgDwPK1CPm2ZLDTRBdsJV2jbfo10aKiDxJBOTuFcLP6
-	4GKYb6Cg7sePmcZXQixjbfW8lf/j68xGIWHOdxbglaiJOvjU2WD70mRsBZioaHtYZrrQ9ltOyl+
-	a40XMBmiAYgaTT672H3UNhU+YBYHFto6gkt8ma0b8PpPiDjc2tA==
-X-Google-Smtp-Source: AGHT+IGtzSNJgjDc/nC7nFe1GhF37b1NuM2JGv6SOuE597isSLhoxrccb1PNcX9sCRP+cNte/jpd8sOR+EPxlmcj0Y8=
-X-Received: by 2002:a05:622a:1f9b:b0:431:6155:c602 with SMTP id
- cb27-20020a05622a1f9b00b004316155c602mr124400qtb.3.1712639621316; Mon, 08 Apr
- 2024 22:13:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="IAFTK/4q"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta27.mxroute.com (ZoneMTA) with ESMTPSA id 18ec14f805f0003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Tue, 09 Apr 2024 05:23:16 +0000
+X-Zone-Loop: 12fabe39237a0b5bca0eeffa5103bc4b16b8e964c707
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=E4MKkW6f1nSRZdtxgNHT1iqRYe28mUV0vTu6PYIA7AU=; b=IAFTK/4qWYzi0uoH+gzXRH277M
+	szUC1vHKbVHJD93VaP8lYVj7chkg2INkU9P3Twn8j5bvPr5tLsgB39GExHcDqmi5eL/twM0E7zQAa
+	vOEsfdAFAlJGt2o5IfIXHXi6t9iN4G4MYhCNas1emwK2+Yl7qHV746HCf8kvAUg1/FLR0v7UsAqdv
+	S577OjtwYuYwhlvxIoQkcQfdV1Ti5wFJ8aj3UEsBF8dn6r810HgKxE9nepl3ikqGR528RMTdRVm1P
+	M06VNj0ujBzCTMxqBnKEzgIJoc+oiTKaSkde7FVqhN0G7cKnNmG92NeiBkXxdTYlinJQ52sai+WA1
+	/QtIQjyQ==;
+Message-ID: <11326ea0-51fb-445c-bae3-f16c40af87a3@luigi311.com>
+Date: Mon, 8 Apr 2024 23:23:12 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240408231310.325451-1-saravanak@google.com> <20240408231310.325451-3-saravanak@google.com>
- <CAGETcx8gGcq01CwTZyn=Q0fSQkzMf6tshSmPr5YWYZuhhJVdXg@mail.gmail.com>
-In-Reply-To: <CAGETcx8gGcq01CwTZyn=Q0fSQkzMf6tshSmPr5YWYZuhhJVdXg@mail.gmail.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Mon, 8 Apr 2024 22:13:01 -0700
-Message-ID: <CAGETcx8j50dpovO-Mj0MjpYcw+n6T9ei6mo8tm7BVkcjfy_VVQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 2/2] of: dynamic: Fix probing of overlay devices
-To: Herve Codina <herve.codina@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Rob Herring <robh@kernel.org>, kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/25] media: i2c: imx258: Add get_selection for pixel
+ array information
+To: Pavel Machek <pavel@ucw.cz>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-12-git@luigi311.com> <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
+Content-Language: en-US
+From: Luis Garcia <git@luigi311.com>
+In-Reply-To: <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: git@luigi311.com
 
-On Mon, Apr 8, 2024 at 6:40=E2=80=AFPM Saravana Kannan <saravanak@google.co=
-m> wrote:
->
-> On Mon, Apr 8, 2024 at 4:13=E2=80=AFPM Saravana Kannan <saravanak@google.=
-com> wrote:
-> >
-> > Get fw_devlink to work well with overlay devices.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  drivers/base/core.c    | 10 ++++++++++
-> >  drivers/of/dynamic.c   |  8 ++++++++
-> >  include/linux/fwnode.h |  2 ++
-> >  3 files changed, 20 insertions(+)
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 5f4e03336e68..d856f9c5d601 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -237,6 +237,16 @@ static void __fw_devlink_pickup_dangling_consumers=
-(struct fwnode_handle *fwnode,
-> >                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
-> >  }
-> >
-> > +
-> > +void fw_devlink_pickup_dangling_consumers(struct fwnode_handle *child,
-> > +                                                struct fwnode_handle *=
-parent)
-> > +{
-> > +       mutex_lock(&fwnode_link_lock);
-> > +       __fw_devlink_pickup_dangling_consumers(child, parent);
-> > +       __fw_devlink_link_to_consumers(parent->dev);
-> > +       mutex_unlock(&fwnode_link_lock);
-> > +}
-> > +
-> >  static DEFINE_MUTEX(device_links_lock);
-> >  DEFINE_STATIC_SRCU(device_links_srcu);
-> >
-> > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> > index 19a1a38554f2..0a936f46820e 100644
-> > --- a/drivers/of/dynamic.c
-> > +++ b/drivers/of/dynamic.c
-> > @@ -237,6 +237,7 @@ static void __of_attach_node(struct device_node *np=
-)
-> >  int of_attach_node(struct device_node *np)
-> >  {
-> >         struct of_reconfig_data rd;
-> > +       struct fwnode_handle *fwnode, *parent;
-> >
-> >         memset(&rd, 0, sizeof(rd));
-> >         rd.dn =3D np;
-> > @@ -246,6 +247,13 @@ int of_attach_node(struct device_node *np)
-> >         mutex_unlock(&of_mutex);
-> >
-> >         of_reconfig_notify(OF_RECONFIG_ATTACH_NODE, &rd);
-> > +       fwnode =3D of_fwnode_handle(np);
-> > +       fwnode_for_each_parent_node(fwnode, parent)
-> > +               if (parent->dev) {
-> > +                       fw_devlink_pickup_dangling_consumers(fwnode, pa=
-rent);
-> > +                       fwnode_handle_put(parent);
-> > +                       break;
-> > +               }
->
-> I'm clearly calling this in the wrong location. Please move this logic
-> to __of_changeset_entry_notify() and for the case
-> OF_RECONFIG_ATTACH_NODE. Haven't fully thought through the DETACH
-> case, but it should work correctly for that case too. If not, I'll
-> take care of that next.
->
+On 4/3/24 12:46, Pavel Machek wrote:
+> Hi!
+> 
+>> Libcamera requires the cropping information for each mode, so
+>> add this information to the driver.
+> 
+>> @@ -116,6 +124,9 @@ struct imx258_mode {
+>>  	u32 link_freq_index;
+>>  	/* Default register values */
+>>  	struct imx258_reg_list reg_list;
+>> +
+>> +	/* Analog crop rectangle. */
+> 
+> No need for "." at the end, as it is not above.
+> 
+>> +	struct v4l2_rect crop;
+>>  };
+> 
+> If the crop is same in all modes, should we have it in common place?
+> 
+> Best regards,
+> 								Pavel
 
-I'll send out a RFC v2 with the code fixed up in a few minutes.
-
-> -Saravana
->
-> >
-> >         return 0;
-> >  }
-> > diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> > index 0d79070c5a70..4b3f697a90e8 100644
-> > --- a/include/linux/fwnode.h
-> > +++ b/include/linux/fwnode.h
-> > @@ -220,6 +220,8 @@ int fwnode_link_add(struct fwnode_handle *con, stru=
-ct fwnode_handle *sup,
-> >                     u8 flags);
-> >  void fwnode_links_purge(struct fwnode_handle *fwnode);
-> >  void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
-> > +void fw_devlink_pickup_dangling_consumers(struct fwnode_handle *child,
-> > +                                         struct fwnode_handle *parent)=
-;
-> >  bool fw_devlink_is_strict(void);
-> >
-> >  #endif
-> > --
-> > 2.44.0.478.gd926399ef9-goog
-> >
+I gave this a try similar to what was done on imx219 but its having
+issues and makes a bunch of changes to the following patches so we
+might need to hold off on that change for now.
