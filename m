@@ -1,195 +1,168 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F4823A2
-	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 10:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9C880BFC
+	for <imx@lists.linux.dev>; Tue,  9 Apr 2024 10:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712658572; cv=none; b=SDui65jyGAnGM/qj4udwLXqF6xq56X6ncirE05gR+PBqcoTDkRqQxwnOA99W/dyT6bugJYJ28wv3UMB575wK6gGo3erzDejSVWcO5IwziP20ffyF0Dxiq/Xe4VR994A4kyw9+LW2SZGVlmLG28o2deoU9I1j5wGAXyy2YEboK88=
+	t=1712659786; cv=none; b=F1VbmZ755IkcPjtwyLz3LI5l7iaPkDNdYR7RsvNveGZ4LRg6hFS0v2V7yZ64qVdfWlGkYOKT8cPDu/glp2RdSUlVapMciHigM0RN/Y/RR619NFgE0iP9YXHvfOsdSE6FfgLCzS91u5ww7SbjvtRiSIot4EXN/oDDb6h6Z2MQp6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712658572; c=relaxed/simple;
-	bh=dYhAReZ1vmDiZdobsjqXxIQmDiSdY/KMsiiQ8xms4CI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=YkkF6fRD5cfbxTJnMyggFYIi9y5Q13Z1du0edjdm/8/6SKgjYV4A+6smgknL9XuTTS3gv5a89YambjQJfNkEVooiWp4IuILyZW1K+ZhaK7DcRkfmxkprv85v9ywcfAYvQj0PfdYnc8FQh+RV372m8dEJ3UBj6mCF8ETgh+i9k70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r1HEQsBt; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r1HEQsBt"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-343d1003106so3248844f8f.1
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 03:29:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712658569; x=1713263369; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ykat5P5LfbO5un7nzciIKTkPn6WaTsCCKh0bvskUEKE=;
-        b=r1HEQsBtXsgrGPDs/npzU0zAj2H9r/vyKhr1Kv9QIOBGceF8xCiOWb0qxgIKz1RC72
-         YJOvAC7Bb0x2c4KfhQB2Ad+g1sFqFPkPrg5OZxhsSKquU8wfnSUy+hj59ZPn3UDYYC+T
-         EE5u9M/hvySD3r0k8UJbxk6/EmdKstpshvYZssTc+qd3mI4uxh7pMLIH5FegFQA/JVBp
-         tLG10fNzED5iRsBhBUhNbwGcdg1v3EO0GqHSZ+3bVYYuo4v4W5zuG7+yA5cV6xVE4EWr
-         9vVOKrJD9rs/o2++RHVxVhWGghklGU0YWf09xQnerYDyyUocTW9KIEfreTj+eeI8sbjX
-         hufg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712658569; x=1713263369;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ykat5P5LfbO5un7nzciIKTkPn6WaTsCCKh0bvskUEKE=;
-        b=qQABLWZbES/EWtn2m3WB6W6zmslBg9HmS6tKXnWXZa6Bk5/aeX3LCQZX4Jab4RDCv8
-         /DH+b4VBy8Oj5N9eNZWnlj9qq98lnTlL69sTUxYjM9GfjCwiooenvJfHFcGXccfP5lyn
-         hyn5FuS+jC04NBEK83qpSzjRGa/M59CsedjMktMR3ukOoyMBWeWfRGn8J3dNG+hkDDYv
-         8Yr4t7DoCwgggrgM7hWpcNJVkU+aPsj2CDWdLzJyPyPXB3YXuWFk1bdweO7RznrPDL42
-         yoiIEyfR9L6CCdDSKohvxACnN6GLr55z2QgBSq/UKu7xp9EM9fOjYWVvC3jN75+hM+kZ
-         ju3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXMReUNsL6QqDaS8gKG86DhwzRjCpYriwQcMdPx+f3xz5aeKDlKdhb+O5OkBQUnx0R/NS5PC0W5vHz8ACDmudJtCApa
-X-Gm-Message-State: AOJu0Yye7bP+Ejmebf3d2LmDijOgwbzWzIKqlHG9v025dWMuVJ6FpBxp
-	NS7yXjafqr85JLXHcZ0BUnjZH6Gj3Pzt43VGfMMYW288wK3zTOTXUw+gqiRFPzk=
-X-Google-Smtp-Source: AGHT+IHg/SYP1OwSQx1phS0Gr4gHr1mGzi2LrzlNYbGgaKVxscSxC6soUmqvYC9x1+rD989bWNX8kw==
-X-Received: by 2002:adf:e849:0:b0:343:e031:69b8 with SMTP id d9-20020adfe849000000b00343e03169b8mr9659991wrn.41.1712658568536;
-        Tue, 09 Apr 2024 03:29:28 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id r18-20020adfce92000000b00343d1d09550sm11145900wrn.60.2024.04.09.03.29.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Apr 2024 03:29:27 -0700 (PDT)
-Message-ID: <bad43869-b6d3-43ba-9509-8b1606c12969@linaro.org>
-Date: Tue, 9 Apr 2024 12:29:26 +0200
+	s=arc-20240116; t=1712659786; c=relaxed/simple;
+	bh=XXednxn3A2ELXwpsSYuPnlymvAJgKHfR1r+rrAGVfBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NxxFQ/kPxwEBUnXr3lzvjiTRSxGsuJDVUZoW1vzKJ0jvxnVDfwYnX+e3uXir5ndvy9jlFBnbSTN3JQG/CLxcEkLGISOMJZpWPkoRByWd0tlviSwYrs9RP8Tf8wSsQAzmZh+Epzvvf6wLlGK1VM0/Ppwv4dE8Q9rps6yzbDC/hyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A07B01007;
+	Tue,  9 Apr 2024 03:50:14 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 486E73F766;
+	Tue,  9 Apr 2024 03:49:42 -0700 (PDT)
+Date: Tue, 9 Apr 2024 11:49:39 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/6] firmware: arm_scmi: add initial support for i.MX
+ BBM protocol
+Message-ID: <ZhUdQ6M0GkL0do_l@bogus>
+References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
+ <20240405-imx95-bbm-misc-v2-v2-3-9fc9186856c2@nxp.com>
+ <ZhQxu8LVNKf5QDLm@pluto>
+ <ZhUDZGJilhczKlDD@bogus>
+ <DU0PR04MB94175384AD9113AC6F60546588072@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] ASoC: dt-bindings: imx-audio-spdif: convert to
- YAML
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
- broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <1712652644-28887-1-git-send-email-shengjiu.wang@nxp.com>
- <1712652644-28887-2-git-send-email-shengjiu.wang@nxp.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <1712652644-28887-2-git-send-email-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DU0PR04MB94175384AD9113AC6F60546588072@DU0PR04MB9417.eurprd04.prod.outlook.com>
 
-On 09/04/2024 10:50, Shengjiu Wang wrote:
-> Convert the imx-audio-spdif binding to YAML.
-> 
-> When testing dtbs_check, found below compatible strings
-> are not listed in document:
-> 
-> fsl,imx-sabreauto-spdif
-> fsl,imx6sx-sdb-spdif
-> 
-> So add them in yaml file to pass the test.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  .../bindings/sound/fsl,imx-audio-spdif.yaml   | 67 +++++++++++++++++++
->  .../bindings/sound/imx-audio-spdif.txt        | 36 ----------
->  2 files changed, 67 insertions(+), 36 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
->  delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-spdif.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
-> new file mode 100644
-> index 000000000000..fec008ffae43
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
-> @@ -0,0 +1,67 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl,imx-audio-spdif.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale i.MX audio complex with S/PDIF transceiver
-> +
-> +maintainers:
-> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,imx-sabreauto-spdif
-> +              - fsl,imx6sx-sdb-spdif
-> +          - enum:
-> +              - fsl,imx-audio-spdif
+On Tue, Apr 09, 2024 at 09:13:33AM +0000, Peng Fan wrote:
+> Hi Sudeep,
+>
+> > Subject: Re: [PATCH v2 3/6] firmware: arm_scmi: add initial support for i.MX
+> > BBM protocol
+> >
+> > On Mon, Apr 08, 2024 at 07:04:43PM +0100, Cristian Marussi wrote:
+> > > On Fri, Apr 05, 2024 at 08:39:25PM +0800, Peng Fan (OSS) wrote:
+> > > > From: Peng Fan <peng.fan@nxp.com>
+> > > >
+> > > > The i.MX BBM protocol is for managing i.MX BBM module which provides
+> > > > RTC and BUTTON feature.
+> > > >
+> > >
+> > > I appreciate that you added versioning but I think a bit of
+> > > documentation about what the protocol and its comamnds purpose is
+> > > still lacking, as asked by Sudeep previously
+> > >
+> > >
+> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore
+> > > .kernel.org%2Flinux-arm-
+> > kernel%2FZeGtoJ7ztSe8Kg8R%40bogus%2F%23t&data=
+> > >
+> > 05%7C02%7Cpeng.fan%40nxp.com%7Ce92ff78b9126447afe9708dc587358d
+> > 4%7C686e
+> > >
+> > a1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638482499632395762%7C
+> > Unknown%7C
+> > >
+> > TWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiL
+> > CJXVC
+> > >
+> > I6Mn0%3D%7C0%7C%7C%7C&sdata=7QP%2BkkjHA3Sa0CdcbbObGG4kgYYK
+> > XAGA2r%2F%2F
+> > > x0MogqU%3D&reserved=0
+> > >
+> >
+> > I have decided to ignore all these vendor protocol patches until they have
+> > some documentation to understand what these protocol are for, what are the
+> > commands, their input/output parameter details, any conditions are the
+> > caller and callee,..etc very similar to SCMI spec.
+>
+> Where do you expect the documentation to be put?
+>
 
-If there is going to be any new version/resend:
-This one should be const, not enum.
+To begin with, we need all these vendor protocols in a directory say
+vendors/nxp under drivers/firmware/arm_scmi. It can be a simple text file
+under that. We can see later if we need any more formal version elsewhere
+but that shouldn't be a blocker for these changes.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> similar as scmi_protocol.h, put in scmi_imx_protcol.h?
+> >
+> > To start with can you please expand what is BBM or MISC protocol is ?
+>
+> ok. Sorry for missing your previous comment in v1. Let me write here briefly
+> first.
+>
 
+Thanks
 
----
+> The Battery Backup (BB) Domain contains the Battery Backed Security
+> Module (BBSM) and the Battery Backed Non-Secure Module (BBNSM).
+> BBM protocol is to manage i.MX BBSM and BBNSM. This protocol supports
+> #define COMMAND_PROTOCOL_VERSION             0x0U
+> #define COMMAND_PROTOCOL_ATTRIBUTES          0x1U
+> #define COMMAND_PROTOCOL_MESSAGE_ATTRIBUTES  0x2U
+> #define COMMAND_BBM_GPR_SET                  0x3U
+> #define COMMAND_BBM_GPR_GET                  0x4U
+> #define COMMAND_BBM_RTC_ATTRIBUTES           0x5U
+> #define COMMAND_BBM_RTC_TIME_SET             0x6U
+> #define COMMAND_BBM_RTC_TIME_GET             0x7U
+> #define COMMAND_BBM_RTC_ALARM_SET            0x8U
+> #define COMMAND_BBM_BUTTON_GET               0x9U
+> #define COMMAND_BBM_RTC_NOTIFY               0xAU
+> #define COMMAND_BBM_BUTTON_NOTIFY            0xBU
+> #define COMMAND_NEGOTIATE_PROTOCOL_VERSION   0x10U
+>
 
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
+Hopefully description of each of these commands cover what GPR above means
+really.
 
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
+> For now in this patchset for linux, we only use RTC, and BUTTON
+> for system wakeup
+>
+> For MISC protocol, it is for various misc things, such as discover
+> build info, get rom passed data, get reset reason, get i.mx
+> cfg name, control set(for gpio expander under m33 control and
+> etc). The command as below:
+> #define COMMAND_PROTOCOL_VERSION             0x0U
+> #define COMMAND_PROTOCOL_ATTRIBUTES          0x1U
+> #define COMMAND_PROTOCOL_MESSAGE_ATTRIBUTES  0x2U
+> #define COMMAND_MISC_CONTROL_SET             0x3U
+> #define COMMAND_MISC_CONTROL_GET             0x4U
+> #define COMMAND_MISC_CONTROL_ACTION          0x5U
+> #define COMMAND_MISC_DISCOVER_BUILD_INFO     0x6U
+> #define COMMAND_MISC_ROM_PASSOVER_GET        0x7U
+> #define COMMAND_MISC_CONTROL_NOTIFY          0x8U
+> #define COMMAND_MISC_REASON_ATTRIBUTES       0x9U
+> #define COMMAND_MISC_RESET_REASON            0xAU
+> #define COMMAND_MISC_SI_INFO                 0xBU
+> #define COMMAND_MISC_CFG_INFO                0xCU
+> #define COMMAND_MISC_SYSLOG                  0xDU
+> #define COMMAND_NEGOTIATE_PROTOCOL_VERSION   0x10U
+>
 
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+And same here. Just as an example what BUILD_INFO ? There will be 10s if not
+100s of different image in the system. What does this BUILD_INFO provide ?
+And why is this important over version or release info ?
 
-Best regards,
-Krzysztof
+These are simple pointers, expect more questions like this if the document
+is not self sufficient in explaining such details.
 
+--
+Regards,
+Sudeep
