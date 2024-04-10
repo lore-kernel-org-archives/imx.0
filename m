@@ -1,60 +1,61 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7706524A
-	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 06:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31892D05D
+	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 06:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712730631; cv=none; b=CceD85feIr7pz2gJkVrRWEfZvaerggGc9FpSJXtvYkwuBZvfO200Ttpvj1oNtBv20MHO8q84SWzfSLdev69tRQRAvxvhccKK/GiErv3Jw3YvrOnOfABG3wJgkZzm2t7crAoMdcjTBeNyh1PPO3oYRavfdyW2VfHXjr5Gf6P78NQ=
+	t=1712730754; cv=none; b=mFJWHUuHHv4QyOhemJqMM/qYAdeaKa6o4b5i1BtGZyEUMEdHeT0ZGKEe9S3i9NoSHhEJiq23Yl67ztV2DLsN+yTQwhxQc1YvAh0vhLon3FxPCynamIL3DF0PRzx1legRyZ1t9pwH0jNlKfVwZ6SFlYteUJMGMFuFm8B9/Mv6fQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712730631; c=relaxed/simple;
-	bh=snLcBzW5JAfOjL33AeXOFsWB7BGPbRw5aXOn3Slj5aE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IUCW3Ez2eILMdLs0WRoS04k8kly3l0IOIeUPxsNCZbA0lnkvBAe+wqCgksSsJO8JWxamDeSyEKzOYnMzpACpZJcSoJvmx6pC5iyeV2MZG2UhJ5IuZB9OHATEZXtQMfQWVH3TsIdlNGP05e8TgEEKoWB5k67UNWXu1sBxesYJjs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xvyys8jN; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1712730754; c=relaxed/simple;
+	bh=tqpijNMZVhaemUA7jcJvu2ULxhVHVLvCejLdP80YXEE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QB1GgRGSs+5xdU51ovD21+VUdz0lyBEn/GHZZdLfYjuTYNIP7D0QsDGvYkyNbu76D/hHtlpKIP/+jEIdtXKD8h/pXLeacVWNw1dJiU8d9x4hPckjmKmZ/Biquux9sXsTugL2ucS+rBXxymHECYhw8bH8Ed19ETnL7vfk5+sF0rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cpg48JPd; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xvyys8jN"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41786893a0bso603525e9.1
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 23:30:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cpg48JPd"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a44ad785a44so744755466b.3
+        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 23:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712730628; x=1713335428; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=gWci41MJZyAHUWq9dFdkgNIb3G6A9TJ1w2pD10mN2/A=;
-        b=xvyys8jNwFEQqZT0xLhXjyznYOZLIykHD43XNkWJfAzRDvL0W60pYeQgrFSFQc7xkd
-         oazyGt73E7sq0jTd0Yxari8oE+B0e7yt8Etjorqyruna8n7arpKlDc+uK8jsMZhiPq7b
-         ZQUDByvW2h6Lfvr7mQOwW/FNHGSlm4xCNF99H/yGfQlBXFJPAKLZCbDxc+7Zae+y+l3t
-         +5MuONLgJgQkx/laAl2cZVo5zgjnKDzQhKnIeAO/aXQLBhmQUn35ex3OVIQoEjkISpW3
-         ZOKayaSP2wo8zXY6lRecQe6Z16g+2XXhRQLfC61P3wxO5a0hV2gocn3uVaHdwHw+zEcB
-         n1iQ==
+        d=linaro.org; s=google; t=1712730751; x=1713335551; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=o7EWNXZ7ahmiyoCceER4yIyMNYDrhM2QQjatZB79UKA=;
+        b=cpg48JPdWNAJweAGacSvt1CceL5peU+PrOXGsiZh3Gma54jhJtE7dMmyXNmxkQH9s8
+         soVDQ3e/VaFuJGxrCvz7wvW3kpDXB2bAXdiQ9GkCWyGzqu3vwm+ZD0QI2t7rN7WAGVSn
+         5LN5CNHjW3Zj88mQyWbFi3lhxzeTkAC1U7w1+6RZ51ednMhETDc7Nuz1lA8jUfvnD5hy
+         oIrpYPtZfxlNUiSUL+dGjCjYTWqjSXimWFnIBzFKL/xoc8tvTmXpQJs8jbnH8BJolhR4
+         UfWvAoqNFbCGzZszW5PxL4nsPQJn1AHp1AWSOptcGMRTI8CZ2QTbb+UKR0pibnwkWawV
+         sZDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712730628; x=1713335428;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gWci41MJZyAHUWq9dFdkgNIb3G6A9TJ1w2pD10mN2/A=;
-        b=lOuZ4Qqx2l7HSiWBnKG5lrrtSzgcrO6GaNkC2DgacZkIPypL0Gctl+K6/8SbAMzg1k
-         XPlzo8Q2FsRFEjy0smiwXdJbHMZCWSFY0XaqE9hmNAYYMS21ph4UGnXGpML+7G/Mmm5z
-         JGXcyoxz+VoumiBm+TqDSqnzkTpqwrWOyfy0dJI8Nz+mnyL712x+hhrqO6JVr1SIjwjZ
-         3inKB0p9ly3rwESxiVn5bdDfs65det4zacbXqipUrM4CIOXmL1ql3/f5rj/mXDQwR7kX
-         E9VjyNxFj02B+Zs68/wBRVgxChg+UqBaighdPnKPuV5ZXe8QuQY+FujxmTytQgbpE0YN
-         BAog==
-X-Forwarded-Encrypted: i=1; AJvYcCXTeSeshXQD6+AlwS6rVFzs6hs4qUYgcrvmAVCYMu7w8RyBwCDfUKfIhpLjRhm+A060WippPqSFOKUqdo8Ef0GiOF/C
-X-Gm-Message-State: AOJu0YyaKMK0Y8h8GXzxRriKeG+7jSlmuLcufDV64BsJYW0srOlv2zHB
-	rKLTSRmGZ9LU5zmzZrmFXk+uveSz3pDpf6Gzj3vaN5RmpJCufafSSRPM6GqsAoc=
-X-Google-Smtp-Source: AGHT+IF0eTsJpLQnt6d4A/NrzBUkHTYbJp6X8EjIxxI0DFlEzYReQ/Xs/F3dE6+19zJczYeIySaAfA==
-X-Received: by 2002:a05:600c:4f08:b0:416:259d:b250 with SMTP id l8-20020a05600c4f0800b00416259db250mr1522584wmq.18.1712730628148;
-        Tue, 09 Apr 2024 23:30:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712730751; x=1713335551;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o7EWNXZ7ahmiyoCceER4yIyMNYDrhM2QQjatZB79UKA=;
+        b=WTlqAxB3u3gGMEj0Vzu/hH93aRUxptcxA9EDxNRMalLeFyGKVThvygGEKMrP3SQ6kp
+         RUj7AHsFAWrwiwhVmR7FHKY/x40Cu/g2OYvOx+3dH0GmA+68GTUYH5RI6nGILdLQHbav
+         qjR1aXjomuCmHxoEFV3/rA8ZCCroSVdUuJ85ArsZ53St+wGsRJTLa5sbNoPERXjmUl9c
+         gCPUWV5HqF6VgnADDM4g/Bkq2Q6NwsJlFBSZNLZ4CKvNeBDYPXV81qc/8bIYBn0s5SWU
+         rNZ/H/eCKTngwbnO4KF0UlesJpdvanq7X4htpWZzdZWDGEvrLsZkeRlTzzN8h5HriZM/
+         mhRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCC6S9jVi2h6lEV2oFGbxyyaOJYh96ZaSxrqELhig8wO/xeTBaWWw0A1kqEbPycSnL7zIqdWxUXDwP+TTe2kzP2FCH
+X-Gm-Message-State: AOJu0YwEdyuScnJmYEOTDRh8GFcs1evAgIGwvZ5FzoTo5YycihfJ6xBK
+	2dp50af22gL1RV4M0ciXnvch4zeVXq6SzfpfP2IwnnGCTe7ki78DnsXjG1wMwFKtWHFX11yJhVZ
+	9
+X-Google-Smtp-Source: AGHT+IEEsAQcH/oLWPV/JGlZ4uSssWErulLZ/+Oov+2FXWP1SnehGQ427YNJfD5zABFDW2w/qKkpRA==
+X-Received: by 2002:a17:906:91c8:b0:a51:f142:e550 with SMTP id b8-20020a17090691c800b00a51f142e550mr887280ejx.29.1712730751059;
+        Tue, 09 Apr 2024 23:32:31 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id f13-20020adfdb4d000000b00341c6b53358sm13049534wrj.66.2024.04.09.23.30.26
+        by smtp.gmail.com with ESMTPSA id q26-20020a170906b29a00b00a51dd500071sm2893449ejz.169.2024.04.09.23.32.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Apr 2024 23:30:27 -0700 (PDT)
-Message-ID: <680f8830-6cd8-433b-85b7-439070bc528f@linaro.org>
-Date: Wed, 10 Apr 2024 08:30:25 +0200
+        Tue, 09 Apr 2024 23:32:30 -0700 (PDT)
+Message-ID: <383141cd-7f6f-4ed0-945b-7761833ecc35@linaro.org>
+Date: Wed, 10 Apr 2024 08:32:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,6 +65,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/2] dt-bindings: dma: fsl-edma: remove 'clocks' from
  required
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Frank Li <Frank.li@nxp.com>
 Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
  dmaengine@vger.kernel.org, imx@lists.linux.dev,
@@ -72,8 +74,8 @@ Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
 References: <20240409185416.2224609-1-Frank.Li@nxp.com>
  <b15ad271-037e-4ee3-ad88-e8068d31c8c8@linaro.org>
  <ZhWuetC8bRvDyxgX@lizhi-Precision-Tower-5810>
+ <680f8830-6cd8-433b-85b7-439070bc528f@linaro.org>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -118,72 +120,87 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZhWuetC8bRvDyxgX@lizhi-Precision-Tower-5810>
+In-Reply-To: <680f8830-6cd8-433b-85b7-439070bc528f@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/04/2024 23:09, Frank Li wrote:
-> On Tue, Apr 09, 2024 at 10:02:32PM +0200, Krzysztof Kozlowski wrote:
->> On 09/04/2024 20:54, Frank Li wrote:
->>> fsl,imx8qm-adma and fsl,imx8qm-edma don't require 'clocks'. Remove it from
->>> required and add 'if' block for other compatible string to keep the same
->>> restrictions.
+On 10/04/2024 08:30, Krzysztof Kozlowski wrote:
+> On 09/04/2024 23:09, Frank Li wrote:
+>> On Tue, Apr 09, 2024 at 10:02:32PM +0200, Krzysztof Kozlowski wrote:
+>>> On 09/04/2024 20:54, Frank Li wrote:
+>>>> fsl,imx8qm-adma and fsl,imx8qm-edma don't require 'clocks'. Remove it from
+>>>> required and add 'if' block for other compatible string to keep the same
+>>>> restrictions.
+>>>>
+>>>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>>> ---
+>>>>
+>>>> Notes:
+>>>>     Change from v2 to v3
+>>>>       - rebase to dmaengine/next
 >>>
->>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>> ---
->>>
->>> Notes:
->>>     Change from v2 to v3
->>>       - rebase to dmaengine/next
+>>> This fails...
 >>
->> This fails...
-> 
-> What's wrong? 
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git/log/?h=next
-> 
+>> What's wrong? 
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git/log/?h=next
 >>
 >>>
->>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>> index 825f4715499e5..657a7d3ebf857 100644
->>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>> @@ -82,7 +82,6 @@ required:
->>>    - compatible
->>>    - reg
->>>    - interrupts
->>> -  - clocks
->>>    - dma-channels
->>>  
->>>  allOf:
->>> @@ -187,6 +186,22 @@ allOf:
->>>          "#dma-cells":
->>>            const: 3
->>>  
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +	  contains:
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+>>>> index 825f4715499e5..657a7d3ebf857 100644
+>>>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+>>>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+>>>> @@ -82,7 +82,6 @@ required:
+>>>>    - compatible
+>>>>    - reg
+>>>>    - interrupts
+>>>> -  - clocks
+>>>>    - dma-channels
+>>>>  
+>>>>  allOf:
+>>>> @@ -187,6 +186,22 @@ allOf:
+>>>>          "#dma-cells":
+>>>>            const: 3
+>>>>  
+>>>> +  - if:
+>>>> +      properties:
+>>>> +        compatible:
+>>>> +	  contains:
+>>>
+>>> It does not look like you tested the bindings, at least after quick
+>>> look. Please run `make dt_binding_check` (see
+>>> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+>>> Maybe you need to update your dtschema and yamllint.
 >>
->> It does not look like you tested the bindings, at least after quick
->> look. Please run `make dt_binding_check` (see
->> Documentation/devicetree/bindings/writing-schema.rst for instructions).
->> Maybe you need to update your dtschema and yamllint.
+>> Strange, Test passed
+>>
+>> make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,edma.yaml
+>>   LINT    Documentation/devicetree/bindings
+>>   DTEX    Documentation/devicetree/bindings/dma/fsl,edma.example.dts
+>>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>>   DTC_CHK Documentation/devicetree/bindings/dma/fsl,edma.example.dtb
 > 
-> Strange, Test passed
+> Nope, you tested other patch. Just look at your second patch for this.
+> When reviewer points to errors to your code, please investigate?
 > 
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,edma.yaml
->   LINT    Documentation/devicetree/bindings
->   DTEX    Documentation/devicetree/bindings/dma/fsl,edma.example.dts
->   CHKDT   Documentation/devicetree/bindings/processed-schema.json
->   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->   DTC_CHK Documentation/devicetree/bindings/dma/fsl,edma.example.dtb
+> NAK, fix your patches.
 
-Nope, you tested other patch. Just look at your second patch for this.
-When reviewer points to errors to your code, please investigate?
+And to prove it, so you will stop wasting my time:
+../Documentation/devicetree/bindings/dma/fsl,edma.yaml:192:1: found
+character that cannot start any token
 
-NAK, fix your patches.
+../Documentation/devicetree/bindings/dma/fsl,edma.yaml:192:1: [error]
+syntax error: found character '\t' that cannot start any token (syntax)
+
+../Documentation/devicetree/bindings/dma/fsl,edma.yaml:192:1: found
+character that cannot start any token
+
+Documentation/devicetree/bindings/dma/fsl,edma.yaml: ignoring, error
+parsing file
+
 
 Best regards,
 Krzysztof
