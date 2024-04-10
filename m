@@ -1,138 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488D3176FDB;
-	Wed, 10 Apr 2024 17:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D08C17F378
+	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 17:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712769568; cv=none; b=tyIe5js0Y8bMEotV3Bj00d6TsBkx0wD/CT0uHzc0pPu05+N00LmN4emviz0Au0WlCZHg4tXlwD2wo5oi+CrtpU0zUPOq+fU4F/ocSBouRxLu+PJGgnR5XIiwohlu9Uq0BO9rQAfeAMZlqdbqi9Vc5dWiG/lK2X7v+7Ij3kJw+q4=
+	t=1712771516; cv=none; b=fQUECXg0QVMNYstcTEAxG37nTRxfJ+0qfbccxNkwtgVK+kwQeaNrbVLQU4Pb3+wYhfEiuP65j0KN7Ti1kLZaOBcmUMTwEDsPVlk3ZHXvI5Boj9QMekrC7fomRMQn5Y2oEd8+yB7jjSgIKtThmBBkliNGVScdaX85u0+LGyL7zKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712769568; c=relaxed/simple;
-	bh=W5eX1rU/9P9HprqQ9cPTQC7SCZNm4aigfiIYicPhLKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SKblNNuSWyJPUv2X9SC1bbUypqDpptpkN3/q+DzK/IvCty31pRdpqYA4rFkEIcsJHQyef4H5xykNLwwW8i2iindizIC8TKaQIM/1fNFVQjYIi4sEhmHSWKijIdRfWM8z0nWa8GhqVv3R62MxaW1q0KfyTEi65dgQzARgdDlIByw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8R+u2Lc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712771516; c=relaxed/simple;
+	bh=GNGxTomVe9SYi6ouodd8VfUTWpqqNdcbzrmwqYTTm0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=c+qGJEfnOBIARVsAoG3ICpe+vmFVyrYXoSBOw+aHw9gkWjUlPu6WhCssHfIc4syAOviE4WlB7G+vvPLj1dj9Pegd4uzSCLJFPGZFy5Y7FD9Fx4Qme4bpbQTMIC3bW/e5YbsJ+XkDOcik1d8y712+LlN5e3kuFW9GNblstdSi9lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OIOQi4a+; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8R+u2Lc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919E3C433F1;
-	Wed, 10 Apr 2024 17:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712769567;
-	bh=W5eX1rU/9P9HprqQ9cPTQC7SCZNm4aigfiIYicPhLKs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g8R+u2LcMjuhESgE2vdJd7RAdvDYicV1iPM5LiK+Cex1rJ4Kn+rqiOOKA4YgGBKvU
-	 6wirhtTbJho6uV8fUZjciCHslvPTUwhW4UtoLt0zHxFxemaIr2QGwk1TON+DL5DPwh
-	 h4NyvSfMciSRUzEYpe0gpKjAsugwpEW/EoOvZdRYg0QWazSXf8I5sdanN5s321ELEa
-	 WJiUI7rmI6eD2Nw2Re3rpobNscN0B/NJ0kDU++7gyEtBdjRNw250mUOIQAgU3B7lA7
-	 XlYVjideFzkiT88e516rW9xYi1ojtQpflKSFz+BxOzTxZ829xErrWrYMEn+5+DHuMX
-	 ZuGXuEGz8Zh6A==
-Date: Wed, 10 Apr 2024 12:19:25 -0500
-From: Rob Herring <robh@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] dt-bindings: firmware: add i.MX SCMI Extension
- protocol
-Message-ID: <20240410171925.GA564262-robh@kernel.org>
-References: <20240405-imx95-bbm-misc-v2-v2-0-9fc9186856c2@nxp.com>
- <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OIOQi4a+"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-516d3a470d5so6838274e87.3
+        for <imx@lists.linux.dev>; Wed, 10 Apr 2024 10:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712771512; x=1713376312; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8EH9Pxm+MZUB9uIJB2EAX8UISWeLkvrbIq4NwMfK/no=;
+        b=OIOQi4a+tvUuEpoxk4n+GafrDBvpYK4mhWn+1I229pKhusKbjLmncE5h86nGvnKQPA
+         PJr/MvPPzJvvPQRcMvIiKfxbHCwUAVWNGq0RlW42NmsMBXwu8wGeDOowGB4qfgvDP27o
+         s1MfpWCa2PAAA0vT8Z9FycweDYaiOZTJ8UtJB9pC56IG0ZwXxO/JT9lRH/Q2cDRjSgaU
+         IE2zoSCtEQgGz3BQI+MgfCsQa4Vq1R+FnPZY63OfGNXpTY1//d3tOj7KQsGngSSz71Gb
+         15shbdRWzIqrIAOC8mNoMB9hRyz3aEAKF9W4b5xcdbBTwexYfIr9DK6ypkKcfkMWK/KL
+         zcbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712771512; x=1713376312;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8EH9Pxm+MZUB9uIJB2EAX8UISWeLkvrbIq4NwMfK/no=;
+        b=Dg0vXRL/QafnexJzUGKe7W3R1frdDtqWsO4a1Q2jl7zdqMNISvxk6yKhiId+viOomH
+         d7wuMVsY0DMziA9LkwGdCWv9GPlum08pclBEpk6IPCaZAYviCxcqY+PIrqQwZmnX45QD
+         yyyHYOmKeSONNzCV3DDy0DSuqJZiRnqVMbr0B1ickCbnI59HO25WaZacSV+Fkpa+/DFO
+         94xef3WueiTB6atkhoVsR1SzcdnbLC2unf08jILZ3c8VShId4QK6mTKln2JgUY9HbsnQ
+         pDpLgS3PZBHgEn+zKe3P/qmVRnOSLdN7wDmv8dtusyJvsOfL9a6Dv52q/sUThW26cbCw
+         o7aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKAXBMzdD4zUdtilWXFKAZ+Xc1hYPrjl0HPm7l/rZBgi+rsx0G6K8HGBsqIMQZovnQn9LnojZuFe17sXMS9BlxetCq
+X-Gm-Message-State: AOJu0YwTOhbrszZ70ugxx/SbfDuq4YY5AZiGDaHIRK0PnE1x39ZMy5R4
+	JgOBEged3584OKnY8vNzCjEqMTzqOxpfa/Aexx8+7JAl8UbB0zIGuv5IuGQraPs=
+X-Google-Smtp-Source: AGHT+IFEmuU/yIHrAY8NuucyCaQFKu+VnZxGulNdN7KpD4j1m+7zPUv7hS0ZitZBToM3exxMIntetw==
+X-Received: by 2002:a05:6512:2c95:b0:516:c600:64e8 with SMTP id dw21-20020a0565122c9500b00516c60064e8mr2674529lfb.1.1712771512162;
+        Wed, 10 Apr 2024 10:51:52 -0700 (PDT)
+Received: from [172.30.205.26] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id x26-20020a19e01a000000b00515a87668a1sm1905343lfg.77.2024.04.10.10.51.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Apr 2024 10:51:51 -0700 (PDT)
+Message-ID: <3ae3891c-32cf-450c-a68d-0f80f9192bea@linaro.org>
+Date: Wed, 10 Apr 2024 19:51:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240405-imx95-bbm-misc-v2-v2-2-9fc9186856c2@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] pinctrl: qcom: sm7150: fix module autoloading
+To: Krzysztof Kozlowski <krzk@kernel.org>, Dong Aisheng
+ <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sean Wang <sean.wang@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ zhanghongchen <zhanghongchen@loongson.cn>, Yinbo Zhu <zhuyinbo@loongson.cn>,
+ Bjorn Andersson <andersson@kernel.org>, linux-gpio@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org
+References: <20240410170150.248428-1-krzk@kernel.org>
+ <20240410170150.248428-4-krzk@kernel.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240410170150.248428-4-krzk@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 05, 2024 at 08:39:24PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+
+
+On 4/10/24 19:01, Krzysztof Kozlowski wrote:
+> Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
+> based on the alias from of_device_id table.  Pin controllers are
+> considered core components, so usually they are built-in, however these
+> can be built and used as modules on some generic kernel.
 > 
-> Add i.MX SCMI Extension protocols bindings for:
->  - Battery Backed Secure Module(BBSM)
->  - MISC settings such as General Purpose Registers settings.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  .../devicetree/bindings/firmware/imx,scmi.yaml     | 80 ++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/firmware/imx,scmi.yaml b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
-> new file mode 100644
-> index 000000000000..7ee19a661d83
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/firmware/imx,scmi.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2024 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/firmware/imx,scmi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: i.MX System Control and Management Interface(SCMI) Vendor Protocols Extension
-> +
-> +maintainers:
-> +  - Peng Fan <peng.fan@nxp.com>
-> +
-> +allOf:
-> +  - $ref: arm,scmi.yaml#
 
-This needs to be the other way around. Add a ref to this file in 
-arm,scmi.yaml under an 'anyOf' entry.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-> +
-> +properties:
-> +  protocol@81:
-> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
-> +    unevaluatedProperties: false
-> +    description:
-> +      The BBM Protocol is for managing Battery Backed Secure Module (BBSM) RTC
-> +      and the ON/OFF Key
-> +
-> +    properties:
-> +      reg:
-> +        const: 0x81
-> +
-> +    required:
-> +      - reg
-> +
-> +  protocol@84:
-> +    $ref: 'arm,scmi.yaml#/$defs/protocol-node'
-> +    unevaluatedProperties: false
-> +    description:
-> +      The MISC Protocol is for managing SoC Misc settings, such as GPR settings
-> +
-> +    properties:
-> +      reg:
-> +        const: 0x84
-> +
-> +      wakeup-sources:
-> +        description:
-> +          Each entry consists of 2 integers, represents the source and electric signal edge
-> +        items:
-> +          items:
-> +            - description: the wakeup source
-> +            - description: the wakeup electric signal edge
-
-No constraints on the entry values?
-
-> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> +
-> +    required:
-> +      - reg
-> +
-> +additionalProperties: false
-
-And then this can be true.
-
-Rob
+Konrad
