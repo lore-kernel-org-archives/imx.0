@@ -1,175 +1,271 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB4E15921E
-	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 11:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31BE157472
+	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 12:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712746904; cv=none; b=L4q0NOG5wiTfKtzrTAeoNSiCXFx4p00jHrmztdH2LONuJwrZYa4cbZsO0MOq9HhuS/lZB7kTx4STPXnjGQs6HCNcPMwPAjGXdGrNYLCAgXs0LoUlwvP9Fph/vza00KMAIZylMCBCzYgdrFy+eXwPVHhRQRbEXhkyAavwvAlMBW4=
+	t=1712752512; cv=none; b=TF9EMFOCSy5L6Cp3RusV4MCbyfU91MuJHyg+o92FsGJ/dyp/cjrsZkPibKEqtyBsfxs7aSp9a0xfetFoWMupXlOcgtYDgMpjvUxpP3phAIp8MKCAg3ctkjJ+tVKAv3xWzx/Jqhh8lI7BLt2IwXPxkaaJyiuDWiXE2IgwhtfepjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712746904; c=relaxed/simple;
-	bh=0GIExPDDJmkcKoTRQsN7KJdje7gDkY/f7sV07NtyAj8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DWAo3HF+2UUqfoVvjzvwf6CYApCgr8LXap3emMgA0B30UE5XwIyG1szl/8EqmXtMaFk8X2dZRFA1JPLVx31x+rNsap+fbB1CR/i5d+js67AX3vjiGqVoOw9XQveZkli8O2f17Ol7uAH0X3M7eQiKi83hQTx/mlPy4RfeM1F+f+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GDmGEnIh; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1712752512; c=relaxed/simple;
+	bh=zIUfJWhof1UMg6uEwOAu/mj91VoIle+JxLjGJ7YPwWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uzA/Ez6vbIqJMMTiD9ym2otB4SH4MoHjcjKFqduo4w/WKtfBluwvd1F9g/nm1Gad9R8ItqL1tpv8jwEUwjrbj6Pj/gNRo1GMpyp3eR6WssfQO3mou8TOaQWFTo0rxmOJTG0gdmPCgWRNAhKqvkgcE3OSecRpmrAVqhIj/yaSkyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BKigrls3; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GDmGEnIh"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4167fce0a41so16149455e9.0
-        for <imx@lists.linux.dev>; Wed, 10 Apr 2024 04:01:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712746902; x=1713351702; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0GIExPDDJmkcKoTRQsN7KJdje7gDkY/f7sV07NtyAj8=;
-        b=GDmGEnIh9LUxzHyjres1G1ModK1XlvpRDDSgtx68A+i8QcNQyBjKXYsOrFU8a30rdX
-         Zu3H68Hk7Ik7P72QZQjJ67pbkirNQHTEFYbfvFw/Zd1jne7Q7+GhvnZdOmpwn+cy3e2u
-         WuNG2nEMeAnUOOiXMcZNj3YG60ExioiAOlxV6QcGDL78tF6Pu0SQR9ZwFllLq8BX/R+M
-         M8q9x0L3StunH+UWQeuDBWkai/qz7wm/JCfPg/inAnHAcPmrZ+xdXTZfNC3se8XBo9Vw
-         vsy8Z+oYaxZa4woWCLwB13SKs1PVxisYlTjXDKaGJYpg3oSoIRYU6yjmeK9kO5C8vFoo
-         o9nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712746902; x=1713351702;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0GIExPDDJmkcKoTRQsN7KJdje7gDkY/f7sV07NtyAj8=;
-        b=tWPyQEWgmgmXrODTGSUXs9x1VQhAhM0SgfGTYvnXXkTI7Uoesq7ASZcPBZQ38COgTv
-         waK6+ChyN8jtDEba2XvbG4d7qHqGZ5uq71LMun1PwHEa86qEqmbkt6yBx/+00mRMqOcC
-         Zcog5XCLdEY8XGXHGFjNAcJ7Ps/aQVlEyxsKPavSrFWAJfrW5idFF/uKpssOwjp37AJv
-         B2CTR5hsL8DWSZFP4Y2qvwY1ksdhdhXK6X5huay/9rlnNCQfm4VcSmcX/fghsEUW6CoL
-         ltCYm3QATzUMSEdbjBMPpmEgWlNaq46S3cH9UVgrLNiWZ66ztKck8vspXk0fpzAA0EK7
-         XDJw==
-X-Forwarded-Encrypted: i=1; AJvYcCXNZNyJVdOAFlfPnqRsIuvrFJjmtpPjbe7DhDQ5lHFWw2vxAihRpiZkU+PfNWERtB7Zws3nvSn6A40DGNtbNcoVvTQ9
-X-Gm-Message-State: AOJu0Yye+wX45xW9aeQ85un+mLCSUrSIdICaSWQx9eg6XF1cLzP3KmND
-	1G9Bs5ExyOBEXCBhPFuty4Z29pWm+EwK3WTspqkLsC6W3UKzt7Yd
-X-Google-Smtp-Source: AGHT+IHKoa80tndzG5LjQajNgoSTiqx34Q91ukfSPKmqksag+EAzMft0lIfxggHx5b0NmLu7IA3Azw==
-X-Received: by 2002:a05:600c:4ed0:b0:416:2bb6:cbea with SMTP id g16-20020a05600c4ed000b004162bb6cbeamr4583319wmq.19.1712746901595;
-        Wed, 10 Apr 2024 04:01:41 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:5844:d7c8:2851:cad9? ([2001:8a0:e622:f700:5844:d7c8:2851:cad9])
-        by smtp.gmail.com with ESMTPSA id g12-20020a05600c310c00b00416b64fa212sm1895234wmo.34.2024.04.10.04.01.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Apr 2024 04:01:41 -0700 (PDT)
-Message-ID: <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Vitor Soares <ivitro@gmail.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 10 Apr 2024 12:01:39 +0100
-In-Reply-To: <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
-	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
-	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BKigrls3"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 224176000A;
+	Wed, 10 Apr 2024 12:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1712752502;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zshKLDyDonwwJOFV5yyCRSdib7yb+zjws8DcpnfUXkI=;
+	b=BKigrls3jfxPWZ3a/Ku6NujZQUUa940viUX2NvVyuSDflgyRf7cQ5v5lr0GGQfVfLK7QRx
+	eXs2SeYrU6zP0Upj2/zxGa2SOc5f+QVX83hbvX04odQHq0SPzeHMG53BZ1kDQcykmZPHBJ
+	+gOszkziMDuE1eXeuCi3TW9H83/13Bvp44oym3Bf8rnRHvoMw29KCMk1VhpE8KFP+6KxI8
+	RwwI7+yF2GmBAwhcUpAGCLek7KB8naJjR8gBP2FdRLvNL+DdIjAodEccQUo6w6yZjGVhXT
+	A96Qx4Q9SulLQG9OIRkLr0xHTKqdwRX1WQgEEByHDvBN6IqBWwBGL1O8BQ2HoA==
+Date: Wed, 10 Apr 2024 14:35:00 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Rob Herring
+ <robh@kernel.org>, kernel-team@android.com, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 0/2] fw_devlink overlay fix
+Message-ID: <20240410143500.783d7eba@bootlin.com>
+In-Reply-To: <CAGETcx-Yxtkdfytsota3AciS6M9UeOaKSRtaHfH5pm60KWVmJA@mail.gmail.com>
+References: <20240409053704.428336-1-saravanak@google.com>
+	<20240409150247.61e30a86@bootlin.com>
+	<CAGETcx-Yxtkdfytsota3AciS6M9UeOaKSRtaHfH5pm60KWVmJA@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Lucas,
+Hi Saravana,
 
-On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
-> On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
-> > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares:
-> > > Hi Lucas,
-> > >=20
-> > > Thanks for your feedback.
-> > >=20
-> > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
-> > > > Hi Vitor,
-> > > >=20
-> > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
-> > > > Soares:
-> > > > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > > >=20
-> > > > > The pgc_vpu_* nodes miss the reference to the power domain
-> > > > > parent,
-> > > > > leading the system to hang during the resume.
-> > > > >=20
-> > > > This change is not correct. The vpumix domain is controlled
-> > > > through
-> > > > the
-> > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by the
-> > > > child
-> > > > domains in order to guarantee proper power sequencing.
-> > > >=20
-> > > > If the sequencing is incorrect for resume, it needs to be fixed
-> > > > in
-> > > > the
-> > > > blk-ctrl driver. I'll happily assist if you have any questions
-> > > > about
-> > > > this intricate mix between GPC and blk-ctrl hardware/drivers.
-> > > =C2=A0
-> > > I'm new into the topic, so I tried to follow same approach as in
-> > > imx8mp
-> > > DT.
-> > >=20
-> > That's a good hint, the 8MP VPU GPC node additions missed my radar.
-> > The
-> > direct dependency there between the GPC domains is equally wrong.
-> >=20
-> > > I also checked the imx8mq DT and it only have one domain for the
-> > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* to
-> > > work
-> > > properly.
-> > >=20
-> > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
-> > > access
-> > > the
-> > > ip registers for the soft reset. I tried to power-up the before
-> > > the
-> > > soft reset, but it didn't work.
-> > >=20
-> > The runtime_pm_get_sync() at the start of that function should
-> > ensure
-> > that bus GPC domain aka vpumix is powered up. Can you check if that
-> > is
-> > happening?
->=20
-> I checked bc->bus_power_dev->power.runtime_status and it is
-> RPM_ACTIVE.
->=20
-> Am I looking to on the right thing? It is RPM_ACTIVE event before
-> runtime_pm_get_sync().
+On Tue, 9 Apr 2024 18:06:33 -0700
+Saravana Kannan <saravanak@google.com> wrote:
 
-During the probe I can see that
-bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpumix is
-powered up on GPC driver.
+> On Tue, Apr 9, 2024 at 6:02 AM Herve Codina <herve.codina@bootlin.com> wrote:
+> >
+> > Hi Saravana,
+> >
+> > +CC Luca and Thomas
+> >
+> > On Mon,  8 Apr 2024 22:37:01 -0700
+> > Saravana Kannan <saravanak@google.com> wrote:
+> >  
+> > > Don't bother reviewing this patch. It needs to be tested and possibly
+> > > refactored first.
+> > >
+> > > Geert and Herve,
+> > >
+> > > This patch serious should hopefully fix both of your use cases
+> > > [1][2][3]. Can you please check to make sure the device links created
+> > > to/from the overlay devices are to/from the right ones?
+> > >
+> > > I've only compile tested it. If I made some obvious mistake, feel free
+> > > to fix it and give it a shot.
+> > >
+> > > Cc: Rob Herring <robh@kernel.org>
+> > >
+> > > [1] - https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+> > > [2] - https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+> > > [3] - https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> > >  
+> >
+> > I tested your patches.
+> >
+> > Concerning my use cases, they fix the issue described in
+> >   https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/  
+> 
+> I went back and looked at the example. I'm not even sure I understand
+> that example. In that example at the link above, are you saying
+> without any changes to upstream reg_dock_sys_3v3 was listing it's
+> supplier as i2c5 instead of tca6424_dock_1? Why wasn't Geert's
+> existing changes in of_i2c_notify not sufficient? Looking at it, it
+> does:
+> rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+> 
+> Which should clear the flag for tca6424_dock_1. Can you help me
+> understand why it's not getting cleared?
 
-On resume routine I can't see this flow. bus_power_dev-
->power.runtime_status =3D RPM_ACTIVE and vpumix end up not being powered-
-up.
+I don't really know but I can mke some asumptions.
 
-I checked the suspend flow and the GPC tries to poweroff vpumix.
+Maybe the link involved in the issue is created quite early in the overlay
+applying process, before the calls to the of notifier of_i2c_notify() that
+can clear the FWNODE_FLAG_NOT_DEVICE.
 
+The link is created by of_link_to_phandle(). This functions is triggered
+from of_fwnode_add_links() which is the .add_link() operation of the OF
+fwnode_operations.
+
+The operation is called by fw_devlink_parse_fwnode(), itself triggered by
+fw_devlink_link_device() each time device_add() is called.
+
+If the device_add() related to the reg_dock_sys_3v3 is called before the
+of_i2c_notify() related to tca6424_dock_1, the FWNODE_FLAG_NOT_DEVICE flag
+in tca6424_dock_1 is not cleared when of_link_to_phandle() is called.
+
+Does this scenario make sense ?
+
+> 
+> > But not the one described in
+> >   https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> > A link is still present between the i2c@600 and the PCI device.
+> > instead of the i2c@600 and the pci-ep-bus.  
+> 
+> What do you mean by PCI device here? You say the same thing in the
+> link, but I don't understand what you mean. Can you clarify what
+> exactly gets added by the overlay? Please use the fwnode name in all
+> the descriptions, even when talking about device links. That should
+> help avoid the confusion.
+> 
+> Also, if you can show what the target node of the overlay looks like,
+> that'd help too.
+> 
+> > Adding the patch clearing the FWNODE_FLAG_NOT_DEVICE in device_add() available
+> > at [1] on top of your patches fixes the link issue.
+> > With this additional patch applied, the link is present between the i2c@600
+> > and the pci-ep-bus.  
+> 
+> I know the problem with this patch series. But to fix it properly, I
+> need to understand the root of the overlay node in your examples and
+> the target it's applied to.
+
+
+This is the Microchip Lan966x PCI device use case.
+The Lan966x is a component that can be a "standard" SoC (i.e. core CPUs
+and some peripherals) or as a PCI device.
+When in PCI device mode, the core CPUs are not available and are replaced
+by an endpoint PCI. The PCI host in PCI device mode has to act the code CPUs
+in SoC mode. In other word the PCI host has access to peripherals (PCI MMIO
+accesses) and has to handle each peripherals.
+
+Drivers for these peripherals are already available in the kernel (reset
+controller, i2c controller, network switch, clock controllers, ...) and are
+functional when the Lan966x is in SoC mode.
+
+In order to re-use all of these drivers, the solution was to have a Lan966x
+PCI driver that is probe() matching the Lan966x PCI Vendor/Device ID.
+This driver then load a DT overlay to described the Lan966x internal components.
+
+Basically, the base DT (the DT describing the PCI host board) has the PCI nodes
+between the root PCI node and the Lan966x PCI device built at runtime during the
+PCI bus scan. At the end of the scan, the Lan966x driver load the overlay and
+the final DT looks like the following:
+--- 8< ---
+soc {
+	...
+	pcie@d0070000 {
+		compatible = "marvell,armada-3700-pcie";
+		...
+		/* A bridge, created at runtime during PCI scan */
+		pci@0,0 {
+			compatible = "pci11ab,100\0pciclass,060400\0pciclass,0604";
+			...
+
+			/* The Lan966x PCI device, created at runtime during PCI scan */
+			dev@0,0 { 
+				compatible = "pci1055,9660\0pciclass,020000\0pciclass,0200";
+				...
+
+				/*
+				 * This node is added by the overlay
+				 * during lan966x PCI driver probe()
+				 */
+				pci-ep-bus@0 {
+					compatible = "simple-bus";
+					...
+
+					flx0: flexcom@e0040000 {
+						compatible = "atmel,sama5d2-flexcom";
+						reg = <0xe0040000 0x100>;
+						ranges = <0x0 0xe0040000 0x800>;
+						...			
+
+						i2c_lan966x: i2c@600 {
+							compatible = "microchip,lan966x-i2c";
+							reg = <0x600 0x200>;
+							...
+						};
+					};
+					...
+				};
+			};
+		};
+	};
+};
+--- 8< ---
+
+Without clearing FWNODE_FLAG_NOT_DEVICE, a link is created between
+i2c@600 and dev@0,0.
+With the FWNODE_FLAG_NOT_DEVICE cleared in device_add(), the link is
+created between i2c@600 and pci-ep-bus@0.
+
+flexcom@e0040000 is a MFD device.
+
+In the lan966x PCI driver, the overlay is applied using the following:
+--- 8< ---
+
+static int lan966x_pci_load_overlay(struct lan966x_pci *data)
+{
+	u32 dtbo_size = __dtbo_lan966x_pci_end - __dtbo_lan966x_pci_begin;
+	void *dtbo_start = __dtbo_lan966x_pci_begin;
+	int ret;
+
+	ret = of_overlay_fdt_apply(dtbo_start, dtbo_size, &data->ovcs_id,
+				   data->dev->of_node);
+	if (ret)
+		return ret;
+
+	return 0;
+}
+
+static int lan966x_pci_probe(struct pci_dev *pdev,
+			     const struct pci_device_id *id)
+{
+	struct device *dev = &pdev->dev;
+	struct lan966x_pci *data;
+	...
+	data->dev = dev;
+	...
+	ret = lan966x_pci_load_overlay(data);
+	if (ret)
+		return ret;
+
+	...
+	ret = of_platform_default_populate(dev->of_node, NULL, dev);
+	if (ret)
+		goto err_unload_overlay;
+
+	return 0;
+	...
+}
+--- 8< ---
+
+Hope my explanations were clear enough and answered your question.
+Feel free to ask some more details if needed.
+
+I provided only extractions of the full dtso file. If you need some more
+information (all nodes, all properties) feel free to ask.
 
 Best regards,
-Vitor Soares
-
->=20
->=20
-> >=20
-> > Regards,
-> > Lucas
-> >=20
-> > > Do you have an idea how we can address this within blk-ctrl?
-> > >=20
-> > > Best regards,
-> > > Vitor
->=20
-
+Hervé
