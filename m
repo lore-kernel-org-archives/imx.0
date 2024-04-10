@@ -1,153 +1,130 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2112.outbound.protection.outlook.com [40.107.15.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0322CA55
-	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 01:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712711235; cv=none; b=L8NerPqiMSYsxh2W8ewav3G2fG5L4iWNfk382ng1zShCLC5NYqJnwMZTymfOedEPLU5C8COab+mjlyGMyUY3BiDiMGZaoleHjbxgn9pBCzTsJiDrhNZP/owM+65LR22i5PUOkA7Qo8frvLO2p0r9ZgoqgdyGRlrPpHaJqsLtKAY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712711235; c=relaxed/simple;
-	bh=qLm+VnepHhI+0yQ/tu/mdPDhXXh30RnD3IF2V76MbZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hMRNqhV2TIS1+xqsbRMdMnLPOhgEEPTF31QYVO9GWHblBEYJEQZZC3h/BpfhX/MM8vt1n9FzB7ADBiCXMHJDDc50NnxsiHe4pQYaijVXp+gr0Z4UZa14ucWRwzqodIlz9GXXf4uQgjiccqH6nosHTImvqr9+BRSf5WSsCWrqMDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M73dc8ZI; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC52138C
+	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 03:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712719508; cv=fail; b=U6kEExxAjyozXfwGb6PfJJIGyiWYL4syWcKjWVUUiZPbF9dH80t3F3XGrt7yurFShMXF3tKSivD5WoK4QF4oj1eblRlTNmaE4rRz/d3cDMPW/2c0mFqe2P/0GFOicwz9G1rhH7zI+kKOoakAqBvWNGEEeCRRW5LV/Tv3adTWJVc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712719508; c=relaxed/simple;
+	bh=oWmIZERJzu+7jV8XHxIy1v2CzqA2LRG+t0busAJrch0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=DHqHWFG289/aAYvb/VcRDzuIsSwnXKKRR3jIvEhZZ6iDwlMoBNS3DHfGmUEO6azZoB+cdvRAF5nM75REn+5cC/mdOoxBmylYjHRN/xmLGOK6dL9G0kWJ+bQzmKw+WTxyrHvY6brU4uOZyPsN1BiNh9BNSaLI4g1jyruhGUxcAXs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=IKOxwWvj; arc=fail smtp.client-ip=40.107.15.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M73dc8ZI"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-43477091797so90971cf.1
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 18:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712711233; x=1713316033; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OnUy9Dgxuu/dnE4qVLvSmNOrCGCLASYP8tq9YkPoGpw=;
-        b=M73dc8ZIKP01WWA8VtSxNtLnc06/17iZpQap0r1Qpk31o9JgiDqSL73YYLYqLVstbT
-         VtdkKtmge87+Y2VxFjpoHJRvXOlB0b/Fa8wQj546/Ehn5m9WeRTUPHIk1xP0gJcnWZGb
-         +guZDdDHP3LYq2UueMJYXWB6sfZ1wHidrRDPipHr3Y/7fOHmtMh7eUYyL1+/mGkSgPRF
-         N0uZ4Fd08ggmVdLCgE91aLkpZaAKVPAb8LPOGBATfSBoNeBJ+46ZWtm1chay70pqZjFg
-         uqenzyUMA7uOP6YWFicGcN5wjCTbmI/6u6S2ghYCDq2lHtLGsJrpwsV+Q29yB1QEw9n2
-         CMTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712711233; x=1713316033;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OnUy9Dgxuu/dnE4qVLvSmNOrCGCLASYP8tq9YkPoGpw=;
-        b=A/7a5s3BhCEokT3qgNMrsdnJdyI0xVVj66PhCq9W4aaFMt7zJR0U1fzik/uYIUoTwd
-         yapw28FIM8FCJrxhbkOWyZTpFE8fCYc6LXuG2WQ9Unh5IShcPocnmPT+/scr+F6Fvyi7
-         7kY1RA5OdSUBttrRnT+93oOLrDOt/yQBDA2v8YMOH/OW74JzuTxLflQ8xYafGwWOkBnp
-         KtVS3ajbJluNjWiPavTnozfO84zJjX6osGNeOiyowv3NhDAVr0aAkMlm6b28sNZ9ckmI
-         zZwgvjq/bNNYED+ukz7B8IlsNrSusTdYO423JChYnOXMvGEr+EdCqO0xiECWjTROEpNt
-         3iVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVq4Ez+PaycRhrHl3yxlSs5J27TrFjUXPyqzjEpChRvPFtBNFH+H6LrVC/+d0cgMAJlH0dTytg1aVjfEfm5qi5tl1eP
-X-Gm-Message-State: AOJu0Yzs5vvl72796ytcU/pqggDX2Jpu4F5rLxYEAJmUCx8QJzD0vfF/
-	zkoMCFN0d6j7o4a019mSxvfGKP6pv47s3iDqdMTbXaO+cN7G/TbIpJTWsON/SbzNbJ0zo4oAwk4
-	e2OgwykdEEYA9HH292uIUHz7VQTymSjRNAEpg
-X-Google-Smtp-Source: AGHT+IEnYGYE7m3kixf85CnlpYGzZvRPhp8krudkLaSycG1wisGydnCUIvWGp+zYdJGwFxhq8++4pWL/y3KX54K3Dyo=
-X-Received: by 2002:a05:622a:22a8:b0:434:a690:e328 with SMTP id
- ay40-20020a05622a22a800b00434a690e328mr77260qtb.17.1712711232788; Tue, 09 Apr
- 2024 18:07:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="IKOxwWvj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g8Bfji4RlVgALxiffaFoEtAibWCQNfte+eos3qAJv4n5rj9xtEOERYLWfrslkULOfFWTG3Mpl5aRmQNXxeYAJnqj58EiIuZM4LjidPBL5Trvkh8uzaha3WY92PfI/Y0GVBODJES7fUrnQ+mx7gUmVhP+7Qi98ZM6hqjcCok/1J2vduJI6Xf7mfjkCislDdfF08wQukP7l/XmkHb6sgxVGloh8QvrT1Ygg+UyxpP//9An85jQ8Ti37CRrb0xrqG//ohgAXz0w70CEh5VhtoJe4cSVxZEzp10fI6GDs3oY2G3jaN4mq9Jkhze4Ebo/Y5Ck7nYe2yGXyGmLMHZ6gkyeig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u9ghx55F2OHxFSJQhOzvypfCz61hkQNVngQuoC5On2A=;
+ b=ARhXWOg3CmApLeFC86o7GqbAH6qu+192ddGc0NPuqB1yqs9sfuxpA2Mx3+ogsGtifUno8neFaIHdWamxsWzY+bnSlJ/EDInrF/+VtwMdOuPy8iz8FsPvjpIFQzmPEboS51O5KWuUcIzDiko+JjMR9sAmscV/dhAOe+bsN/ls/XCDvBtueCSGiQlG1jp5Qu4pQGoKK0MNHUGuqlwV5METJUyE6KDbqMR9WEuzXh7TmfqHxSXLun59fwBTSkzSVWoy7EUTBf9N/5ZaBkKMJWGHxkjXhxieLB7Ho/y6OA/ODzkSKxzq/XWK4f9zKJQlwoJs2uMaXZE/1hvIijp9/6Mh4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u9ghx55F2OHxFSJQhOzvypfCz61hkQNVngQuoC5On2A=;
+ b=IKOxwWvj0GROmHaOE+2/fzUOLf3zoiw5rdySyPnyKkwoeyjHVs3K8igqZ05nWklIRdxZTcIFsRbZ5G2JN5H193nFOqVYYRySQ7uggaZty/tLd42lj9boHLKfnvjOXy1VgFJ7O5HL1vf396+5mMuOa2Ir3VTrX/u3pGO+uqqj65E=
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
+ by AM9PR04MB8684.eurprd04.prod.outlook.com (2603:10a6:20b:43f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Wed, 10 Apr
+ 2024 03:25:01 +0000
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::4f24:3f44:d5b1:70ba]) by AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::4f24:3f44:d5b1:70ba%7]) with mapi id 15.20.7409.042; Wed, 10 Apr 2024
+ 03:25:01 +0000
+From: Joy Zou <joy.zou@nxp.com>
+To: ping.bai@nxp.com,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/1] Add rtc PCF2131 support
+Date: Wed, 10 Apr 2024 11:32:55 +0800
+Message-Id: <20240410033256.1341662-1-joy.zou@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0039.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::8)
+ To AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240409053704.428336-1-saravanak@google.com> <20240409150247.61e30a86@bootlin.com>
-In-Reply-To: <20240409150247.61e30a86@bootlin.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 9 Apr 2024 18:06:33 -0700
-Message-ID: <CAGETcx-Yxtkdfytsota3AciS6M9UeOaKSRtaHfH5pm60KWVmJA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/2] fw_devlink overlay fix
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|AM9PR04MB8684:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	loMToj2kbHXYOFWuozTZGrtc4Nx2HxHo19FisTHhF1z/q8uWZypwjTDBzvNzxEOa3GxFekQffbK3qlqsn8zWE0A00ZkCfmAf4yFM7UjDi8qyPj/zzcD1adbSGsQV+F18rUwoZ/7+aCKWzi/MAV1j13NBDGkGj6ZtlPMiyrsNQ1Y7A2Yy0uiRuv5EEvzA2tB8KXo5m3fr/9ZtVvxeJQlYyqEWxrhBGOswymtxYtuij/9ZAklSD4aFRpELSlBlz7TM5X+C7j5hFrDvCjKw7qlKx7GNB+3Z7uoXVBrs7MTnG5wbHUQTlOArRSQb/J2hzXnu77J0M5JcLNxyo3mO2DMHKbNCPcXtJkXkPEvT2FhlHpkR8tVkdrnPs5YdaQVBWTzY36KdNwBzxGBUWXoHgS9pI3hk8xydIHqIqpSemM34BzTwcUcoz5gyIZWkakqI3q1JkPZzmBNIUUHcqQ/Wwu3DtxYhHUQxaoYV/XF8oBFDMRoenob8/a3rT76VASHOcC7SVKBa/8zhrsiGeS4Fo1vVP/1hOjOReIQVMJPLy5zjNP7UxYyvJZGDFQ117tLyIixi/YbyVgChKrAadT1Z6fYTeZnuO82A2ZK63adBBcl2UdsanXA0NaaF1+fJtyo5LCwkvw4CNI5P5i1pnfhaZL27D+HdmFX+y8DQ6rvMl0WHVb3ZnEMJxmKPG1asjzKRFNrAyS4O/3xfQKiowxIXN2zlJ/e+SN+lXn5fGahhWVp6wxA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(52116005)(376005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y4tXduH+aOoCuIfOifpFnD0PAWNeImf2ToxTDlsI6fFbgLx5eNsbEFWhglu5?=
+ =?us-ascii?Q?/qcwM5pCBjsoVrHnOvht9d45wN7wbZxKOtJC127vtvMYv8Wgi987FSNDAG+Y?=
+ =?us-ascii?Q?F7ou4gav4dH9GhqZazjJHcNN2530NGT0o2HhZyxzvaRa5KrBK38Dd/VatXjP?=
+ =?us-ascii?Q?uLJYWEYSJof/qfc0pgqWLFAfd8ClP5slHXJ4IJSmo57fvrV80r6uF5DcMZ1h?=
+ =?us-ascii?Q?yzwutF4BefRszAAeU8jhHF+iM/BjHIAmF/+Cz7W7ARhFihmsEcnFvoIX8Gsv?=
+ =?us-ascii?Q?Uj6RvYWTk2O4QWY9Xxeg3Ujjh4RybDHVIRzzXoFZwAug+HauhKt0RJVwzc8u?=
+ =?us-ascii?Q?ecEPd1DyGBl50UcRhoscgMwp8el5ou1VIDZCRnpoOvq4qwUqwRZPBgOYFIJR?=
+ =?us-ascii?Q?TfQLbE2Tgmal/1TKNf7Jo1vYUdO5mZrTCKtAi2OzHY3BJkwcA/croKFCRE4O?=
+ =?us-ascii?Q?sfkYWt28gH45DOgQb6RrPmYJSPvBN9BLikCjhpRbKHg4E1aPRTfefxa3pAFo?=
+ =?us-ascii?Q?eI0MD7HaX96UhRx8MCOjed3hIGO/UX375KhPJ2AFDfKiG88eCTyExXc6yihc?=
+ =?us-ascii?Q?+8u2I+oaA4ekBuq8FC62z9m9pLIRWgKoc2ru1CoklBLBGF95QDGmEO5lFiTP?=
+ =?us-ascii?Q?b3VQOy9AR00osHm/sAwaHX1gAu2GdOkg1J6gQjtwSyln3iewLl+JRjqHMWsT?=
+ =?us-ascii?Q?e963elbUe+fW5D5xeMACiGkyksXiV9QRcDOpW8qUMGGUdvkX+/sdzk31Ho9Z?=
+ =?us-ascii?Q?uIzvPJDpwXAkS5yBDcmLnAgD9cLp+vRYzpgAtYA4Fz+rYq9AF+tvShIDwNEu?=
+ =?us-ascii?Q?+VQjEsvOAzTJ8CuHGabpbSkDhjMynoljNjW+Wh7jFi9Qx1eGHCnw7OqiHMaw?=
+ =?us-ascii?Q?P0OI3qu0l0WwTls8X1jLItZcMOWNnGqk2ktrE1mHMq/8fdYDCHi3G6ydKl8q?=
+ =?us-ascii?Q?7yv83mVuGkPyNnmF7R5dwDHrKKT61RVWwrgkkZp9MKhsOfOBBYTNLsFGJtB2?=
+ =?us-ascii?Q?Hw3oocirzZ+ZCkydBhD7X2hvVqfpzko1cbK+ag9fcptc5HLhuQuBeaq8aojg?=
+ =?us-ascii?Q?ilyVAjiH8y8qvqaKtqz2gCw6DpkSdX9eh/VD+14SHeRi7Mv75NcV3jGE5iDN?=
+ =?us-ascii?Q?nkUF89aibqDP1hirpJcLjCRwnJOSNVjhkidM6BAMsFd3keKOERmCDAM+QMSA?=
+ =?us-ascii?Q?ENiUG6BXBOi+XppH2LQo09CNJVhoI/gh51D9sro5C+uvZ+3VZB2lfk5MPRVH?=
+ =?us-ascii?Q?223dWGsBcb9mFSjaYGGubd66MQvJB8BVf5jjW62QpYFQ1DSPKjuiVpmVDiCn?=
+ =?us-ascii?Q?3TUl7wYZaCYorF6r4Rv7jXnF4pcXuHq2hBDODC7girHkkHln/6FvUMP9oQce?=
+ =?us-ascii?Q?+qeoZXNe6cI4V5fbYzGRy2FT9tsL7q5r42N+L/qIpGSbfUJc8LYBJCLmCRgp?=
+ =?us-ascii?Q?+PFtY3tZ/yBzd0wMB7HlmlXZB8D98oXYJ/n7LcgOdctMz7XyYnD+uykrdXUx?=
+ =?us-ascii?Q?DVMCQD0aa9Cqfjs8sERl+iypxh7Lq1N59Dz+HxDdJEFPUOnv6Out4341ii1j?=
+ =?us-ascii?Q?Y1FVqguPjdI4a22o604vTW0CpTCMMq/lVBK2K6qe?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae6f9586-8083-48fb-33d4-08dc590dce65
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2024 03:25:01.5332
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tsrVKTn2Neb1Dy4UNFTKRhNPTc7pKjySK9QHgo5uEW2rh+OKl5KoXvpnWmv+nCo4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8684
 
-On Tue, Apr 9, 2024 at 6:02=E2=80=AFAM Herve Codina <herve.codina@bootlin.c=
-om> wrote:
->
-> Hi Saravana,
->
-> +CC Luca and Thomas
->
-> On Mon,  8 Apr 2024 22:37:01 -0700
-> Saravana Kannan <saravanak@google.com> wrote:
->
-> > Don't bother reviewing this patch. It needs to be tested and possibly
-> > refactored first.
-> >
-> > Geert and Herve,
-> >
-> > This patch serious should hopefully fix both of your use cases
-> > [1][2][3]. Can you please check to make sure the device links created
-> > to/from the overlay devices are to/from the right ones?
-> >
-> > I've only compile tested it. If I made some obvious mistake, feel free
-> > to fix it and give it a shot.
-> >
-> > Cc: Rob Herring <robh@kernel.org>
-> >
-> > [1] - https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8=
-x6=3D9F9rZ+-KzjOg@mail.gmail.com/
-> > [2] - https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
-> > [3] - https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
-> >
->
-> I tested your patches.
->
-> Concerning my use cases, they fix the issue described in
->   https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+The patchset supports RTC PCF2131 on board dts.
+For the details, please check the patch commit log.
 
-I went back and looked at the example. I'm not even sure I understand
-that example. In that example at the link above, are you saying
-without any changes to upstream reg_dock_sys_3v3 was listing it's
-supplier as i2c5 instead of tca6424_dock_1? Why wasn't Geert's
-existing changes in of_i2c_notify not sufficient? Looking at it, it
-does:
-rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+Joy Zou (1):
+  arm64: dts: imx93-11x11-evk: add rtc PCF2131 support
 
-Which should clear the flag for tca6424_dock_1. Can you help me
-understand why it's not getting cleared?
+ .../boot/dts/freescale/imx93-11x11-evk.dts    | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-> But not the one described in
->   https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
-> A link is still present between the i2c@600 and the PCI device.
-> instead of the i2c@600 and the pci-ep-bus.
+-- 
+2.37.1
 
-What do you mean by PCI device here? You say the same thing in the
-link, but I don't understand what you mean. Can you clarify what
-exactly gets added by the overlay? Please use the fwnode name in all
-the descriptions, even when talking about device links. That should
-help avoid the confusion.
-
-Also, if you can show what the target node of the overlay looks like,
-that'd help too.
-
-> Adding the patch clearing the FWNODE_FLAG_NOT_DEVICE in device_add() avai=
-lable
-> at [1] on top of your patches fixes the link issue.
-> With this additional patch applied, the link is present between the i2c@6=
-00
-> and the pci-ep-bus.
-
-I know the problem with this patch series. But to fix it properly, I
-need to understand the root of the overlay node in your examples and
-the target it's applied to.
-
--Saravana
-
->
-> [1] https://lore.kernel.org/lkml/20240220111044.133776-2-herve.codina@boo=
-tlin.com/
->
-> Best regards,
-> Herv=C3=A9
