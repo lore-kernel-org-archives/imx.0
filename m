@@ -1,61 +1,60 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31892D05D
-	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 06:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745E82E417
+	for <imx@lists.linux.dev>; Wed, 10 Apr 2024 06:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712730754; cv=none; b=mFJWHUuHHv4QyOhemJqMM/qYAdeaKa6o4b5i1BtGZyEUMEdHeT0ZGKEe9S3i9NoSHhEJiq23Yl67ztV2DLsN+yTQwhxQc1YvAh0vhLon3FxPCynamIL3DF0PRzx1legRyZ1t9pwH0jNlKfVwZ6SFlYteUJMGMFuFm8B9/Mv6fQk=
+	t=1712730872; cv=none; b=Mr1V2TzaxgqaoW3AkZDEoxSVE0H2h4yHyJS8JYrDo0QY8ijmvhAKwxQbYHFT4ciWfH2TOzMXTRkt6vUHqUtGTyX/OZJ5BZ8Qzwa3Eu/XNz0lSumu0+PmWMSKAh74FzMETAz2a8ujHM22tQisvCmnmNd9856EV9h5WkeTij7r3HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712730754; c=relaxed/simple;
-	bh=tqpijNMZVhaemUA7jcJvu2ULxhVHVLvCejLdP80YXEE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=QB1GgRGSs+5xdU51ovD21+VUdz0lyBEn/GHZZdLfYjuTYNIP7D0QsDGvYkyNbu76D/hHtlpKIP/+jEIdtXKD8h/pXLeacVWNw1dJiU8d9x4hPckjmKmZ/Biquux9sXsTugL2ucS+rBXxymHECYhw8bH8Ed19ETnL7vfk5+sF0rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cpg48JPd; arc=none smtp.client-ip=209.85.218.48
+	s=arc-20240116; t=1712730872; c=relaxed/simple;
+	bh=fP7ZYTCP2Cdtmo6OmKBxrC0LSQX0ryjEqk/dY6OTcF4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tifF44DJ5QPQj1Mp+PX7fVjQ+8wzkw4PtZpmiwOPBR/+YYXoOUX0TmXbouYA3cb1yx/tH4qfEksRb78dIrwSJeLnmgC4s0g+1Ze79NHCXhFwkG9AIBuZrmeeEpYURYLcU1dvvz6+rymERxFk+fk897KWWLsklJkpXrva85K51Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NA1+vROc; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cpg48JPd"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a44ad785a44so744755466b.3
-        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 23:32:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NA1+vROc"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a51fea60c0bso147999966b.3
+        for <imx@lists.linux.dev>; Tue, 09 Apr 2024 23:34:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712730751; x=1713335551; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=o7EWNXZ7ahmiyoCceER4yIyMNYDrhM2QQjatZB79UKA=;
-        b=cpg48JPdWNAJweAGacSvt1CceL5peU+PrOXGsiZh3Gma54jhJtE7dMmyXNmxkQH9s8
-         soVDQ3e/VaFuJGxrCvz7wvW3kpDXB2bAXdiQ9GkCWyGzqu3vwm+ZD0QI2t7rN7WAGVSn
-         5LN5CNHjW3Zj88mQyWbFi3lhxzeTkAC1U7w1+6RZ51ednMhETDc7Nuz1lA8jUfvnD5hy
-         oIrpYPtZfxlNUiSUL+dGjCjYTWqjSXimWFnIBzFKL/xoc8tvTmXpQJs8jbnH8BJolhR4
-         UfWvAoqNFbCGzZszW5PxL4nsPQJn1AHp1AWSOptcGMRTI8CZ2QTbb+UKR0pibnwkWawV
-         sZDg==
+        d=linaro.org; s=google; t=1712730869; x=1713335669; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=N5979IbGYafb7GZr+3q8Cz1d31k/aPg4+HIqBqNbL8I=;
+        b=NA1+vROcdPUt4oo2JO0WwDVdySPzu0y4uWvVeluaUb4eLs8NkZbQ31rquAtYA4cZan
+         q63Xv52dDLsL1Gk0/ZrcVl4IC9TmewuCx3184kRMdXtpVUfYLHD6ATc2wXPuVsSCoaDi
+         kM0JRL5rhVWGyJHm9NLwdLyg4Ct5ilGBbHGIUgM5R03j9OCSMmYLLmvTZW8wfSwWUhwO
+         egEOpz/pLBvw5MakskJST4JK1Agh15theDpdEdNweUJ/EEeUJMII45U9tJoEXxXnwEQY
+         hgifycyZTCI03JZRKUJ6L44Np9UIo1aua66OZpDbJvif2k2tYf5Z+aa6vxwwTcMpCTys
+         4/kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712730751; x=1713335551;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o7EWNXZ7ahmiyoCceER4yIyMNYDrhM2QQjatZB79UKA=;
-        b=WTlqAxB3u3gGMEj0Vzu/hH93aRUxptcxA9EDxNRMalLeFyGKVThvygGEKMrP3SQ6kp
-         RUj7AHsFAWrwiwhVmR7FHKY/x40Cu/g2OYvOx+3dH0GmA+68GTUYH5RI6nGILdLQHbav
-         qjR1aXjomuCmHxoEFV3/rA8ZCCroSVdUuJ85ArsZ53St+wGsRJTLa5sbNoPERXjmUl9c
-         gCPUWV5HqF6VgnADDM4g/Bkq2Q6NwsJlFBSZNLZ4CKvNeBDYPXV81qc/8bIYBn0s5SWU
-         rNZ/H/eCKTngwbnO4KF0UlesJpdvanq7X4htpWZzdZWDGEvrLsZkeRlTzzN8h5HriZM/
-         mhRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCC6S9jVi2h6lEV2oFGbxyyaOJYh96ZaSxrqELhig8wO/xeTBaWWw0A1kqEbPycSnL7zIqdWxUXDwP+TTe2kzP2FCH
-X-Gm-Message-State: AOJu0YwEdyuScnJmYEOTDRh8GFcs1evAgIGwvZ5FzoTo5YycihfJ6xBK
-	2dp50af22gL1RV4M0ciXnvch4zeVXq6SzfpfP2IwnnGCTe7ki78DnsXjG1wMwFKtWHFX11yJhVZ
-	9
-X-Google-Smtp-Source: AGHT+IEEsAQcH/oLWPV/JGlZ4uSssWErulLZ/+Oov+2FXWP1SnehGQ427YNJfD5zABFDW2w/qKkpRA==
-X-Received: by 2002:a17:906:91c8:b0:a51:f142:e550 with SMTP id b8-20020a17090691c800b00a51f142e550mr887280ejx.29.1712730751059;
-        Tue, 09 Apr 2024 23:32:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712730869; x=1713335669;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N5979IbGYafb7GZr+3q8Cz1d31k/aPg4+HIqBqNbL8I=;
+        b=ePbMrh5HLlGpcPbSeGkFtxeil27jZ7eixP+A6G75Rpp0QDpQVQmtBCMxVm88FMwAHR
+         d8XRBzP5Wb7CVyB/Bq3VAvrIxwU26h1P56hf13UT7bF2EC9Z/tLF/vF0TmG1bBwPEHUt
+         IJG0Z2iBDSHRComGMXtzLMHKA+ZmeTgFCK61yqicks3v3OsgiyiF5jMDgcI/Gn2AzQk2
+         /4ixMjd4xKanlH6tMRB9Cf5axsCxbyw+zw9PpGJbDl4nyIstIpq8hYz2shBm/qu/6o62
+         cs2sDoH9uXShReRgASUiwybTmgTzKGTAoRFONQ6pOZ/3tiwpf0w0mcP+5PW/kNqWO8iF
+         OpBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxfamRv9ctDRwrazFHPHkelC1jc6dUnwG+fywPnrf4AioJQLWFM4lplr/tz8ZqLf20JhVRHB7/4ffLQ6Pe3hHWi0mg
+X-Gm-Message-State: AOJu0YwzYivNONqnpWZm/Xi/erayUlEpgYQvtRKRZR+JgyDAQDe3o9cB
+	1C6wSpUBXretTiNfIYFGEOlFm8tn82Ue62Q3g4att7BFlGh+CeP5yMxi+SecQT0=
+X-Google-Smtp-Source: AGHT+IHK0Xzsw7nRgIYHGdHnEFc0s2qdj2x6Ea79N0oZLEa/ugKtyHWIW5uNi6hCTEI7aiOZoi9lBQ==
+X-Received: by 2002:a17:907:3f21:b0:a51:dcda:dcde with SMTP id hq33-20020a1709073f2100b00a51dcdadcdemr1452008ejc.70.1712730868743;
+        Tue, 09 Apr 2024 23:34:28 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id q26-20020a170906b29a00b00a51dd500071sm2893449ejz.169.2024.04.09.23.32.29
+        by smtp.gmail.com with ESMTPSA id g15-20020a170906198f00b00a4e2bf2f743sm6522145ejd.184.2024.04.09.23.34.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Apr 2024 23:32:30 -0700 (PDT)
-Message-ID: <383141cd-7f6f-4ed0-945b-7761833ecc35@linaro.org>
-Date: Wed, 10 Apr 2024 08:32:28 +0200
+        Tue, 09 Apr 2024 23:34:28 -0700 (PDT)
+Message-ID: <d53ab0fd-cd12-48ec-9a80-6ae17690b726@linaro.org>
+Date: Wed, 10 Apr 2024 08:34:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,19 +62,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: dma: fsl-edma: remove 'clocks' from
- required
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- dmaengine@vger.kernel.org, imx@lists.linux.dev,
- krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
- peng.fan@nxp.com, robh@kernel.org, vkoul@kernel.org
-References: <20240409185416.2224609-1-Frank.Li@nxp.com>
- <b15ad271-037e-4ee3-ad88-e8068d31c8c8@linaro.org>
- <ZhWuetC8bRvDyxgX@lizhi-Precision-Tower-5810>
- <680f8830-6cd8-433b-85b7-439070bc528f@linaro.org>
+Subject: Re: [PATCH v2 1/1] arm64: dts: imx93-11x11-evk: add rtc PCF2131
+ support
+To: Joy Zou <joy.zou@nxp.com>, ping.bai@nxp.com, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240410033256.1341662-1-joy.zou@nxp.com>
+ <20240410033256.1341662-2-joy.zou@nxp.com>
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -120,87 +118,45 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <680f8830-6cd8-433b-85b7-439070bc528f@linaro.org>
+In-Reply-To: <20240410033256.1341662-2-joy.zou@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/04/2024 08:30, Krzysztof Kozlowski wrote:
-> On 09/04/2024 23:09, Frank Li wrote:
->> On Tue, Apr 09, 2024 at 10:02:32PM +0200, Krzysztof Kozlowski wrote:
->>> On 09/04/2024 20:54, Frank Li wrote:
->>>> fsl,imx8qm-adma and fsl,imx8qm-edma don't require 'clocks'. Remove it from
->>>> required and add 'if' block for other compatible string to keep the same
->>>> restrictions.
->>>>
->>>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>> ---
->>>>
->>>> Notes:
->>>>     Change from v2 to v3
->>>>       - rebase to dmaengine/next
->>>
->>> This fails...
->>
->> What's wrong? 
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git/log/?h=next
->>
->>>
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>> index 825f4715499e5..657a7d3ebf857 100644
->>>> --- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>> +++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
->>>> @@ -82,7 +82,6 @@ required:
->>>>    - compatible
->>>>    - reg
->>>>    - interrupts
->>>> -  - clocks
->>>>    - dma-channels
->>>>  
->>>>  allOf:
->>>> @@ -187,6 +186,22 @@ allOf:
->>>>          "#dma-cells":
->>>>            const: 3
->>>>  
->>>> +  - if:
->>>> +      properties:
->>>> +        compatible:
->>>> +	  contains:
->>>
->>> It does not look like you tested the bindings, at least after quick
->>> look. Please run `make dt_binding_check` (see
->>> Documentation/devicetree/bindings/writing-schema.rst for instructions).
->>> Maybe you need to update your dtschema and yamllint.
->>
->> Strange, Test passed
->>
->> make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,edma.yaml
->>   LINT    Documentation/devicetree/bindings
->>   DTEX    Documentation/devicetree/bindings/dma/fsl,edma.example.dts
->>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
->>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->>   DTC_CHK Documentation/devicetree/bindings/dma/fsl,edma.example.dtb
+On 10/04/2024 05:32, Joy Zou wrote:
+> Support rtc PCF2131 on imx93-11x11-evk.
 > 
-> Nope, you tested other patch. Just look at your second patch for this.
-> When reviewer points to errors to your code, please investigate?
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+> Changes in v2:
+> 1. remove unnecessary status property.
+> ---
+>  .../boot/dts/freescale/imx93-11x11-evk.dts    | 24 +++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
-> NAK, fix your patches.
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> index 07e85a30a25f..e66723ed25c2 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> @@ -281,6 +281,23 @@ ldo5: LDO5 {
+>  	};
+>  };
+>  
+> +&lpi2c3 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&pinctrl_lpi2c3>;
+> +	pinctrl-1 = <&pinctrl_lpi2c3>;
+> +	status = "okay";
+> +
+> +	pcf2131: rtc@53 {
+> +			compatible = "nxp,pcf2131";
+> +			reg = <0x53>;
+> +			interrupt-parent = <&pcal6524>;
+> +			interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
 
-And to prove it, so you will stop wasting my time:
-../Documentation/devicetree/bindings/dma/fsl,edma.yaml:192:1: found
-character that cannot start any token
-
-../Documentation/devicetree/bindings/dma/fsl,edma.yaml:192:1: [error]
-syntax error: found character '\t' that cannot start any token (syntax)
-
-../Documentation/devicetree/bindings/dma/fsl,edma.yaml:192:1: found
-character that cannot start any token
-
-Documentation/devicetree/bindings/dma/fsl,edma.yaml: ignoring, error
-parsing file
-
+Fix indentation.
 
 Best regards,
 Krzysztof
