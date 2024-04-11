@@ -1,63 +1,66 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D5E4D9EA
-	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 23:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C1F4E1B3
+	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 23:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712879788; cv=none; b=cbhsI0hFbQQT049OaWVclHChPWBcdPLnvvJ44yikLqpu3Via/AWiwMoYBj1iK+7ujW3D4wjMNJz1jLEo63QK6+ccStPgVvgo1DkO/d4c2Ob6TlYqMCL66Wqxwsj1l/1kr+Dw6lwaZsrOTRlq1zhy5afO1H0WjUC0qpcwip7E2p0=
+	t=1712879793; cv=none; b=YdC6BYIh+hveYORPj1JlecSMqr4fAPm/L1OH8TvLIMqv/i14Pj9wzy+YO6RvXcK+i2NxVI58CZDAyoXHzAKADJSdb2BdswLHYmhxeyICrGcGAfwQdrS0WB4hf1caXXvHFpXRCE4IF0OJAxQ6sPM2NP5AzyFEJTM8Q3u7ymKyH3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712879788; c=relaxed/simple;
-	bh=MioIrT4usEvNVbA3gUwhZR5hWnkV5a7eD0MVoAZp/Hg=;
-	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=bn6mR2/u7WW47ebxSIH0U8ignJuHJxdWk0SgFseiKqz7mVKCG3qRjxZaCJlr2DY6TWe2+i/zMJ1hArWAQ5Bh8SYvx64YY/hO9kXta199R52H6Ku36KylQ72yjHkeYo3CQhxrwn+eq9RKtzWx39doRQ1RYEQWr2T0HRQpDrtET4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a5PAJ3Al; arc=none smtp.client-ip=209.85.128.201
+	s=arc-20240116; t=1712879793; c=relaxed/simple;
+	bh=F1I74kxyGocGA+G2MnwZ3U1GGblglJxPUgcMkv2SMGU=;
+	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
+	 To:Cc:Content-Type; b=poyFX32ck0UthMYhjJkb8grjyew3NEN399PVRU62V94EWsxLh7G9qhwWRDHssAD4zZdEw/x6zAXchBhflLW33Y2PNRxDbhfsOHGuapgNebi8/euui/HkbUcPV6uOiHsjvFjC7i03wUuWI2R48+phH4fAnvfPCf18+eaS228wYIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BaXzwa2D; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a5PAJ3Al"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-615372710c4so5606377b3.1
-        for <imx@lists.linux.dev>; Thu, 11 Apr 2024 16:56:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BaXzwa2D"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dd0ae66422fso860657276.0
+        for <imx@lists.linux.dev>; Thu, 11 Apr 2024 16:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712879786; x=1713484586; darn=lists.linux.dev;
-        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O0iRscBO4bdcIhUu420mbq2doNMaDlIpBi8l/p1zhKs=;
-        b=a5PAJ3AlshfPaFzToeS5jYcsaut6+/moqrN6aZ5825FrVlZozRej9yatFM8aKnIY1S
-         MhV20f3l5/p4JLpzVBEuNEjpEUU9lIX+LwUTWBIpVTSesK3WYqXu9vXeeBFp0L0pDj6H
-         YmWfU+HQ+Be+OxS5PQymozKuyXD7nInYlo7MyZ0vVwjIK+o4HdNoUUrmW+rl5U0diCRt
-         SqwNKC4z2AITjJMLD+u0U8zMcJMJ7avTtE7yBjY/tPPIqrC6uJo/MAB3dbA/vKnArzVi
-         vKPWF5MkXq2ukxpRy0PVsAI8ftEGSjEjdFURmQ+dvYEFkOC8txo31814HOLLV+9aatr0
-         80bQ==
+        d=google.com; s=20230601; t=1712879790; x=1713484590; darn=lists.linux.dev;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jT0tMCUG5C45vynKdJTKsAOSulSDMwPl00tKOsyCLZI=;
+        b=BaXzwa2DvsvTyE05Z4XMu8q6CEXrzx5QJ5D+5aGMmFeUvmIU+4fdFzfiHSwPeGmMJR
+         Zi1eBb3TpyZ7tW3S0dj+sP8BULyIsQadZiy3kp6L1drCsQbvS7zeoPEt3euWAoyPpbf1
+         cg1KWvaqIpddOSDqlUyxRNlPoc186kV7+E5RcK7Yn/Ufz2FuhPN88UF7jP2MywNkNppe
+         Hr2aWlVzPQfyPdIautevtLH/HcPXPs3LyECh3gDC/B1ZG/jLuz5pf8pHBEmxCe3ER/OK
+         VS4aooC/Io8UaQLvzfL9h2Wqyoc5oo9HJ/K+1p5eMkLrh10RpuNrCcnsoeDB1VV957Su
+         Xyqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712879786; x=1713484586;
-        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O0iRscBO4bdcIhUu420mbq2doNMaDlIpBi8l/p1zhKs=;
-        b=C2mSaMJmXIIDlg4eGRpKqKcR2TBlqy1zwbSgVLTIGN7MVqBwowLq5UHPa+WFrGZHaS
-         UAHgAP+6EYsHgtVK+XUqQqatFL59onEzJb++1YESft3Ytzb89a/kwisGq+YMVmjXcP0o
-         DJKd9ntl97/Q7C3mTTIHFZz92oQE03CMYO111nFfnTD5OjgsQjIq2aqFtit+Wh7aBfFB
-         eQi7PpzRtqobyualTPL+/CkZqYAiILXwvMWLroQm+FzSzlOXAVxj5EDl+baWebYcfwPy
-         UX11KkN8oLtxxjXRZwsd+J7IOHIhgTNBzyCtsrin5e0A8ym1VzJn8DcaQNqxlJgeJt2+
-         UmBA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCdws++KyzjlpGr3ybdfpJdcwU7rO3TOmMbVh0fBWk+1xtJ9Z9XhH4To2P9u2dNyXFbTM3rq6TsRwNmM6iQKKng2Uq
-X-Gm-Message-State: AOJu0Yw2Zys+4PAUyTv6ZMhMN6N1O/sAv+GXbs4Y7FnKY2nDchb+xvCe
-	Muv1xKs1sxRcO34ub/uUfb6VOF+BjpnS5mw9Xm8FD5aqNvY4QB3BiIU/7bpe/2sDPYCY0gMxLx0
-	hi+I+LRqCde9++A==
-X-Google-Smtp-Source: AGHT+IFosAoa851C7hPGmSTJhtx34QZTzAQeM/iXE6mN4LYGNHAkSwi0R89BgZ48h/lVqrxY4bUEsjpXIA52Xog=
+        d=1e100.net; s=20230601; t=1712879790; x=1713484590;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jT0tMCUG5C45vynKdJTKsAOSulSDMwPl00tKOsyCLZI=;
+        b=lWg/vcsuElgME+a4uaTlS3dzooCkENgm+/I5byIgUMNVRaGvNQqIdjKX5a5uCms3/H
+         UFiGn8hKZ0ZZkp1cG5ZY5dl2wXATs+pAhUTuOnMspiuNBc9hrUsgB9eHmcUfvi1oezXH
+         AiFgtraPwIQD6mD0fMUwYw4GKkbNrLL8370YPQaQ8AnDCQpSC2JYJHoBwh1/URI8PYEZ
+         g0qVGb5Q9kh1iD+SnmC+0P9YRMmrojKfnvQysGlueCEXDc1GDCbad+xw+0PQ9r8D3AJf
+         7ye3/MCKCl4nR9ykkfNHd8iETOw80kgBo6UnElRyukPymLy5xRyIi6EQ5XGEnGp7whPJ
+         052Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWY5jN+87UBARRzqvTkTV+sB4xgyiOrJjdFnxa15L2negoabNTwypjuoHo3mTuXg4pVUluMytPX9PGKxSLF+JoSfi0m
+X-Gm-Message-State: AOJu0Yz608i0u6toCNsQqWET6uFzq5OT3dFpFO40VrkJfl1HCEPLNv5i
+	BASbEtp8AMpOxPtezEd7lwxC3Mrm+4xSSQxcPogN/rU8yiGf/M+AKiWDo1pdyzTU+NKrfiehx1L
+	X2o1lxIMb0eAcaA==
+X-Google-Smtp-Source: AGHT+IEvR1JaDEbMFFioYt0KHpMJr1gBv9IJB0hOdL9dLeYPT6CmjFeSm9ekim1dAEyyL80zGuQNzSbprufcUNI=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:a472:f40c:d4ba:c29])
- (user=saravanak job=sendgmr) by 2002:a0d:ea90:0:b0:615:2ae1:6cd3 with SMTP id
- t138-20020a0dea90000000b006152ae16cd3mr215649ywe.3.1712879786349; Thu, 11 Apr
- 2024 16:56:26 -0700 (PDT)
-Date: Thu, 11 Apr 2024 16:56:20 -0700
-Message-Id: <20240411235623.1260061-1-saravanak@google.com>
+ (user=saravanak job=sendgmr) by 2002:a05:6902:708:b0:dbe:d0a9:2be3 with SMTP
+ id k8-20020a056902070800b00dbed0a92be3mr404697ybt.3.1712879790017; Thu, 11
+ Apr 2024 16:56:30 -0700 (PDT)
+Date: Thu, 11 Apr 2024 16:56:21 -0700
+In-Reply-To: <20240411235623.1260061-1-saravanak@google.com>
+Message-Id: <20240411235623.1260061-2-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20240411235623.1260061-1-saravanak@google.com>
 X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
-Subject: [PATCH v3 0/2] fw_devlink overlay fix
+Subject: [PATCH v3 1/2] Revert "treewide: Fix probing of devices in DT overlays"
 From: Saravana Kannan <saravanak@google.com>
 To: Herve Codina <herve.codina@bootlin.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -74,33 +77,103 @@ Cc: kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.ke
 	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Overlays don't work correctly with fw_devlink. This patch series fixes
-it. This series is now ready for review and merging once Geert and Herve
-give they Tested-by.
+This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
 
-Geert and Herve,
+While the commit fixed fw_devlink overlay handling for one case, it
+broke it for another case. So revert it and redo the fix in a separate
+patch.
 
-This patch series should hopefully fix both of your use cases [1][2][3].
-Can you please check to make sure the device links created to/from the
-overlay devices are to/from the right ones?
+Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+Reported-by: Herve Codina <herve.codina@bootlin.com>
+Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+---
+ drivers/bus/imx-weim.c    | 6 ------
+ drivers/i2c/i2c-core-of.c | 5 -----
+ drivers/of/dynamic.c      | 1 -
+ drivers/of/platform.c     | 5 -----
+ drivers/spi/spi.c         | 5 -----
+ 5 files changed, 22 deletions(-)
 
-Thanks,
-Saravana
-
-Saravana Kannan (2):
-  Revert "treewide: Fix probing of devices in DT overlays"
-  of: dynamic: Fix overlayed devices not probing because of fw_devlink
-
- drivers/base/core.c       | 76 ++++++++++++++++++++++++++++++++++-----
- drivers/bus/imx-weim.c    |  6 ----
- drivers/i2c/i2c-core-of.c |  5 ---
- drivers/of/dynamic.c      |  1 -
- drivers/of/overlay.c      | 15 ++++++++
- drivers/of/platform.c     |  5 ---
- drivers/spi/spi.c         |  5 ---
- include/linux/fwnode.h    |  1 +
- 8 files changed, 83 insertions(+), 31 deletions(-)
-
+diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+index 837bf9d51c6e..caaf887e0ccc 100644
+--- a/drivers/bus/imx-weim.c
++++ b/drivers/bus/imx-weim.c
+@@ -331,12 +331,6 @@ static int of_weim_notify(struct notifier_block *nb, unsigned long action,
+ 				 "Failed to setup timing for '%pOF'\n", rd->dn);
+ 
+ 		if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
+-			/*
+-			 * Clear the flag before adding the device so that
+-			 * fw_devlink doesn't skip adding consumers to this
+-			 * device.
+-			 */
+-			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
+ 				dev_err(&pdev->dev,
+ 					"Failed to create child device '%pOF'\n",
+diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+index a6c407d36800..a250921bbce0 100644
+--- a/drivers/i2c/i2c-core-of.c
++++ b/drivers/i2c/i2c-core-of.c
+@@ -178,11 +178,6 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
+ 			return NOTIFY_OK;
+ 		}
+ 
+-		/*
+-		 * Clear the flag before adding the device so that fw_devlink
+-		 * doesn't skip adding consumers to this device.
+-		 */
+-		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		client = of_i2c_register_device(adap, rd->dn);
+ 		if (IS_ERR(client)) {
+ 			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
+diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+index 4d57a4e34105..19a1a38554f2 100644
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -224,7 +224,6 @@ static void __of_attach_node(struct device_node *np)
+ 	np->sibling = np->parent->child;
+ 	np->parent->child = np;
+ 	of_node_clear_flag(np, OF_DETACHED);
+-	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+ 
+ 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+ 
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 389d4ea6bfc1..efd861fa254f 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -743,11 +743,6 @@ static int of_platform_notify(struct notifier_block *nb,
+ 		if (of_node_check_flag(rd->dn, OF_POPULATED))
+ 			return NOTIFY_OK;
+ 
+-		/*
+-		 * Clear the flag before adding the device so that fw_devlink
+-		 * doesn't skip adding consumers to this device.
+-		 */
+-		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		/* pdev_parent may be NULL when no bus platform device */
+ 		pdev_parent = of_find_device_by_node(rd->dn->parent);
+ 		pdev = of_platform_device_create(rd->dn, NULL,
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ff75838c1b5d..17cd417f7681 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4761,11 +4761,6 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+ 			return NOTIFY_OK;
+ 		}
+ 
+-		/*
+-		 * Clear the flag before adding the device so that fw_devlink
+-		 * doesn't skip adding consumers to this device.
+-		 */
+-		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		spi = of_register_spi_device(ctlr, rd->dn);
+ 		put_device(&ctlr->dev);
+ 
 -- 
 2.44.0.683.g7961c838ac-goog
 
