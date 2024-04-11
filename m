@@ -1,78 +1,84 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A07A1448EF
-	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 09:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F094145B26
+	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 10:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712828547; cv=none; b=gaeDhut5hSQTCAWs6sLNRzMVFIKQKkIhf1/x5/Cov1s85VmKlwzds5fsJIo5RaVdN/ys8bPlA93gjGW2o1Ydu6cm0ZKxyCo8gmmM/5HjDIvIwrpym6xHxRttycD1/xMLgdyzz4lTiOPN3+Zs+DJm6vI3bUhCZhnfT6pAQfn5jf0=
+	t=1712831383; cv=none; b=iiqblv+JpQvSLDksIqhrZyHeC2/rVqyFdihL9MUbX2GCx4WA7aSyAwjdl55HemiNbBxjOVAHvHtWW+B+fCOhfU5FtJq+pYfo4zWxqdtv+pYU7kfcAXam0o4+yjS74ULoqruro8DwjE5evAchL/17SAbzTDMRLM4jQXLI1f3mvmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712828547; c=relaxed/simple;
-	bh=V8R9fkgyimeoVkPMlASX7iK8V0uOUDT/i1En1+rhSGs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=uL0kX5bZyJqql9hFG9dhwCBr3QhglWBtqAEe4pRZVJpzLPHipJ7O22xl+QBC9Ssg+0GNFOrW/8FvizM7HJ/lUSCHS9uSUW961CRQTjGY8ef39hci00UgPd0Vx1Syu9owW9AG/sAUWVvol4Bz+vbFVVEC7DzMt99A7Beaq4ZqHC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=j7nV2JTt; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="j7nV2JTt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1712828544;
-	bh=V8R9fkgyimeoVkPMlASX7iK8V0uOUDT/i1En1+rhSGs=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=j7nV2JTtFRFDoe55/cqaTLUAYGBaUQqgJp8iyOyERH3iEwVToQcRRXQ2xEWj7Do4d
-	 LYbHMIvHXOhzWt+sISp7dkuL3zFZFHv4tqDdQ685cnQokNyiT2z8oApoj/K0yIOl7p
-	 pxz3D7R/335KRnYQLqh5y5M88eRu6YjVflzRWqfpwOFEcm9xIhROxXFkwt3UCsj64x
-	 OSeiJWkVo+A4+GkfHpTO5IkRotje5WBD4Wmmkj3SHRFuzJWhWSmddRnS1q461rxEEJ
-	 kshUc99aQR2eu2hUa8KNfkI18O97E3zVBMhKGYx/zL1LwGF2LlbkW9YpXttDeWwBuG
-	 jeim3z08d6Vlw==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6AD6E378212B;
-	Thu, 11 Apr 2024 09:42:23 +0000 (UTC)
-Message-ID: <21d9e0d3-5e37-4e08-862a-df463c945919@collabora.com>
-Date: Thu, 11 Apr 2024 11:42:22 +0200
+	s=arc-20240116; t=1712831383; c=relaxed/simple;
+	bh=zmStaJ3K2y1OHTUxUlaA8HgWp5SThfzUtWtIqXMw4FU=;
+	h=From:To:Subject:Date:Message-Id; b=bGvsfNfpwq1+m51DLPyy39T4qwjw/C2iN9qthYdVVi9l/01aC0tvyhxKEBwgY+UZ7eL305F+KvfNSPITVIN+QsSbCeOGroQFS4IYBDQdzUWQ1v1Z1Q0dInSc0cRMuSbiSFZpEzTOxyY4SIkagIotLjepjuucYAIB+1aoBcQ8GWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7024B20053D;
+	Thu, 11 Apr 2024 12:29:35 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 28F63200D1A;
+	Thu, 11 Apr 2024 12:29:35 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 1DF70183AD14;
+	Thu, 11 Apr 2024 18:29:33 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shengjiu.wang@gmail.com,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/2] convert imx-audio-spdif.txt to YAML
+Date: Thu, 11 Apr 2024 18:11:43 +0800
+Message-Id: <1712830305-31350-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] pinctrl: mediatek: fix module autoloading
-To: Krzysztof Kozlowski <krzk@kernel.org>, Dong Aisheng
- <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Sean Wang <sean.wang@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- zhanghongchen <zhanghongchen@loongson.cn>, Yinbo Zhu <zhuyinbo@loongson.cn>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, linux-gpio@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-arm-msm@vger.kernel.org
-References: <20240411064614.7409-1-krzk@kernel.org>
- <20240411064614.7409-2-krzk@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20240411064614.7409-2-krzk@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Il 11/04/24 08:46, Krzysztof Kozlowski ha scritto:
-> Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
-> based on the alias from of_device_id table.  Pin controllers are
-> considered core components, so usually they are built-in, however these
-> can be built and used as modules on some generic kernel.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
+convert imx-audio-spdif.txt to YAML
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+changes in v4:
+- change the enmu to const
+- add more comments in commit message for second patch
 
+changes in v3:
+- change file name to fsl,imx-audio-spdif.yaml
+- change example name back to sound-spdif
+- exchange the fallback and specific compatible string
+- update anyOf content
+
+changes in v2:
+- change file name to imx-spdif.yaml
+- remove |
+- add anyof for spdif-in and spdif-out requirement
+- change example name to sound
+
+Shengjiu Wang (2):
+  ASoC: dt-bindings: imx-audio-spdif: convert to YAML
+  ARM: dts: imx6: exchange fallback and specific compatible string
+
+ .../bindings/sound/fsl,imx-audio-spdif.yaml   | 66 +++++++++++++++++++
+ .../bindings/sound/imx-audio-spdif.txt        | 36 ----------
+ .../boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi   |  4 +-
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |  4 +-
+ 4 files changed, 70 insertions(+), 40 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
+ delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-spdif.txt
+
+-- 
+2.34.1
 
