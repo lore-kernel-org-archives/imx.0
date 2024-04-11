@@ -1,57 +1,57 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C1F4E1B3
-	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 23:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D9E4F8BB
+	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 23:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712879793; cv=none; b=YdC6BYIh+hveYORPj1JlecSMqr4fAPm/L1OH8TvLIMqv/i14Pj9wzy+YO6RvXcK+i2NxVI58CZDAyoXHzAKADJSdb2BdswLHYmhxeyICrGcGAfwQdrS0WB4hf1caXXvHFpXRCE4IF0OJAxQ6sPM2NP5AzyFEJTM8Q3u7ymKyH3o=
+	t=1712879796; cv=none; b=BZB1O0x6vVr/yQuSLDqfP3EeHrGT6/zwVJXZBoBvxyZUIY9s5+ccdplvQE+I8/aBD0XTvGhl8YgILIPaIvyXAbRELFTPhsyTDn1hpXyEC87VQXJi/D0dTbZuZ+oJYxocH2wsVR3lRPTqZUGBIbHALUHfC7z5DFzlbKU71cG9Gkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712879793; c=relaxed/simple;
-	bh=F1I74kxyGocGA+G2MnwZ3U1GGblglJxPUgcMkv2SMGU=;
+	s=arc-20240116; t=1712879796; c=relaxed/simple;
+	bh=UD3bfhO0YU3iaHR4sW0PiOGB9kKHCclU23sLM4TNyko=;
 	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=poyFX32ck0UthMYhjJkb8grjyew3NEN399PVRU62V94EWsxLh7G9qhwWRDHssAD4zZdEw/x6zAXchBhflLW33Y2PNRxDbhfsOHGuapgNebi8/euui/HkbUcPV6uOiHsjvFjC7i03wUuWI2R48+phH4fAnvfPCf18+eaS228wYIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BaXzwa2D; arc=none smtp.client-ip=209.85.219.201
+	 To:Cc:Content-Type; b=R/eRRm8pslZhCtBUzc6Zv6tMr8rv7Qq7D9/DKld0FeCzH0Rn2MEE24XK/r9qRr2Twq2fltKJeRSXCRt+LUsJdH+r3Yjairpe6MY1SDUoUngAteAyoZI4awhJxv44UcB6EPKV3rHB16930SyyARUdYgJ6uzpvHAmQ7FvIgGPlhcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LqXgGAXi; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BaXzwa2D"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dd0ae66422fso860657276.0
-        for <imx@lists.linux.dev>; Thu, 11 Apr 2024 16:56:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LqXgGAXi"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2a2e6197371so310325a91.3
+        for <imx@lists.linux.dev>; Thu, 11 Apr 2024 16:56:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712879790; x=1713484590; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1712879794; x=1713484594; darn=lists.linux.dev;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jT0tMCUG5C45vynKdJTKsAOSulSDMwPl00tKOsyCLZI=;
-        b=BaXzwa2DvsvTyE05Z4XMu8q6CEXrzx5QJ5D+5aGMmFeUvmIU+4fdFzfiHSwPeGmMJR
-         Zi1eBb3TpyZ7tW3S0dj+sP8BULyIsQadZiy3kp6L1drCsQbvS7zeoPEt3euWAoyPpbf1
-         cg1KWvaqIpddOSDqlUyxRNlPoc186kV7+E5RcK7Yn/Ufz2FuhPN88UF7jP2MywNkNppe
-         Hr2aWlVzPQfyPdIautevtLH/HcPXPs3LyECh3gDC/B1ZG/jLuz5pf8pHBEmxCe3ER/OK
-         VS4aooC/Io8UaQLvzfL9h2Wqyoc5oo9HJ/K+1p5eMkLrh10RpuNrCcnsoeDB1VV957Su
-         Xyqw==
+        bh=HizrqH7rz47v2QLp5elrgTIyG7EQRo9SAEpqH/+kBy0=;
+        b=LqXgGAXiVHWKxYbAx0+pT1aBg2DiebRwBIdmHpCN0CraNPFNH39BlURXWDlokBnV/6
+         ++Fn1soY24PlRc5X9uWOVV32i9wSWvXOoi6s2zc2jz2QqKNTtW0GYwGUHI5pEbJYyILR
+         pIrjXEmN1DvsB2GowFdGG0NHq48yABcLaFEvn+F4lJDr+6gF/XB3L1fRX/uSs+vdyngn
+         t7JiTRtaaVHhNxKwOEvTQ9MOAqSIMf0+k0MDAGvzhY500cRViLp2ySlxMvWb6FMAcmUC
+         d9QiqmHX6UqbJKaLP+vuuZ+pTJ5b885J++SrQ+cW9QzV9GwAHAxw2h9WGACrT4N7zH1g
+         Pdkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712879790; x=1713484590;
+        d=1e100.net; s=20230601; t=1712879794; x=1713484594;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jT0tMCUG5C45vynKdJTKsAOSulSDMwPl00tKOsyCLZI=;
-        b=lWg/vcsuElgME+a4uaTlS3dzooCkENgm+/I5byIgUMNVRaGvNQqIdjKX5a5uCms3/H
-         UFiGn8hKZ0ZZkp1cG5ZY5dl2wXATs+pAhUTuOnMspiuNBc9hrUsgB9eHmcUfvi1oezXH
-         AiFgtraPwIQD6mD0fMUwYw4GKkbNrLL8370YPQaQ8AnDCQpSC2JYJHoBwh1/URI8PYEZ
-         g0qVGb5Q9kh1iD+SnmC+0P9YRMmrojKfnvQysGlueCEXDc1GDCbad+xw+0PQ9r8D3AJf
-         7ye3/MCKCl4nR9ykkfNHd8iETOw80kgBo6UnElRyukPymLy5xRyIi6EQ5XGEnGp7whPJ
-         052Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWY5jN+87UBARRzqvTkTV+sB4xgyiOrJjdFnxa15L2negoabNTwypjuoHo3mTuXg4pVUluMytPX9PGKxSLF+JoSfi0m
-X-Gm-Message-State: AOJu0Yz608i0u6toCNsQqWET6uFzq5OT3dFpFO40VrkJfl1HCEPLNv5i
-	BASbEtp8AMpOxPtezEd7lwxC3Mrm+4xSSQxcPogN/rU8yiGf/M+AKiWDo1pdyzTU+NKrfiehx1L
-	X2o1lxIMb0eAcaA==
-X-Google-Smtp-Source: AGHT+IEvR1JaDEbMFFioYt0KHpMJr1gBv9IJB0hOdL9dLeYPT6CmjFeSm9ekim1dAEyyL80zGuQNzSbprufcUNI=
+        bh=HizrqH7rz47v2QLp5elrgTIyG7EQRo9SAEpqH/+kBy0=;
+        b=TX6tvWqXiNJnmzkZ3tR6LaV/uVfTY35W/LO5gYSwNIWpNSQQjB+5Z4nO1AYXI3hFrM
+         eX2LX5k/CZefnBD4xZyYCM+yNOkYoNDqOfHIB0wS86hIqSxjl65E4pkshVy1xupOex2k
+         cu/pkfutDqEE9vRIpPMifTbA1z0ZJfOGWLs2SD4kO1ZwUkTSolljbEQMzyHOY3HFV3XP
+         GN29BoQV/B5d1i9BpHNqAtdqDaYCqwlV2rKv/26YUq/D1+QbY1EHaQy5ndzsudv7SvbL
+         UOSoAE/ceHxExxo05pwZVXdDBpKxKUvkAngCfUjhliiILDQuI2D+v5gmYU6w95x+pG3x
+         48qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1MN/0MP/5xpob6KzjoTDk4vGT5xlZ3/XVmFltjxCHDrZGVbrlh3LPRNicoeoj5VDlqLan40RkuAM+H6kjdBzfGPEH
+X-Gm-Message-State: AOJu0YyZGob8g7SxAjZN1wwkukFFxqMNBmaM1GrASBP/4q0N68uXtWO0
+	RQvfL9b4IeZNn0nTnuCuq2vFMHx7d/FGm/93zgPjfnb8JVQMspb2/mwLCGGNjcz0+qOrgkUc36A
+	EPpggP9ORu56Gfw==
+X-Google-Smtp-Source: AGHT+IHqTq2UPkwQrTsIwISL3TPeqKf9uyBTI5tIlaviAP1Wf5pw15DCSNWSteziJ1gjlX/gPxjg3k35MoA1MA0=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:a472:f40c:d4ba:c29])
- (user=saravanak job=sendgmr) by 2002:a05:6902:708:b0:dbe:d0a9:2be3 with SMTP
- id k8-20020a056902070800b00dbed0a92be3mr404697ybt.3.1712879790017; Thu, 11
- Apr 2024 16:56:30 -0700 (PDT)
-Date: Thu, 11 Apr 2024 16:56:21 -0700
+ (user=saravanak job=sendgmr) by 2002:a17:90a:6546:b0:2a5:fb3a:32e6 with SMTP
+ id f6-20020a17090a654600b002a5fb3a32e6mr3270pjs.4.1712879793807; Thu, 11 Apr
+ 2024 16:56:33 -0700 (PDT)
+Date: Thu, 11 Apr 2024 16:56:22 -0700
 In-Reply-To: <20240411235623.1260061-1-saravanak@google.com>
-Message-Id: <20240411235623.1260061-2-saravanak@google.com>
+Message-Id: <20240411235623.1260061-3-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +60,8 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20240411235623.1260061-1-saravanak@google.com>
 X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
-Subject: [PATCH v3 1/2] Revert "treewide: Fix probing of devices in DT overlays"
+Subject: [PATCH v3 2/2] of: dynamic: Fix overlayed devices not probing because
+ of fw_devlink
 From: Saravana Kannan <saravanak@google.com>
 To: Herve Codina <herve.codina@bootlin.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -77,11 +78,11 @@ Cc: kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.ke
 	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
-
-While the commit fixed fw_devlink overlay handling for one case, it
-broke it for another case. So revert it and redo the fix in a separate
-patch.
+When an overlay is applied, if the target device has already probed
+successfully and bound to a device, then some of the fw_devlink logic
+that ran when the device was probed needs to be rerun. This allows newly
+created dangling consumers of the overlayed device tree nodes to be
+moved to become consumers of the target device.
 
 Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
 Reported-by: Herve Codina <herve.codina@bootlin.com>
@@ -90,90 +91,165 @@ Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
 Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/bus/imx-weim.c    | 6 ------
- drivers/i2c/i2c-core-of.c | 5 -----
- drivers/of/dynamic.c      | 1 -
- drivers/of/platform.c     | 5 -----
- drivers/spi/spi.c         | 5 -----
- 5 files changed, 22 deletions(-)
+ drivers/base/core.c    | 76 +++++++++++++++++++++++++++++++++++++-----
+ drivers/of/overlay.c   | 15 +++++++++
+ include/linux/fwnode.h |  1 +
+ 3 files changed, 83 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-index 837bf9d51c6e..caaf887e0ccc 100644
---- a/drivers/bus/imx-weim.c
-+++ b/drivers/bus/imx-weim.c
-@@ -331,12 +331,6 @@ static int of_weim_notify(struct notifier_block *nb, unsigned long action,
- 				 "Failed to setup timing for '%pOF'\n", rd->dn);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 5f4e03336e68..1a646f393dd7 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -46,6 +46,8 @@ static bool fw_devlink_drv_reg_done;
+ static bool fw_devlink_best_effort;
+ static struct workqueue_struct *device_link_wq;
  
- 		if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
--			/*
--			 * Clear the flag before adding the device so that
--			 * fw_devlink doesn't skip adding consumers to this
--			 * device.
--			 */
--			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
- 			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
- 				dev_err(&pdev->dev,
- 					"Failed to create child device '%pOF'\n",
-diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
-index a6c407d36800..a250921bbce0 100644
---- a/drivers/i2c/i2c-core-of.c
-+++ b/drivers/i2c/i2c-core-of.c
-@@ -178,11 +178,6 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
- 			return NOTIFY_OK;
- 		}
++#define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
++
+ /**
+  * __fwnode_link_add - Create a link between two fwnode_handles.
+  * @con: Consumer end of the link.
+@@ -237,6 +239,70 @@ static void __fw_devlink_pickup_dangling_consumers(struct fwnode_handle *fwnode,
+ 		__fw_devlink_pickup_dangling_consumers(child, new_sup);
+ }
  
--		/*
--		 * Clear the flag before adding the device so that fw_devlink
--		 * doesn't skip adding consumers to this device.
--		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
- 		client = of_i2c_register_device(adap, rd->dn);
- 		if (IS_ERR(client)) {
- 			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 4d57a4e34105..19a1a38554f2 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -224,7 +224,6 @@ static void __of_attach_node(struct device_node *np)
- 	np->sibling = np->parent->child;
- 	np->parent->child = np;
- 	of_node_clear_flag(np, OF_DETACHED);
--	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
++static void fw_devlink_pickup_dangling_consumers(struct device *dev)
++{
++	struct fwnode_handle *child;
++
++	mutex_lock(&fwnode_link_lock);
++	fwnode_for_each_available_child_node(dev->fwnode, child)
++		__fw_devlink_pickup_dangling_consumers(child, dev->fwnode);
++	__fw_devlink_link_to_consumers(dev);
++	mutex_unlock(&fwnode_link_lock);
++}
++
++/**
++ * fw_devlink_refresh_fwnode - Recheck the tree under this firmware node
++ * @fwnode: The fwnode under which the fwnode tree has changed
++ *
++ * This function is mainly meant to adjust the supplier/consumer dependencies
++ * after a fwnode tree overlay has occurred.
++ */
++void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode)
++{
++	struct device *dev;
++
++	/*
++	 * Find the closest ancestor fwnode that has been converted to a device
++	 * that can bind to a driver (bus device).
++	 */
++	fwnode_handle_get(fwnode);
++	do {
++		if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
++			continue;
++
++		dev = get_dev_from_fwnode(fwnode);
++		if (!dev)
++			continue;
++
++		if (dev->bus)
++			break;
++
++		put_device(dev);
++	} while ((fwnode = fwnode_get_next_parent(fwnode)));
++
++	/*
++	 * If none of the ancestor fwnodes have (yet) been converted to a device
++	 * that can bind to a driver, there's nothing to fix up.
++	 */
++	if (!fwnode)
++		return;
++
++	WARN(device_is_bound(dev) && dev->links.status != DL_DEV_DRIVER_BOUND,
++	     "Don't multithread overlaying and probing the same device!\n");
++
++	/*
++	 * If the device has already bound to a driver, then we need to redo
++	 * some of the work that was done after the device was bound to a
++	 * driver. If the device hasn't bound to a driver, running thing too
++	 * soon would incorrectly pick up consumers that it shouldn't.
++	 */
++	if (dev->links.status == DL_DEV_DRIVER_BOUND)
++		fw_devlink_pickup_dangling_consumers(dev);
++
++	put_device(dev);
++	fwnode_handle_put(fwnode);
++}
++
+ static DEFINE_MUTEX(device_links_lock);
+ DEFINE_STATIC_SRCU(device_links_srcu);
  
- 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+@@ -1322,14 +1388,8 @@ void device_links_driver_bound(struct device *dev)
+ 	 * child firmware node.
+ 	 */
+ 	if (dev->fwnode && dev->fwnode->dev == dev) {
+-		struct fwnode_handle *child;
+ 		fwnode_links_purge_suppliers(dev->fwnode);
+-		mutex_lock(&fwnode_link_lock);
+-		fwnode_for_each_available_child_node(dev->fwnode, child)
+-			__fw_devlink_pickup_dangling_consumers(child,
+-							       dev->fwnode);
+-		__fw_devlink_link_to_consumers(dev);
+-		mutex_unlock(&fwnode_link_lock);
++		fw_devlink_pickup_dangling_consumers(dev);
+ 	}
+ 	device_remove_file(dev, &dev_attr_waiting_for_supplier);
  
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 389d4ea6bfc1..efd861fa254f 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -743,11 +743,6 @@ static int of_platform_notify(struct notifier_block *nb,
- 		if (of_node_check_flag(rd->dn, OF_POPULATED))
- 			return NOTIFY_OK;
+@@ -1888,8 +1948,6 @@ static void fw_devlink_unblock_consumers(struct device *dev)
+ 	device_links_write_unlock();
+ }
  
--		/*
--		 * Clear the flag before adding the device so that fw_devlink
--		 * doesn't skip adding consumers to this device.
--		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
- 		/* pdev_parent may be NULL when no bus platform device */
- 		pdev_parent = of_find_device_by_node(rd->dn->parent);
- 		pdev = of_platform_device_create(rd->dn, NULL,
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index ff75838c1b5d..17cd417f7681 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4761,11 +4761,6 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 			return NOTIFY_OK;
- 		}
+-#define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
+-
+ static bool fwnode_init_without_drv(struct fwnode_handle *fwnode)
+ {
+ 	struct device *dev;
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index 2ae7e9d24a64..7b2396c53127 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -179,6 +179,15 @@ static int overlay_notify(struct overlay_changeset *ovcs,
+ 	return 0;
+ }
  
--		/*
--		 * Clear the flag before adding the device so that fw_devlink
--		 * doesn't skip adding consumers to this device.
--		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
- 		spi = of_register_spi_device(ctlr, rd->dn);
- 		put_device(&ctlr->dev);
++static void overlay_fw_devlink_refresh(struct overlay_changeset *ovcs)
++{
++	for (int i = 0; i < ovcs->count; i++) {
++		struct device_node *np = ovcs->fragments[i].target;
++
++		fw_devlink_refresh_fwnode(of_fwnode_handle(np));
++	}
++}
++
+ /*
+  * The values of properties in the "/__symbols__" node are paths in
+  * the ovcs->overlay_root.  When duplicating the properties, the paths
+@@ -953,6 +962,12 @@ static int of_overlay_apply(struct overlay_changeset *ovcs,
+ 		pr_err("overlay apply changeset entry notify error %d\n", ret);
+ 	/* notify failure is not fatal, continue */
  
++	/*
++	 * Needs to happen after changset notify to give the listeners a chance
++	 * to finish creating all the devices they need to create.
++	 */
++	overlay_fw_devlink_refresh(ovcs);
++
+ 	ret_tmp = overlay_notify(ovcs, OF_OVERLAY_POST_APPLY);
+ 	if (ret_tmp)
+ 		if (!ret)
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 0d79070c5a70..95a78b87777a 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -220,6 +220,7 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
+ 		    u8 flags);
+ void fwnode_links_purge(struct fwnode_handle *fwnode);
+ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
++void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode);
+ bool fw_devlink_is_strict(void);
+ 
+ #endif
 -- 
 2.44.0.683.g7961c838ac-goog
 
