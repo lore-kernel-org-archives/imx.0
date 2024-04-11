@@ -1,130 +1,79 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17659205E19
-	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 15:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210FB5813B;
+	Thu, 11 Apr 2024 15:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712850296; cv=none; b=qScPkVRkyY+WjEk4hw1ji5gVzr8ALVvCYIxjmon5NfHEJzBJMdRpJ+0Siilh6S/tA6ThsXyVMXg7xRTJrwmVXsIHllO2CNpyMnNVcynM7CKfdQ6KsJH7cVrKTI1jT7/g8ByUlBuB2oWjx6Au6iR6OMPQL5ep50au/K0BFmf3zlg=
+	t=1712850954; cv=none; b=hHTEuCUdGFMvVOIKwslyU/i+A/F8vM2eIg/PFgvRYQwLZXWcN7fGi/veR266LQ0l3UOJ5mJay+zZO1xnppv+mmIk55xhPiGWthf2FdQdypGr5tsHbTfDvMd8W3mQtzwNJPxSRGqk1YIMtlZu2LFB4iv0KO5wmKZPcQJ/uUhm2ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712850296; c=relaxed/simple;
-	bh=/IRr60aMZOeOyFiScIJ7Hqy89Fa77PW2HAAbz3xI4jQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pK7pM47y7iB6fBzVoW5tPOiHym5YvoogbomP3YRHQCwImUdLUkzCgmEZtd4pMZKv5szwOpEuVZAjzWNXReT+XDtHq+9sHnalMwQ1SwjIIvo3DPHKd3ekf1zIXQFvaxeqJ8a1oS9IXvKlU1f7XU4nYkB5dvwDIYxiEsB9TLXjIgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Hh1T/l8A; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1712850954; c=relaxed/simple;
+	bh=0d1y9rY32N57eph8lfneQ9BlV1cLMrSb0BJ8cZM8V2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJc2uFpz7W+hSJOu/C79L/D4wprjdU6VOPjWkiq8OFPuT6/rCpIKplvH1nb36sfZR0BSHd1KgsZayoZNT+x0ZBwNv9/C+rksl5B0imfRN2SkueH2Utxfak/zq8AmIUck1HvCML5WAouUQVARFuShuwsOyrRrljE2mAszWj/YdbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riPvfi0l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Hh1T/l8A"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43BDG7bV024388;
-	Thu, 11 Apr 2024 15:44:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=qcppdkim1; bh=haD8srUSA/7piIQcBMU+j
-	z1u8jwrb7rUW232cvqEx3s=; b=Hh1T/l8AZXIPiuPJqEb+2xEhcwSozimpdVr7/
-	ABvip+E1Wk/J/Zj8agqdbWyJOXCUiT7kxIstytMkXA+Kr/EioGE0k1drFabachGG
-	e/twcqTZYzv9/ZuLmnPN3qe1clHinSdawWe/XA3nIErgRDeW4uRtXUcQGNH/g5LB
-	rnwWMlOrXRIsrFHYwNEFgG5AxakO2YYA/gPwVGw0SJvV8jq4U85e4u4sjAhUfnBv
-	psRlDjeOV5LSTGoaaOr+7fn2w0mbIocdr5edRg/SDi57nOvFQPmti6rJF1yvUb50
-	dcbDTpIE+iyP7jKi+xqrz3TUbZFyfzUAR9PjsEMo8l8BCqSDQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xebqx9mg6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Apr 2024 15:44:46 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43BFijB4032349
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Apr 2024 15:44:45 GMT
-Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 11 Apr 2024 08:44:45 -0700
-Date: Thu, 11 Apr 2024 08:44:44 -0700
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
-        Pengutronix
- Kernel Team <kernel@pengutronix.de>,
-        Linus Walleij
-	<linus.walleij@linaro.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sean Wang
-	<sean.wang@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        zhanghongchen <zhanghongchen@loongson.cn>,
-        Yinbo Zhu <zhuyinbo@loongson.cn>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>,
-        <linux-gpio@vger.kernel.org>, <imx@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH v2 4/5] pinctrl: qcom: sm7150: fix module autoloading
-Message-ID: <ZhgFbKg8DPBsRrac@hu-bjorande-lv.qualcomm.com>
-References: <20240411064614.7409-1-krzk@kernel.org>
- <20240411064614.7409-4-krzk@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riPvfi0l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D39C072AA;
+	Thu, 11 Apr 2024 15:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712850953;
+	bh=0d1y9rY32N57eph8lfneQ9BlV1cLMrSb0BJ8cZM8V2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=riPvfi0l+sGQSD2yaCU3Dh2aTEUg27SIxctHQg9IWQ5r1/OWt2KxG4KfJ2wDoM5WF
+	 UWAn1O+DkIttQKY2r48vYT/q/TyO4ifV2UvrOFxVrHiBuGacBbdtLtoW1dZjs1oAYK
+	 qiANAWnF1NBAzbLW4vZQ248ys3oRJo//LSOynWbtzMdMPesyfmOfJW/3EmdbiPRsng
+	 kWO9fOo0YgCIqnf4uRkast+aVzWEE79npnS0pBXvIVUoBn9kwT0a8Xv7mFuVP6E50e
+	 NxQIFqLB0pkfRAvO3o1I8bYMrOCHZFznxLVaLaV9Ox3meybsc1/qRo5Q71EXoDI4gn
+	 D1rroa5C7drKg==
+Date: Thu, 11 Apr 2024 16:55:48 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 2/2] ARM: dts: imx6: exchange fallback and specific
+ compatible string
+Message-ID: <20240411-shelter-overact-ad518e6e7003@spud>
+References: <1712652644-28887-1-git-send-email-shengjiu.wang@nxp.com>
+ <1712652644-28887-3-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="G5/1QEQbSLLvAARd"
 Content-Disposition: inline
-In-Reply-To: <20240411064614.7409-4-krzk@kernel.org>
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: KU4mU--SOy6t8CFhdoXd3JVsuCKtrbVx
-X-Proofpoint-ORIG-GUID: KU4mU--SOy6t8CFhdoXd3JVsuCKtrbVx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-11_08,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 mlxlogscore=999 malwarescore=0 phishscore=0 suspectscore=0
- adultscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404110115
+In-Reply-To: <1712652644-28887-3-git-send-email-shengjiu.wang@nxp.com>
 
-On Thu, Apr 11, 2024 at 08:46:13AM +0200, Krzysztof Kozlowski wrote:
-> Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
-> based on the alias from of_device_id table.  Pin controllers are
-> considered core components, so usually they are built-in, however these
-> can be built and used as modules on some generic kernel.
-> 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
 
-Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+--G5/1QEQbSLLvAARd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Bjorn
+On Tue, Apr 09, 2024 at 04:50:44PM +0800, Shengjiu Wang wrote:
+> exchange fallback and specific compatible string for spdif sound card.
+>=20
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-> ---
-> 
-> Changes in v2:
-> 1. Add ack
-> ---
->  drivers/pinctrl/qcom/pinctrl-sm7150.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/pinctrl/qcom/pinctrl-sm7150.c b/drivers/pinctrl/qcom/pinctrl-sm7150.c
-> index c25357ca1963..c542f9bc6bcd 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-sm7150.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-sm7150.c
-> @@ -1246,6 +1246,7 @@ static const struct of_device_id sm7150_tlmm_of_match[] = {
->  	{ .compatible = "qcom,sm7150-tlmm", },
->  	{ },
->  };
-> +MODULE_DEVICE_TABLE(of, sm7150_tlmm_of_match);
->  
->  static struct platform_driver sm7150_tlmm_driver = {
->  	.driver = {
-> -- 
-> 2.34.1
-> 
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+--G5/1QEQbSLLvAARd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZhgIBAAKCRB4tDGHoIJi
+0mDpAP9K2EBBVizbp4vQtZXUyf2uWZ8OGON9EkZngwASFNWFGgEA3ImnyynBo61d
+ruuwXuqOjg13Kz+LlJ7nVIoY1Iy6EQg=
+=dmOF
+-----END PGP SIGNATURE-----
+
+--G5/1QEQbSLLvAARd--
