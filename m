@@ -1,255 +1,173 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2075.outbound.protection.outlook.com [40.107.20.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D9E4F8BB
-	for <imx@lists.linux.dev>; Thu, 11 Apr 2024 23:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712879796; cv=none; b=BZB1O0x6vVr/yQuSLDqfP3EeHrGT6/zwVJXZBoBvxyZUIY9s5+ccdplvQE+I8/aBD0XTvGhl8YgILIPaIvyXAbRELFTPhsyTDn1hpXyEC87VQXJi/D0dTbZuZ+oJYxocH2wsVR3lRPTqZUGBIbHALUHfC7z5DFzlbKU71cG9Gkc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712879796; c=relaxed/simple;
-	bh=UD3bfhO0YU3iaHR4sW0PiOGB9kKHCclU23sLM4TNyko=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=R/eRRm8pslZhCtBUzc6Zv6tMr8rv7Qq7D9/DKld0FeCzH0Rn2MEE24XK/r9qRr2Twq2fltKJeRSXCRt+LUsJdH+r3Yjairpe6MY1SDUoUngAteAyoZI4awhJxv44UcB6EPKV3rHB16930SyyARUdYgJ6uzpvHAmQ7FvIgGPlhcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LqXgGAXi; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED7DA31
+	for <imx@lists.linux.dev>; Fri, 12 Apr 2024 00:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712881287; cv=fail; b=bT1lk9FKutr6D+O4jFYDJwga1fbVB8+csxN7m5XTDaBlAR6IFmPHyq4rcbLgPWm7p9HOiCX8LP5Smd2z/JUdefcZfgQhsu0yHRqOavLqguNQ18/iGqw4E6Y2uCfBCwsLf7WxWcjQa84yGLl4e/UkifNks7isQ66LlKOLDdjvkzg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712881287; c=relaxed/simple;
+	bh=ugPvJFgjnLJ0NJ4wxAzAYriJw4zQ+J6ovcBuFXmrJK0=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=mhcu3Vr6mhQNLkx2hFHsdHpSOoQ23Fv+WY/Atlelmf1fu5/qHHIWvwNBEqIFH/axrIWs47gUrOQ6GIKhTpglLRckj950P26Rr8agFUJv8qx49tQUYU2fodXjAYL8QAdqcpcHO+4AnBGCBcSx9UAd+z4ePQSlC2cEJjyx87uhFM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lLtHuZoM; arc=fail smtp.client-ip=40.107.20.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LqXgGAXi"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2a2e6197371so310325a91.3
-        for <imx@lists.linux.dev>; Thu, 11 Apr 2024 16:56:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712879794; x=1713484594; darn=lists.linux.dev;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HizrqH7rz47v2QLp5elrgTIyG7EQRo9SAEpqH/+kBy0=;
-        b=LqXgGAXiVHWKxYbAx0+pT1aBg2DiebRwBIdmHpCN0CraNPFNH39BlURXWDlokBnV/6
-         ++Fn1soY24PlRc5X9uWOVV32i9wSWvXOoi6s2zc2jz2QqKNTtW0GYwGUHI5pEbJYyILR
-         pIrjXEmN1DvsB2GowFdGG0NHq48yABcLaFEvn+F4lJDr+6gF/XB3L1fRX/uSs+vdyngn
-         t7JiTRtaaVHhNxKwOEvTQ9MOAqSIMf0+k0MDAGvzhY500cRViLp2ySlxMvWb6FMAcmUC
-         d9QiqmHX6UqbJKaLP+vuuZ+pTJ5b885J++SrQ+cW9QzV9GwAHAxw2h9WGACrT4N7zH1g
-         Pdkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712879794; x=1713484594;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HizrqH7rz47v2QLp5elrgTIyG7EQRo9SAEpqH/+kBy0=;
-        b=TX6tvWqXiNJnmzkZ3tR6LaV/uVfTY35W/LO5gYSwNIWpNSQQjB+5Z4nO1AYXI3hFrM
-         eX2LX5k/CZefnBD4xZyYCM+yNOkYoNDqOfHIB0wS86hIqSxjl65E4pkshVy1xupOex2k
-         cu/pkfutDqEE9vRIpPMifTbA1z0ZJfOGWLs2SD4kO1ZwUkTSolljbEQMzyHOY3HFV3XP
-         GN29BoQV/B5d1i9BpHNqAtdqDaYCqwlV2rKv/26YUq/D1+QbY1EHaQy5ndzsudv7SvbL
-         UOSoAE/ceHxExxo05pwZVXdDBpKxKUvkAngCfUjhliiILDQuI2D+v5gmYU6w95x+pG3x
-         48qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1MN/0MP/5xpob6KzjoTDk4vGT5xlZ3/XVmFltjxCHDrZGVbrlh3LPRNicoeoj5VDlqLan40RkuAM+H6kjdBzfGPEH
-X-Gm-Message-State: AOJu0YyZGob8g7SxAjZN1wwkukFFxqMNBmaM1GrASBP/4q0N68uXtWO0
-	RQvfL9b4IeZNn0nTnuCuq2vFMHx7d/FGm/93zgPjfnb8JVQMspb2/mwLCGGNjcz0+qOrgkUc36A
-	EPpggP9ORu56Gfw==
-X-Google-Smtp-Source: AGHT+IHqTq2UPkwQrTsIwISL3TPeqKf9uyBTI5tIlaviAP1Wf5pw15DCSNWSteziJ1gjlX/gPxjg3k35MoA1MA0=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:a472:f40c:d4ba:c29])
- (user=saravanak job=sendgmr) by 2002:a17:90a:6546:b0:2a5:fb3a:32e6 with SMTP
- id f6-20020a17090a654600b002a5fb3a32e6mr3270pjs.4.1712879793807; Thu, 11 Apr
- 2024 16:56:33 -0700 (PDT)
-Date: Thu, 11 Apr 2024 16:56:22 -0700
-In-Reply-To: <20240411235623.1260061-1-saravanak@google.com>
-Message-Id: <20240411235623.1260061-3-saravanak@google.com>
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lLtHuZoM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WBJf8ygNDYKiUq09ixp+MSiR/XYRmJmhCnfbzcAccsF3TFDIXcx5Ip9trj71ZHRIFamniq0sb8QlJ5xcQB3MzYccfqzqlr8eO2C9LpfqBdMebcUjdaUBtRTetdZYZb2kVjFpucqmOMdwarFEMTgTsuFE2AdjRi+N02xy3wwKbyPaAGlihoriE1MVfKjJQzoR+UMEfP267Z3dWKnylWQNb6PscL2xUw+1oeb/yfVAsVIC+Xie2xJbkAJu9VBQB2KOvZJ6alXJVxWScYXtb4Evv4oVTAscAXhbiT7CmL9mpAF0E5EdojdNh4TsNHVQwQ47zkQIXxhuNuuBldf8Rcgsqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=it+OUvIgHyhZidLVoM3yG3gEMv/oyg06GoXnSuq+X08=;
+ b=jijnKU87OZYKpdkjLLn/M9Wb3w13304EbY0mDMeeiu2ul7ybkhXobLam8TgmE9HwKWFjnNSQTwdR6MMDFBwQwmkTBmWr3H43J1AGuacpztrZoEloSQowBNv64hQDSRP9M6wEAw0ed//ucrLXLO+Vz3/8eGftKvYSBbf4vmyxNVZPOr7gqz5ozDd60m5LptOxWXRHG/nQjRbKuYi+qYsk7uGcNfUSPhz5aE2rfUruFEaEm2qCZuGhWjb1UkgcWEu01O8RtJ0IBY0PENNFJNt8RzzzOAwYulGrueAzQvIyi+X1gsY9XnPH3QXo1aRz2I7IaM3+5JU9zdhgticIyJ7JiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=it+OUvIgHyhZidLVoM3yG3gEMv/oyg06GoXnSuq+X08=;
+ b=lLtHuZoMSrIs0K9Xc67YOl+oyskBxYjaExqvLBlNJUhaddLxqhrsng6zSGAkO2FUlfqpTNRmyXtyBJ/xyv+kRJGPu+OHX+plzY/PlV4A63o3W8nwB9KoCRLMZIllT8twK9EYXoz5LwCXc5WLv6Kb24is+QI7DMfk903x2Lo+wh4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by AM8PR04MB7970.eurprd04.prod.outlook.com (2603:10a6:20b:24f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
+ 2024 00:21:22 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Fri, 12 Apr 2024
+ 00:21:22 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions
+Date: Fri, 12 Apr 2024 08:29:24 +0800
+Message-Id: <20240412-pinctrl-scmi-oem-v1-v1-0-704f242544c1@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGSAGGYC/x3MQQqAIBBA0avIrBtQmUV1lWhhNtVAWWhIIN09a
+ fkW/xdIHIUT9KpA5CxJzlBhGgV+c2FllLkarLakyVi8JPg77pj8IXjygdkgdeSddZOhVkMtr8i
+ LPP91GN/3AyIuIAplAAAA
+To: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@arm.com>, 
+ Sudeep Holla <sudeep.holla@arm.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>
+Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712881775; l=1113;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=ugPvJFgjnLJ0NJ4wxAzAYriJw4zQ+J6ovcBuFXmrJK0=;
+ b=3+HE8AbL61B1AlyhYweRJo9Z23PKvzL6iH2zusoi1uoMXT62RZi1frAkUvQ1E/ZOseai+dCMD
+ X7B+cE8RQTvBgZYfik0Pbs/1atGOxlUQFfjUcmM41PnxwKBu++pZw8e
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SI2P153CA0030.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::15) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240411235623.1260061-1-saravanak@google.com>
-X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
-Subject: [PATCH v3 2/2] of: dynamic: Fix overlayed devices not probing because
- of fw_devlink
-From: Saravana Kannan <saravanak@google.com>
-To: Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|AM8PR04MB7970:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7e2c0d5-d1d7-42b2-1db8-08dc5a867b41
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	YDo60lquzj9CBscG4PmqX1hooj8aA1dlQ8PheZLVdOM8PFj0pNU6ZwAR/jJPJYuMn7HKabg3YR15lFN+99tglJj+5UDy+MRCukX4z1mdSzAi9qr9KG+8j/JYFgQAYxE4ui+ZxC64VbsKpj9kWFLASeSpsrZCWo+fQGVCvdLFklCfPqBc6nbQT4k9nLgkFDiu8DcIp34hVrvxI+GEeuDiWjqFS8b0vShJmghYIo3VpJuX3+Jqb3CxYXPskAfYX/bkJFq+N8MLmFUfKX85+qgr9DMl8UgGaChfZQSldz4IFaIE0fzee2nYaFH9me7alvnICB51oYCdMWA7R8lMv5G7GyGl6PkMwZouISWC35zNtn4GE2+C5zXI4Yp0mFVbYxBivgcljZYUwZe6/Y2tq8DTtxMToeS5mPQBjyZXluXTGwbuWPiZLXPIWWc/0qdjQ8LqcHyoFPioi+4aeVJXvx02Jko+MwXeeCgy+7V6oBgin6YQsAnWUrHpbwd8yOMvHFtMmOYyESrN+ZM82dv7QCgBeCShC1aTnHfRi166Bs1KMTx05XsYWhbOJfgkQPdGfIs9VIUErtcNs4HLukpKpv3Vhmqb0Nwv8aL1UCX5sL7gW7SAPzNmA9IDKrJ0l+B+uYn42HZZiFPorG6EooS9b7btEnAZcaiLyD+tP8qkuVJ2NwxuPxmUazYd8vo6AEJRFveumZJrJ+h8tY9WefSo1pqDa30yXo5My+cKZNwAKM7MZAI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(52116005)(7416005)(376005)(38350700005)(921011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QnNXRlU3UzFiWjJTbncrNGxDNkJmRnEzdlNRbjlwaWVHQ2k4V3pGcUdXa1A5?=
+ =?utf-8?B?eHpWOFRCVm81b3pJaWRNenAyQ2JsOHMvT25IUk1CMDRFTms4VGd1YUR6Tkxv?=
+ =?utf-8?B?a3A3RjZMb25rOThaWGRpNllnRlc2Y0RadEhKeXdMN21CUVRTQXFJN0xEcURH?=
+ =?utf-8?B?RTNBQnB6cDZJL2R2cmQwaW9ESnEvczlteGs0VU52THpuSDE0VWh4elNodmlh?=
+ =?utf-8?B?cGp4S25KWVBydDlRZ2h6ejhsa3FjaDFHZDM4b0NsVGtlQW45cGxzbnB0OHl1?=
+ =?utf-8?B?TU0wVFFVZlYweTBPRzJrVHpHSGRvaEtKU2o4UkZJeGtWeWlYOUdVUHJJcDhN?=
+ =?utf-8?B?cERrclV4OWR2cEMwRDZ1c0NEZHdnSmt3MDdPeGhCaEtGSkE0c3VHTWFaWHM1?=
+ =?utf-8?B?Z0tTNFBydHZLc3dGTVZ4a0Q4dHJwRGMweVRlRkduTGw3YytkcTNUa20xUS9j?=
+ =?utf-8?B?RlZOTkJ2cnNJV2dBQVlYQi9VL0hXeklSa2V0MlVqYWk3Z1pSeG5MZ2ZFZ254?=
+ =?utf-8?B?RkdiblZRNmJSNzVaY3o5ckJESXVRa0x4YkZyaTdBdUMyRWlNbUQycVRUUUxz?=
+ =?utf-8?B?V1dvZjJ6c1JpU1doRUZWc2VJRVB3eWVUOXJRbEIycTBueTdiTzFuTjl3UnRI?=
+ =?utf-8?B?ZWduNzgxcDhtN1NONEZpbmRBM2k0WjJWRk4vV2JTckFtMFNsaUN4VzRzVndB?=
+ =?utf-8?B?dHBpdHowdkRVbVdKVnJkMWNMa2JCR2pSL2piRWw0RXhHczlFeUg4aSsrQTFY?=
+ =?utf-8?B?czFLUEh1MGhjSEpVRFZGam5aWkM1TE94QkpSNnhNTVlkaDFwRmNSOC9vMmFy?=
+ =?utf-8?B?M3ZZY3RvcEdqTWtrYUZ5K0luSzdrbEpEeXV3WGp3Nk5tdGNpTnVSUXpCWkJv?=
+ =?utf-8?B?S2Fjd0EvQ0JKKy81UFVYMUNaMFRTblNMUEQrdk9PU2pFcnF6YmdFeWlPWDli?=
+ =?utf-8?B?dW52Z1pwTGNlU2dVVXB3Y0dha2FNb2NuSmxMVWVLU0FxbWt2UVlwSzhHcDNN?=
+ =?utf-8?B?b2RNQ2Q1Ylhuc0crK1g0dmtGczd6YzZwTGgzNzRjb01sMncyaG9ZN2xrcFFr?=
+ =?utf-8?B?NW5WVFdBTzZoQStUNUN4djNXM3h3c2pueGU4YzVVb2Fvd2ZYbkRVWndRRExD?=
+ =?utf-8?B?dmZydXluck96S0hDTlN5bUwvRzdpYXpodzluMDV5VmNDRFFDS2RVOXJ0bXpH?=
+ =?utf-8?B?S0NLT29SQ1hrWlZ4SWlVMzRoak5obFhVWHRoUyt5OUNPbGQxaENZWE5QaThK?=
+ =?utf-8?B?ZW9nYVBPNXRBSlNvNHRUdnl2QkYxdjlkUHlnN3RxeW9CVTA4dFFEV25qQXhZ?=
+ =?utf-8?B?a2RPS1ZrQzEzRHQ4REFEQ0lWclBIOUdDOGoxdkVYTStSRFhSWG9xSy9UV0Y0?=
+ =?utf-8?B?cWM2Mzl3VnR1QnZHNmhrbzFWMTE4QjhJK0phY0ZPVnRhRzVtQ3c4YmlpQjF4?=
+ =?utf-8?B?U3dNd3JuVHA2akhkYlN4c0RBNVVzcE5ZL2NtSDdXdUE5UFN6VlVZM3JPNUYx?=
+ =?utf-8?B?bGlseUtqc0l3b041R0tqZDdjekNVMUtVMFF3VEpvdXJ1alZHZ25POS9FTHVn?=
+ =?utf-8?B?QVUydS9jS3VaY2ZIeWxyNnJ6OWkzRjZHOC81V2txQlVBQmg5emxUQTJKUXJE?=
+ =?utf-8?B?bnR3NkJSckQreXBwdTNHalBpWU5Id2V2MGFTSzNuVFFRWGRWSDRub0ZRWjBw?=
+ =?utf-8?B?WlFiVGV0aVUxZDJnU3JpVVBNaEdacDZ3TlFQMTVwZ1ZKaFRyMWFkNjVjempt?=
+ =?utf-8?B?UEJvVFVYVXNuVTBjWXdVWXJyWTZDVFNpYlRIUk5GNTQxZ09wa2dYUFB5QmJ0?=
+ =?utf-8?B?QW5GeWdsd0drTXo1SUxsR3ZWSUc4ZTIyTDFaRFgxRytDTVFIOUJXTE5wUHF1?=
+ =?utf-8?B?MmllNHovbzkzcHpWZTJLUXI5cURmbDU3L3JERk9jSFBBbVBTWWMrRTd5RUNX?=
+ =?utf-8?B?cGw1alNVRk9jWGIxOU9oVVJjbjVOOUR1Z0V0Z0kvYWhOa1V0Vk5EZUk3aGJz?=
+ =?utf-8?B?WFdOLy9kdVhncHVDM3JBWWxrOGQ0dUxXeHpxdmNrWUtJQitvallXVVVXZ1FW?=
+ =?utf-8?B?L1dqMzlkRlFjR2R1eHFxV080NU83VzVRT1BIQ0pmZmU0UnNlWW92bGhaYTlt?=
+ =?utf-8?Q?GYqHblv1RvUSD51lTtqPRpZT8?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7e2c0d5-d1d7-42b2-1db8-08dc5a867b41
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 00:21:22.0678
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l+Yfz1Wp0a6mUYFn7o89egMfJMnvDgn2+UTanWH/58sE6HF07pRCrrBgAalYeRE0U7RMvhm4JJkGxggGdNxk+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7970
 
-When an overlay is applied, if the target device has already probed
-successfully and bound to a device, then some of the fw_devlink logic
-that ran when the device was probed needs to be rerun. This allows newly
-created dangling consumers of the overlayed device tree nodes to be
-moved to become consumers of the target device.
+ARM SCMI v3.2 Table 24 Pin Configuration Type and Enumerations:
+'192 -255 OEM specific units'.
 
-Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-Reported-by: Herve Codina <herve.codina@bootlin.com>
-Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
-Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
-Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
-Signed-off-by: Saravana Kannan <saravanak@google.com>
+i.MX95 System Manager FW supports SCMI PINCTRL protocol, but uses
+OEM Pin Configuration type, so extend the driver to support custom
+params.
+
+This patchset depends on [1].
+
+[1] https://lore.kernel.org/all/20240412-pinctrl-scmi-v9-0-b817344d3a9a@nxp.com/
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/base/core.c    | 76 +++++++++++++++++++++++++++++++++++++-----
- drivers/of/overlay.c   | 15 +++++++++
- include/linux/fwnode.h |  1 +
- 3 files changed, 83 insertions(+), 9 deletions(-)
+Peng Fan (3):
+      dt-bindings: pinctrl: support i.MX95 SCMI pinctrl
+      dt-bindings: firmware: arm,scmi: support i.MX95 SCMI Pinctrl
+      pinctrl: scmi: support i.MX OEM pin configuration type
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 5f4e03336e68..1a646f393dd7 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -46,6 +46,8 @@ static bool fw_devlink_drv_reg_done;
- static bool fw_devlink_best_effort;
- static struct workqueue_struct *device_link_wq;
- 
-+#define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
-+
- /**
-  * __fwnode_link_add - Create a link between two fwnode_handles.
-  * @con: Consumer end of the link.
-@@ -237,6 +239,70 @@ static void __fw_devlink_pickup_dangling_consumers(struct fwnode_handle *fwnode,
- 		__fw_devlink_pickup_dangling_consumers(child, new_sup);
- }
- 
-+static void fw_devlink_pickup_dangling_consumers(struct device *dev)
-+{
-+	struct fwnode_handle *child;
-+
-+	mutex_lock(&fwnode_link_lock);
-+	fwnode_for_each_available_child_node(dev->fwnode, child)
-+		__fw_devlink_pickup_dangling_consumers(child, dev->fwnode);
-+	__fw_devlink_link_to_consumers(dev);
-+	mutex_unlock(&fwnode_link_lock);
-+}
-+
-+/**
-+ * fw_devlink_refresh_fwnode - Recheck the tree under this firmware node
-+ * @fwnode: The fwnode under which the fwnode tree has changed
-+ *
-+ * This function is mainly meant to adjust the supplier/consumer dependencies
-+ * after a fwnode tree overlay has occurred.
-+ */
-+void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode)
-+{
-+	struct device *dev;
-+
-+	/*
-+	 * Find the closest ancestor fwnode that has been converted to a device
-+	 * that can bind to a driver (bus device).
-+	 */
-+	fwnode_handle_get(fwnode);
-+	do {
-+		if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
-+			continue;
-+
-+		dev = get_dev_from_fwnode(fwnode);
-+		if (!dev)
-+			continue;
-+
-+		if (dev->bus)
-+			break;
-+
-+		put_device(dev);
-+	} while ((fwnode = fwnode_get_next_parent(fwnode)));
-+
-+	/*
-+	 * If none of the ancestor fwnodes have (yet) been converted to a device
-+	 * that can bind to a driver, there's nothing to fix up.
-+	 */
-+	if (!fwnode)
-+		return;
-+
-+	WARN(device_is_bound(dev) && dev->links.status != DL_DEV_DRIVER_BOUND,
-+	     "Don't multithread overlaying and probing the same device!\n");
-+
-+	/*
-+	 * If the device has already bound to a driver, then we need to redo
-+	 * some of the work that was done after the device was bound to a
-+	 * driver. If the device hasn't bound to a driver, running thing too
-+	 * soon would incorrectly pick up consumers that it shouldn't.
-+	 */
-+	if (dev->links.status == DL_DEV_DRIVER_BOUND)
-+		fw_devlink_pickup_dangling_consumers(dev);
-+
-+	put_device(dev);
-+	fwnode_handle_put(fwnode);
-+}
-+
- static DEFINE_MUTEX(device_links_lock);
- DEFINE_STATIC_SRCU(device_links_srcu);
- 
-@@ -1322,14 +1388,8 @@ void device_links_driver_bound(struct device *dev)
- 	 * child firmware node.
- 	 */
- 	if (dev->fwnode && dev->fwnode->dev == dev) {
--		struct fwnode_handle *child;
- 		fwnode_links_purge_suppliers(dev->fwnode);
--		mutex_lock(&fwnode_link_lock);
--		fwnode_for_each_available_child_node(dev->fwnode, child)
--			__fw_devlink_pickup_dangling_consumers(child,
--							       dev->fwnode);
--		__fw_devlink_link_to_consumers(dev);
--		mutex_unlock(&fwnode_link_lock);
-+		fw_devlink_pickup_dangling_consumers(dev);
- 	}
- 	device_remove_file(dev, &dev_attr_waiting_for_supplier);
- 
-@@ -1888,8 +1948,6 @@ static void fw_devlink_unblock_consumers(struct device *dev)
- 	device_links_write_unlock();
- }
- 
--#define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
--
- static bool fwnode_init_without_drv(struct fwnode_handle *fwnode)
- {
- 	struct device *dev;
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 2ae7e9d24a64..7b2396c53127 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -179,6 +179,15 @@ static int overlay_notify(struct overlay_changeset *ovcs,
- 	return 0;
- }
- 
-+static void overlay_fw_devlink_refresh(struct overlay_changeset *ovcs)
-+{
-+	for (int i = 0; i < ovcs->count; i++) {
-+		struct device_node *np = ovcs->fragments[i].target;
-+
-+		fw_devlink_refresh_fwnode(of_fwnode_handle(np));
-+	}
-+}
-+
- /*
-  * The values of properties in the "/__symbols__" node are paths in
-  * the ovcs->overlay_root.  When duplicating the properties, the paths
-@@ -953,6 +962,12 @@ static int of_overlay_apply(struct overlay_changeset *ovcs,
- 		pr_err("overlay apply changeset entry notify error %d\n", ret);
- 	/* notify failure is not fatal, continue */
- 
-+	/*
-+	 * Needs to happen after changset notify to give the listeners a chance
-+	 * to finish creating all the devices they need to create.
-+	 */
-+	overlay_fw_devlink_refresh(ovcs);
-+
- 	ret_tmp = overlay_notify(ovcs, OF_OVERLAY_POST_APPLY);
- 	if (ret_tmp)
- 		if (!ret)
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0d79070c5a70..95a78b87777a 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -220,6 +220,7 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
- 		    u8 flags);
- void fwnode_links_purge(struct fwnode_handle *fwnode);
- void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
-+void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode);
- bool fw_devlink_is_strict(void);
- 
- #endif
+ .../devicetree/bindings/firmware/arm,scmi.yaml     |  8 ++--
+ .../bindings/pinctrl/nxp,imx95-pinctrl.yaml        | 44 ++++++++++++++++++++++
+ drivers/pinctrl/pinctrl-scmi.c                     | 23 +++++++++++
+ drivers/pinctrl/pinctrl-scmi.h                     | 15 ++++++++
+ 4 files changed, 87 insertions(+), 3 deletions(-)
+---
+base-commit: 6bd4dec347319b2e0b713a88956470e352f493fa
+change-id: 20240412-pinctrl-scmi-oem-v1-494ca2ab1480
+
+Best regards,
 -- 
-2.44.0.683.g7961c838ac-goog
+Peng Fan <peng.fan@nxp.com>
 
