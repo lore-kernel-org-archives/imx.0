@@ -1,50 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BB483CA6;
-	Fri, 12 Apr 2024 13:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B921D1DFD9;
+	Fri, 12 Apr 2024 13:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712928843; cv=none; b=YpD8JPru9WzdWCmDmFELdw/Tu9yKodXs3tMv5UeTZjYd16ogiOqEfhQRqVnNNH9bfWZO/PVU3s/EgKgDPbMz0gtqTLCU378dJgt5PJr+/umFN6Hi9/e3qmBZASSvzjzvXYVmoi9B1lDAwkZUDZ2EQfEeDrgipHR7GU4zW2dqY6g=
+	t=1712929074; cv=none; b=sMhe2lseVgyl6s0ShnZewntoXZRWOpG9S2yR8J+Akz3nwuCuTNZocS8XciUlnrl1KDaA4AbqTIACOwmxWC3WcCohjMQ0rKYJ7MENY6X5pY0BKBmo5/BhRBdRgqaQTe4unC/Ygrtj5bmw5YmbyLv4HWcFkf7G1jDMEclFVjjYcog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712928843; c=relaxed/simple;
-	bh=H/5Y4943nz8CB9370bqXYhLtnrWjvViTVIaYI0FXTBU=;
+	s=arc-20240116; t=1712929074; c=relaxed/simple;
+	bh=BtXw/kQS9H2R5Z9NHOeu97SUGojR8hmFg+yh11PQUcc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fYhy+rsKtAnQj+uYriEWfjS5g3Xe1FTYkAE6lki93JMPo/LJYrgPUIfqqCYsCZmeapLnNbFtq4KavkMA3w6LjG0zzyzlu9cEa2ggsg6wuaIW66Hin7qIErTV50I7hyfT0yKLhOu30T0v7ddr/u1KVpEA+nd7caaIBxJ54eYzaoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1F7xpqb; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RXrCGu4ki9la631m0siHNlUnfWlu/XYSMTt0rhwjIgn4//zmJDa6rJpoc/cbfN9imRIjDwEmlRhBOCTrN61OL7uJlROzPRnsS2qd+j9DRITm0NrHEVsOkhJhBN3MQERj4GIM11J5F4XH0e43M8CjstcaYUW1yUcxuyJSyV2QILk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXeKwuen; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1F7xpqb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782A1C113CC;
-	Fri, 12 Apr 2024 13:34:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXeKwuen"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69051C3277B;
+	Fri, 12 Apr 2024 13:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712928842;
-	bh=H/5Y4943nz8CB9370bqXYhLtnrWjvViTVIaYI0FXTBU=;
+	s=k20201202; t=1712929074;
+	bh=BtXw/kQS9H2R5Z9NHOeu97SUGojR8hmFg+yh11PQUcc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B1F7xpqbXMlsIlbhQv7f04ytdIJi1BFBq1mId+1PLQCCrBozo1jQcO9gVDvi0Wamx
-	 KxXnTzXS/J4MiXbHcUEfJr67duV5rU+gMk51fR3uDKUg61QEAQCa0xRkbmzuHMbnX+
-	 FAIgd/g7qFdkcV5Rlc6w95Ox2msXM53kgDrPX1QXLi4uTN2gQxv0iDwEUFdPYml+VH
-	 hV5M4IiQy5iPlhy3ludusTZSeGDufHKT6GUgvSsSe8Ym+AWJPU/yQfTq5A53T60ALQ
-	 t4uARCqvgIa9VztJ2iOCTqF/dsvkA+tm9ktM+y1rn98+MDhePmdQD+XZQV1phGnHIe
-	 LMaZrzYb4KgTg==
-Date: Fri, 12 Apr 2024 08:34:00 -0500
-From: Rob Herring <robh@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Peng Fan <peng.fan@nxp.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/6] dt-bindings: firmware: add i.MX95 SCMI Extension
- protocol
-Message-ID: <20240412133400.GA2282201-robh@kernel.org>
-References: <20240412-imx95-bbm-misc-v2-v3-0-4380a4070980@nxp.com>
- <20240412-imx95-bbm-misc-v2-v3-2-4380a4070980@nxp.com>
+	b=DXeKwuencmMy8ddA+0WHxID67LX0wCavx41hTotgshniEDU9JeRGoUaiJlQtLxQa7
+	 t9sALtTijN1Rg3DJpT3+48FRvUnsmzdySfXaNfS1yV3HeJA2UMuS5jQzaO6FqjeSfs
+	 KA9Pz4MsIZtsINxAe6bUuNaEvxKGRLgfXN1p0X3qtZS8jQ9k9JdUXSn5yn1ufLxnfr
+	 neXrCOi0YEez7QJZa+kGtCeXK81uHxtYsRYNiTYJ3e8H249Bd+l6OacxSC3ombOl1h
+	 A8x/WhkZWirauZOSH5FEgWNivzSg0Xk9j7QqKpcjeabgYuwsiI4xI8lKQw6e1eEBq2
+	 6KoTgp6yhNVSA==
+Date: Fri, 12 Apr 2024 15:37:48 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, helgaas@kernel.org,
+	bhelgaas@google.com, gustavo.pimentel@synopsys.com,
+	imx@lists.linux.dev, jdmason@kudzu.us, jingoohan1@gmail.com,
+	kw@linux.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lpieralisi@kernel.org, robh@kernel.org
+Subject: Re: [PATCH v3 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <Zhk5LERFKTFkPl4b@ryzen>
+References: <20240326193540.3610570-1-Frank.Li@nxp.com>
+ <ZhPFmFYorWa-sfLp@ryzen>
+ <20240410180341.GF16629@thinkpad>
+ <ZhbXlOMNxc2nMIW8@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,117 +49,47 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240412-imx95-bbm-misc-v2-v3-2-4380a4070980@nxp.com>
+In-Reply-To: <ZhbXlOMNxc2nMIW8@lizhi-Precision-Tower-5810>
 
-On Fri, Apr 12, 2024 at 06:47:08PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Wed, Apr 10, 2024 at 02:16:52PM -0400, Frank Li wrote:
+> On Wed, Apr 10, 2024 at 11:33:41PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Apr 08, 2024 at 12:23:20PM +0200, Niklas Cassel wrote:
+> > > On Tue, Mar 26, 2024 at 03:35:40PM -0400, Frank Li wrote:
+> > > > When PERST# assert and deassert happens on the PERST# supported platforms,
+> > > > the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
+> > > > to the area that was previously allocated (iATU0) for BAR0, instead of the
+> > > > new area (iATU6) for BAR0.
+> > > 
+> > > Nit: If we want additional clarity, we could also add:
+> > > ""
+> > > Right now, we dodge the bullet because both iATU0 and iATU6 should currently
+> > > translate inbound accesses to BAR0 to the same allocated memory area. However,
+> > > having two separate inbound mappings for the same BAR is a disaster waiting to
+> > > happen.
+> > > ""
+> > 
+> > Since Bjorn asked for the above info, it should get added.
+> > 
+> > With that,
+> > 
+> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > 
-> Add i.MX SCMI Extension protocols bindings for:
->  - Battery Backed Module(BBM) Protocol
->    This contains persistent storage (GPR), an RTC, and the ON/OFF button.
->    The protocol can also provide access to similar functions implemented via
->    external board components.
->  - MISC Protocol.
->    This includes controls that are misc settings/actions that must be exposed
->    from the SM to agents. They are device specific and are usually define to
->    access bit fields in various mix block control modules, IOMUX_GPR, and other
->    GPR/CSR owned by the SM.
+> Mani:
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../devicetree/bindings/firmware/arm,scmi.yaml     | 21 +++++++++++++
->  .../bindings/firmware/nxp,imx95-scmi.yaml          | 36 ++++++++++++++++++++++
->  2 files changed, 57 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> index 93fb7d05f849..fa2cc910c485 100644
-> --- a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> +++ b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> @@ -247,6 +247,27 @@ properties:
->        reg:
->          const: 0x18
->  
-> +  protocol@81:
-> +    $ref: '#/$defs/protocol-node'
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        const: 0x81
-> +
-> +  protocol@84:
-> +    type: object
-> +    anyOf:
-> +      - allOf:
-> +          - $ref: /schemas/firmware/nxp,imx95-scmi.yaml
-> +          - $ref: '#/$defs/protocol-node'
+> Do you need me rework patch? Or you can handle it by yourself when apply?
 
-If you put the ref under the protocol node, then it's 1 schema file per 
-protocol per vendor. Also, we then have to list every possible protocol 
-node here, and every one listed here will be valid for every vendor.  
-What we discussed is putting the list of vendor protocol schemas at the 
-top-level here and then the vendor schemas can list out all the protocol 
-nodes.
+It appears that Krzysztof is the one picking up patches for:
+drivers/pci/controller/dwc/
 
-Also, move "$ref: '#/$defs/protocol-node'" to nxp,imx95-scmi.yaml.
+Since he has the bottommost Signed-off-by on patches in:
+https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=controller%2Fdwc
 
-> +
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        const: 0x84
-> +
->  additionalProperties: false
->  
->  $defs:
-> diff --git a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-> new file mode 100644
-> index 000000000000..b84c4a53b78a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-> @@ -0,0 +1,36 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2024 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/firmware/nxp,imx95-scmi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: i.MX95 System Control and Management Interface(SCMI) Vendor Protocols Extension
-> +
-> +maintainers:
-> +  - Peng Fan <peng.fan@nxp.com>
-> +
-> +properties:
-> +  nxp,wakeup-sources:
-> +    description:
-> +      Each entry consists of 2 integers, represents the source and electric signal edge
-> +    items:
-> +      items:
-> +        - description: the wakeup source
-> +        - description: the wakeup electric signal edge
-> +    minItems: 1
-> +    maxItems: 32
-> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> +
-> +if:
-> +  properties:
-> +    reg:
-> +      const: 0x84
+So I don't think that Mani can amend it, since he is most likely not the
+one picking up this patch.
 
-This schema is only included from protocol@84 node, so how can this be 
-false?
+The fastest way is probably just to send out a v4.
+(But I feel you... this patch has already taken too long :P)
 
-> +then:
-> +  properties:
-> +    nxp,wakeup-sources: true
-> +else:
-> +  properties:
-> +    nxp,wakeup-sources: false
-> +
-> +additionalProperties: true
-> 
-> -- 
-> 2.37.1
-> 
+
+Kind regards,
+Niklas
