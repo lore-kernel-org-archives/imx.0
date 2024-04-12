@@ -1,109 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AC658AD6
-	for <imx@lists.linux.dev>; Fri, 12 Apr 2024 12:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D14B81ABB
+	for <imx@lists.linux.dev>; Fri, 12 Apr 2024 13:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712926488; cv=none; b=qsWJla/D/GdwO1JKTJ38hmAmAW2cY8S4vm66eAqjnBaECuTlYLT9oGEPcpCa24gBWFouG6yMN9GYVlsXJRJawgXFK6kIU9AtQi8REuHgeNEJU98Ed6tW+RKkxwVs5gBDqTcSgYS4v/Hw5vv3tp6cR/NSsh9EeAmr/alNWBB+mW0=
+	t=1712928036; cv=none; b=K/GZWBB6rqQYgXa9nffTtpZcUpbg4kBn2jiDmrVFWLTsA0XpgDCIeIEsHxJ+Q73GDqNCnd6/FMyYi54NCyyWhMvameQNGCilv0jd3L+a9fTfPAZhjdg9NHAjpSsEtODcSLfV6KG92G6Gr5B37xTZKXNduv5YMrBq431Mak1NtgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712926488; c=relaxed/simple;
-	bh=Ngh8as+dXvRlB5SerxSE46bXBnL0GTaccDHqC6EbXGs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q8WnpAWGDzGHXeKNFT9lIQc2+VVulpNnt9lTdryHcs74sHZgo6lYI2NmUPTZ/U9pRB5jc4idUwb/6UqnH/6yef460rJpMlcvCMha8rYZq619wiYkTbjiZVfaO7pQfGwuxpQwDg2OnXjI0Oz3umHOMzffmr3dJZwbk/wZ4YAua2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrw7zwCj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712928036; c=relaxed/simple;
+	bh=/txxqYlU4j9GLPahajtTq8tdmlrsxmJZHDfp0xOA2Kk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eW1njnCQ9MAlyGyxfaC7AV//l4c9GZWrTxb0IWHU8qIcdQDseYRJDChzoI0I66hQOGbG3tNDThp0nSb0T7EegVpT5ugcHhrDhUCw69uF6m8LAmII5CvnlMvBS4P7JWx+96Tq2+gsSMwkIBKo+R3de4kO7oklRhfrv1hx/7x0iR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=dFDjKFek; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=CfYTisVx reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrw7zwCj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68597C4AF09
-	for <imx@lists.linux.dev>; Fri, 12 Apr 2024 12:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712926488;
-	bh=Ngh8as+dXvRlB5SerxSE46bXBnL0GTaccDHqC6EbXGs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mrw7zwCj4c2QBgK6ebnLniWioldnKscr9fp4p1xfsM3oK8SK8KHFwuRNe/3rUVQXx
-	 mGByPtNBqaNEyPCrvZj+PHb1DKZfO8e3J+7CApHm3qj8V+t4kMKTEWqU17gxTKhyw8
-	 /fmekHpA7+x2hucHpUzrvhUHeaJfeDqs2AW1FU1u7r90ZL4o25ERwFDchGSfKH5PXW
-	 iHH9FXCK11kzEvqcCCp+JCbHBzFKH9j53SEBK6hZDyDYsx0FYcSXG46os3Vt7bqBt1
-	 hhPSv2x1D/Y0+TKWB72PmFCZcDJpDBGJaCOECqNmOW6AGMi4zTPzlpS8tseKUjHPEN
-	 YLnbiCbfqBcrg==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d29aad15a5so7803711fa.3
-        for <imx@lists.linux.dev>; Fri, 12 Apr 2024 05:54:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXqz8xxcx67cduVB6BbjKl+rr3LrjrYfEer76B+9rtYXQ7L7xot9KyNqPBn5Y1Br7eRT5JI2a7w/lGAf5AL3TwvFUO1
-X-Gm-Message-State: AOJu0YwPlINWkYDpRZguClxzL2vGNdWAuKIol1pjmxWV4b32/s92vNsg
-	T2I50ByWMyfq2u/dIk/uU/xhpvzM9d75+XVWYRr3BQ7J84Lwa1ur2gzA8ImU5iQyCtlp6TIwBQk
-	AaChOvPTuH+Ts5mjxwUKhAt31Sg==
-X-Google-Smtp-Source: AGHT+IFKEm1DXMB/2mOxm4PPotE7iP/WZMY85GkqR30kYOQrBu7XP7hFrfWzxny45Sfy4yA+K/qn1RB0hJXFKEFWYGY=
-X-Received: by 2002:a2e:88d4:0:b0:2d9:fe27:7716 with SMTP id
- a20-20020a2e88d4000000b002d9fe277716mr1833708ljk.38.1712926486579; Fri, 12
- Apr 2024 05:54:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="dFDjKFek";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="CfYTisVx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1712928032; x=1744464032;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aMvVxK4NUeO+EcAGmB+Dwa/0aVRFR5DKQOjKU0G2Dag=;
+  b=dFDjKFekNt5gdwdl5OiXGJ6vVx/v10BP2GRwTmP7JrnLJN2A3i9zMiH0
+   0QXsAXaDxKlFZgtTcAfSlkX1xWdDxl2Q0TIOhuyuoc1/o5DLEU9Fg5yK7
+   6o30nn1xLTvLwzaN/dl3CmFcfYcNn1lLtxgo6CcCAD2rDznXKW4n83OQw
+   cy7oDi9Z15ZmUAJ1e0REa7ZWE2oxx5/7LYM1FNPlhTdjQaiW7LNMK7GS0
+   1aGVcwu5crZ966XOIwfz65/n8V0EIAV8MMlr/n1Ac/O0sWp7rWHP1Q8YU
+   1s/OeNoJTSsv1a2nGy3XE1irgQ3qsdOoSxlBfnhIxi0D5aKX67O5qy1L5
+   g==;
+X-IronPort-AV: E=Sophos;i="6.07,196,1708383600"; 
+   d="scan'208";a="36391625"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 12 Apr 2024 15:20:29 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5A234174287;
+	Fri, 12 Apr 2024 15:20:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1712928025; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=aMvVxK4NUeO+EcAGmB+Dwa/0aVRFR5DKQOjKU0G2Dag=;
+	b=CfYTisVx8pOM7rt+jKQ8hVvpZN3Mla3TUQipYvq+MxbYpvgC6PrmIGMS0myDHTPnzAOs45
+	n3XDuIpcEx7hq5PuJs7yRVL0yI1nJdQyNzCmb7w0MzpkFa6pCkUHj9VksxKQqqYtFnfOHB
+	WaCA8ZxAD+/gEuvkIC0V9hV5aMZGUAop3yY4TChbFW3hAXnBrKISIe62wQxw70gqdJfAYB
+	cIsd4qlP6n3OETmfyCBe4qJ5J8W0IjzQOpQ596fhePKbcNEYxsakbU27F6tsSfzvd+uVYx
+	Xrzk837JPnkkcMeuqMe6yuvtF2C78nRDR2R6dEtICVAsosqL07cGaArFEKQIgw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] arm64: dts: tqma8mnql: Add EASRC support
+Date: Fri, 12 Apr 2024 15:20:21 +0200
+Message-Id: <20240412132021.520666-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240411235623.1260061-1-saravanak@google.com> <20240411235623.1260061-3-saravanak@google.com>
-In-Reply-To: <20240411235623.1260061-3-saravanak@google.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 12 Apr 2024 07:54:32 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKRVVNzgQk6PETfJ9RrDuzT1CTjHWW02Twc_T4C82t__Q@mail.gmail.com>
-Message-ID: <CAL_JsqKRVVNzgQk6PETfJ9RrDuzT1CTjHWW02Twc_T4C82t__Q@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] of: dynamic: Fix overlayed devices not probing
- because of fw_devlink
-To: Saravana Kannan <saravanak@google.com>
-Cc: Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Mark Brown <broonie@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Apr 11, 2024 at 6:56=E2=80=AFPM Saravana Kannan <saravanak@google.c=
-om> wrote:
->
-> When an overlay is applied, if the target device has already probed
-> successfully and bound to a device, then some of the fw_devlink logic
-> that ran when the device was probed needs to be rerun. This allows newly
-> created dangling consumers of the overlayed device tree nodes to be
-> moved to become consumers of the target device.
->
-> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-> Reported-by: Herve Codina <herve.codina@bootlin.com>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8=
-x6=3D9F9rZ+-KzjOg@mail.gmail.com/
-> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
-> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/base/core.c    | 76 +++++++++++++++++++++++++++++++++++++-----
->  drivers/of/overlay.c   | 15 +++++++++
->  include/linux/fwnode.h |  1 +
->  3 files changed, 83 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 5f4e03336e68..1a646f393dd7 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -46,6 +46,8 @@ static bool fw_devlink_drv_reg_done;
->  static bool fw_devlink_best_effort;
->  static struct workqueue_struct *device_link_wq;
->
-> +#define get_dev_from_fwnode(fwnode)    get_device((fwnode)->dev)
+Enable EASRC support in tlv320aic32x4 sound card.
 
-I think it is better to not have this wrapper. We want it to be clear
-when we're acquiring a ref. I know get_device() does that, but I have
-to look up what get_dev_from_fwnode() does exactly.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Note that the firmware file /lib/firmware/imx/easrc/easrc-imx8mn.bin
+is needed.
 
-Side note: I didn't know fwnode has a ptr to the struct device. I
-wonder if we can kill off of_find_device_by_node() using that. That's
-for platform devices though.
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       | 4 ++++
+ arch/arm64/boot/dts/freescale/mba8mx.dtsi                 | 2 +-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-Rob
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
+index 433d8bba4425..b05be5b39d45 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
+@@ -74,6 +74,10 @@ &sai3 {
+ 		 <&clk IMX8MN_AUDIO_PLL2_OUT>;
+ };
+ 
++&sound {
++	audio-asrc = <&easrc>;
++};
++
+ &tlv320aic3x04 {
+ 	clock-names = "mclk";
+ 	clocks = <&clk IMX8MN_CLK_SAI3_ROOT>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+index fb24b9aa1b93..db47c718e719 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+@@ -52,6 +52,10 @@ &A53_0 {
+ 	cpu-supply = <&buck2_reg>;
+ };
+ 
++&easrc {
++	status = "okay";
++};
++
+ &flexspi {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_flexspi>;
+diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+index 0dc48e514baa..daba4ba14627 100644
+--- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
++++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+@@ -157,7 +157,7 @@ reg_vcc_5v0: regulator-5v0 {
+ 		regulator-always-on;
+ 	};
+ 
+-	sound {
++	sound: sound {
+ 		compatible = "fsl,imx-audio-tlv320aic32x4";
+ 		model = "imx-audio-tlv320aic32x4";
+ 		ssi-controller = <&sai3>;
+-- 
+2.34.1
+
