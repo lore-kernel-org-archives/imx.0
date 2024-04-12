@@ -1,73 +1,68 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2083.outbound.protection.outlook.com [40.107.15.83])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2059.outbound.protection.outlook.com [40.107.8.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A87148825
-	for <imx@lists.linux.dev>; Fri, 12 Apr 2024 15:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D32E148FF9
+	for <imx@lists.linux.dev>; Fri, 12 Apr 2024 16:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712936550; cv=fail; b=KvPSwi0eSozl9Ho2iWHD01TK3hPicl21+ssTYe8keWMtE//XJCqMlDZ7SWcasOiNpq4dgoserLTnRM0QRYor2Y1/P91kVOANwNN8UTkvSir5V6wEUmnT5hq2VkeSvHFcsR8RCZ0WK65zasMky575yPbeOjHRSasKFYrPppMG8i4=
+	t=1712938149; cv=fail; b=rXAfYSrrYxOlodCgIaJHF4cayEy8HwuBbGqaquqthR081zZu7iLsJvMUj2tPkQSQBwKozSuG4r8jsptDxiVLE3SZxSaubOpy7GvDxzXqG/mp99z53idUuZ0xsd6dL8Lm1W6HuwyXceQfB8DX3xBBg28T5kXZgqk0yPkYV0Zf4BE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712936550; c=relaxed/simple;
-	bh=hZ3FB2YoAEaQW3Ylnt/Gg7JZTQVv/tL4UPaG2eVnpcc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Y7CQvol+L2P+baaufluOGLZ3tyq29w9ZDIt1pg1t54s0ljpwh2YUiTBQyeFEN63T70nDOh2tmC7pkDLpBMNWP5TxSicuiRjqfaXfxfm7HIhZDpIVE1WfhnzcwcP+f8dcLG9G7mV+Hqz5gFyrOFTzyeb52IboN0RdRzwCImuBwuY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=SmSvxa6e; arc=fail smtp.client-ip=40.107.15.83
+	s=arc-20240116; t=1712938149; c=relaxed/simple;
+	bh=14QaVJp1PZG1/XG0XoWT//cMaejeB36UdS94KQbcBsE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TcviayW1dESpa4VMElF4JezVjEXEWgJD7Pn5u5erMTC5DWDvYIbwTJ6o5QbENtxuc6P4xpkRuZZglm5/LvPuNtV9QV6ticf123VtLPI915m1smxLnmVwS7wjHVUdgjaGkGuw2FDTU62H4c8UB023UIHYDiAR8hx0Y76MTiL6YMI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ntpXF88l; arc=fail smtp.client-ip=40.107.8.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="SmSvxa6e"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ntpXF88l"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SqyxzOmHkN2Y6pV4qQ+FQrE9TAgYjbYheKux+w1vTV5GoTXBaDhoy7XHzEccvNSBHvPkLHz87PiXl+I07/S5kG8o3RYmn30k/dNC+cqxY/Sc2bS0ZnpfvKcS4d8/iix0kWHVO5ACcVArOWPJKXIfhcnkhxGRgnIle9gO2AxeFhCccTU276C+DyCVML4v2AhH4B28uQTZmdBhMO/Oh3tRkCsdAezxseWy3KgrWuSkyJazZPE+S83EFO+ilsimJVY/mJ+43Ja1T3/dzhqg0RAPhQSOA3LEpc5GZQ89mnt3JL2jxAPXJrC1LxsLCKTzPyAdlmo4ZGOKOz6OdOWS/PLQew==
+ b=VRSjJLZKhWP5mM0XNCbEqbj96v5ZY994OR6hG0g3HoyY3fZl/euuAuyl6YHlpEW6r9NM5q66+4WlT706I9iN6ZR6qCDpsgP9V5J7jacM2QBZcR6fGlENVLguHA0poXKoOtA1b+/HMHkd/o2Hx3CE2LqRpGv1Pptd3zKt+90Gi4mS2rVSb3KuQz2UPl14z9vuC9tZz+Gn0dva0e+Bn1z7Ocw5p4r/2UnOaYEgllUvsUAo3ObcmooYSxjlzX0m2SFoTqOSyM8o630r/7VCS412YlmGQNQb/ICiosV50RlDNsRKijCGQXpeKUA2MkDzIrumrTTDInUvUpg9hsCw2KeyWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zN7nKRHIak8A+YwDg+BzJQphoPyV1EGHTxG87g0wUC8=;
- b=DBxHmHVfAsFdIVWXYAwKR5FC7MvcUvZLahsYu5znIgOQsqCeMLpOgnCYsQRV91ZuTUlPO/E1/NVPQv2far1PWbRrFr+SxDoEJUxrEhwccoqqecOWUyRQ50YdAX2SZONMFFY7HcC3pp6Jyu0+zjFcPB/2ceJeAUiOrW7qnCMUXXYzPmoY1x+qPHJX+SuwFWBBPUavo+VKTWFS2YjrUEqepDmR0FczUUDq3C6q/R0cnWVPkX9UuZftNk3y97I1bbo1cIjVWD+k+Aam7c/Iw7ib1AxYQwevtI9ZJGfiVZI5NmkzbQx3AIu65B/ulCli6id1mDVhdEalQIhCiP8DdQCcPg==
+ bh=4D3g1yKn1DkeyVV3av44X1Wyra+mTLKgpM+gTzeXlmM=;
+ b=JNOLhXTQScj7GujJLUCsyfoKV9T5XG04S/JQxMzFyn7czfEX4opIJftt5zB3Fk713ZnvPMcNmw+EAWGOtj6ZCjW+uli90llMHePCXIewj9zrOIW4QoTFshZJrHAHkUnMrCojPL2tjCWnP/CED2JigKYNNum6okq1V7iY8hz9jXT67yS+bTEjjqBwciw4WAS6vFDUyisvJYN3wDsVNwJrhtDGFQhQEo64fkq/usFFhF3Upv5NdX1Ez8OOCZr4rP0HR/cMqmONiXx3NG21Ye3Z/Xji3O09fAvepsBn4HQvabkcX1bsINgJegh4lwHzi9gS8OlbeFOIv8zHe2hOwMxhBw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zN7nKRHIak8A+YwDg+BzJQphoPyV1EGHTxG87g0wUC8=;
- b=SmSvxa6eNvoRLloZYvLBPcyjk3EWH0tfXNmn29xncr9BCaBfH3ar8xenHCm7mzdu25exG+mPTBQ+eC1r8Ug0TRHetjVkcDndaAJ40Z//TiHfAQ4DoBgu/nd4OEkQKBHH9YmrKB50IB8fUR6I4yJQmGvxMEpU7v4EQYZV+IjwuqY=
+ bh=4D3g1yKn1DkeyVV3av44X1Wyra+mTLKgpM+gTzeXlmM=;
+ b=ntpXF88lOD+kq6aNwFmnIj/w+LjIJUWTrvRyvM150MFXeDLeWZu/FDTytstPA6tkDbmERkhzhGTwB1+Usl+3xOJfKkVPnfQiYxLpNMYPxneZhbnqVcA4POK7jYlaQ4rL1IUopR8ndClXd82O/6aSUWUwVpacVew4IcPosdf70ek=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAWPR04MB9934.eurprd04.prod.outlook.com (2603:10a6:102:380::11) with
+ by PA4PR04MB9462.eurprd04.prod.outlook.com (2603:10a6:102:2aa::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 12 Apr
- 2024 15:42:25 +0000
+ 2024 16:09:03 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7409.055; Fri, 12 Apr 2024
- 15:42:25 +0000
+ 16:09:02 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: krzk@kernel.org
-Cc: 20240409185416.2224609-1-Frank.Li@nxp.com,
-	Frank.li@nxp.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	dmaengine@vger.kernel.org,
+To: cassel@kernel.org
+Cc: Frank.li@nxp.com,
+	bhelgaas@google.com,
+	gustavo.pimentel@synopsys.com,
+	helgaas@kernel.org,
 	imx@lists.linux.dev,
-	krzysztof.kozlowski+dt@linaro.org,
+	jdmason@kudzu.us,
+	jingoohan1@gmail.com,
+	kw@linux.com,
 	linux-kernel@vger.kernel.org,
-	pankaj.gupta@nxp.com,
-	peng.fan@nxp.com,
-	robh@kernel.org,
-	shengjiu.wang@nxp.com,
-	shenwei.wang@nxp.com,
-	vkoul@kernel.org,
-	xu.yang_2@nxp.com
-Subject: [PATCH v4 2/2] dt-bindings: dma: fsl-edma: allow 'power-domains' property
-Date: Fri, 12 Apr 2024 11:42:08 -0400
-Message-Id: <20240412154208.881836-2-Frank.Li@nxp.com>
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org
+Subject: [PATCH v4 1/1] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
+Date: Fri, 12 Apr 2024 12:08:41 -0400
+Message-Id: <20240412160841.925927-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240412154208.881836-1-Frank.Li@nxp.com>
-References: <20240412154208.881836-1-Frank.Li@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SN6PR04CA0087.namprd04.prod.outlook.com
- (2603:10b6:805:f2::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR05CA0036.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::11) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,203 +71,154 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAWPR04MB9934:EE_
-X-MS-Office365-Filtering-Correlation-Id: 58a3c29c-849c-4f24-1ad1-08dc5b072704
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB9462:EE_
+X-MS-Office365-Filtering-Correlation-Id: 470e145d-9b64-4b30-f9c2-08dc5b0ade87
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	lfJPteXYBd6kohK7RiGuUput4ffNYgYj8J5Tjd+D80qO5edEqa7ZsdOtmf91AuNlWZjwtx9Zvlt+gYTdOiQGjIaXFOs67evS2YvHObDEzoSpKSvxNNbXRtxcsHec/3FpFE3OQVe/Dian5xwfoJMLtUGnXW3RJ+juApz92pcM1E0nou2WhUxbQDjJkVitTNH1awiLW2aajBgh24XLyMw3ZoVqRNArgd/5gqrYGti1dV+10K07on+GE4FqldOt8aJAQJ0nUAuGjZ2YlFQQJKpvHOMLfXFlDhjWf54GDGFMVu6L1KhthbKPFjvbGb40Dr1OTQ9CosYC7XBXYAzuMh3EVjOB51f94Mnw53nvf6GERnmqSvlUaIWu+RCDvssCSy/ygI91ZB3BuKNjTzZKhuQNaqltzBDSrXSpByuGFpVNHIa0ndYYG4HpIRa27D6Dmd9CMC8QOMfpp6sKxtPc5aUDwhD60T+wGgvZ6CZFYjLQaSnyeYdUtE8FnXUtaRptcC+OePtqmXRmlL4b8DKm+7Uk8y5/b3uV7x9DC58P9/Pj6e1MTxb7A/JkKt76EvcNS3WBWmemC0cG4nPdyO7BvXyw0LQobxBpPt0k+k9LJ3Z0OxT+Pje2ZHOfRZj4bcZPDsnVkHkr/h+R2k8wTws8R93TO15o/qkfhVMMKA+HUJexNATV4g9wgVvHm5SnfydtCdnSbG2GaFD9BMEX0kFok0p/8OHLp4ELSloojgVUdPIWzlw=
+	lMff4ase7yGBkRL8B4k5EY8riQ9pug83NfyWv/WKzgEW+tPaiO34Ji66aFCvtY+XAlkm60KB1nXORddzgQfa59priCzMWmixvoZ0u2MW+NLjw36OgYaLlbEmZl0IJDXaJyDkby5ipKt12WnBR3RK2mvMwbsFD5ws7w/AayvBTJ6j4n7DLq6HZ7DrAKZE6Rrq0Bh1t5dDz5Yx8d5VibLsqtGEO5G1jIHMxCjA8tugONVG6uygKhEEhDsiNGhdBA5UfP2Tjg3n599jypBOuSTFMAvmHfIlww27zOGeyA1Dr1MKyjX90xJAhxJkRUlGerk9DoSn3r6tncIp9tnVAKdnoICjydllh0DdLWqASU3bTX3MZqG0vSC1Y8+zIqiMw7qQVleXqjgtei0eghMakykjTnutIYvDkNRWlDENxVVtzKSsvuKkXsZgPtRluj35YQ9ohWiSGj+jwzA2xh3K2jfg1P0F5xcRqTyrGjdRRjjTeEP7/YNjzTwyJnGGVmRvYcCYGRLGcFhOcSIY0qpEx+ZzG3WsbAm45X0K2LQ/nze0zi+Y+OrBx/ZtzkaZ8N7wzTGJmqIL8lFSmmjWVqsH/FzUI9iGWqVY1IFAkWfe4jxmtjEboKBWPE5pXeeKPfZ+Pe6e/zg8Ov/WCAWyEIsTjVsnYO6uKwLjfZllWnOVa6ZV7Jo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(52116005)(7416005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YXC1DJkdj7yJq+1U+yLSDohT5kbc/cKAQKONaJGREhUnCDP1taYppzNDesXr?=
- =?us-ascii?Q?n6DmsQjTtKOOttluNfOeHMjY8yzTcvNKMd46PNGrHRdAvxQYxYgcDT9YQRRr?=
- =?us-ascii?Q?8gGaVVO9oKO4ASxI7aJGxh0PNQteGRcq2xO4sdUdMyo+FjCbgW/9wSC+TAuI?=
- =?us-ascii?Q?vt7DQFOiR42OD1U9wfDPdXvS4EijdU/VQ1HpjJFFKZ1uS/kf0IK/hBec0XYd?=
- =?us-ascii?Q?QNQ+2DUhAisgXHvI0BqW0ugNUD5hrLwHEVdiEF9jx2uwJfb1hmxC2h8uEypr?=
- =?us-ascii?Q?ykusTVmxh6csWjNf2WZ3jUlMx0Yo3r7BGDzE1fqeQz31qrM9RrlpV4pj0JiN?=
- =?us-ascii?Q?jnZpiwpb3hVDmTfcksAu7tVWIuIVIepr9E4WA7Ut54BSsgT7iwnFY+BBPosJ?=
- =?us-ascii?Q?WOAE9Umn8OtpsGA0TtW1gtlLWJrt6wEXAzl9f1J/z/ltYx4rXlxKyPLsjT6G?=
- =?us-ascii?Q?AIeP4mS3v3xB4GgEr4u0THML3rCHbIOhHQl7yHYJo8Gg0X+tjFIb63fNW5+h?=
- =?us-ascii?Q?Q5dYcqohJorEwnzFnE8NbMwJ0JW9NI1gOYtNerLgIZSgc22zFF9nYxVAAJwN?=
- =?us-ascii?Q?18Ui5hKpc8axQDbAYEPITKbGk7bpxZEULlqldYVDkTygMv/S5+YlInbuxU6T?=
- =?us-ascii?Q?w+1nXYmO8lzKD1XZsutUqujMmUrn1QD0jOoqAu2m0YqxXrwT95hZ0JjBNAhN?=
- =?us-ascii?Q?bbgqGbTwspWDfkNR1Qf27Kwte9876SWNmfNn7T64SpsLt8YxqmpGd3vjEaoh?=
- =?us-ascii?Q?ENpDXEP7xxc/gFIs15WV87A6qc42lbHOCbg8CIiPwsL5AYqdKbkSB6c5rBkd?=
- =?us-ascii?Q?iNx+VZCfIstW5q+m2RXdOO+dTlqXDImFs+ViEUE2yGb19rsLqoyczKbRJqr5?=
- =?us-ascii?Q?uE5LppGFwQPhXMQvoROIQqBHJfHf6WyC3Pzg6DgkDmNo0srj3h0rOilgZU1p?=
- =?us-ascii?Q?brfZ//CB34cNpt4bqEHBSsx3rhN2hYWaCKfSkvR7jYc/PBU0oPHBb9n2RHjN?=
- =?us-ascii?Q?H/j/YbwZ50ZwhasJAS7dP7+EPjpo6eAfuEjZMFxEXaXMPDpYMjZJ+eVpyXhm?=
- =?us-ascii?Q?jlHEV27MgsM42phx+CS7vtJZvaPo1ue2Ag4+/ZKQ6tvpyfPknO088Z6rIuCE?=
- =?us-ascii?Q?Vvy8mtZ4dIN/JaE3VuAFBLbP7T4dxFCdYOhidNBLKVG1J8RiDOdR3lMA+j2v?=
- =?us-ascii?Q?v9E1fTCNlcfC+dJ1dC/2E7BIKTUJbvHARV0n6GFxZ/HlVh2+212k0Ydj0MxI?=
- =?us-ascii?Q?jsFvLPf+/BTgi1ah6jlFGN2+tqVh3CoRmXxqyfojYLd+6CaYrIGpqsynwufv?=
- =?us-ascii?Q?ZkATLXoHqMtmynqP30RHnMK4EuCcFp6jduTFTVD/+0P4goa8VBgwe0PC7I8h?=
- =?us-ascii?Q?OVOUkCqkkpXDOi2/c6fzh9Wz8GDWYD8vpCkdWvJUIcWVBTmHAtxAp4Pe0WOT?=
- =?us-ascii?Q?WRhBcLMMpvluzJpgtzhw2krFIyJYL/OJ8Bs3sOwgtpH9BjOpz9HKGasjIhbx?=
- =?us-ascii?Q?lj7Z4BP6dgOcMQy0wj1KUPv6e/nNhfC19PhXoMrs1N/DpD+hdn0/xVZ5hB0k?=
- =?us-ascii?Q?ReBKdOkhEOkd/8LM805N28kZPpZ3ziLlNH97banu?=
+	=?us-ascii?Q?ptMG9Uq2yShwzBpoL8f17tzE1qfxdC/qPC358hKCU9F9EDOr/f8sfpcTAvL1?=
+ =?us-ascii?Q?xYAQ7QVhwqa7pvc9Ay33Lm4uC7dMRS0UKB309Ikb5PXRZ3AXCMbBl7KdtM2L?=
+ =?us-ascii?Q?n2aWFFzXwa9AY9xrDpIK2BF55cnSU90LWHlYb71rL3qgwHLSYCae8R818viB?=
+ =?us-ascii?Q?5/RzAQICD55j+J+ll/6cntTPz4yMRyskqqUDTiXoRFvAxv1fYBqFoxXsxR2V?=
+ =?us-ascii?Q?F6fs6uDP4cN6pyUjwksoaj8SwbTBiCXGnwqHuopQktthEXsS1foksvNqrou7?=
+ =?us-ascii?Q?xCTpDw9ugk1SwXMP4Hc2Fnrd7cYTev75V3DRY2eQaABQHk+Tg8CEURmOSev1?=
+ =?us-ascii?Q?Md0CXEsY4cNnDV91pZ7RT0lzaqZgDmNJWuvUI6ono5hSeSRnwJq9eHwdgNz6?=
+ =?us-ascii?Q?nf24KLDoyXPsyCcBipV3qfeh0vmuGXjJXAJa8iTkKmW5ZwnbTfzNxJWL8JoC?=
+ =?us-ascii?Q?G05SXiBDLyq1LR3KAbTMwzEgKytL8f6YJ12zatb/ZhLhA28GSoTtpVuVZgBP?=
+ =?us-ascii?Q?uKbQ1sNzOkuL4r1NoxJj2sOnPq7VYLCOZRDZJF9Im5nXf9U26XfL1SeU1rm9?=
+ =?us-ascii?Q?kO+bsZMhweCeoCJFYO7WIPIz8ZyB0SV2N0JfycsYITTdaT120cRocEawQO/S?=
+ =?us-ascii?Q?R1XkGRH/9ZPXWnXkCsr0ZF+vGysZxTTqUidNiQtcqre+eYDukGK7dxEchbW2?=
+ =?us-ascii?Q?O0RECqph225JNlOz/gT2R81LimZatqc7dmRKWYKrVu1UlyjJwtcqqnPWTyc0?=
+ =?us-ascii?Q?3OiWCqFRo/h1s5WaSromGWxvN5IegiCqzrjSuNGXk1xbEZimvJqizeCBLqiI?=
+ =?us-ascii?Q?j0CyrSaNolxewtKUw2XsuioTRcXqtSHKgA7dziqHkYUX3Jg+j4GLSgTVwKnO?=
+ =?us-ascii?Q?hv3xNpazdaDCV2m0n8fXo0Sdjv3oIII66YKgpVZMIX54UOsil3USK2jVaSQl?=
+ =?us-ascii?Q?pqFkQ2bIb0w4IAOkF1fOtt1PJFQJPiCHYuCmmYMpW0ICbL5V4kbt18KndYSD?=
+ =?us-ascii?Q?24hkutWWI0I+BPd0N1HwC4jn2GELLH4eQGmWkbDkrLCj3aFM6AWqMsRFA0oH?=
+ =?us-ascii?Q?fC3iWZlp1Troryf4x4YdhtLrCDHzqKqwJfmdGe97EbjsJkT+5eAfyZwENHs3?=
+ =?us-ascii?Q?p8JoWqfuFKgIxDywJYlHNlfLKGpG3cb6LebnZzkoZ83ugegJUdRrB4kXgS+s?=
+ =?us-ascii?Q?ugdtqINAjdKYTH+NdkeWmxI7uIN3bidtBvmyTbRPxhyDVkMToy/M+sFPSgQZ?=
+ =?us-ascii?Q?xwFg7NOu0WytXVTR0kUsS3LgooI0jVgh1VDsxiw812tEyLaC77kt4Wd6raAs?=
+ =?us-ascii?Q?XZo+3dPaOGgN3iE7AWhM4kpkE/o5YLOEU+OH6uVikcvTiOds5kYbCSzYRa+I?=
+ =?us-ascii?Q?JzXLfWeCcN00mBrsQKudbKgbeAU6Sjoerb6UsAfOKKmw8cDXKaWM8wlng23u?=
+ =?us-ascii?Q?B2miOPXGGHQPgPA5gCIFEywBAVzDRzBT2ZW6DgC1yIl0E420AAYmo3oYXXh7?=
+ =?us-ascii?Q?0ogbaBjnMtoZuGY0XCYYlinGoqXRdcvPujhALoUfITyRVBSPNbzGq8oQqNvk?=
+ =?us-ascii?Q?KWag2ygmbG5CO0Cs9j0wUIslly9whARf3VM2dBq7?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58a3c29c-849c-4f24-1ad1-08dc5b072704
+X-MS-Exchange-CrossTenant-Network-Message-Id: 470e145d-9b64-4b30-f9c2-08dc5b0ade87
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 15:42:25.8352
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 16:09:02.2243
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pOVFrn8StR/g01u+2dzZc9O1JmcNscrsOaWd/EI4v+45DVgEL+m8P42wPEZ6d2CjxGdSvm/+D+xxM09y7EmJHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9934
+X-MS-Exchange-CrossTenant-UserPrincipalName: +oZOkwLLiDVHg08QTcRkU6RH+dtVSHH1bR6hRezXytCG11jXzhKTnvtFJFzmzO+CvlMU0NorlpJpc5ZFwXxeQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9462
 
-Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
-it. EDMA supports each power-domain for each dma channel. So minItems and
-maxItems align 'dma-channels'.
+When PERST# assert and deassert happens on the PERST# supported platforms,
+the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
+to the area that was previously allocated (iATU0) for BAR0, instead of the
+new area (iATU6) for BAR0.
 
-Change fsl,imx93-edma3 example to fsl,imx8qm-edma to reflect this variants.
+Right now, we dodge the bullet because both iATU0 and iATU6 should
+currently translate inbound accesses to BAR0 to the same allocated memory
+area. However, having two separate inbound mappings for the same BAR is a
+disaster waiting to happen.
 
-Fixed below DTB_CHECK warning:
-  dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
+The mapping between PCI BAR and iATU inbound window are maintained in the
+dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
+a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
+of the existing mapping in the array and if it is not found (i.e., value in
+the array indexed by the BAR is found to be 0), then it will allocate a new
+map value using find_first_zero_bit().
 
+The issue here is, the existing logic failed to consider the fact that the
+map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
+will return '0' as the map value for BAR0 (note that it returns the first
+zero bit position).
+
+Due to this, when PERST# assert + deassert happens on the PERST# supported
+platforms, the inbound window allocation restarts from BAR0 and the
+existing logic to find the BAR mapping will return '6' for BAR0 instead of
+'0' due to the fact that it considers '0' as an invalid map value.
+
+So fix this issue by always incrementing the map value before assigning to
+bar_to_atu[] array and then decrementing it while fetching. This will make
+sure that the map value '0' always represents the invalid mapping."
+
+Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
+Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
+Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
 
 Notes:
     Change from v3 to v4
-    - Remove 'contains' change should be belong to first patch when rebase.
-    
-    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,edma.yaml
-      LINT    Documentation/devicetree/bindings
-      DTEX    Documentation/devicetree/bindings/dma/fsl,edma.example.dts
-      CHKDT   Documentation/devicetree/bindings/processed-schema.json
-      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-      DTC_CHK Documentation/devicetree/bindings/dma/fsl,edma.example.dtb
-    
-    After this patch no warning for imx8dxl-evk.dtb.
-    
-    touch arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  CHECK_DTBS=y freescale/imx8dxl-evk.dtb
-      DTC_CHK arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
+    - commit message add "Right now, we dodge..."
+    - Add Reviewed-by: Manivannan Sadhasivam
     
     Change from v2 to v3
-    - set 'power-domains' false for other compatitble string
-    - change imx93 example to 8qm example to affect this change according to
-    Krzysztof Kozlowski's suggestion, choose least channel number edma
-    instance to reduce code copy. max channel number is 64.
-    
-    - Rebase to latest dmaengine/next, fixes conflicts.
+    - Add impact in commit message
+    - Add mani's detail description
+    - Fix Closes link
     
     Change from v1 to v2
-    - using maxitem: 64. Each channel have one power domain. Max 64 dmachannel.
-    - add power-domains to 'required' when compatible string is fsl,imx8qm-adma
-        or fsl,imx8qm-edma
+    - update subject
+    - use free_win + 1 solution
+    - still leave MAX_IATU_IN as 256. I am not sure if there are platfrom have
+    256 ATU. Suppose it only use max 6 in current EP framework.
+    - @Niklas, can you help test it. My platform become unstable today.
 
- .../devicetree/bindings/dma/fsl,edma.yaml     | 77 ++++++++++---------
- 1 file changed, 39 insertions(+), 38 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-index fb5fbe4b9f9d4..012522612dc96 100644
---- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-+++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-@@ -71,6 +71,10 @@ properties:
-     minItems: 1
-     maxItems: 33
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 5befed2dc02b7..ba932bafdb230 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -139,7 +139,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 	if (!ep->bar_to_atu[bar])
+ 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+ 	else
+-		free_win = ep->bar_to_atu[bar];
++		free_win = ep->bar_to_atu[bar] - 1;
  
-+  power-domains:
-+    minItems: 1
-+    maxItems: 64
+ 	if (free_win >= pci->num_ib_windows) {
+ 		dev_err(pci->dev, "No free inbound window\n");
+@@ -153,7 +153,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 		return ret;
+ 	}
+ 
+-	ep->bar_to_atu[bar] = free_win;
++	/*
++	 * Always increment free_win before assignment, since value 0 is used to identify
++	 * unallocated mapping.
++	 */
++	ep->bar_to_atu[bar] = free_win + 1;
+ 	set_bit(free_win, ep->ib_window_map);
+ 
+ 	return 0;
+@@ -190,7 +194,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	enum pci_barno bar = epf_bar->barno;
+-	u32 atu_index = ep->bar_to_atu[bar];
++	u32 atu_index = ep->bar_to_atu[bar] - 1;
 +
-   big-endian:
-     description: |
-       If present registers and hardware scatter/gather descriptors of the
-@@ -202,6 +206,20 @@ allOf:
-       required:
-         - clocks
++	if (!ep->bar_to_atu[bar])
++		return;
  
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8qm-adma
-+              - fsl,imx8qm-edma
-+    then:
-+      required:
-+        - power-domains
-+    else:
-+      properties:
-+        power-domains: false
-+
- unevaluatedProperties: false
+ 	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
  
- examples:
-@@ -257,44 +275,27 @@ examples:
- 
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
--    #include <dt-bindings/clock/imx93-clock.h>
-+    #include <dt-bindings/firmware/imx/rsrc.h>
- 
--    dma-controller@44000000 {
--      compatible = "fsl,imx93-edma3";
--      reg = <0x44000000 0x200000>;
-+    dma-controller@5a9f0000 {
-+      compatible = "fsl,imx8qm-edma";
-+      reg = <0x5a9f0000 0x90000>;
-       #dma-cells = <3>;
--      dma-channels = <31>;
--      interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
--                   <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>;
--        clocks = <&clk IMX93_CLK_EDMA1_GATE>;
--        clock-names = "dma";
-+      dma-channels = <8>;
-+      interrupts = <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 426 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 427 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 428 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 429 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 430 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>;
-+      power-domains = <&pd IMX_SC_R_DMA_3_CH0>,
-+                      <&pd IMX_SC_R_DMA_3_CH1>,
-+                      <&pd IMX_SC_R_DMA_3_CH2>,
-+                      <&pd IMX_SC_R_DMA_3_CH3>,
-+                      <&pd IMX_SC_R_DMA_3_CH4>,
-+                      <&pd IMX_SC_R_DMA_3_CH5>,
-+                      <&pd IMX_SC_R_DMA_3_CH6>,
-+                      <&pd IMX_SC_R_DMA_3_CH7>;
-     };
 -- 
 2.34.1
 
