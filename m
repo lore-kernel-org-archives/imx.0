@@ -1,570 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2046.outbound.protection.outlook.com [40.107.104.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D54147C9A;
-	Fri, 12 Apr 2024 22:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712960952; cv=none; b=cSq9r2QQ2MosGpAi5Rcgbvouv6CjBxpNs+X+tODLrGZYdZd1NxUEf1+aooU3K8woCenY4VGAo2/DF6sgVPT8US85BmTjGa1VM7xDVZvYnuTO1oq4PuNApz4oocqV97gJBYgkouC65dwNgxjOKFu/USiQXAnS17fvC7n1tQdbY1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712960952; c=relaxed/simple;
-	bh=dvHUo9f2ZgG4pJq4r0jugRT+L386jedgydw0yaLdt9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dZcsANoHje+jdEQWZma/FaV4GJWyyEpb1sVuRlMPyqJEdsnR03nswkn4MFa94tAonVMklZGXoT0IFUb4POPMIh1ddFe6wilJ5nV1+KRhsq1gkrFn8jTlB0U2Ab9ogbD9SSPh7ovP0EROD2ooYgskawEBuxx3H48Ano8NNPwnE+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYW9ll1K; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB591CAAD
+	for <imx@lists.linux.dev>; Sat, 13 Apr 2024 05:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712987807; cv=fail; b=bJYWfYaUXMNqP/gtiVHsQc9YfG4p8U6xR3okjc1Ov5JRGfR1RqyWaqbjm80S8+XyGXSUFTjy9qd0s4J/wTQfffIB4d66rbLT8TMocBQqKRr7F1Oc5E2YcnufBcjCTCGjC/JLTlefNf3uvctHdWH//uoM/BWM2U3U/wCoTIBXTLk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712987807; c=relaxed/simple;
+	bh=lk9/Ci1BMpcOc1emPWURPcleLYxWbDXIXWID5nRKWcY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=N82Wm/5zd4WQRdgkL97sbG/n63cwtCsaQclL9VcBwPTBGZJm2a9/sfastc4Tb2BVlju6azZw6TNADPtcwsStrjHoeGHvKJ09lwiCRHYO2WIJsLQNfsMuyS7PnO/wD7ntbndet2By98uAZTRQ1rgBFZvl++m5jnqhju5t/wppgvw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=KblqiJp4; arc=fail smtp.client-ip=40.107.104.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYW9ll1K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E03C113CC;
-	Fri, 12 Apr 2024 22:29:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712960951;
-	bh=dvHUo9f2ZgG4pJq4r0jugRT+L386jedgydw0yaLdt9A=;
-	h=From:List-Id:To:Cc:Subject:Date:From;
-	b=qYW9ll1Kzsf6JuvAhzLACQWSIH6GxpiKkhqO/53JcsS9wRqohuTJo+mHekoSRs0nw
-	 f1P5p3H1ZmgETGk+bCXpEjB9qhQY+gIlxVEwlnDheASyI9MGdMN+E0/aYYODcLDjio
-	 esSfxwHmO+YbiA2VN0FiURdAdmwmixp8GAUjKEJwBzkI60sR6ZkBuZVwTqgwDfuZkq
-	 tXqXqzs91sTDXNzHDmCHkgDGCn9ZVwrDpHMPLJyOrlElpgFJpgVGcdMjpKD7YvcK9t
-	 VKQ95+bYRWG8BOkB8LwT8YQMMtD83PSw7OHtVUsFgkprtCOhSFbE+kHcdGfFwOnVVV
-	 czECM54Q56BiA==
-From: Rob Herring <robh@kernel.org>
-To: soc@kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Tsahee Zidenberg <tsahee@annapurnalabs.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Khuong Dinh <khuong@os.amperecomputing.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Robert Richter <rric@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Paul J. Murphy" <paul.j.murphy@intel.com>,
-	Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	=?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	linux-fsd@tesla.com,
-	Michal Simek <michal.simek@amd.com>
-Cc: devicetree@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-mediatek@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-realtek-soc@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
-Date: Fri, 12 Apr 2024 17:28:51 -0500
-Message-ID: <20240412222857.3873079-1-robh@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KblqiJp4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RP50utX7u/3lxd8ryS1QV+jS4us9ek+By5ewxvMq50rPPCzH0MVzXXJRXrFG+ifNlJ/1gU4KBujT3s262fxOEQ9poC/Fv565qwjyD5fSqb1RbKm1qxjFkpML7e2dzC+AOsdKS0HiiGV1jBLzRq2m29ycZZtjo5PhcN2wzm9F5jHUMxhSPWt5/owuTCuDGgsGZfODiMDYQbedxFMoSxveNvrL7tvf71o9DfBN4uPqEuRvXo5MCqN45287RWRiLv/eXRXd7vfNjdDV6MiWqGQgTlz9I+jJuKOYVtb8hf784W6nerrt+p3BIEvgXe2Q1f1XAGmzxI9BgyjOeK4dFuQxmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lk9/Ci1BMpcOc1emPWURPcleLYxWbDXIXWID5nRKWcY=;
+ b=Hg1am+xsMe6F9D0SqPuJEjGabc0qBo813Uvd/DFVJ9xeJ55j3pjXqC3IsV2PlyPJW1/CyvsX5r1v0d+Pp9UWw7yUy0f64XeDLy96zVQWqzFZ+Mm+Q+T8sOSoIwOJDtYLVLojnTir+2ael1f6C769zuWoK7dZXN303fTCDQX0jLv1qv7ozSrf6XWBznSTQRHCq9RTyGSzMdOflMsgsIoRSbuX3jgYaeEGQ1zlTf4jCXvMnvnGMCQV1DorPLxMxlptkuqeChvWI6vNViA0CZq/+RR3iM/lc0zyvACztenx1CRT7IyIy3kcLKQZrF5W5YAczyL9SuOs/QNLLMoMEZDKpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lk9/Ci1BMpcOc1emPWURPcleLYxWbDXIXWID5nRKWcY=;
+ b=KblqiJp4syfSA70MUu+9WgzvduBnJVZHcOY3WWjShYRZwaK2Dd3CoJq1l2eBw4PzH/i3nsogmoMi9Uny52E01wLc1hXmDeSEranbq2/mZl6v12hPWhn2laNSTgdaphwicQcvo0NMFZeSnnu1KIesBecIZUB2jWk5BMPfrVUll9Y=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by AS8PR04MB9095.eurprd04.prod.outlook.com (2603:10a6:20b:446::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Sat, 13 Apr
+ 2024 05:56:41 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Sat, 13 Apr 2024
+ 05:56:41 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Frank Li <frank.li@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+CC: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Peng Fan <peng.fan@arm.com>, Sudeep Holla
+	<sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 1/3] dt-bindings: pinctrl: support i.MX95 SCMI pinctrl
+Thread-Topic: [PATCH 1/3] dt-bindings: pinctrl: support i.MX95 SCMI pinctrl
+Thread-Index: AQHajG9cdUkQ2lgZgUStYTjvuii937FkvlsAgAD3U1A=
+Date: Sat, 13 Apr 2024 05:56:41 +0000
+Message-ID:
+ <DU0PR04MB94173208D86117ADA0BB28F5880B2@DU0PR04MB9417.eurprd04.prod.outlook.com>
+References: <20240412-pinctrl-scmi-oem-v1-v1-0-704f242544c1@nxp.com>
+ <20240412-pinctrl-scmi-oem-v1-v1-1-704f242544c1@nxp.com>
+ <ZhlO/oT8BXupXyKP@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZhlO/oT8BXupXyKP@lizhi-Precision-Tower-5810>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AS8PR04MB9095:EE_
+x-ms-office365-filtering-correlation-id: efe4bf6c-7c4b-4b76-ada1-08dc5b7e7db4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ aJwLl6jDUM7+nGsK7d1SDPGW4g3cBLdSB2+z+y98cFo5B/70+SIUn+5l7bPZgQfdA/C4EvuHNCVVMHwGepR76JhlCOrYS0RFGsdeFNliZ/lpP5onrtXPzdEtz/oWpGwVbRoMi+mmekPo+QC5Ry+B0uXQxtGnokpdcfoFnnRDiKTvMkP+hepFYGFd6c1G/xrT4Ck1YYwWAQSpPj3HtDh0LuvhHmFtLKh8iq/fpA94gPWet7ayL6VwKC1ySDmx5q7bZmGwjR+G/d2suGME8g53z1a1TwCL2wJUDVdR/KHVE4mJnaqxrb1ZJfBvYZbxPBCBK/IfC9DTd15Jt8IR1AgpYJUJuf+OEETk1SxwtCI6RR4NeQpM/wGWyKG8EPajQ1hbGByqiXpofWX3afRcxWM/+f1GKCuAOiCn5mxL8YenEEwq6iLB9B8NaBst0I7erpE9xlqBrmeER4Qvt5QzzdV38/bX5K5/dqPZMYr7FF1i7zR1FDWV8QawfqEkxGjqzQuSjISpyDp4bzORU7yBezNJHUnLsL19wQ8pQfnxWonEPVIlIUofyPwW2mNMFM/gxwT5d/CZWrOWUh1HslhJSylt7ev2A+HMOVOHDFnMvrEh9mAansmNnvwRQRV8L7tZdRNuOHf5NBmMoxxKr6c8pKVceKJhG5Le45NZUwsMPNWU6Z7mZqWvbWOA7vL3eN5GEBAT
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(366007)(376005)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?bXgyZnozQ1RZTkkyc2I0OGhxR01DV1p0U2R0cEQzZ2NmVlBNenVKVjJnSUhl?=
+ =?utf-8?B?b3NIVzdHZkY2VGFEZDRIOHpTRFlwWmp3STRpclJnZzVnbnNUdGZnRWpCQ3ZX?=
+ =?utf-8?B?Yk5rRWdhVVNyTWMyWTEwdXVhVFppdmpDQ0krdytMQnB1NytDTS9vc3E0Q3d4?=
+ =?utf-8?B?cFNuMnlmVURwdjMxTUh6YXR2N2svWVQ4YkhaV0h2em9ON3NCWnNpb2VFTVVu?=
+ =?utf-8?B?QitOS096WERVcGJqbFRzdDdUdjFBTzZydEV2V0lDb2ltTlJGcDlzVzVPdUtk?=
+ =?utf-8?B?bVNVcHMrZWNFRTdNTmU3cEsrOEIyNjgxQ1VaUEVKRUFXSWhYT1dWeE5WeUZH?=
+ =?utf-8?B?UUlPM1NRNlRUeWszbHptUjI2NWVkSmgwb3F6YjB5cGRJcGozTnJnMTZCVW5Y?=
+ =?utf-8?B?SEtubFI3WlhtZEE3TktGYzF5TWdIWVhxWW41dmdpZDN2YTkxSFdkMkMzWjZQ?=
+ =?utf-8?B?QkQySGg3Nkw3bjRzbko0MHU4RUM4OUVpcjFHNnRpYTlwdmVZVGI4VGNkQ2ls?=
+ =?utf-8?B?Umtqak54ZGtNemRDR3p3UFhiMmxES2F5dTZmT0prRE1DQWcrR3RjWnBlZjlm?=
+ =?utf-8?B?dnFLYzE4MWNVYzVIdUFkd0VseC83WFNKTWZxbkZsaUYrOU04UXQ3VldWajhE?=
+ =?utf-8?B?Njh3b3RIU1g4MVF2NTBUU3AzNi9iWXZralNJZEFiVUM4MjJXM3lLTk1RZE5l?=
+ =?utf-8?B?QUU3emtwK1F1ck9CcHdhSklzT0NxK2NYOU1oWXYvSUgrZkw5U3ZRWkZVZzFq?=
+ =?utf-8?B?UkprT0RiOXJCTTVRVEluV1lhVUQvT1FsVnpPLzZVYU5HWVZHbzVuam5jNFoz?=
+ =?utf-8?B?Q3lVdE5xeWxDRmNjYm9WYVNQUU9MdTVKVjFqK21yaHJENnJIVzR3aWFnb1k5?=
+ =?utf-8?B?eUE2NnBRbG9NUHVKM3JWVUhDMnBYUUthVG1ZR2w1c3FoVVdmUm85dFE2L29O?=
+ =?utf-8?B?dFIvNXFBNlhoaHdGQm1INHNiVWU0b2hSa1NQSTdRR1AvZ3diZVdicmVocmhu?=
+ =?utf-8?B?ZDM1dEJ4NWZ5L2dFQXJBWVl5V1BwRERpTTgxckhKcFVuUDY0RlZaU1NzUmJh?=
+ =?utf-8?B?VW8zc1NiYmUybnpoaE9qclF6ZU9uVXZtaHJQTy9WcElEV09EbUd3dDUwWUQ1?=
+ =?utf-8?B?T1N6S1NEY1M2OHU5ZklMb3UzMEQ4TG5YR3NUTndEMHhSdXZHc1FhSmFaNHdP?=
+ =?utf-8?B?MkFZV3RqUk5KSlNQS0lQYk1FQlFiY005WEZJdjRhNnE4MVA5RGZlbENJRzBo?=
+ =?utf-8?B?QUdDVGtCeHVpS2x1ZHpQa3dBcldTTVY3dS83eUcwblVVRHZMNzdoTnJiVCtH?=
+ =?utf-8?B?NkZJWXowejR4c1poMFh0WDduNG56VlpIdk1mUEh5QXBvYWpEK29tSHZ5L2lP?=
+ =?utf-8?B?RFd0TnVQUUt4bWw1K0tqUVRUTHdBbEVEVHBPd05UVXVjRjdXSXBTM2hLOXFB?=
+ =?utf-8?B?ZWc4NXJUNE5rZlBuWkpiZVUxV2t4SU1CUGpGbVc5T01qMnJxYzF6bW1tZnFp?=
+ =?utf-8?B?QVBCcFM3cmRkOFhIM1FLUS82cUdsWVVZcmxFWCtEd1NNMjl3SWt1dm4vQjNC?=
+ =?utf-8?B?cjVZQTlzZ1QxZ2NzSlRFM3pWQW02OGJVeXJJTVBDcTFMTVlRWXJ1QTNNTWhL?=
+ =?utf-8?B?QzYvMGFPZ1NsNVRrRUJ6cU1VQ3VrU3F4bUQ2UFJaMHk5UGMwdUh2dzBJY2FD?=
+ =?utf-8?B?TXUzNTZ0ZU1PczNka2o3cmZqdzczNGxlVFc3OGZtZDh1T25TTStWT1lENlQv?=
+ =?utf-8?B?NU5jbXZRci9rTDVuelluUDNlWFc2YTVBT0ZYTWFCcEc5aktaZ0hXeSt6WHps?=
+ =?utf-8?B?R1laTEsyUmxQU3FBU2tlSC9OdGk3b2pTb3lsMHNZcS9WYzN1cTZiODNIL3VQ?=
+ =?utf-8?B?VjcwZ0k1T0NrUXp2RCs3NFRoL04rOHdia2xvVkFGcy9BVFcvVlo4TlMyNENk?=
+ =?utf-8?B?dzEzcTVROVR1QWZZWks2aEhTbmloZmlkdlZUYUdoSUtNK2pYQ3RoS2E3cmNw?=
+ =?utf-8?B?OW11M1diK1dWclpIME0zMUJqTkJmNXZVWjZnYVhMSytzVWd1dmlCNEc2aDZN?=
+ =?utf-8?B?alJsOXN2V1d3bDR0eWtDNThQSUpEaUJGbEpUOVJDYWhraUJaaVZid3JTQ3Z6?=
+ =?utf-8?Q?w4wA=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: efe4bf6c-7c4b-4b76-ada1-08dc5b7e7db4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2024 05:56:41.2508
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5QOQjzhd0SNOWaXYSOpZY/anKEN8WLERQ+qUjO0UxqjuyTvNAitm/FsHARjwJ5i37updOo7EU/Hr0Y7PR7HCMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9095
 
-The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primarily,
-it doesn't provide any detail on uarch specific events.
-
-There's still remaining cases for CPUs without any corresponding PMU
-definition and for big.LITTLE systems which only have a single PMU node
-(there should be one per core type).
-
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-SoC Maintainers, Can you please apply this directly.
----
- arch/arm/boot/dts/broadcom/bcm2711.dtsi              | 4 ++--
- arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi    | 2 +-
- arch/arm64/boot/dts/amazon/alpine-v2.dtsi            | 2 +-
- arch/arm64/boot/dts/apm/apm-storm.dtsi               | 2 +-
- arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts | 2 +-
- arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi     | 2 +-
- arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi  | 2 +-
- arch/arm64/boot/dts/cavium/thunder-88xx.dtsi         | 2 +-
- arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi        | 2 +-
- arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi       | 2 +-
- arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi       | 2 +-
- arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi       | 7 +++++++
- arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi       | 7 +++++++
- arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi       | 5 -----
- arch/arm64/boot/dts/freescale/imx8dxl.dtsi           | 2 +-
- arch/arm64/boot/dts/intel/keembay-soc.dtsi           | 2 +-
- arch/arm64/boot/dts/intel/socfpga_agilex.dtsi        | 2 +-
- arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi        | 2 +-
- arch/arm64/boot/dts/marvell/armada-37xx.dtsi         | 2 +-
- arch/arm64/boot/dts/mediatek/mt8516.dtsi             | 2 +-
- arch/arm64/boot/dts/nvidia/tegra210.dtsi             | 2 +-
- arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
- arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
- arch/arm64/boot/dts/qcom/sdm630.dtsi                 | 2 +-
- arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
- arch/arm64/boot/dts/realtek/rtd16xx.dtsi             | 2 +-
- arch/arm64/boot/dts/rockchip/rk3368.dtsi             | 2 +-
- arch/arm64/boot/dts/sprd/sc9860.dtsi                 | 2 +-
- arch/arm64/boot/dts/sprd/sc9863a.dtsi                | 2 +-
- arch/arm64/boot/dts/synaptics/berlin4ct.dtsi         | 2 +-
- arch/arm64/boot/dts/tesla/fsd.dtsi                   | 2 +-
- arch/arm64/boot/dts/xilinx/zynqmp.dtsi               | 2 +-
- 32 files changed, 44 insertions(+), 35 deletions(-)
-
-diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-index 22c7f1561344..926f87b86590 100644
---- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-+++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-@@ -432,8 +432,8 @@ emmc2: mmc@7e340000 {
- 		};
- 	};
- 
--	arm-pmu {
--		compatible = "arm,cortex-a72-pmu", "arm,armv8-pmuv3";
-+	pmu {
-+		compatible = "arm,cortex-a72-pmu";
- 		interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>,
- 			<GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>,
- 			<GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-index 072fe20cfca0..cbbc53c47921 100644
---- a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-+++ b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-@@ -79,7 +79,7 @@ fpga-region {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <0 170 4>,
- 			     <0 171 4>,
- 			     <0 172 4>,
-diff --git a/arch/arm64/boot/dts/amazon/alpine-v2.dtsi b/arch/arm64/boot/dts/amazon/alpine-v2.dtsi
-index dbf2dce8d1d6..dbe21d88a29e 100644
---- a/arch/arm64/boot/dts/amazon/alpine-v2.dtsi
-+++ b/arch/arm64/boot/dts/amazon/alpine-v2.dtsi
-@@ -106,7 +106,7 @@ timer {
- 		};
- 
- 		pmu {
--			compatible = "arm,armv8-pmuv3";
-+			compatible = "arm,cortex-a57-pmu";
- 			interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/apm/apm-storm.dtsi b/arch/arm64/boot/dts/apm/apm-storm.dtsi
-index 988928c60f15..ee3f838b4904 100644
---- a/arch/arm64/boot/dts/apm/apm-storm.dtsi
-+++ b/arch/arm64/boot/dts/apm/apm-storm.dtsi
-@@ -122,7 +122,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "apm,potenza-pmu", "arm,armv8-pmuv3";
-+		compatible = "apm,potenza-pmu";
- 		interrupts = <1 12 0xff04>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts b/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-index 8db4243a4947..9115c99d0dc0 100644
---- a/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-+++ b/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-@@ -102,7 +102,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
- 	};
-diff --git a/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi b/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi
-index 896d1f33b5b6..cfd9fd23a1c2 100644
---- a/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi
-@@ -102,7 +102,7 @@ IRQ_TYPE_LEVEL_LOW)>,
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a57-pmu";
- 		interrupts = <GIC_SPI 168 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 169 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi b/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi
-index d8516ec0dae7..857fa427e195 100644
---- a/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi
-@@ -142,7 +142,7 @@ psci {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a72-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi b/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi
-index 8ad31dee11a3..4c9f1f808427 100644
---- a/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi
-+++ b/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi
-@@ -361,7 +361,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "cavium,thunder-pmu", "arm,armv8-pmuv3";
-+		compatible = "cavium,thunder-pmu";
- 		interrupts = <1 7 4>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi b/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi
-index 3419bd252696..68cb3d01187a 100644
---- a/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi
-+++ b/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi
-@@ -83,7 +83,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "brcm,vulcan-pmu", "arm,armv8-pmuv3";
-+		compatible = "brcm,vulcan-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>; /* PMU overflow */
- 	};
- 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-index fe9093b3c02e..a0f7bbd691a0 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-@@ -81,7 +81,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <0 106 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-index d333b773bc45..8ee6d8c0ef61 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-@@ -276,7 +276,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <0 106 0x4>,
- 			     <0 107 0x4>,
- 			     <0 95 0x4>,
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi
-index 1aa38ed09aa4..8352197cea6f 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi
-@@ -12,6 +12,13 @@
- #include <dt-bindings/clock/fsl,qoriq-clockgen.h>
- #include "fsl-ls208xa.dtsi"
- 
-+/ {
-+	pmu {
-+		compatible = "arm,cortex-a57-pmu";
-+		interrupts = <1 7 0x8>; /* PMU PPI, Level low type */
-+	};
-+};
-+
- &cpu {
- 	cpu0: cpu@0 {
- 		device_type = "cpu";
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi
-index 8581ea55d254..245bbd615c81 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi
-@@ -12,6 +12,13 @@
- #include <dt-bindings/clock/fsl,qoriq-clockgen.h>
- #include "fsl-ls208xa.dtsi"
- 
-+/ {
-+	pmu {
-+		compatible = "arm,cortex-a72-pmu";
-+		interrupts = <1 7 0x8>; /* PMU PPI, Level low type */
-+	};
-+};
-+
- &cpu {
- 	cpu0: cpu@0 {
- 		device_type = "cpu";
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-index 0b7292835906..ccba0a135b24 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-@@ -247,11 +247,6 @@ timer: timer {
- 			     <1 10 4>; /* Hypervisor PPI, active-low */
- 	};
- 
--	pmu {
--		compatible = "arm,armv8-pmuv3";
--		interrupts = <1 7 0x8>; /* PMU PPI, Level low type */
--	};
--
- 	psci {
- 		compatible = "arm,psci-0.2";
- 		method = "smc";
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-index a0674c5c5576..b8abd98bdc43 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-@@ -104,7 +104,7 @@ dsp_reserved: dsp@92400000 {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a35-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/intel/keembay-soc.dtsi b/arch/arm64/boot/dts/intel/keembay-soc.dtsi
-index 781761d2942b..ae00e9e54e82 100644
---- a/arch/arm64/boot/dts/intel/keembay-soc.dtsi
-+++ b/arch/arm64/boot/dts/intel/keembay-soc.dtsi
-@@ -70,7 +70,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_PPI 0x7 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-index 76aafa172eb0..2a5eeb21da47 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-@@ -80,7 +80,7 @@ fpga-region {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 172 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi b/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi
-index 5591939e057b..75377c292bcb 100644
---- a/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi
-+++ b/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi
-@@ -68,7 +68,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_PPI 12 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-index 1cc3fa1c354d..9603223dd761 100644
---- a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-@@ -68,7 +68,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index 9cbd6dd8f671..d0b03dc4d3f4 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -165,7 +165,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a35-pmu";
- 		interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_LOW>,
- 			     <GIC_SPI 5 IRQ_TYPE_LEVEL_LOW>,
- 			     <GIC_SPI 6 IRQ_TYPE_LEVEL_LOW>,
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210.dtsi b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-index 47f8268e46bf..882b1d1f4ada 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-@@ -2004,7 +2004,7 @@ L2: l2-cache {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a57-pmu";
- 		interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-index 89beac833d43..d3cd68190a17 100644
---- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-@@ -165,7 +165,7 @@ memory@40000000 {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_PPI 6 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/qcom/qdu1000.dtsi b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
-index 832f472c4b7a..f2a5e2e40461 100644
---- a/arch/arm64/boot/dts/qcom/qdu1000.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
-@@ -177,7 +177,7 @@ memory@80000000 {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index f5921b80ef94..349c8ba06aca 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -352,7 +352,7 @@ opp-262500000 {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_PPI 6 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/qcom/sdx75.dtsi b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-index 7dbdf8ca6de6..b74cf4baedd6 100644
---- a/arch/arm64/boot/dts/qcom/sdx75.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-@@ -224,7 +224,7 @@ memory@80000000 {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/realtek/rtd16xx.dtsi b/arch/arm64/boot/dts/realtek/rtd16xx.dtsi
-index 34802cc62983..e57317a17aa9 100644
---- a/arch/arm64/boot/dts/realtek/rtd16xx.dtsi
-+++ b/arch/arm64/boot/dts/realtek/rtd16xx.dtsi
-@@ -109,7 +109,7 @@ timer {
- 	};
- 
- 	arm_pmu: pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>,
- 			<&cpu3>, <&cpu4>, <&cpu5>;
-diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-index 62af0cb94839..734f87db4d11 100644
---- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-@@ -141,7 +141,7 @@ cpu_b3: cpu@103 {
- 	};
- 
- 	arm-pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/sprd/sc9860.dtsi b/arch/arm64/boot/dts/sprd/sc9860.dtsi
-index e27eb3ed1d47..6bfdbdb0e1cd 100644
---- a/arch/arm64/boot/dts/sprd/sc9860.dtsi
-+++ b/arch/arm64/boot/dts/sprd/sc9860.dtsi
-@@ -165,7 +165,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,cortex-a53-pmu", "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/sprd/sc9863a.dtsi b/arch/arm64/boot/dts/sprd/sc9863a.dtsi
-index 22d81ace740a..53e5b77d70b5 100644
---- a/arch/arm64/boot/dts/sprd/sc9863a.dtsi
-+++ b/arch/arm64/boot/dts/sprd/sc9863a.dtsi
-@@ -134,7 +134,7 @@ timer {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi b/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi
-index 53d616c3cfed..71e4bfcc9e81 100644
---- a/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi
-+++ b/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi
-@@ -88,7 +88,7 @@ osc: osc {
- 	};
- 
- 	pmu {
--		compatible = "arm,cortex-a53-pmu", "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/tesla/fsd.dtsi b/arch/arm64/boot/dts/tesla/fsd.dtsi
-index 047a83cee603..690b4ed9c29b 100644
---- a/arch/arm64/boot/dts/tesla/fsd.dtsi
-+++ b/arch/arm64/boot/dts/tesla/fsd.dtsi
-@@ -304,7 +304,7 @@ CPU_SLEEP: cpu-sleep {
- 	};
- 
- 	arm-pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a72-pmu";
- 		interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 357 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 358 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-index 25d20d803230..34d0e0be3fe6 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-@@ -169,7 +169,7 @@ dcc: dcc {
- 	};
- 
- 	pmu {
--		compatible = "arm,armv8-pmuv3";
-+		compatible = "arm,cortex-a53-pmu";
- 		interrupt-parent = <&gic>;
- 		interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
--- 
-2.43.0
-
+PiBTdWJqZWN0OiBSZTogW1BBVENIIDEvM10gZHQtYmluZGluZ3M6IHBpbmN0cmw6IHN1cHBvcnQg
+aS5NWDk1IFNDTUkgcGluY3RybA0KPiANCj4gT24gRnJpLCBBcHIgMTIsIDIwMjQgYXQgMDg6Mjk6
+MjVBTSArMDgwMCwgUGVuZyBGYW4gKE9TUykgd3JvdGU6DQo+ID4gRnJvbTogUGVuZyBGYW4gPHBl
+bmcuZmFuQG54cC5jb20+DQo+ID4NCj4gPiBpLk1YOTUgUGluY3RybCBpcyBtYW5hZ2VkIGJ5IFND
+TUkgZmlybXdhcmUgdXNpbmcgT0VNIGV4dGVuc2lvbnMuIFRoaXMNCj4gPiBwYXRjaCBpcyB0byBh
+ZGQgaS5NWDk1IFBpbmN0cmwgT0VNIGV4dGVuc2lvbnMgcHJvcGVydGllcy4NCj4gDQo+IA0KPiBE
+ZXNjcmliZSB5b3VyIGNoYW5nZXMgaW4gaW1wZXJhdGl2ZSBtb29kLCBlLmcuIOKAnG1ha2UgeHl6
+enkgZG8gZnJvdHrigJ0gLi4uDQo+IA0KPiAiQWRkIHByb3BlcnRpZXMgZm9yIGkuTVg5NSBQaW5j
+dHJsIE9FTSBleHRlbnNpb25zLiINCg0Kb2suIEkgd2lsbCB1cGRhdGUgaW4gdjIuDQoNClJlZ2Fy
+ZHMsDQpQZW5nLg0KDQo+IA0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogUGVuZyBGYW4gPHBlbmcu
+ZmFuQG54cC5jb20+DQo+ID4gLS0tDQo+ID4gIC4uLi9iaW5kaW5ncy9waW5jdHJsL254cCxpbXg5
+NS1waW5jdHJsLnlhbWwgICAgICAgIHwgNDQNCj4gKysrKysrKysrKysrKysrKysrKysrKw0KPiA+
+ICAxIGZpbGUgY2hhbmdlZCwgNDQgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdA0K
+PiA+IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3BpbmN0cmwvbnhwLGlteDk1
+LXBpbmN0cmwueWFtbA0KPiA+IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3Bp
+bmN0cmwvbnhwLGlteDk1LXBpbmN0cmwueWFtbA0KPiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+
+ID4gaW5kZXggMDAwMDAwMDAwMDAwLi40YmY3YTYxOTI4MTMNCj4gPiAtLS0gL2Rldi9udWxsDQo+
+ID4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3BpbmN0cmwvbnhwLGlt
+eDk1LXBpbmN0cmwueWFtbA0KPiA+IEBAIC0wLDAgKzEsNDQgQEANCj4gPiArIyBTUERYLUxpY2Vu
+c2UtSWRlbnRpZmllcjogKEdQTC0yLjAgT1IgQlNELTItQ2xhdXNlKSAjIENvcHlyaWdodCAyMDI0
+DQo+ID4gK05YUCAlWUFNTCAxLjINCj4gPiArLS0tDQo+ID4gKyRpZDogaHR0cDovL2RldmljZXRy
+ZWUub3JnL3NjaGVtYXMvcGluY3RybC9ueHAsaW14OTUtcGluY3RybC55YW1sIw0KPiA+ICskc2No
+ZW1hOiBodHRwOi8vZGV2aWNldHJlZS5vcmcvbWV0YS1zY2hlbWFzL2NvcmUueWFtbCMNCj4gPiAr
+DQo+ID4gK3RpdGxlOiBpLk1YIFN5c3RlbSBDb250cm9sIGFuZCBNYW5hZ2VtZW50IEludGVyZmFj
+ZSAoU0NNSSkgUGluY3RybA0KPiA+ICtQcm90b2NvbA0KPiA+ICsNCj4gPiArbWFpbnRhaW5lcnM6
+DQo+ID4gKyAgLSBQZW5nIEZhbiA8cGVuZy5mYW5AYXJtLmNvbT4NCj4gPiArDQo+ID4gK3BhdHRl
+cm5Qcm9wZXJ0aWVzOg0KPiA+ICsgICctcGlucyQnOiBmYWxzZQ0KPiA+ICsgICdncnAkJzoNCj4g
+PiArICAgIHR5cGU6IG9iamVjdA0KPiA+ICsNCj4gPiArICAgIHByb3BlcnRpZXM6DQo+ID4gKyAg
+ICAgICRub2RlbmFtZToNCj4gPiArICAgICAgICBwYXR0ZXJuOiAiXlswLTlhLWZdKyQiDQo+ID4g
+Kw0KPiA+ICsgICAgICBwaW5zOg0KPiA+ICsgICAgICAgICRyZWY6IC9zY2hlbWFzL3R5cGVzLnlh
+bWwjL2RlZmluaXRpb25zL3N0cmluZw0KPiA+ICsgICAgICAgIGRlc2NyaXB0aW9uOiBuYW1lIG9m
+IHRoZSBwaW4NCj4gPiArDQo+ID4gKyAgICAgIG54cCxmdW5jLWlkOg0KPiA+ICsgICAgICAgICRy
+ZWY6IC9zY2hlbWFzL3R5cGVzLnlhbWwjL2RlZmluaXRpb25zL3VpbnQzMg0KPiA+ICsgICAgICAg
+IGRlc2NyaXB0aW9uOiBoaWdoIGltcGVkYW5jZSBtb2RlICgidGhpcmQtc3RhdGUiLCAiZmxvYXRp
+bmciKQ0KPiA+ICsNCj4gPiArICAgICAgbnhwLHBpbi1jb25mOg0KPiA+ICsgICAgICAgICRyZWY6
+IC9zY2hlbWFzL3R5cGVzLnlhbWwjL2RlZmluaXRpb25zL3VpbnQzMg0KPiA+ICsgICAgICAgIGRl
+c2NyaXB0aW9uOiBsYXRjaCB3ZWFrbHkNCj4gPiArDQo+ID4gKyAgICAgIG54cCxkYWlzeS1pZDoN
+Cj4gPiArICAgICAgICAkcmVmOiAvc2NoZW1hcy90eXBlcy55YW1sIy9kZWZpbml0aW9ucy91aW50
+MzINCj4gPiArICAgICAgICBkZXNjcmlwdGlvbjogcHVsbCB1cCB0aGUgcGluLiBUYWtlcyBhcyBv
+cHRpb25hbCBhcmd1bWVudCBvbiBoYXJkd2FyZQ0KPiA+ICsgICAgICAgICAgc3VwcG9ydGluZyBp
+dCB0aGUgcHVsbCBzdHJlbmd0aCBpbiBPaG0uDQo+ID4gKw0KPiA+ICsgICAgICBueHAsZGFpc3kt
+Y29uZjoNCj4gPiArICAgICAgICAkcmVmOiAvc2NoZW1hcy90eXBlcy55YW1sIy9kZWZpbml0aW9u
+cy91aW50MzINCj4gPiArICAgICAgICBkZXNjcmlwdGlvbjogcHVsbCBkb3duIHRoZSBwaW4uIFRh
+a2VzIGFzIG9wdGlvbmFsIGFyZ3VtZW50IG9uDQo+IGhhcmR3YXJlDQo+ID4gKyAgICAgICAgICBz
+dXBwb3J0aW5nIGl0IHRoZSBwdWxsIHN0cmVuZ3RoIGluIE9obS4NCj4gPiArDQo+ID4gK2FkZGl0
+aW9uYWxQcm9wZXJ0aWVzOiB0cnVlDQo+ID4NCj4gPiAtLQ0KPiA+IDIuMzcuMQ0KPiA+DQo=
