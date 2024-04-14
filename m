@@ -1,244 +1,132 @@
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D9D1D69E
-	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 10:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68F8134CC6;
+	Sun, 14 Apr 2024 16:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713090783; cv=none; b=OHekR0wHybJ+MCJ9gpROow5xvyCR5qDIwr8PWmxKDAOaiME6Uu7d5WK6kgKudkD9NxbqcQO19tJY6H0N8tphr8uS5ANQ/fPCPQboNBixZrebEQsIRbRXVJ75hXLF7ijePgtGLX5mrENNxxS3FQAZ0bN3LJnQqe58Nh4D4FO7cB4=
+	t=1713112584; cv=none; b=BpdZG3/bg64SjfPr0LTQhj88asrAKYpSVSrpY+tojKH/aAuHPhgV6kJCc6SpjEELigVf2+Dj/971sEygEUR5JV2CsGoFhb50iyOM2kjqTJg0rKeCe8ikXrk3lE0NnCZIoIJWaesubki1v50amKKEmpm5A8mTpTrmibZ1GFBJrF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713090783; c=relaxed/simple;
-	bh=GD2VZJ/Qqsxp3zuRDLUSfSvzp4vBjYYUvZyBFHVrN0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfRjygQulj0P4+8+Gsvcd6/rLEN5Yar8gJ+COkeJI16vLs85P+zXdjy2LI+wbVuJvLlekoaeV8FOea2jhlmhnkDmLd1sRGu0/DaVcA55ohffj1ru9jLe86s/s/5ZeKUFtxWhkQJbag5arfWLd6XwtGVa57siGVhWVvVmFOUZuP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lr2CVvvB; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713112584; c=relaxed/simple;
+	bh=eNzOnZBoAvIfDYaYJCy+HYEyB3DpVs0pSukxdyTWkd0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cKzCW/QTMD9Povmndnmjxzsn7Ko/00PT8MjdexHQuIX/CLDqVxxA+1nm+gQrGDLrcmo2dRFAMRLTbxuJMs8v+7GBvHMxFwoLz2DInDJtAzaUDuuBgiX0y3P5tQED3V/MwWkZJskbm7WK5E/FHow8H2iHI4Uns9+v4Q209whOeuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejL/xz4E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lr2CVvvB"
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-23319017c4cso1649275fac.2
-        for <imx@lists.linux.dev>; Sun, 14 Apr 2024 03:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713090781; x=1713695581; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ezWv8Uk8r0iZzTSx1VI+aatOFO9g5HSxqsWTUv27XdY=;
-        b=lr2CVvvBDPoCJ+TTkwRIhdLVaWf6MOWymNmIyK0QHJ2qCIjMwsHTX+yR9W2b/qDYuq
-         xtZ1hHieFcAWkRwgUJ1N2r3yCPuOEapCf+Fj/gfvUMAmC48B84ksg6fwSrAg80p+SfQl
-         /zApuVYKLcH7yTWmJW324bHLW8Db4xchm6fWntvoep0j+OENvkv0rcNkrPWk4iC8w11O
-         xopEEAig67zzvmpLFEVHzrIxz409If4tAuKHlZd1ixpKc9TUTTsTIslHc8IxekVyQXem
-         eY3y+pNT2yw31BM9u6kBf0uJT5sMimrw93Gsqkz5UOWIpBzsXzvRbIyXBZD3A1am8ACs
-         cWUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713090781; x=1713695581;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ezWv8Uk8r0iZzTSx1VI+aatOFO9g5HSxqsWTUv27XdY=;
-        b=wEV23yHGO6Qoq3ZUrxiEqr78AYulm+rE1blNENhybSJsk4QTxUhxql82v14X2tx2Pt
-         FzwXRUO4ImVM3DNUrA+pEj6T1jneNUB2GBPxdeaGhST9lbjPadC0BVFHQBgDsHkyii+6
-         vV8rqc5WhDPqdXrdJVAPs33kA7uhcP12oasld3HBQYMHPul/CEiwgTZb02oUNQ8c24q0
-         2XbNwuR2ydOkVeQpzHUInX5R3KAVSd2i2a33y6uyZoeRzSM0BPEPWkRIrSOOxTD50Ie8
-         3mTNDBP4fvzh/RkCk7T++tYVYkXnT3DqM5ONICsiEE4D2lcJX/JV4/LWxeLRpOxc0xAt
-         AZ+w==
-X-Forwarded-Encrypted: i=1; AJvYcCXKDrkwfhZXBAgiP2x5QGWLdr4MnfzDIV8/j3T3KeV4oK7osOhCfInB6LYFwTLhBd3/RuTcKOMvxruYFTDrDxmGxFzP
-X-Gm-Message-State: AOJu0YyMlV26A1i0L3c+j09YsWP2+LlubVFbcadRmZqr/2nKA8Yeep2s
-	qRjrm/EDaztV1voKqmBR8NiZjWDKg/+h0cSdfZkURFqUNhkdkeSGQwrse2Hduw==
-X-Google-Smtp-Source: AGHT+IGHvQOl59qxFzhWvb2JB596M3kORklxXhpjbwofS/WCy0scK/ufcS2lkNd5/pxWK7SME16DWg==
-X-Received: by 2002:a05:6871:60f:b0:229:87f6:ee8a with SMTP id w15-20020a056871060f00b0022987f6ee8amr8649408oan.30.1713090781146;
-        Sun, 14 Apr 2024 03:33:01 -0700 (PDT)
-Received: from thinkpad ([120.60.136.171])
-        by smtp.gmail.com with ESMTPSA id 1-20020a056a00072100b006ed045e3a70sm5391418pfm.25.2024.04.14.03.32.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Apr 2024 03:33:00 -0700 (PDT)
-Date: Sun, 14 Apr 2024 16:02:56 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] PCI: dwc: Add common send PME_Turn_Off message
- method
-Message-ID: <20240414103256.GB2294@thinkpad>
-References: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
- <20240319-pme_msg-v5-5-af9ffe57f432@nxp.com>
- <20240405062426.GB2953@thinkpad>
- <ZhALNGyNTAzN86GF@lizhi-Precision-Tower-5810>
- <20240406040131.GC2678@thinkpad>
- <ZhQJD7GjRpDwa6jI@lizhi-Precision-Tower-5810>
- <20240412170548.GB19020@thinkpad>
- <Zhmi0XEUFMIO9OLx@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejL/xz4E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBC0C072AA;
+	Sun, 14 Apr 2024 16:36:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713112584;
+	bh=eNzOnZBoAvIfDYaYJCy+HYEyB3DpVs0pSukxdyTWkd0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ejL/xz4EMRQtIL8NFPoxCI7BA2WCz28U7xgpVypZZWpdJosTannIu+kkHbUgXlF1g
+	 XqUeOUUoyo2tBk188MJQ+ZD286korvAtpco7R0AqF+srxompcOH2o3bYxsARNS6+22
+	 RseGS5xk2EGB7dtHc+Xj1wdAcEymmLQKJ1hMPu+7fW1JYkuyu1D7EQzN5ZKj+XElcw
+	 WWy6zTNVcY6/fbR1xB7KfJjMt2I2uNzA3SQ5RIjYGVUWm8SWgMYhxdcLt1s+r9Vw6O
+	 A+VTqjum48dW4AS6DwV/smfJ7vZ+tY/j5sHdGeQqL4pXwWRs/u4dZ/bo9AXsBcBOze
+	 PLTo4g2+VwrzA==
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 00/18] backlight: Constify lcd_ops
+Date: Sun, 14 Apr 2024 18:35:58 +0200
+Message-Id: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zhmi0XEUFMIO9OLx@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAO4FHGYC/x3MTQqAIBBA4avErBswk/6uEi1KRxuKDI0IpLsnL
+ b/FewkiBaYIQ5Eg0M2R/ZFRlQXodT4cIZtskEIqoSqFNxvyuMx629mtF+7aoD8jyrYxnap7a5c
+ Ocn0Gsvz853F63w82aO77aQAAAA==
+To: Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
+ =?utf-8?q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>, 
+ Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+ Alexander Shiyan <shc_work@mail.ru>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-omap@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2295; i=krzk@kernel.org;
+ h=from:subject:message-id; bh=eNzOnZBoAvIfDYaYJCy+HYEyB3DpVs0pSukxdyTWkd0=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmHAXysXFQnYyvdqcs/X5FakY9Fo/FHxiGQeytV
+ tdgafVxAeSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZhwF8gAKCRDBN2bmhouD
+ 1+6rD/9zrg4QyHTGfati6i4s8LnmC6E8hhyOIATO04pH9rEDIPq7D9+7QUXi1gCd8nsDda+rGGc
+ lrjLvf++q6aPw/5rfGmp7sRunrZAkttgq8TQnqGRBnsxZL9pi3GBfbuPxFXsdbTq3DmPUdS0Kwb
+ IixWqSiF/PI9K3KXRmadIw4DQnZ/z6z8JBr0n2KJmrlf6cPHCEP8s6h2vHC0I635LJ8j1eXC2wF
+ UTt19KZsqIV/J7/Lv0EtVygFY2UWHfHUs6crKGUt7Q6HKcsJeol6XWix5ecLTaM4DKkyARJ80Ed
+ Ci+mO1BdAlczTrKKMpx8k26i0S9/oXsaqKhId2eCzKvOdOKytvhTq46mV0rOxGERh4cv69LJm7r
+ ph5flgoJf/BX7/blXsoMhYX2JiIYYt4SNrfEuBVj25G+DygfCs/Dsc598z26dXnuBywCU/p99eQ
+ MYGszfHkvKZUeri7xCiNHnNPnJ4Wn68mLl97KD+AWqc3pGJiClfVzoh/D3Xd8gaHfqX2MUK2EGZ
+ eCJaeaujMjxs+w4MqfFK8sbQ0KrWnNWjYvdnku55wherHqChzpSxnNXiJmx0pHKCTcqHB8MgeXJ
+ 6FlQJOQLB0BJC13I1l5/2uZxryjSeZn5sJBV+3UJDR8Q3oSdbfFP1EpYtpEKbJHCil9AME85b3e
+ 3ZOQeRpuPIdNFOQ==
+X-Developer-Key: i=krzk@kernel.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Fri, Apr 12, 2024 at 05:08:33PM -0400, Frank Li wrote:
-> On Fri, Apr 12, 2024 at 10:35:48PM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Apr 08, 2024 at 11:11:11AM -0400, Frank Li wrote:
-> > > On Sat, Apr 06, 2024 at 09:31:31AM +0530, Manivannan Sadhasivam wrote:
-> > > > On Fri, Apr 05, 2024 at 10:31:16AM -0400, Frank Li wrote:
-> > > > > On Fri, Apr 05, 2024 at 11:54:26AM +0530, Manivannan Sadhasivam wrote:
-> > > > > > On Tue, Mar 19, 2024 at 12:07:15PM -0400, Frank Li wrote:
-> > > > > > 
-> > > > > > PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off during system suspend
-> > > > > > 
-> > > > > > > Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
-> > > > > > > window. This space's size is 'region_align'.
-> > > > > > > 
-> > > > > > > Set outbound ATU map memory write to send PCI message. So one MMIO write
-> > > > > > > can trigger a PCI message, such as PME_Turn_Off.
-> > > > > > > 
-> > > > > > > Add common dwc_pme_turn_off() function.
-> > > > > > > 
-> > > > > > > Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
-> > > > > > > dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
-> > > > > > > exist.
-> > > > > > > 
-> > > > > > 
-> > > > > > How about:
-> > > > > > 
-> > > > > > "Instead of relying on the vendor specific implementations to send the
-> > > > > > PME_Turn_Off message, let's introduce a generic way of sending the message using
-> > > > > > the MSG TLP.
-> > > > > > 
-> > > > > > This is achieved by reserving a region for MSG TLP of size 'pci->region_align',
-> > > > > > at the end of the first IORESOURCE_MEM window of the host bridge. And then
-> > > > > > sending the PME_Turn_Off message during system suspend with the help of iATU.
-> > > > > > 
-> > > > > > It should be noted that this generic implementation is optional for the glue
-> > > > > > drivers and can be overridden by a custom 'pme_turn_off' callback."
-> > > > > > 
-> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > ---
-> > > > > > >  drivers/pci/controller/dwc/pcie-designware-host.c | 94 ++++++++++++++++++++++-
-> > > > > > >  drivers/pci/controller/dwc/pcie-designware.h      |  3 +
-> > > > > > >  2 files changed, 93 insertions(+), 4 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > > > > > index 267687ab33cbc..d5723fce7a894 100644
-> > > > > > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > > > > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > > > > > @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
-> > > > > > >  	return 0;
-> > > > > > >  }
-> > > > > > >  
-> > > > > > > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
-> > > > > > > +{
-> > > > > > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > > > > > +	struct resource_entry *win;
-> > > > > > > +	struct resource *res;
-> > > > > > > +
-> > > > > > > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-> > > > > > > +	if (win) {
-> > > > > > > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
-> > > > > > > +		if (!res)
-> > > > > > > +			return;
-> > > > > > > +
-> > > > > > > +		/* Reserve last region_align block as message TLP space */
-> > > > > > > +		res->start = win->res->end - pci->region_align + 1;
-> > > > > > > +		res->end = win->res->end;
-> > > > > > 
-> > > > > > Don't you need to adjust the host bridge window size and end address?
-> > > > > 
-> > > > > Needn't. request_resource will reserve it from bridge window. Like malloc,
-> > > > > if you malloc to get a region of memory, which will never get by malloc
-> > > > > again utill you call free.
-> > > > > 
-> > > > 
-> > > > Hmm, will that modify the window->res->end address and size?
-> > > 
-> > > No. This windows already reported to pci system before this function. It is
-> > > not good to modify window-res-end. It just add child resource like below.
-> > > 
-> > > windows is root resource, which will create may child when call
-> > > request_resource.
-> > >           bridge -> windows
-> > > 		child1 -> msg
-> > > 		child2 -> pci ep1
-> > > 		child3 -> pci_ep2.
-> > > 		...
-> > > 
-> > > Although you see whole bridge window, 'msg' already used and put under root
-> > > resource,  new pci devices will never use 'msg' resource. 
-> > > 
-> > > If change windows->res->end here, I worry about it may broken resource
-> > > tree.
-> > > 
-> > 
-> > Hmm, I think your argument is fair. I was worrying that if someone try to
-> > map separately by referencing win->res->end, then they will see access
-> > violation.
-> 
-> It should be wrong if use it without request resource.
-> 
-> > 
-> > But why can't you just allocate the resource using 'alloc_resource()' API
-> > instead of always allocating at the end?
-> 
-> Alloc will start from windows (for example: 0x8000_0000). 
-> 0x8000_0000 -> 0x8001_0000 will be allocated to 'msg'.
-> 
-> If ep1 want to get 1MB windows, 0x8010_0000 will return. There is a big
-> hole between 0x8001_0000 to 0x8010_0000.
-> 
-> I just want to reduce impact to existed system. So PCIe memory layout will
-> be kept the same w/o this patch.
-> 
-> There are not big difference between allocate resource and reserve resource
-> for 'msg'. Just little better friendly for exist system.
-> 
+Hi,
 
-Ok. This sounds fine to me. Please add this information as a comment so that
-everyone will be aware of the reasoning.
+Dependencies
+============
+All further patches depend on the first patch.  Therefore everything
+could go via backlight tree (please ack) or via cross-tree pulls. Or
+whatever maintainer choose, just coordinate this with backlight.
 
-- Mani
+Best regards,
+Krzysztof
 
-> Frank
-> 
-> > 
-> > - Mani
-> > 
-> > > > 
-> > > > > > 
-> > > > > > > +		res->name = "msg";
-> > > > > > > +		res->flags = win->res->flags | IORESOURCE_BUSY;
-> > > > > > > +
-> > > > > > 
-> > > > > > Shouldn't this resource be added back to the host bridge?
-> > > > > 
-> > > > > No, this resource will reserver for msg only for whole bridge life cycle.
-> > > > > Genenally alloc resource only happen at PCI devices probe. All pci space
-> > > > > will be fixed after system probe.
-> > > > > 
-> > > > 
-> > > > I don't think so. This resource still belongs to the host bridge, so we should
-> > > > add it back.
-> > > 
-> > > When add back?  It was reserved at bridge probe. When bridge remove, all
-> > > resource will released. 
-> > > 
-> > > > 
-> > > > - Mani
-> > > > 
-> > > > -- 
-> > > > மணிவண்ணன் சதாசிவம்
-> > 
-> > -- 
-> > மணிவண்ணன் சதாசிவம்
+---
+Krzysztof Kozlowski (18):
+      backlight: Constify lcd_ops
+      backlight: ams369fg06: Constify lcd_ops
+      backlight: corgi_lcd: Constify lcd_ops
+      backlight: hx8357: Constify lcd_ops
+      backlight: ili922x: Constify lcd_ops
+      backlight: ili9320: Constify lcd_ops
+      backlight: jornada720_lcd: Constify lcd_ops
+      backlight: l4f00242t03: Constify lcd_ops
+      backlight: lms283gf05: Constify lcd_ops
+      backlight: lms501kf03: Constify lcd_ops
+      backlight: ltv350qv: Constify lcd_ops
+      backlight: otm3225a: Constify lcd_ops
+      backlight: platform_lcd: Constify lcd_ops
+      backlight: tdo24m: Constify lcd_ops
+      HID: picoLCD: Constify lcd_ops
+      fbdev: clps711x: Constify lcd_ops
+      fbdev: imx: Constify lcd_ops
+      fbdev: omap: lcd_ams_delta: Constify lcd_ops
 
+ drivers/hid/hid-picolcd_lcd.c            | 2 +-
+ drivers/video/backlight/ams369fg06.c     | 2 +-
+ drivers/video/backlight/corgi_lcd.c      | 2 +-
+ drivers/video/backlight/hx8357.c         | 2 +-
+ drivers/video/backlight/ili922x.c        | 2 +-
+ drivers/video/backlight/ili9320.c        | 2 +-
+ drivers/video/backlight/jornada720_lcd.c | 2 +-
+ drivers/video/backlight/l4f00242t03.c    | 2 +-
+ drivers/video/backlight/lcd.c            | 4 ++--
+ drivers/video/backlight/lms283gf05.c     | 2 +-
+ drivers/video/backlight/lms501kf03.c     | 2 +-
+ drivers/video/backlight/ltv350qv.c       | 2 +-
+ drivers/video/backlight/otm3225a.c       | 2 +-
+ drivers/video/backlight/platform_lcd.c   | 2 +-
+ drivers/video/backlight/tdo24m.c         | 2 +-
+ drivers/video/fbdev/clps711x-fb.c        | 2 +-
+ drivers/video/fbdev/imxfb.c              | 2 +-
+ drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
+ include/linux/lcd.h                      | 6 +++---
+ 19 files changed, 22 insertions(+), 22 deletions(-)
+---
+base-commit: 9ed46da14b9b9b2ad4edb3b0c545b6dbe5c00d39
+change-id: 20240414-video-backlight-lcd-ops-276d8439ffb8
+
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+Krzysztof Kozlowski <krzk@kernel.org>
+
