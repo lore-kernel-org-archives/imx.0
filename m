@@ -1,104 +1,328 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta200.mxroute.com (mail-108-mta200.mxroute.com [136.175.108.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4201137920;
-	Sun, 14 Apr 2024 18:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3A633987
+	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 20:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713120573; cv=none; b=nRq6VSTe3LWiq1LXPegc3T8oov2J2WSze8eHCefwj8Wge4kQh+U5FXKC69BrcX+563XEaT5EN/WdV8zndwoM2EgXQQ5g+/zkTV96aglYy70zRUCV6NbchWkiu+np2dNO/ILnWjMV/U/x5TrEF9ZtxuVSx102YKd8KGb0SErEBLs=
+	t=1713126931; cv=none; b=CK5e6TFrhqUQ7EsiQExiFDP2JNa10w0j0m370TVDhvYB279nJLaOyFmeMhyy9x0rPbxvQowVjklgl/gNYfjEu4QsO5jaOPBOMzgo/jIB9GjXnPd2gMxYFbnzwx3bTtlm7bClLSIC7oP1PpkHz3o4fLtFr/9Hfa6tgGZxNUS5bc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713120573; c=relaxed/simple;
-	bh=uQ+S648l3NSz9IkZmbPzGnp5Cl0axGVfcA86WU5fpOg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fyPV0zPsXzV57YMX4Vy/Cx2JnGkMPC5eh8cQCiWb7Og80wdvWKRV2UC7ipUYY6vmkZPyt2vXgOP/UshNkmej0yoQz7lc28ffqIK+wcAIvMUHdXTI7XXD0Krz4riRouqCDskoF2Ashq0V7aKQx7o+/a1/Q4PtRVJhQfj2SqR5ZAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eiAtfsJi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713126931; c=relaxed/simple;
+	bh=jyWrtrkRdIwLv8vFyOZgGaDw3f1409gIT2RgcJyPZ/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pT0fPHh/2AXaYYuwkfvk8cnAZT5wjItDNHuC4B1D2uch1lv6BIkGFnmUDs+0jmFOJ/98Wku0p6fiK1+6JC4sgsAVSjLANi+EUaqmlqbVcs5mkhiqu70gUUoRzFpSJ1ybNg06OOdlKPbKMYn/BpEMRoGrIEGPNmHTu3+FvirTFzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=pFHU8248; arc=none smtp.client-ip=136.175.108.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eiAtfsJi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357F6C32781;
-	Sun, 14 Apr 2024 18:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713120573;
-	bh=uQ+S648l3NSz9IkZmbPzGnp5Cl0axGVfcA86WU5fpOg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=eiAtfsJiikEqdcr+79VZ0KLx7AOXG08ERkM3TDQN5wCxSAFVD8YpOGqVpW4tS9Rw3
-	 Wn26J/SZaTauJoaHGH6+uaUG492rkuKKOm4xiMPC4JK84sLpEgv/othNzDupLaRR3o
-	 mhWLm8S7vkz5iAKftgIs1WK4SREUhefAzCDsjOgOMpYbh7PX8z6FIFtN00soXrXQlq
-	 HbnzTOj8SLt/62K8FSqU1c/+d56SE5jCwmSJ5nEIEVa56bD6Uc2bhjBa4z93hqnC1u
-	 Tnr+J12+YFvwpGUl5fM1nK5AraIHuJcVzHBrcpZqj6TEfLI4Z+rOtJ2MfyZ2JIqAYM
-	 gq1pPwN1HzuCA==
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Date: Sun, 14 Apr 2024 20:47:39 +0200
-Subject: [PATCH 14/14] ASoC: SOF: mediatek: mt8195: Constify
- snd_sof_dsp_ops
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="pFHU8248"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta200.mxroute.com (ZoneMTA) with ESMTPSA id 18ede526f510003bea.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sun, 14 Apr 2024 20:35:28 +0000
+X-Zone-Loop: fd9354d044620881709bf73210df3f3e5237d44697f2
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+Z4CkPGkAS954uRQNPQhsFU7twZudFZFCOHeX0C/iOk=; b=pFHU8248SnJwIRvypLTnINked5
+	XxpYS1DTrDMbJ58sshcfDHp2SZLL3VedAoF5HH78oRY7IjuD7y1omB2QHEmp5FiiNmhD8DJgESw+q
+	dnM+5on7o1ZmtXop8ZD0T7LfP2GZ0RtN3MtYmkxYHy9whV3Ipk5dQUIYo03h5O+ayc9kTiN/J/le6
+	yDM4hax6iR2VUYW8E4zI7EuuXhtwGesy+opp9vdCytI5WU/kUBA4TcbX6YW8tb0LTCjVEJg/9ueea
+	ZVG23YoPBhY5GAfV0y6TGlmYQ8EWTmtUpk/a2w6TpI04CQCq3+XNgvytNIf+OLGOxKxPnWHvszeak
+	wCPmW40g==;
+From: git@luigi311.com
+To: linux-media@vger.kernel.org
+Cc: dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com,
+	mchehab@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	pavel@ucw.cz,
+	phone-devel@vger.kernel.org,
+	Luis Garcia <git@luigi311.com>
+Subject: [PATCH v4 08/25] media: i2c: imx258: Add support for 24MHz clock
+Date: Sun, 14 Apr 2024 14:34:46 -0600
+Message-ID: <20240414203503.18402-9-git@luigi311.com>
+In-Reply-To: <20240414203503.18402-1-git@luigi311.com>
+References: <20240414203503.18402-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240414-n-const-ops-var-v1-14-8f53ee5d981c@kernel.org>
-References: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
-In-Reply-To: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, 
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
- Bard Liao <yung-chuan.liao@linux.intel.com>, 
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, 
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Krzysztof Kozlowski <krzk@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=805; i=krzk@kernel.org;
- h=from:subject:message-id; bh=uQ+S648l3NSz9IkZmbPzGnp5Cl0axGVfcA86WU5fpOg=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmHCTQ0H8PMFuGVM51N5GfYEFfknVy7Wcjmiiwt
- 43bIx4ypMSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZhwk0AAKCRDBN2bmhouD
- 1xqKD/9NDtfWOgNmQGNrhyx8gyrXKfwSIDBIaqa5HHvwGUzbkT2Y3ROKNtSGB+/7UYL7KhtXR4H
- gKNGsnKTAGyeDXtAGyQd1hLupkbTd6+p9UFkgV4cuGMTfBUZC5Y8ny5pMSmgWqMGUOb2vMnZwgm
- RCF1iSsFygSvRC+ikIES5ZWQTGSt5WIMWmIV2+yRiYOopUPsG4NePPkrV11fHrBcjeVtcbCvKHj
- +hpnW3WeyLnGLMQbwlITgtFa+OUOQ2dgTKUGQNSK8zVcUoaASoeOQUnupH5rkuCzCSePm8gtoyf
- /CCh4QW+swNq9fhLyRAcuafehxbsbLU8Va2Mr7PX1Im/MmKifR/eIqTY/HwK6ac43Sn3ezA3a+a
- Wi5g9D6oVQO+iVcvWnDr5NbMVGdrYG3hOvqQkJNeuMec90Jrr6xcrRMNtUdBGN1jVAjF7t9lJgy
- /7tRkDgQyPaSt6F77UfToAceeC0Dfx8s9VmIUjHZgavbgXiVnOeYvFL3gqhPxKMCCDdbG51YjYO
- pczurvBtz9+Nh5DUZOkKleoSMQvNs4DhpDRzS0NYJhmfYcTWboSdDHReANirzMp+a7D/cQE3C82
- DBYswsZXuklU0MnOccqVU5n0CqOj6Sjv174g+w1qEE+5CCSA4lSALtZacDRT9Vkb1iMBNWXOxAG
- 71E1iAysInF4j4w==
-X-Developer-Key: i=krzk@kernel.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: personal@luigi311.com
 
-'struct snd_sof_dsp_ops' is not modified by core code, so it can be made
-const for increased code safety.
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+There's no reason why only a clock of 19.2MHz is supported.
+Indeed this isn't even a frequency listed in the datasheet.
+
+Add support for 24MHz as well.
+The PLL settings result in slightly different link frequencies,
+so parameterise those.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Luis Garcia <git@luigi311.com>
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- sound/soc/sof/mediatek/mt8195/mt8195.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx258.c | 130 +++++++++++++++++++++++++++++--------
+ 1 file changed, 102 insertions(+), 28 deletions(-)
 
-diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
-index 8ee7ee246344..fc1c016104ae 100644
---- a/sound/soc/sof/mediatek/mt8195/mt8195.c
-+++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
-@@ -505,7 +505,7 @@ static struct snd_soc_dai_driver mt8195_dai[] = {
+diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+index 351add1bc5d5..e4b1b3cbbde5 100644
+--- a/drivers/media/i2c/imx258.c
++++ b/drivers/media/i2c/imx258.c
+@@ -76,9 +76,6 @@
+ #define REG_CONFIG_MIRROR_FLIP		0x03
+ #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
+ 
+-/* Input clock frequency in Hz */
+-#define IMX258_INPUT_CLOCK_FREQ		19200000
+-
+ struct imx258_reg {
+ 	u16 address;
+ 	u8 val;
+@@ -115,7 +112,9 @@ struct imx258_mode {
  };
  
- /* mt8195 ops */
--static struct snd_sof_dsp_ops sof_mt8195_ops = {
-+static const struct snd_sof_dsp_ops sof_mt8195_ops = {
- 	/* probe and remove */
- 	.probe		= mt8195_dsp_probe,
- 	.remove		= mt8195_dsp_remove,
-
+ /* 4208x3120 needs 1267Mbps/lane, 4 lanes */
+-static const struct imx258_reg mipi_data_rate_1267mbps[] = {
++static const struct imx258_reg mipi_1267mbps_19_2mhz[] = {
++	{ 0x0136, 0x13 },
++	{ 0x0137, 0x33 },
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x02 },
+ 	{ 0x0305, 0x03 },
+@@ -133,7 +132,29 @@ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
+ 	{ 0x0823, 0xCC },
+ };
+ 
+-static const struct imx258_reg mipi_data_rate_640mbps[] = {
++static const struct imx258_reg mipi_1272mbps_24mhz[] = {
++	{ 0x0136, 0x18 },
++	{ 0x0137, 0x00 },
++	{ 0x0301, 0x05 },
++	{ 0x0303, 0x02 },
++	{ 0x0305, 0x04 },
++	{ 0x0306, 0x00 },
++	{ 0x0307, 0xD4 },
++	{ 0x0309, 0x0A },
++	{ 0x030B, 0x01 },
++	{ 0x030D, 0x02 },
++	{ 0x030E, 0x00 },
++	{ 0x030F, 0xD8 },
++	{ 0x0310, 0x00 },
++	{ 0x0820, 0x13 },
++	{ 0x0821, 0x4C },
++	{ 0x0822, 0xCC },
++	{ 0x0823, 0xCC },
++};
++
++static const struct imx258_reg mipi_640mbps_19_2mhz[] = {
++	{ 0x0136, 0x13 },
++	{ 0x0137, 0x33 },
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x02 },
+ 	{ 0x0305, 0x03 },
+@@ -151,9 +172,27 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
+ 	{ 0x0823, 0x00 },
+ };
+ 
++static const struct imx258_reg mipi_642mbps_24mhz[] = {
++	{ 0x0136, 0x18 },
++	{ 0x0137, 0x00 },
++	{ 0x0301, 0x05 },
++	{ 0x0303, 0x02 },
++	{ 0x0305, 0x04 },
++	{ 0x0306, 0x00 },
++	{ 0x0307, 0x6B },
++	{ 0x0309, 0x0A },
++	{ 0x030B, 0x01 },
++	{ 0x030D, 0x02 },
++	{ 0x030E, 0x00 },
++	{ 0x030F, 0xD8 },
++	{ 0x0310, 0x00 },
++	{ 0x0820, 0x0A },
++	{ 0x0821, 0x00 },
++	{ 0x0822, 0x00 },
++	{ 0x0823, 0x00 },
++};
++
+ static const struct imx258_reg mode_common_regs[] = {
+-	{ 0x0136, 0x13 },
+-	{ 0x0137, 0x33 },
+ 	{ 0x3051, 0x00 },
+ 	{ 0x3052, 0x00 },
+ 	{ 0x4E21, 0x14 },
+@@ -313,10 +352,6 @@ static const char * const imx258_supply_name[] = {
+ 
+ #define IMX258_NUM_SUPPLIES ARRAY_SIZE(imx258_supply_name)
+ 
+-/* Configurations for supported link frequencies */
+-#define IMX258_LINK_FREQ_634MHZ	633600000ULL
+-#define IMX258_LINK_FREQ_320MHZ	320000000ULL
+-
+ enum {
+ 	IMX258_LINK_FREQ_1267MBPS,
+ 	IMX258_LINK_FREQ_640MBPS,
+@@ -335,25 +370,48 @@ static u64 link_freq_to_pixel_rate(u64 f)
+ }
+ 
+ /* Menu items for LINK_FREQ V4L2 control */
+-static const s64 link_freq_menu_items[] = {
+-	IMX258_LINK_FREQ_634MHZ,
+-	IMX258_LINK_FREQ_320MHZ,
++/* Configurations for supported link frequencies */
++static const s64 link_freq_menu_items_19_2[] = {
++	633600000ULL,
++	320000000ULL,
++};
++
++static const s64 link_freq_menu_items_24[] = {
++	636000000ULL,
++	321000000ULL,
+ };
+ 
+ /* Link frequency configs */
+-static const struct imx258_link_freq_config link_freq_configs[] = {
++static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
+ 	[IMX258_LINK_FREQ_1267MBPS] = {
+ 		.pixels_per_line = IMX258_PPL_DEFAULT,
+ 		.reg_list = {
+-			.num_of_regs = ARRAY_SIZE(mipi_data_rate_1267mbps),
+-			.regs = mipi_data_rate_1267mbps,
++			.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz),
++			.regs = mipi_1267mbps_19_2mhz,
+ 		}
+ 	},
+ 	[IMX258_LINK_FREQ_640MBPS] = {
+ 		.pixels_per_line = IMX258_PPL_DEFAULT,
+ 		.reg_list = {
+-			.num_of_regs = ARRAY_SIZE(mipi_data_rate_640mbps),
+-			.regs = mipi_data_rate_640mbps,
++			.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz),
++			.regs = mipi_640mbps_19_2mhz,
++		}
++	},
++};
++
++static const struct imx258_link_freq_config link_freq_configs_24[] = {
++	[IMX258_LINK_FREQ_1267MBPS] = {
++		.pixels_per_line = IMX258_PPL_DEFAULT,
++		.reg_list = {
++			.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz),
++			.regs = mipi_1272mbps_24mhz,
++		}
++	},
++	[IMX258_LINK_FREQ_640MBPS] = {
++		.pixels_per_line = IMX258_PPL_DEFAULT,
++		.reg_list = {
++			.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz),
++			.regs = mipi_642mbps_24mhz,
+ 		}
+ 	},
+ };
+@@ -410,6 +468,9 @@ struct imx258 {
+ 	/* Current mode */
+ 	const struct imx258_mode *cur_mode;
+ 
++	const struct imx258_link_freq_config *link_freq_configs;
++	const s64 *link_freq_menu_items;
++
+ 	/*
+ 	 * Mutex for serialized access:
+ 	 * Protect sensor module set pad format and start/stop streaming safely.
+@@ -713,7 +774,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+ 		imx258->cur_mode = mode;
+ 		__v4l2_ctrl_s_ctrl(imx258->link_freq, mode->link_freq_index);
+ 
+-		link_freq = link_freq_menu_items[mode->link_freq_index];
++		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
+ 		pixel_rate = link_freq_to_pixel_rate(link_freq);
+ 		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
+ 		/* Update limits and set FPS to default */
+@@ -727,7 +788,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+ 			vblank_def);
+ 		__v4l2_ctrl_s_ctrl(imx258->vblank, vblank_def);
+ 		h_blank =
+-			link_freq_configs[mode->link_freq_index].pixels_per_line
++			imx258->link_freq_configs[mode->link_freq_index].pixels_per_line
+ 			 - imx258->cur_mode->width;
+ 		__v4l2_ctrl_modify_range(imx258->hblank, h_blank,
+ 					 h_blank, 1, h_blank);
+@@ -747,7 +808,7 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 
+ 	/* Setup PLL */
+ 	link_freq_index = imx258->cur_mode->link_freq_index;
+-	reg_list = &link_freq_configs[link_freq_index].reg_list;
++	reg_list = &imx258->link_freq_configs[link_freq_index].reg_list;
+ 	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
+ 	if (ret) {
+ 		dev_err(&client->dev, "%s failed to set plls\n", __func__);
+@@ -946,9 +1007,9 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	imx258->link_freq = v4l2_ctrl_new_int_menu(ctrl_hdlr,
+ 				&imx258_ctrl_ops,
+ 				V4L2_CID_LINK_FREQ,
+-				ARRAY_SIZE(link_freq_menu_items) - 1,
++				ARRAY_SIZE(link_freq_menu_items_19_2) - 1,
+ 				0,
+-				link_freq_menu_items);
++				imx258->link_freq_menu_items);
+ 
+ 	if (imx258->link_freq)
+ 		imx258->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+@@ -964,8 +1025,10 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	if (vflip)
+ 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ 
+-	pixel_rate_max = link_freq_to_pixel_rate(link_freq_menu_items[0]);
+-	pixel_rate_min = link_freq_to_pixel_rate(link_freq_menu_items[1]);
++	pixel_rate_max =
++		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0]);
++	pixel_rate_min =
++		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1]);
+ 	/* By default, PIXEL_RATE is read only */
+ 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
+ 				V4L2_CID_PIXEL_RATE,
+@@ -1086,8 +1149,19 @@ static int imx258_probe(struct i2c_client *client)
+ 	} else {
+ 		val = clk_get_rate(imx258->clk);
+ 	}
+-	if (val != IMX258_INPUT_CLOCK_FREQ) {
+-		dev_err(&client->dev, "input clock frequency not supported\n");
++
++	switch (val) {
++	case 19200000:
++		imx258->link_freq_configs = link_freq_configs_19_2;
++		imx258->link_freq_menu_items = link_freq_menu_items_19_2;
++		break;
++	case 24000000:
++		imx258->link_freq_configs = link_freq_configs_24;
++		imx258->link_freq_menu_items = link_freq_menu_items_24;
++		break;
++	default:
++		dev_err(&client->dev, "input clock frequency of %u not supported\n",
++			val);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-2.34.1
+2.44.0
 
