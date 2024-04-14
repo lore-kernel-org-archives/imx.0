@@ -1,40 +1,40 @@
-Received: from mail-108-mta179.mxroute.com (mail-108-mta179.mxroute.com [136.175.108.179])
+Received: from mail-108-mta22.mxroute.com (mail-108-mta22.mxroute.com [136.175.108.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60652137750
-	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 20:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB9F13790A
+	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 20:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713127234; cv=none; b=Lq1eRx1X/AUCLz5/bH3BleQdMebgYHYW/TgPFtbm3GzVBNYTy+XN0JsgrWNObYTWKSGy4U/XQ35AOtJ06dUpLoRQArKTX/r48SG7Ojzk7fhKcI79ugIfoDVcfmsdcTi8Bd2s4b81TisUfatae/VSdgpJ5n8IbBLezaCaLfUE+HY=
+	t=1713127237; cv=none; b=PGUY43rfb5Wgufj/toe8qZfGQ+JDhZ58DURi4b7j1wsvzV7DQe7apGzfzpvrE5/ls1wS+UYaW++VKIXtsatF7sudvtUryEqG+xEdUtFkatVxdWMqk1QJr8PXGsTGu7901dudErKlUODfWGVy8IeV/eGSvwrK1aLFXvtaInj9Vmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713127234; c=relaxed/simple;
-	bh=+sFbuAZg5yu7TysrDNdaOxjpNwDMCdp+9SgLS1wKCEQ=;
+	s=arc-20240116; t=1713127237; c=relaxed/simple;
+	bh=vmDWxnFYVlMeX8mv6XV77VsSX93jJDH21Yu7+jdTofM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dg7nzvWLcrUrdf9k+pjrDAmTkvR4TIHR8J+ucDpaT8Xn80XWlE1eSBffUjLC/W0BfIsa8+PbQMX4MIXN+5pyb7f5eJyk8KUFYFve+rTeqVa7sxgUdZoiGP9c7Ft0jHtpiyKp0OmNnTG4eugTkJGhiQ94six70lCBmpw6redfPCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=KCbKvaV+; arc=none smtp.client-ip=136.175.108.179
+	 MIME-Version; b=Z6gkL2TH16uGm777yOI5MfMWYIjbJx2aX6ykHSZkcOZrYDzMwZdVHFwuP41BrSZWaYc7LRhqr6Ezn2xBQmv8tT5WgUly8ZvRPncLp72xHtZTS1PEHzFd2CBzoOYOra0Dne/M20SQTx/9eBaTynQ/02mdNfg8sYJBnPoG9ytnVU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=jIxBgqyZ; arc=none smtp.client-ip=136.175.108.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="KCbKvaV+"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="jIxBgqyZ"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta179.mxroute.com (ZoneMTA) with ESMTPSA id 18ede5236dc0003bea.00a
+ by mail-108-mta22.mxroute.com (ZoneMTA) with ESMTPSA id 18ede525dea0003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sun, 14 Apr 2024 20:35:13 +0000
-X-Zone-Loop: 92c3f9448868e4f46df7bbe84d7c974d3c615daf93b9
+ Sun, 14 Apr 2024 20:35:23 +0000
+X-Zone-Loop: 5c5bf0e2f57d96239206001c59992ec21da7faa7d56f
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tNSp6sgHgm0/xBY9U4t7Qdk6wqjer/597ZfqTYMH0pE=; b=KCbKvaV+XOtXf5R/VBfGX7mLMV
-	A849Gl6TQSYL1JQRfGMZaHyiT7OltujdP70ZBmU/ZIWjG0J7WJNedgXvz8P2D5TrPHdEtNVn5mhS1
-	riXhB8JAXzwS0NlZajK/+Y2XD7UCgbfr37rox8qv42PiFX+MhlKaoJIMiklU3STndBjuy5W5F1CG6
-	aKO3+TLTngrToBkejFc0IW3vfFSyFEqcZy4j6edQbrSChc+lBbUekwkOHwU9iN9pfMsGcFt0Sb1OL
-	Qn1GJrtDcqKljLi1/2pWCHijOnheMh2l2WzcmCMuKNJylWECsCw2PkmdrOzbw/NNNFykjovGcuvXL
-	xu9+0ikg==;
+	bh=Jxe1gPtYFCmEVv9eTkE7KcDWNvKsfj2RH86DpQggAUU=; b=jIxBgqyZIGPJC2ZFe2yVGuYMva
+	jPJRVyXZv52Sl2/ElAgdXIw8fIwwJHz8z4S9a/8SluDiQOMbk38b4SCZLZ460KIh6L4YUQAN9U9iG
+	/UuhpgUYEse34ldRaIzRLjSTeyIzZB4HCGrNm2BOFPsj30hNVin56oOsw6hXqN5nvRYzbuhWsftPM
+	Oborjr0OSIVLfx02EP92crCaoQdx3GvWhGrWHCPR/TOxGA3arLN2Ja9SIGHIAT4DSZpZQdFg8sqSG
+	UuujgcveUtcJMAqCm8//FmYFhm6klBS/VUnG+A+LToj40L7yUnkasr0Ukf3zcNKHtH6mW3pKxaTly
+	QHE5BHGw==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v4 01/25] media: i2c: imx258: Remove unused defines
-Date: Sun, 14 Apr 2024 14:34:39 -0600
-Message-ID: <20240414203503.18402-2-git@luigi311.com>
+Subject: [PATCH v4 06/25] media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
+Date: Sun, 14 Apr 2024 14:34:44 -0600
+Message-ID: <20240414203503.18402-7-git@luigi311.com>
 In-Reply-To: <20240414203503.18402-1-git@luigi311.com>
 References: <20240414203503.18402-1-git@luigi311.com>
 Precedence: bulk
@@ -71,33 +71,80 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-The IMX258_FLL_* defines are unused. Remove them.
+The values and ranges of V4L2_CID_VBLANK are all computed,
+so there is no reason for it to be a read only control.
+Remove the register values from the mode lists, add the
+handler, and remove the read only flag.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/media/i2c/imx258.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/media/i2c/imx258.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index a577afb530b7..2dbafd21dd70 100644
+index 495eaada2945..321b504c6a48 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -29,12 +29,6 @@
+@@ -30,6 +30,8 @@
  #define IMX258_VTS_30FPS_VGA		0x034c
  #define IMX258_VTS_MAX			0xffff
  
--/*Frame Length Line*/
--#define IMX258_FLL_MIN			0x08a6
--#define IMX258_FLL_MAX			0xffff
--#define IMX258_FLL_STEP			1
--#define IMX258_FLL_DEFAULT		0x0c98
--
++#define IMX258_REG_VTS			0x0340
++
  /* HBLANK control - read only */
  #define IMX258_PPL_DEFAULT		5352
  
+@@ -202,8 +204,6 @@ static const struct imx258_reg mode_4208x3120_regs[] = {
+ 	{ 0x0114, 0x03 },
+ 	{ 0x0342, 0x14 },
+ 	{ 0x0343, 0xE8 },
+-	{ 0x0340, 0x0C },
+-	{ 0x0341, 0x50 },
+ 	{ 0x0344, 0x00 },
+ 	{ 0x0345, 0x00 },
+ 	{ 0x0346, 0x00 },
+@@ -319,8 +319,6 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x0114, 0x03 },
+ 	{ 0x0342, 0x14 },
+ 	{ 0x0343, 0xE8 },
+-	{ 0x0340, 0x06 },
+-	{ 0x0341, 0x38 },
+ 	{ 0x0344, 0x00 },
+ 	{ 0x0345, 0x00 },
+ 	{ 0x0346, 0x00 },
+@@ -436,8 +434,6 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x0114, 0x03 },
+ 	{ 0x0342, 0x14 },
+ 	{ 0x0343, 0xE8 },
+-	{ 0x0340, 0x03 },
+-	{ 0x0341, 0x4C },
+ 	{ 0x0344, 0x00 },
+ 	{ 0x0345, 0x00 },
+ 	{ 0x0346, 0x00 },
+@@ -800,6 +796,11 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
+ 					       BIT(IMX258_HDR_RATIO_MAX));
+ 		}
+ 		break;
++	case V4L2_CID_VBLANK:
++		ret = imx258_write_reg(imx258, IMX258_REG_VTS,
++				       IMX258_REG_VALUE_16BIT,
++				       imx258->cur_mode->height + ctrl->val);
++		break;
+ 	default:
+ 		dev_info(&client->dev,
+ 			 "ctrl(id:0x%x,val:0x%x) is not handled\n",
+@@ -1174,9 +1175,6 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 				IMX258_VTS_MAX - imx258->cur_mode->height, 1,
+ 				vblank_def);
+ 
+-	if (imx258->vblank)
+-		imx258->vblank->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+-
+ 	imx258->hblank = v4l2_ctrl_new_std(
+ 				ctrl_hdlr, &imx258_ctrl_ops, V4L2_CID_HBLANK,
+ 				IMX258_PPL_DEFAULT - imx258->cur_mode->width,
 -- 
 2.44.0
 
