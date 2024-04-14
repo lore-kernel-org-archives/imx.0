@@ -1,135 +1,244 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654992374C;
-	Sun, 14 Apr 2024 09:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D9D1D69E
+	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 10:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713088535; cv=none; b=q4he24DDLQYW5v5TCuf9VTfApCCHF8Hi/KutMbtXOuH1Go9+TsyhvSkcoKnRa2Xt+maNRB+ibE04ahWN/wQ+txxBmtbvY3m/zYPzIDmJrnDMmlodLGY5BdF8OecbiQxg1v4MjyecB95zL9jPfgJKIRmXlg8jXksUBPsrYwM1M5Y=
+	t=1713090783; cv=none; b=OHekR0wHybJ+MCJ9gpROow5xvyCR5qDIwr8PWmxKDAOaiME6Uu7d5WK6kgKudkD9NxbqcQO19tJY6H0N8tphr8uS5ANQ/fPCPQboNBixZrebEQsIRbRXVJ75hXLF7ijePgtGLX5mrENNxxS3FQAZ0bN3LJnQqe58Nh4D4FO7cB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713088535; c=relaxed/simple;
-	bh=b3tnisE5mCthW2dJBswBPlSIzQlrQrLbNhzUABTmHY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RXQoc0gDwrwvpnm0aZFGXOcP64IAD0xgWSBYV7n9T4iln8Bnu0eO4XS0o0si2Z20T9gAymKsMcqqDOaKuRXTWOjgr2mxOinJrjPqu8uG+bO2PwhNpcSgYo+ps5RsTZswDtDiztj6Q1i6AluxzmB9ea2bG57pSm9VF7om28nWnZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cpsl8ocR; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713090783; c=relaxed/simple;
+	bh=GD2VZJ/Qqsxp3zuRDLUSfSvzp4vBjYYUvZyBFHVrN0s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QfRjygQulj0P4+8+Gsvcd6/rLEN5Yar8gJ+COkeJI16vLs85P+zXdjy2LI+wbVuJvLlekoaeV8FOea2jhlmhnkDmLd1sRGu0/DaVcA55ohffj1ru9jLe86s/s/5ZeKUFtxWhkQJbag5arfWLd6XwtGVa57siGVhWVvVmFOUZuP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lr2CVvvB; arc=none smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cpsl8ocR"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-516d487659bso2818750e87.2;
-        Sun, 14 Apr 2024 02:55:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lr2CVvvB"
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-23319017c4cso1649275fac.2
+        for <imx@lists.linux.dev>; Sun, 14 Apr 2024 03:33:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713088531; x=1713693331; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mAW8FE3757+N73ozBr48CQyvPZHQOC5ywYwUdbEQp2A=;
-        b=Cpsl8ocRgpwHLtddM2MeGfBVeExFoZtRlyIjiryVtkxNh0/eReOzfPNxqnbsRBBXb1
-         azWcJQtWm8HsjRjXMmAkIbDRdAUMs9mCOtc7Sb184NL5FzuIFJNyR8cGfNEerk0ddPgN
-         AKo8dcsSHwSj1WOeYfj/qE2BFkh41njpPVJE/4EVGoWyPUsqVXjJjsXklaCO1UJ/oSEO
-         3T+xgnJkTVAwsf1XouztuA1WnicIDTJ747xUxRsyNg3gcf44Ob+8RFbueJzIfqwwgtvR
-         k2WVqAN6VxdtdSBMCm+P5tQY3+8xeaNrbI9SR9uAEhM7hopI4yTuaBj3g/QCWHZIO5pj
-         IseA==
+        d=linaro.org; s=google; t=1713090781; x=1713695581; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ezWv8Uk8r0iZzTSx1VI+aatOFO9g5HSxqsWTUv27XdY=;
+        b=lr2CVvvBDPoCJ+TTkwRIhdLVaWf6MOWymNmIyK0QHJ2qCIjMwsHTX+yR9W2b/qDYuq
+         xtZ1hHieFcAWkRwgUJ1N2r3yCPuOEapCf+Fj/gfvUMAmC48B84ksg6fwSrAg80p+SfQl
+         /zApuVYKLcH7yTWmJW324bHLW8Db4xchm6fWntvoep0j+OENvkv0rcNkrPWk4iC8w11O
+         xopEEAig67zzvmpLFEVHzrIxz409If4tAuKHlZd1ixpKc9TUTTsTIslHc8IxekVyQXem
+         eY3y+pNT2yw31BM9u6kBf0uJT5sMimrw93Gsqkz5UOWIpBzsXzvRbIyXBZD3A1am8ACs
+         cWUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713088531; x=1713693331;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mAW8FE3757+N73ozBr48CQyvPZHQOC5ywYwUdbEQp2A=;
-        b=cYaTRuPfrvVNwAG3gJfi/GU25RibhN6XU90Maan5cQBNJRuRyZaITh4znq/trnxOmv
-         VNFzgmB2DLHNxzlAM4VVk81aXUk3iuB2fWcefx/D9g6LwhKq0dQuFE22yarVeTuZF06i
-         I+QWhK4G+3uRLuWOTR8JMUu1O5YumCVQNdrT9pwUVWVlkyhq/3sM5XwAdHv0BMH6iGtC
-         387OYIQSV4KFUY5Cg+aLrTNXRhbMIRkSQKge6JcU8kYn9/rnzxBPNKS+cPBSwa6FvD8H
-         L77y1UX+jPWTW/dLXN5RUNzWl7PeK5Qa0m4YsKXoygjA7zZnmP1QWYurdsWpEDXfTDt1
-         ShVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWokiNItaJFBCDRWJfKUGmU98417bt58Ql0sW3vh5wbD6KIzn7Pe2kybqPS4oyy9GH/zN7wxI1TXTaj1LRYOo/Wbz+ExIMlh/lcTY56GCJ4fJcvGd1FIDyJ0REHcEIo+LI=
-X-Gm-Message-State: AOJu0YyebtGimk3wlte7II7aEFyUAjlieojIWDOelRzTp9x6u1MHt6gB
-	pyDfUo63TTltNCFzB97EvMiypOBIOLb5EAZaO5PH4n5bRhuBB/Au
-X-Google-Smtp-Source: AGHT+IEEKoM/iDTJCuznVR9HiQN/AVCO8Nii+pEgbCzxUMbS3kxqr5wisBFEtwUu4Hozxm6Lwg6jLw==
-X-Received: by 2002:ac2:51b7:0:b0:516:c099:e785 with SMTP id f23-20020ac251b7000000b00516c099e785mr4409977lfk.20.1713088531265;
-        Sun, 14 Apr 2024 02:55:31 -0700 (PDT)
-Received: from jernej-laptop.localnet (APN-123-252-50-gprs.simobil.net. [46.123.252.50])
-        by smtp.gmail.com with ESMTPSA id f10-20020a056000128a00b003436a3cae6dsm8677094wrx.98.2024.04.14.02.55.28
+        d=1e100.net; s=20230601; t=1713090781; x=1713695581;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ezWv8Uk8r0iZzTSx1VI+aatOFO9g5HSxqsWTUv27XdY=;
+        b=wEV23yHGO6Qoq3ZUrxiEqr78AYulm+rE1blNENhybSJsk4QTxUhxql82v14X2tx2Pt
+         FzwXRUO4ImVM3DNUrA+pEj6T1jneNUB2GBPxdeaGhST9lbjPadC0BVFHQBgDsHkyii+6
+         vV8rqc5WhDPqdXrdJVAPs33kA7uhcP12oasld3HBQYMHPul/CEiwgTZb02oUNQ8c24q0
+         2XbNwuR2ydOkVeQpzHUInX5R3KAVSd2i2a33y6uyZoeRzSM0BPEPWkRIrSOOxTD50Ie8
+         3mTNDBP4fvzh/RkCk7T++tYVYkXnT3DqM5ONICsiEE4D2lcJX/JV4/LWxeLRpOxc0xAt
+         AZ+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKDrkwfhZXBAgiP2x5QGWLdr4MnfzDIV8/j3T3KeV4oK7osOhCfInB6LYFwTLhBd3/RuTcKOMvxruYFTDrDxmGxFzP
+X-Gm-Message-State: AOJu0YyMlV26A1i0L3c+j09YsWP2+LlubVFbcadRmZqr/2nKA8Yeep2s
+	qRjrm/EDaztV1voKqmBR8NiZjWDKg/+h0cSdfZkURFqUNhkdkeSGQwrse2Hduw==
+X-Google-Smtp-Source: AGHT+IGHvQOl59qxFzhWvb2JB596M3kORklxXhpjbwofS/WCy0scK/ufcS2lkNd5/pxWK7SME16DWg==
+X-Received: by 2002:a05:6871:60f:b0:229:87f6:ee8a with SMTP id w15-20020a056871060f00b0022987f6ee8amr8649408oan.30.1713090781146;
+        Sun, 14 Apr 2024 03:33:01 -0700 (PDT)
+Received: from thinkpad ([120.60.136.171])
+        by smtp.gmail.com with ESMTPSA id 1-20020a056a00072100b006ed045e3a70sm5391418pfm.25.2024.04.14.03.32.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Apr 2024 02:55:30 -0700 (PDT)
-From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jani Nikula <jani.nikula@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>,
- Javier Martinez Canillas <javierm@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Samuel Holland <samuel@sholland.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Maxime Ripard <mripard@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>
-Subject: Re: [PATCH 5/7] ARM: configs: sunxi: Enable DRM_DW_HDMI
-Date: Sun, 14 Apr 2024 11:55:27 +0200
-Message-ID: <3289340.44csPzL39Z@jernej-laptop>
-In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
-References:
- <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
- <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
+        Sun, 14 Apr 2024 03:33:00 -0700 (PDT)
+Date: Sun, 14 Apr 2024 16:02:56 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] PCI: dwc: Add common send PME_Turn_Off message
+ method
+Message-ID: <20240414103256.GB2294@thinkpad>
+References: <20240319-pme_msg-v5-0-af9ffe57f432@nxp.com>
+ <20240319-pme_msg-v5-5-af9ffe57f432@nxp.com>
+ <20240405062426.GB2953@thinkpad>
+ <ZhALNGyNTAzN86GF@lizhi-Precision-Tower-5810>
+ <20240406040131.GC2678@thinkpad>
+ <ZhQJD7GjRpDwa6jI@lizhi-Precision-Tower-5810>
+ <20240412170548.GB19020@thinkpad>
+ <Zhmi0XEUFMIO9OLx@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zhmi0XEUFMIO9OLx@lizhi-Precision-Tower-5810>
 
-Dne sreda, 3. april 2024 ob 12:56:23 CEST je Maxime Ripard napisal(a):
-> Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
-> module") turned the DRM_DW_HDMI dependency of DRM_SUN8I_DW_HDMI into a
-> depends on which ended up disabling the driver in the defconfig. Make
-> sure it's still enabled.
+On Fri, Apr 12, 2024 at 05:08:33PM -0400, Frank Li wrote:
+> On Fri, Apr 12, 2024 at 10:35:48PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Apr 08, 2024 at 11:11:11AM -0400, Frank Li wrote:
+> > > On Sat, Apr 06, 2024 at 09:31:31AM +0530, Manivannan Sadhasivam wrote:
+> > > > On Fri, Apr 05, 2024 at 10:31:16AM -0400, Frank Li wrote:
+> > > > > On Fri, Apr 05, 2024 at 11:54:26AM +0530, Manivannan Sadhasivam wrote:
+> > > > > > On Tue, Mar 19, 2024 at 12:07:15PM -0400, Frank Li wrote:
+> > > > > > 
+> > > > > > PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off during system suspend
+> > > > > > 
+> > > > > > > Reserve space at end of first IORESOURCE_MEM window as message TLP MMIO
+> > > > > > > window. This space's size is 'region_align'.
+> > > > > > > 
+> > > > > > > Set outbound ATU map memory write to send PCI message. So one MMIO write
+> > > > > > > can trigger a PCI message, such as PME_Turn_Off.
+> > > > > > > 
+> > > > > > > Add common dwc_pme_turn_off() function.
+> > > > > > > 
+> > > > > > > Call dwc_pme_turn_off() to send out PME_Turn_Off message in general
+> > > > > > > dw_pcie_suspend_noirq() if there are not platform callback pme_turn_off()
+> > > > > > > exist.
+> > > > > > > 
+> > > > > > 
+> > > > > > How about:
+> > > > > > 
+> > > > > > "Instead of relying on the vendor specific implementations to send the
+> > > > > > PME_Turn_Off message, let's introduce a generic way of sending the message using
+> > > > > > the MSG TLP.
+> > > > > > 
+> > > > > > This is achieved by reserving a region for MSG TLP of size 'pci->region_align',
+> > > > > > at the end of the first IORESOURCE_MEM window of the host bridge. And then
+> > > > > > sending the PME_Turn_Off message during system suspend with the help of iATU.
+> > > > > > 
+> > > > > > It should be noted that this generic implementation is optional for the glue
+> > > > > > drivers and can be overridden by a custom 'pme_turn_off' callback."
+> > > > > > 
+> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > ---
+> > > > > > >  drivers/pci/controller/dwc/pcie-designware-host.c | 94 ++++++++++++++++++++++-
+> > > > > > >  drivers/pci/controller/dwc/pcie-designware.h      |  3 +
+> > > > > > >  2 files changed, 93 insertions(+), 4 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > > > > > index 267687ab33cbc..d5723fce7a894 100644
+> > > > > > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > > > > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > > > > > @@ -393,6 +393,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+> > > > > > >  	return 0;
+> > > > > > >  }
+> > > > > > >  
+> > > > > > > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> > > > > > > +{
+> > > > > > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > > > > > +	struct resource_entry *win;
+> > > > > > > +	struct resource *res;
+> > > > > > > +
+> > > > > > > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> > > > > > > +	if (win) {
+> > > > > > > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> > > > > > > +		if (!res)
+> > > > > > > +			return;
+> > > > > > > +
+> > > > > > > +		/* Reserve last region_align block as message TLP space */
+> > > > > > > +		res->start = win->res->end - pci->region_align + 1;
+> > > > > > > +		res->end = win->res->end;
+> > > > > > 
+> > > > > > Don't you need to adjust the host bridge window size and end address?
+> > > > > 
+> > > > > Needn't. request_resource will reserve it from bridge window. Like malloc,
+> > > > > if you malloc to get a region of memory, which will never get by malloc
+> > > > > again utill you call free.
+> > > > > 
+> > > > 
+> > > > Hmm, will that modify the window->res->end address and size?
+> > > 
+> > > No. This windows already reported to pci system before this function. It is
+> > > not good to modify window-res-end. It just add child resource like below.
+> > > 
+> > > windows is root resource, which will create may child when call
+> > > request_resource.
+> > >           bridge -> windows
+> > > 		child1 -> msg
+> > > 		child2 -> pci ep1
+> > > 		child3 -> pci_ep2.
+> > > 		...
+> > > 
+> > > Although you see whole bridge window, 'msg' already used and put under root
+> > > resource,  new pci devices will never use 'msg' resource. 
+> > > 
+> > > If change windows->res->end here, I worry about it may broken resource
+> > > tree.
+> > > 
+> > 
+> > Hmm, I think your argument is fair. I was worrying that if someone try to
+> > map separately by referencing win->res->end, then they will see access
+> > violation.
 > 
-> Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
-> Reported-by: Mark Brown <broonie@kernel.org>
-> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
-
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-
-Best regards,
-Jernej
-
-> ---
->  arch/arm/configs/sunxi_defconfig | 1 +
->  1 file changed, 1 insertion(+)
+> It should be wrong if use it without request resource.
 > 
-> diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-> index bddc82f78942..a83d29fed175 100644
-> --- a/arch/arm/configs/sunxi_defconfig
-> +++ b/arch/arm/configs/sunxi_defconfig
-> @@ -108,10 +108,11 @@ CONFIG_DRM_SUN4I_HDMI_CEC=y
->  CONFIG_DRM_SUN8I_DW_HDMI=y
->  CONFIG_DRM_PANEL_LVDS=y
->  CONFIG_DRM_PANEL_SIMPLE=y
->  CONFIG_DRM_PANEL_EDP=y
->  CONFIG_DRM_SIMPLE_BRIDGE=y
-> +CONFIG_DRM_DW_HDMI=y
->  CONFIG_DRM_LIMA=y
->  CONFIG_FB_SIMPLE=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
->  CONFIG_BACKLIGHT_PWM=y
->  CONFIG_SOUND=y
+> > 
+> > But why can't you just allocate the resource using 'alloc_resource()' API
+> > instead of always allocating at the end?
 > 
+> Alloc will start from windows (for example: 0x8000_0000). 
+> 0x8000_0000 -> 0x8001_0000 will be allocated to 'msg'.
+> 
+> If ep1 want to get 1MB windows, 0x8010_0000 will return. There is a big
+> hole between 0x8001_0000 to 0x8010_0000.
+> 
+> I just want to reduce impact to existed system. So PCIe memory layout will
+> be kept the same w/o this patch.
+> 
+> There are not big difference between allocate resource and reserve resource
+> for 'msg'. Just little better friendly for exist system.
 > 
 
+Ok. This sounds fine to me. Please add this information as a comment so that
+everyone will be aware of the reasoning.
 
+- Mani
 
+> Frank
+> 
+> > 
+> > - Mani
+> > 
+> > > > 
+> > > > > > 
+> > > > > > > +		res->name = "msg";
+> > > > > > > +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> > > > > > > +
+> > > > > > 
+> > > > > > Shouldn't this resource be added back to the host bridge?
+> > > > > 
+> > > > > No, this resource will reserver for msg only for whole bridge life cycle.
+> > > > > Genenally alloc resource only happen at PCI devices probe. All pci space
+> > > > > will be fixed after system probe.
+> > > > > 
+> > > > 
+> > > > I don't think so. This resource still belongs to the host bridge, so we should
+> > > > add it back.
+> > > 
+> > > When add back?  It was reserved at bridge probe. When bridge remove, all
+> > > resource will released. 
+> > > 
+> > > > 
+> > > > - Mani
+> > > > 
+> > > > -- 
+> > > > மணிவண்ணன் சதாசிவம்
+> > 
+> > -- 
+> > மணிவண்ணன் சதாசிவம்
 
+-- 
+மணிவண்ணன் சதாசிவம்
