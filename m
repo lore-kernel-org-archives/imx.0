@@ -1,40 +1,40 @@
-Received: from mail-108-mta200.mxroute.com (mail-108-mta200.mxroute.com [136.175.108.200])
+Received: from mail-108-mta103.mxroute.com (mail-108-mta103.mxroute.com [136.175.108.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3A633987
-	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 20:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9622E3A28B
+	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 20:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713126931; cv=none; b=CK5e6TFrhqUQ7EsiQExiFDP2JNa10w0j0m370TVDhvYB279nJLaOyFmeMhyy9x0rPbxvQowVjklgl/gNYfjEu4QsO5jaOPBOMzgo/jIB9GjXnPd2gMxYFbnzwx3bTtlm7bClLSIC7oP1PpkHz3o4fLtFr/9Hfa6tgGZxNUS5bc0=
+	t=1713126946; cv=none; b=Nmb2bGpAblPO+/Yg+UYSSdeazMVvtD3u2RXP7FPYCLERabnjFFi1ipjTtIqBZlvR9E0WrhV5jm6Uyxecrex0zFXg1+aZD0RHUSwBMvyJDv7GtyIhbyJ9qb/l1m565Kr3Qw+h3hyvxN6ibd7dt0HkrMmc10BTUeQnqzS4z1Q27F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713126931; c=relaxed/simple;
-	bh=jyWrtrkRdIwLv8vFyOZgGaDw3f1409gIT2RgcJyPZ/o=;
+	s=arc-20240116; t=1713126946; c=relaxed/simple;
+	bh=t0DpAm14I63PD+zKjpelnQ5UomdKi3PfstUiSulsvmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pT0fPHh/2AXaYYuwkfvk8cnAZT5wjItDNHuC4B1D2uch1lv6BIkGFnmUDs+0jmFOJ/98Wku0p6fiK1+6JC4sgsAVSjLANi+EUaqmlqbVcs5mkhiqu70gUUoRzFpSJ1ybNg06OOdlKPbKMYn/BpEMRoGrIEGPNmHTu3+FvirTFzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=pFHU8248; arc=none smtp.client-ip=136.175.108.200
+	 MIME-Version; b=ZZ3bN7OC0IzQl1mwIvFrd8Xejf5v5GQVwjfgpWhvLjXRaRM0A+y3wgrRfQ0lvxB/9MVxtJzVGZTDXHVifcMoOD7jItBN4js+UHTSSIQLlJiKHFw/yVSkIae7sBMyOumDk8+mESlRrgq2wMttR1kUZscYYyRsjrregKd2UhHW2VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=0ZdcIHfy; arc=none smtp.client-ip=136.175.108.103
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="pFHU8248"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="0ZdcIHfy"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta200.mxroute.com (ZoneMTA) with ESMTPSA id 18ede526f510003bea.00a
+ by mail-108-mta103.mxroute.com (ZoneMTA) with ESMTPSA id 18ede52a0a20003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sun, 14 Apr 2024 20:35:28 +0000
-X-Zone-Loop: fd9354d044620881709bf73210df3f3e5237d44697f2
+ Sun, 14 Apr 2024 20:35:40 +0000
+X-Zone-Loop: 0d87becaf0242124ce60e9ba7cd1f06d1154a95654c4
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+Z4CkPGkAS954uRQNPQhsFU7twZudFZFCOHeX0C/iOk=; b=pFHU8248SnJwIRvypLTnINked5
-	XxpYS1DTrDMbJ58sshcfDHp2SZLL3VedAoF5HH78oRY7IjuD7y1omB2QHEmp5FiiNmhD8DJgESw+q
-	dnM+5on7o1ZmtXop8ZD0T7LfP2GZ0RtN3MtYmkxYHy9whV3Ipk5dQUIYo03h5O+ayc9kTiN/J/le6
-	yDM4hax6iR2VUYW8E4zI7EuuXhtwGesy+opp9vdCytI5WU/kUBA4TcbX6YW8tb0LTCjVEJg/9ueea
-	ZVG23YoPBhY5GAfV0y6TGlmYQ8EWTmtUpk/a2w6TpI04CQCq3+XNgvytNIf+OLGOxKxPnWHvszeak
-	wCPmW40g==;
+	bh=Mc+RbIL+DgqYcfe/mLvPif24eMzEBPY7cltm4NspsTE=; b=0ZdcIHfyqjWZ83Se9/aB+qVxIA
+	lqMCH77aoDsBdApo4joS2n9HTe9uKxYDJ6p7FPqPYzWyasQJJk8ekIPP9Nx7ReaToySHBVSln75dq
+	gsnGwnj7FqHm4a6UYh1hmhYBL0mx+PV3g0TZMbPzZLN5uyCe/BWghOk79MpwcO0KpJDguWQbpj2GI
+	gO8qQdOUyBR6aSnlbNMJ5wfMviAq1W5c6Q8bePXL6Kek9PjqYA4wG5vorFw30nzYjzGO44mmHLpCr
+	8Vbplzv4brPiAd7qlGBiOdGmlhyl+KssXJKQZ6IZ9MvXW9VkedBDAZODtTmgZ4Vk87QNmQ3jZPUW+
+	8uUUwyzw==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v4 08/25] media: i2c: imx258: Add support for 24MHz clock
-Date: Sun, 14 Apr 2024 14:34:46 -0600
-Message-ID: <20240414203503.18402-9-git@luigi311.com>
+Subject: [PATCH v4 14/25] media: i2c: imx258: Issue reset before starting streaming
+Date: Sun, 14 Apr 2024 14:34:52 -0600
+Message-ID: <20240414203503.18402-15-git@luigi311.com>
 In-Reply-To: <20240414203503.18402-1-git@luigi311.com>
 References: <20240414203503.18402-1-git@luigi311.com>
 Precedence: bulk
@@ -71,258 +71,47 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-There's no reason why only a clock of 19.2MHz is supported.
-Indeed this isn't even a frequency listed in the datasheet.
-
-Add support for 24MHz as well.
-The PLL settings result in slightly different link frequencies,
-so parameterise those.
+Whilst not documented, register 0x0103 bit 0 is the soft
+reset for the sensor, so send it before trying to configure
+the sensor.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/media/i2c/imx258.c | 130 +++++++++++++++++++++++++++++--------
- 1 file changed, 102 insertions(+), 28 deletions(-)
+ drivers/media/i2c/imx258.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 351add1bc5d5..e4b1b3cbbde5 100644
+index c1a2c2406aaa..9c83ba1232fa 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -76,9 +76,6 @@
- #define REG_CONFIG_MIRROR_FLIP		0x03
- #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
+@@ -20,6 +20,8 @@
+ #define IMX258_MODE_STANDBY		0x00
+ #define IMX258_MODE_STREAMING		0x01
  
--/* Input clock frequency in Hz */
--#define IMX258_INPUT_CLOCK_FREQ		19200000
--
- struct imx258_reg {
- 	u16 address;
- 	u8 val;
-@@ -115,7 +112,9 @@ struct imx258_mode {
- };
- 
- /* 4208x3120 needs 1267Mbps/lane, 4 lanes */
--static const struct imx258_reg mipi_data_rate_1267mbps[] = {
-+static const struct imx258_reg mipi_1267mbps_19_2mhz[] = {
-+	{ 0x0136, 0x13 },
-+	{ 0x0137, 0x33 },
- 	{ 0x0301, 0x05 },
- 	{ 0x0303, 0x02 },
- 	{ 0x0305, 0x03 },
-@@ -133,7 +132,29 @@ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
- 	{ 0x0823, 0xCC },
- };
- 
--static const struct imx258_reg mipi_data_rate_640mbps[] = {
-+static const struct imx258_reg mipi_1272mbps_24mhz[] = {
-+	{ 0x0136, 0x18 },
-+	{ 0x0137, 0x00 },
-+	{ 0x0301, 0x05 },
-+	{ 0x0303, 0x02 },
-+	{ 0x0305, 0x04 },
-+	{ 0x0306, 0x00 },
-+	{ 0x0307, 0xD4 },
-+	{ 0x0309, 0x0A },
-+	{ 0x030B, 0x01 },
-+	{ 0x030D, 0x02 },
-+	{ 0x030E, 0x00 },
-+	{ 0x030F, 0xD8 },
-+	{ 0x0310, 0x00 },
-+	{ 0x0820, 0x13 },
-+	{ 0x0821, 0x4C },
-+	{ 0x0822, 0xCC },
-+	{ 0x0823, 0xCC },
-+};
++#define IMX258_REG_RESET		0x0103
 +
-+static const struct imx258_reg mipi_640mbps_19_2mhz[] = {
-+	{ 0x0136, 0x13 },
-+	{ 0x0137, 0x33 },
- 	{ 0x0301, 0x05 },
- 	{ 0x0303, 0x02 },
- 	{ 0x0305, 0x03 },
-@@ -151,9 +172,27 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
- 	{ 0x0823, 0x00 },
- };
+ /* Chip ID */
+ #define IMX258_REG_CHIP_ID		0x0016
+ #define IMX258_CHIP_ID			0x0258
+@@ -1052,6 +1054,16 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 	const struct imx258_link_freq_config *link_freq_cfg;
+ 	int ret, link_freq_index;
  
-+static const struct imx258_reg mipi_642mbps_24mhz[] = {
-+	{ 0x0136, 0x18 },
-+	{ 0x0137, 0x00 },
-+	{ 0x0301, 0x05 },
-+	{ 0x0303, 0x02 },
-+	{ 0x0305, 0x04 },
-+	{ 0x0306, 0x00 },
-+	{ 0x0307, 0x6B },
-+	{ 0x0309, 0x0A },
-+	{ 0x030B, 0x01 },
-+	{ 0x030D, 0x02 },
-+	{ 0x030E, 0x00 },
-+	{ 0x030F, 0xD8 },
-+	{ 0x0310, 0x00 },
-+	{ 0x0820, 0x0A },
-+	{ 0x0821, 0x00 },
-+	{ 0x0822, 0x00 },
-+	{ 0x0823, 0x00 },
-+};
++	ret = imx258_write_reg(imx258, IMX258_REG_RESET, IMX258_REG_VALUE_08BIT,
++			       0x01);
++	if (ret) {
++		dev_err(&client->dev, "%s failed to reset sensor\n", __func__);
++		return ret;
++	}
 +
- static const struct imx258_reg mode_common_regs[] = {
--	{ 0x0136, 0x13 },
--	{ 0x0137, 0x33 },
- 	{ 0x3051, 0x00 },
- 	{ 0x3052, 0x00 },
- 	{ 0x4E21, 0x14 },
-@@ -313,10 +352,6 @@ static const char * const imx258_supply_name[] = {
- 
- #define IMX258_NUM_SUPPLIES ARRAY_SIZE(imx258_supply_name)
- 
--/* Configurations for supported link frequencies */
--#define IMX258_LINK_FREQ_634MHZ	633600000ULL
--#define IMX258_LINK_FREQ_320MHZ	320000000ULL
--
- enum {
- 	IMX258_LINK_FREQ_1267MBPS,
- 	IMX258_LINK_FREQ_640MBPS,
-@@ -335,25 +370,48 @@ static u64 link_freq_to_pixel_rate(u64 f)
- }
- 
- /* Menu items for LINK_FREQ V4L2 control */
--static const s64 link_freq_menu_items[] = {
--	IMX258_LINK_FREQ_634MHZ,
--	IMX258_LINK_FREQ_320MHZ,
-+/* Configurations for supported link frequencies */
-+static const s64 link_freq_menu_items_19_2[] = {
-+	633600000ULL,
-+	320000000ULL,
-+};
++	/* 12ms is required from poweron to standby */
++	fsleep(12000);
 +
-+static const s64 link_freq_menu_items_24[] = {
-+	636000000ULL,
-+	321000000ULL,
- };
- 
- /* Link frequency configs */
--static const struct imx258_link_freq_config link_freq_configs[] = {
-+static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
- 	[IMX258_LINK_FREQ_1267MBPS] = {
- 		.pixels_per_line = IMX258_PPL_DEFAULT,
- 		.reg_list = {
--			.num_of_regs = ARRAY_SIZE(mipi_data_rate_1267mbps),
--			.regs = mipi_data_rate_1267mbps,
-+			.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz),
-+			.regs = mipi_1267mbps_19_2mhz,
- 		}
- 	},
- 	[IMX258_LINK_FREQ_640MBPS] = {
- 		.pixels_per_line = IMX258_PPL_DEFAULT,
- 		.reg_list = {
--			.num_of_regs = ARRAY_SIZE(mipi_data_rate_640mbps),
--			.regs = mipi_data_rate_640mbps,
-+			.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz),
-+			.regs = mipi_640mbps_19_2mhz,
-+		}
-+	},
-+};
-+
-+static const struct imx258_link_freq_config link_freq_configs_24[] = {
-+	[IMX258_LINK_FREQ_1267MBPS] = {
-+		.pixels_per_line = IMX258_PPL_DEFAULT,
-+		.reg_list = {
-+			.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz),
-+			.regs = mipi_1272mbps_24mhz,
-+		}
-+	},
-+	[IMX258_LINK_FREQ_640MBPS] = {
-+		.pixels_per_line = IMX258_PPL_DEFAULT,
-+		.reg_list = {
-+			.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz),
-+			.regs = mipi_642mbps_24mhz,
- 		}
- 	},
- };
-@@ -410,6 +468,9 @@ struct imx258 {
- 	/* Current mode */
- 	const struct imx258_mode *cur_mode;
- 
-+	const struct imx258_link_freq_config *link_freq_configs;
-+	const s64 *link_freq_menu_items;
-+
- 	/*
- 	 * Mutex for serialized access:
- 	 * Protect sensor module set pad format and start/stop streaming safely.
-@@ -713,7 +774,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
- 		imx258->cur_mode = mode;
- 		__v4l2_ctrl_s_ctrl(imx258->link_freq, mode->link_freq_index);
- 
--		link_freq = link_freq_menu_items[mode->link_freq_index];
-+		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
- 		pixel_rate = link_freq_to_pixel_rate(link_freq);
- 		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
- 		/* Update limits and set FPS to default */
-@@ -727,7 +788,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
- 			vblank_def);
- 		__v4l2_ctrl_s_ctrl(imx258->vblank, vblank_def);
- 		h_blank =
--			link_freq_configs[mode->link_freq_index].pixels_per_line
-+			imx258->link_freq_configs[mode->link_freq_index].pixels_per_line
- 			 - imx258->cur_mode->width;
- 		__v4l2_ctrl_modify_range(imx258->hblank, h_blank,
- 					 h_blank, 1, h_blank);
-@@ -747,7 +808,7 @@ static int imx258_start_streaming(struct imx258 *imx258)
- 
  	/* Setup PLL */
  	link_freq_index = imx258->cur_mode->link_freq_index;
--	reg_list = &link_freq_configs[link_freq_index].reg_list;
-+	reg_list = &imx258->link_freq_configs[link_freq_index].reg_list;
- 	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
- 	if (ret) {
- 		dev_err(&client->dev, "%s failed to set plls\n", __func__);
-@@ -946,9 +1007,9 @@ static int imx258_init_controls(struct imx258 *imx258)
- 	imx258->link_freq = v4l2_ctrl_new_int_menu(ctrl_hdlr,
- 				&imx258_ctrl_ops,
- 				V4L2_CID_LINK_FREQ,
--				ARRAY_SIZE(link_freq_menu_items) - 1,
-+				ARRAY_SIZE(link_freq_menu_items_19_2) - 1,
- 				0,
--				link_freq_menu_items);
-+				imx258->link_freq_menu_items);
- 
- 	if (imx258->link_freq)
- 		imx258->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-@@ -964,8 +1025,10 @@ static int imx258_init_controls(struct imx258 *imx258)
- 	if (vflip)
- 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
- 
--	pixel_rate_max = link_freq_to_pixel_rate(link_freq_menu_items[0]);
--	pixel_rate_min = link_freq_to_pixel_rate(link_freq_menu_items[1]);
-+	pixel_rate_max =
-+		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0]);
-+	pixel_rate_min =
-+		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1]);
- 	/* By default, PIXEL_RATE is read only */
- 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
- 				V4L2_CID_PIXEL_RATE,
-@@ -1086,8 +1149,19 @@ static int imx258_probe(struct i2c_client *client)
- 	} else {
- 		val = clk_get_rate(imx258->clk);
- 	}
--	if (val != IMX258_INPUT_CLOCK_FREQ) {
--		dev_err(&client->dev, "input clock frequency not supported\n");
-+
-+	switch (val) {
-+	case 19200000:
-+		imx258->link_freq_configs = link_freq_configs_19_2;
-+		imx258->link_freq_menu_items = link_freq_menu_items_19_2;
-+		break;
-+	case 24000000:
-+		imx258->link_freq_configs = link_freq_configs_24;
-+		imx258->link_freq_menu_items = link_freq_menu_items_24;
-+		break;
-+	default:
-+		dev_err(&client->dev, "input clock frequency of %u not supported\n",
-+			val);
- 		return -EINVAL;
- 	}
- 
+ 	link_freq_cfg = &imx258->link_freq_configs[link_freq_index];
 -- 
 2.44.0
 
