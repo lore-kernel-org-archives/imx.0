@@ -1,40 +1,40 @@
-Received: from mail-108-mta64.mxroute.com (mail-108-mta64.mxroute.com [136.175.108.64])
+Received: from mail-108-mta92.mxroute.com (mail-108-mta92.mxroute.com [136.175.108.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4272613777D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D58136E1A
 	for <imx@lists.linux.dev>; Sun, 14 Apr 2024 20:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.64
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713127277; cv=none; b=eRD3Hbbfs4wCT5ww/lD0LusmOdhyQKBawqe2Gj6kSIWwR5gHpuV7KWe60NPhFyVj6nHopvTNouVjn9ILWmIFkwYmrrl5YUPkGT+nUzY37aXMBUJJb3kJ/MTc9gfE/iwWJvCA4MD0a7JID3NduCEndtFnXiJKe2sgvMqr1qjJjxg=
+	t=1713127278; cv=none; b=sea9hGnkLF2X1T+CLcvfbZVBlqZO5N/nR8kTElJwpAdVAcIdQftej+eLJVnszUmu5/Yp5IYyfu7zIlYGAQpYFROWqXto9vuFxL/agrdCC4IuJOhL2T4xdi/+BLt/TLVyQOXogTiEIhEnTcsSH2ng+du9OvHB34wTeQJPfQGGAd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713127277; c=relaxed/simple;
-	bh=UKMUJL4eC2no8yWMvMo8Q7bFRlBLJS/6Zj18ilqvC8I=;
+	s=arc-20240116; t=1713127278; c=relaxed/simple;
+	bh=txI7nLQ7SaAgPbFprDJdTC4+aOlNavya5MDukH1ErMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBTHR/CmhO7hCs9yURhAaBaFlRG3BWoQWtDITfnE6TNHXUjwCjtDpCcjN671Ai/IKZ516kHHHsAv6iwPe9R3RJss6g4BdKPcc4MiZa7tXzw3hgogyhl5gLGU2P2H3L8MSLgwrr6qGyi2+kCyrc79p/b/eqAmvvH0opU5fo8bdPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=WwUaDCjD; arc=none smtp.client-ip=136.175.108.64
+	 MIME-Version; b=S69UFVc9HXfCMaIpzYu7xHj4fn9PaMN52dgUBCIxv6zTgCUQ4T6Qem1NSyPZ+KoX1UCIIpyd9lT+ITaRwqwUt/LPDaxB3RBBriuyikjnDcDFeIkoqzykcUA6sFoFn025tkf55Qqnh+sfr3cb6f4AdaAaG3rH5/zwUFZFXR0IN8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=s3iY/3u7; arc=none smtp.client-ip=136.175.108.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="WwUaDCjD"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="s3iY/3u7"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta64.mxroute.com (ZoneMTA) with ESMTPSA id 18ede52f62a0003bea.00a
+ by mail-108-mta92.mxroute.com (ZoneMTA) with ESMTPSA id 18ede52eec30003bea.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sun, 14 Apr 2024 20:36:02 +0000
-X-Zone-Loop: 87c4e4d7b9448fcb25ec267a8729d58ea77afeeceb3e
+ Sun, 14 Apr 2024 20:36:00 +0000
+X-Zone-Loop: 9f024daaca4fc2328b7a10fab349e147e38b5dd15e6d
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MwUpIIOD2xJwbBIpLMKnrgmMkUMqntOebL0FVSHsg4A=; b=WwUaDCjDkeIdul2uFxjGbEFvjj
-	spt8okC4U6nsGSo0dShDzWjJCU/pkQXoWe1QW34rDrnEGq8aZntY5ZEwpb0JalQzYa3NsrO8Hh61k
-	MP+Bz7XJ+elSa2eD4HkEaCE3+9k8O6ihNUr6mDAONbEiojljkDl2b4YpSNtYl75gjXM8XXvoyQipf
-	uYS1GzjPxWVe9tBaaF84+6+woMnRSPx9dYGx35KWjbs+2Q/t7FqFN0zenhVjX2QQfKRKyClsG2qJA
-	tZiazwQ40aMTQxxzaw6MX/5cQtYhv+VotVZ/4GLnxt2Ros3T5pN25dDWEIDKGPBFW5JYG6QoAi6au
-	4T92JOFg==;
+	bh=RhPK9nK9EKfKLg4i6+hTwf+Rau4stoc3Ghdd7Jp7wTo=; b=s3iY/3u7znzblaOimEAMVdeBOh
+	XB5s2xOeMtrEPhCYtzrK0Pp50YupnAzGidF0n3upIKxuo4AZVFPiRX+8NEbqdIEiKACZWBQfWMkqL
+	46/wUAnvsh0rv2b8yR+X2PUIiy/z6RhpBMAqypwaSLcuPDdgBrxAxyVI6hDeqAHEAJXszu8TfqeKq
+	+7HJH73F0EMMLVEBsCuf0b/opZAv+5ZS74JZao+dKl21NwnSWQKPz4d/C12Kx1tagPSHh6UpDsmcB
+	BulwlbNx4B54j3RnZvENv4o1jEhQjufzkVo77hz3jelmrsQrnbNlI5wN/l+f8rXS/8d21Qej/Hkb8
+	2MlXFbuA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -54,10 +54,11 @@ Cc: dave.stevenson@raspberrypi.com,
 	linux-kernel@vger.kernel.org,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
-	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v4 24/25] media:i2c: imx258: Use v4l2_link_freq_to_bitmap helper
-Date: Sun, 14 Apr 2024 14:35:02 -0600
-Message-ID: <20240414203503.18402-25-git@luigi311.com>
+	Luis Garcia <git@luigi311.com>,
+	Ondrej Jirman <megous@megous.com>
+Subject: [PATCH v4 23/25] media: i2c: imx258: Add support for reset gpio
+Date: Sun, 14 Apr 2024 14:35:01 -0600
+Message-ID: <20240414203503.18402-24-git@luigi311.com>
 In-Reply-To: <20240414203503.18402-1-git@luigi311.com>
 References: <20240414203503.18402-1-git@luigi311.com>
 Precedence: bulk
@@ -71,45 +72,60 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Luis Garcia <git@luigi311.com>
 
-Use the v4l2_link_freq_to_bitmap() helper to figure out which
-driver-supported link freq can be used on a given system.
+It was documented in DT, but not implemented.
 
+Signed-off-by: Ondrej Jirman <megous@megous.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
-Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/media/i2c/imx258.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/media/i2c/imx258.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 5de71cb7c1ae..65846dff775e 100644
+index f0bd72f241e4..5de71cb7c1ae 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -693,6 +693,7 @@ struct imx258 {
- 	/* Current mode */
- 	const struct imx258_mode *cur_mode;
+@@ -699,6 +699,7 @@ struct imx258 {
+ 	unsigned int csi2_flags;
  
-+	unsigned long link_freq_bitmap;
- 	const struct imx258_link_freq_config *link_freq_configs;
- 	const s64 *link_freq_menu_items;
- 	unsigned int lane_mode_idx;
-@@ -1552,6 +1553,17 @@ static int imx258_probe(struct i2c_client *client)
- 		return ret;
+ 	struct gpio_desc *powerdown_gpio;
++	struct gpio_desc *reset_gpio;
+ 
+ 	/*
+ 	 * Mutex for serialized access:
+@@ -1250,7 +1251,11 @@ static int imx258_power_on(struct device *dev)
+ 		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
  	}
  
-+	ret = v4l2_link_freq_to_bitmap(&client->dev,
-+				       ep.link_frequencies,
-+				       ep.nr_of_link_frequencies,
-+				       imx258->link_freq_menu_items,
-+				       ARRAY_SIZE(link_freq_menu_items_19_2),
-+				       &imx258->link_freq_bitmap);
-+	if (ret) {
-+		dev_err(&client->dev, "Link frequency not supported\n");
-+		goto error_endpoint_free;
-+	}
+-	return ret;
++	gpiod_set_value_cansleep(imx258->reset_gpio, 0);
 +
- 	/* Get number of data lanes */
- 	switch (ep.bus.mipi_csi2.num_data_lanes) {
- 	case 2:
++	usleep_range(400, 500);
++
++	return 0;
+ }
+ 
+ static int imx258_power_off(struct device *dev)
+@@ -1260,6 +1265,7 @@ static int imx258_power_off(struct device *dev)
+ 
+ 	clk_disable_unprepare(imx258->clk);
+ 
++	gpiod_set_value_cansleep(imx258->reset_gpio, 1);
+ 	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
+ 
+ 	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
+@@ -1573,6 +1579,12 @@ static int imx258_probe(struct i2c_client *client)
+ 	if (IS_ERR(imx258->powerdown_gpio))
+ 		return PTR_ERR(imx258->powerdown_gpio);
+ 
++	/* request optional reset pin */
++	imx258->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
++						     GPIOD_OUT_HIGH);
++	if (IS_ERR(imx258->reset_gpio))
++		return PTR_ERR(imx258->reset_gpio);
++
+ 	/* Initialize subdev */
+ 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+ 
 -- 
 2.44.0
 
