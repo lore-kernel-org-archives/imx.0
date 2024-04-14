@@ -1,67 +1,87 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC24A21360;
-	Sun, 14 Apr 2024 07:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654992374C;
+	Sun, 14 Apr 2024 09:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713081067; cv=none; b=QXnz6JwNhSsJAZIEfORzoAH7tT3w4H94oRWJ//llya+ZTESvwsXigOC/29ud6qTKiLqhmJW/4efzYLlnysL4qoeNMXZphLU+c4grDSd87f/3ExC3efHVoRzuHSsUJc9WUhjl1xlZkSVJon0iI/q+eWAerVkqtigimK1KWwiz2Wo=
+	t=1713088535; cv=none; b=q4he24DDLQYW5v5TCuf9VTfApCCHF8Hi/KutMbtXOuH1Go9+TsyhvSkcoKnRa2Xt+maNRB+ibE04ahWN/wQ+txxBmtbvY3m/zYPzIDmJrnDMmlodLGY5BdF8OecbiQxg1v4MjyecB95zL9jPfgJKIRmXlg8jXksUBPsrYwM1M5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713081067; c=relaxed/simple;
-	bh=6GuqLWvuYUqQo5TDZvw45mpK3aLhCABT5CnF056sszg=;
+	s=arc-20240116; t=1713088535; c=relaxed/simple;
+	bh=b3tnisE5mCthW2dJBswBPlSIzQlrQrLbNhzUABTmHY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TtQeMhdINWYZ3ZsVB6rZ4G1OF1teJXegFgjZJAtbGnfwmQl+BwYveuEmygAaR4GbhYruQoRcPlUiq6YdUNhVCRxjp4swhQ9LULWY82D7wm/4Le/5AK/eZrw9RIwCVJoiGeb6tJkIhGEMWr9tbE0Qiy0g5sTHm6f+C6SgyWkorXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i5e8616c3.versanet.de ([94.134.22.195] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1rvudE-0001KG-L5; Sun, 14 Apr 2024 09:50:32 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: soc@kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Dinh Nguyen <dinguyen@kernel.org>,
- Tsahee Zidenberg <tsahee@annapurnalabs.com>,
- Antoine Tenart <atenart@kernel.org>,
- Khuong Dinh <khuong@os.amperecomputing.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>, Robert Richter <rric@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+	 MIME-Version:Content-Type; b=RXQoc0gDwrwvpnm0aZFGXOcP64IAD0xgWSBYV7n9T4iln8Bnu0eO4XS0o0si2Z20T9gAymKsMcqqDOaKuRXTWOjgr2mxOinJrjPqu8uG+bO2PwhNpcSgYo+ps5RsTZswDtDiztj6Q1i6AluxzmB9ea2bG57pSm9VF7om28nWnZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cpsl8ocR; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cpsl8ocR"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-516d487659bso2818750e87.2;
+        Sun, 14 Apr 2024 02:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713088531; x=1713693331; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mAW8FE3757+N73ozBr48CQyvPZHQOC5ywYwUdbEQp2A=;
+        b=Cpsl8ocRgpwHLtddM2MeGfBVeExFoZtRlyIjiryVtkxNh0/eReOzfPNxqnbsRBBXb1
+         azWcJQtWm8HsjRjXMmAkIbDRdAUMs9mCOtc7Sb184NL5FzuIFJNyR8cGfNEerk0ddPgN
+         AKo8dcsSHwSj1WOeYfj/qE2BFkh41njpPVJE/4EVGoWyPUsqVXjJjsXklaCO1UJ/oSEO
+         3T+xgnJkTVAwsf1XouztuA1WnicIDTJ747xUxRsyNg3gcf44Ob+8RFbueJzIfqwwgtvR
+         k2WVqAN6VxdtdSBMCm+P5tQY3+8xeaNrbI9SR9uAEhM7hopI4yTuaBj3g/QCWHZIO5pj
+         IseA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713088531; x=1713693331;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mAW8FE3757+N73ozBr48CQyvPZHQOC5ywYwUdbEQp2A=;
+        b=cYaTRuPfrvVNwAG3gJfi/GU25RibhN6XU90Maan5cQBNJRuRyZaITh4znq/trnxOmv
+         VNFzgmB2DLHNxzlAM4VVk81aXUk3iuB2fWcefx/D9g6LwhKq0dQuFE22yarVeTuZF06i
+         I+QWhK4G+3uRLuWOTR8JMUu1O5YumCVQNdrT9pwUVWVlkyhq/3sM5XwAdHv0BMH6iGtC
+         387OYIQSV4KFUY5Cg+aLrTNXRhbMIRkSQKge6JcU8kYn9/rnzxBPNKS+cPBSwa6FvD8H
+         L77y1UX+jPWTW/dLXN5RUNzWl7PeK5Qa0m4YsKXoygjA7zZnmP1QWYurdsWpEDXfTDt1
+         ShVA==
+X-Forwarded-Encrypted: i=1; AJvYcCWokiNItaJFBCDRWJfKUGmU98417bt58Ql0sW3vh5wbD6KIzn7Pe2kybqPS4oyy9GH/zN7wxI1TXTaj1LRYOo/Wbz+ExIMlh/lcTY56GCJ4fJcvGd1FIDyJ0REHcEIo+LI=
+X-Gm-Message-State: AOJu0YyebtGimk3wlte7II7aEFyUAjlieojIWDOelRzTp9x6u1MHt6gB
+	pyDfUo63TTltNCFzB97EvMiypOBIOLb5EAZaO5PH4n5bRhuBB/Au
+X-Google-Smtp-Source: AGHT+IEEKoM/iDTJCuznVR9HiQN/AVCO8Nii+pEgbCzxUMbS3kxqr5wisBFEtwUu4Hozxm6Lwg6jLw==
+X-Received: by 2002:ac2:51b7:0:b0:516:c099:e785 with SMTP id f23-20020ac251b7000000b00516c099e785mr4409977lfk.20.1713088531265;
+        Sun, 14 Apr 2024 02:55:31 -0700 (PDT)
+Received: from jernej-laptop.localnet (APN-123-252-50-gprs.simobil.net. [46.123.252.50])
+        by smtp.gmail.com with ESMTPSA id f10-20020a056000128a00b003436a3cae6dsm8677094wrx.98.2024.04.14.02.55.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Apr 2024 02:55:30 -0700 (PDT)
+From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Jani Nikula <jani.nikula@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "Paul J. Murphy" <paul.j.murphy@intel.com>,
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Andreas =?ISO-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
- Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, linux-fsd@tesla.com,
- Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
- linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-realtek-soc@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
-Date: Sun, 14 Apr 2024 09:50:29 +0200
-Message-ID: <2262532.iZASKD2KPV@diego>
-In-Reply-To: <20240412222857.3873079-1-robh@kernel.org>
-References: <20240412222857.3873079-1-robh@kernel.org>
+ Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+ Samuel Holland <samuel@sholland.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Maxime Ripard <mripard@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org,
+ Maxime Ripard <mripard@kernel.org>
+Subject: Re: [PATCH 5/7] ARM: configs: sunxi: Enable DRM_DW_HDMI
+Date: Sun, 14 Apr 2024 11:55:27 +0200
+Message-ID: <3289340.44csPzL39Z@jernej-laptop>
+In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
+References:
+ <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
+ <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,38 +89,47 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 
-Am Samstag, 13. April 2024, 00:28:51 CEST schrieb Rob Herring:
-> The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primarily,
-> it doesn't provide any detail on uarch specific events.
+Dne sreda, 3. april 2024 ob 12:56:23 CEST je Maxime Ripard napisal(a):
+> Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
+> module") turned the DRM_DW_HDMI dependency of DRM_SUN8I_DW_HDMI into a
+> depends on which ended up disabling the driver in the defconfig. Make
+> sure it's still enabled.
 > 
-> There's still remaining cases for CPUs without any corresponding PMU
-> definition and for big.LITTLE systems which only have a single PMU node
-> (there should be one per core type).
+> Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+
+Best regards,
+Jernej
+
+> ---
+>  arch/arm/configs/sunxi_defconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> SoC Maintainers, Can you please apply this directly.
-> ---
+> diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
+> index bddc82f78942..a83d29fed175 100644
+> --- a/arch/arm/configs/sunxi_defconfig
+> +++ b/arch/arm/configs/sunxi_defconfig
+> @@ -108,10 +108,11 @@ CONFIG_DRM_SUN4I_HDMI_CEC=y
+>  CONFIG_DRM_SUN8I_DW_HDMI=y
+>  CONFIG_DRM_PANEL_LVDS=y
+>  CONFIG_DRM_PANEL_SIMPLE=y
+>  CONFIG_DRM_PANEL_EDP=y
+>  CONFIG_DRM_SIMPLE_BRIDGE=y
+> +CONFIG_DRM_DW_HDMI=y
+>  CONFIG_DRM_LIMA=y
+>  CONFIG_FB_SIMPLE=y
+>  CONFIG_BACKLIGHT_CLASS_DEVICE=y
+>  CONFIG_BACKLIGHT_PWM=y
+>  CONFIG_SOUND=y
+> 
+> 
 
->  arch/arm64/boot/dts/rockchip/rk3368.dtsi             | 2 +-
 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-> index 62af0cb94839..734f87db4d11 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-> @@ -141,7 +141,7 @@ cpu_b3: cpu@103 {
->  	};
->  
->  	arm-pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
-
-For Rockchip:
-Acked-by: Heiko Stuebner <heiko@sntech.de>
 
 
