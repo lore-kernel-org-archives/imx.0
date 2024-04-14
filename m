@@ -1,182 +1,106 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2072.outbound.protection.outlook.com [40.107.15.72])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324EE1CAAD
-	for <imx@lists.linux.dev>; Sat, 13 Apr 2024 06:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712988082; cv=fail; b=dm5JIkEzQbHfCAOerPIf5YO4gLsa9oPCbegpdnI7zGz3CfMOWwjy5Qpwx1JNJqF8CKr+8DqlGudugskA/te7ZsDaLeRvjWyR7N7d/ey1vVkqNjkDWaiYIXvha9+scftjF2ex6SN6+ULA5VkDgQ18LB7YfX9huBkmy4oBMVY39EA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712988082; c=relaxed/simple;
-	bh=v2NfMpWrBg2TTjp0HILX3NC7tXElB505zoSxqOVoefo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LR3xHgJlrlfOt6rNiaCRajFORn1tKrDpB+j+XljCb33Dfp2+uQDo5BBs7zxuhIR0JXEA72IkE3QDCbZmSWezph96vJDi8S9sPRkjiuTnKZSAe49VeXx5Cf7/v80h4qc8V4xX7SMSKcHfAgCB5jOg7yiejEi/GeYcv9lyv/eOGgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=X9dizk+Q; arc=fail smtp.client-ip=40.107.15.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="X9dizk+Q"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hAl17t8DD7am3mikI2RzOFjhiWgkJo7CW3nhJl3wP5wBt/dObme1asAvmX4ynJKYNsHoOytlRpYj9UmyTfRPvH6g1voviQ6X6OSgqUWeavJhPudVQXWRGcMgMnDuqixZXMkl4yw0os/2psU4xAtyynkuicnMsp25O4eLXoX7UjFeR7oDWn2J/DNfekmbJDOR85LWr46BDEyqjNx0fnFguC01XTCno0cSgVtCXo1VAEAor6c365YKF0NWaC8NA+JsxjIIoThgS9BZv/YyI9hFApxr8x3rwPCCQbTs2IUdp/6pZVdMHBIV1Li/sBovM7JDcN02CD2b7zNJ+MtRYTPoNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+Vw7Eh+FZ7rOvuA5OX+0eghB2aa5xongtLD3Vm545kY=;
- b=TZ6//Sifey9+WnDnxlbR/OKw652fd6zoAw23hoYXe4FXprLGkwP6LFULJ1R5Ik4pNKl0hkHbAgpOR6svyBG1/FaH6wkyIbqpZU/87cyMRwpEImonY9IWv/ip/yjBqwsixN7rFb1VALbOGK/Qf3YdLRAvgmu+hjwRf/T7KEkaY/8kNn6wytqAdyAKfOBW8UPS6uUzHaubud6dasTaHxNh+a3lXwq58L/LBrZiYovAoXPWp02EtmRSQtr3RXRF/uUfn9z/lyEI5yaOf0D9SJRs0mUgpKL3IWg2HsQiwQGWVRWY5Bkvg25bf0zVqapTUiyV33gB2vB88jAy49+81Yr/3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Vw7Eh+FZ7rOvuA5OX+0eghB2aa5xongtLD3Vm545kY=;
- b=X9dizk+QGKc4FT1eMVsYbK6uQEP8vEkNjAmTlcLo1EKzVE5klAaMuSuJw/NesWLMdjcMtf7lztb5CmIooqRxuqwyRGPrdfQoNb0IKbs0EnS4hR+gkbB+YbseGTKb6eHZYYctUqyd6LNpY6RFclewyV5qWC6jlcVmX7G+4rr8jbM=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by AS8PR04MB9095.eurprd04.prod.outlook.com (2603:10a6:20b:446::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Sat, 13 Apr
- 2024 06:01:17 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.037; Sat, 13 Apr 2024
- 06:01:17 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Frank Li <frank.li@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-CC: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Peng Fan <peng.fan@arm.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 2/3] dt-bindings: firmware: arm,scmi: support i.MX95 SCMI
- Pinctrl
-Thread-Topic: [PATCH 2/3] dt-bindings: firmware: arm,scmi: support i.MX95 SCMI
- Pinctrl
-Thread-Index: AQHajG9fogbrSJSEIkC/zlbnV4Z6dbFkvpCAgAD3YxA=
-Date: Sat, 13 Apr 2024 06:01:17 +0000
-Message-ID:
- <DU0PR04MB9417C3A75792347AB3A12774880B2@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240412-pinctrl-scmi-oem-v1-v1-0-704f242544c1@nxp.com>
- <20240412-pinctrl-scmi-oem-v1-v1-2-704f242544c1@nxp.com>
- <ZhlPK4PmnYHj0K2d@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZhlPK4PmnYHj0K2d@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AS8PR04MB9095:EE_
-x-ms-office365-filtering-correlation-id: 888ee029-2cd1-4f33-a3e6-08dc5b7f224a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- cDA0JKGFuIrIJ6704OY9z5PhZbC+lKCqAGu0vCEJHBkBGdEs2TuclIjaJbgpkRggSPlDCrsxPYgp/V7wyX+X16053pBmT3LTsxOtEBr7M3OOl75zTyjD4ZlULAHlZHNi2YjAeC5Rth/tKM7jiA1TtEkMGPT1GcRlYDXpWA97Lpz2QIczuhEvDWxNVKPNv5teteRGkD0BrqNc0+srj0doSa2M9N379qAGSiAordrAlTxMHBdaOco/6DHlp8FBRyrySAg5eDR1Y1Yy3Ra/ZsXIIr+9tR4iGgbCHGirg1ZFBS47r55oufgWyrj4sCrYKW2TJz4iZDSVSpsJFA8LgNAcZa8bp/rjOlwMqV4kujtzk7697z/kdB9I4EsAIl8xqM853/xG6RuYFiUsWWs3n1cos2RuVJGn9sDBmeoXiFvly6nORnE9HeQCzvPcUBu4fKpc5cLDiu4TtoguQochWcy89IvbUFNnR6w1v+SMaK9m2bD7Ne1tgkDi/GY/YyFjqZY43v1MmeQhZ/vwk2sK9yBepkwCsbIiZIaPDGNVCf/GivhVq2XsE7mPlWclqA2U4BMEZymxBsJ4Go9sW0ZlEgX/DswlFhsGJhwtQlbvyeoYc7XvuW4LYehLbAEz2O4etIzMkOn/Eacu1Hoj1KpC11Znc0r3wz7SnkuNKOKF0528wuDNsib+7qWBVvy/2Nys64T+woKmQdAGwFgQQlkxnVisyT4b74BOM08codnj2iTaxYY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(366007)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?n1QWokcENZ2ErWubg77GYRpufKmL1yvzvFCmK/gb9xEn/VhcfusAy5dx/7U5?=
- =?us-ascii?Q?/LYfT8N5w3HW9frWNGD1euE9n528T14EUYwdvxj4h9rQR05klUFxj9GbuCzv?=
- =?us-ascii?Q?j2NpFrNRPwQ3g8ZPfHldo0qqvK+UBWBfpg6Pn6TP9JJcJbUtdh9v3uMOfqTj?=
- =?us-ascii?Q?E0DSXA4e5ybpYMVAFYh98w78JsyQaX779YQkvtw3cHlcyCrZKEoY/RMUZ7x6?=
- =?us-ascii?Q?Tn42wl9RZCcxJzH6LtE6wyhjzucXjICAGFxpg/nQMIarMl24QquuJ1DSZsDT?=
- =?us-ascii?Q?7i6/wL5niqxh0cqqYL1gL7fw2wuJysDVECbDibgsMac3KG0QNfZuEtvSUYWq?=
- =?us-ascii?Q?SKaXz48eKy5clmEHcGtGN08Wt3MmJPCGrRxuXVYTWNZb+qBxzZ+XNL1N6/T1?=
- =?us-ascii?Q?2Is7zQX9sJFuU/aha7ku0l+z5sFEockoOCQOKqIwHGgplkYy3Dqzmrei1VVJ?=
- =?us-ascii?Q?QCtMnrnV68Elt8e3OFGHBW4QLTXSzSkb3kWKqAb8Zzx341oxnrItxCzBPV3c?=
- =?us-ascii?Q?zSTmFXwLHZzi9Y5Ed3Js8tOYSFVkBCvkOHyl+M1qYKd4QYiynmiZSu11qLbF?=
- =?us-ascii?Q?lnmAtgZToVDdm5fRTvMZL2yyF41SiSZ252xaYWasMjm4q27Z092xWimc4SUm?=
- =?us-ascii?Q?jwKyw1m0xik87YrqUzJvr4tNqwX/GqrJqj3TVkOLn5eQvrVbKJ8GR78Ge3cC?=
- =?us-ascii?Q?0mucvsOcs3KdSRXRgKywuLpXD/5XwlvCNZU8hmCHW3EiN4t4mlkRWguAljXM?=
- =?us-ascii?Q?h+bQIMN1jOAaJQMEfO4JPwdFggUM+rSLfitxxbdZv7xSzacbkc91ielLdM8Y?=
- =?us-ascii?Q?41LGUcLQoWI6VslpZdd7fwJ8pRKd2WRgK2p+4WqEqmJGlvHHy7xP15Hhq/fk?=
- =?us-ascii?Q?aTuZrLVqIg5ZFB5N4otTkYzbesjbWAvKhjQA7JgmcX8Lxme+4NHUCvHFLXTJ?=
- =?us-ascii?Q?9ovUO385obfrbqn4BxdaskvB383vFeUVby/pVWMB16XDv7Ag2l1HU38JO+2O?=
- =?us-ascii?Q?JwMTsMp/+0GNyOagY/H8PuRwkt4LebaphuRdVRf7k8d8wNWT38nOShD8Ay+4?=
- =?us-ascii?Q?X4gN0jMT9DSvw5CvHPaMSaXvFkjndIMpABa7wvOiz4g9Pz3hZE8bSj2PXXhN?=
- =?us-ascii?Q?i0vZ0p1a3KVb1sACIe+3g5VyD59X/J5MPSeYbEGBKxzW0WhPy59C5CcPKRIY?=
- =?us-ascii?Q?Q/DGrv2o9+IvWwXXnUHiPBUy67O/KIO5vQsmsAFvVE6M0fMcBZcwCOFQK1Rk?=
- =?us-ascii?Q?u0u9aZdm6dsUcWWwGlR91Ft12S7RNEkXY41U/mMN7mQpuPE5cLiN4tRAw9bb?=
- =?us-ascii?Q?o/Ji1huYPuzmMDW20qMEw5xZd9tFLbQRipn6V5Fa7sHdATSL6k4yaOzFQ1w8?=
- =?us-ascii?Q?l1JFCgiEiyaICx44iO09Ww9yPk36EwD0dyx3PqVp08tg0psQPwW8vG+vHrLk?=
- =?us-ascii?Q?WGDntIkFQgPsPyh6UdOeZOg8FCEhq2GPW1yrTjp0EW9a6Bo2RXZI1jxQci1M?=
- =?us-ascii?Q?h2RcEx/iVtzehkTBug6RnTf8PaIoAa/FOHrxaEKlJGdmcES/yZIfsWM/J3sw?=
- =?us-ascii?Q?yQ+Z2DmTCB8op9QFa1U=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC24A21360;
+	Sun, 14 Apr 2024 07:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713081067; cv=none; b=QXnz6JwNhSsJAZIEfORzoAH7tT3w4H94oRWJ//llya+ZTESvwsXigOC/29ud6qTKiLqhmJW/4efzYLlnysL4qoeNMXZphLU+c4grDSd87f/3ExC3efHVoRzuHSsUJc9WUhjl1xlZkSVJon0iI/q+eWAerVkqtigimK1KWwiz2Wo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713081067; c=relaxed/simple;
+	bh=6GuqLWvuYUqQo5TDZvw45mpK3aLhCABT5CnF056sszg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TtQeMhdINWYZ3ZsVB6rZ4G1OF1teJXegFgjZJAtbGnfwmQl+BwYveuEmygAaR4GbhYruQoRcPlUiq6YdUNhVCRxjp4swhQ9LULWY82D7wm/4Le/5AK/eZrw9RIwCVJoiGeb6tJkIhGEMWr9tbE0Qiy0g5sTHm6f+C6SgyWkorXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i5e8616c3.versanet.de ([94.134.22.195] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1rvudE-0001KG-L5; Sun, 14 Apr 2024 09:50:32 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: soc@kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ Tsahee Zidenberg <tsahee@annapurnalabs.com>,
+ Antoine Tenart <atenart@kernel.org>,
+ Khuong Dinh <khuong@os.amperecomputing.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>, Robert Richter <rric@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "Paul J. Murphy" <paul.j.murphy@intel.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Andreas =?ISO-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+ Orson Zhai <orsonzhai@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, linux-fsd@tesla.com,
+ Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
+ linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-realtek-soc@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
+Date: Sun, 14 Apr 2024 09:50:29 +0200
+Message-ID: <2262532.iZASKD2KPV@diego>
+In-Reply-To: <20240412222857.3873079-1-robh@kernel.org>
+References: <20240412222857.3873079-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 888ee029-2cd1-4f33-a3e6-08dc5b7f224a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2024 06:01:17.3677
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: COMyqcuC5ef+cmJQmAIVoUIZG5+0X9qS0u23/JnxwFANR0dURLnOVykxMS+9qKRDLpne87Z5auXpaKGpfdyRIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9095
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> Subject: Re: [PATCH 2/3] dt-bindings: firmware: arm,scmi: support i.MX95
-> SCMI Pinctrl
->=20
-> On Fri, Apr 12, 2024 at 08:29:26AM +0800, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > i.MX95 SCMI Pinctrl uses OEM specific units, so add '$ref' to
-> > '/schemas/pinctrl/nxp,imx95-pinctrl.yaml' and an example.
->=20
-> where 'example'?
+Am Samstag, 13. April 2024, 00:28:51 CEST schrieb Rob Herring:
+> The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primarily,
+> it doesn't provide any detail on uarch specific events.
+> 
+> There's still remaining cases for CPUs without any corresponding PMU
+> definition and for big.LITTLE systems which only have a single PMU node
+> (there should be one per core type).
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> SoC Maintainers, Can you please apply this directly.
+> ---
 
-I was thinking to add the whole example including pinctrl/bbm/misc
-using a separate patch after all the vendor stuff got accepted.
+>  arch/arm64/boot/dts/rockchip/rk3368.dtsi             | 2 +-
 
-Thanks,
-Peng.
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+> index 62af0cb94839..734f87db4d11 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+> @@ -141,7 +141,7 @@ cpu_b3: cpu@103 {
+>  	};
+>  
+>  	arm-pmu {
+> -		compatible = "arm,armv8-pmuv3";
+> +		compatible = "arm,cortex-a53-pmu";
+>  		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
+>  			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
+>  			     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
 
->=20
-> Frank
->=20
-> >
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/firmware/arm,scmi.yaml | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> > b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> > index e9d3f043c4ed..ebc6c083b538 100644
-> > --- a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> > +++ b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> > @@ -249,9 +249,11 @@ properties:
-> >
-> >    protocol@19:
-> >      type: object
-> > -    allOf:
-> > -      - $ref: '#/$defs/protocol-node'
-> > -      - $ref: /schemas/pinctrl/pinctrl.yaml
-> > +    anyOf:
-> > +      - $ref: /schemas/pinctrl/nxp,imx95-pinctrl.yaml
-> > +      - allOf:
-> > +          - $ref: '#/$defs/protocol-node'
-> > +          - $ref: /schemas/pinctrl/pinctrl.yaml
-> >
-> >      unevaluatedProperties: false
-> >
-> >
-> > --
-> > 2.37.1
-> >
+For Rockchip:
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+
+
