@@ -1,108 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8384A5FB9D;
-	Mon, 15 Apr 2024 11:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A4960BB7
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 11:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713180110; cv=none; b=OKWcdSYpxHEJErXGOSllEI9ajlBynw2vFcky7YrYOmMF6HRRs2XRKu2RXTPA9JV+DTMKYJ/bA13v4if7mYR6Tji5BNSxN8RlCb0YkpheTrmwUs1Gj7u/h9gY2p7w2BZFi+kbdWRVT+3P2bk7vSxIME54soBzdfbemFVuJPbsk+g=
+	t=1713181311; cv=none; b=W4ce/a43poNanM5qcZWO5pBSViqWbv3LT8CqjJXFEF5VtccHTVs/k7kCBe2MlcVyFk9/MWGukEG26hwJjtAuy2vCylWQEpEJveGKLHvdHanTysJ62vERE+ZE68AaO45uuEPCsnTUyxxkJzdT9yaNmxtldxiiBR7oXl1KjfLdLZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713180110; c=relaxed/simple;
-	bh=zaeta5YRsGP9vG705wmBldVE6zWx2ubesmRsCMtwiKM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zh1xmuQyDj2lN66LYGaoHxbcc2CnmhKiCMRnI9TLynlcoKRTJdH9/uOGU6TTNBNRY4R72ualtvG0D8VClU/w3HeZ2H0J4WysiiDnU5v6ycQq4ErebToXMns2FeVIZoOD3zx7qooR7ccryTLm1KbcsdURCcUhziXM59smAduSrgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yyl0jw8F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713181311; c=relaxed/simple;
+	bh=wCmMaeJS2OEoFDljYlRdvuz8/epY3LA+puq7nGe+MK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hEv7Ka4IlAn9DC8NvlklR5HDn2CBH7/nxcr/c9QDjkvyTUcUDRN0zyIXoK1KDosTNbEVNeHiVsCH0yp7BcMSf57OvRWHwLqv+nDvvF82dUYfqg5opDzsZBBrOu5f29vMhVw6NpkhiuFhYCw7vOYBD1YKK0U6tqJoEM74hb4hEU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=crASQfuV; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yyl0jw8F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F5DC113CC;
-	Mon, 15 Apr 2024 11:21:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713180110;
-	bh=zaeta5YRsGP9vG705wmBldVE6zWx2ubesmRsCMtwiKM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yyl0jw8FOgIlaxoOAe3p2F9YP256URFG19ccbzwnvLP+nXPKhgD5ZpMounJJGJTGl
-	 W56F7hvPz3yssyAye//nUgEICHyExmh3si6KPUCTQVp+F3t+vLFGf9crAm/lbPZ/tG
-	 oYVox67bc7RG6kHrc53DAHLbGGYZcw0qIMfntJXAZfcS1WFZVqdlHmxrcw0KYz+okp
-	 Pkrupra89W8My0fKez1OycDL7lFi3BMj9x0gWr6hV/lLIp2y2H5n0Od+vGtF3NYO0c
-	 CRzHx1TYaq8LcPQqKjZbGk4YUzmaWnW59PnqFLEdHv4oY9iqpgJNXI7PCDHsTpTWV7
-	 4/moMdyU2qz2A==
-Date: Mon, 15 Apr 2024 13:21:47 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Jani Nikula <jani.nikula@intel.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Javier Martinez Canillas <javierm@redhat.com>, Russell King <linux@armlinux.org.uk>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
-	Samuel Holland <samuel@sholland.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-sunxi@lists.linux.dev, 
-	linux-mips@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 0/7] drm/display: Fix display helpers depends on fallouts
-Message-ID: <20240415-sloppy-invisible-crocodile-da4545@houat>
-References: <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
- <117b0d3b-a60b-4bc0-9f2c-f0e4fffe634a@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="crASQfuV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1713181307;
+	bh=wCmMaeJS2OEoFDljYlRdvuz8/epY3LA+puq7nGe+MK4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=crASQfuV6Lq5dewInjTCyMJylZq3pYIy4F0eAdEIQwAlOBZkAqD1SS2jQnggSijvQ
+	 1rFY9ovIUoYMIQ31A8/Xs9MrPw7YGr+jubat2A1A5OXUtsoVmFuxRX75+QxvP6u4or
+	 +foER+mbaj0HCOt/Ubwm/62KVJgDw1f3A8pSJBau/rhgUAj4zL7UV1i15VlYoaWziQ
+	 a92JEPmB/cKujK6PiDZDzG8UN5FRzkL/rW1klD8y3jD+2IXkDRmvRv+FGA3eAZ0PCM
+	 HAHGRAZ/xbASQCK2kO5w32xf6hwz5wAwP5S8yi033/eUaiVYTDU1MrNRAbrtsl/bbK
+	 YS6JdW2Gio2nQ==
+Received: from obbardc-t14.home (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: obbardc)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 2DFA33781FE9;
+	Mon, 15 Apr 2024 11:41:47 +0000 (UTC)
+From: Christopher Obbard <chris.obbard@collabora.com>
+To: linux-kernel@vger.kernel.org
+Cc: Daniel Scally <dan.scally@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	kernel@collabora.com,
+	Christopher Obbard <chris.obbard@collabora.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v1 0/1] Enable HDMI output support on the Debix Model A SBC
+Date: Mon, 15 Apr 2024 12:41:26 +0100
+Message-ID: <20240415114135.25473-1-chris.obbard@collabora.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="wn4eudraeu4chaua"
-Content-Disposition: inline
-In-Reply-To: <117b0d3b-a60b-4bc0-9f2c-f0e4fffe634a@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
+
+This series brings up the HDMI output on the Debix Model A SBC.
+
+With support for the HDMI transmitter for the i.MX8MP SoC now merged[0],
+we can now enable the HDMI output on the Debix Model A SBC.
+
+The pinctrl values were blindly taken from the downstream BSP[1] and should
+be checked by someone who knows this platform better than myself.
+
+Also, with a 4K display there were a drm error with no output on the
+display, but this error did not occur with a 1080P display:
+
+   imx-lcdif 32fc6000.display-controller: [drm] *ERROR* fbdev-dma: Failed to setup generic emulation (ret=-12)
+
+It would be interesting to see if this error is present for others on a
+different i.MX8MP device. I didn't have time to check this further and I
+assume the issue to be in the driver rather than specific to this SBC, so
+should not block this patch, but please correct me if I am wrong.
+
+[0]: https://lore.kernel.org/all/20240227220444.77566-1-aford173@gmail.com/
+[1]: https://github.com/debix-tech/linux/blob/debix/arch/arm64/boot/dts/freescale/imx8mp-debix-io-board.dts#L1025
 
 
---wn4eudraeu4chaua
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Christopher Obbard (1):
+  arm64: dts: imx8mp-debix-model-a: Add HDMI output support
 
-Hi Mark
+ .../dts/freescale/imx8mp-debix-model-a.dts    | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-On Wed, Apr 10, 2024 at 07:06:39PM +0100, Mark Brown wrote:
-> On Wed, Apr 03, 2024 at 12:56:18PM +0200, Maxime Ripard wrote:
-> > Hi,
-> >=20
-> > Here's a series addressing the various regressions that were reported
-> > after the Kconfig rework for the DRM display helpers.
-> >=20
-> > Let me know what you think,
-> > Maxime
->=20
-> Is there any news on getting the rest of this merged?  It's been more
-> than a week now and the Designware display controllers are all still
-> broken in -next, causing widespread breakage in CI.  For bisection
-> purposes it probably makes sense for the defconfig updates to go along
-> with the changes to the Kconfig for the driver...
+-- 
+2.43.0
 
-I was on holidays so I've admittedly hoped that it would be picked up /
-reviewed by the relevant maintainers.
-
-Aside from the changes on sunxi_defconfig, I haven't seen any review
-=66rom the relevant maintainers so I'm not sure how to merge this. Should
-we get an Acked-by from Arnd, Olof, Catalin or Will and merge everything
-through drm-misc?
-
-Maxime
-
-
---wn4eudraeu4chaua
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZh0NywAKCRAnX84Zoj2+
-dorNAX9YIzjToH375MPL7Ax5ZuueLWq41eVy07FoPTf31aMEQyEy/VR56sILKVLf
-TzYFX28BgODebjC3eC3QNfJYDoWKcB+vda0h0cCbUxE3QnqF2xMfORawm4oSmu2E
-dt3E8cNkCg==
-=f2Da
------END PGP SIGNATURE-----
-
---wn4eudraeu4chaua--
