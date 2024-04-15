@@ -1,223 +1,163 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta82.mxroute.com (mail-108-mta82.mxroute.com [136.175.108.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF44639
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 16:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5C384A36
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 16:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713198933; cv=none; b=R6ryiYsbQyt2L5dw+sB25gnbOTfGBTys9k1nemXBiH8HfFUmW/xnp1MUi/YSpb532j94jsAI8SeNA8STk46YA8rds4zMEpltFTjXR0loHgrlYQjmPGlMeT82mkwqIP9OrZc8DYCHGjO64j/ytIVC9LUesckyyRXUJUhzOqKNZo4=
+	t=1713199130; cv=none; b=Szu458+OaXhTCvyU3/7nKYHtjyF0HyvJOj7ajKsrqos7MfWG4zvct1S/vXLCDWBF6HSx9Y5AvJrpw6o6kUo3vhkPR5N8QaykQazUlLEbgJhbsiNVHAR7+0RWghj6y1y9damH8PBTyRAI6NDXCM4xkXKpI0U946oHuL7B9d1M2oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713198933; c=relaxed/simple;
-	bh=zQ3mUcQ0V6TVm4bmNvVE8F5YpgKPg13IqXSQF1upC+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C7t81xjJGRbJMVXEsMtxRNyCgQgJL+1cHC0+qUy3lBUcYTR+n4hfUpqrjVkNDE/94bM2ltmnt0TlIeT6VXqkr5xJ+a/8Tglq4uVPwIzMG/ybDRrBlEJuww/GVYsdDxJUtavGxziJS7E3sQSjHZF0SmjyZOjJP/U6pcDf6xHtZaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qMt0OftN; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1713199130; c=relaxed/simple;
+	bh=EAgrrowhuxfvuA4IEIS00xQ8mSwdDWuzf1QzmetlHQk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=neIiJNLcldnfLG50ylgfieRd7eGqOv1nnNB46g8Z+hX5ochsGkau+BsHhx4rJwHulVMDIjaatklSMqcxLyxQpRanFCosVwO1pWDWBblmsay9n+tbkUWpI7fbe3+cJsDBih9fyFYHtaCvmncq+QGHeyt/qNeVnPYg2JAVzEIdSZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=MJM/iE2b; arc=none smtp.client-ip=136.175.108.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qMt0OftN"
-Received: from pendragon.ideasonboard.com (117.145-247-81.adsl-dyn.isp.belgacom.be [81.247.145.117])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 773645B2;
-	Mon, 15 Apr 2024 18:34:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1713198883;
-	bh=zQ3mUcQ0V6TVm4bmNvVE8F5YpgKPg13IqXSQF1upC+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qMt0OftNV/lrYtTYmBIaTowedeajRbC1r6L/70Ft/lYOh2o6DAz2ELDoSepJfngxJ
-	 Ely6YUfACt5adqQVUbhOz9mencaqicN3KLH36lC6U3d5Gfwu8CgCojoWr505RhqEND
-	 JCNgA83TsjBUjMMToEPPpfLIysEuZUMA8LaTlxg8=
-Date: Mon, 15 Apr 2024 19:35:20 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Christopher Obbard <chris.obbard@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	Daniel Scally <dan.scally@ideasonboard.com>, kernel@collabora.com,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mp-debix-model-a: Add HDMI output
- support
-Message-ID: <20240415163520.GA22954@pendragon.ideasonboard.com>
-References: <20240415114135.25473-1-chris.obbard@collabora.com>
- <20240415114135.25473-2-chris.obbard@collabora.com>
- <171319369093.2333277.9109576229211275635@ping.linuxembedded.co.uk>
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="MJM/iE2b"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta82.mxroute.com (ZoneMTA) with ESMTPSA id 18ee2a01b680003bea.00b
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Mon, 15 Apr 2024 16:38:47 +0000
+X-Zone-Loop: 07ec39ad08a1fee21fbcd69873330a87595b632341e1
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UFJA6wHd6u5mXxnVb4m3GJPfiP5KjVZafLGU70HOark=; b=MJM/iE2blIwK8MorvyDIPebWQp
+	MXLRU6rrAKDgt19O4GS2lsOQPxCc+XvhhRAzSqZlhoU21/sRm2qKmAwNdi+LWsG/JnLt5bjCrK2XC
+	NCiSNpozQsjHtbnhwjhyOvmRr42A9G2ECEw8/sqWIB+oF6MgR/lWehNdK5I8mxpbHBdjmvGQJNBvl
+	d3jiFHZV6LXkAnOosmm+C+vdNOVMY85qRZC/CLP2jb28PFbdC9Q88OfbK8Sg3T02nGQYv4hANbQN4
+	cKCfBnRaBzjDOMQvLM43E3Qw5u/JT8/GenhrM8IxXYq71j9NPNg6nlOqbBxAYH7wuNzDwqRURMWBk
+	KLYFMTkg==;
+Message-ID: <59255bbe-8d26-4fe5-bd17-97dda92e1553@luigi311.com>
+Date: Mon, 15 Apr 2024 10:38:42 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171319369093.2333277.9109576229211275635@ping.linuxembedded.co.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/25] media: i2c: imx258: Make image geometry meet
+ sensor requirements
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ linux-media@vger.kernel.org
+Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
+ mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, sakari.ailus@linux.intel.com,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ pavel@ucw.cz, phone-devel@vger.kernel.org
+References: <20240414203503.18402-1-git@luigi311.com>
+ <20240414203503.18402-3-git@luigi311.com> <6041186.lOV4Wx5bFT@steina-w>
+Content-Language: en-US
+From: Luis Garcia <git@luigi311.com>
+In-Reply-To: <6041186.lOV4Wx5bFT@steina-w>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: git@luigi311.com
 
-On Mon, Apr 15, 2024 at 04:08:10PM +0100, Kieran Bingham wrote:
-> Hi Chris,
+On 4/15/24 00:25, Alexander Stein wrote:
+> Hi,
 > 
+> Am Sonntag, 14. April 2024, 22:34:40 CEST schrieb git@luigi311.com:
+>> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>>
+>> The output image is defined as being 4208x3118 pixels in size.
+>> Y_ADD_STA register was set to 0, and Y_ADD_END to 3118, giving
+>> 3119 lines total.
+>>
+>> The datasheet lists a requirement for Y_ADD_STA to be a multiple
+>> of a power of 2 depending on binning/scaling mode (2 for full pixel,
+>> 4 for x2-bin/scale, 8 for (x2-bin)+(x2-subsample) or x4-bin, or 16
+>> for (x4-bin)+(x2-subsample)).
+>> (Y_ADD_END – Y_ADD_STA + 1) also has to be a similar power of 2.
+>>
+>> The current configuration for the full res modes breaks that second
+>> requirement, and we can't increase Y_ADD_STA to 1 to retain exactly
+>> the same field of view as that then breaks the first requirement.
+>> For the binned modes, they are worse off as 3118 is not a multiple of
+>> 4.
+>>
+>> Increase the main mode to 4208x3120 so that it is the same FOV as the
+>> binned modes, with Y_ADD_STA at 0.
+>> Fix Y_ADD_STA and Y_ADD_END for the binned modes so that they meet the
+>> sensor requirements.
+>>
+>> This does change the Bayer order as the default configuration is for
+>> H&V flips to be enabled, so readout is from Y_STA_END to Y_ADD_STA,
+>> and this patch has changed Y_STA_END.
+>>
+>> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>> Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+>> Signed-off-by: Luis Garcia <git@luigi311.com>
+>> Reviewed-by: Pavel Machek <pavel@ucw.cz>
+>> ---
+>>  drivers/media/i2c/imx258.c | 26 +++++++++++++-------------
+>>  1 file changed, 13 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+>> index 2dbafd21dd70..4a7048d834c6 100644
+>> --- a/drivers/media/i2c/imx258.c
+>> +++ b/drivers/media/i2c/imx258.c
+>> [snip]
+>> @@ -707,7 +707,7 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+>>  	/* Initialize try_fmt */
+>>  	try_fmt->width = supported_modes[0].width;
+>>  	try_fmt->height = supported_modes[0].height;
+>> -	try_fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
+>> +	try_fmt->code = MEDIA_BUS_FMT_SBGGR10_1X10;
 > 
-> Quoting Christopher Obbard (2024-04-15 12:41:27)
-> > Enable the HDMI output on the Debix Model A SBC, using the HDMI encoder
-> > present in the i.MX8MP SoC.
+> Does someone have access to the data sheet? I am wondering how the
+> arrangement of the pixel array is shown. I've the following (identical)
+> array for these sensors:
+> * imx290/imx327
+> * imx219
+> * imx415
 > 
-> Aha, you beat me to it. I have a commit locally (Dated 2022-09-06) but
-> not sent because I didn't realise the HDMI support finally got upstream
-> \o/
-> 
-> > Signed-off-by: Christopher Obbard <chris.obbard@collabora.com>
-> > ---
-> > 
-> >  .../dts/freescale/imx8mp-debix-model-a.dts    | 47 +++++++++++++++++++
-> >  1 file changed, 47 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > index 2c19766ebf09..29529c2ecac9 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > @@ -20,6 +20,18 @@ chosen {
-> >                 stdout-path = &uart2;
-> >         };
-> >  
-> > +       hdmi-connector {
-> > +               compatible = "hdmi-connector";
-> > +               label = "hdmi";
-> > +               type = "a";
-> > +
-> > +               port {
-> > +                       hdmi_connector_in: endpoint {
-> > +                               remote-endpoint = <&hdmi_tx_out>;
-> > +                       };
-> > +               };
-> > +       };
-> > +
-> 
-> Interesting. My patch missed this. But it looks correct.
-> 
-> >         leds {
-> >                 compatible = "gpio-leds";
-> >                 pinctrl-names = "default";
-> > @@ -94,6 +106,28 @@ ethphy0: ethernet-phy@0 { /* RTL8211E */
-> >         };
-> >  };
-> >  
-> > +&hdmi_pvi {
-> > +       status = "okay";
-> > +};
-> > +
-> > +&hdmi_tx {
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_hdmi>;
-> > +       status = "okay";
-> > +
-> > +       ports {
-> > +               port@1 {
-> > +                       hdmi_tx_out: endpoint {
-> > +                               remote-endpoint = <&hdmi_connector_in>;
-> > +                       };
-> > +               };
-> > +       };
-> > +};
-> > +
-> > +&hdmi_tx_phy {
-> > +       status = "okay";
-> > +};
-> > +
-> >  &i2c1 {
-> >         clock-frequency = <400000>;
-> >         pinctrl-names = "default";
-> > @@ -241,6 +275,10 @@ &i2c6 {
-> >         status = "okay";
-> >  };
-> >  
-> > +&lcdif3 {
-> > +       status = "okay";
-> > +};
-> > +
-> 
-> Except for the addition of the connector, the above matches my patch to
-> here.
-> 
-> >  &snvs_pwrkey {
-> >         status = "okay";
-> >  };
-> 
-> But in my patch I have the following hunk here: (I haven't checked to
-> see if this still applies on mainline, so take with a pinch of salt if
-> it's not there!)
-> 
-> 
->  &iomuxc {
->  	pinctrl-names = "default";
-> -	pinctrl-0 = <&pinctrl_hog>;
-> -
-> -	pinctrl_hog: hoggrp {
-> -		fsl,pins = <
-> -			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL					0x400001c3
-> -			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA					0x400001c3
-> -			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD						0x40000019
-> -			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC						0x40000019
-> -		>;
-> -	};
-> 
->  	pinctrl_eqos: eqosgrp {
->  		fsl,pins = <
->  			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC							0x3
->  			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO						0x3
-> 
-> 
-> > @@ -358,6 +396,15 @@ MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16                              0x19
-> >                 >;
-> >         };
-> >  
-> > +       pinctrl_hdmi: hdmigrp {
-> > +               fsl,pins = <
-> > +                       MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL                     0x400001c3
-> > +                       MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA                     0x400001c3
-> > +                       MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD                         0x40000019
-> > +                       MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC                         0x40000019
-> > +               >;
-> > +       };
-> > +
-> 
-> And my addition here is :
-> 
-> 
-> +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins = <
-> +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c3
-> +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c3
-> +			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x19
-> +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x19
-> +		>;
-> +	};
-> +
-> 
-> 
-> I haven't looked into what the 0x40000000 does yet, but just
-> highlighting the difference from the version I've been using to make use
-> of HDMI so far.
-> 
-> Does anyone else know the impact here? Otherwise I'll try to find time
-> to check this later. (For some undefined term of later...)
+> G B G B
+> R G R G
+> G B G B
+> R G R G
+>
 
-In drivers/pinctrl/freescale/pinctrl-imx.c,
 
-#define IMX_NO_PAD_CTL  0x80000000      /* no pin config need */
-#define IMX_PAD_SION 0x40000000         /* set SION */
+I assume this is what you are looking for
+https://photos.luigi311.com/share/Imk6odsR_44VYsRvfmRwBVoG1TMnXtI61PP4sjssbmKAcNEYuVPRa9W-vIU7rpa-Ask
 
-The SION (Software Input ON) bit forces the input path active for the
-pin. This can be used, for instance, to capture through GPIO the value
-of a pin driven by a module. I'm not sure that's needed here.
+ 
+> Yet each driver configures a different bus format:
+> 
+> * imx290.c: MEDIA_BUS_FMT_SRGGB10_1X10
+> * imx415.c: MEDIA_BUS_FMT_SGBRG10_1X10
+> * imx219.c: MEDIA_BUS_FMT_SRGGB10_1X10 (no flip)
+> 
+> imx219 actually defines all 4 10 Bit Bayer patterns and the comment
+> indicates this depends on how v or h flip is configured.
+> Reading the commit message apparently the same is true for this driver.
+>> Still this is confusing as I would have expected flipping to be disabled by
+> default, expecting the same Bayer pattern order for all drivers. Can someone
+> shed some light?
+> 
+> Best regards,
+> Alexander
+> 
 
-> >         pinctrl_i2c1: i2c1grp {
-> >                 fsl,pins = <
-> >                         MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL                                 0x400001c2
+Flipping defaults are changed around looks like based on use cases. Patch 20
+is what actually brings in flipping and brings in the 4 definitions like you
+are expecting
 
--- 
-Regards,
++	/* 10-bit modes. */
++	MEDIA_BUS_FMT_SRGGB10_1X10,
++	MEDIA_BUS_FMT_SGRBG10_1X10,
++	MEDIA_BUS_FMT_SGBRG10_1X10,
++	MEDIA_BUS_FMT_SBGGR10_1X10
 
-Laurent Pinchart
+
