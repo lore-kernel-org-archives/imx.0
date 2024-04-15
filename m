@@ -1,54 +1,41 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7308382481
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 16:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94081127E36
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 17:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713199927; cv=none; b=Kk+zq8IJST6EeTLq/flFRZio06VbnhXmjsgP2xoaYGfOWH4xrleOMT2YX8ewNVB+3cP/dUC7PYSDmknZ2u2VY+cEABW2jZpsaS4PZuVpPOXMcqKEvpmTwnwYuz4KnwRMG8+GmjPGu8h90+ZxaLjkkWoEl/W3AYIyfoAKm1D2QJY=
+	t=1713200763; cv=none; b=lADIYwPb2bjZqx+BCvE/rXpv1jO7wzQn4+1BCgGtoV5IDMhMbvfgbZiK0Toz9d5Q2p2xfN5+XKdV4wd0rLgblds19LXtPJw2O/Nf1kfr/idA3rcgTXgPCSbgzO0Kl1USTeeTYvUz3vSdJtqu9cBe5B6BDIdemNgfhzUlE7hnjAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713199927; c=relaxed/simple;
-	bh=AEMyLc+1Z6/zZWJfleih74fSQmwSrodBP5//xLKr0kM=;
+	s=arc-20240116; t=1713200763; c=relaxed/simple;
+	bh=4a9TlTGikPdPtvIswhMDPVXsOAtTJIQPwslpOZDf9fY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cwK+lg2lIxPf3ORss2PCvYXIXpGZarwPEJUUZpK4tT9De5zjjEEv4AkohNER2jn2E5hhWayZltavmdV9Ww36RUcqbj7QXcA7rDovw4KFaDR8hb8fjlRTEOHhHRI+jyVFjF4Ezt0QnoUemMFNXyk+/1iUg0KTOsIozph2JmCho3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dKGAC7Pf; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=GTgONCrTIbPgHw0kvnT//Hb7/DoZAICYXCVLuy9RU23yigFgxuaVwbjTIsO+9EbPzVtnEuIb9BM/m5Evvf91yfC29RpPAFMcVFUKiBh4+X4s3943nfYWT+czcXTT1Gx1p5tLBpObH6xZg92GrYbI6A+B/JA7otE8Xwsnv9/ENkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=envm3gPj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dKGAC7Pf"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dcbef31a9dbso2224759276.1
-        for <imx@lists.linux.dev>; Mon, 15 Apr 2024 09:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713199925; x=1713804725; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=u5nj7t3vt2EbEPLlkWSc/ywApSrSPp8k4DfqheemWX4=;
-        b=dKGAC7PfH1GnBpmml1MT5w/K17+nmmnWW61RPDXVpzVpleLtNY9Z6+FyJPvM4ImWYI
-         KYPwzL7AkxeUirsJsIPKPNluUuRW+TBUBfbXZx/0QkiMTGY9IXrTyzyHMS1RW9WDEdx5
-         7z6IjOoGkhisv7MMVri91NDSUzoC8Bl989I6ZPvZ4DpoQdHmepGiyqs9V/mwMGvMGh8p
-         M0ldVahV+HJWUjUwbBFAugYp9QuXgTgTjbG9legKWl6nDuW8PsxobTdUkZnLYq/1dp7Q
-         X183H2nen9XPb3nIMfoOA7ldRmvjEpTfcV8B0TDjZbyvJ3EioJsxfTrxhUz1pz1ouyAI
-         Iz+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713199925; x=1713804725;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u5nj7t3vt2EbEPLlkWSc/ywApSrSPp8k4DfqheemWX4=;
-        b=lifZ5raTrbiC9NNLqlO7mxYUYorL7a2bBErnw12369S0355gMAIjc9WYcBRg/SvLYG
-         3wvAbbfftUdJDZejsHVXK+Xh0DqxE28P0zYg/R4gD2et21Zg3VBoRbuycgehrZdd9Zf3
-         vBOmemoTF95Z69PS7b77yqV8MWuQm7Rqa8K3B0QTpBl0P/+tU0yvcW8CzX7jVfKByEh4
-         QInWKgfcQwBo8/j0EWuRX9w+oD4YuVE+ETsg8hRQUndQV8rgAI7Y/C4J0PFX8x7YcIh6
-         T914075Atmd+WwW8/P9scqidvZHbmxIiIh0JAMFgivDD2Lh0dALFa6nEuCXvTKm9dJ3x
-         LPnA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQEBMpKEkZL0Glrkvw1IbCAE0qbSz9YnbOpUeo0hoZvWfeCoAPmaUEZFPdSiLHEc9yXIfPc3KRR2INQ/acCOEpgky2
-X-Gm-Message-State: AOJu0YxOLLWQc24eHnWO+5FI9O3U8OCGcz+VVe13P8w68aDaAXuiSqy1
-	s8PzCupNWb+YWgNMsW0Q4+Pj6Kc+tkuknzr3M5HfL5PixPB+hzrdedy9SP/FAZahfh/O7RpwiW6
-	7LdwRwNRcVcdXNx7rYqxaxG3AFEC0PSIFRXeRFw==
-X-Google-Smtp-Source: AGHT+IFUQH4ONlkcS0+01CEMOIrS9D3xuTmTIKe0INOXof2d+fsMqiJVzA1ER/VV0S5Vp3kzkSBLhneirq6dUQh4r9c=
-X-Received: by 2002:a25:9e0b:0:b0:de0:df15:b372 with SMTP id
- m11-20020a259e0b000000b00de0df15b372mr9733585ybq.63.1713199925395; Mon, 15
- Apr 2024 09:52:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="envm3gPj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31607C2BD11
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 17:06:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713200763;
+	bh=4a9TlTGikPdPtvIswhMDPVXsOAtTJIQPwslpOZDf9fY=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+	b=envm3gPjZkPR25rFILSSoDGtvq58d0n5TS2Ogmxra3RmmqJOLqTClzNaQo60Rcy/8
+	 axCfm2/V7ALzK2j+/+nve1rMfBSKxfrc/66w1h9SakHpGtRH39qBxvnQIWELc/JNt1
+	 70y5d3MUtd06wenDYBRLLmN9O8hgIPdUs+/sO+G2y5beX4FDbqCiauXeAdrQXsfWnB
+	 PckYPDZC66KLbwdVo1CdwHkuaE+chrIGFCZZCCb53eAm56qC0RIamfBj/CR5RSCwYK
+	 oRbMjLRnnDWF2GpgqY32AMqlw6eI3R983vlkCtFSx5kVqwvNCfGp/PfehO9ZBJzbmk
+	 asMALYe/CuGnA==
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3476dcd9c46so1795822f8f.0
+        for <imx@lists.linux.dev>; Mon, 15 Apr 2024 10:06:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUW4Xyo8VqWdH4WE/3lD/pLMKTdbzheo3TsW/xz3o7/bz99HChN3G39Aar2ORkaauYQygQ35arwvofp76p3PlBKuwnO
+X-Gm-Message-State: AOJu0YwtCe1cv+JB3T6qqjgxNLibk31cisGzD4GHSTTg404Y4pyFhC23
+	97RWyBupt2z+tIFYRsZBd1078rnKoy2zcscbUp0W/lDqGj56QnGiLEERxE1ZtRV1AQEbqRJaKZR
+	25RyTnxTUanir4Gvg2R582Tc2dg==
+X-Google-Smtp-Source: AGHT+IGj52gH0/Dg5INd/xZRyWwlGDPcfmpSpbX0KU82iJTE7+TtYLQcTn0dGxCxYIzg49fhJoCRFzAjpf+6SCkqXUk=
+X-Received: by 2002:a2e:b0ef:0:b0:2da:320a:68d9 with SMTP id
+ h15-20020a2eb0ef000000b002da320a68d9mr3627965ljl.13.1713200741392; Mon, 15
+ Apr 2024 10:05:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,13 +43,15 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20240412222857.3873079-1-robh@kernel.org> <Zh0vXinxy7woerJQ@hu-bjorande-lv.qualcomm.com>
-In-Reply-To: <Zh0vXinxy7woerJQ@hu-bjorande-lv.qualcomm.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 15 Apr 2024 19:51:54 +0300
-Message-ID: <CAA8EJpqL2T4bJZqtZ9KF=V2NLnFxUjouA6_Hu_H07DofifZaoQ@mail.gmail.com>
+ <CAA8EJpqL2T4bJZqtZ9KF=V2NLnFxUjouA6_Hu_H07DofifZaoQ@mail.gmail.com>
+In-Reply-To: <CAA8EJpqL2T4bJZqtZ9KF=V2NLnFxUjouA6_Hu_H07DofifZaoQ@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 15 Apr 2024 12:05:26 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+q3OLEMT=d8=d9o1D9deKGQ5TAtZg_bgptDPQ1cWcctw@mail.gmail.com>
+Message-ID: <CAL_Jsq+q3OLEMT=d8=d9o1D9deKGQ5TAtZg_bgptDPQ1cWcctw@mail.gmail.com>
 Subject: Re: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
-To: Bjorn Andersson <quic_bjorande@quicinc.com>
-Cc: Rob Herring <robh@kernel.org>, soc@kernel.org, 
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>, soc@kernel.org, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Florian Fainelli <florian.fainelli@broadcom.com>, 
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Dinh Nguyen <dinguyen@kernel.org>, 
@@ -90,27 +79,27 @@ Cc: Rob Herring <robh@kernel.org>, soc@kernel.org,
 	linux-arm-msm@vger.kernel.org, linux-realtek-soc@lists.infradead.org, 
 	linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 15 Apr 2024 at 16:46, Bjorn Andersson <quic_bjorande@quicinc.com> wrote:
+On Mon, Apr 15, 2024 at 11:52=E2=80=AFAM Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
 >
-> On Fri, Apr 12, 2024 at 05:28:51PM -0500, Rob Herring wrote:
-> [..]
-> >  arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
-> >  arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
-> >  arch/arm64/boot/dts/qcom/sdm630.dtsi                 | 2 +-
-> >  arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
+> On Mon, 15 Apr 2024 at 16:46, Bjorn Andersson <quic_bjorande@quicinc.com>=
+ wrote:
+> >
+> > On Fri, Apr 12, 2024 at 05:28:51PM -0500, Rob Herring wrote:
+> > [..]
+> > >  arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
+> > >  arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
+> > >  arch/arm64/boot/dts/qcom/sdm630.dtsi                 | 2 +-
+> > >  arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
+> >
+> > Acked-by: Bjorn Andersson <andersson@kernel.org>
 >
-> Acked-by: Bjorn Andersson <andersson@kernel.org>
+> Note, we'd need to override PMU compatibles in sdm636.dtsi and
+> sdm660.dtsi. Ideally it should come as the same patch.
 
-Note, we'd need to override PMU compatibles in sdm636.dtsi and
-sdm660.dtsi. Ideally it should come as the same patch.
+Uh, that's an A for reuse, but an F for readability... It's sdm632 as
+well. Will drop sdm630.
 
->
-> Regards,
-> Bjorn
->
-
-
--- 
-With best wishes
-Dmitry
+Rob
