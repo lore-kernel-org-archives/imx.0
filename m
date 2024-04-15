@@ -1,57 +1,57 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF32C84A48
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 12:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7D613CFA6
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 12:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713185708; cv=none; b=kZ8Bb4tVHnIHrckSsWj/TDNxBS0tOsvySU2EW8kC0VIXgSIx8DGN0VSxlGZFI36oIDCBwzn3lijjDXuMxuhaUUM0djLMu9lsXMcKIpq2n5iPDRA97G0xMwzTSYZmngNsMdG5lyyyEyd/EdrwOM7VTPx0xexaBwjWEtQMjNPeS7o=
+	t=1713185722; cv=none; b=koyhbGaJzdtsZNCR/0wprqnvNvsOU4lFqzoAkbYm8RjT2zExrYb3FGpnBC/XVWtF5MTD/YbzmxL7tyacOpHn2vLb5mZ9TBDS3rriCHCADWgqPMUn/OXeBT+OKaLzV3QR8f1dka0WkkBFqRmS5NoUUscma5gp98CmHRc3N/tgXT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713185708; c=relaxed/simple;
-	bh=+bjzkMqcIFpcw2i9w83bp473RPBZ0vObyEaxzWVYmiQ=;
+	s=arc-20240116; t=1713185722; c=relaxed/simple;
+	bh=w28Vgzy/l8vd8BHW49TVBr3mcKt4Lu6grGdOVajJg6Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GX1/bKCJ62TIntNR8q0p0Y8hCWqUu/BYy1iH8erxzOI1ub3+Y89l4zVO/Obm6B6RMxUznqexFMgj1wdDoehh79j5zK5rRpzsopwO1mWsTjGHw48W5viuY8ukaPgTy7m8fMOdl4hG/2uqSCMGudA4Y6chhLekBoJChchQk7JLVU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y9f5ggDy; arc=none smtp.client-ip=209.85.128.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=NKLare0JWzT9XJExCRlcDZ99619xU0iejk2eEjdxB5HGDByrIOLu2WC6qAHniICNO5e7M326YkzEQf5TvZidagMCmlscq2QcCPE83/SNjGC/48cf4WQPO2MSA5NK5VfvrpQ+kbmm6bYEjisNv0aUUOr5etB0HT+Yy/kBKKL2B4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e2alxhK8; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y9f5ggDy"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4187481e384so3113765e9.0
-        for <imx@lists.linux.dev>; Mon, 15 Apr 2024 05:55:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e2alxhK8"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4187c47405aso1807865e9.3
+        for <imx@lists.linux.dev>; Mon, 15 Apr 2024 05:55:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713185705; x=1713790505; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1713185719; x=1713790519; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+bjzkMqcIFpcw2i9w83bp473RPBZ0vObyEaxzWVYmiQ=;
-        b=Y9f5ggDyvmqDheiU4glM/Iwuda6NQW2fjKYueUWzUIj2bRMhWylRAj+QBAIgzvS/oz
-         6xUQ50aH6AprYZ9SbohOT8YWsM/DMgOxnpAw+xDsVxTIk8qDxGeSQxK1qdVJqbP1cBVf
-         d52EzgUprYAamcTXJjdNFDuSaFi+DhWqFCsPbqTO2xwmlHTM25phGPRIirpuOXfPrGPP
-         Q2I/ujj0yOhYQEiejIIPG9y8MYXT19P+fdXHBtCqJc25b3FyUl3dXSzuk+TfWsjPfcX7
-         JbzgKIET+DcVllRGCMg+3I4PmzKA+7MzoDLng4ymK8+VEzXpjbmQrwjX5yBIMlHRhGW2
-         mNxg==
+        bh=w28Vgzy/l8vd8BHW49TVBr3mcKt4Lu6grGdOVajJg6Q=;
+        b=e2alxhK8UTicN15Px2WWu3VtzK0f28JsS9nUMc1xMUgDZZapXOwHZE+jm7JPqp9AY8
+         mVRYDftCalctxJA6OP3XQJeKjvBnFxV6PMLfttfK50BADWPdiypRuorpjTfRtg48uBWt
+         bL7iG7e6h9NeGUGvZIdlPJhqAGc7z/ky+rUQT9htDsEccZdAwqFq/6pgIsa/eHxSqXPd
+         JmMEUI+7iSVvIGuBsAqJhqRnaYEvUEUt/Dbe/i7jZc36O+Q86PXh9F0RsQjSUoLQ8PLp
+         NoUmWXA2TUqptArjD20ggmtmGTKm4azbVXRj0jjM5mN6BcW4HWMaoaslAZXhFAa45Sis
+         bFsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713185705; x=1713790505;
+        d=1e100.net; s=20230601; t=1713185719; x=1713790519;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+bjzkMqcIFpcw2i9w83bp473RPBZ0vObyEaxzWVYmiQ=;
-        b=Sf4mc+UoYbQpxVtaI7RDASIYX7Lui72aKVmc0dPV9WD4W5bDgDlxwZmu1rM95bWwcg
-         OBvdHTtUaR3Vp0ecekI23J+wSeq27dnByuAaBxag5wJEfhP31niO5edw2vusUs3ABW7c
-         GgyWHNwHHKdgt/VL+wHop4PNFWAMjTZD1qpDK7ghvHUnUXBVYwa1mBN1FSI1dJgpXQAl
-         m/cdRNTDkfFkXc8trHQEFJfHFDJ4T9m80S64JecfEIy8N5hF3cmWCv/WhPix7MyeviKJ
-         hQ9HNGdyErwx9vYI4DXqTZpakzWZIe3fq2TTemu1o3Pm3q7nsjWC9BDJw0rCSqNOP9RD
-         KSeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsyknN8pntIN3N7M0PGeP8Ph8wu4cKn4EF7lcDEcU0AYodBc8pqnWoWkxkvJXMQtO/8SHg73gLC5POH2y8/3YYscHH
-X-Gm-Message-State: AOJu0Yx6wFlXoxnftjLtpC6w1WXs+hRSnqSq1Qi8Oh4HLLsjWPnaZEIa
-	EV5WmXA0beZ7c6KOtlPIs0E3OqNcgCUwhagq3iP2tKTlyzsBnwqufIYixDpJU4c=
-X-Google-Smtp-Source: AGHT+IGHxu6Q4avREKIopyDMuH0F/FlZ8s8HVBOhkgD8sUoGIYcp5Z+UXW61HEvkoXH2alvv3fo09w==
-X-Received: by 2002:a05:600c:19c8:b0:414:d95:cc47 with SMTP id u8-20020a05600c19c800b004140d95cc47mr9336810wmq.30.1713185705260;
-        Mon, 15 Apr 2024 05:55:05 -0700 (PDT)
+        bh=w28Vgzy/l8vd8BHW49TVBr3mcKt4Lu6grGdOVajJg6Q=;
+        b=hef0UABz11jIZtDeVULinE/2KUGWP9OXbZbuSzJQIHiTZCk0xKYNxQOVL95gYDpqkM
+         ntVSgj4sjWZi30x6aitRpKQPuIEVQHznM/UnZFOKJ4YPy2opqrFX8fcxC7wTlhuetepj
+         LURj6IyzcYFu/5GROeFtDWMIVyD/g+UfOx0IGLe3PNf4GUQcObr2bBJuxe6vTG5JMBw4
+         NkwyAdhYApsrklBiqjT9YoPSa8bnMwr3ZUTk/sn53/AWTEPnJyCCoVO+Ph8WK6qFd1n6
+         OuThE4MHgjLu7Q+WJaP4teZAVE5feJr3BCu7fyFqtGyov6A8fH1mEylrEEi3S4FezXJl
+         sq1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVa10qx92yPA4lY0aXRiLUWGSfn9BKQKKcrSAkBDj62yRfoUEyzchD158dPq6tbAA2D9YZIdX9q/hq7pXud/dEMT4sy
+X-Gm-Message-State: AOJu0YzUf5fEYPLGbHr8TEza+IN762Tu6SxLtK7HGdZpi6UjqlzXe+Ox
+	XpZYKSHQf749fZHFmeBEpV526joBWYbEBgYkWGk6TUFmCiM9SdFSHczyq2CsKik=
+X-Google-Smtp-Source: AGHT+IHtbwzdHFlfRbkSxCve8iZ6ujqhwgWjkWmq8yTpU351E4Av/06V3X/v4naeroGsr+pFHM+HYQ==
+X-Received: by 2002:a05:600c:3582:b0:416:9cf8:cf05 with SMTP id p2-20020a05600c358200b004169cf8cf05mr7326072wmq.18.1713185719212;
+        Mon, 15 Apr 2024 05:55:19 -0700 (PDT)
 Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id l23-20020a05600c1d1700b004163ee3922csm19404762wms.38.2024.04.15.05.55.04
+        by smtp.gmail.com with ESMTPSA id s11-20020a05600c45cb00b00417f65f148esm13117334wmo.31.2024.04.15.05.55.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 05:55:04 -0700 (PDT)
-Date: Mon, 15 Apr 2024 13:55:03 +0100
+        Mon, 15 Apr 2024 05:55:18 -0700 (PDT)
+Date: Mon, 15 Apr 2024 13:55:17 +0100
 From: Daniel Thompson <daniel.thompson@linaro.org>
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
@@ -67,10 +67,10 @@ Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
 	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
 	linux-omap@vger.kernel.org
-Subject: Re: [PATCH 13/18] backlight: platform_lcd: Constify lcd_ops
-Message-ID: <20240415125503.GM222427@aspen.lan>
+Subject: Re: [PATCH 14/18] backlight: tdo24m: Constify lcd_ops
+Message-ID: <20240415125517.GN222427@aspen.lan>
 References: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
- <20240414-video-backlight-lcd-ops-v1-13-9b37fcbf546a@kernel.org>
+ <20240414-video-backlight-lcd-ops-v1-14-9b37fcbf546a@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,9 +79,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240414-video-backlight-lcd-ops-v1-13-9b37fcbf546a@kernel.org>
+In-Reply-To: <20240414-video-backlight-lcd-ops-v1-14-9b37fcbf546a@kernel.org>
 
-On Sun, Apr 14, 2024 at 06:36:11PM +0200, Krzysztof Kozlowski wrote:
+On Sun, Apr 14, 2024 at 06:36:12PM +0200, Krzysztof Kozlowski wrote:
 > 'struct lcd_ops' is not modified by core backlight code, so it can be
 > made const for increased code safety.
 >
