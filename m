@@ -1,177 +1,110 @@
-Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.111.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2A21FDD
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 20:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.104.111.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A77156675;
+	Mon, 15 Apr 2024 21:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713212019; cv=none; b=nDOWqZ6hw/eMPvDK+WSqMuM+T4vGHmPhj6ksGedrkN5bQU7J0j4XUrzoPc01mx8eiXuczAIulUhy5Vo4TLM5zwX+Yu5VTlLjqpP0R1jp4xaf5hGuhbM8mq8GjM3b1CIjh2g7h/grFu9R6iqN9mykOxcHkZsy/GNDvTrfjXkOjOU=
+	t=1713216792; cv=none; b=dmTovIIdRudYZLBzsu7qGFTOI6u8P9ej9y5sNLcLoldEAE4lMVyxaI9lehVE4+Xb4BdJxR+Fbu7KyQMB/xLEFIFecjF57nECCmokwTd9QiFt5DjIgAd+PCmscb8wHEFN1oeB8/CxPX0odwNIvXKgiVqc58gMX6mFHAGREnNeByQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713212019; c=relaxed/simple;
-	bh=CDejkLz6T4P1HLzjDjpl2lyTvkERXRBDZtkdFLDkA5I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=sgkhz+Tw25d/DTS8wa47L1PfMw3v0vZWwy4HZbBvjOsb+1z7V/iQp37nnMZaE8CmkQkKymaoLLMsWkRi4r3QT+Yj80t4OQVZixuaLZddNdyKG/z4oYmtMwM8goKyCWccWC6ciPjDSuV2Z2uUMNETgJ6Ubgn2ozas+Cnr6hn4URQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com; spf=pass smtp.mailfrom=toradex.com; dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b=Y8DTH3ts; arc=none smtp.client-ip=194.104.111.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
+	s=arc-20240116; t=1713216792; c=relaxed/simple;
+	bh=4dQXK8rM5riTwBJcZYfqprll9axw8fcL3Iwa1nRYEr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iyHHDBYwukDPA+auy87L/CZw/eE5Ylj6GCUCdMfkxNFxCnh2VBa43pVlcYypgfhcFDNRDq+rp4LinnNwQwEmz++rKQJIWIM0z+9Yxj4BVqwQzdshfjQnKA7Ls7oBHfnVULjRYIn5suZhDRwnoXmjiz687h0PhaWWUD17xBHn1+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TAKzSZz0; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b="Y8DTH3ts"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
-	t=1713212016;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CDejkLz6T4P1HLzjDjpl2lyTvkERXRBDZtkdFLDkA5I=;
-	b=Y8DTH3ts0h4Q+8y2sMxVpgzjOxw+cv4SJXO1sSc5PVIAq09+6FugVsg0nar0kHeFotKgK4
-	usU3+hS307HMJFilXv9OIOu1s+ckqUIUkidr+LcdSfC+iQG04dalcFvPxuopIAnRyDildu
-	/Yylp28G2vqE9PvVYuOnmN0BUcOwhUU=
-Received: from ZR1P278CU001.outbound.protection.outlook.com
- (mail-switzerlandnorthazlp17012010.outbound.protection.outlook.com
- [40.93.85.10]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- de-mta-75-8tKaIVizNSC8pbWFyhySqA-1; Mon, 15 Apr 2024 22:07:13 +0200
-X-MC-Unique: 8tKaIVizNSC8pbWFyhySqA-1
-Received: from ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:3b::9) by
- GV0P278MB1143.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:4c::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7452.50; Mon, 15 Apr 2024 20:07:11 +0000
-Received: from ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM
- ([fe80::ff81:7388:f0a:3555]) by ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM
- ([fe80::ff81:7388:f0a:3555%7]) with mapi id 15.20.7452.049; Mon, 15 Apr 2024
- 20:07:11 +0000
-From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-To: "vkoul@kernel.org" <vkoul@kernel.org>
-CC: "linux-imx@nxp.com" <linux-imx@nxp.com>, "hongxing.zhu@nxp.com"
-	<hongxing.zhu@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
-	"kishon@kernel.org" <kishon@kernel.org>, "heiko@sntech.de" <heiko@sntech.de>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"yang.lee@linux.alibaba.com" <yang.lee@linux.alibaba.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tharvey@gateworks.com" <tharvey@gateworks.com>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-phy@lists.infradead.org" <linux-phy@lists.infradead.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "mkl@pengutronix.de"
-	<mkl@pengutronix.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "festevam@gmail.com" <festevam@gmail.com>
-Subject: Re: [PATCH v1 0/1] phy: freescale: imx8m-pcie: facing pcie link-up
- instability
-Thread-Topic: [PATCH v1 0/1] phy: freescale: imx8m-pcie: facing pcie link-up
- instability
-Thread-Index: AQHafFngyrWKa5u8Ykil67wkqf0VGLFbDhgAgAJtRYCAByPmgIAFSQeA
-Date: Mon, 15 Apr 2024 20:07:10 +0000
-Message-ID: <2f3826dccb20d735d8cb450ecf8b6dec7f0a99e6.camel@toradex.com>
-References: <20240322130646.1016630-1-marcel@ziswiler.com>
-	 <171239511427.352254.8525089049107113141.b4-ty@kernel.org>
-	 <ae96ab05b47f9788bce1c8df5a795b35e16a629c.camel@toradex.com>
-	 <ZhkZ7R7E9LlfZX-l@matsya>
-In-Reply-To: <ZhkZ7R7E9LlfZX-l@matsya>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZR0P278MB0683:EE_|GV0P278MB1143:EE_
-x-ms-office365-filtering-correlation-id: e6a6f711-be97-4173-bc81-08dc5d87a298
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0
-x-microsoft-antispam-message-info: Cyi49Z0/tp/sRboNo9OFV1fE8wGsHfTXsXL3FqtUsCxqJ/YutAdfuoZcln9wLCpA2HSBJf4PPwfLuk+vEyjgrGbZcQisJtNyrFDr/TPShDiAt1ooOe3euyyYhT+jDSopBzmc6O7YfhnO6fgCPdBdu8bE27F7NICigy1kO58IiNxu9ZVrx08fYGVGRYyhm/7tYkbF2VrkoYlZ5p7VqPhhV1zkfsAN6AXCsmaQOI9lL/MBK3MNQRoqFMCdAF3myNZ6nkn/EFlBTq/4IZRxdgoCLiGVRslOozmC47QswX63sS+AOCdtr/KtDOz5MlJZ9oyJKP4TrZ35CdfIJeafuQnaBkgSuAPPQYWky06nfUITkrGxLx+cwdmXFLj/shaVwIw1RA/XBJl9UZKqTodH2Ukz7jexikXSE5uNOsZJotGF3rHYTmVlyHR/4TNPe1VzeUeaB/ktvvnG7ek9ZcvkdNjm2mk/KvkzRQvtlIgkxJnzMjl+rw6tqE/PM7hvQudDWstuSfik532YmIVRJedtY8qT200WSigfrIm7gl7Bk6qkFFNYyTLsmfcMbeSbj2WSeMnRbL2A/TyrwQMhfpyyUvy8WiP7iYkGCte3kZScan1QUPyyX59nNJGbS2eD6eQVayXQXlKKuELRhOwnMqLM19d9Kf/s2Lfp2esdmu4D79qk3L0JmE5wker3KwThv9tFWeYummVv2nthanJ/4t0F+zkM7H8GH+W6vG3v95dCmF/07E0=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1102
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?c1hwdlBzdWRac2V1czZ4eVFoTmNNSGJ1WjR4S2RNdGY1QjRpL3hmVXJZZWEy?=
- =?utf-8?B?dlRBNGVsYlB3RUN6THczWG10aCtiR0pkSFcrRnBvekk4aXlpRUxlQ2VRcnFP?=
- =?utf-8?B?SFR1TG94czZpZGlXcE1FY05BdUVpMjducHByQVB2Ym1jaGVmZUw0aFNpazEw?=
- =?utf-8?B?V1NtalpyZldOc2VMOWd0Q3lHbDZvK3hXdEtpblNid2dJbWp5em9aQVBtZWp3?=
- =?utf-8?B?SW9TYTFLSENrSjFLYXVjUXlyWWNUcU1oL2c5VmhZQStnWS9BdVJ4L0Y5djho?=
- =?utf-8?B?K1R4R0swUzcvR2dQYkxWYTZYUy9SZG0yKytoVDEwajNmNnQ5MForbXlxTncr?=
- =?utf-8?B?N2Z0WnpUUUZCd01pUndpbTFaaWozTzVXOEVwMUhmcDVZVE5GMlkyb0R3OXRR?=
- =?utf-8?B?N1c0dnZBVDI1emVmbTJFdXkvU2JzSFhoeVQxdDRjbXMzY0JWRWVvSU53a2FZ?=
- =?utf-8?B?R1gwUm9JSk1MYmduVGM5bHlwS3g1ZG1WbFdPcDJBRnhNZy9NaktFbjl1Tkw5?=
- =?utf-8?B?VDhVa2U5MHN2SEMrN1ZXOUk1cFRXWXBCUWZaa2JOVmtXS3VwV29Ua1hZMEVL?=
- =?utf-8?B?ZVVHbDYwSXBSODg2NXV6Vmd0Tzg3QWxCemY1SWx5UHpRalMvSDM1TS9qMlZ0?=
- =?utf-8?B?ZStZSlBqVWFiMUFYMmlESDNhN0hOc1E2M29BTVBwQW15YTZ1QmpUdlJoUVV0?=
- =?utf-8?B?R1F5bHpRdWpWT2RVdC9oYXpWeFNXTVJxY3ZQSTBMWU1Odi9nZCtiYkR4L21x?=
- =?utf-8?B?UW92UUl2a0NZWlhiSkVOSzNWWEd1SEcvN3NyRzJmOGhFZVdmMCtjdm9XRFRm?=
- =?utf-8?B?bm4yVGZob1Z1bUZ0YzF0QnZZbTlIaC9iM2pRVW1kejBZYktqSFRxVzFZRWlu?=
- =?utf-8?B?TlZSMnBrU1gwQmU2N0pOR3RkOTdlcFJNR01NUXkyeXZqSDJVbDZ3Qk52NkdR?=
- =?utf-8?B?b2FlOTJIUEhyaTJIc2pEOEQrdzBlcS9hQXk2SVJIZk94Qk9JRGNuU2NneFV4?=
- =?utf-8?B?UXpiblVob1dYV3NmQ2hQbndybGQ5bloyRlNPeS9jTkVOa1hWRGNldEpyVjJt?=
- =?utf-8?B?ZWtuZUV0YS9lM08wdHlrSklNS3lMYkNpNWVJcm5Tc09WYWJrR3NKVnlzTlVX?=
- =?utf-8?B?Mm9sZ1o4bnZ3V1IxbkY4VW9UUURiR1N0ZkgwNkpvWmhvbkVzckZtWkJvWDk3?=
- =?utf-8?B?SlUvays0MDlBcXIwUnE3b2pkb29na1lObnNGTzVsbWhzblJTUTB6Vmx1dHA2?=
- =?utf-8?B?M25ONEloQllNOTVTcC9HUzhtMXVWQ2xqWFB1cDRsK0VNRnFESFBpN3RJbnJN?=
- =?utf-8?B?UDdRNlNkS1l2cU9YY2hEUkR5b3hOemhiMUcrMTVvUU1ZbTFDL2VCQU9iSWRn?=
- =?utf-8?B?VHMwREM4NVQ4cFN2ODArWmFyNjNkRm90bmpSaSt1L3NXbnJDZGVnUCtxQmdz?=
- =?utf-8?B?NjQ2bHRkRUJ4MTVVNmVPbEFIdk9mVVpIUHo1R3JkTjhLODBQSXZFbitIb1M5?=
- =?utf-8?B?aXYyMTl5cU1sRk8xQ1RjQ2RjcVdsd1AwTzYrN2d5ZHVKUC9VcStiSmJwKzhN?=
- =?utf-8?B?QkhocDFOaHFRbU9BTXlDeG40WVNtbitRcmVxK0o2Y3IySDRnU2owbE9JenVL?=
- =?utf-8?B?bVN2NnJnWElIdEpnTXU5U3JXV2psZ3A0ZXpBQ0hOaDM3VXlKVS81eDZVY29G?=
- =?utf-8?B?WllhbE9ncGFUb0FqSUlwelVGUlBrSU1reEdra3BsRkswWkg2WGNIa2VFOTJ4?=
- =?utf-8?B?NXd4SFlKT3VWcmZ0Q3lVa2Q3MUtJdTlsQ3lPYk81T2gveE1pTXp6T0pNOVUy?=
- =?utf-8?B?dnBHaytqampEa2pRb0pybm5iWXBxV3Y0QSsrZ1pSY1BIdWlnSmUyNjJLZTVp?=
- =?utf-8?B?SGpJd29ONHZFRnJXL3NJN1Z0amVMcXo5ZVJqcEpXQ0V0QUoyNTMvSVhPTVBR?=
- =?utf-8?B?bkhUUldBaVhpdmxTVmdTdmd2WXMrVThsYVFhbXdSMUg4M3ovejk4aGM5Y0tr?=
- =?utf-8?B?L0ZEVmEvZlF0UjBaY1pzZ203RmR2T0JXb1U0SXlXL2VPSEdWa01QYldnZ1NL?=
- =?utf-8?B?REgwOTNURDFrVS9iRTE3Ri9BUGd5dVZQS2U2SUNTQlNFV2k5ZVhzNTFpWjVs?=
- =?utf-8?B?Q3ZZSVpJYmlQcjZWelJRWFhhMFJaNTZQcnNVdlI0NVlIWDJmTHJvYXU2aG01?=
- =?utf-8?B?MkE9PQ==?=
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TAKzSZz0"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4187481e384so6888245e9.0;
+        Mon, 15 Apr 2024 14:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713216788; x=1713821588; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nvC0crxQ4hv14tVfrEC0cLFgOk4kwCtX5f1hXnZbvIs=;
+        b=TAKzSZz0ISqKGS1W4Hnko167P+LHTYMPhNy2e/RNZ5qrT8gHtRYdrsaxeR0zWXrspD
+         B9NUmtK+KiSAQsrFafEttJg9xNbmsxa4DQo9B5GMXYcXfYJnVNqi0pPDTdEtlJQ/98sh
+         kr68WNI+ZdjHP9OKSXoFYaXZO7rQ1og3Dski9S05CEfM0gFq5QuzBQcYYhyiR6AlSdP+
+         5GmeUNj3ZC8oukGLtmRZIlF94m4fK73IUwbUFngroDw3x6DSkZNVZnJeDsWa3fk47x4K
+         FtK+CSlj2WDIBkSYtgMWaXwI4dTCF8EaSEXBgCtF0iE7wyAbh7PkLqM7rPP/zB0xquLP
+         F8og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713216788; x=1713821588;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nvC0crxQ4hv14tVfrEC0cLFgOk4kwCtX5f1hXnZbvIs=;
+        b=fPtfAFx3LtRHE6PYD7b8QsuwcOycymSL3xH2o4wXuhRNmSwhB6CAyfCj3x99IowSLc
+         FkiJZuHAeN6VkPo0yYwZi+yHYw3MLCu82GvPaXCia16Y1eHt8DrIVxhJGaNV5p3NFEJp
+         R7hVFgan97xb/rIksEUvb5dPB98tgcA7odDSttIf9MwN8MWdmxgbuYxaI4KHyJadpgXI
+         p37KrFL7tl2i6rl9+wzzN96EisvwHsGAVAzM0NFKKI13i8BK9h7U0t3xSL9KLbaxIXCg
+         cNPVd8fYMa+PSYkmwE8i65KPjTWxB11Xw4F2BNxLb3CXICahZRsb0iVMcdJYlZUc/iFw
+         RVew==
+X-Forwarded-Encrypted: i=1; AJvYcCVb8kp+hBDPMbbalvQfff+i2QODs+SZPK9bEaR+f1NPm0GBa1U/ymt53fDhwZie2OScjMg4Lr6HBqLA3+Fsaj9x5OqMIcdmAIZoAASki0BMei1JJsxUwK6Or5p5FakwOSs=
+X-Gm-Message-State: AOJu0YzuPA8JC6DamYbW0XfmyswMyWKHJWN+ouVrVqju63X+JszdU725
+	Wsff+olHhGIsHfI74jye518XNjROUyzJlyIyca2j9W7UvNyRdWcr
+X-Google-Smtp-Source: AGHT+IGbVwjwj6P/XwJYoeDaKXfrZhxrIYcAxjHA9f44sCvNTZGbYDkW0+pIuu1H7oDt8UlPAumR3w==
+X-Received: by 2002:a05:600c:358d:b0:416:b75e:ffbe with SMTP id p13-20020a05600c358d00b00416b75effbemr8521621wmq.32.1713216788218;
+        Mon, 15 Apr 2024 14:33:08 -0700 (PDT)
+Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
+        by smtp.gmail.com with ESMTPSA id v9-20020a05600c444900b00416b163e52bsm20901026wmn.14.2024.04.15.14.33.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 14:33:07 -0700 (PDT)
+From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Jani Nikula <jani.nikula@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+ Samuel Holland <samuel@sholland.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Maxime Ripard <mripard@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org,
+ Maxime Ripard <mripard@kernel.org>
+Subject: Re: [PATCH 5/7] ARM: configs: sunxi: Enable DRM_DW_HDMI
+Date: Mon, 15 Apr 2024 23:33:06 +0200
+Message-ID: <8399384.NyiUUSuA9g@jernej-laptop>
+In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
+References:
+ <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
+ <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: toradex.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6a6f711-be97-4173-bc81-08dc5d87a298
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2024 20:07:10.9127
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d9995866-0d9b-4251-8315-093f062abab4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1RkcqiserVlBgO7zkKnWkAjbCfbASNMDdPYVrD2OgKCzQazISOLtm7g6v3T2QPy0VoLNlrriLRwJxYE1f+ebM8w/o9W98pat2MIe2ZMi/+A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV0P278MB1143
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: toradex.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-ID: <DDEC3B1660CDC74E8DA8C2B9D4C33EB2@CHEP278.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-SGkgVmlub2QNCg0KT24gRnJpLCAyMDI0LTA0LTEyIGF0IDE2OjU0ICswNTMwLCBWaW5vZCBLb3Vs
-IHdyb3RlOg0KPiBPbiAwNy0wNC0yNCwgMjI6MjIsIE1hcmNlbCBaaXN3aWxlciB3cm90ZToNCj4g
-PiBIaSBWaW5vZA0KPiA+IA0KPiA+IE9uIFNhdCwgMjAyNC0wNC0wNiBhdCAxNDo0OCArMDUzMCwg
-Vmlub2QgS291bCB3cm90ZToNCj4gPiA+IA0KPiA+ID4gT24gRnJpLCAyMiBNYXIgMjAyNCAxNDow
-NjozMSArMDEwMCwgTWFyY2VsIFppc3dpbGVyIHdyb3RlOg0KPiA+ID4gPiBJbiBvdXIgYXV0b21h
-dGVkIHRlc3Rpbmcgc2V0dXAsIHdlIHVzZSBEZWxvY2sgTWluaS1QQ0llIFNBVEEgY2FyZHMgWzFd
-Lg0KPiA+ID4gPiBXaGlsZSB0aGlzIHNldHVwIGhhcyBwcm92ZW4gdmVyeSBzdGFibGUgb3ZlcmFs
-bCB3ZSBub3RpY2VkIHVwc3RyZWFtIG9uDQo+ID4gPiA+IHRoZSBpLk1YOE0gTWluaSBmYWlscyBx
-dWl0ZSByZWd1bGFybHkgKGFib3V0IDUwLzUwKSB0byBicmluZyB1cCB0aGUgUENJZQ0KPiA+ID4g
-PiBsaW5rIHdoaWxlIHdpdGggTlhQJ3MgZG93bnN0cmVhbSBCU1AgNS4xNS43MV8yLjIuMiBpdCBh
-bHdheXMgd29ya3MuIEFzDQo+ID4gPiA+IHRoYXQgb2xkIGRvd25zdHJlYW0gc3R1ZmYgd2FzIHF1
-aXRlIGRpZmZlcmVudCwgSSBmaXJzdCBhbHNvIHRyaWVkIE5YUCdzDQo+ID4gPiA+IGxhdGVzdCBk
-b3duc3RyZWFtIEJTUCA2LjEuNTVfMi4yLjAgd2hpY2ggZnJvbSBhIFBDSWUgcG9pbnQgb2Ygdmll
-dyBpcw0KPiA+ID4gPiBmYWlybHkgdmFuaWxsYSwgaG93ZXZlciwgYWxzbyB0aGVyZSB0aGUgUENJ
-ZSBsaW5rLXVwIHdhcyBub3Qgc3RhYmxlLg0KPiA+ID4gPiBDb21wYXJpbmcgYW5kIGRlYnVnZ2lu
-ZyBJIG5vdGljZWQgdGhhdCB1cHN0cmVhbSBleHBsaWNpdGx5IGNvbmZpZ3VyZXMNCj4gPiA+ID4g
-dGhlIEFVWF9QTExfUkVGQ0xLX1NFTCB0byBJX1BMTF9SRUZDTEtfRlJPTV9TWVNQTEwgd2hpbGUg
-d29ya2luZw0KPiA+ID4gPiBkb3duc3RyZWFtIFsyXSBsZWF2aW5nIGl0IGF0IHJlc2V0IGRlZmF1
-bHRzIG9mIEFVWF9JTiAoUExMIGNsb2NrKS4NCj4gPiA+ID4gVW5mb3J0dW5hdGVseSwgdGhlIFRS
-TSBkb2VzIG5vdCBtZW50aW9uIGFueSBmdXJ0aGVyIGRldGFpbHMgYWJvdXQgdGhpcw0KPiA+ID4g
-PiByZWdpc3RlciAoYm90aCBmb3IgdGhlIGkuTVggOE0gTWluaSBhcyB3ZWxsIGFzIHRoZSBQbHVz
-KS4gTWF5YmUgc29tZWJvZHkNCj4gPiA+ID4gZnJvbSBOWFAgY291bGQgZnVydGhlciBjb21tZW50
-IG9uIHRoaXM/DQo+ID4gPiA+IA0KPiA+ID4gPiBbLi4uXQ0KPiA+ID4gDQo+ID4gPiBBcHBsaWVk
-LCB0aGFua3MhDQo+ID4gPiANCj4gPiA+IFsxLzFdIHBoeTogZnJlZXNjYWxlOiBpbXg4bS1wY2ll
-OiBmaXggcGNpZSBsaW5rLXVwIGluc3RhYmlsaXR5DQo+ID4gPiDCoMKgwqDCoMKgIGNvbW1pdDog
-M2ExNjEwMTdmMWRlNTVjYzQ4YmU4MWY2MTU2MDA0YzE1MWYzMjY3Nw0KPiA+IA0KPiA+IFNvcnJ5
-LCBidXQgaXQgaXMgc2xpZ2h0bHkgY29uZnVzaW5nIHdoZXRoZXIgdjEgb3IgdjIgbm93IGdvdCBh
-cHBsaWVkLiBJIGJlbGlldmUgdjEgYnV0IHRoZW4gb25seSB0aGUgY29tbWl0DQo+ID4gbWVzc2Fn
-ZXMgZGlmZmVyLiBIb3dldmVyLCBwbGVhc2Ugbm90ZSB0aGF0IG9ubHkgdjIgaW5jbHVkZWQgaW5m
-b3JtYXRpb24gb24gaG93IHRvIHByb2NlZWQgY29uY2VybmluZw0KPiA+IGJhY2twb3J0aW5nIHRv
-IHN0YWJsZSA2LjEueC4NCj4gDQo+IFYyIHdhcyBwaWNrZWQsIHlvdSBjYW4gY2hlY2sgcGh5IHRy
-ZWUNCg0KT2theSwgaG93ZXZlciBpdCB1c2VzIHRoZSBjb21taXQgbWVzc2FnZSBvZiB2MSB3aGlj
-aCBpcyByYXRoZXIgc3RyYW5nZS4NCg0KPiBTb21laG93IGI0IHNlbnQgZW1haWwgZm9yIHYxIGFz
-IHdlbGwNCg0KQ2hlZXJzDQoNCk1hcmNlbA0K
+Dne sreda, 3. april 2024 ob 12:56:23 GMT +2 je Maxime Ripard napisal(a):
+> Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
+> module") turned the DRM_DW_HDMI dependency of DRM_SUN8I_DW_HDMI into a
+> depends on which ended up disabling the driver in the defconfig. Make
+> sure it's still enabled.
+> 
+> Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+
+Applied, thanks!
+
+Best regards,
+Jernej
+
 
