@@ -1,40 +1,33 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55E45D480
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 10:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA1C5CDE4;
+	Mon, 15 Apr 2024 11:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713178160; cv=none; b=tL2N1L/eUnDqWe813xdjpfkugCr/t6eyvCKiTjEmBdR+axfuLXYoCbbXVZO2uk/zqKMm6NowI/N67HGMZV8RI3KjTwQcxYittxCPRHhJpzvfXU9dJRpXzGqiTfa7XfjkMAW7LOeVNpHIoOmm9b980yc2B1FLLZrYa1g/RD6X7xY=
+	t=1713179761; cv=none; b=MO+pw+NqHnyo1KAC2ffCjKCzPOjTeVMOuTO45cXG+k/OwCw+TrmcRarfyB5K5hI+WcAC2vtTCqfgLRzvq8r2uDIeS1SneAxHOSogKyxo7fn/S1ysMRAPu1cTruLAQnmVvv24ja+INp1rcOSdKWvelpGbRFDo2gcgrNk5s8oj19g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713178160; c=relaxed/simple;
-	bh=VkoLIjMfNZTvr+tRbMnom1duDqUONl1TjFQKiVbF0Lc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BNVZYTPNuS1OQAKwzs7uhhZpjP0cUb1XWVz37c7HUiyhzLwduQKZly2GD4EV/4O3r1SGCLwnz/SxsMlsDn8htAT/nhWPv3qaRqpZKdb1UZ8KsCk6m92Q5E5IKBg6XzaasrVWmyt9eEi/U6/sjpbjdXu195hQeBAqDef0eEqW3e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=HArTBWPx; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1713179761; c=relaxed/simple;
+	bh=pS+uyKgsyii1wjRg73vGWLVmn9HUda2om5l4QvZMNPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IAiPOrF8zeRHOAs+XFQ3YH/qleVFG+y97RYTelvhBKixMejeKBVlkQdo0zdkdEud/MX0R08HoxBdR569UWdiOUCtUgfVGkTwq3Kf8GsyVys9kcBWGy7CIe0GmvBe6cHh7oN5MFcbbdhZQ+ll0l6OD6JMlM/5TRBRgsch/8am3fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9CguGD2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="HArTBWPx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1713178157;
-	bh=VkoLIjMfNZTvr+tRbMnom1duDqUONl1TjFQKiVbF0Lc=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=HArTBWPxAA1OrcKymipiXN8qbO9S5Bxwi1bJlVkM8V8CEkZnDLCO94fzTJ0dBEGNY
-	 QlZMhM3fFb70b7JfPkGeAQ3jSbFJ6ciXk/8T6RY59xgdsfEJvukShzBr/7ANPuZKb7
-	 Aa5jtJqJ5HqhIEcdHKWzetM2tg1esivxIAgdL0P0ZKOIdPsFZuMSVEe5MFET2v1sQ0
-	 1+bSPuq60FLiKHuKRSC0VjDMptnQZoHH2f4TqNuaCTkvzqISqtyqK6IxOZeTEWbLR0
-	 hhWFaOmsae1RfucFStqX8jcnICLgbORycGbAKGQQ3V48kXcMP9Alik/fdTjtlRj+5O
-	 dNRYZD8SDmzsQ==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D278037820AB;
-	Mon, 15 Apr 2024 10:49:15 +0000 (UTC)
-Message-ID: <47348f40-0902-4a52-8ec7-79b202916486@collabora.com>
-Date: Mon, 15 Apr 2024 12:49:15 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9CguGD2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487CFC113CC;
+	Mon, 15 Apr 2024 11:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713179760;
+	bh=pS+uyKgsyii1wjRg73vGWLVmn9HUda2om5l4QvZMNPQ=;
+	h=Date:Subject:List-Id:To:Cc:References:From:In-Reply-To:From;
+	b=p9CguGD20UqvL+CtegaZxYrRV0MQfovjj0iJ/rNEUvEnlMliidcw1qwq9sZflSkP5
+	 YntfStOgSo3hm5LodJeJ4kVHFRTMRrmvshZpBnD3LJjSu5E6nCTn3e1i11d+O0bIgt
+	 vkxUFcCPd9q2c96hZASkrYmo49MsvGW+AtUTT4jl2sQtBtCb6tHB7K3IIo+L3AqZYT
+	 av44M6ECMSaXKIjkj7xoWMjjS9UuvBLUS19dexS3R6kjvg2AHQJacwuO4BH9rgDb4w
+	 owKwNX+6oNqVRR7xuV7uGjTSUa5WQTKIBf78w4xvF1PMECZ3pI4APEikTez0i/wcgh
+	 E52+HNhFWP3zA==
+Message-ID: <2fa0223f-7cac-4140-b667-886cbe3fb8f5@kernel.org>
+Date: Mon, 15 Apr 2024 06:14:22 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,37 +35,82 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH 13/14] ASoC: SOF: mediatek: mt8186: Constify
- snd_sof_dsp_ops
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Bard Liao <yung-chuan.liao@linux.intel.com>,
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
- Daniel Baluta <daniel.baluta@nxp.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, Mark Brown
- <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
+Subject: Re: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
+To: Rob Herring <robh@kernel.org>, soc@kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Tsahee Zidenberg <tsahee@annapurnalabs.com>,
+ Antoine Tenart <atenart@kernel.org>,
+ Khuong Dinh <khuong@os.amperecomputing.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>, Robert Richter <rric@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
- <20240414-n-const-ops-var-v1-13-8f53ee5d981c@kernel.org>
+ Fabio Estevam <festevam@gmail.com>, "Paul J. Murphy"
+ <paul.j.murphy@intel.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, =?UTF-8?Q?Andreas_F=C3=A4rber?=
+ <afaerber@suse.de>, Heiko Stuebner <heiko@sntech.de>,
+ Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
+ Jisheng Zhang <jszhang@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ linux-fsd@tesla.com, Michal Simek <michal.simek@amd.com>
+Cc: devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
+ linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-realtek-soc@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org
+References: <20240412222857.3873079-1-robh@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20240414-n-const-ops-var-v1-13-8f53ee5d981c@kernel.org>
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <20240412222857.3873079-1-robh@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Il 14/04/24 20:47, Krzysztof Kozlowski ha scritto:
-> 'struct snd_sof_dsp_ops' is not modified by core code, so it can be made
-> const for increased code safety.
+On 4/12/24 17:28, Rob Herring wrote:
+> The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primarily,
+> it doesn't provide any detail on uarch specific events.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> There's still remaining cases for CPUs without any corresponding PMU
+> definition and for big.LITTLE systems which only have a single PMU node
+> (there should be one per core type).
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> SoC Maintainers, Can you please apply this directly.
+> ---
+>   arch/arm/boot/dts/broadcom/bcm2711.dtsi              | 4 ++--
+>   arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi    | 2 +-
+>   arch/arm64/boot/dts/amazon/alpine-v2.dtsi            | 2 +-
+>   arch/arm64/boot/dts/apm/apm-storm.dtsi               | 2 +-
+>   arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts | 2 +-
+>   arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi     | 2 +-
+>   arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi  | 2 +-
+>   arch/arm64/boot/dts/cavium/thunder-88xx.dtsi         | 2 +-
+>   arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi        | 2 +-
+>   arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi       | 2 +-
+>   arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi       | 2 +-
+>   arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi       | 7 +++++++
+>   arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi       | 7 +++++++
+>   arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi       | 5 -----
+>   arch/arm64/boot/dts/freescale/imx8dxl.dtsi           | 2 +-
+>   arch/arm64/boot/dts/intel/keembay-soc.dtsi           | 2 +-
+>   arch/arm64/boot/dts/intel/socfpga_agilex.dtsi        | 2 +-
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+For SoCFPGA,
+
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 
