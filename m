@@ -1,150 +1,143 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B5F745C0
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 12:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E6773191
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 13:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713185886; cv=none; b=ZzJO6Bem5lup/kI4xdTvEnqKWd1yY1Wv1fTMkr9NBEgPSB9Hle5Et0o3THtrIH7fZEPuEgxQ2UmwaxFRkvW8uy59uYNW3Z+vFUajTxc9eD5dkhgeFzzv2tzTuQ6A/2tpuysAx12K3Dql8BAYfXVsdB2A6DHOhatSbBN5zM5T9A4=
+	t=1713188745; cv=none; b=fBsvXUCHc5ZyJ2O17rBKUXNMTLeMqLlc5zeF2zFGHNPdaUZUzF22bQ8JGK0j7n9uIu5Jg4tZP3Pf7Dr9prFqQR3I0m8N17pwp3lVSg4nlx8ajxPguar/ZlkBCQxcruTlvmrXrLkZHBVGExwAZNeGlGcqbCg4TUbtWo0IRCnYlJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713185886; c=relaxed/simple;
-	bh=JuY8Z9SFKAjd485RmpEzDICfCQ5m1DLNGhij0gfh/6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LGmb406IyZdON5a11rUL3keO8BGlPWOv/HMwPm97tcdAM45nYuYs+l+JDJdZx935RrK+tdb8H58ykXgzyGnYfsXubdNMxtWa3F8iOsCMZ0RRVOx3KbT1bCTbgaahUxvInbtFlEmJtrxwf4JpPXZom8NtlWgnUiIEIK1n5HscH8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nzCOsXox; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713188745; c=relaxed/simple;
+	bh=z32CIwWQD4JoiW1WeMXZvCwEz34iuVgxLb9gsZ5i56w=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jn2iZo6Vz9xO6wI1M6ig/C2jQY20k56tV92USnd2saLSk1zry99mvMRuW2d4HgxfrSoq2rNDDZZrI+dP3AkKri8a2RFYpHj51st1QTUl8kX23AyeYwgEzIsrYENxW6znawm9ldVLRAjLjdQDzUaCim/Qi9dhasdsp0HfG9djDQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Dy752Knc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nzCOsXox"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4167fce0a41so22649695e9.0
-        for <imx@lists.linux.dev>; Mon, 15 Apr 2024 05:58:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713185883; x=1713790683; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tLf6fjTVo3wUpV33VREESp7KlEYlqmXsy5vGMydSZn8=;
-        b=nzCOsXoxJdPsado5vwYR63IeFtOXeUlvaobN2/nnO1t7HD+Xy2khjaAybDuR3088Cz
-         9603GI94hYTXKl7Bdy64Kzxd+Ro7IoLWXCp4bKECQKTJFAYq/uVEoUNHWceHaAHJzcDi
-         aceSFZ8v8xZDk3Uy+/11sw1588C11XmkB3Xi0WSsyCHrsWQXl1PSTRwJcQQhAiEve8i0
-         HFZI0peMdyXtksiR1nlnjVZzwm/+oApcv8o24GP3+GTgFU4QVYr3MllQdbHvCJycAIqg
-         5tT9uRt/ptAOIjt0Y/cNXeT9VPL2fz3xdOuHtnmAa+M/I35dpyw7JliC6Gw90A+Re+mQ
-         tQJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713185883; x=1713790683;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tLf6fjTVo3wUpV33VREESp7KlEYlqmXsy5vGMydSZn8=;
-        b=dTC+Yno+u7tN63AzyDNstASYVzXEzmpiFyyEU1eR0B+PeEkuBGQ1nOAwrZ9Yec7c36
-         TUMKgBGLUCzAgi+wt9EiVztMit/trAyYDiIADVBdvVhyDhF6vyLt+BtCvXyVcjAFzAeA
-         Hk8tid9tqc0RyzaVH19x2fWgTDa0Cj2ZFdBLw4DA4HhlxjEiu5qNq/QlhlT22AbzsmVR
-         T/MjrBCd9/CyPAWYtf+n8CFE4tbkpyLv0S3b2La2gAvd3n7hbLwzuuRaaGdoP3lmKWru
-         dPKaVROHaAdvgFKePsc12Gor7BXxmGeG1X6IWGOH83ZPx7iq3IwtpSvJZQhawkHdmIDf
-         pzdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGgwu9pjXgpbGfDfgcW9iifhbde0pEdTbob8AZSQXiQhTa+yXiTHJkzVC5LH+lKV3h1ac+cfRgnlT1jX2P2xFtO8HX
-X-Gm-Message-State: AOJu0YxE0hTpjB4MrCppRqa0kySVsvhxwUCZZfanzZAmbfI51d83OEvO
-	by821hFFAT+PLDj0hLKpcWB7XeomBTg6lSJheFOMzUNPd4NgUFsCkapFwMCDMGA=
-X-Google-Smtp-Source: AGHT+IEAm03/mAgN/wD9H5pLJe3fIVolEbWIhU988XB39qknEhlAzrxruGN5U/LF93zzxG0bYawaFQ==
-X-Received: by 2002:a5d:595b:0:b0:345:e750:6d6c with SMTP id e27-20020a5d595b000000b00345e7506d6cmr7277507wri.30.1713185882741;
-        Mon, 15 Apr 2024 05:58:02 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id f18-20020adfe912000000b00343d6c7240fsm12032238wrm.35.2024.04.15.05.58.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 05:58:02 -0700 (PDT)
-Date: Mon, 15 Apr 2024 13:58:00 +0100
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Alexander Shiyan <shc_work@mail.ru>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH 00/18] backlight: Constify lcd_ops
-Message-ID: <20240415125800.GO222427@aspen.lan>
-References: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Dy752Knc"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43FDi9sY023070;
+	Mon, 15 Apr 2024 13:45:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=qcppdkim1; bh=yhE0N2GTjzloNk8jSE6bL
+	1E7cB8XApNZKK5EefZJ4P4=; b=Dy752KncX+0qPUtwl62xGFwJu/DOlByTMSyRV
+	RwDnVwOE2JbPaOKtAnnuZ4KDvEtt96WpkJdEuSqG3Z81yMGtE1tR/JZg0/65ba+L
+	uxKdfeWJY5EYSG7hct3G3MU/VXT0J5qwUObOKD72jcfdItNgQITAWAaQiyLD3wtU
+	qTZa0QlwsrBItBOEfCjUkZos6vP8ZSmi37nZEqU/sC5G1kLjpyRWmFF4oeoVU9+u
+	tZ6b38LS+iFCIGmf+tCxaaDJD/Hsiyzo7vaanv75QPxJjYuzAcmgMxIKlKlnH+e3
+	zVS2p75tmrlqh/enbvxgsTGVThcfHpx2me1Ug9jnaB1kKNFJA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xgwdph65s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Apr 2024 13:45:05 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43FDj3v4031752
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Apr 2024 13:45:03 GMT
+Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 15 Apr 2024 06:45:03 -0700
+Date: Mon, 15 Apr 2024 06:45:02 -0700
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
+To: Rob Herring <robh@kernel.org>
+CC: <soc@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Florian Fainelli
+	<florian.fainelli@broadcom.com>,
+        Broadcom internal kernel review list
+	<bcm-kernel-feedback-list@broadcom.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Tsahee Zidenberg <tsahee@annapurnalabs.com>,
+        Antoine Tenart
+	<atenart@kernel.org>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Liviu
+ Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo
+ Pieralisi <lpieralisi@kernel.org>,
+        Ray Jui <rjui@broadcom.com>, Scott Branden
+	<sbranden@broadcom.com>,
+        Robert Richter <rric@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>,
+        Li Yang <leoyang.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        "Paul J. Murphy"
+	<paul.j.murphy@intel.com>,
+        Daniele Alessandrelli
+	<daniele.alessandrelli@intel.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory
+ Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth
+	<sebastian.hesselbarth@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Thierry
+ Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Andreas =?iso-8859-1?Q?F=E4rber?=
+	<afaerber@suse.de>,
+        Heiko Stuebner <heiko@sntech.de>, Orson Zhai
+	<orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan
+ Zhang <zhang.lyra@gmail.com>,
+        Jisheng Zhang <jszhang@kernel.org>,
+        Alim Akhtar
+	<alim.akhtar@samsung.com>, <linux-fsd@tesla.com>,
+        Michal Simek
+	<michal.simek@amd.com>, <devicetree@vger.kernel.org>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+        <linux-tegra@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-realtek-soc@lists.infradead.org>,
+        <linux-rockchip@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>
+Subject: Re: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
+Message-ID: <Zh0vXinxy7woerJQ@hu-bjorande-lv.qualcomm.com>
+References: <20240412222857.3873079-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org>
+In-Reply-To: <20240412222857.3873079-1-robh@kernel.org>
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: JnW3rpgElRZ7l7_IYzSAkLFTQ0q_Cpaq
+X-Proofpoint-GUID: JnW3rpgElRZ7l7_IYzSAkLFTQ0q_Cpaq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-15_11,2024-04-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 clxscore=1011 mlxlogscore=803 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404150089
 
-On Sun, Apr 14, 2024 at 06:35:58PM +0200, Krzysztof Kozlowski wrote:
-> Hi,
->
-> Dependencies
-> ============
-> All further patches depend on the first patch.  Therefore everything
-> could go via backlight tree (please ack) or via cross-tree pulls. Or
-> whatever maintainer choose, just coordinate this with backlight.
+On Fri, Apr 12, 2024 at 05:28:51PM -0500, Rob Herring wrote:
+[..]
+>  arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
+>  arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
+>  arch/arm64/boot/dts/qcom/sdm630.dtsi                 | 2 +-
+>  arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
 
-Thanks for the tidy up.
+Acked-by: Bjorn Andersson <andersson@kernel.org>
 
-I've added my Reviewed-by: to all the backlight patches (for Lee) and
-I'm happy with the other patches too... but I didn't want my R-b on the
-HID and fbdev patches to be confused for an ack.
-
-
-Daniel.
-
-
-> ---
-> Krzysztof Kozlowski (18):
->       backlight: Constify lcd_ops
->       backlight: ams369fg06: Constify lcd_ops
->       backlight: corgi_lcd: Constify lcd_ops
->       backlight: hx8357: Constify lcd_ops
->       backlight: ili922x: Constify lcd_ops
->       backlight: ili9320: Constify lcd_ops
->       backlight: jornada720_lcd: Constify lcd_ops
->       backlight: l4f00242t03: Constify lcd_ops
->       backlight: lms283gf05: Constify lcd_ops
->       backlight: lms501kf03: Constify lcd_ops
->       backlight: ltv350qv: Constify lcd_ops
->       backlight: otm3225a: Constify lcd_ops
->       backlight: platform_lcd: Constify lcd_ops
->       backlight: tdo24m: Constify lcd_ops
->       HID: picoLCD: Constify lcd_ops
->       fbdev: clps711x: Constify lcd_ops
->       fbdev: imx: Constify lcd_ops
->       fbdev: omap: lcd_ams_delta: Constify lcd_ops
->
->  drivers/hid/hid-picolcd_lcd.c            | 2 +-
->  drivers/video/backlight/ams369fg06.c     | 2 +-
->  drivers/video/backlight/corgi_lcd.c      | 2 +-
->  drivers/video/backlight/hx8357.c         | 2 +-
->  drivers/video/backlight/ili922x.c        | 2 +-
->  drivers/video/backlight/ili9320.c        | 2 +-
->  drivers/video/backlight/jornada720_lcd.c | 2 +-
->  drivers/video/backlight/l4f00242t03.c    | 2 +-
->  drivers/video/backlight/lcd.c            | 4 ++--
->  drivers/video/backlight/lms283gf05.c     | 2 +-
->  drivers/video/backlight/lms501kf03.c     | 2 +-
->  drivers/video/backlight/ltv350qv.c       | 2 +-
->  drivers/video/backlight/otm3225a.c       | 2 +-
->  drivers/video/backlight/platform_lcd.c   | 2 +-
->  drivers/video/backlight/tdo24m.c         | 2 +-
->  drivers/video/fbdev/clps711x-fb.c        | 2 +-
->  drivers/video/fbdev/imxfb.c              | 2 +-
->  drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
->  include/linux/lcd.h                      | 6 +++---
->  19 files changed, 22 insertions(+), 22 deletions(-)
-> ---
-> base-commit: 9ed46da14b9b9b2ad4edb3b0c545b6dbe5c00d39
-> change-id: 20240414-video-backlight-lcd-ops-276d8439ffb8
->
-> Best regards,
-> --
-> Krzysztof Kozlowski <krzk@kernel.org>
->
+Regards,
+Bjorn
