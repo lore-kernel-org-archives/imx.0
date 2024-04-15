@@ -1,314 +1,116 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2084.outbound.protection.outlook.com [40.107.15.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C69158873
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 23:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713223048; cv=fail; b=uib5t6OAMod6UHjoplzE3u2mWWBr31K0NawXfzKmK9tcoxgiFXOW3gSEaMPF4kNQO88FrN8kobU02i9Aea9MW8oJPBD9gdbvMu6U56Oi/aPxojCtNs+uFCbGM9rwjkD0zbTWiz/zKCwmwkX0eBStcShYXLYkcWJZRlNMJJZsbLI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713223048; c=relaxed/simple;
-	bh=9GGxT+Qd3O44G6ZVjCrGxxwo4Ib9zfB+yxxBBegOszA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FHu+hPkX9swgjobNTXPJo213KrjWbC0LccegdHAZvMoz8JVCyTjWw6cLJ3ny43v+pAWXBT3Jt266stzLdoF2KVv/ltMjEytSxOfzwzMCtwwpqVxB8a3EyhfXzmNQaTDlS+lMaiQQhibdPc8r2BM12mb7sgmIyqOVmY5GRs+Wwww=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=BcHH5c3j; arc=fail smtp.client-ip=40.107.15.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07F71591F9;
+	Mon, 15 Apr 2024 23:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713225228; cv=none; b=aY50IK6GX+EVjIUf3TzZQNnv9bFKEQwO6OAqfLs+FifVEbrH5H4LUNP9JYRRHLPB6uI3n446sfnj5CITOvySxatlX99/upcXwoLMrnvBmpEBcVoitLYvsaBXXJXnwhwzkIXbt8Bmzc/Y9aiHuTUh+h3hpgb7rVR4uScAOc0W4dw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713225228; c=relaxed/simple;
+	bh=Glti5hmyaExB5aURz0ZlgjDbYGJVM7NX72vmMzXnptw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hwHMwN0a3mumtyZkBOu5QpmDRk+Yln1khT0rT/roY1rM8R1AYejYT7lsINYGNZUlhLwCaWWJESOcb0Y3dNJ1IPFd/JMJLJJnfrjWytyXGVXOq0/RJYjrv3MoA7kPSlsK4bID0pNuYz1BenEIsIF+gVS6wtDHEnnTwLFBnY8RJIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZL1hpYiq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="BcHH5c3j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gpRmzrMccXuy/TRLHhgD6EfzeiQHJ6QT9BCsBrRPEVEEGG/MpnL0CjMQZrblzcDwmVmXP9m9LcRo76rddzK8HdFq15g1SQ68tHCS6WWGGOSfHUBfWi8LG+ZWFGpDY0LsRJbv1BIkim7eQfvZ4jlru1wnfzc1To69iP8M2FciLfQEBt71SScn7dSwnK9kYAptkHYMTd2DhgqDbXS7RGd7D4UbS8TEWCh764HbjP+RwG1cHk85The9096Mv0dRGaKpYKDQHsZFhDkcGtX8UjqWeBtwew8+IkrfA6QUYOdB7IVb0toJVbSATceGZRME+KUJejuVfh99Z85V8WxzC0tE3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xaY8MMqc8QJGt+Qp/QPNjSAYiPp2Sqnb6wOKy66rJqY=;
- b=dlKPCbK8iy0yYRP3pzoM26hH9Y7OkXon75klvUOl+k473ZISCkwXOnUOdoIyAj/GNehI5/NX4JEtm3Sl+USepE0eMtpoOH+FjJt/3iezHtCwUWGy++jIOPy5xKi/FcBg0bVC5r6tJXJFVDsr7JVRb2maO15ZyeQO3JMQbOt1R6BvJnrgF+TAALftS9V0BvVN0AAC9TZTyqB4on2cgMtiDekj7P60VqRLmol+27ZL/GNqxbgK6ew29HDoRTHdAHAU/xSKQZfpvVhay5RAOBiBJ7zIcxOhOFYwH9lLNVdB7VVckLc85r/NjmzwyWBLNc1+yGAGntnNgDzAuTWyWjlexQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xaY8MMqc8QJGt+Qp/QPNjSAYiPp2Sqnb6wOKy66rJqY=;
- b=BcHH5c3jDc+ALLPXRY8lOLJUAKDzuyXPy4iPTKlTVxkrj1HKA7scZXN1IO3GpzpRzK1savlu99Wms9DOtH16m2/M0vzVbbPU3NELxY9cWGiFU/5SGCzCfGvI5qSNiQhc7vRvGx8mfnX2ZVt8KJEwmrsoVdEGQrE0EGAwT1+AbrA=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by DU2PR04MB8918.eurprd04.prod.outlook.com (2603:10a6:10:2e1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Mon, 15 Apr
- 2024 23:17:23 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7452.049; Mon, 15 Apr 2024
- 23:17:23 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Rob Herring <robh@kernel.org>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-CC: Linus Walleij <linus.walleij@linaro.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Cristian Marussi
-	<cristian.marussi@arm.com>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 1/3] dt-bindings: pinctrl: support i.MX95 SCMI pinctrl
-Thread-Topic: [PATCH 1/3] dt-bindings: pinctrl: support i.MX95 SCMI pinctrl
-Thread-Index: AQHajG9cdUkQ2lgZgUStYTjvuii937Fp9agAgAAFLsA=
-Date: Mon, 15 Apr 2024 23:17:23 +0000
-Message-ID:
- <DU0PR04MB94174F4B34DB446A951CDBFC88092@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240412-pinctrl-scmi-oem-v1-v1-0-704f242544c1@nxp.com>
- <20240412-pinctrl-scmi-oem-v1-v1-1-704f242544c1@nxp.com>
- <20240415225008.GA215835-robh@kernel.org>
-In-Reply-To: <20240415225008.GA215835-robh@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|DU2PR04MB8918:EE_
-x-ms-office365-filtering-correlation-id: dac86816-eee1-4936-0408-08dc5da234c8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- MKTiiYkgEFv/Tsv4M5R7Re/+HX5xoUE/Y8itnU5MRuHG+9K8si4RAerk6zR5NLRK7YQzAgbSLIGhnoCq6LkGYW34cKWyqXol2a/YtNo+VUBYbtNJKY0hse+O/1fkJK00wJ/hx+qu8GXZaEv/0NWHnP7m2+U0wdMIWMLS/1rC4WkM/dtWYfZtLq1VtAyCHqP1tvFS/LkLIyttWC+RYGNtVual9rCDWb0Gz7Xzr9wYWV7izy6tDdWtodudsvqJOjC0ZNFgBbWa/35VdMN4szapiIRFKA7XzbjGfnIasme7zX6JFN7NVsnb3ZobhOvkbjvLmbD5Zua/dsXIjzObzwvafXiFJ2mxXZ4ICqy9HoO6+cnlHqdgPgL2jDxbJYXY29OPFtVQ91KPnTFEY75UTVGmdP2diL9+dfAQCnr5OJIu3dDxO2pj2vvWZPupWaeBDQS0oo7i4vVzf/s3V6hVfWAHT0pQS4ZaHfUz5rqw6cJMl06SvclHogccLBw58JrDj0nMPL5SnfppHYo8gpfsg/Z1uizfMAvap90POybPdV3l4ILnFj+enF3sfvqqX0XbRiamevlmHnQXuxbxhWeairfW2LYuU5JDuDkEmUcWcxteBkGzGVtiTRqast3UlTJloEi4T2nKOsjTpfV3r2dv6MRsQboMo2SbePS5pTSWEaVG06J7z3wgsh50l7nx5kTJEuyydUuvqNoh9ZpfBMLT2mk5MA==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+xQvLD0Y1KNIMCftvOZPauQNrFsig/pQdXCt0BJwbioZshULMHRqTA5WeYTG?=
- =?us-ascii?Q?MmH/4L0iO4hfgC0x42mJJoQs4IrFBMphOlc+4oRhFClyv+sz1YBEcYy24FNG?=
- =?us-ascii?Q?mW2GRLK0kLOeZ7ActVNaXUTV6rzdNf6CfXlblCZ1vg67a2hCsh7xuWIb0Be6?=
- =?us-ascii?Q?4wd2bB08AHw8gU1tv4vikk7AXFrzNaNauz4/iovPYHP/FQME1eX6Q42Zeddu?=
- =?us-ascii?Q?tv2E9FyFELtwFULthOMAOfi6RjCP6hA63GeY4cLEVWC82XYE1ALTpCRtCrG1?=
- =?us-ascii?Q?ntXYic7EGvrVzuikzWkg2ovSylCUrwzCtPZTiwNbVylLJsauDChIU9jPh8QX?=
- =?us-ascii?Q?PUYBtNxLyf3Cj0cGOgLOEhILVy1KbSyssst3lFXBv3kbOWR/m22jMzR/ymac?=
- =?us-ascii?Q?MQ7ov5A7W5CSb01QCJ/qRsPKzakxzo5XBH6DtAl1wtWIbp54z8PFM2vDU4YH?=
- =?us-ascii?Q?D3fMUod5Bviz08iXUOy+omIil5iM0kd5o0fjs5Hq/gAw2UOwFDYTpjbDzAjP?=
- =?us-ascii?Q?QnvqAnXEvWV3XtGlkhXXGQMa07hM2CD6H4mJhiAxGLMKP7On3coCJCkkL2yG?=
- =?us-ascii?Q?O0dMW+XB2i6l/PLo24flzW+QeIR/wjtupnagXyebdf2tTrtQPlmvUefnldgE?=
- =?us-ascii?Q?Cw6d7M5WLqjD0drT27AeZeYqGaE+pwvV/pc7eo7M1QetUJ67aYDxyv5HqNvk?=
- =?us-ascii?Q?edfUDOHpf1Dt/Pvcoz4faRXiuDRdT732jmzJOc9LWN1pAgisz7T/dH9XDhz+?=
- =?us-ascii?Q?6PPbxSChdzIn9j6ozZ/m1+nuIacGxpAdWQLNEETCl+Ip3LYkC9F67h0aLNfK?=
- =?us-ascii?Q?2CyF+Ymy29nXRyjkBWHRCIdB0zVX2AqDG8zHbc83G2bswrsNBrGvv45x0g8n?=
- =?us-ascii?Q?gqBa8Lwp2SJj/VMIR1qB3HyloyZi9bamSAn0PeJHVsmjlRiaBCnCdFYAscEU?=
- =?us-ascii?Q?29ID7hLQCR/Eay30BQwb9yNphB3QvQy+5yPYchPH193QCSpg91HUjqDW1OeI?=
- =?us-ascii?Q?62ekpO/m43lW0laJJChsc9mfmOu8ZYmp3UgQJvBVgiXQ1/rqlnwc7tBaIx8h?=
- =?us-ascii?Q?J8wwu165VGtIhNKUHMQIAeHnVZ3C1wX+/ifgwZ3bgvwTN5HTGV/cjNwf8VZC?=
- =?us-ascii?Q?p5VWKDh05duUJuQYPKJnwb3F/7ufTnFsFgdDSgfr7mr1zJbDsJFoEhWjNci8?=
- =?us-ascii?Q?Lq7n7amaUnp+otJ33OfJfor0dry/j88V+pnP6EUiAcruksXSJ6Htbcpo5PiT?=
- =?us-ascii?Q?2f4i4/tJunlWsOODa61TemDzmMjE6vxt9Rt7StGp8KBSpmklezSrC76vRHvJ?=
- =?us-ascii?Q?Mn+6lZkD9kBJaqU9YTh21kYKk5s2wxQU0nnkMr/0xj3AneYgSgg/2CUGLhyG?=
- =?us-ascii?Q?+sWKtVYYQZzK1wgO8gY5PwM4CB8UNUnE3c++8C0O9i9iWtDwgGi5hs7GkwWO?=
- =?us-ascii?Q?IYzILDClgCpsK5taju/jT9QmEchtlsr6CTZI4wf6eobw6bukqYipzyB07ZAN?=
- =?us-ascii?Q?m9XYKRysT+zs2/fducjsJDYc46M/VcFptD5mXtr8WzbIhzHhiw9VJLXbtqZI?=
- =?us-ascii?Q?R3MTgH8+1x24Sb/Of2s=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZL1hpYiq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAEFC113CC;
+	Mon, 15 Apr 2024 23:53:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713225228;
+	bh=Glti5hmyaExB5aURz0ZlgjDbYGJVM7NX72vmMzXnptw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZL1hpYiqFFDqEGcnDjrAmsFrlATUjRRZYpTwcmizOz0LFIFtZNFdvRy1mN1IFPBfc
+	 WKhjgFdNYyuXRRIP7E55JZ15scpBAphhvGyqy01JkbCkAqyPNjaq/Rb3zgvOCRtMtg
+	 U+b0hvgvCsCHj48SPclceOQU2PaC/XQX/WOL9tjvJzR7xiIZ2Py7xfsQAvhKmjezyg
+	 GBuxyh0pQMfR2gkRe2josr74QsPhHNKT8doEeokNaAHLhNRpPBHW+yEiZZDgGC0b3d
+	 D59ME0/rdlohUULjuEmzYZJ/jw3jcaRhYSrYHTXKtYYSnM33E4eOw99zTY4n6Y9uyH
+	 f+/I59nHzeKmg==
+Date: Tue, 16 Apr 2024 08:53:45 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 0/7] drm/display: Fix display helpers depends on fallouts
+Message-ID: <Zh2+CZ2G9UOxcUaf@finisterre.sirena.org.uk>
+References: <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
+ <117b0d3b-a60b-4bc0-9f2c-f0e4fffe634a@sirena.org.uk>
+ <20240415-sloppy-invisible-crocodile-da4545@houat>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dac86816-eee1-4936-0408-08dc5da234c8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2024 23:17:23.1314
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CNMxBYV280pydP4oHPiAOa9HVmKqF6eF92CN0OQVW2iDaXz9cQu8H1iWuxRlVU0SbN77UTjQf7aqgH5FFHIWRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8918
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hvR5IVqVtFxbshiT"
+Content-Disposition: inline
+In-Reply-To: <20240415-sloppy-invisible-crocodile-da4545@houat>
+X-Cookie: You might have mail.
 
-Hi Rob,
 
-> Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: support i.MX95 SCMI pinctr=
-l
->=20
-> On Fri, Apr 12, 2024 at 08:29:25AM +0800, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > i.MX95 Pinctrl is managed by SCMI firmware using OEM extensions. This
-> > patch is to add i.MX95 Pinctrl OEM extensions properties.
-> >
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  .../bindings/pinctrl/nxp,imx95-pinctrl.yaml        | 44
-> ++++++++++++++++++++++
-> >  1 file changed, 44 insertions(+)
-> >
-> > diff --git
-> > a/Documentation/devicetree/bindings/pinctrl/nxp,imx95-pinctrl.yaml
-> > b/Documentation/devicetree/bindings/pinctrl/nxp,imx95-pinctrl.yaml
-> > new file mode 100644
-> > index 000000000000..4bf7a6192813
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/pinctrl/nxp,imx95-pinctrl.yaml
-> > @@ -0,0 +1,44 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) # Copyright 2024
-> > +NXP %YAML 1.2
-> > +---
-> > +$id:
-> > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fdev=
-i
-> > +cetree.org%2Fschemas%2Fpinctrl%2Fnxp%2Cimx95-
-> pinctrl.yaml%23&data=3D05%
-> >
-> +7C02%7Cpeng.fan%40nxp.com%7C4c448715c4ad4cd1f70808dc5d9e6924%
-> 7C686ea1
-> >
-> +d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638488182142511691%7CU
-> nknown%7CT
-> >
-> +WFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiL
-> CJXVC
-> >
-> +I6Mn0%3D%7C0%7C%7C%7C&sdata=3DBckWIcVgYU6l8lV6fIpyDIZHt5hCyFdgF
-> xaWBUBb9
-> > +7s%3D&reserved=3D0
-> > +$schema:
-> > +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fdev=
-i
-> > +cetree.org%2Fmeta-
-> schemas%2Fcore.yaml%23&data=3D05%7C02%7Cpeng.fan%40nx
-> >
-> +p.com%7C4c448715c4ad4cd1f70808dc5d9e6924%7C686ea1d3bc2b4c6fa9
-> 2cd99c5c
-> >
-> +301635%7C0%7C0%7C638488182142522802%7CUnknown%7CTWFpbGZs
-> b3d8eyJWIjoiM
-> >
-> +C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7
-> C%7C%7
-> >
-> +C&sdata=3D1BJASfju905Rua9G2mkNvPKDppN9%2BP5UaxFCbXDtPqo%3D&res
-> erved=3D0
-> > +
-> > +title: i.MX System Control and Management Interface (SCMI) Pinctrl
-> > +Protocol
-> > +
-> > +maintainers:
-> > +  - Peng Fan <peng.fan@arm.com>
-> > +
-> > +patternProperties:
-> > +  '-pins$': false
->=20
-> Why?
+--hvR5IVqVtFxbshiT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The node will be as blow, there is no
-"-pins$".
+On Mon, Apr 15, 2024 at 01:21:47PM +0200, Maxime Ripard wrote:
+> On Wed, Apr 10, 2024 at 07:06:39PM +0100, Mark Brown wrote:
 
-+&scmi_iomuxc {                                                            =
-                        =20
-+       pinctrl_uart1: uart1grp {                                          =
-                        =20
-+               txd {                                                      =
-                        =20
-+                       pins =3D "uart1txd";                               =
-                          =20
-+                       nxp,func-id =3D <0>;                               =
-                          =20
-+                       nxp,pin-conf =3D <0x31e>;                          =
-                          =20
-+               };                                                         =
-                        =20
-+               rxd {                                                      =
-                        =20
-+                       pins =3D "uart1rxd";                               =
-                          =20
-+                       nxp,func-id =3D <0>;                               =
-                          =20
-+                       nxp,pin-conf =3D <0x31e>;                          =
-                          =20
-+               };                                                         =
-                        =20
-+       };
->=20
-> > +  'grp$':
-> > +    type: object
->=20
-> Missing 'additionalProperties: false'
+> > Is there any news on getting the rest of this merged?  It's been more
+> > than a week now and the Designware display controllers are all still
+> > broken in -next, causing widespread breakage in CI.  For bisection
+> > purposes it probably makes sense for the defconfig updates to go along
+> > with the changes to the Kconfig for the driver...
 
-Fix in v2.
+> I was on holidays so I've admittedly hoped that it would be picked up /
+> reviewed by the relevant maintainers.
 
->=20
-> > +
-> > +    properties:
-> > +      $nodename:
-> > +        pattern: "^[0-9a-f]+$"
->=20
-> Drop. That has no effect. You just defined the nodename above.
+> Aside from the changes on sunxi_defconfig, I haven't seen any review
+> from the relevant maintainers so I'm not sure how to merge this. Should
+> we get an Acked-by from Arnd, Olof, Catalin or Will and merge everything
+> through drm-misc?
 
-This is to define a subnode, as just listed above, "txd" and "rxd".
+Sounds like a reasonable plan to me - usually it'd be the SoC
+maintainers for stuff like this but they're not on the CC, though TBH it
+seems sufficiently obvious that I doubt anyone would mind if you just
+merged things without waiting.
 
->=20
-> > +
-> > +      pins:
-> > +        $ref: /schemas/types.yaml#/definitions/string
-> > +        description: name of the pin
->=20
-> Needs to define the possible values.
+--hvR5IVqVtFxbshiT
+Content-Type: application/pgp-signature; name="signature.asc"
 
-There will be hundreds of pins, I need to list them all here?
+-----BEGIN PGP SIGNATURE-----
 
->=20
-> > +
-> > +      nxp,func-id:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: high impedance mode ("third-state", "floating")
->=20
-> We already have a standard property for high impendance. You should know
-> that since you obviously copied the description...
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYdvggACgkQJNaLcl1U
+h9AFegf/bZsYaXP8tRkdBSjyeRExVkNbru80uysU+lEbQYvxVG8vF5HBon4Llvvy
+FRg2q45T55EjATaU7/f1FDFJ3TVDtXnQ4bWRlx4dvbk5S4Hcb5XaoGmwatO6eHmX
+rQz/hduFIKhwU+82v3ND/kJYfR1f9+8dvnCdL5TblWBG4o/p21dMWJKoAOlDkAzQ
+Ygt03tBG4O46UgmwS8aPVSbv0ShId3zR/L9lYdIVvtQaK6a0CK7+5EIoS5emLKlZ
+zeXN2qxSfzaUNhhGtJ3aD0Fa76bGjFeXB54Io6f8fPawV/QkDfaxIGFf9FG/G2gq
+D7fQ+Bg6302L5j6cebEC3qW3tmxzdg==
+=U8FE
+-----END PGP SIGNATURE-----
 
-My bad. Fix in v2.
-
->=20
-> > +
-> > +      nxp,pin-conf:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: latch weakly
->=20
-> Same here.
-
-Fix in v2.
-
->=20
-> > +
-> > +      nxp,daisy-id:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: pull up the pin. Takes as optional argument on ha=
-rdware
-> > +          supporting it the pull strength in Ohm.
->=20
-> And here...
-
-Fix in v2.
-
->=20
-> > +
-> > +      nxp,daisy-conf:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: pull down the pin. Takes as optional argument on
-> hardware
-> > +          supporting it the pull strength in Ohm.
->=20
-> And here...
-
-Fix in v2.
-
-Thanks,
-Peng.
->=20
-> > +
-> > +additionalProperties: true
-> >
-> > --
-> > 2.37.1
-> >
+--hvR5IVqVtFxbshiT--
