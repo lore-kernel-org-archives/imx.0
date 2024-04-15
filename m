@@ -1,147 +1,159 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01993B28F
-	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 08:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713171476; cv=none; b=pt8A/MTvPtZ+oB70UEOA4vM0Xw0Lx9I257V3H3VdYXl+a1JFo1485+pX/eNyUF31ghFCuSw74PjYAIaoOV4OLt/BCv8XCyn6Gskmt/WjI0WVmUOa+Mxen062I678vDgfLLEeB+mbdvc3+/fI2oxsUrttN21rCSexyH1WZlVHYY4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713171476; c=relaxed/simple;
-	bh=y17O9lADy1koeCNGu1Oe7+FyvbVjW2CQKFJ5vnc/bJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ny2kBMLj5rh7luH0Vl2mG1y2ZAPnkk0MLgXY8BDkVedg/WnVs8m78aBFzqovagbYpc6AZE1c8HsdbOgUlPvv2lt4NoCUbt9XaaGKFbbroH1Xr6s/Gwb5W21Tae2wzCbFjV2Kj2SHQY/Mdw/3A52pNimag8gkAWE//t88PCjXbBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D38C2F;
-	Mon, 15 Apr 2024 01:58:22 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5E68D3F64C;
-	Mon, 15 Apr 2024 01:57:48 -0700 (PDT)
-Date: Mon, 15 Apr 2024 09:57:45 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Rob Herring <robh@kernel.org>
-Cc: soc@kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Tsahee Zidenberg <tsahee@annapurnalabs.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Khuong Dinh <khuong@os.amperecomputing.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Robert Richter <rric@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Paul J. Murphy" <paul.j.murphy@intel.com>,
-	Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
-	Heiko Stuebner <heiko@sntech.de>, Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, linux-fsd@tesla.com,
-	Michal Simek <michal.simek@amd.com>, devicetree@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
-	linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-realtek-soc@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
-Message-ID: <ZhzsCYu4PEYaQFaF@bogus>
-References: <20240412222857.3873079-1-robh@kernel.org>
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2044.outbound.protection.outlook.com [40.107.7.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AAC56745
+	for <imx@lists.linux.dev>; Mon, 15 Apr 2024 10:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713176909; cv=fail; b=lPvfNom/Btwzy9m+ImbmPNI0j8uuHKqXOIugII9JiddPWzZI/qpuzCU5lZwUPIa/yV28BdE1wdgtLJjqB60oJ4glL1VcZwPG2WBZBy09qe9qsfob5zNBcYN2wmpVMSTEXq8dJZezIAp/EuCYfn5Mq7yUwI9nU36PDzILNyBuoqQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713176909; c=relaxed/simple;
+	bh=wEKbzjGVLq1Q/4LaOSsV588Gx4OL/cLpZ0eZ5B/2MyE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jcGPQJOjSglbZgZgB4dUfo17u6n+HW53P455zP+Q53of1a8ypzRXR/HKlyc3YkfHwN1cm7i4eQr6kQ1tTehlP6X/keVGtMlaEgVLrjloWMJD25Bp+Wd6UFSlQ8lfz6PApsoM6cFBG6AaQCNLpkcC52sWBSTmwDx7OGaa3Lv+Lhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=O0LCBjKZ; arc=fail smtp.client-ip=40.107.7.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="O0LCBjKZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TBDcNELDNy2eXyq1hCXdzg/e4qSAMstiX4onUTximEouysTOfgoBTfRO74mG9HuS+9pig5kxTNG1vGcY7VjBDRVfBJE9fBy8sgLs5/Ll8gm929odGmiYEzVCmDAzI5Oep4B7o8zaKBaBVT8wRFBYuqo7uhnbEPf5zzaiATAYSuY0MoPO4RwfOqhJHar6ZeFRmiWMzuOjZ5qhrvEqC57PgQZ9zAyLmXFqu9ee1k4+xPT2WmkQDni3eoS91aRwZD7/u1s0V8MuknilNyYo/LKehu3ijKUSIS38+PadhItoh2rDbp1y6LciiLfKtlMKvL1OfIszR0HhqLDiDT7dqv88Vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DS8xZlJ0aMm73UmUIvpcSW9ZGy5YuyyuSPsRl/3thiQ=;
+ b=bdw7xkJ5J0PVaYmAWCUJD5dbzy7XtyORJtx1vWBmM7kQSY8eO5B7Bue38vD6m6epn2HDmfzYFO5WqtorJicsEP2CponhGQHGBtBPvHh4MNRQw05FLdbp+I9AhKiIUN6Psuo97wS26aIF4jSdha7yxL/NG54oqFwzLAiie7mMAJMLpE/tS8enojCz+82Ct+I0IGJNO8wWseCRXiCyDcdP14+Z9q8Al1EbbBLlocENw5+jCI9YLGallgqcQHZ8xBtXV6iefJqDEip37xWOvI1bPQpOFolMmIy+BhFP23Pt5EZHKWtg8N4H5j9R6dK09JYmeLxvAs2w6J199nBBjYjXPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DS8xZlJ0aMm73UmUIvpcSW9ZGy5YuyyuSPsRl/3thiQ=;
+ b=O0LCBjKZCFYnV6v42vl2grS5qr41ABXuqIOweSwaQLTu6YJPAd1ZOD6wv5V/H7P+Ko9ah20/JpzHD5Z7EPH90wWlHpBDIPZr9Xx3oeqHa76iOuQD0Pme06SxYaHQiHrnC3LO1+4B6rG8WzTgy0Xw6A+5e00RLOPLU+qykG8LuEg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by AS8PR04MB7895.eurprd04.prod.outlook.com (2603:10a6:20b:2a3::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Mon, 15 Apr
+ 2024 10:28:23 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7452.041; Mon, 15 Apr 2024
+ 10:28:23 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	xiaoning.wang@nxp.com,
+	linux-imx@nxp.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH] dt-bindings: net: nxp,dwmac-imx: allow nvmem cells property
+Date: Mon, 15 Apr 2024 18:36:21 +0800
+Message-Id: <20240415103621.1644735-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0151.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::31) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240412222857.3873079-1-robh@kernel.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|AS8PR04MB7895:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7167738d-9bec-4a84-d52e-08dc5d36c705
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	P03QLMoBSwGVj8DWv6fyBVxWqwt0ndy4as24UsdV50DzEG+HQuka0ZVcFRH+6WkUzPLzpgt7VMcB7ntuJJ7RZC2XThJ/sq8Z3hbk/tap8OnjVDX3JKkx452VX3fmuzr1wp/IkuUuK6rWPcqVbCcnDHVMZtgWF8KolRkg4YJlNFoxMnLFfs/CyHO/QWNfEKtJqNqYPXff+/N+/GmhLt7LqMO90+9/EWPD1D9b2BCMPy5bRGb5rd+hf7LT3szJVpYeLV1hV722vHfrl/l7R3m1ckt/5x9Ds3+ciinktj6um+P0qlTWvNz56baXf1G/W8MJ6D1ndVHpSJDfj/1eAtAyf7+DzxOpo/ucR/V3ZIZ0QcYS/CWpr0Dq0E7bmrfpbFHdLZ8FFOBLvrO+/QpMmKntIcupfrm8I3svGWibDgSD7yfLnJRtoIjuukVuAWfVlgLvM4COaS7adoOo6ThqId1lF70EK7N2usX8AM0xd3AnMpJLDK2wmPlYdTHffY5k0upGaVQNs1vZfJ/uLKaAU9WaGV2408WZmMKWiLMovCJUm67LmkxNF/WqHB1waba4vVKb2guNq7Ls/byEFvLwhTDg+t6JRUWzcV2EnlReQF5sW3umnHXtzvEbBGo9B9zKJmz7LZw5QsM8kTyBqNivpOecdhCZPPpPUhlZpDI9kzjRfvtLm10mrYASibjkaxf/AcECirkjhgCkLV+xjveyA7IJp0imlZfhD+YgYOhOEQttj4g=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(52116005)(7416005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5evUoYYQO5g0ISF1Zv2FVhzZF5slwvGGMYGG8v50nRw3Sc7C9p/GdLfKnQuT?=
+ =?us-ascii?Q?37MWX0V3mVkhh3VKcLzE2eATnOiAtPvP9ah7n9+0LQj+TG2IiDfD9V5cP9Rn?=
+ =?us-ascii?Q?GKqSFcwqC9Q+GvPDvQ7FuwLqc3hpHnGr8Big9f/Q8dHk0w69blgz2ArDc5IC?=
+ =?us-ascii?Q?yjSkf57b0YhW+OwSdyyMZNzhMlDQnmZohKArz8dTkeSx4JXytf+mX3AKdiiZ?=
+ =?us-ascii?Q?nw5bcg0vKlPrwalcMXMu12V7PiYcz5A5hP9EwshgRo0vvWQU985AlAZGsHwt?=
+ =?us-ascii?Q?JYPI6nqkLjFJmAMEQASCu616lotI3/fHNaHGc2l621N5wUib94PJgZmtCMXR?=
+ =?us-ascii?Q?eeNX+Mk/k91Z+qtZLjIOCUUVr9+C8ROzXvFCkXanAsvmNp5m3RlMySluR1qy?=
+ =?us-ascii?Q?mok9tjQPV6GZFpAw/asFaVF39QQ1Qs+oMYY+JaokLIZLkXe7dgU4umW18Abq?=
+ =?us-ascii?Q?Qp4h7BzcQ4BUvIqEazjMwgJKSNeJuQ/zpSXB59svxbOqr8Pb2F1nGfFm5LYd?=
+ =?us-ascii?Q?seo/nVi/lv6d7TC7fHeElz2zTaBt8goPvz28mYTZWPyBb4kQ/BGeCSLrwlvS?=
+ =?us-ascii?Q?NtFyTj7RBsKUb4vgAHG0fr0QWGxDYDZPaMh9R5hI/mr+6BGmwyk3T3fqZJBa?=
+ =?us-ascii?Q?oN0a3U/8/BqSN8DIogDeRG0YvF26ywfB8GK7ZHoTproTwsRZ7C9+OWIWPMR/?=
+ =?us-ascii?Q?mrjIuwGrpzbNZ8cN6674HuDmNj8D25LO7NmVIjOlIIM+wuAlt4RmH90z8kEQ?=
+ =?us-ascii?Q?TR4UQ595fURZMRr3bb3XoQNxXI3P/5X+Xo2hx+nxmjI5YgMn96OUH2+oYion?=
+ =?us-ascii?Q?uX+IMT6EDb7mbArCo2wUL1VEorBztjyelRnM3RuuVHX6NqxvQPDd2eIlL+Cb?=
+ =?us-ascii?Q?3ACL4P632RThneXvEYYF6XoBRjUzwv0/Qh6zfb3OfeMb4Z4840l99vAiNZEv?=
+ =?us-ascii?Q?FwkRh8pPAe7ut4ktor6rv2zKviea10o+Eckh0pwJE6ZgoJbcVRewbTd9h/eb?=
+ =?us-ascii?Q?GEXOtvmPjUGU6i7WmQHnpaKr2MmMwM4ofl1neHxNSC3++j4HjQML8zwLPX0I?=
+ =?us-ascii?Q?9vJTNZqOJE4fWZe/RxxDzPDNYCBrHrDQj7iPpPG8nNpiDy9Gov2m9O6nsY03?=
+ =?us-ascii?Q?1wSYd0xzWv4fo9oaIoaao7AwUiA1122/a75WZsksJawDn1AAXq7gnTsxQVQB?=
+ =?us-ascii?Q?QS7wBIlTHR61rCl/n3uXd1+U83SCRB9eQRzTlNsV5nY+PsdlwYDzXQF1CBOo?=
+ =?us-ascii?Q?E4klw5D1zzPylO/JTZyKR9BeCcRomybOnadFzuzMP6KxuZKFyX75uXviTEu9?=
+ =?us-ascii?Q?lVInU6ncWAn5mIpXjvm6TPBKRZxDb2rSItEmtTICJWJt2ZMUOmftzaJWaUNm?=
+ =?us-ascii?Q?sH/OCxhEzpZ6blY78CY72fWlsszm7M9x9hLJQSpkR+4P4ngDoCpfk7OW4K4D?=
+ =?us-ascii?Q?lUDPmHk3K8wgk/NFcgIIKM4ZJCdaypAcdI7Mey/oAW94VrRpNBaCJDx3K8au?=
+ =?us-ascii?Q?NXn6T/t14ebkjLwXjUWHLPVWr6FgY4I7+/pGhTS/lcNuWM7nWFBTihLi+jSz?=
+ =?us-ascii?Q?Z+ACPTOl1QpRgYaUJzkCDytoB8jPd2KVmGiQSYbd?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7167738d-9bec-4a84-d52e-08dc5d36c705
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2024 10:28:23.3066
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rpBAJiGPCqZxnbcs+SSz9/eVNNtMAmAfCvcAFClRBY2ochjZEjRWaXyLa0wBwKlvLmxJMx5mBNivWoC+SOMO4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7895
 
-On Fri, Apr 12, 2024 at 05:28:51PM -0500, Rob Herring wrote:
-> The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primarily,
-> it doesn't provide any detail on uarch specific events.
-> 
-> There's still remaining cases for CPUs without any corresponding PMU
-> definition and for big.LITTLE systems which only have a single PMU node
-> (there should be one per core type).
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> SoC Maintainers, Can you please apply this directly.
-> ---
->  arch/arm/boot/dts/broadcom/bcm2711.dtsi              | 4 ++--
->  arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi    | 2 +-
->  arch/arm64/boot/dts/amazon/alpine-v2.dtsi            | 2 +-
->  arch/arm64/boot/dts/apm/apm-storm.dtsi               | 2 +-
->  arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts | 2 +-
->  arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi     | 2 +-
->  arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi  | 2 +-
->  arch/arm64/boot/dts/cavium/thunder-88xx.dtsi         | 2 +-
->  arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi        | 2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi       | 2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi       | 2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi       | 7 +++++++
->  arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi       | 7 +++++++
->  arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi       | 5 -----
->  arch/arm64/boot/dts/freescale/imx8dxl.dtsi           | 2 +-
->  arch/arm64/boot/dts/intel/keembay-soc.dtsi           | 2 +-
->  arch/arm64/boot/dts/intel/socfpga_agilex.dtsi        | 2 +-
->  arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi        | 2 +-
->  arch/arm64/boot/dts/marvell/armada-37xx.dtsi         | 2 +-
->  arch/arm64/boot/dts/mediatek/mt8516.dtsi             | 2 +-
->  arch/arm64/boot/dts/nvidia/tegra210.dtsi             | 2 +-
->  arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
->  arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
->  arch/arm64/boot/dts/qcom/sdm630.dtsi                 | 2 +-
->  arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
->  arch/arm64/boot/dts/realtek/rtd16xx.dtsi             | 2 +-
->  arch/arm64/boot/dts/rockchip/rk3368.dtsi             | 2 +-
->  arch/arm64/boot/dts/sprd/sc9860.dtsi                 | 2 +-
->  arch/arm64/boot/dts/sprd/sc9863a.dtsi                | 2 +-
->  arch/arm64/boot/dts/synaptics/berlin4ct.dtsi         | 2 +-
->  arch/arm64/boot/dts/tesla/fsd.dtsi                   | 2 +-
->  arch/arm64/boot/dts/xilinx/zynqmp.dtsi               | 2 +-
->  32 files changed, 44 insertions(+), 35 deletions(-)
->
+From: Peng Fan <peng.fan@nxp.com>
 
-[...]
+Allow nvmem-cells and nvmem-cell-names to get mac_address from onchip
+fuse.
 
-> diff --git a/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts b/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-> index 8db4243a4947..9115c99d0dc0 100644
-> --- a/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-> +++ b/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-> @@ -102,7 +102,7 @@ timer {
->  	};
->
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
->  	};
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+ Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-(For vexpress related change)
+diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
+index 4c01cae7c93a..87bc4416eadf 100644
+--- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
+@@ -66,6 +66,10 @@ properties:
+       Should be phandle/offset pair. The phandle to the syscon node which
+       encompases the GPR register, and the offset of the GPR register.
+ 
++  nvmem-cells: true
++
++  nvmem-cell-names: true
++
+   snps,rmii_refclk_ext:
+     $ref: /schemas/types.yaml#/definitions/flag
+     description:
+-- 
+2.37.1
 
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-
---
-Regards,
-Sudeep
