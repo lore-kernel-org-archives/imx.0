@@ -1,110 +1,101 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A77156675;
-	Mon, 15 Apr 2024 21:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB368157485;
+	Mon, 15 Apr 2024 22:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713216792; cv=none; b=dmTovIIdRudYZLBzsu7qGFTOI6u8P9ej9y5sNLcLoldEAE4lMVyxaI9lehVE4+Xb4BdJxR+Fbu7KyQMB/xLEFIFecjF57nECCmokwTd9QiFt5DjIgAd+PCmscb8wHEFN1oeB8/CxPX0odwNIvXKgiVqc58gMX6mFHAGREnNeByQ=
+	t=1713220164; cv=none; b=M91OmKWXAJiBa0bR+WMk64KbrbzU7lpGUOofJCnFf+g0a3Ia1ReYyMinu5uCO85ssWhcC4BoljO+tOBkpqt/lKKBsP/aVPmJaa0IHNMQDNRXGMUcLY1qNE9YX4XgmCQ9GZxJoE7M64ROv4NUPYNXKD6Dddxtqs5D1gZ1xxy2jUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713216792; c=relaxed/simple;
-	bh=4dQXK8rM5riTwBJcZYfqprll9axw8fcL3Iwa1nRYEr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iyHHDBYwukDPA+auy87L/CZw/eE5Ylj6GCUCdMfkxNFxCnh2VBa43pVlcYypgfhcFDNRDq+rp4LinnNwQwEmz++rKQJIWIM0z+9Yxj4BVqwQzdshfjQnKA7Ls7oBHfnVULjRYIn5suZhDRwnoXmjiz687h0PhaWWUD17xBHn1+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TAKzSZz0; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713220164; c=relaxed/simple;
+	bh=XwTiu8X+FXFyNS9KWXZCeF2yN0mvFNnsMIYBii4sMME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aj9g4tqFhi2vwYNV0dTyTkNAIG3+YxwGAxbvKSrxAY0vQ+Zg2ymQJx95hb89iqO+f+DTjAfJQ45kImcUC+/blVeet05zoG9RwiMdJ6J3Y8DwJGgG5wdiXfqLvz9RkA66D/Cm9uzQKsgkA47XurSSv1n1m//HWi3xRilYFOSafrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+IeCmqy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TAKzSZz0"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4187481e384so6888245e9.0;
-        Mon, 15 Apr 2024 14:33:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713216788; x=1713821588; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nvC0crxQ4hv14tVfrEC0cLFgOk4kwCtX5f1hXnZbvIs=;
-        b=TAKzSZz0ISqKGS1W4Hnko167P+LHTYMPhNy2e/RNZ5qrT8gHtRYdrsaxeR0zWXrspD
-         B9NUmtK+KiSAQsrFafEttJg9xNbmsxa4DQo9B5GMXYcXfYJnVNqi0pPDTdEtlJQ/98sh
-         kr68WNI+ZdjHP9OKSXoFYaXZO7rQ1og3Dski9S05CEfM0gFq5QuzBQcYYhyiR6AlSdP+
-         5GmeUNj3ZC8oukGLtmRZIlF94m4fK73IUwbUFngroDw3x6DSkZNVZnJeDsWa3fk47x4K
-         FtK+CSlj2WDIBkSYtgMWaXwI4dTCF8EaSEXBgCtF0iE7wyAbh7PkLqM7rPP/zB0xquLP
-         F8og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713216788; x=1713821588;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nvC0crxQ4hv14tVfrEC0cLFgOk4kwCtX5f1hXnZbvIs=;
-        b=fPtfAFx3LtRHE6PYD7b8QsuwcOycymSL3xH2o4wXuhRNmSwhB6CAyfCj3x99IowSLc
-         FkiJZuHAeN6VkPo0yYwZi+yHYw3MLCu82GvPaXCia16Y1eHt8DrIVxhJGaNV5p3NFEJp
-         R7hVFgan97xb/rIksEUvb5dPB98tgcA7odDSttIf9MwN8MWdmxgbuYxaI4KHyJadpgXI
-         p37KrFL7tl2i6rl9+wzzN96EisvwHsGAVAzM0NFKKI13i8BK9h7U0t3xSL9KLbaxIXCg
-         cNPVd8fYMa+PSYkmwE8i65KPjTWxB11Xw4F2BNxLb3CXICahZRsb0iVMcdJYlZUc/iFw
-         RVew==
-X-Forwarded-Encrypted: i=1; AJvYcCVb8kp+hBDPMbbalvQfff+i2QODs+SZPK9bEaR+f1NPm0GBa1U/ymt53fDhwZie2OScjMg4Lr6HBqLA3+Fsaj9x5OqMIcdmAIZoAASki0BMei1JJsxUwK6Or5p5FakwOSs=
-X-Gm-Message-State: AOJu0YzuPA8JC6DamYbW0XfmyswMyWKHJWN+ouVrVqju63X+JszdU725
-	Wsff+olHhGIsHfI74jye518XNjROUyzJlyIyca2j9W7UvNyRdWcr
-X-Google-Smtp-Source: AGHT+IGbVwjwj6P/XwJYoeDaKXfrZhxrIYcAxjHA9f44sCvNTZGbYDkW0+pIuu1H7oDt8UlPAumR3w==
-X-Received: by 2002:a05:600c:358d:b0:416:b75e:ffbe with SMTP id p13-20020a05600c358d00b00416b75effbemr8521621wmq.32.1713216788218;
-        Mon, 15 Apr 2024 14:33:08 -0700 (PDT)
-Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
-        by smtp.gmail.com with ESMTPSA id v9-20020a05600c444900b00416b163e52bsm20901026wmn.14.2024.04.15.14.33.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 14:33:07 -0700 (PDT)
-From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jani Nikula <jani.nikula@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>,
- Javier Martinez Canillas <javierm@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Samuel Holland <samuel@sholland.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Maxime Ripard <mripard@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>
-Subject: Re: [PATCH 5/7] ARM: configs: sunxi: Enable DRM_DW_HDMI
-Date: Mon, 15 Apr 2024 23:33:06 +0200
-Message-ID: <8399384.NyiUUSuA9g@jernej-laptop>
-In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
-References:
- <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
- <20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+IeCmqy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12010C113CC;
+	Mon, 15 Apr 2024 22:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713220164;
+	bh=XwTiu8X+FXFyNS9KWXZCeF2yN0mvFNnsMIYBii4sMME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z+IeCmqyeS2ygnY/sw098tqlBOrgReipIJ43IzksFXD1j41GQBq+nzUTjhyhUfct9
+	 2EOAURC5k67ytUJUs96Z9AtTO8GpIRwymfc0R+d1wLyeKBkMX4HT7ZWZuWodnr77EZ
+	 X86hjwCfs7inz502FfjSplZfwiXi2cGQfa66EMEnpo0KvPubWIgkJ68TaRLiOnKHLz
+	 yEAEaIryORD6mV/HLlw20KkRzx8kFPOBF3tksUxSLnmJZBop+ZeyhV/XwXYQIoGwC2
+	 m7AjHpYFVzYE5swhD1hHWZlk4oWTh2fedq2Wi8vICcDWCMnyBuWRmgcov0apavFbHK
+	 +wpdJkthEZfsw==
+Date: Mon, 15 Apr 2024 17:29:22 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/4] ASoC: dt-bindings: fsl-esai: Remove 'fsl,*' from
+ required list
+Message-ID: <20240415222922.GA198321-robh@kernel.org>
+References: <20240411-esai_arm_dts_warning-v1-0-5e1a7c7be9b9@nxp.com>
+ <20240411-esai_arm_dts_warning-v1-1-5e1a7c7be9b9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240411-esai_arm_dts_warning-v1-1-5e1a7c7be9b9@nxp.com>
 
-Dne sreda, 3. april 2024 ob 12:56:23 GMT +2 je Maxime Ripard napisal(a):
-> Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
-> module") turned the DRM_DW_HDMI dependency of DRM_SUN8I_DW_HDMI into a
-> depends on which ended up disabling the driver in the defconfig. Make
-> sure it's still enabled.
+On Thu, Apr 11, 2024 at 01:07:45PM -0400, Frank Li wrote:
+> fsl,fifo-depth have default value 64 in driver(sound/soc/fsl/fsl_esai.c).
 > 
-> Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
-> Reported-by: Mark Brown <broonie@kernel.org>
-> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+> fsl,esai-synchronous is flag(bool) type. It doesn't make sense to put flag
+> type into 'required'.
+> 
+> Fix warning:
+> 
+> arch/arm/boot/dts/nxp/imx/imx6q-sabreauto.dtb: esai@2024000: 'fsl,fifo-depth' is a required property
+> arch/arm/boot/dts/nxp/imx/imx6q-sabreauto.dtb: esai@2024000: 'fsl,esai-synchronous' is a required property
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/sound/fsl,esai.yaml | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,esai.yaml b/Documentation/devicetree/bindings/sound/fsl,esai.yaml
+> index f167f1634d7e3..66f20ecaa42b4 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,esai.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,esai.yaml
+> @@ -70,7 +70,7 @@ properties:
+>      description:
+>        The number of elements in the transmit and receive
+>        FIFOs. This number is the maximum allowed value for
+> -      TFCR[TFWM] or RFCR[RFWM].
+> +      TFCR[TFWM] or RFCR[RFWM]. Default value is 64.
 
-Applied, thanks!
+default: 64
 
-Best regards,
-Jernej
-
-
+>  
+>    fsl,esai-synchronous:
+>      $ref: /schemas/types.yaml#/definitions/flag
+> @@ -95,8 +95,6 @@ required:
+>    - clock-names
+>    - dmas
+>    - dma-names
+> -  - fsl,fifo-depth
+> -  - fsl,esai-synchronous
+>  
+>  unevaluatedProperties: false
+>  
+> 
+> -- 
+> 2.34.1
+> 
