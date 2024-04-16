@@ -1,105 +1,104 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1015C128398
-	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 14:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EABF12D741;
+	Tue, 16 Apr 2024 14:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713277178; cv=none; b=E1t1/JKYyNqZsUUDrzN1LUgtNWcKkaonQM9Eng/945zXsSiIMvomHhCKfNptgt4ovlhYVmpBpj7tG+gUOYlG9cDjwxgD1YqomaQIhV0I0gpoJu1kLAzcugT17MitHedIpKJedoOpR/Emxb3DibtV4E2QYCYqNGTpgqJ6ZyOzAc4=
+	t=1713278137; cv=none; b=g73pDEXN6uYlrqLwTTLRDXBL12lvkwSH7IrKHM5nUsrwrixaw5uWTKR9YBV8jR6vfb9oXiWF0u3olJpUhtL0x1Bv+Vs1RkxWqNmoohRgfTSLcyD3sMh8rg3cA+eIm28b5mJwfgiVXkPuZSHO26WJRJJo6rMwVlPw1HNUTgoGJ8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713277178; c=relaxed/simple;
-	bh=pLi536+XGXRRJdf0dqz8gYWIPISxCUVHwrCOpZAp888=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R570vujV69Los7Dc6QqtOozA/G3Kp832CLbtPds69QV3mFd1+QGGWtnm1hyLlP0wNRet6F/Zg+m/eBD3mRTnz0RngmeJxoSrRSo1sxbQWNk8kiEnhGAGDmGQ6qRZyiY0xeah1bJKBasStw1DsWCA67agMCLyJVg5sFW431z5hCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cpLl15mI; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1713278137; c=relaxed/simple;
+	bh=bucavU5HfQwA1yemtOpcU4H0NN+3+/h4cXMCk96/A6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s+RP/jmVu4/RQg7HHAJr4GMla/sLeaMaw1IxJGQ8htkkzzrHjuroV7fKP0IakspcLWcKDQi/9QyxEIVORLaHlORx1ZUs5Mn7hCOmp6BLa4nqzBBEtLv+YhBXO+IigPM3mZ8tbRlFyZSXNo5FAoppZR1Z1XcVNchjkl6KRRUm5RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EfCE4Bqn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cpLl15mI"
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id C4D9B8839A;
-	Tue, 16 Apr 2024 16:19:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1713277168;
-	bh=ZWRZwImnRDA+97NqC2LDRm2JRPbpuHH3Q1ZGjhqAnOk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cpLl15mI0FHUlgLnSTC1Ddy74MPUIKGCp5p042ml9W3brv4T5c6CIXbqdHs74TYW+
-	 OO9f7SdtQRLIzuDymkxn11JFXMsDxBxBCR7MPWLz38xELdSf1cvkF2+cfKW5mOGAwM
-	 /9UeoUF9iVjMw2MZ5sYDgTG5J6YUYZTZAPwZ7ic4ydF+FoqEOnbh5pAmmq9svFJ7Iv
-	 yIZ/kwLIr9ZvhT0waO8QkmUJpYZKLwruB7CtHe8waY2Se0mW3W7ZCVEl8n0s4/b+8r
-	 u5K/iOyctG1BmY99qKJDfSlf9JhQUHFIGyE95mL/ZkO8ucIaAXRp9H+X6vTjqFoQPO
-	 0vZh5SYYVEQOQ==
-From: Marek Vasut <marex@denx.de>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@denx.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Date: Tue, 16 Apr 2024 16:19:10 +0200
-Message-ID: <20240416141914.9375-1-marex@denx.de>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EfCE4Bqn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220D1C113CE;
+	Tue, 16 Apr 2024 14:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713278136;
+	bh=bucavU5HfQwA1yemtOpcU4H0NN+3+/h4cXMCk96/A6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EfCE4BqnmunYvNboW8U7r6o8if1ruEE5iowfEac9iRxH4d4Xm3OTot+uQA2GiM5Ej
+	 H7RHsx5q2j+CbSW9LMVB9w0LR7PojkHBgceHEEQFKeuXf/vfZKUs7YVAW/wdfdLT49
+	 FZGKZFgzUTQPx4PuNaWX/ZLVrSvf15Pfi4Uzq7tXXdOyPwl4+CWO4CqKk0zb4lYas4
+	 Oc/QbSjsEP6v9m/Sxk3rEQEB3kgNvttj4aJaktOMnfh6fj/v5OfIUeDfHIiCi/26D6
+	 urAHd0PnMxQ40jtgJoKU0miGkV+H2OHw+qJK8ZlNDiyBbUq71T5or4uaa+jXOJAzns
+	 GIMFhnOfSnuQQ==
+Date: Tue, 16 Apr 2024 15:35:30 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	dl-linux-imx <linux-imx@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: net: nxp,dwmac-imx: allow nvmem cells
+ property
+Message-ID: <20240416-simplify-septic-0fd3f7fe4b31@spud>
+References: <20240415103621.1644735-1-peng.fan@oss.nxp.com>
+ <20240415-limes-chasing-dbc111fa9cf2@spud>
+ <DU0PR04MB94173B23CBB11E8DC736E90788082@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LbFcVf2EOeZRzbNd"
+Content-Disposition: inline
+In-Reply-To: <DU0PR04MB94173B23CBB11E8DC736E90788082@DU0PR04MB9417.eurprd04.prod.outlook.com>
 
-Configure both CSI2 assigned-clock-rates the same way.
-There does not seem to be any reason for keeping the
-two CSI2 pixel clock set to different frequencies.
 
-This also reduces first CSI2 clock from overdrive mode
-frequency which is 500 MHz down below the regular mode
-frequency of 400 MHz.
+--LbFcVf2EOeZRzbNd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Paul Elder <paul.elder@ideasonboard.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
-V2: Align both clock to 266 MHz and update commit message
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Apr 16, 2024 at 01:52:18PM +0000, Peng Fan wrote:
+> > Subject: Re: [PATCH] dt-bindings: net: nxp,dwmac-imx: allow nvmem cells
+> > property
+> >=20
+> > On Mon, Apr 15, 2024 at 06:36:21PM +0800, Peng Fan (OSS) wrote:
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > Allow nvmem-cells and nvmem-cell-names to get mac_address from onchip
+> > > fuse.
+> >=20
+> > Is this valid for all 3 devices in this binding?
+>=20
+> Yes. It is valid for all the three devices.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 1bb96e96639f2..7883f5c056f4e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
- 						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
- 				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
- 							 <&clk IMX8MP_CLK_24M>;
--				assigned-clock-rates = <500000000>;
-+				assigned-clock-rates = <266000000>;
- 				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
- 				status = "disabled";
- 
--- 
-2.43.0
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
+Ty,
+Conor.
+
+--LbFcVf2EOeZRzbNd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZh6MsQAKCRB4tDGHoIJi
+0qwpAP4yvTjwx08VV0VAKWzRYa9NlvgQYCEVtOlvbUu9rEG4VwEAhqWVRlHReAgp
+ezG+zW9kzq6/B7Zd0xKKWyPpR4NZaws=
+=TITW
+-----END PGP SIGNATURE-----
+
+--LbFcVf2EOeZRzbNd--
