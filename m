@@ -1,182 +1,209 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2058.outbound.protection.outlook.com [40.107.15.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187E8130AF2
-	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 15:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713279682; cv=fail; b=h1WRTUvlmdBZhe2dvTkscmuX2eMr1NMoQ+cA4QNKQt7xo7jDotVZuv8TdiMQIpEFcLB6G0E4ricJrMEO0NS5RsH+48fua9DW9Suxff0BFXFHm+G6P0rEkt9FP/DRfcxhuwS/Rf4fA4w3usO+bGREfAXNSZPILeMPQCf4MEgQVNU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713279682; c=relaxed/simple;
-	bh=U77LR2Wsyu7cpS68XdjztdUiAn0bBiIl9DMNAlajT9M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K8KbJSn8KUhLiVdxIeWtE3sY5/QIQWC3KJrOkv8ljyZ+PYWhfBBmU3KuWLRckBn27I61D2Qvf6VSK19JkCLyXBzhp7vQH0k1+o+Mwhm4GjbDuwEl2jIoWvGE6t9zGFVgFc+KqEwVOrN2bopm+dvNt2tR65LbCdge0DIVy2KOEOM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=jJMSpz3S; arc=fail smtp.client-ip=40.107.15.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F3B130A6E
+	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 15:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713280735; cv=none; b=LuCLhcofOg3G/KOiOvcjLGkc/D9lXBO02YNOuvcvsT0yW17MowtRQzPRwdNpFeUpJQOddo5jD6wr5OkuibYKS3HaQb4k5jRfkCd7i207I+E3bO82zT/9VhMRhDVYHBtw5w2scoFqRX1suxVmQHfN/S49hPZdnbe/l+n8ZkZwrvg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713280735; c=relaxed/simple;
+	bh=UMePqEyCmVfk7ZgwfylWZhfwuZ/2Cp18577seBEfpOI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=k2RqeLHswJ9xy8t/ODeuVYD0pnjqpNB3D+VV6raa0uWjzmmxVLZoTHiuwB0SLBelJyfmv9mCadTHU5SJ8zb2XUEcOFhj7lwFTuKXGG4rdM10GEq3bFamb0UyYo6lrzCugkJnX1XNkWcI5hTzmxNMO3qyPXpT4PCFsjl23r7PI/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=RxTtJ2PO; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="jJMSpz3S"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WO11t6V4DKwBfIYvP+0iMT9oJYR4aZiAJavTkT2RDeYM/IKjyrque9llyHJDJMvTY81J/7/L5rQf27fmj1MVYMLEFCXJpomZxqryWooEM1eRWij9S0NiV2/obrUxilhkyB0I8lChMSTaVZWNyMYSJ0yhuxI8leTX/R9rN1mJwhW8YwriL45YhotGNO/BlSnjRZh3jNXvmQVBloXVdH+p0TkHHFhjDtwrrh6c5+AAUb4OhA0P0ekPH3TvxCys8u+57D54Q8It7D2ENXuE25ii8AaO8SJmrLaSiRoShB3d8oxhk2/5LFjV0ijbtSMetV2Q4UxbFBOfqgjvaEXR6+5i5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7+FoYLsobtJx2Ch8O9TBCjQjvp1ONHyWwffKgr2BS7o=;
- b=Qf/ox+DT8/u8w4FU7pdVy3ydRgQQfYS7mnBnWMfGwEQKzQ6NgiCgM1iUZAAFUcMWtLWKcpnUA3909b3IQFXUT1i7V2omx0cYbAb78NFwMKMungAaxPuunwqJrFLqoBOLLrvASJGxVVwsQKXb5Jv2uqGHmLLftAhMdQyfAYWYzVXpo9Qg47n9fotiB6kJRxaDdNKsVMfBV+dDN0tphCTl+mvx/lMy48UKw0hwQpkO4T35FWn5EsBjkgNogecFCS8FgkNcR1rfLzEEkE1kJyvdha8zxN6kfBdI7clG/oR2YRXKm+rxOMEKMQf059oCuMZsATLR+waxRUKLFz7Zn6pWEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7+FoYLsobtJx2Ch8O9TBCjQjvp1ONHyWwffKgr2BS7o=;
- b=jJMSpz3SdpWzV0O7LQr1VPRGnfhY3eY32K9VOQZPdufLRp8BG3DxY4tvQzkhsBvSea6ztyiwStCTSBstVJWklFysgOGzWYTgL8+IU+WTtW7wBac4nri+rKbn7eolRNsZen60DRAAUpKxUZY7P1F333lautcynwjDTzDmsUHaXj8=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by DB9PR04MB8431.eurprd04.prod.outlook.com (2603:10a6:10:24e::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
- 2024 15:01:13 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
- 15:01:09 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Marek Vasut <marex@denx.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-CC: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Laurent Pinchart
-	<laurent.pinchart@ideasonboard.com>, Paul Elder
-	<paul.elder@ideasonboard.com>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "G.N. Zhou"
-	<guoniu.zhou@nxp.com>
-Subject: RE: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Thread-Topic: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Thread-Index: AQHakAmOWMT1O5M1oEi6lA340xpOkLFq/Tow
-Date: Tue, 16 Apr 2024 15:01:09 +0000
-Message-ID:
- <DU0PR04MB9417681F7C7551DF5BF4C4CC88082@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240416141914.9375-1-marex@denx.de>
-In-Reply-To: <20240416141914.9375-1-marex@denx.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|DB9PR04MB8431:EE_
-x-ms-office365-filtering-correlation-id: 3268b354-afb0-4ca7-e6e6-08dc5e260c8d
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- HmWQHgiyk38IrVqtc7UstFJ1mHuHFz8E3HKssiGDp3Z/dGUeBLffX+Y/5njXv+OMvOVS3Qo7i/HE9DSNlEGdJxskDEos/2aovYn1FGsB77wVAHXTi49ooxPshjVqjxpEgJC8DJgnx5Y29WNWobit2WPJ3zBlcJnUvAsue/6lZDZXjIrX/kLGt4+3eVQ35M9PPx07JPer4Ov60wFlPSFOGq6tFEX0ragOR08i/+W2WdCkxxPXUwo1B92m4QyA2V6/5NQ0JDj+fyTA2rHTfTqltJ/z1dlbubDLaMPJ8ln3pFVBX7cgTcK5WrQ/ljeNRAucKlMIKYkDWIorXpNAgi32fF5k0ekqB8Grz0MfRN8/qg3zeisWlKTqRH9fr54eHQAzHboVwuRHvP9mAVF4Cp3GKCHIw5FTi0bXu6Gqu+8F5Za+SA+9IHYVZHbCzopBM0Ht4WiFrguhkgf3PNyI88V/zoFo0jAlo3XexY4cbDi0ivVTYAZ6fhDs9RVJukULr4gHVJW0HmGheslxe+s8CuJSteqMQAhIJfShTGCfI3T6jSewF8FihV6Wvy2OnNR1Xb6ZdDOv/rep2P9wZYBWvK8JVI+QV0ZX2cz90v5P6QWD607pTlzYQsB5gj6YjurwhebAepqe/ZSqIU8jhWSBlgqztS8JxGM6lKYDiae/e55HfPJKdRGEKTvFR3mBiHJn5qUUGrWoND0RzMS8b+rYpmzO5ouOtAe+DftXswjSW+heMwg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(7416005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?tb8UC9L5tcSMwwvQICIwF9WmGOkJ9Mhw6lArsMsPTibLkZOrHQ6lafhnhsnb?=
- =?us-ascii?Q?yfvvJtKFypP5yrKgLVucv/ZA/qytj3R4wWCwcuqOW5mVx6NhPyB1ygXm52iM?=
- =?us-ascii?Q?oxZTwH7/acvugoUOLNc/vVctJKrbEbfmgUY5ppnpNDwBJL5peNMJi9ay5es0?=
- =?us-ascii?Q?XA2PKfCRyigMjLgul9J4DE9JDMNvpOwzROKzji4eO3BHkcYeH3aY4aLVSBFI?=
- =?us-ascii?Q?Z3W2OcsTKOmo3Lf6Whwbcnj9Aec7fiurjdSzA5nawyB41HUP3lrZYpPnZKYT?=
- =?us-ascii?Q?1aDUjTuLmihtL/6o6rd7KvG9xWWB9eMx2JHbrGNji3guZgtRK7vP6L5P/Dl4?=
- =?us-ascii?Q?bQtfD/rBAo12r61m0oRDl1mmFX0oPnSllE6wzwjX6ZKjOl2fcY07U/ICmdna?=
- =?us-ascii?Q?f/8aD7Pc1hQmCpf6bcqCRfpwf4iJcHZoNd4dGpARJ37248ATlgosqKjmi8+x?=
- =?us-ascii?Q?1yNm3gdPjCpJZRn4sIjeTZsxn32D2gZlXHoIv6oIJmoV7ib6dq5+GoZPJ0Ob?=
- =?us-ascii?Q?zbv0CD0eqB5hiGYzfhalatko9V9HRKMdCPB0++9pMA/mN6wce8yT4zDbObnF?=
- =?us-ascii?Q?vV25EAfMHfbfTIkrX0U54vhKWstSx6UWVopRNI97w1PoSFRZlqANgeqvfQN6?=
- =?us-ascii?Q?WGZRAl1ZzAQRWCWARHXclSBMiZtXc/fZGFuwAuyQ986wtvH5zJLm7jOLKwQc?=
- =?us-ascii?Q?UO7Mu37K/hy3RR8sA4z3coJccv7eYZRoZpCUBkl3MiUeB29qPcBWRSxoEVqL?=
- =?us-ascii?Q?qKbeeWj2xBIToO7a/deTdR3BF8roMONj3gjTuP/Ul8seOSKDkzYaMj67nhZF?=
- =?us-ascii?Q?xnrwPh/AHaY5NumJ+lu9vBzCoejQ5m8q+0Mb7uvFLcY8hd+7txplm19jEFWU?=
- =?us-ascii?Q?EWpHDK2pHBFfXai0L3AViL6vDy4M3bTvO4f8fmS7znScRsNyn2s8jDmGvWaq?=
- =?us-ascii?Q?HDFF4+xwiKm8p7iUX8hAWVfoBGlhmyTyaEgNNo1xHxK4JfQtpGvP4mujq/XJ?=
- =?us-ascii?Q?lYyGn6f9xwTWVGrC5TAWlC6Nar0ZVo1q0s1Z6wYUT5QNQrrWrud7bKLxubqZ?=
- =?us-ascii?Q?ke+FzDlBuHPh/I5hZFvKKaCAEu2oY5OFgSEt/TAm5qWUiY5lbztTo7YEiv6d?=
- =?us-ascii?Q?fWJw3/JOgfNEWrpWlCCgmtzp3aox+031XYBlrqY9rm6fWpAyOl0tWEsjhRqs?=
- =?us-ascii?Q?55UccJqzr/R6B1v6DK5OfpekbZ03PndMA5PI2mlQmO1dBnHzBpC03TTz99/m?=
- =?us-ascii?Q?EYnOWfAi7G282TSh3alMHEFI6K6jhaHnXwEZOdSd5oHDXfGkACXKgSoH7ASO?=
- =?us-ascii?Q?9NRiU3SYpudTZuulSYurGsdHyttpUknYXCITHSIy1R9VfvY6D/5OpqPJnosh?=
- =?us-ascii?Q?zbj9KH5RoF5aoCbYHDFeeb2JM+/hCQBYCVPVETwJSFHnBnIkT1uhP5dnZKeQ?=
- =?us-ascii?Q?yRisrQiNBD8bmXRy5Nowmpk80sWYzJre28F69q48Vd9MXcKS32bVJ2nhLDA8?=
- =?us-ascii?Q?DcFIxDJ90Css6pi2e9679RP8rh77W9w1ZoI/ILWUbbuzjnSaZR/aOkBBD7xF?=
- =?us-ascii?Q?tsQ3HAOWPYTwCDAH2Uc=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="RxTtJ2PO"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dcd7c526cc0so4290011276.1
+        for <imx@lists.linux.dev>; Tue, 16 Apr 2024 08:18:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1713280732; x=1713885532; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6LXwJvrpu5XtyICEE51W/asLOgN0+jOQgk8lgWBDIns=;
+        b=RxTtJ2POZotE5ay/9642Jhc1cT0/4BTANk+W/bv5mBleJfRZb+m/eknkiljqEsiBsI
+         M40s/d2YwafInksgwvCvMPInK7jt5ssqxCcn3vR2B9x9BqL731c7G3iIGOzSl6FG39WE
+         4eMSManBouyCqQER5SlJO7dw9qV5vD3Oe14GYGE2cDdUrNMFuBpVHFIhAePmNv/NgBZq
+         1KtDXiK7r/pZ7T9oyDLES3fCLFQDpAhX+LPSB+4HA4V2Jb+zq/Kbnnig9paZizwYmaMx
+         WmISRvzD1dw9+UCGGpUo1qu6HZzVVl5rdk2AdU4qjF+ZRtB7wt5m3uJQXieuXStG72ji
+         DyRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713280732; x=1713885532;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6LXwJvrpu5XtyICEE51W/asLOgN0+jOQgk8lgWBDIns=;
+        b=KI8HRFJK28vTMOBAdt84qvzjWVd8h3kamQ/6ZHoI2iFXf2wCZBF35nSs/Ct+E63q+F
+         CAWU3wYKEeJpZVftXm5NgipI5f8SRZP4uX+JpnvW/YUvsQQqkPff/XveqgKgJ664x9KU
+         1MsayvKgbLpp1ajh/uk2Aiqb2ZhJL50+WLOgpEyi1EGHmJc3RGWoQU+p5zxShKHF08P8
+         1JuF0K91R3sedaYpHijiC354AtEr7RKWpia5kV8FjirIsH243WJd9A+qruxobzkxj6NS
+         WezTj/UiMCXpLmrvNpNQzn8E1I57fWlAk6HZR1Mi0W1MMoP2QMywY2MDXoUNVd05unIp
+         /1sA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQLWnOjXsekssgzGV7AlckGTnYZ2wnqDjf3yGPZ1irswVsd/EeFXXxh207O7DcBRZmQv4tVG0jPvakbhzUk4YN2tYM
+X-Gm-Message-State: AOJu0YzfZMT3cUREag60mA5zANXmL4TIFToXPdYUGl8H+1wAnKGSK/Lm
+	1b4dIVgiCHofuHquu4Igu4h1Vp42Z5FAMCMePbemLRQILgjfqk6H3iDpS9k/ARQdu1SkPttu+Iw
+	63WrCaaI5xT8nPpo5aqt72vCQUVDvrj1Jsu9coA==
+X-Google-Smtp-Source: AGHT+IEM14BkgGATsXF6uCE5qYqegVtX765FkUZTIdAjRLYK8ynA4eYAf4JOqjfc0TInKcWDrTkiujQ4lABhn5Zwxug=
+X-Received: by 2002:a05:6902:18c5:b0:dc6:d2d3:a57c with SMTP id
+ ck5-20020a05690218c500b00dc6d2d3a57cmr14225747ybb.59.1713280732051; Tue, 16
+ Apr 2024 08:18:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3268b354-afb0-4ca7-e6e6-08dc5e260c8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2024 15:01:09.1940
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LT1Clgt4RYWUFOZPHHH+uf2FMdLYN+UWQ1pLYyCNEsoWFwffr8tVWpcm5S7e+3dNg+EuI6nbhKsNP/oAPrgPxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8431
+References: <20240414203503.18402-1-git@luigi311.com> <20240414203503.18402-3-git@luigi311.com>
+ <6041186.lOV4Wx5bFT@steina-w>
+In-Reply-To: <6041186.lOV4Wx5bFT@steina-w>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Date: Tue, 16 Apr 2024 16:18:35 +0100
+Message-ID: <CAPY8ntDMFcNN_kcAd_VWDfPbJ2GAua-TbpyOqLJA-kYJPWz-6A@mail.gmail.com>
+Subject: Re: [PATCH v4 02/25] media: i2c: imx258: Make image geometry meet
+ sensor requirements
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-media@vger.kernel.org, git@luigi311.com, 
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	sakari.ailus@linux.intel.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	pavel@ucw.cz, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Subject: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
->=20
-> Configure both CSI2 assigned-clock-rates the same way.
-> There does not seem to be any reason for keeping the two CSI2 pixel clock=
- set
-> to different frequencies.
->=20
-> This also reduces first CSI2 clock from overdrive mode frequency which is=
- 500
-> MHz down below the regular mode frequency of 400 MHz.
->=20
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: Paul Elder <paul.elder@ideasonboard.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
+Hi Alexander
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> V2: Align both clock to 266 MHz and update commit message
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> index 1bb96e96639f2..7883f5c056f4e 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
->  						  <&clk
-> IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
->  				assigned-clock-parents =3D <&clk
-> IMX8MP_SYS_PLL2_1000M>,
->  							 <&clk
-> IMX8MP_CLK_24M>;
-> -				assigned-clock-rates =3D <500000000>;
-> +				assigned-clock-rates =3D <266000000>;
->  				power-domains =3D <&media_blk_ctrl
-> IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
->  				status =3D "disabled";
->=20
+On Mon, 15 Apr 2024 at 07:25, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hi,
+>
+> Am Sonntag, 14. April 2024, 22:34:40 CEST schrieb git@luigi311.com:
+> > From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> >
+> > The output image is defined as being 4208x3118 pixels in size.
+> > Y_ADD_STA register was set to 0, and Y_ADD_END to 3118, giving
+> > 3119 lines total.
+> >
+> > The datasheet lists a requirement for Y_ADD_STA to be a multiple
+> > of a power of 2 depending on binning/scaling mode (2 for full pixel,
+> > 4 for x2-bin/scale, 8 for (x2-bin)+(x2-subsample) or x4-bin, or 16
+> > for (x4-bin)+(x2-subsample)).
+> > (Y_ADD_END =E2=80=93 Y_ADD_STA + 1) also has to be a similar power of 2=
+.
+> >
+> > The current configuration for the full res modes breaks that second
+> > requirement, and we can't increase Y_ADD_STA to 1 to retain exactly
+> > the same field of view as that then breaks the first requirement.
+> > For the binned modes, they are worse off as 3118 is not a multiple of
+> > 4.
+> >
+> > Increase the main mode to 4208x3120 so that it is the same FOV as the
+> > binned modes, with Y_ADD_STA at 0.
+> > Fix Y_ADD_STA and Y_ADD_END for the binned modes so that they meet the
+> > sensor requirements.
+> >
+> > This does change the Bayer order as the default configuration is for
+> > H&V flips to be enabled, so readout is from Y_STA_END to Y_ADD_STA,
+> > and this patch has changed Y_STA_END.
+> >
+> > Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> > Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> > Signed-off-by: Luis Garcia <git@luigi311.com>
+> > Reviewed-by: Pavel Machek <pavel@ucw.cz>
+> > ---
+> >  drivers/media/i2c/imx258.c | 26 +++++++++++++-------------
+> >  1 file changed, 13 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+> > index 2dbafd21dd70..4a7048d834c6 100644
+> > --- a/drivers/media/i2c/imx258.c
+> > +++ b/drivers/media/i2c/imx258.c
+> > [snip]
+> > @@ -707,7 +707,7 @@ static int imx258_open(struct v4l2_subdev *sd, stru=
+ct v4l2_subdev_fh *fh)
+> >       /* Initialize try_fmt */
+> >       try_fmt->width =3D supported_modes[0].width;
+> >       try_fmt->height =3D supported_modes[0].height;
+> > -     try_fmt->code =3D MEDIA_BUS_FMT_SGRBG10_1X10;
+> > +     try_fmt->code =3D MEDIA_BUS_FMT_SBGGR10_1X10;
+>
+> Does someone have access to the data sheet? I am wondering how the
+> arrangement of the pixel array is shown. I've the following (identical)
+> array for these sensors:
+> * imx290/imx327
+> * imx219
+> * imx415
+>
+> G B G B
+> R G R G
+> G B G B
+> R G R G
+
+Check the other 3 corners of your diagrams - they are not identical.
+
+> Yet each driver configures a different bus format:
+>
+> * imx290.c: MEDIA_BUS_FMT_SRGGB10_1X10
+> * imx415.c: MEDIA_BUS_FMT_SGBRG10_1X10
+> * imx219.c: MEDIA_BUS_FMT_SRGGB10_1X10 (no flip)
+>
+> imx219 actually defines all 4 10 Bit Bayer patterns and the comment
+> indicates this depends on how v or h flip is configured.
+> Reading the commit message apparently the same is true for this driver.
+
+Correct.
+
+> Still this is confusing as I would have expected flipping to be disabled =
+by
+> default, expecting the same Bayer pattern order for all drivers. Can some=
+one
+> shed some light?
+
+Comparing different families of sensors isn't really valid, and
+manufacturers vary too.
+
+imx290 is a Starvis sensor, and has an array of 1945x1109, so all 4
+corners are red pixels. It crops an even number of pixels off the
+array in the direction of readout, therefore always producing RGGB.
+
+I don't have a datasheet for imx415. Whilst it is also a Starvis
+sensor the product brief [1] says it is an array of 3864 x 2228, with
+3864 x 2192 effective pixels, which implies it isn't doing the same as
+imx290. However the current driver isn't changing the Bayer order
+based on flip which contradicts that. Pass as to which is correct.
+I can't answer why the default order is GBRG. Presumably the default
+window mode used (it doesn't use X_START / Y_START registers) crops an
+odd number of lines off the raw array, therefore starting on a GB row.
+
+imx219 (Exmor R) and imx258 (Exmor RS) datasheets have an even number
+of pixels in each direction in the array, and whilst the first pixel
+read out in the default direction is red, the colours in the opposite
+corner is blue, with green in the remaining corners. This is why the
+Bayer order changes with flips.
+
+Most Omnivision sensors I've encountered do the same as imx219/258,
+whilst OnSemi sensors are the same as imx290. Drivers obviously have
+to match whatever the hardware does.
+
+  Dave
+
+[1] https://www.sony-semicon.com/files/62/pdf/p-12_IMX415-AAQR_AAMR_Flyer.p=
+df
+
+> Best regards,
+> Alexander
+>
 > --
-> 2.43.0
->=20
-
+> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
+rmany
+> Amtsgericht M=C3=BCnchen, HRB 105018
+> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
+chneider
+> http://www.tq-group.com/
+>
+>
