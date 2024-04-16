@@ -1,119 +1,107 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A091E864
-	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 21:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8B26EB45
+	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 21:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713302332; cv=none; b=Oqmui0zs8YOYjMRfGONrLrhuitO7vzuandfIPVaowozdBBH1lwrZUoq6e8rQ8QNvLtsmfZJJzLW9vJbbyHFxVzzUZBo5dgQZ8CcwZUqnhR7tKeQOMhpX2PZxDJA3ErMnkGJ8aCxglt609rErEftm7zhm0rR2Ipp2PH4b4SFIYdI=
+	t=1713304743; cv=none; b=fURNygmPm1zggenpPigDFIDQiPqAIewMfogrVRU31kFEsC1jH0rZd/h8cJdF3q1tVFY204g+jpQnpW/32PlYGaUZ6pVC2lSfPJ7dWw4mBGDYjMO6CknswkrOwbUNVsh5oDunu4/Uurj/h2m/T2hzmFYKAoN7o3+ZWQAMYgdryiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713302332; c=relaxed/simple;
-	bh=rHxBWPbUv6UV42+sEgbA1iJcX867tFp5OytmZQZ3UGg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ONt0pBKMAdQ1HGnUG6OVlwr9SE5eZn7pdTxsL7f7kmDQUUlWBIp16LdP/uMyI+9bJojzuZlMkQv+DPUa9bhL1dPFuok85yj6KwSyzz6GLU6ijG4g13lrxgHIA3GWWynNFqyNrZPm5Ycm1DZqFION+o7ujX464GF7hltBUTywFls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j10pScDJ; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713304743; c=relaxed/simple;
+	bh=XEoW389eSLuQ1EWHK2ao+NjLE5w0UuWoEmY0QujQk4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqZK0huFneTQCUqPoN0rBcKgJ1IZt/ueOBwsyYH3FWmG1poxY0EC24gxWsT+ln5wsnqB54bQo0Yzu1q+a7RYFDO8yP27CIkvf63qJob3ewEBe5SNorcRJWmBYjeObDqxf8NLiVXF7C6PWDAthvPNiaJTDq/tPD5Bm9qz/rSqC+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dAXXFbG3; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j10pScDJ"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ab1ddfded1so131856a91.1
-        for <imx@lists.linux.dev>; Tue, 16 Apr 2024 14:18:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dAXXFbG3"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-516d0161e13so6054111e87.3
+        for <imx@lists.linux.dev>; Tue, 16 Apr 2024 14:59:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713302331; x=1713907131; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tBEr7AmEEZkKSiw3BsMpmaMNJ9Caj0ON73VIII8SWsI=;
-        b=j10pScDJ/0mmeSlv460ktiUgaqF9H/mXBKEkp3DTiRc0U3VohKK0vGls/WMh0YoWnL
-         +wP/Qf8g5EeSSn4gxRv/bEhgUekFzqB/U3QvwOThvzoK4c9hCyj1ifKe3MOCgtVqaqeI
-         87nJD5sKKVH2vOlSb6mSiZOoZAbVneXBTKVFbZdNd+w5PMCuVkBYR9AvPO1/vva0GGsv
-         4zBGUlmDFTYMNIyamjMRA3H20TEczS4Om99OSQXS3cq46mCdQ5Bck7kEVFlV4a/bMK4Y
-         VC6BFr5ZmCLpT51Ho5asxQ1s/O/dc5TiCI8G4TYrD4O7k9hGYpyYzV0ZYMNLa27yUTop
-         s92g==
+        d=linaro.org; s=google; t=1713304740; x=1713909540; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FrWqLDNPHgTIgEAwm/yBGkXHJJ9fe1QtFWXIQREdmco=;
+        b=dAXXFbG3846u6XgWHCWzY0rnR+pWrTqabj47ds9yScWSBsX1yfrA0T3mYBooM03S/+
+         lpTNL9Rg0PYc+hxJICCSAQ2FGVzE9c5G0s9do7GJYmgaZahpu359ZcnTLnx3DqOBP40c
+         6pdG2iTzBExnJwgsp2QtMjf08wezBNjtZIeBQIzlZHh/cb8JS0HMb2LqTpuwT66CsJhO
+         gDt4S5GFcHsbR1yi2WTUejRyM3LULVkDxVEUvP9qd/ketT8KUopCT0JVfdSbILjqdjdZ
+         8EA+UMOtdVlEBNVjk4075MNgv+gVARi5ELmpqFERQvkci8PTWGKa4vM/kQpG3l2u2YBK
+         Lh+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713302331; x=1713907131;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tBEr7AmEEZkKSiw3BsMpmaMNJ9Caj0ON73VIII8SWsI=;
-        b=Mjm4jMuOHCCeE3lPFsJjJIdVlt9/S6YUOA4dyzvLW9M2QiDhYcu8Z5Bk/ScEpgoonG
-         XuecdMb4iI94mg/E+XVYjf55yGmLd4Z/tUqmMZFF/CCPwzfl7GYZVAqw/ppG6vvcAcDL
-         tsG12jfmLA43eedv1CeHAaKEc0cjj3IpA/rRWSW5fRxO8CH67Ee/voqIvjtU58f8U4GD
-         J1qgId04cw/gQP7V7EleoPFGKNS9Fv6Hcg+yO9SIFT1VdsmA0YhER1HolkjVBNDws5/q
-         vQKg7TEUzAVoUPUwoZuXS3JAYcEx97tbRl/JUrvNOizxjgEvjFQAw78n+1myl9cOjdt4
-         Wozg==
-X-Forwarded-Encrypted: i=1; AJvYcCUN7O2ZpWDAqN30O8MGqnvKnU6403j5QInpxF7FLdz5aGmIcG2gCWeB0OIboGB7MPpvP5c/YreMyT439qFhmOm6FXQi
-X-Gm-Message-State: AOJu0Yz/DXlf2+gh177JWb3DoJDaYii1Xfa2VSyTSvw9sbN4Kkt2qByl
-	b8U1KwxGmKbWyHXfpd/55CMlXPH0C9mgtTeOlFGReBrtiIUVrvS7GvNBFo6qnz1igUEgbf41w6i
-	7pakXdFO/uYIdE6HuJTEqG8bhwGg=
-X-Google-Smtp-Source: AGHT+IFhlEFxkQR+ieC/Pa0fKkP87ACk2PMEqPN62geu1ZxkPfEDzM2tLQRrA2jUzsAT+yFWyAIlwAZgs2PhJ+8rSX4=
-X-Received: by 2002:a17:90b:180d:b0:29f:7fad:ba50 with SMTP id
- lw13-20020a17090b180d00b0029f7fadba50mr13315078pjb.8.1713302330612; Tue, 16
- Apr 2024 14:18:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713304740; x=1713909540;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FrWqLDNPHgTIgEAwm/yBGkXHJJ9fe1QtFWXIQREdmco=;
+        b=dO9eSm3SU3DHDIJFHKZCq/oLZOFBdedXZQnle+yJ5Ps9RAPam5s4Oi36PQJ4bpw1aH
+         HekX3NCz3Qyb4Rt/c1hS8WtNYMT/YobDlbdJYJgunLHOOz5LBKt4MPvkZh9k2bCPsOQ2
+         gmoegz3SMkAuIs0q3XxORx/djPXLo8JAT5k7BW5L38ClRK/2Gh5DWgkalS3pgLj29R1r
+         +N1NxtHJMJ4RHi7j52vhf6E40754zsgKnfy2CYC+klydbdY3vK17l6O8P6wjbNeLBS96
+         fxKz3pEZJCkxD8qmPviDkkU27uiEa3sry7FuAG+Isj1yRx+flCTcO6r2USM/I/NSAX9z
+         +0qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhoMjysxZ64O8zwLcwPqEtyDirG2i8fkb0yvQs0CxbJtB5Y7rWZpHKJOh8Oxy4/7PcR4NAMmb/SyxfYBC5vsoGJ2E1
+X-Gm-Message-State: AOJu0Yy1g6xLKe6cuavt6DiTOp0WX3iHnVbcF+rzU1wmtxitQxgh5zfU
+	FdTkPFbzjJlvNQiRXvQSZRVg9bG1Pjtafjj6Hl8wqHIdWGxwyKdfztWQAqpOW+k=
+X-Google-Smtp-Source: AGHT+IHIWdijioLtvYC5fIdBBwJ5eA/9DxE81hqHqTOf/GfjKH/Bjt5bQdrOAL/NR1UOMamRdStcwA==
+X-Received: by 2002:a05:6512:1c7:b0:516:d3ba:5602 with SMTP id f7-20020a05651201c700b00516d3ba5602mr9510074lfp.16.1713304739613;
+        Tue, 16 Apr 2024 14:58:59 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
+        by smtp.gmail.com with ESMTPSA id k5-20020a05651210c500b00518c1a1d370sm984687lfg.101.2024.04.16.14.58.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 14:58:59 -0700 (PDT)
+Date: Wed, 17 Apr 2024 00:58:57 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 00/12] drm/imx/ipuv3: switch LDB and parallel-display
+ driver to use drm_bridge_connector
+Message-ID: <yh4r2pgdl2m5wp627r35zse3obacmeanin5rjo34f7tctgpix2@dme3vwzaivag>
+References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240305004859.201085-1-aford173@gmail.com> <20240305004859.201085-2-aford173@gmail.com>
-In-Reply-To: <20240305004859.201085-2-aford173@gmail.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Tue, 16 Apr 2024 16:18:38 -0500
-Message-ID: <CAHCN7xLsEvP0A3mQJRzX=nXGr30WD4RU9vQVw9ynqzSi6cDNRg@mail.gmail.com>
-Subject: Re: [PATCH V2 2/2] arm64: dts: imx8mp-beacon-kit: Enable HDMI bridge HPD
-To: dri-devel@lists.freedesktop.org
-Cc: aford@beaconembedded.com, laurent.pinchart@ideasonboard.com, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
 
-On Mon, Mar 4, 2024 at 6:49=E2=80=AFPM Adam Ford <aford173@gmail.com> wrote=
-:
->
-> The DSI to HDMI bridge supports hot-plut-detect, but the
-> driver didn't previously support a shared IRQ GPIO.  With
-> the driver updated, the interrupt can be added to the bridge.
->
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-Shawn,
-
-Patch 1/2 has been applied and sits in linux-next.  Are you OK to
-apply this to the IMX branch so the hot-plug detection can work?
-
-Thank you,
-
-adam
-
-adam
+On Sun, Mar 31, 2024 at 11:28:57PM +0300, Dmitry Baryshkov wrote:
+> The IPUv3 DRM i.MX driver contains several codepaths for different
+> usescases: both LDB and paralllel-display drivers handle next-bridge,
+> panel and the legacy display-timings DT node on their own.
+> 
+> Drop unused ddc-i2c-bus and edid handling (none of the DT files merged
+> upstream ever used these features), switch to panel-bridge driver,
+> removing the need to handle drm_panel codepaths separately and finally
+> switch to drm_bridge_connector, removing requirement for the downstream
+> bridges to create drm_connector on their own.
+> 
+> This has been tested on the iMX53 with the DPI panel attached to LDB via
+> LVDS decoder, using all possible usecases (lvds-codec + panel, panel
+> linked directly to LDB node and the display-timings node).
+> 
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 > ---
-> V2:  No Change
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/a=
-rm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> index a08057410bde..fba8fd04398d 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> @@ -304,6 +304,8 @@ adv_bridge: hdmi@3d {
->                 compatible =3D "adi,adv7535";
->                 reg =3D <0x3d>, <0x3c>, <0x3e>, <0x3f>;
->                 reg-names =3D "main", "cec", "edid", "packet";
-> +               interrupt-parent =3D <&gpio4>;
-> +               interrupts =3D <27 IRQ_TYPE_EDGE_FALLING>;
->                 adi,dsi-lanes =3D <4>;
->                 #sound-dai-cells =3D <0>;
->
-> --
-> 2.43.0
->
+> Changes in v2:
+> - Fixed drm_bridge_attach flags in imx/parallel-display driver.
+> - Moved the legacy bridge to drivers/gpu/drm/bridge
+> - Added missing EXPORT_SYMBOL_GPL to the iMX legacy bridge
+> - Link to v1: https://lore.kernel.org/r/20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org
+
+Phillip, Shawn, Sascha, any comments on this patchset?
+
+
+-- 
+With best wishes
+Dmitry
