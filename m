@@ -1,190 +1,270 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2057.outbound.protection.outlook.com [40.107.7.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B3112BF3E
-	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 13:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713273095; cv=none; b=HCOz8DoUmqI1THK2QMCejvWimV0qxmyCtDjIN3hILKRfK+jbseoL95cmP8YW8V1iTpGoAvo9nr1bwuGxjzkH5sr4qCMObGKU2cBqNoY+LhbnsbGPVJRJGeGCOIWh5vRDeC4mDeEC8R9QLn9yymAXXsRX/ZXrzukd/ZGe9xed+bo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713273095; c=relaxed/simple;
-	bh=FMud9HK4Txi9Iloc/q5Mve8zMEYyQTCHPEZjygPTd+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iLZwWB5F5kfinLTZ3gBb0vsEGHNdfzXeATRjwCdDRoessJeg5lo8yqgYkYMRJcUedtjyfuWxIxDGVWVLQN7RLdMBKqT0C+CUkYgulUlb3ov/jWnUO/W0PiwvRCCrx6LsxIBe9rKUifm6RH5CrOT0Y2LOo6Ui19iyVLcqLKaiqhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UiXHc8sK; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641B912A16E
+	for <imx@lists.linux.dev>; Tue, 16 Apr 2024 13:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713273569; cv=fail; b=P0lZELmMOl8Hf3zQejJ/qTLmwRbWpdKNgoIrzlnD9otT3PWZzva5wK2dxwY9G1ibp8RM3ISGI6h0CQ/OLrGw2uHnbyrzWAmPZkoA6MtYvXLjOsYjsAlzMcyFEV8ph6MD9eRrXw6lp+XN7OcaY4PDQpVWIVg9V4g4iaXkY/+vK9g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713273569; c=relaxed/simple;
+	bh=KR/VrV+G5DdKvF2qawzBVBKExvS7/HQgWNxrT2AzNAY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=C3VFPbldyOz3taPSXSpx1zBOTMoxS45JlobizE4KzWkHE2yksi7NcYpglnUN1jFQxSTQfkjNK/pD/gLQz3sEXaEgB6sz/nqRc+4ZDF5yYxHdMoh2cgMmoTH4O+yRlK7dkOH7eEQ4ItZQGpCnvPnRENuA9LX8BTUBaKDvQeRx9dU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=RjbKUFye; arc=fail smtp.client-ip=40.107.7.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UiXHc8sK"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2a2474f2595so3666529a91.1
-        for <imx@lists.linux.dev>; Tue, 16 Apr 2024 06:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713273090; x=1713877890; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jZPeQ9YwB2tF4++h7n2kgZp1SSqfxUcQvkgkrBvzhQQ=;
-        b=UiXHc8sKLhmbxg5v525gAtbiGM3TPmwrtjt4gJuRdaEPO9CtQdMQRn19azDPP7M4U1
-         gt84BbN8C2HPNDvi7sprUXIRCJrUljhWPBwDyufIzyxIEwRsYXmxxNbWCqOspIIMcnUZ
-         5pja0C/G0//MwKXM61WrpI4eVUZjfKjPM16OSLqB6D+6jASXiYi+9wUs8gPAXlibxMm6
-         QWMkHHG1X90wLgeB8MwMsrSDu0NDIMxLy47fP2UITw8qTd6FuuZjZbN1TfOdd2wzafYd
-         LhCgpNWEgiq6btfj0WVxRySgN2ocG9gkRLg7S1xcN9/tD1mrQuYRxp+IT4XCYvQsnS1j
-         XFEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713273090; x=1713877890;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jZPeQ9YwB2tF4++h7n2kgZp1SSqfxUcQvkgkrBvzhQQ=;
-        b=tpmwo5dAsoShrmf4Ie6wm2NM/aJ4mx7DrcpcRAhZlaYxL0qEWA+vfTeiJ9YDp+gmkJ
-         cVfzvk1ZrvRHPAJTjMpSeagNlqESb16ttTjOlgdxEECTIUudF+XVHCA/2Xm7rdvzvkfi
-         A8wGeN0ZWShUFbnwx7Htn2V8j0q1qD330eLEx7BDZiS7OEx3nry1bT4p6jwGh9XLUIuR
-         VlZa1JhX18UpUlKxuR4H+4SEFnnwhYsHcZp3QpAQZjRN6i29ZOa0zt+07PPnKi7Qt6qq
-         GIvNCiJhc53sQntByKLJjrDu527s45w3QE9uUImlR/GyUlUqWJBi0Luh1CSrrFu9h9dJ
-         7EZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVhModUZ/o/KkR0ZGXcuH70dkyqb2QGWm8IxQhbxjOLIp0/OOr6PAjUFdmogxZdYHYCSJh2JUwKBkEhDm+3arU6QeiC
-X-Gm-Message-State: AOJu0YxXwY0+KSQIZxkEHfygd/9uZFV0vyiEWaGzxBxRNSeRKXVncNA1
-	Kxk6T+CsxfUc1geSztH8Dn7AaLQ8WDKtf2LCGFd1eewY3UW7sg9fyHJkKMyTHzLq0pZyJD2CXBY
-	KrmYpEI0ZOd/MIFzALoz9hpGTchg=
-X-Google-Smtp-Source: AGHT+IFzD1rh2qZ23AsZb3QVgRg8Tiuoux9ZgSgycHvDEg/8cqCQUPMy4CmD0O8wRUYekZwsbgGcvTdTzex4J9tnJv4=
-X-Received: by 2002:a17:90b:3a8c:b0:2a6:ff2e:dce1 with SMTP id
- om12-20020a17090b3a8c00b002a6ff2edce1mr10060329pjb.10.1713273090238; Tue, 16
- Apr 2024 06:11:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="RjbKUFye"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ljQwafFy/kjBCtXLDhZbmgIT9oNlK0GHk9kCFF2Xe1g86klxGaz8UgpCZELxtHYKxZUgR+hI0RPBBtjVumWrbZCMnDqI5HF1bh2jCUdKwtRcHyiEc6gmZiX7sv6OThuU2d9xpxifUHAhXWm0CSr0CxRtsdriCBKFfDXubfiKC9TyZ03W72SUmzrMMgN6Im/fEPuAzCaQUQaWIjdEZQgNEDkeBrJGEm6VrlF2GErKT964fteFo+Uer6tQUFxkjLuwbI3sSyP4ztNM3xj045p9eFnGuv25DBkzU3dt4AiOM3RYRI7F4B36fSxJPnrsowXMlDJ8lhDVBxim3In8LMwLug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eqevLgnm0Wdwaly5aA+vuWQBjA/iUQZ0g4gkgcuypt0=;
+ b=aZQpP3yi86S6Vhqd3575WzskQOoLpFSgOSDsW7YyZ4mgcd0womdPPHYtHiBnqA4GRY73fy086SJ+aHsyfqOnfhBsKd2Be4xgoYikmL03QqMb4Chcep5cQDBPPowaz0z8J2gzLPG+UNKySvLaYyS2KQ7lsPB0oJ6mCVbJDdRgCS1iP/+1aKGxdSX17SdCsROb4uuF/kyREjL14GuliIzsseaqCla6JT1lUWAIUozklA52uj9GTzMTnT94NtZNy0lkPkEQLFiYPK25F0d4dW/p+iZ6iCYrSfcnj24nYKQ/8v/47KMUDLLneryXLADjABdVxg1s95OWcfkNPw4gIH2Ozg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eqevLgnm0Wdwaly5aA+vuWQBjA/iUQZ0g4gkgcuypt0=;
+ b=RjbKUFyebefIdEqVExh8W08hwfVTktqu1qj73PlWTHWb3SyT5sQxp8sCduNYW1F5X6xA2bXkb9E862ZKKz2hkRlb1qg7jGxuEMPZYBcA+q+Dl2ZezXgjsRVavgrfr2yz56otsQKLN1eLCYSZPCUjX2pfA8ZXcxdfgPJtiUiDsc0=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by PA4PR04MB9438.eurprd04.prod.outlook.com (2603:10a6:102:2aa::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
+ 2024 13:19:21 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
+ 13:19:21 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Rob Herring <robh@kernel.org>
+CC: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Cristian Marussi
+	<cristian.marussi@arm.com>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: RE: [PATCH v3 2/6] dt-bindings: firmware: add i.MX95 SCMI Extension
+ protocol
+Thread-Topic: [PATCH v3 2/6] dt-bindings: firmware: add i.MX95 SCMI Extension
+ protocol
+Thread-Index: AQHajMWwPzKaKnlwaUWTuAs/m6AnGLFkopsAgAADorCABj4qgIAAAx8Q
+Date: Tue, 16 Apr 2024 13:19:21 +0000
+Message-ID:
+ <DU0PR04MB9417D5A577A5E91AC98B69C588082@DU0PR04MB9417.eurprd04.prod.outlook.com>
+References: <20240412-imx95-bbm-misc-v2-v3-0-4380a4070980@nxp.com>
+ <20240412-imx95-bbm-misc-v2-v3-2-4380a4070980@nxp.com>
+ <20240412133400.GA2282201-robh@kernel.org>
+ <PA4PR04MB941680A7FCBCDF926417F6A388042@PA4PR04MB9416.eurprd04.prod.outlook.com>
+ <20240416130703.GA1992329-robh@kernel.org>
+In-Reply-To: <20240416130703.GA1992329-robh@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|PA4PR04MB9438:EE_
+x-ms-office365-filtering-correlation-id: cb67333e-655c-406d-3160-08dc5e17d439
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ wLRSyMchFwbmW/rRWhOE2V6l4WqN0M5cc28HjA34MjvmBY99BKe4O0rt8chUvTlHE/LJRPC/ibLR+OQ2dJmwj4hsFdJqa5paMKhBhm1gI5OFtG2gfBMQaFwIHLFKquY1ztoJW+brB23QRNYPyfrJ2E3AdJMUZOORHNUP92lE5IjCySfY67tMHfPArHPSAI8ZfubAHTefB+vvi/z2NmXbl/rnsSr7ClaRsuClQwDZ01u35S5IlHjeFRG2DcrtYJQG5N8Ebzn8/y4GOg/ebjwrplPTOmkgUzb8UMlFcEBh1FOqbTRl0DlIw9kh+G4oo23P+nmpyyjBMMaymyWK0sfgMyhuZMUsJPX3oJ5wgdknaQbwyskdxakNvOedKqa1lt2xJA+4htHnlgsv+E3rB5l+Vhsbj3EzICK6qgBeYtFsxTRfNHoIFSvaThtZTjnJ3iL/sg7k+VuD385WqaI5YcQQpUaq3dewF+1JYWZIQQ5IqcVECDX3qUiD93NImZISYwGW760vGNYbDW+4TahxMABCLT3JskGRONdXR1XRdZ0pdtMM68H5uF6pLnBpqVqlIcXh5BF0xkKNMcBkb074/zXvxh7eFYXI1zBq0M8O3ETTc4+ouI1PRbtJDVhkJEm/3lAqm0XN9+Cp2Jt49cSZNY5rwb0wwlF1uKJuAN9Cmm1DUDR/IQJEEkZGC3wZrh0Gfd/zMnBXd/V/+qoU2yOXH3Ajaw==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(366007)(376005)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?XIyl3yizMrlQt6H1YAk+Zvp/QjSqO7QyFSjFtO26JaDBbIuB6/5TIWIMsUVH?=
+ =?us-ascii?Q?as94ZwjGYPZEoRlvyt+5iZ3RAMCgbpWBlS0/zfSIFSm5u4L9TtaDKMVu0pUz?=
+ =?us-ascii?Q?iFnqSeOaaJyM+PbGddf7k94Z+EO/QDMp2y79TfnG9rCuaIyhuHNhYsdUXu6V?=
+ =?us-ascii?Q?k8ovCKePdfG3sWKBCNzQXiIIUPwOCcWu0JuWtGxDr9cuKOZtpowRuL/WVFSH?=
+ =?us-ascii?Q?05KzvL+deU1ZBnQlw1nlAycexg78stLnnVBEcGEOlLZTkCTbKSgdUhWGKTte?=
+ =?us-ascii?Q?GLXA/OhTwtgZyOCKzKhqO9TIPAw7M5Q6nrwCAqiOY1DdrXjtmVzvkrlyN+9A?=
+ =?us-ascii?Q?79IddHpyqJP6tWghudBvewXYtuL8D7vEEqdZebr24cE/MEdCtUuPbQ8PEqi6?=
+ =?us-ascii?Q?yX99hfiQVjA/EiAJF1GqXVriacAGt0vqMZHaRPg+aYQOTL/EKBovWflJ2h6J?=
+ =?us-ascii?Q?/+gEg9NuoBBkHC2FHEZh2e+KzGJNk6f1T9RJ8UrHuc3mMO7cReuYGhSq/GDS?=
+ =?us-ascii?Q?4g0R4G/bbT4d4UBjZpzeUyh+cawcmWBlJuAWyjAKuGf7ssKYx0sMyZP/8ITs?=
+ =?us-ascii?Q?PJxDW/ZJiabmh5Xt4SLEl0i/RYXWwETcsP2VNEloMJ1qYBBSaMR9t12j7M+4?=
+ =?us-ascii?Q?xJBIeBEumVD+Xd3yBYcKIP3MarbtYk4qPYdAlDHI61dwbbCVM6dHuV9Gti8M?=
+ =?us-ascii?Q?IkQrc5xCXQvPaqgjYpZzhy+jvHnMz60+rbTPzwprvsLp/QSt1NrQPzEFfT2K?=
+ =?us-ascii?Q?VCGqScqfzmQJGlPccqSh5qHPdTc4qqpzE1d/KLETLAT1n+hpWqt7NkL/dydU?=
+ =?us-ascii?Q?qvUoX0Es4WpJKa1cO4pDdyOtgQD/pQOU1JzamE5fvbKenQh+ED11adxj/5ih?=
+ =?us-ascii?Q?m1U3FNUKtNggFejaXQyJY0vw7+SXj/1SN2Tm9gSYda77nuNJuKuqcdCq216P?=
+ =?us-ascii?Q?1uKXq9BjHce1dr3HQLmc2AMPTcPHI8s/dr4r5wy8hqPevqVE40/7IrKCy+3e?=
+ =?us-ascii?Q?/Gp4wESZOd9ILz/K9aAPL+8HcJrCNwNa22dMKmisjtmO9gHJ2nb89nd8EjoI?=
+ =?us-ascii?Q?iVEIHfA2R0LOPrsBCKXHlUAprvXqQ+Y8KmsBW51S2IOPr1Sl45hpq5AyLbyy?=
+ =?us-ascii?Q?dv6xPG3UGckTNxw3H+7BdUFahbulve41zMGEzfUB8XQk3oAHqpHrXK7jSncV?=
+ =?us-ascii?Q?a8gQelsams4zRLH+P3whnFMj1e5Jj4XB/0kL7Z+x+lxFeZ83dkpNJRPQMFWj?=
+ =?us-ascii?Q?umUSTRq9e1piGJh/xRT0KedF4cWTACeYS/PB/l0/xLfLmoKHvf3jj54Uzfc8?=
+ =?us-ascii?Q?9Uzke/KnEa1qTSFuq9oqalf6v6FuSz4hrlxUApb3VXagPsVET5+Q9QO3mtWh?=
+ =?us-ascii?Q?ntv5hQ5HLs0+d7jYaXMJr1aYwMDaZcmoty5eNd03ENB7ppeudsKmVYNH2qW3?=
+ =?us-ascii?Q?b6iPFsJ2N+VWPWcJOdl5PKvQiE/4v8+cXvOz50E2hGwo28a7xEuERV3Y++8R?=
+ =?us-ascii?Q?+J/Oq/nx/zaH4A12WujmKui9k+ki4S+ntgvmEC/Z+uTzQTV/0LJlFD59xKVF?=
+ =?us-ascii?Q?LFlGhcCs2AlPN1VQI2g=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240405202243.46278-1-marex@denx.de> <CAHCN7xKX7v4tmhjvoPLirEoUG91jpu-8R2DV9eE=mnWt=3FffA@mail.gmail.com>
- <8c1935d1-7f59-4742-9659-bf87ac4b736c@denx.de> <5771435.DvuYhMxLoT@steina-w>
-In-Reply-To: <5771435.DvuYhMxLoT@steina-w>
-From: Adam Ford <aford173@gmail.com>
-Date: Tue, 16 Apr 2024 08:11:18 -0500
-Message-ID: <CAHCN7xLVhCWZZ5jaZTaxeA56dJkBEGY3cg_UYtWMZ=BGA-moOw@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: imx8mp: Align both CSI2 pixel clock
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-arm-kernel@lists.infradead.org, 
-	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Paul Elder <paul.elder@ideasonboard.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, Marek Vasut <marex@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb67333e-655c-406d-3160-08dc5e17d439
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2024 13:19:21.7453
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JgHprwJcEoyjBmelzh/PPE+dBTmSmIQ2g1LMFy3mlVtdF+ipPoM3CwIdPBfWeHzKYwP4MzDkUI6Szpz0oqHavA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9438
 
-On Mon, Apr 8, 2024 at 5:14=E2=80=AFAM Alexander Stein
-<alexander.stein@ew.tq-group.com> wrote:
->
-> Hi everyone,
->
-> Am Samstag, 6. April 2024, 04:58:39 CEST schrieb Marek Vasut:
-> > On 4/5/24 11:04 PM, Adam Ford wrote:
-> > > On Fri, Apr 5, 2024 at 3:43=E2=80=AFPM Laurent Pinchart
-> > > <laurent.pinchart@ideasonboard.com> wrote:
-> > >>
-> > >> Hi Marek,
-> > >>
-> > >> (CC'ing Adam)
-> > >>
-> > >> Thank you for the patch.
-> > >>
-> > >> On Fri, Apr 05, 2024 at 10:22:26PM +0200, Marek Vasut wrote:
-> > >>> Configure both CSI2 assigned-clock-rates the same way.
-> > >>> There does not seem to be any reason for keeping the
-> > >>> two CSI2 pixel clock set to different frequencies.
-> > >>
-> > >> There's an issue when using two cameras concurrently. This has been
-> > >> discussed some time ago on the linux-media mailing list, see [1]. Ad=
-am
-> > >> knows more than I do on this topic.
-> > >>
-> > >> [1] https://lore.kernel.org/linux-media/CAHCN7x+kymRGO2kxvN2=3DzLiqR=
-jfTc3hdf3VdNVkWjsW3La0bnA@mail.gmail.com/
-> > >>
-> > >>> Signed-off-by: Marek Vasut <marex@denx.de>
-> > >>> ---
-> > >>> Cc: Conor Dooley <conor+dt@kernel.org>
-> > >>> Cc: Fabio Estevam <festevam@gmail.com>
-> > >>> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> > >>> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > >>> Cc: Paul Elder <paul.elder@ideasonboard.com>
-> > >>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > >>> Cc: Rob Herring <robh@kernel.org>
-> > >>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > >>> Cc: Shawn Guo <shawnguo@kernel.org>
-> > >>> Cc: devicetree@vger.kernel.org
-> > >>> Cc: imx@lists.linux.dev
-> > >>> Cc: linux-arm-kernel@lists.infradead.org
-> > >>> ---
-> > >>>   arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
-> > >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> > >>>
-> > >>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64=
-/boot/dts/freescale/imx8mp.dtsi
-> > >>> index 1bb96e96639f2..2e9ce0c3a9815 100644
-> > >>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > >>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > >>> @@ -1703,7 +1703,7 @@ mipi_csi_1: csi@32e50000 {
-> > >>>                                                  <&clk IMX8MP_CLK_M=
-EDIA_MIPI_PHY1_REF>;
-> > >>>                                assigned-clock-parents =3D <&clk IMX=
-8MP_SYS_PLL2_1000M>,
-> > >>>                                                         <&clk IMX8M=
-P_CLK_24M>;
-> > >>> -                             assigned-clock-rates =3D <266000000>;
-> > >>> +                             assigned-clock-rates =3D <500000000>;
-> > >
-> > > I am traveling, so I don't have the technical documents in front of
-> > > me, but I beleive this is an over-drive speed, and 400MHz would be th=
-e
-> > > single clock, standard rate.  I created an imx8mm-overdrive and
-> > > imx8mn-overdrive dtsi file to let users who operate in overdrive mode
-> > > to update their clocks in one place.
-> > >
-> > > I also think this goes down if the user is running two cameras instea=
-d
-> > > of one.  I re-read the old thread, and it's coming back to me, but
-> > > until I can get settled into my hotel in Germany, I won't have time t=
-o
-> > > review.  I think the original idea was to use the lowest, conservativ=
-e
-> > > value with the idea that people can tweak their clock settings if
-> > > they're only running one and if they are running in over-drive mode.
+> Subject: Re: [PATCH v3 2/6] dt-bindings: firmware: add i.MX95 SCMI
+> Extension protocol
+>=20
+> On Fri, Apr 12, 2024 at 01:50:37PM +0000, Peng Fan wrote:
+> > Hi Rob,
 > >
-> > MX8MPCEC does indeed read 400 MHz regular, 500 MHz overdrive.
+> > > Subject: Re: [PATCH v3 2/6] dt-bindings: firmware: add i.MX95 SCMI
+> > > Extension protocol
+> > >
+> > > On Fri, Apr 12, 2024 at 06:47:08PM +0800, Peng Fan (OSS) wrote:
+> > > > From: Peng Fan <peng.fan@nxp.com>
+> > > >
+> > > > Add i.MX SCMI Extension protocols bindings for:
+> > > >  - Battery Backed Module(BBM) Protocol
+> > > >    This contains persistent storage (GPR), an RTC, and the ON/OFF b=
+utton.
+> > > >    The protocol can also provide access to similar functions implem=
+ented
+> via
+> > > >    external board components.
+> > > >  - MISC Protocol.
+> > > >    This includes controls that are misc settings/actions that must =
+be
+> exposed
+> > > >    from the SM to agents. They are device specific and are usually =
+define
+> to
+> > > >    access bit fields in various mix block control modules,
+> > > > IOMUX_GPR, and
+> > > other
+> > > >    GPR/CSR owned by the SM.
+> > > >
+> > > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > > ---
+> > > >  .../devicetree/bindings/firmware/arm,scmi.yaml     | 21 ++++++++++=
++++
+> > > >  .../bindings/firmware/nxp,imx95-scmi.yaml          | 36
+> > > ++++++++++++++++++++++
+> > > >  2 files changed, 57 insertions(+)
+> > > >
+> > > > diff --git
+> > > > a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> > > > b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> > > > index 93fb7d05f849..fa2cc910c485 100644
+> > > > --- a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> > > > +++ b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> > > > @@ -247,6 +247,27 @@ properties:
+> > > >        reg:
+> > > >          const: 0x18
+> > > >
+> > > > +  protocol@81:
+> > > > +    $ref: '#/$defs/protocol-node'
+> > > > +    unevaluatedProperties: false
+> > > > +
+> > > > +    properties:
+> > > > +      reg:
+> > > > +        const: 0x81
+> > > > +
+> > > > +  protocol@84:
+> > > > +    type: object
+> > > > +    anyOf:
+> > > > +      - allOf:
+> > > > +          - $ref: /schemas/firmware/nxp,imx95-scmi.yaml
+> > > > +          - $ref: '#/$defs/protocol-node'
+> > >
+> > > If you put the ref under the protocol node, then it's 1 schema file
+> > > per protocol per vendor. Also, we then have to list every possible
+> > > protocol node here, and every one listed here will be valid for every
+> vendor.
+> > > What we discussed is putting the list of vendor protocol schemas at
+> > > the top- level here and then the vendor schemas can list out all the
+> protocol nodes.
+> > >
+> > > Also, move "$ref: '#/$defs/protocol-node'" to nxp,imx95-scmi.yaml.
 > >
-> > Shall we align both CSI2 ports to 400 MHz ? Currently they are one 500
-> > MHz and the other 266 MHz .
->
-> No, that won't do. The (industrial products) datasheet says (Table 1):
-> * Single camera on CSI1: 400/500 MHz in normal/overdrive mode
-> * Single camera on CSI2: 277 MHz
-> * Dual camera on CSI1 & CSI2: 266 MHz
->
-> Assuming you need CSI2 more likely in a dual camera setup only, defaultin=
-g to
-> 266MHz seems sensible to me.
+> > In arm,scmi.yaml top level, add below:
+> > +anyOf:
+> > +  - $ref: /schemas/firmware/nxp,imx95-scmi.yaml
+> >
+> > And also add a protocol node:
+> >   protocol@84:
+> >     $ref: '#/$defs/protocol-node'
+> >
+> >     properties:
+> >       reg:
+> >         const: 0x84
+> > But here I not add unevaludatedProperties =3D false; otherwise the
+> > vendor yaml new properties will not work.
+>=20
+> Just drop 'protocol@84' entirely here and change the top-level
+> additionalProperties to unevaluatedProperties.
 
-I agree.  I think that at a minimum, the 500MHz clock should be
-reduced to 400MHz since 500MHz requires overdrive mode, but the safest
-clock rate would be to set both to 266MHz.  Would it be appropriate to
-add a note to the device tree indicating that a single camera
-operating mode could potentially increase this to 400/500 depending on
-overdrive mode?
+Thanks, will fix in v4.
+>=20
+> >
+> > In nxp,imx95-scmi.yaml:
+> > properties:
+> >   protocol@84:
+> >     $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
+> >     unevaluatedProperties: false
+> >
+> >     properties:
+> >       reg:
+> >         const: 0x84
+> >
+> >       nxp,wakeup-sources:
+> >         description:
+> >           Each entry consists of 2 integers, represents the source and =
+electric
+> signal edge
+> >         items:
+> >           items:
+> >             - description: the wakeup source
+> >             - description: the wakeup electric signal edge
+>=20
+> Constraints on the items values?
 
-adam
+will add in v4.
 
->
-> Best regards,
-> Alexander
-> --
-> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
-rmany
-> Amtsgericht M=C3=BCnchen, HRB 105018
-> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
-chneider
-> http://www.tq-group.com/
->
->
+>=20
+> >         minItems: 1
+> >         maxItems: 32
+> >         $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> >
+> > additionalProperties: true
+> >
+> > Are the upper looks good to you?
+>=20
+> Yes, other than the one comment.
+
+Thanks for help reviewing the patch.
+
+Thanks,
+Peng.
+>=20
+> Rob
+
