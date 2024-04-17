@@ -1,84 +1,91 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpcmd13146.aruba.it (smtpcmd13146.aruba.it [62.149.156.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5A147C60
-	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 15:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96523147C8A
+	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 15:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713367840; cv=none; b=o0YJGExT3uq1H6TZ8lhEU6ei1/Rk1L2dq5uzFUxt9YdDQjqjH4oQ7qPtuPDRmOsSZeLw5I6E4Oc70HhCsoTYmn2TzeAo+F+7TMeaaGuYVVBMJDnQlqkkz2ipz6qSTNyDlwEG5Ojc+7mKmEbZo7pmKwYoSKFhGHW7NchvA3LwM9g=
+	t=1713368146; cv=none; b=fIyCQIab5FKMbHLHsts7EGc/K8WEw7x/l9ajExEhJWhJgwXPUWGuEtEj3+573tgmFiyUj4Ka7CmMB+UmKL/0VOoQZbZf0Y6IoEzyuByolVmNgBSwB9GcLLb5uQ0ekXsOwdYJE3aBsQBp+iB4shpaVINjtR8lcKY6mQQTfKhKP8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713367840; c=relaxed/simple;
-	bh=8L9FWH/LHbEyj85WryAl1y2Vb4mXu+cGmOWVxsOrNHo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ltjETwn7paIRInHJPUdIZVZR9/hx8LcwYXbnZEJYYI/3644uHDIXjCekKvcDRtUHLXdqFvhh/OhSxGPnIl1uT61B99P6R+W/bfVsDxOU8UotZGuojlR4pfSlhrYVHzN09llW7bL4T0KlFyD+HklIPCgF3KUiJWxgGyZoo9VPQRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=z4k6Q+0y; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1713368146; c=relaxed/simple;
+	bh=pDXnvTYDcnQuVId72ZBjMPQReEig8zoC6BZfnfYFX44=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nrmxfmuLa4rNXda53sGivakUC87ym0PdmDs+2u3wTV0xb9iPWxYYUBnP3BcTvvI++83dSyHjCoMzaPFL2YXK04ha9gsktgunkSpJpQkMjmyBvmbASg5OqAQcI4xEcuVo0T8/DAn61T8K9Jj74E7kNc6G1cqwgWEHkXTNS4tUL0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=j4M13Y0U; arc=none smtp.client-ip=62.149.156.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="z4k6Q+0y"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 138CD8841D;
-	Wed, 17 Apr 2024 17:30:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1713367830;
-	bh=1KtpGSfLviXFz3BNKiwi3I/lwFR3Jar+xTmmX6ZHb3g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=z4k6Q+0yfGx/89jLtjQJ0Kedqp1V3qyJ8JPo8sjpHVXt40Sq+EYKXWEkoZXvS95B+
-	 50C/96VROErYpWOgXyt9Lx4zrnDlAmiChVPwWCSvbvjZP3Dl0qxhYwG6PVxGXXf8Lw
-	 2JMBXRGLDfSaH4zMM7o04EqwPZOOIbCCrKIzMw8R6nZ1ZNtz2/Em3lytVgZZpw8spp
-	 sjYLRQyOG2gLKCc+IcrKoThUoTR1U/vRWraDKCPDt3D/oShmJ8+F9oWv8PeGm+kKNQ
-	 nrEaPK3bnf7XFLDtEWeipa9npHo1d+wgvU8Chp1DI2295XPxQg/KCgaRS9BnDjkhaV
-	 VOp4+8J5wtSkQ==
-Message-ID: <b9147e01-4759-44c6-9588-6151ae2ff113@denx.de>
-Date: Wed, 17 Apr 2024 13:06:31 +0200
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="j4M13Y0U"
+Received: from engicam.com ([77.32.9.15])
+	by Aruba Outgoing Smtp  with ESMTPSA
+	id x7JrrIqgbiznzx7JsrXauv; Wed, 17 Apr 2024 17:35:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1713368133; bh=pDXnvTYDcnQuVId72ZBjMPQReEig8zoC6BZfnfYFX44=;
+	h=From:To:Subject:Date:MIME-Version;
+	b=j4M13Y0UKIEQQLubyKuY7puuKS5hkz1FaH5n8h+9l7SuNQhfg4pChcJq90yEApGDD
+	 XDop4U73PkpDe4ME5pDK5CSRSy0ZbLEZLAjLxMJqVgDKHuRESnYT+1UOBFPntM+cHh
+	 w1eyhRZu9wY51syVCYrVKqDguThcTezleqiAiFRejGci/odAXrDYl2S8hv4TvvEZ4a
+	 1u/CHeLbOpNeQZfLZDzfxwm6HQ1ECq4KDJD2xUMQiGLxiw3PJLr0JUi/ALyphMRGdK
+	 aimhmEPtjc7/bHV6hASao3wAh/bXtA19C5FjErhSAyqISezzvkr3iM9O8kcFGSUdjM
+	 a6ExR0kvICl5A==
+From: Fabio Aiuto <fabio.aiuto@engicam.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fabio Aiuto <fabio.aiuto@engicam.com>
+Subject: [PATCH 0/4] arm64: dts: imx93: add i.Core MX93 EDIMM 2.0 board
+Date: Wed, 17 Apr 2024 17:35:24 +0200
+Message-Id: <20240417153528.7838-1-fabio.aiuto@engicam.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Paul Elder <paul.elder@ideasonboard.com>, imx@lists.linux.dev,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>
-References: <20240416141914.9375-1-marex@denx.de>
- <352388ee-a267-4c1f-b968-e1a7709d46ea@pengutronix.de>
- <6872097d-b1c8-40c0-8392-28c351dad3dc@pengutronix.de>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <6872097d-b1c8-40c0-8392-28c351dad3dc@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfKf54hZLWy+EqOg5Nqgc0goNOHAhokwMzcseEGM/md4Kj+Xk6iBWYxM59JqOzXCKNRty4XULab5exIS2u3izr6RaljxgtYxGjR+musWIS2kHsPo2muOv
+ cx3OAN2qTT04yrg1TnQSd/TGRTbIBJ49ikYOuGYSAC668GVbSEiL+A4+F+NF7/UcLRNHt+Ljnq15HKJMUA19RxQpy1tgpl/+zVIFANO0OhDrAfynWBafbNqy
+ 90LKZbt8HIO9w1KJHfR486IuQhL8t3QtB6A11+64v8UOgzF3MRFf+OnPpipSZSdLmEP2BPimD/TBmqs0wevGvygwAjNPsqPcPSfytRAb1owt02fMSYPS98fV
+ dSAYjNwraYX9oQdhmcBjVWistHt5eU+ACMQB+x+o7LTyT6dOKcknOXv81kvwXtuOHcMfr6YbjT7clvO1o7g1HevnAxxsSpavI6pJWA7EE9KfjSpPMMIWXCLN
+ 6+Y/7DmdNLbtQ5JlGfwfqPigO732gyjIKhEFKgzIG53Gy0hmaaYhTBi4FGAQYneeZCTK8txkrwQJaMeAo/nNmQSrJUs4B8+RuW59dw==
 
-On 4/17/24 12:17 PM, Ahmad Fatoum wrote:
-> On 17.04.24 12:14, Ahmad Fatoum wrote:
->> On 16.04.24 16:19, Marek Vasut wrote:
->>> Configure both CSI2 assigned-clock-rates the same way.
->>> There does not seem to be any reason for keeping the
->>> two CSI2 pixel clock set to different frequencies.
->>>
->>> This also reduces first CSI2 clock from overdrive mode
->>> frequency which is 500 MHz down below the regular mode
->>> frequency of 400 MHz.
->>>
->>> Signed-off-by: Marek Vasut <marex@denx.de>
->>
->> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> I see now that the node has a clock-frequency = <500000000>; still.
-> This should be lowered too, shouldn't it?
+Hello all,
 
-Oh, right, good catch.
+this patchset adds support for i.Core MX93 EDIMM 2.0 Starter Kit,
+a SoM + Evaluation Board combination from Engicam.
+
+If I'm not wrong the change I propose on patch 2 has been already
+queued up in regulator subsystem, anyway I put it here to satisfy
+requirements for dt-bindings patch submission (if I don't do that
+checkpatch complains about that).
+
+Thanks in advance,
+
+fabio
+
+Fabio Aiuto (4):
+  dt-bindings: arm: fsl: add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
+  regulator: dt-bindings: pca9450: add pca9451a support
+  arm64: dts: imx93: add Engicam i.Core MX93 SoM
+  arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
+
+ .../devicetree/bindings/arm/fsl.yaml          |   7 +
+ .../regulator/nxp,pca9450-regulator.yaml      |   1 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx93-icore-mx93-edimm2.dts | 356 ++++++++++++++++++
+ .../boot/dts/freescale/imx93-icore-mx93.dtsi  | 271 +++++++++++++
+ 5 files changed, 636 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
+
+-- 
+2.34.1
+
