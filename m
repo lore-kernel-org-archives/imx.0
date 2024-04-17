@@ -1,103 +1,139 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4B35675F
-	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 06:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6766EB7D
+	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 07:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713335367; cv=none; b=pyDk/KfBWAUVkRkAHhPgEylyv073av4W7tUCJ7DS9W92KxCC1tZ9zVsaDVAcj5zUgu5CpVbUPKhAybhkTkIDJ++iWrOvuK1GD4vWKqSR4MddJr4ikPID1fNGwCEcVrK/h8qcj7i0n5FaNWj32wwZ/Ygr4+gwEaTt/qi1uG/Uf8Q=
+	t=1713340629; cv=none; b=cGHJVxiP0zXPp9tPgASEgpnL/j1T7l1Ub132GH1fWeiMSdHnFXQhWMvyUcVEo89pdyFg9sfobXLhWc8YZo0I9QW6TtwEt31zEOZuGgTHNnEXvSOUXgFPSztOkDH8lmad15ulbcg74xPpYZd65gxNnQ4klvFrrDrAVHbMBpbBQWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713335367; c=relaxed/simple;
-	bh=zOuw1eJRYDZNmaVdVjGYIu581bMf2HS6hcsde8LTzaQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZM3yd55n3a++5GJO4VXboccwB116WW9sR/BD3b6paaekABGDB9ocG6ItMi7L/lmKFAwSWryT6FS9GI/LhW1wQj8HW/E48d4ITaTiwR2EaekJ34aG5hCfyMu1IjmN9OIx0oMBKQ2jLnab72/FaDPojr5hNRXlWwlv4G55Qp9V0GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kHzb5i0M; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1713340629; c=relaxed/simple;
+	bh=g0N0u9gOAf2wFG4BUbQc7PqWearIDSNnGlyMV7BlUPM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=otnALG8//V5cusmS7nIgBfLqTsYANxns2GC+BmWO+7ftr80715MH/MCSLQ3HDQ13LfrtRMflY1OoRpivfuT53P8/c0xne7odOFzAERV4mDnpNkaCwyjrgRoUKC5cflT4czAiRcsqy6bFPkl60ddWl0H/r9ayRt3/6Zn0TX0xm5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=V2EG8hkU; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kHzb5i0M"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4348110e888so204491cf.1
-        for <imx@lists.linux.dev>; Tue, 16 Apr 2024 23:29:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V2EG8hkU"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1e2c725e234so4286765ad.1
+        for <imx@lists.linux.dev>; Wed, 17 Apr 2024 00:57:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713335364; x=1713940164; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UyngQvsvNX4IVjE6EtxACZNPOHV77/T++2RB3m9+N3E=;
-        b=kHzb5i0MSYo4sFmpUsLQFOS1IfDqb5oek465z6+q+Ji4rYHPCBhtea4dGjtvOpPdEn
-         wnhel7wcDdRHfdbLgri2YOgxeA16ZVZe/YYX7+T/a/n2Y4fy7hmIG0g9WXq4uw5plJ/F
-         3S0EDtR8aaer9ll0xAT/nU+DlMxyQDNhM/QSH6JOvkxQShJf22FKwiUxAv1VDmcqbgYo
-         ShShcZ8lMJlFovT82uRtMLKpvcBO6Fp1C+bwMHQP5/6TLTT1f/95Vzx7JaWWvsxwsbfd
-         aZICaDEAuefUqPLZDrOMe+TOqEm2DyKBK2knVaYxfCwxFYCJeKWTRaXu8sRFDljVLujo
-         hCfQ==
+        d=linaro.org; s=google; t=1713340624; x=1713945424; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=evO2aNxdV+lvu+Wvrf+ju2Hc2q46w9zOfTh+m4DkhcA=;
+        b=V2EG8hkUGcKW2bfK7syEhLF3jXiaWTtCn+flcT8gbWukBzx5kJrpJuccSs4Zu1aU72
+         miQJjuRJcDLhte6GXgrgdLv5mtkZiMwXU73Vrtr4MGALeSfdnMTUr5qXoEWI3wOlapRc
+         awko5IRnqIhqR4vWuN5LntknaB3DYY8lCEbYQE0faN47814BvhgjMt3pdhia6gd6wKtM
+         8YCXf3wUj6vINzNdPIEt0ZEByEHqgG2LT/B1QWJDsOdN2LVValUfyYrx/6QyChEU5mtA
+         cvsQWODx/4SblIjoBj7nooHRv8AqKbmhDCWq6MeFpo6l+7xTefc+ifHNZisdvXLhUeD2
+         MN1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713335364; x=1713940164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UyngQvsvNX4IVjE6EtxACZNPOHV77/T++2RB3m9+N3E=;
-        b=o08+lGn5AY2wu1KCdajw73H/V4nK95xqDZPa24TghXC1BL6BDAqnD0BUWfOv+66pIE
-         CkE3+McpHSwAeEHf/hRwXVh5RqjeVT0Y/2sNxGoNhN58Lnu5Ab1nwITZse9/vWEL7fYe
-         5RWw5JUuV1UXHJlNEJlOFNJonIONyzzTMB5S0KaRZ13tpmBB5I25cv1/6FC/CifpvMMr
-         X9DF3fsO9gs2HJE5Qf8d0dCG69EwakbsyNS0WOb301g+qDMFmN2HaGw8rnwJlKoZji+R
-         PXIONcWvVs4rAO4zj/uc+SUkTUqDm5aSnEyHAwpJ3z7P69AkTJJq/Hbyv6sSPa+++iLK
-         YCCA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+UesYyNl8niHf0TXo3vGC6V4ZVSTkTDXmH87ry66sTp58wxiWMN30IBMP814LBl6Jq+hMddEQQfhUoXkY1hcoVxXf
-X-Gm-Message-State: AOJu0YyESNutXDAzY1dQiu/KFf70SO9pgDTh1eV/gLH/j/CQDR+8knnm
-	G8dxJyLHkJBX1T810y2t+FTeauGWfxc01zZhn7BRwyZWTfOLo+p6kfSiuLPFMT8bO69JRkj6NRl
-	VnRKP8Hf6PdgGLSfum/ZFAhEhaJT3lSyJUcH2
-X-Google-Smtp-Source: AGHT+IGHXQ5c36NdPnQ8e2OzYJ8YGPtp3VigSixmG1sd9NrQgjUSDxsXVn1v8tti2TbzQ+n3DGTVwYYT2xmvyD/Cdj8=
-X-Received: by 2002:a05:622a:24f:b0:436:4015:1d82 with SMTP id
- c15-20020a05622a024f00b0043640151d82mr176693qtx.24.1713335364329; Tue, 16 Apr
- 2024 23:29:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713340624; x=1713945424;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=evO2aNxdV+lvu+Wvrf+ju2Hc2q46w9zOfTh+m4DkhcA=;
+        b=ZLOUHaWWiSc0d68zcWbk32WEn4jEZ7WwAF0RdmpkRudgYaJ/iMXsl30ScPZJ1SjRLl
+         RLq4q0Ql7b8LjrZAFbmokloN9JWKlHvC0lENuEryRUQW3BRg1eUkD+ef4qqAx6gwrt6L
+         R1yw3TCabxQq8p02Q26B5FIzvkjA+eG37/4F3D+5YWbfhTnA7PRWdN6zCs+lep2UGul9
+         PDYSlpc6Gx9Z+BEc0ptxjkIcFmsid050dFpwibGUm8sMhzoJdWbjj6Mfpr96UFM4thF8
+         nsKLO/TMSmYrK9HzBKUfjrUm2vX70h29PR1qJR81pSAWzhiMxQKmIH12s3xcXG87nmZx
+         J7tg==
+X-Forwarded-Encrypted: i=1; AJvYcCXw5ZuJC7PKpUw+SouoTiUPkH58/igdLbze3okQ2q2dEap6jVRG0hszsLYesKKkb/HECNhWV1/Z0H62L44oxZOfgdQu
+X-Gm-Message-State: AOJu0Ywr2STuydBnOHXIloHUUlfVYxdlvFcxWFUrhIWsVJooQnoSVB/E
+	1NSCs2boxe0kw4rgWx4rszPWMukkwTI51cHyfKxO+bBVjZ/fyuIchJ+lx0VYlQezrE2JedjVoRc
+	=
+X-Google-Smtp-Source: AGHT+IFFyHYh8M4+fWRehgScxIXg5jrLdxMhBkxlQ8ODhN7gxnsoZgBvAuBI3hdPZdtAy8cFvr4wdA==
+X-Received: by 2002:a17:903:120c:b0:1e0:c0b9:589e with SMTP id l12-20020a170903120c00b001e0c0b9589emr7827576plh.25.1713340624053;
+        Wed, 17 Apr 2024 00:57:04 -0700 (PDT)
+Received: from thinkpad ([120.60.54.9])
+        by smtp.gmail.com with ESMTPSA id u9-20020a1709026e0900b001e4753f7715sm9622249plk.12.2024.04.17.00.56.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 00:57:03 -0700 (PDT)
+Date: Wed, 17 Apr 2024 13:26:55 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 4/5] PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
+Message-ID: <20240417075655.GF3894@thinkpad>
+References: <20240415-pme_msg-v6-4-56dad968ad3a@nxp.com>
+ <20240416170242.GA164032@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240411235623.1260061-1-saravanak@google.com>
- <20240411235623.1260061-3-saravanak@google.com> <CAL_JsqKRVVNzgQk6PETfJ9RrDuzT1CTjHWW02Twc_T4C82t__Q@mail.gmail.com>
- <Zhx9qqiymJdXwYQs@finisterre.sirena.org.uk>
-In-Reply-To: <Zhx9qqiymJdXwYQs@finisterre.sirena.org.uk>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 16 Apr 2024 23:28:48 -0700
-Message-ID: <CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] of: dynamic: Fix overlayed devices not probing
- because of fw_devlink
-To: Mark Brown <broonie@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240416170242.GA164032@bhelgaas>
 
-On Sun, Apr 14, 2024 at 6:06=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Fri, Apr 12, 2024 at 07:54:32AM -0500, Rob Herring wrote:
-> > On Thu, Apr 11, 2024 at 6:56=E2=80=AFPM Saravana Kannan <saravanak@goog=
-le.com> wrote:
->
-> > > +#define get_dev_from_fwnode(fwnode)    get_device((fwnode)->dev)
->
-> > I think it is better to not have this wrapper. We want it to be clear
-> > when we're acquiring a ref. I know get_device() does that, but I have
-> > to look up what get_dev_from_fwnode() does exactly.
->
-> Or perhaps calling it get_device_from_fwnode() would make it more
-> obvious that it is a get_device() variant?
+On Tue, Apr 16, 2024 at 12:02:42PM -0500, Bjorn Helgaas wrote:
+> On Mon, Apr 15, 2024 at 03:33:28PM -0400, Frank Li wrote:
+> > Add PCIE_MSG_CODE_PME_TURN_OFF macros to enable a PCIe host driver to send
+> > PME_Turn_Off messages.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  drivers/pci/pci.h | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> > index 19b4227a8a7e8..1f6d54a5a7cfc 100644
+> > --- a/drivers/pci/pci.h
+> > +++ b/drivers/pci/pci.h
+> > @@ -30,6 +30,8 @@
+> >  #define PCIE_MSG_TYPE_R_LOCAL	4
+> >  #define PCIE_MSG_TYPE_R_GATHER	5
+> >  
+> > +#define PCIE_MSG_CODE_PME_TURN_OFF	0x19
+> 
+> This is defined in PCIe r6.0, sec 2.2.8.2, so move this below the INTx
+> #defines so they're all in the order of the spec sections and add the
 
-Ack, I'll do this in my next version. Right now I'm waiting for Herve
-and Geert to confirm this series fixes their issues.
+I think it was me who suggested moving this up to keep it sorted in ascending
+order :/
 
--Saravana
+- Mani
+
+> spec citation to follow the same style as the surrounding #defines,
+> i.e.,
+> 
+>   /* Power Management Messages; PCIe r6.0, sec 2.2.8.2 */
+>   #define PCIE_MSG_CODE_PME_TURN_OFF   0x19
+> 
+> While you're at it, tweak the [1/5] comments to be:
+> 
+>   /* Message Routing (r[2:0]); PCIe r6.0, sec 2.2.8 */
+>   /* INTx Mechanism Messages; PCIe r6.0, sec 2.2.8.1 */
+> 
+> since the "Message Routing See: PCIe ..." comments are run together
+> and need some punctuation between the text and the citation.
+> 
+> With these,
+> 
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> >  /* INTx Mechanism Messages See: PCIe r6.0, sec 2.2.8.1 */
+> >  #define PCIE_MSG_CODE_ASSERT_INTA	0x20
+> >  #define PCIE_MSG_CODE_ASSERT_INTB	0x21
+> > 
+> > -- 
+> > 2.34.1
+> > 
+
+-- 
+மணிவண்ணன் சதாசிவம்
