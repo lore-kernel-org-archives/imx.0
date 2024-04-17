@@ -1,110 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8D917109F;
-	Wed, 17 Apr 2024 17:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E7514884B
+	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 17:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713373696; cv=none; b=UhGbguuG5azAvBS3I96SaOniOD9INNkfQstMTEBw+I8lEhCF2Y5affD59XJiNEhip20WLJXOwo4wxAecctM4obUWxfff4vLgM0aKebPp3bKO/pD9rsHt0gutQC6rSaZ9Ihjcjsm0ce2baFM9p+xiEoTp1L7lUAheZsU+/3l/5cA=
+	t=1713374441; cv=none; b=BMPfSevGS6PLcojc7b4El7yzAfetAUDZ5YnJfbQEzrCbt1lP40SXCkBHjgC9uKaQT5u0a2ARrt33tNDaKpIlg0u394ttxaZaukg3McUxD8fZJ04nbDI0PX8/i3UqYBTuTEDjl8CLMm+vYD7vxZPFy9xMjGLvcJK6Bk7rIwdp7jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713373696; c=relaxed/simple;
-	bh=15kb27xxKi0D7C0ue7fKx48hQzIEbZroItX6Rl89xHk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GOJ2PvNUs0tuiP5p3HR+lDjNBrgWNsbHZWNlw8BYyH7WC30VqZcMkm9AcoVFYZkprJbzYhSgVZt5+RediiDRzmD9HCENa/7k5NS74+0v0RUrLzr6wtjCj1vb/+rz9fGB3iYOAVOnzM9NP9zVN0asRizSsyUnxSWF2UPs3O6ddbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVyt/9cf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713374441; c=relaxed/simple;
+	bh=Kv5FPRBx5aI4mDE57tTTrqSLGgwSbiupSBg9tz9cq3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ngk7qq1VJEbJh/bofveOEo3RgmMmbB9mo2jtqW4/6Y6dkkk6Y1/MxNqAVuAOxVJtIUq5mJaN9MEXh5oVZ34UwUSA9opc4+ozHzkWWCRLG95FXuOISJ3YDpKMFt0QjrChjRDfie8r+BOwJbC5tqyrIpy+AD1UQt0f0hyFihG7i2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=UBIdhrcf; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVyt/9cf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B985C072AA;
-	Wed, 17 Apr 2024 17:08:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713373695;
-	bh=15kb27xxKi0D7C0ue7fKx48hQzIEbZroItX6Rl89xHk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rVyt/9cf2TTOh3LoN0u5AGEu404A4aI7X1kPk0TDcpEKvkI8dxsq3TiIHHJyCVCqu
-	 8M3SYUDdeR96uUBY3EBvEuc5+NR7ytsDuU0uoSEVPvS+gB6ySIU0nmyY0mg7toNglH
-	 R8ct81rt2YaFITqwSxZ3sARnm/Cs1J0QcqIriOVhobxHmL0RqC1srb23NtFwCK49Zc
-	 w5w8CvmMKOg2QMRdGqOg7/Oqy/kKU620Sfl5A75wFLyqb84IOVJAU4+i5iNCXExFHU
-	 iRZm5gZc6jiKNwyp+1vfg/beA/Sr4sEoS0o6zCUUjiwZ7bTVtd4KcBaeKERvI5R/Uh
-	 fUuOeQ/fM7JPg==
-Message-ID: <6279a152-e648-4556-ae97-22f8be73143e@kernel.org>
-Date: Wed, 17 Apr 2024 19:08:14 +0200
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="UBIdhrcf"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 5E7E81FE67;
+	Wed, 17 Apr 2024 19:20:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1713374435;
+	bh=CcpFXlllLfas3Vp8HTMypgb0mIEXJNssixFuak86tvw=; h=From:To:Subject;
+	b=UBIdhrcfKD/1kNjDhFs790ModI2esqNg9lKcIYrtVdtg0l4RCNWdHOXChg4WYtHsB
+	 iVH5kUoThuwE59U13LFf5kUYHko8RmRQ0zcJYmYx0K2Eu7pOuTAQl97G77BbprjUub
+	 P/H4dOIoiVMF/XwA3X7tkd6MwiYOiZrUdlmeTooLBMKe5H0NwWmzpDcV5yvEnv48lH
+	 /8MGuHe13KCUTcZL78J7vcA0wCJf435bhUf2acDSxKhbYuJz0nEpFYSE57w+ZDxN7F
+	 cfYCoXTsgMWopx6+VRfGnh2yOxes+q8xexhmpzR6oCsJQktnwcej/B05bmkbpQMiP0
+	 CpScNnQO2Gx9w==
+Date: Wed, 17 Apr 2024 19:20:31 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 02/10] arm64: dts: imx8qm-ss-audio: add audio nodes
+Message-ID: <20240417172031.GA4100@francesco-nb>
+References: <20240415-dts_8qm_audio-v1-0-2976c35a0c52@nxp.com>
+ <20240415-dts_8qm_audio-v1-2-2976c35a0c52@nxp.com>
+ <20240416065026.GA4165@francesco-nb>
+ <Zh/yZ2HyF+G8bty7@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: arm: fsl: add Engicam i.Core MX93 EDIMM
- 2.0 Starter Kit
-To: Fabio Aiuto <fabio.aiuto@engicam.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Matteo Lisi <matteo.lisi@engicam.com>,
- Mirko Ardinghi <mirko.ardinghi@engicam.com>
-References: <20240417153528.7838-1-fabio.aiuto@engicam.com>
- <20240417153528.7838-2-fabio.aiuto@engicam.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240417153528.7838-2-fabio.aiuto@engicam.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zh/yZ2HyF+G8bty7@lizhi-Precision-Tower-5810>
 
-On 17/04/2024 17:35, Fabio Aiuto wrote:
-> i.Core MX93 is a NXP i.MX93 based EDIMM SoM by Engicam.
+Hello Frank,
+
+On Wed, Apr 17, 2024 at 12:01:43PM -0400, Frank Li wrote:
+> On Tue, Apr 16, 2024 at 08:50:26AM +0200, Francesco Dolcini wrote:
+> > On Mon, Apr 15, 2024 at 03:46:38PM -0400, Frank Li wrote:
+> > > Add i.MX8QM audio related nodes and update eDMA[0,1]'s information.
+> > > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx8qm-ss-audio.dtsi | 473 +++++++++++++++++++++
+> > >  arch/arm64/boot/dts/freescale/imx8qm.dtsi          |  86 ++++
+> > >  2 files changed, 559 insertions(+)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-audio.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-audio.dtsi
+> > > new file mode 100644
+> > > index 0000000000000..ed5a1b4af1d76
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-audio.dtsi
+
+...
+
+> > > +/delete-node/ &acm;
+> > > +/delete-node/ &sai4;
+> > > +/delete-node/ &sai5;
+> > > +/delete-node/ &sai4_lpcg;
+> > > +/delete-node/ &sai5_lpcg;
+> > 
+> > Can you explain these delete-node ? This is something that I would
+> > expect when a dtsi is previously included, not in this case.
 > 
-> EDIMM 2.0 Starter Kit is an EDIMM 2.0 Form Factor Capacitive
-> Evaluation Board by Engicam.
+> We want to avoid some property inherent from parent dtsi file because it is
+> big difference with common one.
 > 
+> This node will be rewrite totally in this files.
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+imx8qm-ss-audio.dtsi does not include any file. From where these
+inherited properties are coming from? Which file is the "parent dtsi" ?
 
-Best regards,
-Krzysztof
+Thanks,
+Francesco
 
