@@ -1,80 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7744811;
-	Wed, 17 Apr 2024 00:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C64187F;
+	Wed, 17 Apr 2024 02:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713313233; cv=none; b=I9vOxRIzQu1qpDESrs/yIUoGe647xdOdhpk735ybGWpnFHOQmZ6s+eOhb9dgDrdS9ulyD/S70Dn3z3+YtQUSH6gAt4M6ilPEwZb6iVhQSrXtIBYEnSdfSqXyJbJ1x+JiHO8TGOlAoJ3FKeME5KBgcpKAR9sAXO+2IfIdyK6a8nc=
+	t=1713321963; cv=none; b=g+nKTEsEgFLnrARyEEkV6M2XNt93OXLxCHjdM/bKKU4UN1XxUI5E2PnXr97OgTKsw/0vr4fBGNSWkmAWKfkOfdb5aa5/NtaBPdnIISq1qrUPrAops4883MVnknLvtIIVQ2W4hufjgfF9ksMUYSSh1RPgeEiVc5aZS2teV9GgDcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713313233; c=relaxed/simple;
-	bh=0Ckj8Hs6iWwJGXOoze4UaybZMjysV61Qjyb7fAuvvTo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Eex56nrmguW/Use61RCGVUGgrmTmcf3gOB4enio++Hi3QixfzmFA0daEsgcSiJ8YGmdyozF/PzcsQz2AsAHyXJ1cGApxYvuPgWbDdEp23zwsH/DYB8BFNWGEhI5jECkK+b9s4/5hs01YZuZWA6FYF7d+7nqwhE1cFocDjvevK0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2qfQtMt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713321963; c=relaxed/simple;
+	bh=oRtdwcXfjYROqHZ+bXnWxLq9Cp1snZlo3O4Podnjrow=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=RxonZy8AfajPp+H/mtc5Rgr4wpBFYLJGv7Af+8rRhUOjZ3MUaLj0p/wEyBju66ezuSm8Ql3LBLMRKcQWQvuonAeVtW6TBobDp8YVKZDlaqYos9DLdHopB+m9G/6CFsAxKuPBGWshqXCOkORmqUTsJd8AORVuE2JEl4U5lBWS8tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpW4vqh0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2qfQtMt"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B09C5C4AF0C;
-	Wed, 17 Apr 2024 00:20:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpW4vqh0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92545C113CE;
+	Wed, 17 Apr 2024 02:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713313232;
-	bh=0Ckj8Hs6iWwJGXOoze4UaybZMjysV61Qjyb7fAuvvTo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=o2qfQtMtcZJsLpKRlEtwnveczuMYSTkZDbe92/3xOQ0sMf4nFXqsx9s1FTOoqXJCW
-	 aeT34Wpba/Uz1wCC+uQ3jRSYwnG4m3zeTf9gsZDLwYwAA6L90mok7gfH12jbKnWTYS
-	 Uf4hgERGtV3dl/k55z8Lwt3UpiyyzaBuKu0RGT4DUl+frDsE38+grfd7UOd/x+NN3c
-	 RRoaGNf6hgr06xEsWDjsBWDhBQPlxoKf24TKOhQ8rsDBVohw5/23SwzkS9mYmKFj1m
-	 E2vx3vJKxcFt8SvPKeGvAxSEjIzvaU6tjBZgszboiZMiTBez4cgIoi8nnKlEIj58x9
-	 QHwbqLxuEKX5Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A05D5C54BC8;
-	Wed, 17 Apr 2024 00:20:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1713321963;
+	bh=oRtdwcXfjYROqHZ+bXnWxLq9Cp1snZlo3O4Podnjrow=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=fpW4vqh0BjpWsLCUBevhTAyL3ZG+QFur7d8HIWX6Yl7PECKnUaJzZcqEd5Ajg8CBU
+	 K7HvNhnlbXjf7UZJtI4CaVPZcDS0xmFpBGVy30SX5YP41IDLBxKGeOOUpg0F0DYFEI
+	 bOKY/MzExNwizaQjM7QQYUETz6XvNP5uEgTME7XokykGI2UWrI5jnRaupWxBct/vYK
+	 MML/15VIOedxSUXFFbbdLapD66lSgkXCrdhZFGEOS7lgI1kTd/afdl1RA6XdAY1J6z
+	 P36J6UIiGar0gzwO1eOYczLSgdXW5A7V4CkC3+Bi978ODdvCJjR4aBYRcmTGwv18z7
+	 7pK1Huo2rX3iw==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20240416-esai_arm_dts_warning-v2-0-879e59c0c3b8@nxp.com>
+References: <20240416-esai_arm_dts_warning-v2-0-879e59c0c3b8@nxp.com>
+Subject: Re: (subset) [PATCH v2 0/4] arm: dts: nxp: imx6: fix esai related
+ dtb_check warning
+Message-Id: <171332196061.1698800.11762670932468430918.b4-ty@kernel.org>
+Date: Wed, 17 Apr 2024 11:46:00 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] dt-bindings: net: nxp,dwmac-imx: allow nvmem cells property
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171331323265.29224.3287765599809023599.git-patchwork-notify@kernel.org>
-Date: Wed, 17 Apr 2024 00:20:32 +0000
-References: <20240415103621.1644735-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20240415103621.1644735-1-peng.fan@oss.nxp.com>
-To: Peng Fan (OSS) <peng.fan@oss.nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, xiaoning.wang@nxp.com, linux-imx@nxp.com,
- netdev@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- peng.fan@nxp.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 15 Apr 2024 18:36:21 +0800 you wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Tue, 16 Apr 2024 10:47:46 -0400, Frank Li wrote:
+> two patches update binding doc. two patches fix dts file.
 > 
-> Allow nvmem-cells and nvmem-cell-names to get mac_address from onchip
-> fuse.
+> dt_binding_check each patch.
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> git rebase -i aa8a0e0038936 --exec "make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml"
+> Executing: make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml
+>   LINT    Documentation/devicetree/bindings
+>   DTEX    Documentation/devicetree/bindings/sound/fsl,esai.example.dts
+>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>   DTC_CHK Documentation/devicetree/bindings/sound/fsl,esai.example.dtb
+> Executing: make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml
+>   DTEX    Documentation/devicetree/bindings/sound/fsl,esai.example.dts
+>   LINT    Documentation/devicetree/bindings
+>   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+>   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>   DTC_CHK Documentation/devicetree/bindings/sound/fsl,esai.example.dtb
+> Executing: make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml
+> Executing: make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esai.yaml
+> Successfully rebased and updated refs/heads/b4/esai_arm_dts_warning.
 > 
 > [...]
 
-Here is the summary with links:
-  - dt-bindings: net: nxp,dwmac-imx: allow nvmem cells property
-    https://git.kernel.org/netdev/net-next/c/427f6acbc881
+Applied to
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
+
+[1/4] ASoC: dt-bindings: fsl-esai: Remove 'fsl,*' from required list
+      commit: 5894ff6c4707af645f2faa36cf07cc2745e1658f
+[2/4] ASoC: dt-bindings: fsl-esai: Add ref: dai-common.yaml
+      commit: 9aea6d64bb3acbff6b2f33cb5bbff65e824ab9a7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
