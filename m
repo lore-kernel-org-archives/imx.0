@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3FC172773;
-	Wed, 17 Apr 2024 17:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B59016D334;
+	Wed, 17 Apr 2024 17:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713373466; cv=none; b=rumwKkg3FfbwqxwrkQY9jdw2RXdL+ppqMotXz3yKbHtdR2vfdmFaZ9a9KQVZyCERTwTVy2m7sCkYXtj/C9uBNq2G5X8+UUu5PCxiv/0OoO063HsfsmB3e9aWG5b3sNUhfmALsW53cYonqAO1Cv7+o3cxz0Ul2vwGiAFs33HFa6E=
+	t=1713373681; cv=none; b=PgDM5EvlLY9bhV9OhH/5511VT1Xk7NQK5mRyEBTDfkEZy9lylCZHaP2yPpBgjbL25dziA6gq/jO0Cqbeu1Co0fOxOJusmK1TGE10F3uHmc4QkN+KapHvb353SncicLa7uDRbhZuira5VDdIgigeu3xjwbrV9RtCRZ11bNc4XBpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713373466; c=relaxed/simple;
-	bh=vFdg+IPm07Jyi+OKV3BxelBJQ7lv3C4XgVMhmkJpzaE=;
+	s=arc-20240116; t=1713373681; c=relaxed/simple;
+	bh=l0D0/o7/s/Po5ES8lkHnlE9aPXsOe0MgVgSqW/Sn+Rg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qnxqxNfx6mJ7nNHQJk/0gqHiWg4XV0Wxl85cMC1JoemD/9wIU7XSl2JErSbe4rUUCH3frpDdZQoxfgOdySralIfxC4zo5S+m70QiBwS5k4RnPXKJ6VdYNC2i5Gq55sL2utdfTtUpnwBLt+vq54Gp185hgxRWXT0eV5ZdV45ZOGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pIHWSQBz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=sYAjG1KAYj5xUrwlDvuWiSjew2Ag2mIevw9wh05RmaxeTNyggf6SRMCH1nN4tkHZfEbdfln51CH0HaKQRcYNYpmgbqTbni0pAEC4llkYtvw7fx+lSUi0WpUGyQhkNhjW5C2rPck5Z2RY4dFWSSwIVOLUOZQnn2/4nH/Y/kHMcO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VEs78cch; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pIHWSQBz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D30C072AA;
-	Wed, 17 Apr 2024 17:04:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VEs78cch"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6486C072AA;
+	Wed, 17 Apr 2024 17:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713373466;
-	bh=vFdg+IPm07Jyi+OKV3BxelBJQ7lv3C4XgVMhmkJpzaE=;
+	s=k20201202; t=1713373680;
+	bh=l0D0/o7/s/Po5ES8lkHnlE9aPXsOe0MgVgSqW/Sn+Rg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pIHWSQBzvbu2BxY/nm9KPGHS5tU+cYzzjd1JiPwxPUN7se6UZxdYQZI8s6Se/ITta
-	 Z/paVvbJ9Azofox9eR/kZnsWawXlGs9V3pNR7g43v6x5hlfQC8wRHuewVoUYItWxUQ
-	 BPyArIRTJvlQHGKiXTSZW2W9Isxd+Jr8jHE5HzqkScdgIoTLUjWMH8cR96ip8jc6Pu
-	 sl+f3lCK44cnLbww3ST2xG6pDnt5Hl3Js+v/J/IDeY4ICoI+0l7O4S+yN/vKik/2rE
-	 u0f8VPxjcSjpl65wLDGJJMEQBgynU5R3qRc+8QhhPlqJTXbcaQsgZta6a0Fi044+J4
-	 Jj4QB4t88nDFQ==
-Message-ID: <02c7f0ee-06fc-4bb2-bc7a-aeceaa3be3aa@kernel.org>
-Date: Wed, 17 Apr 2024 19:04:25 +0200
+	b=VEs78cch2DaYSVPw1hwTL3PpAdVRBfoRkqJvktR/0e32wpoEKrc0riLQubvf6eQJH
+	 8paJZj80JY/sDKEqwbSwo0XB12JvS+bcf+9OA3kxffaVQ5ye+8b4C7rWp2NgKwVQGB
+	 ReL5oT/4O8hGgA9IesHjwlXRHCv2VhE9Kqy83vhSdVcyjZUVZGH9MGfpmWv+fR7aXq
+	 vSAVlTfSz3p3lKYDv0izxuQxJ7YEe7MSqWKRjH4bke+hg+mbgm9AcFx649b+rSix1y
+	 dRoKTMel/uJHJfqgVPViTwaG2WYrgpFO/CHAOIkCvdd2VqMACkun9BEySPu0A8cYYF
+	 hfaj5t3TCK8HQ==
+Message-ID: <41a1ca01-384a-40ca-a5f6-6205bb43825b@kernel.org>
+Date: Wed, 17 Apr 2024 19:08:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] regulator: dt-bindings: pca9450: add pca9451a support
+Subject: Re: [PATCH 4/4] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0
+ Starter Kit
 To: Fabio Aiuto <fabio.aiuto@engicam.com>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>, Rob Herring <robh@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
@@ -45,7 +46,7 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  Matteo Lisi <matteo.lisi@engicam.com>,
  Mirko Ardinghi <mirko.ardinghi@engicam.com>
 References: <20240417153528.7838-1-fabio.aiuto@engicam.com>
- <20240417153528.7838-3-fabio.aiuto@engicam.com>
+ <20240417153528.7838-5-fabio.aiuto@engicam.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,20 +92,109 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240417153528.7838-3-fabio.aiuto@engicam.com>
+In-Reply-To: <20240417153528.7838-5-fabio.aiuto@engicam.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 17/04/2024 17:35, Fabio Aiuto wrote:
-> Update bindings for pca9451a support.
+> i.Core MX93 is a NXP i.MX93 based SoM by Enigcam which
+> needs to be mounted on top of Engicam baseboards.
+> 
+> Add support for EDIMM 2.0 Starter Kit hosting
+> i.Core MX93.
+> 
+> Starter Kit main features:
+> 
+> 2x LVDS interfaces
+> HDMI output
+> Audio out
+> Mic in
+> Micro SD card slot
+> USB 3.0 A port
+> 3x USB 2.0 A port
+> Gb Ethernet
+> 2x CAN bus, 3x UART interfaces
+> SIM card slot
+> M.2 KEY_B slot
 > 
 > Cc: Matteo Lisi <matteo.lisi@engicam.com>
 > Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
 > Signed-off-by: Fabio Aiuto <fabio.aiuto@engicam.com>
 > ---
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../dts/freescale/imx93-icore-mx93-edimm2.dts | 356 ++++++++++++++++++
+>  2 files changed, 357 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 045250d0a040..d26c0a458a44 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -226,6 +226,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx93-icore-mx93-edimm2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+> new file mode 100644
+> index 000000000000..75cac97d919c
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+> @@ -0,0 +1,356 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2022 NXP
+> + * Copyright 2024 Engicam s.r.l.
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/usb/pd.h>
+> +#include "imx93-icore-mx93.dtsi"
+> +
+> +/ {
+> +	model = "Engicam i.Core MX93 - EDIMM 2 Starterkit";
+> +	compatible = "engicam,icore-mx93-edimm2", "engicam,icore-mx93",
+> +		     "fsl,imx93";
+> +
+> +	aliases {
+> +		rtc1= &bbnsm_rtc;
+
+Missing pace before =
+
+> +	};
+> +
+> +	bt_reg_on: regulator-btregon {
+> +		compatible = "regulator-gpio";
+> +		regulator-name = "BT_REG_ON";
+> +		pinctrl-names = "default";
+> +		regulator-min-microvolt = <100000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		states = <3300000 0x1>,
+> +				 <100000 0x0>;
+
+Misaligned indentation
+
+> +		gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	chosen {
+> +		stdout-path = &lpuart1;
+> +	};
+> +
+> +	reg_1v8_sgtl: reg_1v8_sgtl_regulator {
+
+Do not use underscores in node names. I am pretty sure you got this
+comment before.
+
+Also, you have confusing naming scheme - sometimes prefix reg, sometimes
+regulator. Keep nodes ordered.
 
 
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Best regards,
 Krzysztof
