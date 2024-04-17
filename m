@@ -1,115 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1982313C80B;
-	Wed, 17 Apr 2024 11:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5938F13C9A7
+	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 11:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713352478; cv=none; b=A8ATGn/0PwOirnVPnpVrOvebEL/RyH8PV93QS77KzsRTVO8FO6YJglXmBF8BAAPylT9pUZ8S5WWytQFRKU6nrDODJqKrRYcxh67zF94FBSid5F/+XIm5CJA16rfdfjJInmrk5pUkXrC2+fKodgXuTVoQpvnAGSCydDXZJYgHpFk=
+	t=1713354168; cv=none; b=u394jxLhbSjcK4VZdxvC/8pl8r0SYlzZTIPHbi4AYe3ufEd0Xi2IPkvcp2R1UiJ7TtcsP5SiDjI+C1gWJt7Ul9q2n9SG27mZvq8u0oFff8rZX2k4cE+YQKZq0n7PLdo/TN8P9N839BvWc5h5xDlSube7zBEoICJt/As0pcQRw9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713352478; c=relaxed/simple;
-	bh=fT3fYl303jdSQU2wOrHLkWojdTgxis/f2aI/wa4Ne4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Yz3UoC80Bw5qMHRu+JWvXwTQD/k/uVBuoOhDU2HY3GWT7f0OX/p7B6Q1NlrQcKI51+f99Oscd/Fc0pyMPdBaQlreBzohKwolXk1B2UkI64lznXJ6VkiyldnGiPzsA+qR2m6TiTbj0M7majsa9Q5gDJTSaaZPJ36/X0ZausrVdAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCU3DgYz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713354168; c=relaxed/simple;
+	bh=NYeg8orai6KBD+CcId5wXJtIw99UyoTcZSujtN87lYw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dpL+kY9Tg/75dUk1WAi4hpJFDLirjVqrDjJWMkAlZotmxk4mWhemvew5qLrFJp0LOWBh2oFhvAYK34fiD+9AlF2+T0XFAM2gmF+B4WmbUPPx28h5jrFeDoWxlVCRrikMHNAWHXr/vWLZ7G8kG8dwjLO8+imXODj3OfkTZf/GLko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=jIy/z3eF; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCU3DgYz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3E7C072AA;
-	Wed, 17 Apr 2024 11:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713352477;
-	bh=fT3fYl303jdSQU2wOrHLkWojdTgxis/f2aI/wa4Ne4g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=XCU3DgYz/jX4ZV3jTocjUICRtT+4xfLATcreV0egGqAKhNZntfx1IXnmTwizis7H7
-	 tpaS81VdSiIpWH1LFk99/V7gM71s72GVdw0V97nCbTVVQVQF3HXVv28LP24XmFnKq/
-	 0RlMTm6E2z/BmCY0xWdoaIFX4e0FHTpOBoccScNv+MEkt/ODZhFm0rsrg1TO7WjOJ5
-	 JJXCKUA8xKszpH4gvheweCAoSly6jDjuyxFCpy7Sn0kJyKUI2zKIgD3odIe3yBS+c4
-	 FEoJlxs/sh2hbLaFUKmkSAIe1crrFKxoD+pTUMTNCotjbKYzdqsHUUnAYqv1MHzepF
-	 BZxI5Z1xVlNUA==
-Date: Wed, 17 Apr 2024 06:14:35 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="jIy/z3eF"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id F00E28847E;
+	Wed, 17 Apr 2024 13:42:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1713354163;
+	bh=re+dmG4DlmUNXzNLIkTemvL4r73mnMr+yNxVCRTHIjk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jIy/z3eFKN6vZc+7gGYVspfzSLQWvI72wgfyQiZNNj0XtIVVVgDiOU3NVtB8Esysl
+	 tMGqkrT1zk8T6ICyM9uX9kwMjd/+CR2jW4dqWlYVPWdcf1lMHEL/dUAwl2kPrnUD8v
+	 m6UU9/JJBPCCE+8GGDFj+ioj7Fq7lNiO6nCpwUZPNeJjsTeJR0lL9aU7IktW+/cmpq
+	 ZU6mqujYnGqhLo3RDd2DjanIoZ/Uq+S7dGBWiJFI/gtJ5bCQV/quAL6tcpSuvXi+kh
+	 h4SIB7J1DStNUSGK0j4Wyjg1hUZ2fKvn7RxMDwE8aRGf7Kf+aPH8g7RhhOqf+fbv1H
+	 Fg7XEjS/YO59g==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 4/5] PCI: Add PCIE_MSG_CODE_PME_TURN_OFF message macro
-Message-ID: <20240417111435.GA187921@bhelgaas>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v3] arm64: dts: imx8mp: Align both CSI2 pixel clock
+Date: Wed, 17 Apr 2024 13:42:06 +0200
+Message-ID: <20240417114231.7044-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240417075655.GF3894@thinkpad>
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Wed, Apr 17, 2024 at 01:26:55PM +0530, Manivannan Sadhasivam wrote:
-> On Tue, Apr 16, 2024 at 12:02:42PM -0500, Bjorn Helgaas wrote:
-> > On Mon, Apr 15, 2024 at 03:33:28PM -0400, Frank Li wrote:
-> > > Add PCIE_MSG_CODE_PME_TURN_OFF macros to enable a PCIe host driver to send
-> > > PME_Turn_Off messages.
-> > > 
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/pci.h | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> > > index 19b4227a8a7e8..1f6d54a5a7cfc 100644
-> > > --- a/drivers/pci/pci.h
-> > > +++ b/drivers/pci/pci.h
-> > > @@ -30,6 +30,8 @@
-> > >  #define PCIE_MSG_TYPE_R_LOCAL	4
-> > >  #define PCIE_MSG_TYPE_R_GATHER	5
-> > >  
-> > > +#define PCIE_MSG_CODE_PME_TURN_OFF	0x19
-> > 
-> > This is defined in PCIe r6.0, sec 2.2.8.2, so move this below the INTx
-> > #defines so they're all in the order of the spec sections and add the
-> 
-> I think it was me who suggested moving this up to keep it sorted in ascending
-> order :/
+Configure both CSI2 clock-frequency and assigned-clock-rates
+the same way. There does not seem to be any reason for keeping
+the two CSI2 pixel clock set to different frequencies.
 
-OK, the order you suggested is fine.
+This also reduces first CSI2 clock from overdrive mode
+frequency which is 500 MHz down below the regular mode
+frequency of 400 MHz.
 
-> > spec citation to follow the same style as the surrounding #defines,
-> > i.e.,
-> > 
-> >   /* Power Management Messages; PCIe r6.0, sec 2.2.8.2 */
-> >   #define PCIE_MSG_CODE_PME_TURN_OFF   0x19
-> > 
-> > While you're at it, tweak the [1/5] comments to be:
-> > 
-> >   /* Message Routing (r[2:0]); PCIe r6.0, sec 2.2.8 */
-> >   /* INTx Mechanism Messages; PCIe r6.0, sec 2.2.8.1 */
-> > 
-> > since the "Message Routing See: PCIe ..." comments are run together
-> > and need some punctuation between the text and the citation.
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Paul Elder <paul.elder@ideasonboard.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+---
+V2: Align both clock to 266 MHz and update commit message
+V3: - Fix up clock-frequency to 266 MHz as well, update commit message
+    - Add RB from Peng and Alexander, but maybe those need to be updated?
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-But please do add and tweak the comments.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 1bb96e96639f2..b92abb5a5c536 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1657,7 +1657,7 @@ mipi_csi_0: csi@32e40000 {
+ 				compatible = "fsl,imx8mp-mipi-csi2", "fsl,imx8mm-mipi-csi2";
+ 				reg = <0x32e40000 0x10000>;
+ 				interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
+-				clock-frequency = <500000000>;
++				clock-frequency = <266000000>;
+ 				clocks = <&clk IMX8MP_CLK_MEDIA_APB_ROOT>,
+ 					 <&clk IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT>,
+ 					 <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF_ROOT>,
+@@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
+ 						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
+ 				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+ 							 <&clk IMX8MP_CLK_24M>;
+-				assigned-clock-rates = <500000000>;
++				assigned-clock-rates = <266000000>;
+ 				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
+ 				status = "disabled";
+ 
+-- 
+2.43.0
 
-> > With these,
-> > 
-> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-
-Still fine to add this :)
-
-> > >  /* INTx Mechanism Messages See: PCIe r6.0, sec 2.2.8.1 */
-> > >  #define PCIE_MSG_CODE_ASSERT_INTA	0x20
-> > >  #define PCIE_MSG_CODE_ASSERT_INTB	0x21
-> > > 
-> > > -- 
-> > > 2.34.1
-> > > 
-> 
-> -- 
-> மணிவண்ணன் சதாசிவம்
