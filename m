@@ -1,112 +1,260 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AF813AD12
-	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 10:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6828713C3E7
+	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 10:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713349036; cv=none; b=nbkn5YiZ1tEPtAmHRWgNZnUdCjTEVsfjGx/VWFQ6PdIM8OjsuGtQ+EiCADO5XplwC8C8cl1fvtiVTDifuCiD18FeeAZPsKyQEXM+0/95YNRye+FBOcsluwX33SJBOU9UAWNUh1L3b9c6QFCcfKf9zeKjbmRhrszJ6tNXb5xyeTs=
+	t=1713349193; cv=none; b=aEtPDIGWGJKNCPz7SmZWCH7pN6FIDomYH9fxbYtkcuUG+kcSjE9VXTxmNIlQUodtzSryP7M1064IqKe/eIcU7LexdMf5Fqd7K0dZYlRUPthiiJL+WuuQZWNDMSeIkYN2dfAYwhhAKJcMno6iBVPnvWQIKrduJ5zxujhE/12mfrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713349036; c=relaxed/simple;
-	bh=Q5H8z0gxxxjp59UVdlIimmJCU4yazo9ZSNZ9crTnX3M=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RH9D6MYULRelKZCNeRzLt/Ai4+WpnHuf3U3dwiPuynRp+G8atZ5HQ2Mck64ek91QYB5Grrjy31toOl5duAF5e2bDNmxLexRTodyzgyowS2PhrNkEa8Jxnvxq8NH8FNRGICPjYH+larS5PdeuiEF9cy55p/IyUJB/kaZVqnvdQ5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rx2Li-0001BM-Hu; Wed, 17 Apr 2024 12:17:06 +0200
-Message-ID: <6872097d-b1c8-40c0-8392-28c351dad3dc@pengutronix.de>
-Date: Wed, 17 Apr 2024 12:17:05 +0200
+	s=arc-20240116; t=1713349193; c=relaxed/simple;
+	bh=9PGzZUtrKcSj3foyq61b5I7RHwcJBkBGFzfqcGRHuIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h1ijHJLRl0TCdl127bbr5c1OCzBYMAs7lxaumv4pGohU4d21bhm4iKKrS/niDVEv+3XUMZjINsFGT4LLXBqWQKHqDxnT9KWTI0AeyYBXloVbS24eK4G3paQYt7WC5ceYwRPBpKtZUVGD4Xak4nJ9vhH5/b9VegE0EmsyDbpFp58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GTHJxN9N; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GTHJxN9N"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1e2c725e234so5092315ad.1
+        for <imx@lists.linux.dev>; Wed, 17 Apr 2024 03:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713349190; x=1713953990; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PU/XWViQTEmW8SgEtJM7+RauCEP6w6F2ew9COsWxkFM=;
+        b=GTHJxN9NmyJzU4HhyOq5XS1CU5SbWPRNjvt9H1nb7yqXYz4QyWLuk5TTDTT3hIEBxj
+         EAf8l3q3ozktK6L0TbkUuZJH7KbWxJPtbY4bi6SatvAbZzOiai3WFQ7iOLGGfI8xd4Dr
+         9T2mmnTJiORX68LXr8Jk239jDRIR/9MKeda5+6WJXrtzjNWigDSjjKQ0COm8AdAMMI8F
+         A/I4fOyxOCOYt/KmsFygNYmYrmI9g1HYg8gaCG2u1WAJBnDZdJ/Cq/aOeqKUbVLei7xW
+         CE6sRDPITNOLU+/ZGf5mDXHpbio9UFMGxdWwckV5lMWiiUA1/qdwuGANdXXRLAUtpPaX
+         TQ6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713349190; x=1713953990;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PU/XWViQTEmW8SgEtJM7+RauCEP6w6F2ew9COsWxkFM=;
+        b=HBj36BFYPOT+Mn+HNAcMVGeIwUQ0ca/C/8UpEV4pmQjTvYUV0sWaO9UNJJpDfwoOKm
+         Hckyi02EfAsWDNCobja61Jcim1AXmcEThduR12aBFS/VFPnTQjQyDdruERAVW9k3sGbt
+         92DildcXIhRQBq3hXaDU2yse4smwl9G5F7VU/Zijw9YXMOM8Y26mJ2ikC1FVPiOGFVA4
+         wdg6RzFIO5fXLAAhYsbjUpnPl2HM3gGGRLnPxQ/ZvzbjVL2zsN2Tfkq1yid8ZKfjeKxU
+         nL+IC1XAzRvGFiaOR+zjqM1TfD9BiPGlj/EdDYLO69vnLwWSNsan+69jxHcOUS1LtTBe
+         fTeg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrcqzViuACIgUGnKpuzK1BWCGxPU4dQ6ZPQn/sAWaLHzNwi51CugMdSnPuhlwvvG8VTNNTFH3fSvf+4RKy8357ktBo
+X-Gm-Message-State: AOJu0YycX3/u8iRqNd5IMLUISER3Jpl/Rv8jBtURSiuLqUnEGHsPeBsP
+	KrISizf9YnIXdPw/m+1Lj7HtCV5QYl83kfGynC2d90o2C3kerIXDVRSGUuWMdw==
+X-Google-Smtp-Source: AGHT+IGMvtY2LJrdCA9xIHskJdG82rcCR+m0wyFcKGMioJv9TMmpPry214t23HYzOr44mdAz17XoYA==
+X-Received: by 2002:a17:90a:134c:b0:2a2:c40a:1a5 with SMTP id y12-20020a17090a134c00b002a2c40a01a5mr6797660pjf.12.1713349190457;
+        Wed, 17 Apr 2024 03:19:50 -0700 (PDT)
+Received: from thinkpad ([120.60.54.9])
+        by smtp.gmail.com with ESMTPSA id hi20-20020a17090b30d400b002a219f8079fsm1035262pjb.33.2024.04.17.03.19.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 03:19:50 -0700 (PDT)
+Date: Wed, 17 Apr 2024 15:49:44 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 5/5] PCI: dwc: Add generic MSG TLP support for sending
+ PME_Turn_Off when system suspend
+Message-ID: <20240417101944.GG3894@thinkpad>
+References: <20240415-pme_msg-v6-0-56dad968ad3a@nxp.com>
+ <20240415-pme_msg-v6-5-56dad968ad3a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Marek Vasut <marex@denx.de>, linux-arm-kernel@lists.infradead.org
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Paul Elder <paul.elder@ideasonboard.com>, imx@lists.linux.dev,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>
-References: <20240416141914.9375-1-marex@denx.de>
- <352388ee-a267-4c1f-b968-e1a7709d46ea@pengutronix.de>
-In-Reply-To: <352388ee-a267-4c1f-b968-e1a7709d46ea@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240415-pme_msg-v6-5-56dad968ad3a@nxp.com>
 
-On 17.04.24 12:14, Ahmad Fatoum wrote:
-> On 16.04.24 16:19, Marek Vasut wrote:
->> Configure both CSI2 assigned-clock-rates the same way.
->> There does not seem to be any reason for keeping the
->> two CSI2 pixel clock set to different frequencies.
->>
->> This also reduces first CSI2 clock from overdrive mode
->> frequency which is 500 MHz down below the regular mode
->> frequency of 400 MHz.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
+On Mon, Apr 15, 2024 at 03:33:29PM -0400, Frank Li wrote:
+> Instead of relying on the vendor specific implementations to send the
+> PME_Turn_Off message, let's introduce a generic way of sending the message
+> using the MSG TLP.
 > 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-I see now that the node has a clock-frequency = <500000000>; still.
-This should be lowered too, shouldn't it?
-
-Cheers,
-Ahmad
-
+> This is achieved by reserving a region for MSG TLP of size
+> 'pci->region_align', at the end of the first IORESOURCE_MEM window of the
+> host bridge. And then sending the PME_Turn_Off message during system
+> suspend with the help of iATU.
 > 
->> ---
->> Cc: Conor Dooley <conor+dt@kernel.org>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
->> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->> Cc: Paul Elder <paul.elder@ideasonboard.com>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->> Cc: Rob Herring <robh@kernel.org>
->> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: Shawn Guo <shawnguo@kernel.org>
->> Cc: devicetree@vger.kernel.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-arm-kernel@lists.infradead.org
->> ---
->> V2: Align both clock to 266 MHz and update commit message
->> ---
->>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> index 1bb96e96639f2..7883f5c056f4e 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> @@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
->>  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
->>  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
->>  							 <&clk IMX8MP_CLK_24M>;
->> -				assigned-clock-rates = <500000000>;
->> +				assigned-clock-rates = <266000000>;
->>  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
->>  				status = "disabled";
->>  
+> The reserve space at end is a little bit better than alloc_resource()
+> because the below reasons.
+> - alloc_resource() will allocate space at begin of IORESOURCE_MEM window.
+> There will be a hole when first Endpoint Device (EP) try to alloc a bigger
+> space then 'region_align' size.
+> - Keep EP device's IORESOURCE_MEM space unchange with/without this patch.
 > 
+
+I'd rewrite the above sentence as:
+
+'The reason for reserving the MSG TLP region at the end of the
+IORESOURCE_MEM is to avoid generating holes in between. Because, when the region
+is allocated using allocate_resource(), memory will be allocated from the start
+of the window. Later, if memory gets allocated for an endpoint of size bigger
+than 'region_align', there will be a hole between MSG TLP region and endpoint
+memory.'
+
+> It should be noted that this generic implementation is optional for the
+> glue drivers and can be overridden by a custom 'pme_turn_off' callback.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 94 ++++++++++++++++++++++-
+>  drivers/pci/controller/dwc/pcie-designware.h      |  3 +
+>  2 files changed, 93 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 3a9cb4be22ab2..5001cdf220123 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -398,6 +398,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  
+> +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct resource_entry *win;
+> +	struct resource *res;
+> +
+> +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> +	if (win) {
+> +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> +		if (!res)
+> +			return;
+> +
+> +		/* Reserve last region_align block as message TLP space */
+
+		/*
+		 * Allocate MSG TLP region of size 'region_align' at the end of
+		 * the host bridge window.
+		 */
+
+> +		res->start = win->res->end - pci->region_align + 1;
+> +		res->end = win->res->end;
+> +		res->name = "msg";
+> +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> +
+> +		if (!devm_request_resource(pci->dev, win->res, res))
+> +			pp->msg_res = res;
+> +		else
+> +			devm_kfree(pci->dev, res);
+
+You are explicitly freeing 'msg_res' everywhere. So either drop devm_ or rely
+on devm to free the memory.
+
+> +	}
+> +}
+> +
+>  int dw_pcie_host_init(struct dw_pcie_rp *pp)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> @@ -484,6 +509,16 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+>  
+>  	dw_pcie_iatu_detect(pci);
+>  
+> +	/*
+> +	 * Allocate the resource for MSG TLP before programming the iATU outbound window in
+> +	 * dw_pcie_setup_rc(). Since the allocation depends on the value of 'region_align', this has
+> +	 * to be done after dw_pcie_iatu_detect().
+
+Please wrap the comments to 80 columns.
+
+> +	 *
+> +	 * Glue driver need set use_atu_msg before dw_pcie_host_init() if want MSG TLP feature.
+
+How about,
+
+	 * Glue drivers need to set 'use_atu_msg' before dw_pcie_host_init() to
+	 * make use of the generic MSG TLP implementation.
+
+> +	 */
+> +	if (pp->use_atu_msg)
+> +		dw_pcie_host_request_msg_tlp_res(pp);
+> +
+>  	ret = dw_pcie_edma_detect(pci);
+>  	if (ret)
+>  		goto err_free_msi;
+> @@ -541,6 +576,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
+>  
+>  	dw_pcie_edma_remove(pci);
+>  
+> +	if (pp->msg_res) {
+> +		release_resource(pp->msg_res);
+> +		devm_kfree(pci->dev, pp->msg_res);
+> +	}
+> +
+>  	if (pp->has_msi_ctrl)
+>  		dw_pcie_free_msi(pp);
+>  
+> @@ -702,6 +742,10 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  		atu.pci_addr = entry->res->start - entry->offset;
+>  		atu.size = resource_size(entry->res);
+>  
+> +		/* MSG TLB window resource reserve at one of end of IORESOURCE_MEM resource */
+
+How about,
+
+		/* Adjust iATU size if MSG TLP region was allocated before */
+		if (pp->msg_res && pp->msg_res->parent == entry->res)
+			atu.size = resource_size(entry->res) -
+					resource_size(pp->msg_res);
+		else
+			atu.size = resource_size(entry->res);
+
+> +		if (pp->msg_res && pp->msg_res->parent == entry->res)
+> +			atu.size -= resource_size(pp->msg_res);
+> +
+>  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
+>  		if (ret) {
+>  			dev_err(pci->dev, "Failed to set MEM range %pr\n",
+> @@ -733,6 +777,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+>  			 pci->num_ob_windows);
+>  
+> +	pp->msg_atu_index = i;
+> +
+>  	i = 0;
+>  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+>  		if (resource_type(entry->res) != IORESOURCE_MEM)
+> @@ -838,11 +884,48 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+>  
+> +/* Using message outbound ATU to send out PME_Turn_Off message for dwc PCIe controller */
+
+No need of this comment.
+
+> +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+> +{
+> +	struct dw_pcie_ob_atu_cfg atu = { 0 };
+> +	void __iomem *mem;
+> +	int ret;
+> +
+> +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
+> +		return -EINVAL;
+
+		return -ENOSPC;
+
+> +
+> +	if (!pci->pp.msg_res)
+> +		return -EINVAL;
+
+		return -ENOSPC;
+- Mani
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+மணிவண்ணன் சதாசிவம்
