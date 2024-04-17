@@ -1,350 +1,316 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2044.outbound.protection.outlook.com [40.107.15.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEC113CF94
-	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 12:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713355975; cv=none; b=i/HuzFKK9KMulDTIMOiMhpgrrRMXstMOHxQKrpt1qLvnAu91I32I3WE7CnxZBAB0tkksjsLSN500no4IVZaTQ/NxqtLFh4efoDBaOSW9KfoQNGnjRdUbYSgrb6Bb0CMjkFLnyxR4behbIQRMuAe0hYOwfc0VBw4+bSSV57rZaX8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713355975; c=relaxed/simple;
-	bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CHCVs916ik0d8H0o8HigQACi/9Lh6exx2rFZ49SClbd/W1mM19QLBQ8SUlh37XEHa+tQnguMhqBZh39XaPn8c/RSGez26ZIgBQghJDD5VudDob4mlWTeZwFyeka34RC1pxS5+BpIcllgzkaolQovZ7GYJ5Rde8gipX5rotJYADI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bT9GGZHd; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC5D84FDF
+	for <imx@lists.linux.dev>; Wed, 17 Apr 2024 14:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713364698; cv=fail; b=Su1bw39Rh8zwigGIO/aRqxNOVivS82de9dDTFsokdyoT311ye05C+bzLwUjZgopIyRjAyq0JbhE/rMCODOeXJ+npkMLFl7CqJyS0KiBIY1/Ws7g00kcutK19Gtl1RlXi52BW4zSf6AXrAp9OCuspVpUD8rCsnfHKJEcABIPiSHo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713364698; c=relaxed/simple;
+	bh=KgRTQn5pqYFk7XlNkk6DA9ZdGyi7fybVuPF1xp1bwfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EqZXw4dwrfoV+j5jntDYQy/5ipmvYla/QAjnHIffQHZhPfhlPjiv0Ij8tphPkGahKcfMorxuv93DT8L5ymhh3JzW7gMHCPzIJ31H3ZHn2ynmI9+CCAz8cjYKgZNhmRaPV5isiKZHVQc/JLiZVDgQ5ZY0AjQ9C7SXbVVK/02hBhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Y/tq+W/E; arc=fail smtp.client-ip=40.107.15.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bT9GGZHd"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-418c2bf2f90so2787665e9.1
-        for <imx@lists.linux.dev>; Wed, 17 Apr 2024 05:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713355971; x=1713960771; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
-        b=bT9GGZHdlSm2MW/f6+Hnt7U3gxhvx6K6rw4S9IX/277C6PqNBLwCkllFB/DAVP09DO
-         +zoMsQVacuGaDWKXkchzTjwVQKWs8XA3y6qbnto+VRFrn+OwooCK/FwMlykk7QVUvZGn
-         DQcybOV/mhsVU8oaSmZAJhMGSonypLgluZ4CTGsCX6EgfbSNTRIGc/xjLsGmKrb82gmx
-         IAlGKeWuOCW1+nCxXAyOl04hcOCsTOoCHrhRRzFZx8qhT3dSC+S7/9sqwfHvySmh2E0J
-         F3An3ZKVUpY3KED/KRNqHY9oCshjtPLXYUbSDsncWI2BDmilu/S1DUAWVPmyi2Y+sG5U
-         lXIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713355971; x=1713960771;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
-        b=QCDO/5DICdtJjkvL9ANPO35KLMHj3/O3NwTkiRbKGUAZtCYqVIFnFGMU/E7cJTUx+N
-         13+PC4PY3NTJUhTZSYBgk+ywdTt/ZE4yibjD7QnfSEq17GrzRwUlmH/h8f3MWKFgX0Y9
-         /oYsDXITG6VVJ1Z4m05TNsJt8e+6Dpe7WugIrmMjt87lKUo/DX+uObud82LHhb7dGMrB
-         pjbl/oSzQuSExVZILb4pb5VBVyhFVOeiesK4eLu/JY5tH+50O9ej3xNIjVtHJh7jNCN3
-         E4Y55NqGY6NW/wYD6Z/0pJhRuJmaWZcUwAeCPLo56AxruDTpFtYm6H2rG7F9q90xyoyd
-         gang==
-X-Forwarded-Encrypted: i=1; AJvYcCU0yRlIQrGXyz/wg7gyNkA4oWfEdS0S5tkwQGvzjamiScSjqImbxaRVvlGjXY/F3s3aJMJlxkvYib/nX69y83mrN0y5
-X-Gm-Message-State: AOJu0YxQq5STRK8k4fZ3IhSCztudUuDyPyQtZZ6nr4ukWs21549bMpeB
-	ZoHYIvPnHeht3NtzUnXlQn39jQwGhTOA9ZxpT33cxvE6Ta0G42Yw
-X-Google-Smtp-Source: AGHT+IHSLygSTkmUK8kxFK7/Y0W8n7WxJu8sNlhyt+B+fUCRZxXO7GbTQJ3brmq96IFuBDfw86LBsw==
-X-Received: by 2002:a05:600c:1d09:b0:417:d347:ac68 with SMTP id l9-20020a05600c1d0900b00417d347ac68mr4178655wms.17.1713355971267;
-        Wed, 17 Apr 2024 05:12:51 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:abb8:8caf:bab6:45a3? ([2001:8a0:e622:f700:abb8:8caf:bab6:45a3])
-        by smtp.gmail.com with ESMTPSA id n26-20020a05600c3b9a00b00418a2ce884bsm2632187wms.32.2024.04.17.05.12.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 05:12:50 -0700 (PDT)
-Message-ID: <ae7a78f5e3258e5e1e0cd1515a50c2c9c0ce1edf.camel@gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Vitor Soares <ivitro@gmail.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 17 Apr 2024 13:12:44 +0100
-In-Reply-To: <47cd522d09fbfb4cce7d1d82e6657b6b21fa04d7.camel@pengutronix.de>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
-	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
-	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
-	 <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
-	 <564fa534b32f4a6e96da6752f531fc7447ec633d.camel@gmail.com>
-	 <c064940ba46449b540a3cba14ebab96d31ba19de.camel@gmail.com>
-	 <47cd522d09fbfb4cce7d1d82e6657b6b21fa04d7.camel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Y/tq+W/E"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Dxi4U7rGFSp8IkPmyTF1d/7OiKa3bT5Ks7GSyMsjrlH9T+U+h5g2VqhQ/Nn7CeP6rFCfcPOjW7INnmsaUrUO6ssteqyM+ri00r+y+IK/HCUyDDXIIkRytcYTa7ezJqFBveJyuqljInsT0qVWvf5ZaBZ4CcKEPGmkuY24AGYLrmvgwC0Hr5uFhk4vC+uaXKJRd+fkOnVa9ernwRziMuAj5UfVImO94QrvUqKtjiLM9oNqpRe6TGbptAJRplIzTRcYJ6t0wpoBgrD4/GRZMMkJ/cXHyphzcRJtV3utYfvWzGukCOwC/RNmR4iScsRbZdcTQyFwJvNk1X8FHO66xtL/8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dMUkDroFmc3r8Q6xtq99hvmNzl26f/UFYdt9K2AjsJw=;
+ b=XbuUG0DAPBQfQpWo1laVXtrV/B57EsJEY4LfSrBJs7uHjGQ/WS6+bs7RT1JQsLr0PH6pD7RbGTKz2ZU1GF/2GY86iuo9K8Jqb4YbEf6nCarOZy3YOhcS+PXaBWNGmkgOdfJeDHNn/hpwUram9CtyJkEcoznJIWhh4/nHC1iD5vXyBJ3y/0P+taaH6BiR/lScdpET7TYb3A7wH8dAHr4e5tpxwiuAAUDlsPfmZ5oBsGqiwuvGXA1ss5C9dzbq9wkc1rdotGMl4Z+xKKDCZLgbaQtMPkwIFhwv5sH6btSqdkTRNmTF6gVBNv0TwXPBrJWE5o8EyWLLwZ2ZV+tWIlR4kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dMUkDroFmc3r8Q6xtq99hvmNzl26f/UFYdt9K2AjsJw=;
+ b=Y/tq+W/Ee2SNBxLczpL9jdWzNXOF2Vio2G/wWbf6RMcA39Bivd1HPjg0NYMV2ibC7d32gRErzbKNbdtN+Hnq8UHwFN2f107iXlWsb/tnaEUEIXDQp1DUwKbuNSdobtQpSeXoUC8Yzrqzc0OwKXP7I5BvxhnkfyeTjCczkmC1vEk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VE1PR04MB7357.eurprd04.prod.outlook.com (2603:10a6:800:1ae::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.49; Wed, 17 Apr
+ 2024 14:38:14 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7452.049; Wed, 17 Apr 2024
+ 14:38:13 +0000
+Date: Wed, 17 Apr 2024 10:38:04 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 5/5] PCI: dwc: Add generic MSG TLP support for sending
+ PME_Turn_Off when system suspend
+Message-ID: <Zh/ezLdct9sisvhc@lizhi-Precision-Tower-5810>
+References: <20240415-pme_msg-v6-0-56dad968ad3a@nxp.com>
+ <20240415-pme_msg-v6-5-56dad968ad3a@nxp.com>
+ <20240417101944.GG3894@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240417101944.GG3894@thinkpad>
+X-ClientProxiedBy: SJ0PR03CA0007.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7357:EE_
+X-MS-Office365-Filtering-Correlation-Id: 94341345-7ede-422c-073b-08dc5eec02fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	R4nsbT43VyoMYeWxU6TNSko04bB+fh7McrO+lSWas4nXiS5r8B1O3h2p2TQxQcc22dxMGjIRcEI+qWOtmI7eDb5XL+D1P17YOE8v9FNcul+pTCRGpSVsaC2olqnlbOFOY/NH0vYQ9LUDwD2S1WTCWXJEkcCcmgxydWrjHqoy27yDJdOj4qubibIsBlZLRYoz1SuxW55kfoi6t0s9wRwhQg2X+InikPq9jozfEfvTJbkydYSQl4FHZjsV8E8BI/f9+Fj1CGISVfX6LimEvSG3ZJU2SLKg4i3DVgeoBlOOD/VVW/5WVa9cNbzjWeHp7AXZF0+tmV0gn2nDyvfLvDpivUfuTryUJEnCLdidPV3kZ+J3miYkC/TwCzuzSwb8Stb6jYBYbpNyPVaaDN+g6p331i8o2Rlbmd91C/oY9JncOZguDy04Q/DTZ5SrDPwpeY7nHHn1ShaRcEIi9aflt38go/bn8MR1ByMv1/mdWpX+y8YkITSNmxJUFg5t+ghlNKpk51ejjzgigR55Plea3i0y3YlSDBuhQ9dou627jL7yp0+CCS07SuYc5+zOvEpqYv+1AiB25uqz7MJ/30cW8JR+4SD9FBZRHTK2zV/9y+vMmfPJn+wREVeN9p7lbkG4kewlF98wnbODoSmELC1sT1Z3bkJIm2CBFDbe2+o1PaAFzWxFl30oeSzy5KEcFBViP5as3iwIqI3KcXAYFzveNwYZ1bKbuUqbogF4ExLbzlV1MnI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(7416005)(366007)(376005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1FOdWg5cTM1NXk5S1cycG5HY3BjSFhhR1U0WisxRXpUc1FRYmtMbzBicFUv?=
+ =?utf-8?B?Q0xTeVJudS82WktKSVlZVlZLS2RIK0cxZHliRFQ4UjdYTlpTTGpQYWo4VHdi?=
+ =?utf-8?B?MEVMZzFMc1AvV2tJRkxwV205TVJtME43T3Iyclk4aXhzWHdPVTI2dWlDZ002?=
+ =?utf-8?B?UEw3aTJodEtwUmtGQkRZQzBWck9aZHVheTZ5dFljL2RrVGhpYjFKQVZvTDQ3?=
+ =?utf-8?B?b1VUdGZtdGdNeHZqZi9XaWpZQ1NtWjNSQXhLcnFNelVTSXcwRWQrSSs0ZStM?=
+ =?utf-8?B?Wkh1WC9yY1c2eE01ZWw1RlBsMnZaRkxLMjJOeG5VNThaT084UXlFVFVZRHV5?=
+ =?utf-8?B?eldLMTExV2VsY3FXNHFtR3hKc2pJUFVUTkpuQzJmRHhEbFRDblNCZzl1Z25m?=
+ =?utf-8?B?bHNTRXlCY1pZa2ZaS3N0SHJBa3I0ZUFlRXlaWHBFWUswLzB0QUpNM3J0Y0kr?=
+ =?utf-8?B?UUc3TGlZWEVibFovK3lDbjNRZUZTcEJLWXp4OVNNcWpmZmtaRXplTnU2Q1Zp?=
+ =?utf-8?B?WWRieDltUUNybjc4ZXJLNFUrUGZmRjZ5eU1NWlRnMnp5c1FTQ09GRGpValRa?=
+ =?utf-8?B?ZHo3Z05PNGVyT1kyL1NPeHN0cjA4MzBwZmk5Q1JnTXJ5S3YzM2NGM0QxdXJF?=
+ =?utf-8?B?QWNRVGw0L2xYblpFMGIxRUpDWWdkRDdFREtsMGhuTEthZ1NSbzBvei9iQUtM?=
+ =?utf-8?B?akhtZURDNWNOcTcvL2V3WWJQQ0RKVW5zdi90bm9aZ2NDYVUxMG1GblFiRVBM?=
+ =?utf-8?B?WThSOEdrRm1ZS3VqTlZERTJVakZyYmtHUW16cWdmemhyeWJqdS9KSTNhQXpk?=
+ =?utf-8?B?NVNjcC9MYVR3MFpGM0hEazVJdHlhSy91VHQvbVVaVlZEQU85aGMvNm5YR2lG?=
+ =?utf-8?B?RCtRM1lublBNeitCMG1UM25rRlhpc2NHdUpBTFIxRHZTVi9aRWh3UHNYTHlG?=
+ =?utf-8?B?amJrWTlwMDVmMFF6V0JqQ29mcVBhWkJrQXpkWWc5bXExelB2aXNEUzNkU0JZ?=
+ =?utf-8?B?VStGWkQxeTBrMzhCNGlxUDFQMml3Y2JveUJxTDNCbmR5eTAwY0xjRk95TVhK?=
+ =?utf-8?B?OFhwZ29RaG5YNWkzTWx3OXhRMnp1YTZzQmxmcVdZamozMms2dnFzZ0JSMmwx?=
+ =?utf-8?B?Rks4MTdsWUhJMGtrMTR5LzU3QUw5aGFJZVFiTkErUnBFUEJxcjN5WkZkWjlZ?=
+ =?utf-8?B?RDZkMGZZdUVObkNndExIU1hGUkVneUhYcnlURXhweE96SllKOGtEcVdRcTd6?=
+ =?utf-8?B?TkMwL0JrY24yQlZGdTVEOHYxTXljMjhOeXpMMmQzSWRBcHA3cUh3WHh6WE11?=
+ =?utf-8?B?ditKUkVzdnVPMWRJWWd5TExkc0dvMVVNQTFab29qQWFGajhveVlWNXIzcmZS?=
+ =?utf-8?B?Qi9kZm5Cei9nNkkraTZlOGRRU0UxMjltZWdJTmFsYnVUbE9pOEdqcEZDOW12?=
+ =?utf-8?B?NFBuMktxbm1SNXg1OG9tdGx2Y3RUYXptSnZrSDg5eTlTV0lNdHJlaGNaQVRw?=
+ =?utf-8?B?WDVCUlpxUk9qaHptdVFBSWV0TmpJTHJrcUpYTWlsUHZTa3MrcTI5bUhVa043?=
+ =?utf-8?B?bWd6VnpRWFNSQ0ppT1h3eUxrZHplMmFLbzFaVkRlNTkrWDQxRERMdHJCNm00?=
+ =?utf-8?B?YnUzWmhhcGxqaGdCQkRUY3FLZXRaOVhEVjVMNW9NR1lSRkd6TXhyTVpOMDhy?=
+ =?utf-8?B?aGtTL3hOMHloVWZsSHVsVkZWUTBCSmY1K2QvUGhCUDVNVHYyaXl5OEZvZThS?=
+ =?utf-8?B?T1dVTEtOVFBXaFNVNVBBY1l5M1ZjUjMwSXFaRVRJck1CWXRkNmcrRVRYVVpQ?=
+ =?utf-8?B?bnhvWlEweGZoRzJwQmU0b01GaXFBcEwraXFtYWdqZThXSFh4TDNwNHN3eFR2?=
+ =?utf-8?B?REQvUjBDMG5KRXFBb1FMWjRmeVo5aWNGUDlacnRpYVhwc0c5djduQU52YTgy?=
+ =?utf-8?B?Umh0cnR5SnZCbmVnYS80cm5ONnMycFprdjFIT0lkWER1VGUyVFBYZ2dUSzMx?=
+ =?utf-8?B?TVUxUFYyZDJrWHNCbkVaaStqRnc4Q0lxaVphNktRdk85S2NScXdiOWtzaDRL?=
+ =?utf-8?B?QnNEWlhRaFN1OWZBRWRUQy9FZDFTbUYzUkp0ZnFHVTltYnMvQ3MyRmNaNWFS?=
+ =?utf-8?Q?o1WhX84egBogHY5ly5tac5HR0?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94341345-7ede-422c-073b-08dc5eec02fb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2024 14:38:13.8395
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u9MxmxG3bUt73Hhs3RkvG1+H2UH31T4w6X01appcXWuqxXEgC+DvPdm68Mx3k+0LL56X47mtywz9X3UHwfIQ0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7357
 
-Hi Lucas,
+On Wed, Apr 17, 2024 at 03:49:44PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Apr 15, 2024 at 03:33:29PM -0400, Frank Li wrote:
+> > Instead of relying on the vendor specific implementations to send the
+> > PME_Turn_Off message, let's introduce a generic way of sending the message
+> > using the MSG TLP.
+> > 
+> > This is achieved by reserving a region for MSG TLP of size
+> > 'pci->region_align', at the end of the first IORESOURCE_MEM window of the
+> > host bridge. And then sending the PME_Turn_Off message during system
+> > suspend with the help of iATU.
+> > 
+> > The reserve space at end is a little bit better than alloc_resource()
+> > because the below reasons.
+> > - alloc_resource() will allocate space at begin of IORESOURCE_MEM window.
+> > There will be a hole when first Endpoint Device (EP) try to alloc a bigger
+> > space then 'region_align' size.
+> > - Keep EP device's IORESOURCE_MEM space unchange with/without this patch.
+> > 
+> 
+> I'd rewrite the above sentence as:
+> 
+> 'The reason for reserving the MSG TLP region at the end of the
+> IORESOURCE_MEM is to avoid generating holes in between. Because, when the region
+> is allocated using allocate_resource(), memory will be allocated from the start
+> of the window. Later, if memory gets allocated for an endpoint of size bigger
+> than 'region_align', there will be a hole between MSG TLP region and endpoint
+> memory.'
+> 
+> > It should be noted that this generic implementation is optional for the
+> > glue drivers and can be overridden by a custom 'pme_turn_off' callback.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-designware-host.c | 94 ++++++++++++++++++++++-
+> >  drivers/pci/controller/dwc/pcie-designware.h      |  3 +
+> >  2 files changed, 93 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > index 3a9cb4be22ab2..5001cdf220123 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > @@ -398,6 +398,31 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+> >  	return 0;
+> >  }
+> >  
+> > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> > +{
+> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > +	struct resource_entry *win;
+> > +	struct resource *res;
+> > +
+> > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> > +	if (win) {
+> > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> > +		if (!res)
+> > +			return;
+> > +
+> > +		/* Reserve last region_align block as message TLP space */
+> 
+> 		/*
+> 		 * Allocate MSG TLP region of size 'region_align' at the end of
+> 		 * the host bridge window.
+> 		 */
+> 
+> > +		res->start = win->res->end - pci->region_align + 1;
+> > +		res->end = win->res->end;
+> > +		res->name = "msg";
+> > +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> > +
+> > +		if (!devm_request_resource(pci->dev, win->res, res))
+> > +			pp->msg_res = res;
+> > +		else
+> > +			devm_kfree(pci->dev, res);
+> 
+> You are explicitly freeing 'msg_res' everywhere. So either drop devm_ or rely
+> on devm to free the memory.
+> 
+> > +	}
+> > +}
+> > +
+> >  int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> >  {
+> >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > @@ -484,6 +509,16 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> >  
+> >  	dw_pcie_iatu_detect(pci);
+> >  
+> > +	/*
+> > +	 * Allocate the resource for MSG TLP before programming the iATU outbound window in
+> > +	 * dw_pcie_setup_rc(). Since the allocation depends on the value of 'region_align', this has
+> > +	 * to be done after dw_pcie_iatu_detect().
+> 
+> Please wrap the comments to 80 columns.
 
-On Wed, 2024-04-17 at 10:00 +0200, Lucas Stach wrote:
-> Hi Vitor,
->=20
-> Am Dienstag, dem 16.04.2024 um 17:08 +0100 schrieb Vitor Soares:
-> > On Tue, 2024-04-16 at 11:53 +0100, Vitor Soares wrote:
-> > > ++ Peng Fan <peng.fan@nxp.com>
-> > >=20
-> > > Greetings,
-> > >=20
-> > >=20
-> > > On Wed, 2024-04-10 at 12:01 +0100, Vitor Soares wrote:
-> > > > Hi Lucas,
-> > > >=20
-> > > > On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
-> > > > > On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
-> > > > > > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares=
-:
-> > > > > > > Hi Lucas,
-> > > > > > >=20
-> > > > > > > Thanks for your feedback.
-> > > > > > >=20
-> > > > > > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
-> > > > > > > > Hi Vitor,
-> > > > > > > >=20
-> > > > > > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
-> > > > > > > > Soares:
-> > > > > > > > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > > > > > > >=20
-> > > > > > > > > The pgc_vpu_* nodes miss the reference to the power domai=
-n
-> > > > > > > > > parent,
-> > > > > > > > > leading the system to hang during the resume.
-> > > > > > > > >=20
-> > > > > > > > This change is not correct. The vpumix domain is controlled
-> > > > > > > > through
-> > > > > > > > the
-> > > > > > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by t=
-he
-> > > > > > > > child
-> > > > > > > > domains in order to guarantee proper power sequencing.
-> > > > > > > >=20
-> > > > > > > > If the sequencing is incorrect for resume, it needs to be
-> > > > > > > > fixed
-> > > > > > > > in
-> > > > > > > > the
-> > > > > > > > blk-ctrl driver. I'll happily assist if you have any
-> > > > > > > > questions
-> > > > > > > > about
-> > > > > > > > this intricate mix between GPC and blk-ctrl hardware/driver=
-s.
-> > > > > > > =C2=A0
-> > > > > > > I'm new into the topic, so I tried to follow same approach as
-> > > > > > > in
-> > > > > > > imx8mp
-> > > > > > > DT.
-> > > > > > >=20
-> > > > > > That's a good hint, the 8MP VPU GPC node additions missed my
-> > > > > > radar.
-> > > > > > The
-> > > > > > direct dependency there between the GPC domains is equally wron=
-g.
-> > > > > >=20
-> > > > > > > I also checked the imx8mq DT and it only have one domain for
-> > > > > > > the
-> > > > > > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* t=
-o
-> > > > > > > work
-> > > > > > > properly.
-> > > > > > >=20
-> > > > > > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
-> > > > > > > access
-> > > > > > > the
-> > > > > > > ip registers for the soft reset. I tried to power-up the befo=
-re
-> > > > > > > the
-> > > > > > > soft reset, but it didn't work.
-> > > > > > >=20
-> > > > > > The runtime_pm_get_sync() at the start of that function should
-> > > > > > ensure
-> > > > > > that bus GPC domain aka vpumix is powered up. Can you check if
-> > > > > > that
-> > > > > > is
-> > > > > > happening?
-> > > > >=20
-> > > > > I checked bc->bus_power_dev->power.runtime_status and it is
-> > > > > RPM_ACTIVE.
-> > > > >=20
-> > > > > Am I looking to on the right thing? It is RPM_ACTIVE event before
-> > > > > runtime_pm_get_sync().
-> > > >=20
-> > > > During the probe I can see that
-> > > > bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpum=
-ix
-> > > > is
-> > > > powered up on GPC driver.
-> > > >=20
-> > > > On resume routine I can't see this flow. bus_power_dev-
-> > > > > power.runtime_status =3D RPM_ACTIVE and vpumix end up not being
-> > > > > powered-
-> > > > up.
-> > > >=20
-> > > > I checked the suspend flow and the GPC tries to poweroff vpumix.
-> > > >=20
-> > > >=20
-> > >=20
-> > > My understanding is that when resuming the 38310000.video-codec, the
-> > > vpumix isn't powered up. It happens because runtime_status and
-> > > runtime_last_status =3D RPM_ACTIVE.=20
-> > >=20
-> > > I tried to change blk-ctrl suspend routine to force the runtime_statu=
-s
-> > > =3D RPM_SUSPENDED, but the system ended up hanging on another device.
-> > >=20
-> > > From the comment in blk-ctrl suspend, we rely on PM_SLEEP code that
-> > > iterates over dpm_list for suspend/resume.
-> > > I did look at the dpm_list, and it changes the order on every boot.=
-=20
-> > >=20
-> > > With all the tests, I also found that the system randomly hangs on
-> > > dispblk-lcdif suspend. I have confirmed this device is in a different
-> > > place in the dpm_list (not sure if it is the root cause).=20
-> > > I haven't understood how blk-ctrl ensures the correct order there yet=
-.=20
-> > >=20
-> Random order of the DPM list seems like a good find to investigate
-> further.
->=20
-> > > Taking the following dpm_list excerpt:
-> > > idx - device
-> > > ------------------------------
-> > > ...=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > 191 - imx-pgc-domain.7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0
-> > > 192 - imx-pgc-domain.8=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0
-> > > 193 - imx-pgc-domain.9=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0
-> > > 194 - 38330000.blk-ctrl=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0
-> > > 195 - 38310000.video-codec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > 196 - 38300000.video-codec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > ...
-> > > 205 - genpd:0:38330000.blk-ctrl
-> > > 206 - genpd:1:38330000.blk-ctrl
-> > > 207 - genpd:2:38330000.blk-ctrl
-> > > 208 - genpd:3:38330000.blk-ctrl
-> > > ------------------------------
-> > >=20
-> > > Shouldn't genpd devices be before 38330000.blk-ctrl?
-> > > As their power domain is GPC and the blk-ctrl power domain is genpd.
-> > >=20
-> >=20
-> > I did the following change to have genpd device before 38330000.blk-ctr=
-l
-> > on dpm_list and it did work.
-> >=20
-> > diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/i=
-mx/imx8m-blk-ctrl.c
-> > index ca942d7929c2..0f1471dcd4e8 100644
-> > --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > @@ -220,6 +220,7 @@ static int imx8m_blk_ctrl_probe(struct platform_dev=
-ice *pdev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retur=
-n dev_err_probe(dev, PTR_ERR(bc->bus_power_dev),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "failed to attach power domai=
-n \"bus\"\n");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 device_move(dev, bc->bus_power_de=
-v, DPM_ORDER_PARENT_BEFORE_DEV);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < bc_data->n=
-um_domains; i++) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 const struct imx8m_blk_ctrl_domain_data *data =3D &bc=
-_data->domains[i];
-> > @@ -268,6 +269,7 @@ static int imx8m_blk_ctrl_probe(struct platform_dev=
-ice *pdev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 data->gpc_name);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto =
-cleanup_pds;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 device_move(dev, domain->power_dev, DPM_ORDER_PARENT_BEFORE=
-_DEV);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 domain->genpd.name =3D data->name;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 domain->genpd.power_on =3D imx8m_blk_ctrl_power_on;
-> >=20
-> > any concern about this approach?
-> >=20
-> I'm a bit uncomfortable with calling such a low-level function from
-> this driver. Also we don't really want to move the device to a new
-> parent, but just want to ensure proper order on the dpm list. Adding a
-> device_link between the devices seems like the better way to do so.
+New code style is 100 columns. does comments still stick to 80 columns?
 
-Thanks for your feedback.
-
-I have tested with device_link_add() and it is working. I will prepare a ne=
-w patch with this change.
-
-Best regards,
-Vitor Soares
->=20
-> Regards,
-> Lucas
->=20
-> > Best regards,
-> > Vitor Soares
-> > >=20
-> > > >=20
-> > > > >=20
-> > > > >=20
-> > > > > >=20
-> > > > > > Regards,
-> > > > > > Lucas
-> > > > > >=20
-> > > > > > > Do you have an idea how we can address this within blk-ctrl?
-> > > > > > >=20
-> > > > > > > Best regards,
-> > > > > > > Vitor
-> > > > >=20
-> > > >=20
-> > >=20
-> >=20
->=20
-
+> 
+> > +	 *
+> > +	 * Glue driver need set use_atu_msg before dw_pcie_host_init() if want MSG TLP feature.
+> 
+> How about,
+> 
+> 	 * Glue drivers need to set 'use_atu_msg' before dw_pcie_host_init() to
+> 	 * make use of the generic MSG TLP implementation.
+> 
+> > +	 */
+> > +	if (pp->use_atu_msg)
+> > +		dw_pcie_host_request_msg_tlp_res(pp);
+> > +
+> >  	ret = dw_pcie_edma_detect(pci);
+> >  	if (ret)
+> >  		goto err_free_msi;
+> > @@ -541,6 +576,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
+> >  
+> >  	dw_pcie_edma_remove(pci);
+> >  
+> > +	if (pp->msg_res) {
+> > +		release_resource(pp->msg_res);
+> > +		devm_kfree(pci->dev, pp->msg_res);
+> > +	}
+> > +
+> >  	if (pp->has_msi_ctrl)
+> >  		dw_pcie_free_msi(pp);
+> >  
+> > @@ -702,6 +742,10 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+> >  		atu.pci_addr = entry->res->start - entry->offset;
+> >  		atu.size = resource_size(entry->res);
+> >  
+> > +		/* MSG TLB window resource reserve at one of end of IORESOURCE_MEM resource */
+> 
+> How about,
+> 
+> 		/* Adjust iATU size if MSG TLP region was allocated before */
+> 		if (pp->msg_res && pp->msg_res->parent == entry->res)
+> 			atu.size = resource_size(entry->res) -
+> 					resource_size(pp->msg_res);
+> 		else
+> 			atu.size = resource_size(entry->res);
+> 
+> > +		if (pp->msg_res && pp->msg_res->parent == entry->res)
+> > +			atu.size -= resource_size(pp->msg_res);
+> > +
+> >  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
+> >  		if (ret) {
+> >  			dev_err(pci->dev, "Failed to set MEM range %pr\n",
+> > @@ -733,6 +777,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+> >  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+> >  			 pci->num_ob_windows);
+> >  
+> > +	pp->msg_atu_index = i;
+> > +
+> >  	i = 0;
+> >  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+> >  		if (resource_type(entry->res) != IORESOURCE_MEM)
+> > @@ -838,11 +884,48 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+> >  }
+> >  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+> >  
+> > +/* Using message outbound ATU to send out PME_Turn_Off message for dwc PCIe controller */
+> 
+> No need of this comment.
+> 
+> > +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+> > +{
+> > +	struct dw_pcie_ob_atu_cfg atu = { 0 };
+> > +	void __iomem *mem;
+> > +	int ret;
+> > +
+> > +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
+> > +		return -EINVAL;
+> 
+> 		return -ENOSPC;
+> 
+> > +
+> > +	if (!pci->pp.msg_res)
+> > +		return -EINVAL;
+> 
+> 		return -ENOSPC;
+> - Mani
+> 
+> -- 
+> மணிவண்ணன் சதாசிவம்
