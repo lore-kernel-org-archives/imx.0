@@ -1,467 +1,359 @@
-Received: from smtpdh20-1.aruba.it (smtpdh20-1.aruba.it [62.149.155.164])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2073.outbound.protection.outlook.com [40.107.22.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C3D1607B2
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 13:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713447759; cv=none; b=Tev9chH4jY5ncQI9dWiYKG1pkLFOC/CYiCxvMjtxaLposy2/CwDBtuSsJwq1uKbmEh7nygz7GdBkGtEj4Ix4wajkKG2kC6g/Dez8RTX548MHg4b4p+65R96OZHf8hpXZ4Z+5mDWjOgrqOGIMRaKGo/yoHk75eLm9Micby9xCzs0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713447759; c=relaxed/simple;
-	bh=w83wzKUePQaYVH74jZx8tFI1GQdOIFTgbhaHxFeorBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ssyKHVIsM+km88+t8v5JbjM+ww7734J6q4f+z9UXf58WvvKFoXhqBrYvitFQ21rbkrJnx0PV9ioGLtU1kBtjY+m7hmV6Aubu8bufmrLkOVyqjo1XCsho76xS34lzRhUWc4G9jZudR6ZA+zfOcu3T9wrrlDWv0kst63cb0Q2hPgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=ZTjvDdWF; arc=none smtp.client-ip=62.149.155.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F5616C68F
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 15:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713454047; cv=fail; b=ATh2pCEcLRxdNjlGvlpUp6Rz+23bhgPZ0xf84MG72N4ZPlLy/sPOTYxZ/4NlN4HpOleoCQrxdOR7iQpVtwrYfOKTyU9ao+pKjfBzyZJN0AInbvvJQljH5aD0TkTUMqiCABOXFHAykY7a9EWfzcdFN4Rip7/3mZm3zrdu/Yg17i8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713454047; c=relaxed/simple;
+	bh=8IBrLEzLA2NWsh+kkCj4G5LuUbSNvDYKvbkUPkQDCY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=U8q/3su3CVWPjBoMkEy5ZeBhh9inc+CUVt+mwYpkCyG4z2xDpiuX8h2N06mzXJZvGupm9QlJJrF7i9Tjad8S+Qza788BbLsMKIvDgpGQSuwF8O47b0wCDS98okYBM+6t2RXQWntN1qKUEC7Ri1DUI2rRV5gQ1ECZ+U9Qkn93QlE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=E/41eod0; arc=fail smtp.client-ip=40.107.22.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="ZTjvDdWF"
-Received: from engicam.com ([146.241.28.123])
-	by Aruba Outgoing Smtp  with ESMTPSA
-	id xRz2rgYv8wWj2xRz5rpfuB; Thu, 18 Apr 2024 15:39:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1713447567; bh=w83wzKUePQaYVH74jZx8tFI1GQdOIFTgbhaHxFeorBM=;
-	h=From:To:Subject:Date:MIME-Version;
-	b=ZTjvDdWFrIy5yldR0d3KWptedrH9M11EGWFNbdn76V+6Jf7cbd1mfWeM4z5E9Del5
-	 EvVn+85GIsfKNfJXBYrKvZ4CouA/w8XMFHN0J6QoaTv0I8ji1P7JF2NIMmFHH5sA3n
-	 p63Z6A7FzzUNwAC2suCxQSOFzKBXJkJcnobkuGvWta6qz3BkkBnBU+nFDpHUNVueB6
-	 SMP8pzKUmViaPGcec+PRI4R0boAlACgWzQIV3IASW4h7tJh/ssmgRTDckBpq+mB9Rd
-	 8uiSMM0Ce0q3Xv12/fJmq11S8tpLFEA4+AGkU8jR1jjZReO9RngRv6w8Y1+E/a5QIQ
-	 MhRouppNeSqUw==
-From: Fabio Aiuto <fabio.aiuto@engicam.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="E/41eod0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bLa2CADdC/L3Q6mJ0WJFO5jaBrwNFCa48hl9HYowJZ1NvywikvnZ4/HXMgfXQtHPuLb/aY4Up4cnnpWRc6ldf0QqhRAdiT/f4LuiIRx1MfDhmJXMJdhbDyDFKK8gGdrxxZG07D/L7BiJ0YArvjDPf40QhXwfNuWjAldzvxZK/fOXO7V0eBP8Q2NUQLKpnQEhjHOyXAd00hL7J4R4jdvralQGmJ8RR+LhXvSKKxE1u6xyvkWl/7LgzCpPZik1YVqcSQJZ5PNkCpePKl9sHVgtWeNQZj/YZpHuB2hKjs1EexdixTxYGknDPIdyTHHxwqbSgTdw3FAjsHLtH3tZ7I/Q9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ARzQQ0+PPDylLEMddtpk4fHDw6Bklw6jGQmYRy8MGGY=;
+ b=mAKX4/U2BZg3SegqGwFYls7PYC4Wu9C8Oo3nX+wNgyUZFMhXkW+A+VjBrj3dHMDcp3whxQ87UjjlU4hGmLT3+0O0ehkV52ABt3huu/a2IVUYnsz70Bbk972KsPx/wF2y6RNhu70mpJRxRxpE3NFb0+ZWat2FmjFAYgJa1cV8jRRwgFqt0E0zIF5kh6dlKe2JXaqH4BmvM7KEXu7i57sPJAXCqvVX6jQu1uY/2dY1IVDMc+WIhVq2QpJLuCUJBlFume2gvz4/HIk+nto4ttyi6BNgX7WIkj4cM38XGaX7zmWliTyXSZsjVcEyn+WPtAs/M7mkkNFgxdUCcAxRFiCj0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ARzQQ0+PPDylLEMddtpk4fHDw6Bklw6jGQmYRy8MGGY=;
+ b=E/41eod0XNGth9Ys598Gd7uEH1CHlGWihBZklkKrodrvpz8N4nwY4x9x+SrZLw381OYEShlJmOGiifX9Eg8uWPVhbNWOlHYY0mb/hdHpHoYBwTKbKduc09I8hzKRmtuoh/WrfwMfRXIpT91NCtBu8mrf+yak3/sOzkHgrM4+pp0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS4PR04MB9716.eurprd04.prod.outlook.com (2603:10a6:20b:4fa::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.37; Thu, 18 Apr
+ 2024 15:27:22 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
+ 15:27:22 +0000
+Date: Thu, 18 Apr 2024 11:27:14 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
 	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Fabio Aiuto <fabio.aiuto@engicam.com>,
-	Matteo Lisi <matteo.lisi@engicam.com>,
-	Mirko Ardinghi <mirko.ardinghi@engicam.com>
-Subject: [PATCH v2 3/3] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
-Date: Thu, 18 Apr 2024 15:39:23 +0200
-Message-Id: <20240418133923.3705-4-fabio.aiuto@engicam.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240418133923.3705-1-fabio.aiuto@engicam.com>
-References: <20240418133923.3705-1-fabio.aiuto@engicam.com>
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 5/5] PCI: dwc: Add generic MSG TLP support for sending
+ PME_Turn_Off when system suspend
+Message-ID: <ZiE70u/EZLmoPz7d@lizhi-Precision-Tower-5810>
+References: <20240417-pme_msg-v7-0-9c6208cda90f@nxp.com>
+ <20240417-pme_msg-v7-5-9c6208cda90f@nxp.com>
+ <20240418063058.GE2861@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240418063058.GE2861@thinkpad>
+X-ClientProxiedBy: BYAPR03CA0029.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::42) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfH0Xu1I2PZhjsA3o4vjTvidBnaRm6j9UVTMgWSASu9RageXyPbhV0dn4aleZWyd/cR5jbpry8cyo2KnOMzSbOtzCHAZJQtNwuceAjFlVc9kwIKPfitUF
- u27oTAwnz2ggk+Ng1v7r8OVJ55XmzydewgJPZVzS1Pi4wSnKchYh8olYFydFI+R1iPpMh85e1GSDoXLfxAbBlEotcaZjGacXua+lGGIZD6nd7CtP4kNIJiIM
- O9fL03X8nycWSa5AL6x2G1drH93R9UFOuXAIVs0HmUdMzSbYK0mL6H+piO0PC7vW1f0HDxyHBdLjb/Ta41lBtVa3Vv3ccXKOxW2F2Ks6RT7OLrCrT0CF20eB
- xTYB0nUrEvad5O8i261CFxVCmS8QcVaVfhhfxiEfVpDNLX+VuobjZttm1hLlexzs7Y15aGjZ2Fm6Bs320P9c6Inah4I5e6hWyFyHNq3Mto3B+BDnmii6gPcT
- 7nmBo64P0WeYnxPfElDb89KthTFtFjZEcVovLQBP2rjtqPNITsKgQTqakKK2hM//sRCdlHt88oRYOmKE+dSJ72RKATfWudkgcRKbYG7M0KtDS9WddGK0fm2s
- I0JBpj4qng7F89pieCvP9vKS
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS4PR04MB9716:EE_
+X-MS-Office365-Filtering-Correlation-Id: 886f7ea7-f470-4c69-eff0-08dc5fbc0b16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	NrRWTqGAZEIfjVAHZ80ZxnjoPVIpIdG3/P2VFKzTGeXWZwm3g0jeiM4lWZt0H8e1Y7B/ybxnRvRjg5BnjlqDS2kZ1ceSrVCUS4f00+pCqPvAsHHK4j9WHiGwg08LwgMNN9tCDbwDRZ0eTOlKLHKt2TwZuMMI5j3kxF63H8LsO7yudmGe1A5+Y5oeuys/oZtiC9FRSoTyUpOA9ZM8yKtYtX/QF9cpt8KhGRD5MAjE9ixIcZHSNpb7cS5Yir1sBBjIwX+1iFupCI/le7o+7Lr4tjYpAC2pGWMXQv6jj9yovzScTDDOR2VRIsH2mVTcP+2RPt+RKoK9MtTB9IUDrvZ252AyYasonhZiYadB4O1siIDRt3digs3BdUW6l7ttyIorXbA6urK6lmDzZ6wOd24avUsiETuKgCCo/Lh2by/avX/xhdHgEvGz/5IYQxnsSoKQLwQPW3qaSl8f1krmI0RTovBBtsQx6LENqUQRF9kP3B12Qsgb4PaJXsz+zGcJrgokKz0Z88BxZDTm+w8Jk4v4CC60/FH8hdcE3konhAtFpNcvZfwDmrdkaEaj+OqRmvL0A+LOFZAqasqOfwdKGjePUjyzfJKH6IbzW2Y5EIX+tJ87zHIetKbl2X9ZmvkrKOxe0GF78Dbph+vRjo5pbGlPX/c4N9ixlAsMHp5bq+ntMNW1IIp7jurgZC5egFXwIXwSfyQEchAKZOc368aFIH2PLwMUsd8cAKFwb28OmTivyKQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(376005)(7416005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?enNXdHZObkJIZVpVajQ0T3RYb3JadkZ5ZUtWRHRodlJBK05CWGtOekd6V1Js?=
+ =?utf-8?B?SDBwN1l1YWtyUVNXV0Qzc20zVHAxTVdNczZtS2VrbTdOTElWYzVHNXpyWjd0?=
+ =?utf-8?B?aEU2dm1yV3lHbHhOWS9YTzZOZy9XS2VHZ0pMcGlaYU93MUtYUXZqa0FEUklP?=
+ =?utf-8?B?VDY5QXgyL2U0dUR1ZDlibFBBUEVBclJBSWpyNTlHaDhDNlNOdG1mY1ByVGsx?=
+ =?utf-8?B?cnFHMFJCVFNHc2dUMndNb3NjelRXTytGSWZaOTRJMCtibEQ2T0UzQlM1YWpm?=
+ =?utf-8?B?YmwvMVRBYzJuNklmVGw4TVlGcmQ0akZHa2FlZGtDMHdQR3N4RnNGVGZFL2c1?=
+ =?utf-8?B?dXR4UHgxSGlaZjFHY2JhOHJGSzNuV0dJU0JOa2l3eVNZd3BFbGRUZUsxNWMx?=
+ =?utf-8?B?ZU1BOTZJSlpOT3d2Ni91eURWZS9TMlQ3Q2RzcDFqdS9iWGxHcUtXdlF0MDJt?=
+ =?utf-8?B?RThGVnFXNnhPL3hWeHRCeFVtL0tQREhMNHh3Y3FDTGxieiswcXUrWnQydG9v?=
+ =?utf-8?B?eFBqZGk1aFhRa2FJNmVLRmFXREh6amRVWnB6cGxTdUJZWkVyMnlmdGFIMHg3?=
+ =?utf-8?B?V29GbUNsa3drU0tCZHVqZU12K0UvY3hVTCtrQTU5WFA1UmtxUG9RVWxNSHp2?=
+ =?utf-8?B?QjdIdXBMSi9sMXF6NFRVVUxVMmhNN3I0RkJWbnU4ajRpNVpyd1NLaTl0Rmw1?=
+ =?utf-8?B?YytjbGdSdmpTSjYwWkw5REVvS1BjTVd3Z0tSbUNScU4wM0Z2ckRicW5Rb2Z0?=
+ =?utf-8?B?dEJqU1RuRzBveXE3WUZkRk43MC81Y1p3S3RlUGk3bHBjQ3JBR2phb2Nqb05T?=
+ =?utf-8?B?aStkVkUyNTVtY3Jsd1FQdkZHT2JJSXgzVTZ1WkorQUFFcmFQTHN1VHpURXFl?=
+ =?utf-8?B?Q1RBQks3aG96WStMdk9id2xwQjM0Tm5DYnJqRnlHdWdGcG1YZHF1azNCOWdI?=
+ =?utf-8?B?MEdDcnFhRFgxczRRdENiUVBrdGRHUnBpa0lvRlFoVUswOXc0ajRmQ0hVR2hI?=
+ =?utf-8?B?eVZhR25iQXVIR2IwS0d6ckpaLzhmalE5Z2JCMFQ4dStzLzUwYkxjWXJDdUlZ?=
+ =?utf-8?B?VkNSbjdmd3pBM0hiSng4MlAxSlhEeW44QkNWV0Q2MzhybkxlVmtrWjRQeGhN?=
+ =?utf-8?B?K01BZE4vbS9EaHpWcW5aUmhXQ3VwN2w4OWpRY2I4MXlVazlZUUFyRlg1RWJI?=
+ =?utf-8?B?ZDQ2WFp6L2t3dFFkbzJGNnNqRG9MODIwSlFFMmFkTEU0bVIxcFI0UWlYUUl5?=
+ =?utf-8?B?VndtdElFT0JEOHhMYzFqRzVEYjhBb3R1YWpjR3F2SEJrWHluSVo3TVpsYzEz?=
+ =?utf-8?B?akNjWHRiaGFHYnFQM21DbmlOMUN2ZXRhWmtiMDdJanpJU0lBaXV0WFpBZHRT?=
+ =?utf-8?B?T0xDbUIvQnF3UGRJR2UzQTJqclF5SHNCV2NVeXFHQUNta2M1L2hPVThlUUFr?=
+ =?utf-8?B?UWc5dnZyOVc3d2kxSUtzbjRhRzI2aG93b1RQdTYrS2VuQi9VbnVIcEFyQVpQ?=
+ =?utf-8?B?dHMxWXBkb29WZ2NIbU9TWjRMb2p4czVQOVhyQ05wdmttZkd2cTBWZit1YSt5?=
+ =?utf-8?B?QzRlNC83ay9waU8zS1lpUjlYbit0dDBQcGJlWEpkK2RLVW1LczBnZ0Zqa3hk?=
+ =?utf-8?B?K3RESWpDT3VOK3kxWHdrWG1mR1pMcjdzKzZYeVJoR2dQZVd2VXUwcjhYUlE1?=
+ =?utf-8?B?WWFvMjdESHc3NllUc2xDaGJwNlh6VlVobjVpYUpLSWhKYUFsNDN4N2NzaXh1?=
+ =?utf-8?B?NGtsdWM2b3I1Sy9qR2F3M3ZTalp1Q1Q1ckw0QysreWZGMDdkWk53bldpcjV3?=
+ =?utf-8?B?TnlraCs4TUV2LzY2UUVqUGowcmkyUHFaMkxDQ3Y1Q0h6bU51VVBNQUJsTkxu?=
+ =?utf-8?B?S1p3THNXYjF5Y3llR0xKbytDWkJOY2V0Q0N0VkFDaGliR1J6dG9McEc1UnN6?=
+ =?utf-8?B?VFpEc2JaRjdKZ01NNmlJWktNR1pudHNpK1gzelZWRXFLbTJ5b0taL2w5eER3?=
+ =?utf-8?B?WlNiSzBvSWxRZ1B2NFVkVFVpWEcyOHIrZmcrZkVlNElIK1hJMkVWL1pUdy9i?=
+ =?utf-8?B?U2d3dGExUlI5ckxGRXpUT3VJNWcxRWRIUHgvQWhLR0lOeC80bnFlL1YvbFFp?=
+ =?utf-8?Q?9aldAFws43VPLvYqvSVwyg1qQ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 886f7ea7-f470-4c69-eff0-08dc5fbc0b16
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 15:27:22.5964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ln5yGhnAFeNcPy/5IKoVuKvsqFTSj9D1vGV6wGtLurLFwFPzxoIvg22aqdB7URPZar8DOXOrwRM1Hiw8C7KiyA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9716
 
-i.Core MX93 is a NXP i.MX93 based SoM by Enigcam which
-needs to be mounted on top of Engicam baseboards.
+On Thu, Apr 18, 2024 at 12:00:58PM +0530, Manivannan Sadhasivam wrote:
+> On Wed, Apr 17, 2024 at 12:59:43PM -0400, Frank Li wrote:
+> > Instead of relying on the vendor specific implementations to send the
+> > PME_Turn_Off message, let's introduce a generic way of sending the message
+> > using the MSG TLP.
+> > 
+> > This is achieved by reserving a region for MSG TLP of size
+> > 'pci->region_align', at the end of the first IORESOURCE_MEM window of the
+> > host bridge. And then sending the PME_Turn_Off message during system
+> > suspend with the help of iATU.
+> > 
+> > The reason for reserving the MSG TLP region at the end of the
+> > IORESOURCE_MEM is to avoid generating holes in between. Because, when the
+> > region is allocated using allocate_resource(), memory will be allocated
+> > from the start of the window. Later, if memory gets allocated for an
+> > endpoint of size bigger than 'region_align', there will be a hole between
+> > MSG TLP region and endpoint memory.
+> > 
+> > It should be noted that this generic implementation is optional for the
+> > glue drivers and can be overridden by a custom 'pme_turn_off' callback.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-designware-host.c | 102 ++++++++++++++++++++--
+> >  drivers/pci/controller/dwc/pcie-designware.h      |   3 +
+> >  2 files changed, 100 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > index 3a9cb4be22ab2..f57805b21ef53 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > @@ -398,6 +398,34 @@ static int dw_pcie_msi_host_init(struct dw_pcie_rp *pp)
+> >  	return 0;
+> >  }
+> >  
+> > +static void dw_pcie_host_request_msg_tlp_res(struct dw_pcie_rp *pp)
+> > +{
+> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > +	struct resource_entry *win;
+> > +	struct resource *res;
+> > +
+> > +	win = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> > +	if (win) {
+> > +		res = devm_kzalloc(pci->dev, sizeof(*res), GFP_KERNEL);
+> > +		if (!res)
+> > +			return;
+> > +
+> > +		/*
+> > +		 * Allocate MSG TLP region of size 'region_align' at the end of
+> > +		 * the host bridge window.
+> > +		 */
+> > +		res->start = win->res->end - pci->region_align + 1;
+> > +		res->end = win->res->end;
+> > +		res->name = "msg";
+> > +		res->flags = win->res->flags | IORESOURCE_BUSY;
+> > +
+> > +		if (!request_resource(win->res, res))
+> > +			pp->msg_res = res;
+> > +		else
+> > +			devm_kfree(pci->dev, res);
+> 
+> You still haven't resolved my earlier comment:
+> 
+> "You are explicitly freeing 'msg_res' everywhere. So either drop devm_ or rely
+> on devm to free the memory."
 
-Add support for EDIMM 2.0 Starter Kit hosting
-i.Core MX93.
 
-Starter Kit main features:
+Sorry, I miss understand you talk about devm_request_resource. omit the
+devm_free here.
 
-2x LVDS interfaces
-HDMI output
-Audio out
-Mic in
-Micro SD card slot
-USB 3.0 A port
-3x USB 2.0 A port
-Gb Ethernet
-2x CAN bus, 3x UART interfaces
-SIM card slot
-M.2 KEY_B slot
+let me remove devm_kfree here. 
 
-Cc: Matteo Lisi <matteo.lisi@engicam.com>
-Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
-Signed-off-by: Fabio Aiuto <fabio.aiuto@engicam.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx93-icore-mx93-edimm2.dts | 354 ++++++++++++++++++
- 2 files changed, 355 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+Frank
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 045250d0a040..d26c0a458a44 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -226,6 +226,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-icore-mx93-edimm2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-new file mode 100644
-index 000000000000..8d57374eebdf
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-@@ -0,0 +1,354 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2022 NXP
-+ * Copyright 2024 Engicam s.r.l.
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx93-icore-mx93.dtsi"
-+
-+/ {
-+	model = "Engicam i.Core MX93 - EDIMM 2 Starterkit";
-+	compatible = "engicam,icore-mx93-edimm2", "engicam,icore-mx93",
-+		     "fsl,imx93";
-+
-+	aliases {
-+		rtc1 = &bbnsm_rtc;
-+	};
-+
-+	bt_reg_on: regulator-btregon {
-+		compatible = "regulator-gpio";
-+		regulator-name = "BT_REG_ON";
-+		pinctrl-names = "default";
-+		regulator-min-microvolt = <100000>;
-+		regulator-max-microvolt = <3300000>;
-+		states = <3300000 0x1>, <100000 0x0>;
-+		gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+		regulator-always-on;
-+	};
-+
-+	chosen {
-+		stdout-path = &lpuart1;
-+	};
-+
-+	reg_1v8_sgtl: regulator-1v8-sgtl {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1v8_sgtl";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		always-on;
-+	};
-+
-+	reg_3v3_avdd_sgtl: regulator-3v3-avdd-sgtl {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3_avdd_sgtl";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		always-on;
-+	};
-+
-+	reg_3v3_sgtl: regulator-3v3-sgtl {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3_sgtl";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		always-on;
-+	};
-+
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		linux,cma {
-+			compatible = "shared-dma-pool";
-+			reusable;
-+			alloc-ranges = <0 0x80000000 0 0x40000000>;
-+			size = <0 0x10000000>;
-+			linux,cma-default;
-+		};
-+
-+		rsc_table: rsc-table@2021f000 {
-+			reg = <0 0x2021f000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdevbuffer: vdevbuffer@a4020000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0xa4020000 0 0x100000>;
-+			no-map;
-+		};
-+
-+		vdev0vring0: vdev0vring0@a4000000 {
-+			reg = <0 0xa4000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@a4008000 {
-+			reg = <0 0xa4008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring0: vdev1vring0@a4000000 {
-+			reg = <0 0xa4010000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring1: vdev1vring1@a4018000 {
-+			reg = <0 0xa4018000 0 0x8000>;
-+			no-map;
-+		};
-+	};
-+
-+	sound {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "imx93-sgtl5000";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&dailink_master>;
-+		simple-audio-card,frame-master = <&dailink_master>;
-+		/*simple-audio-card,mclk-fs = <1>;*/
-+		simple-audio-card,cpu {
-+			sound-dai = <&sai3>;
-+		};
-+
-+		dailink_master: simple-audio-card,codec {
-+			sound-dai = <&sgtl5000>;
-+			clocks = <&clk IMX93_CLK_SAI3_IPG>;
-+		};
-+	};
-+
-+	usdhc3_pwrseq: usdhc3-pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+	};
-+
-+	wl_reg_on: regulator-wlregon {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		regulator-name = "WL_REG_ON";
-+		regulator-min-microvolt = <100000>;
-+		regulator-max-microvolt = <3300000>;
-+		states = <3300000 0x1>,
-+				 <100000 0x0>;
-+		gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&bt_reg_on>;
-+	};
-+};
-+
-+&cm33 {
-+	mbox-names = "tx", "rx", "rxdb";
-+	mboxes = <&mu1 0 1>,
-+		 <&mu1 1 1>,
-+		 <&mu1 3 1>;
-+	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-+			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-+	status = "okay";
-+};
-+
-+&flexcan1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan1>;
-+	fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
-+	status = "okay";
-+};
-+
-+&flexcan2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan2>;
-+	fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
-+	status = "okay";
-+};
-+
-+&lpi2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_lpi2c1>;
-+	pinctrl-1 = <&pinctrl_lpi2c1>;
-+	status = "okay";
-+
-+	pcf8523: rtc@68 {
-+		compatible = "nxp,pcf8523";
-+		reg = <0x68>;
-+	};
-+
-+	sgtl5000: codec@a {
-+		compatible = "fsl,sgtl5000";
-+		status = "okay";
-+		#sound-dai-cells = <0>;
-+		reg = <0x0a>;
-+		clocks = <&clk IMX93_CLK_SAI3_GATE>;
-+		clock-names = "mclk";
-+		assigned-clock-rates = <12000000>, <12000000>;
-+		VDDA-supply = <&reg_3v3_avdd_sgtl>;
-+		VDDIO-supply = <&reg_3v3_sgtl>;
-+		VDDD-supply = <&reg_1v8_sgtl>;
-+	};
-+};
-+
-+&lpuart1 { /* console */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&lpuart5 { /* RS485 */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart5>;
-+	status = "okay";
-+};
-+
-+&lpuart8 { /* RS232 */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart8>;
-+	status = "okay";
-+};
-+
-+&micfil {
-+	#sound-dai-cells = <0>;
-+	pinctrl-names = "default";
-+	assigned-clocks = <&clk IMX93_CLK_PDM>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-+	assigned-clock-rates = <196608000>;
-+	status = "okay";
-+};
-+
-+&mu1 {
-+	status = "okay";
-+};
-+
-+&mu2 {
-+	status = "okay";
-+};
-+
-+&sai1 {
-+	#sound-dai-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai1>;
-+	assigned-clocks = <&clk IMX93_CLK_SAI1>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-+	assigned-clock-rates = <12288000>;
-+	status = "okay";
-+};
-+
-+&sai3 {
-+	pinctrl-names = "default";
-+	#sound-dai-cells = <0>;
-+	pinctrl-0 = <&pinctrl_sai3>;
-+	assigned-clocks = <&clk IMX93_CLK_SAI3>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-+	assigned-clock-rates = <24576000>;
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+};
-+
-+&usdhc3 { /* WiFi */
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-+	pinctrl-1 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-+	pinctrl-2 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-+	vmmc-supply = <&wl_reg_on>;
-+	bus-width = <4>;
-+	no-1-8-v;
-+	non-removable;
-+	max-frequency = <25000000>;
-+	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	brcmf: bcrmf@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm4329-fmac";
-+	};
-+};
-+
-+&wdog3 {
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+
-+	pinctrl_flexcan1: flexcan1grp {
-+		fsl,pins = <
-+			MX93_PAD_PDM_CLK__CAN1_TX		0x139e
-+			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
-+		>;
-+	};
-+
-+	pinctrl_flexcan2: flexcan2grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO25__CAN2_TX	0x139e
-+			MX93_PAD_GPIO_IO27__CAN2_RX	0x139e
-+		>;
-+	};
-+
-+	pinctrl_laird: lairdgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__GPIO2_IO22		0x31e // WL_REG_ON
-+			MX93_PAD_GPIO_IO19__GPIO2_IO19		0x31e // BT_REG_ON
-+		>;
-+	};
-+
-+	pinctrl_lpi2c1: lpi2c1grp {
-+		fsl,pins = <
-+			MX93_PAD_I2C1_SCL__LPI2C1_SCL		0x40000b9e
-+			MX93_PAD_I2C1_SDA__LPI2C1_SDA		0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_sai1: sai1grp {
-+		fsl,pins = <
-+			MX93_PAD_SAI1_TXC__SAI1_TX_BCLK		0x31e
-+			MX93_PAD_SAI1_TXFS__SAI1_TX_SYNC	0x31e
-+			MX93_PAD_SAI1_TXD0__SAI1_TX_DATA00	0x31e
-+			MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00	0x31e
-+		>;
-+	};
-+
-+	pinctrl_sai3: sai3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO26__SAI3_TX_SYNC	0x31e
-+			MX93_PAD_GPIO_IO16__SAI3_TX_BCLK	0x31e
-+			MX93_PAD_GPIO_IO17__SAI3_MCLK		0x31e
-+			MX93_PAD_GPIO_IO21__SAI3_TX_DATA00	0x31e
-+			MX93_PAD_GPIO_IO20__SAI3_RX_DATA00	0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
-+			MX93_PAD_UART1_TXD__LPUART1_TX		0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart5: uart5grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO01__LPUART5_RX		0x31e
-+			MX93_PAD_GPIO_IO00__LPUART5_TX		0x31e
-+			MX93_PAD_GPIO_IO02__LPUART5_CTS_B	0x31e
-+			MX93_PAD_GPIO_IO03__LPUART5_RTS_B	0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart8: uart8grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO13__LPUART8_RX		0x31e
-+			MX93_PAD_GPIO_IO12__LPUART8_TX		0x31e
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX93_PAD_SD3_CLK__USDHC3_CLK		0x17fe
-+			MX93_PAD_SD3_CMD__USDHC3_CMD		0x13fe
-+			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x13fe
-+			MX93_PAD_SD3_DATA1__USDHC3_DATA1        0x13fe
-+			MX93_PAD_SD3_DATA2__USDHC3_DATA2        0x13fe
-+			MX93_PAD_SD3_DATA3__USDHC3_DATA3        0x13fe
-+		>;
-+	};
-+};
--- 
-2.34.1
-
+> 
+> - Mani
+> 
+> > +	}
+> > +}
+> > +
+> >  int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> >  {
+> >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > @@ -484,6 +512,18 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> >  
+> >  	dw_pcie_iatu_detect(pci);
+> >  
+> > +	/*
+> > +	 * Allocate the resource for MSG TLP before programming the iATU
+> > +	 * outbound window in dw_pcie_setup_rc(). Since the allocation depends
+> > +	 * on the value of 'region_align', this has to be done after
+> > +	 * dw_pcie_iatu_detect().
+> > +	 *
+> > +	 * Glue drivers need to set 'use_atu_msg' before dw_pcie_host_init() to
+> > +	 * make use of the generic MSG TLP implementation.
+> > +	 */
+> > +	if (pp->use_atu_msg)
+> > +		dw_pcie_host_request_msg_tlp_res(pp);
+> > +
+> >  	ret = dw_pcie_edma_detect(pci);
+> >  	if (ret)
+> >  		goto err_free_msi;
+> > @@ -541,6 +581,11 @@ void dw_pcie_host_deinit(struct dw_pcie_rp *pp)
+> >  
+> >  	dw_pcie_edma_remove(pci);
+> >  
+> > +	if (pp->msg_res) {
+> > +		release_resource(pp->msg_res);
+> > +		devm_kfree(pci->dev, pp->msg_res);
+> > +	}
+> > +
+> >  	if (pp->has_msi_ctrl)
+> >  		dw_pcie_free_msi(pp);
+> >  
+> > @@ -700,7 +745,13 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+> >  		atu.type = PCIE_ATU_TYPE_MEM;
+> >  		atu.cpu_addr = entry->res->start;
+> >  		atu.pci_addr = entry->res->start - entry->offset;
+> > -		atu.size = resource_size(entry->res);
+> > +
+> > +		/* Adjust iATU size if MSG TLP region was allocated before */
+> > +		if (pp->msg_res && pp->msg_res->parent == entry->res)
+> > +			atu.size = resource_size(entry->res) -
+> > +					resource_size(pp->msg_res);
+> > +		else
+> > +			atu.size = resource_size(entry->res);
+> >  
+> >  		ret = dw_pcie_prog_outbound_atu(pci, &atu);
+> >  		if (ret) {
+> > @@ -733,6 +784,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+> >  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+> >  			 pci->num_ob_windows);
+> >  
+> > +	pp->msg_atu_index = i;
+> > +
+> >  	i = 0;
+> >  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+> >  		if (resource_type(entry->res) != IORESOURCE_MEM)
+> > @@ -838,11 +891,47 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+> >  }
+> >  EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+> >  
+> > +static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+> > +{
+> > +	struct dw_pcie_ob_atu_cfg atu = { 0 };
+> > +	void __iomem *mem;
+> > +	int ret;
+> > +
+> > +	if (pci->num_ob_windows <= pci->pp.msg_atu_index)
+> > +		return -ENOSPC;
+> > +
+> > +	if (!pci->pp.msg_res)
+> > +		return -ENOSPC;
+> > +
+> > +	atu.code = PCIE_MSG_CODE_PME_TURN_OFF;
+> > +	atu.routing = PCIE_MSG_TYPE_R_BC;
+> > +	atu.type = PCIE_ATU_TYPE_MSG;
+> > +	atu.size = resource_size(pci->pp.msg_res);
+> > +	atu.index = pci->pp.msg_atu_index;
+> > +
+> > +	atu.cpu_addr = pci->pp.msg_res->start;
+> > +
+> > +	ret = dw_pcie_prog_outbound_atu(pci, &atu);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	mem = ioremap(atu.cpu_addr, pci->region_align);
+> > +	if (!mem)
+> > +		return -ENOMEM;
+> > +
+> > +	/* A dummy write is converted to a Msg TLP */
+> > +	writel(0, mem);
+> > +
+> > +	iounmap(mem);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> >  {
+> >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> >  	u32 val;
+> > -	int ret;
+> > +	int ret = 0;
+> >  
+> >  	/*
+> >  	 * If L1SS is supported, then do not put the link into L2 as some
+> > @@ -854,10 +943,13 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> >  	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
+> >  		return 0;
+> >  
+> > -	if (!pci->pp.ops->pme_turn_off)
+> > -		return 0;
+> > +	if (pci->pp.ops->pme_turn_off)
+> > +		pci->pp.ops->pme_turn_off(&pci->pp);
+> > +	else
+> > +		ret = dw_pcie_pme_turn_off(pci);
+> >  
+> > -	pci->pp.ops->pme_turn_off(&pci->pp);
+> > +	if (ret)
+> > +		return ret;
+> >  
+> >  	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+> >  				PCIE_PME_TO_L2_TIMEOUT_US/10,
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> > index 703b50bc5e0f1..dca5de4c6e877 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware.h
+> > +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> > @@ -341,6 +341,9 @@ struct dw_pcie_rp {
+> >  	struct pci_host_bridge  *bridge;
+> >  	raw_spinlock_t		lock;
+> >  	DECLARE_BITMAP(msi_irq_in_use, MAX_MSI_IRQS);
+> > +	bool			use_atu_msg;
+> > +	int			msg_atu_index;
+> > +	struct resource		*msg_res;
+> >  };
+> >  
+> >  struct dw_pcie_ep_ops {
+> > 
+> > -- 
+> > 2.34.1
+> > 
+> 
+> -- 
+> மணிவண்ணன் சதாசிவம்
