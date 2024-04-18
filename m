@@ -1,55 +1,57 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D383D17AD66
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 20:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601D8194C7B
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 20:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713472693; cv=none; b=JEowtjZs1+ZvbBwZwSa35SBkfrqGXLvFTyPsNM87YvhXc1q+4++Aevuz5yFReQrIXM0P4JYV1rh2vqOzfLhZxYgU5wvXcmxZcg/m9Ubml/xqmBswdlTE0Faouyl60bCZlQsP8i2Lu5hXeWeRteNdX9DOATrf9rG1OXGBOkbj3aE=
+	t=1713472701; cv=none; b=Mtq+Pyi0jUn76YLniKC4pQgVEfoUWyqyRDiAUUUUa3t6T4mbGvRx6R/Yn5CDcuuMMbNCLNKtyFs9KMEKa1uFlb05aIAl19hs9xQdMDhr7uUrDljLrn8zRPV0JwE3dyxlpJsI9iFobwyU9GpEgLQphUeygsQUVzvPWeYMMpXM0tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713472693; c=relaxed/simple;
-	bh=sKiv4SDu35oSMqZnfSXRLAkPw/aQxk9pkreC9OwjRh0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uVPw1jf0nt2selQQiy/0SMqDSSOdPlSBhIPh3jMuO0WIMs+rjgk98bH3w0I6oVzaB0hgplpRTMc/wC/E8aTF4vR45Gm3PHrQI1knOH855Iou9HWjgF8+b/Bg1WsJzgzrUVfdjwAfhLa2ksVNO6n4qhKIXkI4TxwtWlFh9dCFTaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jrrtWy93; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1713472701; c=relaxed/simple;
+	bh=187YQzagItw83f6vADx4GNKdh6X9UWHJuAmasyW0jXg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Tx9D8/kPaVk2E19fIlGcd/WDf9ZOoovw3aeQ4KN1Thok3HVOPLfPjIBAMsbnTG5z86EofeA96m6KlTG0spQtulVUaF3XsA2AQgxuv6tR4x32lxmRXWSVuzh/nGJ9h9cVyQyZd+tXQsbrmuRY+Fhf2c/ZeQ6G1EIbbAh4BPX+I2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aolj6X0Q; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jrrtWy93"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-516d6e23253so1529334e87.1
-        for <imx@lists.linux.dev>; Thu, 18 Apr 2024 13:38:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aolj6X0Q"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-519ab23dd06so1137485e87.1
+        for <imx@lists.linux.dev>; Thu, 18 Apr 2024 13:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713472689; x=1714077489; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JF4x+kNM/mmae+ZYoHJR13wougtTUOzbFPCVrpt7xuQ=;
-        b=jrrtWy93PSgGJDJhL7/vKmPUchz13LlFyJ+Fz2QAPcmvOuS2BWz43gFHuZI7KvTfz5
-         ucAPjx23f53v09IjDklXxow8+vorbfK9x/P/fRlJu+VcFFbFIIxkOzqY31M9WyQdSH+n
-         jMXPldZb8kqQDnMJZIPpiK6LM/ojHHQi1HVfP7mZ61/XKXXd7sc8pr7Uu03WO3EWH0NM
-         TEFrhkc9orMOVsVWMLLZvPIMBebn6UGQe7mfyl6FH5UBh02fzVTNwaeZk3lpvUWVAPOP
-         AIWf7/L2RDWRjl3EzwPN4YdtZ2e4+tmKGES7KC7FHUuHlaALibEFjaZrF9GXcUzmTEgi
-         7uyw==
+        d=gmail.com; s=20230601; t=1713472699; x=1714077499; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ef1j03PzQot24D7wGKXztI5BpkUJmrRiVGjdQcRoP/A=;
+        b=aolj6X0Q5vnuwW0EI/nWEXhbiXpBcC7UzEe4pqCnfHWZ4kXIQequj9dFqlFYs5bfSj
+         nkd2bzsJ6hR0pe542PaFr5kNyujCMx77G6pDGiQA1iebJ3tFiL9a/7ocGsYoV/t7kDzt
+         XL5b1or3T5ID+yDUT+L2Ulr+xGxHMVYuJ3vFhtZRRm0Ou6JisnI22zNOgsHPaTAjILUe
+         ajFjk81gXd3+ogvmvdMLots4ken2/hVOEEQZutCkRkk9EPoP4eoqsirPI1FyD0LKVgfj
+         2eskLZiTNIo80BF2yqIgm5girTBs0F9EiyJf9xOoN4zzK3gcqwMV3In+cb7ERq6ollDv
+         Oo1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713472689; x=1714077489;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JF4x+kNM/mmae+ZYoHJR13wougtTUOzbFPCVrpt7xuQ=;
-        b=Idwcuqlrpi8qE6q9PTuqs3K77hIxbaNthKZmdEnJLfwib8bsrBYOsVrChE1tL7PPc5
-         /+uHq2ObX3CidJryTql+aercO4vR8tbjx7z5p6iNEdq0lIh91CAVsGX+hGS5peeEPHXR
-         PEEU4v/P78rFB9gYA66fqmpCY/goB/uAVqH/XTBOBxn4UR/ltSUpyRhJMzccEYJxMRCG
-         6g3M+wetgmh9Bh30ElUFgTktS19aFLb5gnxDcpj04D+oxnzGHcPvJPLk5vk3eltoB915
-         ebeEXTgSmU1zzioNFpuFhG9tGCxBTd6uxE5O4QuJcq2bW8YmBeSg3z2rj1bOAP2PXkKt
-         s77g==
-X-Forwarded-Encrypted: i=1; AJvYcCVaMNn8rrMO6FwbmPxtAfzJalho3UwD7IkGoXtTaClRYMMhtCwLUeFeneDfDGIg8Fada0VJoVo0b7R2BYQmY1QQYXJa
-X-Gm-Message-State: AOJu0YwjbKRcWzZpB0lgfbHpj1oVHuBGt7qeTvH1YLdnfdjsah6wKRb8
-	sYZeASUa+yc/T4bWW8l7B5vmDP2bD/HwBQ+w6Renwj4s6cAwkZAG
-X-Google-Smtp-Source: AGHT+IEQdvifaiqzhQgGeM5KMZbCp8qQgxPJ+Bl+TS4jV006wTpcy9/73atGZ2nqI696XMF1UUWulA==
-X-Received: by 2002:a05:6512:2111:b0:513:9e44:c68c with SMTP id q17-20020a056512211100b005139e44c68cmr105129lfr.6.1713472688803;
-        Thu, 18 Apr 2024 13:38:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713472699; x=1714077499;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ef1j03PzQot24D7wGKXztI5BpkUJmrRiVGjdQcRoP/A=;
+        b=stxFoLOfsAeUZd1u3BViBY4RqYFwR4hg6cnODD0uQEKmPl+tv3HUtItrytZfYZGYVY
+         OLQLbmyoDwPXL2fbj9Pk76wZkYFlXzrAMGfAptMNn486fxHM8EwCMX1EyfgWarOxwWNv
+         hAa9Vs4qN7x62xxerGIaPCA/dMLOM8dS1qlAccNVLUvfe2zb2LpToezJcybDZjlV/zsb
+         +tJ4oIEvnbGuDAYUkSjmMSOkPWoIqqv8D/uVjxLgGuZ10YoGenCVgrWhVgNMz/HuvNX3
+         00uDb7OrN+SAGHKhvSWXdGiIvjgGcP3fwv3qYSopCsMCK52pdmCD144o8xNaFDKGNq+Q
+         Z5pw==
+X-Forwarded-Encrypted: i=1; AJvYcCXheit3n4AwNH8bu7YfBjWHNnNS8WuzVuEEPdyJXWBq1y9LlnQ2TPGZWYNiX8tzdh9ISjg5Uk79OZPAldPGfapge3bM
+X-Gm-Message-State: AOJu0YzcpXsUQW2K+5gK4Eag/EmLvbKjV3VNNMCW7a1yZFHEnXnfffR0
+	3omKLLdK7/AcEFnd1AwYNLd2UeW9Jxb8h1Sd2B1m+xPdCaGwozfC/kkBKldI
+X-Google-Smtp-Source: AGHT+IFuUfTaQYJNQUWQD53YUOXbHss6h+ljXIMevbVCxM7rU+ASD0Lp3fuRW4KDMzSE3XGe604KaQ==
+X-Received: by 2002:ac2:430b:0:b0:51a:a400:785e with SMTP id l11-20020ac2430b000000b0051aa400785emr68649lfh.43.1713472698372;
+        Thu, 18 Apr 2024 13:38:18 -0700 (PDT)
 Received: from lmc-playground.localdomain ([188.25.209.252])
-        by smtp.gmail.com with ESMTPSA id l21-20020a170906079500b00a473774b027sm1305649ejc.207.2024.04.18.13.38.07
+        by smtp.gmail.com with ESMTPSA id l21-20020a170906079500b00a473774b027sm1305649ejc.207.2024.04.18.13.38.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 13:38:08 -0700 (PDT)
+        Thu, 18 Apr 2024 13:38:17 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -66,10 +68,12 @@ Cc: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 0/3] Add DSP node for imx8ulp
-Date: Thu, 18 Apr 2024 23:37:17 +0300
-Message-Id: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 1/3] dt-bindings: dsp: support imx8ulp dsp clocks
+Date: Thu, 18 Apr 2024 23:37:18 +0300
+Message-Id: <20240418203720.8492-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
+References: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -80,23 +84,88 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add devicetree node for imx8ulp's DSP core. Also,
-update the schema for the DSP node to accomodate
-the clocks used by it and add a new schema for its
-syscon type node dependency.
+i.MX8ULP DSP node needs a MU clock, but doesn't need
+a debug clock. Change "clocks" and "clock-names" properties
+to allow for this case.
 
-Laurentiu Mihalcea (3):
-  dt-bindings: dsp: support imx8ulp dsp clocks
-  dt-bindings: mfd: add schema for 8ulp AVD-SIM
-  arm64: dts: imx8ulp: add DSP node
-
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+---
  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 51 ++++++++++++++-----
- .../bindings/mfd/fsl,imx8ulp-avd-sim.yaml     | 42 +++++++++++++++
- arch/arm64/boot/dts/freescale/imx8ulp-evk.dts | 39 ++++++++++++++
- arch/arm64/boot/dts/freescale/imx8ulp.dtsi    | 22 ++++++++
- 4 files changed, 142 insertions(+), 12 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
+ 1 file changed, 39 insertions(+), 12 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+index 9af40da5688e..4a39d57b1cc6 100644
+--- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
++++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+@@ -30,22 +30,12 @@ properties:
+     maxItems: 1
+ 
+   clocks:
+-    items:
+-      - description: ipg clock
+-      - description: ocram clock
+-      - description: core clock
+-      - description: debug interface clock
+-      - description: message unit clock
+     minItems: 3
++    maxItems: 5
+ 
+   clock-names:
+-    items:
+-      - const: ipg
+-      - const: ocram
+-      - const: core
+-      - const: debug
+-      - const: mu
+     minItems: 3
++    maxItems: 5
+ 
+   power-domains:
+     description:
+@@ -93,6 +83,43 @@ required:
+   - memory-region
+ 
+ allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: fsl,imx8ulp-hifi4
++    then:
++      properties:
++        clocks:
++          items:
++            - description: ipg clock
++            - description: ocram clock
++            - description: core clock
++            - description: message unit clock
++        clock-names:
++          items:
++            - const: ipg
++            - const: ocram
++            - const: core
++            - const: mu
++    else:
++      properties:
++        clocks:
++          items:
++            - description: ipg clock
++            - description: ocram clock
++            - description: core clock
++            - description: debug interface clock
++            - description: message unit clock
++          minItems: 3
++        clock-names:
++          items:
++            - const: ipg
++            - const: ocram
++            - const: core
++            - const: debug
++            - const: mu
++          minItems: 3
+   - if:
+       properties:
+         compatible:
 -- 
 2.34.1
 
