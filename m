@@ -1,88 +1,122 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4CF16C438
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 16:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CA9171E74;
+	Thu, 18 Apr 2024 16:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713459034; cv=none; b=a/kWRXoBJyuW7vUdZRGSBDhP8+li2IPIARkYVMzCf62raC6hIj7nL6BywS+dHS3fPWblTYnd4XIDgQBV42NhGJEL99K28EAIpzMZOlbPWkOzeBOYOgaQmV0vZ7D3PpnvOGtPNDzgpidGHD/UdcBw36K9fAkPERqZi1kwGMyE1i0=
+	t=1713459480; cv=none; b=txXPiV3xpu8dHJzP15MjX054E/+vs+06OeMXoYYJZHCdhDFRMQ1YJzu2vQOyjoG5HKlb0Qzeb1LBQm203rj41MWq4cxtTUkahOIk/UFyA7mbQObm3NaQJXvICaxDUQd78ouF6pz259IlA1Iw+S/K0z++oQew3q8cOuomH0bISoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713459034; c=relaxed/simple;
-	bh=gA7kr3P8rammQuVG8J+GOuRW2Trrize3tToG0qF1s44=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nP5aO6KdlUsujVQyFM725TTCIiEfo0pXrXEcUnFx5eh6PRwNxtm8M6TG3M00AYtNanPlvNyjyettbadHe/5adD5p57kdNVMvEdSBAEgPjyj92H5bp7TOmD0Z2XQPLneeUaWpBwY6XWMN7fvfhpuZujhkUJG6TMPMYXlly6BQkfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cp1VseIM; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713459480; c=relaxed/simple;
+	bh=pkb2tH01Wki61lhkkNTyrZP8JusR9PVRt2dBWHM5R0Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FA/AYvcepCSNAVApCxqkRI8e2XuREH+UAIcoTv6e2CBTPZ5hpfcz6gABSAVgJWFDA3HlRLVfbEQfRO554TDsWZtP1zFQUb7VmAwl8MfEiIzewkT6+cN38EElnDZ0G/RHu3j9jUSlNh4W563vcQUKqmcNiORLVYsl2ttkUYonn0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=To477Ax0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cp1VseIM"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3454fbdd88aso790740f8f.3
-        for <imx@lists.linux.dev>; Thu, 18 Apr 2024 09:50:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713459031; x=1714063831; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gA7kr3P8rammQuVG8J+GOuRW2Trrize3tToG0qF1s44=;
-        b=Cp1VseIMcDFB6zgMwDpWkQw9wq7YKfjglVUHfNW3Bh6dFbMwLqqIh4bYsyyHbUUSFn
-         GKjiNccTt9offtFUPQewOXQxuamVBd8Y8KYfet0RYxVinLJw4pCN2cBWL8MCDx+xH0f+
-         0gp4evHjMCDaADFeRzMRCoOH+s6zKlB1z3DROWCJ1vtV6EBz7KRIGAFvsj1sjIepPpzM
-         polpJpA+kOT3lFJGYso/SrphpnaFLguLdUV/FuLmPUPangf/LaCNd/auCtDFYRiVkJmc
-         5mhteKYY5WZvxstFJvg6QduZaxjbBIP7/XMsINKlrI//wnTBE5ojDvuQaDIyXpZtlVTg
-         vWzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713459031; x=1714063831;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gA7kr3P8rammQuVG8J+GOuRW2Trrize3tToG0qF1s44=;
-        b=LyTh17yDipLjJ80o3WOBXL4CfF9hdyH0uMTZUhjT7CssmFxNgZxLQnAzQ7lN45pyp8
-         zvQnkyH4ri9fT4r4h8OrxU459qsdgemIRZkrgag4SEjxQpV2E4YJrCNx9Hd2jcATHDBM
-         bYhZGgis+xvCeur1a20navkEAOyNI2znI3PVhswXXrK20AXtn6BZxbZKfMEHMCxE88tB
-         4wn31tCC8b/Eg3y+T50jMAwWjlZMTjpq+VWOO2HqUzKyuZWz5GYmAHA3qxYj6BEXOVjz
-         JeQ9yBYYjnpSHps9U/wUuapxbROVORIRMvS+v3O2YF3/+Sh8ZaQU0uOkWoKRDx5dCohn
-         ALfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXoWTNegOejGbRzJQ9D2kDZ9osu8lU0m97EsZOU6y9IOpIpDB0CqMt1NeS7xye5eqE1jX2TJKgw7jYZg+6CqESyWcWw
-X-Gm-Message-State: AOJu0YyHf3CKC0fdv0zB2tT46Za6nnAAHQmRMUuDb+iU4lP3UHWc0WX2
-	zYzn2wyboCuyQfsaMo52ZmhdIDZY2RCCVZ8NGuxf5zIkk454OynM
-X-Google-Smtp-Source: AGHT+IHMfj38JoZUDpClMWDwQ5C3bc7yi/tNoR0G8uDumFXmFP2ZjAKxHbWtJ3fy5o0rdm/ner2vrg==
-X-Received: by 2002:a5d:4082:0:b0:346:305c:b0eb with SMTP id o2-20020a5d4082000000b00346305cb0ebmr2404081wrp.22.1713459030879;
-        Thu, 18 Apr 2024 09:50:30 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:cffe:40a8:31d4:2e61? ([2001:8a0:e622:f700:cffe:40a8:31d4:2e61])
-        by smtp.gmail.com with ESMTPSA id cg3-20020a5d5cc3000000b00349bd105089sm2223076wrb.47.2024.04.18.09.50.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 09:50:30 -0700 (PDT)
-Message-ID: <e6b42e27b3fd4a0970904224d7bd32c52159a788.camel@gmail.com>
-Subject: Re: [PATCH] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
-From: Vitor Soares <ivitro@gmail.com>
-To: Markus Elfring <Markus.Elfring@web.de>, Vitor Soares
- <vitor.soares@toradex.com>, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, kernel-janitors@vger.kernel.org, 
- kernel@pengutronix.de, Fabio Estevam <festevam@gmail.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Ulf Hansson
- <ulf.hansson@linaro.org>
-Cc: Lucas Stach <l.stach@pengutronix.de>, LKML
- <linux-kernel@vger.kernel.org>,  stable@vger.kernel.org
-Date: Thu, 18 Apr 2024 17:50:29 +0100
-In-Reply-To: <29e1a687-99f5-4e9f-a8c5-50154312cac4@web.de>
-References: <20240418155151.355133-1-ivitro@gmail.com>
-	 <29e1a687-99f5-4e9f-a8c5-50154312cac4@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="To477Ax0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD27DC32783;
+	Thu, 18 Apr 2024 16:57:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713459480;
+	bh=pkb2tH01Wki61lhkkNTyrZP8JusR9PVRt2dBWHM5R0Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=To477Ax0+zjQ6n/ZIeoRIwAlnQrrZ8/91wD9ykXmLF1c8XbPF7H3W/eGOcuZ0Qeb/
+	 /rk8PVlG3D5FycT/XPnXtIB/2tb+B97pd9+CvOcOg5kO2cfUqM1ppX5uiF/fnNbrlR
+	 yabkJl8QreMRFMH9W34l0jH9mDtaZPprlEjEIjcGRe+7Kj9gsTbuY8er1vZhAj7uG1
+	 226aPAhi3cXCds6PIY/JZSMFZARP42HTseW/6zkYP9G+Lm9FNW+gyYs5Mf/05Gr9Gb
+	 aun4saPBaC07pDPxXumxvNKP+6WIHvfBIPnV64wt1U2TgXHXqgXfZytzPK4vLoZGew
+	 fFMwwRl9a/YSA==
+Message-ID: <45e27033-b751-4464-b129-5f9fa44b34e3@kernel.org>
+Date: Thu, 18 Apr 2024 18:57:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] arm64: dts: freescale: imx8mp-beacon: remove
+ tx-sched-sp property
+To: Flavio Suligoi <f.suligoi@asem.it>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240418122859.2079099-1-f.suligoi@asem.it>
+ <20240418122859.2079099-2-f.suligoi@asem.it>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240418122859.2079099-2-f.suligoi@asem.it>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-SGkgTWFya3VzLAoKCk9uIFRodSwgMjAyNC0wNC0xOCBhdCAxODoyNCArMDIwMCwgTWFya3VzIEVs
-ZnJpbmcgd3JvdGU6Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg4oCmLCBhZGQgYSBkZXZpY2Ug
-bGluayBiZXR3ZWVtCj4gPiBibGtfY3RybCBhbmQgZ2VucGQgcG93ZXJfZGV2LiDigKYKPiAKPiBJ
-IGhvcGUgdGhhdCBhIHR5cG8gd2lsbCBiZSBhdm9pZGVkIGluIHRoaXMgY2hhbmdlIGRlc2NyaXB0
-aW9uIGZvciB0aGUgZmluYWwgY29tbWl0Lgo+IAoKVGhhbmtzIGZvciB5b3UgZmVlZGJhY2suCkkg
-d2lsbCBmaXggaXQgbmV4dCB2ZXJzaW9uLgoKQmVzdCByZWdhcmRzLApWaXRvciBTb2FyZXMKCj4g
-UmVnYXJkcywKPiBNYXJrdXMKCg==
+On 18/04/2024 14:28, Flavio Suligoi wrote:
+> Strict priority for the tx scheduler is by default in Linux driver, so the
+> tx-sched-sp property was removed in commit aed6864035b1 ("net: stmmac:
+> platform: Delete a redundant condition branch").
+> 
+> So we can safely remove this property from this device-tree.
+> 
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+NAK, not true. Please point me to this.
+
+Best regards,
+Krzysztof
 
