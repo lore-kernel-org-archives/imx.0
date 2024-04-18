@@ -1,28 +1,28 @@
 Received: from e3i51.smtp2go.com (e3i51.smtp2go.com [158.120.84.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389B315FD07
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 12:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D191607A3
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713443374; cv=none; b=sbo9Wb4f+9x3a4tyhN1Ngiq/LiAXfBsm+b06wtlUzhRrVNR/1Gk5MbNhsExrY/uz6tKzspybCcU4s3TGqMAnrPnYgmnrmTGcByb05wrK+Kt9I1sXYJHGcLyjdjf5eRcVbtMaRSuhX/pqUzGNvY6oGE8ilOzUP9YJjiYZZ7H+74w=
+	t=1713443376; cv=none; b=FWZm8zH7VaRYxylsnIAUe+jsliTCYflHcTckDwq4olK0dN3nIPh6XPqu78bFx6eyQ2GlYci8MjSD0HmS8GP+T9YKX39/icZ6CkqryM2EZPD8hvlFYpPW0HjvVa98dhhepz7jzam149uVvfJtmphMhI+tGQG5cffETJvhBXHUeWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713443374; c=relaxed/simple;
-	bh=7YaaphZZMBLHKh0x7dUPDPqq2nvh8VeZ8PMGp6jM9vA=;
+	s=arc-20240116; t=1713443376; c=relaxed/simple;
+	bh=derKY/X+teh30FJx4b/mrPAzhjIzp4HGT8MMH/0zktg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iB0793jaL22M3D1TKNaJrKXdOLIAzxryX6KHHA550TynkYhzOjfb7kOoqycbFcUf+sGTGU9krz7Qocvn0WHSWjHl1eUbxOr5/WsSZKqxcH6AnqsUg6ikn/GesGCmNKd7acyC9Xx1vtF+YQ/J/p3rOVYj/XzKN3rrM/o1Lxzwn00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=xQ/jrsJt; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=CXp0RPkO; arc=none smtp.client-ip=158.120.84.51
+	 MIME-Version; b=A2Rl98RCjoU/yawBWHgLZTr+lkG3DR+aegpq/pWV8Q9GO/Dgw4B8dGaFnAwbA2YPdWS8L4PVwnmAUu2xde0GygyKY2iYcOfeQbCm+wcyGOgb9pJr+C2RBGUBxGhxea28+aijJgThxmo89XjEUuReGG/8ST+eh5jn+uBxiEaatm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=zRpXauVR; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=NdfP1fpF; arc=none smtp.client-ip=158.120.84.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174574.asem.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="xQ/jrsJt";
-	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="CXp0RPkO"
+	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="zRpXauVR";
+	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="NdfP1fpF"
 Received: from [10.86.249.198] (helo=asas054.asem.intra)
 	by smtpcorp.com with esmtpa (Exim 4.96.1-S2G)
 	(envelope-from <f.suligoi@asem.it>)
-	id 1rxQtK-04eUW9-2w
+	id 1rxQtL-04eUW9-1V
 	for imx@lists.linux.dev;
-	Thu, 18 Apr 2024 12:29:26 +0000
+	Thu, 18 Apr 2024 12:29:27 +0000
 Received: from flavio-x.asem.intra ([172.16.18.47]) by asas054.asem.intra with Microsoft SMTPSVC(10.0.14393.4169);
 	 Thu, 18 Apr 2024 14:29:23 +0200
 From: Flavio Suligoi <f.suligoi@asem.it>
@@ -52,9 +52,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Flavio Suligoi <f.suligoi@asem.it>,
 	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v2 3/5] arm64: dts: freescale: imx8mp-verdin: remove tx-sched-sp property
-Date: Thu, 18 Apr 2024 14:28:57 +0200
-Message-Id: <20240418122859.2079099-4-f.suligoi@asem.it>
+Subject: [PATCH v2 4/5] arm64: dts: qcom: sa8540p-ride: remove tx-sched-sp property
+Date: Thu, 18 Apr 2024 14:28:58 +0200
+Message-Id: <20240418122859.2079099-5-f.suligoi@asem.it>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240418122859.2079099-1-f.suligoi@asem.it>
 References: <20240418122859.2079099-1-f.suligoi@asem.it>
@@ -65,26 +65,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 18 Apr 2024 12:29:23.0767 (UTC) FILETIME=[0BA51C70:01DA918C]
-X-smtpcorp-track: 1rxQtK04-lW92w.mcmnue4mphIWG
+X-OriginalArrivalTime: 18 Apr 2024 12:29:23.0845 (UTC) FILETIME=[0BB10350:01DA918C]
+X-smtpcorp-track: 1rxQtL04-lW91V.mcmXue4Jxy5_z
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpcorp.com;
- i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1713443368; h=feedback-id :
+ i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1713443369; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe;
- bh=xB6lptXkbDQjGZizWOcUacyiIPjTOrnbOEU8DAe0Dnc=;
- b=xQ/jrsJtApZrbHd7xDlXcRx7QoxbdQi6AJSAZuawzSDi7kKZoEJPZYFoiD19PKV6nV433
- 56IvAi2KkbkUNJqV7JPJyyGHrr6aG93t1YeFgCGZUNTuGMIIDLtgC4TsMOMHDfwhlxwqY/5
- PzCPI0WjeBK5H1NQ3dHmFLGGa0wrs/VHIALj9dfp9OJWE+m2oId1Oi6iv3MHUdnl0MfAEWN
- L0YHEUAJDLMcDBcsd72LJkK36pb1wiN5fQmfbq7VIdLXg8sTOREtKQGMxJsZT3DNP931Osy
- TDQJj5IoSFw2QmqNiYJCTORObgIRxuVoq4LgumykwzT7zSfW9kbXZMY63/Kw==
+ bh=KyzVo69ICVJHxwsHXC+wYoJ2MHvwOdDQY4E0c7AHxy0=;
+ b=zRpXauVR5mTZdX29BhoH3jU7k+SwBk//dpL6ElV8MhqVmard7kRrZ+y5IU4bmK9XwtCrr
+ KBnhEXMGpr3DhKoMyYhvuEbfOCQbf6vRKtjDjjL8YCuFDQv0oRKy5SNYY3Ndp7nNJ0HzjSk
+ D+cNpPdeR1MBD0/fg8xIlUHInxblEomWT0z1ChKKLqDij7xO7gyZWXF3hGhZa8KevoQXWpV
+ 5jNR55PoJ2Ssy3yUOGP6iURcqYbULzBJEpSop9Rt4Qaa/29IQIrhCHVdk4QiSsp9TzvHXn2
+ WwaW/q7Vm7sa6xPu5S+0g3tjvxLvMsJzOiA5oRcXeVtKRUFs1sRcFfFBk7wg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it;
- i=@asem.it; q=dns/txt; s=s1174574; t=1713443368; h=from : subject : to
- : message-id : date; bh=xB6lptXkbDQjGZizWOcUacyiIPjTOrnbOEU8DAe0Dnc=;
- b=CXp0RPkO/tupCCZs2L5g9FWimVcXBjaMaXgnZk/QsscnjqUATZr415ZNZTuha4JK5YBAB
- ouqoebG4PR2HL2Ck4Eysj25z18KnqkRPuQFkZ2ZvBaDHExdSI+iP5X5F4P/rGuo653AlnxU
- mq0+jOFWIdWMHlLSSwLTG3ApcVoY0cMDOYUiTMVGr/PHV4WGVnxWAUMAOyNuE34MxJi0S4R
- /zPWqKTT+6tHGK5Hgwp6xOCbWIzX/CCsK+qeOvayl4aN4mgz3CYlW2uXyLGbTeq9Y6IVx/5
- 1ElwlFQt853Xspn4X7GKDPF6M0fBHafO/FWBkAdYDBsnNgidEeMqNocELEtQ==
+ i=@asem.it; q=dns/txt; s=s1174574; t=1713443369; h=from : subject : to
+ : message-id : date; bh=KyzVo69ICVJHxwsHXC+wYoJ2MHvwOdDQY4E0c7AHxy0=;
+ b=NdfP1fpFITanVCZBibB+UCenrw1VZAD2dnYfDIK9Vuky/F6ZHDMsbxX1g8NiNkfXJVU2b
+ bEv82f64AC5qogeLNYMSGscyFjQdeioup2rG+d5q60PQioZu6Yybrvvw4hfC3KfnZ6/LfiT
+ mfsjCLHknG/HnC7hf3SRlg1uDYQYd6JNGy3wT1kjt5qKp+MSOpLQB42e4HL4n/bFbHy7c4C
+ GpvpmnaWClRM0tzVmYF1bwZqfkVt6GeqPWwdLRUfd40kASJm9XUNXdbq/DAIjLzIFfSYuqT
+ MsbANyhzEEuZLLfVDFx0HqX1V3TtAz+HsTOYItXmX9hI92TOACdOHELF6WNA==
 
 Strict priority for the tx scheduler is by default in Linux driver, so the
 tx-sched-sp property was removed in commit aed6864035b1 ("net: stmmac:
@@ -95,17 +95,25 @@ So we can safely remove this property from this device-tree.
 Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sa8540p-ride.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index faa17cbbe2fd..21d4b6a9a1af 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -260,7 +260,6 @@ queue4 {
+diff --git a/arch/arm64/boot/dts/qcom/sa8540p-ride.dts b/arch/arm64/boot/dts/qcom/sa8540p-ride.dts
+index 177b9dad6ff7..11663cf81e45 100644
+--- a/arch/arm64/boot/dts/qcom/sa8540p-ride.dts
++++ b/arch/arm64/boot/dts/qcom/sa8540p-ride.dts
+@@ -225,7 +225,6 @@ queue3 {
  
- 	mtl_tx_setup: tx-queues-config {
- 		snps,tx-queues-to-use = <5>;
+ 	ethernet0_mtl_tx_setup: tx-queues-config {
+ 		snps,tx-queues-to-use = <1>;
+-		snps,tx-sched-sp;
+ 
+ 		queue0 {
+ 			snps,dcb-algorithm;
+@@ -302,7 +301,6 @@ queue3 {
+ 
+ 	ethernet1_mtl_tx_setup: tx-queues-config {
+ 		snps,tx-queues-to-use = <1>;
 -		snps,tx-sched-sp;
  
  		queue0 {
