@@ -1,28 +1,28 @@
 Received: from e3i51.smtp2go.com (e3i51.smtp2go.com [158.120.84.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D191607A3
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29507161306
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 12:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713443376; cv=none; b=FWZm8zH7VaRYxylsnIAUe+jsliTCYflHcTckDwq4olK0dN3nIPh6XPqu78bFx6eyQ2GlYci8MjSD0HmS8GP+T9YKX39/icZ6CkqryM2EZPD8hvlFYpPW0HjvVa98dhhepz7jzam149uVvfJtmphMhI+tGQG5cffETJvhBXHUeWE=
+	t=1713443378; cv=none; b=ZJP8acgrrjd6qlxmueaB7Os5D2xwp2e54QT2NwtGDb0+Wp+kIgz30FkNYkUrl+Q2Vb28fn52AoW73Xah8f7ZsGa0QIYg3qYISc6Xf9yE8wXMeQA8e9Y5r/MZK89b4gBFlMxtshse9zwLTa6w+TlGzkQS+AMu/j+lpka6MJcsUkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713443376; c=relaxed/simple;
-	bh=derKY/X+teh30FJx4b/mrPAzhjIzp4HGT8MMH/0zktg=;
+	s=arc-20240116; t=1713443378; c=relaxed/simple;
+	bh=70ZT+ixekGA7Dp6gZqaclj06/R0USy8Kl4atAXCRXx0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A2Rl98RCjoU/yawBWHgLZTr+lkG3DR+aegpq/pWV8Q9GO/Dgw4B8dGaFnAwbA2YPdWS8L4PVwnmAUu2xde0GygyKY2iYcOfeQbCm+wcyGOgb9pJr+C2RBGUBxGhxea28+aijJgThxmo89XjEUuReGG/8ST+eh5jn+uBxiEaatm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=zRpXauVR; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=NdfP1fpF; arc=none smtp.client-ip=158.120.84.51
+	 MIME-Version; b=oB963DrJB3u91PisV9WSRE9B1aw5moM6jKsaWBUpFs10dgzPToB0XHNpCheepH1MLn9p78n342rTUXSfG60DMr9l3iouhuVd1KUsqItH4WC0UJQv6MuIhV3qnqyQrqIrG1izYkjcVggUshn1ZjSJFr4256tGIJP1RQXiGWcEcQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b=sLJ/86zF; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=cp9pX5Xd; arc=none smtp.client-ip=158.120.84.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174574.asem.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="zRpXauVR";
-	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="NdfP1fpF"
+	dkim=pass (2048-bit key) header.d=smtpcorp.com header.i=@smtpcorp.com header.b="sLJ/86zF";
+	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="cp9pX5Xd"
 Received: from [10.86.249.198] (helo=asas054.asem.intra)
 	by smtpcorp.com with esmtpa (Exim 4.96.1-S2G)
 	(envelope-from <f.suligoi@asem.it>)
-	id 1rxQtL-04eUW9-1V
+	id 1rxQtM-04eUW9-04
 	for imx@lists.linux.dev;
-	Thu, 18 Apr 2024 12:29:27 +0000
+	Thu, 18 Apr 2024 12:29:28 +0000
 Received: from flavio-x.asem.intra ([172.16.18.47]) by asas054.asem.intra with Microsoft SMTPSVC(10.0.14393.4169);
 	 Thu, 18 Apr 2024 14:29:23 +0200
 From: Flavio Suligoi <f.suligoi@asem.it>
@@ -52,9 +52,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Flavio Suligoi <f.suligoi@asem.it>,
 	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v2 4/5] arm64: dts: qcom: sa8540p-ride: remove tx-sched-sp property
-Date: Thu, 18 Apr 2024 14:28:58 +0200
-Message-Id: <20240418122859.2079099-5-f.suligoi@asem.it>
+Subject: [PATCH v2 5/5] arm64: dts: qcom: sa8775p-ride: remove tx-sched-sp property
+Date: Thu, 18 Apr 2024 14:28:59 +0200
+Message-Id: <20240418122859.2079099-6-f.suligoi@asem.it>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240418122859.2079099-1-f.suligoi@asem.it>
 References: <20240418122859.2079099-1-f.suligoi@asem.it>
@@ -65,26 +65,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 18 Apr 2024 12:29:23.0845 (UTC) FILETIME=[0BB10350:01DA918C]
-X-smtpcorp-track: 1rxQtL04-lW91V.mcmXue4Jxy5_z
+X-OriginalArrivalTime: 18 Apr 2024 12:29:23.0923 (UTC) FILETIME=[0BBCEA30:01DA918C]
+X-smtpcorp-track: 1rxQtu04-lW904.mcmpue4GN7QNr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpcorp.com;
  i=@smtpcorp.com; q=dns/txt; s=a1-4; t=1713443369; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe;
- bh=KyzVo69ICVJHxwsHXC+wYoJ2MHvwOdDQY4E0c7AHxy0=;
- b=zRpXauVR5mTZdX29BhoH3jU7k+SwBk//dpL6ElV8MhqVmard7kRrZ+y5IU4bmK9XwtCrr
- KBnhEXMGpr3DhKoMyYhvuEbfOCQbf6vRKtjDjjL8YCuFDQv0oRKy5SNYY3Ndp7nNJ0HzjSk
- D+cNpPdeR1MBD0/fg8xIlUHInxblEomWT0z1ChKKLqDij7xO7gyZWXF3hGhZa8KevoQXWpV
- 5jNR55PoJ2Ssy3yUOGP6iURcqYbULzBJEpSop9Rt4Qaa/29IQIrhCHVdk4QiSsp9TzvHXn2
- WwaW/q7Vm7sa6xPu5S+0g3tjvxLvMsJzOiA5oRcXeVtKRUFs1sRcFfFBk7wg==
+ bh=V+1vvwjdWgujcNcq0BbcQl1Gr7TpP6SphXfO1RK3Fmk=;
+ b=sLJ/86zFRRe7OFcpU2Li0PMBbkVXZLaf2XiHN31q01cNMIHXcVAsf9g+WIMP9Y4idA2vq
+ HfYhqQSOQytd8Uq1u1X1T8FEYYqecEycTnD6uKDaahqoVvx4GAmz9NELmtQmkQtQ5ot48Oc
+ 8DonkBuAKscuWbjDO9eCqqvktf2g+1iTj6yLQf74arfnz2/MuCa6IVkbzcJvZQcQ4caEcby
+ lT7KRzdu39HwdlZFp5xScXGpqTRfzSxHjz/WWHPuL0X9VCZCLBcpGZOPeU3q4qFxW3GkCEi
+ CYgihD3K8BLZVrBrKUTz1mBfMXBu++Y/V/hNCZf2lC7KPYnDUp20VxSqXZKg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it;
  i=@asem.it; q=dns/txt; s=s1174574; t=1713443369; h=from : subject : to
- : message-id : date; bh=KyzVo69ICVJHxwsHXC+wYoJ2MHvwOdDQY4E0c7AHxy0=;
- b=NdfP1fpFITanVCZBibB+UCenrw1VZAD2dnYfDIK9Vuky/F6ZHDMsbxX1g8NiNkfXJVU2b
- bEv82f64AC5qogeLNYMSGscyFjQdeioup2rG+d5q60PQioZu6Yybrvvw4hfC3KfnZ6/LfiT
- mfsjCLHknG/HnC7hf3SRlg1uDYQYd6JNGy3wT1kjt5qKp+MSOpLQB42e4HL4n/bFbHy7c4C
- GpvpmnaWClRM0tzVmYF1bwZqfkVt6GeqPWwdLRUfd40kASJm9XUNXdbq/DAIjLzIFfSYuqT
- MsbANyhzEEuZLLfVDFx0HqX1V3TtAz+HsTOYItXmX9hI92TOACdOHELF6WNA==
+ : message-id : date; bh=V+1vvwjdWgujcNcq0BbcQl1Gr7TpP6SphXfO1RK3Fmk=;
+ b=cp9pX5XdOfVUX4Hunh9Bw4/25GhkWfFmud+EgMVjqP2a6k1LqVMYH8jRo8zqhKGBCfg6G
+ GAOfAbz/yQheVDK/xHu10iTKjxF7a27DcvbGq7NsTskASfoM5Ci37RWmh2NTaja0HFk8cux
+ 2NiWy3RhXpezYl3nKm+HIrsPqb96niRuuMaGFva5us2gDnGS7F4k5i+0WuE5tEsz8cGKb/X
+ EVbEq2Ibleq2/hAluS/KHGk1XTNLnmH9qFZMDN8yeNBO35lXNK7AqEVRcYcmy4sIF0BrEvn
+ DcGpdnGawD9I5ihswXuCh7U8U9As6AoCXigGxqI0oLXZliDAYD0Md6X9Gr+A==
 
 Strict priority for the tx scheduler is by default in Linux driver, so the
 tx-sched-sp property was removed in commit aed6864035b1 ("net: stmmac:
@@ -95,25 +95,25 @@ So we can safely remove this property from this device-tree.
 Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8540p-ride.dts | 2 --
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dts | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8540p-ride.dts b/arch/arm64/boot/dts/qcom/sa8540p-ride.dts
-index 177b9dad6ff7..11663cf81e45 100644
---- a/arch/arm64/boot/dts/qcom/sa8540p-ride.dts
-+++ b/arch/arm64/boot/dts/qcom/sa8540p-ride.dts
-@@ -225,7 +225,6 @@ queue3 {
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
+index 26ad05bd3b3f..2e1770e07f45 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
+@@ -334,7 +334,6 @@ queue3 {
  
- 	ethernet0_mtl_tx_setup: tx-queues-config {
- 		snps,tx-queues-to-use = <1>;
+ 	mtl_tx_setup: tx-queues-config {
+ 		snps,tx-queues-to-use = <4>;
 -		snps,tx-sched-sp;
  
  		queue0 {
  			snps,dcb-algorithm;
-@@ -302,7 +301,6 @@ queue3 {
+@@ -404,7 +403,6 @@ queue3 {
  
- 	ethernet1_mtl_tx_setup: tx-queues-config {
- 		snps,tx-queues-to-use = <1>;
+ 	mtl_tx_setup1: tx-queues-config {
+ 		snps,tx-queues-to-use = <4>;
 -		snps,tx-sched-sp;
  
  		queue0 {
