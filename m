@@ -1,419 +1,133 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2067.outbound.protection.outlook.com [40.107.105.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C65617AD98
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 18:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713463793; cv=fail; b=XkckBNdXsoD+S1mGgPFJ3LvJvviLe1mfNhW8PZqfOe9FPM+GDUWUTTMeO+tAoGRj4VRigpW60kkto/Iy3yz3J0U2CsFfkUWzZ6hy1FQxzbHfSJYxrcQ4HDtq71jKoFz+Zr13ioREs9KKGNxYkVMEQyshFteI64UkMGpUoUvxiyk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713463793; c=relaxed/simple;
-	bh=Pb2xJ326G08zDczLWmtTjquqBs26RkMH+2P/O8c7Xjw=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Wjz2jdu0ggjHtcECK06tcASlBlbF4V9sCkkVpGyuJVV5un/Qe6hacq2YMrh521Ukc+g+I9hWBJVRn1byh+Ooj6FyZNQDZ/jWhG8aB2IUKDENlhgRVZ2roLpcxVZJmcv+pf6U/G6df0AYDU4rOmpvBYQ2g5MobeEg/spKGunaU6E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=M5fmrolI; arc=fail smtp.client-ip=40.107.105.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F4E176FD2;
+	Thu, 18 Apr 2024 18:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713464984; cv=none; b=oo7ASA//YC9hR6/6RNMSCMLtc0YgGQEhYPgnAAPZhPKMEwWmqRaZ2NiIEyRH5AAQS/mqKeimtp7g/lbt1YRIS05CQj4wn/4Xn6o+Ir3gLWF9YozvmMpbkd7bbSyySj+YCGpoC/P9mF1TzWl4xdTTskZWT5Wq0MCtW16/tJWeboo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713464984; c=relaxed/simple;
+	bh=O8GQPhIx4kTFIET9bwlPStvr9H9F3wcwWCLjZ5QysXs=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=GwTgSy5+DYZcag4VbHm9S6bI3/yCMu/5R8DmPAVLVk27QfABmekNej+xO2Rkqs4ATfCG4HwU1xPCRC6HL3lkjW+SHjdW5hdgfpbgDaT/RamhqO+0a1RDLTz7QqAA2NuUnxawznJWoWUaX6VxPGmyzkQD0G++J8xTPZTPXRdpbao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1Jh2LsH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="M5fmrolI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I9eGvjFN9kALGaOQPO8N7Y68tu+y15OyIImgNGMWcyvlyGRmDTzCirGG285oJ59BPOwZ8clMN9QqEcaqcKeBZRur8hs7xr8vHidWXYihRf8BlbgrKYw5Hbw5n8WDBGX0C38XmeFzIAMkNFA+ImR69WGHrKIjMj7DBjibOrbwpQdWJ8uWjEgEEA725wkbthn7FcsfzrN4cigoYYYptbnyLbAKDLKZqy76iB6qGAY0M/9Cu66q4R/jbtIGLjCiyjFDYuXhCtuxzFUzlQLEC7ZfVe640mwdCAbgITV8pk+793g3fUTDk5Diyo5ti2v+Ol3H/zCg3Zceo1SRPOE2CzBgmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L1E5tWdskaG5q9hW4N9SbZJIBbNlov855pXDnzG9tqs=;
- b=ccXeByEAs6IoYELooDmev+sDNn7+9D0Ud7C4q3mmCfSAFNprWeSrQ6+uzR6a7xgXsBJI39Ao/RuvP7C1jyiPKyO4vBNMXF5jQZx1lx5+W0uE7Khe03ulJgh4n2WHu7yShcUhAll4NNYBJKpHu52jYT6d6uRs9+SdFtCD8R7ABySE/gpN7N/MF8/X0oMCZ58pStxJqkvdLw1AtOrvBP2vRQweZw5oYr+BLXb2p+FlZttrJu1W8++QScBPY/o5iZWCkvPLBr7uHtP08U5GZW7/UeKoaLbalK1yRY4/aUuNtDb3dnV+KzxvwV6H8WXKhNO643x/JiIM3UzZ0bzSrC7SHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L1E5tWdskaG5q9hW4N9SbZJIBbNlov855pXDnzG9tqs=;
- b=M5fmrolIF1k1xQDg0cL0tT/eu2wc7qGWxqcLw/GFo49NCUPuxFBIgfiq1+rMxqF1aQR1FKKOKBKrcFuMJtyfXfukHflQ516RZ9NoHt+mRCdeeHqrUbnes1ibz6+LskjMTn82e5QpTYucugMokzzO+54ebP9hNVpc1fqNVMXzisU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBAPR04MB7270.eurprd04.prod.outlook.com (2603:10a6:10:1af::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.42; Thu, 18 Apr
- 2024 18:09:48 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
- 18:09:48 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Thu, 18 Apr 2024 14:09:30 -0400
-Subject: [PATCH v2 3/3] arm64: dts: imx8dxl-evk: add audio nodes
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1Jh2LsH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0347AC113CC;
+	Thu, 18 Apr 2024 18:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713464984;
+	bh=O8GQPhIx4kTFIET9bwlPStvr9H9F3wcwWCLjZ5QysXs=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=h1Jh2LsHFnS9RuufuGll1YExdQ4NuFS17W5CnxtDnCmPYXaJuJtynDDNahAjT8cXq
+	 srHufFyO+8/ZgpWvPVf3RyN0EU6Ipvj/rs+NZ2gzD19gPMQ1JI42VsXZ7h1619dT20
+	 RaEhL4zD9XHFyOivDfsdAHe6cZisTzJeIqHbv8WSi0f49iOq4CCG8v59znRC6QGyO8
+	 toUHLVm+9vq+ixa/c44/pkaiG+E0YVqEeD4CCDte5tjLiNDFcoLezw9Rl9wrnjh1tm
+	 edeq8LobON4+caPn/1/XzDJxOU/6Zc11kdrASYW50p6kRPsAPR4OuBf69sOvE1ByzD
+	 0w55oaEsLSN0w==
+Date: Thu, 18 Apr 2024 13:29:43 -0500
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240418-b4-dts_dxl_audio-v2-3-e4e2747b3a49@nxp.com>
-References: <20240418-b4-dts_dxl_audio-v2-0-e4e2747b3a49@nxp.com>
-In-Reply-To: <20240418-b4-dts_dxl_audio-v2-0-e4e2747b3a49@nxp.com>
-To: Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713463776; l=7897;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=Pb2xJ326G08zDczLWmtTjquqBs26RkMH+2P/O8c7Xjw=;
- b=RlIv1T7TmW+CrDgiwOXwh5aHRW61q+r/yV2T25iOiXpImh9NyImrNDlnHNp9E0uuy7+vNisU9
- XErErujVgL7A8Px4v4PJfDbg87KKn5NASEp2th/H70GSWmEoAd6GJCj
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR08CA0024.namprd08.prod.outlook.com
- (2603:10b6:a03:100::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBAPR04MB7270:EE_
-X-MS-Office365-Filtering-Correlation-Id: 895e66ea-af7a-4e2f-8522-08dc5fd2bc4b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	p8E3GTZBZvv2hh7eCmZpAkm8QUci33ULTRejvIbZoaSW0WCkY2VXzJN32pLz8yRAP4Xmxsfp1EACthANvDlhyAjgQ1Y8gmq8HKgC+9acNDjLKRUJt4yIswqk1iKe1+B3jqf+tpdtc07Ug4uDBL92qLn2PSJD/ci+kgKPvPjJgIuzY4HN3kZvLaU12PrP2RsTuwLhUHAmxnwPSZv681s5SNeF4Wc2i5q/FYiHMfVLBg5ybOmvy/uP3NOhwvuvOckpUrgu1GDRj64hZNEuotwU6CioHDqYs/WY/OLevuIKUottE1avjTujpN7HIZUxxX7ey66Tu6INXGJU4lQV+L1rVTFiIqilJME2Y+OpTuihjDzjwlx2EnpCX90SvAqLM178OuFbqRkzIPTt/78l6VImHMBRvj+vgsPtd0ZT71OhMbgqwGFI9TyAHjmpVEheGMqNCgGqdx2AcRqKUt+2jKteGrJVS8qLctNAIh27NKgyBGzTkPE3xNtm47iTwrrn2IABh7TCzBuf/lYxYbg5nzIXPB1HV+CUe3FJj5GQ7udXGBo+9J070gnVKHHztx6UC0cymvgvGoRIOVgo9mWfMsvLXmwxmNLQ5jByILrAAZ4PmJIe/wl9dfdCGlKAMcvSftD8+iojCKDqlZrsQqHTYBY162QRxsGyZTiukuMzhWjzzLvcSTSb9xroomBhdB7VMbPhno/VaA7+6DOdi/2ii5CzX/bUgdhnVlTUjgkdAp8/xko=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHZXa1J1V3YrZ2VjK3lyUlIzbGJMTTM3ekZ3NFZXTkNkWFdVVDE5MXhzcDNB?=
- =?utf-8?B?TjJRdkxkNjlVcmozeS9PbHM3c3JuVWkyY0lCSlREMTE2Z29pQzlqY085NkRn?=
- =?utf-8?B?WWtjZ2tjazljdld1cUVEdjQvWWFrUHM1NnVlcTNEMW9SY2tOSW1xSTNDa0F0?=
- =?utf-8?B?RkhPSW1UVWhuaGllRGJIQmRKTm02QTJYTHEwdCtaK2hKZEFWUlpOSW9FQzNO?=
- =?utf-8?B?a2pHNXhkTEt3UkxZSHY2b1FrSUhMRGx6dGUyaTFKcHdJZmt4N3k4MDR4OGJN?=
- =?utf-8?B?U3VtS1pzZ2xBLzlaeW9HQnRBSHNHbGlHWmVGcEF1akVTUmF6NVVraitNVm5s?=
- =?utf-8?B?T29QaGFmM0ZERWg0b0JDdit6ZnAwdkRzbUphN3JkdHFTTzhJQjJ6WTUzeTVm?=
- =?utf-8?B?WlBkTk1zYWlMZEttbE9rZ3VGUi9na09HZ1N4MHNlTTRNVW1PaE1ndnFhQlJl?=
- =?utf-8?B?NW5tUXMzYjhEQjRjTmhwQmpyUmJYeVJia1VQM3krVnVybjdNbW13OE5ZV1JI?=
- =?utf-8?B?VXEzc1ZOWnloRUVsUFJzVUhYVXF2QzR0SC9VemtLWXUxN2tRdmRQMUtSa3ky?=
- =?utf-8?B?WElnd3g2WkZVSWhwNXRNNVZ3ZjlNMmdCdmlWRm5zWXZ4TWM3amxaTGxEQkdy?=
- =?utf-8?B?SFVONFFpNDRkcGFsdHRyQlpuRFNtQ1F6U3g4bkFOcnNJWjc1VzYwOGxTUnFD?=
- =?utf-8?B?RG1GdEIzYzFvUmNDam1ETEI0RlMyU2M0YTlTOTV4cllKcGxOSDQ0M3RoSGhG?=
- =?utf-8?B?UDFoNEVhWFIzNlF6M1dDck9sdVl1a2lDaWQxcU1CYVNsYzRSWkRmNE9CWFVD?=
- =?utf-8?B?QlBqN0F0eTZzeThMejhvb3Fqd25rRkdzelpYQ00rNEJDOVpzZ3NhUStURXJw?=
- =?utf-8?B?ZkJLdmZUNXdZcUVVaFBGOVZhTDhSM2ZFa1RUZFdOQ2VwL050d1pWUFV1ekg3?=
- =?utf-8?B?QUdmUFB2TW1Jb0t0c2xLVjFwV2x5aTllQ2ZKNEhOWnhlWXQyWmR2MXI5WXBl?=
- =?utf-8?B?M0tpaGFpeDEzZFgxZ0JIZUZHc3dRWlU5MlhiV3RNZC80cUkzZkRWanpncjN2?=
- =?utf-8?B?Y09KZTdIMUM2bHJYbHJDSkJYejZXaFpOR05IM3YvTEozYW8yNDVYR1R2eEtO?=
- =?utf-8?B?MlJ4d1o2ZlZnMndIVEpJL3YwWFIvUmNmVk9iSXRLaDczNEpHVm45ZEY0V0Zs?=
- =?utf-8?B?VU5DS0o0UWlTRVdFS2cyMThONUMzS2M5VUxNakxJVE51WnFVUCtFYVBhem1J?=
- =?utf-8?B?NGhiTFBJZk5HdFRoYzJMdjNxR2Y5L2s4a2ZBV2JFTVpLVXdNZEVZeUp0RUtN?=
- =?utf-8?B?V2phcjVEcUprRlVtTm4rczlrS3ZzYW5rZGR5QUIyNDErTDR6N2tSYllYUElo?=
- =?utf-8?B?b2xBZnVGODJybmJZQzU2K0s5aStQdExsOXNJR1RxbjRHbGVwbStuZUhuV2or?=
- =?utf-8?B?QXNJeG13ZE1kUkY5S0tKVlRvVEJLMExycE52TUt2N3dIMHZDcDRUT1A3OHdL?=
- =?utf-8?B?RmZRdnNlakVNZExjajltb1FSQkI4NWpTelRmQ3g3WlAzSzFzMkw0L1VrajJp?=
- =?utf-8?B?QkxPZkVtNnRuRGtRVmRTcG1vdVF5LzNyemN4MGozTWJVVWVjRFZ3cmUrM0p6?=
- =?utf-8?B?NjBuVkFSU2dNdWR4K21LUG9nTjN6d1lyS0pnS0VBdDFaUDZma0FlcFhuc0JG?=
- =?utf-8?B?dkV4cTREdytHbmFQMENyV1ZnYlVhOGk0TFFvSHRKa0RKalFjTHNBQmwwKysv?=
- =?utf-8?B?ZVRBdHpyeXhnRzBzV081VkkyWTNpaXFaTEVod1Jid0JQc0RrWmdCMWRONjQz?=
- =?utf-8?B?VkQ1OU1WcVhwczJXdVlqaFJqRGZoMXJEcjBGNGlONmY0OEIxZDlzZEhCUmxD?=
- =?utf-8?B?VGlYa040NlNoYWwyaWRlQklUYXcwQXZvVFprdFdpZE1yZmtyV2FiRGh5Y21V?=
- =?utf-8?B?Z3NOazlMbkhla3hCUG13NmJyYUxVSHk2ODJRMWppengwU1ZaSXZENklEcnZE?=
- =?utf-8?B?WlRCSnF3TGVJM0pHYmo4WHFDVHg2cmVNcTlzNU1Mc2UzbFlCUkNVcDFadmg0?=
- =?utf-8?B?UXFBT2VVcmtSTTVTT3lOZlRwR2RYNEFFNVhTK1A4Y2RiRzJuQ0Jvdzl2ZkdO?=
- =?utf-8?Q?gJIeXFp0QoRL2Jtd0aK/WXsPu?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 895e66ea-af7a-4e2f-8522-08dc5fd2bc4b
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 18:09:48.7425
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: opEsWvyAx46keNwP0dHsNVPgORw8AlUhsQfQv44brWe4t34rmc4ckI+b6mrz267XB+n+XHGaZxXjwR0hnPZ4Lg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7270
+From: Rob Herring <robh@kernel.org>
+To: Fabio Aiuto <fabio.aiuto@engicam.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+ imx@lists.linux.dev
+In-Reply-To: <20240418133923.3705-1-fabio.aiuto@engicam.com>
+References: <20240418133923.3705-1-fabio.aiuto@engicam.com>
+Message-Id: <171346492597.2679649.7866044200094982080.robh@kernel.org>
+Subject: Re: [PATCH v2 0/3] arm64: dts: imx93: add i.Core MX93 EDIMM 2.0
+ board
 
-Add audio nodes for imx8dxl-evk boards.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 232 ++++++++++++++++++++++++++
- 1 file changed, 232 insertions(+)
+On Thu, 18 Apr 2024 15:39:20 +0200, Fabio Aiuto wrote:
+> Hello all,
+> 
+> this patchset adds support for i.Core MX93 EDIMM 2.0 Starter Kit,
+> a SoM + Evaluation Board combination from Engicam.
+> 
+> The number of patch has diminished to 3, for I dropped the
+> patch introducing a change in nxp,pca9450 binding which has
+> been already submitted in regulator tree.
+> 
+> (Dropped also regulator tree maintainers as recipients for
+> they aren't anymore involved in this patchset)
+> 
+> Thanks in advance,
+> 
+> fabio
+> ---
+> v1 ---> v2:
+> 	- dropped patch updating nxp,pca9450 binding
+> 	- fixed indentation issue
+> 	- fixed missing space issue
+> 	- improved naming of regulator nodes
+> 	- removed unneeded include
+> 	- fixed email recipients
+> 
+> Fabio Aiuto (3):
+>   dt-bindings: arm: fsl: add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
+>   arm64: dts: imx93: add Engicam i.Core MX93 SoM
+>   arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   7 +
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../dts/freescale/imx93-icore-mx93-edimm2.dts | 354 ++++++++++++++++++
+>  .../boot/dts/freescale/imx93-icore-mx93.dtsi  | 270 +++++++++++++
+>  4 files changed, 632 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
+> 
+> --
+> 2.34.1
+> 
+> 
+> 
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-index 2123d431e0613..b91ab1813fed5 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-@@ -125,6 +125,79 @@ mii_select: regulator-4 {
- 		enable-active-high;
- 		regulator-always-on;
- 	};
-+
-+	bt_sco_codec: bt_sco_codec {
-+		#sound-dai-cells = <1>;
-+		compatible = "linux,bt-sco";
-+	};
-+
-+	sound-bt-sco {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "bt-sco-audio";
-+		simple-audio-card,format = "dsp_a";
-+		simple-audio-card,bitclock-inversion;
-+		simple-audio-card,frame-master = <&btcpu>;
-+		simple-audio-card,bitclock-master = <&btcpu>;
-+
-+		btcpu: simple-audio-card,cpu {
-+			sound-dai = <&sai0>;
-+			dai-tdm-slot-num = <2>;
-+			dai-tdm-slot-width = <16>;
-+		};
-+
-+		simple-audio-card,codec {
-+			sound-dai = <&bt_sco_codec 1>;
-+		};
-+	};
-+
-+	sound-wm8960-1 {
-+		compatible = "fsl,imx7d-evk-wm8960", "fsl,imx-audio-wm8960";
-+		model = "wm8960-audio";
-+		audio-cpu = <&sai1>;
-+		audio-codec = <&wm8960_1>;
-+		audio-asrc = <&asrc0>;
-+		audio-routing =
-+			"Headphone Jack", "HP_L",
-+			"Headphone Jack", "HP_R",
-+			"Ext Spk", "SPK_LP",
-+			"Ext Spk", "SPK_LN",
-+			"Ext Spk", "SPK_RP",
-+			"Ext Spk", "SPK_RN",
-+			"LINPUT1", "Mic Jack",
-+			"Mic Jack", "MICB";
-+	};
-+
-+	sound-wm8960-2 {
-+		compatible = "fsl,imx7d-evk-wm8960", "fsl,imx-audio-wm8960";
-+		model = "wm8960-audio-2";
-+		audio-cpu = <&sai2>;
-+		audio-codec = <&wm8960_2>;
-+		audio-routing =
-+			"Headphone Jack", "HP_L",
-+			"Headphone Jack", "HP_R",
-+			"Ext Spk", "SPK_LP",
-+			"Ext Spk", "SPK_LN",
-+			"Ext Spk", "SPK_RP",
-+			"Ext Spk", "SPK_RN",
-+			"LINPUT1", "Mic Jack",
-+			"Mic Jack", "MICB";
-+	};
-+
-+	sound-wm8960-3 {
-+		compatible = "fsl,imx7d-evk-wm8960", "fsl,imx-audio-wm8960";
-+		model = "wm8960-audio-3";
-+		audio-cpu = <&sai3>;
-+		audio-codec = <&wm8960_3>;
-+		audio-routing =
-+			"Headphone Jack", "HP_L",
-+			"Headphone Jack", "HP_R",
-+			"Ext Spk", "SPK_LP",
-+			"Ext Spk", "SPK_LN",
-+			"Ext Spk", "SPK_RP",
-+			"Ext Spk", "SPK_RN",
-+			"LINPUT1", "Mic Jack",
-+			"Mic Jack", "MICB";
-+	};
- };
- 
- &adc0 {
-@@ -132,6 +205,11 @@ &adc0 {
- 	status = "okay";
- };
- 
-+&asrc0 {
-+	fsl,asrc-rate  = <48000>;
-+	status = "okay";
-+};
-+
- &eqos {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_eqos>;
-@@ -259,6 +337,78 @@ max7322: gpio@68 {
- 			};
- 		};
- 
-+		i2c@1 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x1>;
-+
-+			wm8960_1: audio-codec@1a {
-+				compatible = "wlf,wm8960";
-+				reg = <0x1a>;
-+				clocks = <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-+				clock-names = "mclk";
-+				assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+						  <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-+				assigned-clock-rates = <786432000>,
-+						       <49152000>,
-+						       <12288000>,
-+						       <12288000>;
-+				wlf,shared-lrclk;
-+				wlf,hp-cfg = <2 2 3>;
-+				wlf,gpio-cfg = <1 3>;
-+			};
-+		};
-+
-+		i2c@2 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x2>;
-+
-+			wm8960_2: audio-codec@1a {
-+				compatible = "wlf,wm8960";
-+				reg = <0x1a>;
-+				clocks = <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-+				clock-names = "mclk";
-+				assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+						  <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-+				assigned-clock-rates = <786432000>,
-+						       <49152000>,
-+						       <12288000>,
-+						       <12288000>;
-+				wlf,shared-lrclk;
-+				wlf,hp-cfg = <2 2 3>;
-+				wlf,gpio-cfg = <1 3>;
-+			};
-+		};
-+
-+		i2c@3 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x3>;
-+
-+			wm8960_3: audio-codec@1a {
-+				compatible = "wlf,wm8960";
-+				reg = <0x1a>;
-+				clocks = <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-+				clock-names = "mclk";
-+				assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+						  <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-+				assigned-clock-rates = <786432000>,
-+						       <49152000>,
-+						       <12288000>,
-+						       <12288000>;
-+				wlf,shared-lrclk;
-+				wlf,hp-cfg = <2 2 3>;
-+				wlf,gpio-cfg = <1 3>;
-+			};
-+		};
-+
- 		i2c@4 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -362,6 +512,53 @@ &lsio_gpio5 {
- 	status = "okay";
- };
- 
-+&sai0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai0>;
-+	#sound-dai-cells = <0>;
-+	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+			<&sai0_lpcg IMX_LPCG_CLK_0>;
-+	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-+	status = "okay";
-+};
-+
-+&sai1 {
-+	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+			<&sai1_lpcg IMX_LPCG_CLK_0>;
-+	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai1>;
-+	status = "okay";
-+};
-+
-+&sai2 {
-+	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+			<&sai2_lpcg IMX_LPCG_CLK_0>;
-+	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai2>;
-+	fsl,sai-asynchronous;
-+	status = "okay";
-+};
-+
-+&sai3 {
-+	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+			<&sai3_lpcg IMX_LPCG_CLK_0>;
-+	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai3>;
-+	fsl,sai-asynchronous;
-+	status = "okay";
-+};
-+
- &thermal_zones {
- 	pmic-thermal {
- 		polling-delay-passive = <250>;
-@@ -595,6 +792,41 @@ IMX8DXL_UART0_TX_ADMA_UART0_TX		0x06000020
- 		>;
- 	};
- 
-+	pinctrl_sai0: sai0grp {
-+		fsl,pins = <
-+			IMX8DXL_SPI0_CS0_ADMA_SAI0_RXD		0x06000060
-+			IMX8DXL_SPI0_CS1_ADMA_SAI0_RXC		0x06000040
-+			IMX8DXL_SPI0_SCK_ADMA_SAI0_TXC		0x06000060
-+			IMX8DXL_SPI0_SDI_ADMA_SAI0_TXD		0x06000060
-+			IMX8DXL_SPI0_SDO_ADMA_SAI0_TXFS		0x06000040
-+		>;
-+	};
-+
-+	pinctrl_sai1: sai1grp {
-+		fsl,pins = <
-+			IMX8DXL_FLEXCAN0_RX_ADMA_SAI1_TXC     0x06000040
-+			IMX8DXL_FLEXCAN0_TX_ADMA_SAI1_TXFS    0x06000040
-+			IMX8DXL_FLEXCAN1_RX_ADMA_SAI1_TXD     0x06000060
-+			IMX8DXL_FLEXCAN1_TX_ADMA_SAI1_RXD     0x06000060
-+		>;
-+	};
-+
-+	pinctrl_sai2: sai2grp {
-+		fsl,pins = <
-+			IMX8DXL_SNVS_TAMPER_OUT3_ADMA_SAI2_RXC   0x06000040
-+			IMX8DXL_SNVS_TAMPER_IN0_ADMA_SAI2_RXFS   0x06000040
-+			IMX8DXL_SNVS_TAMPER_OUT4_ADMA_SAI2_RXD   0x06000060
-+		>;
-+	};
-+
-+	pinctrl_sai3: sai3grp {
-+		fsl,pins = <
-+			IMX8DXL_SNVS_TAMPER_IN1_ADMA_SAI3_RXC    0x06000040
-+			IMX8DXL_SNVS_TAMPER_IN3_ADMA_SAI3_RXFS   0x06000040
-+			IMX8DXL_SNVS_TAMPER_IN2_ADMA_SAI3_RXD    0x06000060
-+		>;
-+	};
-+
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = <
- 			IMX8DXL_EMMC0_CLK_CONN_EMMC0_CLK	0x06000041
 
--- 
-2.34.1
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx93-icore-mx93-edimm2.dtb' for 20240418133923.3705-1-fabio.aiuto@engicam.com:
+
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: codec@a: Unevaluated properties are not allowed ('clock-names' was unexpected)
+	from schema $id: http://devicetree.org/schemas/sound/sgtl5000.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: codec@a: 'assigned-clocks' is a dependency of 'assigned-clock-rates'
+	from schema $id: http://devicetree.org/schemas/clock/clock.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: micfil@44520000: 'pinctrl-0' is a dependency of 'pinctrl-names'
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-btregon: 'pinctrl-0' is a dependency of 'pinctrl-names'
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-1v8-sgtl: Unevaluated properties are not allowed ('always-on' was unexpected)
+	from schema $id: http://devicetree.org/schemas/regulator/fixed-regulator.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-3v3-avdd-sgtl: Unevaluated properties are not allowed ('always-on' was unexpected)
+	from schema $id: http://devicetree.org/schemas/regulator/fixed-regulator.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-3v3-sgtl: Unevaluated properties are not allowed ('always-on' was unexpected)
+	from schema $id: http://devicetree.org/schemas/regulator/fixed-regulator.yaml#
+arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-wlregon: 'pinctrl-0' is a dependency of 'pinctrl-names'
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
+
+
+
+
 
