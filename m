@@ -1,228 +1,295 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2085.outbound.protection.outlook.com [40.107.22.85])
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2074.outbound.protection.outlook.com [40.107.113.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A92853E11
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 02:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80DD53E28
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 04:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.74
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713408331; cv=fail; b=nwgP3Gy4lEogxCdCx668IOayKS/DaLcKk1XDHHpmqlEkHogD/iGhQAteWhbCjlCKcZGzojEbaelN5GI+otn17Dkw7ZkD9n5hulY/vYL8iwCIwYAWVoVPvuLZY7irTadNS363eGQcbVQzlirzCGhE1AJood4sshAjJefW5o7v5uQ=
+	t=1713413501; cv=fail; b=eZ7Sl5kurX+jH5PkeQ8azTrZkDD4S3EOY66vMQWRFIoJaKlZ9ZfnbVYk0wYKMXL0HwU0tHcTxUOi00HT7cEQKad4FJMn8FENFsqB73h37/2/eN2xUM5t+nnXahNyODfW+kVRC8BcjC8puPDv0dxyJKLFF3bH3iMLe8zsPVRLRcE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713408331; c=relaxed/simple;
-	bh=Gk4hU2r+iaIIfBmi9wqN/jM0lkrvMeT46nOOAxus8Z8=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Tojb3/TtAxdtJgIBTyhm2PVnKo+l1kwB39oNLYdKpkb8EW7ukN0lM4bvgGGhCgrwYmOcpxsEHOH+8v+pkHjBFTdDmDXbVbyfKTdj0OhMZESBVVOPS+Numa6/yf+oIW+pei7FXYrL52i9IjW9jQXveXrqS4gO0ja4o/SNG3k5AYQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=GDNujn8/; arc=fail smtp.client-ip=40.107.22.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1713413501; c=relaxed/simple;
+	bh=UBght8bpJ++Ea5k1ZzUWaNlBjjCZcFb2RfPDE9IUXCY=;
+	h=Message-ID:From:To:Subject:Content-Type:Date:MIME-Version; b=bIeXnqgl7RlOb/5ask1PaKrqKP8g0VFIosNI+eQ+rhdfMOXjZsiLeENZvl988gUESL1XslM00l9gVuptC5Hlkb6BV7jD59akcoOfMhhLZ+pW2dvwnNCuFfYkiAUNBJorozvqTTCnb56TXzPeuV/LJxWybEOOr9Ykt05ROWXu1xQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=Kg7uS2GN; arc=fail smtp.client-ip=40.107.113.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="GDNujn8/"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="Kg7uS2GN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NUcYmNe86cMQ2rtOvc+/XC8tLwX/u3WuQpIW8Xk7xkIaiAWsqU4sBYEDC76l8xNHfDvZJYKi9LJ/jDEaNqrJ/6CX3+34xmP43J57rItmq9lpEuhOSgfX5wLbPFrvgnEI54tqCx/3useFWlgarOfCUC0DUlbYP6hoZh1TsjESqQp/nngfSh8KFMB9VjyL+yYZOJKj5Gfg0qQkSnMW+kz0Cu9A0GzS19ZvDd4Xgirn9r/49GZ8NFoVBurjHmk3Eex3y5V746J2YuV9ZKzxVnQ5WqlduURQFuViPuZMqpJf3qH5rKsSa1XWCzCUXll7u7t7lU50RlJPhuenZlHbcilirQ==
+ b=N1l2McHcn7ZGDCJh5N0e5cztJqT6YXrXo7l1xg1z0A8Cj6QiAgVr6BHxsAsz3+qKHgLWPFqiruLrd/1uaqzPmpvqMsVjQMcgp2og2J4wcfUGCIrTMbpis/h5wR2fG4pQj+H05x9QlWAG+IxrIBkbhc3Gv8QRILr5zSIMlyU/qZlkallyTKdboT4N7ffZ97vx3ZmTEkYb0XWpIL+PJoy8Vs3Rt9khRnf66nFrrH8mipZASQ+Zbax5h9PPa1xGsERb2hwnrGDq1ji0LiauSsoAvqagVsd2RZZHXBJf3seRIn0264zR89Hm6wPb8jWG95RB/H59Vp/BOp6MEAvpBgzZkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NS1364QTWuqHKoS3BSH6dxCAfRcqyGmb5slDWU3QQDs=;
- b=Azy7O/oMUXZ+9C4/HfKYI5uJIwzvojiO92alKMDPfPigJdFnnrE+ml2aPF1+PjPWF2sODj+1HGRChZOHUsAVwamc7exKFtlCFH4SLn6n84bCiXdxenRkd655IKX5lhZ2S1JFN4DIFiWlgtxrjD42/NbnMXXi4tkW1K5R83ciRBgf09Qji+UWJ95hMCK3atDwpjIqku1kL68tcAaQjA/R9NjMuP8Xv9lzEsBHJb5SQuGNQOdHnIaFteIBHDsuVCDf9APMhYQq/sNvjE4ZTU6IbRwbKNzb1uQ9PPXHBJifIJBL+aOOgQAY6fc5165XrGAq9JIjowhC6sIeku1kTpp/jQ==
+ bh=9bBN895/hUfq7cTbVS0IR4Y8A7BolwuL5sh79h4s84A=;
+ b=SpWQE+h03r7V/Y+exf+MJSwgDDSHkM9lCptWOUONES02B1H/AW+wc5mSE9HUdl2NVNsRY/7IEDYU96w3oTJRPvKqS1ArEWudbsaD4dwXgZNW/VCjgPa4yy0i4THYyDsTXxaB8bZ7S0MCdmtPBsJlzLrmhw8ghnVMuMxx2fjlQS1I9VM2IxSqCsDcogNto96HEuE3b1nv1q7fmx1gRTBc3b3WIpLOEP2/aXSRIs7oiai+W2/eIrJTtWSw0+a7kwW2TgcvKy7R2JkssIuanNLFeOg7DHrlZEEcx7fXMQ5JChDYD22im7O/g8WQ3CDkWxZpnNmhLtGWLhlPOn0t6fcuvQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NS1364QTWuqHKoS3BSH6dxCAfRcqyGmb5slDWU3QQDs=;
- b=GDNujn8/AtTm9yXVH6I0O/9w4114vTuIhxG9rX8pJt/n3vEsAFr6EkabATCRfsk1B9zKtdVkwXe9kgjPbUJOLwggTlfrCuMJVGW8U2PlPPo8Z9D2iYyVp24lwPcxsgQ8UAFgcmHRVOmrUPwZy6T3vRZZJoDsz/kO8Xth0OL7jFg=
+ bh=9bBN895/hUfq7cTbVS0IR4Y8A7BolwuL5sh79h4s84A=;
+ b=Kg7uS2GNgidMCsA44YYekbxXos6yOXGIWaQj4OZuytdYgdpoZYc/LHyXcWmczTLNIl9X/LI4URz57SO6NjZF/7f/cg82cy3jg0H7dKkZtgqxdj88whO+MyAD8A2lwRGNMB8XW6H9/gSOOG0pvDwQY0b+tvwFMP1K2UavPj9HowQ=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by DU4PR04MB10401.eurprd04.prod.outlook.com (2603:10a6:10:55e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.37; Thu, 18 Apr
- 2024 02:45:26 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7452.049; Thu, 18 Apr 2024
- 02:45:26 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Thu, 18 Apr 2024 10:53:18 +0800
-Subject: [PATCH v2 2/2] pinctrl: scmi: support i.MX OEM pin configuration
- type
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240418-pinctrl-scmi-oem-v1-v2-2-3a555a3c58c3@nxp.com>
-References: <20240418-pinctrl-scmi-oem-v1-v2-0-3a555a3c58c3@nxp.com>
-In-Reply-To: <20240418-pinctrl-scmi-oem-v1-v2-0-3a555a3c58c3@nxp.com>
-To: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@arm.com>, 
- Sudeep Holla <sudeep.holla@arm.com>, 
- Cristian Marussi <cristian.marussi@arm.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713408808; l=2796;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=zPpDa/61WB4JTsNH+KhyU/5a0m6RG00gkpxSuVKB/Qs=;
- b=XjNoNjaAaQ6U4pEzMhv/6Trs/JpRlXS2TEntq24sbVtXi+my5O1vvelWeu5ixiym/Aj3lRHkI
- ITJMMwyOYWZDFrtmJAkLmnPqNg+yDvCyG7C9TevQfyl+V5ic34Qj3c3
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SI2PR01CA0020.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::6) To DU0PR04MB9417.eurprd04.prod.outlook.com
- (2603:10a6:10:358::11)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OSAPR01MB7397.jpnprd01.prod.outlook.com
+ (2603:1096:604:142::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.39; Thu, 18 Apr
+ 2024 04:11:34 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::131e:55c0:a4a0:713b%7]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
+ 04:11:34 +0000
+Message-ID: <87h6fz8g3u.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: =?ISO-8859-2?Q?=22Amadeusz_S=B3awi=F1ski=22?=
+ <amadeuszx.slawinski@linux.intel.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,Alper Nebi Yasak
+ <alpernebiyasak@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Banajit Goswami
+ <bgoswami@quicinc.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Brent
+ Lu <brent.lu@intel.com>, Cezary Rojewski <cezary.rojewski@intel.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Cristian Ciocaltea
+ <cristian.ciocaltea@collabora.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ Hans de Goede <hdegoede@redhat.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jerome Brunet <jbrunet@baylibre.com>, Jiawei Wang <me@jwang.link>, Jonathan
+ Corbet <corbet@lwn.net>, Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Maso Huang <maso.huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Pierre-Louis Bossart
+ <pierre-louis.bossart@linux.intel.com>, Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Sylwester Nawrocki
+ <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Vinod Koul
+ <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ alsa-devel@alsa-project.org, imx@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: [PATCH v3 00/23] ASoC: Replace dpcm_playback/capture to playback/capture_assertion
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Thu, 18 Apr 2024 04:11:33 +0000
+X-ClientProxiedBy: TYCP301CA0081.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7b::18) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|DU4PR04MB10401:EE_
-X-MS-Office365-Filtering-Correlation-Id: 916dbc2c-4eb7-459f-5f6e-08dc5f519a52
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OSAPR01MB7397:EE_
+X-MS-Office365-Filtering-Correlation-Id: 568833dc-43e2-4159-1d8f-08dc5f5da24f
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	vuINNb9gdi9BoHN8PCXpjB5vLlwbe7HYijRJP47t3gImjt+PLOhNAaI+nM0U1LirNSBgzebCxDitSlTWzwLV95HpcucTYcU3NrXk9TvxR7sosRpiyfTA84uN1wYPbAHpHpEHYc8bLRYS1oIiuUwODxSrDKDQaOSQNpqQnWxk8BtPNnuBPp4tPGz4FgIbgpNg9gnS/90L4jjrcyZxx4C2ltZzaNcJAXGuphzBXJRL16WjQw+0IP/mYDfIcYK9I55+EjbEno0P/1k1aQRpjYUGQqFtWUbzd5Tu1BC7Z4vA9d2kPaDCvfIVnoXGCdt9PK0ZNF6EJMDuSOejwOV+kvTlIXTUpvfCtO4PQ1AYQfrrCFF9qHaqsjLusCvzq8fRYIuJnmV9nODpuadHSpqd/odose2208vBTyfKkfNg8Q1MCd/VzUh80u8gHi9kx3v3wPW88ikohpVCoug8fbnXx9Y+0fPJWJm2qaLsBuapG5XLl3ryantS41ZClPdBKuScyHLhfwSG7DmWYaZemshztWzmvnLx2ERkDzpUSn0msUH3OVdPZz152xTJNXwJvE3e6FThPOpHKedontF6Y2SKJHK0m7V5E4lAbKKV7xIZ8SOsbn/vrPtgoXih3pDeUaO/ehIC0CuJTAZKXByzeTcgoFDBT1yMQqQZ8sAA7k3jJ99mx9iwCKtnlYqusWyiSuIHm5Z7UZqg2VO/yESiCR3/iONz4KDtkjnXl10lIH5M2YJMLCU=
+	/leMqX/Exe8NO+UOqsSU+YD1vcO/W0z4YFLSBoUHbpWpnE3txjsrKhCjWFlDqavb5k1yR4w9T+kHfdIcO0pwnTc6SqxPtUXu88MNOjp1BzJkl5vAGiFmVxJZpZbVRBKt0PqL8vsmz6Yjs4A79mhd7poMvA/hkAq0EVI2hG/fhXPa3FYPOE0ypf+lFYCkGK2/NfcNZ6h4K6OATp7nyM7LzOtqsFRKkVMPWhx0VLs0B9EsNUJdH5PuvDjUz75/encAWW7AadltEV/vDVuPdj96HqdBXTe4JIleRQEYMoTgWb+/ZPU82G5Yj35od1Cyv7GfApcZdl+TBcdfzot6BjDfI+xiZvCVKK3a4yppowliJNLON5J4U7iY8lCHyM/9doS2yoYphc1VzrbqixSUS4hZWsbk3aKfI1WzQuWg01H6YclbuLJf42YBcQMW6GfeFDz6LmXttTzDVZSYDql/o6MB0G4G/sj5y8EFyg4cVjIglvLMjahhZNMntBGi0QpTuDpgCic+VUyF8bj3QzJ778UKTwTIMUcphveuouStUTChlHZORBPcVGZiMZyOwLYnggCGh+MUkkaMkEIr9tJCNMutFBPpHovymaNArrZhkJbDdsE/HXowV3THJFvecfxXy/rCr2dNT5e5z3w8cgrDsD9O3hExS2RKg8b3I9ZtyjUS5lWF2bX2JxYwcSe6YLSFaqp+Rz8dfJmaR9utqZsNEsDtpz9JOQnozHAfD4orWrKU4zlvF6852vfs1uyqdZtAVujm
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(52116005)(376005)(366007)(921011)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(7416005)(1800799015)(376005)(366007)(38350700005)(921011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SHIzeStaNVVjMWxnUFJCQ0lXeGE2ZTdHcnZIQjExVGxPb2ZPYjZlR0lnVWZo?=
- =?utf-8?B?NTNFek1zWnhIOXErbUx1K1A2U0FvK2dWcCs3R1A3eElZRzA4Uk5XZE1IR29R?=
- =?utf-8?B?eU1IVlI5UkNucGZOck4xdmxpdnBlZXNXRDQ0RDFMakZiSDdoTlhjTHR0YXFG?=
- =?utf-8?B?elhVVzBqaEVyR2pDUjJzczVqS0h0dmRVeUtSK3FUUzZaQ2NsRWgrOGdvT05G?=
- =?utf-8?B?Tm4vQ1lZKytRL2twRTAwcEVHdHNOR1djQThMVHdIK1YxQ3hQQ1JnZ2crK3I1?=
- =?utf-8?B?ZWVPYkh5Z0tTTS9xQzhiUlBoaFludUZmMFlEelJ4NmdvdTA1VVRsSDZWK2h3?=
- =?utf-8?B?Z3RXWU5PdmxiS052dGhVVE1odEs2NXcrdnVzWVhwOHVtMmp5TEx2VVNpaER1?=
- =?utf-8?B?dk9rd1MxNmRQdG50WW9PeDgxbXhPN1E5TVpRWGxxNjh1bHZiakg3Q0RhdFFw?=
- =?utf-8?B?b0ZZbUlxOFUxYmtqNU0yZjFBeXZoWXprK0N1NVF6dUkrT0V6ZGIrbVROT1Y1?=
- =?utf-8?B?Z05ITlJ1TGk1N3JkZG9mZHJFTWZGWXZXZXNuaXlXcVFNSjJta3lUNFlJdjl6?=
- =?utf-8?B?dk9ncEptVENjWlZBS1NDMVJxT3BjOVkyN09nUHkrZkJaMzVqY3lTT2ppQXk4?=
- =?utf-8?B?T0x5RXloVzdrVWMwaUFNQ2d3aEp6Y09peEhuYUlzQkdXM2R3UXN5ekhmWkpM?=
- =?utf-8?B?UXZXN3RaMHlldFVDM1lweDNjbUdVNmFPQWs3cysvbFZuc3ovbXFlODcyemJ1?=
- =?utf-8?B?L2JjTHFCSEwwWUY4SE81RW13Qjl4WXhCaWRrYktXOFduWW90aWtCNFhUazA4?=
- =?utf-8?B?aG9tdzBEN0M3QXRiRzUyZnpBTGQzWUpVUW5pWmRFRnlqTHk3RHBaSlUxa09F?=
- =?utf-8?B?bW14MkhmRzMzMGVKU1FEUk5MZi8wdmhCU05ic1cwOUZYTGNiZ01oejROK0F5?=
- =?utf-8?B?N3BlZUVLT3JKclhuZjVLcUo5elcyZC93NTNYL0dBNzJSODhMSXFndWEzL1BO?=
- =?utf-8?B?VUl2Tk9SRGFjajh6SDljWE1Nd2xjOHFJdFBoRXZJcEdUUFEzaVA3MmhMRkxF?=
- =?utf-8?B?bFVvZ1h1a042UTE0OGhDS24vblIxWTJrNjJwd3VnVytzTCtwYytJNjFvQnkw?=
- =?utf-8?B?S3hKUU51WmhTNUxGeUpDRFNPWHJ6cm9lcXNwalZoejc3OEl4QXlKR1loOVVG?=
- =?utf-8?B?ZjRTUG1ob0JWTlNLSlc5N0w0eFplNDBOYnZIanNpMEJNUi9NUWtaNXpROGxq?=
- =?utf-8?B?Vm9jTjNKSnVDeS9WbDUyYmNHakh1SThMaVovQlNKT0Q1eFloYS9uRU9YWFFh?=
- =?utf-8?B?c3R3aUxxS1lNZmpIS1NORVlJMU1CR0VJR1NjU2xEcEUrdWZ4WFBmK2VFZStj?=
- =?utf-8?B?WnZ6bU1EbWp1aVJjNWVWUkQ4cjFlVVFURUk0RmxoVGZITzkybEtEMkJMWXJz?=
- =?utf-8?B?ZXpsWXdzUUhleWpzb2pYTlFMZEljTlpHdmtBa0ZhbGFtc1RDNno3eS9QV25n?=
- =?utf-8?B?VGc3RHlDRnJZaHEvQU9aT3NyeEl3RndXdUpwRzhvVjlLNnBrd3BIT0hWb056?=
- =?utf-8?B?L05TWmRGakUrY2s1YjJGWEY1RVRlZHFydTBXNDhXU1RCMGlUUDdISG1DUUo4?=
- =?utf-8?B?bnpudmJGU3RzL2NUS2orUkRvQWJQK3RCc1dnVUlNQXBuUE9vbm5kd3RLanho?=
- =?utf-8?B?RHlwVUNzVi92amg2N3laTzdJVXR4Y3M0SGNNQ2dsTDhqcnNMUkFicGhKbkhy?=
- =?utf-8?B?VmorYkdhbnFncncwQ0RhcVlpZjhmbzFsQ1BHbzBHOUJtZldUYmFNQ1MwNzEy?=
- =?utf-8?B?K2ViL1RlNkZZaHVmbW9ZbTdhbkN6ajhvdW5nQWEyYzBObHN5MDlRWVdtMjlR?=
- =?utf-8?B?Z2tZdDBiYzRXUW1XaExQdndodGsraTdyakRhR0hieWZiQnlDQ0pBR1lIdWk4?=
- =?utf-8?B?ZklyOWhBZTR5ZXpIWUZ5QlpUVlBRdGNPRlV4ZFlHMzFWOW9lZ0xvUkozdFI4?=
- =?utf-8?B?WVJMQ0VsR2ZPZzl2UlpmWWd4YlF5VFlXVHlCWjlKaG83ZXQxa2NaVGg2dnJE?=
- =?utf-8?B?UzU4UURYaDdjZEpGSmZXQ2E1K0RHQXpsdHRkWFpubXNVL2I0UzdtTERyQzFN?=
- =?utf-8?Q?68sjR3Chc7dpCKZSta6P/VMQl?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 916dbc2c-4eb7-459f-5f6e-08dc5f519a52
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+	=?us-ascii?Q?TTR52/CMN9o1dzdDYulkGmgHry3p3n91QYCtEpYSfq6CfOark571e1NaP9DR?=
+ =?us-ascii?Q?kCX6uwgWHYav5kSKo4E0eDTA2Q0JlTW9k8IrRocxkDSafsf1sdUdlDn5ESIw?=
+ =?us-ascii?Q?BUZUVo1CZCCJRy3C2H/OfLOhO2cQFt7KjQiLK2OLAONXmV+4I0zcMKAlfo3u?=
+ =?us-ascii?Q?Ls2fiHTzACFvz0IuCvSblLUH/DrR3CVNhj5Wi3pwRW1fGWzLmx+mwYw3Pv5p?=
+ =?us-ascii?Q?23XNH2qpaIDPCbXYUYRbmW8uXKjrbxxrtKLWANEpq1jE/XydNqwznaCk21VO?=
+ =?us-ascii?Q?3irKM/fT0d6g41zoUyhwOphzZPpoUW8gJi336Xy7ukhvc2dbJ1E+DMaqoVFU?=
+ =?us-ascii?Q?s4IGF22jCjkrdqDk8uQ/+sY0eCC29JVbd450zMk5Nr0q5NBb/51Gjfw1PufO?=
+ =?us-ascii?Q?cxzMty7blnrGXnYFxUF4TAnXSjD5A5Kw5fwQoaiiukYDMQbaRmSkntZe6gLU?=
+ =?us-ascii?Q?rBX5n5Q3K8CjvxH2hHNen4C7Cv9bKWuj3A8IuipYdkXQ3+JOPsj/Gr94HevG?=
+ =?us-ascii?Q?5xfWQeshJnXq8D7jzDD3UXKhfMJmCwMcMQptQKBtAeaoHd2QlhqCFTGA7+YX?=
+ =?us-ascii?Q?CkogAzsKmzHGQ1Q7j0U7MM1671tRwZMpRVP0auIc7tkxqM8WznT7gM4wo1xa?=
+ =?us-ascii?Q?HvriCWNaFlXTQSXD53UaMPVpXC+EfawvczAwgzADiDMg0MmKDIUIM/RiusIh?=
+ =?us-ascii?Q?hNpYw3koHm5lEI0NTlOpAq0VomtbjZ7uy4yvRZiVk1taktjywo6hoRx0E5Dm?=
+ =?us-ascii?Q?vISK2zupSA/fdcD8RXSvspZ3aafqpbenvDYzDuAXnrwuDI0RKNcW0b2gc9xh?=
+ =?us-ascii?Q?tlhl7JiBX8qenNOEpBjOfiz88HQVY8dyUnwQaTrs6IlDYwDpfirY6m4gbnBo?=
+ =?us-ascii?Q?aTnFnffn23ZmJMFcCJU4F41pqxwih1NufvmkwDCM+BKUNRkjou7EE+WQ0mkX?=
+ =?us-ascii?Q?izmcFPw1vAGTQHf2RKnuQcat6k1ni7TAPb/zONytcwJzz11iuEpO/3vN3FpD?=
+ =?us-ascii?Q?dXKq4q7qSzJ3G3pwVFfb7MRjGysMnSujUD+vgllKY8teA2JBfRuCNxolKPSF?=
+ =?us-ascii?Q?ijbecmiu3pYvdwitVCkpSc71NnF7RSAUFpwZHU/+xeuf9iiyu1Xjmhcyt/8V?=
+ =?us-ascii?Q?EctsIQ2Sh+v/t2sCdkn/vdGYsOM9ITcZe7R34ASMdL5iXe4yVpWLa6bP1OoF?=
+ =?us-ascii?Q?ED/6gQVfjUXTPYs7TbX5o9czGqAILoxa2A0rF2w+J7BqGT6+GoiP6aWg6655?=
+ =?us-ascii?Q?skLW1ERecr0BOKyzDJHOHHzYeFcm3E+5vyV+c/vidC5TrIrxaq5MRgZfKi+w?=
+ =?us-ascii?Q?IC2Vo3aOmuDbQc3Iccgd4/rXcsTHxzxG3X3HFvpj+CoYupJljmXbXFn+obhP?=
+ =?us-ascii?Q?art17U5PodsPU4iRktjkSZJpGuDyPf312yEDXuzvIDZEAWacOJS+Tp/oANF5?=
+ =?us-ascii?Q?+2bR0xqxGu0JZF+Ww/uXQ4Vql/nHGJN/Z6afRpmJBdcME0UsB/adBWDbhD2r?=
+ =?us-ascii?Q?FDvuKiQO/5NW+CbntSSJt5i7PRcbLpdJxQGbrrhOjgqQX0++vkTJpW/WxTlg?=
+ =?us-ascii?Q?ZtRB2DF5zwljix8Od8slSUm7Bs4ZO2Lt7XqmOH+ta1m0FnjhK70SNdmjEqRs?=
+ =?us-ascii?Q?0JkQL/5FtQtwKLsEUl0ziXQ=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 568833dc-43e2-4159-1d8f-08dc5f5da24f
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 02:45:26.6623
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 04:11:34.0304
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9s/W9yB1s7WOJaRd9ViX5EpbCGJAI2um5p6twNmTU34MjscQXisdkecEYY3ii7iyDPRJRtj/RpN0UdmLte9PFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10401
+X-MS-Exchange-CrossTenant-UserPrincipalName: kcpI/7VmtxV0ufxrBInD2EoJig0JmTtlQx18JbzSrQIyYtk4m+TwB0oYwkoTk8WPAzsP2ID4b9R/eUfVQ+oyF00xqykGiHN9DWwkeHjMRt7ewr37SUaQvPuAfinP1kc8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB7397
 
-From: Peng Fan <peng.fan@nxp.com>
 
-i.MX95 System Manager FW supports SCMI PINCTRL protocol, but uses
-OEM Pin Configuration type, so extend the driver to support custom
-params.
+Hi Mark
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/pinctrl/pinctrl-scmi.c | 23 +++++++++++++++++++++++
- drivers/pinctrl/pinctrl-scmi.h | 15 +++++++++++++++
- 2 files changed, 38 insertions(+)
+This is v3 patch-set
 
-diff --git a/drivers/pinctrl/pinctrl-scmi.c b/drivers/pinctrl/pinctrl-scmi.c
-index 036bc1e3fc6c..d051fea0dbf5 100644
---- a/drivers/pinctrl/pinctrl-scmi.c
-+++ b/drivers/pinctrl/pinctrl-scmi.c
-@@ -21,6 +21,7 @@
- #include <linux/pinctrl/pinctrl.h>
- #include <linux/pinctrl/pinmux.h>
- 
-+#include "pinctrl-scmi.h"
- #include "pinctrl-utils.h"
- #include "core.h"
- #include "pinconf.h"
-@@ -469,6 +470,23 @@ static const struct pinconf_ops pinctrl_scmi_pinconf_ops = {
- 	.pin_config_config_dbg_show = pinconf_generic_dump_config,
- };
- 
-+static const struct pinconf_generic_params pinctrl_scmi_oem_dt_params[] = {
-+	{"nxp,func-id", IMX_SCMI_PIN_MUX, -1},
-+	{"nxp,daisy-id", IMX_SCMI_PIN_DAISY_ID, -1},
-+	{"nxp,daisy-conf", IMX_SCMI_PIN_DAISY_CFG, -1},
-+	{"nxp,pin-conf", IMX_SCMI_PIN_CONF, -1},
-+};
-+
-+#ifdef CONFIG_DEBUG_FS
-+static const
-+struct pin_config_item pinctrl_scmi_oem_conf_items[ARRAY_SIZE(pinctrl_scmi_oem_dt_params)] = {
-+	PCONFDUMP(IMX_SCMI_PIN_MUX, "FUNC-ID", NULL, true),
-+	PCONFDUMP(IMX_SCMI_PIN_DAISY_ID, "DAISY-ID", NULL, true),
-+	PCONFDUMP(IMX_SCMI_PIN_DAISY_CFG, "DAISY-CFG", NULL, true),
-+	PCONFDUMP(IMX_SCMI_PIN_CONF, "PIN-CONF", NULL, true),
-+};
-+#endif
-+
- static int pinctrl_scmi_get_pins(struct scmi_pinctrl *pmx,
- 				 struct pinctrl_desc *desc)
- {
-@@ -533,6 +551,11 @@ static int scmi_pinctrl_probe(struct scmi_device *sdev)
- 	pmx->pctl_desc.pctlops = &pinctrl_scmi_pinctrl_ops;
- 	pmx->pctl_desc.pmxops = &pinctrl_scmi_pinmux_ops;
- 	pmx->pctl_desc.confops = &pinctrl_scmi_pinconf_ops;
-+	pmx->pctl_desc.custom_params = pinctrl_scmi_oem_dt_params;
-+	pmx->pctl_desc.num_custom_params = ARRAY_SIZE(pinctrl_scmi_oem_dt_params);
-+#ifdef CONFIG_DEBUG_FS
-+	pmx->pctl_desc.custom_conf_items = pinctrl_scmi_oem_conf_items;
-+#endif
- 
- 	ret = pinctrl_scmi_get_pins(pmx, &pmx->pctl_desc);
- 	if (ret)
-diff --git a/drivers/pinctrl/pinctrl-scmi.h b/drivers/pinctrl/pinctrl-scmi.h
-new file mode 100644
-index 000000000000..fcc61bc19c98
---- /dev/null
-+++ b/drivers/pinctrl/pinctrl-scmi.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#ifndef __DRIVERS_PINCTRL_SCMI_H
-+#define __DRIVERS_PINCTRL_SCMI_H
-+
-+/* OEM VENDOR Pin Configuration Type */
-+#define IMX_SCMI_PIN_MUX	192
-+#define IMX_SCMI_PIN_CONF	193
-+#define IMX_SCMI_PIN_DAISY_ID	194
-+#define IMX_SCMI_PIN_DAISY_CFG	195
-+
-+#endif /* __DRIVERS_PINCTRL_SCMI_H */
+When we use DPCM, we need to set dpcm_playback/capture flag.
+If these flag are set, soc_get_playback_capture() will check its
+availability, but non DPCM doesn't need such special flags.
+
+OTOH, it cares playback/capture_only flag. It is needed.
+
+This patch adds new assertion flag, and convert current dpcm_playback
+dpcm_capture flag and playback/capture_only flag to it.
+
+v2 -> v3
+	- re-order patches
+	- add new playback/capture_assertion flag
+	  and covert both dpcm_xxx and xxx_only flag into it
+
+v1 -> v2
+	- based on latest ASoC branch
+	- keep comment on Intel
+	- tidyup patch title
+	- tidyup DPCM BE warning output condition
+	- Add new patch for Document
+
+Link: https://lore.kernel.org/r/87o7b353of.wl-kuninori.morimoto.gx@renesas.com
+Link: https://lore.kernel.org/r/87zfuesz8y.wl-kuninori.morimoto.gx@renesas.com
+
+Kuninori Morimoto (23):
+  ASoC: soc-pcm: cleanup soc_get_playback_capture()
+  ASoC: soc-pcm: indicate warning if DPCM BE Codec has no settings
+  ASoC: soc-dai: remove snd_soc_dai_link_set_capabilities()
+  ASoC: amd: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: fsl: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: sof: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: meson: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: Intel: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: mediatek: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: soc-core: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: soc-topology: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: soc-compress: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: Intel: avs: boards: Replace dpcm_playback/capture to playback/capture_assertion
+  ASoC: ti: Replace playback/capture_only to playback/capture_assertion
+  ASoC: amd: Replace playback/capture_only to playback/capture_assertion
+  ASoC: fsl: Replace playback/capture_only to playback/capture_assertion
+  ASoC: mxs: Replace playback/capture_only to playback/capture_assertion
+  ASoC: atmel: Replace playback/capture_only to playback/capture_assertion
+  ASoC: Intel: Replace playback/capture_only to playback/capture_assertion
+  ASoC: samsung: Replace playback/capture_only to playback/capture_assertion
+  ASoC: generic: Replace playback/capture_only to playback/capture_assertion
+  ASoC: soc-pcm: remove dpcm_playback/capture and playback/capture_only
+  ASoC: doc: Replace dpcm_playback/capture to playback/capture_assertion
+
+ Documentation/sound/soc/dpcm.rst              |  10 +-
+ include/sound/simple_card_utils.h             |   2 +-
+ include/sound/soc-dai.h                       |   1 -
+ include/sound/soc.h                           |  15 +-
+ sound/soc/amd/acp-da7219-max98357a.c          |  20 +--
+ sound/soc/amd/acp-es8336.c                    |   4 +-
+ sound/soc/amd/acp/acp-mach-common.c           |  34 ++---
+ sound/soc/amd/acp3x-rt5682-max9836.c          |   8 +-
+ sound/soc/amd/ps/ps-mach.c                    |   2 +-
+ sound/soc/amd/renoir/acp3x-rn.c               |   2 +-
+ sound/soc/amd/vangogh/acp5x-mach.c            |  14 +-
+ sound/soc/amd/yc/acp6x-mach.c                 |   2 +-
+ sound/soc/atmel/sam9g20_wm8731.c              |   2 +-
+ sound/soc/fsl/fsl-asoc-card.c                 |  20 +--
+ sound/soc/fsl/imx-audmix.c                    |   8 +-
+ sound/soc/fsl/imx-card.c                      |   7 +-
+ sound/soc/fsl/imx-hdmi.c                      |  12 +-
+ sound/soc/fsl/imx-rpmsg.c                     |  10 +-
+ sound/soc/fsl/imx-spdif.c                     |  10 +-
+ sound/soc/generic/audio-graph-card.c          |   2 -
+ sound/soc/generic/audio-graph-card2.c         |  10 +-
+ sound/soc/generic/simple-card-utils.c         |   6 +-
+ sound/soc/generic/simple-card.c               |   2 -
+ sound/soc/intel/avs/boards/da7219.c           |   4 +-
+ sound/soc/intel/avs/boards/dmic.c             |   4 +-
+ sound/soc/intel/avs/boards/es8336.c           |   4 +-
+ sound/soc/intel/avs/boards/hdaudio.c          |   8 +-
+ sound/soc/intel/avs/boards/i2s_test.c         |   4 +-
+ sound/soc/intel/avs/boards/max98357a.c        |   2 +-
+ sound/soc/intel/avs/boards/max98373.c         |   4 +-
+ sound/soc/intel/avs/boards/max98927.c         |   4 +-
+ sound/soc/intel/avs/boards/nau8825.c          |   4 +-
+ sound/soc/intel/avs/boards/rt274.c            |   4 +-
+ sound/soc/intel/avs/boards/rt286.c            |   4 +-
+ sound/soc/intel/avs/boards/rt298.c            |   4 +-
+ sound/soc/intel/avs/boards/rt5514.c           |   2 +-
+ sound/soc/intel/avs/boards/rt5663.c           |   4 +-
+ sound/soc/intel/avs/boards/rt5682.c           |   4 +-
+ sound/soc/intel/avs/boards/ssm4567.c          |   4 +-
+ sound/soc/intel/boards/bdw-rt5650.c           |   8 +-
+ sound/soc/intel/boards/bdw-rt5677.c           |  10 +-
+ sound/soc/intel/boards/bdw_rt286.c            |  14 +-
+ sound/soc/intel/boards/bxt_da7219_max98357a.c |  34 ++---
+ sound/soc/intel/boards/bxt_rt298.c            |  28 ++--
+ sound/soc/intel/boards/bytcht_cx2072x.c       |  10 +-
+ sound/soc/intel/boards/bytcht_da7213.c        |  10 +-
+ sound/soc/intel/boards/bytcht_es8316.c        |  10 +-
+ sound/soc/intel/boards/bytcht_nocodec.c       |  10 +-
+ sound/soc/intel/boards/bytcr_rt5640.c         |  10 +-
+ sound/soc/intel/boards/bytcr_rt5651.c         |  10 +-
+ sound/soc/intel/boards/bytcr_wm5102.c         |  10 +-
+ sound/soc/intel/boards/cht_bsw_max98090_ti.c  |  10 +-
+ sound/soc/intel/boards/cht_bsw_nau8824.c      |  10 +-
+ sound/soc/intel/boards/cht_bsw_rt5645.c       |  10 +-
+ sound/soc/intel/boards/cht_bsw_rt5672.c       |  10 +-
+ sound/soc/intel/boards/ehl_rt5660.c           |  16 +--
+ sound/soc/intel/boards/glk_rt5682_max98357a.c |  32 ++---
+ sound/soc/intel/boards/hsw_rt5640.c           |  14 +-
+ sound/soc/intel/boards/kbl_da7219_max98357a.c |  28 ++--
+ sound/soc/intel/boards/kbl_da7219_max98927.c  |  60 ++++----
+ sound/soc/intel/boards/kbl_rt5660.c           |  20 +--
+ sound/soc/intel/boards/kbl_rt5663_max98927.c  |  48 +++----
+ .../intel/boards/kbl_rt5663_rt5514_max98927.c |  26 ++--
+ sound/soc/intel/boards/skl_hda_dsp_common.c   |  18 +--
+ .../soc/intel/boards/skl_nau88l25_max98357a.c |  28 ++--
+ sound/soc/intel/boards/skl_nau88l25_ssm4567.c |  30 ++--
+ sound/soc/intel/boards/skl_rt286.c            |  28 ++--
+ sound/soc/intel/boards/sof_board_helpers.c    |  18 +--
+ sound/soc/intel/boards/sof_es8336.c           |  10 +-
+ sound/soc/intel/boards/sof_pcm512x.c          |   8 +-
+ sound/soc/intel/boards/sof_sdw.c              |   4 +-
+ sound/soc/intel/boards/sof_wm8804.c           |   4 +-
+ sound/soc/mediatek/mt2701/mt2701-cs42448.c    |  30 ++--
+ sound/soc/mediatek/mt2701/mt2701-wm8960.c     |   8 +-
+ sound/soc/mediatek/mt6797/mt6797-mt6351.c     |  34 ++---
+ sound/soc/mediatek/mt7986/mt7986-wm8960.c     |   8 +-
+ sound/soc/mediatek/mt8173/mt8173-max98090.c   |   8 +-
+ .../mediatek/mt8173/mt8173-rt5650-rt5514.c    |   8 +-
+ .../mediatek/mt8173/mt8173-rt5650-rt5676.c    |  12 +-
+ sound/soc/mediatek/mt8173/mt8173-rt5650.c     |  12 +-
+ .../mediatek/mt8183/mt8183-da7219-max98357.c  |  40 +++---
+ .../mt8183/mt8183-mt6358-ts3a227-max98357.c   |  40 +++---
+ sound/soc/mediatek/mt8186/mt8186-mt6366.c     | 108 +++++++--------
+ sound/soc/mediatek/mt8188/mt8188-mt6359.c     |  60 ++++----
+ .../mt8192/mt8192-mt6359-rt1015-rt5682.c      |  86 ++++++------
+ sound/soc/mediatek/mt8195/mt8195-mt6359.c     |  62 ++++-----
+ sound/soc/meson/axg-card.c                    |   9 +-
+ sound/soc/meson/gx-card.c                     |   1 -
+ sound/soc/meson/meson-card-utils.c            |   4 +-
+ sound/soc/mxs/mxs-sgtl5000.c                  |   4 +-
+ sound/soc/qcom/common.c                       |   1 -
+ sound/soc/samsung/odroid.c                    |  12 +-
+ sound/soc/soc-compress.c                      |   8 +-
+ sound/soc/soc-core.c                          |  15 +-
+ sound/soc/soc-dai.c                           |  38 -----
+ sound/soc/soc-pcm.c                           | 130 ++++++++++--------
+ sound/soc/soc-topology-test.c                 |   4 +-
+ sound/soc/soc-topology.c                      |   4 +-
+ sound/soc/sof/nocodec.c                       |   4 +-
+ sound/soc/ti/j721e-evm.c                      |   8 +-
+ 100 files changed, 789 insertions(+), 832 deletions(-)
 
 -- 
-2.37.1
-
+2.25.1
