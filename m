@@ -1,40 +1,50 @@
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D4816F90E;
-	Thu, 18 Apr 2024 16:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A08116C6BD
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 16:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713457493; cv=none; b=E0560YnDdTkncR3GSS1zI9qBRSH2tgQZgOkzGU/kqAzeAZ7PyO9+DNKXT8ZsIVII8BTySKNqCk3EaUEbnYR58Ger65nCPNVVAalObn9II/7e/1EENQvNUUUF0LIVdpFO7wpl00fdrg8wmukeNfFboKUDslXpY34HrhfsLlDuGBg=
+	t=1713457770; cv=none; b=Tb9eFpyGYW1iGxWVHYgtXJp2WXsCLycYdZtYreSDrYVFFeXZkT9CpkKv6iIUp3qgwKc+cSENsB+hDIKpsbn3BPz3b7Q7bavn8dlQozG168DMqQkes1G1aXlK4D/JDLyp2Sf5iAAsP/QKY76ExMY+0eO+DGRa/L3rlHAaxiz4aYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713457493; c=relaxed/simple;
-	bh=DbjXq4pJyTvVziXvUNSDua2fGdhfY5xnL5fNr9958LI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=smkjOdFeqAsZK/fCaR079xjWbv55+QrNGEWkp3vPZjb0jNfx0Oqssj6Ckrpyk+RLkzK1ImHtxNm1T7dXMr2TeaKMXV1WqY2wMy889JUGWGGovDMogO7T2BsBeUbSK1rYn/vgrl0Gm63gJpnx2awhliTQXN6mRwiyud8THrIUiG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=OYjV0tlZ; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1713457770; c=relaxed/simple;
+	bh=0kP32U7Suy6uQoOJjorW965cKQphIdVvkl6Lvh1uZ0g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=lxu3BQTPxKW6lK8cxndhnmNZ/wMdTUSa4u2F3B4+IaBqee292whgBxbLRYY6IxaCsi3oSHpJ8ZdhyDejJFwhefTfUmdgnn7qrgB9q8pNXuNdOsT3Kr6OAJS7+WKWdQ6l12mXDc/9y9YeOSnm0IPkuSYqemKcElo5s3/qCwE+FRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Shm5qdeW; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="OYjV0tlZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1713457465; x=1714062265; i=markus.elfring@web.de;
-	bh=VJbd+pzZQijTTHJtcHc3eD4TbZ4PGNvmnMzb9lj7ksM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=OYjV0tlZjEhljdLB8qMSLtDRrL0EuX2958PkTfl5+cTBSwk0HMjHX3v4d+Ujm+xg
-	 SVUQBygJNR4KqpsoR8RafIfx+tRWrEqrnkIPz4P/D1XQ8hOUEqqxt9IleRemC7Vl9
-	 lBMJ1gjvr/2HDU6J1cW/jG5x6oX0EKtiqwyrX6Xy8D9F84c6307sRJD1Glr0aqMba
-	 jXsVg8is7Ds3Nhp6EsSE/jYyQIM3sudinz6zCQAsgHZAcQ5xD6bzqHIaWtTjQ3PDE
-	 qRHX/eUVsyE0H879XAeJqAZF6LdeFcZUivDHKl5gmRP+nQgZOQMFySDKfQ6SYuvcH
-	 6pJQMdeXxlUyRS6/rw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MlLE9-1sR58f44yr-00kAR6; Thu, 18
- Apr 2024 18:24:25 +0200
-Message-ID: <29e1a687-99f5-4e9f-a8c5-50154312cac4@web.de>
-Date: Thu, 18 Apr 2024 18:24:20 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Shm5qdeW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713457768; x=1744993768;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=0kP32U7Suy6uQoOJjorW965cKQphIdVvkl6Lvh1uZ0g=;
+  b=Shm5qdeWIL1Lr/h2p2RhmqSJMJxsFARqkUsnhtb4lO4w32igMqNBbs4d
+   G9Dg9fAr+994hUTmbCpE5p1qqlRbA/RrrZa34OP6HRor73nQwo6EsGpdd
+   GpURXOr29L1cVytavOU2JwOsS6nUy1u2Fhd9XkNmTtwMYWcO2QHTaMy8H
+   K1B5SoGFRWSg61FlAJ8IOr0EsfjJ03mR6It/4Hd4bFwZBAYosMW8/TGla
+   KlI/0IcXayQItnOE0neuvdeUkUs4X3cYbr/+3HxwWZ08ECnDe7S/uuwhd
+   rico7jHKZbg20m4XtsBvIrgWjYC3n01UU6kd6ZlYxl4r9D8O4Mc5ZhpWZ
+   Q==;
+X-CSE-ConnectionGUID: 2cRmGnwjST2B6cV5LrMEoQ==
+X-CSE-MsgGUID: DoMMOicjSHmdG+C7YSX/bg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8882316"
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
+   d="scan'208";a="8882316"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 09:27:57 -0700
+X-CSE-ConnectionGUID: 0j6z5O/LTrGXaM4mMcGzeQ==
+X-CSE-MsgGUID: 6pcNHd1SRuG8qoQ9W8Rdxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
+   d="scan'208";a="23105110"
+Received: from rswoodsx-mobl.amr.corp.intel.com (HELO [10.213.167.100]) ([10.213.167.100])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 09:27:50 -0700
+Message-ID: <a1f63065-6d8a-404f-b4be-331d829f802f@linux.intel.com>
+Date: Thu, 18 Apr 2024 11:20:23 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,45 +52,196 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Vitor Soares <vitor.soares@toradex.com>, linux-pm@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- kernel-janitors@vger.kernel.org, kernel@pengutronix.de,
- Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Vitor Soares <ivitro@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <20240418155151.355133-1-ivitro@gmail.com>
-Subject: Re: [PATCH] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240418155151.355133-1-ivitro@gmail.com>
+Subject: Re: [PATCH v3 01/23] ASoC: soc-pcm: cleanup
+ soc_get_playback_capture()
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Banajit Goswami <bgoswami@quicinc.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>,
+ Jiawei Wang <me@jwang.link>, Jonathan Corbet <corbet@lwn.net>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Maso Huang <maso.huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>,
+ Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-sound@vger.kernel.org
+References: <87h6fz8g3u.wl-kuninori.morimoto.gx@renesas.com>
+ <87frvj8g2v.wl-kuninori.morimoto.gx@renesas.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <87frvj8g2v.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/oCiH/JHJi2n0pqJF8inD5bHsFynG+pCawIauTrb9OI2hvhH28t
- gjjT/GOHMldhaZ0cBwtp5q8vUcWITbAuZoMK6kK9nf6WryTvVxnf/0lrscbMHYoSrgTsPjj
- n5cOrJGy/JXnIRvPsr15v50bjbvKcuRna77rvTWOc8ASNO6eFbcFNUWGQZ8vErIHXfhADDV
- +WwN5a3vQtpSibFO8PWIQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:gRkFTCmNWJQ=;6COwrFiZp9DOns+lAus10zZPYkA
- +Itb8ehwOrZlGnLpuAw9gy9X+IZR0SrImDhkqAxVa72T0bGfB5lceo36sTos9fzITy5XZ5IVd
- 5dZ93g9lsyCfdSx8xlaOhyi9zmDNyRx4XHWOPugKzdtoLTlTHXxIR1a+NiIf6v07Go2OJ3S4Z
- Wb27B791noVlSF2Vl+M0W0W4egtlg80y+hiNjER46dYXa728ik4lQQNiKYm3O2qla3A+Mo53M
- quf+CvIlDPvv6bVbGooSh6B6Jrw9BGk/1xjd9e+MLI64HmDwfJVMDYCD30Eijte9y+gJS5vMK
- trvgu+oonniytmpMTgv4RfhDjc7dZXl9tp6rTqOucXqFAFqow2Lp5Fey9Fm51IF1WSROvahfN
- UIOFrokWIdAA6s7EMTplh7PL5oCFBNLyBUYRgR27yEYJ9I2n49YptgxtVlhNt7Eye3ftUMbiG
- z/bMsn8FdC5nKkztpb/H2Qwt9Tb2OgTzp0vyjUEn+mNuI15ipcQ8stfySwi95cOT6yDzJytdA
- stVqjFUfa9rkLR9R3B0A180zN0M5DwyvyBMOEDuEIblJqdG+75WSrquyQKka63v8yCp+Xs3bb
- k9GFGi1w9ql7HYR3bGC6JJZePjJH1ki+X3NDhJow53OcOf5zm2FlV0B/G7MoTxL4OsT7ryK2a
- N58wbWrskS7ti4zngt2h/INl6enrzkFvLqzOKem2lzpHrvrVFzudycVvVh6juW4tMtyi1Hu9W
- MBzqWFK8qZgDrgCFWKbRDsbAZAdbLZqPDowPW8e+uyv2eBCmErdKx05Jm1VCRfvQHVLoaxZFb
- EopcpViTHG6FBd8Gh4xnQRlviAL2LcdkKFugYgOXxzYqo=
+Content-Transfer-Encoding: 7bit
 
->                                         =E2=80=A6, add a device link bet=
-weem
-> blk_ctrl and genpd power_dev. =E2=80=A6
 
-I hope that a typo will be avoided in this change description for the fina=
-l commit.
+> (X) part is for DPCM, and it checks playback/capture availability
+> if dai_link has dpcm_playback/capture flag (a)(b).
+> This availability check should be available not only for DPCM, but for
+> all connections. But it is not mandatory option. Let's name it as
+> assertion.
 
-Regards,
-Markus
+I don't follow the 'not mandatory option'. Why not make these
+'assertions' mandatory? What happens in case the the option is not present?
+
+> In case of having assertion flag, non specific side will be disabled.
+
+Not following the wording, multiple negatives and not clear on what
+'side' refers to (direction or DPCM/non-DPCM).
+
+> For example if it has playback_assertion but not have capture_assertion,
+> capture will be force disabled.
+> 
+> 	dpcm_playback -> playabck_assertion = 1
+> 
+> 	dpcm_capture  -> capture_assertion  = 1
+> 
+> 	playback_only -> playback_assertion = 1
+> 	                 capture_assertion  = 0
+> 
+> 	capture_only  -> playback_assertion = 0
+> 	                 capture_assertion  = 1
+> 
+> By expanding this assertion to all connections, we can use same code
+> for all connections, this means code can be more cleanup.
+
+I see a contradiction between "expanding the assertion to all
+connections" and "not mandatory".
+
+> Current validation check on DPCM ignores Codec DAI, but there is no
+> reason to do it.  We should check both CPU/Codec in all connection.
+
+"there's no reason to do so" ?
+
+> This patch expands validation check to all cases.
+> 
+> 	[CPU/xxxx]-[yyyy/Codec]
+> 	                 *****
+> 
+> In many case (not all case), above [xxxx][yyyy] part are "dummy" DAI
+> which is always valid for both playback/capture.
+> But unfortunately DPCM BE Codec (**** part) had been no validation
+> check before, and some Codec driver doesn't have necessary settings for
+> it. This means all cases validation check breaks compatibility on some
+> vender's drivers. Thus this patch temporary uses dummy DAI at BPCM BE
+
+vendor
+
+> Codec part, and avoid compatibility error. But it should be removed in
+> the future.
+> 
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> ---
+>  include/sound/soc.h |   9 +++
+>  sound/soc/soc-pcm.c | 143 +++++++++++++++++++++++++-------------------
+>  2 files changed, 92 insertions(+), 60 deletions(-)
+> 
+> diff --git a/include/sound/soc.h b/include/sound/soc.h
+> index 0376f7e4c15d..e604d74f6e33 100644
+> --- a/include/sound/soc.h
+> +++ b/include/sound/soc.h
+> @@ -809,6 +809,15 @@ struct snd_soc_dai_link {
+>  	unsigned int dpcm_capture:1;
+>  	unsigned int dpcm_playback:1;
+>  
+> +	/*
+> +	 * Capture / Playback support assertion. Having assertion flag is not mandatory.
+> +	 * In case of having assertion flag, non specific side will be disabled.
+
+again the 'not mandatory' and 'non specific side will be disabled' are
+confusing.
+
+
+> +	/*
+> +	 * Assertion check
+> +	 *
+> +	 * playback_assertion = 0	No assertion check.
+> +	 * capture_assertion  = 0	ASoC will use detected playback/capture as-is.
+> +	 *				No playback, No capture will be error.
+
+did you mean "this combination will be handled as an error" ?
+
+It's probably best to have a different presentation, to avoid
+confusions. Using multiple lines without a separator isn't great.
+
+Suggested example:
+
+playback_assertion = 0 capture_assertion  = 0
+this combination will be handled as an error
+
+playback_assertion = 1 capture_assertion  = 0
+the DAIs in this dailink must support playback.
+ASoC will disable capture.
+In other words "playback_only"
+
+
+> +	 *
+> +	 * playback_assertion = 1	DAI must playback available. ASoC will disable capture.
+> +	 * capture_assertion  = 0	In other words "playback_only"
+> +	 *
+> +	 * playback_assertion = 0	DAI must capture available. ASoC will disable playback.
+> +	 * capture_assertion  = 1	In other words "capture_only"
+> +	 *
+> +	 * playback_assertion = 1	DAI must both playback/capture available.
+> +	 * capture_assertion  = 1
+
+nit-pick: the 'must X available' does not read well, 'must support X' is
+probably what you meant.
+
+> +	 */
+> +	if (dai_link->playback_assertion) {
+> +		if (!has_playback) {
+> +			dev_err(rtd->dev, "%s playback assertion check error\n", dai_link->stream_name);
+
+"invalid playback_assertion" ?
+
+> +			return -EINVAL;
+> +		}
+> +		/* makes it plyaback only */
+
+typo: playback
+
+> +		if (!dai_link->capture_assertion)
+> +			has_capture = 0;
+> +	}
+> +	if (dai_link->capture_assertion) {
+> +		if (!has_capture) {
+> +			dev_err(rtd->dev, "%s capture assertion check error\n", dai_link->stream_name);
+> +			return -EINVAL;
+> +		}
+> +		/* makes it capture only */
+> +		if (!dai_link->playback_assertion)
+> +			has_playback = 0;
+> +	}
+
+we probably want a dev_ log when the has_playback/capture is overridden?
+
+>  
+> +	/*
+> +	 * Detect Mismatch
+> +	 */
+>  	if (!has_playback && !has_capture) {
+>  		dev_err(rtd->dev, "substream %s has no playback, no capture\n",
+>  			dai_link->stream_name);
+> -
+>  		return -EINVAL;
+>  	}
+>  
