@@ -1,108 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpdh20-1.aruba.it (smtpdh20-1.aruba.it [62.149.155.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80B013C3FF;
-	Thu, 18 Apr 2024 13:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76897D07F
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 13:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713445827; cv=none; b=SAkQQu96gXxYI6/B6nsL7bX1RKslAhXdI3nwyo4+sFsTzgkud/2WV5H3nbU6+Psyji7zSXmM6I30cF5gDwOyvu66p9qhlslMwml+TU1YLTxZ+/cAa4NMriiB3SFVHpkEvW5eiJAlS8+Jg/Q4V8VHvnYl9c8LG692c0jpc7hxUrI=
+	t=1713447758; cv=none; b=aD1d4QL3EJTGV4ezkZdDCT8XpYxQE2gLLeO8x1rgwGvMIXdG9RKgJkIX2yuqs+zw7TnnU5rVF3LHyXmREqMXKRqOpHS3hDf8W/au3qE4v6Op4nWZxzztE+parE1nngOQz7uUNSZPOWoAlkZVZrDTNAVqNbNQVXQgJYiKX9v6v18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713445827; c=relaxed/simple;
-	bh=fPZ9DpCJk3Y2zRw5kWl7PSP4OLa6YCUAoXfziirfp8I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XvXd5N3Ow+amln1drfTBG0HGmzLbsKQvk7DxAr1oBJBaooxEEYkBNTZ9lVPs8e41w+RRlSjxdXPvKuuBntICD4N/u5POYjuqBTvqluHOIwvqqlUJFnL67Wb3ZlIBqQY23wSYTp7HVCb3YcKdjFacBLjoD0XM3ksdFwXr4bMoAh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9QxW8Im; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713447758; c=relaxed/simple;
+	bh=6MUcUp/OtL7AaDM8zpiLYMwqSosY0z5R4WOeBTogrUI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S9QWaYEXddrjSVuMctJYYmAJ3/xvEvka0HiUYzMWpxvV2vfliHGcl+NXTqEu9vSaBtHz93lhFEgyIf22bYlLP6zY3j9r5cOJDdDwUdCqP8SZW7SwTFV0KQOqCBoU/LwWkBzZKZk5uMbeB08GQ0trUNURnRnFKRL/crRS9vxvAIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=c4lDgiMa; arc=none smtp.client-ip=62.149.155.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9QxW8Im"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5ABC113CC;
-	Thu, 18 Apr 2024 13:10:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713445826;
-	bh=fPZ9DpCJk3Y2zRw5kWl7PSP4OLa6YCUAoXfziirfp8I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S9QxW8ImvY08pMZCQGTLd+TE9QQh3W/q9gYW7iXhIMlQ6GZcjFBRt8XAjY37tbLCm
-	 5WhVJQk24NcORuoWGmUJQAZOlhefsBAWWm8M5IGLnTTTmKmRaeULkl2rdkdqRE4SuK
-	 x6aFmJ/ykArb53DNCok15aNCYytV84gmJDiFKni8Nl9AN8O6SlLz+n5ZRE3kEWp4C1
-	 cc1IxmwwGFYKNqRKRvd3lUUHJHIrSw+sgJNuXdqpXxhoLlQbH9weGr34ZjuBGNoYou
-	 hJqDbuH1yzpqubp76DF1CmbgQnAFx89uQXCi5td469G1zm8rMc8RkKzm6NidwTe3zu
-	 s4sDzv0CVx4oA==
-Date: Thu, 18 Apr 2024 08:10:24 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: vkoul@kernel.org, pankaj.gupta@nxp.com,
-	20240409185416.2224609-1-Frank.Li@nxp.com, shenwei.wang@nxp.com,
-	xu.yang_2@nxp.com, shengjiu.wang@nxp.com,
-	devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	krzk@kernel.org, linux-kernel@vger.kernel.org, peng.fan@nxp.com,
-	imx@lists.linux.dev, conor+dt@kernel.org, dmaengine@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] dt-bindings: dma: fsl-edma: allow 'power-domains'
- property
-Message-ID: <171344580514.1090639.5974994638297885495.robh@kernel.org>
-References: <20240417152457.361340-1-Frank.Li@nxp.com>
- <20240417152457.361340-2-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="c4lDgiMa"
+Received: from engicam.com ([146.241.28.123])
+	by Aruba Outgoing Smtp  with ESMTPSA
+	id xRz2rgYv8wWj2xRz3rpfsM; Thu, 18 Apr 2024 15:39:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1713447566; bh=6MUcUp/OtL7AaDM8zpiLYMwqSosY0z5R4WOeBTogrUI=;
+	h=From:To:Subject:Date:MIME-Version;
+	b=c4lDgiMaEfzTQb4VJSAWkmaql7rWCbFALx8/KIbI0AUQcKn8lO2GQikHBj2tAsMvP
+	 t7ytW7OqaUJbC1t29idrNM4WO3SwiXxa6X5UJpWEfS25vGQaGqPAK3wuJkX4nyHWGD
+	 dM759+/GOKtJ5Ib0kzZV+4JpibDxeanG4VPQ0+Y5gU/pRW0drPs8JEytICgDLAswis
+	 U0yE34YFn46ROkdsTHuz8zZky2C5SxpTGWKyDkDAtGOL3dsDLeGEX2dXjpCRyVxKhU
+	 b2sbUvWruvfNGMBj4u/zLNspEjI4Vj30NiONweVCd3O7zhZsnrGFGy1P/ZpyDARmc1
+	 Lj0I3hIDxo9gA==
+From: Fabio Aiuto <fabio.aiuto@engicam.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fabio Aiuto <fabio.aiuto@engicam.com>
+Subject: [PATCH v2 0/3] arm64: dts: imx93: add i.Core MX93 EDIMM 2.0 board
+Date: Thu, 18 Apr 2024 15:39:20 +0200
+Message-Id: <20240418133923.3705-1-fabio.aiuto@engicam.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240417152457.361340-2-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfLPJjMyjuC46EePe1tB96/9btQeWSPEKQd8nMiBOciL4/I/k80FuI2OCQZSoAVSxtrbAPJcmCyYr7zN2Fw1D1aVoW/BQPbue5kadG7bPGNMAufDG97zR
+ DTIqauKgc9+6o3A9gWUxLdfPdffO5bPmcITi+l+SGWKlQd/50/HRzTN5I1YNukGWpWjsmWzwMMcp7fS6CijoGOs/M1k4aDlHU2B0owH6fYlzPJs6z1rJOr9Q
+ KEzICuFcB1YT2e9Fgt54j5i0kg67C9B0OPFFFZKFC+TMlixLh82QUVskYpYwppc0AxmY0EL/lTktJ4uhGBsWnmryR7q+WdiIYZQx75MxGox1dwaIylCrUMCK
+ T+0tqxV5rimIPXIpDEzbcGAK5EaSWyZxA/ueYpOme5T5muLhj70mfchdeOstxXKbxiZ3XDHirfn4wgSqulMemHR+AVqfeIr3tyYp1xPNefQHVTwvAgwwPn68
+ YEuLqLh7EbUhIr752qtIEsA02mhyp9CwicUwTdPtN/EYxzSOQvRKUi5+dKhuz5dUQ9Z1jDRChR/mw4Yv
 
+Hello all,
 
-On Wed, 17 Apr 2024 11:24:57 -0400, Frank Li wrote:
-> Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
-> it. EDMA supports each power-domain for each dma channel. So minItems and
-> maxItems align 'dma-channels'.
-> 
-> Change fsl,imx93-edma3 example to fsl,imx8qm-edma to reflect this variants.
-> 
-> Fixed below DTB_CHECK warning:
->   dma-controller@599f0000: Unevaluated properties are not allowed ('power-domains' was unexpected)
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     Change from v4 to v5
->     - Add description according to rob's suggest.
-> 
->      "The number of power domains matches the number of channels, arranged
->      in ascending order according to their associated DMA channels."
-> 
->     Change from v3 to v4
->     - Remove 'contains' change should be belong to first patch when rebase.
-> 
->     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,edma.yaml
->       LINT    Documentation/devicetree/bindings
->       DTEX    Documentation/devicetree/bindings/dma/fsl,edma.example.dts
->       CHKDT   Documentation/devicetree/bindings/processed-schema.json
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       DTC_CHK Documentation/devicetree/bindings/dma/fsl,edma.example.dtb
-> 
->     After this patch no warning for imx8dxl-evk.dtb.
-> 
->     touch arch/arm64/boot/dts/freescale/imx8dxl.dtsi
->     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  CHECK_DTBS=y freescale/imx8dxl-evk.dtb
->       DTC_CHK arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
-> 
->     Change from v2 to v3
->     - set 'power-domains' false for other compatitble string
->     - change imx93 example to 8qm example to affect this change according to
->     Krzysztof Kozlowski's suggestion, choose least channel number edma
->     instance to reduce code copy. max channel number is 64.
-> 
->     - Rebase to latest dmaengine/next, fixes conflicts.
-> 
->     Change from v1 to v2
->     - using maxitem: 64. Each channel have one power domain. Max 64 dmachannel.
->     - add power-domains to 'required' when compatible string is fsl,imx8qm-adma
->         or fsl,imx8qm-edma
-> 
->  .../devicetree/bindings/dma/fsl,edma.yaml     | 80 ++++++++++---------
->  1 file changed, 42 insertions(+), 38 deletions(-)
-> 
+this patchset adds support for i.Core MX93 EDIMM 2.0 Starter Kit,
+a SoM + Evaluation Board combination from Engicam.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+The number of patch has diminished to 3, for I dropped the
+patch introducing a change in nxp,pca9450 binding which has
+been already submitted in regulator tree.
+
+(Dropped also regulator tree maintainers as recipients for
+they aren't anymore involved in this patchset)
+
+Thanks in advance,
+
+fabio
+---
+v1 ---> v2:
+	- dropped patch updating nxp,pca9450 binding
+	- fixed indentation issue
+	- fixed missing space issue
+	- improved naming of regulator nodes
+	- removed unneeded include
+	- fixed email recipients
+
+Fabio Aiuto (3):
+  dt-bindings: arm: fsl: add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
+  arm64: dts: imx93: add Engicam i.Core MX93 SoM
+  arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
+
+ .../devicetree/bindings/arm/fsl.yaml          |   7 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx93-icore-mx93-edimm2.dts | 354 ++++++++++++++++++
+ .../boot/dts/freescale/imx93-icore-mx93.dtsi  | 270 +++++++++++++
+ 4 files changed, 632 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
+
+-- 
+2.34.1
 
