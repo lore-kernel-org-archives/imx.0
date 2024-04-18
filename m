@@ -1,133 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2089.outbound.protection.outlook.com [40.107.22.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F4E176FD2;
-	Thu, 18 Apr 2024 18:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713464984; cv=none; b=oo7ASA//YC9hR6/6RNMSCMLtc0YgGQEhYPgnAAPZhPKMEwWmqRaZ2NiIEyRH5AAQS/mqKeimtp7g/lbt1YRIS05CQj4wn/4Xn6o+Ir3gLWF9YozvmMpbkd7bbSyySj+YCGpoC/P9mF1TzWl4xdTTskZWT5Wq0MCtW16/tJWeboo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713464984; c=relaxed/simple;
-	bh=O8GQPhIx4kTFIET9bwlPStvr9H9F3wcwWCLjZ5QysXs=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=GwTgSy5+DYZcag4VbHm9S6bI3/yCMu/5R8DmPAVLVk27QfABmekNej+xO2Rkqs4ATfCG4HwU1xPCRC6HL3lkjW+SHjdW5hdgfpbgDaT/RamhqO+0a1RDLTz7QqAA2NuUnxawznJWoWUaX6VxPGmyzkQD0G++J8xTPZTPXRdpbao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1Jh2LsH; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBE317AD76
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 18:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713466750; cv=fail; b=bZyHdSB5hkmmdn6GyJ51yJlFn2JCmy53B4y4VuQGINbE4lozUfuSibPmB0m9pM7fxEo5DHUi86WTAPWK/O76HsFL1fMm4SAbAT0AzIMwUEp/i8//JlgSMwT43t1grf5KBtZjqPMesLILf5KU2v4kZuk/nJ3RvrFBlz7M/3sz3SI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713466750; c=relaxed/simple;
+	bh=yguA8Cf0jrTEisMl+XgsgWrujNKBaCZqROyOU0iZhT0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XU8mxBAuLpf6wEUK1AQhG2dkPQHEgWbNZ8Zdh5CA7tserlLvLhp5THb9ehn9+ysbOSe+Kl9c6xNB2r2zp+H8lc+qw/RIX9FNEwxoAk7Fkg/XSalx45Fg1D/rS7qSl5PAMB7/ePlfg7yruPzuO0EwNuyKUJWxZJVAVGzkvJ3FqFw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=RW/v5Wto; arc=fail smtp.client-ip=40.107.22.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1Jh2LsH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0347AC113CC;
-	Thu, 18 Apr 2024 18:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713464984;
-	bh=O8GQPhIx4kTFIET9bwlPStvr9H9F3wcwWCLjZ5QysXs=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=h1Jh2LsHFnS9RuufuGll1YExdQ4NuFS17W5CnxtDnCmPYXaJuJtynDDNahAjT8cXq
-	 srHufFyO+8/ZgpWvPVf3RyN0EU6Ipvj/rs+NZ2gzD19gPMQ1JI42VsXZ7h1619dT20
-	 RaEhL4zD9XHFyOivDfsdAHe6cZisTzJeIqHbv8WSi0f49iOq4CCG8v59znRC6QGyO8
-	 toUHLVm+9vq+ixa/c44/pkaiG+E0YVqEeD4CCDte5tjLiNDFcoLezw9Rl9wrnjh1tm
-	 edeq8LobON4+caPn/1/XzDJxOU/6Zc11kdrASYW50p6kRPsAPR4OuBf69sOvE1ByzD
-	 0w55oaEsLSN0w==
-Date: Thu, 18 Apr 2024 13:29:43 -0500
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="RW/v5Wto"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C4UaKrKsI2aptbDbjjrXA4Db++fb/0t7ApOhog2AtiUDC8tIrBLNzSXL2vOc9anBMeALaEQr0AUDaJYGmD485TTkCaSjmtSB9cWJOTQFL6vm+z2xelqhG+JabWHSl9LXe7QfCSMY27Vudzdk0WxbgvTF2Tz8YmHIjqVwfo+iYG5pU61vszUeP4xXoI1QemDdlH+QdnI/XZKnI3vLtGZzrhLbEXujR/yHDRsYc3obbwy4XGEoJOcijAcvUP+J2R3KEgjg7WxK0TuTFNcP+Cmx9yfMNT33X/16lVx0dd0Sl7O0PHMjX9j1SQ1i3nuEgXRWkjwdVYvGeqsM/OJxRyZu7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qNXAUljkrhvRTFyzEctKTDH8tVmcKFuxgRIKUVxMve8=;
+ b=liIDST+yXZHmlCRT7UGr6UW9fumraZ8KA9OwWPs1fL8hA07VDagZghNbSV/0Ivi5Xj+FnR6m5nU32pg4TtfDHysoBUhgCogjIGKkodnE0PqSZBZM2CTjbxWMD0Gpm5EKK/oteQUr8nIGm0Jq96HCkCp5K2DVJxGTd4sgllrJp/uD73i2LZUt4dvgPvpdNXHUn/HfiioYvuZ/6DP32NjJ/kwJsnejrLFOKWjXwR/HZaeSvMFOu0+cG8LfWM9d++ZRotJe1muyxjmWcl130UxkteEmAmhyLI1lL5oKXQWA/Rd9r95uAU0RnUBSZyqMqv3m+9NHi45tn3F/2V901RR5mg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qNXAUljkrhvRTFyzEctKTDH8tVmcKFuxgRIKUVxMve8=;
+ b=RW/v5Wto8agc8P0Ny/GrNbkWeUxYiK/tU6s8GWfDR1wQ5I48AU19VaHPWCyvsBSjSeAJ9ssEOnc8yvwszTUB8DOW4IDq6xoL4zVvt+inBtqVLy4OOtH1ZXYjlQCu8dqlrlkc9XzWx7+NrKfd+wMOufs+xBNxq8RJY5boJ0/Q0+s=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBBPR04MB7788.eurprd04.prod.outlook.com (2603:10a6:10:1e4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.39; Thu, 18 Apr
+ 2024 18:59:05 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
+ 18:59:05 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>,
+	dmaengine@vger.kernel.org (open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dmaengine: fsl-dpaa2-qdma: Fix kernel-doc check warning
+Date: Thu, 18 Apr 2024 14:58:49 -0400
+Message-Id: <20240418185851.3221726-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR02CA0022.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Fabio Aiuto <fabio.aiuto@engicam.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
- imx@lists.linux.dev
-In-Reply-To: <20240418133923.3705-1-fabio.aiuto@engicam.com>
-References: <20240418133923.3705-1-fabio.aiuto@engicam.com>
-Message-Id: <171346492597.2679649.7866044200094982080.robh@kernel.org>
-Subject: Re: [PATCH v2 0/3] arm64: dts: imx93: add i.Core MX93 EDIMM 2.0
- board
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7788:EE_
+X-MS-Office365-Filtering-Correlation-Id: e953cc57-8587-4380-e0a2-08dc5fd99e8c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	aYNu2duKoAnJySYTrGLjdvRN/3rGMSMIxWmIB9Si7QFH/euHMmXq44vatCaSYZxwZRQxZcAfI+xfMmLS8IR8XgdC3cVZNjCBRp9P9V5suq3dknYwdu6Xy059u7rhxRvD7bOh3MfxjDr+U8/DN7wk+RdPwHW2FE4gJciwYwZHff2ptLd6WnU2FAEanGar/+dmEDfd3gAXGi3/o+/V+ztBFvvXqv0UOOcv81jEbSuxhNU4DjDJm9elnQ8632ujhzZaR3MTpavfQSmdKYMpModPR07tekDxwTZBK57DFNLjuohtJMAa0WTu+azvFpOI9D0l50OdEv96sRKZvmZq3TZT1v0apJBRduOc1YuCNGQkfqSvScHGs6XSPunF4TfoH58QrbGZqVf5m4X/vCV8tns18EG8Xf4jUih+5riPH79l6Mrrx9Ixa8TcsK+PcgAvSxZ422HWkMsgk5gLIFLD55fl0nsQq9S4Ye1TfkHKtXETzd0a7g7bb/OBYAchkLKQYZkWDSH3aMigUgtOskuzsTDo5E98Rn4mGXwCUVMXDz40V2w+rYPo0PRh+CZ/j0SOAd090yUm5xGwiXZfnq+QLBcc0tfqCx/sQ3ebmrMeF89levC3iTbKRB/GVMwz47lvvmQ6o7UHnMDQQxJs1O2BE5FHUH1HKwCQIQkrjkkjN068d7mudVLpwlavmvGt02J2baGkiuKoKV3LcFrOxyv5uI9DS6D+6Iw/sg6wuy5Lrr0bGtI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?y0tUHZJQeTXufA55CQknVNcHoFdB/m08TXXq9hrUh6yFFXRBCXKJVbIvdC4e?=
+ =?us-ascii?Q?nNJh8RxIfI+htcACoyuuc02oxmZPFxYGzQewXaIqy2M/xegyUOhhTh61+rM1?=
+ =?us-ascii?Q?FTaDdJttmLonX9CzESbJPpwux42txiQX2DzDb48jekUTalLYrDoe+Iymn7F1?=
+ =?us-ascii?Q?2JbHGO1k3AafSdEOIGZVaazQVdMxQgG4v3NTmW42ldhl1bgXju31wPZlZUhA?=
+ =?us-ascii?Q?CWSL4N2ho7xWn2l1AB2XW96M5KVqSh9ftU3rho3AMWosGG1eVcqeqBoMv0fH?=
+ =?us-ascii?Q?wAe07Mp7jdLSOWHhii2XLkKlTWrN1DKJSsoDTpPKiLwFg6WI+dQRHSeooQnm?=
+ =?us-ascii?Q?hAty9OycBTuIZPPCJY2p/khpSXA87ou/Bub7cJU5FyOdU8KCNQnVUfo0l9Hi?=
+ =?us-ascii?Q?kJ8bZKyJbiiQEt9vTuqJPSY0LsdRaH9800fW+UUo0H18ziN0QurrSz4abSym?=
+ =?us-ascii?Q?cyPo6HDoySNbQ0opa+uawJEWrfElmyZZ8dyhLNB3BmeP+R0bXiJIbylvk2D4?=
+ =?us-ascii?Q?15XfO9YFV/g4ADPNarC0DgZJRVq/i66pEwxIu2pvOQk+L8hC2qUP849phEIv?=
+ =?us-ascii?Q?PsNWsvT9ONw0FJXaOj9DUw/40tOu07e4aUn8iS7uhXFc4g9BlKGLkSoeHJgP?=
+ =?us-ascii?Q?15aKuxyzecUJbX3KQrAJUdOTtcoSIEsd6u9gAig5lkNXEkjyO0sMXVHhNGjo?=
+ =?us-ascii?Q?fTPsu0mdEa9+qFGrN7uHkALTCsqmNw3OD92GNWJo62O/MeTes/reVJQV/41f?=
+ =?us-ascii?Q?hBGYUHaiByat72CtaJ+B1MIgrsNte0EbJtKDc0IfufMfLTZmYYpziOFclvVt?=
+ =?us-ascii?Q?0WV0RHaSniNCtH/Sxh2L4XvGWHGEYkA8yz7kEepce77GY3HBIrJQFRmM4eW4?=
+ =?us-ascii?Q?NzvEn95k1BHF+Y8i5Zu55MIWIsrGWCPTiFPcyXV2Gu+8Rzn2uMF/DYxZQTIA?=
+ =?us-ascii?Q?T54JCsIL5XXz6gygm6MXrYEqQg7PwgK2o4FeyF8594Z9xq9joV5WkeJwSZIx?=
+ =?us-ascii?Q?+Yr65ln+mpK8hDfJgw/HGgK2NEWQdivDuaqF2HHwDX4UQYYz6p5SOW78J2Hx?=
+ =?us-ascii?Q?91h46yAHUGv6RiPM3VTsVw7naJqNG45ZAchnWF0VntfmsJPh2CuZ1I8RmNJ0?=
+ =?us-ascii?Q?IhFB8JH7S0LAbMkBWSI8JHZg9Pk12C+CYjemA1F45wVImIsBF9M4k9y0jims?=
+ =?us-ascii?Q?H5XzHUvDTAX/SruKejN2icTBk+L0ArJAuyeA+aTrykO+5co6FOQG7MH3JW4E?=
+ =?us-ascii?Q?e61fUfON7Ns3NIcf2GKglSSFuVivM4Esr66fdlnvTsruolk6DIb7b+LtCln+?=
+ =?us-ascii?Q?PuUczCTH4bfEnxDv0vHVPXQae2pSmswqDYtH2c8Mia+Q8JYb3zFeMvHspkOv?=
+ =?us-ascii?Q?KQ44bEOFJwNxm3yqJY9r1+xyxMtSPCeXQMAmZFMnsWz/tNAX2T6ZqyLIWhGD?=
+ =?us-ascii?Q?LCl0ExZVJ5bFk9hx5ZdoIMXCTkmudIeJzjAz5cJwrotfWS6zbIld9zpLGSHs?=
+ =?us-ascii?Q?vNgNrJeBK7WXygC4Qb6xFReTqc6aNDGoPeVTqsF4hj2V5DuH+kdg0lz8a8p1?=
+ =?us-ascii?Q?t6IRhUXxPDfqYS3NUZhb/pISd6W0MRliyEv2YYfQ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e953cc57-8587-4380-e0a2-08dc5fd99e8c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 18:59:05.3591
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IZq3cP6s1ELjY41oqi61UtfG/2x1jJ+IvOfanaeWpQpMbga5KijmJVkhs7uhHQYOUt7YY2LjR1peJi5ZgwfJ8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7788
 
+Fix all kernel-doc warnings under drivers/dma/fsl-dpaa2-qdma.
 
-On Thu, 18 Apr 2024 15:39:20 +0200, Fabio Aiuto wrote:
-> Hello all,
-> 
-> this patchset adds support for i.Core MX93 EDIMM 2.0 Starter Kit,
-> a SoM + Evaluation Board combination from Engicam.
-> 
-> The number of patch has diminished to 3, for I dropped the
-> patch introducing a change in nxp,pca9450 binding which has
-> been already submitted in regulator tree.
-> 
-> (Dropped also regulator tree maintainers as recipients for
-> they aren't anymore involved in this patchset)
-> 
-> Thanks in advance,
-> 
-> fabio
-> ---
-> v1 ---> v2:
-> 	- dropped patch updating nxp,pca9450 binding
-> 	- fixed indentation issue
-> 	- fixed missing space issue
-> 	- improved naming of regulator nodes
-> 	- removed unneeded include
-> 	- fixed email recipients
-> 
-> Fabio Aiuto (3):
->   dt-bindings: arm: fsl: add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
->   arm64: dts: imx93: add Engicam i.Core MX93 SoM
->   arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
-> 
->  .../devicetree/bindings/arm/fsl.yaml          |   7 +
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../dts/freescale/imx93-icore-mx93-edimm2.dts | 354 ++++++++++++++++++
->  .../boot/dts/freescale/imx93-icore-mx93.dtsi  | 270 +++++++++++++
->  4 files changed, 632 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
-> 
-> --
-> 2.34.1
-> 
-> 
-> 
+./scripts/kernel-doc -v -none drivers/dma/fsl-dpaa2-qdma/*
+drivers/dma/fsl-dpaa2-qdma/dpdmai.c:262: warning: Function parameter or struct member 'queue_idx' not described in 'dpdmai_set_rx_queue'
+drivers/dma/fsl-dpaa2-qdma/dpdmai.c:339: warning: Excess function parameter 'fqid' description in 'dpdmai_get_tx_queue'
+...
 
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404190019.t4IhmbHh-lkp@intel.com/
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ drivers/dma/fsl-dpaa2-qdma/dpdmai.c |  5 ++++-
+ drivers/dma/fsl-dpaa2-qdma/dpdmai.h | 15 +++++++--------
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx93-icore-mx93-edimm2.dtb' for 20240418133923.3705-1-fabio.aiuto@engicam.com:
-
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: codec@a: Unevaluated properties are not allowed ('clock-names' was unexpected)
-	from schema $id: http://devicetree.org/schemas/sound/sgtl5000.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: codec@a: 'assigned-clocks' is a dependency of 'assigned-clock-rates'
-	from schema $id: http://devicetree.org/schemas/clock/clock.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: micfil@44520000: 'pinctrl-0' is a dependency of 'pinctrl-names'
-	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-btregon: 'pinctrl-0' is a dependency of 'pinctrl-names'
-	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-1v8-sgtl: Unevaluated properties are not allowed ('always-on' was unexpected)
-	from schema $id: http://devicetree.org/schemas/regulator/fixed-regulator.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-3v3-avdd-sgtl: Unevaluated properties are not allowed ('always-on' was unexpected)
-	from schema $id: http://devicetree.org/schemas/regulator/fixed-regulator.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-3v3-sgtl: Unevaluated properties are not allowed ('always-on' was unexpected)
-	from schema $id: http://devicetree.org/schemas/regulator/fixed-regulator.yaml#
-arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dtb: regulator-wlregon: 'pinctrl-0' is a dependency of 'pinctrl-names'
-	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
-
-
-
-
+diff --git a/drivers/dma/fsl-dpaa2-qdma/dpdmai.c b/drivers/dma/fsl-dpaa2-qdma/dpdmai.c
+index a824450fe19c2..36897b41ee7e5 100644
+--- a/drivers/dma/fsl-dpaa2-qdma/dpdmai.c
++++ b/drivers/dma/fsl-dpaa2-qdma/dpdmai.c
+@@ -251,6 +251,7 @@ EXPORT_SYMBOL_GPL(dpdmai_get_attributes);
+  * @mc_io:	Pointer to MC portal's I/O object
+  * @cmd_flags:	Command flags; one or more of 'MC_CMD_FLAG_'
+  * @token:	Token of DPDMAI object
++ * @queue_idx:	DMA queue index
+  * @priority:	Select the queue relative to number of
+  *		priorities configured at DPDMAI creation
+  * @cfg:	Rx queue configuration
+@@ -286,6 +287,7 @@ EXPORT_SYMBOL_GPL(dpdmai_set_rx_queue);
+  * @mc_io:	Pointer to MC portal's I/O object
+  * @cmd_flags:	Command flags; one or more of 'MC_CMD_FLAG_'
+  * @token:	Token of DPDMAI object
++ * @queue_idx:	DMA Queue index
+  * @priority:	Select the queue relative to number of
+  *				priorities configured at DPDMAI creation
+  * @attr:	Returned Rx queue attributes
+@@ -328,9 +330,10 @@ EXPORT_SYMBOL_GPL(dpdmai_get_rx_queue);
+  * @mc_io:	Pointer to MC portal's I/O object
+  * @cmd_flags:	Command flags; one or more of 'MC_CMD_FLAG_'
+  * @token:	Token of DPDMAI object
++ * @queue_idx:	DMA queue index
+  * @priority:	Select the queue relative to number of
+  *			priorities configured at DPDMAI creation
+- * @fqid:	Returned Tx queue
++ * @attr:	Returned DMA Tx queue attributes
+  *
+  * Return:	'0' on Success; Error code otherwise.
+  */
+diff --git a/drivers/dma/fsl-dpaa2-qdma/dpdmai.h b/drivers/dma/fsl-dpaa2-qdma/dpdmai.h
+index 1efca2a305334..3fe7d8327366e 100644
+--- a/drivers/dma/fsl-dpaa2-qdma/dpdmai.h
++++ b/drivers/dma/fsl-dpaa2-qdma/dpdmai.h
+@@ -45,25 +45,26 @@
+  * Contains initialization APIs and runtime control APIs for DPDMAI
+  */
+ 
+-/**
++/*
+  * Maximum number of Tx/Rx priorities per DPDMAI object
+  */
+ #define DPDMAI_PRIO_NUM		2
+ 
+ /* DPDMAI queue modification options */
+ 
+-/**
++/*
+  * Select to modify the user's context associated with the queue
+  */
+ #define DPDMAI_QUEUE_OPT_USER_CTX	0x1
+ 
+-/**
++/*
+  * Select to modify the queue's destination
+  */
+ #define DPDMAI_QUEUE_OPT_DEST		0x2
+ 
+ /**
+  * struct dpdmai_cfg - Structure representing DPDMAI configuration
++ * @num_queues:	Number of the DMA queues
+  * @priorities: Priorities for the DMA hardware processing; valid priorities are
+  *	configured with values 1-8; the entry following last valid entry
+  *	should be configured with 0
+@@ -77,15 +78,13 @@ struct dpdmai_cfg {
+  * struct dpdmai_attr - Structure representing DPDMAI attributes
+  * @id: DPDMAI object ID
+  * @version: DPDMAI version
++ * @version.major: DPDMAI major version
++ * @version.minor: DPDMAI minor version
+  * @num_of_priorities: number of priorities
++ * @num_of_queues: number of the DMA queues
+  */
+ struct dpdmai_attr {
+ 	int	id;
+-	/**
+-	 * struct version - DPDMAI version
+-	 * @major: DPDMAI major version
+-	 * @minor: DPDMAI minor version
+-	 */
+ 	struct {
+ 		u16 major;
+ 		u16 minor;
+-- 
+2.34.1
 
