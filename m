@@ -1,57 +1,57 @@
 Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52859194C8B
-	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 20:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0C7190691
+	for <imx@lists.linux.dev>; Thu, 18 Apr 2024 20:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713472703; cv=none; b=qp+3sEnuAA5NN3nJirusCpJ4tNmuLwmPPdDein0ZVOFFqfbI4EPG9En4w1oRVbH8jFWoDvNDZnLf1FlcdQOsgof4eXatS8aL5vW/OhFQOTUxlVk1aOnEf66lnRMbCYIfi2pQgpk044XrodjDw2UlAWCWw8lPvWM3r1A77+Sh+Xw=
+	t=1713472706; cv=none; b=rasIFt++cb/uZCBzJaXyVkJjGFP8NoT/9j09vsQ5OyiwJmwT+QhT55TnvfWVczDjRm7FEUrKnYjmL31HV/W4g2zJIppHsmv/9ErRpOW+a9mtx61V0MnViS4yWlvS0KFgj8fht5ccBqJuul69MAqXiFfAxd2706VLo7RnananbOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713472703; c=relaxed/simple;
-	bh=l3v8uiGH9iMneTQKAJQigSsmEW/6PSJtsODaXuUHOxI=;
+	s=arc-20240116; t=1713472706; c=relaxed/simple;
+	bh=IXsOSB48KhBFOf88YD8Blw+Mq+X3++0K3YE2RV82H3M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fxffxmGp1AIGiVwijRLUcSjPUGFQ5EfAnZk6WnCWroq9Nz0+amwPtMZBRDmi9/7rFqVrIdOdgjETR0sS987BYeGle2A2wbMsLE96YwkE7hfCax4INQLPpB9lkaMjkXMUmsZRcrC/VqgQ60bPQRhdnyi0jDYiW8UDQE9EAXlcCwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FylRC1IT; arc=none smtp.client-ip=209.85.218.44
+	 MIME-Version; b=i+ubhUx9R4hMIcqnP0OlWPnR7uoTQhRtEQ1BB+pe60+quOVfZ4Paye/Lx0wv9OiUNIhizHrr44Lmoyh3I9qq3oG5QWYyMPl+0JmcncMxM8U2X7O61fWHJSkQ3obCx74mFcTXLN/T/BNq+8Vh0kJ4r1O6FyeF0dZ7z+7T/Al02j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=luwtmBT1; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FylRC1IT"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a526a200879so161769466b.1
-        for <imx@lists.linux.dev>; Thu, 18 Apr 2024 13:38:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="luwtmBT1"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a519e1b0e2dso131924466b.2
+        for <imx@lists.linux.dev>; Thu, 18 Apr 2024 13:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713472701; x=1714077501; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1713472703; x=1714077503; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VpwB/CJEZck9aj444xbdNc4njqRLnc/SoD7JSsSXE4k=;
-        b=FylRC1ITSnbw/IwgBFXKZwaCuZ0dF3XSEWmfYCFEGCu2nczEJP1OixuQi+OpeKQd4v
-         3gejdPUxtjio0JJHRNwgOXfD0Xv9pn/0tegYHgrLPPTTayYG77CTa13C79JkCBrBR8Yy
-         Wksqidi2CwHJJ6yqHAbm8+bYBRpbcnSUuTNObA/7VHuwzwADfoeaxfj57cn8Y6FwCyiT
-         yRfTV7lg42BkjeytwtYGEKLP8VF4dVUHR9Pw9Z7ILvjMHs51aF/7mtf01nrCLTkmjfqV
-         uyhH4fFZvhp51sdoH5kF+xWRayD6JDuid3OQL9XXpjh2Lw4XnCeL7pN4oEqbXXKKluOg
-         vbsA==
+        bh=7A9GTsxN8IunCYp1DUkY8RgJAa3KxxBOsbu5rncJB9Y=;
+        b=luwtmBT1nVDxWWSEHVkty8gKWVwLa5upiCK7LjT0hyU/txyZognwfCspc+FN/JCyQ6
+         FtvIW+W0M3i+Zv1I5YLbjDg4OMDujzT3ECtxwvn3mv7o6AI/j5naT3c3SJVHLMLPNHAb
+         8N5a93Wd6DvvJgjsMr6UPsBgml63Q266BHxqS4F967mnCxjySGrYMORLWMPKYCmB8716
+         6p9cO3wCsFWUdthJoswlQndxHL55Gq9RLiiQRRjS3tmxFyKmJzK93OgJKmLXlb9Sxlll
+         oF5/MvDKHvapSMZPrk/pDI+227yXXWP/SjH0sPPWTnNYu3ae+IuvJnZ1L5wU3Mqzszr0
+         FBvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713472701; x=1714077501;
+        d=1e100.net; s=20230601; t=1713472703; x=1714077503;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VpwB/CJEZck9aj444xbdNc4njqRLnc/SoD7JSsSXE4k=;
-        b=EXg4Tg6tgIk7SSVKANm+tqrto4lWqL3Apw2H/zJ20/yQp6Lh5nDmiRwMPcMBZ6PtyU
-         5BHF8so6nS33dzRvqlY5twg1P+IuzUC7NsSfa3aaQ3OJb/yuR4ViPin+p6AViH+alAJD
-         MYJFQAAvmt8vuG9CJGBDRer87u4/boET8oZupmy+RlM+7kF2vVf5P/gO16B3DEMeiKiF
-         QZlogG4zlETGqlVSAqwHy7H7V1rIVfZvT6EAN3YyL8R7mZ8iAWVMeMieD0N4HqStIa0c
-         DTy9ApFhiMgMyns+FilzdwdTMQMbUitsPBpk0BSHmxzch2+MlZlN91SRLTOEXW0Jn8XS
-         1inw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbIzp5kXELniYNso0r4HeOq2LEz+JK3KYC5PgOTBBwml0MVzOX5cTy2znrgVE5ZQFvv2339KWw0ZoXhvOCvGPJb7eB
-X-Gm-Message-State: AOJu0Yz7Sp1cZz6a4jk4mlKRz7214C9Xx7TZhNl/aS2DPEE334UAaID1
-	Mz7COrqtyCajjvAJWGAr/WsFTv9CLplOcpstl63cj2Bm+3TdBwMK
-X-Google-Smtp-Source: AGHT+IHy3ebiIyjZ2dOdwO1gTQ1CoH9YGtMxf7V/6zF0j96aRPInH4QXAR7n/SqRIS6C1ntyLMb/og==
-X-Received: by 2002:a17:906:dc4a:b0:a55:635d:ddfb with SMTP id yz10-20020a170906dc4a00b00a55635dddfbmr145305ejb.3.1713472700682;
-        Thu, 18 Apr 2024 13:38:20 -0700 (PDT)
+        bh=7A9GTsxN8IunCYp1DUkY8RgJAa3KxxBOsbu5rncJB9Y=;
+        b=rhuBAvWXbwEj05tzht2KR5XVPdiNfs15vaIqUmifHolatCkrgiPBc2Mdw0jxKQgqi2
+         XPEg4rROF0wik8x5nt03bY+n4ZxSn/wDb4JVVndCx0AF3VMYh3iCEBGpOecNL7uvML/B
+         gtRP6SmlxM+N4jUqOuxl9E3HLKDtRfMc+WGfwggod3lvWHNWXHoFUIsnZ7iNEcs1Jf8Y
+         I1rM6Gz04bog3c+SnUy+nxoFrLqgr+nJS/T2RqUjCw+qmSJssNP4rYzZZep1fiTiRgS0
+         1+1C6lHJin8XUFKnQ4Uw0og4XGyts/VGWFmc2oN0MCNo/gRb61xCs3yeiw8N+2E6CShE
+         /5Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhXEb7t8HfXn0RzYD5Qy2SHuKqX/mkDcm21bHTE0k5QZq2oXF48UbSzDVFY8d3ibOVmxfw2h6Zp62KvPMVSagl2+lk
+X-Gm-Message-State: AOJu0YyHFZKgGhqAO1obhUyP5+nu1h0TX9zZMIJiNg4vA4EqS55/nRtz
+	vnW1My3GuFOjHVXWx1JncInfKCRu8NJxRwDbk22iNYyGLtKocvAt
+X-Google-Smtp-Source: AGHT+IGzLyE7VxWjZDABe7Un265onJx95a/vOFgpB1qchpktSO/egBKsgsmbcFgr7ax7wodqHkbROQ==
+X-Received: by 2002:a17:906:5f89:b0:a55:5ba6:ace9 with SMTP id a9-20020a1709065f8900b00a555ba6ace9mr165722eju.9.1713472702807;
+        Thu, 18 Apr 2024 13:38:22 -0700 (PDT)
 Received: from lmc-playground.localdomain ([188.25.209.252])
-        by smtp.gmail.com with ESMTPSA id l21-20020a170906079500b00a473774b027sm1305649ejc.207.2024.04.18.13.38.19
+        by smtp.gmail.com with ESMTPSA id l21-20020a170906079500b00a473774b027sm1305649ejc.207.2024.04.18.13.38.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 13:38:20 -0700 (PDT)
+        Thu, 18 Apr 2024 13:38:22 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/3] dt-bindings: mfd: add schema for 8ulp AVD-SIM
-Date: Thu, 18 Apr 2024 23:37:19 +0300
-Message-Id: <20240418203720.8492-3-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 3/3] arm64: dts: imx8ulp: add DSP node
+Date: Thu, 18 Apr 2024 23:37:20 +0300
+Message-Id: <20240418203720.8492-4-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
 References: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
@@ -84,63 +84,119 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add schema for i.MX8ULP's AVD-SIM module.
+Add node for i.MX8ULP's DSP core and its dependencies.
 
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- .../bindings/mfd/fsl,imx8ulp-avd-sim.yaml     | 42 +++++++++++++++++++
- 1 file changed, 42 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
+ arch/arm64/boot/dts/freescale/imx8ulp-evk.dts | 39 +++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi    | 22 +++++++++++
+ 2 files changed, 61 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml b/Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
-new file mode 100644
-index 000000000000..4020c6e37f80
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
-@@ -0,0 +1,42 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mfd/fsl,imx8ulp-avd-sim.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
+index 24bb253b938d..5dadcbba370d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
+@@ -67,6 +67,32 @@ vdevbuffer: vdevbuffer@a8400000 {
+ 			reg = <0 0xa8400000 0 0x100000>;
+ 			no-map;
+ 		};
 +
-+title: NXP i.MX8ULP Audio-Video Domain System Integration Module
++		dsp_reserved: dsp_reserved@8e000000 {
++			reg = <0 0x8e000000 0 0x1000000>;
++			no-map;
++		};
 +
-+maintainers:
-+  - Liu Ying <victor.liu@nxp.com>
++		dsp_reserved_heap: dsp_reserved_heap@8f000000 {
++			reg = <0 0x8f000000 0 0xef0000>;
++			no-map;
++		};
 +
-+description: |
-+  The AVD-SIM module provides configuration options for components of AVD.
++		dsp_vdev0vring0: vdev0vring0@8fef0000 {
++			reg = <0 0x8fef0000 0 0x8000>;
++			no-map;
++		};
 +
-+properties:
-+  compatible:
-+    items:
-+      - const: fsl,imx8ulp-avd-sim
-+      - const: syscon
-+      - const: simple-mfd
++		dsp_vdev0vring1: vdev0vring1@8fef8000 {
++			reg = <0 0x8fef8000 0 0x8000>;
++			no-map;
++		};
 +
-+  reg:
-+    maxItems: 1
++		dsp_vdev0buffer: vdev0buffer@8ff00000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x8ff00000 0 0x100000>;
++			no-map;
++		};
+ 	};
+ 
+ 	clock_ext_rmii: clock-ext-rmii {
+@@ -95,6 +121,15 @@ &cm33 {
+ 	status = "okay";
+ };
+ 
++&dsp {
++	assigned-clocks = <&cgc2 IMX8ULP_CLK_HIFI_SEL>, <&cgc2 IMX8ULP_CLK_HIFI_DIVCORE>;
++	assigned-clock-parents = <&cgc2 IMX8ULP_CLK_PLL4_PFD0>;
++	assigned-clock-rates = <0>, <475200000>;
++	memory-region = <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
++			<&dsp_vdev0vring1>, <&dsp_reserved>;
++	status = "okay";
++};
 +
-+  clocks:
-+    maxItems: 1
+ &flexspi2 {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&pinctrl_flexspi2_ptd>;
+@@ -176,6 +211,10 @@ &mu {
+ 	status = "okay";
+ };
+ 
++&mu3 {
++	status = "okay";
++};
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
+ &iomuxc1 {
+ 	pinctrl_enet: enetgrp {
+ 		fsl,pins = <
+diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+index c4a0082f30d3..99ed8c1ee57c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
+@@ -198,6 +198,22 @@ soc: soc@0 {
+ 		ranges = <0x0 0x0 0x0 0x40000000>,
+ 			 <0x60000000 0x0 0x60000000 0x1000000>;
+ 
++		dsp: dsp@21170000 {
++			compatible = "fsl,imx8ulp-hifi4";
++			reg = <0x21170000 0x20000>;
++			clocks = <&cgc2 IMX8ULP_CLK_LPAV_BUS_DIV>,
++				 <&cgc2 IMX8ULP_CLK_HIFI_DIVPLAT>,
++				 <&cgc2 IMX8ULP_CLK_HIFI_DIVCORE>,
++				 <&pcc5 IMX8ULP_CLK_MU3_B>;
++			clock-names = "ipg", "ocram", "core", "mu";
++			power-domains = <&scmi_devpd IMX8ULP_PD_HIFI4>;
++			firmware-name = "imx/dsp/hifi4.bin";
++			mbox-names = "tx", "rx", "rxdb";
++			mboxes = <&mu3 0 0>, <&mu3 1 0>, <&mu3 3 0>;
++			fsl,dsp-ctrl = <&avd_sim>;
++			status = "disabled";
++		};
 +
-+additionalProperties: false
+ 		s4muap: mailbox@27020000 {
+ 			compatible = "fsl,imx8ulp-mu-s4";
+ 			reg = <0x27020000 0x10000>;
+@@ -520,6 +536,12 @@ per_bridge5: bus@2d800000 {
+ 			#size-cells = <1>;
+ 			ranges;
+ 
++			avd_sim: syscon@2da50000 {
++				compatible = "fsl,imx8ulp-avd-sim", "syscon", "simple-mfd";
++				reg = <0x2da50000 0x38>;
++				clocks = <&pcc5 IMX8ULP_CLK_AVD_SIM>;
++			};
 +
-+examples:
-+  - |
-+    #include <dt-bindings/clock/imx8ulp-clock.h>
-+    avd_sim: syscon@2da50000 {
-+        compatible = "fsl,imx8ulp-avd-sim", "syscon", "simple-mfd";
-+        reg = <0x2da50000 0x38>;
-+        clocks = <&pcc5 IMX8ULP_CLK_AVD_SIM>;
-+    };
+ 			cgc2: clock-controller@2da60000 {
+ 				compatible = "fsl,imx8ulp-cgc2";
+ 				reg = <0x2da60000 0x10000>;
 -- 
 2.34.1
 
