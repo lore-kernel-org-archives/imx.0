@@ -1,460 +1,177 @@
-Received: from smtpcmd0872.aruba.it (smtpcmd0872.aruba.it [62.149.156.72])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2041.outbound.protection.outlook.com [40.107.104.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B526F12F38E
-	for <imx@lists.linux.dev>; Fri, 19 Apr 2024 14:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713538391; cv=none; b=EQpLY8ODJJKRn+dllGmtp8qN7At24ij0bj9O3iELLlbygeTG7Z2NXB+UYHAes7ZCIw6lpXld2FTnuAvtHOMr0d+ZSs8h9a88PAhC4uUQVe+XH3JZA5TNb/VhRBWKMniE2IPY5ZgKmlQj0OgB/1J11i+S+Oo8LFOe1ddZVOulYNI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713538391; c=relaxed/simple;
-	bh=9qMIGz9xymy53XjWQbEFGHYETD4tbojKWqztZWVKbBE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SAXNwsySikEDFyAMPeV6ggNPh8Nn98QcgVslhhsLf+fLRL4vNmWauZk2s7d06TEzyxw8mbMAskcc6+aN1ScSkrSvGI2525HOHxWuTxTYLxEPDCgmJ9ZYDJtd6Mb9yWaN7O/v8004u0Er83Yf1XlIPmc5rVXAyNOrZc5McLbiAoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=d3imeC/T; arc=none smtp.client-ip=62.149.156.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719DA12F5AD
+	for <imx@lists.linux.dev>; Fri, 19 Apr 2024 15:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713539277; cv=fail; b=F/huITdvVyNKSDa1nqjvHNR3ANtHDcrNjnvUZmyDdQx7/EUDZLV7KGyedPMI78HFPsViRWIFkHLyoA6MiAx/oMaUv4hcGhxThN/N11DjFSomKnn8/14vQRtXuyl+tsp0qJOcn+a/ZHVme/gFJmEZGI59pGCPXZUVnusc1bA3q4A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713539277; c=relaxed/simple;
+	bh=LezexKi/njf5WJzUJ5rLzvDGoE2jGYh71MApeI7QUb8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=n+hDT3pdxi4tbcLFy/E7Nn4fxy5EeWnPANz8a7oRM0H0cCaPTcgHzXMMU3OTGBPedrsaLio/FNCrEFY+aevZBo5i0yQgkNEaxxvJKHe/MsuWzneABKDty8SN76KXTb+nQIAcqJrV7mBTPSOetDtT66sT/MI0drOp8iaVJ+WE8CA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=kjKwEPjo; arc=fail smtp.client-ip=40.107.104.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="d3imeC/T"
-Received: from engicam.com ([146.241.23.200])
-	by Aruba Outgoing Smtp  with ESMTPSA
-	id xpYprTscuBZCLxpYtrR4uc; Fri, 19 Apr 2024 16:49:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1713538199; bh=9qMIGz9xymy53XjWQbEFGHYETD4tbojKWqztZWVKbBE=;
-	h=From:To:Subject:Date:MIME-Version;
-	b=d3imeC/TmERTlQlfN50TI1jSq5Ufz78ZVGVBozaferjb4OjDtTW76u7aLkNaijWcg
-	 pVn7XllSJnZU4FvG/1Sfg6IusspXSCKRA7zN++eAv3KE/W+jrTgdi1ctZnfuE4LI7R
-	 Dc/BjDVmneKa+7ZMiZuSNpRqoIERkACfv75liQqOzb8W3aVCLooflL+9b2dM2vWdqf
-	 AocIdirXZrZ7cCGCrg/24DYAKXPVi/ZuN60IReoDd6G71vCURTwKj7D6SPBMwN7EYs
-	 kOU0pCfyOA8AkgTTa7vJNMtTx4kJISrCYUVKVP5zGgc0BO1QoId0jk+MWmVKyvBwvi
-	 sn/E8/+NaDLjA==
-From: Fabio Aiuto <fabio.aiuto@engicam.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="kjKwEPjo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nrDBbXVBpXEH2OQJoGeWdAimNZfH0JQ+t47312AZAFb32Ln69vOR6opvmJYAczeNv2MOJ/BcBJ0Nn+2o/dNtMPChMwl4YhZZzrx93+MmAhS/rZepqHjdRUGnS2sbY3Ij2ze6DQsqo+zFen4oh1GIFypQWUNP5ce6DbuaHmOitgiEDXyDx7uV94GXJDgUI6xK2sK6eO23LOO9FNxdrGHaimkQmuSqZhWOa0+g1j98kFTW4kZozJrLIiLRua7wRUkJXGSRD9TCsdLnnOq/VT/hrncoFkfGlebhes1jauHcAr49qay9xVy2veWjfT8Nkg4fIcQ/VAe+mxRH7Dljl28MWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=48Y0BjVoxPxokN2MQq+QIxImoQoKWsrW7mlrMSDnp+Q=;
+ b=iQ5wzz4qUWMeq1YI3FMAhIHV6OD8JAFk0STYmlR91jSaX78/AX0kjnfyLub6WvHEzz6EuUhH47fxJ4j5nJXismWj5b+4EEvBNJ8GstkpV/CzsT8DsrxE58H0Ks7zH1HzshP+MsayPBbP3YOM/bNbfxYrmpSyLmNiOQj/YXTYrSNFkC9okH+5zARuAKhqnxBaDYHeCa0kBRQEC5tDf9t1gJeONIrBoPwQ3jAdcZs9CrX5DVCpNPnN5hTgN+XR8VvXaHmDFSQfoYaIpjUZZmdf3TqHDeKbRmNQN3DqyetgGlPfAXBMZVmRfmtif0LzLLOgb+U5bPbdojd08wOdB1ePuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=48Y0BjVoxPxokN2MQq+QIxImoQoKWsrW7mlrMSDnp+Q=;
+ b=kjKwEPjo4gjvWvovGHvHK7jKH9u+XHXmZyYRYFkzIEI7mq57KSkh12Us5Xli2mBIiAfVhOc/z8o5I5HZQYc2+ljtexexQcT6Xt/fnHiulBVlssUGeOQ/HSIOewVX9LCHx/kjy5lSmb+E02oO2lM+mh1Ug0ahvu7I5FYsPJNI7Ro=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB10330.eurprd04.prod.outlook.com (2603:10a6:150:1cf::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.39; Fri, 19 Apr
+ 2024 15:07:47 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.037; Fri, 19 Apr 2024
+ 15:07:47 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: vkoul@kernel.org
+Cc: Frank.Li@nxp.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	festevam@gmail.com,
 	imx@lists.linux.dev,
+	joy.zou@nxp.com,
+	kernel@pengutronix.de,
+	krzysztof.kozlowski+dt@linaro.org,
 	linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com,
 	linux-kernel@vger.kernel.org,
-	Fabio Aiuto <fabio.aiuto@engicam.com>,
-	Matteo Lisi <matteo.lisi@engicam.com>,
-	Mirko Ardinghi <mirko.ardinghi@engicam.com>
-Subject: [PATCH v3 3/3] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
-Date: Fri, 19 Apr 2024 16:49:53 +0200
-Message-Id: <20240419144953.8700-4-fabio.aiuto@engicam.com>
+	robh@kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org
+Subject: [PATCH v5 1/3] dt-bindings: fsl-imx-sdma: Add I2C peripheral types ID
+Date: Fri, 19 Apr 2024 11:07:27 -0400
+Message-Id: <20240419150729.1071904-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240419144953.8700-1-fabio.aiuto@engicam.com>
-References: <20240419144953.8700-1-fabio.aiuto@engicam.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR21CA0008.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfBa26f888bMB6OaFgSRx403/nMk9rZTPdIW5C5isNhcUIRQq6sz/3ZUKLctauuf7ZTh3/JsWfjHcpwucEaTbKeJc+nlmFmukd3HuUNCM9+tK6FP8ACh/
- 92f6ZR/chJ9V1mfqLz1FOTZEQWa4jOKjE47sVx3SYgJripl++yErxl3Ny3tq/Ji7nscQZmBRjwzHkxfywOfW8FgWmHpzGyZo3GBpxhCrffeDYhgV3tcb5ke2
- NdfYLdlG3R9gDoTvGWAoESdYg1+AXvu7vJfVpUqaSAVMvHesuHYU5GY1cLn7b72fTW+pWlEL9pV3vpYj4qh5MHKbS/o15qfXLQN36iIinUZ+BCC6yabwUHC/
- M8nR5jLuWwIfUzplDiW7+Fo4BmPxNuae29N6vQrvXk8MfiehKymbxa8cn3IixhtQufKSGNXZj2nsXofNPC47tjB68p+QgD3AFuETiLDZCrIjhSyHfCN+tM1u
- Xy+S3lTwe3fMXONyOgnP1/xMFlmwsxpqmtQ9Pg07XOdkUXOTwhEqdC+B9ZAaV9RSAHBsMcGEcfvooskwhY+9yNvFnvoCWzoKVyc8tVAPC+h/OGWXKzeTAnja
- TIjKpFB/8d56p68tZspMicKZ
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10330:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a9fec9b-d4e3-42a7-0d95-08dc6082792d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KY9b3EULoIgwdXJWcM3lKa1aw4fbyJAA3bDoHYq2BtR4H8c36gmblaoPVUua?=
+ =?us-ascii?Q?oLBpGPk2LEiUiQRd0/XJdbT+tdcK5vtSvp4skYovgKWvm5eqSbRuCkn2mMPQ?=
+ =?us-ascii?Q?FEqSunmSw/XdOdWWrhGi1E3sIkQ7aCcBBnZ5QQrDN0rsE4ONDyaWgCIrPtKh?=
+ =?us-ascii?Q?erjq6PFas5X8ZyCChlUiT3IfSVZv025XeKtvzeu7Pdbzsyp3V/2mVRp8PMtA?=
+ =?us-ascii?Q?Be0oCyi98cd//FDaHKxJGUstdz59oAeLpFz3CU7hvjpoW8h2tW0M24C749Sg?=
+ =?us-ascii?Q?vtK8QSXIxWGXPdiCr5u3qUJHva14/ukDMksyg2co1L8/m9xhgvXYcQWy3n/F?=
+ =?us-ascii?Q?cIDcSsYv1zU9yBbyn6ZC4Z+dPpyWTrhDCHUMkHELxyqbi4XTWj4wDzsfsJ39?=
+ =?us-ascii?Q?P4BCZSETPjqbUmh2u28d9Ua/5enZm6xxQyg2w86QZoFEJY0NkygafbH8oGqQ?=
+ =?us-ascii?Q?r4DfUCWxfMy8UK1GeJfBYsSwtfX+IIsocJS7C202u61mEg/vuRJ0ZGTdkMOQ?=
+ =?us-ascii?Q?kaGiLU9fpKqczqOjYMu4S4c+Dxzpc4WuQUKmKa+8+9KGQLBmmit50ZQcaydO?=
+ =?us-ascii?Q?OAhtLrfn7ORyL5ZDrR0QgDVt4MnhyaSfTAVBCxSXId6Cixm6WdMtVtqMWO+w?=
+ =?us-ascii?Q?TUWgljt5Q/cI6yK7qjWLIxNXAd7/7U9+BSII9E1a+n+q2WkzYnYG/QVTmlfL?=
+ =?us-ascii?Q?JQPR5PXDmEkMF81Of8ylE8XySWbaL0dEIJmmdgyrRIgwl+ztntcVsc2FClDy?=
+ =?us-ascii?Q?rI5+K0Q+OleubPRpZBS+25HXGYvPw3PIpSUJ4MvZ/V1uHiApyodREgK5Myh7?=
+ =?us-ascii?Q?dR6TfSjbkb00kq/moI62abRR6QergYIkg8MS3nx/Fbs+cQCvsltt/9IbMfqj?=
+ =?us-ascii?Q?sDG3rRtnA1vXNYKputwCtQrEzCgcfWEAZW+WtdZd04GpZC2SzMeuaXMWEWRg?=
+ =?us-ascii?Q?aWXZMvNZrAVXnZJLw+C5GxuH8VFoXoVfCc99ZTKuUsYKAgYzMwyZek80Db/f?=
+ =?us-ascii?Q?OORcdsTGtT+AmM9/v9YpNB8pli7MIF6cINHV9HAgllc2SJjeIZy3p93uY1Pb?=
+ =?us-ascii?Q?TMc1FsaEXtzsnL3dyovd2ApDvS7eXZRu8o3c1X/rQ1M/ehO9qEpcaNCEbQWt?=
+ =?us-ascii?Q?LaNHJtxazUXV3LG3a2yU54MHkoG2JGd3S2rdUM++z/hrmAbNNdAGE0CPKgvA?=
+ =?us-ascii?Q?c0DzHtEso6Qxb7SVEuuGNc/oRh0B0TjGrJJn6vdyObcuacbbE8A4z4ytBukL?=
+ =?us-ascii?Q?wsNqNSpkGSqNw956wmQ+LIS73p65rYxeXfgam+OvYLAteE1OC8O1rt8QC3E3?=
+ =?us-ascii?Q?cF63wWfcgJ2wiIgbj8UpXn16n7Nsi11pCBxqDfoaw7xMLQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(52116005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dy6kwP7WrnRUag0v587PL20VM2QqG8irlDJgH1pT5CTF5a7fNCvDWqSLDFWv?=
+ =?us-ascii?Q?j1E1yyciAw7jgT3i1auqfqQw58njaL3GskglaFxLqjfgw4Jkqs+B1Pi4OhEl?=
+ =?us-ascii?Q?6ieICQbsJf2TYmT1kXFAe539ToHvioS/7hqPWcx87qQl0B+kk4kxlSmBIvSU?=
+ =?us-ascii?Q?J1VDpblxWoDrZ9fU85EplOwZwD7lYw3XesIp0bwOmty1ST14kL5Qcj+KxWWA?=
+ =?us-ascii?Q?Rwgme1vYVI6hiUBjudEYyBJX/+sUyFQJr2zIoweAj5jRyHhqE+w8mphSkNj6?=
+ =?us-ascii?Q?2w+NyjUns5R6gObV11TK9RvhyngcQp4u0L7UL7cLg4fSk46BFGF8Qd54upKA?=
+ =?us-ascii?Q?vOKxAz/1NT3Hk6Yd8MHldpRZHuX0KjOjcZbR7MB5DN4dCeNW9H8y0gd1vaxG?=
+ =?us-ascii?Q?gRvfbiEPKiW6PlP3LRCoIlYV17iwQUK32xLWRPMI1LWEOPAOSeNV1O/ETSZp?=
+ =?us-ascii?Q?mAONg8DxC0u5+ifeHiS/MCYiuWsJueJsJxhG6IFgLJEzp9k6zOqbr3lPp3/2?=
+ =?us-ascii?Q?kzDmu03I1B8yGhTofIQeB7RaoAFUNrRklaP2Ncze9zS3DQsKzqcAZoDlav4J?=
+ =?us-ascii?Q?zD4h+FJ82KT0CCxjBuqzOOn5KqFZoHPG3NYGgFHkNTPd1zbmSebAfM04Ir2Z?=
+ =?us-ascii?Q?oCThl99VDX9DNrgTjW6wCDXXfYf8bqkNjZP4GRpEgN/D0Znl9a70a0Q8Xpsx?=
+ =?us-ascii?Q?g1wFzb4/Vzj5L+zBFM6LEObgrIELzLlYvsMUW51w6tk9kZ4D1/nDdH0YXYGN?=
+ =?us-ascii?Q?r2epHH+ckFmZ0jwvE4z+DLv7WXxKSSHoyPw95g5N4jWqnE5HXGe4QPDIcZ3Z?=
+ =?us-ascii?Q?1ip5gPT75r4w9FYmtrO9RHj6o9wm9c4l1ZZHNtJ74vOFcZTkjoR08Nd//cu6?=
+ =?us-ascii?Q?+tVd8rPRhLQViB1R5hNqCdcXfaUKTTKIFnxD3T87Ql4fQF3+0bAkt0hT69Dn?=
+ =?us-ascii?Q?mxUd+p8HtJZu5JoSkNFH4v8fbDEA5SHdlf3E0/UO85ph91g30gExsEKZxhbD?=
+ =?us-ascii?Q?pHV4ne4Mcrn9NddFggbFrPlUjBLOgmLFdvnTku+YNRTIitmapKbZNmKiqX7T?=
+ =?us-ascii?Q?8SArdSwcoF0BEx8JwGIqCFtF+cgPkcb3muLRqBYMhPDTuJgwzC6+B49QBMpy?=
+ =?us-ascii?Q?7EBt3bN9vkOFQQ0XrA1VfgsHO/ld2JQU8Kj2s47zHB0b3B1LBurmntOPCdvF?=
+ =?us-ascii?Q?uxK6HgQUjC3N9FT1mPt4HYwQjjYebBj8ikZGg3ZA5A6FCXGBWepGi+R8Op+r?=
+ =?us-ascii?Q?Bi4nJalbY0nWxfrV98LWXu7lqnIqYhejEqGZAqPatkQKGPuRjyOd76HB1pFT?=
+ =?us-ascii?Q?E0Hi8fe5fc5wbkaxwzdIxO/ExDJyJA7kAVCy3R+B+6osftawLb97IOBtovsU?=
+ =?us-ascii?Q?f+jCB/d3PDUlFwgVY6yiORLqmDwU13wxC8UTawDNBnIv/FLISPUH+OpRUTtG?=
+ =?us-ascii?Q?CR3GZk4zV0CmKf3fcSl8hQQTvEcnfv6yVKOnBxR72TxygPw9FBxGWOqYqcxg?=
+ =?us-ascii?Q?ceHNlSt0MKsGBNO7wDbjSsh9NrL4H5IF0+4D6N3QQTHUMjH4K6a2Zbyb7EBd?=
+ =?us-ascii?Q?iuR+AwJcJlgNrP2m69fgI0gr9eRImC9yg/zPSQGG?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a9fec9b-d4e3-42a7-0d95-08dc6082792d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 15:07:47.7499
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G2AtcNb7vMSY897hxDPygNCH/pcAgW2ncI+4wubts7pga+jK6ggifrbyqDWqwvsUdy1RkfKXw2if0vchaH9vsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10330
 
-i.Core MX93 is a NXP i.MX93 based SoM by Enigcam which
-needs to be mounted on top of Engicam baseboards.
+Add peripheral types ID 27 for I2C because sdma firmware (sdma-6q: v3.6,
+sdma-7d: v4.6) support I2C DMA transfer.
 
-Add support for EDIMM 2.0 Starter Kit hosting
-i.Core MX93.
-
-Starter Kit main features:
-
-2x LVDS interfaces
-HDMI output
-Audio out
-Mic in
-Micro SD card slot
-USB 3.0 A port
-3x USB 2.0 A port
-Gb Ethernet
-2x CAN bus, 3x UART interfaces
-SIM card slot
-M.2 KEY_B slot
-
-Cc: Matteo Lisi <matteo.lisi@engicam.com>
-Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
-Signed-off-by: Fabio Aiuto <fabio.aiuto@engicam.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx93-icore-mx93-edimm2.dts | 347 ++++++++++++++++++
- 2 files changed, 348 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 045250d0a040..d26c0a458a44 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -226,6 +226,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-icore-mx93-edimm2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-new file mode 100644
-index 000000000000..470e1098d3eb
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-@@ -0,0 +1,347 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2022 NXP
-+ * Copyright 2024 Engicam s.r.l.
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx93-icore-mx93.dtsi"
-+
-+/ {
-+	model = "Engicam i.Core MX93 - EDIMM 2 Starterkit";
-+	compatible = "engicam,icore-mx93-edimm2", "engicam,icore-mx93",
-+		     "fsl,imx93";
-+
-+	aliases {
-+		rtc1 = &bbnsm_rtc;
-+	};
-+
-+	bt_reg_on: regulator-btregon {
-+		compatible = "regulator-gpio";
-+		regulator-name = "BT_REG_ON";
-+		regulator-min-microvolt = <100000>;
-+		regulator-max-microvolt = <3300000>;
-+		states = <3300000 0x1>, <100000 0x0>;
-+		gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	chosen {
-+		stdout-path = &lpuart1;
-+	};
-+
-+	reg_1v8_sgtl: regulator-1v8-sgtl {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1v8_sgtl";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		regulator-always-on;
-+	};
-+
-+	reg_3v3_avdd_sgtl: regulator-3v3-avdd-sgtl {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3_avdd_sgtl";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-always-on;
-+	};
-+
-+	reg_3v3_sgtl: regulator-3v3-sgtl {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3_sgtl";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-always-on;
-+	};
-+
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		linux,cma {
-+			compatible = "shared-dma-pool";
-+			reusable;
-+			alloc-ranges = <0 0x80000000 0 0x40000000>;
-+			size = <0 0x10000000>;
-+			linux,cma-default;
-+		};
-+
-+		rsc_table: rsc-table@2021f000 {
-+			reg = <0 0x2021f000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdevbuffer: vdevbuffer@a4020000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0xa4020000 0 0x100000>;
-+			no-map;
-+		};
-+
-+		vdev0vring0: vdev0vring0@a4000000 {
-+			reg = <0 0xa4000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@a4008000 {
-+			reg = <0 0xa4008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring0: vdev1vring0@a4000000 {
-+			reg = <0 0xa4010000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring1: vdev1vring1@a4018000 {
-+			reg = <0 0xa4018000 0 0x8000>;
-+			no-map;
-+		};
-+	};
-+
-+	sound {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "imx93-sgtl5000";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&dailink_master>;
-+		simple-audio-card,frame-master = <&dailink_master>;
-+		/*simple-audio-card,mclk-fs = <1>;*/
-+		simple-audio-card,cpu {
-+			sound-dai = <&sai3>;
-+		};
-+
-+		dailink_master: simple-audio-card,codec {
-+			sound-dai = <&sgtl5000>;
-+			clocks = <&clk IMX93_CLK_SAI3_IPG>;
-+		};
-+	};
-+
-+	usdhc3_pwrseq: usdhc3-pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+	};
-+
-+	wl_reg_on: regulator-wlregon {
-+		compatible = "regulator-gpio";
-+		regulator-name = "WL_REG_ON";
-+		regulator-min-microvolt = <100000>;
-+		regulator-max-microvolt = <3300000>;
-+		states = <3300000 0x1>, <100000 0x0>;
-+		gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&bt_reg_on>;
-+	};
-+};
-+
-+&cm33 {
-+	mbox-names = "tx", "rx", "rxdb";
-+	mboxes = <&mu1 0 1>,
-+		 <&mu1 1 1>,
-+		 <&mu1 3 1>;
-+	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-+			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-+	status = "okay";
-+};
-+
-+&flexcan1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan1>;
-+	fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
-+	status = "okay";
-+};
-+
-+&flexcan2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan2>;
-+	fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
-+	status = "okay";
-+};
-+
-+&lpi2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_lpi2c1>;
-+	pinctrl-1 = <&pinctrl_lpi2c1>;
-+	status = "okay";
-+
-+	pcf8523: rtc@68 {
-+		compatible = "nxp,pcf8523";
-+		reg = <0x68>;
-+	};
-+
-+	sgtl5000: codec@a {
-+		compatible = "fsl,sgtl5000";
-+		status = "okay";
-+		#sound-dai-cells = <0>;
-+		reg = <0x0a>;
-+		clocks = <&clk IMX93_CLK_SAI3_GATE>;
-+		VDDA-supply = <&reg_3v3_avdd_sgtl>;
-+		VDDIO-supply = <&reg_3v3_sgtl>;
-+		VDDD-supply = <&reg_1v8_sgtl>;
-+	};
-+};
-+
-+&lpuart1 { /* console */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&lpuart5 { /* RS485 */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart5>;
-+	status = "okay";
-+};
-+
-+&lpuart8 { /* RS232 */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart8>;
-+	status = "okay";
-+};
-+
-+&micfil {
-+	#sound-dai-cells = <0>;
-+	assigned-clocks = <&clk IMX93_CLK_PDM>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-+	assigned-clock-rates = <196608000>;
-+	status = "okay";
-+};
-+
-+&mu1 {
-+	status = "okay";
-+};
-+
-+&mu2 {
-+	status = "okay";
-+};
-+
-+&sai1 {
-+	#sound-dai-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai1>;
-+	assigned-clocks = <&clk IMX93_CLK_SAI1>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-+	assigned-clock-rates = <12288000>;
-+	status = "okay";
-+};
-+
-+&sai3 {
-+	pinctrl-names = "default";
-+	#sound-dai-cells = <0>;
-+	pinctrl-0 = <&pinctrl_sai3>;
-+	assigned-clocks = <&clk IMX93_CLK_SAI3>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-+	assigned-clock-rates = <24576000>;
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+};
-+
-+&usdhc3 { /* WiFi */
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-+	pinctrl-1 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-+	pinctrl-2 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-+	vmmc-supply = <&wl_reg_on>;
-+	bus-width = <4>;
-+	no-1-8-v;
-+	non-removable;
-+	max-frequency = <25000000>;
-+	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	brcmf: bcrmf@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm4329-fmac";
-+	};
-+};
-+
-+&wdog3 {
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+
-+	pinctrl_flexcan1: flexcan1grp {
-+		fsl,pins = <
-+			MX93_PAD_PDM_CLK__CAN1_TX		0x139e
-+			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
-+		>;
-+	};
-+
-+	pinctrl_flexcan2: flexcan2grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO25__CAN2_TX	0x139e
-+			MX93_PAD_GPIO_IO27__CAN2_RX	0x139e
-+		>;
-+	};
-+
-+	pinctrl_laird: lairdgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__GPIO2_IO22		0x31e // WL_REG_ON
-+			MX93_PAD_GPIO_IO19__GPIO2_IO19		0x31e // BT_REG_ON
-+		>;
-+	};
-+
-+	pinctrl_lpi2c1: lpi2c1grp {
-+		fsl,pins = <
-+			MX93_PAD_I2C1_SCL__LPI2C1_SCL		0x40000b9e
-+			MX93_PAD_I2C1_SDA__LPI2C1_SDA		0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_sai1: sai1grp {
-+		fsl,pins = <
-+			MX93_PAD_SAI1_TXC__SAI1_TX_BCLK		0x31e
-+			MX93_PAD_SAI1_TXFS__SAI1_TX_SYNC	0x31e
-+			MX93_PAD_SAI1_TXD0__SAI1_TX_DATA00	0x31e
-+			MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00	0x31e
-+		>;
-+	};
-+
-+	pinctrl_sai3: sai3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO26__SAI3_TX_SYNC	0x31e
-+			MX93_PAD_GPIO_IO16__SAI3_TX_BCLK	0x31e
-+			MX93_PAD_GPIO_IO17__SAI3_MCLK		0x31e
-+			MX93_PAD_GPIO_IO21__SAI3_TX_DATA00	0x31e
-+			MX93_PAD_GPIO_IO20__SAI3_RX_DATA00	0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
-+			MX93_PAD_UART1_TXD__LPUART1_TX		0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart5: uart5grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO01__LPUART5_RX		0x31e
-+			MX93_PAD_GPIO_IO00__LPUART5_TX		0x31e
-+			MX93_PAD_GPIO_IO02__LPUART5_CTS_B	0x31e
-+			MX93_PAD_GPIO_IO03__LPUART5_RTS_B	0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart8: uart8grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO13__LPUART8_RX		0x31e
-+			MX93_PAD_GPIO_IO12__LPUART8_TX		0x31e
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX93_PAD_SD3_CLK__USDHC3_CLK		0x17fe
-+			MX93_PAD_SD3_CMD__USDHC3_CMD		0x13fe
-+			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x13fe
-+			MX93_PAD_SD3_DATA1__USDHC3_DATA1        0x13fe
-+			MX93_PAD_SD3_DATA2__USDHC3_DATA2        0x13fe
-+			MX93_PAD_SD3_DATA3__USDHC3_DATA3        0x13fe
-+		>;
-+	};
-+};
+Notes:
+    Change from v4 to v5
+    - Update I2C to number 27
+    - Add Krzysztof Kozlowski's ACK tag
+
+ Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml b/Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml
+index 37135fa024f9b..738b25b88b377 100644
+--- a/Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml
++++ b/Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml
+@@ -94,6 +94,7 @@ properties:
+           - SAI: 24
+           - Multi SAI: 25
+           - HDMI Audio: 26
++          - I2C: 27
+ 
+        The third cell: transfer priority ID
+          enum:
 -- 
 2.34.1
 
