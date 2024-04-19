@@ -1,513 +1,190 @@
-Received: from smtpdh18-2.aruba.it (smtpdh18-2.aruba.it [62.149.155.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0F7F7C9
-	for <imx@lists.linux.dev>; Fri, 19 Apr 2024 11:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80D433CC
+	for <imx@lists.linux.dev>; Fri, 19 Apr 2024 11:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713524677; cv=none; b=bJvi+4a4EKyWcYlm7Li5g6jL0VLUUScbvetneDQZqG770vhClGO2nzKcuHCkuS6Qz7PtBDsKlV+I/u60jxoC+hvIuteT3UNw75h214hvZEWhgdcO447chR99TBWAtNAcoYkZCjEKS8MK9h0CYCjUy95Hy06Yq0JsGggKpkIlfuo=
+	t=1713526977; cv=none; b=RfTPSUtUB7DELS37uTmf26MoXpeBov/oxMUBf4ypCEr88bH8ZgdUCtyftGOV2Yw7ETlJ4HsfSG6PRBsehFoNb/ZBDj7L0TJidxu8I5ffT2MXJWHX+OGSXXnFPzrJkphRU8KDNRCWroqZ9SlC6cIj1jh/4vvPjbU41myX84ZoDYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713524677; c=relaxed/simple;
-	bh=34ds8pezHaM8zXbo0rmCy4/NhMnoDRXFp3berQVnbqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sTWMyc9PMyzvLg9EAgUz8rXfzoAcfZPJ1/57tgKorclTuj15r0qqBskPqJ1gGtt8TWzGAYOJYDmUno8khPHt1MFyUDlEb/1OKYKR9H2o1agGBDY6UB/aDX0f8pcfJ+5hCC6zTR3FDYWfnrBkQfLfywCPE9CPT59P1AJFfV14+Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=f0HDg5vv; arc=none smtp.client-ip=62.149.155.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
+	s=arc-20240116; t=1713526977; c=relaxed/simple;
+	bh=FxcW7VdpJiXtK3MRSvRJJB20oxQZtoBlZJZyIFAy51s=;
+	h=Content-Type:Mime-Version:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Td4Vd36FNI0ZQu+ShS+BquI+GPCD7hLCndOS9dcv9C4ffkgRjJc9CZB6aZJS0e27W8aPaPS/Tem3mXC97Tk7K57iebsNQ3agynTXsGcuTImOYq8XvB81T6CP4n4Q76iqqpo5R+yMbwXxfd6jLwbvcHEy3aeHLIU2v/ffR+bC0MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BCZL9+nk; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="f0HDg5vv"
-Received: from engicam ([146.241.22.218])
-	by Aruba Outgoing Smtp  with ESMTPSA
-	id xlzfrZWY8wcFexlzgrNLR8; Fri, 19 Apr 2024 13:01:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1713524485; bh=34ds8pezHaM8zXbo0rmCy4/NhMnoDRXFp3berQVnbqY=;
-	h=Date:From:To:Subject:MIME-Version:Content-Type;
-	b=f0HDg5vvdopiAbL1mEWcSejSAEUD+vJkFHp8U/RWpon4kcKeAFjYiZ6hBj/fs1E8d
-	 qHm/7RklsfjOJFQALl49OJAJDWwNiqaVEpcBzvflm4ILCuAmp1srFCtkIRSkKGrkQP
-	 wP02gN2bFl3R0hdii1wns320D8SGMnfZ3bxBxTmjI9ZAzvfZCfRyGnAIiGyUaCpUYa
-	 6+q1Rj/oGSofoEe9F0Q5GEO+OxBAg7dgEqHESFUxMk+fiYzmXbijYmiKycSBJUDfMQ
-	 A65qaTA2ihT9lf1ryEoqnjY+oFF8rzcK9vrboCTs1bU3D9m71bSg6sHZKk4mSoqv6k
-	 VQjufBKJoAIHA==
-Date: Fri, 19 Apr 2024 13:01:22 +0200
-From: Fabio Aiuto <fabio.aiuto@engicam.com>
-To: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Matteo Lisi <matteo.lisi@engicam.com>,
-	Mirko Ardinghi <mirko.ardinghi@engicam.com>
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM
- 2.0 Starter Kit
-Message-ID: <ZiJPAr91xzBhuWbF@engicam>
-References: <20240418133923.3705-1-fabio.aiuto@engicam.com>
- <20240418133923.3705-4-fabio.aiuto@engicam.com>
- <CAOf5uwmy_3NOupkroYX=W2WJKK1sgg0r0L22fOrbbZ3Z6z1jFA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BCZL9+nk"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56e2c1650d8so1925390a12.0
+        for <imx@lists.linux.dev>; Fri, 19 Apr 2024 04:42:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713526972; x=1714131772; darn=lists.linux.dev;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vtm/qtvswOnFXXfebYKskz6/e32yJZ1ZzR1vI0Fp9dI=;
+        b=BCZL9+nkiAcit7F4+h96/Wwb0PmqZrl+Mlnz8qnUiKEHDwutXA7i0cR07D971PjM/W
+         rhQJlpEWYm2OlBGKvAIM9hwZKHOVDkhBlZqaNQmTsBKJuF3ThwjbxEiAqI5Nt1kVUUPd
+         OTfuBnLTDVICnVtycqZjbQIAVrIx4Cn5decZ2rq4gzdIezJfZky3+WAc7SbH9Kkh+fON
+         MMpAkYT4VaXm70Cc4Ww+jU9GwvJlR4XBn/qwhDSN7sVR7N7IFaVxMzhOUVNgoC3bUuZD
+         hauaprJHHs7Rs6wMy3ebmUXJiCD27vOnTcdM6DdUmJXtgdV3vIc+5EujHmz/oVGji5AW
+         Z2AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713526972; x=1714131772;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vtm/qtvswOnFXXfebYKskz6/e32yJZ1ZzR1vI0Fp9dI=;
+        b=PNBmb1XAf6mKgT9VK1WHl/WBPtRk56er1yHq/61NKvulE20qhPbrh51uNWwXdfxpVu
+         31N1r8aPbVf8BtYkuzZUkxkVgmIzaPWlvlDAywgL726umxb/TwFTnMrWYmtPeGFPqJh9
+         s4LO7lxrKvjWeM2Ii8muAombs81dLdM4HY1eDXcbdKymDjK7CDLp6N8jE36ZgmhBUZgk
+         8M92W+LIRf/kknpizpV85ZOn4CZJ08alPnlXCfTaK8rq6EkKWi13ONQvMw4dxyATxZL3
+         Ab+MCIVLC6iaj2GICy+bsmNgzpJZXITJugpD8xx8eC6gj8c3BTxu3We5j9RbK5Za953o
+         lswg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHarhogRyNtpEIgYTbTs6Eq7DqloCtslZftZ5ZcyS2jQ9ajOOOLvX74dAAlrZrRrfJRh9uPQdJWPotyVBL8n8d93Zv
+X-Gm-Message-State: AOJu0YzM3HQlJGQSnWV/6As6BhAKPNR/u/3G8In/0v7Go8krKs0RHg3+
+	Dhy9iaYkYJO9snNNeMRn/TqcI7pZ65ASTdQRsot/+1vb1NMwHXyO
+X-Google-Smtp-Source: AGHT+IEwLsjbBwvBlONApjs+36NUlgAVIroqpndgR5Yohi7VmGBl9cWXP/CC/Cs/xZloP3RIelGMIw==
+X-Received: by 2002:a50:a416:0:b0:56e:f64:aaf6 with SMTP id u22-20020a50a416000000b0056e0f64aaf6mr1348117edb.5.1713526972237;
+        Fri, 19 Apr 2024 04:42:52 -0700 (PDT)
+Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id t16-20020aa7d4d0000000b005701f033da5sm2034565edr.79.2024.04.19.04.42.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Apr 2024 04:42:51 -0700 (PDT)
+Content-Type: multipart/signed;
+ boundary=028f56741d52f91b0bec672921ccea60e74b58ce9c1c05854f65f7d060c2;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOf5uwmy_3NOupkroYX=W2WJKK1sgg0r0L22fOrbbZ3Z6z1jFA@mail.gmail.com>
-X-CMAE-Envelope: MS4xfDq01KQxM5pcyd7Ph2lUxkEV+kMY3uThS5wlw58h4inUqJULoKSusFE8hXDkuaM5c2VuflrPauWHAbMqZ8IDoJhD16+070WjX7BR7gT2O/wpBjYlfMib
- 74lvy+WPrWEttlY76pSiZj0JmdkgnUa1wazzL0ZAVz/2hKVZ6odxgliy0tL+ju/xFxCoYL+vQH3oilBEap40ZeoX4XFNIv0GALJzxQLl7tJLKV+whxHcE6sh
- 5OP/LhZfuLW1IpYyJs9heExMJrZJCDeembyC12yNAAkRsq9Ac+vjK79jk7c2puiljP5r6IoCoJOuch4Aj+PyhYk8GJtNAVhbzmmckBxK5+r8IxYbh5X5sn4L
- T5Ry+SlRBhTPGIUM8B6CEvB21VaMYl5KE6VjsbGh921wyKtqfa8XKoGR3dxg/EiBHjS5NRyOJMyxZlyxAD5J8qgFdMbXRTsHjbx7rwhExTOYmoXaFjrd5r+R
- 3I2l7TO2YBcnG2mN4/t7u6k0AYCtedaLw8Lm7UphpUwFlWsQ051diQj1vaIqHL7+tRnXuVDtDl30R3MgMeoF/rTf05GHdy9y1Bxf2/bS63xNbcukP5s3VrSE
- 9LFfCvBd0OKUsgOfrZ3MIhkU
+Mime-Version: 1.0
+Date: Fri, 19 Apr 2024 13:42:50 +0200
+Message-Id: <D0O2M756FW2M.2XMFVYGKJ1O7W@gmail.com>
+Cc: <devicetree@vger.kernel.org>, <linux-rpi-kernel@lists.infradead.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+ <linux-tegra@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-realtek-soc@lists.infradead.org>,
+ <linux-rockchip@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
+Subject: Re: [PATCH v2] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible
+ usage
+From: "Thierry Reding" <thierry.reding@gmail.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>, <soc@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Florian Fainelli" <florian.fainelli@broadcom.com>,
+ "Broadcom internal kernel review list"
+ <bcm-kernel-feedback-list@broadcom.com>, "Dinh Nguyen"
+ <dinguyen@kernel.org>, "Tsahee Zidenberg" <tsahee@annapurnalabs.com>,
+ "Antoine Tenart" <atenart@kernel.org>, "Khuong Dinh"
+ <khuong@os.amperecomputing.com>, "Liviu Dudau" <liviu.dudau@arm.com>,
+ "Sudeep Holla" <sudeep.holla@arm.com>, "Lorenzo Pieralisi"
+ <lpieralisi@kernel.org>, "Ray Jui" <rjui@broadcom.com>, "Scott Branden"
+ <sbranden@broadcom.com>, "Robert Richter" <rric@kernel.org>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Li Yang" <leoyang.li@nxp.com>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Paul J.
+ Murphy" <paul.j.murphy@intel.com>, "Daniele Alessandrelli"
+ <daniele.alessandrelli@intel.com>, "Andrew Lunn" <andrew@lunn.ch>, "Gregory
+ Clement" <gregory.clement@bootlin.com>, "Sebastian Hesselbarth"
+ <sebastian.hesselbarth@gmail.com>, "Matthias Brugger"
+ <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Jonathan Hunter"
+ <jonathanh@nvidia.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konrad.dybcio@linaro.org>, =?utf-8?q?Andreas_F=C3=A4rber?=
+ <afaerber@suse.de>, "Heiko Stuebner" <heiko@sntech.de>, "Orson Zhai"
+ <orsonzhai@gmail.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Chunyan Zhang" <zhang.lyra@gmail.com>, "Jisheng Zhang"
+ <jszhang@kernel.org>, "Alim Akhtar" <alim.akhtar@samsung.com>,
+ <linux-fsd@tesla.com>, "Michal Simek" <michal.simek@amd.com>
+X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+References: <20240417203853.3212103-1-robh@kernel.org>
+In-Reply-To: <20240417203853.3212103-1-robh@kernel.org>
 
-Hello Michael,
+--028f56741d52f91b0bec672921ccea60e74b58ce9c1c05854f65f7d060c2
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Il Fri, Apr 19, 2024 at 09:29:12AM +0200, Michael Nazzareno Trimarchi ha scritto:
-> Hi Fabio
-> 
-> On Thu, Apr 18, 2024 at 3:43 PM Fabio Aiuto <fabio.aiuto@engicam.com> wrote:
-> >
-> > i.Core MX93 is a NXP i.MX93 based SoM by Enigcam which
-> > needs to be mounted on top of Engicam baseboards.
-> >
-> > Add support for EDIMM 2.0 Starter Kit hosting
-> > i.Core MX93.
-> >
-> > Starter Kit main features:
-> >
-> > 2x LVDS interfaces
-> > HDMI output
-> > Audio out
-> > Mic in
-> > Micro SD card slot
-> > USB 3.0 A port
-> > 3x USB 2.0 A port
-> > Gb Ethernet
-> > 2x CAN bus, 3x UART interfaces
-> > SIM card slot
-> > M.2 KEY_B slot
-> >
-> > Cc: Matteo Lisi <matteo.lisi@engicam.com>
-> > Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
-> > Signed-off-by: Fabio Aiuto <fabio.aiuto@engicam.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
-> >  .../dts/freescale/imx93-icore-mx93-edimm2.dts | 354 ++++++++++++++++++
-> >  2 files changed, 355 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> > index 045250d0a040..d26c0a458a44 100644
-> > --- a/arch/arm64/boot/dts/freescale/Makefile
-> > +++ b/arch/arm64/boot/dts/freescale/Makefile
-> > @@ -226,6 +226,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
-> > +dtb-$(CONFIG_ARCH_MXC) += imx93-icore-mx93-edimm2.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
-> > diff --git a/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-> > new file mode 100644
-> > index 000000000000..8d57374eebdf
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
-> > @@ -0,0 +1,354 @@
-> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > +/*
-> > + * Copyright 2022 NXP
-> > + * Copyright 2024 Engicam s.r.l.
-> > + */
-> > +
-> > +/dts-v1/;
-> > +
-> > +#include "imx93-icore-mx93.dtsi"
-> > +
-> > +/ {
-> > +       model = "Engicam i.Core MX93 - EDIMM 2 Starterkit";
-> > +       compatible = "engicam,icore-mx93-edimm2", "engicam,icore-mx93",
-> > +                    "fsl,imx93";
-> > +
-> > +       aliases {
-> > +               rtc1 = &bbnsm_rtc;
-> > +       };
-> > +
-> > +       bt_reg_on: regulator-btregon {
-> > +               compatible = "regulator-gpio";
-> > +               regulator-name = "BT_REG_ON";
-> > +               pinctrl-names = "default";
-> > +               regulator-min-microvolt = <100000>;
-> > +               regulator-max-microvolt = <3300000>;
-> > +               states = <3300000 0x1>, <100000 0x0>;
-> > +               gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-> > +               regulator-always-on;
-> > +       };
-> > +
-> 
-> Are you sure about regulator always on? I have seen that you broadcom
-> wifi and bluetooth connected. Same comment for the other
-> patches where you have almost all the regulator boot on , always on. I
-> can not be sure that is really true
-> 
-> Please take a look here
-> arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
+On Wed Apr 17, 2024 at 10:38 PM CEST, Rob Herring (Arm) wrote:
+> The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primari=
+ly,
+> it doesn't provide any detail on uarch specific events.
+>
+> There's still remaining cases for CPUs without any corresponding PMU
+> definition and for big.LITTLE systems which only have a single PMU node
+> (there should be one per core type).
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collab=
+ora.com>
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+> Acked-by: Heiko Stuebner <heiko@sntech.de>
+> Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+> Acked-by: Bjorn Andersson <andersson@kernel.org>
+> Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
+> ---
+> SoC Maintainers, Can you please apply this directly.
+>
+> v2:
+>  - Drop QCom sdm630 change
+> ---
+>  arch/arm/boot/dts/broadcom/bcm2711.dtsi              | 4 ++--
+>  arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi    | 2 +-
+>  arch/arm64/boot/dts/amazon/alpine-v2.dtsi            | 2 +-
+>  arch/arm64/boot/dts/apm/apm-storm.dtsi               | 2 +-
+>  arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts | 2 +-
+>  arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi     | 2 +-
+>  arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi  | 2 +-
+>  arch/arm64/boot/dts/cavium/thunder-88xx.dtsi         | 2 +-
+>  arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi        | 2 +-
+>  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi       | 2 +-
+>  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi       | 2 +-
+>  arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi       | 7 +++++++
+>  arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi       | 7 +++++++
+>  arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi       | 5 -----
+>  arch/arm64/boot/dts/freescale/imx8dxl.dtsi           | 2 +-
+>  arch/arm64/boot/dts/intel/keembay-soc.dtsi           | 2 +-
+>  arch/arm64/boot/dts/intel/socfpga_agilex.dtsi        | 2 +-
+>  arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi        | 2 +-
+>  arch/arm64/boot/dts/marvell/armada-37xx.dtsi         | 2 +-
+>  arch/arm64/boot/dts/mediatek/mt8516.dtsi             | 2 +-
+>  arch/arm64/boot/dts/nvidia/tegra210.dtsi             | 2 +-
+>  arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
+>  arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
+>  arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
+>  arch/arm64/boot/dts/realtek/rtd16xx.dtsi             | 2 +-
+>  arch/arm64/boot/dts/rockchip/rk3368.dtsi             | 2 +-
+>  arch/arm64/boot/dts/sprd/sc9860.dtsi                 | 2 +-
+>  arch/arm64/boot/dts/sprd/sc9863a.dtsi                | 2 +-
+>  arch/arm64/boot/dts/synaptics/berlin4ct.dtsi         | 2 +-
+>  arch/arm64/boot/dts/tesla/fsd.dtsi                   | 2 +-
+>  arch/arm64/boot/dts/xilinx/zynqmp.dtsi               | 2 +-
+>  31 files changed, 43 insertions(+), 34 deletions(-)
 
-thank you for your comment, for wifi/bt module is better to
-remove regulator-always-on.
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-For other regulators (e.g. sgtl5000) they are fixed and always on
-from an hardware design point of view.
+--028f56741d52f91b0bec672921ccea60e74b58ce9c1c05854f65f7d060c2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Will remove regulator-always-on for bt_reg_on in the v3 patchset.
+-----BEGIN PGP SIGNATURE-----
 
-kr,
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmYiWLsACgkQ3SOs138+
+s6HVMg//Z1vpOVfPGexT+l41R4BiEbrkDCVeBZnbDapafPEWSkvhzVK3ncQk6yUO
+y7l7yTq0l1PHP6Qh8orKSY6xO/Ui6eLRHnpIXJMhSj0l8hfPEYeiRlc8MSzEWhMH
+ame927kd5iiRpnjhVpRVhthE/gwH8diAIvay/Rx9PULbdsQvF8YsWAPff3+AFtVB
+mBz41wbhUOjDOhIW96UmbH8dwkfse0fNv5sYCuLvS1NtkvUIScL6TYHwTazMDYz0
+npHZJ8XNjGttSj7QCuSGoC7chz4GB3LKTcvYWIvL9he9wxN/CQX4BAFGqv0mx+nK
+FyU9Pva3xbjf6S8f48LhsIa2hbkhhET9km3FLZGftAkYivkD+0wBPFRHo8DRBx4P
+p9Lbo4mpG4QTPs1UV0bvglTGlBXW5YzZkuuuc0P2eMFAkpS4SVZXNfjPzKoSXqA7
+/PWBHccFqXCo64zLeJ8Ls0zhWBfC86BRQquxy/HO+WgsWdDjYNTrjp05bZ+QKkr3
+CjmyXxWDg2ANMnZB/o1Z1Q0B3t2LOou3diBKCp9ez3Cr1oKnarzM1jOZXS8ahnof
+ujUahheBul/NG2JO05EOV6BOabip6CrXH2B/NbfqjmYZM24kTJ+n6hBRcx07/6HJ
+9ARHNqLTLCFSGnbml4wZ68W8+bNiCXuB2BYKniHguyk+zpu5YMw=
+=sTJr
+-----END PGP SIGNATURE-----
 
-fabio 
-
-> 
-> Michael
-> 
-> > +       chosen {
-> > +               stdout-path = &lpuart1;
-> > +       };
-> > +
-> > +       reg_1v8_sgtl: regulator-1v8-sgtl {
-> > +               compatible = "regulator-fixed";
-> > +               regulator-name = "1v8_sgtl";
-> > +               regulator-min-microvolt = <1800000>;
-> > +               regulator-max-microvolt = <1800000>;
-> > +               always-on;
-> > +       };
-> > +
-> > +       reg_3v3_avdd_sgtl: regulator-3v3-avdd-sgtl {
-> > +               compatible = "regulator-fixed";
-> > +               regulator-name = "3v3_avdd_sgtl";
-> > +               regulator-min-microvolt = <3300000>;
-> > +               regulator-max-microvolt = <3300000>;
-> > +               always-on;
-> > +       };
-> > +
-> > +       reg_3v3_sgtl: regulator-3v3-sgtl {
-> > +               compatible = "regulator-fixed";
-> > +               regulator-name = "3v3_sgtl";
-> > +               regulator-min-microvolt = <3300000>;
-> > +               regulator-max-microvolt = <3300000>;
-> > +               always-on;
-> > +       };
-> > +
-> > +       reserved-memory {
-> > +               #address-cells = <2>;
-> > +               #size-cells = <2>;
-> > +               ranges;
-> > +
-> > +               linux,cma {
-> > +                       compatible = "shared-dma-pool";
-> > +                       reusable;
-> > +                       alloc-ranges = <0 0x80000000 0 0x40000000>;
-> > +                       size = <0 0x10000000>;
-> > +                       linux,cma-default;
-> > +               };
-> > +
-> > +               rsc_table: rsc-table@2021f000 {
-> > +                       reg = <0 0x2021f000 0 0x1000>;
-> > +                       no-map;
-> > +               };
-> > +
-> > +               vdevbuffer: vdevbuffer@a4020000 {
-> > +                       compatible = "shared-dma-pool";
-> > +                       reg = <0 0xa4020000 0 0x100000>;
-> > +                       no-map;
-> > +               };
-> > +
-> > +               vdev0vring0: vdev0vring0@a4000000 {
-> > +                       reg = <0 0xa4000000 0 0x8000>;
-> > +                       no-map;
-> > +               };
-> > +
-> > +               vdev0vring1: vdev0vring1@a4008000 {
-> > +                       reg = <0 0xa4008000 0 0x8000>;
-> > +                       no-map;
-> > +               };
-> > +
-> > +               vdev1vring0: vdev1vring0@a4000000 {
-> > +                       reg = <0 0xa4010000 0 0x8000>;
-> > +                       no-map;
-> > +               };
-> > +
-> > +               vdev1vring1: vdev1vring1@a4018000 {
-> > +                       reg = <0 0xa4018000 0 0x8000>;
-> > +                       no-map;
-> > +               };
-> > +       };
-> > +
-> > +       sound {
-> > +               compatible = "simple-audio-card";
-> > +               simple-audio-card,name = "imx93-sgtl5000";
-> > +               simple-audio-card,format = "i2s";
-> > +               simple-audio-card,bitclock-master = <&dailink_master>;
-> > +               simple-audio-card,frame-master = <&dailink_master>;
-> > +               /*simple-audio-card,mclk-fs = <1>;*/
-> > +               simple-audio-card,cpu {
-> > +                       sound-dai = <&sai3>;
-> > +               };
-> > +
-> > +               dailink_master: simple-audio-card,codec {
-> > +                       sound-dai = <&sgtl5000>;
-> > +                       clocks = <&clk IMX93_CLK_SAI3_IPG>;
-> > +               };
-> > +       };
-> > +
-> > +       usdhc3_pwrseq: usdhc3-pwrseq {
-> > +               compatible = "mmc-pwrseq-simple";
-> > +       };
-> > +
-> > +       wl_reg_on: regulator-wlregon {
-> > +               compatible = "regulator-gpio";
-> > +               pinctrl-names = "default";
-> > +               regulator-name = "WL_REG_ON";
-> > +               regulator-min-microvolt = <100000>;
-> > +               regulator-max-microvolt = <3300000>;
-> > +               states = <3300000 0x1>,
-> > +                                <100000 0x0>;
-> > +               gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
-> > +               enable-active-high;
-> > +               vin-supply = <&bt_reg_on>;
-> > +       };
-> > +};
-> > +
-> > +&cm33 {
-> > +       mbox-names = "tx", "rx", "rxdb";
-> > +       mboxes = <&mu1 0 1>,
-> > +                <&mu1 1 1>,
-> > +                <&mu1 3 1>;
-> > +       memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-> > +                       <&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&flexcan1 {
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_flexcan1>;
-> > +       fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&flexcan2 {
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_flexcan2>;
-> > +       fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&lpi2c1 {
-> > +       #address-cells = <1>;
-> > +       #size-cells = <0>;
-> > +       clock-frequency = <400000>;
-> > +       pinctrl-names = "default", "sleep";
-> > +       pinctrl-0 = <&pinctrl_lpi2c1>;
-> > +       pinctrl-1 = <&pinctrl_lpi2c1>;
-> > +       status = "okay";
-> > +
-> > +       pcf8523: rtc@68 {
-> > +               compatible = "nxp,pcf8523";
-> > +               reg = <0x68>;
-> > +       };
-> > +
-> > +       sgtl5000: codec@a {
-> > +               compatible = "fsl,sgtl5000";
-> > +               status = "okay";
-> > +               #sound-dai-cells = <0>;
-> > +               reg = <0x0a>;
-> > +               clocks = <&clk IMX93_CLK_SAI3_GATE>;
-> > +               clock-names = "mclk";
-> > +               assigned-clock-rates = <12000000>, <12000000>;
-> > +               VDDA-supply = <&reg_3v3_avdd_sgtl>;
-> > +               VDDIO-supply = <&reg_3v3_sgtl>;
-> > +               VDDD-supply = <&reg_1v8_sgtl>;
-> > +       };
-> > +};
-> > +
-> > +&lpuart1 { /* console */
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_uart1>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&lpuart5 { /* RS485 */
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_uart5>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&lpuart8 { /* RS232 */
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_uart8>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&micfil {
-> > +       #sound-dai-cells = <0>;
-> > +       pinctrl-names = "default";
-> > +       assigned-clocks = <&clk IMX93_CLK_PDM>;
-> > +       assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-> > +       assigned-clock-rates = <196608000>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&mu1 {
-> > +       status = "okay";
-> > +};
-> > +
-> > +&mu2 {
-> > +       status = "okay";
-> > +};
-> > +
-> > +&sai1 {
-> > +       #sound-dai-cells = <0>;
-> > +       pinctrl-names = "default";
-> > +       pinctrl-0 = <&pinctrl_sai1>;
-> > +       assigned-clocks = <&clk IMX93_CLK_SAI1>;
-> > +       assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-> > +       assigned-clock-rates = <12288000>;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&sai3 {
-> > +       pinctrl-names = "default";
-> > +       #sound-dai-cells = <0>;
-> > +       pinctrl-0 = <&pinctrl_sai3>;
-> > +       assigned-clocks = <&clk IMX93_CLK_SAI3>;
-> > +       assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
-> > +       assigned-clock-rates = <24576000>;
-> > +       fsl,sai-mclk-direction-output;
-> > +       status = "okay";
-> > +};
-> > +
-> > +&usdhc3 { /* WiFi */
-> > +       pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> > +       pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-> > +       pinctrl-1 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-> > +       pinctrl-2 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
-> > +       vmmc-supply = <&wl_reg_on>;
-> > +       bus-width = <4>;
-> > +       no-1-8-v;
-> > +       non-removable;
-> > +       max-frequency = <25000000>;
-> > +       status = "okay";
-> > +
-> > +       #address-cells = <1>;
-> > +       #size-cells = <0>;
-> > +
-> > +       brcmf: bcrmf@1 {
-> > +               reg = <1>;
-> > +               compatible = "brcm,bcm4329-fmac";
-> > +       };
-> > +};
-> > +
-> > +&wdog3 {
-> > +       status = "okay";
-> > +};
-> > +
-> > +&iomuxc {
-> > +
-> > +       pinctrl_flexcan1: flexcan1grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_PDM_CLK__CAN1_TX               0x139e
-> > +                       MX93_PAD_PDM_BIT_STREAM0__CAN1_RX       0x139e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_flexcan2: flexcan2grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_GPIO_IO25__CAN2_TX     0x139e
-> > +                       MX93_PAD_GPIO_IO27__CAN2_RX     0x139e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_laird: lairdgrp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_GPIO_IO22__GPIO2_IO22          0x31e // WL_REG_ON
-> > +                       MX93_PAD_GPIO_IO19__GPIO2_IO19          0x31e // BT_REG_ON
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_lpi2c1: lpi2c1grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_I2C1_SCL__LPI2C1_SCL           0x40000b9e
-> > +                       MX93_PAD_I2C1_SDA__LPI2C1_SDA           0x40000b9e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_sai1: sai1grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_SAI1_TXC__SAI1_TX_BCLK         0x31e
-> > +                       MX93_PAD_SAI1_TXFS__SAI1_TX_SYNC        0x31e
-> > +                       MX93_PAD_SAI1_TXD0__SAI1_TX_DATA00      0x31e
-> > +                       MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00      0x31e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_sai3: sai3grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_GPIO_IO26__SAI3_TX_SYNC        0x31e
-> > +                       MX93_PAD_GPIO_IO16__SAI3_TX_BCLK        0x31e
-> > +                       MX93_PAD_GPIO_IO17__SAI3_MCLK           0x31e
-> > +                       MX93_PAD_GPIO_IO21__SAI3_TX_DATA00      0x31e
-> > +                       MX93_PAD_GPIO_IO20__SAI3_RX_DATA00      0x31e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_uart1: uart1grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_UART1_RXD__LPUART1_RX          0x31e
-> > +                       MX93_PAD_UART1_TXD__LPUART1_TX          0x31e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_uart5: uart5grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_GPIO_IO01__LPUART5_RX          0x31e
-> > +                       MX93_PAD_GPIO_IO00__LPUART5_TX          0x31e
-> > +                       MX93_PAD_GPIO_IO02__LPUART5_CTS_B       0x31e
-> > +                       MX93_PAD_GPIO_IO03__LPUART5_RTS_B       0x31e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_uart8: uart8grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_GPIO_IO13__LPUART8_RX          0x31e
-> > +                       MX93_PAD_GPIO_IO12__LPUART8_TX          0x31e
-> > +               >;
-> > +       };
-> > +
-> > +       pinctrl_usdhc3: usdhc3grp {
-> > +               fsl,pins = <
-> > +                       MX93_PAD_SD3_CLK__USDHC3_CLK            0x17fe
-> > +                       MX93_PAD_SD3_CMD__USDHC3_CMD            0x13fe
-> > +                       MX93_PAD_SD3_DATA0__USDHC3_DATA0        0x13fe
-> > +                       MX93_PAD_SD3_DATA1__USDHC3_DATA1        0x13fe
-> > +                       MX93_PAD_SD3_DATA2__USDHC3_DATA2        0x13fe
-> > +                       MX93_PAD_SD3_DATA3__USDHC3_DATA3        0x13fe
-> > +               >;
-> > +       };
-> > +};
-> > --
-> > 2.34.1
-> >
-> >
-> 
-> 
-> -- 
-> Michael Nazzareno Trimarchi
-> Co-Founder & Chief Executive Officer
-> M. +39 347 913 2170
-> michael@amarulasolutions.com
-> __________________________________
-> 
-> Amarula Solutions BV
-> Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
-> T. +31 (0)85 111 9172
-> info@amarulasolutions.com
-> www.amarulasolutions.com
+--028f56741d52f91b0bec672921ccea60e74b58ce9c1c05854f65f7d060c2--
