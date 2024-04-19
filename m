@@ -1,164 +1,513 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2062.outbound.protection.outlook.com [40.107.94.62])
+Received: from smtpdh18-2.aruba.it (smtpdh18-2.aruba.it [62.149.155.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4366260262
-	for <imx@lists.linux.dev>; Fri, 19 Apr 2024 08:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713516309; cv=fail; b=MeSGc4rpNxYqsjlizTJr1VlZPvVMLcrYllZBKaAaVZXFk8zHb7YzSlI2pBmgUKXehqI7xZjiaZXB2GJefDQk+kFL8zAAivSAtVbHWLi7vvND1qYUn9TR3V8KGm9ZlVk8QZzK5fYdNHdZyxTDt7FxMiXGcVNSgh3lggFPj6veVGY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713516309; c=relaxed/simple;
-	bh=suAYzNRENGG/3atgJwDIczPDN7INle5GVqHqsVucDc4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ogc2lXwdROuNtoNaZQOCtP4vEdcnk9FfA7KgeKJQ4DwJwvIZbRyzLeer+5A5MpuovoeEBgyHYdxxXi+9r2+NYIr0QpSNv9ML4lIzqs3POpAGsJOEV+LMB0pfPzAmQbnprvUXpMJ1oMewDTB8DfyjQdyaDvZj21+YXITWVrYVo4Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=asem.it; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=oN+oXPHy; arc=fail smtp.client-ip=40.107.94.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asem.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0F7F7C9
+	for <imx@lists.linux.dev>; Fri, 19 Apr 2024 11:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713524677; cv=none; b=bJvi+4a4EKyWcYlm7Li5g6jL0VLUUScbvetneDQZqG770vhClGO2nzKcuHCkuS6Qz7PtBDsKlV+I/u60jxoC+hvIuteT3UNw75h214hvZEWhgdcO447chR99TBWAtNAcoYkZCjEKS8MK9h0CYCjUy95Hy06Yq0JsGggKpkIlfuo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713524677; c=relaxed/simple;
+	bh=34ds8pezHaM8zXbo0rmCy4/NhMnoDRXFp3berQVnbqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sTWMyc9PMyzvLg9EAgUz8rXfzoAcfZPJ1/57tgKorclTuj15r0qqBskPqJ1gGtt8TWzGAYOJYDmUno8khPHt1MFyUDlEb/1OKYKR9H2o1agGBDY6UB/aDX0f8pcfJ+5hCC6zTR3FDYWfnrBkQfLfywCPE9CPT59P1AJFfV14+Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=f0HDg5vv; arc=none smtp.client-ip=62.149.155.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="oN+oXPHy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XjwYjmvh9PUQ/hmG4TjHwlbN9U8gd1dlWSPeHExMQT1idNlEYRxdcOSWyUyJrPg6HZdptL8WtbUARAp3PWAh0IBeMVKAkZ02VGQkyXCQEQf61aR7V3WLm5KVCKj3z/GGvJymz0poaHJx9Kw/uF0Oa3v1orzypOpolZXLHPBMS2e7vSIl/uc7aGOtFO8qo4yXDvoqRreV8dvnEu0mLXu98MSHM41obVzPAdh+XabE4xq/ucRRFy1I15XSVAgTrd+Bu6+kiOIRUp4G2kNAaYXtgJMfjd2HrXa8MAVJ8eEqd1jQ3r+sxKe9deBRB5KHz3it8Bc2tI3SHbwbjL3oGi2Xxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=suAYzNRENGG/3atgJwDIczPDN7INle5GVqHqsVucDc4=;
- b=HmFyhbG4uIi70aKk6NNRGxKjo+lx28ePA86TtZFzuhgCbAEpmgIYeAgbHZGspwlQpK8NiBShKCTU8OC/Wyq5vV7ATJPvpm/8Tw/8vwVTFgFEgFv9ExKZG8HSsQZ874//7w/eV0ZwzXLtZRYTsJeSc1Bwkq4RL1gN7fd2yWtu8P0W+1L9BWLb1j/0xJXeln2VUyEqResXH+TA78l5sqifJJ+RUdIEZIZFVxRMwmOioTUyE8YkGFbNT3qeKNgzJEM1bKnm+q8Ikl0RTS11ijLkoNN0xkxnevn6xxcWgdBjNlBFIrrpWAhLKG2KSuGuzQfOMXO54EI0GgSYa2qGuw59BQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=asem.it; dmarc=pass action=none header.from=asem.it; dkim=pass
- header.d=asem.it; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=suAYzNRENGG/3atgJwDIczPDN7INle5GVqHqsVucDc4=;
- b=oN+oXPHyTuPNBKHJ0q3vVbJf/Rw5Ox6SQEQdYB4RbuG3gQ/JKw8iqbGPfmYpufm3ftIzlIjssyUmM0ozTed/IFQE8W1v4qVQmt5A/DyAmAL7RCHYgs1yTlTnELUxNDORHmS7KR7IruGX5bUZJ2DCNCm3qrU/DRkBvVQxUSRf4fiK3AG9RgdMDIJ7PmXLWW80kdcYn057xlTB5Cl3ptqrmJWz1pWLzX+o4+GzXr/18b3NdAsIPputdXTbGv65SacAboaodUGDMeTS+zdHYLtRKCL//vICQDJhcANjFP+vtvpDxzGwctSPereF7cK8dGVYX93HxmGzx6cfz6uh0ejnEg==
-Received: from PH0PR22MB3789.namprd22.prod.outlook.com (2603:10b6:510:29c::11)
- by EA2PR22MB5172.namprd22.prod.outlook.com (2603:10b6:303:25c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.41; Fri, 19 Apr
- 2024 08:45:05 +0000
-Received: from PH0PR22MB3789.namprd22.prod.outlook.com
- ([fe80::ab96:139a:5601:de5a]) by PH0PR22MB3789.namprd22.prod.outlook.com
- ([fe80::ab96:139a:5601:de5a%3]) with mapi id 15.20.7472.037; Fri, 19 Apr 2024
- 08:45:03 +0000
-From: FLAVIO SULIGOI <f.suligoi@asem.it>
-To: 'Krzysztof Kozlowski' <krzk@kernel.org>, Alexandre Torgue
-	<alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
-	<konrad.dybcio@linaro.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: EXTERNAL: Re: [PATCH v2 5/5] arm64: dts: qcom: sa8775p-ride:
- remove tx-sched-sp property
-Thread-Topic: EXTERNAL: Re: [PATCH v2 5/5] arm64: dts: qcom: sa8775p-ride:
- remove tx-sched-sp property
-Thread-Index: AQHakbHTV2pqPIccg0ma6wukYozNRLFvQF7g
-Date: Fri, 19 Apr 2024 08:45:03 +0000
-Message-ID:
- <PH0PR22MB3789D39990E952F4947C04C1FA0D2@PH0PR22MB3789.namprd22.prod.outlook.com>
-References: <20240418122859.2079099-1-f.suligoi@asem.it>
- <20240418122859.2079099-6-f.suligoi@asem.it>
- <4a06b79b-b1b4-4b25-bf36-ba23d3418b8b@kernel.org>
-In-Reply-To: <4a06b79b-b1b4-4b25-bf36-ba23d3418b8b@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=asem.it;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR22MB3789:EE_|EA2PR22MB5172:EE_
-x-ms-office365-filtering-correlation-id: eff51829-76db-417c-ffb2-08dc604d01a2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- YaU0AjLqM3Nur3jsXXzNa04Zo8nxdz8zsXckJrir/Uy7Ty0lqZ87qDhdZn2tsQe0fdvLcKQKDjXIpZg3m5sqMoTycOpSGr7AiQ62FxDGO/nd4RwNSQpjcMAC7FTeiu9Jt2uMvrVta8MQ2QMfYaEd36MbTV+3cQqKeCx/No7s9S6Nls8WnnJLSTajvnVCrNmZdoNV781TEXRLO9104S7sqZACJauQAHOtmLHPrT9xbqVCaWkn4uhm62xZ+0yiluR5BX8lCNGIVhcAsHJVACrbPk6t8FTdPDfVNL9rLnI7VNpJ0N1853kI73+JBYC2Y/CFJfOkYxH9bLtY1I4Doqt9zmlUVUJuTVKoOcMWRuuNG2nXJjkDaFJsaxAqGrgdVCTPSenGbxOo4jdZ8/fzvY+dnBPhYnomTDJo3y97zZtsC3AWksSbLFPrms3lq/hWtWTVYMaiRaVBkWN/uk8k4TVBUPCKhkWy1m3g+dLTf+0xj0fji3F/VW2fTreqFvfnpBvbByAWIuVi3fKE5xDspnjxW/pvYlbMePKu9Vc0QxQxHPk6V4K2zHBAbT7riQ9G/Y9Vm+7J2WJEH9S/edh1AYvxg0N56EN7hrz9syNyA2YWnwH9izGTEAgPTLtuMjV2BkHhAKPxhw9Ma3xzuAatMQiMUZBMboYYkZDthka6fg7pMN5h5PpQaHcFD+6c4IPkoF8AQatwOXYgo/FrcAJCrIsitmiSNnkZt4OLOi0NiLualwE=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR22MB3789.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(7416005)(921011)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?S1Fnd2Y5eEk0Y3ZMTkJCc29mLzY0Y3hqZjBWMURCdkFQRFFmSEo4aW95bVUx?=
- =?utf-8?B?WENKbk5yNjRLcEpXRjVNWHhIa09YVFFrU1RnLzNWNkkzejdwMnp3RWdOMklH?=
- =?utf-8?B?VUJXSUduNDJlb1RTV2orQjZIRnUwWlVMekFnZGJjczdSTHkrdWwzdGJRb0dz?=
- =?utf-8?B?ZkFjMU54alhlbzBnZU5GM2lVZjR1M083M0V5VUQrOURtaGF4aCtRTWFvVjBV?=
- =?utf-8?B?UGR2MlJpRGlBM2xEVEpYQmd4ODRURnFmS1A2TlR4d0pKYVVMRGsrSER4MGxy?=
- =?utf-8?B?ZjJJc1UydTVBdW85b3pkSHFXUDAvSEEveE50cUhKYlJCc2RDM1FUMmxMdkpj?=
- =?utf-8?B?Q0tzQmpHT01lM0hCYzhhQ0tyN2k1SE9sazFtSDJTbzY0M2N3OHZsNXJtdVNs?=
- =?utf-8?B?ZENvV1dweUNhRHM0dWlIUXhlcWhBQnA5OW1jNS9sRFpMSlVJZjBzcytrSitm?=
- =?utf-8?B?OThVSy8xdlN0cHRaVlNwVGlJYU9QNUtTOEhVOVZjMEVGeTVuay9naTdNVkxh?=
- =?utf-8?B?UDRNbTBjZkJrL2Z5S3R2RERJUURSVkp4K0NZV3JleWZuVGxIQmhya2RVZFhD?=
- =?utf-8?B?d1FuTEVXcFBrL204WDJQenNaVGlXWjhEWmdUUFNaOWwyT3ZlZ1d4MWVpSG9D?=
- =?utf-8?B?SzZnZGg0R0JvTW5yTFl2eStpcjc0R3lMdWdjNnkzWEZUQk4vSzhDUStzOTEr?=
- =?utf-8?B?RVNwWG5tUC8zbG0yRVFEbGcwNU5pbXdHR3ZmRlZOUGNFRjhXWmNjMzEzWHVW?=
- =?utf-8?B?STlyekFrbGNjeTluNXRqZk1RNG92U1FoblFiQnQ5Y0xuZEhmNVhmQ2YyZDhI?=
- =?utf-8?B?MlpyZ0YxbjFEZG1XYzVXUncxM1kxRkdWZ0RyTUVZZTNLRkplaTFpZnI0eVJ5?=
- =?utf-8?B?Q1k0djVLd0FaUmNzUlY2NHNnYmVVWEoyVm5lNmk3NFc5c1EzaXhzdHB2Ynor?=
- =?utf-8?B?TXRWZ3k1c0h3aFdIY1ZONXdCRUpVTnhPWG82bHBZcTNxUUxJMjV6ZUR1ODdn?=
- =?utf-8?B?YmlOSXl2c0hRcnZIc0hkVmNueThPb3U5ZlpGWURmZWhFZm00TlFFR3ptMFhF?=
- =?utf-8?B?S2xGZzJ6WnBEZVkrVXpHMCtUTnI5S0htRlVDKzFEOGhQQ2srUWZINlM4WHNK?=
- =?utf-8?B?d2x2NXJ1VE9kekZxZHNvM0p3MFAzNWFTUmdnZkNLTTdna0VXdm0wNVkvTHJv?=
- =?utf-8?B?OStET2hreit6bERHdGpjdS9hMjNGbG8wTmRxd0Job0pMSU95ZUlHTFNXcCtz?=
- =?utf-8?B?QkJPZm96dTJkL1l5N3JNdy9aNFpiMFZIVlViODlUYWEyMDNhYUJ1SW82Qm55?=
- =?utf-8?B?ejF3VGV1eUErcVNMOWdWelRHS05wcFh3dTJQK1ZPNUwvRXM2S3dTWlFTM1JK?=
- =?utf-8?B?VkhqSkxCbzNNd0l6Y2NveC96Z3pVRWxJTVd4KzlZQkpuL3VFM1YxMUNnVjdV?=
- =?utf-8?B?MVlHVEh0M0dYL3hvK292YTdMSnlHSE9DaWlmWHo2SXgrWWE2RDlDQi9qRGRu?=
- =?utf-8?B?dWh6anJPZWJuUlkvYi9jU1JUNU45d0U0a0ZIeDRDNXdmcXErWVhyVkYxT2pK?=
- =?utf-8?B?dmdaK3ZmVDJEa1F0U1NuSG4xcjNBRVlxT1V0N2JBaXppM1QwT0hhL2hwYnBR?=
- =?utf-8?B?UE1jR3crY3hReFl6VVljQnhOYndya1VLbi8rRUtuTzRITE80ZUg5eVF2eWZi?=
- =?utf-8?B?R2I2SWg3VUU4Rzhha1BOUVBzdGRjSXozWmZodWJxb01qTExrT2ZZTlVqNmJM?=
- =?utf-8?B?VTV6N1NiQ1QrazdOSlBjMkpPQktuNForL0pJbm52eFBaUjFWSUhKc0YyMXVv?=
- =?utf-8?B?ZGh2d2x5VU4xYVFHb0IxV0lNcGFlQ1gvaGJqZXRLbXoyS1V3bWQxWk4yekc0?=
- =?utf-8?B?Q1dMWVdrRkhvMHRlR1dvdGNlUDlxcVdaSnpHdEdjZklzdjZIa1BnMkFtNlVi?=
- =?utf-8?B?dytFRUYzVE1UVUM5bHBDZkpubEZrMURBR0VmN3JEV1hCblRMTGFEdExXS0Ur?=
- =?utf-8?B?U2J3MEVxYVBWVGtsS1p4eWhxYVRZeWQvamUvM3ZHcENqOTlBYXl4TGh4blFM?=
- =?utf-8?B?cmNDZUZyNFZPSW9PeWsvVE8wektxbU16KzM2OWNwUE5tSloxTkJDZ0lDQytY?=
- =?utf-8?B?eU9XcWR6eS85NE5UUExEdmVPOWpzRzYyOUgwYjdxU3pNam40b3lKYko5UlFD?=
- =?utf-8?Q?pMOWQkFvbv5tztJGZAbv1yE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="f0HDg5vv"
+Received: from engicam ([146.241.22.218])
+	by Aruba Outgoing Smtp  with ESMTPSA
+	id xlzfrZWY8wcFexlzgrNLR8; Fri, 19 Apr 2024 13:01:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1713524485; bh=34ds8pezHaM8zXbo0rmCy4/NhMnoDRXFp3berQVnbqY=;
+	h=Date:From:To:Subject:MIME-Version:Content-Type;
+	b=f0HDg5vvdopiAbL1mEWcSejSAEUD+vJkFHp8U/RWpon4kcKeAFjYiZ6hBj/fs1E8d
+	 qHm/7RklsfjOJFQALl49OJAJDWwNiqaVEpcBzvflm4ILCuAmp1srFCtkIRSkKGrkQP
+	 wP02gN2bFl3R0hdii1wns320D8SGMnfZ3bxBxTmjI9ZAzvfZCfRyGnAIiGyUaCpUYa
+	 6+q1Rj/oGSofoEe9F0Q5GEO+OxBAg7dgEqHESFUxMk+fiYzmXbijYmiKycSBJUDfMQ
+	 A65qaTA2ihT9lf1ryEoqnjY+oFF8rzcK9vrboCTs1bU3D9m71bSg6sHZKk4mSoqv6k
+	 VQjufBKJoAIHA==
+Date: Fri, 19 Apr 2024 13:01:22 +0200
+From: Fabio Aiuto <fabio.aiuto@engicam.com>
+To: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Mirko Ardinghi <mirko.ardinghi@engicam.com>
+Subject: Re: [PATCH v2 3/3] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM
+ 2.0 Starter Kit
+Message-ID: <ZiJPAr91xzBhuWbF@engicam>
+References: <20240418133923.3705-1-fabio.aiuto@engicam.com>
+ <20240418133923.3705-4-fabio.aiuto@engicam.com>
+ <CAOf5uwmy_3NOupkroYX=W2WJKK1sgg0r0L22fOrbbZ3Z6z1jFA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: asem.it
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR22MB3789.namprd22.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eff51829-76db-417c-ffb2-08dc604d01a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Apr 2024 08:45:03.5710
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 855b093e-7340-45c7-9f0c-96150415893e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wZ0NvGrWZ9uLkBEcPOdCgqJtyXDsW0udTYlf9UD3chI6hXSPhd3C/R9O0YK0IzwpUPDeqR+b2rE4fEpz0v9ig4B29akmpsirvu69+jU2y70KeTtCLonorTcSmX+F+hXk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: EA2PR22MB5172
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOf5uwmy_3NOupkroYX=W2WJKK1sgg0r0L22fOrbbZ3Z6z1jFA@mail.gmail.com>
+X-CMAE-Envelope: MS4xfDq01KQxM5pcyd7Ph2lUxkEV+kMY3uThS5wlw58h4inUqJULoKSusFE8hXDkuaM5c2VuflrPauWHAbMqZ8IDoJhD16+070WjX7BR7gT2O/wpBjYlfMib
+ 74lvy+WPrWEttlY76pSiZj0JmdkgnUa1wazzL0ZAVz/2hKVZ6odxgliy0tL+ju/xFxCoYL+vQH3oilBEap40ZeoX4XFNIv0GALJzxQLl7tJLKV+whxHcE6sh
+ 5OP/LhZfuLW1IpYyJs9heExMJrZJCDeembyC12yNAAkRsq9Ac+vjK79jk7c2puiljP5r6IoCoJOuch4Aj+PyhYk8GJtNAVhbzmmckBxK5+r8IxYbh5X5sn4L
+ T5Ry+SlRBhTPGIUM8B6CEvB21VaMYl5KE6VjsbGh921wyKtqfa8XKoGR3dxg/EiBHjS5NRyOJMyxZlyxAD5J8qgFdMbXRTsHjbx7rwhExTOYmoXaFjrd5r+R
+ 3I2l7TO2YBcnG2mN4/t7u6k0AYCtedaLw8Lm7UphpUwFlWsQ051diQj1vaIqHL7+tRnXuVDtDl30R3MgMeoF/rTf05GHdy9y1Bxf2/bS63xNbcukP5s3VrSE
+ 9LFfCvBd0OKUsgOfrZ3MIhkU
 
-SGkgS3J6eXN6dG9mLA0KDQouLi4NCg0KPiBPbiAxOC8wNC8yMDI0IDE0OjI4LCBGbGF2aW8gU3Vs
-aWdvaSB3cm90ZToNCj4gPiBTdHJpY3QgcHJpb3JpdHkgZm9yIHRoZSB0eCBzY2hlZHVsZXIgaXMg
-YnkgZGVmYXVsdCBpbiBMaW51eCBkcml2ZXIsIHNvDQo+ID4gdGhlIHR4LXNjaGVkLXNwIHByb3Bl
-cnR5IHdhcyByZW1vdmVkIGluIGNvbW1pdCBhZWQ2ODY0MDM1YjEgKCJuZXQ6DQo+IHN0bW1hYzoN
-Cj4gPiBwbGF0Zm9ybTogRGVsZXRlIGEgcmVkdW5kYW50IGNvbmRpdGlvbiBicmFuY2giKS4NCj4g
-Pg0KPiA+IFNvIHdlIGNhbiBzYWZlbHkgcmVtb3ZlIHRoaXMgcHJvcGVydHkgZnJvbSB0aGlzIGRl
-dmljZS10cmVlLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogRmxhdmlvIFN1bGlnb2kgPGYuc3Vs
-aWdvaUBhc2VtLml0Pg0KPiA+IFJldmlld2VkLWJ5OiBLcnp5c3p0b2YgS296bG93c2tpIDxrcnpr
-QGtlcm5lbC5vcmc+DQo+IA0KPiBOQUsuIE5vdCB0cnVlLiBQbGVhc2UgcG9pbnQgbWUgdG8gbXkg
-cmV2aWV3IGZvciB0aGlzIHBhdGNoLg0KDQpJJ20gdmVyeSBzb3JyeSBmb3IgdGhlIG1pc3VuZGVy
-c3RhbmRpbmcsIEkgc2F3IHlvdXIgcmVwbHkgaW46DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
-L25ldGRldi8wMTBkNjdjNy1jYTcxLTQzZmMtYTNlMy1lYzNlNWNkOGIxNDlAa2VybmVsLm9yZy8N
-Cg0KYW5kIHRob3VnaHQgaXQgbWlnaHQgYmUgb2theSBmb3IgYWxsIHRoZSBvdGhlciBwYXRjaGVz
-Lg0KDQpEbyB5b3Ugd2FudCBtZSB0byByZXNlbmQgYSB2MyB2ZXJzaW9uIG9mIHRoZSBwYXRjaGVz
-IHdpdGhvdXQgdGhlDQoiUmV2aWV3ZWQtYnk6IEtyenlzenRvZiBLb3psb3dza2kgPGtyemtAa2Vy
-bmVsLm9yZz4iID8NCg0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiBLcnp5c3p0b2YNCg0KVGhhbmtz
-IGFuZCBiZXN0IHJlZ2FyZHMsDQpGbGF2aW8NCg==
+Hello Michael,
+
+Il Fri, Apr 19, 2024 at 09:29:12AM +0200, Michael Nazzareno Trimarchi ha scritto:
+> Hi Fabio
+> 
+> On Thu, Apr 18, 2024 at 3:43 PM Fabio Aiuto <fabio.aiuto@engicam.com> wrote:
+> >
+> > i.Core MX93 is a NXP i.MX93 based SoM by Enigcam which
+> > needs to be mounted on top of Engicam baseboards.
+> >
+> > Add support for EDIMM 2.0 Starter Kit hosting
+> > i.Core MX93.
+> >
+> > Starter Kit main features:
+> >
+> > 2x LVDS interfaces
+> > HDMI output
+> > Audio out
+> > Mic in
+> > Micro SD card slot
+> > USB 3.0 A port
+> > 3x USB 2.0 A port
+> > Gb Ethernet
+> > 2x CAN bus, 3x UART interfaces
+> > SIM card slot
+> > M.2 KEY_B slot
+> >
+> > Cc: Matteo Lisi <matteo.lisi@engicam.com>
+> > Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
+> > Signed-off-by: Fabio Aiuto <fabio.aiuto@engicam.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+> >  .../dts/freescale/imx93-icore-mx93-edimm2.dts | 354 ++++++++++++++++++
+> >  2 files changed, 355 insertions(+)
+> >  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> > index 045250d0a040..d26c0a458a44 100644
+> > --- a/arch/arm64/boot/dts/freescale/Makefile
+> > +++ b/arch/arm64/boot/dts/freescale/Makefile
+> > @@ -226,6 +226,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
+> > +dtb-$(CONFIG_ARCH_MXC) += imx93-icore-mx93-edimm2.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+> > diff --git a/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+> > new file mode 100644
+> > index 000000000000..8d57374eebdf
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
+> > @@ -0,0 +1,354 @@
+> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> > +/*
+> > + * Copyright 2022 NXP
+> > + * Copyright 2024 Engicam s.r.l.
+> > + */
+> > +
+> > +/dts-v1/;
+> > +
+> > +#include "imx93-icore-mx93.dtsi"
+> > +
+> > +/ {
+> > +       model = "Engicam i.Core MX93 - EDIMM 2 Starterkit";
+> > +       compatible = "engicam,icore-mx93-edimm2", "engicam,icore-mx93",
+> > +                    "fsl,imx93";
+> > +
+> > +       aliases {
+> > +               rtc1 = &bbnsm_rtc;
+> > +       };
+> > +
+> > +       bt_reg_on: regulator-btregon {
+> > +               compatible = "regulator-gpio";
+> > +               regulator-name = "BT_REG_ON";
+> > +               pinctrl-names = "default";
+> > +               regulator-min-microvolt = <100000>;
+> > +               regulator-max-microvolt = <3300000>;
+> > +               states = <3300000 0x1>, <100000 0x0>;
+> > +               gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+> > +               regulator-always-on;
+> > +       };
+> > +
+> 
+> Are you sure about regulator always on? I have seen that you broadcom
+> wifi and bluetooth connected. Same comment for the other
+> patches where you have almost all the regulator boot on , always on. I
+> can not be sure that is really true
+> 
+> Please take a look here
+> arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
+
+thank you for your comment, for wifi/bt module is better to
+remove regulator-always-on.
+
+For other regulators (e.g. sgtl5000) they are fixed and always on
+from an hardware design point of view.
+
+Will remove regulator-always-on for bt_reg_on in the v3 patchset.
+
+kr,
+
+fabio 
+
+> 
+> Michael
+> 
+> > +       chosen {
+> > +               stdout-path = &lpuart1;
+> > +       };
+> > +
+> > +       reg_1v8_sgtl: regulator-1v8-sgtl {
+> > +               compatible = "regulator-fixed";
+> > +               regulator-name = "1v8_sgtl";
+> > +               regulator-min-microvolt = <1800000>;
+> > +               regulator-max-microvolt = <1800000>;
+> > +               always-on;
+> > +       };
+> > +
+> > +       reg_3v3_avdd_sgtl: regulator-3v3-avdd-sgtl {
+> > +               compatible = "regulator-fixed";
+> > +               regulator-name = "3v3_avdd_sgtl";
+> > +               regulator-min-microvolt = <3300000>;
+> > +               regulator-max-microvolt = <3300000>;
+> > +               always-on;
+> > +       };
+> > +
+> > +       reg_3v3_sgtl: regulator-3v3-sgtl {
+> > +               compatible = "regulator-fixed";
+> > +               regulator-name = "3v3_sgtl";
+> > +               regulator-min-microvolt = <3300000>;
+> > +               regulator-max-microvolt = <3300000>;
+> > +               always-on;
+> > +       };
+> > +
+> > +       reserved-memory {
+> > +               #address-cells = <2>;
+> > +               #size-cells = <2>;
+> > +               ranges;
+> > +
+> > +               linux,cma {
+> > +                       compatible = "shared-dma-pool";
+> > +                       reusable;
+> > +                       alloc-ranges = <0 0x80000000 0 0x40000000>;
+> > +                       size = <0 0x10000000>;
+> > +                       linux,cma-default;
+> > +               };
+> > +
+> > +               rsc_table: rsc-table@2021f000 {
+> > +                       reg = <0 0x2021f000 0 0x1000>;
+> > +                       no-map;
+> > +               };
+> > +
+> > +               vdevbuffer: vdevbuffer@a4020000 {
+> > +                       compatible = "shared-dma-pool";
+> > +                       reg = <0 0xa4020000 0 0x100000>;
+> > +                       no-map;
+> > +               };
+> > +
+> > +               vdev0vring0: vdev0vring0@a4000000 {
+> > +                       reg = <0 0xa4000000 0 0x8000>;
+> > +                       no-map;
+> > +               };
+> > +
+> > +               vdev0vring1: vdev0vring1@a4008000 {
+> > +                       reg = <0 0xa4008000 0 0x8000>;
+> > +                       no-map;
+> > +               };
+> > +
+> > +               vdev1vring0: vdev1vring0@a4000000 {
+> > +                       reg = <0 0xa4010000 0 0x8000>;
+> > +                       no-map;
+> > +               };
+> > +
+> > +               vdev1vring1: vdev1vring1@a4018000 {
+> > +                       reg = <0 0xa4018000 0 0x8000>;
+> > +                       no-map;
+> > +               };
+> > +       };
+> > +
+> > +       sound {
+> > +               compatible = "simple-audio-card";
+> > +               simple-audio-card,name = "imx93-sgtl5000";
+> > +               simple-audio-card,format = "i2s";
+> > +               simple-audio-card,bitclock-master = <&dailink_master>;
+> > +               simple-audio-card,frame-master = <&dailink_master>;
+> > +               /*simple-audio-card,mclk-fs = <1>;*/
+> > +               simple-audio-card,cpu {
+> > +                       sound-dai = <&sai3>;
+> > +               };
+> > +
+> > +               dailink_master: simple-audio-card,codec {
+> > +                       sound-dai = <&sgtl5000>;
+> > +                       clocks = <&clk IMX93_CLK_SAI3_IPG>;
+> > +               };
+> > +       };
+> > +
+> > +       usdhc3_pwrseq: usdhc3-pwrseq {
+> > +               compatible = "mmc-pwrseq-simple";
+> > +       };
+> > +
+> > +       wl_reg_on: regulator-wlregon {
+> > +               compatible = "regulator-gpio";
+> > +               pinctrl-names = "default";
+> > +               regulator-name = "WL_REG_ON";
+> > +               regulator-min-microvolt = <100000>;
+> > +               regulator-max-microvolt = <3300000>;
+> > +               states = <3300000 0x1>,
+> > +                                <100000 0x0>;
+> > +               gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
+> > +               enable-active-high;
+> > +               vin-supply = <&bt_reg_on>;
+> > +       };
+> > +};
+> > +
+> > +&cm33 {
+> > +       mbox-names = "tx", "rx", "rxdb";
+> > +       mboxes = <&mu1 0 1>,
+> > +                <&mu1 1 1>,
+> > +                <&mu1 3 1>;
+> > +       memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+> > +                       <&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&flexcan1 {
+> > +       pinctrl-names = "default";
+> > +       pinctrl-0 = <&pinctrl_flexcan1>;
+> > +       fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&flexcan2 {
+> > +       pinctrl-names = "default";
+> > +       pinctrl-0 = <&pinctrl_flexcan2>;
+> > +       fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&lpi2c1 {
+> > +       #address-cells = <1>;
+> > +       #size-cells = <0>;
+> > +       clock-frequency = <400000>;
+> > +       pinctrl-names = "default", "sleep";
+> > +       pinctrl-0 = <&pinctrl_lpi2c1>;
+> > +       pinctrl-1 = <&pinctrl_lpi2c1>;
+> > +       status = "okay";
+> > +
+> > +       pcf8523: rtc@68 {
+> > +               compatible = "nxp,pcf8523";
+> > +               reg = <0x68>;
+> > +       };
+> > +
+> > +       sgtl5000: codec@a {
+> > +               compatible = "fsl,sgtl5000";
+> > +               status = "okay";
+> > +               #sound-dai-cells = <0>;
+> > +               reg = <0x0a>;
+> > +               clocks = <&clk IMX93_CLK_SAI3_GATE>;
+> > +               clock-names = "mclk";
+> > +               assigned-clock-rates = <12000000>, <12000000>;
+> > +               VDDA-supply = <&reg_3v3_avdd_sgtl>;
+> > +               VDDIO-supply = <&reg_3v3_sgtl>;
+> > +               VDDD-supply = <&reg_1v8_sgtl>;
+> > +       };
+> > +};
+> > +
+> > +&lpuart1 { /* console */
+> > +       pinctrl-names = "default";
+> > +       pinctrl-0 = <&pinctrl_uart1>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&lpuart5 { /* RS485 */
+> > +       pinctrl-names = "default";
+> > +       pinctrl-0 = <&pinctrl_uart5>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&lpuart8 { /* RS232 */
+> > +       pinctrl-names = "default";
+> > +       pinctrl-0 = <&pinctrl_uart8>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&micfil {
+> > +       #sound-dai-cells = <0>;
+> > +       pinctrl-names = "default";
+> > +       assigned-clocks = <&clk IMX93_CLK_PDM>;
+> > +       assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> > +       assigned-clock-rates = <196608000>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&mu1 {
+> > +       status = "okay";
+> > +};
+> > +
+> > +&mu2 {
+> > +       status = "okay";
+> > +};
+> > +
+> > +&sai1 {
+> > +       #sound-dai-cells = <0>;
+> > +       pinctrl-names = "default";
+> > +       pinctrl-0 = <&pinctrl_sai1>;
+> > +       assigned-clocks = <&clk IMX93_CLK_SAI1>;
+> > +       assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> > +       assigned-clock-rates = <12288000>;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&sai3 {
+> > +       pinctrl-names = "default";
+> > +       #sound-dai-cells = <0>;
+> > +       pinctrl-0 = <&pinctrl_sai3>;
+> > +       assigned-clocks = <&clk IMX93_CLK_SAI3>;
+> > +       assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> > +       assigned-clock-rates = <24576000>;
+> > +       fsl,sai-mclk-direction-output;
+> > +       status = "okay";
+> > +};
+> > +
+> > +&usdhc3 { /* WiFi */
+> > +       pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> > +       pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
+> > +       pinctrl-1 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
+> > +       pinctrl-2 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
+> > +       vmmc-supply = <&wl_reg_on>;
+> > +       bus-width = <4>;
+> > +       no-1-8-v;
+> > +       non-removable;
+> > +       max-frequency = <25000000>;
+> > +       status = "okay";
+> > +
+> > +       #address-cells = <1>;
+> > +       #size-cells = <0>;
+> > +
+> > +       brcmf: bcrmf@1 {
+> > +               reg = <1>;
+> > +               compatible = "brcm,bcm4329-fmac";
+> > +       };
+> > +};
+> > +
+> > +&wdog3 {
+> > +       status = "okay";
+> > +};
+> > +
+> > +&iomuxc {
+> > +
+> > +       pinctrl_flexcan1: flexcan1grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_PDM_CLK__CAN1_TX               0x139e
+> > +                       MX93_PAD_PDM_BIT_STREAM0__CAN1_RX       0x139e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_flexcan2: flexcan2grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_GPIO_IO25__CAN2_TX     0x139e
+> > +                       MX93_PAD_GPIO_IO27__CAN2_RX     0x139e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_laird: lairdgrp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_GPIO_IO22__GPIO2_IO22          0x31e // WL_REG_ON
+> > +                       MX93_PAD_GPIO_IO19__GPIO2_IO19          0x31e // BT_REG_ON
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_lpi2c1: lpi2c1grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_I2C1_SCL__LPI2C1_SCL           0x40000b9e
+> > +                       MX93_PAD_I2C1_SDA__LPI2C1_SDA           0x40000b9e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_sai1: sai1grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_SAI1_TXC__SAI1_TX_BCLK         0x31e
+> > +                       MX93_PAD_SAI1_TXFS__SAI1_TX_SYNC        0x31e
+> > +                       MX93_PAD_SAI1_TXD0__SAI1_TX_DATA00      0x31e
+> > +                       MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00      0x31e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_sai3: sai3grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_GPIO_IO26__SAI3_TX_SYNC        0x31e
+> > +                       MX93_PAD_GPIO_IO16__SAI3_TX_BCLK        0x31e
+> > +                       MX93_PAD_GPIO_IO17__SAI3_MCLK           0x31e
+> > +                       MX93_PAD_GPIO_IO21__SAI3_TX_DATA00      0x31e
+> > +                       MX93_PAD_GPIO_IO20__SAI3_RX_DATA00      0x31e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_uart1: uart1grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_UART1_RXD__LPUART1_RX          0x31e
+> > +                       MX93_PAD_UART1_TXD__LPUART1_TX          0x31e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_uart5: uart5grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_GPIO_IO01__LPUART5_RX          0x31e
+> > +                       MX93_PAD_GPIO_IO00__LPUART5_TX          0x31e
+> > +                       MX93_PAD_GPIO_IO02__LPUART5_CTS_B       0x31e
+> > +                       MX93_PAD_GPIO_IO03__LPUART5_RTS_B       0x31e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_uart8: uart8grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_GPIO_IO13__LPUART8_RX          0x31e
+> > +                       MX93_PAD_GPIO_IO12__LPUART8_TX          0x31e
+> > +               >;
+> > +       };
+> > +
+> > +       pinctrl_usdhc3: usdhc3grp {
+> > +               fsl,pins = <
+> > +                       MX93_PAD_SD3_CLK__USDHC3_CLK            0x17fe
+> > +                       MX93_PAD_SD3_CMD__USDHC3_CMD            0x13fe
+> > +                       MX93_PAD_SD3_DATA0__USDHC3_DATA0        0x13fe
+> > +                       MX93_PAD_SD3_DATA1__USDHC3_DATA1        0x13fe
+> > +                       MX93_PAD_SD3_DATA2__USDHC3_DATA2        0x13fe
+> > +                       MX93_PAD_SD3_DATA3__USDHC3_DATA3        0x13fe
+> > +               >;
+> > +       };
+> > +};
+> > --
+> > 2.34.1
+> >
+> >
+> 
+> 
+> -- 
+> Michael Nazzareno Trimarchi
+> Co-Founder & Chief Executive Officer
+> M. +39 347 913 2170
+> michael@amarulasolutions.com
+> __________________________________
+> 
+> Amarula Solutions BV
+> Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
+> T. +31 (0)85 111 9172
+> info@amarulasolutions.com
+> www.amarulasolutions.com
