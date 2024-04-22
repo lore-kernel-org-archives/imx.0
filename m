@@ -1,42 +1,60 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6050A819
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 03:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D81E101D5;
+	Mon, 22 Apr 2024 03:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713757924; cv=none; b=Vnplq+fcb7QV5NtEKkw6uoUNs2OSrkASom0w+41ZOkpMZaZTloci/DnlFSe3kUOnekIRwBBb6uQCnNkIvpXuOksllzEPrzv8QKGJ11npVAIwdBmzIA/w8ucr0ua1pOCAzUk99AoArPDNn0wYez/5mLYBXQbL/txXXz8MkOOr9RU=
+	t=1713758286; cv=none; b=EAKTXi3rfnWLp2RnthKcAptTUKq0231jfXZv6VncuUe1yszIU8XYeuRuuLdh8hVrUjdr+mo7LSSG6mmY7+qhHceEbFJ4gO18LWf4jDntE2mJRtC0MsIKS37tbrb5nLlEo6u1Etoh1fbpSlTJIO6QZL1IfK5PtrJz22R1Ko9CBPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713757924; c=relaxed/simple;
-	bh=qh2lATBnUzpzdGwkWu5xianoE/fEhMZqMckQVquiV/g=;
+	s=arc-20240116; t=1713758286; c=relaxed/simple;
+	bh=74DDXzIMt+qGRJSOmzuMZBwtJRLIogdL8tSrRW8MmsA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cMkZp45wzPgHdEmMuBG1sbP+0rupjcOsog3Pcha9imrR7BRfRKiD1jT88v6QRcL5S15apnKv3KL5dUaFG73ZrdTc7WnsC3l6jq4W4KBZxuB+c47gkZHbekn6xVznYgdnQbTTZsvPNirUdD4XE/UdodJVVIoIxvb7ndn0I2XZat0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=foSg7VtP; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=ihR2GeXRgMUJO1R6VLYelbnueniwE6Krt9ZGzJE66RotOU2oondF6sQ/0UKWD9Q2BQEKhhmFuSls9T0teManxSezANiPaKCn300gdRSTqIdQw8YKneffN+ABerFyx1FdRyonXRGt446+HtoUyZlKLWNCzN5hfFLtENJjwqzQq3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VPy8bsJE; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="foSg7VtP"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VPy8bsJE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=NOwt1UGzpwYrljiDMRzV2Nl5es+FS2lFQ8lExF5kDl8=;
-	b=foSg7VtPVvtudsSwbGV+piQkV5VJoZhu+wuOXNp6BoxNaOoupkj7suXFaT+MFd
-	9YBBeTY+I7ndVdLBAeufvZ4qEWa+5GP6xCYnBwzRpsMpbMyfrzDLaUbfZIZnCWOs
-	4+xiSiInrjfOBrNc9UySLuHr565AZK2I0UAmxw519vxaQ=
+	Content-Type; bh=tz47OXMk6zbzBGF1ySQDbEiSUSoHnPDqD9rcCDIH3/o=;
+	b=VPy8bsJEtjhzPsrf057kTfxn2QcwPsyLbEVeyhEsMSlK1s6rOKafjwW1tFiiXn
+	BJzxCWUZ19e2Y3C1m3C9snT+A1us0lCGXrTutHQS0mIMD7kHaG1J3L1xyb9+9UsR
+	k5LTxpbP8FNwbH+D37t/J+5ZPUoN9EXp4qxqlsRVJmVDQ=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp2 (Coremail) with SMTP id C1UQrABHrxiT3iVm6gIyBA--.28493S3;
-	Mon, 22 Apr 2024 11:50:44 +0800 (CST)
-Date: Mon, 22 Apr 2024 11:50:43 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrABHzw5N3yVmRawrAw--.30849S3;
+	Mon, 22 Apr 2024 11:53:50 +0800 (CST)
+Date: Mon, 22 Apr 2024 11:53:49 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
-	conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-imx@nxp.com, jun.li@nxp.com,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Mark Brown <broonie@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 1/7] dt-bindings: usb: usbmisc-imx: add
- fsl,imx8ulp-usbmisc compatible
-Message-ID: <ZiXek6rDRdku9Bfm@dragon>
-References: <20240403090438.583326-1-xu.yang_2@nxp.com>
+	linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org
+Subject: Re: [PATCH 3/7] ARM: configs: imx_v6_v7: Enable DRM_DW_HDMI
+Message-ID: <ZiXfTfNoc0/2XL9s@dragon>
+References: <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
+ <20240403-fix-dw-hdmi-kconfig-v1-3-afbc4a835c38@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,17 +63,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240403090438.583326-1-xu.yang_2@nxp.com>
-X-CM-TRANSID:C1UQrABHrxiT3iVm6gIyBA--.28493S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxGYLDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBTIZV6NnuIK1wAAsT
+In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-3-afbc4a835c38@kernel.org>
+X-CM-TRANSID:ClUQrABHzw5N3yVmRawrAw--.30849S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW5Kr4Duw13uw1UuF1UAF13urg_yoWxGwcEyF
+	yxKrn7Zr15Za4jyw15KFZavrsa93WUWFn8X3yUKrW3WFn8XF45Ar4kt34Sywn7Z3WIyrsr
+	CFs5J3Wvyw4IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbco7JUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQ7IZVsVCfARMAAAsw
 
-On Wed, Apr 03, 2024 at 05:04:32PM +0800, Xu Yang wrote:
-> Add "fsl,imx8ulp-usbmisc" compatible.
+On Wed, Apr 03, 2024 at 12:56:21PM +0200, Maxime Ripard wrote:
+> Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
+> module") turned the DRM_DW_HDMI dependency of DRM_IMX_HDMI into a
+> depends on which ended up disabling the driver in the defconfig. Make
+> sure it's still enabled.
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
-Applied all, thanks!
+Acked-by: Shawn Guo <shawnguo@kernel.org>
 
