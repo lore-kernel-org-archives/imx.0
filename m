@@ -1,95 +1,115 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C63152DFC
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 15:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AE1153572;
+	Mon, 22 Apr 2024 16:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713800552; cv=none; b=uvJ+rMjzJuFEOehRAW+ALjA5I2GDZ9vR6rKrOTa4YaXRG6Gm0BEIIPrNnjs9xOiyBriPea8Ud6TW64Qzc/4kaRb5/WRYb/kGNdesQqbNsJmWCkwm4/5remOpuPYSt+lTlCDwWU9e3Q+ME78L+sK2U45sLQBFzKhpJsrxzggPcAs=
+	t=1713801788; cv=none; b=Q8IUhzpSCM1TRnvPNCgnb4yM8oZJchHD4X8cDhVsviKmMY8heqYbwLRbWuCfpH8jtB96liefDLlOMChD5v/eIB0gqF9JsS+ztaUl7/EfIYI5rnMV07w9FMhxBXTPcuDVHRT7i2HgKWwUHxEsYGDcv9XDC/niMNOS+U2NyulEZ6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713800552; c=relaxed/simple;
-	bh=1ZQOHptYXX3HrTQPw5/AkT23LKEv6avumWOtVNiEBQg=;
+	s=arc-20240116; t=1713801788; c=relaxed/simple;
+	bh=z6xykXSbOqn7cIGy1HJCH5EuceJlzbwO6qft+dmLyLU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XryD2FxB1yUsyi5Zj40zZppAumTT7+Z3JY91dG5udMWyO1MjD8zrlGHx7oa+7KTpepG15SBG+2s03Xz1RbeuG2dThV2hOKCoG0XdgEUGNGTaa4nqNEvUam/wE9MGiM+Nw98XUhyc35Li7/P/qB2WqbwYoawMpYAxun8VXX/r984=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ryvoD-0005wq-Fe; Mon, 22 Apr 2024 17:42:21 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ryvoC-00DiZl-EC; Mon, 22 Apr 2024 17:42:20 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ryvoC-006AzV-17;
-	Mon, 22 Apr 2024 17:42:20 +0200
-Date: Mon, 22 Apr 2024 17:42:20 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	NXP Linux Team <linux-imx@nxp.com>, linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] i2c: lpi2c: Avoid calling clk_get_rate during
- transfer
-Message-ID: <7lcpupsaepqzxwovzvddtvrdr3f3xaxedxv5nfg4ax73gazu7t@mbc6ajq5suxh>
-References: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QJ9kAmlr05PPOi9obht8airIsWIboq0sXRLOwyttk+XlQfjQx6EVh87W1woyp8lXQCbvPv+T23xp1ZlMLiP+2XMmXoCOKFQUmAIttJmYDt1o6fN79BNJluV+mZta1o1ltF819mfVWg7APQLH0I4/z0xgX5u87F2WjGRrxJOiIGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=222tnBrQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="222tnBrQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nrWXsKM4GcLwFBIZrYvh14P/NRPtdrs1fUJfL6jXu2M=; b=222tnBrQxmPiTVFF5iurH3o4Ms
+	jz0+OyhvcCMg1AKkQYQdWPsQJmy0WBpcYOdwK0b6dNfthA3JYwsjsw3eEbZM61aaOJhbzKqgUHVVR
+	ySoKu+nGVjb5gjPaGgvGYFGT/MDyLCVgqpk5Nd5TAInaSWOsucpk1U0eZ54CPbRghaww=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ryw80-00DdF8-R4; Mon, 22 Apr 2024 18:02:48 +0200
+Date: Mon, 22 Apr 2024 18:02:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, Linux Team <linux-imx@nxp.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 1/3] dt-bindings: net: mx93: add enet_clk_sel binding
+Message-ID: <972f323b-2c90-4088-b245-d5a8077d77e8@lunn.ch>
+References: <20240422-v6-9-topic-imx93-eqos-rmii-v1-0-30151fca43d2@pengutronix.de>
+ <20240422-v6-9-topic-imx93-eqos-rmii-v1-1-30151fca43d2@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="57xlb4vbtmvwwuxp"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20240422-v6-9-topic-imx93-eqos-rmii-v1-1-30151fca43d2@pengutronix.de>
 
+> +  enet_clk_sel:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    items:
+> +      - items:
+> +          - description: phandle to the GPR syscon
+> +          - description: the offset of the GPR register
+> +    description:
+> +      Should be phandle/offset pair. The phandle to the syscon node which
+> +      encompases the GPR register, and the offset of the GPR register.
+> +
 
---57xlb4vbtmvwwuxp
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+net/nxp,dwmac-imx.yaml
 
-Hello Alexander,
+  intf_mode:
+    $ref: /schemas/types.yaml#/definitions/phandle-array
+    items:
+      - items:
+          - description: phandle to the GPR syscon
+          - description: the offset of the GPR register
+    description:
+      Should be phandle/offset pair. The phandle to the syscon node which
+      encompases the GPR register, and the offset of the GPR register.
 
-On Mon, Apr 22, 2024 at 01:36:29PM +0200, Alexander Stein wrote:
-> The dependency from v2 has already been merged in commit b0cde62e4c548
-> ("clk: Add a devm variant of clk_rate_exclusive_get()").
+dma/fsl,imx-sdma.yaml
 
-Note that you might also need 7f1dd39aedfccf60772328c5b88d56dbd39954c3
-which is part of v6.9-rc5.
+  gpr:
+    $ref: /schemas/types.yaml#/definitions/phandle
+    description: The phandle to the General Purpose Register (GPR) node
 
-Best regards
-Uwe
+memory-controllers/fsl/fsl,imx-weim.yaml
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+ fsl,weim-cs-gpr:
+    $ref: /schemas/types.yaml#/definitions/phandle
+    description: |
+      Phandle to the system General Purpose Register controller that contains
+      WEIM CS GPR register, e.g. IOMUXC_GPR1 on i.MX6Q. IOMUXC_GPR1[11:0]
+      should be set up as one of the following 4 possible values depending on
+      the CS space configuration.
 
---57xlb4vbtmvwwuxp
-Content-Type: application/pgp-signature; name="signature.asc"
+      IOMUXC_GPR1[11:0]    CS0    CS1    CS2    CS3
+      ---------------------------------------------
+              05          128M     0M     0M     0M
+              033          64M    64M     0M     0M
+              0113         64M    32M    32M     0M
+              01111        32M    32M    32M    32M
 
------BEGIN PGP SIGNATURE-----
+      In case that the property is absent, the reset value or what bootloader
+      sets up in IOMUXC_GPR1[11:0] will be used.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYmhVsACgkQj4D7WH0S
-/k55lwf/cekpfnj5lv5y3h8dke+TMq1Scw8/act4h/I4gUCa1ZSMsiI6ilU+Kd+Z
-ht4Psn95hw9CtcK2NijLd2MZTV4angPZxGjYAaSddPGTlLQ2+tH1YWqdc+n+S/b+
-SGuKmSniD/6wMVUFqJfwLqcIlrCytNPwwj1V+LjUJud8ciuDo8QMmBekhtAyvk2b
-rHwSYH2zOn8QNN1P+WLMz2C7SRzdtQrzbUqDlw/y+Yczn7YqCapT+oeJWWDeDfOe
-SGvzQtgK81DXDlVzanrHqUHSylo7+w2PR6Gmb7nnGoDVenfiQx4OzpjZ/0vlQ1C6
-8KF2nGMS0ZbDl+wdgDUgR/LxyOtjig==
-=zY54
------END PGP SIGNATURE-----
+How about defining that the General Purpose Registers property is
+once, rather than per device which needs access to it?
 
---57xlb4vbtmvwwuxp--
+      Andrew
