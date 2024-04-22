@@ -1,43 +1,41 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5687714285
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 04:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42890168DA
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 04:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713761551; cv=none; b=J93UYX0vexzm6q0TWirV/U2qfd/s2cWUW5ejKLVWT+1t42QXL+uAc8bCnBDlFC9qztYHZLVT1Dd4opgFD5PzotnCGS3t8ps3qgTE8RbVBknoEMcWJcVjlCaLqK0Qz5WwC3wgDA8n9H8lkI31sY/9aK2gEfalkWSlqHljRXON22E=
+	t=1713761946; cv=none; b=H8prb8J3U+sbEud95VkCNjWLgdxFnhiaxAP7JPqacheIc/kRkVi9C/ptyhUUc0X3ASZyL7vsn36bnxgNA2duaXtlA/LReLPUjl+sZ/FxijA7GTv2PC7WSgeFN5Q4Au9caeoFI4ayjQPdIBw3riuW9pBbGkWNhv8KFz/+EcCL7mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713761551; c=relaxed/simple;
-	bh=3TKpaHNbYlQ7W5Tewx88xVlKpd8fLXZgs5BUssoZIYg=;
+	s=arc-20240116; t=1713761946; c=relaxed/simple;
+	bh=e2IOv5P5BEhLEgCvqfH/NoIA22PfHjXvysi4/N9o8Zg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ANqhwBWs9ZjitL/IyEezoubSWpkpKXum6nSsGNrprR4ou0sNTGRSeinARb+ObBroEE9hXFwaOacAiG9i9PDD4I5NEB10rjwtLTnF1zFsLo2VN/BLSBlEgB28NhOGSksRKQx0iPJIdu9V8aKfxRVWXzm8Bsk4YFfbOgbuFljGOGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nF1cX8YC; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=d43mSnOg59IvGEhFesdvIJGnjIYB18CmI/yw+whMCIZlwWnQ3V4pIhP50K6yDmv6eldzkusCTbTQUXDnfMpupFHBmjABu5VnYi2qpjOLhmioCok3UhF6Opk7n9+UqcgGm5fZ7bhCGkbJo2Wmru/n9xmUA8YHp8LlB3d1yXsJvZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ZL5n0Mo0; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nF1cX8YC"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ZL5n0Mo0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=4uRiF1GyQB9YD8QQ1libjMIe78m2rOWJf5vFvOBAwyA=;
-	b=nF1cX8YCW2rwTTXBYdeDiezsnSrNExmnHtQ75z3cRXRTGZ3WEWNlJuvw41gzFs
-	oKAQdmL+0dH5K9H2f/uYby9f6K1OCho+0G37tygrbiLrtc+ZL0qRwORz6X6XSeq6
-	4hVpVI9gGHOFWqV/fmF5H5WfEATGwpShyKt4FtU1yRb2Y=
+	Content-Type; bh=bLSMPym9YLKBmvTHeO2esyIfmmXqnJLIMS/RpQu5QIY=;
+	b=ZL5n0Mo0pwM+TSXvjxE6CKzjodmMDGkjTlKhujJGdGqF8jfDQA85U79CDpfCUs
+	QYOUZTkLIK7utM0DIXcw9ZzszpaZlkqUPyd0q3MT2KAs3piS2JW9W7Ij6rHO7LSV
+	ejGoTWc40Vtvhd1QL6aKmmihGF6hVol0YFpERkGEfHgwg=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrAAHbvrf7CVmXF0sAw--.24511S3;
-	Mon, 22 Apr 2024 12:51:44 +0800 (CST)
-Date: Mon, 22 Apr 2024 12:51:43 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrADHTw9_7iVmhDAzBA--.10732S3;
+	Mon, 22 Apr 2024 12:58:40 +0800 (CST)
+Date: Mon, 22 Apr 2024 12:58:39 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 2/2] ARM: dts: imx6: exchange fallback and specific
- compatible string
-Message-ID: <ZiXs30oAOjJkkr1e@dragon>
-References: <1712894212-32283-1-git-send-email-shengjiu.wang@nxp.com>
- <1712894212-32283-3-git-send-email-shengjiu.wang@nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux@ew.tq-group.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL
+Message-ID: <ZiXufwvLKmZ9ouXB@dragon>
+References: <20240410063706.3813894-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,20 +44,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1712894212-32283-3-git-send-email-shengjiu.wang@nxp.com>
-X-CM-TRANSID:ClUQrAAHbvrf7CVmXF0sAw--.24511S3
+In-Reply-To: <20240410063706.3813894-1-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:C1UQrADHTw9_7iVmhDAzBA--.10732S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVDDGUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwjIZVnxcqAlJgABsS
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVco2UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBbIZV6NnuI2vQABsG
 
-On Fri, Apr 12, 2024 at 11:56:52AM +0800, Shengjiu Wang wrote:
-> Exchange fallback and specific compatible string for spdif sound card.
-> The specific compatible string needs to be in first place, the fallback
-> compatible string needs to be in the end.
+On Wed, Apr 10, 2024 at 08:37:05AM +0200, Alexander Stein wrote:
+> Enable HDMI nodes and add the output connector.
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Applied, thanks!
+Applied, thanks! 
 
