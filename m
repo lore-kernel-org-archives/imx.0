@@ -1,60 +1,60 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77E754FA1
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 09:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88BE20B28
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 09:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713777089; cv=none; b=VeUJDDACXRiaBwx0BMrG/fUou4+ciYsqL+OrmjOSFcZHlrVfVt/YxNTdQPUsV5fBFHQqtprOuuzxnB5vMauczr7iS5F8Z/t11+gE8cxOt+I3To3F++6wiM2YF4mMt8rIwl1kEVVQgqItFHCU9Q/fGISXG63w6xuC6xGBVoIi9XM=
+	t=1713777165; cv=none; b=EG4wFZLzFyTwzrZCw6y+K9IJ0ctYggSX+6fwGEkcMzTS3vBQk28V0r+yvpnaiKtYC44i19sU9y+M3kYsjqoaAwaTybIi2WybUAi/3cxIbXMoozQKWKBCtGo1h5xgEd6Xkht9OUwcvVWuqFmMu3liJApuvR/x9ncqYua1ZwlrB1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713777089; c=relaxed/simple;
-	bh=5Zrk0JNeMMJGeMmuSXd+Glzv2YQQXGQlSA/0f3CSFVY=;
+	s=arc-20240116; t=1713777165; c=relaxed/simple;
+	bh=WE0KzX3VJKaep+Dhdb0z/FehMwSsCc8bQKgh8J8SkqQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tiCvUqwx3cgcgK0/q5otd6WY2By+MDjNXANj/K0gle6SKvpdtYilEXAyJgVJu8l+HQE6xEBC+h7Be+ls4Tr2M7m7OiC8L1G7UVK5T/g5u+juHRohz5EZyp8UckqYzcFy9F1I9yYVtUfDMmhrfTG7v45qcb5XYfzB3dsvvAx43Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rwEHPU0g; arc=none smtp.client-ip=209.85.208.53
+	 In-Reply-To:Content-Type; b=j3H6+2nEd0ZI61RPTpWqyOunY8MA1jwG6RUgeLLG/grKxatzC2+I7rGunO0ler2RM3GBB3GIz25CN48j4OfHMK1u4iTDULAYifGgpmiZkowjckdWDqY/6o/R/pOimTQGXcTpApDW2V2XNQQ0wdJPco9HPwoisnwbMaar9QIsT8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dazg3OYv; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rwEHPU0g"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-571c22d9de4so5365122a12.3
-        for <imx@lists.linux.dev>; Mon, 22 Apr 2024 02:11:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dazg3OYv"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a51a7d4466bso438905666b.2
+        for <imx@lists.linux.dev>; Mon, 22 Apr 2024 02:12:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713777086; x=1714381886; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1713777161; x=1714381961; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hkCaniajq8e0gAUz5Qg0IhAGq3W85Vx1qTiewZinuVI=;
-        b=rwEHPU0gbI8ndyYtY+WfW5EdLgSB+Bx7X8jF3GQNoK1/fSpwwAZhXCK013uiqji6Sy
-         wY2eJB+uUTmF6rljcLUjyR3V6OUbUJe1aHOV2IQpcgrPVd2vNQUq43wEWmUe1PBpiifS
-         JKUdOZ1Q3y0WjYWyTHBBsXFhIW26gmS+vJd9CseJjtjWxtwRJUteQ+uegTxBgoUN3J9n
-         zTRfp3RHH3Wuy8ifWhNUcjmBirW0WN9BnD1UP53c1OKl0+gDBadDy/Fxbkm7GCHEOjoY
-         6PxfdmjSsAtRUBNE/mRNqUYKA5rdizCeV8hQXgw2k/LxShqimBupRp4bA3wuJuGTDyod
-         405A==
+        bh=LUXy42KiwkMsfzFd8SftlWu2Tv7A1Nv/ePpZqOKpeVo=;
+        b=Dazg3OYv+EUzE+mt27OM20KillLZpLopjqm4Tzih7eOzJcmIAoGnwziCZlU8GyDcYe
+         AtMtnfuQg802pbWBXvsutHFEFvK01wfKTSa7CKbBz8H4fdlFSrBI6C8TrrBJ9HyCwNRJ
+         6/rY1Av87zhQROwrT6O8kJwaMuQxcpXWl2tJiGtc0YYYh4JYbLZqGkcHWCZD6U4buqnI
+         hTdxkrkVY3Th2TGMcnrjWE3pYXm+lwsYBoKKksvI52VfL2vYOqzi0XXvUf/yUI9jW873
+         gpYpf2ic1lHoaWewFbskKca+2tyUd+7MclB7nqvLFWV5SloxgSnReyrv2fxsCpGPv1+g
+         npiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713777086; x=1714381886;
+        d=1e100.net; s=20230601; t=1713777161; x=1714381961;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hkCaniajq8e0gAUz5Qg0IhAGq3W85Vx1qTiewZinuVI=;
-        b=nm/ycndZsAHpeH1Nb4HSyPI21rc5syL3IPOMvNjKmRZdKDbDnDHwIB9/F/QwOQKHXa
-         ZIYkWJT7+JbWeqtfac1oLbcmCa0Sh+qmLlln/dM7sG98VzqxGjQCzAQM3DkveRjXV5rY
-         4XyJslOvce18KW2BtbjvOPUQjMPf/y1piaYByhyArzlCPIzZKe9Rg/IYpadrFIxX10RG
-         CdOLdmhWGHgK14I1Xt+XLJjK60JUbhubq9HCjnDnvMvI1nPKYFCwvD53sb3DIqPTKEG3
-         KvGzX70TpZtzN6rXceHykmuh34lFELD2nqwuiGgKF7O6NlpY18I+O8WELM9FTa3zMlFc
-         wLIg==
-X-Forwarded-Encrypted: i=1; AJvYcCX+faCTWSJKGdOj7xFi/tc1JIpt48dy8oppWYoAegyX2+Hhw9H1Z9OfIbanq4RqvWeMe5IKtmKKoYu6VIGQEYg0IEQI
-X-Gm-Message-State: AOJu0YwRE7ioXz0x/pxTWo9Ns2l0/7xQEGbx5v0IK+rRwEYWv9jjADdB
-	xsnjvopIQRW2LAb0ny3bsSXfF2wZNOg9bc+Swi/jy2Y/58QFNIMuIzIvnZlz/Sk=
-X-Google-Smtp-Source: AGHT+IEOmoIpd2iJxnAeQuvStIrPHyzUc+oDU9zayqCDq5neSZ6lG96WQuHyPZ856bz5Xnb48vQ6Jw==
-X-Received: by 2002:a50:f605:0:b0:56e:232b:95cd with SMTP id c5-20020a50f605000000b0056e232b95cdmr5397111edn.41.1713777086019;
-        Mon, 22 Apr 2024 02:11:26 -0700 (PDT)
+        bh=LUXy42KiwkMsfzFd8SftlWu2Tv7A1Nv/ePpZqOKpeVo=;
+        b=t5UBcY45aiT8KK8JbK1SpaJr1xBJuwWd5+1h8Vk/OL1AKyUG+6W51uGt+UDJImJek7
+         O2RpiprJ8LVnxYXvCvVS122pvx8YtsOXCKfim51EB/XbvZ4sgwz7+xf/wh3hcjLVRNP7
+         AnLgT16Iy2cSKJvkqXBOdwJ/odqrSzAwKls3+VEiHgPPuzK6oxMF5LNmdRnaAX0crcoo
+         zNdC5xVKQ42S9D1LyR/FV2XO50r5O7j3N07o6kj9GDWQiHyuEc3l6kEebMcHEU8pt1qp
+         GFiSb/7EqR1/hoVS+Mej4Fzj/v5MFI0M8eCj5NSYoUd42lqPBBS5SPmLqkl1yT0hjXE6
+         FQ9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWmDCqZ20K+CNdfEz9DOEJHpOTtEewCxiV7t5ROmMOBorfmh9slic55BSej9uPwrc1Z6+YnZZA6OMc+Ho5FuFpodlPJ
+X-Gm-Message-State: AOJu0YwR6cp3WD2AkS7woibwkMYWxiNrZ/0UjgPa0yaD6zPNnh5TRzAy
+	pL8HO7Z6zWsBFut8ZeMHdYCWWRgZEGe1Hhn9rQVEuWkkUAPRcudXLF2zz983vo4=
+X-Google-Smtp-Source: AGHT+IGVWr/WXuKg0Q8wHZL7jKFrJPfUhktVV54/z+G0ymvn4BrzyGuYjtvyoPwkjXcM2lNYBNXXRg==
+X-Received: by 2002:a17:907:7e81:b0:a55:b485:fee1 with SMTP id qb1-20020a1709077e8100b00a55b485fee1mr1935856ejc.36.1713777161195;
+        Mon, 22 Apr 2024 02:12:41 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id p8-20020a05640243c800b00571fad0647csm2080041edc.74.2024.04.22.02.11.24
+        by smtp.gmail.com with ESMTPSA id t8-20020a170906a10800b00a4e253c8735sm5525254ejy.52.2024.04.22.02.12.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 02:11:25 -0700 (PDT)
-Message-ID: <b3d074ad-f2fe-4cbb-9ad8-1c28eda6bdae@linaro.org>
-Date: Mon, 22 Apr 2024 11:11:23 +0200
+        Mon, 22 Apr 2024 02:12:40 -0700 (PDT)
+Message-ID: <015d5f6c-9209-40fc-9d2c-c642070df99e@linaro.org>
+Date: Mon, 22 Apr 2024 11:12:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: net: mx93: add enet_clk_sel binding
+Subject: Re: [PATCH 3/3] net: stmicro: imx: set TX_CLK direction in RMII mode
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -80,7 +80,7 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com
 References: <20240422-v6-9-topic-imx93-eqos-rmii-v1-0-30151fca43d2@pengutronix.de>
- <20240422-v6-9-topic-imx93-eqos-rmii-v1-1-30151fca43d2@pengutronix.de>
+ <20240422-v6-9-topic-imx93-eqos-rmii-v1-3-30151fca43d2@pengutronix.de>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -127,20 +127,74 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240422-v6-9-topic-imx93-eqos-rmii-v1-1-30151fca43d2@pengutronix.de>
+In-Reply-To: <20240422-v6-9-topic-imx93-eqos-rmii-v1-3-30151fca43d2@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 22/04/2024 10:46, Steffen Trumtrar wrote:
-> When the eQOS on the i.MX93 is used in RMII mode, the TX_CLK must be set
-> to output mode. To do this, the ENET_CLK_SEL register must be accessed.
-> This register is located in a GPR register space.
+> In case of RMII connection, the TX_CLK must be set to output direction.
+> Parse the register and offset from the devicetree and set the direction
+> of the TX_CLK when the property was provided.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 27 +++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> index 6b65420e11b5c..0fc81a626a664 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+> @@ -37,6 +37,9 @@
+>  #define MX93_GPR_ENET_QOS_INTF_SEL_RGMII	(0x1 << 1)
+>  #define MX93_GPR_ENET_QOS_CLK_GEN_EN		(0x1 << 0)
+>  
+> +#define MX93_GPR_ENET_QOS_TX_CLK_SEL_MASK	GENMASK(1, 1)
+> +#define MX93_GPR_ENET_QOS_TX_CLK_SEL		(0x1 << 1)
+> +
+>  #define DMA_BUS_MODE			0x00001000
+>  #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
+>  #define RMII_RESET_SPEED		(0x3 << 14)
+> @@ -57,7 +60,9 @@ struct imx_priv_data {
+>  	struct clk *clk_tx;
+>  	struct clk *clk_mem;
+>  	struct regmap *intf_regmap;
+> +	struct regmap *enet_clk_regmap;
+>  	u32 intf_reg_off;
+> +	u32 enet_clk_reg_off;
+>  	bool rmii_refclk_ext;
+>  	void __iomem *base_addr;
+>  
+> @@ -116,6 +121,18 @@ static int imx93_set_intf_mode(struct plat_stmmacenet_data *plat_dat)
+>  		break;
+>  	case PHY_INTERFACE_MODE_RMII:
+>  		val = MX93_GPR_ENET_QOS_INTF_SEL_RMII;
+> +
+> +		/* According to NXP AN14149, the direction of the
+> +		 * TX_CLK must be set to output in RMII mode.
+> +		 */
+> +		if (dwmac->enet_clk_regmap)
+> +			regmap_update_bits(dwmac->enet_clk_regmap,
+> +					   dwmac->enet_clk_reg_off,
+> +					   MX93_GPR_ENET_QOS_TX_CLK_SEL_MASK,
+> +					   MX93_GPR_ENET_QOS_TX_CLK_SEL);
+> +		else
+> +			dev_warn(dwmac->dev, "TX_CLK can't be set to output mode.\n");
+> +
+>  		break;
+>  	case PHY_INTERFACE_MODE_RGMII:
+>  	case PHY_INTERFACE_MODE_RGMII_ID:
+> @@ -310,6 +327,16 @@ imx_dwmac_parse_dt(struct imx_priv_data *dwmac, struct device *dev)
+>  			dev_err(dev, "Can't get intf mode reg offset (%d)\n", err);
+>  			return err;
+>  		}
+> +
+> +		dwmac->enet_clk_regmap = syscon_regmap_lookup_by_phandle(np, "enet_clk_sel");
+> +		if (IS_ERR(dwmac->enet_clk_regmap))
+> +			return PTR_ERR(dwmac->enet_clk_regmap);
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching.
+This looks like breaking ABI. Please test your changes without the DTS.
+Does the DTS pass dtbs_check? Does the driver probe correctly with such DTS?
 
 Best regards,
 Krzysztof
