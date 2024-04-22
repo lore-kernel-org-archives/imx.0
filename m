@@ -1,60 +1,44 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D81E101D5;
-	Mon, 22 Apr 2024 03:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8264437
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 04:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713758286; cv=none; b=EAKTXi3rfnWLp2RnthKcAptTUKq0231jfXZv6VncuUe1yszIU8XYeuRuuLdh8hVrUjdr+mo7LSSG6mmY7+qhHceEbFJ4gO18LWf4jDntE2mJRtC0MsIKS37tbrb5nLlEo6u1Etoh1fbpSlTJIO6QZL1IfK5PtrJz22R1Ko9CBPA=
+	t=1713758657; cv=none; b=Yo4RDQtEeFuU/tQY8KHyU85nUofR8RwewT8LzzEsdu1v2iRZSTYiOzOvieYntdjd2u1+TyKDb5a3buUEQ1Viuru4FPHNHqaxiE9TyqIvuVpkz3o2izYJBwDp4lFVXj1GjtDaMO/V2rroCKIF3F997YzaCyGbl4QX3hjpFmmIBLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713758286; c=relaxed/simple;
-	bh=74DDXzIMt+qGRJSOmzuMZBwtJRLIogdL8tSrRW8MmsA=;
+	s=arc-20240116; t=1713758657; c=relaxed/simple;
+	bh=Wp9/jMq1i0gA3KGjLqqk49C1hXN1/SAaPPno8YJF7iw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ihR2GeXRgMUJO1R6VLYelbnueniwE6Krt9ZGzJE66RotOU2oondF6sQ/0UKWD9Q2BQEKhhmFuSls9T0teManxSezANiPaKCn300gdRSTqIdQw8YKneffN+ABerFyx1FdRyonXRGt446+HtoUyZlKLWNCzN5hfFLtENJjwqzQq3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VPy8bsJE; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=gvBjNkhbvunIMMp27qYAfOJ05ogtTvetKDUjb8c25uDPcVx9JM/HRsdb1V8xXuPDkjYFX/b0l+vN5/iNSTgk4JIn5g73uVRZLq80XsKi5GrqGu0c7CEj9FIsvrlobtTOQ3dm0pPiN1wDrsb2sXMEcIewKSx4JgDzI78p+fa2h54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=A8tzrFcN; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VPy8bsJE"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="A8tzrFcN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=tz47OXMk6zbzBGF1ySQDbEiSUSoHnPDqD9rcCDIH3/o=;
-	b=VPy8bsJEtjhzPsrf057kTfxn2QcwPsyLbEVeyhEsMSlK1s6rOKafjwW1tFiiXn
-	BJzxCWUZ19e2Y3C1m3C9snT+A1us0lCGXrTutHQS0mIMD7kHaG1J3L1xyb9+9UsR
-	k5LTxpbP8FNwbH+D37t/J+5ZPUoN9EXp4qxqlsRVJmVDQ=
+	Content-Type; bh=FSlezW9gwAGOI5Wa8d/8abIpiIMp6PI7HfWwx9Mf8p4=;
+	b=A8tzrFcN3IlACQRD1OMygezuV6eJMBFI/Dd1Zy2AqhPYVA9EF6v9GaEdqCzb5v
+	xcug0swm8810WLjcdEDWrQbg/l3ZdPyNQiGwKsZ9fVLMk2TvbFs9EkBAOX5GNBHk
+	/zsd7YtfCXXogKIuGTL7OVhGd93WY2hFMdLVbX04Rz+Jg=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrABHzw5N3yVmRawrAw--.30849S3;
-	Mon, 22 Apr 2024 11:53:50 +0800 (CST)
-Date: Mon, 22 Apr 2024 11:53:49 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAD3_0Oq4SVm98wrAw--.20916S3;
+	Mon, 22 Apr 2024 12:03:55 +0800 (CST)
+Date: Mon, 22 Apr 2024 12:03:53 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Jacopo Mondi <jacopo@jmondi.org>, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Mark Brown <broonie@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-sunxi@lists.linux.dev, linux-mips@vger.kernel.org
-Subject: Re: [PATCH 3/7] ARM: configs: imx_v6_v7: Enable DRM_DW_HDMI
-Message-ID: <ZiXfTfNoc0/2XL9s@dragon>
-References: <20240403-fix-dw-hdmi-kconfig-v1-0-afbc4a835c38@kernel.org>
- <20240403-fix-dw-hdmi-kconfig-v1-3-afbc4a835c38@kernel.org>
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v2] arm64: dts: debix-a: Disable i2c2 in base .dts
+Message-ID: <ZiXhqWsQie0TERh0@dragon>
+References: <20240404002009.10052-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,24 +47,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240403-fix-dw-hdmi-kconfig-v1-3-afbc4a835c38@kernel.org>
-X-CM-TRANSID:ClUQrABHzw5N3yVmRawrAw--.30849S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW5Kr4Duw13uw1UuF1UAF13urg_yoWxGwcEyF
-	yxKrn7Zr15Za4jyw15KFZavrsa93WUWFn8X3yUKrW3WFn8XF45Ar4kt34Sywn7Z3WIyrsr
-	CFs5J3Wvyw4IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbco7JUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQ7IZVsVCfARMAAAsw
+In-Reply-To: <20240404002009.10052-1-laurent.pinchart@ideasonboard.com>
+X-CM-TRANSID:ClUQrAD3_0Oq4SVm98wrAw--.20916S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GrWkCw48ArWDGrW8KFWUCFg_yoWxKwcE9F
+	y5KFnxJwn8tFs3Gwn3Wr4fA3yI934UKF1UuF9Yq3yfZF9rW3sxC3ZFyFWFvr17ur4vkw4f
+	Gr93tr10kryj9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0sL05UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGAvIZV6NnuIU+QAAs8
 
-On Wed, Apr 03, 2024 at 12:56:21PM +0200, Maxime Ripard wrote:
-> Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
-> module") turned the DRM_DW_HDMI dependency of DRM_IMX_HDMI into a
-> depends on which ended up disabling the driver in the defconfig. Make
-> sure it's still enabled.
+On Thu, Apr 04, 2024 at 03:20:09AM +0300, Laurent Pinchart wrote:
+> From: Jacopo Mondi <jacopo@jmondi.org>
 > 
-> Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
-> Reported-by: Mark Brown <broonie@kernel.org>
-> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+> The I2C2 bus is used for the CSI and DSI connectors only, no devices are
+> connected to it on neither the Debix Model A nor its IO board. Disable
+> the bus in the board's .dts and remove its clock frequency settings, as
+> the value depends solely on the devices conncted to the CSI and DSI
+> connectors. Display panel or camera sensor overlays will configure and
+> enable the bus when necessary.
+> 
+> Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
 
-Acked-by: Shawn Guo <shawnguo@kernel.org>
+Applied, thanks!
 
