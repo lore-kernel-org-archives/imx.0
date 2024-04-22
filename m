@@ -1,109 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDA222625;
-	Mon, 22 Apr 2024 14:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C63152DFC
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 15:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713796149; cv=none; b=E2n3QqqdK1nTdyj2bsFhzBwmzUhbrnq+N9ZRqb/XLFreYmdKN5Q7D7YSJsnS6dTysIToe0CzaXjtJWPQies2nodv64ihyOW5RtfJk5LEdA4gTLTSGsEHutC7IanQCFP4P8hM3MV7Esoj22A6jO72RD3y7fhJzeiqThSUPFm86xM=
+	t=1713800552; cv=none; b=uvJ+rMjzJuFEOehRAW+ALjA5I2GDZ9vR6rKrOTa4YaXRG6Gm0BEIIPrNnjs9xOiyBriPea8Ud6TW64Qzc/4kaRb5/WRYb/kGNdesQqbNsJmWCkwm4/5remOpuPYSt+lTlCDwWU9e3Q+ME78L+sK2U45sLQBFzKhpJsrxzggPcAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713796149; c=relaxed/simple;
-	bh=nmeYAAMfDWtKUdUh/u8ThViBJ0dDSRUKYjrXdRvF6lQ=;
+	s=arc-20240116; t=1713800552; c=relaxed/simple;
+	bh=1ZQOHptYXX3HrTQPw5/AkT23LKEv6avumWOtVNiEBQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dk5tc97QjJe5WGaVQmnBirKGPDHi9VBQGBFoOLNDXUFkuDKqeh3a3Q9GmagD9uHYH7r94Vd+WKuZR/L0w74pB/Pb53QPoTSuL8E/iy9zgjG4Sv61ajQsc47JXzieQhvO35v6gGn+kZmV76HsaJEVUKnrvjsU56zCCIKQ60fxhzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfRDfnea; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfRDfnea"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD59AC113CC;
-	Mon, 22 Apr 2024 14:29:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713796149;
-	bh=nmeYAAMfDWtKUdUh/u8ThViBJ0dDSRUKYjrXdRvF6lQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mfRDfneaSpgilD9soWxDDn0jOddgL/VpXa7qjJiBlx/K9yvsRNHVqEFSLMC1OwCBu
-	 qBO92RbLZ5ORv4KE5larndiZ2zpBeYThVL2UbyunWRvegwvKbO7Eeh1tNrPJKVC1pV
-	 bjXhXuSQ/8/TtphYEC7Dm/JyUNsU2mcM6Elf/ni7/D4V4h6Fs1yrOqOOkePhstaxMt
-	 nR9w+C5q2/N5Nopw7gBw4gZiU0p+Yo+6v3mXzgkOQrLxX6N7eku+AdB3tQzbXGD07y
-	 jj/53hn69mBR5hV5s88sbNzq7FqfiXD7qRPxTv33LSGQi8nScMqcUfReFi+lB7zfgM
-	 LbsDLu7EGYlLg==
-Date: Mon, 22 Apr 2024 09:29:06 -0500
-From: Rob Herring <robh@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] dt-bindings: mfd: add schema for 8ulp AVD-SIM
-Message-ID: <20240422142906.GB1207218-robh@kernel.org>
-References: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
- <20240418203720.8492-3-laurentiumihalcea111@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XryD2FxB1yUsyi5Zj40zZppAumTT7+Z3JY91dG5udMWyO1MjD8zrlGHx7oa+7KTpepG15SBG+2s03Xz1RbeuG2dThV2hOKCoG0XdgEUGNGTaa4nqNEvUam/wE9MGiM+Nw98XUhyc35Li7/P/qB2WqbwYoawMpYAxun8VXX/r984=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ryvoD-0005wq-Fe; Mon, 22 Apr 2024 17:42:21 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ryvoC-00DiZl-EC; Mon, 22 Apr 2024 17:42:20 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ryvoC-006AzV-17;
+	Mon, 22 Apr 2024 17:42:20 +0200
+Date: Mon, 22 Apr 2024 17:42:20 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	NXP Linux Team <linux-imx@nxp.com>, linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] i2c: lpi2c: Avoid calling clk_get_rate during
+ transfer
+Message-ID: <7lcpupsaepqzxwovzvddtvrdr3f3xaxedxv5nfg4ax73gazu7t@mbc6ajq5suxh>
+References: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="57xlb4vbtmvwwuxp"
 Content-Disposition: inline
-In-Reply-To: <20240418203720.8492-3-laurentiumihalcea111@gmail.com>
+In-Reply-To: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Apr 18, 2024 at 11:37:19PM +0300, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add schema for i.MX8ULP's AVD-SIM module.
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  .../bindings/mfd/fsl,imx8ulp-avd-sim.yaml     | 42 +++++++++++++++++++
->  1 file changed, 42 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml b/Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
-> new file mode 100644
-> index 000000000000..4020c6e37f80
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/fsl,imx8ulp-avd-sim.yaml
-> @@ -0,0 +1,42 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/fsl,imx8ulp-avd-sim.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP i.MX8ULP Audio-Video Domain System Integration Module
-> +
-> +maintainers:
-> +  - Liu Ying <victor.liu@nxp.com>
-> +
-> +description: |
-> +  The AVD-SIM module provides configuration options for components of AVD.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - const: fsl,imx8ulp-avd-sim
-> +      - const: syscon
-> +      - const: simple-mfd
 
-'simple-mfd' means you have child nodes, but you have none defined.
+--57xlb4vbtmvwwuxp
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
+Hello Alexander,
 
-If you do add child nodes, 'simple-mfd' also means there is not any 
-dependency on the parent node such as needing this clock to be enabled 
-for the child nodes.
+On Mon, Apr 22, 2024 at 01:36:29PM +0200, Alexander Stein wrote:
+> The dependency from v2 has already been merged in commit b0cde62e4c548
+> ("clk: Add a devm variant of clk_rate_exclusive_get()").
 
-Rob
+Note that you might also need 7f1dd39aedfccf60772328c5b88d56dbd39954c3
+which is part of v6.9-rc5.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--57xlb4vbtmvwwuxp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYmhVsACgkQj4D7WH0S
+/k55lwf/cekpfnj5lv5y3h8dke+TMq1Scw8/act4h/I4gUCa1ZSMsiI6ilU+Kd+Z
+ht4Psn95hw9CtcK2NijLd2MZTV4angPZxGjYAaSddPGTlLQ2+tH1YWqdc+n+S/b+
+SGuKmSniD/6wMVUFqJfwLqcIlrCytNPwwj1V+LjUJud8ciuDo8QMmBekhtAyvk2b
+rHwSYH2zOn8QNN1P+WLMz2C7SRzdtQrzbUqDlw/y+Yczn7YqCapT+oeJWWDeDfOe
+SGvzQtgK81DXDlVzanrHqUHSylo7+w2PR6Gmb7nnGoDVenfiQx4OzpjZ/0vlQ1C6
+8KF2nGMS0ZbDl+wdgDUgR/LxyOtjig==
+=zY54
+-----END PGP SIGNATURE-----
+
+--57xlb4vbtmvwwuxp--
