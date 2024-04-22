@@ -1,43 +1,43 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89AE10957
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 04:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5687714285
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 04:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713761245; cv=none; b=C4jnjjW0CHWMjXSw3gBb4nXZSjxDk8qc1M9zNfNh3dsqCZnPpPSFp6//y/6F4zk3LvtyNsJpyNmPAx7GJCJCIqXCcESjVZuIg1OXjS95vtbKj+qMAhGLbUsNk0A7s9wsDOCyxGALC8H6pyKG3gBcl5ZBbyKl5GNwEFt32XuOYDM=
+	t=1713761551; cv=none; b=J93UYX0vexzm6q0TWirV/U2qfd/s2cWUW5ejKLVWT+1t42QXL+uAc8bCnBDlFC9qztYHZLVT1Dd4opgFD5PzotnCGS3t8ps3qgTE8RbVBknoEMcWJcVjlCaLqK0Qz5WwC3wgDA8n9H8lkI31sY/9aK2gEfalkWSlqHljRXON22E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713761245; c=relaxed/simple;
-	bh=O5AhC9Oai8ejuwYTbIzKPn+tBGuRCa6rVo1NLxcf7PA=;
+	s=arc-20240116; t=1713761551; c=relaxed/simple;
+	bh=3TKpaHNbYlQ7W5Tewx88xVlKpd8fLXZgs5BUssoZIYg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u9NRpCNLY7hMCXKkg506cNoO7YtHgP60XI3iq0YJGPIqkKjBkcvgS8i/HeizqNaqOsTyTvofE9B5rj/OyZOo1Goqrl1btLysY6Z2dpEezrzqoMhr5XdYscf50/BRwQgJMdR6vLxigw9Kovlg7IOM88rnGIQgHHtMLT9Jtv92Ouc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AOQxH84i; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANqhwBWs9ZjitL/IyEezoubSWpkpKXum6nSsGNrprR4ou0sNTGRSeinARb+ObBroEE9hXFwaOacAiG9i9PDD4I5NEB10rjwtLTnF1zFsLo2VN/BLSBlEgB28NhOGSksRKQx0iPJIdu9V8aKfxRVWXzm8Bsk4YFfbOgbuFljGOGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nF1cX8YC; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AOQxH84i"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nF1cX8YC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=bruPpaRPsO8HMCfcdLVi2EDHWOtroBLaqQU/MSt+mkc=;
-	b=AOQxH84iMDt0Je0aFb0rExZqJ4XofJFrwTqY7uLMl4/hTySVMPwVx/L0K0Nnp4
-	RfUnNDlSWeMSanAL9kWc7+cdkhvWD3IR8feUHQ3NrFgz2XEq5Xw+TInPtOlD/a3g
-	s2Sk9LljrS57Cqztvr4WPN/ijpLVjgHNqbz43N5qFwOP0=
+	Content-Type; bh=4uRiF1GyQB9YD8QQ1libjMIe78m2rOWJf5vFvOBAwyA=;
+	b=nF1cX8YCW2rwTTXBYdeDiezsnSrNExmnHtQ75z3cRXRTGZ3WEWNlJuvw41gzFs
+	oKAQdmL+0dH5K9H2f/uYby9f6K1OCho+0G37tygrbiLrtc+ZL0qRwORz6X6XSeq6
+	4hVpVI9gGHOFWqV/fmF5H5WfEATGwpShyKt4FtU1yRb2Y=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrAAHbvrH6yVma04sAw--.24483S3;
-	Mon, 22 Apr 2024 12:47:04 +0800 (CST)
-Date: Mon, 22 Apr 2024 12:47:03 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAAHbvrf7CVmXF0sAw--.24511S3;
+	Mon, 22 Apr 2024 12:51:44 +0800 (CST)
+Date: Mon, 22 Apr 2024 12:51:43 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Ian Ray <ian.ray@gehealthcare.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 1/2] arm64: dts: imx8mp-msc-sm2s: correct i2c{1..6}
- pad drive strength
-Message-ID: <ZiXrx9I7YcB7tSWW@dragon>
-References: <20240410105612.982-1-ian.ray@gehealthcare.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 2/2] ARM: dts: imx6: exchange fallback and specific
+ compatible string
+Message-ID: <ZiXs30oAOjJkkr1e@dragon>
+References: <1712894212-32283-1-git-send-email-shengjiu.wang@nxp.com>
+ <1712894212-32283-3-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,16 +46,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240410105612.982-1-ian.ray@gehealthcare.com>
-X-CM-TRANSID:ClUQrAAHbvrH6yVma04sAw--.24483S3
+In-Reply-To: <1712894212-32283-3-git-send-email-shengjiu.wang@nxp.com>
+X-CM-TRANSID:ClUQrAAHbvrf7CVmXF0sAw--.24511S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI5fHUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwjIZVnxcqAlJgAAsT
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVDDGUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwjIZVnxcqAlJgABsS
 
-On Wed, Apr 10, 2024 at 01:56:10PM +0300, Ian Ray wrote:
-> Adjust i2c drive strength based on latest Avnet BSP.
+On Fri, Apr 12, 2024 at 11:56:52AM +0800, Shengjiu Wang wrote:
+> Exchange fallback and specific compatible string for spdif sound card.
+> The specific compatible string needs to be in first place, the fallback
+> compatible string needs to be in the end.
 > 
-> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Applied both, thanks!
+Applied, thanks!
 
