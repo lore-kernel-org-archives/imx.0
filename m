@@ -1,60 +1,60 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FFB52F96
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 09:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77E754FA1
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 09:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713777071; cv=none; b=CYyaLh4Ky3a9ukQvL+Ve4l+JO66Xn/aPEX776WnIstDDLqFP4ApxMUy0Yk+h4sM7JtNTJl+M52goBQna+QptacAOi4Nk7zOrv3yPkxuDVkGi3iHgT62Y4PwJgAiQj7kRE0S057P+Nku/w5bmK0pa+faLAFoqmOvVUOVVYR1RnuU=
+	t=1713777089; cv=none; b=VeUJDDACXRiaBwx0BMrG/fUou4+ciYsqL+OrmjOSFcZHlrVfVt/YxNTdQPUsV5fBFHQqtprOuuzxnB5vMauczr7iS5F8Z/t11+gE8cxOt+I3To3F++6wiM2YF4mMt8rIwl1kEVVQgqItFHCU9Q/fGISXG63w6xuC6xGBVoIi9XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713777071; c=relaxed/simple;
-	bh=cA6gH+89i3S2aDbgZe0BaKQ9KddkyoFC/iJQXRWOcCg=;
+	s=arc-20240116; t=1713777089; c=relaxed/simple;
+	bh=5Zrk0JNeMMJGeMmuSXd+Glzv2YQQXGQlSA/0f3CSFVY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a6y4msIVCF0odrkOQ91zAE97O0CYIBVikcYfLP+R+zYoUt16JBPYlGmrgA4EiXLlE8N7HpLgid+UH5kQ9Tv9CG/bZEY0dMOh4YHGpe9Xi7QgVmvPBC5L9uiklfa2GwzO7iiIsIkBNxk9ztnleWwLnirV+Vcw3oFTL29dPuxvlno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JW4y69N0; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:Content-Type; b=tiCvUqwx3cgcgK0/q5otd6WY2By+MDjNXANj/K0gle6SKvpdtYilEXAyJgVJu8l+HQE6xEBC+h7Be+ls4Tr2M7m7OiC8L1G7UVK5T/g5u+juHRohz5EZyp8UckqYzcFy9F1I9yYVtUfDMmhrfTG7v45qcb5XYfzB3dsvvAx43Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rwEHPU0g; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JW4y69N0"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a55911bff66so268597066b.0
-        for <imx@lists.linux.dev>; Mon, 22 Apr 2024 02:11:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rwEHPU0g"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-571c22d9de4so5365122a12.3
+        for <imx@lists.linux.dev>; Mon, 22 Apr 2024 02:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713777067; x=1714381867; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1713777086; x=1714381886; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4CnDrkxxBFnWZDA6Pwu3mbT+0pyJYbjZWrLnSJVrNYQ=;
-        b=JW4y69N0JT/2Rs8JkRwKogzgBDX0a72SqU7OR+qyQW+OYhhpcNkT6nHPVa6y+mTDx+
-         19W+s9jv0zuK3g5XPUOosU7POi4aLVXw2xMwvzEKgD4wPej+ComjXg0toKireenHqABq
-         SScgjMVCV87/3Zf6fgCuk5CxCxjdFaQ4Z/YYoLUkbH1mUFw/rP9u7mli2J1RIUCMInqy
-         vQvOiGvpNazr4ohlLaDATwcdjeqI+0YzWD6d+6lqvL0AUpaG3fzV0vdXZChGgLy5kxtq
-         mPvn19UmMgy2/mpcfF0n+orBQvwVRsHqgNQqh5M+mRIPQAyxK34MIHEYgjaWzhIeVzRY
-         hjCQ==
+        bh=hkCaniajq8e0gAUz5Qg0IhAGq3W85Vx1qTiewZinuVI=;
+        b=rwEHPU0gbI8ndyYtY+WfW5EdLgSB+Bx7X8jF3GQNoK1/fSpwwAZhXCK013uiqji6Sy
+         wY2eJB+uUTmF6rljcLUjyR3V6OUbUJe1aHOV2IQpcgrPVd2vNQUq43wEWmUe1PBpiifS
+         JKUdOZ1Q3y0WjYWyTHBBsXFhIW26gmS+vJd9CseJjtjWxtwRJUteQ+uegTxBgoUN3J9n
+         zTRfp3RHH3Wuy8ifWhNUcjmBirW0WN9BnD1UP53c1OKl0+gDBadDy/Fxbkm7GCHEOjoY
+         6PxfdmjSsAtRUBNE/mRNqUYKA5rdizCeV8hQXgw2k/LxShqimBupRp4bA3wuJuGTDyod
+         405A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713777067; x=1714381867;
+        d=1e100.net; s=20230601; t=1713777086; x=1714381886;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4CnDrkxxBFnWZDA6Pwu3mbT+0pyJYbjZWrLnSJVrNYQ=;
-        b=dl50t6PAt8rJnEavYpNLH7X6UOzbL/w8oEqIZ7d7t7jUqD7OAlVlXXHjW97dtcJFha
-         F3Y9/V9IuGUs5hxx2uRT30RP25ejF+VvRGi8Wp1KHs/9Qz78R/lFkKaySAtsNjTPUY2X
-         Y+xTJvrxMu3ANb885uw/ha+XLBm/+kzrKS4YOnfHo0ntORiGgCgFEnMrilbWRfQbi6AU
-         m4T38dy5jj4uV6oUbRqKhX6NC5q4Q35DSrtYGbpU6zPMQjYvk7JCtwhYTyKxmiabAxQQ
-         +qt9NLgEagrwfmD0/fB/exVFOINCqsMMpLsRwEEh/q62F2muz0uzhPJZN5MpKpY6kHOI
-         46zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNBCdoR/GMZn2mbrsJJdxfyX+qJbpCwmBmWU8zO/gHmN35iBH/AlKpiVXdESPzs7RjT+2bEjZiXJHzOKtWHfTYVwq5
-X-Gm-Message-State: AOJu0YyXgC8f5ayajHDK1VGN5H9cS6LeIyojj81tNUfKeFPFvwKdSYM7
-	vBhYjRedu9AZS7PTqVQwgmlYGNEiXste3ISwQOtNj/OD67HQsyF2m5qtFE6wn/M=
-X-Google-Smtp-Source: AGHT+IFZ1nN3bK3kIt2gKV+ORhcjAPmw5Pw3Jnm5a8ahxTE3rpZCaXgl+IN7VR6olP1yaDEEJd3/1A==
-X-Received: by 2002:a17:907:724b:b0:a55:b021:c0b1 with SMTP id ds11-20020a170907724b00b00a55b021c0b1mr2895842ejc.9.1713777067211;
-        Mon, 22 Apr 2024 02:11:07 -0700 (PDT)
+        bh=hkCaniajq8e0gAUz5Qg0IhAGq3W85Vx1qTiewZinuVI=;
+        b=nm/ycndZsAHpeH1Nb4HSyPI21rc5syL3IPOMvNjKmRZdKDbDnDHwIB9/F/QwOQKHXa
+         ZIYkWJT7+JbWeqtfac1oLbcmCa0Sh+qmLlln/dM7sG98VzqxGjQCzAQM3DkveRjXV5rY
+         4XyJslOvce18KW2BtbjvOPUQjMPf/y1piaYByhyArzlCPIzZKe9Rg/IYpadrFIxX10RG
+         CdOLdmhWGHgK14I1Xt+XLJjK60JUbhubq9HCjnDnvMvI1nPKYFCwvD53sb3DIqPTKEG3
+         KvGzX70TpZtzN6rXceHykmuh34lFELD2nqwuiGgKF7O6NlpY18I+O8WELM9FTa3zMlFc
+         wLIg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+faCTWSJKGdOj7xFi/tc1JIpt48dy8oppWYoAegyX2+Hhw9H1Z9OfIbanq4RqvWeMe5IKtmKKoYu6VIGQEYg0IEQI
+X-Gm-Message-State: AOJu0YwRE7ioXz0x/pxTWo9Ns2l0/7xQEGbx5v0IK+rRwEYWv9jjADdB
+	xsnjvopIQRW2LAb0ny3bsSXfF2wZNOg9bc+Swi/jy2Y/58QFNIMuIzIvnZlz/Sk=
+X-Google-Smtp-Source: AGHT+IEOmoIpd2iJxnAeQuvStIrPHyzUc+oDU9zayqCDq5neSZ6lG96WQuHyPZ856bz5Xnb48vQ6Jw==
+X-Received: by 2002:a50:f605:0:b0:56e:232b:95cd with SMTP id c5-20020a50f605000000b0056e232b95cdmr5397111edn.41.1713777086019;
+        Mon, 22 Apr 2024 02:11:26 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id q26-20020a1709066b1a00b00a53c746b499sm5491547ejr.137.2024.04.22.02.11.05
+        by smtp.gmail.com with ESMTPSA id p8-20020a05640243c800b00571fad0647csm2080041edc.74.2024.04.22.02.11.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 02:11:06 -0700 (PDT)
-Message-ID: <40856e22-e5e2-4030-8ddf-89c02efc9514@linaro.org>
-Date: Mon, 22 Apr 2024 11:11:04 +0200
+        Mon, 22 Apr 2024 02:11:25 -0700 (PDT)
+Message-ID: <b3d074ad-f2fe-4cbb-9ad8-1c28eda6bdae@linaro.org>
+Date: Mon, 22 Apr 2024 11:11:23 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -137,34 +137,10 @@ On 22/04/2024 10:46, Steffen Trumtrar wrote:
 > This register is located in a GPR register space.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-> index 4c01cae7c93a7..1d1c8b90da871 100644
-> --- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-> +++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-> @@ -56,6 +56,16 @@ properties:
->          - tx
->          - mem
->  
-> +  enet_clk_sel:
 
-Except what Sasha wrote, also missing vendor prefix. That's not a
-generic property.
-
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      - items:
-> +          - description: phandle to the GPR syscon
-> +          - description: the offset of the GPR register
-> +    description:
-> +      Should be phandle/offset pair. The phandle to the syscon node which
-> +      encompases the GPR register, and the offset of the GPR register.
-
-That's redundant. Provide full description in the items. You can say
-here what is the purpose of this phandle.
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching.
 
 Best regards,
 Krzysztof
