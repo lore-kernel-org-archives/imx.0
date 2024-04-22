@@ -1,67 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 9.mo584.mail-out.ovh.net (9.mo584.mail-out.ovh.net [46.105.40.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B2A1D54F;
-	Mon, 22 Apr 2024 22:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3331521353
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 23:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.40.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713824765; cv=none; b=ucNxfXIXnpeuKyu8j/eg8TFksr1i/mpxvMHkpOrTpmTbYPz7u2K5D3Yv4voPUaGLVHSsQVqpdUxDX3DqLp1FG0OQS6nQ0+Qoz0n3XIl9nKsAXvHSPMZZaTIjbucLmf799kMTlbOoZB9ce+cJQfEbjfbLl/PZCwnoVeD+K++Gmlw=
+	t=1713827357; cv=none; b=BjeFX8ALf32zXH/uZuX3Fr2hJOMrCJ7G+FX9juDCqxlb6ukA79B6ifseeq0qpSI1YcJ3xgApVfioinrpwY3pSzBjSSfdMRVLgrIYFQ7HsjIarxtwLHjghs00F9JXN+rvaguepwcUR7XQt8BDZ6+dE17QYPiAtx7rJtq4I3M5Bto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713824765; c=relaxed/simple;
-	bh=Hd5Viy0Nj8LqCDVQU5jU/WzUH80cnkdPjYMuY1/EkGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cfxvO8WIq8VZ3Jhv5USjX9F95l8YNEYtaorwq2BA9plD2fXkpRre5z7dlrycT9FUGyMuFGesO78mRUnixPReo12w6B21yxEnjJkMfMPG2Me22zFnxR+SIFC0O0kr8EIl9kPwfgjEMzer58vOja/el//Dh2CCHZpksOJxyanSXzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THfEvfJq; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THfEvfJq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C928AC113CC;
-	Mon, 22 Apr 2024 22:26:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713824764;
-	bh=Hd5Viy0Nj8LqCDVQU5jU/WzUH80cnkdPjYMuY1/EkGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=THfEvfJqi5eSjOqntwvhBOb4ekKSttKZn4kYPuZ+uDfzUb2UtCO7Bl9XPpuvZlQ0/
-	 59Y177hTyz19Z/NOq+EANhhxQ9Y8PfcuohglhhFKlvO/KdNWuDV3beTuyr2399Vf0R
-	 vZ7Ccvd2BSWPJwwcUzJ1ZU0vI1ATM5IKVnZ8nns1UbGHRFOZrH5qCxBpUg7670BedB
-	 t4TraR6zJOx0McF9UzWBuF0+wUXE3atoPNySamVsJZCCfV67Q8lOCvJ0L2f3jvjSM2
-	 qhwwcfRQKhJXEwLYhdC9RD5cft3bUxcqOfJN+R7SRIbT8BMgdsM8PczYjHZH/VvYsZ
-	 t749YVHLCOTJA==
-Date: Tue, 23 Apr 2024 00:25:59 +0200
+	s=arc-20240116; t=1713827357; c=relaxed/simple;
+	bh=//7ShSPA2EP5NwaaZfEki8K7OlVZFgyEEue1rd1oyaw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=FrHv9mjFMOnK/u8M5VNe8j4G8ImiY6qMDNWOZTA7IiiwwKouv9td798IRGJSi17AdBTlgwLpDC0lMHjIS60mvTVc1WtZor+xbi0V6z2w2xgxuO4/Q0Lq4m4YOOk9Zt4ze3vfaq7vIRnUfxw8oItdo+qu0rc7NGwC8Ybpoq30bbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=etezian.org; arc=none smtp.client-ip=46.105.40.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etezian.org
+Received: from director11.ghost.mail-out.ovh.net (unknown [10.109.140.207])
+	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 4VNgTj2KzRz1Kq3
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 22:51:21 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-4tf5f (unknown [10.110.96.193])
+	by director11.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 3F4BD1FE78;
+	Mon, 22 Apr 2024 22:51:18 +0000 (UTC)
+Received: from etezian.org ([37.59.142.106])
+	by ghost-submission-6684bf9d7b-4tf5f with ESMTPSA
+	id +ft0C+bpJmbCFQIAE4RCCA
+	(envelope-from <andi@etezian.org>); Mon, 22 Apr 2024 22:51:18 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-106R0069a4220ad-9504-47e7-a8ce-39f0ca134099,
+                    C447AC6F663E29B5B072953094682C3B23667ADA) smtp.auth=andi@etezian.org
+X-OVh-ClientIp:89.217.109.169
 From: Andi Shyti <andi.shyti@kernel.org>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	NXP Linux Team <linux-imx@nxp.com>, linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] i2c: lpi2c: Avoid calling clk_get_rate during
- transfer
-Message-ID: <rejqts2qv26lbtizjd3e4wppwm4s3fn7lrloszfrve7zq4t6aw@relukzfcpj6o>
+To: Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>, linux-i2c@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
 References: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
- <7lcpupsaepqzxwovzvddtvrdr3f3xaxedxv5nfg4ax73gazu7t@mbc6ajq5suxh>
+Subject: Re: (subset) [PATCH v3 1/1] i2c: lpi2c: Avoid calling clk_get_rate
+ during transfer
+Message-Id: <171382627746.248626.17524804161385336410.b4-ty@kernel.org>
+Date: Tue, 23 Apr 2024 00:51:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7lcpupsaepqzxwovzvddtvrdr3f3xaxedxv5nfg4ax73gazu7t@mbc6ajq5suxh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
+X-Ovh-Tracer-Id: 16855003081161378475
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudeltddgudeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtjeertdertdejnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpeffteehudffvdfhudfgffdugfejjeduheehgeefgeeuhfeiuefghffgueffvdfgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdekledrvddujedruddtledrudeiledpfeejrdehledrudegvddruddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhnsggprhgtphhtthhopedupdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdpoffvtefjohhsthepmhhoheekgedpmhhouggvpehsmhhtphhouhht
 
-Hi Uwe,
+Hi
 
-On Mon, Apr 22, 2024 at 05:42:20PM +0200, Uwe Kleine-König wrote:
-> On Mon, Apr 22, 2024 at 01:36:29PM +0200, Alexander Stein wrote:
-> > The dependency from v2 has already been merged in commit b0cde62e4c548
-> > ("clk: Add a devm variant of clk_rate_exclusive_get()").
+On Mon, 22 Apr 2024 13:36:29 +0200, Alexander Stein wrote:
+> Instead of repeatedly calling clk_get_rate for each transfer, lock
+> the clock rate and cache the value.
+> A deadlock has been observed while adding tlv320aic32x4 audio codec to
+> the system. When this clock provider adds its clock, the clk mutex is
+> locked already, it needs to access i2c, which in return needs the mutex
+> for clk_get_rate as well.
 > 
-> Note that you might also need 7f1dd39aedfccf60772328c5b88d56dbd39954c3
-> which is part of v6.9-rc5.
+> [...]
 
-it's fine... I have rebased all my branches on top of v6.9-rc5.
+Applied to i2c/i2c-host on
 
-Thanks!
+git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
 
+Thank you,
 Andi
+
+Patches applied
+===============
+[1/1] i2c: lpi2c: Avoid calling clk_get_rate during transfer
+      commit: 7ec84d4d55504710a828047d079cb22f12d4133f
+
