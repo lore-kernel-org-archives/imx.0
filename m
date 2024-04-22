@@ -1,43 +1,42 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D063E542
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 03:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6050A819
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 03:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713757360; cv=none; b=CUJ5pW2cEpDGLryh4A3rgdbsWpLWgoj4kMfk4vE8IrvQPujCtAuS83970qgcsKJ6CWgLAsiSeSp60wH1g0y6VDh/2BcR7EeXWFoIIHghsZepOLur5LprEcDRRgYqnfoIEkJAHjNc9IxwABXvagoxmT4xkeWRS0HknhnezMYMASQ=
+	t=1713757924; cv=none; b=Vnplq+fcb7QV5NtEKkw6uoUNs2OSrkASom0w+41ZOkpMZaZTloci/DnlFSe3kUOnekIRwBBb6uQCnNkIvpXuOksllzEPrzv8QKGJ11npVAIwdBmzIA/w8ucr0ua1pOCAzUk99AoArPDNn0wYez/5mLYBXQbL/txXXz8MkOOr9RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713757360; c=relaxed/simple;
-	bh=qhLCnwMZ88gA2hTnXSuFQMUmXB+Nrz0Fpo+79M1h3K8=;
+	s=arc-20240116; t=1713757924; c=relaxed/simple;
+	bh=qh2lATBnUzpzdGwkWu5xianoE/fEhMZqMckQVquiV/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ree7A/yuvWeylSJCOtVywfOGMHcwILGVVR1ng8djTr6ZpH28loE8uZZ+LRdn3j8xcg/1LjlRSPvtzxfVQ8EOfHCrSxqT5Yh3Y7NxmrgSqCASO1wZb6eig11idnvT3+kOyO8NFKzynvJr4+tx/9ND6+LfRaClCnnv12iMR/yw7dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=D2XIfPDH; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=cMkZp45wzPgHdEmMuBG1sbP+0rupjcOsog3Pcha9imrR7BRfRKiD1jT88v6QRcL5S15apnKv3KL5dUaFG73ZrdTc7WnsC3l6jq4W4KBZxuB+c47gkZHbekn6xVznYgdnQbTTZsvPNirUdD4XE/UdodJVVIoIxvb7ndn0I2XZat0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=foSg7VtP; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="D2XIfPDH"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="foSg7VtP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=fdtfV44v236cnntRxp4mWjiFvJnQMsU2XRd04B3OZtU=;
-	b=D2XIfPDHcemjQdSHqEIZ+OhSCgcL+pxj06woy6S/42b6GchvQIcsraC7H4vDtX
-	hOfphOEb5cVSpJiLC98tm9iBLB+jCT9QBQfdxpAFpnFd0m7rsYH8ekclAoESVd0x
-	23OlQTKNP8VxzfXGeOfzOrZM+XF4CbiSL1BWs49WuJXE4=
+	Content-Type; bh=NOwt1UGzpwYrljiDMRzV2Nl5es+FS2lFQ8lExF5kDl8=;
+	b=foSg7VtPVvtudsSwbGV+piQkV5VJoZhu+wuOXNp6BoxNaOoupkj7suXFaT+MFd
+	9YBBeTY+I7ndVdLBAeufvZ4qEWa+5GP6xCYnBwzRpsMpbMyfrzDLaUbfZIZnCWOs
+	4+xiSiInrjfOBrNc9UySLuHr565AZK2I0UAmxw519vxaQ=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrADXXw+c3CVmanorAw--.29283S3;
-	Mon, 22 Apr 2024 11:42:22 +0800 (CST)
-Date: Mon, 22 Apr 2024 11:42:20 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrABHrxiT3iVm6gIyBA--.28493S3;
+	Mon, 22 Apr 2024 11:50:44 +0800 (CST)
+Date: Mon, 22 Apr 2024 11:50:43 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+	conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-imx@nxp.com, jun.li@nxp.com,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] arm64: dts: imx8dxl-evk: add audio nodes
-Message-ID: <ZiXcnMtk5f0RSrHc@dragon>
-References: <20240402-b4-dts_dxl_audio-v1-0-d26d25b84a08@nxp.com>
- <20240402-b4-dts_dxl_audio-v1-3-d26d25b84a08@nxp.com>
+Subject: Re: [PATCH v11 1/7] dt-bindings: usb: usbmisc-imx: add
+ fsl,imx8ulp-usbmisc compatible
+Message-ID: <ZiXek6rDRdku9Bfm@dragon>
+References: <20240403090438.583326-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,326 +45,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240402-b4-dts_dxl_audio-v1-3-d26d25b84a08@nxp.com>
-X-CM-TRANSID:ClUQrADXXw+c3CVmanorAw--.29283S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Gw4kWr4xWFW8XF4DWF45ZFb_yoW3tw17p3
-	s2ka1fKr4IyasFy34rt34DGrnY9wn5KF4j9a43Kry0yF9IqrZrXr1jkwnxCFWDtrs8Xw1q
-	qF98ZrW8KrsIqaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j55rcUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDR-IZVszXbcLNAAAsC
+In-Reply-To: <20240403090438.583326-1-xu.yang_2@nxp.com>
+X-CM-TRANSID:C1UQrABHrxiT3iVm6gIyBA--.28493S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxGYLDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBTIZV6NnuIK1wAAsT
 
-On Tue, Apr 02, 2024 at 05:02:30PM -0400, Frank Li wrote:
-> Add audio nodes for imx8dxl-evk boards.
+On Wed, Apr 03, 2024 at 05:04:32PM +0800, Xu Yang wrote:
+> Add "fsl,imx8ulp-usbmisc" compatible.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 234 ++++++++++++++++++++++++++
->  1 file changed, 234 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> index 2123d431e0613..ba4cdc3534362 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> @@ -125,6 +125,81 @@ mii_select: regulator-4 {
->  		enable-active-high;
->  		regulator-always-on;
->  	};
-> +
-> +	bt_sco_codec: bt_sco_codec {
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Hyphen is recommended for node name.
-
-> +		#sound-dai-cells = <1>;
-> +		compatible = "linux,bt-sco";
-
-We usually have 'compatible' go first.
-
-> +	};
-> +
-> +	sound-bt-sco {
-> +		compatible = "simple-audio-card";
-> +		simple-audio-card,name = "bt-sco-audio";
-> +		simple-audio-card,format = "dsp_a";
-> +		simple-audio-card,bitclock-inversion;
-> +		simple-audio-card,frame-master = <&btcpu>;
-> +		simple-audio-card,bitclock-master = <&btcpu>;
-> +
-> +		btcpu: simple-audio-card,cpu {
-> +			sound-dai = <&sai0>;
-> +			dai-tdm-slot-num = <2>;
-> +			dai-tdm-slot-width = <16>;
-> +		};
-> +
-> +		simple-audio-card,codec {
-> +			sound-dai = <&bt_sco_codec 1>;
-> +		};
-> +	};
-> +
-> +	sound-wm8960-1 {
-> +		compatible = "fsl,imx7d-evk-wm8960", "fsl,imx-audio-wm8960";
-> +		model = "wm8960-audio";
-> +		audio-cpu = <&sai1>;
-> +		audio-codec = <&wm8960_1>;
-> +		audio-asrc = <&asrc0>;
-> +		audio-routing =
-> +			"Headphone Jack", "HP_L",
-> +			"Headphone Jack", "HP_R",
-> +			"Ext Spk", "SPK_LP",
-> +			"Ext Spk", "SPK_LN",
-> +			"Ext Spk", "SPK_RP",
-> +			"Ext Spk", "SPK_RN",
-> +			"LINPUT1", "Mic Jack",
-> +			"Mic Jack", "MICB";
-
-Nit: can we do this?
-
-		audio-routing = "Headphone Jack", "HP_L",
-				"Headphone Jack", "HP_R",
-			        ...
-
-> +	};
-> +
-> +	sound-wm8960-2 {
-> +		compatible = "fsl,imx7d-evk-wm8960", "fsl,imx-audio-wm8960";
-> +		model = "wm8960-audio-2";
-> +		audio-cpu = <&sai2>;
-> +		audio-codec = <&wm8960_2>;
-> +		capture-only;
-> +		audio-routing =
-> +			"Headphone Jack", "HP_L",
-> +			"Headphone Jack", "HP_R",
-> +			"Ext Spk", "SPK_LP",
-> +			"Ext Spk", "SPK_LN",
-> +			"Ext Spk", "SPK_RP",
-> +			"Ext Spk", "SPK_RN",
-> +			"LINPUT1", "Mic Jack",
-> +			"Mic Jack", "MICB";
-> +	};
-> +
-> +	sound-wm8960-3 {
-> +		compatible = "fsl,imx7d-evk-wm8960", "fsl,imx-audio-wm8960";
-> +		model = "wm8960-audio-3";
-> +		audio-cpu = <&sai3>;
-> +		audio-codec = <&wm8960_3>;
-> +		capture-only;
-> +		audio-routing =
-> +			"Headphone Jack", "HP_L",
-> +			"Headphone Jack", "HP_R",
-> +			"Ext Spk", "SPK_LP",
-> +			"Ext Spk", "SPK_LN",
-> +			"Ext Spk", "SPK_RP",
-> +			"Ext Spk", "SPK_RN",
-> +			"LINPUT1", "Mic Jack",
-> +			"Mic Jack", "MICB";
-> +	};
->  };
->  
->  &adc0 {
-> @@ -132,6 +207,11 @@ &adc0 {
->  	status = "okay";
->  };
->  
-> +&asrc0 {
-> +	fsl,asrc-rate  = <48000>;
-
-One space around =
-
-> +	status = "okay";
-> +};
-> +
->  &eqos {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_eqos>;
-> @@ -259,6 +339,78 @@ max7322: gpio@68 {
->  			};
->  		};
->  
-> +		i2c@1 {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0x1>;
-> +
-> +			wm8960_1: wm8960@1a {
-> +				compatible = "wlf,wm8960";
-> +				reg = <0x1a>;
-> +				clocks = <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-> +				clock-names = "mclk";
-> +				wlf,shared-lrclk;
-> +				wlf,hp-cfg = <2 2 3>;
-> +				wlf,gpio-cfg = <1 3>;
-> +				assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +						  <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-> +				assigned-clock-rates = <786432000>,
-> +						       <49152000>,
-> +						       <12288000>,
-> +						       <12288000>;
-> +			};
-> +		};
-> +
-> +		i2c@2 {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0x2>;
-> +
-> +			wm8960_2: wm8960@1a {
-> +				compatible = "wlf,wm8960";
-> +				reg = <0x1a>;
-> +				clocks = <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-> +				clock-names = "mclk";
-> +				wlf,shared-lrclk;
-> +				wlf,hp-cfg = <2 2 3>;
-> +				wlf,gpio-cfg = <1 3>;
-> +				assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +						  <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-> +				assigned-clock-rates = <786432000>,
-> +						       <49152000>,
-> +						       <12288000>,
-> +						       <12288000>;
-> +			};
-> +		};
-> +
-> +		i2c@3 {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0x3>;
-> +
-> +			wm8960_3: wm8960@1a {
-
-audio-codec for node name.
-
-> +				compatible = "wlf,wm8960";
-> +				reg = <0x1a>;
-> +				clocks = <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-> +				clock-names = "mclk";
-> +				wlf,shared-lrclk;
-> +				wlf,hp-cfg = <2 2 3>;
-> +				wlf,gpio-cfg = <1 3>;
-> +				assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +						  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +						  <&mclkout1_lpcg IMX_LPCG_CLK_0>;
-> +				assigned-clock-rates = <786432000>,
-> +						       <49152000>,
-> +						       <12288000>,
-> +						       <12288000>;
-> +			};
-> +		};
-> +
->  		i2c@4 {
->  			#address-cells = <1>;
->  			#size-cells = <0>;
-> @@ -362,6 +514,53 @@ &lsio_gpio5 {
->  	status = "okay";
->  };
->  
-> +&sai0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai0>;
-> +	#sound-dai-cells = <0>;
-> +	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +			<&sai0_lpcg IMX_LPCG_CLK_0>;
-
-	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-			  ...
-
-> +	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-> +	status = "okay";
-> +};
-> +
-> +&sai1 {
-> +	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +			<&sai1_lpcg IMX_LPCG_CLK_0>;
-> +	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai1>;
-> +	status = "okay";
-> +};
-> +
-> +&sai2 {
-> +	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +			<&sai2_lpcg IMX_LPCG_CLK_0>;
-> +	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai2>;
-> +	fsl,sai-asynchronous;
-> +	status = "okay";
-> +};
-> +
-> +&sai3 {
-> +	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> +			<&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> +			<&sai3_lpcg IMX_LPCG_CLK_0>;
-> +	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai3>;
-> +	fsl,sai-asynchronous;
-> +	status = "okay";
-> +};
-> +
->  &thermal_zones {
->  	pmic-thermal {
->  		polling-delay-passive = <250>;
-> @@ -595,6 +794,41 @@ IMX8DXL_UART0_TX_ADMA_UART0_TX		0x06000020
->  		>;
->  	};
->  
-> +	pinctrl_sai0: sai0grp {
-> +		fsl,pins = <
-> +			IMX8DXL_SPI0_CS0_ADMA_SAI0_RXD		0x06000060
-> +			IMX8DXL_SPI0_CS1_ADMA_SAI0_RXC		0x06000040
-> +			IMX8DXL_SPI0_SCK_ADMA_SAI0_TXC		0x06000060
-> +			IMX8DXL_SPI0_SDI_ADMA_SAI0_TXD		0x06000060
-> +			IMX8DXL_SPI0_SDO_ADMA_SAI0_TXFS		0x06000040
-> +		>;
-> +	};
-> +
-> +	pinctrl_sai1: sai1grp {
-> +		fsl,pins = <
-> +			IMX8DXL_FLEXCAN0_RX_ADMA_SAI1_TXC     0x06000040
-
-Can the indent between pin constant and value be tabs instead of spaces?
-
-Shawn
-
-> +			IMX8DXL_FLEXCAN0_TX_ADMA_SAI1_TXFS    0x06000040
-> +			IMX8DXL_FLEXCAN1_RX_ADMA_SAI1_TXD     0x06000060
-> +			IMX8DXL_FLEXCAN1_TX_ADMA_SAI1_RXD     0x06000060
-> +		>;
-> +	};
-> +
-> +	pinctrl_sai2: sai2grp {
-> +		fsl,pins = <
-> +			IMX8DXL_SNVS_TAMPER_OUT3_ADMA_SAI2_RXC   0x06000040
-> +			IMX8DXL_SNVS_TAMPER_IN0_ADMA_SAI2_RXFS   0x06000040
-> +			IMX8DXL_SNVS_TAMPER_OUT4_ADMA_SAI2_RXD   0x06000060
-> +		>;
-> +	};
-> +
-> +	pinctrl_sai3: sai3grp {
-> +		fsl,pins = <
-> +			IMX8DXL_SNVS_TAMPER_IN1_ADMA_SAI3_RXC    0x06000040
-> +			IMX8DXL_SNVS_TAMPER_IN3_ADMA_SAI3_RXFS   0x06000040
-> +			IMX8DXL_SNVS_TAMPER_IN2_ADMA_SAI3_RXD    0x06000060
-> +		>;
-> +	};
-> +
->  	pinctrl_usdhc1: usdhc1grp {
->  		fsl,pins = <
->  			IMX8DXL_EMMC0_CLK_CONN_EMMC0_CLK	0x06000041
-> 
-> -- 
-> 2.34.1
-> 
+Applied all, thanks!
 
