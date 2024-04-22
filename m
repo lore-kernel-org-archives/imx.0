@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DB72F5E
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 20:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2106A1BC30
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 20:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713818578; cv=none; b=rOLR3zJhA3rSGMnbH0Uk2JCvrJ1nqxLm7lwk+HFl9UIDJDCYZaJio/Z3R2Iu01KhPsctLyydLRKQY9/Rt1si2emVfNqhieY5StNCkfNzcKl0/tB6+MCIOxj9YeNr/6jy64nHyUasVCmfUfaXvbNyNbWTv3UNsPDuoG9nPFQLsyo=
+	t=1713818580; cv=none; b=fnxDo7zn3es7RRFP9t35bWhszw8GOWqNRtSBRoBFBCPuE9BP/FEnkurq64kwae+eoVxTenEG6FZ7eWEmDyHVWGvjDwTkSs4jcp7OpMmTLcpo7/DKoN4xXWiwmFD7PF21XtNUnoW6Wals7Vckz//qom249VMQkuGxKp13zK/ZrEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713818578; c=relaxed/simple;
-	bh=21plNlwF84LiSmR/a7cPmVx+DowVztKcBCbH9tBCfs0=;
+	s=arc-20240116; t=1713818580; c=relaxed/simple;
+	bh=mqvvD4M+5zrVu9tFt8LtTjqLGdgftrUuwLZoC1BIpFI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j3+m7L9Jcsrp2yQpfezJd/H8+v7e5B9gq3rU46l4QBx0upu0lfDoiAy/hqJduHd3NXFsDWiOPS7L0npZY/yWasBtSi/DJ+Zkl/GPF629s1S4/Gg9Dsg5QEkSOthVVxkAASB0/TvM8+e5vU9yg++gSDyhco76ne6RumMIO7QLTBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xq5vzR8u; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=b+ZH4v80YBQiFuiNuxCvazoQVaG751HXbZXCj6YLHZ80jFk4OAMjqKBYbGGkFINgdULk7SiiCX6ireiUL9DipWilDHVzmPGWLkLXpqS1+tP7AycITGFA4dhYAniQ23cWS68o6jN2oKo5a6q2vxmPIAPeWUPArSuhPGFGGp31a7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kv5GocMB; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xq5vzR8u"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kv5GocMB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713818577; x=1745354577;
+  t=1713818579; x=1745354579;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=21plNlwF84LiSmR/a7cPmVx+DowVztKcBCbH9tBCfs0=;
-  b=Xq5vzR8u1honqPqn70ycQYQYUOd5fS5ZqNI11He8dUtkh0hg4f984R4u
-   04jIuB18JF+oSsR0c6Rdf9GWwweVNWKGqqPHsuvGZaLicQIDnohrrjWi+
-   1BPqOSNT2FpRHeBrChxVVwOfqSlFOjG09TLjRHf6yfMDGU4LbhfOwq5ue
-   dF+DPM8uqwT2YcoW1i4Csupc4qXTTjdKX9LlxTfBjGQ2EpJ9jEGviQbNg
-   nhewM5J28/IDKt4FlP8JHvs57lhtau8M9S1Pot3RilDlJGv0iB+Zzc4On
-   hNEb7ngZM6UchaGJRDq1nVu4dzTUw5hdxUOzNXfmFM6McVQmKEOjqDSae
+  bh=mqvvD4M+5zrVu9tFt8LtTjqLGdgftrUuwLZoC1BIpFI=;
+  b=Kv5GocMBnQB5o9ZdEutJ7apqWSmCMSdvhq8lPGqBD7p8ddVsMrbm8OaW
+   in7D8xUytBjZsGVliTlOwh6X9obfOqoxBKxO7VCN9vG8yG7QeO/4/71Mj
+   3ZQ3z1gmnPE710MU1Sxm5PWIgYqRviAvJ4NZ4i7ZVGMG8vccoQrK+qy7X
+   u7s+PsOIoWMMz9Ewbh/xwszIWnYb1CT4wG2/xMv/ZSPz1S5tsruTzxLfb
+   S/LnTXqCkxLBEKA5y5fpWUJDsNB6BOlR5sF3KB2T5qSCs/BFoeLOg6vIS
+   TGGEePr2Ca7q3FNirEckXDLcCNA8WmMceilaH4/cYF23W2/eGL7Re3q/W
    g==;
-X-CSE-ConnectionGUID: FaxarSOKSlGvkr0BSen9TA==
-X-CSE-MsgGUID: bM4ErZEcTIWs5FY5PbhUsg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9234751"
+X-CSE-ConnectionGUID: ptkHbRDXQnK36j3KfzHc1A==
+X-CSE-MsgGUID: wt1ZaZRvTGmb0XfnMDQGqw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9234802"
 X-IronPort-AV: E=Sophos;i="6.07,221,1708416000"; 
-   d="scan'208";a="9234751"
+   d="scan'208";a="9234802"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 13:42:03 -0700
-X-CSE-ConnectionGUID: nHk9q7c0QZK4QyNVPsdbgQ==
-X-CSE-MsgGUID: g0m2gNKLQIu8zJeDlFQ+BQ==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 13:42:18 -0700
+X-CSE-ConnectionGUID: rSzjNxCYSl20z5E0RZYZ6g==
+X-CSE-MsgGUID: uIIvBbpfTemBmMRl7pKJ5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,221,1708416000"; 
-   d="scan'208";a="24747792"
+   d="scan'208";a="24747861"
 Received: from leozhang-mobl.amr.corp.intel.com (HELO [10.212.37.174]) ([10.212.37.174])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 13:42:00 -0700
-Message-ID: <3acfbe3c-8b83-4c40-83c2-437f963fd25a@linux.intel.com>
-Date: Mon, 22 Apr 2024 15:42:00 -0500
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 13:42:14 -0700
+Message-ID: <93294e52-97e5-4441-a849-867429da6573@linux.intel.com>
+Date: Mon, 22 Apr 2024 15:12:04 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,80 +52,177 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/14] ASoC: Constify local snd_sof_dsp_ops
-To: Krzysztof Kozlowski <krzk@kernel.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Bard Liao <yung-chuan.liao@linux.intel.com>,
+Subject: Re: [PATCH v3 01/23] ASoC: soc-pcm: cleanup
+ soc_get_playback_capture()
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Banajit Goswami <bgoswami@quicinc.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>,
+ Jiawei Wang <me@jwang.link>, Jonathan Corbet <corbet@lwn.net>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Maso Huang <maso.huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
  Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
- Daniel Baluta <daniel.baluta@nxp.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, Mark Brown
- <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
- <89f8f0be-2534-46c8-9058-cabea4f68568@linux.intel.com>
- <9d1eda85-32a0-4e53-86ca-ce3137439bd7@kernel.org>
- <d046d195-6fa3-4c52-bc5f-3e5e763bc692@linux.intel.com>
- <138ac465-1576-4e86-a05d-63f8acc6fb70@kernel.org>
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>,
+ Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-sound@vger.kernel.org
+References: <87h6fz8g3u.wl-kuninori.morimoto.gx@renesas.com>
+ <87frvj8g2v.wl-kuninori.morimoto.gx@renesas.com>
+ <a1f63065-6d8a-404f-b4be-331d829f802f@linux.intel.com>
+ <87ttjytayy.wl-kuninori.morimoto.gx@renesas.com>
+ <92054f87-dded-4b66-8108-8b2a10909883@linux.intel.com>
+ <87edaym2cg.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <138ac465-1576-4e86-a05d-63f8acc6fb70@kernel.org>
+In-Reply-To: <87edaym2cg.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+Hi Morimoto-san,
 
-> There are multiple reasons and benefits for const, like compiler
-> optimization, code readability (meaning) up to security improvements,
-> e.g. by some GCC plugins or marking rodata as really non-writeable, so
-> closing some ways of exploits. There are many opportunities here, even
-> if they are not yet enabled.
+> I still wondering why dpcm_xxx flag itself is needed.
 
-Possibly, but the SOF core does not know if the structure it uses is
-rodata or not. Using the 'const' identifier would be misleading.
+That's an excellent question indeed. And since you started a historical
+review, we can get a lot of information.
 
->> that's a different interpretation to the 'software' view you're
->> describing. "this structure will not modified by this function" is not
->> the same thing as "this structure CANNOT be modified".
+> (A) Before, it checks channels_min for DPCM, same as current non-DPCM.
+> This is very clear for me. Let's name this as "validation check"
 > 
-> Yes, but can we please discuss specific patchset then? Patches which
-> change pointers to const have one "interpretation". Patches which modify
-> static or global data have another.
+> 	if (rtd->dai_link->dynamic || rtd->dai_link->no_pcm) {
+> 		if (cpu_dai->driver->playback.channels_min)
+> 			playback = 1;
+> 		if (cpu_dai->driver->capture.channels_min)
+> 			capture = 1;
+> 
+> (B) commit 1e9de42f4324b91ce2e9da0939cab8fc6ae93893
+> ("Explicitly set BE DAI link supported stream directions") force use to
+> dpcm_xxx flag
+> 
+> 	if (rtd->dai_link->dynamic || rtd->dai_link->no_pcm) {
+> 		playback = rtd->dai_link->dpcm_playback;
+> 		capture = rtd->dai_link->dpcm_capture;
 
-Just look at sound/soc/sof/intel/mtl.c... The core will sometimes use a
-constant structure and sometimes not, depending on the PCI ID reported
-by hardware. This was intentional to override common defaults and make
-the differences limited in scope between hardware generations.
+The reason for this (B) addition is very clear from the commit message
 
-int sof_mtl_ops_init(struct snd_sof_dev *sdev)
-{
-	struct sof_ipc4_fw_data *ipc4_data;
+"
+Some BE DAIs can be "dummy" (when the DSP is controlling the DAI) and as
+such wont have set a minimum number of playback or capture channels
+required for BE DAI registration (to establish supported stream directions).
+"
 
-	/* common defaults */
-	memcpy(&sof_mtl_ops, &sof_hda_common_ops, sizeof(struct
-snd_sof_dsp_ops)); <<<< THE BASELINE IS CONSTANT
+So (B) introduced these dpcm_xxx flags as override mechanisms, where the
+dailink information matters more than the dai information.
 
-        <<< THE REST ISN'T.
+> (C) 9b5db059366ae2087e07892b5fc108f81f4ec189
+> ("ASoC: soc-pcm: dpcm: Only allow playback/capture if supported")
+> checks channels_min (= validation check) again
+> 
+> 	if (rtd->dai_link->dynamic || rtd->dai_link->no_pcm) {
+> 		cpu_dai = asoc_rtd_to_cpu(rtd, 0);
+> 		...
+> 		playback = rtd->dai_link->dpcm_playback &&
+> 			snd_soc_dai_stream_valid(cpu_dai, SNDRV_PCM_STREAM_PLAYBACK);
+> 		capture = rtd->dai_link->dpcm_capture &&
+> 			snd_soc_dai_stream_valid(cpu_dai, SNDRV_PCM_STREAM_CAPTURE);
 
-	/* shutdown */
-	sof_mtl_ops.shutdown = hda_dsp_shutdown;
+It helps to look at the commit message in detail:
 
-	/* doorbell */
-	sof_mtl_ops.irq_thread = mtl_ipc_irq_thread;
+"
+Normally the dpcm_playback/capture parameter should match the
+capabilities of the CPU DAI. However, there is no way to set that
+parameter from the device tree (e.g. with simple-audio-card or
+qcom sound cards). dpcm_playback/capture are always both set to 1.
+"
 
-	/* ipc */
-	sof_mtl_ops.send_msg = mtl_ipc_send_msg;
-	sof_mtl_ops.get_mailbox_offset = mtl_dsp_ipc_get_mailbox_offset;
-	sof_mtl_ops.get_window_offset = mtl_dsp_ipc_get_window_offset;
+This is where the direction changed from "dpcm_xxx" being override of
+DAI capabilities to "dpcm_xxx" being required to match DAI capabilities,
+because some machine drivers incorrectly did an override that made no
+sense...
 
-	/* debug */
-	sof_mtl_ops.debug_map = mtl_dsp_debugfs;
-	sof_mtl_ops.debug_map_count = ARRAY_SIZE(mtl_dsp_debugfs);
-	sof_mtl_ops.dbg_dump = mtl_dsp_dump;
-	sof_mtl_ops.ipc_dump = mtl_ipc_dump;
+(C) is essentially (A) && (B)
+
+Clearly there's a contradiction. If (C) was the correct solution, then
+it would revert the direction in (A) and report an error for dummy dais.
+
+It's been my question from the beginning of this thread, when the
+direction information can come from 2 sources, which one do we trust?
+
+> (D) b73287f0b0745961b14e5ebcce92cc8ed24d4d52
+> ("ASoC: soc-pcm: dpcm: fix playback/capture checks") expanded it to
+> multi connection.
+
+You really want to look at
+
+(E) 4f8721542f7b75954bfad98c51aa59d683d35b50
+("ASoC: core: use less strict tests for dailink capabilities")
+
+"
+This patch modifies the snd_soc_dai_link_set_capabilities() helper so
+that the dpcm_playback (resp. dpcm_capture) dailink capabilities are set
+if at least one dai supports playback (resp. capture).
+
+Likewise the checks are modified so that an error is reported only
+when dpcm_playback (resp. dpcm_capture) is set but none of the CPU
+DAIs support playback (resp. capture).
+"
+
+This one has not fundamentally changed the reasons why (C) was
+introduced, the requirement is that dpcm_xxx be aligned with at least
+ONE DAI capability. It's still not clear how dummy-dais would be handled
+since the number of channels may or may not be set for those dummy-dais.
+
+> So, I would say nothing has changed, but become more complicated.
+
+It's not really become more complicated, the open is which of (B) or (C)
+are correct.
+
+> Or if (B) added dpcm_xxx as "option flag", it was understandable for me.
+> like this
+> 
+> 	if (rtd->dai_link->dynamic || rtd->dai_link->no_pcm) {
+> 		playback = (cpu_dai->driver->playback.channels_min > 0) ||
+> 			   rtd->dai_link->dpcm_playback;
+> 		capture  = (cpu_dai->driver->capture.channels_min  > 0) ||
+> 			   rtd->dai_link->dpcm_capture;
+
+That would essentially revert (C), since the direction would ignore the
+actual capabilities of the DAI.
+
+IMHO, we should really try with this revert and go back to the initial
+definition of (A), where dpcm_xxx is an optional escape mechanism to
+allow machine drivers to set the direction. I would guess that would
+impact mostly DT/simple-card users and Qualcomm, if the commit message
+of (C) is still relevant.
+
+Then we can discuss about merging code and removing flags. For now we
+have different directions/opinions on something that's 10 years old,
+last modified 4 years ago. We will break lots of eggs if we don't first
+agree on what works and what doesn't.
+
+This 23-patch code merge/simplification is premature at this point IMHO,
+we should first land in a state where everyone is happy with how
+dpcm_xxx flags need to be handled. We can merge dpcm_xxx and xxx_only
+flags later when we understand what they are supposed to do...
+
+And now I need a coffee refill :-)
+
+Regards,
+-Pierre
