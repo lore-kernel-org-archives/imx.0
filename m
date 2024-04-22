@@ -1,181 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2082.outbound.protection.outlook.com [40.107.22.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2CF155335;
-	Mon, 22 Apr 2024 19:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713815131; cv=none; b=niuxGwsTcdWU8RBb3+o5xzSoIQjNGt5tVEkBBfV+spiARI9kmGTjSbP+avSdOQ3Mx2VCQrMDja0QLlbHEz0x285PRQ/cQ08MkoC7mc+unJt3hWGS57Ax/E7CwVgiFMCRpGgg4eEJs1tMuBvT2LZEzaFose9OUDsLhE0fBpaIxVg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713815131; c=relaxed/simple;
-	bh=jA8EbIxkn0jYEYRo1b3nNwvkaBXoHQ5RVS21ZJPQkQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZUG7o2hXAspbGQGD0m36DjLsaEq1xggIBf9Jc9j/CVdlHUJY7zlFBhOmEaaHM5RKIxMxXetE+miBTbUHuGrwmXqmqPPeEWGszaFpf8otONJ1syTRtIPIAZmz/cdqinINJ2QroO1amRS/TboASR6UwdFuRx2yicTnqfqD3P6/lBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKVM+2Ih; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09676155335
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 19:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713815421; cv=fail; b=j0Fdc3N3yQNCQNMAjqRXQil0UEWOKBMhmSQU7gls8DjmrhzaPiPTm5Bvy/mrXx/hi/HXUWWx2FMhi1uawna9TKVoEjgMyjJLqerz4j3cm2BXfSU9Td1/ZqtOr/N94Hf+vkL9Hq89rvPq21TK+8Ff+pjX5cDiI5NtiZCavXNkH1g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713815421; c=relaxed/simple;
+	bh=RRdKdexHuivNUPMAP46kzzmgvN0WCIP1D7Q3XDzPvhQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=HXjUi4dog3CUfKLOAtD8T0FVq4KUR7Pfus9AoTvxs0gBTNh20Vf+4/bmds9vtJrlhhXM6Gt1rmRLscgUANOAVtHRSD7wUGbNrLt0/qQPIgbnHrOJAGZ9ly56ixt4IGhLbqaeSKgUembYg8RPc17aaUTfFKMGdExNN3N6cA/FllI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=j11Kf55h; arc=fail smtp.client-ip=40.107.22.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKVM+2Ih"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B54C113CC;
-	Mon, 22 Apr 2024 19:45:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713815131;
-	bh=jA8EbIxkn0jYEYRo1b3nNwvkaBXoHQ5RVS21ZJPQkQQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GKVM+2Ih8rza3HC0WzMydQA0HRN+CpwKn21eo7HS1YMjUv7GUp85v0aPQgY60oLKx
-	 1WrQiuRPMEh/JPcosJkQW/n6T9scAfCit7Zfkgf2qb4KgqrOUcRXf4xkdjJsvq6Ihx
-	 T9Gi/0mDC8Yg3yixV2IiZENuuSZDZIGmFXJr/qCqSSX7TXVh+PW3fnUbVh9H2W+k0j
-	 znaLq/LFfBTVFtABAC/gCYQH/Wcz06Qr7XFO+tPe94tgywViC47isvdicdPG8JoWL/
-	 cdzEtd+xUDq6aYvklAwzz7XgVMw/be6uJxMOOjEhT6GP50kk51eknFrQM9AbI1ynNX
-	 zbwG5ehCPI3LA==
-Message-ID: <138ac465-1576-4e86-a05d-63f8acc6fb70@kernel.org>
-Date: Mon, 22 Apr 2024 21:45:22 +0200
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="j11Kf55h"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mrYOfXAzCo0mVQIHyyupZOOnTJt/Fe3rgjHZwYWEzepH6CS54YXv8iV1c9Gj1S4gvcYdu9LzC3PyzU+89uDQfDddvrestlgdyQbfEwi1LP5VWrnUHF1/YvutVf0Lc62I3zQYgEgalviParMu3rfzkLYECPJBIHesBwKctJ+h9O4GpgkXhabaHiHbMcGECyQBDFivP407hD5Lz4YMKIK+ti5CoRX+k8dMGDvf5DmsQLGjSW04QPLT5W8aIl9LX2jwy+2T2+3dpgTsufCk1/7GkLTtaUI9qwHDigAsbpBtCVyETCceztJTKw2MDxXfwH9lWiCiPblnmugDCRAqNnlVhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gM8SAHzu3mVDlC+9S1FGA7V2XH9PclLPSNYn1UTsCog=;
+ b=ESV3PbqX9CNy4BnUsBifBzc2ptRMkTFqauQ7LXAmGmxNUB7pjheAh54A9oC3rVZaUhhdRZwshSgAdNpUbUH8aNTtpuNcHOoAHxtP4vOI4ezUPHIarOjGeZFqv8cnT7N4mG1ZwBY/pt7YS+nJsSZXj5luT0L/bH4IKXVIsi4qt22aj6ISTj5BGFa2vn6m9vB+ife79T9oo8kivklMEIhI1bTgppwBl1BYTYMjE02QSHj4fYXA+Lfxnh+FKDF1qp7U/yv3zKE3MDkuiU2olwuc3pFp/YSj4lH/BgMwOfkhROqkycIwcjadtIcAZgyqVnSIHRMKj3P1edXS38WqH60rew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gM8SAHzu3mVDlC+9S1FGA7V2XH9PclLPSNYn1UTsCog=;
+ b=j11Kf55hqfNzTwkIVEaxm9FXENTuPL2ieckSmo5lRepPmIFJAXN1NkMGxOo4tK6IUc6Ft5b7GiO6KnDfUh4kvpayOnZfL+lxZi/CenjZ+pMdkE9zvpmmX/WNHSzl9oF4T3tK/cij6XPRYlOxmUcjZ88/IjkztbhQP4zJNgZHqcU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DB8PR04MB7195.eurprd04.prod.outlook.com (2603:10a6:10:12d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Mon, 22 Apr
+ 2024 19:50:15 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.044; Mon, 22 Apr 2024
+ 19:50:15 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v3 00/10] arm64: dts: imx8qm Add audio\flexcan\i2c\fec1
+ nodes for imx8qm-mek board
+Date: Mon, 22 Apr 2024 15:50:02 -0400
+Message-Id: <20240422-dts_8qm_audio-v3-0-680cee731ced@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGq/JmYC/13M0Q6CIBiG4VtxHEeDX0TtqPtozSH+JgeKgTGb8
+ 95D11bz8Pu291mIR2fQk0uyEIfBeGOHONJTQnSnhgdS08RNgIFgggFtJl8Vz75Sr8ZYihy5LHN
+ d1q0ksRkdtmbevds97s74ybr3zge+vV+JZwcpcMoolLnUaaaYzuA6zONZ255sToD/tji2EFsUr
+ MVc1pIp+WvXdf0AkNZjGeQAAAA=
+To: Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713815413; l=3032;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=RRdKdexHuivNUPMAP46kzzmgvN0WCIP1D7Q3XDzPvhQ=;
+ b=+muIsyQlm5PI6YwKUuZz3DkTzcsA58MD8wSubhL6khLOad/MBG2pUCd3vGtsV1nuRSAcz9xaP
+ Nu+MD52w1MlDiQXkAyHjncA7EWVAX9nuS+bmarnQuJ1InF2GIjst0dN
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SA1P222CA0189.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c4::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/14] ASoC: Constify local snd_sof_dsp_ops
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Bard Liao <yung-chuan.liao@linux.intel.com>,
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
- Daniel Baluta <daniel.baluta@nxp.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, Mark Brown
- <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
- <89f8f0be-2534-46c8-9058-cabea4f68568@linux.intel.com>
- <9d1eda85-32a0-4e53-86ca-ce3137439bd7@kernel.org>
- <d046d195-6fa3-4c52-bc5f-3e5e763bc692@linux.intel.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <d046d195-6fa3-4c52-bc5f-3e5e763bc692@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB8PR04MB7195:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11871ebb-d114-4af2-1aa3-08dc63056e37
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dEtGZi90OGpza2hJR2NsTG1NUk0yL1FzbHF5WlVXNEduN2N1d3JFNGU4VlNs?=
+ =?utf-8?B?VFdkd0RYbFJJaDI4bldOSUp5TlN4T1gxbEVHWnlCU1dnYWZXc0NLYjZKTzRR?=
+ =?utf-8?B?SEJNL1FKa3dhOWM5RmRGVGVvU2hpeUtmYm9IUU1BcWZhNGJYd0xtZ3RyeTcw?=
+ =?utf-8?B?ZVp1SDJ6RHJZWUZGWStINlA3NVQ4b0VEajFZdElWR1JEZDVKdHJsb3Fvam9n?=
+ =?utf-8?B?K2loMWY4N05EOGoxc2xjRXRDY3p0ZTNUbU8rVDl4OVlyWUozWVRxTkdYTTBQ?=
+ =?utf-8?B?ODVhSVNUMC9ZdTd1aHQ2YTJFQ0xoN09UQ0RkQmtEWDlWMWpSa21BQW5zeFNq?=
+ =?utf-8?B?R1Q5VGtlb2RHd2JQelMvMnlhU1VZTEFPcjBoYlZ4RDVkTHpmK3VzTFBVTGN1?=
+ =?utf-8?B?cEhHRjY5TW9UVHVDZ2d2cXBSWXlMTzhtQzhSNjQvZkVJUnN6Tkc5WmpxeVhm?=
+ =?utf-8?B?RkFDSHkveHVpU0ZjVEdWN2hDdFMxa1lSOWFOZGpIRk55WDNkVGtBcjQzQ3lG?=
+ =?utf-8?B?U1NNamY3SG02RlZ1MUw4VnNuVjFlWGZVQlZDUDEyR1JpZmdGcEk5MlNFc1Zl?=
+ =?utf-8?B?dlhRbCtRcmVNTVVmTko3a2gyVi9ZdE1HdHBBSXF3N3ZSZTVEZDNMVDJQTkla?=
+ =?utf-8?B?c040b0dWbVBhbG54dmZGRUtvdDFRMlNET0FZRFNmZUx6YVlpVW53L1FhMVg0?=
+ =?utf-8?B?cnMrUy9CaWZMNWpML0RMOUxKcmZTR3l1MFNoNklMZ1dXd2JQQXZyaHlTVHAw?=
+ =?utf-8?B?Y29SdHZPdWdJb0ExN2JOZDNUdjVTd0J5b0FFR1FyMWRCZGxybDlFbVA1L0xP?=
+ =?utf-8?B?UHNHcXIxZ1NGUEU1dnZuVlp5RjJWQkxpek1pdFVsR0lWNEdIaHZlK2hSdytX?=
+ =?utf-8?B?aTJXZVk3U29iZzF6aWZ3THdiWGltTmhBRG04NDc1MjkySmJDK3I0QkptTWxa?=
+ =?utf-8?B?S2JnZGdnVTdEZk02MFhYV0lyMGZOb3Znd2xvN0Z0L1hpcDFuT0NwZzNnYWxn?=
+ =?utf-8?B?VVVLNlRhSlUyc1FLM0gvVUlpT3FHRHZUSHRYRVNzbUM4ams2NVlnelp5bEtM?=
+ =?utf-8?B?SWJQeHp6anpYeUdLdHllUUJ5ZlhQL3NUMnpldFVCVnh2NW51QlBQYUFTeVEx?=
+ =?utf-8?B?c3c0Mk1BalZ2c3crT0lzbHM2K0xNU3lMcEt5SXpZV2tzd256K2FsWm9tVy9M?=
+ =?utf-8?B?eDVxb044eWRYQzZCb3A2a1ZtSG5Hd1ZpaDBiVmJ3anY2cEIzSTZEVlkxNkZk?=
+ =?utf-8?B?Vmk1K1YyVGllMVFTTll2TFlSTVNxV1VQcStiM3JPYVlqQlgwa1FSQmVITEVL?=
+ =?utf-8?B?ODVrVWc5VS9iUDZxOU8rTGJ2VmlKL2EvWmVBK2pPSFI2bGtNQnFEeDhRaG5m?=
+ =?utf-8?B?TGxQTDVOM0xmUTNzUlJyMVkwOU1uY1Y1OU5MMzNYQk81eHlSemdsbEhzRmht?=
+ =?utf-8?B?MXNYZ2tuV2Nnb1gvTlRlK0VLWGhsY1B4dFdiQ0psNjYxSU5DdDhleExxaFow?=
+ =?utf-8?B?NFI3SU1UOUtYMVZEMDFsbllwYzFNU09ZNFd5MzRIZmhlVno3N3NQLzkzQTJ3?=
+ =?utf-8?B?Y3htbktaNkw0K05xZVhZS3JIRFFDOXJnNzNlR0VyYWJkdkQ0NmtWQ0FmUHU3?=
+ =?utf-8?B?UlJLMXBRNzYyaVE2ZnJ1S05PM0pCV2VLbi9lRWZVWFlkUDZaSktKNDBSUWUv?=
+ =?utf-8?B?TVJIRTFldWVDQ1U0SU1pUmFVdm9USDBjYWRaVDZ2eEdjeG54MmwvWTlGOHF0?=
+ =?utf-8?B?Sy92a3ovQ1MyVEtVWnIrUExId21WYmJzclFNM01OQ2NtZXZ2T2crV0hUejJu?=
+ =?utf-8?B?aUFrR1Mya2QvRStPdm9hUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(1800799015)(376005)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0hXZGozOVFUTGZtbEVWWWxMUk9qaW5XTmxKNTZpZzNVV2lUTFpOVDhmcXVY?=
+ =?utf-8?B?d1RMTHFrd3FCS25KaUpvNmhyTjFwWkV2aWNzVE1KeEV4RDRad2VMa1BmWW5m?=
+ =?utf-8?B?V1BvQWRPb1pFYlFEbTFDaTg2SGdsV3dPVGRVMmFEWWlHOVNVa3VTMmtOSmhB?=
+ =?utf-8?B?bDlReUZVSTQ1c0pXZ1NoRk9CL3JCS3ZGdTBqZWZRS1FvdW9UU2hEblVVYkZk?=
+ =?utf-8?B?ZXpoZWlVa1VCVkZxVkN6dGM0RVA0NFVOR3pLU0xUa1VjVHc5Zk5DYXU0L3FR?=
+ =?utf-8?B?dlZJbHl4L0lsdUpLd1BhcHVjSUFESDJzWkV1eUZDZSs0Q3NLWnZYWmVQdnNV?=
+ =?utf-8?B?bG01bE96eUJVN25FeWlTY2M3SHNmVTVKb3c5TFZ3Z2xwTFljL3BBWTdaMWc5?=
+ =?utf-8?B?T1d6aG5VSGMyaHRMZjI2WDRWczQzbkNGTXdGVzJrYWRkeXB6LyttTStlbFRa?=
+ =?utf-8?B?RWg0dFYwUGt1dk1rNS9NVWFnL2N1a1NtUWxsMEVlb2t5VW9jQW1ib2N0cFR2?=
+ =?utf-8?B?Z1d6UGxtVW5uVXpJaDFTTjZpOUlUdTNEaWRCYTJnMEFBV2FDaTgxM293elMz?=
+ =?utf-8?B?VlZPMEQ1RFB5U2krcWs0bkQva0oxb2xBUDMwUEw5VHJwOXlYYzN6RExWZVFW?=
+ =?utf-8?B?RVFZdEhXMlNGWDBkYVMrUGxKZnFXd3RjQlpITVZDT1p2SmVSRXFIVmYrWUhi?=
+ =?utf-8?B?b1poYVptQXF4dkxTWGhmK2ZIRkJCSjBOMzdrY0NVenF2QXk3VVBLdDQvZHV3?=
+ =?utf-8?B?ZTg4NzlISnFweTMvUzhXRUVtVFRKQWt6RVJRRjMwc2ZFa3J1cm9lOWc1MUNV?=
+ =?utf-8?B?OUtOMzkrVHZ2ZmFVSndJVUk2K1ROY1hVblQ4ZVovUWdiK04rdHdYY3hUK1da?=
+ =?utf-8?B?alRQNjR1Q0pzU0dJNXpPam0rbWJobmFidGw3Q3h0VjBNajVvTU44aWltaVcw?=
+ =?utf-8?B?UGsrTUlBYnpuUnc2ck8wcmRLSFJyY0pRcmdBUzBFYXZxcnk0SEg3YlFMakZU?=
+ =?utf-8?B?elpOTnkranJMbDgvVDhGK25OQlRRRVBYSUczUysrNWFWeEhlOFR5RzB4UlJa?=
+ =?utf-8?B?VWlraXBubjlhbXhjaDU3TnowRjc2S0pGQnp0Tnl0VWl2V3NOb2xUS2YwNFJn?=
+ =?utf-8?B?dkhVTnBxYmVkQjZ4SGgzSWx2cVpPUi9FK3Jsa2pGTmVUL3Z1UjVMQ0I3QktH?=
+ =?utf-8?B?SXczQnRlbUxBTVhNdCtNTUFobFBxOTNjd3pnOVJmVEZyQWwxQzdRNEhPSXVw?=
+ =?utf-8?B?L3c2cmMvKzdkQnU0UFNEbFg4UDY3ekx1YzRLTGNkOEpSblhWbVc4SHcwaWhx?=
+ =?utf-8?B?YjNSdStUMWQwL2FmVDJ1VG5sVFRISXVqdGhmK01BaEpLVFNwcUQxSnQ3eGFx?=
+ =?utf-8?B?M1owck1QUklvaHhFLzdobUlUOUhOS2Rzb0JDcWpwell0bWhBS2JRNDJQZU5O?=
+ =?utf-8?B?dlNuejdCQ0JvQzdCcU4zcGNkZGFtNll1dmhCeE5YVG1HVk50VThyYSs3cm40?=
+ =?utf-8?B?cnFNZUtIRXBOd3JlSDk1RE5YU1p6RDZwbm9ENzI3blpKK2xSb2k2RnZYUmQ4?=
+ =?utf-8?B?eFpCTzlnVGl1ZkpqZmVxY0N2NjQ5SHZ6UTNuNDlrUWRTZEtqZm5MbGM4d3ZH?=
+ =?utf-8?B?cUk2UlJHMTFBdk1xVXRyK0RmZE5PWmtFZHNNMEQwYjB6OFc2T3Zvb1dDOVZt?=
+ =?utf-8?B?Nm8xYUZSbFc2dTM5ZjFpYm55aG9rVy9QQUx0NGtrV05may9TS1BucWxVMXZE?=
+ =?utf-8?B?U05PYllJK2hEcUovbnVZWHNOV1hVS2hNYllpRUNiZUN2emlOdFdNcWxaaXlP?=
+ =?utf-8?B?WkZHNHR3bjQ4SXBxMlZpSC9BZnlaQlpYYmZ6OS9hcURrL3RLTStlVFQxK2pE?=
+ =?utf-8?B?NE45bnZZUU9xbUNwU2FQUkV3aW1rZVhhY05XaUVsOVFtNzcxaHlZSFhBS1ZY?=
+ =?utf-8?B?RkNFVEJlRVU1TlYrdjBuN2Y4MVBZNWt6cGpKSDdsN2dVaVV1RzBKaWx2RVhS?=
+ =?utf-8?B?L0MrUlV0UUNUWUtwckZaU1ZsT0xUMEZ2UHBLQnYrcmZWR2VkSzhwSVNRazhE?=
+ =?utf-8?B?ZE1wR0IwUVNNR0wvQ0VEdTRoRGFYb01RY2hLZ3Y2OVNsUUpQMHNrOTRyVnFq?=
+ =?utf-8?Q?aFkrH48pjL44GeJiLZ4C3e9hN?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11871ebb-d114-4af2-1aa3-08dc63056e37
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2024 19:50:15.5741
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QzZSKKJ9TkPt2MF4Mzz3Bgf8Q5QRULTX3riwIRYVqMB2fZuAKK61txWouTnxkaX5/GhLgUVN8wYBbQAA1cYgiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7195
 
-On 22/04/2024 17:52, Pierre-Louis Bossart wrote:
-> 
-> 
-> On 4/22/24 00:43, Krzysztof Kozlowski wrote:
->> On 15/04/2024 16:19, Pierre-Louis Bossart wrote:
->>>
->>>> The core code does not modify the 'struct snd_sof_dsp_ops' passed via
->>>> pointer in various places, so this can be made pointer to const.
->>>
->>> The structure itself is NOT always const - the initialization itself
->>> does have platform-specific changes, so what do we really gain from all
->>> this?
->>
->> In the context of these patches, the structure is *always* const. In
->> other drivers, it is not, but they are not really relevant here.
->>
->>>
->>> some commit messages say the code is "a bit safer", but I personally
->>> find the 'const' more confusing since the information that the structure
->>> can be modified during initialization is lost.
->>
->> Functions which take some data and do not modify it are easier to read
->> if the pointed data is marked as const. Then it is obvious that
->> functions for example is re-entrant. Or that it does not affect the
->> state of other devices/core structures.
->>
->> Additionally, the static data is safer when is const, because it cannot
->> be used in some attacks.
-> 
-> agree, but here you are marking as 'const' non-static data.
+No new warning added by 
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  CHECK_DTBS=y freescale/imx8qm-mek.dtb
 
-What do you mean? Entire point of this patchset is for static and global
-data. Which patches are you reviewing?
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v3:
+- sensor use general name
+- use tab in pinctrl
+- remove extra space for fsl,asrc-rate
+- change to bt_sco_codec: audio-codec-bt
+-	audio-routing = "Headphone Jack", "HP_L",
+    ++                          "Headphone Jack", "HP_R",
+    ++                          "Ext Spk", "SPK_LP",
+    ++                          "Ext Spk", "SPK_LN",
+    ++                          "Ext Spk", "SPK_RP",
+    ++                          "Ext Spk", "SPK_RN",
+    ++                          "LINPUT1", "Mic Jack",
+    ++                          "Mic Jack", "MICB";
 
-> 
->> I really do not understand which information you lost here? Core does
->> not change the ops, so the data should be passed as const as often as
->> possible. If anyone wants to write a driver which does not use static
->> ops, but somehow dynamically allocated and changed, nothing stops him.
->> This patch did not make it less readable/doable.
->>
->> The point is that these ops do not differ from other ops or some other
->> driver-passed structures, which we have around 100 already in checkpatch.
-> 
-> I am so old that I remember times where we had to put things in ROM.
-> That's what 'const' means to me: a dedicated memory space for immutable
-> values.
+- align clock under sai
+- remove unused "FIXME: .."
+- Link to v2: https://lore.kernel.org/r/20240418-dts_8qm_audio-v2-0-e40fe76b60a6@nxp.com
 
-There are multiple reasons and benefits for const, like compiler
-optimization, code readability (meaning) up to security improvements,
-e.g. by some GCC plugins or marking rodata as really non-writeable, so
-closing some ways of exploits. There are many opportunities here, even
-if they are not yet enabled.
+Changes in v2:
+- move vendor property to last, just before status
+- use audio-codec@1a as node name
+- about dual license problem, need relicense whole included tree's dts file
+which out scope this patch
+- About delete-node
 
+imx8qm-ss-audio.dtsi are not supposed to be included directly. imx8qm.dtsi
+is supposed to be included by other board dts file.
 
-> 
-> that's a different interpretation to the 'software' view you're
-> describing. "this structure will not modified by this function" is not
-> the same thing as "this structure CANNOT be modified".
+in imx8qm.dtsi
 
-Yes, but can we please discuss specific patchset then? Patches which
-change pointers to const have one "interpretation". Patches which modify
-static or global data have another.
+ 	/* sorted in register address */
++	#include "imx8-ss-audio.dtsi"
+ 	#include "imx8-ss-vpu.dtsi"
+ 	#include "imx8-ss-img.dtsi"
+ 	#include "imx8-ss-dma.dtsi"
+@@ -473,3 +558,4 @@ drc_crit0: trip1 {
+ #include "imx8qm-ss-dma.dtsi"
+ #include "imx8qm-ss-conn.dtsi"
+ #include "imx8qm-ss-lsio.dtsi"
++#include "imx8qm-ss-audio.dtsi"
 
-> 
-> I am not going to lay on the tracks, if Mark wants to apply the patches
-> that's fine. I just wanted to highlight that the reason we did not use
-> 'const' was that the data is dynamically allocated/modified and not
-> constant at all.
+"imx8qm-ss-audio" will overwrite some common audio node in
+"imx8-ss-audio.dtsi"
+
+acm, and sai4/5 are defined in imx8-ss-audio.dtsi for common part for all
+imx8qm\imx8qxp\imx8dxl.
+
+- Link to v1: https://lore.kernel.org/r/20240415-dts_8qm_audio-v1-0-2976c35a0c52@nxp.com
+
+---
+Frank Li (10):
+      arm64: dts: imx8-ss-audio: remove memory-region = <&dsp_reserved>;
+      arm64: dts: imx8qm-ss-audio: add audio nodes
+      arm64: dts: imx8qm-mek: add sai and wm8960 support
+      arm64: dts: imx8x: add cm41 subsystem dtsi
+      arm64: dts: imx8qm-mek: add i2c0 and children devices
+      arm64: dts: imx8qm-mek: add cm41_i2c and children devices
+      arm64: dts: imx8qm-mek: add flexcan support
+      arm64: dts: imx8qm-mek: add lsio mu5 and mu6
+      arm64: dts: imx8qm: add ocopt and fec_mac[0,1]
+      arm64: dts: imx8qm-mek: add fec2 support
+
+ arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi   |   1 -
+ arch/arm64/boot/dts/freescale/imx8-ss-cm41.dtsi    |  68 +++
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts       | 344 +++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8qm-ss-audio.dtsi | 473 +++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8qm.dtsi          | 102 +++++
+ 5 files changed, 987 insertions(+), 1 deletion(-)
+---
+base-commit: eda9714fe6d9e6e5690992ce7dd42b13a5be7803
+change-id: 20240402-dts_8qm_audio-e1e1697c9bf6
 
 Best regards,
-Krzysztof
+---
+Frank Li <Frank.Li@nxp.com>
 
