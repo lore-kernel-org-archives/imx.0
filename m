@@ -1,134 +1,106 @@
-Received: from 2.mo576.mail-out.ovh.net (2.mo576.mail-out.ovh.net [178.33.251.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6869813CF9A
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 10:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.251.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21CA13E3E5
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 10:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713780408; cv=none; b=Wh+GVRDff74gCynLnxb6h8dP8tncAcr/wkT/W1k4+wOdQ66u+U4qbsGlzhESQ3lbQKyRyLIfVFCSzjiYD1BLYXVjHLpI93HWrJnOztidVkDpkQ77xOTl3hQCVuC2IodHNXqTVnjiupKmVomKGI812EX5wxmqJBYxVrcwaNHjEs8=
+	t=1713781528; cv=none; b=XOKkLeAvYIx1S6zHQR42W4sZwoWXwvOobOiNePCm7FHZ6PX6JHsYaCvGcu0su6q4x7PM7erJwwY+Zty2hPTQCLbV+Q1HY5dn1WzqnyeT2vX1wilvtHyUCdgRsH3D8tXD/L1tN6PbtjqTH+5EgQIE+RZw638VjAikKqbfkzOmxKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713780408; c=relaxed/simple;
-	bh=xDSmU42HwR7p82VHSVrC1r6JVxcHqDX7Wo5kVPyv4Ds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PH0J+o9DO8oHwgM2nt0vcbH4swqsj6Doyjvz6bKvajjfDK6ud2GwhcrwSThzd4wpMa/tl1K6JqPQ3TQ4a4B8Fp9mrNuISY3gZ5I2B1Leam9vYceMISpLoiqW3bQ9hGWYHQIMbYGgRDuNtCtYu40IMeJuhz/ZtKTpxCPVaoYPM0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; arc=none smtp.client-ip=178.33.251.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
-Received: from director4.ghost.mail-out.ovh.net (unknown [10.108.9.32])
-	by mo576.mail-out.ovh.net (Postfix) with ESMTP id 4VNKg04D5nz1nly
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 09:28:12 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-rl684 (unknown [10.110.113.68])
-	by director4.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 920A11FE65;
-	Mon, 22 Apr 2024 09:28:09 +0000 (UTC)
-Received: from armadeus.com ([37.59.142.101])
-	by ghost-submission-6684bf9d7b-rl684 with ESMTPSA
-	id qQDTHKktJmYMfgAAjN946g
-	(envelope-from <sebastien.szymanski@armadeus.com>); Mon, 22 Apr 2024 09:28:09 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-101G004c9d7feca-c54e-499e-ad96-007dd4ebdda3,
-                    A64A67AECC9DB63596043E25B5FC1CC6B28F39B0) smtp.auth=sebastien.szymanski@armadeus.com
-X-OVh-ClientIp:92.148.253.243
-Message-ID: <f01d49cf-5955-405c-9c2b-05b0c7bb982c@armadeus.com>
-Date: Mon, 22 Apr 2024 11:28:08 +0200
+	s=arc-20240116; t=1713781528; c=relaxed/simple;
+	bh=jJqY3EzcXGU+nKakTn7MTvOCbow73aPwa+neDvl0lh8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=XsWkWl5FO9n98JuvRxT2BY3sch9LhT/S3EtB1pITqjdT7DtsdH0J1rwUURbsOkgNzwxTmcrwHmqoiWHFSTige5ybqog6XKPjphDvL9q9qHAwUFZRx7NRJUnZHHP/A9/WoZ8ZJMNhYxMXLmnVo0ZW+i6BMQJMx99pwQjzh0gZ7mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ch0xaLnY; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ch0xaLnY"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a52223e004dso392211366b.2
+        for <imx@lists.linux.dev>; Mon, 22 Apr 2024 03:25:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713781525; x=1714386325; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kjOFtSdcuWQZYN13n2HXTmueHu30sawDV2mP2f/7YqE=;
+        b=ch0xaLnYeQ0FN5MB1rRIn/lKLMRJGTzZ6rDnXT7VokWeib1pSxgaMjmsmnBqzbWL4Z
+         AlEyVO7kcROHmZsDbXFXfbLTBxFidIlkStRREuavLkqdoXG50OEVZErbjS7+YKiJSaQe
+         XiJvvLNW+lqJx7Itu+ZelhjJUZldzYJ8Nl501WNghaTK5aD+j5tw3AxqLUuPoDFQkxQ7
+         xfKgnhMDdqJjDKk9yVk7FQyHuwZrJjc5Zg/k2fhuOTdYFa6u8slipFN2ZxEWMKaNZS0X
+         zEFbgpm18mrs31S6greI66tSOnfsQc5mXYkcEbNHYrfJzI1ZqvOfQSt4TUoWSthCISWe
+         0RjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713781525; x=1714386325;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kjOFtSdcuWQZYN13n2HXTmueHu30sawDV2mP2f/7YqE=;
+        b=Pv9nldpyh3Rp/1N2+/ZQviiXJVDylRD7tmdd0C/7FMda38N2brrGCZ6O8mFV8UPHwd
+         IQ7O/jyQ5VOHvVYhSRsEA/84rnTypFlwW28l1FyuiVgmVnMX7X71Q9/4vitd2AaT3ezV
+         UT5jxCwkv6Mjgm8Nt0bF+d0JMB0HaS4pQrdE+9dnoF1b+CSSp8FI3SGkJPXQF67MFGHv
+         zPuQJRQH4v06vSRCdXxw24qrcRoqzip3GE/r+9LKcQwscsmd88a+vduo8hT0UGnxVh8Y
+         FtH+cpKYY8E3iMmaIeHZ5nBi1sUktAeYRp/5041tokgCyPxlHxSDL0yx5ztD4T7LRloW
+         Zh/g==
+X-Forwarded-Encrypted: i=1; AJvYcCV5D0Erx4D2+Xfj8C7zF3Je8XyJiTHBazgSWYHn09CPKJrRb43HfUzZaHCGnkDd292L7SIfFepHQXaC6HYlhPjRKjMc
+X-Gm-Message-State: AOJu0Yz4QjK4UzJ2W5RD54NFYuvbD48k+nPfwmjhA/xMLpTRHTAjBi9p
+	tbIyoy1ng4CMa9X1v9/Lsm55Csow/QBtLISkpQg6BmP4fOXGuzJsjBdGP5LJqPc=
+X-Google-Smtp-Source: AGHT+IGJbFE/xk27S/lBooXeZazvrQf8V1BxKpteLDJyf6SzZbXaMCLpiQbsqNz9JHTqiEI/1HgXqA==
+X-Received: by 2002:a17:906:3ad0:b0:a52:57a6:2f45 with SMTP id z16-20020a1709063ad000b00a5257a62f45mr7820235ejd.21.1713781524763;
+        Mon, 22 Apr 2024 03:25:24 -0700 (PDT)
+Received: from [127.0.1.1] ([62.231.100.236])
+        by smtp.gmail.com with ESMTPSA id k18-20020a1709063fd200b00a524b33fd9asm5553172ejj.68.2024.04.22.03.25.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 03:25:24 -0700 (PDT)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>, 
+ "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20240401-imx95-blk-ctl-v6-0-84d4eca1e759@nxp.com>
+References: <20240401-imx95-blk-ctl-v6-0-84d4eca1e759@nxp.com>
+Subject: Re: [PATCH v6 0/4] Add support i.MX95 BLK CTL module clock
+ features
+Message-Id: <171378152318.2944518.13528932834119248200.b4-ty@linaro.org>
+Date: Mon, 22 Apr 2024 13:25:23 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] arm64: mx93: etherrnet: set TX_CLK in RMII mode
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Linux Team <linux-imx@nxp.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240422-v6-9-topic-imx93-eqos-rmii-v1-0-30151fca43d2@pengutronix.de>
-Content-Language: en-US
-From: =?UTF-8?Q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
-Autocrypt: addr=sebastien.szymanski@armadeus.com; keydata=
- xsBNBFNfZLEBCACv1lqSePHJNpRgcnER+3emy+Arjz84zFax3XkogjY/e3ZneihIgWrVKe5M
- ql16pX4KTkzNgMUKz4bG/XwT3kjcrXshxFLlg7KrHMl287C+W+QOUjnjVeRi/su+SPmjz8VD
- yr11h+ZkVLAWhS+uQJ93jy1NwG8M4t1kBLAVHHD5Vw4FJ+3ouaVYIp1X1Cr8bVKQw33Q1aTd
- ro0kMBb96B9vNu7ciJZ3gvlaBzUEKOgNnq9KaywuLnqrqr4HUIn5JuxZjCjJzt9kTAKcTfp2
- cJM8qpp+2FF5qtbkse9fZ6M64qozgOPr9Tk4Amf9fZEUQ6UNw14mmBZuXSzoHe75gI7TABEB
- AAHNN1PDqWJhc3RpZW4gU1pZTUFOU0tJIDxzZWJhc3RpZW4uc3p5bWFuc2tpQGFybWFkZXVz
- LmNvbT7CwJAEEwEIADoCGyMHCwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgBYhBJwGygpYm/1C
- /GCmwbCaKeiBMmTiBQJdhIHLAAoJELCaKeiBMmTixXIH/2W3kbzRG0UF81jtRRnp0H83rjDT
- v0H+8fgFMRL/7HCJ1QPArkfRJlM2wlJkN+ChP09CCarYfUEHfRCHlTb7At6Yyrz1jziD7ZwX
- 8IWHYRXnZkY5eZc5DsiUgq6JH49kt+GPzK8UVP9MTa6zkBpPCUf7LzZ4pD3FihdkT52BU3gI
- d9P49fSI0TYySlb/VKn815aOhvwEr7+Dh3mZUjSh7saofbRmVUOr7p+R3MvvGI19/IJZjeOE
- ZWliODDOt6HnBOtoGSXMcNIFF6snH52D5N5gY88njZjTwhgGGUBix1bsgf/EY0v4R5itZBXB
- B/Ze4Tm++YHaB75hZK6PQu/YRv7OwE0EU19ksQEIALo7jhXddrXBTRu5SAjelV53jyHBJTX/
- vN4nL/VbbW/saca+NJjDSxx5DBmotZbQdWIyZiSIjU/xnTREvtDrl6ZeSsKWd7ZqiuiY4fSR
- zwuQp9rd0yqRuxesrWeyJB1zCSdEvLyKASERt+nxkOA+IzJ4y1qLtvnWr+SL1AXgTMw+Tkyw
- KIDCRWHTIYas11ldGj82gOIpYeXnapeNLHfT4EQwg0NeWYHynJxAQWiX5aPlw0uSpAQSsBXQ
- FIe3fpoveMSnXK+PG2BBOzexYv7r4S70a6sF9sgTTPpfKqUaqqC+u1+bUX6alTAKhGKJywaF
- 6ViqLlgY8PfwohSyAlqlTRMAEQEAAcLAdgQYAQgAIAIbDBYhBJwGygpYm/1C/GCmwbCaKeiB
- MmTiBQJdhIHSAAoJELCaKeiBMmTitU8IAK7NQM3fEwaF5XaKtepYWsVka44CD8A9e4r7NVK9
- ugirKvXirIxBSDmN/Db862NmVpITsZ6ERNSNZLm/7k55N+TexKYiFZeU7G92TEfAM6qPElvx
- DLEcrkNMq9r08YZeUloacsq31AL5fK4LW+xdvXudkdiKRMJsdTpmff3x5kIziGOHjwFP9wve
- ZgEH52gpbRsP8Whx/Z2lNX/BBRmFM8OnEXFsjjqDzYThdxTq85wGPpkgvvUGyPNRD7TpbB1C
- pajOUUkPxgj5LKt77HD1afeZNudWhgcdkbtT5PMQTT0WY6wvMEj9S1+bGPeXRGWLYB7gHQ+L
- JNoSD7Kz6Y9qnKo=
-In-Reply-To: <20240422-v6-9-topic-imx93-eqos-rmii-v1-0-30151fca43d2@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 3291005431560006571
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudekledgudeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefurogsrghsthhivghnucfuiiihmhgrnhhskhhiuceoshgvsggrshhtihgvnhdrshiihihmrghnshhkihesrghrmhgruggvuhhsrdgtohhmqeenucggtffrrghtthgvrhhnpeeujeffheehvddtuefhjeevveffkeetfffgtedvjeekleelvdfhjeelfeeludduieenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppeduvdejrddtrddtrddupdelvddrudegkedrvdehfedrvdegfedpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepshgvsggrshhtihgvnhdrshiihihmrghnshhkihesrghrmhgruggvuhhsrdgtohhmpdhnsggprhgtphhtthhopedupdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdpoffvtefjohhsthepmhhoheejiedpmhhouggvpehsmhhtphhouhht
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-Hello,
 
-On 4/22/24 10:46, Steffen Trumtrar wrote:
-> This series adds support for setting the TX_CLK direction in the eQOS
-> ethernet core on the i.MX93 when RMII mode is used.
+On Mon, 01 Apr 2024 21:28:14 +0800, Peng Fan (OSS) wrote:
+> i.MX95's several MIXes has BLK CTL module which could be used for
+> clk settings, QoS settings, Misc settings for a MIX. This patchset
+> is to add the clk feature support, including dt-bindings
 > 
-> According to AN14149, when the i.MX93 ethernet controller is used in
-> RMII mode, the TX_CLK *must* be set to output mode.
-
-Must ? I don't think that is true. Downstream NXP kernel has an option 
-to set TX_CLK as an input:
-
-https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/Documentation/devicetree/bindings/net/nxp%2Cdwmac-imx.yaml#L69
-
-https://github.com/nxp-imx/linux-imx/commit/fbc17f6f7919d03c275fc48b0400c212475b60ec
-
-Regards,
-
 > 
-> Add a devicetree property with the register to set this bit and parse it
-> in the dwmac-imx driver.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
-> Steffen Trumtrar (3):
->        dt-bindings: net: mx93: add enet_clk_sel binding
->        arm64: dts: imx93: add enet_clk_sel
->        net: stmicro: imx: set TX_CLK direction in RMII mode
-> 
->   .../devicetree/bindings/net/nxp,dwmac-imx.yaml     | 10 ++++++++
->   arch/arm64/boot/dts/freescale/imx93.dtsi           |  1 +
->   drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c    | 27 ++++++++++++++++++++++
->   3 files changed, 38 insertions(+)
-> ---
-> base-commit: 4cece764965020c22cff7665b18a012006359095
-> change-id: 20240422-v6-9-topic-imx93-eqos-rmii-3a2cb421c81d
-> 
-> Best regards,
 
+Applied, thanks!
+
+[1/4] dt-bindings: clock: add i.MX95 clock header
+      commit: 977b07f769970aec97b907cfc93fb681ecffc9fe
+[2/4] dt-bindings: clock: support i.MX95 BLK CTL module
+      commit: b773f5ad2bfd2d00bd2c5ea7022bc5b86d23a1b7
+[3/4] dt-bindings: clock: support i.MX95 Display Master CSR module
+      commit: c6e87b066756ec4b3f5f9061b508f3bd724ec652
+[4/4] clk: imx: add i.MX95 BLK CTL clk driver
+      commit: 5224b189462ff70df328f173b71acfd925092c3c
+
+Best regards,
 -- 
-Sébastien Szymanski, Armadeus Systems
-Software engineer
+Abel Vesa <abel.vesa@linaro.org>
 
