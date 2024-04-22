@@ -1,149 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F2A1CAAD
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 21:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B2A1D54F;
+	Mon, 22 Apr 2024 22:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713821081; cv=none; b=nQGtMBwfJje025ZdIwuHA3Gbj71zGfOMpXqcwvLLg7G7+kS0ynUjSxiOH2OSYL07l0/IkSHPgZH6bxmTs/TAhoZGV7bFf3IGL8hnU6goquTPDxqLhYlIk0owoTrmmhwpJ3im3WwyvSvU3QtawOAkEH3dG7lUCP/MpPj8i8SDM/o=
+	t=1713824765; cv=none; b=ucNxfXIXnpeuKyu8j/eg8TFksr1i/mpxvMHkpOrTpmTbYPz7u2K5D3Yv4voPUaGLVHSsQVqpdUxDX3DqLp1FG0OQS6nQ0+Qoz0n3XIl9nKsAXvHSPMZZaTIjbucLmf799kMTlbOoZB9ce+cJQfEbjfbLl/PZCwnoVeD+K++Gmlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713821081; c=relaxed/simple;
-	bh=KeQhQEZ8pRcakTBQ9PKDBftDt52xxSsucNhl6xG9XeA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S5AQUTFnRs6wC5HPKEhOHSd+se99J1SianRBhX0Z52VbBLCnJvp58hQsAoFjDNM4fRJKgqXqkQgu4cX1327yxlOh9lwOz9p+MQ9vR4NPzSD1rsRxXhcgW7Vir09HgFyADhLM0bzPTsojocveDbu6sJZIl9IG0GCSpyQ68Zbk7XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gc3VZ3EH; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1713824765; c=relaxed/simple;
+	bh=Hd5Viy0Nj8LqCDVQU5jU/WzUH80cnkdPjYMuY1/EkGc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cfxvO8WIq8VZ3Jhv5USjX9F95l8YNEYtaorwq2BA9plD2fXkpRre5z7dlrycT9FUGyMuFGesO78mRUnixPReo12w6B21yxEnjJkMfMPG2Me22zFnxR+SIFC0O0kr8EIl9kPwfgjEMzer58vOja/el//Dh2CCHZpksOJxyanSXzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THfEvfJq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gc3VZ3EH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713821080; x=1745357080;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KeQhQEZ8pRcakTBQ9PKDBftDt52xxSsucNhl6xG9XeA=;
-  b=gc3VZ3EHil+uqRi111FQRIHbchAgKAkUTtdUrQ8w7vo2fwdnRvYAbrvt
-   vOD+cbP1bYa7W/WonbHxmvXrpizdb/WGT9o5ESN8OsP/CAYIoWzQ0eRY5
-   9QYub9CbGy2NjOvAfCUMzL3Nr5sHYfdV1+6Gp84BxHVsktVAGOtYBRjwp
-   Q8HY4rf8dr2g/8M0HRNlVNGnfTehaDrrfaRkiZ9mQxCiDfKhMFhxjwiiT
-   P4btRI77ic95a8cE7oqVbKQ1n4zRxrSQjk89Xva9DIMSbNAeq1bnSIAOg
-   SKGBrCbCZddiHnF5K98XQUHZr4Y7HL/JaOkr5sXUBAw7lwTw0fayfw1kn
-   w==;
-X-CSE-ConnectionGUID: /CPv0C4ERwuEXoNVf7wwzA==
-X-CSE-MsgGUID: qZd9IM5dRAaJa6T/MgpuFA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9491468"
-X-IronPort-AV: E=Sophos;i="6.07,221,1708416000"; 
-   d="scan'208";a="9491468"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 14:24:39 -0700
-X-CSE-ConnectionGUID: wTTDihldRN6BR80zwReOvg==
-X-CSE-MsgGUID: fSmU2ufDRNW71eOumkykEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,221,1708416000"; 
-   d="scan'208";a="24764444"
-Received: from leozhang-mobl.amr.corp.intel.com (HELO [10.212.37.174]) ([10.212.37.174])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 14:24:37 -0700
-Message-ID: <eaa0c99a-3b41-4444-906c-d2f005d326b9@linux.intel.com>
-Date: Mon, 22 Apr 2024 16:24:36 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THfEvfJq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C928AC113CC;
+	Mon, 22 Apr 2024 22:26:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713824764;
+	bh=Hd5Viy0Nj8LqCDVQU5jU/WzUH80cnkdPjYMuY1/EkGc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=THfEvfJqi5eSjOqntwvhBOb4ekKSttKZn4kYPuZ+uDfzUb2UtCO7Bl9XPpuvZlQ0/
+	 59Y177hTyz19Z/NOq+EANhhxQ9Y8PfcuohglhhFKlvO/KdNWuDV3beTuyr2399Vf0R
+	 vZ7Ccvd2BSWPJwwcUzJ1ZU0vI1ATM5IKVnZ8nns1UbGHRFOZrH5qCxBpUg7670BedB
+	 t4TraR6zJOx0McF9UzWBuF0+wUXE3atoPNySamVsJZCCfV67Q8lOCvJ0L2f3jvjSM2
+	 qhwwcfRQKhJXEwLYhdC9RD5cft3bUxcqOfJN+R7SRIbT8BMgdsM8PczYjHZH/VvYsZ
+	 t749YVHLCOTJA==
+Date: Tue, 23 Apr 2024 00:25:59 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	NXP Linux Team <linux-imx@nxp.com>, linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] i2c: lpi2c: Avoid calling clk_get_rate during
+ transfer
+Message-ID: <rejqts2qv26lbtizjd3e4wppwm4s3fn7lrloszfrve7zq4t6aw@relukzfcpj6o>
+References: <20240422113629.1629891-1-alexander.stein@ew.tq-group.com>
+ <7lcpupsaepqzxwovzvddtvrdr3f3xaxedxv5nfg4ax73gazu7t@mbc6ajq5suxh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/14] ASoC: Constify local snd_sof_dsp_ops
-To: Krzysztof Kozlowski <krzk@kernel.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Bard Liao <yung-chuan.liao@linux.intel.com>,
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
- Daniel Baluta <daniel.baluta@nxp.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, Mark Brown
- <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
- <89f8f0be-2534-46c8-9058-cabea4f68568@linux.intel.com>
- <9d1eda85-32a0-4e53-86ca-ce3137439bd7@kernel.org>
- <d046d195-6fa3-4c52-bc5f-3e5e763bc692@linux.intel.com>
- <138ac465-1576-4e86-a05d-63f8acc6fb70@kernel.org>
- <3acfbe3c-8b83-4c40-83c2-437f963fd25a@linux.intel.com>
- <7490bce3-3bd6-4beb-b8be-d47a6b0a30f0@kernel.org>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <7490bce3-3bd6-4beb-b8be-d47a6b0a30f0@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7lcpupsaepqzxwovzvddtvrdr3f3xaxedxv5nfg4ax73gazu7t@mbc6ajq5suxh>
 
+Hi Uwe,
 
-
->>> There are multiple reasons and benefits for const, like compiler
->>> optimization, code readability (meaning) up to security improvements,
->>> e.g. by some GCC plugins or marking rodata as really non-writeable, so
->>> closing some ways of exploits. There are many opportunities here, even
->>> if they are not yet enabled.
->>
->> Possibly, but the SOF core does not know if the structure it uses is
->> rodata or not. Using the 'const' identifier would be misleading.
+On Mon, Apr 22, 2024 at 05:42:20PM +0200, Uwe Kleine-König wrote:
+> On Mon, Apr 22, 2024 at 01:36:29PM +0200, Alexander Stein wrote:
+> > The dependency from v2 has already been merged in commit b0cde62e4c548
+> > ("clk: Add a devm variant of clk_rate_exclusive_get()").
 > 
-> How so? If core does not modify structure, it should take it via ops,
-> just like 100 other widely known structures (see checkpatch). Why is
-> this different?
+> Note that you might also need 7f1dd39aedfccf60772328c5b88d56dbd39954c3
+> which is part of v6.9-rc5.
 
-I don't understand "it should take it via ops"
+it's fine... I have rebased all my branches on top of v6.9-rc5.
 
-We are already fetching the structure with private_data.
+Thanks!
 
->>>> that's a different interpretation to the 'software' view you're
->>>> describing. "this structure will not modified by this function" is not
->>>> the same thing as "this structure CANNOT be modified".
->>>
->>> Yes, but can we please discuss specific patchset then? Patches which
->>> change pointers to const have one "interpretation". Patches which modify
->>> static or global data have another.
->>
->> Just look at sound/soc/sof/intel/mtl.c... The core will sometimes use a
-> 
-> That's a driver (or specific implementation), not core.
-
-You are making an assumption on what the SOF core is. The core is used
-by ACPI or PCI drivers as a library. The structures are all allocated in
-ACPI/PCI drivers and passed to the core library.
-
->> constant structure and sometimes not, depending on the PCI ID reported
->> by hardware. This was intentional to override common defaults and make
->> the differences limited in scope between hardware generations.
-> 
-> 
->>
->> int sof_mtl_ops_init(struct snd_sof_dev *sdev)
->> {
->> 	struct sof_ipc4_fw_data *ipc4_data;
->>
->> 	/* common defaults */
->> 	memcpy(&sof_mtl_ops, &sof_hda_common_ops, sizeof(struct
->> snd_sof_dsp_ops)); <<<< THE BASELINE IS CONSTANT
-> 
-> Yes, I saw it and such users are not changed. They won't receive any
-> safety. But all others are getting safer.
-
-
-Maybe there's a misunderstanding on what the 'SOF core' is. This is just
-a helper library that are used by the PCI drivers. The core has zero
-knowledge on anything really.
-
-> I really do not understand what is the problem here. In entire Linux all
-> of such changes are welcomed with open arms. So what is different here?
-Adding 'const' at the SOF core level does not mean that we can treat
-structures as rodata. It only means that the structure is not modified
-by the core library. Not the same thing.
-
-
-
+Andi
