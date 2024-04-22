@@ -1,41 +1,44 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42890168DA
-	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 04:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C9EEEDB
+	for <imx@lists.linux.dev>; Mon, 22 Apr 2024 05:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713761946; cv=none; b=H8prb8J3U+sbEud95VkCNjWLgdxFnhiaxAP7JPqacheIc/kRkVi9C/ptyhUUc0X3ASZyL7vsn36bnxgNA2duaXtlA/LReLPUjl+sZ/FxijA7GTv2PC7WSgeFN5Q4Au9caeoFI4ayjQPdIBw3riuW9pBbGkWNhv8KFz/+EcCL7mM=
+	t=1713764287; cv=none; b=sOvpXoAps8gd7KXdVoN8wSchuGqkjMkZIJAYRYW4JlGhHz/22ERN7CshkP0QSJvC351Dyt7G6aoacdjLtnyzy4cEUs+PoxdtFGAkIPsQyZnR7LGH2V/omAAVRyTexHQgJABuJZhnLQQm+1HABPj5WXaU5dWK4LddqgIzTEJHZOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713761946; c=relaxed/simple;
-	bh=e2IOv5P5BEhLEgCvqfH/NoIA22PfHjXvysi4/N9o8Zg=;
+	s=arc-20240116; t=1713764287; c=relaxed/simple;
+	bh=UvqDzdu2TTJTK4OdDH0/3J+sp3kr4bzNlQFZ8kZqx6Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d43mSnOg59IvGEhFesdvIJGnjIYB18CmI/yw+whMCIZlwWnQ3V4pIhP50K6yDmv6eldzkusCTbTQUXDnfMpupFHBmjABu5VnYi2qpjOLhmioCok3UhF6Opk7n9+UqcgGm5fZ7bhCGkbJo2Wmru/n9xmUA8YHp8LlB3d1yXsJvZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ZL5n0Mo0; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=AjUn5JN2OaayLyeFxE8/U0F9JahbH14ObZZv0dktvN52wEM192m07DlJBOXZtI7kRh2Q+tsKtNzwSmZGIWlxLOXv3E178SJBU2OIADsJDbrhVLs6bapnGwGm0cvPUZxw2faRnActTMZNhy2xyFnIxmGLycwr0Ih54W34aC3y8+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=S4a+wRNB; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ZL5n0Mo0"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="S4a+wRNB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=bLSMPym9YLKBmvTHeO2esyIfmmXqnJLIMS/RpQu5QIY=;
-	b=ZL5n0Mo0pwM+TSXvjxE6CKzjodmMDGkjTlKhujJGdGqF8jfDQA85U79CDpfCUs
-	QYOUZTkLIK7utM0DIXcw9ZzszpaZlkqUPyd0q3MT2KAs3piS2JW9W7Ij6rHO7LSV
-	ejGoTWc40Vtvhd1QL6aKmmihGF6hVol0YFpERkGEfHgwg=
+	Content-Type; bh=U7ZXAal9WFWFi5DDqMaGeebZSbq/tx1oQT0cheVJWL0=;
+	b=S4a+wRNBikEbjIczCsK7YbINnGaDrT4tQCGqzmieL4zTt8BovudHH6XlbNhL12
+	Iy6u3HMGLs1u4NBEc7o4HLbeLWsQKts+LIvND1oYm66aeuFh+4cUuP36xS6nAoId
+	O/i3wmAJiFudzy2GrathB1ubH8vgAol1jMJ6Q5kkchu4E=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp2 (Coremail) with SMTP id C1UQrADHTw9_7iVmhDAzBA--.10732S3;
-	Mon, 22 Apr 2024 12:58:40 +0800 (CST)
-Date: Mon, 22 Apr 2024 12:58:39 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAA3vw6C9yVmPxMtAw--.30495S3;
+	Mon, 22 Apr 2024 13:37:08 +0800 (CST)
+Date: Mon, 22 Apr 2024 13:37:06 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux@ew.tq-group.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL
-Message-ID: <ZiXufwvLKmZ9ouXB@dragon>
-References: <20240410063706.3813894-1-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Hiago De Franco <hiago.franco@toradex.com>
+Subject: Re: [PATCH] arm64: dts: freescale: imx8m[mp]-verdin: Update audio
+ card name
+Message-ID: <ZiX3glaq0+cTywEx@dragon>
+References: <20240411161441.70262-1-hiagofranco@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,16 +47,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240410063706.3813894-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:C1UQrADHTw9_7iVmhDAzBA--.10732S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVco2UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBbIZV6NnuI2vQABsG
+In-Reply-To: <20240411161441.70262-1-hiagofranco@gmail.com>
+X-CM-TRANSID:ClUQrAA3vw6C9yVmPxMtAw--.30495S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUs4EEUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDQTIZVszXbdSjQAAs5
 
-On Wed, Apr 10, 2024 at 08:37:05AM +0200, Alexander Stein wrote:
-> Enable HDMI nodes and add the output connector.
+On Thu, Apr 11, 2024 at 01:14:41PM -0300, Hiago De Franco wrote:
+> From: Hiago De Franco <hiago.franco@toradex.com>
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> On the Dahlia and Development carrier boards for the Verdin family
+> (iMX8MM and iMX8MP), WM8904 and NAU8822 codecs are used. Instead of
+> module-specific names, switch to more generic names based on the codec
+> employed on the carrier board itself.
+> 
+> This modification facilitates access to ALSA card names, ensuring
+> consistency across iMX8MP and iMX8MM, as they share the same carrier
+> board.
+> 
+> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 
-Applied, thanks! 
+Applied, thanks!
 
