@@ -1,149 +1,93 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA24225DD
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 06:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3CF18036
+	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 06:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713853628; cv=none; b=PDiA678xDiTmjQ+jSZzcoo4de6sya251/n9f5lc7Lnrh+7L9a5P2e4i4SXjyW0BG2kRMRWjvdAMrx3ec1tGWykfJG9MVUHgdFX7vzFlDU7RbQpcY8d9TMZbzlm0MSnTavqBlz37P+xTAsgrXM3+Atbwn8ExI/IlnaFXOatenmVc=
+	t=1713854658; cv=none; b=YFJiyE4Kz76X9kFxakqtbkKohOBthMSnpt4qSDT6Ad8ciRtWc7x3Fk5XAnV32AeRBwg6FfXcc1aIlQHGAL/AVgwkC4WnXfnn5wJeuSGlvHS4XodfO8lS2zgbHOnWLYHZkDoLKdFtmWjV/iJw3gTYcADoY9yPzY84/KsUxl/vSV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713853628; c=relaxed/simple;
-	bh=BOTVxgdLvwkUKUp/KbDf4z2lDM2qZC92BYAnfam74oY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AKLxNielQlxUGeY0ETlAmsURIOS3M9qaXuWW6ruQCxV8RfrspmcwruV3iPcR2Ada4PsCIj8P8vANcZtKNJEU9c111PIbI6hZoF3ars1cAU3unTBKiH0sKNSXnqpKSp0fbQRz0mbqj1VzbTdPNWFGGuImHKoGG7qhO0lsSttAcE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=GjzkDgyC; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=UAkiHRNj reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="GjzkDgyC";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="UAkiHRNj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1713853625; x=1745389625;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=s7RKTtO04TwlxnfzFc9siRRe1sN43bdKokqcoMESYdY=;
-  b=GjzkDgyCKC7XgSWiVsM6htOIL5wzdzfXwer46C3kENqkqUJNxTojKVGM
-   5VmUuUyZvEji6E3/iTYulTJirJYS7XieHZSRJDLG2Oi+x95gpTe+bYybK
-   rPeXhFy6/15NhMrSMDpxtud8yLqpVz/pr9vpDlm7gqrnxOPXXrqyGhN65
-   /d+0P+TcJaMkM6qEFChUHbSDW3Xy4BQMEivPXSx9ht3sVwvz0bOtye1o2
-   28SXySlcUHQH6wcmJjMeZqwhHkiVfme6gAJez44ZIPfh6u+y7+7CoFj8L
-   XDIht7dydfyCMrnJf2yLCQmMl7M+Ha7JGXx6feSJrlWnJPTwSW/cvxbQ4
-   A==;
-X-IronPort-AV: E=Sophos;i="6.07,222,1708383600"; 
-   d="scan'208";a="36554964"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 23 Apr 2024 08:26:58 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C86B3173F3F;
-	Tue, 23 Apr 2024 08:26:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1713853614;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=s7RKTtO04TwlxnfzFc9siRRe1sN43bdKokqcoMESYdY=;
-	b=UAkiHRNjMPPyc0aoxi7sCbNJkWN4dzPCT/TtD2d4Ca+L9Cf2CMqH/q2MCpIyGF9RFQntm7
-	3EfpEN1GTF0ig6txR+/ictIsHJHX7yZETNMph2MzyROkh82Jw27lDG5Kiham8mfDw3Fmzs
-	7h1bveDOteAgmtqP/o2JBAgNcPth6yqNxCc4Dk3iHpDT8AdjuWasnadJn9OmUd/x5Y/XAJ
-	OTRC1/Xi04FXakyTnKeXE4Tt0eQhiaXaAI2TVsYVXFGVyoFKm8LMPTH1ZJg8RWgqcjqpi1
-	9SLI7W1Ms2kKYyEwBPb/+Ph6Z/48ydp+ZGB0tnFqr0C1jGHZEnBpfvix5mIVOw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lucas Stach <l.stach@pengutronix.de>, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: interrupt-controller: fsl, irqsteer: Add imx8qxp support
-Date: Tue, 23 Apr 2024 08:26:55 +0200
-Message-ID: <6041240.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240422-channel-emission-d485dee6ae48@spud>
-References: <20240422064949.70778-1-alexander.stein@ew.tq-group.com> <20240422-channel-emission-d485dee6ae48@spud>
+	s=arc-20240116; t=1713854658; c=relaxed/simple;
+	bh=3yvG2JR0FVm384FMkHjhLQhJrk9XdHHltko3LnCBBic=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LnsBPWEHe7zzunHQ4UQS9cKqJMtWyaJzwtTcznAdAnrGwDiLj2xKB3+UFlvZKxYagjn/0LF4KrT33b9+KuaHjPBlGluM4EWfo/WcyWQ5D5F3kT4mrF52wlNG+On5u9GLHeHrNTOdiizM8Q1bmStSozgOFxtXUex9xvjKQbWYYPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.pengutronix.de)
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1rz9sp-0007P6-Hm; Tue, 23 Apr 2024 08:44:03 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: =?utf-8?Q?S=C3=A9bastien?= Szymanski <sebastien.szymanski@armadeus.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
+  Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  Clark Wang <xiaoning.wang@nxp.com>,  Linux Team
+ <linux-imx@nxp.com>,  Alexandre Torgue <alexandre.torgue@foss.st.com>,
+  Jose Abreu <joabreu@synopsys.com>,  Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>,  netdev@vger.kernel.org,
+  devicetree@vger.kernel.org,  imx@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 0/3] arm64: mx93: etherrnet: set TX_CLK in RMII mode
+In-Reply-To: <f01d49cf-5955-405c-9c2b-05b0c7bb982c@armadeus.com>
+ (=?utf-8?Q?=22S=C3=A9bastien?=
+	Szymanski"'s message of "Mon, 22 Apr 2024 11:28:08 +0200")
+References: <20240422-v6-9-topic-imx93-eqos-rmii-v1-0-30151fca43d2@pengutronix.de>
+	<f01d49cf-5955-405c-9c2b-05b0c7bb982c@armadeus.com>
+User-Agent: mu4e 1.12.4; emacs 29.3
+Date: Tue, 23 Apr 2024 08:43:58 +0200
+Message-ID: <87mspkk28h.fsf@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Conor,
 
-cc'ed imx@lists.linux.dev
+Hi,
 
-Am Montag, 22. April 2024, 17:48:20 CEST schrieb Conor Dooley:
-> On Mon, Apr 22, 2024 at 08:49:49AM +0200, Alexander Stein wrote:
-> > Some SoC like i.MX8QXP use a power-domain for this IP. Add a SoC-specif=
-ic
-> > compatible, which also requires a power-domain.
-> >=20
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> > Thanks for the feedback.
-> >=20
-> > Changes in v3:
-> > * Move 'allOf' before 'additionalProperties'
-> > * Remove superfluous 'minItems: 1'
-> >=20
-> >  .../interrupt-controller/fsl,irqsteer.yaml      | 17 ++++++++++++++++-
-> >  1 file changed, 16 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl=
-,irqsteer.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl=
-,irqsteer.yaml
-> > index 20ad4ad82ad64..3d33b75d6ecfa 100644
-> > --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqste=
-er.yaml
-> > +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqste=
-er.yaml
-> > @@ -14,7 +14,9 @@ properties:
-> >      oneOf:
-> >        - const: fsl,imx-irqsteer
-> >        - items:
-> > -          - const: fsl,imx8m-irqsteer
-> > +          - enum:
-> > +              - fsl,imx8m-irqsteer
-> > +              - fsl,imx8qxp-irqsteer
-> >            - const: fsl,imx-irqsteer
-> > =20
-> >    reg:
-> > @@ -42,6 +44,9 @@ properties:
-> >    clock-names:
-> >      const: ipg
-> > =20
-> > +  power-domains:
-> > +    maxItems: 1
-> > +
-> >    interrupt-controller: true
-> > =20
-> >    "#interrupt-cells":
-> > @@ -70,6 +75,16 @@ required:
-> >    - fsl,channel
-> >    - fsl,num-irqs
-> > =20
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            const: fsl,imx8qxp-irqsteer
-> > +    then:
-> > +      required:
-> > +        - power-domains
+On 2024-04-22 at 11:28 +02, S=C3=A9bastien Szymanski <sebastien.szymanski@a=
+rmadeus.com> wrote:=20
+=20
+> Hello,  On 4/22/24 10:46, Steffen Trumtrar wrote:=20
+> > This series adds support for setting the TX_CLK direction in the eQOS e=
+thernet core on the i.MX93 when RMII mode is used.  According to AN14149, w=
+hen the i.MX93 ethernet controller is used in RMII mode, the TX_CLK *must* =
+be set to output mode.=20
+>  Must ? I don't think that is true. Downstream NXP kernel has an option t=
+o set TX_CLK as an input:=20
+>
+
+re-reading that passage again, it only says "other registers that must be c=
+onfigured" and that the ENET_QOS_CLK_TX_CLK_SEL bit "is 0b1" for RMII. So, =
+maybe you are right.=20
+
+
+Thanks,
+Steffen
+
+> https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/Documentation/devicetr=
+ee/bindings/net/nxp%2Cdwmac-imx.yaml#L69
 >=20
-> Provided the power domains are optional on the existing platforms,
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> otherwise,
-> else:
->   properties:
->     power-domains: false
+> https://github.com/nxp-imx/linux-imx/commit/fbc17f6f7919d03c275fc48b0400c=
+212475b60ec
+>=20
 
-A power-domain is used on imx8mp, but imx8mq does not.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+--=20
+Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
