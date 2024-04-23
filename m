@@ -1,113 +1,119 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5633012F5AE
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 11:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD2F1420A5
+	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 11:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713871956; cv=none; b=Is4MurvCJg7anrPahqwuJlBT4Z8rpl1J/lFBwaSth7P3M8RQ19HD2LwZhYLNVCV5PAAlugZA+zOMk96U0a3FfMFUosOyiJ+Qd2IiBrC5rBWYP+WdWv04qjaZ350FyisejZBY3ipGWDJWSi/42rM9HylhewzzskU1UEKp+ZZP4Q8=
+	t=1713872469; cv=none; b=B5esHA1JtD41OIGEu62RoFMlXzspNGz5gF2237/VW1r1RDOCcadR3oQHUjMTuXU5JuF3sjKGs7gQnLx84RTgeJQ4NMZdR/9YcA7lWCnGg+EQjLwkkt32eEJFZjCvdCo7eLgbykNPpLnJlrLjIma1fq7QYnfHGHqH2MAx4MbxgUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713871956; c=relaxed/simple;
-	bh=ZeYlrTotjERbxmW3X60SZKrwg2gt2Rp06cYW5JNsCOM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B8anTJQfscbCL4IUnQOGJceg0idLoCVaIt1eoOnG+geK+vGzsUp/vCVcjBe7RWijsV+itYyXhZ66tq06xT0SZjR5fUZM4JPnVHwG0KWtQF+9QKE4xFtVHTdmFjLa72d34gZcAlZ3wqoR5AvXFUDWhxJsTra0nishyIM7ADi+zmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=a678XM4+; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QhwY3aun reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1713872469; c=relaxed/simple;
+	bh=jGSxB/aKBQrvQZyFP9ugxKa9qzrbfWhqVhGn/ZIkYAs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ago4uCu17HOGaz3eg2q55gju3hB/5qOgNVrNicVEHPvb5p8XQuO7wJzFqlDHBxrLgQ89hdnhetgsrQVvo9WMMjs+G1TWx7LREbc6fNIh8jzD7LqEuEAnjd/Sl/3WyR6XZ1D7jrLy03vMYSb3yGMYOYQ0jMUwP0GdYKOnVKRQCMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dd0RQNak; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="a678XM4+";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QhwY3aun"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dd0RQNak"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-de46da8ced2so5395576276.0
+        for <imx@lists.linux.dev>; Tue, 23 Apr 2024 04:41:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1713871954; x=1745407954;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pCLoCC6GOo9gQ9iL/Fi4GAoIoWICczCG1YlZoCwuv8U=;
-  b=a678XM4+Ntc0d0Pnyi7hYH+N1YAEcu7M9rLTFzGBegyuTUnPy4CCEvP1
-   qT166I4p87jmOv4bZ2NTNaDXoZ0wAsuYgLjR7eR0I60O1eIvxtbAUIgDC
-   6ElIDnFc7l6eUS8iZDMz6/cPThghBDFqPPe5cAOxutkn2ySYOkLBpj46F
-   zGSMMuyMjXqkVjD2BrUj3IseVrJthuJbBahw24hUm8VHOY8HXDuTazg7V
-   Els1GH82Y5GIkzScVkJ93Vts+TuAhOq3mQ1qxwTZSMPMregjlNRG5C/Zk
-   WfGpwFa3puBgj975InXdRwoYw6UhdnxiPcpN9EIbwRGktKnLx3eWz4xql
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.07,222,1708383600"; 
-   d="scan'208";a="36565292"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 23 Apr 2024 13:32:33 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98CA61706D1;
-	Tue, 23 Apr 2024 13:32:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1713871949; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pCLoCC6GOo9gQ9iL/Fi4GAoIoWICczCG1YlZoCwuv8U=;
-	b=QhwY3aund2zBHehIjbkKKf5Dw5G1hphylELqCTpdTSET2ekepXcgiNkrfK8NHecF4DHTxQ
-	PkMULW0Skx2/pwI1AvLSueg82jzDHcxTw5mqVBM9ByNzx2sFDKp6tT75eh3Jwq/te5TvxS
-	qWW7A1dtaw6RIsA3yk1XTot8iwyEHvUQ06kSTZRvTHc2ZKeUU8VwHyDdvEFAsf8br9I9RW
-	sTu7McLyyPVLs8jH8+twgeMOqGBUZX+MLGCiXkK++YPJycnmzlffMRhvbfnpryK1SvvUdr
-	ILKIdvSgwyC9g1njHtW9CNwYKOeoPpVL6UU6y0FWT0+58Yni7C8Yn85UAHXigg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] arm64: dts: freescale: tqma8xx: Add partitions subnode to spi-nor
-Date: Tue, 23 Apr 2024 13:31:51 +0200
-Message-Id: <20240423113151.2145120-7-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240423113151.2145120-1-alexander.stein@ew.tq-group.com>
-References: <20240423113151.2145120-1-alexander.stein@ew.tq-group.com>
+        d=linaro.org; s=google; t=1713872466; x=1714477266; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lHww8guo9joHfM40pOxCx1WuFD69gCMICsgCV/kfVdI=;
+        b=Dd0RQNakuyVIamDSbBXtI7I2CnMA0uj2VnHnzPcaobTvVQcavVrkCuo3+mnkmdlgTi
+         lyp7TZbK9j/UF5YFQIUdkYzbFeBIalTUEuD6shZaOYTsBqTAZyilYEVGQ8dmoIiULJ/w
+         vORWoYwD6fcrpFD1h+MgX/HWsSY0QzHYOIUwpZCzXnRtllXsXyJFlnw+BpvPHZGc5ap1
+         JZphpiX7gHafZuM22A8tJd1z1f7SK7/e0fyACRDiZ66IfzCcZS6a7v2xo48rLYtRE2s5
+         LzXXRd8161kMm379zvqIbZeuSIWni7UMtC0R4UrDc/uAOejMLX8boL/Kf8T5l6Soe+iA
+         5LUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713872466; x=1714477266;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lHww8guo9joHfM40pOxCx1WuFD69gCMICsgCV/kfVdI=;
+        b=PpH1VJXJtNXSb5nMND1bwOKxhiNP99sgG9A4q2l1nUZQMduS2pxZq9pgMFO95JJUmI
+         s1rKUwf5zg6u8/tIUn0h9nmqBNqztmaxdoeWvFxdKZnNLG0gSW5CC+SIEeYYzS/yxI6l
+         T1bcSFcMsCy83drvRJ1EpYsNIBw+Cy7QGGJfq/4cFHdnhMv8VaGVTswcYQN4Yw0hX/gX
+         wIVFJhIUcFZC/hUszfjvzFQXd4rKSIowROY/tWVfxpDLnfHIiHCud8xIiZmjkxtoW6Hv
+         4eYjZ5qb8qgsZMlJ2edI7zacrlJWv6MU75BHsPMZmg1bHWOzN5n5/enku9hZcM1nNef4
+         7fVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNyq0hpNp1Bygc+JUieyQOAoUA5IKtk6PkY01pNyIB7N5KxP3/8guVFllXv2O/xlvmwMKkLKOupjyEWoEU4+9DhaLR
+X-Gm-Message-State: AOJu0YxNMZM5q6ge7zfy6zE2qiLDb4O0tpfOghpeJg15iV2mp7VyKOdh
+	lJAh2ygi63OpVUigyQtyAh/vLD2CfsQU94Czir8194H9ydHHCKN3fbbIXJ/TpuDfYAyMQLfzSMp
+	TFAR2DBp+JePis86uplfP0mV+VA28uD6WY2fEFA==
+X-Google-Smtp-Source: AGHT+IG0zUJ0k+vOuaZckaNvNj9KvErNxit8stDC2Lri93dfWftA1haaHyaI6RFYiG/AC23vxxVy2y/4BpkWBRxblqM=
+X-Received: by 2002:a25:bc45:0:b0:de5:5084:715d with SMTP id
+ d5-20020a25bc45000000b00de55084715dmr1506637ybk.53.1713872466081; Tue, 23 Apr
+ 2024 04:41:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20240423022814.3951048-1-haibo.chen@nxp.com>
+In-Reply-To: <20240423022814.3951048-1-haibo.chen@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 23 Apr 2024 13:40:55 +0200
+Message-ID: <CACRpkdaRxoEZT1_KyJ3QMDgBcciw1XUXKr=cEiPxbcwSnpmyiA@mail.gmail.com>
+Subject: Re: [PATCH] gpio: vf610: always set GPIO to input mode when used as
+ interrupt source
+To: haibo.chen@nxp.com
+Cc: brgl@bgdev.pl, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The bootloader adds MTD partitions in this subnode if present, or in the
-spi-nor node itself otherwise.
-Setting #size-cells in MTD nodes itself is deprecated by mtd.yaml.
-Fix all this by adding an empty partitions node which the bootloader will
-fill with configured MTD partitions. Remove the deprecated properties
-as well.
+On Tue, Apr 23, 2024 at 4:28=E2=80=AFAM <haibo.chen@nxp.com> wrote:
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/tqma8xx.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> From: Haibo Chen <haibo.chen@nxp.com>
+>
+> Though the default pin configuration is INPUT, but if the prior stage doe=
+s
+> configure the pins as OUTPUT, then Linux will not reconfigure the pin as
+> INPUT.
+>
+> e.g. When use one pin as interrupt source, and set as low level trigger,
+> if prior stage already set this pin as OUTPUT low, then will meet interru=
+pt
+> storm.
+>
+> So always set GPIO to input mode when used as interrupt source to fix abo=
+ve
+> case.
+>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> ---
+>  drivers/gpio/gpio-vf610.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
+> index 07e5e6323e86..305b0bcdee6f 100644
+> --- a/drivers/gpio/gpio-vf610.c
+> +++ b/drivers/gpio/gpio-vf610.c
+> @@ -214,7 +214,7 @@ static int vf610_gpio_irq_set_type(struct irq_data *d=
+, u32 type)
+>         else
+>                 irq_set_handler_locked(d, handle_edge_irq);
+>
+> -       return 0;
+> +       return port->gc.direction_input(&port->gc, d->hwirq);
 
-diff --git a/arch/arm64/boot/dts/freescale/tqma8xx.dtsi b/arch/arm64/boot/dts/freescale/tqma8xx.dtsi
-index d98469a7c47cc..366912bf3d5e5 100644
---- a/arch/arm64/boot/dts/freescale/tqma8xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/tqma8xx.dtsi
-@@ -61,12 +61,16 @@ &flexspi0 {
- 
- 	flash0: flash@0 {
- 		reg = <0>;
--		#address-cells = <1>;
--		#size-cells = <1>;
- 		compatible = "jedec,spi-nor";
- 		spi-max-frequency = <66000000>;
- 		spi-tx-bus-width = <1>;
- 		spi-rx-bus-width = <4>;
-+
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+		};
- 	};
- };
- 
--- 
-2.34.1
+Just call vf610_gpio_direction_input() instead of indirecting through
+gc->direction_input(), no need to jump through the vtable and as
+Bartosz says: it just makes that struct vulnerable.
 
+Second:
+
+In this patch also implement gc->get_direction() which is currently
+unimplemented. If you are going to change the direction of a
+GPIO randomly at runtime then the framework really likes to
+have a chance to know the current direction for obvious reasons.
+
+Yours,
+Linus Walleij
