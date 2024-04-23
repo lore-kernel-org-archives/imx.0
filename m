@@ -1,204 +1,101 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2076.outbound.protection.outlook.com [40.107.21.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1896813FD8E
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 20:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713903414; cv=fail; b=g44KF4IQKtPnevtYQHPKiIZIdkSPc2odP8GEvMdiGfu72RP+4r9EtmCvIIet7/mC/VotbhN+svJGeyyYbSJ4+S+wMN26h200Ld6MuqPg/mOC3VcE689nLMjxrAFSq6M2CQV4+oCwenlH8GxaqfbzjVbbaQWy56dDBR+zXxjYIIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713903414; c=relaxed/simple;
-	bh=9PmmtD9YJbEL+dITXOLmTurSZ8XS1LaPk9bqvwgs8+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M9VPXoeCZSVv09tCW0EKroX5o7LZ7hPlRPQJSlAGn0sZXrLRm+TLIc60KpOI8EZisykkgEaQYj2TvYwRMiYWg3a3ezuHZWA1TWHaIYU5OxHJsP1iEdSzD3YwM78MUU1QU+EfjX1BHUzfcMpflC2/asYa6XsD8RxQV8n4Ju2F8Vw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=O9JKKnWQ; arc=fail smtp.client-ip=40.107.21.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E4F14291E
+	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 20:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713903760; cv=none; b=hTguFvxPlL/521HleRTb4jlIQWv5gP9FvtjiKnzhgvNwfGcrnRBv+iDwVunTuu3vFbKQZFQNoeTg2uJxizt1zhALsoB7PV9QLydQljHqjIZaotUgsP6p3QPAc8LlcTH0OVlvp7B861A28QpsXOiJpKRSn1eSaDLqOH30oxN5DH0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713903760; c=relaxed/simple;
+	bh=ERg1J41d06etnj+H8lues6SdgOvc50LdXU0Ny6V07n8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OF6pATJYJ0i5B6XovwaCkjACM/Jnm502EBjRG14Ce/49Ro8tVM9zarH4uyGv1vY0ktTVemp8PLsSqB/yE+Wj+nXtIGy/2WD/MGjFWiATZUErudoZWtlR3PhcqdYbgUVqBQLPXRkkY+hqxnXEhharTW1wucPzToUxMh8+J1G4wE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dse1GhFA; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="O9JKKnWQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ro8jA9zWLUUI7LhVBIBHnV8qvuae3K9Z/WCr/rmcHt/ddfdDsONKq8TD2c8upmEeVaBRIM49GU0Odj1zAQEVCIGrR/WP3u7p9mXDU7+YGnhM9LS+QWISnV0aFhvBdpxmAbC0cPu0ThdRsUJx+gQqS00hL99VEP3ObSOSaKmqwtwU6fdnRG0NFd6QLfsHeV9hnwrYjGUicodp/xgTfK/lQjsnpx+KIJH0yIbFUS1GOfOEvOV11yJfXF/7gFYZqKNmfJpCTy76cylQiW3+N6q/Nk71oI+TZQyjPYXyaflfvrgGDavfxOXhf2sGKKLhkVbbi8+S3O0sMjGCIA1DDQCjfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I7QyoMIElxsbh8Zl5Q274z9fuaJ92JlGX+NXewDMV1w=;
- b=iYAzh6rjAp8uOhpnFLSlps8n/4AInKCPhGtcfQnYvDlGegtueoJ8iajnmBwRGzW1AN3f3gSjHrfJK1WEhLFmJXMyrnDKXlNTjzEIBAHnKTbKN4NBZcCekR1N8iWyZ5i/2Kc+3f24JgvucLTYP1CQS3i5HVWWkkj3x9+OpR3K4gnTgXnUZgnJdjRE5Bg0ugzGrEEXtKjANY17JMYDObmSbeFI26ZqmmaAucAp6/LG5tP0tz0kMvCevo6bduypXnWbLKItlZDpIBjQYOWayHR0ttbo70jnm6CqS0F8yuhPNleFxHBSVju1dDQtaUQlr7Oh9HZ1fpyuzKKA/8CB6wCjgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I7QyoMIElxsbh8Zl5Q274z9fuaJ92JlGX+NXewDMV1w=;
- b=O9JKKnWQbtnRkF8GWqpS4zlAPkHijqzFZgQoovEyG+84j2qiJbcs+25niOkfX8FfmnHT0hASL83vQ63uXx0bi2G5xEQpmCLf/w3cRPmFo3Af4HikLTkLVujwX9+PZimGZLe0DNN/EeM+rbBj+/+3dWh/Z/gbLXQ08icn9JjVDlI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU2PR04MB8615.eurprd04.prod.outlook.com (2603:10a6:10:2da::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Tue, 23 Apr
- 2024 20:16:49 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.044; Tue, 23 Apr 2024
- 20:16:49 +0000
-Date: Tue, 23 Apr 2024 16:16:36 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v2 3/4] PCI: imx6: Convert to agnostic GPIO API
-Message-ID: <ZigXJJj4e+oaANAt@lizhi-Precision-Tower-5810>
-References: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
- <20240423172208.2723892-4-andriy.shevchenko@linux.intel.com>
- <ZigSiCBIwoEIPYoG@lizhi-Precision-Tower-5810>
- <ZigUL7exXBSbWDIR@smile.fi.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZigUL7exXBSbWDIR@smile.fi.intel.com>
-X-ClientProxiedBy: BY5PR04CA0024.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dse1GhFA"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ae3afb81d8so461772a91.0
+        for <imx@lists.linux.dev>; Tue, 23 Apr 2024 13:22:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713903758; x=1714508558; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ERg1J41d06etnj+H8lues6SdgOvc50LdXU0Ny6V07n8=;
+        b=dse1GhFAraaOPqgfwB2IBcJikaehWP4T6C7Isbopzt7xUtxHEefA0rKbXjduirHCD1
+         AM6MgRNrVZcXcn3ap2/1JuyYSBOwKXpaIuUgbwK8a7zG62kxKV206nUdC5naZrsY4Pue
+         sVE1sRwOqgK//2eTtOP4mY/lUaZ5Tb/No8026RwEGihMswBHqC3UaFxtgGAJBxnnMZzJ
+         r4RVcGrvXcg4RPZzrwmSDT1VkNCuNSdX2vPgTnuSbFkmyfvCfY8ybMDxRhBASbSYTa95
+         sN1aNiUL/HlID3NipiryqIWkOXFsn5qAcmjaQXVJc2VlkngJoC/vlEEceQafFo44MUZV
+         2/5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713903758; x=1714508558;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ERg1J41d06etnj+H8lues6SdgOvc50LdXU0Ny6V07n8=;
+        b=wmFyICLQc4RIe47y6oPzV4s58a0nou/7ofDNHp/e7LBOMFAws68IPiBOgyvIbeV5hi
+         g97c7nt1YblZQ1E0WdtoVXJvf3U1N/0iiA+EbX/LgqxoMsc+hK4Mkn/GV61hm3TYATGe
+         lHj0DidGighS5S9vVZs1l4mn9Y2FGZUgigOf1ozonkgIQOJ7CXvj15CpmJRX3zY7RmfJ
+         pHCu7TIRh0PGEs1TMagEbg6WJCPaX3WWxEml9D0BVRDHXeGQjC3t1u+S0vClg/fgzUiy
+         pdOrjH/gDMXva7eyY+qidzBgV/y9wU5kkX4o8kBbY4E8Ju7LAiOGWPTujfOQG7CKCH89
+         vPXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCQ/t4pI6vvyINOGPwm6M1T+emgO7fH5BeFwDv5hh59gh/d4mNYd06wAnH3AkuNV0QKRoRnaHAwxLvetYdet8UuQ89
+X-Gm-Message-State: AOJu0YxRSVLG77QcblMntJnDBYa0DqqRSJLvOxPq3/U7IahPKjFQ9dzu
+	jQToyat9l+zIHl+F7j0lIdlr7ZN+JTMyKfkBMGR9jS0LK7gzfUfSK/jyOBLwZw81CXsZgC/xQoM
+	sF7XBkwC3yvLkI16JCyY4ef3tAAo=
+X-Google-Smtp-Source: AGHT+IGueta3RswI0M/FkR9FwKeiGdRf4qn24eyoS2YMfXNjlyVhaYbnUKY9bbwjHMq/YHliJwPYRdqyRkDdJn/L/O0=
+X-Received: by 2002:a17:90a:408e:b0:2a5:3f1f:a1d1 with SMTP id
+ l14-20020a17090a408e00b002a53f1fa1d1mr521558pjg.0.1713903758085; Tue, 23 Apr
+ 2024 13:22:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8615:EE_
-X-MS-Office365-Filtering-Correlation-Id: fda70e91-29bc-438c-668c-08dc63d24e62
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?63f5h6wHyXRAaiExdrEt+EyjQrEDAi4xXVCJ9xeXOVni4V3iWFmSLM+cVecu?=
- =?us-ascii?Q?isu8Ufdkw5NXsh7J5M7qzuGupnzKS9iAqNZhifLNc2nQyRTfgT/0mzlsMJEc?=
- =?us-ascii?Q?GD8VdAH5fo7ZRcksvoOKYisEiAI+f/LnlGJIpXvPTWU4zOkcJvYBI7iI8ovo?=
- =?us-ascii?Q?XJWwNLyzo8CSpeJfaUkWRSCzzk8OIXL15Z5cdIamU4OfkYnNJPXFQDtGmdfE?=
- =?us-ascii?Q?N6nyI61C3WbZIWMbbKVmmBhugs/DWoBf45gH4mWzPMITF9JvE/CqPNsrlfjK?=
- =?us-ascii?Q?oGGvajTLDHWxfhMnut/bfyJlY6Ra+LdAPWM9pXy8XDjMKwtSDHfDqpYqNqRk?=
- =?us-ascii?Q?CHKwNuYbs1FfkucqGUZJHen0Ig7rNOE88wWXd91o9M2JsRtHioolUMu6+rsE?=
- =?us-ascii?Q?YBlsS141VZNzee1Xb3/gLCcYt6YJtwFUMrWKyyIv7x10fdfJrDUgdGt/kRhk?=
- =?us-ascii?Q?Yu7L9Xku7LDljQ3wMdq2e9kOwQv/iucv4w2jBY+o+xArMTtAwNigq6zRS3oE?=
- =?us-ascii?Q?abTEADQuhqksXBXWJdIzgk2YcBhyiiRrMoZxU3tIEH7P1kSrLleOXmIEMXu8?=
- =?us-ascii?Q?9BxEmLk5HRHjCZlS3qRHHqerYwYRmC0IrGg1SIFPRXVN7/VIJmyjnsNHYORY?=
- =?us-ascii?Q?Pnq5Vm3iBpP20VYO6f6xlzwQUVfrS3sKpo+shfP5Ghu6qPR5lVlUm7nSY2vH?=
- =?us-ascii?Q?eGoyepLacpTG4QAfmB1PeExDV+TB0DYBzmfAu0gB21JfVTm0aVQ9uOxgSwOG?=
- =?us-ascii?Q?DkeQ6LRgqqDd74aEf8SeVh6W8gMUFK4wbeUAszHMF/MDZ3ivcWm3eKpcOqTT?=
- =?us-ascii?Q?u1yN8CINJCAQ1UbzoO/7fLOh7j8fgfpJ9geQ9MiHT+DajlddiJ3AlHdhrJfK?=
- =?us-ascii?Q?OUfWkld68ETXOJA0E+KKwpMu0cnwCZywbU7LQIOGAIA9psyrYQq1Pnqox5/M?=
- =?us-ascii?Q?eFZJm7t2SyiGq8w1VgTH6oNwS6EKdkfUGxG0ZMd7UQ9GBiMCIR5VLASd1MFq?=
- =?us-ascii?Q?acE6UVL5cyftCeR4KzNiAjOt9P56z+sDuxfAF+PkNRcIeISK5UCoT4oyoHpA?=
- =?us-ascii?Q?Si6/Szym0wjl8pFuG2FEh8FYXnDLK1FmX2LGsamXSZoIk18j88CdJZm+PaNx?=
- =?us-ascii?Q?WBpbF3d7TCpXFb+HbY2hakQXVJYdDqwR6OyfyGJ5IHU442b9OpxqYDPHXnqb?=
- =?us-ascii?Q?FEsH72eGdH9fqTTt+xhiOy0w7eXrMkmlhJHEomevsNY7i1IxRSU6xu1GwOD+?=
- =?us-ascii?Q?Oi2YadCQXal2NpwWDfsh9KIalmSDk6DQNLG0dqGrspMKd19WRqdOCTug8Zwn?=
- =?us-ascii?Q?70QZ9sAYSt4lT3bS/QZuy2e6dWn13jnrZx7fhAEtn0myUg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(1800799015)(7416005)(366007)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Q/alq3jYTDmY662v9+Ke6OpyP4VqoAEAV2I9uUyv0nCCDpBOuGbX38MLZBdZ?=
- =?us-ascii?Q?aw6jg4OSDMr0y//Ulu9zWJ9+W+gbOl4E2r7r5fGYR+zQcBh9koGGoKItiNDd?=
- =?us-ascii?Q?VQxEfcl1lVOzzQqml5l/bP70ZQ/6EXTILatrU6N2Jh5KFkSG/V4051N+Gafa?=
- =?us-ascii?Q?VmGoQWZxQheopGglNf8VhE7evbxoo00B5yG1yMybNxlPtNMQ9gVuzePl7xUy?=
- =?us-ascii?Q?bqZyt1spuaA+gMO+JbwgqQ5inYogOv6xIMKv43TZ05AAyy7YWe39mNGdXHgk?=
- =?us-ascii?Q?AYtSABAgB2jTTbpCzpl5n3tN2gIsoYZUYAiWh6LE5au07C5XE14c6z6Lb+Bk?=
- =?us-ascii?Q?YSxiDjhe+lauqABn6um914RRuZnEHQor4/Hn0ZMUwh9mAKe3mvwBqTyZepy4?=
- =?us-ascii?Q?F0cifpbtGarP1vzY2MVbsCYY4P82qodzZLtvNvU7waglvrrT6CusxylCD35r?=
- =?us-ascii?Q?b2cljfAns90hNefY5clBGpB7xV+SrfDshI3XGpsG1FTLW+JHJcgmoDF1U8Uc?=
- =?us-ascii?Q?f5tOKfe13Pd4w/cA4y/Pi8AJJQTCakPbcIiyOMADqdsDZKhLG7MPPgsmk8Md?=
- =?us-ascii?Q?LFSW83Dy8f7xJ2Q6QSJM3iYajs8V2lbLzOh5Mn/PWlKfaHkP/u9drBAtEBTG?=
- =?us-ascii?Q?KvK4MiA4K+3Mw6oF9v2Vq0rgV23ZuuJE0CiHVcmGFq1h1fV8fMTvw0OLyLoe?=
- =?us-ascii?Q?5YsrlLSpDvGWsFyTrgaNxQ+oZPucWSn2ny/TMeQqKuHD4LZEhPTiQsq0gEq8?=
- =?us-ascii?Q?Xklas0kmLtxJcpMgOZ3CEFSejwZM2LNaeD14GWcVSWCnVz60BoqCpTdxGThi?=
- =?us-ascii?Q?KpNJep+K9w+uPrzpZXZ/n/MuV8goqUbOS9LNuy2sCKBv81UhSBYkOmYQ7lwD?=
- =?us-ascii?Q?FAiWA/zUWMSAdcmlFCrguCZ7dKZUHTSTu2bkVEXQiAJkF92kueQ2d2bvvB4a?=
- =?us-ascii?Q?v0CqXttQoBnMVMJKg3u5ONpOmRiNzZItt0Lse11r4S6krAP83v2niNFybF8G?=
- =?us-ascii?Q?bMMBs8JVoPW1SJwA/YABPFi74OA/UO+q+IjM2rmkdvsza4enzx/xFHvm+Yor?=
- =?us-ascii?Q?LKO7eyvwHgN65pJPPMbZtlQ/mYKiuzCKovj7cspsnoEkbTps6Eh6uvaROyNN?=
- =?us-ascii?Q?IokaqAyE8EDkRS5FLFillw/qkhEALC6bdk+CbaIPHAxiOs0rgyZwn36fo/iG?=
- =?us-ascii?Q?OLz/ivMblicuNoUbHy2ABAO8NQEXJXykSP7iLQ4NtkGZMaMYHeCbWwCsDKDo?=
- =?us-ascii?Q?VgCNjukgghMMeCOcimaBcA38ZESXIRJamvxHJIB1yLfzQ5TXqbEja/It64Ka?=
- =?us-ascii?Q?Jt0G+tLwsQg2ZvxULWCveyl7XCXEGRCYPZgTslH+pZ8N1mQF15EnJOHFWdlr?=
- =?us-ascii?Q?Qy9ne9+wEfaC/6KOcR1W4bb0SkkggwPpzErI680Lo6gtTc05K6HF4Zs9eNHA?=
- =?us-ascii?Q?QVLPDiGS6YxpnXjgalH79KIn4IAgH8i1YU8QHzkjI9Ms1ytLfW56ooC1WVOU?=
- =?us-ascii?Q?HXWeLY6a6J0Bn0E8tgc7MJTrK6t65hPfrmUGbX0pLOCBMckv0WMftkoFuZFH?=
- =?us-ascii?Q?f6uGZfzmKb9n/h1/8GfeM9cGZEkbVOHX4pluVhXt?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fda70e91-29bc-438c-668c-08dc63d24e62
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 20:16:48.9926
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U+l9MjkGn/knoIHUprvkIyAW0InSfQc4WoDdbEIrhB4VRfHZhbE4C2j54VxCU1BxRSnNqFv1cykZUndLCAdrMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8615
+References: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
+ <20240423172208.2723892-4-andriy.shevchenko@linux.intel.com>
+ <ZigSiCBIwoEIPYoG@lizhi-Precision-Tower-5810> <ZigUL7exXBSbWDIR@smile.fi.intel.com>
+ <ZigXJJj4e+oaANAt@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZigXJJj4e+oaANAt@lizhi-Precision-Tower-5810>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 23 Apr 2024 17:22:25 -0300
+Message-ID: <CAOMZO5CTiXWMXgi35c4M4XsdZ26-QiArXcBcViYnwTAgd00nDQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] PCI: imx6: Convert to agnostic GPIO API
+To: Frank Li <Frank.li@nxp.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Yue Wang <yue.wang@amlogic.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Xiaowei Song <songxiaowei@hisilicon.com>, Binghui Wang <wangbinghui@hisilicon.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 23, 2024 at 11:03:59PM +0300, Andy Shevchenko wrote:
-> On Tue, Apr 23, 2024 at 03:56:56PM -0400, Frank Li wrote:
-> > On Tue, Apr 23, 2024 at 08:19:06PM +0300, Andy Shevchenko wrote:
-> 
-> ...
-> 
-> > > +	imx6_pcie->reset_gpiod =
-> > > +		devm_gpiod_get_optional(dev, "reset",
-> > > +			imx6_pcie->gpio_active_high ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW);
-> > > +	if (IS_ERR(imx6_pcie->reset_gpiod))
-> > > +		return dev_err_probe(dev, PTR_ERR(imx6_pcie->reset_gpiod),
-> > > +				     "unable to get reset gpio\n");
-> > 
-> > Small problem here. err message "unable to get reset gpio\n" will print
-> > when -EPROBE_DEFER happen. EPROBE_DEFER is quite common when use i2c
-> > expand gpio chip.
-> 
-> I'm not sure how you come to this conclusion. Can you elaborate, please?
-> P.S> I do not see a problem as described.
+On Tue, Apr 23, 2024 at 5:16=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
 
-If i2c gpio-expander driver have not load when imx6_pcie probe, I supposed
-devm_gpiod_get_optional() will return -EPROBE_DEFER, 
+> if (IS_ERR(imx6_pcie->reset_gpiod)) should be true. then dev_err_probe()
+> will run and print "unable to get reset gpio\n" with error code
+> -EPROBE_DEFER.
 
-if (IS_ERR(imx6_pcie->reset_gpiod)) should be true. then dev_err_probe()
-will run and print "unable to get reset gpio\n" with error code
+dev_err_probe() will not print an error message when the error code is
 -EPROBE_DEFER.
 
-driver framework will retry imx6_pcie probe again when a new device appear.
-it may retry sevial times utill i2c gpio-expander driver probe success or
-timeout.
-
-Frank
-
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+That's exactly the point of using dev_err_probe().
