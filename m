@@ -1,185 +1,217 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F3151016
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 09:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D015FBA0;
+	Tue, 23 Apr 2024 09:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713864843; cv=none; b=krrhmjjyhK165hySTd+4bTDHLWkGuRUQIw6OnUfskEdSoL5GV49m4n2FpSvScjezGEldpg8Y+wjQrbVpcL/2o7mJqtD49LukD1VX07S7dyVMObYFUNRRdR52KQC1OXmvG1qOu3MNLpSfIQ+9+wLAAbG1gCuFHVv8p7vIMG2nUHQ=
+	t=1713865362; cv=none; b=sbSUN88sQ07extI6xqCm7kPUho1wCtv63lujQp31+HreTJmaklr7rT/ta2jISH+NKWHpBk15dYRjXBwXdhx3DfJOw+wEyo+06rAPEpGKn4AQzZeGk4kbvKAUxAx1zdjLWCPSpsPqlQ/EXahnJPow4LHbd3cPx3wCggN6+2O1Tuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713864843; c=relaxed/simple;
-	bh=aykp8mCrsJ20CN+tqS8Isf4+DpYSc1KUuSazY2hgoCk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A8DSeRsi3A7+NZjO5bZCzT8GN/bbIlRZC/U/aZHFVMGX8iYOzoDX2WnM7wmcAj8dzbkqB4cbfpxn9oYZzqqD6s//xmulxHv2Mg5C7HPbYKiVr4QkxycQGbOZb8ASUy9pkRDvYsMAYhjvgdM8UZyKJwCKkkxWFCu+HPKbk5Kkyyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Na5OUdiG; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=A6zsYeBo reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1713865362; c=relaxed/simple;
+	bh=Ls/UifY5Dz1wJAlodWBpmzK5RW2Ga9GWujeLPVUWApE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f5gekUayicBEMipOi1k8RV80kLKh5YCx4z9S2rY0/FopporVaYB0YnTSRAFf1Nx0x/i2ZXuBIvniZz1YldLSPJsUfH7Go/3ozH6O8M9M713I3Cf72pLsnwhrkcXz4JWd8W8NyJV4uTHIK5Kb1DobsiP3raIR4UW0YoxrVIWV+k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3sUCms4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Na5OUdiG";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="A6zsYeBo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1713864841; x=1745400841;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=C8ObYiQbVBMAjGykb0ue88J5nuKE1CbAPzk6NZyXx7I=;
-  b=Na5OUdiG1OXtGV5mrGD2R9O1prfeYIsIX1PT1Dp8d1BkFkJlMSQ5GN0+
-   59fortMIFKaJH51HF41/3ZN/NmWEbj8fowMTbBwhPPz9UOvtcwcxmjQnR
-   842VcpiTkIvbP3xu+lU/qJxlaVKsXzDH2TfUgrYcny8tGnpMI5yEP//0O
-   Ho7hMeZorHCt0rpO+AY5Wi3fPVQ9fAzR4hh2A/s3v0v271uCN39AlMEux
-   H4GovSfxdGtyGOcTu4WK4/xGo3oRUf9DZdC9eabml1G18JjMgvIv9XLNF
-   /yXPgmHkYerBwKrvnOyAxdzIjrMZBo+Kar5F04g0+gxAKnUSdFhDW0xlt
-   g==;
-X-IronPort-AV: E=Sophos;i="6.07,222,1708383600"; 
-   d="scan'208";a="36562133"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 23 Apr 2024 11:33:58 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41CEF175371;
-	Tue, 23 Apr 2024 11:33:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1713864834; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=C8ObYiQbVBMAjGykb0ue88J5nuKE1CbAPzk6NZyXx7I=;
-	b=A6zsYeBoYspOEHGVHkxHB6fDcjbfmktDpF433HD1eYWI0NqpYKIQSDn75ybb6/6dVwHAzP
-	cDnQUOhHG9BZyPxs+p+Pk0c7PtaIVtmQDLtfWaCqDyNGcdff1A5xZOLnWkcRvdnEBdNDnz
-	k619P+tP/OQsg6YaXNoxMzUmfDEi1CLBW8n7R2enN8KzwgftXcwvHCdEAnrkmK4k7p4esb
-	sii+j+YudT8fCu/kmWTliuZd9uXmnqUvWzcPDMAHQqvOoPBsC0c7jv5FkIow/2rNjjPxqC
-	7rfXUB5xO2i9ZOYQf72tmSkZ7gAjjJNrGrfbNRUD8/FSLT1lkPSYwWwlKAs2uA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: mba93xxca: Add USB support
-Date: Tue, 23 Apr 2024 11:33:41 +0200
-Message-Id: <20240423093341.1927592-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240423093341.1927592-1-alexander.stein@ew.tq-group.com>
-References: <20240423093341.1927592-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3sUCms4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235C1C116B1;
+	Tue, 23 Apr 2024 09:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713865361;
+	bh=Ls/UifY5Dz1wJAlodWBpmzK5RW2Ga9GWujeLPVUWApE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=t3sUCms4mYpMabtasGNhGocxGbl4sFKtiI5xMv3GUseqBt8syt6ltOpJw5h+mhkm9
+	 aFw/mfjIIPxTOgX3aSOEh8CQ9MDDltzwMmO7D/WChVF9JWgnNlfVL892FNWud09dKb
+	 FSA60+icHOuitAqK+1F/rbKWBFDweKEPHeGK3ckswBDSwzaQs+WEOy7vQNwL9Y8luP
+	 xYndgb4wDz00KwaLl7Uhr0PI6sa3C6nq5pot9Z3qY6+LMLbM+8e/iSegNeK7NbIhHP
+	 +qqwJies09VxEMlzq045chEuTCG3ApsAakzZW3oCkuQ9Zt7KVPauqvMQOtnyBHP4I0
+	 PSMBeRefA9q6g==
+Message-ID: <aef907ab-1087-4f49-bea4-d43ee6cebb73@kernel.org>
+Date: Tue, 23 Apr 2024 11:42:33 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/14] ASoC: Constify local snd_sof_dsp_ops
+To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>, Mark Brown
+ <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org>
+ <89f8f0be-2534-46c8-9058-cabea4f68568@linux.intel.com>
+ <9d1eda85-32a0-4e53-86ca-ce3137439bd7@kernel.org>
+ <d046d195-6fa3-4c52-bc5f-3e5e763bc692@linux.intel.com>
+ <138ac465-1576-4e86-a05d-63f8acc6fb70@kernel.org>
+ <3acfbe3c-8b83-4c40-83c2-437f963fd25a@linux.intel.com>
+ <7490bce3-3bd6-4beb-b8be-d47a6b0a30f0@kernel.org>
+ <eaa0c99a-3b41-4444-906c-d2f005d326b9@linux.intel.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <eaa0c99a-3b41-4444-906c-d2f005d326b9@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This adds support for both USB host and USB Type-C ports. This includes
-the on-board USB hub. Remove the gpio-hog for USB_RESET# as well.
+On 22/04/2024 23:24, Pierre-Louis Bossart wrote:
+> 
+> 
+>>>> There are multiple reasons and benefits for const, like compiler
+>>>> optimization, code readability (meaning) up to security improvements,
+>>>> e.g. by some GCC plugins or marking rodata as really non-writeable, so
+>>>> closing some ways of exploits. There are many opportunities here, even
+>>>> if they are not yet enabled.
+>>>
+>>> Possibly, but the SOF core does not know if the structure it uses is
+>>> rodata or not. Using the 'const' identifier would be misleading.
+>>
+>> How so? If core does not modify structure, it should take it via ops,
+>> just like 100 other widely known structures (see checkpatch). Why is
+>> this different?
+> 
+> I don't understand "it should take it via ops"
+> 
+> We are already fetching the structure with private_data.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- .../freescale/imx93-tqma9352-mba93xxca.dts    | 73 ++++++++++++++++---
- 1 file changed, 61 insertions(+), 12 deletions(-)
+I meant, drivers using such core library functions or directly calling
+to the core, pass some private data structure with "struct foo_ops".
+Sometimes pass directly "struct foo_ops". This is happening everywhere
+and is common pattern.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
-index af795ecf678b7..852dd3d2eac74 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
-@@ -303,6 +303,32 @@ temperature-sensor@1c {
- 		reg = <0x1c>;
- 	};
- 
-+	ptn5110: usb-typec@50 {
-+		compatible = "nxp,ptn5110", "tcpci";
-+		reg = <0x50>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_typec>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
-+
-+		connector {
-+			compatible = "usb-c-connector";
-+			label = "X17";
-+			power-role = "dual";
-+			data-role = "dual";
-+			try-power-role = "sink";
-+			typec-power-opmode = "default";
-+			pd-disable;
-+			self-powered;
-+
-+			port {
-+				typec_con_hs: endpoint {
-+					remote-endpoint = <&typec_hs>;
-+				};
-+			};
-+		};
-+	};
-+
- 	eeprom2: eeprom@54 {
- 		compatible = "nxp,se97b", "atmel,24c02";
- 		reg = <0x54>;
-@@ -370,18 +396,6 @@ expander1: gpio@71 {
- 				  "WLAN_PD#", "WLAN_W_DISABLE#",
- 				  "WLAN_PERST#", "12V_EN";
- 
--		/*
--		 * Controls the on board USB Hub reset which is low
--		 * active as reset signal. The output-low states, the
--		 * signal is inactive, e.g. no reset
--		 */
--		usb-reset-hog {
--			gpio-hog;
--			gpios = <2 GPIO_ACTIVE_LOW>;
--			output-low;
--			line-name = "USB_RESET#";
--		};
--
- 		/*
- 		 * Controls the WiFi card PD pin which is low active
- 		 * as power down signal. The output-high states, the signal
-@@ -492,6 +506,41 @@ &tpm6 {
- 	status = "okay";
- };
- 
-+&usbotg1 {
-+	dr_mode = "otg";
-+	hnp-disable;
-+	srp-disable;
-+	adp-disable;
-+	usb-role-switch;
-+	disable-over-current;
-+	samsung,picophy-pre-emp-curr-control = <3>;
-+	samsung,picophy-dc-vol-level-adjust = <7>;
-+	status = "okay";
-+
-+	port {
-+		typec_hs: endpoint {
-+			remote-endpoint = <&typec_con_hs>;
-+		};
-+	};
-+};
-+
-+&usbotg2 {
-+	dr_mode = "host";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	disable-over-current;
-+	samsung,picophy-pre-emp-curr-control = <3>;
-+	samsung,picophy-dc-vol-level-adjust = <7>;
-+	status = "okay";
-+
-+	hub_2_0: hub@1 {
-+		compatible = "usb424,2517";
-+		reg = <1>;
-+		reset-gpios = <&expander1 2 GPIO_ACTIVE_LOW>;
-+		vdd-supply = <&reg_3v3>;
-+	};
-+};
-+
- &usdhc2 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc2_hs>, <&pinctrl_usdhc2_gpio>;
--- 
-2.34.1
+And everywhere we try to make it const, where following conditions are met:
+1. the driver allocates "struct foo_ops" statically,
+2. the driver does not change it,
+3. the core (or library) does not change it.
+
+
+> 
+>>>>> that's a different interpretation to the 'software' view you're
+>>>>> describing. "this structure will not modified by this function" is not
+>>>>> the same thing as "this structure CANNOT be modified".
+>>>>
+>>>> Yes, but can we please discuss specific patchset then? Patches which
+>>>> change pointers to const have one "interpretation". Patches which modify
+>>>> static or global data have another.
+>>>
+>>> Just look at sound/soc/sof/intel/mtl.c... The core will sometimes use a
+>>
+>> That's a driver (or specific implementation), not core.
+> 
+> You are making an assumption on what the SOF core is. The core is used
+> by ACPI or PCI drivers as a library. The structures are all allocated in
+> ACPI/PCI drivers and passed to the core library.
+
+The same as everywhere else. The distinction, that this is "library" and
+in other cases often is "core framework" or "subsystem", does not
+matter. Behaves the same.
+
+> 
+>>> constant structure and sometimes not, depending on the PCI ID reported
+>>> by hardware. This was intentional to override common defaults and make
+>>> the differences limited in scope between hardware generations.
+>>
+>>
+>>>
+>>> int sof_mtl_ops_init(struct snd_sof_dev *sdev)
+>>> {
+>>> 	struct sof_ipc4_fw_data *ipc4_data;
+>>>
+>>> 	/* common defaults */
+>>> 	memcpy(&sof_mtl_ops, &sof_hda_common_ops, sizeof(struct
+>>> snd_sof_dsp_ops)); <<<< THE BASELINE IS CONSTANT
+>>
+>> Yes, I saw it and such users are not changed. They won't receive any
+>> safety. But all others are getting safer.
+> 
+> 
+> Maybe there's a misunderstanding on what the 'SOF core' is. This is just
+> a helper library that are used by the PCI drivers. The core has zero
+> knowledge on anything really.
+
+The "core" or the "library" either modifies the structure or not. That
+is only that matters from the core point of view.
+
+
+> 
+>> I really do not understand what is the problem here. In entire Linux all
+>> of such changes are welcomed with open arms. So what is different here?
+> Adding 'const' at the SOF core level does not mean that we can treat
+> structures as rodata. It only means that the structure is not modified
+> by the core library. Not the same thing.
+
+Are we talking about basic C now? Of course it does not mean that and I
+already explained what is the goal of this - the static or global memory
+in the driver can be moved to rodata.
+
+Just like everywhere else.
+
+I keep repeating the same arguments and keep repeating the same: please
+bring me any argument why this should be different than all other 100
+structs (or more, I count based on checkpatch). So far you did not bring
+any argument for this, so I don't know how to provide any other
+technical feedback.
+
+According to my knowledge and easily visible here, this is exactly the
+same as in all other cases. Drivers have some static or global struct
+which can be moved to rodata, because nothing modifies it.
+
+Best regards,
+Krzysztof
 
