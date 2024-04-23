@@ -1,122 +1,149 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378A413E3E3
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 17:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149631BC23;
+	Tue, 23 Apr 2024 17:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713892944; cv=none; b=XQiWf326gRouANvvdtx2WZ8HfomPnZmmquyD7HLM6mAmMNcrSNiv8sk4zl1gXpS7d/FOk31VxHGKA9mXVzDjXDDBAd7KOs+UUh+exSXj123gDZKetseCOOJHzIEIlnsepjkFVPtokvRE2UguQVF5yYwtnGHEtp1wVx74p9fAcIg=
+	t=1713893150; cv=none; b=sbH1EXQYkfX+imaJaIVDeQ0qR7YaqGwXJV4My2vcGraBf/ozLFsTtWYQP1Mtl0BgJBwOp5/pji7Y/LG0N1dCEWamOatguKeI1FTcPW2H7GI7wdOZYC4CXd+FbQYdFryN0lFoHFIfzVkg5PeC6v8O3beJsvg1Pjjhfb0kPq7hs8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713892944; c=relaxed/simple;
-	bh=wS6mLiwTSrStK6wq/zzMd+gLFuAwWxuYlHIG5FjkkyY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N2+UDGQ1RwVBo0WhLbrIQiOd/jBCult6Kx7Yjtb7/mb8Gu0rlvUPx3LwMpGD11kYZPqUQtdZ4/e1i0Lt8CnG9sdjumn7YYaRetVYiwcrVM8RUKs7gMiG1HJbsy3nWh62kpQk3vGvRceGROciE8+ejgefShtmIvL14WBBVDwfgq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H5kzrKul; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1713893150; c=relaxed/simple;
+	bh=EF0yWbo4WiBBXL3dWcr/3LxSe7IVVaPwqZJ7quETboE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EPs1ahVFSfG3+SLcCFGBRntOmsWJh5D7BPsLaNsoD+m9iG1GCljMqHStXu/QTuXe83vmmlyi7RzIHWPeYFrqkTd2J1wvqU/RAOZ7dYlxt9jm/DOWhXZV0l2ofo+IAiHNPB1e+vCg+/kCcvVCAur5C6b+HwW9H9nTmYN9KcLCJJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eriDnqXZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H5kzrKul"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713892942; x=1745428942;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wS6mLiwTSrStK6wq/zzMd+gLFuAwWxuYlHIG5FjkkyY=;
-  b=H5kzrKultEhmi4iVuijPSAUzkTfz6E+fz+KsYkp7MFqbqaE097nn8Jty
-   cuar2+BcjWuEr3PrwLRP8rHIQenwQq9yyrtGJQMXtesXChE8uwkelpCJk
-   TVnyh6qZWwghMzXNJPetaaDaEP8qoBiAKaFvTMDD5ELlTmI4DgyAqSWDM
-   Yl6XY+lBRc2uFn9Co7hwdkrdNh9Ik5Vmrc8rz93oUBAcmoli96NhHRo59
-   C5fuoYFfVRjHQjNXw4wpbo00aXdIN9EBq5zD5yiqA0rMxIT45NpvWkHxc
-   ljt/vsSKUA+YjVduPO5/z+1CstGuFS/y6+KGRJFb3c5UKq+9jSR04DDZF
-   Q==;
-X-CSE-ConnectionGUID: 75aewYjJRwGeuzJOKwGTHw==
-X-CSE-MsgGUID: 8Ssc9I7jRpONjVXQB4Wwkw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20898282"
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="20898282"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 10:22:20 -0700
-X-CSE-ConnectionGUID: Dr85zdv8Ry67lMcR78sHfg==
-X-CSE-MsgGUID: T1Zw1WYoQVO/2Au0vKgZZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="55410233"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 23 Apr 2024 10:22:11 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 6E4F8192; Tue, 23 Apr 2024 20:22:10 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Yue Wang <yue.wang@Amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-Subject: [PATCH v2 0/4] PCI: controller: Move to agnostic GPIO API
-Date: Tue, 23 Apr 2024 20:19:03 +0300
-Message-ID: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eriDnqXZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53C6C116B1;
+	Tue, 23 Apr 2024 17:25:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713893149;
+	bh=EF0yWbo4WiBBXL3dWcr/3LxSe7IVVaPwqZJ7quETboE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eriDnqXZpCfZ/tEJjVYj+Mi1ZFtRE8gkBeAFG7sQwG+MyCOGb26QxwnIWDjtIxSuL
+	 eWD4zJIlg98rxtB4aSKISfMwFYtn1Yoz7MTxlYGS81d5R17xJ/WOdE+X08H6fTUckD
+	 2JxQ2HX8smMXFv1PQxGkIwf7QzNbjraBax7+D2wspeatpDd/KV7x6gTSLnw7ZhszU4
+	 /4Ywx3F2pAsPJFU1L/TrjvXaWrHPpJ0U1X0urJTub+MMclR7UO0PlppV48orMA8y2X
+	 w4Ql5MOo+RHBMILQesT3Bo3jpFkE8AGk0+YV50PsfIAEnts7R812U0QjgRtQrWD0XP
+	 b0FvfdVARr63Q==
+Date: Tue, 23 Apr 2024 18:25:45 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/1] dt-bindings: interrupt-controller: fsl, irqsteer:
+ Add imx8qxp support
+Message-ID: <20240423-velocity-italicize-c4f1f22c2ef4@spud>
+References: <20240422064949.70778-1-alexander.stein@ew.tq-group.com>
+ <20240422-channel-emission-d485dee6ae48@spud>
+ <6041240.lOV4Wx5bFT@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="eGhzn0VEzH+sEQMJ"
+Content-Disposition: inline
+In-Reply-To: <6041240.lOV4Wx5bFT@steina-w>
 
-Convert the PCI controller drivers to use GPIO agnostic API.
-While at it, remove of_gpio.h leftover from some of the drivers.
 
-In v2:
-- combined previously sent patches into a series (Manivannan)
-- added tags (Rob, Manivannan)
-- converted iMX.6 driver (Manivannan)
-- dropped leftover in aadvark drivers (Manivannan)
+--eGhzn0VEzH+sEQMJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Andy Shevchenko (4):
-  PCI: aardvark: Remove unused of_gpio.h
-  PCI: dwc: Remove unused of_gpio.h
-  PCI: imx6: Convert to agnostic GPIO API
-  PCI: kirin: Convert to agnostic GPIO API
+On Tue, Apr 23, 2024 at 08:26:55AM +0200, Alexander Stein wrote:
+> Hi Conor,
+>=20
+> cc'ed imx@lists.linux.dev
+>=20
+> Am Montag, 22. April 2024, 17:48:20 CEST schrieb Conor Dooley:
+> > On Mon, Apr 22, 2024 at 08:49:49AM +0200, Alexander Stein wrote:
+> > > Some SoC like i.MX8QXP use a power-domain for this IP. Add a SoC-spec=
+ific
+> > > compatible, which also requires a power-domain.
+> > >=20
+> > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > > ---
+> > > Thanks for the feedback.
+> > >=20
+> > > Changes in v3:
+> > > * Move 'allOf' before 'additionalProperties'
+> > > * Remove superfluous 'minItems: 1'
+> > >=20
+> > >  .../interrupt-controller/fsl,irqsteer.yaml      | 17 +++++++++++++++=
++-
+> > >  1 file changed, 16 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/interrupt-controller/f=
+sl,irqsteer.yaml b/Documentation/devicetree/bindings/interrupt-controller/f=
+sl,irqsteer.yaml
+> > > index 20ad4ad82ad64..3d33b75d6ecfa 100644
+> > > --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqs=
+teer.yaml
+> > > +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqs=
+teer.yaml
+> > > @@ -14,7 +14,9 @@ properties:
+> > >      oneOf:
+> > >        - const: fsl,imx-irqsteer
+> > >        - items:
+> > > -          - const: fsl,imx8m-irqsteer
+> > > +          - enum:
+> > > +              - fsl,imx8m-irqsteer
+> > > +              - fsl,imx8qxp-irqsteer
+> > >            - const: fsl,imx-irqsteer
+> > > =20
+> > >    reg:
+> > > @@ -42,6 +44,9 @@ properties:
+> > >    clock-names:
+> > >      const: ipg
+> > > =20
+> > > +  power-domains:
+> > > +    maxItems: 1
+> > > +
+> > >    interrupt-controller: true
+> > > =20
+> > >    "#interrupt-cells":
+> > > @@ -70,6 +75,16 @@ required:
+> > >    - fsl,channel
+> > >    - fsl,num-irqs
+> > > =20
+> > > +allOf:
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            const: fsl,imx8qxp-irqsteer
+> > > +    then:
+> > > +      required:
+> > > +        - power-domains
+> >=20
+> > Provided the power domains are optional on the existing platforms,
+> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> > otherwise,
+> > else:
+> >   properties:
+> >     power-domains: false
+>=20
+> A power-domain is used on imx8mp, but imx8mq does not.
 
- drivers/pci/controller/dwc/pci-dra7xx.c    |   1 -
- drivers/pci/controller/dwc/pci-imx6.c      |  37 +++-----
- drivers/pci/controller/dwc/pci-meson.c     |   1 -
- drivers/pci/controller/dwc/pcie-kirin.c    | 105 +++++++--------------
- drivers/pci/controller/dwc/pcie-qcom.c     |   1 -
- drivers/pci/controller/dwc/pcie-tegra194.c |   2 -
- drivers/pci/controller/pci-aardvark.c      |   1 -
- 7 files changed, 49 insertions(+), 99 deletions(-)
+So then make the contains be an enum with both of the one supporting it
+& add the else please.
 
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+--eGhzn0VEzH+sEQMJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZifvGQAKCRB4tDGHoIJi
+0tskAP48o/+s5lq1jpc+7TE1+8Thqvqyi8lpX4xp9HbEQYDoeAD/aucpundN/HbF
+FwX9e75oP9cKObcaPj16TtFGFHbq8ww=
+=RUuj
+-----END PGP SIGNATURE-----
+
+--eGhzn0VEzH+sEQMJ--
