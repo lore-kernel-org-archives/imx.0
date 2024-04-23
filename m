@@ -1,79 +1,124 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCC2364D2
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 06:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D8A210F8
+	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 07:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713854811; cv=none; b=KZPPKSFkdomTUgYXNKzvckVCBfraRJ5B075cgAF/ZYEsNuFVnwNfvBTv9/5jz1a3trkXKrcsxTp7IRg2LbHMy+zAz6y2XJFTs62R5ea7H+47XgxXYtiaYqEjMeh+OTgqCpthAXqEnjCecTVlLJ73n8tYf73mLQEkEFgNlapnmss=
+	t=1713856366; cv=none; b=pNFrus8EVfmsIk6kCiqVpJHLQ4qamqnx8Lb5KJSS4JV2pXgPrO7U/Jw5f//223cQjoTvUxIfVRUBV+STrcjlV4opaxCvDSs/j39cGXibSruN1QL7KjiNtFmzW86FSUY0EB9TijOxi5ZeHXjMKm3H/X6LtwRH8k6ojmX1H0JBgl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713854811; c=relaxed/simple;
-	bh=+RRLL02QtmKJZU6WTR2j1pNuRlbjrSxTCoBs4ofOQcM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ismtBToMQ1PGpHXUV5ZgiqFcBarXTTDoq4FGSQw7LwBjjuv1bojQuKWmFB2EzxlGfNLdCKmE4AN1QWGX+6gWnmZFvu0+vuJS+jYwRpFedDbzl2dHwSLYFKtEEeoOgwSCDVpdsyysggy9XOYQRLnnkWgGx1SmDMtcTOCaAlRaaJM=
+	s=arc-20240116; t=1713856366; c=relaxed/simple;
+	bh=fQ4UVE6+6CmvmhJdhJsIrzZ7SFLcAeX7/JjxwWX44Ss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=teXJcirMLFWY7OB18sFMadxebTVPlbq2C7r7lqyqtRq7pozVGDjZHtrtAFs7w9Ab1ayRoLSCEqFqhccqbrPgbLf15Bqs0Qg+9FZU3shCFAM+kyIeCMG3IEuy3FbqLH7HekIjvFiD3l4mpli5Lejo8DfSMgd/ygsrwMPk5QS2XsA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rz9vQ-00085s-9n; Tue, 23 Apr 2024 08:46:44 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Shawn Guo <shawnguo@kernel.org>,  Pengutronix Kernel Team
- <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,  Clark Wang
- <xiaoning.wang@nxp.com>,  Linux Team <linux-imx@nxp.com>,  Alexandre
- Torgue <alexandre.torgue@foss.st.com>,  Jose Abreu <joabreu@synopsys.com>,
-  Maxime Coquelin <mcoquelin.stm32@gmail.com>,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  imx@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 1/3] dt-bindings: net: mx93: add enet_clk_sel binding
-In-Reply-To: <ZiYmpruU8JKuPVFb@pengutronix.de> (Sascha Hauer's message of
-	"Mon, 22 Apr 2024 10:58:14 +0200")
-References: <20240422-v6-9-topic-imx93-eqos-rmii-v1-0-30151fca43d2@pengutronix.de>
-	<20240422-v6-9-topic-imx93-eqos-rmii-v1-1-30151fca43d2@pengutronix.de>
-	<ZiYmpruU8JKuPVFb@pengutronix.de>
-User-Agent: mu4e 1.12.4; emacs 29.3
-Date: Tue, 23 Apr 2024 08:46:42 +0200
-Message-ID: <87il08k23x.fsf@pengutronix.de>
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzAKU-0005Pe-6R; Tue, 23 Apr 2024 09:12:38 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzAKT-00DpqQ-DL; Tue, 23 Apr 2024 09:12:37 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzAKT-006lQZ-11;
+	Tue, 23 Apr 2024 09:12:37 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH] clk: imx: imx8mp: Convert to platform remove callback returning void
+Date: Tue, 23 Apr 2024 09:12:31 +0200
+Message-ID: <20240423071232.463201-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2328; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=fQ4UVE6+6CmvmhJdhJsIrzZ7SFLcAeX7/JjxwWX44Ss=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmJ19gD+ey60Q7Nhcuckms6sc7hia2d0PrcgA61 25wyYCFd1mJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZidfYAAKCRCPgPtYfRL+ Tl6MB/9ewqqK8k3EJgNUQucdqRiJOeHsgqj+9R7jJdnfre4guZynzegjaBNiTZj1Eh3QTHqwUUq pCj1flKOlPO3XVFmphFRj9FD6svjQhLqGo5nX6/rYpUVd5j8xEnxbDYsNWqZoZcsItcKeWmrUfQ 55s6tGS7MHvqdcxRYoCs8paCvQ+Wxjq5Kf7OftuG0rTzGw7USCUjDxBOUectqjVP9HEX9HbjoM+ bmXbtYxMJPOVIiaWyOp53Thly1bbx1JKt3C8bJUeLfkSlVdOplKB+L2ZtQkoIUAoWrMCrahmN0h jys0PlKAAhqr2tXeO6U/54VCI3EgyqOijcJTRQXJQSBU54U+
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 2024-04-22 at 10:58 +02, Sascha Hauer <s.hauer@pengutronix.de> wrote: 
- 
-> On Mon, Apr 22, 2024 at 10:46:17AM +0200, Steffen Trumtrar wrote: 
-> > When the eQOS on the i.MX93 is used in RMII mode, the TX_CLK must be set to output mode. To do this, the ENET_CLK_SEL register must be accessed.  This register is located in a GPR register space.   Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de> --- 
-> >  Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml | 10 ++++++++++ 1 file changed, 10 insertions(+) 
-> >  diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml index 4c01cae7c93a7..1d1c8b90da871 100644 --- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml +++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml @@ -56,6 +56,16 @@ properties: 
-> >          - tx - mem 
-> >   
-> > +  enet_clk_sel: 
->  Krzysztof will likely write the same in a moment, but anyway:  Please no underscores in property names, see https://docs.kernel.org/devicetree/bindings/dts-coding-style.html 
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-That's what you get, when you just mindlessly copy existing property names :(
-You are right, of course.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for power saving")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
+
+after the merge window leading to v6.10-rc1 (assuming Linus has >= 10 fingers
+this cycle :-) I want to switch the prototype of struct
+platform_driver::remove to return void. So please either merge this
+patch together with 1496dd413b2e, or accept me sending this patch
+together with the patch changing the function's prototype for inclusion
+to Greg's driver-core tree.
 
 Thanks
-Steffen
+Uwe
 
+ drivers/clk/imx/clk-imx8mp-audiomix.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+index 574a032309c1..be9df93b6adb 100644
+--- a/drivers/clk/imx/clk-imx8mp-audiomix.c
++++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+@@ -346,11 +346,9 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int clk_imx8mp_audiomix_remove(struct platform_device *pdev)
++static void clk_imx8mp_audiomix_remove(struct platform_device *pdev)
+ {
+ 	pm_runtime_disable(&pdev->dev);
+-
+-	return 0;
+ }
+ 
+ static int clk_imx8mp_audiomix_runtime_suspend(struct device *dev)
+@@ -382,7 +380,7 @@ MODULE_DEVICE_TABLE(of, clk_imx8mp_audiomix_of_match);
+ 
+ static struct platform_driver clk_imx8mp_audiomix_driver = {
+ 	.probe	= clk_imx8mp_audiomix_probe,
+-	.remove = clk_imx8mp_audiomix_remove,
++	.remove_new = clk_imx8mp_audiomix_remove,
+ 	.driver = {
+ 		.name = "imx8mp-audio-blk-ctrl",
+ 		.of_match_table = clk_imx8mp_audiomix_of_match,
 -- 
-Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+2.43.0
+
