@@ -1,120 +1,112 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F456605CE
-	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 10:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9FC82C60
+	for <imx@lists.linux.dev>; Tue, 23 Apr 2024 11:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713869825; cv=none; b=gKpISsc5BIklbEI9k+dVm4KQJm0AcfZOHPZ8yVeUv3fQJpv0m2m4HoNpWd3ELFYyhiL/+BOA3RGmSNEuL2aCmGe6j9t0TjkC/4ZvmYEG5bOQ3A6b6uinRB4I2esx7PKX7bzZ5V28iol/g5pG21AV3mEqHvQNk734g7v8mDtfcHk=
+	t=1713871932; cv=none; b=W9NVCUwYzz/1lU5TFmW85oRC7DvZkBfHTiLQkqmPay8k6BgvY7KLd+10f0kx1Mqq11qnrm/gmkD/xJC2yhBIIGCbZiliWur0THq6xj8r1XmXMBJJBk9BbDNig+v9HeSJrzgv76Ssf868EsqvYMV6gv5WvxjtpY6wt4gN9S4ANzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713869825; c=relaxed/simple;
-	bh=wLVBgPgK46w9KM0ua1X9pCnwdk9I/0PinDZppvDLcmE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=faV9Bby/kQ1t0HfaRifzv787B6up868szxja9H0YEL08D0xxbKjDPLdmNFd4LcKZo8bq3OPupb9RrQRyV3PzBZ9euBSuiHQ5++I+YRj5iamKmHP427KB/G7xjoYir7vniCyhigcNUQvXJp2ciCvyoIhBwyTWx9qGrki2IO5Uchc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=pJ1YNGhw; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1713871932; c=relaxed/simple;
+	bh=aH67okvChfjNK/qdROTeGr50aua0GAV9FbdIPCD96iA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MLC/8XmNm9terTp3EyUDVCJ9Fa/pb0JLsAV0/w/0W+8qonVwmfRiUZP3PZczm1uQGaMYwJ29xnIU1PgcB0JsmQOKa5sRYuaaiIH/w/TxN3Bi6bM/FM9W5DKDX5OzPNCAFsa12Imhip+GU9PUCATGrWGplZpSPnIKDkCyvaA/Taw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=G80+gpWt; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=poKuUsrc reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="pJ1YNGhw"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-516d68d7a8bso5173608e87.1
-        for <imx@lists.linux.dev>; Tue, 23 Apr 2024 03:57:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="G80+gpWt";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="poKuUsrc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1713869822; x=1714474622; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kdW/LjY6qj29zoQWo6lWGy4ogoBC4CsCwa2E/E8rpTg=;
-        b=pJ1YNGhwir5EKE2kc2zafLfQQ1JvSEWspx/h6J/HdaWMyaBJVa+gSKEd+3qdT4acXn
-         vLK296PBLhk+CkJR0b0s1ooSHJm0+K0uy6xkRCR2YlZ2/7BietSw3zElqGu1MqC9m1Ec
-         Hge5C+G7ApBbK6lBXld+p5qD6BE+wOrA8X/6Q8ufeikkSnR8/nkJqsYgXq02ejX8VAtQ
-         6bTsGyy0KH0bvhyYH2LAIJB01vESOYco+KpiLQ3igqclnGLlws63QAF34pgg3pO1A+8g
-         E2+xAbMzs/+xRUkENCGtQ852e3AmUBCGWBH3e0G7MLsb/OputIc49TBH//HFTyuApUdR
-         gHTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713869822; x=1714474622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kdW/LjY6qj29zoQWo6lWGy4ogoBC4CsCwa2E/E8rpTg=;
-        b=O7db8ZQiQyxTg2muYXHWdnPRNF6IxMjWBnVmqIH2hPc1nDP1TFEl0HUSZerO3RwbgR
-         Al1kNKeZfyOL98S4sU6xuDiYfY6MzIEhfI1S8p82L8FeMOm2dxNdeimjHa2266FYo4Xa
-         TppsonGDLMbHyGk0M2hWhNVjpA7pUFqib4tSYedZv19wqUZLEt5vmMEek+KscEWzQ6hS
-         T72gksQDHu1K0vWOxknGN98OdSOt4hPZoZAQIB/A4wsdeqaRiZIFsQ2eSFTj4lbU5nOP
-         IWfDWRnIT59sXGRARHXURZLGmiy4i8FbxM+hNzrUVWKwfnE0e1NGIPug7CwOJsEx7T32
-         3eMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXln/anja6LvTRr9gfZBMaHLkR/JIaLGKxPaankn1/nzMYVpx1oKRZyTcY7mimqwGR36Jyrz6phq3QbK8m6cNgVQcp3
-X-Gm-Message-State: AOJu0Yw1H++oF7QhJvU6QJmyPJ0NqkKu3n3OjM75I/melQ1oU6Oq2+un
-	34kcQ6AKEWLSNXv2p2Jh0OyrNLPboPAC1vPKWj74tObkUK/exoROz6UR0S3E3R6OdnYebsmuuE3
-	rc497voqaLsAqp0620Bw1z9nERIyioQTyOparWU9WFtSbO7e77eU=
-X-Google-Smtp-Source: AGHT+IHq2NMdnc+Cduu/lVn33H+Myuo+m7Js3CIcZkZiVbqVDmL57a3r9YJygCSp+EwxMqSAKS5xQlOBYQJzMkAjP60=
-X-Received: by 2002:ac2:5e9e:0:b0:51b:533f:6483 with SMTP id
- b30-20020ac25e9e000000b0051b533f6483mr745330lfq.30.1713869821680; Tue, 23 Apr
- 2024 03:57:01 -0700 (PDT)
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1713871928; x=1745407928;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wofwYl3aLeJL4MtGjQakxRMPKOMFpPo928i/DlFFhz4=;
+  b=G80+gpWtVjNFF1Ld4uS/Wt09LCm87BJcVxC25oH2KeBSKtRFXLy/cRYo
+   7Xc8OC3wsuXySZVc+XeFXQ9wS82AIC5oYSNQTNSWQwJyshdgU+dIMoIqR
+   0rG3QvgNv1py8ti1OykgTVP9CYYrf0qUAUkfztrI+haBlIE9FiuKWPiHr
+   3MGf9Q4ikGfWIrO4a5TVR6v5ggMKSOfy0tcUwtP3j6upVPu10t4hDE5KH
+   6TlU2KRXhR9KmFH2CoU8S1z8gz0FHiGwzbEkps+xl/T+/cHK1WNtXobr0
+   r944OvXQHocDu18pqHAycRebGTlNaS6lDVOdStBi8DWW5ZLPKRODJEXTQ
+   g==;
+X-IronPort-AV: E=Sophos;i="6.07,222,1708383600"; 
+   d="scan'208";a="36565268"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 23 Apr 2024 13:32:05 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D6625170860;
+	Tue, 23 Apr 2024 13:31:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1713871921; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wofwYl3aLeJL4MtGjQakxRMPKOMFpPo928i/DlFFhz4=;
+	b=poKuUsrc+vn61XYDxhlFXS5YMQGSZr+rfRDdko1Alu+5GLUVKeKYaMEaQkz/13VAzCA753
+	usN3p5ZlQA2/kcc+eEIqbFNLlb7YUHEnC+LK6vsGK3tvnTpT10GH4qE5x4n+/bO8gKZk5D
+	8DbDN/Q7c7zELNcYwKEBfsDXXMmINdo89EBgx3/t7krjCAU5VgVuLrAp/MmMe3lgaxTaVn
+	gt0Rz9d6IDrrCYFUngmBtGAMrGG6277Vaj63TESCKLrtmOBNS6pE4ZHUqNXtfSWxOC053U
+	mqmkWMI0s5J0gyhOYmmfJiL6vo8geIAxM5Olu3KMQUaNErU0eMYSm7AEEyhOGQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/6] arm64: dts: freescale: tqma9352: Add partitions subnode to spi-nor
+Date: Tue, 23 Apr 2024 13:31:46 +0200
+Message-Id: <20240423113151.2145120-2-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240423113151.2145120-1-alexander.stein@ew.tq-group.com>
+References: <20240423113151.2145120-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240423022814.3951048-1-haibo.chen@nxp.com>
-In-Reply-To: <20240423022814.3951048-1-haibo.chen@nxp.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 23 Apr 2024 12:56:50 +0200
-Message-ID: <CAMRc=MeoAbdqwtpK87zQytC7PcS==HjQ6GUO7MeWcZHRXf-SjQ@mail.gmail.com>
-Subject: Re: [PATCH] gpio: vf610: always set GPIO to input mode when used as
- interrupt source
-To: haibo.chen@nxp.com
-Cc: linus.walleij@linaro.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Apr 23, 2024 at 4:28=E2=80=AFAM <haibo.chen@nxp.com> wrote:
->
-> From: Haibo Chen <haibo.chen@nxp.com>
->
-> Though the default pin configuration is INPUT, but if the prior stage doe=
-s
-> configure the pins as OUTPUT, then Linux will not reconfigure the pin as
-> INPUT.
->
-> e.g. When use one pin as interrupt source, and set as low level trigger,
-> if prior stage already set this pin as OUTPUT low, then will meet interru=
-pt
-> storm.
->
-> So always set GPIO to input mode when used as interrupt source to fix abo=
-ve
-> case.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  drivers/gpio/gpio-vf610.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-> index 07e5e6323e86..305b0bcdee6f 100644
-> --- a/drivers/gpio/gpio-vf610.c
-> +++ b/drivers/gpio/gpio-vf610.c
-> @@ -214,7 +214,7 @@ static int vf610_gpio_irq_set_type(struct irq_data *d=
-, u32 type)
->         else
->                 irq_set_handler_locked(d, handle_edge_irq);
->
-> -       return 0;
-> +       return port->gc.direction_input(&port->gc, d->hwirq);
->  }
->
->  static void vf610_gpio_irq_mask(struct irq_data *d)
-> --
-> 2.34.1
->
+The bootloader adds MTD partitions in this subnode if present, or in the
+spi-nor node itself otherwise. Direct children cause warnings like:
+425e0000.spi: ofpart partition /soc@0/bus@42000000/spi@425e0000/flash@0/
+  partition@600000 (/soc@0/bus@42000000/spi@425e0000/flash@0) #size-cells
+  is wrongly set to <0>, assuming <1> for parsing partitions.
 
-Can you use gpiod_direction_output()? Otherwise the flags of the
-descriptor will tell a different story.
+This is due flexspi node having #size-cells = <0>. Setting #size-cells in
+MTD nodes itself is deprecated by mtd.yaml.
+Fix all this by adding an empty partitions node which the bootloader will
+fill with configured MTD partitions.
 
-Also: this doesn't matter here as it's a built-in driver but irq
-callbacks accessing gpio_chip is a thing that still needs addressing
-as it doesn't use SRCU. :(
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Bart
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+index 9d2328c185c90..edbd8cad35bca 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+@@ -75,6 +75,12 @@ flash0: flash@0 {
+ 		spi-max-frequency = <62000000>;
+ 		spi-tx-bus-width = <4>;
+ 		spi-rx-bus-width = <4>;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++		};
+ 	};
+ };
+ 
+-- 
+2.34.1
+
