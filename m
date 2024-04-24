@@ -1,231 +1,120 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2087.outbound.protection.outlook.com [40.107.20.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8188815B151
-	for <imx@lists.linux.dev>; Wed, 24 Apr 2024 13:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713964195; cv=fail; b=bnt/PZlapP7uz1yi3HprIB+cyJLrTzJC+D8M76ca3oKSTzJEYd9Kim4uWEKsPRGPL92V5LsAB5NzZt3KzyD3AU2oniDr3JmlEoZzkeRNvHopWJi/pJTbnK9BvF5b61IL8hEu3GycljLtIgOtdhQNVAipRr2ngMdhOgkQxjo989E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713964195; c=relaxed/simple;
-	bh=moFU5yypEgTBW3ReUkXTrRXfoabEgxpyjKkToeNmEN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XJd8tY+SOTjKbj7MatW3lD7g2xFKsyNNi7amNiZsA2k+eNR8T3yCPbAMJSNRmxbbUvmiXwSso+mySkF185KWp3WzKhAnweaHDB02sS9dzR8bIQK7xzA6hLTmVsAoDyBAj/XyDE1Izi5RnLixLeSO0hdCdXEoGFaW8D7I3b+f//0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Bz4lgrSz; arc=fail smtp.client-ip=40.107.20.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Bz4lgrSz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j3ZcDbSRqJsELm2ACoBYU/CgoB5DWpGlwDm8OcvLWVtXxKKND3whby9fJJ0ucRL0VE78+SdJ0KLANXUn2xeGvawOmjlw82BTfxoJGWg6Zj/5zQ+IS677jZKxQqSbEdG7ppGTwVoWecUnq5oDgGek3htiJAyCsTHpiKDmmKE+6T1nGWkhu3CXURttWWOH44ru2kfUma/mwG2q1OvGyT32z8NxhNiFOt2vSt0S2HPGiJFWOlpkcuGZYEWMZcSxmPFNzRFO44G4uyQMAMbv9B6Faxpxi0b08U168Ku34doExC7Cb/i/rqxyjGDDcT0SpWt4nDs0Fe4Q4dusYZZjlwWwyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LxEku2hewmWYMR6SCNUfzVBWwfRzrKIgFkq3/X1Knqw=;
- b=X/RzSbkcZpRCL/f0n37rwzdQwf3lm5J9HP08tulSV2aKbVbfqFRYdNK4aO+5jIQI3p9W/0avRbAEOWVGR0A/SmIsnmk6vjvViG+pjFf7lRehWU35dPgKXC0mmSU/W+EVW1xvAGYXNLcO/qhb2cpKIVmmbcHVp7sAOv853Cs0gPqJMqMrsa2i9+Nnbo18LsLFFuFizO9ZD0inuUdIS9j9apN4ihtRSvuJOkksXvZuIe1U+ca8e0u/TCMKVkkCyCLMf+Bo1r0JQ9hN+KuKm49fW0e9ANL6ZZ4PM275PPvSEg0bp2h8IBgjwMz+J0PbijBksphFCo8cjFiorCkKrR2qWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LxEku2hewmWYMR6SCNUfzVBWwfRzrKIgFkq3/X1Knqw=;
- b=Bz4lgrSzk2Q+lyQhAMM+GqASaiZr4Hj/319PN1J7Cl+X1aFux4uUpryHWxeSW/3G0w5RDwl7hOLh+3qsS/TF9/BIOt5ZcNDwOVHhJt5gcui3/HLRlKqjhHUWfwxXlTwwZFGEkpheIymDwq0RaX0Ua0CsHzfO/L02alUqjEvJ1wY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM8PR04MB7297.eurprd04.prod.outlook.com (2603:10a6:20b:1c5::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Wed, 24 Apr
- 2024 13:09:51 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.044; Wed, 24 Apr 2024
- 13:09:51 +0000
-Date: Wed, 24 Apr 2024 09:09:43 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Joy Zou <joy.zou@nxp.com>
-Cc: peng.fan@nxp.com, vkoul@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] dmaengine: fsl-edma: clean up unused
- "fsl,imx8qm-adma" compatible string
-Message-ID: <ZikEl8Banvu9AyW6@lizhi-Precision-Tower-5810>
-References: <20240424064508.1886764-1-joy.zou@nxp.com>
- <20240424064508.1886764-2-joy.zou@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240424064508.1886764-2-joy.zou@nxp.com>
-X-ClientProxiedBy: BYAPR02CA0036.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::49) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6C615E5D7
+	for <imx@lists.linux.dev>; Wed, 24 Apr 2024 13:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713966046; cv=none; b=vCDfbF9iRnen/9g/uMDpZwkMYlc8HrJQBQyxZHLET8RaapbFyCvKJS7GoYByuCzqAa5MuKjBT8R2JRUzD/j/aE3BhR9s5AiTFeiteL8W5hbCZC/8y9cPD0cDibwV9/HbiClhMnLVf3xJc7RRNJdv9j7sHH5h8h3fDDg+JyDs5v4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713966046; c=relaxed/simple;
+	bh=9DK4QJ/TCi2B/QX3H6PXVhRwQNGSFim3Fn/8J5m5l5g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YGelje0SCpkCX5NiTWSYeykBvXI1ATn/z3zZ4rkO5oDQaveLIXLAgYJKcx8ifzdXsDzPwRhV/tpIlFh69dKuc6RgxYJsbGyJhe5pYP7X05RU7b416qANk50ss+SS9n6iNGTcmpacN6kK5qfNGxobalkc3Hkehzy4OOqn6EkDBHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-516d2b9cd69so8519069e87.2
+        for <imx@lists.linux.dev>; Wed, 24 Apr 2024 06:40:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713966040; x=1714570840;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fZ9CwMK3wqk6+/Yp2Zsm6M08mayo4fMD+34z+UfTXVA=;
+        b=KWAOV+B/Orj5L3hGjTSuDDQVo8HKwlYtKNlqb7eo6Go97Z5KmyFDCmKz7axpunvLpu
+         EOV4mjl+upD3GEl4p0q8o/kBaYfEJei2hyhRitTD7oHoAiGSnwCuu0DBts4Wis3acrb+
+         7+tiUiP2ggkLmwemPpxP5qIOtAiealnUYKyjuNtCObKhOlRQC+rYRnSkguzS06jNcsNu
+         D5dsakSmMP925ybDFpaFxMa67ZklM4uwHDunGFhBRbtmf4Zw8Rm81aqvSIBKDwMi6TII
+         LE7VitZ1scCmhtw3DVQcWz4vTHjWXmOSXVy3dxYNlKBfGV/v73o3znS/IRSOU59OItqj
+         BfyA==
+X-Forwarded-Encrypted: i=1; AJvYcCWalo8UtMECy4G1LJi2qNOhcKaDYl3a0rl4jQ+F/ThPn9qLsFZPu2gaXY8v2CVp179FCZ8zO7HZEu8G//KBCT8flegO
+X-Gm-Message-State: AOJu0YyW8mc8zBlYZVf1Mwywhv1TvYKmzUmfRWpnWHsNubsLEYxUCtP9
+	LwohFlPumAa1EOYdZQChWp7TzBQCvyye6f83JHUlDjdPgTFsNOLL2KPjOCpcxkg=
+X-Google-Smtp-Source: AGHT+IFbMtqpGuT+OWB9R0p00fN7LDDtoN611wqrZUo4hXwORed9sJVw1R/lOxvB/iQiQ8cWBQmq+Q==
+X-Received: by 2002:a05:6512:4803:b0:519:1e33:9d85 with SMTP id eo3-20020a056512480300b005191e339d85mr1747542lfb.36.1713966039891;
+        Wed, 24 Apr 2024 06:40:39 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id n1-20020a0565120ac100b0051aeb8ddc78sm1487046lfu.200.2024.04.24.06.40.39
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Apr 2024 06:40:39 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-51b09c3a111so5654394e87.1
+        for <imx@lists.linux.dev>; Wed, 24 Apr 2024 06:40:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV79oJ1Cl5CsS9CxaObqbhy2KNdvf4i8I/SPwj9KSx0PUqroOSmKRcI++4DL5sBEJS6Z3lXha2QkQaE3e8pJc153lNi
+X-Received: by 2002:a05:6512:3253:b0:516:dd4f:d9ea with SMTP id
+ c19-20020a056512325300b00516dd4fd9eamr1661058lfr.5.1713966039011; Wed, 24 Apr
+ 2024 06:40:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7297:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8b3283c-fced-45a1-c91e-08dc645fd333
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1MeQDJPSny50P66x7vJWfF1MeXBQjbLsCKhXI7RytB3LPm6f02GmXTHTAsVy?=
- =?us-ascii?Q?xI4mobANlNlqfOK54fqSGOohUwXpJ9Yh8/sy9hZs5FkCd1GPgmQJ5FLg9wb8?=
- =?us-ascii?Q?WTyUFAc7e4paheDgf5B8fF+dRhdUg+XCIJ0T1uRJIxMJ4P+hfP6JfrSMBRKJ?=
- =?us-ascii?Q?rL1Lh3GLmZ4dUkmDspsAOYxnIfkvS53XfbzbGpahrAmSO6UvwaW00N9/GOcB?=
- =?us-ascii?Q?yeIorWmPZLmrkalGWuHRRUhHsVvU+2F8hxJ6vsPR7AFBN/H0ickFgO3FTO5S?=
- =?us-ascii?Q?9jvm0BSHJ9CZlE/LqvJCVjhmovBcc8/v9WWU1uptDIaSNJRwqS4qqGuwRRu6?=
- =?us-ascii?Q?A7jaggNjv+UkOFJ39kcDPwo9BLBwACBzmIy7p4H9m89HODD7fGRiC++zIJt/?=
- =?us-ascii?Q?PxnVtgcBhX5Ll02N6WzJvV/g8rOtQb0OHtN7KfgONj1G5NcuHajoAEWAMw/s?=
- =?us-ascii?Q?A7OoSKBB5wpoUPKz+SkBqCghzo6d1/SMqe4MXloyAiQ2+EgodRxto/rcf8CZ?=
- =?us-ascii?Q?IQt62yZiehIGDa8UmraHMuyF5LzWQHPah4RLNJw/UsslL5e3eYdyfeOYJwxI?=
- =?us-ascii?Q?uSzzF+u78soZzNRJEayZVCp+pcC3opkdekfjd2PE5JDcFUJg8MIZl5XZkQeA?=
- =?us-ascii?Q?j13fYu/lPFkRXkiKDq+O8O4DxEyDzvnlHvRnNNYd/2EOVaCp/9tyKKmeYJ6f?=
- =?us-ascii?Q?MyG987K7p3v/mR1Ty5HW53gADyAxr11bjXsUfAMiGK9jPVk8IkjhEQRf1DK7?=
- =?us-ascii?Q?RH8KgOSokzpx/7fNp++6GEttbcbkfbLSQ5bLLOlut4m0JBCkd798BLRtFBuR?=
- =?us-ascii?Q?nJol8IBPbsHydyFgimSJL9dEOIDmtqZOjV/gjWwS41lgFOWEIghvfmTfyHF8?=
- =?us-ascii?Q?b8wmJ9slmzEMoAaG8sTKPcRX2j5wFP4LkS/+f1tJogdwatQGtvy9GQ2YUmCz?=
- =?us-ascii?Q?b0TnDaDC77ursJPkKXHJpA9whhbkl0h3tU+V7oWxdtYLF6ocGRg+V2WlRMj2?=
- =?us-ascii?Q?CwgsGVf9bl6PUbo9x9oMivm3GpJO+EwbqxMS/5a8wlyofyEDarV3ijW+fVga?=
- =?us-ascii?Q?PXopvOiDeG0ePBvOd4+P8wZHd/+w5FuraOd1hGCPgpXKhR+A128oGHPE77H6?=
- =?us-ascii?Q?hmZp0zETuifJ64KXIdiXmUSat25+Z4Cy+LDVRKkwTouajel7ZM7G10loKZKE?=
- =?us-ascii?Q?uwLaqFvcv3ne2md46Bzmi/W2mNGMST3h7ZDS9fENZxjBfCx/w5YfDZEye/cK?=
- =?us-ascii?Q?f5YX1PEKnMOPIDxI49gg3iMy2pHH+ta1bDtMmha5/2cmdGeuNb62yohh9N5F?=
- =?us-ascii?Q?yf+FeFdgyHo6x7LiXMw6jjo0XrWgUZZXA+0EzFlsEKkmwQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(1800799015)(376005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wItPSPCguoshyNhoubtJyeFAFraKJJ3OtIhZZ3K21/lPEdqLL/9ksEjzisKh?=
- =?us-ascii?Q?hPOeKBKgiOlO9l+Ia7EJW9irIGkOOpNIlLOoDGLShAY/7DCZIoSkURUaC+h0?=
- =?us-ascii?Q?kZR0YNAjyPPDl87MrsPhluYtkzhCJ6gnRgXoRDaLXwZgU9xRYsIRsGilp7tv?=
- =?us-ascii?Q?2aECc585YLXV23J+iQgpjC/6UqWvDMBHQ0mx3X1LLjrpoosbbABahHxyC3kY?=
- =?us-ascii?Q?pOTSucGXj1D9NQQpqk1Hdsoe6y7lFgJ3o/dtMwMQOo+ldc+rcWKLysyJ02GI?=
- =?us-ascii?Q?lrQEptOzYzA+e+XJCEKN1xu27zl0i4usC9tBTjhg8p2zB5WN8jDcipEYDJIc?=
- =?us-ascii?Q?yIt2hOEAyiB90t9HRlBATWhLX9umpyA0pw7kN1ze2+7+aNiLlhzLoxwRet91?=
- =?us-ascii?Q?HQG7ao7CmR5G5uAHXWuG3qS4msxXaA8CNYlYsgm5i3GtApCt977BfM6W67LU?=
- =?us-ascii?Q?H7+f6WA+8QzHwqsGj2IjNzcoxYFTbJfd9n0pwk413ahPax1DjcoEhoBPTM06?=
- =?us-ascii?Q?T9qnYhWTCl+XeuDauo/gtseoWJI/befppyx4E2pD4XlA9BnGaYcPPP+H+hGl?=
- =?us-ascii?Q?D+1g3rdSRs2bzk5SfjeP9A0+P+k+nlAyyxeydejxiSLXWcFmB5oYX34JrQjb?=
- =?us-ascii?Q?I+6KslA0rZlXWECIw3m3dxaQfa5sLP66NQQd+ZIyq56mKDEYQ1BmwrrJcryd?=
- =?us-ascii?Q?ZnOrtTUxeyi1TOk8p1AdjrWRWqvX9E1pMgUfa/6u+2gsWav5iBRu582ofhc0?=
- =?us-ascii?Q?drV/b/wpSGBxrCfP2yp0m3CCLFYYRh8rWoKtc75if6I54s+BoSafnNSGCkDw?=
- =?us-ascii?Q?Kc5a2HzgK26+ppTdA1o7Yy1vakPoWZq04Fd7FmRExT2M9zpW5TEPaxZpQncu?=
- =?us-ascii?Q?92JNnorDl5MCIO5HCnB3jKh23kz7o8QbKPTnFltr/qb4yOscBlP0gtH5guSi?=
- =?us-ascii?Q?z2pFBV/yb1mdgbTGTiOlpGzg9dGDOqvMPa8PF35k0H5vY+5QlBIrEbOfz3zt?=
- =?us-ascii?Q?CTuXzcTW5lOY94uBSUhOT0KWVbMSaqpNXgJW0Iz0kRDNohWrnva1REM02q3h?=
- =?us-ascii?Q?dBHcVNaAtpstQq5UgRSO6hgfiAiGlWAs3NepynhlB9/Uyll5gqi4d4CqY+av?=
- =?us-ascii?Q?NarfBwJ6DX3Fm1OlmwFMGyW4Tc7WDMEf17P/3RrT89dySQiWAJnRY7wzWCXb?=
- =?us-ascii?Q?yGhZzfTu/6fzOd8noEaiQZIUTCsOR7B+Xhc0G9Vx64I57/uOvI+dnqfH71Ox?=
- =?us-ascii?Q?MZ8fmSgKCNuf/dpOo/eg01d1R50JJeB3Kov2JkS/wNNvha2Ep37GD7TTrCDq?=
- =?us-ascii?Q?uHA7Gd+EMGXoy+FlhBcypN940NW8s7rJP8Ww/zWVJFjqF+QY9c/y8DMIzYFj?=
- =?us-ascii?Q?zhgZcbrOUVRc07VX9yOiD5LWpURzMaziYEwi2JHiTvPPyd37qY79mW+zUHwz?=
- =?us-ascii?Q?7X5Ukn9vCtVKo3fwRi39rzjyVyL3Ltpt/b23fS3iC4N4waObjyEkYnmrOZuS?=
- =?us-ascii?Q?IRp1aHsNPf2KB3b4fXP0Pw01Iz3u+Erv8VHjDlKHpd79waWpW8HDxGSmSGKl?=
- =?us-ascii?Q?PPA2xUoBq4jhFsFe+44=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8b3283c-fced-45a1-c91e-08dc645fd333
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2024 13:09:50.9295
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dDej25MftCkfmWdNypyH9OxLYi5HeWxgDH+XN4Hy21P5i1WPuhRwlF18ZXeq9SJ6QREgSENCOGnryleCO9r0fw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7297
+References: <20240411235623.1260061-1-saravanak@google.com>
+In-Reply-To: <20240411235623.1260061-1-saravanak@google.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 24 Apr 2024 15:40:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUS-YX7tTEF0216wk+DdCbWCJ0z1huSj8cjRXp8GxJ5gg@mail.gmail.com>
+Message-ID: <CAMuHMdUS-YX7tTEF0216wk+DdCbWCJ0z1huSj8cjRXp8GxJ5gg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] fw_devlink overlay fix
+To: Saravana Kannan <saravanak@google.com>
+Cc: Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Rob Herring <robh@kernel.org>, 
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 24, 2024 at 02:45:07PM +0800, Joy Zou wrote:
-> The eDMA hardware issue only exist imx8QM A0. A0 never mass production.
-> So remove the workaround safely.
-> 
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+Hi Saravana,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Fri, Apr 12, 2024 at 1:56=E2=80=AFAM Saravana Kannan <saravanak@google.c=
+om> wrote:
+> Overlays don't work correctly with fw_devlink. This patch series fixes
+> it. This series is now ready for review and merging once Geert and Herve
+> give they Tested-by.
+>
+> Geert and Herve,
+>
+> This patch series should hopefully fix both of your use cases [1][2][3].
+> Can you please check to make sure the device links created to/from the
+> overlay devices are to/from the right ones?
 
-> ---
-> Changes for v5:
-> 1.remove FSL_EDMA_DRV_QUIRK_SWAPPED in fsl-edma-common.h
-> 
-> Changes for v4:
-> 1.change the subject to keep consistent with the patchset.
-> 
-> Changes for v2:
-> 1. Change the subject.
-> ---
->  drivers/dma/fsl-edma-common.c | 16 ++++------------
->  drivers/dma/fsl-edma-common.h |  2 --
->  drivers/dma/fsl-edma-main.c   |  8 --------
->  3 files changed, 4 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index f9144b015439..ed93e01282d5 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -75,18 +75,10 @@ static void fsl_edma3_enable_request(struct fsl_edma_chan *fsl_chan)
->  
->  	flags = fsl_edma_drvflags(fsl_chan);
->  	val = edma_readl_chreg(fsl_chan, ch_sbr);
-> -	/* Remote/local swapped wrongly on iMX8 QM Audio edma */
-> -	if (flags & FSL_EDMA_DRV_QUIRK_SWAPPED) {
-> -		if (!fsl_chan->is_rxchan)
-> -			val |= EDMA_V3_CH_SBR_RD;
-> -		else
-> -			val |= EDMA_V3_CH_SBR_WR;
-> -	} else {
-> -		if (fsl_chan->is_rxchan)
-> -			val |= EDMA_V3_CH_SBR_RD;
-> -		else
-> -			val |= EDMA_V3_CH_SBR_WR;
-> -	}
-> +	if (fsl_chan->is_rxchan)
-> +		val |= EDMA_V3_CH_SBR_RD;
-> +	else
-> +		val |= EDMA_V3_CH_SBR_WR;
->  
->  	if (fsl_chan->is_remote)
->  		val &= ~(EDMA_V3_CH_SBR_RD | EDMA_V3_CH_SBR_WR);
-> diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
-> index 01157912bfd5..3f93ebb890b3 100644
-> --- a/drivers/dma/fsl-edma-common.h
-> +++ b/drivers/dma/fsl-edma-common.h
-> @@ -194,8 +194,6 @@ struct fsl_edma_desc {
->  #define FSL_EDMA_DRV_HAS_PD		BIT(5)
->  #define FSL_EDMA_DRV_HAS_CHCLK		BIT(6)
->  #define FSL_EDMA_DRV_HAS_CHMUX		BIT(7)
-> -/* imx8 QM audio edma remote local swapped */
-> -#define FSL_EDMA_DRV_QUIRK_SWAPPED	BIT(8)
->  /* control and status register is in tcd address space, edma3 reg layout */
->  #define FSL_EDMA_DRV_SPLIT_REG		BIT(9)
->  #define FSL_EDMA_DRV_BUS_8BYTE		BIT(10)
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index 755a3dc3b0a7..b06fa147d6ba 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -349,13 +349,6 @@ static struct fsl_edma_drvdata imx8qm_data = {
->  	.setup_irq = fsl_edma3_irq_init,
->  };
->  
-> -static struct fsl_edma_drvdata imx8qm_audio_data = {
-> -	.flags = FSL_EDMA_DRV_QUIRK_SWAPPED | FSL_EDMA_DRV_HAS_PD | FSL_EDMA_DRV_EDMA3,
-> -	.chreg_space_sz = 0x10000,
-> -	.chreg_off = 0x10000,
-> -	.setup_irq = fsl_edma3_irq_init,
-> -};
-> -
->  static struct fsl_edma_drvdata imx8ulp_data = {
->  	.flags = FSL_EDMA_DRV_HAS_CHMUX | FSL_EDMA_DRV_HAS_CHCLK | FSL_EDMA_DRV_HAS_DMACLK |
->  		 FSL_EDMA_DRV_EDMA3,
-> @@ -397,7 +390,6 @@ static const struct of_device_id fsl_edma_dt_ids[] = {
->  	{ .compatible = "fsl,ls1028a-edma", .data = &ls1028a_data},
->  	{ .compatible = "fsl,imx7ulp-edma", .data = &imx7ulp_data},
->  	{ .compatible = "fsl,imx8qm-edma", .data = &imx8qm_data},
-> -	{ .compatible = "fsl,imx8qm-adma", .data = &imx8qm_audio_data},
->  	{ .compatible = "fsl,imx8ulp-edma", .data = &imx8ulp_data},
->  	{ .compatible = "fsl,imx93-edma3", .data = &imx93_data3},
->  	{ .compatible = "fsl,imx93-edma4", .data = &imx93_data4},
-> -- 
-> 2.37.1
-> 
+Unfortunately it doesn't, and the result is worse than v2.
+
+After applying the first patch (the revert), the issue reported in
+[1] is back, as expected.
+
+After applying both patches, that issue is not fixed, i.e. I still
+need an add/rm/add cycle to instantiate the devices from the overlay.
+
+/sys/class/devlink shows one extra link after the first add:
+platform:e6060000.pinctrl--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.=
+spi
+
+> [1] - https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=
+=3D9F9rZ+-KzjOg@mail.gmail.com/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
