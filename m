@@ -1,188 +1,144 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2057.outbound.protection.outlook.com [40.107.6.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8453184D1F
-	for <imx@lists.linux.dev>; Wed, 24 Apr 2024 04:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713931633; cv=fail; b=BMAVof8KwPh6gNUiZloGR/b/OLc0V9IWbUsxtLKv/8+KwPDBacWoY3UwwUVCZVj3ksrMa1kCtTbHQDnVfNB+Hm7ktrlePVXjAkBlyFXFtv/Krwhvp7tDI6cYB0qY/6NqMm784IV2E5NFiaumzYVLl0a2L32M1bVSRN6K/uw4aCA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713931633; c=relaxed/simple;
-	bh=tDZPv1tFn420Y9J46DV60cONjh0VpbqSl/RPwtX5Ums=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fxTc0TNnp/7hfyOWTvJAQC1cE5GQjm6aGk6vdixC2MYy3DaenVk55Xv6ZfmL59kziQrkNiuo6k9cFB1+4L2CE4Nk1pnHvKbsoxo3gBE6fkNo43sqGNvWcQn/qSQcMdgTBEnzcKw4jeaGF3Ls2S15eXhOEsmJhkrINL/Stx3fwHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=MZSn7ZqL; arc=fail smtp.client-ip=40.107.6.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26B336D;
+	Wed, 24 Apr 2024 06:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713940470; cv=none; b=RK45h0FMjlxoDnQ8nHmkR40BWcupKCs3d3LDCLIu3A2o/6K7yZUEW/Kin5+OYxqFBi0bWB5TbNNl8oP0URkExJ6t881TE44lhCVg5T1+ghRXzYXjGEMzs5/IhMqQSnqzLWpPMVvxxhtYyG+4AEHg++0I3ZY+2p/ToxKXeW2y0TM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713940470; c=relaxed/simple;
+	bh=qhmThP7INdCC8VBW2wlRiFNJE/7ZEzBRMxYW6QhxoFA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PAQqmwtO/UBmiOlwZk+Vwa71VtOp6mbl39OK6blF6INqqFSGWeDzRpOW8As7oDc9HkCqoDPSCKUp4TP7ZPfKWbRDsM1+fgOG9jqt91ebtbDNX5UUbt1A4pSPnfzCcH7QVu53rwqIU2vPZnWfA4XXtawWyhdRED/PgmKkkpIiQqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWTar0a8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="MZSn7ZqL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cs9rNgQFAX5mIvyeD9kLwr5PesTmG5KjB6fUPgAA2PiCEFqgV3qeqzj5gWyHjHRHnHi/leVZwcH8MNjwhPw3KGqs3GsupjTmVmCdDW9MtIIG4mOh3XWeBvLDgPyHHqV8dSzOuO8tyLDBk5vpfM/XPzelS2dzs+h6LdZSdZc0U21OLKR9h+R8YShloDhXVxZl3SVhhAhUNasPJ0BaUvlRYq5biuSafytpCkQKNJoN4VvVFyTZGmm4aH2CGpt0k4eccxLfnWFmn0A2K166ZG2VH6KVHGP8yw5pEtn3ydle6tVgZvka5l/txzFpkC8pXGxJa/DVLWXRvHlJG95RU+i26g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BWRvZIRuwS9lfn+HEk4AV+ebKNR5ZYrITbn/wuVYqC0=;
- b=II+mcgQLe4yl2kqTGfx8AT7HD/C/G3aYwS+Q0pKrdvHnGa8cfhv+zYLftm0AW7tgBsD5o+OtPlwLSJ+F6wyNX60n3WAgGDHQOEkcIBKHKRwjOYpPk7dT7WJhcmo+Hhxez400h8lGLCixxmy3lcP5SvYq5sQmQ7y42cN1JHMYuHJN48hMfAHJ3Mr2BCh6wpWejKG0iFtimFLMyXgxSRMFUN3ac69uXK/xwSHnhXvORZNZltrPrrKeR8L3kbEbOO0cGPh63N3Da55N1mJlvRlP2i9syNWJvnQJQXpecCM4W/YPr5tfD6dfSKTzcAWDPpN0bGu5gu6XwqU+8YTB3jVanw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BWRvZIRuwS9lfn+HEk4AV+ebKNR5ZYrITbn/wuVYqC0=;
- b=MZSn7ZqLMqSEztTtPn0lgl8W2dBxqbzLdBCx4L5qIbTX2BQiYJw5MtxilJxTRvXDDe0jFeSJ7i0sMljbl+CKIEmBWYOab1LKi6FbdqyGa6lQmakiBkOreIngKh+6h0XpRdXyiAjwGdYIRKjsBU+Ck4/KnyrXWljZfza+qy4mZiY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7515.eurprd04.prod.outlook.com (2603:10a6:10:202::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22; Wed, 24 Apr
- 2024 04:07:08 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.044; Wed, 24 Apr 2024
- 04:07:08 +0000
-Date: Wed, 24 Apr 2024 00:07:01 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Ma Ke <make_ruc2021@163.com>
-Cc: vkoul@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	dmaengine@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: mxs-dma: Add check for dma_set_max_seg_size()
-Message-ID: <ZiiFZZ8kwDeRWhjR@lizhi-Precision-Tower-5810>
-References: <20240423143205.1420976-1-make_ruc2021@163.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240423143205.1420976-1-make_ruc2021@163.com>
-X-ClientProxiedBy: SJ0PR13CA0004.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWTar0a8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8E8C113CE;
+	Wed, 24 Apr 2024 06:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713940469;
+	bh=qhmThP7INdCC8VBW2wlRiFNJE/7ZEzBRMxYW6QhxoFA=;
+	h=From:Subject:Date:To:Cc:From;
+	b=RWTar0a8DvsCOmkBnZc1XtDy8jLSKLsyxGfEbMelOUS3FNkvVfyg2qLCEoAe/zejo
+	 nch9CXCF+72DS5YL4G1/NBQlMwdkS4sVlYbtugJeG49a6h7jFiaoY9fT0ftBK7evGh
+	 llHrzgHVTnex0e4DHzSv8KcDCZ8s4cHXklXGVJkA9f8gTpzOJGvvWzynoK9PFpyBcO
+	 rDUstvFlFXN50vWY/6UyAOOtJe+QEpGVamnBKMC9RtCkLgPz2dYYcIov/28yfyLA1X
+	 SRVq0lCvn0ndJ1+rtrXZrR2K3naOATxOjXXfEm7QIYD2wb4qtwg+FfCdFIWaKzQass
+	 oUiKLou3u+ujg==
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH v2 00/19] backlight: Constify lcd_ops
+Date: Wed, 24 Apr 2024 08:33:26 +0200
+Message-Id: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7515:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20dcf9f7-9e59-4b2d-1e36-08dc64140288
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|376005|7416005|366007|52116005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EwXMyCY/TnfKFUuDSeK5jWFfjRupDaQ83i5U3rjyh2YSf2S/PCrA7//GC4FP?=
- =?us-ascii?Q?xH4d7Nktzy16ocLQkGMLXjocs+mICnDLL8Ei9+a0rnhJiu4mlSrRAsOX2EK0?=
- =?us-ascii?Q?+++582tDXgKl9XDEPsXTiuLsBVk2jm1F0ODKSo6MeI1xk8lo4nwP5O4Hg9AI?=
- =?us-ascii?Q?bviOeebk/mQn+iUE+7fY7R+r4SkpdhmdvA8XEfCliELItehHtai/jAqTKlPR?=
- =?us-ascii?Q?FiDZx+kM3mn7kjEBGcsmp6JUs56NJmVGaiFDi54MUA5DbVaXzH9cw6gf/h5t?=
- =?us-ascii?Q?RjCoFIDwEQ5M9qguoXJIeVXzWNV+PyL6cAREfAZcY50faBgw3W5+RPDW1BV9?=
- =?us-ascii?Q?kNp8zQmWHIblZZpE5Qyq4x/ZS+Jku75VOoSCJUI8/A782S38ss8oti6PNwTO?=
- =?us-ascii?Q?cj4FZvbWNGQupCF/+HZrscDGrIDmFQkEDmZ134g0/pT7Ej+S0LpXPiwPqrMd?=
- =?us-ascii?Q?YN+GWmP2IBLl6U8S/WY7NJEaiCtFK7sAOdTmZMnFD+LxEQnOyJHrDjcJPILT?=
- =?us-ascii?Q?wyPI9hL3eUC04UAE87e9wjKNACP2bV3x5hs6gIKnR6Q6qXS3eMCaZG6/M/Qt?=
- =?us-ascii?Q?j0bBpkolfNFnfHOuiMj/pvxuVE3enbZIV5wVqpwJgAXEJ00ZIAFu6GxQamBJ?=
- =?us-ascii?Q?hVkRLL5YFKFBiTT+KvqO9nuwrTq8flif8sXyFqkF3Wp1v1HuezJRp33Xu6cU?=
- =?us-ascii?Q?eF0Om1rds7H5BC8AwTBewkc4PwB5P+U1v1APe2Bu8vKdOR65vhDhBjj/57cQ?=
- =?us-ascii?Q?S5EgMfdSKYw1Z/MnmRZRKjJPgwDmsX1/qaq9cGq+XVrW+0dsS0NRZo/VExE7?=
- =?us-ascii?Q?pDVsuHgSINbPri7wU4f44kqOAdIb2xUiJfT4tMYbqn25l0uoQTNbBuHfe6Tq?=
- =?us-ascii?Q?WyVWPYxMe5Bg4MiqwmWh3zG3SlHiLdel3FnVdSQwwDRQk6SySS5Zkm5B/Rgt?=
- =?us-ascii?Q?CRqrA+RHxZoudxdeHPDlYKh4LjtyXRONmyzNwRia1Ru9dIop6vte9sIzNnd/?=
- =?us-ascii?Q?2XYYuWf+4STmMuuvyKie7kv5RaND+xsueE8rNE1OPWe53nk7ra/dCdGpE//6?=
- =?us-ascii?Q?dosLaBfKo/GNFesUrROSe4SIe5snhOF6eZ0CeekkHhdbdQwM9NeKheZZ7fVV?=
- =?us-ascii?Q?Gusb3ubcQEGfpZxVy7pdFRep3fhZF6bl3D+0ecHk4nYiBtF+jbdpCyKOHvrw?=
- =?us-ascii?Q?UIBAW6SZxDEx8sPHLeIBQMd0cPv5kHQc1CTyGm0qqgDoxrAtbvO3NCeWxCzr?=
- =?us-ascii?Q?2IYUN3dkX1iyNvIz0ZEe7AvW22RkPiB5dB3V4IMyTRs2973dq5lFXiX6G0nh?=
- =?us-ascii?Q?Mg7kB4dWaaMoqpAZuR+v2tw8Ac2rKLK/56m8DKmnRNy7eQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007)(52116005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hQHTuBBHQ+ubABK0njNImAzUDTITfHdW98e2gxwwM93qXFRC6SPoJ3tw8JQe?=
- =?us-ascii?Q?Ci+0y7mQhuOUiUa3akuKHzaLGyuOF8FFmnGFhzUr8zhoreEpU+HH5tjLi1AW?=
- =?us-ascii?Q?th38sFiFY9eD9hiCKqIoSbnTUs8pg/q/j43jzjhmZItZleA0QX0GFp+3h8rx?=
- =?us-ascii?Q?28WWRE+0E9HTIHbjKQdMdccNfX2V0otaBEh4to9BGtLR+cozN/Tx9Q/mv+IZ?=
- =?us-ascii?Q?RzJubhH3usHhFHOCZsS1l3l+PRiKN2K2zF24zATVhZ1Kz5PkgU9SPxUYcJft?=
- =?us-ascii?Q?LbCDo9Dcj/lieZEa7WpQ9nyVtX5z1qc14rxQcPLvYmpYoMIcLikMuXnj0nJz?=
- =?us-ascii?Q?O1kuTbqKqk6+w3EZ/jVnlPZ/hgW9qnBA4IbG6aEtv0CWFYYBAOaASbF4ks5f?=
- =?us-ascii?Q?U77gNjWGnxzN6F5xbg8/XSwjdcC9UlQh6JCzKCy+eM+JomReVLWObOTBanZ3?=
- =?us-ascii?Q?p6X419dMOWJDCydYI07+3vDX/OMte06IsJLV0FewhmOZtbZ9dslQoO7mPch9?=
- =?us-ascii?Q?/Bskmq4yLzsVXBm8ximn8NWX9ukw+MbN6a4KUNvhQ02RMwZJwi9BUmx6jMXN?=
- =?us-ascii?Q?OmojUX4QQ/lzb+1ZOwNReKOCBOTAGAYUTtXe4ovOkwQq4mafOKTqNuh84qzz?=
- =?us-ascii?Q?KrUdGAa1gPUMYDJh/53YyV2cupQYdni8hHy7CWow/joAOdwzhhe3gNkSepH9?=
- =?us-ascii?Q?4tpmnllbrZrbaERuelIhw36pnaYkvMZQLmukAVT/LiwC837YD4qXruYqUbx9?=
- =?us-ascii?Q?2blY20EPZTEJbFAsTMrd4bs0Br4pc5CLiFfTMaecqIkCGp1p+L0sRLlvSmJR?=
- =?us-ascii?Q?UVuVj/Wdo+NivoW96s9XIUYCckYMRWM26WgiBVdRJ8M8SbNoBfYrdGbW5NKH?=
- =?us-ascii?Q?y3X5QtFIirh42MRtFerA4wE0wVlkaGrexJU1yq//d+QhUfSrDuxbBZtFCP4l?=
- =?us-ascii?Q?cOMBgDUJOKlyyr7NpUB/ooTebpcU9tvu2lxaAGFmHW1+LVtGBIukvLlCryOo?=
- =?us-ascii?Q?irHq956+cPNMLOECeoA7KAZuV6/cNOmh9712HE5CmNAN2Ozo3RX6Box6jUqc?=
- =?us-ascii?Q?QyzHHGEMvupj8L3paNSJbaH5w+YXxzWf0uayFu6tAkNX3ONjiG3qM/+gmznE?=
- =?us-ascii?Q?GMYV5TduDVpZ7gpJcQDtNBCAEq18ZPAhcgXnUox4sE0eOXbYfAdSG/O+NtqN?=
- =?us-ascii?Q?qMAG/vhZ67WJ7U4xkKqLaoTIotD56CunhfNjaQEK4+16Y6JFjzJ53hqW1vO+?=
- =?us-ascii?Q?HYA8MPcRfpSJFtIsDXGZL88yx86P25kjMMlRIri4g7xliKjWjwlFUSvJLIsM?=
- =?us-ascii?Q?42OHJ1gL+Oq74GJEBPwni8kRFyO8b/m3ilSdwVOa5mLjmf19blvarh3//KM6?=
- =?us-ascii?Q?UEmNYY0AgCoa6TMV35dz3XrYd05UdgI0imuMK575WfFGB3v3GKcJfB+6m11k?=
- =?us-ascii?Q?WDJXrBUjEkicFJbWPjdRCf5upMJToL2DgOSeyXmKyB3S1IdQv49AJRQRP7Gp?=
- =?us-ascii?Q?6KVwZiahdmwGlODf/hOlopxrk2c0aKAv8YCOBHdXOXRMIZCZUtUc4R/4EvCo?=
- =?us-ascii?Q?uvJ/h3Exq0X3nBaQdh0at1cO0MI6zXRN+P0IhXYs?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20dcf9f7-9e59-4b2d-1e36-08dc64140288
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2024 04:07:08.5799
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jug7XBCeiS/IyhLp4Zcce9wjzd7hatBOXm2tf6nbmWatt2byQ+7cFT6IqSlhjnC+V3lRieWfP20hYpSsGi6FvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7515
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALanKGYC/4WNTQqDMBBGryKz7hSNqX+r3qO4MMlEB8VIIqFFv
+ HtTL9Dle/C974BAnilAlx3gKXJgtyYQtwz0NKwjIZvEIHIhc1lIjGzIoRr0vPA47bhog24LKOr
+ KNLJsrVUNpPXmyfL7Kr/6xBOH3fnPdRSLn/3fjAXm2KqytlrZh6yG50x+peXu/Aj9eZ5fcJ8xu
+ L8AAAA=
+To: Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
+ =?utf-8?q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>, 
+ Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+ Alexander Shiyan <shc_work@mail.ru>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-omap@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2739; i=krzk@kernel.org;
+ h=from:subject:message-id; bh=qhmThP7INdCC8VBW2wlRiFNJE/7ZEzBRMxYW6QhxoFA=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmKKfa2cwIQ6siUozSMkADWp+Mx0tCvS7bXKbhN
+ kGbbX8WNSaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZiin2gAKCRDBN2bmhouD
+ 14E6D/4vCOuf8a/6KvYfDc5C87F/x5Tj0g6zD9S7ZKUXm6YoQPhQot7+GqfYpM80vLaVm9IkH7R
+ nhERFkiurnMemsKWYDGZz8T9XskGMcNkH3tg/bnC6aP152F3HTC9WjrRZCjHFwCO+7gAUPt4p2i
+ rG2kA1WgBrSWx/YZ9anVXuy4El/xkp1VQPfT8JfAEiWteQM3hnyT36vrzlm5kTwbGhV747+rMEf
+ meeIhJ/nU/usE9ahohS1RDKIRlgeIKS79LJEppW8PnLZpeKCE+s7/0ANmN2vDujJ5W1nG53w5qx
+ fu8a32llePUQOwx3ryJ6ZPOL+d70Xn+qupqHkL2yV7YDBQcPvK7YtTIxwErpcV3hkeFCA4j1LHm
+ xUZf+sCmVr33GFFCPip+B2APJiVlJkPX4vevH7LFcHck/hoBYV2pdiWRnWS/SrE014rLC6v7GS1
+ uwShpE6kyTgs7UfIMi/CoD5tSHLrH6Gh14uNRYxaydE0cXMw5Wz5Sjono2PdP9WX2W7gaXUORfR
+ hu69i+67wp5rEQ9tYFOsf7PjpcQseQCCZ79Iklgi+NdKfb2zbAZooZ7QoUJiVLYOIu8CcpzxKCJ
+ 36tO34XyNIjlS8wILZfctqwOZHouL8Cj5ndg+NmB6b64GIVJTmeeX/W22nIelIBzqvOVDOhCAxW
+ gJl0a+pdXCHlMFw==
+X-Developer-Key: i=krzk@kernel.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Tue, Apr 23, 2024 at 10:32:05PM +0800, Ma Ke wrote:
-> To avoid the failure of dma_set_max_seg_size(), we should check the
-> return value of the dma_set_max_seg_size().
+Hi,
 
-Check return value of dma_set_max_seg_size() in case it return error.
+Changes in v2:
+- Collect tags, including wrongly places Thomas' tag (which requires me
+  to manually edit 15 other patches to drop it).
+- Combine here checkpatch patch:
+  https://lore.kernel.org/all/20240414185440.288812-1-krzk@kernel.org/
+- Link to v1: https://lore.kernel.org/r/20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org
 
-> 
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> ---
->  drivers/dma/mxs-dma.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
-> index cfb9962417ef..90cbb9b04b02 100644
-> --- a/drivers/dma/mxs-dma.c
-> +++ b/drivers/dma/mxs-dma.c
-> @@ -798,7 +798,9 @@ static int mxs_dma_probe(struct platform_device *pdev)
->  	mxs_dma->dma_device.dev = &pdev->dev;
->  
->  	/* mxs_dma gets 65535 bytes maximum sg size */
-> -	dma_set_max_seg_size(mxs_dma->dma_device.dev, MAX_XFER_BYTES);
-> +	ret = dma_set_max_seg_size(mxs_dma->dma_device.dev, MAX_XFER_BYTES);
-> +	if (ret)
-> +		return ret;
+Dependencies
+============
+All further patches depend on the first patch.  Therefore everything
+could go via backlight tree (please ack) or via cross-tree pulls. Or
+whatever maintainer choose, just coordinate this with backlight.
 
-How error happen? 
+Best regards,
+Krzysztof
 
-static inline int dma_set_max_seg_size(struct device *dev, unsigned int size)
-{
-	if (dev->dma_parms) {
-		dev->dma_parms->max_segment_size = size;
-		return 0;
-	}
-	return -EIO;
-}
+---
+Krzysztof Kozlowski (19):
+      backlight: Constify lcd_ops
+      backlight: ams369fg06: Constify lcd_ops
+      backlight: corgi_lcd: Constify lcd_ops
+      backlight: hx8357: Constify lcd_ops
+      backlight: ili922x: Constify lcd_ops
+      backlight: ili9320: Constify lcd_ops
+      backlight: jornada720_lcd: Constify lcd_ops
+      backlight: l4f00242t03: Constify lcd_ops
+      backlight: lms283gf05: Constify lcd_ops
+      backlight: lms501kf03: Constify lcd_ops
+      backlight: ltv350qv: Constify lcd_ops
+      backlight: otm3225a: Constify lcd_ops
+      backlight: platform_lcd: Constify lcd_ops
+      backlight: tdo24m: Constify lcd_ops
+      HID: picoLCD: Constify lcd_ops
+      fbdev: clps711x: Constify lcd_ops
+      fbdev: imx: Constify lcd_ops
+      fbdev: omap: lcd_ams_delta: Constify lcd_ops
+      const_structs.checkpatch: add lcd_ops
 
-Only possible dev->dma_parms is null. but mxs-dma is platform device, it
-point to platform's dma_parms field. Look like impossible it is null.
+ drivers/hid/hid-picolcd_lcd.c            | 2 +-
+ drivers/video/backlight/ams369fg06.c     | 2 +-
+ drivers/video/backlight/corgi_lcd.c      | 2 +-
+ drivers/video/backlight/hx8357.c         | 2 +-
+ drivers/video/backlight/ili922x.c        | 2 +-
+ drivers/video/backlight/ili9320.c        | 2 +-
+ drivers/video/backlight/jornada720_lcd.c | 2 +-
+ drivers/video/backlight/l4f00242t03.c    | 2 +-
+ drivers/video/backlight/lcd.c            | 4 ++--
+ drivers/video/backlight/lms283gf05.c     | 2 +-
+ drivers/video/backlight/lms501kf03.c     | 2 +-
+ drivers/video/backlight/ltv350qv.c       | 2 +-
+ drivers/video/backlight/otm3225a.c       | 2 +-
+ drivers/video/backlight/platform_lcd.c   | 2 +-
+ drivers/video/backlight/tdo24m.c         | 2 +-
+ drivers/video/fbdev/clps711x-fb.c        | 2 +-
+ drivers/video/fbdev/imxfb.c              | 2 +-
+ drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
+ include/linux/lcd.h                      | 6 +++---
+ scripts/const_structs.checkpatch         | 1 +
+ 20 files changed, 23 insertions(+), 22 deletions(-)
+---
+base-commit: a59668a9397e7245b26e9be85d23f242ff757ae8
+change-id: 20240414-video-backlight-lcd-ops-276d8439ffb8
 
-Frank 
+Best regards,
+-- 
+Krzysztof Kozlowski <krzk@kernel.org>
 
-
-
->  
->  	mxs_dma->dma_device.device_alloc_chan_resources = mxs_dma_alloc_chan_resources;
->  	mxs_dma->dma_device.device_free_chan_resources = mxs_dma_free_chan_resources;
-> -- 
-> 2.37.2
-> 
