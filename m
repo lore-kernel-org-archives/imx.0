@@ -1,195 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13261E898;
-	Wed, 24 Apr 2024 10:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA60158D99
+	for <imx@lists.linux.dev>; Wed, 24 Apr 2024 10:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713953237; cv=none; b=CM8LlWTJcB5g1/BXcp8YgIBtE+QyMgGLoFEQ6MuA9XM8QqMOOqawd+EbS0mzCU43vuMVFHYCUj8QrbrMMZ1TilqtSs8XkjOl9nU6jMCvWuEOCx4rVxJH4wpjO4hTQOk6dcbNfHDfJPd1u8tcF/tupMh1LlPL2UZEsP1AjywrqkU=
+	t=1713953301; cv=none; b=h/Rq9oEXph2mEHY5rbTqtEllDrrSmOsuGHLtB4JzcgJGXpGY8LHjQqijUFu4II2PFGwCNb5ij1OEkkTHO+E8ZC39t0i+rw4uRxIqK5T8aTTbLk3V0l/24cB0iPkg4yLlkZy7ML4FsAgBiiejDm2AOgM7rnoRhITebPkUNdckbzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713953237; c=relaxed/simple;
-	bh=8lcnCIurDEsAwt5dZGIgZqL4JM8FXi3W5HBrOI9pPPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JUUPEvKTzKycGO1XogTX67788Lbs29cGRp9fm9U9XkjT9frWwTajE44vrWUfHRDT46sDbeGdDj32XoQKyEusF1JioTtJvVvtDPTcNbdvHY7Pi32fsB8cAAnjRRDm+JUy6I5gnyu/PLGBqUeK3tktx3pZo8F9OLoc6lmM1g/9xnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99A4C32782;
-	Wed, 24 Apr 2024 10:07:13 +0000 (UTC)
-Message-ID: <054e6a95-796a-4bff-b629-96928eeb1685@xs4all.nl>
-Date: Wed, 24 Apr 2024 12:07:12 +0200
+	s=arc-20240116; t=1713953301; c=relaxed/simple;
+	bh=hWKDax4TuNvBE1FyIl8irPm+6EhpYQ3vGRHf4jX8q2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m5B6bGunhYyePBzkqYl1xIpkwuhoOflkPUx2cKP+y2PkiuEwWIcNKNPF+RZkLUCpv/UbM+qO+er3o9BSpsnX8h6ZhGZm5yJIdouuhA3X0vb9vinLRSeu1w/NA0YiEs3WpIgTj43MyHWOrZ0qoPjfiJF0ppJ3wNc+Lso9pQ1mOoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OIvB97vR; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OIvB97vR"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-41b09fb205dso2460815e9.0
+        for <imx@lists.linux.dev>; Wed, 24 Apr 2024 03:08:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713953298; x=1714558098; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hWKDax4TuNvBE1FyIl8irPm+6EhpYQ3vGRHf4jX8q2k=;
+        b=OIvB97vRhFSyIkl/KAvu1gSnn+f5Z23O2f640axUHP76ciTgvXuNwR/Ww6D5NVnsoi
+         12yZw6ZE6Pn7FIC+3mTBF9/OIl/EZ9TfM5a/W7O6FC177HlpiXHZc104SuvzUAVw6Nr8
+         F+Q4J+yLJ6KxaNAHfNxtnCwgq1bvNh1HQQlIE9klIBU6x7qAAIwBgjI1riVSPAnV1iNS
+         UT1a9y+kD/R1wGbyKWxzw2ces63NJUW8i7W9HF6QK2qfUbvv/OGJiqYAM+5taQP1a/59
+         /iMYoyFKPakwhuyhGHOioaOBd3uRjLEzCIaEf0wtWnji4BOCBytUckIbeALlSM/V7O/P
+         FeOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713953298; x=1714558098;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hWKDax4TuNvBE1FyIl8irPm+6EhpYQ3vGRHf4jX8q2k=;
+        b=BD8zyp/rlbrfCM0XauIH6FwQD2TAYr9HRCEw6pJrvip5nED74fCXIUSy2rKIjqv6aY
+         Pbg1cqe4AywVRrHWFEIxlzvTu5i1OJq4E3vU5TEsclPPX4uGCgmEuKw+Vn1oKIKIm8+c
+         kugxaGkB7dmyFt+40C7GtIgo/Fu49GPPmDpPxryLtcqGPFstrcuiYXvPoZAqgw3p4+uG
+         /XhBlwI29bBSKpvWbiJxORopvenXz2WcVtOkw1ovtFPiKfOay8Lzhr5PWSBKe2naShrm
+         shOEkk87E9VmY8/AAL9ZzMTOoPeeYWhnVKN52Khfb5ru/jMEajOBm0cPQ5DsyKpBPlJQ
+         pFmw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlVi8/2h2yCSHn8yixZynPsVJQmkubMMWvCz/0FM7oWQflk+WqqbxAO7cKDThp2B0EkPwRj1CqbFOzG9/SlBnEJeKH
+X-Gm-Message-State: AOJu0Yy6YP46qFf7qCmzVOCrFkKE/7RojRAFIyzn7nS3JQJ7ogwNrL+5
+	vYo0jOh4UkwtKD+e4/0Zh6cBzdbWxVIwQ5xYcu+j8bQAcTkfaDsYeIXqqFtAK8c=
+X-Google-Smtp-Source: AGHT+IF77S0eO7Dutrp6EQMSf6hVu3p2iJBEOx/XxaPtob8SJQvhDdTvZkjJjS4pcN8hkeXUmu2lXw==
+X-Received: by 2002:a05:600c:45c6:b0:41a:a521:9699 with SMTP id s6-20020a05600c45c600b0041aa5219699mr1556544wmo.4.1713953297960;
+        Wed, 24 Apr 2024 03:08:17 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id jg3-20020a05600ca00300b0041affdeeb99sm1634085wmb.39.2024.04.24.03.08.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Apr 2024 03:08:17 -0700 (PDT)
+Date: Wed, 24 Apr 2024 11:08:15 +0100
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexander Shiyan <shc_work@mail.ru>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Subject: Re: [PATCH v2 19/19] const_structs.checkpatch: add lcd_ops
+Message-ID: <20240424100815.GE1567803@aspen.lan>
+References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+ <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] media: amphion: Report the average qp of current
- encoded frame
-Content-Language: en-US, nl
-To: Ming Qian <ming.qian@nxp.com>, mchehab@kernel.org
-Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- ming.qian@oss.nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20240329092352.2648837-1-ming.qian@nxp.com>
- <20240329092352.2648837-2-ming.qian@nxp.com>
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-In-Reply-To: <20240329092352.2648837-2-ming.qian@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
 
-On 29/03/2024 10:23, Ming Qian wrote:
-> Report the average qp value of current encoded frame via the control
-> V4L2_CID_MPEG_VIDEO_AVERAGE_QP
-> 
-> Signed-off-by: Ming Qian <ming.qian@nxp.com>
-> ---
->  drivers/media/platform/amphion/venc.c        | 4 ++++
->  drivers/media/platform/amphion/vpu.h         | 2 ++
->  drivers/media/platform/amphion/vpu_defs.h    | 1 +
->  drivers/media/platform/amphion/vpu_helpers.c | 3 +++
->  drivers/media/platform/amphion/vpu_v4l2.c    | 9 +++++++++
->  drivers/media/platform/amphion/vpu_v4l2.h    | 1 +
->  drivers/media/platform/amphion/vpu_windsor.c | 2 ++
->  7 files changed, 22 insertions(+)
-> 
-> diff --git a/drivers/media/platform/amphion/venc.c b/drivers/media/platform/amphion/venc.c
-> index 4eb57d793a9c..12cebafeaf3b 100644
-> --- a/drivers/media/platform/amphion/venc.c
-> +++ b/drivers/media/platform/amphion/venc.c
-> @@ -680,6 +680,9 @@ static int venc_ctrl_init(struct vpu_inst *inst)
->  			       ~(1 << V4L2_MPEG_VIDEO_HEADER_MODE_JOINED_WITH_1ST_FRAME),
->  			       V4L2_MPEG_VIDEO_HEADER_MODE_JOINED_WITH_1ST_FRAME);
->  
-> +	v4l2_ctrl_new_std(&inst->ctrl_handler, &venc_ctrl_ops,
-> +			  V4L2_CID_MPEG_VIDEO_AVERAGE_QP, 0, 51, 1, 0);
-> +
->  	if (inst->ctrl_handler.error) {
->  		ret = inst->ctrl_handler.error;
->  		v4l2_ctrl_handler_free(&inst->ctrl_handler);
-> @@ -819,6 +822,7 @@ static int venc_get_one_encoded_frame(struct vpu_inst *inst,
->  	vbuf->field = inst->cap_format.field;
->  	vbuf->flags |= frame->info.pic_type;
->  	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
-> +	vpu_set_buffer_average_qp(vbuf, frame->info.average_qp);
->  	dev_dbg(inst->dev, "[%d][OUTPUT TS]%32lld\n", inst->id, vbuf->vb2_buf.timestamp);
->  	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
->  	venc->ready_count++;
-> diff --git a/drivers/media/platform/amphion/vpu.h b/drivers/media/platform/amphion/vpu.h
-> index 0246cf0ac3a8..d21ca6bf2459 100644
-> --- a/drivers/media/platform/amphion/vpu.h
-> +++ b/drivers/media/platform/amphion/vpu.h
-> @@ -270,6 +270,7 @@ struct vpu_inst {
->  	u8 xfer_func;
->  	u32 sequence;
->  	u32 extra_size;
-> +	u32 current_average_qp;
->  
->  	u32 flows[16];
->  	u32 flow_idx;
-> @@ -306,6 +307,7 @@ struct vpu_vb2_buffer {
->  	dma_addr_t chroma_v;
->  	unsigned int state;
->  	u32 tag;
-> +	u32 average_qp;
->  };
->  
->  void vpu_writel(struct vpu_dev *vpu, u32 reg, u32 val);
-> diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
-> index 7320852668d6..428d988cf2f7 100644
-> --- a/drivers/media/platform/amphion/vpu_defs.h
-> +++ b/drivers/media/platform/amphion/vpu_defs.h
-> @@ -114,6 +114,7 @@ struct vpu_enc_pic_info {
->  	u32 wptr;
->  	u32 crc;
->  	s64 timestamp;
-> +	u32 average_qp;
->  };
->  
->  struct vpu_dec_codec_info {
-> diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
-> index d12310af9ebc..59139302cb1d 100644
-> --- a/drivers/media/platform/amphion/vpu_helpers.c
-> +++ b/drivers/media/platform/amphion/vpu_helpers.c
-> @@ -378,6 +378,9 @@ int vpu_helper_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
->  	case V4L2_CID_MIN_BUFFERS_FOR_OUTPUT:
->  		ctrl->val = inst->min_buffer_out;
->  		break;
-> +	case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:
-> +		ctrl->val = inst->current_average_qp;
-> +		break;
+On Wed, Apr 24, 2024 at 08:33:45AM +0200, Krzysztof Kozlowski wrote:
+> 'struct lcd_ops' is not modified by core code.
+>
+> Suggested-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-This is not a volatile control. Instead, the control should be updated
-with the new average_qp in the vpu_vb2_buf_finish function.
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-Regards,
 
-	Hans
-
->  	default:
->  		return -EINVAL;
->  	}
-> diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
-> index c88738e8fff7..893f494ffb0b 100644
-> --- a/drivers/media/platform/amphion/vpu_v4l2.c
-> +++ b/drivers/media/platform/amphion/vpu_v4l2.c
-> @@ -63,6 +63,13 @@ unsigned int vpu_get_buffer_state(struct vb2_v4l2_buffer *vbuf)
->  	return vpu_buf->state;
->  }
->  
-> +void vpu_set_buffer_average_qp(struct vb2_v4l2_buffer *vbuf, u32 qp)
-> +{
-> +	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
-> +
-> +	vpu_buf->average_qp = qp;
-> +}
-> +
->  void vpu_v4l2_set_error(struct vpu_inst *inst)
->  {
->  	vpu_inst_lock(inst);
-> @@ -536,9 +543,11 @@ static int vpu_vb2_buf_prepare(struct vb2_buffer *vb)
->  static void vpu_vb2_buf_finish(struct vb2_buffer *vb)
->  {
->  	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
-> +	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
->  	struct vpu_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
->  	struct vb2_queue *q = vb->vb2_queue;
->  
-> +	inst->current_average_qp = vpu_buf->average_qp;
->  	if (vbuf->flags & V4L2_BUF_FLAG_LAST)
->  		vpu_notify_eos(inst);
->  
-> diff --git a/drivers/media/platform/amphion/vpu_v4l2.h b/drivers/media/platform/amphion/vpu_v4l2.h
-> index 60f43056a7a2..56f2939fa84d 100644
-> --- a/drivers/media/platform/amphion/vpu_v4l2.h
-> +++ b/drivers/media/platform/amphion/vpu_v4l2.h
-> @@ -12,6 +12,7 @@ void vpu_inst_lock(struct vpu_inst *inst);
->  void vpu_inst_unlock(struct vpu_inst *inst);
->  void vpu_set_buffer_state(struct vb2_v4l2_buffer *vbuf, unsigned int state);
->  unsigned int vpu_get_buffer_state(struct vb2_v4l2_buffer *vbuf);
-> +void vpu_set_buffer_average_qp(struct vb2_v4l2_buffer *vbuf, u32 qp);
->  
->  int vpu_v4l2_open(struct file *file, struct vpu_inst *inst);
->  int vpu_v4l2_close(struct file *file);
-> diff --git a/drivers/media/platform/amphion/vpu_windsor.c b/drivers/media/platform/amphion/vpu_windsor.c
-> index 5f1101d7cf9e..e7d37aa4b826 100644
-> --- a/drivers/media/platform/amphion/vpu_windsor.c
-> +++ b/drivers/media/platform/amphion/vpu_windsor.c
-> @@ -499,6 +499,7 @@ struct windsor_pic_info {
->  	u32 proc_dacc_rng_wr_cnt;
->  	s32 tv_s;
->  	u32 tv_ns;
-> +	u32 average_qp;
->  };
->  
->  u32 vpu_windsor_get_data_size(void)
-> @@ -734,6 +735,7 @@ static void vpu_windsor_unpack_pic_info(struct vpu_rpc_event *pkt, void *data)
->  	info->wptr = get_ptr(windsor->str_buff_wptr);
->  	info->crc = windsor->frame_crc;
->  	info->timestamp = timespec64_to_ns(&ts);
-> +	info->average_qp = windsor->average_qp;
->  }
->  
->  static void vpu_windsor_unpack_mem_req(struct vpu_rpc_event *pkt, void *data)
-
+Daniel.
