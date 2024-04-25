@@ -1,169 +1,197 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC03621362
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 10:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC47A84E10
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 11:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714041470; cv=none; b=pnlL8BA7DORKFZ69gHhotnaMVc6Kr8rYwXGPhgAIyildEXxYn69eVRAu4pEQ3PIacCrW9PdxdjOQBf5Fda9R8ky7RNQYdfWA6jGPlcfjg/6QAppklOn9ZX+Y20XrFy+rOMMcldhfU7oiadeluysmEpBMxWC5pIsmN/jkcR+A8Z4=
+	t=1714043597; cv=none; b=JLDFsIqTOZ5p/WTBUD2P2B1H6oOz+wgBdryheZ3DvaY8DUGUszjoT8TPOygZTIJ3jO0GG/khevdWsnKIUht1Ot7oN1pTFXXiM+FCUlNBq+RSbLQH9yAS3bFU80+hl97FcDLBdWeS1/3WOswZA0vHQ5EXKdqGoWJ2kbA9WCTQq98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714041470; c=relaxed/simple;
-	bh=CFoH42OIvTROq01T7YqM+I62dzAY/y5oN09zfkoGmHY=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=nVKY7Z+UzZhSgZEn2An/eIDQKjXf7oC/Mzu+oi9SsGqPKgvfGP9A9H3OUCrUnrhiuoyb7H7l545iW7TEVTmobWMyWLjSDFuS0nM0NIAaKV1wWdvjRuHoER5FlINV5s99HRSsjd4+jiJ3A+KslHWw1rMe9WH55qbHJ8/3bmV+maM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0B0311A0276;
-	Thu, 25 Apr 2024 12:37:47 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7DE961A0258;
-	Thu, 25 Apr 2024 12:37:46 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 8F8D3181D0FB;
-	Thu, 25 Apr 2024 18:37:44 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	shengjiu.wang@gmail.com
-Cc: linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: imx: imx8mp: Add delay after power up
-Date: Thu, 25 Apr 2024 18:19:24 +0800
-Message-Id: <1714040364-17127-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1714043597; c=relaxed/simple;
+	bh=9KoaB6+HPDJeQljM4fsDBGLmE1iGfG/0qRUTsarWPHA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pioWWx70KPsTrUj6pp+z/CVjjeCWx3efDUeAkty5ZVZo46+zHhZTlms0JiJveSJ+/ZWFNGsjYo39bzEz1kNKW0a94HsQRUEyTBwr0cdrpDlxhVToy1sThXRj65seeYvGm0WQKGOjRGZGlP+ox0CX3ePRedyih/ypEKNWLzgH/Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hjFYv9F7; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hjFYv9F7"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6eb7d1a5d39so447140a34.2
+        for <imx@lists.linux.dev>; Thu, 25 Apr 2024 04:13:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714043594; x=1714648394; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QsbB44EeMQGDiOFPnRm6gwdDqQTA+5PLqDVHUcWTTkw=;
+        b=hjFYv9F7UKNW4XjLdcGhhRgQBPqbcJDIIQEKktUbQRCRGYPZ10MfoT2DaVDoRgs/zw
+         ZSoNyczxRP4SHCi0InCqKVmTv0osyx5kez0JBWqcCt0MKlt2Fl6RF3T/V0J7eTDRqdi/
+         3fBsXIZqQoze2Zc4u1b4iCNARlmTzVnmZYOdexpTmEJAMn3RiCAGN+b4L09lE82UIrCj
+         6gh46hMwY7POBvW1mYaMH47n+/Yim5mCLh4Rzgiz0vynB3FPfTv1YU+tbgUVotuyln/2
+         fqdrOBw3Ml3VYXP88hCUoZTFNCTEalRzwXZc1H2+Ke/mJAheoeu23V10Ey/dtMxJXajY
+         VE4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714043594; x=1714648394;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QsbB44EeMQGDiOFPnRm6gwdDqQTA+5PLqDVHUcWTTkw=;
+        b=CmuA6//2i4r7S9fGII3Smq3ruHarRQ/k/UYE9RkbvEHfR6atLdJd1tC0G5kT9cQDUc
+         X73CJTEkKalqbo5yPfnrgNX/GG9Cs3mNGjg8FVTwNkBXwEVYoW4//axkpGej0jdz8qDa
+         bNOEm5YNTEaGcpufJDDV/W2dWOHhY+ZYvdoyK/I3RoG3B60p3QvW4bvQxzDmGXdI3K0E
+         TN3mV6Zi8z118iokDzwj++I9+XRDr9sLoc5enLfp8A64yOh7EvWBjYrg8R3KnVkT2H94
+         po77XRsyEu+wlSKz+cNL6jKkXbMUL99PRRbvm9cFIryAg7GgWg4CRnKlzWmniU3Q2Gip
+         qc5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWrmC7JtFULOupEJ8NU/a92r1XRlmXVrLEWtZJENIwFVs74ng0X115lVISne9af8v0tYG9hGH7VXh/7EZlvN9cUmN47
+X-Gm-Message-State: AOJu0YzLJQb//6djRYp+c74GGFP5KKBj/KaTNIiY1US8aZy9xD7rmpPZ
+	5NS8nrVuYDOoxqRqHbtTnuOZzV6byk5Akczt5JpwqMng0ySOIwX2LI8ELee4qg==
+X-Google-Smtp-Source: AGHT+IFHNH/NdwDnqsViBBSK6fogRbB2GKz5I1kvzLPqZs/OJ7Et5KDr4OWgWersvg/dQNYVNr96aA==
+X-Received: by 2002:a05:6870:a119:b0:22e:d324:b888 with SMTP id m25-20020a056870a11900b0022ed324b888mr5826865oae.56.1714043593756;
+        Thu, 25 Apr 2024 04:13:13 -0700 (PDT)
+Received: from thinkpad ([120.60.75.221])
+        by smtp.gmail.com with ESMTPSA id fu16-20020a056a00611000b006ecca2f2a32sm12930125pfb.168.2024.04.25.04.13.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Apr 2024 04:13:13 -0700 (PDT)
+Date: Thu, 25 Apr 2024 16:42:59 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org, Jason Liu <jason.hui.liu@nxp.com>
+Subject: Re: [PATCH v3 00/11] PCI: imx6: Fix\rename\clean up and add lut
+ information for imx95
+Message-ID: <20240425111259.GB3449@thinkpad>
+References: <20240402-pci2_upstream-v3-0-803414bdb430@nxp.com>
+ <Zh6GHcARSmlV/QdS@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zh6GHcARSmlV/QdS@lizhi-Precision-Tower-5810>
 
-According to comments in drivers/pmdomain/imx/gpcv2.c:
+On Tue, Apr 16, 2024 at 10:07:25AM -0400, Frank Li wrote:
+> On Tue, Apr 02, 2024 at 10:33:36AM -0400, Frank Li wrote:
+> > Fixed 8mp EP mode problem.
+> > 
+> > imx6 actaully for all imx chips (imx6*, imx7*, imx8*, imx9*). To avoid     
+> > confuse, rename all imx6_* to imx_*, IMX6_* to IMX_*. pci-imx6.c to        
+> > pci-imx.c to avoid confuse.                                                
+> 
+> 
+> Mani and lorenzo:
+> 
+> Do you have chance to look these patches?
+> 
 
-	/* request the ADB400 to power up */
-	if (domain->bits.hskreq) {
-		regmap_update_bits(domain->regmap, domain->regs->hsk,
-				   domain->bits.hskreq, domain->bits.hskreq);
+Sorry for the delay. Since this is a non-dwc driver, it got into my low priority
+queue. Will take a look this week.
 
-		/*
-		 * ret = regmap_read_poll_timeout(domain->regmap, domain->regs->hsk, reg_val,
-		 *				  (reg_val & domain->bits.hskack), 0,
-		 *				  USEC_PER_MSEC);
-		 * Technically we need the commented code to wait handshake. But that needs
-		 * the BLK-CTL module BUS clk-en bit being set.
-		 *
-		 * There is a separate BLK-CTL module and we will have such a driver for it,
-		 * that driver will set the BUS clk-en bit and handshake will be triggered
-		 * automatically there. Just add a delay and suppose the handshake finish
-		 * after that.
-		 */
-	}
+- Mani
 
-The BLK-CTL module needs to add delay to wait for a handshake request finished
-before accessing registers, which is just after the enabling of power domain.
+> Frank
+> 
+> > 
+> > Using callback to reduce switch case for core reset and refclk.            
+> > 
+> > Add imx95 iommux and its stream id information.                            
+> > 
+> > Base on linux-pci/controller/imx
+> > 
+> > To: Richard Zhu <hongxing.zhu@nxp.com>
+> > To: Lucas Stach <l.stach@pengutronix.de>
+> > To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> > To: Krzysztof Wilczyński <kw@linux.com>
+> > To: Rob Herring <robh@kernel.org>
+> > To: Bjorn Helgaas <bhelgaas@google.com>
+> > To: Shawn Guo <shawnguo@kernel.org>
+> > To: Sascha Hauer <s.hauer@pengutronix.de>
+> > To: Pengutronix Kernel Team <kernel@pengutronix.de>
+> > To: Fabio Estevam <festevam@gmail.com>
+> > To: NXP Linux Team <linux-imx@nxp.com>
+> > To: Philipp Zabel <p.zabel@pengutronix.de>
+> > To: Liam Girdwood <lgirdwood@gmail.com>
+> > To: Mark Brown <broonie@kernel.org>
+> > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> > To: Conor Dooley <conor+dt@kernel.org>
+> > Cc: linux-pci@vger.kernel.org
+> > Cc: imx@lists.linux.dev
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: bpf@vger.kernel.org
+> > Cc: devicetree@vger.kernel.org
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > 
+> > Changes in v3:
+> > - Add an EP fixed patch
+> >   PCI: imx6: Fix PCIe link down when i.MX8MM and i.MX8MP PCIe is EP mode
+> >   PCI: imx6: Fix i.MX8MP PCIe EP can not trigger MSI
+> > - Add 8qxp rc support
+> > dt-bing yaml pass binding check
+> > make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx6q-pcie.yaml
+> >   LINT    Documentation/devicetree/bindings
+> >   DTEX    Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.example.dts
+> >   CHKDT   Documentation/devicetree/bindings/processed-schema.json
+> >   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+> >   DTC_CHK Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.example.dtb
+> > 
+> > - Link to v2: https://lore.kernel.org/r/20240304-pci2_upstream-v2-0-ad07c5eb6d67@nxp.com
+> > 
+> > Changes in v2:
+> > - remove file to 'pcie-imx.c'
+> > - keep CONFIG unchange.
+> > - Link to v1: https://lore.kernel.org/r/20240227-pci2_upstream-v1-0-b952f8333606@nxp.com
+> > 
+> > ---
+> > Frank Li (7):
+> >       PCI: imx6: Rename imx6_* with imx_*
+> >       PCI: imx6: Rename pci-imx6.c to pcie-imx.c
+> >       MAINTAINERS: pci: imx: update imx6* to imx* since rename driver file
+> >       PCI: imx: Simplify switch-case logic by involve set_ref_clk callback
+> >       PCI: imx: Simplify switch-case logic by involve core_reset callback
+> >       PCI: imx: Config look up table(LUT) to support MSI ITS and IOMMU for i.MX95
+> >       PCI: imx: Consolidate redundant if-checks
+> > 
+> > Richard Zhu (4):
+> >       PCI: imx6: Fix PCIe link down when i.MX8MM and i.MX8MP PCIe is EP mode
+> >       PCI: imx6: Fix i.MX8MP PCIe EP can not trigger MSI
+> >       dt-bindings: imx6q-pcie: Add i.MX8Q pcie compatible string
+> >       PCI: imx6: Add i.MX8Q PCIe support
+> > 
+> >  .../bindings/pci/fsl,imx6q-pcie-common.yaml        |    5 +
+> >  .../devicetree/bindings/pci/fsl,imx6q-pcie.yaml    |   18 +
+> >  MAINTAINERS                                        |    4 +-
+> >  drivers/pci/controller/dwc/Makefile                |    2 +-
+> >  .../pci/controller/dwc/{pci-imx6.c => pcie-imx.c}  | 1173 ++++++++++++--------
+> >  5 files changed, 727 insertions(+), 475 deletions(-)
+> > ---
+> > base-commit: 2e45e73eebd43365cb585c49b3a671dcfae6b5b5
+> > change-id: 20240227-pci2_upstream-0cdd19a15163
+> > 
+> > Best regards,
+> > ---
+> > Frank Li <Frank.Li@nxp.com>
+> > 
 
-Otherwise there is error:
-
-[    2.180834] SError Interrupt on CPU1, code 0x00000000bf000002 -- SError
-[    2.180849] CPU: 1 PID: 48 Comm: kworker/u16:2 Not tainted 6.9.0-rc5-next-20240424-00003-g21cec88845c6 #171
-[    2.180856] Hardware name: NXP i.MX8MPlus EVK board (DT)
-[    2.180861] Workqueue: events_unbound deferred_probe_work_func
-[    2.180878] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    2.180885] pc : clk_imx8mp_audiomix_runtime_resume+0x34/0x44
-[    2.180900] lr : pm_generic_runtime_resume+0x2c/0x44
-[    2.180910] sp : ffff800083423a20
-[    2.180913] x29: ffff800083423a20 x28: 0000000000000000 x27: 0000000000000000
-[    2.180922] x26: ffff0000c0e4e410 x25: 0000000000000000 x24: 0000000000000000
-[    2.180935] x23: 0000000000000000 x22: ffff0000c02afd20 x21: 0000000000000000
-[    2.180945] x20: ffff0000c162a000 x19: ffff0000c0e52810 x18: ffffffffffffffff
-[    2.180959] x17: 0000000000000000 x16: 0000000000000100 x15: ffff8000834239f0
-[    2.180970] x14: ffff0000c03d0a1c x13: ffff0000c0a03440 x12: 00000000000003c7
-[    2.180982] x11: 0000000000000000 x10: ffff8000825010ba x9 : 0000000000000008
-[    2.180993] x8 : 0000000000000008 x7 : 0000000000000000 x6 : 0000000000000000
-[    2.181005] x5 : ffff8000838b0000 x4 : ffff0000c0e66088 x3 : ffff8000813852c0
-[    2.181018] x2 : 0000000000000000 x1 : 0000000000000004 x0 : ffff8000838b0300
-[    2.181035] Kernel panic - not syncing: Asynchronous SError Interrupt
-[    2.181038] CPU: 1 PID: 48 Comm: kworker/u16:2 Not tainted 6.9.0-rc5-next-20240424-00003-g21cec88845c6 #171
-[    2.181047] Hardware name: NXP i.MX8MPlus EVK board (DT)
-[    2.181050] Workqueue: events_unbound deferred_probe_work_func
-[    2.181064] Call trace:
-[    2.181066]  dump_backtrace+0x90/0xe8
-[    2.181080]  show_stack+0x18/0x24
-[    2.181091]  dump_stack_lvl+0x34/0x8c
-[    2.181104]  dump_stack+0x18/0x24
-[    2.181117]  panic+0x39c/0x3d0
-[    2.181129]  nmi_panic+0x48/0x94
-[    2.181142]  arm64_serror_panic+0x6c/0x78
-[    2.181149]  do_serror+0x3c/0x70
-[    2.181157]  el1h_64_error_handler+0x30/0x48
-[    2.181164]  el1h_64_error+0x64/0x68
-[    2.181171]  clk_imx8mp_audiomix_runtime_resume+0x34/0x44
-[    2.181183]  __genpd_runtime_resume+0x30/0x80
-[    2.181195]  genpd_runtime_resume+0x110/0x244
-[    2.181205]  __rpm_callback+0x48/0x1d8
-[    2.181213]  rpm_callback+0x68/0x74
-[    2.181224]  rpm_resume+0x468/0x6c0
-[    2.181234]  __pm_runtime_resume+0x50/0x94
-[    2.181243]  pm_runtime_get_suppliers+0x60/0x8c
-[    2.181258]  __driver_probe_device+0x48/0x12c
-[    2.181268]  driver_probe_device+0xd8/0x15c
-[    2.181278]  __device_attach_driver+0xb8/0x134
-[    2.181290]  bus_for_each_drv+0x84/0xe0
-[    2.181302]  __device_attach+0x9c/0x188
-[    2.181312]  device_initial_probe+0x14/0x20
-[    2.181323]  bus_probe_device+0xac/0xb0
-[    2.181334]  deferred_probe_work_func+0x88/0xc0
-[    2.181344]  process_one_work+0x150/0x290
-[    2.181357]  worker_thread+0x2f8/0x408
-[    2.181370]  kthread+0x110/0x114
-[    2.181381]  ret_from_fork+0x10/0x20
-[    2.181391] SMP: stopping secondary CPUs
-[    2.181400] Kernel Offset: disabled
-[    2.181403] CPU features: 0x0,00000040,00100000,4200421b
-[    2.181407] Memory Limit: none
-[    2.463040] ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
-
-Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for power saving")
-Reported-by: Francesco Dolcini <francesco@dolcini.it>
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- drivers/clk/imx/clk-imx8mp-audiomix.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index e4231e9c8f05..cb44c460548e 100644
---- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-+++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/clk-provider.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/io.h>
- #include <linux/mod_devicetable.h>
-@@ -362,6 +363,12 @@ static int clk_imx8mp_audiomix_runtime_suspend(struct device *dev)
- 
- static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
- {
-+	/*
-+	 * According to the drivers/pmdomain/imx/gpcv2.c
-+	 * need to wait for handshake request to propagate
-+	 */
-+	udelay(5);
-+
- 	clk_imx8mp_audiomix_save_restore(dev, false);
- 
- 	return 0;
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
