@@ -1,71 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DBB127E1F;
-	Thu, 25 Apr 2024 09:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8B42E647
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 09:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714036658; cv=none; b=FsXJXBRpH6s7CAPNbdKzDEcEDmefpTRZxVzmyOPFkPn1YKALbbuNbF3abhWvhE2AbX5MvC7AiAQRVpvkBjsB7vKXJRmy7h4SgxTA1TMfQu5rPU+fbIYLKAlO0IttM2yxg616QbIgU2Hm6AmQl8UDvTQVJkVtwOH4gXPCjlp3bDM=
+	t=1714038972; cv=none; b=SaP89tmexYiRWEIsgmyDoo8upCdXJAJNg1/FIqAePuNP4o2KmoS9fcte9EZF5vyrtIBK5RkmM6BkuRkIGR9HL5VfMi/UA7nfizGdY0/YzzPkT+fpGY7Rj4S7KvNBc/axhhqAnSUDt29zvnsvCk8plFeVJSuRC1MHG/fvbOgkQNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714036658; c=relaxed/simple;
-	bh=+X18uvKMw4jO18R9YLT81J6ZTIUpPc/7+UgzXyIMmcg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Fuj9v8aFeVqOC4kobVhU3o618dXrtCc5BMbQfNjSV5tlYyT6uQI/M07RtzrChdk68zmbFOEH+KsUN1u2B2uPQnjgZ8GbV4bUuyPz1/pJklKrmE6hcc3Lww4aM0LDozd73Tnd0+d/XtYMwFF6K1y4r4wGZkrbkQelqDC3t6cN5Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OheZWlmx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714038972; c=relaxed/simple;
+	bh=keREG8VOOTy4avuSTdnT/gcg/ZfYhNKRJ0pfeqnt/5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=t8/dHdoSLN4o741ogO5s6t1VOnojlIt87epzR7o095L0i7w0YnW4U9h0hokpRjhdN053jo3tOZiwxitIqHeKsIVQh2mS2sZB6BMfmBJlTrI5AWplvSpv9nmuYKGO0A9RAEpeRR1qTLmNmPexjezpACyv9uwiQ2MTNXYxpRsZrpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ONuytCpX; arc=none smtp.client-ip=123.58.177.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OheZWlmx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C24BC113CC;
-	Thu, 25 Apr 2024 09:17:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714036658;
-	bh=+X18uvKMw4jO18R9YLT81J6ZTIUpPc/7+UgzXyIMmcg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=OheZWlmxzucZr5d/6ift/2iIgXbcb3InuJUvg9rvvYVJNDW90PjZv6n01uBSIqFTi
-	 6GzOKlBOoVNDE6BQGMtXvy537VDPYRh56sVYogU5Y2g4SZTs7hFpmp8/bfZFXXVHSF
-	 O/CSF2slTmi3niPqKC1R43JBSysJ69O2p8nhVQLD52/TfZqtF04ZmCOdQcPVDFdbDS
-	 0m9qa5dajvYJLCaCA2eELSiMM+Yoz/QXYsAF26piQZ7bOf3bMssaDgWOQ5th2E6spg
-	 MpRoVceUOKWLZUBk2dFtV91X+2lq+bDQkiAr43wcggTK2T4zlZywLpzBtZfRoXkWGO
-	 BfYwuRhqE3H1w==
-From: Vinod Koul <vkoul@kernel.org>
-To: robh@kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: 20240409185416.2224609-1-Frank.Li@nxp.com, conor+dt@kernel.org, 
- devicetree@vger.kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev, 
- krzk@kernel.org, krzysztof.kozlowski+dt@linaro.org, 
- linux-kernel@vger.kernel.org, pankaj.gupta@nxp.com, peng.fan@nxp.com, 
- shengjiu.wang@nxp.com, shenwei.wang@nxp.com, xu.yang_2@nxp.com
-In-Reply-To: <20240417152457.361340-1-Frank.Li@nxp.com>
-References: <20240417152457.361340-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH v5 1/2] dt-bindings: dma: fsl-edma: remove 'clocks'
- from required
-Message-Id: <171403665255.79852.5372763957317899753.b4-ty@kernel.org>
-Date: Thu, 25 Apr 2024 14:47:32 +0530
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ONuytCpX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=xQul+LRJa5DBqWGtv092kro7gL1oG1Dc98ltSQ5nIAU=;
+	b=ONuytCpXMYEEPHdRlj4YG+hnuQ41IsIM5HpG0VhuF93KWW9Zp1f3xrmFZBX5o+
+	HA3Na+D0DECoj4dYMjZl5Zl9xIoIUC0ltqeBNwzEm1SdQW8rTN2xniu3GXf7kg+P
+	yBGW48mhblJncz/XJ7WVCshjCqF9Mohmr8jGOStS34rI0=
+Received: from dragon (unknown [223.68.79.243])
+	by smtp2 (Coremail) with SMTP id C1UQrADXX1GnKCpmhnh2BA--.6268S3;
+	Thu, 25 Apr 2024 17:55:52 +0800 (CST)
+Date: Thu, 25 Apr 2024 17:55:50 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org, arm@kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX fixes for 6.9, round 2
+Message-ID: <ZioopqscxwUOwQkf@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-CM-TRANSID:C1UQrADXX1GnKCpmhnh2BA--.6268S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gw4kAry5Ar4Uuw4DWF1Dtrb_yoWkurc_ZF
+	W8GF1UWw48Jr4UA3WUtw1vgr9rtF1UJryrAryUXr47X39rAr1UJFy0qrWrXrnrXw4rXrZr
+	JrWUXw1jq34rCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0StC7UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGArLZV6Nnu1lSwAAsy
 
+The following changes since commit 00b436182138310bb8d362b912b12a9df8f72ca3:
 
-On Wed, 17 Apr 2024 11:24:56 -0400, Frank Li wrote:
-> fsl,imx8qm-adma and fsl,imx8qm-edma don't require 'clocks'. Remove it from
-> required and add 'if' block for other compatible string to keep the same
-> restrictions.
-> 
-> 
+  arm64: dts: imx8qm-ss-dma: fix can lpcg indices (2024-04-03 20:44:54 +0800)
 
-Applied, thanks!
+are available in the Git repository at:
 
-[1/2] dt-bindings: dma: fsl-edma: remove 'clocks' from required
-      commit: 9c21bbfa30ec14f8dcf24e7f26fe72368960975c
-[2/2] dt-bindings: dma: fsl-edma: allow 'power-domains' property
-      commit: 167ec660c247ea4c71a059290b50c100659d6e86
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.9-2
 
-Best regards,
--- 
-~Vinod
+for you to fetch changes up to d7f3040a565214a30e2f07dc9b91566d316e2d36:
 
+  ARM: dts: imx6ull-tarragon: fix USB over-current polarity (2024-04-25 14:21:00 +0800)
+
+----------------------------------------------------------------
+i.MX fixes for 6.9, round 2:
+
+- Fix i.MX8MP the second CSI2 assigned-clock property which got wrong by
+  commit f78835d1e616 ("arm64: dts: imx8mp: reparent MEDIA_MIPI_PHY1_REF
+  to CLK_24M")
+- Correct USB over-current polarity for imx6ull-tarragon board
+
+----------------------------------------------------------------
+Marek Vasut (1):
+      arm64: dts: imx8mp: Fix assigned-clocks for second CSI2
+
+Michael Heimpold (1):
+      ARM: dts: imx6ull-tarragon: fix USB over-current polarity
+
+ arch/arm/boot/dts/nxp/imx/imx6ull-tarragon-common.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi              | 2 +-
 
