@@ -1,70 +1,57 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124F084DE9
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 11:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B351E497;
+	Thu, 25 Apr 2024 11:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714043654; cv=none; b=t0SeoL0nS8JvWtoJ4Zj9y73bT9iGvZyL6dOikPdJyEnn23kWP1yWKVESKeTeVvkdjIeBrtPlU0s6x0IZh3rz3bKD3QmejtMHVlGUDbeDUZjFWxnjo962bDi/0O8/Ymo/0aV5dKDi0ohhn84EwQDItoUEa1uatYtvXFdP8yN5OSs=
+	t=1714045416; cv=none; b=IDeUuyyIShoTIbvm/N7BzN/GcKmjimNsnvoYwInDREjqHTI3S4ROPqAxubQBdhq8bEY6mARm4XwQ7jVUXAHEzguSappqoCy8Hcmrc1m5sWXnGsei+dgC+J0ClqiEtKjCAce8tjZfDj63o36vs36VNCq9LYb1AezrDCSh+LVKHlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714043654; c=relaxed/simple;
-	bh=niR16qEKwPqjmNIq6bjqJcMcnb66MBAe9uEjIVqzIP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nn/opzeqsZbWVV7Lpba1b/97IjOXupbqBQiglUvBem0G0d6DyuECRbyMRhWAnkTaMe0WZunvY+RtQ8DrpWr+6+eWsu071tLK4BTxrbKaWJydh9W5hHRuKfXPRVcTmfUO8lddT+LocZMJbp8GmwLZ9GlrfnMF/Quym1ibQat7AIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bLVDuBDy; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1714045416; c=relaxed/simple;
+	bh=6hbuEo73qBv0jvZBozo1DEDhJftdYqQqfhBq3uTN4Wc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JO5sbwJ/29PB3sCDuC+vYp+U6Kn38auZjknrgsAtpK9wCIvIhsSHLtpwUtCM7HB6Qduvhp/Xy6dq02o/ab2Lmhk7CcdM2HkPaozp163+FEoZMis60fOndCTAJI053U+rqpqUdqLmOj97rEXVfzc9SihHOEfsQFQYraFfVbqfmOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZ53i8ZW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bLVDuBDy"
-Received: from pendragon.ideasonboard.com (117.145-247-81.adsl-dyn.isp.belgacom.be [81.247.145.117])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2392AB0B;
-	Thu, 25 Apr 2024 13:13:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1714043598;
-	bh=niR16qEKwPqjmNIq6bjqJcMcnb66MBAe9uEjIVqzIP0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bLVDuBDyaEur9zVnBH3Iy8ObP2vK3yEgss7QXwjuRfCXNnYX9w5A/D0YpuFdCRk3e
-	 hZMGgLHdMXgnmHhidf4gl9TEswJTasAGCykg1aeVvsxs2iwhTus89tepR/CJJc2qUA
-	 SVLwr1e/nsCzMgpPx+XHLH20ALf1QsuBxzjx87IQ=
-Date: Thu, 25 Apr 2024 14:14:03 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
-	kernel test robot <lkp@intel.com>, Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2] drm/bridge: imx: Fix unmet depenency for
- PHY_FSL_SAMSUNG_HDMI_PHY
-Message-ID: <20240425111403.GB28454@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZ53i8ZW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999EEC113CC;
+	Thu, 25 Apr 2024 11:43:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714045415;
+	bh=6hbuEo73qBv0jvZBozo1DEDhJftdYqQqfhBq3uTN4Wc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=fZ53i8ZWjxv2puTITm4U5wtba2pLlmhRXa0CGan/vm3jNACET538J4co1YWOd5R3A
+	 eQszDLjlEB5Xqw5HPnsNq67mGyAsQIUbTl+S17SVawU+hZZhbJS2fGmfmhIYWrhV0K
+	 JXjSDOo2As9Bemr/GzPVFmtxaYYsuiGD3bAd/OG20ltzZ6zXhUKkLj2PvCNN+xT+JD
+	 +msfZ4kyNburoymGfRgBNdM3X8T8LOAvJvsAdhcMcX68AFoZu7tg+V/gj/japRFyxT
+	 +Zg0K+KB/8IGL74r+uhz2OubhGuAA3grUW/uP6xK9XKzzMTvcRCWqiGsq8XC/sF6g+
+	 xrsxBiBBpi6bQ==
+From: Robert Foss <rfoss@kernel.org>
+To: Adam Ford <aford173@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: David Airlie <airlied@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, Maxime Ripard <mripard@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Daniel Vetter <daniel@ffwll.ch>, Fabio Estevam <festevam@gmail.com>,
+ Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ aford@beaconembedded.com, Lucas Stach <l.stach@pengutronix.de>, Jonas Karlman <jonas@kwiboo.se>,
+ kernel test robot <lkp@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>
+In-Reply-To: <20240422103352.8886-1-aford173@gmail.com>
 References: <20240422103352.8886-1-aford173@gmail.com>
+Subject: Re: [PATCH V2] drm/bridge: imx: Fix unmet depenency for PHY_FSL_SAMSUNG_HDMI_PHY
+Message-Id: <171404541028.1834748.16197484610982972035.b4-ty@kernel.org>
+Date: Thu, 25 Apr 2024 13:43:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240422103352.8886-1-aford173@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.1
 
-Hi Adam,
-
-Thank you for the patch.
-
-On Mon, Apr 22, 2024 at 05:33:52AM -0500, Adam Ford wrote:
+On Mon, 22 Apr 2024 05:33:52 -0500, Adam Ford wrote:
 > When enabling i.MX8MP DWC HDMI driver, it automatically selects
 > PHY_FSL_SAMSUNG_HDMI_PHY, since it wont' work without the phy.
 > This may cause some Kconfig warnings during various build tests.
@@ -73,36 +60,14 @@ On Mon, Apr 22, 2024 at 05:33:52AM -0500, Adam Ford wrote:
 > To prevent this from happening with the DRM_IMX8MP_HDMI_PVI, also
 > imply it instead of selecting it.
 > 
-> Fixes: 1f36d634670d ("drm/bridge: imx: add bridge wrapper driver for i.MX8MP DWC HDMI")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202404190103.lLm8LtuP-lkp@intel.com/
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+> [...]
 
-This looks sensible to me.
+Applied, thanks!
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+[1/1] drm/bridge: imx: Fix unmet depenency for PHY_FSL_SAMSUNG_HDMI_PHY
+      https://cgit.freedesktop.org/drm/drm-misc/commit/?id=cbdbd9ca718e
 
-> ---
-> V2:  Change DRM_IMX8MP_HDMI_PVI at the same time since it was affected
->      from the same commit.
-> 
-> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-> index 7687ed652df5..13142a6b8590 100644
-> --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> @@ -8,8 +8,8 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
->  	depends on COMMON_CLK
->  	depends on DRM_DW_HDMI
->  	depends on OF
-> -	select DRM_IMX8MP_HDMI_PVI
-> -	select PHY_FSL_SAMSUNG_HDMI_PHY
-> +	imply DRM_IMX8MP_HDMI_PVI
-> +	imply PHY_FSL_SAMSUNG_HDMI_PHY
->  	help
->  	  Choose this to enable support for the internal HDMI encoder found
->  	  on the i.MX8MP SoC.
 
--- 
-Regards,
 
-Laurent Pinchart
+Rob
+
