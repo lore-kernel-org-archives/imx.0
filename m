@@ -1,55 +1,57 @@
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A98149DFA
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 15:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A3414A616
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 15:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714057417; cv=none; b=J7BLKS9Ep4FrcMjtChiZ5Mxnp6nQtE5S/cmGEKlRXVDudSTc48YriuHXTOuzzQWXxcPSL3LJ5cVH2Xsta39SsnLqZA2fexrZR1Qa7W6+yu6Bo1VEZ1nxWn88VSmQo4Z3v7GDROvLY4ALcbJrq8uV7jrYN9loFblkQUsEDAly+z8=
+	t=1714057418; cv=none; b=G8o66b01FWRoEHWE5XkwPCYdG1KVyImZM3cuwqMYJ5fizmO4S/ob11jmHsYhTImgCzHfGtmQQi0hcqO/VUXcdXZT8uvo7O9WYG90A0rrTDFXBd64yPSI09rEYz6M/UU2hNg3mCgeA4snCn0+zwtfdksZpy8Ji4x7wZyz+5+tPWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714057417; c=relaxed/simple;
-	bh=6HVultyKajYKe1H+uYe3q2OjaTtG4U901xdI1ul0mzg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WQkm+3VjqkgYvM7dg3qysFZqPk3oBTg1hMuNgEsfEfcsEHt1RfcOUIabng701M0c4TbT73Mizu7lUa4GwE6OgS5y6GMAizIAEXviAqY4NPHNJ6jF1xxd5S04Zrtyg+0+yoRsRZ3K1EJ6vc/0IsDeBEGWKhCIoy5L8ML/sn5haog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oJiShwNT; arc=none smtp.client-ip=209.85.160.54
+	s=arc-20240116; t=1714057418; c=relaxed/simple;
+	bh=c0UVqkjMuNtarShlxI0bIDMYPsBOuAUJ6QeQyiAWEuY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i7J+7WOQY+2tdd1YWOSzNE4ec0CDpoAFxPQ83ztNVyLTTMrB+cGaw/vHzSqMIc954DlPg+R8/KQ+IFB9XfBT47vVy1TXU6dsuv5x6L7qI58mcYkBlBJGKPDmizK10hK484B/FOK5MckpEPTY0MtvNd1GMzQlxs80sAv0TrcpQ08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Xz/BHl4p; arc=none smtp.client-ip=209.85.160.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oJiShwNT"
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-22efc6b8dc5so722552fac.0
-        for <imx@lists.linux.dev>; Thu, 25 Apr 2024 08:03:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Xz/BHl4p"
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2390335b67cso355549fac.0
+        for <imx@lists.linux.dev>; Thu, 25 Apr 2024 08:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714057414; x=1714662214; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TVzvIdSysiCQUUen73Bj+sLcl+k2nyJjAr6PCZt7XT4=;
-        b=oJiShwNTyeDZeZCVf9trQH66WMND5CE4pX6wKoHKP8/9G5T781jqMobaTjgsd7jkFd
-         W2cpf6pelL1zuxS1+NiE72hiJ+qRn79N/SNOAmmvZjfIEfOFmWfkCYFT6Vqn11PhVkDe
-         Zd7KZ/LzXISa4nzuM8z4j4B32ybz4++//r8WBoqQL9dp8ncBNAYmc/+DTYERXw8WCFsO
-         oZR8RtEHzo56Z+R93u5twYVcA8Qr34jyYv4U2JAqqGiqYr+2ul7HRhkVvgPYggN3+XdK
-         IkHY0KlXBtMhfsDxVHMEuBbkg6Xn2G8Fqk3iZpx/lRuRMKWb9Oxv80hjp77uAsse3Cbw
-         mdDQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714057416; x=1714662216; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FuUgN+eqDnD1TSwHoUcLirGapuP4idukeuGNZ2DNfLI=;
+        b=Xz/BHl4puv74JoTQXRE4A5mi2fAv9wAR/WXhblrI9t6cWmM+C9TDqykcWrDhO6gQp0
+         IGv+iqMnznDDqZclmgpVhHjEQcQObkwGPS69KiFvuRjhnizcgkidmlQywBr+pVjaw2YP
+         0AD6wmZ8NdWewmNjFG+gVPdoIY0RtG0IWgERi1IpZDnKnz8GPs9sXUl8CXcjgq7C+U6+
+         WjrsM1qrhVM31LHZq5CWu8cudPmAg+4Ze4frAqnv1aV00RpsAQ9ENvrJADkw/qGiJaKP
+         lS6RxCSaTIgp0j6ukGv0Hb/rVq9wCVMLH/VKywRN5COXX9GaS/yScXXuVKK8Eo2Nrs5W
+         8NAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714057414; x=1714662214;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TVzvIdSysiCQUUen73Bj+sLcl+k2nyJjAr6PCZt7XT4=;
-        b=bcfnGNLVEXvjCF7rTIfe8eegCXPvTIZyjPhH1L7UdGfVgHmoEa+u79ie3pyhGgnWpf
-         cYpEhL4EIsGFRuuxeFvp1Ep+eTIDVppkpVkulW9xjX8knhKFWWJoxQWtACBx9dVKTy6t
-         nsGMEAC69QlgN3bXCQBBSeLUo730XzJcbzsrlR88j7CXeuRFh1IM/gt3Pa5Bem8st659
-         diczcK3pBewgfvSz6Eqzakq3wzoXsFk/KbTDi48UUM7Vls5sziDdIZCx7/tn7w3QlBiq
-         FsIhG4ydRA0tWvEeAYmGJujyH4BWqAlN7IMnnTH80vShABWNQ8SNttxBLbDw1N5KY/H1
-         jKDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxV8tzmQYdPM+r+JlQTwyIQHP1K9LpXDVdxp136ex+oakuqWKjZEch4rEbkp26V76jBhVD9XvaZ6q7rKNxB7HrVzNT
-X-Gm-Message-State: AOJu0YzRWjbPg5uaARGEtcX7uMDanMo079tqXuHiziSJbO/9k/g+n3IB
-	eZ5QYDQpaMZNlPwN56l+wJete7S2M56ng/58Eh9bz+fTRXvBMTxSK06JqaPMUZU=
-X-Google-Smtp-Source: AGHT+IE7uk/e9lPnEmRVtei7ZdUwH47uHhQ5kFtFyZHHsMq0kRAPIHbtnVqwEvJRA8mUQD2RSmGSfw==
-X-Received: by 2002:a05:6871:4393:b0:233:276e:6bbf with SMTP id lv19-20020a056871439300b00233276e6bbfmr6917951oab.15.1714057413979;
-        Thu, 25 Apr 2024 08:03:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714057416; x=1714662216;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FuUgN+eqDnD1TSwHoUcLirGapuP4idukeuGNZ2DNfLI=;
+        b=Gjd3gElFqm5roPZkmoAIwGbQFowyVxeOQsj6H8LZDWSQX70HgMTx3F/+PF0xcHy+Yg
+         HVQ1hzCZk/L9TzCkpHiNtph4od+EIv44K1r4SKaq0VIFqQ/57J/QHtb5I8bhYUeunRWq
+         IjwFOkHWbk7UI/ndVwJNNWbyz+aqURnMBKpXX4mHcjo7itxFg9LisiqPhelKdfLyKcnC
+         p3l24MP0coq8qlLmKiw2o5OxwywWn4iZlgaAh8+p+vKVYQGoU9NYsp6JroU1SjDZPavn
+         Z3sDsPIXgCaUf4eAzCMSnleijL0TYGuYACuSDsPaesa8H8v5LPB+3U8GavjsGHB29/uU
+         DduQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3WcZbUz0kH0ok/YEBVoRfBWCcsbFMws5ij5M99M3vZ7nepwxJj8LcBvMc+M+PwnUfPosz4sijPJ5QjQz5s8eBnL4D
+X-Gm-Message-State: AOJu0YxjKVHC1gM/jYfmEiceTf499mG9vyJqO0O9Hc5IMM9cJLOFAxfP
+	hkDGFxE8LpgjdDE1putdfwUUapxODxyTwwUP+c4TOB1b+6G+cjDxfDMTKeWrJqM=
+X-Google-Smtp-Source: AGHT+IFvAtaidOO7h0zkTLuuS0Zuix9lqDgu9+DKxThfm0jLTYtjgYSEE2bX05vg7lHkXPUfguF9Bw==
+X-Received: by 2002:a05:6870:9f86:b0:22e:de21:e084 with SMTP id xm6-20020a0568709f8600b0022ede21e084mr7083274oab.9.1714057415874;
+        Thu, 25 Apr 2024 08:03:35 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id mp2-20020a056871328200b0023b6d4723edsm166739oac.14.2024.04.25.08.03.33
+        by smtp.gmail.com with ESMTPSA id mp2-20020a056871328200b0023b6d4723edsm166739oac.14.2024.04.25.08.03.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Apr 2024 08:03:33 -0700 (PDT)
+        Thu, 25 Apr 2024 08:03:35 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -63,10 +65,12 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 0/3] iio: cleanup masklength usage
-Date: Thu, 25 Apr 2024 10:03:26 -0500
-Message-ID: <20240425-b4-iio-masklength-cleanup-v1-0-d3d16318274d@baylibre.com>
+Subject: [PATCH 2/3] iio: adc: mxs-lradc-adc: don't set masklength
+Date: Thu, 25 Apr 2024 10:03:28 -0500
+Message-ID: <20240425-b4-iio-masklength-cleanup-v1-2-d3d16318274d@baylibre.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240425-b4-iio-masklength-cleanup-v1-0-d3d16318274d@baylibre.com>
+References: <20240425-b4-iio-masklength-cleanup-v1-0-d3d16318274d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,22 +81,29 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-While working on other patches I noticed that a few drivers are setting
-the masklength field of struct iio_dev even though it is marked as
-[INTERN]. It looks like maybe this was not always the case, but we can
-safely clean it up now without breaking anything.
+The masklength field is marked as [INTERN] and should not be set by
+drivers, so remove the assignment in the mxs-lradc-adc driver.
 
----
-David Lechner (3):
-      iio: adc: ad7266: don't set masklength
-      iio: adc: mxs-lradc-adc: don't set masklength
-      iio: buffer: initialize masklength accumulator to 0
+__iio_device_register() will populate this field with the correct value.
 
- drivers/iio/adc/ad7266.c          | 1 -
- drivers/iio/adc/mxs-lradc-adc.c   | 1 -
- drivers/iio/industrialio-buffer.c | 2 +-
- 3 files changed, 1 insertion(+), 3 deletions(-)
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-base-commit: b80ad8e3cd2712b78b98804d1f59199680d8ed91
-change-id: 20240425-b4-iio-masklength-cleanup-86b632b19901
+ drivers/iio/adc/mxs-lradc-adc.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+index 2e60c10ee4ff..8c7b64e78dbb 100644
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -724,7 +724,6 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+ 	iio->dev.of_node = dev->parent->of_node;
+ 	iio->info = &mxs_lradc_adc_iio_info;
+ 	iio->modes = INDIO_DIRECT_MODE;
+-	iio->masklength = LRADC_MAX_TOTAL_CHANS;
+ 
+ 	if (lradc->soc == IMX23_LRADC) {
+ 		iio->channels = mx23_lradc_chan_spec;
+
+-- 
+2.43.2
 
