@@ -1,41 +1,47 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD665672
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 06:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3403FBB7
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 06:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714026168; cv=none; b=vA9nVIOAygmoLJM4L1PbK8sAhfdb7Ns+tDsfIwXawh/psTPkwt0+8CU16kL168o96fRh63u+fTQzaL8M0S+LR/VBZ7Rz4qa2ZyizJ/n3aHTojbqlTpdNrKXkP0Pmg0UGt/9xTvu8XRoInWetaUDxa1/LaPDCrE0L6QFJm6NgnpA=
+	t=1714026310; cv=none; b=IZdp5v9konrt6RjlWsr/vt3cbt49j2TdG8j+fBiDMR8cM41c3v6UyWZiUzUIK6jfURZOQhoa0r6FNcqEe84gwCIBiX3tEv2E9O1+zNMmwYnfQAZgt8E0C0s6XUgPvhTZpglXm4RB3xrikYeVeNMPQArObmfG5JTz1EKNIbuZqcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714026168; c=relaxed/simple;
-	bh=Ue4DWi0QD52B1nKNAzf4PVh+IQ4I0X4KROOINeGW2bs=;
+	s=arc-20240116; t=1714026310; c=relaxed/simple;
+	bh=+KdhJr1P8PvWkYwBV2ck5l3jTNNmFw8B+PBQUUA4d1s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X7dGHPou5lopmV1p+0JMM5tA20i1ODsvg+1qfk/x5G6aN895oviDteyECox4g8ChAwIkz0D13zuqR39jSN3boP6CpWAflk0oUpa6OeNp2q2P8ggITkMd+TYlz2dz5dw/zYr0nMBG7wIVlPegCc8EZQtgmhwN6s2rqaIflHPXKlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=J0Qlka3k; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=PjObErEpdTFHDa+t0p9zK0OMCCT0OiJtkRP3IIQNjn7gFOJ4olQ1X23oVPlN9gnb0Q+jQb4QSJafzH9m3acJ3jiOfwPlzXxBIqAiWjALnql/b75UVCvLBdmMBOZW1L/pwPrhBDXBRN5RESwwDrZsGk28S/eMHEWaEgxCNJSMSEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=K1ITDqaB; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="J0Qlka3k"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="K1ITDqaB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=SDHGiDEJmLvzRYT3TaLtU3T7lep9rxFUwhCFeg6kHtw=;
-	b=J0Qlka3kTVlTFb8uiCxic55R3RBtEYwhMf4GMtVm4zZF1hdPRGR+4HEwLjxjxo
-	V4XFkDSIWL2PFu/p7c5BTQ7GLodguJWLFkto8QvqB1zH8aQkfe/DI7RZ/yuvGTLD
-	QqxjSR38R02fhrWM8AM8zCrYTxfpPunQ4R7GA5VYc2xXM=
+	Content-Type; bh=+vDVzeVrZ2eMn1LXWqDrH0dDuL+sbBGXy1PppvgvXxY=;
+	b=K1ITDqaBC4/NO4bw+s3/dWcKofyc64dDUTeXP2mJRM+Fo44nR9W8HOiZtrNn+s
+	6K+XHZcfs6WR7neUlZlVfTvbl2lwBRGXP/oI0gf+uXIN++U1bRcATlT87S++b0s4
+	xknkuCTN0rcaZKAgHAZEMCCvFrVBftfiTZdfoBAjrJ924=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp2 (Coremail) with SMTP id C1UQrADXPhiB9ilmE2pzBA--.45333S3;
-	Thu, 25 Apr 2024 14:21:55 +0800 (CST)
-Date: Thu, 25 Apr 2024 14:21:53 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAA3n_sd9ylm0zdsAw--.40856S3;
+	Thu, 25 Apr 2024 14:24:30 +0800 (CST)
+Date: Thu, 25 Apr 2024 14:24:28 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Rob Herring <robh@kernel.org>,
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Peng Fan <peng.fan@nxp.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/2] ARM: dts: imx6ull-tarragon: Minor changes
-Message-ID: <Zin2get3gcS8+AQe@dragon>
-References: <20240416190659.15430-1-wahrenst@gmx.net>
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v3] arm64: dts: imx8mp: Align both CSI2 pixel clock
+Message-ID: <Zin3HAKVtKsTc9li@dragon>
+References: <20240417114231.7044-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,21 +50,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240416190659.15430-1-wahrenst@gmx.net>
-X-CM-TRANSID:C1UQrADXPhiB9ilmE2pzBA--.45333S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxtxhDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwPLZVnxcqq3tAAAsR
+In-Reply-To: <20240417114231.7044-1-marex@denx.de>
+X-CM-TRANSID:ClUQrAA3n_sd9ylm0zdsAw--.40856S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU2EfOUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDR7LZVszXcHRqQAAsx
 
-On Tue, Apr 16, 2024 at 09:06:57PM +0200, Stefan Wahren wrote:
-> This small series contains 2 changes for the chargebyte Tarragon
-> boards.
+On Wed, Apr 17, 2024 at 01:42:06PM +0200, Marek Vasut wrote:
+> Configure both CSI2 clock-frequency and assigned-clock-rates
+> the same way. There does not seem to be any reason for keeping
+> the two CSI2 pixel clock set to different frequencies.
 > 
-> Michael Heimpold (1):
->   ARM: dts: imx6ull-tarragon: fix USB over-current polarity
+> This also reduces first CSI2 clock from overdrive mode
+> frequency which is 500 MHz down below the regular mode
+> frequency of 400 MHz.
 > 
-> Stefan Wahren (1):
->   ARM: dts: imx6ull-tarragon: Reduce SPI clock for QCA7000
+> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Applied both, thanks!
+Applied, thanks!
 
