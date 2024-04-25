@@ -1,43 +1,49 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9D26EB4D
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 08:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from smtpcmd12132.aruba.it (smtpcmd12132.aruba.it [62.149.156.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A1174425
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 08:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714032586; cv=none; b=C/FkpQTgyBHjctEWhxWB4RtNpN8XD9akWCHjp/0pxxX12kbak196dReQTWcBRe7qrgzJwEW9zP539hlh4xoh95KIKOaxciv3ePsWDkyjSW+mKDFyXGFVs8tb1bMBB3RpZN4LJ3F35sjmFC9OpcokqeXzrDhZ1zt/ednbZPobsbg=
+	t=1714032689; cv=none; b=eNCJeagKvuJh8GDXJN6TjYEqiGe/Jz66W95oVU8aEBi+v+DjDrvKYRI0ZXd1+l2Yz4BC5NYbDgdjaq5TDhCNbiZR0ST3ghUV7ND78eehOFwX3WzTtLSqQLt2JCBOqCxhNzCEKsP8gKdyQIGysDSASnytbQqCjkLf7KedY8gxvPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714032586; c=relaxed/simple;
-	bh=3pH9BI+mmlAYKS5yzMrgsCLtEZ/uEG/QYW/gdUS91Bc=;
+	s=arc-20240116; t=1714032689; c=relaxed/simple;
+	bh=xITDB7UKgCxQTUlRqzOvcHkRmrO0TzMhT36ooI6yReU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gh0WOtjd8VP6yl5q/Xl5i8m5Y3QR1KJ7TlBxhT+JFRsd4VSVIaE0tJmLTiOJLyA4v/iP5E3rETPRXuiBuCbAL1sA+ewd1/p4TLRG2eVXY/3eVzqCY69AMqF88tri/TEmb5VkOQM+P3yZ/QDjSPxQ8yMSF7t1mA1UvVIM9mn7ulY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Ulb28jPk; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=fESIoPH9xzVabSyH4Kmf/GYtS0/yvrpn5888rDVruvoHfffP/4GL6go1ds02itxPT3pecLnQ3rSwAiagKjJx+Ym3/9OjWJZ7jQ5XxqTCdxdSawgT2vbZXPOJirbjjng/T2Je/59cFcsJl7li08MLSq5C5nrWLCgCBwRuSY05/3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=lAtFCm50; arc=none smtp.client-ip=62.149.156.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Ulb28jPk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=hhIHs+++PP0WLQlgo22/+Sat6DJyqVSqCbFqSFZstCo=;
-	b=Ulb28jPkDiZlNFVgGvgt8/JLdOQ7HLSIlJZpgD3bLO3AtPPju5WtO+8scuG/1f
-	beBMrkNELiqbSTGMdebscziZHPwBiT/OjZIKxqW13u3sSaVq+fc8ipJTHH+QRuLd
-	byXwcu2NrghChiECnpUscS7oGcFQBX3GhrsTBk+YepkgQ=
-Received: from dragon (unknown [223.68.79.243])
-	by smtp1 (Coremail) with SMTP id ClUQrAC3f_muDypmRaZtAw--.40896S3;
-	Thu, 25 Apr 2024 16:09:20 +0800 (CST)
-Date: Thu, 25 Apr 2024 16:09:18 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="lAtFCm50"
+Received: from engicam ([77.32.5.97])
+	by Aruba Outgoing Smtp  with ESMTPSA
+	id zu9OrLBIrTSwmzu9QrYPoi; Thu, 25 Apr 2024 10:08:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1714032496; bh=xITDB7UKgCxQTUlRqzOvcHkRmrO0TzMhT36ooI6yReU=;
+	h=Date:From:To:Subject:MIME-Version:Content-Type;
+	b=lAtFCm50kWBXTrfufeZzItaWHAg2Zn4PLdP+/QNXCQbWTBSUx+xTK+waPMiHQFHHr
+	 q5HRUP7tJkM5D2LFMXUlvliJBtYkJwrjoiInOWUV283foI0SKrKmZm3VLRqyyqkWZW
+	 pKfOZAabOVv8jEPRi8f61FNXM2bM9iqhqJCptNTw5dBWTFpqzX5k+ADl25p8cEFwpa
+	 Z+ud1LbekAcok3uiVXKhrCaPYUxooN5aIC6ax8Y9QSJM9VmKRRJyXpmk6i9ahD17Ee
+	 KfbXX7zmh8lJ300HLHETP3MQHeKopPdhjs6IuPpsiuEaKj/cCEchczLZ/YfESbASjx
+	 ZD0JHKVVB9ovA==
+Date: Thu, 25 Apr 2024 10:08:14 +0200
+From: Fabio Aiuto <fabio.aiuto@engicam.com>
+To: Shawn Guo <shawnguo2@yeah.net>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 10/10] arm64: dts: imx8qm-mek: add fec2 support
-Message-ID: <ZioPrhKPWBrTdLUS@dragon>
-References: <20240422-dts_8qm_audio-v3-0-680cee731ced@nxp.com>
- <20240422-dts_8qm_audio-v3-10-680cee731ced@nxp.com>
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Mirko Ardinghi <mirko.ardinghi@engicam.com>
+Subject: Re: [PATCH v3 3/3] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM
+ 2.0 Starter Kit
+Message-ID: <ZioPbmPmIuKME7zl@engicam>
+References: <20240419144953.8700-1-fabio.aiuto@engicam.com>
+ <20240419144953.8700-4-fabio.aiuto@engicam.com>
+ <ZioJ032d0ZgwKbli@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,94 +52,291 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240422-dts_8qm_audio-v3-10-680cee731ced@nxp.com>
-X-CM-TRANSID:ClUQrAC3f_muDypmRaZtAw--.40896S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCFW7Aw1rtw1DCFWrGFWruFg_yoW5Xr1Dpr
-	W5JrWFgrs7AF1rGw13ur17JFy5Jr409aykW3srJry8uFsxuFnrGa4Fvr4qkrykGrW5Xw4a
-	qFWjgF1293WSg3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzc_fUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFRDLZV6NnF4SGwAAsz
+In-Reply-To: <ZioJ032d0ZgwKbli@dragon>
+X-CMAE-Envelope: MS4xfEw2TEhR79G8KBdkloDMFZ13/DFcmttqslcwtXPGe8mgYNSYBVH7RHr+TmJ87iZQYslrqpnMYgGuFPJ+2sfpkR8ldW4jXps7rE3qln8jliUQHO6DBRbf
+ HZQOthm8zhPm8Ws8VQuhp+UpoCs+4DTzBfsSJQfzH0lSCAPFuJfLVUq7Jp6Sy3P5YcVXjRT2fQ3zbFEtj8/XEPmG1mga9sIaW0FbZX2mXUYtVm/CjgBzVXo0
+ YJk5JvMQ+i7QN0henzkXiz8fk+nx1sWaObXJcMpUIDD1NbEE8/6gpf1yVKiERUd4doH8lvWe8yLNnRX3OEudxSQzcSBj91nEEJmF8grevjmq6vB7xEcK1iTZ
+ Sx1eOLPcXyKDA5OvAlNOoU/xQXvuxT+8rnQyKTguKJMEdrYdZbG2/LefaDt0BnC0I9mNZG2oUCaBk3/HOw+TPjyO4uf2yZFbhv6ALEoA24Fc0Y9evdbtZurC
+ 3Yb2WUjDf6gESBJhDc03CC1qeCC0/OGjXT/cgzbGDpDdUqfp/3VAyPozYtBynkGZRUrIC4MN7Tg2DYrWNbLorMz2k7AXQacYqbRzR+R0g/rbuO3O70t/FJAN
+ 6Xk=
 
-On Mon, Apr 22, 2024 at 03:50:12PM -0400, Frank Li wrote:
-> Add fec2 support.
+Dear Shawn,
+
+Il Thu, Apr 25, 2024 at 03:44:19PM +0800, Shawn Guo ha scritto:
+> On Fri, Apr 19, 2024 at 04:49:53PM +0200, Fabio Aiuto wrote:
+
+<snip>
+
+> > +	usdhc3_pwrseq: usdhc3-pwrseq {
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 40 ++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
+> Can we drop it, as it's unused?
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> index cef395e919395..570a9bf583132 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> @@ -40,6 +40,15 @@ reg_usdhc2_vmmc: usdhc2-vmmc {
->  		enable-active-high;
->  	};
->  
-> +	reg_fec2_supply: fec2_nvcc {
-
-regulator-fec2-nvcc for node name?
-
-Shawn
-
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "fec2_nvcc";
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +		gpio = <&max7322 0 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +	};
-> +
->  	reg_can01_en: regulator-can01-gen {
->  		compatible = "regulator-fixed";
->  		regulator-name = "can01-en";
-> @@ -381,6 +390,19 @@ ethphy1: ethernet-phy@1 {
->  	};
->  };
->  
-> +&fec2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_fec2>;
-> +	phy-mode = "rgmii-txid";
-> +	phy-handle = <&ethphy1>;
-> +	phy-supply = <&reg_fec2_supply>;
-> +	nvmem-cells = <&fec_mac1>;
-> +	nvmem-cell-names = "mac-address";
-> +	rx-internal-delay-ps = <2000>;
-> +	fsl,magic-packet;
-> +	status = "okay";
-> +};
-> +
->  &usdhc1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_usdhc1>;
-> @@ -500,6 +522,24 @@ IMX8QM_QSPI0B_SS1_B_LSIO_QSPI0B_SS1_B     0x06000021
->  		>;
->  	};
->  
-> +	pinctrl_fec2: fec2grp {
-> +		fsl,pins = <
-> +			IMX8QM_COMP_CTL_GPIO_1V8_3V3_ENET_ENETA_PAD		0x000014a0
-> +			IMX8QM_ENET1_RGMII_TX_CTL_CONN_ENET1_RGMII_TX_CTL	0x00000060
-> +			IMX8QM_ENET1_RGMII_TXC_CONN_ENET1_RGMII_TXC		0x00000060
-> +			IMX8QM_ENET1_RGMII_TXD0_CONN_ENET1_RGMII_TXD0		0x00000060
-> +			IMX8QM_ENET1_RGMII_TXD1_CONN_ENET1_RGMII_TXD1		0x00000060
-> +			IMX8QM_ENET1_RGMII_TXD2_CONN_ENET1_RGMII_TXD2		0x00000060
-> +			IMX8QM_ENET1_RGMII_TXD3_CONN_ENET1_RGMII_TXD3		0x00000060
-> +			IMX8QM_ENET1_RGMII_RXC_CONN_ENET1_RGMII_RXC		0x00000060
-> +			IMX8QM_ENET1_RGMII_RX_CTL_CONN_ENET1_RGMII_RX_CTL	0x00000060
-> +			IMX8QM_ENET1_RGMII_RXD0_CONN_ENET1_RGMII_RXD0		0x00000060
-> +			IMX8QM_ENET1_RGMII_RXD1_CONN_ENET1_RGMII_RXD1		0x00000060
-> +			IMX8QM_ENET1_RGMII_RXD2_CONN_ENET1_RGMII_RXD2		0x00000060
-> +			IMX8QM_ENET1_RGMII_RXD3_CONN_ENET1_RGMII_RXD3		0x00000060
-> +		>;
-> +	};
-> +
->  	pinctrl_flexcan1: flexcan0grp {
->  		fsl,pins = <
->  			IMX8QM_FLEXCAN0_TX_DMA_FLEXCAN0_TX			0x21
+> > +		compatible = "mmc-pwrseq-simple";
 > 
-> -- 
-> 2.34.1
-> 
+> It controls nothing, neither clock nor GPIO?
 
+please see v4.
+
+Thank you for your comments, will fix all issues in a v5
+patchset.
+
+kr, fabio
+
+> 
+> > +	};
+> > +
+> > +	wl_reg_on: regulator-wlregon {
+> > +		compatible = "regulator-gpio";
+> > +		regulator-name = "WL_REG_ON";
+> > +		regulator-min-microvolt = <100000>;
+> > +		regulator-max-microvolt = <3300000>;
+> > +		states = <3300000 0x1>, <100000 0x0>;
+> > +		gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
+> > +		enable-active-high;
+> > +		vin-supply = <&bt_reg_on>;
+> > +	};
+> > +};
+> > +
+> > +&cm33 {
+> > +	mbox-names = "tx", "rx", "rxdb";
+> > +	mboxes = <&mu1 0 1>,
+> > +		 <&mu1 1 1>,
+> > +		 <&mu1 3 1>;
+> > +	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+> > +			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&flexcan1 {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_flexcan1>;
+> > +	fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&flexcan2 {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_flexcan2>;
+> > +	fsl,stop-mode = <&aonmix_ns_gpr 0x10 4>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&lpi2c1 {
+> > +	#address-cells = <1>;
+> > +	#size-cells = <0>;
+> > +	clock-frequency = <400000>;
+> > +	pinctrl-names = "default", "sleep";
+> > +	pinctrl-0 = <&pinctrl_lpi2c1>;
+> > +	pinctrl-1 = <&pinctrl_lpi2c1>;
+> > +	status = "okay";
+> > +
+> > +	pcf8523: rtc@68 {
+> > +		compatible = "nxp,pcf8523";
+> > +		reg = <0x68>;
+> > +	};
+> > +
+> > +	sgtl5000: codec@a {
+> 
+> audio-codec for the node name.  And we should sort slave nodes in unit-address.
+> 
+> > +		compatible = "fsl,sgtl5000";
+> > +		status = "okay";
+> 
+> 'compatible' first, 'reg' second, and 'status' last. 
+> 
+> > +		#sound-dai-cells = <0>;
+> > +		reg = <0x0a>;
+> > +		clocks = <&clk IMX93_CLK_SAI3_GATE>;
+> > +		VDDA-supply = <&reg_3v3_avdd_sgtl>;
+> > +		VDDIO-supply = <&reg_3v3_sgtl>;
+> > +		VDDD-supply = <&reg_1v8_sgtl>;
+> > +	};
+> > +};
+> > +
+> > +&lpuart1 { /* console */
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_uart1>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&lpuart5 { /* RS485 */
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_uart5>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&lpuart8 { /* RS232 */
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_uart8>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&micfil {
+> > +	#sound-dai-cells = <0>;
+> > +	assigned-clocks = <&clk IMX93_CLK_PDM>;
+> > +	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> > +	assigned-clock-rates = <196608000>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&mu1 {
+> > +	status = "okay";
+> > +};
+> > +
+> > +&mu2 {
+> > +	status = "okay";
+> > +};
+> > +
+> > +&sai1 {
+> > +	#sound-dai-cells = <0>;
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_sai1>;
+> > +	assigned-clocks = <&clk IMX93_CLK_SAI1>;
+> > +	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> > +	assigned-clock-rates = <12288000>;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&sai3 {
+> > +	pinctrl-names = "default";
+> > +	#sound-dai-cells = <0>;
+> > +	pinctrl-0 = <&pinctrl_sai3>;
+> 
+> pinctrl-0 right after pinctrl-names.
+> 
+> > +	assigned-clocks = <&clk IMX93_CLK_SAI3>;
+> > +	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> > +	assigned-clock-rates = <24576000>;
+> > +	fsl,sai-mclk-direction-output;
+> > +	status = "okay";
+> > +};
+> > +
+> > +&usdhc3 { /* WiFi */
+> > +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> > +	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
+> > +	pinctrl-1 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
+> > +	pinctrl-2 = <&pinctrl_usdhc3>, <&pinctrl_laird>;
+> > +	vmmc-supply = <&wl_reg_on>;
+> > +	bus-width = <4>;
+> > +	no-1-8-v;
+> > +	non-removable;
+> > +	max-frequency = <25000000>;
+> > +	status = "okay";
+> > +
+> > +	#address-cells = <1>;
+> > +	#size-cells = <0>;
+> 
+> Drop newline and move them before pinctrl-names.
+> 
+> > +
+> > +	brcmf: bcrmf@1 {
+> > +		reg = <1>;
+> > +		compatible = "brcm,bcm4329-fmac";
+> 
+> Flip the order.
+> 
+> > +	};
+> > +};
+> > +
+> > +&wdog3 {
+> > +	status = "okay";
+> > +};
+> > +
+> > +&iomuxc {
+> > +
+> 
+> Drop newline.
+> 
+> > +	pinctrl_flexcan1: flexcan1grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_PDM_CLK__CAN1_TX		0x139e
+> > +			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_flexcan2: flexcan2grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_GPIO_IO25__CAN2_TX	0x139e
+> > +			MX93_PAD_GPIO_IO27__CAN2_RX	0x139e
+> 
+> Try to vertically align hex values.
+> 
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_laird: lairdgrp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_GPIO_IO22__GPIO2_IO22		0x31e // WL_REG_ON
+> > +			MX93_PAD_GPIO_IO19__GPIO2_IO19		0x31e // BT_REG_ON
+> 
+> /* ... */ for comments.
+> 
+> Shawn
+> 
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_lpi2c1: lpi2c1grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_I2C1_SCL__LPI2C1_SCL		0x40000b9e
+> > +			MX93_PAD_I2C1_SDA__LPI2C1_SDA		0x40000b9e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_sai1: sai1grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_SAI1_TXC__SAI1_TX_BCLK		0x31e
+> > +			MX93_PAD_SAI1_TXFS__SAI1_TX_SYNC	0x31e
+> > +			MX93_PAD_SAI1_TXD0__SAI1_TX_DATA00	0x31e
+> > +			MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00	0x31e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_sai3: sai3grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_GPIO_IO26__SAI3_TX_SYNC	0x31e
+> > +			MX93_PAD_GPIO_IO16__SAI3_TX_BCLK	0x31e
+> > +			MX93_PAD_GPIO_IO17__SAI3_MCLK		0x31e
+> > +			MX93_PAD_GPIO_IO21__SAI3_TX_DATA00	0x31e
+> > +			MX93_PAD_GPIO_IO20__SAI3_RX_DATA00	0x31e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_uart1: uart1grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
+> > +			MX93_PAD_UART1_TXD__LPUART1_TX		0x31e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_uart5: uart5grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_GPIO_IO01__LPUART5_RX		0x31e
+> > +			MX93_PAD_GPIO_IO00__LPUART5_TX		0x31e
+> > +			MX93_PAD_GPIO_IO02__LPUART5_CTS_B	0x31e
+> > +			MX93_PAD_GPIO_IO03__LPUART5_RTS_B	0x31e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_uart8: uart8grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_GPIO_IO13__LPUART8_RX		0x31e
+> > +			MX93_PAD_GPIO_IO12__LPUART8_TX		0x31e
+> > +		>;
+> > +	};
+> > +
+> > +	pinctrl_usdhc3: usdhc3grp {
+> > +		fsl,pins = <
+> > +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x17fe
+> > +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x13fe
+> > +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x13fe
+> > +			MX93_PAD_SD3_DATA1__USDHC3_DATA1        0x13fe
+> > +			MX93_PAD_SD3_DATA2__USDHC3_DATA2        0x13fe
+> > +			MX93_PAD_SD3_DATA3__USDHC3_DATA3        0x13fe
+> > +		>;
+> > +	};
+> > +};
+> > -- 
+> > 2.34.1
+> > 
+> 
