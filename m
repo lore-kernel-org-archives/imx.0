@@ -1,44 +1,42 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DAD2E631
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 07:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8730D6BB39
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 07:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714028613; cv=none; b=C9XJuNv9gUYLTkz1nWyY16ca6rCroYORtoVhPLXmqULLcmHPBWh1BEjORgMvV9IlBiV/HIruXkW8ie5A7R5QpOF3JwqmNA91lmGKezFvXarSZuqaMU834BKR0gYEjskODwMCCzteZgTnTfK5zKTNlCq2Xgzzl15MjV5wsVww1Jg=
+	t=1714029956; cv=none; b=Wi7tcgqbH2SfLuKB6jVx7rPjBXQdzIM4QUVzxhc+OJWIuoel01EO1/nWTA68IreyRcGC7Qr5LGJX4t8+bYZWcvSBE3LJy4hSqzLQ/ffI8IvF2DL4h1NaGQg4UMdgbU3mYQYUtJoqAOSr6sbiUQenweCI7BpjMjzR8QwZ6UGu8HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714028613; c=relaxed/simple;
-	bh=a9pxUeSvXj0YjRIYapeT1g/Jcq2rXjn/otoGvhCnm94=;
+	s=arc-20240116; t=1714029956; c=relaxed/simple;
+	bh=A9coNx1K20Po/ObzvlXeFbDL9sUGwdI1RLfsnunL2i4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wwn5U/cQGDjSkHjwV4yQubObAm6oSXyAqWchNlhA8/RVMnQG14dvuOxvbPi4sWdclJe3n3kseSdCJC9qtqjvBvbXxeC5OSqZdVeNjaPdV8Vl0lrVzG6BKOgIY1xv29IzNxmxH6pJy6UA11mtOhlyCVg2LoDc1hoCIbfIujg4x2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QNWc5fqZ; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=TSaFyBM2569yhi+xIrIhJtF1c0QIZprni74FMzgzSCjVfeN+1MG465ouWu/Pj8YXXG5bagweBZZP8XCuk/fkQKnKCPuL0THw8oXqidjKuaJuKD8/yq4a0LrYhTxbKoxMWoyjbFDVJf/MMoTVaNKfNu6ZFRPoRy3QdnOKB2CCF4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nG1YIi5U; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QNWc5fqZ"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nG1YIi5U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=8I5SepTp7Ur5JNM2XvBCPKYmcp0vIpHbn9Chz0RD2d8=;
-	b=QNWc5fqZOwIxLUGcu2Ux9MWlSkGPKgx+TOSXNW/x+lxSWd7rp8+bXo5isHUJ+M
-	H8xbjVM8IojV0RQMe7DvJ/CF6RdCU6gJkdLTsbPloslgobiLwdZeuMdmBhD8zG0t
-	LNQNEEtJA3RNl9Mz+F0/6UsXv7Z7jeb6p3dA3X00wmMpw=
+	Content-Type; bh=wxnFsIX3GILFSa3fy8ZTRzuEuxZ6oMLgGVOnT+BQYdM=;
+	b=nG1YIi5UALMoFPXrLuS0wIWYyPsPd1otMXg1KwVqbDtOFIw/v663SbPih1ckfz
+	sj2RYuZiz4csi/goiAphuVFN0SzNk9dh/M+5b/fKgH61pfU79ULUm/30fKcvvOOK
+	so2YrgrD/UpgWIBQGySKzAU73uOGFeLDlWwPosUNLER6k=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp2 (Coremail) with SMTP id C1UQrADXX1AuACpmzAN0BA--.9663S3;
-	Thu, 25 Apr 2024 15:03:11 +0800 (CST)
-Date: Thu, 25 Apr 2024 15:03:10 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrADnLyFpBSpmGABtAw--.20059S3;
+	Thu, 25 Apr 2024 15:25:30 +0800 (CST)
+Date: Thu, 25 Apr 2024 15:25:28 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Sherry Sun <sherry.sun@nxp.com>,
-	Luke Wang <ziniu.wang_1@nxp.com>, Wei Fang <wei.fang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>
-Subject: Re: [PATCH v2 00/12] arm64: dts: imx93: various update
-Message-ID: <ZioALo6flIQOu1Vk@dragon>
-References: <20240419-imx93-dts-4-13-v2-0-9076e1d7d399@nxp.com>
+To: Fabio Aiuto <fabio.aiuto@engicam.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Mirko Ardinghi <mirko.ardinghi@engicam.com>
+Subject: Re: [PATCH v3 2/3] arm64: dts: imx93: add Engicam i.Core MX93 SoM
+Message-ID: <ZioFaJtxYsUlchfW@dragon>
+References: <20240419144953.8700-1-fabio.aiuto@engicam.com>
+ <20240419144953.8700-3-fabio.aiuto@engicam.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,52 +45,334 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240419-imx93-dts-4-13-v2-0-9076e1d7d399@nxp.com>
-X-CM-TRANSID:C1UQrADXX1AuACpmzAN0BA--.9663S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1UGrWktF1kWF48JFWUurg_yoW8XrWfpa
-	93ZrZ3Kr1DKr4rZrsxZFn2y3y5Ca98W3W5Kr13X3s09ayYya47Z3W5KFy3Wr4UGryUZrW7
-	t3ZxCFyvy342vr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jlWlkUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGALLZV6NnuzZkQABsc
+In-Reply-To: <20240419144953.8700-3-fabio.aiuto@engicam.com>
+X-CM-TRANSID:ClUQrADnLyFpBSpmGABtAw--.20059S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW3XF4kXFyUJFyDKw1DXF47urg_yoWfGryDpr
+	ZxZ39rurs7uFyfJa15W3WakF43Xw1jk3s7ur93XFWrAa4xZ3ZrKr90kr15J3yUAr4DJw12
+	yFWjvF13K3ZxK3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jz7KsUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFQzLZV6NnF3xzQAAsZ
 
-On Fri, Apr 19, 2024 at 11:36:55AM +0800, Peng Fan (OSS) wrote:
-> This patchset has several updates in imx93 dtsi and imx93-11x11-evk dts
-> - add dma for lpspi/lpi2c
-> - add nvmem for fec/eqos
-> - update sdhc assigned clocks
-> - update resource table for m33
-> - add sleep pinctrl
-> - add reset gpios for network phys
-> - includes a defconfig patch to build in OCOTP ELE.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> Changes in v2:
-> - Add new patch 1 to convert dma bit mask to FSL_EDMA_RX
-> - Use FSL_EDMA_RX for patch 2,3
-> - Update commit log for patch 7. Add Fixes tag for patch 7.
-> - Link to v1: https://lore.kernel.org/r/20240416-imx93-dts-4-13-v1-0-da8ac02e8413@nxp.com
-> 
-> ---
-> Haibo Chen (1):
->       arm64: dts: imx93: assign usdhc[1..3] root clock to 400MHz
-> 
-> Luke Wang (1):
->       arm64: dts: imx93-11x11-evk: add different usdhc pinctrl for different timing usage
-> 
-> Peng Fan (9):
->       arm64: dts: imx93: use FSL_EDMA_RX for rx channel
->       arm64: dts: imx93: add dma support for lpi2c[1..8]
->       arm64: dts: imx93: add dma support for lpspi[1..8]
->       arm64: dts: imx93: add nvmem property for fec1
->       arm64: dts: imx93: add nvmem property for eqos
->       arm64: dts: imx93-11x11-evk: update resource table address
->       arm64: dts: imx93-11x11-evk: add sleep pinctrl for eqos and fec
->       arm64: dts: imx93-11x11-evk: add sleep pinctrl for sdhc2
->       arm64: defconfig: build in OCOTP ELE
-> 
-> Wei Fang (1):
->       arm64: dts: imx93-11x11-evk: add reset gpios for ethernet PHYs
+On Fri, Apr 19, 2024 at 04:49:52PM +0200, Fabio Aiuto wrote:
+> i.Core MX93 is a NXP i.MX93 based EDIMM SoM
+> by Engicam.
 
-Applied all, except the defconfig one.
+Could you wrap the lines around column 72?
+
+> 
+> Main features:
+> 
+> CPU:   NXP i.MX 93
+> MEMORY: Up to 2GB LPDDR4
+> NETWORKING: 2x Gb Ethernet
+> USB: USB OTG 2.0, USB HOST 2.0
+> STORAGE: eMMC starting from 4GB
+> PERIPHERALS: UART, I2C, SPI, CAN, SDIO, GPIO
+> 
+> The i.Core MX93 needs to be mounted on top of
+> Engicam baseboards to work.
+> 
+> Add devicetree include file.
+> 
+> Cc: Matteo Lisi <matteo.lisi@engicam.com>
+> Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
+> Signed-off-by: Fabio Aiuto <fabio.aiuto@engicam.com>
+> ---
+>  .../boot/dts/freescale/imx93-icore-mx93.dtsi  | 271 ++++++++++++++++++
+>  1 file changed, 271 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi b/arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
+> new file mode 100644
+> index 000000000000..32a56d51f904
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
+> @@ -0,0 +1,271 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2022 NXP
+> + * Copyright 2024 Engicam s.r.l.
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include "imx93.dtsi"
+> +
+> +/ {
+> +	model = "Engicam i.Core MX93 SoM";
+> +	compatible = "engicam,icore-mx93", "fsl,imx93";
+> +
+> +	reg_vref_1v8: regulator-adc-vref {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vref_1v8";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +	};
+> +};
+> +
+> +&adc1 {
+> +	vref-supply = <&reg_vref_1v8>;
+> +	status = "okay";
+> +};
+> +
+> +&eqos {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_eqos>;
+> +	phy-mode = "rgmii-id";
+> +	phy-handle = <&ethphy1>;
+> +	status = "okay";
+> +
+> +	mdio {
+> +		compatible = "snps,dwmac-mdio";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		ethphy1: ethernet-phy@7 {
+> +			compatible = "ethernet-phy-ieee802.3-c22";
+> +			reg = <7>;
+> +		};
+> +	};
+> +};
+> +
+> +&fec {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_fec>;
+> +	phy-mode = "rgmii-id";
+> +	phy-handle = <&ethphy2>;
+> +	fsl,magic-packet;
+> +	status = "okay";
+> +
+> +	mdio {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		ethphy2: ethernet-phy@7 {
+> +			compatible = "ethernet-phy-ieee802.3-c22";
+> +			reg = <7>;
+> +		};
+> +	};
+> +};
+> +
+> +&lpi2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&pinctrl_lpi2c2>;
+> +	pinctrl-1 = <&pinctrl_lpi2c2>;
+> +	status = "okay";
+> +
+> +	pmic@25 {
+> +		compatible = "nxp,pca9451a";
+> +		reg = <0x25>;
+> +		nxp,wdog_b-warm-reset;
+> +
+
+Could you drop the newline and put vendor specific properties after
+generic ones, i.e. move 'nxp,wdog_b-warm-reset' after 'interrupts'?
+
+> +		interrupt-parent = <&gpio2>;
+> +		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
+> +
+> +		regulators {
+> +			buck1: BUCK1 {
+> +				regulator-name = "BUCK1";
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-max-microvolt = <2187500>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +				regulator-ramp-delay = <3125>;
+> +			};
+> +
+> +			buck2: BUCK2 {
+> +				regulator-name = "BUCK2";
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-max-microvolt = <2187500>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +				regulator-ramp-delay = <3125>;
+> +			};
+> +
+> +			buck4: BUCK4{
+> +				regulator-name = "BUCK4";
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			buck5: BUCK5{
+> +				regulator-name = "BUCK5";
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			buck6: BUCK6 {
+> +				regulator-name = "BUCK6";
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo1: LDO1 {
+> +				regulator-name = "LDO1";
+> +				regulator-min-microvolt = <1600000>;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo2: LDO2 {
+> +				regulator-name = "LDO2";
+> +				regulator-min-microvolt = <800000>;
+> +				regulator-max-microvolt = <1150000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo3: LDO3 {
+> +				regulator-name = "LDO3";
+> +				regulator-min-microvolt = <800000>;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo4: LDO4 {
+> +				regulator-name = "LDO4";
+> +				regulator-min-microvolt = <800000>;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo5: LDO5 {
+> +				regulator-name = "LDO5";
+> +				regulator-min-microvolt = <1800000>;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&usdhc1 {
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 = <&pinctrl_usdhc1>;
+> +	pinctrl-1 = <&pinctrl_usdhc1>;
+> +	pinctrl-2 = <&pinctrl_usdhc1>;
+> +	bus-width = <8>;
+> +	non-removable;
+> +	status = "okay";
+> +};
+> +
+> +&usdhc2 {/*SD Card*/
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-1 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-2 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
+> +	bus-width = <4>;
+> +	no-1-8-v;
+> +	max-frequency = <25000000>;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +
+
+Drop the newline.
+
+> +	pinctrl_eqos: eqosgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_ENET1_MDC__ENET_QOS_MDC                        0x53e
+> +			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO                      0x53e
+> +			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0                  0x53e
+> +			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1                  0x53e
+> +			MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2                  0x53e
+> +			MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3                  0x53e
+> +			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK  0x53e
+> +			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL            0x53e
+> +			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0                  0x53e
+> +			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1                  0x53e
+> +			MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2                  0x53e
+> +			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3                  0x53e
+> +			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK  0x53e
+> +			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL            0x53e
+> +		>;
+> +	};
+> +
+> +	pinctrl_fec: fecgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_ENET2_MDC__ENET1_MDC                   0x57e
+> +			MX93_PAD_ENET2_MDIO__ENET1_MDIO                 0x57e
+> +			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0             0x57e
+> +			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1             0x57e
+> +			MX93_PAD_ENET2_RD2__ENET1_RGMII_RD2             0x57e
+> +			MX93_PAD_ENET2_RD3__ENET1_RGMII_RD3             0x57e
+> +			MX93_PAD_ENET2_RXC__ENET1_RGMII_RXC             0x5fe
+> +			MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL       0x57e
+> +			MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0             0x57e
+> +			MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1             0x57e
+> +			MX93_PAD_ENET2_TD2__ENET1_RGMII_TD2             0x57e
+> +			MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3             0x57e
+> +			MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC             0x5fe
+> +			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL       0x57e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lpi2c2: lpi2c2grp {
+> +		fsl,pins = <
+> +			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
+> +			MX93_PAD_I2C2_SDA__LPI2C2_SDA			0x40000b9e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc1: usdhc1grp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD1_CLK__USDHC1_CLK		0x15fe
+> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x13fe
+> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x13fe
+> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x13fe
+> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x13fe
+> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x13fe
+> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x13fe
+> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x13fe
+> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x13fe
+> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x13fe
+> +			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x15fe
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2: usdhc2grp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD2_CLK__USDHC2_CLK			0x170e
+> +			MX93_PAD_SD2_CMD__USDHC2_CMD			0x130e
+> +			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x130e
+> +			MX93_PAD_SD2_DATA1__USDHC2_DATA1        0x130e
+> +			MX93_PAD_SD2_DATA2__USDHC2_DATA2        0x130e
+> +			MX93_PAD_SD2_DATA3__USDHC2_DATA3        0x130e
+> +			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
+
+Could you try to align the indents, so that those hex values appear at
+the same column?
+
+Shawn
+
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
+> +		>;
+> +	};
+> +};
+> -- 
+> 2.34.1
+> 
 
