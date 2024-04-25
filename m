@@ -1,35 +1,42 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8B42E647
-	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 09:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6C784D3C
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 09:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714038972; cv=none; b=SaP89tmexYiRWEIsgmyDoo8upCdXJAJNg1/FIqAePuNP4o2KmoS9fcte9EZF5vyrtIBK5RkmM6BkuRkIGR9HL5VfMi/UA7nfizGdY0/YzzPkT+fpGY7Rj4S7KvNBc/axhhqAnSUDt29zvnsvCk8plFeVJSuRC1MHG/fvbOgkQNY=
+	t=1714039133; cv=none; b=Xg80ZVUfVQ4MKVMscONEUL8iL9VM7eT9f3MOowRhilNydHX4KNJoWj9bCykMSuyNVqS7yabWIcGpklH7RzH1xNIRNLJupa4huJDj1CUsRcPk/zGnTUqaemp8olxCINoY3eg/JDtV3OSJk6FOQiIushVK1WqJZpc66KKPnTt2DxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714038972; c=relaxed/simple;
-	bh=keREG8VOOTy4avuSTdnT/gcg/ZfYhNKRJ0pfeqnt/5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=t8/dHdoSLN4o741ogO5s6t1VOnojlIt87epzR7o095L0i7w0YnW4U9h0hokpRjhdN053jo3tOZiwxitIqHeKsIVQh2mS2sZB6BMfmBJlTrI5AWplvSpv9nmuYKGO0A9RAEpeRR1qTLmNmPexjezpACyv9uwiQ2MTNXYxpRsZrpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ONuytCpX; arc=none smtp.client-ip=123.58.177.132
+	s=arc-20240116; t=1714039133; c=relaxed/simple;
+	bh=bS5vRZgCepqsfybsuZmUFrGIxQpeiKXaE4I15xitOig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I5t5qdWciMfaOhozHYkugfqOI9TnBIGZiG10tI9U9Kn6t1A2hR0827NJTVmd+TZD37dDDB4S4w4tdrw5gz7dJhFonv48q5sfvYy/GtQZ0ErX4wYS1SvZKv81FNuCdmRV0rGtzpDWNV6SoC3Ogy58cHnxchRUJZH2YyJjBnLsjDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HJ4ikIuF; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ONuytCpX"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HJ4ikIuF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=xQul+LRJa5DBqWGtv092kro7gL1oG1Dc98ltSQ5nIAU=;
-	b=ONuytCpXMYEEPHdRlj4YG+hnuQ41IsIM5HpG0VhuF93KWW9Zp1f3xrmFZBX5o+
-	HA3Na+D0DECoj4dYMjZl5Zl9xIoIUC0ltqeBNwzEm1SdQW8rTN2xniu3GXf7kg+P
-	yBGW48mhblJncz/XJ7WVCshjCqF9Mohmr8jGOStS34rI0=
+	Content-Type; bh=SUK3KiYsAjXmz1lQMFlWpM7cirHy3HazgSFNWJvitho=;
+	b=HJ4ikIuFN43ZQXNjGc2sJM00WaIucvlYOZNwkAcJ6WDdd2evjqUe+8s456JNYl
+	fgOe1CD+H0VRnuqB7vlSLlvyJMY1unn7IxuqAqJhVv3bAjt5EtYM3Oe9aBdbgfSx
+	l6xaxrK2Mo+6ZQyh0PzsA2GTit/2HRCzLWqdsIaDpCpyQ=
 Received: from dragon (unknown [223.68.79.243])
-	by smtp2 (Coremail) with SMTP id C1UQrADXX1GnKCpmhnh2BA--.6268S3;
-	Thu, 25 Apr 2024 17:55:52 +0800 (CST)
-Date: Thu, 25 Apr 2024 17:55:50 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrADXHyFKKSpmwUBvAw--.20945S3;
+	Thu, 25 Apr 2024 17:58:36 +0800 (CST)
+Date: Thu, 25 Apr 2024 17:58:34 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org, arm@kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] i.MX fixes for 6.9, round 2
-Message-ID: <ZioopqscxwUOwQkf@dragon>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: m.felsch@pengutronix.de, frank.li@nxp.com, ping.bai@nxp.com,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/1] arm64: dts: imx93-11x11-evk: add RTC PCF2131
+ support
+Message-ID: <ZiopSiXqkZ3H7Dhv@dragon>
+References: <20240425013507.2840128-1-joy.zou@nxp.com>
+ <20240425013507.2840128-2-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -38,40 +45,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-CM-TRANSID:C1UQrADXX1GnKCpmhnh2BA--.6268S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Gw4kAry5Ar4Uuw4DWF1Dtrb_yoWkurc_ZF
-	W8GF1UWw48Jr4UA3WUtw1vgr9rtF1UJryrAryUXr47X39rAr1UJFy0qrWrXrnrXw4rXrZr
-	JrWUXw1jq34rCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0StC7UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGArLZV6Nnu1lSwAAsy
+In-Reply-To: <20240425013507.2840128-2-joy.zou@nxp.com>
+X-CM-TRANSID:ClUQrADXHyFKKSpmwUBvAw--.20945S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsyCJDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFQzLZV6NnF5h7QAAsq
 
-The following changes since commit 00b436182138310bb8d362b912b12a9df8f72ca3:
+On Thu, Apr 25, 2024 at 09:35:07AM +0800, Joy Zou wrote:
+> Support RTC PCF2131 on imx93-11x11-evk.
+> 
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
 
-  arm64: dts: imx8qm-ss-dma: fix can lpcg indices (2024-04-03 20:44:54 +0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.9-2
-
-for you to fetch changes up to d7f3040a565214a30e2f07dc9b91566d316e2d36:
-
-  ARM: dts: imx6ull-tarragon: fix USB over-current polarity (2024-04-25 14:21:00 +0800)
-
-----------------------------------------------------------------
-i.MX fixes for 6.9, round 2:
-
-- Fix i.MX8MP the second CSI2 assigned-clock property which got wrong by
-  commit f78835d1e616 ("arm64: dts: imx8mp: reparent MEDIA_MIPI_PHY1_REF
-  to CLK_24M")
-- Correct USB over-current polarity for imx6ull-tarragon board
-
-----------------------------------------------------------------
-Marek Vasut (1):
-      arm64: dts: imx8mp: Fix assigned-clocks for second CSI2
-
-Michael Heimpold (1):
-      ARM: dts: imx6ull-tarragon: fix USB over-current polarity
-
- arch/arm/boot/dts/nxp/imx/imx6ull-tarragon-common.dtsi | 1 +
- arch/arm64/boot/dts/freescale/imx8mp.dtsi              | 2 +-
+Applied, thanks!
 
