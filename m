@@ -1,233 +1,214 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2049.outbound.protection.outlook.com [40.107.21.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC2A14A4F7;
-	Thu, 25 Apr 2024 15:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714059105; cv=none; b=i39roKMIzgh3AiDPWm2e1IepMajCmDH37Aj+mfzsXc9SC9k6l1Vr6dSPvPKNPCWZWGnib1EmbRTI99PdbefMWXrtl2E0iZZU5u3iZfDTiudTazbA7fQXEVC1T4x/FrIKWPtsTgY+CYjkHUxhaWiYnyQaVaxwJWeD/wVrtH3ohRY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714059105; c=relaxed/simple;
-	bh=3/GCTM431jHb9nDcDDmIr5rh5QVpw++p6BByO8EL4Z4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MgxJ71JBpN2np7cT+KKC1KBqJ62gUESHKazu7nrpa9R98JihnJZoCvFANsYXJvt7+JFghrKMAMyYd1+6Qmlm3FDVyzkkDtYObZM2sxyFXe4RjzCMFSe86MGp10x88X6cjHtzTqERNBOXvrGNOBDeaoDhzF1If/R+kMsgLDsgfVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tCd2zckO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24830433AE
+	for <imx@lists.linux.dev>; Thu, 25 Apr 2024 15:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714059300; cv=fail; b=BSZo81n4FDRuxX5oDuUrhkhKiMhKLI8XSkriWsCDXv8OOoUTvfL14nvMH19dIRctmQo/VLkgVPcstOqNJedsPcVhOeE5K+DEwsAPoAgx21Cv7j6SaqDxC+pEnU8VMxjO/EMhsoVGzV3d6Sn3bTz1LZjZMw+RqIjwRIFdTyvYbak=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714059300; c=relaxed/simple;
+	bh=ZkHRbbzmumSaGsE+/ljDDyVcXbpNuq6W6vJcwHIIZ98=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=j3eBZNg/sWLfvOsjJVqDEHg8WP5M5PWT6BV2j3Uewf10wqhXNUkKs0ZGpfwM/nNbVmDwe6L4z3Z8J6yqlFajHMiXngSb7SyidCGN+G5zkDRqdEfTT3c4+1cfW3ESlea2sZ+/hf+5M+5OEs+kwop/xFOw/6oJkFzaeAQ1WD8oqjI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=UzmbdrpU; arc=fail smtp.client-ip=40.107.21.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tCd2zckO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DBDC113CC;
-	Thu, 25 Apr 2024 15:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714059103;
-	bh=3/GCTM431jHb9nDcDDmIr5rh5QVpw++p6BByO8EL4Z4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tCd2zckOmDI/bTXDD6Q4O/dY6HpYLih6zDo5Ye0WBjd7OthjGOsZZzce1D0Yzxxax
-	 Om22flbhYkb/UEHgKwexvcRNoAMtYT8g+3xJI+UvHi35BB0UY9l3jXY0UhRl1abFka
-	 wyWQg3+tXq6Jj8CACW218C6TaoyaUDQPDzJUduVmbvlgILAU8AneoIGKhXNRG2aLHu
-	 4ePllrlWYMNtlbj4f4ry+ATP2RSWig7gAg/JcQ75zX8cCw6Unf8cL9vT22RVDlZ9A5
-	 oEOMNua/fgg5Yjflz1lgwLVEIEq0lG9THS5xdMO6i9lp+mDa2KYSNHmFv1oVxCez7y
-	 +v/bkdeENoPoA==
-Date: Thu, 25 Apr 2024 10:31:40 -0500
-From: Rob Herring <robh@kernel.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: firmware: arm,scmi: Add properties
- for i.MX95 Pinctrl OEM extensions
-Message-ID: <20240425153140.GA2556348-robh@kernel.org>
-References: <20240418-pinctrl-scmi-oem-v1-v2-0-3a555a3c58c3@nxp.com>
- <20240418-pinctrl-scmi-oem-v1-v2-1-3a555a3c58c3@nxp.com>
- <20240424193007.GA329896-robh@kernel.org>
- <DU0PR04MB9417C67342B1DD6CC299B4CE88172@DU0PR04MB9417.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="UzmbdrpU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OQARlcxXkzx4PR2BxIbyOeRnTbmlbuXgmUDxwAFBsCzjm7tzRa0SHlHoWSzzKksQKNvxcemmeXc3OGxC+rtaJ95kkP6BJUvjLoVvaInxi/D0gj/mFtPhemmk+nPdqRqV/QiJhT0vmfAvZ7cUuukQ3WEmLgIvisJqNdG59iUK5zNL8jr7skUpQMvNy12UePmDlV8y9JjWR2OXwxn4lAa7XHCz3h8xOKzOH2LFzN6zP8SgSUOvCJyxm/J04DePhUxGEC9/614egNo00ol9qZnvHUDxAGfdrYhZu0H9YZNIf8KTVzuZGo52z8C40VHai2fctjSG7AWQ4m870Ybk4kjaOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F/+Hk8PRdHtM4pvl9ueqaqoloknrvfi+d7L0BpGvuVg=;
+ b=YLxich6peQyIZA1UshFkJ0XN9SoPML0mWpBP9VOw602qQhMqAa7lBB8z+bJWxt+VcgHt117nBwbEYwbE3PuXsmY/6rUd1nVXR3yC/MPvo9mBfOolOoOodzvytAA8I98jIvLsszZCJvEzH6zzSb8fjOu0frR21heIegQr6PuysbNTmJ34TniwkEnzJcudGhaaxYHQaInnkgaXbiWa+xZootYxaq6ryq/IMs/cEq+gmfQ8WNc4IEVJybrQOODh1Y3R1QEA9dPLtXVzJBrjBpwYbcuzQNUKteScKeO+7woWalV85ygYpShZHqzQB8XuTn2+biCCg84R2tTUp3C9wNgdQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F/+Hk8PRdHtM4pvl9ueqaqoloknrvfi+d7L0BpGvuVg=;
+ b=UzmbdrpUeSQ5hcyU1shFKxZr/Fc6IMcjK3atpC/amKfR4RG4We32YhX7TMo6lfxD1GTrvJG7NYhlwisAvKHzFf50DSrS/UIVYZVcXGKwq2wkpr45HNxxSIAFKC99RfK+EQ/nRoCOKWuaZVbk1B1SOpLQbuNFsqOqPJmObbhRfmg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DB8PR04MB7020.eurprd04.prod.outlook.com (2603:10a6:10:126::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22; Thu, 25 Apr
+ 2024 15:34:56 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7472.044; Thu, 25 Apr 2024
+ 15:34:56 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v5 0/3] arm64: dts: imx8dxl: add audio support for imx8dxl
+Date: Thu, 25 Apr 2024 11:34:40 -0400
+Message-Id: <20240425-b4-dts_dxl_audio-v5-0-46397f23ce35@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABB4KmYC/33NwQrCMBAE0F+RnI1sNhvTevI/RCRpVg1oWxotF
+ em/G71YoXicgTfzFIm7yElsFk/RcR9TbOoczHIhqrOrTyxjyFkgIAEBSk8y3NIhDJeDu4fYSEv
+ eAYIGZ1Fk1nZ8jMNncrfP+RzTreken4devds/Y72SIAOuAxpfkINiWw/tqmqu4j3V44SrYoZj5
+ kyMlqzXjspfricc59515gaUNUoddVnyL6cp1zOcMofKWPY2a2e/fBzHF+weFulrAQAA
+To: Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1714059292; l=1670;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=ZkHRbbzmumSaGsE+/ljDDyVcXbpNuq6W6vJcwHIIZ98=;
+ b=lEsNeZ8CR+sVDniTYvGaOqIpmJQbvXTUvw2RAEnnsU31EISu8iPbTNQJQ8hjua7YRNcmG3mq/
+ Xax0XE+Cp9ACPMxBZC66+mkkga8FCe7lKFxRz74gOL/D5rVMj7as4Mb
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BY3PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9417C67342B1DD6CC299B4CE88172@DU0PR04MB9417.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB8PR04MB7020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f44477f-b927-4aba-3721-08dc653d423d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|366007|1800799015|7416005|376005|52116005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cmFUS2JmSGtUWXFueFNsL1ZvMTFPR2N6OEhjM3lyVS9XM3hDWmtiQWNYRFk0?=
+ =?utf-8?B?cUp5MlRCYnViSjZFYVMrdzRLSWNjRjNiQ29aRG9jeURhYmV1SWRJQzZGSTJ0?=
+ =?utf-8?B?WmRUWk9pdmJhbWF1aFh2cEUyWk4wTkNhNVBodEZxSnREMS9MT21yTWVtQ1Fz?=
+ =?utf-8?B?TWREMXBsRVV6T2xWaGJuRlowMGtkNXROMjZ0a0lxdkVXbjBodXZWendzc0Fa?=
+ =?utf-8?B?MDErWmNwWlQ3eE5Cczc1VXRZRUtaSi8yV3FDaysycURDdTJ1TzFEdHJGdXF4?=
+ =?utf-8?B?c0Z2VmVoOVZoMThZZ21kcERhbWZ2elp5am55eldjOTJFM290UVNqUkFnbHYv?=
+ =?utf-8?B?QlA4RUxVVm5NaExROERpK05xRnVaZE5MZnBDNnlGbzdwYlVOaWxzTWNNUEhG?=
+ =?utf-8?B?QWJ4OWkwNTVNZFpiUTFhUjhvSmlLSjRLdE1uckFWT2ZYUWF6SHhuUjliOGc3?=
+ =?utf-8?B?YTBLRmpPWnVNMlppY3NqclpWZ1NOSmEzTXpPZnErUEFTSlc1UElUNjFYbVpY?=
+ =?utf-8?B?UkNtN1U2Ym8rYnVRNmtjTnRPTW5JTmplOUJCSTZDOEhHOGVLVCtqY1JtMTFn?=
+ =?utf-8?B?M3RMVGthQkhJR09rejdzMVBLSHNVZWF4c0JNYXFMLy83R1g5OFR0L2p1a2VW?=
+ =?utf-8?B?RUg5ZDFHWFlwMnRmRkVVSkk2ZVVxc2FPcXdxLzk1L0treGl3UW42VXN2eFdi?=
+ =?utf-8?B?aEQ5VzNleEJqREFVOXpwMGdzN0p2N2JLVm9Lb3ZRcFJyaU55QktsV1ZVajJU?=
+ =?utf-8?B?TGR2dXpiL2JSeUM0N1l1Tm1CUExTNHBQZ281bmx3SHlQOWx5d3J3UzltSzQ3?=
+ =?utf-8?B?TkgyK1RTalhBUld1ZGloakNycEdHYVlYd09Idzhpc2cvQzFNNmFzMUVSSlpu?=
+ =?utf-8?B?bmRWeUZyanZtSkJtdVdqRkNOZXYzL1ZiWHRRdGY2UXZVTjVPSjRiK1JFMGNH?=
+ =?utf-8?B?ZDkzN1doM3F5Qzl0OHc2cTJwOUtJckQxWmUxSGlVbzUvUlpDSlYrZDg5NzBB?=
+ =?utf-8?B?eEJtYXRJdmZyYU5RZkt0cnovNjhGcUNlcGxCZUpxeW43ZGd4bHFGTG0zZ3lD?=
+ =?utf-8?B?RTZtWHpyUFlrZE1mYzNQczRKeDJKL0xrUEh3QlF2NnllbUZlRzQyWDkxSFl6?=
+ =?utf-8?B?Qk5SWlBXWlRESjNzOVRST1FmWUxtSHJYRitESEpzM3BDRkZuTUxQY1MrSHJZ?=
+ =?utf-8?B?WHM0Yk5pNVI0SWJZZEVKMGhmTFpXL0hwQXBGL29pNHV6QVNGaVlQRUs4RjFB?=
+ =?utf-8?B?YzAzbHdBR3JCSFV4MC9ETTA4dWU1OXB1SkhRWUdadVhLRzAwMUNHVzQ5RS90?=
+ =?utf-8?B?SE5GS3BNUEU1bC9ENEh6cHo5WmdxcHZtTDNYczNocDlaMS9tQWEvdDJwYmQ2?=
+ =?utf-8?B?VHQyeXJlT0lDNU9RKzJGVldhNmF4UkU4Nlp2eDZ4UFp0ZVFGaEpxS1hwb2d4?=
+ =?utf-8?B?UG1Zd1NJbEFiNURVRmtGT0FyTmVLTDFqelcyekNQT1hZL2dtVm1MTGtaaXJn?=
+ =?utf-8?B?V2tHNkxCbUNiNkpueDNGaXRSL3EvbU5oY3VhOU8xSkMzMXRJeXJuSnQxN0Ro?=
+ =?utf-8?B?N0NraTNOMWpGRjhSZ1VGVFZjZVNPc0ZqUmEveVNvWjlvYnRFbm5CaFJFZ3Vp?=
+ =?utf-8?B?bTJGWnNKOG43RzFRQm1YWDNUN2FFcElaSml4QndkU3M1NnIvRklvS3ZwWXAr?=
+ =?utf-8?B?Rm9GUmZwVng0WlVNZTQ2WlF0MGxZYzF3V1VXTzBrdUZvTTFYRGdsSGVRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SXBzLzI4UXBhSzg5dHM0L01SWmtLRVFwVTZENVg5VW5FYys2Z01QQVM3aVlY?=
+ =?utf-8?B?eVBZZ3JOdVVhTERrbWhKWVdXaHg5WmtUWWZ6Ujk1QS9VaVNhWWltOFRvYzk0?=
+ =?utf-8?B?bTZVOHhwWlNXNVYyNTVnajBWQVlEb0tQRzcxaVFFUGNXOG1nYTVvZEV4Uzhy?=
+ =?utf-8?B?Z1VSOS9IR1FSNExGay9JL3JtUnB0Yy9TTTFNS1NUdit3WDZrUS9zRnIwSmdr?=
+ =?utf-8?B?WVhqalV1a2xEWVprVFFMOHRlYW5oUTVwRnlaRDJybWpFQ0VpQnJoRVh1aWJB?=
+ =?utf-8?B?OTJGQTNzNXRPdHRTbXpWQzRFUDJyQy9PWHBSQi9nOE4wZ2JKRUZ4Qy93cDNG?=
+ =?utf-8?B?ZDNoOXZaNWgwRDJIRjNNcXJwV29FRUduQi9kZ2c1RFdOM0lDZnlySllueW9G?=
+ =?utf-8?B?SFRxQVJzdWI1UUtWV1Fkd240aGFQaFFSRndPRUc4Z0M1eEV0V01lVFd2UVFu?=
+ =?utf-8?B?VjY3eHNBdXdVV3h4bi9ES2cwTUYwbzNMUzBNQU91clRFZUIyV0p5RVdMQU92?=
+ =?utf-8?B?ZGwxTFBZZWRTNjdrUFcra3MybUNSdzhUT0EwN2xPZ29BWVhyNkdzMVlWYk9H?=
+ =?utf-8?B?a3NWaTFKV3dGU1pNZWQwbFRwUmxjWS9DQmh5UXhRTTRJdmxwRE01bVRreDg2?=
+ =?utf-8?B?RTRJcGlzUW8rRVR5NnRMY1hJdURobVN2bzFBdk5iaGlEOFhSeUcxM1Z4a3Z0?=
+ =?utf-8?B?RFBmV1U2OUFkbklYUndVNVpSRXovRkVLSjhJOEZuaUtzcUhYbXl2dXoraHNI?=
+ =?utf-8?B?dEEzcjVZTjN6Z1paTkJSMXR2bVMyK0RCT3pWNmJzM2V2bTVkR1o4b2xGMjVE?=
+ =?utf-8?B?dEVzUWN6b29uZDVNczFXdGxQb0h6NzVWQkpWbERmVG5DSng0ZnlhVGpYQVFB?=
+ =?utf-8?B?bld4Y3hlUTBTd0EwdUlqRy9IS0xFbnlmZVdjZFpwVVFZZkJuYnBYQ0pUeGJZ?=
+ =?utf-8?B?Zks4Y3BZMzNiWURuVVFXSjczL2FzWkhFTjVNWEcrNm0vdlpYWDdVRzJGMTQ0?=
+ =?utf-8?B?SHFFdDR4K1hwcllmNXA3eUVueDJEc0VnY0tEa2VtTVJ0b3hvRG5KQVJUc0N4?=
+ =?utf-8?B?dXM5ZCtMR3pNN0M1cmlaL3hCd0pTS0hIVVFnTUU0S1NNWWFtTmpSSTAwRy9t?=
+ =?utf-8?B?V0VRWkYyMVBkcGNFSEx2R2FUamplL0E3WGVua1ZlY2ZVWjhIay9hVWhCUWJS?=
+ =?utf-8?B?N05OejFNZEVBVElsdzdnVjdKdkNUbHl5UWNVYnJqUWhFWWVjWGx0dUJGMzdt?=
+ =?utf-8?B?d1lDN2FUYm5kelR3bWVhUVlIWTVQTjRZd2ZNblh4WjJ3dGxOVXhrV29nTUdm?=
+ =?utf-8?B?MS9RaHJSNFRsOVgxTlNFWkYwNXVBZHNlVVJhazhNS1lkT2FWeFFvcmIvdkN0?=
+ =?utf-8?B?OC9iQ3Z3NFZiYmJaeERMQU9mQmhIR0F4L1hsMDg4bHBNVjJEUUdyMXFxQ000?=
+ =?utf-8?B?dG5EYlRlYkk0eG9tZ3Y5aUl6SjZGRUtnL1lSWmdVUkVuNUFvdlZvSVpaNFEr?=
+ =?utf-8?B?cTRIcTIydjlZNTdTYitqeGpCbkdJa1pQN3ZSaFlRNHo4V2pqSkgwTnZqSXVm?=
+ =?utf-8?B?aWF0UVIvNmJkNWV5bmlFU2pONENmV3lFaEwzc3J6eGgxQlk1WW1YU2o0ZHN6?=
+ =?utf-8?B?SUp1T2tTQjg3c05XMVBsbEFxa1AxZ0dvOStIOVJhRUpRM3BleCswV01wZkU3?=
+ =?utf-8?B?R0RZSG4vSENGSEtyT2xzV2lBRCtkazVSVXAwZzlJaTVHS2ZOdzF4OUJiVnlV?=
+ =?utf-8?B?U0ZwTW95MGdDNW1TUkZtUDUzelJ4V0psV1dFRjA4ZldBWmgyM2xlZU0rdk9G?=
+ =?utf-8?B?RjFBSCtRUmVIamt0aFEvVVl4WUx5eGN3S0lZY1ZpWngyeXpTZm5zVWZPc1dU?=
+ =?utf-8?B?V0hYa05HUVVZd0dFZHpQYTBGVXRobkVjb1RWNEVzQzYvQlJpUmMwVG5vUDNs?=
+ =?utf-8?B?NjU3VlRqMXltWENkcHI1TDBReC8vb3Ayb1RWTEZLNE42NHQ1SnFiR2pueGt6?=
+ =?utf-8?B?anJMNER1NlYvdENsVUU3OWdlMEg0aEgxVE5nMGdiNW5uNVg1S0pjMzZtb3hm?=
+ =?utf-8?B?OVA5VkE2cHBFSUt0a1FYT09WZlVMOFptcDVuY3o5aEFDNEEvWnBMV0xVYU9v?=
+ =?utf-8?Q?jf+4=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f44477f-b927-4aba-3721-08dc653d423d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2024 15:34:55.9390
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8KswqgY+BWDQb0uyLJMZOU4txQUIE+gRlDxBFIemanyU1amHfxE29MgI3Pcxy9hYHeK/nqIqe2Rmr4bqXYVKcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7020
 
-On Thu, Apr 25, 2024 at 09:06:00AM +0000, Peng Fan wrote:
-> Hi Rob,
-> 
-> > Subject: Re: [PATCH v2 1/2] dt-bindings: firmware: arm,scmi: Add properties
-> > for i.MX95 Pinctrl OEM extensions
-> > 
-> > On Thu, Apr 18, 2024 at 10:53:17AM +0800, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > i.MX95 Pinctrl is managed by SCMI firmware using OEM extensions. This
-> > > patch is to add i.MX95 Pinctrl OEM extensions properties.
-> > >
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/firmware/arm,scmi.yaml     |  9 ++-
-> > >  .../bindings/firmware/nxp,imx95-scmi-pinctrl.yaml  | 66
-> > > ++++++++++++++++++++++
-> > >  2 files changed, 72 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> > > b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> 
-> ....
-> 
-> > > +
-> > > +title: i.MX System Control and Management Interface (SCMI) Pinctrl
-> > > +Protocol
-> > > +
-> > > +maintainers:
-> > > +  - Peng Fan <peng.fan@arm.com>
-> > > +
-> > > +patternProperties:
-> > > +  '[a-f0-9]+$':
-> > > +    type: object
-> > > +    unevaluatedProperties: false
-> > > +
-> > > +    properties:
-> > > +      pins:
-> > > +        $ref: /schemas/types.yaml#/definitions/string
-> > > +        description: name of the pin
-> > > +        items:
-> > > +          enum: [ daptdi, daptmsswdio, daptclkswclk, daptdotraceswo,
-> > > +                  gpioio00, gpioio01, gpioio02, gpioio03, gpioio04,
-> > 
-> > ioio?
-> 
-> Yes. The name is exported from SCMI firmware.
-> 
-> > 
-> > > +                  gpioio05, gpioio06, gpioio07, gpioio08, gpioio09,
-> > > +                  gpioio10, gpioio11, gpioio12, gpioio13, gpioio14,
-> > > +                  gpioio15, gpioio16, gpioio17, gpioio18, gpioio19,
-> > > +                  gpioio20, gpioio21, gpioio22, gpioio23, gpioio24,
-> > > +                  gpioio25, gpioio26, gpioio27, gpioio28, gpioio29,
-> > > +                  gpioio30, gpioio31, gpioio32, gpioio33, gpioio34,
-> > > +                  gpioio35, gpioio36, gpioio37, ccmclko1, ccmclko2,
-> > > +                  ccmclko3, ccmclko4, enet1mdc, enet1mdio, enet1td3,
-> > > +                  enet1td2, enet1td1, enet1td0, enet1txctl, enet1txc,
-> > > +                  enet1rxctl, enet1rxc, enet1rd0, enet1rd1, enet1rd2,
-> > > +                  enet1rd3, enet2mdc, enet2mdio, enet2td3, enet2td2,
-> > > +                  enet2td1, enet2td0, enet2txctl, enet2txc, enet2rxctl,
-> > > +                  enet2rxc, enet2rd0, enet2rd1, enet2rd2, enet2rd3,
-> > > +                  sd1clk, sd1cmd, sd1data0, sd1data1, sd1data2, sd1data3,
-> > > +                  sd1data4, sd1data5, sd1data6, sd1data7, sd1strobe,
-> > > +                  sd2vselect, sd3clk, sd3cmd, sd3data0, sd3data1,
-> > > +                  sd3data2, sd3data3, xspi1data0, xspi1data1, xspi1data2,
-> > > +                  xspi1data3, xspi1data4, xspi1data5, xspi1data6,
-> > > +                  xspi1data7, xspi1dqs, xspi1sclk, xspi1ss0b, xspi1ss1b,
-> > > +                  sd2cdb, sd2clk, sd2cmd, sd2data0, sd2data1, sd2data2,
-> > > +                  sd2data3, sd2resetb, i2c1scl, i2c1sda, i2c2scl, i2c2sda,
-> > > +                  uart1rxd, uart1txd, uart2rxd, uart2txd, pdmclk,
-> > > +                  pdmbitstream0, pdmbitstream1, sai1txfs, sai1txc,
-> > > +                  sai1txd0, sai1rxd0, wdogany, fccuerr0 ]
-> > > +
-> > > +      nxp,func-id:
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        description: Indicates the PAD connections which function
-> > > + module
-> > 
-> > The description makes no sense...
-> 
-> I will use below description in v3:
-> For each pin, there are up to 8 muxing options (called ALT modes). For example:
-> Select 1 of 5 iomux modes to be used for pad: DAP_TCLK_SWCLK.
-> 000b - Select mux mode: ALT0 mux port: JTAG_MUX_TCK of instance: jtag_mux
-> 010b - Select mux mode: ALT2 mux port: CAN4_RX of instance: imx95_wakeupmix_top
-> 100b - Select mux mode: ALT4 mux port: FLEXIO1_FLEXIO30 of instance: imx95_wakeupmix_top
-> 101b - Select mux mode: ALT5 mux port: GPIO3_IO30 of instance: imx95_wakeupmix_top
-> 110b - Select mux mode: ALT6 mux port: LPUART5_CTS_B of instance: imx95_wakeupmix_top
-> The nxp,func-id property is selecting one ALT mode.
+No new warning add
+by make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  CHECK_DTBS=y freescale/imx8dxl-evk.dtb
 
-Looks like constraints on the values. Please add schema for them. I 
-don't think you need to list an example. 
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v5:
+- remove fsl,imx7d-evk-wm8960
+- Link to v4: https://lore.kernel.org/r/20240423-b4-dts_dxl_audio-v4-0-0c57eb7399a7@nxp.com
 
-Perhaps you should be using 'pinmux' property. That is the standard way 
-to specify a numeric mux mode.
+Changes in v4:
+- fix wm8960-2 and wm8960-3's audio-routing =
+- Link to v3: https://lore.kernel.org/r/20240422-b4-dts_dxl_audio-v3-0-5017511f399e@nxp.com
 
+Changes in v3:
+- change bt_sco_codec to 'audio-codec-bt'
+- 'compatible' to first
+- audio-routing = "Headphone Jack", "HP_L",
+		  "Headphone Jack", "HP_R",
+- remove extra space in fsl,asrc-rate  = <48000>;
+- align clock at assigned-clocks =
+- using tab in pinctrl_sai<n>
+- Link to v2: https://lore.kernel.org/r/20240418-b4-dts_dxl_audio-v2-0-e4e2747b3a49@nxp.com
 
-> > 
-> > > +
-> > > +      nxp,pin-conf:
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        description: The PAD configuration
-> > 
-> > PAD stands for? Or is it pin configuration as the property name says?
-> 
-> It is pin configuration which includes pull up/down, drive strength and etc.
-> 
-> > 
-> > This is just a raw register values? 
-> 
-> Yes.
-> 
-> Why can't standard pinctrl properties be
-> > used here. What's the point of using SCMI pinctrl if you are just shuttling
-> > register values to SCMI?
-> 
-> Standard pinctrl properties will need more memory in our SCMI
-> firmware design. We have limited on-chip memory for SCMI firmware usage.
+Changes in v2:
+- use general name: audio-codec
+- move vendor property to last
+- remove undocument property 'capture-only', since linux-next/master merge
+txt to yaml bind doc
+- Link to v1: https://lore.kernel.org/r/20240402-b4-dts_dxl_audio-v1-0-d26d25b84a08@nxp.com
 
-Then maybe you shouldn't be using SCMI and just write a pinctrl driver. 
-Or, Linux has to parse the DT anyways, so use standard properties and 
-transform them into your register values and send that to SCMI.
+---
+Frank Li (3):
+      arm64: dts: imx8dxl-ss-adma: delete unused node
+      arm64: dts: imx8dxl-ss-adma: update audio node power domains and IRQ number
+      arm64: dts: imx8dxl-evk: add audio nodes
 
-> > > +
-> > > +      nxp,daisy-id:
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        description: The select input register ID
-> > > +
-> > > +      nxp,daisy-conf:
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        description: The select input register value
-> > 
-> > I remember some daisy chaining stuff in iomuxc, but otherwise
-> > 
-> > What's the relationship between these 2 properties? Is it valid if only
-> > 1 is present? I doubt it.
-> 
-> The scmi firmware will convert the daisy-id into register address, and
-> write the daisy-conf value into the register.
-> 
->  Looks like an address and value pair. Either the
-> > schema needs to define allowed combinations
-> 
-> The firmware will check whether id and conf is valid, is there a need to define
-> allowed combinations? There will be lots of check to define allowed
-> combinations.
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts      | 229 +++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8dxl-ss-adma.dtsi |  78 +++++++
+ 2 files changed, 307 insertions(+)
+---
+base-commit: 2d13a7797c3970a4eea160844d8905c93065634f
+change-id: 20240402-b4-dts_dxl_audio-74ba02030a72
 
-The firmware can't check that the DT contains nxp,daisy-id but not 
-nxp,daisy-conf or vice-versa. Of course the kernel could check that, but 
-validating the DT is not the kernel's job.
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
-
->  or design the properties in a
-> > way you don't have too. IOW, make a single property that's a tuple of register
-> > ID and value.
-> 
-> Define tuple will make the property not able to use linux generic pinconf
-> driver. The current parse_dt_cfg for custom_dt_params only support a
-> single u32 value and not easy to support tuple.
-
-Sounds like a Linux problem. We're talking about bindings. Fix Linux if 
-it doesn't meet your needs.
-
-
-How many bits of id and conf do you need? This too could just be part of 
-'pinmux' property. It's value is entirely h/w specific and up to you. 
-You just need to fit it into 32-bits (though we could perhaps enlarge 
-it).
-
-Rob
