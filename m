@@ -1,126 +1,108 @@
-Received: from smtpcmd0642.aruba.it (smtpcmd0642.aruba.it [62.149.156.42])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E970145358
-	for <imx@lists.linux.dev>; Fri, 26 Apr 2024 16:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42AF208D6
+	for <imx@lists.linux.dev>; Fri, 26 Apr 2024 19:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714148129; cv=none; b=ZiZ0F5JWEzURxtYukpO+SxhNIYdq/eqFScClEVVLQ4AixN8GOqyapAXZiKCL1hove6wphNKmxWqIkJnVSsKXwLEPg/a9w6dMVOqwrRa0rIreBs6PdTQCZVff1e/tha6Nxw9BAhwZMKSk7VwEgHRSH5IkLuuSnBEssbdMHNbZjO4=
+	t=1714160445; cv=none; b=DFZS7/kP+gjXUE9bmi5AiesDVRSu6nNFUvoXRokXhxjBR7nm8XKXD3Bn9zyDolu7q6mPMz5ISYbq+gA72xgyZtfU/KphhoaZBvizot2ku+BvAak3tV3NtSn4ikcpzzrviJUPBfdjPHSyGdas0f6949oYrWmkYufJmycWGfJiuxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714148129; c=relaxed/simple;
-	bh=pnyXw/ftob25tneROsiaKUILSD4JRB3GjJx1OTH8R2U=;
+	s=arc-20240116; t=1714160445; c=relaxed/simple;
+	bh=MJhoBOcKvcAfCqXZ27Dow0kPxI2bLjrCHZ1BhmTfiUs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gaWj1UkAnCn4khOXM75uqLbGwtfAWuME5UGk4jbn65D8PkF9awbJ2PWPy5Y8uMsdSf9ABk3nP+yB1yx3ykZ2Isf4ygwRnRnLdHMcSNJ5rTzIw7TN0xP03sQI1+VTbG2NDtPL7JIgkEYQyam1TaZE4mydHIsdO05zQ8V7A8rt/Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=VJpqabk5; arc=none smtp.client-ip=62.149.156.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="VJpqabk5"
-Received: from engicam ([146.241.23.148])
-	by Aruba Outgoing Smtp  with ESMTPSA
-	id 0O7Rsyf2ImFXq0O7SsDdoJ; Fri, 26 Apr 2024 18:08:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1714147695; bh=pnyXw/ftob25tneROsiaKUILSD4JRB3GjJx1OTH8R2U=;
-	h=Date:From:To:Subject:MIME-Version:Content-Type;
-	b=VJpqabk5ECoNvuraq1mYIGZvGuHGXNdrEX1Oq+11FkQs2WDYu516Mj9yVj4GosqtP
-	 LFJrAQJ7TacT5InoM3oI4nhWKgSaymieOXUQuPFNyKXpshkRxbb0Cg4R6XuHCzUemO
-	 zeZol0zfC90C+y+BLq6b4VKNxiOGqCLwW/a/o1K98ju/CFFsilYFKV32q+r3wfgzUw
-	 TEmmGJC8bXOf9NoJpVWiTvae/haubHCuwGpprO2UgCyJrQtfg/O+HhKIeSafstbtLu
-	 vKm/gemZlHaRtdPSFaAmkNRz2lMbDUFfisAoTY0bRBaa9hsS9EQ1dI3rmYva9AtEUw
-	 WMXBXOUHcLERA==
-Date: Fri, 26 Apr 2024 18:08:12 +0200
-From: Fabio Aiuto <fabio.aiuto@engicam.com>
-To: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Matteo Lisi <matteo.lisi@engicam.com>,
-	Mirko Ardinghi <mirko.ardinghi@engicam.com>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 3/3] arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM
- 2.0 Starter Kit
-Message-ID: <ZivRbM0DiuWijsm0@engicam>
-References: <20240426152730.9806-1-fabio.aiuto@engicam.com>
- <20240426152730.9806-4-fabio.aiuto@engicam.com>
- <CAOMZO5D=Ens3f-FnjEf8SDSTCChdzKW3m7LH+t6y6qUtWsSRZg@mail.gmail.com>
- <CAOf5uwkB7Z7FUt5K8CP3sEoCEahE=ipuXX4MRZYNgDw6eMuEfg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qk8LNZ3DXEx65CO7HYF3iOpZKFuoj3+dfx5QZ9sIHUSx7Wl2VOVYo7PYILjHV3F3mNvh+lGvCBGpjRJBwYT5+iO7V2GEe9G7K8pp6JNQvrYQkuEKZgw2Xo8TL3dhImXGC0Gl8irxvm/OazNIcqt0gPyDQYQQoq0QW9oAGiC4uxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1s0RQo-0006P0-27; Fri, 26 Apr 2024 21:40:26 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1s0RQn-00EV0n-4J; Fri, 26 Apr 2024 21:40:25 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1s0RQn-009ZX2-08;
+	Fri, 26 Apr 2024 21:40:25 +0200
+Date: Fri, 26 Apr 2024 21:40:24 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Russell King <linux@armlinux.org.uk>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, linux-kernel@vger.kernel.org, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 00/49] ARM: dts: imx: Use #pwm-cells = <3> for
+ imx27-pwm device
+Message-ID: <oy4mnbkskyrw5dwkq3rebe2yh4i3fy44rubhvesug7pedzws46@472pzktn5t22>
+References: <cover.1712352665.git.u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6qlyaxmagn4lyfzd"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOf5uwkB7Z7FUt5K8CP3sEoCEahE=ipuXX4MRZYNgDw6eMuEfg@mail.gmail.com>
-X-CMAE-Envelope: MS4xfEQHJUwPGut5HvpvFPF2pe71cWizGdRVhGS/taAnCGeAc19EvJ8snl1JKqeRzdYmu6JlGUIw/X6E6BKKxbiLt4S4opL8Ey0RE/hM1BJZB8gDGrfW4VYS
- cOWsq+L6/V//Ai30tXoqkv3rbIFViPw2Zv5HoL4pV8eai5aA5FlhSuvldApdGjGH+sNXxQfh/d6R4TQ3tLGM3P4AZC+jgN4/ew2ggZquxcd95ZIKXsNuTgbI
- /9YRbVzGRny3+2jXWTamKsaDpNkyantggycHvOBp+nTw7F24DAxNs0MQ6TAn3NXqbwDDtmw+OZElHeWFHzWySUqMPOs2Q/gpGJv8frNzdJXce/0VNK4zK1ZJ
- 3R95wEK2HsuWDw/z7KPgs/NrApq5v9VDhUVuHsylLlX/PmrdSnJ19RcNkcyEl/OHoDMnSkonv3uphhx32+0qilW9eQ7oW5JSoGPTjX7oYoeM507hJAvb8XKU
- cz6ZWuxiUluQrrQd/Ul60peNWHrxGKDycEnsB09Ela8ZqSo9q6OFXeNdZfDs1obU11ZOgr9F38ZcUd6HVU9Vlop+orI+soF8hbTGFn0vemziWz6aNo3+mcV9
- bGKLtrAatuU/G+5luvYPy1mLW33EnXi83vrNWEUUWHLEHJOLo1lsgcNc7lrtOhq7mwFU3783+GRdQiNN9N4sb21U
+In-Reply-To: <cover.1712352665.git.u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hello Michael,
 
-Il Fri, Apr 26, 2024 at 05:59:39PM +0200, Michael Nazzareno Trimarchi ha scritto:
-> Hi
-> 
-> On Fri, Apr 26, 2024 at 5:56 PM Fabio Estevam <festevam@gmail.com> wrote:
-> >
-> > Hi Fabio,
-> >
-> > On Fri, Apr 26, 2024 at 12:31 PM Fabio Aiuto <fabio.aiuto@engicam.com> wrote:
-> >
-> > > +&usdhc3 { /* WiFi */
-> > > +       #address-cells = <1>;
-> > > +       #size-cells = <0>;
-> > > +       pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> > > +       pinctrl-0 = <&pinctrl_usdhc3>;
-> > > +       pinctrl-1 = <&pinctrl_usdhc3>;
-> > > +       pinctrl-2 = <&pinctrl_usdhc3>;
-> > > +       mmc-pwrseq = <&usdhc3_pwrseq>;
-> > > +       bus-width = <4>;
-> > > +       no-1-8-v;
-> > > +       non-removable;
-> > > +       max-frequency = <25000000>;
-> >
-> > Is this 25MHz limitation correct?
-> 
-> This make the wifi a bit slow ;). You should be able to go to ~50Mhz at
-> 3.3v. BTW the other mux
-> are not needed "state_100mhz", "state_200mhz";
-> 
-> Sorry both Fabio, I did not see before
-> 
-> Michael
+--6qlyaxmagn4lyfzd
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-thanks for your comment, will get in touch with my colleagues
-on monday, then I will give a feedback.
+Hello,
 
-kr,
+On Fri, Apr 05, 2024 at 11:41:47PM +0200, Uwe Kleine-K=F6nig wrote:
+> this series addresses many warnings of the type:
+>=20
+> 	arch/arm/boot/dts/nxp/imx/imx6ul-pico-dwarf.dtb: pwm@2088000: #pwm-cells=
+:0:0: 3 was expected
+> 	        from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
+>=20
+> that is emitted when building with CHECK_DTBS=3D1.
+>=20
+> This completes the conversion started with
+>=20
+> 	fa28d8212ede ("ARM: dts: imx: default to #pwm-cells =3D <3> in the SoC d=
+tsi files")
+> 	4c6f19ab2aed ("dt-bindings: pwm: imx-pwm: Unify #pwm-cells for all compa=
+tibles")
 
-fabio
+Gentle ping! I would expect that Shawn picks up this series.
 
-> 
-> 
-> Michael
-> 
-> 
-> 
-> 
-> --
-> Michael Nazzareno Trimarchi
-> Co-Founder & Chief Executive Officer
-> M. +39 347 913 2170
-> michael@amarulasolutions.com
-> __________________________________
-> 
-> Amarula Solutions BV
-> Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
-> T. +31 (0)85 111 9172
-> info@amarulasolutions.com
-> www.amarulasolutions.com
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--6qlyaxmagn4lyfzd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYsAycACgkQj4D7WH0S
+/k76+gf/RTd50w5R0hfdfG8xkZOBeH3rPK6SXQs8zpgJ+/lgFxqquJi95MpCrQiG
+3JRo4kCmPkPbUNjhTGORzRBeh9Gi8uI7FZ1TFEMgiytsVDuJV/lC/CbWAhI/BebL
+N+vBHG3188lpfsfzgbuUnCQk1TxLEeyWrdV/sG5pGR1JaalCudQxwTVODqvRX8T3
+qiuNqZmHG3HWkGVZ21ibdkdfVcArWphKeB2GUpss3MQJDNR8zYPkMgFYWYy3TYie
+ic2z6+LEP/9IA2E5eKz6prVC/zgOjsUMktzs5aNy01uRxiUe1iQ3IPhPuBu/qner
+qlkpR97+TFM8ZGuypO4fRp0bVIG3Aw==
+=sPqb
+-----END PGP SIGNATURE-----
+
+--6qlyaxmagn4lyfzd--
