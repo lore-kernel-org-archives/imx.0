@@ -1,106 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456E213D500;
-	Fri, 26 Apr 2024 09:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF3013F42B
+	for <imx@lists.linux.dev>; Fri, 26 Apr 2024 09:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714122396; cv=none; b=jbO8yB/HvxU4r2wkbDTNvnids6QEAdESL3aIWRfbV7Fx/REiUdW2pSe0XK5tG85mKJQ8MM+NTvKA8GeUFrgy4N9E4Aw82JW22k/Y5z5CQyhTvOcW0rqjE+U5EPWvzAnnk/c5OnoJ0YwDrRHJhIKIOX56hfaEGMqq+idyCbXdh5k=
+	t=1714124467; cv=none; b=htVgdP0MCa4UAgr9Kt3ejuqemHY7vjEuepRoeAhzGpDurJalEn7VIrpbsTJ7nSF2hH4OFtBL4W4XR7GGFv5qHeYrYvkYjC2ByEPM5SWMxxppD0JNxo4cY77as2sDQNaIfxC1LEnaMeZkzR77nxJDR/bQyNfrzgOKBa9CZuVbiDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714122396; c=relaxed/simple;
-	bh=1j45APt84Z2XIlLb4CgSXht8+Dv+bV1Rc+4llmd3nOU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PkQj1GYzqs2unCJX6y7Kjks/IcMHxbIyzKkoe/12STFQAvD8HoQOzk0h3UTDkED5j/Ug6lEhhhTHVJO483wOSZxP6FX2ERiexYGFDESZOYWQDKAEADb6T5amrFdMEQvH0B0pw1GzeaeIHe6FwsZfKQQwIcNWpKWNfSLLXedTmlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQehXKrr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714124467; c=relaxed/simple;
+	bh=kzpjBbw7imQPtr1iEKrA+g23bA1zMo6sqYKAYgW5TGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RSCz6NcymDbDHNWGrzPjwReQOfeR9crPJTzcc+TazpWwVnqiHDdLeRPGJuu27OLk9Dy6IZrjA4rCij6jvLtuz1GjOwDOgn7lTEx2Mhcof8kwzPkfA7wCjjmEzcT2pbnh62UJ9iAVaXG/WgM3cC4JkpsrkxjbzwTGgQzAFAIPLXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SaW1yqep; arc=none smtp.client-ip=209.85.166.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQehXKrr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F039AC2BD10;
-	Fri, 26 Apr 2024 09:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714122395;
-	bh=1j45APt84Z2XIlLb4CgSXht8+Dv+bV1Rc+4llmd3nOU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YQehXKrr/O/mDKcnEZ/VzzQIguHqfHe3LKofGVlscwcbsgubsTX5zxKFuh6luz/uZ
-	 x5QOEM64z9voC8y7xCFEfsScljgkOzCOORs5FaB2kBMLjXa328uZOUQ4Cc0vf/ftt7
-	 pCQRpP0M4CoeX20h+PraWWEdYcWtwHB9uLP+cRvTwa1LcT2sZm28NmT2tCRdSbpk+o
-	 Kt2ixUBwlffHVhUkMnuvdCaPu+4qcjJ4xbPnPzOqVSvNJcB+u6/KRm0gXnT43X6Mfs
-	 ET1okh6qQUwzrUjqbwwmQeMKpR5+FXRSp5va0PlCO42WRDjS7e1eoTIODOXevTJI0s
-	 uyl0UUt2rOfYw==
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Date: Fri, 26 Apr 2024 11:04:01 +0200
-Subject: [PATCH v2 14/14] ASoC: SOF: mediatek: mt8195: Constify
- snd_sof_dsp_ops
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SaW1yqep"
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-36c2cf463e9so6496425ab.3
+        for <imx@lists.linux.dev>; Fri, 26 Apr 2024 02:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714124464; x=1714729264; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S1BsiCXySDfC7jDGmTMKKwQaI3n7a2aIRe2EcYSparo=;
+        b=SaW1yqepn67rP0nmUKw0IuWLRA6NAoT7Y4FL9VEvHgwGnc1O/Ia+XEPmpFwvjuYCc8
+         pbPeGcYhbd5PEH+Usdr6Zqtteg92aG7/7b5vEGLUG7xoroa8XRz5rij+ELgly2W3Jcdj
+         XPfkHRwNcBct0xrdFtSC2zfkv+S3tvskB7ZLtA/b8PWOtlwgL4H/YOnYZu6Yfgtxz0fg
+         vnT+bhg00T0N5K1TKRMoSNqmffloXFHwXq0y42MLyny5NS3+eMeQ76KwBYO6r2q1iJ70
+         u3T2NvB543XlKoX1fM6R9j+JhISzsWMA/1+uvw9adjsuMnpdkwJiP1gR8O8bTOHeoFIT
+         guWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714124464; x=1714729264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S1BsiCXySDfC7jDGmTMKKwQaI3n7a2aIRe2EcYSparo=;
+        b=tCe3IHF5DRmZKHFhcEdRRd8U7NAlmeLPYSwOp0IWPONBn3i2NHoHCdCugBIUYoal/Q
+         dPdSih5Wq8PG+T+VoMRXFb5KapCa02yTNH+ivuH2VTd/KfF28WVScbCCKBCtxHRZFynW
+         f4yM6E4WEe4z1WJVpEhiUpZmKDJi/vmuQ6L4uy08KVWDHm6RZgICnjSMID7fAQkEyu8u
+         uOItaDLqZBLCwCms0gqTMSBLO3WYSoBE78o8NUT5QJc5X0+b8uzmwbhlUXtbTDnhfojF
+         xKk59gxtnKxqMZQnNdLnoVbDgCFAT3IOpphUUno3zF9Pq/EP3EfWAA1qyA1sXQ4YFhcw
+         plpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdOso30o27akRFBLGZaIqa152ekAnpHytvVIiZMa8eckPb+Eo2iGpjKvhSwLqifxKs4MQ3qmCEh2LIOduBVJfFwWQi
+X-Gm-Message-State: AOJu0YziaZc7pYUaYyLYP/ev8uIUfKl61Qzf1sqpiBZdLwjGTRi0D36l
+	IL+2P3/+Pyuu8Nj+EWhivtdUtJPd3JIio7CgAfiYhmgVnI16mc6DHCCgOmKolKpyxb47p6iQ9Bl
+	kDO3zxenrbFxlEtLb6KPsTUYUub8=
+X-Google-Smtp-Source: AGHT+IEGaZvPO5oDRi2nUcdkHLqGT35jCal6XIN3ooTOhGsIGR31vfLjrd1ZIar9sR1QKw8y2eHL6Ege8TqMTy0rULg=
+X-Received: by 2002:a05:6e02:138d:b0:36c:ae5:c4da with SMTP id
+ d13-20020a056e02138d00b0036c0ae5c4damr2836951ilo.17.1714124463813; Fri, 26
+ Apr 2024 02:41:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240426-n-const-ops-var-v2-14-e553fe67ae82@kernel.org>
-References: <20240426-n-const-ops-var-v2-0-e553fe67ae82@kernel.org>
-In-Reply-To: <20240426-n-const-ops-var-v2-0-e553fe67ae82@kernel.org>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, 
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
- Bard Liao <yung-chuan.liao@linux.intel.com>, 
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, 
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Krzysztof Kozlowski <krzk@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=960; i=krzk@kernel.org;
- h=from:subject:message-id; bh=1j45APt84Z2XIlLb4CgSXht8+Dv+bV1Rc+4llmd3nOU=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmK24ri5hbvvP8DkjdiR3gDZ/o/lD3rZTZSVmyL
- 9OhKlqW3dWJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZituKwAKCRDBN2bmhouD
- 1wyvD/979AcclNlfz3AHCAc7yWzJwuKG99G5B/V3GZmbbF/Q10mefin+IcW+1AAGJx2Ay8WQH06
- /gJnJMTc3D4r/w/4atnDj/NHGDbxk3muVAtK2hnvsR0839UYh5KzKhXGo1/6mOyClf6pbRaFPb1
- 8jViXGzLcqMaBMKNWSCn7JwanyBjPd6O/O1J1Y5+cQvx5G94upsOAULNXWUOewj0xXSuTWXx4th
- gSgRLwfnoz+P1gVvurneJUtyWMOFYLINjNVclWPllOnNff328w3UN9Oi5rlxpJttkKV3EvOevXA
- D6M2gp7LsDUCyBHBVDe8ENUm9reCFKuFACkUnU6Gb3vF4AdUbVglglpD9+UHNr/MQMGNgc4n2g3
- ARGqfKiz9ibJC5AzsUnsErKtnJvNl9riPrMHpTxo9kyk5HDPSIg10LMOmzGp6ONl+8KBfGIuqgF
- 6byJO3lHB14IYBAL77WuIUDDjUT9gIW5NzklFSiTcJys/0UWJ/zg1CnxJlTbq/1mzugQw+bOTeZ
- rpDZWvYtaNvQVTNIvr5WcZUUR2Pv4bPIf4D15CgtHKvTtbhBoFQqdkyqdvk/GIKXdjLqM2ShDRh
- OINLugwKjkJTmgFR6c+03NS9CXETbG+wymA6nbTIrHLhl9JrwVOoAxysfBELBVJLlzdCuokBjqv
- +kpjVSBdxdC1Z4Q==
-X-Developer-Key: i=krzk@kernel.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+References: <1714040364-17127-1-git-send-email-shengjiu.wang@nxp.com> <ZirB5sWBsOXucVsY@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZirB5sWBsOXucVsY@lizhi-Precision-Tower-5810>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 26 Apr 2024 17:40:52 +0800
+Message-ID: <CAA+D8AO4Hzg3ydc1CkidZ0T18bJ3M3d79WPSxAcWZ2xdT4=rMA@mail.gmail.com>
+Subject: Re: [PATCH] clk: imx: imx8mp: Add delay after power up
+To: Frank Li <Frank.li@nxp.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, peng.fan@nxp.com, 
+	mturquette@baylibre.com, sboyd@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	imx@lists.linux.dev, linux-clk@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-'struct snd_sof_dsp_ops' is not modified by core code, so it can be made
-const for increased code safety.
+On Fri, Apr 26, 2024 at 4:49=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Thu, Apr 25, 2024 at 06:19:24PM +0800, Shengjiu Wang wrote:
+> > According to comments in drivers/pmdomain/imx/gpcv2.c:
+> >
+> >       /* request the ADB400 to power up */
+> >       if (domain->bits.hskreq) {
+> >               regmap_update_bits(domain->regmap, domain->regs->hsk,
+> >                                  domain->bits.hskreq, domain->bits.hskr=
+eq);
+> >
+> >               /*
+> >                * ret =3D regmap_read_poll_timeout(domain->regmap, domai=
+n->regs->hsk, reg_val,
+> >                *                                (reg_val & domain->bits=
+.hskack), 0,
+> >                *                                USEC_PER_MSEC);
+> >                * Technically we need the commented code to wait handsha=
+ke. But that needs
+> >                * the BLK-CTL module BUS clk-en bit being set.
+> >                *
+> >                * There is a separate BLK-CTL module and we will have su=
+ch a driver for it,
+> >                * that driver will set the BUS clk-en bit and handshake =
+will be triggered
+> >                * automatically there. Just add a delay and suppose the =
+handshake finish
+> >                * after that.
+> >                */
+> >       }
+> >
+> > The BLK-CTL module needs to add delay to wait for a handshake request f=
+inished
+> > before accessing registers, which is just after the enabling of power d=
+omain.
+> >
+> > Otherwise there is error:
+> >
+> > [    2.180834] SError Interrupt on CPU1, code 0x00000000bf000002 -- SEr=
+ror
+> > [    2.180849] CPU: 1 PID: 48 Comm: kworker/u16:2 Not tainted 6.9.0-rc5=
+-next-20240424-00003-g21cec88845c6 #171
+> > [    2.180856] Hardware name: NXP i.MX8MPlus EVK board (DT)
+> > [    2.180861] Workqueue: events_unbound deferred_probe_work_func
+> > [    2.180878] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BT=
+YPE=3D--)
+> > [    2.180885] pc : clk_imx8mp_audiomix_runtime_resume+0x34/0x44
+> > [    2.180900] lr : pm_generic_runtime_resume+0x2c/0x44
+> > [    2.180910] sp : ffff800083423a20
+> > [    2.180913] x29: ffff800083423a20 x28: 0000000000000000 x27: 0000000=
+000000000
+> > [    2.180922] x26: ffff0000c0e4e410 x25: 0000000000000000 x24: 0000000=
+000000000
+> > [    2.180935] x23: 0000000000000000 x22: ffff0000c02afd20 x21: 0000000=
+000000000
+> > [    2.180945] x20: ffff0000c162a000 x19: ffff0000c0e52810 x18: fffffff=
+fffffffff
+> > [    2.180959] x17: 0000000000000000 x16: 0000000000000100 x15: ffff800=
+0834239f0
+> > [    2.180970] x14: ffff0000c03d0a1c x13: ffff0000c0a03440 x12: 0000000=
+0000003c7
+> > [    2.180982] x11: 0000000000000000 x10: ffff8000825010ba x9 : 0000000=
+000000008
+> > [    2.180993] x8 : 0000000000000008 x7 : 0000000000000000 x6 : 0000000=
+000000000
+> > [    2.181005] x5 : ffff8000838b0000 x4 : ffff0000c0e66088 x3 : ffff800=
+0813852c0
+> > [    2.181018] x2 : 0000000000000000 x1 : 0000000000000004 x0 : ffff800=
+0838b0300
+> > [    2.181035] Kernel panic - not syncing: Asynchronous SError Interrup=
+t
+> > [    2.181038] CPU: 1 PID: 48 Comm: kworker/u16:2 Not tainted 6.9.0-rc5=
+-next-20240424-00003-g21cec88845c6 #171
+> > [    2.181047] Hardware name: NXP i.MX8MPlus EVK board (DT)
+> > [    2.181050] Workqueue: events_unbound deferred_probe_work_func
+> > [    2.181064] Call trace:
+> > [    2.181066]  dump_backtrace+0x90/0xe8
+> > [    2.181080]  show_stack+0x18/0x24
+> > [    2.181091]  dump_stack_lvl+0x34/0x8c
+> > [    2.181104]  dump_stack+0x18/0x24
+> > [    2.181117]  panic+0x39c/0x3d0
+> > [    2.181129]  nmi_panic+0x48/0x94
+> > [    2.181142]  arm64_serror_panic+0x6c/0x78
+> > [    2.181149]  do_serror+0x3c/0x70
+> > [    2.181157]  el1h_64_error_handler+0x30/0x48
+> > [    2.181164]  el1h_64_error+0x64/0x68
+> > [    2.181171]  clk_imx8mp_audiomix_runtime_resume+0x34/0x44
+> > [    2.181183]  __genpd_runtime_resume+0x30/0x80
+> > [    2.181195]  genpd_runtime_resume+0x110/0x244
+> > [    2.181205]  __rpm_callback+0x48/0x1d8
+> > [    2.181213]  rpm_callback+0x68/0x74
+> > [    2.181224]  rpm_resume+0x468/0x6c0
+> > [    2.181234]  __pm_runtime_resume+0x50/0x94
+> > [    2.181243]  pm_runtime_get_suppliers+0x60/0x8c
+> > [    2.181258]  __driver_probe_device+0x48/0x12c
+> > [    2.181268]  driver_probe_device+0xd8/0x15c
+> > [    2.181278]  __device_attach_driver+0xb8/0x134
+> > [    2.181290]  bus_for_each_drv+0x84/0xe0
+> > [    2.181302]  __device_attach+0x9c/0x188
+> > [    2.181312]  device_initial_probe+0x14/0x20
+> > [    2.181323]  bus_probe_device+0xac/0xb0
+> > [    2.181334]  deferred_probe_work_func+0x88/0xc0
+> > [    2.181344]  process_one_work+0x150/0x290
+> > [    2.181357]  worker_thread+0x2f8/0x408
+> > [    2.181370]  kthread+0x110/0x114
+> > [    2.181381]  ret_from_fork+0x10/0x20
+> > [    2.181391] SMP: stopping secondary CPUs
+> > [    2.181400] Kernel Offset: disabled
+> > [    2.181403] CPU features: 0x0,00000040,00100000,4200421b
+> > [    2.181407] Memory Limit: none
+> > [    2.463040] ---[ end Kernel panic - not syncing: Asynchronous SError=
+ Interrupt ]---
+> >
+> > Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for powe=
+r saving")
+> > Reported-by: Francesco Dolcini <francesco@dolcini.it>
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  drivers/clk/imx/clk-imx8mp-audiomix.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/cl=
+k-imx8mp-audiomix.c
+> > index e4231e9c8f05..cb44c460548e 100644
+> > --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > @@ -6,6 +6,7 @@
+> >   */
+> >
+> >  #include <linux/clk-provider.h>
+> > +#include <linux/delay.h>
+> >  #include <linux/device.h>
+> >  #include <linux/io.h>
+> >  #include <linux/mod_devicetable.h>
+> > @@ -362,6 +363,12 @@ static int clk_imx8mp_audiomix_runtime_suspend(str=
+uct device *dev)
+> >
+> >  static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
+> >  {
+> > +     /*
+> > +      * According to the drivers/pmdomain/imx/gpcv2.c
+> > +      * need to wait for handshake request to propagate
+> > +      */
+> > +     udelay(5);
+> > +
+>
+> https://lore.kernel.org/imx/20230727152503.2199550-1-shenwei.wang@nxp.com=
+/T/#m2dc5111e9628235f031c0bad2a137222b0205a61
+>
+> supposed clk_imx8mp_audiomix_save_restore() is that write save data into
+> some registers.
+>
+> See above link for detail, it may not delay 5us before write to register.
+> You need
+>         readl();
+>         udelay(5);
+>         writel();
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- sound/soc/sof/mediatek/mt8195/mt8195.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Here we need to wait for the handshake to be ready,  we have nothing
+to be read.
 
-diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
-index 8ee7ee246344..fc1c016104ae 100644
---- a/sound/soc/sof/mediatek/mt8195/mt8195.c
-+++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
-@@ -505,7 +505,7 @@ static struct snd_soc_dai_driver mt8195_dai[] = {
- };
- 
- /* mt8195 ops */
--static struct snd_sof_dsp_ops sof_mt8195_ops = {
-+static const struct snd_sof_dsp_ops sof_mt8195_ops = {
- 	/* probe and remove */
- 	.probe		= mt8195_dsp_probe,
- 	.remove		= mt8195_dsp_remove,
+but I don't really understand why the code is commented.
 
--- 
-2.43.0
+               /*
+                * ret =3D regmap_read_poll_timeout(domain->regmap,
+domain->regs->hsk, reg_val,
+                *                                (reg_val &
+domain->bits.hskack), 0,
+                *                                USEC_PER_MSEC);
 
+If we uncomment the code,  it can also fix the issue.
+
+best regards
+Shengjiu Wang
+
+>
+> >       clk_imx8mp_audiomix_save_restore(dev, false);
+> >
+> >       return 0;
+> > --
+> > 2.34.1
+> >
