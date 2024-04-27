@@ -1,58 +1,58 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB4841744
-	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 06:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC7A4086F
+	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 06:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714199933; cv=none; b=IoxQ38fIxhcVjUVPD+K3lAsaZyWV0zzaA97eEakaCwUyCIX/Ag2RTUPr4SXBgLQZnUtsUYkyvkr1A4JUiQjHqbHgCLcVx0hO82F4lnAc7+tOKPFp1W6SmWH/UNt6L2G72AXmloIA8cGHm4ACiM17HNSsNV8XOqJrB9FX1u8CF38=
+	t=1714200224; cv=none; b=jwl8SxxtuUiQG1ffooTySyxFwx4ibAjTS/NYrupigUxwh/v0PZLts09LnO6L/Ge+S7ZYX6cC+rU1iVeW1576v7d929XPA0qXko25c49zNAujHk6pBBqkgwpNKaHuPJgtH0PBDyUHgHA01Z76QxxCC25ionubP8CmMFnZTXA1pcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714199933; c=relaxed/simple;
-	bh=rMhrAE8YXNfqvYLpIvyBbY1dUGHNrT55DGekIZ7UUJM=;
+	s=arc-20240116; t=1714200224; c=relaxed/simple;
+	bh=LPalAcWzxJ0yMmzch32JrWfIS3osx/TskoGrevHHB+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TuSwJxE56adR+1JTHUBOPHBPxnl31vVo/TDVfmVbgeNIecRNirDgipWXzNWAPnRgRSOOjA3ug29KRBmzud+xv2mhfRgRQR1IG5cF8Se8H5IYpEJm7s7+Jyiz8Ig1vdRMTm/PBbaGY3qIKb72kZUBxhXJ1BiujTMfwucBcPbDBY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tFoevi4p; arc=none smtp.client-ip=209.85.215.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCPgt5GDtLFfXcQvdOchKW7JMFtxa/4Zf1/Y9fd4G94cygxdjfo6TWBfjeQAXK2jTcKjU9qoEYHHpewmUuIEsDbgahp7xOZZE6lpyrCrbIZHBFEoxufXV1YZ9xPmpx0XoP1YaJ4fLx+6tAvBWBVcmg54ySO2l219IadyVSAv4Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jgLlcKfK; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tFoevi4p"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-6001399f22bso2021838a12.0
-        for <imx@lists.linux.dev>; Fri, 26 Apr 2024 23:38:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jgLlcKfK"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1e3c9300c65so25863785ad.0
+        for <imx@lists.linux.dev>; Fri, 26 Apr 2024 23:43:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714199930; x=1714804730; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1714200222; x=1714805022; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=u5BZd/9PlqkZZUs68lDdFcJ5CEc1B68syvKugYGnzVE=;
-        b=tFoevi4pzr+hHu8viR+XQh31HNCowdDWQdJxP4bo849MOV7C86EYzXHTJrnk5ca/oD
-         fB5ijJUqKAFj9/e0jo8zvI6Mxs0jc0O3PVCeFfDsNOCST9T3fgxDSN9+53IE4xyMp46M
-         /Bg1IlvARC/H3Q/I65owxdldXGVBv09lFKW/EUxS1Qd32XNp0wFxP5A/NAx3T1TI1AE9
-         hy9JdMf1Gf8fhx8m9GWy2Dv8ILGHqgqfOrXBExHJkMHjPX96+0y4Tkxss/hoxH6F7RC7
-         tDon5QOy66susjUHrIrQU9Gf3sb8PTN9/oVCWuRs2J9Kzn2FDsQ2D2fFDC3Sc4YUb5jm
-         uasw==
+        bh=eTGnh4hJsxF2w2JcjcnIEUBbWbOx1xRb7gasYjxARjc=;
+        b=jgLlcKfKpNycq8yAKITIt6k7xd56DuLV7zp9vEdUZAtr+tNrnxNqHdbflrZz8I5CGG
+         ETt5HDKpBaLAHDjfx6DSnYxySbzGl7Nu6LHbtrbDMuyUywH9P1IWQzwpTWIvlC7MFnK/
+         5Zw4dKmLlVlBaZKX2LE5AD2uQDPnyxfbijG30USNZShi/2ID3Ff+C4DegATNjwJVz0yL
+         i9IEgglXdSckBAgEiMUPgED1SL0qDK6qRb7+XD59ChvmyH+Y1+JshY1xHXOxMNWhCufF
+         bYZ8qd1vtkPOz6DOj1sokc647d7CZ5ffSmgaOaVof9gWsAluw9dYS94kDg2uVt00lXRJ
+         Xx7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714199930; x=1714804730;
+        d=1e100.net; s=20230601; t=1714200222; x=1714805022;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u5BZd/9PlqkZZUs68lDdFcJ5CEc1B68syvKugYGnzVE=;
-        b=RRSTcq2iYMYEVOXjLTvmCUm8INGUUWC9KLdh1y7Yod0jlf01wMCRi2ofNlO4crLM/n
-         JxRhj1TNJ9z04MAC38bDfEIE9OCL3P5JJX6lMrvqZURp89YBMFhj1Uh6lEeI9+Yrqksz
-         hxCkNvSEYrezLf5AfOOZPHEca7/ixC/0r1o2Yl8bP3hGIh1eGfPaoiJ2DgWp8MuRAIMV
-         w4cHpNTMxVdBM0vQZjp/0xFYuKOk86phwIOkZNVQ9yM01150j/UcBiU6UGm7mypUE3wZ
-         DAIbAJo4gJOg12sQqII5qt9P59T6smKeZ7EPSSo1TLtZ8LuyV4f3crQKa2/WjV4o+3TU
-         TeNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRJ7eoAtzM48ejJ0G+RysTgb+xUmo1s/BZd83xRw3vhajrUtRaJEYMLebEQkalNIRSFl2EXcW+OOpxV6nIdSS42mDK
-X-Gm-Message-State: AOJu0YynZ6Hw+f15Nk42ka7TI4n3q4MH8ll2KvaCxmM3gB5QT1e8WJhI
-	4XuWX4r0mG9kHSiU9MnmHpcK86CdcNTv91UBCHLZOrKO0BHCPXmQx1vUs0g6fA==
-X-Google-Smtp-Source: AGHT+IFOTwYBRJQ6hpSLIlWNvowiugvVRk7RGAo5g37wQTTmlbJt9WKRQxSRhuQmeF2kLwvwvDKZ0g==
-X-Received: by 2002:a05:6a20:f394:b0:1a3:55d2:1489 with SMTP id qr20-20020a056a20f39400b001a355d21489mr4790412pzb.7.1714199930233;
-        Fri, 26 Apr 2024 23:38:50 -0700 (PDT)
+        bh=eTGnh4hJsxF2w2JcjcnIEUBbWbOx1xRb7gasYjxARjc=;
+        b=Z+4PvLMB3kNRLgBCjWbWa9+N8LbOMJ2vXce/zEf/V9RYVRa8Jm8PGUxq9g3UmDd/Ai
+         fG1sefaYUvzcGOBMq6yMxlKTOrFNYt9liM6Ra/K2MYSEaDounK2DQb7wR9v5jz3vYJqp
+         aXJpV/WRy3UPxrhB8CU4yxpXwZdGWklEBIEzSd3AVoe5DbzkXmnQOKxywBB8yj7h25+Z
+         umS/y7C3S0gfCcpybxDBQXU2uS/KvBC3E6JXOosj6FEM5SyfuVr8kXscz14btMBJBEiG
+         9OXJDoRKI9prl31G5AwbqZQdZVV/L8Km6FXJQcp6hZZYG1sgRJPZFEdiwH5DAEt8qe3A
+         uoww==
+X-Forwarded-Encrypted: i=1; AJvYcCWpwjl4yWuTk2JiHuM7QwlFXc0SKO7dThYncIgiodZnRTyRuiGhdzMPj1PSC2PZbPFCtTfo+RZxCTt6ZeBc1zOabbLh
+X-Gm-Message-State: AOJu0YzU9EAIv80D81nY5Cd13WC0MFZopx68dZBPEDia9LoN4P/kQ5nv
+	0dTfvATL2N602cqUD3x2watVjgVt/ROk4/RF4zE5jlBw/0GYo12qhmLJ65YSPg==
+X-Google-Smtp-Source: AGHT+IHUmT02EuAP4GA34txQXaVB3I9YqYCabXLgvXGRga6DshOVeDQbPJbpV0gl5wTwZcs3Pq2Smg==
+X-Received: by 2002:a17:903:240a:b0:1e9:6609:37d4 with SMTP id e10-20020a170903240a00b001e9660937d4mr6065899plo.9.1714200222300;
+        Fri, 26 Apr 2024 23:43:42 -0700 (PDT)
 Received: from thinkpad ([120.60.53.237])
-        by smtp.gmail.com with ESMTPSA id r18-20020aa79892000000b006ed0c9751d0sm16232311pfl.98.2024.04.26.23.38.38
+        by smtp.gmail.com with ESMTPSA id b21-20020a170902d89500b001e44578dccasm16507119plz.254.2024.04.26.23.43.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 23:38:49 -0700 (PDT)
-Date: Sat, 27 Apr 2024 12:08:32 +0530
+        Fri, 26 Apr 2024 23:43:41 -0700 (PDT)
+Date: Sat, 27 Apr 2024 12:13:29 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Frank Li <Frank.Li@nxp.com>,
@@ -83,10 +83,10 @@ Cc: Frank Li <Frank.Li@nxp.com>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v2 1/4] PCI: aardvark: Remove unused of_gpio.h
-Message-ID: <20240427063832.GA1981@thinkpad>
+Subject: Re: [PATCH v2 3/4] PCI: imx6: Convert to agnostic GPIO API
+Message-ID: <20240427064329.GB1981@thinkpad>
 References: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
- <20240423172208.2723892-2-andriy.shevchenko@linux.intel.com>
+ <20240423172208.2723892-4-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -96,11 +96,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240423172208.2723892-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240423172208.2723892-4-andriy.shevchenko@linux.intel.com>
 
-On Tue, Apr 23, 2024 at 08:19:04PM +0300, Andy Shevchenko wrote:
-> of_gpio.h is deprecated and subject to remove.
-> The driver doesn't use it, simply remove the unused header.
+On Tue, Apr 23, 2024 at 08:19:06PM +0300, Andy Shevchenko wrote:
+> The of_gpio.h is going to be removed. In preparation of that convert
+> the driver to the agnostic API.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
@@ -109,23 +109,97 @@ Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 - Mani
 
 > ---
->  drivers/pci/controller/pci-aardvark.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 37 ++++++++++-----------------
+>  1 file changed, 14 insertions(+), 23 deletions(-)
 > 
-> diff --git a/drivers/pci/controller/pci-aardvark.c b/drivers/pci/controller/pci-aardvark.c
-> index 71ecd7ddcc8a..8b3e1a079cf3 100644
-> --- a/drivers/pci/controller/pci-aardvark.c
-> +++ b/drivers/pci/controller/pci-aardvark.c
-> @@ -23,7 +23,6 @@
->  #include <linux/platform_device.h>
->  #include <linux/msi.h>
->  #include <linux/of_address.h>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 917c69edee1d..d620f1e1a43c 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -11,14 +11,13 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/clk.h>
+>  #include <linux/delay.h>
+> -#include <linux/gpio.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
+>  #include <linux/mfd/syscon/imx7-iomuxc-gpr.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
 > -#include <linux/of_gpio.h>
->  #include <linux/of_pci.h>
+>  #include <linux/of_address.h>
+>  #include <linux/pci.h>
+>  #include <linux/platform_device.h>
+> @@ -107,7 +106,7 @@ struct imx6_pcie_drvdata {
 >  
->  #include "../pci.h"
+>  struct imx6_pcie {
+>  	struct dw_pcie		*pci;
+> -	int			reset_gpio;
+> +	struct gpio_desc	*reset_gpiod;
+>  	bool			gpio_active_high;
+>  	bool			link_is_up;
+>  	struct clk_bulk_data	clks[IMX6_PCIE_MAX_CLKS];
+> @@ -721,9 +720,8 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+>  	}
+>  
+>  	/* Some boards don't have PCIe reset GPIO. */
+> -	if (gpio_is_valid(imx6_pcie->reset_gpio))
+> -		gpio_set_value_cansleep(imx6_pcie->reset_gpio,
+> -					imx6_pcie->gpio_active_high);
+> +	gpiod_set_raw_value_cansleep(imx6_pcie->reset_gpiod,
+> +				     imx6_pcie->gpio_active_high);
+>  }
+>  
+>  static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+> @@ -771,10 +769,10 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+>  	}
+>  
+>  	/* Some boards don't have PCIe reset GPIO. */
+> -	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
+> +	if (imx6_pcie->reset_gpiod) {
+>  		msleep(100);
+> -		gpio_set_value_cansleep(imx6_pcie->reset_gpio,
+> -					!imx6_pcie->gpio_active_high);
+> +		gpiod_set_raw_value_cansleep(imx6_pcie->reset_gpiod,
+> +					     !imx6_pcie->gpio_active_high);
+>  		/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
+>  		msleep(100);
+>  	}
+> @@ -1285,22 +1283,15 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  		return PTR_ERR(pci->dbi_base);
+>  
+>  	/* Fetch GPIOs */
+> -	imx6_pcie->reset_gpio = of_get_named_gpio(node, "reset-gpio", 0);
+>  	imx6_pcie->gpio_active_high = of_property_read_bool(node,
+>  						"reset-gpio-active-high");
+> -	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
+> -		ret = devm_gpio_request_one(dev, imx6_pcie->reset_gpio,
+> -				imx6_pcie->gpio_active_high ?
+> -					GPIOF_OUT_INIT_HIGH :
+> -					GPIOF_OUT_INIT_LOW,
+> -				"PCIe reset");
+> -		if (ret) {
+> -			dev_err(dev, "unable to get reset gpio\n");
+> -			return ret;
+> -		}
+> -	} else if (imx6_pcie->reset_gpio == -EPROBE_DEFER) {
+> -		return imx6_pcie->reset_gpio;
+> -	}
+> +	imx6_pcie->reset_gpiod =
+> +		devm_gpiod_get_optional(dev, "reset",
+> +			imx6_pcie->gpio_active_high ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW);
+> +	if (IS_ERR(imx6_pcie->reset_gpiod))
+> +		return dev_err_probe(dev, PTR_ERR(imx6_pcie->reset_gpiod),
+> +				     "unable to get reset gpio\n");
+> +	gpiod_set_consumer_name(imx6_pcie->reset_gpiod, "PCIe reset");
+>  
+>  	if (imx6_pcie->drvdata->clks_cnt >= IMX6_PCIE_MAX_CLKS)
+>  		return dev_err_probe(dev, -ENOMEM, "clks_cnt is too big\n");
 > -- 
 > 2.43.0.rc1.1336.g36b5255a03ac
+> 
 > 
 
 -- 
