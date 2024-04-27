@@ -1,245 +1,105 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB57C481A6
-	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 11:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC8A2E852
+	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 20:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714218469; cv=none; b=nSH9RxjeIPJIMrUMLeFj+//mUk4Q6xbBMLuOvFQpDH9o6u1y4xAvqy3D8r84Yh/VQV/verg2n11I5IJpna/4dUpytA55RHdYg/s//GUXUU8TEweVWNQ4nDL5KpFg7qi4M7hZQv56NgrwWxyHPecynwOaCfpE1nq1es9oyygLjXo=
+	t=1714250181; cv=none; b=rdC3NUgs+8z3FkUBnjogFkQkphEzoEBXF60pIW7s8+nalEc4O35k7/l6hk534r1BED59kShybXTL6A05qrby/VbryEK+9o5jnnUFMvZKjO4tm9u7IaikSOmfVhUi3o6hrPlYO4fd796AxcwmJcRGJnCodrTYwmnc31Oa+OWiqZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714218469; c=relaxed/simple;
-	bh=m64OPA49saGqYh5NGoDkpU02HfGnplA/FI6YB5a3TLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J8FmMg/xp/arVKNbd6LXU8dYBcI6N5ODs5OEDJZdqgGxwGY6X70ppWscolspkgyUbMK+MKcxwCWNF584RbMEQRAktnmkxgIphP/028OtJz7x0AlqMmtOL4zuc9Lj/IkzT8hTsA/X0x2kHiuAKh74I6qLqKDCjo8tTVJHvode8mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dn3QDI3G; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714250181; c=relaxed/simple;
+	bh=Tx0G6b9JwQMFmz7pulrhML1UHa1rgqE/GzFQrCputUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IdPjEglh3718zZEbABysrEKay+AqpINoXiiTGwtf1TlVABgEtfmXbNYv9QZIzB//pw7QVCN0v3l6t/vnOtpOS1Tn48yjoiCWhifsfyMjKLD5erSi0//LpfYsXQh0CYeD9DbQ6rn8UlEDyGyc9551UjgXc0qB/fm0U4o9qYk1HxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=J/dbn4NF; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dn3QDI3G"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso2219892a12.3
-        for <imx@lists.linux.dev>; Sat, 27 Apr 2024 04:47:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714218467; x=1714823267; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HcfbaR8kZq8OLnUAT2pXDqoM8fNnWHLJf3IpXP9uecY=;
-        b=dn3QDI3GnVZcKN2uDvOYB8itNqHMeBmrP91O9xBUuNfbn0dKVh2zknaRUgPiaiCrvx
-         6N1ijXtoFn/9OisfmSGVD38zkYTHhceorsRP9KmMV94SUKyx5Dq0QVNIvr/Z3aydkUvQ
-         PIzTqV7/xMfF6wzzUTKoa+LW2/jon64AIM12MOKQK0YOiC5AsZ40TjcNas/ecV8zbZ/m
-         2p73G/+dYC4C1Dhx5FDkrsPJRlnxMlX4Gjx64L0EGhOz8V+BJs/bfy8pM7YmhL1CTHLT
-         B5tt03UPJFrPri3h72yxhPM70z1C31UAT1JYOCrg2j2PW5DDauDPLRkphdL/ptJl1quW
-         9gGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714218467; x=1714823267;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HcfbaR8kZq8OLnUAT2pXDqoM8fNnWHLJf3IpXP9uecY=;
-        b=fSpU985XxdPPeoB2PHS2I+vhllyOB9BaQRcP24FASiDfjDvOhvvs6tTQY9M3yzIvbD
-         VNNSLl2qASshdaHNhvNnS+etm179NwMeUMtp6GBBj7wPtB4fytTQKRXFpb3315R5QrlX
-         679kQlD6ZjhHAdypeqKHJlUZqDBFfdhO6+llWh5/sjUKGf2j7RHffAH5PATFJ0+dYsp2
-         YgGT6GnRAE7bZjOyaqi3iuufIGWBgiDpvwooF073+Ul4CDNWnMngHENdj6Haj49k0e7m
-         K1gQ6ACrhQ5dHhtM8Bw5IbmQVlQx4Qztb1HdsHAsItw0aD0bx1MVOECanbC5CgwdauS2
-         Pi1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXnt7ad4atwJNh5tZPn/+mPI7Jow1PlEtoooSl+wIQFKXdcID6Jr/fdAHun6zNpf8CY4MGOjMjxUrSuksNJ6E/vFRA4
-X-Gm-Message-State: AOJu0Yx2v/oHlmLYAmNZcS9THmBiak17m3NOkSYLXY1BhlPNNRFAkkLv
-	igZasYz8UkDi8JnO/nxb52VQ9hzo+f/0MjxjkTzLf4fMBs8HrK0fXMn58ImIWQ==
-X-Google-Smtp-Source: AGHT+IGeS2NJ9XxwhqftWfQ5PmQrFQpYK3kdhK248fghwiiRxIGhENovfD8acLiKv+RBllo0edUJtw==
-X-Received: by 2002:a17:90a:5d0e:b0:2af:f382:158b with SMTP id s14-20020a17090a5d0e00b002aff382158bmr4524138pji.49.1714218466853;
-        Sat, 27 Apr 2024 04:47:46 -0700 (PDT)
-Received: from thinkpad ([117.213.97.210])
-        by smtp.gmail.com with ESMTPSA id l9-20020a17090a070900b002a528a1f907sm19257945pjl.56.2024.04.27.04.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Apr 2024 04:47:46 -0700 (PDT)
-Date: Sat, 27 Apr 2024 17:17:36 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 11/11] PCI: imx6: Add i.MX8Q PCIe support
-Message-ID: <20240427114736.GO1981@thinkpad>
-References: <20240402-pci2_upstream-v3-0-803414bdb430@nxp.com>
- <20240402-pci2_upstream-v3-11-803414bdb430@nxp.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="J/dbn4NF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=vucjjM3RsCbo5+
+	FPCKzNEmVbLons1oLEEtyP6oygaEw=; b=J/dbn4NFhpPLnpA2UHgTAGogwIkFVU
+	c1Oe144PmBmlBY7G1bZjfrO64wUSfJItMs30Ey1vHza/lqVrpXpu3HBC64PtE6wm
+	PM643I22QuBpe+FQCCFBy9C1g8B/+qKR2wnguasGV7MKIQhjrLfC6ogaEikc7wZg
+	NXKz5ylEb6ox+6JSJCa222bDqBSM7wjjeZmD2itN/VEqY86s1JzjVcawhMT0dNBB
+	ZfrCpu0HSx1LJTveW87o2Bi1Cr36obPwq5lvaoeqdeUgwJOFx2FSWFozO2gDVB1+
+	r2IRSzGgTFNtpEl2Svq5p+/Wg9jwOurnZVwcxRc0W7D4YqCilqvAW/8A==
+Received: (qmail 1781755 invoked from network); 27 Apr 2024 22:36:14 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 27 Apr 2024 22:36:14 +0200
+X-UD-Smtp-Session: l3s3148p1@ZFeo+BkXsI9ehh9l
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-i2c@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 00/15] i2c: use 'time_left' with wait_for_*
+Date: Sat, 27 Apr 2024 22:35:52 +0200
+Message-ID: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240402-pci2_upstream-v3-11-803414bdb430@nxp.com>
 
-On Tue, Apr 02, 2024 at 10:33:47AM -0400, Frank Li wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
-> 
-> Add i.MX8Q (i.MX8QM, i.MX8QXP and i.MX8DXL) PCIe support.
-> 
+There is a confusing pattern in the kernel to use a variable named 'timeout' to
+store the result of wait_for_*() causing patterns like:
 
-Add some info like IP version, PCIe Gen, how different the code support
-comparted to previous SoCs etc...
+        timeout = wait_for_completion_timeout(...)
+        if (!timeout) return -ETIMEDOUT;
 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pcie-imx.c | 54 +++++++++++++++++++++++++++++++++++
->  1 file changed, 54 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-imx.c b/drivers/pci/controller/dwc/pcie-imx.c
-> index 378808262d16b..af7c79e869e70 100644
-> --- a/drivers/pci/controller/dwc/pcie-imx.c
-> +++ b/drivers/pci/controller/dwc/pcie-imx.c
-> @@ -30,6 +30,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/reset.h>
->  #include <linux/phy/phy.h>
-> +#include <linux/phy/pcie.h>
->  #include <linux/pm_domain.h>
->  #include <linux/pm_runtime.h>
->  
-> @@ -81,6 +82,7 @@ enum imx_pcie_variants {
->  	IMX8MQ,
->  	IMX8MM,
->  	IMX8MP,
-> +	IMX8Q,
->  	IMX95,
->  	IMX8MQ_EP,
->  	IMX8MM_EP,
-> @@ -96,6 +98,7 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
->  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
->  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
-> +#define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
->  
->  #define imx_check_flag(pci, val)     (pci->drvdata->flags & val)
->  
-> @@ -132,6 +135,7 @@ struct imx_pcie {
->  	struct regmap		*iomuxc_gpr;
->  	u16			msi_ctrl;
->  	u32			controller_id;
-> +	u32			local_addr;
->  	struct reset_control	*pciephy_reset;
->  	struct reset_control	*apps_reset;
->  	struct reset_control	*turnoff_reset;
-> @@ -402,6 +406,10 @@ static void imx_pcie_configure_type(struct imx_pcie *imx_pcie)
->  	if (!drvdata->mode_mask[id])
->  		id = 0;
->  
-> +	/* If mode_mask is 0, means use phy driver to set mode */
-> +	if (!drvdata->mode_mask[id])
-> +		return;
+with all kinds of permutations. Use 'time_left' as a variable to make the code
+self explaining.
 
-There is already a check above for 0 mode_mask. Please consolidate.
+This is the I2C part of a tree-wide series. The rest of the patches can
+be found here (slightly WIP):
 
-> +
->  	mask = drvdata->mode_mask[id];
->  	val = mode << (ffs(mask) - 1);
->  
-> @@ -957,6 +965,7 @@ static void imx_pcie_ltssm_enable(struct device *dev)
->  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
->  	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
->  
-> +	phy_set_speed(imx_pcie->phy, PCI_EXP_LNKCAP_SLS_2_5GB);
->  	if (drvdata->ltssm_mask)
->  		regmap_update_bits(imx_pcie->iomuxc_gpr, drvdata->ltssm_off, drvdata->ltssm_mask,
->  				   drvdata->ltssm_mask);
-> @@ -969,6 +978,7 @@ static void imx_pcie_ltssm_disable(struct device *dev)
->  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
->  	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
->  
-> +	phy_set_speed(imx_pcie->phy, 0);
->  	if (drvdata->ltssm_mask)
->  		regmap_update_bits(imx_pcie->iomuxc_gpr, drvdata->ltssm_off,
->  				   drvdata->ltssm_mask, 0);
-> @@ -1104,6 +1114,12 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  			goto err_clk_disable;
->  		}
->  
-> +		ret = phy_set_mode_ext(imx_pcie->phy, PHY_MODE_PCIE, PHY_MODE_PCIE_RC);
-> +		if (ret) {
-> +			dev_err(dev, "unable to set pcie PHY mode\n");
-> +			goto err_phy_off;
-> +		}
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
 
-This is not i.MX8Q specific. Please add it in a separate patch.
+Because these patches are generated, they need manual audit. So, I will
+send them step by step. This is part 1 and also a call for opinions if
+this is a desirable change. But at least in the I2C realm, I really want
+to have it proper.
 
-> +
->  		ret = phy_power_on(imx_pcie->phy);
->  		if (ret) {
->  			dev_err(dev, "waiting for PHY ready timeout!\n");
-> @@ -1154,6 +1170,28 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  		regulator_disable(imx_pcie->vpcie);
->  }
->  
-> +static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
-> +{
-> +	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
-> +	struct dw_pcie_ep *ep = &pcie->ep;
-> +	struct dw_pcie_rp *pp = &pcie->pp;
-> +	struct resource_entry *entry;
-> +	unsigned int offset;
-> +
-> +	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
+Build bot is happy with these patches and I also compile tested them
+(except two). No functional changes intended.
 
-This flag should be documented in the commit message.
-
-> +		return cpu_addr;
-> +
-> +	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
-> +		offset = ep->phys_base;
-> +	} else {
-> +		entry = resource_list_first_type(&pp->bridge->windows,
-> +						 IORESOURCE_MEM);
-
-Check for NULL entry.
-
-> +		offset = entry->res->start;
-> +	}
-> +
-> +	return (cpu_addr + imx_pcie->local_addr - offset);
-> +}
-> +
->  static const struct dw_pcie_host_ops imx_pcie_host_ops = {
->  	.init = imx_pcie_host_init,
->  	.deinit = imx_pcie_host_exit,
-> @@ -1162,6 +1200,7 @@ static const struct dw_pcie_host_ops imx_pcie_host_ops = {
->  static const struct dw_pcie_ops dw_pcie_ops = {
->  	.start_link = imx_pcie_start_link,
->  	.stop_link = imx_pcie_stop_link,
-> +	.cpu_addr_fixup = imx_pcie_cpu_addr_fixup,
->  };
->  
->  static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
-> @@ -1481,6 +1520,12 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  					     "Failed to get PCIEPHY reset control\n");
->  	}
->  
-> +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_CPU_ADDR_FIXUP)) {
-> +		ret = of_property_read_u32(node, "fsl,local-address", &imx_pcie->local_addr);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "Failed to get local-address");
-
-Is it OK to continue?
-
-- Mani
+Wolfram Sang (15):
+  i2c: amd-mp2-plat: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: digicolor: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: exynos5: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: hix5hd2: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: imx-lpi2c: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: omap: use 'time_left' variable with wait_for_completion_timeout()
+  i2c: st: use 'time_left' variable with wait_for_completion_timeout()
+  i2c: stm32f4: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: stm32f7: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: synquacer: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: jz4780: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: qcom-geni: use 'time_left' variable with
+    wait_for_completion_timeout()
+  i2c: rk3x: use 'time_left' variable with wait_event_timeout()
+  i2c: s3c2410: use 'time_left' variable with wait_event_timeout()
+  i2c: pxa: use 'time_left' variable with wait_event_timeout()
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.43.0
+
