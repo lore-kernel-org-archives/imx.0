@@ -1,58 +1,58 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9357383B2
-	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 09:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1604642D
+	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 09:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714210305; cv=none; b=hWUxEi5FWDykYq2sRStCZFrBwAQ/7a3DtpcOWEO9LLKgzGc+eaWOzkfrIofxYGCF6UcL6gFeoAXO9ywDUR5FcfOwRG+5i/T6cD1n6uMRkJiyirwQQ3jYDgztBXdMdNgVz1yaUjv9/t/IBJDwY8H2PDWoWPTJernOhUl6gMXShc0=
+	t=1714210430; cv=none; b=r2j5AjP8LLrS3I1TDRYFHjSs6li7CIEXjfzF6U6CXvo8xsC7gKPVlX+KoWxvS/b7Da/yLzmR4HlIO1fONn9/8eAYR6u5qxfoZnjaR8G4j9hHIPnf2Lkn/33DA6J+ZhqJK3MBzeFiLLUS8yqCKAJAgx0rq9ioYNP35pIDdpa3PHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714210305; c=relaxed/simple;
-	bh=vhh5H2vOFTU8TUNbGQSR21C/gruMVYqytSa4SWxU+l8=;
+	s=arc-20240116; t=1714210430; c=relaxed/simple;
+	bh=Miw7hc5GB+267q55Huzr5s6mRn9tnVsaVR6HdF6ZL2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TJ7ODNJIlEnGzz6KW2ox+FGnTE2ce6axrUkGOwMqAByWeOGcZlzLcDQ9HwcZZvKSK0uc1C4qLJo3jd3CVftIUyJfPju0W8g/Bw7XoVPiRqUk/kGyR0pQUyzub6lD60QvvIJ5mFTQkCpCCMwdGuhZRzZQ+ln0s2D0lAYEE+dNuhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=niv0E/MA; arc=none smtp.client-ip=209.85.210.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=swC82qxlDHXl6//4Jy2hbwI8MYU02r67uHlMGXO4LvCcqUD6XtNVgH/xqDt5/ec/AwhnO4HSjC2hjg3rUEBBkll06b1S7zfnVRL+T2ICZj9NCiGUaSQyEdMK1FOf6s7WTvajJroDLsn0G1Rw7a9s8/9FajtE8FQQhLwzwUzixdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iboznVoh; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="niv0E/MA"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6f043f9e6d7so3080626b3a.3
-        for <imx@lists.linux.dev>; Sat, 27 Apr 2024 02:31:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iboznVoh"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1e3e84a302eso23069905ad.0
+        for <imx@lists.linux.dev>; Sat, 27 Apr 2024 02:33:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714210303; x=1714815103; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1714210428; x=1714815228; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=tYOHjjJvOYuP2OhXdEZddqymE0/QhchR9DMZrxwOyFM=;
-        b=niv0E/MAOL5gSz0MJD1YsxUY6Mz01TNC4BaH9ALEm3M2rduISYEQNeQeQzo7T2EpEZ
-         k7edQytc2EyLVSD5TpI0JrK24nYMZcWLzLv3FV6FlE5i5UuPrv5bFLIBmat3cXoj6DmO
-         oDa81lq4YLU6+OEnd+ktUt+dxIw6Qp1aWN3ukK7BT+p42TlBCzuBmRqGQwVciLexWnk5
-         1ClxHGguGKd3Ey0KZTYvUDkZ+hq1cupsySvqyZkpjxdglAtBsygGpggKtIoNNVaiAfJb
-         siqtSuoMdrtwJBGmSLlgcyipWYWaGrsXQr+FIK3tRcSlKs6Fgz+Bc+C6sBnSQUjtsTJU
-         wdNg==
+        bh=xcGWu0Qd+VKYUbfzlOh1vmNPNKKTWpUhtERS9P99/fA=;
+        b=iboznVohOfgjoTkekEOhwBLXiAM9W1YLP5M+sjX8lJDcWqc/jYZeo0cyZQ773pat2d
+         xbUs8zlRB32CzvY1JnjFAZRO+SxKSDCouYIPrM+2DUIq0EUXtwcV8D9bXQqllgNK7+yo
+         +I02PCFSYz9A+MHR4TzUddymLDdTX/tMway16e3Y/RZ0CDKxryTyASQWBPOKd/PgF/Bj
+         O1V2+c9tU/5nM/TPR9FjuX/0tk5uVsmZyUNDvJvA96u4IC31WYKUALVsbDOcabMoLpdp
+         sRc40QltoDECy3Rc2l2G7CJM4kbcUBZTAO8v1Yx31ikGGPGQBNTdLZVhrua9RBesFx0c
+         7M5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714210303; x=1714815103;
+        d=1e100.net; s=20230601; t=1714210428; x=1714815228;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tYOHjjJvOYuP2OhXdEZddqymE0/QhchR9DMZrxwOyFM=;
-        b=rJofP3UpDKKHPKetINCyqB4W1ylafEbtTqV3f7bMTyMR+qPmnGtnZ5dXJX6AAekc+t
-         ebukrviVxNMI9Sjs8cIHdxkEcIofs1H5qrGrIJRqYEZegxsPk6WfCwhzq/6newJn/1JN
-         7bWQW8sYb61g1c8bQ0HdLYh1DRHkxPZeLhhb/8/W86jCAdzWP0x6Yi+XIHETLdCMUD2m
-         48NXLRWahSbHPK05XINIO8iOVps5FA3mub3gh88Wa9mD3ra91Q1sv+L5D18Em6F5UiuL
-         NHtX2ebFAvVNTDcf32CS0OxGD5u2+AtyIjkvY5awTfYQMWgBLOFbxq2BlkTGhEs5FbYf
-         mSnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWM2plybGsB0E2E5T+bzXj9/FuqSqL5ep6zwrYujIxPsU5UknnrAyVi+SOmR0Ky6shg+6L/rdnPX5TjKLaaRZRxc42S
-X-Gm-Message-State: AOJu0YwNjFYCWw7A+j2Z9/V6Y4Ju7UOKuGGJNUDLqNv7DBIOYEm39/Vq
-	jWaX8E0ZccFOH7dFssiM2ht0HziV1VhUP9c3VN4GRcqSfZZvTluesF2Dj9bPYA==
-X-Google-Smtp-Source: AGHT+IEDEy5DOuk8n6kXlJvEA8g+7MUq9OgTqFu1xI+W8rd0Vtrs/hhQqEV4yIwn5e/6UYcNXRNLPQ==
-X-Received: by 2002:a05:6a21:2d86:b0:1a9:d9bb:acdc with SMTP id ty6-20020a056a212d8600b001a9d9bbacdcmr5839673pzb.28.1714210303063;
-        Sat, 27 Apr 2024 02:31:43 -0700 (PDT)
+        bh=xcGWu0Qd+VKYUbfzlOh1vmNPNKKTWpUhtERS9P99/fA=;
+        b=igoSmqEWZM0Jiw8zdil1zDbFvphlz1iNPI/GSB6ILyhLW327x/o7oil2MBNjkIv0R0
+         8lZyIbRt7/4p3dhHx1uMwPjCcsYfqtz4zoZkRDr7yro5r6HeE5WaOENZVLRsOLLY5860
+         gB4zbQ7lmxaVdyzyUvvRyJo87v6k5fqinGJVRYcY9t5nkaSPhu6An1VuhQXzarKoQL7v
+         m2iRnF4DQUaM0oj+F4KiVFAstI2dyG/20iyl8U/xd3Y7oWbbSER9VkRYrk6iXmi3Ioy5
+         gTcV/GMlUltv2BrXqtTgH7LJDUBvzIcehElkWDvAd22nqlmxejjry8/P9rSQrMgtfTM3
+         uvqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEJ6z0jTQLX52kAPz0I4VQqL7Y8w59YcshYOV1R2KJzvTNRxA+jqZVo1NZ0/sDaN/AgWylva/0PmsyHM+HY7eDKc/a
+X-Gm-Message-State: AOJu0Yw6f2E60CyTzFwmHbZc2GchfkGj1wPLn0GZBQJiknLpaxIkLhBf
+	csyW7OHwpzT2Pks81lwQ6EnvZzNxgns69k7kxzNAwTW3fZT4uF1uBpgFwWLgRg==
+X-Google-Smtp-Source: AGHT+IHEgFcFYTWrCb8oOy/T7GvDZXiPS2vYVXc1VHEpHHfPR/Jn0v3TSW+ktgEofQzf5auO4mceIw==
+X-Received: by 2002:a17:902:f78d:b0:1eb:527e:a8ad with SMTP id q13-20020a170902f78d00b001eb527ea8admr1948983pln.51.1714210427762;
+        Sat, 27 Apr 2024 02:33:47 -0700 (PDT)
 Received: from thinkpad ([117.213.97.210])
-        by smtp.gmail.com with ESMTPSA id h17-20020aa79f51000000b006e71aec34a8sm16043440pfr.167.2024.04.27.02.31.37
+        by smtp.gmail.com with ESMTPSA id mq8-20020a170902fd4800b001e23fcdebe9sm16790001plb.98.2024.04.27.02.33.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Apr 2024 02:31:42 -0700 (PDT)
-Date: Sat, 27 Apr 2024 15:01:33 +0530
+        Sat, 27 Apr 2024 02:33:47 -0700 (PDT)
+Date: Sat, 27 Apr 2024 15:03:36 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Richard Zhu <hongxing.zhu@nxp.com>,
@@ -73,10 +73,11 @@ Cc: Richard Zhu <hongxing.zhu@nxp.com>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 04/11] PCI: imx6: Rename pci-imx6.c to pcie-imx.c
-Message-ID: <20240427093133.GI1981@thinkpad>
+Subject: Re: [PATCH v3 05/11] MAINTAINERS: pci: imx: update imx6* to imx*
+ since rename driver file
+Message-ID: <20240427093336.GJ1981@thinkpad>
 References: <20240402-pci2_upstream-v3-0-803414bdb430@nxp.com>
- <20240402-pci2_upstream-v3-4-803414bdb430@nxp.com>
+ <20240402-pci2_upstream-v3-5-803414bdb430@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,46 +87,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240402-pci2_upstream-v3-4-803414bdb430@nxp.com>
+In-Reply-To: <20240402-pci2_upstream-v3-5-803414bdb430@nxp.com>
 
-On Tue, Apr 02, 2024 at 10:33:40AM -0400, Frank Li wrote:
-> Update the filename from 'pci-imx6.c' to 'pcie-imx.c' to accurately reflect
-> its applicability to all i.MX chips (i.MX6x, i.MX7x, i.MX8x, i.MX9x).
-> Eliminate the '6' to prevent confusion. Additionally, correct the prefix
-> from 'pci-' to 'pcie-'.
-> 
-> Retain the previous configuration CONFIG_PCI_IMX6 unchanged to maintain
-> compatibility.
+On Tue, Apr 02, 2024 at 10:33:41AM -0400, Frank Li wrote:
+> Add me to imx pcie driver maintainer.
+> Add mail list imx@lists.linux.dev.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-You should not rename a driver as that will break existing userspace scripts
-looking for module with old name.
+The driver name changing part should be dropped. But adding a co-maintainer,
+warrants an ACK from previous maintainers.
 
 - Mani
 
 > ---
->  drivers/pci/controller/dwc/Makefile                   | 2 +-
->  drivers/pci/controller/dwc/{pci-imx6.c => pcie-imx.c} | 0
->  2 files changed, 1 insertion(+), 1 deletion(-)
+>  MAINTAINERS | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
-> index bac103faa5237..eaea7abbabc2c 100644
-> --- a/drivers/pci/controller/dwc/Makefile
-> +++ b/drivers/pci/controller/dwc/Makefile
-> @@ -7,7 +7,7 @@ obj-$(CONFIG_PCIE_BT1) += pcie-bt1.o
->  obj-$(CONFIG_PCI_DRA7XX) += pci-dra7xx.o
->  obj-$(CONFIG_PCI_EXYNOS) += pci-exynos.o
->  obj-$(CONFIG_PCIE_FU740) += pcie-fu740.o
-> -obj-$(CONFIG_PCI_IMX6) += pci-imx6.o
-> +obj-$(CONFIG_PCI_IMX6) += pcie-imx.o
->  obj-$(CONFIG_PCIE_SPEAR13XX) += pcie-spear13xx.o
->  obj-$(CONFIG_PCI_KEYSTONE) += pci-keystone.o
->  obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pcie-imx.c
-> similarity index 100%
-> rename from drivers/pci/controller/dwc/pci-imx6.c
-> rename to drivers/pci/controller/dwc/pcie-imx.c
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8d1052fa6a692..59a409dd604d8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16736,14 +16736,16 @@ F:	drivers/pci/controller/pci-host-generic.c
+>  
+>  PCI DRIVER FOR IMX6
+>  M:	Richard Zhu <hongxing.zhu@nxp.com>
+> +M:	Frank Li <Frank.Li@nxp.com>
+>  M:	Lucas Stach <l.stach@pengutronix.de>
+>  L:	linux-pci@vger.kernel.org
+> +L:	imx@lists.linux.dev
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
+>  F:	Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+>  F:	Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> -F:	drivers/pci/controller/dwc/*imx6*
+> +F:	drivers/pci/controller/dwc/*imx*
+>  
+>  PCI DRIVER FOR INTEL IXP4XX
+>  M:	Linus Walleij <linus.walleij@linaro.org>
 > 
 > -- 
 > 2.34.1
