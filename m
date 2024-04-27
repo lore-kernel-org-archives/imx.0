@@ -1,48 +1,52 @@
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC8A2E852
-	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 20:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355771487D3
+	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 20:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714250181; cv=none; b=rdC3NUgs+8z3FkUBnjogFkQkphEzoEBXF60pIW7s8+nalEc4O35k7/l6hk534r1BED59kShybXTL6A05qrby/VbryEK+9o5jnnUFMvZKjO4tm9u7IaikSOmfVhUi3o6hrPlYO4fd796AxcwmJcRGJnCodrTYwmnc31Oa+OWiqZw=
+	t=1714250186; cv=none; b=eacnfZOR4dqUCKyJZMVikvGxDgs+BaUAhE7gj/yZdG3IJJcAKf/rkJkEysB++WwT5GK+EH7QTEO9HUn9j8awDWxiRIw0kMoisSpBN+46NxQ0kFYd6xj8hio9osB1LICtO9usctn9utlxwXDKFUYM4lnSEAiElIJ93NUqi/T4WYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714250181; c=relaxed/simple;
-	bh=Tx0G6b9JwQMFmz7pulrhML1UHa1rgqE/GzFQrCputUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IdPjEglh3718zZEbABysrEKay+AqpINoXiiTGwtf1TlVABgEtfmXbNYv9QZIzB//pw7QVCN0v3l6t/vnOtpOS1Tn48yjoiCWhifsfyMjKLD5erSi0//LpfYsXQh0CYeD9DbQ6rn8UlEDyGyc9551UjgXc0qB/fm0U4o9qYk1HxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=J/dbn4NF; arc=none smtp.client-ip=194.117.254.33
+	s=arc-20240116; t=1714250186; c=relaxed/simple;
+	bh=n4hQc5gZqdrk//Rxy2JOXADtiKMOzaMTzzXO1IINnr0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F8iyO8PazhsGc5q/R8HWoOgVGUTpBUeMXeJaKHXcHckv2lFXSVhO2sGDuEpeHLse/krp9Jy2QfnLpiV5NvyrutBNGUNTvCnngEiSp1SerUX3PoEusKeEDFk7ofdxXS3PtBQCoBWCWR23QBtNL9iH4MiSomTik+Ou9xjrwposNZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=FNRdal9N; arc=none smtp.client-ip=194.117.254.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="J/dbn4NF"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="FNRdal9N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:mime-version:content-transfer-encoding; s=k1; bh=vucjjM3RsCbo5+
-	FPCKzNEmVbLons1oLEEtyP6oygaEw=; b=J/dbn4NFhpPLnpA2UHgTAGogwIkFVU
-	c1Oe144PmBmlBY7G1bZjfrO64wUSfJItMs30Ey1vHza/lqVrpXpu3HBC64PtE6wm
-	PM643I22QuBpe+FQCCFBy9C1g8B/+qKR2wnguasGV7MKIQhjrLfC6ogaEikc7wZg
-	NXKz5ylEb6ox+6JSJCa222bDqBSM7wjjeZmD2itN/VEqY86s1JzjVcawhMT0dNBB
-	ZfrCpu0HSx1LJTveW87o2Bi1Cr36obPwq5lvaoeqdeUgwJOFx2FSWFozO2gDVB1+
-	r2IRSzGgTFNtpEl2Svq5p+/Wg9jwOurnZVwcxRc0W7D4YqCilqvAW/8A==
-Received: (qmail 1781755 invoked from network); 27 Apr 2024 22:36:14 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 27 Apr 2024 22:36:14 +0200
-X-UD-Smtp-Session: l3s3148p1@ZFeo+BkXsI9ehh9l
+	:in-reply-to:references:mime-version:content-transfer-encoding;
+	 s=k1; bh=lgb5SzZOxsbM5nweq0hf5zFbKk9/34W+E/fPoNu8BgM=; b=FNRdal
+	9NQ6vzfXBzcTkf+PgQZ1TcO7TXIwlE2qCZcth2/uSaa76PiE6woabAXEq4BcjnQT
+	Ob67SFbg8SmjEONMw50ZZ7Xt+rp4mGVb085+TH7Z3l16ZMe7zWwfmzB+u+64DUtH
+	kAM/2qBP0dK3Ux1E3tPslg+feGkWQetQSDPPwfeZIhZFCbDrstt9amQ+GWS5SdXt
+	e4/rDMN5l3HT5jqJlstfd935xijmv+n9839AYqyD8fOF5UjFNJZChsXrTYyO+lAW
+	buIei5S4w89RfPWb/6BX6n4TOGf1EyhKjGzwllDrAnIk6Zj0vWCdiA97hjNdVcSl
+	3GBUnGbQ5NLGJOvg==
+Received: (qmail 1781911 invoked from network); 27 Apr 2024 22:36:18 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 27 Apr 2024 22:36:18 +0200
+X-UD-Smtp-Session: l3s3148p1@Rr/s+BkXts9ehh9l
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-i2c@vger.kernel.org
 Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH 00/15] i2c: use 'time_left' with wait_for_*
-Date: Sat, 27 Apr 2024 22:35:52 +0200
-Message-ID: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 05/15] i2c: imx-lpi2c: use 'time_left' variable with wait_for_completion_timeout()
+Date: Sat, 27 Apr 2024 22:35:57 +0200
+Message-ID: <20240427203611.3750-6-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
+References: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,54 +56,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 There is a confusing pattern in the kernel to use a variable named 'timeout' to
-store the result of wait_for_*() causing patterns like:
+store the result of wait_for_completion_timeout() causing patterns like:
 
-        timeout = wait_for_completion_timeout(...)
-        if (!timeout) return -ETIMEDOUT;
+	timeout = wait_for_completion_timeout(...)
+	if (!timeout) return -ETIMEDOUT;
 
 with all kinds of permutations. Use 'time_left' as a variable to make the code
 self explaining.
 
-This is the I2C part of a tree-wide series. The rest of the patches can
-be found here (slightly WIP):
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
-
-Because these patches are generated, they need manual audit. So, I will
-send them step by step. This is part 1 and also a call for opinions if
-this is a desirable change. But at least in the I2C realm, I really want
-to have it proper.
-
-Build bot is happy with these patches and I also compile tested them
-(except two). No functional changes intended.
-
-Wolfram Sang (15):
-  i2c: amd-mp2-plat: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: digicolor: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: exynos5: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: hix5hd2: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: imx-lpi2c: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: omap: use 'time_left' variable with wait_for_completion_timeout()
-  i2c: st: use 'time_left' variable with wait_for_completion_timeout()
-  i2c: stm32f4: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: stm32f7: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: synquacer: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: jz4780: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: qcom-geni: use 'time_left' variable with
-    wait_for_completion_timeout()
-  i2c: rk3x: use 'time_left' variable with wait_event_timeout()
-  i2c: s3c2410: use 'time_left' variable with wait_event_timeout()
-  i2c: pxa: use 'time_left' variable with wait_event_timeout()
-
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 36e8f6196a87..0197786892a2 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -307,11 +307,11 @@ static int lpi2c_imx_master_disable(struct lpi2c_imx_struct *lpi2c_imx)
+ 
+ static int lpi2c_imx_msg_complete(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long timeout;
++	unsigned long time_left;
+ 
+-	timeout = wait_for_completion_timeout(&lpi2c_imx->complete, HZ);
++	time_left = wait_for_completion_timeout(&lpi2c_imx->complete, HZ);
+ 
+-	return timeout ? 0 : -ETIMEDOUT;
++	return time_left ? 0 : -ETIMEDOUT;
+ }
+ 
+ static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
 -- 
 2.43.0
 
