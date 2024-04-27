@@ -1,58 +1,58 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC7A4086F
-	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 06:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0893BBD2
+	for <imx@lists.linux.dev>; Sat, 27 Apr 2024 07:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714200224; cv=none; b=jwl8SxxtuUiQG1ffooTySyxFwx4ibAjTS/NYrupigUxwh/v0PZLts09LnO6L/Ge+S7ZYX6cC+rU1iVeW1576v7d929XPA0qXko25c49zNAujHk6pBBqkgwpNKaHuPJgtH0PBDyUHgHA01Z76QxxCC25ionubP8CmMFnZTXA1pcc=
+	t=1714202633; cv=none; b=u7B00pzZEIchQL75Ahx0Tywae/6fkgVTn5odfG5U8wlGrb3+kvaGjmVzkGlM+Ol2BIUrtkKlMgNDQmPS+6hfZ325/qeNeriROuXSwZWRrRXCH3jKZyEQsEe9w3v8dK/k78m9gEIgI/7ztyKlO8E6JLYprwHciODyzUiON6ZR+40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714200224; c=relaxed/simple;
-	bh=LPalAcWzxJ0yMmzch32JrWfIS3osx/TskoGrevHHB+I=;
+	s=arc-20240116; t=1714202633; c=relaxed/simple;
+	bh=QQ9X6/B/OY5Rpbf27ZZgDjJFLbBrR5d8bJENXinX6zw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VCPgt5GDtLFfXcQvdOchKW7JMFtxa/4Zf1/Y9fd4G94cygxdjfo6TWBfjeQAXK2jTcKjU9qoEYHHpewmUuIEsDbgahp7xOZZE6lpyrCrbIZHBFEoxufXV1YZ9xPmpx0XoP1YaJ4fLx+6tAvBWBVcmg54ySO2l219IadyVSAv4Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jgLlcKfK; arc=none smtp.client-ip=209.85.214.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=uiic7nMVrdKMi6lradhoCSWUiZvOiHNRZF3DdSjp0FKh2arUA48aqwAcd0EXxVkU4B88PcB9Xs/ao+7C4usNcrkhKOjPi8LeDglZfG9k21zwvTCuCwFr/Ln7dZOiGVlcNFnD0i32BBwVHpes/Xv9Ust9J8K/Xws0qxrsjlzCQ3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xhXv/wYA; arc=none smtp.client-ip=209.85.167.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jgLlcKfK"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1e3c9300c65so25863785ad.0
-        for <imx@lists.linux.dev>; Fri, 26 Apr 2024 23:43:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xhXv/wYA"
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3c6f6c5bc37so1506394b6e.1
+        for <imx@lists.linux.dev>; Sat, 27 Apr 2024 00:23:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714200222; x=1714805022; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1714202631; x=1714807431; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=eTGnh4hJsxF2w2JcjcnIEUBbWbOx1xRb7gasYjxARjc=;
-        b=jgLlcKfKpNycq8yAKITIt6k7xd56DuLV7zp9vEdUZAtr+tNrnxNqHdbflrZz8I5CGG
-         ETt5HDKpBaLAHDjfx6DSnYxySbzGl7Nu6LHbtrbDMuyUywH9P1IWQzwpTWIvlC7MFnK/
-         5Zw4dKmLlVlBaZKX2LE5AD2uQDPnyxfbijG30USNZShi/2ID3Ff+C4DegATNjwJVz0yL
-         i9IEgglXdSckBAgEiMUPgED1SL0qDK6qRb7+XD59ChvmyH+Y1+JshY1xHXOxMNWhCufF
-         bYZ8qd1vtkPOz6DOj1sokc647d7CZ5ffSmgaOaVof9gWsAluw9dYS94kDg2uVt00lXRJ
-         Xx7Q==
+        bh=X6/zlDycsKlLm9oMWJCj8T6cyudX5ggjd/VxiVnvZxs=;
+        b=xhXv/wYA1Na54NzcKKZ2wnPIZsSebx9VA+NHO8MYxMBhBO30cC+wvEzqr9qDY6+dK+
+         7hyLTvtzFTcSUXANQYuBuC2BiqesQEzh5hHGPwEVsEhr2HJc3jE7O0zb2Ot6a1ARHFYc
+         RMfWHKeu8soxN/gxTD01kP0uI1qg7Fg/RSajLCHl0TiW1SqWbh17SQmsjjRfsOv/HjV0
+         OyVg0z1hhSkJILEvjyiteg481m3WI93xIUjyxwCA6NHDA6QvVGzHW/wiBJh9kio/2LZm
+         wthn5mXl7sazWPwnbaRJXu8xgzUV3UQkg67+C3+Sz2wV366EdgpNs94EzBdJtCq+SC1B
+         p8Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714200222; x=1714805022;
+        d=1e100.net; s=20230601; t=1714202631; x=1714807431;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eTGnh4hJsxF2w2JcjcnIEUBbWbOx1xRb7gasYjxARjc=;
-        b=Z+4PvLMB3kNRLgBCjWbWa9+N8LbOMJ2vXce/zEf/V9RYVRa8Jm8PGUxq9g3UmDd/Ai
-         fG1sefaYUvzcGOBMq6yMxlKTOrFNYt9liM6Ra/K2MYSEaDounK2DQb7wR9v5jz3vYJqp
-         aXJpV/WRy3UPxrhB8CU4yxpXwZdGWklEBIEzSd3AVoe5DbzkXmnQOKxywBB8yj7h25+Z
-         umS/y7C3S0gfCcpybxDBQXU2uS/KvBC3E6JXOosj6FEM5SyfuVr8kXscz14btMBJBEiG
-         9OXJDoRKI9prl31G5AwbqZQdZVV/L8Km6FXJQcp6hZZYG1sgRJPZFEdiwH5DAEt8qe3A
-         uoww==
-X-Forwarded-Encrypted: i=1; AJvYcCWpwjl4yWuTk2JiHuM7QwlFXc0SKO7dThYncIgiodZnRTyRuiGhdzMPj1PSC2PZbPFCtTfo+RZxCTt6ZeBc1zOabbLh
-X-Gm-Message-State: AOJu0YzU9EAIv80D81nY5Cd13WC0MFZopx68dZBPEDia9LoN4P/kQ5nv
-	0dTfvATL2N602cqUD3x2watVjgVt/ROk4/RF4zE5jlBw/0GYo12qhmLJ65YSPg==
-X-Google-Smtp-Source: AGHT+IHUmT02EuAP4GA34txQXaVB3I9YqYCabXLgvXGRga6DshOVeDQbPJbpV0gl5wTwZcs3Pq2Smg==
-X-Received: by 2002:a17:903:240a:b0:1e9:6609:37d4 with SMTP id e10-20020a170903240a00b001e9660937d4mr6065899plo.9.1714200222300;
-        Fri, 26 Apr 2024 23:43:42 -0700 (PDT)
+        bh=X6/zlDycsKlLm9oMWJCj8T6cyudX5ggjd/VxiVnvZxs=;
+        b=Yn1dUsSpUBArx9wqLowhxDjgmLH/phnsGPKiS2+RSq4h6znchZjFJxGCk4LcLVzuEm
+         i8u/81cu4hoUwwJw1+/V2K5rrEuZeJugpu5DFRxC2aafYn8IJM1yuBa+IkfmidtN2W2u
+         +czU6ok8hQyiF/rRRrVxBu7Vf6P+4+x63F9Ma3WEoLo1IKy3QSDtjvlBH9sZ4bXraIvH
+         JJjeaGE3Fs51ApGP9Lw6ulu37SriaJQG1zeriBAU51oyoVdbCugYpBkUU52uSVtppprg
+         H/7nmtMHql/8DMFQGpjwERBzfMVLf2DuIZ21Kqw42xBEyU7/GN30DM0OkYvH0Qj2UDC8
+         r/fA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVVfcEXymKQ5sp4cfkCtGMuf9CpnETKEoMeCCkPLbY98R0h6+rFDtNOTXMu1M4Y2BV/UzIf/xSbGiijPGJzFPR9Ezp
+X-Gm-Message-State: AOJu0YyX+Y0HtMU2SZLc2szWJcNJuXWslnjUwQhTJQLNfWjS1xrC/tyh
+	4zvASDIOdjbLCR86RXKwYyTDJF2wchngKMYtXe/zx5xQgzssPhDvDqvtFIRwow==
+X-Google-Smtp-Source: AGHT+IHfipPHYlZH0dzUMyHUrOzKZyinCxBfDMz+pa+y5kowAJsMrQzIMhjdPr+G4bo6/Uiu7Lh6tA==
+X-Received: by 2002:a05:6808:85:b0:3c7:4b27:57fb with SMTP id s5-20020a056808008500b003c74b2757fbmr5763377oic.29.1714202630707;
+        Sat, 27 Apr 2024 00:23:50 -0700 (PDT)
 Received: from thinkpad ([120.60.53.237])
-        by smtp.gmail.com with ESMTPSA id b21-20020a170902d89500b001e44578dccasm16507119plz.254.2024.04.26.23.43.34
+        by smtp.gmail.com with ESMTPSA id i123-20020a639d81000000b005f7ff496050sm13702516pgd.76.2024.04.27.00.23.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 23:43:41 -0700 (PDT)
-Date: Sat, 27 Apr 2024 12:13:29 +0530
+        Sat, 27 Apr 2024 00:23:50 -0700 (PDT)
+Date: Sat, 27 Apr 2024 12:53:35 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Frank Li <Frank.Li@nxp.com>,
@@ -83,10 +83,10 @@ Cc: Frank Li <Frank.Li@nxp.com>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v2 3/4] PCI: imx6: Convert to agnostic GPIO API
-Message-ID: <20240427064329.GB1981@thinkpad>
+Subject: Re: [PATCH v2 4/4] PCI: kirin: Convert to agnostic GPIO API
+Message-ID: <20240427072335.GC1981@thinkpad>
 References: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
- <20240423172208.2723892-4-andriy.shevchenko@linux.intel.com>
+ <20240423172208.2723892-5-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -96,110 +96,230 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240423172208.2723892-4-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240423172208.2723892-5-andriy.shevchenko@linux.intel.com>
 
-On Tue, Apr 23, 2024 at 08:19:06PM +0300, Andy Shevchenko wrote:
+On Tue, Apr 23, 2024 at 08:19:07PM +0300, Andy Shevchenko wrote:
 > The of_gpio.h is going to be removed. In preparation of that convert
 > the driver to the agnostic API.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>  drivers/pci/controller/dwc/pcie-kirin.c | 105 ++++++++----------------
+>  1 file changed, 35 insertions(+), 70 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+> index d5523f302102..1753ab63a541 100644
+> --- a/drivers/pci/controller/dwc/pcie-kirin.c
+> +++ b/drivers/pci/controller/dwc/pcie-kirin.c
+> @@ -12,12 +12,10 @@
+>  #include <linux/compiler.h>
+>  #include <linux/delay.h>
+>  #include <linux/err.h>
+> -#include <linux/gpio.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/of.h>
+> -#include <linux/of_gpio.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/phy/phy.h>
+>  #include <linux/pci.h>
+> @@ -78,16 +76,16 @@ struct kirin_pcie {
+>  	void		*phy_priv;	/* only for PCIE_KIRIN_INTERNAL_PHY */
+>  
+>  	/* DWC PERST# */
+> -	int		gpio_id_dwc_perst;
+> +	struct gpio_desc *id_dwc_perst_gpio;
+>  
+>  	/* Per-slot PERST# */
+>  	int		num_slots;
+> -	int		gpio_id_reset[MAX_PCI_SLOTS];
+> +	struct gpio_desc *id_reset_gpio[MAX_PCI_SLOTS];
+>  	const char	*reset_names[MAX_PCI_SLOTS];
+>  
+>  	/* Per-slot clkreq */
+>  	int		n_gpio_clkreq;
+> -	int		gpio_id_clkreq[MAX_PCI_SLOTS];
+> +	struct gpio_desc *id_clkreq_gpio[MAX_PCI_SLOTS];
+>  	const char	*clkreq_names[MAX_PCI_SLOTS];
+>  };
+>  
+> @@ -381,15 +379,20 @@ static int kirin_pcie_get_gpio_enable(struct kirin_pcie *pcie,
+>  	pcie->n_gpio_clkreq = ret;
+>  
+>  	for (i = 0; i < pcie->n_gpio_clkreq; i++) {
+> -		pcie->gpio_id_clkreq[i] = of_get_named_gpio(dev->of_node,
+> -						    "hisilicon,clken-gpios", i);
+> -		if (pcie->gpio_id_clkreq[i] < 0)
+> -			return pcie->gpio_id_clkreq[i];
+> +		pcie->id_clkreq_gpio[i] = devm_gpiod_get_index(dev,
+> +							"hisilicon,clken", i,
+> +							GPIOD_ASIS);
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Please don't use GPIOD_ASIS even if the old code was using it.
+
+For all 3 GPIOs in this driver, GPIOD_OUT_LOW flag should be used as the default
+state is assert (considering the fact that the DT uses GPIO_ACTIVE_HIGH).
 
 - Mani
 
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 37 ++++++++++-----------------
->  1 file changed, 14 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 917c69edee1d..d620f1e1a43c 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -11,14 +11,13 @@
->  #include <linux/bitfield.h>
->  #include <linux/clk.h>
->  #include <linux/delay.h>
-> -#include <linux/gpio.h>
-> +#include <linux/gpio/consumer.h>
->  #include <linux/kernel.h>
->  #include <linux/mfd/syscon.h>
->  #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
->  #include <linux/mfd/syscon/imx7-iomuxc-gpr.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_gpio.h>
->  #include <linux/of_address.h>
->  #include <linux/pci.h>
->  #include <linux/platform_device.h>
-> @@ -107,7 +106,7 @@ struct imx6_pcie_drvdata {
+> +		if (IS_ERR(pcie->id_clkreq_gpio[i]))
+> +			return dev_err_probe(dev, PTR_ERR(pcie->id_clkreq_gpio[i]),
+> +					     "unable to get a valid clken gpio\n");
 >  
->  struct imx6_pcie {
->  	struct dw_pcie		*pci;
-> -	int			reset_gpio;
-> +	struct gpio_desc	*reset_gpiod;
->  	bool			gpio_active_high;
->  	bool			link_is_up;
->  	struct clk_bulk_data	clks[IMX6_PCIE_MAX_CLKS];
-> @@ -721,9 +720,8 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+>  		pcie->clkreq_names[i] = devm_kasprintf(dev, GFP_KERNEL,
+>  						       "pcie_clkreq_%d", i);
+>  		if (!pcie->clkreq_names[i])
+>  			return -ENOMEM;
+> +
+> +		gpiod_set_consumer_name(pcie->id_clkreq_gpio[i],
+> +					pcie->clkreq_names[i]);
 >  	}
 >  
->  	/* Some boards don't have PCIe reset GPIO. */
-> -	if (gpio_is_valid(imx6_pcie->reset_gpio))
-> -		gpio_set_value_cansleep(imx6_pcie->reset_gpio,
-> -					imx6_pcie->gpio_active_high);
-> +	gpiod_set_raw_value_cansleep(imx6_pcie->reset_gpiod,
-> +				     imx6_pcie->gpio_active_high);
+>  	return 0;
+> @@ -407,10 +410,16 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
+>  		for_each_available_child_of_node(parent, child) {
+>  			i = pcie->num_slots;
+>  
+> -			pcie->gpio_id_reset[i] = of_get_named_gpio(child,
+> -							"reset-gpios", 0);
+> -			if (pcie->gpio_id_reset[i] < 0)
+> -				continue;
+> +			pcie->id_reset_gpio[i] = devm_fwnode_gpiod_get_index(dev,
+> +							 of_fwnode_handle(child),
+> +							 "reset", 0, GPIOD_ASIS,
+> +							 NULL);
+> +			if (IS_ERR(pcie->id_reset_gpio[i])) {
+> +				if (PTR_ERR(pcie->id_reset_gpio[i]) == -ENOENT)
+> +					continue;
+> +				return dev_err_probe(dev, PTR_ERR(pcie->id_reset_gpio[i]),
+> +						     "unable to get a valid reset gpio\n");
+> +			}
+>  
+>  			pcie->num_slots++;
+>  			if (pcie->num_slots > MAX_PCI_SLOTS) {
+> @@ -434,6 +443,9 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
+>  				ret = -ENOMEM;
+>  				goto put_node;
+>  			}
+> +
+> +			gpiod_set_consumer_name(pcie->id_reset_gpio[i],
+> +						pcie->reset_names[i]);
+>  		}
+>  	}
+>  
+> @@ -463,14 +475,11 @@ static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
+>  		return PTR_ERR(kirin_pcie->apb);
+>  
+>  	/* pcie internal PERST# gpio */
+> -	kirin_pcie->gpio_id_dwc_perst = of_get_named_gpio(dev->of_node,
+> -							  "reset-gpios", 0);
+> -	if (kirin_pcie->gpio_id_dwc_perst == -EPROBE_DEFER) {
+> -		return -EPROBE_DEFER;
+> -	} else if (!gpio_is_valid(kirin_pcie->gpio_id_dwc_perst)) {
+> -		dev_err(dev, "unable to get a valid gpio pin\n");
+> -		return -ENODEV;
+> -	}
+> +	kirin_pcie->id_dwc_perst_gpio = devm_gpiod_get(dev, "reset", GPIOD_ASIS);
+> +	if (IS_ERR(kirin_pcie->id_dwc_perst_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(kirin_pcie->id_dwc_perst_gpio),
+> +				     "unable to get a valid gpio pin\n");
+> +	gpiod_set_consumer_name(kirin_pcie->id_dwc_perst_gpio, "pcie_perst_bridge");
+>  
+>  	ret = kirin_pcie_get_gpio_enable(kirin_pcie, pdev);
+>  	if (ret)
+> @@ -553,7 +562,7 @@ static int kirin_pcie_add_bus(struct pci_bus *bus)
+>  
+>  	/* Send PERST# to each slot */
+>  	for (i = 0; i < kirin_pcie->num_slots; i++) {
+> -		ret = gpio_direction_output(kirin_pcie->gpio_id_reset[i], 1);
+> +		ret = gpiod_direction_output_raw(kirin_pcie->id_reset_gpio[i], 1);
+>  		if (ret) {
+>  			dev_err(pci->dev, "PERST# %s error: %d\n",
+>  				kirin_pcie->reset_names[i], ret);
+> @@ -623,44 +632,6 @@ static int kirin_pcie_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
 >  }
 >  
->  static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
-> @@ -771,10 +769,10 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
->  	}
->  
->  	/* Some boards don't have PCIe reset GPIO. */
-> -	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
-> +	if (imx6_pcie->reset_gpiod) {
->  		msleep(100);
-> -		gpio_set_value_cansleep(imx6_pcie->reset_gpio,
-> -					!imx6_pcie->gpio_active_high);
-> +		gpiod_set_raw_value_cansleep(imx6_pcie->reset_gpiod,
-> +					     !imx6_pcie->gpio_active_high);
->  		/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
->  		msleep(100);
->  	}
-> @@ -1285,22 +1283,15 @@ static int imx6_pcie_probe(struct platform_device *pdev)
->  		return PTR_ERR(pci->dbi_base);
->  
->  	/* Fetch GPIOs */
-> -	imx6_pcie->reset_gpio = of_get_named_gpio(node, "reset-gpio", 0);
->  	imx6_pcie->gpio_active_high = of_property_read_bool(node,
->  						"reset-gpio-active-high");
-> -	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
-> -		ret = devm_gpio_request_one(dev, imx6_pcie->reset_gpio,
-> -				imx6_pcie->gpio_active_high ?
-> -					GPIOF_OUT_INIT_HIGH :
-> -					GPIOF_OUT_INIT_LOW,
-> -				"PCIe reset");
-> -		if (ret) {
-> -			dev_err(dev, "unable to get reset gpio\n");
-> -			return ret;
+> -static int kirin_pcie_gpio_request(struct kirin_pcie *kirin_pcie,
+> -				   struct device *dev)
+> -{
+> -	int ret, i;
+> -
+> -	for (i = 0; i < kirin_pcie->num_slots; i++) {
+> -		if (!gpio_is_valid(kirin_pcie->gpio_id_reset[i])) {
+> -			dev_err(dev, "unable to get a valid %s gpio\n",
+> -				kirin_pcie->reset_names[i]);
+> -			return -ENODEV;
 > -		}
-> -	} else if (imx6_pcie->reset_gpio == -EPROBE_DEFER) {
-> -		return imx6_pcie->reset_gpio;
+> -
+> -		ret = devm_gpio_request(dev, kirin_pcie->gpio_id_reset[i],
+> -					kirin_pcie->reset_names[i]);
+> -		if (ret)
+> -			return ret;
 > -	}
-> +	imx6_pcie->reset_gpiod =
-> +		devm_gpiod_get_optional(dev, "reset",
-> +			imx6_pcie->gpio_active_high ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW);
-> +	if (IS_ERR(imx6_pcie->reset_gpiod))
-> +		return dev_err_probe(dev, PTR_ERR(imx6_pcie->reset_gpiod),
-> +				     "unable to get reset gpio\n");
-> +	gpiod_set_consumer_name(imx6_pcie->reset_gpiod, "PCIe reset");
+> -
+> -	for (i = 0; i < kirin_pcie->n_gpio_clkreq; i++) {
+> -		if (!gpio_is_valid(kirin_pcie->gpio_id_clkreq[i])) {
+> -			dev_err(dev, "unable to get a valid %s gpio\n",
+> -				kirin_pcie->clkreq_names[i]);
+> -			return -ENODEV;
+> -		}
+> -
+> -		ret = devm_gpio_request(dev, kirin_pcie->gpio_id_clkreq[i],
+> -					kirin_pcie->clkreq_names[i]);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret = gpio_direction_output(kirin_pcie->gpio_id_clkreq[i], 0);
+> -		if (ret)
+> -			return ret;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static const struct dw_pcie_ops kirin_dw_pcie_ops = {
+>  	.read_dbi = kirin_pcie_read_dbi,
+>  	.write_dbi = kirin_pcie_write_dbi,
+> @@ -680,7 +651,7 @@ static int kirin_pcie_power_off(struct kirin_pcie *kirin_pcie)
+>  		return hi3660_pcie_phy_power_off(kirin_pcie);
 >  
->  	if (imx6_pcie->drvdata->clks_cnt >= IMX6_PCIE_MAX_CLKS)
->  		return dev_err_probe(dev, -ENOMEM, "clks_cnt is too big\n");
+>  	for (i = 0; i < kirin_pcie->n_gpio_clkreq; i++)
+> -		gpio_direction_output(kirin_pcie->gpio_id_clkreq[i], 1);
+> +		gpiod_direction_output_raw(kirin_pcie->id_clkreq_gpio[i], 1);
+>  
+>  	phy_power_off(kirin_pcie->phy);
+>  	phy_exit(kirin_pcie->phy);
+> @@ -707,10 +678,6 @@ static int kirin_pcie_power_on(struct platform_device *pdev,
+>  		if (IS_ERR(kirin_pcie->phy))
+>  			return PTR_ERR(kirin_pcie->phy);
+>  
+> -		ret = kirin_pcie_gpio_request(kirin_pcie, dev);
+> -		if (ret)
+> -			return ret;
+> -
+>  		ret = phy_init(kirin_pcie->phy);
+>  		if (ret)
+>  			goto err;
+> @@ -723,11 +690,9 @@ static int kirin_pcie_power_on(struct platform_device *pdev,
+>  	/* perst assert Endpoint */
+>  	usleep_range(REF_2_PERST_MIN, REF_2_PERST_MAX);
+>  
+> -	if (!gpio_request(kirin_pcie->gpio_id_dwc_perst, "pcie_perst_bridge")) {
+> -		ret = gpio_direction_output(kirin_pcie->gpio_id_dwc_perst, 1);
+> -		if (ret)
+> -			goto err;
+> -	}
+> +	ret = gpiod_direction_output_raw(kirin_pcie->id_dwc_perst_gpio, 1);
+> +	if (ret)
+> +		goto err;
+>  
+>  	usleep_range(PERST_2_ACCESS_MIN, PERST_2_ACCESS_MAX);
+>  
 > -- 
 > 2.43.0.rc1.1336.g36b5255a03ac
-> 
 > 
 
 -- 
