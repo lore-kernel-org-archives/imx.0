@@ -1,28 +1,28 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A221F69D3C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFCF6A348
 	for <imx@lists.linux.dev>; Sun, 28 Apr 2024 12:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714306400; cv=none; b=E675nSvx4NUn6GBSqAPN8WDJO4KmX42tk96BAA6fpDcjy19ZTa3PusnNQEGjZpfcwIwjZY1+SEx9sLLM4DH1piagF5gAx8pfNYC+t0aZAa19ARb+C12lArOs5WWQrIcYM3u4tOj6xbs7Uyj2wLP9Xs2KI4x9BVFzbWX7yE0Ro/4=
+	t=1714306400; cv=none; b=AZYuT2wu6s6dyZR79Uokw1cavmAs6wd3G33mO3AIzEUOcShDZt83kdEOhn1T46vIWzXvUVJyS1OTOsqC3Va1SOHXZG/q6dM7H05MCFGeYyJmMP6dsrY/8WW1PIK7E5q5Xg/AVIwDLusQxdpBJtzsAOMnvrOq6rSdfxDql4+gtlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714306400; c=relaxed/simple;
-	bh=UdbZyInltYfUCBYOkkFerJFqGiGNC0XMov9VR0hqz6c=;
+	bh=YSPUm9E9Q7xKL7VRK1Xg04OMT4ubx/Pnq/sQkODBZ/c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H1+uxQEXfCDy5UBhiaaTtkmnTUj/bLcgjRHYZDAI5lbB1emdtVpqvLVQSmnB4wP9DoSKcDdgo3vysyv8t8J7/zhzCMHC4msBZuBht3aWWjIeXxcPmjOzVfQB546lCFNj9CvmcckKZpg8kGL1WITqOKANU0E7ZeIT3IfYJwVRT8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QD+oScgo; arc=none smtp.client-ip=123.58.177.131
+	 MIME-Version; b=ESUm3HOpsPJWoBzr3GDr/89iJE71OTXqshlG7PAWNlSppD+025YC5vyaOWQuTUPKjG8pHzOeT+owp+MWd5wbi8H1TlamzS+TacL0j93740dV54sPKlgyjfktRIiXB0xZwlaaQtHLQl/a1yf/TUZkieTS6K7nlOVHx5RB2ItzK1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=N2BWyN+c; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QD+oScgo"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="N2BWyN+c"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=f9J+2
-	xd2MjCae/FtXnzZ2t/+65jAWil7L/FZxif8cXo=; b=QD+oScgopsiK6GdNieqmR
-	mYpXk76ONOtbI4Knip21OzpVEPwfdjDa8aN6oK2Rnr1C3X/UD6AZh3e94iG4R8f/
-	87PBwPtcjZm21J7elwTZt953Zp2mRnUqAOa5bvSkwTn1/tckw+x4kNhACjLP/16J
-	JYU24s5NmOSoUhUJ/VPLec=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=FcsXD
+	qrJPA6A/VZQFSKJ5uTbwhlGz8l67jd2Ww1Iqf8=; b=N2BWyN+c2WIDXTj0uARRy
+	ljOus6MEmxK7sxaAxbqZAiiHuFGhlg8veWS3eC5zQaeBME/me+lG/YP0JCxkL4Ad
+	tQn+0MYb/Jf7IpKp5yO1coyacRHMKrMqTKTzjT7mlCEYqK14j0XYqPLFrly+PG4j
+	dcrdb3LSxMVslOk8I/kxYw=
 Received: from localhost.localdomain (unknown [114.216.210.46])
-	by smtp1 (Coremail) with SMTP id ClUQrAD3v19HPS5mcJTNAw--.22534S3;
-	Sun, 28 Apr 2024 20:12:57 +0800 (CST)
+	by smtp1 (Coremail) with SMTP id ClUQrAD3v19HPS5mcJTNAw--.22534S6;
+	Sun, 28 Apr 2024 20:12:58 +0800 (CST)
 From: Shawn Guo <shawnguo2@yeah.net>
 To: soc@kernel.org,
 	arm@kernel.org
@@ -31,9 +31,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	kernel@pengutronix.de,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 2/5] i.MX DT bindings for 6.10
-Date: Sun, 28 Apr 2024 20:12:44 +0800
-Message-Id: <20240428121247.10370-2-shawnguo2@yeah.net>
+Subject: [GIT PULL 5/5] i.MX defconfig changes for 6.10
+Date: Sun, 28 Apr 2024 20:12:47 +0800
+Message-Id: <20240428121247.10370-5-shawnguo2@yeah.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240428121247.10370-1-shawnguo2@yeah.net>
 References: <20240428121247.10370-1-shawnguo2@yeah.net>
@@ -44,12 +44,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ClUQrAD3v19HPS5mcJTNAw--.22534S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WFWxXryrCr4rGr1fKr43trb_yoW8Ar1fpF
-	sxCF9xGr10yF17Jrsxt3WkAF4UXr1kAF13JFsxWF1xJ3W5Aw1jqr95tw1rZr9rAFyxWFW3
-	AF18Cr1FgryUAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jntxhUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDQnOZVszXcuKCgAAsR
+X-CM-TRANSID:ClUQrAD3v19HPS5mcJTNAw--.22534S6
+X-Coremail-Antispam: 1Uf129KBjvJXoWrZryrKr47KrW3ZrW8GF45ZFb_yoW8Jr48pF
+	9xCrnxJr48JFyUXrWUZryv9F48JwsrArnxXr1DJw1fArW7Z34UArnrKryxWryUJ3srGr40
+	yr18KF1DKr1UAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jn_-PUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDQrOZVszXcuKDAAAsU
 
 From: Shawn Guo <shawnguo@kernel.org>
 
@@ -59,41 +59,28 @@ The following changes since commit 4cece764965020c22cff7665b18a012006359095:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-bindings-6.10
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-defconfig-6.10
 
-for you to fetch changes up to 6687155ffc6671514f2ef874ac8be41d9d131918:
+for you to fetch changes up to da8fc156d76c3b4b4a49ef65cf6b5cd1767ff17e:
 
-  dt-bindings: usb: usbmisc-imx: add fsl,imx8ulp-usbmisc compatible (2024-04-22 11:47:55 +0800)
-
-----------------------------------------------------------------
-i.MX DT bindings for 6.10:
-
-- Add vendor prefix for Emcraft Systems
-- Add compatible for new boards: Emcraft Systems i.MX8M Plus NavQ+ Kit,
-  Colibri iMX8DX, Seeed studio NPi base board, NXP S32G3 board
-- Drop reduntant toradex,colibri-imx8x from fsl.yaml
-- Add usbmisc compatible for i.MX8ULP
+  ARM: imx_v6_v7_defconfig: Update ONBOARD_USB_HUB to ONBOAD_USB_DEV (2024-04-22 12:54:08 +0800)
 
 ----------------------------------------------------------------
-Gilles Talis (2):
-      dt-bindings: vendor-prefixes: Add Emcraft Systems
-      dt-bindings: arm: Add Emcraft Systems i.MX8M Plus NavQ+ Kit
+i.MX defconfig changes for 6.10:
 
-Hiago De Franco (2):
-      dt-bindings: arm: fsl: remove reduntant toradex,colibri-imx8x
-      dt-bindings: arm: fsl: Add Colibri iMX8DX
+- Enable DW HDMI bridge driver for i.MX8M Plus SoC in arm64 defconfig
+- Enable ONBOAD_USB_DEV driver in imx_v6_v7_defconfig to support USB2514
+  Hub found on imx6qdl-udoo board
 
-Parthiban Nallathambi (1):
-      dt-bindings: arm: fsl: Add Seeed studio NPi based boards
+----------------------------------------------------------------
+Adam Ford (1):
+      arm64: defconfig: Enable DRM_IMX8MP_DW_HDMI_BRIDGE as module
 
-Wadim Mueller (1):
-      dt-bindings: arm: fsl: add NXP S32G3 board
+Fabio Estevam (2):
+      ARM: imx_v6_v7_defconfig: Select CONFIG_USB_ONBOARD_HUB
+      ARM: imx_v6_v7_defconfig: Update ONBOARD_USB_HUB to ONBOAD_USB_DEV
 
-Xu Yang (1):
-      dt-bindings: usb: usbmisc-imx: add fsl,imx8ulp-usbmisc compatible
-
- Documentation/devicetree/bindings/arm/fsl.yaml     | 22 +++++++++++++++++++---
- .../devicetree/bindings/usb/fsl,usbmisc.yaml       |  1 +
- .../devicetree/bindings/vendor-prefixes.yaml       |  2 ++
- 3 files changed, 22 insertions(+), 3 deletions(-)
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ arch/arm64/configs/defconfig         | 1 +
+ 2 files changed, 2 insertions(+)
 
