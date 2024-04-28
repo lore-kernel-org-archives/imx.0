@@ -1,83 +1,236 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CA150251
-	for <imx@lists.linux.dev>; Sun, 28 Apr 2024 07:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D8B69D3C
+	for <imx@lists.linux.dev>; Sun, 28 Apr 2024 12:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714291158; cv=none; b=dZCwd7XAmAqjwRcgsK0GKaGWu03JL6fBf6yEiRynWprOnHgIK33X3LOXIarzhvM0huIf6O1GQa2TERkFrdFXh2UsRy9XECmm0ncA7lLo47qHaPx+zcWD493N6hfou97j6c1TxKjtXU7/D+xjuQehtJkZI994pALR82xEgsC+eVo=
+	t=1714306274; cv=none; b=Nl758+6nNq0iwZvJVWRgNJY0VsSHznYnpjWQ255vrEePH2MUgN9y4awq7EhHEyh/G1g6xEp/dp87TWU7T/7qIF4vrVmGNrlET7k6U+IVNpySM0cDh9C60+vO75w0C5vp+3FET/cgMWZQlIEZJ50YwbSM9kRXnebxL7nPQWGiFUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714291158; c=relaxed/simple;
-	bh=sJweSO7ymb4LO1Afes/fz5qes9jXjF77aWOkkBcE/LM=;
+	s=arc-20240116; t=1714306274; c=relaxed/simple;
+	bh=+64wxOTIcf1mVvmQvla1H4FimIOHlzYvb+7dHdfg4pY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TtycSZOeBu+CyCYh2KR3PL0gmb2E4lQnqHcPWXo5Qzh3pt6T/UDbz7RgqBlEyh5+JMcxUi8yj5DKc7cI5TS0nrHJ7gof4bmbaiIUP7ELGFv2HjxpBaz0WEN9Ig0fmLvUP+GAhW+pKAG47U9rgfw7w5W/lJ8GAosVkBOQVM4HsUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=eofGzXtg; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=XoQsd0cY5Jsjn7xF11u5XelfXqWF8+K8pdtTh7aJevwOtEB/QTjCvAy4W8EFatIMaNPVIJ49WUOkiJnB4B0yUmE/AP2p62RjASTizd+6hQTZaxe3y2LFA1CzI7fAR/kIdsQvMaLoNddyQXvSEKQStb/9Msi2MMleEx5sveWZ15Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n0GV9gYg; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="eofGzXtg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=N/5F1F5Rz7AAM3iNROhjX8YnjpmKVMOyfv0VpHrRf74=;
-	b=eofGzXtgvx2EtQ8WNM5a6W0OgTp5A7nGRgZioPZR2v+VBgg0/pxA3DI4SCNfOy
-	FytTEGmQ0huPOU61KPTWV5YKF8CgF2UTAUKPGuvJBmi/v8P/CMoRn54Hkk2QD6Ex
-	TOwozFBoQfXXxJxSOgj/t/2ccZvvZAlRV/F+wzkNCtyVI=
-Received: from dragon (unknown [114.216.210.46])
-	by smtp1 (Coremail) with SMTP id ClUQrAD3f3VwAS5mp07GAw--.21974S3;
-	Sun, 28 Apr 2024 15:57:39 +0800 (CST)
-Date: Sun, 28 Apr 2024 15:57:36 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n0GV9gYg"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5196c755e82so4284254e87.0
+        for <imx@lists.linux.dev>; Sun, 28 Apr 2024 05:11:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714306271; x=1714911071; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KRBSeLk9qclalJBGYAUq3IA67Fsgi/ilD5BmZ2hGWvE=;
+        b=n0GV9gYgPr/H+DbzFcoQtXc8CRUim9aqRYWdS+/ni8lJzl6Y72QOHtTX+hHDARvm6W
+         ypZoXekZqIde9MBNFDHlblWfiXKkYFZuCJObiSKpWCmHY02FMf3QUF+TSvp/y4NcTLLy
+         ZaoTA3tDzqucibE2zQy073XCGLfTsnb/7dIPEouRL2J3RUX/pSYREcEhYGIGlDClEm4e
+         amWq8c+skFmDTbK1pkk/qepM/WgOLuwnlnowr7HaB8xnryna6eNcqLOvGO4d6aGifMna
+         7D0w7PmN8SGyULLCucx0xSSKyeSBhLWNXmdFiOHQ/JQ8QeO0ij3cs+ik9pQzbNUCDzOM
+         z+rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714306271; x=1714911071;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KRBSeLk9qclalJBGYAUq3IA67Fsgi/ilD5BmZ2hGWvE=;
+        b=m26ufn+LX50Afa2GKf9GO2fQmU7HEV/JV8tquZT8qN4saipuqi/+lxWtFZFLGnrNcK
+         be83GRR54cy68aKUunVtR4rL+qWKHs/gAhP317bDwLbkRnnozMi69I/SIcI+nko8vepw
+         UbSY4JprAhOwUp4r8VnXSkY5WJB8p7Pxd+pIYlN45mpXnTncMJkuUVKQQ4sgv5War4KN
+         8ogEFCbr2Lw89QfIOa7K6uiXkHLrRtDUlxQ5DsjP2qAhFBmhj+Uson8B/rDwiSt23mJa
+         qVKwgfWTzSxQedFWVW68rqdFJqMlMvQHGNv4l5HGi+AvljokX/Qr0ZfblgptJRGkQBUX
+         Tumw==
+X-Forwarded-Encrypted: i=1; AJvYcCX72OtUUud3/3YIm+KIN1lwFnp6CfW6cYmTiKXgK+3y0/yvsJp6qY3oSlwt66Sd23UPvRkj3FFxV82mCpS512MKOMdN
+X-Gm-Message-State: AOJu0Yyaa2ZlSpKgyu7qqEvKIuzgQixGy2VOWZn1uEhzqsCZ2Uc+o53z
+	zgGEFIswsLqyoxmHlaK9xCJvGSgfYkyBuE+pBszZ7BgH+MLjVGI5MmUqktguBUs=
+X-Google-Smtp-Source: AGHT+IHzQY3PktXsr5yUNhS5fY9e0Tq26eU3VIAMuAboMo7+PruS6QE21aDbXSwXaBeHKjUFP5rU6w==
+X-Received: by 2002:ac2:4ed9:0:b0:518:f697:fac with SMTP id p25-20020ac24ed9000000b00518f6970facmr4613819lfr.18.1714306270129;
+        Sun, 28 Apr 2024 05:11:10 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170906705400b00a555ef55ab5sm12689755ejj.218.2024.04.28.05.11.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Apr 2024 05:11:09 -0700 (PDT)
+Date: Sun, 28 Apr 2024 15:11:05 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-kernel@vger.kernel.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 00/49] ARM: dts: imx: Use #pwm-cells = <3> for
- imx27-pwm device
-Message-ID: <Zi4BcG+1d5LEdbms@dragon>
-References: <cover.1712352665.git.u.kleine-koenig@pengutronix.de>
- <oy4mnbkskyrw5dwkq3rebe2yh4i3fy44rubhvesug7pedzws46@472pzktn5t22>
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-gpio@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 6/6] pinctrl: imx: support SCMI pinctrl protocol for
+ i.MX95
+Message-ID: <1bc4d494-f4c0-4bec-a2de-e9971ef4be49@moroto.mountain>
+References: <20240428-pinctrl-scmi-oem-v3-v3-0-eda341eb47ed@nxp.com>
+ <20240428-pinctrl-scmi-oem-v3-v3-6-eda341eb47ed@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <oy4mnbkskyrw5dwkq3rebe2yh4i3fy44rubhvesug7pedzws46@472pzktn5t22>
-X-CM-TRANSID:ClUQrAD3f3VwAS5mp07GAw--.21974S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Gw4xXr47Xw4kGw18tFyfCrg_yoW3ArgE93
-	W293WDCa95AFWkGas0yw45t343KrWUt3y3try7Wrn29Fn3Cas8Ca4kKrWrtw13ur4rtas7
-	KFZ3t3WUX34Y9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8qYLPUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBRTOZVsVCgQLwwAAsy
+In-Reply-To: <20240428-pinctrl-scmi-oem-v3-v3-6-eda341eb47ed@nxp.com>
 
-On Fri, Apr 26, 2024 at 09:40:24PM +0200, Uwe Kleine-König wrote:
-> Hello,
-> 
-> On Fri, Apr 05, 2024 at 11:41:47PM +0200, Uwe Kleine-König wrote:
-> > this series addresses many warnings of the type:
-> > 
-> > 	arch/arm/boot/dts/nxp/imx/imx6ul-pico-dwarf.dtb: pwm@2088000: #pwm-cells:0:0: 3 was expected
-> > 	        from schema : http://devicetree.org/schemas/pwm/imx-pwm.yaml#
-> > 
-> > that is emitted when building with CHECK_DTBS=1.
-> > 
-> > This completes the conversion started with
-> > 
-> > 	fa28d8212ede ("ARM: dts: imx: default to #pwm-cells = <3> in the SoC dtsi files")
-> > 	4c6f19ab2aed ("dt-bindings: pwm: imx-pwm: Unify #pwm-cells for all compatibles")
-> 
-> Gentle ping! I would expect that Shawn picks up this series.
+On Sun, Apr 28, 2024 at 01:07:52PM +0800, Peng Fan (OSS) wrote:
+> +static int pinctrl_scmi_imx_dt_group_node_to_map(struct pinctrl_dev *pctldev,
+> +						 struct device_node *np,
+> +						 struct pinctrl_map **map,
+> +						 unsigned int *reserved_maps,
+> +						 unsigned int *num_maps,
+> +						 const char *func_name)
+> +{
+> +	struct device *dev = pctldev->dev;
+> +	unsigned long *cfgs = NULL;
+> +	unsigned int n_cfgs, reserve = 1;
+> +	int i, n_pins, ret;
+> +	u32 ncfg, val, mask, shift, pin_conf, pinmux_group;
+> +	unsigned long cfg[IMX_SCMI_NUM_CFG];
+> +	enum pin_config_param param;
+> +	struct property *prop;
+> +	const __be32 *p;
+> +
+> +	n_pins = of_property_count_u32_elems(np, "pinmux");
+> +	if (n_pins < 0) {
+> +		dev_warn(dev, "Can't find 'pinmux' property in node %pOFn\n", np);
+> +		return -EINVAL;
 
-Thanks for reminding!  Applied all, thanks!
+	return n_pins;
 
-Shawn
+> +	} else if (!n_pins) {
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = pinconf_generic_parse_dt_config(np, pctldev, &cfgs, &n_cfgs);
+> +	if (ret) {
+> +		dev_err(dev, "%pOF: could not parse node property\n", np);
+> +		return ret;
+> +	}
+> +
+> +	pin_conf = 0;
+> +	for (i = 0; i < n_cfgs; i++) {
+> +		param = pinconf_to_config_param(cfgs[i]);
+> +		ret = pinctrl_scmi_imx_map_pinconf_type(param, &mask, &shift);
+> +		if (ret) {
+> +			dev_err(dev, "Error map pinconf_type %d\n", ret);
+> +			return ret;
+
+This should be goto free_cfgs.
+
+> +		}
+> +
+> +		val = pinconf_to_config_argument(cfgs[i]);
+> +
+> +		pin_conf |= (val << shift) & mask;
+> +
+> +	}
+> +
+> +	reserve = n_pins * (1 + n_cfgs);
+> +
+> +	ret = pinctrl_utils_reserve_map(pctldev, map, reserved_maps, num_maps,
+> +					reserve);
+> +	if (ret < 0)
+> +		goto free_cfgs;
+> +
+> +	of_property_for_each_u32(np, "pinmux", prop, p, pinmux_group) {
+> +		u32 pin_id, pin_func, daisy_id, daisy_val, daisy_valid;
+> +		const char *pin_name;
+> +
+> +		i = 0;
+> +		ncfg = IMX_SCMI_NUM_CFG;
+> +		pin_id = get_pin_no(pinmux_group);
+> +		pin_func = get_pin_func(pinmux_group);
+> +		daisy_id = get_pin_daisy_no(pinmux_group);
+> +		daisy_val = get_pin_daisy_val(pinmux_group);
+> +		cfg[i++] = pinconf_to_config_packed(IMX_SCMI_PIN_MUX, pin_func);
+> +		cfg[i++] = pinconf_to_config_packed(IMX_SCMI_PIN_CONFIG, pin_conf);
+> +
+> +		daisy_valid = get_pin_daisy_valid(pinmux_group);
+> +		if (daisy_valid) {
+> +			cfg[i++] = pinconf_to_config_packed(IMX_SCMI_PIN_DAISY_ID,
+> +							    daisy_id);
+> +			cfg[i++] = pinconf_to_config_packed(IMX_SCMI_PIN_DAISY_CFG,
+> +							    daisy_val);
+> +		} else {
+> +			ncfg -= 2;
+> +		}
+> +
+> +		pin_name = pin_get_name(pctldev, pin_id);
+> +
+> +		dev_dbg(dev, "pin: %s, pin_conf: 0x%x, daisy_id: %u, daisy_val: 0x%x\n",
+> +			pin_name, pin_conf, daisy_id, daisy_val);
+> +
+> +		ret = pinctrl_utils_add_map_configs(pctldev, map, reserved_maps,
+> +						    num_maps, pin_name,
+> +						    cfg, ncfg,
+> +						    PIN_MAP_TYPE_CONFIGS_PIN);
+> +		if (ret < 0)
+> +			goto free_cfgs;
+> +	};
+> +
+> +
+> +free_cfgs:
+> +	kfree(cfgs);
+> +	return ret;
+> +}
+> +
+> +static int pinctrl_scmi_imx_dt_node_to_map(struct pinctrl_dev *pctldev,
+> +					   struct device_node *np_config,
+> +					   struct pinctrl_map **map,
+> +					   unsigned int *num_maps)
+> +
+> +{
+> +	unsigned int reserved_maps;
+> +	struct device_node *np;
+> +	int ret = 0;
+> +
+> +	reserved_maps = 0;
+> +	*map = NULL;
+> +	*num_maps = 0;
+> +
+> +	for_each_available_child_of_node(np_config, np) {
+
+Btw, if you used the scoped version of these loops such as
+for_each_available_child_of_node_scoped(), then
+
+> +		ret = pinctrl_scmi_imx_dt_group_node_to_map(pctldev, np, map,
+> +							    &reserved_maps,
+> +							    num_maps,
+> +							    np_config->name);
+> +		if (ret < 0) {
+> +			of_node_put(np);
+
+You could get rid of the calls to of_node_put().  I would move the
+call to pinctrl_utils_free_map() here.
+
+		if (ret) {
+			pinctrl_utils_free_map(pctldev, *map, *num_maps);
+			return ret;
+		}
+
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (ret)
+> +		pinctrl_utils_free_map(pctldev, *map, *num_maps);
+> +
+> +	return ret;
+
+	return 0;
+
+> +}
+
+regards,
+dan carpenter
 
