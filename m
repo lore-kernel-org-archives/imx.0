@@ -1,246 +1,213 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134666A353
-	for <imx@lists.linux.dev>; Sun, 28 Apr 2024 12:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714306401; cv=none; b=Kw4cxGDHBDMUjlinbwTWAjysFBsIGSAfjUraKkzICeIa3jZNgenkimHpB2WC/yhJM0e/VojsJbuTH8/VSSXOYdhe2IbGT7fmLjY+BwDOumdwEfxacLXUIA6sfvXhgHpCuL0bomo4BBdoVkmhPxIPRhLnkr0HlNn5AsRO/AHeoT0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714306401; c=relaxed/simple;
-	bh=tp5Gy8mM9tlsA0asA10kWkevTFCuZjHRwRmKQa/XbPQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dR/peJQdCnOt0Y9KUBzEP17ueve2x7FsXPrgFlvu4M9cEioZYHWF67smVn/kdLvcNwYoyBWz1/lZuxwrzxwXV3O/FBGXO/mPZsQ3sAN2Y9N405KV+K2PlL/eg0yta+2nulhfk4zObudNLvJzC2ftqSuhRkZXj5qiqTuVjeQI5zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=p3w5sESd; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2060.outbound.protection.outlook.com [40.107.6.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B826A33F
+	for <imx@lists.linux.dev>; Sun, 28 Apr 2024 12:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714306475; cv=fail; b=GuyJ69i+AK9SKiCATM9xMq2yKjeePU1Xt/zPRkW5xajW0K+koPoVuzzjObPELZBPVtcuVW4tGWm5zu/RjJjVequb+/nrm/cgP4e+EraOkAv8W1C+33ICSmamRJD9v0NH5rWamQIr6+CGxmjuqaTlh74ijNNC9pM+T+26ey9/X9c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714306475; c=relaxed/simple;
+	bh=h5lZ1dXREKIO7TIqfsxsZcvv1x5DJJe8/YJ8j6UyWs4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=F/c8pW9RSLnKQccl96iYjkrdOp/xA5E7dYN1VGxKbgzauvbEHARr6AWLi27ENTW3XJGnGE+cTfS9ZRA6g0It0eg1QUer8eRawBKzVkJp+zuaXp774VaaBVMYJ3DXW/M2UrmFPPRAJFh6wxV7WTFTiIZpp3SZC1pIzNiwfJwPCL0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=I49xqpkd; arc=fail smtp.client-ip=40.107.6.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="p3w5sESd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=xq4mqDRxHLFlUuScYThP1TGPHrncl/xeG/DuKQgqljA=;
-	b=p3w5sESdR14/55gLXquy/p3wJJC0r6c1S8tnmWhZ+G2kxLh2PkUKTj4A2EMCyT
-	BMFtTyoz7BTM6nKZEQYdJFB9rnocTNBQmkim/ZLAI8lADB5YXMEf+sA5Gqj5M30u
-	P86LQ0EH8zPlcFjmOoe6UEkhyZp/HSyDnxDgJ67dMfvW4=
-Received: from localhost.localdomain (unknown [114.216.210.46])
-	by smtp1 (Coremail) with SMTP id ClUQrAD3v19HPS5mcJTNAw--.22534S4;
-	Sun, 28 Apr 2024 20:12:57 +0800 (CST)
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org,
-	arm@kernel.org
-Cc: Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 3/5] i.MX ARM device tree for 6.10
-Date: Sun, 28 Apr 2024 20:12:45 +0800
-Message-Id: <20240428121247.10370-3-shawnguo2@yeah.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240428121247.10370-1-shawnguo2@yeah.net>
-References: <20240428121247.10370-1-shawnguo2@yeah.net>
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="I49xqpkd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fh0W5u4zDS7qIY58BYs8coT6NaeyRFPF3EA+I9VPZ2w/r3ONdxwzkTP7QiufNhs7x9DH7VCDwTYLV5lmGaYC182oOttEe2GZPxiEcttlCDPP8peGg+mc/spn3y6vYTLVCJ/UUSXsi/CDGNRw+K2rqAmRHGATzxi7OQEksshdFTJF+66AWi6mV1SJ+1o245+Azpylo4XhlqbzRemj43i51PqAsXnzKoE2m2V5MR/FkO4PgPD5DKVYF+NO1aiuOotXAP6LqDsi21SBV36NpAZgaucvIeM4bGHk6SsXIkqvy9J0ZrP47jqZRFiyAvgtM387igrLlPX5nzNHAiu/h2x9EQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dJjMOCCkzb5KhRZj1/1C3TQxVFwNaqP9CKv8JyAxdtE=;
+ b=B3BixNjznlouScJo8bzMKvlBmjKzDQiJqK+JsL+cc/ldyXlDNC07oaRUxGrhghcYkqhKUeCLLR+hDfhTEwTJadVkJJu/epb/4v2u24ag8NVrIU9bqS26x1L+CnODL5pvoj+Pmhh5fWzO+1PMzXHpXWuig+JdOk5QonvnMBRW7qd3az0sFyCwTo4A02jna3LCGEEimQ34bkiS6pJyC1Bo+gDw1/vqaoR04fJ1BQqFZfhw67Bl+Nbd25DGMK2YBI+5yfIGkC1gvJ+mmXkPaNnb1X3MaADOz79y2d0JrW5Uw9ChX2imcNoZhrMBz9Ky3hyYSOIN8XytGdubfYbUFQ+zHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dJjMOCCkzb5KhRZj1/1C3TQxVFwNaqP9CKv8JyAxdtE=;
+ b=I49xqpkd+7TGzmdkYuzTkz1DZ60y8Y45mkLGbXhiyutPdFFa25znoO4mBmO8dGB3I4Q/O+GsnKmUvssPur4j/dIewgC15q2tL/zrRHNDZEvpB3IcsVMpbBTBgHtREc0Rupa7Rbj7I7bmgGWBKLYLIzlJ7VFyPViYP2Q2V7+oPYw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by DB8PR04MB7018.eurprd04.prod.outlook.com (2603:10a6:10:121::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.32; Sun, 28 Apr
+ 2024 12:14:29 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7519.031; Sun, 28 Apr 2024
+ 12:14:29 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v3 0/3] arm64: dts: add i.MX95 and EVK board
+Date: Sun, 28 Apr 2024 20:22:18 +0800
+Message-Id: <20240428-imx95-dts-v3-v3-0-765395f88b9f@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHo/LmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEyML3czcCktT3ZSSYt0yY92k1FRTyzSDVFNTyyQloJaCotS0zAqwcdG
+ xtbUAOkx+N14AAAA=
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Peng Fan <peng.fan@nxp.com>, Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1714306959; l=1924;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=h5lZ1dXREKIO7TIqfsxsZcvv1x5DJJe8/YJ8j6UyWs4=;
+ b=VBejQcGGULJosa3CLxgg/0cOhJ8G04+BRjYd0GxIEpT8mi/71SbD+GV4aW3RGZSgjtUIsiUdJ
+ 0qSPo1MK9aTAyy5pHcMLUZcopUOvxQlLm4Mi57v5MjjyaWwXwNs7qOJ
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SG2PR01CA0186.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:189::14) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ClUQrAD3v19HPS5mcJTNAw--.22534S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Cw1xAw1kWF1UWFWUWw1Utrb_yoWDCw4xpa
-	4S9393tFs7GryIkrZ8X340y390vw1UAr1xur15GFW8KFW3ZFy7Wr9agwn3t345XFn5Xa4a
-	gr1kur9rXw1DGaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jDhL8UUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQnOZVsVCgSGJwAAsG
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|DB8PR04MB7018:EE_
+X-MS-Office365-Filtering-Correlation-Id: 255fc99c-fa35-40cc-80a1-08dc677cc0d5
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|52116005|376005|7416005|366007|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?T1JzZERIVXpISDJQRUVuZzZoVW1tZkNOTWJvVHg3STFvaTF3ZEVqQ2d2ZjA1?=
+ =?utf-8?B?Vlp4SjMxOXN2S2tKSUVaUlhReUJqMFdlQ0Mvd2Z4N3BpcTlZR3JFWUhaMXhs?=
+ =?utf-8?B?bUJHemhXWUZGbjNyVHd2aHRHMUQwYWlaak1nOUc4ZkZTNzd4bFZxQVpZdzkz?=
+ =?utf-8?B?ZElZVWI5VFdZclI1UWJRb25PRjJzMWNMTkdFN2cvSjZlSHJKL1c0RklpSmV5?=
+ =?utf-8?B?ZXNGd0h6SCtCdllkZnE5WUZBczZjMDAySGI2Zlh1MHg1T0pnZVIxb2RqZ3hp?=
+ =?utf-8?B?cFFSUjdyc2FoeGtXdXlnSlRnVlIxb2VrYlRpT2xZOU5kVTMvNnkzT1VEVTNp?=
+ =?utf-8?B?eVJIQTE3dnBJQ3psNE0yNXg1RkVkWElvdWRPc3FLRU5uMXBqNW8reXE4c1kv?=
+ =?utf-8?B?YXExOXA3cWxSY2d3T2pOdk9xVGhDaVROZzk2YnpRSU0vc2dvZlFWTDdkWXg1?=
+ =?utf-8?B?OTNVbVl3emE5WVAxTlBWbG1ScGpHYk13cHYwRVlWY1luK28vMUJYbDJ3Rysw?=
+ =?utf-8?B?b1Q2Ykg5VlZKblcxb09rWlBSVCtZa2c2Yk1xNGNhQ3NoTUhXM3lad0hqZmVh?=
+ =?utf-8?B?RDlnajM3SmlINW8rWGJlSCswazZWMGo3eHBoOERvdlBwUXZGaWR0VVg1c0xv?=
+ =?utf-8?B?QjFjajNvbm1RZ1l4WXY1MHhTSVBRcnMrTnhLNWNsc055bFkyZFJxM2wyMEsw?=
+ =?utf-8?B?Vm1GaUpoSjl0cVZQOUdmaDJZeGxHaHJlUEtOSzE4V0RrNXNjSXJsc0RHSGV0?=
+ =?utf-8?B?VWpzdW9GSWhOSzY4TnZQanJ1RE5BYndsN1h5VHY5NjRIRlRtOUJ5cGRNcGJV?=
+ =?utf-8?B?MVdxekRQVFhmSWErTmg5SHd0STB1MkVQek4vQkV3aTRqSUFwVEkralI4N09B?=
+ =?utf-8?B?TmJRUHYrbThmOXRWY21Xb2F5TzFSaHNTajVmeDJyNzFkNjdCbldOZ1pISGh1?=
+ =?utf-8?B?MWdOM21oTUszT2FnUFp4c3pQdDY4d1N0VStDNTRGb3pPQzhGclF0cnpiaFhm?=
+ =?utf-8?B?QjJlRmdXNDFvSkR4SEs5eTNaYjZYcDUwbEVObnlQNVRSclAvUzFMQ3dwMjRO?=
+ =?utf-8?B?cXh6cldOZTI3ZW1LRHBzekIyTDI2N1l1blA4L0U4ZVRXMGo4UFpvV0RmQTZG?=
+ =?utf-8?B?MGo3NndCRmxQTGkzcmNBQWJsMGNveWpnNHFMTDVpUGlGblFmdW9mQnlhT3F1?=
+ =?utf-8?B?S2ZWUlE3dzJlWTNwNHIzSkZFdnlyL0FtU2NvV3VsU0c3VmtOYlRYT3NvOW5N?=
+ =?utf-8?B?N215RG5CWHNxYTdEK1hCS0lPMTF4a3ltV1VmekloU0xKUWM0YjZoeFRUaEZ2?=
+ =?utf-8?B?aFpaM0FMclRtNXhHSEZDMDA2b1lCR0N6Q00zc0dlQ0UzcGgwS011WUhVdXNN?=
+ =?utf-8?B?SjhLUkgvZjRVRzdZbmRjdzZOSHZTNFRNL2oxdFVuZFlUZGhYRE5ZUEZaTVFK?=
+ =?utf-8?B?bitaWFBLRC91c2Iwb25QSGJ5WG5MS0JteWpnOGR6MWdBaFZzMXdkOWk1K0U0?=
+ =?utf-8?B?LzdDb0Z0OXJremxVOGhCdWM0VjVpb2pNN1d5OEh4SXVaM3RQZm5JR0N4d1hr?=
+ =?utf-8?B?VjZ6c1pLeUpscVh0eWJQWWVOTC9saEcvbkRaRHltdFF0RzZaM2JRdERXaFdx?=
+ =?utf-8?B?NDg3RDIzYUFMMDZvTlZScitTL2dVdUpGbmdlYTN5QnRiUDhsOHppcVJqMVEr?=
+ =?utf-8?B?NXRwb0ZmZVh1bk1pNmJmTmpuOXlEVnJRS2EwNERkMVFkM2dOMFlHeURnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(376005)(7416005)(366007)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qm53RkFMbnByR09GRGZ6cVBBamx2QUFrN2VEY1dCdC9vQjFuUFZ5aTdiaG5o?=
+ =?utf-8?B?K2ZtRk1FSnJGMk5RUTZkQldJN0FoZWFKT0VWZVBGYmkreExQbEt3Vks4YXJY?=
+ =?utf-8?B?c3kyTzhLRzFiVk1XYU9pWm5jZGdhaHZKd2g0WWlFeklONUNXSEFZYk9qOXVR?=
+ =?utf-8?B?eVpIYVFXT01YYko0cHJmTGYzREdJRFNBcHJJaVlhaWlxMmhkQm80NGh3NDVa?=
+ =?utf-8?B?clVqbllwRUMwQlJGWHFXV3JLdFQwUTFtQkdnS0c5OGFnMXh1clN1Q2NERHds?=
+ =?utf-8?B?SGZIUmdHNTYvcmR6cEdPcDV1K1E4TjVFN3NFRDM5REhzV2tFN1JINzBhUkJO?=
+ =?utf-8?B?UmJkYjdpaW9YTlNRcUdUWkw1K0N5TkVTVkVTSFNjK0JQVFVpdk4rWFUvZlBj?=
+ =?utf-8?B?SXhiUnppNHFZZzVjeTBhbk8yN0RNS2p6Rk9VNVJqN3RMZFU2cjREOE1aMkl3?=
+ =?utf-8?B?bXJFalh6N0s4TkN0aDVmcmtVUUxUUFh1Z0t6Q3pmOURlSzhRUmtTS01Qa0Mv?=
+ =?utf-8?B?VkNNNlNsbS9uVXVZcS9tWTB5NzQyOVlua3JEY1N0WHZBUmZwWmFtYk9tVklR?=
+ =?utf-8?B?WXYyM3VvV1ZPWmg0NW93cE9YRStNeE1QWlpnUHRWRnZZQnkvR2IrSXNaNnhp?=
+ =?utf-8?B?d2lRMmF1QVViNHBrakxpcHh3V2hITTFHVk9KNGtyK0J5VUF2YWFBcFJiUHlC?=
+ =?utf-8?B?VTFKRXRaaFQwTG5URk5jZ1hzOHBKb2xva09vRkNUcDRkK1VEYkRpNlh1Zkpl?=
+ =?utf-8?B?T3RXZDc0ZDJ1cW9pUGdINWNUdTVoREQvOEhrZ3JLdjBDMXQzRnFtSHNCOHF1?=
+ =?utf-8?B?U1pQdjFRMkRLdWRrckVvcWtjVk1iUkFBaEgrN1BhVmR1R3g5L3FQamkvUkVj?=
+ =?utf-8?B?Y0UzQnpXQzBBQUtCdkV1OWVhWU9Ta2JaVXExS1pLYjhDd0xnUEQzbHVjZks2?=
+ =?utf-8?B?UjR3Wk82enJBRTRUWU1QRUUvYTQ2L1VtSzUzeGpHSUpmR0RuK2JEUVRnWWZk?=
+ =?utf-8?B?dkNJdHdOVFBBWkZ5Ty9DYW00STQ4SWZndnIvVjROVEppQndxQm9DVU5uaGd2?=
+ =?utf-8?B?YW5BQWJTUE0rZG90a2dKb09NMEw3d1N5RGV5b0IySTYxZ3pPQUdhY2RYK2hJ?=
+ =?utf-8?B?WWgxS3BicEtvUVUwTjB4UnJQd2crMzRabmtzdDVpNm1pNXJWRGIvelVmcWR6?=
+ =?utf-8?B?cUdmTGRLWE5xWmFQRXYrYWpRd1dyNjdNWm9OSDlUZEc5RWllODlPUG4wYklv?=
+ =?utf-8?B?cWJqTjZ5ZEdxVlN5RnZTV1FQeWRMUTVXeXlyVDdTUnNmSVhnNjVKRXNPdnJP?=
+ =?utf-8?B?M0tKUW1FcXl3TFBSZHg1T0J1THEySXdkQTQ4bStpSE1XcmRTTkhOeEFnUTZU?=
+ =?utf-8?B?RGJEM0l0NW95TTA2RTNzcGcxK3BBNTNQWjB6V2VvMWkwN2dkeks4QzE5OEhS?=
+ =?utf-8?B?K0MvaWJ1N3pxWnB3TDNBNEJJckMzYmJLb0EvdHRER3pPb01lSW03WDAxUkZD?=
+ =?utf-8?B?Z2piM2V5Ky9jcGptVkk0ZE0rUGoyVWRodCtUa0NFeSsweFJ1bHRjV2RvNUxJ?=
+ =?utf-8?B?QXBzOVR0N1Y2TlZ6d2QwVlpzdSt0QkloOWQ4NGwyRi91UlZmcWhUQ3RPUVlV?=
+ =?utf-8?B?R2RPVzFzTXZ6ZENHd2NyaDRpMW1ScmdTOTFpZlJaT1JmRmZqZFJYU0UzQmZm?=
+ =?utf-8?B?QmxmSktjVzhhQlpKTXpRZjhINTJreWdDdDFudkg0UzhiOVZ0enh0aWhGOG9Z?=
+ =?utf-8?B?c0FLUmg1bzVIYXkzUjltWWE0a3haWGtlZ1czQTA4b1FHeGkzNCtSZW85eXYr?=
+ =?utf-8?B?d1pUZExiYWNyKzlFNnNyNW9EdlJFdXZPeUJNdFBGOGhtWG9MWU52Vm5GUmRq?=
+ =?utf-8?B?OS9nSEp0Vk1Gb2FJa3dVMzRtQXhIZ2NPNzhaSDY1YjZ1MmI3T3RqVy9sZTJ6?=
+ =?utf-8?B?emJ0WDVFR2FVakNWK2R3WkJSbmhnek1nbitvOUtQNmlZbVRiYldCaHpZajJj?=
+ =?utf-8?B?UjFGbXByUG5OVmdIMi9IMHprOVVoMnVLWG1YbkVCK0NsV0l5ZkFYMmpsQmtn?=
+ =?utf-8?B?Y2xyU3gxSllBSis1QXh1MGZvakhSWVp2UTJhdldKczdDbkd6czdBMlZsdDhB?=
+ =?utf-8?Q?XGwpBd4MeHOZUycdktaG9P0ZQ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 255fc99c-fa35-40cc-80a1-08dc677cc0d5
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2024 12:14:29.2577
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B+2aeSXO5iAKbEPOhYBcS+arhv44yGp7VmOOfdOy1rKrDetpcNcAy1/d01f65A5FSLrIgsD7lZuPaogzTeCgpg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7018
 
-From: Shawn Guo <shawnguo@kernel.org>
+Add a minimal i.MX95 dtsi and EVK board dts.
+i.MX95 has a M33 running SCMI firmware, but as of now, the scmi pinctrl
+driver still not ready for i.MX95, so we count on bootloader to
+configure the pinctrl for lpuart and sdhc and it boots well. After pinctrl
+driver ready, we could move to use scmi pinctrl.
 
-The following changes since commit 4cece764965020c22cff7665b18a012006359095:
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v3:
+- Drop irqsteer node because binding not accepted
+- Pass dtbs_check
+- Link to v2: https://lore.kernel.org/r/20240226-imx95-dts-v2-0-00e36637b07e@nxp.com
 
-  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
+Changes in v2:
+- Addressed Rob and Krzysztof's comments, and fix dts_check issue
+  To pass the dtbs_check, need apply:
+  https://lore.kernel.org/all/20240226070910.3379108-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240226130243.3820915-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240226130516.3821803-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240226130826.3824251-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240219-imx-mailbox-v8-1-75535a87794e@nxp.com/
 
-are available in the Git repository at:
+- Link to v1: https://lore.kernel.org/r/20240218-imx95-dts-v1-0-2959f89f2018@nxp.com
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-dt-6.10
+---
+Peng Fan (3):
+      dt-bindings: arm: fsl: add i.MX95 19x19 EVK board
+      arm64: dts: freescale: add i.MX95 basic dtsi
+      arm64: dts: freescale: add i.MX95 19x19 EVK minimal board dts
 
-for you to fetch changes up to 68313ee6961ca59a77c164a55cc352cc8bbfa6ec:
+ Documentation/devicetree/bindings/arm/fsl.yaml    |    6 +
+ arch/arm64/boot/dts/freescale/Makefile            |    1 +
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts |  111 ++
+ arch/arm64/boot/dts/freescale/imx95-clock.h       |  187 ++++
+ arch/arm64/boot/dts/freescale/imx95-power.h       |   55 +
+ arch/arm64/boot/dts/freescale/imx95.dtsi          | 1152 +++++++++++++++++++++
+ 6 files changed, 1512 insertions(+)
+---
+base-commit: bb7a2467e6beef44a80a17d45ebf2931e7631083
+change-id: 20240428-imx95-dts-v3-bee59f0e559b
 
-  ARM: dts: imx6ul-pico: Use #pwm-cells = <3> for imx27-pwm device (2024-04-28 15:56:17 +0800)
-
-----------------------------------------------------------------
-i.MX ARM device tree for 6.10:
-
-- New board support: Seeed Studio NPi dev board, UNI-T UTi260B thermal
-  camera board.
-- A couple of IRQ config correction for touchscreen and RC5T619 on
-  tolino-shine2hd device.
-- Add snvs-poweroff support for i.MX7.
-- A couple of dtb_check warning fixes on i.MX6SX and i.MX6QDL ESAI.
-- Enable USB support for imx6qdl-udoo and imx27-phytec.
-- A big series from Uwe Kleine-König to adopt #pwm-cells = <3> for i.MX
-  devices.
-- Other small changes and clean-ups.
-
-----------------------------------------------------------------
-Alexander Stein (2):
-      ARM: dts: imx6qdl: mba6: Add missing vdd-supply for on-board USB hub
-      ARM: dts: imx6qdl: Remove LCD.CONTRAST pinctrl from muxing
-
-Andreas Kemnade (2):
-      ARM: dts: imx6sl: tolino-shine2hd: fix IRQ config of touchscreen
-      ARM: dts: imx6: fix IRQ config of RC5T619
-
-Fabio Estevam (2):
-      ARM: dts: imx7s: Add snvs-poweroff support
-      ARM: dts: imx6qdl-udoo: Enable USB host
-
-Frank Li (2):
-      ARM: dts: nxp: imx6sx: fix esai related warning when do dtb_check
-      ARM: dts: nxp: imx6qdl: fix esai clock warning when do dtb_check
-
-Michael Grzeschik (1):
-      ARM: dts: imx27-phytec: Add USB support
-
-Parthiban Nallathambi (1):
-      ARM: dts: imx6ull: add seeed studio NPi dev board
-
-Sebastian Reichel (1):
-      ARM: dts: imx: Add UNI-T UTi260B thermal camera board
-
-Shengjiu Wang (2):
-      ARM: dts: imx6sx-nitrogen6sx: drop incorrect cpu-dai property
-      ARM: dts: imx6: exchange fallback and specific compatible string
-
-Stefan Wahren (1):
-      ARM: dts: imx6ull-tarragon: Reduce SPI clock for QCA7000
-
-Uwe Kleine-König (49):
-      ARM: dts: imx51-ts4800: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx53-m53evk: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx53-ppd: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx53-kp: Drop redundant settings in pwm nodes
-      ARM: dts: imx53-tqma: Use #pwm-cells = <3> for imx27-pwm devices
-      ARM: dts: imx6dl-aristainetos_4: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6dl-aristainetos_7: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6dl-mamoj: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-ba16: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-bosch-acc: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-apf6dev: Use #pwm-cells = <3> for imx27-pwm devices
-      ARM: dts: imx6qdl-aristainetos2: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-cubox-i: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-emcon: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-gw52xx: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-gw53xx: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-gw54xx: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-gw560x: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-gw5903: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-gw5904: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-icore: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-nit6xlite: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-nitrogen6_max: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-nitrogen6_som2: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-nitrogen6x: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-phytec-mira: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-sabreauto: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-sabrelite: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-sabresd: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-savageboard: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6qdl-skov-cpu: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-kp: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-novena: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-pistachio: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-prti6q: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6q-var-dt6customboard: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6sl-evk: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6sll-evk: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6sx-nitrogen6sx: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6sx-sdb: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6sx-softing-vining-2000: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-14x14-evk: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-ccimx6ulsbcpro: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-geam: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-imx6ull-opos6uldev: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-isiot: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-kontron-bl-43: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-kontron-bl-common: Use #pwm-cells = <3> for imx27-pwm device
-      ARM: dts: imx6ul-pico: Use #pwm-cells = <3> for imx27-pwm device
-
-Xu Yang (1):
-      ARM: dts: imx6: remove fsl,anatop property from usb controller node
-
- arch/arm/boot/dts/nxp/imx/Makefile                 |   3 +
- arch/arm/boot/dts/nxp/imx/e60k02.dtsi              |   2 +-
- arch/arm/boot/dts/nxp/imx/e70k02.dtsi              |   2 +-
- .../dts/nxp/imx/imx27-phytec-phycard-s-som.dtsi    |  78 +++
- arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts         |   3 +-
- arch/arm/boot/dts/nxp/imx/imx53-kp-ddc.dts         |   2 +-
- arch/arm/boot/dts/nxp/imx/imx53-kp.dtsi            |  10 +-
- arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts         |   3 +-
- arch/arm/boot/dts/nxp/imx/imx53-mba53.dts          |   2 +-
- arch/arm/boot/dts/nxp/imx/imx53-ppd.dts            |   6 +-
- arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi        |   8 -
- .../arm/boot/dts/nxp/imx/imx6dl-aristainetos_4.dts |   3 +-
- .../arm/boot/dts/nxp/imx/imx6dl-aristainetos_7.dts |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6dl-mamoj.dts         |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi          |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6q-bosch-acc.dts      |  10 +-
- arch/arm/boot/dts/nxp/imx/imx6q-kp.dtsi            |   6 +-
- arch/arm/boot/dts/nxp/imx/imx6q-novena.dts         |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6q-pistachio.dts      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts         |   3 +-
- .../boot/dts/nxp/imx/imx6q-var-dt6customboard.dts  |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi     |   3 +-
- .../boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi    |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi     |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-emcon.dtsi       |   9 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi      |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi       |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi        |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-nit6xlite.dtsi   |   6 +-
- .../boot/dts/nxp/imx/imx6qdl-nitrogen6_max.dtsi    |   9 +-
- .../boot/dts/nxp/imx/imx6qdl-nitrogen6_som2.dtsi   |   6 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-nitrogen6x.dtsi  |   6 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-mira.dtsi |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi   |   7 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabrelite.dtsi   |   9 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi     |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-savageboard.dtsi |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi    |   1 -
- arch/arm/boot/dts/nxp/imx/imx6qdl-udoo.dtsi        |  25 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi             |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts           |   4 +-
- .../boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts    |   4 +-
- arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts          |   4 +-
- arch/arm/boot/dts/nxp/imx/imx6sll.dtsi             |   1 -
- arch/arm/boot/dts/nxp/imx/imx6sx-nitrogen6sx.dts   |   6 +-
- arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi          |   8 +-
- .../dts/nxp/imx/imx6sx-softing-vining-2000.dts     |  12 +-
- arch/arm/boot/dts/nxp/imx/imx6sx.dtsi              |   7 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi    |   3 +-
- .../arm/boot/dts/nxp/imx/imx6ul-ccimx6ulsbcpro.dts |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts          |   3 +-
- .../dts/nxp/imx/imx6ul-imx6ull-opos6uldev.dtsi     |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi        |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-43.dts |   3 +-
- .../boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi |   3 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi         |   3 +-
- .../nxp/imx/imx6ull-seeed-npi-dev-board-emmc.dts   |  19 +
- .../nxp/imx/imx6ull-seeed-npi-dev-board-nand.dts   |  19 +
- .../dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi   | 424 +++++++++++++++
- arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi.dtsi   | 155 ++++++
- .../boot/dts/nxp/imx/imx6ull-tarragon-master.dts   |   4 +-
- .../boot/dts/nxp/imx/imx6ull-tarragon-slave.dts    |   2 +-
- .../boot/dts/nxp/imx/imx6ull-tarragon-slavext.dts  |   2 +-
- arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts      | 566 +++++++++++++++++++++
- arch/arm/boot/dts/nxp/imx/imx7s.dtsi               |   9 +
- 70 files changed, 1366 insertions(+), 186 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board-emmc.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board-nand.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-uti260b.dts
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
 
