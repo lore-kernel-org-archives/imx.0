@@ -1,121 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2BF1B809
-	for <imx@lists.linux.dev>; Mon, 29 Apr 2024 08:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E0200BA;
+	Mon, 29 Apr 2024 08:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714380490; cv=none; b=svX9UbSGokzMiRTeop5nHOYgq0/rHSjaGsTanuiQX2T2aHKYZJ5N5nGXdePzfJ8Kk93Ai+xd2yb+ospht45LUS3xrL8XbbOyguEQ46Vyq1yDuLncVsAtGtBX9SyOqyf2KdMbQ8oWC3k9v1hByx42FczSc62nlwmjVJVLKf/HSVQ=
+	t=1714380795; cv=none; b=UyXvEyZmn2GLCfWHbsbd0YMbr8jNQ0SIatC+DQ1UFqfDyjmsEeaI6Eqw3PjpL/clyJ/7Bvpb2TDnPwaF8UdxQ0yxUQHYL4dbxz4y0gBhnfhnihpmtPZuojeEBqjI1tZn3V8FI4KBkMujVGaTn4abZ4rJMPYTCfbUonhYG6PX9iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714380490; c=relaxed/simple;
-	bh=Z8WLMcuvoc4LDhYSNGhPtCPz11xVNOa8e2sBdMQx030=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LU8pmNDFjdxqcEJspwrs7GZOhYsLMMwDxu9yyURl7jk9mki+FfuPRmrHltlQld6IGd3UJdTsxQsObexiFtSjxMcCJjfeDbd6RGsjdnN4fVq3IUStN59VWX92gvAb7NRAznKeWjROdWhEuqjLjVsISaLtLRapM1F1qvtkJmgLJL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FOSmcDJu; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1714380795; c=relaxed/simple;
+	bh=qCiVpmPm2vD21QvDTCakxjwW4nT2phnYn/CJReOGSRg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UWZ6P4BZk3YfLyJ47OBRZhbPKP+Eo+PeQIRAEUm4O/HjVxbjxs65HkNcgO0XkgBM6PQHufEd7hSGq8lX5s7OApzO+iC5YXewJ2qcD0QyQ2AbxJwsAWWcTFA3IDXIhizC+zY0oDxYc/mEQjUCBsxk0aOWGMSCRnc1utlbNIJZe/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXl7xx3i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FOSmcDJu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714380490; x=1745916490;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Z8WLMcuvoc4LDhYSNGhPtCPz11xVNOa8e2sBdMQx030=;
-  b=FOSmcDJu44C083S4JlMZxHp+qKWrKPRNOGVrCzZzoS0fE7CUgb/GOj5V
-   jseUQScfmI+Gkq7KsNfy0ERtujsFIlqc9dD2G58HAwWWqWZndC6e2RwYZ
-   MyaS8EmnClerF8aqri0jgxomZHKbFg/Sikln1stzeYFd00ngjqo7+iWdW
-   hdQ5oOrckfHTchrCuvRtH5wLDS1KQWtm9/MWCvdStd7UweDC8t6dSSQPL
-   qw6ouV6rCZDSvyw1Tx+gn0QIywBzUXDogFmoyhjII0tGojTnMwEaZrrAs
-   bpVd8kKBXj6wPFeXsEgllTbOXT9OBbt0JlclMm/N3FIvSY2XtenRnGVif
-   w==;
-X-CSE-ConnectionGUID: KknwjC8JSXuC2EH6JxYfsQ==
-X-CSE-MsgGUID: k1wYEPkJQVuSw6G68XYpPQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10143319"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="10143319"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:48:09 -0700
-X-CSE-ConnectionGUID: 6In1FgQkScO0LRKeS9iqeA==
-X-CSE-MsgGUID: HTM8jSzOS9CfPGqWX67RQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="57235629"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:48:01 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s1Mg1-00000002GCn-2sLU;
-	Mon, 29 Apr 2024 11:47:57 +0300
-Date: Mon, 29 Apr 2024 11:47:57 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v2 4/4] PCI: kirin: Convert to agnostic GPIO API
-Message-ID: <Zi9eve2brQvKwAKm@smile.fi.intel.com>
-References: <20240423172208.2723892-1-andriy.shevchenko@linux.intel.com>
- <20240423172208.2723892-5-andriy.shevchenko@linux.intel.com>
- <20240427072335.GC1981@thinkpad>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXl7xx3i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8456C113CD;
+	Mon, 29 Apr 2024 08:53:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714380794;
+	bh=qCiVpmPm2vD21QvDTCakxjwW4nT2phnYn/CJReOGSRg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FXl7xx3iPrMFlZZBVgM2InLgHEYa1PL9HR9lM2FKMSwr9En0jzUmOFEreZgCTrQrd
+	 9j3XO471snTmM7K6zH8vXdE/oRDjydWKgoIHs5R2l0BklDjJldQVAp46a84oB+/vKI
+	 iKdZcy5HdtqV1FhCOFz4JWGjexCKZwZ+Fk013HVeJx9bJDJKFzm8NRFF8Wy81kqAR4
+	 jWg7AqL7L4cM5RH4orErESAh90fn6r3u8YL8BfpZoIK4ESwYC+fSRUzvX/LvvIVDhj
+	 muiOYZb3KOSUmpNYh8F241ik3wZO4sgah59/pSEc/e8dJd14uoXSTQoNKuKI4zso80
+	 C3L3nN+w4UQcQ==
+Message-ID: <07fa8910-da6e-49f3-a3d3-b7a55c48224a@kernel.org>
+Date: Mon, 29 Apr 2024 10:53:08 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240427072335.GC1981@thinkpad>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] dt-bindings: arm: fsl: add Engicam i.Core MX93
+ EDIMM 2.0 Starter Kit
+To: Fabio Aiuto <fabio.aiuto@engicam.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Matteo Lisi <matteo.lisi@engicam.com>,
+ Mirko Ardinghi <mirko.ardinghi@engicam.com>,
+ Conor Dooley <conor.dooley@microchip.com>
+References: <20240429084422.8369-1-fabio.aiuto@engicam.com>
+ <20240429084422.8369-2-fabio.aiuto@engicam.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240429084422.8369-2-fabio.aiuto@engicam.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Apr 27, 2024 at 12:53:35PM +0530, Manivannan Sadhasivam wrote:
-> On Tue, Apr 23, 2024 at 08:19:07PM +0300, Andy Shevchenko wrote:
-> > The of_gpio.h is going to be removed. In preparation of that convert
-> > the driver to the agnostic API.
-
-...
-
-> > +		pcie->id_clkreq_gpio[i] = devm_gpiod_get_index(dev,
-> > +							"hisilicon,clken", i,
-> > +							GPIOD_ASIS);
+On 29/04/2024 10:44, Fabio Aiuto wrote:
+> i.Core MX93 is a NXP i.MX93 based EDIMM SoM by Engicam.
 > 
-> Please don't use GPIOD_ASIS even if the old code was using it.
+> EDIMM 2.0 Starter Kit is an EDIMM 2.0 Form Factor Capacitive
+> Evaluation Board by Engicam.
 > 
-> For all 3 GPIOs in this driver, GPIOD_OUT_LOW flag should be used as the default
-> state is assert (considering the fact that the DT uses GPIO_ACTIVE_HIGH).
+> i.Core MX93 needs to be mounted on top of EDIMM 2.0 Starter Kit
+> to get the full i.Core MX93 EDIMM 2.0 Starter Kit board.
+> 
+> Add bindings for this board.
+> 
+> Cc: Matteo Lisi <matteo.lisi@engicam.com>
+> Cc: Mirko Ardinghi <mirko.ardinghi@engicam.com>
+> Reviewed-by: Krzysztof Kozlowsky <krzk@kernel.org>
 
-And if not? I believe we may not assume that all of DTBs around the globe put
-the flags correctly. But I think you know much more about them than me, hence
-I am okay to update this.
+What the hell? Why are you changing tags?
 
--- 
-With Best Regards,
-Andy Shevchenko
+This is corrupted since v3!
 
+NAK.
+
+Best regards,
+Krzysztof
 
