@@ -1,102 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A21442FD;
-	Mon, 29 Apr 2024 20:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2B11779BD
+	for <imx@lists.linux.dev>; Mon, 29 Apr 2024 20:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714421220; cv=none; b=JHZyneKZbcosxBtYHIs679lL9Vnbu30aatlB0Nb8RQu6RUijHUtefB4BpnE8Z9w3TMC5NMc+BQg2KiihCuIyVklDkAZePUcVa+b04/TCGh4DVOfvddjO2mc30TO6nZ0i1/DC13ToOu8SfkjBDSSLiqr2BtxkkIlSd1s1tZdxTd4=
+	t=1714423440; cv=none; b=qsPwhPGGJTtFXXRv8TdBe1rxyAf/rCjEB8MsLDYjKtdJ9Zt+6vRLIoc3ZCLrqLh/kMa185FwgfKAS1UYq32ulhKZRyS0CggF2fdDayIQXR6oWSmLyVyoUhGax8APfIIUsTzDuih66JHA0f/4iXxuOLb74WTeE4qngkwNcIvxbAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714421220; c=relaxed/simple;
-	bh=4A88CtFhO9g0Vm1pMTxYoO6IBnLwMZJMkAtxvaB8yTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PD//LsOY5mZSEnj7mhp8kSd5Z2dfL2ZruNetOb9eE8NvqJOcPEg3bkIqzx/zuUfgPdpIEIFUWDZfEPu+uKEIxe9p7MN08LgDDfPxaF/OQ8pwnGJXfGZSJz/Pr9YDRIMMvJjge7dPhVY9bJVsyflDSMo+7IWQblxJyHwYw/D+N/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2Eu+bDc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714423440; c=relaxed/simple;
+	bh=DlJMFV/5TBkqj5Xgp0aq/ty+b2/P8lMPnJnVQ5Jw5rY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=O9apKE0w/vs2tnXdo74ImQeu4YE2KS5EytgO0nd9jD9ephGxfSXO4Xuyzw+hLcwZlr7tIGDbeSJxnVf3jqo+/Rye1Mtsg6FkVIc5U86IkuoUzFb9Muc+ZbBP3+UC4f2Rt0aXXaZ1ij5vV187m5R0YNF6njtT6QJs5l+1ThpLQew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rZAk/u/5; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2Eu+bDc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C298EC4AF14;
-	Mon, 29 Apr 2024 20:06:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714421219;
-	bh=4A88CtFhO9g0Vm1pMTxYoO6IBnLwMZJMkAtxvaB8yTQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d2Eu+bDcB2VBGxzdNS8FaG+wTdSF6EoPn0gvxQjza1D737089iPlbg0X3lOuJ7qth
-	 yva0Bwg83ykirUtT774C38MB8baxZTN7nAsmiaI4FJKiv2i9/gmHixZUCEOw9MeQ1h
-	 zg6AbK4mBXTHZT+4Cvu/os75HZWacf7PReftRCBMhYTrKwp2XbiaubHfGdTuvfZ5rg
-	 BONtufjopg6ZlMGGhKRZppD2XFeHXoXqHwen53ezbgea/Cg+w9UpW2hDxgRMTqxJC+
-	 07vhFpg9Xe221vL8ol/WQGRNXarUta0VmHYfVOgReolABJxkH5ps5kZNfzH3AFlg8w
-	 9NFnqEt6HKlLQ==
-Date: Mon, 29 Apr 2024 21:06:48 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 0/8] iio: use 'time_left' instead of 'timeout' with
- wait_for_*() functions
-Message-ID: <20240429210648.4b429d31@jic23-huawei>
-In-Reply-To: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
-References: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rZAk/u/5"
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4dac6802e7aso1083552e0c.0
+        for <imx@lists.linux.dev>; Mon, 29 Apr 2024 13:43:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714423437; x=1715028237; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nFLm7dyUtqCFeQ1Y3Oad/n2nmA3y2+DD3YB2hxxWLCM=;
+        b=rZAk/u/5DvwEaUFc6PBqu0mCgFKKFL8JKiwYp5SgROhYKGqxke0CHX6q8T2JYKqa+U
+         fUwYvw4n559P0xFHmNfUXkt6RE8Nm37guG0lJviDdF9XJcRRqwZvWQcV/aqHi7/gUqHp
+         to7B5GW8XoScEeWRE6WGLE3qCfZoZofokp+b8s1lRldQ9WNP+ofiTrv+axyrX384Cuqc
+         jDX7PQu0fmmDEauSYJIWpFRk32+2WjEOtjmydwrLTC8KCboJPqISrSEHQ6uAohaBmNRV
+         teMEgOZqgMccaPCOtV9eYuY4LV9VtFcZXh/MsqSjkXb9KvyY3SogX7JsNt2/B7+ytIht
+         RvEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714423437; x=1715028237;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nFLm7dyUtqCFeQ1Y3Oad/n2nmA3y2+DD3YB2hxxWLCM=;
+        b=FSQX4EGLBBH6rk+/jwEuaFKuciBFs+FaevwNirA8z+kXF31J5MabwTNJ0zKzMH3ULc
+         W3UG3AmfqLssGpiQlD1yY52oP8PpEaECZNf2ZvdbNKpWoSXQyHAyRS+zZ37e2KwhoUxv
+         PQFGbiOpECA1VhQMuPoVUZnTuSDEM/7PipHge7DgHGEdfuKtmySXav5st9ZYTrGAPZyA
+         Axshadf2BHyoks8U5VkaVxHisZcP1eVgpMlFOIpiEXIt9/M2OuHdxGqKAPSfYYaNh1ZH
+         ZohB9keUOmkdYjTvq214WcYPl1Ab13HBjUkxM9eHrUkzy5wSadP2jFyCm0c2tEkaujgN
+         m1Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPcV2IlvwO7NUT0csW5Beuq/OZVM6IDYkw/66txFLoDIoh+xUgBznA9Ec3bHMgF/I2QHNl0/lKSgWvkCfmuxXe0MKm
+X-Gm-Message-State: AOJu0Yz9T23dl0jaZWCHMTj8UTwD/2eMChkPlcKfVsxsNuhNA03FvIOI
+	/Yf9sJlBGypL2N1WL/zJvTVAEvxPit2bHJa41g52uEc/PuPfnE5K7ndZsQAC2bmRtbM5kR7Hh10
+	FaOl+TZq9lgIV+/LX7o05+COrrl8J3z74oHu3yQ==
+X-Google-Smtp-Source: AGHT+IELY2zwLnQIzK1qbE3Sp9Z06BUgG4WlkmnHrcqV/8QmexyPMqSjZnChm2MVfRJ3gQJpaKv37A2s5enuif64LHI=
+X-Received: by 2002:a05:6122:725:b0:4de:daa8:b8e2 with SMTP id
+ 37-20020a056122072500b004dedaa8b8e2mr9482653vki.3.1714423436022; Mon, 29 Apr
+ 2024 13:43:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 30 Apr 2024 02:13:44 +0530
+Message-ID: <CA+G9fYuP7S+a89Ep5g5_Ad69EMwRkJ8nM+MMTzbEcP+6H2oMXQ@mail.gmail.com>
+Subject: s390: clk-imx8mp-audiomix.c:363:12: error: 'clk_imx8mp_audiomix_runtime_resume'
+ defined but not used
+To: linux-s390@vger.kernel.org, open list <linux-kernel@vger.kernel.org>, 
+	linux-clk <linux-clk@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>, imx@lists.linux.dev
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Abel Vesa <abelvesa@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, peng.fan@nxp.com, 
+	Abel Vesa <abel.vesa@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 29 Apr 2024 13:33:03 +0200
-Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
+The s390 allmodconfig builds failed on Linux next master branch with gcc-13.
 
-> There is a confusing pattern in the kernel to use a variable named 'timeout' to
-> store the result of wait_for_*() functions causing patterns like:
-> 
->         timeout = wait_for_completion_timeout(...)
->         if (!timeout) return -ETIMEDOUT;
-> 
-> with all kinds of permutations. Use 'time_left' as a variable to make the code
-> obvious and self explaining.
-> 
-> This is part of a tree-wide series. The rest of the patches can be found here
-> (some parts may still be WIP):
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
-> 
-> Because these patches are generated, I audit them before sending. This is why I
-> will send series step by step. Build bot is happy with these patches, though.
-> No functional changes intended.
+s390:
+ allmodconfig - gcc-13 - fail
 
-Nice improvement.  Applied
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> 
-> Wolfram Sang (8):
->   iio: adc: ad_sigma_delta: use 'time_left' variable with
->     wait_for_completion_timeout()
->   iio: adc: exynos_adc: use 'time_left' variable with
->     wait_for_completion_timeout()
->   iio: adc: fsl-imx25-gcq: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: intel_mrfld_adc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: stm32-adc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: stm32-dfsdm-adc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: twl6030-gpadc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: pressure: zpa2326: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
-> 
->  drivers/iio/adc/ad_sigma_delta.c  |  6 +++---
->  drivers/iio/adc/exynos_adc.c      | 16 ++++++++--------
->  drivers/iio/adc/fsl-imx25-gcq.c   | 10 +++++-----
->  drivers/iio/adc/intel_mrfld_adc.c | 12 ++++++------
->  drivers/iio/adc/stm32-adc.c       | 10 +++++-----
->  drivers/iio/adc/stm32-dfsdm-adc.c | 12 ++++++------
->  drivers/iio/adc/twl6030-gpadc.c   |  8 ++++----
->  drivers/iio/pressure/zpa2326.c    | 10 +++++-----
->  8 files changed, 42 insertions(+), 42 deletions(-)
-> 
+Build log:
+--------
+drivers/clk/imx/clk-imx8mp-audiomix.c:363:12: error:
+'clk_imx8mp_audiomix_runtime_resume' defined but not used
+[-Werror=unused-function]
+  363 | static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/clk/imx/clk-imx8mp-audiomix.c:356:12: error:
+'clk_imx8mp_audiomix_runtime_suspend' defined but not used
+[-Werror=unused-function]
+  356 | static int clk_imx8mp_audiomix_runtime_suspend(struct device *dev)
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
+metadata:
+----
+  git_describe: next-20240429
+  git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
+  git_short_log: b0a2c79c6f35 ("Add linux-next specific files for 20240429")
+  arch: s390
+  toolchain: gcc-13
+
+Steps to reproduce:
+---
+ # tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
+--kconfig allmodconfig
+
+
+Links:
+----
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fmJ3qzFbmI2ACNTo81vzzgQaLS/
+ - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240429/testrun/23715243/suite/build/test/gcc-13-allmodconfig/details/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
