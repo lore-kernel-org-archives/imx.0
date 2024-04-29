@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BE439FFD
-	for <imx@lists.linux.dev>; Mon, 29 Apr 2024 10:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF3638FA6
+	for <imx@lists.linux.dev>; Mon, 29 Apr 2024 10:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714386325; cv=none; b=Pcs2CS9cJ24JhjBqyLtLLtgcuYeBSb40d4TJMkUdeVkrW/wfIxVF/2yhSYK6c6wuEztFxI0QbwovZDgUxw385RCxtmGYcGQIImdwnRxUkAcxmyaRJCpvTkFvGsbL1IYoIRYKGViz49oJDDun3WPqd9XcpV0J9OSQ8px9bhiVLx8=
+	t=1714386326; cv=none; b=YuoOAbjxeHf4qQ0VRetoiPu5HVe1UiFESwgDZc9xNOAegNQ6MixumETGJ8KU8kHzJBkJ0jC1o2mkryg/QYG5kvTW2b6RKsnd1DvwTOL56bpXF9XRUSSh9fb/90qxvtLQLLOSFrUpuNGl8mar7Y72PGSFivpp0xlIaDnsFgD0gHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714386325; c=relaxed/simple;
-	bh=mnVWFiBfYUU2lpuKyQVuWsMjv4lrzOkciv18t8WSb+Q=;
+	s=arc-20240116; t=1714386326; c=relaxed/simple;
+	bh=/87+Jpunp1P/a+YS0O7wEX1PysDjoquFgBulttW7SNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjlPp44z0yoZJ7z0iKW9l4keFAOrDSGe3N+pyh/T+kof9KGxdmXXt6G6OelwnInCo2gYlXIxQpgx918V6eFkY9x+qFn0HF4B486qKXNX21pOwNAW/up1C1mAMXsA43wbH4kzRTl4Mf+Kc4CZ+j3Eti0dzXnDGF/EhPwz0BHGZvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QCuHiJrL; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=AY6ReBXChz+diq/FYZLkvsP8WU6F0FEa+yetBOA6KvG7IirFk0ZG1TtdK/ssRCFXtMea8sTVfpDeNwTanNZQpq+muENdZ5XtD9ilHAnKDvue8E1WGpmz303v5J/8yp5fQ52nNnvpr9lyXIyrZNtPWfnAueD4mASztCNIvrSIR3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eERAZ6OL; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QCuHiJrL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eERAZ6OL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1714386324; x=1745922324;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mnVWFiBfYUU2lpuKyQVuWsMjv4lrzOkciv18t8WSb+Q=;
-  b=QCuHiJrLfsgKdbO855tOCouzBSska7MQ8yP/2V/Z1zLkeYKrbAd+u5Xv
-   KD1e5NOX8vy/+b6pK0Dw8VB+PNy9cboDMzhptz+BD2eUhEgLUgd4ePDTz
-   QYmn6BlFvqiDQP8T7RjFIFX8x+9x5VjmbSB4ZS/Qq+rJebdDRpdwcWFE0
-   a324IHgMPDIyANjI9E4KYGNhARyzkoBRZq0BpuY74kEaHAznNkPZOCbr4
-   hgqa0Hb3KbXWzRTGYtAArAF3esmZ4Z/WVBM9FjIi+CPFNdfvYMKR6aK9l
-   Fqr7OS5Shq5YhE3NhboKgXUV/6T4RQSepUt3eSw81rDeZlnOsooOYPFWz
-   g==;
-X-CSE-ConnectionGUID: gVBn7GDuRhyOHDcZ8jLCRQ==
-X-CSE-MsgGUID: rRp7RbaATHykIrPMwD/Qmw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="13827920"
+  bh=/87+Jpunp1P/a+YS0O7wEX1PysDjoquFgBulttW7SNk=;
+  b=eERAZ6OLzqKopbk1kS5/PUcZ9vO2xtz7iTqJPpPXaFrliBK2zJd2CJ+F
+   uiarTuahHkcvxA1bq9Wf5jSSei0FcsB6V2rwF2kG63eVpTVdBh2TKAdv2
+   VmpK2KL3fd7aX+BFJfE/90fn1KrTyrUpxaYXRdPQhHT0nBxBHF1EA2T7c
+   CancEy12tWJ8+1rMLf53S0SqBhxo4GKDktbY8llFW3JgZGSECQbptG4lu
+   AqC2QcMSAgkDgky+BY+bvir6PJKsYJLtQcV4QmQY+tqZTPQTHc9cMQv+H
+   mV7C2FTXGs7G11hG5/JZhvSI6FlXq1OqbxCN2B8mI82CdQBMKCyrJ9wgM
+   Q==;
+X-CSE-ConnectionGUID: bxQsaZBSTLG3Sf2iXD9Hbg==
+X-CSE-MsgGUID: kqy6/ZVJQWKf9hvq542XBg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="13827934"
 X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="13827920"
+   d="scan'208";a="13827934"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:25:21 -0700
-X-CSE-ConnectionGUID: KDY/1w+iSwiKi9y57mrB/g==
-X-CSE-MsgGUID: HKejN5CvT+q1pdsGY7VemQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:25:22 -0700
+X-CSE-ConnectionGUID: aWnvLQKuQtOqZY6wYM1MvA==
+X-CSE-MsgGUID: bPFGkKK8S6CWF7cZGoE+BQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="26475173"
+   d="scan'208";a="26475174"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa006.jf.intel.com with ESMTP; 29 Apr 2024 03:25:13 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id A849B1A0; Mon, 29 Apr 2024 13:25:11 +0300 (EEST)
+	id 9324BCB; Mon, 29 Apr 2024 13:25:11 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Frank Li <Frank.Li@nxp.com>,
@@ -82,9 +82,9 @@ Cc: Vignesh Raghavendra <vigneshr@ti.com>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-Subject: [PATCH v3 2/5] PCI: aardvark: Remove unused of_gpio.h
-Date: Mon, 29 Apr 2024 13:23:19 +0300
-Message-ID: <20240429102510.2665280-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 1/5] PCI: dra7xx: Add missing header inclusion
+Date: Mon, 29 Apr 2024 13:23:18 +0300
+Message-ID: <20240429102510.2665280-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
 References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
@@ -96,27 +96,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-of_gpio.h is deprecated and subject to remove.
-The driver doesn't use it, simply remove the unused header.
+Driver is using chained_irq_*() APIs, add the respective inclusion.
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/pci/controller/pci-aardvark.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/pci-aardvark.c b/drivers/pci/controller/pci-aardvark.c
-index 71ecd7ddcc8a..8b3e1a079cf3 100644
---- a/drivers/pci/controller/pci-aardvark.c
-+++ b/drivers/pci/controller/pci-aardvark.c
-@@ -23,7 +23,6 @@
- #include <linux/platform_device.h>
- #include <linux/msi.h>
- #include <linux/of_address.h>
--#include <linux/of_gpio.h>
- #include <linux/of_pci.h>
- 
- #include "../pci.h"
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index d2d17d37d3e0..b67071a63f8a 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/irqchip/chained_irq.h>
+ #include <linux/irqdomain.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
