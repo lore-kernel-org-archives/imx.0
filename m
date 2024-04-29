@@ -1,51 +1,44 @@
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA41047A5C
-	for <imx@lists.linux.dev>; Mon, 29 Apr 2024 11:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADF145019
+	for <imx@lists.linux.dev>; Mon, 29 Apr 2024 11:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390137; cv=none; b=NmVYl2TapAsxX4h1CXd0RAp77qieHMJ0czwaVZdRfxDTk+HqQa61RV/Foxa4zPiCMif36tR8ZwwX9D7tEIS7kzd+AAnX8xRe8lP8rbix5bPvn0AJJ4czwPYIxpsu38kGWySaHDG4ZVB2LpWvsYH0VpY6rhVAnVbr/M4rnt+wptg=
+	t=1714390397; cv=none; b=E+gMwp+L7ALIoIuF/rLlJCEygnEUfi+TgiLs8sYbj+le2ufUcluMcTXEiEdddGBnaCnmQmqhzJ59UHqoJa/2L66+0RKgfT80i0cKz9KiIjm0ctCUWYMgTgcTR+pJXMfJFib+Ul4CP2IDvLd9sWZ0u756BQGCnceL5Mdxga3s7ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390137; c=relaxed/simple;
-	bh=Xsyv5SDNkoLgH9URuS3zIADXYIorPsuiL3ykMXINUvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wh87yUKX5/3safRaO2XQpgA/VoSfaV4WeGgVKzW5L0jBZFdqC7aRDhSy5ioXvaCSPe/M2hxGQgd22mkfk5AQg40PJPA6v40vIpPpIygyyPoX6QNYM+y6OPBFXqI36INZVk4okYisn6cyBQU8EF1JFziSwBlkCtztUDodS9JDtMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=CC8HVkPf; arc=none smtp.client-ip=194.117.254.33
+	s=arc-20240116; t=1714390397; c=relaxed/simple;
+	bh=12pNV/3v45L2MvCn7S9EqWK9lwdw7rPRpQGj+Sgofag=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EcNVwwvA8QTMzvuea8AH8tyVqLAi4dmhONQBPx/Db/tkWge9LKd/0c3h35iaoAhkwm3vuN9EI8t0DE98ep/hrhDF2/LI4cEzEC5S4Vr/LqhrhlyUU464jz5BfUSNBSPm8IA5YA6mpAqiM+bGm7QqzHnhhwynnQd56S8+LiEqVcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=LZifYU4S; arc=none smtp.client-ip=194.117.254.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="CC8HVkPf"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="LZifYU4S"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=7uNA3296SSZr7aZkz7ZdUhN4Qf0isSkwCYvTIcIHIv8=; b=CC8HVk
-	PfDiXBD6JGqzCl/GFyo9GTZfjDKVejx1LSIaI+5AsreC5+T+yH0CZ2wWt8j5eI3y
-	8P81reUjJ00HeO/33tGlMJBGcriHmvyUxGqVPFIeh3JjngRZ4zMyateJQELR4mmH
-	yiOM+RJhdsmdg6OBeQnRHqKxdhcCEfoJ8QBk5J8av+FZLBm6ZFxyAFtILyLsA9Mb
-	l2Wyki0pHaRl7Y0apLZGS5a0rlwks0LoBkMCEVjjrjcDgX+BQtLzZCgkYqxC+VV1
-	R4B4LpySmiMxpKH/RGP4QYaa4GsgEN2VX7604QsEt685XwuvHWlArROFXQkHNPSa
-	qZOVNSrG47cXVNXQ==
-Received: (qmail 2279577 invoked from network); 29 Apr 2024 13:28:47 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Apr 2024 13:28:47 +0200
-X-UD-Smtp-Session: l3s3148p1@aCKGjjoXGlBtKPB4
+	:mime-version:content-transfer-encoding; s=k1; bh=Vgux3aE3wJGJ6D
+	mN+k2dPKSst7IED0Ek/dvVSF5yq0g=; b=LZifYU4S7NUCZENs8jHvem7CPVc3RO
+	Z3op2lLszJOlJW1oB5HiWE7k2lz1H+HkpBtnYKqtl7Lp8rQRdP9YXnjf6sPTzO4j
+	Wk8RtkToMA8SV96difp+7EyiKQOCJ2ifDGF1OE2meSCScZGzXtRX8dv8uSIjrXRT
+	1Gk/Roz7bw3hlJUSwnHCOHS8z+lRdyxGEJC8I2TXDabw4CYqDmJXVGsI7MEP4T9z
+	D8cDOIGDMfMvH96D+lULSj1D+HbRqQk9cZlnluoi0G+iWOM83jhL/6p5zh5KS0ir
+	JwwH5q/TFzeIOAMMa0JiHpRDafNE5erJTauOlwdCZG6ig419naUxKWmg==
+Received: (qmail 2280950 invoked from network); 29 Apr 2024 13:33:14 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Apr 2024 13:33:14 +0200
+X-UD-Smtp-Session: l3s3148p1@eC5qnjoXbxxtKPB4
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-spi@vger.kernel.org
+To: linux-iio@vger.kernel.org
 Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/8] spi: imx: use 'time_left' variable with wait_for_completion_timeout()
-Date: Mon, 29 Apr 2024 13:28:36 +0200
-Message-ID: <20240429112843.67628-4-wsa+renesas@sang-engineering.com>
+	linux-kernel@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 0/8] iio: use 'time_left' instead of 'timeout' with wait_for_*() functions
+Date: Mon, 29 Apr 2024 13:33:03 +0200
+Message-ID: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240429112843.67628-1-wsa+renesas@sang-engineering.com>
-References: <20240429112843.67628-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,78 +48,51 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 There is a confusing pattern in the kernel to use a variable named 'timeout' to
-store the result of wait_for_completion_timeout() causing patterns like:
+store the result of wait_for_*() functions causing patterns like:
 
-	timeout = wait_for_completion_timeout(...)
-	if (!timeout) return -ETIMEDOUT;
+        timeout = wait_for_completion_timeout(...)
+        if (!timeout) return -ETIMEDOUT;
 
 with all kinds of permutations. Use 'time_left' as a variable to make the code
-self explaining.
+obvious and self explaining.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/spi/spi-imx.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+This is part of a tree-wide series. The rest of the patches can be found here
+(some parts may still be WIP):
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index c3e5cee18bea..f4006c82f867 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1405,7 +1405,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- {
- 	struct dma_async_tx_descriptor *desc_tx, *desc_rx;
- 	unsigned long transfer_timeout;
--	unsigned long timeout;
-+	unsigned long time_left;
- 	struct spi_controller *controller = spi_imx->controller;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
- 	struct scatterlist *last_sg = sg_last(rx->sgl, rx->nents);
-@@ -1471,18 +1471,18 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
- 	/* Wait SDMA to finish the data transfer.*/
--	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
-+	time_left = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
- 						transfer_timeout);
--	if (!timeout) {
-+	if (!time_left) {
- 		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
- 		dmaengine_terminate_all(controller->dma_tx);
- 		dmaengine_terminate_all(controller->dma_rx);
- 		return -ETIMEDOUT;
- 	}
- 
--	timeout = wait_for_completion_timeout(&spi_imx->dma_rx_completion,
--					      transfer_timeout);
--	if (!timeout) {
-+	time_left = wait_for_completion_timeout(&spi_imx->dma_rx_completion,
-+						transfer_timeout);
-+	if (!time_left) {
- 		dev_err(&controller->dev, "I/O Error in DMA RX\n");
- 		spi_imx->devtype_data->reset(spi_imx);
- 		dmaengine_terminate_all(controller->dma_rx);
-@@ -1501,7 +1501,7 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
- 	unsigned long transfer_timeout;
--	unsigned long timeout;
-+	unsigned long time_left;
- 
- 	spi_imx->tx_buf = transfer->tx_buf;
- 	spi_imx->rx_buf = transfer->rx_buf;
-@@ -1517,9 +1517,9 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
- 
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
--	timeout = wait_for_completion_timeout(&spi_imx->xfer_done,
--					      transfer_timeout);
--	if (!timeout) {
-+	time_left = wait_for_completion_timeout(&spi_imx->xfer_done,
-+						transfer_timeout);
-+	if (!time_left) {
- 		dev_err(&spi->dev, "I/O Error in PIO\n");
- 		spi_imx->devtype_data->reset(spi_imx);
- 		return -ETIMEDOUT;
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
+
+Because these patches are generated, I audit them before sending. This is why I
+will send series step by step. Build bot is happy with these patches, though.
+No functional changes intended.
+
+Wolfram Sang (8):
+  iio: adc: ad_sigma_delta: use 'time_left' variable with
+    wait_for_completion_timeout()
+  iio: adc: exynos_adc: use 'time_left' variable with
+    wait_for_completion_timeout()
+  iio: adc: fsl-imx25-gcq: use 'time_left' variable with
+    wait_for_completion_interruptible_timeout()
+  iio: adc: intel_mrfld_adc: use 'time_left' variable with
+    wait_for_completion_interruptible_timeout()
+  iio: adc: stm32-adc: use 'time_left' variable with
+    wait_for_completion_interruptible_timeout()
+  iio: adc: stm32-dfsdm-adc: use 'time_left' variable with
+    wait_for_completion_interruptible_timeout()
+  iio: adc: twl6030-gpadc: use 'time_left' variable with
+    wait_for_completion_interruptible_timeout()
+  iio: pressure: zpa2326: use 'time_left' variable with
+    wait_for_completion_interruptible_timeout()
+
+ drivers/iio/adc/ad_sigma_delta.c  |  6 +++---
+ drivers/iio/adc/exynos_adc.c      | 16 ++++++++--------
+ drivers/iio/adc/fsl-imx25-gcq.c   | 10 +++++-----
+ drivers/iio/adc/intel_mrfld_adc.c | 12 ++++++------
+ drivers/iio/adc/stm32-adc.c       | 10 +++++-----
+ drivers/iio/adc/stm32-dfsdm-adc.c | 12 ++++++------
+ drivers/iio/adc/twl6030-gpadc.c   |  8 ++++----
+ drivers/iio/pressure/zpa2326.c    | 10 +++++-----
+ 8 files changed, 42 insertions(+), 42 deletions(-)
+
 -- 
 2.43.0
 
