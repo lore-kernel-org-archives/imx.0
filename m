@@ -1,241 +1,323 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2045.outbound.protection.outlook.com [40.107.13.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672FEBE65
-	for <imx@lists.linux.dev>; Tue, 30 Apr 2024 02:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714444008; cv=fail; b=sjA7ciUtxEqzXrypol2ybl7oE1Yll2NYoHsvT5Z1wHQFv/beiQ+7GW27+sTrsQ0mAaasYLjmKOIf5p0ndNUjU441EMolhaW6dgJS2dPZRtEenEgfZsGPeL5xRTgq/dE6E3bGLK9alIVOnm33UpMuPm/gmbnpxxolPaGpMpc+Oc4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714444008; c=relaxed/simple;
-	bh=dQSPoLDIcVXVrv0tT04ckAFmdGEmehBwmhmU9tWQVAE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GJ+Pg/7nLIrhnLFoylTKuODeTHrUlY6dSV0fG49vPFnHaXFWcFG1GvfvagmZP7dZBIMkwrmPGE0ukcrtqAshLI2kWsZmy49dkhiy/Ts5UnvAIm3EYJSj/LhkQ7U4ybKXk1Xf7CvjLDYFUwNXop1Qw3C5INS5wk+pNUAraaSbCHo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jrQ6+cwu; arc=fail smtp.client-ip=40.107.13.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763AD17584
+	for <imx@lists.linux.dev>; Tue, 30 Apr 2024 05:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714454177; cv=none; b=eLCPkB5PqPW8CR8zHcp5CxBd9CFkhGBC6ijJyFLDCoh4cQkD5YREdlyw1kNOpjUSHs5d3KiHpUUxUICtth6TA3T8BSXtAV8ph6rEI+ZSqUHlubrwZbAUMaRnxcG26seuFR+1SNRceN4sUq95v7CHGIhGmb1yKNTEmUHpvsOYEAI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714454177; c=relaxed/simple;
+	bh=bCkBpn/Vh2Kt4bDBmzkaG2zkzavinVKs6L0yROp2qXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eOdt7XL9U5SW+5VzHjbaCIQ6N8+CScBJiiwjnt9YyzbohI4O/QLNdWhxGETNiXR5s1VYSR69oZlD/msFKVjsEM+BDt32rP78s2wTVxnu0dQ1U03PRmBkg5MvJbGaF75f3l/LteiSxty2gtcwW1sHTCixKgP1Yzbk6eSmi5Pc2fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sFfky+jQ; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jrQ6+cwu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=doDv4Uh1O3TMrPbmopdu+qH83dFCRh9LejiCq1n/F64upT+SYvd++Js95ZHIwPSkDRhw070jtXg201CPcGANN/GUsXDei1Jd+YBHDtCA5IWqYT0aUypf1gCNGr3hOT624lwmjwoHclEonD9XMQp8xDeYxQzzy3Llw9Nu1XRo2OrP/BWIF94WuWdNErru3h5gT/VKlA1NF5tR1uPys9/WoOhZqP4ygJSulr8gYqMvr+tj9X3zE2c2g/jIEQ4A8n3YsJEUFZrkI1gpqTteVFB7GbCwBdnl3E8zUrhvYyHMHDfp5pxkfZU+N7HhVHrhkSspewq3iU0IIKRT115oSs/v2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bvk2WSknsLFBnpPpKJal9z4Uv8JTVSedgC7r7i3QLwQ=;
- b=CqT2w9zfsUp6frm8dmuEDZKDeJrDZt3eYn5p7VoykDHEIB63idbJKyX2+FAQxIVzwXkHRsrDsaip7erxnp3yt/zJgCwNvZOAQWW041mAiinUVE58RGa4MkpylOm7yL9SPrf4UEb27HtyM+0ASjgK12x1ZhOEMHOW1W1uNIFaJhyjttoIe32of4U1pV/0xkJHx4iGHjJjZEtj0xVhBSoF6uygPpLA7yG0IirqA44obztAM1DjNEzGGJvKMzSlGIofgukQ6eP/spJ0vslOF+cCNETNI97EGKBwCyIdB+jwzH91s3y+3cdm3CjjWb4XoSIeQyLX1FYcorBPi4Gh3ExjZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bvk2WSknsLFBnpPpKJal9z4Uv8JTVSedgC7r7i3QLwQ=;
- b=jrQ6+cwulmdlHqFZ+NolDeAaHmsFLs1W6ajmo8CscAuPxb9hNLpCZM17MIa71kQ7ErBQrH39q3Tx07PIdOAAFFzE/445+x9po8ugWi4sSvm2OMEOSWNh6g6GiFUQSbLD2SHokqu/DofCln2Bz4nUFUUVr+Wq7oC/Ch5Aau1QaOk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by DUZPR04MB9983.eurprd04.prod.outlook.com (2603:10a6:10:4d9::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.32; Tue, 30 Apr
- 2024 02:26:42 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::8589:eb00:ecf3:b4ca]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::8589:eb00:ecf3:b4ca%6]) with mapi id 15.20.7519.035; Tue, 30 Apr 2024
- 02:26:42 +0000
-Message-ID: <be54f273-7bba-4db0-bc52-5ddbb3982d84@oss.nxp.com>
-Date: Tue, 30 Apr 2024 10:32:58 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] media: amphion: Remove lock in s_ctrl callback
-To: Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
- Ming Qian <ming.qian@nxp.com>, mchehab@kernel.org, hverkuil-cisco@xs4all.nl
-Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20240425065011.105915-1-ming.qian@nxp.com>
- <20240425065011.105915-3-ming.qian@nxp.com>
- <8c39b3c3-8146-4418-8835-6dbfe38a85ec@collabora.com>
-Content-Language: en-US
-From: ming qian <ming.qian@oss.nxp.com>
-In-Reply-To: <8c39b3c3-8146-4418-8835-6dbfe38a85ec@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P192CA0045.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:658::25) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sFfky+jQ"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6f28bb6d747so4475626b3a.3
+        for <imx@lists.linux.dev>; Mon, 29 Apr 2024 22:16:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714454175; x=1715058975; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5ynejgaDnZjcmZfXmFDrndip2YGb6tAWR1lBuHbKqsw=;
+        b=sFfky+jQIcy/RX3xFfj2TwpenvDIGYIXwKN1clgcQGKgfeutBcT3VbO7n1gaqxkw+X
+         J/NMDlbghArTXIvzKhwQyGTD6A5ahphdw29lAkhvBajD7yj1uQrliuvD+rH8FZCkaJWa
+         Nla9HOg36fMI69NRx02x5RaAUXeWJiQ55a51HR/+MvhA2e4BhVs/IKGayvebAeS2/NSK
+         sWdW8wIIc+EPU8mKPheltUaaHRhLRm+/uPbcpT42F1rLFW3XldMz2BvcLgov9kCAwRQL
+         GFt/+z613rvuAkzS02wNls38l0GNR7049RyNlX388gLTKxAGRyWKB7m0jCy0aZNdsUCq
+         sLeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714454175; x=1715058975;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ynejgaDnZjcmZfXmFDrndip2YGb6tAWR1lBuHbKqsw=;
+        b=iWMMpkF+W7ASDXwG+oxj6MgrwrZu5QmUyX96dmaK8ul8kih7zHvj1/IiKJm8AkpHzW
+         jAga6r+1Z8lPita460QvJ98TjzcVdRkAJoM0/w24sB/sbL1UM1OpqPDeNz+aYkh1UC0U
+         IMiIKtCECOAvHesLzxbPcdpaoJ1y9eJ+/AvAF5nyyb3lFcTPmdAD5+Igt1NuRrbmIiJg
+         5UAywqe+CviR1fWtHhQLKnp+qblWQURjymhcJgO2d7pwYZmSfCJxsXhFe+x4wc2LwNyv
+         aoOaAS6mDyD2R+ku2rcgh+DHBN78NREaAsSC+c40xAmhEgIgU9L1cF0CMXzmamWCn4Hc
+         M5vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVX/D9oaR6KP/r7cgIS0ENutKB1pqiilmtDUhHt99shopjxr5joNT+4/atBY5lL4ooXmWOpALk7UexRzTYlT13aZ1fw
+X-Gm-Message-State: AOJu0YxcDKZfz7QnPCIqzFF5gArMdbbLvVU39L+H3cfN0YeDwcUJjcV4
+	gDGe0EjNvnC78omK9cF8EVQgG4eXQdCrN4iCYJgPWJpb1A0K0rwseMbzcmsXMw==
+X-Google-Smtp-Source: AGHT+IGeASrZZdOKkLRwqMeew25lnfW2E16O02bRTclJxxqzXXmg/MPOAdDxiUpkYBPU/+iJ5ms0XA==
+X-Received: by 2002:a05:6a20:12cf:b0:1a9:6cdd:6907 with SMTP id v15-20020a056a2012cf00b001a96cdd6907mr14733071pzg.29.1714454174430;
+        Mon, 29 Apr 2024 22:16:14 -0700 (PDT)
+Received: from thinkpad ([220.158.156.15])
+        by smtp.gmail.com with ESMTPSA id e5-20020a170902cf4500b001e2c1ce5bb0sm21409980plg.83.2024.04.29.22.16.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 22:16:14 -0700 (PDT)
+Date: Tue, 30 Apr 2024 10:46:04 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@Amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH v3 5/5] PCI: kirin: Convert to agnostic GPIO API
+Message-ID: <20240430051604.GA3301@thinkpad>
+References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
+ <20240429102510.2665280-6-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|DUZPR04MB9983:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49640a1f-f84e-44cd-b1b7-08dc68bcf906
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|7416005|366007|376005;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TFJYZDZBUGlsbDJKZVhLN05QdnorRDh3eE1lcTRRc2FXWnJ0UCtRSzR4dmc5?=
- =?utf-8?B?T3dOUWxnVDRUZEdaanZkOFdNRjBjQWhrN0JFaGlNUEMwcXZoTXNJTG8wcmJR?=
- =?utf-8?B?bVhEVVFHL2tmSWdBT1lLMXJ4d3VISjRGd0VoMjNEMkZsYzkrNjNNRzJXUWE3?=
- =?utf-8?B?Z1lBVjQ4Tlo3Q1ppdFpvQVlabU50dkJtN0hTZnB6eW1FQTM5YzBmbk50VVZD?=
- =?utf-8?B?MXlQei9MMG1EaWRwS1ZEajRKWWxXV1hXVTlLREhFNzh0TDZtYTVHaHJqZGtN?=
- =?utf-8?B?bFNiSlZHNEVuOFBVeGwyRjdQem5xM28wQnlOZC9MSzFaZTVhRXRJVkdWTlB6?=
- =?utf-8?B?c0FUc0lpRE02YmNRdUI1NjExb2cvWVd0V0VXQVVlbEZaNXFjcmVkbGVWSTBy?=
- =?utf-8?B?cU8vaTBmWUtTMFNqZURlbXFuL2NPVG41b0k2WjFsYzRDcXpNQUhMS3V1ZVpr?=
- =?utf-8?B?RzVpb2lUeWFVNDhlbU1rOUJ1a3AvZUxNL1B1TFF1bldIb2krekFKcDNLUVhD?=
- =?utf-8?B?N2lya1ErY0dlV2w2TXBiS0pVZWc0cFJkcEFibjJ5V1E4aUpYZjc4eXlpeEpk?=
- =?utf-8?B?aVlLUWxlOVQzdnJFK3lDaElEMy81NWtaNEZxRFlKMHc3eU5iZ0xheUMyclBT?=
- =?utf-8?B?R1diSmtnakFValFMMXRIZzNhWVloeHFzTzZhZm5UcEdITUYyUUplRVo1NHVQ?=
- =?utf-8?B?a0RNVEQ2cm9vV2RWWEtSekdJcE9za1JXN1k5VjlBYzd5MFI0cHFLUDRSSHl1?=
- =?utf-8?B?SXFRZW1WZmJTcC9QRE95bko1YnFXeVppLzBvbC85NklEcFpxankvYXFsZCs5?=
- =?utf-8?B?VFJpTFhrUjR5ZVVPRmU1aEtEcnFiUElwK3dPeWZQTDZFdDhSc2xUT1VPK05U?=
- =?utf-8?B?azFHalhYcUJKMXdiWEQrTmxrM2JOYTY1bTVNNG9RUHJXblJRQndTNHUvRTl3?=
- =?utf-8?B?cUdHSHY3TUhYZENpVjZZeEVWUU1VVWxFWmdpZ3c0bHFPMWhEeUdvVEh3NTd1?=
- =?utf-8?B?WlpFbG5DNWlDYTRUdG5QalVpaGwvR2RwcDN4MENFdDc4YU1qN2pocVFIdERS?=
- =?utf-8?B?azRBUGZxZnNiUEhjN2prUWJ4Wm9tU0RiOUcxa1g4T2V5UTNYTjNaUHpPU2t1?=
- =?utf-8?B?dWFSSGc5c2VtS1c0UGxWRzBhZ3lLL1JmV3JPNnh6Zy9PUVFhZUdVelNZRWNZ?=
- =?utf-8?B?cFp3dlk1Y1pleWVnNU1XaGJEQVU5OGgvdWJYRW5iSm9oRmt4RVU4OFMyUjhj?=
- =?utf-8?B?L3RKcDhvTXB4ZVdyd05LMlZnU2ZtQk1nTmJ0aDRVNG12SnBZMFA4KzVEYjJo?=
- =?utf-8?B?VUlMdVJpZ1FwUzNaQytJRUMyUU8za24vM09sbklBREtxVFpkNm44UVBJelBF?=
- =?utf-8?B?Q084U2FIankyU08zNE5zZ3dacSt5NEtMUFVrb0lPd2RPNGlNcEVxWmJHeEQy?=
- =?utf-8?B?NThSTENpMzlzNzgzaVFHZXIyalpTendaMG8rdU00SmxlcjlSLzU0Qzdudmd5?=
- =?utf-8?B?TFcvVDF6bGdzSC9EQ0hZQkJvcDVHc0N3SHdPODd6OXRPckl2RGxNQzFyRFlo?=
- =?utf-8?B?Z0hSZFo3OVg0Q2IxaTJFc3ZBajRnNXlLRFRkdC9NK0NhR1poRlBmUDgwK21M?=
- =?utf-8?B?SVVkWEl2eTRqM01UNi9JeTNZemg3ZDN5MFFBeFA1eDlOdytadENHVlBGbFYx?=
- =?utf-8?B?d0VOdDRIc3JqZTlqRUJvd0ZCazgyVm1XczNXYUtHSEczL1VKcEdwdVlnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(366007)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUhlaXJYaXlxUk5EUW1heUZOT0FQRjFnYmloZXdnNjZNNWRZUWl2czBBQ0J0?=
- =?utf-8?B?MTJ3aUpWb1haNzZ1NlZaajZscmlNSHl4N2pZWllaQzRYeHN4bVhmcTN2eVFR?=
- =?utf-8?B?LzNKMFRlOG5lc0dQaEV6TkVtSVF1aDE1TWM5QndGeWQ1S3pvekdwbHRLQ0sv?=
- =?utf-8?B?dTVqOXZ3S1JTbTRwNE9odUZVeUxoMnVacjhIMzFKWW5WUzFTM3VrRG9jWWtY?=
- =?utf-8?B?QndUanNId0E0M0NuWlFsNE14VVVBVVNlMzdwbXRTWFRZUkZtTmVsR3E3VG54?=
- =?utf-8?B?ZUoxWm1LV1NoZk0yZEVuQWg5akdpWE9ERkxzOG9ialhzZ0pLVmIzTHpiS1I1?=
- =?utf-8?B?QkxuY05YVG9RQlAzOUZPZGFyQlQ0NllKck9pTTd0WXBSOVViamhuU0gvTm1J?=
- =?utf-8?B?Mm9kQ1QySGlCVStZbG1RLzAyZU5LNUR5SXhrb0FGT1JaaDlPMFI0QXZtMjNr?=
- =?utf-8?B?RkdSaHF6NW5HWFl1Umo2OVRNR3VkY1BIL28vSmtZdXUrNkNOdFlOMVNBQ1ZX?=
- =?utf-8?B?Nk1IODZSSzFLeldHWmpITWFac1FIUElkUzNiL0VvZksyOEs1ZW1lKzJNQXNU?=
- =?utf-8?B?VzBHV1hZYXdBUWRjV0xISituZll4TVlRVVp6U0Y4K0pxNytRVFNNaWQxbnA4?=
- =?utf-8?B?OWxWR1FaUTVKSG9WbWZIU05rRFNqMGdNTEpKYUFlbDFLUk16cEt2VlUvcFV3?=
- =?utf-8?B?ZkhlaEtISEJSbTVGSXhrV1djWXBmb0JvVnJqQTZzTjZEM3JzWjlwNVFKZk11?=
- =?utf-8?B?eCtuQmhIT0dwcmJpRjBDN2haT241NUdacWhGMjFDWndsaWF2ci8xYnY5dVJJ?=
- =?utf-8?B?NitDazdsQlMrQkFYOC9xbXNCVG9YV2RjY01pcE93N0syQStuWW5NK01CbXJB?=
- =?utf-8?B?aU56RkwwRms5Z1kvWGVnTllnN25RbHZETVNSTDUrMW1lS0licXFrRWxhOGxi?=
- =?utf-8?B?ZkI2RUtjdkRQTnBoRU9uZGFRVkNJM2gyQ0hkRTVhdlVNTWVYam9wR0xGbVho?=
- =?utf-8?B?ZDc0RjZJZ2x2eVNxdEMrQ3Nld2J6aHFUUDJZSDQ0NXFJYm5FV3hNNDArUFpz?=
- =?utf-8?B?Mkp0c0hWR1NSV0wzYlRoaVNBRCtKblZDcFJmRzdlZGlIVy9XTWw3aUlLMDJt?=
- =?utf-8?B?dG8wdXpPeXVaOFdGTWVGWENMeGM0cTgzMHZqaThVdlJwajIwUlV3MnZ0TXQz?=
- =?utf-8?B?NWF3elJxSUU2RnV1c0Fubm9JWmlOT0lsQnFjNVRkUFNTSW5EVjhmd2hHdXN1?=
- =?utf-8?B?Y3laVFZDU3FnSkNQeG5uTGtEQ29lSnBsQk5GcnVTQUlUOWx4MkRUQ1lhbjBG?=
- =?utf-8?B?eGFaV2xiZmpmbEJQTURKVEdVd2tuL3hJbFgxT2pBbTRhcUNub3QvYzZrRloz?=
- =?utf-8?B?ems2TmZUOVpiYXp4RHh1dG40UHQ2cGpESHh0RHN2NkpYWDllNTEraVNzYTVD?=
- =?utf-8?B?QXgxZllXdlBaY0Ntam5jcGhlYkxGTDhqV21oN1hQNmU2bkZzSkNEaURZM0Y5?=
- =?utf-8?B?RXdXb0h3MGZCbnZLMnlzczkrUXFFUjVoTm5JeFhuUlljaUxCYUpHRjVNY3o2?=
- =?utf-8?B?Qkp3VDd2WkYrZm9yL3VGYUhjZHlabXlsUFQ3TTYweENXY1pBUEhUVGE0UVlx?=
- =?utf-8?B?d2dxUHh0WjdCSU9MeFUyekIrRjRNTG40SnBpVXhUalc2NjEwNDN2aDFPR1Bl?=
- =?utf-8?B?dk81cFBrMzlOeXlBSDBhUjRRblBNZzl4QytUc1ZtM3FMNktzQVlCUHdEQk1x?=
- =?utf-8?B?MkVPMjVxdS9GUXZnWGF1NThlbFdHUk1odms2SCt6RjdJTjlCTUcwcDlTeGRJ?=
- =?utf-8?B?Y096OTVNSXpmakZBQ01od0ZnSGZ6aUtITWNRbE14QW9YOXZodytaSllPUExU?=
- =?utf-8?B?OEFkeEMvWVorZEZuVXVXdGNrTC9ydWo4c2NhcndvUVBiWExqZVJXd2tLaXJr?=
- =?utf-8?B?M1VqUFVmNkF4ZGlEQ21PL1VPNjk3Y1RHL0YwcVRmcWx0WGF1UU93c3grc0ZW?=
- =?utf-8?B?WXlIV24vVmp1V0dlWk1BZS9Hdzh1dEdncXZOVGdIRllXUXdXbEhYRFh2VkpN?=
- =?utf-8?B?cHNpak8vOFRIaUU5emJDYzE0bXdrUkxNMHc2UlNVdzlkSXQ4bU51VFdzMlNX?=
- =?utf-8?Q?hN7sPB8DH+LBxbSrVaTbePXrL?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49640a1f-f84e-44cd-b1b7-08dc68bcf906
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 02:26:42.2064
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7KrQMr7DWq1hu4zolrpqTC8k95F0DaxtzV0p31CK3F3rbPz9I82VNfLTaFYZprTdO6aLZ/nks6unQOTzHdU0ZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9983
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240429102510.2665280-6-andriy.shevchenko@linux.intel.com>
 
-Hi Andrzej,
-
-> Hi Ming Qian,
+On Mon, Apr 29, 2024 at 01:23:22PM +0300, Andy Shevchenko wrote:
+> The of_gpio.h is going to be removed. In preparation of that convert
+> the driver to the agnostic API.
 > 
-> W dniu 25.04.2024 o 08:50, Ming Qian pisze:
->> There is no need to add lock in s_ctrl callback, it has been
->> synchronized by the ctrl_handler's lock, otherwise it may led to
->> deadlock if driver call v4l2_ctrl_s_ctrl().
->>
->> Signed-off-by: Ming Qian <ming.qian@nxp.com>
->> ---
->>   drivers/media/platform/amphion/vdec.c | 2 --
->>   drivers/media/platform/amphion/venc.c | 2 --
->>   2 files changed, 4 deletions(-)
->>
->> diff --git a/drivers/media/platform/amphion/vdec.c 
->> b/drivers/media/platform/amphion/vdec.c
->> index a57f9f4f3b87..6a38a0fa0e2d 100644
->> --- a/drivers/media/platform/amphion/vdec.c
->> +++ b/drivers/media/platform/amphion/vdec.c
->> @@ -195,7 +195,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
->>       struct vdec_t *vdec = inst->priv;
->>       int ret = 0;
->> -    vpu_inst_lock(inst);
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+>  drivers/pci/controller/dwc/pcie-kirin.c | 105 ++++++++----------------
+>  1 file changed, 35 insertions(+), 70 deletions(-)
 > 
-> I assume that PATCH v2 2/3 might cause the said deadlock to happen?
-> If so, maybe it would make more sense to make the current patch preceed
->   PATCH v2 2/3? Otherwise the kernel at PATCH v2 2/3 introduces a potential
-> deadlock.
-> 
-> Regards,
-> 
-> Andrzej
+> diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+> index d5523f302102..d1f54f188e71 100644
+> --- a/drivers/pci/controller/dwc/pcie-kirin.c
+> +++ b/drivers/pci/controller/dwc/pcie-kirin.c
+> @@ -12,12 +12,10 @@
+>  #include <linux/compiler.h>
+>  #include <linux/delay.h>
+>  #include <linux/err.h>
+> -#include <linux/gpio.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/of.h>
+> -#include <linux/of_gpio.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/phy/phy.h>
+>  #include <linux/pci.h>
+> @@ -78,16 +76,16 @@ struct kirin_pcie {
+>  	void		*phy_priv;	/* only for PCIE_KIRIN_INTERNAL_PHY */
+>  
+>  	/* DWC PERST# */
+> -	int		gpio_id_dwc_perst;
+> +	struct gpio_desc *id_dwc_perst_gpio;
+>  
+>  	/* Per-slot PERST# */
+>  	int		num_slots;
+> -	int		gpio_id_reset[MAX_PCI_SLOTS];
+> +	struct gpio_desc *id_reset_gpio[MAX_PCI_SLOTS];
+>  	const char	*reset_names[MAX_PCI_SLOTS];
+>  
+>  	/* Per-slot clkreq */
+>  	int		n_gpio_clkreq;
+> -	int		gpio_id_clkreq[MAX_PCI_SLOTS];
+> +	struct gpio_desc *id_clkreq_gpio[MAX_PCI_SLOTS];
+>  	const char	*clkreq_names[MAX_PCI_SLOTS];
+>  };
+>  
+> @@ -381,15 +379,20 @@ static int kirin_pcie_get_gpio_enable(struct kirin_pcie *pcie,
+>  	pcie->n_gpio_clkreq = ret;
+>  
+>  	for (i = 0; i < pcie->n_gpio_clkreq; i++) {
+> -		pcie->gpio_id_clkreq[i] = of_get_named_gpio(dev->of_node,
+> -						    "hisilicon,clken-gpios", i);
+> -		if (pcie->gpio_id_clkreq[i] < 0)
+> -			return pcie->gpio_id_clkreq[i];
+> +		pcie->id_clkreq_gpio[i] = devm_gpiod_get_index(dev,
+> +							"hisilicon,clken", i,
+> +							GPIOD_OUT_LOW);
+> +		if (IS_ERR(pcie->id_clkreq_gpio[i]))
+> +			return dev_err_probe(dev, PTR_ERR(pcie->id_clkreq_gpio[i]),
+> +					     "unable to get a valid clken gpio\n");
+>  
+>  		pcie->clkreq_names[i] = devm_kasprintf(dev, GFP_KERNEL,
+>  						       "pcie_clkreq_%d", i);
+>  		if (!pcie->clkreq_names[i])
+>  			return -ENOMEM;
+> +
+> +		gpiod_set_consumer_name(pcie->id_clkreq_gpio[i],
+> +					pcie->clkreq_names[i]);
+>  	}
+>  
+>  	return 0;
+> @@ -407,10 +410,16 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
+>  		for_each_available_child_of_node(parent, child) {
+>  			i = pcie->num_slots;
+>  
+> -			pcie->gpio_id_reset[i] = of_get_named_gpio(child,
+> -							"reset-gpios", 0);
+> -			if (pcie->gpio_id_reset[i] < 0)
+> -				continue;
+> +			pcie->id_reset_gpio[i] = devm_fwnode_gpiod_get_index(dev,
+> +							 of_fwnode_handle(child),
+> +							 "reset", 0, GPIOD_OUT_LOW,
+> +							 NULL);
+> +			if (IS_ERR(pcie->id_reset_gpio[i])) {
+> +				if (PTR_ERR(pcie->id_reset_gpio[i]) == -ENOENT)
+> +					continue;
+> +				return dev_err_probe(dev, PTR_ERR(pcie->id_reset_gpio[i]),
+> +						     "unable to get a valid reset gpio\n");
+> +			}
+>  
+>  			pcie->num_slots++;
+>  			if (pcie->num_slots > MAX_PCI_SLOTS) {
+> @@ -434,6 +443,9 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
+>  				ret = -ENOMEM;
+>  				goto put_node;
+>  			}
+> +
+> +			gpiod_set_consumer_name(pcie->id_reset_gpio[i],
+> +						pcie->reset_names[i]);
+>  		}
+>  	}
+>  
+> @@ -463,14 +475,11 @@ static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
+>  		return PTR_ERR(kirin_pcie->apb);
+>  
+>  	/* pcie internal PERST# gpio */
+> -	kirin_pcie->gpio_id_dwc_perst = of_get_named_gpio(dev->of_node,
+> -							  "reset-gpios", 0);
+> -	if (kirin_pcie->gpio_id_dwc_perst == -EPROBE_DEFER) {
+> -		return -EPROBE_DEFER;
+> -	} else if (!gpio_is_valid(kirin_pcie->gpio_id_dwc_perst)) {
+> -		dev_err(dev, "unable to get a valid gpio pin\n");
+> -		return -ENODEV;
+> -	}
+> +	kirin_pcie->id_dwc_perst_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+> +	if (IS_ERR(kirin_pcie->id_dwc_perst_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(kirin_pcie->id_dwc_perst_gpio),
+> +				     "unable to get a valid gpio pin\n");
+> +	gpiod_set_consumer_name(kirin_pcie->id_dwc_perst_gpio, "pcie_perst_bridge");
+>  
+>  	ret = kirin_pcie_get_gpio_enable(kirin_pcie, pdev);
+>  	if (ret)
+> @@ -553,7 +562,7 @@ static int kirin_pcie_add_bus(struct pci_bus *bus)
+>  
+>  	/* Send PERST# to each slot */
+>  	for (i = 0; i < kirin_pcie->num_slots; i++) {
+> -		ret = gpio_direction_output(kirin_pcie->gpio_id_reset[i], 1);
+> +		ret = gpiod_direction_output_raw(kirin_pcie->id_reset_gpio[i], 1);
+>  		if (ret) {
+>  			dev_err(pci->dev, "PERST# %s error: %d\n",
+>  				kirin_pcie->reset_names[i], ret);
+> @@ -623,44 +632,6 @@ static int kirin_pcie_host_init(struct dw_pcie_rp *pp)
+>  	return 0;
+>  }
+>  
+> -static int kirin_pcie_gpio_request(struct kirin_pcie *kirin_pcie,
+> -				   struct device *dev)
+> -{
+> -	int ret, i;
+> -
+> -	for (i = 0; i < kirin_pcie->num_slots; i++) {
+> -		if (!gpio_is_valid(kirin_pcie->gpio_id_reset[i])) {
+> -			dev_err(dev, "unable to get a valid %s gpio\n",
+> -				kirin_pcie->reset_names[i]);
+> -			return -ENODEV;
+> -		}
+> -
+> -		ret = devm_gpio_request(dev, kirin_pcie->gpio_id_reset[i],
+> -					kirin_pcie->reset_names[i]);
+> -		if (ret)
+> -			return ret;
+> -	}
+> -
+> -	for (i = 0; i < kirin_pcie->n_gpio_clkreq; i++) {
+> -		if (!gpio_is_valid(kirin_pcie->gpio_id_clkreq[i])) {
+> -			dev_err(dev, "unable to get a valid %s gpio\n",
+> -				kirin_pcie->clkreq_names[i]);
+> -			return -ENODEV;
+> -		}
+> -
+> -		ret = devm_gpio_request(dev, kirin_pcie->gpio_id_clkreq[i],
+> -					kirin_pcie->clkreq_names[i]);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret = gpio_direction_output(kirin_pcie->gpio_id_clkreq[i], 0);
+> -		if (ret)
+> -			return ret;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static const struct dw_pcie_ops kirin_dw_pcie_ops = {
+>  	.read_dbi = kirin_pcie_read_dbi,
+>  	.write_dbi = kirin_pcie_write_dbi,
+> @@ -680,7 +651,7 @@ static int kirin_pcie_power_off(struct kirin_pcie *kirin_pcie)
+>  		return hi3660_pcie_phy_power_off(kirin_pcie);
+>  
+>  	for (i = 0; i < kirin_pcie->n_gpio_clkreq; i++)
+> -		gpio_direction_output(kirin_pcie->gpio_id_clkreq[i], 1);
+> +		gpiod_direction_output_raw(kirin_pcie->id_clkreq_gpio[i], 1);
+>  
+>  	phy_power_off(kirin_pcie->phy);
+>  	phy_exit(kirin_pcie->phy);
+> @@ -707,10 +678,6 @@ static int kirin_pcie_power_on(struct platform_device *pdev,
+>  		if (IS_ERR(kirin_pcie->phy))
+>  			return PTR_ERR(kirin_pcie->phy);
+>  
+> -		ret = kirin_pcie_gpio_request(kirin_pcie, dev);
+> -		if (ret)
+> -			return ret;
+> -
+>  		ret = phy_init(kirin_pcie->phy);
+>  		if (ret)
+>  			goto err;
+> @@ -723,11 +690,9 @@ static int kirin_pcie_power_on(struct platform_device *pdev,
+>  	/* perst assert Endpoint */
+>  	usleep_range(REF_2_PERST_MIN, REF_2_PERST_MAX);
+>  
+> -	if (!gpio_request(kirin_pcie->gpio_id_dwc_perst, "pcie_perst_bridge")) {
+> -		ret = gpio_direction_output(kirin_pcie->gpio_id_dwc_perst, 1);
+> -		if (ret)
+> -			goto err;
+> -	}
+> +	ret = gpiod_direction_output_raw(kirin_pcie->id_dwc_perst_gpio, 1);
+> +	if (ret)
+> +		goto err;
+>  
+>  	usleep_range(PERST_2_ACCESS_MIN, PERST_2_ACCESS_MAX);
+>  
+> -- 
+> 2.43.0.rc1.1336.g36b5255a03ac
 > 
 
-I actually discovered this problem when I was preparing the v2 2/3 patch.
-
-But in the v2 2/3 patch, it tried to add a read-only ctrl, then I just
-unset the s_ctrl callback for the new added ctrl, the potential deadlock
-is caused by call the s_ctrl back in a locked environment, so after unset
-the s_ctrl callback, the 2/3 patch won't trigger the deadlock even if
-this patch is missing.
-
-In order to avoid encountering similar problems in the future, that
-driver may set or get some ctrl, I added this patch.
-
-Best regards,
-Ming
-
->>       switch (ctrl->id) {
->>       case V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE:
->>           vdec->params.display_delay_enable = ctrl->val;
->> @@ -207,7 +206,6 @@ static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
->>           ret = -EINVAL;
->>           break;
->>       }
->> -    vpu_inst_unlock(inst);
->>       return ret;
->>   }
->> diff --git a/drivers/media/platform/amphion/venc.c 
->> b/drivers/media/platform/amphion/venc.c
->> index cdfaba9d107b..351b4edc8742 100644
->> --- a/drivers/media/platform/amphion/venc.c
->> +++ b/drivers/media/platform/amphion/venc.c
->> @@ -518,7 +518,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
->>       struct venc_t *venc = inst->priv;
->>       int ret = 0;
->> -    vpu_inst_lock(inst);
->>       switch (ctrl->id) {
->>       case V4L2_CID_MPEG_VIDEO_H264_PROFILE:
->>           venc->params.profile = ctrl->val;
->> @@ -579,7 +578,6 @@ static int venc_op_s_ctrl(struct v4l2_ctrl *ctrl)
->>           ret = -EINVAL;
->>           break;
->>       }
->> -    vpu_inst_unlock(inst);
->>       return ret;
->>   }
-> 
+-- 
+மணிவண்ணன் சதாசிவம்
