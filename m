@@ -1,131 +1,192 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8B1757A
-	for <imx@lists.linux.dev>; Tue, 30 Apr 2024 05:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E54714AB7
+	for <imx@lists.linux.dev>; Tue, 30 Apr 2024 07:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714454226; cv=none; b=Gwy0oqL5rBX3oJt8uwpqToRyQDvk+SJP1Ul5eSK2dsBS65yjO8oFxRiqrM6JhuEUpVXOfuAyEJGKTX6jVQ/kkwcni50kCwf6absrzWZ+KUeTe5AEdifp7wLjitQDCg11ysyvdZERHC5elOuqGmVWMfw5+U5YMpjfRPfpL6Pqpj4=
+	t=1714463769; cv=none; b=jjN2fseN9AVIrkrAegGw5SxHXMzFvtaA9faaNc49KfcsVvcDBW/mJidesyDtQy06GwoESVDXwnGeChcmkEIB7ybk1NU2vEdjVzo6Gbmpq0OrZtkYWbJvlYQ35Hjcyke+TvFUfkOBq6P+SbgW23QapjjLy2JgGwPFbsR7jGqHVvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714454226; c=relaxed/simple;
-	bh=X1vBe8uy2scxUJixEbvfFTMb+bweVxUZtX/Ylg3mEfs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AOHjQa8JMghu4SVKd3sG1gscPy+UWMSv8/55nKQzDvZ/6kVkN3tVFSKdciGAl21U/hMkRUY+sBmE7KkjIAE2J1q8XBM8yeyFkzReUhNAIhjYs+1wzpoRTgZ74GiweflZcvmQt9LRDGRc7ZB0zveF/LcWFWhzsUhqBuqASqyu3BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZqnB5DBk; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714463769; c=relaxed/simple;
+	bh=K0J8xHt/skiy/7vOnAPJgizv8vUGFgcOOConDclFOfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mo/jIAeRWvgs3+u+EafK2H+heBy0eeLGe/8HlpW+IWrSNkGJKNAVZhv6IbqZXIREaeVVA268euhA3d1ZMgv9sYuxu0exJWI9zY/dtoRLJUhlU/Ig8TecxprEhLdDHp+4JSw87+k7fXy1sVJYGFm2TWS5/JVKECSN9v6ta+YblSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VB2HrYRI; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZqnB5DBk"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6f28bb6d747so4476010b3a.3
-        for <imx@lists.linux.dev>; Mon, 29 Apr 2024 22:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714454223; x=1715059023; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=V0avMUsDc59rYN7coX7sm9Yp5eSnR9Q04mgQzckQ9lw=;
-        b=ZqnB5DBkGfH/xj9Pi1aWEji/kyKojgJDjMYdE41KKNPcG0paEj9kUwCId4kRBCT1n+
-         cLLwGEkE5OXuosGKpOFqWnARUV0oPn2YSiRrEdsgPR8J8kMX9m+6OWSAvnkHd0962fB5
-         7HlvdF2Voy8rt5AF/JifM7aeL9vnYxmwsHoQm+hyTiZSlX6gGjYrP+1/bbAH9ZfpGwtV
-         6VBf2wCOTusQu322uxOfSy6isL+3J62I6BiRx7ZmyqB1hTmsDbMqh344L9Ze+dlO7OE+
-         cC8rba4L4s/3uD84hdswN1P1fPgA7BOZjGIGUNRo9IBJkL6OiyX8XL7MM3XCbDzLWaMc
-         T7IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714454223; x=1715059023;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0avMUsDc59rYN7coX7sm9Yp5eSnR9Q04mgQzckQ9lw=;
-        b=HreM9KtU0P+LjhgTBs6bf0D7/UPBpboi+XBr8k1ykyCcuMJf5eFfGbSOW2x8wCorK2
-         aqJUzr6+4c7uDTyh0OSgVz8xS1DuJWRL98etJ/G8b/laCG8heG8U35YrTHb5PRWT//FD
-         0tdzH2b0eFsKHfvd0GjHd/xStDpkPcJTq9Fi+sMvLVuJ2VBwEzaAiLIIgp4gxoUDxy4Q
-         oqAwyd095cSIyRolSgvN0eBs7rZ36Jq4h8DyWZg2S0oQ4bUyOvx9XihEf7QPe2mMZOxz
-         C64JuWIbn6JPoEeA6YwttpskVianqcMeLsxri0U/G5z9hSMM5DI2nDEpoHlY2uSqkBAx
-         R7lg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9y9BVH5Y0ethongQxesj65qHfLZsbFwsAZDvh4IImrcIcjujmvv5X/OyigWh4hMYnXiKvk6dmYvFzli3GNK1UZgPc
-X-Gm-Message-State: AOJu0YzvWo0gJd3D9N5bW7Aes0asAIUi9QmXxJEabiOVVP+9hsY1zUhF
-	UnLxz7rwIljWfZ/SHg7lmoMfIkWPppI7uololDIwwGtFWipiFlPvu42u2aKF0A==
-X-Google-Smtp-Source: AGHT+IFWRZGQxckWXPNLxXAG7MGt/iJLdvfO4+V6xpas6sXD4xSC0z15Fh9sptvi1twg0sW4mfipRw==
-X-Received: by 2002:a05:6a20:72a0:b0:1aa:59ff:5d31 with SMTP id o32-20020a056a2072a000b001aa59ff5d31mr14465799pzk.0.1714454223164;
-        Mon, 29 Apr 2024 22:17:03 -0700 (PDT)
-Received: from thinkpad ([220.158.156.15])
-        by smtp.gmail.com with ESMTPSA id su11-20020a17090b534b00b002b27eb61901sm602961pjb.21.2024.04.29.22.16.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 22:17:02 -0700 (PDT)
-Date: Tue, 30 Apr 2024 10:46:53 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@Amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v3 1/5] PCI: dra7xx: Add missing header inclusion
-Message-ID: <20240430051653.GB3301@thinkpad>
-References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
- <20240429102510.2665280-2-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VB2HrYRI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1714463764;
+	bh=K0J8xHt/skiy/7vOnAPJgizv8vUGFgcOOConDclFOfE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VB2HrYRITiQ/6AQ/RLQM/j4mHuvkHmFBIOQDhOjsNrusDRyKCBe9osDTZMguCFYnw
+	 LoYuHgHAkj7gAOFmIze18vQ++Q2afegipv9S/VDN3Qz/nkTFaF45MNfvdwjmtVBXFh
+	 5JHty8IepUIKbzDRuoY4A/cfXb44ZKzgJ8AvIEvKn7eZngveZc/RjxCobTnRJOLFRL
+	 RhlNrp/B9d58x+LhQ5BnDsdIlDI2J6un0fzQ4HJantb/pSisFiZWWKRWznCKoN1zLv
+	 4wDhF5Zvedb98D+FN+BNpx2mZ8U7TXqft75csebeuSV0B8xaVcCcFUdMK6WTLZF32+
+	 mZl/ya4c9rM4Q==
+Received: from [100.95.196.182] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: andrzej.p)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 890FD3781107;
+	Tue, 30 Apr 2024 07:56:03 +0000 (UTC)
+Message-ID: <a839b292-6776-4ecb-8d8a-a25e58816787@collabora.com>
+Date: Tue, 30 Apr 2024 09:56:02 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] media: v4l2-ctrls: Add average qp control
+To: ming qian <ming.qian@oss.nxp.com>, Ming Qian <ming.qian@nxp.com>,
+ mchehab@kernel.org, hverkuil-cisco@xs4all.nl
+Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
+ imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20240425065011.105915-1-ming.qian@nxp.com>
+ <c9fdf07d-f434-430e-bb41-8bc8f6bf1bb8@collabora.com>
+ <383b6e30-1266-4db1-9c5d-10db7ab17957@oss.nxp.com>
+Content-Language: en-US
+From: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+In-Reply-To: <383b6e30-1266-4db1-9c5d-10db7ab17957@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240429102510.2665280-2-andriy.shevchenko@linux.intel.com>
 
-On Mon, Apr 29, 2024 at 01:23:18PM +0300, Andy Shevchenko wrote:
-> Driver is using chained_irq_*() APIs, add the respective inclusion.
+Hi Ming,
+
+W dniu 30.04.2024 o 04:20, ming qian pisze:
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-- Mani
-
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c | 1 +
->  1 file changed, 1 insertion(+)
+> Hi Andrzej,
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> index d2d17d37d3e0..b67071a63f8a 100644
-> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> @@ -13,6 +13,7 @@
->  #include <linux/err.h>
->  #include <linux/interrupt.h>
->  #include <linux/irq.h>
-> +#include <linux/irqchip/chained_irq.h>
->  #include <linux/irqdomain.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> -- 
-> 2.43.0.rc1.1336.g36b5255a03ac
+>> Hi Ming Qian,
+>>
+>> W dniu 25.04.2024 o 08:50, Ming Qian pisze:
+>>> Add a control V4L2_CID_MPEG_VIDEO_AVERAGE_QP to report the average qp
+>>> value of current encoded frame. the value applies to the last dequeued
+>>> capture buffer.
+>>>
+>>> Signed-off-by: Ming Qian <ming.qian@nxp.com>
+>>> ---
+>>> v2
+>>>   - improve document description according Hans's comments
+>>>   - drop volatile flag
+>>>
+>>>   Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst | 5 +++++
+>>>   drivers/media/v4l2-core/v4l2-ctrls-defs.c                 | 5 +++++
+>>>   include/uapi/linux/v4l2-controls.h                        | 2 ++
+>>>   3 files changed, 12 insertions(+)
+>>>
+>>> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst 
+>>> b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+>>> index 2a165ae063fb..7d82ab14b8ba 100644
+>>> --- a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+>>> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+>>> @@ -1653,6 +1653,11 @@ enum v4l2_mpeg_video_h264_hierarchical_coding_type -
+>>>       Quantization parameter for a P frame for FWHT. Valid range: from 1
+>>>       to 31.
+>>> +``V4L2_CID_MPEG_VIDEO_AVERAGE_QP (integer)``
+>>> +    This read-only control returns the average QP value of the currently
+>>> +    encoded frame. The value applies to the last dequeued capture buffer
+>>> +    (VIDIOC_DQBUF). Applicable to encoders.
+>>> +
+>>
+>> What is the intended range of the values? And why? Is your intention to make it
+>> a hardware-agnostic control or a hardware-specific control?
+>>
+>> Regrds,
+>>
+>> Andrzej
+>>
 > 
+> The value range depends on the format,
+> For H264, it's [V4L2_CID_MPEG_VIDEO_H264_MIN_QP, V4L2_CID_MPEG_VIDEO_H264_MIN_QP],
+> usually this is [0, 51].
+> For HEVC, it's [V4L2_CID_MPEG_VIDEO_HEVC_MIN_QP, V4L2_CID_MPEG_VIDEO_HEVC_MAX_QP],
+> usually it's from 0 to 51 for 8 bit and from 0 to 63 for 10 bit.
+> For H263 and MPEG4, it may be from 1 to 31.
+> For VPX, it may be from 1 to 128.
+> 
+> I think the driver that supports this ctrl can set an appropriate value
+> range based on the format it supports.
+> 
+> Users also need to read the value of this ctrl according to the format
+> they set.
 
--- 
-மணிவண்ணன் சதாசிவம்
+What happens if the user does not set the format or until they set it?
+
+This looks like a contextual control, where the context is a cross
+product between setting or not setting the format and which particular
+format is actually set.
+
+I don't want to voice strong opinions about whether this should or
+should not be accepted, but this kind of behavior should definitely
+be documented so that driver writers know how to implement this control.
+Right now reading the documentation in the *.rst file as a driver writer
+I would be puzzled. So, from a driver writer's perspective I'd expect
+these additions to the doc:
+
+- the range of returned values
+- the expected behavior when format has not been set
+- the expected behavior when no frames have been processed yet (so there's no QP
+to be read back from the hardware)
+
+Regards,
+
+Andrzej
+
+> 
+> Best regards,
+> Ming
+> 
+>>>   .. raw:: latex
+>>>       \normalsize
+>>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c 
+>>> b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>>> index 8696eb1cdd61..1ea52011247a 100644
+>>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>>> @@ -970,6 +970,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+>>>       case V4L2_CID_MPEG_VIDEO_LTR_COUNT:            return "LTR Count";
+>>>       case V4L2_CID_MPEG_VIDEO_FRAME_LTR_INDEX:        return "Frame LTR Index";
+>>>       case V4L2_CID_MPEG_VIDEO_USE_LTR_FRAMES:        return "Use LTR Frames";
+>>> +    case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:            return "Average QP Value";
+>>>       case V4L2_CID_FWHT_I_FRAME_QP:                return "FWHT I-Frame QP 
+>>> Value";
+>>>       case V4L2_CID_FWHT_P_FRAME_QP:                return "FWHT P-Frame QP 
+>>> Value";
+>>> @@ -1507,6 +1508,10 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum 
+>>> v4l2_ctrl_type *type,
+>>>           *max = 0xffffffffffffLL;
+>>>           *step = 1;
+>>>           break;
+>>> +    case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:
+>>> +        *type = V4L2_CTRL_TYPE_INTEGER;
+>>> +        *flags |= V4L2_CTRL_FLAG_READ_ONLY;
+>>> +        break;
+>>>       case V4L2_CID_PIXEL_RATE:
+>>>           *type = V4L2_CTRL_TYPE_INTEGER64;
+>>>           *flags |= V4L2_CTRL_FLAG_READ_ONLY;
+>>> diff --git a/include/uapi/linux/v4l2-controls.h 
+>>> b/include/uapi/linux/v4l2-controls.h
+>>> index 99c3f5e99da7..974fd254e573 100644
+>>> --- a/include/uapi/linux/v4l2-controls.h
+>>> +++ b/include/uapi/linux/v4l2-controls.h
+>>> @@ -898,6 +898,8 @@ enum v4l2_mpeg_video_av1_level {
+>>>       V4L2_MPEG_VIDEO_AV1_LEVEL_7_3 = 23
+>>>   };
+>>> +#define V4L2_CID_MPEG_VIDEO_AVERAGE_QP  (V4L2_CID_CODEC_BASE + 657)
+>>> +
+>>>   /*  MPEG-class control IDs specific to the CX2341x driver as defined by 
+>>> V4L2 */
+>>>   #define V4L2_CID_CODEC_CX2341X_BASE (V4L2_CTRL_CLASS_CODEC | 0x1000)
+>>>   #define V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE 
+>>> (V4L2_CID_CODEC_CX2341X_BASE+0)
+>>
+
