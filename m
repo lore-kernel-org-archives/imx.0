@@ -1,60 +1,60 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FAA1BF6F2
-	for <imx@lists.linux.dev>; Tue, 30 Apr 2024 14:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834511C0DC4
+	for <imx@lists.linux.dev>; Tue, 30 Apr 2024 14:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714485781; cv=none; b=dITk9vMBXJTSLTqRKRvhcSYrG+2lOiX5qI8viX7blKFud0wdqsCyAE9wmFp5JBWqGyEByr919z5xhZVZYCcnhSdwkLrTwRFX4wBUf/2Tj81jGCuioXdI05I2CoKsSsOcHdF766caV+PzmCxvS21r75Hxu2n9dmxoVDzTzudJbvc=
+	t=1714485785; cv=none; b=Egs4griuEPSPYZsnE5TeUgZvRcTGBi9RWOvU0U33a3YROAo2bp/yXv0RFrBrV672XphVYQLDR1Bfam1HfIvLQXqlthGR76mNbWTIhEAkiwuIUNh6/BV1lbdxJA1+Vf2WgmvIjB8ZouYD1m1qt2a9GlyD0jUXINa+jSXWjAWZ4BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714485781; c=relaxed/simple;
-	bh=ucjMMVrCkGueEU7NLLh2sAE4bDhfGS2t9ibvgfiZuqk=;
+	s=arc-20240116; t=1714485785; c=relaxed/simple;
+	bh=ZJVoQsuYVbU6eX1WKifNhQyvCwwvs/Q4umjN6N4+yu4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b+V/cXUu0nHZ0MvhYwL4THg0aoAqwC0eA8ihKOk8BRB0qFWPte/j3svBHPBNQSHKTEnx33kzbIC5tUtOiZt6iX+VlxN6537CVJUYU/kKGVS0eDGiYI4RoqlpT37MzOTXEdZu4zvq8K9INfcJhR4gyriFkZNRS9RoMthOkbOcx4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K5iZHG/n; arc=none smtp.client-ip=209.85.167.54
+	 In-Reply-To:To:Cc; b=JciBAl7HM4yWtMT6bLW/GFFqA9t3yyKw0qoo6BYyuo0KF4WzFdOfXWywX4+4u4U2G/+ZllNyotRlnAp5+a0rtyb+9wISNBtFdQzUiJpBqlRDNG4KwUrdCEv6ogRbNf/CQ6KyoYIHleuRDbSBXpJUl/cCkP0p2wNMqluoB89uL4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L02jL4u7; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K5iZHG/n"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-518a56cdbcfso9165475e87.2
-        for <imx@lists.linux.dev>; Tue, 30 Apr 2024 07:02:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L02jL4u7"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-572669fd9f9so4884537a12.0
+        for <imx@lists.linux.dev>; Tue, 30 Apr 2024 07:03:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714485778; x=1715090578; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1714485781; x=1715090581; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YNgLEZpy94T5of5dDiteuT7S3SOS839FWPGD9Oz3+lU=;
-        b=K5iZHG/n38BDxrYhRXdZscbtlFuugHNp7m0xw5nUn777kSkzrgbiuokNceS6+w7C8P
-         AasadD9klbsGMj8O3JFg6hohlMgaXl2fAZ0QbK2pgtddOIulwwdSlAUKTj99AiNgtSGl
-         RLvrSK/7BiVwbgfI/dsihvswGLF5/L2tz5vkjYUc3uUl9eG6tYbplUYKTjNUbjA+DWVz
-         QpWJU77OJXSiL5/YiiGni1bnBuld4EWvIuDu63CWomRqfj819dRHiNlwVWPjWM3fh25v
-         n4HJHQcrZ/6WrwH7RZX1DNs6tp+GqmeFsBu+NJMMPwvIAzsepiGE2gKGm9szOZyh0loJ
-         ee0w==
+        bh=8wnYPNchoJMJHPXPE9uqd4IXLQ1+2DNP0wbgQTer3qE=;
+        b=L02jL4u7YqpAfx/QvQHOXyueCjrEu9P4xe9QHeIkMXyoH3FEdxhlg/xNG/v16wsnqH
+         BKTSfGvDdL/meTvxf6cICUR7dgL/Gy6ooVnnvPpTojuNCQXdjvEaIKVAMlZRFWYAkapK
+         ZuWyRSCIIR+tD9itXXTWIcIG3hAozKj0ppkWvS1iid1bnhuFgx6Iq9qY0GCk8XezCl8+
+         VQ/ifMPj1A1TpnXnZaus7SRbdw00foD//HcPt1rMYpOolnDBtOgJaKv+K86AoE0YYQL9
+         yxE55WWOfUBY6iybZWeKkRYYlis4RQ08rb4TrNrUxxgj0xSuqoOMqQEvXPBqUk0nssZo
+         h4wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714485778; x=1715090578;
+        d=1e100.net; s=20230601; t=1714485781; x=1715090581;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YNgLEZpy94T5of5dDiteuT7S3SOS839FWPGD9Oz3+lU=;
-        b=XnFiaNO9XByz7Rwte3dQkX3th16295l+K88Ei+9oK0mQA66GMVtPzo7gV0zuqtNlOI
-         RVOokubhZNtm32HZb1UeGImLtHZ0uYKrE/I+W3ZxwAw8zgESwLCdo8ZbehTH+iXXTM6E
-         XvhZzczYlQZNh6wm39x3GnrWtOJtUIcuQv6JziwGq2/wZFIRL6ka+60xe8PWWISE8nM4
-         ZOI8BXsAs3Lw7ubb8YGciOrjGKnoEaUAfZ9qHO0op2kHZow9JqG2TedAk+qdDkEozL3Q
-         JXmk1dUCvYdN12FpbcR5TWJH7SzPWSAGFpjYjtwVOlXTzN75fCKGNwAFR+OLNcUeKMPc
-         YNrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsKMRbufoucUyi+A2xflM1x1HC0ooF4AYKFtIdHrSsyaGhR+LiYa7ukmpGrvxsGAnU9tMC87yCw33jyM5UCelFVOYq
-X-Gm-Message-State: AOJu0YxYSlLDqIgX7vk3r9mRhX4i9S4Wn2wxBIIyFNTmT+6GWgLd0l8d
-	RwmEwTWC1buRmkckyOUs3352KjZS+/1nN1P/6qPpaJjiFlTABKQN0MFxzndDXxk=
-X-Google-Smtp-Source: AGHT+IFjpnpTp49C7eNXISEFR7RNPga2jXB5JGxKI22M+Sgkavx0dXEQC64nAv94ubWY9cbPtavVlQ==
-X-Received: by 2002:a2e:9d88:0:b0:2dd:da86:ee38 with SMTP id c8-20020a2e9d88000000b002ddda86ee38mr10711122ljj.8.1714485777680;
-        Tue, 30 Apr 2024 07:02:57 -0700 (PDT)
+        bh=8wnYPNchoJMJHPXPE9uqd4IXLQ1+2DNP0wbgQTer3qE=;
+        b=efk2sDa49GXAztbxQlnBqLz6D1oDdpqTwbbRvWqDDaRf4pVcUTA4xGke1kqiWbq040
+         V6t5bV/OX+4z/9cXhS2AcdeVNHpWo555r7V1XWazn5Z+AGEoMs0TFMDisoL/Fo07cSaQ
+         I+rE4BJFFJzEwEGecvTcCnxXYAH1NYA37LLEr+KrGPYougF5SGp81WNucLJUZyrJG+qC
+         xOzJqgy+d2r26noD4jvsiR5wu+lS+bvLCA/PkILXbTBXPYq1zM9UWnmVppMRFJCR57Fx
+         uEyOL0j7NoRHM1hZCs+Mrnta3c9ZzMTeBGm+r1lzFQmIvy/hC93ZmpJuSODK/Ingefyj
+         nzaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSRXnURDk5pNpbRdSf31ovlImoXk6Zi/UKsl1sVI15juHu62YuawFl4ECEOG6G7xIFPoYLB5zeMpgjkZDTRt2HIyny
+X-Gm-Message-State: AOJu0YzDpGy8D18hLUHJVGUbHA1PaZf02R+eIgFGVGVYP4Ya6cM+rrK7
+	xLNiSELY0OLYdysQjdPoubJxeJC4VSOwIrOiLXMiVS70rY8OWMkhcULerhD85I8=
+X-Google-Smtp-Source: AGHT+IHfqH0vbD3bQInQbBF2YUx3yEJaJuYtVm+BQiqXb8Xkd6Z+iJPnJ+JbD3G3lpGOTc/Xz5AyMg==
+X-Received: by 2002:a17:907:76a4:b0:a58:94c1:88c9 with SMTP id jw4-20020a17090776a400b00a5894c188c9mr10358426ejc.54.1714485780892;
+        Tue, 30 Apr 2024 07:03:00 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id pv27-20020a170907209b00b00a5940af3f67sm31434ejb.16.2024.04.30.07.02.52
+        by smtp.gmail.com with ESMTPSA id pv27-20020a170907209b00b00a5940af3f67sm31434ejb.16.2024.04.30.07.02.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 07:02:57 -0700 (PDT)
+        Tue, 30 Apr 2024 07:03:00 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 30 Apr 2024 16:02:15 +0200
-Subject: [PATCH 06/13] ASoC: fsl: Use snd_soc_substream_to_rtd() for
+Date: Tue, 30 Apr 2024 16:02:16 +0200
+Subject: [PATCH 07/13] ASoC: img: Use snd_soc_substream_to_rtd() for
  accessing private_data
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240430-asoc-snd-substream-clean-v1-6-6f8a8902b479@linaro.org>
+Message-Id: <20240430-asoc-snd-substream-clean-v1-7-6f8a8902b479@linaro.org>
 References: <20240430-asoc-snd-substream-clean-v1-0-6f8a8902b479@linaro.org>
 In-Reply-To: <20240430-asoc-snd-substream-clean-v1-0-6f8a8902b479@linaro.org>
 To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
@@ -98,21 +98,21 @@ Cc: alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
  linux-sunxi@lists.linux.dev, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5066;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1453;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=ucjMMVrCkGueEU7NLLh2sAE4bDhfGS2t9ibvgfiZuqk=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmMPnyVTX4VSForeLiGua7AKa1bycRXXidVTl9D
- CaOooFdBBqJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZjD58gAKCRDBN2bmhouD
- 1x+nD/9L3QfdqNvflH7gpARtP03tnjdskVjY9BZshvK55BYu/8uL8qeQ8m7grVZgtdnFSp17jzg
- psAIaY2iZ3XjkhL1Wm9i2Bco6fY+REaa9ipQVksNn10h2zoFp4l3tKiNz9T6HIW+tr9LB4YJ0ez
- 95oxVwwR3mmgoGnOTgoBhBquIQotbSGxNdua1owIxI4ynwBEDk9aSuLzFvyZaK+a5pQqlk8sFHE
- 1Zk4N9BanSfRWtR7ZmuLxcDMQFw+f9cLlfnQjEF7qbDegbSaNYOR4VuwuAPVTQgmhL2FDZ9ZZBZ
- VS8nH1w1VupmUXyDCQM9+Ord+ux+JRHtepLks0LWYAmaEYSn0maBsInTR79T6/Z5BTnHY5o05cb
- 17XjcuRdjm0E9YceHUg/H7Cu+qPpavOo45i3peulA/Kw8Bmz/UrCoPzgKCZECARmZhBwtFfXKFi
- BFBqwmlfaJ5mO+BUYtGOK0mi8QL8IJGpqneIw6WuwxG8gcximwl6XUtbhpG9dUMulPUId44Q4Lx
- 6MRqlOL82xSEpJjTLh5Q1IVtCafvXHdADF0e5NcyPGZeB3xciZX49dPUqRv/agS7rPISpGBqP+3
- 2uMcyxscGa3WWW9aQmkwpKw3L4QuI/OgOw5ddiu+DS7516wv6HU8Om/sxKJq6Fm9j1OTCD6HkT0
- JghFY64qvYvldfw==
+ bh=ZJVoQsuYVbU6eX1WKifNhQyvCwwvs/Q4umjN6N4+yu4=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmMPnz7LqN72vQN5f6xW+8v1IAmdOUCMPS6bcOV
+ 4KOBcs83WmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZjD58wAKCRDBN2bmhouD
+ 12uLD/wJ78QXDNb2piUOxSHgAlHla7As9001viT+koWXU/H7+DT8NtdMhT51dhbsQHiwJTtlPtD
+ v3rC/wbLFAMaGDIiWvpnu6k+B052j/BXEI/AehuKgv4cRWhNtPKvFOKq1xqdWsRw0716H2t9hFG
+ 2jji38Y55VThEkJU2s/2A+dyolipm/A2PYgxMVJTO2l5DA469GyAQo6sBIY2U/cunIB3Nd5iXjE
+ Q3am7Lu9EXrAVEs3BW97SbLIHkYf0T5TAzmd8NGKPpDxyuCZXX18ORVI6i9N7ObF7t002ooK2kS
+ ojdOtbdfw+8odlw1cUk0WmcG2BmcKgq60G25WepWhGsaV86YzAG4j0PmBLoDpKaIajgntlgaXru
+ C59rV1W8tr/ZE1ju9NExCpppLGnkJdg1uS/O8ht/KxBbXbi7EIaeuB9CgaJ61HQpTjOo7fl4Wbf
+ Rpr2d48ma59TnUEfG2V3VYPvbYQlMec8a+1gOtwjG9C7eGdUDWFPtphMaW/PQOdGdwQE6of966h
+ 08q8aydTVqPyc6BlBswO7GuRGZvbVbSjXzYlnWR3btBq5N/fAyyLJVZQAR/CLmHCNxuMnquGLnh
+ Ki9ObapaRsHnKsbyLXLqmRwcEn/t2Ywexl6X3EbXj9/YMjD5OQJehn/bvQ8tFvT1+BObAtIFNxa
+ lE5v1KAME9l6c0Q==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
@@ -120,100 +120,36 @@ Do not open-code snd_soc_substream_to_rtd().
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 2 +-
- sound/soc/fsl/imx-card.c      | 6 +++---
- sound/soc/fsl/imx-hdmi.c      | 2 +-
- sound/soc/fsl/imx-pcm-rpmsg.c | 6 +++---
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ sound/soc/img/img-i2s-in.c  | 2 +-
+ sound/soc/img/img-i2s-out.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index f6d2564864c6..5ddc0c2fe53f 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -242,7 +242,7 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
+diff --git a/sound/soc/img/img-i2s-in.c b/sound/soc/img/img-i2s-in.c
+index dacc29fcf24b..b69a364d619e 100644
+--- a/sound/soc/img/img-i2s-in.c
++++ b/sound/soc/img/img-i2s-in.c
+@@ -395,7 +395,7 @@ static int img_i2s_in_dma_prepare_slave_config(struct snd_pcm_substream *st,
+ 	struct snd_pcm_hw_params *params, struct dma_slave_config *sc)
+ {
+ 	unsigned int i2s_channels = params_channels(params) / 2;
+-	struct snd_soc_pcm_runtime *rtd = st->private_data;
++	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(st);
+ 	struct snd_dmaengine_dai_dma_data *dma_data;
+ 	int ret;
  
- static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
+diff --git a/sound/soc/img/img-i2s-out.c b/sound/soc/img/img-i2s-out.c
+index f442d985ab87..6f9831c6d6e0 100644
+--- a/sound/soc/img/img-i2s-out.c
++++ b/sound/soc/img/img-i2s-out.c
+@@ -401,7 +401,7 @@ static int img_i2s_out_dma_prepare_slave_config(struct snd_pcm_substream *st,
+ 	struct snd_pcm_hw_params *params, struct dma_slave_config *sc)
  {
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(rtd->card);
- 	struct codec_priv *codec_priv = &priv->codec_priv;
- 	struct device *dev = rtd->card->dev;
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index cb8723965f2f..0e18ccabe28c 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -252,7 +252,7 @@ static unsigned long akcodec_get_mclk_rate(struct snd_pcm_substream *substream,
- 					   struct snd_pcm_hw_params *params,
- 					   int slots, int slot_width)
- {
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct imx_card_data *data = snd_soc_card_get_drvdata(rtd->card);
- 	const struct imx_card_plat_data *plat_data = data->plat_data;
- 	struct dai_link_data *link_data = &data->link_data[rtd->num];
-@@ -289,7 +289,7 @@ static unsigned long akcodec_get_mclk_rate(struct snd_pcm_substream *substream,
- static int imx_aif_hw_params(struct snd_pcm_substream *substream,
- 			     struct snd_pcm_hw_params *params)
- {
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct snd_soc_card *card = rtd->card;
- 	struct imx_card_data *data = snd_soc_card_get_drvdata(card);
-@@ -405,7 +405,7 @@ static int ak5558_hw_rule_rate(struct snd_pcm_hw_params *p, struct snd_pcm_hw_ru
- static int imx_aif_startup(struct snd_pcm_substream *substream)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_card *card = rtd->card;
- 	struct imx_card_data *data = snd_soc_card_get_drvdata(card);
- 	struct dai_link_data *link_data = &data->link_data[rtd->num];
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-index e454085c6e5c..fe47b439a818 100644
---- a/sound/soc/fsl/imx-hdmi.c
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -32,7 +32,7 @@ struct imx_hdmi_data {
- static int imx_hdmi_hw_params(struct snd_pcm_substream *substream,
- 			      struct snd_pcm_hw_params *params)
- {
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct imx_hdmi_data *data = snd_soc_card_get_drvdata(rtd->card);
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
-diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-index b84d1dfddba2..ba491cbb9930 100644
---- a/sound/soc/fsl/imx-pcm-rpmsg.c
-+++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-@@ -316,7 +316,7 @@ static int imx_rpmsg_pcm_prepare(struct snd_soc_component *component,
- 				 struct snd_pcm_substream *substream)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct fsl_rpmsg *rpmsg = dev_get_drvdata(cpu_dai->dev);
+ 	unsigned int i2s_channels = params_channels(params) / 2;
+-	struct snd_soc_pcm_runtime *rtd = st->private_data;
++	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(st);
+ 	struct snd_dmaengine_dai_dma_data *dma_data;
+ 	int ret;
  
-@@ -461,7 +461,7 @@ static int imx_rpmsg_pcm_trigger(struct snd_soc_component *component,
- 				 struct snd_pcm_substream *substream, int cmd)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct fsl_rpmsg *rpmsg = dev_get_drvdata(cpu_dai->dev);
- 	int ret = 0;
-@@ -515,7 +515,7 @@ static int imx_rpmsg_pcm_ack(struct snd_soc_component *component,
- 			     struct snd_pcm_substream *substream)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
--	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct fsl_rpmsg *rpmsg = dev_get_drvdata(cpu_dai->dev);
- 	struct rpmsg_info *info = dev_get_drvdata(component->dev);
 
 -- 
 2.43.0
