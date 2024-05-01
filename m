@@ -1,133 +1,187 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B1F14012
-	for <imx@lists.linux.dev>; Wed,  1 May 2024 17:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBF116132E
+	for <imx@lists.linux.dev>; Wed,  1 May 2024 19:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714583820; cv=none; b=daulX5yZOPc8Bq1yu4BBZY4yc77r/kS5kuwjVNil05hnvGTX7X7HJHESNCdTMEGGKdwFIXcfUaizWe68YudCbVRiRwAUJJG2+x3wzQ6gAZpqThq9O10u7z4tpFloaiYmJEsDSXH1PrsobI1QgYuKQ2WuLuqWgTW5ii2URlVFAnw=
+	t=1714593350; cv=none; b=WMIChzC8SVJa6MwOuI9CsSPVlkHqsDhrLD12gi/7KZzx60lt1vo/b3Jpu8lo83BR53vuEeaL47w2MNygqaLggM+kd5NtSO+/4v+8I3uPFN3LUsi5VIcwUQpLz5RFV+aNLv2C4p7d36LW6ptQRY/nKt5Wz5uF/lFnI4d+IP55TCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714583820; c=relaxed/simple;
-	bh=02BhFBAy4ZX6ytoV+oKn8+uM4s9GylTFH+6SsonvGE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwj7vxGymr4XKCZq6QxIzb/aARca9RWmZ2dY5bfta3zszjbI7YHLGDkY8v+Ix0H40cceGuq01axfaok0Tsc5QaMyZh+eosHFtOPTppY+eG3lhlv7GoBAVuWBfJxD1YVwLVXqBsilRNZMSdVgjcSC3DWoV0BUmt3BxqhhWJz2lac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HhefVKHm; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714593350; c=relaxed/simple;
+	bh=f73jSEAMJKBp15N9UkPWYqMCh4YYPf7JXmaAdRz51NM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Y4qD+ww/X/82zn78Rsz3CMgdvhfHz8w8UQ1dMqYTgluJThVCTgL8umYUpbH/ZLDG4TiFDp+Q38stQXDQ0465rXHK9t4YXKY2cp8zesWfa5866+Z9r2M9edOlsM6qY9dFQNmaUDkxKZjrtoWtEBO00LgJ7/DhTupYYqXjGFAud4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=Le37GPWX; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HhefVKHm"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51bae805c56so8139168e87.0
-        for <imx@lists.linux.dev>; Wed, 01 May 2024 10:16:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="Le37GPWX"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4365c1451d4so47979221cf.2
+        for <imx@lists.linux.dev>; Wed, 01 May 2024 12:55:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714583815; x=1715188615; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MOHqyTk2nsRZy88pDJJ/quBzrqb3UUPa7Yn14ZhLib4=;
-        b=HhefVKHmLTIHyRWOpcJep5hVy2KF8drzKuuPxgi9RMsYgXXtOBzWHVO1Hi5rIa04ca
-         HM8CXKCtxNyVtLmcw9zGwhM5tKOaQhcOBMdYIz7iTDifPx/0LGEtc7DChb3gGFKmZ4gC
-         +0Cu/kGB0MRo1a0J4gw3nKGPmlJ8BP29tcM+zM+FtL1oRzbmQKRCZyhCL0LL3aKFrag1
-         2KUCEIYhfz5uNsGlQtSkAu1eEj7MqSzM8azeW8vMLNKozRr/96sCVks7mEd3G7N+2tdw
-         CSt4I9gQnKulqv+gzr2293Wf1amy1Cgf5jcNjHBl/RoaIQ8RrkdrdKpq/cQalI5JF31V
-         Nakg==
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1714593348; x=1715198148; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Rp2Oeq63C4vnEAayPDNotRfG8unurD54mFT8YeJ0RJ8=;
+        b=Le37GPWXiFlTO9VjND0JDW85CFtk7+gQk3MZKS0ONsvLbXI1taingVlqgH7KmLTBFO
+         lq2eHzIzoVK1DyBXOtMDugwFyz/YIV7HZLr6U/9e6Ho2po7N176HGxEHJilsZ46VHguA
+         QqHGTbcGMbnOtf2Y2ub7qkoG2y24cYYwZr9bqpFBiNQiCnrDhqUBQtuEpYmko2Y7mUxW
+         oAhISPY3Bw6jUplmCVGBI3SMQ00hbirahamXZR2wj17fo/OSSw7Lkt6/0YPWe/4N4yof
+         2cgLs+43rK/RY3sBKV5P7r7NzxbVfulnVPPdec5unfwpcFxP9sAs9xmOP+IUgdbXaxjO
+         O6+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714583815; x=1715188615;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MOHqyTk2nsRZy88pDJJ/quBzrqb3UUPa7Yn14ZhLib4=;
-        b=IRrP9MdRKbG4J1oF6Tz3lYs9NHouIOomabJH4z46FvlDuTTxI3fDjrJaT2E/naJKnP
-         QPUcuWqE1kAMfK1t3iXHnh5JOnuHFJX3Bez0FRhbzDK/O0xrtXzmSj3OtbZlEEovtoqt
-         Hpq8LKTBisVjUL3hiPfKmcXLHFCUIkfFqEN4hapPvNPcFKpaQJlFRjD+yb57ZuYyfoxH
-         r1KLlhOn11yFA2xP1M8ZgZsVFkXN9czuGcSZnKhJORy6jng6nTfWl1u6vAXBNxuYe7J7
-         NvkQqeMGq91ncwCQ9CeT7QMoJC1YEyoj6AfU9RoWoFiX+rEQFvOjK4jNuYuXhxzaxV4s
-         tQ3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUXw8xOFCNRFR5dCxBeDoDR7+eiX5/LofGytRUk2jF+krHPepRsAPTnS3tCe9dVtrBF2KGCaaTw8Yzs8oaTp20XNR90
-X-Gm-Message-State: AOJu0YyB2QRlGb0Ed3ibXTtqegwaWMudbRX3auDIeqICWTut9QJlUlQn
-	4WwTKmvEvKK/FKsYR0XJC35eDAC7JIEW993pH+Wd7nHeziCamDeOfzVSFGxB8mU=
-X-Google-Smtp-Source: AGHT+IGQV4KLhJUah5uwpDXzYUszrhPNSItjqkYS07RJilfCu8tUsg9Dz64nf2enkLVMqtqy/1k75Q==
-X-Received: by 2002:a05:6512:12c7:b0:51f:196:d217 with SMTP id p7-20020a05651212c700b0051f0196d217mr197144lfg.63.1714583815158;
-        Wed, 01 May 2024 10:16:55 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id t10-20020a192d4a000000b0051d5616c3e1sm1524897lft.231.2024.05.01.10.16.53
+        d=1e100.net; s=20230601; t=1714593348; x=1715198148;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Rp2Oeq63C4vnEAayPDNotRfG8unurD54mFT8YeJ0RJ8=;
+        b=gCKkR2g373XSHU2GByL6b0PoNsjNfMbmsTGyGmVIK3RBYqXQWuCr1L7ZTnxvXzn1xy
+         0GcnseJD1jt+SsJ8+rO6pnD4UNSO9vKss5+hWFRtSi5YLbYzFDCG0yZJ3Hzh2nKYPP6R
+         MHcPiWjAEpSiZ9T4ST8PTloNVSYIEHTggjeP+NafRl6WZx8rlumxonms1/+FF0sMdkNP
+         QiylNg/yYbCevyPjf9LF30SSXWvobtdwsTNxTe0xmSEcmVMcCn4KumT5lo7cJcCm23Uv
+         95YrUVSOkXS2E7Ss71fGHSILnIQvANfZn2Nc5QVyHbSdKde7BMUbjsrhwXkYn7g5wkds
+         YYmg==
+X-Forwarded-Encrypted: i=1; AJvYcCUODKLeVOzN8ouwrvSrcXlWcN1gcnoB3576ZLnHZRKcIW+zRwgkwjTtQ+1p0EP7Jp91D3/z9uxm0nlrZ5M39xs1ls5N
+X-Gm-Message-State: AOJu0Yw66VvtEOaolx2P6ps3b6IK9H9q7UPSBycI5KgvhMvXvqH2Qmtq
+	RBrYb8uRCxx2gK5Meel1E2/PUh4hqj07xb1rzIt37qVXYXZFsU8M1m+gMJJqsoc=
+X-Google-Smtp-Source: AGHT+IE+pwCRMel6AM6QEax/+YdZn8uEc6qt/ryuDm38HckiIWQdWtCTMgcpb+i+ZFA4KAjP/8xZaQ==
+X-Received: by 2002:a05:622a:4b18:b0:43a:ea03:31b6 with SMTP id et24-20020a05622a4b1800b0043aea0331b6mr3444178qtb.31.1714593347744;
+        Wed, 01 May 2024 12:55:47 -0700 (PDT)
+Received: from nicolas-tpx395.lan ([2606:6d00:17:6448::7a9])
+        by smtp.gmail.com with ESMTPSA id jv9-20020a05622aa08900b004366d3eef03sm12490361qtb.68.2024.05.01.12.55.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 10:16:54 -0700 (PDT)
-Date: Wed, 1 May 2024 20:16:49 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Jianlong Huang <jianlong.huang@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Joel Stanley <joel@jms.id.au>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-samsung-soc@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
-	linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 10/21] pinctrl: st: Use scope based of_node_put() cleanups
-Message-ID: <f6aa3a17-90d2-42e3-8c55-639dfcdbf8ca@moroto.mountain>
-References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
- <20240501-pinctrl-cleanup-v1-10-797ceca46e5c@nxp.com>
+        Wed, 01 May 2024 12:55:47 -0700 (PDT)
+Message-ID: <46ea74867fee6f0dbefb4c2d24a682d15beb41e7.camel@ndufresne.ca>
+Subject: Re: [PATCH 1/2] media: v4l2-ctrls: Add average qp control
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Hans Verkuil <hverkuil-cisco@xs4all.nl>, Ming Qian <ming.qian@nxp.com>, 
+	mchehab@kernel.org
+Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, 
+ kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ xiahong.bao@nxp.com,  eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
+ ming.qian@oss.nxp.com,  imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org
+Date: Wed, 01 May 2024 15:55:46 -0400
+In-Reply-To: <25a33db9-3bc1-4d90-83d4-0bdbea9bc5d8@xs4all.nl>
+References: <20240329092352.2648837-1-ming.qian@nxp.com>
+	 <25a33db9-3bc1-4d90-83d4-0bdbea9bc5d8@xs4all.nl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240501-pinctrl-cleanup-v1-10-797ceca46e5c@nxp.com>
 
-On Wed, May 01, 2024 at 08:56:08PM +0800, Peng Fan (OSS) wrote:
-> @@ -1224,8 +1221,7 @@ static int st_pctl_dt_parse_groups(struct device_node *np,
->  	grp->pin_conf = devm_kcalloc(dev, npins, sizeof(*grp->pin_conf), GFP_KERNEL);
->  
->  	if (!grp->pins || !grp->pin_conf) {
-> -		ret = -ENOMEM;
-> -		goto out_put_node;
-> +		return -ENOMEM;
->  	}
+Le mercredi 24 avril 2024 =C3=A0 12:03 +0200, Hans Verkuil a =C3=A9crit=C2=
+=A0:
+> On 29/03/2024 10:23, Ming Qian wrote:
+> > Add a control V4L2_CID_MPEG_VIDEO_AVERAGE_QP to report the average qp
+> > value of current encoded frame.
+> >=20
+> > Signed-off-by: Ming Qian <ming.qian@nxp.com>
+> > ---
+> >  Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst | 4 ++++
+> >  drivers/media/v4l2-core/v4l2-ctrls-defs.c                 | 5 +++++
+> >  include/uapi/linux/v4l2-controls.h                        | 2 ++
+> >  3 files changed, 11 insertions(+)
+> >=20
+> > diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst =
+b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+> > index 2a165ae063fb..cef20b3f54ca 100644
+> > --- a/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+> > +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-codec.rst
+> > @@ -1653,6 +1653,10 @@ enum v4l2_mpeg_video_h264_hierarchical_coding_ty=
+pe -
+> >      Quantization parameter for a P frame for FWHT. Valid range: from 1
+> >      to 31.
+> > =20
+> > +``V4L2_CID_MPEG_VIDEO_AVERAGE_QP (integer)``
+> > +    This read-only control returns the average qp value of the current=
+ly
+> > +    encoded frame. Applicable to the H264 and HEVC encoders.
+>=20
+> qp -> QP
+>=20
+> Why is this applicable to H264/HEVC only? I think it is fine for any code=
+c.
 
-You could delete the curly braces as well.
+Same question, though we should document the range, which will differ per-
+codecs. We should also document to always use the specified range, rather t=
+hen a
+HW custom range. This way we don't endup with issues we have hit with other=
+ ill-
+defined controls.
 
-regards,
-dan carpenter
+Nicolas
 
+>=20
+> This needs to document that the value applies to the last dequeued buffer
+> (VIDIOC_DQBUF).
+>=20
+> > +
+> >  .. raw:: latex
+> > =20
+> >      \normalsize
+> > diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/=
+v4l2-core/v4l2-ctrls-defs.c
+> > index 8696eb1cdd61..88e86e4e539d 100644
+> > --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> > +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> > @@ -972,6 +972,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+> >  	case V4L2_CID_MPEG_VIDEO_USE_LTR_FRAMES:		return "Use LTR Frames";
+> >  	case V4L2_CID_FWHT_I_FRAME_QP:				return "FWHT I-Frame QP Value";
+> >  	case V4L2_CID_FWHT_P_FRAME_QP:				return "FWHT P-Frame QP Value";
+> > +	case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:			return "Average QP value";
+>=20
+> value -> Value
+>=20
+> Also move it up two lines so that it follows V4L2_CID_MPEG_VIDEO_USE_LTR_=
+FRAMES
+> rather than FWHT controls.
+>=20
+> > =20
+> >  	/* VPX controls */
+> >  	case V4L2_CID_MPEG_VIDEO_VPX_NUM_PARTITIONS:		return "VPX Number of P=
+artitions";
+> > @@ -1507,6 +1508,10 @@ void v4l2_ctrl_fill(u32 id, const char **name, e=
+num v4l2_ctrl_type *type,
+> >  		*max =3D 0xffffffffffffLL;
+> >  		*step =3D 1;
+> >  		break;
+> > +	case V4L2_CID_MPEG_VIDEO_AVERAGE_QP:
+> > +		*type =3D V4L2_CTRL_TYPE_INTEGER;
+> > +		*flags |=3D V4L2_CTRL_FLAG_VOLATILE | V4L2_CTRL_FLAG_READ_ONLY;
+>=20
+> Drop the volatile flag, this isn't a volatile value.
+>=20
+> > +		break;
+> >  	case V4L2_CID_PIXEL_RATE:
+> >  		*type =3D V4L2_CTRL_TYPE_INTEGER64;
+> >  		*flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
+> > diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4=
+l2-controls.h
+> > index 99c3f5e99da7..974fd254e573 100644
+> > --- a/include/uapi/linux/v4l2-controls.h
+> > +++ b/include/uapi/linux/v4l2-controls.h
+> > @@ -898,6 +898,8 @@ enum v4l2_mpeg_video_av1_level {
+> >  	V4L2_MPEG_VIDEO_AV1_LEVEL_7_3 =3D 23
+> >  };
+> > =20
+> > +#define V4L2_CID_MPEG_VIDEO_AVERAGE_QP  (V4L2_CID_CODEC_BASE + 657)
+> > +
+> >  /*  MPEG-class control IDs specific to the CX2341x driver as defined b=
+y V4L2 */
+> >  #define V4L2_CID_CODEC_CX2341X_BASE				(V4L2_CTRL_CLASS_CODEC | 0x1000=
+)
+> >  #define V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE		(V4L2_CID_COD=
+EC_CX2341X_BASE+0)
+>=20
+> Regards,
+>=20
+> 	Hans
+>=20
 
