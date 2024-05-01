@@ -1,136 +1,174 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25FA199E8F;
-	Tue, 30 Apr 2024 19:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD786166E
+	for <imx@lists.linux.dev>; Wed,  1 May 2024 11:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714506837; cv=none; b=L9hRyOh3Nk2sNpVyRTYxbo/wSoqVkQT08OlnqT5AVyEWm7cYES6WwILC0qYpeVOWBFwkuYhwaHpy27KLC5WJeJzhXFbZhsqWG+VNF7AdoohHLOyV0g+woNDesnTa2YCc9xUEbcN4px5Ot0T2juZRP00UvUmluhbQKd/wGFOnYbA=
+	t=1714563127; cv=none; b=kAKVlFn8Zwqadwk7TIqNmj0eTCWHh1lERGpKWORoVGUB5giok0QtJEIPtVvep/9vaMKj9g0w8i2Nc6rXtV5jEMABvkDstwrRpJb5KI6KH3zNAAWubxRFInwY5qDubHIgeHkfCaUFH5SHUkp4Ia3ODrBVlq+AmNDHckgPM0TJXgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714506837; c=relaxed/simple;
-	bh=/57uI0NnDO2LrGAjhLyCD8a8uhYqBrJbnu0u7FZxjEM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b3O0DVF8ndm8QqMWbjuEi+pd8UHExwW2/vU/lVEM6eIXAeNa4b8eCAWbjPj1ZOVgbnUFNkBhysNSdK6KRIykioor2hpO2W0Pv6eLuSIfv91bFRTsoPb7k34W/S9DibbiJaz6+qmm7iOeF+uRmyH30mbXW9B2V9sQbwvipyagJGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GDuAYcSS; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GDuAYcSS"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a58fc650f8fso336825966b.1;
-        Tue, 30 Apr 2024 12:53:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714506833; x=1715111633; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HQq1oWqrCF0TfrogSNrGXKQjYOwjvsMuDYhQTiGCeqo=;
-        b=GDuAYcSSlh+rc2kUIrxilLqLaWg/8OtqHwwYUfl1mB+Xm/8wxR4eTTK8X4WtaTKc9W
-         dvrZXJo8xfXeXS0s4uQgznBMAfP8JskDkGxhOBfZbxyMdqR8RnI7e0OLDG6rQ3GfbTY8
-         UZV5vEzu9+/1AUuGhpxknNsN6/Diahobfcs1BaRC0CBj8UWl7scBV5FCHEMAFKglDwL5
-         KoJ+vJBRE3kdsewRVueyCryuj2PKqT0P5mkaXUwmXT9W2LoHfwjRObOQr2NVdYcDf/Xf
-         slklUyyeRuWh9fn4qumWwFccqsHOm+Qv1tszE1rnUJXczHHHFAK6+KfoUlYOf10XND0W
-         adwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714506833; x=1715111633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HQq1oWqrCF0TfrogSNrGXKQjYOwjvsMuDYhQTiGCeqo=;
-        b=NjoUiwffVk6yp3kHuNNwfHakvx254IcKdVFLxfuGh5jdFPUMKUklIQbKoP9SD5+Rid
-         mtlbr+glnzqjOjOrxS3LV9swKMOa0PM/rLWte6++t2+cXqApX4aNA/F3yH0OTH3NfOSV
-         PwWvEPYj7KNTSu46DdR9wFdb6q2A4qU+5bqEhQPTRW0fz5iQIw7DukY5STuPM3yl/k2Y
-         vO3HF9xg8IX8ywA6zGu4IQBH958oBCbHNzs6UQDjWBqzqka32I3EUiybFRyxJAYKqVP0
-         tFycfnbsFNfAa64abC7DkG4cqL799mR+vU0SHO4HnuxGOWo1dBQWEfdTQeo66v0l10ba
-         q+aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXp23BsqThddj2E1SV2RLOgoPQDrf/a3IJa9/K1BC1Hp1bDizX/SNLZQKj1OnKeckRA3RHZURyngTI340Taj4jn3KGYirGu48OvgOyOB7kw3rwt653hyepUZZCOQpYcMUA=
-X-Gm-Message-State: AOJu0YzJS+faA+eW28bPj5O4LGyWlNg927w5GoSh4ZeTrnN4Mu4f0NbS
-	GfRctI7g227b8YdF9Iy/UnvkRD8MiIX7SkfEuPPXoRObMrWOpHTI
-X-Google-Smtp-Source: AGHT+IHcHyFMebv11hNczXbfOSBPzOfPEK56ZS5IQDWu8DzPrwNQuSSocR8UcDfVrVvZhY8lrKqE1g==
-X-Received: by 2002:a17:906:a084:b0:a55:387b:eef9 with SMTP id q4-20020a170906a08400b00a55387beef9mr455005ejy.10.1714506832645;
-        Tue, 30 Apr 2024 12:53:52 -0700 (PDT)
-Received: from jernej-laptop.localnet ([188.159.248.16])
-        by smtp.gmail.com with ESMTPSA id 13-20020a170906058d00b00a522d34fee8sm15418045ejn.114.2024.04.30.12.53.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 12:53:52 -0700 (PDT)
-From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Peter Ujfalusi <peter.ujfalusi@gmail.com>,
- Jarkko Nikula <jarkko.nikula@bitmer.com>, Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Ban Tao <fengzheng923@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Samuel Holland <samuel@sholland.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev,
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-sunxi@lists.linux.dev,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject:
- Re: [PATCH 13/13] ASoC: sunxi: Use snd_soc_substream_to_rtd() for accessing
- private_data
-Date: Tue, 30 Apr 2024 21:53:49 +0200
-Message-ID: <3292058.44csPzL39Z@jernej-laptop>
-In-Reply-To: <20240430-asoc-snd-substream-clean-v1-13-6f8a8902b479@linaro.org>
-References:
- <20240430-asoc-snd-substream-clean-v1-0-6f8a8902b479@linaro.org>
- <20240430-asoc-snd-substream-clean-v1-13-6f8a8902b479@linaro.org>
+	s=arc-20240116; t=1714563127; c=relaxed/simple;
+	bh=IKkLZZ/6LHNlSiF5MEAigsdy2P81iDCz4def5PRB3/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFEfMwBvijDGayfxT33VqOwwfiDxHTYV13z6Xtb2ScMPY1vlyaZDs2Rzrc/l9/NYgfDPI7+uQ1/QkSWSK3bBPZZr5Zj8hdMFP3xdDG32ng876uX0jN5NicxvhSrBcWjbuQzblHJJv1H7PXA6lPkUBu+ICX/ka0pfw5bdsh0l6Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A6E912F4;
+	Wed,  1 May 2024 04:32:31 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DCE613F793;
+	Wed,  1 May 2024 04:32:02 -0700 (PDT)
+Date: Wed, 1 May 2024 12:32:00 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: firmware: arm,scmi: Add properties
+ for i.MX95 Pinctrl OEM extensions
+Message-ID: <ZjIoMJOAxtC-nkZO@pluto>
+References: <20240418-pinctrl-scmi-oem-v1-v2-0-3a555a3c58c3@nxp.com>
+ <20240418-pinctrl-scmi-oem-v1-v2-1-3a555a3c58c3@nxp.com>
+ <20240424193007.GA329896-robh@kernel.org>
+ <DU0PR04MB9417C67342B1DD6CC299B4CE88172@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DU0PR04MB9417C67342B1DD6CC299B4CE88172@DU0PR04MB9417.eurprd04.prod.outlook.com>
 
-Dne torek, 30. april 2024 ob 16:02:22 GMT +2 je Krzysztof Kozlowski napisal(a):
-> Do not open-code snd_soc_substream_to_rtd().
+On Thu, Apr 25, 2024 at 09:06:00AM +0000, Peng Fan wrote:
+> Hi Rob,
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-
-Best regards,
-Jernej
-
-> ---
->  sound/soc/sunxi/sun50i-dmic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> > Subject: Re: [PATCH v2 1/2] dt-bindings: firmware: arm,scmi: Add properties
+> > for i.MX95 Pinctrl OEM extensions
+> > 
+> > On Thu, Apr 18, 2024 at 10:53:17AM +0800, Peng Fan (OSS) wrote:
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > i.MX95 Pinctrl is managed by SCMI firmware using OEM extensions. This
+> > > patch is to add i.MX95 Pinctrl OEM extensions properties.
+> > >
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/firmware/arm,scmi.yaml     |  9 ++-
+> > >  .../bindings/firmware/nxp,imx95-scmi-pinctrl.yaml  | 66
+> > > ++++++++++++++++++++++
+> > >  2 files changed, 72 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> > > b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
 > 
-> diff --git a/sound/soc/sunxi/sun50i-dmic.c b/sound/soc/sunxi/sun50i-dmic.c
-> index c76628bc86c6..fedfa4fc95fb 100644
-> --- a/sound/soc/sunxi/sun50i-dmic.c
-> +++ b/sound/soc/sunxi/sun50i-dmic.c
-> @@ -74,7 +74,7 @@ static const struct dmic_rate dmic_rate_s[] = {
->  static int sun50i_dmic_startup(struct snd_pcm_substream *substream,
->  			       struct snd_soc_dai *cpu_dai)
->  {
-> -	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-> +	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
->  	struct sun50i_dmic_dev *host = snd_soc_dai_get_drvdata(snd_soc_rtd_to_cpu(rtd, 0));
->  
->  	/* only support capture */
+> ....
 > 
+> > > +
+> > > +title: i.MX System Control and Management Interface (SCMI) Pinctrl
+> > > +Protocol
+> > > +
+> > > +maintainers:
+> > > +  - Peng Fan <peng.fan@arm.com>
+> > > +
+> > > +patternProperties:
+> > > +  '[a-f0-9]+$':
+> > > +    type: object
+> > > +    unevaluatedProperties: false
+> > > +
+> > > +    properties:
+> > > +      pins:
+> > > +        $ref: /schemas/types.yaml#/definitions/string
+> > > +        description: name of the pin
+> > > +        items:
+> > > +          enum: [ daptdi, daptmsswdio, daptclkswclk, daptdotraceswo,
+> > > +                  gpioio00, gpioio01, gpioio02, gpioio03, gpioio04,
+> > 
+> > ioio?
+> 
+> Yes. The name is exported from SCMI firmware.
+> 
+> > 
+> > > +                  gpioio05, gpioio06, gpioio07, gpioio08, gpioio09,
+> > > +                  gpioio10, gpioio11, gpioio12, gpioio13, gpioio14,
+> > > +                  gpioio15, gpioio16, gpioio17, gpioio18, gpioio19,
+> > > +                  gpioio20, gpioio21, gpioio22, gpioio23, gpioio24,
+> > > +                  gpioio25, gpioio26, gpioio27, gpioio28, gpioio29,
+> > > +                  gpioio30, gpioio31, gpioio32, gpioio33, gpioio34,
+> > > +                  gpioio35, gpioio36, gpioio37, ccmclko1, ccmclko2,
+> > > +                  ccmclko3, ccmclko4, enet1mdc, enet1mdio, enet1td3,
+> > > +                  enet1td2, enet1td1, enet1td0, enet1txctl, enet1txc,
+> > > +                  enet1rxctl, enet1rxc, enet1rd0, enet1rd1, enet1rd2,
+> > > +                  enet1rd3, enet2mdc, enet2mdio, enet2td3, enet2td2,
+> > > +                  enet2td1, enet2td0, enet2txctl, enet2txc, enet2rxctl,
+> > > +                  enet2rxc, enet2rd0, enet2rd1, enet2rd2, enet2rd3,
+> > > +                  sd1clk, sd1cmd, sd1data0, sd1data1, sd1data2, sd1data3,
+> > > +                  sd1data4, sd1data5, sd1data6, sd1data7, sd1strobe,
+> > > +                  sd2vselect, sd3clk, sd3cmd, sd3data0, sd3data1,
+> > > +                  sd3data2, sd3data3, xspi1data0, xspi1data1, xspi1data2,
+> > > +                  xspi1data3, xspi1data4, xspi1data5, xspi1data6,
+> > > +                  xspi1data7, xspi1dqs, xspi1sclk, xspi1ss0b, xspi1ss1b,
+> > > +                  sd2cdb, sd2clk, sd2cmd, sd2data0, sd2data1, sd2data2,
+> > > +                  sd2data3, sd2resetb, i2c1scl, i2c1sda, i2c2scl, i2c2sda,
+> > > +                  uart1rxd, uart1txd, uart2rxd, uart2txd, pdmclk,
+> > > +                  pdmbitstream0, pdmbitstream1, sai1txfs, sai1txc,
+> > > +                  sai1txd0, sai1rxd0, wdogany, fccuerr0 ]
+> > > +
+> > > +      nxp,func-id:
+> > > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > > +        description: Indicates the PAD connections which function
+> > > + module
+> > 
+> > The description makes no sense...
+> 
+> I will use below description in v3:
+> For each pin, there are up to 8 muxing options (called ALT modes). For example:
+> Select 1 of 5 iomux modes to be used for pad: DAP_TCLK_SWCLK.
+> 000b - Select mux mode: ALT0 mux port: JTAG_MUX_TCK of instance: jtag_mux
+> 010b - Select mux mode: ALT2 mux port: CAN4_RX of instance: imx95_wakeupmix_top
+> 100b - Select mux mode: ALT4 mux port: FLEXIO1_FLEXIO30 of instance: imx95_wakeupmix_top
+> 101b - Select mux mode: ALT5 mux port: GPIO3_IO30 of instance: imx95_wakeupmix_top
+> 110b - Select mux mode: ALT6 mux port: LPUART5_CTS_B of instance: imx95_wakeupmix_top
+> The nxp,func-id property is selecting one ALT mode.
+> 
+> > 
+> > > +
+> > > +      nxp,pin-conf:
+> > > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > > +        description: The PAD configuration
+> > 
+> > PAD stands for? Or is it pin configuration as the property name says?
+> 
+> It is pin configuration which includes pull up/down, drive strength and etc.
+> 
+> > 
+> > This is just a raw register values? 
+> 
+> Yes.
+> 
+> Why can't standard pinctrl properties be
+> > used here. What's the point of using SCMI pinctrl if you are just shuttling
+> > register values to SCMI?
+> 
+> Standard pinctrl properties will need more memory in our SCMI
+> firmware design. We have limited on-chip memory for SCMI firmware usage.
 > 
 
+So you sort of strip-down the server due to hw constraints, but is it
+the SCMI server still compliant with the spec ? (as in supporting all
+the mandatory commands and features for the protocols you decided to
+support)
 
-
-
+Thanks,
+Cristian
