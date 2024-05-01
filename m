@@ -1,39 +1,40 @@
-Received: from mail-108-mta132.mxroute.com (mail-108-mta132.mxroute.com [136.175.108.132])
+Received: from mail-108-mta122.mxroute.com (mail-108-mta122.mxroute.com [136.175.108.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A55512F367
-	for <imx@lists.linux.dev>; Wed,  1 May 2024 15:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F03512FB2D
+	for <imx@lists.linux.dev>; Wed,  1 May 2024 15:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714577403; cv=none; b=TYyybGRoS/9VMotgqw5v5dEc1xl6rxRgjGW2VCzaqZppFurudyWSO33w95sOKu1cGW5dDXOAnXzy9TdYrxuSvbbWTmzAaZ2etTZz+FVw9eonMI7AnZO9Hgq2PqrFV9Ogd8SmV++Bqz33Z0hbIlkoiL3NwDpsFCCrNSS5DKVdbMc=
+	t=1714577408; cv=none; b=lAoaks04nZ/qz1Xmj44v1EHyj7Bk/bDLGhCL0QOEJ3PM8RWrgb9yXbfsG4iEs7Oc4SDvZhMJ8sKvXHYrnSFfUUAq/I9y/vZKz+EPrz1ihcN3KWgCav7m009SXj19jMG3f0AP30vFBxFcAgxW981k+gRIF8k6auL8ExSiuWB44mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714577403; c=relaxed/simple;
-	bh=/pRCtSseLzYkCvXz7LcflhT9f5jyHTqpeVpOZcybRX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qEprLpvOx689gtdulSdogkUP4W6jj9oV+YAsLbU6cOz4fBF1cN/UYdhJlo8H6COzRn9cT8zAw4uKwlAaCWEUVhaeJ4zeKIQvFoZfLkyNhYMf21adVCsnQWyXyI6Myvg/6M6ZG/seeT5CFuwjkWXt8RIGaWS2pmK75FLVpy9SKVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=gB9JxAcj; arc=none smtp.client-ip=136.175.108.132
+	s=arc-20240116; t=1714577408; c=relaxed/simple;
+	bh=8VdBRsDDSp5wkUn0ulACN2P9epAxMpmNx+w+XhJIpks=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AKEJ4T9vfPHQP+o9wENmVaxVCY5GGlD8UWwYEnS2kIGh7pTUeDHG4CYiC1nKwe+JzAyEueoXUwzfFqsb3qQTQunUILlVNSP1De+efLZ52iPQ9STT3PSgvFOqbaDBX5umS67owZDhdQ49rmlnEy/2nhVeHhs0EfcdEBImxrpqi/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=uNcbOdjs; arc=none smtp.client-ip=136.175.108.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="gB9JxAcj"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="uNcbOdjs"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta132.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c228370008ca2.00a
+ by mail-108-mta122.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c238d50008ca2.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 01 May 2024 15:24:50 +0000
-X-Zone-Loop: 466a75867b6102fcc63b5de9bd871356cd6da8e9a76e
+ Wed, 01 May 2024 15:24:54 +0000
+X-Zone-Loop: 24a106a5dbb8086bcd3f15d787a11a0035d68d0a72a1
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9fd1WG4wcM9VhDUCqkT94Cc+eRxvqfQ5BlXSqcGrRWY=; b=gB9JxAcjgsgJGpTreOxML+Glj+
-	g4//pBQBOvFdzLV2baYfGNX2hv6xYVPH86yvkkoRdt/emmeNz2OINfVEu/caOcSQSn4448U/g7qrZ
-	lp8VO9awzTsz9UepRJ7gPyBUwQ5OzqYjFKbQLUt0RJs8BRtGkaEzjG6cwHDW/2mRRCszEMYCi80jy
-	4ikjmUpKZ8ttClAHewrJZopsN5PUIlgYpNpi8rzB5Ffd0m7sxps98tGFtx/lt9eQSlNWVihTbKYwi
-	utFfF2M5Jpsw4pu4+vav2tKG6fqALqk+tl9dEl3MQFhuxHPzLHIe3EuJf4g7DE5JUkYI3anQbA8Af
-	sS2cCxaw==;
+	bh=IrtZw3b4fhqGfwqS79xHpjO252TynNZZi9NyZ5yPxfc=; b=uNcbOdjsWkvLbKOmpCj4jjzEVH
+	IXhyTDvyNMA16+G4C3codJmOjbtx0lH5NRmCJS8Lvybwk1ioplEKIjF4mxUc2+fMa3v9ubwqbenQH
+	KcByf4jIM0m7z9rNdAI7AotoMY60+YU/l2lajvZkSgxqM6LBvz1AoVVHhTpH3LcoRZfKLi0fPY+E/
+	kihyb7RQYu9CciQIQpx9PX+WKikap5ERid16n3Ch19zyHnfmFKlTpR9yr+NrD8nmDL4O5/DEpYy+V
+	H21PJ5eiFNh59xqGRsh8SugCbIOqUVwlMRmExvQRQlmJU5OFQDvoGJZhX8BYVtLp/mFzDVWPoeV9q
+	ELMxnhCg==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -54,9 +55,11 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v5 00/25] imx258 improvement series
-Date: Wed,  1 May 2024 09:24:17 -0600
-Message-ID: <20240501152442.1072627-1-git@luigi311.com>
+Subject: [PATCH v5 02/25] media: i2c: imx258: Make image geometry meet sensor requirements
+Date: Wed,  1 May 2024 09:24:19 -0600
+Message-ID: <20240501152442.1072627-3-git@luigi311.com>
+In-Reply-To: <20240501152442.1072627-1-git@luigi311.com>
+References: <20240501152442.1072627-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,145 +70,151 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: personal@luigi311.com
 
-From: Luis Garcia <git@luigi311.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-v5:
-  - Changed ownership of a few patches to Ondrej Jirman
-  - Implement feedback from Tommy Merciai
-    - media: i2c: imx258: Add support for reset gpio
-    - media: i2c: imx258: Use v4l2_link_freq_to_bitmap helper
-    - media: i2c: imx258: Convert to new CCI register access helpers
+The output image is defined as being 4208x3118 pixels in size.
+Y_ADD_STA register was set to 0, and Y_ADD_END to 3118, giving
+3119 lines total.
 
-v4:
-  - Swapped out the use macro patch for a patch that uses the new
-    CCI register access helpers per Sakari Ailus
-  - Fix order of reset and powerdown gpio before disable regulators
-  - Fix formating of all patches
-  
-  - Implemented feedback from Pavel Machek
-    - media: i2c: imx258: Follow normal V4L2 behaviours
-    - media: i2c: imx258: Allow configuration of clock
-  - Implemented feedback from Sakari Ailus
-    - media: i2c: imx258: Add support for powerdown gpio
+The datasheet lists a requirement for Y_ADD_STA to be a multiple
+of a power of 2 depending on binning/scaling mode (2 for full pixel,
+4 for x2-bin/scale, 8 for (x2-bin)+(x2-subsample) or x4-bin, or 16
+for (x4-bin)+(x2-subsample)).
+(Y_ADD_END – Y_ADD_STA + 1) also has to be a similar power of 2.
 
+The current configuration for the full res modes breaks that second
+requirement, and we can't increase Y_ADD_STA to 1 to retain exactly
+the same field of view as that then breaks the first requirement.
+For the binned modes, they are worse off as 3118 is not a multiple of
+4.
 
-v3 Luis Garcia
+Increase the main mode to 4208x3120 so that it is the same FOV as the
+binned modes, with Y_ADD_STA at 0.
+Fix Y_ADD_STA and Y_ADD_END for the binned modes so that they meet the
+sensor requirements.
 
-- Add Use v4l2_link_freq_to_bitmap helper patch per Sakari Ailus
-- Separate dt-bindings for powerdown per Rob Herring
-- Fix dt-bindings for imx258.yaml
-- Fix sign offs per Dang Huynh 
-- Fix versioning per Conor Dooley and Kieran Bingham
-- Use scripts to validate and fix patches
-- Implemented feedback from Sakari Ailus
-  - media: i2c: imx258: Add support for 24MHz clock
-  - media: i2c: imx258: Add support for running on 2 CSI data lanes
+This does change the Bayer order as the default configuration is for
+H&V flips to be enabled, so readout is from Y_STA_END to Y_ADD_STA,
+and this patch has changed Y_STA_END.
 
-- Implemented feedback from Rob Herring
-  - dt-bindings: media: imx258: Add alternate compatible strings
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Luis Garcia <git@luigi311.com>
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
+---
+ drivers/media/i2c/imx258.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-
-
-v2 Luis Garcia
-
-- Add use macros patch 
-- Add support for powerdown gpio patch
-- Add support for reset gpio patch
-- Dropped Add support for long exposure modes patch
-- Implemented feedback from Jacopo Mondi
-  - media: i2c: imx258: Add regulator control
-  - media: i2c: imx258: Add support for 24MHz clock
-  - media: i2c: imx258: Add support for running on 2 CSI data lanes
-  - media: i2c: imx258: Add get_selection for pixel array information
-  - media: i2c: imx258: Issue reset before starting streaming
-  - media: i2c: imx258: Set pixel_rate range to the same as the value
-  - dt-bindings: media: imx258: Add alternate compatible strings
-  - media: i2c: imx258: Change register settings for variants of the sensor
-  - media: i2c: imx258: Make HFLIP and VFLIP controls writable
-
-This adds a few more patches and drops one. The long exposure mode patch
-was dropped due to the bug that Jacopo found. The powerdown and reset gpio
-patches were added as that fixes support for the Pinephone Pro, without
-them the sensor doesn't initialize correctly.
-
-Tested on a Pinephone Pro by forcing 24 mhz clock. The two lower 
-resolutions had some artifacts but that is expected as more changes are 
-required to fix them for the Pinephone Pro specifically, kept all 
-registers the same as Dave's original patch since that works on dedicated
-imx258 hardware and the artifacts are PPP specific so it shouldn't 
-be a regression.
-
-
-
-v1 Dave Stevenson
-
-This is a set of patches for imx258 that allow it to work with alternate
-clock frequencies, over either 2 or 4 lanes, and generally adding
-flexibility to the driver.
-
-Tested with an IMX258 module from Soho Enterprises that has a 24MHz
-oscillator. Both 2 and 4 lane configurations work with correct link
-frequencies and pixel rates.
-
-Jacopo has tested on a PinePhone Pro which has an ~19.2MHz clock fed from
-the SoC, He confirms that the two lower resolution modes work, but not the
-full res mode. Comparing to the BSP it looks like they have some weird
-clock configuration in the 4208x3120 mode (nominally 1224Mb/s/lane instead
-of 1267). As it has never previously worked directly with the mainline
-driver this isn't a regression but may indicate that there is a need for
-support of additional link frequencies in the future.
-
-The last patch that makes HFLIP and VFLIP configurable may be contentious
-as I've retained the default configuration of inverted from the original
-driver. I know this was discussed recently, but I can't recall the final
-outcome.
-
-I am relying on someone from Intel testing this out, as correcting the
-cropping and supporting flips has changed the Bayer order. Seeing as this
-is all above board in V4L2 terms I really hope that the layers above it
-behave themselves.
-
-Dave Stevenson (20):
-  media: i2c: imx258: Remove unused defines
-  media: i2c: imx258: Make image geometry meet sensor requirements
-  media: i2c: imx258: Disable digital cropping on binned modes
-  media: i2c: imx258: Remove redundant I2C writes.
-  media: i2c: imx258: Add regulator control
-  media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
-  media: i2c: imx258: Split out common registers from the mode based
-    ones
-  media: i2c: imx258: Add support for 24MHz clock
-  media: i2c: imx258: Add support for running on 2 CSI data lanes
-  media: i2c: imx258: Follow normal V4L2 behaviours for clipping
-    exposure
-  media: i2c: imx258: Add get_selection for pixel array information
-  media: i2c: imx258: Allow configuration of clock lane behaviour
-  media: i2c: imx258: Correct max FRM_LENGTH_LINES value
-  media: i2c: imx258: Issue reset before starting streaming
-  media: i2c: imx258: Set pixel_rate range to the same as the value
-  media: i2c: imx258: Support faster pixel rate on binned modes
-  dt-bindings: media: imx258: Rename to include vendor prefix
-  dt-bindings: media: imx258: Add alternate compatible strings
-  media: i2c: imx258: Change register settings for variants of the
-    sensor
-  media: i2c: imx258: Make HFLIP and VFLIP controls writable
-
-Luis Garcia (2):
-  media: i2c: imx258: Use v4l2_link_freq_to_bitmap helper
-  media: i2c: imx258: Convert to new CCI register access helpers
-
-Ondrej Jirman (3):
-  dt-bindings: media: imx258: Add binding for powerdown-gpio
-  media: i2c: imx258: Add support for powerdown gpio
-  media: i2c: imx258: Add support for reset gpio
-
- .../i2c/{imx258.yaml => sony,imx258.yaml}     |   15 +-
- MAINTAINERS                                   |    2 +-
- drivers/media/i2c/Kconfig                     |    1 +
- drivers/media/i2c/imx258.c                    | 1451 ++++++++++-------
- 4 files changed, 850 insertions(+), 619 deletions(-)
- rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (86%)
-
+diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+index 2dbafd21dd70..4a7048d834c6 100644
+--- a/drivers/media/i2c/imx258.c
++++ b/drivers/media/i2c/imx258.c
+@@ -111,7 +111,7 @@ struct imx258_mode {
+ 	struct imx258_reg_list reg_list;
+ };
+ 
+-/* 4208x3118 needs 1267Mbps/lane, 4 lanes */
++/* 4208x3120 needs 1267Mbps/lane, 4 lanes */
+ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x02 },
+@@ -148,7 +148,7 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
+ 	{ 0x0823, 0x00 },
+ };
+ 
+-static const struct imx258_reg mode_4208x3118_regs[] = {
++static const struct imx258_reg mode_4208x3120_regs[] = {
+ 	{ 0x0136, 0x13 },
+ 	{ 0x0137, 0x33 },
+ 	{ 0x3051, 0x00 },
+@@ -210,7 +210,7 @@ static const struct imx258_reg mode_4208x3118_regs[] = {
+ 	{ 0x0348, 0x10 },
+ 	{ 0x0349, 0x6F },
+ 	{ 0x034A, 0x0C },
+-	{ 0x034B, 0x2E },
++	{ 0x034B, 0x2F },
+ 	{ 0x0381, 0x01 },
+ 	{ 0x0383, 0x01 },
+ 	{ 0x0385, 0x01 },
+@@ -329,7 +329,7 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x0348, 0x10 },
+ 	{ 0x0349, 0x6F },
+ 	{ 0x034A, 0x0C },
+-	{ 0x034B, 0x2E },
++	{ 0x034B, 0x2F },
+ 	{ 0x0381, 0x01 },
+ 	{ 0x0383, 0x01 },
+ 	{ 0x0385, 0x01 },
+@@ -448,7 +448,7 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x0348, 0x10 },
+ 	{ 0x0349, 0x6F },
+ 	{ 0x034A, 0x0C },
+-	{ 0x034B, 0x2E },
++	{ 0x034B, 0x2F },
+ 	{ 0x0381, 0x01 },
+ 	{ 0x0383, 0x01 },
+ 	{ 0x0385, 0x01 },
+@@ -562,12 +562,12 @@ static const struct imx258_link_freq_config link_freq_configs[] = {
+ static const struct imx258_mode supported_modes[] = {
+ 	{
+ 		.width = 4208,
+-		.height = 3118,
++		.height = 3120,
+ 		.vts_def = IMX258_VTS_30FPS,
+ 		.vts_min = IMX258_VTS_30FPS,
+ 		.reg_list = {
+-			.num_of_regs = ARRAY_SIZE(mode_4208x3118_regs),
+-			.regs = mode_4208x3118_regs,
++			.num_of_regs = ARRAY_SIZE(mode_4208x3120_regs),
++			.regs = mode_4208x3120_regs,
+ 		},
+ 		.link_freq_index = IMX258_LINK_FREQ_1267MBPS,
+ 	},
+@@ -707,7 +707,7 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 	/* Initialize try_fmt */
+ 	try_fmt->width = supported_modes[0].width;
+ 	try_fmt->height = supported_modes[0].height;
+-	try_fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	try_fmt->code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 	try_fmt->field = V4L2_FIELD_NONE;
+ 
+ 	return 0;
+@@ -819,7 +819,7 @@ static int imx258_enum_mbus_code(struct v4l2_subdev *sd,
+ 	if (code->index > 0)
+ 		return -EINVAL;
+ 
+-	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	code->code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 
+ 	return 0;
+ }
+@@ -831,7 +831,7 @@ static int imx258_enum_frame_size(struct v4l2_subdev *sd,
+ 	if (fse->index >= ARRAY_SIZE(supported_modes))
+ 		return -EINVAL;
+ 
+-	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
++	if (fse->code != MEDIA_BUS_FMT_SBGGR10_1X10)
+ 		return -EINVAL;
+ 
+ 	fse->min_width = supported_modes[fse->index].width;
+@@ -847,7 +847,7 @@ static void imx258_update_pad_format(const struct imx258_mode *mode,
+ {
+ 	fmt->format.width = mode->width;
+ 	fmt->format.height = mode->height;
+-	fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->format.code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 	fmt->format.field = V4L2_FIELD_NONE;
+ }
+ 
+@@ -894,7 +894,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+ 	mutex_lock(&imx258->mutex);
+ 
+ 	/* Only one raw bayer(GBRG) order is supported */
+-	fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->format.code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 
+ 	mode = v4l2_find_nearest_size(supported_modes,
+ 		ARRAY_SIZE(supported_modes), width, height,
 -- 
 2.44.0
 
