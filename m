@@ -1,174 +1,152 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD786166E
-	for <imx@lists.linux.dev>; Wed,  1 May 2024 11:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962D77710B
+	for <imx@lists.linux.dev>; Wed,  1 May 2024 11:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714563127; cv=none; b=kAKVlFn8Zwqadwk7TIqNmj0eTCWHh1lERGpKWORoVGUB5giok0QtJEIPtVvep/9vaMKj9g0w8i2Nc6rXtV5jEMABvkDstwrRpJb5KI6KH3zNAAWubxRFInwY5qDubHIgeHkfCaUFH5SHUkp4Ia3ODrBVlq+AmNDHckgPM0TJXgg=
+	t=1714563579; cv=none; b=hLwe6Ji8CYQ4IhHVblzXbQ/w6y3y+TbKlwubo8hTkI3MzjSlLety1e8IxYvaNNh/DTXQP5+3bo41KJt45yNHifvB5HVcA4r3vmF3+HTRIVIGkbyvAcP6ycDpNBtrMTEdP/JVqRTw2SJpDgBmMGZRgn8Ob7u9fTkY/6PPQLE0D5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714563127; c=relaxed/simple;
-	bh=IKkLZZ/6LHNlSiF5MEAigsdy2P81iDCz4def5PRB3/U=;
+	s=arc-20240116; t=1714563579; c=relaxed/simple;
+	bh=hWiB2IF9/BVtMMyQ4v988Y/lvqGLBwMNOHdlgiN6avs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qFEfMwBvijDGayfxT33VqOwwfiDxHTYV13z6Xtb2ScMPY1vlyaZDs2Rzrc/l9/NYgfDPI7+uQ1/QkSWSK3bBPZZr5Zj8hdMFP3xdDG32ng876uX0jN5NicxvhSrBcWjbuQzblHJJv1H7PXA6lPkUBu+ICX/ka0pfw5bdsh0l6Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A6E912F4;
-	Wed,  1 May 2024 04:32:31 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DCE613F793;
-	Wed,  1 May 2024 04:32:02 -0700 (PDT)
-Date: Wed, 1 May 2024 12:32:00 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gh1+zwlWfgxXIbeOQQ3VYzlVT+tp3uf2bDluOv6gO6dUdUx8oeivlX5H49arVyjqnAcNgRsJMV683SOu5eCvNDY1OrWRY0+Xub0p+d+dsukNEixMx6024hJ1Hub29PKDku5MR44SomVVY7lNhnxI1Co7Tdkrr/JjlTept0hQYmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CczAGi+B; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CczAGi+B"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a58fc650f8fso393361666b.1
+        for <imx@lists.linux.dev>; Wed, 01 May 2024 04:39:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714563574; x=1715168374; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6F17kWFJJgrPWa4fwXbgU8r9m9niISBPH10+pYqanrE=;
+        b=CczAGi+B56gEPmkIwr8iD+XGui7/zJW8IJ76dzL8Qj+E+qnJLw2RpT+qqT/aqEcA97
+         Ulz95q7XTGKXOhT/xaEEHyoqIgjbrGnIpSC3F0n86YCATsoLvErWt82JJEuhwnnR3GGs
+         GqM8XMP6x8yIFFtbPpFOQR7BL5DAZ5IpWmm72rktMF8I2LxgPf06qCLsArSci9gjAb4d
+         V52ytK35Ely8FKZ1Nxn1ObTNax/yut6o1r8HUcT/AbSYR1GeJbfzdwE46Eiwk2T0NB4k
+         Ok+SNuL76j+mSAlHn5Qh2OCYZ7rxiFYDlc9LVNYmXyH8PV+YtKi7KgJq2XxXl8VUrle9
+         az2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714563574; x=1715168374;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6F17kWFJJgrPWa4fwXbgU8r9m9niISBPH10+pYqanrE=;
+        b=DTsjN38Xo5Vz/VBdPF7B4mBGO0jeI6Rz1dx2KFOo6X1aEwiipSCaC6kvVuffjehtJi
+         4J57UfK7HevciOs5UpZGwsIlMvhD71fB8NKg2bhIFNOv57z+SLffRTHkrfeDKX3VY63W
+         pzH/IJG14snH2ARD2HMh1hDBqNZr2JCXpYtSQ+qFGvK1PuXJclD1ozO9WKZ3zZjK2Qlf
+         SR/XDTzPhSMzHISAI8/ZKBeCRUpJF0P1UV8kroe8pFHupaCZzBDu3XjuNilra6h7/6kK
+         S9bSV/aTmPHyWis8BYAJDti217edrgWtkW/zZGJxaQPFwqBiZOI430fIf865KCkGZj/h
+         TxVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWERIeTiRTH3wMGaP3VaUpt6h9Lpvw04FdQFAK8V6sNUcfyi4bUxLYIGrB3YWzlCY2udlUxM3AofLSel5HwHNjBSoV/
+X-Gm-Message-State: AOJu0Yxkq0f2r/07E2fqdEEWx9ovK6p26Ap3c8d0/5csELYPrBfiCHzd
+	0BWcZFHw373gnFXABxLyeePzeDqIhwSPR3eTYqcrCvMYulwuZIdrlRUGij8Ir7Y=
+X-Google-Smtp-Source: AGHT+IG0gW8AtnHPdOjlgNheHMn3PEoAxQnpTPi2JoQxokArraxLe3iFJHW1+ihQz250D5AqltkHqw==
+X-Received: by 2002:a17:906:af85:b0:a58:a1e3:a2cd with SMTP id mj5-20020a170906af8500b00a58a1e3a2cdmr1578941ejb.55.1714563573542;
+        Wed, 01 May 2024 04:39:33 -0700 (PDT)
+Received: from linaro.org ([62.231.100.236])
+        by smtp.gmail.com with ESMTPSA id f7-20020a170906c08700b00a51a80028e8sm16222894ejz.65.2024.05.01.04.39.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 May 2024 04:39:33 -0700 (PDT)
+Date: Wed, 1 May 2024 14:39:31 +0300
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Abel Vesa <abelvesa@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: firmware: arm,scmi: Add properties
- for i.MX95 Pinctrl OEM extensions
-Message-ID: <ZjIoMJOAxtC-nkZO@pluto>
-References: <20240418-pinctrl-scmi-oem-v1-v2-0-3a555a3c58c3@nxp.com>
- <20240418-pinctrl-scmi-oem-v1-v2-1-3a555a3c58c3@nxp.com>
- <20240424193007.GA329896-robh@kernel.org>
- <DU0PR04MB9417C67342B1DD6CC299B4CE88172@DU0PR04MB9417.eurprd04.prod.outlook.com>
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] clk: imx: imx8mp: Convert to platform remove callback
+ returning void
+Message-ID: <ZjIp85IouNtMV7JD@linaro.org>
+References: <20240423071232.463201-2-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9417C67342B1DD6CC299B4CE88172@DU0PR04MB9417.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240423071232.463201-2-u.kleine-koenig@pengutronix.de>
 
-On Thu, Apr 25, 2024 at 09:06:00AM +0000, Peng Fan wrote:
-> Hi Rob,
+On 24-04-23 09:12:31, Uwe Kleine-König wrote:
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
 > 
-> > Subject: Re: [PATCH v2 1/2] dt-bindings: firmware: arm,scmi: Add properties
-> > for i.MX95 Pinctrl OEM extensions
-> > 
-> > On Thu, Apr 18, 2024 at 10:53:17AM +0800, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > i.MX95 Pinctrl is managed by SCMI firmware using OEM extensions. This
-> > > patch is to add i.MX95 Pinctrl OEM extensions properties.
-> > >
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/firmware/arm,scmi.yaml     |  9 ++-
-> > >  .../bindings/firmware/nxp,imx95-scmi-pinctrl.yaml  | 66
-> > > ++++++++++++++++++++++
-> > >  2 files changed, 72 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
-> > > b/Documentation/devicetree/bindings/firmware/arm,scmi.yaml
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all drivers
+> are converted, .remove_new() will be renamed to .remove().
 > 
-> ....
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
 > 
-> > > +
-> > > +title: i.MX System Control and Management Interface (SCMI) Pinctrl
-> > > +Protocol
-> > > +
-> > > +maintainers:
-> > > +  - Peng Fan <peng.fan@arm.com>
-> > > +
-> > > +patternProperties:
-> > > +  '[a-f0-9]+$':
-> > > +    type: object
-> > > +    unevaluatedProperties: false
-> > > +
-> > > +    properties:
-> > > +      pins:
-> > > +        $ref: /schemas/types.yaml#/definitions/string
-> > > +        description: name of the pin
-> > > +        items:
-> > > +          enum: [ daptdi, daptmsswdio, daptclkswclk, daptdotraceswo,
-> > > +                  gpioio00, gpioio01, gpioio02, gpioio03, gpioio04,
-> > 
-> > ioio?
-> 
-> Yes. The name is exported from SCMI firmware.
-> 
-> > 
-> > > +                  gpioio05, gpioio06, gpioio07, gpioio08, gpioio09,
-> > > +                  gpioio10, gpioio11, gpioio12, gpioio13, gpioio14,
-> > > +                  gpioio15, gpioio16, gpioio17, gpioio18, gpioio19,
-> > > +                  gpioio20, gpioio21, gpioio22, gpioio23, gpioio24,
-> > > +                  gpioio25, gpioio26, gpioio27, gpioio28, gpioio29,
-> > > +                  gpioio30, gpioio31, gpioio32, gpioio33, gpioio34,
-> > > +                  gpioio35, gpioio36, gpioio37, ccmclko1, ccmclko2,
-> > > +                  ccmclko3, ccmclko4, enet1mdc, enet1mdio, enet1td3,
-> > > +                  enet1td2, enet1td1, enet1td0, enet1txctl, enet1txc,
-> > > +                  enet1rxctl, enet1rxc, enet1rd0, enet1rd1, enet1rd2,
-> > > +                  enet1rd3, enet2mdc, enet2mdio, enet2td3, enet2td2,
-> > > +                  enet2td1, enet2td0, enet2txctl, enet2txc, enet2rxctl,
-> > > +                  enet2rxc, enet2rd0, enet2rd1, enet2rd2, enet2rd3,
-> > > +                  sd1clk, sd1cmd, sd1data0, sd1data1, sd1data2, sd1data3,
-> > > +                  sd1data4, sd1data5, sd1data6, sd1data7, sd1strobe,
-> > > +                  sd2vselect, sd3clk, sd3cmd, sd3data0, sd3data1,
-> > > +                  sd3data2, sd3data3, xspi1data0, xspi1data1, xspi1data2,
-> > > +                  xspi1data3, xspi1data4, xspi1data5, xspi1data6,
-> > > +                  xspi1data7, xspi1dqs, xspi1sclk, xspi1ss0b, xspi1ss1b,
-> > > +                  sd2cdb, sd2clk, sd2cmd, sd2data0, sd2data1, sd2data2,
-> > > +                  sd2data3, sd2resetb, i2c1scl, i2c1sda, i2c2scl, i2c2sda,
-> > > +                  uart1rxd, uart1txd, uart2rxd, uart2txd, pdmclk,
-> > > +                  pdmbitstream0, pdmbitstream1, sai1txfs, sai1txc,
-> > > +                  sai1txd0, sai1rxd0, wdogany, fccuerr0 ]
-> > > +
-> > > +      nxp,func-id:
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        description: Indicates the PAD connections which function
-> > > + module
-> > 
-> > The description makes no sense...
-> 
-> I will use below description in v3:
-> For each pin, there are up to 8 muxing options (called ALT modes). For example:
-> Select 1 of 5 iomux modes to be used for pad: DAP_TCLK_SWCLK.
-> 000b - Select mux mode: ALT0 mux port: JTAG_MUX_TCK of instance: jtag_mux
-> 010b - Select mux mode: ALT2 mux port: CAN4_RX of instance: imx95_wakeupmix_top
-> 100b - Select mux mode: ALT4 mux port: FLEXIO1_FLEXIO30 of instance: imx95_wakeupmix_top
-> 101b - Select mux mode: ALT5 mux port: GPIO3_IO30 of instance: imx95_wakeupmix_top
-> 110b - Select mux mode: ALT6 mux port: LPUART5_CTS_B of instance: imx95_wakeupmix_top
-> The nxp,func-id property is selecting one ALT mode.
-> 
-> > 
-> > > +
-> > > +      nxp,pin-conf:
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        description: The PAD configuration
-> > 
-> > PAD stands for? Or is it pin configuration as the property name says?
-> 
-> It is pin configuration which includes pull up/down, drive strength and etc.
-> 
-> > 
-> > This is just a raw register values? 
-> 
-> Yes.
-> 
-> Why can't standard pinctrl properties be
-> > used here. What's the point of using SCMI pinctrl if you are just shuttling
-> > register values to SCMI?
-> 
-> Standard pinctrl properties will need more memory in our SCMI
-> firmware design. We have limited on-chip memory for SCMI firmware usage.
-> 
+> Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for power saving")
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-So you sort of strip-down the server due to hw constraints, but is it
-the SCMI server still compliant with the spec ? (as in supporting all
-the mandatory commands and features for the protocols you decided to
-support)
+LGTM.
 
-Thanks,
-Cristian
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+
+> ---
+> Hello,
+> 
+> after the merge window leading to v6.10-rc1 (assuming Linus has >= 10 fingers
+> this cycle :-) I want to switch the prototype of struct
+> platform_driver::remove to return void. So please either merge this
+> patch together with 1496dd413b2e, or accept me sending this patch
+> together with the patch changing the function's prototype for inclusion
+> to Greg's driver-core tree.
+
+Sure, will apply it today.
+
+> 
+> Thanks
+> Uwe
+> 
+>  drivers/clk/imx/clk-imx8mp-audiomix.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> index 574a032309c1..be9df93b6adb 100644
+> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> @@ -346,11 +346,9 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
+>  	return ret;
+>  }
+>  
+> -static int clk_imx8mp_audiomix_remove(struct platform_device *pdev)
+> +static void clk_imx8mp_audiomix_remove(struct platform_device *pdev)
+>  {
+>  	pm_runtime_disable(&pdev->dev);
+> -
+> -	return 0;
+>  }
+>  
+>  static int clk_imx8mp_audiomix_runtime_suspend(struct device *dev)
+> @@ -382,7 +380,7 @@ MODULE_DEVICE_TABLE(of, clk_imx8mp_audiomix_of_match);
+>  
+>  static struct platform_driver clk_imx8mp_audiomix_driver = {
+>  	.probe	= clk_imx8mp_audiomix_probe,
+> -	.remove = clk_imx8mp_audiomix_remove,
+> +	.remove_new = clk_imx8mp_audiomix_remove,
+>  	.driver = {
+>  		.name = "imx8mp-audio-blk-ctrl",
+>  		.of_match_table = clk_imx8mp_audiomix_of_match,
+> -- 
+> 2.43.0
+> 
