@@ -1,40 +1,40 @@
-Received: from mail-108-mta130.mxroute.com (mail-108-mta130.mxroute.com [136.175.108.130])
+Received: from mail-108-mta109.mxroute.com (mail-108-mta109.mxroute.com [136.175.108.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E83130A4B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AF912FF6C
 	for <imx@lists.linux.dev>; Wed,  1 May 2024 15:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714577438; cv=none; b=T0V2BPvQe1PC4JENF4C0XGCnGs7MXKLfdpAd8QOA4k4i4ugEtQXAgATUkV/oJNvNvmv9JkbAb0uh4tGgyO85iMXINO2a8ewryPlAKgM1z3drqqtcdne0gyrv/ixzN7eYDHZTkMAhBs0fWGEIDqkc6YGfdpb4eUyWYj0/+tLIagY=
+	t=1714577438; cv=none; b=iwxoxu+0HgIWQoTPuSV0KHdtLLfEBF4m7iJ5h9YnRcEw330+3thDg+J81SEcdOvzoekFLJt0kBaMFBFHV0j3dRarPAPJvc1cKhVbLFPX0ESxiQm+kaTILG4cBctKBiMsX/jNQMoMAgTtbM/XT+vj/ae8+F7j7CgkzvBPkoHlkhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714577438; c=relaxed/simple;
-	bh=3GOmMIRHsNVhxdy69UdU/N5ldgNF0c1SP/SadcWTgmA=;
+	bh=pQK2j/aOaMt8ywl27zkrasiDgTR0TE4do7sZJlOPRRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGgsO5Pw2xLtOBzyCbFR6Bc8SwcqzhB6iVFWYwddpQs9JGSIlw9vk9ByETQgYTARuxrRTusauLe39Kh599lT4wl2nZNVtlLytnhBylcc/fNJ7gk1Sxd91IBs1lmiNZ7iUGEigTKocGVswWN5e6n7rT7FsWMZW8IdBb0XcpPKVVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=WNh6HOqo; arc=none smtp.client-ip=136.175.108.130
+	 MIME-Version; b=VTijMZnTjTnie5QNO5BP5iqjWoqBX5aSUCpQkIAS+s1Rti9veLxjeoH6G2LK92pTtgvQ2dEuPsZl9dihdoMD9lQbZvHTVGT5hxhl/LGg6MvWr8S00IpP7S6NFysk/9ALM2Fl5ZsPkNOpb7IL98rDeuJWuYJ8NzMDphlSHb+61HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=sF6+cUNB; arc=none smtp.client-ip=136.175.108.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="WNh6HOqo"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="sF6+cUNB"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta130.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2bb0b0008ca2.00a
+ by mail-108-mta109.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2a8f10008ca2.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 01 May 2024 15:25:28 +0000
-X-Zone-Loop: 0da31aafbbc4e249aafcdfe4e59327166f4b6a68af0d
+ Wed, 01 May 2024 15:25:23 +0000
+X-Zone-Loop: b9514a7ce722ad1dd1ce82acd8717ed9c8e650f94d10
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hBpjW4fXJ0RL8rfhZEBmzy5bT//pxdiec10L9b4NGpg=; b=WNh6HOqo38jOoemcC3cfTtjgHW
-	BHgLwKt9Sn1OEOQklBRInL48rDddHZgWAbsmmZjWxCAeewf9410D5d+Fq/xOHSHuqKVi6vw12I1jW
-	RUVf/TKFYDJhg5ulBaZcJU82U2c12F+JdlCISu1A/KwH62JFFQ0LaBicLlDQmRauVPqNXM6z/5UQY
-	NDDOeCNeI8e/yxXmysZQG+7PNY22Trh4jW/EbtRlbpmDPFWtNQ2dBouzcnH0A5oQCPwa4FjX83Juc
-	BhExO9gVzgkjkR2RBScEMH6LOTwSwpFkNwKCqNkLYcKdtMfZWuIOCxhyzNyQwLtwdzSLRKFgskcga
-	pHU0c5/g==;
+	bh=xTu7TgWqZVAd6M9P/qgtMjmNVXvV33CqoO1c4TcfXKM=; b=sF6+cUNBUNjUpX54jnLdLfUJIB
+	BGdEb7Z5kkBFMr+Ptoo6XYiM6pFNSQTyuq+fvVd0y6QMca8E+nMI91AXkF4HVZ2PP2ayDMGVEUKra
+	9JkFDSQZmK9IshV7fe5PgK8n2QzE1xb2f2SqoxSkEqX/k9bDcfndtBkDRniMQGSH2Hy2ELhHjqU6w
+	jMECHm+ut9IKOpSK8FDKjaEwCFshnzPnWa0ej09cZgMqT0vu5EvQQPzpnFXHTv7cNJniwfr9X8piY
+	8V+p/7tAJggLTgBkqdUry5hmGENrD9xShLHlsKDb6W0sjmCGF2MZD0jDmqAgQJmxAQcA7cDeZva34
+	xXeYbUaw==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -54,11 +54,10 @@ Cc: dave.stevenson@raspberrypi.com,
 	linux-kernel@vger.kernel.org,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v5 17/25] dt-bindings: media: imx258: Rename to include vendor prefix
-Date: Wed,  1 May 2024 09:24:34 -0600
-Message-ID: <20240501152442.1072627-18-git@luigi311.com>
+Subject: [PATCH v5 15/25] media: i2c: imx258: Set pixel_rate range to the same as the value
+Date: Wed,  1 May 2024 09:24:32 -0600
+Message-ID: <20240501152442.1072627-16-git@luigi311.com>
 In-Reply-To: <20240501152442.1072627-1-git@luigi311.com>
 References: <20240501152442.1072627-1-git@luigi311.com>
 Precedence: bulk
@@ -72,49 +71,65 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-imx258.yaml doesn't include the vendor prefix of sony, so
-rename to add it.
-Update the id entry and MAINTAINERS to match.
+With a read only control there is limited point in advertising
+a minimum and maximum for the control, so change to set the
+value, min, and max all to the selected pixel rate.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- .../bindings/media/i2c/{imx258.yaml => sony,imx258.yaml}        | 2 +-
- MAINTAINERS                                                     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
- rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (97%)
+ drivers/media/i2c/imx258.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-similarity index 97%
-rename from Documentation/devicetree/bindings/media/i2c/imx258.yaml
-rename to Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-index 80d24220baa0..bee61a443b23 100644
---- a/Documentation/devicetree/bindings/media/i2c/imx258.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: http://devicetree.org/schemas/media/i2c/imx258.yaml#
-+$id: http://devicetree.org/schemas/media/i2c/sony,imx258.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+index 9c83ba1232fa..4eb5f2eba491 100644
+--- a/drivers/media/i2c/imx258.c
++++ b/drivers/media/i2c/imx258.c
+@@ -971,7 +971,8 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
  
- title: Sony IMX258 13 Mpixel CMOS Digital Image Sensor
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8ceb49f1b630..a8c3a531ad39 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20489,7 +20489,7 @@ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
- L:	linux-media@vger.kernel.org
- S:	Maintained
- T:	git git://linuxtv.org/media_tree.git
--F:	Documentation/devicetree/bindings/media/i2c/imx258.yaml
-+F:	Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
- F:	drivers/media/i2c/imx258.c
+ 		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
+ 		pixel_rate = link_freq_to_pixel_rate(link_freq, imx258->nlanes);
+-		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
++		__v4l2_ctrl_modify_range(imx258->pixel_rate, pixel_rate,
++					 pixel_rate, 1, pixel_rate);
+ 		/* Update limits and set FPS to default */
+ 		vblank_def = imx258->cur_mode->vts_def -
+ 			     imx258->cur_mode->height;
+@@ -1261,8 +1262,7 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	struct v4l2_ctrl *vflip, *hflip;
+ 	s64 vblank_def;
+ 	s64 vblank_min;
+-	s64 pixel_rate_min;
+-	s64 pixel_rate_max;
++	s64 pixel_rate;
+ 	int ret;
  
- SONY IMX274 SENSOR DRIVER
+ 	ctrl_hdlr = &imx258->ctrl_handler;
+@@ -1293,18 +1293,13 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	if (vflip)
+ 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ 
+-	pixel_rate_max =
+-		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
+-					imx258->nlanes);
+-	pixel_rate_min =
+-		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1],
+-					imx258->nlanes);
++	pixel_rate = link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
++					     imx258->nlanes);
+ 	/* By default, PIXEL_RATE is read only */
+ 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
+ 				V4L2_CID_PIXEL_RATE,
+-				pixel_rate_min, pixel_rate_max,
+-				1, pixel_rate_max);
+-
++				pixel_rate, pixel_rate,
++				1, pixel_rate);
+ 
+ 	vblank_def = imx258->cur_mode->vts_def - imx258->cur_mode->height;
+ 	vblank_min = imx258->cur_mode->vts_min - imx258->cur_mode->height;
 -- 
 2.44.0
 
