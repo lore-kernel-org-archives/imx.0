@@ -1,132 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20C31758D;
-	Wed,  1 May 2024 13:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E59610958
+	for <imx@lists.linux.dev>; Wed,  1 May 2024 14:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714570997; cv=none; b=KCnjz/ijzXDfddP37QfQBDgIJmu3i5Y30X64uriJLfvcu4L9tKdZV+uNuigFP9S0D8pn/xpFZ0u3Yl1IGwOI7tFS9HUiYIkNG3OBOc8uWs2GArq5nWGEIEEUV3g2wpTIRP6Tk3OWGeXRQiSPbIlvGQlUkZjH83+4xtR+234HBak=
+	t=1714574707; cv=none; b=ql5omzqgrqgGfr2s/eX3DZwSarRsvBQ7cEBq0H/Z1r5NMNUIQmQmZINYDjm4PO3MFXzaWC9o7nxoueRd8vKr+U47uHFIe7NseLjALmslX92flwMbmUXwPIe4o7pBFyAtUSvtEaG5iXU/ljYT9qiLn9RFhq+Aa6XMWV9CnmdYWGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714570997; c=relaxed/simple;
-	bh=8s5kRpq9v7omz4cTI6onHJBvW1QqzHh21ZT4YSBdF7k=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=TvF03jFyFfFtMRePmAdLZZiQZs6RReqi59Zw+9v/63trKBHQujvIDBdrupjvLEg0rdMOP32SynysE/1BVgABHvK4rISRcCtWvJvkJztFfuLkMirgA+L/Z/9SupnyOaNhTtnvhM3TIYg8wyIqXIEKnzzYVET3MjbCxGIpXvQxHww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjyr9K85; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714574707; c=relaxed/simple;
+	bh=OVCEA+sMHIn5t+AmYPlgxoh+k+aWKCTPEhOiftVsSw4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hyitFG5Pq/3J5xliq15LCr13mU5/meb4MKmN+AiB9MKirwJFyCxscjXrVeUAuy1oH5O0D3oYhzR3Q3/4PlBmtAtHGzMZUuOicSSq/JbyfQIJ7CBx62UBBYngfaSvo17kATe/jTNksTyHMStecGwlbZox7cdDOjF/QuUwvug2Ko8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RHW1ZnrK; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjyr9K85"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD58C4AF19;
-	Wed,  1 May 2024 13:43:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714570997;
-	bh=8s5kRpq9v7omz4cTI6onHJBvW1QqzHh21ZT4YSBdF7k=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=kjyr9K85Re6Zf3n9S/Id7kQZR5Yr29JID3fNO4fHNxVk5U08ylMmNTPsEZRIEN0zB
-	 SxbL3nPSGCY272Yx7p2+Nwqx/y/1bJTSuzixrQjfSj+hpzykP+n1SjZ9F5y4iftmZ4
-	 ltLsKFZeF63cRrNzaRiwdNjKz2IU/K9NUNnJJTHIZqOIzbsNnIrDqGVyicTC36n7n+
-	 /0nR5HcPpt3vA1s38/WKQSrMkCUgS9I/XeH1Bu/d77r427FiVlvbpkmePxuIQKgo3w
-	 YNl2GWRMX+kMjg+FRe0vPunEq+eHFK8VH9EZJ7fljw1SxEjKHaogC03pMTHMpAu3ob
-	 RxoZuI1LiqjSA==
-From: Mark Brown <broonie@kernel.org>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, 
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
- Bard Liao <yung-chuan.liao@linux.intel.com>, 
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, 
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-In-Reply-To: <20240426-n-const-ops-var-v2-0-e553fe67ae82@kernel.org>
-References: <20240426-n-const-ops-var-v2-0-e553fe67ae82@kernel.org>
-Subject: Re: [PATCH v2 00/14] ASoC: Constify local snd_sof_dsp_ops
-Message-Id: <171457099304.1888704.3710450015978525893.b4-ty@kernel.org>
-Date: Wed, 01 May 2024 22:43:13 +0900
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RHW1ZnrK"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a5883518135so769497066b.3
+        for <imx@lists.linux.dev>; Wed, 01 May 2024 07:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714574703; x=1715179503; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=19fONahm4CwkvcFuKCjkaG9ywwBvaJs3VMjRkYN1PAE=;
+        b=RHW1ZnrK0k7K9aUuPkcwWu29w5aPa1Dik5B1DSb/ScT1EIRV/P1cF0HIwW5NgGDxFz
+         e53aaVDEmr+/I7TXePwW3Fz1afTAhGUCfF6fxfVzZOk/1kxQsXfMXwZ6aBBJLgoaxbQ1
+         uDA/cmEUFHfC0qQyX7/a5/L6FCB/2z324Vsp0ppOrxhc8aYidv7/BMjdubGJQLv5Sz43
+         nGwaNqvxKNyDqD1a3J1Ojly86/twH42ZMJFRrHxYlrYLvnvbaMOXQdegyMknTTPrS1WX
+         FV3KWO6gNKVdpQbBXSKt9P3sdysFeQ+u0tlIVZgba8gsFRNPfYeMXbUBHk8ZAgwwPiS1
+         25AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714574703; x=1715179503;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=19fONahm4CwkvcFuKCjkaG9ywwBvaJs3VMjRkYN1PAE=;
+        b=sBG2b4hAH6AdtuRhiNBn5I3jJJCJZ9Uc5aQ/7It2PRsHWCoTEw4bc4Ze7/j41uyVmq
+         n1RjoJid07R6gJDuOmruh6kHUHRbFKK9YuogASi3Eb3PbSoMR8N4mhbMGfNOV+5wFa4P
+         DtlpvrcBDFiQfZmJFyz6lBIkEB4YjCUMm2hepZK3owzAP6WN3Tot/N53Sah9u4B9rKJz
+         +dKGlALV86pygKXpAP7AldK1+/YFwNwSx5WieHAfAs+BP7zMbd+l4wb7cyQZpEevqG3q
+         vVZDiIus2W8fkv2J6LQ1fnkqQAKLkd6LpWQ+rh/7pB4+NWFCd+hkWnZf3RamWjpLYVWz
+         zAVQ==
+X-Gm-Message-State: AOJu0YxEbvTucAqZFRSa74JoWHnsg/pNGx/xMfbJkY3Vdj8tayKA7qh0
+	P8EI3E2pT+bipHUqlWsuQgJVizsdm7LEi/dELbztV5JYrnhgc/cm3MN3HNViWo4=
+X-Google-Smtp-Source: AGHT+IFWw4+HYpsJ1jIgKWLbzvy0AN2twDF2ubXy00OLPY7mv44CBJ1BKi+rmI9iBBALYYUDnnI0BA==
+X-Received: by 2002:a17:906:a0d4:b0:a51:fec0:23ec with SMTP id bh20-20020a170906a0d400b00a51fec023ecmr1764739ejb.25.1714574702588;
+        Wed, 01 May 2024 07:45:02 -0700 (PDT)
+Received: from hackbox.lan ([62.231.100.236])
+        by smtp.gmail.com with ESMTPSA id e7-20020a170906c00700b00a51bf97e63esm16343266ejz.190.2024.05.01.07.45.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 May 2024 07:45:02 -0700 (PDT)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Mike Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-clk@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] clk: imx: Updates for v6.10
+Date: Wed,  1 May 2024 17:44:45 +0300
+Message-Id: <20240501144445.892045-1-abel.vesa@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 26 Apr 2024 11:03:47 +0200, Krzysztof Kozlowski wrote:
-> Changes in v2
-> =============
-> - Only rebase on for-next of broonie/sound.git
-> - Add tags.
-> - Link to v1: https://lore.kernel.org/r/20240414-n-const-ops-var-v1-0-8f53ee5d981c@kernel.org
-> 
-> Description
-> ===========
-> The core code does not modify the 'struct snd_sof_dsp_ops' passed via
-> pointer in various places, so this can be made pointer to const in few
-> places.  This in turn allows few drivers to have the local (usually
-> static) 'struct snd_sof_dsp_ops' as const which increased code safety,
-> as it is now part of rodata.
-> 
-> [...]
+The following changes since commit 4cece764965020c22cff7665b18a012006359095:
 
-Applied to
+  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+are available in the Git repository at:
 
-Thanks!
+  git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/clk-imx-6.10
 
-[01/14] ASoC: SOF: debug: Constify local snd_sof_dsp_ops
-        commit: ffca099bbff1978bc9c97b076f0d35b4fe6ddf27
-[02/14] ASoC: SOF: ipc3: Constify local snd_sof_dsp_ops
-        commit: ee5acc1e035ec5ed5d9f0f63fda9d627220090c2
-[03/14] ASoC: SOF: pcm: Constify local snd_sof_dsp_ops
-        commit: a0db037df9630edad76153c7937c6f5ca04ed44f
-[04/14] ASoC: SOF: Constify stored pointer to snd_sof_dsp_ops
-        commit: 8bbc692d1abce5bc949dea9acba85fc686601c04
-[05/14] ASoC: SOF: intel: pci-tng: Constify snd_sof_dsp_ops
-        commit: 8f2b0d55abc44676b076128903a5dc730aab23c6
-[06/14] ASoC: SOF: intel: hda: Constify snd_sof_dsp_ops
-        commit: 6032eefc2c478243a511352dda04495c9a9fec6a
-[07/14] ASoC: SOF: amd: acp: Constify snd_sof_dsp_ops
-        commit: 04f2f516be09d5493d764e0020a771c46b5470d8
-[08/14] ASoC: SOF: imx8: Constify snd_sof_dsp_ops
-        commit: ab85c44973298b69eb32795de11ce4d426705532
-[09/14] ASoC: SOF: imx8m: Constify snd_sof_dsp_ops
-        commit: 66d49ab5fb51bb8d1b4c2c9c8fa0fbe8e4c8ca1c
-[10/14] ASoC: SOF: imx8ulp: Constify snd_sof_dsp_ops
-        commit: 232e0da9fa778233358586617bd22173bcac6bcc
-[11/14] ASoC: SOF: intel: bdw: Constify snd_sof_dsp_ops
-        commit: 936cc56044a87ae7fbd0e4098a7daefa0f2f4e8e
-[12/14] ASoC: SOF: intel: byt: Constify snd_sof_dsp_ops
-        commit: 48d5f1800d0cbda0212c5a58177918c419a24f8a
-[13/14] ASoC: SOF: mediatek: mt8186: Constify snd_sof_dsp_ops
-        commit: fe80673f59da01776a1402e4b508a66fca43a24d
-[14/14] ASoC: SOF: mediatek: mt8195: Constify snd_sof_dsp_ops
-        commit: 8b6d678fede700db6466d73f11fcbad496fa515e
+for you to fetch changes up to f5072cffb35c122ec85d91ef327fa8814f04297b:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+  clk: imx: imx8mp: Convert to platform remove callback returning void (2024-05-01 14:40:49 +0300)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+----------------------------------------------------------------
+i.MX clocks changes for 6.10
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+- Add PM runtime support to i.MX8MP Audiomix
+- Add i.MX95 BLK CTL clock driver
+- Add DT schema for i.MX95 Display Master Block Control
+- Convert to platform remove callback returning void for i.MX8MP
+  Audiomix
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+----------------------------------------------------------------
+Fabio Estevam (1):
+      clk: imx: imx8mp: Switch to RUNTIME_PM_OPS()
 
-Thanks,
-Mark
+Peng Fan (4):
+      dt-bindings: clock: add i.MX95 clock header
+      dt-bindings: clock: support i.MX95 BLK CTL module
+      dt-bindings: clock: support i.MX95 Display Master CSR module
+      clk: imx: add i.MX95 BLK CTL clk driver
 
+Shengjiu Wang (1):
+      clk: imx: imx8mp: Add pm_runtime support for power saving
+
+Uwe Kleine-König (1):
+      clk: imx: imx8mp: Convert to platform remove callback returning void
+
+ .../bindings/clock/nxp,imx95-blk-ctl.yaml          |  56 +++
+ .../clock/nxp,imx95-display-master-csr.yaml        |  64 +++
+ drivers/clk/imx/Kconfig                            |   7 +
+ drivers/clk/imx/Makefile                           |   1 +
+ drivers/clk/imx/clk-imx8mp-audiomix.c              | 155 +++++++-
+ drivers/clk/imx/clk-imx95-blk-ctl.c                | 438 +++++++++++++++++++++
+ include/dt-bindings/clock/nxp,imx95-clock.h        |  28 ++
+ 7 files changed, 728 insertions(+), 21 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/nxp,imx95-display-master-csr.yaml
+ create mode 100644 drivers/clk/imx/clk-imx95-blk-ctl.c
+ create mode 100644 include/dt-bindings/clock/nxp,imx95-clock.h
