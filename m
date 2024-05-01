@@ -1,322 +1,187 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D4912839D
-	for <imx@lists.linux.dev>; Wed,  1 May 2024 13:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1BD12E1D5
+	for <imx@lists.linux.dev>; Wed,  1 May 2024 13:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714570273; cv=none; b=esbWR2vIFin96RwOg3pOYNGBgreyun/QiiWZInnBympsgczrcVTc4Wlq/35UVokUPGSZHVnSxvdh/Nu0B3Mi69KTh8+1aUHyaoszzzxeIX6c105gnN6VrPfKfW4xqU/PYX9/YQFD0+gxNAXRS8phgoSME8bYijJ7uJMSjmUWuQY=
+	t=1714570373; cv=none; b=MpBHp8WLlLXjRHjElHTc9eego01BTkTLmKPW4vgN/iaEZiVI0Rx5clUE9eAfD8li4SAmWwgt96z/DwUoJlzAVJHBlTgSt1mQ8NDslVeVzkQ3T1Vi/E8+k5WBrJhlYlz7E29LUs1jB+I251O4WnKAPCjqGD0BX5iiVvX5RqcQDTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714570273; c=relaxed/simple;
-	bh=GOV9SpBdrbLUHNqrWyub6cb3BrALMYIpAncwmbro2yc=;
-	h=From:In-Reply-To:References:Mime-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z86CvGWTQq5ktebWtqs8Dnd8T1vLP2yrAI6oqYbvRRXoqvnWNgx7dEqPFIZO+hG8qdrjpstVkO9vXQ5ksIQ/Z6WQUaTEth093MYGJXm2DM9SuygkxD1Ws9895HlK/1rN7NhzE/KsRvfVyyP6WM30Z3gxYbxaFF+oTyu57K1QsMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=tjUJJWYA; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1714570373; c=relaxed/simple;
+	bh=ZqcDVgO1hmm+00KuoWmbr7W1NZLQvg1QhUiwr8SEKP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QLxe0N2aSztik36UFqDXwOY/wnY78aBWRY1YN4AkVJuNzODrnOdgGSKlwPrfrqaxpRgs+BWZb4WKZ84WolZ40jUeb8khN6V06UcYYPyHcOisOHOfHGpmmeegzl0TbwICa05iILLgcEZ75xgWdKzmgBPwI381tbXTikAP4vDDq34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mMOTJZQH; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="tjUJJWYA"
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D08333FE61
-	for <imx@lists.linux.dev>; Wed,  1 May 2024 13:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1714570260;
-	bh=c8oK9gFYZNPK8JjkQaEUib/TlJXrHwdRQFsXpehmfQo=;
-	h=From:In-Reply-To:References:Mime-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=tjUJJWYAm037n+X+UwTKteZdNy6632ZFnwu71KGJdInaF/7ZyZ5OHcbuRmgzITc5D
-	 ZBySWeb18UGuT68L6WPUyzb8VsxFARFrkX1CCKY31C7XiWiBiZgcYH43xGVfvUXA0x
-	 dends1qVDcrj83j/BNwKJTcFTYLeLCdmYJS6HhoelNxzQmhEOsJFqXn3N15jCsJ8b3
-	 29lLID7aDaYIFp745OAylulNt2eibyhj8KjdIeDECREkuF5ocq3Fky3vEWBQTyT9Qo
-	 D/pxHrqHK0Q5XsjkrVoS6WOJFdtbS0oZUyGULkZqPkjsZadqYgLBi/l5ADm0yyhWz6
-	 lViiOMZM4X7tA==
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2d865b3b04cso4934121fa.0
-        for <imx@lists.linux.dev>; Wed, 01 May 2024 06:31:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mMOTJZQH"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-34d7b0dac54so459756f8f.0
+        for <imx@lists.linux.dev>; Wed, 01 May 2024 06:32:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714570370; x=1715175170; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ior2gPFVlEOyeV8FJQcXfdx4VXM0R/609sKh6Of53VM=;
+        b=mMOTJZQHeQBjjQCp+6iF6onn/MQqTo4T2rcD5p+srS37rMCohw+AfTKGcTGkUUqgOd
+         FnFnl/vkwYA/xdTtPzuZrXHIkv3yLXJDbOZfFJZ18sJPprKOjQDxeCz+cXAqBy5H/jiq
+         4eXevU2EP6wm4lPv911qG7UBObrA3JGvbMN1Kb1rZJ073gZjIiR3tLeLKrQeek2J5mKP
+         1JdOKPhAXNtJtWlxYFkEC6Qi2oyV22HOcy6s665BiYdO5mQckB8wuF5gf0s0gTZjbJA5
+         BfDp0xlNhSqdpWE3C0ZOKNH95ZN75k1YjKYehWQPruadgU5gXN3PBdn7wJFvBTYEAnI2
+         /y8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714570258; x=1715175058;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c8oK9gFYZNPK8JjkQaEUib/TlJXrHwdRQFsXpehmfQo=;
-        b=vat+4yoLOzdzjcs+04zB6wG6dWmN/7K7qdo80rudkIBxQRvzrqsJtc2HlvRpe1lar4
-         QJvw9Pkzpr1ylGb5SpWWiMHsLGNsyc6RkSKKI/JyPM7sHXkPhsJV1XPBQeTgY6kS1YdX
-         9Z6+1wyTAuqpIrTle6hq5EhtEQIAUcDVGlTPIYed6xA7FyglwVgvg5HPArY/YJZcutyU
-         Xa32yGf7br6DK2Dd3gIDyAM/jn0oPyNuoNQ/e2db2d0c6A2n5I17A/EGSA13Zcb1o1rX
-         aE1vZtg/LG3l0lDqOnLqYkg/nMJa7zcn00keDZSCTldKXnn5w/lY6osPQUBl6dqCAaXE
-         BeRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsyMiqa3MpiYwUvkxKYdlu7ffcFcBxdFsYnpHJcujzfi0No3KVn3ShkvGkPPD4qJZCL7GHFsuEYf9SzPkQUJq12+bP
-X-Gm-Message-State: AOJu0YxlZJD6wgQAMcy8uewyGKbSwcF65NKLGF4cpzjlrgltNtmr5BEQ
-	+0v4GjQEUvwxa5YCW4V7e2RZxFgsC8XgkdkBf/1q2FPInkjalgcK/TreJQ1c1F7mHW2c7wifQGA
-	qeVU3eUJgbFLbK7DuIjSCNDUW9TiCGSAy3FL97HedXFhsrGnguDIGodY23Fhhi0ymb+lufrOTsd
-	zBxpMmMGB57tTJiSihsbnTqcxrZk2Hjne3txdzJJW/
-X-Received: by 2002:a2e:a7ce:0:b0:2df:8ce6:96cb with SMTP id x14-20020a2ea7ce000000b002df8ce696cbmr955441ljp.8.1714570258110;
-        Wed, 01 May 2024 06:30:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEYT+qTSOE1Kr9KmhXevsjrdrGfobx9Pel64hRtY96pMsR8tg00NtEJfiVi5E4mSMS1jyTIKo1grrZjSHhuefw=
-X-Received: by 2002:a2e:a7ce:0:b0:2df:8ce6:96cb with SMTP id
- x14-20020a2ea7ce000000b002df8ce696cbmr955417ljp.8.1714570257684; Wed, 01 May
- 2024 06:30:57 -0700 (PDT)
-Received: from 348282803490 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 1 May 2024 08:30:56 -0500
-From: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-In-Reply-To: <20240501-pinctrl-cleanup-v1-5-797ceca46e5c@nxp.com>
-References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com> <20240501-pinctrl-cleanup-v1-5-797ceca46e5c@nxp.com>
+        d=1e100.net; s=20230601; t=1714570370; x=1715175170;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ior2gPFVlEOyeV8FJQcXfdx4VXM0R/609sKh6Of53VM=;
+        b=OAcXtZNlPg3hjX0KHAr9hn2XLMfdLLjjDFKPQw1XOjlWdJ/3v0MTbQ8mK1Sm/Fu7NS
+         Mpi69WODuODxW/ud9XrtXrFBUQgfFLfAEkCeSLJLK1v/qsDOXmwg7OPd1lkdhQE1yHLm
+         FCf5KLlxXX9SoJy4AOgNcqoSbGD0BOowoKuWEm/ys5AL2v+vnQs4/hZt/q23Pbn6k+9c
+         /8sKEPzR6/nUQsl7H8nhpsXLkc66goiCBf3oUsCCaFq6m/0hnK16EklJckmO1Lfs4XfT
+         jUWkMyZIgAaWX6y7hqnWHhsVAAAsthOlTK0qnAPlaAzQvyoL4HF+bukNrw1mt1gt/q4c
+         u3AA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwLW+HPim3nbNcQJyqxJEOy/R2P+InEsDtaNF89bVYWi+MvZbRGS9xC2hoxy70mgBOnTbO3jje2TR5kpDIB2NRHg2O
+X-Gm-Message-State: AOJu0YzbFxbyND5T+Kebrm6vbwpAKKycDS7JeGLHMFJkJ02B1DO6eG5b
+	buj/OfNHrDoPlRjdVDtng1XBYosBanGjnAB4Qc6yU0IixUqQwvvWk50LRFAJq14=
+X-Google-Smtp-Source: AGHT+IHuNu3c35RsAkvpJAfWqKVWQhv6Z4Ac0yjTjDmpBKt12bv5Zna3drXEkGYfHrENBoZl/SwOjw==
+X-Received: by 2002:a05:6000:24f:b0:34c:bf22:73f9 with SMTP id m15-20020a056000024f00b0034cbf2273f9mr2265612wrz.28.1714570369370;
+        Wed, 01 May 2024 06:32:49 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id d4-20020adfe2c4000000b0034a3a0a753asm32876234wrj.100.2024.05.01.06.32.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 May 2024 06:32:49 -0700 (PDT)
+Date: Wed, 1 May 2024 16:32:40 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Jianlong Huang <jianlong.huang@starfivetech.com>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Joel Stanley <joel@jms.id.au>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-samsung-soc@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
+	linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 01/21] pinctrl: ti: iodelay: Use scope based
+ of_node_put() cleanups
+Message-ID: <ee5c8637-b8b2-491b-b011-e399942691dc@moroto.mountain>
+References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
+ <20240501-pinctrl-cleanup-v1-1-797ceca46e5c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Date: Wed, 1 May 2024 08:30:56 -0500
-Message-ID: <CAJM55Z9RuobAMR4EaevhTPRsJe3vuruV7-_DTQYpH_w8_azkcA@mail.gmail.com>
-Subject: Re: [PATCH 05/21] pinctrl: starfive: Use scope based of_node_put() cleanups
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Jianlong Huang <jianlong.huang@starfivetech.com>, 
-	Hal Feng <hal.feng@starfivetech.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Viresh Kumar <vireshk@kernel.org>, Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Damien Le Moal <dlemoal@kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Chester Lin <chester62515@gmail.com>, 
-	Matthias Brugger <mbrugger@suse.com>, Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Joel Stanley <joel@jms.id.au>, Dan Carpenter <dan.carpenter@linaro.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-samsung-soc@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	imx@lists.linux.dev, linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240501-pinctrl-cleanup-v1-1-797ceca46e5c@nxp.com>
 
-Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Use scope based of_node_put() cleanup to simplify code.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On Wed, May 01, 2024 at 08:55:59PM +0800, Peng Fan (OSS) wrote:
+> @@ -879,16 +874,12 @@ static int ti_iodelay_probe(struct platform_device *pdev)
+>  	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
+>  	if (ret) {
+>  		dev_err(dev, "Failed to register pinctrl\n");
+> -		goto exit_out;
+> +		return ret;
+>  	}
+>  
+>  	platform_set_drvdata(pdev, iod);
+>  
+>  	return pinctrl_enable(iod->pctl);
+> -
+> -exit_out:
+> -	of_node_put(np);
+> -	return ret;
+>  }
 
-Acked-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+This will call of_node_put() on the success path so it's a behavior
+change.  The original code is buggy, it's supposed to call of_node_put()
+on the success path here or in ti_iodelay_remove().
 
-> ---
->  drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c | 27 +++++++++-------------
->  drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c | 18 +++++++--------
->  2 files changed, 19 insertions(+), 26 deletions(-)
->
-> diff --git a/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c b/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-> index 6df7a310c7ed..27f99183d994 100644
-> --- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-> +++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-> @@ -480,7 +480,6 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->  {
->  	struct starfive_pinctrl *sfp = pinctrl_dev_get_drvdata(pctldev);
->  	struct device *dev = sfp->gc.parent;
-> -	struct device_node *child;
->  	struct pinctrl_map *map;
->  	const char **pgnames;
->  	const char *grpname;
-> @@ -492,20 +491,18 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->
->  	nmaps = 0;
->  	ngroups = 0;
-> -	for_each_available_child_of_node(np, child) {
-> +	for_each_available_child_of_node_scoped(np, child) {
->  		int npinmux = of_property_count_u32_elems(child, "pinmux");
->  		int npins   = of_property_count_u32_elems(child, "pins");
->
->  		if (npinmux > 0 && npins > 0) {
->  			dev_err(dev, "invalid pinctrl group %pOFn.%pOFn: both pinmux and pins set\n",
->  				np, child);
-> -			of_node_put(child);
->  			return -EINVAL;
->  		}
->  		if (npinmux == 0 && npins == 0) {
->  			dev_err(dev, "invalid pinctrl group %pOFn.%pOFn: neither pinmux nor pins set\n",
->  				np, child);
-> -			of_node_put(child);
->  			return -EINVAL;
->  		}
->
-> @@ -527,14 +524,14 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->  	nmaps = 0;
->  	ngroups = 0;
->  	mutex_lock(&sfp->mutex);
-> -	for_each_available_child_of_node(np, child) {
-> +	for_each_available_child_of_node_scoped(np, child) {
->  		int npins;
->  		int i;
->
->  		grpname = devm_kasprintf(dev, GFP_KERNEL, "%pOFn.%pOFn", np, child);
->  		if (!grpname) {
->  			ret = -ENOMEM;
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		pgnames[ngroups++] = grpname;
-> @@ -543,18 +540,18 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->  			pins = devm_kcalloc(dev, npins, sizeof(*pins), GFP_KERNEL);
->  			if (!pins) {
->  				ret = -ENOMEM;
-> -				goto put_child;
-> +				goto free_map;
->  			}
->
->  			pinmux = devm_kcalloc(dev, npins, sizeof(*pinmux), GFP_KERNEL);
->  			if (!pinmux) {
->  				ret = -ENOMEM;
-> -				goto put_child;
-> +				goto free_map;
->  			}
->
->  			ret = of_property_read_u32_array(child, "pinmux", pinmux, npins);
->  			if (ret)
-> -				goto put_child;
-> +				goto free_map;
->
->  			for (i = 0; i < npins; i++) {
->  				unsigned int gpio = starfive_pinmux_to_gpio(pinmux[i]);
-> @@ -570,7 +567,7 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->  			pins = devm_kcalloc(dev, npins, sizeof(*pins), GFP_KERNEL);
->  			if (!pins) {
->  				ret = -ENOMEM;
-> -				goto put_child;
-> +				goto free_map;
->  			}
->
->  			pinmux = NULL;
-> @@ -580,18 +577,18 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->
->  				ret = of_property_read_u32_index(child, "pins", i, &v);
->  				if (ret)
-> -					goto put_child;
-> +					goto free_map;
->  				pins[i] = v;
->  			}
->  		} else {
->  			ret = -EINVAL;
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		ret = pinctrl_generic_add_group(pctldev, grpname, pins, npins, pinmux);
->  		if (ret < 0) {
->  			dev_err(dev, "error adding group %s: %d\n", grpname, ret);
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		ret = pinconf_generic_parse_dt_config(child, pctldev,
-> @@ -600,7 +597,7 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->  		if (ret) {
->  			dev_err(dev, "error parsing pin config of group %s: %d\n",
->  				grpname, ret);
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		/* don't create a map if there are no pinconf settings */
-> @@ -623,8 +620,6 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
->  	mutex_unlock(&sfp->mutex);
->  	return 0;
->
-> -put_child:
-> -	of_node_put(child);
->  free_map:
->  	pinctrl_utils_free_map(pctldev, map, nmaps);
->  	mutex_unlock(&sfp->mutex);
-> diff --git a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-> index 9609eb1ecc3d..4ce080caa233 100644
-> --- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-> +++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-> @@ -150,7 +150,7 @@ static int jh7110_dt_node_to_map(struct pinctrl_dev *pctldev,
->  	nmaps = 0;
->  	ngroups = 0;
->  	mutex_lock(&sfp->mutex);
-> -	for_each_available_child_of_node(np, child) {
-> +	for_each_available_child_of_node_scoped(np, child) {
->  		int npins = of_property_count_u32_elems(child, "pinmux");
->  		int *pins;
->  		u32 *pinmux;
-> @@ -161,13 +161,13 @@ static int jh7110_dt_node_to_map(struct pinctrl_dev *pctldev,
->  				"invalid pinctrl group %pOFn.%pOFn: pinmux not set\n",
->  				np, child);
->  			ret = -EINVAL;
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		grpname = devm_kasprintf(dev, GFP_KERNEL, "%pOFn.%pOFn", np, child);
->  		if (!grpname) {
->  			ret = -ENOMEM;
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		pgnames[ngroups++] = grpname;
-> @@ -175,18 +175,18 @@ static int jh7110_dt_node_to_map(struct pinctrl_dev *pctldev,
->  		pins = devm_kcalloc(dev, npins, sizeof(*pins), GFP_KERNEL);
->  		if (!pins) {
->  			ret = -ENOMEM;
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		pinmux = devm_kcalloc(dev, npins, sizeof(*pinmux), GFP_KERNEL);
->  		if (!pinmux) {
->  			ret = -ENOMEM;
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		ret = of_property_read_u32_array(child, "pinmux", pinmux, npins);
->  		if (ret)
-> -			goto put_child;
-> +			goto free_map;
->
->  		for (i = 0; i < npins; i++)
->  			pins[i] = jh7110_pinmux_pin(pinmux[i]);
-> @@ -200,7 +200,7 @@ static int jh7110_dt_node_to_map(struct pinctrl_dev *pctldev,
->  						pins, npins, pinmux);
->  		if (ret < 0) {
->  			dev_err(dev, "error adding group %s: %d\n", grpname, ret);
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		ret = pinconf_generic_parse_dt_config(child, pctldev,
-> @@ -209,7 +209,7 @@ static int jh7110_dt_node_to_map(struct pinctrl_dev *pctldev,
->  		if (ret) {
->  			dev_err(dev, "error parsing pin config of group %s: %d\n",
->  				grpname, ret);
-> -			goto put_child;
-> +			goto free_map;
->  		}
->
->  		/* don't create a map if there are no pinconf settings */
-> @@ -233,8 +233,6 @@ static int jh7110_dt_node_to_map(struct pinctrl_dev *pctldev,
->  	*num_maps = nmaps;
->  	return 0;
->
-> -put_child:
-> -	of_node_put(child);
->  free_map:
->  	pinctrl_utils_free_map(pctldev, map, nmaps);
->  	mutex_unlock(&sfp->mutex);
->
-> --
-> 2.37.1
->
+If it's supposed to call of_node_put() here, then fine, this is bugfix
+but if it's supposed to call it in ti_iodelay_remove() then we need to
+save the pointer somewhere using no_free_ptr().  Probably saving ->np
+is the safest choice?
+
+The original code is already a little bit buggy because it doesn't
+check for pinctrl_enable() errors and cleanup.
+
+
+diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+index 040f2c46a868..f40a1476e4ff 100644
+--- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
++++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+@@ -156,6 +156,7 @@ struct ti_iodelay_device {
+ 
+ 	const struct ti_iodelay_reg_data *reg_data;
+ 	struct ti_iodelay_reg_values reg_init_conf_values;
++	struct device_node *np;
+ };
+ 
+ /**
+@@ -884,7 +885,12 @@ static int ti_iodelay_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, iod);
+ 
+-	return pinctrl_enable(iod->pctl);
++	ret = pinctrl_enable(iod->pctl);
++	if (ret)
++		goto exit_out;
++
++	iod->np = no_free_ptr(np);
++	return 0;
+ 
+ exit_out:
+ 	of_node_put(np);
+@@ -903,6 +909,7 @@ static void ti_iodelay_remove(struct platform_device *pdev)
+ 		pinctrl_unregister(iod->pctl);
+ 
+ 	ti_iodelay_pinconf_deinit_dev(iod);
++	of_node_put(iod->np);
+ 
+ 	/* Expect other allocations to be freed by devm */
+ }
+
+
+
+
