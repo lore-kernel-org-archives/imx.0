@@ -1,106 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C969D527;
-	Thu,  2 May 2024 03:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68588200C7
+	for <imx@lists.linux.dev>; Thu,  2 May 2024 05:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714622228; cv=none; b=tTAKz/+WOZyb8h4kwmeWSCyOY3ywzw7l1s53a9urHNZzTK9uyXpiE/O7q8njvw5QAEQzVmRbp8DZmE2tRXsViSWkGbnQwz2OsNd4uNqZ5f4dP5FoLIrySY7V5Ua5AM9GKQMcBVvSliUhIeFDZSwAJujyGOZgt1sCABGKB87ZjiE=
+	t=1714629179; cv=none; b=jals+jJc3t91SBVnTGsNYt1YbnnI2PNMfdW7tG63uehq2ilgHIeLwIMWSa/5zta9IIZm0ZRL3jn3sZOiKQR5hHbR5V1gUH59SmaQKOE09QrfqLoOqkI+3WQh2VlWrlif5Z2gjMrebdSFnb4RKdK7IfPdb+g5i+8z+mz8CR8kxZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714622228; c=relaxed/simple;
-	bh=GhLrb4LsugJQdErEM1U3FioSUcGebSzbtNTOsJjlJe4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=NyxhD/CZLilmQiTN0JjGbFUS1w9OjahbhGtZKiNfUUV/BC7bjEdPkbAAjGfIjnmBWW7Q2YkqJXtzTE9NVQyb9LtgbRoxfVVX7Yr9OcPPDFhQ18s4zoJEgyKWNJPrMnsbXcR/vh+N0nUvr+PuYzvQe6udGpFMj3S7nfzudMIv9XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4uBsHfv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714629179; c=relaxed/simple;
+	bh=Vr8lTCzO1VAJ0OenIH3p+WXBrU2/jSnRyY4dIxgUK0A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U8zAKZcs2lshqy9S5cmMgjdXiTQGoTzGZUi50/QyUQ84dYsstBZI6EpgXwEfwrygzQWUrplvDQ0A5/ri8LrlR9s/4YWVRy42g3KATf8LNc9d2wKqfbtllv2r3jmpOlMbRNnRKQ4joHalqZeJeVaL+dGWeAH0BxAa+/JBvP56rjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q0d74eGG; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4uBsHfv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0964C4AF4D;
-	Thu,  2 May 2024 03:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714622227;
-	bh=GhLrb4LsugJQdErEM1U3FioSUcGebSzbtNTOsJjlJe4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=h4uBsHfvJ70gB5079HVXd1JVMXmwd4oeFaHxkutp2sUdk77EGI7ruVtyss9OVDqT3
-	 QARmiCfSHZFhcyA9BOqIB1qO0gTPUiRdyPwKgpPZf3Bqyf06T9zUam+Q1U4L20wuMO
-	 36ApLDr/oOoA0l/4D5r2Pr/4RlZN1Nv2v3xhfHncs6dAGjaWF7hSTdacRF9Lp/WF7j
-	 Q304t34WpWbaG47iBOzK0jx9ZZFJGzzVrAjpeLlvI6/f1KA2AxsDbJCTwbqk9FaseM
-	 drOrMnCYezj1Y6ZWcaEOVgvRIELSS0lPK8dSiMc9qm42X9QwZ2Eqborw9owLEP7mZz
-	 Lev8AaSUdZNNw==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Chen-Yu Tsai <wens@csie.org>, imx@lists.linux.dev, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-sunxi@lists.linux.dev, Samuel Holland <samuel@sholland.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-In-Reply-To: <20240430114142.28551-1-wsa+renesas@sang-engineering.com>
-References: <20240430114142.28551-1-wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v2 0/8] spi: use 'time_left' instead of 'timeout' with
- wait_for_*() functions
-Message-Id: <171462222567.1904471.14171309243632895183.b4-ty@kernel.org>
-Date: Thu, 02 May 2024 12:57:05 +0900
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q0d74eGG"
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-7f3c944ff8eso295578241.3
+        for <imx@lists.linux.dev>; Wed, 01 May 2024 22:52:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714629177; x=1715233977; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2v5ycL9gtgqXkrtE6QN/SY19fUHl9GdEfrTwqyHjjjo=;
+        b=q0d74eGGXqFWk+8icmqJHOWv68dgWy1SbwwpQCgJSF0u+ZD6uyEascciTyQkh1i/gb
+         q4MYgzD6fdIJjOSOQ1nGw6y1cOJxdYGLHn2SsBmVQz24zeAaTUdlevmN4ylnzBvIyjci
+         Ig4cu/qLCvsyakNMv+MEPbp4IKXxiMcxPKe6DiECqurxt8eujyq2q3IIPcq1b/tsiYcX
+         pGirruj9uCNEAtD258UNIsHF9iVDSbZJaZHqhHbCInE88z/L+8sauz2mcsWfYZOOybkh
+         /bNQrTWbISxA9VAcjPqKHA3akIC9y7fbahIesFy9FNWQj1LBi8PxyZjX+ompXElSxQx/
+         9/Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714629177; x=1715233977;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2v5ycL9gtgqXkrtE6QN/SY19fUHl9GdEfrTwqyHjjjo=;
+        b=Og/Fn/RsdUFPDXen1YUWelCyywBjMZgwKskOuwwf/FXSoY4lGKRN3Z3DoxFK00icl9
+         RclMk/ZfJ+THwd58pv744thYMizTZewe8ITIwnSAy79y3JM2vLgnVbeZSjWHxO9QxPRy
+         CP6E9QigMpiUgp1qgDL45XqFwQvZbeB09R2zow2BTMhb0UY1VObCPD+OGs2kNsgDdX/g
+         VVRsPaVKJrq841FE5cIS/Fe39W1fPioaeaF+OCUV+v88J4J7HAqY82sM9ADzQkPu1YDh
+         5bMr5FdizDM+eEmwC9JYHaH4bzOFSMhUcQFVQW/xlce9VK+kgAQ5/OxXH/x0Se6EJffA
+         D3gQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxdhbkn5VxMBylh2B4PY2HJ1/VbkcBpBL7r1kjQbNniIJfe+cmSNgibj5mPvoWPoeN0uMHqJyXYgISqvHO6aTfjTRH
+X-Gm-Message-State: AOJu0YyB9rHm4Tx0Rr4NwyC7kIZKzPI4285xf+hSaesac2ACTXkXHCdT
+	GmxR1nwMIzThPa1SlU2Un+eZEjDWKJVW+ViAKsLTYaHrRMe/MKRwktdW28mmznDkU7r8mqAQIXP
+	71Fcz+2NB8zdbnHw2YDDknl+HAYDpC8SeTyopjg==
+X-Google-Smtp-Source: AGHT+IE4z0Ze4gzkMIfqiFc+oCUd9KfOkp4NqCn+dDWcOn1IKyPUjkFfjMy1SuxTyT2yHEuBcn9tW//JhlQvugz5uRA=
+X-Received: by 2002:a05:6122:3109:b0:4da:9a90:a6f2 with SMTP id
+ cg9-20020a056122310900b004da9a90a6f2mr5459247vkb.10.1714629177112; Wed, 01
+ May 2024 22:52:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+References: <20240429214502.1363592-1-festevam@gmail.com>
+In-Reply-To: <20240429214502.1363592-1-festevam@gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 2 May 2024 11:22:45 +0530
+Message-ID: <CA+G9fYvAbjZ26RBXmkMGUgO-sXSNFtsVZ8_2Y=JmuFknfL4ZxA@mail.gmail.com>
+Subject: Re: [PATCH] clk: imx: imx8mp: Switch to RUNTIME_PM_OPS()
+To: Fabio Estevam <festevam@gmail.com>
+Cc: abelvesa@kernel.org, imx@lists.linux.dev, shengjiu.wang@nxp.com, 
+	linux-clk@vger.kernel.org, Fabio Estevam <festevam@denx.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 30 Apr 2024 13:41:32 +0200, Wolfram Sang wrote:
-> There is a confusing pattern in the kernel to use a variable named 'timeout' to
-> store the result of wait_for_*() functions causing patterns like:
-> 
->         timeout = wait_for_completion_timeout(...)
->         if (!timeout) return -ETIMEDOUT;
-> 
-> with all kinds of permutations. Use 'time_left' as a variable to make the code
-> obvious and self explaining.
-> 
-> [...]
+On Tue, 30 Apr 2024 at 03:15, Fabio Estevam <festevam@gmail.com> wrote:
+>
+> From: Fabio Estevam <festevam@denx.de>
+>
+> Replace SET_RUNTIME_PM_OPS() with its modern alternative RUNTIME_PM_OPS().
+>
+> The combined usage of pm_ptr() and RUNTIME_PM_OPS() allows the
+> compiler to evaluate if the suspend/resume() functions are used at
+> buid time or are simply dead code.
+>
+> This fixes the following s390 allmodconfig build errors:
+>
+> drivers/clk/imx/clk-imx8mp-audiomix.c:363:12: error:
+> 'clk_imx8mp_audiomix_runtime_resume' defined but not used
+> [-Werror=unused-function]
+>   363 | static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/clk/imx/clk-imx8mp-audiomix.c:356:12: error:
+> 'clk_imx8mp_audiomix_runtime_suspend' defined but not used
+> [-Werror=unused-function]
+>   356 | static int clk_imx8mp_audiomix_runtime_suspend(struct device *dev)
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+>
+> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Closes: https://lore.kernel.org/linux-clk/CA+G9fYuP7S+a89Ep5g5_Ad69EMwRkJ8nM+MMTzbEcP+6H2oMXQ@mail.gmail.com/T/#u
+> Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for power saving")
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-Applied to
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Thanks for the fix patch.
 
-Thanks!
+> ---
+>  drivers/clk/imx/clk-imx8mp-audiomix.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> index 574a032309c1..6a9b48b20cd6 100644
+> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> @@ -368,8 +368,8 @@ static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
+>  }
+>
+>  static const struct dev_pm_ops clk_imx8mp_audiomix_pm_ops = {
+> -       SET_RUNTIME_PM_OPS(clk_imx8mp_audiomix_runtime_suspend,
+> -                          clk_imx8mp_audiomix_runtime_resume, NULL)
+> +       RUNTIME_PM_OPS(clk_imx8mp_audiomix_runtime_suspend,
+> +                      clk_imx8mp_audiomix_runtime_resume, NULL)
+>         SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+>                                       pm_runtime_force_resume)
+>  };
+> @@ -386,7 +386,7 @@ static struct platform_driver clk_imx8mp_audiomix_driver = {
+>         .driver = {
+>                 .name = "imx8mp-audio-blk-ctrl",
+>                 .of_match_table = clk_imx8mp_audiomix_of_match,
+> -               .pm = &clk_imx8mp_audiomix_pm_ops,
+> +               .pm = pm_ptr(&clk_imx8mp_audiomix_pm_ops),
+>         },
+>  };
+>
+> --
+> 2.34.1
 
-[1/8] spi: armada-3700: use 'time_left' variable with wait_for_completion_timeout()
-      commit: 7dbbbb1206dd0b695b9a76d3b758c8a689f1aa52
-[2/8] spi: fsl-lpspi: use 'time_left' variable with wait_for_completion_timeout()
-      commit: eef51e99f7b9ecc903a3a9ad9e7ca84dc35c3f52
-[3/8] spi: imx: use 'time_left' variable with wait_for_completion_timeout()
-      commit: eaeac043ab842d2e84616ff0412eec0121c1758c
-[4/8] spi: pic32-sqi: use 'time_left' variable with wait_for_completion_timeout()
-      commit: a7c79e50a26cb619400ccc6294dbd7d8c24a0341
-[5/8] spi: pic32: use 'time_left' variable with wait_for_completion_timeout()
-      commit: e66480aed4a194f278da1e46ec45221b3983216f
-[6/8] spi: sun4i: use 'time_left' variable with wait_for_completion_timeout()
-      commit: 34bed8a33f3a4f69b0ef584ef49f04a671a4a5c2
-[7/8] spi: sun6i: use 'time_left' variable with wait_for_completion_timeout()
-      commit: 83a3f1ba60d6e2f73c9dd2627a8ce41867dbc46b
-[8/8] spi: xlp: use 'time_left' variable with wait_for_completion_timeout()
-      commit: 594aa75d6bdda85b5fd027a5056d8cd1345c1db3
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--
+Linaro LKFT
+https://lkft.linaro.org
