@@ -1,136 +1,175 @@
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68588200C7
-	for <imx@lists.linux.dev>; Thu,  2 May 2024 05:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4B523769
+	for <imx@lists.linux.dev>; Thu,  2 May 2024 07:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714629179; cv=none; b=jals+jJc3t91SBVnTGsNYt1YbnnI2PNMfdW7tG63uehq2ilgHIeLwIMWSa/5zta9IIZm0ZRL3jn3sZOiKQR5hHbR5V1gUH59SmaQKOE09QrfqLoOqkI+3WQh2VlWrlif5Z2gjMrebdSFnb4RKdK7IfPdb+g5i+8z+mz8CR8kxZw=
+	t=1714633545; cv=none; b=V3PuU7gwQYRK90FaNTfMQMpUrr+ayrBf59fqMKl+1QgJmM/TUJ4HFmNwqVeX/IkLWFmJWqqkdH1bfHY/1Ya6wZPRSauQhdnFsARJUqgMVm0vLkW3Pm1lgaPT4LAvSfq97OjsOMuT9CzCzW2L0RcvsGKpWPA4XiTYxCksxLCcB1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714629179; c=relaxed/simple;
-	bh=Vr8lTCzO1VAJ0OenIH3p+WXBrU2/jSnRyY4dIxgUK0A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U8zAKZcs2lshqy9S5cmMgjdXiTQGoTzGZUi50/QyUQ84dYsstBZI6EpgXwEfwrygzQWUrplvDQ0A5/ri8LrlR9s/4YWVRy42g3KATf8LNc9d2wKqfbtllv2r3jmpOlMbRNnRKQ4joHalqZeJeVaL+dGWeAH0BxAa+/JBvP56rjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q0d74eGG; arc=none smtp.client-ip=209.85.222.42
+	s=arc-20240116; t=1714633545; c=relaxed/simple;
+	bh=jmCz2bzZzN6llSSfnEw77N01jtx9utNXMW5o87pvL2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m7MwErIaO2KDnCNmIvm8Syu4eKj3eiceB3LISo7raaYZWt/itcu8PPP5e1YCJXm1UsL9IWKUqZJRELaslRrA09GozQldnZJqg+Lj86fZhQRgylUd42VBDu1hODFkJGQ5rA5oPlcnx3Ho+4lrMJpBS+FsKR9ME9AwiChaEhjTwfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L1CRr2m5; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q0d74eGG"
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-7f3c944ff8eso295578241.3
-        for <imx@lists.linux.dev>; Wed, 01 May 2024 22:52:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L1CRr2m5"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2dd6c160eaaso92300391fa.1
+        for <imx@lists.linux.dev>; Thu, 02 May 2024 00:05:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714629177; x=1715233977; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2v5ycL9gtgqXkrtE6QN/SY19fUHl9GdEfrTwqyHjjjo=;
-        b=q0d74eGGXqFWk+8icmqJHOWv68dgWy1SbwwpQCgJSF0u+ZD6uyEascciTyQkh1i/gb
-         q4MYgzD6fdIJjOSOQ1nGw6y1cOJxdYGLHn2SsBmVQz24zeAaTUdlevmN4ylnzBvIyjci
-         Ig4cu/qLCvsyakNMv+MEPbp4IKXxiMcxPKe6DiECqurxt8eujyq2q3IIPcq1b/tsiYcX
-         pGirruj9uCNEAtD258UNIsHF9iVDSbZJaZHqhHbCInE88z/L+8sauz2mcsWfYZOOybkh
-         /bNQrTWbISxA9VAcjPqKHA3akIC9y7fbahIesFy9FNWQj1LBi8PxyZjX+ompXElSxQx/
-         9/Lg==
+        d=linaro.org; s=google; t=1714633540; x=1715238340; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V3T3S0/ACanJIeY4czsTT+RTZ1YRol9ljsewIaXQads=;
+        b=L1CRr2m5pVSF8irm1d2LITJBafAaApR7R+MR3h00ahRaWdRs9lG1jnd4OcYQ9a4gC/
+         wWAczO/82vCcCdhlTmPz1Lq2m+U1HL9K6JlQvs92ufnam0FpGwDr1/64eXpXsyJeRzFv
+         8fNhuTTDD+bFHqKHG3Ef/k7GIqnyVTYrwqYTySkve1WD8psObZcWXuDUvYSGjIceVLX7
+         IF4IUiSTcSnuy/PacMCi761SBi+mE9ukQe215tHqsik8wlmfxUVGpyRoq9CDKtSQJ66Y
+         /xvUrVY7N3VI9+j26H74oVsgNl+0H1wgBfYhqeYhSHRq+RCEBuMbwwgR1un+jbbbEqS2
+         i0lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714629177; x=1715233977;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2v5ycL9gtgqXkrtE6QN/SY19fUHl9GdEfrTwqyHjjjo=;
-        b=Og/Fn/RsdUFPDXen1YUWelCyywBjMZgwKskOuwwf/FXSoY4lGKRN3Z3DoxFK00icl9
-         RclMk/ZfJ+THwd58pv744thYMizTZewe8ITIwnSAy79y3JM2vLgnVbeZSjWHxO9QxPRy
-         CP6E9QigMpiUgp1qgDL45XqFwQvZbeB09R2zow2BTMhb0UY1VObCPD+OGs2kNsgDdX/g
-         VVRsPaVKJrq841FE5cIS/Fe39W1fPioaeaF+OCUV+v88J4J7HAqY82sM9ADzQkPu1YDh
-         5bMr5FdizDM+eEmwC9JYHaH4bzOFSMhUcQFVQW/xlce9VK+kgAQ5/OxXH/x0Se6EJffA
-         D3gQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxdhbkn5VxMBylh2B4PY2HJ1/VbkcBpBL7r1kjQbNniIJfe+cmSNgibj5mPvoWPoeN0uMHqJyXYgISqvHO6aTfjTRH
-X-Gm-Message-State: AOJu0YyB9rHm4Tx0Rr4NwyC7kIZKzPI4285xf+hSaesac2ACTXkXHCdT
-	GmxR1nwMIzThPa1SlU2Un+eZEjDWKJVW+ViAKsLTYaHrRMe/MKRwktdW28mmznDkU7r8mqAQIXP
-	71Fcz+2NB8zdbnHw2YDDknl+HAYDpC8SeTyopjg==
-X-Google-Smtp-Source: AGHT+IE4z0Ze4gzkMIfqiFc+oCUd9KfOkp4NqCn+dDWcOn1IKyPUjkFfjMy1SuxTyT2yHEuBcn9tW//JhlQvugz5uRA=
-X-Received: by 2002:a05:6122:3109:b0:4da:9a90:a6f2 with SMTP id
- cg9-20020a056122310900b004da9a90a6f2mr5459247vkb.10.1714629177112; Wed, 01
- May 2024 22:52:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714633540; x=1715238340;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V3T3S0/ACanJIeY4czsTT+RTZ1YRol9ljsewIaXQads=;
+        b=q9xdpaj5l6vEobFBc2gWGWRAaHqzHKtBSZoYdXPPM0lshjwJELrRT0OwkmGqjOfklW
+         5uqqDrbtRdEwmh8c042bYerkunDlr3hEPvt5ec2ebQZflMmsgO+f9XxMtxc1RaHzGnk+
+         AlQm1g/Kq85yvPhPN9smOlxq3zqkV6A3JqN5a7zrCjW2Yid8KjY7uuavUMNdagkHlCMC
+         uxiLW2w9tbemCKSroC6uQ+NlummlTv18gK96IcmqDL3jpb1K5DpqsJ883NUtGsRVGNPG
+         gsmpvS5sYjiezdoIarRllJcUQd/kCzsGulwuJLPvkoveZLGmvBjbmITQ+BAJh9ppRM34
+         +cdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3iWntpNJ+vN2U9IMpQOH/VMmCvLw5fBjIChgXmDXdMVZuhfc0t88yLU0rPAtgJeVrpq0Xkvv2Rbu5Pswrs4lAh6GH
+X-Gm-Message-State: AOJu0Yx2qQXIjGQ3+dAQO1XCxNd4jO3pNXH6Bc4bbe365bQGu9WQ+zYn
+	fQ9gTQNbmsUVeNi82YKg73RzNH+w+07KOQj4CUWNZJR5S2GscNoDDbb6FFkvGkA=
+X-Google-Smtp-Source: AGHT+IGHVWuyebZDGCsij4vuuCGXUnlNacdJhnGzP0jhAixWhDpzQ1nmi4t3DPfRBlZrMwTir+WhcA==
+X-Received: by 2002:a2e:a58e:0:b0:2d9:fb60:9afa with SMTP id m14-20020a2ea58e000000b002d9fb609afamr1096872ljp.40.1714633540084;
+        Thu, 02 May 2024 00:05:40 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id q26-20020a2e969a000000b002d860a40f9dsm69420lji.136.2024.05.02.00.05.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 May 2024 00:05:39 -0700 (PDT)
+Date: Thu, 2 May 2024 10:05:35 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Jianlong Huang <jianlong.huang@starfivetech.com>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+	"soc@kernel.org" <soc@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Aisheng Dong <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	"Ghennadi Procopciuc (OSS)" <ghennadi.procopciuc@oss.nxp.com>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Joel Stanley <joel@jms.id.au>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+	"openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>
+Subject: Re: [PATCH 01/21] pinctrl: ti: iodelay: Use scope based
+ of_node_put() cleanups
+Message-ID: <26aab31b-8085-49e0-862d-24c26ff4d02c@moroto.mountain>
+References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
+ <20240501-pinctrl-cleanup-v1-1-797ceca46e5c@nxp.com>
+ <ee5c8637-b8b2-491b-b011-e399942691dc@moroto.mountain>
+ <DU0PR04MB9417AD5892A1A45E6AE18D8688182@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240429214502.1363592-1-festevam@gmail.com>
-In-Reply-To: <20240429214502.1363592-1-festevam@gmail.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 2 May 2024 11:22:45 +0530
-Message-ID: <CA+G9fYvAbjZ26RBXmkMGUgO-sXSNFtsVZ8_2Y=JmuFknfL4ZxA@mail.gmail.com>
-Subject: Re: [PATCH] clk: imx: imx8mp: Switch to RUNTIME_PM_OPS()
-To: Fabio Estevam <festevam@gmail.com>
-Cc: abelvesa@kernel.org, imx@lists.linux.dev, shengjiu.wang@nxp.com, 
-	linux-clk@vger.kernel.org, Fabio Estevam <festevam@denx.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DU0PR04MB9417AD5892A1A45E6AE18D8688182@DU0PR04MB9417.eurprd04.prod.outlook.com>
 
-On Tue, 30 Apr 2024 at 03:15, Fabio Estevam <festevam@gmail.com> wrote:
->
-> From: Fabio Estevam <festevam@denx.de>
->
-> Replace SET_RUNTIME_PM_OPS() with its modern alternative RUNTIME_PM_OPS().
->
-> The combined usage of pm_ptr() and RUNTIME_PM_OPS() allows the
-> compiler to evaluate if the suspend/resume() functions are used at
-> buid time or are simply dead code.
->
-> This fixes the following s390 allmodconfig build errors:
->
-> drivers/clk/imx/clk-imx8mp-audiomix.c:363:12: error:
-> 'clk_imx8mp_audiomix_runtime_resume' defined but not used
-> [-Werror=unused-function]
->   363 | static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
->       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/clk/imx/clk-imx8mp-audiomix.c:356:12: error:
-> 'clk_imx8mp_audiomix_runtime_suspend' defined but not used
-> [-Werror=unused-function]
->   356 | static int clk_imx8mp_audiomix_runtime_suspend(struct device *dev)
->       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
->
-> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-> Closes: https://lore.kernel.org/linux-clk/CA+G9fYuP7S+a89Ep5g5_Ad69EMwRkJ8nM+MMTzbEcP+6H2oMXQ@mail.gmail.com/T/#u
-> Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for power saving")
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
+On Thu, May 02, 2024 at 12:28:42AM +0000, Peng Fan wrote:
+> > Subject: Re: [PATCH 01/21] pinctrl: ti: iodelay: Use scope based of_node_put()
+> > cleanups
+> > 
+> > On Wed, May 01, 2024 at 08:55:59PM +0800, Peng Fan (OSS) wrote:
+> > > @@ -879,16 +874,12 @@ static int ti_iodelay_probe(struct
+> > platform_device *pdev)
+> > >  	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
+> > >  	if (ret) {
+> > >  		dev_err(dev, "Failed to register pinctrl\n");
+> > > -		goto exit_out;
+> > > +		return ret;
+> > >  	}
+> > >
+> > >  	platform_set_drvdata(pdev, iod);
+> > >
+> > >  	return pinctrl_enable(iod->pctl);
+> > > -
+> > > -exit_out:
+> > > -	of_node_put(np);
+> > > -	return ret;
+> > >  }
+> > 
+> > This will call of_node_put() on the success path so it's a behavior change.  The
+> > original code is buggy, it's supposed to call of_node_put() on the success path
+> > here or in ti_iodelay_remove().
+> > 
+> > If it's supposed to call of_node_put() here, then fine, this is bugfix but if it's
+> > supposed to call it in ti_iodelay_remove() then we need to save the pointer
+> > somewhere using no_free_ptr().  Probably saving ->np is the safest choice?
+> > 
+> > The original code is already a little bit buggy because it doesn't check for
+> > pinctrl_enable() errors and cleanup.
+> 
+> It was introduced by 
+> commit 6118714275f0a313ecc296a87ed1af32d9691bed (tag: pinctrl-v4.11-4)
+> Author: Tony Lindgren <tony@atomide.com>
+> Date:   Thu Mar 30 09:16:39 2017 -0700
+> 
+>     pinctrl: core: Fix pinctrl_register_and_init() with pinctrl_enable()
+> 
+> of_node_put is expected in probe, not in remove.
+> 
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Ah, right.  You'll add that for the Fixes tag obviously...
 
-Thanks for the fix patch.
+regards,
+dan carpenter
 
-> ---
->  drivers/clk/imx/clk-imx8mp-audiomix.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> index 574a032309c1..6a9b48b20cd6 100644
-> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> @@ -368,8 +368,8 @@ static int clk_imx8mp_audiomix_runtime_resume(struct device *dev)
->  }
->
->  static const struct dev_pm_ops clk_imx8mp_audiomix_pm_ops = {
-> -       SET_RUNTIME_PM_OPS(clk_imx8mp_audiomix_runtime_suspend,
-> -                          clk_imx8mp_audiomix_runtime_resume, NULL)
-> +       RUNTIME_PM_OPS(clk_imx8mp_audiomix_runtime_suspend,
-> +                      clk_imx8mp_audiomix_runtime_resume, NULL)
->         SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
->                                       pm_runtime_force_resume)
->  };
-> @@ -386,7 +386,7 @@ static struct platform_driver clk_imx8mp_audiomix_driver = {
->         .driver = {
->                 .name = "imx8mp-audio-blk-ctrl",
->                 .of_match_table = clk_imx8mp_audiomix_of_match,
-> -               .pm = &clk_imx8mp_audiomix_pm_ops,
-> +               .pm = pm_ptr(&clk_imx8mp_audiomix_pm_ops),
->         },
->  };
->
-> --
-> 2.34.1
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
