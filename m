@@ -1,140 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B7355783;
-	Thu,  2 May 2024 09:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8695040BF5;
+	Thu,  2 May 2024 11:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714643120; cv=none; b=JmONAqOM+RmrQMLnu5V9vT6CZaWNXunjfR5TobAWdrmvMrgFKTyVJU6tipS8736IKVYlRVtuRegIwHpmYiR0sDiCs+IoyXOyGgcuGBEhMEDueMUDGINC2uDfYGZdU9fBdXdOrqfKkGRWX626c+/p3h10CCXcRS9KWWxjYRToi/I=
+	t=1714649382; cv=none; b=BUQ2P+3TG7qJqpvHCYfZe04PGMGEKXgPXqLf2+0im6WbGkpATIY3EctSRdhnKwEZ5KdgJ4UCD9z5SKZ6AQ6SEd/I0CSALptSfnt72CFyJL0jGKTN69JzUXWNJvT1+skald+UY86dmbWetx3X4seAT90aKz9B/invZj8axBqvSQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714643120; c=relaxed/simple;
-	bh=KMKmbjNxDjaQW/0y4bty5ahkkoXZGQdtL8KqJYUhwyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jye0JU9wZma8jHPfRlVCgkwzVu6n+DQpIxCY9sZDFapxY2O6jRUBoSSr1MbvX33rsWrxPV5dYCjw+Qb+Ya3lHsFLcRo3AhkW9g0w6h++bd4VEcLxeJn4TpIV4BCkgT1S7Cgp4OASuPm+0D5g311Urw6qX2rif6Ri0Qz3CVRAUB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oAfQwcFE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714649382; c=relaxed/simple;
+	bh=sFaNlOmGEeVD3nYHw0uf/YVM65vnE+n2alDOQR8Xux8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=taEJxZau7LUk6HvMkVI6mwDSUcZg6y3kj1BRc+ERTT1NZVF+3vXu31vuTA4GjrMJYiSJSKY9x0YMp/HjLkdpTN0tjiViVhPQjTAKElBsVOa/RB8f2Ric7OAIzGMZwt5gvFMzld0YGzZHgBoVws7JT72j2JdFd6NBdzXj8vxhntw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESlSRyPf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oAfQwcFE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6A9C113CC;
-	Thu,  2 May 2024 09:45:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESlSRyPf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8390CC113CC;
+	Thu,  2 May 2024 11:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714643119;
-	bh=KMKmbjNxDjaQW/0y4bty5ahkkoXZGQdtL8KqJYUhwyE=;
-	h=Date:Subject:List-Id:To:Cc:References:From:In-Reply-To:From;
-	b=oAfQwcFEFQ4YSvMqY1Xbh/lsc5LPNSzumgD/oGqD14ngGgVPaEs7MibpgzzKx9oki
-	 Zagn8sEO8gj46WZhp4lLi4tBXFTB+pnYiA73nYZaFmp60rxFnqFwc6JU+DjWzL67dG
-	 /MZ0o36PB32nJVFZyZuANe63Rb2438n1oBk0vqlifHQrplthsktdyd/SJ9MqUjTqSh
-	 S4MhcJVVnSWRNuZQtI579Q7AgypadRVel2Bn/9DPwLpuM9kooXWaDgrnlLnFOcgFi9
-	 WcmGesxwuIsoxe8I2o27QKIei0xaWcNAItuJ4mp51iYpDI3BxfZTFiHOR9LfE7YUv9
-	 8qqWoV1TVGUXg==
-Message-ID: <dfde41a3-9d7d-4253-8297-c7684372f6f0@kernel.org>
-Date: Thu, 2 May 2024 18:45:09 +0900
+	s=k20201202; t=1714649382;
+	bh=sFaNlOmGEeVD3nYHw0uf/YVM65vnE+n2alDOQR8Xux8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ESlSRyPfuggpHlVgObOH64jFR9a8f9GIZCEhVT8gPmkobRlLYwAUiNRPfLbKhZwzW
+	 v7ynMJzCeC3YDHZQGy1Q/mS6f3TG5Qn8hnFAIHQSm32cuRdykxx6YOM7yco+HfAKf4
+	 SHaKiTPRAfmytRm0NPO+SKEUr04uz4iJG4jgPSVoxiiZTOrGtBPL9YTrVMvZjbNoNA
+	 hpfZSUbfu5x4dgJf3pv98nxFDT5uDOnpz3xK1za+KYGS+AiHdyoHiFFSauA8N8KIVL
+	 WWTfVYzc0t6o6VrvByrKuloKxF38CiRBT0qqJVhTi3bXJyhPvG5z1dB5AGwXshKh5j
+	 kw6XFUPZ5oEXg==
+Date: Thu, 2 May 2024 13:29:38 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 00/15] i2c: use 'time_left' with wait_for_*
+Message-ID: <6zrly2hk2vqljiuo3niehym74pqdgfv77fzjb63shgg4iiwhnt@zcnrqrke663b>
+References: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/21] pinctrl: k210: Use scope based of_node_put()
- cleanups
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Dvorkin Dmitry <dvorkin@tibbo.com>,
- Wells Lu <wellslutw@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Emil Renner Berthing <kernel@esmil.dk>,
- Jianlong Huang <jianlong.huang@starfivetech.com>,
- Hal Feng <hal.feng@starfivetech.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Viresh Kumar <vireshk@kernel.org>,
- Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Patrice Chotard <patrice.chotard@foss.st.com>,
- Heiko Stuebner <heiko@sntech.de>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Dan Carpenter <dan.carpenter@linaro.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-samsung-soc@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org,
- imx@lists.linux.dev, linux-aspeed@lists.ozlabs.org,
- openbmc@lists.ozlabs.org, Peng Fan <peng.fan@nxp.com>
-References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
- <20240501-pinctrl-cleanup-v1-12-797ceca46e5c@nxp.com>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20240501-pinctrl-cleanup-v1-12-797ceca46e5c@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240427203611.3750-1-wsa+renesas@sang-engineering.com>
 
-On 5/1/24 21:56, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+Hi Wolfram,
+
+On Sat, Apr 27, 2024 at 10:35:52PM +0200, Wolfram Sang wrote:
+> There is a confusing pattern in the kernel to use a variable named 'timeout' to
+
+there was a little checkpatch warning here for the line being
+over 75 characters, but I went ahead anyway and pushed the whole
+series to i2c/i2c-host.
+
+Thanks,
+Andi
+
+> store the result of wait_for_*() causing patterns like:
 > 
-> Use scope based of_node_put() cleanup to simplify code.
+>         timeout = wait_for_completion_timeout(...)
+>         if (!timeout) return -ETIMEDOUT;
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/pinctrl/pinctrl-k210.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+> with all kinds of permutations. Use 'time_left' as a variable to make the code
+> self explaining.
 > 
-> diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
-> index b6d1ed9ec9a3..2753e14c3e38 100644
-> --- a/drivers/pinctrl/pinctrl-k210.c
-> +++ b/drivers/pinctrl/pinctrl-k210.c
-> @@ -849,7 +849,6 @@ static int k210_pinctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
->  				       unsigned int *num_maps)
->  {
->  	unsigned int reserved_maps;
-> -	struct device_node *np;
->  	int ret;
->  
->  	reserved_maps = 0;
-> @@ -861,13 +860,11 @@ static int k210_pinctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
->  	if (ret < 0)
->  		goto err;
->  
-> -	for_each_available_child_of_node(np_config, np) {
-> +	for_each_available_child_of_node_scoped(np_config, np) {
->  		ret = k210_pinctrl_dt_subnode_to_map(pctldev, np, map,
->  						     &reserved_maps, num_maps);
-> -		if (ret < 0) {
-> -			of_node_put(np);
-
-Personally, I am really not a fan of things that hide code like that scoped
-thing... If I want a language that hides code, I would be doing C++ :)
-That said, I am not opposed to this so I will let Linus (Walleij) decide.
-
-Also, I think that "for_each_available_child_of_node" is a bad name... It really
-should be something like for_each_available_child_of_node_get() to make it clear
-that a of_node_put() is needed.
-
-> +		if (ret < 0)
->  			goto err;
-> -		}
->  	}
->  	return 0;
->  
+> This is the I2C part of a tree-wide series. The rest of the patches can
+> be found here (slightly WIP):
 > 
-
--- 
-Damien Le Moal
-Western Digital Research
-
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
+> 
+> Because these patches are generated, they need manual audit. So, I will
+> send them step by step. This is part 1 and also a call for opinions if
+> this is a desirable change. But at least in the I2C realm, I really want
+> to have it proper.
+> 
+> Build bot is happy with these patches and I also compile tested them
+> (except two). No functional changes intended.
+> 
+> Wolfram Sang (15):
+>   i2c: amd-mp2-plat: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: digicolor: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: exynos5: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: hix5hd2: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: imx-lpi2c: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: omap: use 'time_left' variable with wait_for_completion_timeout()
+>   i2c: st: use 'time_left' variable with wait_for_completion_timeout()
+>   i2c: stm32f4: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: stm32f7: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: synquacer: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: jz4780: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: qcom-geni: use 'time_left' variable with
+>     wait_for_completion_timeout()
+>   i2c: rk3x: use 'time_left' variable with wait_event_timeout()
+>   i2c: s3c2410: use 'time_left' variable with wait_event_timeout()
+>   i2c: pxa: use 'time_left' variable with wait_event_timeout()
+> 
+> -- 
+> 2.43.0
+> 
