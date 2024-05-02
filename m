@@ -1,175 +1,99 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4B523769
-	for <imx@lists.linux.dev>; Thu,  2 May 2024 07:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2301CD31;
+	Thu,  2 May 2024 07:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714633545; cv=none; b=V3PuU7gwQYRK90FaNTfMQMpUrr+ayrBf59fqMKl+1QgJmM/TUJ4HFmNwqVeX/IkLWFmJWqqkdH1bfHY/1Ya6wZPRSauQhdnFsARJUqgMVm0vLkW3Pm1lgaPT4LAvSfq97OjsOMuT9CzCzW2L0RcvsGKpWPA4XiTYxCksxLCcB1Y=
+	t=1714634494; cv=none; b=Jkbi99AVOVotwta+DSMxHeKPV9Q3nU4sFMO7ccXZBaSXgg+JaiqEn659kGLBrHgroPtBKmuqxHl7xS2wkmtp4GO0XgCtFfGMzCXRfm/Z3OVdwHRJ+QDaY7Q4NjRBI7JoXp9gYhvU7wnP9uMd9UIhrSUtnIV09+bB/gqv0Ij7YpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714633545; c=relaxed/simple;
-	bh=jmCz2bzZzN6llSSfnEw77N01jtx9utNXMW5o87pvL2I=;
+	s=arc-20240116; t=1714634494; c=relaxed/simple;
+	bh=tX69CvEtAwgo4XZ4l/Uep5L3565GREJ/19F+uS2/KpI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m7MwErIaO2KDnCNmIvm8Syu4eKj3eiceB3LISo7raaYZWt/itcu8PPP5e1YCJXm1UsL9IWKUqZJRELaslRrA09GozQldnZJqg+Lj86fZhQRgylUd42VBDu1hODFkJGQ5rA5oPlcnx3Ho+4lrMJpBS+FsKR9ME9AwiChaEhjTwfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L1CRr2m5; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=fOiWKRUsUS499Qo14p7RFZv+xHyHf+ooO+c8ruo6jmPbznLzLWLol6/DXsiDW12qDedOfYoaKV1aQUtO9TqjJVMQZ8GwokKcnuI/uREfj1IxIEMtsje3eFitKfvo3gmlPrCUO+r1EDBHUCEeMeJevrXKV7SBYSRtlHpXbu5wysQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGcbvCrQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L1CRr2m5"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2dd6c160eaaso92300391fa.1
-        for <imx@lists.linux.dev>; Thu, 02 May 2024 00:05:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714633540; x=1715238340; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V3T3S0/ACanJIeY4czsTT+RTZ1YRol9ljsewIaXQads=;
-        b=L1CRr2m5pVSF8irm1d2LITJBafAaApR7R+MR3h00ahRaWdRs9lG1jnd4OcYQ9a4gC/
-         wWAczO/82vCcCdhlTmPz1Lq2m+U1HL9K6JlQvs92ufnam0FpGwDr1/64eXpXsyJeRzFv
-         8fNhuTTDD+bFHqKHG3Ef/k7GIqnyVTYrwqYTySkve1WD8psObZcWXuDUvYSGjIceVLX7
-         IF4IUiSTcSnuy/PacMCi761SBi+mE9ukQe215tHqsik8wlmfxUVGpyRoq9CDKtSQJ66Y
-         /xvUrVY7N3VI9+j26H74oVsgNl+0H1wgBfYhqeYhSHRq+RCEBuMbwwgR1un+jbbbEqS2
-         i0lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714633540; x=1715238340;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V3T3S0/ACanJIeY4czsTT+RTZ1YRol9ljsewIaXQads=;
-        b=q9xdpaj5l6vEobFBc2gWGWRAaHqzHKtBSZoYdXPPM0lshjwJELrRT0OwkmGqjOfklW
-         5uqqDrbtRdEwmh8c042bYerkunDlr3hEPvt5ec2ebQZflMmsgO+f9XxMtxc1RaHzGnk+
-         AlQm1g/Kq85yvPhPN9smOlxq3zqkV6A3JqN5a7zrCjW2Yid8KjY7uuavUMNdagkHlCMC
-         uxiLW2w9tbemCKSroC6uQ+NlummlTv18gK96IcmqDL3jpb1K5DpqsJ883NUtGsRVGNPG
-         gsmpvS5sYjiezdoIarRllJcUQd/kCzsGulwuJLPvkoveZLGmvBjbmITQ+BAJh9ppRM34
-         +cdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3iWntpNJ+vN2U9IMpQOH/VMmCvLw5fBjIChgXmDXdMVZuhfc0t88yLU0rPAtgJeVrpq0Xkvv2Rbu5Pswrs4lAh6GH
-X-Gm-Message-State: AOJu0Yx2qQXIjGQ3+dAQO1XCxNd4jO3pNXH6Bc4bbe365bQGu9WQ+zYn
-	fQ9gTQNbmsUVeNi82YKg73RzNH+w+07KOQj4CUWNZJR5S2GscNoDDbb6FFkvGkA=
-X-Google-Smtp-Source: AGHT+IGHVWuyebZDGCsij4vuuCGXUnlNacdJhnGzP0jhAixWhDpzQ1nmi4t3DPfRBlZrMwTir+WhcA==
-X-Received: by 2002:a2e:a58e:0:b0:2d9:fb60:9afa with SMTP id m14-20020a2ea58e000000b002d9fb609afamr1096872ljp.40.1714633540084;
-        Thu, 02 May 2024 00:05:40 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id q26-20020a2e969a000000b002d860a40f9dsm69420lji.136.2024.05.02.00.05.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 May 2024 00:05:39 -0700 (PDT)
-Date: Thu, 2 May 2024 10:05:35 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Jianlong Huang <jianlong.huang@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-	"soc@kernel.org" <soc@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	"Ghennadi Procopciuc (OSS)" <ghennadi.procopciuc@oss.nxp.com>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGcbvCrQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD48C113CC;
+	Thu,  2 May 2024 07:21:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714634493;
+	bh=tX69CvEtAwgo4XZ4l/Uep5L3565GREJ/19F+uS2/KpI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MGcbvCrQDirSeDnPM0TpNimb91ucNM+8g3bD+PgHyc9ntVB+g2zov+7PyIdYgkvsU
+	 jtz4hactVTRvJISbUNUhpKLI+BBX6iqpPrUpbDLCcpvjR7DDeFB0R05Ou0BZh5TP83
+	 zhNKgRAdqM3mz/ke21ppHndeEXLoUBxjXf3wJ0WzpkBfzGYq25aX6HVu2Dx5RVmTyI
+	 20/F1/pZ70UB763380hHv6L+yrovyv0fDZcNO0MbOeSBT8MK4gpXlYosj28jQEEjsd
+	 i8xKnp6Z1NSnVOYsRSYFSbcVk4KpQIdp2hl3cYk4nUdwg5CfvMIUB1wnDtVletoO01
+	 /tNAKvXRfu0xQ==
+Date: Thu, 2 May 2024 08:21:26 +0100
+From: Lee Jones <lee@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
+	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexander Shiyan <shc_work@mail.ru>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Joel Stanley <joel@jms.id.au>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-	"openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>
-Subject: Re: [PATCH 01/21] pinctrl: ti: iodelay: Use scope based
- of_node_put() cleanups
-Message-ID: <26aab31b-8085-49e0-862d-24c26ff4d02c@moroto.mountain>
-References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
- <20240501-pinctrl-cleanup-v1-1-797ceca46e5c@nxp.com>
- <ee5c8637-b8b2-491b-b011-e399942691dc@moroto.mountain>
- <DU0PR04MB9417AD5892A1A45E6AE18D8688182@DU0PR04MB9417.eurprd04.prod.outlook.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Subject: Re: [PATCH v2 19/19] const_structs.checkpatch: add lcd_ops
+Message-ID: <20240502072126.GC5338@google.com>
+References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+ <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9417AD5892A1A45E6AE18D8688182@DU0PR04MB9417.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240424-video-backlight-lcd-ops-v2-19-1aaa82b07bc6@kernel.org>
 
-On Thu, May 02, 2024 at 12:28:42AM +0000, Peng Fan wrote:
-> > Subject: Re: [PATCH 01/21] pinctrl: ti: iodelay: Use scope based of_node_put()
-> > cleanups
-> > 
-> > On Wed, May 01, 2024 at 08:55:59PM +0800, Peng Fan (OSS) wrote:
-> > > @@ -879,16 +874,12 @@ static int ti_iodelay_probe(struct
-> > platform_device *pdev)
-> > >  	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
-> > >  	if (ret) {
-> > >  		dev_err(dev, "Failed to register pinctrl\n");
-> > > -		goto exit_out;
-> > > +		return ret;
-> > >  	}
-> > >
-> > >  	platform_set_drvdata(pdev, iod);
-> > >
-> > >  	return pinctrl_enable(iod->pctl);
-> > > -
-> > > -exit_out:
-> > > -	of_node_put(np);
-> > > -	return ret;
-> > >  }
-> > 
-> > This will call of_node_put() on the success path so it's a behavior change.  The
-> > original code is buggy, it's supposed to call of_node_put() on the success path
-> > here or in ti_iodelay_remove().
-> > 
-> > If it's supposed to call of_node_put() here, then fine, this is bugfix but if it's
-> > supposed to call it in ti_iodelay_remove() then we need to save the pointer
-> > somewhere using no_free_ptr().  Probably saving ->np is the safest choice?
-> > 
-> > The original code is already a little bit buggy because it doesn't check for
-> > pinctrl_enable() errors and cleanup.
-> 
-> It was introduced by 
-> commit 6118714275f0a313ecc296a87ed1af32d9691bed (tag: pinctrl-v4.11-4)
-> Author: Tony Lindgren <tony@atomide.com>
-> Date:   Thu Mar 30 09:16:39 2017 -0700
-> 
->     pinctrl: core: Fix pinctrl_register_and_init() with pinctrl_enable()
-> 
-> of_node_put is expected in probe, not in remove.
-> 
+On Wed, 24 Apr 2024, Krzysztof Kozlowski wrote:
 
-Ah, right.  You'll add that for the Fixes tag obviously...
+> 'struct lcd_ops' is not modified by core code.
+> 
+> Suggested-by: Thomas Weißschuh <linux@weissschuh.net>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> ---
+> 
+> Patch making lcd_ops const in progress:
+> https://lore.kernel.org/r/20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org
+> 
+> Cc: Lee Jones <lee@kernel.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  scripts/const_structs.checkpatch | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/scripts/const_structs.checkpatch b/scripts/const_structs.checkpatch
+> index fa96cfd16e99..52e5bfb61fd0 100644
+> --- a/scripts/const_structs.checkpatch
+> +++ b/scripts/const_structs.checkpatch
+> @@ -39,6 +39,7 @@ kgdb_arch
+>  kgdb_io
+>  kobj_type
+>  kset_uevent_ops
+> +lcd_ops
 
-regards,
-dan carpenter
+Acked-by: Lee Jones <lee@kernel.org>
 
+>  lock_manager_operations
+>  machine_desc
+>  microcode_ops
+
+-- 
+Lee Jones [李琼斯]
