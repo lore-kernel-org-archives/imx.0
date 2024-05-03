@@ -1,54 +1,54 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE371353FD
-	for <imx@lists.linux.dev>; Fri,  3 May 2024 21:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83307135A65
+	for <imx@lists.linux.dev>; Fri,  3 May 2024 21:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714772271; cv=none; b=AZ0NvhQotjBvCx0CbgpOdNsBQG7iOzH0qvK8idtSDc7x+odoImXlMCq8Mm558SA1Uoy8smnwjABb6E6isEPK+7m8dIc68bGbEmTTEiIFdMhKif3O/ojYlP/BcfwV7nvDLM5SmnAfvEtaDwy2e63o0V/5fDbzgCARMzuLylFBUbs=
+	t=1714772272; cv=none; b=O5oudsLg/uFtRPPrldOFltkOWg2wyoo/E+ywvT+tMuto9GMb1OzqyoEvkTlwysJ3qXFWEdkVFI4C7rs+CvcHayeFm7/ChZnhfDq9QdikRmpe5nJmowmva5bMOaX5g9G6ktYspWfSu0i91wlAc3/joKdQSmBkg7/juEReebKfsC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714772271; c=relaxed/simple;
-	bh=axmCxiLmm7juCKxfHqZtD6qpzVBDjoTLtSOaskdPvC4=;
+	s=arc-20240116; t=1714772272; c=relaxed/simple;
+	bh=Ag630NMyOKc2REE64wl78IRaThiGetixkU0G1oxt3RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzaUv4upnFVso5wOY0RqUTau/gqSAts0GbVqwDuFUb/yfNqyEaW2PG744AZn85tto8BHXYl/J1myP9V6IrBXK3R1MrdgJSE3oSBIjNsRCoq8mVncFDTelo1K5VAtU1ptjLJFJLV5Qi+yYxg9Dvyug18ydZWOTJ2MTU1K6bNApog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dWncXYDe; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=jj4jNof6ryJ20yoi2sEMPZ58ckTt3XSstnK2paTA+5MDnaANLXz+4gAYioWveu865r1CIFw+qnsNnLNp6k3aC5rK3L8Q4Shz7pVJCz7v11VWu8NRQSUPwDRzvy2Qedht9qESw5tobbUd9gzRiw/8ZYiwr00iBG1YnXB6tKBvYHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jv2Nkrrl; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dWncXYDe"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1ed0abbf706so1072475ad.2
-        for <imx@lists.linux.dev>; Fri, 03 May 2024 14:37:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jv2Nkrrl"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e4266673bbso1050555ad.2
+        for <imx@lists.linux.dev>; Fri, 03 May 2024 14:37:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1714772269; x=1715377069; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1714772271; x=1715377071; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L0iO3yAQ8KkSt7Wokb68l77QkaHVGUqroVg9qjrT7Jw=;
-        b=dWncXYDeIHCIpuW3ryk9+ZdL/SoIueXr8TLJG63fgv1txXWcx+O+wFZsde8Ikwi1eA
-         2SIbD18eiuA9BxNtuQv+K/M7yFWP4ycfT62Y/2czzkAfSXRlPdX3iK3rSKLwH/XYrUwS
-         tFZpF5FLh9XkG2WBwNU4bKP8ekfCb4BfpCV+I=
+        bh=rL+8TR+FVEOGHEmIclktS5Eo1OM2fp+pjfqU2SfLZsA=;
+        b=jv2Nkrrl2ToQ82HZdbnAQn4SZFWe8aR5KjLS8rHkN5v3+Y3HcZ03vGOT4gY52OQgGe
+         mPsj8WGBQwetZfYutJj8wPYZeiatB2PvjuUeBopNmliH9JddLWGErppOL0rPqR1G9i2G
+         hH2ymdXJriUZGa6wifUe0RVA5Q0TwiMH9QM3g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714772269; x=1715377069;
+        d=1e100.net; s=20230601; t=1714772271; x=1715377071;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=L0iO3yAQ8KkSt7Wokb68l77QkaHVGUqroVg9qjrT7Jw=;
-        b=WqhunLCZ1QRp/zFnUuIjZIkWnf0hfrMeYVKYQudM/qCBTT4HXrXZXp0KWy7DzS9sh7
-         MtyiJwN/nVQyZh3YtQF6fIVB8dNuIdVGaedCldrzMlCHj617VKd9jbUF55hPERiaiawf
-         3SVdS3K0JqSToQtX/AnI9Tb25XVwYdAXBnMywn9ZpOyCtEgJQrzfiI1fjIFr5Veyl+As
-         rZxUoG/TjhkuhEmsmxBcYL6VIM/DaNb+NCh2tvyoDNBi5AyTYImfn9pu717RaiBbrvPA
-         o7+YH/h7+3MbfiNrzQX1xtnC8qG/FEZHrEzqLZihQsHL4XQZJL/eYVkaDw/QMMUWRuwD
-         we8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWQEsM8ZsfMQ4znbhc+0mZor+gMGOzQd42xazzNaqUKzx79pT1Tc7LZNtQ4QFJjMmGO7JKg6K0QOFApEFAracoSNzL7
-X-Gm-Message-State: AOJu0YzPf6fkIHs6G7gpUTj7ZCkpmXZ1oKsHsYiT81pyuD1VsQQG63re
-	XZTj+4H7pdqHexT3QxAZmTq2F/64VDB1CbADQb76S6EGSRT8nL4wMAtKn59Jow==
-X-Google-Smtp-Source: AGHT+IEJXRtPeQGcDuRFCN51uInhuJn+mY1i1wPYgk00iOIMC5r7aJDHEYH9EmcUpqfMP7eJW7lrPw==
-X-Received: by 2002:a17:902:7797:b0:1e3:e39a:2e49 with SMTP id o23-20020a170902779700b001e3e39a2e49mr3858363pll.18.1714772269071;
-        Fri, 03 May 2024 14:37:49 -0700 (PDT)
+        bh=rL+8TR+FVEOGHEmIclktS5Eo1OM2fp+pjfqU2SfLZsA=;
+        b=b8mmcAbykSbf8+zFP3e2IaGGLOTeLaIJlxM/yFHk6bQ5+3+i5LPSROszjSVgTa5t20
+         Oma3Ug++GtT7/hiZykwd5wS7GtOf4QaU1IXZfi2WHS6mPLiLqL8qVK9ypLlNNa381tlO
+         5IvIJSYRBQEZzRr8tQHNxZLM/ZaW5ZjJn03wAB5uekabNjsaAYiZLALCBSb5K6sYhJsm
+         IVJMT+oXrqvsZ0cifsomAKqRhoR5Kv+kr72KHJoUw9MRGW19OyPocgYPa2S6CBqDzFjV
+         Hjqrg2GzemldJboyBHw5npC+Q+1Fw8g9VJOZlmqxa+bVaX4okUev+RYpfKudlu1KDa51
+         ueOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxWT1GmQXBRfiI/TTG+BmUYCTq+VWU4xY9LT5eWIqvSbGgIIJJxWu+NDaQZyw8ThNa7QkMopo/TSRJIuVATrEXlyeQ
+X-Gm-Message-State: AOJu0YwZeV2Xt+eJbKWNZKDBA4aC4ObrwyukTjeKd0SoCQlCgDpz/BVV
+	hl1NskKtUWbK8WwDoD1VjJSf+EiE9dcDFqUMEVq1IkspWplA1shYgirHXnkLeA==
+X-Google-Smtp-Source: AGHT+IGqOILtOMpTQpdNPww4A4HTkoN+afOAFJGfdSt9UtYlGc1IDjYPsnnRSAg9cfQkss7IrOZqZQ==
+X-Received: by 2002:a17:902:b495:b0:1ea:f7d4:cf2b with SMTP id y21-20020a170902b49500b001eaf7d4cf2bmr3601945plr.17.1714772271011;
+        Fri, 03 May 2024 14:37:51 -0700 (PDT)
 Received: from dianders.sjc.corp.google.com ([2620:15c:9d:2:fb6a:b54b:7580:64f3])
-        by smtp.gmail.com with ESMTPSA id j12-20020a170903024c00b001eb51a46f5bsm3729134plh.43.2024.05.03.14.37.47
+        by smtp.gmail.com with ESMTPSA id j12-20020a170903024c00b001eb51a46f5bsm3729134plh.43.2024.05.03.14.37.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 May 2024 14:37:48 -0700 (PDT)
+        Fri, 03 May 2024 14:37:50 -0700 (PDT)
 From: Douglas Anderson <dianders@chromium.org>
 To: dri-devel@lists.freedesktop.org,
 	Maxime Ripard <mripard@kernel.org>
@@ -69,9 +69,9 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	Sam Ravnborg <sam@ravnborg.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	linux-kernel@vger.kernel.org
-Subject: [RFT PATCH v2 36/48] drm/panel: seiko-43wvf1g: Stop tracking prepared/enabled
-Date: Fri,  3 May 2024 14:33:17 -0700
-Message-ID: <20240503143327.RFT.v2.36.Idda91d310ca2e4f5a4ab4ca6eaf1afdaf14eeb51@changeid>
+Subject: [RFT PATCH v2 37/48] drm/panel: seiko-43wvf1g: Don't call disable at shutdown/remove
+Date: Fri,  3 May 2024 14:33:18 -0700
+Message-ID: <20240503143327.RFT.v2.37.Ief712fb6720cb98bdf9ec8644362d028b6554f9b@changeid>
 X-Mailer: git-send-email 2.45.0.rc1.225.g2a3ae87e7f-goog
 In-Reply-To: <20240503213441.177109-1-dianders@chromium.org>
 References: <20240503213441.177109-1-dianders@chromium.org>
@@ -83,12 +83,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As talked about in commit d2aacaf07395 ("drm/panel: Check for already
-prepared/enabled in drm_panel"), we want to remove needless code from
-panel drivers that was storing and double-checking the
-prepared/enabled state. Even if someone was relying on the
-double-check before, that double-check is now in the core and not
-needed in individual drivers.
+It's the responsibility of a correctly written DRM modeset driver to
+call drm_atomic_helper_shutdown() at shutdown time and that should be
+disabling / unpreparing the panel if needed. Panel drivers shouldn't
+be calling these functions themselves.
+
+A recent effort was made to fix as many DRM modeset drivers as
+possible [1] [2] [3] and most drivers are fixed now.
+
+A grep through mainline for compatible strings used by this driver
+indicates that it is used by IMX boards. As far as I can tell, all IMX
+boards are now correctly calling drm_atomic_helper_shutdown() so we
+can remove the calls.
+
+[1] https://lore.kernel.org/r/20230901234015.566018-1-dianders@chromium.org
+[2] https://lore.kernel.org/r/20230901234202.566951-1-dianders@chromium.org
+[3] https://lore.kernel.org/r/20230921192749.1542462-1-dianders@chromium.org
 
 Cc: Marco Franchi <marco.franchi@nxp.com>
 Cc: Fabio Estevam <festevam@denx.de>
@@ -102,115 +112,36 @@ Changes in v2:
 - Only handle 1 panel per patch.
 - Split removal of prepared/enabled from handling of remove/shutdown.
 
- drivers/gpu/drm/panel/panel-seiko-43wvf1g.c | 40 ---------------------
- 1 file changed, 40 deletions(-)
+ drivers/gpu/drm/panel/panel-seiko-43wvf1g.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c b/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c
-index 658c7c040570..98480904126c 100644
+index 98480904126c..8a3fe531c641 100644
 --- a/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c
 +++ b/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c
-@@ -44,8 +44,6 @@ struct seiko_panel_desc {
+@@ -243,14 +243,6 @@ static void seiko_panel_remove(struct platform_device *pdev)
+ 	struct seiko_panel *panel = platform_get_drvdata(pdev);
  
- struct seiko_panel {
- 	struct drm_panel base;
--	bool prepared;
--	bool enabled;
- 	const struct seiko_panel_desc *desc;
- 	struct regulator *dvdd;
- 	struct regulator *avdd;
-@@ -122,25 +120,10 @@ static int seiko_panel_get_fixed_modes(struct seiko_panel *panel,
- 	return num;
- }
- 
--static int seiko_panel_disable(struct drm_panel *panel)
--{
--	struct seiko_panel *p = to_seiko_panel(panel);
--
--	if (!p->enabled)
--		return 0;
--
--	p->enabled = false;
--
--	return 0;
+ 	drm_panel_remove(&panel->base);
+-	drm_panel_disable(&panel->base);
 -}
 -
- static int seiko_panel_unprepare(struct drm_panel *panel)
- {
- 	struct seiko_panel *p = to_seiko_panel(panel);
- 
--	if (!p->prepared)
--		return 0;
--
- 	gpiod_set_value_cansleep(p->enable_gpio, 0);
- 
- 	regulator_disable(p->avdd);
-@@ -150,8 +133,6 @@ static int seiko_panel_unprepare(struct drm_panel *panel)
- 
- 	regulator_disable(p->dvdd);
- 
--	p->prepared = false;
--
- 	return 0;
- }
- 
-@@ -160,9 +141,6 @@ static int seiko_panel_prepare(struct drm_panel *panel)
- 	struct seiko_panel *p = to_seiko_panel(panel);
- 	int err;
- 
--	if (p->prepared)
--		return 0;
--
- 	err = regulator_enable(p->dvdd);
- 	if (err < 0) {
- 		dev_err(panel->dev, "failed to enable dvdd: %d\n", err);
-@@ -180,8 +158,6 @@ static int seiko_panel_prepare(struct drm_panel *panel)
- 
- 	gpiod_set_value_cansleep(p->enable_gpio, 1);
- 
--	p->prepared = true;
--
- 	return 0;
- 
- disable_dvdd:
-@@ -189,18 +165,6 @@ static int seiko_panel_prepare(struct drm_panel *panel)
- 	return err;
- }
- 
--static int seiko_panel_enable(struct drm_panel *panel)
+-static void seiko_panel_shutdown(struct platform_device *pdev)
 -{
--	struct seiko_panel *p = to_seiko_panel(panel);
+-	struct seiko_panel *panel = platform_get_drvdata(pdev);
 -
--	if (p->enabled)
--		return 0;
--
--	p->enabled = true;
--
--	return 0;
--}
--
- static int seiko_panel_get_modes(struct drm_panel *panel,
- 				 struct drm_connector *connector)
- {
-@@ -228,10 +192,8 @@ static int seiko_panel_get_timings(struct drm_panel *panel,
+-	drm_panel_disable(&panel->base);
  }
  
- static const struct drm_panel_funcs seiko_panel_funcs = {
--	.disable = seiko_panel_disable,
- 	.unprepare = seiko_panel_unprepare,
- 	.prepare = seiko_panel_prepare,
--	.enable = seiko_panel_enable,
- 	.get_modes = seiko_panel_get_modes,
- 	.get_timings = seiko_panel_get_timings,
+ static const struct display_timing seiko_43wvf1g_timing = {
+@@ -306,7 +298,6 @@ static struct platform_driver seiko_panel_platform_driver = {
+ 	},
+ 	.probe = seiko_panel_platform_probe,
+ 	.remove_new = seiko_panel_remove,
+-	.shutdown = seiko_panel_shutdown,
  };
-@@ -246,8 +208,6 @@ static int seiko_panel_probe(struct device *dev,
- 	if (!panel)
- 		return -ENOMEM;
+ module_platform_driver(seiko_panel_platform_driver);
  
--	panel->enabled = false;
--	panel->prepared = false;
- 	panel->desc = desc;
- 
- 	panel->dvdd = devm_regulator_get(dev, "dvdd");
 -- 
 2.45.0.rc1.225.g2a3ae87e7f-goog
 
