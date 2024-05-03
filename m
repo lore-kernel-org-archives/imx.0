@@ -1,72 +1,80 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE097824AB
-	for <imx@lists.linux.dev>; Fri,  3 May 2024 21:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE371353FD
+	for <imx@lists.linux.dev>; Fri,  3 May 2024 21:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714771376; cv=none; b=vAX/of0L4H98PCz0xRqGd411SY9LkX7Y9e8qPf3t5oxekkFvsE4xjM6g4Gl3TM/D66hh8xhWDPx9Ir1l7yR5eXC+hQrGdXnbMcq8O6coWvf7yBV0pN4LOfmOdd1zmSszCr7tnqR3wV6cNb3GX16qxuQkB656/ijEx0cuhpQaJ6M=
+	t=1714772271; cv=none; b=AZ0NvhQotjBvCx0CbgpOdNsBQG7iOzH0qvK8idtSDc7x+odoImXlMCq8Mm558SA1Uoy8smnwjABb6E6isEPK+7m8dIc68bGbEmTTEiIFdMhKif3O/ojYlP/BcfwV7nvDLM5SmnAfvEtaDwy2e63o0V/5fDbzgCARMzuLylFBUbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714771376; c=relaxed/simple;
-	bh=K4NcSEpC7I/4aUwVZiqF2rm1O+WGjxoElYis3WpGrUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EVVXs/adkNoo3+5lhftfY8UlCBqcp5zpVa9aIDQc6YR1UIgyLEs9Blw86PWd7ScZaffgFmYrJNwHbPncU1hKNvuOIXwFU2JaGZRzEDWi0qCnjwGbDJGzxeORGNYgkJM3fkTkQnl9ixlvtFx6S7PAw/+7muH2xre+exp6qvhVbto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzpeZIHC; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1714772271; c=relaxed/simple;
+	bh=axmCxiLmm7juCKxfHqZtD6qpzVBDjoTLtSOaskdPvC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gzaUv4upnFVso5wOY0RqUTau/gqSAts0GbVqwDuFUb/yfNqyEaW2PG744AZn85tto8BHXYl/J1myP9V6IrBXK3R1MrdgJSE3oSBIjNsRCoq8mVncFDTelo1K5VAtU1ptjLJFJLV5Qi+yYxg9Dvyug18ydZWOTJ2MTU1K6bNApog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dWncXYDe; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzpeZIHC"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5171a529224so119123e87.0
-        for <imx@lists.linux.dev>; Fri, 03 May 2024 14:22:54 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dWncXYDe"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1ed0abbf706so1072475ad.2
+        for <imx@lists.linux.dev>; Fri, 03 May 2024 14:37:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714771373; x=1715376173; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1bvhcIi7s7OtBZ29qVZiiarvKCxPVK9OqdYkfozMUGo=;
-        b=PzpeZIHCKxkV8QviVnkQG7BJiJTuaCF/EAifuKU+p3ZxGBciScGUjdh/v2gbt9g7X4
-         BeXJUeQqxhFBKWdvLWESc/HOLXU85CrKspqIlT1WiYpD1t4Mc2y4aFGcpd5vkAiRydFF
-         TbSTKPfzkD/48AMzz3rBJ+cHlbyheDpPCJ+20zScI7Zvbgx3NAs29fD0bq3uFzbQlsbi
-         J7vAzFPtcbHNVbmjPCq8O/q6eJLJhLf8Lwfnz/zDpfXu0xcNoP34HwI7bFMq+LnmUDS2
-         jxMb//FZtCvNqIsDXks23rBalhkbkOq/xIDZ0Nvn1Mw0GN24wJMbH29CwJR8s8TETjtF
-         hA6w==
+        d=chromium.org; s=google; t=1714772269; x=1715377069; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L0iO3yAQ8KkSt7Wokb68l77QkaHVGUqroVg9qjrT7Jw=;
+        b=dWncXYDeIHCIpuW3ryk9+ZdL/SoIueXr8TLJG63fgv1txXWcx+O+wFZsde8Ikwi1eA
+         2SIbD18eiuA9BxNtuQv+K/M7yFWP4ycfT62Y/2czzkAfSXRlPdX3iK3rSKLwH/XYrUwS
+         tFZpF5FLh9XkG2WBwNU4bKP8ekfCb4BfpCV+I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714771373; x=1715376173;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1bvhcIi7s7OtBZ29qVZiiarvKCxPVK9OqdYkfozMUGo=;
-        b=SiT7etXMrSK6wKlyqIN6e00DFTm48dosElNZKMdlg8noj1H96pXZfgRk7vnVn6whdY
-         A6EUHN07nkoaIurBPsiiMK1Zlcl87QUOSOptnWjQf2c2Es/wj/o1dx3lY09fmXE9uk2d
-         /ldRRyFR9RZ9BWfQNTq4SwLY8gLvOuWcwEvVfwdqTntVS55/195/FQKn7OVV0vYuV6de
-         AGc3Dh81jFzWIcrLoqkuyCBW3IRb/YpuptJ5vc6+pGJThGTvJJ+snXc4/JU2ACPsXQsI
-         B5cSp7xZHjtAmRZcA4t4nVpwhllTOYE/b2kLYV+Isdtls0TDqgYcVv2OsCJ/oXUTv6UU
-         7Zeg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRrD3FbDRRQ1uCpZZg9KtSAuxFanxEEF7svhAiAtE1BAjFduonBGubsf1n/e3ohzW1ll74SabxbrPuyEIk3zWcH/pT
-X-Gm-Message-State: AOJu0Yys1zZGONNICH/KhwvyQP7Y90P7RwVtgG0pd5480g/ZcEO4seSG
-	Y/tQJckUReH1kYM2G8Muf5jUIOIkirp1d9/9GErGHzPqSJeSanxe
-X-Google-Smtp-Source: AGHT+IHKt7/IlhLnAgzH8evYd55jGnh8jC+7MGS9qJrx7K/YQeZM+131ljiwIjiNWKPIrFhyU1yuIQ==
-X-Received: by 2002:a05:6512:3ba:b0:51c:d528:c333 with SMTP id v26-20020a05651203ba00b0051cd528c333mr1804987lfp.20.1714771372707;
-        Fri, 03 May 2024 14:22:52 -0700 (PDT)
-Received: from localhost.localdomain (80-108-76-242.cable.dynamic.surfer.at. [80.108.76.242])
-        by smtp.gmail.com with ESMTPSA id mt20-20020a170907619400b00a59a4261b84sm162073ejc.141.2024.05.03.14.22.51
+        d=1e100.net; s=20230601; t=1714772269; x=1715377069;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L0iO3yAQ8KkSt7Wokb68l77QkaHVGUqroVg9qjrT7Jw=;
+        b=WqhunLCZ1QRp/zFnUuIjZIkWnf0hfrMeYVKYQudM/qCBTT4HXrXZXp0KWy7DzS9sh7
+         MtyiJwN/nVQyZh3YtQF6fIVB8dNuIdVGaedCldrzMlCHj617VKd9jbUF55hPERiaiawf
+         3SVdS3K0JqSToQtX/AnI9Tb25XVwYdAXBnMywn9ZpOyCtEgJQrzfiI1fjIFr5Veyl+As
+         rZxUoG/TjhkuhEmsmxBcYL6VIM/DaNb+NCh2tvyoDNBi5AyTYImfn9pu717RaiBbrvPA
+         o7+YH/h7+3MbfiNrzQX1xtnC8qG/FEZHrEzqLZihQsHL4XQZJL/eYVkaDw/QMMUWRuwD
+         we8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWQEsM8ZsfMQ4znbhc+0mZor+gMGOzQd42xazzNaqUKzx79pT1Tc7LZNtQ4QFJjMmGO7JKg6K0QOFApEFAracoSNzL7
+X-Gm-Message-State: AOJu0YzPf6fkIHs6G7gpUTj7ZCkpmXZ1oKsHsYiT81pyuD1VsQQG63re
+	XZTj+4H7pdqHexT3QxAZmTq2F/64VDB1CbADQb76S6EGSRT8nL4wMAtKn59Jow==
+X-Google-Smtp-Source: AGHT+IEJXRtPeQGcDuRFCN51uInhuJn+mY1i1wPYgk00iOIMC5r7aJDHEYH9EmcUpqfMP7eJW7lrPw==
+X-Received: by 2002:a17:902:7797:b0:1e3:e39a:2e49 with SMTP id o23-20020a170902779700b001e3e39a2e49mr3858363pll.18.1714772269071;
+        Fri, 03 May 2024 14:37:49 -0700 (PDT)
+Received: from dianders.sjc.corp.google.com ([2620:15c:9d:2:fb6a:b54b:7580:64f3])
+        by smtp.gmail.com with ESMTPSA id j12-20020a170903024c00b001eb51a46f5bsm3729134plh.43.2024.05.03.14.37.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 May 2024 14:22:52 -0700 (PDT)
-From: Christian Gmeiner <christian.gmeiner@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+        Fri, 03 May 2024 14:37:48 -0700 (PDT)
+From: Douglas Anderson <dianders@chromium.org>
+To: dri-devel@lists.freedesktop.org,
+	Maxime Ripard <mripard@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Yuran Pereira <yuran.pereira@hotmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Marco Franchi <marco.franchi@nxp.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Christian Gmeiner <cgmeiner@igalia.com>,
-	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] arm64: dts: imx8qm: Add GPU nodes
-Date: Fri,  3 May 2024 23:22:48 +0200
-Message-ID: <20240503212249.3102288-1-christian.gmeiner@gmail.com>
-X-Mailer: git-send-email 2.44.0
+Subject: [RFT PATCH v2 36/48] drm/panel: seiko-43wvf1g: Stop tracking prepared/enabled
+Date: Fri,  3 May 2024 14:33:17 -0700
+Message-ID: <20240503143327.RFT.v2.36.Idda91d310ca2e4f5a4ab4ca6eaf1afdaf14eeb51@changeid>
+X-Mailer: git-send-email 2.45.0.rc1.225.g2a3ae87e7f-goog
+In-Reply-To: <20240503213441.177109-1-dianders@chromium.org>
+References: <20240503213441.177109-1-dianders@chromium.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,33 +83,134 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christian Gmeiner <cgmeiner@igalia.com>
+As talked about in commit d2aacaf07395 ("drm/panel: Check for already
+prepared/enabled in drm_panel"), we want to remove needless code from
+panel drivers that was storing and double-checking the
+prepared/enabled state. Even if someone was relying on the
+double-check before, that double-check is now in the core and not
+needed in individual drivers.
 
-Add the DT node for the GPU core found on the i.MX8QM.
-
-etnaviv-gpu 53100000.gpu: model: GC7000, revision: 6009
-[drm] Initialized etnaviv 1.4.0 20151214 for etnaviv on minor 0
-
-Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Cc: Marco Franchi <marco.franchi@nxp.com>
+Cc: Fabio Estevam <festevam@denx.de>
+Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: imx@lists.linux.dev
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
-v1 -> v2:
- - Order by subsystem register address.
 
- arch/arm64/boot/dts/freescale/imx8qm.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v2:
+- Only handle 1 panel per patch.
+- Split removal of prepared/enabled from handling of remove/shutdown.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-index b3d01677b70c..8e061582a4c9 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-@@ -463,6 +463,7 @@ drc_crit0: trip1 {
+ drivers/gpu/drm/panel/panel-seiko-43wvf1g.c | 40 ---------------------
+ 1 file changed, 40 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c b/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c
+index 658c7c040570..98480904126c 100644
+--- a/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c
++++ b/drivers/gpu/drm/panel/panel-seiko-43wvf1g.c
+@@ -44,8 +44,6 @@ struct seiko_panel_desc {
  
- 	/* sorted in register address */
- 	#include "imx8-ss-vpu.dtsi"
-+	#include "imx8-ss-gpu0.dtsi"
- 	#include "imx8-ss-img.dtsi"
- 	#include "imx8-ss-dma.dtsi"
- 	#include "imx8-ss-conn.dtsi"
+ struct seiko_panel {
+ 	struct drm_panel base;
+-	bool prepared;
+-	bool enabled;
+ 	const struct seiko_panel_desc *desc;
+ 	struct regulator *dvdd;
+ 	struct regulator *avdd;
+@@ -122,25 +120,10 @@ static int seiko_panel_get_fixed_modes(struct seiko_panel *panel,
+ 	return num;
+ }
+ 
+-static int seiko_panel_disable(struct drm_panel *panel)
+-{
+-	struct seiko_panel *p = to_seiko_panel(panel);
+-
+-	if (!p->enabled)
+-		return 0;
+-
+-	p->enabled = false;
+-
+-	return 0;
+-}
+-
+ static int seiko_panel_unprepare(struct drm_panel *panel)
+ {
+ 	struct seiko_panel *p = to_seiko_panel(panel);
+ 
+-	if (!p->prepared)
+-		return 0;
+-
+ 	gpiod_set_value_cansleep(p->enable_gpio, 0);
+ 
+ 	regulator_disable(p->avdd);
+@@ -150,8 +133,6 @@ static int seiko_panel_unprepare(struct drm_panel *panel)
+ 
+ 	regulator_disable(p->dvdd);
+ 
+-	p->prepared = false;
+-
+ 	return 0;
+ }
+ 
+@@ -160,9 +141,6 @@ static int seiko_panel_prepare(struct drm_panel *panel)
+ 	struct seiko_panel *p = to_seiko_panel(panel);
+ 	int err;
+ 
+-	if (p->prepared)
+-		return 0;
+-
+ 	err = regulator_enable(p->dvdd);
+ 	if (err < 0) {
+ 		dev_err(panel->dev, "failed to enable dvdd: %d\n", err);
+@@ -180,8 +158,6 @@ static int seiko_panel_prepare(struct drm_panel *panel)
+ 
+ 	gpiod_set_value_cansleep(p->enable_gpio, 1);
+ 
+-	p->prepared = true;
+-
+ 	return 0;
+ 
+ disable_dvdd:
+@@ -189,18 +165,6 @@ static int seiko_panel_prepare(struct drm_panel *panel)
+ 	return err;
+ }
+ 
+-static int seiko_panel_enable(struct drm_panel *panel)
+-{
+-	struct seiko_panel *p = to_seiko_panel(panel);
+-
+-	if (p->enabled)
+-		return 0;
+-
+-	p->enabled = true;
+-
+-	return 0;
+-}
+-
+ static int seiko_panel_get_modes(struct drm_panel *panel,
+ 				 struct drm_connector *connector)
+ {
+@@ -228,10 +192,8 @@ static int seiko_panel_get_timings(struct drm_panel *panel,
+ }
+ 
+ static const struct drm_panel_funcs seiko_panel_funcs = {
+-	.disable = seiko_panel_disable,
+ 	.unprepare = seiko_panel_unprepare,
+ 	.prepare = seiko_panel_prepare,
+-	.enable = seiko_panel_enable,
+ 	.get_modes = seiko_panel_get_modes,
+ 	.get_timings = seiko_panel_get_timings,
+ };
+@@ -246,8 +208,6 @@ static int seiko_panel_probe(struct device *dev,
+ 	if (!panel)
+ 		return -ENOMEM;
+ 
+-	panel->enabled = false;
+-	panel->prepared = false;
+ 	panel->desc = desc;
+ 
+ 	panel->dvdd = devm_regulator_get(dev, "dvdd");
 -- 
-2.44.0
+2.45.0.rc1.225.g2a3ae87e7f-goog
 
