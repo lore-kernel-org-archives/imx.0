@@ -1,113 +1,112 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD41146A72
-	for <imx@lists.linux.dev>; Fri,  3 May 2024 07:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5296914F9D2;
+	Fri,  3 May 2024 09:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714720812; cv=none; b=jidH2ndLEBIOlnXUlihAyFk9O82/+Ft0djUJ+ZFjXfqcVia7eyxXBFXt3sVDPJBEnfKs8/aTa0pTPeLLCNBoirUFc2+KNbKs4Wz0ANa/FPcPEVOUUL4ric2kyWmeLqg4esHBGBLln7X8VONgS1UpoNvi0DGqV8aa9Be2Kl9THaM=
+	t=1714729289; cv=none; b=kMStaGsP8ArGWAsR85TCYY4CSDnR8AbS9cwQ+2PZ1IRlar1Rt3yxuxxVqD4EQk7mOd1WdDU7f0Mfdt1UY5mr8e8LOIToqhBLKMxgFaWx3KNLk8fcQEHYWsQUgIeBSAJ88fWfkCtLzDRn2YYTcUn/Egg3PtwOBWwQ4vnnY1XuBmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714720812; c=relaxed/simple;
-	bh=9wIaPeFAaUloh+tV0Kf/Zmc8dIfcbAIB89NynZIAYBA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iyuJYHD343vVV1DoJEvZ7QRGA+SFprsrQRPIBCfWt0y4b3OfcBpz1vQCXVe+xwpnzsYoJWgc1/lT8kP5LbgaBWiv/zyO2SKYi5vrkRH+zu3OQiyET0RNFw1NSleO55qW4AmVB4mDsfXaA4NTiXwtqCSnt2lZDXeCNBpqROpn/us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FPdRhil6; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714729289; c=relaxed/simple;
+	bh=xkVHQuN0QK1pV6FCvZWwjaK3ABs9JuiXHV7UeLNN/F8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZsMZwcv/1eti+5X3/sUkOTznv2+SGxSOY8PSZAbGFUXaAau8qaLJLlbSqBTlYdFYAJqqOvawikmCS195x+SSu3atS9prK5r7hVF55X+twvex/WLvd+STGHOA+9ZsxZdLfjHoQBYUZHPYUpJOmIG+p0OiT4G8QPfqeT7R/LQSYYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4rsNwSc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FPdRhil6"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-de5b1e6beceso8567605276.0
-        for <imx@lists.linux.dev>; Fri, 03 May 2024 00:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714720810; x=1715325610; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9wIaPeFAaUloh+tV0Kf/Zmc8dIfcbAIB89NynZIAYBA=;
-        b=FPdRhil6DbGq16tTpBJyrwovixVXOD+FpGC8lGOnjdZCrZf2nwYa//dBLgZz4A+Frl
-         8vf4WyARRPoiFVlm4yeN/Oc8reyxsquy4LsmBxguZhsWWWjkuUJ4JmuDst34RQtW4CRO
-         /ON0McD2n9gIeIQy716NMmN9kd0ELPefSRQ0Wf3D9lI17Bg6c1IxBwx4bYJ4+2KTJDjl
-         giUA4sJ0hRbh/arnUgbkW97AtggkVEw6kQTKgfDdTg0v793VPQteoh/k5oboQFnbNSbF
-         M9AWUQ5+DYR5Mg82CR4CYR9/uwZrIJYDbqX0yD3VDn/ItRnYWUV86cvp8Ccyl6C05+/q
-         kGUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714720810; x=1715325610;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9wIaPeFAaUloh+tV0Kf/Zmc8dIfcbAIB89NynZIAYBA=;
-        b=Vte5waUN5Afqo26JKs3rtb53A8owGrBcboJcnp91U3Tq4o3UCmaJ22hxMdrbVugnaM
-         6GiNe3uE2SuQn5EHlhS2TQ8Oi6JIFzno/5MT7FSsXD0AHYWUjFAZQyjBlZ/x0PcHPNr/
-         TfoGaZERCo/1nVDWjZhPydveM28fSHVlTf0EVMlIxQLtzHzH2gZGuHsibRCHepEwTAiC
-         G+/i3jtWJh5Y0SgsjF+MeWvYNrOr1y5KXdKIgfwx9dIeSExcCFis3DDKHdL50+mcwn0I
-         xqugtpXeVDUmvndaH7GOkSZy1OWOu4tZmS0rDxdx6TmNOlmhDl4/4dkmKNO6IXuM8H1t
-         V8nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEuaOYzspj9hoWnAurSXnJu/+5c7AkxWNOGDtRpyk1NPfidUUhC18QXuYhQwGGmRXZZkX1XRhWYtzqh6dyTGOU+r41
-X-Gm-Message-State: AOJu0YyGd82fYFa0cHvq6ZE0lAdbe3gt3iAYhgnpGNLHV5M+FsrhdFAa
-	zon6UuomsjK0f9lzPlSeLoXXCcyrPGs2bs8myeMeTP+MmmSGW/U+86yosg4mL11RDCWDLpGhCO+
-	wS7g5C1NjjVzXxjC2AyQasaqRGIr7NulfhnU9Bg==
-X-Google-Smtp-Source: AGHT+IG2e9YB/XnLTQbvqj0kK4ATPxoJ7R6aIP282PPsbZXF297lXvACY/w/LCEjCFtAwBrhBmRU/mc6jno/5QoxHeQ=
-X-Received: by 2002:a05:6902:2203:b0:dc2:2b0d:613e with SMTP id
- dm3-20020a056902220300b00dc22b0d613emr2388159ybb.10.1714720809843; Fri, 03
- May 2024 00:20:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4rsNwSc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8B8C116B1;
+	Fri,  3 May 2024 09:41:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714729288;
+	bh=xkVHQuN0QK1pV6FCvZWwjaK3ABs9JuiXHV7UeLNN/F8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=t4rsNwSc6Oag1pK5kvocDG3jdrsGrw8xMMHm2DbMC/dAHL/rjP1jasl3fOq3sQ6sT
+	 mYcRq41TFgVg2ydSAPH2ZHU71Y1s8oP8fcwa01fViN/4Kj8yLNB/h/N3wZoSTkUxQ5
+	 ZS92MJT5rVfxVzRKK5RcU+OlQERguUMiR6nsVQyGG2n759Z8YoVerzxZIKC0KXD70n
+	 DbH8POgDU6CBf7YY/KhzUaUWJ20nyfUFKWkwZv9AlZKnPkjq9umNUoAcG/06p28ro0
+	 4svbrxeI04Ja42Jtru++TKUyN5kZ8mzKVSEHNeWWTYOarl1Pd8NbZE1LDzRFzzqJ0k
+	 dZWkxZ6fnACxA==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
+ =?utf-8?q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>, 
+ Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+ Alexander Shiyan <shc_work@mail.ru>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-omap@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+In-Reply-To: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+Subject: Re: [PATCH v2 00/19] backlight: Constify lcd_ops
+Message-Id: <171472928415.1323021.3458121588308140519.b4-ty@kernel.org>
+Date: Fri, 03 May 2024 10:41:24 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
-In-Reply-To: <20240501-pinctrl-cleanup-v1-0-797ceca46e5c@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 3 May 2024 09:19:58 +0200
-Message-ID: <CACRpkdaRpJw=kHtya2iww7vvm+Bt6-oPMmz-6VzfhZniSoMP3w@mail.gmail.com>
-Subject: Re: [PATCH 00/21] pinctrl: Use scope based of_node_put() cleanups
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Jianlong Huang <jianlong.huang@starfivetech.com>, 
-	Hal Feng <hal.feng@starfivetech.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Viresh Kumar <vireshk@kernel.org>, Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Damien Le Moal <dlemoal@kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Chester Lin <chester62515@gmail.com>, 
-	Matthias Brugger <mbrugger@suse.com>, Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Joel Stanley <joel@jms.id.au>, Dan Carpenter <dan.carpenter@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-samsung-soc@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	imx@lists.linux.dev, linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.12.4
 
-Hi Peng,
+On Wed, 24 Apr 2024 08:33:26 +0200, Krzysztof Kozlowski wrote:
+> Changes in v2:
+> - Collect tags, including wrongly places Thomas' tag (which requires me
+>   to manually edit 15 other patches to drop it).
+> - Combine here checkpatch patch:
+>   https://lore.kernel.org/all/20240414185440.288812-1-krzk@kernel.org/
+> - Link to v1: https://lore.kernel.org/r/20240414-video-backlight-lcd-ops-v1-0-9b37fcbf546a@kernel.org
+> 
+> [...]
 
-thanks for doing this! I am very much in favor of using
-scoped management of resources where it makes it easier to
-do the right thing.
+Applied, thanks!
 
-I agree with Krzysztof's comment that we should avoid scoping
-in cases where there is a clear path grab/use/release so the
-code is easy to read already as it is. Let's drop those.
+[01/19] backlight: Constify lcd_ops
+        commit: 9258e31adebf0ccf0797867841f3f9800695dba2
+[02/19] backlight: ams369fg06: Constify lcd_ops
+        commit: 8053c4fa200c3fef07859bac9469ad3f26f5aba1
+[03/19] backlight: corgi_lcd: Constify lcd_ops
+        commit: 18c5d4ab9f6312f2c9c6c409287d552112db810a
+[04/19] backlight: hx8357: Constify lcd_ops
+        commit: 1d669c1998b559393ec2eaac0449f4989a255049
+[05/19] backlight: ili922x: Constify lcd_ops
+        commit: e77fef89de954b1557cb91b64696cd4fc06c80ad
+[06/19] backlight: ili9320: Constify lcd_ops
+        commit: 06cfc92faa1eabb2ea226c58d6fd0b5ab117ee39
+[07/19] backlight: jornada720_lcd: Constify lcd_ops
+        commit: a54b4999dc204bc5839bb70602078c7c8e4a5010
+[08/19] backlight: l4f00242t03: Constify lcd_ops
+        commit: 657e6c1b270e9f4a890059f5d08a08ea842fa1a8
+[09/19] backlight: lms283gf05: Constify lcd_ops
+        commit: 66e5a10818fd332e973d36429e36f4c436a86a91
+[10/19] backlight: lms501kf03: Constify lcd_ops
+        commit: 31c205d1e8426dd0cce0143c500ff1ff71fe64d1
+[11/19] backlight: ltv350qv: Constify lcd_ops
+        commit: 24424f84d7568d9d794657622e080b1cba1e9290
+[12/19] backlight: otm3225a: Constify lcd_ops
+        commit: 02949072ee8fb6141cd8ac2be9867ef466580ddb
+[13/19] backlight: platform_lcd: Constify lcd_ops
+        commit: d217a8d5a39851caa16996756682715c9debb4a9
+[14/19] backlight: tdo24m: Constify lcd_ops
+        commit: c7a1809d1982f671e66a4b1c1ffd8bdd5ba260aa
+[15/19] HID: picoLCD: Constify lcd_ops
+        commit: 238724635763e7c5d82c0581b0c49e5dfdd5505a
+[16/19] fbdev: clps711x: Constify lcd_ops
+        commit: 55d9a955375af3b3fd5725a9b5cbc658d4bdd244
+[17/19] fbdev: imx: Constify lcd_ops
+        commit: a6abbb5783345c4c7cc9fbd583b81e167bd0207d
+[18/19] fbdev: omap: lcd_ams_delta: Constify lcd_ops
+        commit: ca991e8e096c9f0cff0300289e2d4813192b8ef3
+[19/19] const_structs.checkpatch: add lcd_ops
+        commit: f02aeccbec6108d768f54d31e7cb48b06c0e3814
 
-I saw there was some patch that was even a fix, perhaps I
-should pick that one separately for fixes, but probably it is
-non-urgent.
+--
+Lee Jones [李琼斯]
 
-I suppose we will just apply v2 after people had some time to
-look at it!
-
-Yours,
-Linus Walleij
