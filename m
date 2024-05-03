@@ -1,139 +1,136 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC188495
-	for <imx@lists.linux.dev>; Fri,  3 May 2024 12:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14C621A06;
+	Fri,  3 May 2024 13:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714741113; cv=none; b=Z388OP8LWJ0oglT7kWVnrzmsNUegJRDUTlxD591AS91e0hJnM8vxuSCbnyXBWSPkvDGrh/NZhSKPSj5B/dhlImkKlqirQMe4esv2BSclhrK2hRpySkYbU2UzlUtwMue/aFV3ivvp+e4OW7o6GdTbp8lgyNHZcrfC2HTvSJktj9Y=
+	t=1714742787; cv=none; b=YYI5IsfDV7zy3B+Tp/zGXLMJUvxPmmQ44tGCzMjS2phYYfmg6uZuraoMB3EzhEKdWWJNPYc4lkPez6etC8gbmISBuXa0R0xMnS4my7Gaj+kD+9eIKn489AsUZhC+xF66RZbnP7QkO//KRMr1WjqROoI/I0Bfr99315hERB0E+QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714741113; c=relaxed/simple;
-	bh=YkNGtKSy5REbDya5MJjleMOscfr6ZOuhSMFpINPzqNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mu9cdAK8avMmaZcMwN3fDG7WtE8gmuCs0LgqOmX5F5LFz/wJddG2+2L1A3nJraHXjXKVGIiztb49CjG3k8HHlc6dE9Chh1WQSMDVQzMxPYR7Qk9wS+Qrq9Qs7OklkDonaELnj/DJDVofd9HvwcTdrisz1JzwYvHOrz0iVGODUe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=dU2Xri8i; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jIQO3pMZ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1714742787; c=relaxed/simple;
+	bh=FzJmLJEAfWbfxoDrGzOyw0EXb6lj4tCCnC3PFnqsC+8=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=ULAItGzEw8a+4zx5lvDr5VYl/gpBe0IUGA6o4+rvuHXao21MhNzk8ZMAqj/Z5ub1KA8uATgP3vewhsmEpmdaIQpTu4mr5eBFEZOg0llAxJXulqvfl3BHuNqytR3ItatYnx4ARtJz+2UT7tMKYibMgWSq4BHmZWzdGeAg2AUbO58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QohNH+5A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="dU2Xri8i";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jIQO3pMZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1714741110; x=1746277110;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VMoe7SYlALrfWi5S2dB+GJHXhcLLyVr0yLlsMrIAcus=;
-  b=dU2Xri8ixewB35ca98WEN9WAvrLnWl0FXHVXPz1EFty3FLjnSP85GNsO
-   lPiLxXVCYrE+FiYUnfm76dephadUPfT7mBSGnHhVM/TXhnFS8XEN7dLuO
-   5szk4A4GHIMXwmmCL50AFXBq9TvY0hSZPIJk9L1EdM2vx997maC+mU425
-   VlEL0+jSsLtVqUeFhJ3WpiS1UpyomIyiajmGsx5qTlKoHsFXnWEZbc7po
-   clvoUg0/0RCF7Na/l+vU5xCm6uBxxBdv+mK7pwlsVXydym2uwh1D6TzaL
-   mooKHPyALdlzuga9bBId8Jyf4dSZonZZc82SXJDUO4G3rb1WVtBMiIgY1
-   w==;
-X-IronPort-AV: E=Sophos;i="6.07,251,1708383600"; 
-   d="scan'208";a="36736105"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 03 May 2024 14:58:21 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E854D173347;
-	Fri,  3 May 2024 14:58:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1714741097;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VMoe7SYlALrfWi5S2dB+GJHXhcLLyVr0yLlsMrIAcus=;
-	b=jIQO3pMZb8c00MezK1nZkV4/fjV+Ri8QgIKvKWYAuQ1yBoOnKyBUZ1Axolmy3EIsnY5ThQ
-	GcP2eUCkmUs8eL7nJWlbXWMBtVkUsRTIrwhb/LyKjVnjzlcpAEqGJ5onwAcXHYn+oXNbSZ
-	XHvercmx57IhmxwPisbVdIC+wT2f9pzZjVkBYCW9AqWAU24AeQ3X9rMX5kFvLvsdGNt61f
-	eALqH0AA4/ki/f4v+wrz4nOBIwL/Y4X66r8uGOUxyjgK3rx0ApiJlNQ+gqxoBalEwZUWWe
-	rOfkRF7HZ/AD+9tAyDjYrt/vUzrgVDHMWzP0Q9I26CwhQ25H6VjfO/jbD5MZPQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@denx.de>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Paul Elder <paul.elder@ideasonboard.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Date: Fri, 03 May 2024 14:58:19 +0200
-Message-ID: <3311352.aeNJFYEL58@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <2327389.ElGaqSPkdT@steina-w>
-References: <20240416141914.9375-1-marex@denx.de> <2327389.ElGaqSPkdT@steina-w>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QohNH+5A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CA4C116B1;
+	Fri,  3 May 2024 13:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714742786;
+	bh=FzJmLJEAfWbfxoDrGzOyw0EXb6lj4tCCnC3PFnqsC+8=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=QohNH+5ACzoqeSQBk3VonpvWlJw8iyUIYzpZ+b2IrA5H7UkLmHu7+eMluTFHH4Xl+
+	 8nzyy4Z/u9inj0mdTpo5579ZQpvuOi4Jwy7rOmlKH5N+6Tz4P9O0nJ+DhwpX2rozjG
+	 gh1tbgOZHDqCqFniDir6nvtaaKSF04vlALRjofWeRBREG+iWs9teyZy8/gg7SYHmSf
+	 Xr/oZhE41aeiawkv3kqXWky5oQwpTX1s4W6u75Ckr6BPKa8go5a7QEB/vcx30UXzLH
+	 2QB0iizPbib7MR7lC5WFD9HMFl/+ccspoIF2iDD5rlr3oMpprpbCJPaxRgXxOqQc4k
+	 IWTbcqgzj2OTQ==
+Date: Fri, 03 May 2024 08:26:25 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
-
-Hi,
-
-Am Mittwoch, 17. April 2024, 11:12:04 CEST schrieb Alexander Stein:
-> Am Dienstag, 16. April 2024, 16:19:10 CEST schrieb Marek Vasut:
-> > Configure both CSI2 assigned-clock-rates the same way.
-> > There does not seem to be any reason for keeping the
-> > two CSI2 pixel clock set to different frequencies.
-> >=20
-> > This also reduces first CSI2 clock from overdrive mode
-> > frequency which is 500 MHz down below the regular mode
-> > frequency of 400 MHz.
-> >=20
-> > Signed-off-by: Marek Vasut <marex@denx.de>
->=20
-> Apparently there is no difference when using imx415 (3840x2160) sensor.
-
-Just for the records: While this change does not affect imx415 (3840x2160)
-processing, reducing clock-frequency as well (v3) imx415 does not work.
-So I assume that for this image size a higher than default frequency is
-required.
-
-Best regards,
-Alexander
-
-> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
-> > ---
-> > Cc: Conor Dooley <conor+dt@kernel.org>
-> > Cc: Fabio Estevam <festevam@gmail.com>
-> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Cc: Paul Elder <paul.elder@ideasonboard.com>
-> > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > Cc: Rob Herring <robh@kernel.org>
-> > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > Cc: Shawn Guo <shawnguo@kernel.org>
-> > Cc: devicetree@vger.kernel.org
-> > Cc: imx@lists.linux.dev
-> > Cc: linux-arm-kernel@lists.infradead.org
-> > ---
-> > V2: Align both clock to 266 MHz and update commit message
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boo=
-t/dts/freescale/imx8mp.dtsi
-> > index 1bb96e96639f2..7883f5c056f4e 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
-> >  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
-> >  				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
-> >  							 <&clk IMX8MP_CLK_24M>;
-> > -				assigned-clock-rates =3D <500000000>;
-> > +				assigned-clock-rates =3D <266000000>;
-> >  				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
-> >  				status =3D "disabled";
-> > =20
-> >=20
->=20
->=20
->=20
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev, 
+ Conor Dooley <conor.dooley@microchip.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>
+In-Reply-To: <20240503-imx95-dts-v3-v4-0-535ddc2bde73@nxp.com>
+References: <20240503-imx95-dts-v3-v4-0-535ddc2bde73@nxp.com>
+Message-Id: <171474271031.624119.6280624703185299261.robh@kernel.org>
+Subject: Re: [PATCH v4 0/3] arm64: dts: add i.MX95 and EVK board
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+On Fri, 03 May 2024 09:37:10 +0800, Peng Fan (OSS) wrote:
+> Add a minimal i.MX95 dtsi and EVK board dts.
+> i.MX95 has a M33 running SCMI firmware, but as of now, the scmi pinctrl
+> driver still not ready for i.MX95, so we count on bootloader to
+> configure the pinctrl for lpuart and sdhc and it boots well. After pinctrl
+> driver ready, we could move to use scmi pinctrl.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Changes in v4:
+> - Sort nodes by address
+> - Drop coresight nodes
+> - Align clock rates for SDHC1-3
+> - Drop wdog3 board specific property
+> - Link to v3: https://lore.kernel.org/r/20240428-imx95-dts-v3-v3-0-765395f88b9f@nxp.com
+> 
+> Changes in v3:
+> - Drop irqsteer node because binding not accepted
+> - Pass dtbs_check
+> - Link to v2: https://lore.kernel.org/r/20240226-imx95-dts-v2-0-00e36637b07e@nxp.com
+> 
+> Changes in v2:
+> - Addressed Rob and Krzysztof's comments, and fix dts_check issue
+>   To pass the dtbs_check, need apply:
+>   https://lore.kernel.org/all/20240226070910.3379108-1-peng.fan@oss.nxp.com/
+>   https://lore.kernel.org/all/20240226130243.3820915-1-peng.fan@oss.nxp.com/
+>   https://lore.kernel.org/all/20240226130516.3821803-1-peng.fan@oss.nxp.com/
+>   https://lore.kernel.org/all/20240226130826.3824251-1-peng.fan@oss.nxp.com/
+>   https://lore.kernel.org/all/20240219-imx-mailbox-v8-1-75535a87794e@nxp.com/
+> 
+> - Link to v1: https://lore.kernel.org/r/20240218-imx95-dts-v1-0-2959f89f2018@nxp.com
+> 
+> ---
+> Peng Fan (3):
+>       dt-bindings: arm: fsl: add i.MX95 19x19 EVK board
+>       arm64: dts: freescale: add i.MX95 basic dtsi
+>       arm64: dts: freescale: add i.MX95 19x19 EVK minimal board dts
+> 
+>  Documentation/devicetree/bindings/arm/fsl.yaml    |    6 +
+>  arch/arm64/boot/dts/freescale/Makefile            |    1 +
+>  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts |  112 +++
+>  arch/arm64/boot/dts/freescale/imx95-clock.h       |  187 ++++
+>  arch/arm64/boot/dts/freescale/imx95-power.h       |   55 ++
+>  arch/arm64/boot/dts/freescale/imx95.dtsi          | 1049 +++++++++++++++++++++
+>  6 files changed, 1410 insertions(+)
+> ---
+> base-commit: bb7a2467e6beef44a80a17d45ebf2931e7631083
+> change-id: 20240428-imx95-dts-v3-bee59f0e559b
+> 
+> Best regards,
+> --
+> Peng Fan <peng.fan@nxp.com>
+> 
+> 
+> 
+
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx95-19x19-evk.dtb' for 20240503-imx95-dts-v3-v4-0-535ddc2bde73@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: mmc@428b0000: 'assigned-clocks' is a dependency of 'assigned-clock-parents'
+	from schema $id: http://devicetree.org/schemas/clock/clock.yaml#
+arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: mmc@428b0000: 'assigned-clocks' is a dependency of 'assigned-clock-rates'
+	from schema $id: http://devicetree.org/schemas/clock/clock.yaml#
+
+
+
 
 
