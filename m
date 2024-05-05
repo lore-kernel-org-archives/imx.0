@@ -1,564 +1,227 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2055.outbound.protection.outlook.com [40.107.7.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB90937143
-	for <imx@lists.linux.dev>; Sun,  5 May 2024 16:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714925556; cv=none; b=j3R73BxiYqthFsqJm9JVWwloVJsqmO1XVZJIRfkYgxprWMVfGeeGZb0NHmyXCZ6HxonenSSzUmlGZswnTuS4ldBGoycR44mqotnDlkdz7v43RVveFgiO3Yp5Jb5Jfs7z2CVXmcKfzKHih1dFnIRbhdnqMF29wdKv+rkOjuahzXY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714925556; c=relaxed/simple;
-	bh=Q4f/tEzVyp7qJaT5k7uv0B0XR+OCFQEO1RGo4OSlOdQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WOpvRLSD2/S7sP3N/jF4BLEYTAXPnfBLii+M80nnfXKz9BEwKZPJnwF1NLUaphQ7AqCRSQJOMrdvWVZg1oVUXk/wJeKw4jqPkpkhsZWFObPTt+GGG6pK9ypbjsMhChEIqWY4fJq11U2LPhGz1PSAK8CAqGoBKXBoaQn3neexPrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oUHOQOMx; arc=none smtp.client-ip=217.70.178.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8478136E29
+	for <imx@lists.linux.dev>; Sun,  5 May 2024 22:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714947299; cv=fail; b=CLTpehXwSGIuVM2qEwnXaUCEAs1vsw+eddP7AURxoO2I5nUscB9J5X3Vl/+vjjESwaVkvAqnBIxebpEPxUvrnYTL5MoFFFjV0rxCJsNL83BiCyI7J3xEpwI1KeD4tILwaeDzV9CiUm9mt+TUvQ179PKT6vUnDkNVKuVyIUmMCWA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714947299; c=relaxed/simple;
+	bh=zQKQnJYq00b4ywnw0trq+X1cuAKPBNOPke9h7IK9L7k=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=ddp53f/8KHftXHYnFkw3hEu8Il7JMbjcZO7ykeVrE+A6WaO3EDwdOG/2ShwQpA1ItYMtSammp3Ui2ZQFNXHPoYEQsSesVUNUpGq+2Ii5ImnlqPzxK+ELGBLt+RM0i9NenB8ccKFRuQUGJ2C4/WcFCDmsbdWDitckDoArnFDwSF0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EmgbG2++; arc=fail smtp.client-ip=40.107.7.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oUHOQOMx"
-Received: from relay7-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::227])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 7EA46C370C
-	for <imx@lists.linux.dev>; Sun,  5 May 2024 16:08:48 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2366320005;
-	Sun,  5 May 2024 16:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1714925321;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kBFovU4IWW/lVLu+flk1ZH6OUHn6p72crUVgGGNOBv4=;
-	b=oUHOQOMxyQ/c0m7iUxwmuNeyfeDzub7/cdlE3dKrkunGKAa3u6XpX3At2YrUqOC5Yc6Lws
-	fu2FOit+sMqDkDdxqgiIvoMcdBC7R8JxHaHZpVvuftlraFHbxYgWLRAiXOlJiqCCqkVhE4
-	Nf1/btMTQIHMvcNRqADQtt3sYiXfpzWCqMIQsU/xFQaWvXCrslVx3HydDNRA+2Rpj4kurX
-	U5+7Oh+AdCXRm5Qn0l8vrsncNkY7prl052zlXza7dhr+r7j5X084jtZYK8AvgkzNY6of0Z
-	hJufSQK1mpovLYIqQ1pbyFzGD2Xv0jChxziGODahf3wJc9Sqoy/O4Kfq8WGa6g==
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>, soc@kernel.org, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Dinh Nguyen
- <dinguyen@kernel.org>, Tsahee Zidenberg <tsahee@annapurnalabs.com>,
- Antoine Tenart <atenart@kernel.org>, Khuong Dinh
- <khuong@os.amperecomputing.com>, Liviu Dudau <liviu.dudau@arm.com>, Sudeep
- Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Robert
- Richter <rric@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Li Yang
- <leoyang.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- "Paul J. Murphy" <paul.j.murphy@intel.com>, Daniele Alessandrelli
- <daniele.alessandrelli@intel.com>, Andrew Lunn <andrew@lunn.ch>, Sebastian
- Hesselbarth <sebastian.hesselbarth@gmail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Thierry Reding
- <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Bjorn
- Andersson <andersson@kernel.org>, Konrad Dybcio
- <konrad.dybcio@linaro.org>, Andreas =?utf-8?Q?F=C3=A4rber?=
- <afaerber@suse.de>, Heiko
- Stuebner <heiko@sntech.de>, Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Jisheng Zhang <jszhang@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- linux-fsd@tesla.com, Michal Simek <michal.simek@amd.com>
-Cc: devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
- linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-realtek-soc@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v2] arm/arm64: dts: Drop "arm,armv8-pmuv3" compatible usage
-In-Reply-To: <20240417203853.3212103-1-robh@kernel.org>
-References: <20240417203853.3212103-1-robh@kernel.org>
-Date: Sun, 05 May 2024 18:08:34 +0200
-Message-ID: <87y18onsvx.fsf@BLaptop.bootlin.com>
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EmgbG2++"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BYJgjxthWJwX1KIO7j8n2F1lH5KOoluzOuvcPZTEO4DAmj4f+EbN2FkvXET2R+MIa7lwBWDuhDQg3OQzobSscuayCCvk3qrf9YnZfNcwtYORn7sugzGsXIMq3hJAwmFiyHf9XwrqCz4uoGl4TRVo5FfcCYILQ+JujnegTpO+LaIRFa/bJbJqPFiJbuuhTao7X24XWZG/rs94dLw4mZZ52CVrttQjHDlJwGLJHEYxx2BhR5uRa+29ALoaV6nG4JdbZ/xrHZF61/EkqEQYdlam/+fpDBYPqw4cD3O7XpmGemmXZ0rfGIwgpwQq2br24h3284s/2jsezoqZ/aS4XE6jMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ck/pERlRKZVZK4I8QpTViZ/KGHgdSzAa1jW/z4kfFo0=;
+ b=VUtxQ2JgycxAhrS+5Ig2hQmtKeItqkh3YODdCCCX5PHqbAZXKB8jWU5sz8+Rp6Ge/TTLa8jerSP3zOulbk2boJ1LLTe93Vu6Z2PAzmL0MrPV+A7bNE7qGvdNl/Cvw6y7vEfqgLtz6KaXLHBcRohEkuBeH2+WLGE4lAqcqi0n+elBe41S3ig17x3M8tuTd34c21p0PkxiZvOm9utUSZl7P6u3+tPFLzsWOHseDJ7WpyYUY3Sz7WBpwQIyYrM9aw3YFLtPHZZnQCL09yyHEDXpEjUJeaHc3QXWsSzR8kfruX5wLuEGK33LBfyXYejw3o7IsSNTPxlFnX7JTHchKKLdBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ck/pERlRKZVZK4I8QpTViZ/KGHgdSzAa1jW/z4kfFo0=;
+ b=EmgbG2++2R1cA9vZYRBXVLhey6JsJLnQyjcsYvWjgRi8C8uGtv4ArrjNNSLVzEhcHvqFtNPpWfqB6axEHgCgTKdzut24oThwvv4Nozia7+mzIBn6KkbOrjbFvazBBou6fdx81qkADbi4/NgzRxGic2r/cZor1ImQ9QqQuBARaGs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by AM0PR04MB6818.eurprd04.prod.outlook.com (2603:10a6:208:186::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.41; Sun, 5 May
+ 2024 22:14:52 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7544.041; Sun, 5 May 2024
+ 22:14:52 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v5 0/3] arm64: dts: add i.MX95 and EVK board
+Date: Mon, 06 May 2024 06:22:42 +0800
+Message-Id: <20240506-imx95-dts-v3-v5-0-5ec9b99cfb2f@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALIGOGYC/3WMywrCMBBFf0VmbSQkGdu48j/EhWkmdhZ9kJRQK
+ f13024KgnA358I5CySKTAlupwUiZU489AXwfIKmffVvEuwLg5LKSKNqwd1sUfgpiayFI0IbJCF
+ aB0UZIwWe99zjWbjlNA3xs9ez3t4/oTIpqitqi6GunQ33fh4vzdDBlsnmUFHqH9UUFTV63yjnq
+ dKHuq7rF5JJZUDhAAAA
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Peng Fan <peng.fan@nxp.com>, Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1714947780; l=2329;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=zQKQnJYq00b4ywnw0trq+X1cuAKPBNOPke9h7IK9L7k=;
+ b=jXcKMtGAe/rZSRhHIgK3i2GU+jH0UZuG16PzvWiqDau0GaCbqyZKAwT7SsYaQ0+p87X4k/rio
+ p9MJBjGvHZPCk5MU+AhQLtTOFOw/lpUIfImLHj4h3uzm/ZlvpoKlXAi
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SG3P274CA0023.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::35)
+ To DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-GND-Sasl: gregory.clement@bootlin.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|AM0PR04MB6818:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1dcd4fe-2fd8-4af8-1167-08dc6d50c928
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|366007|52116005|1800799015|7416005|376005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TGF4eHBTb3FwTzlTYzhneGJPVHlzM1lhS0J6Q3ZmS3praURoUUxxejdaNklo?=
+ =?utf-8?B?K09rWmtPYjJyVHhYVG5mbmd2Ky9vT0g2RnRja0dKcFhzY3FaU3U3R2NFSUto?=
+ =?utf-8?B?b3JSdnFIeGdFeDMxbVgyY3VIbTBTSkFOU3NXeFVCSkZiSTNlNTZjbjNtRmF2?=
+ =?utf-8?B?bUd4WFMrWEYvaVVDbW00WWJnakhlVldTbTVwKzBjL3EyOEFzalhYNzY4MytQ?=
+ =?utf-8?B?ekFlQjJXSFpvYXJDakNReWlTRDZLMkxkS1l3NzA1U0dTSldLNEltT24vZzZr?=
+ =?utf-8?B?eC9pc2lEaWo3Vy9pTWZNZHlNd0VPcDJwZEZRdXROaGFwT29ta2lDQnJTa05z?=
+ =?utf-8?B?ZGJXKy9CbVMxVFJEWDFsVkhadWpLNmYyZTR0Z0FvbXJkT2cwVnpZallsYWs5?=
+ =?utf-8?B?aVU4NCtyWTJaeWlSZG5ZR0FVNjdySVdIWUVINTI2cGdNVzk0T0VBWFQ0cXpq?=
+ =?utf-8?B?eXZMY3MxQmVJUEJ3WmphNTdXWWc5V1RhbW54TGVzMG9VYy9aN1JEVE9oQ1hK?=
+ =?utf-8?B?UE9CcGZYNjBjdStKM0pNcWhwQW81WG9IWmtkN2I1Uys4NFNKWHV1YktDZkZT?=
+ =?utf-8?B?eFlWQU9uSDdBOGVwVEc2UjEzK0l1RmVSQ1liZTVSc3VvcmIyVktZeWNrRU5H?=
+ =?utf-8?B?dWFOWUxpeUZTV3Z6ako5ZjZ2S1BMMUNYVHBtWS9yRU5RSEZrTjlSWDlvTERB?=
+ =?utf-8?B?Y3ovamU2ckRiQzE0UlgyeTNEdHc3TW8vYTU4RnlBb0JPektxQ0J6NjVBRlNS?=
+ =?utf-8?B?eTR1Y0lCTUE4dko0Sms4MnhJcjJGdGlGV3AyelUyWGx2T211Zkp4NWdncnFM?=
+ =?utf-8?B?VXdPUlVEbytWQUVLSFFSSTNwcXRyMUU2SHVaVG9NN2ZlRERJd0VRdWRYS2k0?=
+ =?utf-8?B?cHd2VjM5ZVZlOFA0cjkwZGhjYy9oNDJXamJlNi95dkQyTndNTjVaTzNjdk5N?=
+ =?utf-8?B?V0dXSjBmN25HVUh0TlZBZEZtMzI0UFZWWDUrUkZFeVFqNmlBRHRmY09sV3B2?=
+ =?utf-8?B?UzBkUXdLeHNpdU1rR1o5dmJqVU9EMk5sVEhUWXZYNng0MmVpL3BZc3BXb3NL?=
+ =?utf-8?B?enFHV1RpbFNWOXBLNTNXTVhSUk5qdlN5TUZTSDErRC9tY2U4ZGVOZDRkK3J4?=
+ =?utf-8?B?cC9ndE9QNDZGZGJmK2RPbVpNRGEra0paelBpUVEzQlBoOUhJWWxtcG9HWEZj?=
+ =?utf-8?B?UkNzNndhQU9wRkpTcC9HTGJxVHByN3NUNlhKZzl0WlJ6VkF3d0ZCeGFNY3ky?=
+ =?utf-8?B?WEdJMXA4a21VRU0rMHJvUlQ3R2tBUGxBVDZPZ1lMSXVWMFN2ZGpyNVo3UWlz?=
+ =?utf-8?B?NTZvajdVL2JaZkJvWEFJZGJvaWV4cjl2eTR3UkczUS9seDR2VVlJenFGSEdQ?=
+ =?utf-8?B?RkErdm96NlBxZ1J3aVB1OW4zdFpIbHdSYWg0S1NMaEZKQVozcW5uYXVLU2pw?=
+ =?utf-8?B?WjZEYVFnR0FKRGRrdkI4R1Y4aVE5alJ3dkVOTDViTUxwZ3BaOGJxM1ZLMFhU?=
+ =?utf-8?B?MGthRVRISGVUQkJJWENEd2xXc2U1dStxT1AxRFhDcURlK3htRUk1ZW10NVdL?=
+ =?utf-8?B?dExnTjBqQkI2S1MrY1JEdnduLythTFhxYnk3OW0yNmM1YzNoRDVpbXJDcmVk?=
+ =?utf-8?B?YU9kcmFXeTliakFQdVNuZFJka1ZYTWhkbUpjcDE3dHJ4SEtQd1ZYcFZYUThQ?=
+ =?utf-8?B?ZFQ1dW1wM1dRY0pUSDFvdDk5aVBGVGxlUXFnazhHSnhuRnVjeVBCVWx3eUJJ?=
+ =?utf-8?Q?JDZqffCXe7EGp+Wt5k=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(1800799015)(7416005)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bDZFQ1hQSFhNM0NucEFrNWN6MnZsbHFnWjhpOXFrVmlPREp2b1N2ZjhxV0R4?=
+ =?utf-8?B?UUlsRVY4QmRaWSs2ck9IaTVua3VNdnhmNWc4TE45cU9RSHhCaE1SYzRSd3FN?=
+ =?utf-8?B?UkNON2hLbitORGxZamE5eGhKb3ozZ0krOFFqYkdIdkoyZmJEVHcvbmU5ZHdW?=
+ =?utf-8?B?MDNudVV5UXpTcXlienN3Wm5rc1dSSTVqOXQ2cVhPN3dJaTRWQVpnOUFJenZu?=
+ =?utf-8?B?ZHdJVCt3VVVtQTBmV1BheWNWRi81ellpUU9JK0NNTm9HajdGWC92bU1leFR4?=
+ =?utf-8?B?d29OK09iR01UNjREbitjUUZEYTZwa0dkOVJ2WnJwM1lBS2hCbGE1dGpEb08v?=
+ =?utf-8?B?VTB4Q2FUZlFYQytmajBmQlNRaWlyU2lNd3l3elUrUDdsQ2Z4cVdQZ3RDMjUz?=
+ =?utf-8?B?OFlxUmNkVHhpTE9UVEZSQXlwdzNWVVZ2dG1mN1dRRUZKZEhMRFN2bm5IOXBp?=
+ =?utf-8?B?UTNoN29IQlV2MDdPVnpzQzRDL0FQd3Ywb09qeWwwNFlNRDdQUktIV2tpVkY4?=
+ =?utf-8?B?VzlyUTFhNzhBeXlyaXhCMk90SVRRNFRNZ1ZwV1NURXJYNXAySFNMc0JwVHZh?=
+ =?utf-8?B?NE41NitsR240MDVZdUI3ekt2Vmx1R0lWbitOWU52N09HNWlacWpvYWRvVXNu?=
+ =?utf-8?B?WElBcHMyY3I5aHpFQTgvN1JrTlZRZHQ1MWgrUm1kTGZiNHMzVlcreHBld1Yz?=
+ =?utf-8?B?Nnh3ZXcrUFFIVTlUUk05VG0rNGQ3cDVKUDVMMGM2WUlrdjhmOXZqU3pOVFZG?=
+ =?utf-8?B?bG4xdjdDRVdlRW94bXRpTy8vRER1VXZYaTN5cEtINmNMZEppeks4eEg3UzVa?=
+ =?utf-8?B?WEdFaGEwbnJCVnYvRGQ5SzA4a2N2QWFXbVhlZFRHZFFaK3NjNFpEOEU5OHNt?=
+ =?utf-8?B?SStMeE1zNWxVcDhUUU9yNXllTDNGVHo5cXhXUERvVEgwZkhMT2dlTEV5a2N1?=
+ =?utf-8?B?Ri9NclhrNnFjN0NRY3dCUlQ0U01xcm9YbTFiWnUwNzZPMEQzaEhVc0RZWkp0?=
+ =?utf-8?B?TGV5U01hMDVKYzByY05qVDE2VjFmenNmZzJSelBmZTdzZFNEeFBjYVpINWY3?=
+ =?utf-8?B?VndpS1djdFAwblJ1amVzL1oxUnc2akNTOGw0RTAxdTk3aHQ4YlhDcEtlOS8r?=
+ =?utf-8?B?V0duaTRyQXlLN1RKalJ4TGNONFJJaFVvSXJkamFDWmZ5QWhhY2VqOTJycGxm?=
+ =?utf-8?B?aUpyOFlqRGgvZnRUNDgwbi8yWkVGbmp3bGthUlp5bXpiY1ROK0JtcWExVU54?=
+ =?utf-8?B?Y2VYZ2U2WUdmSjBRc3ZDOEdVTzE0UEkvbGoxd0ZIUnNvQ2Z1L3JlRW9wRm9k?=
+ =?utf-8?B?K2NXTVFBUEF1WjRqRWhTTDdLbmx6azBHZFpKUStlWENuMWJIZXF5V0R3Rnpy?=
+ =?utf-8?B?R1VNTkdiMDNGMkZLWWRYZ3VXV09uNTFXVkVzdmkzSlg1SktDQ2NNblE0UzNU?=
+ =?utf-8?B?TFA0aHRWUlNpNk8wSXpLSnR0VVVQNjBIblhsaWYyM3BFV3hZalZYNk9rOWM0?=
+ =?utf-8?B?c1RHMStzZk83WmdYL0ZScnFJOFNpL0k5RnBYTGdpdW1zWmU2T2VQL3NLa0tQ?=
+ =?utf-8?B?SzNkdUFNeHZ6dFlhdDVSNnNuc3ZPVXJyd2hxQUxOdTJvTEFodGlPZVRmQjhY?=
+ =?utf-8?B?MEMwc2RVcGtCYnN5K1VKaXVZR0p6M3BuWEhxc0Fwa1RNQi9JU3JTMDFDNlYr?=
+ =?utf-8?B?MVAzRW1PaTJqNjhwZnVnakUvV215Y2hGNE5MSEFwaDRaUkdEYWNBS296eTcr?=
+ =?utf-8?B?a0VoWXJBdU9rV2tIT2hSUHo3ZzVzTHhlS0tOUmFmcUZSMy9PZHdNeWZqeWhh?=
+ =?utf-8?B?WWJwbytNZ09qc01iQTM2eTR0WDlIVk1ORjZRR3VVdk04bzZic29uMVF6Y3VP?=
+ =?utf-8?B?RXY1cGtwSG9uR0pQd3dLNmdYUDQvajIrbktCTzFvOTFmaUpYRlFyVU04UWVV?=
+ =?utf-8?B?SmhySHhNdzhRV0h0Z2JOMm1uY0pmd0ZVYUo4UW02YjNzZit0QU5vcTRNMmdp?=
+ =?utf-8?B?d2ZHcitXRjVZNFg2OFlEZEpWcC9waWVmRWY4Z0JTdVFza2swWHJXbFJQUjFW?=
+ =?utf-8?B?aXVqZ29IS25PL1J6SmZCOEpoY2EweVFhdUtZS1lWak5YbmFtMklSbDgvZi9C?=
+ =?utf-8?Q?NObpkWLsZdAHfrhoaqkhWZpCC?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1dcd4fe-2fd8-4af8-1167-08dc6d50c928
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2024 22:14:52.0588
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: o0ks7sJgiumluz7xka92u3vdjLt/WfTDkW1NuqnxuQATXFFYQVWMvHrXidHLVuC6T40zddSzN3MeDHuW+G9EfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6818
 
-"Rob Herring (Arm)" <robh@kernel.org> writes:
+Add a minimal i.MX95 dtsi and EVK board dts.
+i.MX95 has a M33 running SCMI firmware, but as of now, the scmi pinctrl
+driver still not ready for i.MX95, so we count on bootloader to
+configure the pinctrl for lpuart and sdhc and it boots well. After pinctrl
+driver ready, we could move to use scmi pinctrl.
 
-> The "arm,armv8-pmuv3" compatible is intended only for s/w models. Primarily,
-> it doesn't provide any detail on uarch specific events.
->
-> There's still remaining cases for CPUs without any corresponding PMU
-> definition and for big.LITTLE systems which only have a single PMU node
-> (there should be one per core type).
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-> Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-> Acked-by: Heiko Stuebner <heiko@sntech.de>
-> Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-> Acked-by: Bjorn Andersson <andersson@kernel.org>
-> Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v5:
+- Drop unused regulator and alias for now.
+- Fix CHECK_DTB warning.
+- Link to v4: https://lore.kernel.org/r/20240503-imx95-dts-v3-v4-0-535ddc2bde73@nxp.com
 
-Acked-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Changes in v4:
+- Sort nodes by address
+- Drop coresight nodes
+- Align clock rates for SDHC1-3
+- Drop wdog3 board specific property
+- Link to v3: https://lore.kernel.org/r/20240428-imx95-dts-v3-v3-0-765395f88b9f@nxp.com
 
-Thanks,
+Changes in v3:
+- Drop irqsteer node because binding not accepted
+- Pass dtbs_check
+- Link to v2: https://lore.kernel.org/r/20240226-imx95-dts-v2-0-00e36637b07e@nxp.com
 
-Gregory
-> ---
-> SoC Maintainers, Can you please apply this directly.
->
-> v2:
->  - Drop QCom sdm630 change
-> ---
->  arch/arm/boot/dts/broadcom/bcm2711.dtsi              | 4 ++--
->  arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi    | 2 +-
->  arch/arm64/boot/dts/amazon/alpine-v2.dtsi            | 2 +-
->  arch/arm64/boot/dts/apm/apm-storm.dtsi               | 2 +-
->  arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts | 2 +-
->  arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi     | 2 +-
->  arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi  | 2 +-
->  arch/arm64/boot/dts/cavium/thunder-88xx.dtsi         | 2 +-
->  arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi        | 2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi       | 2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi       | 2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi       | 7 +++++++
->  arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi       | 7 +++++++
->  arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi       | 5 -----
->  arch/arm64/boot/dts/freescale/imx8dxl.dtsi           | 2 +-
->  arch/arm64/boot/dts/intel/keembay-soc.dtsi           | 2 +-
->  arch/arm64/boot/dts/intel/socfpga_agilex.dtsi        | 2 +-
->  arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi        | 2 +-
->  arch/arm64/boot/dts/marvell/armada-37xx.dtsi         | 2 +-
->  arch/arm64/boot/dts/mediatek/mt8516.dtsi             | 2 +-
->  arch/arm64/boot/dts/nvidia/tegra210.dtsi             | 2 +-
->  arch/arm64/boot/dts/qcom/qcm2290.dtsi                | 2 +-
->  arch/arm64/boot/dts/qcom/qdu1000.dtsi                | 2 +-
->  arch/arm64/boot/dts/qcom/sdx75.dtsi                  | 2 +-
->  arch/arm64/boot/dts/realtek/rtd16xx.dtsi             | 2 +-
->  arch/arm64/boot/dts/rockchip/rk3368.dtsi             | 2 +-
->  arch/arm64/boot/dts/sprd/sc9860.dtsi                 | 2 +-
->  arch/arm64/boot/dts/sprd/sc9863a.dtsi                | 2 +-
->  arch/arm64/boot/dts/synaptics/berlin4ct.dtsi         | 2 +-
->  arch/arm64/boot/dts/tesla/fsd.dtsi                   | 2 +-
->  arch/arm64/boot/dts/xilinx/zynqmp.dtsi               | 2 +-
->  31 files changed, 43 insertions(+), 34 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-> index 22c7f1561344..926f87b86590 100644
-> --- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-> +++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-> @@ -432,8 +432,8 @@ emmc2: mmc@7e340000 {
->  		};
->  	};
->  
-> -	arm-pmu {
-> -		compatible = "arm,cortex-a72-pmu", "arm,armv8-pmuv3";
-> +	pmu {
-> +		compatible = "arm,cortex-a72-pmu";
->  		interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>,
->  			<GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>,
->  			<GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-> index 072fe20cfca0..cbbc53c47921 100644
-> --- a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-> +++ b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-> @@ -79,7 +79,7 @@ fpga-region {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <0 170 4>,
->  			     <0 171 4>,
->  			     <0 172 4>,
-> diff --git a/arch/arm64/boot/dts/amazon/alpine-v2.dtsi b/arch/arm64/boot/dts/amazon/alpine-v2.dtsi
-> index dbf2dce8d1d6..dbe21d88a29e 100644
-> --- a/arch/arm64/boot/dts/amazon/alpine-v2.dtsi
-> +++ b/arch/arm64/boot/dts/amazon/alpine-v2.dtsi
-> @@ -106,7 +106,7 @@ timer {
->  		};
->  
->  		pmu {
-> -			compatible = "arm,armv8-pmuv3";
-> +			compatible = "arm,cortex-a57-pmu";
->  			interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
->  				     <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
->  				     <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/apm/apm-storm.dtsi b/arch/arm64/boot/dts/apm/apm-storm.dtsi
-> index 988928c60f15..ee3f838b4904 100644
-> --- a/arch/arm64/boot/dts/apm/apm-storm.dtsi
-> +++ b/arch/arm64/boot/dts/apm/apm-storm.dtsi
-> @@ -122,7 +122,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "apm,potenza-pmu", "arm,armv8-pmuv3";
-> +		compatible = "apm,potenza-pmu";
->  		interrupts = <1 12 0xff04>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts b/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-> index 8db4243a4947..9115c99d0dc0 100644
-> --- a/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-> +++ b/arch/arm64/boot/dts/arm/vexpress-v2f-1xv7-ca53x2.dts
-> @@ -102,7 +102,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
->  	};
-> diff --git a/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi b/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi
-> index 896d1f33b5b6..cfd9fd23a1c2 100644
-> --- a/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi
-> +++ b/arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi
-> @@ -102,7 +102,7 @@ IRQ_TYPE_LEVEL_LOW)>,
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a57-pmu";
->  		interrupts = <GIC_SPI 168 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 169 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi b/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi
-> index d8516ec0dae7..857fa427e195 100644
-> --- a/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi
-> +++ b/arch/arm64/boot/dts/broadcom/stingray/stingray.dtsi
-> @@ -142,7 +142,7 @@ psci {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a72-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi b/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi
-> index 8ad31dee11a3..4c9f1f808427 100644
-> --- a/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi
-> +++ b/arch/arm64/boot/dts/cavium/thunder-88xx.dtsi
-> @@ -361,7 +361,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "cavium,thunder-pmu", "arm,armv8-pmuv3";
-> +		compatible = "cavium,thunder-pmu";
->  		interrupts = <1 7 4>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi b/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi
-> index 3419bd252696..68cb3d01187a 100644
-> --- a/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi
-> +++ b/arch/arm64/boot/dts/cavium/thunder2-99xx.dtsi
-> @@ -83,7 +83,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "brcm,vulcan-pmu", "arm,armv8-pmuv3";
-> +		compatible = "brcm,vulcan-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>; /* PMU overflow */
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> index fe9093b3c02e..a0f7bbd691a0 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> @@ -81,7 +81,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <0 106 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-> index d333b773bc45..8ee6d8c0ef61 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-> @@ -276,7 +276,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <0 106 0x4>,
->  			     <0 107 0x4>,
->  			     <0 95 0x4>,
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi
-> index 1aa38ed09aa4..8352197cea6f 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls2080a.dtsi
-> @@ -12,6 +12,13 @@
->  #include <dt-bindings/clock/fsl,qoriq-clockgen.h>
->  #include "fsl-ls208xa.dtsi"
->  
-> +/ {
-> +	pmu {
-> +		compatible = "arm,cortex-a57-pmu";
-> +		interrupts = <1 7 0x8>; /* PMU PPI, Level low type */
-> +	};
-> +};
-> +
->  &cpu {
->  	cpu0: cpu@0 {
->  		device_type = "cpu";
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi
-> index 8581ea55d254..245bbd615c81 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls2088a.dtsi
-> @@ -12,6 +12,13 @@
->  #include <dt-bindings/clock/fsl,qoriq-clockgen.h>
->  #include "fsl-ls208xa.dtsi"
->  
-> +/ {
-> +	pmu {
-> +		compatible = "arm,cortex-a72-pmu";
-> +		interrupts = <1 7 0x8>; /* PMU PPI, Level low type */
-> +	};
-> +};
-> +
->  &cpu {
->  	cpu0: cpu@0 {
->  		device_type = "cpu";
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-> index 0b7292835906..ccba0a135b24 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-> @@ -247,11 +247,6 @@ timer: timer {
->  			     <1 10 4>; /* Hypervisor PPI, active-low */
->  	};
->  
-> -	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> -		interrupts = <1 7 0x8>; /* PMU PPI, Level low type */
-> -	};
-> -
->  	psci {
->  		compatible = "arm,psci-0.2";
->  		method = "smc";
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-> index a0674c5c5576..b8abd98bdc43 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl.dtsi
-> @@ -104,7 +104,7 @@ dsp_reserved: dsp@92400000 {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a35-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/intel/keembay-soc.dtsi b/arch/arm64/boot/dts/intel/keembay-soc.dtsi
-> index 781761d2942b..ae00e9e54e82 100644
-> --- a/arch/arm64/boot/dts/intel/keembay-soc.dtsi
-> +++ b/arch/arm64/boot/dts/intel/keembay-soc.dtsi
-> @@ -70,7 +70,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_PPI 0x7 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-> index 76aafa172eb0..2a5eeb21da47 100644
-> --- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-> +++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-> @@ -80,7 +80,7 @@ fpga-region {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 172 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi b/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi
-> index 5591939e057b..75377c292bcb 100644
-> --- a/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi
-> +++ b/arch/arm64/boot/dts/marvell/ac5-98dx25xx.dtsi
-> @@ -68,7 +68,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a55-pmu";
->  		interrupts = <GIC_PPI 12 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-> index 1cc3fa1c354d..9603223dd761 100644
-> --- a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-> +++ b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-> @@ -68,7 +68,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-> index 9cbd6dd8f671..d0b03dc4d3f4 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-> @@ -165,7 +165,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a35-pmu";
->  		interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_LOW>,
->  			     <GIC_SPI 5 IRQ_TYPE_LEVEL_LOW>,
->  			     <GIC_SPI 6 IRQ_TYPE_LEVEL_LOW>,
-> diff --git a/arch/arm64/boot/dts/nvidia/tegra210.dtsi b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-> index 47f8268e46bf..882b1d1f4ada 100644
-> --- a/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-> +++ b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-> @@ -2004,7 +2004,7 @@ L2: l2-cache {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a57-pmu";
->  		interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-> index 89beac833d43..d3cd68190a17 100644
-> --- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-> @@ -165,7 +165,7 @@ memory@40000000 {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_PPI 6 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/qcom/qdu1000.dtsi b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
-> index 832f472c4b7a..f2a5e2e40461 100644
-> --- a/arch/arm64/boot/dts/qcom/qdu1000.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
-> @@ -177,7 +177,7 @@ memory@80000000 {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a55-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/qcom/sdx75.dtsi b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-> index 7dbdf8ca6de6..b74cf4baedd6 100644
-> --- a/arch/arm64/boot/dts/qcom/sdx75.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdx75.dtsi
-> @@ -224,7 +224,7 @@ memory@80000000 {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a55-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  
-> diff --git a/arch/arm64/boot/dts/realtek/rtd16xx.dtsi b/arch/arm64/boot/dts/realtek/rtd16xx.dtsi
-> index 34802cc62983..e57317a17aa9 100644
-> --- a/arch/arm64/boot/dts/realtek/rtd16xx.dtsi
-> +++ b/arch/arm64/boot/dts/realtek/rtd16xx.dtsi
-> @@ -109,7 +109,7 @@ timer {
->  	};
->  
->  	arm_pmu: pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a55-pmu";
->  		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
->  		interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>,
->  			<&cpu3>, <&cpu4>, <&cpu5>;
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-> index 62af0cb94839..734f87db4d11 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
-> @@ -141,7 +141,7 @@ cpu_b3: cpu@103 {
->  	};
->  
->  	arm-pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/sprd/sc9860.dtsi b/arch/arm64/boot/dts/sprd/sc9860.dtsi
-> index e27eb3ed1d47..6bfdbdb0e1cd 100644
-> --- a/arch/arm64/boot/dts/sprd/sc9860.dtsi
-> +++ b/arch/arm64/boot/dts/sprd/sc9860.dtsi
-> @@ -165,7 +165,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,cortex-a53-pmu", "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/sprd/sc9863a.dtsi b/arch/arm64/boot/dts/sprd/sc9863a.dtsi
-> index 22d81ace740a..53e5b77d70b5 100644
-> --- a/arch/arm64/boot/dts/sprd/sc9863a.dtsi
-> +++ b/arch/arm64/boot/dts/sprd/sc9863a.dtsi
-> @@ -134,7 +134,7 @@ timer {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a55-pmu";
->  		interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi b/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi
-> index 53d616c3cfed..71e4bfcc9e81 100644
-> --- a/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi
-> +++ b/arch/arm64/boot/dts/synaptics/berlin4ct.dtsi
-> @@ -88,7 +88,7 @@ osc: osc {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,cortex-a53-pmu", "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/tesla/fsd.dtsi b/arch/arm64/boot/dts/tesla/fsd.dtsi
-> index 047a83cee603..690b4ed9c29b 100644
-> --- a/arch/arm64/boot/dts/tesla/fsd.dtsi
-> +++ b/arch/arm64/boot/dts/tesla/fsd.dtsi
-> @@ -304,7 +304,7 @@ CPU_SLEEP: cpu-sleep {
->  	};
->  
->  	arm-pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a72-pmu";
->  		interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 357 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 358 IRQ_TYPE_LEVEL_HIGH>,
-> diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> index 25d20d803230..34d0e0be3fe6 100644
-> --- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> +++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> @@ -169,7 +169,7 @@ dcc: dcc {
->  	};
->  
->  	pmu {
-> -		compatible = "arm,armv8-pmuv3";
-> +		compatible = "arm,cortex-a53-pmu";
->  		interrupt-parent = <&gic>;
->  		interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>,
->  			     <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
-> -- 
-> 2.43.0
+Changes in v2:
+- Addressed Rob and Krzysztof's comments, and fix dts_check issue
+  To pass the dtbs_check, need apply:
+  https://lore.kernel.org/all/20240226070910.3379108-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240226130243.3820915-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240226130516.3821803-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240226130826.3824251-1-peng.fan@oss.nxp.com/
+  https://lore.kernel.org/all/20240219-imx-mailbox-v8-1-75535a87794e@nxp.com/
+
+- Link to v1: https://lore.kernel.org/r/20240218-imx95-dts-v1-0-2959f89f2018@nxp.com
+
+---
+Peng Fan (3):
+      dt-bindings: arm: fsl: add i.MX95 19x19 EVK board
+      arm64: dts: freescale: add i.MX95 basic dtsi
+      arm64: dts: freescale: add i.MX95 19x19 EVK minimal board dts
+
+ Documentation/devicetree/bindings/arm/fsl.yaml    |    6 +
+ arch/arm64/boot/dts/freescale/Makefile            |    1 +
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts |   70 ++
+ arch/arm64/boot/dts/freescale/imx95-clock.h       |  187 ++++
+ arch/arm64/boot/dts/freescale/imx95-power.h       |   55 ++
+ arch/arm64/boot/dts/freescale/imx95.dtsi          | 1050 +++++++++++++++++++++
+ 6 files changed, 1369 insertions(+)
+---
+base-commit: bb7a2467e6beef44a80a17d45ebf2931e7631083
+change-id: 20240428-imx95-dts-v3-bee59f0e559b
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
