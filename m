@@ -1,105 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from wfhigh6-smtp.messagingengine.com (wfhigh6-smtp.messagingengine.com [64.147.123.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FE943AD2
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 10:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB25142913
+	for <imx@lists.linux.dev>; Mon,  6 May 2024 11:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714992511; cv=none; b=bV04L1C747NZvP9LdF26Afuwyql++P5BPuF14PnrdOUwlVE5X1Dc0BMjAg5ZbWQK5KtElESU/jV6heyNjOmAQbm6CLQKKfU/6Fc5qNXo8KvzjBtXtEJ9eI0WipPJ7/sNpHj0Sf23CxmQe3eDDMpnjgrn2XxbN0q+R71MV4Lr4zs=
+	t=1714995009; cv=none; b=FSv5opTY7AAHwI8LnvBa4pC5PsIensYWc68qjlx0RdMPbVzL4GwOUfA681FEuB7pyAyxG0naBPfpG4onQVfRgfrcIqDDQN5KcxlK9FnwGI8pNd6Uavq1RND5FvEg0aqW3J/e1JM/jEneenkVL9hDBvsUZAVeo1k3MlwS80fhvNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714992511; c=relaxed/simple;
-	bh=Hkr65neol7moVbYcz4JhrxGkKmAFlo3QCts5BAX/JeA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F3uwMgPw76GbI+awd0IJZE1uJkVPrMy5U89m9lkDYjk1fBTBi9cBvA3WHYj+djgrwxC5r1VqaABDGaJrDiNVlbQ8F7kP4y7ql4R97FoQG1Bmx61qlUWDJde+TTJXL9kL73vw9+A6P9fOIntdu3qmQOUAT1CMbm9qvd6osoQ8Hx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XAbUtn6Q; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1714995009; c=relaxed/simple;
+	bh=qvCGSoQawQTxwKwTMIcTAx8d5xEdDNJuiCoB8WMClEI=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=HUN0uM7xbuEznalkK+X2EX9ePElcCOQBZC4pS2vJ5C9TruYM0Dozlbc/afo/CllnKYOviaLqBJF16wES7NV/gRdBZALFdlW62wcLOMJx9xDWsU+HoNYYV7An2Ij0I3navReXx89LQt6kvm/KwSMS0WpeXFHgzav5ODBUcO7odTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=AHD0pizr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LmDhZqq7; arc=none smtp.client-ip=64.147.123.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XAbUtn6Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714992510; x=1746528510;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Hkr65neol7moVbYcz4JhrxGkKmAFlo3QCts5BAX/JeA=;
-  b=XAbUtn6Qv80eXDr4uDw1eV3REbc29NWJY0x76H0grR8b4Iyf5a76NYfD
-   YEPa3nMSjfBhDTU6YDDCDHgxnYdfj6/w3Q0PYMCreHnqoBpVaYD7s55GY
-   baOVta8yR6WFdSUvhCDWgDkzjOYagYRm+iGWn0ZM5jNCkJ/JgsM2LeXuS
-   U7ZDFaw3Zp4J6bAnWQTr4BIleqDszm6uCxZnvOJBW/pRnwtkILLWqQu3L
-   uxQd/02vYHNQsCv1b6FCRktWJ5y1mKt4POcsPFPn5YiZx8EnCPk+wwXPq
-   Gwq1+d4MTfKXgpAl0UYQTP9P6G+6FA4ucEWjEtlH2KF5Fajh3NcxPXnvi
-   w==;
-X-CSE-ConnectionGUID: LhYw1O/5R/SX4YNsAvpf9g==
-X-CSE-MsgGUID: IHP7BokyRdeaxWBWS615+Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="22141458"
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="22141458"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 03:48:29 -0700
-X-CSE-ConnectionGUID: gfqCPeZeTiqvdoy3cHNrAg==
-X-CSE-MsgGUID: TecDTmn/SAqaUoRMU8GFQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="65568146"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 03:48:22 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s3vtJ-00000004ehl-02rk;
-	Mon, 06 May 2024 13:48:17 +0300
-Date: Mon, 6 May 2024 13:48:16 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v3 0/5] PCI: controller: Move to agnostic GPIO API
-Message-ID: <Zji1cEqUMZOdk6QN@smile.fi.intel.com>
-References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="AHD0pizr";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LmDhZqq7"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id EACC01800139;
+	Mon,  6 May 2024 07:30:05 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 06 May 2024 07:30:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1714995005; x=1715081405; bh=s6x+9FStSk
+	mw7vHjv+iXvtpuGZLNrdWUBFo+scPQRuU=; b=AHD0pizrJgQdHxOS42Q/D4QKdi
+	cukMgjIREaL18jW6eVNU3mtIyiMNJFV0dWbbZwqjz7A9JAI6Q8SRmHDpp3/EHYrN
+	zzfedo+5gcPFmtepD7mWH6dJyBAkImSl28b0R2S529P4QD3gPNoPQXE0GkfJLbni
+	bcHbtznhHXH751bObyWlZVllJcOdc6r6kv2juDiQUxR9GNM7quOoL8HTNYvtEb2x
+	m0CfmibODx9F0D6N3VJ99qwikzWIkgHbRVWsvr2bp+M5Iv5H+bSfZxsDwjIBn++s
+	whqy2Szt7gPoUwTa38Qfw8Sro9kx7f/cMhlq3aMZq3xr0zO+YPIEH+p9N8lQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1714995005; x=1715081405; bh=s6x+9FStSkmw7vHjv+iXvtpuGZLN
+	rdWUBFo+scPQRuU=; b=LmDhZqq7geQ9VNHRILOo3gI5RJvQJGxeL8VVaM5An/rh
+	LtwkpztUwJ392kBYoAaNVWLTYaQw19J3sFYEdSme5Y5YDv7mNGNZl0q0imMTFBPO
+	UIyVnzKx4ksC1fbPKw+JqdVOZCLt9AJMt5/zBbbdHXRQp4vIIuReZwVorC0nBcs1
+	xrGuE8vBurc1hvWVxvDF8idaZsmBU4O7tHVPuQRK8FMmc8+U27/0rT+AL4uBo7y5
+	f+WEhDi0jKB/yneA6LWkgYFCCxwA4lhayxK5aAIn0cxco2alT5yIyTp89h5AqEyG
+	IletbRxaeMKUFqDzOZk3YEjXPJcxoV/sc7VO24xamg==
+X-ME-Sender: <xms:PL84ZhG2CJ47LRvE8Z0f0oI7RS-IFtnFCC95EF-yqkNb8rHH5Q2zkQ>
+    <xme:PL84ZmXn6vpMMB6daj34dsfRhVIzZRgz1AOoC2Lfni8UmPbiZqACo4ooefkh-X-zv
+    gTM3KdvLsDFQqTN5o0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddviedggeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:PL84ZjKcZcBSYJOyDf-lKjpDwcJR5r_7cWSnzd2f_K9vhXgUq4LTnQ>
+    <xmx:PL84ZnHZk9R4VkiVpThqxonxMYAhPtAuT361zbNj-r0vIUunaIoccQ>
+    <xmx:PL84ZnXfvgYh9t5xO0bUHgrm4-NMynO8_nj9bNnUGmHbvb-e9uvL1Q>
+    <xmx:PL84ZiPfylLJxKa4OeZsppFpdbsmqGHP_KpbYLTOvv1C-8k2ahMeZg>
+    <xmx:Pb84ZkWBosuE-iq_ccMnFYDgkDpdoTT83l6NuSACPF_77-HLv-M_O3El>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id A5F9DB6008F; Mon,  6 May 2024 07:30:04 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-437-gcad818a2a-fm-20240502.001-gcad818a2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Message-Id: <8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com>
+In-Reply-To: <20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
+References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
+ <20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
+Date: Mon, 06 May 2024 13:29:43 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Esben Haabendal" <esben@geanix.com>,
+ "Russell King" <linux@armlinux.org.uk>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>, "Dong Aisheng" <aisheng.dong@nxp.com>,
+ "Jacky Bai" <ping.bai@nxp.com>, "Linus Walleij" <linus.walleij@linaro.org>
+Cc: "Rasmus Villemoes" <rasmus.villemoes@prevas.dk>,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] pinctrl: freescale: Use CONFIG_SOC_IMXRT to guard i.MX
+ RT1xxx drivers
+Content-Type: text/plain
 
-On Mon, Apr 29, 2024 at 01:23:17PM +0300, Andy Shevchenko wrote:
-> While at it, remove of_gpio.h leftover from some of the drivers.
+On Mon, May 6, 2024, at 12:23, Esben Haabendal wrote:
+> 
+>  config PINCTRL_IMXRT1050
+>  	bool "IMXRT1050 pinctrl driver"
+> -	depends on ARCH_MXC
+> +	depends on SOC_IMXRT
+> +	default SOC_IMXRT
+>  	select PINCTRL_IMX
+>  	help
+>  	  Say Y here to enable the imxrt1050 pinctrl driver
 
-Can this be moved forward?
-Or should I do something additionally with it?
+Maybe make this
 
--- 
-With Best Regards,
-Andy Shevchenko
+       depends on SOC_IMXRT || COMPILE_TEST
 
+I see that all the i.MX pinctrl drivers are currently missing
+this, but a lot of other platforms have the ||COMPILE_TEST 
+bit so it gets included in x86 allmodconfig tests that
+often gets run before sending or merging changes.
 
+    Arnd
