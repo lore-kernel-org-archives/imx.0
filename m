@@ -1,126 +1,102 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8AB1420B9
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 08:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0361422A2;
+	Mon,  6 May 2024 10:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714985986; cv=none; b=RwzL4jbPMHzfQESmbBQWZlyFaoQVcb5ltwcLlBa5ujE+UKsR6NpAwNdg+IcqC45JFTuRrWqZHSgabepdYVAUSKRlUxvjtIpQO1QZkqzRNWJgOiatEBVH/AaOOReqo00cmG8wcqQE7u7Qh8/Vy6hSaaOEyglVdKeBmRAz8AbzPBE=
+	t=1714991067; cv=none; b=KTGXlPwaqDrhym1D8AnzCwfxVgRByP6ElARXuI6I5jJ3ZJnGI6GsQgaoRESYNYj1zpDfl8gtUfZfDmmml5FUCX5xyzXoPJ0/tsmXFxAucNF4N1uDwgEHPeUqadH0SOVz6hbW7u6RMRTlfK4WnJcGtoXoCOo/rlIKVch/zyJXUEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714985986; c=relaxed/simple;
-	bh=zI9aKrE6NiMa73k6e2lcD5sd2ANI0ztCC+XSoAVmyY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gK+rrsv2D8ii6ooYuC7ftnZKK7S2iBDWFrwqrs6AngIgrQNLTJankTlO+WWiAiUbc5yt1sDRs2xxE4tGR32NSdaHfMVQ+beuaBV9/XmpuB+PFiOhXoIXQAJxPb+4q3ybFr1iozyeGl5f5K/S51SYZitThgnHp47Z1PeBRJ9sxA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PDKE8Egb; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1714991067; c=relaxed/simple;
+	bh=M2VUMtNp5P3o890SB2AKCq/Qvl+kHhU87lLXVyDZ834=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bl8a451893J27W4ymCZsrAU9fpWPfJwF2HFxd+7cRtkemkLYAaqLGUfrlG2Z6jiFCF3IQ/2LA11Kppt2V3XwmHynMstOy8loCT5BEjmgx/jei/YgNwkGGzUQtp1s/MEWt9LTnktV45i8XRNCWymKprobWeC2h+51weUdVSIqysI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=pFuFcelH; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PDKE8Egb"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 119A61BF204;
-	Mon,  6 May 2024 08:59:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1714985981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xLoumWwq12QqlpvmyZ6oFlX+y9BSSofQN7u2jFCOtaU=;
-	b=PDKE8EgbLksMFP97qVMtx6poecdit3R82OTJQweQ2bJqnbujyZk+/pcORyzyP1UUWMRlbq
-	05Y1ZDNkYGMsz5OUnU+ODdIo4ZCDxwIvOZZ778OwJHHC3vfiVftnyUm7wEcZ81yRR8eIxe
-	mPlvhQPNe7r+xTt0d2y/uO0G/Thdl77yA4J1GouPLtIFG5qxszkA9/GPXxlXEFWEofqGiT
-	Uaa3D/EXUhelQLkNKZP/rDPmbyGtb+WL07+yLSVKMxlVC7U9silYUf+4CGTESXUnueIT6u
-	W0CXbThvRLGP48xY4/qXuGTZ7Ro7vbqSKPF+oZBiqpHGMageYRumhGNp960MPQ==
-Date: Mon, 6 May 2024 10:59:40 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, linux-i3c@lists.infradead.org (moderated
- list:SILVACO I3C DUAL-ROLE MASTER), linux-kernel@vger.kernel.org (open
- list), imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] i3c: master: svc: fix invalidate IBI type and miss
- call client IBI handler
-Message-ID: <20240506105940.5d8d2308@xps-13>
-In-Reply-To: <20240424190030.857632-2-Frank.Li@nxp.com>
-References: <20240424190030.857632-1-Frank.Li@nxp.com>
-	<20240424190030.857632-2-Frank.Li@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="pFuFcelH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=wmFwpK3N8h26Gty8Cr+tcAz2yNoNekoIKLqBXcgccJE=; b=pF
+	uFcelHy4P+rqcXZYlaes07Jkz/+XlIlCCaw1xTHIfrfDJaaWujw/cM8xSh5Hw6bWwx0OnAnJcr1ZT
+	qPEmkkfunL4hCNrW3HFsllLqArORax/Pd8Xq+9eHSQOZJ0zL3h/p06oUnPhZhuOYKy0SUZEGsZKiR
+	oFvfh2kQvEAf1NghfSHjhHwmhZOzPNp2elxLL96FKjvp7BR2T8FPygAV/l/OgiP8BTToSSao/a9bv
+	e5mwQvZ43NulUKKSyvuCVqO9o926GL4Tw+11/8HLXYSVZ0Dn+La5qqEoLUl5c2SVPoanfGaKH1tYv
+	ohzeqeURXEa3ECh1iZuU9mrijSPsKRBg==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1s3vVs-0007Xy-Tw; Mon, 06 May 2024 12:24:04 +0200
+Received: from [87.49.147.101] (helo=localhost)
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1s3vVr-000Ofo-29;
+	Mon, 06 May 2024 12:24:04 +0200
+From: Esben Haabendal <esben@geanix.com>
+Subject: [PATCH v2 0/3] ARM: imx: only enable pinctrl as needed
+Date: Mon, 06 May 2024 12:23:52 +0200
+Message-Id: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALivOGYC/x2MQQqAIBAAvyJ7bkGsJPpKdDDdaqFMVCII/550H
+ JiZFxJFpgSjeCHSzYkvX0E1Auxu/EbIrjIoqTrZS418PhjY2xwPvEKuujlQt8a61i3D4CzUNER
+ a+fm301zKB2FwNF1mAAAA
+To: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
+ Jacky Bai <ping.bai@nxp.com>, Linus Walleij <linus.walleij@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, 
+ Rasmus Villemoes <rasmus.villemoes@prevas.dk>, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ Esben Haabendal <esben@geanix.com>
+X-Mailer: b4 0.13.0
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27267/Mon May  6 10:24:34 2024)
 
-Hi Frank,
+As not all mach-imx platforms has support for run-time changes of pin
+configurations (such as LS1021A), a more selective approach to enabling
+pinctrl infrastructure makes sense, so that an e.g. an LS1021A only kernel
+could be built without pinctrl support.
 
-Frank.Li@nxp.com wrote on Wed, 24 Apr 2024 15:00:30 -0400:
+This is a very late follow up v1 3 years ago [1]. The situation seems to be
+unchanged since then, and I have tried to incorporate the requested
+changes.
 
-> In an In-Band Interrupt (IBI) handle, the code logic is as follows:
->=20
-> 1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
-> 	  master->regs + SVC_I3C_MCTRL);
->=20
-> 2: ret =3D readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
->                                     SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
-> 	...
-> 3: ibitype =3D SVC_I3C_MSTATUS_IBITYPE(status);
->    ibiaddr =3D SVC_I3C_MSTATUS_IBIADDR(status);
->=20
-> SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
-> immediately, and the I3C controller has not sent out the 9th SCL yet.
-> Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
-> occurrence and missing call I3C client driver's IBI handler.
->=20
-> A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
-> during the controller send start frame in svc_i3c_master_xfer().
->=20
-> Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
-> to fix this issue.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI ha=
-ppen during start frame")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/i3c/master/svc-i3c-master.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
--i3c-master.c
-> index a2298ab460a37..3bfe8e694f840 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -415,6 +415,9 @@ static void svc_i3c_master_ibi_work(struct work_struc=
-t *work)
->  	int ret;
-> =20
->  	mutex_lock(&master->lock);
-> +	/* Clear the interrupt status */
+[1] https://lore.kernel.org/linux-arm-kernel/be1c35eb997959b4939b304ef26664dfb9cd2275.1621941451.git.esben@geanix.com/
 
-Could you improve the comment to explain why this is needed here?
+Changes since v1:
+- Changed all the pinctrl drivers to be user-configurable, allowing disable
+  even for systems with pinctrl.
+- Added fixup of overly generic dependency for i.MX RT pinctrl drivers.
+- Allow compile-testing of i.MX pinctrl drivers using CONFIG_COMPILE_TEST.
 
-Otherwise seems okay, but I don't have any strong feelings here.
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+---
+Esben Haabendal (3):
+      ARM: imx: Allow user to disable pinctrl
+      pinctrl: freescale: Use CONFIG_SOC_IMXRT to guard i.MX RT1xxx drivers
+      pinctrl: freescale: enable use with COMPILE_TEST
 
-> +	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
-> +
->  	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
->  	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
->  	       SVC_I3C_MCTRL_IBIRESP_AUTO,
-> @@ -429,9 +432,6 @@ static void svc_i3c_master_ibi_work(struct work_struc=
-t *work)
->  		goto reenable_ibis;
->  	}
-> =20
-> -	/* Clear the interrupt status */
-> -	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
-> -
->  	status =3D readl(master->regs + SVC_I3C_MSTATUS);
->  	ibitype =3D SVC_I3C_MSTATUS_IBITYPE(status);
->  	ibiaddr =3D SVC_I3C_MSTATUS_IBIADDR(status);
+ arch/arm/mach-imx/Kconfig         | 16 -------
+ drivers/pinctrl/freescale/Kconfig | 89 +++++++++++++++++++++++++++------------
+ 2 files changed, 63 insertions(+), 42 deletions(-)
+---
+base-commit: dd5a440a31fae6e459c0d6271dddd62825505361
+change-id: 20240506-imx-pinctrl-optional-63acd3db88dc
 
-Thanks,
-Miqu=C3=A8l
+Best regards,
+-- 
+Esben Haabendal <esben@geanix.com>
+
