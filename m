@@ -1,111 +1,129 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE08114388F
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 12:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23913143C45
+	for <imx@lists.linux.dev>; Mon,  6 May 2024 12:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714997438; cv=none; b=T2v8lwXCMml/Sl+4dPOSJH4b+mtozLe2fDMNRh1oPAFYRGWEW1F6cjL73JYpipvUIMLdoLIg36EXbd0qaOBqvHJ4GFmdQprTibxyzIXF6F+ZidloEm9o85+XKvPFRk/iKkQtRNoKzzNXxk1lo+/4D2clljcIUd9mIYGp5Ft8xqs=
+	t=1714998367; cv=none; b=NCB40UfzWcTsc6bMeIwKK3WboiakJFYrG8z1GcN/s30QYjFsX1rFx8Y9d9UjNl/RJ7iJlJTUIqrQOpHBpcqAt+g/AvjTWw0ItbvES4N29fx+F7h0J2V0SNNi1qmSQRrXbgyAYWu3f8tYIineFkUkVJ4dxAjEBZeufOImO1P165M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714997438; c=relaxed/simple;
-	bh=NpCD5T+l+gGXtsoL7GDErBmJ6/RrNy8hQRbP7mriCTk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HbNDGjwEBVYWpk1ExLD79jKaa/djaIw25Oattwjmu+BTy/ATVlRq0Nq7DT6cfhFUisnEq4LJwKW4O0wW+JxbmHodh+l8BG+4BoTkVhGv6NvJDwQy3KTn9RoZ/joOPcyAFEBJSjhDjTTOnsCU57A6AnOiHrUcuUg7WojV2+Soyf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QAmUuGzX; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714998367; c=relaxed/simple;
+	bh=yim39yRqN4bdpfi/yZPkyOfIHeiJsr3OoFhecZ7dSX8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQCoMqZzQZj5jIFY5d7NpZEyJjiUMTWCZu2lagjI1Zs43hKFgughlNZitB3jUbBKvzbijMot53vPZ//mhuCISvxvopW3PnLrEn3wgZ8UbgArRs9LbuiC2klSU8h3Cy9buXQKdyGzbNfcWh3FZFZyR1JlLFM327srDcEGP+5STQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZCvgzkq2; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QAmUuGzX"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-62050e00cfdso8405887b3.3
-        for <imx@lists.linux.dev>; Mon, 06 May 2024 05:10:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714997436; x=1715602236; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=83bq6sZnjWOAj2QjLu2jyQop5vm1yVH5pagOdWkdqQE=;
-        b=QAmUuGzXtbKGZY7gMveFfysKW/3UOJmrUQ5ifhdLyQ5M1uirxr7R5XkUei2A9L+yDZ
-         OB6Bk5erutHj3aPUCM5vn8Z237qTk3RZNad1LyPEd1HU0kByBfbMfPOnx0vtruGiU1Ne
-         AvwCL+kcwvDPUGRKfdF1piDBrn9qvmAMaQxooT2A+z9pPQWRbzBxYTwa7WSPmFQspxyU
-         HXkxCT1pFk6ps9CDUSjP0ox6ZvfawwgFXqrhYLGreWwd3ciVySTA9nvZlDXex6TgdjGn
-         EmTUevD49THXCXTA7dJ1wxMOHhk45+iCZb4s6e2iXE1wk3lFGYtEEGSmOCXDiUKS8R2K
-         40LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714997436; x=1715602236;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=83bq6sZnjWOAj2QjLu2jyQop5vm1yVH5pagOdWkdqQE=;
-        b=vFgVB3snazGqz3bvup6ZkZ58ND6bDWFKbYMjjrJ2uXRRxp/TONV/FLwDKYCcyTZ/qu
-         4/1/H1fDIN7DUKqbNZN52g4UdmL3caZ32ToPha6UIwYZezLX1SM6DdYX7MsPHXgzRTjW
-         deZiT0qYcewm+rBhvRdv/iGa7oi/FnxN7o71KMWn3XTWzjModV8CeqM8c2UDL4egUM5J
-         sRkh+/94aY9N2gp0VOA1tE2fdB5Q0U30EbAXsLXvEvM5masS9yjp9hqZODnmi5qh67Dq
-         Hzsd4iaTqXtxAi/q1pVzhYEW+vwjqjqFPr9iquEfrKvjSdJ9UzE575MDTbZsHDYVIkRF
-         PjsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSRf6kxVtAkEz4n3WPSAw/wAdZeHgKtyWhcJ0pe6406LuN9HXCcIs6ztbhUv4p0xOewZsPP74fdazPv7lEQeMBPmDF
-X-Gm-Message-State: AOJu0YzR/VRpQqGa1jwBkTBcl1TRTDglbgsc7NmtCMfeSfMpysY4J//W
-	rYwvB7gIlviPTYfsFOkM8ClyKuR5XiXfzcBjdYQ3RD67Tw/5XuNxGt0iw2ixVdTRyHwmwGzrEqu
-	r3ZSkL7enf4oQi3yYkiA4REk3H0li21CkeiGoVg==
-X-Google-Smtp-Source: AGHT+IER78l+XvV7AsX+dBbOeQ79q3sQzITzxy15JTynwXfGIedBRzHp3Bby/Y/eLvaqRahVeAP4r46dQsP2qbPRE+I=
-X-Received: by 2002:a05:6902:2011:b0:dcf:2cfe:c82e with SMTP id
- dh17-20020a056902201100b00dcf2cfec82emr11080008ybb.55.1714997435752; Mon, 06
- May 2024 05:10:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZCvgzkq2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714998366; x=1746534366;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=yim39yRqN4bdpfi/yZPkyOfIHeiJsr3OoFhecZ7dSX8=;
+  b=ZCvgzkq2FrVYthP2jVKlAfB01bIBcwCDZcUWMke/J9PPTn6+3MnqV9hO
+   zeBEoBCM0LvLVsocgxvSzx3CDR4P2JtEbBazL/Hu0RqutrTH1wrMKQyat
+   anxDzndHigUmTiiaYQCx59a0PWm6Hx36Vt1qVeZJwsUZ5CeBEIP4hkYxS
+   Q9aV/IKi2P7es8Rtx7aqWAyW4vS53IQYbkrR4dB9RHDefxmY39wVtNNGR
+   pBR2ikBAjU2vDERWBgVHryGU0LBr4SOreplQKoQ8ICLlfu9iN5oVILQvg
+   kZaitMf1A+RPr5OC9/mOM/l7YePioDeTqMU7yGU/2VWcObQTUQL7gvRhp
+   w==;
+X-CSE-ConnectionGUID: lGbtRN+HRgWlrdLKKrc+fA==
+X-CSE-MsgGUID: QM1ClJtVQ/WkipPBkQAJ7A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="21352638"
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="21352638"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 05:26:05 -0700
+X-CSE-ConnectionGUID: i/6U48ZHSka9s8R3PJyNXw==
+X-CSE-MsgGUID: UQissWGdTaOeNacEhtYQ9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="28116539"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 05:25:58 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1s3xPl-00000004gZr-3aNZ;
+	Mon, 06 May 2024 15:25:53 +0300
+Date: Mon, 6 May 2024 15:25:53 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH v3 4/5] PCI: imx6: Convert to agnostic GPIO API
+Message-ID: <ZjjMUSj3cZTI56wE@smile.fi.intel.com>
+References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
+ <20240429102510.2665280-5-andriy.shevchenko@linux.intel.com>
+ <CACRpkdZUsA034L5GjF_-XELX9369PwNjONfsDV-_EC564R0QWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com> <20240429102510.2665280-5-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240429102510.2665280-5-andriy.shevchenko@linux.intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 6 May 2024 14:10:24 +0200
-Message-ID: <CACRpkdZUsA034L5GjF_-XELX9369PwNjONfsDV-_EC564R0QWg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] PCI: imx6: Convert to agnostic GPIO API
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Yue Wang <yue.wang@amlogic.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Xiaowei Song <songxiaowei@hisilicon.com>, Binghui Wang <wangbinghui@hisilicon.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdZUsA034L5GjF_-XELX9369PwNjONfsDV-_EC564R0QWg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Apr 29, 2024 at 12:25=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, May 06, 2024 at 02:10:24PM +0200, Linus Walleij wrote:
+> On Mon, Apr 29, 2024 at 12:25 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > The of_gpio.h is going to be removed. In preparation of that convert
+> > the driver to the agnostic API.
+> >
+> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> I think there is a bug here, the code is respecting the OF property
+> "reset-gpio-active-high"
+> but the code in drivers/gpio/gpiolib-of.h actually has a quirk for
+> this so you can just
+> delete all the active high handling and rely on 1 = asserted and 0 =
+> deasserted when
+> using GPIO descriptors.
+> 
+> Just delete this thing:
+> imx6_pcie->gpio_active_high = of_property_read_bool(node,
+>                                            "reset-gpio-active-high");
 
-> The of_gpio.h is going to be removed. In preparation of that convert
-> the driver to the agnostic API.
->
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Good catch! Thank you, I'll update it in the next version. Can you review
+the rest meanwhile?
 
-I think there is a bug here, the code is respecting the OF property
-"reset-gpio-active-high"
-but the code in drivers/gpio/gpiolib-of.h actually has a quirk for
-this so you can just
-delete all the active high handling and rely on 1 =3D asserted and 0 =3D
-deasserted when
-using GPIO descriptors.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Just delete this thing:
-imx6_pcie->gpio_active_high =3D of_property_read_bool(node,
-                                           "reset-gpio-active-high");
 
-Yours,
-Linus Walleij
