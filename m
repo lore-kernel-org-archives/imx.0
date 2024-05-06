@@ -1,50 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C89B13DDCB
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 14:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3809213D26E
+	for <imx@lists.linux.dev>; Mon,  6 May 2024 14:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715005317; cv=none; b=h9z9wOWbDxdnO0LHkB3GaHkeonRYASrt2iBFelcbKBWl+V+b+R7LNGoeXwsvznBYdnUVsHW4CMWbVlLrmPQwrVwV2J+snYf+GOqnIRB+uqual/vnij3x+HzZlVppCRGNAOpt1aaWsA7FvBUeHyjy4hSDl9dF8JGUZ9Akk3uvr0w=
+	t=1715005319; cv=none; b=FYBzPsUbES7YxPQJPLQh4M0eZcjE8O8imiXMUufU3+2ZiYZW5FM70PB6NMm1avsde/ttHS1D3XAwsZHUw2tQV70+W2q9OluFKFDki1VHwv8TlD1EJLw1jKKn8iw6RF6zUawX+/N9HsuUfjESW2mraUsXSkNEKeNpYp/HlBiZElc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715005317; c=relaxed/simple;
-	bh=Z57pGJjnjRVkYzZo0wihsvwiTkK/ndmlOsPxrIGszlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wmw6hL35ERU4Nb1qlSxYHL+bWmLWKqInuv0kJcQLDnpDKP55aXlH/5wRDzPPDn/FbW0dWBsrec7ek4QbQaYlim+ePJUrW1vWruHv28EgNs90TrD0fg5COcIdAN0SlAktW1KHHh7lFW7jwXYqkQ9qytIEVjQ7wUPphbHmIEn0B3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oC2ihOoh; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1715005319; c=relaxed/simple;
+	bh=Q6wvxPR0ih++7Mokt01obdSM7aO9GEPlMf6UMIVpETA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hs4GWNhIEXQh661fbh6+5AsD+CXvhMlDuyPv133juotXQKymDB2bYNJ5dlpuakdBGwfj/4k/L286zU4JFENM/m1typp4AXSG72OHeev12u2nCIC6vmz4w+KPGgLagxaAUSxgVE7Q3lHhIxySuSxvUDQxVxXbUWluRr4Q/dFsvbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k1wYMaqp; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oC2ihOoh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k1wYMaqp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715005314; x=1746541314;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Z57pGJjnjRVkYzZo0wihsvwiTkK/ndmlOsPxrIGszlo=;
-  b=oC2ihOohlhlgMvPnZXOOnsRfoSX44OU7viMwZcnyZnrc1y75juiQB4+I
-   jLCldYMJuGPj5sLtAVGFhRob7+EZcoH/nvIkV/BZbmGIG+PJj27f/Dlo3
-   FfDRZhHu/ZDC48xacygJUvHepRyaWux4KYxEJrI7TBDo3lqFXlygDLBpd
-   OdeLuYbQ7gPy5tcdWjGiGhm9/ceAu4Ftt1MTSaCkH9gN3WjkUJrC8sjIK
-   eNoWW3i5GImX1Xj8bc8e24FR27elsOqsMPGRbTJ1GOqXP/+3stOd1wHgo
-   krrDkrAJd+2pWF/e+5Q2ahXtViRAdy2vcpk56CaAOl4e4YobX/vVq+r/0
-   Q==;
-X-CSE-ConnectionGUID: sBDcLkEYRfaxdhk0bcrRPg==
-X-CSE-MsgGUID: pIqwRB0OSx6vahiqKwstOQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10631843"
+  t=1715005318; x=1746541318;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Q6wvxPR0ih++7Mokt01obdSM7aO9GEPlMf6UMIVpETA=;
+  b=k1wYMaqpMYKjy1hhBnDA8i42Re6QvApxqitdVsrjfj5j58fNsAeplQzZ
+   F6zWsczYhpvGo2NQIc1Ez3Pgg2A+hKOVshB/WjjO/t5UJvVg8/m8m/RXB
+   3cPrZ2KcvCfAyCeH6HKx93P60/ipJrkdcCvkRcM89a5171sKcPnr/Vwxn
+   1x271TP/viO2KRPDAAnh9dFK3NfQqD5ep7IdIDKBbHwNl3AzI3EoAxFDO
+   BWxj3oiEywgvb0Xv8+ygNytrn/Cp5/UrlKLxh/7pmlwRtYGafB4/E54s/
+   hE4jpJkaT1ofDqGQDeiyOefwS4yhODjbsx5+ZvYb9QHRM6HNI0RVdijyw
+   w==;
+X-CSE-ConnectionGUID: Wn/QpjoQRrm0UIx8wAg/hw==
+X-CSE-MsgGUID: vpXFu88hQhaytJAUg6mB9Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22155553"
 X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="10631843"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 07:21:52 -0700
-X-CSE-ConnectionGUID: LmUtZS9TRKi6vdTo+P+jMQ==
-X-CSE-MsgGUID: SSFBTkBWSVaqnxNR9fDPHQ==
+   d="scan'208";a="22155553"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 07:21:53 -0700
+X-CSE-ConnectionGUID: qvt0cQ2DQUCIlIa75LChlA==
+X-CSE-MsgGUID: 6EhTFntRRUmP7O47GmpzcA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="32652262"
+   d="scan'208";a="32988757"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 06 May 2024 07:21:44 -0700
+  by orviesa005.jf.intel.com with ESMTP; 06 May 2024 07:21:44 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 341DB537; Mon, 06 May 2024 17:21:43 +0300 (EEST)
+	id 00749161; Mon, 06 May 2024 17:21:42 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Frank Li <Frank.Li@nxp.com>,
@@ -82,12 +81,10 @@ Cc: Vignesh Raghavendra <vigneshr@ti.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v4 4/5] PCI: imx6: Convert to agnostic GPIO API
-Date: Mon,  6 May 2024 17:20:40 +0300
-Message-ID: <20240506142142.4042810-5-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 0/5] PCI: controller: Move to agnostic GPIO API
+Date: Mon,  6 May 2024 17:20:36 +0300
+Message-ID: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
-References: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -96,98 +93,39 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The of_gpio.h is going to be removed. In preparation of that convert
-the driver to the agnostic API.
+While at it, remove of_gpio.h leftover from some of the drivers.
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 36 ++++++++-------------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+In v4:
+- added tag (Mani)
+- fixed a polarity bug in iMX.6 driver (Linus)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 917c69edee1d..62a4994c5501 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -11,14 +11,13 @@
- #include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/kernel.h>
- #include <linux/mfd/syscon.h>
- #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
- #include <linux/mfd/syscon/imx7-iomuxc-gpr.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_address.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
-@@ -107,8 +106,7 @@ struct imx6_pcie_drvdata {
- 
- struct imx6_pcie {
- 	struct dw_pcie		*pci;
--	int			reset_gpio;
--	bool			gpio_active_high;
-+	struct gpio_desc	*reset_gpiod;
- 	bool			link_is_up;
- 	struct clk_bulk_data	clks[IMX6_PCIE_MAX_CLKS];
- 	struct regmap		*iomuxc_gpr;
-@@ -721,9 +719,7 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
- 	}
- 
- 	/* Some boards don't have PCIe reset GPIO. */
--	if (gpio_is_valid(imx6_pcie->reset_gpio))
--		gpio_set_value_cansleep(imx6_pcie->reset_gpio,
--					imx6_pcie->gpio_active_high);
-+	gpiod_set_value_cansleep(imx6_pcie->reset_gpiod, 1);
- }
- 
- static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
-@@ -771,10 +767,9 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 	}
- 
- 	/* Some boards don't have PCIe reset GPIO. */
--	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
-+	if (imx6_pcie->reset_gpiod) {
- 		msleep(100);
--		gpio_set_value_cansleep(imx6_pcie->reset_gpio,
--					!imx6_pcie->gpio_active_high);
-+		gpiod_set_value_cansleep(imx6_pcie->reset_gpiod, 0);
- 		/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
- 		msleep(100);
- 	}
-@@ -1285,22 +1280,11 @@ static int imx6_pcie_probe(struct platform_device *pdev)
- 		return PTR_ERR(pci->dbi_base);
- 
- 	/* Fetch GPIOs */
--	imx6_pcie->reset_gpio = of_get_named_gpio(node, "reset-gpio", 0);
--	imx6_pcie->gpio_active_high = of_property_read_bool(node,
--						"reset-gpio-active-high");
--	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
--		ret = devm_gpio_request_one(dev, imx6_pcie->reset_gpio,
--				imx6_pcie->gpio_active_high ?
--					GPIOF_OUT_INIT_HIGH :
--					GPIOF_OUT_INIT_LOW,
--				"PCIe reset");
--		if (ret) {
--			dev_err(dev, "unable to get reset gpio\n");
--			return ret;
--		}
--	} else if (imx6_pcie->reset_gpio == -EPROBE_DEFER) {
--		return imx6_pcie->reset_gpio;
--	}
-+	imx6_pcie->reset_gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx6_pcie->reset_gpiod))
-+		return dev_err_probe(dev, PTR_ERR(imx6_pcie->reset_gpiod),
-+				     "unable to get reset gpio\n");
-+	gpiod_set_consumer_name(imx6_pcie->reset_gpiod, "PCIe reset");
- 
- 	if (imx6_pcie->drvdata->clks_cnt >= IMX6_PCIE_MAX_CLKS)
- 		return dev_err_probe(dev, -ENOMEM, "clks_cnt is too big\n");
+In v3:
+- added precursor patch 1 to avoid build errors (LKP)
+- used GPIOD_OUT_LOW instead of GPIOD_ASIS (Mani)
+- added tags (Mani, Frank)
+
+In v2:
+- combined previously sent patches into a series (Manivannan)
+- added tags (Rob, Manivannan)
+- converted iMX.6 driver (Manivannan)
+- dropped leftover in aadvark drivers (Manivannan)
+
+Andy Shevchenko (5):
+  PCI: dra7xx: Add missing header inclusion
+  PCI: aardvark: Remove unused of_gpio.h
+  PCI: dwc: Remove unused of_gpio.h
+  PCI: imx6: Convert to agnostic GPIO API
+  PCI: kirin: Convert to agnostic GPIO API
+
+ drivers/pci/controller/dwc/pci-dra7xx.c    |   2 +-
+ drivers/pci/controller/dwc/pci-imx6.c      |  36 ++-----
+ drivers/pci/controller/dwc/pci-meson.c     |   1 -
+ drivers/pci/controller/dwc/pcie-kirin.c    | 105 +++++++--------------
+ drivers/pci/controller/dwc/pcie-qcom.c     |   1 -
+ drivers/pci/controller/dwc/pcie-tegra194.c |   2 -
+ drivers/pci/controller/pci-aardvark.c      |   1 -
+ 7 files changed, 46 insertions(+), 102 deletions(-)
+
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
