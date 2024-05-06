@@ -1,47 +1,48 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31746CDCE
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 08:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8AB1420B9
+	for <imx@lists.linux.dev>; Mon,  6 May 2024 08:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714985697; cv=none; b=ikHN85x4H1qe6UV0Q+k3tgbAHxHoc/EwkDktbeKB9bg6JI/pPxoGQsCTg3LnU3gAi3IOaWTf3/WsOtIRPfuRgYAbb1Z7R5hQH8U4epItKey8b6Ae93dBMvZXUgBvFiOIw/d6LgRGwB4nJK05PBcyUEtLYUAstqBecjna4nJCD5s=
+	t=1714985986; cv=none; b=RwzL4jbPMHzfQESmbBQWZlyFaoQVcb5ltwcLlBa5ujE+UKsR6NpAwNdg+IcqC45JFTuRrWqZHSgabepdYVAUSKRlUxvjtIpQO1QZkqzRNWJgOiatEBVH/AaOOReqo00cmG8wcqQE7u7Qh8/Vy6hSaaOEyglVdKeBmRAz8AbzPBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714985697; c=relaxed/simple;
-	bh=fD2iXQIxQO1O7t0yL8276/zUtOXwPZze/133iLrLiNk=;
+	s=arc-20240116; t=1714985986; c=relaxed/simple;
+	bh=zI9aKrE6NiMa73k6e2lcD5sd2ANI0ztCC+XSoAVmyY0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qncxF+PAhofrjRZRb2vR3f73ZNdLTUwfImsU24sUbETksY2DDO7SS5HkAhuO/N4vCP6NW0xEjnba48PcXH5XbpdWvNivCAbDR6L9HMBBAVFBVg1ox9+WEGG/TE0PfA9zW2wN0zylllCX+JFZHQu3Y8Oiusz4XZzIkDOJzYqXx8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ApPpNERI; arc=none smtp.client-ip=217.70.183.198
+	 MIME-Version:Content-Type; b=gK+rrsv2D8ii6ooYuC7ftnZKK7S2iBDWFrwqrs6AngIgrQNLTJankTlO+WWiAiUbc5yt1sDRs2xxE4tGR32NSdaHfMVQ+beuaBV9/XmpuB+PFiOhXoIXQAJxPb+4q3ybFr1iozyeGl5f5K/S51SYZitThgnHp47Z1PeBRJ9sxA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PDKE8Egb; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ApPpNERI"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 80946C0015;
-	Mon,  6 May 2024 08:54:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PDKE8Egb"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 119A61BF204;
+	Mon,  6 May 2024 08:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1714985693;
+	t=1714985981;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YXrjSateGikcCPRPsOAFErk3+6M1AzwYZKnymVg6nJw=;
-	b=ApPpNERIDYb7v5HNNv2O3UmGLL3XrVpcmUG/KTbGeWUn0nSwFZ7Y1fOQG4eLDDMMLFXZjN
-	IVNxqKtITNEsAIsD+5l1wCshGzNAszAec+sJVNetqbe/zDkUoR95xvspSzimcIBmE4AVX9
-	bzBlCLmqpedbcg9BRsSLQ9G378ogtXYUTGg74IcaE5nsk/XIaDocF1jbTL+pwkbORC0/cB
-	ci8mGZazK+SLG7XWnZsEMQarqfKQyNXGd3kHgCboKm/B0FNlxkSN37jt0vCU+qJnvfYCDC
-	wVSkUHiUciz9ceslcnbEnu6PJanl0Int2TrGEnpGVpyqO+akReJJY/OyNKpSyQ==
-Date: Mon, 6 May 2024 10:54:51 +0200
+	bh=xLoumWwq12QqlpvmyZ6oFlX+y9BSSofQN7u2jFCOtaU=;
+	b=PDKE8EgbLksMFP97qVMtx6poecdit3R82OTJQweQ2bJqnbujyZk+/pcORyzyP1UUWMRlbq
+	05Y1ZDNkYGMsz5OUnU+ODdIo4ZCDxwIvOZZ778OwJHHC3vfiVftnyUm7wEcZ81yRR8eIxe
+	mPlvhQPNe7r+xTt0d2y/uO0G/Thdl77yA4J1GouPLtIFG5qxszkA9/GPXxlXEFWEofqGiT
+	Uaa3D/EXUhelQLkNKZP/rDPmbyGtb+WL07+yLSVKMxlVC7U9silYUf+4CGTESXUnueIT6u
+	W0CXbThvRLGP48xY4/qXuGTZ7Ro7vbqSKPF+oZBiqpHGMageYRumhGNp960MPQ==
+Date: Mon, 6 May 2024 10:59:40 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
  <alexandre.belloni@bootlin.com>, linux-i3c@lists.infradead.org (moderated
  list:SILVACO I3C DUAL-ROLE MASTER), linux-kernel@vger.kernel.org (open
  list), imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] i3c: master: svc: change ENXIO to EAGAIN when IBI
- occurs during start frame
-Message-ID: <20240506105451.26e40778@xps-13>
-In-Reply-To: <20240424190030.857632-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 2/2] i3c: master: svc: fix invalidate IBI type and miss
+ call client IBI handler
+Message-ID: <20240506105940.5d8d2308@xps-13>
+In-Reply-To: <20240424190030.857632-2-Frank.Li@nxp.com>
 References: <20240424190030.857632-1-Frank.Li@nxp.com>
+	<20240424190030.857632-2-Frank.Li@nxp.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -56,41 +57,70 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hi Frank,
 
-Frank.Li@nxp.com wrote on Wed, 24 Apr 2024 15:00:29 -0400:
+Frank.Li@nxp.com wrote on Wed, 24 Apr 2024 15:00:30 -0400:
 
-> svc_i3c_master_xfer() returns error ENXIO if an In-Band Interrupt (IBI)
-> occurs when the host starts the frame.
+> In an In-Band Interrupt (IBI) handle, the code logic is as follows:
 >=20
-> Change error code to EAGAIN to inform the client driver that this
-> situation has occurred and to try again sometime later.
-
-This changes slightly the user API, but feels legitimate at the same
-time. Maybe a comment somewhere in the i3c headers to clarify this
-possibility might be welcome?
-
+> 1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
+> 	  master->regs + SVC_I3C_MCTRL);
+>=20
+> 2: ret =3D readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
+>                                     SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
+> 	...
+> 3: ibitype =3D SVC_I3C_MSTATUS_IBITYPE(status);
+>    ibiaddr =3D SVC_I3C_MSTATUS_IBIADDR(status);
+>=20
+> SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
+> immediately, and the I3C controller has not sent out the 9th SCL yet.
+> Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
+> occurrence and missing call I3C client driver's IBI handler.
+>=20
+> A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
+> during the controller send start frame in svc_i3c_master_xfer().
+>=20
+> Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
+> to fix this issue.
+>=20
+> Cc: stable@vger.kernel.org
 > Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI ha=
 ppen during start frame")
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/i3c/master/svc-i3c-master.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/i3c/master/svc-i3c-master.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >=20
 > diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
 -i3c-master.c
-> index 5ee4db68988e2..a2298ab460a37 100644
+> index a2298ab460a37..3bfe8e694f840 100644
 > --- a/drivers/i3c/master/svc-i3c-master.c
 > +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -1080,7 +1080,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_maste=
-r *master,
->  	 * and yield the above events handler.
->  	 */
->  	if (SVC_I3C_MSTATUS_IBIWON(reg)) {
-> -		ret =3D -ENXIO;
-> +		ret =3D -EAGAIN;
->  		*actual_len =3D 0;
->  		goto emit_stop;
->  	}
+> @@ -415,6 +415,9 @@ static void svc_i3c_master_ibi_work(struct work_struc=
+t *work)
+>  	int ret;
+> =20
+>  	mutex_lock(&master->lock);
+> +	/* Clear the interrupt status */
 
+Could you improve the comment to explain why this is needed here?
+
+Otherwise seems okay, but I don't have any strong feelings here.
+
+> +	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
+> +
+>  	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
+>  	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
+>  	       SVC_I3C_MCTRL_IBIRESP_AUTO,
+> @@ -429,9 +432,6 @@ static void svc_i3c_master_ibi_work(struct work_struc=
+t *work)
+>  		goto reenable_ibis;
+>  	}
+> =20
+> -	/* Clear the interrupt status */
+> -	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
+> -
+>  	status =3D readl(master->regs + SVC_I3C_MSTATUS);
+>  	ibitype =3D SVC_I3C_MSTATUS_IBITYPE(status);
+>  	ibiaddr =3D SVC_I3C_MSTATUS_IBIADDR(status);
 
 Thanks,
 Miqu=C3=A8l
