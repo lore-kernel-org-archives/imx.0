@@ -1,156 +1,109 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6222A3D967
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 06:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADCB19479;
+	Mon,  6 May 2024 06:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714976404; cv=none; b=XUTC7IRv/knmUO8D+S7AZlX7urhQLyomLOlM/yIhgWiLXPp5BEo5TjHMj0BA6umG5ZBOc3iVKFKqLuPfOwnjg9X2oliODJep17/eYy2TmtO9BEc9B5rII2USUqDFocvQOkRcijI6y/M0N3vMuHzNuezIhWwA0zZtMES+ePDo1II=
+	t=1714976640; cv=none; b=lSjtrIS8MdhKEeJRp296qv3CmBmYX3xNNYk7ngls1zyE2smSYn7bn87GMobW9DE+wi52JwA/DiKi0q0mUioFyvwqfsZW4pdI3Tni1a7Dm4GDumY1l8yFSULzbaYp2PyYM4ecsfdXoYU+WOIZ5nBFLElX1xWhBgsJmhR+g92WlP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714976404; c=relaxed/simple;
-	bh=I/wYklHMETTJKHKgZfkpBUzfaIGJUfOcJA7j1rii/1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dKBHx0/OGq2fAml4gRusuJYj90DVUkE8928xGt9B17lS6TSfQDDhTRtxbix5olvh9uVaBln3+42mqd3vREXCejqcW3KLLGEDcLWpFFDUzbWTJ7m8DdCX4aVnGXvi6eOHlBRg8DNuYe35YvFggI55DWxtekjE70mhmu4w9rgtMVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=n4oPdWiD; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Y4yZYrGR reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1714976640; c=relaxed/simple;
+	bh=p4igZQLeFwGDAUOMUpmKtPTUN3wWPG7RQrSfgLmxk8U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JlhDL4XFz9TfVDQCbDzaQa1L3Em2tRKxbQCbFeZj/UPaITQfIzo3AWbrMCS9YWFmtI1v1xuUy9nBltKowIetRuaZ2UNuMtchZ7WI9Guf7GIwgGmvIat/eThnyIJ+gqFGwat4WKivCPO+LBokIGvBZCflepomk7KCbnQsYV5o1NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dotD2BlV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="n4oPdWiD";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Y4yZYrGR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1714976400; x=1746512400;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2KOgeH5FtSg96AKSLg0bxhcztOJxyjb2Q/p7HPjcZGc=;
-  b=n4oPdWiDvTF+OsyBnIeB+4Kbt8p8dePd/xemYXpJUFWFa69NeN1Sh6GC
-   B9t4QUJLjJ9wxRlzvpaykc9ZRUmq1SeofBEwiWgjv5TqHyNuyOAOEkeMn
-   4lKBVl0liiO5J5M7z9nrcX6GUg8RQYPMJE/t3hGsYO+yOfo1DCdBj/39c
-   dqjYwLmKiK2KovkP3NzGyYJIxt8PoD/5/fWJ2C9XkQtkLxnrZNECdo51P
-   rWhMKz9uJpssjCsR4QZvhfx4EaXmfAHowaKncuTnqO3/qlTrW0JRfC/3/
-   Ewm/FB5WZhlmEbu6xJrusCLOtQp1dp59APzewA5bwon6u3OgP0beO3fIL
-   g==;
-X-CSE-ConnectionGUID: BB0jHhSwRgCSyHDG/5irEA==
-X-CSE-MsgGUID: oQ9oM6zfT2u9m2bUD3KvsQ==
-X-IronPort-AV: E=Sophos;i="6.07,257,1708383600"; 
-   d="scan'208";a="36751950"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 06 May 2024 08:19:57 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 251651700C1;
-	Mon,  6 May 2024 08:19:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1714976393;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=2KOgeH5FtSg96AKSLg0bxhcztOJxyjb2Q/p7HPjcZGc=;
-	b=Y4yZYrGR7Ldui6BZLOhiY3mvMYE8Mm24INnUdDW6l/9e8Q6RlUgXpky8mIok5F+BUmqhsK
-	USI5Z6XlxvmDNXkYDYOHRkpsr7An23Hlb8s3Robrkr/BTaeTvA36mJDvQ3sYiB2XImlhjb
-	WGmgVXciYXsHQopREcC0VeDvWxA0jfDb45POgcPWL4fiOHrUFrEhxEtTrPAH8pC98egL6K
-	5K/Yoaj2XLjeyjTWfK/FQNxbakvaB3e8nmzdffRhSS+TbdWGrpGks7JvKHn4PhyKjTNEl4
-	AshfFmN3zZuZ7EKiASvwjqFyoa49tz7+Ej6VHcJdqRAkexXEb2cGB9p2b3bedw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@denx.de>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Paul Elder <paul.elder@ideasonboard.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Date: Mon, 06 May 2024 08:19:57 +0200
-Message-ID: <5784573.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240503134557.GC13904@pendragon.ideasonboard.com>
-References: <20240416141914.9375-1-marex@denx.de> <3311352.aeNJFYEL58@steina-w> <20240503134557.GC13904@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dotD2BlV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3ADC116B1;
+	Mon,  6 May 2024 06:23:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714976640;
+	bh=p4igZQLeFwGDAUOMUpmKtPTUN3wWPG7RQrSfgLmxk8U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dotD2BlV4BdYlqlgMd9bYraEZZwTGLAACBbg0eg0Eqeca3oL4rWPK6r6/jj7LgHvR
+	 GCq13a9pKKFy46d0/wReqz3BxIdTvbvI6ZDo9cw6qcJyg3GYiKLZGZAumuNiI7zeBB
+	 KcJ3thDDClDfS2C/Zr7Rp1E76Ku9ma1YI5g5VMiHDxdAtUUmD3m5Qseug/Kpt/Fk2h
+	 eAkvtRMv9ngyUJUWj5Di1buORKgAO60vjXK3XqhUbVZ62MBKz1YswI7kGMhU8na9Fy
+	 5lLeOiZRuOzPSdrf2j/DJHrQiWFj1ry2vAR3d+JV/7EO4INym797uSAkLdjB5gowlX
+	 8sQ80wUlJFpPA==
+Message-ID: <05365b5a-0398-4382-9646-a1586468ed10@kernel.org>
+Date: Mon, 6 May 2024 08:23:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] dt-bindings: clock: imx8mp: Add #reset-cells property
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org,
+ peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, marex@denx.de, imx@lists.linux.dev,
+ shengjiu.wang@gmail.com
+Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <1714967359-27905-1-git-send-email-shengjiu.wang@nxp.com>
+ <1714967359-27905-2-git-send-email-shengjiu.wang@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <1714967359-27905-2-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Am Freitag, 3. Mai 2024, 15:45:57 CEST schrieb Laurent Pinchart:
-> On Fri, May 03, 2024 at 02:58:19PM +0200, Alexander Stein wrote:
-> > Am Mittwoch, 17. April 2024, 11:12:04 CEST schrieb Alexander Stein:
-> > > Am Dienstag, 16. April 2024, 16:19:10 CEST schrieb Marek Vasut:
-> > > > Configure both CSI2 assigned-clock-rates the same way.
-> > > > There does not seem to be any reason for keeping the
-> > > > two CSI2 pixel clock set to different frequencies.
-> > > >=20
-> > > > This also reduces first CSI2 clock from overdrive mode
-> > > > frequency which is 500 MHz down below the regular mode
-> > > > frequency of 400 MHz.
-> > > >=20
-> > > > Signed-off-by: Marek Vasut <marex@denx.de>
-> > >=20
-> > > Apparently there is no difference when using imx415 (3840x2160) senso=
-r.
-> >=20
-> > Just for the records: While this change does not affect imx415 (3840x21=
-60)
-> > processing, reducing clock-frequency as well (v3) imx415 does not work.
-> > So I assume that for this image size a higher than default frequency is
-> > required.
->=20
-> For the time being I expect sensor overlays to override the default
-> clock setup.
+On 06/05/2024 05:49, Shengjiu Wang wrote:
+> Make audiomix block control a reset provider for
+> Enhanced Audio Return Channel (eARC).
 
-Yep, that's what I did in the end.
+Why? Commit msg should explain that. Why suddenly this became reset
+coontroller? Does it represent hardware?
 
-> Ideally the clock frequencies should be configured
-> automatically at runtime by the CSI-2 RX driver.
 
-Ideally, yes. In this case it depends on whether it is MIPI-CSI 1 in normal
-or overdrive mode, if it is MIPI-CSI 2 or if both cameras a run
-simultaneously. I wonder if it really worth to add that much infrastructure
-for a use case which is essentially fixed setup.
 
 Best regards,
-Alexander
-
-> > > Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > >=20
-> > > > ---
-> > > > Cc: Conor Dooley <conor+dt@kernel.org>
-> > > > Cc: Fabio Estevam <festevam@gmail.com>
-> > > > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> > > > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > > Cc: Paul Elder <paul.elder@ideasonboard.com>
-> > > > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > > > Cc: Rob Herring <robh@kernel.org>
-> > > > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > Cc: Shawn Guo <shawnguo@kernel.org>
-> > > > Cc: devicetree@vger.kernel.org
-> > > > Cc: imx@lists.linux.dev
-> > > > Cc: linux-arm-kernel@lists.infradead.org
-> > > > ---
-> > > > V2: Align both clock to 266 MHz and update commit message
-> > > > ---
-> > > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64=
-/boot/dts/freescale/imx8mp.dtsi
-> > > > index 1bb96e96639f2..7883f5c056f4e 100644
-> > > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > @@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
-> > > >  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
-> > > >  				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
-> > > >  							 <&clk IMX8MP_CLK_24M>;
-> > > > -				assigned-clock-rates =3D <500000000>;
-> > > > +				assigned-clock-rates =3D <266000000>;
-> > > >  				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI=
-2_1>;
-> > > >  				status =3D "disabled";
-> > > > =20
-> > > >=20
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Krzysztof
 
