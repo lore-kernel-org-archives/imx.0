@@ -1,135 +1,128 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E02158D99
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 18:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C0F15B54C;
+	Mon,  6 May 2024 20:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715021746; cv=none; b=i3AkPV3o/pLK+lclK1zdij0TLiV9clOlsbEqRkzyDLbF4fyy0TMJvNbulLrNfhJkXvWf/ZK16F3jHJVCSeSaWQgiRMsXD+QR+BlwHQFwDjXMslvnlF9SYXPqr2/YGcvtUxam22Th2ca/W0PHOK4VlaGh2Pa5HeJ93lD9Yx03uWs=
+	t=1715028026; cv=none; b=rPwHaFTK2G6wldXDx0s3ubPnuS31HyxDGWx1c2e/c2IH1kFeSw6ZJXSmDdfzAvJ3z+10dv+6IiPhNzOn7qovOfH9QEqKuNpw4W2QaqxHqTBLFyb0/UEQUGIbfHA5a6gyTrmheXOEMcZcgRH3AEkDqcxQ7DHxVYqRRCCyJG11VvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715021746; c=relaxed/simple;
-	bh=bZDiZMGu0jBtjwsda2PcNCz+ZVppj4NJDGPoMGORpxY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uUtPu2DzwEzyDVjyQged2lIhHdR82yPhy85yOyQ1luST+Fxut4XWRZjnVUCu9TGonzWrRco1SFJ+sQ5eVJfytcXcml5dQZg5DRUSW9GjDmcBKfT12/F7Tlgx4qfuLSFwNE03cNX3BWqxBeJ3ENOQZwhgd99eZJjTIaRsNG7MeoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AGhAKqJ3; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1715028026; c=relaxed/simple;
+	bh=rWTABs0XgoNxHIEU6FB1ENUmGMXZUHEd53NHS+u7P5Q=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=d1Q4+1DllLFk7JaO+qaJxLQdk1DjCb56Ox5wwWXJcU9RNOZuz/GnMZ9y0iQKX/CelBHqQmVPLoU2/92KuGSptBNcnsl8E4koI7Kl5QGv70eHjWk6vO/5wQIMM1186Zg6670u30YkRZSBvJ0DgS1lnBOCXF0Vwzr6N3ZCwDFKO5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWzg0ttT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AGhAKqJ3"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1370B114D;
-	Mon,  6 May 2024 20:55:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1715021740;
-	bh=bZDiZMGu0jBtjwsda2PcNCz+ZVppj4NJDGPoMGORpxY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AGhAKqJ3rNcKJ3ySqDlXLDV2PZMylOpUjrwj/IGvTgFgAzMmfOHRfE5kl1or3ELGn
-	 X5nbSS/kKXXVTfPneSYuE2Eicwwd8PA2drq+yXYA/gFWUGpridR8JtUnBEYUfbBH7u
-	 Y2ztuBtd+pwe+8q336SrmePUFncKH8JXwn67rgG8=
-Date: Mon, 6 May 2024 21:55:34 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@denx.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Align both CSI2 pixel clock
-Message-ID: <20240506185534.GC26689@pendragon.ideasonboard.com>
-References: <20240416141914.9375-1-marex@denx.de>
- <3311352.aeNJFYEL58@steina-w>
- <20240503134557.GC13904@pendragon.ideasonboard.com>
- <5784573.DvuYhMxLoT@steina-w>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PWzg0ttT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FFAC116B1;
+	Mon,  6 May 2024 20:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715028025;
+	bh=rWTABs0XgoNxHIEU6FB1ENUmGMXZUHEd53NHS+u7P5Q=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=PWzg0ttTovsQ2y7AKUfHCgx+faR7cSQGZ8Ndb6LhmM9gAyN/QaZXowrzYg3SbCfEJ
+	 +jfw2cMI8ChtE1WTcBM/F7/jr6yc2Ats8gzQATR/qcpEl2TCwK21EBcUahjfhKDyNc
+	 Dzw7eqCpaCBeeHle5FMhr3hB05S8iqJP6MU1f2Ra5p6/lGmLCd41oO/CcGe+wddJpW
+	 zzbmqnA72DohDCAlN/XrVSpI0E8Rzc4dcADdzlc0yV/DpkqApCS8jpDpuprnaHv7tw
+	 CBjkfeeuHnmG0ytcQ80Lu81BaUzgNFdNLteakKczzE8ELgnAePLZeTfmQslXJWv5u2
+	 5kpzcNwAjOxxQ==
+Date: Mon, 06 May 2024 15:40:23 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5784573.DvuYhMxLoT@steina-w>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: kernel@pengutronix.de, s.hauer@pengutronix.de, shawnguo@kernel.org, 
+ leoyang.li@nxp.com, krzk+dt@kernel.org, conor+dt@kernel.org, 
+ linux-kernel@vger.kernel.org, festevam@gmail.com, 
+ linux-arm-kernel@lists.infradead.org, marex@denx.de, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20240504215344.861327-1-andreas@kemnade.info>
+References: <20240504215344.861327-1-andreas@kemnade.info>
+Message-Id: <171502764288.89501.11764429607857982890.robh@kernel.org>
+Subject: Re: [PATCH 0/2] ARM: dts: mix: Add Kobo Clara HD rev B
 
-On Mon, May 06, 2024 at 08:19:57AM +0200, Alexander Stein wrote:
-> Am Freitag, 3. Mai 2024, 15:45:57 CEST schrieb Laurent Pinchart:
-> > On Fri, May 03, 2024 at 02:58:19PM +0200, Alexander Stein wrote:
-> > > Am Mittwoch, 17. April 2024, 11:12:04 CEST schrieb Alexander Stein:
-> > > > Am Dienstag, 16. April 2024, 16:19:10 CEST schrieb Marek Vasut:
-> > > > > Configure both CSI2 assigned-clock-rates the same way.
-> > > > > There does not seem to be any reason for keeping the
-> > > > > two CSI2 pixel clock set to different frequencies.
-> > > > > 
-> > > > > This also reduces first CSI2 clock from overdrive mode
-> > > > > frequency which is 500 MHz down below the regular mode
-> > > > > frequency of 400 MHz.
-> > > > > 
-> > > > > Signed-off-by: Marek Vasut <marex@denx.de>
-> > > > 
-> > > > Apparently there is no difference when using imx415 (3840x2160) sensor.
-> > > 
-> > > Just for the records: While this change does not affect imx415 (3840x2160)
-> > > processing, reducing clock-frequency as well (v3) imx415 does not work.
-> > > So I assume that for this image size a higher than default frequency is
-> > > required.
-> > 
-> > For the time being I expect sensor overlays to override the default
-> > clock setup.
+
+On Sat, 04 May 2024 23:53:42 +0200, Andreas Kemnade wrote:
+> Apparently there exists another revision of the Kobo Clara HD
+> which has just different regulator setup. So add support for it.
 > 
-> Yep, that's what I did in the end.
+> For details: https://gitlab.com/postmarketOS/pmaports/-/issues/2356
 > 
-> > Ideally the clock frequencies should be configured
-> > automatically at runtime by the CSI-2 RX driver.
+> Andreas Kemnade (2):
+>   dt-bindings: arm: fsl: Add Kobo Clara HD rev B
+>   ARM: dts: imx: Add Kobo Clara HD rev b
 > 
-> Ideally, yes. In this case it depends on whether it is MIPI-CSI 1 in normal
-> or overdrive mode, if it is MIPI-CSI 2 or if both cameras a run
-> simultaneously. I wonder if it really worth to add that much infrastructure
-> for a use case which is essentially fixed setup.
+>  .../devicetree/bindings/arm/fsl.yaml          |  6 ++
+>  arch/arm/boot/dts/nxp/imx/Makefile            |  1 +
+>  .../dts/nxp/imx/imx6sll-kobo-clarahd-b.dts    | 79 +++++++++++++++++++
+>  3 files changed, 86 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dts
+> 
+> --
+> 2.39.2
+> 
+> 
+> 
 
-There could be platforms where two cameras are connected, and the user
-would want to operate them either concurrently at lower resolutions (and
-speed), or separately at higher resolutions.
 
-> > > > Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > > > 
-> > > > > ---
-> > > > > Cc: Conor Dooley <conor+dt@kernel.org>
-> > > > > Cc: Fabio Estevam <festevam@gmail.com>
-> > > > > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> > > > > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > > > Cc: Paul Elder <paul.elder@ideasonboard.com>
-> > > > > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > > > > Cc: Rob Herring <robh@kernel.org>
-> > > > > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > > Cc: Shawn Guo <shawnguo@kernel.org>
-> > > > > Cc: devicetree@vger.kernel.org
-> > > > > Cc: imx@lists.linux.dev
-> > > > > Cc: linux-arm-kernel@lists.infradead.org
-> > > > > ---
-> > > > > V2: Align both clock to 266 MHz and update commit message
-> > > > > ---
-> > > > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
-> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > index 1bb96e96639f2..7883f5c056f4e 100644
-> > > > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > @@ -1667,7 +1667,7 @@ mipi_csi_0: csi@32e40000 {
-> > > > >  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
-> > > > >  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
-> > > > >  							 <&clk IMX8MP_CLK_24M>;
-> > > > > -				assigned-clock-rates = <500000000>;
-> > > > > +				assigned-clock-rates = <266000000>;
-> > > > >  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
-> > > > >  				status = "disabled";
-> > > > >  
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
--- 
-Regards,
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-Laurent Pinchart
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y nxp/imx/imx6sll-kobo-clarahd-b.dtb' for 20240504215344.861327-1-andreas@kemnade.info:
+
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: /soc/bus@2000000/spba-bus@2000000/spdif@2004000: failed to match any schema with compatible: ['fsl,imx6sl-spdif', 'fsl,imx35-spdif']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: serial@2034000: dma-name: b'rx\x00tx\x00' is not of type 'object', 'array', 'boolean', 'null'
+	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: timer@2098000: compatible: 
+'oneOf' conditional failed, one must be fixed:
+	['fsl,imx6sl-gpt'] is too short
+	'fsl,imx1-gpt' was expected
+	'fsl,imx21-gpt' was expected
+	'fsl,imx27-gpt' was expected
+	'fsl,imx31-gpt' was expected
+	'fsl,imx6sl-gpt' is not one of ['fsl,imx25-gpt', 'fsl,imx50-gpt', 'fsl,imx51-gpt', 'fsl,imx53-gpt', 'fsl,imx6q-gpt']
+	'fsl,imx6dl-gpt' was expected
+	'fsl,imx6sl-gpt' is not one of ['fsl,imx6ul-gpt', 'fsl,imx7d-gpt']
+	from schema $id: http://devicetree.org/schemas/timer/fsl,imxgpt.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: anatop@20c8000: '#address-cells', '#size-cells', 'regulator-3p0@20c8120', 'temperature-sensor' do not match any of the regexes: 'pinctrl-[0-9]+', 'regulator-((1p1)|(2p5)|(3p0)|(vddcore)|(vddpu)|(vddsoc))$'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-anatop.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: regulator-3p0@20c8120: Unevaluated properties are not allowed ('reg' was unexpected)
+	from schema $id: http://devicetree.org/schemas/regulator/anatop-regulator.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: temperature-sensor: '#thermal-sensor-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/thermal/imx-thermal.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: /soc/bus@2000000/interrupt-controller@20dc000: failed to match any schema with compatible: ['fsl,imx6sll-gpc', 'fsl,imx6q-gpc']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: /soc/bus@2000000/pinctrl@20e0000: failed to match any schema with compatible: ['fsl,imx6sll-iomuxc']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: /soc/bus@2000000/csi@20e8000: failed to match any schema with compatible: ['fsl,imx6sll-csi', 'fsl,imx6s-csi']
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: lcd-controller@20f8000: compatible: 
+'oneOf' conditional failed, one must be fixed:
+	['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
+	'fsl,imx6sll-lcdif' is not one of ['fsl,imx23-lcdif', 'fsl,imx28-lcdif', 'fsl,imx6sx-lcdif', 'fsl,imx8mp-lcdif', 'fsl,imx93-lcdif']
+	'fsl,imx6sx-lcdif' was expected
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: lcd-controller@20f8000: clocks: [[2, 129], [2, 123], [2, 0]] is too long
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd-b.dtb: lcd-controller@20f8000: clock-names: ['pix', 'axi', 'disp_axi'] is too long
+	from schema $id: http://devicetree.org/schemas/display/fsl,lcdif.yaml#
+
+
+
+
+
