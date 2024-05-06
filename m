@@ -1,114 +1,111 @@
-Received: from wfhigh6-smtp.messagingengine.com (wfhigh6-smtp.messagingengine.com [64.147.123.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB25142913
-	for <imx@lists.linux.dev>; Mon,  6 May 2024 11:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE08114388F
+	for <imx@lists.linux.dev>; Mon,  6 May 2024 12:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714995009; cv=none; b=FSv5opTY7AAHwI8LnvBa4pC5PsIensYWc68qjlx0RdMPbVzL4GwOUfA681FEuB7pyAyxG0naBPfpG4onQVfRgfrcIqDDQN5KcxlK9FnwGI8pNd6Uavq1RND5FvEg0aqW3J/e1JM/jEneenkVL9hDBvsUZAVeo1k3MlwS80fhvNI=
+	t=1714997438; cv=none; b=T2v8lwXCMml/Sl+4dPOSJH4b+mtozLe2fDMNRh1oPAFYRGWEW1F6cjL73JYpipvUIMLdoLIg36EXbd0qaOBqvHJ4GFmdQprTibxyzIXF6F+ZidloEm9o85+XKvPFRk/iKkQtRNoKzzNXxk1lo+/4D2clljcIUd9mIYGp5Ft8xqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714995009; c=relaxed/simple;
-	bh=qvCGSoQawQTxwKwTMIcTAx8d5xEdDNJuiCoB8WMClEI=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=HUN0uM7xbuEznalkK+X2EX9ePElcCOQBZC4pS2vJ5C9TruYM0Dozlbc/afo/CllnKYOviaLqBJF16wES7NV/gRdBZALFdlW62wcLOMJx9xDWsU+HoNYYV7An2Ij0I3navReXx89LQt6kvm/KwSMS0WpeXFHgzav5ODBUcO7odTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=AHD0pizr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LmDhZqq7; arc=none smtp.client-ip=64.147.123.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1714997438; c=relaxed/simple;
+	bh=NpCD5T+l+gGXtsoL7GDErBmJ6/RrNy8hQRbP7mriCTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HbNDGjwEBVYWpk1ExLD79jKaa/djaIw25Oattwjmu+BTy/ATVlRq0Nq7DT6cfhFUisnEq4LJwKW4O0wW+JxbmHodh+l8BG+4BoTkVhGv6NvJDwQy3KTn9RoZ/joOPcyAFEBJSjhDjTTOnsCU57A6AnOiHrUcuUg7WojV2+Soyf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QAmUuGzX; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="AHD0pizr";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LmDhZqq7"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id EACC01800139;
-	Mon,  6 May 2024 07:30:05 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 06 May 2024 07:30:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1714995005; x=1715081405; bh=s6x+9FStSk
-	mw7vHjv+iXvtpuGZLNrdWUBFo+scPQRuU=; b=AHD0pizrJgQdHxOS42Q/D4QKdi
-	cukMgjIREaL18jW6eVNU3mtIyiMNJFV0dWbbZwqjz7A9JAI6Q8SRmHDpp3/EHYrN
-	zzfedo+5gcPFmtepD7mWH6dJyBAkImSl28b0R2S529P4QD3gPNoPQXE0GkfJLbni
-	bcHbtznhHXH751bObyWlZVllJcOdc6r6kv2juDiQUxR9GNM7quOoL8HTNYvtEb2x
-	m0CfmibODx9F0D6N3VJ99qwikzWIkgHbRVWsvr2bp+M5Iv5H+bSfZxsDwjIBn++s
-	whqy2Szt7gPoUwTa38Qfw8Sro9kx7f/cMhlq3aMZq3xr0zO+YPIEH+p9N8lQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1714995005; x=1715081405; bh=s6x+9FStSkmw7vHjv+iXvtpuGZLN
-	rdWUBFo+scPQRuU=; b=LmDhZqq7geQ9VNHRILOo3gI5RJvQJGxeL8VVaM5An/rh
-	LtwkpztUwJ392kBYoAaNVWLTYaQw19J3sFYEdSme5Y5YDv7mNGNZl0q0imMTFBPO
-	UIyVnzKx4ksC1fbPKw+JqdVOZCLt9AJMt5/zBbbdHXRQp4vIIuReZwVorC0nBcs1
-	xrGuE8vBurc1hvWVxvDF8idaZsmBU4O7tHVPuQRK8FMmc8+U27/0rT+AL4uBo7y5
-	f+WEhDi0jKB/yneA6LWkgYFCCxwA4lhayxK5aAIn0cxco2alT5yIyTp89h5AqEyG
-	IletbRxaeMKUFqDzOZk3YEjXPJcxoV/sc7VO24xamg==
-X-ME-Sender: <xms:PL84ZhG2CJ47LRvE8Z0f0oI7RS-IFtnFCC95EF-yqkNb8rHH5Q2zkQ>
-    <xme:PL84ZmXn6vpMMB6daj34dsfRhVIzZRgz1AOoC2Lfni8UmPbiZqACo4ooefkh-X-zv
-    gTM3KdvLsDFQqTN5o0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddviedggeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:PL84ZjKcZcBSYJOyDf-lKjpDwcJR5r_7cWSnzd2f_K9vhXgUq4LTnQ>
-    <xmx:PL84ZnHZk9R4VkiVpThqxonxMYAhPtAuT361zbNj-r0vIUunaIoccQ>
-    <xmx:PL84ZnXfvgYh9t5xO0bUHgrm4-NMynO8_nj9bNnUGmHbvb-e9uvL1Q>
-    <xmx:PL84ZiPfylLJxKa4OeZsppFpdbsmqGHP_KpbYLTOvv1C-8k2ahMeZg>
-    <xmx:Pb84ZkWBosuE-iq_ccMnFYDgkDpdoTT83l6NuSACPF_77-HLv-M_O3El>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id A5F9DB6008F; Mon,  6 May 2024 07:30:04 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-437-gcad818a2a-fm-20240502.001-gcad818a2
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QAmUuGzX"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-62050e00cfdso8405887b3.3
+        for <imx@lists.linux.dev>; Mon, 06 May 2024 05:10:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714997436; x=1715602236; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=83bq6sZnjWOAj2QjLu2jyQop5vm1yVH5pagOdWkdqQE=;
+        b=QAmUuGzXtbKGZY7gMveFfysKW/3UOJmrUQ5ifhdLyQ5M1uirxr7R5XkUei2A9L+yDZ
+         OB6Bk5erutHj3aPUCM5vn8Z237qTk3RZNad1LyPEd1HU0kByBfbMfPOnx0vtruGiU1Ne
+         AvwCL+kcwvDPUGRKfdF1piDBrn9qvmAMaQxooT2A+z9pPQWRbzBxYTwa7WSPmFQspxyU
+         HXkxCT1pFk6ps9CDUSjP0ox6ZvfawwgFXqrhYLGreWwd3ciVySTA9nvZlDXex6TgdjGn
+         EmTUevD49THXCXTA7dJ1wxMOHhk45+iCZb4s6e2iXE1wk3lFGYtEEGSmOCXDiUKS8R2K
+         40LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714997436; x=1715602236;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=83bq6sZnjWOAj2QjLu2jyQop5vm1yVH5pagOdWkdqQE=;
+        b=vFgVB3snazGqz3bvup6ZkZ58ND6bDWFKbYMjjrJ2uXRRxp/TONV/FLwDKYCcyTZ/qu
+         4/1/H1fDIN7DUKqbNZN52g4UdmL3caZ32ToPha6UIwYZezLX1SM6DdYX7MsPHXgzRTjW
+         deZiT0qYcewm+rBhvRdv/iGa7oi/FnxN7o71KMWn3XTWzjModV8CeqM8c2UDL4egUM5J
+         sRkh+/94aY9N2gp0VOA1tE2fdB5Q0U30EbAXsLXvEvM5masS9yjp9hqZODnmi5qh67Dq
+         Hzsd4iaTqXtxAi/q1pVzhYEW+vwjqjqFPr9iquEfrKvjSdJ9UzE575MDTbZsHDYVIkRF
+         PjsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSRf6kxVtAkEz4n3WPSAw/wAdZeHgKtyWhcJ0pe6406LuN9HXCcIs6ztbhUv4p0xOewZsPP74fdazPv7lEQeMBPmDF
+X-Gm-Message-State: AOJu0YzR/VRpQqGa1jwBkTBcl1TRTDglbgsc7NmtCMfeSfMpysY4J//W
+	rYwvB7gIlviPTYfsFOkM8ClyKuR5XiXfzcBjdYQ3RD67Tw/5XuNxGt0iw2ixVdTRyHwmwGzrEqu
+	r3ZSkL7enf4oQi3yYkiA4REk3H0li21CkeiGoVg==
+X-Google-Smtp-Source: AGHT+IER78l+XvV7AsX+dBbOeQ79q3sQzITzxy15JTynwXfGIedBRzHp3Bby/Y/eLvaqRahVeAP4r46dQsP2qbPRE+I=
+X-Received: by 2002:a05:6902:2011:b0:dcf:2cfe:c82e with SMTP id
+ dh17-20020a056902201100b00dcf2cfec82emr11080008ybb.55.1714997435752; Mon, 06
+ May 2024 05:10:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com>
-In-Reply-To: <20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
- <20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
-Date: Mon, 06 May 2024 13:29:43 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Esben Haabendal" <esben@geanix.com>,
- "Russell King" <linux@armlinux.org.uk>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>, "Dong Aisheng" <aisheng.dong@nxp.com>,
- "Jacky Bai" <ping.bai@nxp.com>, "Linus Walleij" <linus.walleij@linaro.org>
-Cc: "Rasmus Villemoes" <rasmus.villemoes@prevas.dk>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] pinctrl: freescale: Use CONFIG_SOC_IMXRT to guard i.MX
- RT1xxx drivers
-Content-Type: text/plain
+References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com> <20240429102510.2665280-5-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240429102510.2665280-5-andriy.shevchenko@linux.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 6 May 2024 14:10:24 +0200
+Message-ID: <CACRpkdZUsA034L5GjF_-XELX9369PwNjONfsDV-_EC564R0QWg@mail.gmail.com>
+Subject: Re: [PATCH v3 4/5] PCI: imx6: Convert to agnostic GPIO API
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Yue Wang <yue.wang@amlogic.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Xiaowei Song <songxiaowei@hisilicon.com>, Binghui Wang <wangbinghui@hisilicon.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 6, 2024, at 12:23, Esben Haabendal wrote:
-> 
->  config PINCTRL_IMXRT1050
->  	bool "IMXRT1050 pinctrl driver"
-> -	depends on ARCH_MXC
-> +	depends on SOC_IMXRT
-> +	default SOC_IMXRT
->  	select PINCTRL_IMX
->  	help
->  	  Say Y here to enable the imxrt1050 pinctrl driver
+On Mon, Apr 29, 2024 at 12:25=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 
-Maybe make this
+> The of_gpio.h is going to be removed. In preparation of that convert
+> the driver to the agnostic API.
+>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-       depends on SOC_IMXRT || COMPILE_TEST
+I think there is a bug here, the code is respecting the OF property
+"reset-gpio-active-high"
+but the code in drivers/gpio/gpiolib-of.h actually has a quirk for
+this so you can just
+delete all the active high handling and rely on 1 =3D asserted and 0 =3D
+deasserted when
+using GPIO descriptors.
 
-I see that all the i.MX pinctrl drivers are currently missing
-this, but a lot of other platforms have the ||COMPILE_TEST 
-bit so it gets included in x86 allmodconfig tests that
-often gets run before sending or merging changes.
+Just delete this thing:
+imx6_pcie->gpio_active_high =3D of_property_read_bool(node,
+                                           "reset-gpio-active-high");
 
-    Arnd
+Yours,
+Linus Walleij
