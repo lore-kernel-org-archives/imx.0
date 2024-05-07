@@ -1,121 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAC315DBD3
-	for <imx@lists.linux.dev>; Tue,  7 May 2024 13:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3635E15F304;
+	Tue,  7 May 2024 14:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715087573; cv=none; b=jmWiJsTDv+TxtOdFZwaHBPSeVpGZB0fheMvfhLAzZUR31ah9PxGsT79lI52fmeQJpIMgXhAR4At82i99x2jQzZp69fVdW43V8A8tL6p+GlNTfa3GwgJJBXeGNaJSUiihRa9m9IrypYlHvIjd6BWAwUTd+n+QjHdKfLk+wUYE+Ss=
+	t=1715090487; cv=none; b=YrdIoxpDZ7bYigWDIdNro+lXTpF1NR6en0eXvipkT8bRWVyukivSmcN0oj1ngc8t8yS5C7Ov329aFwfvCsRRUNtVGliUXQsxWfeHNrAa8t3moymp9mwyVFSqSvc5KHSnkLOVsrvcYSNYJtMo+6ltFCGAeSlXQT8rSP16svJ3U7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715087573; c=relaxed/simple;
-	bh=a6gSLSNzkB7vq5lvXJKxfEYqY5Zj8C4OuyJc6Y6NlXY=;
+	s=arc-20240116; t=1715090487; c=relaxed/simple;
+	bh=UB/6PiROn3Ss0PYSbD6N+s8cEj87DBXnAILxKvy/+yw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t9hNJfdXln31FspazTLLbLZa++asUlZ8zHinGpBI6ufJDsuJs2lfLF2d2h1h8bkomSI3v5ztUwgRnKTCGlVv7nPW2+GQCReeIxc8Mgv349bRPL8D0WpBazUjJCZ/JnoJ4DJCi4haufQsyp25jI13VDGmNr6lG8FPwvVDIGTeSbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NUJfugUj; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=h6wSIZxDI6cXcM9hlc1/QIfie27UHKtv3sqpwgfuU2HEbSrijwmxVB87CT4CWoSEU1Rvv1KFvw71jLXjmIIZMMXVgO23wubCFTKc6IXcQnQ1NthS0Q0MVaEMO3gJQsQgHgPCMMVSgN5MyigWGoy+n8fUYrReX3X41pj0SICv2+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yyEoaDx9; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NUJfugUj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715087572; x=1746623572;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=a6gSLSNzkB7vq5lvXJKxfEYqY5Zj8C4OuyJc6Y6NlXY=;
-  b=NUJfugUjLIR6NPcmhniWaqizLAc3dKQoFsdRdvQaK3dNsxJz4coQjclh
-   P3hePDfN47vy+qvEgFhk09AnuRFiWdscjOn03+FA1rqGCzRq8m7BAW6U5
-   ZDF/tEdBNnGU0ryeLWI9FaINzXJkZWwNf6EpFma2BUm7F7e7QQrW71lNA
-   Ghvk8hr4pDNWFJdpNHOPNZZGq+jAGROYimK5gAkLDieT+FqJJD8T2DbY6
-   L/CttRzhFAY5IawUtvgI4rcWbXaqBwNePE9Z1PQL5GVLl+VoE8ZwLH6Iq
-   WGRiTQwR1ndEdaGY7IxzmKAOmtngU2vx7OfTZum0zgU1CmFuP0emVNiLc
-   w==;
-X-CSE-ConnectionGUID: C30irS7JRm22jnQVxP+5cg==
-X-CSE-MsgGUID: YG0zBPc4TTKWs/YdVs2aPg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="21483950"
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
-   d="scan'208";a="21483950"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 06:12:50 -0700
-X-CSE-ConnectionGUID: Fu6nYwQcTgeZWSY044wYqQ==
-X-CSE-MsgGUID: MsXTeSYhRgedCqb9bG/apQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
-   d="scan'208";a="28920705"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 06:12:42 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s4KcY-000000052fm-0iB8;
-	Tue, 07 May 2024 16:12:38 +0300
-Date: Tue, 7 May 2024 16:12:37 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v4 0/5] PCI: controller: Move to agnostic GPIO API
-Message-ID: <ZjooxTO3wb2ItvGv@smile.fi.intel.com>
-References: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
- <CACRpkda=a3X=jyZKQoOFrfgzpE2C+rZ9UC1VDnCvGL7QP4x4BA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yyEoaDx9"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Hv/fCJ8384OqXRVFLKYelrn0yH7DaMvzM8OyS3Gfsbc=; b=yyEoaDx9qi6UhgRut9iHivZCIV
+	U622s0K+/TahVFphjeG/XUEXEFHiIzf7dYWWdWKzODKosAy7P75ihQrGaveehy41dxYEbKyR1tHy+
+	+1ZL8LWsm+V7hPjrXbB4AKR+FSzl2Ta/lX/TqF5qCskgVVkS3mXmQWG3oYVD4xL/zN7I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1s4LNW-00ErZd-KY; Tue, 07 May 2024 16:01:10 +0200
+Date: Tue, 7 May 2024 16:01:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+	richardcochran@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH net-next] net: fec: Convert fec driver to use lock guards
+Message-ID: <e1fa1aa5-4a40-43c5-a6ab-780667254fe9@lunn.ch>
+References: <20240507090520.284821-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkda=a3X=jyZKQoOFrfgzpE2C+rZ9UC1VDnCvGL7QP4x4BA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20240507090520.284821-1-wei.fang@nxp.com>
 
-On Tue, May 07, 2024 at 12:03:50PM +0200, Linus Walleij wrote:
-> On Mon, May 6, 2024 at 4:22 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> > In v4:
-> > - added tag (Mani)
-> > - fixed a polarity bug in iMX.6 driver (Linus)
-> 
-> Looks good now. The series:
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+On Tue, May 07, 2024 at 05:05:20PM +0800, Wei Fang wrote:
+> Use guard() and scoped_guard() defined in linux/cleanup.h to automate
+> lock lifetime control in fec driver.
 
-Thank you!
+You are probably the first to use these in netdev. Or one of the very
+early adopters. As such, you should explain in a bit more detail why
+these changes are safe. 
 
-> Perhaps the use of  _raw accessors could be avoided in 5/5 by some
-> elaborart polarity quirk but I'm no perfectionist and it can be fixed later.
+> -	spin_lock_irqsave(&fep->tmreg_lock, flags);
+> -	ns = timecounter_cyc2time(&fep->tc, ts);
+> -	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+> +	scoped_guard(spinlock_irqsave, &fep->tmreg_lock) {
+> +		ns = timecounter_cyc2time(&fep->tc, ts);
+> +	}
 
-After your comment I was thinking the same, and came to the similar conclusion,
-we might fix this later as in comparison to iMX.6 case this requires an
-additional code to be added to gpiolib-of.c.
+This looks fine.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> -			mutex_lock(&fep->ptp_clk_mutex);
+> -			ret = clk_prepare_enable(fep->clk_ptp);
+> -			if (ret) {
+> -				mutex_unlock(&fep->ptp_clk_mutex);
+> -				goto failed_clk_ptp;
+> -			} else {
+> -				fep->ptp_clk_on = true;
+> +			scoped_guard(mutex, &fep->ptp_clk_mutex) {
+> +				ret = clk_prepare_enable(fep->clk_ptp);
+> +				if (ret)
+> +					goto failed_clk_ptp;
+> +				else
+> +					fep->ptp_clk_on = true;
+>  			}
 
+As Eric pointed out, it is not obvious what the semantics are
+here. You are leaving the scope, so i hope it does not matter it is a
+goto you are using to leave the scope. But a quick search did not find
+anything to confirm this. So i would like to see some justification in
+the commit message this is safe.
 
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -99,18 +99,17 @@
+>   */
+>  static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+>  {
+> -	unsigned long flags;
+>  	u32 val, tempval;
+>  	struct timespec64 ts;
+>  	u64 ns;
+>  
+> -	if (fep->pps_enable == enable)
+> -		return 0;
+> -
+>  	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+>  	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
+>  
+> -	spin_lock_irqsave(&fep->tmreg_lock, flags);
+> +	guard(spinlock_irqsave)(&fep->tmreg_lock);
+> +
+> +	if (fep->pps_enable == enable)
+> +		return 0;
+
+This is not obviously correct. Why has this condition moved?
+
+I also personally don't like guard(). scoped_guard() {} is much easier
+to understand.
+
+In order to get my Reviewed-by: you need to drop all the plain guard()
+calls. I'm also not sure as a community we want to see changes like
+this.
+
+	Andrew
