@@ -1,124 +1,137 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322F213C831
-	for <imx@lists.linux.dev>; Tue,  7 May 2024 08:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5063773530
+	for <imx@lists.linux.dev>; Tue,  7 May 2024 08:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715069070; cv=none; b=QX1WfQIiQCck0cKAf23TfxDe6LhGXpIZjaXHlv+Ih8aFxrxHh4f2ggB2QbjBUkNC+eovEji3Qyh9VI+HLn98J/PBzAgLHWBkIFzWMmQ0uknm9or0Bm737o8bDCp1SBjhfZQdHetlplYDqeh0h0Z5eVS+/PYXKv3mH9TM+8T+V2w=
+	t=1715069698; cv=none; b=fmWp+57Bh3hcAWY1vjWHgRoPaY19n8vm54Mf7nx4E0fq/v3zgPjtwcdbARSai1XIlZnBR+exV4/4S9JRxA5H7wFrMYShXkbJbzMSxPQaYPzhNE7m3QRMHAl9/zjoMf2n4feVGEfvRFG0xqqpWO4k5PjkcEV0gqBN1+/DnIXz6Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715069070; c=relaxed/simple;
-	bh=0ykBxAOHnnyFYoBMTLFf57HmlIaOOKJXi3ApXDLq7OI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bX9AZvELaE5DpXa48gcI2mJ6Z0/ED6Eg0VapT5Cpzy7hBd23jWwiJjuiDPVNx6A19Yf8EBJIYlw8RHwYEG0biwNnEN8aUNBKmrf0EgWLpZlDEZYm1WV3ZA+qRoVD3zt0qd0WXJTqGNAAwEutPyqyiiRCtxiexSzx+e1BE4uTn6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DBdTuImE; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1715069698; c=relaxed/simple;
+	bh=aFQgo/ziy0W2y9xqCxx31ymI6sX+uIn9KFqYXFLiQWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMKZPCjFtF7MyagJ9CnuFRtGVtTFpczDwSPnPtpl1DQiCWj7D+y5l5BeMXiWzFD1pxVCSNlHlAD2UjxyhVzcYPzxuiQ3RLvYiYXOtQI4m8hKar2ravFt84lwQDqDURy3/M/xuMCsgMOSMKKtYA332B+3pWkVs7vwTVfg9WlYMDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SbTCxQ2s; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DBdTuImE"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DDC2060002;
-	Tue,  7 May 2024 08:04:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1715069065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsjTpPdQhp8xGYXA1tswPY/6gILWdgf1jxKsPkJpD10=;
-	b=DBdTuImErvsqqyGScDzRjFP6Ovas2ZBQNaI3ew3vfdC+96+QHodwGpMNmeBcjkuS8qn+cb
-	M2ELFwQoWEKVoK/tD2bfRNBtlzQiOMDxjAXfxkqAmtgdy0isoav5SA+rA8pAgv6dvTg6pS
-	ijCrywnACX7Nyj2c0DG9hZQPLp965b8+JbK9BzdMyYvTOqeHFdKcWSDY4HjXrS0qAvIP69
-	maeaj3TuseAdMJtr9YGK0D0+aEUBisgJ++0osrV46VsRW776IqCjrRUXu+untSJgFGL/Y0
-	j6K0ui2o+/kLLdBQ/EabG0R/CeoLbcWzY64vuZCETVXIbRZL48IhC3StsbUXog==
-Date: Tue, 7 May 2024 10:04:24 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: alexandre.belloni@bootlin.com, conor.culhane@silvaco.com,
- imx@lists.linux.dev, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] i3c: master: svc: fix invalidate IBI type and
- miss call client IBI handler
-Message-ID: <20240507100424.611181f1@xps-13>
-In-Reply-To: <20240506164009.21375-3-Frank.Li@nxp.com>
-References: <20240506164009.21375-1-Frank.Li@nxp.com>
-	<20240506164009.21375-3-Frank.Li@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SbTCxQ2s"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6f4603237e0so1607462b3a.0
+        for <imx@lists.linux.dev>; Tue, 07 May 2024 01:14:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715069697; x=1715674497; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GqO/eiCLhjMrDJZ/oHlF6w3tQ/HJRwHOeX5fd3lD2/4=;
+        b=SbTCxQ2sWM6uTGacynfq/8+FBo5T02RleqEGo1hhW7X7HzZNP3yMFtuSOFB8eGUwQY
+         UnHTTS7jirykhuZTnEolnYSUyztdnFp/Q3QMVWrxvRVEDtIc8hHQXc7hJh6PjqhHb6XI
+         fBDM9qx6+rjamfB8JqIIU/MTn9EOptEVA6salbQJByXSAvhNUOz8GGMvOGj65pahatkD
+         uchUvd6Sth47LP85IqVB5ets5Yeo1yXGhFgPx7ZQWulI1mpj/qGo/Uh7npRZdlmcLi9i
+         L7+JwJggx2szCxaMvTi94MfSM1Pes5um2jdxX5U9jpWWxNC5jA7SWLcO6PugF0doINFy
+         9z9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715069697; x=1715674497;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GqO/eiCLhjMrDJZ/oHlF6w3tQ/HJRwHOeX5fd3lD2/4=;
+        b=NSvqxw4oE1tdIx1mw9+MWXnIdIKwzpijmgD0/Z9igMOKB/KoSPGkQsHdbcLtZeTfKp
+         Bo1OslldRl1SujcLJI4GOn263IIpDDcXzxS7TZOV2DZ+LgrfWtswftMMtvJJADWl6rva
+         XpyMGNHV1iA8buyNNAFza2EarrNNaQeRHO9kNssyAFJV4ukdOU9H1CgPGUZWOmnLtZ8j
+         3k98TnSTx9B/+Np/yMMKdXBNc+mU17kBl9+xhMY3EVxax/djMxAwu5bVINJjjG6pOz/z
+         MM9cUrOXwVuOGZuIefX3dT94jxWcMO4dqIB51tQ0tA5ZA6t62Zfxa7r3TVzNhK1NLARp
+         i30g==
+X-Forwarded-Encrypted: i=1; AJvYcCU936AsYQJMVlhovXXv0h6oyVQL4q4cNe4/1eBV2khfaQ30XTr8qG5P2zv/in8Ns2e5qNS9SI1FIkPfO4vqhZZe1vNU
+X-Gm-Message-State: AOJu0Ywy/1axzGn8hZJcbzL33StPjZGgNCJAWnYtdbiXfvYPt1N0xGBZ
+	DP1CWe6z5R3QaCr7xKPzuwP4pEysy8dH26ldYf9TOagjAfCg2rzHoxh/O1EGHQ==
+X-Google-Smtp-Source: AGHT+IHnAZTFdWiXFQwCMQRZCYd4TYAmRcm6JIyFZLn9J3uME67W+T2rImADb2DRfd7XSqJSBOyHVA==
+X-Received: by 2002:a05:6a20:3251:b0:1ac:3d3c:c1e7 with SMTP id adf61e73a8af0-1afbdca8a39mr2746431637.12.1715069696505;
+        Tue, 07 May 2024 01:14:56 -0700 (PDT)
+Received: from thinkpad ([117.213.100.197])
+        by smtp.gmail.com with ESMTPSA id u34-20020a631422000000b00600d20da76esm9156572pgl.60.2024.05.07.01.14.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 May 2024 01:14:56 -0700 (PDT)
+Date: Tue, 7 May 2024 13:44:41 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Xiaowei Song <songxiaowei@hisilicon.com>,
+	Binghui Wang <wangbinghui@hisilicon.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH v3 4/5] PCI: imx6: Convert to agnostic GPIO API
+Message-ID: <20240507081441.GA6025@thinkpad>
+References: <20240429102510.2665280-1-andriy.shevchenko@linux.intel.com>
+ <20240429102510.2665280-5-andriy.shevchenko@linux.intel.com>
+ <CACRpkdZUsA034L5GjF_-XELX9369PwNjONfsDV-_EC564R0QWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdZUsA034L5GjF_-XELX9369PwNjONfsDV-_EC564R0QWg@mail.gmail.com>
 
-Hi Frank,
+On Mon, May 06, 2024 at 02:10:24PM +0200, Linus Walleij wrote:
+> On Mon, Apr 29, 2024 at 12:25 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > The of_gpio.h is going to be removed. In preparation of that convert
+> > the driver to the agnostic API.
+> >
+> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> I think there is a bug here, the code is respecting the OF property
+> "reset-gpio-active-high"
+> but the code in drivers/gpio/gpiolib-of.h actually has a quirk for
+> this so you can just
+> delete all the active high handling and rely on 1 = asserted and 0 =
+> deasserted when
+> using GPIO descriptors.
+> 
 
-Frank.Li@nxp.com wrote on Mon,  6 May 2024 12:40:09 -0400:
+Wow...
 
-> In an In-Band Interrupt (IBI) handle, the code logic is as follows:
->=20
-> 1: writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI | SVC_I3C_MCTRL_IBIRESP_AUTO,
-> 	  master->regs + SVC_I3C_MCTRL);
->=20
-> 2: ret =3D readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
->                                     SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
-> 	...
-> 3: ibitype =3D SVC_I3C_MSTATUS_IBITYPE(status);
->    ibiaddr =3D SVC_I3C_MSTATUS_IBIADDR(status);
->=20
-> SVC_I3C_MSTATUS_IBIWON may be set before step 1. Thus, step 2 will return
-> immediately, and the I3C controller has not sent out the 9th SCL yet.
-> Consequently, ibitype and ibiaddr are 0, resulting in an unknown IBI type
-> occurrence and missing call I3C client driver's IBI handler.
->=20
-> A typical case is that SVC_I3C_MSTATUS_IBIWON is set when an IBI occurs
-> during the controller send start frame in svc_i3c_master_xfer().
->=20
-> Clear SVC_I3C_MSTATUS_IBIWON before issue SVC_I3C_MCTRL_REQUEST_AUTO_IBI
-> to fix this issue.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI ha=
-ppen during start frame")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->=20
-> Notes:
->     Change from v1 to v2
->     - improve comments.
->=20
->  drivers/i3c/master/svc-i3c-master.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
--i3c-master.c
-> index 94e4954509558..032fe032ec433 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -415,6 +415,19 @@ static void svc_i3c_master_ibi_work(struct work_stru=
-ct *work)
->  	int ret;
-> =20
->  	mutex_lock(&master->lock);
-> +	/*
-> +	 * IBIWON may be set before SVC_I3C_MCTRL_REQUEST_AUTO_IBI, causing
-> +	 * readl_relaxed_poll_timeout() to return immediately. Consequently,
-> +	 * ibitype will be 0 since it was last updated only after the 8th SCL
-> +	 * cycle, leading to missed client IBI handlers.
-> +	 *
-> +	 * A typical scenario is when IBIWON occurs and bus arbitration is lost
-> +	 * at svc_i3c_master_priv_xfers().
-> +	 *
-> +	 * Clear SVC_I3C_MINT_IBIWON before sending SVC_I3C_MCTRL_REQUEST_AUTO_=
-IBI.
-> +	 */
+So this bug is present even before this series, right?
 
-Thanks a lot.
+> Just delete this thing:
+> imx6_pcie->gpio_active_high = of_property_read_bool(node,
+>                                            "reset-gpio-active-high");
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+But this is just a bandaid IMO. The flag for the PERST# GPIO should be properly
+set in the board dts as per the board design.
 
-Thanks,
-Miqu=C3=A8l
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
