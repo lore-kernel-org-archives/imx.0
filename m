@@ -1,99 +1,126 @@
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from wfhigh3-smtp.messagingengine.com (wfhigh3-smtp.messagingengine.com [64.147.123.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE61A59;
-	Tue,  7 May 2024 07:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36FE13C69A
+	for <imx@lists.linux.dev>; Tue,  7 May 2024 07:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715067459; cv=none; b=AHvT5I/ofNV/rkuBVn2kymj7cJvxaPBJ7qFrrZyV91D7ma3TwpkgjuQVes9YfbJxjIIbkV8k/CGHQP6WnqAQf428wUbZtysju9Pj5HhdOcb0HGy5GVjbkVVKzTZFJwmlBJ7E1gxz4fEe/Su0ubhKG6eMtTUHbtPZXzb8S9EVFzU=
+	t=1715067839; cv=none; b=kT3k7AfCRyPDAJ0pO8KjhzC5DHRC9SmWlWCt3GmeLo+oNd0O5dAiuhEJvcF3jWYNf80zhoNNOKTvTXNP7DarEMgKgJqBggLobcCzv667LzDuhYQXcfyl4ZwCxbHdTmwBQHwLQCznnI45PkL0aHU9NtU8HxiJ3bL7Lt8+D59VoSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715067459; c=relaxed/simple;
-	bh=+qOvWpCPeGXeR+th07JcopTU+AMMcDLmUqMDEaLPrbQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=k+tvBCVfeKhLX7WiqMnJ254s76M/+lieQDSaJsQ57Xae3GWVjYfC5Mf6Dg7kohACvztD1e5vY5INLUYSuAYd10NMjUPcGnJBg9IBoAgeej0N54vJRVfyrF8Fhza0nz+UT/VFgacmQoJ9hvYHt8dkCxogPTT8FgG5y9AjW8vnGvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=w3z8PGs/; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1715067839; c=relaxed/simple;
+	bh=g6fhHHq292p9kLriuFL1SHKTwn+Nzn2QhEszy1OcCBI=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=b1CLzphQT0sHe/9IZ5iSx2hMhzLiVYNBCHd6BIYK33vdQ5EOuASa2dmTbp6W5ew/vq9UE0ZtajGPF+Pzv2vo8IBDKiZI7X/U34+IJ4w6r4Ez123RfyIt+TFswG1B1DYNMsOc3rNC0UaTeHG5JdmAR2RZbb9J3cr/6x+H1jq4pzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ddo8WbCU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XPN1d7bg; arc=none smtp.client-ip=64.147.123.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="w3z8PGs/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Type:MIME-Version:Message-ID:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Jl1NeGniwVxQ4c/mZS2EMNJQFZCarzGd7D0TSvYG1NE=; b=w3z8PGs/vTTI6QvG1ZKTAdLe7V
-	riiCxlu+m887K0HETKDn2d9KviI5AMoCwh6yYlux6tvAsbeM4DDfK0/EVPOkkFZruPFiT+37Ig+o+
-	w1omOc4YItZvWWMVF08gVo6tjFjxcmImd47aKN2vWLAdJeaGLZn5uWj5PkFJsn5j+4i9LA8eSY+mX
-	yKTgp/zsipkW4yf1Sa0QmAEnbDLn4tOEMsa+3yccqc/bsZnaKzZXuDQLKVJwI1J0WJlFrtA5M8w/a
-	mCaLrjLEd5gtymI/IVA8eJSchKPC7/1xCKUXyTDvJ49KErmJLbFa+H/vJJzKcjnCLBEokuj7fErE3
-	Hmaj0gzg==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1s4FOE-000GoJ-32; Tue, 07 May 2024 09:37:30 +0200
-Received: from [87.49.147.101] (helo=localhost)
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <esben@geanix.com>)
-	id 1s4FOC-000D6a-38;
-	Tue, 07 May 2024 09:37:29 +0200
-From: Esben Haabendal <esben@geanix.com>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Russell King" <linux@armlinux.org.uk>,  "Shawn Guo"
- <shawnguo@kernel.org>,  "Sascha Hauer" <s.hauer@pengutronix.de>,
-  "Pengutronix Kernel Team" <kernel@pengutronix.de>,  "Fabio Estevam"
- <festevam@gmail.com>,  "Dong Aisheng" <aisheng.dong@nxp.com>,  "Jacky Bai"
- <ping.bai@nxp.com>,  "Linus Walleij" <linus.walleij@linaro.org>,  "Rasmus
- Villemoes" <rasmus.villemoes@prevas.dk>,
-  linux-arm-kernel@lists.infradead.org,  imx@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  "open list:GPIO SUBSYSTEM"
- <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] pinctrl: freescale: Use CONFIG_SOC_IMXRT to
- guard i.MX RT1xxx drivers
-In-Reply-To: <8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com> (Arnd
-	Bergmann's message of "Mon, 06 May 2024 13:29:43 +0200")
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
-	<20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
-	<8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com>
-Date: Tue, 07 May 2024 09:37:28 +0200
-Message-ID: <87r0eef4xz.fsf@geanix.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ddo8WbCU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XPN1d7bg"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 37088180008F;
+	Tue,  7 May 2024 03:43:55 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Tue, 07 May 2024 03:43:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1715067834; x=1715154234; bh=vXPfMRB/3T
+	UDYWRS7PTwpTJ3S3jPVhG0XFAxiG18T9o=; b=ddo8WbCU43F2hE/einqY2JG9B5
+	U6fys2bSof7xfPpvB0rWSydXLRgkWBY6HqOaDG2Oy1MI+r+imPkLEntBqnEvaeRo
+	qNtXtLNlVtrAjAA+3cwhxUOIh+xzNgtH2OtHYsN4p+4/1jjaX/hOWIBf3eRjn4Ms
+	dYtu2nbeHOK/VIAD+Z6k11ozW/cM8orTBufFUAztZgcGG0RifHKhlq889epy7TFI
+	ZkRuzTRepEB5var1xqBWDQXX0UqD1OWkLXCShijBo/jScEbEM7bK2G1dHK0WsGc6
+	b88iwAx/yQOR9JNHon6Pk191kX4KOeTGCGnz14hYa4FIC1hKr2BXrRgcDYXA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1715067834; x=1715154234; bh=vXPfMRB/3TUDYWRS7PTwpTJ3S3jP
+	VhG0XFAxiG18T9o=; b=XPN1d7bgvQ1kPuWnZrXVYj8XUMWeEs0q6HAfq9QCmNq1
+	MfPwWFrvqnFL4CnzfaR+DPkHgrYz2DP9W6QPNMwGKqXwq5Jg5EmXUl9Z4Nn7dOHB
+	9Un5pturWPAsHZ8A/s3mWV6FTXZIjLUpZa6Eh+giIYaHyJPbby24Cnu8wyHugIUw
+	wuFGEI0omqmXl7oQXNITr6UPisdDOzkYdzfVTvAXrLUdrwCQCE9UT9CTeyjCxkcN
+	ZTiWrppkqIJBvywyvcrUGSTF/EHpgi+nfuHXyBxUKo14jeOFOU6U2GWY1RneZ44R
+	5Zs9ccOXBMmZ16EEYnO3ykSk/qGli4zdQfuG9CJ3XA==
+X-ME-Sender: <xms:uts5Zvl7-nEq-CbF7QGNhobayzAeohw3tv0Ejxu14PR1zvsSnFgIyQ>
+    <xme:uts5Zi2bihLmybG1yqeKLHGOC9DeZey6QdEo8U0ZYv7VUMamAoTZtHu41vMMZmypO
+    scYH8hF0o_zLd__vTo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddvjedguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:uts5ZlrYSndBEJjDurgNdyAnizkGaL550-rFSG8IbQoYzXvJs4QT4Q>
+    <xmx:uts5ZnlmGs0rWEkFtYSXKopQH_s1142cx8ljGNwJcUo9UDwmJnsSdw>
+    <xmx:uts5Zt0bHq7RqMby2NcDs7M2qulNICqFyD-5_kjxoFOp9XX9kkbM3g>
+    <xmx:uts5ZmsHfQZki9eDHmArUCMXLkeQQP83Qn-95pb26amDgq2PN6O85A>
+    <xmx:uts5Zs1I6GVHr8XkXk_9IE4HJUWtOLyGmFk5D44BVVzsmlziBVnbXsTX>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 4D40AB6008F; Tue,  7 May 2024 03:43:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-443-g0dc955c2a-fm-20240507.001-g0dc955c2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Message-Id: <cfd19433-c8de-4157-bdde-dcb6aa490792@app.fastmail.com>
+In-Reply-To: <87r0eef4xz.fsf@geanix.com>
+References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
+ <20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
+ <8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com>
+ <87r0eef4xz.fsf@geanix.com>
+Date: Tue, 07 May 2024 09:43:33 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Esben Haabendal" <esben@geanix.com>
+Cc: "Russell King" <linux@armlinux.org.uk>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>, "Dong Aisheng" <aisheng.dong@nxp.com>,
+ "Jacky Bai" <ping.bai@nxp.com>, "Linus Walleij" <linus.walleij@linaro.org>,
+ "Rasmus Villemoes" <rasmus.villemoes@prevas.dk>,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] pinctrl: freescale: Use CONFIG_SOC_IMXRT to guard i.MX
+ RT1xxx drivers
 Content-Type: text/plain
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27267/Mon May  6 10:24:34 2024)
 
-"Arnd Bergmann" <arnd@arndb.de> writes:
-
-> On Mon, May 6, 2024, at 12:23, Esben Haabendal wrote:
+On Tue, May 7, 2024, at 09:37, Esben Haabendal wrote:
+> "Arnd Bergmann" <arnd@arndb.de> writes:
+>
+>> On Mon, May 6, 2024, at 12:23, Esben Haabendal wrote:
+>>>
+>>>  config PINCTRL_IMXRT1050
+>>>  	bool "IMXRT1050 pinctrl driver"
+>>> -	depends on ARCH_MXC
+>>> +	depends on SOC_IMXRT
+>>> +	default SOC_IMXRT
+>>>  	select PINCTRL_IMX
+>>>  	help
+>>>  	  Say Y here to enable the imxrt1050 pinctrl driver
 >>
->>  config PINCTRL_IMXRT1050
->>  	bool "IMXRT1050 pinctrl driver"
->> -	depends on ARCH_MXC
->> +	depends on SOC_IMXRT
->> +	default SOC_IMXRT
->>  	select PINCTRL_IMX
->>  	help
->>  	  Say Y here to enable the imxrt1050 pinctrl driver
+>> Maybe make this
+>>
+>>        depends on SOC_IMXRT || COMPILE_TEST
 >
-> Maybe make this
+> That is done in patch 3/3.
 >
->        depends on SOC_IMXRT || COMPILE_TEST
+>> I see that all the i.MX pinctrl drivers are currently missing
+>> this, but a lot of other platforms have the ||COMPILE_TEST
+>> bit so it gets included in x86 allmodconfig tests that
+>> often gets run before sending or merging changes.
+>
+> Take a look at patch 3/3 in this series. It does a wholesale addition of
+> ||COMPILE_TEST to these drivers.
 
-That is done in patch 3/3.
+Ok, great! Sorry I missed that bit. Whole series
 
-> I see that all the i.MX pinctrl drivers are currently missing
-> this, but a lot of other platforms have the ||COMPILE_TEST
-> bit so it gets included in x86 allmodconfig tests that
-> often gets run before sending or merging changes.
-
-Take a look at patch 3/3 in this series. It does a wholesale addition of
-||COMPILE_TEST to these drivers.
-
-/Esben
+Acked-by: Arnd Bergmann <arnd@arndb.de>
