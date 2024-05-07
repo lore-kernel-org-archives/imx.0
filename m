@@ -1,126 +1,65 @@
-Received: from wfhigh3-smtp.messagingengine.com (wfhigh3-smtp.messagingengine.com [64.147.123.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36FE13C69A
-	for <imx@lists.linux.dev>; Tue,  7 May 2024 07:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C498413C667;
+	Tue,  7 May 2024 07:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715067839; cv=none; b=kT3k7AfCRyPDAJ0pO8KjhzC5DHRC9SmWlWCt3GmeLo+oNd0O5dAiuhEJvcF3jWYNf80zhoNNOKTvTXNP7DarEMgKgJqBggLobcCzv667LzDuhYQXcfyl4ZwCxbHdTmwBQHwLQCznnI45PkL0aHU9NtU8HxiJ3bL7Lt8+D59VoSQ=
+	t=1715068143; cv=none; b=tEvRGzkTbJj9tTFk1VdAiMY4DSYlaC3Ix+r64fiWUN8kjNaEc0e97lZ7fUnIx80bX2r1BCORLQapVkENdHju4s84Vt0DiGHnVJhLcpHizMPGJZT3xjlAcUDDsL/bf0pPH99x004kNpRRgmLIjg6hj/Ss9yWjbLGHGB/eH31W6f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715067839; c=relaxed/simple;
-	bh=g6fhHHq292p9kLriuFL1SHKTwn+Nzn2QhEszy1OcCBI=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=b1CLzphQT0sHe/9IZ5iSx2hMhzLiVYNBCHd6BIYK33vdQ5EOuASa2dmTbp6W5ew/vq9UE0ZtajGPF+Pzv2vo8IBDKiZI7X/U34+IJ4w6r4Ez123RfyIt+TFswG1B1DYNMsOc3rNC0UaTeHG5JdmAR2RZbb9J3cr/6x+H1jq4pzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ddo8WbCU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XPN1d7bg; arc=none smtp.client-ip=64.147.123.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1715068143; c=relaxed/simple;
+	bh=uSLcxGXRL/0Oim0oSJlxmzZQQX6ug/aSy/1i3zrYigY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F4MjkTkyMbWGl5NPLF8SP5T2OSgXzgMiMNm1D/H20zw6ozXfcOdgrbiccobA4vZbU2CMUPFeTaSXuJRtajHk6cd5mRvLwgX241XLOTtSNKAPQfs20TWjQKPvZUhxT495NNyN99zinYYN6ctcdxiA9N3xoz3jt22NrAWGI3+MmjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gM93Mlv8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ddo8WbCU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XPN1d7bg"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 37088180008F;
-	Tue,  7 May 2024 03:43:55 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 07 May 2024 03:43:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1715067834; x=1715154234; bh=vXPfMRB/3T
-	UDYWRS7PTwpTJ3S3jPVhG0XFAxiG18T9o=; b=ddo8WbCU43F2hE/einqY2JG9B5
-	U6fys2bSof7xfPpvB0rWSydXLRgkWBY6HqOaDG2Oy1MI+r+imPkLEntBqnEvaeRo
-	qNtXtLNlVtrAjAA+3cwhxUOIh+xzNgtH2OtHYsN4p+4/1jjaX/hOWIBf3eRjn4Ms
-	dYtu2nbeHOK/VIAD+Z6k11ozW/cM8orTBufFUAztZgcGG0RifHKhlq889epy7TFI
-	ZkRuzTRepEB5var1xqBWDQXX0UqD1OWkLXCShijBo/jScEbEM7bK2G1dHK0WsGc6
-	b88iwAx/yQOR9JNHon6Pk191kX4KOeTGCGnz14hYa4FIC1hKr2BXrRgcDYXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1715067834; x=1715154234; bh=vXPfMRB/3TUDYWRS7PTwpTJ3S3jP
-	VhG0XFAxiG18T9o=; b=XPN1d7bgvQ1kPuWnZrXVYj8XUMWeEs0q6HAfq9QCmNq1
-	MfPwWFrvqnFL4CnzfaR+DPkHgrYz2DP9W6QPNMwGKqXwq5Jg5EmXUl9Z4Nn7dOHB
-	9Un5pturWPAsHZ8A/s3mWV6FTXZIjLUpZa6Eh+giIYaHyJPbby24Cnu8wyHugIUw
-	wuFGEI0omqmXl7oQXNITr6UPisdDOzkYdzfVTvAXrLUdrwCQCE9UT9CTeyjCxkcN
-	ZTiWrppkqIJBvywyvcrUGSTF/EHpgi+nfuHXyBxUKo14jeOFOU6U2GWY1RneZ44R
-	5Zs9ccOXBMmZ16EEYnO3ykSk/qGli4zdQfuG9CJ3XA==
-X-ME-Sender: <xms:uts5Zvl7-nEq-CbF7QGNhobayzAeohw3tv0Ejxu14PR1zvsSnFgIyQ>
-    <xme:uts5Zi2bihLmybG1yqeKLHGOC9DeZey6QdEo8U0ZYv7VUMamAoTZtHu41vMMZmypO
-    scYH8hF0o_zLd__vTo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddvjedguddujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:uts5ZlrYSndBEJjDurgNdyAnizkGaL550-rFSG8IbQoYzXvJs4QT4Q>
-    <xmx:uts5ZnlmGs0rWEkFtYSXKopQH_s1142cx8ljGNwJcUo9UDwmJnsSdw>
-    <xmx:uts5Zt0bHq7RqMby2NcDs7M2qulNICqFyD-5_kjxoFOp9XX9kkbM3g>
-    <xmx:uts5ZmsHfQZki9eDHmArUCMXLkeQQP83Qn-95pb26amDgq2PN6O85A>
-    <xmx:uts5Zs1I6GVHr8XkXk_9IE4HJUWtOLyGmFk5D44BVVzsmlziBVnbXsTX>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 4D40AB6008F; Tue,  7 May 2024 03:43:54 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-443-g0dc955c2a-fm-20240507.001-g0dc955c2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gM93Mlv8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D15C2BBFC;
+	Tue,  7 May 2024 07:49:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715068143;
+	bh=uSLcxGXRL/0Oim0oSJlxmzZQQX6ug/aSy/1i3zrYigY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gM93Mlv8MYmcaS8Flyh5LYVFSclkdxfJj7xa2kPLuUy+qWDBgQQRUNwKaDRXIUAZX
+	 bjEjc+vAm0nZvjYymbTexObr/1Nzsiy05CBoyheQ5ODz1uBqs87B74FsDqdJ0P8Baw
+	 MQniSMo3tQHev8MBdPLab2gg6JgUq1OrwrWlADVQ+eVvngC/Q30YQFr8p3zM1JZtmb
+	 5nCNwwrvCCHeTa2xsI9BKqEGein//ZuV3Lj9cHpvFNO8ZOTYdk99qHTFr/5mogXEkw
+	 I1TSyEN7g0+pNo4inKRnz4kHNV2d0qTRyfPluEPXJPShq+d/btfhY13KZ4+E9cWEhh
+	 oYczS141q0GCw==
+Date: Tue, 7 May 2024 09:48:58 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: manivannan.sadhasivam@linaro.org, imx@lists.linux.dev, arnd@arndb.de,
+	gregkh@linuxfoundation.org, kishon@kernel.org, kw@linux.com,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] misc: pci_endpoint_test: Refactor
+ dma_set_mask_and_coherent() logic
+Message-ID: <Zjnc6s97DbrGm8t1@ryzen.lan>
+References: <20240502195903.3191049-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <cfd19433-c8de-4157-bdde-dcb6aa490792@app.fastmail.com>
-In-Reply-To: <87r0eef4xz.fsf@geanix.com>
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
- <20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
- <8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com>
- <87r0eef4xz.fsf@geanix.com>
-Date: Tue, 07 May 2024 09:43:33 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Esben Haabendal" <esben@geanix.com>
-Cc: "Russell King" <linux@armlinux.org.uk>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>, "Dong Aisheng" <aisheng.dong@nxp.com>,
- "Jacky Bai" <ping.bai@nxp.com>, "Linus Walleij" <linus.walleij@linaro.org>,
- "Rasmus Villemoes" <rasmus.villemoes@prevas.dk>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] pinctrl: freescale: Use CONFIG_SOC_IMXRT to guard i.MX
- RT1xxx drivers
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240502195903.3191049-1-Frank.Li@nxp.com>
 
-On Tue, May 7, 2024, at 09:37, Esben Haabendal wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
->
->> On Mon, May 6, 2024, at 12:23, Esben Haabendal wrote:
->>>
->>>  config PINCTRL_IMXRT1050
->>>  	bool "IMXRT1050 pinctrl driver"
->>> -	depends on ARCH_MXC
->>> +	depends on SOC_IMXRT
->>> +	default SOC_IMXRT
->>>  	select PINCTRL_IMX
->>>  	help
->>>  	  Say Y here to enable the imxrt1050 pinctrl driver
->>
->> Maybe make this
->>
->>        depends on SOC_IMXRT || COMPILE_TEST
->
-> That is done in patch 3/3.
->
->> I see that all the i.MX pinctrl drivers are currently missing
->> this, but a lot of other platforms have the ||COMPILE_TEST
->> bit so it gets included in x86 allmodconfig tests that
->> often gets run before sending or merging changes.
->
-> Take a look at patch 3/3 in this series. It does a wholesale addition of
-> ||COMPILE_TEST to these drivers.
+On Thu, May 02, 2024 at 03:59:03PM -0400, Frank Li wrote:
+> dma_set_mask_and_coherent() should never fail when the mask is >= 32bit,
+> unless the architecture has no DMA support. So no need check for the error
+> and also no need to set dma_set_mask_and_coherent(32) as a fallback.
+> 
+> Even if dma_set_mask_and_coherent(48) fails due to the lack of DMA support
+> (theoretically), then dma_set_mask_and_coherent(32) will also fail for the
+> same reason. So the fallback doesn't make sense.
+> 
+> Due to the above reasons, let's simplify the code by setting the streaming
+> and coherent DMA mask to 48 bits.
+> 
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Ok, great! Sorry I missed that bit. Whole series
-
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
