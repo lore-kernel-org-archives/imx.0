@@ -1,337 +1,99 @@
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2069.outbound.protection.outlook.com [40.107.113.69])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE9B79CF
-	for <imx@lists.linux.dev>; Tue,  7 May 2024 04:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715056431; cv=fail; b=o52eaet5+1JyQBlmTllRjarqCbKRc1vWA5HFFgr9VqO3HJEzQ1pD9O/8dADs8lJnxydAR+RHSyzkzgQiLyxB4zKGQbnLqrMPQzN/9R4Qbij1s3+CHL5GJaexGImhIKf6Hhn7nxbjoTj8shYa+or7U0V0H8ypcsL7Z2iWnBLezEM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715056431; c=relaxed/simple;
-	bh=JaEfXBWlGHqdYwZ2dANrrSieJSCowt5IpkWOna4hHjI=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=cnrb9twuxxKEu3KwPGoxbTECbk3f7UEoQs556BAgr6i0gWM5vfMTSqegNR0alnl5iCcODADiFMXYEl4PD9BaRN/8RJdiofd0jCO+SBZ0/DgUqHf7MyzhpYEww8bNWpYwAu2G5CAWCRf6uI5sA1dqXGcORxG3afjjtZO/VjI0dUw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=XoCmDYd/; arc=fail smtp.client-ip=40.107.113.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE61A59;
+	Tue,  7 May 2024 07:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715067459; cv=none; b=AHvT5I/ofNV/rkuBVn2kymj7cJvxaPBJ7qFrrZyV91D7ma3TwpkgjuQVes9YfbJxjIIbkV8k/CGHQP6WnqAQf428wUbZtysju9Pj5HhdOcb0HGy5GVjbkVVKzTZFJwmlBJ7E1gxz4fEe/Su0ubhKG6eMtTUHbtPZXzb8S9EVFzU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715067459; c=relaxed/simple;
+	bh=+qOvWpCPeGXeR+th07JcopTU+AMMcDLmUqMDEaLPrbQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=k+tvBCVfeKhLX7WiqMnJ254s76M/+lieQDSaJsQ57Xae3GWVjYfC5Mf6Dg7kohACvztD1e5vY5INLUYSuAYd10NMjUPcGnJBg9IBoAgeej0N54vJRVfyrF8Fhza0nz+UT/VFgacmQoJ9hvYHt8dkCxogPTT8FgG5y9AjW8vnGvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=w3z8PGs/; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="XoCmDYd/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QSce4s1IqoIXne3vtycCFIOSBol6bPCqk24AQkXYr+RiYXQtxokyzWfqHV6dPmOoTMcsP6n3S5Tcom+K0KpCd2YlgNgri9BoM+wwVHkteFtLMLz6cj73CyznlNdNjJM9NzhUSBGN4qxy0hfeTjDVqVx3kDrEuUUgWZ7ycnftZruOS66uVqVMqUedGyKmBhAy760GRy2jmFiaCUpdhJun5rBQC8QHYuKjzwtfHB4EV3zbEgoRuhgHxs3XCVhSECg0TzNZFfshaHPCco/Jmk5uajbirPRjquj0+KSwQfu3Egq62X3ngzTlHu3cyziuM3EzJiPrxt3uP6eppkiHzHf/9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sLaTQRJ6+dc0X4MaTimYuQOcrzydhxcK4moSLomERV0=;
- b=gd/RuwGBxdKkc1doDWgGbnL0DgaOjhPXyj17s8rXG816CX3UeJMBOrN5i7tvCzNLoKeTND5wQ+grdkmTTaiytysYpK53ize2icWWs2Ee3tY/0yb0cZUCMTPi628g/VtaxoMhivCWnwG/My+q8eQEjJQDGWaydmnFDg5tVRXsPCXukJ89GSe7COvyvF1FuzowmZFUcOFlhIU82HkjkkHpGn/iOzZrdUnd5xA+rOpvx87PfIza0FDpgnrdy44CFxorh+m9GLsByJl8LYZ+Dx6deZoSx2nSD6RLtsGU7bbTNnLfP2+ps9TUBq8adUg4V0GbLroferBWqJBur7iGvUKhsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sLaTQRJ6+dc0X4MaTimYuQOcrzydhxcK4moSLomERV0=;
- b=XoCmDYd/ozXIk82rcVsh4bpG+pWp9TcZX+Q7k7cTXTAuZH39pmkmHpPWIC1q/Cczx8ShIcIfrVa0bb9QA27tZSZCyKLdlOfvZieNFcI/n4s13YuDqLAcLxu9035GQGhJwzjG8fhEfZZx6sqyHLy8LgYsd6NF4YYBwRQNVsMJ8yQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by TYBPR01MB5421.jpnprd01.prod.outlook.com
- (2603:1096:404:802e::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.41; Tue, 7 May
- 2024 04:33:45 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::2f40:537b:2694:7b76]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::2f40:537b:2694:7b76%7]) with mapi id 15.20.7544.041; Tue, 7 May 2024
- 04:33:45 +0000
-Message-ID: <87seyudyvr.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH 3/3] ASoC: remove snd_soc_dai_link_set_capabilities()
-User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
-To: =?ISO-8859-2?Q?=22Amadeusz_S=B3awi=F1ski=22?=
- <amadeuszx.slawinski@linux.intel.com>,	Alexandre Belloni
- <alexandre.belloni@bootlin.com>,	Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
- <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent
- Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,	Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,	Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>,	Daniel Baluta <daniel.baluta@nxp.com>,
-	Hans de Goede <hdegoede@redhat.com>,	Jaroslav Kysela <perex@perex.cz>,
-	Jerome Brunet <jbrunet@baylibre.com>,	Jiawei Wang <me@jwang.link>,	Jonathan
- Corbet <corbet@lwn.net>,	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Kevin Hilman <khilman@baylibre.com>,	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,	Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>,	Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
- <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Vinod Koul
- <vkoul@kernel.org>,	Xiubo Li <Xiubo.Lee@gmail.com>,
-	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
-	linux-sound@vger.kernel.org
-In-Reply-To: <87wmo6dyxg.wl-kuninori.morimoto.gx@renesas.com>
-References: <87wmo6dyxg.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=US-ASCII
-Date: Tue, 7 May 2024 04:33:45 +0000
-X-ClientProxiedBy: TYCP286CA0165.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:383::11) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="w3z8PGs/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=Jl1NeGniwVxQ4c/mZS2EMNJQFZCarzGd7D0TSvYG1NE=; b=w3z8PGs/vTTI6QvG1ZKTAdLe7V
+	riiCxlu+m887K0HETKDn2d9KviI5AMoCwh6yYlux6tvAsbeM4DDfK0/EVPOkkFZruPFiT+37Ig+o+
+	w1omOc4YItZvWWMVF08gVo6tjFjxcmImd47aKN2vWLAdJeaGLZn5uWj5PkFJsn5j+4i9LA8eSY+mX
+	yKTgp/zsipkW4yf1Sa0QmAEnbDLn4tOEMsa+3yccqc/bsZnaKzZXuDQLKVJwI1J0WJlFrtA5M8w/a
+	mCaLrjLEd5gtymI/IVA8eJSchKPC7/1xCKUXyTDvJ49KErmJLbFa+H/vJJzKcjnCLBEokuj7fErE3
+	Hmaj0gzg==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1s4FOE-000GoJ-32; Tue, 07 May 2024 09:37:30 +0200
+Received: from [87.49.147.101] (helo=localhost)
+	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1s4FOC-000D6a-38;
+	Tue, 07 May 2024 09:37:29 +0200
+From: Esben Haabendal <esben@geanix.com>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Russell King" <linux@armlinux.org.uk>,  "Shawn Guo"
+ <shawnguo@kernel.org>,  "Sascha Hauer" <s.hauer@pengutronix.de>,
+  "Pengutronix Kernel Team" <kernel@pengutronix.de>,  "Fabio Estevam"
+ <festevam@gmail.com>,  "Dong Aisheng" <aisheng.dong@nxp.com>,  "Jacky Bai"
+ <ping.bai@nxp.com>,  "Linus Walleij" <linus.walleij@linaro.org>,  "Rasmus
+ Villemoes" <rasmus.villemoes@prevas.dk>,
+  linux-arm-kernel@lists.infradead.org,  imx@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  "open list:GPIO SUBSYSTEM"
+ <linux-gpio@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] pinctrl: freescale: Use CONFIG_SOC_IMXRT to
+ guard i.MX RT1xxx drivers
+In-Reply-To: <8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com> (Arnd
+	Bergmann's message of "Mon, 06 May 2024 13:29:43 +0200")
+References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
+	<20240506-imx-pinctrl-optional-v2-2-bdff75085156@geanix.com>
+	<8accb26e-c7a8-43aa-90d5-d83d5a1575de@app.fastmail.com>
+Date: Tue, 07 May 2024 09:37:28 +0200
+Message-ID: <87r0eef4xz.fsf@geanix.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|TYBPR01MB5421:EE_
-X-MS-Office365-Filtering-Correlation-Id: b052f01a-9e9d-48c8-85cc-08dc6e4ee1e3
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|366007|376005|7416005|1800799015|52116005|38350700005|921011;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kz8Q6yIp8ZWpEfKsMymJy7YzzBspaR1TI7tBy5RT7qaRXoeGRRonIgJOXo0f?=
- =?us-ascii?Q?5q7v3oKj2A+jikS2kfOZrrYFWwbqToe2utdl6ihZ5biKOHfURutXdGUW6KZL?=
- =?us-ascii?Q?tVGpMRG/KXce0W5ZLaHQGjtoXGvLnDn7jGtXMgbSPg/pKX1wHxe69j5af0ww?=
- =?us-ascii?Q?DIVO2nxSRuutovtEEFez5PsU+cEN06BZnP+9ShZvrh0GCCGIwjdnhHkc5p7h?=
- =?us-ascii?Q?G09XClxSUCo2S/19zAE1L/1nz9xFaVshV5zEtHjvcwE17D4eHknjfeXcfHcI?=
- =?us-ascii?Q?CyNUE1WnvE7wMTtgtBw9yaxATUPNlnMOG+xpnSQ0lz2V7WHY0lhC90bi1lkm?=
- =?us-ascii?Q?KIUUKU/h3nXMoV/b+myOpcFbT9mFluiVYYDSDvdweOeoqr7UXU+akHI5Xrfq?=
- =?us-ascii?Q?cjJ1RQlcdYIDivPOt6MBgtEbgwDvNAlpijRIEUSTEs+48OYaizY2K4N4uy/A?=
- =?us-ascii?Q?X0XPf0Nfq3Hx7R/t1uN+Z268DwADrkhH2E4XxGhaEq9I+3c70aKtwY0rO48E?=
- =?us-ascii?Q?ipkt5unbQlWm7WwQpbLd2aDl6QdhNSGhRM4Zv/YaVSdOOgRviygPUKSFNWa+?=
- =?us-ascii?Q?LNYNihNLIWxjcWAbUwtR65S8qhA9jsQ7FnBt3XcrQC5hHK94H3B16sZsXAmf?=
- =?us-ascii?Q?lUbg2F4EaaxuJEFuJIA5IJyO8eQB1r91k9pC8QDzgoplnJ34sPGXQUo8nH4M?=
- =?us-ascii?Q?G99tWbnEQDf8nBfNn+/a6h1Zrgb/GZy6Q0PJXQQrjLVBnW3IpAfK9hjtyPfz?=
- =?us-ascii?Q?oJhYCalpCUCWXoF/nUcmPnIxuI9F0/xr5e8/KKCYTERIVpmYdPWW9x9C5Uyn?=
- =?us-ascii?Q?W0qfy58SaXCmgYrEGLqZJGhb1HRITMkG7jF5V40QOaH9LiAYy5PvdzeqhK96?=
- =?us-ascii?Q?+Y+TQUnbg4gHSTPpOFv/9bgkGKFtP1oRXd26FUoQDaOGkuhcvYuIFETTGW2J?=
- =?us-ascii?Q?yfOu4nKOWqUkqGKrdshW6FGfOER9XduHHc4qG4ldlGTK+ejCn2djbnUUsv1m?=
- =?us-ascii?Q?AsHtqvsxQZxJ3jXi8QKsnJT9BXhwvT9k/fyZIUQtjQoDvV7iA2QcyNuqtgVg?=
- =?us-ascii?Q?dCM4z/iJUtzvdd0+Etbv2AhCuIW20n58VxNzlZByfwIMYhzgPjFgUdVXnIa2?=
- =?us-ascii?Q?WqsmBUEXmhC0+zJjIlY3qMExG2n78wG7jUbtTfKjWD9yqU/J6G2AnH58DhEZ?=
- =?us-ascii?Q?odYHEK9nvyKyrdNP3FC1xd+g5fVVIIVsezp6acsHqX69RzzvZnwMBEoDFxsY?=
- =?us-ascii?Q?h5CDZri2Wj6Rb4chSJ7ZNO1PLV9tq0vVGqYoQXJ68e8P5d4y2SkPWVt+3yak?=
- =?us-ascii?Q?UZh+apM03c3ySGc14NRoYnSGrZ3GimbodS/OVzlTrmdTNVYm7xOAl3vFQJuJ?=
- =?us-ascii?Q?mVnwAEs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015)(52116005)(38350700005)(921011);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?n3CwhEIWGEm2LLnYYIM2QF/R9JmQvPbCnRi76l1hdTzskesFaze5LzZz2Cbz?=
- =?us-ascii?Q?qE2xCWY2nxbYllscIufGkE5etcTOu1WcRnstJDZ0eKopPFUiZF5cpXIRS1Rq?=
- =?us-ascii?Q?0+V8+a73envqOb5LTrf732ucJhEbvcw6tJsX6w3pyRbPeADgfMZDfMaRMqm3?=
- =?us-ascii?Q?ywWa7WHK/2QQkeVOdEOAjvCSddjyM/bwBrRxKZqz2nfeE5QmRnM0N7jyI4LJ?=
- =?us-ascii?Q?CIThzJhJ6cwCupYmHaOnvcEev7UpuWX65hnZHwhDRaLc3vCDaVBvdhvaGYGF?=
- =?us-ascii?Q?1fOUofxLKONg60QBydTfFv8JbeJLqcS/GWkJ7KHAjgUQ8Yq+cuHtK4hs6NZ3?=
- =?us-ascii?Q?HWoUh74kkzSC16fJWyKENT3UYyMPWmpt8Ea+3jwi3Kr4cQuz3llVhwr10ckh?=
- =?us-ascii?Q?3b0B22cd9YoQDChoefrj870LoWfB+Mm9KN9jWTTTyBuGKjT0Yp1dOyK99zKJ?=
- =?us-ascii?Q?yMT9rZBAzisr8i5TpO3cH9cK8prU+Bx+1Xg54zquvcLyqHyBt84Meddx+2Mi?=
- =?us-ascii?Q?c4pGfdngf1cqkMGdueTnNceQfVKWIfNeWsdplLTI3K6DxKJQx9qsCnxIUwP9?=
- =?us-ascii?Q?/g25OMgeoJNktCfeLt1wGVQBrc+LlgapCbSImmcdIh+Sbt5juH3z+uGOFRx5?=
- =?us-ascii?Q?KAiq1kqrCiqAsRmgdSlobjb+yY+ZG8peQDsFmOzmZkSfLvPwPsxXdDT/a+Wk?=
- =?us-ascii?Q?R+ksacHFytYabm3pHATcnUO7dQqOctBPUMn6vn0pE5sYCILIiH3dEQc67TUJ?=
- =?us-ascii?Q?LcWGJ3TLW2+fVYP8OuAbkIKWadSK2ZfxupMefY/fW3UelhJqGyaQX4bbX8Dg?=
- =?us-ascii?Q?fs7CkuI31Zbam7ZljgikeAGyUpHqliUsEREb+sPyC2YfsDzVVkkxsq0cu+p/?=
- =?us-ascii?Q?sC60NALdSqQLZEYiisf5FtbTFjFtx/bI0BUnFkk8fGiIea5X8O3VHa4mKoIt?=
- =?us-ascii?Q?1GFAVGT2EwaCGXgmJ2TOaWf55Z1WfHn6tWgEQ4uX1UaK9OUUOGXqTNDudhXR?=
- =?us-ascii?Q?PZlA3Wrp41S6sRoMx9ANqT/SNQ34TjSfJLEAvcqFDtUmrcAU/KdMBe8dliX1?=
- =?us-ascii?Q?Tt542R16bek8qb/497GVM1hEqorfkFUgE7hRyWHFzDzOskoHX+fBh7+vQnFW?=
- =?us-ascii?Q?PHgJaL1AlheAHiuwYg8fLAug/647dQpmwgzj1P57GODrp/1CAtCPaA440r22?=
- =?us-ascii?Q?ZrvGljofSzN42Elr8hZBFHHFbC59xgCCEhboHAe96RaXcYXR0o4ytJb6bVny?=
- =?us-ascii?Q?vh9eVosLDO5eWlqUOA9bnrtHtveqLe2jMhgznEr+DVRRnjv8BcR5W9D3A02e?=
- =?us-ascii?Q?MSKLXkopKu/lrGR2CrMNT3Q9kMs7Q40F/5MaVUFcZPuFj7utbONUZaq+SQf+?=
- =?us-ascii?Q?81hooj/izZ9ONRy+BKAJoIV5GohcCxehHpbd1QEjeeyVFlC2eXrXBjUe5Du9?=
- =?us-ascii?Q?Epte0voYdyUSn27QZNkUFKJpOh4oKjPLFMnEdoOh1gZySWYuUXDgbPOr16sx?=
- =?us-ascii?Q?g+yFrZ0YRBcazTVKaLhco+B/YAZmXqDRZRVCrLadLpgxa+kOuU6JmOxWRYC/?=
- =?us-ascii?Q?ML3Gkpmf/0jfc8trXuRVJ+cfTBVgYUfNt76cV06tOisH9TPrGU3rMeaT3uFS?=
- =?us-ascii?Q?mCzm9eVSqadFii2VuLDG0b8=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b052f01a-9e9d-48c8-85cc-08dc6e4ee1e3
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2024 04:33:45.7135
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ECtsaOg5Qh9qmqkgRTG45kBwG8zpXWYZbnHDhBTGQk6uYYr9HjPaqLQW3kNVZv0sJ85P9+MaI6Q4N0Hvtq3bfkDeq5GdO/TrhIs7wAzP0UlLfaWYdasS0zKeG/Q72irp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYBPR01MB5421
+Content-Type: text/plain
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27267/Mon May  6 10:24:34 2024)
 
-dpcm_xxx flags are no longer needed.
+"Arnd Bergmann" <arnd@arndb.de> writes:
 
-We need to use xxx_only flags instead if needed, but
-snd_soc_dai_link_set_capabilities() user adds dpcm_xxx if playback/catpure
-were available. Thus converting dpcm_xxx to xxx_only is not needed.
-Just remove it.
+> On Mon, May 6, 2024, at 12:23, Esben Haabendal wrote:
+>>
+>>  config PINCTRL_IMXRT1050
+>>  	bool "IMXRT1050 pinctrl driver"
+>> -	depends on ARCH_MXC
+>> +	depends on SOC_IMXRT
+>> +	default SOC_IMXRT
+>>  	select PINCTRL_IMX
+>>  	help
+>>  	  Say Y here to enable the imxrt1050 pinctrl driver
+>
+> Maybe make this
+>
+>        depends on SOC_IMXRT || COMPILE_TEST
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
----
- include/sound/soc-dai.h               |  1 -
- sound/soc/fsl/imx-card.c              |  3 ---
- sound/soc/generic/audio-graph-card.c  |  2 --
- sound/soc/generic/audio-graph-card2.c |  2 --
- sound/soc/generic/simple-card.c       |  2 --
- sound/soc/meson/axg-card.c            |  1 -
- sound/soc/meson/gx-card.c             |  1 -
- sound/soc/qcom/common.c               |  1 -
- sound/soc/soc-dai.c                   | 38 ---------------------------
- 9 files changed, 51 deletions(-)
+That is done in patch 3/3.
 
-diff --git a/include/sound/soc-dai.h b/include/sound/soc-dai.h
-index adcd8719d343..69ba1a628eab 100644
---- a/include/sound/soc-dai.h
-+++ b/include/sound/soc-dai.h
-@@ -219,7 +219,6 @@ void snd_soc_dai_resume(struct snd_soc_dai *dai);
- int snd_soc_dai_compress_new(struct snd_soc_dai *dai,
- 			     struct snd_soc_pcm_runtime *rtd, int num);
- bool snd_soc_dai_stream_valid(struct snd_soc_dai *dai, int stream);
--void snd_soc_dai_link_set_capabilities(struct snd_soc_dai_link *dai_link);
- void snd_soc_dai_action(struct snd_soc_dai *dai,
- 			int stream, int action);
- static inline void snd_soc_dai_activate(struct snd_soc_dai *dai,
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index cb8723965f2f..9c7e24cebd7b 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -650,9 +650,6 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 			link->ops = &imx_aif_ops;
- 		}
- 
--		if (link->no_pcm || link->dynamic)
--			snd_soc_dai_link_set_capabilities(link);
--
- 		/* Get dai fmt */
- 		ret = simple_util_parse_daifmt(dev, np, codec,
- 					       NULL, &link->dai_fmt);
-diff --git a/sound/soc/generic/audio-graph-card.c b/sound/soc/generic/audio-graph-card.c
-index 83e3ba773fbd..714ce1f4a061 100644
---- a/sound/soc/generic/audio-graph-card.c
-+++ b/sound/soc/generic/audio-graph-card.c
-@@ -246,8 +246,6 @@ static int graph_dai_link_of_dpcm(struct simple_util_priv *priv,
- 
- 	graph_parse_convert(dev, ep, &dai_props->adata);
- 
--	snd_soc_dai_link_set_capabilities(dai_link);
--
- 	ret = graph_link_init(priv, cpu_ep, codec_ep, li, dai_name);
- 
- 	li->link++;
-diff --git a/sound/soc/generic/audio-graph-card2.c b/sound/soc/generic/audio-graph-card2.c
-index 62606e20be9a..0d2ac4c9ba3d 100644
---- a/sound/soc/generic/audio-graph-card2.c
-+++ b/sound/soc/generic/audio-graph-card2.c
-@@ -925,8 +925,6 @@ int audio_graph2_link_dpcm(struct simple_util_priv *priv,
- 	graph_parse_convert(ep,  dai_props); /* at node of <dpcm> */
- 	graph_parse_convert(rep, dai_props); /* at node of <CPU/Codec> */
- 
--	snd_soc_dai_link_set_capabilities(dai_link);
--
- 	graph_link_init(priv, rport, li, is_cpu);
- err:
- 	of_node_put(ep);
-diff --git a/sound/soc/generic/simple-card.c b/sound/soc/generic/simple-card.c
-index 9c79ff6a568f..5e66812ffadf 100644
---- a/sound/soc/generic/simple-card.c
-+++ b/sound/soc/generic/simple-card.c
-@@ -276,8 +276,6 @@ static int simple_dai_link_of_dpcm(struct simple_util_priv *priv,
- 
- 	simple_parse_convert(dev, np, &dai_props->adata);
- 
--	snd_soc_dai_link_set_capabilities(dai_link);
--
- 	ret = simple_link_init(priv, node, codec, li, prefix, dai_name);
- 
- out_put_node:
-diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-index 8c5605c1e34e..09aa36e94c85 100644
---- a/sound/soc/meson/axg-card.c
-+++ b/sound/soc/meson/axg-card.c
-@@ -339,7 +339,6 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
- 		dai_link->num_c2c_params = 1;
- 	} else {
- 		dai_link->no_pcm = 1;
--		snd_soc_dai_link_set_capabilities(dai_link);
- 		if (axg_card_cpu_is_tdm_iface(dai_link->cpus->of_node))
- 			ret = axg_card_parse_tdm(card, np, index);
- 	}
-diff --git a/sound/soc/meson/gx-card.c b/sound/soc/meson/gx-card.c
-index f1539e542638..7edca3e49c8f 100644
---- a/sound/soc/meson/gx-card.c
-+++ b/sound/soc/meson/gx-card.c
-@@ -107,7 +107,6 @@ static int gx_card_add_link(struct snd_soc_card *card, struct device_node *np,
- 		dai_link->num_c2c_params = 1;
- 	} else {
- 		dai_link->no_pcm = 1;
--		snd_soc_dai_link_set_capabilities(dai_link);
- 		/* Check if the cpu is the i2s encoder and parse i2s data */
- 		if (gx_card_cpu_identify(dai_link->cpus, "I2S Encoder"))
- 			ret = gx_card_parse_i2s(card, np, index);
-diff --git a/sound/soc/qcom/common.c b/sound/soc/qcom/common.c
-index 747041fa7866..24862002e82b 100644
---- a/sound/soc/qcom/common.c
-+++ b/sound/soc/qcom/common.c
-@@ -145,7 +145,6 @@ int qcom_snd_parse_of(struct snd_soc_card *card)
- 
- 		if (platform || !codec) {
- 			/* DPCM */
--			snd_soc_dai_link_set_capabilities(link);
- 			link->ignore_suspend = 1;
- 			link->nonatomic = 1;
- 		}
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index fefe394dce72..f8e46bec6f80 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -479,44 +479,6 @@ bool snd_soc_dai_stream_valid(struct snd_soc_dai *dai, int dir)
- 	return stream->channels_min;
- }
- 
--/*
-- * snd_soc_dai_link_set_capabilities() - set dai_link properties based on its DAIs
-- */
--void snd_soc_dai_link_set_capabilities(struct snd_soc_dai_link *dai_link)
--{
--	bool supported[SNDRV_PCM_STREAM_LAST + 1];
--	int direction;
--
--	for_each_pcm_streams(direction) {
--		struct snd_soc_dai_link_component *cpu;
--		struct snd_soc_dai_link_component *codec;
--		struct snd_soc_dai *dai;
--		bool supported_cpu = false;
--		bool supported_codec = false;
--		int i;
--
--		for_each_link_cpus(dai_link, i, cpu) {
--			dai = snd_soc_find_dai_with_mutex(cpu);
--			if (dai && snd_soc_dai_stream_valid(dai, direction)) {
--				supported_cpu = true;
--				break;
--			}
--		}
--		for_each_link_codecs(dai_link, i, codec) {
--			dai = snd_soc_find_dai_with_mutex(codec);
--			if (dai && snd_soc_dai_stream_valid(dai, direction)) {
--				supported_codec = true;
--				break;
--			}
--		}
--		supported[direction] = supported_cpu && supported_codec;
--	}
--
--	dai_link->dpcm_playback = supported[SNDRV_PCM_STREAM_PLAYBACK];
--	dai_link->dpcm_capture  = supported[SNDRV_PCM_STREAM_CAPTURE];
--}
--EXPORT_SYMBOL_GPL(snd_soc_dai_link_set_capabilities);
--
- void snd_soc_dai_action(struct snd_soc_dai *dai,
- 			int stream, int action)
- {
--- 
-2.25.1
+> I see that all the i.MX pinctrl drivers are currently missing
+> this, but a lot of other platforms have the ||COMPILE_TEST
+> bit so it gets included in x86 allmodconfig tests that
+> often gets run before sending or merging changes.
 
+Take a look at patch 3/3 in this series. It does a wholesale addition of
+||COMPILE_TEST to these drivers.
+
+/Esben
