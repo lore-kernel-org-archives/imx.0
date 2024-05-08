@@ -1,67 +1,99 @@
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587E585952;
-	Wed,  8 May 2024 14:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B214DDB2;
+	Wed,  8 May 2024 16:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715176906; cv=none; b=fssBDWKvGnjxvLr3zSjyuRDLtvGt81sukAh8cE7FcMu6DRlMcVuzul1YtvRlxCTLPovi3bvMmeU9Koas7Vh4m5wBenaul1YCRjP2HfEO7SIWH5xaJuu1ULPRRnvJhEi6WJwrvzs/xduiuhT8ZOlZsIjJLtRS1WCRg9q8G66pVcQ=
+	t=1715187349; cv=none; b=Jp3Kr8a9TLrh+YdJo0lIWQOWcwQKKB1i3F1mhqAupfSBzbcMO5PEf5x34XsAyC4n41VMuOWB34bIIb3GuEBF/FrVOar8ouFvZ6Xd90E5T+PKH13vaU6rvflMZlhkym5WuZ7W0VhsyQ/AxXtlnJvHH9T6VsEHL6VgcmR2V74/fuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715176906; c=relaxed/simple;
-	bh=QTtrLqU3MtsdtuOBqcMMsypFeSb32mO7pCqLCKsGXjo=;
+	s=arc-20240116; t=1715187349; c=relaxed/simple;
+	bh=oV9q6FohML+t2GsOtO4f7Y/sVfHt/7X/LujEYuhSVX0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PyTc0UVwUcPhYgylMeZCbaOdYi/peL043gqE5cWmO6DKufadTepZqFzbSFlKUotOOrjt2xujHy94SOlU+16Px2Fb9J/s+fMG1xQb1WJk/LoYFkGE74k/BPBJL3n5vNWFZFOlO07q5Vuv4Zp1sWubGC782urdgoN0ZOxNdDhQ5Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
-	(envelope-from <martin@akranes.kaiser.cx>)
-	id 1s4hbJ-001u7V-2P;
-	Wed, 08 May 2024 15:44:53 +0200
-Date: Wed, 8 May 2024 15:44:53 +0200
-From: Martin Kaiser <martin@kaiser.cx>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=qNzCZtRxwNex5oL469LCGPQRGq8oQipQN2UkWZrAqrfcBBt+wlpWlfjo8ZF2QSfOsViaVuproYsm6N7naxGHGQwIVT5VE6ym2i7Xu0EYJxtdshCQ07KJ9GP9luP4CWfdFpaCKkVOCjKRg0s5lfefbDZE93d/5fmEn3UcKNmhpkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6uhNQ1o; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6uhNQ1o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8C8C113CC;
+	Wed,  8 May 2024 16:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715187348;
+	bh=oV9q6FohML+t2GsOtO4f7Y/sVfHt/7X/LujEYuhSVX0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n6uhNQ1oq6Rn5WQb042DEvXZnTUepAiSPmAjDtYr5An6TZV3w2plxq2bKwuN7C2J0
+	 hOvQEROUy/ICLmgmQm/7iEFRvJPRKVSjfz0bWHrOQDxgQLllOwWuwkdLb78j2zh1xD
+	 dBFpIfOT871mUsCl2/DRD6q615dEZ3+Sedo4Q/c/o2oK4vsvsbUZ9YtgAT1QRDRZe4
+	 /Rwy7ykBQ9e/guvz5JNTU0zsQ/LxRIJoflPbOSOtX7iSyR2/oGkpongQIOSVeMbXDM
+	 3hXBS5OluDrRUcGRM6dNvJet7GpI7Xcwxmv1FKitzIxIi1+OqYHyI916q+0GMRYy1r
+	 ZAXpILsX/Rb4g==
+Date: Wed, 8 May 2024 17:55:41 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi
- devices
-Message-ID: <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
-References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 10/12] dt-bindings: imx6q-pcie: Add i.MX8Q pcie
+ compatible string
+Message-ID: <20240508-stalling-skinless-2ee6926d5bba@spud>
+References: <20240507-pci2_upstream-v4-0-e8c80d874057@nxp.com>
+ <20240507-pci2_upstream-v4-10-e8c80d874057@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="QdjAdVM3nDrdUFsa"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
-Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
+In-Reply-To: <20240507-pci2_upstream-v4-10-e8c80d874057@nxp.com>
 
-Hi Uwe,
 
-Thus wrote Uwe Kleine-König (u.kleine-koenig@pengutronix.de):
+--QdjAdVM3nDrdUFsa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-> claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-> device trees don't add DMA channels. The Reference manuals of i.MX31 and
-> i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-> check the others.)
+On Tue, May 07, 2024 at 02:45:48PM -0400, Frank Li wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
+>=20
+> Add i.MX8Q PCIe "fsl,imx8q-pcie" compatible strings. clock-names align dwc
+> common naming convension.
+>=20
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-If I'm not mistaken, the imx25 reference manual
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-https://www.nxp.com/docs/en/reference-manual/IMX25RM.pdf
+Cheers,
+Conor.
 
-does say that CSPI has DMA support. Section 18.1.1 (Features) lists DMA as one
-of the features. There's also DMA events (section 3) for CSPI-1/2/3 RX, TX.
 
-I'd have to dig up the hardware to test again if this is actually working...
+--QdjAdVM3nDrdUFsa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-   Martin
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjuujQAKCRB4tDGHoIJi
+0iEAAP4odCwqsa0krpPtS6/ctZZWtHEAap7Ag61eyEoeDNMojQD/Sn+eC8qeLR/x
+JDSqlvC8xXonb7tvS7luBljtDTpTBgE=
+=3NM7
+-----END PGP SIGNATURE-----
+
+--QdjAdVM3nDrdUFsa--
