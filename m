@@ -1,86 +1,112 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880E783CBE
-	for <imx@lists.linux.dev>; Wed,  8 May 2024 12:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF3D7D088
+	for <imx@lists.linux.dev>; Wed,  8 May 2024 13:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715170939; cv=none; b=RGPuImIywIX7o5bdbpUHDbtu3x8YMdW2+B8veJJVTEt47UZTKZdMDH75VS4VkekS8cZbnM7zihaUleYYKMBWXTv6y2Ac29vPswCdPxJ0uQnI2I4U6uC2pl1iC8/NMOSPBrscqc8iKgYkzzERy8dBkzBiUp6oKywxlAc64j9lACQ=
+	t=1715175504; cv=none; b=ieFPPMYrf89NXT2HeNX9fAeOI0sKlRXu/FpJDunYm0h5y9mfv09zrDY2OR5bAQMTkTmdLEEZmAjgTfjiDeETexuNSKJvSbxzC2qmAEI5WEu5g2PPvy9DwiSgF4XnDoTsams6w/7hyuIMwlqbmBoiBD4mwnxQ8VCZbUMei9kqu2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715170939; c=relaxed/simple;
-	bh=X1S1dzhW3wRfqpB++o89A6VLOtGJiekN3EHOLbW+84E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6SikQK/+cjezFBMcYKuZIhf/pSlseV1QnJDGe11a9uCugIbMdwj/GRZvDvilbq//wPbVxThoR06JpjvRj3ljmNkR4H+7mUJoUA6nVLOG3yNasnfXUC1xTTCUmW4zJFmlXeBF5/cc5gQv41srJxXgCGC8/dSi0e3CZoVVkNPBV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 559B91007;
-	Wed,  8 May 2024 05:22:42 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C7873F587;
-	Wed,  8 May 2024 05:22:14 -0700 (PDT)
-Date: Wed, 8 May 2024 13:22:12 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	s=arc-20240116; t=1715175504; c=relaxed/simple;
+	bh=vB0Sjt7S+gjdevIA1MOKWP5yvN4Z07ftcH3hTneiHdc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CFdfouoyhDN9nl4YUOZEmPi6tfekPRKuPlzH5DqTwFnK1Chn54Rv5fna07dX4l01K0LufVS+Dc3/Lg8B6yzPCXtoXPeUgwAb43wrCIlt35NvhYuc1rRu+Yf+sVgrwifQxyzaHrmm/frpjCmvaiTGbBK1bxGFOC5TmTqNPZEnoH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=H2+bo0K7; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qtXJCzoe reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="H2+bo0K7";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qtXJCzoe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1715175500; x=1746711500;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1anWl7U0g1N5ReOl67RGFJDhNdBee4tIaUiND+Vgla8=;
+  b=H2+bo0K7oLCgYvX4fiB/8hxucoN3XJyPIX8zpROAL4MnIvwOE1u3Os0a
+   980VafRB/96O/j7EQQ8WqKlJUZZNx2/QJBIh02YwoAvYBQdqsszmpTjqq
+   WLaDavkxvLEUdkLlMfqoQzTt4Gkzwh+ofOc0y5qu2DNjnJZa1VY1V+Jow
+   3rglfLXKQGY6zh3UZh3uzpNqTXPbUBQqzcYmmwbrsKfCBjuk3Mwuna13e
+   FgyeTwZazyZKs4fnC2NXaxnu6sQH8bRJNNfNYERgXajMUAksLHA2ZDN4x
+   5gfTdoKvjIp/RIhu4yp5y7WuKAZ3QPKGgv7nXkLwYNK3ke2b4JTPcJVSD
+   A==;
+X-CSE-ConnectionGUID: z54Sk1EmRBC1VdH69ne3fA==
+X-CSE-MsgGUID: 3vZd3Y/sRkKMGvbzBMbsTQ==
+X-IronPort-AV: E=Sophos;i="6.08,145,1712613600"; 
+   d="scan'208";a="36814849"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 08 May 2024 15:38:11 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D977816E68D;
+	Wed,  8 May 2024 15:38:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1715175487;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=1anWl7U0g1N5ReOl67RGFJDhNdBee4tIaUiND+Vgla8=;
+	b=qtXJCzoersL5wQiIkKQBAwn4D4j1wABKeNyuQudkAIie3Q8ZmvyTdD5EEbJNiX7a42Ctpk
+	W1eBU5pUlT2EFPWCm6CPi5kFsDDgkeP0OUiJjsVJct0eVihbTEg76lQCV7yAo2N+FH5Etn
+	PcWCE0YGvTmH1q9BOR0cBxOGgSPG/o0oLR1glcAgFoOz8b3+btIhMgCk1mhPeIjg7K5tBZ
+	v9qfdIH/33ko0jAiHFk/lPBP03oCDFu2N5ZCDQ391ng8zlYRQZZPbi96RHuKup5SCpW0AO
+	Q3DcCAxCoeIkVPH7W6D6WB+F0LyjF6wjePw6SGW3HHIKKh93QW/RJwxc+AfrRg==
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Aisheng Dong <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH v5 0/3] pinctrl: scmi: support i.MX95 OEM extensions
-Message-ID: <ZjtudPS1CUqCJU5v@bogus>
-References: <20240508-pinctrl-scmi-oem-v3-v5-0-6f2b167f71bc@nxp.com>
- <ZjtCGXgwgtZ4X49v@bogus>
- <DU0PR04MB94170BB9A2C41DE40C8F575288E52@DU0PR04MB9417.eurprd04.prod.outlook.com>
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+Subject: [PATCH] serial: imx: Raise TX trigger level to 8
+Date: Wed,  8 May 2024 15:37:44 +0200
+Message-ID: <20240508133744.35858-1-matthias.schiffer@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DU0PR04MB94170BB9A2C41DE40C8F575288E52@DU0PR04MB9417.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, May 08, 2024 at 09:41:24AM +0000, Peng Fan wrote:
-> Hi Sudeep,
->
-> > Subject: Re: [PATCH v5 0/3] pinctrl: scmi: support i.MX95 OEM extensions
-> >
-> > On Wed, May 08, 2024 at 11:32:01AM +0800, Peng Fan (OSS) wrote:
-> > > ARM SCMI v3.2 Table 24 Pin Configuration Type and Enumerations:
-> > > '192 -255 OEM specific units'.
-> > >
-> > > i.MX95 System Manager FW supports SCMI PINCTRL protocol, but it has
-> > > zero functions, groups. So pinctrl-scmi.c could not be reused for i.MX95.
-> > > Because nxp,pin-func, nxp,pin-conf properties are rejected by dt
-> > > maintainers, so use generic property 'pinmux' which requires a new
-> > > driver pinctrl-imx-scmi.c
-> > >
-> >
-> > Not a review in particular, but if we decide to merge this deviation, it must be
-> > under the condition that it can be deleted anytime in the future if this
-> > becomes annoyance(like other vendors using this as a way to deviate from
-> > the specification). If we can't agree with that, then we better not merge this
-> > at all.
->
-> It is ok for me. I agree.
-> But actually this driver still follows Spec by using OEM extensions.
->
+At the default TX trigger level of 2 in non-DMA mode (meaning that an
+interrupt is generated when less than 2 characters are left in the
+FIFO), we have observed frequent buffer underruns at 115200 Baud on an
+i.MX8M Nano. This can cause communication issues if the receiving side
+expects a continuous transfer.
 
-Agreed, but that's what I call as deviations. When such extensions are
-used as baseline implementation, it becomes deviations.
+Increasing the level to 8 makes the UART trigger an interrupt earlier,
+giving the kernel enough time to refill the FIFO, at the cost of
+triggering one interrupt per ~24 instead of ~30 bytes of transmitted
+data (as the i.MX UART has a 32 byte FIFO).
 
---
-Regards,
-Sudeep
+Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+---
+ drivers/tty/serial/imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 79f1503cd75b4..2eb22594960f3 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1305,7 +1305,7 @@ static void imx_uart_clear_rx_errors(struct imx_port *sport)
+ 
+ }
+ 
+-#define TXTL_DEFAULT 2 /* reset default */
++#define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
+-- 
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+https://www.tq-group.com/
+
