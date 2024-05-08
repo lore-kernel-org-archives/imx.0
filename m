@@ -1,112 +1,58 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF3D7D088
-	for <imx@lists.linux.dev>; Wed,  8 May 2024 13:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4CD84E04
+	for <imx@lists.linux.dev>; Wed,  8 May 2024 13:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715175504; cv=none; b=ieFPPMYrf89NXT2HeNX9fAeOI0sKlRXu/FpJDunYm0h5y9mfv09zrDY2OR5bAQMTkTmdLEEZmAjgTfjiDeETexuNSKJvSbxzC2qmAEI5WEu5g2PPvy9DwiSgF4XnDoTsams6w/7hyuIMwlqbmBoiBD4mwnxQ8VCZbUMei9kqu2c=
+	t=1715175719; cv=none; b=c1eqLQds/6hcBHKOVX2pjJRTMzpvibEEnfvqiaRoHYvn4ZiHjag0Yy1HZa7vzvuV824QyL4TLLj8kB1Kb1Hq9ZsYTJkpN2kdUX1T8MUTHtaO8da5K+vnIFdh5FJlzKZCMDiwgAQHR6gMYY7xbTKW4bQLYCgFnVC9UY+pe6RHALU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715175504; c=relaxed/simple;
-	bh=vB0Sjt7S+gjdevIA1MOKWP5yvN4Z07ftcH3hTneiHdc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CFdfouoyhDN9nl4YUOZEmPi6tfekPRKuPlzH5DqTwFnK1Chn54Rv5fna07dX4l01K0LufVS+Dc3/Lg8B6yzPCXtoXPeUgwAb43wrCIlt35NvhYuc1rRu+Yf+sVgrwifQxyzaHrmm/frpjCmvaiTGbBK1bxGFOC5TmTqNPZEnoH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=H2+bo0K7; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qtXJCzoe reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="H2+bo0K7";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qtXJCzoe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1715175500; x=1746711500;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1anWl7U0g1N5ReOl67RGFJDhNdBee4tIaUiND+Vgla8=;
-  b=H2+bo0K7oLCgYvX4fiB/8hxucoN3XJyPIX8zpROAL4MnIvwOE1u3Os0a
-   980VafRB/96O/j7EQQ8WqKlJUZZNx2/QJBIh02YwoAvYBQdqsszmpTjqq
-   WLaDavkxvLEUdkLlMfqoQzTt4Gkzwh+ofOc0y5qu2DNjnJZa1VY1V+Jow
-   3rglfLXKQGY6zh3UZh3uzpNqTXPbUBQqzcYmmwbrsKfCBjuk3Mwuna13e
-   FgyeTwZazyZKs4fnC2NXaxnu6sQH8bRJNNfNYERgXajMUAksLHA2ZDN4x
-   5gfTdoKvjIp/RIhu4yp5y7WuKAZ3QPKGgv7nXkLwYNK3ke2b4JTPcJVSD
-   A==;
-X-CSE-ConnectionGUID: z54Sk1EmRBC1VdH69ne3fA==
-X-CSE-MsgGUID: 3vZd3Y/sRkKMGvbzBMbsTQ==
-X-IronPort-AV: E=Sophos;i="6.08,145,1712613600"; 
-   d="scan'208";a="36814849"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 08 May 2024 15:38:11 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D977816E68D;
-	Wed,  8 May 2024 15:38:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1715175487;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=1anWl7U0g1N5ReOl67RGFJDhNdBee4tIaUiND+Vgla8=;
-	b=qtXJCzoersL5wQiIkKQBAwn4D4j1wABKeNyuQudkAIie3Q8ZmvyTdD5EEbJNiX7a42Ctpk
-	W1eBU5pUlT2EFPWCm6CPi5kFsDDgkeP0OUiJjsVJct0eVihbTEg76lQCV7yAo2N+FH5Etn
-	PcWCE0YGvTmH1q9BOR0cBxOGgSPG/o0oLR1glcAgFoOz8b3+btIhMgCk1mhPeIjg7K5tBZ
-	v9qfdIH/33ko0jAiHFk/lPBP03oCDFu2N5ZCDQ391ng8zlYRQZZPbi96RHuKup5SCpW0AO
-	Q3DcCAxCoeIkVPH7W6D6WB+F0LyjF6wjePw6SGW3HHIKKh93QW/RJwxc+AfrRg==
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Michael Krummsdorf <michael.krummsdorf@tq-group.com>
-Subject: [PATCH] serial: imx: Raise TX trigger level to 8
-Date: Wed,  8 May 2024 15:37:44 +0200
-Message-ID: <20240508133744.35858-1-matthias.schiffer@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1715175719; c=relaxed/simple;
+	bh=ZPf+rSnPTRyUxIk56yCEHcfZHAeg+uj08XJt6D76TLc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TLastEBZzA1BvID+sDQdoMw5HOGwb2oVJlerMpREGRyTxsLCqxNZw6/T0yVOFOarYa3/uFs/cI4S4GrDIpJkL6fMfRNp/PPfgLFx4A5gzBOp6bdC4XYNfOCBKl/qAIKYWIqmAAHodPZ4Vn0JocFXTV4ADypembfT3A3bmRttJVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXM34nTz4x80;
+	Wed,  8 May 2024 23:41:55 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Ran Wang <ran.wang_1@nxp.com>, Zhao Chenhui <chenhui.zhao@freescale.com>, Li Yang <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240119203911.3143928-1-Frank.Li@nxp.com>
+References: <20240119203911.3143928-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/4] powerpc: dts: add power management nodes to FSL chips
+Message-Id: <171517558555.165093.3578824568292116308.b4-ty@ellerman.id.au>
+Date: Wed, 08 May 2024 23:39:45 +1000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-At the default TX trigger level of 2 in non-DMA mode (meaning that an
-interrupt is generated when less than 2 characters are left in the
-FIFO), we have observed frequent buffer underruns at 115200 Baud on an
-i.MX8M Nano. This can cause communication issues if the receiving side
-expects a continuous transfer.
+On Fri, 19 Jan 2024 15:38:54 -0500, Frank Li wrote:
+> Enable Power Management feature on device tree, including MPC8536,
+> MPC8544, MPC8548, MPC8572, P1010, P1020, P1021, P1022, P2020, P2041,
+> P3041, T104X, T1024.
+> 
+> 
 
-Increasing the level to 8 makes the UART trigger an interrupt earlier,
-giving the kernel enough time to refill the FIFO, at the cost of
-triggering one interrupt per ~24 instead of ~30 bytes of transmitted
-data (as the i.MX UART has a 32 byte FIFO).
+Applied to powerpc/next.
 
-Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
----
- drivers/tty/serial/imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1/4] powerpc: dts: add power management nodes to FSL chips
+      https://git.kernel.org/powerpc/c/b12ba096b89084d1e2d6ebdb71b852eeebef95d3
+[2/4] powerpc: dts: p1010rdb: fix INTx interrupt issue on P1010RDB-PB
+      https://git.kernel.org/powerpc/c/9c8dc6f34351cd0c6a2ef83be2266f7dd67c152c
+[3/4] powerpc: dts: mpc85xx: remove "simple-bus" compatible from ifc node
+      https://git.kernel.org/powerpc/c/0bf51cc9e9e57a751b4c5dacbfa499ba5cd8bd72
+[4/4] powerpc: dts: fsl: rename ifc node name to be memory-controller
+      https://git.kernel.org/powerpc/c/acb354fe97e5aa6d9534b601ce18ef7866f25c4d
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 79f1503cd75b4..2eb22594960f3 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1305,7 +1305,7 @@ static void imx_uart_clear_rx_errors(struct imx_port *sport)
- 
- }
- 
--#define TXTL_DEFAULT 2 /* reset default */
-+#define TXTL_DEFAULT 8
- #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
- #define TXTL_DMA 8 /* DMA burst setting */
- #define RXTL_DMA 9 /* DMA burst setting */
--- 
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-https://www.tq-group.com/
-
+cheers
