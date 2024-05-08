@@ -1,97 +1,86 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057D679B96
-	for <imx@lists.linux.dev>; Wed,  8 May 2024 09:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880E783CBE
+	for <imx@lists.linux.dev>; Wed,  8 May 2024 12:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715162188; cv=none; b=CKo16c8WnN1hMYp1PJ/TzcJfYKQZiU++Ug1/8Nn3xSw7Vu9dfY2LEa9eFsQ0xmaHdT39MZyo2QCDxMWA+KGuGz/kIReq+lmEuRF1MGJ2cXzAIJduX121M8rjHTUQI0sFyDTBmrqC0nt2Tb7hsb0DbGhf8BUeO8jZMgWwxo2A8is=
+	t=1715170939; cv=none; b=RGPuImIywIX7o5bdbpUHDbtu3x8YMdW2+B8veJJVTEt47UZTKZdMDH75VS4VkekS8cZbnM7zihaUleYYKMBWXTv6y2Ac29vPswCdPxJ0uQnI2I4U6uC2pl1iC8/NMOSPBrscqc8iKgYkzzERy8dBkzBiUp6oKywxlAc64j9lACQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715162188; c=relaxed/simple;
-	bh=4POJOZrPUHJ4nLXafYkKHc0N6Q4o99ssDV15veYIDv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m+I1FziuEWhmLcAafMAtAhWZV/4dFF/JFGiyDAs2nl206UgyyYGwFiGwrtERKWnA+CyVDO9yt5VfhyL3RB0k697dHoXAOOuS5Yq6IZpu+yUIY/JN4haX7whZ9p4j3qK8i1HM/aCVSDAIhZvDMpd4nvNR2ExH+WvIdEifUCp1pRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4e26-0003tz-2c; Wed, 08 May 2024 11:56:18 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4e22-000FZO-TL; Wed, 08 May 2024 11:56:14 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4e22-000P2m-2c;
-	Wed, 08 May 2024 11:56:14 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	s=arc-20240116; t=1715170939; c=relaxed/simple;
+	bh=X1S1dzhW3wRfqpB++o89A6VLOtGJiekN3EHOLbW+84E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K6SikQK/+cjezFBMcYKuZIhf/pSlseV1QnJDGe11a9uCugIbMdwj/GRZvDvilbq//wPbVxThoR06JpjvRj3ljmNkR4H+7mUJoUA6nVLOG3yNasnfXUC1xTTCUmW4zJFmlXeBF5/cc5gQv41srJxXgCGC8/dSi0e3CZoVVkNPBV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 559B91007;
+	Wed,  8 May 2024 05:22:42 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C7873F587;
+	Wed,  8 May 2024 05:22:14 -0700 (PDT)
+Date: Wed, 8 May 2024 13:22:12 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Martin Kaiser <martin@kaiser.cx>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
-Date: Wed,  8 May 2024 11:56:10 +0200
-Message-ID: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
+	Linus Walleij <linus.walleij@linaro.org>,
+	Aisheng Dong <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Subject: Re: [PATCH v5 0/3] pinctrl: scmi: support i.MX95 OEM extensions
+Message-ID: <ZjtudPS1CUqCJU5v@bogus>
+References: <20240508-pinctrl-scmi-oem-v3-v5-0-6f2b167f71bc@nxp.com>
+ <ZjtCGXgwgtZ4X49v@bogus>
+ <DU0PR04MB94170BB9A2C41DE40C8F575288E52@DU0PR04MB9417.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1292; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=4POJOZrPUHJ4nLXafYkKHc0N6Q4o99ssDV15veYIDv4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmO0w7jfwBMKYN5LrwTb8WMy4uLu8hgzfnw4SlG sO0fmfSZeGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZjtMOwAKCRCPgPtYfRL+ TvqyB/oDstQEmdCXLVt/2A8ZzX9lJ4egjjfpipCboZqbVLrRSWx4y+ScewExE4oLHfYFbt8eMlG 828IAsPzjeM34V+YeBnNLAPMWR9DK/6/hj929Nqv6wMxp9TMarj8eqSzkAtwRAv9wa7cyA3JLIH FlLW1Swe0Zk5wda+KtsZQOhokZZHMbNbPWkhnueTbMaAyDiyTbyhcYKl+f2pV0DAYGrSjhmne1Q 9eB5AbSJ7jmeQycnEDewkJE+nKaRLJa09tX+SRFYlUUUOGk9kxsQmsVmA7BqV1Z83J0/XGJLahG CmDGwfaGnrxafovALzJezUnG7tdPQrVlOWLcsvG7TM7PAw8W
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DU0PR04MB94170BB9A2C41DE40C8F575288E52@DU0PR04MB9417.eurprd04.prod.outlook.com>
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+On Wed, May 08, 2024 at 09:41:24AM +0000, Peng Fan wrote:
+> Hi Sudeep,
+>
+> > Subject: Re: [PATCH v5 0/3] pinctrl: scmi: support i.MX95 OEM extensions
+> >
+> > On Wed, May 08, 2024 at 11:32:01AM +0800, Peng Fan (OSS) wrote:
+> > > ARM SCMI v3.2 Table 24 Pin Configuration Type and Enumerations:
+> > > '192 -255 OEM specific units'.
+> > >
+> > > i.MX95 System Manager FW supports SCMI PINCTRL protocol, but it has
+> > > zero functions, groups. So pinctrl-scmi.c could not be reused for i.MX95.
+> > > Because nxp,pin-func, nxp,pin-conf properties are rejected by dt
+> > > maintainers, so use generic property 'pinmux' which requires a new
+> > > driver pinctrl-imx-scmi.c
+> > >
+> >
+> > Not a review in particular, but if we decide to merge this deviation, it must be
+> > under the condition that it can be deleted anytime in the future if this
+> > becomes annoyance(like other vendors using this as a way to deviate from
+> > the specification). If we can't agree with that, then we better not merge this
+> > at all.
+>
+> It is ok for me. I agree.
+> But actually this driver still follows Spec by using OEM extensions.
+>
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
+Agreed, but that's what I call as deviations. When such extensions are
+used as baseline implementation, it becomes deviations.
 
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
-
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index f4006c82f867..4de5476f79b8 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1060,7 +1060,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_targetmode = false,
- 	.devtype = IMX35_CSPI,
-
-base-commit: e7b4ef8fffaca247809337bb78daceb406659f2d
--- 
-2.43.0
-
+--
+Regards,
+Sudeep
