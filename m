@@ -1,58 +1,67 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4CD84E04
-	for <imx@lists.linux.dev>; Wed,  8 May 2024 13:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587E585952;
+	Wed,  8 May 2024 14:01:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715175719; cv=none; b=c1eqLQds/6hcBHKOVX2pjJRTMzpvibEEnfvqiaRoHYvn4ZiHjag0Yy1HZa7vzvuV824QyL4TLLj8kB1Kb1Hq9ZsYTJkpN2kdUX1T8MUTHtaO8da5K+vnIFdh5FJlzKZCMDiwgAQHR6gMYY7xbTKW4bQLYCgFnVC9UY+pe6RHALU=
+	t=1715176906; cv=none; b=fssBDWKvGnjxvLr3zSjyuRDLtvGt81sukAh8cE7FcMu6DRlMcVuzul1YtvRlxCTLPovi3bvMmeU9Koas7Vh4m5wBenaul1YCRjP2HfEO7SIWH5xaJuu1ULPRRnvJhEi6WJwrvzs/xduiuhT8ZOlZsIjJLtRS1WCRg9q8G66pVcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715175719; c=relaxed/simple;
-	bh=ZPf+rSnPTRyUxIk56yCEHcfZHAeg+uj08XJt6D76TLc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=TLastEBZzA1BvID+sDQdoMw5HOGwb2oVJlerMpREGRyTxsLCqxNZw6/T0yVOFOarYa3/uFs/cI4S4GrDIpJkL6fMfRNp/PPfgLFx4A5gzBOp6bdC4XYNfOCBKl/qAIKYWIqmAAHodPZ4Vn0JocFXTV4ADypembfT3A3bmRttJVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXM34nTz4x80;
-	Wed,  8 May 2024 23:41:55 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Ran Wang <ran.wang_1@nxp.com>, Zhao Chenhui <chenhui.zhao@freescale.com>, Li Yang <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20240119203911.3143928-1-Frank.Li@nxp.com>
-References: <20240119203911.3143928-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/4] powerpc: dts: add power management nodes to FSL chips
-Message-Id: <171517558555.165093.3578824568292116308.b4-ty@ellerman.id.au>
-Date: Wed, 08 May 2024 23:39:45 +1000
+	s=arc-20240116; t=1715176906; c=relaxed/simple;
+	bh=QTtrLqU3MtsdtuOBqcMMsypFeSb32mO7pCqLCKsGXjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PyTc0UVwUcPhYgylMeZCbaOdYi/peL043gqE5cWmO6DKufadTepZqFzbSFlKUotOOrjt2xujHy94SOlU+16Px2Fb9J/s+fMG1xQb1WJk/LoYFkGE74k/BPBJL3n5vNWFZFOlO07q5Vuv4Zp1sWubGC782urdgoN0ZOxNdDhQ5Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
+Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
+	(envelope-from <martin@akranes.kaiser.cx>)
+	id 1s4hbJ-001u7V-2P;
+	Wed, 08 May 2024 15:44:53 +0200
+Date: Wed, 8 May 2024 15:44:53 +0200
+From: Martin Kaiser <martin@kaiser.cx>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi
+ devices
+Message-ID: <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
+References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
+Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
 
-On Fri, 19 Jan 2024 15:38:54 -0500, Frank Li wrote:
-> Enable Power Management feature on device tree, including MPC8536,
-> MPC8544, MPC8548, MPC8572, P1010, P1020, P1021, P1022, P2020, P2041,
-> P3041, T104X, T1024.
-> 
-> 
+Hi Uwe,
 
-Applied to powerpc/next.
+Thus wrote Uwe Kleine-König (u.kleine-koenig@pengutronix.de):
 
-[1/4] powerpc: dts: add power management nodes to FSL chips
-      https://git.kernel.org/powerpc/c/b12ba096b89084d1e2d6ebdb71b852eeebef95d3
-[2/4] powerpc: dts: p1010rdb: fix INTx interrupt issue on P1010RDB-PB
-      https://git.kernel.org/powerpc/c/9c8dc6f34351cd0c6a2ef83be2266f7dd67c152c
-[3/4] powerpc: dts: mpc85xx: remove "simple-bus" compatible from ifc node
-      https://git.kernel.org/powerpc/c/0bf51cc9e9e57a751b4c5dacbfa499ba5cd8bd72
-[4/4] powerpc: dts: fsl: rename ifc node name to be memory-controller
-      https://git.kernel.org/powerpc/c/acb354fe97e5aa6d9534b601ce18ef7866f25c4d
+> While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+> claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+> device trees don't add DMA channels. The Reference manuals of i.MX31 and
+> i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+> check the others.)
 
-cheers
+If I'm not mistaken, the imx25 reference manual
+
+https://www.nxp.com/docs/en/reference-manual/IMX25RM.pdf
+
+does say that CSPI has DMA support. Section 18.1.1 (Features) lists DMA as one
+of the features. There's also DMA events (section 3) for CSPI-1/2/3 RX, TX.
+
+I'd have to dig up the hardware to test again if this is actually working...
+
+   Martin
