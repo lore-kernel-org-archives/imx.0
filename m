@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CEE1A2C2A;
-	Thu,  9 May 2024 05:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91ED514900A;
+	Thu,  9 May 2024 05:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715233873; cv=none; b=UVWsx7zP5PFfdVclzEv6o+E4QaaslF7b4KspheZhbH20lv6TBK6oxZP5YSWIlLiuQ8jEfae3NyY44l1QXMj55ScxwWPAaiIJ0L+pHZMgtL4jtFeEPAeuWvjkVtAzYFqdaZr8AeXy9WcVR8qoVZZr5swE4txpgXxO1ks7hjfnLq0=
+	t=1715234030; cv=none; b=mlxU89exkhM1r6oU1q0YCFo5AN5H4kmFgt7v6eg5NU5lyrFoO9pGhw2UtHrf93bUD2zosOhE15qikQSWLe4DPALj+cKs2Tjq8EiJ9pMgY5S9jrQDscNpMiG4Vt2zldWVe4ip14xriW5WmVYKBQWO6VbV8K2DJzfXGn95p949Q8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715233873; c=relaxed/simple;
-	bh=JrahC9u3iZ2EEYCRi1f+9st8RuDxEJwQs/PRe7O4KYw=;
+	s=arc-20240116; t=1715234030; c=relaxed/simple;
+	bh=nUxDYR94Olupa1Zo0d7qXT5PpHsBib40UnrN6ICzzx0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ko4mnI9o1RR0VrEtFIrUnIt0CpWhA0i3dqBn6A5627NKmUJoB1CVFSiRd6854m6lPYJaJpufn9GL+J+29/pBMRdAzafG5R1LC9FeHRxLLCly0YAbdS8WqmsclXdUJ9fu6SrXoovzr5CnwFBNbtxhWCyLJ4XQa0XhG/1FE6uxUTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5uTbjO7; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=MGkcvMzJRP+938ORcBNCaNN8yGYy6GGqYo6CbGJEhCF9A/8W4HPBDyhU8sB6ya7sGxR+Uw68j2ou5Pvj6aT6QCh3XTRZP+Q2fpQeCdEizJOmCwEoz+iZy2HJFLiHLciNyxMHMeBQmTR+CzktRHnOCqdSBB72rDHK+6HugT4MbGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u65x0Dyr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5uTbjO7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86399C116B1;
-	Thu,  9 May 2024 05:51:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u65x0Dyr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E74C2BD11;
+	Thu,  9 May 2024 05:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715233873;
-	bh=JrahC9u3iZ2EEYCRi1f+9st8RuDxEJwQs/PRe7O4KYw=;
+	s=k20201202; t=1715234030;
+	bh=nUxDYR94Olupa1Zo0d7qXT5PpHsBib40UnrN6ICzzx0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M5uTbjO7YOZrR6uyg9Ln6X3dHgEXn5rzLsp44/fz/cE0Da+km5F8Sb+XR3IbzwjSP
-	 GvUEHkNWvlg0RTFy5SVFO+220c2Xs69+7rjaie0iu6gJFz3qD1A08of+OeHt7THvEo
-	 ZvFeAterHuHXDbZrFXpmEy6MQsTbkouyKQz6LMG2teauAQwGhbYSdmOcNcjb7BVaVp
-	 OIfX5jnu3mhxQ53HUGjQFbZPRVNd0RbrxDTjBiin/Vo5glWlUPLR/yS6ijzjDUkKlu
-	 c/xlhNJQXBv2iLaEd4WkpfDX3n5qYqXCdf7jwjwp2Tdh+olMQZHMsi273EBKgm0eC5
-	 Maf7OUf7KR42Q==
-Message-ID: <81241dde-da0a-4817-90f4-37741d652600@kernel.org>
-Date: Thu, 9 May 2024 07:51:04 +0200
+	b=u65x0Dyrpl3LrMYvbjuPFSCh3Ujw5TOu8wcotWnjrweAqHXG7+pIly002g8PAwYBs
+	 S8o6aaZ6cuZKk1YM7mFy89Vj9k0j4US8LxT48sP8U4SejCWB5vD+0D74/oTwzvOo1k
+	 PuUrE0dLifZUTxOvpevaNez5TCHQO/lRaZnx+9oq+b+tJTuQ18OymnMv+3m+uv5Mrw
+	 P9fBedwdgf6Xe8iUa3Myk1RhabMkabvPfLRRG6EYJlx2has9k+MSFHR8alS90wunJZ
+	 /g97J1OKvtX4ULJRDcbcn+3APk913M8eVThXM5aN8IlDhavhX9EhXKP5Ovri4f0E91
+	 Edwe1V0Ax7b5w==
+Message-ID: <750f5388-20f9-45a3-a1e6-ceac4b91329f@kernel.org>
+Date: Thu, 9 May 2024 07:53:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] soc: imx: secvio: Add secvio support
+Subject: Re: [PATCH 1/4] dt-bindings: firmware: secvio: Add device tree
+ bindings
 To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Franck LENORMAND <franck.lenormand@nxp.com>,
@@ -46,10 +47,9 @@ To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  Varun Sethi <V.Sethi@nxp.com>, Silvano Di Ninno <silvano.dininno@nxp.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, frank.li@nxp.com,
- daniel.baluta@nxp.com, Iuliana Prodan <iuliana.prodan@nxp.com>,
- Horia Geanta <horia.geanta@nxp.com>
+ Pankaj Gupta <pankaj.gupta@nxp.com>, frank.li@nxp.com, daniel.baluta@nxp.com
 References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
+ <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,11 +95,13 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
+In-Reply-To: <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 09/05/2024 02:45, Vabhav Sharma wrote:
+> Document the secvio device tree bindings.
+> 
 > The tampers are security feature available on i.MX products and
 > managed by SNVS block.The tamper goal is to detect the variation
 > of hardware or physical parameters, which can indicate an attack.
@@ -109,53 +111,65 @@ On 09/05/2024 02:45, Vabhav Sharma wrote:
 > to the security-violation ports, which send an alert when an
 > out-of-range value is detected.
 > 
-> This detection is done by:
-> -Analog tampers: measure analogic values
-> 	- External clock frequency.
-> 	- Temperature.
-> 	- Voltage.
-> 
-> - Digital tampers:
-> 	- External tamper
-> 	- Other detectors:
-> 		- Secure real-time counter rollover tamper.
-> 		- Monotonic counter rollover tamper.
-> 		- Power supply glitch tamper.
-> 
-> The on-chip sensors for voltage, temperature, and clock frequency
-> indicate if tamper scenarios may be present. These sensors generate an
-> out-of-range signal that causes a security violation to clear the
-> authentication and storage keys and to block access to sensitive
-> information.
-> 
-> Add linux module secvio driver to handle security violation interrupt.
-> 
 > The "imx-secvio-sc" module is designed to report security violations
-> and tamper triggering to the user.
+> and tamper triggering via SCU firmware to the user.
 > 
-> The functionalities of the module are accessible via the "debugfs"
-> kernel.The folder containing the interface files for the module is
-> "<kernel_debugfs>/secvio/".
+> Add the imx-scu secvio sub node and secvio sub node description.
 > 
-> Get status
-> Reading from the "info" file will return the status of security:
-> - Fuse related to security tampers.
-> - SNVS readable registers.
-> - DGO registers.
-> 
+> Signed-off-by: Franck LENORMAND <franck.lenormand@nxp.com>
 > Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
 > ---
-> Vabhav Sharma (4):
->       dt-bindings: firmware: secvio: Add device tree bindings
->       firmware: imx: Add SC APIs required for secvio module
->       soc: imx: secvio: Add support for SNVS secvio and tamper via SCFW
->       arm64: dts: imx8q: Add node for Security Violation
 
-Please version your patches correctly and provide changelog.
+That's not v1, right? What changed? Why do we have to guess this?
 
-I wrote about b4 already, which solves this as well.
+This is thoroughly documented in kernel process so read the
+documentation before posting.
 
-What changed here?
+
+>  .../bindings/arm/freescale/fsl,scu-secvio.yaml     | 35 ++++++++++++++++++++++
+>  .../devicetree/bindings/firmware/fsl,scu.yaml      | 10 +++++++
+>  2 files changed, 45 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/freescale/fsl,scu-secvio.yaml b/Documentation/devicetree/bindings/arm/freescale/fsl,scu-secvio.yaml
+> new file mode 100644
+> index 000000000000..30dc1e21f903
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/arm/freescale/fsl,scu-secvio.yaml
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/arm/freescale/fsl,scu-secvio.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX Security Violation driver
+
+Bindings are for hardware, not drivers. Describe hardware.
+
+> +
+> +maintainers:
+> +  - Franck LENORMAND <franck.lenormand@nxp.com>
+> +
+> +description: |
+
+Do not need '|' unless you need to preserve formatting.
+
+> +  Receive security violation from the SNVS via the SCU firmware. Allow to
+> +  register notifier for additional processing
+
+Notifier? That's a Linux thing, how does it relate to the hardware?
+
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx-sc-secvio
+
+Missing SoC compatibles.
+
+So no, that's just abuse of DT to instantiate driver.
+
+NAK. Drop the binding.
 
 Best regards,
 Krzysztof
