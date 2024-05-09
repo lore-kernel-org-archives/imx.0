@@ -1,137 +1,76 @@
-Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CDD33982
-	for <imx@lists.linux.dev>; Thu,  9 May 2024 04:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAB81494D8
+	for <imx@lists.linux.dev>; Thu,  9 May 2024 05:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715228696; cv=none; b=CRiI5VYankWAaABn5agWudzWAferQqZDVkWJTABjPPKbc8hRXnhsMkW79X47Oq8m90yLvHCmgKuuyne4C8d6ZsmKTcrcQHD+NDmh1ZpQIQUUn2v3/iy+YvCNxh/CTM/KlT10SYeOHD9oj3A5swRri+gCsYQdnPDeC4scra5xEhQ=
+	t=1715232861; cv=none; b=Q0DwYk6i0I//wnL+7G65I/88KLsGCeGDgjAvfD+fcUqjy6j1QhDoP2gqZEEFZjEcRnKv5OHSh3zv+JNO3vGSB3nWPZZNJBl8GNjLjwqrx/mBwguBadTOZAPEH0lN0Nkm66X+7GPO1BWCTvnlV82oJbAzUbDVzWZmBPSi7GSK8Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715228696; c=relaxed/simple;
-	bh=wbluDtpkgkqI4b6uOnSnk0JaOqE8O/8A4tFQH+1zXWw=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zwlzc5X1gWy+jRyMMP2BY0yK1rjqD4wxrQB01Hp55aa25ox8S23OdnRphLd/2/T6BB21UlTiVw/lm9oNb8UMGb5w+k0f/M9Gr61PUbAa5+UYK0UkgGbd16MFuxWLbtTtexGi5HS8FwZYqZYn/pbqEYP2IFWpMj4ftz+4m07sIKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-208.elisa-laajakaista.fi [88.113.25.208])
-	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
-	id 14224eb4-0dbc-11ef-b972-005056bdfda7;
-	Thu, 09 May 2024 07:24:52 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 9 May 2024 07:24:51 +0300
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <frank.li@nxp.com>,
-	Krzysztof =?utf-8?B?V2lsY3p577+977+9c2tp?= <kwilczynski@kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?B?V2lsY3p577+977+9c2tp?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v4 4/5] PCI: imx6: Convert to agnostic GPIO API
-Message-ID: <ZjxQE8h0-BABxybu@surfacebook.localdomain>
-References: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
- <20240506142142.4042810-5-andriy.shevchenko@linux.intel.com>
- <AS8PR04MB867668870DD2DC029C8B98048CE62@AS8PR04MB8676.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1715232861; c=relaxed/simple;
+	bh=fdUH87iHP9ev1kU+ajKaxLKo02sTP5LzeEqw2Aiby1w=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=E/8I8/nS7Eyap8AP4T+ni9C4zwSIshEmSdf1JNkKrtqSHAozd6k2Emjd4YuCr7MLiZvpQG8SkMjenI2G6PA6fWWi8OK6wgDLQu/iVAADtFdX21oAVuzsQBvBm+NaDO0QRxmkFU6lyS9uMzOIw8Yex52UauhE632/VZCJXcoJy04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 47EFB1A1881;
+	Thu,  9 May 2024 07:34:18 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F3AC71A1FFD;
+	Thu,  9 May 2024 07:34:17 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 27163181D0FD;
+	Thu,  9 May 2024 13:34:16 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com
+Subject: [PATCH 1/2] arm64: dts: imx8mp: Initialize audio PLLs from audiomix subsystem
+Date: Thu,  9 May 2024 13:14:57 +0800
+Message-Id: <1715231698-451-2-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1715231698-451-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1715231698-451-1-git-send-email-shengjiu.wang@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB867668870DD2DC029C8B98048CE62@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-Thu, May 09, 2024 at 01:24:45AM +0000, Hongxing Zhu kirjoitti:
-> > -----Original Message-----
-> > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Sent: 2024年5月6日 22:21
+Initialize audio PLL1 as the parent clock for 8kHz series rates,
+audio PLL2 as the parent clock for 11kHz series rates. that PLL1
+and PLL2 can together support full range of audio sample rates.
 
-...
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> > -	imx6_pcie->gpio_active_high = of_property_read_bool(node,
-> > -						"reset-gpio-active-high");
-> > -	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
-> > -		ret = devm_gpio_request_one(dev, imx6_pcie->reset_gpio,
-> > -				imx6_pcie->gpio_active_high ?
-> > -					GPIOF_OUT_INIT_HIGH :
-> > -					GPIOF_OUT_INIT_LOW,
-> > -				"PCIe reset");
-> > -		if (ret) {
-> > -			dev_err(dev, "unable to get reset gpio\n");
-> > -			return ret;
-> > -		}
-> > -	} else if (imx6_pcie->reset_gpio == -EPROBE_DEFER) {
-> > -		return imx6_pcie->reset_gpio;
-> > -	}
-
-> Please correct me if my understand is wrong.
-> The "reset-gpio-active-high" property is added for some buggy board designs.
-> On these buggy boards, the reset gpio is active high.
-
-This is my understanding too.
-
-> In the other words, the PERST# is active and remote endpoint device would
-> be in reset stat when this gpio is high on these buggy boards.
-
-Yes.
-
-> I'm afraid that the PCIe would be broken on these boards, If these codes
->  are removed totally,
-
-No. Linus W. explained in the previous version review round how it's supposed
-to work.
-
-> and toggle the reset GPIO pin like below.
-> ...
-> gpio_set_value_cansleep(imx6_pcie->reset_gpio, 0);
-> msleep(100);
-> gpio_set_value_cansleep(imx6_pcie->reset_gpio, 1);
-> ...
-
-It's not the code that this patch adds. I'm not sure if I understand starting
-from here what you mean.
-
-> By the way, this reset GPIO pin should be high at end in
-> imx6_pcie_deassert_core_reset() if the imx6_pcie->gpio_active_high is zero. 
-
-This seems a terminology mixup. You probably meant "inactive".
-And this is exactly the case with this patch.
-
-If you start thinking in terms of "active"/"inactive" you will see that there
-is no contradiction and no behaviour change. The quirk itself is located in
-gpiolib-of.c..
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index b92abb5a5c53..459c4a54d30e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1579,6 +1579,9 @@ audio_blk_ctrl: clock-controller@30e20000 {
+ 					      "sai1", "sai2", "sai3",
+ 					      "sai5", "sai6", "sai7";
+ 				power-domains = <&pgc_audio>;
++				assigned-clocks = <&clk IMX8MP_AUDIO_PLL1>,
++						  <&clk IMX8MP_AUDIO_PLL2>;
++				assigned-clock-rates = <393216000>, <361267200>;
+ 			};
+ 		};
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
