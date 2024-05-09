@@ -1,242 +1,610 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA50149C7C
-	for <imx@lists.linux.dev>; Thu,  9 May 2024 09:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB1013118B
+	for <imx@lists.linux.dev>; Thu,  9 May 2024 10:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715246343; cv=none; b=XnFLB6E+a23b6rl61xiN3G8EFntWwSAMpS8Kwq3Lo6L9lTsGMT8g0FTsLa2sX+wgdbw5WUn1cAEpG9l/EjpXng1n/GQALvy9qPn2Mb4RSD+hOY5dMtUkwisO2f/bQLBkFZiZZwSy4UwlM6jsnn7yHMpWPIFWn6HKruW5FJbKebw=
+	t=1715251726; cv=none; b=jv9cGyEmT+7GplQNVk5Vi0GowOAuW1nB2QafA9Or15nsV0vPjQ7Tc0VDLU68nXt/azMOiYtNVBMlAZ5nbDmmuygmRxENoeGt1TV0Jy92L6IM/6gWYhcxABz9jN9c68SI4r2WooyDk+U0iF36PwIDcxPxrGAoujOGdWSLtqjrmrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715246343; c=relaxed/simple;
-	bh=lcCQnxRMRJTW7GYII3BN87nmQecfBijYHLC7JbXBtcU=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=L7Ftm3MNDN9HoY48uZYUlXeIOfK0Jl3+wHofDbZ4mMlAGZJLWYKatHbhbBT4wGUUgqGl2711AlMBbejFJo5CkA8KRzv6vvfJyFlk4NM4uBj1Zb5+pgC17vw8Tc73RSEWFak30qdpjPn1K0DVQoWvR0pqYZG+pFyMfi/hAaOOjqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PbgVk9Sh; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1715251726; c=relaxed/simple;
+	bh=7ce71H0+iO+dpFN+K0elPR2oWkQjuMhFm58muY13Wy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IDXV9OHW/pcpFNsNRETCfWlUyFSCpgkU9SoH35q7CH7Su0b/Cq5rgujq7AOOnr8csg8tXE+aOiLi153+xwV50kb9kvhkY+NP4hKe5e24i1t8gNyqfpenrB45XnjqwAkfZWdkC+XadQ6ZvfU6If4L/Z09fxV3TvJwxHMnb4wOEIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mBeoS44f; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PbgVk9Sh"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-34d99ec52e1so504175f8f.3
-        for <imx@lists.linux.dev>; Thu, 09 May 2024 02:19:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mBeoS44f"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a5a157a1cd1so166282466b.0
+        for <imx@lists.linux.dev>; Thu, 09 May 2024 03:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715246339; x=1715851139; darn=lists.linux.dev;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=bLpM7TJDjRcXRO0i4lYjo6OZAM3sE3CuEsmwQ0zb4mw=;
-        b=PbgVk9SheAF7uKM4PGSJadOnbRiC0SMlb9Ax18t+oXhlTl2qgDVEDTv/eOKweDSK6Q
-         l/JIEe2/v60nm9//sncJ+v+HB+Nq9PiBqhk5uqaFDSW7HDA0cox+xscDQtWpjWbq7iZo
-         U0CWssxAFZEXe7xFbnNdQdrITcmPnZ6KZiWffywf/I/KWG+F0+C/JSKWY9a1wBh5lgkP
-         sEPUmOYIbgvF2ERFrvkvf5TsewMcD+0hGlYIuJU/uAb7dGXUpxfzRWQe1PqiX0YPFZS/
-         OCaahub+qbAuSBoAVkTliV8RkoOpQFTVpT0Sargzd4nK26tFC0AH5Go7N+cJhdXkQnJ9
-         OIuw==
+        d=linaro.org; s=google; t=1715251723; x=1715856523; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pYlidyl89G5PiBxk0XMF7OIxIFGwq175e8Cd1RD8Edg=;
+        b=mBeoS44fU8K/YGpmtDTwiOJcZebI601b2Sf3APZsDMCo5H9gwav07unQHI8Z8ZyPyi
+         CAIxksqDb9qDCgtDH4FHz0SfjIl8CjmlAA91ZqYo8EB3TiSKv58oYMDX8CTGpKJoQeS1
+         QHgPIO9RpFkh2zXse6Qyt2F7CIUmfZXcoQj2V2WwVzUgH2q0xNmyKCqIb/4XqwLRSPoM
+         2ji1MkfMQRHctRrQ8LF/LS2njREBk/8tgSOn+nK7r9QE2U6RvRt6qoIDmjddQdl9ftNh
+         5+bY7151hqyLnFYCdKWwiaW39l9VEaMlGj0iZGGkRLzfXTsxLA0+e3Kxy+uFsFgkqEFT
+         3Dew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715246339; x=1715851139;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bLpM7TJDjRcXRO0i4lYjo6OZAM3sE3CuEsmwQ0zb4mw=;
-        b=No55l92+Kfmp2EdGRw1vA4FmKmVRZXxUdOmC2lDyHO/KBQt6rzlVs1N2ohve+07npM
-         cxf0JNhZLryOPtsbkgEqunnD2oiBdq+LjoI1oqMP+3ks8+Xc72cExpm4KzJMsE9v2hvX
-         YAoWQtJ/sfg3Oi26x1ko9fU52JD93XJFGYCWVc2wOwuis+kLot3miX+yPxxSm80/BvJC
-         TePlsPvqNqXW+Ixf3ZTMYVQuh7sGVX8Po5qhDiLanjaYk6HY7XM63WcNhNZjEMnKZgEd
-         wXOPhQ1EFwYi78abJIA8zU3XLlRZnNJenASrootKwIivOc6wfE0uuGOJvdIPgIc/xlSX
-         8qLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhBvfvEgOVOIxkEzFIxZFpo0seaopSM1e8+gjYDuDu7HynOFegvwkrqtUTskK+ZMW7yiMGR/qR8xVP9ZGhlEsBE/D7
-X-Gm-Message-State: AOJu0YwkJApSsJPynUzQSEb3Cunonbo90arH05aoAr3A7Ne34ttWcGhV
-	2680Xnix1kD+y8E4Svoso72uvPtpLBUjhfyQ3ITdSFZ3mzM0Om7NrPum0A2cIQM=
-X-Google-Smtp-Source: AGHT+IFsB5wyyg9+udb49eD6La4FDSf5anjooXUEPEJOhb5hbaV1MWw6t5Anw3NkxndfSAwplOMP8A==
-X-Received: by 2002:adf:ca90:0:b0:34d:ef22:70d9 with SMTP id ffacd0b85a97d-34fca23f9ecmr3576359f8f.15.1715246338692;
-        Thu, 09 May 2024 02:18:58 -0700 (PDT)
-Received: from localhost ([2a01:e0a:3c5:5fb1:87e6:73a1:526b:a411])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502b79bd40sm1179386f8f.4.2024.05.09.02.18.57
+        d=1e100.net; s=20230601; t=1715251723; x=1715856523;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pYlidyl89G5PiBxk0XMF7OIxIFGwq175e8Cd1RD8Edg=;
+        b=AJZ2kXv+NmjlYD3QZI4QVvAGkslOl1ceY+5kAZ5p+9ow53GVsjegzz3ExDpssRu3wI
+         LLwMxys/+i9A0isDkenXA+J4TQHzWBAxz2I5KWLG9FX6B9UJ+94+XLUIRKVYZjGQJlGL
+         SpFPdb5lDuWno3OKSF1Xgq9/EwkJIugh8hkTG2IxyEt5tTIatgv0CPrGIZqJD7gypvp+
+         +KFRjnoA/1fvmlqsH9v5Bw2/Pq+TC83T0lfcOTSuJhKCCf/sMG/PR4TWdlytDVqC6dKO
+         53r2QcjGh0XOYSU3ZnUlBtOhbj1fV9oQ8EUe+B7X036gdIXhARQzsiNJ5nDNtr4GKer7
+         Ux8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXCEaSHr93zevbR3j+NcQBrbic9rI0+VsMMExWotmgAJz+Kp5B4BJPWfcLTOooWXu+Z3s0dmyKAgj53UQNT2leScqgz
+X-Gm-Message-State: AOJu0YxRUbd9BXfM4o5OXXgXW7ACQHYiHYNnZ/qYUkTgLB5AmHcd2g4O
+	B9U8AgBc+BFwdDAqIAeuvhnuFDgS0YUV+ug03VsZ6AjJMIf9jynEejyIfaaYwVk=
+X-Google-Smtp-Source: AGHT+IH1CmRJSg3xhi+VUJ3TVNOjm9s+MndboSe1LvFSho3NF1BCuqzFPPDeEK7mG1aMmNDFxXz38g==
+X-Received: by 2002:a17:906:c404:b0:a59:a282:5db7 with SMTP id a640c23a62f3a-a59fb9d0889mr284564266b.65.1715251722913;
+        Thu, 09 May 2024 03:48:42 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17894d85sm60195966b.72.2024.05.09.03.48.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 May 2024 02:18:58 -0700 (PDT)
-References: <87wmo6dyxg.wl-kuninori.morimoto.gx@renesas.com>
- <1jr0ee2ebk.fsf@starbuckisacylon.baylibre.com>
- <87pltxmakr.wl-kuninori.morimoto.gx@renesas.com>
- <87edaba5ze.wl-kuninori.morimoto.gx@renesas.com>
-User-agent: mu4e 1.10.8; emacs 29.2
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Jerome Brunet <jbrunet@baylibre.com>, Amadeusz =?utf-8?B?U8WCYXdpxYRz?=
- =?utf-8?B?a2k=?=
- <amadeuszx.slawinski@linux.intel.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Alper Nebi Yasak
- <alpernebiyasak@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Banajit Goswami
- <bgoswami@quicinc.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Brent
-   Lu <brent.lu@intel.com>, Cezary Rojewski <cezary.rojewski@intel.com>,
- Charles Keepax <ckeepax@opensource.cirrus.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- Hans de Goede <hdegoede@redhat.com>, Jaroslav Kysela <perex@perex.cz>,
- Jiawei Wang <me@jwang.link>, Jonathan  Corbet <corbet@lwn.net>, Kai
-  Vehmanen <kai.vehmanen@linux.intel.com>, Kevin Hilman
- <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Maso Huang <maso.huang@mediatek.com>, Matthias
-  Brugger <matthias.bgg@gmail.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>, Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang
- <shengjiu.wang@gmail.com>, Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>, Sylwester Nawrocki
- <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, Vinod Koul
- <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- alsa-devel@alsa-project.org, imx@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 0/3] ASoC: grace time for DPCM cleanup
-Date: Thu, 09 May 2024 10:51:59 +0200
-In-reply-to: <87edaba5ze.wl-kuninori.morimoto.gx@renesas.com>
-Message-ID: <1j1q6b1gxs.fsf@starbuckisacylon.baylibre.com>
+        Thu, 09 May 2024 03:48:42 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/5] ARM: dts: imx: align panel timings node name with dtschema
+Date: Thu,  9 May 2024 12:48:34 +0200
+Message-ID: <20240509104838.216773-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
+DT schema expects panel timings node to follow certain pattern,
+dtbs_check warnings:
 
-On Thu 09 May 2024 at 05:50, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+  imx6dl-gw54xx.dtb: display-timings: 'hsd100pxn1' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
 
-> Hi Jerome
->
-> I need your help
->
->> > I have tested this series on an Amlogic device (vim3l)
->> > This brings warnings for cases which are perfectly fine.
->> > 
->> > For example, one of the DPCM backends is the TDM interface. This
->> > interface is capable of both playback and capture. It can be associated
->> > with any i2s/TDM codec.
->> > 
->> > The codec may do playback and capture too, but it
->> > may also do a single direction. Then usual example is the hdmi codec
->> > which does playback only.
->> > 
->> > In this case I get:
->> >  axg-sound-card sound: CPU capture is available but Codec capture is not (be.dai-link-6) Please update Codec driver
->> > 
->> > I don't think this is right.
->> 
->> Hmm..., I'm confusing
->> Does it mean you want to use "playback only" on it ?
->> If so, did you get below warning too ?
->> 	 "both playback/capture are available, but not using playback_only flag (%s)\n",
->>
+Linux drivers do not care about node name, so this should not have
+effect on Linux.
 
-I've checked. No such trace, no.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/nxp/imx/imx51-apf51dev.dts     |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx51-babbage.dts      |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts       |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts       |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts    | 14 +++++++-------
+ arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts    |  6 +++---
+ .../boot/dts/nxp/imx/imx6dl-aristainetos2_4.dts  |  2 +-
+ .../boot/dts/nxp/imx/imx6dl-aristainetos_4.dts   |  2 +-
+ .../boot/dts/nxp/imx/imx6dl-aristainetos_7.dts   |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi    |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi    |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi    |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi    |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi    |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi    |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lcd.dtsi   | 16 ++++++++--------
+ arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lvds.dtsi  | 16 ++++++++--------
+ arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi      | 14 +++++++-------
+ 19 files changed, 47 insertions(+), 47 deletions(-)
 
->> If not, can you please fill below ?
->> 
->> Card
->> 	dpcm_playback = (0 or 1)
->> 	dpcm_capture  = (0 or 1)
->> 	playback_only = (0 or 1)
->> 	capture_only  = (0 or 1)
->> BE.CPU
->> 	playback = (available, not available)
->> 	capture  = (available, not available)
->> BE.Codec
->> 	playback = (available, not available)
->> 	capture  = (available, not available)
->> Expect
->> 	playback = (available, not available)
->> 	capture  = (available, not available)
-
-I'm not too sure I undestand this. I'll try to illustrate the case
-raising the warning as precisely as possible bellow
-
->
-> I need feedback from you, it is still not clear for me.
-
-Sorry. There are some national holidays in France. I'm not spending much
-time near the keyboard ATM
-
-> But I noticed that we want to update below. I'm happy if it can solve your
-> issue.
->
-> -	if (has_playback && !has_playback_both)
-> +	if (has_playback && !has_playback_both && !dai_link->capture_only)
-> 		dev_warn(rtd->card->dev, ...)
->
-> -	if (has_capture && !has_capture_both)
-> +	if (has_capture && !has_capture_both && !dai_link->playback_only)
-> 		dev_warn(rtd->card->dev, ...)
->
-
-Honestly I'm a bit lost in all these flag :/
-
-Some for BE error reported here is the full picture
-
-     PCM
- =====|=====
-      V
-    --------
-    |CPU FE| This CPU (FIFO) does Playback only. 
-    --------
-      |  Because of the CPU, link a playback only one
-      V
-    ----------
-    |Codec FE| Using Dummy here
-    ----------
-      |
-      V
-    ~~~~~~~~~~
-    |Routing |
-    ~~~~~~~~~~
-      ^
-      |
-      V
-    --------
-    |CPU BE|  This is the TDM interface. Capable of both Playback and
-    --------  Capture. Through routing it can be connected to Playback
-      ^       and/or Capture FE CPUs.
-      |
-      |
-      V
-    -------------
-    |BE Codec(s)| Possibly N codecs, supporting both direction, or a
-    ------------- Single one, or one direction each. In this particular case
-      |           it is Playback only C2C.
-      |
- ---- V ------------------ From Here, it is specific to HDMI -------------
-    ~~~~~~~~~~~~~
-    |C2C Routing| SoC has routing has mux between the different TDM
-    ~~~~~~~~~~~~~ interfaces and the HDMI controller
-      |
-      |
-      V
-    ---------
-    |C2C CPU|     This is a playback only CPU for HDMI
-    ---------
-      |
-      V
-    -----------
-    |HDMI Codec|  The usual HDMI codec, playback only
-    -----------
-
-Better picture are available in the SoC doc.
-There is publicly available datasheet here [1]
-
-Audio paths are displayed in Section 9, page 807, Figure 9-1.
-A TDM interface in this figure is combination of a TDMOUT and a TDMIN
-(axg-tdm-formatter.c). The axg-tdm-interface.c joins them because they
-use the same pads and clocks.
-
-[1]: https://dl.khadas.com/products/vim3l/datasheet/s905d3_datasheet_0.2_wesion.pdf
-
->
->
-> Thank you for your help !!
->
-> Best regards
-> ---
-> Renesas Electronics
-> Ph.D. Kuninori Morimoto
-
-
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51-apf51dev.dts b/arch/arm/boot/dts/nxp/imx/imx51-apf51dev.dts
+index b61d55ca1467..f72e109342bc 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51-apf51dev.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx51-apf51dev.dts
+@@ -25,7 +25,7 @@ disp1 {
+ 		pinctrl-0 = <&pinctrl_ipu_disp1>;
+ 
+ 		display-timings {
+-			lw700 {
++			timing0: timing-lw700 {
+ 				native-mode;
+ 				clock-frequency = <33000033>;
+ 				hactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts b/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts
+index 16ff543f3fbf..f4a47e8348b2 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts
+@@ -89,7 +89,7 @@ display2: disp2 {
+ 		status = "disabled";
+ 		display-timings {
+ 			native-mode = <&timing1>;
+-			timing1: claawvga {
++			timing1: timing-claawvga {
+ 				clock-frequency = <27000000>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts b/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts
+index 2bd0761c7e90..87a34cbdf233 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts
+@@ -58,7 +58,7 @@ display1: disp1 {
+ 		pinctrl-0 = <&pinctrl_lcd>;
+ 
+ 		display-timings {
+-			800x480p60 {
++			timing0: timing-800x480p60 {
+ 				native-mode;
+ 				clock-frequency = <30066000>;
+ 				hactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts b/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts
+index 1353d985969c..f0f92ee7ba95 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-m53evk.dts
+@@ -17,7 +17,7 @@ display1: disp1 {
+ 		pinctrl-0 = <&pinctrl_ipu_disp1>;
+ 
+ 		display-timings {
+-			800x480p60 {
++			timing0: timing-800x480p60 {
+ 				native-mode;
+ 				clock-frequency = <31500000>;
+ 				hactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts
+index a7f77527269d..a02d77bb5672 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x03x.dts
+@@ -67,7 +67,7 @@ display0_in: endpoint {
+ 		};
+ 
+ 		display-timings {
+-			VGA {
++			timing-vga {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -83,7 +83,7 @@ VGA {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ETV570 {
++			timing-etc570 {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -99,7 +99,7 @@ ETV570 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0350 {
++			timing-et0350 {
+ 				clock-frequency = <6413760>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+@@ -115,7 +115,7 @@ ET0350 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0430 {
++			timing-et0430 {
+ 				clock-frequency = <9009000>;
+ 				hactive = <480>;
+ 				vactive = <272>;
+@@ -131,7 +131,7 @@ ET0430 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ET0500 {
++			timing-et0500 {
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+@@ -147,7 +147,7 @@ ET0500 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0700 { /* same as ET0500 */
++			timing-et0700 { /* same as ET0500 */
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+@@ -163,7 +163,7 @@ ET0700 { /* same as ET0500 */
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ETQ570 {
++			timing-etq570 {
+ 				clock-frequency = <6596040>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts
+index 6cdf2082c742..e10c179dbdb3 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-tx53-x13x.dts
+@@ -191,7 +191,7 @@ lvds0: lvds-channel@0 {
+ 		display-timings {
+ 			native-mode = <&lvds0_timing0>;
+ 
+-			lvds0_timing0: hsd100pxn1 {
++			lvds0_timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+@@ -207,7 +207,7 @@ lvds0_timing0: hsd100pxn1 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			lvds0_timing1: nl12880bc20 {
++			lvds0_timing1: timing-nl12880bc20 {
+ 				clock-frequency = <71000000>;
+ 				hactive = <1280>;
+ 				vactive = <800>;
+@@ -233,7 +233,7 @@ lvds1: lvds-channel@1 {
+ 		display-timings {
+ 			native-mode = <&lvds1_timing0>;
+ 
+-			lvds1_timing0: hsd100pxn1 {
++			lvds1_timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos2_4.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos2_4.dts
+index dfa6f64d43cc..c75606fc4abd 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos2_4.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos2_4.dts
+@@ -85,7 +85,7 @@ lcd_panel: display@0 {
+ 		power-on-delay = <10>;
+ 
+ 		display-timings {
+-			480x800p57 {
++			timing0: timing-480x800p57 {
+ 				native-mode;
+ 				clock-frequency = <27000027>;
+ 				hactive = <480>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_4.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_4.dts
+index a5ac79346854..0d86927819c2 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_4.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_4.dts
+@@ -36,7 +36,7 @@ display0: disp0 {
+ 		status = "okay";
+ 
+ 		display-timings {
+-			480x800p60 {
++			timing0: timing-480x800p60 {
+ 				native-mode;
+ 				clock-frequency = <30000000>;
+ 				hactive = <480>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_7.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_7.dts
+index 5a25bdbbeb68..66271daf97d9 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_7.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos_7.dts
+@@ -25,7 +25,7 @@ display0: disp0 {
+ 		status = "okay";
+ 
+ 		display-timings {
+-			800x480p60 {
++			timing0: timing-800x480p60 {
+ 				native-mode;
+ 				clock-frequency = <33246000>;
+ 				hactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
+index 48ffb3ee01bd..082a2e3a391f 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
+@@ -485,7 +485,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
++			timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
+index 1eae438fbdae..8ec442038ea0 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
+@@ -482,7 +482,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
++			timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
+index c2ec8572c8a5..9df9f79affae 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
+@@ -529,7 +529,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
++			timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
+index 7cee983da669..7693f92195d5 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
+@@ -584,7 +584,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
++			timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
+index fbc704c064b6..9d0836df0fed 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
+@@ -486,7 +486,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: g101evn010 {
++			timing0: timing-g101evn010 {
+ 				clock-frequency = <68930000>;
+ 				hactive = <1280>;
+ 				vactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
+index 070506279186..f4cb9e1d34a9 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
+@@ -551,7 +551,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
++			timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
+index 6656e2e762a1..0a3deaf92eea 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
+@@ -786,7 +786,7 @@ lvds-channel@0 {
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
++			timing0: timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lcd.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lcd.dtsi
+index 79f2354886b7..7ae495bdc48f 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lcd.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lcd.dtsi
+@@ -110,7 +110,7 @@ lcd_out: endpoint {
+ 		};
+ 
+ 		display-timings {
+-			VGA {
++			timing-vga {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -126,7 +126,7 @@ VGA {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ETV570 {
++			timing-etv570 {
+ 				u-boot,panel-name = "edt,et057090dhu";
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+@@ -143,7 +143,7 @@ ETV570 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0350 {
++			timing-et0350 {
+ 				u-boot,panel-name = "edt,et0350g0dh6";
+ 				clock-frequency = <6413760>;
+ 				hactive = <320>;
+@@ -160,7 +160,7 @@ ET0350 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0430 {
++			timing-et0430 {
+ 				u-boot,panel-name = "edt,et0430g0dh6";
+ 				clock-frequency = <9009000>;
+ 				hactive = <480>;
+@@ -177,7 +177,7 @@ ET0430 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ET0500 {
++			timing-et0500 {
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+@@ -193,7 +193,7 @@ ET0500 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0700 { /* same as ET0500 */
++			timing-et0700 { /* same as ET0500 */
+ 				u-boot,panel-name = "edt,etm0700g0dh6";
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+@@ -210,7 +210,7 @@ ET0700 { /* same as ET0500 */
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ETQ570 {
++			timing-etq570 {
+ 				clock-frequency = <6596040>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+@@ -226,7 +226,7 @@ ETQ570 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			CoMTFT { /* same as ET0700 but with inverted pixel clock */
++			timing-comtft { /* same as ET0700 but with inverted pixel clock */
+ 				u-boot,panel-name = "edt,etm0700g0edh6";
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lvds.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lvds.dtsi
+index 2ca2eb37e14f..dfbdbb87aec4 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lvds.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6-lvds.dtsi
+@@ -127,7 +127,7 @@ lvds0_out: endpoint {
+ 		};
+ 
+ 		display-timings {
+-			hsd100pxn1 {
++			timing-hsd100pxn1 {
+ 				u-boot,panel-name = "hannstar,hsd100pxn1";
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+@@ -142,7 +142,7 @@ hsd100pxn1 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			VGA {
++			timing-vga {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -158,7 +158,7 @@ VGA {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			nl12880bc20 {
++			timing-nl12880bc20 {
+ 				u-boot,panel-name = "nlt,nl12880bc20-spwg-24";
+ 				clock-frequency = <71000000>;
+ 				hactive = <1280>;
+@@ -175,7 +175,7 @@ nl12880bc20 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ET0700 {
++			timing-et0700 {
+ 				u-boot,panel-name = "edt,etm0700g0dh6";
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+@@ -192,7 +192,7 @@ ET0700 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ETV570 {
++			timing-etv570 {
+ 				u-boot,panel-name = "edt,et057090dhu";
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+@@ -224,7 +224,7 @@ lvds1_out: endpoint {
+ 		};
+ 
+ 		display-timings {
+-			hsd100pxn1 {
++			timing-hsd100pxn1 {
+ 				clock-frequency = <65000000>;
+ 				hactive = <1024>;
+ 				vactive = <768>;
+@@ -238,7 +238,7 @@ hsd100pxn1 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			VGA {
++			timing-vga {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -254,7 +254,7 @@ VGA {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			nl12880bc20 {
++			timing-nl12880bc20 {
+ 				clock-frequency = <71000000>;
+ 				hactive = <1280>;
+ 				vactive = <800>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+index 1db146ac1c17..864173e30709 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+@@ -405,7 +405,7 @@ display: disp0 {
+ 		status = "okay";
+ 
+ 		display-timings {
+-			VGA {
++			timing-vga {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -421,7 +421,7 @@ VGA {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ETV570 {
++			timing-etv570 {
+ 				clock-frequency = <25200000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+@@ -437,7 +437,7 @@ ETV570 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ET0350 {
++			timing-et0350 {
+ 				clock-frequency = <6413760>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+@@ -453,7 +453,7 @@ ET0350 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ET0430 {
++			timing-et0430 {
+ 				clock-frequency = <9009000>;
+ 				hactive = <480>;
+ 				vactive = <272>;
+@@ -469,7 +469,7 @@ ET0430 {
+ 				pixelclk-active = <0>;
+ 			};
+ 
+-			ET0500 {
++			timing-et0500 {
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+@@ -485,7 +485,7 @@ ET0500 {
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ET0700 { /* same as ET0500 */
++			timing-et0700 { /* same as ET0500 */
+ 				clock-frequency = <33264000>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+@@ -501,7 +501,7 @@ ET0700 { /* same as ET0500 */
+ 				pixelclk-active = <1>;
+ 			};
+ 
+-			ETQ570 {
++			timing-etq570 {
+ 				clock-frequency = <6596040>;
+ 				hactive = <320>;
+ 				vactive = <240>;
 -- 
-Jerome
+2.43.0
+
