@@ -1,27 +1,27 @@
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501A013CAB4
-	for <imx@lists.linux.dev>; Thu,  9 May 2024 02:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4E813D26F
+	for <imx@lists.linux.dev>; Thu,  9 May 2024 02:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715220219; cv=none; b=IVHQtL0jilLUgN2VyRjLIBo2N6ca4R4eas1qMpaMqjXjIWmMrQUEXCDRNUPwrjdx2NcNfHg7gX8rZlkA8cMJAH0CBZIbOwrBGZfZQ+2QuIoAOwJZukun6rdYO3ApemD4L2uUE3okMTmIj0l9cI4KX+Dl1xBkAqpQ3bqebeUCIWQ=
+	t=1715220221; cv=none; b=iQBDukAWRyRAIzKfaKWR6qSB5QX+XsbOI6ha3QRb/kUaCOSnc1dtTIID6Il+h4PhQw4sYsjtn6sluHvvIcRzDDbD438Y3ZNPUWV1+jsHCswvU2mYac+0xYS2FZUeLx9u/4pjxSwAQfwNsDPlOYslvbG0Cx2AKWS7Q6QxAUealKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715220219; c=relaxed/simple;
-	bh=56mHVeFdfvxE2yIKn/Gg33/t+3cYTSavu7fC7I3BoYA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qwCjhIS5goy29awtBXLtg8aiMeD+LdeW/htiEQhzNTfdR6niMYkD0WCHWsVfEtyntmSU7fC8fizkFFA6H5jcK4qEEQop2U6qES4bepifzBf763RWqcPvG60yDo2r22s9wf4GypGO4wTzI3JSiHud7UT+LwkR+OyLMrazq4DDPaw=
+	s=arc-20240116; t=1715220221; c=relaxed/simple;
+	bh=eUwcL9aI2F0Cu45RR1S0pmgtx3YEe7LfV3/UpkyDPg4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=LLbXpEICAGFckcI9fk9JHkQOycYBwtvvhy1mKru2+qg0olO7v5VqVNy6TB+xv6L5IbZgqZ6iO2++/Eh31l/R9jBboATup1L/qmZHO4gxPD96+UV6wLOHkgLDwRNdamD3hI2423cUjadi/nV9kHK0d7DrrGFKiKJJWBvS1MdWykA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0CE751A1352;
-	Thu,  9 May 2024 04:03:30 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EAD1E1A1829;
+	Thu,  9 May 2024 04:03:32 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9625E1A1349;
-	Thu,  9 May 2024 04:03:29 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id AD2D11A156B;
+	Thu,  9 May 2024 04:03:32 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 85ABE181D0FC;
-	Thu,  9 May 2024 10:03:27 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 9D509180222F;
+	Thu,  9 May 2024 10:03:30 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: abelvesa@kernel.org,
 	peng.fan@nxp.com,
@@ -41,9 +41,9 @@ Cc: linux-clk@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v2 2/4] clk: imx: clk-audiomix: Add reset controller
-Date: Thu,  9 May 2024 09:43:56 +0800
-Message-Id: <1715219038-32453-3-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v2 4/4] clk: imx: clk-audiomix: Corrent parent clock for earc_phy and audpll
+Date: Thu,  9 May 2024 09:43:58 +0800
+Message-Id: <1715219038-32453-5-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1715219038-32453-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1715219038-32453-1-git-send-email-shengjiu.wang@nxp.com>
@@ -54,139 +54,55 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Audiomix block control can be a reset controller for
-Enhanced Audio Return Channel (EARC), which is one of
-modules in this audiomix subsystem.
+According to Reference Manual of i.MX8MP
+The parent clock of "earc_phy" is "sai_pll_out_div2",
+The parent clock of "audpll" is "osc_24m".
 
-The EARC PHY software reset and EARC controller software
-reset need to be supported.
+Add CLK_GATE_PARENT() macro for usage of specifying parent clock.
 
+Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block control")
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- drivers/clk/imx/clk-imx8mp-audiomix.c | 82 +++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ drivers/clk/imx/clk-imx8mp-audiomix.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index b381d6f784c8..e84365cef71b 100644
+index 6ed44cd5001b..11a29bd46a9e 100644
 --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
 +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -13,6 +13,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-+#include <linux/reset-controller.h>
- 
- #include <dt-bindings/clock/imx8mp-clock.h>
- 
-@@ -35,6 +36,8 @@
- #define SAI_PLL_MNIT_CTL	0x410
- #define IPG_LP_CTRL		0x504
- 
-+#define EARC_RESET_MASK		0x3
-+
- #define SAIn_MCLK1_PARENT(n)						\
- static const struct clk_parent_data					\
- clk_imx8mp_audiomix_sai##n##_mclk1_parents[] = {			\
-@@ -212,6 +215,7 @@ static const u16 audiomix_regs[] = {
- struct clk_imx8mp_audiomix_priv {
- 	void __iomem *base;
- 	u32 regs_save[ARRAY_SIZE(audiomix_regs)];
-+	struct reset_controller_dev rcdev;
- 
- 	/* Must be last */
- 	struct clk_hw_onecell_data clk_data;
-@@ -232,6 +236,80 @@ static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
+@@ -157,6 +157,15 @@ static const struct clk_parent_data clk_imx8mp_audiomix_pll_bypass_sels[] = {
+ 		PDM_SEL, 2, 0						\
  	}
- }
  
-+static int clk_imx8mp_audiomix_reset_set(struct reset_controller_dev *rcdev,
-+					 unsigned long id, bool assert)
-+{
-+	struct clk_imx8mp_audiomix_priv *drvdata = container_of(rcdev,
-+				struct clk_imx8mp_audiomix_priv, rcdev);
-+	unsigned int mask = BIT(id);
-+	u32 reg;
++#define CLK_GATE_PARENT(gname, cname, pname)						\
++	{								\
++		gname"_cg",						\
++		IMX8MP_CLK_AUDIOMIX_##cname,				\
++		{ .fw_name = pname, .name = pname }, NULL, 1,		\
++		CLKEN0 + 4 * !!(IMX8MP_CLK_AUDIOMIX_##cname / 32),	\
++		1, IMX8MP_CLK_AUDIOMIX_##cname % 32			\
++	}
 +
-+	pm_runtime_get_sync(rcdev->dev);
-+
-+	/* bit = 0 reset, bit = 1 unreset */
-+	reg = readl(drvdata->base + EARC);
-+	if (assert)
-+		writel(reg & ~mask, drvdata->base + EARC);
-+	else
-+		writel(reg | mask, drvdata->base + EARC);
-+
-+	pm_runtime_put_sync(rcdev->dev);
-+
-+	return 0;
-+}
-+
-+static int clk_imx8mp_audiomix_reset_reset(struct reset_controller_dev *rcdev,
-+					   unsigned long id)
-+{
-+	clk_imx8mp_audiomix_reset_set(rcdev, id, true);
-+
-+	return clk_imx8mp_audiomix_reset_set(rcdev, id, false);
-+}
-+
-+static int clk_imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
-+					    unsigned long id)
-+{
-+	return clk_imx8mp_audiomix_reset_set(rcdev, id, true);
-+}
-+
-+static int clk_imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
-+					      unsigned long id)
-+{
-+	return clk_imx8mp_audiomix_reset_set(rcdev, id, false);
-+}
-+
-+static int clk_imx8mp_audiomix_reset_xlate(struct reset_controller_dev *rcdev,
-+					   const struct of_phandle_args *reset_spec)
-+{
-+	unsigned long id = reset_spec->args[0];
-+
-+	if (!(BIT(id) & EARC_RESET_MASK))
-+		return -EINVAL;
-+
-+	return id;
-+}
-+
-+static const struct reset_control_ops clk_imx8mp_audiomix_reset_ops = {
-+	.reset		= clk_imx8mp_audiomix_reset_reset,
-+	.assert		= clk_imx8mp_audiomix_reset_assert,
-+	.deassert	= clk_imx8mp_audiomix_reset_deassert,
-+};
-+
-+static int clk_imx8mp_audiomix_register_reset_controller(struct device *dev)
-+{
-+	struct clk_imx8mp_audiomix_priv *drvdata = dev_get_drvdata(dev);
-+
-+	drvdata->rcdev.owner     = THIS_MODULE;
-+	drvdata->rcdev.nr_resets = fls(EARC_RESET_MASK);
-+	drvdata->rcdev.ops       = &clk_imx8mp_audiomix_reset_ops;
-+	drvdata->rcdev.of_node   = dev->of_node;
-+	drvdata->rcdev.dev	 = dev;
-+	drvdata->rcdev.of_reset_n_cells = 1;
-+	drvdata->rcdev.of_xlate  = clk_imx8mp_audiomix_reset_xlate;
-+
-+	return devm_reset_controller_register(dev, &drvdata->rcdev);
-+}
-+
- static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
- {
- 	struct clk_imx8mp_audiomix_priv *priv;
-@@ -337,6 +415,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_clk_register;
- 
-+	ret = clk_imx8mp_audiomix_register_reset_controller(dev);
-+	if (ret)
-+		goto err_clk_register;
-+
- 	pm_runtime_put_sync(dev);
- 	return 0;
- 
+ struct clk_imx8mp_audiomix_sel {
+ 	const char			*name;
+ 	int				clkid;
+@@ -174,14 +183,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
+ 	CLK_GATE("earc", EARC_IPG),
+ 	CLK_GATE("ocrama", OCRAMA_IPG),
+ 	CLK_GATE("aud2htx", AUD2HTX_IPG),
+-	CLK_GATE("earc_phy", EARC_PHY),
++	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
+ 	CLK_GATE("sdma2", SDMA2_ROOT),
+ 	CLK_GATE("sdma3", SDMA3_ROOT),
+ 	CLK_GATE("spba2", SPBA2_ROOT),
+ 	CLK_GATE("dsp", DSP_ROOT),
+ 	CLK_GATE("dspdbg", DSPDBG_ROOT),
+ 	CLK_GATE("edma", EDMA_ROOT),
+-	CLK_GATE("audpll", AUDPLL_ROOT),
++	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
+ 	CLK_GATE("mu2", MU2_ROOT),
+ 	CLK_GATE("mu3", MU3_ROOT),
+ 	CLK_PDM,
 -- 
 2.34.1
 
