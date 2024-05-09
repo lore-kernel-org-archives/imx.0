@@ -1,113 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA21013C9A4;
-	Thu,  9 May 2024 07:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CEB26AE7;
+	Thu,  9 May 2024 07:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715238124; cv=none; b=hN4LT53VRfBpqRO7GtgQdD06tRhK3w/FcZ04TCwLjtzYhoHjk+F8GMTEZVmpqjVWh9DnGtRFnAmrYDKWjoH7cemZLY1M2kvtmb3WtY2g3ll7VpQVrPNwYqRDHB2TpfoSRAKDF0W0zrgV4OYS8SUKF5XJpXxHq6wRWjj8ir3wCVU=
+	t=1715240237; cv=none; b=aWOCx+Qd03mUsTWh000I52yQrieetbB9Odw9vJNqs5uy1f9juO6jfYAhoTuoWMs+FlHFjZWgo+fkX4FoJ8aZQDRyY3qF//6+YkJCbVo/8yHx5Ws+WSK0jTW1HhzHTc2il5m7cgVe+QPERVmI7Sgh6wvQcYAOAKFDQ2vksbBMh54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715238124; c=relaxed/simple;
-	bh=HHUwATgsQkm4exkktBSGDqLQb41I/ScfpBMZ1OFL9As=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g0J5d9fPrQe8yVaV3oYuGIIkYfmzCPVRUbEKW7k+F5uxmpYxM6nk8LT3bHqZpRlV8lzXLq29D/16bjQGsLE8rIecUxcDlycsRtlozdRSodEVneU20XqhfExDQ2SUj9Mqrucwy2km26Mj9oV2QgclmMva8ILN+nuwLOWCjSbDIyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bo00cS1t; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715240237; c=relaxed/simple;
+	bh=qk2+IBmDngaDBCJU7AWu8KKJZ2Rxhc2kyG9HF1G1JBg=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=pEPlMX2H6VPvCD4XhABwKnyhZ/yF7pPJvisv3PC3yJVIbXSLGw567lnIH216MJqcrvOTHgN4Wx0LavhwhezDYuXZ8LZsHBjyZtPzVd4qCse/MXZ1/n2gioWeq+N7D9pvHkN8dADTQ/ZaVXoBIpspdCQm3LkByEH6yABvUI94BFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOAsEd7P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bo00cS1t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160E0C2BBFC;
-	Thu,  9 May 2024 07:01:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOAsEd7P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EC6C116B1;
+	Thu,  9 May 2024 07:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715238123;
-	bh=HHUwATgsQkm4exkktBSGDqLQb41I/ScfpBMZ1OFL9As=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bo00cS1t802h1N0emnQnDEt2+DH5ItaIWlezkP+yHKJtxSPp8bLogwwVuhDf0BFCY
-	 zXFhW0xJlui7ZcQWfd3kXf1aWkKxRTIJFJSh/Yx+PN3XupJeH++mFUUWTDl0JAvXI1
-	 9LAxvDNdQ7iJfd5niciOmsQIRFlHOxhkaTOe4uzijTdYdL/s99jRVWlChiPgnw2LGY
-	 HIsRwn1p2CUOEEuVLjtTZT0T1CI92Z/Ce6mcxRbHocj7uvtq0/D2/ozCNSNVt0yPBR
-	 Sa7m/iPaRS3n84SONW4NVfb/T1ya2chpGGH4miK/jyoRjZQ3c05LRzyaGtIa8LKDFJ
-	 j+2zgB2VFwKTA==
-Message-ID: <7505562d-ba61-48c2-ad30-d03499b95166@kernel.org>
-Date: Thu, 9 May 2024 09:01:54 +0200
+	s=k20201202; t=1715240237;
+	bh=qk2+IBmDngaDBCJU7AWu8KKJZ2Rxhc2kyG9HF1G1JBg=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=oOAsEd7PQJIoZ2Vr4Q5rpV1oePjIklqIWCXS8FlQab75d64GDWCB8eUa5P55ZeyQD
+	 s0XWc8mGImqVD5UyZP9uXkGUmPKRyyCqC4+YYHq5rQta7obsKDM3GmmBFlD6PRYxtS
+	 xpV8tZpda60FRWM491//iijyjJWzvd0sbsvOd3UmUwekPdk6tYzGIDln7JZSqH9tFr
+	 IzNZrca1dt4rYw9pjk5FnvoFvM23bUJv7LNZozAu3NCtlzeErQOjwQ0V4R9rVDFCZb
+	 vf2MsxLB0Y10AHcRi7X3IOm4uxjqr0sd6Y2VNxkBmZmAVirDLPIGiQt0pFge40JtTT
+	 hp4/O84Z3NyPA==
+Date: Thu, 09 May 2024 02:37:15 -0500
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] dt-bindings: clock: imx8mp: Add #reset-cells
- property
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org,
- peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de, imx@lists.linux.dev,
- shengjiu.wang@gmail.com
-Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <1715219038-32453-1-git-send-email-shengjiu.wang@nxp.com>
- <1715219038-32453-2-git-send-email-shengjiu.wang@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <1715219038-32453-2-git-send-email-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: kernel@pengutronix.de, imx@lists.linux.dev, 
+ krzysztof.kozlowski+dt@linaro.org, conor@kernel.org, conor+dt@kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, vkoul@kernel.org, 
+ robh+dt@kernel.org, linux-phy@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, frank.li@nxp.com, kishon@kernel.org
+In-Reply-To: <1715234181-672-3-git-send-email-hongxing.zhu@nxp.com>
+References: <1715234181-672-1-git-send-email-hongxing.zhu@nxp.com>
+ <1715234181-672-3-git-send-email-hongxing.zhu@nxp.com>
+Message-Id: <171524023506.3993776.14373949922426519018.robh@kernel.org>
+Subject: Re: [PATCH v4 2/3] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY
+ binding
 
-On 09/05/2024 03:43, Shengjiu Wang wrote:
-> The Audio Block Control contains clock distribution and gating
-> controls, as well as reset handling to several of the AUDIOMIX
-> peripherals. Especially the reset controls for Enhanced Audio
-> Return Channel (EARC) PHY and Controller.
+
+On Thu, 09 May 2024 13:56:20 +0800, Richard Zhu wrote:
+> Add i.MX8QM and i.MX8QXP HSIO SerDes PHY binding.
+> Introduce one HSIO configuration 'fsl,hsio-cfg', which need be set at
+> initialization according to board design.
 > 
-> So make Audio Block Control a reset provider for EARC, which
-> is one of modules in this audio subsystem.
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+>  .../bindings/phy/fsl,imx8qm-hsio.yaml         | 142 ++++++++++++++++++
+>  1 file changed, 142 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
 > 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Best regards,
-Krzysztof
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml:54:13: [error] string value is redundantly quoted with any quotes (quoted-strings)
+./Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml:54:22: [error] string value is redundantly quoted with any quotes (quoted-strings)
+
+dtschema/dtc warnings/errors:
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/1715234181-672-3-git-send-email-hongxing.zhu@nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
