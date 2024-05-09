@@ -1,27 +1,27 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855BA13C683
-	for <imx@lists.linux.dev>; Thu,  9 May 2024 02:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD0D13C8FF
+	for <imx@lists.linux.dev>; Thu,  9 May 2024 02:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715220216; cv=none; b=m0f0mTDMq9mDuDea0RHUS9heishePI0pWG2h83uIefLQ/993T/IjmaHUbkEoBNwK13LBt78ep7M15esX5IxKE6xfuW9DvnUbzBhu1fjkK4GmkYUMitvCD/bdfoEzV2o+297ylHSjfTBiWFD2IuFrydW/INKlk8GB2ek+y8o4/h4=
+	t=1715220218; cv=none; b=IiCD3qrmUeJ5CyPKb9UWFzb8OyZZIycdAhsCdUOgs+4zOdVHKxjeoRdb1WKCvBUCqhrP3M6EGiBhF8oSfVgM6upGuwsJUcA5Q5efhdGgbuAXaO16+UT/2V34RX/r+JqSCZwY7y5dXV1uq+xB42Z5f2boeAzgyJ5LMR1nF6amXXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715220216; c=relaxed/simple;
-	bh=c6XIgSQ/dc58EUSEJ1tEuyH3zh/U7hLPp2W9pGYTvXA=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=EE/cDY3m0AlFoXrVK5wAyp8dkJ2Z9xd/C/TMhUuBrk2weos2QT3zZJWBXWNbnqrYqDJOnwINf1OpBtRlca6DFz7yrPOvnofg/mzeaAwX4Uaxy0mfgGU6jd7CsNiy5Shdo7mSwLYRRuUAweW5w8zvZYO/nidTK2qnqJIg4ESA62M=
+	s=arc-20240116; t=1715220218; c=relaxed/simple;
+	bh=2YvN+OkmCp+6irX18QH/SxlB3J6Aq6w+eC09W93naH4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qTtxxTaZE+H5omhcXrXkt660hVSy9M8+b+ySEMoQOCk+Y+Kodmgg1G7g3vV9zZPEZy1d8Acv6AS077T1sYXr3LIja7LHFHC2frrOmN2q9bTvqc4PoaZHdrM0RQ7mKQ9yCY3xoRxB4wfuKxsR5LIw2aQQd28I931lmP6/L3dFUDw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id ACFE2201857;
-	Thu,  9 May 2024 04:03:26 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4B64320185B;
+	Thu,  9 May 2024 04:03:28 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 718F0200A78;
-	Thu,  9 May 2024 04:03:26 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0DFB220185E;
+	Thu,  9 May 2024 04:03:28 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 5A849181D0FC;
-	Thu,  9 May 2024 10:03:24 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id EA1D6181D0FD;
+	Thu,  9 May 2024 10:03:25 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: abelvesa@kernel.org,
 	peng.fan@nxp.com,
@@ -41,10 +41,12 @@ Cc: linux-clk@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v2 0/4] clk: imx: clk-audiomix: Improvement for audiomix
-Date: Thu,  9 May 2024 09:43:54 +0800
-Message-Id: <1715219038-32453-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v2 1/4] dt-bindings: clock: imx8mp: Add #reset-cells property
+Date: Thu,  9 May 2024 09:43:55 +0800
+Message-Id: <1715219038-32453-2-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1715219038-32453-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1715219038-32453-1-git-send-email-shengjiu.wang@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -52,24 +54,33 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Some improvement for audiomix driver:
-Add reset controller for EARC function
-Add CLK_SET_RATE_PARENT flags for clocks
-Corrent parent clock for earc_phy and audpll clocks.
+The Audio Block Control contains clock distribution and gating
+controls, as well as reset handling to several of the AUDIOMIX
+peripherals. Especially the reset controls for Enhanced Audio
+Return Channel (EARC) PHY and Controller.
 
-changes in v2:
-- add more info in commit messages.
+So make Audio Block Control a reset provider for EARC, which
+is one of modules in this audio subsystem.
 
-Shengjiu Wang (4):
-  dt-bindings: clock: imx8mp: Add #reset-cells property
-  clk: imx: clk-audiomix: Add reset controller
-  clk: imx: clk-audiomix: Add CLK_SET_RATE_PARENT flags for clocks
-  clk: imx: clk-audiomix: Corrent parent clock for earc_phy and audpll
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
- .../bindings/clock/imx8mp-audiomix.yaml       |   3 +
- drivers/clk/imx/clk-imx8mp-audiomix.c         | 105 +++++++++++++++++-
- 2 files changed, 102 insertions(+), 6 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+index 0a6dc1a6e122..6588a17a7d9a 100644
+--- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
++++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+@@ -44,6 +44,9 @@ properties:
+       ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8mp-clock.h
+       for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
+ 
++  '#reset-cells':
++    const: 1
++
+ required:
+   - compatible
+   - reg
 -- 
 2.34.1
 
