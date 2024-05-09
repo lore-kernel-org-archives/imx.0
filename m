@@ -1,229 +1,162 @@
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11011009.outbound.protection.outlook.com [52.101.229.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CABD12BEA4
-	for <imx@lists.linux.dev>; Thu,  9 May 2024 05:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715233851; cv=fail; b=WzOiAUWolAQVKihaG+ifViPQPHCtXSpeCJIi1kIj1gKiUyxf/oJkptMuUMm3Guta0ybYShj07msDR0jc0svAzkcn3L3+qsUZJfc4DmaeWQCMBNYQCX176pEqgst+zojU2AtElimtF6PVdgH/LpjY7qAuh1j5BDENaAsVSDvCfsQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715233851; c=relaxed/simple;
-	bh=Abn6ku78wy/1oamhGsfOpuJ+/CKZci0liEj7ItXib6Q=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=aDiC4X2MEUTU/n9a/vj7mxZitlFvS+n3a+SjhZwPzVmcg4VIaBvPs66rjB/gqnDnmZB/c9pmGdc+UJpkc6GfgwXxCLLeIpKgoOWlVTmmaTQ7EQGBB+KeP/ulHvHSFVf8UOJ1HOkvGt8pnfwW6TRScFa4AX3dl5QmLe1s7PYXo2o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=mGTn6HUC; arc=fail smtp.client-ip=52.101.229.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CEE1A2C2A;
+	Thu,  9 May 2024 05:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715233873; cv=none; b=UVWsx7zP5PFfdVclzEv6o+E4QaaslF7b4KspheZhbH20lv6TBK6oxZP5YSWIlLiuQ8jEfae3NyY44l1QXMj55ScxwWPAaiIJ0L+pHZMgtL4jtFeEPAeuWvjkVtAzYFqdaZr8AeXy9WcVR8qoVZZr5swE4txpgXxO1ks7hjfnLq0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715233873; c=relaxed/simple;
+	bh=JrahC9u3iZ2EEYCRi1f+9st8RuDxEJwQs/PRe7O4KYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ko4mnI9o1RR0VrEtFIrUnIt0CpWhA0i3dqBn6A5627NKmUJoB1CVFSiRd6854m6lPYJaJpufn9GL+J+29/pBMRdAzafG5R1LC9FeHRxLLCly0YAbdS8WqmsclXdUJ9fu6SrXoovzr5CnwFBNbtxhWCyLJ4XQa0XhG/1FE6uxUTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5uTbjO7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="mGTn6HUC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZkpXgTW8UW3nFL3gntniE5xwA8nIPif12hZUnXwM7/a1l6zA4vgNg3xFtA/7b/+EFV3CiEk08jMJxJDd84YEFryxPzsg5IeHSPYlWG4t+er8seX/0CUEenZgUQA09Hwa66y40FMdCAcRKQPeHaFMUnUVoWEfst2dt5goqf6Mt09mro8D0p4V/lNnlVBu2P99Fw4DmHMcXlzt98y/Bc/dhm7s4fbQa6c37K7o6P029+Xq9Ga3tkQFdzHlT7qNZomxR9K9Ev/4ADGxFZ6FZD48qus7LWAy9ZUaDKey/ddvaXfXdOha4H8Rz9WuXAOKCz2PtvqmnNN3kSPrjnVtDRhzXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aOca45vba7htqxKgkw2r5bdAFLt5wRXjXXCoEBJ5quI=;
- b=O4kZcZqebAUN7untLuYpAmELcz/g9cSPMRfTzXdtDp6BRWhVClbR6wrZVSLUN1QI5MTMfP8v05E3bEEUPuaVVwg7/cRC16uu7DuRwmkvQtD2cWa6BcCCQD48kUdhLEELv9kaXHU6iDB3auSgXdiG5pXNc5vyGXxRm0ZFeZkIS7oYMj3Vo2RNzakZbZvKUdLvVKmgv9onyBbPDnETid/PYzVzIJB1KyricJ+W9HoAlkuBItz3GAeoqDnxWSp+muZ0H+k5nZUdPjqmkp5JF1TBZNhH3BDTpHsx70q2XzJtI/gwHfE6LKA7CDQxzoCk0gqIsjCs39DEE6xb1EldsJiv5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aOca45vba7htqxKgkw2r5bdAFLt5wRXjXXCoEBJ5quI=;
- b=mGTn6HUCpFYGXTPEeyGCQcHM+nY/YMyjaDJ/DqWVWP+2VWIKcAsGNVL/6r0N2/f901NPFIZW85412Gyd2PWtmFoZ9JeM0F+sL4bMmQ8WLz7c3uemVZwFHQzaszKBk8ePiTWEgJwG2j0IRcBxzp32G0JHPCuPIMyPs7BH4q9kU9o=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TY3PR01MB10906.jpnprd01.prod.outlook.com
- (2603:1096:400:3af::14) by TYCPR01MB11419.jpnprd01.prod.outlook.com
- (2603:1096:400:37e::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.47; Thu, 9 May
- 2024 05:50:46 +0000
-Received: from TY3PR01MB10906.jpnprd01.prod.outlook.com
- ([fe80::592:9b7b:ef57:2dd8]) by TY3PR01MB10906.jpnprd01.prod.outlook.com
- ([fe80::592:9b7b:ef57:2dd8%4]) with mapi id 15.20.7544.046; Thu, 9 May 2024
- 05:50:46 +0000
-Message-ID: <87edaba5ze.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
- <amadeuszx.slawinski@linux.intel.com>,	Alexandre Belloni
- <alexandre.belloni@bootlin.com>,	Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
- <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent 
- Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,	Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,	Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>,	Daniel Baluta <daniel.baluta@nxp.com>,
-	Hans de Goede <hdegoede@redhat.com>,	Jaroslav Kysela <perex@perex.cz>,
-	Jiawei Wang <me@jwang.link>,	Jonathan  Corbet <corbet@lwn.net>,	Kai
- Vehmanen <kai.vehmanen@linux.intel.com>,	Kevin Hilman
- <khilman@baylibre.com>,	Liam Girdwood <lgirdwood@gmail.com>,	Mark Brown
- <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,	Matthias
- Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,	Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>,	Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
- <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Vinod Koul
- <vkoul@kernel.org>,	Xiubo Li <Xiubo.Lee@gmail.com>,
-	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
-	linux-doc@vger.kernel.org,	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 0/3] ASoC: grace time for DPCM cleanup
-In-Reply-To: <87pltxmakr.wl-kuninori.morimoto.gx@renesas.com>
-References: <87wmo6dyxg.wl-kuninori.morimoto.gx@renesas.com>
-	<1jr0ee2ebk.fsf@starbuckisacylon.baylibre.com>
-	<87pltxmakr.wl-kuninori.morimoto.gx@renesas.com>
-User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Thu, 9 May 2024 05:50:45 +0000
-X-ClientProxiedBy: TYCP286CA0115.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:29c::19) To TY3PR01MB10906.jpnprd01.prod.outlook.com
- (2603:1096:400:3af::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5uTbjO7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86399C116B1;
+	Thu,  9 May 2024 05:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715233873;
+	bh=JrahC9u3iZ2EEYCRi1f+9st8RuDxEJwQs/PRe7O4KYw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M5uTbjO7YOZrR6uyg9Ln6X3dHgEXn5rzLsp44/fz/cE0Da+km5F8Sb+XR3IbzwjSP
+	 GvUEHkNWvlg0RTFy5SVFO+220c2Xs69+7rjaie0iu6gJFz3qD1A08of+OeHt7THvEo
+	 ZvFeAterHuHXDbZrFXpmEy6MQsTbkouyKQz6LMG2teauAQwGhbYSdmOcNcjb7BVaVp
+	 OIfX5jnu3mhxQ53HUGjQFbZPRVNd0RbrxDTjBiin/Vo5glWlUPLR/yS6ijzjDUkKlu
+	 c/xlhNJQXBv2iLaEd4WkpfDX3n5qYqXCdf7jwjwp2Tdh+olMQZHMsi273EBKgm0eC5
+	 Maf7OUf7KR42Q==
+Message-ID: <81241dde-da0a-4817-90f4-37741d652600@kernel.org>
+Date: Thu, 9 May 2024 07:51:04 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY3PR01MB10906:EE_|TYCPR01MB11419:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1fc305a6-40fe-49ea-0ba7-08dc6febf8d9
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|366007|52116005|1800799015|7416005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FLmOiMzY6VWWLIAnYjLBfCWRHv1gx1THGpyp132L4Q5AvUoneS1D5zZckm0Y?=
- =?us-ascii?Q?5hcgL6adJcXtWWfMQFSbYIIogr2tOdEWczNl+Hl3jiKYnZbcwPwYNvSwJjWy?=
- =?us-ascii?Q?dy/GGL8kL8H3H2ka8GKiDZWxJQx7TfUCQa1oCOSoC7Y8PoW72fSlb1dRIWTg?=
- =?us-ascii?Q?wuAJ7sNAfzzNaVoJikzmKzMGg8qvxvNGCzg0L8H7CvRDk/GAdKxl2CADv1dX?=
- =?us-ascii?Q?mXmg1gcnpot3Gq7f1ORcqYcvsQ4kzXdUmqC8FmwVR4y2XqgNfEqOekUM5cmq?=
- =?us-ascii?Q?YHTvlvezvF+eeXAS9n3Z7i1ydOJa83uHCxo17p5IkQnqd+FeANoTKCi0WLyB?=
- =?us-ascii?Q?clp+DNL57nmLcHm7cpJsfjnf13bUTEKek949jqtTvzHolV6bqosV61MF9qqh?=
- =?us-ascii?Q?nq4sDBcPIlpkZmUntiup08a7IUkqYP5b9NXpn6S0no10DjfUexD8CmJ9HPwL?=
- =?us-ascii?Q?/LiM6AIlZeNdH+tK5JvYJNfG4wlqb2zdsglo/xTL8aJznE8oQSAdS0YYo8k/?=
- =?us-ascii?Q?rDW4DPty3NU6rbvp8B+I2C7feYEbG2BJk9AloMleN45S6zTxZn1jBfijxOfG?=
- =?us-ascii?Q?oMwecyKkzAkslx/XuU7kNRHG1+uFivTmsd0CQAlzrtDUvNDB33rNVbIJ1km/?=
- =?us-ascii?Q?Y6xkuv81TMFccuIK1m02XvfOnf9svYfNj2r+zJsigdhZYoy0etUju0rMnXc+?=
- =?us-ascii?Q?DKtgCdAUVp8xspuFyqSFoP2CNU0u8fD8GSHTS+rlBy4NDsmr2Ljis3xxS02q?=
- =?us-ascii?Q?cNKPqeRwFfd8hZXlRxn03SVZaGM7Kt/QvdNo+1bZi7+279M3otni9jwiclcs?=
- =?us-ascii?Q?SKTtsI8eX1/bzRTAWsiC+Vf5LdM32/3hJJ+cPBl5LcN7hAW89UfoSkX9/3Wh?=
- =?us-ascii?Q?7xrpBD5Eb1ri5A5k4fDfSGGnhCtRgxg4YGbx+YOexcW+tKGEsAb/oV9Bymov?=
- =?us-ascii?Q?+6kpj/izUqitQSjoXqZ8txN1NE0wKzStopnbnOTdygOtvj4iubGHgu2Z2/Ho?=
- =?us-ascii?Q?7Dmo4E94zl9jnV8FQlDgo3It1smQCP2UjnoSVEuLWFD1bhlybOlEAMMaeErg?=
- =?us-ascii?Q?VSWQ3Y+PwyXYOqcvyF2rv4au6wMvvo7ERKygy2w7AT+yZ9ORFF8ODwvRMc7Z?=
- =?us-ascii?Q?RS/JCIyNLEkd524hpCffVM1HwLrv5ehx/yJD8lmy/qGHn82fikoZhL+ohmzW?=
- =?us-ascii?Q?kdrHXWLjgywV6w17oYe6bGj2104oiMdx6rDOVaJYnaAi8wxSpdY9GuONH4JK?=
- =?us-ascii?Q?kTjXYoE/shHNr9D3Ab3KlcmJISsp4ysV129vq1f6QukamhImr7pmpiUa9Ppc?=
- =?us-ascii?Q?Wdr5E2RNio8Ib2GhMivhRuLagqfySu4MjWL0hJQ7bQETmg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB10906.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(7416005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KQ1HOzqn3Iar8sB3DTreUoqarOKDaIN134FgcDJa1Ax5S2DC0sCUGsL5SuY6?=
- =?us-ascii?Q?EUpCCM40hZRnlt4s6qg3ANoTlXL2cdfJX6yaiEcp3/5NeQu6jsT81+/8TVK5?=
- =?us-ascii?Q?C7PclZiP1HlGzweuQrPevaBFAoWYKg7xMndeAFcNgCD47KY12oIItaixULhV?=
- =?us-ascii?Q?J2qmV2dlwCByF6LylNB9UBBaJST/+u9/34JQaSw0H72rm+sWqmMAZ3p5vfbd?=
- =?us-ascii?Q?iPB8iAW8+R0bCLmOdDlWc+6ma3MKRkTxeOcskcA9u8r9Wgzf/9EWdzMvOeCM?=
- =?us-ascii?Q?4Ym63zwOPhcMdBR3d5bSNexIi6zAkiJfXyxsnLwCofwoPKMk4qoHvMguHYWH?=
- =?us-ascii?Q?MG5gZzzaARI9g52ji+jGhAr/vqCSizpZcVE1H6+/NJC/4evzsidQlYCQgleu?=
- =?us-ascii?Q?uEjlJ3FxzfViYMFygAToDIjtZuweR1gkPR5dz2vHGWnuckO7jIyeAva8Oqpe?=
- =?us-ascii?Q?gMejc+Dr5Od1jMAedX5iEBg2nQ+cxe8NWHNolTP378HSA4RYA9alRCPVWl13?=
- =?us-ascii?Q?gccVywKkly3+9Ce2lsvnCTVux+egTFWcs2yM8H/ddkbTKzdsHK1D4Uu3Wcup?=
- =?us-ascii?Q?InTERsN/ugdI/+MmsBB3coY7+Art+QVeVvZ5GaxwjsovMdAHTKXnVz4ZYIsl?=
- =?us-ascii?Q?YWEb9g1vK/d1qsXrdsw+tjhCiSMOve7EF4CUU5mKzbErln2PWiML2bxR4wlc?=
- =?us-ascii?Q?BSrvhRTdv1kCBBe5LJ79HSFjNaG8hER3bk5LSUYKKZmIAftdqUYl2aqjqeED?=
- =?us-ascii?Q?TeIZAPpvaUxhNS39gSAEw53jyaw/KQ0FOQyO3OO6M5ZpssI4ZYHzRTnkr0Kk?=
- =?us-ascii?Q?dkvPpdoiuutD+1x71r+03bT0jIuV/xiL0DzW9CLBPbNg0XLEMYAIbM8aQLH6?=
- =?us-ascii?Q?ImXMvkiorkmFssRKUvM51Ayb2RI4G94pkPdcXOgthmi8iD1XU6y7BhEQhe5K?=
- =?us-ascii?Q?k1r/IXX6/EiB/iwUy2pbnwD/zlP19XdSyjBUlBl9+BAWn/SMk06Eohj+2EO/?=
- =?us-ascii?Q?2pWC/actHJ2U6jTnrOF5dnJzq7TIng7F1J0Job6TxD3zY13HQn8DSWmxDPqK?=
- =?us-ascii?Q?oj5DC6HBIs9UeSCCx7XxK/JXbMXRWvL+lCD91VlNbz8HKXDINLCw3FUgwWdK?=
- =?us-ascii?Q?ADGNyJs+ru2KFGa9WAKC5t4QTOpY+6/S5xj0ceTHiT/QM8d8cJuA7oRMFJn7?=
- =?us-ascii?Q?FE0mqwXJXRKItcI5GyTsWv4cvzJnaZfIcVbJeRxzErXOg7iFLW/+fozUSc3y?=
- =?us-ascii?Q?B462/wgIK7W4gU1eBHRSi97MVfLj6zLO9h8whB5iQybuVjIBBLwl6/pPUrkL?=
- =?us-ascii?Q?3GBUkAhuE0Bca9YBDP/Ma/upnQUJ7vzwBHp1KHjVb+HZwqjS0K+CxR1XV1th?=
- =?us-ascii?Q?+C6j8hQbTIKtcQhi7e2lnBC77GQzA/c4Yp0Kno7+1ogY5hrF07+LdRWNjCZ4?=
- =?us-ascii?Q?GB7mn/kZGgTUOlSb9qXWizBs+ml9btuvID+TZFzKTyNbUh/llVGii5IHDzUJ?=
- =?us-ascii?Q?xfsLEazQRJBPIalYxYrrxiDG//5xRoZhPpE0eb8KiLe7cJqeJRXEnaHI88pA?=
- =?us-ascii?Q?hUYkky7XQL2zd964VT3c3OS5xfurgrAQo1yzJVRUcdRedYDsNcHtjB8+CTuI?=
- =?us-ascii?Q?Pmi03NV7pfqMAPirPk5cpQ0=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1fc305a6-40fe-49ea-0ba7-08dc6febf8d9
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB10906.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2024 05:50:46.4005
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2m0QDG0j926/ypjO99NbRU3BaqDaRyIiOgvwYE5WKJoiFRR8JTBlLSWst6a22uo5Wmx8m3dYmsMl6S82owK2ygOK7BR/hNuTPsJC2HgoTqiNjjlAv61qn5ebjMPJnHJO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB11419
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] soc: imx: secvio: Add secvio support
+To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Franck LENORMAND <franck.lenormand@nxp.com>,
+ Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Varun Sethi <V.Sethi@nxp.com>, Silvano Di Ninno <silvano.dininno@nxp.com>,
+ Pankaj Gupta <pankaj.gupta@nxp.com>, frank.li@nxp.com,
+ daniel.baluta@nxp.com, Iuliana Prodan <iuliana.prodan@nxp.com>,
+ Horia Geanta <horia.geanta@nxp.com>
+References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-Hi Jerome
-
-I need your help
-
-> > I have tested this series on an Amlogic device (vim3l)
-> > This brings warnings for cases which are perfectly fine.
-> > 
-> > For example, one of the DPCM backends is the TDM interface. This
-> > interface is capable of both playback and capture. It can be associated
-> > with any i2s/TDM codec.
-> > 
-> > The codec may do playback and capture too, but it
-> > may also do a single direction. Then usual example is the hdmi codec
-> > which does playback only.
-> > 
-> > In this case I get:
-> >  axg-sound-card sound: CPU capture is available but Codec capture is not (be.dai-link-6) Please update Codec driver
-> > 
-> > I don't think this is right.
+On 09/05/2024 02:45, Vabhav Sharma wrote:
+> The tampers are security feature available on i.MX products and
+> managed by SNVS block.The tamper goal is to detect the variation
+> of hardware or physical parameters, which can indicate an attack.
 > 
-> Hmm..., I'm confusing
-> Does it mean you want to use "playback only" on it ?
-> If so, did you get below warning too ?
-> 	 "both playback/capture are available, but not using playback_only flag (%s)\n",
+> The SNVS, which provides secure non-volatile storage, allows to
+> detect some hardware attacks against the SoC.They are connected
+> to the security-violation ports, which send an alert when an
+> out-of-range value is detected.
 > 
-> If not, can you please fill below ?
+> This detection is done by:
+> -Analog tampers: measure analogic values
+> 	- External clock frequency.
+> 	- Temperature.
+> 	- Voltage.
 > 
-> Card
-> 	dpcm_playback = (0 or 1)
-> 	dpcm_capture  = (0 or 1)
-> 	playback_only = (0 or 1)
-> 	capture_only  = (0 or 1)
-> BE.CPU
-> 	playback = (available, not available)
-> 	capture  = (available, not available)
-> BE.Codec
-> 	playback = (available, not available)
-> 	capture  = (available, not available)
-> Expect
-> 	playback = (available, not available)
-> 	capture  = (available, not available)
+> - Digital tampers:
+> 	- External tamper
+> 	- Other detectors:
+> 		- Secure real-time counter rollover tamper.
+> 		- Monotonic counter rollover tamper.
+> 		- Power supply glitch tamper.
+> 
+> The on-chip sensors for voltage, temperature, and clock frequency
+> indicate if tamper scenarios may be present. These sensors generate an
+> out-of-range signal that causes a security violation to clear the
+> authentication and storage keys and to block access to sensitive
+> information.
+> 
+> Add linux module secvio driver to handle security violation interrupt.
+> 
+> The "imx-secvio-sc" module is designed to report security violations
+> and tamper triggering to the user.
+> 
+> The functionalities of the module are accessible via the "debugfs"
+> kernel.The folder containing the interface files for the module is
+> "<kernel_debugfs>/secvio/".
+> 
+> Get status
+> Reading from the "info" file will return the status of security:
+> - Fuse related to security tampers.
+> - SNVS readable registers.
+> - DGO registers.
+> 
+> Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
+> ---
+> Vabhav Sharma (4):
+>       dt-bindings: firmware: secvio: Add device tree bindings
+>       firmware: imx: Add SC APIs required for secvio module
+>       soc: imx: secvio: Add support for SNVS secvio and tamper via SCFW
+>       arm64: dts: imx8q: Add node for Security Violation
 
-I need feedback from you, it is still not clear for me.
-But I noticed that we want to update below. I'm happy if it can solve your
-issue.
+Please version your patches correctly and provide changelog.
 
--	if (has_playback && !has_playback_both)
-+	if (has_playback && !has_playback_both && !dai_link->capture_only)
-		dev_warn(rtd->card->dev, ...)
+I wrote about b4 already, which solves this as well.
 
--	if (has_capture && !has_capture_both)
-+	if (has_capture && !has_capture_both && !dai_link->playback_only)
-		dev_warn(rtd->card->dev, ...)
+What changed here?
 
+Best regards,
+Krzysztof
 
-
-Thank you for your help !!
-
-Best regards
----
-Renesas Electronics
-Ph.D. Kuninori Morimoto
