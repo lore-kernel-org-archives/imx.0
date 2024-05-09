@@ -1,154 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC201494B0;
-	Thu,  9 May 2024 05:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06387149DE6
+	for <imx@lists.linux.dev>; Thu,  9 May 2024 06:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715234054; cv=none; b=uGRodEj7xVQ25eYuVVKQzCJPhCTedeoWyOv31xY9rptBr+ToeZXGyCt0oIGws7o59OBCMWhED1Qi+fVsN32EaxW7vfB1VPm26YqWrm63Gdn2Z65E8XPP+7zAX7YmWwOxn5d1TIdzVBxuWlB3dpCbZ36JFTYX1NWHfwGjJ+/9uig=
+	t=1715235355; cv=none; b=nnqRQef6h0T1DY2eXT9jkQmZWz9psPf3rSzJwAgCawTn8godDXfRwA8/+hKZJzz7BqeabKLbp8kRSWIqQPwpiTrEkdiLTHxtZ0lds39UGJIt/GD5QKJMxLOwU+QGsjpfWZ997X5xs2Fed3s62gAupQqRNYdqQ9kl9ZsSn2h4Rsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715234054; c=relaxed/simple;
-	bh=vh70fdrbReUpeG3Gpm7z0esgXW7NCGq6fbdWPKHWf84=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rthuvwzIlAsxHyu4afqZCGZdSYwJfCoTmyR5E0R7vV1a7u8OcnUf4tGqfHKTZbbxQmBxvjjxZ3/aqxd2Fr+2ECnt+CbiSzxCg6TVUyiKHHuT3WshkGtvPp77kkFbqeknIiRZ82d836Uf3QtnmVAmH3KeAoZk4TumbVRbrv07LRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8CddZrw; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8CddZrw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACA6C116B1;
-	Thu,  9 May 2024 05:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715234054;
-	bh=vh70fdrbReUpeG3Gpm7z0esgXW7NCGq6fbdWPKHWf84=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F8CddZrw4YItK/5AJsm1o/cbVVXv/84T3RlL4udgP3SpeFqEDwLyJrKTvj5ykI1hX
-	 9N/jFL5IaYNFeWKbckq84lbW0+py7UI98A87RtbLqNBGdbPMcu3nWjHamO1HrCzB1a
-	 huHTUN5yP282CHJjvhrE6igy0vDG4aPC+7fVoGK5i3etL2tEq5uWOhV7t1gnNgwpgS
-	 5MQiJfrH5SDx46RGg7CsAoTbACIVcQ+hdRi/EG6s57f4HNzB3TSGLdv1EkSu3deGMd
-	 YJHNTalkJSzFz/GpUzIpJCkSalmvpZ6vm2l+DYIOcpJfd0WbSG9aOGUAgcCHzu1SEa
-	 ty8J7kdtilRDQ==
-Message-ID: <52deb076-f2d0-4c61-9dac-079e3ae881b6@kernel.org>
-Date: Thu, 9 May 2024 07:54:06 +0200
+	s=arc-20240116; t=1715235355; c=relaxed/simple;
+	bh=G6dU1I9aNo+s1EN/9eYyaLmRUS9K4F18BCgUfTOW2Z4=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=oAAwrtIq3MzQ53/F9Jk7QKpBnYgAHKieqNPalo0Utov0+vC/PoOu9y6EFwZQ0MsYcbbWTeeJ2T8xAQ2kJQp4KJ8dg6fsHTLDs+gy4sFPlXMYEuZ7O27U7ImRM83JFaAAko3EgyfPdDL1HPzJqrcbkIiM79RmneFTnq0g2MCA/pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 503171A0BEA;
+	Thu,  9 May 2024 08:15:40 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BCF5B1A1F52;
+	Thu,  9 May 2024 08:15:39 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id C2E81181D0FC;
+	Thu,  9 May 2024 14:15:37 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: conor@kernel.org,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	frank.li@nxp.com,
+	conor+dt@kernel.org
+Cc: hongxing.zhu@nxp.com,
+	linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: [PATCH v4 0/3] Add i.MX8Q HSIO PHY support
+Date: Thu,  9 May 2024 13:56:18 +0800
+Message-Id: <1715234181-672-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: firmware: secvio: Add device tree
- bindings
-To: Frank Li <Frank.li@nxp.com>, Vabhav Sharma <vabhav.sharma@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Franck LENORMAND <franck.lenormand@nxp.com>,
- Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Varun Sethi <V.Sethi@nxp.com>, Silvano Di Ninno <silvano.dininno@nxp.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, daniel.baluta@nxp.com
-References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
- <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
- <Zjw9044yBRn9+adW@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Zjw9044yBRn9+adW@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 09/05/2024 05:06, Frank Li wrote:
-> On Thu, May 09, 2024 at 02:45:32AM +0200, Vabhav Sharma wrote:
->> Document the secvio device tree bindings.
-> 
-> reduntant sentence. 
->>
->> The tampers are security feature available on i.MX products and
->> managed by SNVS block.The tamper goal is to detect the variation
->                         ^^ space here
-> 
->> of hardware or physical parameters, which can indicate an attack.
->>
->> The SNVS, which provides secure non-volatile storage, allows to
->> detect some hardware attacks against the SoC.They are connected
->                                                ^^ space here 
->> to the security-violation ports, which send an alert when an
->> out-of-range value is detected.
->>
->> The "imx-secvio-sc" module is designed to report security violations
->> and tamper triggering via SCU firmware to the user.
->>
->> Add the imx-scu secvio sub node and secvio sub node description.
->>
->> Signed-off-by: Franck LENORMAND <franck.lenormand@nxp.com>
->> Signed-off-by: Vabhav Sharma <vabhav.sharma@nxp.com>
->> ---
->>  .../bindings/arm/freescale/fsl,scu-secvio.yaml     | 35 ++++++++++++++++++++++
->>  .../devicetree/bindings/firmware/fsl,scu.yaml      | 10 +++++++
->>  2 files changed, 45 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/arm/freescale/fsl,scu-secvio.yaml b/Documentation/devicetree/bindings/arm/freescale/fsl,scu-secvio.yaml
->> new file mode 100644
->> index 000000000000..30dc1e21f903
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/arm/freescale/fsl,scu-secvio.yaml
->> @@ -0,0 +1,35 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/arm/freescale/fsl,scu-secvio.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: NXP i.MX Security Violation driver
-> 
-> Violation detect driver
+v4 changes:
+- Re-format the "phy-cells" as <&hsio_phy lane_id phy_mode controller_id>
+- Use each lane as a phys entry, suggested by Rob.
+PCIEA:
+phys = <&hsio_phy 0 PHY_MODE_PCIE>;
+or:
+phys = <&hsio_phy 0 PHY_MODE_PCIE>, <&hsio_phy 1 PHY_MODE_PCIE>;
 
-Bindings are not for drivers.
+PCIEB:
+phys = <&hsio_phy 1 PHY_MODE_PCIE>;
+or:
+phys = <&hsio_phy 2 PHY_MODE_PCIE>;
 
-Best regards,
-Krzysztof
+SATA:
+phys = <&hsio_phy 2 PHY_MODE_SATA>;
 
+- Add a new propery "fsl,hsio-cfg".
+The HSIO configuration (fsl,hsio-cfg) is one global state.
+It should be known and used to set global setting: PCIE_AB_SELECT and
+PHY_X1_EPCS_SEL at the begin of HSIO initialization like this listed below.
+
+ +-------------------------------------------------------------+
+ |CRR(SYS.CSR) register|PCIAx2 and|PCIEAx1, PCIEBx1|PCIEAx2 and|
+ |                     |SATA      |SATA            |PCIEBx1    |
+ |---------------------|----------|----------------|-----------|
+ |PCIE_AB_SELECT       | 0        | 1              | 1         |
+ |---------------------|----------|----------------|-----------|
+ |PHY_X1_EPCS_SEL      | 1        | 1              | 0         |
+ +-------------------------------------------------------------+
+When first PHY instance is probed, PHY driver can't get a global view of the
+HSIO use case and doesn't know how to set global setting: PCIE_AB_SELECT and
+PHYX1_EPCS_SEL.
+Because first PHY instance doesn't know followed PHY instance use mode.
+
+So, one property named "fsl,hsio-cfg" has to be introduced here to specify the
+setting of the global setting: PCIE_AB_SELECT and PHY_X1_EPCS_SEL.
+
+Here is the discussion about this.
+https://lkml.org/lkml/2024/4/26/231
+
+- Address Conor's comments about the "fsl,refclk-pad-mode".
+fsl,refclk-pad-mode:
+  description:
+    ...
+  enum: ["input", "output"].
+
+v3:https://patchwork.kernel.org/project/linux-phy/cover/1713939683-15328-1-git-send-email-hongxing.zhu@nxp.com/
+
+v3 changes:
+Refer to Conor's comments.
+- Let filename match a compatible
+- Refine description of the fsl,refclk-pad-mode.
+- Remove power-domains description.
+- Keep clock ording for two devices.
+- Drop the unused label and status.
+Refer to Rob's comments.
+- Use standard phy mode defines.
+- Correct the spell mistakes in the binding document.
+
+v2:https://patchwork.kernel.org/project/linux-phy/cover/1712036704-21064-1-git-send-email-hongxing.zhu@nxp.com/ 
+
+v2 changes:
+- Place the dt-bindings header file changes as the first one
+in the patch-set, make the annotation more clear, and add
+Frank's Reviewed-by tag.
+
+v1:https://patchwork.kernel.org/project/linux-phy/cover/1711699790-16494-1-git-send-email-hongxing.zhu@nxp.com/
+
+[PATCH v4 1/3] dt-bindings: phy: phy-imx8-pcie: Add header file for
+[PATCH v4 2/3] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY binding
+[PATCH v4 3/3] phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY
+
+Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml | 142 ++++++++++++++++++++
+drivers/phy/freescale/Kconfig                              |   8 ++
+drivers/phy/freescale/Makefile                             |   1 +
+drivers/phy/freescale/phy-fsl-imx8qm-hsio.c                | 598 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+include/dt-bindings/phy/phy-imx8-pcie.h                    |  29 +++++
+5 files changed, 778 insertions(+)
