@@ -1,123 +1,243 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ABC168AFC;
-	Fri, 10 May 2024 14:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349A712AAD5;
+	Fri, 10 May 2024 15:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715352942; cv=none; b=ZGYUFXvxWMHPFUU7kbYZIr023198we/j+wiGZ86sv7GOygbLOOY8fmr4xchowQFNEVQTtDzwDwxFBcp0cIOfw2qa1ZdT0qTkHYSgUcG+VEzeldlH4zKY5rnX+DE1epxWakWCkgw1mZfYc87i6KYfHsjkuKpvv5HM3UA6DRDh0p4=
+	t=1715355532; cv=none; b=d2LHLFulcYY5syXnpEh5omOwXpu1EsdRNHtXE1ho9PzMwjYNmsODRIT4Vz76VAD8X4AXBitfUSfd7qbo/ihT45RtoM5ifTqg0f2WJY4e5ay7i9W28aXHBEOBRMC6ZpM2ZMNo4f+fWFsrCnXumWE9WN7f6qIfilqBgB5U4c0DPGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715352942; c=relaxed/simple;
-	bh=sLxTchYz896sDj6qbtwDuUDSEIrv3OIFfIsIipZpE5U=;
+	s=arc-20240116; t=1715355532; c=relaxed/simple;
+	bh=5i/Kwz7QCD09ox7fq0+nK+iuNVgav4u7fr/M1k9fkGQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGwqQCepcSKbgbemV/dptfixidGWezFD6/dE4IploauNfCurmQ5myBjBLUPnlODCanzScemsDf440nwX/Jbbk4vq+lvPirAb6YSAx1lZhBb2jm+YZaQyYCazmvkCNs2Azor6W0tb0mugwJy6b6SJKqN55pOATTlw/bgdf3OKCnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qk+QHBRU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GxGmZD23AV1JyLA79iMoTbxcCeA24xMYACTY7j3hb0HgqV+ViLhkjlX95AB0AllBnuedaLrGE5i4kdO+O4EsExNE08b1CgHaQcnsWATp/VAmhatkw3nr+QGstLd5WJ44LaTX9gGEhbjKmztv17JkVrw8dbRnQoGLZENcC5EONms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4m+dHD8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qk+QHBRU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B805BC113CC;
-	Fri, 10 May 2024 14:55:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4m+dHD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81117C113CC;
+	Fri, 10 May 2024 15:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715352942;
-	bh=sLxTchYz896sDj6qbtwDuUDSEIrv3OIFfIsIipZpE5U=;
+	s=k20201202; t=1715355531;
+	bh=5i/Kwz7QCD09ox7fq0+nK+iuNVgav4u7fr/M1k9fkGQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qk+QHBRUz835G4CYflpo32U3bgdyaL3BSq2dIP7JPTBxppCQBluDy5JvM3o97jF80
-	 iEALaNAdz3a/+xGsLAEiu9b9vQ8IOnPt5tIhImEP0eGpneYwpJjwpuG02fLkJ3yi68
-	 nhbRbKKys1TrAkL5vW0TVsZ1OZcRgEjvN426FUx7zeuaqiU+tMqyApz+JEHhGlVjsp
-	 zDEVo4rZ2XssiB7JTh43TEhLtOPYXIZhhcknhTJmh/C+HOdQCExA3ZWfYGTj7MIeOv
-	 FQzyk2hH6uVo11vyU+GDq7RXKXBnosQk38Lr2DJANEJLXeauHqnO5s9JAJ0Ew2Q7b5
-	 NjdJU+QN1zb3Q==
-Date: Fri, 10 May 2024 15:55:34 +0100
-From: Lee Jones <lee@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Alexander Shiyan <shc_work@mail.ru>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-omap@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: [GIT PULL] Immutable branch between Backlight, HID and fbdev due for
- the v6.10 merge window
-Message-ID: <20240510145534.GD6146@google.com>
-References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+	b=s4m+dHD8MracwXhQxc+HGvMM7x1N6E+yIVYj0BVRNfpR4cYP8M2xhklBBxbbTOam+
+	 o1s1UzSaLNLahxTkZo3hGkAw/9i5mz4OE1qRquZm1qsFeIcdIAswRHAF/oKVTy1U/s
+	 7xOhUSBjoOsn1zmsLJXq1/sK6yj29qTMzs71rBixyPYwB02YqA0aOsHREhwwjpuThP
+	 DnSAxMb59p3CCP5XT8z2GtK8xQotVUCqE4Zx+53dizwzQzrjqX5L3NI9vDjz5haYNn
+	 36Atqs8xCY1wAoZBYSgLWCJ7ZppgmbycjLkcmfBrk5t5H16ktF5b1yUaFa8nO/Nj3J
+	 0j2p6WNko87ZA==
+Date: Fri, 10 May 2024 10:38:49 -0500
+From: Rob Herring <robh@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: conor@kernel.org, vkoul@kernel.org, kishon@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, frank.li@nxp.com,
+	conor+dt@kernel.org, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v4 2/3] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY
+ binding
+Message-ID: <20240510153849.GA308062-robh@kernel.org>
+References: <1715234181-672-1-git-send-email-hongxing.zhu@nxp.com>
+ <1715234181-672-3-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
+In-Reply-To: <1715234181-672-3-git-send-email-hongxing.zhu@nxp.com>
 
-Enjoy!
+On Thu, May 09, 2024 at 01:56:20PM +0800, Richard Zhu wrote:
+> Add i.MX8QM and i.MX8QXP HSIO SerDes PHY binding.
+> Introduce one HSIO configuration 'fsl,hsio-cfg', which need be set at
+> initialization according to board design.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+>  .../bindings/phy/fsl,imx8qm-hsio.yaml         | 142 ++++++++++++++++++
+>  1 file changed, 142 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
+> new file mode 100644
+> index 000000000000..e8648cd9fea6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
+> @@ -0,0 +1,142 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/phy/fsl,imx8qm-hsio.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale i.MX8QM SoC series HSIO SERDES PHY
+> +
+> +maintainers:
+> +  - Richard Zhu <hongxing.zhu@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8qm-hsio
+> +      - fsl,imx8qxp-hsio
+> +  reg:
+> +    minItems: 4
+> +    maxItems: 4
 
-The following changes since commit 4cece764965020c22cff7665b18a012006359095:
+Need to define what is each entry:
 
-  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
+items:
+  - description: ...
+  - description: ...
+  - description: ...
+  - description: ...
 
-are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/lee/backlight.git ib-backlight-hid-fbdev-lcd-scripts-v6.10
+> +
+> +  "#phy-cells":
+> +    const: 3
+> +    description:
+> +      The first defines lane index.
+> +      The second defines the type of the PHY refer to the include phy.h.
+> +      The third defines the controller index, indicated which controller
+> +      is bound to the lane.
+> +
+> +  reg-names:
+> +    items:
+> +      - const: reg
+> +      - const: phy
+> +      - const: ctrl
+> +      - const: misc
+> +
+> +  clocks:
+> +    minItems: 5
+> +    maxItems: 14
+> +
+> +  clock-names:
+> +    minItems: 5
+> +    maxItems: 14
+> +
+> +  fsl,hsio-cfg:
+> +    description: Refer macro HSIO_CFG* include/dt-bindings/phy/phy-imx8-pcie.h.
 
-for you to fetch changes up to 82b9007bc4f8c22975d640d7df6743366f25a353:
+I can't, it's not in this patch. But it should be.
 
-  const_structs.checkpatch: add lcd_ops (2024-05-03 10:45:55 +0100)
+Please say something about what this is for, not just refer to header.
 
-----------------------------------------------------------------
-Immutable branch between Backlight, HID and fbdev due for the v6.10 merge window
+> +    $ref: /schemas/types.yaml#/definitions/uint32
 
-----------------------------------------------------------------
-Krzysztof Kozlowski (19):
-      backlight: lcd: Constify lcd_ops
-      backlight: ams369fg06: Constify lcd_ops
-      backlight: corgi_lcd: Constify lcd_ops
-      backlight: hx8357: Constify lcd_ops
-      backlight: ili922x: Constify lcd_ops
-      backlight: ili9320: Constify lcd_ops
-      backlight: jornada720_lcd: Constify lcd_ops
-      backlight: l4f00242t03: Constify lcd_ops
-      backlight: lms283gf05: Constify lcd_ops
-      backlight: lms501kf03: Constify lcd_ops
-      backlight: ltv350qv: Constify lcd_ops
-      backlight: otm3225a: Constify lcd_ops
-      backlight: platform_lcd: Constify lcd_ops
-      backlight: tdo24m: Constify lcd_ops
-      HID: picoLCD: Constify lcd_ops
-      fbdev: clps711x: Constify lcd_ops
-      fbdev: imx: Constify lcd_ops
-      fbdev: omap: lcd_ams_delta: Constify lcd_ops
-      const_structs.checkpatch: add lcd_ops
+       maximum: 3
 
- drivers/hid/hid-picolcd_lcd.c            | 2 +-
- drivers/video/backlight/ams369fg06.c     | 2 +-
- drivers/video/backlight/corgi_lcd.c      | 2 +-
- drivers/video/backlight/hx8357.c         | 2 +-
- drivers/video/backlight/ili922x.c        | 2 +-
- drivers/video/backlight/ili9320.c        | 2 +-
- drivers/video/backlight/jornada720_lcd.c | 2 +-
- drivers/video/backlight/l4f00242t03.c    | 2 +-
- drivers/video/backlight/lcd.c            | 4 ++--
- drivers/video/backlight/lms283gf05.c     | 2 +-
- drivers/video/backlight/lms501kf03.c     | 2 +-
- drivers/video/backlight/ltv350qv.c       | 2 +-
- drivers/video/backlight/otm3225a.c       | 2 +-
- drivers/video/backlight/platform_lcd.c   | 2 +-
- drivers/video/backlight/tdo24m.c         | 2 +-
- drivers/video/fbdev/clps711x-fb.c        | 2 +-
- drivers/video/fbdev/imxfb.c              | 2 +-
- drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
- include/linux/lcd.h                      | 6 +++---
- scripts/const_structs.checkpatch         | 1 +
- 20 files changed, 23 insertions(+), 22 deletions(-)
+> +
+> +  fsl,refclk-pad-mode:
+> +    description:
+> +      Specifies the mode of the refclk pad used. INPUT(PHY refclock is
+> +      provided externally via the refclk pad) or OUTPUT(PHY refclock is
+> +      derived from SoC internal source and provided on the refclk pad).
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ "input", "output" ]
 
--- 
-Lee Jones [李琼斯]
+default?
+
+Really, this could just be a boolean for the non-default mode.
+
+> +
+> +  power-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - "#phy-cells"
+> +  - clocks
+> +  - clock-names
+> +  - fsl,hsio-cfg
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qxp-hsio
+> +    then:
+> +      properties:
+> +        clock-names:
+> +          items:
+> +            - const: pclk0
+> +            - const: apb_pclk0
+> +            - const: phy0_crr
+> +            - const: ctl0_crr
+> +            - const: misc_crr
+> +        power-domains:
+> +          minItems: 1
+
+Should be maxItems? min is already 1.
+
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qm-hsio
+> +    then:
+> +      properties:
+> +        clock-names:
+> +          items:
+> +            - const: pclk0
+> +            - const: pclk1
+> +            - const: apb_pclk0
+> +            - const: apb_pclk1
+> +            - const: pclk2
+> +            - const: epcs_tx
+> +            - const: epcs_rx
+> +            - const: apb_pclk2
+> +            - const: phy0_crr
+> +            - const: phy1_crr
+> +            - const: ctl0_crr
+> +            - const: ctl1_crr
+> +            - const: ctl2_crr
+> +            - const: misc_crr
+> +        power-domains:
+> +          minItems: 2
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8-clock.h>
+> +    #include <dt-bindings/clock/imx8-lpcg.h>
+> +    #include <dt-bindings/firmware/imx/rsrc.h>
+> +    #include <dt-bindings/phy/phy-imx8-pcie.h>
+> +
+> +    hsio_phy@5f1a0000 {
+
+phy@...
+
+> +        compatible = "fsl,imx8qxp-hsio";
+> +        reg = <0x5f1a0000 0x10000>,
+> +              <0x5f120000 0x10000>,
+> +              <0x5f140000 0x10000>,
+> +              <0x5f160000 0x10000>;
+> +        reg-names = "reg", "phy", "ctrl", "misc";
+> +        clocks = <&phyx1_lpcg IMX_LPCG_CLK_0>,
+> +                 <&phyx1_lpcg IMX_LPCG_CLK_4>,
+> +                 <&phyx1_crr1_lpcg IMX_LPCG_CLK_4>,
+> +                 <&pcieb_crr3_lpcg IMX_LPCG_CLK_4>,
+> +                 <&misc_crr5_lpcg IMX_LPCG_CLK_4>;
+> +        clock-names = "pclk0", "apb_pclk0", "phy0_crr", "ctl0_crr", "misc_crr";
+> +        power-domains = <&pd IMX_SC_R_SERDES_1>;
+> +        #phy-cells = <3>;
+> +        fsl,hsio-cfg = <IMX8Q_HSIO_CFG_PCIEB>;
+> +        fsl,refclk-pad-mode = "input";
+> +    };
+> +...
+> -- 
+> 2.37.1
+> 
