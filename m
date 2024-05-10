@@ -1,187 +1,102 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E42112C522
-	for <imx@lists.linux.dev>; Fri, 10 May 2024 13:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CF312C7E8;
+	Fri, 10 May 2024 14:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715348420; cv=none; b=KuDsM8KjFXz+cshpUY/cgqdPUdtNRubURPaxGq5+QkRGJHlGFzWi57Rt8bJGFhofR1WPsF8diYO0iCWGIOYattYgw8mV5hu4ywQlMpHxzy2yVWcP9x1uyljRtlCceh61hW4JEqo97FPI2i9J4QEULAiOGhxbKjkC6JE7xeoWttc=
+	t=1715350949; cv=none; b=IDVnZoUMAoz90WHuycBLuztZ+7Xhk0j9ShT3kj6Hx4Em+6MV4aOGHkFl9aSYUk+M6k9UdnJO6xDTNTqXunzVKBw51ZBsDqjLhPNVtzrGd2vViuBsS5llPLWhF2WqzIXJP9EjiFoPrFzDnKOuJXlWztp8lpWPvAhipKBrE6CSOAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715348420; c=relaxed/simple;
-	bh=oulGCoHFnCj/NET3N1OyxsppTrm7YHHc7XXE9G23JwE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNO8h8PLZQp0pDZQItrHZc1bWIk6OCLtYJPLG8e6Zzx7oWqpNWKxQK0GVdo0wDgRMGyJKXl1INB8d8J8ojmhl+hEmD6wzG1iHPXqdf39XI8jRqpyFNQWcolwXL8Jl3bTf+1bO9wfPK6zwFO1+wyoLgQxSYFwzmv+TL5OL8fqIJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s5QTt-0006O7-VZ; Fri, 10 May 2024 15:40:13 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s5QTs-000du8-MP; Fri, 10 May 2024 15:40:12 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s5QTs-0022bE-1v;
-	Fri, 10 May 2024 15:40:12 +0200
-Date: Fri, 10 May 2024 15:40:12 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Martin Kaiser <martin@kaiser.cx>
-Cc: imx@lists.linux.dev, Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, Shawn Guo <shawnguo@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25, 35, 50, 51, 53}
- cspi devices
-Message-ID: <pof7t5skj6w7to75kynjtck5hh5whc2zm3k3cd3nsz6ogthxi3@2a6at3s4lfpy>
-References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
- <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
- <a342h4qn2qkmeimbuanyqh6pxbpqvz7artmodnltcxtbzeo6qn@iyth4xit622f>
+	s=arc-20240116; t=1715350949; c=relaxed/simple;
+	bh=oq2wm3Lbj4UkoA0P6JiSrXaZwpRiR7h5cZJSyLcveLU=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=Xq+a+ti3UrOpbnSZ/CYCEkaiSshuzTwYqLC1VApfqy2HdVSRWQCcnQPFwtS6AvuamMsESmDB5LS3T8j9vhR6JkVeOQ14uPgNpxGJLppdF50ONg8/Wzlvrtff0+MOk9SG3Xsd8PxASkynfGpo1Nk8g67E++OWVorjwsjmt6Ny2SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rf2yhUfn; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rf2yhUfn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251C8C2BBFC;
+	Fri, 10 May 2024 14:22:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715350948;
+	bh=oq2wm3Lbj4UkoA0P6JiSrXaZwpRiR7h5cZJSyLcveLU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=rf2yhUfnqZaPF/0sD21fkyCkLbHrpaiKcdoCjQEamkpFp2lgaTuGTWar+R+glsnZo
+	 Ce045If8KIQHEJIfTkChQ/oaBv1Qm8FkL3N4UO/SmJ8j8Eb6XotYTTb2tYcZz2b4xM
+	 S+Ic5N7LATP6lVzYlmQxR5DN0Fo7/mSjhd5QOUqPjtYWN5511i93zr98Agun4qDlpT
+	 /uAQ/4T6OI+95d9u16EfPiNLaDFQj7W7e9yEtCf3UM9dvlhEut7yOALR1X7ARsrURu
+	 k1e/ygT/ohuhgdilPLv6TbPn3D+OrbmHQg41D7hb2UsWxreQon161OMlonPDRfmlb/
+	 sBGVVwLHVIkeQ==
+Date: Fri, 10 May 2024 09:22:26 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3cibc4wntmwtix5p"
-Content-Disposition: inline
-In-Reply-To: <a342h4qn2qkmeimbuanyqh6pxbpqvz7artmodnltcxtbzeo6qn@iyth4xit622f>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux-doc@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Rob Herring <robh+dt@kernel.org>
+In-Reply-To: <20240510-imx-se-if-v1-2-27c5a674916d@nxp.com>
+References: <20240510-imx-se-if-v1-0-27c5a674916d@nxp.com>
+ <20240510-imx-se-if-v1-2-27c5a674916d@nxp.com>
+Message-Id: <171535094644.45933.7938748436310737402.robh@kernel.org>
+Subject: Re: [PATCH 2/4] dt-bindings: arm: fsl: add imx-se-fw binding doc
 
 
---3cibc4wntmwtix5p
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, 10 May 2024 18:57:28 +0530, Pankaj Gupta wrote:
+> The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
+> creates an embedded secure enclave within the SoC boundary to enable
+> features like:
+> - HSM
+> - SHE
+> - V2X
+> 
+> Secure-Enclave(s) communication interface are typically via message
+> unit, i.e., based on mailbox linux kernel driver. This driver enables
+> communication ensuring well defined message sequence protocol between
+> Application Core and enclave's firmware.
+> 
+> Driver configures multiple misc-device on the MU, for multiple
+> user-space applications, to be able to communicate over single MU.
+> 
+> It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+> 
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> ---
+>  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 186 +++++++++++++++++++++
+>  1 file changed, 186 insertions(+)
+> 
 
-Hello,
+My bot found errors running 'make dt_binding_check' on your patch:
 
-On Fri, May 10, 2024 at 02:32:56PM +0200, Uwe Kleine-K=F6nig wrote:
-> On Wed, May 08, 2024 at 03:44:53PM +0200, Martin Kaiser wrote:
-> > Thus wrote Uwe Kleine-K=F6nig (u.kleine-koenig@pengutronix.de):
-> > > While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it w=
-as
-> > > claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-> > > device trees don't add DMA channels. The Reference manuals of i.MX31 =
-and
-> > > i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-> > > check the others.)
-> >=20
-> > If I'm not mistaken, the imx25 reference manual
-> >=20
-> > https://www.nxp.com/docs/en/reference-manual/IMX25RM.pdf
-> >=20
-> > does say that CSPI has DMA support. Section 18.1.1 (Features) lists DMA=
- as one
-> > of the features. There's also DMA events (section 3) for CSPI-1/2/3 RX,=
- TX.
->=20
-> Oh indeed. I don't know what made me claim that DMA isn't mentioned in
-> the reference manual. Maybe I looked at the i2c chapter.
->=20
-> I now did:
->=20
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx25.dtsi b/arch/arm/boot/dts/nxp=
-/imx/imx25.dtsi
-> index 4a85684deff8..710b28a41bae 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-> @@ -190,6 +190,8 @@ spi1: spi@43fa4000 {
->  				reg =3D <0x43fa4000 0x4000>;
->  				clocks =3D <&clks 78>, <&clks 78>;
->  				clock-names =3D "ipg", "per";
-> +				dmas =3D <&sdma 8 1 0>, <&sdma 9 1 0>;
-> +				dma-names =3D "rx", "tx";
->  				interrupts =3D <14>;
->  				status =3D "disabled";
->  			};
-> @@ -229,6 +231,8 @@ spi3: spi@50004000 {
->  				interrupts =3D <0>;
->  				clocks =3D <&clks 80>, <&clks 80>;
->  				clock-names =3D "ipg", "per";
-> +				dmas =3D <&sdma 34 1 0>, <&sdma 35 1 0>;
-> +				dma-names =3D "rx", "tx";
->  				status =3D "disabled";
->  			};
-> =20
-> @@ -257,6 +261,8 @@ spi2: spi@50010000 {
->  				reg =3D <0x50010000 0x4000>;
->  				clocks =3D <&clks 79>, <&clks 79>;
->  				clock-names =3D "ipg", "per";
-> +				dmas =3D <&sdma 6 1 0>, <&sdma 7 1 0>;
-> +				dma-names =3D "rx", "tx";
->  				interrupts =3D <13>;
->  				status =3D "disabled";
->  			};
+yamllint warnings/errors:
 
-Additionally to the above I now did:
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/firmware/fsl,imx-se.example.dtb: /example-2/v2x: failed to match any schema with compatible: ['fsl,imx95-v2x']
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index c3e5cee18bea..74da1a965a0d 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1428,12 +1428,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data =
-*spi_imx,
- 	if (ret)
- 		goto dma_failure_no_start;
-=20
--	if (!spi_imx->devtype_data->setup_wml) {
--		dev_err(spi_imx->dev, "No setup_wml()?\n");
--		ret =3D -EINVAL;
--		goto dma_failure_no_start;
-+	if (spi_imx->devtype_data->setup_wml) {
-+		spi_imx->devtype_data->setup_wml(spi_imx);
- 	}
--	spi_imx->devtype_data->setup_wml(spi_imx);
-=20
- 	/*
- 	 * The TX DMA setup starts the transfer, so make sure RX is configured
+doc reference errors (make refcheckdocs):
 
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240510-imx-se-if-v1-2-27c5a674916d@nxp.com
 
-because there is no .setup_wml() callback for i.MX25 in
-imx31_cspi_devtype_data and the DMA register is already setup in
-mx31_prepare_transfer(). Without this change DMA isn't used.
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
-However this breaks SPI transfers, when I try to read out an MRAM I get:
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-	root@ecu02:~ hexdump -C /dev/mtd4
-	[   71.813807] spi_imx 43fa4000.spi: I/O Error in DMA TX
-	[   71.819173] spi-nor spi0.2: SPI transfer failed: -110
-	[   71.829129] spi_master spi0: failed to transfer one message from queue
-	[   71.843962] spi_master spi0: noqueue transfer failed
+pip3 install dtschema --upgrade
 
-So it would indeed be interesting if you ever managed to use DMA on
-i.MX25.
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---3cibc4wntmwtix5p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmY+I7sACgkQj4D7WH0S
-/k6HzQf/S67lzT4YmTJ9q3bqWfTgirvFBobySdM5Hxwdywi4mo8KmvWV0fXV6L3Z
-NvecRd4zYPI9X/y8BgX9tHYCcI2JEqKFL4fBs0thrOGMXXOqytvkWvXEm6y/coXA
-pNauGY+kcgcFp2TDepyBZO0F7Ob6b0Lqtm54gpKBf7hfLZu3pa6GUodfa+f2xRz4
-WvSqFPLdIlTcroKRkHNiH/j8VXN8C2dHxciqFka64BemOOG5cvORjsFvWIPn59nt
-QjRt48BgIflUUHqM14yHZRHWd0ONx+WrLdZZUrdX4st7dOz7kD9E3OMzFefTxt+B
-OA47B43hZksnSJvQI/tjwUsFx07wJw==
-=So2r
------END PGP SIGNATURE-----
-
---3cibc4wntmwtix5p--
