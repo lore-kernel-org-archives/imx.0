@@ -1,102 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CF312C7E8;
-	Fri, 10 May 2024 14:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ABC168AFC;
+	Fri, 10 May 2024 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715350949; cv=none; b=IDVnZoUMAoz90WHuycBLuztZ+7Xhk0j9ShT3kj6Hx4Em+6MV4aOGHkFl9aSYUk+M6k9UdnJO6xDTNTqXunzVKBw51ZBsDqjLhPNVtzrGd2vViuBsS5llPLWhF2WqzIXJP9EjiFoPrFzDnKOuJXlWztp8lpWPvAhipKBrE6CSOAo=
+	t=1715352942; cv=none; b=ZGYUFXvxWMHPFUU7kbYZIr023198we/j+wiGZ86sv7GOygbLOOY8fmr4xchowQFNEVQTtDzwDwxFBcp0cIOfw2qa1ZdT0qTkHYSgUcG+VEzeldlH4zKY5rnX+DE1epxWakWCkgw1mZfYc87i6KYfHsjkuKpvv5HM3UA6DRDh0p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715350949; c=relaxed/simple;
-	bh=oq2wm3Lbj4UkoA0P6JiSrXaZwpRiR7h5cZJSyLcveLU=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=Xq+a+ti3UrOpbnSZ/CYCEkaiSshuzTwYqLC1VApfqy2HdVSRWQCcnQPFwtS6AvuamMsESmDB5LS3T8j9vhR6JkVeOQ14uPgNpxGJLppdF50ONg8/Wzlvrtff0+MOk9SG3Xsd8PxASkynfGpo1Nk8g67E++OWVorjwsjmt6Ny2SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rf2yhUfn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715352942; c=relaxed/simple;
+	bh=sLxTchYz896sDj6qbtwDuUDSEIrv3OIFfIsIipZpE5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sGwqQCepcSKbgbemV/dptfixidGWezFD6/dE4IploauNfCurmQ5myBjBLUPnlODCanzScemsDf440nwX/Jbbk4vq+lvPirAb6YSAx1lZhBb2jm+YZaQyYCazmvkCNs2Azor6W0tb0mugwJy6b6SJKqN55pOATTlw/bgdf3OKCnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qk+QHBRU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rf2yhUfn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251C8C2BBFC;
-	Fri, 10 May 2024 14:22:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qk+QHBRU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B805BC113CC;
+	Fri, 10 May 2024 14:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715350948;
-	bh=oq2wm3Lbj4UkoA0P6JiSrXaZwpRiR7h5cZJSyLcveLU=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=rf2yhUfnqZaPF/0sD21fkyCkLbHrpaiKcdoCjQEamkpFp2lgaTuGTWar+R+glsnZo
-	 Ce045If8KIQHEJIfTkChQ/oaBv1Qm8FkL3N4UO/SmJ8j8Eb6XotYTTb2tYcZz2b4xM
-	 S+Ic5N7LATP6lVzYlmQxR5DN0Fo7/mSjhd5QOUqPjtYWN5511i93zr98Agun4qDlpT
-	 /uAQ/4T6OI+95d9u16EfPiNLaDFQj7W7e9yEtCf3UM9dvlhEut7yOALR1X7ARsrURu
-	 k1e/ygT/ohuhgdilPLv6TbPn3D+OrbmHQg41D7hb2UsWxreQon161OMlonPDRfmlb/
-	 sBGVVwLHVIkeQ==
-Date: Fri, 10 May 2024 09:22:26 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1715352942;
+	bh=sLxTchYz896sDj6qbtwDuUDSEIrv3OIFfIsIipZpE5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qk+QHBRUz835G4CYflpo32U3bgdyaL3BSq2dIP7JPTBxppCQBluDy5JvM3o97jF80
+	 iEALaNAdz3a/+xGsLAEiu9b9vQ8IOnPt5tIhImEP0eGpneYwpJjwpuG02fLkJ3yi68
+	 nhbRbKKys1TrAkL5vW0TVsZ1OZcRgEjvN426FUx7zeuaqiU+tMqyApz+JEHhGlVjsp
+	 zDEVo4rZ2XssiB7JTh43TEhLtOPYXIZhhcknhTJmh/C+HOdQCExA3ZWfYGTj7MIeOv
+	 FQzyk2hH6uVo11vyU+GDq7RXKXBnosQk38Lr2DJANEJLXeauHqnO5s9JAJ0Ew2Q7b5
+	 NjdJU+QN1zb3Q==
+Date: Fri, 10 May 2024 15:55:34 +0100
+From: Lee Jones <lee@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
+	Bruno =?iso-8859-1?Q?Pr=E9mont?= <bonbons@linux-vserver.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexander Shiyan <shc_work@mail.ru>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-omap@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Subject: [GIT PULL] Immutable branch between Backlight, HID and fbdev due for
+ the v6.10 merge window
+Message-ID: <20240510145534.GD6146@google.com>
+References: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, linux-doc@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Rob Herring <robh+dt@kernel.org>
-In-Reply-To: <20240510-imx-se-if-v1-2-27c5a674916d@nxp.com>
-References: <20240510-imx-se-if-v1-0-27c5a674916d@nxp.com>
- <20240510-imx-se-if-v1-2-27c5a674916d@nxp.com>
-Message-Id: <171535094644.45933.7938748436310737402.robh@kernel.org>
-Subject: Re: [PATCH 2/4] dt-bindings: arm: fsl: add imx-se-fw binding doc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240424-video-backlight-lcd-ops-v2-0-1aaa82b07bc6@kernel.org>
 
+Enjoy!
 
-On Fri, 10 May 2024 18:57:28 +0530, Pankaj Gupta wrote:
-> The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
-> creates an embedded secure enclave within the SoC boundary to enable
-> features like:
-> - HSM
-> - SHE
-> - V2X
-> 
-> Secure-Enclave(s) communication interface are typically via message
-> unit, i.e., based on mailbox linux kernel driver. This driver enables
-> communication ensuring well defined message sequence protocol between
-> Application Core and enclave's firmware.
-> 
-> Driver configures multiple misc-device on the MU, for multiple
-> user-space applications, to be able to communicate over single MU.
-> 
-> It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
-> 
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> ---
->  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 186 +++++++++++++++++++++
->  1 file changed, 186 insertions(+)
-> 
+The following changes since commit 4cece764965020c22cff7665b18a012006359095:
 
-My bot found errors running 'make dt_binding_check' on your patch:
+  Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
 
-yamllint warnings/errors:
+are available in the Git repository at:
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/firmware/fsl,imx-se.example.dtb: /example-2/v2x: failed to match any schema with compatible: ['fsl,imx95-v2x']
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/backlight.git ib-backlight-hid-fbdev-lcd-scripts-v6.10
 
-doc reference errors (make refcheckdocs):
+for you to fetch changes up to 82b9007bc4f8c22975d640d7df6743366f25a353:
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240510-imx-se-if-v1-2-27c5a674916d@nxp.com
+  const_structs.checkpatch: add lcd_ops (2024-05-03 10:45:55 +0100)
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+----------------------------------------------------------------
+Immutable branch between Backlight, HID and fbdev due for the v6.10 merge window
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+----------------------------------------------------------------
+Krzysztof Kozlowski (19):
+      backlight: lcd: Constify lcd_ops
+      backlight: ams369fg06: Constify lcd_ops
+      backlight: corgi_lcd: Constify lcd_ops
+      backlight: hx8357: Constify lcd_ops
+      backlight: ili922x: Constify lcd_ops
+      backlight: ili9320: Constify lcd_ops
+      backlight: jornada720_lcd: Constify lcd_ops
+      backlight: l4f00242t03: Constify lcd_ops
+      backlight: lms283gf05: Constify lcd_ops
+      backlight: lms501kf03: Constify lcd_ops
+      backlight: ltv350qv: Constify lcd_ops
+      backlight: otm3225a: Constify lcd_ops
+      backlight: platform_lcd: Constify lcd_ops
+      backlight: tdo24m: Constify lcd_ops
+      HID: picoLCD: Constify lcd_ops
+      fbdev: clps711x: Constify lcd_ops
+      fbdev: imx: Constify lcd_ops
+      fbdev: omap: lcd_ams_delta: Constify lcd_ops
+      const_structs.checkpatch: add lcd_ops
 
-pip3 install dtschema --upgrade
+ drivers/hid/hid-picolcd_lcd.c            | 2 +-
+ drivers/video/backlight/ams369fg06.c     | 2 +-
+ drivers/video/backlight/corgi_lcd.c      | 2 +-
+ drivers/video/backlight/hx8357.c         | 2 +-
+ drivers/video/backlight/ili922x.c        | 2 +-
+ drivers/video/backlight/ili9320.c        | 2 +-
+ drivers/video/backlight/jornada720_lcd.c | 2 +-
+ drivers/video/backlight/l4f00242t03.c    | 2 +-
+ drivers/video/backlight/lcd.c            | 4 ++--
+ drivers/video/backlight/lms283gf05.c     | 2 +-
+ drivers/video/backlight/lms501kf03.c     | 2 +-
+ drivers/video/backlight/ltv350qv.c       | 2 +-
+ drivers/video/backlight/otm3225a.c       | 2 +-
+ drivers/video/backlight/platform_lcd.c   | 2 +-
+ drivers/video/backlight/tdo24m.c         | 2 +-
+ drivers/video/fbdev/clps711x-fb.c        | 2 +-
+ drivers/video/fbdev/imxfb.c              | 2 +-
+ drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
+ include/linux/lcd.h                      | 6 +++---
+ scripts/const_structs.checkpatch         | 1 +
+ 20 files changed, 23 insertions(+), 22 deletions(-)
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+Lee Jones [李琼斯]
