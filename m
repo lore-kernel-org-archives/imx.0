@@ -1,147 +1,210 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2071.outbound.protection.outlook.com [40.107.8.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD65A26ADB
-	for <imx@lists.linux.dev>; Fri, 10 May 2024 12:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715344383; cv=none; b=Rm+1GQX2N/llXKNKhlNJZzeytAyfkjguDrO9CUCYYo7KbDLB1sW5dZVC/vvTqOfby0rSBqMRTkiDouEIrbfEeExiAGloxzT4Qxag74s55vldqUAWvHjS5zSF5zf0l7efjBCKbTqhQsBLtARvMruVsVmzSR1BMJmm8huWJ+Guc3g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715344383; c=relaxed/simple;
-	bh=p3FXyHOQzqFmoQSnCB5ECR3npK/GsqyfzSxfbFpSGG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=goC5xkjEmtK3McowQ44zkNWjiBXNE+/Eb6Z39oqMaznvSEvw7PrxqbvkNU4YRN38OvnhUjeeiHy+DAng/E7dciDyJsOTDBDeG8fbxkxZ7c0tLFfMlZkCVaMxGmCy2VdvLstxseXfO/IIJP2lq/uIe92DYP6KhJJJFT+qgAmAndc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s5PQo-0002v4-C6; Fri, 10 May 2024 14:32:58 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s5PQm-000d8e-8G; Fri, 10 May 2024 14:32:56 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s5PQm-001zvV-0V;
-	Fri, 10 May 2024 14:32:56 +0200
-Date: Fri, 10 May 2024 14:32:56 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Martin Kaiser <martin@kaiser.cx>
-Cc: imx@lists.linux.dev, Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, Fabio Estevam <festevam@gmail.com>, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25, 35, 50, 51, 53}
- cspi devices
-Message-ID: <a342h4qn2qkmeimbuanyqh6pxbpqvz7artmodnltcxtbzeo6qn@iyth4xit622f>
-References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
- <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E65127E0D
+	for <imx@lists.linux.dev>; Fri, 10 May 2024 13:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715347802; cv=fail; b=YZE825J0FOsHmC5+8j/4Y3wkB6gJ+WvL5yfeTykxjF3GcP+4htWHb++mEKXmNC/rFpjspViF28L++2uuMTmYYxb3vgsUMra7GN5mP15ur2hfXcQihmPz6MhYbHESzdExOHsP++uBgxNSMTs1zE2jRVrmguWOXWXVhVPv83yJl00=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715347802; c=relaxed/simple;
+	bh=f2ac9QRAicm5VDNnBecL5v4PUcq/Egt4zE6wms3i1gA=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=u3AxLMO+Flug6hYYxJ8TBpsxLecncW0OTE766sSF4dAhsZSEW1UrTE5WQiWCHIFhGLS22Bfm4SxY+SQSAED6x65j2bJHH63hbr+7LXgmCnwCGjW9r1XwleSzyyrFP4rfujv8NPZVI6sxd39o1+P3wBcSLfXOXUBLgxKchT9RoTU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=sD2LSul0; arc=fail smtp.client-ip=40.107.8.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="sD2LSul0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UNwDUt9WXyqxaPk91R+3R7fLacG2fqb7AAR7/HfS/DDlhkfYUYTfwCXe8E1IKZQQMKB6gTyIX+wzqOXOyqLl9YKSK2wpAx/Fu1u7VIOvMoXuAFQnZ+ur4GgvMNn1M8fPTwamUS7uwiOm9dTJ6LTsljhGNKPcsqhaXDXaLL4lHDDLrqck0WWy22FCAXShoesF8fardGcpiYXDHlcjvIbRuGv5JMuIfOtFMVL8w1j7hOBGQi6p7yepsPs0/OrAGFrAZknGG62Nc5znn4KuExEejSCWa2sJAVz4CE1cZZFtAzgPayMuYnFn0DbUpgErof6uC2TqQJrUAsWYDfflZaHK2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o0rhxtrNBYZA/9j2JxNXzPtum/qEOv6Nkz5UlpI0iJc=;
+ b=gFL6N30WZGt3WuK7AO7JdffNIb0LeuRDqgGa3loXWk8ubgMytZ9xDqoyiNc6xHZdmPopg1tg64IamzmFIETVDiH++/+X1p5v59OGk8PYYluzd/sLzuJ8IhKOyrewry7JnNPRuLWy8B9hNn1JDQALLeBcXkRKzL3NQnpOCNadPEQctha2FgUPhk7o+L7hdukYsU1OaOmnt7yWFYxoxLjbpcXKnrx6OWvZK5juwde6udncYRN0pLoXQ6v2xoBMGiDfFpM5WFfB7Rw20Ceqof+iEsRXQFx/71YB5fDH/Z2KVoHo/kUDCf7DuGjLi6cdIL99lJ2MLL89m8s29VYDkXtwYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o0rhxtrNBYZA/9j2JxNXzPtum/qEOv6Nkz5UlpI0iJc=;
+ b=sD2LSul0x8mYcy+jBjNG8rPT7fuXVXKzumkRas0fo43m00UJJIA8pGPwfCAMs1cRQ3hUrRw6CDSGeeBVuNH4rYkIjwq+jWOZOr3b20zpGR5LuQKlhmCkArn9+fyPg+uDtaseRS2Qh0rPUIu0zbX8YHaFq+XyirwHziKhAzuOouk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
+ by AS5PR04MB10041.eurprd04.prod.outlook.com (2603:10a6:20b:67c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49; Fri, 10 May
+ 2024 13:29:57 +0000
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827%4]) with mapi id 15.20.7544.048; Fri, 10 May 2024
+ 13:29:57 +0000
+From: Pankaj Gupta <pankaj.gupta@nxp.com>
+Subject: [PATCH 0/4] Communication Interface to NXP secure-enclave HW IP
+ like Edgelock Enclave
+Date: Fri, 10 May 2024 18:57:26 +0530
+Message-Id: <20240510-imx-se-if-v1-0-27c5a674916d@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL4gPmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDUwNz3czcCt1ioGiabqKJgYGpqYGlcUqymRJQfUFRalpmBdis6NjaWgA
+ Vk2ItWwAAAA==
+To: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Pankaj Gupta <pankaj.gupta@nxp.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: SI2PR06CA0003.apcprd06.prod.outlook.com
+ (2603:1096:4:186::14) To AM9PR04MB8604.eurprd04.prod.outlook.com
+ (2603:10a6:20b:43b::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="34j2p23xuz2tn5tz"
-Content-Disposition: inline
-In-Reply-To: <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8604:EE_|AS5PR04MB10041:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22e4ffe6-5ccb-41ce-fb63-08dc70f548d8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|366007|1800799015|7416005|376005|52116005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M2hSajE4ZklEc1Q1WkdEUFdvdURFZHN1M0hEWlZPdTlRNjRMU0pRcnp4TDgw?=
+ =?utf-8?B?aEgyR2s2aXNpN0M5aG0wcVZXaldoY0NhQllXTzZUcXJTd1ZEemoyNEJVYWp3?=
+ =?utf-8?B?ZXFMekszSXRLdmY1dmVDQUVick5PMkFjTFRZVVpoT2VmM25rMmx0RTJUZkpo?=
+ =?utf-8?B?OGRmYndOczFoQjdlN0EwM3VEWWkwWlZFSytFOHpSaTlHbStNUWxySElLcTAv?=
+ =?utf-8?B?ZUZHSW5aMVVERGdhZ3oyUUVTNThVWm91N3ZNRVpvSzJvdTUybTV5dlNRakZD?=
+ =?utf-8?B?OG5udDJnWUFBaTJ0MjlQd0xCOVFndlhzTmFCTnFwZkhYUmZidU95VEt5T29I?=
+ =?utf-8?B?NmdwckZub0lFYmtQaVBHMnQvWHByRTFPc0dwdXdDTEJyazdyc2pKaGJPUFFR?=
+ =?utf-8?B?dVo3eWhUMmVkZFl0aXNiQldtNXhzNzFSQ1NTWk0xTzNPMG1MR0VVNDZUa2Nv?=
+ =?utf-8?B?RFRMZ2p6UVZ1MksrK21FZU5nd1VaVFdESGdtUjl5cEFqU29wbkJ6TWcrQUVi?=
+ =?utf-8?B?bUU5aXBTUmkrTk8rL2NKMXBOazBETzdRZzQxM0E0UnNQK05QOFdpVWFtUGpp?=
+ =?utf-8?B?b29MeXNSTXVBN2xMWFE3SVVZL0EvL0hhNjQycUVpREV3QWF2WFVJcXdPWWcx?=
+ =?utf-8?B?UWhuU3BuMjVva1d0SUdNWnVvczVadGcraUZXempjdlZoazdjdStWQjJmRjZW?=
+ =?utf-8?B?TkZxb1B2R21haUZpRHIwa1djVWdUTjlLRCtZRDBoelZ6Rm4rMkRneUFpbTFD?=
+ =?utf-8?B?YlZ6dWFiL2dWajV0Szc4UTRjVVRMZXJZU0ZpZ3BnN1MrRjFQSGhicGVRZUtm?=
+ =?utf-8?B?U1UrdGNVbzVRVFY2dS9MRCtUNzJuSjJFRkl2ZXFIbndveVNlbE1sb3ordFdP?=
+ =?utf-8?B?MDNyN2dWanZhS3V6em9QMGpnZGs4TjVieWpzQ2V2d1lIaEEzSzdyNzRNcWVV?=
+ =?utf-8?B?TDBkbjhLNE5oSE52a1ZQbTZHOStCYkphU2hoWHF0T1pqVnlmMncvQklNSnA5?=
+ =?utf-8?B?QnBydzZoRUZZcHdsZk56Z3UvTU9nSmpiSzdTcFNEM24yUmowUkg5ZXFFQWRK?=
+ =?utf-8?B?YklGK21yb3ZMWm54dzk5L1A4dHB0N3ZCSk4xWjcvRXNEcVkzNy90STh5aSsy?=
+ =?utf-8?B?OGZ3RlFIankrS1FCOWk4ZVRQeksxVDNlSmxaMXdSL29KV2pFbStyakRNa2Nt?=
+ =?utf-8?B?Sjl6RERkbWl5eDFOZDAzZFM0d3NTZElPNDdvR0VnT08wWHFLeFVqV0gvbTF6?=
+ =?utf-8?B?SlJ4cWlFZG1YeFFUL2JodWxoaGdnY3ZVUWJUVEZEdDBpR3o3RDFsQXhGR2Fm?=
+ =?utf-8?B?cGhBUGRGcWZ1emY0Y2k0NVlack1DbDZ4bWRsMnEvclhvNUs4ME5FYW5iUExL?=
+ =?utf-8?B?TEhpaHBTeWZkS0x6RG9aNUJFSHdUY1FNN0JmSUUwcUd2THFtT2R6YklRdTVX?=
+ =?utf-8?B?cVY0T2dWRjVEK0VhdFJ2VTBLa2lQTVV4WklmQ2tZZmhHY0ZOeE5GbWRqM2xG?=
+ =?utf-8?B?ek5kb29ZVlRYRWxqWjJ5eGRwazN5YXJBNCs0aTA5ZVRxMnh3SStsT3dkWUx4?=
+ =?utf-8?B?eGVCbEI5aUpRNHk5dVNzclZGWUF0RklaYjdmTmR1MWVuQk9MN1VRWmtVKzdk?=
+ =?utf-8?B?SGdWaU8yUGpzNEFjRHhIOVpDckNhQ3NpUC9tZzhoMGRtQjJ0WTBzNXNjUXBR?=
+ =?utf-8?B?V2lQNFhDOTgzQ0tUeFp2bmZRS204L2Q3VEh5M0o2YnlMOUtXbklVa09LTTZy?=
+ =?utf-8?B?b3ZvaHhzMk5HODJaeFBOQUU0b1RXY1RYQVBLYmgzNU9Qa3BOVHJvV1ljaGMr?=
+ =?utf-8?B?bk5NZXJNQm5MV1prb1ZjZz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V2FlNEdTeVF4L0ZueHNKY3pxRVRBYmtZY0NRcEppNE0xbGJXMXBCOXMvclV1?=
+ =?utf-8?B?N1o2SzFnekpOR2NuY2xQUWJSYklEWWRTRGJFOEJkSytjMTRtZFNMWCtiSDdP?=
+ =?utf-8?B?ajJRcDJsVVhpSmJvclRsWGxSWG92aTF0U0ZEbzFKY1RxZTBLamJ0UmxqZFBF?=
+ =?utf-8?B?dFdpc2dLQzhNV1Vsd2htbjV2TXFTWXNaUk1aZU9MMm9JcmhpY3k1SlZjelNI?=
+ =?utf-8?B?ak1BUW14KzRCTU92QmxwODQ5MXA0KzdicVN6ZmRwUGJLTnVPVWRSeUhZSFhG?=
+ =?utf-8?B?WU01c0Rwckg5ZVlFbG5hK0d4NDkvK1NaMUxJT29FNndLSzZWMmNweC9DQjNI?=
+ =?utf-8?B?dGF1MjVFRXgvMjYyVHFxWUpwMlVmdFZJVjBEL1pucDM3K28vTDB1RURzajFj?=
+ =?utf-8?B?d3pWVVdXMm1CSGVvUU1CL0l2Ymo5cVNId0haZnlFdDVBVFY1T0F2KzkxQnBj?=
+ =?utf-8?B?RVN4NjRyaGovOVNjZ0czUWpCNkpMQ1dIb3A5NFYrb2hBT3NQQzVpaHlZZ3RC?=
+ =?utf-8?B?clJJQ1U2b1RvQlNuQmoyb3lkTU9GZXdVQ3RMUGliUHhIYlkrdHhDelY4T0Vq?=
+ =?utf-8?B?aXZrbkJhVUE5UUNIQm4rK2RNL3FHQnU2SFNJckxrWmVDdktMMVNuOXFRSEhO?=
+ =?utf-8?B?M1J0ZHFvS2pIeUFwVUNwTFkwRkpRZzZ4Nm5BSDZEbThDSWNERHFFOCs0bjU3?=
+ =?utf-8?B?dWJHam90QkFETUVjU2trM241cUM2QnRzbXFjSzBrcHVVWnBORC91dkxweW5H?=
+ =?utf-8?B?TWRwMTRGeVdmb1dyamZLVDQ2L2NEZXJuN0U5ZGtvQlJCUkw4T2xtUlpkakI4?=
+ =?utf-8?B?aXBuR0ZRdVFHc0VvUHM1WW5qZFk1dkkxZGRFajllbDdRc3Y0SEgyWFhxSXlq?=
+ =?utf-8?B?REQyY0JUdU8zT2F0SEdsMWZPNXBBdThBc3NGYjF1UEpXSGRwOHJRRjFyb0xX?=
+ =?utf-8?B?dHJqZWJJUFMxVmR4Slo2V0twYmJGUTAzSkdKekoxZmlFeFdjNE8yQkdpUHAr?=
+ =?utf-8?B?ci8yanZYSXpzRzBlc0IrRU4xcE9OZG5Pb3NzTi9UR0NESkpDS1phZDJLSEh4?=
+ =?utf-8?B?eFVIZmRFenZZY1dlL1pVMTVJcmlsUWU5b095ZGlUaGM5dmYydlZMRW1IcU1B?=
+ =?utf-8?B?UHAxN0RmTjV1bkZjUm93TElQOWtKbHlLNDZJenFGaXBPNS96VWRTK2REMVJs?=
+ =?utf-8?B?dkhuTWtMV1o1MFpZTGNjdkZvVG5NQWdpeHBWYWtuNTd3SU0xZGNvM2EycStP?=
+ =?utf-8?B?MExacmJtWDJlU2Z5b1BwdHJkcUtvUUhBb0FmNWg2eE1qblNsVEc3MlFpeFRL?=
+ =?utf-8?B?MHVpc1M3a1Z6d1FCUUxlWGFFOVVKNmF6aWxpMzBlU2t4Z2pVNXl6R2tqU1Jk?=
+ =?utf-8?B?NC81OWs2bnZONjVpLzVQZmVGVWNOY1Q1endYZnpCM3pVUnlSSHFiTTVaL0w0?=
+ =?utf-8?B?UUtTdzJ5SlhFSnZFeCtYeGc5aUowL1RCNHhucUQvUWNvTWFsYTRqdVhpeTBD?=
+ =?utf-8?B?TWwvclNlVHMzRlBXM3lrdEw1NlhueGttVjZ3bno4aFhlNitlcW5GMlNjRGUv?=
+ =?utf-8?B?bGE1d1RBODBrRCtTb2FEUHZ0WVhlUm84WHc5eWJ2SnErSlU5Y3NHTE51RzhG?=
+ =?utf-8?B?R2c0UGhDcnpzRVJEcElwYm84TzYzM3Y2YTA0MDFoNEtEMjZCY2hqaGlBZllT?=
+ =?utf-8?B?MFhHakhhYUoyOHBaMGROOStuaXNTMmh4MWN4aEY0ZUFLMC8vOUVHTllQcFcw?=
+ =?utf-8?B?dU1EaFFKZEtUTGdORUxHS1gwWVNoeEVTM2NRYTg3SUg5eGFBa21pcE1nMjBB?=
+ =?utf-8?B?LzRidGY3R3dMK3ArL09tbExHS1Vua3RsYVhuVnZWR1czY1E1Z0I5VVRyMVZs?=
+ =?utf-8?B?V3RhVERMZ0kxRmhuQVlsZ3RSdi9ZU0pVM3h3cUk3M1R4K3l0Nlg0Vk0xOFpk?=
+ =?utf-8?B?M2tncW1YcTJHK3I3VWNKSC9ZbktnTm5hNDN5aUZVZW9BRmxkUmhPMTkrd21K?=
+ =?utf-8?B?am9lQjQvVzNPTTRHNmhJYVlNeXMxbk5OeFVodG5vdXZhSHV3cENmSWhqeVA2?=
+ =?utf-8?B?M3VzckRwcTVRTzdQQmczL0IrTHd6Lys2NnV2WXNqSVNqNnBVRWZaMERkbFZF?=
+ =?utf-8?Q?Jh5dJIGA1jAum3UjRZizuJiu8?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22e4ffe6-5ccb-41ce-fb63-08dc70f548d8
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 13:29:57.2321
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aNhcbg4xuE9KVK5CWEQAZA3oDl7d9e25szDIzlSvaNSNhbZfpsA3sSr2L32HXTuiQ/6AkiliL88urfEHm0eajg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10041
 
+Hardware interface of the NXP Secure Enclave  HW IP(s) like EdgeLock Enclave,
+V2X, SHE etc, is based on the Messaging Unit module that enables processing
+elements like ARMv8 core, RISC V core, within the SoC to communicate and
+coordinate by passing messages (e.g., data, status and control) through 
+these interfaces.
 
---34j2p23xuz2tn5tz
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The NXP i.MX secure enclaves hardware interface kernel driver, is specifically
+targeted for use between application core and NXP secure-enclave(s) HW. It allows
+to send/receive messages to/from the secure-enclave.
 
-Hello Martin,
+Patch-set adds the kernel driver for communication interface to secure-enclave,
+for exchanging messages with NXP secure enclave HW IP(s) like EdgeLock Enclave,
+both from:
+- User-Space Applications via character driver.
+- Kernel-space, used by kernel management layers like DM-Crypt.
 
-On Wed, May 08, 2024 at 03:44:53PM +0200, Martin Kaiser wrote:
-> Thus wrote Uwe Kleine-K=F6nig (u.kleine-koenig@pengutronix.de):
-> > While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-> > claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-> > device trees don't add DMA channels. The Reference manuals of i.MX31 and
-> > i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-> > check the others.)
->=20
-> If I'm not mistaken, the imx25 reference manual
->=20
-> https://www.nxp.com/docs/en/reference-manual/IMX25RM.pdf
->=20
-> does say that CSPI has DMA support. Section 18.1.1 (Features) lists DMA a=
-s one
-> of the features. There's also DMA events (section 3) for CSPI-1/2/3 RX, T=
-X.
+Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+---
+Pankaj Gupta (4):
+      Documentation/firmware: add imx/se to other_interfaces
+      dt-bindings: arm: fsl: add imx-se-fw binding doc
+      arm64: dts: imx8ulp-evk: add nxp secure enclave firmware
+      firmware: imx: add driver for NXP EdgeLock Enclave
 
-Oh indeed. I don't know what made me claim that DMA isn't mentioned in
-the reference manual. Maybe I looked at the i2c chapter.
+ Documentation/ABI/testing/se-cdev                  |   42 +
+ .../devicetree/bindings/firmware/fsl,imx-se.yaml   |  186 +++
+ .../driver-api/firmware/other_interfaces.rst       |  126 ++
+ arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |   17 +-
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi         |   18 +-
+ drivers/firmware/imx/Kconfig                       |   12 +
+ drivers/firmware/imx/Makefile                      |    2 +
+ drivers/firmware/imx/ele_base_msg.c                |  287 +++++
+ drivers/firmware/imx/ele_base_msg.h                |   70 +
+ drivers/firmware/imx/ele_common.c                  |  341 +++++
+ drivers/firmware/imx/ele_common.h                  |   43 +
+ drivers/firmware/imx/se_ctrl.c                     | 1339 ++++++++++++++++++++
+ drivers/firmware/imx/se_ctrl.h                     |  151 +++
+ include/linux/firmware/imx/se_api.h                |   14 +
+ include/uapi/linux/se_ioctl.h                      |   88 ++
+ 15 files changed, 2733 insertions(+), 3 deletions(-)
+---
+base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+change-id: 20240507-imx-se-if-a40055093dc6
 
-I now did:
+Best regards,
+-- 
+Pankaj Gupta <pankaj.gupta@nxp.com>
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25.dtsi b/arch/arm/boot/dts/nxp/i=
-mx/imx25.dtsi
-index 4a85684deff8..710b28a41bae 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-@@ -190,6 +190,8 @@ spi1: spi@43fa4000 {
- 				reg =3D <0x43fa4000 0x4000>;
- 				clocks =3D <&clks 78>, <&clks 78>;
- 				clock-names =3D "ipg", "per";
-+				dmas =3D <&sdma 8 1 0>, <&sdma 9 1 0>;
-+				dma-names =3D "rx", "tx";
- 				interrupts =3D <14>;
- 				status =3D "disabled";
- 			};
-@@ -229,6 +231,8 @@ spi3: spi@50004000 {
- 				interrupts =3D <0>;
- 				clocks =3D <&clks 80>, <&clks 80>;
- 				clock-names =3D "ipg", "per";
-+				dmas =3D <&sdma 34 1 0>, <&sdma 35 1 0>;
-+				dma-names =3D "rx", "tx";
- 				status =3D "disabled";
- 			};
-=20
-@@ -257,6 +261,8 @@ spi2: spi@50010000 {
- 				reg =3D <0x50010000 0x4000>;
- 				clocks =3D <&clks 79>, <&clks 79>;
- 				clock-names =3D "ipg", "per";
-+				dmas =3D <&sdma 6 1 0>, <&sdma 7 1 0>;
-+				dma-names =3D "rx", "tx";
- 				interrupts =3D <13>;
- 				status =3D "disabled";
- 			};
-
-And spi still works. I see an issue, but I think that's orthogonal to
-adding DMA. Will send a formal patch when I debugged that.
-
-Thanks for your feedback,
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---34j2p23xuz2tn5tz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmY+E/cACgkQj4D7WH0S
-/k6S6Af+NhNWUC65ORkPzGHcNzgRIMATb6fopM3JGyAy5eCkpiyWVOSlyrxzb0RR
-99xOYyTzI20zDMcHoNkZB+/1FAW6rogVEUKmxc0XqYgiIqcWl3tvP1ip8bN6FQ3X
-3rshJcmcii2Cnl1xjbj5Rj62Bh07WP2mMhLCkoxnp5m9f4bgsHT2OJErmEwfww5H
-twVz3fMrUIG4mT5mGqRseX762dS2OGNyxxuuLMQNFTVOutwsrjMYgoV1Bqp4xAWU
-AR1g17y/Fka4LTAbt9+g+5vHELOeSqUZVRMoqNCDzYcjelNLZ5r5Zd/Gr7X3TTvd
-/8rU3/2/wOy+TbtDjlUE7YXuEvC++Q==
-=D8mb
------END PGP SIGNATURE-----
-
---34j2p23xuz2tn5tz--
