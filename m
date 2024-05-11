@@ -1,69 +1,43 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B981610B;
-	Sat, 11 May 2024 07:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6C154675;
+	Sat, 11 May 2024 14:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715411758; cv=none; b=oqHhwf+5dtO8qu2pazve/WcARZ4WoMhdfEdu34eiGqepd+ViKqu8CoksOudfuI4m21IPHBMjCgnDM5pOwJdTzYgSXg9goZ9II9dg2lKsAfoknd/sunnroluXF0nCDQZgc3TT7x8OixedxMFlBM2DeKGLgT12RZAzcu7t1UZpKB8=
+	t=1715437811; cv=none; b=nUPAtKUVRuD6YDNuQ7W97UFqoevfRp0WXDr4e6yk+z7lbj/xN/QTuSofqSEzuJv2i5F0Q/kz9WZ2EvLVdL/vlIeeNVHvoOjIrukyZ6+xC/UJpB59YVd71T3X9MmZ1aflBG8MB0+sz6VawVeHNk3e9Z24R4x81+2bXHCKFSd+PZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715411758; c=relaxed/simple;
-	bh=TjIX/flL554zvS60Pv08V4xwbSviSX/085JsCFPdfW0=;
+	s=arc-20240116; t=1715437811; c=relaxed/simple;
+	bh=Ljf9kyd52InGJKqfdBuV4Ah4NYoQ0uueOOS0D+QxAlE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k7MT2ks46WEgP4GX+kU8QR/MAb/KdSik8rTUl8Oknc1mqxoi0jjG1D9QrT3elFxCAJgY8C6E5E8lpDEV54HmNJ61L9m1tAKiwfVISFtsb6qkqLMEs7AbTra57Oaez+95wLndIw9wvKIZu2cD/MdvY451NnETsv3o+ScWpvhu5l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O0KD0eCw; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=adqaZeZsj6mMgDAnpUzMQIPcG31zWbBvKuhTn34Eyyb5adj76feXHhYieb8/BCDgb2uZqGfdEwa93YUmBQLZsCEwJz5KOKL35LWGH4slrp+otQCrapX8uYn77HmBR8NgDUjDGK8sS/PhtF6kb9C/bOQXMIQW8SbDIdjYsmUqnV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Hf91AIkh; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O0KD0eCw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715411757; x=1746947757;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TjIX/flL554zvS60Pv08V4xwbSviSX/085JsCFPdfW0=;
-  b=O0KD0eCwO9R6GuqK5XlnlBlz7inxXag+onaC1SBQqx1Q4nBOG37CzdMX
-   rWHGKqNhh9bdw/mVT8Dr1gwLQcQgvlr6movjuJNoFriUnIJ6iCB4gMrX9
-   e6RlAZSKhXHie/VuLhUXGs+ssHVNCSvzg2ku3V5ORT35nFHqA4c/IfNpO
-   HNpPSwI+IIxrFAVrdeNj0IsGKlUrW1g5FAk6Qy5l3EhshCCN3R11EglvT
-   0NoQztO9f78Lh8DRmgzZiY6vFmyNf0JGK44rtciEcfyDXRi8sMRhUXFJC
-   PxrCjZj6UPd+pHhx5QhC+sjz63W8HDiJfuWrNvcayc7ikbJjsRarcpunj
-   Q==;
-X-CSE-ConnectionGUID: HcNRiZ6qQjyAM5UiVQla1w==
-X-CSE-MsgGUID: MiNOVFicRACKRTEIk5ftkQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="15223395"
-X-IronPort-AV: E=Sophos;i="6.08,153,1712646000"; 
-   d="scan'208";a="15223395"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 00:15:56 -0700
-X-CSE-ConnectionGUID: MWwOHqH+RbO9RIk3HpsY+A==
-X-CSE-MsgGUID: gzKGgGHUTNGlt5D+4HZqmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,153,1712646000"; 
-   d="scan'208";a="34391821"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 11 May 2024 00:15:52 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s5gxS-00074n-0B;
-	Sat, 11 May 2024 07:15:50 +0000
-Date: Sat, 11 May 2024 15:14:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Pankaj Gupta <pankaj.gupta@nxp.com>
-Subject: Re: [PATCH 4/4] firmware: imx: add driver for NXP EdgeLock Enclave
-Message-ID: <202405111457.slkK7qEv-lkp@intel.com>
-References: <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Hf91AIkh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=5MHosLGyMfOMQTFlE11a37ZDMCC9zCbFJQj+2H5rwUU=; b=Hf91AIkhkaSC/B2WvhNWfwFnWf
+	Kq/EjgoDVI6qd9M6wXYFCYedTgtUun6AbuF8yvyUPI32/G6ilEsrdkmELeZYD1x4pyjh33PZ++2ok
+	xa0UUy15UX1uZDoqYtGX2wzPl4ea9Pyie9+77E5Iu29n/yCdXDzpTH2O/k/0BGTruXz0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1s5njP-00FCTL-Pz; Sat, 11 May 2024 16:29:47 +0200
+Date: Sat, 11 May 2024 16:29:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+	richardcochran@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 net-next] net: fec: Convert fec driver to use lock
+ guards
+Message-ID: <b96822ea-4373-415d-8397-d8bc5da88120@lunn.ch>
+References: <20240511030229.628287-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,144 +46,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
+In-Reply-To: <20240511030229.628287-1-wei.fang@nxp.com>
 
-Hi Pankaj,
+On Sat, May 11, 2024 at 11:02:29AM +0800, Wei Fang wrote:
+> The Scope-based resource management mechanism has been introduced into
+> kernel since the commit 54da6a092431 ("locking: Introduce __cleanup()
+> based infrastructure"). The mechanism leverages the 'cleanup' attribute
+> provided by GCC and Clang, which allows resources to be automatically
+> released when they go out of scope.
+> Therefore, convert the fec driver to use guard() and scoped_guard()
+> defined in linux/cleanup.h to automate lock lifetime control in the
+> fec driver.
 
-kernel test robot noticed the following build warnings:
+Sorry, it has been decided for netdev we don't want these sort of
+conversions, at least not yet. The main worry is backporting fixes. It
+is likely such bcakports are going to be harder, and also more error
+prone, since the context is quite different.
 
-[auto build test WARNING on e8f897f4afef0031fe618a8e94127a0934896aba]
+If done correctly, scoped_guard() {} could be useful, and avoid
+issues. So we are O.K. with that in new code. That will also allow us
+to get some experience with it over the next few years. Maybe we will
+then re-evaluate this decision about converting existing code.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20240510-213210
-base:   e8f897f4afef0031fe618a8e94127a0934896aba
-patch link:    https://lore.kernel.org/r/20240510-imx-se-if-v1-4-27c5a674916d%40nxp.com
-patch subject: [PATCH 4/4] firmware: imx: add driver for NXP EdgeLock Enclave
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20240511/202405111457.slkK7qEv-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project b910bebc300dafb30569cecc3017b446ea8eafa0)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240511/202405111457.slkK7qEv-lkp@intel.com/reproduce)
+    Andrew
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405111457.slkK7qEv-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/firmware/imx/ele_common.c:27:6: warning: variable 'err' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-      27 |         if (!wait_for_completion_timeout(&priv->done, wait)) {
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/firmware/imx/ele_common.c:36:9: note: uninitialized use occurs here
-      36 |         return err;
-         |                ^~~
-   drivers/firmware/imx/ele_common.c:27:2: note: remove the 'if' if its condition is always true
-      27 |         if (!wait_for_completion_timeout(&priv->done, wait)) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/firmware/imx/ele_common.c:24:9: note: initialize the variable 'err' to silence this warning
-      24 |         int err;
-         |                ^
-         |                 = 0
-   1 warning generated.
---
-   In file included from drivers/firmware/imx/ele_base_msg.c:8:
-   In file included from include/linux/dma-mapping.h:11:
-   In file included from include/linux/scatterlist.h:8:
-   In file included from include/linux/mm.h:2188:
-   include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     509 |                            item];
-         |                            ~~~~
-   include/linux/vmstat.h:515:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     515 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     516 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:522:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     522 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:527:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     527 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     528 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:536:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     536 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     537 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
->> drivers/firmware/imx/ele_base_msg.c:23:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-      23 |         if (!priv || !s_info)
-         |             ^~~~~~~~~~~~~~~~
-   drivers/firmware/imx/ele_base_msg.c:114:9: note: uninitialized use occurs here
-     114 |         return ret;
-         |                ^~~
-   drivers/firmware/imx/ele_base_msg.c:23:2: note: remove the 'if' if its condition is always false
-      23 |         if (!priv || !s_info)
-         |         ^~~~~~~~~~~~~~~~~~~~~
-      24 |                 goto exit;
-         |                 ~~~~~~~~~
->> drivers/firmware/imx/ele_base_msg.c:23:6: warning: variable 'ret' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
-      23 |         if (!priv || !s_info)
-         |             ^~~~~
-   drivers/firmware/imx/ele_base_msg.c:114:9: note: uninitialized use occurs here
-     114 |         return ret;
-         |                ^~~
-   drivers/firmware/imx/ele_base_msg.c:23:6: note: remove the '||' if its condition is always false
-      23 |         if (!priv || !s_info)
-         |             ^~~~~~~~
-   drivers/firmware/imx/ele_base_msg.c:21:9: note: initialize the variable 'ret' to silence this warning
-      21 |         int ret;
-         |                ^
-         |                 = 0
->> drivers/firmware/imx/ele_base_msg.c:23:6: warning: variable 'get_info_addr' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-      23 |         if (!priv || !s_info)
-         |             ^~~~~~~~~~~~~~~~
-   drivers/firmware/imx/ele_base_msg.c:103:6: note: uninitialized use occurs here
-     103 |         if (get_info_addr) {
-         |             ^~~~~~~~~~~~~
-   drivers/firmware/imx/ele_base_msg.c:23:2: note: remove the 'if' if its condition is always false
-      23 |         if (!priv || !s_info)
-         |         ^~~~~~~~~~~~~~~~~~~~~
-      24 |                 goto exit;
-         |                 ~~~~~~~~~
->> drivers/firmware/imx/ele_base_msg.c:23:6: warning: variable 'get_info_addr' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
-      23 |         if (!priv || !s_info)
-         |             ^~~~~
-   drivers/firmware/imx/ele_base_msg.c:103:6: note: uninitialized use occurs here
-     103 |         if (get_info_addr) {
-         |             ^~~~~~~~~~~~~
-   drivers/firmware/imx/ele_base_msg.c:23:6: note: remove the '||' if its condition is always false
-      23 |         if (!priv || !s_info)
-         |             ^~~~~~~~
-   drivers/firmware/imx/ele_base_msg.c:18:27: note: initialize the variable 'get_info_addr' to silence this warning
-      18 |         phys_addr_t get_info_addr;
-         |                                  ^
-         |                                   = 0
-   9 warnings generated.
-
-
-vim +27 drivers/firmware/imx/ele_common.c
-
-    20	
-    21	int imx_ele_msg_rcv(struct se_if_priv *priv)
-    22	{
-    23		u32 wait;
-    24		int err;
-    25	
-    26		wait = msecs_to_jiffies(1000);
-  > 27		if (!wait_for_completion_timeout(&priv->done, wait)) {
-    28			dev_err(priv->dev,
-    29					"Error: wait_for_completion timed out.\n");
-    30			err = -ETIMEDOUT;
-    31		}
-    32	
-    33		mutex_unlock(&priv->se_if_cmd_lock);
-    34		priv->no_dev_ctx_used = false;
-    35	
-    36		return err;
-    37	}
-    38	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
+pw-bot: cr
+     
