@@ -1,161 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2054.outbound.protection.outlook.com [40.107.8.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257146556;
-	Sat, 11 May 2024 05:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715405454; cv=none; b=cjUII0alStyVv4pqSIeWrSCHCVlbU/jtGVsMBy+u8ppXYhRUAW+FBudH7epWult+R8HVhCAAqK0AOjmWNbnmoWcWp8VkOPDLVF0zGzX6M67N+cfOW+gdH4cbbT3ltFuUOls1/TuyZNBjfWApYyA8+KnpmdudI/zUDPkrJMtFxgk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715405454; c=relaxed/simple;
-	bh=rQ1c7y7bZSRr0Y8VPoLgL/gNE+kEqKqhcHEmsbqe1Ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ne5nERiCmK0AsKW7FWui4mIJVqtHEB7kIcRgw/1AqprEdjEs8XslCcH33RQyHrZz7wsB38Rg6zmvzaWIOEcKH+aQKbEaf42/p6EEuTV34E3bSoqHn34xvVNZAkmaH/U9kGPpQ61ATObGD01m9mp3qapuUgu74eBwcjMo6o4R/6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TsH2yEUi; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64028A41
+	for <imx@lists.linux.dev>; Sat, 11 May 2024 06:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715409082; cv=fail; b=SNiCSoFOdnDhmS8IK13bZtvqAbBglp2SvCXbdFTFGZEzpZh+U//XRbPlRF/p5iM5W3mtgZMTh4ee45rs4D0jWCgoFYicfyiplCorWBh5mcCiKEliSP/dACPdJ6L+6bHm72XnsWLgsAhR46aXEc1THUxgYyY3CvR1Pnq5eQx50IQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715409082; c=relaxed/simple;
+	bh=BUDFgpg+nYEFNgcv5M0PQZH5XdKcv+4AI5+Aj5dJris=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JSc5SL7rs31M717CS9IXeOczIG4UhrbtoTVjj8Lj7+HH49ec38+z/EQLCjLvf+fUxfP3s+ur/cCEpGq/viN4DgT5pA5+HbwMxHDDFa2bvrhtEoQUzn5l667F1k5/XZMeKl9uoXvvHB9A4hj7ShvO9de9m660+5/OFpqgFf6qTHE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=HOYV7EDJ; arc=fail smtp.client-ip=40.107.8.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TsH2yEUi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715405452; x=1746941452;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rQ1c7y7bZSRr0Y8VPoLgL/gNE+kEqKqhcHEmsbqe1Ro=;
-  b=TsH2yEUiIGCkFS3jmLSBNRQMylh1Lhu/qpTOkB91E4Va9xEY38Wrb0j4
-   x7gF2GBsx8ILsH45awhvzVbqID24i5UcCz9F7d+l4oF+pb06XOK83cFnH
-   0bDwg/xe9aI2xH9z8oyCe6EynypTKNIJN0EGY2e/EtMgipuGboe8ZZLiT
-   zwGALGm99nVWleW7K8soqvZAswc6fDFth4bsoiE2BCO9Wtzo/AvykJKb6
-   Z5NXGqWbPZfqqK49YmjRXE+S5uhtj57oyT8Tjhu+xZBRklB5j4R0zavH/
-   ai/cZUYG2h5z5PsKh1Zq+FEZGXsSts3SAx07agzYdVqsgIsDzOlAN0G7j
-   w==;
-X-CSE-ConnectionGUID: EyXCyDCxRWGO5YEaKz6G6Q==
-X-CSE-MsgGUID: CQleQ4jXS0SwQ99CnDmPqg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="11627141"
-X-IronPort-AV: E=Sophos;i="6.08,153,1712646000"; 
-   d="scan'208";a="11627141"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 22:30:52 -0700
-X-CSE-ConnectionGUID: U7mxv43QQ3aMp4eUHKbX3Q==
-X-CSE-MsgGUID: 1Yto9Q3cTBq4VwM+MDji3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,153,1712646000"; 
-   d="scan'208";a="34347206"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 10 May 2024 22:30:48 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s5fJl-0006yk-2S;
-	Sat, 11 May 2024 05:30:45 +0000
-Date: Sat, 11 May 2024 13:30:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Pankaj Gupta <pankaj.gupta@nxp.com>
-Subject: Re: [PATCH 4/4] firmware: imx: add driver for NXP EdgeLock Enclave
-Message-ID: <202405111304.CJcpd03O-lkp@intel.com>
-References: <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="HOYV7EDJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oXaLUeX4bmofbi+ks88beROSrNizbwMOQ3INELzB9aBvkIjHcpLfxh/85uG+2RcHeVVRaBE41Jkpe7oSNjSpFTgNKb6gBgOyrNeiwdW7vcPkBdRZiOQCo4Yd04xrxd7RhoWHjBDzdb0ESCOfdvHbKIXON/VJO6geRJaQaG8pEuRpjxAs8WsYvZTpNB4XYlK63yAYXXgmHX8PwTwsfCQTqX4aSE4cmgjQ+th5aV/X+Z9OFs7co0YoH5xQPvKR0ccF0++hsu1jZJ7MhxhFHQoR0OtTA8mO9pdLexjofzfqG6yEcvYyD3sTZtNOh52lMo+eWiG7sTUsu3vh0rBIN0qq/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UKoUWpdmUUawbUL+N8U9sNlZrRisggBQ4JyNY/Iwu0M=;
+ b=RLfDwAzpBd1aZRpKcROW5TDXPNv8KaAdfA1VC0a8yz4trAcB7WnRdQBh4dVOZA0UgyKKjEXZG4mkCGXqwXRQEeGAUHMWmb/gjS1kJlVMcFjAx2n/MUcHqFqssOZA4j0mBKa73fM+lOJPdQWHLyPyMwJOBbmVS1rn7n8GDmIlTu4mlXmtOASHkV/CvAQqb4Nw+3sK3FHwTXJ0PX8VUfTT0tvBGZ7BkJs7O1uTiF79JG+oVtezQZjG6S3jAkNczjSPofdSnaVtULaqyAkWzpniF2/GSLWAyD69B3lFgZkjqWFALansIdqdJ1xmmM51dL/gJJPfQfcshlVQaHNMJGr5Wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UKoUWpdmUUawbUL+N8U9sNlZrRisggBQ4JyNY/Iwu0M=;
+ b=HOYV7EDJqewdRh9mJ/yCEN1dm2DQzNsNHbELT2JK5fOLNjMdmMbEkc4K6sZRAnWuIMXW4YnqpkjS1H247CndG6Pvgu4hR8+wvPgZMwTRVdQVezorN4GzltTJGUUbqJYg+Tce7bAUp8KllHNyZ0Pr9vQMiHr5AA2RxPO50zMQT5o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR0402MB3891.eurprd04.prod.outlook.com (2603:10a6:208:f::23)
+ by PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49; Sat, 11 May
+ 2024 06:31:17 +0000
+Received: from AM0PR0402MB3891.eurprd04.prod.outlook.com
+ ([fe80::6562:65a4:3e00:d0ed]) by AM0PR0402MB3891.eurprd04.prod.outlook.com
+ ([fe80::6562:65a4:3e00:d0ed%7]) with mapi id 15.20.7544.052; Sat, 11 May 2024
+ 06:31:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net] net: fec: remove .ndo_poll_controller to avoid deadlocks
+Date: Sat, 11 May 2024 14:20:09 +0800
+Message-Id: <20240511062009.652918-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0058.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::9) To AM0PR0402MB3891.eurprd04.prod.outlook.com
+ (2603:10a6:208:f::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR0402MB3891:EE_|PAXPR04MB9642:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86f166e3-5c4d-44fb-5438-08dc7183f640
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|366007|376005|1800799015|52116005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?R28UeCxIbX0ntuGn+qWrZeeAk21ZeglGWrOjcrPdvg8GoIoaGWpPsn9EUS8Y?=
+ =?us-ascii?Q?HMPF8Df8LsVoQ2CzbrjT7IU0LoNPYWOj8+8BWBeHPAGlyFQoZnOixrVJJaUj?=
+ =?us-ascii?Q?+rESLJ1f9+aUdycB3sLZNdBhFR0Mm7KmxWJPWx/PzwR63+s8uW4kRSy3Ay6y?=
+ =?us-ascii?Q?rg7eqe8DtCQjsnK3K2QGXnv95CoUhellgf8JglOcbZard2+9UefcVj0NcAZ3?=
+ =?us-ascii?Q?9QeaWklGUtQ32WGkM3eGzSf7A2mqI/NZHzQx6fZgOQaryzZMfepIhY46hIiu?=
+ =?us-ascii?Q?5CMYo8VP4nUXFM4z4BCa6GQHQk79njDcYVVEkK+RK7abOsr0O2WScD7zBJcc?=
+ =?us-ascii?Q?WeLXYRZBvFFK3efXEPUN4plrzZpHmpFWKFHYC/GPe7NPL7VvwTG5pFuKJYLo?=
+ =?us-ascii?Q?73/DH1F5SMjdQd66KEY1wGZ6x7TyHxPf5wDWU2SPX8K7iMrcFV3oXZcLBkLw?=
+ =?us-ascii?Q?lRRzPxesUtanMI9W3hIHQTPQOgSaf7ginmSqSP0WnEoSa0z6feMHLJKztUr7?=
+ =?us-ascii?Q?rm+8HtdZvenD8HeJGST7M+tY0I64tREWAC9UANLYoZstae7hLRCVsjjVKtXj?=
+ =?us-ascii?Q?V60s1dfLKXUUWDqydirjIi2j1ak8kAOk4Mc2fH1hs1QtK7gLOVOE51ozYKS2?=
+ =?us-ascii?Q?2QUMr9op+QwZeGAJBHjjYCXUegC92GBcI93kjchkjjp6So1uGP7tuB8ofeRY?=
+ =?us-ascii?Q?Fux+YYhNDHqPZ9jhM7jt25DquaREScuVYJF+o0bZI+bnrD4MfOaBz1YNyhen?=
+ =?us-ascii?Q?z1EJyG22dfjerLMoHW5PTC7oapGYnQXyer3tqMPy4jObymqx3Yc0NcmrImYy?=
+ =?us-ascii?Q?zrcM4gdUtJ+xhRYhGactSa89NpU/ydIFM+Jv2Rgm+etecflDXOf/i02G0cnD?=
+ =?us-ascii?Q?+E7PqzoxzAAQBQ55/cXAN+zrvSRHoBNk5FGfFpzme5OseAR4YdVSxZ+gNVox?=
+ =?us-ascii?Q?934V52JH4YZWpWxXC/9Tzp1zsnHXYV9tDP935Ct3VgYR3hVFEkuUFhPKYOYj?=
+ =?us-ascii?Q?vMl1kCR5yoV4nSKGFUzPmT5q1659VLv0uRLJHuFHr7I/gMX51SHLyhfGGn/I?=
+ =?us-ascii?Q?f5W//jzKgInFZ4xatLUcoEn6kLGpHmzwFOZv0gu8j6nZ/ZA7hQEEbwjuZf+V?=
+ =?us-ascii?Q?OfExwXSo1l23wGj8zk4TlVNKtkHNccX0nqA4v/ZJiwyN7EJLSigwyCxOVNm2?=
+ =?us-ascii?Q?2T0Mx4YsK4AwGBOEcmlxfgGYDknj3RHHfeFe4V+TcQnsCSGNubFZ+ZS+sYQ+?=
+ =?us-ascii?Q?uOgUxkW3TSbh0/iNQ/0KEqXx1rg1QFB3IMAEmcJqbpupFG46T+8P0jmVINu3?=
+ =?us-ascii?Q?IrX3OLxirkDEhtnLr06U+JULnf/A2K5N6LHuknBOG7rWvQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3891.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8hAY+UWobnl78QdNQOF1nNao+CQ63b4flseRlYmFwG74hMJWv01/TG6hRc26?=
+ =?us-ascii?Q?OTskYMokSHJwdyK5Er2sRyqvIXgZNLF//4CM6TaG6rIW47GyTTTLMz95I0g3?=
+ =?us-ascii?Q?pfrRcHu6LG3grGpes/wrd432Gl1mz7tplU2sudVzEqLrwEbig0BrpFzVf9I1?=
+ =?us-ascii?Q?i8bBYx+D9ZEUyJPwkLpFf4TTXpmSC8p7ECzB27bxKOo90/kWB6M8PUCOuYq6?=
+ =?us-ascii?Q?wLo00vPTA3qewT3g78LLNiXYpeK4goLOYl9RCZGs+08n65YesSgaSXKufXEt?=
+ =?us-ascii?Q?XD3smJzBu80TmEJcVxBmJtwau/AWWM0jiK/BSUBp5NSJxp2YM7WiZgzCqQoZ?=
+ =?us-ascii?Q?c5oO/zJhaKb5cuP9h3+xgzpC2l+PUYeZoYGiOY0M6D0/E/zOXwNBwSBLaMIa?=
+ =?us-ascii?Q?gI3nzXom79YWPZUj61C/OlIaiAiUm710nT+YZDzZ0TWQ4pHfZdxBsp+/aaqp?=
+ =?us-ascii?Q?d5U4amcytX2qWMQ/L0ugWPlPOgn8hY7Pmej25nSZ7/4TloVo25haES4g8yJU?=
+ =?us-ascii?Q?Ldxdldy7Q2xKjT0iRjMcyEefKhkbCaZZYyBu5eFVBmLv4Qma80TiDkZBc/QL?=
+ =?us-ascii?Q?BGqY35KCSlqrdn0NdmUnGyXjsXhQlJj3CoheDdEW3x/o9+uqEiLZciB5LX7x?=
+ =?us-ascii?Q?Arfh/3a1J+w1oI06uLRnDPP4d8bdXiUfizkEcTwIB1XdR1Z/UJnE8HntPlRS?=
+ =?us-ascii?Q?pq3dEqwiTQ0lqDMHOclK2ts7pBvnXsdITf/buUDXqnC4vtkryCSbARDjmNJm?=
+ =?us-ascii?Q?/ML3Zmm2vbNA9y9PpXQxtYqOx5F/jrFZYc2Ia31D1uAhu0Qzx4401oBYbxq6?=
+ =?us-ascii?Q?eFXPo+7vq028dihSv2Wcn1s1YUH3hqQAuHGgDufxTRCnnIQkS6SAf5USMv1j?=
+ =?us-ascii?Q?DQyY5LJtyKVZvBK24ejSImb/6+AzKvaosbtHa1M1lbTt8jRXqxAyk/TJ61fH?=
+ =?us-ascii?Q?2W/8T/pbeheWRC9Rb2KhjbItCWCXuA95DN5EZ4E7jN/AQjwvTGlKvvYxGN/o?=
+ =?us-ascii?Q?le909D44SttztVn1XiPbf2HDYE0jk+GSKcJ7b0Z9/e2+r2Gf3BZkXBJUSV9Y?=
+ =?us-ascii?Q?aqPV3cbS2rtMVAeGjQIRWOkWLDvgLbgZQeDPwzz5Bu6kvBcvOjzd6SIGC2BJ?=
+ =?us-ascii?Q?edkn+z1k1XKKj3zNZoddEDWrbQDXo5lvQwIYXQ73jRZkT6qTtWurLaRLFNcg?=
+ =?us-ascii?Q?5jkEh8y0V3hbnqabHgRpuIeymD/vvj8Hhr35hP1wV2g2qQutj8Klc8nqqYg3?=
+ =?us-ascii?Q?ZX2gJigmbUI76aV7rFJt9Z9lkPr+178y7FNWyLsLYCGa0BksimIuS/u4qtk7?=
+ =?us-ascii?Q?O5SFMbGf+om9NDtXR3JvFb3iuPVgqes1PWhP7Umtj1oNRG60exJrIeWsnq1b?=
+ =?us-ascii?Q?fp8Ci6+XxSSh2ER+kqLZq2XZqteFvwd+8hrhikLl4wCPyc975VSmokAIvBpr?=
+ =?us-ascii?Q?0Ppru1Ec0KHR1tDrxKhqaH3MZPXTA9tmNB5qT5t3glvAFVz/Z/ZnLIyHPr+8?=
+ =?us-ascii?Q?3bA7mGUDd6Cviy02xXcq0Rkl9cPaqkTJ4Y6gzkt/h3jmUnxFEdlLnOX2lR+R?=
+ =?us-ascii?Q?qKrtxg707O0fWSa5EGtL9WJHT+eW43TZnsThQxQb?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86f166e3-5c4d-44fb-5438-08dc7183f640
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3891.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2024 06:31:16.8328
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C3mc3rRhFOB1008RJj/a0hXqxpXti1fZhIN1JCIpBaaTykcnt4ADBOnBVLNfkAS6utaD8k3hOgxGlo5JckLurg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9642
 
-Hi Pankaj,
+There is a deadlock issue found in sungem driver, please refer to the
+commit ac0a230f719b ("eth: sungem: remove .ndo_poll_controller to avoid
+deadlocks"). The root cause of the issue is that netpoll is in atomic
+context and disable_irq() is called by .ndo_poll_controller interface
+of sungem driver, however, disable_irq() might sleep. After analyzing
+the implementation of fec_poll_controller(), the fec driver should have
+the same issue. Due to the fec driver uses NAPI for TX completions, the
+.ndo_poll_controller is unnecessary to be implemented in the fec driver,
+so fec_poll_controller() can be safely removed.
 
-kernel test robot noticed the following build errors:
+Fixes: 7f5c6addcdc0 ("net/fec: add poll controller function for fec nic")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 26 -----------------------
+ 1 file changed, 26 deletions(-)
 
-[auto build test ERROR on e8f897f4afef0031fe618a8e94127a0934896aba]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20240510-213210
-base:   e8f897f4afef0031fe618a8e94127a0934896aba
-patch link:    https://lore.kernel.org/r/20240510-imx-se-if-v1-4-27c5a674916d%40nxp.com
-patch subject: [PATCH 4/4] firmware: imx: add driver for NXP EdgeLock Enclave
-config: x86_64-buildonly-randconfig-005-20240511 (https://download.01.org/0day-ci/archive/20240511/202405111304.CJcpd03O-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240511/202405111304.CJcpd03O-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405111304.CJcpd03O-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from <built-in>:1:
->> ./usr/include/linux/se_ioctl.h:12:2: error: unknown type name 'u8'
-      12 |         u8 *user_buf;
-         |         ^
->> ./usr/include/linux/se_ioctl.h:13:2: error: unknown type name 'u32'
-      13 |         u32 length;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:14:2: error: unknown type name 'u32'
-      14 |         u32 flags;
-         |         ^
->> ./usr/include/linux/se_ioctl.h:15:2: error: unknown type name 'u64'
-      15 |         u64 ele_addr;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:19:2: error: unknown type name 'u32'
-      19 |         u32 base_offset;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:20:2: error: unknown type name 'u32'
-      20 |         u32 size;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:24:2: error: unknown type name 'u8'
-      24 |         u8 se_if_id;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:25:2: error: unknown type name 'u8'
-      25 |         u8 interrupt_idx;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:26:2: error: unknown type name 'u8'
-      26 |         u8 tz;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:27:2: error: unknown type name 'u8'
-      27 |         u8 did;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:28:2: error: unknown type name 'u8'
-      28 |         u8 cmd_tag;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:29:2: error: unknown type name 'u8'
-      29 |         u8 rsp_tag;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:30:2: error: unknown type name 'u8'
-      30 |         u8 success_tag;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:31:2: error: unknown type name 'u8'
-      31 |         u8 base_api_ver;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:32:2: error: unknown type name 'u8'
-      32 |         u8 fw_api_ver;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:36:2: error: unknown type name 'u8'
-      36 |         u8 *message;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:37:2: error: unknown type name 'u32'
-      37 |         u32 msg_size;
-         |         ^
-   ./usr/include/linux/se_ioctl.h:38:2: error: unknown type name 'u32'
-      38 |         u32 error_code;
-         |         ^
->> ./usr/include/linux/se_ioctl.h:42:2: error: unknown type name 'u16'
-      42 |         u16 soc_id;
-         |         ^
-   fatal error: too many errors emitted, stopping now [-ferror-limit=]
-   20 errors generated.
-
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 8bd213da8fb6..a72d8a2eb0b3 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3674,29 +3674,6 @@ fec_set_mac_address(struct net_device *ndev, void *p)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-/**
+- * fec_poll_controller - FEC Poll controller function
+- * @dev: The FEC network adapter
+- *
+- * Polled functionality used by netconsole and others in non interrupt mode
+- *
+- */
+-static void fec_poll_controller(struct net_device *dev)
+-{
+-	int i;
+-	struct fec_enet_private *fep = netdev_priv(dev);
+-
+-	for (i = 0; i < FEC_IRQ_NUM; i++) {
+-		if (fep->irq[i] > 0) {
+-			disable_irq(fep->irq[i]);
+-			fec_enet_interrupt(fep->irq[i], dev);
+-			enable_irq(fep->irq[i]);
+-		}
+-	}
+-}
+-#endif
+-
+ static inline void fec_enet_set_netdev_features(struct net_device *netdev,
+ 	netdev_features_t features)
+ {
+@@ -4003,9 +3980,6 @@ static const struct net_device_ops fec_netdev_ops = {
+ 	.ndo_tx_timeout		= fec_timeout,
+ 	.ndo_set_mac_address	= fec_set_mac_address,
+ 	.ndo_eth_ioctl		= phy_do_ioctl_running,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller	= fec_poll_controller,
+-#endif
+ 	.ndo_set_features	= fec_set_features,
+ 	.ndo_bpf		= fec_enet_bpf,
+ 	.ndo_xdp_xmit		= fec_enet_xdp_xmit,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
