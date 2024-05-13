@@ -1,155 +1,235 @@
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2063.outbound.protection.outlook.com [40.107.114.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66BD4BAA6;
-	Sun, 12 May 2024 16:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715530495; cv=none; b=I4LszjFE9BU7r6E+4nNeoXG7YBomzeuYNO5zzniymlOYU3faOHBnkDd+BA0dwHI2miHxokHwaMUR1uXbrXlbXDevCTfHFqmV0GZBmE99Hj0B2Pcl/cWGjVVYPEH8rPpY874SB5dWYwGYSYWeD5SYg1r1B/qN/oPVIPg4RrzFIGE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715530495; c=relaxed/simple;
-	bh=3p6RZsaFuqQrcqYg8I7erxfuDReeZqOo7JtbFmK1OW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2W5NiQ21iUceUiVQ9IXvDDZ4nj70DnlZF76BqHqDbfhG5Pp9ZJjHfLGHuwwQqnmvV+RTkcD9FGyZIHf0vg2A3QUWt4iRcXVb2Y2YXR+8b9d1L5nch0dOXX+y4HsyPggqD5loLzT244yH1fK+HJExCMqwiEdX619livsPutZUE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
-	(envelope-from <martin@akranes.kaiser.cx>)
-	id 1s6BqR-000DB9-2O;
-	Sun, 12 May 2024 18:14:39 +0200
-Date: Sun, 12 May 2024 18:14:39 +0200
-From: Martin Kaiser <martin@kaiser.cx>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: imx@lists.linux.dev, Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25, 35, 50, 51, 53}
- cspi devices
-Message-ID: <ZkDq73W7MuyQ4RLj@akranes.kaiser.cx>
-References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
- <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
- <a342h4qn2qkmeimbuanyqh6pxbpqvz7artmodnltcxtbzeo6qn@iyth4xit622f>
- <pof7t5skj6w7to75kynjtck5hh5whc2zm3k3cd3nsz6ogthxi3@2a6at3s4lfpy>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E47360
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 00:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715559091; cv=fail; b=iySqgaSbBR61VEoAQYSK3nau/YCQ8KvyQ0YxNAU9bbovAku+ajedY0tDQQkSXnjP41R7HQ9WxTdxspjSQi4x2fBhHnxSSVM+s++xSuQB9/VH241Lw/ZeWbyPWp7h74+T6JLUFZP1+004Hk9RI+ZTV4XB96q88M6bfUKhGli9uJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715559091; c=relaxed/simple;
+	bh=eVxcQtLkImm7A/Ymi0UKXVh57KZEZCYP+40rl0ryttE=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=DGl73s5BpiBsO63kmpMte3/Iicq3Nf2iSJTrXcoDy95jitnrzZczFJa9GeU8waWI6gUut/tvHxRcnfaOPFqfHHmOZ+zsWLvFFdNZ+7tUD4Xr4sRAOq0n7pV8sZRH91jS3fMnyl6QvCPnuwH0gMcSXgRzQzfgQUHVKuiSQfztBcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=C4BBlA49; arc=fail smtp.client-ip=40.107.114.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="C4BBlA49"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mGF9B3bKTyGDi1XnjECZ5kXEMXyJqQIj8xuIE6jmpUUTKPPnnZ/eLr4FwpQJ1WLQsP/lFb/kZGnE+BuYPDSt2toUIiOI7ipfOzEJPpPpCnC8LEO/FI+Lvf+vhdIvKXXb5RaIk0MbaxWEpOdUfbJCyIFJJ4WoOQ5rszJzA5WBmrdL/brD2aVtc+D9aHw0TnCMhzvBEkdHmn1xV+loX7/rtcbty46CbcwzEgt7E0OlK9JSNNNAeO8t7nxOO1yADxzXoZthendaE8gn5giM8PjNguwPEeXEsjzhE9mC99pblpniy6LQi1n6M+ICcK2fYPS+WgatuaA8UFYvZDCB2NFn2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c5iWd4d1Fy78CjS+zPylrfjZ1kac1GoR/o72tpzDLfw=;
+ b=BgqME8gU5iF8ELpQxuDYf5lUdhGFerOgwWu1v2LvQxwZH9M/83PN1E3tZFwkuuguO+xXQmVBZg9VPoKe0ibCG4tr8JPeCFTXbPlzV8v5j1CaaWl4P2+AiRyuO66lpF9f9C9BY+9lCSniOdgvnPaPwOdeS5SkZ/Nr0S8d5KMym9+HemWbN9IdPlLQIhsGTYf4EJzPhvD++NHY8Nxe6n1IJ7KAw5ouW/XzPuKac5OlcXgYoEgBYBMCeKo4WscTxcxh1MzhYOn7YDmVg4QyPxdL5RC9612zSPhXLkTrLEUYRKrVGn3yok94NyYxWmzuVHxTgfLXDuvS1jDi+7chHZrbBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c5iWd4d1Fy78CjS+zPylrfjZ1kac1GoR/o72tpzDLfw=;
+ b=C4BBlA49UabNkK5abNHv8vWz0rWJ1ec8A1RXpj3556JJcWAgb59/Y6BjR+Ux8zVT8HghdCGubi3LC9g92ggFjXYyCr7KW4bIMvvGvbYKPSBpsxcgqikAysbxY95szBcPYZ7h1QV3MR/YhDCMRLyihN7236k1JBau/2WgEVuoEd4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TY3PR01MB10906.jpnprd01.prod.outlook.com
+ (2603:1096:400:3af::14) by OS3PR01MB7285.jpnprd01.prod.outlook.com
+ (2603:1096:604:14b::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
+ 2024 00:11:19 +0000
+Received: from TY3PR01MB10906.jpnprd01.prod.outlook.com
+ ([fe80::592:9b7b:ef57:2dd8]) by TY3PR01MB10906.jpnprd01.prod.outlook.com
+ ([fe80::592:9b7b:ef57:2dd8%4]) with mapi id 15.20.7544.052; Mon, 13 May 2024
+ 00:11:19 +0000
+Message-ID: <87pltqzi3n.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
+ <amadeuszx.slawinski@linux.intel.com>,	Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,	Alper Nebi Yasak
+ <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
+ <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent 
+   Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,	Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,	Cristian Ciocaltea
+ <cristian.ciocaltea@collabora.com>,	Daniel Baluta <daniel.baluta@nxp.com>,
+	Hans de Goede <hdegoede@redhat.com>,	Jaroslav Kysela <perex@perex.cz>,
+	Jiawei Wang <me@jwang.link>,	Jonathan  Corbet <corbet@lwn.net>,	Kai  
+ Vehmanen <kai.vehmanen@linux.intel.com>,	Kevin Hilman
+ <khilman@baylibre.com>,	Liam Girdwood <lgirdwood@gmail.com>,	Mark Brown
+ <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,	Matthias  
+ Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
+ <neil.armstrong@linaro.org>,	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,	Pierre-Louis Bossart
+ <pierre-louis.bossart@linux.intel.com>,	Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
+ <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Vinod Koul
+ <vkoul@kernel.org>,	Xiubo Li <Xiubo.Lee@gmail.com>,
+	alsa-devel@alsa-project.org,	imx@lists.linux.dev,
+	linux-doc@vger.kernel.org,	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 0/3] ASoC: grace time for DPCM cleanup
+In-Reply-To: <1jwmnzz5k3.fsf@starbuckisacylon.baylibre.com>
+References: <87wmo6dyxg.wl-kuninori.morimoto.gx@renesas.com>
+	<1jr0ee2ebk.fsf@starbuckisacylon.baylibre.com>
+	<87pltxmakr.wl-kuninori.morimoto.gx@renesas.com>
+	<87edaba5ze.wl-kuninori.morimoto.gx@renesas.com>
+	<1j1q6b1gxs.fsf@starbuckisacylon.baylibre.com>
+	<878r0ir1qw.wl-kuninori.morimoto.gx@renesas.com>
+	<1jwmnzz5k3.fsf@starbuckisacylon.baylibre.com>
+User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Mon, 13 May 2024 00:11:18 +0000
+X-ClientProxiedBy: TYAPR01CA0041.jpnprd01.prod.outlook.com
+ (2603:1096:404:28::29) To TY3PR01MB10906.jpnprd01.prod.outlook.com
+ (2603:1096:400:3af::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <pof7t5skj6w7to75kynjtck5hh5whc2zm3k3cd3nsz6ogthxi3@2a6at3s4lfpy>
-Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
-
-Hello,
-
-Thus wrote Uwe Kleine-König (u.kleine-koenig@pengutronix.de):
-
-> Hello,
-
-> On Fri, May 10, 2024 at 02:32:56PM +0200, Uwe Kleine-König wrote:
-> > On Wed, May 08, 2024 at 03:44:53PM +0200, Martin Kaiser wrote:
-> > > Thus wrote Uwe Kleine-König (u.kleine-koenig@pengutronix.de):
-> > > > While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-> > > > claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-> > > > device trees don't add DMA channels. The Reference manuals of i.MX31 and
-> > > > i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-> > > > check the others.)
-
-> > > If I'm not mistaken, the imx25 reference manual
-
-> > > https://www.nxp.com/docs/en/reference-manual/IMX25RM.pdf
-
-> > > does say that CSPI has DMA support. Section 18.1.1 (Features) lists DMA as one
-> > > of the features. There's also DMA events (section 3) for CSPI-1/2/3 RX, TX.
-
-> > Oh indeed. I don't know what made me claim that DMA isn't mentioned in
-> > the reference manual. Maybe I looked at the i2c chapter.
-
-> > I now did:
-
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx25.dtsi b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-> > index 4a85684deff8..710b28a41bae 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-> > @@ -190,6 +190,8 @@ spi1: spi@43fa4000 {
-> >  				reg = <0x43fa4000 0x4000>;
-> >  				clocks = <&clks 78>, <&clks 78>;
-> >  				clock-names = "ipg", "per";
-> > +				dmas = <&sdma 8 1 0>, <&sdma 9 1 0>;
-> > +				dma-names = "rx", "tx";
-> >  				interrupts = <14>;
-> >  				status = "disabled";
-> >  			};
-> > @@ -229,6 +231,8 @@ spi3: spi@50004000 {
-> >  				interrupts = <0>;
-> >  				clocks = <&clks 80>, <&clks 80>;
-> >  				clock-names = "ipg", "per";
-> > +				dmas = <&sdma 34 1 0>, <&sdma 35 1 0>;
-> > +				dma-names = "rx", "tx";
-> >  				status = "disabled";
-> >  			};
-
-> > @@ -257,6 +261,8 @@ spi2: spi@50010000 {
-> >  				reg = <0x50010000 0x4000>;
-> >  				clocks = <&clks 79>, <&clks 79>;
-> >  				clock-names = "ipg", "per";
-> > +				dmas = <&sdma 6 1 0>, <&sdma 7 1 0>;
-> > +				dma-names = "rx", "tx";
-> >  				interrupts = <13>;
-> >  				status = "disabled";
-> >  			};
-
-> Additionally to the above I now did:
-
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index c3e5cee18bea..74da1a965a0d 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -1428,12 +1428,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
->  	if (ret)
->  		goto dma_failure_no_start;
-
-> -	if (!spi_imx->devtype_data->setup_wml) {
-> -		dev_err(spi_imx->dev, "No setup_wml()?\n");
-> -		ret = -EINVAL;
-> -		goto dma_failure_no_start;
-> +	if (spi_imx->devtype_data->setup_wml) {
-> +		spi_imx->devtype_data->setup_wml(spi_imx);
->  	}
-> -	spi_imx->devtype_data->setup_wml(spi_imx);
-
->  	/*
->  	 * The TX DMA setup starts the transfer, so make sure RX is configured
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY3PR01MB10906:EE_|OS3PR01MB7285:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0014a64-ad7c-4ad6-02dd-08dc72e1371c
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|366007|1800799015|52116005|7416005|376005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?4SGEz8OdIwwOflmlloQGN42tHwkIjgSoH9GCCDAj3Ag6BqrAmx4b2Srg+JEm?=
+ =?us-ascii?Q?8RiIMi/C4Wv0OKP0pY9s2SUfTr7FSbfIE+PQF0MOh+J5ISxcPN/Bl+WlOunT?=
+ =?us-ascii?Q?gHs3MMGQpn5c1J39nHB+CXZzJrQakj6zpvdvSYrzSb42+Y6f7Etqd43L3yP1?=
+ =?us-ascii?Q?VTeDAuxX/S7/6cpP3WVD6F4Ge/NSXR0dT2fRyJ4jQOibLPGas0HKeXYLxJcP?=
+ =?us-ascii?Q?tvUQLFg3Ed0R2m7nI2+bmW0YHFG9bbfoUKk2MqwCyA/kClWNTXX8FMRcDi4r?=
+ =?us-ascii?Q?xcuhQgV9suFDMvIBsYk0mbq+/PYF2R9ahMHYn8KsgAyMBHPXtV143lgxVVqC?=
+ =?us-ascii?Q?RGe1CRKJfqBcU2jz4Hwd2qIIlMbSnfkuq+S/IeC5prwgQHQXnhrQN5gaFpwT?=
+ =?us-ascii?Q?j4Br1nzoV2nkKvO+BLepKVsR6OjJRsRUXDPy3I+oAw0But5qBiw/BRVl1qMO?=
+ =?us-ascii?Q?URA3nB9GUdkeEGm2yUMROwjrcmTh0prRDLebhBx6HCM+lkSeS9/wcHLrmpNe?=
+ =?us-ascii?Q?Lb/Q5ZAslTGfQML3p23jFdFgilb9rQtEVtGBqTa6Du/KOm4ZNiKrqbvYDxo6?=
+ =?us-ascii?Q?36niTqtk7a1UoBApLnX0FH2NXohslvU0+BLa02FywNKzs2y3EJH8LSdgCPWh?=
+ =?us-ascii?Q?pwRKkV0N6ezVRyC3wkjffXOeqkhS4ab+riJD4UnKeAgf/D3ZUVGeHyZo9xfb?=
+ =?us-ascii?Q?T87fL2utGayqm4EuudFGDpFBwBbCJA87MFcPBvfYwVDbLv2+XkfYYpr431r1?=
+ =?us-ascii?Q?erwXQpwcDCBSFpbp7mGLwEm2pzKziz8QDmOp5PmEbAYlfuE8/UHDz35cLJMe?=
+ =?us-ascii?Q?H9s+kryDi0b+M+BgrN0tftyCBdbwMSNDpA/9LNm5KKGrZMKG/TpN11hxVgMh?=
+ =?us-ascii?Q?NHfYXaH5T0IN/8UpcDxfNk+iwP23WaU1LgdrSojJEHmSpYSbgbPwApEo4vq3?=
+ =?us-ascii?Q?lbeJEBocEr3dteviSYU3nyIH7Z9UIugU2CaNUqHdybOahPQriPHReB/qZ3g9?=
+ =?us-ascii?Q?YgAfXREJfDn+idyupWiRNntl0B3dzHOHgJl0KmrDUV3Dfw0tf6yynFjw9sJK?=
+ =?us-ascii?Q?HVXg5sYftJ86OcqTUdsGu5BovP/Io8JLpjRbLw2ComDuxnUWhrvcs0pdwXLQ?=
+ =?us-ascii?Q?l4vOf8814b4++tmSf7Ht4un+5xlnDhkVbVlRAgL/BMiEWC42v2Ri50CV5Jqe?=
+ =?us-ascii?Q?oHLQRGDtdwDo5jwCygfjtliIXAuwzFPxGu7ol7N6iXXPvRdpWTOhLf63cZYs?=
+ =?us-ascii?Q?TgISwQDibwBiV4RcS4Kwp3oh3ENRJUFIJj1w3TDffg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB10906.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(52116005)(7416005)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dfQ2za+zaHpVnKz4Od74lCWuujfcidrMt1xK80OAFIO+TtErj6/qIJxD7SXT?=
+ =?us-ascii?Q?Kii6v555PjEY5rYm2+gm4LPNgQIfwavww1zK34tGX8n5oCnkc8NPlm4sl+xt?=
+ =?us-ascii?Q?Y2Wv7UBB6uNAIILYhGyk5Goa2X4x/h72Z3wH31F2opmIuPERr/BebzKcKikT?=
+ =?us-ascii?Q?n6vTM/Ko7k8yR2kWs4K2Butb4g5Z57CM5AZlv+H4+m6ct8b9E4hlnifknzss?=
+ =?us-ascii?Q?6HW6AMXkDSO6pe/mTj7CAnWp28veZltbAa1UW+zJSfclYeeT+QPWml5tQral?=
+ =?us-ascii?Q?WxT3MZnzDHJ9ojmI5G4drOhDQP5lwPilVBVsO6n2UZpovqTJjOmx5JpNWG4I?=
+ =?us-ascii?Q?mLq4lKwpSHwAFdlbCzv8GhkpWEYJa0HQq56K77hbn/vZC3jNpB1SPH/rnMcg?=
+ =?us-ascii?Q?oBrzwe8MLNEe1J5WdeBM/VwVe+UOSakZK8ou76LQwfzYdA+XLDzj3uK8eSrt?=
+ =?us-ascii?Q?l0+gtyBMG3zICh5V39q2QEEIwsg4kp1EhrYx6HVddUmlj+/8wmCUzOlePuek?=
+ =?us-ascii?Q?PwrYCpGSs3O27HpXUfRABNsasLaZsTRXmJXeRUyQ2P0GqAU/qDIyR+OAvpPN?=
+ =?us-ascii?Q?giqXHSrkZN7pfY8oExfAerGmEeG6tj3Z0+aW4HXczN/e6WaUw8rNygGNhiqL?=
+ =?us-ascii?Q?MQhDo8UoDor5aUL5G8crmtWSacyPrYrQHv+wil7wVqTcaSz9sBZiTEaYi+Io?=
+ =?us-ascii?Q?Tec5DZEDBlQEvMWH9umLY3qS7bLqMpsqQlGqztrTle2gXQBj8JWk8bMbUdre?=
+ =?us-ascii?Q?D1y5fTul6F/CUWi7XCEePS22Dw3MgMKd9hSFM9+mBF6vW66qfUBMZrM1xxE3?=
+ =?us-ascii?Q?NrKe+sa1pwFkuw29uDCrgxlEeKsec49kcL635FFFl3H8H2oaB5clrMnfBQ7R?=
+ =?us-ascii?Q?ze/3TcobMEUPO7QQUb9n0+QpW8BSN0Uqrg92RV3KsIOesE8wc/DbaVtzbqh3?=
+ =?us-ascii?Q?wtCZwMWA7M3CG+Iij/dAA3UJZVoQ6cML/3g8pYNKvUYa/PRJvURtCjfICXV5?=
+ =?us-ascii?Q?SY0ohfLULGXmmrp171cpSZNBQR5jZGhwSkPnrsrU3XsyJpOk0lVUQ6bdSRs3?=
+ =?us-ascii?Q?w5SzqrPZmXMHzuKPNZml2npoQ3SVmmM/2Y6aPE0ixLaklYBLiKpilDmKMw8n?=
+ =?us-ascii?Q?ElkY90qOuxbOogUzZnPOGz22TQDUkRm8QNGVh8ZV/aynj4uTP2j0ApyV6sTB?=
+ =?us-ascii?Q?sZj5dePrRaumJNvnpSi/1CYGJc5WfaQQjkZVthIwTMonMEbZzbSqHJnkgY/H?=
+ =?us-ascii?Q?XxlYqx+KBBfBLXs9RMrU7jfHNeT1t75S89eg2+w3TnZQdGXateRyhiW0n9S/?=
+ =?us-ascii?Q?viJ+jVFY18Y2SFA3w/mC9LYCLXdjqZ4AEW8yyEjcZoQRku1AeSFbt36Ikl56?=
+ =?us-ascii?Q?C3zqmve1cXHFJ+aptp7X/MS4e9ODXpWvT7eOVtrkPYoZ/pv9ANerZ6i0mzYj?=
+ =?us-ascii?Q?RH7aSF9pHJPu34aOfaJhg/L3gU4qi+Lbbnyz1/FoOmonuw4pIM/L1h/ku11+?=
+ =?us-ascii?Q?NTFIlxY4LDHglxX65bVHROk/+j15J/ldmkAwszOQnWKDgBsWho8hXkytjpKY?=
+ =?us-ascii?Q?9c4x16R4ZxqPgvlAOOffv+pQlO/+xqVisMmydTPIzI/DwPa9Q8At6fhOWLzP?=
+ =?us-ascii?Q?NZ7xWnINvu1gegtGc96QVnM=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0014a64-ad7c-4ad6-02dd-08dc72e1371c
+X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB10906.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2024 00:11:19.8533
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q3XbBP7jzW4NbRo02y1f+I4ksb3AT0UrGx5SDMW4HO6IgcspVMg8AohxQg4qnC/XKyNZpGPqwwSUT4lvhYaW79Kttz7I+Uly2B2/qMSXYs7a3zIWLRiY0BGYa0hWGyZ7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB7285
 
 
-> because there is no .setup_wml() callback for i.MX25 in
-> imx31_cspi_devtype_data and the DMA register is already setup in
-> mx31_prepare_transfer(). Without this change DMA isn't used.
+Hi Jerome
 
-> However this breaks SPI transfers, when I try to read out an MRAM I get:
+Thank you for your feedback and analysis !
 
-> 	root@ecu02:~ hexdump -C /dev/mtd4
-> 	[   71.813807] spi_imx 43fa4000.spi: I/O Error in DMA TX
-> 	[   71.819173] spi-nor spi0.2: SPI transfer failed: -110
-> 	[   71.829129] spi_master spi0: failed to transfer one message from queue
-> 	[   71.843962] spi_master spi0: noqueue transfer failed
+>  - 1st problem: I see that following your removal of
+>    snd_soc_dai_link_set_capabilities(), the dpcm_playback/capture flags
+>    are no longer properly initialised in the amlogic card drivers.
+>    That will need fixing.
+(snip)
+> This codec is not meant to have capture channels.
+> I think DT description and the card driver settings (before the removal of
+> snd_soc_dai_link_set_capabilities()) are correct.
 
-> So it would indeed be interesting if you ever managed to use DMA on
-> i.MX25.
+OK, I see. Thank you for your analysis.
 
-I believe so. Looking into my notes from 2016 (when I last tried this), I got
-the -110 error when the SMC bit in CONREG wasn't set. But this should now be
-done in mx31_prepare_transfer if DMA is used...
+The problem was my patch checks CPU direction vs Codec direction only,
+thus, it will indicates unexpected warnings, like this case.
 
-I'll try to set up a test some time next week.
+Thank you for finding it, I hope v2 patch should be OK for you.
 
-Best regards,
-Martin
+> IMO, those check become too restrictive. We are adding a lot of code I'm
+> not sure I understand what we stand by going so far in the
+> consistency checks.
+> 
+> Initially those dpcm_playback/capture flag could be used to just
+> forcefully disable a link direction, regardless of the CPUs or codecs present
+> on the link. It was just another setting and it was not required to be consistent
+> with anything. It just declared whether the direction was allowed on the
+> link, or not.
+> 
+> It changed this commit, and the flags suddenly needed to be consistent
+> with whatever was on link:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/sound/soc?h=v6.9-rc7&id=b73287f0b074
+> 
+> I complained back then and I still don't think this change was good.
+> 
+> If the flags needs to consistent with what is on the link, and we have
+> the ability to check it, why let card drivers set it and then complain
+> about it in ASoC checks ? Why not deal with it in the framework directly ?
+> 
+> I think the simplest solution would to just go back to the initial
+> meaning of these flags which was just the card driver declaring the
+> direction allowed/disallowed on a link. Then ASoC can mix that
+> information with whatever it finds with DAI drivers and figure out what
+> is actually possible.
+> 
+> It would give a clear and separate semantic meaning to those flags
+> instead something redundant with the DAI driver info.
+> 
+> What we have currently is not straight forward to set and check.
+> It makes the code unnecessarily complicated and difficult to maintain. I
+> think the difficulties with this patchset are a good illustration of
+> that, unfortunately.
+
+By this patch-set, it will be handled automatically via CPU and Codec
+driver settings, Card driver will no longer need to consider about
+direction (like non-DPCM), and I hope people (including you) will be
+happy about that.
+
+Thank you for your help !!
+
+Best regards
+---
+Renesas Electronics
+Ph.D. Kuninori Morimoto
