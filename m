@@ -1,142 +1,109 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2091.outbound.protection.partner.outlook.cn [139.219.146.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ED81474B1
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 09:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23D352F9E
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 10:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.91
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715592458; cv=fail; b=NZT+ZLFVopgzKmgoRczJY77rQbX9rL198FvjAluzmXMEFBYijDpBBEYYK8pn/J81b19jtCNlmYrtHxMarBb+KAy2v7qt/eQxULMuieEntWzpHCAez1DJLvB5DU5pQcCeC9fJkFO+MiXiVR9Y/BhrVg9XNO6kKA3g5J08aDwo7A8=
+	t=1715597365; cv=fail; b=L83BV7uCuP8AEAsY+152UsA/EQhAsplszLk6nEqatL6c/XoUcOKnqGt6apU3wydJxi9BwKX+z78jGBLXMcj+vJfgwkMXFyjUV+HGN6OosZT6LrY3v8Oo5wKWMuJRuVyl+q80B2BGRhNaj242Hg/zIyBSTw/XQLzf43F/9UxkF44=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715592458; c=relaxed/simple;
-	bh=pxxnxXt3r23JpMpHxJOcTBR/jOfbNPhelyHL+UlpFRc=;
+	s=arc-20240116; t=1715597365; c=relaxed/simple;
+	bh=htnfL11LcYNS5fplqGS+tlhtNbCEYHcoi6MqbnNPUuY=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XhdVBsRpsvPm2/Jfn5iL9aed6d8if6WWHbFHwzLbwFloP/J5OzRltUrWunPtl3/eQHW/QheM7HKRFYapYTRQOB/DtYNoBf+0Il/Ig+457pLg0jmiw0rRtfX1rS+8W2ElY69dgbskD5xRRNu6dckk+jyFfSzgW8JrhgfJYWJwCDQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=HW45mSvP; arc=fail smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="HW45mSvP"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44D8X8GG002147;
-	Mon, 13 May 2024 02:27:28 -0700
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2041.outbound.protection.outlook.com [104.47.74.41])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3y286jbs4b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 May 2024 02:27:27 -0700 (PDT)
+	 Content-Type:MIME-Version; b=EsBbBPtda2c+OBbcNmdgCTPcOAt9HyfYn6cCHdw63q3Js9IM5OW0YMARx3rJW4QeQSWObsdsEulIoD+DPekzwHHrQnyKmIWAxUyl1+9ygK0xR9jrKr7raQgHa9/YqSwZFnmSwn3FIqhOEQU0QKcJ1+wmJ35Ll9ST5MQ8heQS7Kg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c5nXjHPwt2zGF1ObpMmQghe0WBUKvjte/Kgim6yo8NBH7yBbS3ND3QA5vitGcUy9iMgGKC/JZbanLWDlozPwKsUNfrPqt9PPMeKPNDZ1u0hZxP+rQaMymkPk+aswHlpIv/6X3PHj/lCtrbnUfAu7GwggbMjW9704+hXdr27W5peataEEVIIgKfA/McxGiNBpeOypi42x+f7O1DIBybpxUl7zibhRx561/9WaAyOdVQEeDMJOPNJxy3boysJOvCf9yI3SntHInIHDMR+o3RFRxPXgiJwjegZQ0yUH8MSfcvh9hghlJxp3tNpV6dwh5Ycz2srIpt/naFV8ZdmggRzoew==
+ b=dJh6xtqKhSJ1zRdpamkqxSO1wx9gpraaMYPinohgUn0ivR4WsyZ5uPWtFmQE6dykTb47DQSZqD3TjVnZLBiTfwaSss5Pvt1F7rw8ePyO1bfdY/P9VOJGqne/Qk81JtMZw5JtuBeZ7GFk3YcBIS+A6kg/lYAcd1VIWTkEupGkS8JvzAMKh1V985AuAytrA41VCdPV03cPBDThhFdHOH4r+PVSBhUQaSWxk23eMlNL1Fu+4sKnewg5qjQ55wnbsrRrVAipVWRp7+gsvsPzvJRZISATXV9feOoIXuT2yJrqLVHjeerNQHYelUO8i5OMPi+9tniV5A1/9Wt5vYWnVKRApQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V5xKqfd4GrY2bqBMnO4bjRqad/Xn/lbot9/cN3m3fmA=;
- b=Tb2qGF5DuLEOFAm6NIID6b2rbc1oudmjYcsiO51zPdAwaZaxf7AtYzBkYc8zfHczM8MmeAITcXrr16gIg2+zj7cnH2/hnM99P5rhi3zk964UOhz/PxqSdE/DST3V0YQP0mF2CoVHH5unmKsIXEeBaqm4wP5uzJwJDzmta8YWubdYcGSIxqTKKeeN7rt40iE/G4Y/mNntGNByN2jAJjvISfB+Rbn8F4ZpEDNrZrwDywmb8iHfsGvXRhP2XkZHcEFG1JFzTO20NUkZa6SryAFZKsr1Wiv/YH2zCPv9v0TumddlI5s0wSXV8NmlGMv7p545L8i/ikElqJz++PBG29huZg==
+ bh=jX2bh41WhE8eTPK4Fs/+vHGzJuAQAasQ5kIrFISVn1k=;
+ b=i2ZyEHSMM4mBgBAqWWMaXVenb/sPwV6ZLG+Gzz5es9SBRg5bPwydpUCCbvKWyD/KF68T0SLz8vtiEvisAeSRZiiRr8zkpn5cn0QrN6INJ1d66DIm6JMYixEjpzFOcivJXcdgn3GvOTR3FB704iCg+992hkRqsoXBtijqyldIS/Q/QwbueWKXbq8eLOyiKyB8T3pWVNf9VNNTRxq2ikHfPh2bXfiF/6pZHF3KlaTX4dqdqE2nDjzOVp3Sl8w329hQ4av071QWZlSoZanTA9ERv+3Qkiv4EsbCs+MkBmwc40DMqrFTB9eVYQhG4Eiy7OfzokvrriFd6zULH/iHkJYZbQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V5xKqfd4GrY2bqBMnO4bjRqad/Xn/lbot9/cN3m3fmA=;
- b=HW45mSvPUkN8u08bFglfkuGenycOcF3W8s9tefMmUsSxb9zLSZQgqELW01oMt9jYpQCySC2mysEB7Jn2sZZ3fxlrODezC60djYSzkVDbanpHIC5qsOuZYt3TzfyB+rf6y8vpqTUFvo6RfBleXd+KTET5AzRuUTmYSm8AY3Fyvk8=
-Received: from PH0PR18MB4474.namprd18.prod.outlook.com (2603:10b6:510:ea::22)
- by MW3PR18MB3498.namprd18.prod.outlook.com (2603:10b6:303:5f::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
- 2024 09:27:24 +0000
-Received: from PH0PR18MB4474.namprd18.prod.outlook.com
- ([fe80::eeed:4f:2561:f916]) by PH0PR18MB4474.namprd18.prod.outlook.com
- ([fe80::eeed:4f:2561:f916%5]) with mapi id 15.20.7452.049; Mon, 13 May 2024
- 09:27:23 +0000
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: Wei Fang <wei.fang@nxp.com>, "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org"
-	<kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "shenwei.wang@nxp.com" <shenwei.wang@nxp.com>,
-        "xiaoning.wang@nxp.com"
-	<xiaoning.wang@nxp.com>,
-        "richardcochran@gmail.com"
-	<richardcochran@gmail.com>,
-        "andrew@lunn.ch" <andrew@lunn.ch>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: [PATCH net] net: fec: avoid lock evasion when reading pps_enable
-Thread-Topic: [PATCH net] net: fec: avoid lock evasion when reading pps_enable
-Thread-Index: AQHapRfDaiJFn1FWf0uT/Cuv3lOavw==
-Date: Mon, 13 May 2024 09:27:23 +0000
-Message-ID: 
- <PH0PR18MB4474D5050F6CBA0B2D4A6041DEE22@PH0PR18MB4474.namprd18.prod.outlook.com>
-References: <20240513015127.961360-1-wei.fang@nxp.com>
-In-Reply-To: <20240513015127.961360-1-wei.fang@nxp.com>
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:20::14) by SH0PR01MB0555.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:6::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Mon, 13 May
+ 2024 03:16:05 +0000
+Received: from SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e0a:f88a:cad1:dc1c]) by SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e0a:f88a:cad1:dc1c%7]) with mapi id 15.20.7472.044; Mon, 13 May 2024
+ 03:16:05 +0000
+From: Joshua Yeong <joshua.yeong@starfivetech.com>
+To: Frank Li <Frank.Li@nxp.com>, "alexandre.belloni@bootlin.com"
+	<alexandre.belloni@bootlin.com>
+CC: "conor.culhane@silvaco.com" <conor.culhane@silvaco.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "jirislaby@kernel.org"
+	<jirislaby@kernel.org>, "joe@perches.com" <joe@perches.com>,
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
+	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>, "robh@kernel.org"
+	<robh@kernel.org>, "zbigniew.lukwinski@linux.intel.com"
+	<zbigniew.lukwinski@linux.intel.com>
+Subject: RE: [PATCH resend v9 1/8] i3c: add target mode support
+Thread-Topic: [PATCH resend v9 1/8] i3c: add target mode support
+Thread-Index: AQHaoL9J0lwk/jg/a0+LeeDupwAoCLGUgoaw
+Date: Mon, 13 May 2024 03:16:05 +0000
+Message-ID:
+ <SH0PR01MB084187FBA1E4EE786A8996C9F9E22@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
+References: <20240507204311.2898714-1-Frank.Li@nxp.com>
+ <20240507204311.2898714-2-Frank.Li@nxp.com>
+In-Reply-To: <20240507204311.2898714-2-Frank.Li@nxp.com>
 Accept-Language: en-US
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR18MB4474:EE_|MW3PR18MB3498:EE_
-x-ms-office365-filtering-correlation-id: 5aa0273c-b137-4435-6f39-08dc732ee5a7
+x-ms-traffictypediagnostic: SH0PR01MB0841:EE_|SH0PR01MB0555:EE_
+x-ms-office365-filtering-correlation-id: 0f2ece38-1c4b-486c-e9ac-08dc72fb06c8
 x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230031|376005|366007|7416005|1800799015|38070700009|921011;
-x-microsoft-antispam-message-info: 
- =?us-ascii?Q?tD+SyPAJAaX3Hgx9DwNMP+YZgKf1Rz0dREJXQKd3M/+OUJCiK5l7MbIOMqSR?=
- =?us-ascii?Q?UCmXtK9YNmWIAliSdHa5SEALAH7EoIxbP5eQmVAqqz0vyitokH34dcgbVV2z?=
- =?us-ascii?Q?3uR2KIlMI3AunCkC5eQi9kCSqUmKhu65ZGaTlLz7rzFoJMKHJrJ2RhE8l3Lv?=
- =?us-ascii?Q?GR2jVOviXxEbsLlE8btJ2yZgyNrCls7+6K3WhdmOH8WXPKG/q5r2axyGnU9F?=
- =?us-ascii?Q?NWCQoD1M2+g/N81oiBeqrBDimVbDaYsdRENfted243iKnu4wDY0xRy1v07+0?=
- =?us-ascii?Q?pOjMvcvVdr7DeC1Igu/z2cm4HAnYs/DdUgSfVAmCQq5aSrDBz96d2LTwsr6I?=
- =?us-ascii?Q?JJCO65YSKQ1STbczPsmIyT66xvJXQzrYgQkjAMa3d7LAyIFC+z61ZgOy0dOV?=
- =?us-ascii?Q?aRrjMpFBX9LGzDKam7U2WK1dZ7Kg0jRJdGu4PGfCb8GMd+jscai20IyVjLBh?=
- =?us-ascii?Q?mGBoZvH16DW+6VFqZ9TeUnfkj2ZVipB7hTE7p7PJ5Jkmx6r2y2dGiisZlB0p?=
- =?us-ascii?Q?Li3eAAryGdkHgDKxNJoH6YNAfkcy5/FfI0DrPT8+yYN+wVtpar7NOOPM5epm?=
- =?us-ascii?Q?jXmCIzY0fyaKB+P+CP1A4imh/XpmppPdPVTq8ByWLcU9YO/23n32juKtp3Ej?=
- =?us-ascii?Q?YVGpNXVRquUlIPMBB1rpKqAFewN5v7HDu4uTlmM+DvCnhwIhQGYaGWkDXo4k?=
- =?us-ascii?Q?KTRhnTDNxBjnXU1OQ4RmWYvSYlu+GeBWqOIPelVfS+JShYMT+AsydV97Z5Xv?=
- =?us-ascii?Q?KicT9A4aT0aMrjnRt10tnEZZDwc6jgytEqrMh615Zp6pIYiNIyuXmEnK4oO/?=
- =?us-ascii?Q?vpbqFL/eulb4V/PX8zcc+WdIdZHLs5ZiYXk+IholSHSGwBh4WuL5vPcJQZ0R?=
- =?us-ascii?Q?8Xge/ds0VNzLUXArYHEdXgda+iderJxvHceEts8vCNXqh9+hGZiE4DzNWXiB?=
- =?us-ascii?Q?806w+xCRN07W9qgHjHPVA5ZTJL8t+jlMwQz3TXv8GsODqQuSiiqarkXbZuTM?=
- =?us-ascii?Q?lXgoduWjgZpBHveXYDKvtJvGQ0g6/rptL0q+HVXv1QIkfMab+gOk9HOMTHYJ?=
- =?us-ascii?Q?ZgkOTA1qX9IrVIUlNIt8NMISVmRix8A8wvIRSaeJOZSteaFlpILR6pCgc9fG?=
- =?us-ascii?Q?cjuZkbVVLFScEwWjeBSD6GvuLnEQZ/jxEMXLELaHq9anOniE2nFsF9HspQoK?=
- =?us-ascii?Q?ceqMSv7sd6FbdX1aMLMpZRhUWY3Da6oWHnlXO6twEwI7Zo55gBxM+1ear3NL?=
- =?us-ascii?Q?uFjgSP9V/FxMTcWwFq6keFNM9O7vmmKTGNYgNQ1OGatEODS5JPTFI2+XaOKl?=
- =?us-ascii?Q?/O3wl4gVPqmougsXRRcG5vLsnUXBb5ET0L6fMBl8B8si/mDKvRZGPGdZA/g8?=
- =?us-ascii?Q?twwh6So=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB4474.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(1800799015)(38070700009)(921011);DIR:OUT;SFP:1102;
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ mjC4M/eMaIhFRV2NRAZb1f6Xw0f1ukejnEp0JfU4fGBbxeU2jrnrFdHviQ+7etJc9MFdmk/JGLUKWary3eDY5zg/PZ1F5a6EdNSnw+gQU0u7p90Ve7nyjSoKzNIrFPEE9ebl5OJkXi4R+rAt76PPzGdgpisD4IB27C3tR5L6pu/VOuMW+yZ+2lhKtW1+96CdokpYAgV8NZxZx6Li9ZMcKWeb0ZJ6/IMRu2oO0SG2tTS4vuEWKkpB6sG6ftKa16nMZo2vrFl8Y/eaWtSAJZBAM3Yes0xmdVmLLh0u5nFeTnbu/IJO5SOeQaNOTHayYmqoLlzGLyF5BF8TlQKAZJ77MwC4lVl49MA4HLpIQ3iBj7ZU9nvP3ThsXKkD1y57SqbktVVQag7tldGDd0JOKkuCO/Ox57ObNASOEGqzqgmAlQFORlwDXOrmCUhWbBquheyFN8fKyulw5nNE2Rs45u0Xd5ttFAUwyt4cLMrV3n4x4Eaeyx+ZNwnCBHmi9jHzpqFj4APIn5rVYNYdQD8Am/gcQPjThSnSneq1rxgYjP89D0CsnD3qhPU/UVsfS8YLXYqUZ9I6ElXF4lk9A0TbAU5ijWnGTeQdoVzVvf3oM+FVyxLj1L15VNgu2Y7niw/g45et
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(41320700004)(7416005)(38070700009);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?6O7PsR0Lr3KhiHAhOj1FqDV3pd9Jhcyz4OB5y0Yfv3PNQ6FV3EfYDyEGkkzQ?=
- =?us-ascii?Q?/Ru8JjcksKlqUNR0qmFH1Lg0wAY8hIrT/fnGufmw0Bns1HC0ksb2zv04wq8U?=
- =?us-ascii?Q?24JLQfgocuzzLS32Uyb4kFWFSgI+WdGsnwYUK2isvbHtalXhz63GG4s7kD8g?=
- =?us-ascii?Q?qdpzmH4yjuU2ZNIBWUdPrc972z/VRHHy+9RvQsWI+Q2eYh3c1fVQX8EMaWfU?=
- =?us-ascii?Q?azSTjmRPWVO6C10UjgbVlrBOBx7MFwhH/AQAZWPer7r5aVN65HCqIuVUV/tf?=
- =?us-ascii?Q?3lMxA5/Y6vAd3LC7MCA6AszPF1q5KgNhEooyoj6B2eaqEvVNDLZ3hT+6/cs1?=
- =?us-ascii?Q?dTO3KFJRxQIA2qjzG6mDQEWvP50/AlDfE6vTg/pXZuiTZ12OYPFbBsozEEVW?=
- =?us-ascii?Q?HVrCQO0pugz+7nlv2HN3IfCvagNttO8l7wqgXDwdaI3QOLr/aiNDw5tAJeP9?=
- =?us-ascii?Q?iq5skixLlCACu1uEc/KxPeMsjZsVHUMxnQxlfZy+2O3POKrFMjAHDi+6wMzd?=
- =?us-ascii?Q?PhfY+N0FzQZXwnT19xAJVgZRqEjxva0fzLO1naEtlTl5RFFbXx88bv4dqENq?=
- =?us-ascii?Q?WUQLHumfl0pQZm7zc24fPHCzabpGg6Jjo7w00RUsy7q63c3VjqPxH8rY6Xsk?=
- =?us-ascii?Q?rRmizeIg4HVzaVFg2ku8R1vxqbn3Uu/JLcV3LzYkfG9NQHUNmTHJTL7P0Qah?=
- =?us-ascii?Q?vcjMTUdxMxkYzq1VOlKit8CnQBWQRI3ru7pI9IBBkgytxYMM11djJ7FD+OgY?=
- =?us-ascii?Q?GUep74b93T/t4kKHwF2VcC6hkCqA0ykV3nZP2O0jSCv5jZsoTFQXyZ3gMp5a?=
- =?us-ascii?Q?DBMtTYoQl1c4VvcJUf5ccQ/CcP0LeXlPXrMe8tB7rJKLXIE91Ibu3NlutdAA?=
- =?us-ascii?Q?2a9ns3rsKssyrnGEzVoZToFrq4AIDglNvYShnXYYyRrbH279bVcPsONMzTYR?=
- =?us-ascii?Q?qQCXPp5IF7cvEazAtSm2mldow31tZPh9AUuwLP4NueSHOJNYshcSp/yDaEYp?=
- =?us-ascii?Q?qcwMrNcXeSE/s0sKnyi43h93vzkcz+8OHTL8HFW/6e7Jhf7UglFY8MBaTJ95?=
- =?us-ascii?Q?RZYIEBzr4rOXCJLEVl9w0QlugO23kxsgRcFg2B5uG4GIqP0+C/yE2ztPSqKd?=
- =?us-ascii?Q?Rinl+H6vEicCpcu9m7UeJcWXmAgfMsdoTgwJ/NoGka7csrEm5+Awpsps/KIE?=
- =?us-ascii?Q?p/kXVhuhnQD5gGRg69BQqcfiTsuabNEDqnvkeoJJxUi+di3LK3XbW7sLtlYE?=
- =?us-ascii?Q?FhFbWoaKM8ga80ej6oJgHQRE8JY/KiccUk/Ft+Zfz/Z2u26tV2gmDR8GcvE8?=
- =?us-ascii?Q?8q96WGzjXzKFi7/ByGF/GLLbh9Hitg4OWBlL5C5G02Nj7pQ4YSTK6HaXTRIl?=
- =?us-ascii?Q?v+5SDVLtv6RMW5y8ERGYkAGe6T0N2VhTX/U13nRZgPdWuysDuMPMhg7VOCfk?=
- =?us-ascii?Q?a4HrKhlYTxoZ50LCPxK4oiSaO3aWIJKIjoOk53rbKiBQbTf1CVD/d7cqI+m9?=
- =?us-ascii?Q?dd+ugqkRFOWqFzfNr6LKT6m7gwciNp9TVYcbHR2jz757ysmOb9H2+AS2PDWK?=
- =?us-ascii?Q?sTs8UZ51m5QYbopZEpQ=3D?=
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?5cFJc5b1KoDlprn18BUBa1U5aE8NC7FadivsA3seiz2dQM6onS49/KC9j+v0?=
+ =?us-ascii?Q?z6cGsPL5ivxl4vQUhovQYzU8fLlQ53vfbS3xi+ztHTryKbpM/4E9mI4gt624?=
+ =?us-ascii?Q?jQU2MYQjyPxCaxfvqNQULklSbwG4nJ5gnsfB7tRx/RQmasmGk3O7JEv/S2ub?=
+ =?us-ascii?Q?bJYNyO8/YwaDsutxW1q6QWWwOR+bmbcR3yvXSKKtulSKRghmREbf2476nxHJ?=
+ =?us-ascii?Q?8CPPFsouRCDrF9/Dzq+eEvdEP82p0HCl2WFwGMnoEIZFfGiPFmDMr+ELo+qr?=
+ =?us-ascii?Q?JJpklfqg28j+nvFjN3Xk5PXaKcMwjGmS2gYFgWV38Tpbsv7z+RE5rCJ9eheq?=
+ =?us-ascii?Q?f/jEnoj7uTg2u79yMIokGJCHkyZ04Fr106MyLOMmb5PCwyBnQks57JuziHn1?=
+ =?us-ascii?Q?sflnvc5uSA2wuPD3PHCiEOfN1M14f3swKQL7SXD+AxzKeCCT+uYVIL0obDKO?=
+ =?us-ascii?Q?u9AsfkvHTkz2yEmWyo4gs8YQ5C4WJ5hiMTt+OLHSaBIexOXBuy5jV7/kg88g?=
+ =?us-ascii?Q?Q66sqadyADMrhJSMDvqwHpcvOQ3+LYhe4jh8/4ndR77grgB9ea/qMH1rF6zX?=
+ =?us-ascii?Q?Ktc1Ru43+R6N9RtojOgF8t0CpC9aBnNiRBg9T0vBjcbRoTW084cztd4Pc1W5?=
+ =?us-ascii?Q?qTa5GM/OPOaQIb8K5py38FdfSAac7WECbHfLcu3K7LI2T/jdRr4IV43KiY+1?=
+ =?us-ascii?Q?guht8/JjkjMe7BT/kIXYY/jOuDSwlMLnJ5aRfpFulo0NHVvSFH4hr2kxwNlT?=
+ =?us-ascii?Q?MxoiAVYhNVjdNio9F6brurfq64kTN2jcic2UvIM+0IxSzZribLgdadqR00Y9?=
+ =?us-ascii?Q?a0G1PBVab5LwUJ77ajXkOgCXzhqN1YKY2TJPJrjbZDlTAIj9MsKE5+HgryMJ?=
+ =?us-ascii?Q?feKeQXuiMvJ3f86S8TDrMwC3z2S2eH1JcVLQCTj50/3o4aGVtUYg0mNT82q6?=
+ =?us-ascii?Q?gTy31KR7NeYhczGojwrjwNB29T4EdHvDSxeynRY65KmHmrrwJ4HDy9mZgrA5?=
+ =?us-ascii?Q?LPgpry3uMsr1607dVG41TbUAfm6cCzx9cDLAJF6R/WyuTDLe95muJY+8yMv2?=
+ =?us-ascii?Q?0cRdXUtvuEoxdiQI9/+2CNZdLnolC/+wiqXJ7PRNXpEFxYAZFx1Zh0FlACUZ?=
+ =?us-ascii?Q?VmWcN6WrbzL2btO/ThQhoi/ktzO8qprhCd8bKXPdylEr3dYJpjDVOZw0CIzr?=
+ =?us-ascii?Q?UOd2mkK0/vdZ31KO4lJoCHfrfPE3er9ZB2ONXdq1kckYBVXfo0ppXFhUNOBi?=
+ =?us-ascii?Q?4VziwvqVBehU3tt19kXKZX6Z1YpwDuSszygnH9cenfnXye1NmqH8tTKyzMk3?=
+ =?us-ascii?Q?SvH+Jo8Qogtkz6CfAmDLme4RE4U19oJXQ2P40/havLbJNlmGy8anZGTKdGu+?=
+ =?us-ascii?Q?z09nH7/uBiHCAx6LayrOG9AFbHXslrBT3E5Gj1SZXck9Dq8V3G+4li6TNC4O?=
+ =?us-ascii?Q?U7DdsWE0/tr8QTBwjMoh15Kullqw9DrVFXHHq2mNugSmMuh0WyQpy0aHXLHQ?=
+ =?us-ascii?Q?a2uKOjl34DgWT7TbY/+szVkskfDDJ89mc5I7FyMdbJvk5NALnqVbApM7N9bw?=
+ =?us-ascii?Q?MRNPs4tqRR9jBhHNhcwMsiYZm5WCp33WMliGbERGisO/3Ll88XlYoLsidnRt?=
+ =?us-ascii?Q?Xg=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -145,74 +112,148 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
+X-OriginatorOrg: starfivetech.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB4474.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5aa0273c-b137-4435-6f39-08dc732ee5a7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 09:27:23.8333
+X-MS-Exchange-CrossTenant-AuthSource: SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f2ece38-1c4b-486c-e9ac-08dc72fb06c8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 03:16:05.5641
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: McNWMuo77eaPrfQ9mattNy11SRgv9YowH+c2/sd5A2UzmhgfpYkeC4+3uuKEIrLzi2mSUjrg2UkzZHnXQQm/Rg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR18MB3498
-X-Proofpoint-GUID: qpw4X80iu3_doLr74ASfpbcj8y0IfHFh
-X-Proofpoint-ORIG-GUID: qpw4X80iu3_doLr74ASfpbcj8y0IfHFh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-13_06,2024-05-10_02,2023-05-22_02
+X-MS-Exchange-CrossTenant-userprincipalname: meLKca3lf/TFg7RMqDVN60oKSRxqg9QkvJYqVBT4g7AI2pWeEx/KrYZBCR2b6AaWciNufN6RVId91ITHAoEZ7MmI8QYZUkiG47LZdfEKQwg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SH0PR01MB0555
 
-See inline,
-
-> The assignment of pps_enable is protected by tmreg_lock, but the read
-> operation of pps_enable is not. So the Coverity tool reports a lock evasi=
-on
-> warning which may cause data race to occur when running in a multithread
-> environment. Although this issue is almost impossible to occur, we'd bett=
-er fix
-> it, at least it seems more logically reasonable, and it also prevents Cov=
-erity
-> from continuing to issue warnings.
+Joshua Yeong wrote:
 >=20
-> Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock=
-")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Introduce a new target core layer in order to support target functions in=
+ linux
+> kernel. This comprises the controller library and function library.
+> Controller library implements functions specific to an target controller =
+and
+> function library implements functions specific to an target function.
+>=20
+> Introduce a new configfs entry to configure the target function configuri=
+ng
+> and bind the target function with target controller.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/net/ethernet/freescale/fec_ptp.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-> b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 181d9bfbee22..8d37274a3fb0 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -104,14 +104,16 @@ static int fec_ptp_enable_pps(struct
-> fec_enet_private *fep, uint enable)
->  	struct timespec64 ts;
->  	u64 ns;
+> Notes:
+>     Change from v8 to v9
+>     -none
 >=20
-> -	if (fep->pps_enable =3D=3D enable)
-> -		return 0;
-> -
->  	fep->pps_channel =3D DEFAULT_PPS_CHANNEL;
->  	fep->reload_period =3D PPS_OUPUT_RELOAD_PERIOD;
+>     Change from v7 to v8
+>     Added missed head files
 >=20
->  	spin_lock_irqsave(&fep->tmreg_lock, flags);
+>     Change from v5 to v6
+>     - fixed build error when have not CONFIG_TARGET_CONFIGFS
+>     | Reported-by: kernel test robot <lkp@intel.com>
+>     | Closes: https://lore.kernel.org/oe-kbuild-all/202402030437.GdGCrKeK=
+-
+> lkp@intel.com/
 >=20
-> +	if (fep->pps_enable =3D=3D enable) {
-
-Can we atomic_set/get instead of spin_lock here.
-
-Thanks,
-Hariprasad k
-> +		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-> +		return 0;
-> +	}
+>     Chagne from v4 to v5
+>     - add include <linux/slab.h> to fix build error
+>     | Reported-by: kernel test robot <lkp@intel.com>
+>     | Closes: https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT=
+-
+> lkp@intel.com/
+>=20
+>     Chagne from v4 to v8
+>     - add include <linux/slab.h> to fix build error
+>     | Reported-by: kernel test robot <lkp@intel.com>
+>     | Closes: https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT=
+-
+> lkp@intel.com/
+>=20
+>  drivers/i3c/Kconfig        |  28 +-
+>  drivers/i3c/Makefile       |   2 +
+>  drivers/i3c/i3c-cfs.c      | 389 ++++++++++++++++++++++++++
+>  drivers/i3c/target.c       | 453 ++++++++++++++++++++++++++++++
+>  include/linux/i3c/target.h | 548
+> +++++++++++++++++++++++++++++++++++++
+>
+> ...
+>
+> diff --git a/include/linux/i3c/target.h b/include/linux/i3c/target.h new =
+file
+> mode 100644 index 0000000000000..b0bf06685834c
+> --- /dev/null
+> +++ b/include/linux/i3c/target.h
+>
+> ...
+>
+> +/**
+> + * struct i3c_target_ctrl_ops - set of function pointers for performing
+> +controller operations
+> + * @set_config: set I3C controller configuration
+> + * @enable: enable I3C controller
+> + * @disable: disable I3C controller
+> + * @raise_ibi: raise IBI interrupt to master
+> + * @alloc_request: allocate a i3c_request, optional, default use
+> +kmalloc
+> + * @free_request: free a i3c_request, default use kfree
+> + * @queue: queue an I3C transfer
+> + * @dequeue: dequeue an I3C transfer
+> + * @cancel_all_reqs: call all pending requests
+> + * @fifo_status: current FIFO status
+> + * @fifo_flush: flush hardware FIFO
+> + * @hotjoin: raise hotjoin request to master
+> + * @set_status_format1: set i3c status format1
+> + * @get_status_format1: get i3c status format1
+> + * @get_addr: get i3c dynmatic address
+> + * @get_features: ops to get the features supported by the I3C target
+> +controller
+> + * @owner: the module owner containing the ops  */ struct
+> +i3c_target_ctrl_ops {
+> +	int (*set_config)(struct i3c_target_ctrl *ctrl, struct i3c_target_func
+> *func);
+> +	int (*enable)(struct i3c_target_ctrl *ctrl);
+> +	int (*disable)(struct i3c_target_ctrl *ctrl);
+> +	int (*raise_ibi)(struct i3c_target_ctrl *ctrl, void *p, u8 size);
 > +
->  	if (enable) {
->  		/* clear capture or output compare interrupt status if have.
->  		 */
+> +	struct i3c_request *(*alloc_request)(struct i3c_target_ctrl *ctrl, gfp_=
+t
+> gfp_flags);
+> +	void (*free_request)(struct i3c_request *req);
+> +
+> +	int (*queue)(struct i3c_request *req, gfp_t gfp_flags);
+> +	int (*dequeue)(struct i3c_request *req);
+> +
+> +	void (*cancel_all_reqs)(struct i3c_target_ctrl *ctrl, bool tx);
+> +
+> +	int (*fifo_status)(struct i3c_target_ctrl *ctrl, bool tx);
+> +	void (*fifo_flush)(struct i3c_target_ctrl *ctrl, bool tx);
+> +	int (*hotjoin)(struct i3c_target_ctrl *ctrl);
+> +	int (*set_status_format1)(struct i3c_target_ctrl *ctrl, u16 status);
+> +	u16 (*get_status_format1)(struct i3c_target_ctrl *ctrl);
+> +	u8  (*get_addr)(struct i3c_target_ctrl *ctrl);
+> +	const struct i3c_target_ctrl_features *(*get_features)(struct
+> i3c_target_ctrl *ctrl);
+> +	struct module *owner;
+> +};
+
+This structure looks very different from the master controller ops 'i3c_mas=
+ter_controller_ops'.
+I think you could probably combine 'set_config, enable' into 'bus_init', 'd=
+isable' to 'bus_cleanup'.
+Also using the 'struct i3c_priv_xfer' rather redefining another 'struct i3c=
+_request' would be much cleaner.
+
+In the master i3c side they don't abbreviate i3c_master_controller to i3c_m=
+aster_ctrl. I think we should
+do the same here to standardize it. Thanks
+
+Regards,
+Joshua
+
 > --
 > 2.34.1
 >=20
-
+>=20
+> --
+> linux-i3c mailing list
+> linux-i3c@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-i3c
