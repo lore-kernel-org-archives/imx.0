@@ -1,63 +1,115 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFB2152171
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 13:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7431474CA
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 15:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606686; cv=none; b=Dyn1Z+ZlL8seiVX2A//Q+WaC7hfVfZaHoUOsEtAY+DGX6D6HME257LTqWC6CWMV+9QkbIn7iPEWLtOmsu6YYGglS2IyMQS33mKF1SiwOaJK33P7kqUS+BQ3TnmYpS+qQUfyvEFYTB4/g85sdaylh2r9UIfQiWYbcXCuRkhjFSOY=
+	t=1715614284; cv=none; b=iBeFVxgi8FxYSNZaBqUHe3uDFuyymcB4zz1jGBLe6f7hKURuzf5DHt2mytV9tGojKdWNkpo19mz91vCfuH58Qc2OdRp9oPYbEfNW2rmJJMBn3aJVnmF4Lfy1/gjZugLxvYUboZp0R80iRjBuZN5bFCVGOCLWEttu3fht7Ng71a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606686; c=relaxed/simple;
-	bh=/0f/9NJPEz9XROE4twEmI/N9FBspLI3sqJzJ1VENxgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WfF5SfQv9bewzbHjBgYgdwBqraYF2s7CL/BLUwfaHonaztBJBOLZ4g2Mj2yaczUZw75Fm375YHpPqLJQHG7gTpmuuPMKLN6RbGa8ASJnJi1KqqfF+Ot/xo1+C/qnQwWAhM1rWivGXV5oXao/kYS2TytIJWAjXg8He74NytfX1Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9FAB91007;
-	Mon, 13 May 2024 06:25:09 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B8603F7A6;
-	Mon, 13 May 2024 06:24:42 -0700 (PDT)
-Date: Mon, 13 May 2024 14:24:39 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Rob Herring <robh@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	s=arc-20240116; t=1715614284; c=relaxed/simple;
+	bh=w20mTqxPk9ZtO8madRvj0Hv77EK2jVodrEj7P3mT978=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyYUlZjjn4KtxzXr50eVWTDV0KoRcf+hXHdCeMtK6UBLFgMks0YCZsUKOaCOvS0KQicXR1v61bVLuZNEIhRMRb4nAfdSMbEVQVFwO/Dro3xpEpofxmIfLiUBCj0cX1MdYi3tjAgCgGqaizvFbyBJ5cnawlqrZszyRAGTIoKQC5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZRmDzwba; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZRmDzwba"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1715614279;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=k3tjxn3hGY8chOLjVh9vgYTCDBGT+jNofxaqe3MH5eQ=;
+	b=ZRmDzwba0JQB7k8VCryqFvCdY5BoaUNiiKnjxAg6mzUz+0tZAiAsPe7OB5HgR+ZSUk4CpZ
+	F3qLiy5rGzO5TxUbfWV/9t8OmU2OOlAHMx8b37w8sa/UntnSUAVtJ5Z7Jbh3I7DWmilj2u
+	xddyis1gkWeTjmE1+IeRnS+i4eWxyyA=
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 0/3] pinctrl: scmi: support i.MX95 OEM extensions
-Message-ID: <ZkIUl2SoCICsZy7Z@bogus>
-References: <20240513-pinctrl-scmi-oem-v3-v6-0-904975c99cc4@nxp.com>
+	Douglas Anderson <dianders@chromium.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Liu Ying <victor.liu@nxp.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Sui Jingfeng <sui.jingfeng@linux.dev>
+Subject: [PATCH v2 00/12] Remove redundant checks on existence of 'bridge->encoder'
+Date: Mon, 13 May 2024 23:30:57 +0800
+Message-ID: <20240513153109.46786-1-sui.jingfeng@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240513-pinctrl-scmi-oem-v3-v6-0-904975c99cc4@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, May 13, 2024 at 07:45:23PM +0800, Peng Fan (OSS) wrote:
-> Hi Sudeep, Linus
->   Is it possible for you to pick up this patchset earlier if no major
->   comments?
->
+The checks on the existence of bridge->encoder in the implementation of
+drm_bridge_funcs::attach() is not necessary, as it has already been checked
+in the drm_bridge_attach() function call by previous bridge or KMS driver.
+The drm_bridge_attach() will quit with a negative error code returned if
+it fails for some reasons, hence, it is guaranteed that the .encoder member
+of the drm_bridge instance is not NULL when various bridge attach functions
+are called.
 
-FYI, it is the start of the merge window for v6.10. Any new feature
-planned to be merged for v6.10 must be already in linux-next and anything
-else need to wait for v6.11.
+V1 -> V2:
+	* Gather all similar patches to form a series (Laurent)
+	* Fix various spell error (Laurent)
+	* Correct commit message for bridges of i.MX (Ying)
 
-In short, this is not a v6.10 material and please wait until -rc1.
+Sui Jingfeng (12):
+  drm/bridge: simple-bridge: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: tfp410: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: nxp-ptn3460: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: panel: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: it6505: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: adv7511: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: cdns-mhdp8546: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: megachips-stdpxxxx-ge-b850v3-fw: Remove a redundant check
+    on existence of bridge->encoder
+  drm/bridge: synopsys: dw-mipi-dsi: Remove a redundant check on
+    existence of bridge->encoder
+  drm/bridge: lt9611uxc: Remove a redundant check on existence of
+    bridge->encoder
+  drm/bridge: imx: Remove redundant checks on existence of
+    bridge->encoder
+  drm/bridge: analogix: Remove redundant checks on existence of
+    bridge->encoder
 
---
-Regards,
-Sudeep
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c           |  5 -----
+ drivers/gpu/drm/bridge/analogix/analogix-anx6345.c     |  5 -----
+ drivers/gpu/drm/bridge/analogix/analogix-anx78xx.c     |  5 -----
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c     |  5 -----
+ drivers/gpu/drm/bridge/analogix/anx7625.c              | 10 ----------
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    |  5 -----
+ drivers/gpu/drm/bridge/imx/imx-ldb-helper.c            |  5 -----
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    |  5 -----
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c        |  5 -----
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c           |  5 -----
+ drivers/gpu/drm/bridge/ite-it6505.c                    |  5 -----
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c             |  5 -----
+ .../gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c   |  5 -----
+ drivers/gpu/drm/bridge/nxp-ptn3460.c                   |  5 -----
+ drivers/gpu/drm/bridge/panel.c                         |  5 -----
+ drivers/gpu/drm/bridge/simple-bridge.c                 |  5 -----
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c          |  5 -----
+ drivers/gpu/drm/bridge/ti-tfp410.c                     |  5 -----
+ 18 files changed, 95 deletions(-)
+
+-- 
+2.43.0
+
