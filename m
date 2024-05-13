@@ -1,209 +1,484 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBC0146D62
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 07:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715586825; cv=fail; b=smo3FGPgIKRpiQYUqMAbnuS3qatNzwDalsJV/Xr3X5/KlCUcHM8mH4oGJnHoIkbgBiM8WixzkCo7KSxQhcM4iOp2fCaZXEOVAv0hIpnyV6LXlWex6Nsgd3TC2PK+ELKJJyoGI4iQJ4/o9jr13Z8ovJGm+DRa+YX1Z1Sc+DckATM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715586825; c=relaxed/simple;
-	bh=nNSnpz5vNJB3WTVzdeiJZrPo+HmIZlvZWLC7bW8teRQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KdAugpHzLn+3lEmEhTp9oF1CmKSNXBxXkIa3PgmEbe+WnuxUrIQ+1pbwjOSSxz9IMIwsrAqWv+7rYA8vT7lMxD1zc5Ho1xkPdknkAOe3iqsC4G61bg2Qih7ekRuGTsafzxOV6IzWj7CA9Xw/YWBkVAz4GZuLJ1oHVoS7lQw48S8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Roheoovc; arc=fail smtp.client-ip=40.107.22.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Roheoovc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jPKcxaYSd8bk/VTdet2jLfIT10tKOMteoHwcypAkRFSgi4tfa5Lb7tkNtiO6r2SPRMciNHSbwEjHbOmUYiSNhpcw2nkqGyBB48znBXHCE1XCm7jc5I+jGXznkEiD4ftWnKU0zu/a8Uvmf5JXYLUxS7mySKTaIHqC5zuzkb7ySumlY/8+qhm9Ch+hqme1cG4wVOhzy0nWyrSraCFcKNHg8p2Pvny9QCLlaQ7tMGOEGh5iAK6mqhTFLsDJXzx281ESj9JMqOFa8Mnr2dLnM+3U7kLON+6zUTPM8IUNWlJAzPkxJSMydPb54un4StnG4B5O+Fou1ruK9Qi/7JhV4wHRQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nNSnpz5vNJB3WTVzdeiJZrPo+HmIZlvZWLC7bW8teRQ=;
- b=dnCjAW+ShI+rXsBn3T02Lc+i9oWbFdhhrFGcO1k5YQg3NRW54XuuGa84P3jCFHBST7xCBPR3n9hHvmSTobuWYGJ8wRqomH4LqI4KPVlu/pUqtknmZfpVjFV3QRBVvA8QwFd2/3EKB1/rSuTJgb3dlkeP6D5yZphzu29ZPge9jwTm+h1ij5Y3aR9IPjkBsGp9YMfxc9R7kcUG68aITdo8YHyR8YqMJYBYzC/upeIqdxMPn0SUoQJ6aNH0MmcC1SgymwzHP62O4AeRqC56kHN6d/LRbxjE3KzRSzh/5LEOjVL/hDg4lv/4w9rldxAP+ZBmDuDyw4MTDpEcJvoZwRHfiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nNSnpz5vNJB3WTVzdeiJZrPo+HmIZlvZWLC7bW8teRQ=;
- b=RoheoovcPu3mgNhwYvIwc+c30dDJpK4B5jDYDBKSNRKmCa9tnF0eteS6DMRkgsiiIy4ncNFWSaHJhxyrzLMWTB6MOVx4tYqngTeOHJRgxKbmG1zn2gEEn7bULUG7+GZmmJxwQgpDU5BuUBy7ZPkMTAM8VkGKEKkvKUASz7pWono=
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DB9PR04MB9259.eurprd04.prod.outlook.com (2603:10a6:10:371::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
- 2024 07:53:38 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::baed:1f6d:59b4:957]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::baed:1f6d:59b4:957%5]) with mapi id 15.20.7544.052; Mon, 13 May 2024
- 07:53:38 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Eric Dumazet <edumazet@google.com>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH net] net: fec: avoid lock evasion when reading pps_enable
-Thread-Topic: [PATCH net] net: fec: avoid lock evasion when reading pps_enable
-Thread-Index: AQHapNmrkXK8ZZdjQEWnp7p3Tpjf6LGUxN8AgAADp7A=
-Date: Mon, 13 May 2024 07:53:38 +0000
-Message-ID:
- <PAXPR04MB85100C1A06253C0AE1EB36C288E22@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20240513015127.961360-1-wei.fang@nxp.com>
- <CANn89i+EQDCFrhC3mN8g2k=KFpaKtrDusgaUo9zBvv0JCw8eYg@mail.gmail.com>
-In-Reply-To:
- <CANn89i+EQDCFrhC3mN8g2k=KFpaKtrDusgaUo9zBvv0JCw8eYg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DB9PR04MB9259:EE_
-x-ms-office365-filtering-correlation-id: b6bc0cb4-c074-47a7-f377-08dc7321cccb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230031|376005|366007|1800799015|38070700009;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ZlRTTy9RUUZJOFBVamNpNG9QMmxVUkdKV293YzF6WElpdlNiUkFoQ1dHRHJ3?=
- =?utf-8?B?UVA3N0kyOWV4VXNtWW9yVW1jRVN6QUxEUGlxTFpIOTNWNktxSzJNS05zKzBr?=
- =?utf-8?B?RFVjRUVMNC9NNitBU1k3QUNZK0F1WHhZTU5yNWZZZnltNmhtejNTc3JaMTFD?=
- =?utf-8?B?YmtEZDF2VjNtZDlvN2JnQVJWV0Y4blZ3eUZkOU5VUjFuR0wyb2ZuL3h1aEt3?=
- =?utf-8?B?dlFTM3p5cndacVRnQndpc1c1VmhHSG04NTQzQ2sxcjV3N0hLblBpSkR5WEds?=
- =?utf-8?B?TFFQN0NNREFGYUUrZzhWSXlqTzlsU29hbHlCaFV3TFB1QzhSYTF6NzlLcm9N?=
- =?utf-8?B?eDREL1F4NmRyazNXSFNsdmhpVk8randaYnJ0d21wbDU2T00rL2l6VDYrWWtU?=
- =?utf-8?B?QWx4WGpsdHVhdFRlcncrREc1eUV3U3B4Nnk3c2N5UzZmL2NwZVdBUGg4SnUy?=
- =?utf-8?B?Y3J6Z2NBbHZhQVRHTm54N0RPNnVJR0NBWEtwbDlneU1SSXFOcmtPbGFkcVJ2?=
- =?utf-8?B?bWYzN3ZFQmFxeHNKenFaY0pkWTdKdTRJZnlqQm9UQjI4aW5sQTZtYk1NZExx?=
- =?utf-8?B?S0hxVkdjYU90T2hZM0FZNzVodmloUGViWmRPVUdReWxlSThzMnpsN3VVc0tv?=
- =?utf-8?B?ZDJwOGw1Uk5GVVRNQW12K3ArL1owd2J4cENiS0ZCVGVldW5ZWk9aZm94VjRS?=
- =?utf-8?B?U1hiOFptVDRsdUhScnhtbWNKamZjOWdkK3BBTjBDZTExMU1BczVOL1lPd3kv?=
- =?utf-8?B?QUlMUUdsNkp0R3BGdUhONnE0R2JzZnhGZ0xrS3FhSXQ0cWg0R3N0Z1hCR1JS?=
- =?utf-8?B?dmszVlJ1N0JZVFNCRGNkZlhFTzFyV2pwaFo3R2JYWU43QXA0dnFsUFpDTm5P?=
- =?utf-8?B?RDI0ZnQ4eW1xZ3ltNHI4NlJzTGNtZ1hJaVk5WFZrbjZuS2hkWXNzek9NSlpW?=
- =?utf-8?B?TnA2UE9LQk9CVXUvS3kvODhhVVFaSjRxT2hWZzlQVFRSSWRTcHVHYURDOEx4?=
- =?utf-8?B?QlFqalZzSHYvVnErT2c5Y1hXUmtGMlhENWs0V3dkaXBvT2ZtWnhtTU1MZEhm?=
- =?utf-8?B?ZWhubG1Bd2kxQk9TeVJzQ3J0ZUQzczh4SGZRblpNYWljWjlHaE1QOVByUUY2?=
- =?utf-8?B?ZS9CR0kyVnowdlk5VTEzdjVZOVA2QjNvQktmRHZaZmVmd2NidU9kRGN5LzYr?=
- =?utf-8?B?YlJha0kyQzlzRmFlc0lGVjZiaFVoYUtmWUU2WjN2aTZCa2Q4Zno3dXBtL2Vl?=
- =?utf-8?B?ZndjT0xJZkYvTlRacHVhelVSQ2UvSCswYTJ4cEFVK0J1TS83VXNGM3BRd3hz?=
- =?utf-8?B?c2x1bk1vNnBUd21MWWNkSmVxaGNxOXQyRVlEUFRoc0t4WTJlckpNWVhiY2d6?=
- =?utf-8?B?c3A5V1g5L1ZlOFpqQVQ1MUxsNHNMN3VkdmJLTC81NzJMaklLVVlrUHJkMnMw?=
- =?utf-8?B?Zkh6NWZoUEYrNGd5MHBQWXJUU0FQY3loRVphQTVSeXdGMVRTT2lxKzI1ODBm?=
- =?utf-8?B?YWNaV3ZmOXoyYWZSY2ZTTlRzKytVM2JhREpEU0VKZHNoMUt2RDRwMnNldjdG?=
- =?utf-8?B?NW1KT2Z1MnhyWkVISnUzRzN3VjNiRFU0L2IvTmpocTZOc0NJWmdac2Z4Mmgv?=
- =?utf-8?B?dnpycURHZHJNYnkyQ1V1eXZzZk9qYkFJMG5BcjVaeWs0T0FicXpDTXQvL1Jx?=
- =?utf-8?B?ek1qb0ptckJIRVd1aWdQdUNneGp5N244YWk1ZCtjc2VsWmdTT1A5SlpsaGZo?=
- =?utf-8?B?R2F5d1NTcXNVdTF4Q3ZuNUd2aFJnMFNPbU8vaWdtRmlVblBOQ0tjN0RqeEtW?=
- =?utf-8?B?V3JuMERnd1QxT3pWU3Y0dz09?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?WTZ0MkxJVEJUYkl0c1pWRXRRcTBELzhOaG1PMlN6SWR0QmNGN2JObzJGK3py?=
- =?utf-8?B?YVlaSVdZTjRGeGVwKy91R3U4QW85RzlQODVxRzJkeFBjaEZpaDhleXlLY0xO?=
- =?utf-8?B?T2dMY1Rlb3BCRG5oMmhNTDB3Ny9mamZkL3JTV3hlbVh2M1R2bHpHZ3ZlbTRp?=
- =?utf-8?B?YUdEVlBFVWpSUjNrcTV3djk4b09IWURYMDUrT1Zidi83REpTejhoT3pwdmJW?=
- =?utf-8?B?eTM0NkhQTEd5VUJwOVRIUWtiZTBqNDZRQXZ3Q2xqQ0xya2daYnBPaUszM3Jt?=
- =?utf-8?B?dktHR01rQ2dmOFN4Rnd1YVlBdVAyQSsrRzlxNGhNZUxOL0IxbVdOZE9sZ2p6?=
- =?utf-8?B?SGNRM0FTakdycTZ0RVZxbXkvc0xEUWhDNzkzcklCOGZTTVorcFYzUjByQm9X?=
- =?utf-8?B?STFrd2ZrRFdvZnI1RWptQlVlcGdYOHpVUktRVEVUd1YrNW85dnhVN0w4TFRP?=
- =?utf-8?B?alU1U1lMdDRLMFZrRHNuTTlkNVJJUkExSUtPbEdpd1pTVytkOElkMzE1UnZQ?=
- =?utf-8?B?Z29DTWdUbHFOdk92Ym9JV2FZcjRzZytJeEc0c2pUKytBbDFDV0Q5V2xvcCtS?=
- =?utf-8?B?TDdiN093MlJhZlBTU05IVHF0cUpSdUZhMTlicUdCdWFPT1N2eFh4eHN6R3lt?=
- =?utf-8?B?YXFDWDljbWh5c3RycFdSSmczcG4ydkh0elh2YVJXaTVNTWlOSGluUlNZMkNR?=
- =?utf-8?B?L3ZHN3NKdTNETWRzR1BVa3kxM2FuSEJyNVVGQUluU2ZEKzZxYkNVbGV0ZnA4?=
- =?utf-8?B?Q2hsb0F5Y2xnSVhxNHRia3FkdEZnWGYzNGhzZ0t6SmJZT2tkSXB3Tlg3NHRj?=
- =?utf-8?B?ZHdzaitYc0JnYWludzJDSC9yWHpJK0JwQ3JKOFFRQVFqYlNWb29wZ0dOOVhC?=
- =?utf-8?B?dGxaQ1RHaW5abWNXRjFRK0w4UnBVMTNMYlpFbkRjZlViUVBWbGxOa3A4Titm?=
- =?utf-8?B?c2NSYmkzamJIaVo0YXVaUWFuem5mbjF0QXRsbno1dTFXbzJxb3M4R25NVTMv?=
- =?utf-8?B?Um5oZzMwbTdxMGxtNEtQRUw5dzJpeXFHeWRzc2p6MWRSdXQvYVZLTzRLMTRR?=
- =?utf-8?B?ODAzVVc3dVI2U1dGYUNsSHhnQzF6eW0zNWFhVDZERUFsVkRSVm1WaTM4aVBn?=
- =?utf-8?B?NlF6cXEveHY1cVdOL3FSWTZjYnlTeFVwMUJXSU5sZnhkdEdGTmVFSSs5TWtD?=
- =?utf-8?B?SWxHZ1lJeEpUNUxBNE1DSDBPYU9JbGNkNTI0SC9xYUgwWm5HNjV0VnZVekY3?=
- =?utf-8?B?WFVhejFTTzFkc0ZsWmVWK0RVZzZtemZidENMWGk4UjZIYXd3OWQrRDVHYS9o?=
- =?utf-8?B?NDhaZHVUa3ZHMjM1ZDBldm0xVURYSlFtTlNXUG5EVjY5cURUMmlNbFV2NEpk?=
- =?utf-8?B?T1U2MTFTczlxTFdFa3kyaG5QUk0yK2hyNUpmN0VNeWYzN0s2eUhPRDRXSUFt?=
- =?utf-8?B?ejFEQWhQd1VWU05kZ2tvTk44dnZHUmVkZ2dyUDZpNlJpampsMjJOMkhmK0lY?=
- =?utf-8?B?Rm1kYytUV01FV245V1VYNHZLanFyNTBhVmdocEZUNGxVRld3dVZ3OWR1T2xx?=
- =?utf-8?B?eGh2Q0JiTVFzSG15NkMvSVhqSWMyOU5NaC81M0llYWVUWklFNWxSc0s3T2Mz?=
- =?utf-8?B?eEZNY0p4VURSUmZ2NXljYmwzMXIwVElnUnFEaysrNGFsT3YwU1JGV1lTQ2Vi?=
- =?utf-8?B?UWtNSmlrV1NlT1MzYlZjTGIxYTQ0OUZIQnVwNXM4eW1CZkRMdGhsS1pBVnd1?=
- =?utf-8?B?dmFmaW82VGtTSFd1S2JXcnNEd0pEWXdMMFNLenRJdm9iWmh1anhqazJ3S0dQ?=
- =?utf-8?B?amFWalJnVmIxMDE5cHBTTHBmZVE1RG9QdVJCd0lBZGtaZDZ4Mld3MlQzcURE?=
- =?utf-8?B?S2k3MnZ0M051cHRDRGQ1OTJjUGNLYzR4bS9ZVmJIaVpTTnRhTnRqZDRkYm8r?=
- =?utf-8?B?RzdmU1p0RjRoRW9kdkxSWEpLRkpBWklmT3FDT1VaL0k0b3BkUWlXNHhENVE0?=
- =?utf-8?B?UERwaWhiRjF2MENBcWgrTktKMWRoZFd1WG9WZjg1TmUxMFZvOHQvY3pCa3Ry?=
- =?utf-8?B?NTlYYThsV0w1RFA5RGROTm5FTXdHQUdJQ2xtL0szYTBUSGwvWElNU1FtU1pD?=
- =?utf-8?Q?mCSI=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E321474B5
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 08:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715588513; cv=none; b=M59YiWQvxMPQVIzJg/sg5uFZAxjXyMvya4v6HOxkfvay/RKq1EMNMx86rE/FkpBeBCLZI/WLnAUKAi203Mx0KrHQ97lnXlnqy/KCEFWGDlYZ7GYJqtgRqlOL8I6xFa5/T2hApyPy+doAHD1KnQSJ0KoodcPzRdycdxi7wLzXEAU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715588513; c=relaxed/simple;
+	bh=370Z/4pVqcnUJaFTTi6fEsKjJh8phfzv2AhRGUlrOS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fPJVlmweNyFGbKookWc9J1VTNbJhUMqbJfPfwKNLXhrGWHC/heBPl9Q/8qa7XgnBZyhOm5l1xZ6McFtQrzNGRNfflc6frsHYE+bp0jrWHrhR3fk8JCpPkHY98fGAdFyCySiPcMabSF5mavctahKJpWWh+FdRyb4p4Sn7cs87JuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s6Qw8-0004dw-HJ; Mon, 13 May 2024 10:21:32 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s6Qw7-0018O1-EL; Mon, 13 May 2024 10:21:31 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s6Qw7-009QJp-17;
+	Mon, 13 May 2024 10:21:31 +0200
+Date: Mon, 13 May 2024 10:21:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/4] firmware: imx: add driver for NXP EdgeLock Enclave
+Message-ID: <ZkHNixUeasNCBjMn@pengutronix.de>
+References: <20240510-imx-se-if-v1-0-27c5a674916d@nxp.com>
+ <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6bc0cb4-c074-47a7-f377-08dc7321cccb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 07:53:38.6581
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XkoHPDpHLPy1yAkBUuHfIo+u4Dlmq5j07Yo6cGq8JexJw7Q0lBuDp/bJiDKYy7skCOZN1IIaP33RPzKVdIJjXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9259
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIER1bWF6ZXQgPGVkdW1h
-emV0QGdvb2dsZS5jb20+DQo+IFNlbnQ6IDIwMjTlubQ15pyIMTPml6UgMTU6MjkNCj4gVG86IFdl
-aSBGYW5nIDx3ZWkuZmFuZ0BueHAuY29tPg0KPiBDYzogZGF2ZW1AZGF2ZW1sb2Z0Lm5ldDsga3Vi
-YUBrZXJuZWwub3JnOyBwYWJlbmlAcmVkaGF0LmNvbTsgU2hlbndlaQ0KPiBXYW5nIDxzaGVud2Vp
-LndhbmdAbnhwLmNvbT47IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT47DQo+IHJp
-Y2hhcmRjb2NocmFuQGdtYWlsLmNvbTsgYW5kcmV3QGx1bm4uY2g7IG5ldGRldkB2Z2VyLmtlcm5l
-bC5vcmc7DQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGlteEBsaXN0cy5saW51eC5k
-ZXYNCj4gU3ViamVjdDogUmU6IFtQQVRDSCBuZXRdIG5ldDogZmVjOiBhdm9pZCBsb2NrIGV2YXNp
-b24gd2hlbiByZWFkaW5nIHBwc19lbmFibGUNCj4gDQo+IE9uIE1vbiwgTWF5IDEzLCAyMDI0IGF0
-IDQ6MDLigK9BTSBXZWkgRmFuZyA8d2VpLmZhbmdAbnhwLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBU
-aGUgYXNzaWdubWVudCBvZiBwcHNfZW5hYmxlIGlzIHByb3RlY3RlZCBieSB0bXJlZ19sb2NrLCBi
-dXQgdGhlIHJlYWQNCj4gPiBvcGVyYXRpb24gb2YgcHBzX2VuYWJsZSBpcyBub3QuIFNvIHRoZSBD
-b3Zlcml0eSB0b29sIHJlcG9ydHMgYSBsb2NrDQo+ID4gZXZhc2lvbiB3YXJuaW5nIHdoaWNoIG1h
-eSBjYXVzZSBkYXRhIHJhY2UgdG8gb2NjdXIgd2hlbiBydW5uaW5nIGluIGENCj4gPiBtdWx0aXRo
-cmVhZCBlbnZpcm9ubWVudC4gQWx0aG91Z2ggdGhpcyBpc3N1ZSBpcyBhbG1vc3QgaW1wb3NzaWJs
-ZSB0bw0KPiA+IG9jY3VyLCB3ZSdkIGJldHRlciBmaXggaXQsIGF0IGxlYXN0IGl0IHNlZW1zIG1v
-cmUgbG9naWNhbGx5DQo+ID4gcmVhc29uYWJsZSwgYW5kIGl0IGFsc28gcHJldmVudHMgQ292ZXJp
-dHkgZnJvbSBjb250aW51aW5nIHRvIGlzc3VlIHdhcm5pbmdzLg0KPiA+DQo+ID4gRml4ZXM6IDI3
-OGQyNDA0Nzg5MSAoIm5ldDogZmVjOiBwdHA6IEVuYWJsZSBQUFMgb3V0cHV0IGJhc2VkIG9uIHB0
-cA0KPiA+IGNsb2NrIikNCj4gPiBTaWduZWQtb2ZmLWJ5OiBXZWkgRmFuZyA8d2VpLmZhbmdAbnhw
-LmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2ZlY19w
-dHAuYyB8IDggKysrKystLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwg
-MyBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5l
-dC9mcmVlc2NhbGUvZmVjX3B0cC5jDQo+ID4gYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2Nh
-bGUvZmVjX3B0cC5jDQo+ID4gaW5kZXggMTgxZDliZmJlZTIyLi44ZDM3Mjc0YTNmYjAgMTAwNjQ0
-DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2ZlY19wdHAuYw0KPiA+
-ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9mZWNfcHRwLmMNCj4gPiBAQCAt
-MTA0LDE0ICsxMDQsMTYgQEAgc3RhdGljIGludCBmZWNfcHRwX2VuYWJsZV9wcHMoc3RydWN0DQo+
-IGZlY19lbmV0X3ByaXZhdGUgKmZlcCwgdWludCBlbmFibGUpDQo+ID4gICAgICAgICBzdHJ1Y3Qg
-dGltZXNwZWM2NCB0czsNCj4gPiAgICAgICAgIHU2NCBuczsNCj4gPg0KPiA+IC0gICAgICAgaWYg
-KGZlcC0+cHBzX2VuYWJsZSA9PSBlbmFibGUpDQo+ID4gLSAgICAgICAgICAgICAgIHJldHVybiAw
-Ow0KPiA+IC0NCj4gPiAgICAgICAgIGZlcC0+cHBzX2NoYW5uZWwgPSBERUZBVUxUX1BQU19DSEFO
-TkVMOw0KPiA+ICAgICAgICAgZmVwLT5yZWxvYWRfcGVyaW9kID0gUFBTX09VUFVUX1JFTE9BRF9Q
-RVJJT0Q7DQo+IA0KPiBXaHkgYXJlIHRoZXNlIHdyaXRlcyBsZWZ0IHdpdGhvdXQgdGhlIHNwaW5s
-b2NrIHByb3RlY3Rpb24gPw0KRm9yIGZlYyBkcml2ZXIsIHRoZSBwcHNfY2hhbm5lbCBhbmQgdGhl
-IHJlbG9hZF9wZXJpb2Qgb2YgUFBTIHJlcXVlc3QNCmFyZSBhbHdheXMgZml4ZWQsIGFuZCB0aGV5
-IHdlcmUgYWxzbyBub3QgcHJvdGVjdGVkIGJ5IHRoZSBsb2NrIGluIHRoZQ0Kb3JpZ2luYWwgY29k
-ZS4NCg0KPiANCj4gDQo+ID4NCj4gPiAgICAgICAgIHNwaW5fbG9ja19pcnFzYXZlKCZmZXAtPnRt
-cmVnX2xvY2ssIGZsYWdzKTsNCj4gPg0KPiA+ICsgICAgICAgaWYgKGZlcC0+cHBzX2VuYWJsZSA9
-PSBlbmFibGUpIHsNCj4gPiArICAgICAgICAgICAgICAgc3Bpbl91bmxvY2tfaXJxcmVzdG9yZSgm
-ZmVwLT50bXJlZ19sb2NrLCBmbGFncyk7DQo+ID4gKyAgICAgICAgICAgICAgIHJldHVybiAwOw0K
-PiA+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiAgICAgICAgIGlmIChlbmFibGUpIHsNCj4gPiAgICAg
-ICAgICAgICAgICAgLyogY2xlYXIgY2FwdHVyZSBvciBvdXRwdXQgY29tcGFyZSBpbnRlcnJ1cHQg
-c3RhdHVzIGlmDQo+IGhhdmUuDQo+ID4gICAgICAgICAgICAgICAgICAqLw0KPiA+IC0tDQo+ID4g
-Mi4zNC4xDQo+ID4NCg==
+On Fri, May 10, 2024 at 06:57:30PM +0530, Pankaj Gupta wrote:
+> NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE),
+> are embedded in the SoC to support the features like HSM, SHE & V2X,
+> using message based communication interface.
+> 
+> The secure enclave FW communicates on a dedicated messaging unit(MU)
+> based interface(s) with application core, where kernel is running.
+> It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
+> 
+> This patch adds the driver for communication interface to secure-enclave,
+> for exchanging messages with NXP secure enclave HW IP(s) like EdgeLock Enclave,
+> both from:
+> - User-Space Applications via character driver.
+> - Kernel-space, used by kernel management layers like DM-Crypt.
+> 
+> ABI documentation for the NXP secure-enclave driver.
+
+Several review comments inside, but stopping here. I just found v7 of
+this series. Could it be that you have resent an older version of this
+series instead of the new one??
+
+Sascha
+
+> 
+> User-space library using this driver:
+> - i.MX Secure Enclave library:
+>   -- URL: https://github.com/nxp-imx/imx-secure-enclave.git,
+> - i.MX Secure Middle-Ware:
+>   -- URL: https://github.com/nxp-imx/imx-smw.git
+> 
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> ---
+>  Documentation/ABI/testing/se-cdev   |   42 ++
+>  drivers/firmware/imx/Kconfig        |   12 +
+>  drivers/firmware/imx/Makefile       |    2 +
+>  drivers/firmware/imx/ele_base_msg.c |  287 ++++++++
+>  drivers/firmware/imx/ele_base_msg.h |   70 ++
+>  drivers/firmware/imx/ele_common.c   |  341 +++++++++
+>  drivers/firmware/imx/ele_common.h   |   43 ++
+>  drivers/firmware/imx/se_ctrl.c      | 1339 +++++++++++++++++++++++++++++++++++
+>  drivers/firmware/imx/se_ctrl.h      |  151 ++++
+>  include/linux/firmware/imx/se_api.h |   14 +
+>  include/uapi/linux/se_ioctl.h       |   88 +++
+>  11 files changed, 2389 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/se-cdev b/Documentation/ABI/testing/se-cdev
+> new file mode 100644
+> index 000000000000..699525af6b86
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/se-cdev
+> @@ -0,0 +1,42 @@
+> +What:		/dev/<se>_mu[0-9]+_ch[0-9]+
+> +Date:		May 2024
+> +KernelVersion:	6.8
+> +Contact:	linux-imx@nxp.com, pankaj.gupta@nxp.com
+> +Description:
+> +		NXP offers multiple hardware IP(s) for  secure-enclaves like EdgeLock-
+> +		Enclave(ELE), SECO. The character device file-descriptors
+> +		/dev/<se>_mu*_ch* are the interface between user-space NXP's secure-
+> +		enclave shared-library and the kernel driver.
+> +
+> +		The ioctl(2)-based ABI is defined and documented in
+> +		[include]<linux/firmware/imx/ele_mu_ioctl.h>
+> +		 ioctl(s) are used primarily for:
+> +			- shared memory management
+> +			- allocation of I/O buffers
+> +			- get mu info
+> +			- setting a dev-ctx as receiver that is slave to fw
+> +			- get SoC info
+> +
+> +		The following file operations are supported:
+> +
+> +		open(2)
+> +		  Currently the only useful flags are O_RDWR.
+> +
+> +		read(2)
+> +		  Every read() from the opened character device context is waiting on
+> +		  wakeup_intruptible, that gets set by the registered mailbox callback
+> +		  function; indicating a message received from the firmware on message-
+> +		  unit.
+> +
+> +		write(2)
+> +		  Every write() to the opened character device context needs to acquire
+> +		  mailbox_lock, before sending message on to the message unit.
+> +
+> +		close(2)
+> +		  Stops and free up the I/O contexts that was associated
+> +		  with the file descriptor.
+> +
+> +Users:		https://github.com/nxp-imx/imx-secure-enclave.git,
+> +		https://github.com/nxp-imx/imx-smw.git
+> +		crypto/skcipher,
+> +		drivers/nvmem/imx-ocotp-ele.c
+> diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
+> index 183613f82a11..56bdca9bd917 100644
+> --- a/drivers/firmware/imx/Kconfig
+> +++ b/drivers/firmware/imx/Kconfig
+> @@ -22,3 +22,15 @@ config IMX_SCU
+>  
+>  	  This driver manages the IPC interface between host CPU and the
+>  	  SCU firmware running on M4.
+> +
+> +config IMX_SEC_ENCLAVE
+> +	tristate "i.MX Embedded Secure Enclave - EdgeLock Enclave Firmware driver."
+> +	depends on IMX_MBOX && ARCH_MXC && ARM64
+> +	default m if ARCH_MXC
+> +
+> +	help
+> +	  It is possible to use APIs exposed by the iMX Secure Enclave HW IP called:
+> +          - EdgeLock Enclave Firmware (for i.MX8ULP, i.MX93),
+> +          like base, HSM, V2X & SHE using the SAB protocol via the shared Messaging
+> +          Unit. This driver exposes these interfaces via a set of file descriptors
+> +          allowing to configure shared memory, send and receive messages.
+> diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
+> index 8f9f04a513a8..aa9033e0e9e3 100644
+> --- a/drivers/firmware/imx/Makefile
+> +++ b/drivers/firmware/imx/Makefile
+> @@ -1,3 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
+>  obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
+> +sec_enclave-objs		= se_ctrl.o ele_common.o ele_base_msg.o
+> +obj-${CONFIG_IMX_SEC_ENCLAVE}	+= sec_enclave.o
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/ele_base_msg.c
+> new file mode 100644
+> index 000000000000..0463f26d93c7
+> --- /dev/null
+> +++ b/drivers/firmware/imx/ele_base_msg.c
+> @@ -0,0 +1,287 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/types.h>
+> +#include <linux/completion.h>
+> +#include <linux/dma-mapping.h>
+> +
+> +#include "ele_base_msg.h"
+> +#include "ele_common.h"
+> +
+> +int ele_get_info(struct device *dev, struct soc_info *s_info)
+> +{
+> +	struct se_if_priv *priv = dev_get_drvdata(dev);
+> +	struct se_api_msg *tx_msg __free(kfree);
+> +	struct se_api_msg *rx_msg __free(kfree);
+> +	phys_addr_t get_info_addr;
+> +	u32 *get_info_data;
+> +	u32 status;
+> +	int ret;
+> +
+> +	if (!priv || !s_info)
+> +		goto exit;
+
+ret and get_info_addr are used uninitialized when jumping to the exit
+label from here.
+
+> +
+> +	memset(s_info, 0x0, sizeof(*s_info));
+> +
+> +	if (priv->mem_pool_name)
+> +		get_info_data = get_phy_buf_mem_pool(dev,
+> +						     priv->mem_pool_name,
+> +						     &get_info_addr,
+> +						     ELE_GET_INFO_BUFF_SZ);
+> +	else
+> +		get_info_data = dmam_alloc_coherent(dev,
+> +						    ELE_GET_INFO_BUFF_SZ,
+> +						    &get_info_addr,
+> +						    GFP_KERNEL);
+> +	if (!get_info_data) {
+> +		ret = -ENOMEM;
+> +		dev_err(dev,
+> +			"%s: Failed to allocate get_info_addr.\n",
+> +			__func__);
+> +		goto exit;
+> +	}
+> +
+> +	tx_msg = kzalloc(ELE_GET_INFO_REQ_MSG_SZ << 2, GFP_KERNEL);
+> +	if (!tx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	rx_msg = kzalloc(ELE_GET_INFO_RSP_MSG_SZ << 2, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	ret = plat_fill_cmd_msg_hdr(priv,
+> +				    (struct se_msg_hdr *)&tx_msg->header,
+> +				    ELE_GET_INFO_REQ,
+> +				    ELE_GET_INFO_REQ_MSG_SZ,
+> +				    true);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	tx_msg->data[0] = upper_32_bits(get_info_addr);
+
+How can this work without triggering a NULL pointer exception? struct se_api_msg
+is declared as:
+
+struct se_api_msg {
+	u32 header; /* u8 Tag; u8 Command; u8 Size; u8 Ver; */
+	u32 *data;
+};
+
+The memory for tx_msg is kzalloced above, so *data is a NULL pointer.
+
+> +	tx_msg->data[1] = lower_32_bits(get_info_addr);
+> +	tx_msg->data[2] = ELE_GET_INFO_READ_SZ;
+> +	priv->rx_msg = rx_msg;
+> +	ret = imx_ele_msg_send_rcv(priv, tx_msg);
+> +	if (ret < 0)
+> +		goto exit;
+> +
+> +	ret  = validate_rsp_hdr(priv,
+> +				priv->rx_msg->header,
+> +				ELE_GET_INFO_REQ,
+> +				ELE_GET_INFO_RSP_MSG_SZ,
+> +				true);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	status = RES_STATUS(priv->rx_msg->data[0]);
+> +	if (status != priv->success_tag) {
+> +		dev_err(dev, "Command Id[%d], Response Failure = 0x%x",
+> +			ELE_GET_INFO_REQ, status);
+> +		ret = -1;
+
+Callers seem to expect an error code. Do you intend to return -EPERM
+here?
+
+> +	}
+> +
+> +	s_info->imem_state = (get_info_data[ELE_IMEM_STATE_WORD]
+> +				& ELE_IMEM_STATE_MASK) >> 16;
+> +	s_info->major_ver = (get_info_data[GET_INFO_SOC_INFO_WORD_OFFSET]
+> +				& SOC_VER_MASK) >> 24;
+> +	s_info->minor_ver = ((get_info_data[GET_INFO_SOC_INFO_WORD_OFFSET]
+> +				& SOC_VER_MASK) >> 16) & 0xFF;
+> +	s_info->soc_rev = (get_info_data[GET_INFO_SOC_INFO_WORD_OFFSET]
+> +				& SOC_VER_MASK) >> 16;
+> +	s_info->soc_id = get_info_data[GET_INFO_SOC_INFO_WORD_OFFSET]
+> +				& SOC_ID_MASK;
+> +	s_info->serial_num
+> +		= (u64)get_info_data[GET_INFO_SL_NUM_MSB_WORD_OFF] << 32
+> +			| get_info_data[GET_INFO_SL_NUM_LSB_WORD_OFF];
+> +exit:
+> +	if (get_info_addr) {
+> +		if (priv->mem_pool_name)
+> +			free_phybuf_mem_pool(dev, priv->mem_pool_name,
+> +					     get_info_data, ELE_GET_INFO_BUFF_SZ);
+> +		else
+> +			dmam_free_coherent(dev,
+> +					   ELE_GET_INFO_BUFF_SZ,
+> +					   get_info_data,
+> +					   get_info_addr);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +int ele_ping(struct device *dev)
+> +{
+> +	struct se_if_priv *priv = dev_get_drvdata(dev);
+> +	struct se_api_msg *tx_msg __free(kfree);
+> +	struct se_api_msg *rx_msg __free(kfree);
+> +	u32 status;
+> +	int ret;
+> +
+> +	tx_msg = kzalloc(ELE_PING_REQ_SZ << 2, GFP_KERNEL);
+> +	if (!tx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	rx_msg = kzalloc(ELE_PING_RSP_SZ << 2, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	ret = plat_fill_cmd_msg_hdr(priv,
+> +				    (struct se_msg_hdr *)&tx_msg->header,
+> +				    ELE_PING_REQ, ELE_PING_REQ_SZ,
+> +				    true);
+> +	if (ret) {
+> +		dev_err(dev, "Error: plat_fill_cmd_msg_hdr failed.\n");
+> +		goto exit;
+> +	}
+> +
+> +	priv->rx_msg = rx_msg;
+> +	ret = imx_ele_msg_send_rcv(priv, tx_msg);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	ret  = validate_rsp_hdr(priv,
+> +				priv->rx_msg->header,
+> +				ELE_PING_REQ,
+> +				ELE_PING_RSP_SZ,
+> +				true);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	status = RES_STATUS(priv->rx_msg->data[0]);
+> +	if (status != priv->success_tag) {
+> +		dev_err(dev, "Command Id[%d], Response Failure = 0x%x",
+> +			ELE_PING_REQ, status);
+> +		ret = -1;
+> +	}
+> +exit:
+> +	return ret;
+> +}
+> +
+> +int ele_service_swap(struct device *dev,
+> +		     phys_addr_t addr,
+> +		     u32 addr_size, u16 flag)
+> +{
+> +	struct se_if_priv *priv = dev_get_drvdata(dev);
+> +	struct se_api_msg *tx_msg __free(kfree);
+> +	struct se_api_msg *rx_msg __free(kfree);
+> +	u32 status;
+> +	int ret;
+> +
+> +	tx_msg = kzalloc(ELE_SERVICE_SWAP_REQ_MSG_SZ << 2, GFP_KERNEL);
+> +	if (!tx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	rx_msg = kzalloc(ELE_SERVICE_SWAP_RSP_MSG_SZ << 2, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	ret = plat_fill_cmd_msg_hdr(priv,
+> +				    (struct se_msg_hdr *)&tx_msg->header,
+> +				    ELE_SERVICE_SWAP_REQ,
+> +				    ELE_SERVICE_SWAP_REQ_MSG_SZ,
+> +				    true);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	tx_msg->data[0] = flag;
+> +	tx_msg->data[1] = addr_size;
+> +	tx_msg->data[2] = ELE_NONE_VAL;
+> +	tx_msg->data[3] = lower_32_bits(addr);
+> +	tx_msg->data[4] = plat_add_msg_crc((uint32_t *)&tx_msg[0],
+> +						 ELE_SERVICE_SWAP_REQ_MSG_SZ);
+> +	priv->rx_msg = rx_msg;
+> +	ret = imx_ele_msg_send_rcv(priv, tx_msg);
+> +	if (ret < 0)
+> +		goto exit;
+> +
+> +	ret  = validate_rsp_hdr(priv,
+> +				priv->rx_msg->header,
+> +				ELE_SERVICE_SWAP_REQ,
+> +				ELE_SERVICE_SWAP_RSP_MSG_SZ,
+> +				true);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	status = RES_STATUS(priv->rx_msg->data[0]);
+> +	if (status != priv->success_tag) {
+> +		dev_err(dev, "Command Id[%d], Response Failure = 0x%x",
+> +			ELE_SERVICE_SWAP_REQ, status);
+> +		ret = -1;
+> +	} else {
+> +		if (flag == ELE_IMEM_EXPORT)
+> +			ret = priv->rx_msg->data[1];
+> +		else
+> +			ret = 0;
+> +	}
+> +exit:
+> +
+> +	return ret;
+> +}
+> +
+> +int ele_fw_authenticate(struct device *dev, phys_addr_t addr)
+> +{
+> +	struct se_if_priv *priv = dev_get_drvdata(dev);
+> +	struct se_api_msg *tx_msg __free(kfree);
+> +	struct se_api_msg *rx_msg __free(kfree);
+> +	u32 status;
+> +	int ret;
+> +
+> +	tx_msg = kzalloc(ELE_FW_AUTH_REQ_SZ << 2, GFP_KERNEL);
+> +	if (!tx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	rx_msg = kzalloc(ELE_FW_AUTH_RSP_MSG_SZ << 2, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +	ret = plat_fill_cmd_msg_hdr(priv,
+> +				    (struct se_msg_hdr *)&tx_msg->header,
+> +				    ELE_FW_AUTH_REQ,
+> +				    ELE_FW_AUTH_REQ_SZ,
+> +				    true);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	tx_msg->data[0] = addr;
+> +	tx_msg->data[1] = 0x0;
+> +	tx_msg->data[2] = addr;
+
+Has this been tested? According to the documentation data[0] shall
+contain the upper 32bit of the address and data[1] shall contain the
+lower 32bit of the address. There is no data[2] for this call.
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
