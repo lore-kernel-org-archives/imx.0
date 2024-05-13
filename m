@@ -1,136 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B87815532C;
-	Mon, 13 May 2024 16:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9C21A716;
+	Mon, 13 May 2024 16:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715616099; cv=none; b=WhGFb6rhO75lUFQO7le9x8Joo69/vfNqOhJC4fKGQFruAdzwDSjgpxYPI4RVP4mDNp4k8cKSuQL6TgoEyh7QmMBXIyOxHGiipyqJtHO+YqdkOMXcViugutMPu9HRVzvByjUBwneXisqq2DLMo9VJ8O2JJoueZ2bAHKUxXbkHXtA=
+	t=1715618161; cv=none; b=kVqhb2LCzrtwPuvWtKN781/c//0dJwkv/+P0YkBdaNIZtR4Y8b3o36cYBX3LEKFgOeL5ZJ8XM2jLaLVZYtIR/rIfzENxcm6CcSPFEfjnEF16v9/bVkO3xMGACnQQAnmZkGwGsudlORA0rUF5LgRHPLAzABuLurOKj7bAsgZCGY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715616099; c=relaxed/simple;
-	bh=VhYVty2acqcCBHONMhwvO6FK9j6wZBYyuF0dbi8giHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k9HHooFoTFwy8ASlZVZiGkAd8snXIdB2bomjhmVT74SwBNL4SVzOIsZIOKg33qZxJc2/S4BWkVjnnK/ohGxzQi/sqUux/oMRg1EvOzHjpNBj/8PYattz++COUygzeU0Mq+Q/tQvFu7OWw6qmBPHUF1i7fz5BIaNsodQI56MDpbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffg7e+m5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715618161; c=relaxed/simple;
+	bh=WL4mQviCBXJXVL3QbU+lDj3cm5lbV4VfD08lc6+45kc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=pz6sIZflSmyHuE4MMASjr1nqL3HBueUMwUZZDJ/+G7C1Wtvd9VYW38ShuG96xIkcWOyOHiLCV/M4UsSchN42W74DRQXUbjhF3448QM+gxii+NEtI2IiptwiRL9ZgIvkLayyg1bXgZzmpspQA2PNd723cxLFPZZqJscCpvLMzTQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kgI9iDP/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffg7e+m5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C99C32786;
-	Mon, 13 May 2024 16:01:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kgI9iDP/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03B5C113CC;
+	Mon, 13 May 2024 16:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715616098;
-	bh=VhYVty2acqcCBHONMhwvO6FK9j6wZBYyuF0dbi8giHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ffg7e+m5AIYyrukObG14BNxs6iZMIte+CF9XqtORl9+GcQRHlMyUiM/PgQiLOBqTo
-	 NtIbLlBKyudR4ZUkA0qBEUs7xVbPdE2Z7rQOcndm+SBoWHt2TAnvXkcoaj0INd4xiw
-	 VYl8NhPUWDcfc95/m2uPILl66Hyn6aDz6yJBoqEzo0F/SUJYZ4Gf75K32l/VRDMaHQ
-	 eHxvu0o8/30zkXB55dgRdXv27xyqQ5cgZyv9flhveKWOa0+hjeb2lERC/ipOqXnTvT
-	 i00yuKXLbU6clOF3YSyfoNzIibYIbIfilNS64jsgRrbQ21iDHR6sK4MBoe4uUBLh71
-	 wHGf+Qmp2Ig7w==
-Date: Mon, 13 May 2024 17:01:33 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, frank.li@nxp.com,
-	conor+dt@kernel.org, linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v5 1/2] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY
- binding
-Message-ID: <20240513-antonym-flanking-5a812dd49920@spud>
-References: <1715563324-6391-1-git-send-email-hongxing.zhu@nxp.com>
- <1715563324-6391-2-git-send-email-hongxing.zhu@nxp.com>
+	s=k20201202; t=1715618161;
+	bh=WL4mQviCBXJXVL3QbU+lDj3cm5lbV4VfD08lc6+45kc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=kgI9iDP/j23MTKqJ38bXuHTYN+VYj1ybdPdblKAETl9tinCbaM8aJ9XqKwyaxCJfQ
+	 MCJUksnmp3fP9iyVo5TzVTy883f3IUxpvGRvLUGr/aiVfK9tRhPouQOnpYjuyf5mfw
+	 P6EafBr5vR5y9tRMbJIsrzXgKefscmgEtKGO1pOEpAHjuAZRYI9nPjDFU5kPnjC/s8
+	 adafPBwFtx2PJ9W3VIE1bP7yzmSKL7o8DZBo23P0NDBA2hq6NTW8TTuRShitLSPO1C
+	 EpiL16d71Dn0Bw29SEa6/NT8EMYEJxgirhhxQcmkf9+HVY9gNdDO2fL8MR1CafETNZ
+	 lfEd3U22/NiKQ==
+From: Robert Foss <rfoss@kernel.org>
+To: Sui Jingfeng <sui.jingfeng@linux.dev>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: imx@lists.linux.dev, Maxime Ripard <mripard@kernel.org>, Liu Ying <victor.liu@nxp.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Sascha Hauer <s.hauer@pengutronix.de>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240513153109.46786-1-sui.jingfeng@linux.dev>
+References: <20240513153109.46786-1-sui.jingfeng@linux.dev>
+Subject: Re: [PATCH v2 00/12] Remove redundant checks on existence of 'bridge->encoder'
+Message-Id: <171561815850.92124.10451289435632217035.b4-ty@kernel.org>
+Date: Mon, 13 May 2024 18:35:58 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ww9JUqbrd7gfrxGO"
-Content-Disposition: inline
-In-Reply-To: <1715563324-6391-2-git-send-email-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.1
+
+On Mon, 13 May 2024 23:30:57 +0800, Sui Jingfeng wrote:
+> The checks on the existence of bridge->encoder in the implementation of
+> drm_bridge_funcs::attach() is not necessary, as it has already been checked
+> in the drm_bridge_attach() function call by previous bridge or KMS driver.
+> The drm_bridge_attach() will quit with a negative error code returned if
+> it fails for some reasons, hence, it is guaranteed that the .encoder member
+> of the drm_bridge instance is not NULL when various bridge attach functions
+> are called.
+> 
+> [...]
+
+Applied, thanks!
+
+[01/12] drm/bridge: simple-bridge: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=f0a83a2cf9eb
+[02/12] drm/bridge: tfp410: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=482ade3ec1c5
+[03/12] drm/bridge: nxp-ptn3460: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0f4bca4e1be3
+[04/12] drm/bridge: panel: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=a8f856bf054a
+[05/12] drm/bridge: it6505: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=8761a39e3f9d
+[06/12] drm/bridge: adv7511: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=41e6ed85e457
+[07/12] drm/bridge: cdns-mhdp8546: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=b24fd6e9eb66
+[08/12] drm/bridge: megachips-stdpxxxx-ge-b850v3-fw: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0a59deb2fedb
+[09/12] drm/bridge: synopsys: dw-mipi-dsi: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=80221a89ff95
+[10/12] drm/bridge: lt9611uxc: Remove a redundant check on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=91942a37ebba
+[11/12] drm/bridge: imx: Remove redundant checks on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=ec74951a7507
+[12/12] drm/bridge: analogix: Remove redundant checks on existence of bridge->encoder
+        https://cgit.freedesktop.org/drm/drm-misc/commit/?id=591255853a37
 
 
---ww9JUqbrd7gfrxGO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Mon, May 13, 2024 at 09:22:03AM +0800, Richard Zhu wrote:
+Rob
 
-> +  fsl,hsio-cfg:
-> +    description:
-> +      Specifies the use case of the HSIO module in the hardware design.
-> +      Because the HSIO module can be configure into three different use
-> +      cases.
-> +      Refer to macro HSIO_CFG* of include/dt-bindings/phy/phy-imx8-pcie.h.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    maximum: 3
-
-> +/*
-> + * Regarding the design of i.MX8QM HSIO subsystem, HSIO module can be
-> + * confiured as following three use cases.
-> + *
-> + * Define different configurations refer to the use cases, since it is
-> + * mandatory required in the initialization.
-> + *
-> + * On i.MX8QXP, HSIO module only has PCIEB and one lane PHY.
-> + * Define "IMX8Q_HSIO_CFG_PCIEB" for i.MX8QXP platforms.
-> + *
-> + * +----------------------------------------------------+----------+
-> + * |                               | i.MX8QM            | i.MX8QXP |
-> + * |-------------------------------|--------------------|----------|
-> + * |                               | Lane0| Lane1| Lane2| Lane0    |
-> + * |-------------------------------|------|------|------|----------|
-> + * | IMX8Q_HSIO_CFG_PCIEAX2SATA    | PCIEA| PCIEA| SATA |          |
-> + * |-------------------------------|------|------|------|----------|
-> + * | IMX8Q_HSIO_CFG_PCIEAX2PCIEB   | PCIEA| PCIEA| PCIEB|          |
-> + * |-------------------------------|------|------|------|----------|
-> + * | IMX8Q_HSIO_CFG_PCIEAPCIEBSATA | PCIEA| PCIEB| SATA |          |
-> + * |-------------------------------|------|------|------|----------|
-> + * | IMX8Q_HSIO_CFG_PCIEB          | -    | -    | -    | PCIEB    |
-> + * +----------------------------------------------------+----------+
-> + */
-> +#define IMX8Q_HSIO_CFG_PCIEAX2SATA	0x1
-> +#define IMX8Q_HSIO_CFG_PCIEAX2PCIEB	0x2
-> +#define IMX8Q_HSIO_CFG_PCIEAPCIEBSATA	(IMX8Q_HSIO_CFG_PCIEAX2SATA | IMX8Q_HSIO_CFG_PCIEAX2PCIEB)
-> +#define IMX8Q_HSIO_CFG_PCIEB		IMX8Q_HSIO_CFG_PCIEAX2PCIEB
-
-Rob may disagree with me, but I think this should be an enum of possible
-strings with the table here moved into the property description. The QXP
-only option should then be constrained per compatible.
-
-> +
-> +  fsl,refclk-pad-mode:
-> +    description:
-> +      Specifies the mode of the refclk pad used. INPUT(PHY refclock is
-> +      provided externally via the refclk pad) or OUTPUT(PHY refclock is
-> +      derived from SoC internal source and provided on the refclk pad).
-
-> +      This property not exsit means unused(PHY refclock is derived from
-
-Please run a spell checker on your patches.
-
-> +      SoC internal source).
-
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [ input, output ]
-
-enum: [input, output, unused]
-default: unused
-
-Cheers,
-Conor.
-
---ww9JUqbrd7gfrxGO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZkI5XQAKCRB4tDGHoIJi
-0jqoAQCYD2YK1tmMPaNlI9amDiaAHYglL45y74OiDECRW83y9QEAhhjmKXQ4AoBA
-7osBM/TWVCR/ttAnM0RjJm8MSwDcjQA=
-=aM53
------END PGP SIGNATURE-----
-
---ww9JUqbrd7gfrxGO--
