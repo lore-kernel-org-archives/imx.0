@@ -1,146 +1,183 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2048.outbound.protection.outlook.com [40.107.13.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CC21487E1
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 12:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715604048; cv=none; b=jLQcDOHHSqaqGv3tIEQxn8xav+TYfdM2wpRFKERdSxA5WGgUB1Q2JhWJ39YqzJoIn1fVQmzJy97+GkJRyu8gnaN0TlNWe+bKcV24Ose2XakmF6tmV3CNBjRvNsQICWQHrDgwjpMqSbdsqf+uRg1SCIkZ9ToxDeTUga8EosPwJuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715604048; c=relaxed/simple;
-	bh=w2F7IUkcAC7aB3Nq4XW5MR7FrwSIJSgwqZe0Qj/b/z8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=stBSLG7SDZp0pE6PLIzCRPlu/CfogwY+5gldQv1Ami/J+Stdwbkza3MdG/kMQelXeHiOyWR0NDslfInqOaSF5/o+cE21DzCLuIPKMLPY2E5/FiNE2ukGkkvapHLCHMsIax+hAcmPXhneVeFDDbUE/42txBXzuf/8/g5+V4989K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aLeHs0nI; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B7814C5A9
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 12:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715604129; cv=fail; b=m5qVZY0NtQGerGAALEZN1uQqwKfSkN0XGR3YnvP+zr71d3fRlf1HEzrBhSx5htvLTrKLSCTPvzf1FlT3EmlVEVcupi0ZRcc6r5avx71JdCvnBHq4Pmz0jg07n54afW21a+P4o6W4CMhUlLaeQSrPilzPua8Im7Nurb9ZNq6KgZA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715604129; c=relaxed/simple;
+	bh=rVXMRkibz3NGDlyZik7urzdfxRLQoxrh6Vy3LpoA5P8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AbxfuE7PbunD2z19cM6oANtAS0bX/p8LE/23zWNtbIzqTTDufopun+hRpaRq4t1Tqi8q77mb3LD242PWUj/Zua3l1cS0dYmETscQW8WXR0TjH9SE1IZ2uJz0Nyk6GkVJEnfKknBbTox70juKbXcb8V6yEzAssfrMBqM85mOkWaU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=p9OwHkpp; arc=fail smtp.client-ip=40.107.13.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLeHs0nI"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2b338460546so2998887a91.1
-        for <imx@lists.linux.dev>; Mon, 13 May 2024 05:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715604046; x=1716208846; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5k8gT3oHNPh1LBJEkswvOb6QJDXdUG4eOyHdkELqHRI=;
-        b=aLeHs0nIbk43w5fmtjPOh3TK48l95rRglyi3jOf3T3GnC7EoOy9VB4bZ1sKRCUZa5t
-         VC9sAAIte2q4ylN+EJaWwyupx9jX/u1KxUf1dAbHVd+p48BnS1IVj4M8H4zLo5R0GLWi
-         uw7r5SCEFwuQ5gs0szCt+LlyVyJjlD9fFv6bguD8mw+JNYRtfxoqJx2vRlkp/CQaGw7f
-         0dhFMn9LkWBansK6gN2ZgshXddP8llPf/RCoTjyE8OwX8mmah6uPIaEQ7r2krPsnKcd8
-         RMV1jIMfuU0I4DLueaDo9GO5oukXlyHToPY62OiQaV70iP3IRgfBZWCBUsrnIo2+2wxc
-         O3tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715604046; x=1716208846;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5k8gT3oHNPh1LBJEkswvOb6QJDXdUG4eOyHdkELqHRI=;
-        b=mNi/i3nu/nqML6DV3yFahxtgJoCqpHK+l2v1e/l4QMxpIWeo69SSBe4NeR46sH3f+2
-         0uCpdFB4yT3Kz2uHkm2mCTgKcdPy7AyXNHGdLqlTUfQSkQtZFhKeHrxmhWJk6DR6U8rx
-         YOBdNe5OyVfkG38B/PKEc3GWuYmMD2Bd5JwNn5redR67gHs/TiWrRSSiSDziknHk5lJ+
-         rbw3HRflAdMbKKKgaN+S+qSjgnUAPP+p1DUGuKGrU0ZDnr8hdTojSoqmWavSJ6q46kdp
-         5l6yKO6nxU4VTaMYFtI45EsaoJ8VLJxfP/F7dM3DarEDKHiOyWDQE7+/D0/Wtt0eJzRt
-         3stg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXllpZnbeul4siGt8VyvWsiKynhqwGL4RMW6/zoh7xs/blcC83OC5O/iZK0jK21hC3f3/MlcuvH8m1FnjtMg7JWVoa
-X-Gm-Message-State: AOJu0Yz8M0uChcZb+Z3K9jftLnIPbLzUTk0vIo2rgx/fDCS+UzfJEfiU
-	jGPoHTwmCGqSFtFNtnfVf241/ZT7ybGf88TM3DnsEBaiCw+JTZVXtsOu28XMyWd1KcjbmpaKJH9
-	/NneNe41F/UaK6gWSjM4JPH5TWHw=
-X-Google-Smtp-Source: AGHT+IFKvFGDNjWqsC37PG60kuZj37qvqWxTZdYiwXWhMF84+yxKE6jRgoEVdJx7ZcsxrhynwdD5U2PpnyKfQpChwU8=
-X-Received: by 2002:a17:90b:1086:b0:2b2:7055:5a8b with SMTP id
- 98e67ed59e1d1-2b6cc757f22mr450787a91.21.1715604045679; Mon, 13 May 2024
- 05:40:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="p9OwHkpp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UuZZ5elN4I2NE56eCwhEmQYyU3KlcX0PIsygviA+K36NEI26pPT++S8dfCc4K0kxPoG+vCYKX5KWNl9yDuewg3Mem99LRPmO2JNKN4fT43d779ejlpjn4aiidX5/Dvk2DEkD76CwZqlU0L7JHnwmW86aa1pgGNBMKw0qIQtCrzjeL7zStJj0+V5WCJwwad3BXh6u6UMU6IeRwwDUTZFMQvSARd4SP6AofQZv/h5xPizu1RG1Zoao1pJ53M4ML9/jnvesiykmiRaBS0M0SR26YGbCv4HvtG2RVrrXy5moVbAuLx7fyu12LzzU2TOliqAnGsSvqPa/E0XxxYjAeaOs/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rVXMRkibz3NGDlyZik7urzdfxRLQoxrh6Vy3LpoA5P8=;
+ b=HgB54cwWdek/M2w0MtTGb5TMpTpnpsFgbsFP1cj5EBNZN5KyMPKTTeTsqRbfUeuxInj8cjtZTqI23FUNj9bB3FoFW8LklZQts6yxQRiHzrhsof6ATsAPo6AcJkp6YsbYJJoWOg2L1h55PZ8VW5oxYl8DYVwef1ljDj3pd7XYIXex/zuqA2pIhVW43KaKQFGdbTB+UWYApJ8KPemBsWPJD8yoHPsbecKFHPAkhH/HCl1HNLQPg94LtKjWxDlkFuZAlzmPa0kWaPc/MI0l7O8dN4PfgqlW/1R+IyR6YXu1BsS6OkqOO2moE6LTH5VL1zUMk/95VqsO8Cn73TF+rhdVbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rVXMRkibz3NGDlyZik7urzdfxRLQoxrh6Vy3LpoA5P8=;
+ b=p9OwHkppPaupYKbZ8M/TWtze0/tO4ZKNtq8BuWFaM2YM9c48aaWg1fgobYfF4MzBLccVI5SpjKBtsDon59sRP9oKthlDi3qlwzq5PYFOUuO3qGhiC6h6t7qnjKmyyPOLu7CCt+0snC6bUbCgkSXY/E0AeYChK+cBTr+3dhFjsjY=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by PA2PR04MB10348.eurprd04.prod.outlook.com (2603:10a6:102:41d::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
+ 2024 12:42:03 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7544.052; Mon, 13 May 2024
+ 12:42:03 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>, "Peng Fan (OSS)"
+	<peng.fan@oss.nxp.com>, Abel Vesa <abelvesa@kernel.org>, Michael Turquette
+	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>, Aisheng Dong
+	<aisheng.dong@nxp.com>
+CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Abel Vesa <abel.vesa@linaro.org>, "S.J. Wang"
+	<shengjiu.wang@nxp.com>, Chancel Liu <chancel.liu@nxp.com>
+Subject: RE: [PATCH v2 05/17] clk: imx: pll14xx: Add constraint for fvco
+ frequency
+Thread-Topic: [PATCH v2 05/17] clk: imx: pll14xx: Add constraint for fvco
+ frequency
+Thread-Index: AQHaoroMvImi844DX0SJs1FVr1w0MLGVHIwAgAADTNA=
+Date: Mon, 13 May 2024 12:42:03 +0000
+Message-ID:
+ <DU0PR04MB9417C72E3558D576FDF8EF5588E22@DU0PR04MB9417.eurprd04.prod.outlook.com>
+References: <20240510-imx-clk-v2-0-c998f315d29c@nxp.com>
+ <20240510-imx-clk-v2-5-c998f315d29c@nxp.com>
+ <2867ae55-ab4e-4a69-b24b-0535bc77ef31@prevas.dk>
+In-Reply-To: <2867ae55-ab4e-4a69-b24b-0535bc77ef31@prevas.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|PA2PR04MB10348:EE_
+x-ms-office365-filtering-correlation-id: da3d8174-f670-4cdd-c1e4-08dc734a176c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230031|376005|7416005|1800799015|366007|921011|38070700009;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?TzlqdnpPaE1QU3hBQ2RVeE5pVXpCVXBnME5uNDMxcGNoMWx5T3c0WXFvYlVh?=
+ =?utf-8?B?QjcvT1E2Y2R3N2p5TzN1bEtYVEdQT0xEVTk3ZExDaHNwOWxoYmRPZ0RLOFpQ?=
+ =?utf-8?B?dmJSdUs4djJNbWFYK0l2QmFZQ2ZsM0I4dkYyVjIvdjRNMXQ3QkFEOGl3WWlT?=
+ =?utf-8?B?emZIZHRKZUoxbzBTbWpHTGVmcEZGSGJSdzd3NWFHcktIYlc2UFpsN3ZBNFJi?=
+ =?utf-8?B?WTJaQnFBbTJPT3RVaTh1cDZScTFHamtzME1lMlFxSHhtYkNpQXZ2cW9yZS9r?=
+ =?utf-8?B?YVowV25hYzgxU01vZkZXZ0dpa2pQK0cxRTBEZm0vOWd3SzdrZmJva2JITjdC?=
+ =?utf-8?B?d0dmdURrT3VPYWV5R0k3L0JJSkFld1pRSDBld1pRQVlFOHNlWkZkK1JxYjdM?=
+ =?utf-8?B?ZEoxUUxUTWNGQnhKdkh1UklqYkN3VWd0dm9mblUrZ2dkWDRROU1ENWl3YmUy?=
+ =?utf-8?B?c3JxOTByNXN4M0p0bSt4cFRURStacFN3aSt6dGRwcDVkNW1sc2Nlejkva3Za?=
+ =?utf-8?B?MFdZRnhVOGRmUGNtdEtpb2EyK0F2TkxlU2ZRVUt3V2tqazNNM3B2TE55S0JD?=
+ =?utf-8?B?Ny8wWDM3RVVvQVg4K0kzd1dHRmNoL3RqaEZ0ZnQ2eDcxaFF5d1BCeXNGdGkw?=
+ =?utf-8?B?TnhDSTVVeG43U2hzVFRlL0tGVlZVQmpOTThuNVRwVWVqYllnYkNNVE45bnhm?=
+ =?utf-8?B?K2JaS2R5VVI1MXVMclYwL2tWNTR4UjkwUXFMSEo2TzBxNnRnaW81eWxXUk8z?=
+ =?utf-8?B?dWdHN29vWFl6NnVwbGxXa3dmalpIWlVSMTFwYnhuTjI1bVEzdEd5d21ub3Rr?=
+ =?utf-8?B?d1ZlcERoRW1razU2OXArMXlrbVc5WitRWS81UFcwbHdaVDR6dmZUVWRKZ0xB?=
+ =?utf-8?B?QmtyZUp4QmU3eFRmZE95Uzc4R2hKYTJWR3RFanMrMWs5ZmNMRFM4THhYSWFk?=
+ =?utf-8?B?MzVibkR1SldGN21HOEpQOCtDYUhmMCtVMUFxQlRoMVpuN29kZFg5cU9nR1lw?=
+ =?utf-8?B?ektPakcrWitObXJTRzNyMGd6OVRLT3p6aHFZOTVVYjNmanc4R2tWaUw0eVpD?=
+ =?utf-8?B?ZlRmYmx6TzJROU9JUVpER0FJb1o1NzlBT1RuYWt0akR2cVFJbUo4T000TUJ0?=
+ =?utf-8?B?V3g3MThLMjNNQVZCSk1UTGI0ZHRUY1JCa1c1WWUzL0VOSmV5UmZxZ1UzbDE2?=
+ =?utf-8?B?T0xkVHlwamFwdnpvMk9JMkwrU1hIT0xveDZEVWZIYTlwS1hDUmgwZ3BzYjQw?=
+ =?utf-8?B?dnRtdURHVXlzRnJxNW9JemZQZjRIMVVKSmRuMVIrU2FCOXZmZ0FhaSsxTXR3?=
+ =?utf-8?B?SnFTSk9mQXdtYW4wV2NRb1VDQkRNVTdPR1BPK21MV2Vnbk1BeFMvYWluelp2?=
+ =?utf-8?B?cm1oYUNaUlR3T3lML3FjZjRkS1U3QXhVcWVEaVVyS0lyMFNTdGZKbFdrempt?=
+ =?utf-8?B?bHhwaUNBLzh0cldqL0xJdHZxQ0h2d243dUFmS0I1clZQbFFSQUJpaTJBZGxU?=
+ =?utf-8?B?ZFNVbCs3bTZTUmFyRVE4QkdRcmhNUCtsY3M0ZllPdGFOekJKNjJ0T3JDRWxx?=
+ =?utf-8?B?bFp0emloTTNzRXJBcFcwK1NwUnZMbXBtd2RpeElSOXJZL0xwd0NQVDJLZWlm?=
+ =?utf-8?B?VDNwd3hobktFN1FGWTFDeGh0QzlaaHFzVVNJU3pKRlNFUTFHYkwwSEw1dm9L?=
+ =?utf-8?B?TDJtMCszRUZ3RWwxR2ZQNTNLMFJMOTEwTFl4TWtZaE9YOTJrd3Zxcm8xVVlz?=
+ =?utf-8?B?U0V1S240YUV3dVNpdXlkeXNCRG5Dc2c5YmlxNjhPb21lSkpHWXhyOWpKSnB0?=
+ =?utf-8?B?Q2c3VGw3V28xT1l6QnE1QT09?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007)(921011)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?cFhDYm9DNHpCdkxadnhTKzZQU0xqNjIrNDJXZFc0V1RuZzg2dUs4Z2x6Z1V0?=
+ =?utf-8?B?VlJjdkw2NTVwUHp5eHlLLzI1bTRtL2lhY25wckJSeDFiYmYrS01zWVR6Sm9t?=
+ =?utf-8?B?NTFxOC9Sc2I3NVZpTzYwT3d5ZUFRaEpTM2grak01RFpGcVdRTnRidDBEUktq?=
+ =?utf-8?B?NWdWMUZTa1R1aGhGTGNDN1BjY3c1M1NzR05RQmZzSXo2TWFXQ2NST0htQ0lp?=
+ =?utf-8?B?MXQ3ZDAwQ21Tb1psZUpoWk9KMWlJWWY2azhzdm9Beno5RUk2c3YzT1dJZzJT?=
+ =?utf-8?B?UDU2OHNyVEdMQ3pvTFNDRWRXa1E5MlpVV1ZzRXhIR2tFSjhnYlNUc0RKQkp4?=
+ =?utf-8?B?bHdxUWNkZ0dUN0RFVzQ3UllTaGwvcTQybkxNWnR2bFREZmFXN2NFYUFuRC9W?=
+ =?utf-8?B?Z3lWck9rZlR5RzJJMk54cUYzWGF1YWF3MkJvUk9VY1hReUJLSHoweklSbE9p?=
+ =?utf-8?B?Njdla21ERGFKM2RvaVVoV0tjRmpMR01VeStZZEVmZ1c2VHpiT2RIaGNqOFpS?=
+ =?utf-8?B?WWNaR3JGc3pSYzFZeE0wSE85TmpubnlqdUZaM1VxaWdPTkpERFgvUFhLWXhJ?=
+ =?utf-8?B?dDhuYk1VZ1VmOHp5cHcxd2lYMkYxNU93ZDJJenRQTjQ1MmcvWGhjWVJ2Wk5V?=
+ =?utf-8?B?RnRYakNYZEs4RTBGK05ldS9heVIwRHZhVEVKbUViZCthMEdzekZlQTg4UXpr?=
+ =?utf-8?B?TTBweUpnRUNlSm5SaXJmaDBKS1RGUmZ5V3JnaGRubllJZ0hQV05sS2lBakJS?=
+ =?utf-8?B?Zi9McHIyOW9ROUZFelNnNVRCdGtabGFlNHNGdFdyOWhBQ2NORlRwOXFvWmdQ?=
+ =?utf-8?B?K3Q0bUpsNkExQkF6ci82WVoyMWtDcXNOMTZ3U1dlRS8vS3dtaVE2WmFRQkhJ?=
+ =?utf-8?B?S0FxRkl2ZVdHWlc1clpqeFcyQUNXTmR3dXNlcU14TDlhS3pSbW5JZ3JVL2pX?=
+ =?utf-8?B?YTJkZmpoSTFkOUVMRUNvVk1QbXgrdzFFNmozb2U2RGVycy9KRGFNWG9sT3hB?=
+ =?utf-8?B?Z0hRRi92VkdHanZvVXFyUUlQNU04M2c0Q05LbnZOZVBsV24wT0JYRWRub2NE?=
+ =?utf-8?B?YXRjZytNQ3JyL1hOTkhJL0lvaHgzTHpSQXM3cU9lb3l1L0tBeUI2Y1pCMUhU?=
+ =?utf-8?B?V0tqU3ZNTWNZU3VKai9ibjgrOENZdVpyNlRLcXpucGdJa1dMSTF5UGZpZ1p1?=
+ =?utf-8?B?aEl6bUp1WWVpQ3pGaVp3K0VxUlVOYjdMa2pUdnR4L1dkZDFOMkRheTJrV29v?=
+ =?utf-8?B?UWpTK29kZjNWY21iZDdocTE2Z1BLQnp3OWR5amVOWVdQbFJJMCtGTmpETWtr?=
+ =?utf-8?B?Njc5Q1B0ZlQxeHQrWXlSRnJENDhOMnV0TWVPL1o2b1RYbjNPU3VZU1lIUjU4?=
+ =?utf-8?B?M1pTVHl5K1ZoRnY4NnF3NWxxODFZc3JGL3ltc3RMd2JkZVhHVGlEL25BY29v?=
+ =?utf-8?B?SWwyUFkvY2JTcFQzdHh0cG9DMDdYYWswbCtsYTdNTzdHT01KSHg3ZGkxNC90?=
+ =?utf-8?B?NXdBeHIvVUgrczBWMHR5eENtU2JReTVKV2xVdmVUdVNRYXVjbWxBVStrZWps?=
+ =?utf-8?B?VFVWeFF3STUwd0JoTURiajVmZ2NsWnE0Y2RrbXp0V212Ni9UaFJTc3pBM3Az?=
+ =?utf-8?B?SCtGSzF4dGx1RHB2NGZSKzZFQ1VBdVRrOURWd3JVQnpiY2MxdUtuVDhjY3V2?=
+ =?utf-8?B?OWNmQmp3ajlWVXNVbWRFbW9qckI2dVZmblZvTDlDQnRRbC9DQ1k5WHhyRmtE?=
+ =?utf-8?B?emRCVzUxcndBeExUSHBnOTE5TnhrTXI0VlhpdnRZNVg2dUQxRm5Qb0FoZ1JI?=
+ =?utf-8?B?VWRMUS9rRHJ5T0RiVk1QaGNVYjdOTGFGNzR2d0ZNZW9YNkxzeFNWYnplNWdO?=
+ =?utf-8?B?WHdCM29YM04yd0JIU2s5K3ZmQkttUHFWOHhYdHdGOVVvYkFrWkF3K1BtcDdW?=
+ =?utf-8?B?cHIwd0FXdisxbWdXRlBYSFhxSlB0QkhXb3NBVktYUVVHTkJMTEtJYm5rdWU3?=
+ =?utf-8?B?clFQdFRaTWR2VDlab0FubDdnWjNSR2RtWVZrMjR4QUxTd2xCcFcvaGM5Uk9h?=
+ =?utf-8?B?YVdLUW5UN2tTZGlXR2hqaWFmM3FUR3dOUk9yeUlsV01UVGttSTJmTzlQN0Y5?=
+ =?utf-8?Q?CrjI=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240510-imx-clk-v2-0-c998f315d29c@nxp.com> <20240510-imx-clk-v2-5-c998f315d29c@nxp.com>
-In-Reply-To: <20240510-imx-clk-v2-5-c998f315d29c@nxp.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Mon, 13 May 2024 07:40:34 -0500
-Message-ID: <CAHCN7xKXjuEBb1wTm0-r-j4iCnSYuq_f-AtPpOZG-h7DtSo4aQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/17] clk: imx: pll14xx: Add constraint for fvco frequency
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Abel Vesa <abel.vesa@linaro.org>, Peng Fan <peng.fan@nxp.com>, 
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Chancel Liu <chancel.liu@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: da3d8174-f670-4cdd-c1e4-08dc734a176c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 12:42:03.7426
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nVsHcb85M0m7jvmW5gH78PbyL6VFuOMj0QDbmqocGh6CTRJ3POwV/KsHvPpKhElUBRmynsMK7AznuvHaDv+W9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10348
 
-On Fri, May 10, 2024 at 4:14=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
-m> wrote:
->
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
->
-> The fvco frequency range is between 1600MHz and 3200MHz, without
-> this constraint the fvco may out of range, the real output
-> frequency is no accurate.
->
-> Aslo correct the name for fvco and fout clock.
->
-> Fixes: b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates")
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Acked-by: Jacky Bai <ping.bai@nxp.com>
-> Tested-by: Chancel Liu <chancel.liu@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/clk/imx/clk-pll14xx.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.=
-c
-> index d63564dbb12c..55812bfb9ec2 100644
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
-> @@ -131,7 +131,7 @@ static void imx_pll14xx_calc_settings(struct clk_pll1=
-4xx *pll, unsigned long rat
->  {
->         u32 pll_div_ctl0, pll_div_ctl1;
->         int mdiv, pdiv, sdiv, kdiv;
-> -       long fout, rate_min, rate_max, dist, best =3D LONG_MAX;
-> +       long fvco, fout, rate_min, rate_max, dist, best =3D LONG_MAX;
->         const struct imx_pll14xx_rate_table *tt;
->
->         /*
-> @@ -144,6 +144,8 @@ static void imx_pll14xx_calc_settings(struct clk_pll1=
-4xx *pll, unsigned long rat
->          *
->          * fvco =3D (m * 65536 + k) * prate / (p * 65536)
->          * fout =3D (m * 65536 + k) * prate / (p * 65536) / (1 << sdiv)
-> +        *
-> +        * e) 1600MHz <=3D fvco <=3D 3200MHz
->          */
->
->         /* First try if we can get the desired rate from one of the stati=
-c entries */
-> @@ -193,6 +195,10 @@ static void imx_pll14xx_calc_settings(struct clk_pll=
-14xx *pll, unsigned long rat
->                         kdiv =3D pll1443x_calc_kdiv(mdiv, pdiv, sdiv, rat=
-e, prate);
->                         fout =3D pll14xx_calc_rate(pll, mdiv, pdiv, sdiv,=
- kdiv, prate);
->
-> +                       fvco =3D fout << sdiv;
-
-The calculation of fvco here does not match the comment above where
-fvco =3D (m * 65536 + k) * prate / (p * 65536)
-
-
-> +
-> +                       if (fvco < 1600000000 || fvco > 3200000000)
-> +                               continue;
->                         /* best match */
->                         dist =3D abs((long)rate - (long)fout);
->                         if (dist < best) {
->
-> --
-> 2.37.1
->
->
+PiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDA1LzE3XSBjbGs6IGlteDogcGxsMTR4eDogQWRkIGNv
+bnN0cmFpbnQgZm9yIGZ2Y28NCj4gZnJlcXVlbmN5DQo+IA0KPiBPbiAxMC8wNS8yMDI0IDExLjE5
+LCBQZW5nIEZhbiAoT1NTKSB3cm90ZToNCj4gPg0KPiA+IEFzbG8gY29ycmVjdCB0aGUgbmFtZSBm
+b3IgZnZjbyBhbmQgZm91dCBjbG9jay4NCj4gDQo+IEJ0dy4sIHRoYXQgcGFydCBvZiB0aGUgY29t
+bWl0IGxvZyBpcyBtaXNsZWFkaW5nLiBUaGUgcGF0Y2ggZG9lcyBubyBzdWNoIHRoaW5nLA0KPiBh
+cyB0aGF0IHBhcnQgaXMgYWxyZWFkeSBkb25lIGluIGY1MmYwMDA2OTg4OCB0aGF0IHdlbnQgaW50
+byB2Ni44Lg0KPiANCj4gUGxlYXNlIGRvbid0IG1pbmRsZXNzbHkgY2hlcnJ5LXBpY2sgc3R1ZmYg
+ZnJvbSB0aGUgTlhQIGZvcmsgYW5kIGZpeHVwIHN0dWZmIHNvDQo+IGl0IGJ1aWxkcyBhbmQganVz
+dCBpZ25vcmUgd2hldGhlciB0aGUgY29tbWl0IGxvZyBzdGlsbCBtYWtlcyBzZW5zZS4NCg0KTXkg
+YmFkLiB3aWxsIGdvIHRocm91Z2ggdHJlZSBoaXN0b3J5IG5leHQgdGltZSBiZWZvcmUgcG9zdCB0
+aGVzZS4NCg0KUmVnYXJkcywNClBlbmcuDQoNCj4gDQo+IFJhc211cw0KDQo=
