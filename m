@@ -1,102 +1,174 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF7C12DDA5
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 02:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F768468
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 06:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715565914; cv=none; b=PcB2q3nKt2R9QclxxKuFGrEDidTmxcZwWHwAfk1zr8+kbTOkEUdk+MlsqxR3iV0WxEEogZLq8sH2Zyut7o3zANvizeVwsAFfjzLGpJMrLrqeYDavS5uMB7+NOJBvBmWxtxvawEhax2DlDEoNrPd/nKzT2UiewbQAqsOAnKMjc7E=
+	t=1715582387; cv=none; b=X2MJA8zXV0tWp+heHOJDKhDkVnu4NmJ2eJ/nKnR0U6+boKSj2I/OZ5RETRGV0LkJiY9LeVO+psJDAnzJidVw3JrUTLQEkAJbqr0tH5DIQQi6Oj4kjrVilp6zZIk4daYnkayrGdhmeKHOTPG2a30cjAuOsJIK7yjgWLhgIb1WVd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715565914; c=relaxed/simple;
-	bh=ZLr5UrARaHefDZc+uWzNJhmGH6xSykQ6ui4NwmEi9+o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N1FlZbZ6ptrN7oCdKWXCs6VTnMURKxC+ZX1NGYoyADkNhOkcI3krU4Y28yWm2UgiqxPYDpF0nZVYZjW3XcsLUataRoeoDQ61cmMSu1w7R/UuCY0OWDxNbXrf/ZaDs+gAbpa4ykmbkMTiCVlQOaRKaWylXg2Tf84SQUjrSQzsYD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=k8azgD8e; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="k8azgD8e"
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id CEEC488116;
-	Mon, 13 May 2024 04:05:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1715565909;
-	bh=tTs3SgAZz3M4fFgZyEds7/0nwHr1qmH1+Ulr0vH+QKw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=k8azgD8eSZoUc1SdSYM9g1y5dF6b+iRM6I+W6gBbz3eE6lNa3CwaCHmQI2si+tjib
-	 AamXCwBphyApwW/3ghpyiPxc0juP6Slw9y5glS+1wl0MInTBspcV72E84hjhlORaNB
-	 bEoiuCRyLVLzoRsOZnkAZCUceXHeBtC3TP5WT4yCpVNuvcwv96w95ngM9asyA2PNYz
-	 +dPQb536hhcwpbPw93RVzZLlxXo86rE6gmfdOGGphrhWFlprPh68bo6bDks81K5Jv4
-	 Xi9B50HT4Y8O52BNG2MozipE2CZkM6403i8od4Gd0ezFIivio6lWQlYiOSjChIe4JG
-	 xfRX1cn/uSBag==
-From: Marek Vasut <marex@denx.de>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@denx.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	s=arc-20240116; t=1715582387; c=relaxed/simple;
+	bh=qWUVcFOckM2mzHpQ2EXaxk0W1FsPXBRLNnFXKDxYnZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sEzfUZ0qQcO2k33o+k2KfJ2tH0LvIzND0HU4Trdc+JmYmzvoTWTGdZsSlT0Oe7Dka3p0Qgb5302MPg9ea//KJ7aLzQ89e+eF5PlWm9EL4PRntCVvtbyNzhKfBzUbI1NtKX8Rl77eozvapUiD8QWYUib7s16jC33vqf3k5Dt59j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s6PLT-0004Yo-2g; Mon, 13 May 2024 08:39:35 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s6PLS-0017Sf-4l; Mon, 13 May 2024 08:39:34 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s6PLS-009O2c-07;
+	Mon, 13 May 2024 08:39:34 +0200
+Date: Mon, 13 May 2024 08:39:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@dh-electronics.com
-Subject: [PATCH] arm64: dts: imx8mp: Fix TC9595 input clock on DH i.MX8M Plus DHCOM SoM
-Date: Mon, 13 May 2024 04:04:39 +0200
-Message-ID: <20240513020454.127584-1-marex@denx.de>
-X-Mailer: git-send-email 2.43.0
+	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
+	Ye Li <ye.li@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Abel Vesa <abel.vesa@linaro.org>, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 01/17] clk: imx: composite-8m: Enable gate clk with
+ mcore_booted
+Message-ID: <ZkG1put2k33K4c_b@pengutronix.de>
+References: <20240510-imx-clk-v2-0-c998f315d29c@nxp.com>
+ <20240510-imx-clk-v2-1-c998f315d29c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240510-imx-clk-v2-1-c998f315d29c@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The IMX8MP_CLK_CLKOUT2 supplies the TC9595 bridge with 13 MHz reference
-clock. The IMX8MP_CLK_CLKOUT2 is supplied from IMX8MP_AUDIO_PLL2_OUT.
-The IMX8MP_CLK_CLKOUT2 operates only as a power-of-two divider, and the
-current 156 MHz is not power-of-two divisible to achieve 13 MHz.
+On Fri, May 10, 2024 at 05:18:56PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> Bootloader might disable some CCM ROOT Slices. So if mcore_booted set with
+> display CCM ROOT disabled by Bootloader, kernel display BLK CTRL driver
+> imx8m_blk_ctrl_driver_init may hang the system because the BUS clk is
+> disabled.
+> 
+> Add back gate ops, but with disable doing nothing, then the CCM ROOT
+> will be enabled when used.
+> 
+> Fixes: 489bbee0c983 ("clk: imx: composite-8m: Enable gate clk with mcore_booted")
 
-To achieve 13 MHz output from IMX8MP_CLK_CLKOUT2, set IMX8MP_AUDIO_PLL2_OUT
-to 208 MHz, because 208 MHz / 16 = 13 MHz.
+I can't find this commitish anywhere, also the subject looks like this
+patch fixes itself.
 
-Fixes: 20d0b83e712b ("arm64: dts: imx8mp: Add TC9595 bridge on DH electronics i.MX8M Plus DHCOM")
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: kernel@dh-electronics.com
-Cc: linux-arm-kernel@lists.infradead.org
----
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Reviewed-by: Ye Li <ye.li@nxp.com>
+> Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/clk/imx/clk-composite-8m.c | 53 ++++++++++++++++++++++++++++++--------
+>  1 file changed, 42 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
+> index 8cc07d056a83..f187582ba491 100644
+> --- a/drivers/clk/imx/clk-composite-8m.c
+> +++ b/drivers/clk/imx/clk-composite-8m.c
+> @@ -204,6 +204,34 @@ static const struct clk_ops imx8m_clk_composite_mux_ops = {
+>  	.determine_rate = imx8m_clk_composite_mux_determine_rate,
+>  };
+>  
+> +static int imx8m_clk_composite_gate_enable(struct clk_hw *hw)
+> +{
+> +	struct clk_gate *gate = to_clk_gate(hw);
+> +	unsigned long flags;
+> +	u32 val;
+> +
+> +	spin_lock_irqsave(gate->lock, flags);
+> +
+> +	val = readl(gate->reg);
+> +	val |= BIT(gate->bit_idx);
+> +	writel(val, gate->reg);
+> +
+> +	spin_unlock_irqrestore(gate->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static void imx8m_clk_composite_gate_disable(struct clk_hw *hw)
+> +{
+> +	/* composite clk requires the disable hook */
+> +}
+> +
+> +static const struct clk_ops imx8m_clk_composite_gate_ops = {
+> +	.enable = imx8m_clk_composite_gate_enable,
+> +	.disable = imx8m_clk_composite_gate_disable,
+> +	.is_enabled = clk_gate_is_enabled,
+> +};
+> +
+>  struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+>  					const char * const *parent_names,
+>  					int num_parents, void __iomem *reg,
+> @@ -217,6 +245,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+>  	struct clk_mux *mux;
+>  	const struct clk_ops *divider_ops;
+>  	const struct clk_ops *mux_ops;
+> +	const struct clk_ops *gate_ops;
+>  
+>  	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
+>  	if (!mux)
+> @@ -257,20 +286,22 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+>  	div->flags = CLK_DIVIDER_ROUND_CLOSEST;
+>  
+>  	/* skip registering the gate ops if M4 is enabled */
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index 882186d96f58b..4d30f74622a18 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -254,7 +254,7 @@ tc_bridge: bridge@f {
- 				  <&clk IMX8MP_CLK_CLKOUT2>,
- 				  <&clk IMX8MP_AUDIO_PLL2_OUT>;
- 		assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
--		assigned-clock-rates = <13000000>, <13000000>, <156000000>;
-+		assigned-clock-rates = <13000000>, <13000000>, <208000000>;
- 		reset-gpios = <&gpio4 1 GPIO_ACTIVE_HIGH>;
- 		status = "okay";
- 
+This comment doesn't seems to become inaccurate with this patch.
+
+> -	if (!mcore_booted) {
+> -		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+> -		if (!gate)
+> -			goto free_div;
+> -
+> -		gate_hw = &gate->hw;
+> -		gate->reg = reg;
+> -		gate->bit_idx = PCG_CGC_SHIFT;
+> -		gate->lock = &imx_ccm_lock;
+> -	}
+> +	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+> +	if (!gate)
+> +		goto free_div;
+> +
+> +	gate_hw = &gate->hw;
+> +	gate->reg = reg;
+> +	gate->bit_idx = PCG_CGC_SHIFT;
+> +	gate->lock = &imx_ccm_lock;
+> +	if (!mcore_booted)
+> +		gate_ops = &clk_gate_ops;
+> +	else
+> +		gate_ops = &imx8m_clk_composite_gate_ops;
+
+Please use positive logic. It's easier to read.
+
+Sascha
+
 -- 
-2.43.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
