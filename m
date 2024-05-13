@@ -1,32 +1,32 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E550815442F
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 15:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B8315444D
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 15:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715614289; cv=none; b=mEuC0fs5kCZ519BtbZiVHHCnNt9nbujHa9YMV6M8j/9CKnRNNY19Z/Z/vu8NxW+v4BSOPpkgL7eENXYiV/HcN3wARLD3QQNK7oq9Fm3+4NOEpxM5M8YIMI5a8MSqI1t6OpMDu/gMQV/w+FJ2k5nlfJDEh639NPzf9E6y1Y2LwFU=
+	t=1715614292; cv=none; b=EMWm62hxHp02rIbnbIl50FEZ1zx8vJcepARhYJx7v0Ck6X+HbBQ06aqq+s/kAZcwDClacUkWGYtPs6LO2c+T3Lkm9XEMvYDueJ4DMoiP7P4jgbPSdW56jSEeQxunob5CoXTxvU3l7+ChDD/k64wLtVQQLPwhktSMPwzFL7l2lP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715614289; c=relaxed/simple;
-	bh=p6YXlAq5y5nroCD3axdcAiCsFuwA/e7PiPvtBxv/PWY=;
+	s=arc-20240116; t=1715614292; c=relaxed/simple;
+	bh=3pIkhFZutgRbunZ+6pvSexYNkmFQyMQV3MN2fvC5RqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwWBN+ahN1c3AEPkRtJM8STyCvzalCWVSYCkSYAl4kVg2duzIjtB22CqI/eRvMhD74+Bdu+KHxoD5gUqw9QNNUmk0BVwVXbFOXqaE7+qf912pp2Tt8eCEnlqPfP9KbF1TJXQduvGw/oBVFYaNdhFWEbXwyzERJMnsHtjv+yAyjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dQutNbbD; arc=none smtp.client-ip=95.215.58.170
+	 MIME-Version; b=twW4hpf/DiwLz8Y2e2jvApdvCrtqNvlExsrY+ABSM20+SQy91QJ80PZDyrDITyoSpRl8SQDREZq0s2/0VjyCpKigeM0E/aUuKofPNBJByhrhNszaaLo/S/7xljFTAmgZiiBg7S4NPZ7uyRg2TMbHuMBT8Yo37tS3Yabwq8YOtqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bq1IkHpU; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dQutNbbD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bq1IkHpU"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1715614286;
+	t=1715614289;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4YoVt4aSJSp709BZ9Sg0TFkDLrzgxtQT0KSEfyb8RGE=;
-	b=dQutNbbD0iwsWvTR7cYsV4k51jyQEB518S7NGrJrei0GmE8x2FDXw9Xwpe1viUxWJLfktb
-	cCnzN5N60RHj7cODV2AHrqo2rePzXacLapXoqJhWrN/8iF80pRtK88QX2onB0zWBepOLLI
-	6P4szXukzBRqgTPN67witSUwmvjaWKU=
+	bh=fieuYk+nURcP7QzRErE1UcUcoViv3rOVeaNarCw66hk=;
+	b=bq1IkHpUh3PVQqMCH65q9MHUERq13wniLIxTv634zzNyy189ZqQdXuT9FLRwNpt+pksh0A
+	ILgI/8m83EnRIHiJNgd1pWUIs5m35IGlPiH7AZVdD3wYwmrVnmlRtopWdQcgq0WyJZuDGL
+	y+KISuWRztOl1y5CmjgADb2YqJkzNQY=
 From: Sui Jingfeng <sui.jingfeng@linux.dev>
 To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
@@ -42,9 +42,9 @@ Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
 	imx@lists.linux.dev,
 	Sui Jingfeng <sui.jingfeng@linux.dev>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH v2 02/12] drm/bridge: tfp410: Remove a redundant check on existence of bridge->encoder
-Date: Mon, 13 May 2024 23:30:59 +0800
-Message-ID: <20240513153109.46786-3-sui.jingfeng@linux.dev>
+Subject: [PATCH v2 03/12] drm/bridge: nxp-ptn3460: Remove a redundant check on existence of bridge->encoder
+Date: Mon, 13 May 2024 23:31:00 +0800
+Message-ID: <20240513153109.46786-4-sui.jingfeng@linux.dev>
 In-Reply-To: <20240513153109.46786-1-sui.jingfeng@linux.dev>
 References: <20240513153109.46786-1-sui.jingfeng@linux.dev>
 Precedence: bulk
@@ -56,36 +56,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Because the existence of bridge->encoder has already been checked before
-the simple_bridge_attach() function get called, And drm_bridge_attach()
+Because the existence of 'bridge->encoder' has already been checked before
+the ptn3460_bridge_attach() function get called, and drm_bridge_attach()
 will quit with a negative error code returned if it fails for some reasons.
 Hence, it is guaranteed that the .encoder member of the drm_bridge instance
-is not NULL when the tfp410_attach() function get called.
+is not NULL when the ptn3460_bridge_attach() function get called.
 
 Remove the redundant checking codes "if (!bridge->encoder) { ... }".
 
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
 ---
- drivers/gpu/drm/bridge/ti-tfp410.c | 5 -----
+ drivers/gpu/drm/bridge/nxp-ptn3460.c | 5 -----
  1 file changed, 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-tfp410.c b/drivers/gpu/drm/bridge/ti-tfp410.c
-index c7bef5c23927..b1b1e4d5a24a 100644
---- a/drivers/gpu/drm/bridge/ti-tfp410.c
-+++ b/drivers/gpu/drm/bridge/ti-tfp410.c
-@@ -133,11 +133,6 @@ static int tfp410_attach(struct drm_bridge *bridge,
+diff --git a/drivers/gpu/drm/bridge/nxp-ptn3460.c b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+index ed93fd4c3265..e77aab965fcf 100644
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -229,11 +229,6 @@ static int ptn3460_bridge_attach(struct drm_bridge *bridge,
  	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
  		return 0;
  
 -	if (!bridge->encoder) {
--		dev_err(dvi->dev, "Missing encoder\n");
+-		DRM_ERROR("Parent encoder object not found");
 -		return -ENODEV;
 -	}
 -
- 	if (dvi->next_bridge->ops & DRM_BRIDGE_OP_DETECT)
- 		dvi->connector.polled = DRM_CONNECTOR_POLL_HPD;
- 	else
+ 	ptn_bridge->connector.polled = DRM_CONNECTOR_POLL_HPD;
+ 	ret = drm_connector_init(bridge->dev, &ptn_bridge->connector,
+ 			&ptn3460_connector_funcs, DRM_MODE_CONNECTOR_LVDS);
 -- 
 2.43.0
 
