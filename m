@@ -1,334 +1,262 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2123.outbound.protection.partner.outlook.cn [139.219.17.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D981AACA
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 16:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715619046; cv=fail; b=XHCLLj1Cb6pEKe4Y4JMnlbhhldOUIWfBJ9hA2Xg3CgAJiFlfo0eKzPDg3d/gzUDpbY8VzA+uiI5gRu6BO95/KyUgC21uz7w1uVOaOn/ctZiumF9YPPFyd10vD5dVzXB8Oa2l8INL0UqyEX7wys+yZA1YQq8KqWSFPqd36wATqNg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715619046; c=relaxed/simple;
-	bh=zWPtiIfPQ+oZzqOhYANssgV8l+KpI4ZtaXtnojyIqh8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PHR6u7zOw2j7aCdVurH6YXtf0Hq2egThvIKAQrmcnMcRadS9gzhHw9tQTqLsYpbE11AAiUYcGKEtSCx6oF1QaTQf0FA84qK5UTzbvWbjpMtdA5BT2bfeum6VLDYHsGGXa4I5mtb1R/AdnMkBz0YkbqLxI61xrKi5s6XnZf9nzlA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iw9yjfr34twx1nBLfuQf2iyJdyE2ivoffISib0qN/26BriMVH5zlfHAukgxbaL8gtdLoAQvfpUvl8EbPPGquPy9Ct2UF0j3B03GqfJonyC9kCN5Gh7IoJj3Rd5761sscfhAiv/SNGqk+jL6Jf+KGLQtOlBULR0qxee7cDxawOoiOvnh+74z3ESfW+cOviH7jyGxpir1kPH9SKDBF6TfqxfPrVrkLAc6qEP4bIjfLmYxgS3Z+ux5ZIz5UNJrB7BhbEOOm9lqEonM74mr49yloRGAq2u/FptiQzy3TZ1YhhfStqLtkbstvudFvUwdCxYq4pBLsK2to6HRjvMixtvUkHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fifDCzdyeHbmnLFxJclfJMq8nW+rEwhlPH+L6XSZfyo=;
- b=cbusA8hZOCp7aUBIMIlpIyuPTIbx0Higdw78hcGaQBV7a4Qexk3gLg1KVB6LBt/zIkriGvz0pnh0jLTAlNK9A70FUf8gzpHTKHSK/jwI7BrPYJv6joCtsAMQgcgNCR858BBvSSeHQAXedjYON8tpNiILZLCaK3FtpYLaHAbYZ5mT1uYR0Ml8UApiEBSPk2CPphQK4JEW07kEbwYibP71TtAzfWMOqxb6HptbkLG33py1SOvDG0CtSNcqV4q8IvmRWqRZXqLx7KIFn65rLubXfvTGd+At6jzxHn2k6vg13fUfwVdw6t7K/vs7E8VJ/MEAB8QQhhVW66n85mFxD7DmWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:20::14) by SH0PR01MB0761.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:20::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Mon, 13 May
- 2024 16:18:01 +0000
-Received: from SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
- ([fe80::e0a:f88a:cad1:dc1c]) by SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
- ([fe80::e0a:f88a:cad1:dc1c%7]) with mapi id 15.20.7472.044; Mon, 13 May 2024
- 16:18:01 +0000
-From: Joshua Yeong <joshua.yeong@starfivetech.com>
-To: Frank Li <Frank.li@nxp.com>
-CC: "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-	"conor.culhane@silvaco.com" <conor.culhane@silvaco.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "jirislaby@kernel.org"
-	<jirislaby@kernel.org>, "joe@perches.com" <joe@perches.com>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>, "robh@kernel.org"
-	<robh@kernel.org>, "zbigniew.lukwinski@linux.intel.com"
-	<zbigniew.lukwinski@linux.intel.com>
-Subject: RE: [PATCH resend v9 1/8] i3c: add target mode support
-Thread-Topic: [PATCH resend v9 1/8] i3c: add target mode support
-Thread-Index: AQHaoL9J0lwk/jg/a0+LeeDupwAoCLGUgoawgADYHgCAAAMG8A==
-Date: Mon, 13 May 2024 16:18:00 +0000
-Message-ID:
- <SH0PR01MB084189445E4928BC5047495AF9E22@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
-References: <20240507204311.2898714-1-Frank.Li@nxp.com>
- <20240507204311.2898714-2-Frank.Li@nxp.com>
- <SH0PR01MB084187FBA1E4EE786A8996C9F9E22@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
- <ZkI4GO4czdgs5/Xy@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZkI4GO4czdgs5/Xy@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SH0PR01MB0841:EE_|SH0PR01MB0761:EE_
-x-ms-office365-filtering-correlation-id: 880da501-35d8-49e3-f27f-08dc73684287
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- C2tv5uDiRotP8h8iTJNvfDqnfafDtBePddrwc1CEnELbo829BocO7SVtFhlhazUhX/92I6rCiKxy4bR7OYXeU6sXHVTn+VEQ2LfuVXLFf9MPYa9NiTFai09OgdTAtEV095DB15yu6MeL6BAPnuZshB4Jf0eYdmYOJQS6Wbsy0HYUnIAc+U4Agov7ZGgxOHPRID+h0s2U/eN54EZ/mqszZkPDntkF7Cd2wPdcxd9F7Rr3vejujkNY6dBpaUdvgLWwLuE9PwlNGMBazvYAj/IW4MLjj0X7ZDZdz55bDRQyhZ6YctJ1e43pVbODvkRZBJgDqj7HGXP8ol6d+jmP39MCoShK50NEsTeJtIu9cxjbn0875oxRcN2emFpNjcOGfCFLSaY54If2juRaOfzWI/A9H7XUOihkO6pgzn55sxWqnKrMCIFMr334o7VdeCogSOgCciMLXXJWgh++iqnSitQack13r79hwYq7A2VdQ5ZXyeb0zhz84cb5DvyCYf+jT7P5E3fiFQ1eNgWn6uVU4Jopns3kLJloFgIibuPqK2uIT8EZBL1qbIbBF8gDjab67wWtfULLXxSPNY2ZtoQ8sJmFEVT043t7uNc3LryxDZp+53izpFBHvj793u5z1yhg4wP/
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(41320700004)(7416005)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?kWvIGGFqzELoh6lwxnAJWJafhzBhwsbXPKHsIJ+xNdfZ48O2etr2GCvbMrgq?=
- =?us-ascii?Q?9mqUx2mPqrDuTZOYy0G3RFqPUW72bSLFV721fCLsJDAIbU/krlAjGOzdnORF?=
- =?us-ascii?Q?693Cq0UqSbXfFxUufUyYP98gEmuLELthrlV4hATyW+6gkPP89uBwXVK8kOib?=
- =?us-ascii?Q?1XJeFw/m8bQABbz8BAAxHWx2vXywgwqVKMzNIq+i9sp/8ZofLbkkWISOiZYs?=
- =?us-ascii?Q?GRU1gNXsPF6gPwr2kW0k172tanpuPx6aCyoEeW2n2qiXD8rYlvkVIuahLaWp?=
- =?us-ascii?Q?qw83YcdOkgsTuOpA82ioXZjYC4D5qOFes0Sr8f1wWXtNZbIvR4pN83zzXMrq?=
- =?us-ascii?Q?j6KBr0mPk8haygz8PUKw/CmXLRlRm6cEvbrE0Oq720HsTcigodfQbI951GuM?=
- =?us-ascii?Q?jS6LPgEDkgii1aiG2yg+QLQ3Bym6FMsVLfVFotu/kSPDVtSVhnbP1ZvQ4xgX?=
- =?us-ascii?Q?4SLqX41Ru9tbNRhtMXsFuUkl+g3QgpdsvQnuKUpxoFpAzjAB6NrEsltImByQ?=
- =?us-ascii?Q?fHWMG81hHKjeSIwCziwbfTaYVl5F8ap0HpaJIbDL2vBhxKGEzQXEmcWixfP8?=
- =?us-ascii?Q?18eKCQMcQqeH0AY7QzYRtduwtCS+teTZt7w7e6t8KspL9wAZxD30I24fFbwy?=
- =?us-ascii?Q?lAW8agIMcF4mwJuI85hukogmBefhcZkniMh9FCwTnTn57U1OL2o42AB77HiL?=
- =?us-ascii?Q?h9kdUpprhCHmcGSVdpqzRMoXVmeBHgEkSB9pjk+1c7XpYP6Ss/C6SssoLu1l?=
- =?us-ascii?Q?0Ghb96gav89I4ZX/Bdgb/LzSkqgRcqveDHAEtSa0OltlHsi9EyytCdB69FFI?=
- =?us-ascii?Q?gn0U6YAETwG3rYUeOqy1ErAxh2Zt8HD5WG+w8xzOUo/vu5dCZR7gKonLleFU?=
- =?us-ascii?Q?CpOSGoKRvVGjhC/UcmDLhJVbuKDfr6YHObodEpuGKWg+pTGuiUB2Izb/GtkT?=
- =?us-ascii?Q?JRUwT19lP72RlJAcQzRifWMordZOk7eMD2tl0B0L1FuLzGcn+lVOT17DJrAU?=
- =?us-ascii?Q?RL5qhcfiEu8mBt8xikxWxhw3vSzx9aF7Imm+0qWt247LkKnl+p4qQuOgDRnE?=
- =?us-ascii?Q?hxbNfrdQDydaF6XB55Qw42uRmkSLd9xXCC0nhnZHjP+O/JwTtLLzj5HM2fFo?=
- =?us-ascii?Q?76SRwQZBBkNbuBHLG4HuNvxyuInUqtSjbJg6MuIwHZFHIa1/11GcNkPtqSdN?=
- =?us-ascii?Q?EEqJrFHvV9XCyFLAeueaCYWK5UPq/JNLDf1jcZ5NQpqd9cUj2Q0GI2vwj/Jv?=
- =?us-ascii?Q?out3yFV6fSIYcRdPU1PZmVjtXo6X6WXHqMsiqtACKSBUBpyoy8VzlA62e7YW?=
- =?us-ascii?Q?z/ya+yb4P8Z772G05xpGFoyls9LQ5TneQTlJ48FvL9YQIUomr5Goj/dqmeV+?=
- =?us-ascii?Q?z1Q2yx+ezJGDKgvaDGAlb33IjNO945CPP/hTjpfbMM5eLpNsrhjQUWY/PDTg?=
- =?us-ascii?Q?v6HLg3sryMNL3+1HjxcaVHda82HRoXBVN4+xpD7Y98JYpX9dl7UqcA/CigVS?=
- =?us-ascii?Q?WqFxqB9fjdMEQvyYzHE7mclfOQON/Ro4MmGADawzNafh8hjf45BD4Ekw/+id?=
- =?us-ascii?Q?n/zaYBUZIL8fx1XA3KOphzqn1/IaW8GD2RWlLXVDe227eH3qVilMmPUzUz90?=
- =?us-ascii?Q?Xw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1789F2C1A9
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 18:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715623960; cv=none; b=lnCmUIGyyD3v5IA0uJPeXrUkOz8FcsPpfLdcK0B/Uu4i4lWjc9OzZB0+TUP89tBqEEb327Nh2kpjuEuXHi0wLBgxPzVsbaCZ2UiuEr+RMH7WHMDevW6zqf+MlV1LfAt+pYSFFbaSHY75ENxPrMhEwfU0G82fsImMyFmke11oi04=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715623960; c=relaxed/simple;
+	bh=V8O8b/a/9SKnu8BvsqCHZuN34e3VNtVB8eSNq1AvVvI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oYMakq1Zaod+o4mHF7aH3aWoLsKw0A6BKAOVDftuAiyjfv1uRusT+ymkbNRYptpn90T7YUTjFRCgd0VYP1sKo3dz0L/Ib0Ioir7FLTm/MA4BxsJgi853VGLx72eW9CkR2CljyPXdbSCFcwW3VwUEaAelTxLnd8TZrXwG69k1vhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-61e0c2b5cd2so38803987b3.1
+        for <imx@lists.linux.dev>; Mon, 13 May 2024 11:12:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715623956; x=1716228756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qz8i2MYQZHxasbjZ1GiJBGuINHDKmK9M19imzVTEtiM=;
+        b=WnSBFRq+Bl0jQQV/eTu+s9oEtI5ovntl3rGzrPjbnQPzZ96624vUXSlhouLlPfuNHu
+         GFHELBK/ZaPgYUT/WDEMncj/MZNP7+v5Ak9wYOWyGhgCAX9OXdXWIectNgPX98H6cNUt
+         xbvpwIyy6FJ242pB+gpUdSdPN++GdS2FEKL1hMaFz5HXiyspOCnWpT5EyeE8+nGWH8k6
+         9Z8lkmwPuprLCEJgvunmQH4C2LbZ7PmPpRHia60OSxHQ7GcZGJjNuZmpsqiEDEGlxA5l
+         phOHa/G4rjFLUQsaL8dlG/abqmPhCCLz7HL27lycPzH3zpOCQXOsoegVvQX6oR3JcTVC
+         on9A==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ7mnBQcUpUuXJUBgV2jJ8BCuw4x3YXkSb9UAuwaSFB61ywD9a4oNoe0oiM9MWHFDf0Rehag/biT8ICm708XoSyO1F
+X-Gm-Message-State: AOJu0Yy4Wn3yk+mylmsJmxu6TyrQrtBRSTqlnnvQOyWzwRbEXZrR3YJj
+	Nbt1QKxxmrO7ijiu7kSBswrntqkMCyfRWyNSIedf4EqHFFo/oQ2nRBCnzgj0
+X-Google-Smtp-Source: AGHT+IHG+kBoBqHZ0QtcMcl47i7ae8l7vlX5miORJCeR2cXIUbQYsokXhaD/AD0/nrK5UwikM0dQpg==
+X-Received: by 2002:a81:6255:0:b0:61b:e61e:8988 with SMTP id 00721157ae682-6209943c8a2mr101903787b3.18.1715623955710;
+        Mon, 13 May 2024 11:12:35 -0700 (PDT)
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6209e234e19sm22292107b3.15.2024.05.13.11.12.35
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 May 2024 11:12:35 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dc6cbe1ac75so3489209276.1
+        for <imx@lists.linux.dev>; Mon, 13 May 2024 11:12:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXWovPY79FTDwx85uDqgK5oYdWqiJuEt+UxVI7/TOaaDymuQ5RI134T/zpu51zf7zT/tr6Pde3x9CahDlKoEuYkosyO
+X-Received: by 2002:a25:8503:0:b0:dc2:2f3f:2148 with SMTP id
+ 3f1490d57ef6-dee4e57066cmr7440441276.29.1715623955117; Mon, 13 May 2024
+ 11:12:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 880da501-35d8-49e3-f27f-08dc73684287
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 16:18:00.9167
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RyHe4wgoXIEgNDP0MabXaBaSQsFcUbVekgxm6TjVdKwHCQvn2l1gyZ/g3UuQQQSejdZ4JSyph8WoscDuwLVQDA7f1u35u4N1XHTGLffzdUI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SH0PR01MB0761
+References: <20240509193517.3571694-1-Frank.Li@nxp.com>
+In-Reply-To: <20240509193517.3571694-1-Frank.Li@nxp.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 13 May 2024 20:12:25 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVB2PrkxDMoo0y1y6SLj-yuW5o+PJ+sQn2VtB2yrXzkbw@mail.gmail.com>
+Message-ID: <CAMuHMdVB2PrkxDMoo0y1y6SLj-yuW5o+PJ+sQn2VtB2yrXzkbw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] dmaengine: fsl-edma: merge mcf-edma into fsl-edma driver
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, 
+	"open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>, Greg Ungerer <gerg@linux-m68k.org>, 
+	Angelo Dureghello <angelo@kernel-space.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Frank Li wrote:
-> On Mon, May 13, 2024 at 03:16:05AM +0000, Joshua Yeong wrote:
-> > Joshua Yeong wrote:
-> > >
-> > > Introduce a new target core layer in order to support target
-> > > functions in linux kernel. This comprises the controller library and =
-function
-> library.
-> > > Controller library implements functions specific to an target
-> > > controller and function library implements functions specific to an t=
-arget
-> function.
-> > >
-> > > Introduce a new configfs entry to configure the target function
-> > > configuring and bind the target function with target controller.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >
-> > > Notes:
-> > >     Change from v8 to v9
-> > >     -none
-> > >
-> > >     Change from v7 to v8
-> > >     Added missed head files
-> > >
-> > >     Change from v5 to v6
-> > >     - fixed build error when have not CONFIG_TARGET_CONFIGFS
-> > >     | Reported-by: kernel test robot <lkp@intel.com>
-> > >     | Closes:
-> > > https://lore.kernel.org/oe-kbuild-all/202402030437.GdGCrKeK-
-> > > lkp@intel.com/
-> > >
-> > >     Chagne from v4 to v5
-> > >     - add include <linux/slab.h> to fix build error
-> > >     | Reported-by: kernel test robot <lkp@intel.com>
-> > >     | Closes:
-> > > https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT-
-> > > lkp@intel.com/
-> > >
-> > >     Chagne from v4 to v8
-> > >     - add include <linux/slab.h> to fix build error
-> > >     | Reported-by: kernel test robot <lkp@intel.com>
-> > >     | Closes:
-> > > https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT-
-> > > lkp@intel.com/
-> > >
-> > >  drivers/i3c/Kconfig        |  28 +-
-> > >  drivers/i3c/Makefile       |   2 +
-> > >  drivers/i3c/i3c-cfs.c      | 389 ++++++++++++++++++++++++++
-> > >  drivers/i3c/target.c       | 453 ++++++++++++++++++++++++++++++
-> > >  include/linux/i3c/target.h | 548
-> > > +++++++++++++++++++++++++++++++++++++
-> > >
-> > > ...
-> > >
-> > > diff --git a/include/linux/i3c/target.h b/include/linux/i3c/target.h
-> > > new file mode 100644 index 0000000000000..b0bf06685834c
-> > > --- /dev/null
-> > > +++ b/include/linux/i3c/target.h
-> > >
-> > > ...
-> > >
-> > > +/**
-> > > + * struct i3c_target_ctrl_ops - set of function pointers for
-> > > +performing controller operations
-> > > + * @set_config: set I3C controller configuration
-> > > + * @enable: enable I3C controller
-> > > + * @disable: disable I3C controller
-> > > + * @raise_ibi: raise IBI interrupt to master
-> > > + * @alloc_request: allocate a i3c_request, optional, default use
-> > > +kmalloc
-> > > + * @free_request: free a i3c_request, default use kfree
-> > > + * @queue: queue an I3C transfer
-> > > + * @dequeue: dequeue an I3C transfer
-> > > + * @cancel_all_reqs: call all pending requests
-> > > + * @fifo_status: current FIFO status
-> > > + * @fifo_flush: flush hardware FIFO
-> > > + * @hotjoin: raise hotjoin request to master
-> > > + * @set_status_format1: set i3c status format1
-> > > + * @get_status_format1: get i3c status format1
-> > > + * @get_addr: get i3c dynmatic address
-> > > + * @get_features: ops to get the features supported by the I3C
-> > > +target controller
-> > > + * @owner: the module owner containing the ops  */ struct
-> > > +i3c_target_ctrl_ops {
-> > > +	int (*set_config)(struct i3c_target_ctrl *ctrl, struct
-> > > +i3c_target_func
-> > > *func);
-> > > +	int (*enable)(struct i3c_target_ctrl *ctrl);
-> > > +	int (*disable)(struct i3c_target_ctrl *ctrl);
-> > > +	int (*raise_ibi)(struct i3c_target_ctrl *ctrl, void *p, u8 size);
-> > > +
-> > > +	struct i3c_request *(*alloc_request)(struct i3c_target_ctrl *ctrl,
-> > > +gfp_t
-> > > gfp_flags);
-> > > +	void (*free_request)(struct i3c_request *req);
-> > > +
-> > > +	int (*queue)(struct i3c_request *req, gfp_t gfp_flags);
-> > > +	int (*dequeue)(struct i3c_request *req);
-> > > +
-> > > +	void (*cancel_all_reqs)(struct i3c_target_ctrl *ctrl, bool tx);
-> > > +
-> > > +	int (*fifo_status)(struct i3c_target_ctrl *ctrl, bool tx);
-> > > +	void (*fifo_flush)(struct i3c_target_ctrl *ctrl, bool tx);
-> > > +	int (*hotjoin)(struct i3c_target_ctrl *ctrl);
-> > > +	int (*set_status_format1)(struct i3c_target_ctrl *ctrl, u16 status)=
-;
-> > > +	u16 (*get_status_format1)(struct i3c_target_ctrl *ctrl);
-> > > +	u8  (*get_addr)(struct i3c_target_ctrl *ctrl);
-> > > +	const struct i3c_target_ctrl_features *(*get_features)(struct
-> > > i3c_target_ctrl *ctrl);
-> > > +	struct module *owner;
-> > > +};
-> >
-> > This structure looks very different from the master controller ops
-> 'i3c_master_controller_ops'.
-> > I think you could probably combine 'set_config, enable' into 'bus_init'=
-,
-> 'disable' to 'bus_cleanup'.
-> > Also using the 'struct i3c_priv_xfer' rather redefining another 'struct
-> i3c_request' would be much cleaner.
->=20
-> Thanks, let me think this. i3c_priv_xter may include read and write, or w=
-rite
-> and read. I3C is quite fast. Most time software are not quite enough to h=
-andle
-> it in time.
->=20
-> If data len bigger than FIFO size, it have to use DMA to transfer it beca=
-use
-> there are not flow controler at target side (write direction).
-> Read, hardware to use early terminate to tell host read too fast. but for=
- write,
-> 9th bit is parit check bit. Data will be lost if software have not read f=
-rom FIFO
-> in time. If use external DMA to do that, it needs switch dma channel(gene=
-rally,
-> DMA rx and tx are two channel). switch channel automatically are quite
-> challenge at current dma engine framework.
->=20
+CC coldfire
 
-I guess when data is larger than FIFO, the i3c controller (master) should=20
-'aware' of this limitation when using such target device. So that appropria=
-te
-handle like make new read command, or do a write then another larger read
-request.=20
-
-> Of course it will be possible if hardware implement simpilar I3C HCI comm=
-and
-> queue. But I still not found any hardware that can do that yet.
->=20
-> If only limited data size to FIFO size, there are still limiation for xfe=
-r.  if write,
-> read, write, read, two write may combined in one FIFO, target driver may =
-not
-> split it which depend on hardware detect repeat start and insert somethin=
-g
-> into fifo.
->=20
-> It is hard to support all user case by I3C target software in linux.
-
-Can I know the speed limitation that you having issue while running on sili=
-con?=20
-
->=20
-> write follow by read, generally used from get hardware register value fro=
-m
-> target side, which almost impossible by software, it is not quick enough =
-to
-> parse (write value) then send back data.
->=20
-> >
-> > In the master i3c side they don't abbreviate i3c_master_controller to
-> > i3c_master_ctrl. I think we should do the same here to standardize it.
-> > Thanks
->=20
-> The problem is in I3C spec: "master" already depericated
->=20
-> from i3c spec 1.1.1
->=20
-> "Controller: An I3C Device that is capable of controlling the I3C Bus."
->=20
-> master/slave =3D> controller/target.
->=20
-> It will become more confused if i3c_target_controller. "controller"
-> are ambiguity.
->=20
-> If "master" =3D> "host" would be better situation, but not happen. A poin=
-t, I use
-> "ctrl"  here to avoid I3C spec defined "controller" term.
->=20
-> Anyway, I hope more people that involve target support discussion.
->=20
-> >
-> > Regards,
-> > Joshua
-> >
-> > > --
-> > > 2.34.1
-> > >
-> > >
-> > > --
-> > > linux-i3c mailing list
-> > > linux-i3c@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/linux-i3c
+On Thu, May 9, 2024 at 9:35=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+> MCF eDMA are almost the same as FSL eDMA driver. Previously link to two
+> kernel modules, fsl-edma.ko and mcf-edma.ko. These are not problem becaus=
+e
+> mcf-edma is for m68k ARCH and FSL eDMA is for arm/arm64 ARCH. But often
+> build both at PPC ARCH. It also makes sense to build two drivers at the
+> same time. It causes many build warning because share a fsl-edma-common.o=
+.
+> such as:
+>
+>    powerpc64le-linux-ld: warning: orphan section `.stubs' from `drivers/d=
+ma/fsl-edma-common.o' being placed in section `.stubs'
+>    powerpc64le-linux-ld: warning: orphan section `.stubs' from `drivers/d=
+ma/fsl-edma-trace.o' being placed in section `.stubs'
+>
+> Merge mcf-edma into fsl-edma driver. So use one driver (fsl-edma.ko) for
+> MCF and FSL eDMA.
+>
+> mcf-edma.ko should be replaced by fsl-edma.ko in modules, minimizing user
+> space impact because MCF eDMA remains confined to legacy ColdFire mcf5441=
+x
+> production and mcf5441x has been in production for at least a decade and
+> NXP has long ceased ColdFire development.
+>
+> Update Kconfig to make MCF_EDMA as feature of FSL_EDMA and change Makefil=
+e
+> to link mcl-edma-main.o to fsl-edma.o.
+>
+> Create a common module init/exit functions, which call original's
+> fsl-edma-init[exit]() and mcf-edma-init[exit]().
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202405082029.Es9umH7n-lkp@i=
+ntel.com/
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/dma/Kconfig           |  8 ++++----
+>  drivers/dma/Makefile          |  5 ++---
+>  drivers/dma/fsl-edma-common.c | 28 ++++++++++++++++++++++++++++
+>  drivers/dma/fsl-edma-common.h |  5 +++++
+>  drivers/dma/fsl-edma-main.c   |  6 ++----
+>  drivers/dma/mcf-edma-main.c   |  6 ++----
+>  6 files changed, 43 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+> index 002a5ec806207..45110520f6e68 100644
+> --- a/drivers/dma/Kconfig
+> +++ b/drivers/dma/Kconfig
+> @@ -393,14 +393,14 @@ config LS2X_APB_DMA
+>           It does not support memory to memory data transfer.
+>
+>  config MCF_EDMA
+> -       tristate "Freescale eDMA engine support, ColdFire mcf5441x SoCs"
+> +       bool "Freescale eDMA engine support, ColdFire mcf5441x SoCs"
+>         depends on M5441x || COMPILE_TEST
+>         select DMA_ENGINE
+>         select DMA_VIRTUAL_CHANNELS
+>         help
+> -         Support the Freescale ColdFire eDMA engine, 64-channel
+> -         implementation that performs complex data transfers with
+> -         minimal intervention from a host processor.
+> +         Support the Freescale ColdFire eDMA engine in FSL_EDMA driver,
+> +         64-channel implementation that performs complex data transfers
+> +         with minimal intervention from a host processor.
+>           This module can be found on Freescale ColdFire mcf5441x SoCs.
+>
+>  config MILBEAUT_HDMAC
+> diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
+> index 802ca916f05f5..0000922c7cbfe 100644
+> --- a/drivers/dma/Makefile
+> +++ b/drivers/dma/Makefile
+> @@ -33,11 +33,10 @@ obj-$(CONFIG_DW_EDMA) +=3D dw-edma/
+>  obj-$(CONFIG_EP93XX_DMA) +=3D ep93xx_dma.o
+>  fsl-edma-trace-$(CONFIG_TRACING) :=3D fsl-edma-trace.o
+>  CFLAGS_fsl-edma-trace.o :=3D -I$(src)
+> +mcf-edma-main-$(CONFIG_MCF_EDMA) :=3D mcf-edma-main.o
+>  obj-$(CONFIG_FSL_DMA) +=3D fsldma.o
+> -fsl-edma-objs :=3D fsl-edma-main.o fsl-edma-common.o ${fsl-edma-trace-y}
+> +fsl-edma-objs :=3D fsl-edma-main.o fsl-edma-common.o ${fsl-edma-trace-y}=
+ ${mcf-edma-main-y}
+>  obj-$(CONFIG_FSL_EDMA) +=3D fsl-edma.o
+> -mcf-edma-objs :=3D mcf-edma-main.o fsl-edma-common.o ${fsl-edma-trace-y}
+> -obj-$(CONFIG_MCF_EDMA) +=3D mcf-edma.o
+>  obj-$(CONFIG_FSL_QDMA) +=3D fsl-qdma.o
+>  obj-$(CONFIG_FSL_RAID) +=3D fsl_raid.o
+>  obj-$(CONFIG_HISI_DMA) +=3D hisi_dma.o
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.=
+c
+> index 3af4307873157..ac04a2ce4fa1f 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -888,4 +888,32 @@ void fsl_edma_setup_regs(struct fsl_edma_engine *edm=
+a)
+>         }
+>  }
+>
+> +static int __init fsl_edma_common_init(void)
+> +{
+> +       int ret;
+> +
+> +       ret =3D fsl_edma_init();
+> +       if (ret)
+> +               return ret;
+> +
+> +#ifdef CONFIG_MCF_EDMA
+> +       ret =3D mcf_edma_init();
+> +       if (ret)
+> +               return ret;
+> +#endif
+> +       return 0;
+> +}
+> +
+> +subsys_initcall(fsl_edma_common_init);
+> +
+> +static void __exit fsl_edma_common_exit(void)
+> +{
+> +       fsl_edma_exit();
+> +
+> +#ifdef CONFIG_MCF_EDMA
+> +       mcf_edma_exit();
+> +#endif
+> +}
+> +module_exit(fsl_edma_common_exit);
+> +
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.=
+h
+> index ac66222c16040..dfbdcc922ceea 100644
+> --- a/drivers/dma/fsl-edma-common.h
+> +++ b/drivers/dma/fsl-edma-common.h
+> @@ -488,4 +488,9 @@ void fsl_edma_free_chan_resources(struct dma_chan *ch=
+an);
+>  void fsl_edma_cleanup_vchan(struct dma_device *dmadev);
+>  void fsl_edma_setup_regs(struct fsl_edma_engine *edma);
+>
+> +int __init fsl_edma_init(void);
+> +void __exit fsl_edma_exit(void);
+> +int __init mcf_edma_init(void);
+> +void __exit mcf_edma_exit(void);
+> +
+>  #endif /* _FSL_EDMA_COMMON_H_ */
+> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> index 391e4f13dfeb0..a1c3c4ed869c5 100644
+> --- a/drivers/dma/fsl-edma-main.c
+> +++ b/drivers/dma/fsl-edma-main.c
+> @@ -724,17 +724,15 @@ static struct platform_driver fsl_edma_driver =3D {
+>         .remove_new     =3D fsl_edma_remove,
+>  };
+>
+> -static int __init fsl_edma_init(void)
+> +int __init fsl_edma_init(void)
+>  {
+>         return platform_driver_register(&fsl_edma_driver);
+>  }
+> -subsys_initcall(fsl_edma_init);
+>
+> -static void __exit fsl_edma_exit(void)
+> +void __exit fsl_edma_exit(void)
+>  {
+>         platform_driver_unregister(&fsl_edma_driver);
+>  }
+> -module_exit(fsl_edma_exit);
+>
+>  MODULE_ALIAS("platform:fsl-edma");
+>  MODULE_DESCRIPTION("Freescale eDMA engine driver");
+> diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
+> index 78c606f6d0026..d97991a1e9518 100644
+> --- a/drivers/dma/mcf-edma-main.c
+> +++ b/drivers/dma/mcf-edma-main.c
+> @@ -284,17 +284,15 @@ bool mcf_edma_filter_fn(struct dma_chan *chan, void=
+ *param)
+>  }
+>  EXPORT_SYMBOL(mcf_edma_filter_fn);
+>
+> -static int __init mcf_edma_init(void)
+> +int __init mcf_edma_init(void)
+>  {
+>         return platform_driver_register(&mcf_edma_driver);
+>  }
+> -subsys_initcall(mcf_edma_init);
+>
+> -static void __exit mcf_edma_exit(void)
+> +void __exit mcf_edma_exit(void)
+>  {
+>         platform_driver_unregister(&mcf_edma_driver);
+>  }
+> -module_exit(mcf_edma_exit);
+>
+>  MODULE_ALIAS("platform:mcf-edma");
+>  MODULE_DESCRIPTION("Freescale eDMA engine driver, ColdFire family");
+> --
+> 2.34.1
