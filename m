@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F768468
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 06:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3B41465BD
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 06:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715582387; cv=none; b=X2MJA8zXV0tWp+heHOJDKhDkVnu4NmJ2eJ/nKnR0U6+boKSj2I/OZ5RETRGV0LkJiY9LeVO+psJDAnzJidVw3JrUTLQEkAJbqr0tH5DIQQi6Oj4kjrVilp6zZIk4daYnkayrGdhmeKHOTPG2a30cjAuOsJIK7yjgWLhgIb1WVd0=
+	t=1715583287; cv=none; b=GyYimkd/njDvHFoV54cbClZmxSRJSQyPC5m6ZHJOtx8PpMi+Gg6FkSghpckPTWNsUZoxGUEwSRUHBFGiWdSh2ErGkT21bXKaFdnewIiHMPQxK4YeXSB6fjgsVd/y9SrTUKJ8m/Vj/p8rujxY8soQKcG/xM9SA3RsYdpGHr08CVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715582387; c=relaxed/simple;
-	bh=qWUVcFOckM2mzHpQ2EXaxk0W1FsPXBRLNnFXKDxYnZY=;
+	s=arc-20240116; t=1715583287; c=relaxed/simple;
+	bh=lN/1vCTP0wYNL0Pd3ViC+AMORd82VxLhCd0MaH31XRY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sEzfUZ0qQcO2k33o+k2KfJ2tH0LvIzND0HU4Trdc+JmYmzvoTWTGdZsSlT0Oe7Dka3p0Qgb5302MPg9ea//KJ7aLzQ89e+eF5PlWm9EL4PRntCVvtbyNzhKfBzUbI1NtKX8Rl77eozvapUiD8QWYUib7s16jC33vqf3k5Dt59j8=
+	 Content-Type:Content-Disposition:In-Reply-To; b=Is2PsGZgbrFK3Pz/xaRVXXCGaEb4OT0fjI7JGIIpVOPWNQ58ZSheaVbRJSPtvUXPwyfJFhsbGH3IW37U3MbX60mVs2uVe5zCogM92a057EhysEsUaXf4bzM7ieG1zx7bo3ZF4QL8vN4t6OkUZxfbX2s9QLyP+XPvhVkwRInHu9Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1s6PLT-0004Yo-2g; Mon, 13 May 2024 08:39:35 +0200
+	id 1s6Pa1-0006sF-G3; Mon, 13 May 2024 08:54:37 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1s6PLS-0017Sf-4l; Mon, 13 May 2024 08:39:34 +0200
+	id 1s6Pa0-0017VY-7p; Mon, 13 May 2024 08:54:36 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1s6PLS-009O2c-07;
-	Mon, 13 May 2024 08:39:34 +0200
-Date: Mon, 13 May 2024 08:39:34 +0200
+	id 1s6Pa0-009O7G-0S;
+	Mon, 13 May 2024 08:54:36 +0200
+Date: Mon, 13 May 2024 08:54:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: Abel Vesa <abelvesa@kernel.org>,
@@ -40,11 +40,11 @@ Cc: Abel Vesa <abelvesa@kernel.org>,
 	linux-clk@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	Abel Vesa <abel.vesa@linaro.org>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2 01/17] clk: imx: composite-8m: Enable gate clk with
- mcore_booted
-Message-ID: <ZkG1put2k33K4c_b@pengutronix.de>
+Subject: Re: [PATCH v2 03/17] clk: imx: composite-7ulp: Check the PCC present
+ bit
+Message-ID: <ZkG5LGzFGWe0blJ_@pengutronix.de>
 References: <20240510-imx-clk-v2-0-c998f315d29c@nxp.com>
- <20240510-imx-clk-v2-1-c998f315d29c@nxp.com>
+ <20240510-imx-clk-v2-3-c998f315d29c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240510-imx-clk-v2-1-c998f315d29c@nxp.com>
+In-Reply-To: <20240510-imx-clk-v2-3-c998f315d29c@nxp.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -63,107 +63,41 @@ X-SA-Exim-Mail-From: sha@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, May 10, 2024 at 05:18:56PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Fri, May 10, 2024 at 05:18:58PM +0800, Peng Fan (OSS) wrote:
+> From: Ye Li <ye.li@nxp.com>
 > 
-> Bootloader might disable some CCM ROOT Slices. So if mcore_booted set with
-> display CCM ROOT disabled by Bootloader, kernel display BLK CTRL driver
-> imx8m_blk_ctrl_driver_init may hang the system because the BUS clk is
-> disabled.
+> When some module is disabled by fuse, its PCC PR bit is default 0 and
+> PCC is not operational. Any write to this PCC will cause SError.
 > 
-> Add back gate ops, but with disable doing nothing, then the CCM ROOT
-> will be enabled when used.
-> 
-> Fixes: 489bbee0c983 ("clk: imx: composite-8m: Enable gate clk with mcore_booted")
-
-I can't find this commitish anywhere, also the subject looks like this
-patch fixes itself.
-
-> Reviewed-by: Ye Li <ye.li@nxp.com>
-> Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+> Fixes: b40ba8065347 ("clk: imx: Update the compsite driver to support imx8ulp")
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Ye Li <ye.li@nxp.com>
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  drivers/clk/imx/clk-composite-8m.c | 53 ++++++++++++++++++++++++++++++--------
->  1 file changed, 42 insertions(+), 11 deletions(-)
+>  drivers/clk/imx/clk-composite-7ulp.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
-> index 8cc07d056a83..f187582ba491 100644
-> --- a/drivers/clk/imx/clk-composite-8m.c
-> +++ b/drivers/clk/imx/clk-composite-8m.c
-> @@ -204,6 +204,34 @@ static const struct clk_ops imx8m_clk_composite_mux_ops = {
->  	.determine_rate = imx8m_clk_composite_mux_determine_rate,
->  };
+> diff --git a/drivers/clk/imx/clk-composite-7ulp.c b/drivers/clk/imx/clk-composite-7ulp.c
+> index e208ddc51133..e70a03e7299c 100644
+> --- a/drivers/clk/imx/clk-composite-7ulp.c
+> +++ b/drivers/clk/imx/clk-composite-7ulp.c
+> @@ -14,6 +14,7 @@
+>  #include "../clk-fractional-divider.h"
+>  #include "clk.h"
 >  
-> +static int imx8m_clk_composite_gate_enable(struct clk_hw *hw)
-> +{
-> +	struct clk_gate *gate = to_clk_gate(hw);
-> +	unsigned long flags;
-> +	u32 val;
-> +
-> +	spin_lock_irqsave(gate->lock, flags);
-> +
-> +	val = readl(gate->reg);
-> +	val |= BIT(gate->bit_idx);
-> +	writel(val, gate->reg);
-> +
-> +	spin_unlock_irqrestore(gate->lock, flags);
-> +
-> +	return 0;
-> +}
-> +
-> +static void imx8m_clk_composite_gate_disable(struct clk_hw *hw)
-> +{
-> +	/* composite clk requires the disable hook */
-> +}
-> +
-> +static const struct clk_ops imx8m_clk_composite_gate_ops = {
-> +	.enable = imx8m_clk_composite_gate_enable,
-> +	.disable = imx8m_clk_composite_gate_disable,
-> +	.is_enabled = clk_gate_is_enabled,
-> +};
-> +
->  struct clk_hw *__imx8m_clk_hw_composite(const char *name,
->  					const char * const *parent_names,
->  					int num_parents, void __iomem *reg,
-> @@ -217,6 +245,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
->  	struct clk_mux *mux;
->  	const struct clk_ops *divider_ops;
->  	const struct clk_ops *mux_ops;
-> +	const struct clk_ops *gate_ops;
+> +#define PCG_PR_MASK		BIT(31)
+>  #define PCG_PCS_SHIFT	24
+>  #define PCG_PCS_MASK	0x7
+>  #define PCG_CGC_SHIFT	30
+> @@ -78,6 +79,10 @@ static struct clk_hw *imx_ulp_clk_hw_composite(const char *name,
+>  	struct clk_hw *hw;
+>  	u32 val;
 >  
->  	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
->  	if (!mux)
-> @@ -257,20 +286,22 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
->  	div->flags = CLK_DIVIDER_ROUND_CLOSEST;
->  
->  	/* skip registering the gate ops if M4 is enabled */
+> +	val = readl(reg);
+> +	if (!(val & PCG_PR_MASK))
+> +		return ERR_PTR(-ENODEV);
 
-This comment doesn't seems to become inaccurate with this patch.
-
-> -	if (!mcore_booted) {
-> -		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
-> -		if (!gate)
-> -			goto free_div;
-> -
-> -		gate_hw = &gate->hw;
-> -		gate->reg = reg;
-> -		gate->bit_idx = PCG_CGC_SHIFT;
-> -		gate->lock = &imx_ccm_lock;
-> -	}
-> +	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
-> +	if (!gate)
-> +		goto free_div;
-> +
-> +	gate_hw = &gate->hw;
-> +	gate->reg = reg;
-> +	gate->bit_idx = PCG_CGC_SHIFT;
-> +	gate->lock = &imx_ccm_lock;
-> +	if (!mcore_booted)
-> +		gate_ops = &clk_gate_ops;
-> +	else
-> +		gate_ops = &imx8m_clk_composite_gate_ops;
-
-Please use positive logic. It's easier to read.
+It looks like this will trigger an error message in imx_check_clk_hws()
 
 Sascha
 
