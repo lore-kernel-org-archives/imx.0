@@ -1,132 +1,126 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB1F1474C7
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 08:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9752AD11;
+	Mon, 13 May 2024 09:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715589665; cv=none; b=YQ1U7lsFoXh0/XQtNLmV8dW5E64fbek+emmYplrzKZbE6KxFDYxX1ec4Pxx9d1K5vdinukyik3QHKmhsdpbD1U4/vAeu52Kome3qHkLqXs9eXz0suw9Ew0WZEWdDmIdli6hN6tc20Z3YuikbglrO7EdmDqfJO8whNIZStDZGeT8=
+	t=1715590980; cv=none; b=DPbW/nmq3LjZF3clq5B44zFOm95/pHTfDmMn1E2wlVW5qBRfD3FhXWf1w/R9tGMWPGpEdKH4quzR37Qa6JydOQMdmO9g91LkpmI9wjU/AP7psfXOJO2HHdTwldDo+LzKAgNuqy5G0ZS4KvKkW3JpwSWq2M900SEYrrwq7wzs75A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715589665; c=relaxed/simple;
-	bh=6Qe+Z4SzpwQnD/xZduFUuZ+qeUgZmflyk3fkh5lZ93s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=frPRkGF8iESbjb6hNcUu7ZddX573+9PPTWLUfRdmjH5jruMfSFr5tndxDQjBBkDzsPYi1zRSnfky2y3FV/ovgo+Td2XPKp3sZEWk4Y3ZQnDKLCbdid1dcsX0cCX7gbtKOgum9Wxnnj9Kz/WA94BG/s9nsJhTx8Boxc8Bqif+QvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jRwY6lJv; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1715590980; c=relaxed/simple;
+	bh=s0EggrzDRtwd1QQwT28+y5mOLtbo0dl6U8XEYPlo+yQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fBnIjNY038Ao1IH3yUNCX643OOI441/ft5wS6ZlguaxPNAoCXCTINrXDoguOLVd6m31foVE68I//A/5Hm1NiF1X6Jkf7AUXHb25SrQWEY9s/NReO5ljqM8PkXNfwpQCvBvfWDP0yg7jb3JEydiRQBBUx8ez4N1J6b9mGr7oDC9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/+FLJbj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jRwY6lJv"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5724736770cso9484a12.1
-        for <imx@lists.linux.dev>; Mon, 13 May 2024 01:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715589660; x=1716194460; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iSDRwv7jk6IAgHWtX5wD76uWRnyIu2E9jN3RV77i0HQ=;
-        b=jRwY6lJvLtlMeUELfNGPikg5bdf1j5DfO3dAQ04KQw2tI9zBwObZ4qJV5dRaMXh8Nx
-         adJyedzUCo88j+dbYCpyvjLm+6slKFk/FtbfxYObt8YlFopxx4Op/Fb3BSTv8ftg5pNG
-         1NK7BCwhXT/SksSRMYrx9SebbOhAdGFX5eZm02j8n+RIBi5j7W4zic6bmRmCWCQ4uShs
-         z1DDSCByEJyvEIeuky7PKGpnWMtf/4qlsw1ljKUWO4RBuWwXwKDv4WH1wqaVqG24d50k
-         WSR1jTFjsVRj/YmE0dWqUOkR+LV/9KCTLSg4gGfZT/LWOh768f/ERXi/p2CkmvgOpdxe
-         f96Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715589660; x=1716194460;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iSDRwv7jk6IAgHWtX5wD76uWRnyIu2E9jN3RV77i0HQ=;
-        b=I++1XLmyBThKQjs6I8aMvnfLRwPKu2adof88vYaCnsbg3ZAREwm8AIN5/94BKIitF8
-         I03lu5IqcfwkUyfqn7rt8JXl+LPKZL9zNzhbpaRmExNNhzkM/Q0SGw3qyh8hwAEik7i5
-         M13BnbER1R30RpEhKyLCQb8lnT1DmgHJcyvNwyu1PgaS8sUaeam3Ke+ZsBzsitMEvre3
-         CpApZ8BDrZBvWnwngRTpZ5pFL2IpjjlgeqP0otf43/u6dfgFEl+PCBvw6scYlZCUxLWS
-         kmp20SDMxTK9OZAdhnNIV+BB7wsjCY+PIQHj/8TNiowAa+wb6kMLa1qWk7kvH0lT3RIU
-         FaSA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1zF/YDM511rlszjoS4IjilotubSQ7ztwpvKdfxTQSSqB61X9d7l7xEgebNBigcow+fDFDXcXDVTMwhwdH+yHu/1c5
-X-Gm-Message-State: AOJu0Yyq/UNP+ftyC9cSN+OSQa2VZZnqAFtjxsWX+ApTzpu0Hn4T2Qdo
-	acTAVkg9EOTU8UvDNCYVzEJa1YrgmHljoYKFyiEjXTYz/OEV238+Osif56hDyggG8LZqmJv/tul
-	Ss+bWHpdkrCxH4a2Af3OLPtiffBIGVyk/WnEi
-X-Google-Smtp-Source: AGHT+IG57BWFXudd7m8JcDciNBmtXJbh5+hfFHuyw1l+yn/mpSNaGi+yGRv/Cgp0O9O0ywU03d4iur9Dsc9F5E9hlnM=
-X-Received: by 2002:a05:6402:2153:b0:572:5597:8f89 with SMTP id
- 4fb4d7f45d1cf-57443d30921mr260807a12.6.1715589660140; Mon, 13 May 2024
- 01:41:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/+FLJbj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD1C113CC;
+	Mon, 13 May 2024 09:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715590980;
+	bh=s0EggrzDRtwd1QQwT28+y5mOLtbo0dl6U8XEYPlo+yQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=A/+FLJbj4oXu5vlP2FOyLU5Y3872Wt4b2TwJjGM0ieE2rOafc8vehRo6Vq6/PQMNZ
+	 Z2LeE+/SeiiVRlsDNRFQKbDrtwh+O1i0QK8CWWOPU0p9Z9v3YFsgBi3ghu1+xbxG6J
+	 WTEddw9Kdv31J9rygrSXfMD3pSyg0ROSHlKjOWTxRxsyLJxnErI9lgGwpHYzYbb1H7
+	 Qr52K+qH53PlN1elIWpGeXoySdQngfWQYkTGyD61bsQj6AxHBxCA4VHn7w0N12gp0H
+	 v9R2OuABqhlWRQm1i/tCb9df/9dB6HXy8sIAQYi3OmAuofb0q8qWNwQWYRRCbOyMli
+	 TjXWx7jKfjwSg==
+Message-ID: <99f0fcb4-7c45-426a-8176-8191a032c0f0@kernel.org>
+Date: Mon, 13 May 2024 11:02:53 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240513015127.961360-1-wei.fang@nxp.com> <CANn89i+EQDCFrhC3mN8g2k=KFpaKtrDusgaUo9zBvv0JCw8eYg@mail.gmail.com>
- <PAXPR04MB85100C1A06253C0AE1EB36C288E22@PAXPR04MB8510.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB85100C1A06253C0AE1EB36C288E22@PAXPR04MB8510.eurprd04.prod.outlook.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 13 May 2024 10:40:46 +0200
-Message-ID: <CANn89i+0xtG5hg2LsGvNOueCAkOac_UccXWq-Eeqt1a40EkqBA@mail.gmail.com>
-Subject: Re: [PATCH net] net: fec: avoid lock evasion when reading pps_enable
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, 
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, "andrew@lunn.ch" <andrew@lunn.ch>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] dt-bindings: mfd: add schema for 8ulp AVD-SIM
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+ Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Liu Ying <victor.liu@nxp.com>,
+ Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240418203720.8492-1-laurentiumihalcea111@gmail.com>
+ <20240418203720.8492-3-laurentiumihalcea111@gmail.com>
+ <20240422142906.GB1207218-robh@kernel.org>
+ <799c3c81-fc33-4f76-bd0b-287e8b8a6f5a@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <799c3c81-fc33-4f76-bd0b-287e8b8a6f5a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 13, 2024 at 9:53=E2=80=AFAM Wei Fang <wei.fang@nxp.com> wrote:
->
-> > -----Original Message-----
-> > From: Eric Dumazet <edumazet@google.com>
-> > Sent: 2024=E5=B9=B45=E6=9C=8813=E6=97=A5 15:29
-> > To: Wei Fang <wei.fang@nxp.com>
-> > Cc: davem@davemloft.net; kuba@kernel.org; pabeni@redhat.com; Shenwei
-> > Wang <shenwei.wang@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
-> > richardcochran@gmail.com; andrew@lunn.ch; netdev@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; imx@lists.linux.dev
-> > Subject: Re: [PATCH net] net: fec: avoid lock evasion when reading pps_=
-enable
-> >
-> > On Mon, May 13, 2024 at 4:02=E2=80=AFAM Wei Fang <wei.fang@nxp.com> wro=
-te:
-> > >
-> > > The assignment of pps_enable is protected by tmreg_lock, but the read
-> > > operation of pps_enable is not. So the Coverity tool reports a lock
-> > > evasion warning which may cause data race to occur when running in a
-> > > multithread environment. Although this issue is almost impossible to
-> > > occur, we'd better fix it, at least it seems more logically
-> > > reasonable, and it also prevents Coverity from continuing to issue wa=
-rnings.
-> > >
-> > > Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp
-> > > clock")
-> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > ---
-> > >  drivers/net/ethernet/freescale/fec_ptp.c | 8 +++++---
-> > >  1 file changed, 5 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-> > > b/drivers/net/ethernet/freescale/fec_ptp.c
-> > > index 181d9bfbee22..8d37274a3fb0 100644
-> > > --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> > > +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> > > @@ -104,14 +104,16 @@ static int fec_ptp_enable_pps(struct
-> > fec_enet_private *fep, uint enable)
-> > >         struct timespec64 ts;
-> > >         u64 ns;
-> > >
-> > > -       if (fep->pps_enable =3D=3D enable)
-> > > -               return 0;
-> > > -
-> > >         fep->pps_channel =3D DEFAULT_PPS_CHANNEL;
-> > >         fep->reload_period =3D PPS_OUPUT_RELOAD_PERIOD;
-> >
-> > Why are these writes left without the spinlock protection ?
-> For fec driver, the pps_channel and the reload_period of PPS request
-> are always fixed, and they were also not protected by the lock in the
-> original code.
+On 09/05/2024 20:48, Laurentiu Mihalcea wrote:
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  clocks:
+>>> +    maxItems: 1
+>> If you do add child nodes, 'simple-mfd' also means there is not any 
+>> dependency on the parent node such as needing this clock to be enabled 
+>> for the child nodes.
+>>
+>> Rob
+> 
+> The plan was to add the children later on as required.
+> Given the children would in fact depend on the parent's clock being
+> enabled, I wonder if just removing 'simple-mfd' from the compatible
+> list would do the trick?
 
-If this is the case, please move this initialization elsewhere, so
-that we can be absolutely sure of the  claim.
+Dropping simple-mfd would be a requirement in such case, but not
+sufficient. Please send complete bindings, so with the children.
 
-I see fep->reload_period being overwritten in this file, I do not see
-clear evidence this is all safe.
+Best regards,
+Krzysztof
+
