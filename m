@@ -1,183 +1,102 @@
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2041.outbound.protection.outlook.com [40.107.15.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B7633C9
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 02:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715565779; cv=fail; b=EPV6K8jvxSSH01mO3qQgyW1rgyGyH0gL54+gohE3t+4G+ytSTPkb7gQH3UlqcygrRy0gI8+JtaHCA5sz6zcTVsPP5Sx7l6cqncEKPuz8sxz0UJWwadjHt5gp//lcq1sww+BGpXkHoJU5QbmVex2OE8gef2/CBsUzUgaFyrplb6M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715565779; c=relaxed/simple;
-	bh=mS8buf+BgiCQZkciPKSJ0NHaDiyM6AZ0laX6A90b1hI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PWEIGtGHMw0CaCE1LmDPV2MT7qbOdaAx4GYI75HWfofHkbtER+p7vPJ6czsG72hxe0uzSN0JXRayj5YSCUXDmXJUGttpOF/yzgOo3GOU2kPjm+WWRCchztU45Qn0AWQB4gLvXpkC/IqvqjWHHJ9e3s82tEXgj/ndPoXoH633+VQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=c8+m6JlF; arc=fail smtp.client-ip=40.107.15.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF7C12DDA5
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 02:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715565914; cv=none; b=PcB2q3nKt2R9QclxxKuFGrEDidTmxcZwWHwAfk1zr8+kbTOkEUdk+MlsqxR3iV0WxEEogZLq8sH2Zyut7o3zANvizeVwsAFfjzLGpJMrLrqeYDavS5uMB7+NOJBvBmWxtxvawEhax2DlDEoNrPd/nKzT2UiewbQAqsOAnKMjc7E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715565914; c=relaxed/simple;
+	bh=ZLr5UrARaHefDZc+uWzNJhmGH6xSykQ6ui4NwmEi9+o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N1FlZbZ6ptrN7oCdKWXCs6VTnMURKxC+ZX1NGYoyADkNhOkcI3krU4Y28yWm2UgiqxPYDpF0nZVYZjW3XcsLUataRoeoDQ61cmMSu1w7R/UuCY0OWDxNbXrf/ZaDs+gAbpa4ykmbkMTiCVlQOaRKaWylXg2Tf84SQUjrSQzsYD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=k8azgD8e; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="c8+m6JlF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JGp2EOQigP1CEfk0iFqr5JpezCMll0fOpVBOwO3UgTj04jmNmAbu/nEDGbpDA9xAeRrcjqdECtCYSu0y40lRoKVyZgkurE3lr/XCflzgvmQLqDQsyvx4eMGdO4HfbADNZ3ar1ZiKF7PPMTBdf4tv14TGPFeH/NC1QKZau50FTqg4leZF23tl6hi1pSna//VhokwuHf7IqFl+lAK7LLQtas2U3FmTlH+Z8BCBTecsdKkG4kGgeEBwStVy2Jz1s0yXxcg9y+H4KHI48ASLeCylTwFgvfSPEmKyB2JxIC5tbd75FRAXt96ko8FKU/pqeudZ6tK+PMiLCkmdm7nVn3LicQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kg6NgPVIPBGzsKPV2QOevCcaYQsebXVAh7Loga0bQec=;
- b=B1V6wc2jdyI8p6vMLRVXvOO/n4XZ9f0KwZR0wyM+le+ksLhd3f3gvoQ4fund/Xap7tpFS3/2UBbhVNPfCBION5Oybrwnzh44j8oZ6BCWwchtXpk2ss/84tvy0aZoxPw0h0xn0GKOnWKb4lzhRhy+zQrpInYM1Xy4dqY4ByGHwDY05rYW0HVXbuIPguhKk+wSaVmgI0tXuY/ddXoVxryqqI8/QfzM8zC+8PRtFNSJwUuX4nAFX8v0a/sRuWK5ATGaL+zPnqz358I5AsV9AO9mJUV2OdS9PilqtY937XJGQsyNA+5CJWA79paldYu+C0M/fmTiEQ9c08CURqCTpWOAaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kg6NgPVIPBGzsKPV2QOevCcaYQsebXVAh7Loga0bQec=;
- b=c8+m6JlFIG+q4jKtbfm+tVG/TQ6S5G4Yb0jzC0KRYWco2nVh7FY2xGw+z3TidIByhm/lLH/dWBTZKDV3x92rCZ8cWVXXQaWrQIyoNJ4q+8xhQOxChtL913SS8L/q2iWdQte06grQOU7geUB2Y8EPy7/BNWt0hTBTs6oEBa53Ce8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAXPR04MB9400.eurprd04.prod.outlook.com (2603:10a6:102:2b2::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
- 2024 02:02:55 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::baed:1f6d:59b4:957]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::baed:1f6d:59b4:957%5]) with mapi id 15.20.7544.052; Mon, 13 May 2024
- 02:02:55 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com,
-	richardcochran@gmail.com,
-	andrew@lunn.ch,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: fec: avoid lock evasion when reading pps_enable
-Date: Mon, 13 May 2024 09:51:26 +0800
-Message-Id: <20240513015127.961360-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0040.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::7) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="k8azgD8e"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id CEEC488116;
+	Mon, 13 May 2024 04:05:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1715565909;
+	bh=tTs3SgAZz3M4fFgZyEds7/0nwHr1qmH1+Ulr0vH+QKw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=k8azgD8eSZoUc1SdSYM9g1y5dF6b+iRM6I+W6gBbz3eE6lNa3CwaCHmQI2si+tjib
+	 AamXCwBphyApwW/3ghpyiPxc0juP6Slw9y5glS+1wl0MInTBspcV72E84hjhlORaNB
+	 bEoiuCRyLVLzoRsOZnkAZCUceXHeBtC3TP5WT4yCpVNuvcwv96w95ngM9asyA2PNYz
+	 +dPQb536hhcwpbPw93RVzZLlxXo86rE6gmfdOGGphrhWFlprPh68bo6bDks81K5Jv4
+	 Xi9B50HT4Y8O52BNG2MozipE2CZkM6403i8od4Gd0ezFIivio6lWQlYiOSjChIe4JG
+	 xfRX1cn/uSBag==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@dh-electronics.com
+Subject: [PATCH] arm64: dts: imx8mp: Fix TC9595 input clock on DH i.MX8M Plus DHCOM SoM
+Date: Mon, 13 May 2024 04:04:39 +0200
+Message-ID: <20240513020454.127584-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAXPR04MB9400:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c219309-f373-49e1-85d6-08dc72f0cdcb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|52116005|1800799015|366007|376005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xDsz/qAsjKM9P1BapO8hAMkYbK7M3bS+8Sa6tR+PNTj+8Tduk6WLN3d6Pq5i?=
- =?us-ascii?Q?99KRKY6HaT3nqYVsLo0eO/5ZroXUBloUL/SX7K/DN5XwQwI3y3kntoindw5s?=
- =?us-ascii?Q?LORAZABzugJSJWRK2q74fPfbfUN1RY4oU+x7fF17L+N7AyUXVPn65wKZxAt0?=
- =?us-ascii?Q?i6eov6o8QltWmzeG3CWqe3lA2gvHGFXy520FlF0MMlxOuBc8sMf3riVyNCw7?=
- =?us-ascii?Q?Msey3OIuA1tddM+E52HkhPuyEIDHJey8S+xe7pr/u6VRYBWm21APuC5SqnBL?=
- =?us-ascii?Q?6l4AOFyzLx6pJohiWmPoNXeky8jzUyCRHx4rEt3uMVR/KMm9oUrnP1rUjcEh?=
- =?us-ascii?Q?y3Xf1zU8eQHCtg13p274PM0XY127nwMcDdfk5VWxBHcx44T9hcayLw1VYyxg?=
- =?us-ascii?Q?E6DUF3K7r66s2YuOE7bfrGwx007zdiCOVe9x047jcKfQl8UQ80F4ZUNZmXHB?=
- =?us-ascii?Q?/r3R3JHbCC0+TaXEon7JFqJVi8/q56UCoPEK3FgBh2sByNa1E2RmDLz9Zege?=
- =?us-ascii?Q?kJYma6W+C1mLMVTUIY1RDMULHDYEBk/i0uzBV31BpsbuSh1tesTbDOyTgn+5?=
- =?us-ascii?Q?3KGyhH1q+ZwBxt0NQQnpkroqqw8XQDr3StDQkQEe4VIODCM8aJnfVCSEvsst?=
- =?us-ascii?Q?Z1itFjfKWiM//OV+Cx4kO9n7hFv3BUjxuZ9uECpAoh376TQd/G+Ke6AlIjoV?=
- =?us-ascii?Q?5tT7jyRFlIpH0PekOQu7UXpHSPay7bpn94GQgRoASdGB6uCOXB4mENaifSA0?=
- =?us-ascii?Q?+RQaHxs0HDlHNDTqyrMpitpLAy+yrzaFe3Vk2jtSq6a95XmFjex7sWXZ0PMB?=
- =?us-ascii?Q?rBVkMLt8fhNufKbvRV33im6RiKseUWcGVlPAqpBvhdHwFP3YGOhuAhV8j3Nc?=
- =?us-ascii?Q?Wm4p4nQ2SVVbW7gJQfJdKsus0COw5zLlNd6WQYFIOKqxDnlmKzXXNhNeiZAv?=
- =?us-ascii?Q?Gd8qiMvg/sKbiLxg+fg075UDK/EMuLG7dWoXL3EEm6Umc7y9FXqhGbsMqidx?=
- =?us-ascii?Q?mJHZDnE1OvYcoU+1oH2O9F8GzmcA1bG82D5oMqJtw6zWddfNGntMAcO8y8ID?=
- =?us-ascii?Q?qQuMbceWuctb4PxUQHOXhYfyJT/RLurIdt0saI5S4FnBD9RGxjyem4CqEqHY?=
- =?us-ascii?Q?zoBabRbhCjl20wCy8YoCDDHGziKuy/qscK4Gh+c8NBnCUsonHGSewoefCwRb?=
- =?us-ascii?Q?BOSbJzH0oy0qSD/rqYqi3tw5mdy11bPtP4FeogBDPQ8aAhL1AAgUpogy3LLQ?=
- =?us-ascii?Q?L4cFHQj/IbnwPf2aUdN17jx1vmDIBAJuIJypXB8QNQAkktBto3xNy39xgGEj?=
- =?us-ascii?Q?HtM4WGeIO+HCUK3ty2Ck4I8ptPr/TNMOH4y/b5I/3+q1Aw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(1800799015)(366007)(376005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?z7OXDaBpZURMe472MsXjanxiiGi6FSYfSxAUsswDAw+iD80QwI3Hkmtud9Pj?=
- =?us-ascii?Q?5pAwaZwWe1QRLcT0eUHbF/AJ2omEYGOvNzgGE1FmuMC3wLl39fN93MHjnaS9?=
- =?us-ascii?Q?P7tvET8qgkIL4ZATzZfLQQZto8L+O5HYLzhLoaOdqSkkmAjsPws4z1cK79AU?=
- =?us-ascii?Q?FvQX8BslAHRuN1lbYRwN24XAgh3UaF3HepEMSGSSIuTT9u2SsGOvbl943f6W?=
- =?us-ascii?Q?lUGM2XQWHfosGhbqbKIScJ5qwvCiPuDWTBEqErMAEcHqa/1/SjyOJF0xxwXi?=
- =?us-ascii?Q?8oulkKGme9lVpHWCxEvW83RiGoa+c8j4zWjhwRccivqGqpBGc/ySkfFGcm6b?=
- =?us-ascii?Q?mF/XS2D8/bTm/zCCTdtuFw3CctxB320Syycquig1rygo9nA5HlWB7JCdZaIo?=
- =?us-ascii?Q?zKe8P2EUyzh76g9XGxXGhwlyH7cclWURpyNEfxZHrpblbJQu5acZPqS1Jj/8?=
- =?us-ascii?Q?ps26wM26eg+V9nAhaiCwNsAG4NZw/jj6fwo3CkX8s1wSh5rwjTljfZnIex1V?=
- =?us-ascii?Q?IqpaLlV9gpzkGsJdsgCjtbfn9pRrNkO7nVC6U9ScLM7j0F/xz+r1LpMn7VfJ?=
- =?us-ascii?Q?0rWVVxYn3mD+wwOx+UwxovXc+nMkf+I8+A3KL7NjtswyU5FPsXsu71r9LjWq?=
- =?us-ascii?Q?PjP5eukqKQH50covc6gJkP1TFi1Xde0o6fUmGGt9NxPJUf4ZM+UyxInDJsiL?=
- =?us-ascii?Q?X6jh+Y6e49pfMayFtQzCC5iGNrDJLe4ICVI5wjzjq7cx0PmEMpDPWC2okIu9?=
- =?us-ascii?Q?Eze2vDIq0xJuR/opn3cV+TJTdI+B+cmM3IZEI7IJFebuh/iKGc7SlG3WkhZU?=
- =?us-ascii?Q?gq5JqSPMyYKaPnKu52MX76tqkPqmbk6pNjlBlZ6lLPn+HFnq9/vNWtoqOW4l?=
- =?us-ascii?Q?qsdFTndUGlcgTGqAPOZRdZ0t0kyS7BENIntuxDwBCVB9AsPpiC/3SnJsgSoZ?=
- =?us-ascii?Q?xIoUna0A3HFSOYsklaNNFjcJSciXPQ1EK4aIHBgx5QEYkVEdepfHfAAPNA1c?=
- =?us-ascii?Q?dnVoysfVqveCqs5upnNBkaly4kJ7SDqEJBVHKgYDjS3m12NLVg7jN+JJVln2?=
- =?us-ascii?Q?VbKYTx2bCnZdpHLuxtQiIO2DTuZSF1nZzE7IU9/rNQGyYSGUxkSg8JEkqwxc?=
- =?us-ascii?Q?r9DSMasV+Uq1rzlyFPXdsUQuaC3g+uzVBYl9OJVcmLGjq6/kfBb+YTGK/CQt?=
- =?us-ascii?Q?UbP/9NwVFOnpornjbFnlungDmoaWYVnA319cL0Ksy1IbLK4qgfsEJRwdYlRI?=
- =?us-ascii?Q?TC4RE8jiHnwy2JOvsEUL9M68puK8oeaUOdc1o6DesTjuadEUVQUt+ZPvmmSx?=
- =?us-ascii?Q?gW1/9vWwYkpqoGHb4fkCYXP1m2KWtPEnmfWg97R3k0d4rO6EUIO5L2G3Zned?=
- =?us-ascii?Q?G1XLhY880nVwNpGlOOYT6i+l/CpjnRCRFhmkmtxdbGJhta9+n3N/+RlvOGqs?=
- =?us-ascii?Q?jgJxFPtNMChlBFHvOnXk5Xv6zkKXbOTnZCRPUEE/op615o6EVWsN2jN1UaiL?=
- =?us-ascii?Q?5podLpyEkARKi/yFbylP8sNgT4MRH4DgxeRh7x7GTxg1gqiRLSR+PhtSPIDN?=
- =?us-ascii?Q?1dQlMegCd4DINCYhG9+OArHaG3rzrnzV0vnqzcpm?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c219309-f373-49e1-85d6-08dc72f0cdcb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2024 02:02:55.2008
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 34C+iKhBmeQapjTgg6UfoXfHP8H5T9SsOQALF9ikkzJJnVy87GRsUvnKlYmXmMaXA4FStkrMyaeBgwAIJalnpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9400
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-The assignment of pps_enable is protected by tmreg_lock, but the read
-operation of pps_enable is not. So the Coverity tool reports a lock
-evasion warning which may cause data race to occur when running in a
-multithread environment. Although this issue is almost impossible to
-occur, we'd better fix it, at least it seems more logically reasonable,
-and it also prevents Coverity from continuing to issue warnings.
+The IMX8MP_CLK_CLKOUT2 supplies the TC9595 bridge with 13 MHz reference
+clock. The IMX8MP_CLK_CLKOUT2 is supplied from IMX8MP_AUDIO_PLL2_OUT.
+The IMX8MP_CLK_CLKOUT2 operates only as a power-of-two divider, and the
+current 156 MHz is not power-of-two divisible to achieve 13 MHz.
 
-Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+To achieve 13 MHz output from IMX8MP_CLK_CLKOUT2, set IMX8MP_AUDIO_PLL2_OUT
+to 208 MHz, because 208 MHz / 16 = 13 MHz.
+
+Fixes: 20d0b83e712b ("arm64: dts: imx8mp: Add TC9595 bridge on DH electronics i.MX8M Plus DHCOM")
+Signed-off-by: Marek Vasut <marex@denx.de>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 181d9bfbee22..8d37274a3fb0 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -104,14 +104,16 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
- 	struct timespec64 ts;
- 	u64 ns;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+index 882186d96f58b..4d30f74622a18 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+@@ -254,7 +254,7 @@ tc_bridge: bridge@f {
+ 				  <&clk IMX8MP_CLK_CLKOUT2>,
+ 				  <&clk IMX8MP_AUDIO_PLL2_OUT>;
+ 		assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL2_OUT>;
+-		assigned-clock-rates = <13000000>, <13000000>, <156000000>;
++		assigned-clock-rates = <13000000>, <13000000>, <208000000>;
+ 		reset-gpios = <&gpio4 1 GPIO_ACTIVE_HIGH>;
+ 		status = "okay";
  
--	if (fep->pps_enable == enable)
--		return 0;
--
- 	fep->pps_channel = DEFAULT_PPS_CHANNEL;
- 	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
-+	if (fep->pps_enable == enable) {
-+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+		return 0;
-+	}
-+
- 	if (enable) {
- 		/* clear capture or output compare interrupt status if have.
- 		 */
 -- 
-2.34.1
+2.43.0
 
