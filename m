@@ -1,30 +1,32 @@
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7431474CA
-	for <imx@lists.linux.dev>; Mon, 13 May 2024 15:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB044153589
+	for <imx@lists.linux.dev>; Mon, 13 May 2024 15:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715614284; cv=none; b=iBeFVxgi8FxYSNZaBqUHe3uDFuyymcB4zz1jGBLe6f7hKURuzf5DHt2mytV9tGojKdWNkpo19mz91vCfuH58Qc2OdRp9oPYbEfNW2rmJJMBn3aJVnmF4Lfy1/gjZugLxvYUboZp0R80iRjBuZN5bFCVGOCLWEttu3fht7Ng71a0=
+	t=1715614286; cv=none; b=SUbfrOIX6xSHhyyEKiuFZYWyLmkjaBsbwSd+YzIuDe7UHVmFZsJZBc0plZOv1ZeNDpzLg2TVyNaJZss0Odd2E/ZR3MASD/3DyY5KS9UK1VmkrDx4MkE/QCMZc+CkjVYRhSCsTgncsmhCX8EjbQ8LlFIeLgSFVGFs4r9FRf1zcYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715614284; c=relaxed/simple;
-	bh=w20mTqxPk9ZtO8madRvj0Hv77EK2jVodrEj7P3mT978=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyYUlZjjn4KtxzXr50eVWTDV0KoRcf+hXHdCeMtK6UBLFgMks0YCZsUKOaCOvS0KQicXR1v61bVLuZNEIhRMRb4nAfdSMbEVQVFwO/Dro3xpEpofxmIfLiUBCj0cX1MdYi3tjAgCgGqaizvFbyBJ5cnawlqrZszyRAGTIoKQC5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZRmDzwba; arc=none smtp.client-ip=95.215.58.186
+	s=arc-20240116; t=1715614286; c=relaxed/simple;
+	bh=l89qcY05vZBXoEEEwzVwYsUrgne6mG0qP39cHxCZ9YY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DTbPOVWgLBxR83ZDhgyUaVvfU60XEXLPQu8ihybLuQJ1qzkV2IIXHui6veoyLGtR3/9TvoEa2ttfhP5ybGdaZ+tj/pXAIi8p3D+nyR6Oov7yZ4ZEr4Gg7EVxPlEU7rS+oY7sC20IzYDf+FV6e53jrjT+pNOamxeIB5oG1oZlwAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xv2NJ8oB; arc=none smtp.client-ip=95.215.58.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZRmDzwba"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xv2NJ8oB"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1715614279;
+	t=1715614282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k3tjxn3hGY8chOLjVh9vgYTCDBGT+jNofxaqe3MH5eQ=;
-	b=ZRmDzwba0JQB7k8VCryqFvCdY5BoaUNiiKnjxAg6mzUz+0tZAiAsPe7OB5HgR+ZSUk4CpZ
-	F3qLiy5rGzO5TxUbfWV/9t8OmU2OOlAHMx8b37w8sa/UntnSUAVtJ5Z7Jbh3I7DWmilj2u
-	xddyis1gkWeTjmE1+IeRnS+i4eWxyyA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WiifdoFYgTp3rVEK2qqeyz0G8r+zsR9iFqUJx/OeTgY=;
+	b=xv2NJ8oBRndXa8ykHGEtOp3Az38+Qtnmuim843TUjh1gWieTYWz6a7OMJGYlc8wi2pYIv+
+	Cssj7AOECrLYKW8tryoychMlunWVtWmb/Gk5UrnSjOGQMlLDcmUjgvKF5/dAfOFKyP3GN3
+	sXGdeBCJWv2VOdSAh5ARWgXx27CFts8=
 From: Sui Jingfeng <sui.jingfeng@linux.dev>
 To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
@@ -38,10 +40,13 @@ Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>
-Subject: [PATCH v2 00/12] Remove redundant checks on existence of 'bridge->encoder'
-Date: Mon, 13 May 2024 23:30:57 +0800
-Message-ID: <20240513153109.46786-1-sui.jingfeng@linux.dev>
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH v2 01/12] drm/bridge: simple-bridge: Remove a redundant check on existence of bridge->encoder
+Date: Mon, 13 May 2024 23:30:58 +0800
+Message-ID: <20240513153109.46786-2-sui.jingfeng@linux.dev>
+In-Reply-To: <20240513153109.46786-1-sui.jingfeng@linux.dev>
+References: <20240513153109.46786-1-sui.jingfeng@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,65 +56,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The checks on the existence of bridge->encoder in the implementation of
-drm_bridge_funcs::attach() is not necessary, as it has already been checked
-in the drm_bridge_attach() function call by previous bridge or KMS driver.
-The drm_bridge_attach() will quit with a negative error code returned if
-it fails for some reasons, hence, it is guaranteed that the .encoder member
-of the drm_bridge instance is not NULL when various bridge attach functions
-are called.
+Because the existence of 'bridge->encoder' has already been checked before
+the simple_bridge_attach() function get called, and drm_bridge_attach()
+will quit with a negative error code returned if it fails for some reasons.
+Hence, it is guaranteed that the .encoder member of the drm_bridge instance
+is not NULL when the simple_bridge_attach() get called.
 
-V1 -> V2:
-	* Gather all similar patches to form a series (Laurent)
-	* Fix various spell error (Laurent)
-	* Correct commit message for bridges of i.MX (Ying)
+Remove the redundant checking codes "if (!bridge->encoder) { ... }".
 
-Sui Jingfeng (12):
-  drm/bridge: simple-bridge: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: tfp410: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: nxp-ptn3460: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: panel: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: it6505: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: adv7511: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: cdns-mhdp8546: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: megachips-stdpxxxx-ge-b850v3-fw: Remove a redundant check
-    on existence of bridge->encoder
-  drm/bridge: synopsys: dw-mipi-dsi: Remove a redundant check on
-    existence of bridge->encoder
-  drm/bridge: lt9611uxc: Remove a redundant check on existence of
-    bridge->encoder
-  drm/bridge: imx: Remove redundant checks on existence of
-    bridge->encoder
-  drm/bridge: analogix: Remove redundant checks on existence of
-    bridge->encoder
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+---
+ drivers/gpu/drm/bridge/simple-bridge.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
- drivers/gpu/drm/bridge/adv7511/adv7511_drv.c           |  5 -----
- drivers/gpu/drm/bridge/analogix/analogix-anx6345.c     |  5 -----
- drivers/gpu/drm/bridge/analogix/analogix-anx78xx.c     |  5 -----
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c     |  5 -----
- drivers/gpu/drm/bridge/analogix/anx7625.c              | 10 ----------
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    |  5 -----
- drivers/gpu/drm/bridge/imx/imx-ldb-helper.c            |  5 -----
- drivers/gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    |  5 -----
- drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c        |  5 -----
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c           |  5 -----
- drivers/gpu/drm/bridge/ite-it6505.c                    |  5 -----
- drivers/gpu/drm/bridge/lontium-lt9611uxc.c             |  5 -----
- .../gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c   |  5 -----
- drivers/gpu/drm/bridge/nxp-ptn3460.c                   |  5 -----
- drivers/gpu/drm/bridge/panel.c                         |  5 -----
- drivers/gpu/drm/bridge/simple-bridge.c                 |  5 -----
- drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c          |  5 -----
- drivers/gpu/drm/bridge/ti-tfp410.c                     |  5 -----
- 18 files changed, 95 deletions(-)
-
+diff --git a/drivers/gpu/drm/bridge/simple-bridge.c b/drivers/gpu/drm/bridge/simple-bridge.c
+index 5813a2c4fc5e..2ca89f313cd1 100644
+--- a/drivers/gpu/drm/bridge/simple-bridge.c
++++ b/drivers/gpu/drm/bridge/simple-bridge.c
+@@ -116,11 +116,6 @@ static int simple_bridge_attach(struct drm_bridge *bridge,
+ 	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
+ 		return 0;
+ 
+-	if (!bridge->encoder) {
+-		DRM_ERROR("Missing encoder\n");
+-		return -ENODEV;
+-	}
+-
+ 	drm_connector_helper_add(&sbridge->connector,
+ 				 &simple_bridge_con_helper_funcs);
+ 	ret = drm_connector_init_with_ddc(bridge->dev, &sbridge->connector,
 -- 
 2.43.0
 
