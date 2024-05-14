@@ -1,33 +1,41 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFDB14A96
-	for <imx@lists.linux.dev>; Tue, 14 May 2024 05:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556E114A96
+	for <imx@lists.linux.dev>; Tue, 14 May 2024 05:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715664404; cv=none; b=T9/nSOfCkLMpATyiljoQSVXYsSNP/DiLdDpbMFOiBpQqe13V/KZ8kldX3mRS7IYqIovU4HdeiupL8SMinuXGjEWORZQVq8DgeRhwJ6aBWdpOtq5oYbn2up7Pc6lLcJ/oF/NjsCfQt+/gmyS5qGWlVCUWPjo5AuuA6+u6BVicqWM=
+	t=1715664526; cv=none; b=atvbhQBz7FSmQLlUsSWbMdLztu68nXIivfyWEOCvlO8VuSkJyd3kBfHk7+7ZY1YPKK5cPuKyQDddwQruYxCNEGbwwNeqoYVzG4YTlwXod4VlxMBfZPZYvf7Gk2OFaOV21lmf520ETzSMesRezQO8jeiqyJYRCZaGJ6nQRnea/1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715664404; c=relaxed/simple;
+	s=arc-20240116; t=1715664526; c=relaxed/simple;
 	bh=NRqzaYlat30Cka6lLWm1QfveJqU5KFy7bW8Zc9IvWpI=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=PuPl4CUz17RQHDUHFluTYctsV3a/bG0/1PGLRmW4gNYjWOJG70GpULCGkSUa4o2GJQ2hz9sy1jyEry0jsAxueUkxThqrHopXcTr2wr9XPuuCN9xwfP7PCNUuLuieGNkSp3fp7GUeDdgFZccZWO1gD+hBEmQtUFD8wX1vpfTn0fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	h=From:To:Cc:Subject:Date:Message-Id; b=q5YTI1nlWEjyIZrjULWQEa8xWql8lyULcj3htX0O1gMn9xNHi24MFqW6QsJQ76KYPwb0sOCBf4dx1WGYJezNy8BmbiPlUR708BK4Y++PnOK42sc++yiMpjnqU9EKCRIZtEjeQegOB04VOycfT4qVonCPV+RrTtnWdHJx5Tho4uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9DEC82000F6;
-	Tue, 14 May 2024 07:26:40 +0200 (CEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 59DB71A0BC9;
+	Tue, 14 May 2024 07:28:38 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 544C92013D6;
-	Tue, 14 May 2024 07:26:40 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0FA831A0BA8;
+	Tue, 14 May 2024 07:28:38 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 30BB1180226C;
-	Tue, 14 May 2024 13:26:39 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 56BBC1820F77;
+	Tue, 14 May 2024 13:28:36 +0800 (+08)
 From: Richard Zhu <hongxing.zhu@nxp.com>
-To: hongxing.zhu@nxp.com
-Cc: imx@lists.linux.dev
+To: bhelgaas@google.com,
+	lorenzo.pieralisi@arm.com,
+	frank.li@nxp.com,
+	mani@kernel.org
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	Richard Zhu <hongxing.zhu@nxp.com>
 Subject: [PATCH v1] PCI: dwc: Fix resume failure if no EP is connected at some platforms.
-Date: Tue, 14 May 2024 13:07:20 +0800
-Message-Id: <1715663241-8826-1-git-send-email-hongxing.zhu@nxp.com>
+Date: Tue, 14 May 2024 13:09:18 +0800
+Message-Id: <1715663358-8900-1-git-send-email-hongxing.zhu@nxp.com>
 X-Mailer: git-send-email 2.7.4
 X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
