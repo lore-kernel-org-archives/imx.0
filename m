@@ -1,210 +1,154 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2042.outbound.protection.outlook.com [40.107.20.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB411802A5
-	for <imx@lists.linux.dev>; Tue, 14 May 2024 16:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715703556; cv=fail; b=q04ruCCgWTM1vVIM8Wzl9n/FfMTT71bi2kVx2Jn0EjttH1wlum/r4MrL/PXxaqnD4TfnsQJ+hP1wakuQLYeunLxONgXhDi7ZajciPcH/n0ozNH8AqnMKGQKDa2V/FlMj7yTJkiuwIxbPzJIMA/DA+yQIA5lFKZLxo2DvbwZP0wM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715703556; c=relaxed/simple;
-	bh=PnycsfVh1aujBm9yTOz32NLA6pEUVw8jio50miuki0E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SVxQ/MPd92FvdWXLgkyHpYeMrbz2KxggDRK70tXi2WDVF3tp/jat7sPOvSJZU3P0Tcl/Ui4CNkAZR0FG0bh4T3U/y2EAfEnfgivtJTQil/Y8za3r/x/lLGKgf/I+CdAqE4qYUZdJQ5G+VjWvkEBumjJvOKvqYPxgx1CqI+W7Gdc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=m2MWpEqw; arc=fail smtp.client-ip=40.107.20.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E1F1802B2;
+	Tue, 14 May 2024 18:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715709980; cv=none; b=L5O3je55jWBSgeulV6TDsyIUb76IQXTPSW4S0vu3NE+EwZQfCgujjt9jQ7XmjzYu04w1jUTQHq1ygNt2dllWFzkGQ/JealepHUSJjmr5S5MpBZLqYIBT3mLk1I81Py4W6QeApxLnFeOz3fVfJiY4U8NfUjfUVu9YCykM81WYSpI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715709980; c=relaxed/simple;
+	bh=1D7baXBKgZDMtYJArXbSDEg75oiAzjU9n1AllDE1/jA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c0bgO8ife5YQX45vyPbC7wHlJmh4Ht3wfRjFzFP5Ft7VZ+ODwdDYskE/g3rwyRlFV0TUFpsNnsZEVRmYdG9EXjRjmSb6Fa4msEX/pCPDOr68hIxrNQBcsAwVY7cdiVkMvuc0S4mj7ySdAOqOIFOeW+2r7eQhS7Ot8YVPnCvCL24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtDmOqPd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="m2MWpEqw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aPrgUC+P8k+rEyVWvzfJpBn2y1kpDefMepHaQTrbD2d/l3e1dKUiKtha9vE18/kAhx5wrau72db61KtR0nWriIjLuIqoXIbI4JQxwwLXSw4x0zMjMOtbKf4FXR0k3CEm7WgFWOA5kGujrVYXKps7o0wa5Nu/DP8fBwFMc7Yhd/K1g1SWHNF1WzHpQ229naGt268STbwe0YqdhVrg2LN0iQnzBecLWIwFedKW8xc4SUVjeba8XDLluRuBwySAT3b0Z9AIqPr7CDG87BmAG3CJyIisu0bRmsE9FAyyWaKmKh29ZrDtUFXCjbaFlnscDKIi/jSshI74Bk2k4eKxnMf17A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5vbD7ViSGycGGLn/TXxnyHOEosd05uK9V4vPjn1yXPk=;
- b=D/0CfRxmnAsHviwMHJPoRptNEHmWCXBteXPydrSnqlmWmqQD/kolc1KhA2J9iFanE8wFo7lizdnmcVOs8UZrg1vELHJv4WxbNeSD95+Z6n/yg57k2o43M6te+j6croxT5oukDE7QlWCkd0QdskF8YpbnOLBRSz3V2qzDFCrmVm67yaXAoykH7cWmVWqCupuSR67FHqLtJ+RezQu1tjKhOnfRzsmYG9VNUR4K/qK3svjSjmocUqUy5bWIR7xznPaZhCWiVM3f/ZvWjWdKx4foPNWo9gokRHbiCluxdjIcN2CNPH+H1adZI5yqf7pwLhnx3kMIQiU2hHsXlHicVI1QXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5vbD7ViSGycGGLn/TXxnyHOEosd05uK9V4vPjn1yXPk=;
- b=m2MWpEqwf8LqlM4leQ6pQ9+AZr5DETQPltiHN6oz9j7StWqAukAhzo+yUi4yT4TrknuVJedp2MQjFYb9d5maiZd1dUPR/CojgWdc49hX4OBfbGxS7bN0bSSUx4W4prMlzfU8D7xG8Fc3UfhM3SIXqYQCln6FUd0F66CVZm1YtBU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by DU4PR04MB10887.eurprd04.prod.outlook.com (2603:10a6:10:592::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.21; Tue, 14 May
- 2024 16:19:11 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.7544.052; Tue, 14 May 2024
- 16:19:11 +0000
-Date: Tue, 14 May 2024 12:19:03 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: bhelgaas@google.com, lorenzo.pieralisi@arm.com, mani@kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v1] PCI: dwc: Fix resume failure if no EP is connected at
- some platforms.
-Message-ID: <ZkOO923deBXzAcQ+@lizhi-Precision-Tower-5810>
-References: <1715663358-8900-1-git-send-email-hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1715663358-8900-1-git-send-email-hongxing.zhu@nxp.com>
-X-ClientProxiedBy: SJ0PR05CA0099.namprd05.prod.outlook.com
- (2603:10b6:a03:334::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtDmOqPd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8A9C2BD10;
+	Tue, 14 May 2024 18:06:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715709980;
+	bh=1D7baXBKgZDMtYJArXbSDEg75oiAzjU9n1AllDE1/jA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dtDmOqPd0y5D56goykEk4q+29o4G52cyn17EUlae8b9AAKGV/nQugPcFxLxjdajys
+	 uSXbTVMi7rbcYOeRNcm4gcgwFkce/xHJRVOqOjMBbBD90CyI7QXzOs/VuyGbIjMgWI
+	 qgYOthRVzQHQUpg+21SGMtO3IBIWsbFFXfVePq+Sa/nx2Y8TEoYU/CSqDXgN/1mWzL
+	 It3E0eMmYN3ByX6MzxqjzBYPvqeq2M0REk019lGl4VeAoBBbldeervtdSe2tnUq/cp
+	 x2uepyY1P2EpET69f2+Yf9cZCAXEg5479aYZM7dO9zS3GJPot2JSOWd+9QEVS0HcwR
+	 JzT1N25quhF4g==
+Date: Tue, 14 May 2024 19:06:14 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
+	sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, marex@denx.de,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de,
+	shengjiu.wang@gmail.com
+Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller
+ sub-node
+Message-ID: <20240514-campus-sibling-21cdf4c78366@spud>
+References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
+ <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DU4PR04MB10887:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7152b7a9-a4cf-4852-c3ee-08dc743196ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|366007|1800799015|52116005|376005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GviAin7iryitA4xniEZ9L8CTw/Kbgf0GEewPeJGdUyQBJc9UL5j7spcpP05E?=
- =?us-ascii?Q?0btIB4/g7tECOj3Bij5ZqW9FOaRXhf03acsBACoqqsBAhKI/EyqjLkTSKFMu?=
- =?us-ascii?Q?YbEcWrqUMV5uxg3cWyXAKTV9QKhi5/jgYMj2ZQhikZJgSBH42XlDx9jUkgWO?=
- =?us-ascii?Q?/7wSLc0tWVYlBIEjxNp68nKeFRwOQfricx6RnRnfBHuxhfB0PH4I15hfolr5?=
- =?us-ascii?Q?+EEN/UFLsB8UScQYpvnelXbnqYQKiHioEij0opg/IQw7gLSMRo3IBX2bsVEY?=
- =?us-ascii?Q?eStdmhlfBDTxeuhAlytU3B3wYcTgcAC8nVZLYrfN0hH/Bp3Lx4HNVXZ4SUtk?=
- =?us-ascii?Q?+5k9zMh5ZsXB/8pfQs+MAz2dMpZxucyip2Xq1HLCctYj4WIO8xPxjblOtUdH?=
- =?us-ascii?Q?0XRW4nLuDf7akaxX7vTIAlq9PLOe2VSYvYlbInOJFdQ4TnRbz+jRwEczy3+H?=
- =?us-ascii?Q?41IwjVd5LjQKB1tWOfOyCZ3evCo4BQtvHqAWz16dA+Gqvt+DOOLl6jdAFnWJ?=
- =?us-ascii?Q?vMGYcRz8Z9Do55ohMThroEe5TkHoYf51qk0bS5sLvb1Z4/LKSN/GTvEx8ORp?=
- =?us-ascii?Q?ehn9dpclDkT3EfvXo9rIR3B/APBKs6Xju027nSgGVoSVxcpaoBXWuRx8/peC?=
- =?us-ascii?Q?ii46JehgfNl4DZgyMfIdAEBUQUs8TEFUDKuPXTaTf3pf2UlhT02Lm4guGDac?=
- =?us-ascii?Q?UL5rt2aj7OsCkohw86ZLQfwwspv18BXPporL9AraL89ur0dJJ3cBj/Ua9u23?=
- =?us-ascii?Q?ovweLb552iFV3m2YO8amtgStA4/ZyHzmMM81dSCQXZWSN6KzTZzXu6SHmcfL?=
- =?us-ascii?Q?Qo7FzyGkPAzYaxxDt3IT1AAPgXzHpSkASdr2fD4yEaTkICHywRHNdcCao3bW?=
- =?us-ascii?Q?HG3fXi4GSnuinSb7Mnc32hYeiEAtjZ5MFEY+mjfG3a6pB0sK+9qI1D5Th+vw?=
- =?us-ascii?Q?qGroBErNjX+B9yJLceCotxptBqhEq2v/3hnW6AlxXsIZsV4GMOmqKij+1AQS?=
- =?us-ascii?Q?+9Bm30mJeaA08MDdp547fFgGKnUsxOYhBLp+PV6iFSZKMUpZOEcJdk8hY77r?=
- =?us-ascii?Q?vhgCzHqyacvbCFExSFDVa50pZis6j45czaOkfk1nviBrw7Yup7PRtW+VfXdW?=
- =?us-ascii?Q?XfJi/mKADjnBUAkZmM74SPHH3jD/FSBzYRzwEvuZDTxyfoXcygQw2e/s9TkO?=
- =?us-ascii?Q?ZEjI4Hp9JgJEfTckmo52QS2DDhENCbT+VmUqVMTLFjVj8dCzQzWYHdHfI1z1?=
- =?us-ascii?Q?d8cK3Scq2+OxAL/meExDY4xOYg8aJOP0WWEafkjmaQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(52116005)(376005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OJZnPpiqwf8IX4eRw50M7/oDCxFjIsnrZlpPe1IKqlM3BLJQAtfGcinX6LXF?=
- =?us-ascii?Q?jC/R76d3j2ZuabGlA642bbykUD421KIa+JjnBhJQ7Vjb3bcbHfexVrcK4qR6?=
- =?us-ascii?Q?Y5izrbpHFqBJeTZIg9csv19xU3oJ1pgb+8yC8qQNgojO1vDJymNcubJ7oMUp?=
- =?us-ascii?Q?Ky6AXljw3WimXRi7UGlX/SB5BS+8JBh917PtiYPvPd5jbVlgYOT7h62nMvK7?=
- =?us-ascii?Q?Gqav19uY3StMMLDEEAYoFukHY8CrECGQwoXoCfYsUQtPK7e5VnrRLnah4Wee?=
- =?us-ascii?Q?XGFrESPS7mXy+LbAftzfnd+0oU+za28WEVDUwPWIQEaYdEFtxGaW+FTyUgL2?=
- =?us-ascii?Q?vthVKjqhqGCWz4H0I7Sa8yMxNKkxYjRmW4iD64SVDmQVAjYLkNiUEcb9zwUJ?=
- =?us-ascii?Q?FYebV9kbIajHeLIYgaCQ0jnF9BaH54pB9w6FZHWqL/4mJrCSP6OmCL9Q76nJ?=
- =?us-ascii?Q?MJfHxDV5okAU5WO6clRGFrQPhywarkDenaDhwUoJY6yZSpjel5/9aPWk9zlB?=
- =?us-ascii?Q?yCE2LQKLg2EXmKxYAglnhWMZdyDHqhfKGTyQcBijuZjsrWpq1mVuo6eHu35n?=
- =?us-ascii?Q?nfu+GEB00fQNIpmkgiYZvFXzDjtoGiVtBl94j6PuMIVFNaS78y0x4G7bQuoi?=
- =?us-ascii?Q?Gqfua+T7PFbEY+3HuQ1Hhz342r7H7nQr4eIdPnkay7owT5bDYa2H0K1Y/P0a?=
- =?us-ascii?Q?qYFhbrExKCnkO5QvMpmxNi/EptfvG6ASHCyuk1Ls+03HFZP201pbnUhrd/Jw?=
- =?us-ascii?Q?xWNy0/PlFr0Fny7GoqtO6g2gaq28Fbm9EWaqyYN6Jo4iNSrJxcBodeSiuYSP?=
- =?us-ascii?Q?GTrAR8oEoXi5091yesHnSAu3+OfFWF6SOgusVvkJXHuzBFUO9WpMWjenKbjc?=
- =?us-ascii?Q?5O/7Z1ZX4dPREZnnHvKh1gmMkNrUpBjWmVBMXaQMdr8u90/Qim8USOOJvDnp?=
- =?us-ascii?Q?CZ5gVAEqdp6nSA/Y7sS9liFhqMPWssEzwHAt3eJ1/vSzbLNcc6H0cNp43AH0?=
- =?us-ascii?Q?b/lhvMGy8tjiULvve5hJwcm/BIZTwLOJ3Cfg7O/Wo7J3/1DiWdtufDqN1NYp?=
- =?us-ascii?Q?+LpuKUCRSuvP4GVnFKJ1zNXPpvT3DnEJW9+pUtCUKFgOLHeFxQL6GVktMKN1?=
- =?us-ascii?Q?mVo85ybLjs+crFxXI7a2TnkF14+F1R6ypz+w/yBAjqGS+og6uwFdf0x8Prmg?=
- =?us-ascii?Q?nqXWi34F58eXWFfgGbXpfyZ2WWIChqRzljy93avlx9aYJ37ZvRv9VEtcrFAF?=
- =?us-ascii?Q?WXK2ZHvtY5dyS/oSUDKTWqDIiZWwFlVAbUcc/xMYk1g15CLmArHkrI33qgjq?=
- =?us-ascii?Q?jadDKOEDWk/+Hc9FrfVar541WpJKoIRyUxJ99ABNU3l+x84tG4rX035SKLJU?=
- =?us-ascii?Q?fvLNvrG6IVK8P2X0MOGEuhTxu8MWxiZd8ZIGs9W3Thl2B1OPHsPGBiLt9U6N?=
- =?us-ascii?Q?0Coj6FeJ7sKCWNCsRC08QbHez7pMFWFJgQE5e50LfCx+Uqi4Ke/7LNQAwEPP?=
- =?us-ascii?Q?i3OqiH8jOgIdt+K7K0tUac64YU3SkZTDDQmk0MUFRgEueLSXv8WuouVdDNU7?=
- =?us-ascii?Q?Vi8zfTDDA3SEFaHx1+c=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7152b7a9-a4cf-4852-c3ee-08dc743196ec
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2024 16:19:11.8149
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tktVre2JTG8fTsAUQwkbrU4BfGSUvVBCURX+fJKdahKbBubFxLkYSa2gA469SbhzgIAXDMQW44MH6b3/0FcxCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10887
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="/fS/DhJwdDL+x8Fz"
+Content-Disposition: inline
+In-Reply-To: <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com>
 
-On Tue, May 14, 2024 at 01:09:18PM +0800, Richard Zhu wrote:
-> The dw_pcie_suspend_noirq() function currently returns success directly
-> if no endpoint (EP) device is connected. However, on some platforms, power
-> loss occurs during suspend, causing dw_resume() to do nothing in this case.
-> This results in a system halt because the DWC controller is not initialized
-> after power-on during resume.
-> 
-> Change call to deinit() in suspend and init() at resume regardless of
-> whether there are EP device connections or not. It is not harmful to
-> perform deinit() and init() again for the no power-off case, and it keeps
-> the code simple and consistent in logic.
-> 
-> Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+--/fS/DhJwdDL+x8Fz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, May 14, 2024 at 05:33:27PM +0800, Shengjiu Wang wrote:
+> The Audio Block Control contains clock distribution and gating
+> controls, as well as reset handling to several of the AUDIOMIX
+> peripherals. Especially the reset controls for Enhanced Audio
+> Return Channel (EARC) PHY and Controller.
+>=20
+> So Audio Block Control is a Multi-Function Devices.
+>=20
+> Add reset-controller sub node which is a reset provider for EARC.
+> Add compatible string "syscon", "simple-mfd" which make Audio
+> Block Control device support reset-controller sub-node.
+>=20
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
-> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=controller/dwc
-> This patch depends on the branch listed above, because it's not in pci-next.
-> But suppose it will be in there soon.
-> 
->  .../pci/controller/dwc/pcie-designware-host.c | 30 +++++++++----------
->  1 file changed, 15 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index a0822d5371bc5..cb8c3c2bcc790 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -933,23 +933,23 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
->  		return 0;
->  
-> -	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
-> -		return 0;
-> -
-> -	if (pci->pp.ops->pme_turn_off)
-> -		pci->pp.ops->pme_turn_off(&pci->pp);
-> -	else
-> -		ret = dw_pcie_pme_turn_off(pci);
-> +	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
-> +		/* Only send out PME_TURN_OFF when PCIE link is up */
-> +		if (pci->pp.ops->pme_turn_off)
-> +			pci->pp.ops->pme_turn_off(&pci->pp);
-> +		else
-> +			ret = dw_pcie_pme_turn_off(pci);
->  
-> -	if (ret)
-> -		return ret;
-> +		if (ret)
-> +			return ret;
->  
-> -	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> -				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> -				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> -	if (ret) {
-> -		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> -		return ret;
-> +		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-> +					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> +					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> +		if (ret) {
-> +			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> +			return ret;
-> +		}
->  	}
->  
->  	if (pci->pp.ops->deinit)
-> -- 
-> 2.37.1
-> 
+>  .../bindings/clock/imx8mp-audiomix.yaml         | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml=
+ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> index 0a6dc1a6e122..a403ace4d11f 100644
+> --- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> @@ -15,7 +15,10 @@ description: |
+> =20
+>  properties:
+>    compatible:
+> -    const: fsl,imx8mp-audio-blk-ctrl
+> +    items:
+> +      - const: fsl,imx8mp-audio-blk-ctrl
+> +      - const: syscon
+> +      - const: simple-mfd
+> =20
+>    reg:
+>      maxItems: 1
+> @@ -44,6 +47,11 @@ properties:
+>        ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx=
+8mp-clock.h
+>        for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
+> =20
+> +  reset-controller:
+> +    type: object
+> +    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
+> +    description: The child reset devices of AudioMIX Block Control.
+
+Why not just set #reset-cells =3D <1> in the existing node? IIRC it was
+already suggested to you to do that and use auxdev to set up the reset
+driver.
+
+Cheers,
+Conor.
+
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -60,7 +68,7 @@ examples:
+>      #include <dt-bindings/clock/imx8mp-clock.h>
+> =20
+>      clock-controller@30e20000 {
+> -        compatible =3D "fsl,imx8mp-audio-blk-ctrl";
+> +        compatible =3D "fsl,imx8mp-audio-blk-ctrl", "syscon", "simple-mf=
+d";
+>          reg =3D <0x30e20000 0x10000>;
+>          #clock-cells =3D <1>;
+>          clocks =3D <&clk IMX8MP_CLK_AUDIO_ROOT>,
+> @@ -74,6 +82,11 @@ examples:
+>                        "sai1", "sai2", "sai3",
+>                        "sai5", "sai6", "sai7";
+>          power-domains =3D <&pgc_audio>;
+> +
+> +        reset-controller {
+> +            compatible =3D "fsl,imx8mp-audiomix-reset";
+> +            #reset-cells =3D <1>;
+> +        };
+>      };
+> =20
+>  ...
+> --=20
+> 2.34.1
+>=20
+
+--/fS/DhJwdDL+x8Fz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZkOoFgAKCRB4tDGHoIJi
+0mnkAQCfYx3ESpxuBfcV+o4yFqeGhopQBeQemIeoiZ7FFQmbeQEAt8BwyiI9fAVf
+T8+mnW1Tx66ZdvmZsib64ALlolQyUQ8=
+=XWvb
+-----END PGP SIGNATURE-----
+
+--/fS/DhJwdDL+x8Fz--
