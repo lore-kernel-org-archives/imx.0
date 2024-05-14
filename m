@@ -1,35 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C142FEDC;
-	Tue, 14 May 2024 01:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F75FEC5
+	for <imx@lists.linux.dev>; Tue, 14 May 2024 01:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715648429; cv=none; b=GWn+sfoZMr08Wvlf1RG8bO/C7JyBtOaYm7rvEbh3y5oxU63D+EYe2iq7j1UMvO0mbIZ7JsNXm9nSS2dX2d0O/P1QmHb2R7Tgnbn8drAn8WIIlm3hqXfEsEzo7UD9EagrYboknW0lBaa9rXSuUUVfYwiDdh8xO+cLP/z49ZJP2UU=
+	t=1715648853; cv=none; b=szhD9zpysCkZhCA6uRAqZytV3Wb/4ojmtSM1TpWQwf755EYWZvDj8/bh5C29Fm5rI/8zb75SQozR6R9d6mTQOjQpYB8398DeeSMzMnXejCT3wrByUjl+ZxLSnXVC9c7kQ5PIwQhExBcKwy4uVn2wRru86ubo+LG8XjzONajOTYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715648429; c=relaxed/simple;
-	bh=E5AY8dfKlOU1rOU80YnyA0n26lpjKt6Wld2wUg4Wwas=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Kkk7+CHzFh2sRL8TrdSjgv4dzyJK4YjEVSXl/+6pFHWyzuDT8VFNkXA8eRNDuyFixbEi/AwU5X9zRJZnh+mY0sj54XGEDHSDBEc837FHIn1LR9SPi8v3e0jI5YmQpJX2W3ZmYjNGJ0rTGc4viLhpG7O8hASDFWGKLU3+v8ZxXAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUHaHtSP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715648853; c=relaxed/simple;
+	bh=f3uKJl77S3XOtyuC/S9DUc5g9aTtxON73vg/NMUwG8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyMXgS1Lvk/xdtMmyawGrHG5drfaPe1seu72XlwbPGnX7nzZSzYbRpKiGqIgRpSPk2XMD3tPh24GFKsROI35f+qgbKznXAK8Rvgs5XWqjZPMlNhs6JUrvAdtfQmX0V0t89WJlCuo6Uh1EVudvS/qzzG1ZOVFwM1LS9Flx0MN+lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Uf9gQv3T; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUHaHtSP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 418A7C32782;
-	Tue, 14 May 2024 01:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715648429;
-	bh=E5AY8dfKlOU1rOU80YnyA0n26lpjKt6Wld2wUg4Wwas=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pUHaHtSP4HIltHGM0u7E5/7IB0rDPt9DB7zWnDsiPUOiloWFJjzDjw5Sq9yZgRI8f
-	 QhMDzt+exPKpDYWomMTPxAvPiEpj7+hp5Y8NrhP0x0JwqRfq/uE5DcMespnkKbCTDx
-	 GegOLB4s2AUzT90BHqyprF8bOWHjZv0cWHi4t9NrVz4T5w2jhz0mWDri9J2kkMq+kC
-	 OWc11fTAxIhi+CmEbkFH1NULrbzV0TQtWKDEGrWmoKvLr0AcH5x1hvBS+lbv6q+izx
-	 S96ea2deDI+Ua1w1PnsjvESR7DxcJwpfj4EQ2kgEQBAh0AXilo0Fgy1fWlE3/+Dj07
-	 bUIDNtDLQKjaA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 298C6C433F2;
-	Tue, 14 May 2024 01:00:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Uf9gQv3T"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id D24AF87CDA;
+	Tue, 14 May 2024 03:07:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1715648848;
+	bh=xa8qPwKZOCPA6/bJm4wN473IAF5TnUbKp0w2XO2euGc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Uf9gQv3TS2ZdvuTL4ueqYusy6VjZooHp2Umwz+LKpfP67fFq7AeUWlf5nxC7JquMa
+	 WCvnBbF6UH9Ek4d7p2tT+hiZIWQVcCgZS8li7GrHQwexqLYMLYxF+ETX9a2a4UP+ky
+	 QdB0Ef/gHRzHBilbVNWBEzcSO6zxFaAIpLc3aDGq9WoYGErUK4H3p20CyJuHnGNdOP
+	 QSfdguK/iOhK7hcN9cZeiApKO1NcDl/Jth2UduaKWh5H0fOyH4frlJZkG0YQuOuMdn
+	 T9d853XIJidH0Bft89HtfVa8z10rjMuSJqc+bL9JsvEVwmyKOWP1ucYtkHzO13NaMB
+	 SKF4O9kEzJnfg==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@dh-electronics.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2 and PDK3
+Date: Tue, 14 May 2024 03:06:42 +0200
+Message-ID: <20240514010706.245874-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,43 +56,147 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: fec: remove .ndo_poll_controller to avoid deadlocks
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171564842916.4255.8652669521897481692.git-patchwork-notify@kernel.org>
-Date: Tue, 14 May 2024 01:00:29 +0000
-References: <20240511062009.652918-1-wei.fang@nxp.com>
-In-Reply-To: <20240511062009.652918-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hello:
+Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
+I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
+of HDMI DDC mode to permit connection of other I2C devices on those buses.
+The pinctrl_hdmi node is part of the SoM DTSI already.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ .../boot/dts/freescale/imx8mp-dhcom-pdk2.dts  | 39 +++++++++++++++++++
+ .../boot/dts/freescale/imx8mp-dhcom-pdk3.dts  | 39 +++++++++++++++++++
+ 2 files changed, 78 insertions(+)
 
-On Sat, 11 May 2024 14:20:09 +0800 you wrote:
-> There is a deadlock issue found in sungem driver, please refer to the
-> commit ac0a230f719b ("eth: sungem: remove .ndo_poll_controller to avoid
-> deadlocks"). The root cause of the issue is that netpoll is in atomic
-> context and disable_irq() is called by .ndo_poll_controller interface
-> of sungem driver, however, disable_irq() might sleep. After analyzing
-> the implementation of fec_poll_controller(), the fec driver should have
-> the same issue. Due to the fec driver uses NAPI for TX completions, the
-> .ndo_poll_controller is unnecessary to be implemented in the fec driver,
-> so fec_poll_controller() can be safely removed.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net: fec: remove .ndo_poll_controller to avoid deadlocks
-    https://git.kernel.org/netdev/net/c/c2e0c58b25a0
-
-You are awesome, thank you!
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
+index 3b1c940860e02..ebdf13e97b4e2 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
+@@ -69,6 +69,18 @@ button-3 {
+ 		};
+ 	};
+ 
++	hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "X38";
++		type = "a";
++
++		port {
++			hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	led {
+ 		compatible = "gpio-leds";
+ 
+@@ -184,6 +196,33 @@ &flexcan1 {
+ 	status = "okay";
+ };
+ 
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	ddc-i2c-bus = <&i2c5>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
++&lcdif3 {
++	status = "okay";
++};
++
+ &pcie_phy {
+ 	clock-names = "ref";
+ 	clocks = <&hsio_blk_ctrl>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk3.dts b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk3.dts
+index ac7ec7533a3c8..ef012e8365b1f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk3.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk3.dts
+@@ -75,6 +75,18 @@ button-3 {
+ 		};
+ 	};
+ 
++	hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "X28";
++		type = "a";
++
++		port {
++			hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	led {
+ 		compatible = "gpio-leds";
+ 
+@@ -248,6 +260,33 @@ &flexcan1 {
+ 	status = "okay";
+ };
+ 
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	ddc-i2c-bus = <&i2cmuxed1>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
++&lcdif3 {
++	status = "okay";
++};
++
+ &pcie_phy {
+ 	clocks = <&pcieclk 1>;
+ 	clock-names = "ref";
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
