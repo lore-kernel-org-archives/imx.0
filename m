@@ -1,27 +1,27 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5A713A244
-	for <imx@lists.linux.dev>; Tue, 14 May 2024 09:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B3413A41D
+	for <imx@lists.linux.dev>; Tue, 14 May 2024 09:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715680396; cv=none; b=gLWloXdYGqxqoYiT6fZ+vFoBjEBjC9XkvzxjGbOp+6RtV+UitctpDucQpjHM+ME95CPchBK1rSGn1ctX0adZFz/H1j7EEsziqyiCkFXeWF7rPuFZfVRLsXxZkOM/mX4X0+QwFiWEDKbW0Z1GJmBni/lYoGQF4ffm3RMTHE9vM8g=
+	t=1715680401; cv=none; b=dG3cphHI1m1GS1DGUJqgJcucb8iTAT+P9R/jJkQZpbDEWYlw6zl9pPQYNrSPyLISEHdKhZMTNG2p3TZozbYyd4Wj/UdS7h/aTW34p14/tkjtWppC/X4lf9Vwl1nanwNucoDgORJ90rElHEVAVjiMdb4KRfTQWvpT7T0DU2zBg/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715680396; c=relaxed/simple;
-	bh=N1Be/lHX9le8mgGi3YYkU+QV7lUMRQix+T57VbFccns=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=LCBvyd15oiv107UU59FsZC8bNSj9q3rxq7T0XQS1M19IDJVB9k3i2pMmPqnQjpCShMUUKgioODRBE4Ct7QbtmIoQ5HHtY3A+JkfIUawOadK7UoBCGLjCbx9UNR+VT8pEwzbcPi8B9/y+Qbmu9s6tY2JChQmIG6ehn1EjneSKQso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	s=arc-20240116; t=1715680401; c=relaxed/simple;
+	bh=xjDz2Izt0vEcEs30HE8QpAJZW65ZIRs1wI1ol9QNFdU=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=DlM7H9wh/kJwvB+oFjNA8/Yrg8y6qY4aqnk811xkexdRq2CRbdXMO7z6shrxdmc97IvGbnrvOyPM9ECcY9HEUMTU0yymAxl6mT5SDiK7+7CxYtqsVbDH4bA71vHr91AcK+BTYHhK5MOtZceqDqg/SH81kbXxUMIzrINCYyS/bws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4DBD320192A;
-	Tue, 14 May 2024 11:53:00 +0200 (CEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 38CCD1A1D45;
+	Tue, 14 May 2024 11:53:05 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0F267200BC5;
-	Tue, 14 May 2024 11:53:00 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id E53A51A1910;
+	Tue, 14 May 2024 11:53:04 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BCA39180226C;
-	Tue, 14 May 2024 17:52:57 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 93FDF180222F;
+	Tue, 14 May 2024 17:53:02 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: abelvesa@kernel.org,
 	peng.fan@nxp.com,
@@ -42,9 +42,9 @@ To: abelvesa@kernel.org,
 	linux-kernel@vger.kernel.org,
 	p.zabel@pengutronix.de,
 	shengjiu.wang@gmail.com
-Subject: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller sub-node
-Date: Tue, 14 May 2024 17:33:27 +0800
-Message-Id: <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v3 6/6] arm64: dts: imx8mp: Add reset-controller sub node for audio_blk_ctrl
+Date: Tue, 14 May 2024 17:33:30 +0800
+Message-Id: <1715679210-9588-7-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
@@ -58,68 +58,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 The Audio Block Control contains clock distribution and gating
 controls, as well as reset handling to several of the AUDIOMIX
 peripherals. Especially the reset controls for Enhanced Audio
-Return Channel (EARC) PHY and Controller.
+Return Channel (EARC) PHY and Controller
 
-So Audio Block Control is a Multi-Function Devices.
-
-Add reset-controller sub node which is a reset provider for EARC.
-Add compatible string "syscon", "simple-mfd" which make Audio
-Block Control device support reset-controller sub-node.
+Add reset-controller sub-node for audio_blk_ctrl.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- .../bindings/clock/imx8mp-audiomix.yaml         | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-index 0a6dc1a6e122..a403ace4d11f 100644
---- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-+++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-@@ -15,7 +15,10 @@ description: |
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 459c4a54d30e..f94702ad4210 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1565,7 +1565,7 @@ sdma2: dma-controller@30e10000 {
+ 			};
  
- properties:
-   compatible:
--    const: fsl,imx8mp-audio-blk-ctrl
-+    items:
-+      - const: fsl,imx8mp-audio-blk-ctrl
-+      - const: syscon
-+      - const: simple-mfd
- 
-   reg:
-     maxItems: 1
-@@ -44,6 +47,11 @@ properties:
-       ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8mp-clock.h
-       for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
- 
-+  reset-controller:
-+    type: object
-+    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
-+    description: The child reset devices of AudioMIX Block Control.
+ 			audio_blk_ctrl: clock-controller@30e20000 {
+-				compatible = "fsl,imx8mp-audio-blk-ctrl";
++				compatible = "fsl,imx8mp-audio-blk-ctrl", "syscon", "simple-mfd";
+ 				reg = <0x30e20000 0x10000>;
+ 				#clock-cells = <1>;
+ 				clocks = <&clk IMX8MP_CLK_AUDIO_ROOT>,
+@@ -1582,6 +1582,11 @@ audio_blk_ctrl: clock-controller@30e20000 {
+ 				assigned-clocks = <&clk IMX8MP_AUDIO_PLL1>,
+ 						  <&clk IMX8MP_AUDIO_PLL2>;
+ 				assigned-clock-rates = <393216000>, <361267200>;
 +
- required:
-   - compatible
-   - reg
-@@ -60,7 +68,7 @@ examples:
-     #include <dt-bindings/clock/imx8mp-clock.h>
++				audio_blk_ctrl_rst: reset-controller {
++					compatible = "fsl,imx8mp-audiomix-reset";
++					#reset-cells = <1>;
++				};
+ 			};
+ 		};
  
-     clock-controller@30e20000 {
--        compatible = "fsl,imx8mp-audio-blk-ctrl";
-+        compatible = "fsl,imx8mp-audio-blk-ctrl", "syscon", "simple-mfd";
-         reg = <0x30e20000 0x10000>;
-         #clock-cells = <1>;
-         clocks = <&clk IMX8MP_CLK_AUDIO_ROOT>,
-@@ -74,6 +82,11 @@ examples:
-                       "sai1", "sai2", "sai3",
-                       "sai5", "sai6", "sai7";
-         power-domains = <&pgc_audio>;
-+
-+        reset-controller {
-+            compatible = "fsl,imx8mp-audiomix-reset";
-+            #reset-cells = <1>;
-+        };
-     };
- 
- ...
 -- 
 2.34.1
 
