@@ -1,178 +1,80 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2040.outbound.protection.outlook.com [40.107.104.40])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8F180A6C
-	for <imx@lists.linux.dev>; Tue, 14 May 2024 20:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715717149; cv=fail; b=IUD0shivdHK4YeKurLvGHMht1wdRsK8WSzAppC810Pj8CCFIpiBUtioLR4zoAF2YYgZzPxAcoVybUQ2Rm0EomXQUXtru2S46/t8OQ3CPe1DKl648tdaLAj6bdkwTRjv5nuT2CWH6prAyq1ZcJgDPxNtTAOFlGX2UqLhaGQmN1L4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715717149; c=relaxed/simple;
-	bh=Q3vwZUsVSpubghSWOJrRM01pyrkhaL/zpTuRScITy30=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iNkK+k6ZYZNO6MlNigtY7U2ZTI+ABDfTdgwe12kF5+CglXtmyLItup+Giel9ggBF5bZ29GNEDbsiOMbpAyEsCryxb88t3h6wUwi/dZaJULIC6VRwdzo8azUmc/PAo9Z3o7B+Lw+gUvMS37Fb2PyyQ1+LmucXWTdiJbT8QjYDlXk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=qL2L1dBf; arc=fail smtp.client-ip=40.107.104.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F921DFD1;
+	Tue, 14 May 2024 21:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715720952; cv=none; b=LCS0GAuzUihOAZ21vH/2cwzUxA9ZhZTUTMfSqyUAap0c/ioZLES+k7wo8rG5eQRNW4Bmgky5AjGnj2npC51iYqGQmY/aIqZzvtHReK7y5eIj+n4LR4QbR2mknjkdCmB4GQKrW/6FjAoVAK8HYkm5a+3lPWIlcBhtixFRa6TgAK8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715720952; c=relaxed/simple;
+	bh=iBQGtyPRNxJ3b5eCicElCWKrOiKS02iKAvulYWm1oUU=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=JIlrkKL/LaRQewntYGEyDj/vEoSY0eWpHAfAdR8aYhGNSlne5wvfYdHT/mZdiZNuFMIULhlRL739AIh6r4roi/R+1PyzmOgkuaXMBRaHoBYxMYx98IbFLd3UVuHxJw1JZXndXtGUDYc/EjkLFP+r6QufWF8sUTW3j1QnzHCi03Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geFwaALR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="qL2L1dBf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WR37j9yO+H/a4CIwBoYjeTAF3TSmns3OxArDtvwkyqY5AAEDUCV9gNiyMinB71ItVWEKSWfclWTuGYRZRlu7IfVuwnl1HJLNyNonj0qzGt5S8MfsHyqDmJyJxNoZLIvsJgqHtZTBS+RAJnbTUQ0QksOeWhdZoFzoYSKPvm3/gcn4Av9uAjI5Q83VsTNj8Cw3qn/mpO/2QeO1QsLPa7NMSokfDqC93beeR09yBEX6jE+2rrgrGf3Z2sA7HKxj9ki7wEgt/426l7SE63qG7/RfkfYU34dNOCVpYfmI74Z75pDkoonNqIWqnpGCs+8tkpQ2lHKj4Y/V96H7l2Xu1S6EMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dWao8nhTwDMVhh8chAf/CwxBNxQaZzVpnpgp/+yTgTo=;
- b=FCVdZL9T5ZWBDsCmTN3cZABQryDadW+v7rcvkD9lxKe6C0Kbqz8EfLbKSENK6l/9+gxYu8ftyqsq9M+ojgjdZ4rQA9DB7+ea5qfmgghuYTVlap/InYacxywJ/NcH5YJRsYbbN5Xz+scFUj5AITl86rL24lA0+f0x8aisb7NtC2KTiEdHAN0uZ7jjK8AU+/3nQ9ANrSfLmVlRiRG5d/gvj5Ospxq0h9yrJJHUQh3v6ohs7rdh5pYCl8CIOqMPpX8QgqiTZrhEb8xzs4Wo6I0gtgOAGNGV1Nl4cUwjG8I0rTZR/amnxU3SP1wl9gSlKdTW4REuqmwWtDqAGZnMnlQ/Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dWao8nhTwDMVhh8chAf/CwxBNxQaZzVpnpgp/+yTgTo=;
- b=qL2L1dBfiwDRXkOLz6VK79cCoBCOwJ30Mbe5N7BMY0LyFkPb21HXHz0HCahLC/JVCQndUetMXbS1wCr9lxr330GWuoUZzPiMOEkAc/DEGJL0efSfD0oK3UdIs2qP+39qgDV2TvS7TJYFBJZvBX8ORMoVcvMFIIiOc/VHyV14eFQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM7PR04MB6807.eurprd04.prod.outlook.com (2603:10a6:20b:104::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Tue, 14 May
- 2024 20:05:43 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%2]) with mapi id 15.20.7587.025; Tue, 14 May 2024
- 20:05:43 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-pwm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com,
-	Shenwei Wang <shenwei.wang@nxp.com>
-Subject: [PATCH] pwm: imx-tpm: Enable pinctrl setting for sleep state
-Date: Tue, 14 May 2024 15:05:34 -0500
-Message-Id: <20240514200534.73847-1-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0082.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::23) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geFwaALR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE4BC2BD10;
+	Tue, 14 May 2024 21:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715720951;
+	bh=iBQGtyPRNxJ3b5eCicElCWKrOiKS02iKAvulYWm1oUU=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=geFwaALR6vbhzVKzofNk1wS80bfk5LIQWAfWAgkQV6OL0DagMP9T+RwSQa2s0bz6N
+	 89LSgb4bi7I0aAtPTZMwye1uz3OMNaZja+SJaf+dki+W1UZC14FmzFuPbXRwBeHAFG
+	 sVZUuKIeSNTU0FmHftWNp50QfMXnv/CQBXommIolqyx3czSfcJnEWMDPQOPJd9y+t2
+	 jWVLHciqhkaiCdBtCoB1eLVOd3zfS4vvukwhXYTvw0ziGkgbrCEUNNefdofDyJTt54
+	 NkoEzS6VTHACXS/ONZ3OZf/+4dIjsVc00Pj7AMJx3dbXGU85MJlLT5zzdH0Q8Mh/Bx
+	 DkXZ1i3E8sX4Q==
+Message-ID: <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|AM7PR04MB6807:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f30f6ac-972c-45ab-094c-08dc74513c4d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|366007|376005|1800799015|52116005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zDth5/BWnXK0UjbSN42Hg4ZtMGjxBz/R18DS2INtycXj7mkqUp/R/Xpph17+?=
- =?us-ascii?Q?K8nP2muCt1rXUGj5AYjVlMk3h+XXLght3/1r4nvvJY2KYr1tbf95XAenYCrQ?=
- =?us-ascii?Q?bmpYok7dGGAflBwa+hpElTN5j2slLZLL24tEonMPP+5dH7WHofY3wIfPahKr?=
- =?us-ascii?Q?f1LqDwy5RNtpR9hpl42UzdF2nRa3grJmNdUdQtMYNIWIAAnxmzsvtp0ii9Xz?=
- =?us-ascii?Q?kFq8MUhgfPG3KjuB9ElQ6WuJ/JLj1ij7lHtF6Go6NwHshqnP7jePwBB2YPRe?=
- =?us-ascii?Q?2TcVhX0yYYvfkn5uFTvCv/3pBj014LzXB6QXG/RJAWBNBvh148lar4eaWIIx?=
- =?us-ascii?Q?Mz/p3xNHNCXjsXbhh8OB94Z0Yv6c/kQBWbUj7+B6rZ++ugifiWlyYFsyDC+G?=
- =?us-ascii?Q?0XbURhkG1DgdBjydZwwf1NT8rOZcLARmvaU21wqBDmdlT9X8ZtFPCsMyEAXo?=
- =?us-ascii?Q?LGQYZbonZm0dXwKvO6ryMnoRgv+V0mqqwAJ3vZDJ5OvuQkexGgwEW5CKI3aX?=
- =?us-ascii?Q?pZnEbM+xFj/NeopI/s8U0zaAgEOoZLz0MppVmoIHAtK4vn6P7ZnM5MReY6G3?=
- =?us-ascii?Q?rFKI0WI4BSwQZZc364Rp4PjtzRAkrQGonOgz14i9LOpXoePZz2fhsQXBlF7f?=
- =?us-ascii?Q?b2VJVtmJ6I/vHFU7wCfPSXvwofOCIP5AiKH8+j6Yw5c4OwaMF080VPyZOn6M?=
- =?us-ascii?Q?cgeFT1yeQzXxGUktS1X7yWtCHRHITvCbj7fthc+2VevhkDgiXE5U7Ggl1l2h?=
- =?us-ascii?Q?3aaibOqqBYpyxxAODQEK9tR3zWe4h3pjjDpqPZ47E2k1l7+sn5TX5wkeNmjE?=
- =?us-ascii?Q?V721J55ghkIN8sAbLIr1tkC75KTr5HKR0irmBr2wkCZDoG06tsEyWymBpwUr?=
- =?us-ascii?Q?SoTenYCKnBUMN1cHt+dT5uJtrYUa7XHmBvuk6FN2MGLksyuaNAB///CCM3aL?=
- =?us-ascii?Q?tjJudAy0KvfIyrgujBv0oUgB0ov0PL/yw6DECkBQ/5TXI0XDGE7MB+uoBMCm?=
- =?us-ascii?Q?jiHyfVqzpQGiQRxi8YOGz+jIu/qWQigUu3QGUENeRjilLZhZTQmX4ex+Bx5e?=
- =?us-ascii?Q?IcmYhOX5aYfutYxXGrBaPMJZYb9gOfF23vwzHYrXxgz2AvUF9LPVf1KtqruK?=
- =?us-ascii?Q?wkLiDkTHRL2T6Y8xu1HXMd0OUSWRxEAy8xu6NOaAuG7pyJ2pKxNe1KxaOToY?=
- =?us-ascii?Q?tLn9NAQs5W/5YweeDABIG4sYoYjS4vRoC4haCGHL6vWDxJ7c8rXWOmspAVXB?=
- =?us-ascii?Q?x2FKC+NVUc1knmAxL2UNtc38/LDKXBv+8DsoYGVFC5dXVSC/kXW/xjVidxPW?=
- =?us-ascii?Q?ATXtf4zEA4d9cbh8DCkqEvTJ5Qet1atRTXjrN3fOXCkxwA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(52116005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mXvauGlMbZNXGMSevn3qpjluXdH67GcMe9kuA+SqjHR2QakWBTRkPRaRUwlj?=
- =?us-ascii?Q?EbHwdDz/DBT1lUw7bN8RUZ8B5FbJm9fIjBYRHFdvYu4aOg3Auyk72+L2Hcpu?=
- =?us-ascii?Q?xM33Spqoi0ngWVxX+BEDWxKHiYIeN9qketa100B1gSZb5SIA06U+CWobX+Z+?=
- =?us-ascii?Q?FBRujxJ/DYufvfjFiNE3RfTNxFXq8buEhimgwpMg1Pm8uxFlk3MNskWOt/bh?=
- =?us-ascii?Q?wmTeZIKWCrBBDDLvVfe4J1Zv+DgU5CykRfPfJDWYNVeZP/Z0LgYAQ//tz1qt?=
- =?us-ascii?Q?wDyM84FSBp8XLKXPlbvXYN+iR8C58zYnBlzASmVHdFvqezixWJzjcyWMPL4B?=
- =?us-ascii?Q?5TezCjYyMNsno2xCRNQQc4vJE0PR5fpfskPpt+sYyTNJsV3Kv8kNIMJgg1Uo?=
- =?us-ascii?Q?NpSwNZTgtBtqqkUAYupzAlxyms1zokWVO8Vvx8ya71Hx9kOLMhciSJBNu8Qu?=
- =?us-ascii?Q?9jIibZOKJj1f92qS5RkjHvFuIEXsK3daX8FunrX82LuxYUlkNn/Fq3iu/yue?=
- =?us-ascii?Q?21FR2HSQYy6SEj9Mr6XVa1ux5imp1QmzNf3CcyiZr3wEWEpzINLmUKDm/kXw?=
- =?us-ascii?Q?iglIDDMM12W+6+i0FmLk0obF0J8ldd+iejiASFvhEqRxKuB3YY0KtbJPp7TF?=
- =?us-ascii?Q?Eq6bMQXc1jS16w7ohcWr2Rjvon6HjN3ZRKu+76hg2GqDLnbQVWiQf0IgviNY?=
- =?us-ascii?Q?cF3HAu+dTm/82GOCjLe3xf7/Bz06Jh/dVJvaFhaOYM0TQUg+UEH4fRXgpDOK?=
- =?us-ascii?Q?MafTbsGAMPUNz1FBWtdMhDZB9/0bCKlVVEk4u5DurUzrFi4FqZb7yL3+rxFn?=
- =?us-ascii?Q?UqloY20/iBOX3WAyr29pPluw64qUEmPfEMRkfdrbqGqJ/jJTUQ/SpNu00bgk?=
- =?us-ascii?Q?ManTXd4XhWUVfi48Hklk3ayiDYkILUCF2kjWbEs04dCj0+qIeq1wUd4OYtcx?=
- =?us-ascii?Q?9Owd850Zg9rThs+Gg5VWo1REyCs66szBtfuaFsbCVB3oaHxefKg3iVp5aHc2?=
- =?us-ascii?Q?DTIaNqdtfL2uCQ5snTg/Ih8S8+5hfvdNLRgGOyp0vtqHYcdYevEfWC9txjDU?=
- =?us-ascii?Q?3d2jSNNu7Pr8m+PCS7mA2/YjaKkNCpRTiqB/PkHXqTd8Bsokn9dcppvzfeTy?=
- =?us-ascii?Q?UjfP53PFhBZo6M2PnIErUmXmmWiBrUhUvgPE032/RJJRuAAASnQ3RPL4R2J8?=
- =?us-ascii?Q?H8+10GXhR6s1P2ArsMuqnxOJwp/FFYGSMBw4mMLFZH8iNBb54cDwq3WpPY3L?=
- =?us-ascii?Q?V0IyB3ao5bQU32eJXcMUlqKFFSZYPJMgkKeHRvhSX33Bd8wPpHPeEbqCfqhD?=
- =?us-ascii?Q?RzWTwe7CJ+lrY8Yh3ZEh6h93wLgFSX+CsTrkXChgqsmFXobGz0WjBs1YX0pX?=
- =?us-ascii?Q?Z/IuIq3Y68z2Lo9CNGo50FyeNF7xuBXd0gGjd6/DqorLmEIknkQJdZwsGdg8?=
- =?us-ascii?Q?SS8CMvmvOCxPYyztNdufMFxOBuJ87eeGmEnggm4CTFPAAywDxvLnSHK+3bSk?=
- =?us-ascii?Q?vhMdJ/gHQ+myPAoCqv00NXZOVnb6lnJTq5SPkr5MeyjXl5EooxpIuKwGB0Yq?=
- =?us-ascii?Q?x+LqceZrwVvA/dIfMg8ruUqtidCQsMvSrPsgbXHL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f30f6ac-972c-45ab-094c-08dc74513c4d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2024 20:05:43.6329
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oq2h85W7ZzKmUON/dli/p7JUb6jd/7lzqhSArfGCyxB+zIBaxmuyI/KK9l/rbhO+GhbBMNjV+scfUW0zgKizrQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6807
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240514-campus-sibling-21cdf4c78366@spud>
+References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com> <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com> <20240514-campus-sibling-21cdf4c78366@spud>
+Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller sub-node
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, p.zabel@pengutronix.de, shengjiu.wang@gmail.com
+To: Conor Dooley <conor@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>
+Date: Tue, 14 May 2024 14:09:09 -0700
+User-Agent: alot/0.10
 
-Apply the pinctrl setting of sleep state when system enters
-suspend state.
-Restore to the default pinctrl setting when system resumes.
+Quoting Conor Dooley (2024-05-14 11:06:14)
+> On Tue, May 14, 2024 at 05:33:27PM +0800, Shengjiu Wang wrote:
+> > diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.ya=
+ml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > index 0a6dc1a6e122..a403ace4d11f 100644
+> > --- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > +++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > @@ -15,7 +15,10 @@ description: |
+> > =20
+> >  properties:
+> >    compatible:
+> > -    const: fsl,imx8mp-audio-blk-ctrl
+> > +    items:
+> > +      - const: fsl,imx8mp-audio-blk-ctrl
+> > +      - const: syscon
+> > +      - const: simple-mfd
+> > =20
+> >    reg:
+> >      maxItems: 1
+> > @@ -44,6 +47,11 @@ properties:
+> >        ID in its "clocks" phandle cell. See include/dt-bindings/clock/i=
+mx8mp-clock.h
+> >        for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
+> > =20
+> > +  reset-controller:
+> > +    type: object
+> > +    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
+> > +    description: The child reset devices of AudioMIX Block Control.
+>=20
+> Why not just set #reset-cells =3D <1> in the existing node? IIRC it was
+> already suggested to you to do that and use auxdev to set up the reset
+> driver.
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
----
- drivers/pwm/pwm-imx-tpm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-index c50ddbac43c8..19245790c67c 100644
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -393,7 +393,7 @@ static int pwm_imx_tpm_suspend(struct device *dev)
- 
- 	clk_disable_unprepare(tpm->clk);
- 
--	return 0;
-+	return pinctrl_pm_select_sleep_state(dev);
- }
- 
- static int pwm_imx_tpm_resume(struct device *dev)
-@@ -401,6 +401,10 @@ static int pwm_imx_tpm_resume(struct device *dev)
- 	struct imx_tpm_pwm_chip *tpm = dev_get_drvdata(dev);
- 	int ret = 0;
- 
-+	ret = pinctrl_pm_select_default_state(dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = clk_prepare_enable(tpm->clk);
- 	if (ret)
- 		dev_err(dev, "failed to prepare or enable clock: %d\n", ret);
--- 
-2.34.1
-
+Yes, do that.
